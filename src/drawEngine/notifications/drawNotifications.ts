@@ -1,6 +1,7 @@
 import { addNotice, deleteNotice } from '../../global/state/globalState';
 import { getPositionAssignments } from '../getters/positionsGetter';
 
+import { DrawDefinition } from '../../types/tournamentFromSchema';
 import {
   ADD_DRAW_DEFINITION,
   ADD_MATCHUPS,
@@ -18,11 +19,17 @@ import {
   MISSING_STRUCTURE,
 } from '../../constants/errorConditionConstants';
 
-function drawUpdatedAt(drawDefinition, structureIds) {
+function drawUpdatedAt(
+  drawDefinition: DrawDefinition,
+  structureIds?: string[]
+) {
   if (!drawDefinition) return;
 
   let timeStamp = Date.now();
-  if (timeStamp === new Date(drawDefinition.updatedAt).getTime())
+  if (
+    drawDefinition.updatedAt &&
+    timeStamp === new Date(drawDefinition.updatedAt).getTime()
+  )
     timeStamp += 1;
   const updatedAt = new Date(timeStamp).toISOString();
 
@@ -130,12 +137,19 @@ export function deleteDrawNotice({ tournamentId, eventId, drawId }) {
   });
   deleteNotice({ key: drawId });
 }
+
+type ModifyDrawNoticeArgs = {
+  drawDefinition: DrawDefinition;
+  structureIds?: string[];
+  tournamentId: string;
+  eventId?: string;
+};
 export function modifyDrawNotice({
   drawDefinition,
   tournamentId,
   structureIds,
   eventId,
-}) {
+}: ModifyDrawNoticeArgs) {
   if (!drawDefinition) {
     return { error: MISSING_DRAW_DEFINITION };
   }
@@ -166,7 +180,7 @@ export function modifySeedAssignmentsNotice({
     key: drawDefinition.drawId,
   });
   modifyDrawNotice({
-    sructureIds: [structureId],
+    structureIds: [structureId],
     drawDefinition,
     tournamentId,
     eventId,
@@ -200,7 +214,7 @@ export function modifyPositionAssignmentsNotice({
   });
 
   modifyDrawNotice({
-    sructureIds: [structureId],
+    structureIds: [structureId],
     drawDefinition,
     tournamentId,
     eventId,

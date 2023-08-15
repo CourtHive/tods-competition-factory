@@ -39,24 +39,24 @@ it('will return participant events including all entryStatuses', () => {
   expect(positionAssignments[1].bye).toEqual(true);
 
   let result = tournamentEngine.assignDrawPosition({
-    drawId,
-    structureId,
     participantId: alternateParticipantIds[0],
+    structureId,
+    drawId,
   });
   expect(result.error).toEqual(MISSING_DRAW_POSITION);
 
   result = tournamentEngine.assignDrawPosition({
-    drawId,
-    drawPosition: 2,
     participantId: alternateParticipantIds[0],
+    drawPosition: 2,
+    drawId,
   });
   expect(result.error).toEqual(MISSING_STRUCTURE_ID);
 
   result = tournamentEngine.assignDrawPosition({
-    drawId,
-    structureId,
-    drawPosition: 2,
     participantId: alternateParticipantIds[0],
+    drawPosition: 2,
+    structureId,
+    drawId,
   });
   expect(result.success).toEqual(true);
 
@@ -78,10 +78,10 @@ it('will return participant events including all entryStatuses', () => {
   );
 
   let { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+    participantFilters: { participantIds: [alternateParticipantIds[0]] },
     withStatistics: true,
     withOpponents: true,
     withMatchUps: true,
-    participantFilters: { participantIds: [alternateParticipantIds[0]] },
   });
   expect(tournamentParticipants[0].draws[0].entryStatus).toEqual(ALTERNATE);
   const { opponents, matchUps } = tournamentParticipants[0];
@@ -103,8 +103,8 @@ it('will return participant events including all entryStatuses', () => {
   expect(result.stack).toEqual(['assignDrawPositionBye']);
 
   result = tournamentEngine.assignDrawPosition({
-    qualifier: true,
     drawPosition: 2,
+    qualifier: true,
     structureId,
     drawId,
   });

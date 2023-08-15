@@ -1,5 +1,5 @@
 export interface Tournament {
-  createdAt?: Date;
+  createdAt?: Date | string;
   /**
    * Date on which the tournament ends
    */
@@ -34,14 +34,14 @@ export interface Tournament {
   tournamentName?: string;
   tournamentOtherIds?: UnifiedTournamentID[];
   tournamentRank?: string;
-  updatedAt?: Date;
+  updatedAt?: Date | string;
   venues?: Venue[];
 }
 
 export interface Event {
   allowedDrawTypes?: DrawTypeEnum[];
   category?: Category;
-  createdAt?: Date;
+  createdAt?: Date | string;
   discipline?: DisciplineEnum;
   drawDefinitions?: DrawDefinition[];
   /**
@@ -70,7 +70,7 @@ export interface Event {
   tennisOfficialIds?: string[];
   tieFormat?: TieFormat;
   timeItems?: TimeItem[];
-  updatedAt?: Date;
+  updatedAt?: Date | string;
   wheelchairClass?: WheelchairClassEnum;
 }
 
@@ -103,7 +103,7 @@ export interface Category {
   ageMinDate?: string;
   ballType?: BallTypeEnum;
   categoryName?: string;
-  createdAt?: Date;
+  createdAt?: Date | string;
   extensions?: Extension[];
   isMock?: boolean;
   notes?: string;
@@ -113,7 +113,7 @@ export interface Category {
   subType?: string;
   timeItems?: TimeItem[];
   type?: CategoryEnum;
-  updatedAt?: Date;
+  updatedAt?: Date | string;
 }
 
 export enum BallTypeEnum {
@@ -134,8 +134,8 @@ export interface Extension {
 }
 
 export interface TimeItem {
-  createdAt?: Date;
-  itemDate?: Date;
+  createdAt?: Date | string;
+  itemDate?: Date | string;
   itemSubTypes?: string[];
   itemType?: string;
   itemValue?: any;
@@ -155,7 +155,7 @@ export enum DisciplineEnum {
 
 export interface DrawDefinition {
   automated?: boolean;
-  createdAt?: Date;
+  createdAt?: Date | string;
   drawId: string;
   drawName?: string;
   drawOrder?: number;
@@ -182,7 +182,7 @@ export interface DrawDefinition {
   structures?: Structure[];
   tieFormat?: TieFormat;
   timeItems?: TimeItem[];
-  updatedAt?: Date;
+  updatedAt?: Date | string;
 }
 
 export enum DrawStatusEnum {
@@ -192,7 +192,7 @@ export enum DrawStatusEnum {
 }
 
 export interface Entry {
-  createdAt?: Date;
+  createdAt?: Date | string;
   entryId?: string;
   entryPosition?: number;
   entryStage?: StageTypeEnum;
@@ -203,7 +203,7 @@ export interface Entry {
   notes?: string;
   participantId: string;
   timeItems?: TimeItem[];
-  updatedAt?: Date;
+  updatedAt?: Date | string;
 }
 
 export enum StageTypeEnum {
@@ -231,7 +231,7 @@ export enum EntryStatusEnum {
 }
 
 export interface DrawLink {
-  createdAt?: Date;
+  createdAt?: Date | string;
   extensions?: Extension[];
   isMock?: boolean;
   linkCondition?: string;
@@ -240,7 +240,7 @@ export interface DrawLink {
   source: DrawLinkSource;
   target: DrawLinkTarget;
   timeItems?: TimeItem[];
-  updatedAt?: Date;
+  updatedAt?: Date | string;
 }
 
 export enum LinkTypeEnum {
@@ -250,7 +250,7 @@ export enum LinkTypeEnum {
 }
 
 export interface DrawLinkSource {
-  createdAt?: Date;
+  createdAt?: Date | string;
   drawId?: string;
   extensions?: Extension[];
   finishingPositions?: number[];
@@ -259,11 +259,11 @@ export interface DrawLinkSource {
   roundNumber?: number;
   structureId: string;
   timeItems?: TimeItem[];
-  updatedAt?: Date;
+  updatedAt?: Date | string;
 }
 
 export interface DrawLinkTarget {
-  createdAt?: Date;
+  createdAt?: Date | string;
   drawId?: string;
   extensions?: Extension[];
   feedProfile: PositioningProfileEnum;
@@ -274,7 +274,7 @@ export interface DrawLinkTarget {
   roundNumber: number;
   structureId: string;
   timeItems?: TimeItem[];
-  updatedAt?: Date;
+  updatedAt?: Date | string;
 }
 
 export enum PositioningProfileEnum {
@@ -300,7 +300,7 @@ export enum TypeEnum {
 export interface MatchUp {
   collectionId?: string;
   collectionPosition?: number;
-  createdAt?: Date;
+  createdAt?: Date | string;
   drawPositions?: number[];
   /**
    * Date on which the matchUp ends
@@ -334,7 +334,7 @@ export interface MatchUp {
   tieFormat?: TieFormat;
   tieMatchUps?: MatchUp[];
   timeItems?: TimeItem[];
-  updatedAt?: Date;
+  updatedAt?: Date | string;
   winnerMatchUpId?: string;
   winningSide?: number;
 }
@@ -370,7 +370,7 @@ export enum MatchUpStatusEnum {
 }
 
 export interface Score {
-  createdAt?: Date;
+  createdAt?: Date | string;
   extensions?: Extension[];
   isMock?: boolean;
   notes?: string;
@@ -378,11 +378,11 @@ export interface Score {
   scoreStringSide2?: string;
   sets?: Set[];
   timeItems?: TimeItem[];
-  updatedAt?: Date;
+  updatedAt?: Date | string;
 }
 
 export interface Set {
-  createdAt?: Date;
+  createdAt?: Date | string;
   extensions?: Extension[];
   games?: Game[];
   isMock?: boolean;
@@ -397,12 +397,12 @@ export interface Set {
   side2Score?: number;
   side2TiebreakScore?: number;
   timeItems?: TimeItem[];
-  updatedAt?: Date;
+  updatedAt?: Date | string;
   winningSide?: number;
 }
 
 export interface Game {
-  createdAt?: Date;
+  createdAt?: Date | string;
   extensions?: Extension[];
   gameDuration?: string;
   gameFormat?: string;
@@ -411,13 +411,13 @@ export interface Game {
   notes?: string;
   points?: Point[];
   timeItems?: TimeItem[];
-  updatedAt?: Date;
+  updatedAt?: Date | string;
   winningSide?: number;
   winReason?: WinReasonEnum;
 }
 
 export interface Point {
-  createdAt?: Date;
+  createdAt?: Date | string;
   extensions?: Extension[];
   isMock?: boolean;
   notes?: string;
@@ -427,14 +427,14 @@ export interface Point {
   side1Score?: string;
   side2Score?: string;
   timeItems?: TimeItem[];
-  updatedAt?: Date;
+  updatedAt?: Date | string;
   winningSide?: number;
   winReason?: WinReasonEnum;
 }
 
 export interface Shot {
   bounceAt?: CourtPosition;
-  createdAt?: Date;
+  createdAt?: Date | string;
   extensions?: Extension[];
   isMock?: boolean;
   notes?: string;
@@ -448,18 +448,18 @@ export interface Shot {
   speed?: number;
   spin?: string;
   timeItems?: TimeItem[];
-  updatedAt?: Date;
+  updatedAt?: Date | string;
 }
 
 export interface CourtPosition {
-  createdAt?: Date;
+  createdAt?: Date | string;
   extensions?: Extension[];
   isMock?: boolean;
   notes?: string;
   positionName?: CourtPositionEnum;
-  timeAtPosition?: Date;
+  timeAtPosition?: Date | string;
   timeItems?: TimeItem[];
-  updatedAt?: Date;
+  updatedAt?: Date | string;
   x?: number;
   y?: number;
 }
@@ -510,7 +510,7 @@ export enum WinReasonEnum {
 }
 
 export interface Side {
-  createdAt?: Date;
+  createdAt?: Date | string;
   extensions?: Extension[];
   isMock?: boolean;
   lineUp?: TeamCompetitor[];
@@ -518,18 +518,18 @@ export interface Side {
   participantId?: string;
   sideNumber?: number;
   timeItems?: TimeItem[];
-  updatedAt?: Date;
+  updatedAt?: Date | string;
 }
 
 export interface TeamCompetitor {
   collectionAssignments?: CollectionAssignment[];
-  createdAt?: Date;
+  createdAt?: Date | string;
   extensions?: Extension[];
   isMock?: boolean;
   notes?: string;
   participantId: string;
   timeItems?: TimeItem[];
-  updatedAt?: Date;
+  updatedAt?: Date | string;
 }
 
 export interface CollectionAssignment {
@@ -548,13 +548,13 @@ export enum SurfaceCategoryEnum {
 export interface TieFormat {
   collectionDefinitions: CollectionDefinition[];
   collectionGroups?: CollectionGroup[];
-  createdAt?: Date;
+  createdAt?: Date | string;
   extensions?: Extension[];
   isMock?: boolean;
   notes?: string;
   tieFormatName?: string;
   timeItems?: TimeItem[];
-  updatedAt?: Date;
+  updatedAt?: Date | string;
   winCriteria: WinCriteria;
 }
 
@@ -566,7 +566,7 @@ export interface CollectionDefinition {
   collectionOrder?: number;
   collectionValue?: number;
   collectionValueProfiles?: CollectionValueProfile[];
-  createdAt?: Date;
+  createdAt?: Date | string;
   extensions?: Extension[];
   gender?: GenderEnum;
   isMock?: boolean;
@@ -579,19 +579,19 @@ export interface CollectionDefinition {
   scoreValue?: number;
   setValue?: number;
   timeItems?: TimeItem[];
-  updatedAt?: Date;
+  updatedAt?: Date | string;
   winCriteria?: WinCriteria;
 }
 
 export interface CollectionValueProfile {
   collectionPosition: number;
-  createdAt?: Date;
+  createdAt?: Date | string;
   extensions?: Extension[];
   isMock?: boolean;
   matchUpValue: number;
   notes?: string;
   timeItems?: TimeItem[];
-  updatedAt?: Date;
+  updatedAt?: Date | string;
 }
 
 export enum GenderEnum {
@@ -603,17 +603,17 @@ export enum GenderEnum {
 
 export interface WinCriteria {
   aggregateValue?: boolean;
-  createdAt?: Date;
+  createdAt?: Date | string;
   extensions?: Extension[];
   isMock?: boolean;
   notes?: string;
   timeItems?: TimeItem[];
-  updatedAt?: Date;
+  updatedAt?: Date | string;
   valueGoal: number;
 }
 
 export interface CollectionGroup {
-  createdAt?: Date;
+  createdAt?: Date | string;
   extensions?: Extension[];
   groupName?: string;
   groupNumber: number;
@@ -621,12 +621,12 @@ export interface CollectionGroup {
   isMock?: boolean;
   notes?: string;
   timeItems?: TimeItem[];
-  updatedAt?: Date;
+  updatedAt?: Date | string;
   winCriteria?: WinCriteria;
 }
 
 export interface Structure {
-  createdAt?: Date;
+  createdAt?: Date | string;
   extensions?: Extension[];
   finishingPosition?: FinishingPositionEnum;
   isMock?: boolean;
@@ -650,7 +650,7 @@ export interface Structure {
   structureType?: StructureTypeEnum;
   tieFormat?: TieFormat;
   timeItems?: TimeItem[];
-  updatedAt?: Date;
+  updatedAt?: Date | string;
 }
 
 export enum FinishingPositionEnum {
@@ -660,7 +660,7 @@ export enum FinishingPositionEnum {
 
 export interface PositionAssignment {
   bye?: boolean;
-  createdAt?: Date;
+  createdAt?: Date | string;
   drawPosition: number;
   extensions?: Extension[];
   isMock?: boolean;
@@ -668,11 +668,11 @@ export interface PositionAssignment {
   participantId?: string;
   qualifier?: boolean;
   timeItems?: TimeItem[];
-  updatedAt?: Date;
+  updatedAt?: Date | string;
 }
 
 export interface SeedAssignment {
-  createdAt?: Date;
+  createdAt?: Date | string;
   extensions?: Extension[];
   isMock?: boolean;
   notes?: string;
@@ -680,7 +680,7 @@ export interface SeedAssignment {
   seedNumber: number;
   seedValue: number | string;
   timeItems?: TimeItem[];
-  updatedAt?: Date;
+  updatedAt?: Date | string;
 }
 
 export enum StructureTypeEnum {
@@ -960,7 +960,7 @@ export enum CountryCodeEnum {
 }
 
 export interface OnlineResource {
-  createdAt?: Date;
+  createdAt?: Date | string;
   extensions?: Extension[];
   identifier?: string;
   isMock?: boolean;
@@ -970,7 +970,7 @@ export interface OnlineResource {
   resourceSubType?: string;
   resourceType?: OnlineResourceTypeEnum;
   timeItems?: TimeItem[];
-  updatedAt?: Date;
+  updatedAt?: Date | string;
 }
 
 export enum OnlineResourceTypeEnum {
@@ -982,7 +982,7 @@ export enum OnlineResourceTypeEnum {
 
 export interface Participant {
   contacts?: Contact[];
-  createdAt?: Date;
+  createdAt?: Date | string;
   extensions?: Extension[];
   individualParticipantIds?: string[];
   isMock?: boolean;
@@ -1001,11 +1001,11 @@ export interface Participant {
   representing?: CountryCodeEnum;
   teamId?: string;
   timeItems?: TimeItem[];
-  updatedAt?: Date;
+  updatedAt?: Date | string;
 }
 
 export interface Contact {
-  createdAt?: Date;
+  createdAt?: Date | string;
   emailAddress?: string;
   extensions?: Extension[];
   fax?: string;
@@ -1016,7 +1016,7 @@ export interface Contact {
   notes?: string;
   telephone?: string;
   timeItems?: TimeItem[];
-  updatedAt?: Date;
+  updatedAt?: Date | string;
 }
 
 export enum ParticipantRoleEnum {
@@ -1044,7 +1044,7 @@ export enum ParticipantTypeEnum {
 }
 
 export interface Penalty {
-  createdAt?: Date;
+  createdAt?: Date | string;
   extensions?: Extension[];
   isMock?: boolean;
   issuedAt?: string;
@@ -1055,7 +1055,7 @@ export interface Penalty {
   penaltyType: PenaltyTypeEnum;
   refereeParticipantId?: string;
   timeItems?: TimeItem[];
-  updatedAt?: Date;
+  updatedAt?: Date | string;
 }
 
 export enum PenaltyTypeEnum {
@@ -1083,7 +1083,7 @@ export interface Person {
   biographicalInformation?: BiographicalInformation;
   birthDate?: string;
   contacts?: Contact[];
-  createdAt?: Date;
+  createdAt?: Date | string;
   extensions?: Extension[];
   isMock?: boolean;
   nationalityCode?: string;
@@ -1105,7 +1105,7 @@ export interface Person {
   status?: string;
   tennisId?: string;
   timeItems?: TimeItem[];
-  updatedAt?: Date;
+  updatedAt?: Date | string;
   wheelchair?: boolean;
 }
 
@@ -1117,7 +1117,7 @@ export interface Address {
   addressType?: AddressTypeEnum;
   city?: string;
   countryCode?: CountryCodeEnum;
-  createdAt?: Date;
+  createdAt?: Date | string;
   extensions?: Extension[];
   isMock?: boolean;
   latitude?: string;
@@ -1127,7 +1127,7 @@ export interface Address {
   state?: string;
   timeItems?: TimeItem[];
   timeZone?: string;
-  updatedAt?: Date;
+  updatedAt?: Date | string;
 }
 
 export enum AddressTypeEnum {
@@ -1144,7 +1144,7 @@ export interface BiographicalInformation {
   ageTurnedPro?: number;
   birthCountryCode?: CountryCodeEnum;
   coachId?: string;
-  createdAt?: Date;
+  createdAt?: Date | string;
   doublePlayingHand?: PlayingDoubleHandCodeEnum;
   extensions?: Extension[];
   height?: number;
@@ -1156,7 +1156,7 @@ export interface BiographicalInformation {
   playingHand?: PlayingHandCodeEnum;
   residenceCountryCode?: CountryCodeEnum;
   timeItems?: TimeItem[];
-  updatedAt?: Date;
+  updatedAt?: Date | string;
   weight?: number;
   weightUnit?: WeightUnitEnum;
 }
@@ -1186,7 +1186,7 @@ export enum WeightUnitEnum {
 }
 
 export interface UnifiedPersonID {
-  createdAt?: Date;
+  createdAt?: Date | string;
   extensions?: Extension[];
   isMock?: boolean;
   notes?: string;
@@ -1194,7 +1194,7 @@ export interface UnifiedPersonID {
   personId: string;
   timeItems?: TimeItem[];
   uniqueOrganisationName?: string;
-  updatedAt?: Date;
+  updatedAt?: Date | string;
 }
 
 export enum SexEnum {
@@ -1204,30 +1204,30 @@ export enum SexEnum {
 }
 
 export interface RegistrationProfile {
-  createdAt?: Date;
-  entriesClose?: Date;
-  entriesOpen?: Date;
+  createdAt?: Date | string;
+  entriesClose?: Date | string;
+  entriesOpen?: Date | string;
   extensions?: Extension[];
   isMock?: boolean;
   notes?: string;
   timeItems?: TimeItem[];
-  updatedAt?: Date;
-  withdrawalDeadline?: Date;
+  updatedAt?: Date | string;
+  withdrawalDeadline?: Date | string;
 }
 
 export interface PrizeMoney {
   amount: number;
-  createdAt?: Date;
+  createdAt?: Date | string;
   currencyCode: string;
   extensions?: Extension[];
   isMock?: boolean;
   notes?: string;
   timeItems?: TimeItem[];
-  updatedAt?: Date;
+  updatedAt?: Date | string;
 }
 
 export interface UnifiedTournamentID {
-  createdAt?: Date;
+  createdAt?: Date | string;
   extensions?: Extension[];
   isMock?: boolean;
   notes?: string;
@@ -1235,14 +1235,14 @@ export interface UnifiedTournamentID {
   timeItems?: TimeItem[];
   tournamentId: string;
   uniqueOrganisationName?: string;
-  updatedAt?: Date;
+  updatedAt?: Date | string;
 }
 
 export interface Venue {
   addresses?: Address[];
   contacts?: Contact[];
   courts?: Court[];
-  createdAt?: Date;
+  createdAt?: Date | string;
   extensions?: Extension[];
   isMock?: boolean;
   notes?: string;
@@ -1251,7 +1251,7 @@ export interface Venue {
   roles?: string[];
   subVenues?: Venue[];
   timeItems?: TimeItem[];
-  updatedAt?: Date;
+  updatedAt?: Date | string;
   venueAbbreviation?: string;
   venueId: string;
   venueName?: string;
@@ -1264,7 +1264,7 @@ export interface Court {
   courtDimensions?: string;
   courtId: string;
   courtName?: string;
-  createdAt?: Date;
+  createdAt?: Date | string;
   dateAvailability?: Availability[];
   extensions?: Extension[];
   floodlit?: boolean;
@@ -1279,12 +1279,12 @@ export interface Court {
   surfacedDate?: string;
   surfaceType?: string;
   timeItems?: TimeItem[];
-  updatedAt?: Date;
+  updatedAt?: Date | string;
 }
 
 export interface Availability {
   bookings?: Booking;
-  createdAt?: Date;
+  createdAt?: Date | string;
   date?: string;
   endTime?: string;
   extensions?: Extension[];
@@ -1292,29 +1292,29 @@ export interface Availability {
   notes?: string;
   startTime?: string;
   timeItems?: TimeItem[];
-  updatedAt?: Date;
+  updatedAt?: Date | string;
 }
 
 export interface Booking {
   bookingType?: string;
-  createdAt?: Date;
+  createdAt?: Date | string;
   endTime?: string;
   extensions?: Extension[];
   isMock?: boolean;
   notes?: string;
   startTime?: string;
   timeItems?: TimeItem[];
-  updatedAt?: Date;
+  updatedAt?: Date | string;
 }
 
 export interface UnifiedVenueID {
-  createdAt?: Date;
+  createdAt?: Date | string;
   extensions?: Extension[];
   isMock?: boolean;
   notes?: string;
   organisationId: string;
   timeItems?: TimeItem[];
   uniqueOrganisationName?: string;
-  updatedAt?: Date;
+  updatedAt?: Date | string;
   venueId: string;
 }

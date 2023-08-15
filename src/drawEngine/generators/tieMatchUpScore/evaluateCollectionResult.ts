@@ -1,4 +1,7 @@
-import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
+import {
+  COMPLETED,
+  completedMatchUpStatuses,
+} from '../../../constants/matchUpStatusConstants';
 
 export function evaluateCollectionResult({
   collectionDefinition,
@@ -12,10 +15,10 @@ export function evaluateCollectionResult({
   );
 
   // keep track of the values derived from matchUps
-  const sideMatchUpValues = [0, 0];
+  const sideMatchUpValues: number[] = [0, 0];
   // will be equivalent to sideMatchUpValues unless there is a collectionValue,
   // in which case the sideMatchUpValues are used in comparision with winCriteria
-  let sideCollectionValues = [0, 0];
+  let sideCollectionValues: number[] = [0, 0];
 
   const allCollectionMatchUpsCompleted = collectionMatchUps.every((matchUp) =>
     completedMatchUpStatuses.includes(matchUp.matchUpStatus)
@@ -59,7 +62,12 @@ export function evaluateCollectionResult({
           side1Score = 0,
           side2Score = 0,
         } = set;
-        if (set.winningSide || matchUp.winningSide) {
+
+        if (
+          matchUp.matchUpStatus === COMPLETED ||
+          matchUp.winningSide ||
+          set.winningSide
+        ) {
           if (side1Score || side2Score) {
             sideMatchUpValues[0] += side1Score;
             sideMatchUpValues[1] += side2Score;
@@ -107,14 +115,14 @@ export function evaluateCollectionResult({
         (winningSide, side, i) => {
           return side >= winCriteria.valueGoal ? i + 1 : winningSide;
         },
-        undefined
+        0
       );
     } else {
       const winGoal = Math.floor(collectionDefinition.matchUpCount / 2) + 1;
 
       collectionWinningSide = sideWins.reduce((winningSide, side, i) => {
         return side >= winGoal ? i + 1 : winningSide;
-      }, undefined);
+      }, 0);
     }
 
     if (collectionWinningSide) {

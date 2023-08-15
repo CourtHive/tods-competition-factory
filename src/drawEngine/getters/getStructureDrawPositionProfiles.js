@@ -16,6 +16,7 @@ export function getStructureDrawPositionProfiles({
   findContainer,
   structureId,
   structure,
+  event,
 }) {
   const matchUpFilters = { isCollectionMatchUp: false };
   const { containedStructures } = getContainedStructures({ drawDefinition });
@@ -37,8 +38,9 @@ export function getStructureDrawPositionProfiles({
   // must use all draw matchUps to get active matchUps across all connected structures
   const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
     inContext: true,
-    drawDefinition,
     matchUpFilters,
+    drawDefinition,
+    event,
   });
 
   const inContextStructureMatchUps = inContextDrawMatchUps.filter(

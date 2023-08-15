@@ -18,18 +18,18 @@ export function generateTeamTournament({
     collectionDefinitions: [
       {
         collectionId: 'doublesCollectionId',
+        matchUpFormat: 'SET3-S:6/TB7-F:TB10',
+        matchUpCount: doublesCount,
         collectionName: 'Doubles',
         matchUpType: DOUBLES,
-        matchUpCount: doublesCount,
-        matchUpFormat: 'SET3-S:6/TB7-F:TB10',
         matchUpValue: 1,
       },
       {
         collectionId: 'singlesCollectionId',
+        matchUpFormat: 'SET3-S:6/TB7',
+        matchUpCount: singlesCount,
         collectionName: 'Singles',
         matchUpType: SINGLES,
-        matchUpCount: singlesCount,
-        matchUpFormat: 'SET3-S:6/TB7',
         matchUpValue: 1,
       },
     ],
