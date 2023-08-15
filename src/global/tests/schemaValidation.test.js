@@ -17,6 +17,10 @@ import {
 } from '../../constants/drawDefinitionConstants';
 
 const ajv = new Ajv({ allowUnionTypes: true, verbose: true, allErrors: true });
+ajv.addFormat('date-time', (dateTime) => {
+  if (typeof dateTimeString === 'object') dateTime = dateTime.toISOString();
+  return !isNaN(Date.parse(dateTime));
+});
 addFormats(ajv);
 
 const schema = JSON.parse(

@@ -6,8 +6,18 @@ import { matchUpAssignedVenueId } from '../../accessors/matchUpAccessor/venueAss
 import { extractDate, sameDay } from '../../../utilities/dateTime';
 
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
+import { MatchUp } from '../../../types/tournamentFromSchema';
 
-export function filterMatchUps(params) {
+type HydratedMatchUp = {
+  [key: string | number | symbol]: unknown;
+} & MatchUp;
+
+type FilterArgs = {
+  matchUps: HydratedMatchUp[];
+  [key: string | number | symbol]: unknown;
+};
+
+export function filterMatchUps(params: FilterArgs) {
   const {
     matchUps,
 
@@ -113,7 +123,12 @@ export function filterMatchUps(params) {
       !matchUp.readyToScore
     )
       return false;
-    if (hasWinningSide && ![1, 2].includes(matchUp.winningSide)) return false;
+    if (
+      matchUp.winningSide &&
+      hasWinningSide &&
+      ![1, 2].includes(matchUp.winningSide)
+    )
+      return false;
     if (isMatchUpTie !== undefined) {
       if (isMatchUpTie && !matchUp.tieMatchUps) {
         return false;
@@ -154,13 +169,13 @@ export function filterMatchUps(params) {
     }
     if (
       targetRoundNumbers.length &&
-      !roundNumbers.includes(matchUp.roundNumber)
+      !targetRoundNumbers.includes(matchUp.roundNumber)
     ) {
       return false;
     }
     if (
       targetRoundPositions.length &&
-      !roundPositions.includes(matchUp.roundPosition)
+      !targetRoundPositions.includes(matchUp.roundPosition)
     ) {
       return false;
     }
@@ -214,7 +229,7 @@ export function filterMatchUps(params) {
       const { allocatedCourts } = matchUpAllocatedCourts({ matchUp });
       const allocatedCourtIds = allocatedCourts?.map(({ courtId }) => courtId);
       if (
-        !courtIds.filter(Boolean).includes(courtId) ||
+        !targetCourtIds.filter(Boolean).includes(courtId) ||
         allocatedCourtIds?.includes(courtId)
       ) {
         return false;
@@ -223,7 +238,7 @@ export function filterMatchUps(params) {
 
     if (targetVenueIds.length) {
       const { venueId } = matchUpAssignedVenueId({ matchUp });
-      if (!venueIds.filter(Boolean).includes(venueId)) {
+      if (!targetVenueIds.filter(Boolean).includes(venueId)) {
         return false;
       }
     }

@@ -10,7 +10,7 @@ export function getEventSeedAssignments({
   participant,
   event,
 }) {
-  const eventSeedAssignments = {};
+  const eventSeedAssignments: any = {};
 
   const getScaleAccessor = (scaleName) =>
     [SCALE, SEEDING, event.eventType, scaleName].join('.');

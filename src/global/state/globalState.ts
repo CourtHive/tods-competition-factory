@@ -253,7 +253,11 @@ export function getNotices(topic) {
   return _globalStateProvider.getNotices(topic);
 }
 
-export function deleteNotice({ key, topic }) {
+type DeleteNoticeArgs = {
+  topic?: string;
+  key: string;
+};
+export function deleteNotice({ key, topic }: DeleteNoticeArgs) {
   return _globalStateProvider.deleteNotice({ key, topic });
 }
 

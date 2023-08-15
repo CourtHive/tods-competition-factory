@@ -1,6 +1,8 @@
 import { addNotice, deleteNotice } from '../../global/state/globalState';
 import { getPositionAssignments } from '../getters/positionsGetter';
 
+import { DrawDefinition, MatchUp } from '../../types/tournamentFromSchema';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   ADD_DRAW_DEFINITION,
   ADD_MATCHUPS,
@@ -18,11 +20,17 @@ import {
   MISSING_STRUCTURE,
 } from '../../constants/errorConditionConstants';
 
-function drawUpdatedAt(drawDefinition, structureIds) {
-  if (!drawDefinition) return;
+function drawUpdatedAt(
+  drawDefinition: DrawDefinition,
+  structureIds?: string[]
+) {
+  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   let timeStamp = Date.now();
-  if (timeStamp === new Date(drawDefinition.updatedAt).getTime())
+  if (
+    drawDefinition.updatedAt &&
+    timeStamp === new Date(drawDefinition.updatedAt).getTime()
+  )
     timeStamp += 1;
   const updatedAt = new Date(timeStamp).toISOString();
 
@@ -37,6 +45,8 @@ function drawUpdatedAt(drawDefinition, structureIds) {
       structure.updatedAt = updatedAt;
     }
   });
+
+  return { ...SUCCESS };
 }
 export function addMatchUpsNotice({
   drawDefinition,
@@ -49,6 +59,8 @@ export function addMatchUpsNotice({
     payload: { matchUps, tournamentId, eventId },
     topic: ADD_MATCHUPS,
   });
+
+  return { ...SUCCESS };
 }
 export function deleteMatchUpsNotice({
   drawDefinition,
@@ -70,7 +82,19 @@ export function deleteMatchUpsNotice({
   for (const matchUpId of matchUpIds) {
     deleteNotice({ key: matchUpId });
   }
+
+  return { ...SUCCESS };
 }
+
+type ModifyMatchUpNoticeArgs = {
+  drawDefinition: DrawDefinition;
+  tournamentId?: string;
+  structureId?: string;
+  matchUp: MatchUp;
+  eventId?: string;
+  context?: any;
+};
+
 export function modifyMatchUpNotice({
   drawDefinition,
   tournamentId,
@@ -78,15 +102,16 @@ export function modifyMatchUpNotice({
   context,
   eventId,
   matchUp,
-}) {
+}: ModifyMatchUpNoticeArgs) {
   if (!matchUp) {
     console.log(MISSING_MATCHUP);
     return { error: MISSING_MATCHUP };
   }
   if (drawDefinition) {
+    const structureIds = structureId ? [structureId] : undefined;
     modifyDrawNotice({
-      structureIds: [structureId],
       drawDefinition,
+      structureIds,
       tournamentId,
       eventId,
     });
@@ -96,6 +121,8 @@ export function modifyMatchUpNotice({
     payload: { matchUp, tournamentId, context },
     key: matchUp.matchUpId,
   });
+
+  return { ...SUCCESS };
 }
 
 export function updateInContextMatchUp({ tournamentId, inContextMatchUp }) {
@@ -107,6 +134,8 @@ export function updateInContextMatchUp({ tournamentId, inContextMatchUp }) {
     payload: { inContextMatchUp, tournamentId },
     key: inContextMatchUp.matchUpId,
   });
+
+  return { ...SUCCESS };
 }
 
 export function addDrawNotice({ tournamentId, eventId, drawDefinition }) {
@@ -120,6 +149,8 @@ export function addDrawNotice({ tournamentId, eventId, drawDefinition }) {
     topic: ADD_DRAW_DEFINITION,
     key: drawDefinition.drawId,
   });
+
+  return { ...SUCCESS };
 }
 
 export function deleteDrawNotice({ tournamentId, eventId, drawId }) {
@@ -129,13 +160,22 @@ export function deleteDrawNotice({ tournamentId, eventId, drawId }) {
     key: drawId,
   });
   deleteNotice({ key: drawId });
+
+  return { ...SUCCESS };
 }
+
+type ModifyDrawNoticeArgs = {
+  drawDefinition: DrawDefinition;
+  structureIds?: string[];
+  tournamentId?: string;
+  eventId?: string;
+};
 export function modifyDrawNotice({
   drawDefinition,
   tournamentId,
   structureIds,
   eventId,
-}) {
+}: ModifyDrawNoticeArgs) {
   if (!drawDefinition) {
     return { error: MISSING_DRAW_DEFINITION };
   }
@@ -145,6 +185,8 @@ export function modifyDrawNotice({
     topic: MODIFY_DRAW_DEFINITION,
     key: drawDefinition.drawId,
   });
+
+  return { ...SUCCESS };
 }
 
 export function modifySeedAssignmentsNotice({
@@ -166,11 +208,13 @@ export function modifySeedAssignmentsNotice({
     key: drawDefinition.drawId,
   });
   modifyDrawNotice({
-    sructureIds: [structureId],
+    structureIds: [structureId],
     drawDefinition,
     tournamentId,
     eventId,
   });
+
+  return { ...SUCCESS };
 }
 
 export function modifyPositionAssignmentsNotice({
@@ -200,9 +244,11 @@ export function modifyPositionAssignmentsNotice({
   });
 
   modifyDrawNotice({
-    sructureIds: [structureId],
+    structureIds: [structureId],
     drawDefinition,
     tournamentId,
     eventId,
   });
+
+  return { ...SUCCESS };
 }

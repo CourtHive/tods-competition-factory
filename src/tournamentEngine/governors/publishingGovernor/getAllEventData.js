@@ -56,17 +56,17 @@ export function getAllEventData({ tournamentRecord, policyDefinitions }) {
 
     const drawsData = (event.drawDefinitions || []).map((drawDefinition) => {
       const drawInfo = (({ drawId, drawName, matchUpFormat, updatedAt }) => ({
-        drawId,
-        drawName,
         matchUpFormat,
         updatedAt,
+        drawName,
+        drawId,
       }))(drawDefinition);
 
       const {
-        pendingMatchUps,
+        abandonedMatchUps,
         completedMatchUps,
         upcomingMatchUps,
-        abandonedMatchUps,
+        pendingMatchUps,
       } = getDrawMatchUps({
         includeByeMatchUps: false,
         requireParticipants: true,
@@ -75,8 +75,8 @@ export function getAllEventData({ tournamentRecord, policyDefinitions }) {
         policyDefinitions,
         tournamentRecord,
         inContext: true,
-        drawDefinition,
         scheduleTiming,
+        drawDefinition,
         event,
       });
 
