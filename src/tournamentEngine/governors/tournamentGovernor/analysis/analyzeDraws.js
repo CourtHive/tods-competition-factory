@@ -19,17 +19,27 @@ export function analyzeDraws({ tournamentRecord }) {
     drawAnalysis: {},
   };
 
-  const drawDefinitions = tournamentRecord.events
-    ?.map((event) => event?.drawDefinitions)
+  const eventsMap = {};
+
+  const eventDraws = tournamentRecord.events
+    ?.map((event) => {
+      const eventId = event.eventId;
+      eventsMap[eventId] = event;
+      return (event?.drawDefinitions || []).map((drawDefinition) => ({
+        drawDefinition,
+        eventId,
+      }));
+    })
     .flat()
     .filter(Boolean);
 
-  drawDefinitions.forEach((drawDefinition) => {
+  eventDraws.forEach(({ drawDefinition, eventId }) => {
     let positionsAssignedCount = 0;
     let matchUpsWithWinningSideCount = 0;
     let matchUpsNoOutcomeCount = 0;
     const { allStructuresLinked } = getStructureGroups({ drawDefinition });
 
+    const event = eventsMap[eventId];
     const structures = drawDefinition?.structures || [];
     const structuresData = structures.map((structure) => {
       const { stage, stageSequence, structureId } = structure;
@@ -37,6 +47,7 @@ export function analyzeDraws({ tournamentRecord }) {
       const { inContextStructureMatchUps } = getStructureDrawPositionProfiles({
         drawDefinition,
         structure,
+        event,
       });
       const matchUpsWithWinningSide = inContextStructureMatchUps?.filter(
         ({ winningSide }) => winningSide

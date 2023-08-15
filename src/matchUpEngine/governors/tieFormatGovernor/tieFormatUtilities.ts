@@ -17,9 +17,7 @@ type ValidateTieFormatArgs = {
   tieFormat?: TieFormat;
 };
 
-export function validateTieFormat(
-  params: ValidateTieFormatArgs
-): ResultType | { errors?: string[]; valid?: boolean; error?: string } {
+export function validateTieFormat(params: ValidateTieFormatArgs): ResultType {
   const checkCollectionIds = params?.checkCollectionIds;
   const tieFormat = params?.tieFormat;
 

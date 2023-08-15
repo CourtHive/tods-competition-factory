@@ -1,21 +1,22 @@
 import { latestVisibleTimeItemValue } from './latestVisibleTimeItemValue';
 
-import { ASSIGN_VENUE } from '../../../constants/timeItemConstants';
+import { ASSIGN_COURT } from '../../../constants/timeItemConstants';
+import { ScheduledMatchUpArgs } from './scheduledMatchUpArgs';
 
-export function matchUpAssignedVenueId({
+export function matchUpAssignedCourtId({
   visibilityThreshold,
   timeStamp,
   schedule,
   matchUp,
-}) {
-  const { itemValue: venueId, timeStamp: itemTimeStamp } =
+}: ScheduledMatchUpArgs) {
+  const { itemValue: courtId, timeStamp: itemTimeStamp } =
     latestVisibleTimeItemValue({
       timeItems: matchUp?.timeItems || [],
-      itemType: ASSIGN_VENUE,
+      itemType: ASSIGN_COURT,
       visibilityThreshold,
     });
 
   return !schedule || (itemTimeStamp && timeStamp && itemTimeStamp > timeStamp)
-    ? { venueId }
+    ? { courtId }
     : schedule;
 }
