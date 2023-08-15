@@ -37,12 +37,7 @@ type TieMatchUpScore = {
   set: any;
 };
 
-export function generateTieMatchUpScore(
-  params
-):
-  | TieMatchUpScore
-  | ResultType
-  | { errors?: string[]; valid?: boolean; error?: string } {
+export function generateTieMatchUpScore(params): TieMatchUpScore | ResultType {
   const {
     sideAdjustments = [0, 0], // currently unused?
     separator = '-',

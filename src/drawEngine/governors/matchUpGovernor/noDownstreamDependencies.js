@@ -58,7 +58,7 @@ export function noDownstreamDependencies(params) {
 
   const statusNotTBP = matchUpStatus && matchUpStatus !== TO_BE_PLAYED;
 
-  const removeDirected = ({ removeScore } = {}) => {
+  const removeDirected = (removeScore) => {
     let connectedStructures;
     const { structure, drawDefinition, dualMatchUp, disableAutoCalc } = params;
 
@@ -104,26 +104,26 @@ export function noDownstreamDependencies(params) {
     [CANCELLED, ABANDONED].includes(matchUpStatus) &&
     params.dualWinningSideChange;
 
-  const result =
-    ((winningSide || triggerDualWinningSide) &&
-      attemptToSetWinningSide(params)) ||
-    (scoreWithNoWinningSide && removeDirected({ removeScore })) ||
+  const result = ((winningSide || triggerDualWinningSide) &&
+    attemptToSetWinningSide(params)) ||
+    (scoreWithNoWinningSide && removeDirected(removeScore)) ||
     (statusNotTBP && attemptToSetMatchUpStatus(params)) ||
-    (removeWinningSide && removeDirected({ removeScore })) ||
-    (matchUp && scoreModification({ ...params, removeScore: true })) ||
-    (console.log('unknown condition') && { ...SUCCESS });
+    (removeWinningSide && removeDirected(removeScore)) ||
+    (matchUp && scoreModification({ ...params, removeScore: true })) || {
+      ...SUCCESS, // unknown condition
+    };
 
   return decorateResult({ result, stack });
 }
 
 function scoreModification(params) {
   const stack = 'scoreModification';
-  const removeDirected =
+  const remove =
     params.isCollectionMatchUp &&
     params.dualMatchUp?.winningSide &&
     !params.projectedWinningSide;
 
-  if (removeDirected) {
+  if (remove) {
     const result = removeDirectedParticipants(params);
     if (result.error) return result;
   }
