@@ -29,4 +29,6 @@ export function getEventPublishStatuses({ event }) {
       publishedSeeding,
     };
   }
+
+  return undefined;
 }

@@ -8,8 +8,10 @@ export type ResultType = {
   result?: ResultType;
   [key: string]: any;
   error?: ErrorType;
+  errors?: string[];
   success?: boolean;
   context?: object;
+  valid?: boolean;
   info?: string;
 };
 

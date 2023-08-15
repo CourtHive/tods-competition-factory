@@ -4,6 +4,10 @@ import { expect, it } from 'vitest';
 import { INDIVIDUAL } from '../../constants/participantConstants';
 import { MALE } from '../../constants/genderConstants';
 
+const timeStamp = '0001-01-01T00:00:00';
+const birthDate = '2026-09-04';
+const Ivan = 'Ivan Illich';
+
 it('handles bad data', () => {
   let result = attributeFilter();
   expect(result).toEqual();
@@ -42,7 +46,7 @@ it('can filter attributes from arrays of object', () => {
     },
   };
   const participant = {
-    participantName: 'Ivan Illich',
+    participantName: Ivan,
     participantId: '1234567',
     participantRole: 'Educator',
     participantStatus: 'Deceased',
@@ -57,13 +61,13 @@ it('can filter attributes from arrays of object', () => {
           addressLine2: 'Some Street',
         },
       ],
-      birthDate: '2026-09-04',
-      nationalityCode: 'AUT',
-      nativeFamilyName: 'Illich',
-      nativeGivenName: 'Ivan',
-      sex: MALE,
       standardFamilyName: 'Illich',
       standardGivenName: 'Ivan',
+      nativeFamilyName: 'Illich',
+      nativeGivenName: 'Ivan',
+      nationalityCode: 'AUT',
+      birthDate,
+      sex: MALE,
     },
   };
 
@@ -73,7 +77,7 @@ it('can filter attributes from arrays of object', () => {
   });
 
   const expectedParticipant = {
-    participantName: 'Ivan Illich',
+    participantName: Ivan,
     participantId: '1234567',
     participantType: 'INDIVIDUAL',
     person: {
@@ -112,19 +116,19 @@ it('supports templates which contain objects not present in source', () => {
     },
   };
   const participant = {
-    participantName: 'Ivan Illich',
+    participantName: Ivan,
     participantId: '1234567',
     participantRole: 'Educator',
     participantStatus: 'Deceased',
     participantType: INDIVIDUAL,
     person: {
-      birthDate: '2026-09-04',
-      nationalityCode: 'AUT',
-      nativeFamilyName: 'Illich',
-      nativeGivenName: 'Ivan',
-      sex: MALE,
       standardFamilyName: 'Illich',
+      nativeFamilyName: 'Illich',
       standardGivenName: 'Ivan',
+      nativeGivenName: 'Ivan',
+      nationalityCode: 'AUT',
+      birthDate,
+      sex: MALE,
     },
   };
 
@@ -134,7 +138,7 @@ it('supports templates which contain objects not present in source', () => {
   });
 
   const expectedParticipant = {
-    participantName: 'Ivan Illich',
+    participantName: Ivan,
     participantId: '1234567',
     participantType: 'INDIVIDUAL',
     person: {
@@ -165,7 +169,7 @@ it('supports sources which contain attributes not present in templates', () => {
     },
   };
   const participant = {
-    participantName: 'Ivan Illich',
+    participantName: Ivan,
     participantId: '1234567',
     participantRole: 'Educator',
     participantStatus: 'Deceased',
@@ -180,13 +184,13 @@ it('supports sources which contain attributes not present in templates', () => {
           addressLine2: 'Some Street',
         },
       ],
-      birthDate: '2026-09-04',
-      nationalityCode: 'AUT',
-      nativeFamilyName: 'Illich',
-      nativeGivenName: 'Ivan',
-      sex: MALE,
       standardFamilyName: 'Illich',
+      nativeFamilyName: 'Illich',
       standardGivenName: 'Ivan',
+      nativeGivenName: 'Ivan',
+      nationalityCode: 'AUT',
+      sex: MALE,
+      birthDate,
     },
   };
 
@@ -196,7 +200,7 @@ it('supports sources which contain attributes not present in templates', () => {
   });
 
   const expectedParticipant = {
-    participantName: 'Ivan Illich',
+    participantName: Ivan,
     participantId: '1234567',
     participantType: 'INDIVIDUAL',
     person: {
@@ -244,10 +248,10 @@ it('can apply the same filter template to multiple attributes', () => {
             eventType: 'ADULT',
             ntrpRating: 0,
             ntrpRatingHundredths: 0,
-            ratingDate: '0001-01-01T00:00:00',
-            ratingExpiration: '0001-01-01T00:00:00',
+            ratingDate: timeStamp,
+            ratingExpiration: timeStamp,
             ratingYear: 0,
-            updatedAt: '0001-01-01T00:00:00',
+            updatedAt: timeStamp,
             ustaRatingType: '',
           },
           scaleName: 'NTRP',

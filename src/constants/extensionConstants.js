@@ -22,6 +22,7 @@ export const ROUND_TARGET = 'roundTarget';
 export const SCHEDULE_LIMITS = 'scheduleLimits';
 export const SCHEDULE_TIMING = 'scheduleTiming';
 export const SCHEDULING_PROFILE = 'schedulingProfile';
+export const STATUS_DETAIL = 'statusDetail';
 export const SUB_ORDER = 'subOrder';
 export const TALLY = 'tally';
 export const TIE_FORMAT_MODIFICATIONS = 'tieFormatModification';
@@ -50,6 +51,7 @@ export const extensionConstants = {
   SCHEDULE_LIMITS,
   SCHEDULE_TIMING,
   SCHEDULING_PROFILE,
+  STATUS_DETAIL, // attached to event.entries
   SUB_ORDER,
   TALLY,
   TIE_FORMAT_MODIFICATIONS, // for auditing, not important when anonymized

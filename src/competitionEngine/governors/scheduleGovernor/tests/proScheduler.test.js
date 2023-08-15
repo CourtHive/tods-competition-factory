@@ -48,39 +48,56 @@ it('supports pro-scheduling', () => {
     ]
   );
 
+  const times = [
+    '2022-08-27T07:00',
+    '2022-08-27T08:30',
+    '2022-08-27T10:00',
+    '2022-08-27T11:30',
+    '2022-08-28T07:00',
+  ];
+
+  const courtNames = [
+    'Court 1',
+    'Court 2',
+    'Court 3',
+    'Court 4',
+    'Court 5',
+    'Court 6',
+  ];
+
   // no recovery time has been defined and the default averageMatchUpTime is 90 minutes
   const roundScheduleExpectation = [
-    [1, '2022-08-27T07:00', 'Court 1'], // rounds 1 & 2 are scheduled for the 1st day
-    [1, '2022-08-27T07:00', 'Court 2'],
-    [1, '2022-08-27T07:00', 'Court 3'],
-    [1, '2022-08-27T07:00', 'Court 4'],
-    [1, '2022-08-27T07:00', 'Court 5'],
-    [1, '2022-08-27T07:00', 'Court 6'],
-    [1, '2022-08-27T08:30', 'Court 1'],
-    [1, '2022-08-27T08:30', 'Court 2'],
-    [1, '2022-08-27T08:30', 'Court 3'],
-    [1, '2022-08-27T08:30', 'Court 4'],
-    [1, '2022-08-27T08:30', 'Court 5'],
-    [1, '2022-08-27T08:30', 'Court 6'],
-    [1, '2022-08-27T10:00', 'Court 1'],
-    [1, '2022-08-27T10:00', 'Court 2'],
-    [1, '2022-08-27T10:00', 'Court 3'],
-    [1, '2022-08-27T10:00', 'Court 4'],
-    [2, '2022-08-27T10:00', 'Court 5'],
-    [2, '2022-08-27T10:00', 'Court 6'],
-    [2, '2022-08-27T11:30', 'Court 1'],
-    [2, '2022-08-27T11:30', 'Court 2'],
-    [2, '2022-08-27T11:30', 'Court 3'],
-    [2, '2022-08-27T11:30', 'Court 4'],
-    [2, '2022-08-27T11:30', 'Court 5'],
-    [2, '2022-08-27T11:30', 'Court 6'],
-    [3, '2022-08-28T07:00', 'Court 1'], // rounds 3 & 4 are scheduled for the 2nd day
-    [3, '2022-08-28T07:00', 'Court 2'],
-    [3, '2022-08-28T07:00', 'Court 3'],
-    [3, '2022-08-28T07:00', 'Court 4'],
-    [4, '2022-08-28T08:30', 'Court 1'],
-    [4, '2022-08-28T08:30', 'Court 2'],
-    [5, '2022-08-29T07:00', 'Court 1'], // round 5 is scheduled for the 3rd day
+    [1, times[0], courtNames[0]], // rounds 1 & 2 are scheduled for the 1st day
+    [1, times[0], courtNames[1]],
+    [1, times[0], courtNames[2]],
+    [1, times[0], courtNames[3]],
+    [1, times[0], courtNames[4]],
+    [1, times[0], courtNames[5]],
+    [1, times[1], courtNames[0]],
+    [1, times[1], courtNames[1]],
+    [1, times[1], courtNames[2]],
+    [1, times[1], courtNames[3]],
+    [1, times[1], courtNames[4]],
+    [1, times[1], courtNames[5]],
+    [1, times[2], courtNames[0]],
+    [1, times[2], courtNames[1]],
+    [1, times[2], courtNames[2]],
+    [1, times[2], courtNames[3]],
+    [2, times[2], courtNames[4]],
+    [2, times[2], courtNames[5]],
+    [2, times[3], courtNames[0]],
+    [2, times[3], courtNames[1]],
+    [2, times[3], courtNames[2]],
+    [2, times[3], courtNames[3]],
+    [2, times[3], courtNames[4]],
+    [2, times[3], courtNames[5]],
+    [3, times[4], courtNames[0]], // rounds 3 & 4 are scheduled for the 2nd day
+    [3, times[4], courtNames[1]],
+    [3, times[4], courtNames[2]],
+    [3, times[4], courtNames[3]],
+    [4, '2022-08-28T08:30', courtNames[0]],
+    [4, '2022-08-28T08:30', courtNames[1]],
+    [5, '2022-08-29T07:00', courtNames[0]], // round 5 is scheduled for the 3rd day
   ];
 
   expect(roundSchedules).toEqual(roundScheduleExpectation);

@@ -6,7 +6,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -25,7 +25,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -182,7 +182,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "itemDate": {
@@ -207,7 +207,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -226,7 +226,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -362,7 +362,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -381,7 +381,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -473,7 +473,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -492,7 +492,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -603,7 +603,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -622,7 +622,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -682,7 +682,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -701,7 +701,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -735,7 +735,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -754,7 +754,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -783,7 +783,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -802,7 +802,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -862,7 +862,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -881,7 +881,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -1055,7 +1055,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -1074,7 +1074,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -1099,7 +1099,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -1118,7 +1118,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -1167,7 +1167,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -1186,7 +1186,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -1220,7 +1220,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -1239,7 +1239,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -1276,7 +1276,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -1295,7 +1295,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -1339,7 +1339,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -1358,7 +1358,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -1430,7 +1430,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -1449,7 +1449,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -1474,7 +1474,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -1493,7 +1493,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -1539,7 +1539,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -1561,7 +1561,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -1593,7 +1593,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -1612,7 +1612,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -1680,7 +1680,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -1699,7 +1699,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -1723,7 +1723,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -1742,7 +1742,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -1762,7 +1762,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -1781,7 +1781,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -1807,7 +1807,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -1829,7 +1829,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -1913,7 +1913,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -1932,7 +1932,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -1958,7 +1958,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -1977,7 +1977,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -2287,7 +2287,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -2306,7 +2306,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -2385,7 +2385,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -2404,7 +2404,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -2478,7 +2478,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -2497,7 +2497,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -2546,7 +2546,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -2565,7 +2565,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -2619,7 +2619,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -2638,7 +2638,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -2744,7 +2744,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -2763,7 +2763,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -2816,7 +2816,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -2835,7 +2835,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -2906,7 +2906,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -2925,7 +2925,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -2960,7 +2960,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -2979,7 +2979,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -3004,7 +3004,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -3023,7 +3023,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -3043,7 +3043,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -3062,7 +3062,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -3085,7 +3085,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -3104,7 +3104,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -3175,7 +3175,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -3194,7 +3194,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -3264,7 +3264,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -3283,7 +3283,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -3316,7 +3316,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -3335,7 +3335,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {
@@ -3357,7 +3357,7 @@
       "type": "object",
       "properties": {
         "createdAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "extensions": {
@@ -3376,7 +3376,7 @@
           }
         },
         "updatedAt": {
-          "type": "string",
+          "type": ["string", "object"],
           "format": "date-time"
         },
         "isMock": {

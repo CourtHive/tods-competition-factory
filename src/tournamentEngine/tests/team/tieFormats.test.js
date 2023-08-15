@@ -2,7 +2,7 @@ import { validateTieFormat } from '../../../matchUpEngine/governors/tieFormatGov
 import tieFormatConstants from '../../../constants/tieFormatConstants';
 import mocksEngine from '../../../mocksEngine';
 import { tournamentEngine } from '../../..';
-import { expect, it } from 'vitest';
+import { expect, it, test } from 'vitest';
 
 import { TEAM } from '../../../constants/eventConstants';
 
@@ -84,4 +84,65 @@ it.each(tieKeys)('can generate all exported tieFormatConstants', (tieKey) => {
   } else {
     expect(foundTieFormat.tieFormatName).toEqual(key);
   }
+});
+
+test('timed sets can be COMPLETED with tied score', () => {
+  const {
+    tournamentRecord,
+    eventIds: [eventId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [
+      {
+        eventType: TEAM,
+        tieFormatName: tieFormatConstants.USTA_TOC,
+        drawSize: 2,
+      },
+    ],
+  });
+
+  let result = tournamentEngine.setState(tournamentRecord);
+  expect(result.success).toEqual(true);
+
+  const { tieFormat } = tournamentEngine.getTieFormat({ eventId });
+  const collectionId = tieFormat.collectionDefinitions.find(
+    ({ collectionName }) => collectionName === 'Overtime'
+  ).collectionId;
+  const { matchUps } = tournamentEngine.allTournamentMatchUps({
+    contextFilters: { collectionIds: [collectionId] },
+  });
+  expect(matchUps.length).toEqual(1);
+
+  const three3 = '3-3';
+  const outcome = {
+    score: {
+      scoreStringSide1: three3,
+      scoreStringSide2: three3,
+      sets: [
+        {
+          side1Score: 3,
+          side2Score: 3,
+          setNumber: 1,
+        },
+      ],
+    },
+    matchUpFormat: 'SET1-S:T20',
+    matchUpStatus: 'COMPLETED',
+  };
+
+  result = tournamentEngine.setMatchUpStatus({
+    matchUpId: matchUps[0].matchUpId,
+    drawId: matchUps[0].drawId,
+    outcome,
+  });
+  expect(result.success).toEqual(true);
+
+  const { matchUp } = tournamentEngine.findMatchUp({
+    matchUpId: matchUps[0].matchUpId,
+  });
+  expect(matchUp.score.scoreStringSide1).toEqual(three3);
+
+  const { matchUp: dualMatchUp } = tournamentEngine.findMatchUp({
+    matchUpId: matchUps[0].matchUpTieId,
+  });
+  expect(dualMatchUp.score.scoreStringSide1).toEqual(three3);
 });

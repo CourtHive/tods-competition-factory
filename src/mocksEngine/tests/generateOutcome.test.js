@@ -16,6 +16,7 @@ import {
   INVALID_VALUES,
 } from '../../constants/errorConditionConstants';
 
+const SET1T20 = 'SET1-S:T20';
 const iterations = 1;
 
 it.each(generateRange(0, iterations))(
@@ -119,7 +120,7 @@ test.each(generateRange(0, iterations))('iteration counts', () => {
 
 test.each(generateRange(0, iterations))('supports timed matchUpFormats', () => {
   let result = mocksEngine.generateOutcome({
-    matchUpFormat: 'SET1-S:T20',
+    matchUpFormat: SET1T20,
     matchUpStatusProfile: {}, // ensures that there are no DOUBLE_WALKOVERS
   });
   expect(result.outcome.winningSide).not.toBeUndefined();
@@ -152,13 +153,13 @@ test.each(generateRange(0, iterations))(
     let result;
     generateRange(0, 10).forEach(() => {
       result = mocksEngine.generateOutcome({
-        matchUpFormat: 'SET1-S:T20',
+        matchUpFormat: SET1T20,
         matchUpStatusProfile: {}, // ensures that there are no DOUBLE_WALKOVERS
         winningSide: 1,
       });
       expect(result.outcome.winningSide).toEqual(1);
       result = mocksEngine.generateOutcome({
-        matchUpFormat: 'SET1-S:T20',
+        matchUpFormat: SET1T20,
         matchUpStatusProfile: {}, // ensures that there are no DOUBLE_WALKOVERS
         winningSide: 2,
       });
