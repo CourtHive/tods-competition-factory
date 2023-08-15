@@ -105,6 +105,7 @@ export function setMatchUpStatus(params) {
     inContext: true,
     drawDefinition,
     matchUpsMap,
+    event,
   });
 
   // Find target matchUp ------------------------------------------------------
