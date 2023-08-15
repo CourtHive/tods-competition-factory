@@ -1,7 +1,7 @@
 import { addNotice, deleteNotice } from '../../global/state/globalState';
 import { getPositionAssignments } from '../getters/positionsGetter';
 
-import { DrawDefinition } from '../../types/tournamentFromSchema';
+import { DrawDefinition, MatchUp } from '../../types/tournamentFromSchema';
 import {
   ADD_DRAW_DEFINITION,
   ADD_MATCHUPS,
@@ -78,6 +78,16 @@ export function deleteMatchUpsNotice({
     deleteNotice({ key: matchUpId });
   }
 }
+
+type ModifyMatchUpNoticeArgs = {
+  drawDefinition: DrawDefinition;
+  tournamentId?: string;
+  structureId?: string;
+  matchUp: MatchUp;
+  eventId?: string;
+  context?: any;
+};
+
 export function modifyMatchUpNotice({
   drawDefinition,
   tournamentId,
@@ -85,15 +95,16 @@ export function modifyMatchUpNotice({
   context,
   eventId,
   matchUp,
-}) {
+}: ModifyMatchUpNoticeArgs) {
   if (!matchUp) {
     console.log(MISSING_MATCHUP);
     return { error: MISSING_MATCHUP };
   }
   if (drawDefinition) {
+    const structureIds = structureId ? [structureId] : undefined;
     modifyDrawNotice({
-      structureIds: [structureId],
       drawDefinition,
+      structureIds,
       tournamentId,
       eventId,
     });
@@ -141,7 +152,7 @@ export function deleteDrawNotice({ tournamentId, eventId, drawId }) {
 type ModifyDrawNoticeArgs = {
   drawDefinition: DrawDefinition;
   structureIds?: string[];
-  tournamentId: string;
+  tournamentId?: string;
   eventId?: string;
 };
 export function modifyDrawNotice({
