@@ -77,7 +77,7 @@ export function getParticipantEntries({
   const derivedEventInfo = {};
   const derivedDrawInfo = {};
   const mappedMatchUps = {};
-  let matchUps = [];
+  const matchUps = [];
 
   const getRanking = ({ eventType, scaleNames, participantId }) =>
     participantMap[participantId].participant?.rankings?.[eventType]?.find(
