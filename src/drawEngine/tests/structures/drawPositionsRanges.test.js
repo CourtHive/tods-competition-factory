@@ -28,6 +28,9 @@ it('can add drawPositionsRange to inContext matchUps in a SINGLE_ELIMINATION str
   const participantIds = participants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result.success).toEqual(true);
+  result = tournamentEngine.addEventEntries({ eventId, participantIds });
+  expect(result.addedEntriesCount).toEqual(0);
+  expect(result.success).toEqual(true);
 
   const matchUpFormat = 'SET5-S:4/TB7';
   const values = {
