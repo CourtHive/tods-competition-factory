@@ -295,8 +295,10 @@ export function getParticipantEntries({
                 qualifyingSeedingMap?.[participantId]?.seedNumber
               : undefined;
 
-            if (mainSeeding) seedAssignments[MAIN] = mainSeeding;
-            if (qualifyingSeeding) seedAssignments[QUALIFYING] = mainSeeding;
+            if (seedAssignments && mainSeeding)
+              seedAssignments[MAIN] = mainSeeding;
+            if (seedAssignments && qualifyingSeeding)
+              seedAssignments[QUALIFYING] = mainSeeding;
 
             if (withEvents || withRankingProfile) {
               if (includeSeeding) {
