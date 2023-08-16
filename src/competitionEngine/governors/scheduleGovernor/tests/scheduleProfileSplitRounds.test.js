@@ -9,11 +9,14 @@ import { expect, it } from 'vitest';
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
 import { APPLIED_POLICIES } from '../../../../constants/extensionConstants';
 
+const u16MS = 'U16 Male Singles';
 const showGlobalLog = false;
+const d220101 = '2022-01-01';
+const d220107 = '2022-01-07';
 
 it('Can split rounds across multiple venues', () => {
-  const startDate = '2022-01-01';
-  const endDate = '2022-01-07';
+  const startDate = d220101;
+  const endDate = d220107;
   const firstVenueId = 'first';
   const secondVenueId = 'second';
   const venueProfiles = [
@@ -35,10 +38,10 @@ it('Can split rounds across multiple venues', () => {
 
   const drawProfiles = [
     {
-      drawName: 'U16 Male Singles',
       participantsCount: 32,
-      idPrefix: 'M16',
+      drawName: u16MS,
       drawId: 'idM16',
+      idPrefix: 'M16',
       drawSize: 32,
     },
   ];
@@ -120,8 +123,8 @@ it('Can split rounds across multiple venues', () => {
 });
 
 it('Can split rounds across multiple venues', () => {
-  const startDate = '2022-01-01';
-  const endDate = '2022-01-07';
+  const startDate = d220101;
+  const endDate = d220107;
   const firstVenueId = 'first';
   const secondVenueId = 'second';
   const venueProfiles = [
@@ -143,10 +146,10 @@ it('Can split rounds across multiple venues', () => {
 
   const drawProfiles = [
     {
-      drawName: 'U16 Male Singles',
       participantsCount: 32,
-      idPrefix: 'M16',
+      drawName: u16MS,
       drawId: 'idM16',
+      idPrefix: 'M16',
       drawSize: 32,
     },
   ];
@@ -158,8 +161,8 @@ it('Can split rounds across multiple venues', () => {
           venueId: firstVenueId,
           rounds: [
             {
-              drawId: 'idM16',
               winnerFinishingPositionRange: '1-16',
+              drawId: 'idM16',
             },
           ],
         },
@@ -167,8 +170,8 @@ it('Can split rounds across multiple venues', () => {
           venueId: secondVenueId,
           rounds: [
             {
-              drawId: 'idM16',
               winnerFinishingPositionRange: '1-8',
+              drawId: 'idM16',
             },
           ],
         },
@@ -208,10 +211,10 @@ it('Can split rounds across multiple venues', () => {
 });
 
 it('Can split rounds with multiple BYEs', () => {
-  const startDate = '2022-01-01';
-  const endDate = '2022-01-07';
-  const firstVenueId = 'first';
   const secondVenueId = 'second';
+  const firstVenueId = 'first';
+  const startDate = d220101;
+  const endDate = d220107;
   const venueProfiles = [
     {
       venueId: firstVenueId,
@@ -231,10 +234,10 @@ it('Can split rounds with multiple BYEs', () => {
 
   const drawProfiles = [
     {
-      drawName: 'U16 Male Singles',
       participantsCount: 18,
-      idPrefix: 'M16',
+      drawName: u16MS,
       drawId: 'idM16',
+      idPrefix: 'M16',
       drawSize: 32,
     },
   ];
@@ -246,9 +249,9 @@ it('Can split rounds with multiple BYEs', () => {
           venueId: firstVenueId,
           rounds: [
             {
-              drawId: 'idM16',
-              winnerFinishingPositionRange: '1-16',
               roundSegment: { segmentNumber: 1, segmentsCount: 2 },
+              winnerFinishingPositionRange: '1-16',
+              drawId: 'idM16',
             },
           ],
         },
@@ -256,9 +259,9 @@ it('Can split rounds with multiple BYEs', () => {
           venueId: secondVenueId,
           rounds: [
             {
-              drawId: 'idM16',
-              winnerFinishingPositionRange: '1-16',
               roundSegment: { segmentNumber: 2, segmentsCount: 2 },
+              winnerFinishingPositionRange: '1-16',
+              drawId: 'idM16',
             },
           ],
         },
@@ -287,17 +290,17 @@ it('Can split rounds with multiple BYEs', () => {
     tournamentEngine.getSchedulingProfile();
 
   const venues = attachedSchedulingProfile[0].venues;
-  expect(venues[0].rounds[0].roundNumber).toEqual(1);
-  expect(venues[1].rounds[0].roundNumber).toEqual(1);
   expect(venues[0].rounds[0].roundSegment.segmentNumber).toEqual(1);
   expect(venues[1].rounds[0].roundSegment.segmentNumber).toEqual(2);
+  expect(venues[0].rounds[0].roundNumber).toEqual(1);
+  expect(venues[1].rounds[0].roundNumber).toEqual(1);
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
   const scheduledMatchUps = matchUps.filter(hasSchedule);
-  expect(scheduledMatchUps.length).toEqual(2);
   expect(scheduledMatchUps[0].schedule.venueId).not.toEqual(
     scheduledMatchUps[1].schedule.venueId
   );
+  expect(scheduledMatchUps.length).toEqual(2);
 
   visualizeScheduledMatchUps({ scheduledMatchUps, showGlobalLog });
 

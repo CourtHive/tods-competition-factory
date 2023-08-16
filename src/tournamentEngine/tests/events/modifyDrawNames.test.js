@@ -2,12 +2,15 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 import { expect, it } from 'vitest';
 
-import { INDIVIDUAL } from '../../../constants/participantConstants';
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
+import { INDIVIDUAL } from '../../../constants/participantConstants';
+
+const NEW_DRAW_NAME = 'New Draw Name';
+const TEST_EVENT = 'Test Event';
 
 it('can modify flightNames and drawNames', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
-  const eventName = 'Test Event';
+  const eventName = TEST_EVENT;
   const event = { eventName };
   let result = tournamentEngine.setState(tournamentRecord).addEvent({ event });
   let { event: eventResult } = result;
@@ -42,7 +45,7 @@ it('can modify flightNames and drawNames', () => {
 
   const drawId = flightProfile.flights[0].drawId;
 
-  const newDrawName = 'New Draw Name';
+  const newDrawName = NEW_DRAW_NAME;
   result = tournamentEngine.modifyDrawName({
     drawName: newDrawName,
     eventId,
@@ -60,7 +63,7 @@ it('can modify flightNames and drawNames', () => {
 
 it('can modify flightNames when no drawDefinitions generated', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
-  const eventName = 'Test Event';
+  const eventName = TEST_EVENT;
   const event = { eventName };
   let result = tournamentEngine.setState(tournamentRecord).addEvent({ event });
   let { event: eventResult } = result;
@@ -84,11 +87,11 @@ it('can modify flightNames when no drawDefinitions generated', () => {
 
   const drawId = flightProfile.flights[0].drawId;
 
-  const newDrawName = 'New Draw Name';
+  const newDrawName = NEW_DRAW_NAME;
   result = tournamentEngine.modifyDrawName({
+    drawName: newDrawName,
     eventId,
     drawId,
-    drawName: newDrawName,
   });
 
   ({ flightProfile } = tournamentEngine.getFlightProfile({ eventId }));
@@ -97,7 +100,7 @@ it('can modify flightNames when no drawDefinitions generated', () => {
 
 it('can modify drawNames when no flightProfile', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
-  const eventName = 'Test Event';
+  const eventName = TEST_EVENT;
   let event = { eventName };
   let result = tournamentEngine.setState(tournamentRecord).addEvent({ event });
   let { event: eventResult } = result;
@@ -127,11 +130,11 @@ it('can modify drawNames when no flightProfile', () => {
 
   const drawId = event.drawDefinitions[0].drawId;
 
-  const newDrawName = 'New Draw Name';
+  const newDrawName = NEW_DRAW_NAME;
   result = tournamentEngine.modifyDrawName({
+    drawName: newDrawName,
     eventId,
     drawId,
-    drawName: newDrawName,
   });
   expect(result.success).toEqual(true);
 
@@ -141,9 +144,9 @@ it('can modify drawNames when no flightProfile', () => {
   expect(drawName).toEqual(newDrawName);
 
   result = tournamentEngine.modifyDrawName({
-    eventId,
-    drawId: 'bogusId',
     drawName: newDrawName,
+    drawId: 'bogusId',
+    eventId,
   });
   expect(result.error).toEqual(MISSING_DRAW_DEFINITION);
 });

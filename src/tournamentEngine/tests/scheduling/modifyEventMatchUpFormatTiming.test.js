@@ -1,19 +1,18 @@
+import competitionEngine from '../../../competitionEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 import { expect, it } from 'vitest';
 
 import POLICY_SCHEDULING_USTA from '../../../fixtures/policies/POLICY_SCHEDULING_USTA';
 import POLICY_SCORING_USTA from '../../../fixtures/policies/POLICY_SCORING_USTA';
+import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
+import { SCHEDULE_TIMING } from '../../../constants/extensionConstants';
 import {
   EVENT_NOT_FOUND,
   MISSING_EVENT,
 } from '../../../constants/errorConditionConstants';
-import { SCHEDULE_TIMING } from '../../../constants/extensionConstants';
-import competitionEngine from '../../../competitionEngine/sync';
 
-// categoryTypes
-// const JUNIOR = 'JUNIOR';
-// const ADULT = 'ADULT';
+const SHORT4TB10 = 'SET1-S:4/TB10';
 
 it('can modify event timing for matchUpFormat codes', () => {
   const {
@@ -39,14 +38,14 @@ it('can modify event timing for matchUpFormat codes', () => {
 
   let result = tournamentEngine.modifyEventMatchUpFormatTiming({
     eventId,
-    matchUpFormat: 'SET3-S:6/TB7',
+    matchUpFormat: FORMAT_STANDARD,
     averageMinutes: 127,
   });
   expect(result.success).toEqual(true);
 
   result = tournamentEngine.modifyEventMatchUpFormatTiming({
     eventId,
-    matchUpFormat: 'SET1-S:4/TB10',
+    matchUpFormat: SHORT4TB10,
     averageMinutes: 137,
   });
   expect(result.success).toEqual(true);
@@ -54,7 +53,7 @@ it('can modify event timing for matchUpFormat codes', () => {
   // overwriting value of 137 with 117
   result = tournamentEngine.modifyEventMatchUpFormatTiming({
     eventId,
-    matchUpFormat: 'SET1-S:4/TB10',
+    matchUpFormat: SHORT4TB10,
     averageMinutes: 117,
   });
   expect(result.success).toEqual(true);
@@ -77,7 +76,7 @@ it('can modify event timing for matchUpFormat codes', () => {
 
   ({ eventMatchUpFormatTiming } = tournamentEngine.getEventMatchUpFormatTiming({
     eventId,
-    matchUpFormats: ['SET3-S:6/TB7', 'SET1-S:4/TB10', 'SET1-S:4/TB10'],
+    matchUpFormats: [FORMAT_STANDARD, SHORT4TB10, SHORT4TB10],
   }));
   // expect duplicated matchUpFormat to be filtered out
   expect(eventMatchUpFormatTiming.map((t) => t.averageMinutes)).toEqual([
@@ -109,7 +108,7 @@ it('can modify event timing for matchUpFormat codes', () => {
 
   ({ eventMatchUpFormatTiming } = tournamentEngine.getEventMatchUpFormatTiming({
     eventId,
-    matchUpFormats: ['SET3-S:6/TB7', 'SET1-S:4/TB10'],
+    matchUpFormats: [FORMAT_STANDARD, SHORT4TB10],
   }));
   expect(eventMatchUpFormatTiming.map((t) => t.averageMinutes)).toEqual([
     90, 90,

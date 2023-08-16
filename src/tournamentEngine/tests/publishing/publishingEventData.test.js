@@ -297,7 +297,7 @@ it('can generate payload for publishing a compass draw', () => {
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result.success).toEqual(true);
 
-  const matchUpFormat = 'SET3-S:6/TB7';
+  const matchUpFormat = FORMAT_STANDARD;
   const { drawDefinition } = tournamentEngine.generateDrawDefinition({
     eventId,
     drawType,
@@ -428,7 +428,7 @@ it('can generate payload for publishing a FIRST_MATCH_LOSER_CONSOLATION draw', (
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result.success).toEqual(true);
 
-  const matchUpFormat = 'SET3-S:6/TB7';
+  const matchUpFormat = FORMAT_STANDARD;
   const { drawDefinition } = tournamentEngine.generateDrawDefinition({
     eventId,
     drawType,

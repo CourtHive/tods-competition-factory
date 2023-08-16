@@ -3,6 +3,7 @@ import tournamentEngine from '../../sync';
 import { expect, it } from 'vitest';
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
+import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
 import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
 import { UUID } from '../../../utilities';
 
@@ -26,7 +27,7 @@ it('can generate draws in TEAM events with tieFormat and assign participants to 
         collectionName: 'Singles',
         matchUpType: SINGLES,
         matchUpCount: 5,
-        matchUpFormat: 'SET3-S:6/TB7',
+        matchUpFormat: FORMAT_STANDARD,
         matchUpValue: 1,
       },
     ],
@@ -108,7 +109,7 @@ it('can generate TEAM draws and use tieFormat and assign participants to collect
         collectionName: 'Singles',
         matchUpType: SINGLES,
         matchUpCount: 5,
-        matchUpFormat: 'SET3-S:6/TB7',
+        matchUpFormat: FORMAT_STANDARD,
         matchUpValue: 1,
       },
     ],

@@ -6,6 +6,10 @@ import { INVALID_TIME } from '../../../constants/errorConditionConstants';
 import { DOUBLES } from '../../../constants/eventConstants';
 import { ERROR } from '../../../constants/resultConstants';
 
+const t200101_10 = '2020-01-01T10:00:00Z';
+const t200101_9 = '2020-01-01T09:00:00Z';
+const t200101_8 = '2020-01-01T08:15:00Z';
+
 it('can add schedule items', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     drawProfiles: [{ drawSize: 32, eventType: DOUBLES }],
@@ -77,15 +81,15 @@ it('can add schedule items', () => {
   result = drawEngine.addMatchUpStartTime({ matchUpId, startTime });
   expect(result.success).toEqual(true);
 
-  stopTime = '2020-01-01T08:15:00Z';
+  stopTime = t200101_8;
   result = drawEngine.addMatchUpStopTime({ matchUpId, stopTime });
   expect(result.success).toEqual(true);
 
-  resumeTime = '2020-01-01T09:00:00Z';
+  resumeTime = t200101_9;
   result = drawEngine.addMatchUpResumeTime({ matchUpId, resumeTime });
   expect(result.success).toEqual(true);
 
-  endTime = '2020-01-01T10:00:00Z';
+  endTime = t200101_10;
   result = drawEngine.addMatchUpEndTime({ matchUpId, endTime });
   expect(result.success).toEqual(true);
 
@@ -106,7 +110,7 @@ it('can add schedule items', () => {
   result = drawEngine.resetMatchUpTimeItems({ matchUpId });
   expect(result.success).toEqual(true);
 
-  endTime = '2020-01-01T10:00:00Z';
+  endTime = t200101_10;
   result = drawEngine.addMatchUpEndTime({ matchUpId, endTime });
   expect(result.success).toEqual(true);
 
@@ -142,11 +146,11 @@ it('can add schedule items', () => {
   result = drawEngine.resetMatchUpTimeItems({ matchUpId });
   expect(result.success).toEqual(true);
 
-  stopTime = new Date('2020-01-01T08:15:00Z');
+  stopTime = new Date(t200101_8);
   result = drawEngine.addMatchUpStopTime({ matchUpId, stopTime });
   expect(result).toHaveProperty(ERROR);
 
-  resumeTime = new Date('2020-01-01T09:00:00Z');
+  resumeTime = new Date(t200101_9);
   result = drawEngine.addMatchUpResumeTime({ matchUpId, resumeTime });
   expect(result).toHaveProperty(ERROR);
 
@@ -158,16 +162,16 @@ it('can add schedule items', () => {
   result = drawEngine.addMatchUpStartTime({ matchUpId, startTime });
   expect(result.success).toEqual(true);
 
-  stopTime = '2020-01-01T08:15:00Z';
+  stopTime = t200101_8;
   result = drawEngine.addMatchUpStopTime({ matchUpId, stopTime });
   expect(result.success).toEqual(true);
 
-  endTime = '2020-01-01T10:00:00Z';
+  endTime = t200101_10;
   result = drawEngine.addMatchUpEndTime({ matchUpId, endTime });
   expect(result.success).toEqual(true);
 
   // end time should be ignored since there is a stop time
-  resumeTime = '2020-01-01T09:00:00Z';
+  resumeTime = t200101_9;
   result = drawEngine.addMatchUpResumeTime({ matchUpId, resumeTime });
   expect(result).toHaveProperty(ERROR);
 

@@ -5,6 +5,7 @@ import fs from 'fs';
 
 import { POLICY_TYPE_AVOIDANCE } from '../../constants/policyConstants';
 import { DIRECT_ACCEPTANCE } from '../../constants/entryStatusConstants';
+import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats';
 
 const tournamentRecordJSON = fs.readFileSync(
   './src/global/testHarness/avoidanceIssue.tods.json',
@@ -47,7 +48,7 @@ it.each([1, 2, 3, 4, 5])(
     const params = {
       seedsCount: 8,
       automated: 'automated',
-      matchUpFormat: 'SET3-S:6/TB7',
+      matchUpFormat: FORMAT_STANDARD,
       tieFormatName: '',
       drawName: 'Draw',
       drawType: 'SINGLE_ELIMINATION',

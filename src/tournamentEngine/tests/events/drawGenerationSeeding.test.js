@@ -16,9 +16,12 @@ import {
   UNRECOGNIZED_DRAW_TYPE,
 } from '../../../constants/errorConditionConstants';
 
+const TEST_EVENT = 'Test Event';
+const d200606 = '2020-06-06';
+
 it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
-  const eventName = 'Test Event';
+  const eventName = TEST_EVENT;
   const event = { eventName, category: { categoryName: 'U18' } };
   let result = tournamentEngine.setState(tournamentRecord).addEvent({ event });
   let { event: eventResult } = result;
@@ -35,11 +38,11 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
   const scaleValues = [1, 2, 3, 4, 5, 6, 7, 8];
   scaleValues.forEach((scaleValue, index) => {
     let scaleItem = {
-      scaleValue,
-      scaleName: 'U18',
       scaleType: SEEDING,
       eventType: SINGLES,
-      scaleDate: '2020-06-06',
+      scaleDate: d200606,
+      scaleName: 'U18',
+      scaleValue,
     };
     const participantId = participantIds[index];
     let result = tournamentEngine.setParticipantScaleItem({
@@ -169,7 +172,7 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
 
 it('can constrain seedsCount by policyDefinitions', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
-  const eventName = 'Test Event';
+  const eventName = TEST_EVENT;
   const ageCategoryCode = 'U18';
   const event = { eventName, category: { ageCategoryCode } };
   let result = tournamentEngine.setState(tournamentRecord).addEvent({ event });
@@ -189,11 +192,11 @@ it('can constrain seedsCount by policyDefinitions', () => {
   const scaleValues = [1, 2, 3, 4, 5, 6, 7, 8];
   scaleValues.forEach((scaleValue, index) => {
     let scaleItem = {
-      scaleValue,
       scaleName: ageCategoryCode,
       scaleType: SEEDING,
       eventType: SINGLES,
-      scaleDate: '2020-06-06',
+      scaleDate: d200606,
+      scaleValue,
     };
     const participantId = participantIds[index];
     let result = tournamentEngine.setParticipantScaleItem({
@@ -243,7 +246,7 @@ it('can constrain seedsCount by policyDefinitions', () => {
 
 it('can constrain seedsCount by policyDefinitions', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
-  const eventName = 'Test Event';
+  const eventName = TEST_EVENT;
   const ageCategoryCode = 'U18';
   const event = { eventName, category: { ageCategoryCode } };
   let result = tournamentEngine.setState(tournamentRecord).addEvent({ event });
@@ -263,11 +266,11 @@ it('can constrain seedsCount by policyDefinitions', () => {
   const scaleValues = [1, 2, 3, 3, 5, 5, 5, 5];
   scaleValues.forEach((scaleValue, index) => {
     let scaleItem = {
-      scaleValue,
       scaleName: ageCategoryCode,
       scaleType: SEEDING,
       eventType: SINGLES,
-      scaleDate: '2020-06-06',
+      scaleDate: d200606,
+      scaleValue,
     };
     const participantId = participantIds[index];
     let result = tournamentEngine.setParticipantScaleItem({
@@ -302,7 +305,7 @@ it('can constrain seedsCount by policyDefinitions', () => {
 
 it('can define seeds using seededParticipants', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
-  const eventName = 'Test Event';
+  const eventName = TEST_EVENT;
   const ageCategoryCode = 'U18';
   const event = { eventName, category: { ageCategoryCode } };
   let result = tournamentEngine.setState(tournamentRecord).addEvent({ event });

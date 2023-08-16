@@ -6,6 +6,7 @@ import { expect, test } from 'vitest';
 
 import POLICY_SCHEDULING_USTA from '../../../../fixtures/policies/POLICY_SCHEDULING_USTA';
 import POLICY_SCORING_USTA from '../../../../fixtures/policies/POLICY_SCORING_USTA';
+import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
 import { ADD_MATCHUPS } from '../../../../constants/topicConstants';
 import {
   ANACHRONISM,
@@ -16,6 +17,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
 } from '../../../../constants/errorConditionConstants';
 
+const SHORT4TB10 = 'SET1-S:4/TB10';
 const matchUpAddNotices = [];
 
 const subscriptions = {
@@ -120,15 +122,15 @@ test('competitionEngine can setMatchUpStatus', () => {
   const outcomes = upcomingMatchUps.map((matchUp) => {
     const { matchUpId, drawId, eventId, tournamentId } = matchUp;
     return {
-      drawId,
-      eventId,
-      matchUpId,
-      tournamentId,
       schedule: {
         scheduledDate: startDate,
       },
-      winningSide: 2,
       score: outcome.score,
+      winningSide: 2,
+      tournamentId,
+      matchUpId,
+      eventId,
+      drawId,
     };
   });
 
@@ -151,8 +153,8 @@ test('competitionEngine can bulkScheduleMatchUps', () => {
     drawIds: [drawId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles,
     venueProfiles,
+    drawProfiles,
   });
 
   competitionEngine.setState(tournamentRecord);
@@ -268,13 +270,13 @@ test('can modify event timing for matchUpFormat codes', () => {
   expect(error).not.toBeUndefined();
 
   result = competitionEngine.modifyEventMatchUpFormatTiming({
-    matchUpFormat: 'SET3-S:6/TB7',
+    matchUpFormat: FORMAT_STANDARD,
     averageMinutes: 127,
   });
   expect(result.error).toEqual(MISSING_EVENT);
 
   result = competitionEngine.modifyEventMatchUpFormatTiming({
-    matchUpFormat: 'SET3-S:6/TB7',
+    matchUpFormat: FORMAT_STANDARD,
     tournamentId: 'bogusId',
     averageMinutes: 127,
     eventId,
@@ -282,31 +284,31 @@ test('can modify event timing for matchUpFormat codes', () => {
   expect(result.error).toEqual(INVALID_VALUES);
 
   result = competitionEngine.modifyEventMatchUpFormatTiming({
-    matchUpFormat: 'SET3-S:6/TB7',
+    matchUpFormat: FORMAT_STANDARD,
     averageMinutes: 127,
     eventId: 'bogusId',
   });
   expect(result.error).toEqual(EVENT_NOT_FOUND);
 
   result = competitionEngine.modifyEventMatchUpFormatTiming({
-    matchUpFormat: 'SET3-S:6/TB7',
+    matchUpFormat: FORMAT_STANDARD,
     averageMinutes: 127,
     eventId,
   });
   expect(result.success).toEqual(true);
 
   result = competitionEngine.modifyEventMatchUpFormatTiming({
-    eventId,
-    matchUpFormat: 'SET1-S:4/TB10',
+    matchUpFormat: SHORT4TB10,
     averageMinutes: 137,
+    eventId,
   });
   expect(result.success).toEqual(true);
 
   // overwriting value of 137 with 117
   result = competitionEngine.modifyEventMatchUpFormatTiming({
-    eventId,
-    matchUpFormat: 'SET1-S:4/TB10',
+    matchUpFormat: SHORT4TB10,
     averageMinutes: 117,
+    eventId,
   });
   expect(result.success).toEqual(true);
 
@@ -325,7 +327,7 @@ test('can modify event timing for matchUpFormat codes', () => {
 
   ({ eventMatchUpFormatTiming } = competitionEngine.getEventMatchUpFormatTiming(
     {
-      matchUpFormats: ['SET3-S:6/TB7', 'SET1-S:4/TB10', 'SET1-S:4/TB10'],
+      matchUpFormats: [FORMAT_STANDARD, SHORT4TB10, SHORT4TB10],
       eventId,
     }
   ));
@@ -339,7 +341,7 @@ test('can modify event timing for matchUpFormat codes', () => {
 
   ({ eventMatchUpFormatTiming } = competitionEngine.getEventMatchUpFormatTiming(
     {
-      matchUpFormats: ['SET3-S:6/TB7', 'SET1-S:4/TB10'],
+      matchUpFormats: [FORMAT_STANDARD, SHORT4TB10],
       eventId,
     }
   ));
@@ -357,8 +359,8 @@ test('can modify event timing for matchUpFormat codes', () => {
 
   const policyDefinitions = POLICY_SCORING_USTA;
   competitionEngine.attachPolicies({
-    policyDefinitions,
     allowReplacement: true,
+    policyDefinitions,
   });
 
   ({ eventMatchUpFormatTiming } = competitionEngine.getEventMatchUpFormatTiming(
