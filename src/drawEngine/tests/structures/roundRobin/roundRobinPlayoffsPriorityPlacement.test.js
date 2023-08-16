@@ -22,6 +22,7 @@ import {
   SINGLE_ELIMINATION,
 } from '../../../../constants/drawDefinitionConstants';
 
+import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
 import { SINGLES } from '../../../../constants/eventConstants';
 
 it('can advance players in Round Robin with Playoffs => 2 x 4 x 4', () => {
@@ -68,7 +69,7 @@ it('can advance players in Round Robin with Playoffs => 2 x 4 x 4', () => {
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result.success).toEqual(true);
 
-  const matchUpFormat = 'SET3-S:6/TB7';
+  const matchUpFormat = FORMAT_STANDARD;
   let { drawDefinition } = tournamentEngine.generateDrawDefinition({
     seedingProfile: { positioning: WATERFALL },
     structureOptions,
@@ -305,7 +306,7 @@ it('can advance players in Round Robin with Playoffs', () => {
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result.success).toEqual(true);
 
-  const matchUpFormat = 'SET3-S:6/TB7';
+  const matchUpFormat = FORMAT_STANDARD;
   let { drawDefinition } = tournamentEngine.generateDrawDefinition({
     eventId,
     drawType,

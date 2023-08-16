@@ -3,9 +3,12 @@ import matchUpEngineSync from '../../../sync';
 import { getHistory } from '../getHistory';
 import { expect, it } from 'vitest';
 
+import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
 import { MATCHUP_HISTORY } from '../../../../constants/extensionConstants';
 
 const asyncMatchUpEngine = matchUpEngineAsync(true);
+
+const TIEBREAK_SET = 'SET1-S:TB10';
 
 it.each([matchUpEngineSync, asyncMatchUpEngine])(
   'can calculate score from history',
@@ -28,7 +31,7 @@ it.each([matchUpEngineSync, asyncMatchUpEngine])(
 
     const matchUp = {
       extensions: [{ name: MATCHUP_HISTORY, value: { history } }],
-      matchUpFormat: 'SET3-S:6/TB7',
+      matchUpFormat: FORMAT_STANDARD,
       matchUpId: 'foo',
     };
 
@@ -57,7 +60,7 @@ it.each([matchUpEngineSync, asyncMatchUpEngine])(
   'correctly tracks serving side in tiebreaks',
   async (matchUpEngine) => {
     const matchUp = {
-      matchUpFormat: 'SET1-S:TB10',
+      matchUpFormat: TIEBREAK_SET,
       matchUpId: 'foo',
     };
 
@@ -89,7 +92,7 @@ it.each([matchUpEngineSync, asyncMatchUpEngine])(
   'supports double fault tracking',
   async (matchUpEngine) => {
     const matchUp = {
-      matchUpFormat: 'SET1-S:TB10',
+      matchUpFormat: TIEBREAK_SET,
       matchUpId: 'foo',
     };
 
@@ -121,7 +124,7 @@ it.each([matchUpEngineSync, asyncMatchUpEngine])(
   'supports undo and redo',
   async (matchUpEngine) => {
     let matchUp = {
-      matchUpFormat: 'SET1-S:TB10',
+      matchUpFormat: TIEBREAK_SET,
       matchUpId: 'foo',
     };
 

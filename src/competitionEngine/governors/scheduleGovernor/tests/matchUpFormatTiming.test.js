@@ -3,6 +3,7 @@ import competitionEngineSync from '../../../sync';
 import mocksEngine from '../../../../mocksEngine';
 import { expect, test } from 'vitest';
 
+import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
 import {
   EVENT_NOT_FOUND,
   INVALID_VALUES,
@@ -38,7 +39,7 @@ test.each([competitionEngineSync])(
     let { tournamentRecords } = competitionEngine.getState();
     const tournamentIds = Object.keys(tournamentRecords);
 
-    const matchUpFormat = 'SET3-S:6/TB7';
+    const matchUpFormat = FORMAT_STANDARD;
     let result = competitionEngine.findMatchUpFormatTiming({
       categoryType: JUNIOR,
       matchUpFormat,
@@ -48,21 +49,21 @@ test.each([competitionEngineSync])(
 
     result = competitionEngine.modifyMatchUpFormatTiming({
       averageTimes: [{ categoryTypes: [JUNIOR], minutes: { default: 127 } }],
-      matchUpFormat: 'SET3-S:6/TB7',
+      matchUpFormat: FORMAT_STANDARD,
       tournamentId: 'bogusId',
     });
     expect(result.error).toEqual(INVALID_VALUES);
 
     result = competitionEngine.modifyMatchUpFormatTiming({
       averageTimes: [{ categoryTypes: [JUNIOR], minutes: { default: 127 } }],
-      matchUpFormat: 'SET3-S:6/TB7',
+      matchUpFormat: FORMAT_STANDARD,
       eventId: 'bogusId',
     });
     expect(result.error).toEqual(EVENT_NOT_FOUND);
 
     result = competitionEngine.modifyMatchUpFormatTiming({
       averageTimes: [{ categoryTypes: [JUNIOR], minutes: { default: 127 } }],
-      matchUpFormat: 'SET3-S:6/TB7',
+      matchUpFormat: FORMAT_STANDARD,
     });
     expect(result.success).toEqual(true);
 

@@ -9,6 +9,8 @@ import { expect, test } from 'vitest';
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
 import { DOUBLES, SINGLES } from '../../../../constants/eventConstants';
 
+const d210505 = '2021-05-05';
+
 test.each([competitionEngineSync])(
   'correctly enumerates participantProfiles for { eventType: DOUBLES }',
   async (competitionEngine) => {
@@ -16,8 +18,8 @@ test.each([competitionEngineSync])(
     const venueProfiles = [{ courtsCount: 3 }];
 
     const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-      startDate: '2021-05-05',
       endDate: '2021-05-07',
+      startDate: d210505,
       venueProfiles,
       drawProfiles,
     });
@@ -55,8 +57,8 @@ test.each([competitionEngineSync])(
 
     const { tournamentRecord } = mocksEngine.generateTournamentRecord({
       policyDefinitions: POLICY_SCHEDULING_NO_DAILY_LIMITS,
-      startDate: '2021-05-05',
       endDate: '2021-05-07',
+      startDate: d210505,
       venueProfiles,
       drawProfiles,
     });
@@ -83,7 +85,7 @@ test.each([competitionEngineSync])(
       )
     ).toEqual(true);
 
-    const matchUpFilters = { scheduledDate: '2021-05-05' };
+    const matchUpFilters = { scheduledDate: d210505 };
     result = competitionEngine.competitionScheduleMatchUps({
       usePublishState: true,
       matchUpFilters,

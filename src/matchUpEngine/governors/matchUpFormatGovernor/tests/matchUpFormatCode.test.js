@@ -2,7 +2,9 @@ import { matchUpFormatCode } from '..';
 import { isValid } from '../isValid';
 import { expect, it } from 'vitest';
 
-const standard = 'SET3-S:6/TB7';
+import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
+
+const standard = FORMAT_STANDARD;
 const validFormats = [
   {
     name: 'Standard Match',

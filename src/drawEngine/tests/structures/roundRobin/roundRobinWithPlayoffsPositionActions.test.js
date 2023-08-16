@@ -10,6 +10,7 @@ import { expect, it } from 'vitest';
 import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
 import POLICY_SEEDING_NATIONAL from '../../../../fixtures/policies/POLICY_SEEDING_NATIONAL';
 import POLICY_SEEDING_USTA from '../../../../fixtures/policies/POLICY_SEEDING_USTA';
+import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
 import { toBePlayed } from '../../../../fixtures/scoring/outcomes/toBePlayed';
 import { LUCKY_LOSER } from '../../../../constants/entryStatusConstants';
 import { SINGLES } from '../../../../constants/eventConstants';
@@ -66,7 +67,7 @@ it('disables placement actions for Round Robin Playoffs until all groups are com
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result.success).toEqual(true);
 
-  const matchUpFormat = 'SET3-S:6/TB7';
+  const matchUpFormat = FORMAT_STANDARD;
   let { drawDefinition } = tournamentEngine.generateDrawDefinition({
     seedingProfile: { positioning: WATERFALL },
     structureOptions,
@@ -394,7 +395,7 @@ it('Playoff drawPosition assignment includes group winners who lost no matchUps'
   expect(mainStructure.structures.length).toEqual(groupsCount);
   expect(mainStructure.structures[0].positionAssignments.length).toEqual(4);
 
-  const matchUpFormat = 'SET3-S:6/TB7';
+  const matchUpFormat = FORMAT_STANDARD;
   const completeStructures = (structure, structureOrder) => {
     const values = setsValues[structureOrder];
     const structureMatchUps = structure.matchUps;
