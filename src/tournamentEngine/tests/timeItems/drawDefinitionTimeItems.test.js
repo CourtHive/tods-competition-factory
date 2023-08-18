@@ -42,11 +42,11 @@ it('can add and read timeItems from events', async () => {
   expect(result.success).toEqual(true);
 
   const values = {
+    event: eventResult,
     automated: true,
     drawSize: 32,
-    eventId,
     participants,
-    event: eventResult,
+    eventId,
   };
   const { drawDefinition } = tournamentEngine.generateDrawDefinition(values);
   const { drawId } = drawDefinition;

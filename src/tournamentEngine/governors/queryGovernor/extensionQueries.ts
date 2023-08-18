@@ -29,10 +29,8 @@ export function findExtension({
   element,
   name,
 }: FindExtensionType):
-  | Extension
-  | ErrorType
-  | ResultType
-  | { info: ErrorType | undefined } {
+  | { info: ErrorType | undefined; extension?: Extension }
+  | ResultType {
   if (!element || !name)
     return decorateResult({ result: { error: MISSING_VALUE }, stack });
   if (!Array.isArray(element.extensions)) return { info: NOT_FOUND };

@@ -7,10 +7,12 @@ import { FLIGHT_PROFILE } from '../../constants/extensionConstants';
 export function getFlightProfile({ event, eventId }) {
   if (!event) return { error: MISSING_EVENT };
 
-  const { extension } = findEventExtension({
+  const result = findEventExtension({
     name: FLIGHT_PROFILE,
     event,
   });
+
+  const extension = result?.extension;
 
   // eventId indicates that `getFlightProfile()` has been called via `tournamentEngine`
   // a deep copy is made and drawDefinitions are attached for client convenience
