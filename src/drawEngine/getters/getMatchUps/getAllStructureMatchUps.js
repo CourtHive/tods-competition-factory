@@ -39,6 +39,31 @@ import {
   return all matchUps within a structure and its child structures
   context is used to pass in additional parameters to be assigned to each matchUp
 */
+
+/**
+ * 
+ * @param {boolesn=} scheduleVisibilityFilters 
+  @param {object=} tournamentAppliedPolicies
+  @param {object=} provisionalPositioning
+  @param {object[]=} tournamentParticipants
+  @param {object=} afterRecoveryTimes
+  @param {object=} policyDefinitions
+  @param {object=} tournamentRecord
+  @param {object=} seedAssignments
+  @param {object=} contextFilters
+  @param {object=} contextContent
+  @param {object=} matchUpFilters
+  @param {object=} participantMap
+  @param {object=} scheduleTiming
+  @param {object=} drawDefinition
+  @param {object=} contextProfile
+  @param {object=} exitProfiles
+  @param {object=} context
+  @param {object=} matchUpsMap,
+  @param {object=} structure,
+  @param {boolean=} inContext,
+  @param {object=} event,
+ */
 export function getAllStructureMatchUps({
   scheduleVisibilityFilters,
   tournamentAppliedPolicies,

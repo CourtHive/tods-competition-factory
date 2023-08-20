@@ -35,7 +35,6 @@ export { getPositionAssignments } from '../../drawEngine/getters/positionsGetter
 export { getFlightProfile } from '../../tournamentEngine/getters/getFlightProfile';
 export { findExtension } from '../../global/functions/deducers/findExtension';
 export { getValidGroupSizes } from '../../drawEngine/generators/roundRobin';
-export { getTieFormat } from '../../tournamentEngine/getters/getTieFormat';
 export {
   getRounds,
   getProfileRounds,
