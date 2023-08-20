@@ -57,6 +57,7 @@ interface CountGames {
   tallyPolicy?: any;
   score: any;
 }
+
 export function countGames({
   winningSide: matchUpWinningSide,
   matchUpFormat = FORMAT_STANDARD,
@@ -75,6 +76,7 @@ export function countGames({
   const tiebreakAt = parsedMatchUpFormat?.setFormat?.tiebreakAt || 0;
 
   const gamesTally: number[][] = [[], []];
+
   if (
     (matchUpStatus === DEFAULTED && tallyPolicy?.gamesCreditForDefaults) ||
     (matchUpStatus === WALKOVER && tallyPolicy?.gamesCreditForWalkovers)
@@ -90,13 +92,38 @@ export function countGames({
           ? 'finalSetFormat'
           : 'setFormat';
       const based = parsedMatchUpFormat?.[whichFormat]?.based;
+      const isTiebreakSet = parsedMatchUpFormat?.[whichFormat].tiebreakSet;
+
+      const { side1Score, side2Score, side1TiebreakScore, side2TiebreakScore } =
+        set;
+
       if (isGamesBased(based)) {
-        const { side1Score, side2Score } = set;
         gamesTally[0].push(parseInt(side1Score || 0));
         gamesTally[1].push(parseInt(side2Score || 0));
       }
+
+      // count a tiebreak as a game won
+      if (
+        !based &&
+        !isTiebreakSet &&
+        set.winningSide &&
+        (side1TiebreakScore || side2TiebreakScore) &&
+        tallyPolicy?.gamesCreditForTiebreaks !== false
+      ) {
+        gamesTally[set.winningSide - 1].push(1);
+      }
+
+      // count a tiebreak set also as a game won
+      if (
+        isTiebreakSet &&
+        set.winningSide &&
+        tallyPolicy?.gamesCreditForTiebreakSets !== false
+      ) {
+        gamesTally[set.winningSide - 1].push(1);
+      }
     });
   }
+
   if (matchUpStatus === RETIRED) {
     // setFormat must consider whether retirment occurred in a finalSet which has a different format
     const whichFormat =
@@ -104,6 +131,7 @@ export function countGames({
         ? 'finalSetFormat'
         : 'setFormat';
     const format = parsedMatchUpFormat?.[whichFormat];
+
     if (isGamesBased(format.based)) {
       const gamesForSet = format?.setTo || 0;
 
@@ -122,6 +150,7 @@ export function countGames({
         matchUpFormat,
         tallyPolicy,
       });
+
       const loserLeadSet = gamesTally
         .map((g) => g[matchUpWinnerIndex] <= g[1 - matchUpWinnerIndex])
         .reduce((a, b) => a + (b ? 1 : 0), 0);
@@ -134,6 +163,7 @@ export function countGames({
         if (complement)
           gamesTally[matchUpWinnerIndex][talliedGames - 1] = complement;
       }
+
       // if the gamesTally[x].length is less than the number of sets to win award gamesForSet to winner
       // gamesTally[x].length is an array of games won for each set, so length is number of sets
       if (
