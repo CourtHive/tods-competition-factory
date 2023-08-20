@@ -54,7 +54,6 @@ import {
 } from './utilities';
 
 export const utilities = {
-  addDays,
   hasAttributeValues,
   extractAttributes,
   structureSort,
