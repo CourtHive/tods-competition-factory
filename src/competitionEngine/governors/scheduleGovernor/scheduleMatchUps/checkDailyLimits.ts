@@ -5,10 +5,9 @@ import { unique } from '../../../../utilities';
 import { TOTAL } from '../../../../constants/scheduleConstants';
 
 /**
- *
- * @param {object[]} sides - matchUp.sides
- * @param {string} matchUpType - SINGLES, DOUBLES, TEAM
+ * @param {object} matchUp
  * @param {object} matchUpDailyLimits - { SINGLES, DOUBLES, TOTAL } - counters
+ * @param {string[]} matchUpPotentialParticipantIds - participantIds are attributes { [participantId]: { counters: { SINGLES, DOUBLES, TOTAL }}}
  * @param {object} individualParticipantProfiles - participantIds are attributes { [participantId]: { counters: { SINGLES, DOUBLES, TOTAL }}}
  * @returns {string[]} participantIdsAtLimit - array of participantIds who are at or beyond daily matchUp limit
  * @returns {string[]} relevantParticipantIds - array of participantIds relevant to current matchUp

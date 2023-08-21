@@ -44,6 +44,13 @@ export function getEvents({ tournamentRecord, context, inContext }) {
   return { events: eventCopies };
 }
 
+/**
+ *
+ * @param {object} tournamentRecord
+ * @param {string=} eventId
+ * @param {string=} drawId
+ */
+
 export function findEvent({ tournamentRecord, eventId, drawId }) {
   const stack = 'findEvent';
   if (!tournamentRecord)
