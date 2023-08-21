@@ -39,8 +39,8 @@ it('will modify flight.drawEntries when no drawDefinition is present', () => {
 
   // taking 36 of 40 participants to generate 3 flights of 12
   result = tournamentEngine.addEventEntries({
-    eventId,
     participantIds: participantIds.slice(0, 36),
+    eventId,
   });
   expect(result.success).toEqual(true);
 
@@ -62,23 +62,23 @@ it('will modify flight.drawEntries when no drawDefinition is present', () => {
 
   // adding draw entries will fail becuase the participantIds are not in event.entries
   result = tournamentEngine.addDrawEntries({
+    participantIds: participantIdsToAdd,
     eventId,
     drawId,
-    participantIds: participantIdsToAdd,
   });
   expect(result.error).not.toBeUndefined();
 
   // participants can be added to the event and draw at the same time
   result = tournamentEngine.addEventEntries({
+    participantIds: participantIdsToAdd,
     eventId,
     drawId,
-    participantIds: participantIdsToAdd,
   });
   expect(result.success).toEqual(true);
 
   result = tournamentEngine.addDrawEntries({
-    drawId: 'bogusId',
     participantIds: participantIdsToAdd,
+    drawId: 'bogusId',
   });
   expect(result.error).toEqual(EVENT_NOT_FOUND);
 
@@ -90,9 +90,9 @@ it('will modify flight.drawEntries when no drawDefinition is present', () => {
   );
   const participantIdsToRemove = firstFlightParticipantIds.slice(0, 2);
   result = tournamentEngine.removeDrawEntries({
+    participantIds: participantIdsToRemove,
     eventId,
     drawId,
-    participantIds: participantIdsToRemove,
   });
   expect(result.success).toEqual(true);
 

@@ -2,13 +2,14 @@ import { drawEngine } from '../../sync';
 import { mocksEngine } from '../../..';
 import { expect, it } from 'vitest';
 
+import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { DOUBLES } from '../../../constants/matchUpTypes';
 
 it('can check-in and check-out matchUp participants', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     drawProfiles: [
-      { drawSize: 32, eventType: DOUBLES, matchUpFormat: 'SET3-S:6/TB7' },
+      { drawSize: 32, eventType: DOUBLES, matchUpFormat: FORMAT_STANDARD },
     ],
   });
   const drawDefinition = tournamentRecord.events[0].drawDefinitions[0];

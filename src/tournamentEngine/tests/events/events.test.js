@@ -2,6 +2,7 @@ import { tournamentEngine } from '../../sync';
 import mocksEngine from '../../../mocksEngine';
 import { expect, it } from 'vitest';
 
+import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
 import { SINGLES } from '../../../constants/eventConstants';
 
 let result;
@@ -45,7 +46,7 @@ it('can add events to a tournament record', () => {
   expect(result.success).toEqual(true);
 
   const { drawId } = drawDefinition;
-  const defaultMatchUpFormat = 'SET3-S:6/TB7';
+  const defaultMatchUpFormat = FORMAT_STANDARD;
   result = tournamentEngine.setMatchUpFormat({
     matchUpFormat: defaultMatchUpFormat,
     drawId,

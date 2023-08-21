@@ -8,6 +8,8 @@ import {
   verifySideNumbers,
 } from '../primitives/verifyMatchUps';
 
+import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
+
 /*
  * this test is no longer relevant given that byes must be distributed equally and seedNumbers with lower seedValues
  * could dictate that byes follow them into an unbalanced BYE scenario
@@ -20,7 +22,7 @@ it.skip('can generate and verify elmination structures', () => {
     drawProfiles: [
       {
         seedAssignmentProfile: { 5: 4 },
-        matchUpFormat: 'SET3-S:6/TB7',
+        matchUpFormat: FORMAT_STANDARD,
         participantsCount: 49,
         assignSeedsCount: 5,
         seedsCount: 8,

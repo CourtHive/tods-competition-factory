@@ -4,6 +4,7 @@ import mocksEngine from '../../../mocksEngine';
 import drawEngine from '../../sync';
 import { expect, it } from 'vitest';
 
+import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 import {
@@ -33,7 +34,7 @@ it('correctly assigns BYE positions in consolation structure', () => {
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
 
   const { drawDefinition } = tournamentEngine.generateDrawDefinition({
-    matchUpFormat: 'SET3-S:6/TB7',
+    matchUpFormat: FORMAT_STANDARD,
     drawType: FEED_IN_CHAMPIONSHIP,
     drawSize,
     eventId,

@@ -77,7 +77,7 @@ export function getParticipantEntries({
   const derivedEventInfo = {};
   const derivedDrawInfo = {};
   const mappedMatchUps = {};
-  let matchUps = [];
+  const matchUps = [];
 
   const getRanking = ({ eventType, scaleNames, participantId }) =>
     participantMap[participantId].participant?.rankings?.[eventType]?.find(
@@ -295,8 +295,10 @@ export function getParticipantEntries({
                 qualifyingSeedingMap?.[participantId]?.seedNumber
               : undefined;
 
-            if (mainSeeding) seedAssignments[MAIN] = mainSeeding;
-            if (qualifyingSeeding) seedAssignments[QUALIFYING] = mainSeeding;
+            if (seedAssignments && mainSeeding)
+              seedAssignments[MAIN] = mainSeeding;
+            if (seedAssignments && qualifyingSeeding)
+              seedAssignments[QUALIFYING] = mainSeeding;
 
             if (withEvents || withRankingProfile) {
               if (includeSeeding) {

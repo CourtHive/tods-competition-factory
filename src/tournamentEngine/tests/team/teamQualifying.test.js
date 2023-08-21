@@ -4,6 +4,7 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 import { expect, it } from 'vitest';
 
+import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
 import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { TEAM_EVENT } from '../../../constants/eventConstants';
 import {
@@ -35,7 +36,7 @@ it('Modifying tieFormats supported for TEAM QUALIFYING events', () => {
         collectionName: 'Singles',
         matchUpType: SINGLES_MATCHUP,
         matchUpCount: 5,
-        matchUpFormat: 'SET3-S:6/TB7',
+        matchUpFormat: FORMAT_STANDARD,
         matchUpValue: 1,
       },
     ],

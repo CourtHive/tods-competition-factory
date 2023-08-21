@@ -4,8 +4,9 @@ import mocksEngine from '../../../../mocksEngine';
 import { tournamentEngine } from '../../../sync';
 import { expect, it } from 'vitest';
 
-import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';
 import { DOUBLES, SINGLES, TEAM } from '../../../../constants/eventConstants';
+import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';
+import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
 import { QUALIFYING } from '../../../../constants/drawDefinitionConstants';
 import { ALTERNATE } from '../../../../constants/entryStatusConstants';
 import { COMPETITOR } from '../../../../constants/participantRoles';
@@ -64,7 +65,7 @@ it('can add doubles events to a tournament record', () => {
   expect(result.success).toEqual(true);
 
   const { drawId } = drawDefinition;
-  const defaultMatchUpFormat = 'SET3-S:6/TB7';
+  const defaultMatchUpFormat = FORMAT_STANDARD;
   result = tournamentEngine.setMatchUpFormat({
     matchUpFormat: defaultMatchUpFormat,
     drawId,

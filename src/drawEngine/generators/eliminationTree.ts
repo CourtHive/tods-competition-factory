@@ -15,6 +15,7 @@ type TreeMatchUpsArgs = {
   isMock?: boolean;
   uuids?: string[];
 };
+
 type TreeMatchUpsReturn = {
   matchUps: MatchUp[];
   roundsCount: number;
@@ -121,14 +122,14 @@ export function treeMatchUps({
     matchUps,
   });
 
-  if (roundLimit) {
-    matchUps = matchUps.filter(
-      (matchUp) => !roundLimit || (matchUp.roundNumber || 0) <= roundLimit
-    );
-  } else {
+  if (!roundLimit) {
     // this is the case { qualifyingPositions : 1 }
     // subtract one to account for the last ++
     roundLimit = roundNumber - 1;
+  } else {
+    matchUps = matchUps.filter(
+      (matchUp) => roundLimit && (matchUp.roundNumber || 0) <= roundLimit
+    );
   }
 
   return { drawSize, matchUps, roundsCount, roundLimit };

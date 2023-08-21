@@ -10,6 +10,8 @@ import {
   NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
+const MODIFICATION_CONTENT = 'MODIFICATION.CONTENT';
+
 // this is necessary to ensure that at least one millisecond has passed between modifications
 async function forceDelay(delay = 10) {
   return new Promise((resolve) => setTimeout(() => resolve(), delay));
@@ -40,11 +42,11 @@ it('can add and read timeItems from events', async () => {
   expect(result.success).toEqual(true);
 
   const values = {
+    event: eventResult,
     automated: true,
     drawSize: 32,
-    eventId,
     participants,
-    event: eventResult,
+    eventId,
   };
   const { drawDefinition } = tournamentEngine.generateDrawDefinition(values);
   const { drawId } = drawDefinition;
@@ -66,14 +68,14 @@ it('can add and read timeItems from events', async () => {
   expect(result.error).toEqual(INVALID_TIME_ITEM);
 
   timeItem = {
-    itemType: 'MODIFICATION.CONTENT',
+    itemType: MODIFICATION_CONTENT,
   };
   result = tournamentEngine.addDrawDefinitionTimeItem({ drawId, timeItem });
   expect(result.error).toEqual(INVALID_TIME_ITEM);
 
   const itemValue = '2021-01-01T00:00';
   timeItem = {
-    itemType: 'MODIFICATION.CONTENT',
+    itemType: MODIFICATION_CONTENT,
     itemValue,
   };
   result = tournamentEngine.addDrawDefinitionTimeItem({ drawId, timeItem });
@@ -82,7 +84,7 @@ it('can add and read timeItems from events', async () => {
   let { timeItem: retrievedTimeItem, info } =
     tournamentEngine.getDrawDefinitionTimeItem({
       drawId,
-      itemType: 'MODIFICATION.CONTENT',
+      itemType: MODIFICATION_CONTENT,
     });
   expect(retrievedTimeItem.itemValue).toEqual(itemValue);
   expect(info).toEqual(undefined);
