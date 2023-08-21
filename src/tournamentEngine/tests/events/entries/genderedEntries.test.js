@@ -39,8 +39,8 @@ it('throws an error on misgendered entries', () => {
     .filter(({ person }) => person.sex === MALE)
     .map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({
-    eventId,
     participantIds: maleParticipantIds,
+    eventId,
   });
   expect(result.success).toEqual(true);
 

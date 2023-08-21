@@ -40,7 +40,7 @@ it('recognizes no AD sets with no tiebreak as valid', () => {
   }).outcome.score;
 
   let result = analyzeScore({
-    matchUpFormat: 'SET3-S:6/TB7',
+    matchUpFormat: FORMAT_STANDARD,
     winningSide: 1,
     score,
   });

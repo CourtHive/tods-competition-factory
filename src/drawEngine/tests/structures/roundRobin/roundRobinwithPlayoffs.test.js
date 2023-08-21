@@ -18,6 +18,7 @@ import {
   mainDrawPositions,
 } from '../../primitives/primitives';
 
+import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
 import { SINGLES } from '../../../../constants/eventConstants';
 import {
   DRAW,
@@ -198,7 +199,7 @@ it('can advance players in Round Robin with Playoffs', () => {
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result.success).toEqual(true);
 
-  const matchUpFormat = 'SET3-S:6/TB7';
+  const matchUpFormat = FORMAT_STANDARD;
   let { drawDefinition } = tournamentEngine.generateDrawDefinition({
     seedingProfile: { positioning: WATERFALL },
     structureOptions,
@@ -412,7 +413,7 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result.success).toEqual(true);
 
-  const matchUpFormat = 'SET3-S:6/TB7';
+  const matchUpFormat = FORMAT_STANDARD;
   let { drawDefinition } = tournamentEngine.generateDrawDefinition({
     seedingProfile: { positioning: WATERFALL },
     structureOptions,

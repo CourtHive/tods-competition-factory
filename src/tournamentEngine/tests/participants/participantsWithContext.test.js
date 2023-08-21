@@ -160,6 +160,7 @@ it('can add statistics to tournament participants', () => {
   );
   expect(categoriesPresent).toBeTruthy();
 
+  /*
   const getParticipant = ({ drawPosition }) => {
     const participantId = positionAssignments.find(
       (assignment) => assignment.drawPosition === drawPosition
@@ -168,8 +169,13 @@ it('can add statistics to tournament participants', () => {
       (participant) => participant.participantId === participantId
     );
   };
+  */
 
-  const doublesParticipant = getParticipant({ drawPosition: 1 });
+  const doublesParticipant = getParticipant({
+    tournamentParticipants,
+    positionAssignments,
+    drawPosition: 1,
+  });
   expect(doublesParticipant.statistics[0].statValue).toEqual(1);
   expect(doublesParticipant.opponents.length).toEqual(2);
   expect(doublesParticipant.matchUps.length).toEqual(3);
@@ -229,6 +235,7 @@ it('can add statistics to tournament participants', () => {
   });
   expect(tournamentParticipants.length).toEqual(12);
 
+  /*
   const getParticipant = ({ drawPosition }) => {
     const participantId = positionAssignments.find(
       (assignment) => assignment.drawPosition === drawPosition
@@ -237,8 +244,13 @@ it('can add statistics to tournament participants', () => {
       (participant) => participant.participantId === participantId
     );
   };
+  */
 
-  const doublesParticipant = getParticipant({ drawPosition: 1 });
+  const doublesParticipant = getParticipant({
+    tournamentParticipants,
+    positionAssignments,
+    drawPosition: 1,
+  });
 
   const {
     individualParticipantIds,
@@ -265,3 +277,16 @@ it('can add statistics to tournament participants', () => {
     ).length
   ).toEqual(2);
 });
+
+function getParticipant({
+  tournamentParticipants,
+  positionAssignments,
+  drawPosition,
+}) {
+  const participantId = positionAssignments.find(
+    (assignment) => assignment.drawPosition === drawPosition
+  ).participantId;
+  return tournamentParticipants.find(
+    (participant) => participant.participantId === participantId
+  );
+}

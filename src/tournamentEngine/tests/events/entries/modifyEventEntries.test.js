@@ -3,19 +3,21 @@ import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../sync';
 import { expect, it } from 'vitest';
 
+import {
+  DOUBLES_EVENT,
+  SINGLES_EVENT,
+} from '../../../../constants/eventConstants';
 import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';
-import { DOUBLES } from '../../../../constants/eventConstants';
 import {
   INVALID_PARTICIPANT_IDS,
   MISSING_EVENT,
 } from '../../../../constants/errorConditionConstants';
+import { ALTERNATE } from '../../../../constants/entryStatusConstants';
+import { QUALIFYING } from '../../../../constants/drawDefinitionConstants';
 
 it('can modify entries for a DOUBLES event and create PAIR participants', () => {
-  const participantsProfile = {
-    participantsCount: 32,
-  };
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-    participantsProfile,
+    participantsProfile: { participantsCount: 32 },
   });
   let { tournamentParticipants } = tournamentEngine
     .setState(tournamentRecord)
@@ -34,8 +36,8 @@ it('can modify entries for a DOUBLES event and create PAIR participants', () => 
 
   const eventName = 'Test Event';
   const event = {
+    eventType: DOUBLES_EVENT,
     eventName,
-    eventType: DOUBLES,
   };
 
   let result = tournamentEngine.addEvent({ event });
@@ -61,4 +63,44 @@ it('can modify entries for a DOUBLES event and create PAIR participants', () => 
 
   // modifyEventEntries has automatically created PAIR participants
   expect(participantTypes).toEqual([INDIVIDUAL, PAIR]);
+});
+
+it('will not allow duplicated entries to be created', () => {
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord();
+  const { participants } = tournamentRecord;
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const eventName = 'Test Event';
+  const event = {
+    eventType: SINGLES_EVENT,
+    eventName,
+  };
+
+  let result = tournamentEngine.addEvent({ event });
+  const { event: eventResult, success } = result;
+  const { eventId } = eventResult;
+  expect(success).toEqual(true);
+
+  const participantIds = participants.map((p) => p.participantId);
+  result = tournamentEngine.addEventEntries({ eventId, participantIds });
+  expect(result.success).toEqual(true);
+  result = tournamentEngine.addEventEntries({ eventId, participantIds });
+  expect(result.addedEntriesCount).toEqual(0);
+  expect(result.success).toEqual(true);
+  result = tournamentEngine.addEventEntries({
+    entryStatus: ALTERNATE,
+    participantIds,
+    eventId,
+  });
+  expect(result.addedEntriesCount).toEqual(0);
+  expect(result.success).toEqual(true);
+  result = tournamentEngine.addEventEntries({
+    entryStatus: ALTERNATE,
+    entryStage: QUALIFYING,
+    participantIds,
+    eventId,
+  });
+  expect(result.addedEntriesCount).toEqual(0);
+  expect(result.success).toEqual(true);
 });

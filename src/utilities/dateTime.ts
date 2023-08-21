@@ -390,6 +390,8 @@ export function sameDay(date1, date2) {
 }
 
 export const dateTime = {
+  addDays,
+  addWeek,
   addMinutesToTimeString,
   convertTime,
   getIsoDateString,

@@ -25,11 +25,13 @@ const esmBundle = (config) => ({
 
 const esmProfile = [
   { input: 'src/index.ts', outputFile: 'dist/index.mjs' },
+  /*
   {
     outputFile: 'dist/forge/utilities.mjs',
     input: 'src/utilities/index.ts',
     outputName: 'utilities',
   },
+  */
   {
     outputFile: 'dist/forge/generate.mjs',
     input: 'src/forge/generate/index.ts',
@@ -147,9 +149,11 @@ export default [
     output: [{ file: `${distPath}/forge/generate.d.ts`, format: 'es' }],
     plugins: [dts()],
   },
+  /*
   {
     input: 'src/utilities/index.ts',
     output: [{ file: `${distPath}/forge/utilities.d.ts`, format: 'es' }],
     plugins: [dts()],
   },
+  */
 ];

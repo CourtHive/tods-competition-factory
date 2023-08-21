@@ -27,6 +27,9 @@ import {
 
 tournamentEngine.devContext({ addVenue: true });
 
+// '2020-01-01' and '2020-01-01T00:00Z' work but '2020-01-01T00:00' does not work
+const d200101 = '2020-01-01T00:00';
+
 let venueModificationsCounter = 0;
 let venueDeletionsCounter = 0;
 setSubscriptions({
@@ -102,13 +105,11 @@ it('can add events, venues, and schedule matchUps and modify drawDefinition.upda
   } = result;
   expect(result.success).toEqual(true);
 
-  // '2020-01-01' and '2020-01-01T00:00Z' work but '2020-01-01T00:00' does not work
-  const date = '2020-01-01T00:00';
   const dateAvailability = [
     {
-      date,
       startTime: '07:00',
       endTime: '19:00',
+      date: d200101,
       bookings: [
         { startTime: '07:00', endTime: '08:30', bookingType: 'PRACTICE' },
         { startTime: '08:30', endTime: '09:00', bookingType: 'MAINTENANCE' },
@@ -117,9 +118,9 @@ it('can add events, venues, and schedule matchUps and modify drawDefinition.upda
     },
   ];
   let { courts } = tournamentEngine.addCourts({
-    venueId,
-    courtsCount: 3,
     dateAvailability,
+    courtsCount: 3,
+    venueId,
   });
   expect(courts.length).toEqual(3);
 
@@ -135,12 +136,12 @@ it('can add events, venues, and schedule matchUps and modify drawDefinition.upda
   expect(pendingMatchUps.length).toEqual(15);
 
   const timingParameters = {
-    date,
-    courts,
+    averageMatchUpMinutes: 90,
     startTime: '08:00',
     endTime: ' 19:00',
     periodLength: 30,
-    averageMatchUpMinutes: 90,
+    date: d200101,
+    courts,
   };
   const { scheduleTimes } = getScheduleTimes(timingParameters);
   expect(scheduleTimes.length).toEqual(18);
@@ -156,7 +157,7 @@ it('can add events, venues, and schedule matchUps and modify drawDefinition.upda
   const matchUpIds = getMatchUpIds(upcoming);
   result = competitionEngine
     .setState(tournamentRecords)
-    .scheduleMatchUps({ scheduleDate: date, matchUpIds });
+    .scheduleMatchUps({ scheduleDate: d200101, matchUpIds });
   expect(result.success).toEqual(true);
 
   ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
@@ -169,12 +170,12 @@ it('can add events, venues, and schedule matchUps and modify drawDefinition.upda
   tournamentRecord = tournamentRecords[tournamentId];
   tournamentEngine.setState(tournamentRecord);
 
-  let scheduledDate = '2020-01-01T00:00';
+  let scheduledDate = d200101;
   let contextFilters = {
-    eventIds: [],
     drawIds: [drawId],
     structureIds: [],
     roundNumbers: [1],
+    eventIds: [],
   };
 
   let { upcomingMatchUps } = tournamentEngine.tournamentMatchUps({
@@ -226,8 +227,8 @@ it('can add events, venues, and schedule matchUps and modify drawDefinition.upda
   let {
     matchUp: { schedule },
   } = tournamentEngine.findMatchUp({
-    drawId,
     matchUpId,
+    drawId,
   });
   expect(schedule.venueId).toBeUndefined();
 
@@ -241,10 +242,10 @@ it('can add events, venues, and schedule matchUps and modify drawDefinition.upda
   await forceDelay();
 
   result = tournamentEngine.assignMatchUpCourt({
+    courtDayDate: scheduledDate,
     tournamentRecord,
     courtId,
     drawId,
-    courtDayDate: scheduledDate,
   });
   expect(result.error).toEqual(MISSING_MATCHUP_ID);
 
@@ -255,39 +256,39 @@ it('can add events, venues, and schedule matchUps and modify drawDefinition.upda
   lastUpdatedAt = drawDefinition.updatedAt;
 
   result = tournamentEngine.assignMatchUpCourt({
+    courtDayDate: scheduledDate,
     tournamentRecord,
     matchUpId,
     courtId,
     drawId,
-    courtDayDate: scheduledDate,
   });
   expect(result.success).toEqual(true);
 
   result = tournamentEngine.assignMatchUpCourt({
-    tournamentRecord,
-    matchUpId,
-    courtId: undefined,
-    drawId,
     courtDayDate: scheduledDate,
+    tournamentRecord,
+    courtId: undefined,
+    matchUpId,
+    drawId,
   });
   expect(result.success).toEqual(true);
 
   ({
     matchUp: { schedule },
   } = tournamentEngine.findMatchUp({
-    drawId,
     matchUpId,
+    drawId,
   }));
   expect(schedule.courtId).toBeUndefined();
 
   await forceDelay();
 
   result = tournamentEngine.assignMatchUpCourt({
+    courtDayDate: scheduledDate,
     tournamentRecord,
     matchUpId,
     courtId,
     drawId,
-    courtDayDate: scheduledDate,
   });
   expect(result.success).toEqual(true);
 
@@ -301,9 +302,9 @@ it('can add events, venues, and schedule matchUps and modify drawDefinition.upda
 
   scheduledDate = '2020-01-03';
   result = tournamentEngine.addMatchUpScheduledDate({
-    drawId,
-    matchUpId,
     scheduledDate,
+    matchUpId,
+    drawId,
   });
   expect(result.success).toEqual(true);
 
@@ -317,9 +318,9 @@ it('can add events, venues, and schedule matchUps and modify drawDefinition.upda
 
   const scheduledTime = '08:00';
   result = tournamentEngine.addMatchUpScheduledTime({
-    drawId,
-    matchUpId,
     scheduledTime,
+    matchUpId,
+    drawId,
   });
   expect(result.success).toEqual(true);
 
@@ -333,9 +334,9 @@ it('can add events, venues, and schedule matchUps and modify drawDefinition.upda
 
   const startTime = '08:00';
   result = tournamentEngine.addMatchUpStartTime({
-    drawId,
     matchUpId,
     startTime,
+    drawId,
   });
   expect(result.success).toEqual(true);
 
@@ -349,9 +350,9 @@ it('can add events, venues, and schedule matchUps and modify drawDefinition.upda
 
   const endTime = '14:30';
   result = tournamentEngine.addMatchUpEndTime({
-    drawId,
     matchUpId,
     endTime,
+    drawId,
   });
   expect(result.success).toEqual(true);
 
@@ -449,8 +450,8 @@ it('can add events, venues, and schedule matchUps and modify drawDefinition.upda
   ({
     matchUp: { schedule },
   } = tournamentEngine.findMatchUp({
-    drawId,
     matchUpId,
+    drawId,
   }));
   expect(schedule.scheduledTime).toBeUndefined();
 
@@ -475,9 +476,9 @@ it('adds venueId to matchUp.schedule when court is assigned', () => {
   const participantsCount = 32;
 
   const { tournamentRecord: record } = mocksEngine.generateTournamentRecord({
+    participantsProfile: { participantsCount },
     startDate,
     endDate,
-    participantsProfile: { participantsCount },
   });
   const { participants } = record;
   tournamentEngine.setState(record);
@@ -497,11 +498,11 @@ it('adds venueId to matchUp.schedule when court is assigned', () => {
   expect(result.success).toEqual(true);
 
   const values = {
+    event: eventResult,
     automated: true,
     drawSize: 32,
-    eventId,
     participants,
-    event: eventResult,
+    eventId,
   };
   const { drawDefinition } = tournamentEngine.generateDrawDefinition(values);
   const { drawId } = drawDefinition;
@@ -519,9 +520,9 @@ it('adds venueId to matchUp.schedule when court is assigned', () => {
   const date = '2020-01-01T00:00Z';
   const dateAvailability = [
     {
-      date,
       startTime: '07:00',
       endTime: '19:00',
+      date,
       bookings: [
         { startTime: '07:00', endTime: '08:30', bookingType: 'PRACTICE' },
         { startTime: '08:30', endTime: '09:00', bookingType: 'MAINTENANCE' },
@@ -550,12 +551,12 @@ it('adds venueId to matchUp.schedule when court is assigned', () => {
   expect(pendingMatchUps.length).toEqual(15);
 
   const timingParameters = {
-    date,
-    courts,
+    averageMatchUpMinutes: 90,
     startTime: '08:00',
     endTime: ' 19:00',
     periodLength: 30,
-    averageMatchUpMinutes: 90,
+    courts,
+    date,
   };
   const { scheduleTimes } = getScheduleTimes(timingParameters);
   expect(scheduleTimes.length).toEqual(18);
@@ -576,12 +577,12 @@ it('adds venueId to matchUp.schedule when court is assigned', () => {
   tournamentRecord = tournamentRecords[tournamentId];
   tournamentEngine.setState(tournamentRecord);
 
-  let scheduledDate = '2020-01-01T00:00';
+  let scheduledDate = d200101;
   let contextFilters = {
-    eventIds: [],
     drawIds: [drawId],
     structureIds: [],
     roundNumbers: [1],
+    eventIds: [],
   };
 
   let { upcomingMatchUps } = tournamentEngine.tournamentMatchUps({
@@ -603,19 +604,19 @@ it('adds venueId to matchUp.schedule when court is assigned', () => {
   const { matchUpId } = matchUp;
 
   result = tournamentEngine.assignMatchUpCourt({
+    courtDayDate: scheduledDate,
     tournamentRecord,
     matchUpId,
     courtId,
     drawId,
-    courtDayDate: scheduledDate,
   });
   expect(result.success).toEqual(true);
 
   let {
     matchUp: { schedule },
   } = tournamentEngine.findMatchUp({
-    drawId,
     matchUpId,
+    drawId,
   });
   expect(schedule.venueId).toEqual(venueId);
 });

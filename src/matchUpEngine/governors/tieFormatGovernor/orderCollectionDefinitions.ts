@@ -14,6 +14,12 @@ import {
   MISSING_MATCHUP,
   NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
+import {
+  DrawDefinition,
+  Event,
+  MatchUp,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
 function getOrderedTieFormat({ tieFormat, orderMap }) {
   const orderedTieFormat = copyTieFormat(tieFormat);
@@ -29,6 +35,17 @@ function getOrderedTieFormat({ tieFormat, orderMap }) {
   return orderedTieFormat;
 }
 
+type OrderCollectionDefinitionsArgs = {
+  tournamentRecord: Tournament;
+  drawDefinition: DrawDefinition;
+  structureId?: string;
+  matchUpId?: string;
+  matchUp?: MatchUp;
+  eventId?: string;
+  orderMap: any;
+  event?: Event;
+};
+
 export function orderCollectionDefinitions({
   tournamentRecord,
   drawDefinition,
@@ -38,7 +55,7 @@ export function orderCollectionDefinitions({
   eventId,
   matchUp,
   event,
-}) {
+}: OrderCollectionDefinitionsArgs) {
   if (typeof orderMap !== 'object') return { error: INVALID_VALUES, orderMap };
 
   if (eventId && event?.tieFormat) {
@@ -116,19 +133,26 @@ export function orderCollectionDefinitions({
   return { ...SUCCESS };
 }
 
+type UpdateEventTieFormatArgs = {
+  tournamentRecord: Tournament;
+  structureIds?: string[];
+  orderMap?: any;
+  event: Event;
+};
+
 function updateEventTieFormat({
   tournamentRecord,
   structureIds, // allow scoping to only specific structureIds
   orderMap,
   event,
-}) {
+}: UpdateEventTieFormatArgs) {
   const updatedFormat = getOrderedTieFormat({
     tieFormat: event.tieFormat,
     orderMap,
   });
   if (!structureIds?.length) event.tieFormat = updatedFormat;
 
-  for (const drawDefinition of event.drawDefinitions || []) {
+  for (const drawDefinition of event.drawDefinitions ?? []) {
     updateDrawTieFormat({
       tournamentRecord,
       drawDefinition,
@@ -139,22 +163,30 @@ function updateEventTieFormat({
   }
 }
 
+type UpdateDrawTieFormatArgs = {
+  tournamentRecord: Tournament;
+  drawDefinition: DrawDefinition;
+  structureIds?: string[];
+  orderMap?: any;
+  event?: Event;
+};
+
 function updateDrawTieFormat({
   tournamentRecord,
   drawDefinition,
   structureIds,
   orderMap,
   event,
-}) {
-  const tieFormat = drawDefinition.tieFormat || event.tieFormat;
+}: UpdateDrawTieFormatArgs) {
+  const tieFormat = drawDefinition.tieFormat ?? event?.tieFormat;
   const updatedFormat = getOrderedTieFormat({
     tieFormat,
     orderMap,
   });
   if (!structureIds?.length) drawDefinition.tieFormat = updatedFormat;
-  const modifiedStructureIds = [];
+  const modifiedStructureIds: string[] = [];
 
-  for (const structure of drawDefinition.structures || []) {
+  for (const structure of drawDefinition.structures ?? []) {
     // if structureIds is present, only modify referenced structures
     if (structureIds?.length && !structureIds.includes(structure.structureId))
       continue;
@@ -162,7 +194,7 @@ function updateDrawTieFormat({
     if (structure.tieFormat || structureIds?.includes(structure.structureId))
       structure.tieFormat = getOrderedTieFormat({
         tieFormat:
-          structure.tieFormat || drawDefinition.tieFormat || event.tieFormat,
+          structure.tieFormat ?? drawDefinition.tieFormat ?? event?.tieFormat,
         orderMap,
       });
     updateStructureMatchUps({

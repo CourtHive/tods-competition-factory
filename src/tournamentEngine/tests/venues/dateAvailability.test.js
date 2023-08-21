@@ -10,9 +10,13 @@ import {
   INVALID_TIME,
 } from '../../../constants/errorConditionConstants';
 
+const invalidTime = 'Invalid Time';
+const d210102 = '2021-01-02';
+const d220202 = '2022-02-02';
+
 test('will not allow saving of Invalid Date in dateAvailability', () => {
   let dateAvailability = [
-    { date: '2021-01-02', startTime: '09:00', endTime: '16:00' },
+    { date: d210102, startTime: '09:00', endTime: '16:00' },
   ];
   let result = validDateAvailability({ dateAvailability });
   expect(result.valid).toEqual(true);
@@ -24,41 +28,37 @@ test('will not allow saving of Invalid Date in dateAvailability', () => {
   expect(result.error).toEqual(INVALID_DATE_AVAILABILITY);
 
   dateAvailability = [
-    { date: 'Invalid Date', startTime: '09:00', endTime: '16:00' },
+    { date: invalidTime, startTime: '09:00', endTime: '16:00' },
   ];
   result = validDateAvailability({ dateAvailability });
   expect(result.error).toEqual(INVALID_DATE);
 
   dateAvailability = [
-    { date: '2021-01-02', startTime: 'Invalid Time', endTime: '16:00' },
+    { date: d210102, startTime: invalidTime, endTime: '16:00' },
   ];
   result = validDateAvailability({ dateAvailability });
   expect(result.error).toEqual(INVALID_TIME);
 
   dateAvailability = [
-    { date: '2021-01-02', startTime: '09:00', endTime: 'Invalid Time' },
+    { date: d210102, startTime: '09:00', endTime: invalidTime },
   ];
   result = validDateAvailability({ dateAvailability });
   expect(result.error).toEqual(INVALID_TIME);
 
-  dateAvailability = [
-    { date: '2021-01-02', startTime: '09:00', endTime: '09:00' },
-  ];
+  dateAvailability = [{ date: d210102, startTime: '09:00', endTime: '09:00' }];
   result = validDateAvailability({ dateAvailability });
   expect(result.error).toEqual(INVALID_TIME);
 
-  dateAvailability = [
-    { date: '2021-01-02', startTime: '10:00', endTime: '09:00' },
-  ];
+  dateAvailability = [{ date: d210102, startTime: '10:00', endTime: '09:00' }];
   result = validDateAvailability({ dateAvailability });
   expect(result.error).toEqual(INVALID_TIME);
 
   dateAvailability = [
     {
-      date: '2021-01-02',
+      bookings: [{ startTime: '09:00', endTime: '10:00' }],
       startTime: '08:00',
       endTime: '19:00',
-      bookings: [{ startTime: '09:00', endTime: '10:00' }],
+      date: d210102,
     },
   ];
   result = validDateAvailability({ dateAvailability });
@@ -66,10 +66,10 @@ test('will not allow saving of Invalid Date in dateAvailability', () => {
 
   dateAvailability = [
     {
-      date: '2021-01-02',
-      startTime: '08:00',
-      endTime: '19:00',
       bookings: 'not an array',
+      startTime: '08:00',
+      endTime: '19:00',
+      date: d210102,
     },
   ];
   result = validDateAvailability({ dateAvailability });
@@ -77,10 +77,10 @@ test('will not allow saving of Invalid Date in dateAvailability', () => {
 
   dateAvailability = [
     {
-      date: '2021-01-02',
-      startTime: '08:00',
-      endTime: '19:00',
       bookings: ['not an object'],
+      startTime: '08:00',
+      endTime: '19:00',
+      date: d210102,
     },
   ];
   result = validDateAvailability({ dateAvailability });
@@ -88,10 +88,10 @@ test('will not allow saving of Invalid Date in dateAvailability', () => {
 
   dateAvailability = [
     {
-      date: '2021-01-02',
+      bookings: [{ startTime: invalidTime, endTime: '10:00' }],
       startTime: '08:00',
       endTime: '19:00',
-      bookings: [{ startTime: 'Invalid Time', endTime: '10:00' }],
+      date: d210102,
     },
   ];
   result = validDateAvailability({ dateAvailability });
@@ -99,10 +99,10 @@ test('will not allow saving of Invalid Date in dateAvailability', () => {
 
   dateAvailability = [
     {
-      date: '2021-01-02',
+      bookings: [{ startTime: '09:00', endTime: invalidTime }],
       startTime: '08:00',
       endTime: '19:00',
-      bookings: [{ startTime: '09:00', endTime: 'Invalid Time' }],
+      date: d210102,
     },
   ];
   result = validDateAvailability({ dateAvailability });
@@ -110,10 +110,10 @@ test('will not allow saving of Invalid Date in dateAvailability', () => {
 
   dateAvailability = [
     {
-      date: '2021-01-02',
-      startTime: '08:00',
-      endTime: '19:00',
       bookings: [{ startTime: '09:00', endTime: '09:00' }],
+      startTime: '08:00',
+      endTime: '19:00',
+      date: d210102,
     },
   ];
   result = validDateAvailability({ dateAvailability });
@@ -121,10 +121,10 @@ test('will not allow saving of Invalid Date in dateAvailability', () => {
 
   dateAvailability = [
     {
-      date: '2021-01-02',
+      bookings: [{ startTime: '10:00', endTime: '09:00' }],
       startTime: '08:00',
       endTime: '19:00',
-      bookings: [{ startTime: '10:00', endTime: '09:00' }],
+      date: d210102,
     },
   ];
   result = validDateAvailability({ dateAvailability });
@@ -137,9 +137,9 @@ it('can add events, venues, and schedule matchUps', () => {
 
   const dateAvailability = [
     {
-      date: startDate,
       startTime: '07:00',
       endTime: '19:00',
+      date: startDate,
       bookings: [
         { startTime: '07:00', endTime: '08:30', bookingType: 'PRACTICE' },
         { startTime: '08:30', endTime: '09:00', bookingType: 'MAINTENANCE' },
@@ -169,8 +169,8 @@ it('can add events, venues, and schedule matchUps', () => {
 
   result = tournamentEngine.modifyCourtAvailability({
     dateAvailability: [
-      { date: '2022-02-02', startTime: '10:00', endTime: '20:00' },
-      { date: '2022-02-02', startTime: '08:00', endTime: '09:00' },
+      { date: d220202, startTime: '10:00', endTime: '20:00' },
+      { date: d220202, startTime: '08:00', endTime: '09:00' },
     ],
     courtId,
   });
@@ -179,8 +179,8 @@ it('can add events, venues, and schedule matchUps', () => {
 
   result = tournamentEngine.modifyCourtAvailability({
     dateAvailability: [
-      { date: '2022-02-02', startTime: '08:30', endTime: '20:00' },
-      { date: '2022-02-02', startTime: '08:00', endTime: '09:00' },
+      { date: d220202, startTime: '08:30', endTime: '20:00' },
+      { date: d220202, startTime: '08:00', endTime: '09:00' },
     ],
     courtId,
   });
@@ -192,6 +192,6 @@ it('can add events, venues, and schedule matchUps', () => {
 
   // overlapping dateAvailability has been merged
   expect(court.dateAvailability).toEqual([
-    { date: '2022-02-02', startTime: '08:00', endTime: '20:00' },
+    { date: d220202, startTime: '08:00', endTime: '20:00' },
   ]);
 });

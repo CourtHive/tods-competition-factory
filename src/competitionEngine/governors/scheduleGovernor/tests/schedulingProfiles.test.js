@@ -9,6 +9,9 @@ import {
   VENUE_NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
 
+const d220101 = '2022-01-01';
+const d220203 = '2022-01-03';
+
 test.each([competitionEngineSync])(
   'it can set scheulingProfile',
   async (competitionEngine) => {
@@ -21,7 +24,7 @@ test.each([competitionEngineSync])(
       mocksEngine.generateTournamentRecord({
         drawProfiles,
         venueProfiles,
-        startDate: '2022-01-01',
+        startDate: d220101,
         endDate: '2022-01-07',
       });
     const { tournamentRecord: secondRecord } =
@@ -32,7 +35,7 @@ test.each([competitionEngineSync])(
     competitionEngine.setState([firstRecord, secondRecord]);
 
     let { startDate, endDate } = competitionEngine.getCompetitionDateRange();
-    expect(startDate).toEqual('2022-01-01');
+    expect(startDate).toEqual(d220101);
     expect(endDate).toEqual('2022-01-10');
 
     const { venues, venueIds } = competitionEngine.getCompetitionVenues();
@@ -46,7 +49,7 @@ test.each([competitionEngineSync])(
     let result = competitionEngine.validateSchedulingProfile({
       schedulingProfile: [
         {
-          scheduleDate: '2022-01-03',
+          scheduleDate: d220203,
           venues: [
             {
               venueId: venueIds[0],
@@ -63,7 +66,7 @@ test.each([competitionEngineSync])(
     result = competitionEngine.validateSchedulingProfile({
       schedulingProfile: [
         {
-          scheduleDate: '2022-01-03',
+          scheduleDate: d220203,
           venues: [
             {
               venueId: venueIds[0],
@@ -87,7 +90,7 @@ test.each([competitionEngineSync])(
     result = competitionEngine.validateSchedulingProfile({
       schedulingProfile: [
         {
-          scheduleDate: '2022-01-03',
+          scheduleDate: d220203,
           venues: [
             {
               venueId: venueIds[0],
@@ -111,7 +114,7 @@ test.each([competitionEngineSync])(
     result = competitionEngine.validateSchedulingProfile({
       schedulingProfile: [
         {
-          scheduleDate: '2022-01-03',
+          scheduleDate: d220203,
           venues: [
             {
               venueId: venueIds[0],
@@ -135,7 +138,7 @@ test.each([competitionEngineSync])(
     result = competitionEngine.validateSchedulingProfile({
       schedulingProfile: [
         {
-          scheduleDate: '2022-01-03',
+          scheduleDate: d220203,
           venues: [
             {
               venueId: venueIds[0],
@@ -162,7 +165,7 @@ test.each([competitionEngineSync])(
 
     result = competitionEngine.addSchedulingProfileRound({
       round: { drawId: 'drawId' },
-      scheduleDate: '2022-01-03',
+      scheduleDate: d220203,
       venueId: venueIds[0],
     });
     expect(result.error).toEqual(INVALID_VALUES);
@@ -183,14 +186,14 @@ test.each([competitionEngineSync])(
 
     result = competitionEngine.addSchedulingProfileRound({
       round: { eventId, drawId },
-      scheduleDate: '2022-01-03',
+      scheduleDate: d220203,
       venueId: venueIds[0],
     });
     expect(result.error).toEqual(INVALID_VALUES);
 
     result = competitionEngine.addSchedulingProfileRound({
       round: { tournamentId, eventId, drawId, structureId, roundNumber },
-      scheduleDate: '2022-01-03',
+      scheduleDate: d220203,
       venueId: venueIds[0],
     });
     expect(result.success).toEqual(true);
@@ -254,7 +257,7 @@ test.each([competitionEngineSync])(
     ];
     const { tournamentRecord } = mocksEngine.generateTournamentRecord({
       venueProfiles,
-      startDate: '2022-01-01',
+      startDate: d220101,
       endDate: '2022-01-07',
     });
     competitionEngine.setState(tournamentRecord);
@@ -276,26 +279,24 @@ test.each([competitionEngineSync])(
     expect(result.valid).toEqual(false);
 
     result = competitionEngine.validateSchedulingProfile({
-      schedulingProfile: [{ scheduleDate: '2022-01-03', venues: [] }],
+      schedulingProfile: [{ scheduleDate: d220203, venues: [] }],
     });
     expect(result.valid).toEqual(true);
 
     result = competitionEngine.validateSchedulingProfile({
-      schedulingProfile: [{ scheduleDate: '2022-01-03', venues: [{}] }],
+      schedulingProfile: [{ scheduleDate: d220203, venues: [{}] }],
     });
     expect(result.valid).toEqual(false);
 
     result = competitionEngine.validateSchedulingProfile({
-      schedulingProfile: [
-        { scheduleDate: '2022-01-03', venues: [{ rounds: [] }] },
-      ],
+      schedulingProfile: [{ scheduleDate: d220203, venues: [{ rounds: [] }] }],
     });
     expect(result.valid).toEqual(false);
 
     result = competitionEngine.validateSchedulingProfile({
       schedulingProfile: [
         {
-          scheduleDate: '2022-01-03',
+          scheduleDate: d220203,
           venues: [{ venueId: venueIds[0], rounds: [] }],
         },
       ],
@@ -305,7 +306,7 @@ test.each([competitionEngineSync])(
     result = competitionEngine.validateSchedulingProfile({
       schedulingProfile: [
         {
-          scheduleDate: '2022-01-03',
+          scheduleDate: d220203,
           venues: [{ venueId: 'bogusId', rounds: [] }],
         },
       ],

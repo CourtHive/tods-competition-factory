@@ -19,6 +19,15 @@ import {
   MISSING_TIE_FORMAT,
 } from '../../../constants/errorConditionConstants';
 
+import {
+  DrawDefinition,
+  Event,
+  MatchUp,
+  Structure,
+  TieFormat,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
+
 // used to determine that all collections have the same collectionIds
 function mapsCheck(map1, map2) {
   const referenceKeys = Object.keys(map1);
@@ -27,6 +36,17 @@ function mapsCheck(map1, map2) {
     referenceKeys.length
   );
 }
+
+type UpdateTieFormatArgs = {
+  updateInProgressMatchUps?: boolean;
+  tournamentRecord?: Tournament;
+  drawDefinition: DrawDefinition;
+  structure?: Structure;
+  tieFormat: TieFormat;
+  matchUp?: MatchUp;
+  eventId?: string;
+  event?: Event;
+};
 
 export function updateTieFormat({
   updateInProgressMatchUps,
@@ -37,7 +57,7 @@ export function updateTieFormat({
   eventId,
   matchUp,
   event,
-}) {
+}: UpdateTieFormatArgs) {
   const stack = 'updateTieFormat';
   let modifiedStructuresCount = 0;
   let modifiedCount = 0;
@@ -60,13 +80,11 @@ export function updateTieFormat({
     return mapsCheck(collectionMap, cMap);
   };
 
-  const { drawDefaultTieFormat, eventDefaultTieFormat } = getTieFormat({
-    drawDefinition,
-    event,
-  });
+  const drawDefaultTieFormat = getTieFormat({ drawDefinition })?.tieFormat;
+  const eventDefaultTieFormat = getTieFormat({ event })?.tieFormat;
 
   if (event && eventId) {
-    for (const drawDefinition of event.drawDefinitions || []) {
+    for (const drawDefinition of event.drawDefinitions ?? []) {
       processDrawDefinition({ drawDefinition });
     }
     event.tieFormat = tieFormat;
@@ -133,18 +151,23 @@ export function updateTieFormat({
   return { ...SUCCESS, modifiedCount, modifiedStructuresCount, tieFormat };
 
   function processDrawDefinition({ drawDefinition }) {
-    const modifiedStructureIds = [];
-    for (const structure of drawDefinition.structures || []) {
+    const structures = drawDefinition.structures || [];
+    const modifiedStructureIds: string[] = [];
+
+    for (const structure of structures) {
       // if a sub-structure has a tieFormat then setting drawDefinition.tieFormat will have no effect
       if (structure.tieFormat) continue;
+
       const inheritedTieFormat = eventDefaultTieFormat;
       const modifiedCount = processStructure({
         inheritedTieFormat,
         structure,
       })?.modifiedCount;
+
       if (modifiedCount) {
         modifiedStructuresCount += modifiedCount;
-        modifiedStructureIds.push(structure.structureId);
+        const structureId = structure.structureId;
+        modifiedStructureIds.push(structureId);
       }
     }
 
@@ -188,15 +211,6 @@ export function updateTieFormat({
         matchUp.tieFormat = copyTieFormat(tieFormat);
         modified = true;
       }
-
-      /*
-      const map1ValuesTotal = Object.values(map1).reduce(
-        (a, b) => (a || 0) + (b || 0)
-      );
-      const map2ValuesTotal = Object.values(map2).reduce(
-        (a, b) => (a || 0) + (b || 0)
-      );
-      */
 
       if (modified) {
         modifiedCount += 1;

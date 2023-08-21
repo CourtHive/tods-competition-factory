@@ -3,6 +3,7 @@ import { expect, it } from 'vitest';
 
 import { COMPLETED } from '../../../../constants/matchUpStatusConstants';
 import {
+  FORMAT_ATP_DOUBLES,
   FORMAT_SHORT_SETS,
   FORMAT_STANDARD,
 } from '../../../../fixtures/scoring/matchUpFormats';
@@ -107,8 +108,8 @@ it('can count games with tiebreaks in short sets', () => {
           winningSide: 2,
         },
         {
-          side1Score: undefined,
-          side2Score: undefined,
+          side1Score: 4,
+          side2Score: 4,
           side1TiebreakScore: 7,
           side2TiebreakScore: 5,
           winningSide: 1,
@@ -117,13 +118,47 @@ it('can count games with tiebreaks in short sets', () => {
     },
     winningSide: 1,
   };
-  expect(countGames(matchUp)).toEqual([6, 5]);
+  expect(countGames(matchUp)).toEqual([11, 9]);
 });
 
 it('can count games in tiebreak sets', () => {
   const matchUp = {
     matchUpStatus: COMPLETED,
     matchUpFormat: FORMAT_STANDARD,
+    score: {
+      sets: [
+        {
+          side1Score: 6,
+          side2Score: 1,
+          side1TiebreakScore: undefined,
+          side2TiebreakScore: undefined,
+          winningSide: 1,
+        },
+        {
+          side1Score: 1,
+          side2Score: 6,
+          side1TiebreakScore: undefined,
+          side2TiebreakScore: undefined,
+          winningSide: 2,
+        },
+        {
+          side1Score: 6,
+          side2Score: 6,
+          side1TiebreakScore: 10,
+          side2TiebreakScore: 5,
+          winningSide: 1,
+        },
+      ],
+    },
+    winningSide: 1,
+  };
+  expect(countGames(matchUp)).toEqual([14, 13]);
+});
+
+it('counts tiebreak sets as both sets and games', () => {
+  const matchUp = {
+    matchUpStatus: COMPLETED,
+    matchUpFormat: FORMAT_ATP_DOUBLES,
     score: {
       sets: [
         {
@@ -151,5 +186,5 @@ it('can count games in tiebreak sets', () => {
     },
     winningSide: 1,
   };
-  expect(countGames(matchUp)).toEqual([7, 7]);
+  expect(countGames(matchUp)).toEqual([8, 7]);
 });
