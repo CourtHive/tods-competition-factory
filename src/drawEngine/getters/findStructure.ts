@@ -1,5 +1,8 @@
 import { findExtension } from '../../tournamentEngine/governors/queryGovernor/extensionQueries';
-import { decorateResult } from '../../global/functions/decorateResult';
+import {
+  ResultType,
+  decorateResult,
+} from '../../global/functions/decorateResult';
 import { structureSort } from './structureSort';
 
 import { ITEM, validStages } from '../../constants/drawDefinitionConstants';
@@ -9,12 +12,26 @@ import {
   STRUCTURE_NOT_FOUND,
   MISSING_STRUCTURE_ID,
   MISSING_DRAW_DEFINITION,
+  ErrorType,
 } from '../../constants/errorConditionConstants';
 
-/*
-  TESTS: structureGetter.test.js
-*/
-export function findStructure({ drawDefinition, structureId }) {
+import { DrawDefinition, Structure } from '../../types/tournamentFromSchema';
+
+type FindStructureArgs = {
+  drawDefinition?: DrawDefinition;
+  structureId?: string;
+};
+
+type FoundStructureResult = {
+  containingStructure?: Structure;
+  structure: Structure;
+  error?: ErrorType;
+};
+
+export function findStructure({
+  drawDefinition,
+  structureId,
+}: FindStructureArgs): ResultType | FoundStructureResult {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
   const { structures } = getDrawStructures({ drawDefinition });
@@ -34,16 +51,29 @@ export function findStructure({ drawDefinition, structureId }) {
 
   const containingStructure =
     structure.structureType === ITEM &&
-    allStructures.find((s) =>
-      s.structures?.some((s) => s.structureId === structureId)
+    allStructures.find(
+      (s) => s.structures?.some((s) => s.structureId === structureId)
     );
 
   return { structure, containingStructure };
 }
 
-/*
-  TESTS: structureGetter.test.js
-*/
+type GetDrawStructuresArgs = {
+  drawDefinition?: DrawDefinition;
+  withStageGrouping?: boolean;
+  stageSequences?: string[];
+  stageSequence?: string;
+  roundTarget?: number;
+  stages?: string[];
+  sortConfig?: any;
+  stage?: string;
+};
+
+type FoundDrawStructure = {
+  stageStructures?: Structure[];
+  structures: Structure[];
+};
+
 export function getDrawStructures({
   withStageGrouping,
   drawDefinition,
@@ -53,10 +83,10 @@ export function getDrawStructures({
   sortConfig,
   stages,
   stage,
-}) {
+}: GetDrawStructuresArgs): ResultType | FoundDrawStructure {
   const error =
     (!drawDefinition && MISSING_DRAW_DEFINITION) ||
-    (!drawDefinition.structures && MISSING_STRUCTURES) ||
+    (!drawDefinition?.structures && MISSING_STRUCTURES) ||
     undefined;
 
   if (error)
@@ -70,7 +100,7 @@ export function getDrawStructures({
     return !roundTarget || roundTarget === value;
   };
 
-  const structures = drawDefinition.structures
+  const structures = drawDefinition?.structures
     ?.filter(isStage)
     .filter(isStageSequence)
     .filter(isRoundTarget)
@@ -82,10 +112,10 @@ export function getDrawStructures({
       {},
       ...validStages
         .map((stage) => {
-          const relevantStructures = structures.filter(
+          const relevantStructures = structures?.filter(
             (structure) => structure.stage === stage
           );
-          return relevantStructures.length && { [stage]: relevantStructures };
+          return relevantStructures?.length && { [stage]: relevantStructures };
         })
         .filter(Boolean)
     );

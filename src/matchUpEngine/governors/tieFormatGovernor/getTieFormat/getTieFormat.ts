@@ -1,4 +1,8 @@
 import { findMatchUp } from '../../../../drawEngine/getters/getMatchUps/findMatchUp';
+import {
+  ResultType,
+  decorateResult,
+} from '../../../../global/functions/decorateResult';
 import { findStructure } from '../../../../drawEngine/getters/findStructure';
 import { getObjectTieFormat } from './getObjectTieFormat';
 import { getItemTieFormat } from './getItemTieFormat';
@@ -10,7 +14,22 @@ import {
   MISSING_TIE_FORMAT,
 } from '../../../../constants/errorConditionConstants';
 
-import { MatchUp, Structure } from '../../../../types/tournamentFromSchema';
+import {
+  DrawDefinition,
+  Event,
+  MatchUp,
+  Structure,
+} from '../../../../types/tournamentFromSchema';
+
+type GetTieFormatArgs = {
+  drawDefinition?: DrawDefinition;
+  structure?: Structure;
+  structureId?: string;
+  matchUpId?: string;
+  matchUp?: MatchUp;
+  eventId?: string;
+  event?: Event;
+};
 
 export function getTieFormat({
   drawDefinition,
@@ -20,11 +39,18 @@ export function getTieFormat({
   matchUp,
   eventId, // optional - if an eventId is present only return tieFormat for event
   event,
-}) {
+}: GetTieFormatArgs):
+  | ResultType
+  | {
+      success: boolean;
+      tieFormat: string;
+      matchUp: MatchUp;
+      structure: Structure;
+    } {
   let tieFormat;
 
-  structureId = structure?.structureId || structureId;
-  matchUpId = matchUp?.matchUpId || matchUpId;
+  structureId = structure?.structureId ?? structureId;
+  matchUpId = matchUp?.matchUpId ?? matchUpId;
 
   if ((matchUpId || structureId) && !drawDefinition)
     return { error: MISSING_DRAW_DEFINITION };
@@ -82,7 +108,8 @@ export function getTieFormat({
     tieFormat = getObjectTieFormat(drawDefinition) || getObjectTieFormat(event);
   }
 
-  if (!tieFormat) return { error: MISSING_TIE_FORMAT };
+  if (!tieFormat)
+    return decorateResult({ result: { error: MISSING_TIE_FORMAT } });
 
   return { ...SUCCESS, tieFormat, matchUp, structure };
 }
