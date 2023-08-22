@@ -16,6 +16,7 @@ import { generateScoreString } from './matchUpEngine/generators/generateScoreStr
 import { getTimeItem } from './tournamentEngine/governors/queryGovernor/timeItems';
 import { parseAgeCategoryCode } from './global/functions/parseAgeCategoryCode';
 import { parseScoreString } from './mocksEngine/utilities/parseScoreString';
+import { roundRobinGroups } from './drawEngine/generators/roundRobinGroups';
 import { addExtension } from './global/functions/producers/addExtension';
 import { isAdHoc } from './drawEngine/governors/queryGovernor/isAdHoc';
 import { structureSort } from './drawEngine/getters/structureSort';
@@ -71,6 +72,7 @@ export const utilities = {
   countValues,
   dateRange,
   dateTime,
+  roundRobinGroups,
   definedAttributes,
   dehydrateMatchUps,
   findExtension,

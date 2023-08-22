@@ -126,7 +126,9 @@ it.each([asyncDrawEngine, drawEngineSync])(
           'reset',
         ].includes(method);
         if (!onList) console.log({ method, result });
-      } else if (['credits', 'version'].includes(method)) {
+      } else if (
+        ['credits', 'version', 'addFinishingRounds'].includes(method)
+      ) {
         expect(result).not.toBeUndefined();
       } else if (method === 'getState') {
         expect(result.drawDefinition).toBeUndefined();

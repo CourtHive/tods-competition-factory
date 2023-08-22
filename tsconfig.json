@@ -1,5 +1,6 @@
 {
   "include": ["src/**/*.ts", "src/**/*.js"],
+  "exclude": ["src/**/scratch/**"],
   "compilerOptions": {
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
