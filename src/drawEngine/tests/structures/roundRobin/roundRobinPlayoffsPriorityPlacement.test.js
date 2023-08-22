@@ -4,7 +4,7 @@ import tournamentEngine from '../../../../tournamentEngine/sync';
 import { reset, initialize } from '../../primitives/primitives';
 import { findStructure } from '../../../getters/findStructure';
 import matchUpEngine from '../../../../matchUpEngine/sync';
-import { setsValues } from './roundRobinSetsValues.js';
+import { setsValues } from './roundRobinSetsValues';
 import mocksEngine from '../../../../mocksEngine';
 import drawEngine from '../../../sync';
 import { expect, it } from 'vitest';

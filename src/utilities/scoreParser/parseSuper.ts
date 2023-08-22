@@ -17,4 +17,6 @@ export function parseSuper(score) {
       return `${numbers[0]}-${numbers[1]} ${numbers[2]}-${numbers[3]} ${superTiebreak}`;
     }
   }
+
+  return undefined;
 }

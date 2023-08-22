@@ -1,8 +1,15 @@
 import { makeDeepCopy } from '../../../utilities';
 
+import {
+  DrawDefinition,
+  Event,
+  Structure,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
+  ErrorType,
   MISSING_POLICY_TYPE,
   POLICY_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
@@ -16,6 +23,16 @@ import {
  * @param {object} event - optional
  * @returns
  */
+
+type GetAppliedPoliciesArgs = {
+  onlySpecifiedPolicyTypes?: boolean;
+  tournamentRecord?: Tournament;
+  drawDefinition?: DrawDefinition;
+  policyTypes?: string[];
+  structure?: Structure;
+  event?: Event;
+};
+
 export function getAppliedPolicies({
   onlySpecifiedPolicyTypes = false,
   policyTypes = [],
@@ -23,7 +40,7 @@ export function getAppliedPolicies({
   drawDefinition,
   structure,
   event,
-}) {
+}: GetAppliedPoliciesArgs): { appliedPolicies?: any; error?: ErrorType } {
   if (!Array.isArray(policyTypes)) return { error: MISSING_POLICY_TYPE };
   const appliedPolicies = {};
 
@@ -34,7 +51,8 @@ export function getAppliedPolicies({
 
   return { appliedPolicies, ...SUCCESS };
 
-  function extractAppliedPolicies({ extensions }) {
+  function extractAppliedPolicies(params) {
+    const extensions = params?.extensions;
     const extensionPolicies = extensions?.find(
       (extension) => extension.name === APPLIED_POLICIES
     )?.value;
@@ -71,7 +89,7 @@ export function getPolicyDefinitions({
     event,
   });
 
-  const policyDefinitions = {};
+  const policyDefinitions: any = {};
 
   for (const policyType of policyTypes) {
     const policy = appliedPolicies[policyType];
