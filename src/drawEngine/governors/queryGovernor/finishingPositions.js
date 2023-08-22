@@ -3,13 +3,6 @@ import { getParticipantIdMatchUps } from './participantIdMatchUps';
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { BYE, COMPLETED } from '../../../constants/matchUpStatusConstants';
 
-/**
- *
- * @param {string} drawId - drawId of target draw within a tournament
- * @param {object[]} tournamentParticipants - optional - to return matchUps with inContext participant details
- * @param {boolean} byeAdvancements - whether or not to consider byeAdancements in returns finishingPositionRange
- *
- */
 export function getParticipantIdFinishingPositions({
   byeAdvancements = false,
   tournamentParticipants,

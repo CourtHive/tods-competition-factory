@@ -124,7 +124,6 @@ export function getParticipantsCount({
     } else {
       if (category) {
         categories.push(category);
-        console.log({ categories });
       }
     }
   });
