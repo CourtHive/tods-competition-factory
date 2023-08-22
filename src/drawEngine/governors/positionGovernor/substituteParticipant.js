@@ -44,7 +44,6 @@ export function substituteParticipant({
 
   const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
     tournamentParticipants: tournamentRecord?.participants,
-    includeByeMatchUps: true,
     inContext: true,
     drawDefinition,
     matchUpsMap,

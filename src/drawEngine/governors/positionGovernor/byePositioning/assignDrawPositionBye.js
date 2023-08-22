@@ -121,7 +121,6 @@ export function assignDrawPositionBye({
 
   // ########## gather reusable data for performance optimization ###########
   const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
-    includeByeMatchUps: true,
     inContext: true,
     drawDefinition,
     matchUpsMap,

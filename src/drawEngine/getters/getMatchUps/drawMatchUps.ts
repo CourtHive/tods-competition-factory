@@ -8,7 +8,10 @@ import { getDrawStructures } from '../findStructure';
 import { getMatchUpsMap } from './getMatchUpsMap';
 import { filterMatchUps } from './filterMatchUps';
 
-import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
+import {
+  ErrorType,
+  MISSING_DRAW_DEFINITION,
+} from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 /*
@@ -32,15 +35,26 @@ export function getAllDrawMatchUps(params) {
   } = result;
 
   const matchUps = [].concat(
-    ...abandonedMatchUps,
-    ...completedMatchUps,
-    ...upcomingMatchUps,
-    ...pendingMatchUps,
-    ...byeMatchUps
+    ...(abandonedMatchUps || []),
+    ...(completedMatchUps || []),
+    ...(upcomingMatchUps || []),
+    ...(pendingMatchUps || []),
+    ...(byeMatchUps || [])
   );
 
   return { matchUps, matchUpsMap };
 }
+
+type GroupsMatchUpsResult = {
+  abandonedMatchUps?: any[];
+  completedMatchUps?: any[];
+  upcomingMatchUps?: any[];
+  pendingMatchUps?: any[];
+  byeMatchUps?: any[];
+  matchUpsMap?: any;
+  success?: boolean;
+  error?: ErrorType;
+};
 
 export function getDrawMatchUps({
   scheduleVisibilityFilters,
@@ -49,7 +63,6 @@ export function getDrawMatchUps({
   requireParticipants,
   participantsProfile,
   afterRecoveryTimes,
-  includeByeMatchUps,
   policyDefinitions,
   tournamentRecord,
   contextContent,
@@ -64,7 +77,7 @@ export function getDrawMatchUps({
   inContext,
   context,
   event,
-}) {
+}): GroupsMatchUpsResult {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   let allAbandonedMatchUps = [];
@@ -129,7 +142,6 @@ export function getDrawMatchUps({
       tournamentParticipants,
       requireParticipants,
       afterRecoveryTimes,
-      includeByeMatchUps,
       policyDefinitions,
       tournamentRecord,
       contextProfile,
@@ -178,7 +190,7 @@ export function getDrawMatchUps({
   };
 
   if (nextMatchUps) {
-    const nextFilter = typeof nextMatchUps === 'object' || {
+    const nextFilter: any = typeof nextMatchUps === 'object' || {
       abandoned: true,
       completed: true,
       upcoming: true,

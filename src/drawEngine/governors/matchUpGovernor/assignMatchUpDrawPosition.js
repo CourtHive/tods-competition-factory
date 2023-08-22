@@ -53,7 +53,6 @@ export function assignMatchUpDrawPosition({
 
   if (!inContextDrawMatchUps) {
     ({ matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
-      includeByeMatchUps: true,
       inContext: true,
       drawDefinition,
       matchUpsMap,
@@ -102,7 +101,6 @@ export function assignMatchUpDrawPosition({
   if (positionAdded) {
     // necessary to update inContextDrawMatchUps
     ({ matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
-      includeByeMatchUps: true,
       inContext: true,
       drawDefinition,
       matchUpsMap,

@@ -66,7 +66,6 @@ export function paramsMiddleware(tournamentRecord, params, prefetch) {
         const matchUpsMap = getMatchUpsMap({ drawDefinition });
 
         const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
-          includeByeMatchUps: true,
           inContext: true,
           drawDefinition,
           matchUpsMap,

@@ -16,7 +16,6 @@ export function addGoesTo({
 
   if (!inContextDrawMatchUps) {
     ({ matchUps: inContextDrawMatchUps, matchUpsMap } = getAllDrawMatchUps({
-      includeByeMatchUps: true,
       inContext: true,
       drawDefinition,
       matchUpsMap,
