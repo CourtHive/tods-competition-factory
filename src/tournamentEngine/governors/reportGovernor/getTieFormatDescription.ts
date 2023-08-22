@@ -3,7 +3,7 @@ import { DOUBLES_MATCHUP } from '../../../constants/matchUpTypes';
 export function getTieFormatDesc(tieFormat) {
   if (!tieFormat) return {};
 
-  const matchUpFormats = [];
+  const matchUpFormats: string[] = [];
 
   const tieFormatName = tieFormat.tieFormatName;
   const tieFormatDesc = tieFormat.collectionDefinitions

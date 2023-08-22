@@ -14,6 +14,7 @@ export function isDiffOne(score) {
     const diff = Math.abs(scores.reduce((a, b) => +a - +b));
     return diff === 1;
   }
+  return false;
 }
 
 export function getSuper(values, index) {
@@ -26,6 +27,7 @@ export function getSuper(values, index) {
 
   const diff = Math.abs(scores.reduce((a, b) => +a - +b));
   if (diff >= 2) return scores.join('-');
+  return undefined;
 }
 
 export function dashJoin(part) {

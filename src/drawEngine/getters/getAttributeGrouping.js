@@ -60,8 +60,10 @@ export function getAttributeGroupings({
 
 /**
  *
- * @param {string[]} policyAtributtes - participant attributes to be processed to create groupings
- * @param {object} participant - participant from which attribute values will be extracted
+ * @param {object[]} policyAtributtes - participant attributes to be processed to create groupings
+ * @param {object=} participant - participant from which attribute values will be extracted
+ * @param {object[]=} participants - participant from which attribute values will be extracted
+ * @param {object} idCollections
  *
  */
 export function extractAttributeValues({

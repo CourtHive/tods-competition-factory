@@ -2,8 +2,8 @@ import { generateMatchUpOutcome } from '../../primitives/generateMatchUpOutcome'
 import { getPositionAssignments } from '../../../getters/positionsGetter';
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import { reset, initialize } from '../../primitives/primitives';
-import { setsValues } from './roundRobinSetsValues.js';
 import { intersection } from '../../../../utilities';
+import { setsValues } from './roundRobinSetsValues';
 import mocksEngine from '../../../../mocksEngine';
 import { expect, it } from 'vitest';
 

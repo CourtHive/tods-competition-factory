@@ -83,7 +83,6 @@ function getModifiedSet(params) {
       modifiedSet.side2PointScore = value;
     }
   } else {
-    // console.log('game scores', { sideNumber, value });
     if (sideNumber === 1) {
       modifiedSet.side1Score = value;
     } else if (sideNumber === 2) {
