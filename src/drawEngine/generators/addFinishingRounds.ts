@@ -1,14 +1,15 @@
 import { getRoundMatchUps } from '../accessors/matchUpAccessor/getRoundMatchUps';
 import { extractAttributes, generateRange } from '../../utilities';
 import { getDevContext } from '../../global/state/globalState';
+import { MatchUp } from '../../types/tournamentFromSchema';
 
 type AddFinishingRoundsArgs = {
   finishingPositionOffset?: number;
   finishingPositionLimit?: number;
   positionsFed?: number;
-  roundsCount: number;
+  roundsCount?: number;
   roundLimit?: number;
-  matchUps: any[];
+  matchUps: MatchUp[];
   lucky?: boolean;
   fmlc?: boolean;
 };
@@ -65,7 +66,7 @@ export function addFinishingRounds({
       {},
       ...roundNumbers.map((roundNumber) => {
         const finishingRound =
-          roundsCount + 1 - roundNumber - finishingRoundOffset;
+          (roundsCount || 0) + 1 - roundNumber - finishingRoundOffset;
         const matchUpsCount = roundProfile[roundNumber].matchUpsCount;
         const finishingData = {
           finishingPositionRange: {},
@@ -97,7 +98,8 @@ export function addFinishingRounds({
 
   const devContext = getDevContext({ finishingRound: true });
   matchUps.filter(Boolean).forEach((matchUp) => {
-    const roundData = roundFinishingData[matchUp.roundNumber];
+    const roundData =
+      matchUp.roundNumber && roundFinishingData[matchUp.roundNumber];
     if (devContext && !roundData) console.log({ roundFinishingData, matchUp });
     matchUp.finishingRound = roundData?.finishingRound;
     matchUp.finishingPositionRange = roundData?.finishingPositionRange;

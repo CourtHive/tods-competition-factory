@@ -1,6 +1,8 @@
 import { nextRoundMatchUp } from '../../getters/getMatchUps/nextRoundMatchUp';
 import { getTargetMatchUp } from '../../getters/getMatchUps/getTargetMatchUp';
+import { HydratedMatchUp } from '../../getters/getMatchUps/hydratedMatchUp';
 import { getRoundLinks, getTargetLink } from '../../getters/linkGetter';
+import { DrawDefinition } from '../../../types/tournamentFromSchema';
 import { findStructure } from '../../getters/findStructure';
 import { definedAttributes } from '../../../utilities';
 
@@ -13,31 +15,40 @@ import {
 } from '../../../constants/drawDefinitionConstants';
 
 /**
- * @param {string} matchUpId - matchUp identifier for sourceMatchUp
- * @param {object} structure - structure within which matchUp occurs
- * @param {object} drawDefinition - drawDefinition within which structure occurs
- * @param {object[]} inContextDrawMatchUps - array of all draw matchUps (for optimiation)
- * @param {object} inContextMatchUp - source matchUp with context
- * @param {boolean} useTargetMatchUpIds - whether to use { loserMatchUpId, winnerMatchUpId } to find targets
+ * @param {string=} matchUpId - matchUp identifier for sourceMatchUp
+ * @param {object=} structure - structure within which matchUp occurs
+ * @param {object=} drawDefinition - drawDefinition within which structure occurs
+ * @param {object[]=} inContextDrawMatchUps - array of all draw matchUps (for optimiation)
+ * @param {object=} inContextMatchUp - source matchUp with context
+ * @param {boolean=} useTargetMatchUpIds - whether to use { loserMatchUpId, winnerMatchUpId } to find targets
  *
  * targetMatchUpIds are used for optimization when fetching targetMatchUps for the purpose of displaying upcoming scheduling information
  * (!!) when targetMatchUpIds are used targetDrawPositions are not retrieved (!!)
  * targetDrawPositions are necessary for participant movement logic
  */
+
+type PositionTargetsArgs = {
+  inContextDrawMatchUps?: HydratedMatchUp[];
+  inContextMatchUp?: HydratedMatchUp;
+  useTargetMatchUpIds?: boolean;
+  drawDefinition: DrawDefinition;
+  matchUpId: string;
+};
+
 export function positionTargets({
   inContextDrawMatchUps = [],
   useTargetMatchUpIds,
   inContextMatchUp,
   drawDefinition,
   matchUpId,
-}) {
+}: PositionTargetsArgs) {
   let matchUp = inContextMatchUp;
   if (inContextDrawMatchUps.length && !matchUp) {
     matchUp = inContextDrawMatchUps.find((m) => m.matchUpId === matchUpId);
   }
 
   const { structure } = findStructure({
-    structureId: matchUp.structureId,
+    structureId: matchUp?.structureId,
     drawDefinition,
   });
 
@@ -51,7 +62,7 @@ export function positionTargets({
       matchUp,
     });
   } else {
-    return targetByWinRatio({ drawDefinition, matchUp, structure });
+    return targetByWinRatio({ matchUp });
   }
 }
 

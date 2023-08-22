@@ -1,12 +1,13 @@
 import { getPairedPreviousMatchUp } from '../positionGovernor/getPairedPreviousMatchup';
 
+import { MatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { MatchUp } from '../../../types/tournamentFromSchema';
 
 type UpdateMatchUpStatusCodesArgs = {
   inContextDrawMatchUps: any[];
   sourceMatchUpStatus: string;
+  matchUpsMap: MatchUpsMap;
   sourceMatchUpId: string;
-  matchUpsMap: object;
   matchUp: MatchUp;
 };
 

@@ -1,19 +1,33 @@
+import { makeDeepCopy } from '../../../utilities';
 import {
   DrawDefinition,
   MatchUp,
   Structure,
 } from '../../../types/tournamentFromSchema';
-import { makeDeepCopy } from '../../../utilities';
+
+export type MappedMatchUps = {
+  [key: string]: {
+    matchUps: MatchUp[] | undefined;
+    itemStructureIds: string[];
+    structureName?: string;
+  };
+};
+
+export type MatchUpsMap = {
+  mappedMatchUps: MappedMatchUps;
+  drawMatchUps: MatchUp[];
+};
 
 type GetMatchUpsMapArgs = {
   drawDefinition?: DrawDefinition;
   structure?: Structure;
 };
+
 export function getMatchUpsMap({
   drawDefinition,
   structure,
-}: GetMatchUpsMapArgs) {
-  const mappedMatchUps = {};
+}: GetMatchUpsMapArgs): MatchUpsMap {
+  const mappedMatchUps: MappedMatchUps = {};
   const drawMatchUps: MatchUp[] = [];
 
   (drawDefinition?.structures || [structure])
@@ -24,7 +38,10 @@ export function getMatchUpsMap({
       const isRoundRobin = Array.isArray(structures);
       if (!isRoundRobin) {
         const filteredMatchUps = matchUps;
-        mappedMatchUps[structureId] = { matchUps: filteredMatchUps };
+        mappedMatchUps[structureId] = {
+          matchUps: filteredMatchUps,
+          itemStructureIds: [],
+        };
         filteredMatchUps?.forEach((matchUp) => {
           drawMatchUps.push(matchUp);
           if (matchUp.tieMatchUps) drawMatchUps.push(...matchUp.tieMatchUps);
@@ -36,6 +53,7 @@ export function getMatchUpsMap({
 
           mappedMatchUps[itemStructure.structureId] = {
             matchUps: filteredMatchUps,
+            itemStructureIds: [],
             structureName,
           };
           if (filteredMatchUps) {
@@ -45,7 +63,11 @@ export function getMatchUpsMap({
                 drawMatchUps.push(...matchUp.tieMatchUps);
             });
           }
-          if (!mappedMatchUps[structureId]) mappedMatchUps[structureId] = {};
+          if (!mappedMatchUps[structureId])
+            mappedMatchUps[structureId] = {
+              itemStructureIds: [],
+              matchUps: [],
+            };
           if (!mappedMatchUps[structureId].itemStructureIds)
             mappedMatchUps[structureId].itemStructureIds = [];
           mappedMatchUps[structureId].itemStructureIds.push(
@@ -59,10 +81,10 @@ export function getMatchUpsMap({
 }
 
 type GetMappedStructureMatchUpsArgs = {
+  matchUpsMap?: MatchUpsMap;
   mappedMatchUps?: any;
   structureId: string;
   inContext?: boolean;
-  matchUpsMap?: any;
 };
 export function getMappedStructureMatchUps({
   mappedMatchUps,
@@ -88,6 +110,7 @@ export function getMappedStructureMatchUps({
       }
     })
     .flat();
+
   return (structureMatchUpsMap?.matchUps || []).concat(
     ...itemStructureMatchUps
   );
