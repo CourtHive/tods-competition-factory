@@ -43,7 +43,9 @@ export function getParticipantEntries({
   const getRelevantParticipantIds = (participantId) => {
     const relevantParticipantIds = [participantId];
     relevantParticipantIds.push(participantId);
-    participantMap[participantId].participant.individualParticipantIds?.forEach(
+    participantMap[
+      participantId
+    ]?.participant.individualParticipantIds?.forEach(
       (individualParticiapntId) =>
         relevantParticipantIds.push(individualParticiapntId)
     );
@@ -461,12 +463,16 @@ export function getParticipantEntries({
         ) {
           const potentialParticipantIds = potentialParticipants
             .flat()
-            .map(extractAttributes('participantId'));
+            .map(extractAttributes('participantId'))
+            .filter(Boolean);
           potentialParticipantIds?.forEach((participantId) => {
             const relevantParticipantIds =
               getRelevantParticipantIds(participantId);
 
             relevantParticipantIds?.forEach((relevantParticipantId) => {
+              if (!participantMap[relevantParticipantId]) {
+                return;
+              }
               participantMap[relevantParticipantId].potentialMatchUps[
                 matchUpId
               ] = definedAttributes({

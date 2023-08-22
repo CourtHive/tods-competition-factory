@@ -124,8 +124,8 @@ export function getDrawData({
             policyDefinitions,
             tournamentRecord,
             drawDefinition,
-            structure,
             inContext,
+            structure,
             event,
           });
 
