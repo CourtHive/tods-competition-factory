@@ -3,7 +3,9 @@ import { modifyEntryProfile } from '../governors/entryGovernor/modifyEntryProfil
 import { getEntryProfile } from './getEntryProfile';
 import { findStructure } from './findStructure';
 
+import { DrawDefinition, DrawLink } from '../../types/tournamentFromSchema';
 import { ROUND_TARGET, TALLY } from '../../constants/extensionConstants';
+import { ErrorType } from '../../constants/errorConditionConstants';
 import {
   POSITION,
   CONTAINER,
@@ -72,14 +74,27 @@ export function stageSeededEntries({ stage, drawDefinition }) {
 
 /**
  *
- * @param {string[]} entryTypes - ENUM - entry status, e.g. DIRECT_ACCEPTANCE, WILDCARD
- * @param {object} drawDefinition
- * @param {string} stage - ENUM - QUALIFYING, MAIN, PLAY_OFF, CONSOLATION
- * @param {string[]} stages - ENUM - QUALIFYING, MAIN, PLAY_OFF, CONSOLATION
- * @param {number} stageSequence - sequence within a stage
- * @param {string} structureId - optional; used for round robin participant results
+ * @param {boolean=} provisionalPositioning
+ * @param {string[]=} entryTypes - ENUM - entry status, e.g. DIRECT_ACCEPTANCE, WILDCARD
+ * @param {object=} drawDefinition
+ * @param {string=} stage - ENUM - QUALIFYING, MAIN, PLAY_OFF, CONSOLATION
+ * @param {string[]=} stages - ENUM - QUALIFYING, MAIN, PLAY_OFF, CONSOLATION
+ * @param {number=} stageSequence - sequence within a stage
+ * @param {string=} structureId - optional; used for round robin participant results
  *
  */
+
+type GetStageEntriesArgs = {
+  provisionalPositioning?: boolean;
+  drawDefinition: DrawDefinition;
+  entryStatuses?: string[];
+  stageSequence?: number;
+  structureId: string;
+  roundTarget?: number;
+  stages?: string[];
+  stage?: string;
+};
+
 export function getStageEntries({
   provisionalPositioning,
   drawDefinition,
@@ -89,19 +104,22 @@ export function getStageEntries({
   roundTarget,
   stages,
   stage,
-}) {
+}: GetStageEntriesArgs) {
   const entries =
-    drawDefinition.entries?.reduce((entries, entry) => {
+    drawDefinition.entries?.reduce((entries: any[], entry) => {
       const entryRoundTarget = findExtension({
         name: ROUND_TARGET,
         element: entry,
       })?.extension?.value;
       const stageTarget =
         (stage && entry.entryStage === stage) ||
-        (stages?.length && stages.includes(entry.entryStage));
+        (stages?.length &&
+          entry.entryStage &&
+          stages.includes(entry.entryStage));
       const matchesEntryType =
-        !entryStatuses || entryStatuses.includes(entry.entryStatus);
-      const entryStageSequence = entry.entryStageSequence || 1; // default to 1 if not present
+        !entryStatuses ||
+        (entry.entryStatus && entryStatuses.includes(entry.entryStatus));
+      const entryStageSequence = entry.entryStageSequence ?? 1; // default to 1 if not present
       const sameStageSequence =
         !stageSequence || entryStageSequence === stageSequence;
       const targetMatch =
@@ -110,7 +128,7 @@ export function getStageEntries({
       return stageTarget && sameStageSequence && matchesEntryType && targetMatch
         ? entries.concat(entry)
         : entries;
-    }, []) || [];
+    }, []) ?? [];
 
   // handle POSITION entries
   if (structureId && stage === PLAY_OFF) {
@@ -127,19 +145,18 @@ export function getStageEntries({
   return entries;
 }
 
-/**
- *
- * @param {object} drawDefinition
- * @param {string} structureId - id of structure within drawDefinition
- *
- */
+type GetPlayoffEntriesArgs = {
+  provisionalPositioning?: boolean;
+  drawDefinition: DrawDefinition;
+  structureId: string;
+};
 function getPlayoffEntries({
   provisionalPositioning,
   drawDefinition,
   structureId,
-}) {
-  const playoffEntries = [];
-  const inboundLink = (drawDefinition.links || []).find(
+}: GetPlayoffEntriesArgs): { playoffEntries?: any[]; error?: ErrorType } {
+  const playoffEntries: any[] = [];
+  const inboundLink: DrawLink | undefined = (drawDefinition.links ?? []).find(
     (link) =>
       link.linkType === POSITION && link.target.structureId === structureId
   );
@@ -178,7 +195,7 @@ function getPlayoffEntries({
 
         // TODO: ignore structures where finishingPositions are not unique
         const uniqueFinishingPositions = Object.keys(results).reduce(
-          (unique, key) => {
+          (unique: any, key) => {
             const result = results[key];
             const finishingPosition =
               result.groupOrder ||
@@ -199,7 +216,7 @@ function getPlayoffEntries({
           const finishingPosition =
             result.groupOrder ||
             (provisionalPositioning && result.provisionalOrder);
-          return finishingPositions.includes(finishingPosition);
+          return finishingPositions?.includes(finishingPosition);
         });
 
         if (!provisionalPositioning || finishingPositionsAreUnique) {
@@ -210,7 +227,7 @@ function getPlayoffEntries({
             const finishingPosition =
               groupOrder || (provisionalPositioning && provisionalOrder);
             const placementGroup =
-              finishingPositions.sort().indexOf(finishingPosition) + 1;
+              (finishingPositions ?? []).sort().indexOf(finishingPosition) + 1;
 
             playoffEntries.push({
               entryStage: PLAY_OFF,

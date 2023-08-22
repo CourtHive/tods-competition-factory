@@ -6,8 +6,9 @@ import {
 } from '../../../constants/participantConstants';
 
 // derive matchUpType from participants when not defined on matchUp
-export function getMatchUpType({ matchUp = {} } = {}) {
-  let matchUpType = matchUp.matchUpType;
+export function getMatchUpType(params) {
+  const matchUp = params?.matchUp;
+  let matchUpType = matchUp?.matchUpType as string | undefined;
 
   if (!matchUpType && matchUp.sides?.length) {
     const side = matchUp.sides.find(({ participant }) => participant);

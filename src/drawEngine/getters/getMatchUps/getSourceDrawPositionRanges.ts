@@ -41,8 +41,8 @@ export function getSourceDrawPositionRanges({
     {},
     ...sourceStructureIds.map((sourceStructureId) => {
       const structureMatchUps = getMappedStructureMatchUps({
-        matchUpsMap,
         structureId: sourceStructureId,
+        matchUpsMap,
       });
       const { roundProfile } = getRoundMatchUps({
         matchUps: structureMatchUps,
@@ -97,7 +97,6 @@ export function getSourceDrawPositionRanges({
         orderedPositions;
     }
 
-    // let drawPositionBlocks = chunkArray(firstRoundDrawPositions, chunkSize);
     let drawPositionBlocks = chunkArray(orderedPositions, chunkSize);
 
     if (!sizedGroupOrder?.length && feedProfile === BOTTOM_UP)
@@ -138,7 +137,7 @@ export function getSourceDrawPositionRanges({
     // when the number of drawPositions is greater than the number of drawPositionBlocks for a given roundNumber
     // then sourceDrawPositionRanges are being added to a feedRound
     // targetStructureProfile also has the boolean attribute .feedRound to flag this case
-    const targetRoundProfile = targetStructureProfile[targetRoundNumber];
+    const targetRoundProfile = targetStructureProfile?.[targetRoundNumber];
     const increment = targetRoundProfile?.feedRound ? 2 : 1;
 
     drawPositionBlocks.forEach((block, index) => {
@@ -156,11 +155,11 @@ export function getSourceDrawPositionRanges({
 }
 
 /*
-function getRangeString(arr) {
-  if (!Array.isArray(arr)) return '';
-  const numericArray = arr.filter(isNumeric);
-  if (!numericArray.length) return '';
-  const range = unique([Math.min(...numericArray), Math.max(...numericArray)]);
-  return range.join('-');
-}
-*/
+ * function getRangeString(arr) {
+ *   if (!Array.isArray(arr)) return '';
+ *   const numericArray = arr.filter(isNumeric);
+ *   if (!numericArray.length) return '';
+ *   const range = unique([Math.min(...numericArray), Math.max(...numericArray)]);
+ *   return range.join('-');
+ * }
+ */

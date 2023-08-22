@@ -9,7 +9,7 @@ import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
 import { MatchUp } from '../../../types/tournamentFromSchema';
 
 type HydratedMatchUp = {
-  [key: string | number | symbol]: unknown;
+  [key: string | number | symbol]: any;
 } & MatchUp;
 
 type FilterArgs = {
@@ -270,7 +270,7 @@ export function filterMatchUps(params: FilterArgs) {
         const matchUpParticipantIds =
           matchUp.sides
             ?.map(({ participantId }) => participantId)
-            .filter(Boolean) || [];
+            .filter(Boolean) ?? [];
         const containsTargetedParticipantId = targetParticipantIds.some(
           (participantId) => matchUpParticipantIds.includes(participantId)
         );

@@ -15,6 +15,7 @@ import {
   UPDATE_INCONTEXT_MATCHUP,
 } from '../../constants/topicConstants';
 import {
+  ErrorType,
   MISSING_DRAW_DEFINITION,
   MISSING_MATCHUP,
   MISSING_STRUCTURE,
@@ -138,7 +139,16 @@ export function updateInContextMatchUp({ tournamentId, inContextMatchUp }) {
   return { ...SUCCESS };
 }
 
-export function addDrawNotice({ tournamentId, eventId, drawDefinition }) {
+type AddDrawNoticeArgs = {
+  drawDefinition?: DrawDefinition;
+  tournamentId?: string;
+  eventId?: string;
+};
+export function addDrawNotice({
+  tournamentId,
+  eventId,
+  drawDefinition,
+}: AddDrawNoticeArgs): { success?: boolean; error?: ErrorType } {
   if (!drawDefinition) {
     console.log(MISSING_DRAW_DEFINITION);
     return { error: MISSING_DRAW_DEFINITION };

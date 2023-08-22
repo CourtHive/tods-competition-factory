@@ -9,17 +9,54 @@ import {
 } from '../../../utilities';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
+import { MatchUp } from '../../../types/tournamentFromSchema';
 import { TEAM } from '../../../constants/matchUpTypes';
 
-export function getRoundMatchUps({ matchUps = [], interpolate }) {
+type RoundProfile = {
+  [key: number]: {
+    abbreviatedRoundName?: string;
+    finishingPositionRange?: any;
+    pairedDrawPositions?: any[];
+    feedRoundIndex?: number;
+    preFeedRound?: boolean;
+    inactiveRound?: boolean;
+    finishingRound?: number;
+    inactiveCount?: number;
+    drawPositions?: any[];
+    matchUpsCount: number;
+    roundFactor?: number;
+    roundIndex?: number;
+    feedRound?: boolean;
+    roundNumber: number;
+    roundName?: string;
+  };
+};
+
+type HydratedMatchUp = {
+  [key: string | number | symbol]: any;
+} & MatchUp;
+
+type GetRoundMatchUpsArgs = {
+  matchUps: HydratedMatchUp[];
+  interpolate?: boolean;
+};
+
+export function getRoundMatchUps({
+  matchUps = [],
+  interpolate,
+}: GetRoundMatchUpsArgs) {
   if (!Array.isArray(matchUps)) return { error: INVALID_VALUES };
 
   // create an array of arrays of matchUps grouped by roundNumber
   const roundMatchUpsArray = matchUps
-    .reduce((roundNumbers, matchUp) => {
-      return !matchUp.roundNumber || roundNumbers.includes(matchUp.roundNumber)
+    .reduce((roundNumbers: number[], matchUp) => {
+      const roundNumber =
+        typeof matchUp.roundNumber === 'string'
+          ? parseInt(matchUp.roundNumber)
+          : (matchUp.roundNumber as number);
+      return !matchUp.roundNumber || roundNumbers.includes(roundNumber)
         ? roundNumbers
-        : roundNumbers.concat(parseInt(matchUp.roundNumber));
+        : roundNumbers.concat(roundNumber);
     }, [])
     .sort(numericSort)
     .map((roundNumber) => {
@@ -42,8 +79,12 @@ export function getRoundMatchUps({ matchUps = [], interpolate }) {
 
   // calculate the finishing Round for each roundNumber
   const finishingRoundMap = matchUps.reduce((mapping, matchUp) => {
-    if (!mapping[matchUp.roundNumber])
-      mapping[matchUp.roundNumber] = definedAttributes({
+    const roundNumber =
+      typeof matchUp.roundNumber === 'string'
+        ? parseInt(matchUp.roundNumber)
+        : (matchUp.roundNumber as number);
+    if (!mapping[roundNumber])
+      mapping[roundNumber] = definedAttributes({
         abbreviatedRoundName: matchUp.abbreviatedRoundName,
         finishingRound: matchUp.finishingRound,
         roundName: matchUp.roundName,
@@ -55,7 +96,6 @@ export function getRoundMatchUps({ matchUps = [], interpolate }) {
   const roundMatchUps = Object.assign({}, ...roundMatchUpsArray);
 
   if (interpolate) {
-    // console.log(roundMatchUpsArray[roundMatchUpsArray.length - 1]);
     const maxRoundNumber = Math.max(
       ...Object.keys(roundMatchUps)
         .map((key) => parseInt(key))
@@ -86,7 +126,7 @@ export function getRoundMatchUps({ matchUps = [], interpolate }) {
   //  - feedRound: whether round matchUps have fed partitipants
   //  - roundIndex & feedRoundIndex: index relative to round type
   //  - finishingRound: reverse count of rounds. Final is finishingRound #1
-  const roundProfile = Object.assign(
+  const roundProfile: RoundProfile = Object.assign(
     {},
     ...Object.keys(roundMatchUps).map((roundNumber) => {
       const matchUpsCount = roundMatchUps[roundNumber]?.length;
@@ -151,9 +191,11 @@ export function getRoundMatchUps({ matchUps = [], interpolate }) {
       // ensures that drawPositions are returned in top to bottom order
       const roundDrawPositions = currentRoundMatchUps.map((matchUp) => {
         const { roundPosition } = matchUp;
-        const drawPositions = []
-          .concat(...(matchUp.drawPositions || []), undefined, undefined)
-          .slice(0, 2); // accounts for empty array, should always have length 2
+        const drawPositions = [
+          ...(matchUp.drawPositions || []),
+          undefined,
+          undefined,
+        ].slice(0, 2); // accounts for empty array, should always have length 2
 
         if (!roundPosition) return drawPositions;
 

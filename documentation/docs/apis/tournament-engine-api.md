@@ -1715,7 +1715,7 @@ const {
   longitude,
   surfaceCategory,
   surfaceType,
-  surfaceDate,
+  surfacedDate,
   pace,
   notes,
 } = tournamentEngine.getCourtInfo({ courtId });
@@ -2694,7 +2694,7 @@ tournamentEngine.modifyCourt({
     courtDimensions,
     onlineResources,
     surfaceCategory,
-    surfaceDate,
+    surfacedDate,
     surfaceType,
     altitude,
     latitude,

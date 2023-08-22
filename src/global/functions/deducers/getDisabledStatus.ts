@@ -1,4 +1,12 @@
-export function getDisabledStatus({ extension, dates = [] }) {
+type GetDisabledStatusArgs = {
+  dates?: string[];
+  extension?: any;
+};
+
+export function getDisabledStatus({
+  extension,
+  dates = [],
+}: GetDisabledStatusArgs) {
   if (!extension) return false;
   if (typeof extension.value === 'boolean' && extension.value) return true;
   if (
