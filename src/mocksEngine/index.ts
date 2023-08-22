@@ -51,11 +51,16 @@ export const mocksEngine = (function () {
           try {
             return engineInvoke(governor[method], params);
           } catch (err) {
-            const error = err.toString();
+            let error;
+            if (typeof err === 'string') {
+              error = err.toUpperCase();
+            } else if (err instanceof Error) {
+              error = err.message;
+            }
             console.log('ERROR', {
-              error,
-              method,
               params: JSON.stringify(params),
+              method,
+              error,
             });
           }
         };
