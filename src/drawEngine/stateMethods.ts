@@ -32,11 +32,16 @@ function validDefinitionKeys(definition) {
   );
 }
 
+type NewDrawDefinitionArgs = {
+  matchUpType?: string;
+  drawType?: string;
+  drawId?: string;
+};
 export function newDrawDefinition({
   drawId = UUID(),
   matchUpType,
   drawType,
-} = {}) {
+}: NewDrawDefinitionArgs) {
   const drawDefinition = definitionTemplate();
   return Object.assign(drawDefinition, { drawId, drawType, matchUpType });
 }

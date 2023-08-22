@@ -9,7 +9,6 @@ import { parse } from '../../../matchUpEngine/governors/matchUpFormatGovernor/pa
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 import { findParticipant } from '../../../global/functions/deducers/findParticipant';
 import { getMatchUpType } from '../../accessors/matchUpAccessor/getMatchUpType';
-import { getMatchUpsMap, getMappedStructureMatchUps } from './getMatchUpsMap';
 import { getStructureSeedAssignments } from '../getStructureSeedAssignments';
 import { getExitProfiles } from '../../governors/queryGovernor/getExitProfile';
 import { getSourceDrawPositionRanges } from './getSourceDrawPositionRanges';
@@ -23,6 +22,11 @@ import { isConvertableInteger } from '../../../utilities/math';
 import { definedAttributes } from '../../../utilities/objects';
 import { filterMatchUps } from './filterMatchUps';
 import { getSide } from './getSide';
+import {
+  getMatchUpsMap,
+  getMappedStructureMatchUps,
+  MatchUpsMap,
+} from './getMatchUpsMap';
 
 import { MISSING_STRUCTURE } from '../../../constants/errorConditionConstants';
 import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
@@ -77,6 +81,7 @@ type GetAllStructureMatchUps = {
   tournamentAppliedPolicies?: any;
   tournamentRecord?: Tournament;
   provisionalPositioning?: any;
+  matchUpsMap?: MatchUpsMap;
   afterRecoveryTimes?: any;
   policyDefinitions?: any;
   seedAssignments?: any;
@@ -90,7 +95,6 @@ type GetAllStructureMatchUps = {
   contextProfile?: any;
   inContext?: boolean;
   exitProfiles?: any;
-  matchUpsMap?: any;
   event?: Event;
   context?: any;
 };

@@ -1,15 +1,8 @@
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 
+import { DrawDefinition, Structure } from '../../../types/tournamentFromSchema';
+import { HydratedMatchUp } from '../../getters/getMatchUps/hydratedMatchUp';
 import { LUCKY_DRAW } from '../../../constants/drawDefinitionConstants';
-import {
-  DrawDefinition,
-  MatchUp,
-  Structure,
-} from '../../../types/tournamentFromSchema';
-
-type HydratedMatchUp = {
-  [key: string | number | symbol]: any;
-} & MatchUp;
 
 type IsLuckyArgs = {
   hasOddMatchUpsCount?: boolean;

@@ -6,11 +6,7 @@ import { matchUpAssignedVenueId } from '../../accessors/matchUpAccessor/venueAss
 import { extractDate, sameDay } from '../../../utilities/dateTime';
 
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
-import { MatchUp } from '../../../types/tournamentFromSchema';
-
-type HydratedMatchUp = {
-  [key: string | number | symbol]: any;
-} & MatchUp;
+import { HydratedMatchUp } from './hydratedMatchUp';
 
 type FilterArgs = {
   matchUps: HydratedMatchUp[];

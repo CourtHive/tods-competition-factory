@@ -3,16 +3,16 @@ import { addUpcomingMatchUps } from '../../governors/matchUpGovernor/addUpcoming
 import { getContextContent } from '../../../tournamentEngine/getters/getContextContent';
 import { getExitProfiles } from '../../governors/queryGovernor/getExitProfile';
 import { decorateResult } from '../../../global/functions/decorateResult';
+import { MatchUpsMap, getMatchUpsMap } from './getMatchUpsMap';
 import { getStructureMatchUps } from './getStructureMatchUps';
 import { getDrawStructures } from '../findStructure';
-import { getMatchUpsMap } from './getMatchUpsMap';
 import { filterMatchUps } from './filterMatchUps';
 
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   ErrorType,
   MISSING_DRAW_DEFINITION,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 /*
   return ALL matchUps within a drawDefinition, regardless of state
@@ -46,12 +46,12 @@ export function getAllDrawMatchUps(params) {
 }
 
 type GroupsMatchUpsResult = {
+  matchUpsMap?: MatchUpsMap;
   abandonedMatchUps?: any[];
   completedMatchUps?: any[];
   upcomingMatchUps?: any[];
   pendingMatchUps?: any[];
   byeMatchUps?: any[];
-  matchUpsMap?: any;
   success?: boolean;
   error?: ErrorType;
 };

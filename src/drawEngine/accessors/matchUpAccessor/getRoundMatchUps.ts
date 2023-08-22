@@ -9,7 +9,7 @@ import {
 } from '../../../utilities';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
-import { MatchUp } from '../../../types/tournamentFromSchema';
+import { HydratedMatchUp } from '../../getters/getMatchUps/hydratedMatchUp';
 import { TEAM } from '../../../constants/matchUpTypes';
 
 type RoundProfile = {
@@ -31,10 +31,6 @@ type RoundProfile = {
     roundName?: string;
   };
 };
-
-type HydratedMatchUp = {
-  [key: string | number | symbol]: any;
-} & MatchUp;
 
 type GetRoundMatchUpsArgs = {
   matchUps: HydratedMatchUp[];

@@ -3,6 +3,7 @@ import { getMatchUp } from '../../accessors/matchUpAccessor/matchUps';
 import { getAllStructureMatchUps } from './getAllStructureMatchUps';
 import { getDrawStructures } from '../findStructure';
 import { makeDeepCopy } from '../../../utilities';
+import { MatchUpsMap } from './getMatchUpsMap';
 import {
   INVALID_VALUES,
   MATCHUP_NOT_FOUND,
@@ -26,11 +27,11 @@ export function publicFindMatchUp(params) {
 type FindMatchUpArgs = {
   tournamentParticipants?: Participant[];
   drawDefinition: DrawDefinition;
+  matchUpsMap?: MatchUpsMap;
   afterRecoveryTimes?: any;
   contextContent?: any;
   contextProfile?: any;
   inContext?: boolean;
-  matchUpsMap?: any;
   matchUpId: string;
   context?: any;
   event?: Event;

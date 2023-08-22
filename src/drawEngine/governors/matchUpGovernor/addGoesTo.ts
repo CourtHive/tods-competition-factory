@@ -1,18 +1,28 @@
-import { getMappedStructureMatchUps } from '../../getters/getMatchUps/getMatchUpsMap';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { addFinishingRounds } from '../../generators/addFinishingRounds';
 import { positionTargets } from '../positionGovernor/positionTargets';
+import {
+  MatchUpsMap,
+  getMappedStructureMatchUps,
+} from '../../getters/getMatchUps/getMatchUpsMap';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
+import { HydratedMatchUp } from '../../getters/getMatchUps/hydratedMatchUp';
+import { DrawDefinition } from '../../../types/tournamentFromSchema';
 
+type AddGoesToArgs = {
+  inContextDrawMatchUps?: HydratedMatchUp[];
+  drawDefinition: DrawDefinition;
+  matchUpsMap?: MatchUpsMap;
+};
 export function addGoesTo({
   inContextDrawMatchUps,
   drawDefinition,
   matchUpsMap,
-}) {
+}: AddGoesToArgs) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
-  const goesToMap = { loserMatchUpIds: {}, winnerMatchUpIds: [] };
+  const goesToMap = { loserMatchUpIds: {}, winnerMatchUpIds: {} };
 
   if (!inContextDrawMatchUps) {
     ({ matchUps: inContextDrawMatchUps, matchUpsMap } = getAllDrawMatchUps({
@@ -22,7 +32,7 @@ export function addGoesTo({
     }));
   }
 
-  const hasFinishingPositionRanges = matchUpsMap.drawMatchUps.some(
+  const hasFinishingPositionRanges = matchUpsMap?.drawMatchUps.some(
     (m) => m.finishingPositionRange
   );
 
@@ -31,10 +41,11 @@ export function addGoesTo({
   // TODO: make a more sophisticated version which can use .links to addFinishingRounds for all structures
   if (
     !hasFinishingPositionRanges &&
-    drawDefinition.structures.length === 1 &&
-    !drawDefinition.structures[0].structures
+    drawDefinition?.structures?.length === 1 &&
+    !drawDefinition?.structures[0].structures
   ) {
-    addFinishingRounds({ matchUps: matchUpsMap.drawMatchUps });
+    const matchUps = matchUpsMap?.drawMatchUps || [];
+    addFinishingRounds({ matchUps });
   }
 
   (inContextDrawMatchUps || [])
