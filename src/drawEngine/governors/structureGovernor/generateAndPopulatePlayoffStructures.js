@@ -230,7 +230,6 @@ export function generateAndPopulatePlayoffStructures(params) {
   drawDefinition.links.push(...newLinks);
 
   const { matchUps: inContextDrawMatchUps, matchUpsMap } = getAllDrawMatchUps({
-    includeByeMatchUps: true,
     inContext: true,
     drawDefinition,
   });

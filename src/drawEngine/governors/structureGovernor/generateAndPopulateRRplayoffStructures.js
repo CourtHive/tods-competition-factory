@@ -65,7 +65,6 @@ export function generateAndPopulateRRplayoffStructures(params) {
   drawDefinition.links.push(...playoffLinks);
 
   const { matchUps: inContextDrawMatchUps, matchUpsMap } = getAllDrawMatchUps({
-    includeByeMatchUps: true,
     inContext: true,
     drawDefinition,
   });

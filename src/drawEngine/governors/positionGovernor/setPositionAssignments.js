@@ -66,7 +66,6 @@ export function setPositionAssignments({
 
     const matchUpsMap = getMatchUpsMap({ drawDefinition });
     const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
-      includeByeMatchUps: true,
       inContext: true,
       drawDefinition,
       matchUpsMap,

@@ -3,6 +3,14 @@ import { structureAssignedDrawPositions } from '../positionsGetter';
 import { getAllStructureMatchUps } from './getAllStructureMatchUps';
 import { findStructure } from '../findStructure';
 
+import { ResultType } from '../../../global/functions/decorateResult';
+import {
+  DrawDefinition,
+  Event,
+  Participant,
+  Structure,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
   ABANDONED,
@@ -16,6 +24,41 @@ import {
   pendingMatchUps are those matchUps where a drawPosition is undefined
   *AND* where both drawPositions map to assigned participantIds
 */
+
+type GroupsMatchUpsResult = {
+  includesTeamMatchUps: boolean;
+  abandonedMatchUps: any[];
+  completedMatchUps: any[];
+  upcomingMatchUps: any[];
+  pendingMatchUps: any[];
+  byeMatchUps: any[];
+  structure: Structure;
+};
+
+type GetStructureMatchUpsArgs = {
+  tournamentParticipants?: Participant[];
+  scheduleVisibilityFilters?: any;
+  tournamentAppliedPolicies?: any;
+  requireParticipants?: boolean;
+  tournamentRecord?: Tournament;
+  drawDefinition?: DrawDefinition;
+  afterRecoveryTimes?: any;
+  policyDefinitions?: any;
+  structure?: Structure;
+  matchUpFilters?: any;
+  contextContent?: any;
+  contextFilters?: any;
+  participantMap?: any;
+  scheduleTiming?: any;
+  structureId?: string;
+  inContext?: boolean;
+  contextProfile?: any;
+  exitProfiles?: any;
+  matchUpsMap?: any;
+  context?: any;
+  event?: Event;
+};
+
 export function getStructureMatchUps({
   requireParticipants = true,
   scheduleVisibilityFilters,
@@ -24,13 +67,13 @@ export function getStructureMatchUps({
   afterRecoveryTimes,
   policyDefinitions,
   tournamentRecord,
-  drawDefinition,
   matchUpFilters,
   contextFilters,
-  contextProfile,
   contextContent,
   participantMap,
   scheduleTiming,
+  contextProfile,
+  drawDefinition,
   exitProfiles,
   matchUpsMap,
   structureId,
@@ -38,7 +81,7 @@ export function getStructureMatchUps({
   structure,
   context,
   event,
-}) {
+}: GetStructureMatchUpsArgs): GroupsMatchUpsResult | ResultType {
   if (!structure && structureId) {
     ({ structure } = findStructure({ drawDefinition, structureId }));
   }
@@ -72,11 +115,11 @@ export function getStructureMatchUps({
     .filter((assignment) => assignment.participantId)
     .map((assignment) => assignment.drawPosition);
 
-  const byeMatchUps = [];
-  const pendingMatchUps = [];
-  const upcomingMatchUps = [];
-  const abandonedMatchUps = [];
-  const completedMatchUps = [];
+  const byeMatchUps: any[] = [];
+  const pendingMatchUps: any[] = [];
+  const upcomingMatchUps: any[] = [];
+  const abandonedMatchUps: any[] = [];
+  const completedMatchUps: any[] = [];
 
   let includesTeamMatchUps;
 
@@ -85,7 +128,7 @@ export function getStructureMatchUps({
       const teamsMatchUpsOnly =
         matchUpFilters?.matchUpTypes?.length === 1 &&
         matchUpFilters.matchUpTypes[0] === TEAM;
-      return matchUp.matchUpType !== TEAM && teamsMatchUpsOnly ? false : true;
+      return !(matchUp.matchUpType !== TEAM && teamsMatchUpsOnly);
     })
     .forEach((matchUp) => {
       if (matchUp.matchUpStatus === ABANDONED) {

@@ -42,9 +42,8 @@ it('can direct participants in First Match Consolation (FIRST_MATCH_LOSER_CONSOL
   });
 
   const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
-    drawDefinition,
     inContext: true,
-    includeByeMatchUps: true,
+    drawDefinition,
   });
 
   // test first matchUp in roundNumber: 1
@@ -146,9 +145,8 @@ it('can direct participants in FEED_IN_CHAMPIONSHIP structure', () => {
   expect(upcomingMatchUps.length).toEqual(drawSize / 2);
 
   const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
-    drawDefinition,
     inContext: true,
-    includeByeMatchUps: true,
+    drawDefinition,
   });
 
   // test first matchUp in roundNumber: 1
@@ -264,9 +262,8 @@ it('can direct participants in COMPASS', () => {
   });
 
   const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
-    drawDefinition,
     inContext: true,
-    includeByeMatchUps: true,
+    drawDefinition,
   });
 
   let { matchUpId } = upcomingMatchUps[0];

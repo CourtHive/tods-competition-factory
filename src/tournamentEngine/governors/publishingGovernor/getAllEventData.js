@@ -68,7 +68,6 @@ export function getAllEventData({ tournamentRecord, policyDefinitions }) {
         upcomingMatchUps,
         pendingMatchUps,
       } = getDrawMatchUps({
-        includeByeMatchUps: false,
         requireParticipants: true,
         tournamentParticipants,
         context: { eventId },

@@ -153,7 +153,6 @@ export function matchUpActions({
 
   if (!inContextDrawMatchUps) {
     ({ matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
-      includeByeMatchUps: true,
       tournamentParticipants,
       inContext: true,
       drawDefinition,

@@ -1,19 +1,31 @@
-import { MatchUp } from '../../../types/tournamentFromSchema';
+import {
+  DrawDefinition,
+  MatchUp,
+  Structure,
+} from '../../../types/tournamentFromSchema';
 import { makeDeepCopy } from '../../../utilities';
 
-export function getMatchUpsMap({ drawDefinition, structure }) {
+type GetMatchUpsMapArgs = {
+  drawDefinition?: DrawDefinition;
+  structure?: Structure;
+};
+export function getMatchUpsMap({
+  drawDefinition,
+  structure,
+}: GetMatchUpsMapArgs) {
   const mappedMatchUps = {};
   const drawMatchUps: MatchUp[] = [];
 
   (drawDefinition?.structures || [structure])
     .filter((structure) => structure && typeof structure === 'object')
     .forEach((structure) => {
+      if (!structure) return;
       const { structureId, matchUps, structures } = structure;
       const isRoundRobin = Array.isArray(structures);
       if (!isRoundRobin) {
         const filteredMatchUps = matchUps;
         mappedMatchUps[structureId] = { matchUps: filteredMatchUps };
-        filteredMatchUps.forEach((matchUp) => {
+        filteredMatchUps?.forEach((matchUp) => {
           drawMatchUps.push(matchUp);
           if (matchUp.tieMatchUps) drawMatchUps.push(...matchUp.tieMatchUps);
         });
@@ -26,10 +38,13 @@ export function getMatchUpsMap({ drawDefinition, structure }) {
             matchUps: filteredMatchUps,
             structureName,
           };
-          drawMatchUps.push(...filteredMatchUps);
-          filteredMatchUps.forEach((matchUp) => {
-            if (matchUp.tieMatchUps) drawMatchUps.push(...matchUp.tieMatchUps);
-          });
+          if (filteredMatchUps) {
+            drawMatchUps.push(...filteredMatchUps);
+            filteredMatchUps.forEach((matchUp) => {
+              if (matchUp.tieMatchUps)
+                drawMatchUps.push(...matchUp.tieMatchUps);
+            });
+          }
           if (!mappedMatchUps[structureId]) mappedMatchUps[structureId] = {};
           if (!mappedMatchUps[structureId].itemStructureIds)
             mappedMatchUps[structureId].itemStructureIds = [];
