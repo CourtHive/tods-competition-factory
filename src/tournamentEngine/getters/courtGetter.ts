@@ -6,11 +6,27 @@ import { makeDeepCopy } from '../../utilities';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
   COURT_NOT_FOUND,
+  ErrorType,
   MISSING_COURT_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '../../constants/errorConditionConstants';
+import { Court, Tournament, Venue } from '../../types/tournamentFromSchema';
 
-export function findCourt({ tournamentRecords, tournamentRecord, courtId }) {
+type FindCourtArgs = {
+  tournamentRecords?: Tournament[];
+  tournamentRecord?: Tournament;
+  courtId: string;
+};
+export function findCourt({
+  tournamentRecords,
+  tournamentRecord,
+  courtId,
+}: FindCourtArgs): {
+  success?: boolean;
+  error?: ErrorType;
+  court?: Court;
+  venue?: Venue;
+} {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!courtId) return { error: MISSING_COURT_ID };
 
@@ -18,8 +34,8 @@ export function findCourt({ tournamentRecords, tournamentRecord, courtId }) {
 
   let court, venue;
 
-  (tournamentRecord.venues || []).forEach((venueRecord) => {
-    (venueRecord.courts || []).forEach((courtRecord) => {
+  (tournamentRecord.venues ?? []).forEach((venueRecord) => {
+    (venueRecord.courts ?? []).forEach((courtRecord) => {
       if (courtRecord.courtId === courtId) {
         court = courtRecord;
         venue = venueRecord;
@@ -43,7 +59,7 @@ export function findCourt({ tournamentRecords, tournamentRecord, courtId }) {
       const result = findCourt({ tournamentRecord: record, courtId });
       // if court is found in linked tournamentRecords, add venue to original tournamentRecord
       if (result.success) {
-        addVenue({ tournamentRecord, venue: result.venue });
+        result.venue && addVenue({ tournamentRecord, venue: result.venue });
         return { ...SUCCESS, court, venue };
       }
     }
@@ -69,7 +85,7 @@ export function getCourts({ tournamentRecord, venueId, venueIds }) {
     .filter((venue) => {
       if (venueId) return venue.venueId === venueId;
       if (venueIds) return venueIds.includes(venue.venueId);
-      return (!venueId && !venueIds) ? true : false;
+      return true;
     })
     .map((venue) => {
       const { venueId } = venue;

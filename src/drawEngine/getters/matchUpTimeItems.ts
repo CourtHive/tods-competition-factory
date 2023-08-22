@@ -26,15 +26,18 @@ export function getCheckedInParticipantIds({ matchUp }) {
   }
 
   const {
-    sideParticipantIds,
     nestedIndividualParticipantIds,
     allRelevantParticipantIds,
+    sideParticipantIds,
   } = getMatchUpParticipantIds({ matchUp });
 
   const timeItems = matchUp.timeItems || [];
   const checkInItems = timeItems
     .filter((timeItem) => [CHECK_IN, CHECK_OUT].includes(timeItem?.itemType))
-    .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+    .sort(
+      (a, b) =>
+        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+    );
   const timeItemParticipantIds = checkInItems.map(
     (timeItem) => timeItem.itemValue
   );
@@ -56,13 +59,10 @@ export function getCheckedInParticipantIds({ matchUp }) {
       const sideParticipantId = sideParticipantIds[sideIndex];
       const allIndividualsCheckedIn =
         sideIndividualParticipantIds?.length &&
-        sideIndividualParticipantIds.reduce((checkedIn, participantId) => {
-          return (
-            checkedIn &&
-            participantId &&
-            checkedInParticipantIds.includes(participantId)
-          );
-        }, true);
+        sideIndividualParticipantIds.every((participantId) =>
+          checkedInParticipantIds.includes(participantId)
+        );
+
       if (
         sideParticipantId &&
         allIndividualsCheckedIn &&
@@ -74,9 +74,9 @@ export function getCheckedInParticipantIds({ matchUp }) {
   );
 
   // if side is checked in then all individuals on that side are checked in
-  sideParticipantIds.forEach((sideParticipantId, sideIndex) => {
+  sideParticipantIds.forEach((sideParticipantId: string, sideIndex) => {
     if (checkedInParticipantIds.includes(sideParticipantId)) {
-      (nestedIndividualParticipantIds[sideIndex] || []).forEach(
+      (nestedIndividualParticipantIds?.[sideIndex] || []).forEach(
         (participantId) => {
           if (
             participantId &&

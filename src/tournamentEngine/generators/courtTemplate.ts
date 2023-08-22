@@ -7,7 +7,7 @@ export const courtTemplate = () => ({
   longitude: undefined,
   surfaceCategory: undefined,
   surfaceType: undefined,
-  surfaceDate: undefined,
+  surfacedDate: undefined,
   dateAvailability: [],
   onlineResources: [],
   pace: undefined,

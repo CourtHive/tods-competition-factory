@@ -44,7 +44,6 @@ export function getExitProfiles({ drawDefinition }) {
       structureId,
       stage,
     });
-    // console.log({ exitProfiles });
   }
 
   return { exitProfiles };

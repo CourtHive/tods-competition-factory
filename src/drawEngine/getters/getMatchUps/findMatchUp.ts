@@ -9,6 +9,11 @@ import {
   MISSING_DRAW_DEFINITION,
   MISSING_MATCHUP_ID,
 } from '../../../constants/errorConditionConstants';
+import {
+  DrawDefinition,
+  Event,
+  Participant,
+} from '../../../types/tournamentFromSchema';
 
 /*
   public version of findMatchUp
@@ -18,20 +23,18 @@ export function publicFindMatchUp(params) {
   return { matchUp: makeDeepCopy(findMatchUp(params).matchUp, false, true) };
 }
 
-/**
- * 
-  // function to find a matchUp within a draw
-  @param {Object=} tournamentParticipants
-  @param {boolean=} afterRecoveryTimes
-  @param {Object=} contextContent
-  @param {Object=} contextProfile
-  @param {Object} drawDefinition
-  @param {Object=} matchUpsMap
-  @param {string} matchUpId
-  @param {boolean=} inContext
-  @param {Object=} context
-  @param {Object=} event
- */
+type FindMatchUpArgs = {
+  tournamentParticipants?: Participant[];
+  drawDefinition: DrawDefinition;
+  afterRecoveryTimes?: any;
+  contextContent?: any;
+  contextProfile?: any;
+  inContext?: boolean;
+  matchUpsMap?: any;
+  matchUpId: string;
+  context?: any;
+  event?: Event;
+};
 export function findMatchUp({
   tournamentParticipants,
   afterRecoveryTimes,
@@ -43,7 +46,7 @@ export function findMatchUp({
   inContext,
   context,
   event,
-}) {
+}: FindMatchUpArgs) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
   if (typeof matchUpId !== 'string') return { error: INVALID_VALUES };

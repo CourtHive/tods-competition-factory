@@ -46,10 +46,11 @@ export function getRoundContextProfile({
   const stageConstants = roundNamingPolicy?.stageConstants;
   const stageConstant = stageConstants?.[stage] || stageInitial;
 
+  const roundProfileKeys = roundProfile ? Object.keys(roundProfile) : [];
   if (isRoundRobin || isAdHocStructure || isLuckyStructure) {
     Object.assign(
       roundNamingProfile,
-      ...Object.keys(roundProfile).map((key) => {
+      ...roundProfileKeys.map((key) => {
         const roundName = `Round ${key}`;
         const abbreviatedRoundName = `R${key}`;
         return { [key]: { roundName, abbreviatedRoundName } };
@@ -58,7 +59,8 @@ export function getRoundContextProfile({
   } else {
     Object.assign(
       roundNamingProfile,
-      ...Object.keys(roundProfile).map((round) => {
+      ...roundProfileKeys.map((round) => {
+        if (!roundProfile?.[round]) return;
         const { matchUpsCount, preFeedRound } = roundProfile[round];
         const participantsCount = matchUpsCount * 2;
 

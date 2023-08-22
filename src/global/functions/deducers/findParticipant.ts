@@ -2,6 +2,20 @@ import { getScaleValues } from '../../../tournamentEngine/getters/participants/g
 import { attributeFilter, makeDeepCopy } from '../../../utilities';
 
 import { POLICY_TYPE_PARTICIPANT } from '../../../constants/policyConstants';
+import { Participant } from '../../../types/tournamentFromSchema';
+
+type HydratedParticipant = {
+  [key: string | number | symbol]: unknown;
+} & Participant;
+
+type FindParticipantArgs = {
+  tournamentParticipants: Participant[];
+  policyDefinitions?: any;
+  participantId?: string;
+  internalUse?: boolean;
+  contextProfile?: any;
+  personId?: string;
+};
 
 export function findParticipant({
   tournamentParticipants = [],
@@ -10,30 +24,31 @@ export function findParticipant({
   participantId,
   internalUse,
   personId,
-}) {
-  const participant = tournamentParticipants.find(
+}: FindParticipantArgs): HydratedParticipant | undefined {
+  const foundParticipant = tournamentParticipants.find(
     (candidate) =>
       (participantId && candidate.participantId === participantId) ||
       (personId && candidate.person && candidate.person.personId === personId)
   );
+
+  const participant = makeDeepCopy(foundParticipant, false, internalUse);
 
   if (participant) {
     const participantAttributes = policyDefinitions?.[POLICY_TYPE_PARTICIPANT];
 
     if (contextProfile?.withScaleValues) {
       const { ratings, rankings } = getScaleValues({ participant });
-      participant.ratings = ratings;
       participant.rankings = rankings;
+      participant.ratings = ratings;
     }
 
     if (participantAttributes?.participant) {
-      const filteredParticipant = attributeFilter({
+      return attributeFilter({
         template: participantAttributes.participant,
         source: participant,
       });
-      return makeDeepCopy(filteredParticipant, false, internalUse);
     }
   }
 
-  return makeDeepCopy(participant, false, internalUse);
+  return participant;
 }

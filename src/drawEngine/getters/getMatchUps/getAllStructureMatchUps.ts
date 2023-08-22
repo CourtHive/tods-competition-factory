@@ -34,6 +34,12 @@ import {
   POLICY_TYPE_PARTICIPANT,
   POLICY_TYPE_ROUND_NAMING,
 } from '../../../constants/policyConstants';
+import {
+  Participant,
+  Tournament,
+  Event,
+  Structure,
+} from '../../../types/tournamentFromSchema';
 
 /*
   return all matchUps within a structure and its child structures
@@ -42,7 +48,7 @@ import {
 
 /**
  * 
- * @param {boolesn=} scheduleVisibilityFilters 
+  @param {object=} scheduleVisibilityFilters 
   @param {object=} tournamentAppliedPolicies
   @param {object=} provisionalPositioning
   @param {object[]=} tournamentParticipants
@@ -64,6 +70,31 @@ import {
   @param {boolean=} inContext,
   @param {object=} event,
  */
+
+type GetAllStructureMatchUps = {
+  tournamentParticipants?: Participant[];
+  scheduleVisibilityFilters?: any;
+  tournamentAppliedPolicies?: any;
+  tournamentRecord?: Tournament;
+  provisionalPositioning?: any;
+  afterRecoveryTimes?: any;
+  policyDefinitions?: any;
+  seedAssignments?: any;
+  structure?: Structure;
+  contextFilters?: any;
+  contextContent?: any;
+  matchUpFilters?: any;
+  participantMap?: any;
+  scheduleTiming?: any;
+  drawDefinition?: any;
+  contextProfile?: any;
+  inContext?: boolean;
+  exitProfiles?: any;
+  matchUpsMap?: any;
+  event?: Event;
+  context?: any;
+};
+
 export function getAllStructureMatchUps({
   scheduleVisibilityFilters,
   tournamentAppliedPolicies,
@@ -86,12 +117,12 @@ export function getAllStructureMatchUps({
   structure,
   inContext,
   event,
-}) {
+}: GetAllStructureMatchUps) {
   let collectionPositionMatchUps = {},
     roundMatchUps = {};
 
   tournamentParticipants =
-    tournamentParticipants || tournamentRecord?.participants;
+    tournamentParticipants ?? tournamentRecord?.participants;
 
   if (!structure) {
     return {
@@ -159,9 +190,11 @@ export function getAllStructureMatchUps({
 
   const structureScoringPolicies = appliedPolicies?.scoring?.structures;
   const stageSpecificPolicies =
+    structure.stage &&
     structureScoringPolicies?.stage &&
     structureScoringPolicies?.stage[structure.stage];
   const sequenceSpecificPolicies =
+    structure.stageSequence &&
     stageSpecificPolicies?.stageSequence &&
     stageSpecificPolicies.stageSequence[structure.stageSequence];
   const requireAllPositionsAssigned =
@@ -180,9 +213,7 @@ export function getAllStructureMatchUps({
     getStructureSeedAssignments({
       provisionalPositioning,
       drawDefinition,
-      matchUpsMap,
       structure,
-      event,
     });
 
   // enables passing in seedAssignments rather than using structureSeedAssignments
@@ -215,7 +246,6 @@ export function getAllStructureMatchUps({
   const roundNamingPolicy = appliedPolicies?.[POLICY_TYPE_ROUND_NAMING];
   const result = getRoundContextProfile({
     roundNamingPolicy,
-    drawDefinition,
     structure,
     matchUps,
   });
@@ -316,13 +346,30 @@ export function getAllStructureMatchUps({
   return { matchUps, roundMatchUps, roundProfile, collectionPositionMatchUps };
 
   // isCollectionBye is an attempt to embed BYE status in matchUp.tieMatchUps
+  type AddMatchUpContextArgs = {
+    scheduleVisibilityFilters?: any;
+    sourceDrawPositionRanges?: any;
+    initialRoundOfPlay?: number;
+    drawPositionsRanges?: any;
+    isCollectionBye?: boolean;
+    tieDrawPositions?: any[];
+    additionalContext?: any;
+    roundNamingProfile?: any;
+    isRoundRobin?: boolean;
+    appliedPolicies?: any;
+    matchUpTieId?: string;
+    sideLineUps?: any[];
+    roundProfile?: any;
+    matchUp?: any;
+    event?: Event;
+  };
   function addMatchUpContext({
     scheduleVisibilityFilters,
     sourceDrawPositionRanges,
-    additionalContext = {},
     drawPositionsRanges,
-    roundNamingProfile,
     initialRoundOfPlay,
+    additionalContext,
+    roundNamingProfile,
     tieDrawPositions,
     appliedPolicies,
     isCollectionBye,
@@ -332,7 +379,8 @@ export function getAllStructureMatchUps({
     sideLineUps,
     matchUp,
     event,
-  }) {
+  }: AddMatchUpContextArgs) {
+    additionalContext = additionalContext || {};
     const tieFormat = resolveTieFormat({
       drawDefinition,
       structure,
@@ -350,14 +398,14 @@ export function getAllStructureMatchUps({
     const matchUpFormat = matchUp.collectionId
       ? collectionDefinition?.matchUpFormat
       : matchUp.matchUpFormat ||
-        structure.matchUpFormat ||
+        structure?.matchUpFormat ||
         drawDefinition?.matchUpFormat ||
         event?.matchUpFormat;
 
     const matchUpType =
       matchUp.matchUpType ||
       collectionDefinition?.matchUpType ||
-      structure.matchUpType ||
+      structure?.matchUpType ||
       drawDefinition?.matchUpType ||
       (event?.eventType !== TEAM && event?.eventType);
 
@@ -372,7 +420,7 @@ export function getAllStructureMatchUps({
       matchUp,
       event,
     });
-    const drawPositions = tieDrawPositions || matchUp.drawPositions;
+    const drawPositions = tieDrawPositions ?? matchUp.drawPositions;
     const { collectionPosition, collectionId, roundPosition } = matchUp;
     const roundNumber = matchUp.roundNumber || additionalContext.roundNumber;
 
@@ -417,7 +465,7 @@ export function getAllStructureMatchUps({
       (matchUp.processCodes?.length && matchUp.processCodes) ||
       (collectionDefinition?.processCodes?.length &&
         collectionDefinition?.processCodes) ||
-      (structure.processCodes?.length && structure.processCodes) ||
+      (structure?.processCodes?.length && structure?.processCodes) ||
       (drawDefinition?.processCodes?.length && drawDefinition?.processCodes) ||
       (event?.processCodes?.length && event?.processCodes) ||
       tournamentRecord?.processCodes;
@@ -477,7 +525,7 @@ export function getAllStructureMatchUps({
 
     if (matchUpFormat && matchUp.score?.scoreStringSide1) {
       const parsedFormat = parse(matchUpFormat);
-      const { bestOf, finalSetFormat, setFormat } = parsedFormat || {};
+      const { bestOf, finalSetFormat, setFormat } = parsedFormat ?? {};
       if (
         finalSetFormat?.tiebreakSet ||
         setFormat?.tiebreakSet ||
@@ -502,7 +550,6 @@ export function getAllStructureMatchUps({
     if (Array.isArray(drawPositions)) {
       const { orderedDrawPositions, displayOrder } = getOrderedDrawPositions({
         drawPositions,
-        roundPosition,
         roundProfile,
         roundNumber,
       });
@@ -568,13 +615,14 @@ export function getAllStructureMatchUps({
         if (side.participantId) {
           const participant = makeDeepCopy(
             getMappedParticipant(side.participantId) ||
-              findParticipant({
-                policyDefinitions: appliedPolicies,
-                participantId: side.participantId,
-                tournamentParticipants,
-                internalUse: true,
-                contextProfile,
-              }),
+              (tournamentParticipants &&
+                findParticipant({
+                  policyDefinitions: appliedPolicies,
+                  participantId: side.participantId,
+                  tournamentParticipants,
+                  internalUse: true,
+                  contextProfile,
+                })),
             undefined,
             true
           );
@@ -602,13 +650,14 @@ export function getAllStructureMatchUps({
             side.participant.individualParticipantIds.map((participantId) => {
               return (
                 getMappedParticipant(participantId) ||
-                findParticipant({
-                  policyDefinitions: appliedPolicies,
-                  tournamentParticipants,
-                  internalUse: true,
-                  contextProfile,
-                  participantId,
-                })
+                (tournamentParticipants &&
+                  findParticipant({
+                    policyDefinitions: appliedPolicies,
+                    tournamentParticipants,
+                    internalUse: true,
+                    contextProfile,
+                    participantId,
+                  }))
               );
             });
           Object.assign(side.participant, { individualParticipants });

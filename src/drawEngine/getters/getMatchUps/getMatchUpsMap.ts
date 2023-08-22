@@ -1,8 +1,9 @@
+import { MatchUp } from '../../../types/tournamentFromSchema';
 import { makeDeepCopy } from '../../../utilities';
 
 export function getMatchUpsMap({ drawDefinition, structure }) {
   const mappedMatchUps = {};
-  const drawMatchUps = [];
+  const drawMatchUps: MatchUp[] = [];
 
   (drawDefinition?.structures || [structure])
     .filter((structure) => structure && typeof structure === 'object')
@@ -42,14 +43,20 @@ export function getMatchUpsMap({ drawDefinition, structure }) {
   return { mappedMatchUps, drawMatchUps };
 }
 
+type GetMappedStructureMatchUpsArgs = {
+  mappedMatchUps?: any;
+  structureId: string;
+  inContext?: boolean;
+  matchUpsMap?: any;
+};
 export function getMappedStructureMatchUps({
   mappedMatchUps,
   matchUpsMap,
   structureId,
   inContext,
-}) {
+}: GetMappedStructureMatchUpsArgs) {
   mappedMatchUps = matchUpsMap?.mappedMatchUps || mappedMatchUps;
-  let structureMatchUpsMap = mappedMatchUps[structureId];
+  const structureMatchUpsMap = mappedMatchUps[structureId];
   const itemStructureMatchUps = (structureMatchUpsMap?.itemStructureIds || [])
     .map((itemStructureId) => {
       const { matchUps, structureName } = mappedMatchUps[itemStructureId];

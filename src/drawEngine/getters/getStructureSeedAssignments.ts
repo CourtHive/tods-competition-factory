@@ -1,21 +1,28 @@
 import { getStageEntries } from './stageGetter';
 import { findStructure } from './findStructure';
 
+import { DrawDefinition, Structure } from '../../types/tournamentFromSchema';
 import { PLAY_OFF } from '../../constants/drawDefinitionConstants';
 import {
   MISSING_SEED_ASSIGNMENTS,
   STRUCTURE_NOT_FOUND,
 } from '../../constants/errorConditionConstants';
 
+type GetStructureSeedAssignmentsArgs = {
+  provisionalPositioning?: boolean;
+  drawDefinition?: DrawDefinition;
+  structure?: Structure;
+  structureId?: string;
+};
+
 export function getStructureSeedAssignments({
   provisionalPositioning,
   drawDefinition,
-  matchUpsMap,
   structureId,
   structure,
-}) {
+}: GetStructureSeedAssignmentsArgs) {
   let error,
-    seedAssignments = [];
+    seedAssignments: any[] = [];
   if (!structure) {
     ({ structure, error } = findStructure({ drawDefinition, structureId }));
   }
@@ -33,7 +40,6 @@ export function getStructureSeedAssignments({
       provisionalPositioning,
       drawDefinition,
       stageSequence,
-      matchUpsMap,
       structureId,
       stage,
     });

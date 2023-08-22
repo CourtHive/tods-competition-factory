@@ -97,11 +97,10 @@ export function getCompetitionParticipants(params) {
       }
     }
 
-    idsWithConflicts &&
-      idsWithConflicts.forEach((participantId) => {
-        if (!participantIdsWithConflicts.includes(participantId))
-          participantIdsWithConflicts.push(participantId);
-      });
+    idsWithConflicts?.forEach((participantId) => {
+      if (!participantIdsWithConflicts.includes(participantId))
+        participantIdsWithConflicts.push(participantId);
+    });
   }
 
   return { competitionParticipants, participantIdsWithConflicts, ...SUCCESS };

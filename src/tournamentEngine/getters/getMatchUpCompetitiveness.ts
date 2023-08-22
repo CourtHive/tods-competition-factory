@@ -3,17 +3,29 @@ import { findPolicy } from '../governors/policyGovernor/findPolicy';
 
 import POLICY_COMPETITIVE_BANDS_DEFAULT from '../../fixtures/policies/POLICY_COMPETITIVE_BANDS_DEFAULT';
 import { POLICY_TYPE_COMPETITIVE_BANDS } from '../../constants/policyConstants';
+import { MatchUp, Tournament } from '../../types/tournamentFromSchema';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
+  ErrorType,
   INVALID_VALUES,
   MISSING_MATCHUP,
 } from '../../constants/errorConditionConstants';
+
+type GetMatchUpCompetitivenessArgs = {
+  tournamentRecord?: Tournament;
+  competitiveProfile?: any;
+  matchUp: MatchUp;
+};
 
 export function getMatchUpCompetitiveness({
   competitiveProfile,
   tournamentRecord,
   matchUp,
-}) {
+}: GetMatchUpCompetitivenessArgs): {
+  success?: boolean;
+  error?: ErrorType;
+  competitiveness?: any;
+} {
   if (!matchUp) return { error: MISSING_MATCHUP };
   const { score, winningSide } = matchUp;
 
@@ -21,6 +33,7 @@ export function getMatchUpCompetitiveness({
 
   const policy =
     !competitiveProfile &&
+    tournamentRecord &&
     findPolicy({
       policyType: POLICY_TYPE_COMPETITIVE_BANDS,
       tournamentRecord,

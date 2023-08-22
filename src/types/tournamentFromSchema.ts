@@ -60,6 +60,7 @@ export interface Event {
   indoorOutdoor?: IndoorOutdoorEnum;
   isMock?: boolean;
   links?: DrawLink[];
+  matchUpFormat?: string;
   notes?: string;
   processCodes?: string[];
   /**
@@ -87,6 +88,7 @@ export enum DrawTypeEnum {
   FirstMatchLoserConsolation = 'FIRST_MATCH_LOSER_CONSOLATION',
   FirstRoundLoserConsolation = 'FIRST_ROUND_LOSER_CONSOLATION',
   ModifiedFeedInChampionship = 'MODIFIED_FEED_IN_CHAMPIONSHIP',
+  Lucky = 'LUCKY_DRAW',
   Olympic = 'OLYMPIC',
   Other = 'OTHER',
   Playoff = 'PLAYOFF',
@@ -632,8 +634,10 @@ export interface Structure {
   isMock?: boolean;
   matchUpFormat?: string;
   matchUps?: MatchUp[];
+  matchUpType?: TypeEnum;
   notes?: string;
   positionAssignments?: PositionAssignment[];
+  processCodes?: string[];
   qualifyingRoundNumber?: number;
   roundLimit?: number;
   roundOffset?: number;
@@ -1276,7 +1280,7 @@ export interface Court {
   onlineResources?: OnlineResource[];
   pace?: string;
   surfaceCategory?: SurfaceCategoryEnum;
-  surfacedDate?: string;
+  surfacedDate?: Date | string;
   surfaceType?: string;
   timeItems?: TimeItem[];
   updatedAt?: Date | string;
