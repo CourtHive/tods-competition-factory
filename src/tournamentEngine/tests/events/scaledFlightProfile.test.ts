@@ -4,7 +4,7 @@ import { expect, it } from 'vitest';
 
 import { MISSING_EVENT } from '../../../constants/errorConditionConstants';
 import { INDIVIDUAL } from '../../../constants/participantConstants';
-import { RATING } from '../../../constants/scaleConstants';
+import { RANKING, RATING } from '../../../constants/scaleConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 import {
   SPLIT_LEVEL_BASED,
@@ -20,7 +20,7 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
   const eventName = 'Test Event';
   const event = { eventName };
   let result = tournamentEngine.setState(tournamentRecord).addEvent({ event });
-  let { event: eventResult } = result;
+  const { event: eventResult } = result;
   const { eventId } = eventResult;
   expect(result.success).toEqual(true);
 
@@ -35,7 +35,7 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
 
   const scaleValues = [5, 4, 3, 2, 1, 10, 9, 8, 7, 6, 15, 14, 13, 12, 11];
   scaleValues.forEach((scaleValue, index) => {
-    let scaleItem = {
+    const scaleItem = {
       scaleValue,
       scaleName: 'NTRP',
       scaleType: RATING,
@@ -43,7 +43,7 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
       scaleDate: '2020-06-06',
     };
     const participantId = participantIds[index];
-    let result = tournamentEngine.setParticipantScaleItem({
+    const result = tournamentEngine.setParticipantScaleItem({
       participantId,
       scaleItem,
     });
@@ -157,4 +157,60 @@ it('can delete flightProfileAndFlightDraw', () => {
     eventId,
   });
   expect(result.success).toEqual(true);
+});
+
+it('will randomly sort unranked participants when creating flights', () => {
+  const scaledParticipantsCount = 28;
+  const participantsCount = 48;
+  const {
+    eventIds: [eventId],
+    tournamentRecord,
+  } = mocksEngine.generateTournamentRecord({
+    eventProfiles: [{ eventName: 'Flighting ' }],
+    participantsProfile: {
+      category: { ageCategoryCode: '18U' },
+      scaledParticipantsCount,
+      participantsCount,
+    },
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+  const { participants } = tournamentEngine.getParticipants({
+    withScaleValues: true,
+  });
+  expect(participants.length).toEqual(participantsCount);
+
+  const scaledParticipants = participants.filter((p) => p.rankings?.SINGLES);
+  expect(scaledParticipants.length).toEqual(scaledParticipantsCount);
+
+  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
+    {
+      participantFilters: { participantTypes: [INDIVIDUAL] },
+    }
+  );
+  const participantIds = tournamentParticipants.map((p) => p.participantId);
+  const result = tournamentEngine.addEventEntries({ eventId, participantIds });
+  expect(result.success).toEqual(true);
+
+  const { event } = tournamentEngine.getEvent({ eventId });
+  expect(event.entries.length).toEqual(participantsCount);
+
+  const scaleAttributes = {
+    scaleType: RANKING,
+    eventType: SINGLES,
+    scaleName: '18U',
+  };
+  const { flightProfile, splitEntries } =
+    tournamentEngine.generateFlightProfile({
+      attachFlightProfile: true,
+      scaleAttributes,
+      flightsCount: 3,
+      eventId,
+    });
+  expect(flightProfile.flights.length).toEqual(3);
+  const entryPositions = splitEntries[2].map((e) => e.entryPosition);
+  const nonSequential = entryPositions.some(
+    (entryPosition, i) => entryPosition > entryPositions[i + 1]
+  );
+  expect(nonSequential).toBeTruthy();
 });

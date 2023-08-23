@@ -27,6 +27,7 @@ import {
   cycleMutationStatus,
 } from '../global/state/globalState';
 
+import { FactoryEngine } from '../types/factoryTypes';
 import { SUCCESS } from '../constants/resultConstants';
 import {
   INVALID_VALUES,
@@ -34,41 +35,40 @@ import {
 } from '../constants/errorConditionConstants';
 
 export const tournamentEngine = (function () {
-  const engine = {
-    getState: ({ convertExtensions, removeExtensions } = {}) =>
+  const engine: FactoryEngine = {
+    getState: (params) =>
       getState({
-        convertExtensions,
-        removeExtensions,
+        convertExtensions: params?.convertExtensions,
+        removeExtensions: params?.removeExtensions,
         tournamentId: getTournamentId(),
       }),
     newTournamentRecord: (params = {}) => {
       const result = newTournamentRecord(params);
+      const tournamentId = result.tournamentId;
       if (result.error) return result;
       setTournamentRecord(result);
-      setTournamentId(result.tournamentId);
-      return Object.assign({ tournamentId: result.tournamentId }, SUCCESS);
+      setTournamentId(tournamentId);
+      return Object.assign({ tournamentId }, SUCCESS);
     },
     setTournamentId: (newTournamentId) => setTournamentId(newTournamentId),
+    version: () => factoryVersion(),
+    reset: () => {
+      const result = removeTournamentRecord(getTournamentId());
+      return processResult(result);
+    },
+    setState: (tournament, deepCopyOption, deepCopyAttributes) => {
+      setDeepCopy(deepCopyOption, deepCopyAttributes);
+      const result = setState(tournament, deepCopyOption);
+      return processResult(result);
+    },
+    getDevContext: (contextCriteria) => getDevContext(contextCriteria),
+    executionQueue: (directives, rollbackOnError) =>
+      executionQueue(directives, rollbackOnError),
+    devContext: (contextCriteria) => {
+      setDevContext(contextCriteria);
+      return engine;
+    },
   };
-
-  engine.version = () => factoryVersion();
-  engine.reset = () => {
-    const result = removeTournamentRecord(getTournamentId());
-    return processResult(result);
-  };
-  engine.setState = (tournament, deepCopyOption, deepCopyAttributes) => {
-    setDeepCopy(deepCopyOption, deepCopyAttributes);
-    const result = setState(tournament, deepCopyOption);
-    return processResult(result);
-  };
-  engine.devContext = (contextCriteria) => {
-    setDevContext(contextCriteria);
-    return engine;
-  };
-  engine.getDevContext = (contextCriteria) => getDevContext(contextCriteria);
-
-  engine.executionQueue = (directives, rollbackOnError) =>
-    executionQueue(directives, rollbackOnError);
 
   function processResult(result) {
     if (result?.error) {
@@ -108,7 +108,7 @@ export const tournamentEngine = (function () {
     const elapsed = Date.now() - start;
     const devContext = getDevContext();
 
-    const log = { method: methodName };
+    const log: any = { method: methodName };
     const logErrors =
       typeof devContext.result === 'object' && devContext.result.error;
     if (
@@ -199,12 +199,16 @@ export const tournamentEngine = (function () {
             try {
               return engineInvoke(governor[methodName], params, methodName);
             } catch (err) {
-              const tournamentId = getTournamentId();
-              const error = err.toString();
+              let error;
+              if (typeof err === 'string') {
+                error = err.toUpperCase();
+              } else if (err instanceof Error) {
+                error = err.message;
+              }
 
               console.log('ERROR', {
+                tournamentId: getTournamentId(),
                 params: JSON.stringify(params),
-                tournamentId,
                 methodName,
                 error,
               });
@@ -224,8 +228,8 @@ export const tournamentEngine = (function () {
     const snapshot =
       rollbackOnError && makeDeepCopy(tournamentRecord, false, true);
 
-    const result = {};
-    const results = [];
+    const result: any = {};
+    const results: any[] = [];
     for (const directive of directives) {
       if (typeof directive !== 'object') return { error: INVALID_VALUES };
 
@@ -243,7 +247,7 @@ export const tournamentEngine = (function () {
         return result;
       }
 
-      const result = executeFunction(
+      const result: any = executeFunction(
         tournamentRecord,
         engine[methodName],
         params,

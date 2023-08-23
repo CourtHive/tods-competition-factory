@@ -2,6 +2,7 @@ import { intersection } from '../../utilities/arrays';
 import syncGlobalState from './syncGlobalState';
 
 import {
+  ErrorType,
   MISSING_ASYNC_STATE_PROVIDER,
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
@@ -111,7 +112,7 @@ export function createInstanceState() {
 /**
  * if contextCriteria, check whether all contextCriteria keys values are equivalent with globalState.devContext object
  */
-export function getDevContext(contextCriteria?) {
+export function getDevContext(contextCriteria?): any {
   if (!contextCriteria || typeof contextCriteria !== 'object') {
     return globalState.devContext || false;
   } else {
@@ -293,7 +294,10 @@ export function setTournamentRecords(tournamentRecords) {
   return _globalStateProvider.setTournamentRecords(tournamentRecords);
 }
 
-export function setTournamentId(tournamentId) {
+export function setTournamentId(tournamentId: string): {
+  success?: boolean;
+  error?: ErrorType;
+} {
   return _globalStateProvider.setTournamentId(tournamentId);
 }
 
