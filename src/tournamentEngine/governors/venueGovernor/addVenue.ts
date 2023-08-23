@@ -5,13 +5,32 @@ import { UUID, makeDeepCopy } from '../../../utilities';
 import { CONTEXT } from '../../../constants/extensionConstants';
 import { ADD_VENUE } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { Venue } from '../../../types/tournamentFromSchema';
 import {
+  ErrorType,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
   VENUE_EXISTS,
 } from '../../../constants/errorConditionConstants';
 
-export function addVenue({ tournamentRecord, context, disableNotice, venue }) {
+type AddVenueArgs = {
+  disableNotice?: boolean;
+  tournamentRecord: any;
+  context?: any;
+  venue: Venue;
+};
+
+export function addVenue({
+  tournamentRecord,
+  disableNotice,
+  context,
+  venue,
+}: AddVenueArgs): {
+  success?: boolean;
+  error?: ErrorType;
+  venue?: Venue;
+  info?: string;
+} {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!venue) return { error: MISSING_VALUE, info: 'missing venue' };
 
@@ -19,7 +38,7 @@ export function addVenue({ tournamentRecord, context, disableNotice, venue }) {
   if (!venue.venueId) venue.venueId = UUID();
 
   const venueExists = tournamentRecord.venues.reduce(
-    (exists, existingVenue) => {
+    (exists: any, existingVenue) => {
       return exists || existingVenue.venueId === venue.venueId;
     },
     undefined

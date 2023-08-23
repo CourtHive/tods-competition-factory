@@ -1,6 +1,11 @@
 import { AD_HOC } from '../../../constants/drawDefinitionConstants';
+import { DrawDefinition, Structure } from '../../../types/tournamentFromSchema';
 
-export function isAdHoc({ drawDefinition, structure }) {
+type IsAdHocArgs = {
+  drawDefinition?: DrawDefinition;
+  structure?: Structure;
+};
+export function isAdHoc({ drawDefinition, structure }: IsAdHocArgs): boolean {
   if (!structure) return false;
 
   return (

@@ -24,11 +24,10 @@ it('can generate COMPASS and fill all drawPositions', () => {
     WEST: { advancedFiltered: [2, 1, 4], unadvancedFiltered: 0 },
     SOUTH: { advancedFiltered: [2, 1, 2], unadvancedFiltered: 0 },
     SOUTHEAST: {
-      includeByeMatchUps: true,
-      advancedFiltered: [0],
-      pendingAdvancedLength: 1,
-      pendingAdvancedRoundPosition: 1,
       pendingAdvancedDrawPositions: [2, 3],
+      pendingAdvancedRoundPosition: 1,
+      pendingAdvancedLength: 1,
+      advancedFiltered: [0],
       unadvancedPending: 1,
     },
   };
@@ -60,12 +59,11 @@ it('can generate COMPASS and fill all drawPositions', () => {
     WEST: { advancedFiltered: [4, 1, 2], unadvancedFiltered: 0 },
     SOUTH: { advancedFiltered: [0], unadvancedFiltered: 0 },
     SOUTHEAST: {
-      includeByeMatchUps: true,
-      advancedFiltered: [0],
-      pendingAdvancedLength: 0,
       pendingAdvancedRoundPosition: undefined,
       pendingAdvancedDrawPositions: undefined,
+      pendingAdvancedLength: 0,
       unadvancedFiltered: 0,
+      advancedFiltered: [0],
       unadvancedPending: 0,
     },
   };
@@ -91,9 +89,7 @@ function testByeRemoval({ stage, expectedByeRemoval }) {
   const { structureId } = directionEast;
   const byeDrawPositions = assignedByes(directionEast.positionAssignments);
 
-  const { byeMatchUps } = drawEngine.drawMatchUps({
-    includeByeMatchUps: true,
-  });
+  const { byeMatchUps } = drawEngine.drawMatchUps();
   expect(byeMatchUps.length).toEqual(expectedByeRemoval.initialByeMatchUpCount);
 
   if (expectedByeRemoval.clearExpect) {
@@ -102,9 +98,7 @@ function testByeRemoval({ stage, expectedByeRemoval }) {
         structureId,
         drawPosition: byeDrawPositions[index],
       });
-      const { byeMatchUps } = drawEngine.drawMatchUps({
-        includeByeMatchUps: true,
-      });
+      const { byeMatchUps } = drawEngine.drawMatchUps();
       expect(byeMatchUps.length).toEqual(length);
     });
   }
@@ -135,10 +129,8 @@ function checkByeAdvancedDrawPositions({
 
   Object.keys(expectedByeDrawPositions).forEach((direction) => {
     const structure = findStructureByName(structures, direction);
-    const includeByeMatchUps = expectedByeDrawPositions.includeByeMatchUps;
     const { pendingMatchUps } = drawEngine.getStructureMatchUps({
       structure,
-      includeByeMatchUps,
     });
     const filteredMatchUps = pendingMatchUps.filter(pendingWithOneParticipant);
 

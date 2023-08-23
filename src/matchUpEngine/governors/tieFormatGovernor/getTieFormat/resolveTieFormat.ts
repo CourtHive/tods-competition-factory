@@ -10,7 +10,7 @@ import {
 
 type ResolveTieFormatArgs = {
   drawDefinition: DrawDefinition;
-  structure: Structure;
+  structure?: Structure;
   matchUp?: object;
   event?: Event;
 };

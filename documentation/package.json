@@ -20,7 +20,7 @@
     "@docusaurus/theme-live-codeblock": "2.4.1",
     "@material-ui/core": "4.12.4",
     "@mdx-js/react": "1.6.22",
-    "@types/react": "18.2.20",
+    "@types/react": "18.2.21",
     "clsx": "2.0.0",
     "courthive-components": "^0.2.4",
     "material-ui": "0.20.2",
@@ -29,7 +29,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-json-tree": "0.18.0",
-    "tods-competition-factory": "1.4.12"
+    "tods-competition-factory": "1.4.13"
   },
   "browserslist": {
     "production": [

@@ -9,6 +9,7 @@ import { POLICY_TYPE_ROUND_ROBIN_TALLY } from '../../../constants/policyConstant
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
+  ErrorType,
   INVALID_VALUES,
   MISSING_MATCHUPS,
 } from '../../../constants/errorConditionConstants';
@@ -37,8 +38,9 @@ type TallyParticipantResultsArgs = {
 type TallyResultType = {
   completedTieMatchUps?: boolean;
   bracketComplete?: boolean;
-  participantResults: any;
+  participantResults?: any;
   readableReport?: string;
+  error?: ErrorType;
   report?: string[];
   order?: string[];
 };

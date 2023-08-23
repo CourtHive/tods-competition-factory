@@ -298,6 +298,9 @@
             "$ref": "#/definitions/DrawLink"
           }
         },
+        "matchUpFormat": {
+          "type": "string"
+        },
         "processCodes": {
           "type": "array",
           "items": {
@@ -348,6 +351,7 @@
         "FEED_IN_CHAMPIONSHIP_TO_QF",
         "FEED_IN_CHAMPIONSHIP_TO_R16",
         "FIRST_MATCH_LOSER_CONSOLATION",
+        "LUCKY_DRAW",
         "MODIFIED_FEED_IN_CHAMPIONSHIP",
         "OLYMPIC",
         "OTHER",
@@ -422,6 +426,9 @@
           "$ref": "#/definitions/BallTypeEnum"
         },
         "categoryName": {
+          "type": "string"
+        },
+        "categoryType": {
           "type": "string"
         },
         "ratingMax": {
@@ -1847,10 +1854,19 @@
         "matchUpFormat": {
           "type": "string"
         },
+        "matchUpType": {
+          "$ref": "#/definitions/MatchUpTypeEnum"
+        },
         "positionAssignments": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/PositionAssignment"
+          }
+        },
+        "processCodes": {
+          "type": "array",
+          "items": {
+            "type": "string"
           }
         },
         "qualifyingRoundNumber": {

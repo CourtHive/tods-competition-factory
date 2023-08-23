@@ -8,6 +8,7 @@ import {
   removeTournamentExtension,
 } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 
+import { Extension, Tournament } from '../../../types/tournamentFromSchema';
 import { MISSING_NAME } from '../../../constants/infoConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -18,7 +19,14 @@ import {
   NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
-export function addExtension({ tournamentRecords, extension }) {
+type AddExtensionArgs = {
+  tournamentRecords: { [key: string]: Tournament } | Tournament[];
+  extension: Extension;
+};
+export function addExtension({
+  tournamentRecords,
+  extension,
+}: AddExtensionArgs) {
   if (!isValidExtension({ extension })) return { error: INVALID_VALUES };
   const stack = 'addExtension';
 
@@ -30,7 +38,14 @@ export function addExtension({ tournamentRecords, extension }) {
   return { ...SUCCESS };
 }
 
-export function findExtension({ tournamentRecords, name }) {
+type FindRemoveExtensionArgs = {
+  tournamentRecords: { [key: string]: Tournament } | Tournament[];
+  name: string;
+};
+export function findExtension({
+  tournamentRecords,
+  name,
+}: FindRemoveExtensionArgs) {
   if (!name) return { error: MISSING_VALUE, info: MISSING_NAME };
 
   let foundExtension;
@@ -47,7 +62,10 @@ export function findExtension({ tournamentRecords, name }) {
   return tournamentId ? { extension: foundExtension } : { error: NOT_FOUND };
 }
 
-export function removeExtension({ tournamentRecords, name }) {
+export function removeExtension({
+  tournamentRecords,
+  name,
+}: FindRemoveExtensionArgs) {
   if (!name) return { error: MISSING_VALUE, info: MISSING_NAME };
 
   let removed = 0;
@@ -62,7 +80,16 @@ export function removeExtension({ tournamentRecords, name }) {
   return { ...SUCCESS, removed };
 }
 
-export function addEventExtension({ tournamentRecords, eventId, extension }) {
+type AddEventExtensionArgs = {
+  tournamentRecords: { [key: string]: Tournament } | Tournament[];
+  extension: Extension;
+  eventId: string;
+};
+export function addEventExtension({
+  tournamentRecords,
+  eventId,
+  extension,
+}: AddEventExtensionArgs) {
   if (typeof eventId !== 'string') return { error: MISSING_EVENT };
   if (!isValidExtension({ extension })) return { error: INVALID_VALUES };
 
