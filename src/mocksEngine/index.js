@@ -11,7 +11,7 @@ import mocksGovernor from './governors/mocksGovernor';
 
 let devContextSet = false;
 
-export const mocksEngine = (function () {
+export const mocksEngine = (() => {
   const engine = {
     version: () => factoryVersion(),
     setDeepCopy: (deepCopyOption, deepCopyAttributes) => {
