@@ -6,11 +6,7 @@ import { matchUpAssignedVenueId } from '../../accessors/matchUpAccessor/venueAss
 import { extractDate, sameDay } from '../../../utilities/dateTime';
 
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
-import { MatchUp } from '../../../types/tournamentFromSchema';
-
-type HydratedMatchUp = {
-  [key: string | number | symbol]: unknown;
-} & MatchUp;
+import { HydratedMatchUp } from '../../../types/hydrated';
 
 type FilterArgs = {
   matchUps: HydratedMatchUp[];
@@ -270,7 +266,7 @@ export function filterMatchUps(params: FilterArgs) {
         const matchUpParticipantIds =
           matchUp.sides
             ?.map(({ participantId }) => participantId)
-            .filter(Boolean) || [];
+            .filter(Boolean) ?? [];
         const containsTargetedParticipantId = targetParticipantIds.some(
           (participantId) => matchUpParticipantIds.includes(participantId)
         );

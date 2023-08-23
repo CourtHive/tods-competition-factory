@@ -72,7 +72,6 @@ export function positionByes({
   let { unseededByePositions } = getUnseededByePositions({
     provisionalPositioning,
     seedOrderByePositions,
-    ignoreSeededByes,
     appliedPolicies,
     drawDefinition,
     seedLimit,
@@ -124,7 +123,6 @@ export function positionByes({
       provisionalPositioning,
       tournamentRecord,
       drawDefinition,
-      seedBlockInfo,
       drawPosition,
       matchUpsMap,
       structureId,

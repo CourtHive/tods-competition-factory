@@ -17,7 +17,8 @@ const tournamentId = 'tid';
 const idPrefix = 'cc-court';
 const drawId = 'did';
 
-it('will not scheduled earlier rounds after later rounds', () => {
+it.only('will not scheduled earlier rounds after later rounds', () => {
+  tournamentEngine.devContext(true);
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     venueProfiles: [
       {

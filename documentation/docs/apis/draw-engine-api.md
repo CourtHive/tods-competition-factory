@@ -228,7 +228,6 @@ const { matchUps } = drawEngine.allDrawMatchUps({
   nextMatchUps, // optioanl - boolean - to include winnerTo and loserTo
   matchUpFilters, // attribute filters
   contextFilters, // filters based on context attributes
-  includeByeMatchUps, // return matchUps with { matchUpStatus: BYE }
   tournamentParticipants, // optional - provide an array of tournamentParticipants to add into matchUps
   requireParticipants, // optional - require that participants be loaded into drawEngine or passed into method
   tournamentAppliedPolicies, // any policies, such as privacy, to be applied to matchUps
@@ -250,7 +249,6 @@ const { matchUps } = drawEngine.allStructureMatchUps({
   nextMatchUps, // optioanl - boolean - to include winnerTo and loserTo
   matchUpFilters, // attribute filters
   contextFilters, // filters based on context attributes
-  includeByeMatchUps, // return matchUps with { matchUpStatus: BYE }
   tournamentParticipants, // optional - provide an array of tournamentParticipants to add into matchUps
   requireParticipants, // optional - require that participants be loaded into drawEngine or passed into method
   tournamentAppliedPolicies, // any policies, such as privacy, to be applied to matchUps
@@ -414,7 +412,6 @@ const {
   nextMatchUps, // optioanl - boolean - to include winnerTo and loserTo
   matchUpFilters, // attribute filters
   contextFilters, // filters based on context attributes
-  includeByeMatchUps, // return matchUps with { matchUpStatus: BYE }
   tournamentParticipants, // optional - provide an array of tournamentParticipants to add into matchUps
   requireParticipants, // optional - require that participants be loaded into drawEngine or passed into method
   tournamentAppliedPolicies, // any policies, such as privacy, to be applied to matchUps
@@ -1186,7 +1183,6 @@ const {
   nextMatchUps, // optioanl - boolean - to include winnerTo and loserTo
   matchUpFilters, // attribute filters
   contextFilters, // filters based on context attributes
-  includeByeMatchUps, // return matchUps with { matchUpStatus: BYE }
   tournamentParticipants, // optional - provide an array of tournamentParticipants to add into matchUps
   requireParticipants, // optional - require that participants be loaded into drawEngine or passed into method
   tournamentAppliedPolicies, // any policies, such as privacy, to be applied to matchUps

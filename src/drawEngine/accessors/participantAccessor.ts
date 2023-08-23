@@ -9,10 +9,10 @@ import {
 
 // Does NOT include potential participandIds
 export function getMatchUpParticipantIds({ matchUp }) {
-  let nestedIndividualParticipantIds = [];
-  let allRelevantParticipantIds = [];
-  let individualParticipantIds = [];
-  let sideParticipantIds = [];
+  let nestedIndividualParticipantIds: string[][] = [];
+  let allRelevantParticipantIds: string[] = [];
+  let individualParticipantIds: string[] = [];
+  let sideParticipantIds: string[] = [];
   let error;
 
   if (!matchUp) error = MISSING_MATCHUP;
@@ -22,7 +22,7 @@ export function getMatchUpParticipantIds({ matchUp }) {
   if (!error) {
     sideParticipantIds = matchUp.sides.map((side) => side.participantId);
 
-    const sideIndividualParticipantIds = matchUp.sides
+    const sideIndividualParticipantIds: string[] = matchUp.sides
       .filter((side) => side.participantType === INDIVIDUAL)
       .map((participant) => participant.participantId)
       .filter(Boolean);
@@ -38,12 +38,10 @@ export function getMatchUpParticipantIds({ matchUp }) {
           .filter(Boolean)
     );
 
-    individualParticipantIds = []
-      .concat(
-        ...sideIndividualParticipantIds,
-        ...nestedIndividualParticipantIds.flat()
-      )
-      .filter(Boolean);
+    individualParticipantIds = [
+      ...sideIndividualParticipantIds,
+      ...nestedIndividualParticipantIds.flat(),
+    ].filter(Boolean);
 
     allRelevantParticipantIds = unique(
       individualParticipantIds.concat(sideParticipantIds)

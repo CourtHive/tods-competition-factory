@@ -2,20 +2,33 @@ import { decorateResult } from '../../../global/functions/decorateResult';
 import { intersection } from '../../../utilities/arrays';
 import { makeDeepCopy } from '../../../utilities';
 
+import { Participant, Tournament } from '../../../types/tournamentFromSchema';
 import { PAIR } from '../../../constants/participantConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
+  ErrorType,
   INVALID_PARTICIPANT_IDS,
   MISSING_PARTICIPANT_IDS,
   MISSING_TOURNAMENT_RECORD,
   PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
+type GetPairedParticipantArgs = {
+  tournamentParticipants?: any[];
+  tournamentRecord?: Tournament;
+  participantIds: string[];
+};
+
 export function getPairedParticipant({
   tournamentParticipants,
   tournamentRecord,
   participantIds,
-}) {
+}: GetPairedParticipantArgs): {
+  success?: boolean;
+  error?: ErrorType;
+  participant?: Participant;
+  duplicatedPairParticipants?: any[];
+} {
   const stack = 'getPairedParticipant';
 
   if (!tournamentParticipants && !tournamentRecord)

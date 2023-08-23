@@ -1,14 +1,15 @@
 import { getRoundMatchUps } from '../accessors/matchUpAccessor/getRoundMatchUps';
 import { extractAttributes, generateRange } from '../../utilities';
 import { getDevContext } from '../../global/state/globalState';
+import { MatchUp } from '../../types/tournamentFromSchema';
 
 type AddFinishingRoundsArgs = {
   finishingPositionOffset?: number;
   finishingPositionLimit?: number;
   positionsFed?: number;
-  roundsCount: number;
+  roundsCount?: number;
   roundLimit?: number;
-  matchUps: any[];
+  matchUps: MatchUp[];
   lucky?: boolean;
   fmlc?: boolean;
 };
@@ -38,11 +39,11 @@ export function addFinishingRounds({
   // for QUALIFYING draws the best finishingPosition is equal to the number of matchUps in the final round of the structure
   const minQualifyingPosition =
     finishingRoundOffset &&
-    roundProfile[roundsCount - finishingRoundOffset]?.matchUpsCount;
+    roundProfile?.[roundsCount - finishingRoundOffset]?.matchUpsCount;
 
-  const roundMatchUpsCountArray = Object.values(roundProfile).map(
-    extractAttributes('matchUpsCount')
-  );
+  const roundMatchUpsCountArray =
+    roundProfile &&
+    Object.values(roundProfile).map(extractAttributes('matchUpsCount'));
 
   // returns a range for array of possible finishing drawPositions
   const finishingRange = (positionRange, winner?) => {
@@ -59,43 +60,46 @@ export function addFinishingRounds({
     return [minFinishingPosition, maxFinishingPosition];
   };
 
-  const roundFinishingData = Object.assign(
-    {},
-    ...roundNumbers.map((roundNumber) => {
-      const finishingRound =
-        roundsCount + 1 - roundNumber - finishingRoundOffset;
-      const matchUpsCount: number = roundProfile[roundNumber].matchUpsCount;
-      const finishingData = {
-        finishingPositionRange: {},
-        finishingRound,
-      };
+  const roundFinishingData =
+    roundProfile &&
+    Object.assign(
+      {},
+      ...roundNumbers.map((roundNumber) => {
+        const finishingRound =
+          (roundsCount || 0) + 1 - roundNumber - finishingRoundOffset;
+        const matchUpsCount = roundProfile[roundNumber].matchUpsCount;
+        const finishingData = {
+          finishingPositionRange: {},
+          finishingRound,
+        };
 
-      const upcomingMatchUps = roundMatchUpsCountArray
-        .slice(roundNumber - 1)
-        .reduce((a, b) => a + (b || 0), 0);
-      // in the case of FMLC the finishingPositionRange in consolation is not modified after first fed round
-      const fmlcException = fmlc && roundNumber !== 1;
-      const rangeOffset =
-        1 + finishingPositionOffset + (fmlcException ? positionsFed || 0 : 0);
-      const finalPosition = 1;
-      const positionRange = generateRange(
-        rangeOffset,
-        lucky
-          ? rangeOffset + matchUpsCount * 2
-          : upcomingMatchUps + rangeOffset + finalPosition
-      );
-      const slicer = upcomingMatchUps + finalPosition - matchUpsCount;
-      const loser = finishingRange(positionRange.slice(slicer));
-      const winner = finishingRange(positionRange.slice(0, slicer), true);
-      finishingData.finishingPositionRange = { loser, winner };
+        const upcomingMatchUps = roundMatchUpsCountArray
+          ?.slice(roundNumber - 1)
+          .reduce((a, b) => a + (b || 0), 0);
+        // in the case of FMLC the finishingPositionRange in consolation is not modified after first fed round
+        const fmlcException = fmlc && roundNumber !== 1;
+        const rangeOffset =
+          1 + finishingPositionOffset + (fmlcException ? positionsFed || 0 : 0);
+        const finalPosition = 1;
+        const positionRange = generateRange(
+          rangeOffset,
+          lucky
+            ? rangeOffset + matchUpsCount * 2
+            : upcomingMatchUps + rangeOffset + finalPosition
+        );
+        const slicer = upcomingMatchUps + finalPosition - matchUpsCount;
+        const loser = finishingRange(positionRange.slice(slicer));
+        const winner = finishingRange(positionRange.slice(0, slicer), true);
+        finishingData.finishingPositionRange = { loser, winner };
 
-      return { [roundNumber]: finishingData };
-    })
-  );
+        return { [roundNumber]: finishingData };
+      })
+    );
 
   const devContext = getDevContext({ finishingRound: true });
   matchUps.filter(Boolean).forEach((matchUp) => {
-    const roundData = roundFinishingData[matchUp.roundNumber];
+    const roundData =
+      matchUp.roundNumber && roundFinishingData[matchUp.roundNumber];
     if (devContext && !roundData) console.log({ roundFinishingData, matchUp });
     matchUp.finishingRound = roundData?.finishingRound;
     matchUp.finishingPositionRange = roundData?.finishingPositionRange;

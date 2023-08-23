@@ -59,7 +59,7 @@ export function getTieFormat({
     tieFormat = getObjectTieFormat(event);
   } else if (matchUpId) {
     // if matchUpId is present, structure and drawDefinition are always required
-    if (!matchUp || !structure) {
+    if (drawDefinition && (!matchUp || !structure)) {
       const result: {
         matchUp?: MatchUp;
         error?: ErrorType;

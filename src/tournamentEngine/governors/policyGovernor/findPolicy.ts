@@ -1,9 +1,24 @@
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 
 import {
+  ErrorType,
   MISSING_TOURNAMENT_RECORD,
   POLICY_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
+import {
+  DrawDefinition,
+  Event,
+  Structure,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
+
+type FindPolicyArgs = {
+  drawDefinition?: DrawDefinition;
+  tournamentRecord: Tournament;
+  structure?: Structure;
+  policyType: string;
+  event?: Event;
+};
 
 export function findPolicy({
   tournamentRecord,
@@ -11,7 +26,7 @@ export function findPolicy({
   policyType,
   structure,
   event,
-}) {
+}: FindPolicyArgs): { policy?: any; error?: ErrorType } {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
   const { appliedPolicies } = getAppliedPolicies({

@@ -16,6 +16,7 @@ import {
   DrawDefinition,
   Extension,
   Tournament,
+  Event,
 } from '../../../types/tournamentFromSchema';
 
 const stack = 'extensionQueries';
@@ -25,12 +26,16 @@ type FindExtensionType = {
   name: string;
 };
 
+type ExtensionResult = {
+  info: ErrorType | undefined;
+  extension?: Extension;
+  error?: ErrorType;
+};
+
 export function findExtension({
   element,
   name,
-}: FindExtensionType):
-  | { info: ErrorType | undefined; extension?: Extension }
-  | ResultType {
+}: FindExtensionType): ExtensionResult | ResultType {
   if (!element || !name)
     return decorateResult({ result: { error: MISSING_VALUE }, stack });
   if (!Array.isArray(element.extensions)) return { info: NOT_FOUND };
@@ -75,7 +80,7 @@ type FindDrawDefinitionExtensionType = {
 export function findDrawDefinitionExtension({
   drawDefinition,
   name,
-}: FindDrawDefinitionExtensionType): any | ResultType {
+}: FindDrawDefinitionExtensionType): ExtensionResult | ResultType {
   if (!drawDefinition)
     return decorateResult({
       result: { error: MISSING_DRAW_DEFINITION },

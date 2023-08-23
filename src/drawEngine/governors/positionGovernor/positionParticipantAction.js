@@ -37,7 +37,6 @@ export function positionParticipantAction(params) {
 
   if (!inContextDrawMatchUps) {
     ({ matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
-      includeByeMatchUps: true,
       inContext: true,
       drawDefinition,
       matchUpsMap,

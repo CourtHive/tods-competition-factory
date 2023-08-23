@@ -194,7 +194,6 @@ export function modifyMatchUpScore({
       // ... and should therefore already have groupings / ratings / rankings for participants
       // participantsProfile: { withGroupings: true },
       matchUpFilters: { matchUpIds: [matchUpId] },
-      includeByeMatchUps: true,
       nextMatchUps: true,
       tournamentRecord, // required to hydrate participants
       inContext: true,

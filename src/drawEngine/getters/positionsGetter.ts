@@ -6,7 +6,11 @@ import {
   MISSING_POSITION_ASSIGNMENTS,
 } from '../../constants/errorConditionConstants';
 
-import { PositionAssignment } from '../../types/tournamentFromSchema';
+import {
+  DrawDefinition,
+  PositionAssignment,
+  Structure,
+} from '../../types/tournamentFromSchema';
 
 export function getAllPositionedParticipantIds({ drawDefinition }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
@@ -64,18 +68,23 @@ export function getPositionAssignments({
   return { positionAssignments, error };
 }
 
+type StructureAssignedDrawPositionsArgs = {
+  drawDefinition?: DrawDefinition;
+  structure?: Structure;
+  structureId?: string;
+};
 export function structureAssignedDrawPositions({
   drawDefinition,
   structureId,
   structure,
-}) {
+}: StructureAssignedDrawPositionsArgs) {
   const { positionAssignments } = getPositionAssignments({
     drawDefinition,
     structureId,
     structure,
   });
   const assignedPositions = positionAssignments.filter((assignment) => {
-    return assignment.participantId || assignment.bye || assignment.qualifier;
+    return assignment.participantId ?? assignment.bye ?? assignment.qualifier;
   });
   const allPositionsAssigned =
     positionAssignments.length === assignedPositions.length;

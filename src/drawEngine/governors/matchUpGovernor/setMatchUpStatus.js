@@ -100,7 +100,6 @@ export function setMatchUpStatus(params) {
   // Get map of all drawMatchUps and inContextDrawMatchUps ---------------------
   const matchUpsMap = getMatchUpsMap({ drawDefinition });
   let { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
-    includeByeMatchUps: true,
     nextMatchUps: true,
     inContext: true,
     drawDefinition,

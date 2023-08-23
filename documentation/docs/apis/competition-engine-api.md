@@ -1094,7 +1094,7 @@ competitionEngine.modifyCourt({
     courtDimensions,
     onlineResources,
     surfaceCategory,
-    surfaceDate,
+    surfacedDate,
     surfaceType,
     altitude,
     latitude,

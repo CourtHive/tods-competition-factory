@@ -304,8 +304,6 @@ it('can remove individualParticipantIds from a grouping participant', () => {
 });
 
 it('will add individualParticipants to events as UNGROUPED when removed from TEAMs', () => {
-  expect(true);
-
   const {
     tournamentRecord,
     eventIds: [eventId],

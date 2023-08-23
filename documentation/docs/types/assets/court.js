@@ -14,7 +14,7 @@ export const court = {
     '{\\"type\\":\\"enum\\",\\"enum\\": \\"\\",\\"required\\":\\"false\\"}',
   surfaceType:
     '{\\"type\\":\\"string\\",\\"required\\":\\"false\\",\\"note\\":\\"ITF recognized type\\"}',
-  surfaceDate:
+  surfacedDate:
     '{\\"type\\":\\"string\\",\\"required\\":\\"true\\",\\"note\\":\\"\'YYYY-MM-DD\'\\"}',
 };
 
