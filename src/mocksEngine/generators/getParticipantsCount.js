@@ -96,7 +96,9 @@ export function getParticipantsCount({
     }
   };
 
-  let categories = []; // use when generating participants
+  /*
+   * TODO: let categories = []; // use when generating participants
+   */
 
   eventProfiles?.forEach((eventProfile) => {
     const {
@@ -122,9 +124,9 @@ export function getParticipantsCount({
         });
       }
     } else {
-      if (category) {
-        categories.push(category);
-      }
+      /*
+       * if (category) categories.push(category);
+       */
     }
   });
 
