@@ -36,8 +36,8 @@ it('minimizes duplication of names', () => {
   let { personData } = generatePersonData({ count, sex: MALE });
   expect(personData.length).toEqual(count);
 
-  let first = [];
-  let last = [];
+  let first: string[] = [];
+  let last: string[] = [];
   personData.forEach((person) => {
     const { firstName, lastName } = person;
     first.push(firstName);
