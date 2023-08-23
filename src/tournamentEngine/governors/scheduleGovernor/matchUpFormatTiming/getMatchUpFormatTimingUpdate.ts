@@ -9,7 +9,7 @@ import { SCHEDULE_TIMING } from '../../../../constants/extensionConstants';
 export function getMatchUpFormatTimingUpdate({ tournamentRecord }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
-  const methods = [];
+  const methods: any[] = [];
 
   const { extension } = findTournamentExtension({
     tournamentRecord,

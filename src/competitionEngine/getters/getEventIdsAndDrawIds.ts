@@ -1,14 +1,30 @@
-import { MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
+import {
+  ErrorType,
+  MISSING_TOURNAMENT_RECORDS,
+} from '../../constants/errorConditionConstants';
+
+type Aggregator = {
+  tournamentIdMap: { [key: string]: string[] };
+  eventIds: string[];
+  drawIds: string[];
+};
+
+type AggregatorResut = {
+  tournamentIdMap?: { [key: string]: string[] };
+  eventIds?: string[];
+  drawIds?: string[];
+  error?: ErrorType;
+};
 
 // Returns arrays of all drawIds and eventIds across tournamentRecords
 // Returns an combined array of drawIds and eventIds for each tournamentId
-export function getEventIdsAndDrawIds({ tournamentRecords }) {
+export function getEventIdsAndDrawIds({ tournamentRecords }): AggregatorResut {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
 
   const tournamentIds = Object.keys(tournamentRecords);
 
   return tournamentIds.reduce(
-    (aggregator, tournamentId) => {
+    (aggregator: Aggregator, tournamentId) => {
       aggregator.tournamentIdMap[tournamentId] = [];
 
       const tournamentRecord = tournamentRecords[tournamentId];

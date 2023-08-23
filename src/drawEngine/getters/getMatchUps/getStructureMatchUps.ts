@@ -16,6 +16,7 @@ import {
   ABANDONED,
   upcomingMatchUpStatuses,
 } from '../../../constants/matchUpStatusConstants';
+import { ErrorType } from '../../../constants/errorConditionConstants';
 
 /*
   completedMatchUps are those matchUps where a winningSide is defined
@@ -26,13 +27,14 @@ import {
 */
 
 type GroupsMatchUpsResult = {
-  includesTeamMatchUps: boolean;
-  abandonedMatchUps: any[];
-  completedMatchUps: any[];
-  upcomingMatchUps: any[];
-  pendingMatchUps: any[];
-  byeMatchUps: any[];
-  structure: Structure;
+  includesTeamMatchUps?: boolean;
+  abandonedMatchUps?: any[];
+  completedMatchUps?: any[];
+  upcomingMatchUps?: any[];
+  pendingMatchUps?: any[];
+  structure?: Structure;
+  byeMatchUps?: any[];
+  error?: ErrorType;
 };
 
 type GetStructureMatchUpsArgs = {

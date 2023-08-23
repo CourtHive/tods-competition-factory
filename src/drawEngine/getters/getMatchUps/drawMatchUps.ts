@@ -56,29 +56,28 @@ type GroupsMatchUpsResult = {
   error?: ErrorType;
 };
 
-export function getDrawMatchUps({
-  scheduleVisibilityFilters,
-  tournamentAppliedPolicies,
-  tournamentParticipants,
-  requireParticipants,
-  participantsProfile,
-  afterRecoveryTimes,
-  policyDefinitions,
-  tournamentRecord,
-  contextContent,
-  contextFilters,
-  contextProfile,
-  drawDefinition,
-  matchUpFilters,
-  scheduleTiming,
-  participantMap,
-  nextMatchUps,
-  matchUpsMap,
-  inContext,
-  context,
-  event,
-}): GroupsMatchUpsResult {
-  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+export function getDrawMatchUps(params): GroupsMatchUpsResult {
+  if (!params?.drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+  let { tournamentParticipants, contextContent, matchUpsMap } = params;
+  const {
+    scheduleVisibilityFilters,
+    tournamentAppliedPolicies,
+    requireParticipants,
+    participantsProfile,
+    afterRecoveryTimes,
+    policyDefinitions,
+    tournamentRecord,
+    contextFilters,
+    contextProfile,
+    drawDefinition,
+    matchUpFilters,
+    scheduleTiming,
+    participantMap,
+    nextMatchUps,
+    inContext,
+    context,
+    event,
+  } = params;
 
   let allAbandonedMatchUps = [];
   let allCompletedMatchUps = [];

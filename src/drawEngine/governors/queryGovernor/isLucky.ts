@@ -1,13 +1,13 @@
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 
 import { DrawDefinition, Structure } from '../../../types/tournamentFromSchema';
-import { HydratedMatchUp } from '../../getters/getMatchUps/hydratedMatchUp';
 import { LUCKY_DRAW } from '../../../constants/drawDefinitionConstants';
+import { HydratedMatchUp } from '../../../types/hydrated';
 
 type IsLuckyArgs = {
+  roundMatchUps?: HydratedMatchUp[];
   hasOddMatchUpsCount?: boolean;
   drawDefinition?: DrawDefinition;
-  roundMatchUps?: HydratedMatchUp[];
   structure?: Structure;
 };
 export function isLucky({

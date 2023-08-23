@@ -14,23 +14,24 @@ import {
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 
-export function allTournamentMatchUps({
-  scheduleVisibilityFilters,
-  participantsProfile,
-  afterRecoveryTimes,
-  useParticipantMap, // will default to true in future release
-  policyDefinitions,
-  tournamentRecord,
-  inContext = true,
-  contextProfile,
-  matchUpFilters,
-  contextFilters,
-  participantMap,
-  nextMatchUps,
-  participants,
-  context,
-}) {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+export function allTournamentMatchUps(params) {
+  if (!params?.tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  let {
+    scheduleVisibilityFilters,
+    participantsProfile,
+    afterRecoveryTimes,
+    useParticipantMap, // will default to true in future release
+    policyDefinitions,
+    tournamentRecord,
+    inContext = true,
+    contextProfile,
+    matchUpFilters,
+    contextFilters,
+    participantMap,
+    nextMatchUps,
+    participants,
+    context,
+  } = params;
 
   const tournamentId =
     tournamentRecord.unifiedTournamentId?.tournamentId ||
@@ -271,22 +272,23 @@ export function allEventMatchUps({
   return { matchUps };
 }
 
-export function tournamentMatchUps({
-  scheduleVisibilityFilters,
-  participantsProfile,
-  afterRecoveryTimes,
-  policyDefinitions,
-  useParticipantMap,
-  tournamentRecord,
-  inContext = true,
-  contextFilters,
-  contextProfile,
-  contextContent,
-  matchUpFilters,
-  nextMatchUps,
-  context,
-}) {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+export function tournamentMatchUps(params) {
+  if (!params?.tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  let {
+    scheduleVisibilityFilters,
+    participantsProfile,
+    afterRecoveryTimes,
+    policyDefinitions,
+    useParticipantMap,
+    tournamentRecord,
+    inContext = true,
+    contextFilters,
+    contextProfile,
+    contextContent,
+    matchUpFilters,
+    nextMatchUps,
+    context,
+  } = params;
   const tournamentId =
     tournamentRecord.unifiedTournamentId?.tournamentId ||
     tournamentRecord.tournamentId;

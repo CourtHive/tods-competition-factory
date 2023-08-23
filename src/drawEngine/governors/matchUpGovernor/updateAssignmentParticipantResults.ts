@@ -44,7 +44,7 @@ export function updateAssignmentParticipantResults({
   positionAssignments.forEach((assignment) => {
     const { participantId } = assignment;
     if (participantIds.includes(participantId)) {
-      let extension = {
+      const extension = {
         value: participantResults[participantId],
         name: TALLY,
       };

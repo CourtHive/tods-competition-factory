@@ -37,33 +37,33 @@ export function setOrderOfFinish({ drawDefinition, finishingOrder }) {
     drawDefinition,
   });
 
-  const matchUpIds = completedMatchUps.map(getMatchUpId);
+  const matchUpIds: string[] = completedMatchUps?.map(getMatchUpId) || [];
   const targetMatchUpIds = finishingOrder.map(getMatchUpId);
 
-  const { matchUpTypes, roundNumbers, structureIds, matchUpTieIds } =
-    completedMatchUps
-      .filter(({ matchUpId }) => targetMatchUpIds.includes(matchUpId))
-      .reduce(
-        (aggregator, matchUp) => {
-          const { matchUpTieId, matchUpType, roundNumber, structureId } =
-            matchUp;
-          if (!aggregator.matchUpTypes.includes(matchUpType))
-            aggregator.matchUpTypes.push(matchUpType);
-          if (!aggregator.roundNumbers.includes(roundNumber))
-            aggregator.roundNumbers.push(roundNumber);
-          if (!aggregator.structureIds.includes(structureId))
-            aggregator.structureIds.push(structureId);
-          if (!aggregator.matchUpTieIds.includes(matchUpTieId))
-            aggregator.matchUpTieIds.push(matchUpTieId);
-          return aggregator;
-        },
-        {
-          matchUpTypes: [],
-          roundNumbers: [],
-          structureIds: [],
-          matchUpTieIds: [],
-        }
-      );
+  const { matchUpTypes, roundNumbers, structureIds, matchUpTieIds } = (
+    completedMatchUps || []
+  )
+    .filter(({ matchUpId }) => targetMatchUpIds.includes(matchUpId))
+    .reduce(
+      (aggregator, matchUp) => {
+        const { matchUpTieId, matchUpType, roundNumber, structureId } = matchUp;
+        if (!aggregator.matchUpTypes.includes(matchUpType))
+          aggregator.matchUpTypes.push(matchUpType);
+        if (!aggregator.roundNumbers.includes(roundNumber))
+          aggregator.roundNumbers.push(roundNumber);
+        if (!aggregator.structureIds.includes(structureId))
+          aggregator.structureIds.push(structureId);
+        if (!aggregator.matchUpTieIds.includes(matchUpTieId))
+          aggregator.matchUpTieIds.push(matchUpTieId);
+        return aggregator;
+      },
+      {
+        matchUpTypes: [],
+        roundNumbers: [],
+        structureIds: [],
+        matchUpTieIds: [],
+      }
+    );
 
   // targeted matchUps must all be of the same matchUpType and have the same roundNumber and structureId
   if (
@@ -84,8 +84,8 @@ export function setOrderOfFinish({ drawDefinition, finishingOrder }) {
   // targetedMatchUps must all be in draws completedMatchUps and orderOfFinish values must be integers
   let validMatchUpId, validOrderOfFinish;
   const valuesMap = {};
-  const targetedMatchUpIds = [];
-  const orderOfFinishValues = [];
+  const targetedMatchUpIds: string[] = [];
+  const orderOfFinishValues: number[] = [];
   const validValues = finishingOrder.every(({ orderOfFinish, matchUpId }) => {
     targetedMatchUpIds.push(matchUpId);
     if (orderOfFinish) orderOfFinishValues.push(orderOfFinish);
@@ -112,7 +112,7 @@ export function setOrderOfFinish({ drawDefinition, finishingOrder }) {
   }
 
   // get other matchUps in the same logical grouping
-  const otherCohortMatchUps = completedMatchUps.filter(
+  const otherCohortMatchUps = completedMatchUps?.filter(
     (matchUp) =>
       matchUp.structureId === structureIds[0] &&
       matchUp.roundNumber === roundNumbers[0] &&
@@ -122,7 +122,7 @@ export function setOrderOfFinish({ drawDefinition, finishingOrder }) {
   );
 
   // throw an error if an existing matchUp has an invalid orderOfFinish value
-  for (const matchUp of otherCohortMatchUps) {
+  for (const matchUp of otherCohortMatchUps || []) {
     const { orderOfFinish } = matchUp || {};
     if (orderOfFinish) {
       if (!isConvertableInteger(orderOfFinish))

@@ -4,11 +4,28 @@ import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 
 import { MATCHUP_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  DrawDefinition,
+  Event,
+  TimeItem,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
 /*
   generic function to addMatchUpTimeItem
   must retrieve matchUp WITHOUT CONTEXT so original can be modified
 */
+
+type AddMatchUpTimeItem = {
+  tournamentRecord?: Tournament;
+  drawDefinition: DrawDefinition;
+  removePriorValues?: boolean;
+  duplicateValues?: boolean;
+  disableNotice?: boolean;
+  timeItem: TimeItem;
+  matchUpId: string;
+  event?: Event;
+};
 export function addMatchUpTimeItem({
   removePriorValues,
   tournamentRecord,
@@ -18,7 +35,7 @@ export function addMatchUpTimeItem({
   matchUpId,
   timeItem,
   event,
-}) {
+}: AddMatchUpTimeItem) {
   const { matchUp } = findMatchUp({ drawDefinition, event, matchUpId });
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };
 

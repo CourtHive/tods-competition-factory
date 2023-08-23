@@ -8,16 +8,18 @@ import {
   MISSING_VENUE_ID,
 } from '../../../constants/errorConditionConstants';
 
-export function getScheduledCourtMatchUps({
-  scheduleVisibilityFilters,
-  tournamentRecord,
-  matchUpFilters,
-  venueMatchUps,
-  courtId,
-}) {
-  if (!tournamentRecord && !Array.isArray(venueMatchUps))
+export function getScheduledCourtMatchUps(params) {
+  if (!params?.tournamentRecord && !Array.isArray(params?.venueMatchUps))
     return { error: MISSING_TOURNAMENT_RECORD };
-  if (!courtId) return { error: MISSING_COURT_ID };
+  if (!params?.courtId) return { error: MISSING_COURT_ID };
+
+  const {
+    scheduleVisibilityFilters,
+    tournamentRecord,
+    matchUpFilters,
+    venueMatchUps,
+    courtId,
+  } = params;
 
   const { schedulingProfile } = getSchedulingProfile({ tournamentRecord });
 

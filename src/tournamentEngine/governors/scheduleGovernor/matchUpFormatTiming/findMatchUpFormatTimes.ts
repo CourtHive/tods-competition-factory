@@ -1,7 +1,5 @@
-export function findMatchupFormatAverageTimes({
-  matchUpAverageTimes,
-  matchUpFormat,
-} = {}) {
+export function findMatchupFormatAverageTimes(params) {
+  const { matchUpAverageTimes, matchUpFormat } = params || {};
   // first find all matchUpAverageTime definitions which include matchUpFormats...
   // ... that either exactly match or start with the target matchUpFormat.
   const codeMatches =
@@ -25,11 +23,8 @@ export function findMatchupFormatAverageTimes({
   return targetDefinition?.averageTimes;
 }
 
-export function findMatchupFormatRecoveryTimes({
-  matchUpRecoveryTimes,
-  averageMinutes,
-  matchUpFormat,
-} = {}) {
+export function findMatchupFormatRecoveryTimes(params) {
+  const { matchUpRecoveryTimes, averageMinutes, matchUpFormat } = params || {};
   return matchUpRecoveryTimes?.find(
     ({ matchUpFormatCodes, averageTimes, recoveryTimes }) => {
       if (averageTimes && averageMinutes) {

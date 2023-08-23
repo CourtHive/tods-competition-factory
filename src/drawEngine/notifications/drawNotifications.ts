@@ -88,7 +88,7 @@ export function deleteMatchUpsNotice({
 }
 
 type ModifyMatchUpNoticeArgs = {
-  drawDefinition: DrawDefinition;
+  drawDefinition?: DrawDefinition;
   tournamentId?: string;
   structureId?: string;
   matchUp: MatchUp;

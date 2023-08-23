@@ -5,10 +5,10 @@ import { UUID } from '../../utilities';
 
 export function generateVenues({ tournamentRecord, venueProfiles }) {
   const { startDate, endDate } = tournamentRecord;
-  let venueIds = [];
+  const venueIds: string[] = [];
 
   for (const [index, venueProfile] of venueProfiles.entries()) {
-    let {
+    const {
       venueAbbreviation,
       venueId = UUID(),
       dateAvailability,
@@ -27,7 +27,7 @@ export function generateVenues({ tournamentRecord, venueProfiles }) {
       venueAbbreviation,
       venueId,
     };
-    let result = addVenue({ tournamentRecord, venue: newVenue });
+    const result = addVenue({ tournamentRecord, venue: newVenue });
     if (result.error) return result;
 
     venueIds.push(venueId);
@@ -43,7 +43,7 @@ export function generateVenues({ tournamentRecord, venueProfiles }) {
         }))
       );
 
-    result = addCourts({
+    const addResult = addCourts({
       dateAvailability: dateAvailability || generatedDateAvailability,
       tournamentRecord,
       courtTimings,
@@ -56,7 +56,7 @@ export function generateVenues({ tournamentRecord, venueProfiles }) {
       venueId,
       dates,
     });
-    if (result.error) return result;
+    if (addResult.error) return addResult;
   }
 
   return venueIds;

@@ -9,7 +9,7 @@ import {
 } from '../../../utilities';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
-import { HydratedMatchUp } from '../../getters/getMatchUps/hydratedMatchUp';
+import { HydratedMatchUp } from '../../../types/hydrated';
 import { TEAM } from '../../../constants/matchUpTypes';
 
 type RoundProfile = {
