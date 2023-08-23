@@ -1,11 +1,7 @@
 import { generateScoreString } from './generateScoreString';
 
-export function matchUpScore({
-  matchUpFormat,
-  matchUpStatus,
-  winningSide,
-  score,
-} = {}) {
+export function matchUpScore(params) {
+  const { matchUpFormat, matchUpStatus, winningSide, score } = params;
   if (!score) return { sets: [] };
 
   const sets = score.sets || [];
@@ -25,14 +21,14 @@ export function matchUpScore({
     sets,
   });
 
-  let winnerPerspective = generateScoreString({
+  const winnerPerspective = generateScoreString({
     matchUpFormat,
     matchUpStatus,
     winningSide,
     sets,
   });
 
-  let loserPerspective =
+  const loserPerspective =
     scoreStringSide1 === winnerPerspective
       ? scoreStringSide2
       : scoreStringSide1;

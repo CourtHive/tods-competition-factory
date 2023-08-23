@@ -16,9 +16,9 @@ test('lastName uniqueness', () => {
     ...Object.keys(namesData).map((key) => ({ [key]: namesData[key].length }))
   );
   const { persons } = generatePersons({ count: counts.lastNames, sex: MALE });
-  const lastNames = Math.max(
-    ...Object.values(instanceCount(persons.map((p) => p.lastName)))
-  );
+  const lastNameMap = instanceCount(persons.map((p) => p.lastName));
+  const lastNameCounts: number[] = Object.values(lastNameMap);
+  const lastNames = Math.max(...lastNameCounts);
   expect(lastNames).toEqual(1);
 });
 
@@ -90,11 +90,11 @@ test('basic person generation', () => {
 
 const defaultPersonData = generatePersonData({ count: 8 }).personData;
 const personData = defaultPersonData
-  .slice(0, 8)
+  ?.slice(0, 8)
   .map((person) => Object.assign(person, { personId: UUID() }));
 
-const firstNames = personData.map(({ firstName }) => firstName);
-const lastNames = personData.map(({ lastName }) => lastName);
+const firstNames = (personData || []).map(({ firstName }) => firstName);
+const lastNames = (personData || []).map(({ lastName }) => lastName);
 
 const scenarios = [
   undefined,
@@ -106,13 +106,13 @@ test.each(scenarios)(
   'can generate participants with identical persons for different draw types',
   (drawProfile) => {
     // create 8 persons to be used across multiple tournaments
-    let { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    const { tournamentRecord } = mocksEngine.generateTournamentRecord({
       participantsProfile: { personData, participantsCount: 8 },
       drawProfiles: drawProfile && [drawProfile],
     });
     tournamentEngine.setState(tournamentRecord);
 
-    let { tournamentParticipants } =
+    const { tournamentParticipants } =
       tournamentEngine.getTournamentParticipants();
 
     tournamentParticipants.forEach((participant) => {
@@ -134,7 +134,7 @@ test('it can attach participant extensions and timeItems from personData', () =>
     },
   ];
 
-  const augmentedPersonData = personData.map((data) => ({
+  const augmentedPersonData = (personData || []).map((data) => ({
     ...data,
     participantExtensions,
     participantTimeItems,

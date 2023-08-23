@@ -343,7 +343,7 @@ export function getDateByWeek(week, year, dateFormat, sunday = false) {
   return formatDate(date, dateFormat);
 }
 
-export function dateFromDay(year, day, dateFormat) {
+export function dateFromDay(year, day, dateFormat?) {
   const date = new Date(year, 0); // initialize a date in `year-01-01`
   return formatDate(new Date(date.setDate(day)), dateFormat); // add the number of days
 }

@@ -7,9 +7,9 @@ import { FEMALE, MALE } from '../../constants/genderConstants';
 
 it('can generation personData', () => {
   let { personData } = generatePersonData();
-  expect(personData.length).toEqual(100);
+  expect(personData?.length).toEqual(100);
 
-  for (const person of personData) {
+  for (const person of personData || []) {
     expect(person.nationalityCode).not.toBeUndefined();
     expect(person.firstName).not.toBeUndefined();
     expect(person.lastName).not.toBeUndefined();
@@ -18,15 +18,15 @@ it('can generation personData', () => {
 
   let count = 200;
   personData = generatePersonData({ count, sex: MALE }).personData;
-  expect(personData.length).toEqual(count);
-  expect(instanceCount(personData.map(({ sex }) => sex))).toEqual({
+  expect(personData?.length).toEqual(count);
+  expect(instanceCount(personData?.map(({ sex }) => sex))).toEqual({
     MALE: count,
   });
 
   count = 50;
   personData = generatePersonData({ count, sex: FEMALE }).personData;
-  expect(personData.length).toEqual(count);
-  expect(instanceCount(personData.map(({ sex }) => sex))).toEqual({
+  expect(personData?.length).toEqual(count);
+  expect(instanceCount(personData?.map(({ sex }) => sex))).toEqual({
     FEMALE: count,
   });
 });
@@ -34,11 +34,11 @@ it('can generation personData', () => {
 it('minimizes duplication of names', () => {
   let count = 200;
   let { personData } = generatePersonData({ count, sex: MALE });
-  expect(personData.length).toEqual(count);
+  expect(personData?.length).toEqual(count);
 
   let first: string[] = [];
   let last: string[] = [];
-  personData.forEach((person) => {
+  personData?.forEach((person) => {
     const { firstName, lastName } = person;
     first.push(firstName);
     last.push(lastName);
@@ -67,10 +67,10 @@ it('minimizes duplication of names', () => {
 
   count = 400;
   personData = generatePersonData({ count, sex: FEMALE }).personData;
-  expect(personData.length).toEqual(count);
+  expect(personData?.length).toEqual(count);
   first = [];
   last = [];
-  personData.forEach((person) => {
+  personData?.forEach((person) => {
     const { firstName, lastName } = person;
     first.push(firstName);
     last.push(lastName);

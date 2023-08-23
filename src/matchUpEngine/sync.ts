@@ -21,9 +21,10 @@ import {
 } from './stateMethods';
 
 import { SUCCESS } from '../constants/resultConstants';
+import { FactoryEngine } from '../types/factoryTypes';
 
 export const matchUpEngine = (() => {
-  const engine = {
+  const engine: FactoryEngine = {
     getState: (params) => getState(params),
     version: () => factoryVersion(),
     reset: () => {
