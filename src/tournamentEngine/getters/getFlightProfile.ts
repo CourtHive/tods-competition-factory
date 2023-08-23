@@ -3,8 +3,13 @@ import { makeDeepCopy } from '../../utilities';
 
 import { MISSING_EVENT } from '../../constants/errorConditionConstants';
 import { FLIGHT_PROFILE } from '../../constants/extensionConstants';
+import { Event } from '../../types/tournamentFromSchema';
 
-export function getFlightProfile({ event, eventId }) {
+type GetFlightProfileArgs = {
+  eventId?: string;
+  event: Event;
+};
+export function getFlightProfile({ event, eventId }: GetFlightProfileArgs) {
   if (!event) return { error: MISSING_EVENT };
 
   const result = findEventExtension({
