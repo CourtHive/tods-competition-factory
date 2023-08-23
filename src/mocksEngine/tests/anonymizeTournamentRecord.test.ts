@@ -64,7 +64,7 @@ test.each(mockProfiles)('it can anonymize tournamentRecords', (mockProfile) => {
   );
 
   expect(tournamentRecord.tournamentName).toEqual(tournamentName);
-  let result = mocksEngine.anonymizeTournamentRecord({ tournamentRecord });
+  const result = mocksEngine.anonymizeTournamentRecord({ tournamentRecord });
   expect(result.success).toEqual(true);
 
   expect(tournamentRecord.tournamentName.split(':')[0]).toEqual(`Anonymized`);
@@ -106,7 +106,9 @@ it.each(filenames)(
   'can anonymize TODS files in the testHarness directory',
   (filename) => {
     const tournamentRecord = JSON.parse(
-      fs.readFileSync(`./src/global/testHarness/${filename}`, 'UTF-8')
+      fs.readFileSync(`./src/global/testHarness/${filename}`, {
+        encoding: 'utf8',
+      })
     );
 
     const result = mocksEngine.anonymizeTournamentRecord({ tournamentRecord });

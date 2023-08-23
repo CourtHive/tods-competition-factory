@@ -15,13 +15,13 @@ import {
 } from '../../constants/drawDefinitionConstants';
 
 test('modifyTournamentRecord error conditions', () => {
-  let result = mocksEngine.modifyTournamentRecord();
+  const result = mocksEngine.modifyTournamentRecord();
   expect(result.error).toEqual(MISSING_TOURNAMENT_RECORD);
 });
 
 test('mocksEngine can modify existing tournamentRecords', () => {
   // prettier-ignore
-  let eventProfiles = [{ eventName: `Boy's U16 Doubles`, eventType: DOUBLES, gender: MALE }];
+  let eventProfiles: any[] = [{ eventName: `Boy's U16 Doubles`, eventType: DOUBLES, gender: MALE }];
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     participantsProfile: { participantsCount: 0 },
     eventProfiles,
@@ -31,7 +31,7 @@ test('mocksEngine can modify existing tournamentRecords', () => {
 
   // prettier-ignore
   eventProfiles = [{ eventName: `Boy's U16 Doubles`, drawProfiles: [{ drawSize: 4, drawType: ROUND_ROBIN }] }];
-  let result = mocksEngine
+  const result = mocksEngine
     .setDeepCopy(false)
     .devContext({ makeDeepCopy: true, iterations: 4 }) // in this case setting { iterations: 3 } will result in logging
     .modifyTournamentRecord({
@@ -45,7 +45,7 @@ test('mocksEngine can modify existing tournamentRecords', () => {
 
 test('mocksEngine can modify existing tournamentRecords and complete SOME matchUps', () => {
   // prettier-ignore
-  let eventProfiles = [{ eventName: `Boy's U16 Doubles`, gender: MALE }];
+  let eventProfiles: any[] = [{ eventName: `Boy's U16 Doubles`, gender: MALE }];
   const {
     tournamentRecord,
     eventIds: [eventId],
@@ -90,7 +90,7 @@ test('mocksEngine can modify existing tournamentRecords and complete SOME matchU
 });
 
 test('mocksEngine can modify existing tournamentRecords', () => {
-  let eventProfiles = [
+  let eventProfiles: any[] = [
     { eventName: `Gentlemen's O50 Doubles`, eventType: DOUBLES, gender: MALE },
     { eventName: `Boy's U16 Doubles`, eventType: DOUBLES, gender: MALE },
     { eventName: `Boy's U16 Singles`, eventType: SINGLES, gender: MALE },
@@ -183,8 +183,8 @@ test('mocksEngine can modify existing tournamentRecords by adding events', () =>
   });
 
   // prettier-ignore
-  let eventProfiles = [{ eventName: `Boy's U16 Doubles`, eventType: DOUBLES, gender: MALE }];
-  let result = mocksEngine.modifyTournamentRecord({
+  const eventProfiles = [{ eventName: `Boy's U16 Doubles`, eventType: DOUBLES, gender: MALE }];
+  const result = mocksEngine.modifyTournamentRecord({
     tournamentRecord,
     eventProfiles,
   });
@@ -197,8 +197,8 @@ test('mocksEngine can modify existing tournamentRecords by adding events', () =>
   });
 
   // prettier-ignore
-  let eventProfiles = [{ eventName: `Boy's U16 Doubles`, drawProfiles: [{ drawSize: 4, drawType: ROUND_ROBIN }] }];
-  let result = mocksEngine.modifyTournamentRecord({
+  const eventProfiles = [{ eventName: `Boy's U16 Doubles`, drawProfiles: [{ drawSize: 4, drawType: ROUND_ROBIN }] }];
+  const result = mocksEngine.modifyTournamentRecord({
     tournamentRecord,
     eventProfiles,
   });
@@ -213,7 +213,7 @@ test('mocksEngine can modify existing tournamentRecords with drawProfiles', () =
 
   const drawProfiles = [{ drawId: 'd1', drawSize: 4, drawType: ROUND_ROBIN }];
 
-  let result = mocksEngine.modifyTournamentRecord({
+  const result = mocksEngine.modifyTournamentRecord({
     tournamentRecord,
     drawProfiles,
   });

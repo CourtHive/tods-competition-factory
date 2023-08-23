@@ -1,6 +1,12 @@
 import { attachFlightProfile as attachProfile } from '../governors/eventGovernor/attachFlightProfile';
 import { getScaledEntries } from '../governors/eventGovernor/entries/getScaledEntries';
-import { chunkArray, generateRange, chunkByNth, UUID } from '../../utilities';
+import {
+  chunkArray,
+  generateRange,
+  chunkByNth,
+  UUID,
+  shuffleArray,
+} from '../../utilities';
 import { getParticipantId } from '../../global/functions/extractors';
 import { getDevContext } from '../../global/state/globalState';
 import { getFlightProfile } from '../getters/getFlightProfile';
@@ -17,7 +23,6 @@ import {
 } from '../../constants/flightConstants';
 
 /**
- *
  * @param {object} event - automatically retrieved by tournamentEngine given eventId
  * @param {string} eventId - unique identifier for event
  * @param {string} splitMethod - one of the supported methods for splitting entries
@@ -31,25 +36,24 @@ import {
  * @param {string} drawNameRoot - root word for generating flight names
  * @param {boolean} deleteExisting - if flightProfile exists then delete
  * @param {string} stage - OPTIONAL - only consider event entries matching stage
- *
  */
-export function generateFlightProfile({
-  drawNameRoot = 'Flight',
-  attachFlightProfile,
-  tournamentRecord,
-  scaleAttributes,
-  scaleSortMethod,
-  deleteExisting,
-  sortDescending,
-  drawNames = [],
-  scaledEntries,
-  flightsCount,
-  flightValues,
-  splitMethod,
-  uuids = [],
-  event,
-  stage,
-}) {
+
+export function generateFlightProfile(params) {
+  const {
+    drawNameRoot = 'Flight',
+    attachFlightProfile,
+    tournamentRecord,
+    scaleAttributes,
+    scaleSortMethod,
+    deleteExisting,
+    sortDescending,
+    drawNames = [],
+    flightsCount,
+    splitMethod,
+    uuids = [],
+    event,
+    stage,
+  } = params;
   if (!event) return { error: MISSING_EVENT };
   const eventEntries = event.entries || [];
 
@@ -58,38 +62,43 @@ export function generateFlightProfile({
     return { error: EXISTING_PROFILE };
   }
 
-  if (!scaledEntries) {
-    ({ scaledEntries } = getScaledEntries({
+  const scaledEntries =
+    params.scaledEntries ??
+    getScaledEntries({
       tournamentRecord,
       scaleAttributes,
       scaleSortMethod,
       sortDescending,
       event,
       stage,
-    }));
-  }
+    }).scaledEntries;
 
   const scaledEntryParticipantIds = scaledEntries.map(getParticipantId);
-  const unscaledEntries = eventEntries
-    .filter(
-      ({ participantId }) => !scaledEntryParticipantIds.includes(participantId)
-    )
-    .filter(
-      (entry) =>
-        (!stage || !entry.entryStage || entry.entryStage === stage) &&
-        DIRECT_ENTRY_STATUSES.includes(entry.entryStatus)
-    );
+  const unscaledEntries = shuffleArray(
+    eventEntries
+      .filter(
+        ({ participantId }) =>
+          !scaledEntryParticipantIds.includes(participantId)
+      )
+      .filter(
+        (entry) =>
+          (!stage || !entry.entryStage || entry.entryStage === stage) &&
+          DIRECT_ENTRY_STATUSES.includes(entry.entryStatus)
+      )
+  );
 
   const flightEntries = scaledEntries.concat(...unscaledEntries);
   const entriesCount = flightEntries.length;
 
-  // default is SPLIT_LEVEL_BASED
+  // default is SPLIT_LEVEL_BASED - Evenly chunk sorted entries
   const chunkSize = Math.ceil(entriesCount / flightsCount);
   let splitEntries = chunkArray(flightEntries, chunkSize);
 
   if (splitMethod === SPLIT_WATERFALL) {
+    // e.g. 1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4
     splitEntries = chunkByNth(flightEntries, flightsCount);
   } else if (splitMethod === SPLIT_SHUTTLE) {
+    // e.g. 1,2,3,4,4,3,2,1,1,2,3,4,4,3,2,1
     splitEntries = chunkByNth(flightEntries, flightsCount, true);
   }
 
@@ -111,7 +120,7 @@ export function generateFlightProfile({
 
   const flights = generateRange(0, flightsCount).map((index) => {
     const flightNumber = index + 1;
-    const flight = {
+    return {
       flightNumber,
       drawId: uuids?.pop() || UUID(),
       drawEntries: getDrawEntries(splitEntries[index]),
@@ -119,15 +128,6 @@ export function generateFlightProfile({
         (drawNames?.length && drawNames[index]) ||
         `${drawNameRoot} ${flightNumber}`,
     };
-
-    const matchUpValue = flightValues?.find(
-      (value) => value.flightNumber === flightNumber
-    )?.matchUpValue;
-
-    // UNUSED: flight.matchUpValue is currently unused
-    if (matchUpValue) flight.matchUpValue = matchUpValue;
-
-    return flight;
   });
 
   const updatedFlightProfile = {

@@ -8,11 +8,12 @@ import {
 
 import amendsGovernor from './governors/amendsGovernor';
 import mocksGovernor from './governors/mocksGovernor';
+import { FactoryEngine } from '../types/factoryTypes';
 
 let devContextSet = false;
 
-export const mocksEngine = (function () {
-  const engine = {
+export const mocksEngine = (() => {
+  const engine: FactoryEngine = {
     version: () => factoryVersion(),
     setDeepCopy: (deepCopyOption, deepCopyAttributes) => {
       setDeepCopy(deepCopyOption, deepCopyAttributes);

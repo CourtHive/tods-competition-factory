@@ -1,7 +1,10 @@
 import { parse } from '../governors/matchUpFormatGovernor/parse';
 import { isNumeric } from '../../utilities/math';
 
-import { MISSING_VALUE } from '../../constants/errorConditionConstants';
+import {
+  ErrorType,
+  MISSING_VALUE,
+} from '../../constants/errorConditionConstants';
 import {
   ABANDONED,
   DEAD_RUBBER,
@@ -22,7 +25,9 @@ import {
  * @param {boolean} - autoComplete - whether to convert undefined values to 0
  *
  */
-export function generateScoreString(params) {
+export function generateScoreString(
+  params
+): string | { error?: ErrorType; info?: ErrorType | string } {
   const {
     winnerFirst = true,
     addOutcomeString,

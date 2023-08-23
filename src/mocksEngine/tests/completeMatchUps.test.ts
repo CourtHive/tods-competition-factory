@@ -83,7 +83,7 @@ it('can generate an FMLC draw with all results completed', () => {
   });
   tournamentEngine.setState(tournamentRecord);
 
-  let {
+  const {
     drawDefinition: {
       structures: [mainStructure, consolationStructure],
     },

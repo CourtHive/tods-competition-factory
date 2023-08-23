@@ -11,14 +11,12 @@ import { INVALID_VALUES } from '../../constants/errorConditionConstants';
  *
  * @param {string} scoreString - parseable score string, e.g. '6-0 6-0'
  * @param {number} winningSide - optional - valid values are [1, 2, undefined]
+ * @param {string=} matchUpFormat
+ * @param {string=} matchUpStatus
  *
  */
-export function generateOutcomeFromScoreString({
-  matchUpFormat,
-  matchUpStatus,
-  winningSide,
-  scoreString,
-}) {
+export function generateOutcomeFromScoreString(params) {
+  const { matchUpFormat, matchUpStatus, winningSide, scoreString } = params;
   if (!scoreString)
     return {
       outcome: {
@@ -31,7 +29,7 @@ export function generateOutcomeFromScoreString({
     return { error: INVALID_VALUES, winningSide };
 
   const neutralParsedSets = scoreString && parseScoreString({ scoreString });
-  const score = {};
+  const score: any = {};
   const winningScoreString = generateScoreString({
     sets: neutralParsedSets,
     matchUpFormat,
