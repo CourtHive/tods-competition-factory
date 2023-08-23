@@ -135,6 +135,11 @@ export default [
   ...cjsExports,
   ...esmExports,
   {
+    input: 'src/mocksEngine/index.ts',
+    output: [{ file: `${distPath}/mocksEngine.d.ts`, format: 'es' }],
+    plugins: [dts()],
+  },
+  {
     input: 'src/forge/query/index.ts',
     output: [{ file: `${distPath}/forge/query.d.ts`, format: 'es' }],
     plugins: [dts()],
