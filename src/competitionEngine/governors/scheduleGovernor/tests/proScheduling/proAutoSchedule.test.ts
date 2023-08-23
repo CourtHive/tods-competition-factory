@@ -1,4 +1,4 @@
-import competitionEngine from '../../../../../competitionEngine/sync';
+import competitionEngine from '../../../../sync';
 import tournamentEngine from '../../../../../tournamentEngine/sync';
 import { mocksEngine } from '../../../../../mocksEngine';
 import { unique } from '../../../../../utilities';
@@ -17,7 +17,7 @@ const tournamentId = 'tid';
 const idPrefix = 'cc-court';
 const drawId = 'did';
 
-it.only('will not scheduled earlier rounds after later rounds', () => {
+it('will not scheduled earlier rounds after later rounds', () => {
   tournamentEngine.devContext(true);
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     venueProfiles: [
@@ -58,7 +58,7 @@ it.only('will not scheduled earlier rounds after later rounds', () => {
   result = competitionEngine.executionQueue([scheduleOneSecondRoundMatchUp]);
   expect(result.success).toEqual(true);
 
-  let matchUps = competitionEngine
+  const matchUps = competitionEngine
     .allCompetitionMatchUps({ inContext: true, nextMatchUps: true })
     .matchUps.filter((m) => m.matchUpId !== matchUpId);
 
@@ -83,7 +83,7 @@ it.only('will not scheduled earlier rounds after later rounds', () => {
   const issues = unique(
     Object.values(courtIssues)
       .flat()
-      .map((c) => c.issue)
+      .map((c: any) => c.issue)
   );
   expect(issues).toEqual([SCHEDULE_WARNING]);
 });
@@ -125,15 +125,15 @@ it('will not save overlapping timeModifiers', () => {
     inContext: true,
   }).matchUps;
 
-  let firstRowMatchUpIds = matchUps
+  const firstRowMatchUpIds = matchUps
     .filter(({ schedule }) => schedule?.courtOrder === 1)
     .map(({ matchUpId }) => matchUpId);
 
-  let secondRowMatchUpIds = matchUps
+  const secondRowMatchUpIds = matchUps
     .filter(({ schedule }) => schedule?.courtOrder === 2)
     .map(({ matchUpId }) => matchUpId);
 
-  let bulkScheduleFirst = {
+  let bulkScheduleFirst: any = {
     method: 'bulkScheduleMatchUps',
     params: {
       schedule: { scheduledTime: '08:00' },
@@ -144,7 +144,7 @@ it('will not save overlapping timeModifiers', () => {
   result = tournamentEngine.executionQueue([bulkScheduleFirst]);
   expect(result.success).toEqual(true);
 
-  let bulkScheduleSecond = {
+  let bulkScheduleSecond: any = {
     method: 'bulkScheduleMatchUps',
     params: {
       schedule: { timeModifiers: NEXT_AVAILABLE },
@@ -186,7 +186,7 @@ it('will not save overlapping timeModifiers', () => {
     ({ schedule }) => schedule?.courtOrder === 1
   );
 
-  let secondRowMatchUps = matchUps.filter(
+  const secondRowMatchUps = matchUps.filter(
     ({ schedule }) => schedule?.courtOrder === 2
   );
 
