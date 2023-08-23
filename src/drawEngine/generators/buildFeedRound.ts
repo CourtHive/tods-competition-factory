@@ -2,7 +2,20 @@ import { generateMatchUpId } from './generateMatchUpId';
 import { generateRange } from '../../utilities';
 
 import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
+import { MatchUp } from '../../types/tournamentFromSchema';
 
+type BuildFeedRoundArgs = {
+  includeMatchUpType?: boolean;
+  drawPosition?: number;
+  matchUpType: string;
+  roundNumber: number;
+  matchUps: MatchUp[];
+  idPrefix?: string;
+  isMock?: boolean;
+  uuids?: string[];
+  fed: number;
+  nodes: any;
+};
 export function buildFeedRound({
   includeMatchUpType,
   drawPosition,
@@ -14,7 +27,11 @@ export function buildFeedRound({
   uuids,
   nodes,
   fed,
-}) {
+}: BuildFeedRoundArgs): {
+  drawPosition: number | undefined;
+  matchUps: MatchUp[];
+  roundNodes: any;
+} {
   const feedRoundMatchUpsCount = nodes.length;
   const initialGroupDrawPosition = drawPosition
     ? drawPosition - feedRoundMatchUpsCount
@@ -24,7 +41,7 @@ export function buildFeedRound({
       initialGroupDrawPosition ? initialGroupDrawPosition + value : undefined
   );
 
-  const roundNodes = [];
+  const roundNodes: any[] = [];
   for (let nodeIndex = 0; nodeIndex < feedRoundMatchUpsCount; nodeIndex++) {
     const feedDrawPosition = drawPositionGroup.shift();
 
@@ -43,7 +60,7 @@ export function buildFeedRound({
       uuids,
     });
 
-    const newMatchUp = {
+    const newMatchUp: any = {
       roundPosition: position.roundPosition,
       drawPositions: [feedDrawPosition],
       matchUpStatus: TO_BE_PLAYED,

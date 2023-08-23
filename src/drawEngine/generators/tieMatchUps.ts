@@ -1,8 +1,18 @@
 import { generateRange, UUID } from '../../utilities';
 
 import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
+import { TieFormat } from '../../types/tournamentFromSchema';
 
-export function generateTieMatchUps({ tieFormat, uuids, isMock }) {
+type GenerateTieMatchUpsArgs = {
+  tieFormat?: TieFormat;
+  isMock?: boolean;
+  uuids?: string[];
+};
+export function generateTieMatchUps({
+  tieFormat,
+  isMock,
+  uuids,
+}: GenerateTieMatchUpsArgs) {
   const { collectionDefinitions } = tieFormat || {};
 
   const tieMatchUps = (collectionDefinitions || [])
@@ -15,12 +25,18 @@ export function generateTieMatchUps({ tieFormat, uuids, isMock }) {
   return { tieMatchUps };
 }
 
+type GenerateCollectionMatchUpsArgs = {
+  collectionDefinition: any;
+  matchUpsLimit?: number;
+  isMock?: boolean;
+  uuids?: string[];
+};
 export function generateCollectionMatchUps({
   collectionDefinition,
   matchUpsLimit, // internal use allows generation of missing matchUps on "reset"
   isMock,
   uuids,
-}) {
+}: GenerateCollectionMatchUpsArgs) {
   const { matchUpCount, matchUpType, collectionId, processCodes } =
     collectionDefinition || {};
 

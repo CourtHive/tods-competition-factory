@@ -13,6 +13,7 @@ import {
   mainDrawPositions,
 } from '../../tests/primitives/primitives';
 
+import { SINGLES } from '../../../constants/matchUpTypes';
 import {
   MAIN,
   ROUND_ROBIN,
@@ -45,7 +46,7 @@ it('can return matchUps from an SINGLE_ELIMINATION structure', () => {
   let { matchUpType } = getMatchUpType({
     matchUp: matchUps[0],
   });
-  expect(matchUpType).toEqual(undefined);
+  expect(matchUpType).toEqual(SINGLES);
 });
 
 it('matchUps returned with context cannot modify original', () => {

@@ -226,7 +226,7 @@ export function replaceTieMatchUpParticipantId(params) {
       if (modifiedCompetitor.participantId === newParticipantId) {
         if (!modifiedCompetitor.collectionAssignments)
           modifiedCompetitor.collectionAssignments = [];
-        const assignment = { collectionId, collectionPosition };
+        const assignment: any = { collectionId, collectionPosition };
         if (substitution) {
           assignment.previousParticipantId = existingParticipantId;
           assignment.substitutionOrder = substitutionOrder + 1;
@@ -238,7 +238,7 @@ export function replaceTieMatchUpParticipantId(params) {
     }) || [];
 
   if (!newParticipantIdInLineUp) {
-    const collectionAssignment = { collectionId, collectionPosition };
+    const collectionAssignment: any = { collectionId, collectionPosition };
     if (substitution) {
       collectionAssignment.substitutionOrder = substitutionOrder + 1;
       collectionAssignment.previousParticipantId = existingParticipantId;

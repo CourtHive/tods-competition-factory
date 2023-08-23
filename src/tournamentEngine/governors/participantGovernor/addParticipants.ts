@@ -4,6 +4,7 @@ import { addNotice } from '../../../global/state/globalState';
 import { intersection } from '../../../utilities/arrays';
 import { makeDeepCopy, UUID } from '../../../utilities';
 
+import { Participant, Tournament } from '../../../types/tournamentFromSchema';
 import { ADD_PARTICIPANTS } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -27,15 +28,13 @@ import {
   EXISTING_PARTICIPANT,
 } from '../../../constants/errorConditionConstants';
 
-import { Participant, Tournament } from '../../../types/tournamentFromSchema';
-
 type AddParticipantType = {
   allowDuplicateParticipantIdPairs?: boolean;
   returnParticipant?: boolean;
   tournamentRecord: Tournament;
-  participant: Participant;
   disableNotice?: boolean;
   pairOverride?: boolean;
+  participant: any; // participantId may be missing and is added by the method
 };
 
 export function addParticipant({

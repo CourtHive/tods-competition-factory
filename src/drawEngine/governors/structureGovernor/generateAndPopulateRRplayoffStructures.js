@@ -119,20 +119,20 @@ export function generateAndPopulateRRplayoffStructures(params) {
   });
 
   /*
-  finishingPositionTargets.forEach((target) => {
-    const { finishingPositions, structureId } = target;
-    const participantIds = finishingPositions
-      .flatMap((position) => finishingPositionParticipantIds[position] || [])
-      .sort();
-    console.log({ structureId, participantIds });
-    const stageEntries = getStageEntries({
-      drawDefinition,
-      structureId,
-      stage: 'PLAY_OFF',
-    });
-    console.log(stageEntries.map((p) => p.participantId).sort());
-  });
-  */
+   *finishingPositionTargets.forEach((target) => {
+   *  const { finishingPositions, structureId } = target;
+   *  const participantIds = finishingPositions
+   *    .flatMap((position) => finishingPositionParticipantIds[position] || [])
+   *    .sort();
+   *  console.log({ structureId, participantIds });
+   *  const stageEntries = getStageEntries({
+   *    drawDefinition,
+   *    structureId,
+   *    stage: 'PLAY_OFF',
+   *  });
+   *  console.log(stageEntries.map((p) => p.participantId).sort());
+   *});
+   */
 
   const result = automatedPlayoffPositioning({
     provisionalPositioning: params.provisionalPositioning,

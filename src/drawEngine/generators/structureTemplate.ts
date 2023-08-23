@@ -18,6 +18,7 @@ type StructureTemplateArgs = {
   stageSequence?: number;
   structureName?: string;
   structureType?: string;
+  matchUpType?: string;
   matchUps?: MatchUp[];
   roundOffset?: number;
   structureId?: string;
@@ -38,6 +39,7 @@ export const structureTemplate = ({
   matchUpFormat,
   structureType,
   structureName,
+  matchUpType,
   matchUps = [],
   structureId,
   roundOffset,
@@ -59,6 +61,7 @@ export const structureTemplate = ({
   if (structureOrder) structure.structureOrder = structureOrder;
   if (structureType) structure.structureType = structureType;
   if (seedingProfile) structure.seedingProfile = seedingProfile;
+  if (matchUpType) structure.matchUpType = matchUpType;
   if (roundOffset) structure.roundOffset = roundOffset;
   if (stageOrder) structure.stageOrder = stageOrder;
   if (roundLimit) structure.roundLimit = roundLimit;

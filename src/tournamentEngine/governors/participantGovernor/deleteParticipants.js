@@ -22,13 +22,23 @@ import {
   TEAM as participantTeam,
 } from '../../../constants/participantConstants';
 
-export function deleteParticipants({
-  addIndividualParticipantsToEvents,
-  tournamentRecord,
-  participantIds,
-}) {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!participantIds?.length) return { error: MISSING_PARTICIPANT_IDS };
+/**
+ *
+ * @param {boolean=} addIndividualParticipantsToEvents
+ * @param {object} tournamentRecord
+ * @param {string[]} participantIds
+ * @returns {object}
+ */
+
+export function deleteParticipants(params) {
+  if (!params?.tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  if (!params?.participantIds?.length)
+    return { error: MISSING_PARTICIPANT_IDS };
+  const {
+    addIndividualParticipantsToEvents,
+    tournamentRecord,
+    participantIds,
+  } = params;
 
   const participantsCount = tournamentRecord.participants?.length || 0;
   if (!participantsCount) return { ...SUCCESS };

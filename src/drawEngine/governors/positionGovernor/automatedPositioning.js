@@ -197,7 +197,6 @@ export function automatedPositioning({
       placeByes &&
       positionByes({
         provisionalPositioning,
-        inContextDrawMatchUps,
         tournamentRecord,
         appliedPolicies,
         drawDefinition,

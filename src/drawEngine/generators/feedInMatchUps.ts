@@ -3,11 +3,31 @@ import { addFinishingRounds } from './addFinishingRounds';
 import { buildFeedRound } from './buildFeedRound';
 import { buildRound } from './buildRound';
 
+import { MatchUp } from '../../types/tournamentFromSchema';
+
+type FeedInMatchUpsArgs = {
+  linkFedFinishingRoundNumbers?: number[];
+  finishingPositionOffset?: number;
+  linkFedRoundNumbers?: number[];
+  feedsFromFinal?: number;
+  isConsolation?: boolean;
+  feedRoundsProfile?: any;
+  baseDrawSize?: number;
+  feedRounds?: number;
+  skipRounds?: number;
+  matchUpType: string;
+  idPrefix?: string;
+  drawSize: number;
+  isMock?: boolean;
+  uuids?: string[];
+  fmlc?: boolean;
+};
+
 export function feedInMatchUps({
-  linkFedFinishingRoundNumbers = [],
-  linkFedRoundNumbers = [],
+  linkFedFinishingRoundNumbers,
   finishingPositionOffset,
-  feedRoundsProfile = [],
+  linkFedRoundNumbers,
+  feedRoundsProfile,
   feedRounds = 0,
   skipRounds = 0,
   feedsFromFinal,
@@ -19,7 +39,7 @@ export function feedInMatchUps({
   isMock,
   uuids,
   fmlc,
-}) {
+}: FeedInMatchUpsArgs) {
   // calculate the number of rounds and the number of matchUps in each round
   // for normal elimination structure
   baseDrawSize = baseDrawSize || getBaseDrawSize(drawSize);
@@ -27,7 +47,7 @@ export function feedInMatchUps({
   const baseRoundsCount = baseDrawRounds.length;
 
   let positionsFed = 0;
-  if (feedRoundsProfile.length) {
+  if (feedRoundsProfile?.length) {
     positionsFed = feedRoundsProfile.reduce((a, b) => a + b, 0);
   } else if (drawSize) {
     // having a drawSize defined trumps other configuration options
@@ -74,8 +94,8 @@ export function feedInMatchUps({
   // linkFedRoundNumbers[] and linkFedFinishingRoundNumbers[]
   // the difference being which end of the draw structure === 1
   const linkFedRoundNumbersIndices = [
-    ...linkFedRoundNumbers.map((n) => n - 1),
-    ...linkFedFinishingRoundNumbers.map((n) => roundsCount - n),
+    ...(linkFedRoundNumbers ?? []).map((n) => n - 1),
+    ...(linkFedFinishingRoundNumbers ?? []).map((n) => roundsCount - n),
   ];
 
   // positionsFedByLinks can be determined by summing the values in allRounds
@@ -87,13 +107,13 @@ export function feedInMatchUps({
 
   // initialize round creation variables
   let fed = 0; // keep track of even/odd feed rounds
-  let matchUps = []; // accumulate matchUps
+  let matchUps: MatchUp[] = []; // accumulate matchUps
   let roundNodes; // an array of nodes
   let roundNumber = 1; // initial roundNumber
 
   // firstRoundDrawPositions are generated and assigned drawPositions
   const firstRoundDrawPositions = generateRange(0, baseDrawSize).map(
-    (x, i) => ({
+    (_, i) => ({
       drawPosition: i + 1 + positionsFed,
     })
   );
@@ -102,7 +122,7 @@ export function feedInMatchUps({
   let nodes = firstRoundDrawPositions;
 
   // drawPosition within structure; offset used for feedRounds
-  let drawPosition = positionsFed + 1;
+  let drawPosition: number | undefined = positionsFed + 1;
 
   for (const baseDrawRound of baseDrawRounds) {
     ({ roundNodes, matchUps } = buildRound({
@@ -120,16 +140,15 @@ export function feedInMatchUps({
       const iterationRange = generateRange(0, roundIterations);
       const finishingRoundNumber = roundsCount + 1 - roundNumber;
       const isLinkFedRound =
-        linkFedFinishingRoundNumbers.includes(finishingRoundNumber) ||
-        linkFedRoundNumbers.includes(roundNumber);
+        linkFedFinishingRoundNumbers?.includes(finishingRoundNumber) ||
+        linkFedRoundNumbers?.includes(roundNumber);
 
-      for (const roundIteration of iterationRange) {
+      iterationRange.forEach(() => {
         const iterationDrawPosition =
           (!isLinkFedRound && drawPosition) || undefined;
         ({ roundNodes, matchUps, drawPosition } = buildFeedRound({
           drawPosition: iterationDrawPosition,
           nodes: roundNodes,
-          roundIteration, // meaningless; avoids eslint value never used
           matchUpType,
           roundNumber,
           idPrefix,
@@ -140,7 +159,7 @@ export function feedInMatchUps({
         }));
         roundNumber++;
         fed += 1;
-      }
+      });
     }
     nodes = roundNodes;
   }

@@ -62,6 +62,19 @@ import {
   7. If loserMatchUp is part of different structure... return to step #1
  */
 
+/**
+ *
+ * @param {boolean=} provisionalPositioning
+ * @param {boolean=} isPositionAction
+ * @param {object=} tournamentRecord
+ * @param {object} drawDefinition
+ * @param {string} drawPosition
+ * @param {object=} matchUpsMap
+ * @param {string=} structureId
+ * @param {object=} structure
+ * @param {object=} event
+ */
+
 export function assignDrawPositionBye({
   provisionalPositioning,
   isPositionAction,
