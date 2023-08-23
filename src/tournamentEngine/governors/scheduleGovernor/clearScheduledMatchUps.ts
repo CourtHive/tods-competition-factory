@@ -5,6 +5,7 @@ import { getMatchUpId } from '../../../global/functions/extractors';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
+  ErrorType,
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
@@ -15,14 +16,26 @@ import {
   SCHEDULED_DATE,
   SCHEDULED_TIME,
 } from '../../../constants/timeItemConstants';
+import { Tournament } from '../../../types/tournamentFromSchema';
 
+type ClearScheduledMatchUpsArgs = {
+  ignoreMatchUpStatuses?: string[];
+  scheduleAttributes?: string[];
+  tournamentRecord: Tournament;
+  scheduledDates?: string[];
+  venueIds?: string[];
+};
 export function clearScheduledMatchUps({
   scheduleAttributes = ['scheduledDate', 'scheduledTime'],
   ignoreMatchUpStatuses = completedMatchUpStatuses,
   tournamentRecord,
   scheduledDates,
   venueIds = [],
-}) {
+}: ClearScheduledMatchUpsArgs): {
+  clearedScheduleCount?: number;
+  success?: boolean;
+  error?: ErrorType;
+} {
   if (typeof tournamentRecord !== 'object')
     return { error: MISSING_TOURNAMENT_RECORD };
 

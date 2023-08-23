@@ -16,7 +16,8 @@ import {
 
 export function allTournamentMatchUps(params) {
   if (!params?.tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  let {
+  let { participantMap, participants } = params;
+  const {
     scheduleVisibilityFilters,
     participantsProfile,
     afterRecoveryTimes,
@@ -27,9 +28,7 @@ export function allTournamentMatchUps(params) {
     contextProfile,
     matchUpFilters,
     contextFilters,
-    participantMap,
     nextMatchUps,
-    participants,
     context,
   } = params;
 
@@ -98,26 +97,31 @@ export function allTournamentMatchUps(params) {
   return { matchUps };
 }
 
-export function allDrawMatchUps({
-  participants: tournamentParticipants,
-  scheduleVisibilityFilters,
-  tournamentAppliedPolicies,
-  participantsProfile,
-  afterRecoveryTimes,
-  policyDefinitions,
-  useParticipantMap,
-  tournamentRecord,
-  contextContent,
-  contextFilters,
-  contextProfile,
-  drawDefinition,
-  matchUpFilters,
-  participantMap,
-  nextMatchUps,
-  inContext,
-  context,
-  event,
-}) {
+export function allDrawMatchUps(params) {
+  let {
+    participants: tournamentParticipants,
+    participantMap,
+    contextContent,
+  } = params;
+
+  const {
+    scheduleVisibilityFilters,
+    tournamentAppliedPolicies,
+    participantsProfile,
+    afterRecoveryTimes,
+    policyDefinitions,
+    useParticipantMap,
+    tournamentRecord,
+    contextFilters,
+    contextProfile,
+    drawDefinition,
+    matchUpFilters,
+    nextMatchUps,
+    inContext,
+    context,
+    event,
+  } = params;
+
   const { eventId, eventName, eventType, category, gender, matchUpFormat } =
     event || {};
   const additionalContext = {
@@ -177,25 +181,24 @@ export function allDrawMatchUps({
   });
 }
 
-export function allEventMatchUps({
-  scheduleVisibilityFilters,
-  tournamentAppliedPolicies,
-  participantsProfile,
-  afterRecoveryTimes,
-  policyDefinitions,
-  participants = [],
-  useParticipantMap,
-  tournamentRecord,
-  contextContent,
-  contextFilters,
-  contextProfile,
-  matchUpFilters,
-  participantMap,
-  nextMatchUps,
-  inContext,
-  context,
-  event,
-}) {
+export function allEventMatchUps(params) {
+  let { participants = [], contextContent, participantMap } = params;
+  const {
+    scheduleVisibilityFilters,
+    tournamentAppliedPolicies,
+    participantsProfile,
+    afterRecoveryTimes,
+    policyDefinitions,
+    useParticipantMap,
+    tournamentRecord,
+    contextFilters,
+    contextProfile,
+    matchUpFilters,
+    nextMatchUps,
+    inContext,
+    context,
+    event,
+  } = params;
   if (!event) return { error: MISSING_EVENT };
   const { eventId, eventName, endDate, category, gender, matchUpFormat } =
     event;
@@ -274,7 +277,8 @@ export function allEventMatchUps({
 
 export function tournamentMatchUps(params) {
   if (!params?.tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  let {
+  let contextContent = params.contextContent;
+  const {
     scheduleVisibilityFilters,
     participantsProfile,
     afterRecoveryTimes,
@@ -284,7 +288,6 @@ export function tournamentMatchUps(params) {
     inContext = true,
     contextFilters,
     contextProfile,
-    contextContent,
     matchUpFilters,
     nextMatchUps,
     context,
@@ -364,26 +367,31 @@ export function tournamentMatchUps(params) {
   );
 }
 
-export function eventMatchUps({
-  participants: tournamentParticipants,
-  tournamentAppliedPolicies,
-  scheduleVisibilityFilters,
-  participantsProfile,
-  afterRecoveryTimes,
-  policyDefinitions,
-  useParticipantMap,
-  tournamentRecord,
-  contextFilters,
-  contextProfile,
-  contextContent,
-  matchUpFilters,
-  participantMap,
-  nextMatchUps,
-  tournamentId,
-  inContext,
-  context,
-  event,
-}) {
+export function eventMatchUps(params) {
+  let {
+    participants: tournamentParticipants,
+    contextContent,
+    participantMap,
+  } = params;
+
+  const {
+    tournamentAppliedPolicies,
+    scheduleVisibilityFilters,
+    participantsProfile,
+    afterRecoveryTimes,
+    policyDefinitions,
+    useParticipantMap,
+    tournamentRecord,
+    contextFilters,
+    contextProfile,
+    matchUpFilters,
+    nextMatchUps,
+    tournamentId,
+    inContext,
+    context,
+    event,
+  } = params;
+
   if (!event) return { error: MISSING_EVENT };
   const { eventId, eventName, endDate } = event;
 

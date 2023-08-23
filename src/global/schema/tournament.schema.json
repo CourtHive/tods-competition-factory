@@ -428,6 +428,9 @@
         "categoryName": {
           "type": "string"
         },
+        "categoryType": {
+          "type": "string"
+        },
         "ratingMax": {
           "type": "number"
         },

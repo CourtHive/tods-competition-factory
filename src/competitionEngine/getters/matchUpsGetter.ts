@@ -3,16 +3,37 @@ import {
   tournamentMatchUps,
 } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
 
-import { MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
+import {
+  ErrorType,
+  MISSING_TOURNAMENT_RECORDS,
+} from '../../constants/errorConditionConstants';
+import { Tournament } from '../../types/tournamentFromSchema';
+import { HydratedMatchUp } from '../../types/hydrated';
+
+type CompetitionMatchUpsArgs = {
+  tournamentRecords: { [key: string]: Tournament } | Tournament[];
+  scheduleVisibilityFilters?: boolean;
+  participantsProfile?: any;
+  afterRecoveryTimes?: any;
+  policyDefinitions?: any;
+  nextMatchUps?: boolean;
+  matchUpFilters?: any;
+  contextFilters?: any;
+};
 
 export function allCompetitionMatchUps({
   scheduleVisibilityFilters,
   afterRecoveryTimes,
+  participantsProfile,
   tournamentRecords,
+  policyDefinitions,
   matchUpFilters,
   contextFilters,
   nextMatchUps,
-}) {
+}: CompetitionMatchUpsArgs): {
+  matchUps?: HydratedMatchUp[];
+  error?: ErrorType;
+} {
   if (
     typeof tournamentRecords !== 'object' ||
     !Object.keys(tournamentRecords).length
@@ -20,12 +41,14 @@ export function allCompetitionMatchUps({
     return { error: MISSING_TOURNAMENT_RECORDS };
 
   const tournamentIds = Object.keys(tournamentRecords);
-  const competitionMatchUps = tournamentIds
+  const competitionMatchUps: HydratedMatchUp[] = tournamentIds
     .map((tournamentId) => {
       const tournamentRecord = tournamentRecords[tournamentId];
       const { matchUps } = allTournamentMatchUps({
         scheduleVisibilityFilters,
         afterRecoveryTimes,
+        participantsProfile,
+        policyDefinitions,
         tournamentRecord,
         matchUpFilters,
         contextFilters,
@@ -52,12 +75,12 @@ export function getFloatValue(matchUp) {
 export function competitionMatchUps({
   scheduleVisibilityFilters,
   participantsProfile,
-  policyDefinitions,
   tournamentRecords,
+  policyDefinitions,
   matchUpFilters,
   contextFilters,
   nextMatchUps,
-}) {
+}: CompetitionMatchUpsArgs) {
   if (
     typeof tournamentRecords !== 'object' ||
     !Object.keys(tournamentRecords).length

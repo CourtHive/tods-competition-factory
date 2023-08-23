@@ -105,6 +105,7 @@ export interface Category {
   ageMinDate?: string;
   ballType?: BallTypeEnum;
   categoryName?: string;
+  categoryType?: string;
   createdAt?: Date | string;
   extensions?: Extension[];
   isMock?: boolean;
