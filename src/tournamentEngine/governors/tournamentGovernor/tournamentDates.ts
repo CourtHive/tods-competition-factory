@@ -13,8 +13,18 @@ import {
   MISSING_TOURNAMENT_RECORD,
   SCHEDULE_NOT_CLEARED,
 } from '../../../constants/errorConditionConstants';
+import { Tournament } from '../../../types/tournamentFromSchema';
 
-export function setTournamentDates({ tournamentRecord, startDate, endDate }) {
+type SetTournamentDatesArgs = {
+  tournamentRecord: Tournament;
+  startDate?: string;
+  endDate?: string;
+};
+export function setTournamentDates({
+  tournamentRecord,
+  startDate,
+  endDate,
+}: SetTournamentDatesArgs) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
   if (
@@ -95,8 +105,8 @@ export function removeInvalidScheduling({ tournamentRecord }) {
   const endDate =
     tournamentRecord.endDate && new Date(tournamentRecord.endDate);
 
-  const invalidScheduledDates = [];
-  const invalidSchedulingMatchUpIds = [];
+  const invalidScheduledDates: string[] = [];
+  const invalidSchedulingMatchUpIds: string[] = [];
   for (const matchUp of matchUps) {
     const { schedule, matchUpId } = matchUp;
     if (!schedule) continue;

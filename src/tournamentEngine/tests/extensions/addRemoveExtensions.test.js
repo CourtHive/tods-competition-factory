@@ -213,11 +213,13 @@ test('add and remove primitives throw appropriate errors', () => {
   expect(result.success).toEqual(true);
 
   result = addParticipantExtension();
-  expect(result.error).toEqual(MISSING_PARTICIPANT_ID);
+  expect(result.error).toEqual(MISSING_VALUE);
   result = addParticipantExtension({ participantId: 'bogus' });
   expect(result.error).toEqual(PARTICIPANT_NOT_FOUND);
 
   result = removeParticipantExtension();
+  expect(result.error).toEqual(MISSING_VALUE);
+  result = removeParticipantExtension({});
   expect(result.error).toEqual(MISSING_PARTICIPANT_ID);
   result = removeParticipantExtension({ participantId: 'bogus' });
   expect(result.error).toEqual(PARTICIPANT_NOT_FOUND);
