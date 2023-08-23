@@ -98,26 +98,31 @@ export function allTournamentMatchUps(params) {
   return { matchUps };
 }
 
-export function allDrawMatchUps({
-  participants: tournamentParticipants,
-  scheduleVisibilityFilters,
-  tournamentAppliedPolicies,
-  participantsProfile,
-  afterRecoveryTimes,
-  policyDefinitions,
-  useParticipantMap,
-  tournamentRecord,
-  contextContent,
-  contextFilters,
-  contextProfile,
-  drawDefinition,
-  matchUpFilters,
-  participantMap,
-  nextMatchUps,
-  inContext,
-  context,
-  event,
-}) {
+export function allDrawMatchUps(params) {
+  let {
+    participants: tournamentParticipants,
+    participantMap,
+    contextContent,
+  } = params;
+
+  const {
+    scheduleVisibilityFilters,
+    tournamentAppliedPolicies,
+    participantsProfile,
+    afterRecoveryTimes,
+    policyDefinitions,
+    useParticipantMap,
+    tournamentRecord,
+    contextFilters,
+    contextProfile,
+    drawDefinition,
+    matchUpFilters,
+    nextMatchUps,
+    inContext,
+    context,
+    event,
+  } = params;
+
   const { eventId, eventName, eventType, category, gender, matchUpFormat } =
     event || {};
   const additionalContext = {

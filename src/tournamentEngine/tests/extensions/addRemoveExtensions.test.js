@@ -225,6 +225,8 @@ test('add and remove primitives throw appropriate errors', () => {
   expect(result.error).toEqual(PARTICIPANT_NOT_FOUND);
 
   result = addNotes();
+  expect(result.error).toEqual(MISSING_VALUE);
+  result = addNotes({});
   expect(result.error).toEqual(INVALID_VALUES);
   result = addNotes({ element: 'bogus' });
   expect(result.error).toEqual(INVALID_VALUES);
@@ -232,6 +234,8 @@ test('add and remove primitives throw appropriate errors', () => {
   expect(result.error).toEqual(MISSING_VALUE);
 
   result = removeNotes();
+  expect(result.error).toEqual(MISSING_VALUE);
+  result = removeNotes({});
   expect(result.error).toEqual(INVALID_VALUES);
   result = removeNotes({ element: {} });
   expect(result.success).toEqual(true);

@@ -8,19 +8,33 @@ import { isActiveMatchUp } from './activeMatchUp';
 import { findStructure } from './findStructure';
 
 import { INVALID_DRAW_POSITION } from '../../constants/errorConditionConstants';
+import {
+  DrawDefinition,
+  Event,
+  Structure,
+} from '../../types/tournamentFromSchema';
 
 // active drawPositions occur in activeMatchUps...
 // ...which have a winningSide, a scoreString, or a completed matchUpStatus
-export function getStructureDrawPositionProfiles({
-  drawDefinition,
-  findContainer,
-  structureId,
-  structure,
-  event,
-}) {
+
+type GetStructureDrawPositionProfilesArgs = {
+  drawDefinition: DrawDefinition;
+  findContainer?: boolean;
+  structure?: Structure;
+  structureId?: string;
+  event?: Event;
+};
+export function getStructureDrawPositionProfiles(
+  params: GetStructureDrawPositionProfilesArgs
+): { [key: string]: any } {
+  const { drawDefinition, findContainer, structureId, event } = params;
+  let structure = params.structure;
+
   const matchUpFilters = { isCollectionMatchUp: false };
   const { containedStructures } = getContainedStructures({ drawDefinition });
-  const containedStructureIds = containedStructures[structureId] || [];
+  const containedStructureIds = structureId
+    ? containedStructures[structureId] || []
+    : [];
 
   if (!structure) {
     const result = findStructure({ drawDefinition, structureId });
@@ -56,10 +70,10 @@ export function getStructureDrawPositionProfiles({
     drawDefinition,
   });
 
-  const activeDependentMatchUpIdsCollection = [];
+  const activeDependentMatchUpIdsCollection: string[] = [];
+  const drawPositionsCollection: number[] = [];
   const drawPositionInitialRounds = {};
-  const drawPositionsCollection = [];
-  const activeMatchUps = [];
+  const activeMatchUps: any[] = [];
 
   for (const matchUp of inContextDrawMatchUps) {
     if (
