@@ -1,8 +1,8 @@
 import { nextRoundMatchUp } from '../../getters/getMatchUps/nextRoundMatchUp';
 import { getTargetMatchUp } from '../../getters/getMatchUps/getTargetMatchUp';
-import { HydratedMatchUp } from '../../getters/getMatchUps/hydratedMatchUp';
 import { getRoundLinks, getTargetLink } from '../../getters/linkGetter';
 import { DrawDefinition } from '../../../types/tournamentFromSchema';
+import { HydratedMatchUp } from '../../../types/hydrated';
 import { findStructure } from '../../getters/findStructure';
 import { definedAttributes } from '../../../utilities';
 

@@ -5,25 +5,34 @@ import { findExtension } from '../../global/functions/deducers/findExtension';
 import { makeDeepCopy } from '../../utilities';
 
 import { MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
+import { Tournament, Venue } from '../../types/tournamentFromSchema';
+import { HydratedCourt, HydratedVenue } from '../../types/hydrated';
 import { DISABLED } from '../../constants/extensionConstants';
 
+type GetVenuesAndCourtsArgs = {
+  tournamentRecords: Tournament[] | { [key: string]: Tournament };
+  convertExtensions?: boolean;
+  ignoreDisabled?: boolean;
+  venueIds?: string[];
+  dates?: string[];
+};
 export function getVenuesAndCourts({
   tournamentRecords,
   convertExtensions,
   ignoreDisabled,
   venueIds = [],
   dates, // used in conjunction with ignoreDisabled
-}) {
+}: GetVenuesAndCourtsArgs) {
   if (
     typeof tournamentRecords !== 'object' ||
     !Object.keys(tournamentRecords).length
   )
     return { error: MISSING_TOURNAMENT_RECORDS };
 
-  const uniqueVenueIds = [];
-  const uniqueCourtIds = [];
-  const venues = [];
-  const courts = [];
+  const uniqueVenueIds: string[] = [];
+  const uniqueCourtIds: string[] = [];
+  const courts: HydratedCourt[] = [];
+  const venues: HydratedVenue[] = [];
 
   const tournamentIds = Object.keys(tournamentRecords);
   tournamentIds.forEach((tournamentId) => {
@@ -70,6 +79,11 @@ export function getVenuesAndCourts({
   return { courts, venues };
 }
 
+type Accumulator = {
+  venueIds: string[];
+  venues: Venue[];
+};
+
 export function getCompetitionVenues({
   tournamentRecords,
   requireCourts,
@@ -83,7 +97,7 @@ export function getCompetitionVenues({
 
   const tournamentIds = Object.keys(tournamentRecords);
   return tournamentIds.reduce(
-    (accumulator, tournamentId) => {
+    (accumulator: Accumulator, tournamentId) => {
       const tournamentRecord = tournamentRecords[tournamentId];
       const { venues } = teVenuesAndCourts({ tournamentRecord, dates });
       venues.forEach((venue) => {

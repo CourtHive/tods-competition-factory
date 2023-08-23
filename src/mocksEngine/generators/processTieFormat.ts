@@ -22,7 +22,7 @@ export function processTieFormat({
   let singlesMatchUpTotal = 0,
     doublesMatchUpTotal = 0;
 
-  let categories = {};
+  const categories = {};
   const genders = { [MALE]: 0, [FEMALE]: 0, [MIXED]: 0, [OTHER]: 0, [ANY]: 0 };
 
   tieFormat =

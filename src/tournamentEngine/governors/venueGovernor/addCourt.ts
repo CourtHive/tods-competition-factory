@@ -18,6 +18,7 @@ import {
   VENUE_NOT_FOUND,
   COURT_EXISTS,
 } from '../../../constants/errorConditionConstants';
+import { Tournament } from '../../../types/tournamentFromSchema';
 
 export function addCourt({
   tournamentRecord,
@@ -36,9 +37,9 @@ export function addCourt({
     courtRecord.courtId = UUID();
   }
 
-  const courtExists = venue.courts.reduce((exists, candidate) => {
-    return exists || candidate.courtId === courtRecord.courtId;
-  }, undefined);
+  const courtExists = venue.courts.some(
+    (candidate) => candidate.courtId === courtRecord.courtId
+  );
 
   if (courtExists) {
     return { error: COURT_EXISTS };
@@ -85,6 +86,22 @@ export function addCourt({
   }
 }
 
+type AddCourtsArgs = {
+  venueAbbreviationRoot?: string;
+  tournamentRecord: Tournament;
+  dateAvailability?: any[];
+  courtNameRoot?: string;
+  courtNames?: string[];
+  courtTimings?: any[];
+  courtsCount?: number;
+  courtIds?: string[];
+  startTime?: string;
+  endTime?: string;
+  idPrefix?: string;
+  venueId: string;
+  dates: string[];
+};
+
 export function addCourts({
   courtNameRoot = 'Court',
   dateAvailability = [],
@@ -99,9 +116,9 @@ export function addCourts({
   idPrefix,
   venueId,
   dates,
-}) {
+}: AddCourtsArgs) {
   if (!venueId) return { error: MISSING_VENUE_ID };
-  let result = findVenue({ tournamentRecord, venueId });
+  const result = findVenue({ tournamentRecord, venueId });
   if (result.error) return result;
 
   const { venue } = result;
@@ -129,14 +146,14 @@ export function addCourts({
       courtName:
         courtNames[i] ||
         (venueAbbreviationRoot &&
-          venue.venueAbbreviation &&
-          `${venue.venueAbbreviation} ${i + 1}`) ||
+          venue?.venueAbbreviation &&
+          `${venue?.venueAbbreviation} ${i + 1}`) ||
         `${courtNameRoot} ${i + 1}`,
       dateAvailability: courtAvailability,
     };
   });
 
-  result = courts.map((court, i) => {
+  const mapResult: any[] = courts.map((court, i) => {
     const courtId = courtIds?.pop() || (idPrefix && `${idPrefix}-${i + 1}`);
     return addCourt({
       disableNotice: true,
@@ -146,15 +163,20 @@ export function addCourts({
       court,
     });
   });
-  const courtRecords = result.map((outcome) => outcome.court).filter(Boolean);
-  if (courtRecords.length !== parseInt(courtsCount)) {
+
+  const courtRecords = mapResult
+    .map((outcome) => outcome.court)
+    .filter(Boolean);
+  if (courtRecords.length !== courtsCount) {
     return { error: 'Not all courts could be generated', result };
   }
 
-  addNotice({
-    payload: { venue, tournamentId: tournamentRecord.tournamentId },
-    topic: MODIFY_VENUE,
-    key: venue.venueId,
-  });
+  if (venue)
+    addNotice({
+      payload: { venue, tournamentId: tournamentRecord.tournamentId },
+      topic: MODIFY_VENUE,
+      key: venue.venueId,
+    });
+
   return { ...SUCCESS, courts: makeDeepCopy(courtRecords) };
 }

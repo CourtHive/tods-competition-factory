@@ -60,10 +60,10 @@ export function getEventMatchUpFormatTiming({
       }
     }
   } else {
-    const uniqueMatchUpFormats = [];
+    const uniqueMatchUpFormats: any[] = [];
     matchUpFormatDefinitions = matchUpFormats
       .map((definition) => {
-        let definitionObject =
+        const definitionObject =
           typeof definition === 'string'
             ? { matchUpFormat: definition }
             : definition;

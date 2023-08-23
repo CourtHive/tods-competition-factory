@@ -33,7 +33,7 @@ export function modifyEventMatchUpFormatTiming({
     category?.categoryName || category?.ageCategoryCode || event?.eventId;
 
   let currentAverageTime = { categoryNames: [categoryName], minutes: {} };
-  let currentRecoveryTime = { categoryNames: [categoryName], minutes: {} };
+  const currentRecoveryTime = { categoryNames: [categoryName], minutes: {} };
 
   const newTiming = (timing) => {
     if (timing.categoryTypes?.includes(categoryType)) {

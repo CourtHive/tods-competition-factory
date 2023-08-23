@@ -23,16 +23,16 @@ export function modifyCourtAvailability({
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!courtId) return { error: MISSING_COURT_ID };
 
-  let result = validDateAvailability({ dateAvailability });
-  if (result.error) return result;
+  const dateResult = validDateAvailability({ dateAvailability });
+  if (dateResult.error) return dateResult;
 
   const { updatedDateAvailability, totalMergeCount } =
     sortAndMergeDateAvailability(dateAvailability);
   dateAvailability = updatedDateAvailability;
 
-  result = findCourt({ tournamentRecord, courtId });
-  if (result.error) return result;
-  const { court, venue } = result;
+  const courtResult = findCourt({ tournamentRecord, courtId });
+  if (courtResult.error) return courtResult;
+  const { court, venue } = courtResult;
 
   const { matchUps: courtMatchUps } = getScheduledCourtMatchUps({
     tournamentRecord,
@@ -49,14 +49,16 @@ export function modifyCourtAvailability({
     }
   }
 
-  court.dateAvailability = dateAvailability;
+  if (court) {
+    court.dateAvailability = dateAvailability;
 
-  if (!disableNotice)
-    addNotice({
-      payload: { venue, tournamentId: tournamentRecord.tournamentId },
-      topic: MODIFY_VENUE,
-      key: venue.venueId,
-    });
+    if (!disableNotice && venue)
+      addNotice({
+        payload: { venue, tournamentId: tournamentRecord.tournamentId },
+        topic: MODIFY_VENUE,
+        key: venue.venueId,
+      });
+  }
 
   return { ...SUCCESS, totalMergeCount };
 }
@@ -71,7 +73,7 @@ function sortAndMergeDateAvailability(dateAvailability) {
     return byDate;
   }, {});
 
-  const updatedDateAvailability = [];
+  const updatedDateAvailability: any[] = [];
 
   Object.keys(availabilityByDate).forEach((date) => {
     availabilityByDate[date].sort(startTimeSort);
@@ -79,7 +81,10 @@ function sortAndMergeDateAvailability(dateAvailability) {
       availabilityByDate[date]
     );
     updatedDateAvailability.push(
-      ...mergedAvailability.map((availability) => ({ date, ...availability }))
+      ...mergedAvailability.map((availability: any) => ({
+        date,
+        ...availability,
+      }))
     );
     totalMergeCount += mergeCount;
   });
@@ -93,7 +98,7 @@ function getMergedAvailability(dateDetails) {
     lastBookings,
     safety = dateDetails.length,
     mergeCount = 0;
-  const mergedAvailability = [];
+  const mergedAvailability: any[] = [];
 
   while (dateDetails.length && safety) {
     const details = dateDetails.shift();
@@ -112,7 +117,10 @@ function getMergedAvailability(dateDetails) {
       );
 
       if (difference > 0) {
-        const availability = { startTime: lastStartTime, endTime: lastEndTime };
+        const availability: any = {
+          startTime: lastStartTime,
+          endTime: lastEndTime,
+        };
         if (lastBookings?.length) availability.bookings = lastBookings;
         mergedAvailability.push(availability);
         lastStartTime = startTime;
@@ -131,7 +139,7 @@ function getMergedAvailability(dateDetails) {
       }
     }
   }
-  const availability = { startTime: lastStartTime, endTime: lastEndTime };
+  const availability: any = { startTime: lastStartTime, endTime: lastEndTime };
   if (lastBookings?.length) availability.bookings = lastBookings;
   mergedAvailability.push(availability);
 

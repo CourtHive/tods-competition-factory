@@ -6,13 +6,28 @@ import { deletionMessage } from './deletionMessage';
 import { DELETE_VENUE } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
+  ErrorType,
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VENUE_ID,
   VENUE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
+import { Tournament, Venue } from '../../../types/tournamentFromSchema';
 
-export function deleteVenue({ tournamentRecord, venueId, force }) {
+type DeleteVenueArgs = {
+  tournamentRecord: Tournament;
+  venueId: string;
+  force?: boolean;
+};
+
+export function deleteVenue({
+  tournamentRecord,
+  venueId,
+  force,
+}: DeleteVenueArgs): {
+  success?: boolean;
+  error?: ErrorType;
+} {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (typeof venueId !== 'string') return { error: MISSING_VENUE_ID };
 
@@ -37,10 +52,13 @@ export function deleteVenue({ tournamentRecord, venueId, force }) {
   }
 
   let deleted;
-  tournamentRecord.venues = (tournamentRecord.venues || []).filter((venue) => {
-    if (venue.venueId !== venueId) return true;
-    deleted = true;
-  });
+  tournamentRecord.venues = (tournamentRecord.venues || []).filter(
+    (venue: Venue | undefined) => {
+      if (venue?.venueId !== venueId) return true;
+      deleted = true;
+      return false;
+    }
+  );
 
   if (!deleted) return { error: VENUE_NOT_FOUND };
 

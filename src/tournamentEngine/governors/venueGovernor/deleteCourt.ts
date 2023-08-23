@@ -23,8 +23,8 @@ export function deleteCourt({
     courtId,
   });
 
-  if (!matchUps.length || force) {
-    for (const matchUp of matchUps) {
+  if (!matchUps?.length || force) {
+    for (const matchUp of matchUps || []) {
       const result = removeCourtAssignment({
         matchUpId: matchUp.matchUpId,
         drawId: matchUp.drawId,
@@ -33,15 +33,18 @@ export function deleteCourt({
       });
       if (result.error) return result;
     }
-    venue.courts = (venue.courts || []).filter((courtRecord) => {
-      return courtRecord.courtId !== courtId;
-    });
-    if (!disableNotice)
-      addNotice({
-        topic: MODIFY_VENUE,
-        payload: { venue, tournamentId: tournamentRecord.tournamentId },
-        key: venue.venueId,
+
+    if (venue) {
+      venue.courts = (venue.courts || []).filter((courtRecord) => {
+        return courtRecord.courtId !== courtId;
       });
+      if (!disableNotice)
+        addNotice({
+          topic: MODIFY_VENUE,
+          payload: { venue, tournamentId: tournamentRecord.tournamentId },
+          key: venue.venueId,
+        });
+    }
   } else {
     return deletionMessage({ matchUpsCount: matchUps.length });
   }

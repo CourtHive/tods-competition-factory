@@ -60,13 +60,16 @@ export function modifyMatchUpFormatTiming({
   return { ...SUCCESS };
 }
 
-function modifyScheduling({
-  matchUpAverageTimes = [],
-  matchUpRecoveryTimes = [],
-  averageTimes: formatAverageTimes,
-  recoveryTimes: formatRecoveryTimes,
-  matchUpFormat,
-}) {
+function modifyScheduling(params) {
+  const {
+    matchUpRecoveryTimes = [],
+    matchUpAverageTimes = [],
+    matchUpFormat,
+  } = params;
+
+  let { averageTimes: formatAverageTimes, recoveryTimes: formatRecoveryTimes } =
+    params;
+
   // don't allow modification without categoryName
   formatAverageTimes = (formatAverageTimes || []).filter(
     (averageTime) =>

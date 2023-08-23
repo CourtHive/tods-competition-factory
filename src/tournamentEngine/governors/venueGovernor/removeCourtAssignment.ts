@@ -16,12 +16,23 @@ import {
   ASSIGN_COURT,
 } from '../../../constants/timeItemConstants';
 
+import {
+  DrawDefinition,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
+
+type RemoveCourtAssignmentArgs = {
+  drawDefinition?: DrawDefinition;
+  tournamentRecord: Tournament;
+  matchUpId: string;
+  drawId?: string;
+};
 export function removeCourtAssignment({
   tournamentRecord,
   drawDefinition,
   matchUpId,
   drawId,
-}) {
+}: RemoveCourtAssignmentArgs) {
   const stack = 'removeCourtAssignment';
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
   if (!drawDefinition && !drawId) return { error: MISSING_DRAW_ID };

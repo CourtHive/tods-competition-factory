@@ -6,6 +6,7 @@ import { findTournamentExtension } from '../queryGovernor/extensionQueries';
 
 import { SCHEDULING_PROFILE } from '../../../constants/extensionConstants';
 import {
+  ErrorType,
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
@@ -24,7 +25,12 @@ function saveSchedulingProfile({ tournamentRecord, schedulingProfile }) {
   return addTournamentExtension({ tournamentRecord, extension });
 }
 
-export function getSchedulingProfile({ tournamentRecord }) {
+export function getSchedulingProfile({ tournamentRecord }): {
+  schedulingProfile?: any;
+  modifications?: number;
+  issues?: string[];
+  error?: ErrorType;
+} {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   const tournamentId = tournamentRecord.tournamentId;
 
@@ -39,9 +45,11 @@ export function getSchedulingProfile({ tournamentRecord }) {
     const venueIds = tournamentRecord.venues?.map(
       ({ venueId, courts }) => courts?.length && venueId
     );
-    const { eventIds, drawIds } = getEventIdsAndDrawIds({
+    const aggregator = getEventIdsAndDrawIds({
       tournamentRecords: { [tournamentId]: tournamentRecord },
     });
+
+    const { eventIds, drawIds } = aggregator;
 
     const { updatedSchedulingProfile, modifications, issues } =
       getUpdatedSchedulingProfile({
