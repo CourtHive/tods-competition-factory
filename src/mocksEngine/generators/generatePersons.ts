@@ -19,16 +19,17 @@ import { MALE, FEMALE } from '../../constants/genderConstants';
  * @param {object[]} personData - optional array of persons to seed generator [{ firstName, lastName, sex, nationalityCode }]
  * @param {object} personExtensions - optional array of extentsions to apply to all persons
  */
-export function generatePersons({
-  personExtensions,
-  consideredDate,
-  isMock = true,
-  gendersCount,
-  personData,
-  count = 1,
-  category,
-  sex,
-} = {}) {
+export function generatePersons(params?) {
+  let count = params?.count || 1;
+  const {
+    personExtensions,
+    consideredDate,
+    isMock = true,
+    gendersCount,
+    personData,
+    category,
+    sex,
+  } = params || {};
   if (isNaN(count)) return { error: INVALID_VALUES };
 
   const maleCount = gendersCount?.[MALE] || (sex === MALE && count) || 0;
@@ -66,7 +67,7 @@ export function generatePersons({
     (person) => !sex || (maleCount && femaleCount) || person.sex === sex
   );
 
-  let nationalityCodes = [];
+  const nationalityCodes: string[] = [];
 
   if (Array.isArray(personData)) {
     const validatedPersonData = personData.filter((person) => {
@@ -169,7 +170,8 @@ export function generatePersons({
   const yearRange = (ageMinDate || ageMaxDate) && [rangeStart, rangeEnd];
 
   const persons = shuffledPersons.slice(0, count).map((person, i) => {
-    const birthYear = yearRange && randomPop(generateRange(...yearRange));
+    const [start, end] = yearRange || [];
+    const birthYear = yearRange && randomPop(generateRange(start, end));
     const birthDay = randomPop(generateRange(0, 365));
     const birthDate = birthYear && dateFromDay(birthYear, birthDay);
 

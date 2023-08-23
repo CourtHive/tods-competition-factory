@@ -7,10 +7,17 @@ import {
   randomPop,
 } from '../../utilities';
 
-import { INVALID_VALUES } from '../../constants/errorConditionConstants';
 import { FEMALE, MALE } from '../../constants/genderConstants';
+import {
+  ErrorType,
+  INVALID_VALUES,
+} from '../../constants/errorConditionConstants';
 
-export function generatePersonData({ count = 100, sex } = {}) {
+export function generatePersonData(params?): {
+  personData?: any[];
+  error?: ErrorType;
+} {
+  const { count = 100, sex } = params || {};
   if (!count || (sex && ![MALE, FEMALE].includes(sex)))
     return { personData: [], error: INVALID_VALUES };
 

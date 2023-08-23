@@ -8,15 +8,24 @@ import { generateRange, UUID } from '../../utilities';
 import { INDIVIDUAL, TEAM } from '../../constants/participantConstants';
 import { COMPETITOR } from '../../constants/participantRoles';
 import { SUCCESS } from '../../constants/resultConstants';
+import { Participant, Tournament } from '../../types/tournamentFromSchema';
 
+type AddTournamentParticipantsArgs = {
+  tournamentRecord: Tournament;
+  participantsProfile?: any;
+  eventProfiles?: any[];
+  drawProfiles?: any[];
+  startDate?: string;
+  uuids?: string[];
+};
 export function addTournamentParticipants({
-  participantsProfile = {},
+  participantsProfile,
   tournamentRecord,
   eventProfiles,
   drawProfiles,
   startDate,
   uuids,
-}) {
+}: AddTournamentParticipantsArgs) {
   const {
     participantsCount,
     participantType,
@@ -29,16 +38,16 @@ export function addTournamentParticipants({
     drawProfiles,
   });
 
-  const { teamKey } = participantsProfile || {};
+  const teamKey = participantsProfile?.teamKey;
 
-  const { participants } = generateParticipants({
+  const participants = generateParticipants({
     uuids,
     ...participantsProfile,
     consideredDate: startDate,
     participantsCount,
     participantType,
     gendersCount,
-  });
+  }).participants as Participant[];
 
   let addedCount = 0;
   let result = addParticipants({ tournamentRecord, participants });
@@ -57,7 +66,7 @@ export function addTournamentParticipants({
   const allIndividualParticipantIds = participants
     .filter(({ participantType }) => participantType === INDIVIDUAL)
     .map(getParticipantId);
-  const teamParticipants = generateRange(0, largestTeamDraw).map(
+  const teamParticipants: any[] = generateRange(0, largestTeamDraw).map(
     (teamIndex) => {
       const individualParticipantIds = allIndividualParticipantIds.slice(
         teamIndex * largestTeamSize,

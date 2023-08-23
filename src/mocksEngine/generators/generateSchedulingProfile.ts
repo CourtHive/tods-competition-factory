@@ -17,7 +17,7 @@ export function generateSchedulingProfile({
   const { matchUps } = allTournamentMatchUps({ tournamentRecord });
 
   const { tournamentId } = tournamentRecord;
-  const scheduledRounds = [];
+  const scheduledRounds: any[] = [];
 
   for (const dateProfile of schedulingProfile) {
     const { scheduleDate, venues = [] } = dateProfile;
@@ -69,7 +69,7 @@ export function generateSchedulingProfile({
             drawId,
           };
 
-          let result = addSchedulingProfileRound({
+          const result = addSchedulingProfileRound({
             tournamentRecords: { [tournamentId]: tournamentRecord },
             round: roundToSchedule,
             scheduleDate,

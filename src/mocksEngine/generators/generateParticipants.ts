@@ -11,6 +11,7 @@ import { nameMocks } from '../utilities/nameMocks';
 import defaultRatingsParameters from '../../fixtures/ratings/ratingsParameters';
 import { DOUBLES_EVENT, SINGLES_EVENT } from '../../constants/eventConstants';
 import { RANKING, RATING, SCALE } from '../../constants/scaleConstants';
+import { ErrorType } from '../../constants/errorConditionConstants';
 import { DOUBLES_MATCHUP } from '../../constants/matchUpTypes';
 import { COMPETITOR } from '../../constants/participantRoles';
 import {
@@ -20,59 +21,44 @@ import {
   TEAM,
 } from '../../constants/participantConstants';
 
-/**
- *
- * Generate mock participants
- *
- * @param {string[]} nationalityCodes - an array of ISO codes to randomly assign to participants
- * @param {number} nationalityCodesCount - number of nationality codes to use when generating participants
- * @param {number} participantsCount - number of participants to generate
- * @param {string} participantType - [INDIVIDUAL, PAIR, TEAM]
- * @param {number[]} personIds - optional array of pre-defined personIds
- * @param {string} matchUpType - optional - [SINGLES, DOUBLES] - forces PAIR participant generation if DOUBLES
- * @param {string} sex - optional - [MALE, FEMALE]
- * @param {number} valuesInstanceLimit - maximum number of values which can be the same
- * @param {number} valuesCount - number of values to generate
- * @param {boolean} inContext - whether to expand PAIR and TEAM individualParticipantIds => individualParticipant objects
- * @param {object[]} personData - optional array of persons to seed generator [{ firstName, lastName, sex, nationalityCode }]
- * @param {object} personExtensions - optional array of extentsions to apply to all persons
- * @param {string} consideredDate - date from which category ageMaxDate and ageMinDate should be calculated (typically tournament.startDate or .endDate)
- * @param {object} category - optional - { categoryName, ageCategoryCode, ratingType, ratingMax, ratingMin }
- * @param {number[]} rankingRankge - optional - range within which ranking numbers should be generated for specified category (non-rating)
- * @param {number} scaledParticipantsCount - optional - number of participants to assign rankings/ratings
- *
- */
-export function generateParticipants({
-  ratingsParameters = defaultRatingsParameters,
-  valuesInstanceLimit,
-  consideredDate,
-  category,
+export function generateParticipants(params): {
+  participants?: any[];
+  error?: ErrorType;
+} {
+  let {
+    rankingRange, // range of ranking positions to generate
+    scaledParticipantsCount, // number of participants to assign rankings/ratings
+  } = params;
+  const {
+    ratingsParameters = defaultRatingsParameters,
+    valuesInstanceLimit,
+    consideredDate,
+    category,
 
-  nationalityCodesCount,
-  nationalityCodeType,
-  nationalityCodes,
+    nationalityCodesCount,
+    nationalityCodeType,
+    nationalityCodes,
 
-  participantsCount = 32,
-  participantType,
-  personIds,
-  idPrefix,
-  uuids,
+    participantsCount = 32,
+    participantType,
+    personIds,
+    idPrefix,
+    uuids,
 
-  personExtensions,
-  addressProps,
-  gendersCount, // used by mocksEngine; internally calculated
-  matchUpType,
-  personData,
-  sex,
+    personExtensions,
+    addressProps,
+    gendersCount, // used by mocksEngine; internally calculated
+    matchUpType,
+    personData,
+    sex,
 
-  inContext,
-  withISO2,
-  withIOC,
+    inContext,
+    withISO2,
+    withIOC,
 
-  rankingRange, // range of ranking positions to generate
-  scaledParticipantsCount, // number of participants to assign rankings/ratings
-  scaleAllParticipants, // optional boolean
-}) {
+    scaleAllParticipants, // optional boolean
+  } = params;
+
   const doubles = participantType === PAIR || matchUpType === DOUBLES_MATCHUP;
   const team = participantType === TEAM || matchUpType === TEAM;
 
@@ -114,28 +100,32 @@ export function generateParticipants({
     result;
 
   // generated arrays of rankings and ratings to be attached as scaleItems
-  let doublesRankings = [],
-    singlesRankings = [],
-    singlesRatings = [],
-    doublesRatings = [];
+  let doublesRankings: any[] = [],
+    singlesRankings: any[] = [],
+    singlesRatings: any[] = [],
+    doublesRatings: any[] = [];
 
   if (typeof category === 'object') {
     const { categoryName, ageCategoryCode, ratingType } = category;
     if ((categoryName || ageCategoryCode) && !ratingType) {
-      singlesRankings = shuffleArray(generateRange(...rankingRange)).slice(
+      const [start, end] = rankingRange || [];
+      singlesRankings = shuffleArray(generateRange(start, end)).slice(
         0,
         scaledParticipantsCount || randomInt(20, 30)
       );
-      if ([PAIR, TEAM].includes(participantType))
-        doublesRankings = shuffleArray(generateRange(...rankingRange)).slice(
+
+      if ([PAIR, TEAM].includes(participantType)) {
+        const [start, end] = rankingRange || [];
+        doublesRankings = shuffleArray(generateRange(start, end)).slice(
           0,
           scaledParticipantsCount || randomInt(20, 30)
         );
+      }
     }
 
     if (ratingType && ratingsParameters[ratingType]) {
       // ratingAttributes allows selected attributes of ratingParameters to be overridden
-      let { ratingMax, ratingMin, ratingAttributes } = category;
+      const { ratingMax, ratingMin, ratingAttributes } = category;
 
       const ratingParameters = Object.assign(
         {},
@@ -253,7 +243,7 @@ export function generateParticipants({
     ? shuffleArray(countryCodes).slice(0, nationalityCodesCount)
     : nationalityCodes
     ? countryCodes.filter((isoCountry) =>
-        nationalityCodes.includes(isoCountry.key)
+        nationalityCodes.includes(isoCountry.iso)
       )
     : countryCodes;
 
@@ -284,7 +274,7 @@ export function generateParticipants({
         .join('/');
 
       const participantType = doubles ? PAIR : TEAM;
-      const groupParticipant = {
+      const groupParticipant: any = {
         participantId: genParticipantId({
           participantType,
           idPrefix,

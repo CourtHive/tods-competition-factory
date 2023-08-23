@@ -1,3 +1,5 @@
+import { isValid } from '../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
+import { parse } from '../../matchUpEngine/governors/matchUpFormatGovernor/parse';
 import { analyzeMatchUp } from '../../matchUpEngine/getters/analyzeMatchUp';
 import { matchUpScore } from '../../matchUpEngine/generators/matchUpScore';
 import { analyzeSet } from '../../matchUpEngine/getters/analyzeSet';
@@ -25,8 +27,6 @@ import {
   completedMatchUpStatuses,
   DOUBLE_DEFAULT,
 } from '../../constants/matchUpStatusConstants';
-import { isValid } from '../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
-import { parse } from '../../matchUpEngine/governors/matchUpFormatGovernor/parse';
 
 // percentages rounded to the nearest whole number
 const defaultStatusProfile = {
@@ -50,14 +50,15 @@ const defaultStatusProfile = {
  *
  * @returns {object} outcome - { score, winningSide, matchUpStatus }
  */
-export function generateOutcome({
-  matchUpFormat = 'SET3-S:6/TB7',
-  matchUpStatusProfile = defaultStatusProfile, // { matchUpStatusProfile: {} } will always return only { matchUpStatus: COMPLETED }
-  pointsPerMinute = 1,
-  sideWeight = 4,
-  winningSide,
-  defaultWithScorePercent = 2,
-}) {
+export function generateOutcome(params) {
+  let { defaultWithScorePercent = 2, winningSide } = params;
+  const {
+    matchUpFormat = 'SET3-S:6/TB7',
+    matchUpStatusProfile = defaultStatusProfile, // { matchUpStatusProfile: {} } will always return only { matchUpStatus: COMPLETED }
+    pointsPerMinute = 1,
+    sideWeight = 4,
+  } = params;
+
   if (!isValid(matchUpFormat)) return { error: INVALID_MATCHUP_FORMAT };
   if (typeof matchUpStatusProfile !== 'object')
     return { error: INVALID_VALUES };
@@ -82,7 +83,7 @@ export function generateOutcome({
     return { error: INVALID_VALUES, matchUpStatusProfile };
 
   const matchUpStatusMap = matchUpStatuses.reduce(
-    (statusMap, matchUpStatus) => {
+    (statusMap: { pointer: number; valueMap: any[][] }, matchUpStatus) => {
       statusMap.pointer =
         statusMap.pointer + matchUpStatusProfile[matchUpStatus];
       statusMap.valueMap.push([statusMap.pointer, matchUpStatus]);
@@ -92,7 +93,7 @@ export function generateOutcome({
   );
 
   const outcomePointer = randomInt(1, 100);
-  const matchUpStatus = (matchUpStatusMap.valueMap.find(
+  const matchUpStatus: string = (matchUpStatusMap.valueMap.find(
     (item) => outcomePointer <= item[0]
   ) || [100, COMPLETED])[1];
 
@@ -115,9 +116,9 @@ export function generateOutcome({
 
   const parsedFormat = parse(matchUpFormat);
 
-  const { bestOf, setFormat, finalSetFormat } = parsedFormat;
+  const { bestOf, setFormat, finalSetFormat } = parsedFormat || {};
 
-  const sets = [];
+  const sets: any[] = [];
   const weightedSide = randomInt(0, 1);
   const weightedRange = winningSide
     ? [winningSide - 1]
@@ -139,7 +140,7 @@ export function generateOutcome({
   // used to capture winner by RETIREMENT or DEFAULT
   let weightedWinningSide;
 
-  for (const setNumber of generateRange(1, bestOf + 1)) {
+  for (const setNumber of generateRange(1, (bestOf || 0) + 1)) {
     const isFinalSet = setNumber === bestOf;
     const { set, incomplete, winningSideNumber } = generateSet({
       incomplete: incompleteAt === setNumber,
@@ -201,7 +202,7 @@ function generateSet({
   setFormat,
   setNumber,
 }) {
-  const set = { setNumber };
+  const set: any = { setNumber };
   const { setTo, tiebreakFormat, tiebreakAt, tiebreakSet, timed, minutes } =
     setFormat;
 
@@ -304,7 +305,7 @@ function generateSet({
         )
         .flat();
       const lowValue = range[randomInt(0, range.length - 1)];
-      let scores = getTiebreakComplement({
+      const scores = getTiebreakComplement({
         isSide1: true,
         tiebreakNoAd,
         tiebreakTo,
