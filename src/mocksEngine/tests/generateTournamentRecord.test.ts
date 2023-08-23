@@ -202,9 +202,11 @@ test('eventProfiles and participantsProfile work as expected', () => {
   expect(events[1].surfaceCategory).toEqual(CLAY);
 
   tournamentEngine.setState(tournamentRecord);
-  let { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
-    participantFilters: { participantTypes: [INDIVIDUAL] },
-  });
+  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
+    {
+      participantFilters: { participantTypes: [INDIVIDUAL] },
+    }
+  );
 
   const addressComponents = tournamentParticipants.reduce(
     (components, participant) => {

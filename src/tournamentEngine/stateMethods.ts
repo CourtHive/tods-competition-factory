@@ -13,7 +13,7 @@ import {
   MISSING_TOURNAMENT_ID,
 } from '../constants/errorConditionConstants';
 
-export function setState(tournament, deepCopyOption) {
+export function setState(tournament, deepCopyOption?) {
   if (typeof tournament !== 'object') return { error: INVALID_OBJECT };
   const tournamentId =
     tournament.unifiedTournamentId?.tournamentId || tournament.tournamentId;
@@ -31,7 +31,7 @@ export function setState(tournament, deepCopyOption) {
 type GetStateArgs = {
   convertExtensions?: boolean;
   removeExtensions?: boolean;
-  tournamentId: string;
+  tournamentId: string | undefined;
 };
 
 export function getState({
@@ -52,7 +52,7 @@ export function getState({
 }
 
 // prefetch can be triggered based on method governor, e.g. not necessary for query
-export function paramsMiddleware(tournamentRecord, params, prefetch) {
+export function paramsMiddleware(tournamentRecord, params, prefetch?) {
   if (params) {
     const drawId = params.drawId || params.matchUp?.drawId;
 

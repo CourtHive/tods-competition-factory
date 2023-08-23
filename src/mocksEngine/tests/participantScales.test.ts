@@ -42,7 +42,7 @@ test.each(rankingsScenarios)(
       const timeItem = participant.timeItems[0];
       expect(timeItem.itemType).toEqual(scenario.expectation.timeItem.itemType);
       const { ratingMin, ratingMax, ratingType } = scenario.category;
-      const accessor = ratingsParameters[ratingType]?.accessor;
+      const accessor = ratingType && ratingsParameters[ratingType]?.accessor;
       const itemValue = timeItem.itemValue;
       const value = accessor ? itemValue[accessor] : itemValue;
 
@@ -196,13 +196,15 @@ test('generates participants with rankings and ratings with additional embellish
 });
 
 it('can assess predictive accuracy of scaleValues', () => {
-  const drawProfile = mockProfile.drawProfiles.find(
+  const drawProfile: any = mockProfile.drawProfiles.find(
     (drawProfile) => drawProfile.category.ratingType === WTN
   );
   const drawSize = 64;
-  drawProfile.scaledParticipantsCount = drawSize - 4;
-  drawProfile.drawSize = drawSize;
-  drawProfile.generate = true;
+  if (drawProfile) {
+    drawProfile.scaledParticipantsCount = drawSize - 4;
+    drawProfile.drawSize = drawSize;
+    drawProfile.generate = true;
+  }
 
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     drawProfiles: [drawProfile],
@@ -254,9 +256,8 @@ it('can assess predictive accuracy of scaleValues', () => {
     }
   );
 
-  const zonePercentTotal = Object.values(zoneDistribution).reduce(
-    (a, b) => a + b
-  );
+  const distributionValues: number[] = Object.values(zoneDistribution);
+  const zonePercentTotal = distributionValues.reduce((a, b) => a + b);
   expect(Math.round(zonePercentTotal)).toEqual(100);
 
   accuracy.excluded.forEach(({ exclusionValues, sideValues }) => {
