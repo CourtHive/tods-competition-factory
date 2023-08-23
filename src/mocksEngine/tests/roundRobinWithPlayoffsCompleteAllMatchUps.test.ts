@@ -37,7 +37,7 @@ it('can complete matchUps in playoff structures', () => {
     winningSide,
   });
 
-  let result = tournamentEngine.setMatchUpStatus({
+  const result = tournamentEngine.setMatchUpStatus({
     matchUpId,
     outcome,
     drawId,

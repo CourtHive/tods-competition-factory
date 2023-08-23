@@ -2,7 +2,7 @@ import { getTiebreakComplement } from '../../matchUpEngine/getters/getComplement
 
 type ParseScoreArgs = {
   scoreString: string;
-  tiebreakTo: number;
+  tiebreakTo?: number;
 };
 
 type ParsedSetString = {

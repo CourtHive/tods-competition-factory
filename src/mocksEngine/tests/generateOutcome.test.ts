@@ -103,14 +103,14 @@ test.each(generateRange(0, iterations))('iteration counts', () => {
 
   let firstIteration3Sets = 0;
   generateRange(0, 100).forEach(() => {
-    let { outcome } = mocksEngine.generateOutcome({ sideWeight: 1 });
+    const { outcome } = mocksEngine.generateOutcome({ sideWeight: 1 });
     winningSides[outcome.winningSide] += 1;
     if (outcome.score.sets.length === 3) firstIteration3Sets += 1;
   });
 
   let secondIteration3Sets = 0;
   generateRange(0, 100).forEach(() => {
-    let { outcome } = mocksEngine.generateOutcome({ sideWeight: 100 });
+    const { outcome } = mocksEngine.generateOutcome({ sideWeight: 100 });
     winningSides[outcome.winningSide] += 1;
     if (outcome.score.sets.length === 3) secondIteration3Sets += 1;
   });
