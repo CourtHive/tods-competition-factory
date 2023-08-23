@@ -1,6 +1,12 @@
 import { attachFlightProfile as attachProfile } from '../governors/eventGovernor/attachFlightProfile';
 import { getScaledEntries } from '../governors/eventGovernor/entries/getScaledEntries';
-import { chunkArray, generateRange, chunkByNth, UUID } from '../../utilities';
+import {
+  chunkArray,
+  generateRange,
+  chunkByNth,
+  UUID,
+  shuffleArray,
+} from '../../utilities';
 import { getParticipantId } from '../../global/functions/extractors';
 import { getDevContext } from '../../global/state/globalState';
 import { getFlightProfile } from '../getters/getFlightProfile';
@@ -70,26 +76,31 @@ export function generateFlightProfile({
   }
 
   const scaledEntryParticipantIds = scaledEntries.map(getParticipantId);
-  const unscaledEntries = eventEntries
-    .filter(
-      ({ participantId }) => !scaledEntryParticipantIds.includes(participantId)
-    )
-    .filter(
-      (entry) =>
-        (!stage || !entry.entryStage || entry.entryStage === stage) &&
-        DIRECT_ENTRY_STATUSES.includes(entry.entryStatus)
-    );
+  const unscaledEntries = shuffleArray(
+    eventEntries
+      .filter(
+        ({ participantId }) =>
+          !scaledEntryParticipantIds.includes(participantId)
+      )
+      .filter(
+        (entry) =>
+          (!stage || !entry.entryStage || entry.entryStage === stage) &&
+          DIRECT_ENTRY_STATUSES.includes(entry.entryStatus)
+      )
+  );
 
   const flightEntries = scaledEntries.concat(...unscaledEntries);
   const entriesCount = flightEntries.length;
 
-  // default is SPLIT_LEVEL_BASED
+  // default is SPLIT_LEVEL_BASED - Evenly chunk sorted entries
   const chunkSize = Math.ceil(entriesCount / flightsCount);
   let splitEntries = chunkArray(flightEntries, chunkSize);
 
   if (splitMethod === SPLIT_WATERFALL) {
+    // e.g. 1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4
     splitEntries = chunkByNth(flightEntries, flightsCount);
   } else if (splitMethod === SPLIT_SHUTTLE) {
+    // e.g. 1,2,3,4,4,3,2,1,1,2,3,4,4,3,2,1
     splitEntries = chunkByNth(flightEntries, flightsCount, true);
   }
 
