@@ -51,7 +51,7 @@ it('generates appropriate sourceMatchUpStatuses in matchUpStatusCodes', () => {
     ({ roundNumber, roundPosition }) => roundNumber === 1 && roundPosition === 2
   ).matchUpId;
 
-  let result = tournamentEngine.setMatchUpStatus({
+  const result = tournamentEngine.setMatchUpStatus({
     matchUpId,
     outcome,
     drawId,

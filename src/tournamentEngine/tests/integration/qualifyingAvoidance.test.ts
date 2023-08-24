@@ -20,7 +20,7 @@ it('properly handles qualifiers with avoidances', () => {
     },
   ];
 
-  let result = mocksEngine.generateTournamentRecord({
+  const result = mocksEngine.generateTournamentRecord({
     policyDefinitions,
     drawProfiles,
   });

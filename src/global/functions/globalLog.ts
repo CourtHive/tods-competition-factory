@@ -3,7 +3,7 @@ import { logColors } from './logColors';
 
 const globalLog: any[] = [];
 
-export function pushGlobalLog(value: any, devContextOverride) {
+export function pushGlobalLog(value: any, devContextOverride?) {
   if (typeof value === 'string') value = { method: value };
   if (devContextOverride || getDevContext()) globalLog.push(value);
 }

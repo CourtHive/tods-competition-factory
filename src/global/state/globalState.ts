@@ -193,7 +193,7 @@ export function timeKeeper(action = 'reset', timer = 'default') {
   return globalState.timers[timer];
 }
 
-export function setDevContext(value) {
+export function setDevContext(value?) {
   globalState.devContext = value;
 }
 

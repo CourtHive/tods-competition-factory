@@ -10,7 +10,7 @@ import {
   REMOVE_ASSIGNMENT,
 } from '../../constants/positionActionConstants';
 
-export function getOrderedDrawPositionPairs(params) {
+export function getOrderedDrawPositionPairs(params?) {
   const matchUpFilters = { structureIds: [params?.structureId] };
   const { matchUps } = tournamentEngine.allTournamentMatchUps({
     matchUpFilters,

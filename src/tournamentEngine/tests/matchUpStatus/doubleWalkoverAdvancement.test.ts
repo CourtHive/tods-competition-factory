@@ -13,13 +13,15 @@ import {
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
 
-const getTarget = ({ matchUps, roundNumber, roundPosition, stage }) =>
-  matchUps.find(
+const getTarget = (params) => {
+  const { matchUps, roundNumber, roundPosition, stage } = params;
+  return matchUps.find(
     (matchUp) =>
       matchUp.roundNumber === roundNumber &&
       matchUp.roundPosition === roundPosition &&
       (!stage || matchUp.stage === stage)
   );
+};
 
 test('A produced WALKOVER encountering a produced WALKOVER winningSide will not continue propagation', () => {
   const drawProfiles = [
@@ -54,7 +56,7 @@ test('A produced WALKOVER encountering a produced WALKOVER winningSide will not 
 
   tournamentEngine.setState(tournamentRecord);
 
-  let modifiedMatchUpLog = [];
+  let modifiedMatchUpLog: any[] = [];
   let result = setSubscriptions({
     subscriptions: {
       [MODIFY_MATCHUP]: (matchUps) => {
@@ -275,8 +277,8 @@ test('A produced WALKOVER encountering a produced WALKOVER winningSide will not 
 });
 
 test('DOUBLE_WALKOVER in feedRound does not inappropriately advance drawPositions for other roundPositions', () => {
-  let completionGoal = 6;
-  let drawProfiles = [
+  const completionGoal = 6;
+  const drawProfiles = [
     {
       drawSize: 8,
       drawType: 'FEED_IN_CHAMPIONSHIP_TO_SF',
@@ -292,7 +294,7 @@ test('DOUBLE_WALKOVER in feedRound does not inappropriately advance drawPosition
       ],
     },
   ];
-  let mockProfile = { drawProfiles };
+  const mockProfile = { drawProfiles };
 
   const { tournamentRecord } =
     mocksEngine.generateTournamentRecord(mockProfile);
@@ -333,11 +335,11 @@ test('DOUBLE_WALKOVER in feedRound does not inappropriately advance drawPosition
     roundNumber: 1,
   });
 
-  let { outcome } = mocksEngine.generateOutcomeFromScoreString({
+  const { outcome } = mocksEngine.generateOutcomeFromScoreString({
     scoreString: '6-1 6-1',
     winningSide: 1,
   });
-  let result = tournamentEngine.setMatchUpStatus({
+  const result = tournamentEngine.setMatchUpStatus({
     matchUpId: targetMatchUp.matchUpId,
     drawId: targetMatchUp.drawId,
     outcome,

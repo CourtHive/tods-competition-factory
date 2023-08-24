@@ -35,7 +35,7 @@ test('Replacing a DOUBLE_WALKOVER with an outcome including score will remove ad
   tournamentEngine.setState(tournamentRecord);
 
   // keep track of notficiations with each setMatchUpStatus event
-  let modifiedMatchUpLog = [];
+  let modifiedMatchUpLog: any[] = [];
   let result = setSubscriptions({
     subscriptions: {
       [MODIFY_MATCHUP]: (matchUps) => {
@@ -142,7 +142,7 @@ test('Removing a scored outcome will remove a WALKOVER advanced participant from
   tournamentEngine.setState(tournamentRecord);
 
   // keep track of notficiations with each setMatchUpStatus event
-  let modifiedMatchUpLog = [];
+  let modifiedMatchUpLog: any[] = [];
   let result = setSubscriptions({
     subscriptions: {
       [MODIFY_MATCHUP]: (matchUps) => {

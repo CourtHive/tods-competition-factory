@@ -43,7 +43,7 @@ it('can set every valid matchUpStatus', () => {
       ],
     },
   ];
-  let {
+  const {
     tournamentRecord,
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({
@@ -97,7 +97,7 @@ it('removes scores for CANCELLED and WALKOVER outcomes', () => {
       ],
     },
   ];
-  let {
+  const {
     drawIds: [drawId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
@@ -137,7 +137,7 @@ it('allows AWAITING_RESULT status with no outcome', () => {
       participantsCount: 15,
     },
   ];
-  let {
+  const {
     drawIds: [drawId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
@@ -182,7 +182,7 @@ it('does not allow IN_PROGRESS or AWAITING_RESULT status when < 2 drawPositions'
       participantsCount: 15,
     },
   ];
-  let {
+  const {
     drawIds: [drawId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
@@ -226,7 +226,7 @@ it('attaches notes to matchUps', () => {
       participantsCount: 15,
     },
   ];
-  let {
+  const {
     drawIds: [drawId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({

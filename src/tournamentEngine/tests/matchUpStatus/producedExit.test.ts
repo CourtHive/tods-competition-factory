@@ -38,7 +38,7 @@ test('A produced WALKOVER or DEFAULTED matchUpStatus will not cause prior rounds
   );
 
   // ensure roundNumber: 1, roundPosition: 8 has two participants
-  let { drawId, structureId, drawPositions } = targetMatchUp;
+  const { drawId, structureId, drawPositions } = targetMatchUp;
   if (!targetMatchUp.drawPositions.includes(16)) {
     const drawPosition = drawPositions[0];
     const result = tournamentEngine.swapDrawPositionAssignments({
