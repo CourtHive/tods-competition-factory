@@ -129,8 +129,8 @@ it('can generate ROUND_ROBIN drawDefinition using country avoidance with INDIVID
   expect(matchUps.length).toEqual(48);
   const structure = drawDefinition.structures[0];
   const { positionAssignments } = getPositionAssignments({ structure });
-  const assignedPositions = positionAssignments.filter(
+  const assignedPositions = positionAssignments?.filter(
     ({ participantId }) => participantId
   );
-  expect(assignedPositions.length).toEqual(32);
+  expect(assignedPositions?.length).toEqual(32);
 });

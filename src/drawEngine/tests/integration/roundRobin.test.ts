@@ -107,14 +107,14 @@ it.each(scenarios)('can generate and verify', (scenario) => {
 
   const seedAssignments = structure.seedAssignments;
   const { positionAssignments } = getPositionAssignments({ structure });
-  const assignedPositions = positionAssignments.filter(
+  const assignedPositions = positionAssignments?.filter(
     (assignment) => assignment.bye || assignment.participantId
   );
-  expect(assignedPositions.length).toEqual(expectation.assignedPositionsCount);
+  expect(assignedPositions?.length).toEqual(expectation.assignedPositionsCount);
   const byePositions = positionAssignments
-    .filter((assignment) => assignment.bye)
+    ?.filter((assignment) => assignment.bye)
     .map(({ drawPosition }) => drawPosition);
-  expect(byePositions.length).toEqual(expectation.byesCount);
+  expect(byePositions?.length).toEqual(expectation.byesCount);
 
   const assignedSeedPositions = seedAssignments.filter(
     (assignment) => assignment.participantId
@@ -132,7 +132,7 @@ it.each(scenarios)('can generate and verify', (scenario) => {
       positionAssignments.map(({ drawPosition }) => drawPosition)
   );
   const seedMapping = seedAssignments.map((seedAssignment) => {
-    const position = assignedPositions.find(
+    const position = assignedPositions?.find(
       (assignment) => assignment.participantId === seedAssignment.participantId
     );
     return {

@@ -108,10 +108,10 @@ export function swapWinnerLoser(params) {
   // for each subsequent structure swap drawPosition assignments (where applicable)
   subsequentStructures.forEach((structure) => {
     const { positionAssignments } = getPositionAssignments({ structure });
-    const existingWinnerAssignment = positionAssignments.find(
+    const existingWinnerAssignment = positionAssignments?.find(
       ({ participantId }) => participantId === existingWinnerParticipantId
     );
-    const existingLoserAssignment = positionAssignments.find(
+    const existingLoserAssignment = positionAssignments?.find(
       ({ participantId }) => participantId === existingLoserParticipantId
     );
 

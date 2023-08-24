@@ -27,11 +27,11 @@ export function getAffectedTargetStructureIds({
     structure,
   });
 
-  const relevantAssignments = positionAssignments.filter(({ drawPosition }) =>
-    drawPositions?.includes(drawPosition)
+  const relevantAssignments = positionAssignments?.filter(
+    ({ drawPosition }) => drawPositions?.includes(drawPosition)
   );
 
-  const finishingPositions = relevantAssignments.map((assignment) => {
+  const finishingPositions = relevantAssignments?.map((assignment) => {
     const { extension } = findExtension({ element: assignment, name: TALLY });
     return extension?.value?.groupOrder;
   });

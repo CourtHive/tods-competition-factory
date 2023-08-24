@@ -129,7 +129,7 @@ test('drawProfile participant generation', () => {
     drawDefinition,
     structureId,
   });
-  const allPositionsFilled = positionAssignments.every(
+  const allPositionsFilled = positionAssignments?.every(
     (assignment) => assignment.bye || assignment.participantId
   );
   expect(allPositionsFilled).toEqual(true);

@@ -78,7 +78,7 @@ export function analyzeDraws({ tournamentRecord }) {
       const positionsAssigned = positionAssignments?.filter(
         ({ participantId }) => participantId
       );
-      positionsAssignedCount += positionsAssigned.length;
+      positionsAssignedCount += positionsAssigned?.length || 0;
 
       const unassignedPositionsCount =
         (positionAssignments?.length || 0) - (positionsAssigned?.length || 0);

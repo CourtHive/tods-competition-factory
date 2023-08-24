@@ -34,7 +34,7 @@ export function verifyStructure(params) {
     structure,
   });
 
-  const positionsAssignedCount = positionAssignments.reduce(
+  const positionsAssignedCount = positionAssignments?.reduce(
     (count, candidate) => {
       return (
         count +
@@ -51,31 +51,31 @@ export function verifyStructure(params) {
   }
 
   const byeAssignedDrawPositions = positionAssignments
-    .filter((assignment) => assignment.bye)
+    ?.filter((assignment) => assignment.bye)
     .map((assignment) => assignment.drawPosition);
 
   const qualifierAssignedDrawPositions = positionAssignments
-    .filter((assignment) => assignment.qualifier)
+    ?.filter((assignment) => assignment.qualifier)
     .map((assignment) => assignment.drawPosition);
 
   if (expectedByeAssignments !== undefined) {
-    expect(byeAssignedDrawPositions.length).toEqual(expectedByeAssignments);
+    expect(byeAssignedDrawPositions?.length).toEqual(expectedByeAssignments);
   }
 
   expect(
-    expectedQualifierAssignments && qualifierAssignedDrawPositions.length
+    expectedQualifierAssignments && qualifierAssignedDrawPositions?.length
   ).toEqual(expectedQualifierAssignments);
 
   const seededParticipantIds = seedAssignments
     .map((assignment) => assignment.participantId)
     .filter(Boolean);
   const seedAssignedDrawPositions = positionAssignments
-    .filter((assignment) =>
+    ?.filter((assignment) =>
       seededParticipantIds.includes(assignment.participantId)
     )
     .map((assignment) => assignment.drawPosition);
   if (expectedSeeds !== undefined)
-    expect(seedAssignedDrawPositions.length).toEqual(expectedSeeds);
+    expect(seedAssignedDrawPositions?.length).toEqual(expectedSeeds);
 
   const { matchUps, roundMatchUps } = getAllStructureMatchUps({
     afterRecoveryTimes: false,
@@ -97,7 +97,7 @@ export function verifyStructure(params) {
     .map((matchUp) => matchUp.drawPositions);
 
   const seedPairedDrawPositions = seedAssignedDrawPositions
-    .map((drawPosition) => {
+    ?.map((drawPosition) => {
       const { pairedDrawPosition } = getPairedDrawPosition({
         matchUps,
         drawPosition,
@@ -107,11 +107,11 @@ export function verifyStructure(params) {
     })
     .filter(Boolean);
 
-  const seedPairedDrawPositionsWithBye = seedPairedDrawPositions.filter(
-    (drawPosition) => byeAssignedDrawPositions.includes(drawPosition)
+  const seedPairedDrawPositionsWithBye = seedPairedDrawPositions?.filter(
+    (drawPosition: any) => byeAssignedDrawPositions?.includes(drawPosition)
   );
   if (expectedSeedsWithByes !== undefined) {
-    expect(seedPairedDrawPositionsWithBye.length).toEqual(
+    expect(seedPairedDrawPositionsWithBye?.length).toEqual(
       expectedSeedsWithByes
     );
   }
@@ -120,20 +120,21 @@ export function verifyStructure(params) {
     drawDefinition,
     structure,
   });
-  const seedDrawPositionsWithBye = seedPairedDrawPositionsWithBye.map(
-    (drawPosition) => {
+  const seedDrawPositionsWithBye = seedPairedDrawPositionsWithBye?.map(
+    (drawPosition: any) => {
       const { pairedDrawPosition } = getPairedDrawPosition({
-        matchUps,
-        drawPosition,
         roundNumber: 1,
+        drawPosition,
+        matchUps,
       });
       return pairedDrawPosition;
     }
   );
 
-  const seedValuesOfSeedsWithBye = positionedSeeds
-    .filter((assignment: any) =>
-      seedDrawPositionsWithBye.includes(assignment.drawPosition)
+  const seedValuesOfSeedsWithBye: any = positionedSeeds
+    ?.filter(
+      (assignment: any) =>
+        seedDrawPositionsWithBye?.includes(assignment.drawPosition)
     )
     .map((assignment: any) => getNumericSeedValue(assignment.seedValue))
     .sort((a, b) => (a || 0) - (b || 0));

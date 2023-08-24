@@ -37,7 +37,6 @@ it('can recognize invalid matchUps', () => {
 
   result = validDrawPositions({
     matchUps: postExecutionMatchUps,
-    devContextext: false,
   });
   expect(result).toEqual(true);
 });

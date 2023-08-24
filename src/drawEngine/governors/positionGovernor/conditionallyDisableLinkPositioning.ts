@@ -16,10 +16,10 @@ export function conditionallyDisableLinkPositioning({
     return;
   }
   const { positionAssignments } = getPositionAssignments({ structure });
-  const relevantAssignments = positionAssignments.filter(({ drawPosition }) =>
-    drawPositions?.includes(drawPosition)
+  const relevantAssignments = positionAssignments?.filter(
+    ({ drawPosition }) => drawPositions?.includes(drawPosition)
   );
-  relevantAssignments.forEach((assignment) => {
+  relevantAssignments?.forEach((assignment) => {
     const extension = {
       name: DISABLE_LINKS,
       value: true,

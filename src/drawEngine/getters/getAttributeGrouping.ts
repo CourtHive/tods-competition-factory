@@ -5,6 +5,7 @@ import {
   MISSING_PARTICIPANTS,
   MISSING_POLICY_ATTRIBUTES,
 } from '../../constants/errorConditionConstants';
+import { HydratedParticipant } from '../../types/hydrated';
 
 /**
  *
@@ -21,12 +22,18 @@ import {
  *  { participant: { individualParticipants: [ { person: { nationalityCode }}, { person: { nationalityCode }}]}}
  */
 
+type GetAttributeGroupingsArgs = {
+  targetParticipantIds: string[];
+  participants: HydratedParticipant;
+  policyAttributes: any;
+  idCollections?: any;
+};
 export function getAttributeGroupings({
   targetParticipantIds,
   policyAttributes,
   idCollections,
   participants,
-}) {
+}: GetAttributeGroupingsArgs) {
   if (!Array.isArray(policyAttributes)) {
     return { error: MISSING_POLICY_ATTRIBUTES };
   }
@@ -66,19 +73,25 @@ export function getAttributeGroupings({
  * @param {object} idCollections
  *
  */
+type ExtractAttributeValuesArgs = {
+  participants?: HydratedParticipant[];
+  participant?: HydratedParticipant;
+  policyAttributes: any;
+  idCollections?: any;
+};
 export function extractAttributeValues({
   policyAttributes,
   idCollections,
   participants,
   participant,
-}) {
+}: ExtractAttributeValuesArgs) {
   if (!Array.isArray(policyAttributes)) {
     return { error: MISSING_POLICY_ATTRIBUTES };
   }
   if (!participant) {
     return { error: MISSING_PARTICIPANT };
   }
-  const extractedValues = [];
+  const extractedValues: string[] = [];
   policyAttributes.forEach((policyAttribute) => {
     const { directive, groupings, key, significantCharacters } =
       policyAttribute || {};

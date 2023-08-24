@@ -1,5 +1,5 @@
-import { getParticipantIds } from '../../global/functions/extractors';
 import { getPositionAssignments } from './positionsGetter';
+import { extractAttributes } from '../../utilities';
 
 // build up an array of participantIds which are assigned positions in structures
 // optionally filter to included only specified stages
@@ -13,7 +13,9 @@ export function getAssignedParticipantIds({ drawDefinition, stages }) {
       const { positionAssignments } = getPositionAssignments({
         structure,
       });
-      return getParticipantIds(positionAssignments);
+      return positionAssignments
+        ? positionAssignments.map(extractAttributes('participantId'))
+        : [];
     })
     .flat();
 }

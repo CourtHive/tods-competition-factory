@@ -44,9 +44,9 @@ it('can generate groupings accurately', () => {
   const policyAttributes =
     fixtures.policies.POLICY_AVOIDANCE_COUNTRY.avoidance.policyAttributes;
   const groupings = getAttributeGroupings({
-    participants,
-    policyAttributes,
     targetParticipantIds: doublesParticipantsIds,
+    policyAttributes,
+    participants,
   });
 
   Object.keys(groupings).forEach((nationalityCode) => {

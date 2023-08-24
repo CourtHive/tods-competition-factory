@@ -62,14 +62,13 @@ export function getByesData({
   // const { positionAssignments, qualifierPositions, byePositions, unassignedPositions } = structureAssignedDrawPositions({structure});
   const { positionAssignments, unassignedPositions } =
     structureAssignedDrawPositions({ structure });
-  const unassignedDrawPositions = unassignedPositions.map(
+  const unassignedDrawPositions = unassignedPositions?.map(
     (position) => position.drawPosition
   );
-  const placedByes = positionAssignments.filter(
-    (assignment) => assignment.bye
-  ).length;
+  const placedByes = positionAssignments?.filter((assignment) => assignment.bye)
+    .length;
   const placedByePositions = positionAssignments
-    .filter((assignment) => assignment.bye)
+    ?.filter((assignment) => assignment.bye)
     .map((assignment) => assignment.drawPosition);
 
   const positionsToAvoidDoubleBye = relevantMatchUps
@@ -77,15 +76,15 @@ export function getByesData({
     .filter((drawPositions) => {
       return drawPositions?.reduce(
         (noBye, drawPosition) =>
-          !placedByePositions.includes(drawPosition) && noBye,
+          !placedByePositions?.includes(drawPosition) && noBye,
         true
       );
     })
     .flat(Infinity)
-    .filter((drawPosition) => unassignedDrawPositions.includes(drawPosition));
+    .filter((drawPosition) => unassignedDrawPositions?.includes(drawPosition));
 
-  const drawSize = positionAssignments.length;
-  let byesCount = drawSize - entriesCount;
+  const drawSize = positionAssignments?.length;
+  let byesCount = drawSize ? drawSize - entriesCount : 0;
   if (
     byesCount > maxByes &&
     structure.stageSequence === 1 &&

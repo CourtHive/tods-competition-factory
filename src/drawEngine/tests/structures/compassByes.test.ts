@@ -110,10 +110,10 @@ function compassByesTest({
     });
     if (expectations) {
       expect(expectations[structure.structureName]).toEqual(
-        byePositions.length
+        byePositions?.length
       );
     } else {
-      console.log(structure.structureName, byePositions.length);
+      console.log(structure.structureName, byePositions?.length);
     }
   });
 

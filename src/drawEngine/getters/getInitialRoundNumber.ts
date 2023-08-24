@@ -1,6 +1,14 @@
+import { HydratedMatchUp } from '../../types/hydrated';
 import { numericSort } from '../../utilities';
 
-export function getInitialRoundNumber({ drawPosition, matchUps = [] }) {
+type GetInitialRoundNumberArgs = {
+  matchUps?: HydratedMatchUp[];
+  drawPosition: number;
+};
+export function getInitialRoundNumber({
+  drawPosition,
+  matchUps = [],
+}: GetInitialRoundNumberArgs) {
   // determine the initial round where drawPosition appears
   // drawPosition cannot be removed from its initial round
   const initialRoundNumber = matchUps
@@ -8,7 +16,7 @@ export function getInitialRoundNumber({ drawPosition, matchUps = [] }) {
       ({ drawPositions }) =>
         drawPosition && drawPositions?.includes(drawPosition)
     )
-    .map(({ roundNumber }) => parseInt(roundNumber))
+    .map(({ roundNumber }) => roundNumber)
     .sort(numericSort)[0];
   return { initialRoundNumber };
 }

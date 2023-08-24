@@ -139,7 +139,7 @@ export function getDrawData(params): {
         });
 
         const participantResults = positionAssignments
-          .filter(hasParticipantId)
+          ?.filter(hasParticipantId)
           .map((assignment) => {
             participantPlacements = true;
             const { drawPosition, participantId } = assignment;
