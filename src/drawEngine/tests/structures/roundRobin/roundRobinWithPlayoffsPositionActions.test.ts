@@ -252,10 +252,10 @@ it('Playoff drawPosition assignment includes group winners who lost no matchUps'
     drawDefinition,
   });
 
-  const firstAssignment = positionAssignments[0];
+  const firstAssignment = positionAssignments?.[0];
   expect(firstAssignment?.extensions?.[0].value.matchUpsWon).toEqual(3);
   expect(firstAssignment?.extensions?.[0].value.matchUpsLost).toEqual(0);
-  const { participantId } = firstAssignment;
+  const participantId = firstAssignment?.participantId;
 
   const structureId = playoffStructureIds[0];
   const { matchUps } = tournamentEngine.allTournamentMatchUps({

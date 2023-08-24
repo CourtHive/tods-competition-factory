@@ -55,7 +55,7 @@ export function replacementTest(params) {
 
   // find all drawPositions assigned to participantIds and shuffle the array
   const participantDrawPositions = positionAssignments
-    .filter(hasParticipantId)
+    ?.filter(hasParticipantId)
     .map(getDrawPosition);
   const shuffledDrawPositions = shuffleArray(participantDrawPositions);
 
@@ -80,7 +80,7 @@ export function replacementTest(params) {
     // shuffle updated positionAssignments and slice to select random number of drawPositions to assign
     const assignmentCount = randomInt(0, participantsCount);
     const drawPositionsToAssign = shuffleArray(
-      updatedPositionAssignments.map(extractAttributes('drawPosition'))
+      updatedPositionAssignments?.map(extractAttributes('drawPosition')) || []
     ).slice(0, assignmentCount);
 
     // for each targeted drawPosition remove the BYE and assign participantId from availableParticipantIds

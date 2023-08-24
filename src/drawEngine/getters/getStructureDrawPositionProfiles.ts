@@ -127,12 +127,12 @@ export function getStructureDrawPositionProfiles(
 
   // determine which positions are BYEs
   const byeDrawPositions = positionAssignments
-    .filter((assignment) => assignment.bye)
+    ?.filter((assignment) => assignment.bye)
     .map((assignment) => assignment.drawPosition);
 
   // determine which positions are Qualifiers
   const qualifyingDrawPositions = positionAssignments
-    .filter((assignment) => assignment.qualifier)
+    ?.filter((assignment) => assignment.qualifier)
     .map((assignment) => assignment.drawPosition);
 
   const inactiveDrawPositions =

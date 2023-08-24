@@ -2,6 +2,7 @@ import { extractAttributes } from '../../utilities';
 import { findStructure } from './findStructure';
 
 import {
+  ErrorType,
   MISSING_DRAW_DEFINITION,
   MISSING_POSITION_ASSIGNMENTS,
 } from '../../constants/errorConditionConstants';
@@ -22,9 +23,10 @@ export function getAllPositionedParticipantIds({ drawDefinition }) {
       if (!stagePositionedParticipantIds[stage])
         stagePositionedParticipantIds[stage] = [];
       const { positionAssignments } = getPositionAssignments({ structure });
-      const particiapntIds = positionAssignments
-        .map(extractAttributes('participantId'))
-        .filter(Boolean);
+      const particiapntIds =
+        positionAssignments
+          ?.map(extractAttributes('participantId'))
+          .filter(Boolean) ?? [];
       stagePositionedParticipantIds[stage].push(...particiapntIds);
       return particiapntIds;
     })
@@ -42,7 +44,10 @@ export function getPositionAssignments({
   drawDefinition,
   structureId,
   structure,
-}: GetPositionAssignmentsArgs) {
+}: GetPositionAssignmentsArgs): {
+  positionAssignments?: PositionAssignment[];
+  error?: ErrorType;
+} {
   let error: any,
     positionAssignments: PositionAssignment[] = [];
   if (!structure) {
@@ -83,20 +88,21 @@ export function structureAssignedDrawPositions({
     structureId,
     structure,
   });
-  const assignedPositions = positionAssignments.filter((assignment) => {
+  const assignedPositions = positionAssignments?.filter((assignment) => {
     return assignment.participantId ?? assignment.bye ?? assignment.qualifier;
   });
   const allPositionsAssigned =
-    positionAssignments.length === assignedPositions.length;
-  const unassignedPositions = positionAssignments.filter((assignment) => {
+    positionAssignments &&
+    positionAssignments?.length === assignedPositions?.length;
+  const unassignedPositions = positionAssignments?.filter((assignment) => {
     return (
       !assignment.participantId && !assignment.bye && !assignment.qualifier
     );
   });
-  const byePositions = positionAssignments.filter((assignment) => {
+  const byePositions = positionAssignments?.filter((assignment) => {
     return !assignment.participantId && assignment.bye;
   });
-  const qualifierPositions = positionAssignments.filter((assignment) => {
+  const qualifierPositions = positionAssignments?.filter((assignment) => {
     return !assignment.participantId && assignment.qualifier;
   });
 

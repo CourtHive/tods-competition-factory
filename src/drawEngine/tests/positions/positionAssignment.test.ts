@@ -50,7 +50,7 @@ it('can assign SINGLE_ELIMINATION draw drawPositions', () => {
     drawDefinition,
     structureId,
   });
-  expect(unassignedPositions.length).toEqual(participantIds.length);
+  expect(unassignedPositions?.length).toEqual(participantIds.length);
 
   // expect it to fail if an invalid drawPosition is attempted
   const participantId = participantIds[0];
@@ -62,7 +62,7 @@ it('can assign SINGLE_ELIMINATION draw drawPositions', () => {
   expect(result).toHaveProperty(ERROR);
 
   participantIds.forEach((participantId, i) => {
-    const drawPosition = unassignedPositions[i].drawPosition;
+    const drawPosition = unassignedPositions?.[i].drawPosition;
     result = drawEngine.assignDrawPosition({
       structureId,
       drawPosition,
@@ -72,7 +72,7 @@ it('can assign SINGLE_ELIMINATION draw drawPositions', () => {
     ({ drawDefinition } = drawEngine.getState());
     const { unassignedPositions: stillUnassigned } =
       structureAssignedDrawPositions({ drawDefinition, structureId });
-    expect(stillUnassigned.length).toEqual(participantIds.length - 1 - i);
+    expect(stillUnassigned?.length).toEqual(participantIds.length - 1 - i);
   });
 
   ({ drawDefinition } = drawEngine.getState());
@@ -80,10 +80,10 @@ it('can assign SINGLE_ELIMINATION draw drawPositions', () => {
     drawDefinition,
     structureId,
   });
-  expect(assignedPositions.length).toEqual(drawSize);
+  expect(assignedPositions?.length).toEqual(drawSize);
 
   // can't assign a player a second time
-  const drawPosition = unassignedPositions[0].drawPosition;
+  const drawPosition = unassignedPositions?.[0].drawPosition;
   result = drawEngine.assignDrawPosition({
     structureId,
     drawPosition,
@@ -129,10 +129,10 @@ it('can assign ROUND_ROBIN draw drawPositions', () => {
     drawDefinition,
     structureId,
   });
-  expect(unassignedPositions.length).toEqual(participantIds.length);
+  expect(unassignedPositions?.length).toEqual(participantIds.length);
 
   participantIds.forEach((participantId, i) => {
-    const drawPosition = unassignedPositions[i].drawPosition;
+    const drawPosition = unassignedPositions?.[i].drawPosition;
     result = drawEngine.assignDrawPosition({
       structureId,
       drawPosition,
@@ -142,7 +142,7 @@ it('can assign ROUND_ROBIN draw drawPositions', () => {
     ({ drawDefinition } = drawEngine.getState());
     const { unassignedPositions: stillUnassigned } =
       structureAssignedDrawPositions({ drawDefinition, structureId });
-    expect(stillUnassigned.length).toEqual(participantIds.length - 1 - i);
+    expect(stillUnassigned?.length).toEqual(participantIds.length - 1 - i);
   });
 
   ({ drawDefinition } = drawEngine.getState());
@@ -150,7 +150,7 @@ it('can assign ROUND_ROBIN draw drawPositions', () => {
     drawDefinition,
     structureId,
   });
-  expect(assignedPositions.length).toEqual(16);
+  expect(assignedPositions?.length).toEqual(16);
 
   const { drawDefinition: state } = drawEngine.getState();
   const groups = state.structures[0].structures;
@@ -166,7 +166,7 @@ it('can assign ROUND_ROBIN draw drawPositions', () => {
 
   // can't assign a player a second time
   const participantId = participantIds[0];
-  const drawPosition = unassignedPositions[0].drawPosition;
+  const drawPosition = unassignedPositions?.[0].drawPosition;
   result = drawEngine.assignDrawPosition({
     structureId,
     drawPosition,
@@ -184,7 +184,7 @@ it('returns positionAssignments for SINGLE_ELIMINATION and ROUND_ROBIN strucures
   } = drawEngine.generateDrawTypeAndModifyDrawDefinition();
   const { positionAssignments: eliminationAssignments } =
     structureAssignedDrawPositions({ structure: elimination });
-  expect(eliminationAssignments.length).toEqual(16);
+  expect(eliminationAssignments?.length).toEqual(16);
 
   reset();
   initialize();
@@ -195,5 +195,5 @@ it('returns positionAssignments for SINGLE_ELIMINATION and ROUND_ROBIN strucures
   } = drawEngine.generateDrawTypeAndModifyDrawDefinition({ drawType });
   const { positionAssignments: roundRobinAssignments } =
     structureAssignedDrawPositions({ structure: roundRobin });
-  expect(roundRobinAssignments.length).toEqual(16);
+  expect(roundRobinAssignments?.length).toEqual(16);
 });

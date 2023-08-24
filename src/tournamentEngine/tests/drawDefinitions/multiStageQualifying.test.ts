@@ -73,7 +73,7 @@ it('supports multi-sequence qualifying structures', () => {
     structure: mainStructure,
   });
 
-  const qualifiersCount = positionAssignments.filter(
+  const qualifiersCount = positionAssignments?.filter(
     (assignment) => assignment.qualifier
   ).length;
   expect(qualifiersCount).toEqual(4);
@@ -88,10 +88,10 @@ it('supports multi-sequence qualifying structures', () => {
   const { positionAssignments: q1pa } = getPositionAssignments({
     structure: q1,
   });
-  expect(q1pa.length).toEqual(32);
+  expect(q1pa?.length).toEqual(32);
 
-  const q1positioned = q1pa.filter((q) => q.participantId);
-  expect(q1positioned.length).toEqual(32);
+  const q1positioned = q1pa?.filter((q) => q.participantId);
+  expect(q1positioned?.length).toEqual(32);
 
   let { roundMatchUps } = getRoundMatchUps({ matchUps: q1.matchUps });
   let roundNumbers = roundMatchUps
@@ -110,9 +110,9 @@ it('supports multi-sequence qualifying structures', () => {
   const { positionAssignments: q2pa } = getPositionAssignments({
     structure: q2,
   });
-  expect(q2pa.length).toEqual(16);
-  const q2positioned = q2pa.filter((q) => q.participantId);
-  expect(q2positioned.length).toEqual(12);
+  expect(q2pa?.length).toEqual(16);
+  const q2positioned = q2pa?.filter((q) => q.participantId);
+  expect(q2positioned?.length).toEqual(12);
 
   ({ roundMatchUps } = getRoundMatchUps({ matchUps: q2.matchUps }));
   roundNumbers = roundMatchUps
@@ -213,15 +213,15 @@ it('can advance participants through multi-stage qualifying structures', () => {
     structure: qualifying2,
   });
   const qualifyingPositions = positionAssignments
-    .filter(({ qualifier }) => qualifier)
+    ?.filter(({ qualifier }) => qualifier)
     .map(({ drawPosition }) => drawPosition);
-  expect(qualifyingPositions.length).toEqual(2);
+  expect(qualifyingPositions?.length).toEqual(2);
 
   // first pop 2 then pop 1
   const expectations = [1, 2];
 
   // assign qualifiers in QUALIFYING stageSequence: 2
-  for (const drawPosition of qualifyingPositions) {
+  for (const drawPosition of qualifyingPositions || []) {
     let result = tournamentEngine.positionActions({
       // policyDefinitions: POLICY_POSITION_ACTIONS_UNRESTRICTED,
       structureId: qualifying2.structureId,
@@ -369,10 +369,10 @@ it('does what Jeff wants it to', () => {
     if (structure.stage === QUALIFYING) {
       expect(structure.structures.length).toEqual(2);
       const { positionAssignments } = getPositionAssignments({ structure });
-      const qualifyingPositionsCount = positionAssignments.filter(
+      const qualifyingPositionsCount = positionAssignments?.filter(
         ({ qualifier }) => qualifier
       ).length;
-      const unassignedPositionsCount = positionAssignments.filter(
+      const unassignedPositionsCount = positionAssignments?.filter(
         ({ qualifier, bye, participantId }) =>
           !qualifier && !bye && !participantId
       ).length;

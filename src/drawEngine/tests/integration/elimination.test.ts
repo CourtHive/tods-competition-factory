@@ -147,7 +147,7 @@ it('will vary bye distribution', () => {
       structureId,
     });
 
-    const byesHash = byeAssignedDrawPositions.join('|');
+    const byesHash = byeAssignedDrawPositions?.join('|');
     const quartersHash = filteredQuarters.map((q) => q.join('|')).join('~');
 
     return { byesHash, quartersHash };

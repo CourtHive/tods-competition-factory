@@ -21,6 +21,7 @@ import { addExtension } from './global/functions/producers/addExtension';
 import { isAdHoc } from './drawEngine/governors/queryGovernor/isAdHoc';
 import { structureSort } from './drawEngine/getters/structureSort';
 import { tidyScore } from './utilities/scoreParser/scoreParser';
+export { EntryStatusEnum } from './types/tournamentFromSchema';
 import { matchUpSort } from './drawEngine/getters/matchUpSort';
 import { dateTime, dateRange } from './utilities/dateTime';
 import { JSON2CSV, flattenJSON } from './utilities/json';
@@ -124,10 +125,7 @@ export { participantTypes } from './constants/participantConstants';
 export { factoryConstants } from './constants';
 
 export { drawDefinitionConstants } from './constants/drawDefinitionConstants';
-export {
-  entryStatusConstants,
-  EntryStatusEnum,
-} from './constants/entryStatusConstants';
+export { entryStatusConstants } from './constants/entryStatusConstants';
 export { errorConditionConstants } from './constants/errorConditionConstants';
 export { eventConstants } from './constants/eventConstants';
 export { flightConstants } from './constants/flightConstants';

@@ -59,9 +59,9 @@ it('advances paired drawPositions when BYE is assigned first', () => {
     EntryStatusEnum.Wildcard,
   ];
   const mainDrawEntries = getStageEntries({
-    stage,
     drawDefinition,
     entryStatuses,
+    stage,
   });
   const participantIds = mainDrawEntries.map((e) => e.participantId);
 
@@ -72,124 +72,124 @@ it('advances paired drawPositions when BYE is assigned first', () => {
   });
 
   result = drawEngine.assignDrawPositionBye({
+    drawPosition: unassignedPositions?.[1].drawPosition,
     structureId,
-    drawPosition: unassignedPositions[1].drawPosition,
   });
   expect(result.success).toEqual(true);
 
   let { matchUp } = findMatchUpByRoundNumberAndPosition({
-    structureId,
-    roundNumber: 2,
     roundPosition: 1,
+    roundNumber: 2,
+    structureId,
   });
   expect(matchUp.drawPositions).toMatchObject([1, undefined]);
   drawEngine.assignDrawPosition({
-    structureId,
-    drawPosition: unassignedPositions[0].drawPosition,
+    drawPosition: unassignedPositions?.[0].drawPosition,
     participantId: participantIds[0],
+    structureId,
   });
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
-    structureId,
-    roundNumber: 2,
     roundPosition: 1,
+    roundNumber: 2,
+    structureId,
   }));
   expect(matchUp.drawPositions).toMatchObject([1, undefined]);
 
   ({ drawDefinition } = drawEngine.getState());
 
   verifyStructure({
-    structureId,
-    drawDefinition,
-    expectedByeAssignments: 1,
     expectedPositionsAssignedCount: 2,
+    expectedByeAssignments: 1,
+    drawDefinition,
+    structureId,
   });
 
   verifyMatchUps({
-    structureId,
-    expectedRoundPending: [3, 2],
-    expectedRoundUpcoming: [0, 0],
     expectedRoundCompleted: [0, 0],
+    expectedRoundUpcoming: [0, 0],
+    expectedRoundPending: [3, 2],
+    structureId,
   });
 
   drawEngine.assignDrawPositionBye({
+    drawPosition: unassignedPositions?.[6].drawPosition,
     structureId,
-    drawPosition: unassignedPositions[6].drawPosition,
   });
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
-    structureId,
-    roundNumber: 2,
     roundPosition: 2,
+    roundNumber: 2,
+    structureId,
   }));
   expect(matchUp.drawPositions).toMatchObject([8, undefined]);
   drawEngine.assignDrawPosition({
-    structureId,
-    drawPosition: unassignedPositions[7].drawPosition,
+    drawPosition: unassignedPositions?.[7].drawPosition,
     participantId: participantIds[1],
+    structureId,
   });
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
-    structureId,
-    roundNumber: 2,
     roundPosition: 2,
+    roundNumber: 2,
+    structureId,
   }));
   expect(matchUp.drawPositions).toMatchObject([8, undefined]);
 
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
-    structureId,
-    roundNumber: 1,
     roundPosition: 1,
+    roundNumber: 1,
+    structureId,
   }));
   let { matchUpId } = matchUp;
   let { error } = drawEngine.setMatchUpStatus({
-    matchUpId,
     matchUpStatus: RETIRED,
+    matchUpId,
   });
   expect(error).not.toBeUndefined();
 
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
-    structureId,
-    roundNumber: 1,
     roundPosition: 1,
+    roundNumber: 1,
+    structureId,
   }));
   let { matchUpStatus } = matchUp;
   expect(matchUpStatus).toEqual(BYE);
 
   ({ error } = drawEngine.setMatchUpStatus({
-    matchUpId,
     matchUpStatus: 'BOGUS',
+    matchUpId,
   }));
   expect(error).not.toBeUndefined();
 
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
-    structureId,
-    roundNumber: 1,
     roundPosition: 2,
+    roundNumber: 1,
+    structureId,
   }));
   ({ matchUpId } = matchUp);
   ({ error } = drawEngine.setMatchUpStatus({
-    matchUpId,
     matchUpStatus: 'BYE',
+    matchUpId,
   }));
   expect(error).not.toBeUndefined();
 
   drawEngine.assignDrawPosition({
-    structureId,
-    drawPosition: unassignedPositions[2].drawPosition,
+    drawPosition: unassignedPositions?.[2].drawPosition,
     participantId: participantIds[2],
+    structureId,
   });
   drawEngine.assignDrawPosition({
-    structureId,
-    drawPosition: unassignedPositions[3].drawPosition,
+    drawPosition: unassignedPositions?.[3].drawPosition,
     participantId: participantIds[3],
+    structureId,
   });
   drawEngine.assignDrawPosition({
-    structureId,
-    drawPosition: unassignedPositions[4].drawPosition,
+    drawPosition: unassignedPositions?.[4].drawPosition,
     participantId: participantIds[4],
+    structureId,
   });
   drawEngine.assignDrawPosition({
-    structureId,
-    drawPosition: unassignedPositions[5].drawPosition,
+    drawPosition: unassignedPositions?.[5].drawPosition,
     participantId: participantIds[5],
+    structureId,
   });
 
   // add score
@@ -258,9 +258,9 @@ it('advances paired drawPositions when BYE is assigned first', () => {
   expect(result).toMatchObject(SUCCESS);
 
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
-    structureId,
-    roundNumber: 1,
     roundPosition: 2,
+    roundNumber: 1,
+    structureId,
   }));
   ({ matchUpStatus, winningSide } = matchUp);
   expect(matchUpStatus).toEqual(TO_BE_PLAYED);
@@ -303,9 +303,9 @@ it('advances paired drawPosition if BYE is assigned second', () => {
   });
 
   drawEngine.assignDrawPosition({
-    structureId,
-    drawPosition: unassignedPositions[0].drawPosition,
+    drawPosition: unassignedPositions?.[0].drawPosition,
     participantId: participantId1,
+    structureId,
   });
   let { matchUp } = findMatchUpByRoundNumberAndPosition({
     structureId,
@@ -314,13 +314,13 @@ it('advances paired drawPosition if BYE is assigned second', () => {
   });
   expect(matchUp.drawPositions.filter(Boolean)).toMatchObject([]);
   drawEngine.assignDrawPositionBye({
+    drawPosition: unassignedPositions?.[1].drawPosition,
     structureId,
-    drawPosition: unassignedPositions[1].drawPosition,
   });
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
-    structureId,
-    roundNumber: 2,
     roundPosition: 1,
+    roundNumber: 2,
+    structureId,
   }));
   expect(matchUp.drawPositions).toMatchObject([1, undefined]);
 
@@ -340,7 +340,7 @@ it('advances paired drawPosition if BYE is assigned second', () => {
   });
 
   drawEngine.assignDrawPosition({
-    drawPosition: unassignedPositions[7].drawPosition,
+    drawPosition: unassignedPositions?.[7].drawPosition,
     participantId: participantId2,
     structureId,
   });
@@ -351,7 +351,7 @@ it('advances paired drawPosition if BYE is assigned second', () => {
   }));
   expect(matchUp.drawPositions.filter(Boolean)).toMatchObject([]);
   drawEngine.assignDrawPositionBye({
-    drawPosition: unassignedPositions[6].drawPosition,
+    drawPosition: unassignedPositions?.[6].drawPosition,
     structureId,
   });
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
@@ -390,9 +390,9 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
 
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
     structureId: mainStructureId,
-    roundNumber: 1,
     roundPosition: 2,
     inContext: true,
+    roundNumber: 1,
   }));
   ({ matchUpStatus, sides, score } = matchUp);
   expect(matchUpStatus).toEqual(COMPLETED);
@@ -422,9 +422,9 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
   // check that first matchUp in consolation draw is BYE and that loser was directed
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
     structureId: consolationStructureId,
-    roundNumber: 1,
     roundPosition: 1,
     inContext: true,
+    roundNumber: 1,
   }));
   ({ matchUpStatus, sides } = matchUp);
   expect(sides[1].participantId).toEqual(losingParticipantId);
@@ -432,8 +432,8 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
   // check that second matchUp in consolation draw is TO_BE_PLAYED
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
     structureId: consolationStructureId,
-    roundNumber: 1,
     roundPosition: 2,
+    roundNumber: 1,
   }));
   ({ matchUpStatus } = matchUp);
   expect(matchUpStatus).toEqual(TO_BE_PLAYED);
@@ -450,8 +450,8 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
 
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
     structureId: mainStructureId,
-    roundNumber: 2,
     roundPosition: 1,
+    roundNumber: 2,
   }));
   expect(matchUp.drawPositions).toEqual([1, 3]);
 
@@ -481,8 +481,8 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
 
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
     structureId: mainStructureId,
-    roundNumber: 1,
     roundPosition: 3,
+    roundNumber: 1,
   }));
   expect(matchUp.drawPositions).toEqual([5, 6]);
 

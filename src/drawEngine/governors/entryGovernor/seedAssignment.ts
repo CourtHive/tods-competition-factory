@@ -55,7 +55,7 @@ export function assignSeed({
     ?.length;
   const flighted = flightsCount && flightsCount > 1;
 
-  const relevantAssignment = positionAssignments.find(
+  const relevantAssignment = positionAssignments?.find(
     (assignment) => assignment.participantId === participantId
   );
   const assignedDrawPosition = relevantAssignment?.drawPosition;

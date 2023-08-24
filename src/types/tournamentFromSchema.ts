@@ -227,6 +227,7 @@ export enum EntryStatusEnum {
   OrganiserAcceptance = 'ORGANISER_ACCEPTANCE',
   Qualifier = 'QUALIFIER',
   SpecialExempt = 'SPECIAL_EXEMPT',
+  Registered = 'Registered',
   Ungrouped = 'UNGROUPED',
   Unpaired = 'UNPAIRED',
   Wildcard = 'WILDCARD',
