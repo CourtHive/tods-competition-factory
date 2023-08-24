@@ -60,7 +60,7 @@ export function HHMMSS(s, format) {
   return timeString.split(':').map(zeroPad).join(':');
 }
 
-export const getUTCdateString = (date) => {
+export const getUTCdateString = (date?) => {
   const dateDate =
     isDate(date) || isISODateString(date) ? new Date(date) : new Date();
   const monthNumber = dateDate.getUTCMonth() + 1;

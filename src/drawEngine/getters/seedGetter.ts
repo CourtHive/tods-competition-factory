@@ -18,6 +18,7 @@ import {
   shuffleArray,
 } from '../../utilities';
 
+import { DrawDefinition, Structure } from '../../types/tournamentFromSchema';
 import {
   CLUSTER,
   CONTAINER,
@@ -38,15 +39,22 @@ import {
  * The calculations for the positioning of [a, b] and [w, x, y, z] are specific to seeding policies
  */
 
+type GetValidSeedBlocksArgs = {
+  provisionalPositioning?: boolean;
+  drawDefinition?: DrawDefinition;
+  allPositions?: boolean;
+  appliedPolicies?: any;
+  structure: Structure;
+};
+
 export function getValidSeedBlocks({
   provisionalPositioning,
   appliedPolicies,
   drawDefinition,
   allPositions,
   structure,
-  event,
-}) {
-  let validSeedBlocks = [];
+}: GetValidSeedBlocksArgs) {
+  let validSeedBlocks: any[] = [];
 
   if (!structure) return { error: MISSING_STRUCTURE };
 
@@ -59,14 +67,15 @@ export function getValidSeedBlocks({
     provisionalPositioning,
     drawDefinition,
     structure,
-    event,
   });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const positionsCount = positionAssignments.length;
   const seedsCount = seedAssignments?.length || 0;
 
-  let allDrawPositions = [];
-  const roundNumbers = Object.keys(roundMatchUps).sort((a, b) => a - b);
+  let allDrawPositions: number[] = [];
+  const roundNumbers = Object.keys(roundMatchUps)
+    .map((n) => parseInt(n))
+    .sort((a, b) => a - b);
   const uniqueDrawPositionsByRound = roundNumbers
     .map((roundNumber) => {
       const roundDrawPositions = roundMatchUps[roundNumber]
@@ -114,9 +123,11 @@ export function getValidSeedBlocks({
       0;
 
   if (qualifyingBlocks) {
-    const seedingBlocksCount = structure.matchUps.filter(
-      ({ roundNumber }) => roundNumber === structure.roundLimit
-    ).length;
+    const seedingBlocksCount = structure?.matchUps
+      ? structure.matchUps.filter(
+          ({ roundNumber }) => roundNumber === structure.roundLimit
+        ).length
+      : 0;
     const chunkSize = firstRoundDrawPositions.length / seedingBlocksCount;
 
     if (isFeedIn) {
@@ -147,10 +158,6 @@ export function getValidSeedBlocks({
       seedingProfile,
       structure,
     });
-    if (!result || result.error) {
-      console.log(result);
-      return result;
-    }
     ({ validSeedBlocks } = result);
   } else if (isFeedIn) {
     // for FEED_IN structures, block seeding proceeds from final rounds
@@ -171,21 +178,13 @@ export function getValidSeedBlocks({
   }
 
   if (!isContainer && !isLucky && !qualifyingBlocks) {
-    const { blocks, error } = constructPower2Blocks({
+    const { blocks } = constructPower2Blocks({
       drawPositionOffset: firstRoundDrawPositionOffset,
       seedNumberOffset: fedSeedNumberOffset,
       seedCountGoal: firstRoundSeedsCount,
       seedingProfile,
       baseDrawSize,
     });
-    if (error) {
-      return {
-        validSeedBlocks: [],
-        isContainer,
-        isFeedIn,
-        error,
-      };
-    }
     blocks.forEach((block) => validSeedBlocks.push(block));
   }
 
@@ -242,11 +241,11 @@ export function getContainerBlocks({ seedingProfile, structure }) {
 }
 
 function getSeedBlockPattern({ positioning, seedGroups, drawPositionBlocks }) {
-  const validSeedBlocks = [];
+  const validSeedBlocks: any[] = [];
 
   const topDown = (a, b) => a - b;
   const bottomUp = (a, b) => b - a;
-  const assignedPositions = [];
+  const assignedPositions: number[] = [];
   seedGroups.forEach((seedGroup, i) => {
     if (i && positioning !== WATERFALL) {
       shuffleArray(seedGroup);
@@ -267,16 +266,18 @@ function getSeedBlockPattern({ positioning, seedGroups, drawPositionBlocks }) {
   return { validSeedBlocks };
 }
 
-function constructPower2Blocks({
-  roundRobinGroupsCount,
-  drawPositionOffset = 0,
-  seedNumberOffset = 0,
-  seedingProfile,
-  seedCountGoal,
-  baseDrawSize,
-}) {
+function constructPower2Blocks(params) {
+  const {
+    drawPositionOffset = 0,
+    roundRobinGroupsCount,
+    seedNumberOffset = 0,
+    seedingProfile,
+    seedCountGoal,
+    baseDrawSize,
+  } = params;
+
   let count = 1;
-  const blocks = [];
+  const blocks: any[] = [];
 
   const { seedBlocks } = getSeedBlocks({
     cluster: getSeedPattern(seedingProfile) === CLUSTER,
@@ -300,7 +301,7 @@ function constructPower2Blocks({
   return { blocks };
 
   function getSeeds(s, n) {
-    return Array.from(new Array(n), (val, i) => i + s);
+    return Array.from(new Array(n), (_, i) => i + s);
   }
 }
 
@@ -346,26 +347,26 @@ export function isValidSeedPosition({
     return validSeedPositions.includes(drawPosition);
   }
 
-  const validSeedPositions = [].concat(
+  const validSeedPositions: number[] = [].concat(
     ...validSeedBlocks.map((seedBlock) => seedBlock.drawPositions)
   );
   return validSeedPositions.includes(drawPosition);
 }
 
-export function getNextSeedBlock({
-  provisionalPositioning,
-  drawDefinition,
-  seedBlockInfo,
-  structureId,
-  randomize,
-  event,
-}) {
+export function getNextSeedBlock(params) {
+  const {
+    provisionalPositioning,
+    drawDefinition,
+    seedBlockInfo,
+    structureId,
+    randomize,
+  } = params;
+
   const { structure } = findStructure({ drawDefinition, structureId });
   const { seedAssignments } = getStructureSeedAssignments({
     provisionalPositioning,
     drawDefinition,
     structure,
-    event,
   });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const positionsWithParticipants = positionAssignments.filter(
@@ -384,7 +385,6 @@ export function getNextSeedBlock({
       appliedPolicies,
       drawDefinition,
       structure,
-      event,
     })?.validSeedBlocks;
   const unfilledSeedBlocks = (validSeedBlocks || []).filter((seedBlock) => {
     const unfilledPositions = seedBlock.drawPositions.filter(
@@ -424,7 +424,7 @@ export function getNextSeedBlock({
       )) ||
     [];
   const unfilledPositions = randomize ? shuffleArray(unfilled) : unfilled;
-  const selectedParticipantIds = [];
+  const selectedParticipantIds: string[] = [];
   const randomlySelectedUnplacedSeedValueIds = unfilledPositions
     .map(() => {
       const assignment = randomlySelectLowestSeedValue(

@@ -31,7 +31,10 @@ export function matchUpDuration({ matchUp }) {
         timeItem?.itemType
       )
     )
-    .sort((a, b) => timeDate(a.itemValue) - timeDate(b.itemValue));
+    .sort(
+      (a, b) =>
+        timeDate(a.itemValue).getTime() - timeDate(b.itemValue).getTime()
+    );
 
   const elapsed = relevantTimeItems.reduce(
     (elapsed, timeItem) => {
@@ -51,7 +54,8 @@ export function matchUpDuration({ matchUp }) {
             [START_TIME, RESUME_TIME].includes(elapsed.lastType)
           ) {
             const interval =
-              timeDate(timeItem.itemValue) - timeDate(elapsed.lastValue);
+              timeDate(timeItem.itemValue).getTime() -
+              timeDate(elapsed.lastValue).getTime();
             milliseconds = elapsed.milliseconds + interval;
           } else {
             milliseconds = elapsed.milliseconds;
@@ -60,7 +64,8 @@ export function matchUpDuration({ matchUp }) {
         case STOP_TIME:
           if ([START_TIME, 'SCHECULE.TIME.RESUME'].includes(elapsed.lastType)) {
             const interval =
-              timeDate(timeItem.itemValue) - timeDate(elapsed.lastValue);
+              timeDate(timeItem.itemValue).getTime() -
+              timeDate(elapsed.lastValue).getTime();
             milliseconds = elapsed.milliseconds + interval;
           } else {
             milliseconds = elapsed.milliseconds;
@@ -80,7 +85,8 @@ export function matchUpDuration({ matchUp }) {
   );
 
   if ([START_TIME, RESUME_TIME].includes(elapsed.lastType)) {
-    const interval = new Date() - timeDate(elapsed.lastValue);
+    const interval =
+      new Date().getTime() - timeDate(elapsed.lastValue).getTime();
     elapsed.milliseconds += interval;
   }
 

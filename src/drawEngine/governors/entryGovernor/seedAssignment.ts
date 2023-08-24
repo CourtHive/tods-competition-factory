@@ -1,4 +1,3 @@
-import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 import { getFlightProfile } from '../../../tournamentEngine/getters/getFlightProfile';
 import { modifySeedAssignmentsNotice } from '../../notifications/drawNotifications';
@@ -31,12 +30,11 @@ export function assignSeed({
   const stack = 'assignSeed';
   const { structure } = findStructure({ drawDefinition, structureId });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
-  const { seedAssignments } = getStructureSeedAssignments({
+  const seedAssignments = getStructureSeedAssignments({
     provisionalPositioning,
     drawDefinition,
     structure,
-    event,
-  });
+  }).seedAssignments as any;
   const seedNumbers = seedAssignments.map(
     (assignment) => assignment.seedNumber
   );
@@ -63,14 +61,8 @@ export function assignSeed({
   const assignedDrawPosition = relevantAssignment?.drawPosition;
 
   if (assignedDrawPosition) {
-    const { appliedPolicies } = getAppliedPolicies({
-      tournamentRecord,
-      drawDefinition,
-      event,
-    });
     const positionIsValid = isValidSeedPosition({
       drawPosition: assignedDrawPosition,
-      appliedPolicies,
       drawDefinition,
       seedBlockInfo,
       structureId,
@@ -110,7 +102,6 @@ export function assignSeed({
   if (success) {
     modifySeedAssignmentsNotice({
       tournamentId: tournamentRecord?.tournamentId,
-      structureIds: [structureId],
       drawDefinition,
       structure,
       eventId,

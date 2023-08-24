@@ -11,19 +11,20 @@ import { expect } from 'vitest';
 
 import { drawEngine } from '../../sync';
 
-export function verifyStructure({
-  expectedPositionsAssignedCount,
-  expectedQualifierAssignments,
-  expectedRoundMatchUpsCounts,
-  expectedSeedValuesWithBye,
-  expectedByeAssignments,
-  expectedSeedsWithByes,
-  hierarchyVerification,
-  drawDefinition,
-  expectedSeeds,
-  structureId,
-  event,
-}) {
+export function verifyStructure(params) {
+  let { drawDefinition } = params;
+  const {
+    expectedPositionsAssignedCount,
+    expectedQualifierAssignments,
+    expectedRoundMatchUpsCounts,
+    expectedSeedValuesWithBye,
+    expectedByeAssignments,
+    expectedSeedsWithByes,
+    hierarchyVerification,
+    expectedSeeds,
+    structureId,
+    event,
+  } = params;
   if (!drawDefinition) {
     ({ drawDefinition } = drawEngine.getState());
   }

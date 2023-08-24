@@ -10,8 +10,8 @@ import {
   REMOVE_ASSIGNMENT,
 } from '../../constants/positionActionConstants';
 
-export function getOrderedDrawPositionPairs({ structureId } = {}) {
-  const matchUpFilters = { structureIds: [structureId] };
+export function getOrderedDrawPositionPairs(params) {
+  const matchUpFilters = { structureIds: [params?.structureId] };
   const { matchUps } = tournamentEngine.allTournamentMatchUps({
     matchUpFilters,
   });
@@ -24,8 +24,8 @@ export function getOrderedDrawPositionPairs({ structureId } = {}) {
     .sort(matchUpSort)
     .map(({ drawPositions }) => drawPositions?.sort((a, b) => a - b));
 
-  const filteredOrderedPairs = orderedPairs?.map((pair) =>
-    pair?.filter(Boolean)
+  const filteredOrderedPairs = orderedPairs?.map(
+    (pair) => pair?.filter(Boolean)
   );
   return { filteredOrderedPairs, orderedPairs, matchUps };
 }
@@ -94,12 +94,8 @@ export function removeAssignment({
   return result;
 }
 
-export function replaceWithBye({
-  policyDefinitions,
-  drawPosition,
-  structureId,
-  drawId,
-}) {
+export function replaceWithBye(params) {
+  const { policyDefinitions, drawPosition, structureId, drawId } = params;
   const { validActions } = tournamentEngine.positionActions({
     policyDefinitions,
     drawPosition,

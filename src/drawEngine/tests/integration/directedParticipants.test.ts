@@ -1,6 +1,6 @@
 import { parseScoreString } from '../../../mocksEngine/utilities/parseScoreString';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
-import { verifyStructure } from '../../tests/primitives/verifyStructure';
+import { verifyStructure } from '../primitives/verifyStructure';
 import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
 import { getDrawStructures } from '../../getters/findStructure';
 import { getStageEntries } from '../../getters/stageGetter';
@@ -12,7 +12,7 @@ import {
   verifyMatchUps,
   getMatchUpWinnerLoserIds,
   findMatchUpByRoundNumberAndPosition,
-} from '../../tests/primitives/verifyMatchUps';
+} from '../primitives/verifyMatchUps';
 
 import { MAIN } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -30,14 +30,14 @@ import {
   SUSPENDED,
 } from '../../../constants/matchUpStatusConstants';
 import {
-  DIRECT_ACCEPTANCE,
-  WILDCARD,
-} from '../../../constants/entryStatusConstants';
+  EntryStatusEnum,
+  StageTypeEnum,
+} from '../../../types/tournamentFromSchema';
 
 it('advances paired drawPositions when BYE is assigned first', () => {
   let result;
 
-  const stage = MAIN;
+  const stage: StageTypeEnum = StageTypeEnum.Main;
   const drawSize = 8;
 
   let { drawDefinition } = mocksEngine.generateEventWithDraw({
@@ -54,7 +54,10 @@ it('advances paired drawPositions when BYE is assigned first', () => {
     structures: [structure],
   } = getDrawStructures({ drawDefinition, stage });
 
-  const entryStatuses = [DIRECT_ACCEPTANCE, WILDCARD];
+  const entryStatuses = [
+    EntryStatusEnum.DirectAcceptance,
+    EntryStatusEnum.Wildcard,
+  ];
   const mainDrawEntries = getStageEntries({
     stage,
     drawDefinition,
@@ -192,11 +195,11 @@ it('advances paired drawPositions when BYE is assigned first', () => {
   // add score
   let score, winningSide;
   ({ error, matchUpId } = completeMatchUp({
-    structureId,
-    roundNumber: 1,
-    roundPosition: 2,
-    winningSide: 1,
     scoreString: '6-3 6-3',
+    roundPosition: 2,
+    roundNumber: 1,
+    winningSide: 1,
+    structureId,
   }));
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
     structureId,
@@ -281,7 +284,10 @@ it('advances paired drawPosition if BYE is assigned second', () => {
     structures: [structure],
   } = getDrawStructures({ drawDefinition, stage });
 
-  const entryStatuses = [DIRECT_ACCEPTANCE, WILDCARD];
+  const entryStatuses = [
+    EntryStatusEnum.DirectAcceptance,
+    EntryStatusEnum.Wildcard,
+  ];
   const mainDrawEntries = getStageEntries({
     drawDefinition,
     entryStatuses,
@@ -367,9 +373,8 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
     drawSize,
   });
 
-  let result, error, success, drawPositions;
-  let winningParticipantId, losingParticipantId;
-  let matchUp, matchUpId, matchUpStatus, sides, score, winningSide;
+  let result, error, success;
+  let matchUp, matchUpId, matchUpStatus, sides, score;
 
   // complete the 2nd position matchUp, between drawPositions: [3, 4]; 3 advances;
   ({ matchUp, success, matchUpId } = completeMatchUp({
@@ -389,18 +394,18 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
     roundPosition: 2,
     inContext: true,
   }));
-  ({ drawPositions, matchUpStatus, sides, score } = matchUp);
+  ({ matchUpStatus, sides, score } = matchUp);
   expect(matchUpStatus).toEqual(COMPLETED);
-  expect(drawPositions).toEqual([3, 4]);
+  expect(matchUp.drawPositions).toEqual([3, 4]);
   const sets = parseScoreString({ scoreString: '6-1 6-2' });
   expect(score?.sets).toEqual(sets);
 
   ({ drawDefinition } = drawEngine.getState());
-  ({ winningParticipantId, losingParticipantId } = getMatchUpWinnerLoserIds({
-    drawDefinition,
-    matchUpId,
-  }));
-  // const firstWinningParticipantId = winningParticipantId;
+  const { winningParticipantId, losingParticipantId } =
+    getMatchUpWinnerLoserIds({
+      drawDefinition,
+      matchUpId,
+    });
 
   // check that winner advanced to second round matchUp and that matchUpStatus is TO_BE_PLAYED
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
@@ -436,10 +441,10 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
   // advance main draw participant in drawPosition: 1 to third round
   ({ matchUp, success, matchUpId } = completeMatchUp({
     structureId: mainStructureId,
-    roundNumber: 2,
+    scoreString: '6-2 6-1',
     roundPosition: 1,
+    roundNumber: 2,
     winningSide: 1,
-    score: '6-2 6-1',
   }));
   expect(success).toEqual(true);
 
@@ -453,10 +458,10 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
   // attempt to complete 2nd position matchUp in first round of consolation draw
   result = completeMatchUp({
     structureId: consolationStructureId,
-    roundNumber: 1,
+    scoreString: '6-1 1-6 6-2',
     roundPosition: 2,
+    roundNumber: 1,
     winningSide: 1,
-    score: '6-1 1-6 6-2',
   });
   ({ error, success, matchUpId } = result);
   expect(success).toEqual(undefined);
@@ -467,10 +472,10 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
   // ...to direct other participants to consolation draw
   ({ matchUp, success, error, matchUpId } = completeMatchUp({
     structureId: mainStructureId,
-    roundNumber: 1,
+    scoreString: '6-1 6-3',
     roundPosition: 3,
+    roundNumber: 1,
     winningSide: 1,
-    score: '6-1 6-3',
   }));
   expect(success).toEqual(true);
 
@@ -483,10 +488,10 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
 
   ({ matchUp, success, matchUpId } = completeMatchUp({
     structureId: mainStructureId,
-    roundNumber: 1,
+    scoreString: '6-1 6-4',
     roundPosition: 4,
+    roundNumber: 1,
     winningSide: 1,
-    score: '6-1 6-4',
   }));
   expect(success).toEqual(true);
 
@@ -500,10 +505,10 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
   // complete 2nd position matchUp in first round of consolation draw
   ({ matchUp, success, matchUpId } = completeMatchUp({
     structureId: consolationStructureId,
-    roundNumber: 1,
+    scoreString: '6-1 1-6 6-2',
     roundPosition: 2,
+    roundNumber: 1,
     winningSide: 1,
-    score: '6-1 1-6 6-2',
   }));
   expect(success).toEqual(true);
 
@@ -593,7 +598,7 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
     roundPosition: 2,
     inContext: true,
   }));
-  ({ matchUpStatus, score, winningSide } = matchUp);
+  ({ matchUpStatus, score } = matchUp);
   expect(matchUpStatus).toEqual(RETIRED);
-  expect(winningSide).toEqual(1);
+  expect(matchUp.winningSide).toEqual(1);
 });

@@ -62,7 +62,7 @@ type GetDrawStructuresArgs = {
   drawDefinition?: DrawDefinition;
   withStageGrouping?: boolean;
   stageSequences?: string[];
-  stageSequence?: string;
+  stageSequence?: number;
   roundTarget?: number;
   stages?: string[];
   sortConfig?: any;

@@ -95,7 +95,7 @@ const scenarios = [
 
 it.each(scenarios)('can generate and verify', (scenario) => {
   const { drawProfile, expectation } = scenario;
-  let result = mocksEngine.generateTournamentRecord({
+  const result = mocksEngine.generateTournamentRecord({
     drawProfiles: [
       { ...drawProfile, enforcePolicyLimits: false, drawType: ROUND_ROBIN },
     ],
@@ -123,9 +123,8 @@ it.each(scenarios)('can generate and verify', (scenario) => {
 
   const matchUps = getAllStructureMatchUps({ structure }).matchUps;
   const roundMatchUps = getRoundMatchUps({ matchUps }).roundMatchUps;
-  const roundMatchUpCounts = Object.values(roundMatchUps).map(
-    (value) => value.length
-  );
+  const rmArr: any[] = Object.values(roundMatchUps);
+  const roundMatchUpCounts = rmArr.map((value) => value.length);
   expect(roundMatchUpCounts).toEqual(expectation.roundMatchUpCounts);
 
   const groupedDrawPositions = structure.structures.map(
@@ -137,7 +136,7 @@ it.each(scenarios)('can generate and verify', (scenario) => {
       (assignment) => assignment.participantId === seedAssignment.participantId
     );
     return {
-      drawPosition: position.drawPosition,
+      drawPosition: position?.drawPosition,
       seedNumber: seedAssignment.seedNumber,
     };
   });

@@ -8,7 +8,7 @@ import entryGovernor from './governors/entryGovernor';
 import linkGovernor from './governors/linkGovernor';
 
 import { newDrawDefinition, paramsMiddleware, setState } from './stateMethods';
-import { notifySubscribers } from '../global/state/notifySubscribers';
+import { notifySubscribersAsync } from '../global/state/notifySubscribers';
 import { factoryVersion } from '../global/functions/factoryVersion';
 import { modifyDrawNotice } from './notifications/drawNotifications';
 import { makeDeepCopy } from '../utilities';
@@ -17,23 +17,28 @@ import {
   setDevContext,
   getDevContext,
   deleteNotices,
+  createInstanceState,
 } from '../global/state/globalState';
 
 import { MISSING_DRAW_DEFINITION } from '../constants/errorConditionConstants';
 import { SUCCESS } from '../constants/resultConstants';
+import { FactoryEngine } from '../types/factoryTypes';
 
 let drawDefinition;
-let prefetch = false;
+const prefetch = false;
 let tournamentParticipants = [];
 
-export const drawEngine = (function () {
-  const engine = {
-    getState: ({ convertExtensions, removeExtensions } = {}) => ({
+export function drawEngineAsync(test) {
+  const result = createInstanceState();
+  if (result.error && !test) return result;
+
+  const engine: FactoryEngine = {
+    getState: (params) => ({
       drawDefinition: makeDeepCopy(
         drawDefinition,
-        convertExtensions,
+        params?.convertExtensions,
         false,
-        removeExtensions
+        params?.removeExtensions
       ),
     }),
     version: () => factoryVersion(),
@@ -41,8 +46,11 @@ export const drawEngine = (function () {
       drawDefinition = undefined;
       return { ...SUCCESS };
     },
-    newDrawDefinition: ({ drawId, drawType } = {}) => {
-      drawDefinition = newDrawDefinition({ drawId, drawType });
+    newDrawDefinition: (params) => {
+      drawDefinition = newDrawDefinition({
+        drawId: params?.drawId,
+        drawType: params?.drawType,
+      });
       return Object.assign(
         {
           drawId: drawDefinition.drawId,
@@ -51,9 +59,9 @@ export const drawEngine = (function () {
         SUCCESS
       );
     },
-    setDrawDescription: ({ description } = {}) => {
+    setDrawDescription: (params) => {
       if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-      drawDefinition.description = description;
+      drawDefinition.description = params?.description;
       modifyDrawNotice({ drawDefinition });
       return Object.assign({ drawId: drawDefinition.drawId }, SUCCESS);
     },
@@ -99,17 +107,24 @@ export const drawEngine = (function () {
 
   return engine;
 
-  function importGovernors(governors) {
-    governors.forEach((governor) => {
-      Object.keys(governor).forEach((governorMethod) => {
-        engine[governorMethod] = (params) => {
+  async function importGovernors(governors) {
+    for (const governor of governors) {
+      const governorMethods = Object.keys(governor);
+
+      for (const governorMethod of governorMethods) {
+        engine[governorMethod] = async (params) => {
           if (getDevContext()) {
-            return invoke({ params, governor, governorMethod });
+            return await invoke({ params, governor, governorMethod });
           } else {
             try {
-              return invoke({ params, governor, governorMethod });
+              return await invoke({ params, governor, governorMethod });
             } catch (err) {
-              const error = err.toString();
+              let error;
+              if (typeof err === 'string') {
+                error = err.toUpperCase();
+              } else if (err instanceof Error) {
+                error = err.message;
+              }
               console.log('ERROR', {
                 params: JSON.stringify(params),
                 drawId: drawDefinition?.drawId,
@@ -119,18 +134,17 @@ export const drawEngine = (function () {
             }
           }
         };
-      });
-    });
+      }
+    }
   }
 
-  function invoke({ params, governor, governorMethod }) {
+  async function invoke({ params, governor, governorMethod }) {
     delete engine.success;
     delete engine.error;
 
     const snapshot =
       params?.rollbackOnError && makeDeepCopy(drawDefinition, false, true);
 
-    // TODO: perhaps prefetch based on targeted methods (e.g. specific governors)
     const additionalParams = prefetch ? paramsMiddleware(drawDefinition) : {};
 
     params = {
@@ -151,11 +165,11 @@ export const drawEngine = (function () {
       result?.success &&
       params?.delayNotify !== true &&
       params?.doNotNotify !== true;
-    if (notify) notifySubscribers();
+    if (notify) await notifySubscribersAsync();
     if (notify || !result?.success || params?.doNotNotify) deleteNotices();
 
     return result;
   }
-})();
+}
 
-export default drawEngine;
+export default drawEngineAsync;

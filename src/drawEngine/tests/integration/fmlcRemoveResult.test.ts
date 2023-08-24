@@ -4,10 +4,7 @@ import tournamentEngine from '../../../tournamentEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import { drawEngine } from '../../sync';
 import { expect, it } from 'vitest';
-import {
-  completeMatchUp,
-  verifyMatchUps,
-} from '../../tests/primitives/verifyMatchUps';
+import { completeMatchUp, verifyMatchUps } from '../primitives/verifyMatchUps';
 
 import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { SINGLES } from '../../../constants/matchUpTypes';
@@ -89,7 +86,7 @@ it('can direct winners and losers', () => {
     expectedRoundCompleted: [0, 0],
   });
 
-  let {
+  const {
     structures: [mainStructure],
   } = drawEngine.getDrawStructures({ stage: MAIN, stageSequence: 1 });
   const { structureId: verifyMainStructureId } = mainStructure;
@@ -177,7 +174,7 @@ it('can direct winners and losers', () => {
     expectedRoundCompleted: [0, 0],
   });
 
-  let {
+  const {
     structures: [mainStructure],
   } = drawEngine.getDrawStructures({ stage: MAIN, stageSequence: 1 });
   const { structureId: verifyMainStructureId } = mainStructure;
@@ -215,7 +212,7 @@ it('can remove matchUps properly in FIRST_MATCH_LOSER_CONSOLATION', () => {
       ],
     },
   ];
-  let { tournamentRecord, drawIds } = mocksEngine.generateTournamentRecord({
+  const { tournamentRecord, drawIds } = mocksEngine.generateTournamentRecord({
     drawProfiles,
     participantsProfile,
   });
@@ -226,7 +223,7 @@ it('can remove matchUps properly in FIRST_MATCH_LOSER_CONSOLATION', () => {
   let { drawDefinition } = tournamentEngine.getEvent({ drawId });
   drawEngine.setState(drawDefinition);
 
-  let {
+  const {
     structures: [mainStructure],
   } = drawEngine.getDrawStructures({ stage: MAIN, stageSequence: 1 });
 
@@ -242,7 +239,7 @@ it('can remove matchUps properly in FIRST_MATCH_LOSER_CONSOLATION', () => {
     consolationStructure.positionAssignments[1].participantId
   ).toBeUndefined();
 
-  let result = tournamentEngine.setMatchUpStatus({
+  const result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId,
     outcome: toBePlayed,

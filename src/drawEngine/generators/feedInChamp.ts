@@ -6,8 +6,9 @@ import { feedInLinks } from './feedInLinks';
 import { MAIN, CONSOLATION } from '../../constants/drawDefinitionConstants';
 import { POLICY_TYPE_FEED_IN } from '../../constants/policyConstants';
 import { SUCCESS } from '../../constants/resultConstants';
+import { DrawLink } from '../../types/tournamentFromSchema';
 
-export function feedInChampionship(params = {}) {
+export function feedInChampionship(params) {
   const {
     finishingPositionOffset,
     policyDefinitions,
@@ -52,7 +53,7 @@ export function feedInChampionship(params = {}) {
   });
 
   const structures = [mainStructure];
-  const links = [];
+  const links: DrawLink[] = [];
 
   const baseDrawSize = drawSize / 2;
   const { matchUps: consolationMatchUps, roundsCount } = feedInMatchUps({

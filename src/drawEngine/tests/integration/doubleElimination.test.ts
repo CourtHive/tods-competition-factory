@@ -4,7 +4,7 @@ import {
   mocksEngine,
   tournamentEngine,
   utilities,
-} from '../../../';
+} from '../../..';
 
 import { DOUBLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
 import {
@@ -22,7 +22,7 @@ it('generates valid DOUBLE_ELIMINATION', () => {
     drawProfiles: [{ drawSize, drawType: DOUBLE_ELIMINATION }],
   });
 
-  let result = tournamentEngine.setState(tournamentRecord);
+  const result = tournamentEngine.setState(tournamentRecord);
   expect(result.success).toEqual(true);
 
   let matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
@@ -58,7 +58,7 @@ it('generates valid DOUBLE_ELIMINATION', () => {
 
 it('mocksEngine can complete DOUBLE_ELIMINATION matchUps', () => {
   const drawSize = 32;
-  let result = mocksEngine.generateTournamentRecord({
+  const result = mocksEngine.generateTournamentRecord({
     drawProfiles: [{ drawSize, drawType: DOUBLE_ELIMINATION }],
     completeAllMatchUps: true,
   });

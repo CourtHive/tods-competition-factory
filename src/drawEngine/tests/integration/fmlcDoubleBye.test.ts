@@ -230,7 +230,7 @@ it('can remove 2nd round MAIN draw result when no participant went to consolatio
     },
   ];
 
-  let {
+  const {
     tournamentRecord,
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({
@@ -302,7 +302,7 @@ it('can propagate BYE to 2nd round feed arm when 1st round Double-BYE creates 2n
     },
   ];
 
-  let {
+  const {
     drawIds: [drawId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
@@ -367,7 +367,7 @@ it('can propagate BYE to 2nd round feed arm when 1st round Double-BYE creates 2n
     },
   ];
 
-  let {
+  const {
     drawIds: [drawId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
@@ -425,11 +425,11 @@ it('can propagate BYE to 2nd round feed arm when 1st round Double-BYE creates 2n
 });
 
 function getConsolationDetails({ drawId }) {
-  let {
+  const {
     drawDefinition: { structures },
   } = tournamentEngine.getEvent({ drawId });
-  let positionAssignments = structures[1].positionAssignments;
-  let { orderedPairs, matchUps } = getOrderedDrawPositionPairs({
+  const positionAssignments = structures[1].positionAssignments;
+  const { orderedPairs, matchUps } = getOrderedDrawPositionPairs({
     structureId: structures[1].structureId,
   });
   return { matchUps, orderedPairs, positionAssignments };

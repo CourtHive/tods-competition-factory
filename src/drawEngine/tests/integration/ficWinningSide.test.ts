@@ -53,7 +53,7 @@ it('can complete FIC consolation with WOWO before main', () => {
   expect(consolationMatchUpIds.length).toEqual(4);
 
   consolationMatchUpIds.forEach((matchUpId) => {
-    let result = tournamentEngine.setMatchUpStatus({
+    const result = tournamentEngine.setMatchUpStatus({
       outcome: { matchUpStatus: DOUBLE_WALKOVER },
       matchUpId,
       drawId,
@@ -75,7 +75,7 @@ it('can complete FIC consolation with WOWO before main', () => {
     .map(({ matchUpId }) => matchUpId);
   expect(mainMatchUpIds.length).toEqual(4);
 
-  let result = tournamentEngine.setMatchUpStatus({
+  const result = tournamentEngine.setMatchUpStatus({
     outcome: { winningSide: 1 },
     matchUpId: mainMatchUpIds[0],
     drawId,

@@ -3,7 +3,11 @@ import { modifyEntryProfile } from '../governors/entryGovernor/modifyEntryProfil
 import { getEntryProfile } from './getEntryProfile';
 import { findStructure } from './findStructure';
 
-import { DrawDefinition, DrawLink } from '../../types/tournamentFromSchema';
+import {
+  DrawDefinition,
+  DrawLink,
+  EntryStatusEnum,
+} from '../../types/tournamentFromSchema';
 import { ROUND_TARGET, TALLY } from '../../constants/extensionConstants';
 import { ErrorType } from '../../constants/errorConditionConstants';
 import {
@@ -85,11 +89,11 @@ export function stageSeededEntries({ stage, drawDefinition }) {
  */
 
 type GetStageEntriesArgs = {
+  entryStatuses?: EntryStatusEnum[];
   provisionalPositioning?: boolean;
   drawDefinition: DrawDefinition;
-  entryStatuses?: string[];
   stageSequence?: number;
-  structureId: string;
+  structureId?: string;
   roundTarget?: number;
   stages?: string[];
   stage?: string;
