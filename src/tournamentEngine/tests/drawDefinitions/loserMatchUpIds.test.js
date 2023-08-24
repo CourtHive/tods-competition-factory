@@ -33,14 +33,14 @@ test.each([tournamentEngineSync, asyncTournamentEngine])(
         '0-4': { name: 'Gold', abbreviation: 'G' },
       },
     };
-    let drawProfiles = [
+    const drawProfiles = [
       {
         drawType: FEED_IN_CHAMPIONSHIP_TO_R16,
         withPlayoffs,
         drawSize: 32,
       },
     ];
-    let mockProfile = { drawProfiles };
+    const mockProfile = { drawProfiles };
 
     let result = mocksEngine.generateTournamentRecord(mockProfile);
     const { tournamentRecord } = result;
@@ -50,7 +50,7 @@ test.each([tournamentEngineSync, asyncTournamentEngine])(
     result = await tournamentEngine.allTournamentMatchUps();
 
     const matchUps = result.matchUps;
-    let round3MatchUps = matchUps.filter(
+    const round3MatchUps = matchUps.filter(
       ({ roundNumber, stage }) => stage === MAIN && [3].includes(roundNumber)
     );
     round3MatchUps.forEach(({ loserMatchUpId }) =>
