@@ -118,14 +118,14 @@ type TieFormatDefaultArgs = {
   uuids?: string[];
 };
 
-export const tieFormatDefaults = (params: TieFormatDefaultArgs) => {
+export const tieFormatDefaults = (params?: TieFormatDefaultArgs) => {
   const namedFormat =
     params?.namedFormat &&
     Object.keys(namedFormats).includes(params.namedFormat)
       ? params.namedFormat
       : STANDARD;
 
-  const uuids = Array.isArray(params?.uuids) ? params.uuids : [];
+  const uuids = Array.isArray(params?.uuids) ? params?.uuids : [];
 
   let tieFormat;
   const { category, gender } = params?.event || {};
