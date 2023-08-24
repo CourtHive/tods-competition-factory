@@ -22,17 +22,18 @@ import {
   MISSING_EVENT,
 } from '../../../../constants/errorConditionConstants';
 
-export function addDrawDefinition({
-  flight: flightDefinition,
-  suppressNotifications,
-  modifyEventEntries, // event.entries[{entryStatus}] are modified to match draw.entries[{entryStatus}]
-  existingDrawCount,
-  allowReplacement,
-  checkEntryStatus, // optional boolean to enable checking that flight.drawEntries match event.entries
-  tournamentRecord,
-  drawDefinition,
-  event,
-}) {
+export function addDrawDefinition(params) {
+  const {
+    flight: flightDefinition,
+    suppressNotifications,
+    modifyEventEntries, // event.entries[{entryStatus}] are modified to match draw.entries[{entryStatus}]
+    existingDrawCount,
+    allowReplacement,
+    checkEntryStatus, // optional boolean to enable checking that flight.drawEntries match event.entries
+    tournamentRecord,
+    drawDefinition,
+    event,
+  } = params;
   if (!drawDefinition) return { error: MISSING_DRAW_ID };
   if (!event) return { error: MISSING_EVENT };
 

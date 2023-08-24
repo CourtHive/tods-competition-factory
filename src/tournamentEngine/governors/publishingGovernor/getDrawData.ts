@@ -11,6 +11,7 @@ import { makeDeepCopy } from '../../../utilities';
 import { TALLY } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
+  ErrorType,
   MISSING_DRAW_DEFINITION,
   UNLINKED_STRUCTURES,
 } from '../../../constants/errorConditionConstants';
@@ -33,21 +34,27 @@ import {
   QUALIFYING,
 } from '../../../constants/drawDefinitionConstants';
 
-export function getDrawData({
-  tournamentParticipants = [],
-  includePositionAssignments,
-  policyDefinitions,
-  tournamentRecord,
-  inContext = true,
-  drawDefinition,
-  noDeepCopy,
-  sortConfig,
-  context,
-  event,
-}) {
+export function getDrawData(params): {
+  structures?: any[];
+  success?: boolean;
+  error?: ErrorType;
+  drawInfo?: any;
+} {
+  const {
+    tournamentParticipants = [],
+    includePositionAssignments,
+    policyDefinitions,
+    tournamentRecord,
+    inContext = true,
+    drawDefinition,
+    noDeepCopy,
+    sortConfig,
+    context,
+    event,
+  } = params;
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
-  const drawInfo = (({
+  const drawInfo: any = (({
     matchUpFormat,
     updatedAt,
     drawType,
@@ -72,8 +79,7 @@ export function getDrawData({
   });
 
   if (!allStructuresLinked) {
-    const error = { error: UNLINKED_STRUCTURES };
-    return { error };
+    return { error: UNLINKED_STRUCTURES };
   }
 
   let drawActive = false;
@@ -86,7 +92,6 @@ export function getDrawData({
         const { seedAssignments } = getStructureSeedAssignments({
           drawDefinition,
           structure,
-          event,
         });
 
         // capture the seedAssignments for MAIN/QUALIFYING { stageSequence: 1 }
@@ -152,7 +157,7 @@ export function getDrawData({
           })
           .filter((f) => f?.participantResult);
 
-        const structureInfo = (({
+        const structureInfo: any = (({
           stageSequence,
           structureName,
           structureType,

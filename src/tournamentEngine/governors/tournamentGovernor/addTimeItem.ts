@@ -97,13 +97,14 @@ export function addParticipantTimeItem({
   });
 }
 
-export function addTournamentTimeItem({
-  removePriorValues,
-  tournamentRecord,
-  duplicateValues,
-  creationTime,
-  timeItem,
-}) {
+export function addTournamentTimeItem(params) {
+  const {
+    removePriorValues,
+    tournamentRecord,
+    duplicateValues,
+    creationTime,
+    timeItem,
+  } = params;
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   return addTimeItem({
     element: tournamentRecord,
@@ -114,13 +115,9 @@ export function addTournamentTimeItem({
   });
 }
 
-export function addEventTimeItem({
-  removePriorValues,
-  duplicateValues,
-  creationTime,
-  timeItem,
-  event,
-}) {
+export function addEventTimeItem(params) {
+  const { removePriorValues, duplicateValues, creationTime, timeItem, event } =
+    params;
   if (!event) return { error: EVENT_NOT_FOUND };
   return addTimeItem({
     removePriorValues,

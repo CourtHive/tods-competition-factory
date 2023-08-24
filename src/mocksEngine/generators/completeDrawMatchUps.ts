@@ -11,6 +11,7 @@ import { matchUpSort } from '../../drawEngine/getters/matchUpSort';
 import { getMatchUpId } from '../../global/functions/extractors';
 import { generateOutcome } from './generateOutcome';
 
+import { ErrorType } from '../../constants/errorConditionConstants';
 import { MAIN, QUALIFYING } from '../../constants/drawDefinitionConstants';
 import { DOUBLES, SINGLES, TEAM } from '../../constants/matchUpTypes';
 import { ASCENDING } from '../../constants/sortingConstants';
@@ -33,14 +34,14 @@ export function completeDrawMatchUps({
   completionGoal,
   matchUpFormat,
   event,
-}) {
+}): { success?: boolean; error?: ErrorType; completedCount?: number } {
   const sortedStructures = drawDefinition.structures
     .slice()
     .sort(structureSort);
 
   let completedCount = 0;
 
-  let { matchUps: firstRoundDualMatchUps, matchUpsMap } = getAllDrawMatchUps({
+  const { matchUps: firstRoundDualMatchUps, matchUpsMap } = getAllDrawMatchUps({
     contextFilters: {
       stages: [MAIN, QUALIFYING],
     },
@@ -76,7 +77,7 @@ export function completeDrawMatchUps({
         structureId,
       });
       if (positionAssignments?.length) {
-        let { tournamentParticipants: teamParticipants } =
+        const { tournamentParticipants: teamParticipants } =
           getTournamentParticipants({
             participantFilters: { participantTypes: [TEAM] },
             tournamentRecord,
@@ -218,7 +219,7 @@ export function completeDrawMatchUps({
           event,
         });
 
-        if (result.error) return result;
+        if (result?.error) return result;
 
         completedCount += 1;
       }
@@ -228,17 +229,18 @@ export function completeDrawMatchUps({
   return { ...SUCCESS, completedCount };
 }
 
-export function completeDrawMatchUp({
-  matchUpStatusCodes,
-  tournamentRecord,
-  drawDefinition,
-  targetMatchUp,
-  matchUpStatus,
-  matchUpFormat,
-  scoreString,
-  winningSide,
-  event,
-}) {
+export function completeDrawMatchUp(params) {
+  const {
+    matchUpStatusCodes,
+    tournamentRecord,
+    drawDefinition,
+    targetMatchUp,
+    matchUpStatus,
+    matchUpFormat,
+    scoreString,
+    winningSide,
+    event,
+  } = params;
   if (!targetMatchUp || targetMatchUp.matchUpStatus === BYE) {
     return;
   }

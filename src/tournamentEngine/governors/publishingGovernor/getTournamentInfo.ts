@@ -1,9 +1,15 @@
 import { makeDeepCopy } from '../../../utilities';
 
-import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
+import {
+  ErrorType,
+  MISSING_TOURNAMENT_RECORD,
+} from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
-export function getTournamentInfo({ tournamentRecord }) {
+export function getTournamentInfo({ tournamentRecord }): {
+  tournamentInfo?: any;
+  error?: ErrorType;
+} {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
   const tournamentInfo = (({

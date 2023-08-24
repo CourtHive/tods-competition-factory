@@ -19,6 +19,7 @@ export function unPublishOrderOfPlay({
 
   const itemType = `${PUBLISH}.${STATUS}`;
   const { timeItem } = getTournamentTimeItem({
+    tournamentRecord,
     itemType,
   });
 
@@ -57,6 +58,7 @@ export function publishOrderOfPlay({
 
   const itemType = `${PUBLISH}.${STATUS}`;
   const { timeItem } = getTournamentTimeItem({
+    tournamentRecord,
     itemType,
   });
 

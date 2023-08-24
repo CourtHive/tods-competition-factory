@@ -6,17 +6,20 @@ import { MAIN, QUALIFYING } from '../../constants/drawDefinitionConstants';
 import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';
 import { DOUBLES, SINGLES } from '../../constants/eventConstants';
 import { FEMALE, MALE } from '../../constants/genderConstants';
+import { Participant } from '../../types/tournamentFromSchema';
 
-export function generateEventParticipants({
-  participantsProfile = {},
-  uniqueParticipantsCount,
-  ratingsParameters,
-  tournamentRecord,
-  eventProfile,
-  eventIndex,
-  event,
-  uuids,
-}) {
+export function generateEventParticipants(params) {
+  const {
+    participantsProfile = {},
+    uniqueParticipantsCount,
+    ratingsParameters,
+    tournamentRecord,
+    eventProfile,
+    eventIndex,
+    event,
+    uuids,
+  } = params;
+
   const { category, gender, eventType } = event;
 
   const eventParticipantType =
@@ -47,16 +50,17 @@ export function generateEventParticipants({
     sex,
   });
 
-  let result = addParticipants({
-    participants: uniqueFlightParticipants,
+  const participants = uniqueFlightParticipants as Participant[];
+  const result = addParticipants({
     tournamentRecord,
+    participants,
   });
   if (result.error) return result;
 
-  const uniqueDrawParticipants = uniqueFlightParticipants.filter(
+  const uniqueDrawParticipants = uniqueFlightParticipants?.filter(
     ({ participantType }) => participantType === eventParticipantType
   );
-  const uniqueParticipantIds = uniqueFlightParticipants.map(getParticipantId);
+  const uniqueParticipantIds = uniqueFlightParticipants?.map(getParticipantId);
 
   return { uniqueDrawParticipants, uniqueParticipantIds };
 }

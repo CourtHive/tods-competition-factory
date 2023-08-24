@@ -27,16 +27,18 @@ import {
 } from '../../constants/errorConditionConstants';
 
 // by default if there are no scaleValues matching the scaleAccessor then participants will be assigned in the array order of [team].individidualParticipantIds
-export function generateLineUps({
-  useDefaultEventRanking,
-  tournamentRecord,
-  drawDefinition,
-  scaleAccessor, // e.g. { scaleType: 'RANKINGS', scaleName: 'U18', accessor: 'wtnRating', sortOrder: 'ASC' }
-  singlesOnly, // use singles scale for doubles events
-  tieFormat,
-  attach, // boolean - when true attach LINEUPS extension to drawDefinition and add new PAIR participants (where necessary)
-  event,
-}) {
+export function generateLineUps(params) {
+  let { tieFormat } = params;
+  const {
+    useDefaultEventRanking,
+    tournamentRecord,
+    drawDefinition,
+    scaleAccessor, // e.g. { scaleType: 'RANKINGS', scaleName: 'U18', accessor: 'wtnRating', sortOrder: 'ASC' }
+    singlesOnly, // use singles scale for doubles events
+    attach, // boolean - when true attach LINEUPS extension to drawDefinition and add new PAIR participants (where necessary)
+    event,
+  } = params;
+
   if (event?.eventType !== TEAM_EVENT) return { error: INVALID_EVENT_TYPE };
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tieFormat && !drawDefinition)
@@ -110,7 +112,7 @@ export function generateLineUps({
   const singlesScaleSort = (a, b) => sortMethod(a, b, SINGLES_MATCHUP);
   const doublesScaleSort = (a, b) => sortMethod(a, b, DOUBLES_MATCHUP);
 
-  const participantIdPairs = [];
+  const participantIdPairs: string[][] = [];
   const collectionDefinitions = tieFormat.collectionDefinitions || [];
   for (const teamParticipant of teamParticipants) {
     const singlesSort =
@@ -121,7 +123,7 @@ export function generateLineUps({
 
     const participantAssignments = {};
     for (const collectionDefinition of collectionDefinitions) {
-      const collectionParticipantIds = [];
+      const collectionParticipantIds: string[] = [];
       const { collectionId, matchUpCount, matchUpType, gender } =
         collectionDefinition;
       const singlesMatchUp = matchUpType === SINGLES_MATCHUP;
@@ -130,7 +132,7 @@ export function generateLineUps({
         const typeSort = singlesMatchUp ? singlesSort : doublesSort;
         const collectionPosition = i + 1;
 
-        const participantIds = [];
+        const participantIds: string[] = [];
         generateRange(0, singlesMatchUp ? 1 : 2).forEach((i) => {
           const nextParticipantId = typeSort.find((participant) => {
             const targetGender =
@@ -166,7 +168,7 @@ export function generateLineUps({
     lineUps[teamParticipant.participantId] = lineUp;
   }
 
-  const participantsToAdd = [];
+  const participantsToAdd: any[] = [];
   for (const pairParticipantIds of participantIdPairs) {
     const { participant: existingPairParticipant } = getPairedParticipant({
       tournamentParticipants: participants,

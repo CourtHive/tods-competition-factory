@@ -45,23 +45,26 @@ import {
   ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
+import { Participant } from '../../types/tournamentFromSchema';
 
-export function generateEventWithDraw({
-  allUniqueParticipantIds = [],
-  participantsProfile = {},
-  matchUpStatusProfile,
-  completeAllMatchUps,
-  autoEntryPositions,
-  hydrateCollections,
-  randomWinningSide,
-  ratingsParameters,
-  tournamentRecord,
-  isMock = true,
-  drawProfile,
-  startDate,
-  drawIndex,
-  uuids,
-}) {
+export function generateEventWithDraw(params) {
+  const {
+    allUniqueParticipantIds = [],
+    participantsProfile = {},
+    matchUpStatusProfile,
+    completeAllMatchUps,
+    autoEntryPositions,
+    hydrateCollections,
+    randomWinningSide,
+    ratingsParameters,
+    tournamentRecord,
+    isMock = true,
+    drawProfile,
+    startDate,
+    drawIndex,
+    uuids,
+  } = params;
+
   const drawProfileCopy = makeDeepCopy(drawProfile, false, true);
 
   const {
@@ -87,7 +90,7 @@ export function generateEventWithDraw({
     stage,
   } = drawProfileCopy;
 
-  let drawSize =
+  const drawSize =
     drawProfileCopy.drawSize ||
     (drawProfileCopy.ignoreDefaults ? undefined : 32);
 
@@ -107,7 +110,7 @@ export function generateEventWithDraw({
   const categoryName =
     category?.categoryName || category?.ageCategoryCode || category?.ratingType;
 
-  let eventName =
+  const eventName =
     drawProfile.eventName || categoryName || `Generated ${eventType}`;
   let targetParticipants = tournamentRecord?.participants || [];
 
@@ -122,7 +125,7 @@ export function generateEventWithDraw({
             ? profile.drawSize
             : profile.participantsCount || 0;
         return count + qpc;
-      }, 0) || 0) * (participantType === DOUBLES ? 2 : 1);
+      }, 0) || 0) * (participantType === PAIR ? 2 : 1);
 
   const participantsCount =
     (!drawProfile.participantsCount || drawProfile.participantsCount > drawSize
@@ -131,7 +134,7 @@ export function generateEventWithDraw({
 
   const eventId = drawProfileCopy.eventId || UUID();
   // TODO: implement use of tieFormats and tieFormatId
-  let event = { eventName, eventType, tieFormat, category, eventId, gender };
+  const event = { eventName, eventType, tieFormat, category, eventId, gender };
 
   if (Array.isArray(timeItems)) {
     timeItems.forEach((timeItem) => addEventTimeItem({ event, timeItem }));
@@ -147,7 +150,7 @@ export function generateEventWithDraw({
     if (extensions?.length) Object.assign(event, { extensions });
   }
 
-  const uniqueParticipantIds = [];
+  const uniqueParticipantIds: string[] = [];
   if (
     qualifyingParticipantsCount ||
     drawProfile.uniqueParticipants ||
@@ -197,7 +200,7 @@ export function generateEventWithDraw({
       idPrefix,
       category,
     });
-    const { participants: unique } = result;
+    const unique = result.participants as Participant[];
 
     // update categoryName **after** generating participants
     if (event.category) event.category.categoryName = categoryName;
@@ -220,7 +223,7 @@ export function generateEventWithDraw({
         ? unique
             .filter(
               ({ participantType, person }) =>
-                participantType === INDIVIDUAL && person.sex === MALE
+                participantType === INDIVIDUAL && person?.sex === MALE
             )
             .map(getParticipantId)
         : [];
@@ -228,7 +231,7 @@ export function generateEventWithDraw({
         ? unique
             .filter(
               ({ participantType, person }) =>
-                participantType === INDIVIDUAL && person.sex === FEMALE
+                participantType === INDIVIDUAL && person?.sex === FEMALE
             )
             .map(getParticipantId)
         : [];
@@ -275,7 +278,7 @@ export function generateEventWithDraw({
         }
       );
       const result = addParticipants({
-        participants: teamParticipants,
+        participants: teamParticipants as Participant[],
         tournamentRecord,
       });
       if (!result.success) return result;
@@ -293,15 +296,12 @@ export function generateEventWithDraw({
   const isEventGender = (participant) => {
     if (!drawProfile.gender) return true;
     if (participant.person?.sex === drawProfile.gender) return true;
-    if (
-      participant.individualParticipantIds?.some((participantId) => {
-        const individualParticipant = targetParticipants.find(
-          (p) => p.participantId === participantId
-        );
-        return individualParticipant && isEventGender(individualParticipant);
-      })
-    )
-      return true;
+    return participant.individualParticipantIds?.some((participantId) => {
+      const individualParticipant = targetParticipants.find(
+        (p) => p.participantId === participantId
+      );
+      return individualParticipant && isEventGender(individualParticipant);
+    });
   };
 
   const consideredParticipants = targetParticipants
@@ -411,7 +411,7 @@ export function generateEventWithDraw({
   if (tournamentRecord && seedsCount && seedsCount <= participantIds.length) {
     const scaleValues = generateRange(1, seedsCount + 1);
     scaleValues.forEach((scaleValue, index) => {
-      let scaleItem = {
+      const scaleItem = {
         scaleName: seedingScaleName,
         scaleDate: startDate,
         scaleType: SEEDING,
@@ -480,14 +480,14 @@ export function generateEventWithDraw({
     if (isMock && !manual) {
       // NOTE: completionGoal needs to come before outcomes array because setMatchUpStatus has integrity checks
       // ... which may require positionAssignments and/or drawPositions to have been propagated
-      const goComplete = ({ completionGoal, completeAllMatchUps }) => {
+      const goComplete = (p) => {
         const result = completeDrawMatchUps({
+          completeAllMatchUps: p.completeAllMatchUps,
+          completionGoal: p.completionGoal,
           matchUpStatusProfile,
-          completeAllMatchUps,
-          qualifyingProfiles,
+          // qualifyingProfiles,
           randomWinningSide,
           tournamentRecord,
-          completionGoal,
           drawDefinition,
           matchUpFormat,
           event,
@@ -508,7 +508,7 @@ export function generateEventWithDraw({
           // ignore when positioning cannot occur because of incomplete source structure
 
           const playoffCompletionGoal = completionGoal
-            ? completionGoal - completedCount
+            ? completionGoal - (completedCount || 0)
             : undefined;
           result = completeDrawMatchUps({
             completionGoal: completionGoal ? playoffCompletionGoal : undefined,
@@ -593,7 +593,6 @@ export function generateEventWithDraw({
             matchUpStatus,
             scoreString,
             winningSide,
-            drawId,
           });
           // will not throw errors for BYE matchUps
           if (result?.error) return result;

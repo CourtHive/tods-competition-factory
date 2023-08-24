@@ -4,34 +4,51 @@ import { filterParticipants } from './filterParticipants';
 import { getParticipantMap } from './getParticipantMap';
 import { definedAttributes } from '../../../utilities';
 
-import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
+import { HydratedParticipant } from '../../../types/hydrated';
 import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  MISSING_TOURNAMENT_RECORD,
+  ErrorType,
+} from '../../../constants/errorConditionConstants';
 
-export function getParticipants({
-  withIndividualParticipants,
-  participantFilters = {},
-  withPotentialMatchUps,
-  withRankingProfile,
-  convertExtensions,
-  policyDefinitions,
-  withScheduleItems,
-  tournamentRecord,
-  scheduleAnalysis,
-  withSignInStatus,
-  withTeamMatchUps,
-  withScaleValues,
-  usePublishState,
-  contextProfile,
-  withStatistics,
-  withOpponents,
-  withMatchUps,
-  internalUse,
-  withSeeding,
-  withEvents,
-  withDraws,
-  withISO2,
-  withIOC,
-}) {
+export function getParticipants(params): {
+  eventsPublishStatuses?: { [key: string]: any };
+  participantMap?: { [key: string]: any };
+  participantIdsWithConflicts?: string[];
+  participants?: HydratedParticipant[];
+  derivedEventInfo?: any;
+  derivedDrawInfo?: any;
+  mappedMatchUps?: any;
+  error?: ErrorType;
+  success?: boolean;
+  matchUps?: any[];
+} {
+  const {
+    withIndividualParticipants,
+    participantFilters = {},
+    withPotentialMatchUps,
+    withRankingProfile,
+    convertExtensions,
+    policyDefinitions,
+    withScheduleItems,
+    tournamentRecord,
+    scheduleAnalysis,
+    withSignInStatus,
+    withTeamMatchUps,
+    withScaleValues,
+    usePublishState,
+    contextProfile,
+    withStatistics,
+    withOpponents,
+    withMatchUps,
+    internalUse,
+    withSeeding,
+    withEvents,
+    withDraws,
+    withISO2,
+    withIOC,
+  } = params;
+
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
   if (withMatchUps || withRankingProfile) {
@@ -49,40 +66,39 @@ export function getParticipants({
     withISO2,
     withIOC,
   });
-  let participantIdsWithConflicts,
-    eventsPublishStatuses,
-    derivedEventInfo,
-    derivedDrawInfo,
-    mappedMatchUps,
-    matchUps;
-  ({
-    participantIdsWithConflicts,
-    eventsPublishStatuses,
-    derivedEventInfo,
-    derivedDrawInfo,
-    participantMap,
-    mappedMatchUps,
-    matchUps,
-  } = getParticipantEntries({
+
+  const entriesResult = getParticipantEntries({
     withMatchUps: withMatchUps || withRankingProfile,
     withEvents: withEvents || withRankingProfile,
     withDraws: withDraws || withRankingProfile,
     withPotentialMatchUps,
     participantFilters,
     withRankingProfile,
-    policyDefinitions,
     convertExtensions,
     withScheduleItems,
+    policyDefinitions,
     tournamentRecord,
     scheduleAnalysis,
     withTeamMatchUps,
     usePublishState,
     withStatistics,
-    contextProfile,
     participantMap,
     withOpponents,
+    contextProfile,
     withSeeding,
-  }));
+  });
+
+  const {
+    participantIdsWithConflicts,
+    eventsPublishStatuses,
+    derivedEventInfo,
+    derivedDrawInfo,
+    mappedMatchUps,
+  } = entriesResult;
+
+  const matchUps: any[] = entriesResult.matchUps;
+
+  participantMap = entriesResult.participantMap;
 
   const nextMatchUps = scheduleAnalysis || withPotentialMatchUps;
   const processedParticipants = Object.values(participantMap).map(
@@ -96,12 +112,12 @@ export function getParticipants({
       draws,
       ...p
     }) => {
-      const participantDraws = Object.values(draws);
+      const participantDraws: any[] = Object.values(draws);
       const participantOpponents = Object.values(opponents);
       if (withOpponents) {
         participantDraws?.forEach((draw) => {
           draw.opponents = participantOpponents.filter(
-            (opponent) => opponent.drawId === draw.drawId
+            (opponent: any) => opponent.drawId === draw.drawId
           );
         });
       }
@@ -133,7 +149,7 @@ export function getParticipants({
   );
 
   // filter must be last so attributes can be used for reporting & etc.
-  let participants = filterParticipants({
+  const participants = filterParticipants({
     participants: processedParticipants,
     participantFilters,
     tournamentRecord,

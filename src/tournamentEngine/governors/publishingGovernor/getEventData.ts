@@ -8,20 +8,26 @@ import { getDrawData } from './getDrawData';
 import { PUBLIC, PUBLISH, STATUS } from '../../../constants/timeItemConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
+  ErrorType,
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 
-export function getEventData({
-  includePositionAssignments,
-  tournamentRecord: t,
-  participantsProfile,
-  policyDefinitions,
-  usePublishState,
-  status = PUBLIC,
-  sortConfig,
-  event: e,
-}) {
+export function getEventData(params): {
+  success?: boolean;
+  eventData?: any;
+  error?: ErrorType;
+} {
+  const {
+    includePositionAssignments,
+    tournamentRecord: t,
+    participantsProfile,
+    policyDefinitions,
+    usePublishState,
+    status = PUBLIC,
+    sortConfig,
+    event: e,
+  } = params;
   const tournamentRecord = makeDeepCopy(t, false, true);
   const event = makeDeepCopy(e, false, true);
 
@@ -96,7 +102,7 @@ export function getEventData({
     )
   );
 
-  const eventInfo = (({
+  const eventInfo: any = (({
     eventId,
     eventName,
     eventType,
