@@ -1,8 +1,14 @@
-import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
+import {
+  RoundMatchUpsResult,
+  getRoundMatchUps,
+} from '../../accessors/matchUpAccessor/getRoundMatchUps';
 import { getAllStructureMatchUps } from './getAllStructureMatchUps';
 import { findStructure } from '../findStructure';
 
-export function getStructureRoundProfile({ drawDefinition, structureId }) {
+export function getStructureRoundProfile({
+  drawDefinition,
+  structureId,
+}): RoundMatchUpsResult {
   const result = findStructure({
     drawDefinition,
     structureId,

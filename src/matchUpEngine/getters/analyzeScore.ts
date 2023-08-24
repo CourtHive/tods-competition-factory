@@ -1,4 +1,5 @@
 import { parse } from '../governors/matchUpFormatGovernor/parse';
+import { Score } from '../../types/tournamentFromSchema';
 import { instanceCount } from '../../utilities';
 
 import {
@@ -7,18 +8,26 @@ import {
   WALKOVER,
 } from '../../constants/matchUpStatusConstants';
 
+type AnalyzeScoreArgs = {
+  existingMatchUpStatus?: string;
+  matchUpStatus?: string;
+  matchUpFormat: string;
+  winningSide: number;
+  score: Score;
+};
 export function analyzeScore({
   existingMatchUpStatus,
   matchUpFormat,
   matchUpStatus,
   winningSide,
   score,
-}) {
+}: AnalyzeScoreArgs) {
   const sets = score?.sets || [];
   const completedSets = sets?.filter((set) => set?.winningSide) || [];
   const setsWinCounts = completedSets.reduce(
     (counts, set) => {
       const { winningSide } = set;
+      if (!winningSide) return counts;
       const winningSideIndex = winningSide - 1;
       counts[winningSideIndex]++;
       return counts;
@@ -38,9 +47,9 @@ export function analyzeScore({
   const setsToWin = (bestOf && Math.ceil(bestOf / 2)) || 1;
 
   const relevantMatchUpStatus = matchUpStatus || existingMatchUpStatus;
-  const irregularEnding = [DEFAULTED, RETIRED, WALKOVER].includes(
-    relevantMatchUpStatus
-  );
+  const irregularEnding =
+    relevantMatchUpStatus &&
+    [DEFAULTED, RETIRED, WALKOVER].includes(relevantMatchUpStatus);
 
   const validSets =
     !matchUpScoringFormat ||

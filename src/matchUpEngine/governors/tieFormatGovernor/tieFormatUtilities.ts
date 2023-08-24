@@ -1,20 +1,18 @@
+import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
+import { matchUpFormatCode } from '../matchUpFormatGovernor';
+import { unique, UUID } from '../../../utilities';
 import {
   decorateResult,
   ResultType,
 } from '../../../global/functions/decorateResult';
-import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
-import { matchUpFormatCode } from '../matchUpFormatGovernor';
-import { unique, UUID } from '../../../utilities';
 
 import { INVALID_TIE_FORMAT } from '../../../constants/errorConditionConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 
-import { TieFormat } from '../../../types/tournamentFromSchema';
-
 type ValidateTieFormatArgs = {
   checkCollectionIds?: boolean;
-  tieFormat?: TieFormat;
+  tieFormat?: any; // not using TieFormat type because incoming value is potentially invalid
 };
 
 export function validateTieFormat(params: ValidateTieFormatArgs): ResultType {

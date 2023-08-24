@@ -8,7 +8,10 @@ import {
   numericSort,
 } from '../../../utilities';
 
-import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
+import {
+  ErrorType,
+  INVALID_VALUES,
+} from '../../../constants/errorConditionConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import { TEAM } from '../../../constants/matchUpTypes';
 
@@ -37,10 +40,19 @@ type GetRoundMatchUpsArgs = {
   interpolate?: boolean;
 };
 
+export type RoundMatchUpsResult = {
+  roundMatchUps?: HydratedMatchUp[];
+  hasOddMatchUpsCount?: boolean;
+  roundProfile?: RoundProfile;
+  maxMatchUpsCount?: number;
+  roundNumbers?: number[];
+  error?: ErrorType;
+};
+
 export function getRoundMatchUps({
   matchUps = [],
   interpolate,
-}: GetRoundMatchUpsArgs) {
+}: GetRoundMatchUpsArgs): RoundMatchUpsResult {
   if (!Array.isArray(matchUps)) return { error: INVALID_VALUES };
 
   // create an array of arrays of matchUps grouped by roundNumber

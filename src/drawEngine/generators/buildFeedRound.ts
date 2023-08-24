@@ -7,7 +7,7 @@ import { MatchUp } from '../../types/tournamentFromSchema';
 type BuildFeedRoundArgs = {
   includeMatchUpType?: boolean;
   drawPosition?: number;
-  matchUpType: string;
+  matchUpType?: string;
   roundNumber: number;
   matchUps: MatchUp[];
   idPrefix?: string;

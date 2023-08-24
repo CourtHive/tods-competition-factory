@@ -58,7 +58,7 @@ const globalState: GlobalStateTypes = {
   deepCopy: true,
 };
 
-let _globalStateProvider = syncGlobalState;
+let _globalStateProvider: any = syncGlobalState;
 
 const requiredStateProviderMethods = [
   'addNotice',
@@ -236,10 +236,12 @@ export function deepCopyEnabled() {
   };
 }
 
-export function setSubscriptions({ subscriptions = undefined } = {}) {
-  if (!subscriptions)
+export function setSubscriptions(params) {
+  if (!params?.subscriptions)
     return { error: MISSING_VALUE, info: 'missing subscriptions' };
-  return _globalStateProvider.setSubscriptions({ subscriptions });
+  return _globalStateProvider.setSubscriptions({
+    subscriptions: params.subscriptions,
+  });
 }
 
 export function cycleMutationStatus() {
