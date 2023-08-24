@@ -49,7 +49,7 @@ it('can separate bye stage, add, and update entryPositions', () => {
     { entryStage: MAIN },
     { entryStage: CONSOLATION },
   ];
-  let positionedEntries = refreshEntryPositions({ entries });
+  const positionedEntries = refreshEntryPositions({ entries });
   expect(positionedEntries).toEqual([
     { entryStage: 'MAIN', entryPosition: 1 },
     { entryStage: 'MAIN', entryPosition: 2 },
@@ -71,7 +71,7 @@ it('can handle missing positions', () => {
     { entryStage: MAIN },
     { entryStage: CONSOLATION },
   ];
-  let positionedEntries = refreshEntryPositions({ entries });
+  const positionedEntries = refreshEntryPositions({ entries });
   expect(positionedEntries).toEqual([
     { entryStage: 'MAIN', entryPosition: 1 },
     { entryStage: 'MAIN', entryPosition: 2 },

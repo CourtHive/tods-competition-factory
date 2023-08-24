@@ -84,16 +84,13 @@ export function validateSchedulingProfile({
   return { valid: !!isValid, error, info };
 }
 
-export function tournamentRelevantSchedulingIds({
-  tournamentRecord = {},
-  tournamentMap = {},
-  requireCourts,
-} = {}) {
-  const drawIds = [];
-  const eventIds = [];
-  const structureIds = [];
-  const tournamentIds = [];
-  const venueIds = (tournamentRecord?.venues || []).map(
+export function tournamentRelevantSchedulingIds(params) {
+  const { tournamentRecord = {}, tournamentMap = {}, requireCourts } = params;
+  const tournamentIds: string[] = [];
+  const structureIds: string[] = [];
+  const eventIds: string[] = [];
+  const drawIds: string[] = [];
+  const venueIds: string[] = (tournamentRecord?.venues || []).map(
     ({ venueId, courts }) => (!requireCourts || courts?.length) && venueId
   );
   const tournamentId = tournamentRecord?.tournamentId;
@@ -147,8 +144,10 @@ export function tournamentRelevantSchedulingIds({
   };
 }
 
-export function getAllRelevantSchedulingIds({ tournamentRecords = {} } = {}) {
-  const records = (tournamentRecords && Object.values(tournamentRecords)) || [];
+export function getAllRelevantSchedulingIds(params) {
+  const records =
+    (params?.tournamentRecords && Object.values(params?.tournamentRecords)) ||
+    [];
   const tournamentsMap = {};
   const { venueIds, eventIds, drawIds, structureIds, tournamentIds } =
     records.reduce(

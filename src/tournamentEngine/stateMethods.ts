@@ -9,11 +9,16 @@ import {
 } from '../global/state/globalState';
 
 import {
+  ErrorType,
   INVALID_OBJECT,
   MISSING_TOURNAMENT_ID,
 } from '../constants/errorConditionConstants';
+import { Tournament } from '../types/tournamentFromSchema';
 
-export function setState(tournament, deepCopyOption?) {
+export function setState(
+  tournament,
+  deepCopyOption?
+): Tournament | { error: ErrorType } {
   if (typeof tournament !== 'object') return { error: INVALID_OBJECT };
   const tournamentId =
     tournament.unifiedTournamentId?.tournamentId || tournament.tournamentId;

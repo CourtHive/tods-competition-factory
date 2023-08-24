@@ -82,7 +82,7 @@ it('can add and remove extensions from tournamentRecords', () => {
   expect(drawDefinition.extensions.length).toEqual(3);
 
   // Retrieve extensions from elements
-  let { extension: tournamentRecordExtension } =
+  const { extension: tournamentRecordExtension } =
     tournamentEngine.findTournamentExtension({
       name: extensionName,
     });
@@ -191,10 +191,16 @@ it('can add and remove extensions from tournamentRecords', () => {
 test('add and remove primitives throw appropriate errors', () => {
   let result = addExtension();
   expect(result.error).toEqual(MISSING_VALUE);
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   result = addExtension({ element: 'bogus' });
   expect(result.error).toEqual(INVALID_VALUES);
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   result = addExtension({ element: {} });
   expect(result.error).toEqual(INVALID_VALUES);
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   result = addExtension({ element: {}, extension: 'bogus' });
   expect(result.error).toEqual(INVALID_VALUES);
   result = addExtension({

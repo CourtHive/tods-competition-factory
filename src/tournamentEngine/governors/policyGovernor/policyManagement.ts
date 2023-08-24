@@ -15,13 +15,14 @@ import {
   POLICY_NOT_ATTACHED,
   POLICY_NOT_FOUND,
   MISSING_VALUE,
+  ErrorType,
 } from '../../../constants/errorConditionConstants';
 
 export function attachPolicies({
   tournamentRecord,
   policyDefinitions,
   allowReplacement,
-}) {
+}): { success?: boolean; error?: ErrorType; applied?: any } {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!policyDefinitions || typeof policyDefinitions !== 'object') {
     return { error: MISSING_POLICY_DEFINITION };
@@ -36,6 +37,7 @@ export function attachPolicies({
         appliedPolicies[policyType] = policyDefinitions[policyType];
         return policyType;
       }
+      return undefined;
     })
     .filter(Boolean);
 

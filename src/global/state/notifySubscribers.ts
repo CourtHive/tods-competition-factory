@@ -22,12 +22,16 @@ import {
   UPDATE_INCONTEXT_MATCHUP,
 } from '../../constants/topicConstants';
 
-export function notifySubscribers({
-  mutationStatus,
-  tournamentId,
-  directives,
-  timeStamp,
-} = {}) {
+type NotifySubscribersArgs = {
+  mutationStatus?: any;
+  tournamentId: string;
+  directives?: any[];
+  timeStamp?: any;
+};
+
+export function notifySubscribers(params?: NotifySubscribersArgs) {
+  const { mutationStatus, tournamentId, directives, timeStamp } = params || {};
+
   const { topics } = getTopics();
 
   for (const topic of [...topics].sort(topicSort)) {
@@ -43,12 +47,8 @@ export function notifySubscribers({
   }
 }
 
-export async function notifySubscribersAsync({
-  mutationStatus,
-  tournamentId,
-  directives,
-  timeStamp,
-} = {}) {
+export async function notifySubscribersAsync(params?: NotifySubscribersArgs) {
+  const { mutationStatus, tournamentId, directives, timeStamp } = params || {};
   const { topics } = getTopics();
 
   for (const topic of [...topics].sort(topicSort)) {
