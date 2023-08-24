@@ -15,7 +15,7 @@ it('can add multiple participants at once', () => {
   expect(result?.success).toEqual(true);
   const participantId = UUID();
 
-  let participant = {
+  let participant: any = {
     participantId,
     participantRole: COMPETITOR,
     person: {

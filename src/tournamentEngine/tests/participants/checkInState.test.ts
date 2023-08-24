@@ -37,7 +37,7 @@ it('can check participants in and out', () => {
       ],
     },
   ];
-  let {
+  const {
     tournamentRecord,
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({

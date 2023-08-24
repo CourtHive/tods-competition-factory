@@ -96,7 +96,7 @@ test('will remove UNGROUPED individual participants when their team is added to 
     event: { eventType: TEAM },
   });
 
-  let { event: eventResult } = result;
+  const { event: eventResult } = result;
   const { eventId } = eventResult;
   expect(result.success).toEqual(true);
 

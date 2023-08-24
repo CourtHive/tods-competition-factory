@@ -25,7 +25,7 @@ import { INVALID_VALUES } from '../constants/errorConditionConstants';
  * NOTE: `columnTransform` mapped array elements are sensitive to order and will resolve to the first matching value
  * NOTE: `columnMap` should not contain new columnName(s) that are `columnTransform` keys
  */
-export function JSON2CSV(arrayOfJSON, config) {
+export function JSON2CSV(arrayOfJSON, config?) {
   if (config && typeof config !== 'object') return INVALID_VALUES;
 
   let { columnTransform = {} } = config || {};

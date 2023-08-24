@@ -60,10 +60,12 @@ it('can add ISO country codes to persons', () => {
   });
   tournamentEngine.setState(tournamentRecord);
 
-  let { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
-    inContext: true,
-    withIOC: true,
-  });
+  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
+    {
+      inContext: true,
+      withIOC: true,
+    }
+  );
   expect(tournamentParticipants.length).toEqual(3);
   const persons = tournamentParticipants
     .map(
@@ -128,9 +130,11 @@ test('accessorValues can filter participants by sex', () => {
   tournamentEngine.setState(tournamentRecord);
 
   const accessorValues = [{ accessor: 'person.sex', value: MALE }];
-  let { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
-    participantFilters: { participantTypes: [INDIVIDUAL], accessorValues },
-  });
+  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
+    {
+      participantFilters: { participantTypes: [INDIVIDUAL], accessorValues },
+    }
+  );
   expect(tournamentParticipants.length).toEqual(0);
 });
 

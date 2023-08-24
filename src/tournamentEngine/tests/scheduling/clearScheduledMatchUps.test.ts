@@ -61,9 +61,9 @@ it('can clear matchUp schedules', () => {
     structureId,
   });
 
-  const matchUpIds = roundMatchUps[1].map((matchUp) => matchUp.matchUpId);
+  const matchUpIds = roundMatchUps?.[1].map((matchUp) => matchUp.matchUpId);
 
-  let schedule = {
+  const schedule = {
     scheduledTime: '08:00',
     scheduledDate: '2021-01-01',
     venueId,

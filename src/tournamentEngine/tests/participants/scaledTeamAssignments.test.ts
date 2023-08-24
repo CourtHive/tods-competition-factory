@@ -19,7 +19,7 @@ import {
 const EVENT_NAME = 'Team Event';
 
 it('can automatically assign participants to teams using individualParticipantIds and scaleAttributes', () => {
-  let participantsCount = 100;
+  const participantsCount = 100;
 
   const eventProfiles = [{ eventName: EVENT_NAME, eventType: TEAM_EVENT }];
   const participantsProfile = {
@@ -58,7 +58,7 @@ it('can automatically assign participants to teams using individualParticipantId
   let { event } = tournamentEngine.getEvent({ eventId });
   expect(event.entries.length).toEqual(participantsCount);
 
-  let teamParticipants = generateRange(0, 8).map((i) => ({
+  let teamParticipants: any = generateRange(0, 8).map((i) => ({
     participantName: `Team ${i + 1}`,
     participantType: TEAM_PARTICIPANT,
     participantRole: COMPETITOR,
@@ -131,7 +131,7 @@ it('can automatically assign participants to teams using individualParticipantId
 });
 
 it('can automatically assign participants to teams using scaledParticipants', () => {
-  let participantsCount = 100;
+  const participantsCount = 100;
 
   const eventProfiles = [{ eventName: EVENT_NAME, eventType: TEAM_EVENT }];
   const participantsProfile = {
@@ -164,7 +164,7 @@ it('can automatically assign participants to teams using scaledParticipants', ()
   let { event } = tournamentEngine.getEvent({ eventId });
   expect(event.entries.length).toEqual(participantsCount);
 
-  let teamParticipants = generateRange(0, 8).map((i) => ({
+  let teamParticipants: any = generateRange(0, 8).map((i) => ({
     participantName: `Team ${i + 1}`,
     participantType: TEAM_PARTICIPANT,
     participantRole: COMPETITOR,
@@ -229,7 +229,7 @@ it('can automatically assign participants to teams using scaledParticipants', ()
 });
 
 it('will cleanup UNGROUPED participant entries if TEAM entry is added AFTER team assignments are made', () => {
-  let participantsCount = 100;
+  const participantsCount = 100;
 
   const eventProfiles = [{ eventName: EVENT_NAME, eventType: TEAM_EVENT }];
   const participantsProfile = {
@@ -262,7 +262,7 @@ it('will cleanup UNGROUPED participant entries if TEAM entry is added AFTER team
   let { event } = tournamentEngine.getEvent({ eventId });
   expect(event.entries.length).toEqual(participantsCount);
 
-  let teamParticipants = generateRange(0, 8).map((i) => ({
+  let teamParticipants: any = generateRange(0, 8).map((i) => ({
     participantName: `Team ${i + 1}`,
     participantType: TEAM_PARTICIPANT,
     participantRole: COMPETITOR,
@@ -330,7 +330,7 @@ it('will cleanup UNGROUPED participant entries if TEAM entry is added AFTER team
 });
 
 it('will generate teams for scaledTeamAssignment when given teamsCount', () => {
-  let participantsCount = 100;
+  const participantsCount = 100;
 
   const eventProfiles = [{ eventName: EVENT_NAME, eventType: TEAM_EVENT }];
   const participantsProfile = {
@@ -360,7 +360,7 @@ it('will generate teams for scaledTeamAssignment when given teamsCount', () => {
   });
   expect(result.success).toEqual(true);
 
-  let { event } = tournamentEngine.getEvent({ eventId });
+  const { event } = tournamentEngine.getEvent({ eventId });
   expect(event.entries.length).toEqual(participantsCount);
 
   const scaleAttributes = {
@@ -412,7 +412,7 @@ it('will generate teams for scaledTeamAssignment when given teamsCount', () => {
 });
 
 it('can determine teams from DIRECT_ACCEPTANCE entries of a TEAM event', () => {
-  let participantsCount = 100;
+  const participantsCount = 100;
 
   const eventProfiles = [{ eventName: EVENT_NAME, eventType: TEAM_EVENT }];
   const participantsProfile = {
@@ -451,7 +451,7 @@ it('can determine teams from DIRECT_ACCEPTANCE entries of a TEAM event', () => {
   let { event } = tournamentEngine.getEvent({ eventId });
   expect(event.entries.length).toEqual(participantsCount);
 
-  let teamParticipants = generateRange(0, 8).map((i) => ({
+  let teamParticipants: any = generateRange(0, 8).map((i) => ({
     participantName: `Team ${i + 1}`,
     participantType: TEAM_PARTICIPANT,
     participantRole: COMPETITOR,

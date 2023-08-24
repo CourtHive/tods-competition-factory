@@ -98,7 +98,7 @@ it('can modify PAIR participants', () => {
   ).toEqual(1);
 
   const modifiedSecondIndividual = makeDeepCopy(updatedSecondIndividual);
-  let nationalityCode = modifiedSecondIndividual.person.nationalityCode;
+  const nationalityCode = modifiedSecondIndividual.person.nationalityCode;
 
   modifiedSecondIndividual.person.nationalityCode = 'XXX';
   result = tournamentEngine.modifyParticipant({
@@ -175,7 +175,7 @@ it('will not modify participantType', () => {
   expect(teamParticipants.length).toEqual(10);
 
   const firstTeam = teamParticipants[0];
-  let result = tournamentEngine.modifyParticipant({
+  const result = tournamentEngine.modifyParticipant({
     participant: {
       participantId: firstTeam.participantId,
       participantType: PAIR,

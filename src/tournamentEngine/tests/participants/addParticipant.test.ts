@@ -18,7 +18,7 @@ it('will not add the same participantId twice', () => {
   expect(result?.success).toEqual(true);
 
   const participantId = UUID();
-  let participant = {
+  const participant = {
     participantId,
     participantRole: COMPETITOR,
     participantType: INDIVIDUAL,
@@ -39,7 +39,7 @@ it('will not add invalid individual participants', () => {
   let result = tournamentEngine.newTournamentRecord();
   expect(result?.success).toEqual(true);
 
-  let participant = {
+  let participant: any = {
     participantRole: COMPETITOR,
     person: {
       standardFamilyName: 'Family',
@@ -126,7 +126,7 @@ it('can add individual and pair participants', () => {
     },
   };
 
-  const individualParticipantIds = [];
+  const individualParticipantIds: string[] = [];
   result = tournamentEngine.addParticipant({
     participant: participant1,
     returnParticipant: true,
@@ -214,7 +214,7 @@ it('will not add invalid PAIR participants', () => {
   expect(result.error).toEqual(INVALID_PARTICIPANT_IDS);
 
   // expect success
-  let individualParticipantIds = individualParticipants
+  const individualParticipantIds = individualParticipants
     .slice(0, 2)
     .map((participant) => participant.participantId);
   pairParticipant = {

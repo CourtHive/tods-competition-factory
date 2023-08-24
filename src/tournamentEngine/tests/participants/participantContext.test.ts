@@ -60,7 +60,7 @@ test('hydrated consolation matchUps include seeding when participants advance', 
     drawId,
   });
 
-  let alternateOption = result.validActions.find(
+  const alternateOption = result.validActions.find(
     ({ type }) => type === ALTERNATE
   );
   const { method, payload, availableAlternatesParticipantIds } =

@@ -3,12 +3,12 @@ import { expect, it } from 'vitest';
 import fs from 'fs';
 
 it('test structureReports seedingBasis', () => {
-  let tournamentRecordJSON = fs.readFileSync(
+  const tournamentRecordJSON = fs.readFileSync(
     './src/tournamentEngine/tests/reports/seedingBasis.tods.json',
     'utf-8'
   );
 
-  let tournamentRecord = JSON.parse(tournamentRecordJSON);
+  const tournamentRecord = JSON.parse(tournamentRecordJSON);
   tournamentEngine.setState(tournamentRecord);
 
   const { structureReports, eventStructureReports } =

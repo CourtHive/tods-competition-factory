@@ -21,7 +21,8 @@ it('will return participant events including all entryStatuses', () => {
   });
   tournamentEngine.setState(tournamentRecord);
 
-  let { event, drawDefinition } = tournamentEngine.getEvent({ drawId });
+  let { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const { event } = tournamentEngine.getEvent({ drawId });
   const alternateEntries = event.entries.filter(
     ({ entryStatus }) => entryStatus === ALTERNATE
   );
@@ -77,12 +78,14 @@ it('will return participant events including all entryStatuses', () => {
     alternateParticipantIds[0]
   );
 
-  let { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
-    participantFilters: { participantIds: [alternateParticipantIds[0]] },
-    withStatistics: true,
-    withOpponents: true,
-    withMatchUps: true,
-  });
+  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
+    {
+      participantFilters: { participantIds: [alternateParticipantIds[0]] },
+      withStatistics: true,
+      withOpponents: true,
+      withMatchUps: true,
+    }
+  );
   expect(tournamentParticipants[0].draws[0].entryStatus).toEqual(ALTERNATE);
   const { opponents, matchUps } = tournamentParticipants[0];
   expect(alternateParticipantIds[0]).not.toEqual(opponents[0].participantId);
