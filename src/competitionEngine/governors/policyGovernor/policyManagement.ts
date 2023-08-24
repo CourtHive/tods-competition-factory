@@ -12,9 +12,9 @@ export function attachPolicies({ tournamentRecords, policyDefinitions }) {
 
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     const result = attachTournamentPolicies({
+      allowReplacement: true,
       tournamentRecord,
       policyDefinitions,
-      allowReplacement: true,
     });
     if (result.error) return result;
   }

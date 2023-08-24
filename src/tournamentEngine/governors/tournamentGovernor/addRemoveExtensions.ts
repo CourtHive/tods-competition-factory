@@ -24,7 +24,7 @@ import {
   Tournament,
 } from '../../../types/tournamentFromSchema';
 
-export function removeExtension(params) {
+export function removeExtension(params?) {
   if (!params || typeof params !== 'object') return { error: MISSING_VALUE };
   if (!params?.element) return { error: MISSING_VALUE, info: ELEMENT_REQUIRED };
   if (typeof params?.element !== 'object') return { error: INVALID_VALUES };
@@ -77,7 +77,7 @@ export function addEventExtension(params: AddExtensionArgs) {
   });
 }
 
-export function addParticipantExtension(params) {
+export function addParticipantExtension(params?) {
   if (!params || typeof params !== 'object') return { error: MISSING_VALUE };
   if (!params.participantId) return { error: MISSING_PARTICIPANT_ID };
   const tournamentParticipants = params.tournamentRecord?.participants || [];
@@ -114,7 +114,7 @@ export function removeEventExtension(params) {
   return removeExtension({ element: params.event, name: params.name });
 }
 
-export function removeParticipantExtension(params) {
+export function removeParticipantExtension(params?) {
   if (!params || typeof params !== 'object') return { error: MISSING_VALUE };
   if (!params.participantId) return { error: MISSING_PARTICIPANT_ID };
   const tournamentParticipants = params.tournamentRecord?.participants || [];

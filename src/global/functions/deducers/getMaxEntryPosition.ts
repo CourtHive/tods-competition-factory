@@ -1,4 +1,5 @@
-export function getMaxEntryPosition({ entries = [], entryStatus, stage }) {
+export function getMaxEntryPosition(params) {
+  const { entries = [], entryStatus, stage } = params;
   return Math.max(
     ...entries
       .filter(
