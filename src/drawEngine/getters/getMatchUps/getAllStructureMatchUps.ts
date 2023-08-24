@@ -254,7 +254,7 @@ export function getAllStructureMatchUps({
     matchUps,
   });
   const { roundNamingProfile, roundProfile } = result;
-  roundMatchUps = result.roundMatchUps;
+  roundMatchUps = result?.roundMatchUps || [];
 
   // must make a pass before hydration and addition of tieMatchUps
   if (matchUpFilters) {
@@ -338,7 +338,7 @@ export function getAllStructureMatchUps({
   }
 
   if (matchUpFilters?.matchUpTypes || matchUpFilters?.matchUpIds || inContext) {
-    ({ roundMatchUps } = getRoundMatchUps({ matchUps }));
+    roundMatchUps = getRoundMatchUps({ matchUps }).roundMatchUps || [];
   }
 
   if (resolveTieFormat({ drawDefinition, structure, event })?.tieFormat) {

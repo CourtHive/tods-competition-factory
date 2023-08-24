@@ -123,7 +123,7 @@ it.each(scenarios)('can generate and verify', (scenario) => {
 
   const matchUps = getAllStructureMatchUps({ structure }).matchUps;
   const roundMatchUps = getRoundMatchUps({ matchUps }).roundMatchUps;
-  const rmArr: any[] = Object.values(roundMatchUps);
+  const rmArr: any[] = roundMatchUps ? Object.values(roundMatchUps) : [];
   const roundMatchUpCounts = rmArr.map((value) => value.length);
   expect(roundMatchUpCounts).toEqual(expectation.roundMatchUpCounts);
 

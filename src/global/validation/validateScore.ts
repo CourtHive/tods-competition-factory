@@ -11,9 +11,9 @@ import {
 import type { Score } from '../../types/tournamentFromSchema';
 
 type validateScoreTypes = {
-  existingMatchUpStatus: string;
+  existingMatchUpStatus?: string;
+  matchUpStatus?: string;
   matchUpFormat: string;
-  matchUpStatus: string;
   winningSide: number;
   score: Score;
 };

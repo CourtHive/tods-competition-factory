@@ -8,7 +8,7 @@ type TreeMatchUpsArgs = {
   finishingPositionLimit?: number;
   qualifyingRoundNumber?: number;
   qualifyingPositions?: number;
-  matchUpType: string;
+  matchUpType?: string;
   roundLimit?: number;
   idPrefix?: string;
   drawSize: number;

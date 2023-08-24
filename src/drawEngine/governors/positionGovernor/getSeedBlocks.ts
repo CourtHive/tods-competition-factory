@@ -131,7 +131,14 @@ export function getSeedBlocks(params: GetSeedBlocksArgs) {
   return { ...SUCCESS, seedBlocks };
 }
 
-export function getSeedGroups({ drawSize, roundRobinGroupsCount }) {
+type GetSeedGroupsArgs = {
+  roundRobinGroupsCount?: number;
+  drawSize: number;
+};
+export function getSeedGroups({
+  drawSize,
+  roundRobinGroupsCount,
+}: GetSeedGroupsArgs) {
   const stack = 'getSeedGroups';
 
   if (!isConvertableInteger(drawSize))
@@ -178,10 +185,14 @@ export function getSeedGroups({ drawSize, roundRobinGroupsCount }) {
   }
 }
 
+type GetSeedingThresholdsArgs = {
+  roundRobinGroupsCount?: number;
+  participantsCount: number;
+};
 export function getSeedingThresholds({
   roundRobinGroupsCount,
   participantsCount,
-}) {
+}: GetSeedingThresholdsArgs) {
   if (roundRobinGroupsCount) {
     const { validGroupSizes } = getValidGroupSizes({
       drawSize: participantsCount,

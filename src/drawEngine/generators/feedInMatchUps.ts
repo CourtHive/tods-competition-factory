@@ -15,7 +15,7 @@ type FeedInMatchUpsArgs = {
   baseDrawSize?: number;
   feedRounds?: number;
   skipRounds?: number;
-  matchUpType: string;
+  matchUpType?: string;
   idPrefix?: string;
   drawSize?: number;
   isMock?: boolean;

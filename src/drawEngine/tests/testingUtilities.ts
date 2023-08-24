@@ -68,13 +68,21 @@ export function assignDrawPosition({ drawId, structureId, drawPosition }) {
   return result;
 }
 
+type RemoveAssignmentArgs = {
+  replaceWithBye?: boolean;
+  policyDefinitions?: any;
+  drawPosition: string;
+  structureId: string;
+  drawId: string;
+};
+
 export function removeAssignment({
   policyDefinitions,
   replaceWithBye,
   drawPosition,
   structureId,
   drawId,
-}) {
+}: RemoveAssignmentArgs) {
   let result = tournamentEngine.positionActions({
     policyDefinitions,
     drawPosition,

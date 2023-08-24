@@ -15,9 +15,29 @@ import {
   STRUCTURE_NOT_FOUND,
   INVALID_EVENT_TYPE,
   INVALID_MATCHUP,
+  ErrorType,
 } from '../../../constants/errorConditionConstants';
+import {
+  DrawDefinition,
+  Event,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
-export function setMatchUpFormat(params) {
+type SetMatchUpFormatArgs = {
+  tournamentRecord?: Tournament;
+  drawDefinition: DrawDefinition;
+  structureIds?: string[];
+  matchUpFormat: string;
+  structureId?: string;
+  matchUpId?: string;
+  event?: Event;
+};
+
+export function setMatchUpFormat(params: SetMatchUpFormatArgs): {
+  success?: boolean;
+  error?: ErrorType;
+  info?: string;
+} {
   let structureIds = params.structureIds;
   const {
     tournamentRecord,

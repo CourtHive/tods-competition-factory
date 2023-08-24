@@ -24,17 +24,22 @@ import {
   DOUBLE_WALKOVER,
 } from '../../constants/matchUpStatusConstants';
 
-export function completeDrawMatchUps({
-  matchUpStatusProfile,
-  completeAllMatchUps,
-  // qualifyingProfiles, // CONSIDER: allowing completionGoal per structureProfile
-  randomWinningSide,
-  tournamentRecord,
-  drawDefinition,
-  completionGoal,
-  matchUpFormat,
-  event,
-}): { success?: boolean; error?: ErrorType; completedCount?: number } {
+export function completeDrawMatchUps(params): {
+  success?: boolean;
+  error?: ErrorType;
+  completedCount?: number;
+} {
+  const {
+    matchUpStatusProfile,
+    completeAllMatchUps,
+    // qualifyingProfiles, // CONSIDER: allowing completionGoal per structureProfile
+    randomWinningSide,
+    tournamentRecord,
+    drawDefinition,
+    completionGoal,
+    matchUpFormat,
+    event,
+  } = params;
   const sortedStructures = drawDefinition.structures
     .slice()
     .sort(structureSort);
