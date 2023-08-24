@@ -18,13 +18,15 @@ import {
   FEED_IN_CHAMPIONSHIP_TO_SF,
 } from '../../../constants/drawDefinitionConstants';
 
-const getTarget = ({ matchUps, roundNumber, roundPosition, stage }) =>
-  matchUps.find(
+const getTarget = (params) => {
+  const { matchUps, roundNumber, roundPosition, stage } = params;
+  return matchUps.find(
     (matchUp) =>
       matchUp.roundNumber === roundNumber &&
       matchUp.roundPosition === roundPosition &&
       (!stage || matchUp.stage === stage)
   );
+};
 
 /*
   drawSize: 4
@@ -44,7 +46,7 @@ test('drawSize: 4 - Removing a DOUBLE_WALKOVER will remove produced WALKOVER in 
   tournamentEngine.setState(tournamentRecord);
 
   // keep track of notficiations with each setMatchUpStatus event
-  let modifiedMatchUpLog = [];
+  let modifiedMatchUpLog: any[] = [];
   let result = setSubscriptions({
     subscriptions: {
       [MODIFY_MATCHUP]: (matchUps) => {
@@ -161,7 +163,7 @@ test('drawSize: 8 - Removing a DOUBLE_WALKOVER / Removing scored outcome in WOWO
   tournamentEngine.setState(tournamentRecord);
 
   // keep track of notficiations with each setMatchUpStatus event
-  let modifiedMatchUpLog = [];
+  let modifiedMatchUpLog: any[] = [];
   let result = setSubscriptions({
     subscriptions: {
       [MODIFY_MATCHUP]: (matchUps) => {
@@ -405,7 +407,7 @@ test('drawSize: 8 - Removing a DOUBLE_WALKOVER will remove produced WALKOVER in 
   tournamentEngine.setState(tournamentRecord);
 
   // keep track of notficiations with each setMatchUpStatus event
-  let modifiedMatchUpLog = [];
+  const modifiedMatchUpLog: any[] = [];
   let result = setSubscriptions({
     subscriptions: {
       [MODIFY_MATCHUP]: (matchUps) => {
@@ -434,7 +436,7 @@ test('drawSize: 8 - Removing a DOUBLE_WALKOVER will remove produced WALKOVER in 
   expect(targetMatchUp.winningSide).toEqual(2);
 
   targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 1 });
-  let { outcome } = mocksEngine.generateOutcomeFromScoreString({
+  const { outcome } = mocksEngine.generateOutcomeFromScoreString({
     winningSide: undefined,
     matchUpStatus: TO_BE_PLAYED,
   });
@@ -532,7 +534,7 @@ test('DOUBLE_WALKOVER cannot be removed when active downstream matchUps', () => 
   tournamentEngine.setState(tournamentRecord);
 
   // keep track of notficiations with each setMatchUpStatus event
-  let modifiedMatchUpLog = [];
+  const modifiedMatchUpLog: any[] = [];
   let result = setSubscriptions({
     subscriptions: {
       [MODIFY_MATCHUP]: (matchUps) => {
@@ -544,7 +546,7 @@ test('DOUBLE_WALKOVER cannot be removed when active downstream matchUps', () => 
   });
   expect(result.success).toEqual(true);
 
-  let { matchUps } = tournamentEngine.allTournamentMatchUps();
+  const { matchUps } = tournamentEngine.allTournamentMatchUps();
 
   // a DOUBLE_WALKOVER matchUp will not have SCORE option if { activeDownstream: true }
   let targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 2 });
@@ -566,7 +568,7 @@ test('DOUBLE_WALKOVER cannot be removed when active downstream matchUps', () => 
 
   // attempting to score an active DOUBLE_WALKOVER matchUp will return an error
   targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 2 });
-  let { outcome } = mocksEngine.generateOutcomeFromScoreString({
+  const { outcome } = mocksEngine.generateOutcomeFromScoreString({
     winningSide: undefined,
     matchUpStatus: TO_BE_PLAYED,
   });
@@ -602,7 +604,7 @@ test('Removing DOUBLE_WALKOVER will remove BYE-Advanced WALKOVER Winner', () => 
   tournamentEngine.setState(tournamentRecord);
 
   // keep track of notficiations with each setMatchUpStatus event
-  let modifiedMatchUpLog = [];
+  let modifiedMatchUpLog: any[] = [];
   let result = setSubscriptions({
     subscriptions: {
       [MODIFY_MATCHUP]: (matchUps) => {
@@ -617,7 +619,7 @@ test('Removing DOUBLE_WALKOVER will remove BYE-Advanced WALKOVER Winner', () => 
   let { matchUps } = tournamentEngine.allTournamentMatchUps();
 
   let targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 2 });
-  let { outcome } = mocksEngine.generateOutcomeFromScoreString({
+  const { outcome } = mocksEngine.generateOutcomeFromScoreString({
     winningSide: undefined,
     matchUpStatus: TO_BE_PLAYED,
   });
@@ -670,7 +672,7 @@ test('drawSize: 8 - removing multiple DOUBLE_WALKOVERs cleans up WALKOVERs in su
   tournamentEngine.setState(tournamentRecord);
 
   // keep track of notficiations with each setMatchUpStatus event
-  let modifiedMatchUpLog = [];
+  const modifiedMatchUpLog: any[] = [];
   let result = setSubscriptions({
     subscriptions: {
       [MODIFY_MATCHUP]: (matchUps) => {
@@ -688,7 +690,7 @@ test('drawSize: 8 - removing multiple DOUBLE_WALKOVERs cleans up WALKOVERs in su
   expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
 
   targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 2 });
-  let { outcome } = mocksEngine.generateOutcomeFromScoreString({
+  const { outcome } = mocksEngine.generateOutcomeFromScoreString({
     winningSide: undefined,
     matchUpStatus: TO_BE_PLAYED,
   });
@@ -716,7 +718,7 @@ test('drawSize: 16 - removing multiple DOUBLE_WALKOVERs cleans up WALKOVERs in s
   tournamentEngine.setState(tournamentRecord);
 
   // keep track of notficiations with each setMatchUpStatus event
-  let modifiedMatchUpLog = [];
+  let modifiedMatchUpLog: any[] = [];
   let result = setSubscriptions({
     subscriptions: {
       [MODIFY_MATCHUP]: (matchUps) => {
@@ -787,7 +789,7 @@ test('A produced WALKOVER in the Final will be replaced by a propagated winner',
 
   tournamentEngine.setState(tournamentRecord);
 
-  let modifiedMatchUpLog = [];
+  let modifiedMatchUpLog: any[] = [];
   let result = setSubscriptions({
     subscriptions: {
       [MODIFY_MATCHUP]: (matchUps) => {
@@ -889,8 +891,8 @@ test('A produced WALKOVER in the Final will be replaced by a propagated winner',
 });
 
 test('consolation fed player advanced by WO/WO will be removed when WO/WO cleared', () => {
-  let completionGoal = 6;
-  let drawProfiles = [
+  const completionGoal = 6;
+  const drawProfiles = [
     {
       drawType: FEED_IN_CHAMPIONSHIP_TO_SF,
       completionGoal,
@@ -906,7 +908,7 @@ test('consolation fed player advanced by WO/WO will be removed when WO/WO cleare
       ],
     },
   ];
-  let mockProfile = { drawProfiles };
+  const mockProfile = { drawProfiles };
 
   let result = mocksEngine.generateTournamentRecord(mockProfile);
   const { tournamentRecord } = result;

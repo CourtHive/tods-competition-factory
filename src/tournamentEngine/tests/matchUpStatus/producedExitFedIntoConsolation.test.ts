@@ -65,7 +65,7 @@ it('properly handles produced Exit fed into consolation structure', () => {
       stage === MAIN && roundNumber === 1 && readyToScore
   );
 
-  let { outcome } = mocksEngine.generateOutcomeFromScoreString({
+  const { outcome } = mocksEngine.generateOutcomeFromScoreString({
     scoreString: '7-5 7-5',
     winningSide: 1,
   });

@@ -35,7 +35,7 @@ test('Replacing an outcome with a DOUBLE_WALKOVER will advance paired position',
   tournamentEngine.setState(tournamentRecord);
 
   // keep track of notficiations with each setMatchUpStatus event
-  let modifiedMatchUpLog = [];
+  let modifiedMatchUpLog: any[] = [];
   let result = setSubscriptions({
     subscriptions: {
       [MODIFY_MATCHUP]: (matchUps) => {

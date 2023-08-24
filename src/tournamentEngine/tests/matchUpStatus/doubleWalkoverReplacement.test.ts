@@ -91,11 +91,11 @@ test('Replacing a DOUBLE_WALKOVER which has produced WALKOVERs with a score will
 
   tournamentEngine.devContext({ scorePropagation: true });
   targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 1 });
-  let { outcome } = mocksEngine.generateOutcomeFromScoreString({
+  const { outcome } = mocksEngine.generateOutcomeFromScoreString({
     scoreString: '6-1 6-2',
     winningSide: 1,
   });
-  let result = tournamentEngine.setMatchUpStatus({
+  const result = tournamentEngine.setMatchUpStatus({
     matchUpId: targetMatchUp.matchUpId,
     outcome,
     drawId,

@@ -36,8 +36,12 @@ test('A DOUBLE_WALKOVER in FMLC does not restrict positionActions', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  let { matchUps } = tournamentEngine.allTournamentMatchUps();
-  let targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 1 });
+  const { matchUps } = tournamentEngine.allTournamentMatchUps();
+  const targetMatchUp = getTarget({
+    matchUps,
+    roundNumber: 1,
+    roundPosition: 1,
+  });
 
   let result = tournamentEngine.positionActions({
     structureId: targetMatchUp.structureId,

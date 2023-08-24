@@ -84,7 +84,7 @@ test('bye propagated double walkover in final has correct sideNumber', () => {
 
   result = tournamentEngine.allTournamentMatchUps({ inContext: true });
 
-  let matchUp = result.matchUps.find(
+  const matchUp = result.matchUps.find(
     (m) => m.stage === CONSOLATION && m.roundNumber === 3
   );
   expect(matchUp.winningSide).toEqual(2);

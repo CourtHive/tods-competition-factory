@@ -46,7 +46,7 @@ it('DOUBLE_WALKOVER can Advance participant to final when scores entered after W
     scoreString: '6-1 6-2',
     winningSide: 1,
   });
-  let result = tournamentEngine.setMatchUpStatus({
+  const result = tournamentEngine.setMatchUpStatus({
     matchUpId: targetMatchUp.matchUpId,
     outcome,
     drawId,
@@ -94,7 +94,7 @@ it('DOUBLE_WALKOVER can Advance participant to final when scores are present', (
   const { outcome } = mocksEngine.generateOutcomeFromScoreString({
     matchUpStatus: DOUBLE_WALKOVER,
   });
-  let result = tournamentEngine.setMatchUpStatus({
+  const result = tournamentEngine.setMatchUpStatus({
     matchUpId: targetMatchUp.matchUpId,
     outcome,
     drawId,

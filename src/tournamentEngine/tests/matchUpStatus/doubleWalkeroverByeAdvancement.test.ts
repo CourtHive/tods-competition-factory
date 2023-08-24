@@ -55,7 +55,7 @@ test('Consolation WO/WO advancing fed BYE', () => {
   expect(matchUps.map(({ roundPosition }) => roundPosition)).toEqual([1, 2]);
 
   const { matchUpId, drawId } = targetMatchUp;
-  let result = tournamentEngine.setMatchUpStatus({
+  const result = tournamentEngine.setMatchUpStatus({
     outcome: { matchUpStatus: DOUBLE_WALKOVER },
     matchUpId,
     drawId,
