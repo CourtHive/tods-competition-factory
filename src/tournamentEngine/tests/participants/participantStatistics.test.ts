@@ -3,6 +3,7 @@ import tournamentEngine from '../../sync';
 import { expect, test } from 'vitest';
 
 import { WIN_RATIO } from '../../../constants/statsConstants';
+import { HydratedParticipant } from '../../../types/hydrated';
 
 const scenarios = [{ drawProfiles: [{ drawSize: 8 }], matchUpsCount: 7 }];
 
@@ -35,8 +36,14 @@ test.each(scenarios)(
       true
     );
 
+    const hydratedParticipants: HydratedParticipant[] =
+      Object.values(participantMap);
+
     expect(
-      Object.values(participantMap).every(({ structureParticipation }) => {
+      hydratedParticipants.every(({ structureParticipation }) => {
+        const firstParticipation: any = Object.values(
+          structureParticipation
+        )[0];
         const {
           finishingMatchUpId,
           finishingPositionRange,
@@ -44,7 +51,7 @@ test.each(scenarios)(
           rankingStage,
           roundNumber,
           drawId,
-        } = Object.values(structureParticipation)[0];
+        } = firstParticipation;
         return (
           finishingPositionRange &&
           finishingMatchUpId &&

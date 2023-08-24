@@ -15,7 +15,7 @@ it('can retrieve and modify tournament persons', () => {
   });
   tournamentEngine.setState(tournamentRecord);
 
-  let { tournamentPersons } = tournamentEngine.getTournamentPersons({
+  const { tournamentPersons } = tournamentEngine.getTournamentPersons({
     participantFilters: { participantRoles: [COMPETITOR] },
   });
   expect(tournamentPersons?.length).toBeGreaterThan(0);

@@ -3,10 +3,10 @@ import { getDrawData } from '../../governors/publishingGovernor/getDrawData';
 import { expect, it } from 'vitest';
 import fs from 'fs';
 
-const elimination = fs.readFileSync(
+const elimination: any = fs.readFileSync(
   './src/tournamentEngine/tests/publishing/eliminationMock.json'
 );
-const roundRobin = fs.readFileSync(
+const roundRobin: any = fs.readFileSync(
   './src/tournamentEngine/tests/publishing/roundRobinMock.json'
 );
 
@@ -32,11 +32,11 @@ it('can extract round robin structures', () => {
   expect(structureGroups.length).toEqual(1);
 
   const result = getDrawData({ drawDefinition });
-  expect(result.structures.length).toEqual(1);
+  expect(result.structures?.length).toEqual(1);
   expect(result.drawInfo.drawActive).toEqual(false);
   expect(result.drawInfo.drawCompleted).toEqual(false);
   expect(result.drawInfo.drawGenerated).toEqual(true);
-  expect(result.structures.length).toEqual(1);
+  expect(result.structures?.length).toEqual(1);
 });
 
 /*

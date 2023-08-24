@@ -41,7 +41,7 @@ it('can accurately determine seedsCount from drawSize and participantCount', () 
   }));
   expect(error).toEqual(INVALID_POLICY_DEFINITION);
 
-  let policyDefinitions = {
+  let policyDefinitions: any = {
     [POLICY_TYPE_SEEDING]: {
       seedingProfile: { positioning: CLUSTER },
       duplicateSeedNumbers: true,

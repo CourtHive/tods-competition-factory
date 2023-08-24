@@ -21,7 +21,7 @@ it('can delete participants', () => {
   expect(participantIds.length).toBeGreaterThan(0);
 
   const participantIdsToDelete = participantIds.slice(0, 16);
-  let result = tournamentEngine.deleteParticipants({
+  const result = tournamentEngine.deleteParticipants({
     participantIds: participantIdsToDelete,
   });
   expect(result.success).toEqual(true);
@@ -44,7 +44,7 @@ it('will not delete participants in draws', () => {
   expect(participantIds.length).toBeGreaterThan(0);
 
   const participantIdsToDelete = participantIds.slice(0, 16);
-  let result = tournamentEngine.deleteParticipants({
+  const result = tournamentEngine.deleteParticipants({
     participantIds: participantIdsToDelete,
   });
   expect(result.error).toEqual(EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT);
@@ -111,7 +111,7 @@ it('will clean up entries when participants are deleted', () => {
   expect(event.entries.length).toEqual(2);
   expect(drawDefinition).toBeUndefined();
 
-  let result = tournamentEngine.deleteParticipants({
+  const result = tournamentEngine.deleteParticipants({
     addIndividualParticipantsToEvents: true,
     participantIds: pairParticipantIds,
   });

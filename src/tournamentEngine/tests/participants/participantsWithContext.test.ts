@@ -100,13 +100,17 @@ it('can add statistics to tournament participants', () => {
       ],
     },
   ];
-  let { tournamentRecord, eventIds } = mocksEngine.generateTournamentRecord({
+  const genResult = mocksEngine.generateTournamentRecord({
     participantsProfile,
     drawProfiles,
   });
+
+  let tournamentRecord = genResult.tournamentRecord;
+  const eventIds = genResult.eventIds;
+
   tournamentEngine.setState(tournamentRecord);
 
-  let extension = {
+  let extension: any = {
     name: 'ustaSection',
     value: { code: 65 },
   };
@@ -146,12 +150,14 @@ it('can add statistics to tournament participants', () => {
   const positionAssignments =
     event.drawDefinitions[0].structures[0].positionAssignments;
 
-  let { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
-    convertExtensions: true,
-    withStatistics: true,
-    withOpponents: true,
-    withMatchUps: true,
-  });
+  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
+    {
+      convertExtensions: true,
+      withStatistics: true,
+      withOpponents: true,
+      withMatchUps: true,
+    }
+  );
   // specified 200 participantType: DOUBLES => 200 PAIR + 400 INDIVIDUAL
   // specified category on bot DOUBLES (30 + 30 + 30) and SINGLES (30) + 120
   expect(tournamentParticipants.length).toEqual(720);
@@ -212,9 +218,11 @@ it('can add statistics to tournament participants', () => {
       },
     },
   ];
-  let { tournamentRecord, eventIds } = mocksEngine.generateTournamentRecord({
+  const genResult = mocksEngine.generateTournamentRecord({
     drawProfiles,
   });
+  let tournamentRecord = genResult.tournamentRecord;
+  const eventIds = genResult.eventIds;
   tournamentEngine.setState(tournamentRecord);
 
   ({ tournamentRecord } = tournamentEngine.getState({
@@ -227,12 +235,14 @@ it('can add statistics to tournament participants', () => {
   const positionAssignments =
     event.drawDefinitions[0].structures[0].positionAssignments;
 
-  let { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
-    convertExtensions: true,
-    withStatistics: true,
-    withOpponents: true,
-    withMatchUps: true,
-  });
+  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
+    {
+      convertExtensions: true,
+      withStatistics: true,
+      withOpponents: true,
+      withMatchUps: true,
+    }
+  );
   expect(tournamentParticipants.length).toEqual(12);
 
   /*

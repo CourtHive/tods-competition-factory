@@ -133,7 +133,7 @@ it('can add a GROUP participant and remove individualParticipantIds', () => {
   );
 
   // first four individual participants belong to groupParticipant
-  let individualParticipantIds = tournamentParticipants
+  const individualParticipantIds = tournamentParticipants
     .slice(0, 4)
     .map((participant) => participant.participantId);
 
@@ -289,7 +289,7 @@ it('can remove individualParticipantIds from a grouping participant', () => {
   const groupingParticipant = result.participant;
   const { participantId: groupingParticipantId } = groupingParticipant;
 
-  let { participant } = tournamentEngine.findParticipant({
+  const { participant } = tournamentEngine.findParticipant({
     participantId: groupingParticipantId,
   });
   expect(individualParticipantIds).toEqual(
@@ -320,7 +320,7 @@ it('will add individualParticipants to events as UNGROUPED when removed from TEA
   const individualParticipantIdToRemove =
     teamParticipant.individualParticipantIds[0];
 
-  let result = tournamentEngine.removeIndividualParticipantIds({
+  const result = tournamentEngine.removeIndividualParticipantIds({
     individualParticipantIds: [individualParticipantIdToRemove],
     groupingParticipantId: teamParticipant.participantId,
     addIndividualParticipantsToEvents: true,

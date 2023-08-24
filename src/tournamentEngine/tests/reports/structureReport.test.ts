@@ -18,7 +18,7 @@ it.skip.each(filenames)(
   (filename) => {
     if (filename) {
       const tournamentRecord = JSON.parse(
-        fs.readFileSync(`${sourcePath}/${filename}`, 'UTF-8')
+        fs.readFileSync(`${sourcePath}/${filename}`, { encoding: 'utf8' })
       );
       tournamentEngine.setState(tournamentRecord);
 
@@ -35,7 +35,7 @@ it.skip.each(filenames)(
         })?.extension?.value;
 
         if (sectionCode && districtCode) {
-          let result = tournamentEngine.getEntryStatusReports();
+          const result = tournamentEngine.getEntryStatusReports();
           const {
             participantEntryReports,
             // tournamentEntryReport,

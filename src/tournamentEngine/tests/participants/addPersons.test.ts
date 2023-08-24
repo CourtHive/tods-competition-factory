@@ -12,17 +12,17 @@ import {
 test('it can addPersons and create INDIVIDUAL and PAIR participants', () => {
   const personsCount = 20;
   tournamentEngine.newTournamentRecord();
-  const defaultPersonData = generatePersonData({ count: 20 }).personData;
+  const defaultPersonData: any = generatePersonData({ count: 20 }).personData;
 
   let result = tournamentEngine.addPersons();
   expect(result.error).toEqual(INVALID_VALUES);
 
   result = tournamentEngine.addPersons({
-    persons: defaultPersonData.slice(0, personsCount),
+    persons: defaultPersonData?.slice(0, personsCount),
   });
   expect(result.error).toEqual(MISSING_PERSON_DETAILS);
 
-  const persons = defaultPersonData.slice(0, personsCount).map((person) => ({
+  const persons = defaultPersonData?.slice(0, personsCount).map((person) => ({
     nationalityCode: person.nationalityCode,
     standardFamilyName: person.lastName,
     standardGivenName: person.firstName,
@@ -40,8 +40,9 @@ test('it can addPersons and create INDIVIDUAL and PAIR participants', () => {
   expect(result.success).toEqual(true);
   expect(result.addedCount).toEqual(personsCount);
 
-  let { tournamentParticipants } = tournamentEngine.getTournamentParticipants();
-  expect(tournamentParticipants.length).toEqual(persons.length);
+  const { tournamentParticipants } =
+    tournamentEngine.getTournamentParticipants();
+  expect(tournamentParticipants.length).toEqual(persons?.length);
 
   persons[0].pairedPersons = [{ personId: persons[1].personId }];
   result = tournamentEngine.addPersons({ persons });

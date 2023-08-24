@@ -65,9 +65,9 @@ it('can bulk schedule matchUps', () => {
     structureId,
   });
 
-  const matchUpIds = roundMatchUps[1].map((matchUp) => matchUp.matchUpId);
+  const matchUpIds = roundMatchUps?.[1].map((matchUp) => matchUp.matchUpId);
 
-  let schedule = { scheduledTime: '08:00 x y z' };
+  let schedule: any = { scheduledTime: '08:00 x y z' };
   result = tournamentEngine.bulkScheduleMatchUps({ matchUpIds, schedule });
   expect(result.error).toEqual(INVALID_TIME);
 
@@ -202,7 +202,7 @@ test('recognizes scheduling conflicts', () => {
       scheduleAnalysis: true,
     });
 
-  let { tournamentParticipants, participantIdsWithConflicts: teConflicts } =
+  const { tournamentParticipants, participantIdsWithConflicts: teConflicts } =
     tournamentEngine.getTournamentParticipants({
       scheduleAnalysis: true,
       withMatchUps: true,
@@ -211,14 +211,15 @@ test('recognizes scheduling conflicts', () => {
   expect(ceConflicts.length).toEqual(16);
   expect(teConflicts.length).toEqual(16);
 
+  const participantResult = competitionEngine.getParticipants({
+    scheduleAnalysis: { scheduledMinutesDifference: Infinity },
+  });
   let {
     participantIdsWithConflicts: gpConflicts,
     mappedMatchUps,
     participantMap,
-    participants,
-  } = competitionEngine.getParticipants({
-    scheduleAnalysis: { scheduledMinutesDifference: Infinity },
-  });
+  } = participantResult;
+  const participants = participantResult.participants;
   expect(Object.values(participantMap).length).toEqual(16);
   expect(participants.length).toEqual(16);
   expect(gpConflicts.length).toEqual(16);
