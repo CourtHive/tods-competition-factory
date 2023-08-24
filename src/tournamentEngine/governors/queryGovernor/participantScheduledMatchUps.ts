@@ -9,11 +9,16 @@ import {
   INVALID_VALUES,
   MISSING_MATCHUPS,
 } from '../../../constants/errorConditionConstants';
+import { HydratedMatchUp } from '../../../types/hydrated';
 
+type ParticiapntScheduledMatchUps = {
+  scheduleAttributes?: string[];
+  matchUps?: HydratedMatchUp[];
+};
 export function participantScheduledMatchUps({
-  matchUps = [],
   scheduleAttributes = ['scheduledDate', 'scheduledTime'],
-}) {
+  matchUps = [],
+}: ParticiapntScheduledMatchUps) {
   if (!Array.isArray(matchUps)) return { error: MISSING_MATCHUPS };
   if (!Array.isArray(scheduleAttributes)) return { error: INVALID_VALUES };
 

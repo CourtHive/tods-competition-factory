@@ -242,7 +242,7 @@ type AddParticipantsType = {
 export function addParticipants({
   allowDuplicateParticipantIdPairs,
   returnParticipants,
-  participants = [],
+  participants,
   tournamentRecord,
 }: AddParticipantsType) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

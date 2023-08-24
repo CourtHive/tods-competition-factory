@@ -13,22 +13,22 @@ import {
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 
-export function publishEvent({
-  policyDefinitions,
-  removePriorValues,
-  tournamentRecord,
-  status = PUBLIC,
-  event,
+export function publishEvent(params) {
+  let { policyDefinitions, drawIds, structureIds } = params;
+  const {
+    removePriorValues,
+    tournamentRecord,
+    status = PUBLIC,
+    event,
 
-  drawIdsToRemove,
-  drawIdsToAdd,
-  drawIds,
+    drawIdsToRemove,
+    drawIdsToAdd,
 
-  includePositionAssignments,
-  structureIdsToRemove,
-  structureIdsToAdd,
-  structureIds,
-}) {
+    includePositionAssignments,
+    structureIdsToRemove,
+    structureIdsToAdd,
+  } = params;
+
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
 
@@ -98,8 +98,8 @@ export function publishEvent({
 
   // filter out drawData for unPublished draws
   const publishState = eventData?.eventInfo?.publish?.state;
-  eventData.drawsData = eventData.drawsData.filter(({ drawId }) =>
-    publishState?.PUBLIC?.drawIds.includes(drawId)
+  eventData.drawsData = eventData.drawsData.filter(
+    ({ drawId }) => publishState?.PUBLIC?.drawIds.includes(drawId)
   );
 
   addNotice({

@@ -28,10 +28,10 @@ export function generateFlightDrawDefinitions({
   drawProfiles,
   event,
 }) {
-  const { flightProfile } = getFlightProfile({ event });
+  const flightProfile = getFlightProfile({ event }).flightProfile;
   const { eventName, eventType, category } = event;
   const { startDate } = tournamentRecord;
-  const drawIds = [];
+  const drawIds: string[] = [];
 
   const categoryName =
     category?.categoryName || category?.ageCategoryCode || category?.ratingType;
@@ -59,7 +59,7 @@ export function generateFlightDrawDefinitions({
         ) {
           const scaleValues = generateRange(1, seedsCount + 1);
           scaleValues.forEach((scaleValue, index) => {
-            let scaleItem = {
+            const scaleItem = {
               scaleValue,
               scaleName: seedingScaleName,
               scaleType: SEEDING,
@@ -172,7 +172,7 @@ export function generateFlightDrawDefinitions({
             if (result.error) return result;
 
             const playoffCompletionGoal = completionGoal
-              ? completionGoal - completedCount
+              ? completionGoal - (completedCount || 0)
               : undefined;
             result = completeDrawMatchUps({
               completeAllMatchUps: !completionGoal && completeAllMatchUps,
