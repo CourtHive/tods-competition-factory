@@ -8,7 +8,7 @@ import {
 } from '../../global/state/globalState';
 
 it('can set state provider', () => {
-  let result = setStateProvider(syncGlobalState);
+  let result: any = setStateProvider(syncGlobalState);
   expect(result.success).toEqual(true);
 
   try {
@@ -22,7 +22,7 @@ it('can set state provider', () => {
     expect(err).not.toBeUndefined();
   }
 
-  const allParticipants = [];
+  const allParticipants: any[] = [];
 
   const subscriptions = {
     addParticipants: (payload) => {
@@ -38,7 +38,7 @@ it('can set state provider', () => {
   expect(result.success).toEqual(true);
 
   const { tournamentId } = tournamentEngine.newTournamentRecord();
-  let participant = {
+  const participant = {
     participantRole: 'COMPETITOR',
     participantType: 'INDIVIDUAL',
     person: {

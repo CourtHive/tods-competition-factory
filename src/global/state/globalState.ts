@@ -78,7 +78,7 @@ const requiredStateProviderMethods = [
   'setTournamentRecords',
 ];
 
-export function setStateProvider(globalStateProvider) {
+export function setStateProvider(globalStateProvider?) {
   if (typeof globalStateProvider !== 'object') {
     throw new Error(`Global state provider can not be undefined or null`);
   } else {

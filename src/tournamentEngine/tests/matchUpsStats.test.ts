@@ -24,7 +24,8 @@ it('can generate competitive statistics for matchUps and add competitiveness', (
 
   const result = tournamentEngine.getMatchUpsStats({ matchUps });
   expect(result.success).toEqual(true);
-  const sum = Object.values(result.competitiveBands).reduce((a, b) => a + b);
+  const bandTotals: number[] = Object.values(result.competitiveBands);
+  const sum = bandTotals.reduce((a, b) => a + b);
   expect(Math.round(sum)).toEqual(100);
 
   let matchUpsCompetitiveness = instanceCount(
