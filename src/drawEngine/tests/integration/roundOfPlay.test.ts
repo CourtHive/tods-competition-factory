@@ -20,7 +20,7 @@ it.each(scenarios)(
 
     tournamentEngine.setState(tournamentRecord);
 
-    let matchUps = tournamentEngine.allTournamentMatchUps({
+    const matchUps = tournamentEngine.allTournamentMatchUps({
       contextFilters: { stageSequences },
     }).matchUps;
     expect(unique(matchUps.map((m) => m.roundOfPlay))).toEqual(roundsOfPlay);

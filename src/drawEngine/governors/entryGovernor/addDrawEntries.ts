@@ -11,10 +11,6 @@ import { getStageSpace } from '../../getters/getStageSpace';
 import { ROUND_TARGET } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
-  DIRECT_ACCEPTANCE,
-  LUCKY_LOSER,
-} from '../../../constants/entryStatusConstants';
-import {
   INVALID_STAGE,
   MISSING_STAGE,
   EXISTING_PARTICIPANT,
@@ -28,29 +24,43 @@ import {
   MAIN,
   VOLUNTARY_CONSOLATION,
 } from '../../../constants/drawDefinitionConstants';
+import {
+  DrawDefinition,
+  Entry,
+  EntryStatusEnum,
+  Extension,
+  Participant,
+  StageTypeEnum,
+} from '../../../types/tournamentFromSchema';
 
-/**
- *
- * @param {object} drawDefinition - drawDefinition object; passed in automatically by drawEngine when drawEngine.setSTate(drawdefinition) has been previously called
- * @param {string} participantId - id of participant being entered into draw
- * @param {object} participant - optional; for passing participantId
- * @param {string} entryStage - either QUALIFYING or MAIN
- * @param {string} entryStatus - entryStatusEnum (e.g. DIRECT_ACCEPTANCE, WILDCARD)
- *
- */
-export function addDrawEntry({
-  entryStatus = DIRECT_ACCEPTANCE,
-  entryStageSequence,
-  entryStage = MAIN,
-  ignoreStageSpace,
-  drawDefinition,
-  entryPosition,
-  participantId,
-  participant,
-  roundTarget,
-  extensions,
-  extension,
-}) {
+type AddDrawEntryArgs = {
+  entryStatus?: EntryStatusEnum;
+  drawDefinition: DrawDefinition;
+  entryStageSequence?: number;
+  ignoreStageSpace?: boolean;
+  entryStage?: StageTypeEnum;
+  participant?: Participant;
+  extensions?: Extension[];
+  entryPosition?: number;
+  extension?: Extension;
+  participantId: string;
+  roundTarget?: number;
+};
+
+export function addDrawEntry(params: AddDrawEntryArgs) {
+  const {
+    entryStatus = EntryStatusEnum.DirectAcceptance,
+    entryStageSequence,
+    entryStage = MAIN,
+    ignoreStageSpace,
+    drawDefinition,
+    entryPosition,
+    participant,
+    roundTarget,
+    extensions,
+    extension,
+  } = params;
+
   const stack = 'addDrawEntry';
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!entryStage) return { error: MISSING_STAGE };
@@ -75,12 +85,12 @@ export function addDrawEntry({
       stack,
     });
 
-  participantId = participantId || participant?.participantId;
+  const participantId = params.participantId || participant?.participantId;
   if (!participantId)
     return decorateResult({ result: { error: MISSING_PARTICIPANT_ID }, stack });
 
   const invalidLuckyLoser =
-    entryStatus === LUCKY_LOSER &&
+    entryStatus === EntryStatusEnum.LuckyLoser &&
     participantInEntries({ participantId, drawDefinition, entryStatus });
   const invalidVoluntaryConsolation =
     entryStage === VOLUNTARY_CONSOLATION &&
@@ -90,7 +100,7 @@ export function addDrawEntry({
       entryStage,
     });
   const invalidEntry =
-    entryStatus !== LUCKY_LOSER &&
+    entryStatus !== EntryStatusEnum.LuckyLoser &&
     entryStage !== VOLUNTARY_CONSOLATION &&
     participantInEntries({ drawDefinition, participantId });
 
@@ -103,7 +113,6 @@ export function addDrawEntry({
   }
 
   const entry = definedAttributes({
-    ...participant,
     entryStageSequence,
     participantId,
     entryPosition,
@@ -123,30 +132,36 @@ export function addDrawEntry({
     });
   }
 
+  if (!drawDefinition.entries) drawDefinition.entries = [];
   drawDefinition.entries.push(entry);
   modifyDrawNotice({ drawDefinition });
 
   return { ...SUCCESS };
 }
 
-/**
- *
- * @param {object} drawDefinition - drawDefinition object
- * @param {string[]} participantIds - ids of participants to add to drawDefinition.entries
- * @param {string} entryStatus - entry status to be applied to all draw Entries, e.g. DIRECT ACCEPTANCE
- * @param {string} stage - entry stage for participants (QUALIFYING, MAIN)
- *
- */
-export function addDrawEntries({
-  entryStatus = DIRECT_ACCEPTANCE,
-  autoEntryPositions = true,
-  ignoreStageSpace,
-  drawDefinition,
-  participantIds,
-  stageSequence,
-  stage = MAIN,
-  roundTarget,
-}) {
+type AddDrawEntriesArgs = {
+  entryStatus?: EntryStatusEnum;
+  drawDefinition: DrawDefinition;
+  autoEntryPositions?: boolean;
+  ignoreStageSpace?: boolean;
+  participantIds: string[];
+  stageSequence?: number;
+  stage?: StageTypeEnum;
+  roundTarget?: number;
+};
+
+export function addDrawEntries(params: AddDrawEntriesArgs) {
+  const {
+    entryStatus = EntryStatusEnum.DirectAcceptance,
+    stage = StageTypeEnum.Main,
+    autoEntryPositions = true,
+    ignoreStageSpace,
+    drawDefinition,
+    participantIds,
+    stageSequence,
+    roundTarget,
+  } = params;
+
   if (!stage) return { error: MISSING_STAGE };
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!Array.isArray(participantIds)) return { error: INVALID_PARTICIPANT_IDS };
@@ -172,9 +187,9 @@ export function addDrawEntries({
     return { error: PARTICIPANT_COUNT_EXCEEDS_DRAW_SIZE };
 
   const participantIdsNotAdded = participantIds.reduce(
-    (notAdded, participantId) => {
+    (notAdded: string[], participantId) => {
       const invalidLuckyLoser =
-        entryStatus === LUCKY_LOSER &&
+        entryStatus === EntryStatusEnum.LuckyLoser &&
         participantInEntries({ participantId, drawDefinition, entryStatus });
       const invalidVoluntaryConsolation =
         stage === VOLUNTARY_CONSOLATION &&
@@ -184,7 +199,7 @@ export function addDrawEntries({
           participantId,
         });
       const invalidEntry =
-        entryStatus !== LUCKY_LOSER &&
+        entryStatus !== EntryStatusEnum.LuckyLoser &&
         stage !== VOLUNTARY_CONSOLATION &&
         participantInEntries({ drawDefinition, participantId });
 
@@ -202,16 +217,19 @@ export function addDrawEntries({
         participantId && !participantIdsNotAdded.includes(participantId)
     )
     .forEach((participantId) => {
-      const entry = Object.assign(
-        { participantId },
-        { entryStage: stage, entryStatus, entryStageSequence: stageSequence }
-      );
+      const entry: Entry = {
+        entryStageSequence: stageSequence,
+        entryStage: stage,
+        participantId,
+        entryStatus,
+      };
       if (roundTarget) {
         addExtension({
           element: entry,
           extension: { name: ROUND_TARGET, value: roundTarget },
         });
       }
+      if (!drawDefinition.entries) drawDefinition.entries = [];
       drawDefinition.entries.push(entry);
     });
 

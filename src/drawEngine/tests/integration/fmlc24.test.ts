@@ -2,10 +2,7 @@ import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
 import { instanceCount } from '../../../utilities';
 import { drawEngine } from '../../sync';
 import { expect, it } from 'vitest';
-import {
-  completeMatchUp,
-  verifyMatchUps,
-} from '../../tests/primitives/verifyMatchUps';
+import { completeMatchUp, verifyMatchUps } from '../primitives/verifyMatchUps';
 
 import { MAIN, CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';

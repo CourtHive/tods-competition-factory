@@ -18,16 +18,20 @@ import { SUCCESS } from '../../../constants/resultConstants';
  * ...on the bottom of the draw seed positions are always on the bottom of a group of positions
  * In the ITF seeding pattern seed positions alternate between top and bottom of groups of positions
  *
+ * @param {number} roundRobinGroupsCount - optional - number of round robin groups
  * @param {number} participantsCount - number of participants, coerced into a valid elimination structure size
  * @param {boolean} cluster - whether to cluster seed positions (ITF)
  * @returns
  */
 
-export function getSeedBlocks({
-  roundRobinGroupsCount,
-  participantsCount,
-  cluster,
-}) {
+type GetSeedBlocksArgs = {
+  roundRobinGroupsCount?: number;
+  participantsCount: number;
+  cluster?: boolean;
+};
+
+export function getSeedBlocks(params: GetSeedBlocksArgs) {
+  const { roundRobinGroupsCount, participantsCount, cluster } = params;
   if (!isConvertableInteger(participantsCount))
     return decorateResult({
       result: { error: INVALID_VALUES },
@@ -41,7 +45,7 @@ export function getSeedBlocks({
     // ensure that drawSize has not already been subdivided
     // e.g. each group treated as a separate drawSize whilst passing total groupsCount
     const increment = Math.min(roundRobinGroupsCount, drawSize);
-    const seedBlocks = [];
+    const seedBlocks: number[][] = [];
     let position = 1;
 
     generateRange(0, increment).forEach(() => {
@@ -59,7 +63,7 @@ export function getSeedBlocks({
 
   const range = generateRange(1, drawSize + 1);
 
-  let positions = [];
+  const positions: number[] = [];
   let chunkSize = drawSize / 2;
   // first two seed blocks are always [[1], [drawSize]], e.g. [[1], [32]] for a 32 drawSize
   // While loop generates an array of ordered drawPositions which are later broken into blocks
@@ -117,7 +121,7 @@ export function getSeedBlocks({
   const iterations = seedBlockSizes.indexOf(drawSize);
 
   let sum = 0;
-  const seedBlocks = [];
+  const seedBlocks: number[][] = [];
   // iterate over seed block sizes to generate seedBlocks
   generateRange(0, iterations).forEach((i) => {
     seedBlocks.push(positions.slice(sum, sum + seedBlockSizes[i]));

@@ -53,7 +53,7 @@ it('can complete FMLC consolation with BYE before main', () => {
     .filter((matchUp) => matchUp.stage === MAIN)
     .map(({ matchUpId }) => matchUpId);
 
-  let result = tournamentEngine.setMatchUpStatus({
+  const result = tournamentEngine.setMatchUpStatus({
     outcome: { winningSide: 2 },
     matchUpId: matchUpIds[0],
     drawId,

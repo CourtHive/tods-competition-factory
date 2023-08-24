@@ -4,7 +4,8 @@ import { drawEngine } from '../../sync';
 
 import { MAIN, CONSOLATION } from '../../../constants/drawDefinitionConstants';
 
-export function feedInChampionship({ drawSize, drawType, feedPolicy }) {
+export function feedInChampionship(params) {
+  const { drawSize, drawType, feedPolicy } = params;
   reset();
   initialize();
   mainDrawPositions({ drawSize });

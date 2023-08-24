@@ -43,7 +43,7 @@ export function feedInLinks({
           ? roundNumber - roundOffset
           : (roundNumber - roundOffset - 2) * 2 + 2;
 
-      const link = {
+      const link: any = {
         linkType: LOSER,
         source: {
           roundNumber,

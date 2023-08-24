@@ -4,20 +4,31 @@ import { findStructure } from './findStructure';
 
 import { MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
 import { CONTAINER, QUALIFYING } from '../../constants/drawDefinitionConstants';
+import { DrawDefinition } from '../../types/tournamentFromSchema';
 
-export function getQualifiersCount({
-  provisionalPositioning,
-  drawDefinition,
-  stageSequence,
-  structureId,
-  stage,
-}) {
+type GetQualifiersCountArgs = {
+  provisionalPositioning?: boolean;
+  drawDefinition: DrawDefinition;
+  stageSequence?: number;
+  structureId?: string;
+  stage?: string;
+};
+export function getQualifiersCount(params: GetQualifiersCountArgs) {
+  const {
+    provisionalPositioning,
+    drawDefinition,
+    stageSequence,
+    structureId,
+    stage,
+  } = params;
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   const { entryProfile } = getEntryProfile({ drawDefinition });
   const profileQualifiersCount =
-    entryProfile?.[stage]?.stageSequence?.[stageSequence]?.qualifiersCount ||
-    entryProfile?.[stage]?.qualifiersCount ||
+    (stage &&
+      stageSequence &&
+      entryProfile?.[stage]?.stageSequence?.[stageSequence]?.qualifiersCount) ||
+    (stage && entryProfile?.[stage]?.qualifiersCount) ||
     0;
 
   const roundQualifiersCounts = {};
@@ -57,9 +68,9 @@ export function getQualifiersCount({
           // return source structure qualifying round matchUps count
           const matchUps = getAllStructureMatchUps({
             matchUpFilters: { roundNumbers: [sourceRoundNumber] },
-            provisionalPositioning,
             structure: sourceStructure,
             afterRecoveryTimes: false,
+            provisionalPositioning,
             inContext: false,
           }).matchUps;
 

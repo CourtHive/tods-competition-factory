@@ -4,7 +4,7 @@ import { expect, test } from 'vitest';
 
 test('roundRobinTally policy can specify tally by games only', () => {
   // prettier-ignore
-  const mockProfile = {
+  const mockProfile: any = {
     tournamentName: 'Round Robin Points',
     policyDefinitions: {
       roundRobinTally: {
@@ -29,7 +29,7 @@ test('roundRobinTally policy can specify tally by games only', () => {
     ],
   };
 
-  let { tournamentRecord } = mocksEngine.generateTournamentRecord({
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     completeAllMatchUps: true,
     ...mockProfile,
   });
@@ -44,7 +44,7 @@ test('roundRobinTally policy can specify tally by games only', () => {
     matchUps,
   });
 
-  Object.values(participantResults).forEach((result) => {
+  Object.values(participantResults).forEach((result: any) => {
     const { GEMscore, gamesPct = 0 } = result;
     const expectation = parseInt((gamesPct * 1000).toString().slice(0, 2));
     // in very rare instances the GEMscore calc is expectation - 1

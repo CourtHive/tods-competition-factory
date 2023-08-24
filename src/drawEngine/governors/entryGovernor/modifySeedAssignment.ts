@@ -10,18 +10,21 @@ import {
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
+import {
+  DrawDefinition,
+  Event,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
-/**
- * method is made available to clients via positionActions
- * modifies the seedValue of an existing seedAssignment for a given participantId
- * --or-- adds an additional seedAssignment for an unrecognized participantId (this behavior may be unnecessary)
- *
- * @param {object} drawDefinition
- * @param {string} participantId
- * @param {string} structureId
- * @param {string} seedValue
- *
- */
+type ModifySeedAssignmentArgs = {
+  seedValue: string | number | undefined;
+  tournamentRecord?: Tournament;
+  drawDefinition: DrawDefinition;
+  participantId: string;
+  validation?: boolean;
+  structureId: string;
+  event?: Event;
+};
 export function modifySeedAssignment({
   validation = true,
   tournamentRecord,
@@ -30,7 +33,7 @@ export function modifySeedAssignment({
   structureId,
   seedValue,
   event,
-}) {
+}: ModifySeedAssignmentArgs) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
 
@@ -40,16 +43,16 @@ export function modifySeedAssignment({
   const validValue =
     !validation ||
     isNumeric(seedValue) ||
-    [undefined, ''].includes(seedValue) ||
+    seedValue === undefined ||
+    seedValue === '' ||
     (typeof seedValue === 'string' &&
-      seedValue.split('-').every((v) => isNumeric(v) && v > 0));
+      seedValue.split('-').every((v) => isNumeric(v) && parseInt(v) > 0));
 
   if (!validValue) return { error: INVALID_VALUES };
 
   const { seedAssignments } = getStructureSeedAssignments({
     drawDefinition,
     structure,
-    event,
   });
   const seedNumbers = seedAssignments.map(
     (assignment) => assignment.seedNumber
@@ -67,9 +70,9 @@ export function modifySeedAssignment({
               .split('-')
               .map((v) => parseInt(v))
               .join('-')) ||
-          (seedValue > 0 && parseInt(seedValue)) ||
+          (parseInt(seedValue) > 0 && parseInt(seedValue)) ||
           ''
-        : (seedValue > 0 && parseInt(seedValue)) || '';
+        : (seedValue && seedValue > 0 && seedValue) || '';
     existingAssginment.seedValue = newValue;
   } else {
     const seedNumber = Math.max(0, ...seedNumbers) + 1;
@@ -78,7 +81,6 @@ export function modifySeedAssignment({
 
   modifySeedAssignmentsNotice({
     tournamentId: tournamentRecord?.tournamentId,
-    structureIds: [structureId],
     eventId: event?.eventId,
     drawDefinition,
     structure,

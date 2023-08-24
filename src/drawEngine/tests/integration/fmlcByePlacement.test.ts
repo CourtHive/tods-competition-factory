@@ -117,7 +117,7 @@ it('can remove BYEs when matchUps are cleared', () => {
     policyDefinitions: SEEDING_USTA,
   });
 
-  let completionValues = [
+  let completionValues: any[] = [
     [1, 2, 2, true],
     [1, 4, 1, true],
     [2, 1, 1, true], // side 1 had 1st round BYE, wins matchUp
@@ -202,7 +202,7 @@ it('can remove BYEs when matchUps are cleared', () => {
     drawProfiles,
   });
   tournamentEngine.setState(tournamentRecord);
-  let { upcomingMatchUps } = tournamentEngine.drawMatchUps({
+  const { upcomingMatchUps } = tournamentEngine.drawMatchUps({
     drawId,
     inContext: true,
     constextFilters: { stages: [MAIN] },

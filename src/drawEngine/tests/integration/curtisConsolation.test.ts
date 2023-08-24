@@ -1,4 +1,4 @@
-import { verifyStructure } from '../../tests/primitives/verifyStructure';
+import { verifyStructure } from '../primitives/verifyStructure';
 import { generateRange } from '../../../utilities';
 import { drawEngine } from '../../sync';
 import { expect, it } from 'vitest';
@@ -167,7 +167,7 @@ function generateCurtis({
   const {
     structures: [playoffStructure],
   } = drawEngine.getDrawStructures({ stage: PLAY_OFF, stageSequence: 2 });
-  const { structureId: playoffStructureId } = { ...playoffStructure };
+  const playoffStructureId = playoffStructure?.structureId;
 
   const {
     structures: [consolation1stStructure],

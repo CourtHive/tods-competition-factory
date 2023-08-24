@@ -17,29 +17,33 @@ type FeedInMatchUpsArgs = {
   skipRounds?: number;
   matchUpType: string;
   idPrefix?: string;
-  drawSize: number;
+  drawSize?: number;
   isMock?: boolean;
   uuids?: string[];
   fmlc?: boolean;
 };
 
-export function feedInMatchUps({
-  linkFedFinishingRoundNumbers,
-  finishingPositionOffset,
-  linkFedRoundNumbers,
-  feedRoundsProfile,
-  feedRounds = 0,
-  skipRounds = 0,
-  feedsFromFinal,
-  isConsolation,
-  baseDrawSize,
-  matchUpType,
-  idPrefix,
-  drawSize,
-  isMock,
-  uuids,
-  fmlc,
-}: FeedInMatchUpsArgs) {
+export function feedInMatchUps(params: FeedInMatchUpsArgs) {
+  let {
+    feedRoundsProfile,
+    feedRounds = 0,
+    skipRounds = 0,
+    baseDrawSize,
+    drawSize,
+  } = params;
+
+  const {
+    linkFedFinishingRoundNumbers,
+    finishingPositionOffset,
+    linkFedRoundNumbers,
+    feedsFromFinal,
+    isConsolation,
+    matchUpType,
+    idPrefix,
+    isMock,
+    uuids,
+    fmlc,
+  } = params;
   // calculate the number of rounds and the number of matchUps in each round
   // for normal elimination structure
   baseDrawSize = baseDrawSize || getBaseDrawSize(drawSize);
