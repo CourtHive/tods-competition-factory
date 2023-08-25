@@ -3,7 +3,11 @@ import {
   findTournamentExtension,
 } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 
-import { MISSING_TOURNAMENT_RECORDS } from '../../../constants/errorConditionConstants';
+import {
+  ErrorType,
+  MISSING_TOURNAMENT_RECORDS,
+} from '../../../constants/errorConditionConstants';
+import { TournamentRecordsArgs } from '../../../types/factoryTypes';
 
 /**
  * Specific to deployments where both client and server are running competitionEngine.
@@ -13,14 +17,21 @@ import { MISSING_TOURNAMENT_RECORDS } from '../../../constants/errorConditionCon
  * This method is "wrapped" by other methods which pass in `extensionName`
  */
 
-export function getExtensionUpdate({ tournamentRecords, extensionName }) {
+type GetExtensionUpdateArgs = TournamentRecordsArgs & {
+  extensionName: string;
+};
+
+export function getExtensionUpdate({
+  tournamentRecords,
+  extensionName,
+}: GetExtensionUpdateArgs): { error?: ErrorType; methods?: any[] } {
   if (
     typeof tournamentRecords !== 'object' ||
     !Object.keys(tournamentRecords).length
   )
     return { error: MISSING_TOURNAMENT_RECORDS };
 
-  const methods = [];
+  const methods: any[] = [];
   let tournamentExtensionAdded;
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     const { extension } = findTournamentExtension({

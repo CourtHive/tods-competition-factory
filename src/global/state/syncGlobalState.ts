@@ -1,3 +1,4 @@
+import { TournamentRecordsArgs } from '../../types/factoryTypes';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
   INVALID_TOURNAMENT_RECORD,
@@ -5,10 +6,8 @@ import {
   MISSING_TOURNAMENT_RECORD,
   NOT_FOUND,
 } from '../../constants/errorConditionConstants';
-import { Tournament } from '../../types/tournamentFromSchema';
 
-type GlobalStateTypes = {
-  tournamentRecords: { [key: string]: Tournament };
+type GlobalStateTypes = TournamentRecordsArgs & {
   tournamentId: string | undefined;
   disableNotifications: boolean;
   subscriptions: any;

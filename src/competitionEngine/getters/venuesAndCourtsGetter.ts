@@ -11,6 +11,7 @@ import {
 import { Tournament, Venue } from '../../types/tournamentFromSchema';
 import { HydratedCourt, HydratedVenue } from '../../types/hydrated';
 import { DISABLED } from '../../constants/extensionConstants';
+import { TournamentRecordsArgs } from '../../types/factoryTypes';
 
 type GetVenuesAndCourtsArgs = {
   tournamentRecords: Tournament[] | { [key: string]: Tournament };
@@ -87,8 +88,7 @@ type Accumulator = {
   venues: Venue[];
 };
 
-type GetCompeitionVenuesArgs = {
-  tournamentRecords: { [key: string]: Tournament } | Tournament[];
+type GetCompeitionVenuesArgs = TournamentRecordsArgs & {
   requireCourts?: boolean;
   dates?: string[];
 };

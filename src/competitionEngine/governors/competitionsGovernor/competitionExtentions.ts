@@ -8,8 +8,9 @@ import {
   removeTournamentExtension,
 } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 
-import { Extension, Tournament } from '../../../types/tournamentFromSchema';
+import { TournamentRecordsArgs } from '../../../types/factoryTypes';
 import { MISSING_NAME } from '../../../constants/infoConstants';
+import { Extension } from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   EVENT_NOT_FOUND,
@@ -19,8 +20,7 @@ import {
   NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
-type AddExtensionArgs = {
-  tournamentRecords: { [key: string]: Tournament } | Tournament[];
+type AddExtensionArgs = TournamentRecordsArgs & {
   extension: Extension;
 };
 export function addExtension({
@@ -38,8 +38,7 @@ export function addExtension({
   return { ...SUCCESS };
 }
 
-type FindRemoveExtensionArgs = {
-  tournamentRecords: { [key: string]: Tournament } | Tournament[];
+type FindRemoveExtensionArgs = TournamentRecordsArgs & {
   name: string;
 };
 export function findExtension({
@@ -80,8 +79,7 @@ export function removeExtension({
   return { ...SUCCESS, removed };
 }
 
-type AddEventExtensionArgs = {
-  tournamentRecords: { [key: string]: Tournament } | Tournament[];
+type AddEventExtensionArgs = TournamentRecordsArgs & {
   extension: Extension;
   eventId: string;
 };

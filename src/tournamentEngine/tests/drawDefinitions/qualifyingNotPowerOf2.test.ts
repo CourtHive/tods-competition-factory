@@ -46,7 +46,7 @@ const scenarios = [
 ];
 
 it.each(scenarios)(
-  'can qualifying non-power-of-2 # of participants',
+  'can generate qualifying non-power-of-2 # of participants',
   (scenario) => {
     const result = mocksEngine.generateTournamentRecord({
       drawProfiles: [
@@ -64,8 +64,9 @@ it.each(scenarios)(
 
     // if (scenario.expectation.error) {
     if (result.error) {
-      console.log(result);
+      // console.log(result, { scenario });
     } else {
+      console.log('boo');
       const {
         tournamentRecord,
         drawIds: [drawId],
