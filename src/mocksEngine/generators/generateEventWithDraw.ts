@@ -94,8 +94,6 @@ export function generateEventWithDraw(params) {
     drawProfileCopy.drawSize ||
     (drawProfileCopy.ignoreDefaults ? undefined : 32);
 
-  if (drawProfileCopy.ignoreDefaults) console.log({ drawSize });
-
   const eventType = drawProfile.eventType || drawProfile.matchUpType || SINGLES;
   const participantType = eventType === DOUBLES ? PAIR : INDIVIDUAL;
 

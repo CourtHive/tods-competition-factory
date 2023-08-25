@@ -55,14 +55,15 @@ export function treeMatchUps({
   }
 
   const isValidQualifying =
-    qualifyingRoundNumber &&
     qualifyingPositions &&
     !(drawSize % 2) &&
-    (!isNaN(qualifyingPositions) || !isNaN(qualifyingRoundNumber)) &&
+    (!isNaN(qualifyingPositions) ||
+      (qualifyingRoundNumber && !isNaN(qualifyingRoundNumber))) &&
     (drawSize / qualifyingPositions ===
       Math.round(drawSize / qualifyingPositions) ||
-      drawSize / qualifyingRoundNumber ===
-        Math.round(drawSize / qualifyingRoundNumber));
+      (qualifyingRoundNumber &&
+        drawSize / qualifyingRoundNumber ===
+          Math.round(drawSize / qualifyingRoundNumber)));
 
   if (!isPowerOf2(drawSize) && !isValidQualifying) {
     return { matchUps: [], roundsCount: 0 };
