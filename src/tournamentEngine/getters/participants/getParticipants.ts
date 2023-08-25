@@ -4,6 +4,7 @@ import { filterParticipants } from './filterParticipants';
 import { getParticipantMap } from './getParticipantMap';
 import { definedAttributes } from '../../../utilities';
 
+import { MatchUp } from '../../../types/tournamentFromSchema';
 import { HydratedParticipant } from '../../../types/hydrated';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -18,10 +19,10 @@ export function getParticipants(params): {
   participants?: HydratedParticipant[];
   derivedEventInfo?: any;
   derivedDrawInfo?: any;
+  matchUps?: MatchUp[];
   mappedMatchUps?: any;
   error?: ErrorType;
   success?: boolean;
-  matchUps?: any[];
 } {
   const {
     withIndividualParticipants,

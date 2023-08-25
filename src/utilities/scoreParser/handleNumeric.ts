@@ -3,7 +3,9 @@ import { setBuilder } from './setBuilder';
 import { parseSuper } from './parseSuper';
 import { isNumeric } from '../math';
 
-export function handleNumeric({ score, applied, matchUpStatus }) {
+export function handleNumeric(params) {
+  let { score } = params;
+  const { applied, matchUpStatus } = params;
   const onlyNumbers = score
     ?.toString()
     // .replace(/\(|\)|\s/g, '')

@@ -47,7 +47,7 @@ export function DateHHMM(date) {
   return HHMMSS(secs, { displaySeconds: false });
 }
 
-export function HHMMSS(s, format) {
+export function HHMMSS(s, format?) {
   const secondNumber = parseInt(s, 10); // don't forget the second param
   const hours = Math.floor(secondNumber / 3600);
   const minutes = Math.floor((secondNumber - hours * 3600) / 60);
@@ -70,7 +70,7 @@ export const getUTCdateString = (date?) => {
   )}`;
 };
 
-export function timeUTC(date) {
+export function timeUTC(date?) {
   const dateDate =
     isDate(date) || isISODateString(date) ? new Date(date) : new Date();
   return Date.UTC(
@@ -95,7 +95,7 @@ export function localizeDate(submittedDate, dateLocalization, locale) {
   );
 }
 
-export function formatDate(date, separator = '-', format = 'YMD') {
+export function formatDate(date?, separator = '-', format = 'YMD') {
   if (!date) return '';
   if (typeof date === 'string' && date.indexOf('T') < 0) date = date + 'T00:00';
 
@@ -121,7 +121,7 @@ export function offsetDate(date) {
   return new Date(targetTime.getTime() - tzDifference * 60 * 1000);
 }
 
-export function offsetTime(date) {
+export function offsetTime(date?) {
   return offsetDate(date).getTime();
 }
 
@@ -136,7 +136,7 @@ export function isDate(dateArg) {
   return t && !isNaN(t.valueOf());
 }
 
-export function dateRange(startDt, endDt) {
+export function dateRange(startDt?, endDt?) {
   if (!isValidDateString(startDt) || !isValidDateString(endDt)) return [];
 
   const startDateString = extractDate(startDt) + 'T00:00';
@@ -189,7 +189,7 @@ function isTimeString(timeString) {
   return !invalid;
 }
 
-export function timeStringMinutes(timeString) {
+export function timeStringMinutes(timeString?) {
   const validTimeString = extractTime(timeString);
   if (!validTimeString) return 0;
   const [hours, minutes] = validTimeString
@@ -246,7 +246,7 @@ export function splitTime(value) {
   return time;
 }
 
-export function militaryTime(value) {
+export function militaryTime(value?) {
   const time = splitTime(value);
   if (time.ampm && time.hours) {
     if (time.ampm.toLowerCase() === 'pm' && parseInt(time.hours) < 12)
@@ -281,7 +281,7 @@ export function regularTime(value) {
   return `${time.hours || '12'}:${time.minutes || '00'} ${time.ampm}`;
 }
 
-export function convertTime(value, time24, keepDate) {
+export function convertTime(value, time24?, keepDate?) {
   const hasDate = extractDate(value);
   const timeString = extractTime(value);
   const timeValue = hasDate ? timeString : value;
@@ -304,7 +304,7 @@ export function timeSort(a, b) {
   return 0;
 }
 
-export function weekDays(date = new Date(), firstDayOfWeek = 0) {
+export function weekDays(date: any = new Date(), firstDayOfWeek = 0) {
   if (!isDate(date)) return [];
   const dates = [0, 1, 2, 3, 4, 5, 6].map((i) =>
     dayOfWeek(date, i + firstDayOfWeek)
@@ -330,7 +330,7 @@ export function addDays(date, days = 7) {
 export function addWeek(date) {
   return addDays(date);
 }
-export function subtractWeek(date, dateFormat) {
+export function subtractWeek(date, dateFormat?) {
   const universalDate = extractDate(date) + 'T00:00';
   const now = new Date(universalDate);
   return formatDate(now.setDate(now.getDate() - 7), dateFormat);
@@ -361,7 +361,7 @@ export function minutesDifference(date1, date2, absolute = true) {
   return absolute ? Math.abs(Math.round(diff)) : Math.round(diff);
 }
 
-export function addMinutesToTimeString(timeString, minutes) {
+export function addMinutesToTimeString(timeString?, minutes?) {
   const validTimeString = extractTime(timeString);
   if (!validTimeString) return '00:00';
   const minutesToAdd = isNaN(minutes) ? 0 : minutes;

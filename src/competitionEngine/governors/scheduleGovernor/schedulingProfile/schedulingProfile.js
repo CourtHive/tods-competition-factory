@@ -39,8 +39,8 @@ export function getSchedulingProfile({ tournamentRecords }) {
 
   if (schedulingProfile.length) {
     const { venueIds } = getCompetitionVenues({
-      tournamentRecords,
       requireCourts: true,
+      tournamentRecords,
     });
     const { eventIds, drawIds } = getEventIdsAndDrawIds({ tournamentRecords });
 
@@ -204,7 +204,6 @@ export function getUpdatedSchedulingProfile({
 export function checkSchedulingProfile({ tournamentRecords }) {
   const { schedulingProfile } = getSchedulingProfile({
     tournamentRecords,
-    requireCourts: true,
   });
   if (schedulingProfile) {
     const { venueIds } = getCompetitionVenues({ tournamentRecords });
