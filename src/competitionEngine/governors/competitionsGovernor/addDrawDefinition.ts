@@ -2,13 +2,13 @@ import { addDrawDefinition as addDefinition } from '../../../tournamentEngine/go
 import { findEvent } from '../../../tournamentEngine/getters/eventGetter';
 import { findTournamentId } from './findTournamentId';
 
+import { TournamentRecordsArgs } from '../../../types/factoryTypes';
+import { DrawDefinition } from '../../../types/tournamentFromSchema';
 import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
-import { TournamentRecordsArgs } from '../../../types/factoryTypes';
-import { DrawDefinition } from '../../../types/tournamentFromSchema';
 
 type AddDrawDefinitionArgs = TournamentRecordsArgs & {
   drawDefinition: DrawDefinition;
