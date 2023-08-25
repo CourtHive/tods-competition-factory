@@ -10,7 +10,7 @@ import { BYE, COMPLETED } from '../../../constants/matchUpStatusConstants';
 import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
 import { SINGLES, TEAM } from '../../../constants/matchUpTypes';
 
-const getMatchUp = (id, inContext) => {
+const getMatchUp = (id, inContext?) => {
   const {
     matchUps: [matchUp],
   } = tournamentEngine.allTournamentMatchUps({
@@ -30,7 +30,7 @@ test('positionActions work when team score is 0-0', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  let {
+  const {
     matchUps: [firstDualMatchUp],
   } = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [1] },
@@ -47,7 +47,7 @@ test('positionActions work when team score is 0-0', () => {
   expect(validActions.includes('SWAP')).toEqual(true);
 
   // generate outcome to be applied to each first round singles matchUp
-  let { outcome } = mocksEngine.generateOutcomeFromScoreString({
+  const { outcome } = mocksEngine.generateOutcomeFromScoreString({
     matchUpStatus: COMPLETED,
     scoreString: '6-1 6-1',
     winningSide: 1,
@@ -92,7 +92,7 @@ function processOutcome({ dualMatchUp, outcome, expectedScore }) {
   const { drawId } = dualMatchUp;
   singlesMatchUps.forEach((singlesMatchUp) => {
     const { matchUpId } = singlesMatchUp;
-    let result = tournamentEngine.setMatchUpStatus({
+    const result = tournamentEngine.setMatchUpStatus({
       matchUpId,
       outcome,
       drawId,
@@ -118,13 +118,13 @@ test('BYEs can be placed in TEAM RR', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  let matchUps = tournamentEngine.allTournamentMatchUps({
+  const matchUps = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: { matchUpTypes: [TEAM] },
   }).matchUps;
 
   expect(matchUps.length).toEqual(12);
 
-  let drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+  const drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
   const structureId = drawDefinition.structures[0].structureId;
 
   let validActions = tournamentEngine.positionActions({
@@ -184,15 +184,15 @@ test('Can generate TEAM RR with BYE', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  let matchUps = tournamentEngine.allTournamentMatchUps({
+  const matchUps = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: { matchUpTypes: [TEAM] },
   }).matchUps;
 
   expect(matchUps.length).toEqual(12);
 
-  let drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+  const drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
   const structureId = drawDefinition.structures[0].structureId;
-  let { positionAssignments } = tournamentEngine.getPositionAssignments({
+  const { positionAssignments } = tournamentEngine.getPositionAssignments({
     structureId,
     drawId,
   });

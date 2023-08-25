@@ -26,7 +26,7 @@ it('will remove redundant tieFormat on matchUp with no results', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  let outcome = {
+  const outcome = {
     winningSide: 1,
     score: {
       scoreStringSide1: '8-1',
@@ -59,7 +59,7 @@ it('will remove redundant tieFormat on matchUp with no results', () => {
   firstRoundDualMatchUps.forEach((dualMatchUp) => {
     dualMatchUp.tieMatchUps.slice(0, 9).forEach((matchUp) => {
       const { matchUpId } = matchUp;
-      let result = tournamentEngine.setMatchUpStatus({
+      const result = tournamentEngine.setMatchUpStatus({
         matchUpId,
         outcome,
         drawId,
@@ -95,7 +95,7 @@ it('will remove redundant tieFormat on matchUp with no results', () => {
   firstRoundDualMatchUps.forEach((dualMatchUp) => {
     dualMatchUp.tieMatchUps.slice(0, 9).forEach((matchUp) => {
       const { matchUpId } = matchUp;
-      let result = tournamentEngine.setMatchUpStatus({
+      const result = tournamentEngine.setMatchUpStatus({
         outcome: toBePlayed,
         matchUpId,
         drawId,

@@ -56,7 +56,7 @@ test('changing scores after playoffs generated in team round robin with playoffs
     );
     singlesMatchUps.forEach((singlesMatchUp) => {
       const { matchUpId } = singlesMatchUp;
-      let result = tournamentEngine.setMatchUpStatus({
+      const result = tournamentEngine.setMatchUpStatus({
         matchUpId,
         outcome,
         drawId,
@@ -68,7 +68,7 @@ test('changing scores after playoffs generated in team round robin with playoffs
     );
     doublesMatchUps.forEach((doublesMatchUp) => {
       const { matchUpId } = doublesMatchUp;
-      let result = tournamentEngine.setMatchUpStatus({
+      const result = tournamentEngine.setMatchUpStatus({
         matchUpId,
         outcome,
         drawId,

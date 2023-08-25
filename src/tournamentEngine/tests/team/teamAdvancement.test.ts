@@ -32,7 +32,7 @@ import {
 } from '../../../constants/drawDefinitionConstants';
 
 // reusable
-const getMatchUp = (id, inContext) => {
+const getMatchUp = (id, inContext?) => {
   const {
     matchUps: [matchUp],
   } = tournamentEngine.allTournamentMatchUps({
@@ -54,7 +54,8 @@ const scenarios = [
 ];
 
 it.each(scenarios)('can advance teamParticipants', (scenario) => {
-  const { tournamentRecord, drawId, eventId, valueGoal, expectLineUps } =
+  const expectLineUps = scenario.expectLineUps;
+  const { tournamentRecord, drawId, eventId, valueGoal } =
     generateTeamTournament(scenario);
   expect(valueGoal).toEqual(scenario.valueGoal);
 
@@ -81,7 +82,7 @@ it.each(scenarios)('can advance teamParticipants', (scenario) => {
   let { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
   const { positionAssignments } = drawDefinition.structures[0];
 
-  let { tournamentParticipants: teamParticipants } =
+  const { tournamentParticipants: teamParticipants } =
     tournamentEngine.getTournamentParticipants({
       participantFilters: { participantTypes: [TEAM] },
     });
@@ -127,7 +128,7 @@ it.each(scenarios)('can advance teamParticipants', (scenario) => {
     );
     singlesMatchUps.forEach((singlesMatchUp, i) => {
       const { matchUpId } = singlesMatchUp;
-      let result = tournamentEngine.setMatchUpStatus({
+      const result = tournamentEngine.setMatchUpStatus({
         matchUpId,
         outcome,
         drawId,
@@ -162,7 +163,7 @@ it.each(scenarios)('can advance teamParticipants', (scenario) => {
     );
     doublesMatchUps.forEach((doublesMatchUp, i) => {
       const { matchUpId } = doublesMatchUp;
-      let result = tournamentEngine.setMatchUpStatus({
+      const result = tournamentEngine.setMatchUpStatus({
         matchUpId,
         outcome,
         drawId,
@@ -198,7 +199,7 @@ it.each(scenarios)('can advance teamParticipants', (scenario) => {
     expect(score.sets[0].side1Score).toBeGreaterThanOrEqual(valueGoal);
   });
 
-  let { matchUps: secondRoundDualMatchUps } =
+  const { matchUps: secondRoundDualMatchUps } =
     tournamentEngine.allTournamentMatchUps({
       matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [2] },
     });
@@ -275,18 +276,18 @@ test('participants for other teams cannot be assigned without teamParticipantId'
 
   tournamentEngine.setState(tournamentRecord);
 
-  let { matchUps: firstRoundDualMatchUps } =
+  const { matchUps: firstRoundDualMatchUps } =
     tournamentEngine.allTournamentMatchUps({
       matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [1] },
     });
 
-  let { tournamentParticipants: individualParticipants } =
+  const { tournamentParticipants: individualParticipants } =
     tournamentEngine.getTournamentParticipants({
       participantFilters: { participantTypes: [INDIVIDUAL] },
     });
 
-  let errors = [];
-  let participantIndex = 0;
+  const errors: any[] = [];
+  const participantIndex = 0;
   // for each first round dualMatchUp assign individualParticipants to singles matchUps
   firstRoundDualMatchUps.forEach((dualMatchUp) => {
     const singlesMatchUps = dualMatchUp.tieMatchUps.filter(
@@ -356,7 +357,7 @@ test('tieFormat with scoreValue calculation', () => {
     );
     doublesMatchUps.forEach((doublesMatchUp) => {
       const { matchUpId } = doublesMatchUp;
-      let result = tournamentEngine.setMatchUpStatus({
+      const result = tournamentEngine.setMatchUpStatus({
         matchUpId,
         outcome,
         drawId,
@@ -451,7 +452,7 @@ test('properly removes advanced team at 9-0 in USTA_GOLD', () => {
   firstRoundDualMatchUps.forEach((dualMatchUp) => {
     dualMatchUp.tieMatchUps.slice(0, 9).forEach((matchUp) => {
       const { matchUpId } = matchUp;
-      let result = tournamentEngine.setMatchUpStatus({
+      const result = tournamentEngine.setMatchUpStatus({
         matchUpId,
         outcome,
         drawId,
@@ -482,7 +483,7 @@ test('properly removes advanced team at 9-0 in USTA_GOLD', () => {
     });
   });
 
-  let {
+  const {
     matchUps: [secondRoundDualMatchUp],
   } = tournamentEngine.allTournamentMatchUps({
     contextFilters: {
@@ -525,10 +526,10 @@ test('properly removes advanced team at 9-0 in USTA_GOLD', () => {
     ({ matchUpType }) => matchUpType === TEAM
   );
 
-  let firstRoundFirst = teamMatchUps.find(
+  const firstRoundFirst = teamMatchUps.find(
     ({ roundNumber, roundPosition }) => roundNumber === 1 && roundPosition === 1
   );
-  let secondRoundFirst = teamMatchUps.find(
+  const secondRoundFirst = teamMatchUps.find(
     ({ roundNumber, roundPosition }) => roundNumber === 2 && roundPosition === 1
   );
 
@@ -572,10 +573,10 @@ test('properly removes lineUps when team drawPositions are swapped', () => {
   expect(firstRoundDualMatchUps.length).toEqual(2);
 
   // get positionAssignments to determine drawPositions
-  let { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   const { positionAssignments } = drawDefinition.structures[0];
 
-  let { tournamentParticipants: teamParticipants } =
+  const { tournamentParticipants: teamParticipants } =
     tournamentEngine.getTournamentParticipants({
       participantFilters: { participantTypes: [TEAM] },
     });
@@ -608,16 +609,16 @@ test('properly removes lineUps when team drawPositions are swapped', () => {
   );
   targetMatchUp.sides.forEach((side) => expect(side.lineUp.length).toEqual(6));
 
-  let drawPosition = 1;
+  const drawPosition = 1;
   const { structureId } = firstRoundDualMatchUps[0];
   let result = tournamentEngine.positionActions({
     drawPosition,
     structureId,
     drawId,
   });
-  let options = result.validActions?.map((validAction) => validAction.type);
+  const options = result.validActions?.map((validAction) => validAction.type);
   expect(options.includes(SWAP_PARTICIPANTS)).toEqual(true);
-  let option = result.validActions.find(
+  const option = result.validActions.find(
     (action) => action.type === SWAP_PARTICIPANTS
   );
   expect(option.availableAssignments[1].drawPosition).toEqual(3);
@@ -652,7 +653,7 @@ test('properly removes lineUps when team drawPositions are swapped', () => {
 });
 
 test('does not propagate matchUpStatusCodes from SINGLE/DOUBLES to TEAM matchUps on DOUBLE_WALKOVER', () => {
-  let matchUpModifyNotices = [];
+  const matchUpModifyNotices: any[] = [];
 
   const subscriptions = {
     modifyMatchUp: (payload) => {
@@ -710,7 +711,7 @@ test('does not propagate matchUpStatusCodes from SINGLE/DOUBLES to TEAM matchUps
     matchUpStatus: DOUBLE_WALKOVER,
     matchUpStatusCodes: ['WOWO', 'WOWO'],
   };
-  let result = tournamentEngine.setMatchUpStatus({
+  const result = tournamentEngine.setMatchUpStatus({
     matchUpId: singlesMatchUps[0].matchUpId,
     outcome,
     drawId,

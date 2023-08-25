@@ -21,7 +21,7 @@ import {
 } from '../../../constants/matchUpStatusConstants';
 
 // reusable
-const getMatchUp = (id, inContext) => {
+const getMatchUp = (id, inContext?) => {
   const {
     matchUps: [matchUp],
   } = tournamentEngine.allTournamentMatchUps({
@@ -51,7 +51,7 @@ it.each(scenarios)(
   'can generate all drawTypes for eventType: TEAM',
   (scenario) => {
     const { drawType, matchUpsCount } = scenario;
-    let {
+    const {
       tournamentRecord,
       drawIds: [drawId],
       eventIds: [eventId],
@@ -79,7 +79,7 @@ it.each(scenarios)(
       (dualMatchUp) => expect(dualMatchUp.tieFormat).not.toBeUndefined()
     );
 
-    let { matchUps: firstRoundDualMatchUps } =
+    const { matchUps: firstRoundDualMatchUps } =
       tournamentEngine.allTournamentMatchUps({
         matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [1] },
       });
@@ -95,7 +95,7 @@ it.each(scenarios)(
       );
       singlesMatchUps.forEach((singlesMatchUp, i) => {
         const { matchUpId } = singlesMatchUp;
-        let result = tournamentEngine.setMatchUpStatus({
+        const result = tournamentEngine.setMatchUpStatus({
           matchUpId,
           outcome,
           drawId,
@@ -119,7 +119,7 @@ it.each(scenarios)(
       );
       doublesMatchUps.forEach((doublesMatchUp, i) => {
         const { matchUpId } = doublesMatchUp;
-        let result = tournamentEngine.setMatchUpStatus({
+        const result = tournamentEngine.setMatchUpStatus({
           matchUpId,
           outcome,
           drawId,
@@ -140,8 +140,8 @@ it.each(scenarios)(
 );
 
 it('generates playoff structures for TEAM events and propagates tieFormat', () => {
-  const allMatchUps = [];
-  let matchUpAddNotices = [];
+  const allMatchUps: any[] = [];
+  const matchUpAddNotices: number[] = [];
 
   const subscriptions = {
     addMatchUps: (payload) => {
@@ -173,7 +173,7 @@ it('generates playoff structures for TEAM events and propagates tieFormat', () =
     },
   } = tournamentEngine.getEvent({ drawId });
 
-  let result = tournamentEngine.addPlayoffStructures({
+  const result = tournamentEngine.addPlayoffStructures({
     playoffStructureNameBase: '3-4 Playoff',
     playoffPositions: [3, 4],
     structureId,
@@ -241,7 +241,7 @@ it('handles TEAM ROUND_ROBIN tallyParticipants', () => {
   );
   singlesMatchUps.forEach((singlesMatchUp, i) => {
     const { matchUpId } = singlesMatchUp;
-    let result = tournamentEngine.setMatchUpStatus({
+    const result = tournamentEngine.setMatchUpStatus({
       matchUpId,
       outcome,
       drawId,

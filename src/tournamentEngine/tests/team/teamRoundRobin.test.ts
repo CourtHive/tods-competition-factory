@@ -27,7 +27,7 @@ test('team ROUND_robin with 3 teams', () => {
   let result = tournamentEngine.setState(tournamentRecord);
   expect(result.success).toEqual(true);
 
-  let { matchUps } = tournamentEngine.allTournamentMatchUps({});
+  const { matchUps } = tournamentEngine.allTournamentMatchUps({});
   let matchUp = matchUps.find(
     ({ matchUpType }) => matchUpType === TEAM_MATCHUP
   );

@@ -60,8 +60,8 @@ it('can enforce collection gender', () => {
 
   const testMatchUps = [maleSingles[0], femaleSingles[0]];
   for (const matchUp of testMatchUps) {
-    let { matchUpId, drawId } = matchUp;
-    let { validActions } = tournamentEngine.matchUpActions({
+    const { matchUpId, drawId } = matchUp;
+    const { validActions } = tournamentEngine.matchUpActions({
       sideNumber: 1,
       matchUpId,
       drawId,
@@ -74,10 +74,10 @@ it('can enforce collection gender', () => {
       unique(validActions[2].availableParticipants.map((p) => p.person.sex))[0]
     ).toEqual(matchUp.gender);
 
-    let assignPositionAction = validActions.find(
+    const assignPositionAction = validActions.find(
       ({ type }) => type === ASSIGN_PARTICIPANT
     );
-    let { method, payload, availableParticipantIds } = assignPositionAction;
+    const { method, payload, availableParticipantIds } = assignPositionAction;
     let participantId = availableParticipantIds[0];
 
     result = tournamentEngine[method]({ ...payload, participantId });

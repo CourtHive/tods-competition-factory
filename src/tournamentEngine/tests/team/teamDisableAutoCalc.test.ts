@@ -42,8 +42,10 @@ it('supports disabling and then re-enabling auto-Calc', () => {
   } = targetTeamMatchUp;
 
   // in this case winningSide happens to equal drawPosition... because matchUp is { roundNumber : 1, roundPosition: 1 }
-  let { matchUpId: winnerTeamMatchUpId, drawPositions: originalDrawPositions } =
-    winnerTeamMatchUp;
+  const {
+    matchUpId: winnerTeamMatchUpId,
+    drawPositions: originalDrawPositions,
+  } = winnerTeamMatchUp;
   expect(originalDrawPositions).toEqual([originalWinningSide]);
 
   // now manually change the team score to not match the calculated score
@@ -122,8 +124,10 @@ it('disabled auto calc with manually advanced team will not advance calculated w
   } = targetTeamMatchUp;
 
   // in this case winningSide happens to equal drawPosition... because matchUp is { roundNumber : 1, roundPosition: 1 }
-  let { matchUpId: winnerTeamMatchUpId, drawPositions: originalDrawPositions } =
-    winnerTeamMatchUp;
+  const {
+    matchUpId: winnerTeamMatchUpId,
+    drawPositions: originalDrawPositions,
+  } = winnerTeamMatchUp;
   expect(originalDrawPositions).toEqual([originalWinningSide]);
 
   // now manually change the team score to not match the calculated score

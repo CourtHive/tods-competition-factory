@@ -294,7 +294,7 @@ test.each(scenarios)(
           return;
         }
 
-        let result = tournamentEngine.setMatchUpStatus({
+        const result = tournamentEngine.setMatchUpStatus({
           outcome: collectionValues[collectionId]?.outcome || outcome,
           matchUpId,
           drawId,
@@ -408,7 +408,7 @@ const outcomeScenarios = [
 test.each(outcomeScenarios)(
   'aggregateValue works with matchUpValue',
   (scenario) => {
-    let tieFormat = tieFormats.aggregateDuo;
+    const tieFormat: any = tieFormats.aggregateDuo;
     if (scenario.winCriteria) tieFormat.winCriteria = scenario.winCriteria;
 
     const {
@@ -540,7 +540,7 @@ test.each(outcomeScenarios)(
 
     const newWinningSide = 2 - firstSinglesMatchUp.winningSide;
     const newScoreString = '6-1 6-1';
-    let { outcome } = mocksEngine.generateOutcomeFromScoreString({
+    const { outcome } = mocksEngine.generateOutcomeFromScoreString({
       scoreString: newScoreString,
       winningSide: newWinningSide,
       matchUpStatus: COMPLETED,

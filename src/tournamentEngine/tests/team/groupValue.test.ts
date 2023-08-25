@@ -27,10 +27,11 @@ test('groupValue can be used in tieFormats and lineUps can be applied after scor
 
   tournamentEngine.setState(tournamentRecord);
 
-  let { tournamentParticipants } = tournamentEngine.getTournamentParticipants();
+  const { tournamentParticipants } =
+    tournamentEngine.getTournamentParticipants();
   expect(tournamentParticipants.length).toEqual(40);
 
-  let { matchUps: singlesMatchUps } = tournamentEngine.allTournamentMatchUps({
+  const { matchUps: singlesMatchUps } = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: { matchUpTypes: [SINGLES] },
   });
   expect(singlesMatchUps.length).toEqual(18);

@@ -11,7 +11,7 @@ import {
   IN_PROGRESS,
 } from '../../../constants/matchUpStatusConstants';
 
-const getMatchUp = (id, inContext) => {
+const getMatchUp = (id, inContext?) => {
   const {
     matchUps: [matchUp],
   } = tournamentEngine.allTournamentMatchUps({
@@ -35,13 +35,13 @@ it.each(scenarios)('can remove directed teamParticipants', (scenario) => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  let { matchUps: firstRoundDualMatchUps } =
+  const { matchUps: firstRoundDualMatchUps } =
     tournamentEngine.allTournamentMatchUps({
       matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [1] },
     });
 
   // generate outcome to be applied to each first round singles matchUp
-  let { outcome } = mocksEngine.generateOutcomeFromScoreString({
+  const { outcome } = mocksEngine.generateOutcomeFromScoreString({
     matchUpStatus: COMPLETED,
     scoreString: '6-1 6-1',
     winningSide: 1,
@@ -84,7 +84,7 @@ it.each(scenarios)('can change winningSide', (scenario) => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  let { matchUps: firstRoundDualMatchUps } =
+  const { matchUps: firstRoundDualMatchUps } =
     tournamentEngine.allTournamentMatchUps({
       matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [1] },
     });
@@ -147,13 +147,14 @@ it.each(scenarios)('can change winningSide', (scenario) => {
   }
 });
 
-function processOutcome({
-  dualWinningSide = 1,
-  checkForInProgress,
-  dualMatchUps,
-  valueGoal,
-  outcome,
-}) {
+function processOutcome(params) {
+  const {
+    dualWinningSide = 1,
+    checkForInProgress,
+    dualMatchUps,
+    valueGoal,
+    outcome,
+  } = params;
   dualMatchUps.forEach((dualMatchUp) => {
     const singlesMatchUps = dualMatchUp.tieMatchUps.filter(
       ({ matchUpType }) => matchUpType === SINGLES
@@ -161,7 +162,7 @@ function processOutcome({
     const { drawId } = dualMatchUp;
     singlesMatchUps.forEach((singlesMatchUp, i) => {
       const { matchUpId } = singlesMatchUp;
-      let result = tournamentEngine.setMatchUpStatus({
+      const result = tournamentEngine.setMatchUpStatus({
         matchUpId,
         outcome,
         drawId,

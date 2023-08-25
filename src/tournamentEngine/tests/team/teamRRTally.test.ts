@@ -62,7 +62,7 @@ it('handles TEAM ROUND_ROBIN tallyParticipants', () => {
       });
 
       const { matchUpId } = singlesMatchUp;
-      let result = tournamentEngine.setMatchUpStatus({
+      const result = tournamentEngine.setMatchUpStatus({
         matchUpId,
         outcome,
         drawId,

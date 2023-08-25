@@ -43,15 +43,15 @@ const singlesMatchUpFormat = (tieFormat) =>
 
 test.each(scenarios)(
   'can pass tieFormatName in eventProfiles and drawProfiles',
-  (scenario) => {
-    let {
+  (scenario: any) => {
+    const {
       tournamentRecord,
       drawIds: [drawId],
     } = mocksEngine.generateTournamentRecord(scenario.mockProfile);
 
     tournamentEngine.setState(tournamentRecord);
 
-    let {
+    const {
       structureDefaultTieFormat,
       eventDefaultTieFormat,
       drawDefaultTieFormat,
