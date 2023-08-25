@@ -107,6 +107,7 @@ export function assignTieMatchUpParticipantId(params) {
   });
 
   const matchUpActionsPolicy =
+    params?.policyDefinitions?.[POLICY_MATCHUP_ACTIONS_DEFAULT] ||
     appliedPolicies?.[POLICY_TYPE_MATCHUP_ACTIONS] ||
     POLICY_MATCHUP_ACTIONS_DEFAULT[POLICY_TYPE_MATCHUP_ACTIONS];
 
