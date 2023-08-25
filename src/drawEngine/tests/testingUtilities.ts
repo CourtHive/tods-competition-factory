@@ -71,7 +71,7 @@ export function assignDrawPosition({ drawId, structureId, drawPosition }) {
 type RemoveAssignmentArgs = {
   replaceWithBye?: boolean;
   policyDefinitions?: any;
-  drawPosition: string;
+  drawPosition: number;
   structureId: string;
   drawId: string;
 };
@@ -116,12 +116,8 @@ export function replaceWithBye(params) {
   return result;
 }
 
-export function replaceWithAlternate({
-  policyDefinitions,
-  drawPosition,
-  structureId,
-  drawId,
-}) {
+export function replaceWithAlternate(params) {
+  const { policyDefinitions, drawPosition, structureId, drawId } = params;
   const { validActions } = tournamentEngine.positionActions({
     policyDefinitions,
     drawPosition,
