@@ -1,7 +1,7 @@
 import { unique } from './arrays';
 
 // arrayMerge can be boolean or an array of target attributes which are arrays to merge
-export function deepMerge(existing, incoming, arrayMerge) {
+export function deepMerge(existing, incoming, arrayMerge?) {
   if (!existing && incoming) return incoming;
   if (existing && !incoming) return existing;
   if (typeof existing !== 'object' || typeof incoming !== 'object')

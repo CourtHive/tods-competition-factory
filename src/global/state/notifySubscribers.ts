@@ -24,7 +24,7 @@ import {
 
 type NotifySubscribersArgs = {
   mutationStatus?: any;
-  tournamentId: string;
+  tournamentId?: string;
   directives?: any[];
   timeStamp?: any;
 };

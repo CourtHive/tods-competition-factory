@@ -28,7 +28,9 @@ let drawDefinition;
 const prefetch = false;
 let tournamentParticipants = [];
 
-export function drawEngineAsync(test) {
+export function drawEngineAsync(
+  test?: boolean
+): FactoryEngine & { error?: any } {
   const result = createInstanceState();
   if (result.error && !test) return result;
 

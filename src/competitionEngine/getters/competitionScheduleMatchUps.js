@@ -129,7 +129,7 @@ export function competitionScheduleMatchUps(params) {
     ? scheduledSortedMatchUps({ matchUps: relevantMatchUps, schedulingProfile })
     : relevantMatchUps;
 
-  const courtsData = courts.map((court) => {
+  const courtsData = courts?.map((court) => {
     const matchUps = getCourtMatchUps(court);
     return {
       surfaceCategory: court?.surfaceCategory || '',
