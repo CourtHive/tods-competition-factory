@@ -43,7 +43,7 @@ import {
  * @param {object} event
  */
 
-export function assignTieMatchUpParticipantId(params) {
+export function assignTieMatchUpParticipantId(params: any) {
   const matchUpContext = getTieMatchUpContext(params);
   if (matchUpContext.error) return matchUpContext;
   const stack = 'assignTieMatchUpParticipantId';
@@ -107,6 +107,7 @@ export function assignTieMatchUpParticipantId(params) {
   });
 
   const matchUpActionsPolicy =
+    params.policyDefinitions?.[POLICY_TYPE_MATCHUP_ACTIONS] ||
     appliedPolicies?.[POLICY_TYPE_MATCHUP_ACTIONS] ||
     POLICY_MATCHUP_ACTIONS_DEFAULT[POLICY_TYPE_MATCHUP_ACTIONS];
 
@@ -201,13 +202,14 @@ export function assignTieMatchUpParticipantId(params) {
       drawDefinition,
     })?.lineUp;
 
-  const targetAssignments = lineUp?.filter((participantAssignment) =>
-    participantAssignment.collectionAssignments?.find(
-      (assignment) =>
-        assignment.collectionPosition === collectionPosition &&
-        assignment.collectionId === collectionId &&
-        !assignment.previousParticipantId
-    )
+  const targetAssignments = lineUp?.filter(
+    (participantAssignment) =>
+      participantAssignment.collectionAssignments?.find(
+        (assignment) =>
+          assignment.collectionPosition === collectionPosition &&
+          assignment.collectionId === collectionId &&
+          !assignment.previousParticipantId
+      )
   );
   const assignedParticipantIds = targetAssignments?.map(
     (assignment) => assignment?.participantId
@@ -225,11 +227,9 @@ export function assignTieMatchUpParticipantId(params) {
     collectionPosition,
     teamParticipantId,
     dualMatchUpSide,
-    participantType,
     drawDefinition,
     participantIds,
     collectionId,
-    matchUpType,
   });
   if (removeResult.error)
     return decorateResult({ result: removeResult, stack });
@@ -240,7 +240,7 @@ export function assignTieMatchUpParticipantId(params) {
 
   if (matchUpType === DOUBLES) {
     if (participantType !== PAIR) {
-      let result = updateLineUp({
+      let result: any = updateLineUp({
         collectionPosition,
         teamParticipantId,
         drawDefinition,
@@ -343,10 +343,9 @@ export function assignTieMatchUpParticipantId(params) {
           tournamentRecord,
         });
 
-        if (!existingParticipant) {
+        if (!existingParticipant && participant) {
           participant.individualParticipantIds = individualParticipantIds;
           const result = modifyParticipant({
-            individualParticipantIds,
             pairOverride: true,
             tournamentRecord,
             participant,
@@ -355,7 +354,7 @@ export function assignTieMatchUpParticipantId(params) {
         } else {
           // check if there is a pairParticipant that includes both individualParticipantIds
           // if there is, use that and delete the PAIR participant with only one [individualParticipantId]
-          deleteParticipantId = participant.participantId;
+          deleteParticipantId = participant?.participantId;
         }
       }
     }
