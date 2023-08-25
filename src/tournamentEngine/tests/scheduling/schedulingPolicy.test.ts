@@ -36,7 +36,6 @@ it.each([
   'can retrieve matchUpAverageTimes for for matchUpFormats',
   ({
     matchUpFormat,
-    categoryName,
     categoryType,
     averageMinutes,
     recoveryMinutes,
@@ -59,7 +58,6 @@ it.each([
         defaultAverageMinutes: 87,
         defaultRecoveryMinutes: 57,
         matchUpFormat,
-        categoryName,
         categoryType,
         eventType,
         eventId,
@@ -76,7 +74,6 @@ it.each([
 
     result = tournamentEngine.getMatchUpFormatTiming({
       matchUpFormat,
-      categoryName,
       categoryType,
       eventType,
       eventId,

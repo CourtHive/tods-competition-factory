@@ -45,7 +45,7 @@ setSubscriptions({
 
 // this is necessary to ensure that at least one millisecond has passed between modifications
 async function forceDelay(delay = 10) {
-  return new Promise((resolve) => setTimeout(() => resolve(), delay));
+  return new Promise((resolve) => setTimeout(() => resolve(undefined), delay));
 }
 
 it('can add events, venues, and schedule matchUps and modify drawDefinition.updatedAt', async () => {
@@ -171,7 +171,7 @@ it('can add events, venues, and schedule matchUps and modify drawDefinition.upda
   tournamentEngine.setState(tournamentRecord);
 
   let scheduledDate = d200101;
-  let contextFilters = {
+  let contextFilters: any = {
     drawIds: [drawId],
     structureIds: [],
     roundNumbers: [1],
@@ -458,6 +458,8 @@ it('can add events, venues, and schedule matchUps and modify drawDefinition.upda
   ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
 
   // these are unit tests and therefore do not modify { updatedAt }
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   result = removeCourtAssignment({ drawDefinition });
   expect(result.error).toEqual(MISSING_MATCHUP_ID);
   result = removeCourtAssignment({ matchUpId });
@@ -577,8 +579,8 @@ it('adds venueId to matchUp.schedule when court is assigned', () => {
   tournamentRecord = tournamentRecords[tournamentId];
   tournamentEngine.setState(tournamentRecord);
 
-  let scheduledDate = d200101;
-  let contextFilters = {
+  const scheduledDate = d200101;
+  let contextFilters: any = {
     drawIds: [drawId],
     structureIds: [],
     roundNumbers: [1],
@@ -599,8 +601,8 @@ it('adds venueId to matchUp.schedule when court is assigned', () => {
   const courtIds = courts.map((court) => court.courtId);
   const courtId = courtIds[0];
 
-  let { matchUps } = tournamentEngine.allTournamentMatchUps();
-  let [matchUp] = matchUps;
+  const { matchUps } = tournamentEngine.allTournamentMatchUps();
+  const [matchUp] = matchUps;
   const { matchUpId } = matchUp;
 
   result = tournamentEngine.assignMatchUpCourt({
@@ -612,7 +614,7 @@ it('adds venueId to matchUp.schedule when court is assigned', () => {
   });
   expect(result.success).toEqual(true);
 
-  let {
+  const {
     matchUp: { schedule },
   } = tournamentEngine.findMatchUp({
     matchUpId,

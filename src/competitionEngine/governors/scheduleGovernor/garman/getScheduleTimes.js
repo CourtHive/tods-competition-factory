@@ -12,19 +12,24 @@ import {
   dayMinutesToTimeString,
 } from '../../../../utilities/dateTime';
 
-export function getScheduleTimes({
-  calculateStartTimeFromCourts = true,
-  remainingScheduleTimes, // times remaining from previous scheduling iteration
-  date = getUTCdateString(),
-  averageMatchUpMinutes,
-  startTime = '08:00',
-  clearScheduleDates,
-  endTime = '19:00',
-  periodLength,
-  courtsCount,
-  bookings,
-  courts,
-} = {}) {
+export function getScheduleTimes(params) {
+  let {
+    date = getUTCdateString(),
+    startTime = '08:00',
+    endTime = '19:00',
+    periodLength,
+    courts,
+  } = params;
+
+  const {
+    calculateStartTimeFromCourts = true,
+    remainingScheduleTimes, // times remaining from previous scheduling iteration
+    averageMatchUpMinutes,
+    clearScheduleDates,
+    courtsCount,
+    bookings,
+  } = params;
+
   periodLength =
     periodLength || calculatePeriodLength({ averageMatchUpMinutes });
 

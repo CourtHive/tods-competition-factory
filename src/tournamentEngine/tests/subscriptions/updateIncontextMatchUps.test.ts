@@ -9,8 +9,8 @@ import {
 } from '../../../constants/topicConstants';
 
 it('supports subscriptions to fully hydrated matchUps', () => {
-  let inContextMatchUpNotifications = [];
-  let matchUpNotifications = [];
+  const inContextMatchUpNotifications: any[] = [];
+  const matchUpNotifications: any[] = [];
   let notificationsCounter = 0;
 
   const subscriptions = {

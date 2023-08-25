@@ -20,7 +20,7 @@ export function getGlobalLog(purge) {
   return globalLogCopy;
 }
 
-export function printGlobalLog(purge) {
+export function printGlobalLog(purge?) {
   const globalLogCopy = getGlobalLog(purge);
   const modifiedText = globalLogCopy.map((line) => {
     const { color, keyColors, method, newline } = line;

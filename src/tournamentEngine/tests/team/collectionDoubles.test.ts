@@ -21,7 +21,7 @@ import {
 } from '../../../constants/matchUpStatusConstants';
 
 // reusable
-const getDoublesMatchUp = (id, inContext) => {
+const getDoublesMatchUp = (id, inContext?) => {
   const {
     matchUps: [foo],
   } = tournamentEngine.allTournamentMatchUps({
@@ -43,7 +43,7 @@ it('can both assign and remove individualParticipants in DOUBLES matchUps that a
   });
 
   // get the matchUpId for the first doubles matchUp
-  let { matchUpId: doublesMatchUpId } = doublesMatchUp;
+  const { matchUpId: doublesMatchUpId } = doublesMatchUp;
 
   // confirm that matchUpFilters/matchUpIds can find tieMatchUps
   doublesMatchUp = getDoublesMatchUp(doublesMatchUpId);
@@ -51,7 +51,7 @@ it('can both assign and remove individualParticipants in DOUBLES matchUps that a
   expect(doublesMatchUp.matchUpType).toEqual(DOUBLES);
 
   // get positionAssignments to determine drawPositions
-  let { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   const { positionAssignments } = drawDefinition.structures[0];
 
   // get the teamParticipantIds for each side in the matchUp
@@ -61,7 +61,7 @@ it('can both assign and remove individualParticipants in DOUBLES matchUps that a
     .map(getParticipantId);
 
   // get the teamParticipants for each side in the matchUp
-  let { tournamentParticipants: teamParticipants } =
+  const { tournamentParticipants: teamParticipants } =
     tournamentEngine.getTournamentParticipants({
       participantFilters: { participantIds: teamParticipantIds },
     });
@@ -140,7 +140,7 @@ it('An EXISTING_OUTCOME will prevent removal of individualParticipants in DOUBLE
   const { tournamentRecord, drawId } = generateTeamTournament();
   tournamentEngine.setState(tournamentRecord);
 
-  let { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   const { positionAssignments } = drawDefinition.structures[0];
 
   let {
@@ -149,12 +149,12 @@ it('An EXISTING_OUTCOME will prevent removal of individualParticipants in DOUBLE
     matchUpFilters: { matchUpTypes: [DOUBLES] },
   });
 
-  let { drawPositions, matchUpId: doublesMatchUpId } = doublesMatchUp;
+  const { drawPositions, matchUpId: doublesMatchUpId } = doublesMatchUp;
   const teamParticipantIds = positionAssignments
     .filter(({ drawPosition }) => drawPositions.includes(drawPosition))
     .map(getParticipantId);
 
-  let { tournamentParticipants: teamParticipants } =
+  const { tournamentParticipants: teamParticipants } =
     tournamentEngine.getTournamentParticipants({
       participantFilters: { participantIds: teamParticipantIds },
     });
@@ -298,7 +298,7 @@ it('An EXISTING_OUTCOME will prevent removal of individualParticipants in DOUBLE
   expect(individualParticipantIdsCount).toEqual([2, 2, 2, 2, 2, 2]);
 
   function removeFirstParticipantFromBothSides() {
-    const results = [];
+    const results: any[] = [];
     // remove individual participants from each DOUBLES matchUp
     const success = teamParticipants.every((teamParticipant) => {
       const { participantId } = teamParticipant;
@@ -332,7 +332,7 @@ it('can create new PAIR participants and remove/replace individualParticipants',
   });
   tournamentEngine.setState(tournamentRecord);
 
-  let { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   const { positionAssignments } = drawDefinition.structures[0];
 
   let {
@@ -341,7 +341,7 @@ it('can create new PAIR participants and remove/replace individualParticipants',
     matchUpFilters: { matchUpTypes: [DOUBLES] },
   });
 
-  let { drawPositions, matchUpId: doublesMatchUpId } = doublesMatchUp;
+  const { drawPositions, matchUpId: doublesMatchUpId } = doublesMatchUp;
   const teamParticipantIds = positionAssignments
     .filter(({ drawPosition }) => drawPositions.includes(drawPosition))
     .map(getParticipantId);
@@ -353,7 +353,7 @@ it('can create new PAIR participants and remove/replace individualParticipants',
     });
   expect(pairParticipants.length).toEqual(6);
 
-  let { tournamentParticipants: teamParticipants } =
+  const { tournamentParticipants: teamParticipants } =
     tournamentEngine.getTournamentParticipants({
       participantFilters: { participantIds: teamParticipantIds },
     });
@@ -370,7 +370,7 @@ it('can create new PAIR participants and remove/replace individualParticipants',
 
     // create new pairs from the first and third individuals on each team
     const individualParticipantIds =
-      teamParticipant.individualParticipantIds.filter((id, index) =>
+      teamParticipant.individualParticipantIds.filter((_, index) =>
         [1, 3].includes(index + 1)
       );
 
@@ -412,7 +412,7 @@ it('can create new PAIR participants and remove/replace individualParticipants',
   teamParticipants.forEach((teamParticipant) => {
     // get the third and fifth individual from each team
     const individualParticipantIds =
-      teamParticipant.individualParticipantIds.filter((id, index) =>
+      teamParticipant.individualParticipantIds.filter((_, index) =>
         [3, 5].includes(index + 1)
       );
     const [existingParticipantId, newParticipantId] = individualParticipantIds;
@@ -433,7 +433,7 @@ it('can create new PAIR participants and remove/replace individualParticipants',
   let result = teamParticipants.every((teamParticipant) => {
     // get the third and fifth individual from each team
     const individualParticipantIds =
-      teamParticipant.individualParticipantIds.filter((id, index) =>
+      teamParticipant.individualParticipantIds.filter((_, index) =>
         [5].includes(index + 1)
       );
     const [existingParticipantId] = individualParticipantIds;
@@ -479,23 +479,23 @@ it('can assign PAIR participants to tieMatchUps', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  let { matchUps: firstRoundDualMatchUps } =
+  const { matchUps: firstRoundDualMatchUps } =
     tournamentEngine.allTournamentMatchUps({
       matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [1] },
     });
 
-  let { tournamentParticipants: pairParticipants } =
+  const { tournamentParticipants: pairParticipants } =
     tournamentEngine.getTournamentParticipants({
       participantFilters: { participantTypes: [PAIR] },
     });
 
-  let { tournamentParticipants: teamParticipants } =
+  const { tournamentParticipants: teamParticipants } =
     tournamentEngine.getTournamentParticipants({
       participantFilters: { participantTypes: [TEAM] },
     });
 
   // get positionAssignments to determine drawPositions
-  let { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   const { positionAssignments } = drawDefinition.structures[0];
 
   let participantIndex = 0;
@@ -559,7 +559,7 @@ it('handles pair dependencies across draws', () => {
   );
   expect(intersection(drawEntries[0], drawEntries[1]).length).toEqual(2);
 
-  let { tournamentParticipants: individualParticipants } =
+  const { tournamentParticipants: individualParticipants } =
     tournamentEngine.getTournamentParticipants({
       participantFilters: { participantTypes: [INDIVIDUAL] },
       withEvents: true,
@@ -584,13 +584,13 @@ it('handles pair dependencies across draws', () => {
     expect(pairParticipant.draws.length).toEqual(0)
   );
 
-  let { tournamentParticipants: teamParticipants } =
+  const { tournamentParticipants: teamParticipants } =
     tournamentEngine.getTournamentParticipants({
       participantFilters: { participantTypes: [TEAM] },
     });
 
   // get positionAssignments to determine drawPositions
-  let { drawDefinition } = tournamentEngine.getEvent({ drawId: drawIds[0] });
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId: drawIds[0] });
   const { positionAssignments } = drawDefinition.structures[0];
 
   assignPairParticipants({ drawId: drawIds[0] });
