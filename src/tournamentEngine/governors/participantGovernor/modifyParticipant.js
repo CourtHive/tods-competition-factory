@@ -24,14 +24,15 @@ import {
   participantTypes,
 } from '../../../constants/participantConstants';
 
-export function modifyParticipant({
-  updateParticipantName = true,
-  groupingParticipantId,
-  removeFromOtherTeams,
-  tournamentRecord,
-  pairOverride,
-  participant,
-}) {
+export function modifyParticipant(params) {
+  const {
+    updateParticipantName = true,
+    groupingParticipantId,
+    removeFromOtherTeams,
+    tournamentRecord,
+    pairOverride,
+    participant,
+  } = params;
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!participant) return { error: MISSING_PARTICIPANT };
 
