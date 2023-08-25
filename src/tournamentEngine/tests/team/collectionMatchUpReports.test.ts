@@ -12,10 +12,10 @@ test('collection matchUps appear in participant reports', () => {
   const { tournamentRecord, drawId } = generateTeamTournament({ drawSize });
   tournamentEngine.setState(tournamentRecord);
 
-  let { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   const { positionAssignments } = drawDefinition.structures[0];
 
-  const getTeamParticipants = (drawPositions = []) => {
+  const getTeamParticipants = (drawPositions: string[] = []) => {
     const teamParticipantIds = positionAssignments
       .filter(({ drawPosition }) => drawPositions.includes(drawPosition))
       .map(getParticipantId);
@@ -34,7 +34,7 @@ test('collection matchUps appear in participant reports', () => {
 
   // create collectionAssignments for all doublesMatchUps
   doublesMatchUps.forEach((doublesMatchUp) => {
-    let { drawPositions, matchUpId: doublesMatchUpId } = doublesMatchUp;
+    const { drawPositions, matchUpId: doublesMatchUpId } = doublesMatchUp;
     const teamParticipants = getTeamParticipants(drawPositions);
     teamParticipants.forEach((teamParticipant) => {
       const individualParticipantIds =
@@ -65,7 +65,7 @@ test('collection matchUps appear in participant reports', () => {
     }
   });
 
-  let { matchUps: singlesMatchUps } = tournamentEngine.allTournamentMatchUps({
+  const { matchUps: singlesMatchUps } = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: { matchUpTypes: [SINGLES] },
   });
 
@@ -73,7 +73,7 @@ test('collection matchUps appear in participant reports', () => {
 
   // create collectionAssignments for all singlesMatchUps
   singlesMatchUps.forEach((singlesMatchUp) => {
-    let { drawPositions, matchUpId: doublesMatchUpId } = singlesMatchUp;
+    const { drawPositions, matchUpId: doublesMatchUpId } = singlesMatchUp;
     const teamParticipants = getTeamParticipants(drawPositions);
     teamParticipants.forEach((teamParticipant) => {
       const { participantId } = teamParticipant;

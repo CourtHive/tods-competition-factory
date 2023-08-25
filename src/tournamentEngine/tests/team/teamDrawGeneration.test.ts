@@ -18,7 +18,7 @@ test('it can use tieFormatName in addEvent', () => {
     event: { eventType: TEAM, tieFormatName: LAVER_CUP },
   });
 
-  let { event: eventResult } = result;
+  const { event: eventResult } = result;
   const { eventId } = eventResult;
   expect(result.success).toEqual(true);
 
@@ -56,7 +56,7 @@ test('it will provide default tieFormat for TEAM events', () => {
 
   let result = tournamentEngine.addEvent({ event: { eventType: TEAM } });
 
-  let { event: eventResult } = result;
+  const { event: eventResult } = result;
   const { eventId } = eventResult;
   expect(result.success).toEqual(true);
 

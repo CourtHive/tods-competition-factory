@@ -32,7 +32,7 @@ test('it can allocate courts to a TEAM matchUp', () => {
   expect(result.success).toEqual(true);
 
   result = tournamentEngine.findMatchUp({ matchUpId });
-  let { allocatedCourts } = result.matchUp.schedule;
+  const { allocatedCourts } = result.matchUp.schedule;
   expect(allocatedCourts.map(({ courtId }) => courtId)).toEqual(courtIds);
 
   result = competitionEngine.allocateTeamMatchUpCourts({
@@ -93,7 +93,7 @@ test('it can allocate courts to a TEAM matchUp', () => {
 
   result = competitionEngine.competitionScheduleMatchUps({ matchUpFilters });
   expect(result.dateMatchUps.length).toEqual(1);
-  let updatedCourtIds = result.dateMatchUps[0].schedule.allocatedCourts.map(
+  const updatedCourtIds = result.dateMatchUps[0].schedule.allocatedCourts.map(
     ({ courtId }) => courtId
   );
   expect(updatedCourtIds.includes(courtIds[0])).toEqual(false);

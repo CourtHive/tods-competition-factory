@@ -80,7 +80,7 @@ it('Modifying tieFormats supported for TEAM QUALIFYING events', () => {
   expect(result.success).toEqual(true);
   // -----------------------------------------------------------------------------------
 
-  let { event } = tournamentEngine.getEvent({ eventId });
+  const { event } = tournamentEngine.getEvent({ eventId });
   expect(event.tieFormat).toBeUndefined();
 
   const qualifyingParticipantIds = event.entries.slice(8).map(getParticipantId);
@@ -116,7 +116,7 @@ it('Modifying tieFormats supported for TEAM QUALIFYING events', () => {
     'QUALIFYING|DIRECT_ACCEPTANCE': 8,
   });
 
-  let { drawDefinition } = tournamentEngine.generateDrawDefinition({
+  const { drawDefinition } = tournamentEngine.generateDrawDefinition({
     qualifyingProfiles: [
       {
         structureProfiles: [
@@ -137,7 +137,7 @@ it('Modifying tieFormats supported for TEAM QUALIFYING events', () => {
     expect(structure.tieFormat).toBeUndefined()
   );
 
-  let qualifyingStructure = drawDefinition.structures.find(
+  const qualifyingStructure = drawDefinition.structures.find(
     ({ stage }) => stage === QUALIFYING
   );
 

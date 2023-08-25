@@ -21,10 +21,10 @@ it('can propagate and remove lineUps', () => {
   tournamentEngine.setState(tournamentRecord);
 
   // get positionAssignments to determine drawPositions
-  let { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   const { positionAssignments } = drawDefinition.structures[0];
 
-  let { tournamentParticipants: teamParticipants } =
+  const { tournamentParticipants: teamParticipants } =
     tournamentEngine.getTournamentParticipants({
       participantFilters: { participantTypes: [TEAM] },
     });
@@ -60,7 +60,7 @@ it('can propagate and remove lineUps', () => {
       })
     );
 
-  let outcome = {
+  let outcome: any = {
     winningSide,
     score: { sets: [{ side1Score: 2, side2Score: 1, winningSide: 1 }] },
   };
@@ -78,7 +78,7 @@ it('can propagate and remove lineUps', () => {
         stageSequence === 1 && roundNumber === 1
     )
     .forEach(({ matchUpId }) => {
-      let result = tournamentEngine.setMatchUpStatus({
+      const result = tournamentEngine.setMatchUpStatus({
         matchUpId,
         outcome,
         drawId,
@@ -121,7 +121,7 @@ it('can propagate and remove lineUps', () => {
         stageSequence === 1 && roundNumber === 1
     )
     .forEach(({ matchUpId }) => {
-      let result = tournamentEngine.setMatchUpStatus({
+      const result = tournamentEngine.setMatchUpStatus({
         matchUpId,
         outcome,
         drawId,
@@ -154,10 +154,10 @@ it('can propagate COMPASS lineUps properly', () => {
   tournamentEngine.setState(tournamentRecord);
 
   // get positionAssignments to determine drawPositions
-  let { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   const { positionAssignments } = drawDefinition.structures[0];
 
-  let { tournamentParticipants: teamParticipants } =
+  const { tournamentParticipants: teamParticipants } =
     tournamentEngine.getTournamentParticipants({
       participantFilters: { participantTypes: [TEAM] },
     });
@@ -183,7 +183,7 @@ it('can propagate COMPASS lineUps properly', () => {
       })
     );
 
-  let outcome = {
+  const outcome = {
     winningSide: 1,
     score: { sets: [{ side1Score: 2, side2Score: 1, winningSide: 1 }] },
   };
@@ -198,7 +198,7 @@ it('can propagate COMPASS lineUps properly', () => {
   singlesMatchUps
     .filter(({ stageSequence }) => stageSequence === 1)
     .forEach(({ matchUpId }) => {
-      let result = tournamentEngine.setMatchUpStatus({
+      const result = tournamentEngine.setMatchUpStatus({
         matchUpId,
         outcome,
         drawId,

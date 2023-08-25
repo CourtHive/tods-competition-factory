@@ -13,12 +13,12 @@ import {
 
 // reusable
 test('can clear TEAM matchUp "scorecards"', () => {
-  let firstMatchUpTieMatchUpScoringLog = [];
-  let firstMatchUpScoringLog = [];
-  let modifiedMatchUpLog = [];
+  const firstMatchUpTieMatchUpScoringLog: any[] = [];
+  const firstMatchUpScoringLog: string[] = [];
+  const modifiedMatchUpLog: any[] = [];
 
-  let trackMatchUpModifications;
-  let matchUpId;
+  let trackMatchUpModifications = false;
+  let matchUpId = '';
 
   let result = setSubscriptions({
     subscriptions: {
@@ -60,7 +60,7 @@ test('can clear TEAM matchUp "scorecards"', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  let outcome = {
+  const outcome = {
     winningSide: 1,
     score: {
       scoreStringSide1: '8-1',
@@ -91,7 +91,7 @@ test('can clear TEAM matchUp "scorecards"', () => {
   firstRoundDualMatchUps.forEach((dualMatchUp) => {
     dualMatchUp.tieMatchUps.slice(0, 9).forEach((matchUp) => {
       const { matchUpId } = matchUp;
-      let result = tournamentEngine.setMatchUpStatus({
+      const result = tournamentEngine.setMatchUpStatus({
         matchUpId,
         outcome,
         drawId,
@@ -143,7 +143,7 @@ test('can clear TEAM matchUp "scorecards"', () => {
   expect(result.success).toEqual(true);
 
   modifiedMatchUpLog.forEach((log) => {
-    const values = Object.values(log).filter(Boolean);
+    const values: any = Object.values(log).filter(Boolean);
     if (values.length) {
       expect(values.length).toEqual(1);
       expect(values[0].scoreStringSide1).toEqual('');
@@ -175,7 +175,7 @@ test('can clear TEAM matchUp "scorecards"', () => {
     (matchUp) => matchUp.matchUpId === matchUpId
   );
 
-  expect(targetMatchUp.score.scoreStringSide1).toEqual();
+  expect(targetMatchUp.score.scoreStringSide1).toBeUndefined();
 
   ({
     matchUps: [secondRoundDualMatchUp],
@@ -185,6 +185,5 @@ test('can clear TEAM matchUp "scorecards"', () => {
       roundNumbers: [2],
     },
   }));
-  // expect(secondRoundDualMatchUp.drawPositions).toEqual([undefined, 3]);
   expect(secondRoundDualMatchUp.drawPositions).toEqual([3]);
 });

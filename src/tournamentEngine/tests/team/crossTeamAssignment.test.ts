@@ -19,26 +19,26 @@ test.skip('participants can play for a team even when not part of team', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  let { matchUps: firstRoundDualMatchUps } =
+  const { matchUps: firstRoundDualMatchUps } =
     tournamentEngine.allTournamentMatchUps({
       matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [1] },
     });
 
-  let { tournamentParticipants: individualParticipants } =
+  const { tournamentParticipants: individualParticipants } =
     tournamentEngine.getTournamentParticipants({
       participantFilters: { participantTypes: [INDIVIDUAL] },
     });
 
-  let { tournamentParticipants: teamParticipants } =
+  const { tournamentParticipants: teamParticipants } =
     tournamentEngine.getTournamentParticipants({
       participantFilters: { participantTypes: [TEAM] },
     });
 
   // get positionAssignments to determine drawPositions
-  let { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   const { positionAssignments } = drawDefinition.structures[0];
 
-  let participantIndex = 0;
+  const participantIndex = 0;
   // for each first round dualMatchUp assign individualParticipants to singles matchUps
   firstRoundDualMatchUps.forEach((dualMatchUp) => {
     const singlesMatchUps = dualMatchUp.tieMatchUps.filter(

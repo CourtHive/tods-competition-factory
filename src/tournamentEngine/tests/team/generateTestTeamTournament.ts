@@ -5,13 +5,14 @@ import { SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { TEAM } from '../../../constants/eventConstants';
 
-export function generateTeamTournament({
-  drawType = SINGLE_ELIMINATION,
-  drawProfilesCount = 1,
-  doublesCount = 1,
-  singlesCount = 2,
-  drawSize = 8,
-} = {}) {
+export function generateTeamTournament(params?) {
+  const {
+    drawType = SINGLE_ELIMINATION,
+    drawProfilesCount = 1,
+    doublesCount = 1,
+    singlesCount = 2,
+    drawSize = 8,
+  } = params || {};
   const valueGoal = Math.ceil((doublesCount + singlesCount) / 2);
   const tieFormat = {
     winCriteria: { valueGoal },
