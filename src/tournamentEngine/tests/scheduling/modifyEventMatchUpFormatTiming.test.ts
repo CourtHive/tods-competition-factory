@@ -28,13 +28,13 @@ it('can modify event timing for matchUpFormat codes', () => {
     policyDefinitions: POLICY_SCHEDULING_USTA,
   });
 
-  let { eventMatchUpFormatTiming, error } =
-    tournamentEngine.getEventMatchUpFormatTiming({
-      eventId,
-    });
+  const timingResult = tournamentEngine.getEventMatchUpFormatTiming({
+    eventId,
+  });
 
+  let eventMatchUpFormatTiming = timingResult.eventMatchUpFormatTiming;
   expect(eventMatchUpFormatTiming).toBeUndefined();
-  expect(error).not.toBeUndefined();
+  expect(timingResult.error).not.toBeUndefined();
 
   let result = tournamentEngine.modifyEventMatchUpFormatTiming({
     eventId,

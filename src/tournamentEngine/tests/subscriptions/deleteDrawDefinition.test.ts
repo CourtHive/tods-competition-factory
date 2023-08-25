@@ -25,7 +25,7 @@ it('can notify subscriber when drawDefinitions are deleted', () => {
     inContext: true,
   });
 
-  let auditTrail = [];
+  const auditTrail: any[] = [];
   let notificationCounter = 0;
   const subscriptions = {
     [AUDIT]: (trail) => {

@@ -89,18 +89,18 @@ test('recognizes scheduling conflicts', () => {
     ).toEqual(false);
   });
 
-  let { tournamentParticipants, participantIdsWithConflicts } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantTypes: [INDIVIDUAL] },
-      scheduleAnalysis: true,
-      withStatistics: true,
-      withMatchUps: true,
-    });
+  const tp = tournamentEngine.getTournamentParticipants({
+    participantFilters: { participantTypes: [INDIVIDUAL] },
+    scheduleAnalysis: true,
+    withStatistics: true,
+    withMatchUps: true,
+  });
 
-  expect(participantIdsWithConflicts.length).toEqual(16);
+  expect(tp.participantIdsWithConflicts.length).toEqual(16);
 
-  const participantWithConflict = tournamentParticipants.find(
-    ({ participantId }) => participantIdsWithConflicts.includes(participantId)
+  const participantWithConflict = tp.tournamentParticipants.find(
+    ({ participantId }) =>
+      tp.participantIdsWithConflicts.includes(participantId)
   );
 
   expect(
@@ -108,12 +108,11 @@ test('recognizes scheduling conflicts', () => {
       .scheduleConflict
   ).toEqual('string');
 
-  let competitionParticipants;
-  ({ competitionParticipants, participantIdsWithConflicts } =
+  const { competitionParticipants, participantIdsWithConflicts } =
     competitionEngine.getCompetitionParticipants({
       scheduleAnalysis: { scheduledMinutesDifference: 60 },
       withStatistics: true,
-    }));
+    });
 
   expect(participantIdsWithConflicts.length).toEqual(16);
   expect(competitionParticipants[0].scheduleConflicts.length).toEqual(1);
@@ -141,11 +140,10 @@ test('recognizes scheduling conflicts', () => {
   expect(targetParticipant.scheduleConflicts.length).toEqual(2);
   expect(targetParticipant.potentialMatchUps.length).toEqual(2);
 
-  ({ participantIdsWithConflicts } =
-    competitionEngine.getCompetitionParticipants({
-      scheduleAnalysis: { scheduledMinutesDifference: 50 },
-      withStatistics: true,
-    }));
+  const cp = competitionEngine.getCompetitionParticipants({
+    scheduleAnalysis: { scheduledMinutesDifference: 50 },
+    withStatistics: true,
+  });
 
-  expect(participantIdsWithConflicts.length).toEqual(0);
+  expect(cp.participantIdsWithConflicts.length).toEqual(0);
 });

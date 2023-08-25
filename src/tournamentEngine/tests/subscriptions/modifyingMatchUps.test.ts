@@ -26,7 +26,7 @@ import {
 const debug = false;
 const debugLog = debug ? console.log : () => {};
 
-let matchUpNotifications = [];
+let matchUpNotifications: any[] = [];
 let notificationsCounter = 0;
 
 const subscriptions = {
@@ -40,13 +40,15 @@ setSubscriptions({ subscriptions });
 const separator = '------------------------------------------------';
 let snapshots = {};
 
-function snapshot({ name, compare, notifications, log, reset }) {
+function snapshot(params) {
+  const { name, compare, notifications, log, reset } = params;
   let matchUps;
 
   if (reset) snapshots = {};
 
   if (log && compare) {
-    debugLog(chalk.rgb(...rgbColors.pink)('\r\n', separator));
+    const [r, g, b] = rgbColors.pink;
+    debugLog(chalk.rgb(r, g, b)('\r\n', separator));
     debugLog(
       chalk.yellowBright(
         'comparing',
@@ -55,7 +57,7 @@ function snapshot({ name, compare, notifications, log, reset }) {
         chalk.greenBright(name)
       )
     );
-    debugLog(chalk.rgb(...rgbColors.pink)(separator, '\r\n'));
+    debugLog(chalk.rgb(r, g, b)(separator, '\r\n'));
   }
 
   if (!snapshots[name]) {
@@ -74,16 +76,16 @@ function snapshot({ name, compare, notifications, log, reset }) {
     matchUps = Object.values(snapshots[name]);
   }
 
-  const changedMatchUpIds =
+  const changedMatchUpIds: string[] =
     compare &&
     snapshots[compare] &&
     Object.values(snapshots[name])
       .filter(
-        (matchUp) =>
+        (matchUp: any) =>
           JSON.stringify(matchUp) !==
           JSON.stringify(snapshots[compare][matchUp.matchUpId])
       )
-      .map(({ matchUpId }) => matchUpId);
+      .map((m: any) => m.matchUpId);
 
   const notificationMap =
     notifications &&
@@ -112,14 +114,10 @@ function snapshot({ name, compare, notifications, log, reset }) {
   );
 
   if (log && comparison) {
+    const [r, g, b] = rgbColors.tomato;
     comparison.map(({ matchUpId, text }) => {
       if (missingNotifications?.includes(matchUpId)) {
-        debugLog(
-          chalk.blueBright(
-            'matchUpId',
-            chalk.rgb(...rgbColors.tomato)(matchUpId)
-          )
-        );
+        debugLog(chalk.blueBright('matchUpId', chalk.rgb(r, g, b)(matchUpId)));
       } else {
         debugLog(chalk.blueBright('matchUpId', chalk.cyan(matchUpId)));
       }
@@ -137,7 +135,7 @@ function snapshot({ name, compare, notifications, log, reset }) {
       debugLog(
         chalk.red(
           'missingNotifications:',
-          chalk.rgb(...rgbColors.tomato)(missingNotifications)
+          chalk.rgb(r, g, b)(missingNotifications)
         )
       );
     }
@@ -235,8 +233,8 @@ it.each(scenarios)(
     notificationsCounter = 0;
 
     // FIRST: get a snapshot of the initial condition
-    let result = snapshot({ reset: true, name: 'start' });
-    let matchUps = result.matchUps;
+    let result: any = snapshot({ reset: true, name: 'start' });
+    const matchUps = result.matchUps;
 
     expect(matchUps.length).toEqual(61);
 
@@ -251,11 +249,11 @@ it.each(scenarios)(
       drawId,
     });
     expect(result.isByePosition).toEqual(true);
-    let alternateOption = result.validActions.find(
+    const alternateOption = result.validActions.find(
       ({ type }) => type === ALTERNATE
     );
-    let { method, payload, availableAlternatesParticipantIds } =
-      alternateOption;
+    let { method, payload } = alternateOption;
+    const { availableAlternatesParticipantIds } = alternateOption;
     const alternateParticipantId = availableAlternatesParticipantIds[0];
     Object.assign(payload, { alternateParticipantId });
 
@@ -285,7 +283,7 @@ it.each(scenarios)(
       structureId,
       drawId,
     });
-    let byeOption = result.validActions.find(({ type }) => type === BYE);
+    const byeOption = result.validActions.find(({ type }) => type === BYE);
     ({ method, payload } = byeOption);
 
     // SEVENTH: re-assign a BYE to the target drawPosition
