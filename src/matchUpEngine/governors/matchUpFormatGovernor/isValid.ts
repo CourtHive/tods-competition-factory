@@ -15,9 +15,10 @@ export function isValid(matchUpFormat: string): boolean {
   const finalSetTiebreakTo = finalSetParts?.[2];
   const finalTiebreakAt = finalSetParts?.[3];
 
-  const preserveRedundant =
+  const preserveRedundant = !!(
     (setParts && tiebreakTo && setsTo === tiebreakAt) ||
-    (finalSetParts && finalSetTiebreakTo && finalSetTo === finalTiebreakAt);
+    (finalSetParts && finalSetTiebreakTo && finalSetTo === finalTiebreakAt)
+  );
 
   const stringified = stringify(parsedFormat, preserveRedundant);
 
