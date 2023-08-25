@@ -99,7 +99,6 @@ export function generatePersons(params?) {
   const shuffledPersons = shuffleArray(validPersonData);
 
   if (shuffledPersons.length < count) {
-    console.log('LESS', shuffledPersons.length, count);
     const {
       maleFirstNames,
       maleLastNames,
