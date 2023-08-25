@@ -7,7 +7,17 @@ import {
   MISSING_TOURNAMENT_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
+import { TournamentRecordsArgs } from '../../../types/factoryTypes';
+import { DrawDefinition } from '../../../types/tournamentFromSchema';
 
+type AddDrawDefinitionArgs = TournamentRecordsArgs & {
+  drawDefinition: DrawDefinition;
+  existingDrawCount?: number;
+  allowReplacement?: boolean;
+  tournamentId?: string;
+  eventId?: string;
+  flight?: any;
+};
 export function addDrawDefinition({
   tournamentRecords,
   existingDrawCount,
@@ -16,7 +26,7 @@ export function addDrawDefinition({
   tournamentId,
   eventId,
   flight,
-}) {
+}: AddDrawDefinitionArgs) {
   if (!eventId) return { error: MISSING_EVENT };
 
   tournamentId =
