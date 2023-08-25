@@ -4,11 +4,16 @@ import { allTournamentMatchUps } from '../../tournamentEngine/getters/matchUpsGe
 import { intersection, unique } from '../../utilities';
 
 import { INVALID_VALUES } from '../../constants/errorConditionConstants';
+import { Tournament } from '../../types/tournamentFromSchema';
 
-export function generateSchedulingProfile({
+type GenerateSchedulingProfileArgs = {
+  tournamentRecord: Tournament;
+  schedulingProfile: any;
+};
+export function generateScheduledRounds({
   schedulingProfile,
   tournamentRecord,
-}) {
+}: GenerateSchedulingProfileArgs) {
   if (typeof schedulingProfile !== 'object') return { error: INVALID_VALUES };
 
   const containedStructures = getContainedStructures({

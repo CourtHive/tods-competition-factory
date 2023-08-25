@@ -35,6 +35,7 @@ import { COMPLETED } from '../../constants/matchUpStatusConstants';
 import { SINGLES, DOUBLES } from '../../constants/eventConstants';
 import { ALTERNATE } from '../../constants/entryStatusConstants';
 import { FEMALE, MALE } from '../../constants/genderConstants';
+import { Participant } from '../../types/tournamentFromSchema';
 import { COMPETITOR } from '../../constants/participantRoles';
 import { SEEDING } from '../../constants/timeItemConstants';
 import { SUCCESS } from '../../constants/resultConstants';
@@ -45,7 +46,6 @@ import {
   ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
-import { Participant } from '../../types/tournamentFromSchema';
 
 export function generateEventWithDraw(params) {
   const {

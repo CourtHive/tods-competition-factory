@@ -1,16 +1,15 @@
 import { deleteVenue as venueDelete } from '../../../tournamentEngine/governors/venueGovernor/deleteVenue';
 import { checkSchedulingProfile } from '../scheduleGovernor/schedulingProfile/schedulingProfile';
 
+import { TournamentRecordsArgs } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_TOURNAMENT_RECORDS,
   MISSING_VENUE_ID,
   VENUE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { Tournament } from '../../../types/tournamentFromSchema';
 
-type DeleteVenueArgs = {
-  tournamentRecords: { [key: string]: Tournament } | Tournament[];
+type DeleteVenueArgs = TournamentRecordsArgs & {
   venueId: string;
   force?: boolean;
 };

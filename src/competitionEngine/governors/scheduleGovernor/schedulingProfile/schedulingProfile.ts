@@ -16,7 +16,7 @@ import {
 } from '../../competitionsGovernor/competitionExtentions';
 
 import { SCHEDULING_PROFILE } from '../../../../constants/extensionConstants';
-import { Tournament } from '../../../../types/tournamentFromSchema';
+import { TournamentRecordsArgs } from '../../../../types/factoryTypes';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   EXISTING_ROUND,
@@ -25,13 +25,9 @@ import {
   MISSING_TOURNAMENT_RECORDS,
 } from '../../../../constants/errorConditionConstants';
 
-type GetSchedulingProfileArgs = {
-  tournamentRecords: { [key: string]: Tournament } | Tournament[];
-};
-
 export function getSchedulingProfile({
   tournamentRecords,
-}: GetSchedulingProfileArgs): {
+}: TournamentRecordsArgs): {
   schedulingProfile?: any;
   modifications?: number;
   error?: ErrorType;

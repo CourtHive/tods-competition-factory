@@ -3,6 +3,8 @@ import { getTournamentParticipants } from '../../tournamentEngine/getters/partic
 import { findParticipant } from '../../global/functions/deducers/findParticipant';
 import { deepMerge } from '../../utilities/deepMerge';
 
+import { TournamentRecordsArgs } from '../../types/factoryTypes';
+import { MatchUp } from '../../types/tournamentFromSchema';
 import { HydratedParticipant } from '../../types/hydrated';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
@@ -10,7 +12,6 @@ import {
   MISSING_TOURNAMENT_RECORDS,
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
-import { MatchUp, Tournament } from '../../types/tournamentFromSchema';
 
 export function getParticipants(params) {
   const { tournamentRecords } = params || {};
@@ -109,8 +110,7 @@ export function getCompetitionParticipants(params) {
   return { competitionParticipants, participantIdsWithConflicts, ...SUCCESS };
 }
 
-type PublicFindParticipantArgs = {
-  tournamentRecords: { [key: string]: Tournament } | Tournament[];
+type PublicFindParticipantArgs = TournamentRecordsArgs & {
   policyDefinitions: any;
   participantId?: string;
   inContext?: boolean;

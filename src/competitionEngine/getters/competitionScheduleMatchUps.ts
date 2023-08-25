@@ -11,7 +11,7 @@ import {
 import { MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
 import { PUBLIC, PUBLISH, STATUS } from '../../constants/timeItemConstants';
 import { COMPLETED } from '../../constants/matchUpStatusConstants';
-import { Tournament } from '../../types/tournamentFromSchema';
+import { TournamentRecordsArgs } from '../../types/factoryTypes';
 
 export function competitionScheduleMatchUps(params) {
   if (
@@ -181,12 +181,9 @@ export function competitionScheduleMatchUps(params) {
   }
 }
 
-type GetCompeitionPublishedDrawIdsArgs = {
-  tournamentRecords: { [key: string]: Tournament } | Tournament;
-};
 function getCompetitionPublishedDrawIds({
   tournamentRecords,
-}: GetCompeitionPublishedDrawIdsArgs) {
+}: TournamentRecordsArgs) {
   const drawIds: string[] = [];
 
   for (const tournamentRecord of Object.values(tournamentRecords)) {

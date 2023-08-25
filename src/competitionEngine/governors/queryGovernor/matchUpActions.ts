@@ -4,16 +4,27 @@ import {
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
+import { TournamentRecordsArgs } from '../../../types/factoryTypes';
 
-export function matchUpActions({
-  tournamentRecords,
-  participantId,
-  tournamentId,
-  sideNumber,
-  matchUpId,
-  eventId, // optional
-  drawId,
-} = {}) {
+type MatchUpActionsArgs = TournamentRecordsArgs & {
+  participantId: string;
+  tournamentId: string;
+  sideNumber?: number;
+  matchUpId: string;
+  drawId: string;
+  eventId?: string;
+};
+export function matchUpActions(params: MatchUpActionsArgs) {
+  const {
+    tournamentRecords,
+    participantId,
+    tournamentId,
+    sideNumber,
+    matchUpId,
+    eventId,
+    drawId,
+  } = params;
+
   if (
     typeof tournamentRecords !== 'object' ||
     typeof tournamentId !== 'string' ||

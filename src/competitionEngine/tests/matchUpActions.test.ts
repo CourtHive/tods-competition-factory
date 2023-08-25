@@ -8,9 +8,13 @@ import {
 } from '../../constants/errorConditionConstants';
 
 test('matchUpActions returns expected error messages', () => {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   let result = matchUpActions();
   expect(result.error).toEqual(INVALID_VALUES);
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   result = matchUpActions({
     matchUpId: 'matchUpId',
     eventId: 'eventId',
@@ -18,6 +22,8 @@ test('matchUpActions returns expected error messages', () => {
   });
   expect(result.error).toEqual(INVALID_VALUES);
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   result = matchUpActions({
     tournamentId: 'tournamentId',
     matchUpId: 'matchUpId',
@@ -28,11 +34,13 @@ test('matchUpActions returns expected error messages', () => {
   expect(result.error).toEqual(MISSING_TOURNAMENT_RECORD);
 
   result = matchUpActions({
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    tournamentRecords: { tournamentId: {} },
     tournamentId: 'tournamentId',
     matchUpId: 'matchUpId',
     eventId: 'eventId',
     drawId: 'drawId',
-    tournamentRecords: { tournamentId: {} },
   });
   expect(result.error).toEqual(EVENT_NOT_FOUND);
 });

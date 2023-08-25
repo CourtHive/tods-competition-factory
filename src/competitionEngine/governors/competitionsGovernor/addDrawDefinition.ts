@@ -2,12 +2,22 @@ import { addDrawDefinition as addDefinition } from '../../../tournamentEngine/go
 import { findEvent } from '../../../tournamentEngine/getters/eventGetter';
 import { findTournamentId } from './findTournamentId';
 
+import { TournamentRecordsArgs } from '../../../types/factoryTypes';
+import { DrawDefinition } from '../../../types/tournamentFromSchema';
 import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 
+type AddDrawDefinitionArgs = TournamentRecordsArgs & {
+  drawDefinition: DrawDefinition;
+  existingDrawCount?: number;
+  allowReplacement?: boolean;
+  tournamentId?: string;
+  eventId?: string;
+  flight?: any;
+};
 export function addDrawDefinition({
   tournamentRecords,
   existingDrawCount,
@@ -16,7 +26,7 @@ export function addDrawDefinition({
   tournamentId,
   eventId,
   flight,
-}) {
+}: AddDrawDefinitionArgs) {
   if (!eventId) return { error: MISSING_EVENT };
 
   tournamentId =

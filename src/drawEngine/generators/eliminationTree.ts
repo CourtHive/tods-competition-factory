@@ -55,14 +55,15 @@ export function treeMatchUps({
   }
 
   const isValidQualifying =
-    qualifyingRoundNumber &&
     qualifyingPositions &&
     !(drawSize % 2) &&
-    (!isNaN(qualifyingPositions) || !isNaN(qualifyingRoundNumber)) &&
+    (!isNaN(qualifyingPositions) ||
+      (qualifyingRoundNumber && !isNaN(qualifyingRoundNumber))) &&
     (drawSize / qualifyingPositions ===
       Math.round(drawSize / qualifyingPositions) ||
-      drawSize / qualifyingRoundNumber ===
-        Math.round(drawSize / qualifyingRoundNumber));
+      (qualifyingRoundNumber &&
+        drawSize / qualifyingRoundNumber ===
+          Math.round(drawSize / qualifyingRoundNumber)));
 
   if (!isPowerOf2(drawSize) && !isValidQualifying) {
     return { matchUps: [], roundsCount: 0 };
@@ -90,10 +91,7 @@ export function treeMatchUps({
   roundLimit =
     roundLimit ||
     qualifyingRoundNumber ||
-    (qualifyingPositions &&
-      (qualifyingPositions > 1
-        ? drawSize / 2 / qualifyingPositions
-        : undefined));
+    (qualifyingPositions ? drawSize / 2 / qualifyingPositions : undefined);
 
   while (roundNodes.length > 1) {
     if (qualifyingPositions && roundNodes.length === qualifyingPositions) {
