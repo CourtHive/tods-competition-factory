@@ -12,8 +12,8 @@ it('can recognize valid ALTERNATES', () => {
   // Create mock tournament record
   const drawProfiles = [
     {
-      drawSize: 32,
       participantsCount: 30,
+      drawSize: 32,
     },
   ];
   const {
@@ -98,10 +98,10 @@ it('can recognize valid ALTERNATES', () => {
   const { structureReports, eventStructureReports } =
     tournamentEngine.getStructureReports();
   const report = structureReports.find((s) => s.structureId === structureId);
-  expect(report.positionManipulations).toEqual(2);
+  expect(report.positionManipulations).toEqual(1);
   expect(report.avgWTN).toEqual(0);
   const eventReport = eventStructureReports.find((e) => e.eventId === eventId);
-  expect(eventReport.totalPositionManipulations).toEqual(2);
+  expect(eventReport.totalPositionManipulations).toEqual(1);
   expect(eventReport.generatedDrawsCount).toEqual(1);
   expect(eventReport.drawDeletionsCount).toEqual(0);
 });

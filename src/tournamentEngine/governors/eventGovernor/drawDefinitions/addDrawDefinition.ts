@@ -200,7 +200,7 @@ export function addDrawDefinition(params) {
     (drawDefinition) => drawDefinition.drawId === drawId
   );
   const tournamentId = tournamentRecord?.tournamentId;
-  const eventId = event.eventId;
+  const eventId: string = event.eventId;
 
   if (existingDrawDefinition) {
     if (!allowReplacement) {
@@ -210,7 +210,8 @@ export function addDrawDefinition(params) {
     const existingMatchUps = allDrawMatchUps({
       drawDefinition: existingDrawDefinition,
     })?.matchUps;
-    const existingMatchUpIds = existingMatchUps?.map(getMatchUpId);
+    const existingMatchUpIds: string[] =
+      existingMatchUps?.map(getMatchUpId) ?? [];
     const incomingMatchUps = allDrawMatchUps({
       drawDefinition,
     })?.matchUps;

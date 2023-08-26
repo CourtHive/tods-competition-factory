@@ -177,8 +177,8 @@ test('groupValue can be used in tieFormats and lineUps can be applied after scor
         );
         for (const participantId of participantIds) {
           const assignment = {
-            collectionId,
             collectionPosition,
+            collectionId,
             matchUpType,
           };
           if (!lineUpSides[side][participantId])

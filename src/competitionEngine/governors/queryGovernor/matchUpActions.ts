@@ -1,10 +1,10 @@
 import { matchUpActions as tournamentMatchUpActions } from '../../../tournamentEngine/getters/matchUpActions';
 import { findEvent } from '../../../tournamentEngine/getters/eventGetter';
+import { TournamentRecordsArgs } from '../../../types/factoryTypes';
 import {
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
-import { TournamentRecordsArgs } from '../../../types/factoryTypes';
 
 type MatchUpActionsArgs = TournamentRecordsArgs & {
   participantId: string;
@@ -14,7 +14,7 @@ type MatchUpActionsArgs = TournamentRecordsArgs & {
   drawId: string;
   eventId?: string;
 };
-export function matchUpActions(params: MatchUpActionsArgs) {
+export function matchUpActions(params?: MatchUpActionsArgs) {
   const {
     tournamentRecords,
     participantId,
@@ -23,7 +23,7 @@ export function matchUpActions(params: MatchUpActionsArgs) {
     matchUpId,
     eventId,
     drawId,
-  } = params;
+  } = params ?? {};
 
   if (
     typeof tournamentRecords !== 'object' ||

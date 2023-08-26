@@ -146,11 +146,13 @@ type AddDrawEntriesArgs = {
   ignoreStageSpace?: boolean;
   participantIds: string[];
   stageSequence?: number;
+  extension?: Extension;
   stage?: StageTypeEnum;
   roundTarget?: number;
 };
 
 export function addDrawEntries(params: AddDrawEntriesArgs) {
+  const stack = 'addDrawEntries';
   const {
     entryStatus = EntryStatusEnum.DirectAcceptance,
     stage = StageTypeEnum.Main,
@@ -160,6 +162,7 @@ export function addDrawEntries(params: AddDrawEntriesArgs) {
     participantIds,
     stageSequence,
     roundTarget,
+    extension,
   } = params;
 
   if (!stage) return { error: MISSING_STAGE };
@@ -167,6 +170,15 @@ export function addDrawEntries(params: AddDrawEntriesArgs) {
   if (!Array.isArray(participantIds)) return { error: INVALID_PARTICIPANT_IDS };
   if (!getValidStage({ stage, drawDefinition })) {
     return { error: INVALID_STAGE };
+  }
+
+  if (extension && !isValidExtension({ extension })) {
+    return decorateResult({
+      result: { error: INVALID_VALUES },
+      info: 'Invalid extension',
+      context: { extension },
+      stack,
+    });
   }
 
   const spaceAvailable = getStageSpace({
@@ -178,7 +190,7 @@ export function addDrawEntries(params: AddDrawEntriesArgs) {
   if (!ignoreStageSpace && !spaceAvailable.success) {
     return { error: spaceAvailable.error };
   }
-  const positionsAvailable = spaceAvailable.positionsAvailable || 0;
+  const positionsAvailable = spaceAvailable.positionsAvailable ?? 0;
   if (
     !ignoreStageSpace &&
     stage !== VOLUNTARY_CONSOLATION &&
@@ -223,10 +235,13 @@ export function addDrawEntries(params: AddDrawEntriesArgs) {
         participantId,
         entryStatus,
       };
+      if (extension) {
+        addExtension({ element: entry, extension });
+      }
       if (roundTarget) {
         addExtension({
-          element: entry,
           extension: { name: ROUND_TARGET, value: roundTarget },
+          element: entry,
         });
       }
       if (!drawDefinition.entries) drawDefinition.entries = [];

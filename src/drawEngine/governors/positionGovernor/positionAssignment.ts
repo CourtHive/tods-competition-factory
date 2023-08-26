@@ -1,6 +1,6 @@
 import { modifyRoundRobinMatchUpsStatus } from '../matchUpGovernor/modifyRoundRobinMatchUpsStatus';
 import { getStructureDrawPositionProfiles } from '../../getters/getStructureDrawPositionProfiles';
-import { conditionallyDisableLinkPositioning } from './conditionallyDisableLinkPositioning';
+// import { conditionallyDisableLinkPositioning } from './conditionallyDisableLinkPositioning';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { assignMatchUpDrawPosition } from '../matchUpGovernor/assignMatchUpDrawPosition';
@@ -10,9 +10,12 @@ import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchU
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getInitialRoundNumber } from '../../getters/getInitialRoundNumber';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
-import { addPositionActionTelemetry } from './addPositionActionTelemetry';
+// import { addPositionActionTelemetry } from './addPositionActionTelemetry';
 import { decorateResult } from '../../../global/functions/decorateResult';
-import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
+import {
+  MatchUpsMap,
+  getMatchUpsMap,
+} from '../../getters/getMatchUps/getMatchUpsMap';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { isValidSeedPosition } from '../../getters/seedGetter';
 import { assignSeed } from '../entryGovernor/seedAssignment';
@@ -32,6 +35,7 @@ import {
   DRAW_POSITION_ACTIVE,
   MISSING_PARTICIPANT_ID,
   INVALID_MATCHUP,
+  ErrorType,
 } from '../../../constants/errorConditionConstants';
 import {
   CONSOLATION,
@@ -40,14 +44,36 @@ import {
   PLAY_OFF,
   QUALIFYING,
 } from '../../../constants/drawDefinitionConstants';
+import { HydratedMatchUp } from '../../../types/hydrated';
+import {
+  DrawDefinition,
+  Event,
+  MatchUpStatusEnum,
+  PositionAssignment,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
+
+type AssignDrawPositionArgs = {
+  inContextDrawMatchUps?: HydratedMatchUp[];
+  sourceMatchUpStatus?: MatchUpStatusEnum;
+  provisionalPositioning?: boolean;
+  tournamentRecord?: Tournament;
+  drawDefinition: DrawDefinition;
+  isQualifierPosition?: boolean;
+  matchUpsMap?: MatchUpsMap;
+  participantId: string;
+  drawPosition: number;
+  seedingProfile?: any;
+  seedBlockInfo?: any;
+  structureId: string;
+  event?: Event;
+};
 
 export function assignDrawPosition({
   provisionalPositioning,
   inContextDrawMatchUps,
   isQualifierPosition, // internal use
   sourceMatchUpStatus,
-  automaticPlacement, // internal use to override public behaviors
-  drawPositionIndex,
   tournamentRecord,
   drawDefinition,
   seedingProfile,
@@ -57,7 +83,7 @@ export function assignDrawPosition({
   matchUpsMap,
   structureId,
   event,
-}) {
+}: AssignDrawPositionArgs) {
   const stack = 'assignDrawPosition';
 
   if (!participantId && !isQualifierPosition)
@@ -85,7 +111,6 @@ export function assignDrawPosition({
     provisionalPositioning,
     drawDefinition,
     structure,
-    event,
   });
 
   const relevantAssignment = seedAssignments.find(
@@ -116,8 +141,10 @@ export function assignDrawPosition({
       });
   }
 
-  const { positionAssignments } = structureAssignedDrawPositions({ structure });
-  const positionAssignment = positionAssignments.find(
+  const sadp = structureAssignedDrawPositions({ structure });
+  const positionAssignments: PositionAssignment[] =
+    sadp.positionAssignments || [];
+  const positionAssignment = positionAssignments?.find(
     (assignment) => assignment.drawPosition === drawPosition
   );
   if (!positionAssignment)
@@ -128,7 +155,7 @@ export function assignDrawPosition({
     });
 
   const participantAlreadyAssigned = positionAssignments
-    .map(getParticipantId)
+    ?.map(getParticipantId)
     .includes(participantId);
 
   if (participantAlreadyAssigned) {
@@ -143,7 +170,7 @@ export function assignDrawPosition({
     drawPositionFilled(positionAssignment);
 
   if (containsBye) {
-    let result = clearDrawPosition({
+    const result = clearDrawPosition({
       inContextDrawMatchUps,
       tournamentRecord,
       drawDefinition,
@@ -151,7 +178,7 @@ export function assignDrawPosition({
       structureId,
       matchUpsMap,
       event,
-    });
+    }) as { error?: ErrorType };
     if (result.error) return decorateResult({ result, stack });
   }
 
@@ -187,36 +214,38 @@ export function assignDrawPosition({
     [CONSOLATION, PLAY_OFF].includes(structure.stage)
   ) {
     const targetStage = structure.stage === QUALIFYING ? QUALIFYING : MAIN;
-    const seedAssignments =
-      drawDefinition.structures.find(
-        (structure) =>
-          structure.stage === targetStage && structure.stageSequence === 1
-      ).seedAssignments || [];
+    const targetStructure = drawDefinition.structures?.find(
+      (structure) =>
+        structure?.stage === targetStage && structure?.stageSequence === 1
+    );
+    const seedAssignments = targetStructure?.seedAssignments || [];
     const assignment = seedAssignments.find(
       (assignment) => assignment.participantId === participantId
     );
 
-    if (assignment)
+    if (assignment?.participantId) {
+      const { participantId, seedNumber, seedValue } = assignment;
       assignSeed({
         eventId: event?.eventId,
         provisionalPositioning,
         tournamentRecord,
         drawDefinition,
         seedingProfile,
-        ...assignment,
+        participantId,
+        seedNumber,
+        seedValue,
+        // ...assignment,
         structureId,
         event,
       });
+    }
   }
 
   if (structure.structureType !== CONTAINER) {
     addDrawPositionToMatchUps({
       provisionalPositioning,
       inContextDrawMatchUps,
-      positionAssignments,
       sourceMatchUpStatus,
-      automaticPlacement,
-      drawPositionIndex,
       tournamentRecord,
       drawDefinition,
       drawPosition,
@@ -226,7 +255,6 @@ export function assignDrawPosition({
     });
   } else {
     modifyRoundRobinMatchUpsStatus({
-      inContextDrawMatchUps,
       positionAssignments,
       tournamentRecord,
       drawDefinition,
@@ -244,9 +272,14 @@ export function assignDrawPosition({
     });
 
     // if a team participant is being assigned and there is a default lineUp, attach to side
-    if (matchUps?.length === 1 && matchUps[0].matchUpType === TEAM) {
-      const drawPositionSideIndex = targetMatchUps?.[0]?.sides.reduce(
-        (sideIndex, side, i) =>
+    if (
+      drawPositions &&
+      matchUps?.length === 1 &&
+      matchUps[0].matchUpType === TEAM
+    ) {
+      const sides: any = targetMatchUps?.[0].sides || [];
+      const drawPositionSideIndex = sides.reduce(
+        (sideIndex, side, i: number) =>
           drawPositions?.includes(side.drawPosition) ? i : sideIndex,
         undefined
       );
@@ -262,6 +295,7 @@ export function assignDrawPosition({
     }
   }
 
+  /*
   if (!automaticPlacement) {
     conditionallyDisableLinkPositioning({
       drawPositions: [drawPosition],
@@ -278,16 +312,16 @@ export function assignDrawPosition({
     addPositionActionTelemetry({ drawDefinition, positionAction });
     // END TODO.
   }
+  */
 
   modifyPositionAssignmentsNotice({
     tournamentId: tournamentRecord?.tournamentId,
     drawDefinition,
-    source: stack,
     structure,
     event,
   });
 
-  return Object.assign({ positionAssignments }, SUCCESS);
+  return { positionAssignments, ...SUCCESS };
 
   function drawPositionFilled(positionAssignment) {
     const containsBye = positionAssignment.bye;
@@ -303,8 +337,6 @@ function addDrawPositionToMatchUps({
   provisionalPositioning,
   inContextDrawMatchUps,
   sourceMatchUpStatus,
-  automaticPlacement,
-  drawPositionIndex,
   tournamentRecord,
   drawDefinition,
   drawPosition,
@@ -315,9 +347,8 @@ function addDrawPositionToMatchUps({
   const matchUpFilters = { isCollectionMatchUp: false };
   const { matchUps } = getAllStructureMatchUps({
     provisionalPositioning,
-    inContextDrawMatchUps,
-    drawDefinition,
     matchUpFilters,
+    drawDefinition,
     matchUpsMap,
     structure,
     event,
@@ -329,17 +360,17 @@ function addDrawPositionToMatchUps({
     matchUps,
   });
 
-  const matchUp = roundMatchUps[initialRoundNumber].find((matchUp) =>
-    matchUp.drawPositions?.includes(drawPosition)
-  );
+  const matchUp: HydratedMatchUp =
+    initialRoundNumber &&
+    roundMatchUps?.[initialRoundNumber].find(
+      (matchUp) => matchUp.drawPositions?.includes(drawPosition)
+    );
 
   if (matchUp) {
     const result = assignMatchUpDrawPosition({
       matchUpId: matchUp.matchUpId,
       inContextDrawMatchUps,
       sourceMatchUpStatus,
-      automaticPlacement,
-      drawPositionIndex,
       tournamentRecord,
       drawDefinition,
       drawPosition,
@@ -352,4 +383,5 @@ function addDrawPositionToMatchUps({
         result,
       });
   }
+  return { ...SUCCESS };
 }

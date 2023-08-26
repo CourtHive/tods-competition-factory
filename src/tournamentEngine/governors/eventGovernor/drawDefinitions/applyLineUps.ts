@@ -59,14 +59,14 @@ export function applyLineUps({
   // 2. there should be at most one participantId for a given collectionPosition in singles
   // 3. there should be at most two participantIds for a given collectionPosition in doubles
 
-  const sideAssignments = {};
+  const sideAssignments: { [key: string]: any } = {};
 
   for (const lineUp of lineUps) {
     if (!Array.isArray(lineUp)) return { error: INVALID_VALUES, lineUp };
 
     // maintain mapping of collectionId|collectionPosition to the participantIds assigned
     const collectionParticipantIds = {};
-    const sideNumbers = [];
+    const sideNumbers: number[] = [];
 
     for (const lineUpAssignment of lineUp) {
       if (typeof lineUpAssignment !== 'object')
@@ -83,8 +83,9 @@ export function applyLineUps({
       if (participant.participantType !== INDIVIDUAL)
         return { error: INVALID_PARTICIPANT_TYPE };
 
-      const sideNumber = inContextMatchUp.sides?.find((side) =>
-        side.participant?.individualParticipantIds?.includes(participantId)
+      const sideNumber = inContextMatchUp.sides?.find(
+        (side) =>
+          side.participant?.individualParticipantIds?.includes(participantId)
       )?.sideNumber;
       if (sideNumber) sideNumbers.push(sideNumber);
 
@@ -125,9 +126,12 @@ export function applyLineUps({
     }
 
     // ensure that doubles pair participants exist, otherwise create
-    for (const participantIds of Object.values(collectionParticipantIds)) {
+    const collectionParticipantIdPairs = Object.values(
+      collectionParticipantIds
+    ) as string[][];
+    for (const participantIds of collectionParticipantIdPairs) {
       if (participantIds.length === 2) {
-        const { pairedParticipant } = getPairedParticipant({
+        const { participant: pairedParticipant } = getPairedParticipant({
           tournamentParticipants,
           participantIds,
         });
@@ -157,7 +161,10 @@ export function applyLineUps({
       undefined;
 
     // if side not previously assigned, map sideNumber to lineUp
-    if (sideNumber && !Object.keys(sideAssignments).includes(sideNumber)) {
+    const sideAssignmentKeys = Object.keys(sideAssignments).map((key) =>
+      parseInt(key)
+    );
+    if (sideNumber && !sideAssignmentKeys.includes(sideNumber)) {
       sideAssignments[sideNumber] = lineUp;
     }
   }

@@ -81,7 +81,6 @@ export function directWinner({
       targetDrawPositionIsUnfilled
     ) {
       assignDrawPosition({
-        drawPositionIndex: winnerMatchUpDrawPositionIndex,
         drawPosition: targetMatchUpDrawPosition,
         participantId: winnerParticipantId,
         structureId: targetStructureId,
@@ -96,7 +95,6 @@ export function directWinner({
     } else if (unfilledTargetMatchUpDrawPositions.length) {
       const drawPosition = unfilledTargetMatchUpDrawPositions.pop();
       assignDrawPosition({
-        drawPositionIndex: winnerMatchUpDrawPositionIndex,
         participantId: winnerParticipantId,
         structureId: targetStructureId,
         inContextDrawMatchUps,
@@ -110,7 +108,6 @@ export function directWinner({
       });
     } else if (winnerExistingDrawPosition) {
       const result = assignMatchUpDrawPosition({
-        drawPositionIndex: winnerMatchUpDrawPositionIndex,
         drawPosition: winnerExistingDrawPosition,
         matchUpId: winnerMatchUp.matchUpId,
         inContextDrawMatchUps,
@@ -150,7 +147,6 @@ export function directWinner({
     }
   } else {
     const result = assignMatchUpDrawPosition({
-      drawPositionIndex: winnerMatchUpDrawPositionIndex,
       matchUpId: winnerMatchUp.matchUpId,
       drawPosition: winningDrawPosition,
       inContextDrawMatchUps,
