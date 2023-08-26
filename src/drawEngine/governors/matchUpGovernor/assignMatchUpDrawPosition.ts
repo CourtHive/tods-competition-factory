@@ -11,6 +11,7 @@ import { updateMatchUpStatusCodes } from './matchUpStatusCodes';
 import { getExitWinningSide } from './getExitWinningSide';
 import { overlap } from '../../../utilities';
 import {
+  MatchUpsMap,
   getMappedStructureMatchUps,
   getMatchUpsMap,
 } from '../../getters/getMatchUps/getMatchUpsMap';
@@ -32,7 +33,25 @@ import {
   TO_BE_PLAYED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
+import { HydratedMatchUp } from '../../../types/hydrated';
+import {
+  DrawDefinition,
+  Event,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
+type AssignMatchUpDrawPositionArgs = {
+  inContextDrawMatchUps: HydratedMatchUp[];
+  tournamentRecord?: Tournament;
+  drawDefinition: DrawDefinition;
+  sourceMatchUpStatus?: string;
+  matchUpsMap?: MatchUpsMap;
+  sourceMatchUpId?: string;
+  matchUpStatus?: string;
+  drawPosition: number;
+  matchUpId: string;
+  event?: Event;
+};
 export function assignMatchUpDrawPosition({
   inContextDrawMatchUps,
   sourceMatchUpStatus,
@@ -44,7 +63,7 @@ export function assignMatchUpDrawPosition({
   matchUpsMap,
   matchUpId,
   event,
-}) {
+}: AssignMatchUpDrawPositionArgs) {
   const stack = 'assignMatchUpDrawPosition';
 
   if (!matchUpsMap) {
@@ -73,7 +92,7 @@ export function assignMatchUpDrawPosition({
     (matchUp) => matchUp.matchUpId === matchUpId
   );
 
-  const drawPositions = matchUp.drawPositions || [];
+  const drawPositions: number[] = matchUp?.drawPositions || [];
   const { positionAdded, positionAssigned, updatedDrawPositions } =
     getUpdatedDrawPositions({ drawPosition, drawPositions });
 
@@ -82,11 +101,12 @@ export function assignMatchUpDrawPosition({
     structure,
   });
 
-  const matchUpAssignments = positionAssignments.filter((assignment) =>
+  const matchUpAssignments = positionAssignments?.filter((assignment) =>
     updatedDrawPositions.includes(assignment.drawPosition)
   );
-  const isByeMatchUp = matchUpAssignments.find(({ bye }) => bye);
+  const isByeMatchUp = matchUpAssignments?.find(({ bye }) => bye);
   const isDoubleExitExit =
+    matchUp?.matchUpStatus &&
     [WALKOVER, DEFAULTED].includes(matchUp.matchUpStatus) &&
     updatedDrawPositions.filter(Boolean).length < 2;
 
@@ -94,11 +114,12 @@ export function assignMatchUpDrawPosition({
     (isByeMatchUp && BYE) ||
     matchUpStatus ||
     (isDoubleExitExit && matchUp.matchUpStatus) ||
-    ([DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(matchUp.matchUpStatus) &&
+    (matchUp?.matchUpStatus &&
+      [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(matchUp.matchUpStatus) &&
       matchUp.matchUpStatus) ||
     TO_BE_PLAYED;
 
-  if (positionAdded) {
+  if (matchUp && positionAdded) {
     // necessary to update inContextDrawMatchUps
     ({ matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
       inContext: true,
@@ -114,7 +135,7 @@ export function assignMatchUpDrawPosition({
         })) ||
       undefined;
 
-    if (matchUp.matchUpStatusCodes) {
+    if (matchUp?.matchUpStatusCodes) {
       updateMatchUpStatusCodes({
         inContextDrawMatchUps,
         sourceMatchUpStatus,
@@ -161,7 +182,6 @@ export function assignMatchUpDrawPosition({
       if ([BYE, DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(matchUpStatus)) {
         const result = assignMatchUpDrawPosition({
           matchUpId: winnerMatchUp.matchUpId,
-          iterative: 'brightmagenta',
           inContextDrawMatchUps,
           tournamentRecord,
           drawDefinition,
@@ -178,7 +198,7 @@ export function assignMatchUpDrawPosition({
         }
       }
     }
-  } else if (winnerMatchUp && !inContextMatchUp.feedRound) {
+  } else if (winnerMatchUp && inContextMatchUp && !inContextMatchUp.feedRound) {
     const { pairedPreviousMatchUpIsDoubleExit } =
       getPairedPreviousMatchUpIsDoubleExit({
         targetMatchUp: matchUp,
@@ -190,7 +210,6 @@ export function assignMatchUpDrawPosition({
     if (pairedPreviousMatchUpIsDoubleExit) {
       const result = assignMatchUpDrawPosition({
         matchUpId: winnerMatchUp.matchUpId,
-        iterative: 'brightred',
         inContextDrawMatchUps,
         tournamentRecord,
         drawDefinition,
@@ -202,15 +221,16 @@ export function assignMatchUpDrawPosition({
   }
 
   // if { matchUpType: TEAM } then also assign the default lineUp to the appopriate side
-  if (matchUp.matchUpType === TEAM) {
+  if (matchUp?.matchUpType === TEAM) {
     const inContextTargetMatchUp = inContextDrawMatchUps?.find(
       ({ matchUpId }) => matchUpId === matchUp.matchUpId
     );
-    const drawPositionSideIndex = inContextTargetMatchUp?.sides?.reduce(
+    const sides: any[] = inContextTargetMatchUp?.sides || [];
+    const drawPositionSideIndex = sides.reduce(
       (index, side, i) => (side.drawPosition === drawPosition ? i : index),
       undefined
     );
-    const teamParticipantId = positionAssignments.find(
+    const teamParticipantId = positionAssignments?.find(
       (assignment) => assignment.drawPosition === drawPosition
     )?.participantId;
 

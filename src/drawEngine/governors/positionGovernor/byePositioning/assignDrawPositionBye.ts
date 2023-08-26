@@ -3,7 +3,10 @@ import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStru
 import { getRoundMatchUps } from '../../../accessors/matchUpAccessor/getRoundMatchUps';
 import { getInitialRoundNumber } from '../../../getters/getInitialRoundNumber';
 import { getAllDrawMatchUps } from '../../../getters/getMatchUps/drawMatchUps';
-import { getMatchUpsMap } from '../../../getters/getMatchUps/getMatchUpsMap';
+import {
+  MatchUpsMap,
+  getMatchUpsMap,
+} from '../../../getters/getMatchUps/getMatchUpsMap';
 import { decorateResult } from '../../../../global/functions/decorateResult';
 import { addPositionActionTelemetry } from '../addPositionActionTelemetry';
 import { getPositionAssignments } from '../../../getters/positionsGetter';
@@ -18,6 +21,7 @@ import {
 
 import { CONTAINER } from '../../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
+import { HydratedMatchUp } from '../../../../types/hydrated';
 import {
   DRAW_POSITION_ACTIVE,
   INVALID_DRAW_POSITION,
@@ -29,6 +33,13 @@ import {
   BYE,
   TO_BE_PLAYED,
 } from '../../../../constants/matchUpStatusConstants';
+import {
+  DrawDefinition,
+  Event,
+  MatchUp,
+  Structure,
+  Tournament,
+} from '../../../../types/tournamentFromSchema';
 
 /*
   assignDrawPositionBye
@@ -62,18 +73,17 @@ import {
   7. If loserMatchUp is part of different structure... return to step #1
  */
 
-/**
- *
- * @param {boolean=} provisionalPositioning
- * @param {boolean=} isPositionAction
- * @param {object=} tournamentRecord
- * @param {object} drawDefinition
- * @param {string} drawPosition
- * @param {object=} matchUpsMap
- * @param {string=} structureId
- * @param {object=} structure
- * @param {object=} event
- */
+type AssignDrawPositionByeArgs = {
+  provisionalPositioning?: boolean;
+  tournamentRecord?: Tournament;
+  drawDefinition: DrawDefinition;
+  isPositionAction?: boolean;
+  matchUpsMap?: MatchUpsMap;
+  structure?: Structure;
+  drawPosition: number;
+  structureId?: string;
+  event?: Event;
+};
 
 export function assignDrawPositionBye({
   provisionalPositioning,
@@ -85,7 +95,7 @@ export function assignDrawPositionBye({
   structureId,
   structure,
   event,
-}) {
+}: AssignDrawPositionByeArgs) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structure)
     ({ structure } = findStructure({ drawDefinition, structureId }));
@@ -105,7 +115,7 @@ export function assignDrawPositionBye({
     structureId,
   });
 
-  const currentAssignment = positionAssignments.find(
+  const currentAssignment = positionAssignments?.find(
     (assignment) => assignment.drawPosition === drawPosition
   );
 
@@ -119,7 +129,7 @@ export function assignDrawPositionBye({
     return { error: DRAW_POSITION_ACTIVE };
   }
 
-  const positionAssignment = positionAssignments.find(
+  const positionAssignment = positionAssignments?.find(
     (assignment) => assignment.drawPosition === drawPosition
   );
   if (!positionAssignment) return { error: INVALID_DRAW_POSITION };
@@ -150,7 +160,7 @@ export function assignDrawPositionBye({
 
   // modifies the structure's positionAssignments
   // applies to both ELIMINATION and ROUND_ROBIN structures
-  positionAssignments.forEach((assignment) => {
+  positionAssignments?.forEach((assignment) => {
     if (assignment.drawPosition === drawPosition) {
       assignment.bye = true;
     }
@@ -167,7 +177,6 @@ export function assignDrawPositionBye({
     modifyPositionAssignmentsNotice({
       tournamentId: tournamentRecord?.tournamentId,
       drawDefinition,
-      source: stack,
       structure,
       event,
     });
@@ -186,17 +195,21 @@ export function assignDrawPositionBye({
   const { roundProfile, roundMatchUps } = getRoundMatchUps({ matchUps });
 
   // search from final rounds towards first rounds to find furthest advancement
-  const roundNumbers = Object.keys(roundProfile)
-    .map((roundNumber) => parseInt(roundNumber))
-    .reverse();
-  const roundNumber = roundNumbers.find((roundNumber) => {
-    return roundProfile[roundNumber].drawPositions?.includes(drawPosition);
+  const roundNumbers =
+    roundProfile &&
+    Object.keys(roundProfile)
+      .map((roundNumber) => parseInt(roundNumber))
+      .reverse();
+  const roundNumber = roundNumbers?.find((roundNumber) => {
+    return roundProfile?.[roundNumber].drawPositions?.includes(drawPosition);
   });
 
   // matchUp where BYE-advancement needs to occur
-  const matchUp = roundMatchUps[roundNumber].find(({ drawPositions }) =>
-    drawPositions?.includes(drawPosition)
-  );
+  const matchUp =
+    roundNumber &&
+    roundMatchUps?.[roundNumber].find(
+      ({ drawPositions }) => drawPositions?.includes(drawPosition)
+    );
 
   setMatchUpStatusBYE({ tournamentRecord, drawDefinition, matchUp, event });
 
@@ -220,7 +233,6 @@ export function assignDrawPositionBye({
   modifyPositionAssignmentsNotice({
     tournamentId: tournamentRecord?.tournamentId,
     drawDefinition,
-    source: stack,
     structure,
     event,
   });
@@ -264,12 +276,20 @@ function drawPositionFilled(positionAssignment) {
   return { containsBye, containsQualifier, assignedParticipantId, filled };
 }
 
+type SetMatchUpStatusByeArgs = {
+  tournamentRecord?: Tournament;
+  drawDefinition?: DrawDefinition;
+  eventId?: string;
+  matchUp: MatchUp;
+  event?: Event;
+};
 function setMatchUpStatusBYE({
   tournamentRecord,
   drawDefinition,
+  eventId,
   matchUp,
   event,
-}) {
+}: SetMatchUpStatusByeArgs) {
   Object.assign(matchUp, {
     matchUpStatus: BYE,
     score: undefined,
@@ -278,12 +298,20 @@ function setMatchUpStatusBYE({
 
   modifyMatchUpNotice({
     tournamentId: tournamentRecord?.tournamentId,
+    eventId: eventId ?? event?.eventId,
     context: 'setMatchUpStatusBye',
-    eventId: event?.eventId,
     drawDefinition,
     matchUp,
   });
 }
+
+type AssignRoundRobinByeArgs = {
+  tournamentRecord?: Tournament;
+  drawDefinition: DrawDefinition;
+  drawPosition: number;
+  matchUps: MatchUp[];
+  event?: Event;
+};
 
 function assignRoundRobinBYE({
   tournamentRecord,
@@ -291,7 +319,7 @@ function assignRoundRobinBYE({
   drawPosition,
   matchUps,
   event,
-}) {
+}: AssignRoundRobinByeArgs) {
   matchUps.forEach((matchUp) => {
     if (matchUp.drawPositions?.includes(drawPosition)) {
       setMatchUpStatusBYE({
@@ -306,6 +334,16 @@ function assignRoundRobinBYE({
 
 // Looks to see whether a given matchUp has a winnerMatchup or a loserMatchUp
 // and if so advances the appropriate drawPosition into the targetMatchUp
+type AdvanceDrawPositionType = {
+  inContextDrawMatchUps: HydratedMatchUp[];
+  sourceDrawPositions?: number[];
+  drawPositionToAdvance: number;
+  tournamentRecord?: Tournament;
+  drawDefinition: DrawDefinition;
+  matchUpsMap: MatchUpsMap;
+  matchUpId: string;
+  event?: Event;
+};
 export function advanceDrawPosition({
   drawPositionToAdvance,
   inContextDrawMatchUps,
@@ -315,7 +353,7 @@ export function advanceDrawPosition({
   matchUpsMap,
   matchUpId,
   event,
-}) {
+}: AdvanceDrawPositionType) {
   const stack = 'advanceDrawPosition';
   pushGlobalLog({ method: stack, color: 'cyan', drawPositionToAdvance });
 
@@ -332,13 +370,14 @@ export function advanceDrawPosition({
   });
 
   const byeAssignedDrawPositions = positionAssignments
-    .filter((assignment) => assignment.bye)
+    ?.filter((assignment) => assignment.bye)
     .map((assignment) => assignment.drawPosition);
 
-  const losingDrawPosition = matchUp.drawPositions.find(
+  const losingDrawPosition = matchUp?.drawPositions?.find(
     (drawPosition) => drawPosition !== drawPositionToAdvance
   );
   const losingDrawPosiitonIsBye =
+    losingDrawPosition &&
     byeAssignedDrawPositions?.includes(losingDrawPosition);
 
   const {
@@ -348,7 +387,6 @@ export function advanceDrawPosition({
     inContextDrawMatchUps,
     drawDefinition,
     matchUpId,
-    structure,
   });
 
   // only handling situation where winningMatchUp is in same structure
@@ -379,7 +417,6 @@ export function advanceDrawPosition({
       const result = assignDrawPositionBye({
         structureId: loserTargetLink.target.structureId,
         drawPosition: loserTargetDrawPosition,
-        iterative: 'brightyellow',
         tournamentRecord,
         drawDefinition,
         event,
@@ -421,17 +458,17 @@ function advanceWinner({
   const structureId = inContextMatchUp?.structureId;
   const { structure } = findStructure({ drawDefinition, structureId });
   const { positionAssignments } = getPositionAssignments({ structure });
-  const drawPositionToAdvanceAssigment = positionAssignments.find(
+  const drawPositionToAdvanceAssigment = positionAssignments?.find(
     ({ drawPosition }) => drawPosition === drawPositionToAdvance
   );
-  const drawPositionToAdvanceIsBye = drawPositionToAdvanceAssigment.bye;
+  const drawPositionToAdvanceIsBye = drawPositionToAdvanceAssigment?.bye;
   const existingDrawPositions =
     noContextWinnerMatchUp.drawPositions?.filter(Boolean);
-  const existingAssignments = positionAssignments.filter((assignment) =>
-    existingDrawPositions?.includes(assignment.drawPosition)
+  const existingAssignments = positionAssignments?.filter(
+    (assignment) => existingDrawPositions?.includes(assignment.drawPosition)
   );
 
-  const advancingAssignmentIsBye = positionAssignments.find(
+  const advancingAssignmentIsBye = positionAssignments?.find(
     ({ drawPosition }) => drawPosition === drawPositionToAdvance
   );
 
@@ -442,7 +479,7 @@ function advanceWinner({
   );
   const priorPairAssignment =
     priorPair &&
-    existingAssignments.find(({ drawPosition }) => drawPosition === priorPair);
+    existingAssignments?.find(({ drawPosition }) => drawPosition === priorPair);
   const priorPairIsBye = priorPairAssignment?.bye;
   const isByeAdvancedBye = drawPositionToAdvanceIsBye && priorPairIsBye;
   if (isByeAdvancedBye) console.log({ isByeAdvancedBye });
@@ -461,13 +498,11 @@ function advanceWinner({
 
   let drawPositionAssigned = isByeAdvancedBye;
   // always ensure there are two drawPositions to iterate over
-  const twoDrawPositions = []
-    .concat(
-      ...(noContextWinnerMatchUp.drawPositions || []).filter(Boolean),
-      undefined,
-      undefined
-    )
-    .slice(0, 2);
+  const twoDrawPositions = [
+    ...(noContextWinnerMatchUp.drawPositions || []).filter(Boolean),
+    undefined,
+    undefined,
+  ].slice(0, 2);
 
   const drawPositions = twoDrawPositions
     .map((position) => {
@@ -492,10 +527,10 @@ function advanceWinner({
     return decorateResult({ result: { error: DRAW_POSITION_ASSIGNED }, stack });
   }
 
-  const pairedDrawPositionIsBye = positionAssignments.find(
+  const pairedDrawPositionIsBye = positionAssignments?.find(
     ({ drawPosition }) => drawPosition === pairedDrawPosition
   )?.bye;
-  const drawPositionIsBye = positionAssignments.find(
+  const drawPositionIsBye = positionAssignments?.find(
     ({ drawPosition }) => drawPosition === drawPositionToAdvance
   )?.bye;
 
@@ -536,7 +571,6 @@ function advanceWinner({
     matchUpId: winnerMatchUp.matchUpId,
     inContextDrawMatchUps,
     drawDefinition,
-    structure,
   });
 
   if (pairedDrawPositionIsBye || drawPositionIsBye) {
@@ -573,8 +607,6 @@ function advanceWinner({
         const result = assignDrawPositionBye({
           structureId: loserTargetLink.target.structureId,
           drawPosition: targetDrawPosition,
-          loserTargetDrawPosition,
-          iterative: 'brightgreen',
           tournamentRecord,
           drawDefinition,
           event,
@@ -585,6 +617,16 @@ function advanceWinner({
   }
 }
 
+type AssignFedDrawPositionByeType = {
+  loserTargetDrawPosition: number;
+  tournamentRecord?: Tournament;
+  drawDefinition: DrawDefinition;
+  loserMatchUp: HydratedMatchUp;
+  matchUpsMap: MatchUpsMap;
+  loserTargetLink: any;
+  event?: Event;
+};
+
 function assignFedDrawPositionBye({
   loserTargetDrawPosition,
   tournamentRecord,
@@ -593,7 +635,7 @@ function assignFedDrawPositionBye({
   loserMatchUp,
   matchUpsMap,
   event,
-}) {
+}: AssignFedDrawPositionByeType) {
   const { roundNumber } = loserMatchUp;
 
   const stack = 'assignFedDrawPositionBye';
@@ -611,7 +653,6 @@ function assignFedDrawPositionBye({
       structureId: loserTargetLink.target.structureId,
       drawPosition: loserTargetDrawPosition,
       tournamentRecord,
-      iterative: 'red',
       drawDefinition,
       event,
     });

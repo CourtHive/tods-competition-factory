@@ -24,10 +24,10 @@ export function getPairedParticipant({
   tournamentRecord,
   participantIds,
 }: GetPairedParticipantArgs): {
-  success?: boolean;
-  error?: ErrorType;
-  participant?: Participant;
   duplicatedPairParticipants?: any[];
+  participant?: Participant;
+  error?: ErrorType;
+  success?: boolean;
 } {
   const stack = 'getPairedParticipant';
 

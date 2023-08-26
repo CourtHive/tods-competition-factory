@@ -12,6 +12,7 @@ import {
   MISSING_ENTRIES,
   MISSING_PARTICIPANT_IDS,
 } from '../../../../constants/errorConditionConstants';
+import { EntryStatusEnum } from '../../../../types/tournamentFromSchema';
 
 export function addDrawEntries({
   autoEntryPositions = true,
@@ -98,12 +99,18 @@ export function addDrawEntries({
   return { ...SUCCESS };
 }
 
+type ParticipantInFlightEntriesArgs = {
+  entryStatus?: EntryStatusEnum;
+  participantId: string;
+  entryStage?: string;
+  flight: any;
+};
 function participantInFlightEntries({
   participantId,
   entryStatus,
   entryStage,
   flight,
-}) {
+}: ParticipantInFlightEntriesArgs) {
   const inEntries = flight.drawEntries?.find(
     (entry) =>
       entry.participantId === participantId &&

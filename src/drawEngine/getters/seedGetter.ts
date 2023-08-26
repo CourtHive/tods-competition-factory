@@ -321,15 +321,28 @@ function constructPower2Blocks(params) {
  * 3. Strict - drawPosition is only valid if it is found in seedBlock which contains seedNumber
  *
  */
+
+type IsValidSeedPositionArgs = {
+  drawDefinition: DrawDefinition;
+  appliedPolicies?: any;
+  drawPosition: number;
+  seedBlockInfo?: any;
+  structureId: string;
+  seedNumber: number;
+};
+
 export function isValidSeedPosition({
+  appliedPolicies,
   drawDefinition,
   seedBlockInfo,
   drawPosition,
   structureId,
   seedNumber,
-}) {
+}: IsValidSeedPositionArgs) {
   const { structure } = findStructure({ drawDefinition, structureId });
-  const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
+  if (!appliedPolicies) {
+    appliedPolicies = getAppliedPolicies({ drawDefinition }).appliedPolicies;
+  }
 
   let validSeedBlocks = seedBlockInfo?.validSeedBlocks;
 

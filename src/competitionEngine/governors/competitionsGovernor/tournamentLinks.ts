@@ -57,7 +57,6 @@ export function linkTournaments({ tournamentRecords }) {
     return { error: MISSING_TOURNAMENT_RECORDS };
 
   const result = getTournamentIds(tournamentRecords);
-  if (result.error) return result;
   const { tournamentIds } = result;
 
   if (tournamentIds?.length > 1) {
@@ -95,7 +94,6 @@ export function unlinkTournament({ tournamentRecords, tournamentId }) {
   if (!tournamentId) return { error: MISSING_TOURNAMENT_ID };
 
   const result = getTournamentIds(tournamentRecords);
-  if (result.error) return result;
   const { tournamentIds } = result;
 
   if (!tournamentIds.includes(tournamentId))
@@ -115,7 +113,7 @@ export function unlinkTournament({ tournamentRecords, tournamentId }) {
     // if there is no extension return { ...SUCCESS } because no links exist
     if (!extension) return true;
 
-    let linkedTournamentIds = extension?.value?.tournamentIds || [];
+    const linkedTournamentIds = extension?.value?.tournamentIds || [];
 
     // if there are no tournamentIds
     if (
@@ -125,8 +123,8 @@ export function unlinkTournament({ tournamentRecords, tournamentId }) {
       currentTournamentId === tournamentId
     ) {
       const result = removeTournamentExtension({
-        tournamentRecord,
         name: LINKED_TOURNAMENTS,
+        tournamentRecord,
       });
       if (result.error) unlinkError = result.error;
       return result.success;

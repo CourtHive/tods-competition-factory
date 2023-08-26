@@ -30,7 +30,7 @@ export function addDrawDefinition({
   if (!eventId) return { error: MISSING_EVENT };
 
   tournamentId =
-    tournamentId || findTournamentId({ tournamentRecords, eventId });
+    tournamentId ?? findTournamentId({ tournamentRecords, eventId });
   if (!tournamentId) return { error: MISSING_TOURNAMENT_ID };
 
   const tournamentRecord = tournamentRecords[tournamentId];

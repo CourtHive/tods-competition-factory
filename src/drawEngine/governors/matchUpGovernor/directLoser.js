@@ -146,7 +146,6 @@ export function directLoser(params) {
     const fedDrawPosition =
       unfilledTargetMatchUpDrawPositions.sort(numericSort)[0];
     const result = assignDrawPosition({
-      drawPositionIndex: loserMatchUpDrawPositionIndex,
       participantId: loserParticipantId,
       structureId: targetStructureId,
       drawPosition: fedDrawPosition,
@@ -242,7 +241,6 @@ export function directLoser(params) {
 
   function assignLoserPositionBye() {
     const result = assignDrawPositionBye({
-      drawPositionIndex: loserMatchUpDrawPositionIndex,
       drawPosition: loserBackdrawPosition,
       structureId: targetStructureId,
       tournamentRecord,
@@ -255,7 +253,6 @@ export function directLoser(params) {
 
   function asssignLoserDrawPosition() {
     const result = assignDrawPosition({
-      drawPositionIndex: loserMatchUpDrawPositionIndex,
       drawPosition: targetMatchUpDrawPosition,
       participantId: loserParticipantId,
       structureId: targetStructureId,

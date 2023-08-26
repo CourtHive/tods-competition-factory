@@ -14,6 +14,7 @@ import { Extension } from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   EVENT_NOT_FOUND,
+  ErrorType,
   INVALID_VALUES,
   MISSING_EVENT,
   MISSING_VALUE,
@@ -64,7 +65,12 @@ export function findExtension({
 export function removeExtension({
   tournamentRecords,
   name,
-}: FindRemoveExtensionArgs) {
+}: FindRemoveExtensionArgs): {
+  success?: boolean;
+  removed?: number;
+  error?: ErrorType;
+  info?: any;
+} {
   if (!name) return { error: MISSING_VALUE, info: MISSING_NAME };
 
   let removed = 0;

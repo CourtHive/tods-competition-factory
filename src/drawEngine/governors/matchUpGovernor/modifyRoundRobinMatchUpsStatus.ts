@@ -2,7 +2,23 @@ import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructu
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 
 import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
+import { MatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
+import {
+  DrawDefinition,
+  Event,
+  PositionAssignment,
+  Structure,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
+type ModifyRoundRobinMatchUpStatusArgs = {
+  positionAssignments: PositionAssignment[];
+  tournamentRecord?: Tournament;
+  drawDefinition: DrawDefinition;
+  matchUpsMap?: MatchUpsMap;
+  structure: Structure;
+  event?: Event;
+};
 export function modifyRoundRobinMatchUpsStatus({
   positionAssignments,
   tournamentRecord,
@@ -10,7 +26,7 @@ export function modifyRoundRobinMatchUpsStatus({
   matchUpsMap,
   structure,
   event,
-}) {
+}: ModifyRoundRobinMatchUpStatusArgs) {
   const { matchUps } = getAllStructureMatchUps({
     drawDefinition,
     matchUpsMap,
@@ -19,8 +35,8 @@ export function modifyRoundRobinMatchUpsStatus({
   });
 
   matchUps.forEach((matchUp) => {
-    const matchUpAssignments = positionAssignments.filter(({ drawPosition }) =>
-      matchUp.drawPositions?.includes(drawPosition)
+    const matchUpAssignments = positionAssignments.filter(
+      ({ drawPosition }) => matchUp.drawPositions?.includes(drawPosition)
     );
     const matchUpContainsBye = matchUpAssignments.filter(
       (assignment) => assignment.bye

@@ -13,7 +13,25 @@ import {
   INVALID_PARTICIPANT_ID,
   INVALID_SEED_NUMBER,
 } from '../../../constants/errorConditionConstants';
+import {
+  DrawDefinition,
+  Event,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
+type AssignSeedArgs = {
+  provisionalPositioning?: boolean;
+  tournamentRecord?: Tournament;
+  drawDefinition: DrawDefinition;
+  participantId: string;
+  seedingProfile?: any;
+  seedBlockInfo?: any;
+  structureId: string;
+  seedNumber: number;
+  seedValue?: string | number;
+  eventId?: string;
+  event?: Event;
+};
 export function assignSeed({
   provisionalPositioning,
   tournamentRecord,
@@ -26,7 +44,7 @@ export function assignSeed({
   seedValue,
   eventId,
   event,
-}) {
+}: AssignSeedArgs) {
   const stack = 'assignSeed';
   const { structure } = findStructure({ drawDefinition, structureId });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
@@ -51,8 +69,9 @@ export function assignSeed({
       stack,
     });
 
-  const flightsCount = getFlightProfile({ event }).flightProfile?.flights
-    ?.length;
+  const flightsCount = event
+    ? getFlightProfile({ event }).flightProfile?.flights?.length
+    : 0;
   const flighted = flightsCount && flightsCount > 1;
 
   const relevantAssignment = positionAssignments?.find(
