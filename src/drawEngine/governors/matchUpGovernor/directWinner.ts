@@ -46,7 +46,7 @@ export function directWinner({
         drawDefinition,
       });
 
-    const relevantSourceAssignment = sourcePositionAssignments.find(
+    const relevantSourceAssignment = sourcePositionAssignments?.find(
       (assignment) => assignment.drawPosition === winningDrawPosition
     );
     const winnerParticipantId = relevantSourceAssignment?.participantId;
@@ -58,13 +58,13 @@ export function directWinner({
         drawDefinition,
       });
 
-    const relevantAssignment = targetPositionAssignments.find(
+    const relevantAssignment = targetPositionAssignments?.find(
       (assignment) => assignment.participantId === winnerParticipantId
     );
     const winnerExistingDrawPosition = relevantAssignment?.drawPosition;
 
     const unfilledTargetMatchUpDrawPositions = targetPositionAssignments
-      .filter((assignment) => {
+      ?.filter((assignment) => {
         const inTarget = targetMatchUpDrawPositions.includes(
           assignment.drawPosition
         );
@@ -74,9 +74,10 @@ export function directWinner({
       })
       .map((assignment) => assignment.drawPosition);
     const targetDrawPositionIsUnfilled =
-      unfilledTargetMatchUpDrawPositions.includes(targetMatchUpDrawPosition);
+      unfilledTargetMatchUpDrawPositions?.includes(targetMatchUpDrawPosition);
 
     if (
+      winnerParticipantId &&
       winnerTargetLink.target.roundNumber === 1 &&
       targetDrawPositionIsUnfilled
     ) {
@@ -87,25 +88,27 @@ export function directWinner({
         inContextDrawMatchUps,
         sourceMatchUpStatus,
         tournamentRecord,
-        sourceMatchUpId,
         drawDefinition,
         matchUpsMap,
         event,
       });
-    } else if (unfilledTargetMatchUpDrawPositions.length) {
+    } else if (
+      winnerParticipantId &&
+      unfilledTargetMatchUpDrawPositions?.length
+    ) {
       const drawPosition = unfilledTargetMatchUpDrawPositions.pop();
-      assignDrawPosition({
-        participantId: winnerParticipantId,
-        structureId: targetStructureId,
-        inContextDrawMatchUps,
-        sourceMatchUpStatus,
-        tournamentRecord,
-        sourceMatchUpId,
-        drawDefinition,
-        drawPosition,
-        matchUpsMap,
-        event,
-      });
+      drawPosition &&
+        assignDrawPosition({
+          participantId: winnerParticipantId,
+          structureId: targetStructureId,
+          inContextDrawMatchUps,
+          sourceMatchUpStatus,
+          tournamentRecord,
+          drawDefinition,
+          drawPosition,
+          matchUpsMap,
+          event,
+        });
     } else if (winnerExistingDrawPosition) {
       const result = assignMatchUpDrawPosition({
         drawPosition: winnerExistingDrawPosition,

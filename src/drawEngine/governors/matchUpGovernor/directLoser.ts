@@ -10,7 +10,10 @@ import { assignSeed } from '../entryGovernor/seedAssignment';
 import { findStructure } from '../../getters/findStructure';
 import { numericSort } from '../../../utilities';
 
-import { INVALID_DRAW_POSITION } from '../../../constants/errorConditionConstants';
+import {
+  INVALID_DRAW_POSITION,
+  MISSING_PARTICIPANT_ID,
+} from '../../../constants/errorConditionConstants';
 import { DEFAULTED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -27,7 +30,6 @@ export function directLoser(params) {
     loserDrawPosition,
     tournamentRecord,
     loserTargetLink,
-    sourceMatchUpId,
     drawDefinition,
     loserMatchUp,
     dualMatchUp,
@@ -63,8 +65,8 @@ export function directLoser(params) {
     event,
   });
 
-  const drawPositionMatchUps = sourceMatchUps.filter((matchUp) =>
-    matchUp.drawPositions?.includes(loserDrawPosition)
+  const drawPositionMatchUps = sourceMatchUps.filter(
+    (matchUp) => matchUp.drawPositions?.includes(loserDrawPosition)
   );
 
   // in this calculation BYEs and WALKOVERs are not counted as wins
@@ -90,7 +92,7 @@ export function directLoser(params) {
       drawDefinition,
     });
 
-  const relevantAssignment = sourcePositionAssignments.find(
+  const relevantAssignment = sourcePositionAssignments?.find(
     (assignment) => assignment.drawPosition === loserDrawPosition
   );
   const loserParticipantId = relevantAssignment?.participantId;
@@ -102,11 +104,11 @@ export function directLoser(params) {
       drawDefinition,
     });
 
-  const targetMatchUpPositionAssignments = targetPositionAssignments.filter(
+  const targetMatchUpPositionAssignments = targetPositionAssignments?.filter(
     ({ drawPosition }) => targetMatchUpDrawPositions.includes(drawPosition)
   );
 
-  const loserAlreadyDirected = targetMatchUpPositionAssignments.some(
+  const loserAlreadyDirected = targetMatchUpPositionAssignments?.some(
     (assignment) => assignment.participantId === loserParticipantId
   );
 
@@ -115,7 +117,7 @@ export function directLoser(params) {
   }
 
   const unfilledTargetMatchUpDrawPositions = targetMatchUpPositionAssignments
-    .filter((assignment) => {
+    ?.filter((assignment) => {
       const inTarget = targetMatchUpDrawPositions.includes(
         assignment.drawPosition
       );
@@ -126,11 +128,11 @@ export function directLoser(params) {
     .map((assignment) => assignment.drawPosition);
 
   const targetDrawPositionIsUnfilled =
-    unfilledTargetMatchUpDrawPositions.includes(targetMatchUpDrawPosition);
+    unfilledTargetMatchUpDrawPositions?.includes(targetMatchUpDrawPosition);
 
   const isFeedRound =
     loserTargetLink.target.roundNumber > 1 &&
-    unfilledTargetMatchUpDrawPositions.length;
+    unfilledTargetMatchUpDrawPositions?.length;
 
   const isFirstRoundValidDrawPosition =
     loserTargetLink.target.roundNumber === 1 && targetDrawPositionIsUnfilled;
@@ -141,7 +143,7 @@ export function directLoser(params) {
   } else if (isFirstRoundValidDrawPosition) {
     const result = asssignLoserDrawPosition();
     if (result.error) return decorateResult({ result, stack });
-  } else if (isFeedRound) {
+  } else if (loserParticipantId && isFeedRound) {
     // if target.roundNumber > 1 then it is a feed round and should always take the lower drawPosition
     const fedDrawPosition =
       unfilledTargetMatchUpDrawPositions.sort(numericSort)[0];
@@ -149,11 +151,9 @@ export function directLoser(params) {
       participantId: loserParticipantId,
       structureId: targetStructureId,
       drawPosition: fedDrawPosition,
-      automaticPlacement: true,
       inContextDrawMatchUps,
       sourceMatchUpStatus,
       tournamentRecord,
-      sourceMatchUpId,
       drawDefinition,
       matchUpsMap,
       event,
@@ -244,7 +244,6 @@ export function directLoser(params) {
       drawPosition: loserBackdrawPosition,
       structureId: targetStructureId,
       tournamentRecord,
-      sourceMatchUpId,
       drawDefinition,
       event,
     });
@@ -252,19 +251,20 @@ export function directLoser(params) {
   }
 
   function asssignLoserDrawPosition() {
-    const result = assignDrawPosition({
-      drawPosition: targetMatchUpDrawPosition,
-      participantId: loserParticipantId,
-      structureId: targetStructureId,
-      automaticPlacement: true,
-      inContextDrawMatchUps,
-      sourceMatchUpStatus,
-      tournamentRecord,
-      sourceMatchUpId,
-      drawDefinition,
-      matchUpsMap,
-      event,
-    });
+    const result = loserParticipantId
+      ? assignDrawPosition({
+          drawPosition: targetMatchUpDrawPosition,
+          participantId: loserParticipantId,
+          structureId: targetStructureId,
+          inContextDrawMatchUps,
+          sourceMatchUpStatus,
+          tournamentRecord,
+          drawDefinition,
+          matchUpsMap,
+          event,
+        })
+      : { error: MISSING_PARTICIPANT_ID };
+
     return decorateResult({ result, stack: 'assignLoserDrawPosition' });
   }
 }
