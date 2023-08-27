@@ -50,6 +50,7 @@ export function getFirstTimeSlotStartTime({
             firstTimeSlotStartTime = timeString;
           }
         }
+        return undefined;
       });
     }
   }

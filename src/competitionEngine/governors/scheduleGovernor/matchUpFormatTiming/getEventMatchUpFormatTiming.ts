@@ -42,6 +42,7 @@ export function getEventMatchUpFormatTiming({
     });
     if (error) timingError = error;
     timing = eventMatchUpFormatTiming;
+    return undefined;
   });
 
   return (

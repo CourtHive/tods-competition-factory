@@ -12,14 +12,16 @@ import {
   INVALID_VALUES,
 } from '../../../../../constants/errorConditionConstants';
 
-export function generateVirtualCourts({
-  remainingScheduleTimes = [],
-  clearScheduleDates,
-  periodLength = 30,
-  bookings = [],
-  scheduleDate,
-  courts = [],
-}) {
+export function generateVirtualCourts(params) {
+  const {
+    remainingScheduleTimes = [],
+    clearScheduleDates,
+    periodLength = 30,
+    scheduleDate,
+    courts = [],
+  } = params;
+  let { bookings = [] } = params;
+
   if (!Array.isArray(courts) || !courts.length)
     return { error: INVALID_VALUES, courts };
   if (!Array.isArray(bookings)) return { error: INVALID_BOOKINGS };
@@ -34,7 +36,7 @@ export function generateVirtualCourts({
   }
 
   const { courtBookings, unassignedBookings } = bookings.reduce(
-    (accumulator, booking) => {
+    (accumulator: any, booking) => {
       const { courtId } = booking;
       if (courtId) {
         if (!accumulator.courtBookings[courtId]) {
@@ -102,7 +104,7 @@ export function generateVirtualCourts({
       })
       .flat();
 
-  const assignedBookings = [];
+  const assignedBookings: any[] = [];
 
   for (const unassignedBooking of unassignedBookings) {
     const { startTime, endTime, averageMinutes, recoveryMinutes, matchUpId } =
@@ -111,7 +113,7 @@ export function generateVirtualCourts({
     const endMinutes = timeStringMinutes(endTime);
     const courtTimeSlots = getCourtTimeSlots();
     const bestCourt = courtTimeSlots.reduce(
-      (best, { courtId, courtName, timeSlots }) => {
+      (best: any, { courtId, courtName, timeSlots }) => {
         let startDifference;
         const timeSlot = timeSlots.find(({ startTime, endTime }) => {
           startDifference = timeStringMinutes(startTime) - startMinutes;
@@ -143,13 +145,13 @@ export function generateVirtualCourts({
       const virtualCourt = inProcessCourts.find(
         ({ courtId }) => courtId === bestCourt.courtId
       );
-      virtualCourt.dateAvailability.bookings.push(booking);
+      virtualCourt?.dateAvailability.bookings.push(booking);
     } else {
       console.log({ unassignedBooking });
     }
   }
 
-  const virtualCourts = inProcessCourts.map(
+  const virtualCourts: any[] = inProcessCourts.map(
     ({ courtId, courtName, dateAvailability }) => ({
       dateAvailability: [dateAvailability],
       courtName,

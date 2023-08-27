@@ -31,7 +31,7 @@ it('correctly generates second round scheduleTimes', () => {
   });
 
   const allScheduleTimes = scheduleTimes.reduce(
-    (timesMapped, { scheduleTime }) => {
+    (timesMapped: any, { scheduleTime }) => {
       if (!timesMapped[scheduleTime]) {
         timesMapped[scheduleTime] = 1;
       } else {
