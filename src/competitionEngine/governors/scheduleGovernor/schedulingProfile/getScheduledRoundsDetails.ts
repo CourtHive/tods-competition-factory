@@ -11,6 +11,7 @@ import { isPowerOf2 } from '../../../../utilities';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
+  ErrorType,
   MISSING_TOURNAMENT_RECORDS,
   MISSING_VALUE,
 } from '../../../../constants/errorConditionConstants';
@@ -18,6 +19,8 @@ import {
   BYE,
   completedMatchUpStatuses,
 } from '../../../../constants/matchUpStatusConstants';
+import { Tournament } from '../../../../types/tournamentFromSchema';
+import { HydratedMatchUp } from '../../../../types/hydrated';
 
 /**
  *
@@ -28,6 +31,27 @@ import {
  * @param {object[]} rounds - array of ordered rounds specified as part of a schedulingProfile
  * @returns
  */
+
+type GetScheduledRoundsDetailsArgs = {
+  tournamentRecords: { [key: string]: Tournament };
+  scheduleCompletedMatchUps?: boolean;
+  containedStructureIds?: string[];
+  matchUps?: HydratedMatchUp[];
+  periodLength?: number;
+  rounds: any[];
+};
+type RoundsDetailsResult = {
+  greatestAverageMinutes?: number;
+  scheduledRoundsDetails?: any[];
+  orderedMatchUpIds?: string[];
+  matchUpFormatCohorts?: any; // currently unused
+  recoveryMinutesMap?: any;
+  averageMinutesMap?: any;
+  error?: ErrorType;
+  success?: boolean;
+  minutesMap?: any;
+  info?: string;
+};
 export function getScheduledRoundsDetails({
   scheduleCompletedMatchUps,
   containedStructureIds, // optional to support calling method outside of scheduleProfileRounds
@@ -35,14 +59,15 @@ export function getScheduledRoundsDetails({
   periodLength = 30,
   matchUps, // optional to support calling method outside of scheduleProfileRounds
   rounds,
-}) {
+}: GetScheduledRoundsDetailsArgs): RoundsDetailsResult {
   if (typeof tournamentRecords !== 'object')
     return { error: MISSING_TOURNAMENT_RECORDS };
   if (!Array.isArray(rounds))
     return { error: MISSING_VALUE, info: mustBeAnArray('rounds') };
 
-  const hashes = [];
-  const orderedMatchUpIds = [];
+  const matchUpFormatCohorts = {};
+  const hashes: string[] = [];
+  const orderedMatchUpIds: string[] = [];
   const sortedRounds = rounds.sort(
     (a, b) => (a.sortOrder || 0) - (b.sortOrder || 0)
   );
@@ -74,7 +99,7 @@ export function getScheduledRoundsDetails({
 
   const scheduledRoundsDetails = sortedRounds.flatMap((round) => {
     const roundPeriodLength = round.periodLength || periodLength;
-    const structureIds = containedStructureIds[round.structureId] || [
+    const structureIds = containedStructureIds?.[round.structureId] || [
       round.structureId,
     ];
     const roundMatchUpFilters = {
@@ -85,11 +110,13 @@ export function getScheduledRoundsDetails({
       drawIds: [round.drawId],
       structureIds,
     };
-    let roundMatchUps = filterMatchUps({
-      ...roundMatchUpFilters,
-      processContext: true,
-      matchUps,
-    }).sort(matchUpSort);
+    let roundMatchUps = matchUps
+      ? filterMatchUps({
+          ...roundMatchUpFilters,
+          processContext: true,
+          matchUps,
+        }).sort(matchUpSort)
+      : [];
 
     // filter by roundSegment
     const { segmentNumber, segmentsCount } = round.roundSegment || {};
@@ -117,15 +144,16 @@ export function getScheduledRoundsDetails({
       tournamentRecord,
     });
 
-    const matchUpFormatOrder = [];
-    const matchUpFormatCohorts = {};
+    const matchUpFormatOrder: string[] = [];
     for (const matchUp of roundMatchUps) {
       const matchUpFormat = matchUp.matchUpFormat;
-      if (!matchUpFormatCohorts[matchUpFormat]) {
-        matchUpFormatCohorts[matchUpFormat] = [];
+      if (matchUpFormat) {
+        if (!matchUpFormatCohorts[matchUpFormat]) {
+          matchUpFormatCohorts[matchUpFormat] = [];
+          matchUpFormatCohorts[matchUpFormat].push(matchUp);
+        }
         matchUpFormatOrder.push(matchUpFormat);
       }
-      matchUpFormatOrder.push(matchUp);
     }
 
     for (const matchUpFormat of matchUpFormatOrder) {
@@ -149,11 +177,11 @@ export function getScheduledRoundsDetails({
 
       const matchUpIds = roundMatchUps
         .filter(
-          ({ matchUpStatus }) =>
+          (rm: any) =>
             // don't attempt to scheduled completed matchUpstatuses unless explicit override
             (scheduleCompletedMatchUps ||
-              !completedMatchUpStatuses.includes(matchUpStatus)) &&
-            matchUpStatus !== BYE
+              !completedMatchUpStatuses.includes(rm.matchUpStatus)) &&
+            rm.matchUpStatus !== BYE
         )
         .map(getMatchUpId);
 
@@ -183,11 +211,13 @@ export function getScheduledRoundsDetails({
         hash,
       };
     }
+    return undefined;
   });
 
   return {
     scheduledRoundsDetails,
     greatestAverageMinutes,
+    matchUpFormatCohorts,
     recoveryMinutesMap,
     averageMinutesMap,
     orderedMatchUpIds,

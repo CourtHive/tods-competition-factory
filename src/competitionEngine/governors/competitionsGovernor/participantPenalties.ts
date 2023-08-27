@@ -13,6 +13,7 @@ import {
   PARTICIPANT_NOT_FOUND,
   PENALTY_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
+import { Penalty, Tournament } from '../../../types/tournamentFromSchema';
 
 export function addPenalty(params) {
   const { tournamentRecords, participantIds } = params;
@@ -75,17 +76,22 @@ export function removePenalty(params) {
   return { ...SUCCESS };
 }
 
-export function getCompetitionPenalties({ tournamentRecords }) {
+type GetCompetitionPenaltiesArgs = {
+  tournamentRecords: { [key: string]: Tournament };
+};
+export function getCompetitionPenalties({
+  tournamentRecords,
+}: GetCompetitionPenaltiesArgs) {
   if (
     typeof tournamentRecords !== 'object' ||
     !Object.keys(tournamentRecords).length
   )
     return { error: MISSING_TOURNAMENT_RECORDS };
 
-  const allPenalties = [];
+  const allPenalties: Penalty[] = [];
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     const { penalties } = getTournamentPenalties({ tournamentRecord });
-    allPenalties.push(...penalties);
+    allPenalties.push(...(penalties || []));
   }
 
   return { penalties: allPenalties };
