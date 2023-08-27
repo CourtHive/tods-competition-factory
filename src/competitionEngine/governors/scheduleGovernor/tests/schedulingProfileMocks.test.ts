@@ -1,7 +1,6 @@
 import { getContainedStructures } from '../../../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
 import { mocksEngine, tournamentEngine, competitionEngine } from '../../../..';
-import { getMatchUpIds } from '../../../../global/functions/extractors';
-import { intersection, unique } from '../../../../utilities';
+import { extractAttributes, intersection, unique } from '../../../../utilities';
 import { expect, it } from 'vitest';
 
 import { EXISTING_ROUND } from '../../../../constants/errorConditionConstants';
@@ -119,9 +118,9 @@ it('can schedule potential rounds properly in scenarios with recovery times grea
 
   expect(tournamentParticipants.length).toEqual(88); // expect (2 * 32 unique) + (24 unique) = 88
 
-  const allMatchUpIds = [];
-  const nonByeMatchUpsCount = [];
-  const eventEnteredParticipantIds = [];
+  const eventEnteredParticipantIds: string[] = [];
+  const nonByeMatchUpsCount: number[] = [];
+  const allMatchUpIds: string[] = [];
 
   // expect that 4 structures exist per drawDefinition, as follows:
   const expectations = { MAIN: 31, CONSOLATION: 23, Silver: 3, Gold: 1 };
@@ -130,7 +129,7 @@ it('can schedule potential rounds properly in scenarios with recovery times grea
     const { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
     expect(drawDefinition.structures.length).toEqual(4);
 
-    const drawMatchUps = [];
+    const drawMatchUps: any[] = [];
     drawDefinition.structures.forEach((structure) => {
       const { matchUps, structureName } = structure;
       expect(matchUps.length).toEqual(expectations[structureName]);
@@ -143,7 +142,7 @@ it('can schedule potential rounds properly in scenarios with recovery times grea
     );
     eventEnteredParticipantIds.push(enteredParticipantIds);
 
-    const matchUpIds = getMatchUpIds(drawMatchUps);
+    const matchUpIds = drawMatchUps.map(extractAttributes('matchUpId'));
     allMatchUpIds.push(...matchUpIds);
 
     const matchUpsNoBye = drawMatchUps.filter(
@@ -194,7 +193,7 @@ it('can schedule potential rounds properly in scenarios with recovery times grea
 
       if (matchUp) {
         const { eventId, structureId, roundNumber } = matchUp;
-        let result = competitionEngine.addSchedulingProfileRound({
+        const result = competitionEngine.addSchedulingProfileRound({
           round: { tournamentId, eventId, drawId, structureId, roundNumber },
           scheduleDate: startDate,
           venueId,

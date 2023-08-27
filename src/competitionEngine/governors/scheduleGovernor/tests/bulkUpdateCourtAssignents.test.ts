@@ -35,7 +35,7 @@ it('can update matchUp court assignments accross multiple events/draws', () => {
   expect(result.success).toEqual(true);
 
   const courtDayDate = '2020-01-01T00:00';
-  let { courts, success } = tournamentEngine.devContext(true).addCourts({
+  const { courts, success } = tournamentEngine.devContext(true).addCourts({
     venueId,
     courtsCount: 3,
   });

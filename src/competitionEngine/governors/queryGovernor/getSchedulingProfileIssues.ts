@@ -5,6 +5,7 @@ import { allCompetitionMatchUps } from '../../getters/matchUpsGetter';
 import { isValidDateString } from '../../../utilities/dateTime';
 import { intersection, unique } from '../../../utilities';
 
+import { Tournament } from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_DATE,
@@ -12,11 +13,20 @@ import {
   INVALID_VALUES,
 } from '../../../constants/errorConditionConstants';
 
-export function getSchedulingProfileIssues({
-  scheduleDates = [],
-  tournamentRecords,
-  periodLength = 30,
-} = {}) {
+type GetSchedulingProfileIssuesArgs = {
+  tournamentRecords: { [key: string]: Tournament };
+  scheduleDates?: string[];
+  periodLength?: number;
+};
+export function getSchedulingProfileIssues(
+  params?: GetSchedulingProfileIssuesArgs
+) {
+  const {
+    scheduleDates = [],
+    tournamentRecords,
+    periodLength = 30,
+  } = params || {};
+
   if (typeof tournamentRecords !== 'object')
     return { error: INVALID_TOURNAMENT_RECORD };
   if (!Array.isArray(scheduleDates)) return { error: INVALID_VALUES };
@@ -24,7 +34,7 @@ export function getSchedulingProfileIssues({
   const validDates = scheduleDates.every(isValidDateString);
   if (!validDates) return { error: INVALID_DATE };
 
-  const issues = [];
+  const issues: any[] = [];
   let issuesCount = 0;
   const roundIndexShouldBeAfter = {};
 
@@ -45,8 +55,8 @@ export function getSchedulingProfileIssues({
       for (const venue of venues || []) {
         if (venue) {
           const { rounds } = venue;
-          const schedulingErrors = [];
-          let { orderedMatchUpIds, scheduledRoundsDetails } =
+          const schedulingErrors: any = [];
+          const { orderedMatchUpIds, scheduledRoundsDetails } =
             getScheduledRoundsDetails({
               tournamentRecords,
               periodLength,
@@ -59,7 +69,7 @@ export function getSchedulingProfileIssues({
           });
           const getRoundIndex = (matchUpId) => {
             let roundIndex;
-            scheduledRoundsDetails.find((round, index) => {
+            scheduledRoundsDetails?.find((round, index) => {
               const includes = round.matchUpIds.includes(matchUpId);
               if (includes) roundIndex = index;
               return includes;
@@ -67,7 +77,7 @@ export function getSchedulingProfileIssues({
             return roundIndex;
           };
 
-          orderedMatchUpIds.forEach((matchUpId, index) => {
+          orderedMatchUpIds?.forEach((matchUpId, index) => {
             const followingMatchUpIds = orderedMatchUpIds.slice(index + 1);
             const shouldBeAfter = intersection(
               followingMatchUpIds,

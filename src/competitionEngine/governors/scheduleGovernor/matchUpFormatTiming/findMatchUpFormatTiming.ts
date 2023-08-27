@@ -3,18 +3,30 @@ import { isValid } from '../../../../matchUpEngine/governors/matchUpFormatGovern
 import { findEvent } from '../../../../tournamentEngine/getters/eventGetter';
 
 import { UNRECOGNIZED_MATCHUP_FORMAT } from '../../../../constants/errorConditionConstants';
+import { Tournament } from '../../../../types/tournamentFromSchema';
 
+type FindMatchUpFormatTiming = {
+  tournamentRecords: { [key: string]: Tournament };
+  defaultRecoveryMinutes?: number;
+  defaultAverageMinutes?: number;
+  matchUpFormat: string;
+  categoryName?: string;
+  categoryType?: string;
+  tournamentId: string;
+  eventType: string;
+  eventId?: string;
+};
 export function findMatchUpFormatTiming({
   defaultRecoveryMinutes = 0,
   defaultAverageMinutes,
   tournamentRecords,
-  tournamentId,
   matchUpFormat,
   categoryName,
   categoryType,
+  tournamentId,
   eventType,
   eventId,
-}) {
+}: FindMatchUpFormatTiming) {
   if (!isValid(matchUpFormat)) return { error: UNRECOGNIZED_MATCHUP_FORMAT };
 
   const tournamentIds = Object.keys(tournamentRecords).filter(
@@ -39,8 +51,8 @@ export function findMatchUpFormatTiming({
   });
 
   return {
-    averageMinutes: timing?.averageMinutes || defaultAverageMinutes,
     recoveryMinutes: timing?.recoveryMinutes || defaultRecoveryMinutes,
+    averageMinutes: timing?.averageMinutes || defaultAverageMinutes,
     typeChangeRecoveryMinutes:
       timing?.typeChangeRecoveryMinutes ||
       timing?.recoveryMinutes ||

@@ -125,7 +125,7 @@ it.each([
 
     competitionEngine.devContext({ virtual: true });
     // Scheduled Profile Rounds ##############################
-    let result = competitionEngine.scheduleProfileRounds({
+    const result = competitionEngine.scheduleProfileRounds({
       scheduleDates: [startDate],
       garmanSinglePass: false,
     });
@@ -139,7 +139,7 @@ it.each([
     visualizeScheduledMatchUps({ scheduledMatchUps, showGlobalLog });
 
     // get the participantIds for each draw
-    const drawEnteredParticipantIds = [];
+    const drawEnteredParticipantIds: string[] = [];
     for (const drawId of drawIds) {
       const {
         drawDefinition: { entries: drawEntries },

@@ -109,12 +109,12 @@ it.each([
 
     const { schedulingProfile } = competitionEngine.getSchedulingProfile();
     const rounds = schedulingProfile[0].venues[0].rounds;
-    let { orderedMatchUpIds } = competitionEngine.getScheduledRoundsDetails({
+    const { orderedMatchUpIds } = competitionEngine.getScheduledRoundsDetails({
       rounds,
     });
     const { matchUpDependencies } = competitionEngine.getMatchUpDependencies();
 
-    const schedulingErrors = [];
+    const schedulingErrors: any[] = [];
     orderedMatchUpIds.forEach((matchUpId, index) => {
       const followingMatchUpIds = orderedMatchUpIds.slice(index + 1);
       const orderErrors = intersection(
@@ -162,7 +162,7 @@ it('does not schedule subsequent rounds if dependencies are unscheduled', () => 
     });
     expect(result.success).toEqual(true);
   }
-  let result = competitionEngine.scheduleProfileRounds({
+  const result = competitionEngine.scheduleProfileRounds({
     scheduleDates: [startDate],
   });
   expect(result.success).toEqual(true);

@@ -104,7 +104,7 @@ it('can add events, venues, and schedule matchUps', () => {
 
   const courtIds = courts.map((court) => court.courtId);
   const courtId = courtIds[0];
-  let [matchUp] = upcoming;
+  const [matchUp] = upcoming;
   const { matchUpId } = matchUp;
 
   result = competitionEngine.assignMatchUpVenue({
@@ -358,7 +358,7 @@ it('can schedule many attributes at once', () => {
 
   const modifiedMatchUpId = matchUpId;
 
-  let modifiedMatchUp = competitionEngine.allCompetitionMatchUps({
+  const modifiedMatchUp = competitionEngine.allCompetitionMatchUps({
     matchUpFilters: { matchUpIds: [modifiedMatchUpId] },
   }).matchUps[0];
   expect(modifiedMatchUp.timeItems.length).toEqual(5);
@@ -432,7 +432,7 @@ it.each(scheduleItems)('throws errors for invalid time', (scheduleItem) => {
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
 
   const { tournamentId, drawId, matchUpId } = matchUps[0];
-  let result = competitionEngine.addMatchUpScheduleItems({
+  const result = competitionEngine.addMatchUpScheduleItems({
     schedule: scheduleItem,
     tournamentId,
     matchUpId,
@@ -465,12 +465,12 @@ it.each(scheduleScenarios)(
 
     tournamentEngine.setState(tournamentRecord);
 
-    let { matchUps } = tournamentEngine.allTournamentMatchUps();
+    const { matchUps } = tournamentEngine.allTournamentMatchUps();
 
     const { tournamentId, drawId, matchUpId } = matchUps[0];
     const { schedule, error } = scheduleScenario;
 
-    let result = competitionEngine.addMatchUpScheduleItems({
+    const result = competitionEngine.addMatchUpScheduleItems({
       tournamentId,
       matchUpId,
       schedule,

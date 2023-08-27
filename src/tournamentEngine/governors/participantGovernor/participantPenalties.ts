@@ -13,15 +13,28 @@ import {
   MISSING_TOURNAMENT_RECORD,
   NO_VALID_ATTRIBUTES,
   INVALID_VALUES,
+  ErrorType,
 } from '../../../constants/errorConditionConstants';
+import {
+  Extension,
+  Participant,
+  Penalty,
+  PenaltyTypeEnum,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
-/**
- *
- * @param {string[]} participantIds - ids of participants receiving the panalty
- * @param {string} penaltyType - enum
- * @param {string} matchUpId - optional - matchUp in which penalty occurred
- *
- */
+type AddPenaltyArgs = {
+  refereeParticipantId?: string;
+  tournamentRecord: Tournament;
+  penaltyType: PenaltyTypeEnum;
+  participantIds: string[];
+  extensions?: Extension[];
+  penaltyCode: string;
+  penaltyId: string;
+  matchUpId: string;
+  issuedAt: string;
+  notes?: string;
+};
 export function addPenalty({
   refereeParticipantId,
   tournamentRecord,
@@ -33,7 +46,11 @@ export function addPenalty({
   matchUpId,
   issuedAt,
   notes,
-}) {
+}: AddPenaltyArgs): {
+  penaltyId?: string;
+  success?: boolean;
+  error?: ErrorType;
+} {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!participantIds) return { error: MISSING_PARTICIPANT_ID };
   if (!penaltyType) return { error: MISSING_PENALTY_TYPE };
@@ -47,7 +64,7 @@ export function addPenalty({
   if (!relevantParticipants.length) return { error: PARTICIPANT_NOT_FOUND };
 
   const createdAt = new Date().toISOString();
-  const penaltyItem = Object.assign(penaltyTemplate({ penaltyId }), {
+  const penaltyItem: Penalty = Object.assign(penaltyTemplate({ penaltyId }), {
     refereeParticipantId,
     penaltyCode,
     penaltyType,
@@ -80,17 +97,23 @@ export function addPenalty({
   return { ...SUCCESS, penaltyId: penaltyItem.penaltyId };
 }
 
-/**
- *
- * @param {string} penaltyId
- *
- */
-export function removePenalty({ tournamentRecord, penaltyId }) {
+type RemovePenaltyArgs = {
+  tournamentRecord: Tournament;
+  penaltyId: string;
+};
+export function removePenalty({
+  tournamentRecord,
+  penaltyId,
+}: RemovePenaltyArgs): {
+  error?: ErrorType;
+  success?: boolean;
+  penalty?: Penalty;
+} {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!penaltyId) return { error: MISSING_PENALTY_ID };
 
   const participants = tournamentRecord?.participants || [];
-  const modifiedParticipants = [];
+  const modifiedParticipants: Participant[] = [];
 
   let penaltyRemoved = false;
   let removedPenalty;
@@ -124,7 +147,12 @@ export function removePenalty({ tournamentRecord, penaltyId }) {
     : { error: PENALTY_NOT_FOUND };
 }
 
-export function getTournamentPenalties({ tournamentRecord }) {
+type GetTournamentPenaltiesArgs = {
+  tournamentRecord: Tournament;
+};
+export function getTournamentPenalties({
+  tournamentRecord,
+}: GetTournamentPenaltiesArgs): { error?: ErrorType; penalties?: Penalty[] } {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   const participants = tournamentRecord?.participants || [];
   const allPenalties = participants.reduce((penalties, participant) => {
@@ -146,7 +174,22 @@ export function getTournamentPenalties({ tournamentRecord }) {
   return { penalties: Object.values(allPenalties) };
 }
 
-export function modifyPenalty({ tournamentRecord, penaltyId, modifications }) {
+type ModifyPenaltyArgs = {
+  tournamentRecord: Tournament;
+  modifications: { [key: string]: any };
+  penaltyId;
+  string;
+};
+export function modifyPenalty({
+  tournamentRecord,
+  modifications,
+  penaltyId,
+}: ModifyPenaltyArgs): {
+  modifications?: any;
+  error?: ErrorType;
+  success?: boolean;
+  penalty?: Penalty;
+} {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!modifications) return { error: INVALID_VALUES, modifications };
   if (!penaltyId) return { error: MISSING_PENALTY_ID };
@@ -165,7 +208,7 @@ export function modifyPenalty({ tournamentRecord, penaltyId, modifications }) {
     return { error: NO_VALID_ATTRIBUTES };
 
   let updatedPenalty;
-  const modifiedParticipants = [];
+  const modifiedParticipants: Participant[] = [];
   participants.forEach((participant) => {
     let participantModified = false;
     participant.penalties = (participant.penalties || []).map((penalty) => {

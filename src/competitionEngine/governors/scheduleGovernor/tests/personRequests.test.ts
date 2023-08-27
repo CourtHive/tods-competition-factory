@@ -6,6 +6,7 @@ import competitionEngine from '../../../sync';
 import { expect, it } from 'vitest';
 
 import { DO_NOT_SCHEDULE } from '../../../../constants/requestConstants';
+import { Tournament } from '../../../../types/tournamentFromSchema';
 
 it('can add, query, amd remove personRequests across multiple tournaments', () => {
   const { tournamentRecord: tournament1 } =
@@ -35,8 +36,12 @@ it('can add, query, amd remove personRequests across multiple tournaments', () =
 
   let { tournamentRecords } = competitionEngine.getState();
   // extension is only added to the tournament which includes participant with personId
-  expect(Object.values(tournamentRecords)[0].extensions.length).toEqual(1);
-  expect(Object.values(tournamentRecords)[1].extensions).toBeUndefined();
+  let tournamentRecord: Tournament = Object.values(
+    tournamentRecords
+  )[0] as Tournament;
+  expect(tournamentRecord?.extensions?.length).toEqual(1);
+  tournamentRecord = Object.values(tournamentRecords)[1] as Tournament;
+  expect(tournamentRecord.extensions).toBeUndefined();
 
   let requestId = personRequests[personId][0].requestId;
   expect(requestId).not.toBeUndefined();
@@ -46,7 +51,8 @@ it('can add, query, amd remove personRequests across multiple tournaments', () =
   expect(result.removed).toEqual(1);
 
   ({ tournamentRecords } = competitionEngine.getState());
-  expect(Object.values(tournamentRecords)[0].extensions.length).toEqual(0);
+  tournamentRecord = Object.values(tournamentRecords)[0] as Tournament;
+  expect(tournamentRecord?.extensions?.length).toEqual(0);
 
   // now remove a request using only the requestId
   result = competitionEngine.addPersonRequests({
@@ -147,7 +153,7 @@ it('can identify conflicts with person requests', () => {
   // there is one personRequest which causes a 1st round matchUp not to be scheduled until 10:00
   // which causes 2 players to have timeAfterRecovery > 11:00 (potential timeAfterRecovery not considered)
   const lateRecoveryTimes = Object.values(result.individualParticipantProfiles)
-    .map(({ timeAfterRecovery }) => timeAfterRecovery)
+    .map((profile: any) => profile.timeAfterRecovery)
     .filter((time) => timeStringMinutes(time) > timeStringMinutes('11:00'));
 
   expect(lateRecoveryTimes.length).toEqual(2);
@@ -155,7 +161,7 @@ it('can identify conflicts with person requests', () => {
   const potentialRecoveryTimes = Object.values(
     result.individualParticipantProfiles
   )
-    .map((p) => p.potentialRecovery[drawId])
+    .map((p: any) => p.potentialRecovery[drawId])
     .flat();
 
   // when potentialRecoveryTimes are considered there are twice as many lateRecoveryTimes

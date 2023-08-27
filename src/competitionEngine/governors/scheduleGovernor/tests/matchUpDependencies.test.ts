@@ -87,7 +87,7 @@ it('can capture distance between matchUps', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  let { matchUpDependencies } = tournamentEngine.getMatchUpDependencies();
+  const { matchUpDependencies } = tournamentEngine.getMatchUpDependencies();
   const sourceDistance = (a, b) =>
     matchUpDependencies[a].sources.reduce(
       (distance, round, index) => (round.includes(b) && index + 1) || distance,

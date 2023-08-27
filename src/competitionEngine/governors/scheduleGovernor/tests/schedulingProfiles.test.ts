@@ -34,7 +34,7 @@ test.each([competitionEngineSync])(
       });
     competitionEngine.setState([firstRecord, secondRecord]);
 
-    let { startDate, endDate } = competitionEngine.getCompetitionDateRange();
+    const { startDate, endDate } = competitionEngine.getCompetitionDateRange();
     expect(startDate).toEqual(d220101);
     expect(endDate).toEqual('2022-01-10');
 

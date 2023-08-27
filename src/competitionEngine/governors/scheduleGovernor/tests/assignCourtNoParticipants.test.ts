@@ -26,7 +26,7 @@ it('will not allow an IN_PROGRESS matchUpStatus when there are no participants',
   const { courts } = tournamentEngine.getVenuesAndCourts();
   const courtId = courts[0].courtId;
 
-  let result = tournamentEngine.setMatchUpStatus({
+  const result = tournamentEngine.setMatchUpStatus({
     outcome: {
       matchUpStatus: IN_PROGRESS,
     },
