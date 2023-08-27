@@ -4,8 +4,16 @@ import {
   tidyTime,
 } from '../../../../utilities/dateTime';
 
-export function generateTimeSlots({ courtDate, includeBookingTypes = [] }) {
-  const timeSlots = [];
+type GenerateTimeSlotsArgs = {
+  includeBookingTypes?: string[];
+  courtDate: any;
+};
+
+export function generateTimeSlots({
+  includeBookingTypes = [],
+  courtDate,
+}: GenerateTimeSlotsArgs) {
+  const timeSlots: any[] = [];
   let startTime = timeToDate(courtDate.startTime);
 
   (courtDate.bookings || [])

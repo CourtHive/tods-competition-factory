@@ -2,16 +2,14 @@ import { minutesDifference, timeToDate } from '../../../../utilities/dateTime';
 import { generateTimeSlots } from './generateTimeSlots';
 
 export function getEnoughTime({
-  includeBookingTypes,
   averageMatchUpMinutes,
+  includeBookingTypes,
   periodStartTime,
   periodEndTime,
-  periodLength,
 }) {
   const enoughTime = (courtDate) => {
     const timeSlots = generateTimeSlots({
       includeBookingTypes,
-      periodLength,
       courtDate,
     });
     const availableTimeSlots = timeSlots.filter(validTimeSlot);
