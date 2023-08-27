@@ -95,11 +95,9 @@ export function getScheduleTimes(params) {
     // availableToScheduleCount calculated from periodStartTime and averageMatchUpMinutes
     // a court is only available if it can accommodate matchUps of duration averageMatchUpMinutes
     const { availableToScheduleCount } = getCourtsAvailableAtPeriodStart({
-      courts: virtualCourts,
+      courts: virtualCourts || [],
       averageMatchUpMinutes,
-      periodLength,
       periodStart,
-      period,
       date,
     });
 
@@ -136,7 +134,8 @@ export function getScheduleTimes(params) {
     previousAvailableCourts = availableToScheduleCount;
     cumulativeMatches += calculationDifference;
 
-    const addToSchedule = parseInt(cumulativeMatches) - totalMatchUps;
+    const stringifiedNumber = cumulativeMatches.toString();
+    const addToSchedule = parseInt(stringifiedNumber) - totalMatchUps;
     totalMatchUps += addToSchedule;
 
     return {
@@ -150,12 +149,12 @@ export function getScheduleTimes(params) {
 
   const scheduleTimes = timingProfile
     .reduce((scheduleTimes, profile) => {
-      return scheduleTimes.concat(
-        ...generateRange(0, profile.add).map(() => {
-          const scheduleTime = profile.periodStart;
-          return { scheduleTime };
-        })
-      );
+      const stRange: number[] = generateRange(0, profile.add);
+      const newTimes: any[] = stRange.map(() => {
+        const scheduleTime = profile.periodStart;
+        return { scheduleTime };
+      });
+      return scheduleTimes.concat(...newTimes);
     }, [])
     .flat();
 
