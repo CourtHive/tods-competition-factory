@@ -37,7 +37,7 @@ it('can simulate clearing schedule on dryRun scheduleProfileRounds', () => {
 
   competitionEngine.setState(tournamentRecord);
 
-  let { upcomingMatchUps } = competitionEngine.competitionMatchUps({
+  const { upcomingMatchUps } = competitionEngine.competitionMatchUps({
     matchUpFilters: { roundNumbers: [1] },
   });
 

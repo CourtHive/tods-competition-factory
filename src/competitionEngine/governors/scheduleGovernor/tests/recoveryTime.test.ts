@@ -26,19 +26,19 @@ test.each([competitionEngineSync])(
       instanceCount(upcomingMatchUps.map(({ matchUpType }) => matchUpType))
     ).toEqual({ SINGLES: 12 });
 
-    let result = competitionEngine.scheduleMatchUps({
+    const result = competitionEngine.scheduleMatchUps({
       scheduleDate: startDate,
       recoveryMinutes: 30,
       matchUpIds,
     });
     Object.values(result.individualParticipantProfiles).forEach(
-      (participantProfile) => {
+      (participantProfile: any) => {
         expect(participantProfile.counters).toEqual({ SINGLES: 3, total: 3 });
       }
     );
     const afterRecoveryTimes = Object.values(
       result.individualParticipantProfiles
-    ).map(({ timeAfterRecovery }) => timeAfterRecovery);
+    ).map((profile: any) => profile.timeAfterRecovery);
 
     /*
     // prettier-ignore
@@ -100,20 +100,20 @@ test.each([competitionEngineSync])(
       instanceCount(upcomingMatchUps.map(({ matchUpType }) => matchUpType))
     ).toEqual({ SINGLES: 12 });
 
-    let result = competitionEngine.scheduleMatchUps({
+    const result = competitionEngine.scheduleMatchUps({
       matchUpDailyLimits: { total: 2 },
       scheduleDate: startDate,
       recoveryMinutes: 30,
       matchUpIds,
     });
     Object.values(result.individualParticipantProfiles).forEach(
-      (participantProfile) => {
+      (participantProfile: any) => {
         expect(participantProfile.counters).toEqual({ SINGLES: 2, total: 2 });
       }
     );
     const afterRecoveryTimes = Object.values(
       result.individualParticipantProfiles
-    ).map(({ timeAfterRecovery }) => timeAfterRecovery);
+    ).map((profile: any) => profile.timeAfterRecovery);
 
     // prettier-ignore
     expect(afterRecoveryTimes.sort()).toEqual([

@@ -73,7 +73,7 @@ it('auto schedules multiple events at multiple venues and tracks participants ac
   });
   expect(result.success).toEqual(true);
 
-  const drawIds = [];
+  const drawIds: string[] = [];
   let { drawDefinition } = tournamentEngine.generateDrawDefinition({
     eventId: eventIds[0],
     drawSize: 32,
@@ -305,7 +305,7 @@ it('multiple events at multiple venues with different participants will start at
   }
 
   // #################################################
-  let result = competitionEngine.scheduleProfileRounds({
+  const result = competitionEngine.scheduleProfileRounds({
     scheduleDates: [startDate],
   });
   expect(result.success).toEqual(true);

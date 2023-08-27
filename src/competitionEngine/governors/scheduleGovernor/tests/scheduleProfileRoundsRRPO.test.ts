@@ -66,7 +66,7 @@ it('will not schedule RR PLAY_OFF rounds before MAIN rounds', () => {
   expect(result.success).toEqual(true);
 
   result = competitionEngine.getMatchUpDependencies();
-  const matchUpDependencies = Object.values(result.positionDependencies);
+  const matchUpDependencies: any[] = Object.values(result.positionDependencies);
   expect(matchUpDependencies.length).toEqual(1);
   // Round Robin of 4x4 produces 24 matchUps
   expect(matchUpDependencies[0].length).toEqual(24);

@@ -9,17 +9,23 @@ import {
   timeStringMinutes,
 } from '../../../utilities/dateTime';
 
+import { TournamentRecordsArgs } from '../../../types/factoryTypes';
 import {
   INVALID_DATE,
   INVALID_VALUES,
 } from '../../../constants/errorConditionConstants';
 
+type GetVenueReportArgs = TournamentRecordsArgs & {
+  ignoreDisabled?: boolean;
+  venueIds?: string[];
+  dates?: string[];
+};
 export function getVenuesReport({
   ignoreDisabled = true,
   tournamentRecords,
   venueIds = [],
   dates = [],
-}) {
+}: GetVenueReportArgs) {
   if (!Array.isArray(dates)) return { error: INVALID_VALUES, dates };
   if (!Array.isArray(venueIds)) return { error: INVALID_VALUES, venueIds };
 
@@ -38,8 +44,9 @@ export function getVenuesReport({
   );
 
   const courtDates = result.courts
-    .reduce((dates, court) => {
-      court.dateAvailability.forEach(({ date }) => {
+    .reduce((dates: string[], court) => {
+      court.dateAvailability?.forEach((availability: any) => {
+        const date: string = availability.date;
         if (!dates.includes(date)) dates.push(date);
       });
       return dates;

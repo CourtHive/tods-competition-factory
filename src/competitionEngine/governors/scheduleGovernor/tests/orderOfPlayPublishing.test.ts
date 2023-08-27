@@ -4,6 +4,7 @@ import { expect, it } from 'vitest';
 
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
 import { PUBLIC } from '../../../../constants/timeItemConstants';
+import { Tournament } from '../../../../types/tournamentFromSchema';
 
 it('can publish order of play for specified days', () => {
   const startDate = '2022-01-01';
@@ -109,9 +110,11 @@ it('can publish order of play for specified days', () => {
   expect(result.success).toEqual(true);
 
   result = competitionEngine.getState();
+  let tournamentRecord: Tournament = Object.values(
+    result.tournamentRecords
+  )[0] as Tournament;
   expect(
-    Object.values(result.tournamentRecords)[0].timeItems[1].itemValue[PUBLIC]
-      .orderOfPlay
+    tournamentRecord.timeItems?.[1].itemValue[PUBLIC].orderOfPlay
   ).not.toBeUndefined();
 
   result = competitionEngine.unPublishOrderOfPlay({
@@ -120,21 +123,15 @@ it('can publish order of play for specified days', () => {
   expect(result.success).toEqual(true);
 
   result = competitionEngine.getState();
-  expect(Object.values(result.tournamentRecords)[0].timeItems.length).toEqual(
-    3
-  );
-  expect(
-    Object.values(result.tournamentRecords)[0].timeItems[2].itemValue
-  ).toEqual({ [PUBLIC]: {} });
+  tournamentRecord = Object.values(result.tournamentRecords)[0] as Tournament;
+  expect(tournamentRecord.timeItems?.length).toEqual(3);
+  expect(tournamentRecord.timeItems?.[2].itemValue).toEqual({ [PUBLIC]: {} });
 
   result = competitionEngine.unPublishOrderOfPlay();
   expect(result.success).toEqual(true);
 
   result = competitionEngine.getState();
-  expect(Object.values(result.tournamentRecords)[0].timeItems.length).toEqual(
-    2
-  );
-  expect(
-    Object.values(result.tournamentRecords)[0].timeItems[1].itemValue
-  ).toEqual({ [PUBLIC]: {} });
+  tournamentRecord = Object.values(result.tournamentRecords)[0] as Tournament;
+  expect(tournamentRecord.timeItems?.length).toEqual(2);
+  expect(tournamentRecord.timeItems?.[1].itemValue).toEqual({ [PUBLIC]: {} });
 });

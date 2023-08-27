@@ -33,12 +33,12 @@ test.each([competitionEngineSync])(
       instanceCount(upcomingMatchUps.map(({ matchUpType }) => matchUpType))
     ).toEqual({ DOUBLES: 8 });
 
-    let result = competitionEngine.scheduleMatchUps({
+    const result = competitionEngine.scheduleMatchUps({
       scheduleDate: startDate,
       matchUpIds,
     });
     Object.values(result.individualParticipantProfiles).forEach(
-      (participantProfile) =>
+      (participantProfile: any) =>
         expect(participantProfile.counters).toEqual({ DOUBLES: 1, total: 1 })
     );
     expect(result.scheduledMatchUpIds.length).toEqual(8);
@@ -80,7 +80,7 @@ test.each([competitionEngineSync])(
     expect(result.scheduledMatchUpIds.length).toEqual(23);
     expect(
       Object.values(result.individualParticipantProfiles).some(
-        (profile) =>
+        (profile: any) =>
           profile.counters.DOUBLES === 1 && profile.counters.SINGLES === 1
       )
     ).toEqual(true);

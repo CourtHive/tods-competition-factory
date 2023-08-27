@@ -91,7 +91,7 @@ test('already scheduled round matchUps', () => {
   });
   tournamentEngine.setState(tournamentRecord);
 
-  let { matchUps } = tournamentEngine.allTournamentMatchUps();
+  const { matchUps } = tournamentEngine.allTournamentMatchUps();
   const targetMatchUp = matchUps.find(
     ({ roundNumber, roundPosition }) => roundNumber === 1 && roundPosition === 1
   );
@@ -150,4 +150,5 @@ function findOverlappingBooking(virtualCourts) {
       if (overlap) return true;
     }
   }
+  return false;
 }

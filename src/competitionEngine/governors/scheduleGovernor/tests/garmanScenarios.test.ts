@@ -234,8 +234,8 @@ it('properly schedules 1st rounds of two 32 single elimination draws with 10 cou
   const { tournamentId } = tournamentRecord;
   competitionEngine.setState(tournamentRecord);
 
-  const eventDrawEntries = [];
-  const eventEntries = [];
+  const eventDrawEntries: string[][] = [];
+  const eventEntries: string[][] = [];
   let {
     event: { eventId, entries },
     drawDefinition: {

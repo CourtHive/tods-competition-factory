@@ -141,7 +141,7 @@ it.each([
     // #######################################################
 
     // get the participantIds for each draw
-    const drawEnteredParticipantIds = [];
+    const drawEnteredParticipantIds: string[] = [];
     for (const drawId of drawIds) {
       const {
         drawDefinition: { entries: drawEntries },
@@ -328,7 +328,7 @@ it('can clear scheduled matchUps', () => {
   // #######################################################
 
   // get the participantIds for each draw
-  const drawEnteredParticipantIds = [];
+  const drawEnteredParticipantIds: string[] = [];
   for (const drawId of drawIds) {
     const {
       drawDefinition: { entries: drawEntries },

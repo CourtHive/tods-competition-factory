@@ -83,7 +83,7 @@ it('Can split rounds across multiple venues', () => {
     },
   ];
 
-  let result = mocksEngine.generateTournamentRecord({
+  const result = mocksEngine.generateTournamentRecord({
     policyDefinitions: POLICY_SCHEDULING_NO_DAILY_LIMITS,
     autoSchedule: true,
     schedulingProfile,
@@ -179,7 +179,7 @@ it('Can split rounds across multiple venues', () => {
     },
   ];
 
-  let result = mocksEngine.generateTournamentRecord({
+  const result = mocksEngine.generateTournamentRecord({
     policyDefinitions: POLICY_SCHEDULING_NO_DAILY_LIMITS,
     autoSchedule: true,
     schedulingProfile,
@@ -269,7 +269,7 @@ it('Can split rounds with multiple BYEs', () => {
     },
   ];
 
-  let result = mocksEngine.generateTournamentRecord({
+  const result = mocksEngine.generateTournamentRecord({
     policyDefinitions: POLICY_SCHEDULING_NO_DAILY_LIMITS,
     autoSchedule: true,
     schedulingProfile,
@@ -311,6 +311,6 @@ it('Can split rounds with multiple BYEs', () => {
       tournamentRecords,
       rounds: venues[index].rounds,
     });
-    expect(scheduledRoundsDetails[0].matchUpIds.length).toEqual(1);
+    expect(scheduledRoundsDetails?.[0].matchUpIds.length).toEqual(1);
   }
 });

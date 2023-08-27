@@ -101,10 +101,10 @@ it('correctly determines courts available at periodStart', () => {
   ];
 
   let availability = garman.getCourtsAvailableAtPeriodStart({
+    averageMatchUpMinutes: 90,
+    periodStart: '8:00',
     courts,
     date,
-    periodStart: '8:00',
-    averageMatchUpMinutes: 90,
   });
   expect(availability.availableToScheduleCount).toEqual(0);
   availability = garman.getCourtsAvailableAtPeriodStart({

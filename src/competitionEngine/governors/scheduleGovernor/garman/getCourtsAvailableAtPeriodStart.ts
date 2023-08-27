@@ -2,6 +2,14 @@ import { addMinutes, timeToDate } from '../../../../utilities/dateTime';
 import { getCourtDateAvailability } from './getCourtDateAvailability';
 import { getEnoughTime } from './getEnoughTime';
 
+type GetCourtsAvailableAtPeriodStartArgs = {
+  averageMatchUpMinutes: number;
+  includeBookingTypes?: boolean;
+  periodLength?: number;
+  periodStart: string;
+  courts: any[];
+  date: string;
+};
 export function getCourtsAvailableAtPeriodStart({
   averageMatchUpMinutes,
   includeBookingTypes,
@@ -9,7 +17,7 @@ export function getCourtsAvailableAtPeriodStart({
   periodStart,
   courts,
   date,
-}) {
+}: GetCourtsAvailableAtPeriodStartArgs) {
   const periodStartTime = timeToDate(periodStart);
   const periodEndTime = addMinutes(periodStartTime, averageMatchUpMinutes);
 

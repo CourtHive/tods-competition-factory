@@ -36,7 +36,7 @@ it('supports pro-scheduling', () => {
   result = competitionEngine.scheduleProfileRounds({ pro: true });
   expect(result.success).toEqual(true);
   expect(
-    Object.values(result.scheduledMatchUpIds).map((x) => x.length)
+    Object.values(result.scheduledMatchUpIds).map((x: any) => x.length)
   ).toEqual([24, 6, 1]);
 
   let { matchUps } = competitionEngine.allCompetitionMatchUps();
@@ -108,7 +108,7 @@ it('supports pro-scheduling', () => {
   });
   expect(result.success).toEqual(true);
   expect(
-    Object.values(result.scheduledMatchUpIds).map((x) => x.length)
+    Object.values(result.scheduledMatchUpIds).map((x: any) => x.length)
   ).toEqual([24, 6, 1]);
 
   matchUps = competitionEngine.allCompetitionMatchUps().matchUps;
