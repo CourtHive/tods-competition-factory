@@ -1,12 +1,26 @@
+import { HydratedMatchUp } from '../../../types/hydrated';
 import { getDetailsWTN } from './getDetailsWTN';
 
-export function getAvgWTN({ matchUps, drawId, eventId, eventType }) {
-  const matchUpFormats = {};
+type GetAvgWTNArgs = {
+  matchUps: HydratedMatchUp[];
+  eventType?: string;
+  eventId?: string;
+  drawId: string;
+};
+export function getAvgWTN({
+  eventType,
+  matchUps,
+  eventId,
+  drawId,
+}: GetAvgWTNArgs) {
+  const matchUpFormatCounts = {};
 
-  const countMatchUpFormat = ({ matchUpFormat }) => {
+  const countMatchUpFormat = (params) => {
+    const matchUpFormat = params?.matchUpFormat;
     if (!matchUpFormat) return;
-    if (!matchUpFormats[matchUpFormat]) matchUpFormats[matchUpFormat] = 0;
-    matchUpFormats[matchUpFormat] += 1;
+    if (!matchUpFormatCounts[matchUpFormat])
+      matchUpFormatCounts[matchUpFormat] = 0;
+    matchUpFormatCounts[matchUpFormat] += 1;
   };
   const participantsMap = matchUps
     .filter((matchUp) =>
@@ -15,7 +29,7 @@ export function getAvgWTN({ matchUps, drawId, eventId, eventType }) {
     .reduce((participants, matchUp) => {
       countMatchUpFormat(matchUp);
       (matchUp.sides || [])
-        .flatMap((side) =>
+        .flatMap((side: any) =>
           (
             side?.participant?.individualParticipants || [side?.participant]
           ).filter(Boolean)
@@ -52,10 +66,14 @@ export function getAvgWTN({ matchUps, drawId, eventId, eventType }) {
     ? wtnTotals.totalConfidence / wtnRatings.length
     : 0;
 
-  const matchUpsCount = Object.values(matchUpFormats).reduce(
-    (p, c) => (p += c || 0),
-    0
-  );
+  const counts: number[] = Object.values(matchUpFormatCounts);
+  const matchUpsCount = counts.reduce((p: number, c) => (p += c || 0), 0);
 
-  return { avgWTN, avgConfidence, matchUpFormats, matchUpsCount, pctNoRating };
+  return {
+    matchUpFormatCounts,
+    matchUpsCount,
+    avgConfidence,
+    pctNoRating,
+    avgWTN,
+  };
 }
