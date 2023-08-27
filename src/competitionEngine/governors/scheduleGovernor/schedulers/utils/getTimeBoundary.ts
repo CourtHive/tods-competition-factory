@@ -1,12 +1,19 @@
 import { getCourtDateAvailability } from '../../garman/getCourtDateAvailability';
 import { timeStringMinutes } from '../../../../../utilities/dateTime';
+import { Court } from '../../../../../types/tournamentFromSchema';
 
+type GetTimeBoundaryArgs = {
+  scheduleDate: string;
+  startTime?: boolean;
+  endTime?: boolean;
+  courts: Court[];
+};
 export function getDateTimeBoundary({
   scheduleDate,
   startTime,
   endTime,
   courts,
-}) {
+}: GetTimeBoundaryArgs) {
   const accessor =
     (startTime && 'startTime') || (endTime && 'endTime') || undefined;
   return courts.reduce((boundaryTime, court) => {
@@ -15,7 +22,8 @@ export function getDateTimeBoundary({
       court,
     });
 
-    const comparisonTime = dateAvailability?.[accessor] || court[accessor];
+    const comparisonTime =
+      accessor && (dateAvailability?.[accessor] || court[accessor]);
 
     return comparisonTime &&
       (!boundaryTime ||
