@@ -8,7 +8,7 @@ singleSetStressTests({ matchUpFormat: FORMAT_PRO_SET, setTo: 8 });
 
 it('generates appropriate high scoreString', () => {
   const matchUpFormat = FORMAT_PRO_SET;
-  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+  let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
   const values = [{ lowSide: 2, value: '3' }];
 
@@ -26,7 +26,7 @@ it('generates appropriate high scoreString', () => {
 
 it('generates appropriate high scoreString with win by 2', () => {
   const matchUpFormat = FORMAT_PRO_SET;
-  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+  let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
   const values = [{ lowSide: 2, value: '7' }];
 

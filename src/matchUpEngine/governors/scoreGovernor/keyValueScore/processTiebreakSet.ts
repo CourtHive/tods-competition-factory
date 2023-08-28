@@ -45,7 +45,7 @@ export function processTiebreakSet({
       scoreString,
     });
     const matchTiebreakScoreString =
-      scoreString.slice(lastOpenBracketIndex + 1) + (auto ? '' : value);
+      scoreString.slice((lastOpenBracketIndex ?? 0) + 1) + (auto ? '' : value);
     const matchTiebreakScores = matchTiebreakScoreString.split(
       MATCH_TIEBREAK_JOINER
     );
@@ -71,7 +71,7 @@ export function processTiebreakSet({
       lastSet.side1TiebreakScore = setScores[0];
       lastSet.side2TiebreakScore = setScores[1];
 
-      scoreString = scoreString.slice(0, lastOpenBracketIndex + 1);
+      scoreString = scoreString.slice(0, (lastOpenBracketIndex ?? 0) + 1);
       scoreString += setScores.join(MATCH_TIEBREAK_JOINER);
       updated = true;
     } else {

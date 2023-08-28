@@ -7,7 +7,7 @@ import { MATCH_TIEBREAK_JOINER } from '../constants';
 it('recognizes incomplete matchUp tiebreaks', () => {
   let info;
   const matchUpFormat = FORMAT_ATP_DOUBLES;
-  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+  let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
   const v1 = [
     { lowSide: 2, value: 3 },
@@ -39,18 +39,18 @@ it('recognizes incomplete matchUp tiebreaks', () => {
   expect(info).not.toBeUndefined();
   expect(matchUp.scoreString.trim()).toEqual(`6-3 3-6 [1`);
 
-  ({ matchUp, info } = scoreMatchUp({ value: '1', lowSide: 1, matchUp }));
+  ({ matchUp } = scoreMatchUp({ value: '1', lowSide: 1, matchUp }));
   expect(matchUp.scoreString.trim()).toEqual(
     `6-3 3-6 [11${MATCH_TIEBREAK_JOINER}13`
   );
 
-  ({ matchUp, info } = scoreMatchUp({ value: ']', matchUp }));
+  ({ matchUp } = scoreMatchUp({ value: ']', matchUp }));
   expect(matchUp.winningSide).toEqual(2);
 });
 
 it('can support 2nd set tiebreaks with 3rd set matchUp tiebreaks', () => {
   const matchUpFormat = FORMAT_ATP_DOUBLES;
-  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+  let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
   const v1 = [
     { lowSide: 2, value: '3' },
@@ -79,7 +79,7 @@ it('can support 2nd set tiebreaks with 3rd set matchUp tiebreaks', () => {
 
 it('does not allow matchUp tiebreak scores greater than 2 digits', () => {
   const matchUpFormat = FORMAT_ATP_DOUBLES;
-  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+  let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
   const values = [
     { lowSide: 2, value: '3' },
@@ -103,7 +103,7 @@ it('does not allow matchUp tiebreak scores greater than 2 digits', () => {
 
 it('can enter 0 for side 2 when matchUp tiebreak open bracket and no matchUp tiebreak scoreString', () => {
   const matchUpFormat = FORMAT_ATP_DOUBLES;
-  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+  let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
   const values = [
     { lowSide: 2, value: '3' },

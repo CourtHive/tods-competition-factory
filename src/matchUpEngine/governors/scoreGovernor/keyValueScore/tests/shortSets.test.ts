@@ -15,7 +15,7 @@ stressTests({ matchUpFormat: FORMAT_SHORT_SETS, setTo: 4 });
 
 it('can enter a straight set win for side 1', () => {
   const matchUpFormat = FORMAT_SHORT_SETS;
-  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+  let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
   ({ matchUp } = keyValueMatchUpScore({
     lowSide: 2,
@@ -54,7 +54,7 @@ it('can enter a straight set win for side 1', () => {
 
 it('can enter a straight set win for side 2', () => {
   const matchUpFormat = FORMAT_SHORT_SETS;
-  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+  let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
   ({ matchUp } = keyValueMatchUpScore({
     lowSide: 1,
@@ -93,7 +93,7 @@ it('can enter a straight set win for side 2', () => {
 
 it('can enter a three set win for side 1', () => {
   const matchUpFormat = FORMAT_SHORT_SETS;
-  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+  let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
   ({ matchUp } = keyValueMatchUpScore({
     lowSide: 1,
@@ -140,7 +140,7 @@ it('can enter a three set win for side 1', () => {
 
 it('can enter a three set win for side 2', () => {
   const matchUpFormat = FORMAT_SHORT_SETS;
-  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+  let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
   ({ matchUp } = keyValueMatchUpScore({
     lowSide: 1,
@@ -183,7 +183,7 @@ it('can enter a three set win for side 2', () => {
 
 it('can enter a first set tiebreak scoreString', () => {
   const matchUpFormat = FORMAT_SHORT_SETS;
-  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+  let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
   ({ matchUp } = keyValueMatchUpScore({
     lowSide: 2,
@@ -219,7 +219,7 @@ it('can enter a first set tiebreak scoreString', () => {
 
 it('can enter a second set tiebreak scoreString', () => {
   const matchUpFormat = FORMAT_SHORT_SETS;
-  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+  let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
   const values = [
     { lowSide: 2, value: 1 },
@@ -237,7 +237,7 @@ it('can enter a second set tiebreak scoreString', () => {
 
 it('supports space for completing tiebreak scores', () => {
   const matchUpFormat = FORMAT_SHORT_SETS;
-  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+  let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
   const values = [
     { lowSide: 2, value: 4 },
@@ -257,7 +257,7 @@ it('supports space for completing tiebreak scores', () => {
 
 it('supports three tiebreak sets', () => {
   const matchUpFormat = FORMAT_SHORT_SETS;
-  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+  let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
   const values = [
     { lowSide: 2, value: 4 },
@@ -281,7 +281,7 @@ it('supports three tiebreak sets', () => {
 
 it('can handle scoreString deletions', () => {
   const matchUpFormat = FORMAT_SHORT_SETS;
-  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+  let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
   const values = [
     { lowSide: 2, value: 2 },
@@ -300,7 +300,7 @@ it('can handle scoreString deletions', () => {
 
 it('does not allow leading zero in tiebreak scores', () => {
   const matchUpFormat = FORMAT_SHORT_SETS;
-  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+  let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
   const values = [
     { lowSide: 2, value: 4 },
@@ -322,7 +322,7 @@ it('does not allow leading zero in tiebreak scores', () => {
 
 it('does not allow more than two digits for set tiebreaks', () => {
   const matchUpFormat = FORMAT_SHORT_SETS;
-  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+  let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
   const values = [
     { lowSide: 2, value: 4 },

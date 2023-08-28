@@ -6,7 +6,7 @@ const TIMED3x10 = 'SET3-S:T10';
 
 it('can enter single timed set', () => {
   const matchUpFormat = 'SET1-S:T10';
-  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+  let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
   ({ matchUp } = keyValueMatchUpScore({ value: 2, matchUp, matchUpFormat }));
   expect(matchUp?.scoreString.trim()).toEqual('2');
@@ -23,7 +23,7 @@ it('can enter single timed set', () => {
 
 it('can enter best of three timed sets', () => {
   const matchUpFormat = TIMED3x10;
-  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+  let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
   const values = [
     { value: 3 },
@@ -47,7 +47,7 @@ it('can enter best of three timed sets', () => {
 
 it('supports adding outcomes', () => {
   const matchUpFormat = TIMED3x10;
-  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+  let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
   const values = [
     { value: 3 },
@@ -62,7 +62,7 @@ it('supports adding outcomes', () => {
 });
 it('can handle adding and removing outcome', () => {
   const matchUpFormat = TIMED3x10;
-  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+  let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
   const values = [
     { value: 3 },
@@ -88,7 +88,7 @@ it('can handle adding and removing outcome', () => {
 
 it('does not consider tied scoreString to be complete set', () => {
   const matchUpFormat = TIMED3x10;
-  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+  let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
   const values = [
     { value: 3 },
@@ -112,7 +112,7 @@ it('does not consider tied scoreString to be complete set', () => {
 
 it('handles zeros properly', () => {
   const matchUpFormat = TIMED3x10;
-  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+  let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
   const values = [
     { value: 0 },
@@ -136,7 +136,7 @@ it('handles zeros properly', () => {
 
 it('ignores leading zeroes', () => {
   const matchUpFormat = TIMED3x10;
-  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+  let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
   const values = [
     { value: 0 },
