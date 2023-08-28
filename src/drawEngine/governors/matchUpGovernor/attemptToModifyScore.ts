@@ -66,11 +66,11 @@ export function attemptToModifyScore(params) {
 function drawPositionsAssignedParticipantIds({ structure, matchUp }) {
   const { drawPositions } = matchUp;
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
-  const assignedParticipantIds = positionAssignments.filter((assignment) => {
+  const assignedParticipantIds = positionAssignments?.filter((assignment) => {
     return (
       drawPositions?.includes(assignment.drawPosition) &&
       assignment.participantId
     );
   });
-  return assignedParticipantIds.length === 2;
+  return assignedParticipantIds?.length === 2;
 }

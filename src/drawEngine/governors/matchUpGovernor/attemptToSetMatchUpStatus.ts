@@ -89,7 +89,7 @@ export function attemptToSetMatchUpStatus(params) {
 }
 
 function removeWinningSideAndSetDoubleExit(params) {
-  let result = removeDirectedParticipants(params);
+  const result = removeDirectedParticipants(params);
   if (result.error) return result;
   return doubleExitAdvancement(params);
 }
