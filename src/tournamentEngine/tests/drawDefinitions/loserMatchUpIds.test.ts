@@ -64,7 +64,7 @@ test.each([tournamentEngineSync, asyncTournamentEngine])(
 test.each([tournamentEngineSync, asyncTournamentEngine])(
   'generates loserMatchUpIds when generated playoffs are attached',
   async (tournamentEngine) => {
-    let matchUpModifyNotices = [];
+    let matchUpModifyNotices: any[] = [];
     const subscriptions = {
       modifyMatchUp: (payload) => {
         if (Array.isArray(payload)) {
@@ -158,8 +158,8 @@ test.each([tournamentEngineSync, asyncTournamentEngine])(
 test.each([tournamentEngineSync, asyncTournamentEngine])(
   'generates appropriate notifications for team matchUps',
   async (tournamentEngine) => {
-    let matchUpModifyNotices = [];
-    let addMatchUpNotices = [];
+    let matchUpModifyNotices: any[] = [];
+    let addMatchUpNotices: any[] = [];
 
     const subscriptions = {
       addMatchUps: (payload) => {

@@ -24,11 +24,11 @@ export function deleteEvents({
   if (!Array.isArray(eventIds))
     return { error: MISSING_VALUE, info: mustBeAnArray('drawIds') };
 
-  const auditTrail = [];
-  const deletedEventDetails = [];
+  const auditTrail: any[] = [];
+  const deletedEventDetails: any[] = [];
 
-  const activePairParticipantIds = [];
-  const pairParticipantIds = [];
+  const activePairParticipantIds: string[] = [];
+  const pairParticipantIds: string[] = [];
 
   tournamentRecord.events = (tournamentRecord.events || []).filter((event) => {
     if (eventIds.includes(event.eventId)) {

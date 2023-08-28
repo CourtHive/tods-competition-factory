@@ -32,6 +32,7 @@ export function assignMatchUpCourt({
     const venueId = result.venue?.venueId;
 
     assignMatchUpVenue({
+      tournamentRecords,
       tournamentRecord,
       drawDefinition,
       disableNotice,

@@ -6,7 +6,21 @@ import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_MATCHUP_ID,
 } from '../../../constants/errorConditionConstants';
+import { TournamentRecordsArgs } from '../../../types/factoryTypes';
+import {
+  DrawDefinition,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
+type AssignMatchUpVenueArgs = {
+  tournamentRecords: TournamentRecordsArgs;
+  tournamentRecord?: Tournament;
+  drawDefinition: DrawDefinition;
+  removePriorValues?: boolean;
+  disableNotice?: boolean;
+  matchUpId: string;
+  venueId?: string;
+};
 export function assignMatchUpVenue({
   removePriorValues,
   tournamentRecords,
@@ -15,7 +29,7 @@ export function assignMatchUpVenue({
   disableNotice,
   matchUpId,
   venueId,
-}) {
+}: AssignMatchUpVenueArgs) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 

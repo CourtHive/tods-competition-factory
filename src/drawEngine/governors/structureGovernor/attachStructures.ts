@@ -13,11 +13,26 @@ import {
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
 } from '../../../constants/errorConditionConstants';
+import {
+  DrawDefinition,
+  DrawLink,
+  Event,
+  Structure,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
 export function attachPlayoffStructures(params) {
   return attachStructures(params);
 }
 
+type AttachStructuresArgs = {
+  tournamentRecord?: Tournament;
+  drawDefinition: DrawDefinition;
+  matchUpModifications?: any[];
+  structures: Structure[];
+  links?: DrawLink[];
+  event?: Event;
+};
 export function attachStructures({
   matchUpModifications,
   tournamentRecord,
@@ -25,7 +40,7 @@ export function attachStructures({
   structures,
   links = [],
   event,
-}) {
+}: AttachStructuresArgs) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!Array.isArray(structures) || !Array.isArray(links))
     return { error: INVALID_VALUES };
@@ -39,11 +54,11 @@ export function attachStructures({
       link.target.roundNumber,
     ].join('|');
 
-  const existingLinkHashes = drawDefinition.links.map(linkHash);
+  const existingLinkHashes = drawDefinition.links?.map(linkHash);
 
   const duplicateLink = links.some((link) => {
     const hash = linkHash(link);
-    return existingLinkHashes.includes(hash);
+    return existingLinkHashes?.includes(hash);
   });
 
   if (duplicateLink)
@@ -54,27 +69,29 @@ export function attachStructures({
     });
 
   // TODO: ensure that all links are valid and reference structures that are/will be included in the drawDefinition
-  if (links.length) drawDefinition.links.push(...links);
+  if (links.length) drawDefinition.links?.push(...links);
 
   const generatedStructureIds = structures.map(
     ({ structureId }) => structureId
   );
-  const existingStructureIds = drawDefinition.structures.map(
+  const existingStructureIds = drawDefinition.structures?.map(
     ({ structureId }) => structureId
   );
 
   // replace any existing structures with newly generated structures
   // this is done because it is possible that a structure exists without matchUps
-  drawDefinition.structures = drawDefinition.structures.map((structure) => {
-    return generatedStructureIds.includes(structure.structureId)
-      ? structures.find(
-          ({ structureId }) => structureId === structure.structureId
-        )
-      : structure;
-  });
+  drawDefinition.structures = (drawDefinition.structures || []).map(
+    (structure) => {
+      return generatedStructureIds.includes(structure.structureId)
+        ? structures.find(
+            ({ structureId }) => structureId === structure.structureId
+          )
+        : structure;
+    }
+  ) as Structure[];
 
-  const newStructures = structures.filter(
-    ({ structureId }) => !existingStructureIds.includes(structureId)
+  const newStructures = structures?.filter(
+    ({ structureId }) => !existingStructureIds?.includes(structureId)
   );
   if (newStructures.length) drawDefinition.structures.push(...newStructures);
 
@@ -132,7 +149,7 @@ export function attachStructures({
 
     // pre-existing structures must be updated if any matchUpModifications were passed into this method
     drawDefinition.structures.forEach((structure) => {
-      if (existingStructureIds.includes(structure.structureId)) {
+      if (existingStructureIds?.includes(structure.structureId)) {
         if (structure.structures) {
           for (const subStructure of structure.structures) {
             modifyStructureMatchUps(subStructure);
