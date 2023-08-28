@@ -1,5 +1,6 @@
 import { getRoundMatchUps } from '../accessors/matchUpAccessor/getRoundMatchUps';
 import { generateRange, makeDeepCopy, unique, UUID } from '../../utilities';
+import { ensureInt } from '../../utilities/ensureInt';
 
 import { MISSING_MATCHUPS } from '../../constants/errorConditionConstants';
 import { DOUBLES, SINGLES, TEAM } from '../../constants/matchUpTypes';
@@ -42,7 +43,7 @@ export function buildDrawHierarchy({
 
   if (!Array.isArray(matchUps) || !matchUps.length) return {};
 
-  const drawPositionSort = (a, b) => parseInt(a) - parseInt(b);
+  const drawPositionSort = (a, b) => ensureInt(a) - ensureInt(b);
   const allDrawPositions = unique(
     matchUps
       .map((matchUp) => matchUp.drawPositions)
@@ -66,7 +67,7 @@ export function buildDrawHierarchy({
   const structureId = firstRoundMatchUp.structureId;
 
   const roundNumbers: number[] = roundMatchUps
-    ? Object.keys(roundMatchUps).map((r) => parseInt(r))
+    ? Object.keys(roundMatchUps).map((r) => ensureInt(r))
     : [];
   const maxRound = Math.max(...roundNumbers);
 

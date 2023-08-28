@@ -2,7 +2,22 @@ import { modifyParticipantMatchUpsCount } from '../../scheduleMatchUps/modifyPar
 import { updateTimeAfterRecovery } from '../../scheduleMatchUps/updateTimeAfterRecovery';
 import { getMatchUpId } from '../../../../../global/functions/extractors';
 import { hasSchedule } from '../../scheduleMatchUps/hasSchedule';
+import { HydratedMatchUp } from '../../../../../types/hydrated';
 
+type ProcessAlreadyScheduledMatchUpsArgs = {
+  matchUpPotentialParticipantIds: { [key: string]: string[] };
+  dateScheduledMatchUps?: HydratedMatchUp[];
+  individualParticipantProfiles: any;
+  dateScheduledMatchUpIds: string[];
+  greatestAverageMinutes?: number;
+  matchUpNotBeforeTimes: string[];
+  matchUpScheduleTimes: string[];
+  clearScheduleDates?: boolean;
+  matchUps: HydratedMatchUp[];
+  matchUpDependencies: any;
+  scheduleDate: string;
+  minutesMap: any;
+};
 export function processAlreadyScheduledMatchUps({
   matchUpPotentialParticipantIds,
   individualParticipantProfiles,
@@ -16,13 +31,15 @@ export function processAlreadyScheduledMatchUps({
   scheduleDate,
   minutesMap,
   matchUps,
-}) {
+}: ProcessAlreadyScheduledMatchUpsArgs) {
   if (!dateScheduledMatchUpIds) {
-    dateScheduledMatchUps = matchUps?.filter(
-      (matchUp) =>
-        hasSchedule(matchUp) &&
+    dateScheduledMatchUps = matchUps?.filter((matchUp) => {
+      const schedule = matchUp.schedule || {};
+      return (
+        hasSchedule({ schedule }) &&
         (!scheduleDate || matchUp.schedule.scheduledDate === scheduleDate)
-    );
+      );
+    });
 
     dateScheduledMatchUpIds = dateScheduledMatchUps.map(getMatchUpId);
   }
@@ -43,9 +60,8 @@ export function processAlreadyScheduledMatchUps({
     modifyParticipantMatchUpsCount({
       matchUpPotentialParticipantIds,
       individualParticipantProfiles,
-      scheduleDate,
-      matchUp,
       value: 1,
+      matchUp,
     });
 
     const scheduleTime = matchUp.schedule?.scheduledTime;
@@ -61,10 +77,8 @@ export function processAlreadyScheduledMatchUps({
         matchUpPotentialParticipantIds,
         matchUpNotBeforeTimes,
         matchUpDependencies,
-
-        recoveryMinutes,
         averageMatchUpMinutes,
-        scheduleDate,
+        recoveryMinutes,
         scheduleTime,
         matchUp,
       });

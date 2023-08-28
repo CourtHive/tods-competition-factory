@@ -45,7 +45,6 @@ export function attemptToSetWinningSide(params) {
     }
 
     const result = removeDirectedParticipants(params);
-
     if (result.error) return result;
   }
 

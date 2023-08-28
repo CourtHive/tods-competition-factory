@@ -3,6 +3,7 @@ import { getParticipantIds } from '../../../global/functions/extractors';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { timeStringMinutes } from '../../../utilities/dateTime';
 import { findStructure } from '../../getters/findStructure';
+import { ensureInt } from '../../../utilities/ensureInt';
 
 import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import {
@@ -18,7 +19,7 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
     const { structure } = findStructure({ drawDefinition, structureId });
     if (structure?.finishingPosition === WIN_RATIO) {
       const { roundNumber } = inContextMatchUp;
-      const nextRoundNumber = roundNumber && parseInt(roundNumber) + 1;
+      const nextRoundNumber = roundNumber && ensureInt(roundNumber) + 1;
       const matchUps = structure.matchUps || [];
       const { roundMatchUps } = getRoundMatchUps({ matchUps });
 

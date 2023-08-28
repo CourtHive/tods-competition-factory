@@ -2,6 +2,7 @@ import { processIncompleteSetScore } from './processIncompleteSetScore';
 import { keyValueTimedSetScore } from './keyValueTimedSetScore';
 import { getWinningSide, getLeadingSide } from './winningSide';
 import { arrayIndices } from '../../../../utilities/arrays';
+import { ensureInt } from '../../../../utilities/ensureInt';
 import { processTiebreakSet } from './processTiebreakSet';
 import { keyValueSetScore } from './keyValueSetScore';
 import { getScoreAnalysis } from './scoreAnalysis';
@@ -112,7 +113,7 @@ export function keyValueScore(params) {
     analysis.isTiebreakEntry &&
     !analysis.isTiebreakSet &&
     isShifted &&
-    parseInt(value) === 0
+    ensureInt(value) === 0
   ) {
     analysis.isTiebreakCloser = true;
   }
@@ -270,8 +271,8 @@ export function keyValueScore(params) {
       ...arrayIndices(open, scoreString.split(''))
     );
     const tiebreakValue = scoreString.slice(lastOpenBracketIndex + 1);
-    const hasZeroStart = tiebreakValue && parseInt(tiebreakValue) === ZERO;
-    const newTiebreakValue = parseInt(
+    const hasZeroStart = tiebreakValue && ensureInt(tiebreakValue) === ZERO;
+    const newTiebreakValue = ensureInt(
       tiebreakValue ? tiebreakValue + value : value
     );
 
@@ -301,7 +302,7 @@ export function keyValueScore(params) {
         analysis,
         lowSide,
         scoreString,
-        value: parseInt(value),
+        value: ensureInt(value),
       });
       if (set) set.setNumber = sets?.length + 1 || 1;
       sets = sets?.concat(set).filter(Boolean) || [set];

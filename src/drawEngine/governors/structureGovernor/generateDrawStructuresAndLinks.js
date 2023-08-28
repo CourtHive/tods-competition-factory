@@ -4,6 +4,7 @@ import { decorateResult } from '../../../global/functions/decorateResult';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import { definedAttributes } from '../../../utilities/objects';
 import { structureSort } from '../../getters/structureSort';
+import { ensureInt } from '../../../utilities/ensureInt';
 import { isPowerOf2 } from '../../../utilities';
 import { getGenerators } from './getGenerators';
 
@@ -175,7 +176,7 @@ export function generateDrawStructuresAndLinks(params = {}) {
   }
 
   const multiStructure = MULTI_STRUCTURE_DRAWS.includes(drawType);
-  if (parseInt(drawSize) < 4 && multiStructure) {
+  if (ensureInt(drawSize) < 4 && multiStructure) {
     if (drawTypeCoercion) {
       drawType = SINGLE_ELIMINATION;
     } else if (enforceMinimumDrawSize) {

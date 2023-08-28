@@ -12,7 +12,14 @@ import {
   dayMinutesToTimeString,
 } from '../../../../utilities/dateTime';
 
-export function getScheduleTimes(params) {
+import { ScheduleTimesResult } from '../../../../types/factoryTypes';
+import { ensureInt } from '../../../../utilities/ensureInt';
+
+export function getScheduleTimes(params): {
+  scheduleTimes: ScheduleTimesResult[];
+  totalMatchUps: number;
+  timingProfile: any;
+} {
   let {
     date = getUTCdateString(),
     startTime = '08:00',
@@ -134,8 +141,7 @@ export function getScheduleTimes(params) {
     previousAvailableCourts = availableToScheduleCount;
     cumulativeMatches += calculationDifference;
 
-    const stringifiedNumber = cumulativeMatches.toString();
-    const addToSchedule = parseInt(stringifiedNumber) - totalMatchUps;
+    const addToSchedule = ensureInt(cumulativeMatches) - totalMatchUps;
     totalMatchUps += addToSchedule;
 
     return {

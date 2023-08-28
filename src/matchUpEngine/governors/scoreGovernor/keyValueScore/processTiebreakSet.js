@@ -1,4 +1,5 @@
 import { getHighTiebreakValue, testTiebreakEntry } from './keyValueUtilities';
+import { ensureInt } from '../../../../utilities/ensureInt';
 
 import { MATCH_TIEBREAK_BRACKETS, MATCH_TIEBREAK_JOINER } from './constants';
 
@@ -23,11 +24,11 @@ export function processTiebreakSet({
   const tiebreakSet = sets[analysis.setNumber - 1];
   if (!tiebreakSet) {
     const highValue = getHighTiebreakValue({
-      lowValue: parseInt(value || 0),
+      lowValue: ensureInt(value || 0),
       tiebreakTo,
       NoAD,
     });
-    const setScores = [parseInt(value), highValue];
+    const setScores = [ensureInt(value), highValue];
     if (lowSide === 2) setScores.reverse();
     const set = {
       side1TiebreakScore: setScores[0],
@@ -61,7 +62,7 @@ export function processTiebreakSet({
       const setScores = [
         matchTiebreakScores[0] || 0,
         matchTiebreakScores[1] || 0,
-      ].map((s) => parseInt(s));
+      ].map((s) => ensureInt(s));
       const highIndex = lowSide === 1 ? 1 : 0;
       setScores[highIndex] = setScores[1 - highIndex] + (NoAD ? 1 : 2);
       if (setScores[highIndex] < tiebreakTo) setScores[highIndex] = tiebreakTo;
@@ -77,7 +78,7 @@ export function processTiebreakSet({
       const setScores = [
         matchTiebreakScores[0] || 0,
         matchTiebreakScores[1] || 0,
-      ].map((s) => parseInt(s));
+      ].map((s) => ensureInt(s));
 
       const lastSet = sets[sets.length - 1];
       lastSet.side1TiebreakScore = setScores[0];

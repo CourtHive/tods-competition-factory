@@ -11,6 +11,7 @@ import { positionTargets } from '../positionGovernor/positionTargets';
 import { getMatchUpId } from '../../../global/functions/extractors';
 import { generateTieMatchUps } from '../../generators/tieMatchUps';
 import { findStructure } from '../../getters/findStructure';
+import { ensureInt } from '../../../utilities/ensureInt';
 import { addGoesTo } from '../matchUpGovernor/addGoesTo';
 import { getSourceRounds } from './getSourceRounds';
 import { makeDeepCopy } from '../../../utilities';
@@ -119,7 +120,7 @@ export function generateAndPopulatePlayoffStructures(params) {
 
   const validRoundNumbers =
     Array.isArray(targetRoundNumbers) &&
-    targetRoundNumbers.map((p) => !isNaN(p) && parseInt(p)).filter(Boolean);
+    targetRoundNumbers.map((p) => !isNaN(p) && ensureInt(p)).filter(Boolean);
 
   if (validRoundNumbers) {
     if (!Array.isArray(validRoundNumbers))

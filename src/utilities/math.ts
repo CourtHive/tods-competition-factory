@@ -1,3 +1,5 @@
+import { ensureInt } from './ensureInt';
+
 export function isPowerOf2(n?) {
   if (isNaN(n)) return false;
   return n && (n & (n - 1)) === 0;
@@ -27,7 +29,7 @@ export function isNumeric(value) {
 }
 
 export function isOdd(num) {
-  const numInt = parseInt(num);
+  const numInt = ensureInt(num);
   if (isNaN(numInt)) return undefined;
   if (numInt === 0) return false;
   return (numInt & -numInt) === 1;

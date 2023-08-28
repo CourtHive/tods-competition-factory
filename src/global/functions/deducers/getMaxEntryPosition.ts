@@ -1,3 +1,5 @@
+import { ensureInt } from '../../../utilities/ensureInt';
+
 export function getMaxEntryPosition(params) {
   const { entries = [], entryStatus, stage } = params;
   return Math.max(
@@ -8,7 +10,7 @@ export function getMaxEntryPosition(params) {
           (!entryStatus || entry.entryStatus === entryStatus) &&
           !isNaN(entry.entryPosition)
       )
-      .map(({ entryPosition }) => parseInt(entryPosition || 0)),
+      .map(({ entryPosition }) => ensureInt(entryPosition || 0)),
     0
   );
 }

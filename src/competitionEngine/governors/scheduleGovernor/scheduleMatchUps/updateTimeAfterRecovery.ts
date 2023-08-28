@@ -1,4 +1,5 @@
 import { processNextMatchUps } from './processNextMatchUps';
+import { ensureInt } from '../../../../utilities/ensureInt';
 import {
   addParticipantPotentialRecovery,
   checkParticipantProfileInitialization,
@@ -8,25 +9,36 @@ import {
   extractTime,
 } from '../../../../utilities/dateTime';
 
-export function updateTimeAfterRecovery({
-  individualParticipantProfiles,
+import { HydratedMatchUp } from '../../../../types/hydrated';
 
+type UpdateTimeAfterRecoveryArgs = {
+  matchUpPotentialParticipantIds: { [key: string]: string[] };
+  matchUpNotBeforeTimes: { [key: string]: any };
+  matchUpDependencies: { [key: string]: any };
+  typeChangeRecoveryMinutes?: string;
+  individualParticipantProfiles: any;
+  averageMatchUpMinutes?: number;
+  recoveryMinutes?: number;
+  scheduleTime: string;
+  matchUp: HydratedMatchUp;
+};
+export function updateTimeAfterRecovery({
   matchUpPotentialParticipantIds,
+  individualParticipantProfiles,
+  typeChangeRecoveryMinutes,
+  averageMatchUpMinutes = 0,
   matchUpNotBeforeTimes,
   matchUpDependencies,
-
-  averageMatchUpMinutes = 0,
-  typeChangeRecoveryMinutes,
   recoveryMinutes = 0,
   scheduleTime,
   matchUp,
-}) {
+}: UpdateTimeAfterRecoveryArgs) {
   const endTime = extractTime(matchUp?.schedule?.endTime);
   const timeAfterRecovery = endTime
-    ? addMinutesToTimeString(endTime, parseInt(recoveryMinutes))
+    ? addMinutesToTimeString(endTime, ensureInt(recoveryMinutes))
     : addMinutesToTimeString(
         scheduleTime,
-        parseInt(averageMatchUpMinutes) + parseInt(recoveryMinutes)
+        ensureInt(averageMatchUpMinutes) + ensureInt(recoveryMinutes)
       );
 
   const typeChangeTimeAfterRecovery =
@@ -35,7 +47,8 @@ export function updateTimeAfterRecovery({
       ? addMinutesToTimeString(extractTime(endTime), typeChangeRecoveryMinutes)
       : addMinutesToTimeString(
           scheduleTime,
-          parseInt(averageMatchUpMinutes) + parseInt(typeChangeRecoveryMinutes)
+          ensureInt(averageMatchUpMinutes) +
+            ensureInt(typeChangeRecoveryMinutes)
         ));
   const participantIdDependencies =
     matchUpDependencies?.[matchUp.matchUpId]?.participantIds || [];

@@ -7,6 +7,7 @@ import { decorateResult } from '../../../global/functions/decorateResult';
 import { scheduledMatchUpDate } from '../../accessors/matchUpAccessor';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { isConvertableInteger } from '../../../utilities/math';
+import { ensureInt } from '../../../utilities/ensureInt';
 import { addMatchUpTimeItem } from './timeItems';
 import {
   addMatchUpScheduledTime,
@@ -352,7 +353,7 @@ export function addMatchUpCourtOrder({
   if (courtOrder && !isConvertableInteger(courtOrder))
     return { error: INVALID_VALUES, info: 'courtOrder must be numeric' };
 
-  const itemValue = parseInt(courtOrder);
+  const itemValue = ensureInt(courtOrder);
   const timeItem = {
     itemType: COURT_ORDER,
     itemValue,

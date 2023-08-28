@@ -6,11 +6,24 @@ import {
   addMinutesToTimeString,
   extractTime,
 } from '../../../../../utilities/dateTime';
+
+import { Tournament } from '../../../../../types/tournamentFromSchema';
+import { HydratedMatchUp } from '../../../../../types/hydrated';
 import {
   MISSING_MATCHUPS,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../../../../constants/errorConditionConstants';
 
+type GenerateBookingsArgs = {
+  tournamentRecords: { [key: string]: Tournament };
+  dateScheduledMatchUps?: HydratedMatchUp[];
+  defaultRecoveryMinutes?: number;
+  averageMatchUpMinutes?: number;
+  matchUps?: HydratedMatchUp;
+  periodLength?: number;
+  scheduleDate?: string;
+  venueIds?: string[];
+};
 export function generateBookings({
   defaultRecoveryMinutes = 0,
   averageMatchUpMinutes = 90,
@@ -20,7 +33,7 @@ export function generateBookings({
   periodLength,
   scheduleDate,
   matchUps,
-}) {
+}: GenerateBookingsArgs) {
   if (typeof tournamentRecords !== 'object')
     return { error: MISSING_TOURNAMENT_RECORDS };
 
