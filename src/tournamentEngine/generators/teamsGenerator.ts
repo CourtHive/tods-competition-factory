@@ -102,7 +102,7 @@ export function generateTeamsFromParticipantAttribute({
     .filter(Boolean);
 
   let participantsAdded = 0;
-  const newParticipants = [];
+  const newParticipants: any[] = [];
   Object.keys(teams).forEach((attributeValue) => {
     const participant = teams[attributeValue];
     const { participantId } = participant;

@@ -14,7 +14,7 @@ export function getSeedValue({ participant, drawId, event }) {
   ].filter(Boolean);
 
   for (const scaleName of potentialScaleNames) {
-    let result = participantScaleItem({
+    const result = participantScaleItem({
       scaleAttributes: {
         eventType: event?.eventType,
         scaleType: SEEDING,

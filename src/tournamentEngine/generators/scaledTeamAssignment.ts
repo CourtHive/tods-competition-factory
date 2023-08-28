@@ -23,6 +23,11 @@ import {
   INDIVIDUAL,
   TEAM_PARTICIPANT,
 } from '../../constants/participantConstants';
+import {
+  Event,
+  Participant,
+  Tournament,
+} from '../../types/tournamentFromSchema';
 
 /*
 scaledParticipants are equivalent to scaledEntries
@@ -37,6 +42,20 @@ the parameter is generalized... as long as there is a `participantId` and a `sca
 scaleAttributes can include { accessor: 'attribute' } which will return scaleItem.scaleValue[accessor] for scaleValue
 */
 
+type ScaledTeamAssignmentArgs = {
+  clearExistingAssignments?: boolean;
+  individualParticipantIds?: string[];
+  reverseAssignmentOrder?: boolean;
+  initialTeamIndex?: number;
+  scaledParticipants?: any[];
+  teamParticipantIds?: string[];
+  tournamentRecord: Tournament;
+  scaleAttributes?: any;
+  teamNameBase?: string;
+  teamsCount?: number;
+  eventId?: string;
+  event?: Event;
+};
 export function scaledTeamAssignment({
   clearExistingAssignments = true, // by default remove all existing individualParticipantIds from targeted teams
   individualParticipantIds, // if scaledParticipants are provided, individualParticipants is ignored
@@ -50,7 +69,7 @@ export function scaledTeamAssignment({
   teamsCount, // optional - derived from teamParticipantIds (if provided) - create # of teams if teamParticipantIds provided are insufficient
   eventId, // optional - source teamParticipantIds from DIRECT_ACCEPTANCE participants in a TEAM event
   event, // supplied automatically by tournamentEngine
-}) {
+}: ScaledTeamAssignmentArgs) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (
     (!Array.isArray(teamParticipantIds) &&
@@ -73,8 +92,8 @@ export function scaledTeamAssignment({
 
   if (eventId && !teamParticipantIds) {
     if (event?.eventType !== TEAM_EVENT) return { error: INVALID_EVENT_TYPE };
-    teamParticipantIds = event.entries
-      .filter(({ entryStatus }) => entryStatus === DIRECT_ACCEPTANCE)
+    teamParticipantIds = event?.entries
+      ?.filter(({ entryStatus }) => entryStatus === DIRECT_ACCEPTANCE)
       .map(getParticipantId);
   }
 
@@ -90,17 +109,18 @@ export function scaledTeamAssignment({
     scaledParticipants.map(({ participantId }) => participantId);
 
   if (reverseAssignmentOrder) {
-    teamParticipantIds.reverse();
+    teamParticipantIds?.reverse();
     initialTeamIndex += 1; // ensures that the targeted team remains the first team to receive an assignment
   }
-  if (initialTeamIndex > teamParticipantIds?.length - 1) initialTeamIndex = 0;
+  if (initialTeamIndex > (teamParticipantIds?.length || 0) - 1)
+    initialTeamIndex = 0;
 
   const orderedTeamParticipantIds =
     teamParticipantIds
       ?.slice(initialTeamIndex)
       .concat(...teamParticipantIds.slice(0, initialTeamIndex)) || [];
 
-  const relevantTeams = [];
+  const relevantTeams: any[] = [];
   // build up an array of targeted TEAM participants
   for (const participant of tournamentRecord.participants || []) {
     const { participantId, participantType } = participant;
@@ -113,11 +133,11 @@ export function scaledTeamAssignment({
   if (teamsCount && relevantTeams.length < teamsCount) {
     const addCount = teamsCount - (relevantTeams?.length || 0);
     const nameBase = teamNameBase || 'Team';
-    let teamParticipants = generateRange(0, addCount).map((i) => ({
+    const teamParticipants = generateRange(0, addCount).map((i) => ({
       participantName: `${nameBase} ${i + 1}`,
       participantType: TEAM_PARTICIPANT,
       participantRole: COMPETITOR,
-    }));
+    })) as Participant[];
 
     const { participants = [] } = addParticipants({
       participants: teamParticipants,
@@ -125,9 +145,10 @@ export function scaledTeamAssignment({
       tournamentRecord,
     });
     const addedParticipantIds = participants.map(getParticipantId);
-    const addedParticipants = tournamentRecord.participants.filter(
-      ({ participantId }) => addedParticipantIds.includes(participantId)
-    );
+    const addedParticipants =
+      tournamentRecord.participants?.filter(({ participantId }) =>
+        addedParticipantIds.includes(participantId)
+      ) ?? [];
     relevantTeams.push(...addedParticipants);
   }
 

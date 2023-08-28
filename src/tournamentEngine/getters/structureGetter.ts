@@ -9,6 +9,7 @@ import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../constants/errorConditionConstants';
+import { Structure } from '../../types/tournamentFromSchema';
 
 export function getPlayoffStructures({ drawDefinition, structureId }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
@@ -39,7 +40,7 @@ export function getEventStructures({
 }) {
   if (!event) return { error: MISSING_EVENT };
   const stageStructures = {};
-  const structures = [];
+  const structures: Structure[] = [];
 
   for (const drawDefinition of event.drawDefinitions || []) {
     const { structures: drawStructures, stageStructures: drawStageStructures } =
@@ -76,7 +77,7 @@ export function getTournamentStructures({
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   const stageStructures = {};
-  const structures = [];
+  const structures: Structure[] = [];
 
   for (const event of tournamentRecord.events || []) {
     const {
@@ -92,7 +93,7 @@ export function getTournamentStructures({
       stage,
     });
 
-    structures.push(...eventStructures);
+    if (eventStructures) structures.push(...eventStructures);
     if (eventStageStructures) {
       for (const stage of Object.keys(eventStageStructures)) {
         if (!stageStructures[stage]) stageStructures[stage] = [];
