@@ -13,12 +13,12 @@ import {
 
 // node --expose-gc ./node_modules/.bin/jest --runInBand --logHeapUsage --watch madness
 it('withOpponents adds appropriate opponents', () => {
-  let tournamentRecordJSON = fs.readFileSync(
+  const tournamentRecordJSON = fs.readFileSync(
     './src/global/testHarness/teamMadness.tods.json',
     'utf-8'
   );
 
-  let tournamentRecord = JSON.parse(tournamentRecordJSON);
+  const tournamentRecord = JSON.parse(tournamentRecordJSON);
   mocksEngine.anonymizeTournamentRecord({ tournamentRecord });
   tournamentEngine.setState(tournamentRecord);
 
@@ -159,7 +159,7 @@ it('returns expected opponents for withOpponents', () => {
   expect(matchUps.length).toEqual(0);
   expect(participant.opponents?.length).toBeUndefined();
 
-  let { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   const { positionAssignments } = drawDefinition.structures[0];
   const assignParticipants = (dualMatchUp) => {
     const singlesMatchUps = dualMatchUp.tieMatchUps.filter(
@@ -191,7 +191,7 @@ it('returns expected opponents for withOpponents', () => {
     });
   };
 
-  let { matchUps: firstRoundDualMatchUps } =
+  const { matchUps: firstRoundDualMatchUps } =
     tournamentEngine.allTournamentMatchUps({
       matchUpFilters: {
         matchUpTypes: [TEAM],

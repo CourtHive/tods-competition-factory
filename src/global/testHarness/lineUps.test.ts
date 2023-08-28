@@ -3,12 +3,12 @@ import { expect, it } from 'vitest';
 import fs from 'fs';
 
 it('can get competitionScheduleMatchUps', () => {
-  let tournamentRecordJSON = fs.readFileSync(
+  const tournamentRecordJSON = fs.readFileSync(
     './src/global/testHarness/lineUps.tods.json',
     'utf-8'
   );
 
-  let tournamentRecord = JSON.parse(tournamentRecordJSON);
+  const tournamentRecord = JSON.parse(tournamentRecordJSON);
   tournamentEngine.setState(tournamentRecord);
 
   const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(

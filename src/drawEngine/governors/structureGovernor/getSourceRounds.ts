@@ -81,13 +81,15 @@ export function getSourceRounds({
   });
 
   // determine which rounds produced played off positions
-  const playedOffSourceRounds = Object.values(playedOffRoundsMap)
-    .reduce((rounds: any[], round: any) => {
-      return rounds.includes(round.roundNumber)
-        ? rounds
-        : rounds.concat(round.roundNumber);
-    }, [])
-    .map((round) => ensureInt(round));
+  const playedOffSourceRounds = playedOffRoundsMap
+    ? Object.values(playedOffRoundsMap)
+        .reduce((rounds: any[], round: any) => {
+          return rounds.includes(round.roundNumber)
+            ? rounds
+            : rounds.concat(round.roundNumber);
+        }, [])
+        .map((round) => ensureInt(round))
+    : [];
 
   // available playoffSourceRounds are those relevantPlayoffSourceRounds which are not included in playoffSourceRounds
   const playoffSourceRounds = relevantPlayoffSourceRounds

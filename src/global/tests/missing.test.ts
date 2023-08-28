@@ -158,7 +158,6 @@ it.each([scaleEngineSync, asyncScaleEngine])(
   async (scaleEngine) => {
     const scaleEngineMethods = Object.keys(scaleEngine);
     for (const method of scaleEngineMethods) {
-      await scaleEngine.reset();
       const result = await scaleEngine[method]();
       if (!result) {
         // covers methods which are expected to return boolean

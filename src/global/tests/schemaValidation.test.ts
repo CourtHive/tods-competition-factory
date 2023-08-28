@@ -17,14 +17,16 @@ import {
 } from '../../constants/drawDefinitionConstants';
 
 const ajv = new Ajv({ allowUnionTypes: true, verbose: true, allErrors: true });
-ajv.addFormat('date-time', (dateTime) => {
-  if (typeof dateTimeString === 'object') dateTime = dateTime.toISOString();
+ajv.addFormat('date-time', (dateTime: any) => {
+  if (typeof dateTime === 'object') dateTime = dateTime.toISOString();
   return !isNaN(Date.parse(dateTime));
 });
 addFormats(ajv);
 
 const schema = JSON.parse(
-  fs.readFileSync('./src/global/schema/tournament.schema.json', 'UTF-8')
+  fs.readFileSync('./src/global/schema/tournament.schema.json', {
+    encoding: 'utf8',
+  })
 );
 const validate = ajv.compile(schema);
 
@@ -38,7 +40,9 @@ it.each(filenames)(
   'can validate all tods files in testHarness directory',
   (filename) => {
     const data = JSON.parse(
-      fs.readFileSync(`./src/global/testHarness/${filename}`, 'UTF-8')
+      fs.readFileSync(`./src/global/testHarness/${filename}`, {
+        encoding: 'utf8',
+      })
     );
     const result = validate(data);
 

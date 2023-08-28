@@ -9,63 +9,55 @@ import {
 } from '../../constants/matchUpStatusConstants';
 
 it('WO/WO advances SF player to F and sets winningSide', () => {
-  let tournamentRecordJSON = fs.readFileSync(
+  const tournamentRecordJSON = fs.readFileSync(
     './src/global/testHarness/tournamentOne.tods.json',
     'utf-8'
   );
 
-  let tournamentRecord = JSON.parse(tournamentRecordJSON);
+  const tournamentRecord = JSON.parse(tournamentRecordJSON);
 
   tournamentEngine.setState(tournamentRecord);
 
-  let { matchUps } = tournamentEngine.allTournamentMatchUps({
+  const { matchUps } = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: { matchUpStatuses: [TO_BE_PLAYED] },
   });
 
-  let targetMatchUp = matchUps.find(
+  const targetMatchUp = matchUps.find(
     ({ stage, roundNumber, roundPosition }) =>
       stage === CONSOLATION && roundNumber === 4 && roundPosition === 2
   );
   const { drawId, matchUpId } = targetMatchUp;
-  let result = tournamentEngine.setMatchUpStatus({
-    drawId,
-    matchUpId: matchUpId,
+  const result = tournamentEngine.setMatchUpStatus({
     outcome: { matchUpStatus: DOUBLE_WALKOVER },
+    matchUpId: matchUpId,
+    drawId,
   });
   expect(result.success).toEqual(true);
-
-  ({ matchUps } = tournamentEngine.allTournamentMatchUps());
-
-  targetMatchUp = matchUps.find(({ roundName }) => roundName === 'C-F');
 });
 
 it('WO/WO advances SF player to F and sets winningSide', () => {
-  let tournamentRecordJSON = fs.readFileSync(
+  const tournamentRecordJSON = fs.readFileSync(
     './src/global/testHarness/tournamentTwo.tods.json',
     'utf-8'
   );
 
-  let tournamentRecord = JSON.parse(tournamentRecordJSON);
+  const tournamentRecord = JSON.parse(tournamentRecordJSON);
 
   tournamentEngine.setState(tournamentRecord);
 
-  let { matchUps } = tournamentEngine.allTournamentMatchUps({
+  const { matchUps } = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: { matchUpStatuses: [TO_BE_PLAYED] },
   });
 
-  let targetMatchUp = matchUps.find(
+  const targetMatchUp = matchUps.find(
     ({ stage, roundNumber, roundPosition }) =>
       stage === CONSOLATION && roundNumber === 4 && roundPosition === 2
   );
   const { drawId, matchUpId } = targetMatchUp;
-  let result = tournamentEngine.setMatchUpStatus({
-    drawId,
-    matchUpId: matchUpId,
+  const result = tournamentEngine.setMatchUpStatus({
     outcome: { matchUpStatus: DOUBLE_WALKOVER },
+    matchUpId: matchUpId,
+    drawId,
   });
   expect(result.success).toEqual(true);
-
-  ({ matchUps } = tournamentEngine.allTournamentMatchUps());
-
-  targetMatchUp = matchUps.find(({ roundName }) => roundName === 'C-F');
 });

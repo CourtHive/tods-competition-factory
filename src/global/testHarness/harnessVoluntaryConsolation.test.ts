@@ -3,7 +3,7 @@ import { expect, it } from 'vitest';
 import fs from 'fs';
 
 it('voluntary consolation test', () => {
-  let tournamentRecordJSON = fs.readFileSync(
+  const tournamentRecordJSON = fs.readFileSync(
     './src/global/testHarness/voluntaryConsolation.tods.json',
     'utf-8'
   );
@@ -14,15 +14,12 @@ it('voluntary consolation test', () => {
 
   const drawId = tournamentRecord.events[1].drawDefinitions[0].drawId;
 
-  let { eligibleParticipants, losingParticipantIds } =
-    tournamentEngine.getEligibleVoluntaryConsolationParticipants({ drawId });
-
-  ({ eligibleParticipants, losingParticipantIds } =
+  const { eligibleParticipants, losingParticipantIds } =
     tournamentEngine.getEligibleVoluntaryConsolationParticipants({
       requirePlay: false,
       matchUpsLimit: 1,
       drawId,
-    }));
+    });
 
   expect(losingParticipantIds.length).toEqual(3);
   expect(eligibleParticipants.length).toEqual(3);

@@ -11,7 +11,7 @@ async function getAllTimers(delay = 1000) {
 }
 
 it('can keep time for various processes', async () => {
-  let result = timeKeeper();
+  let result: any = timeKeeper();
   expect(result.elapsedTime).toEqual(0);
   expect(result.startTime).not.toBeUndefined();
 
@@ -40,10 +40,10 @@ it('can keep time for various processes', async () => {
 
   result = timeKeeper('stop', 'firstTimer');
   expect(result.state).toEqual('stopped');
-  let firstTimerElapsedTime = result.elapsedTime;
+  const firstTimerElapsedTime = result.elapsedTime;
 
   // now add 2 seconds to all running timers
-  result = await getAllTimers(2000);
+  await getAllTimers(2000);
 
   result = timeKeeper('report', 'secondTimer');
   expect(+result.elapsedTime).toBeGreaterThan(firstTimerElapsedTime);
@@ -57,7 +57,7 @@ it('can keep time for various processes', async () => {
   expect(result.state).toEqual('active');
 
   // now add 1/2 second to all running timers
-  result = await getAllTimers(500);
+  await getAllTimers(500);
 
   result = timeKeeper('report', 'firstTimer');
   expect(+result.elapsedTime).toBeGreaterThan(firstTimerElapsedTime);

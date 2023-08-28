@@ -107,7 +107,7 @@ export function drawMatic({
     let scaleValue = getScaleValue({ eventType, participant });
     // if no dynamic value found and a seeding scaleValue is provided...
     if (!scaleValue && scaleName) {
-      scaleValue = getScaleValue({ scaleValue, eventType, participant });
+      scaleValue = getScaleValue({ scaleName, eventType, participant });
     }
     if (scaleValue) adHocRatings[participantId] = scaleValue;
   }

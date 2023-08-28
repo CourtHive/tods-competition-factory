@@ -104,7 +104,7 @@ it('can add a participant to a partial pair with a Substitute', () => {
   let result = tournamentEngine.setState(tournament);
   expect(result.success).toEqual(true);
 
-  let params = {
+  const params = {
     participantId: '32b181af-0f31-4b97-881b-4e9caa4180de',
     tieMatchUpId: '69b0156b-3cb1-4e0a-b148-8d796e2929c4',
     drawId: '21d8e860-41d8-4b2d-8f79-94c5758e2ad2',

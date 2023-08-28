@@ -20,15 +20,15 @@ test('can properly analyze standard advantage sets with tiebreak', () => {
   expect(isValidSetOutcome).toEqual(undefined);
   expect(analysis.isValidSet).toEqual(undefined);
 
-  let setObject = { setNumber: 1, side1Score: 6, side2Score: 3 };
+  let setObject: any = { setNumber: 1, side1Score: 6, side2Score: 3 };
   analysis = analyzeSet({ setObject, matchUpScoringFormat });
-  ({ standardSetError: error, isValidSetOutcome } = analysis);
+  ({ isValidSetOutcome } = analysis);
   expect(analysis.isValidSet).toEqual(true);
   expect(isValidSetOutcome).toEqual(false);
 
   setObject = { setNumber: 1, side1Score: 6, side2Score: 3, winningSide: 1 };
   analysis = analyzeSet({ setObject, matchUpScoringFormat });
-  ({ standardSetError: error, isValidSetOutcome } = analysis);
+  ({ isValidSetOutcome } = analysis);
   expect(analysis.isValidSet).toEqual(true);
   expect(isValidSetOutcome).toEqual(true);
 
@@ -156,6 +156,7 @@ test('can properly analyze final sets with no advantage and no tiebreak', () => 
   const matchUpFormat = FORMAT_WIMBLEDONE_2018;
   const matchUpScoringFormat = parse(matchUpFormat);
 
+  let error;
   let setObject = {
     setNumber: 5,
     side1Score: 12,
@@ -163,13 +164,13 @@ test('can properly analyze final sets with no advantage and no tiebreak', () => 
     winningSide: 1,
   };
   let analysis = analyzeSet({ setObject, matchUpScoringFormat });
-  let { standardSetError: error, isValidSetOutcome } = analysis;
+  let { isValidSetOutcome } = analysis;
   expect(analysis.isValidSet).toEqual(true);
   expect(isValidSetOutcome).toEqual(true);
 
   setObject = { setNumber: 5, side1Score: 3, side2Score: 6, winningSide: 2 };
   analysis = analyzeSet({ setObject, matchUpScoringFormat });
-  ({ standardSetError: error, isValidSetOutcome } = analysis);
+  ({ isValidSetOutcome } = analysis);
   expect(analysis.isValidSetNumber).toEqual(true);
   expect(analysis.isValidSet).toEqual(true);
   expect(isValidSetOutcome).toEqual(true);

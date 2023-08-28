@@ -208,7 +208,7 @@ test('generate incomplete scoreString string', () => {
 });
 
 it('returns empty string when no sets', () => {
-  let sets = [];
+  let sets: any[] = [];
   let result = generateScoreString({ sets, autoComplete: false });
   expect(result).toEqual('');
 
@@ -260,7 +260,7 @@ it('returns empty string when no sets', () => {
 });
 
 it('handles zero', () => {
-  let sets = [];
+  let sets: any[] = [];
   let result = generateScoreString({ sets, autoComplete: false });
   expect(result).toEqual('');
 

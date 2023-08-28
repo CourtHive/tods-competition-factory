@@ -1,10 +1,17 @@
 import { generateScoreString } from '../../generators/generateScoreString';
 import { definedAttributes } from '../../../utilities';
 
-import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
+import {
+  ErrorType,
+  MISSING_VALUE,
+} from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
-export function reverseScore(params) {
+export function reverseScore(params?): {
+  reversedScore?: any;
+  success?: boolean;
+  error?: ErrorType;
+} {
   if (!params?.score) return { error: MISSING_VALUE };
   const { sets } = params.score;
   const reversedSets = sets.map((set) => {
