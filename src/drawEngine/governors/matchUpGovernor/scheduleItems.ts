@@ -49,6 +49,8 @@ import {
   SCHEDULED_DATE,
   COURT_ORDER,
 } from '../../../constants/timeItemConstants';
+import { HydratedMatchUp } from '../../../types/hydrated';
+import { DrawDefinition, Event } from '../../../types/tournamentFromSchema';
 
 function timeDate(value, scheduledDate) {
   const time = validTimeString.test(value) ? value : extractTime(value);
@@ -56,8 +58,24 @@ function timeDate(value, scheduledDate) {
     extractDate(value) || extractDate(scheduledDate) || formatDate(new Date());
 
   // doesn't matter if this is invalid due to undefined time because this is used for sorting only
-  return new Date(`${date}T${time}`);
+  return new Date(`${date}T${time}`).getTime();
 }
+
+type AddMatchUpScheduleItemsArgs = {
+  inContextMatchUps?: HydratedMatchUp[];
+  drawMatchUps?: HydratedMatchUp[];
+  drawDefinition: DrawDefinition;
+  errorOnAnachronism?: boolean;
+  removePriorValues?: boolean;
+  checkChronology?: boolean;
+  matchUpDependencies?: any;
+  disableNotice?: boolean;
+  tournamentRecords: any;
+  tournamentRecord: any;
+  matchUpId: string;
+  schedule: any;
+  event?: Event;
+};
 
 export function addMatchUpScheduleItems({
   errorOnAnachronism = false,
@@ -73,7 +91,7 @@ export function addMatchUpScheduleItems({
   matchUpId,
   schedule,
   event,
-}) {
+}: AddMatchUpScheduleItemsArgs) {
   if (!schedule) return { error: MISSING_VALUE, info: 'Missing schedule' };
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
@@ -115,7 +133,7 @@ export function addMatchUpScheduleItems({
   const priorMatchUpIds = matchUpDependencies?.[matchUpId]?.matchUpIds;
   if (schedule.scheduledDate && checkChronology && priorMatchUpIds) {
     const priorMatchUpTimes = inContextMatchUps
-      .filter(
+      ?.filter(
         (matchUp) =>
           (matchUp.schedule?.scheduledDate ||
             extractDate(matchUp.schedule?.scheduledTime)) &&
@@ -173,7 +191,6 @@ export function addMatchUpScheduleItems({
       drawDefinition,
       matchUpId,
       startTime,
-      matchUp,
       event,
     });
     if (result?.error)
@@ -187,7 +204,6 @@ export function addMatchUpScheduleItems({
       drawDefinition,
       matchUpId,
       stopTime,
-      matchUp,
       event,
     });
     if (result?.error)
@@ -201,7 +217,6 @@ export function addMatchUpScheduleItems({
       drawDefinition,
       resumeTime,
       matchUpId,
-      matchUp,
       event,
     });
     if (result?.error)
@@ -215,7 +230,6 @@ export function addMatchUpScheduleItems({
       drawDefinition,
       matchUpId,
       endTime,
-      matchUp,
       event,
     });
     if (result?.error)
@@ -266,7 +280,6 @@ export function addMatchUpScheduleItems({
     const result = addMatchUpCourtOrder({
       disableNotice: true,
       removePriorValues,
-      tournamentRecords,
       tournamentRecord,
       drawDefinition,
       courtOrder,
@@ -280,7 +293,6 @@ export function addMatchUpScheduleItems({
     const result = addMatchUpTimeModifiers({
       disableNotice: true,
       removePriorValues,
-      tournamentRecords,
       tournamentRecord,
       drawDefinition,
       timeModifiers,

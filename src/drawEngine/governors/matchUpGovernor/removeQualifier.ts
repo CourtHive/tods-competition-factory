@@ -8,7 +8,6 @@ import { DRAW } from '../../../constants/drawDefinitionConstants';
 import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 
 export function removeQualifier(params) {
-  const stack = 'removeQualifier';
   let qualifierRemoved;
   const { inContextDrawMatchUps, inContextMatchUp, drawDefinition } = params;
 
@@ -47,7 +46,7 @@ export function removeQualifier(params) {
           structure,
         }).positionAssignments;
 
-        for (const positionAssignment of positionAssignments) {
+        for (const positionAssignment of positionAssignments || []) {
           if (
             positionAssignment.participantId === previousWinningParticipantId
           ) {
@@ -59,7 +58,7 @@ export function removeQualifier(params) {
             } else if (structure.structures) {
               const assignmentMap = Object.assign(
                 {},
-                ...positionAssignments.map((assignment) => ({
+                ...(positionAssignments || []).map((assignment) => ({
                   [assignment.drawPosition]: assignment.participantId,
                 }))
               );
@@ -77,7 +76,6 @@ export function removeQualifier(params) {
               tournamentId: params.tournamentRecord?.tournamentId,
               event: params.event,
               drawDefinition,
-              source: stack,
               structure,
             });
             qualifierRemoved = true;

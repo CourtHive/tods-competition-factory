@@ -190,11 +190,11 @@ type RemvoveDirectedWinnerArgs = {
   winnerMatchUp: HydratedMatchUp;
   dualMatchUp?: HydratedMatchUp;
   tournamentRecord?: Tournament;
+  winnerParticipantId?: string;
   drawDefinition: DrawDefinition;
   sourceMatchUpStatus?: string;
   winningDrawPosition: number;
-  winnerParticipantId: string;
-  winnerTargetLink: DrawLink;
+  winnerTargetLink?: DrawLink;
   matchUpsMap?: MatchUpsMap;
   sourceMatchUpId?: string;
   event?: Event;

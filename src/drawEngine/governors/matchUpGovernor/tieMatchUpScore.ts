@@ -7,7 +7,10 @@ import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { isActiveMatchUp } from '../../getters/activeMatchUp';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 
-import { INVALID_MATCHUP } from '../../../constants/errorConditionConstants';
+import {
+  ErrorType,
+  INVALID_MATCHUP,
+} from '../../../constants/errorConditionConstants';
 import { DISABLE_AUTO_CALC } from '../../../constants/extensionConstants';
 import { MatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -42,7 +45,14 @@ export function updateTieMatchUpScore({
   matchUpsMap,
   matchUpId,
   event,
-}: UpdateTieMatchUpScoreArgs) {
+}: UpdateTieMatchUpScoreArgs): {
+  removeWinningSide?: boolean;
+  tieFormatRemoved?: boolean;
+  winningSide?: number;
+  error?: ErrorType;
+  success?: boolean;
+  score?: any;
+} {
   const result = findMatchUp({ drawDefinition, event, matchUpId });
   if (result.error) return result;
 

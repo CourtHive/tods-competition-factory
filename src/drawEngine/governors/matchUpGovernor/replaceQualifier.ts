@@ -3,15 +3,13 @@ import { getPositionAssignments } from '../../getters/positionsGetter';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { findStructure } from '../../getters/findStructure';
 import { isActiveDownstream } from './isActiveDownstream';
-import { randomMember } from '../../../utilities';
 
 import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { DRAW } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
-export function placeQualifier(params) {
-  const stack = 'placeQualifier';
-  let qualifierPlaced;
+export function replaceQualifier(params) {
+  let qualifierReplaced;
   const {
     inContextDrawMatchUps,
     inContextMatchUp,
@@ -22,20 +20,19 @@ export function placeQualifier(params) {
   const winnerTargetLink = params.targetData.targetLinks?.winnerTargetLink;
 
   if (winnerTargetLink.target.feedProfile === DRAW) {
-    const winningQualifierId = inContextMatchUp.sides.find(
-      ({ sideNumber }) => sideNumber === winningSide
-    )?.participantId;
-
-    const mainDrawQualifierMatchUps = inContextDrawMatchUps.filter(
+    const previousWinningParticipantId = inContextMatchUp.sides.find(
+      ({ sideNumber }) => sideNumber !== winningSide
+    ).participantId;
+    const mainDrawTargetMatchUp = inContextDrawMatchUps.find(
       (m) =>
         m.structureId === winnerTargetLink.target.structureId &&
         m.roundNumber === winnerTargetLink.target.roundNumber &&
         m.sides.some(
-          ({ participantId, qualifier }) => qualifier && !participantId
+          ({ participantId }) => participantId === previousWinningParticipantId
         )
     );
-    const mainDrawTargetMatchUp = randomMember(mainDrawQualifierMatchUps);
     if (mainDrawTargetMatchUp?.matchUpStatus === TO_BE_PLAYED) {
+      // prevoius winningSide participant was placed in MAIN
       const targetData = positionTargets({
         matchUpId: mainDrawTargetMatchUp.matchUpId,
         inContextDrawMatchUps,
@@ -47,9 +44,6 @@ export function placeQualifier(params) {
         targetData,
       });
       if (!activeDownstream) {
-        const targetDrawPosition = mainDrawTargetMatchUp.sides.find(
-          (side) => side.qualifier && !side.participantId
-        )?.drawPosition;
         const { structure } = findStructure({
           structureId: mainDrawTargetMatchUp.structureId,
           drawDefinition,
@@ -57,13 +51,14 @@ export function placeQualifier(params) {
         const positionAssignments = getPositionAssignments({
           structure,
         }).positionAssignments;
-
-        for (const positionAssignment of positionAssignments) {
+        for (const positionAssignment of positionAssignments || []) {
           if (
-            positionAssignment.drawPosition === targetDrawPosition &&
-            !positionAssignment.participantId
+            positionAssignment.participantId === previousWinningParticipantId
           ) {
-            positionAssignment.participantId = winningQualifierId;
+            const newWinningParticipantId = inContextMatchUp.sides.find(
+              ({ sideNumber }) => sideNumber === winningSide
+            ).participantId;
+            positionAssignment.participantId = newWinningParticipantId;
 
             // update positionAssignments on structure
             if (structure.positionAssignments) {
@@ -71,7 +66,7 @@ export function placeQualifier(params) {
             } else if (structure.structures) {
               const assignmentMap = Object.assign(
                 {},
-                ...positionAssignments.map((assignment) => ({
+                ...(positionAssignments || []).map((assignment) => ({
                   [assignment.drawPosition]: assignment.participantId,
                 }))
               );
@@ -88,15 +83,14 @@ export function placeQualifier(params) {
               tournamentId: params.tournamentRecord?.tournamentId,
               event: params.event,
               drawDefinition,
-              source: stack,
               structure,
             });
-            qualifierPlaced = true;
+            qualifierReplaced = true;
           }
         }
       }
     }
   }
 
-  return { ...SUCCESS, qualifierPlaced };
+  return { ...SUCCESS, qualifierReplaced };
 }
