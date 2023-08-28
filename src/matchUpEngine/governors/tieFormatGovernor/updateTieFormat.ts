@@ -13,6 +13,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
   CANNOT_MODIFY_TIEFORMAT,
+  ErrorType,
   INVALID_MATCHUP,
   INVALID_TIE_FORMAT,
   MISSING_DRAW_DEFINITION,
@@ -48,6 +49,13 @@ type UpdateTieFormatArgs = {
   event?: Event;
 };
 
+type UpdateTieFormatResult = {
+  modifiedStructuresCount?: number;
+  modifiedCount?: number;
+  tieFormat?: TieFormat;
+  error?: ErrorType;
+};
+
 export function updateTieFormat({
   updateInProgressMatchUps,
   tournamentRecord,
@@ -57,7 +65,7 @@ export function updateTieFormat({
   eventId,
   matchUp,
   event,
-}: UpdateTieFormatArgs) {
+}: UpdateTieFormatArgs): UpdateTieFormatResult {
   const stack = 'updateTieFormat';
   let modifiedStructuresCount = 0;
   let modifiedCount = 0;

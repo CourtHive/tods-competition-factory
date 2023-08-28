@@ -26,13 +26,23 @@ import {
   MatchUp,
   Tournament,
 } from '../../../../types/tournamentFromSchema';
+import { HydratedMatchUp } from '../../../../types/hydrated';
+
+type AddScheduleAttributeArgs = {
+  tournamentRecord?: Tournament;
+  removePriorValues?: boolean;
+  drawDefinition: DrawDefinition;
+  disableNotice?: boolean;
+  matchUpId: string;
+  event?: Event;
+};
 
 type AddMatchUpScheduledTimeArgs = {
-  scheduledTime?: string | undefined;
   tournamentRecord?: Tournament;
   drawDefinition: DrawDefinition;
   removePriorValues?: boolean;
   disableNotice?: boolean;
+  scheduledTime?: string;
   matchUpId?: string;
   matchUp?: MatchUp;
 };
@@ -64,8 +74,6 @@ export function addMatchUpScheduledTime(params: AddMatchUpScheduledTimeArgs) {
   if (timeDate) {
     const scheduledDate = scheduledMatchUpDate({ matchUp }).scheduledDate;
     if (scheduledDate && scheduledDate !== timeDate) {
-      // console.log({ scheduledDate, timeDate });
-      // !!decorateResult && stack;
       return decorateResult({
         info: `date in time: ${timeDate} does not corresponde to scheduledDate: ${scheduledDate}`,
         result: { error: INVALID_TIME },
@@ -117,12 +125,20 @@ export function addMatchUpTimeModifiers({
   timeModifiers,
   matchUpId,
   matchUp,
+}: AddScheduleAttributeArgs & {
+  matchUp?: HydratedMatchUp;
+  timeModifiers: any[];
 }) {
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
   if (timeModifiers !== undefined && !Array.isArray(timeModifiers))
     return { error: INVALID_VALUES, info: mustBeAnArray('timeModifiers') };
 
+  if (!matchUp) {
+    const result = findMatchUp({ drawDefinition, matchUpId });
+    if (result.error) return result;
+    matchUp = result.matchUp;
+  }
   let existingTimeModifiers =
     matchUpTimeModifiers({ matchUp }).timeModifiers || [];
   const toBeAdded = timeModifiers.filter(

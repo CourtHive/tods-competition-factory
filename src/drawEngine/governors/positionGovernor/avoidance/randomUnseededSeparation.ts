@@ -28,17 +28,32 @@ import {
   MISSING_AVOIDANCE_POLICY,
   NO_CANDIDATES,
 } from '../../../../constants/errorConditionConstants';
+import {
+  HydratedMatchUp,
+  HydratedParticipant,
+} from '../../../../types/hydrated';
+import { MatchUpsMap } from '../../../getters/getMatchUps/getMatchUpsMap';
+import {
+  DrawDefinition,
+  Event,
+  Tournament,
+} from '../../../../types/tournamentFromSchema';
 
-/**
- *
- * @param {object} avoidance - an avoidance policy
- * @param {string} structureId - id of the structure within a drawDefinition in which participantIds will be assigned drawPositions
- * @param {object[]} participants - all tournament participants; used to access attribute values for grouping
- * @param {object} drawDefinition - object containing the definition of a draw including all entries, structures and links
- * @param {string[]} unseededParticipantIds - participantIds which are to be assigned drawPositions
- * @param {number} roundsToSeparate - number of rounds to consider for avoidance; defaults to max
- *
- */
+type RandomUnseededDistribution = {
+  inContextDrawMatchUps?: HydratedMatchUp[];
+  participants: HydratedParticipant[];
+  provisionalPositioning?: boolean;
+  unseededParticipantIds: string[];
+  unseededByePositions: number[];
+  tournamentRecord?: Tournament;
+  drawDefinition: DrawDefinition;
+  matchUpsMap?: MatchUpsMap;
+  seedBlockInfo?: any;
+  structureId: string;
+  avoidance?: any;
+  entries?: any;
+  event?: Event;
+};
 export function randomUnseededSeparation({
   provisionalPositioning,
   unseededParticipantIds,
@@ -53,7 +68,7 @@ export function randomUnseededSeparation({
   avoidance,
   entries, // entries for the specific stage of drawDefinition
   event,
-}) {
+}: RandomUnseededDistribution) {
   if (!avoidance) {
     return { error: MISSING_AVOIDANCE_POLICY };
   }
@@ -202,7 +217,7 @@ export function randomUnseededSeparation({
   if (!candidate) return { error: NO_CANDIDATES };
 
   const alreadyAssignedParticipantIds = (
-    getPositionAssignments({ structure })?.positionAssignments || []
+    getPositionAssignments({ structure })?.positionAssignments ?? []
   )
     .filter((assignment) => assignment.participantId)
     .map((assignment) => assignment.participantId);

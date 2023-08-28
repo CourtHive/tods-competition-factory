@@ -184,6 +184,7 @@ export interface DrawDefinition {
   startDate?: string;
   structures?: Structure[];
   tieFormat?: TieFormat;
+  tieFormatId?: string;
   timeItems?: TimeItem[];
   updatedAt?: Date | string;
 }
@@ -656,6 +657,7 @@ export interface Structure {
   structureOrder?: number;
   structureType?: StructureTypeEnum;
   tieFormat?: TieFormat;
+  tieFormatId?: string;
   timeItems?: TimeItem[];
   updatedAt?: Date | string;
 }

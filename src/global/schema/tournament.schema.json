@@ -597,6 +597,9 @@
         },
         "tieFormat": {
           "$ref": "#/definitions/TieFormat"
+        },
+        "tieFormatId": {
+          "type": "string"
         }
       },
       "required": ["drawId"],
@@ -1920,6 +1923,9 @@
         },
         "tieFormat": {
           "$ref": "#/definitions/TieFormat"
+        },
+        "tieFormatId": {
+          "type": "string"
         }
       },
       "required": ["structureId"],

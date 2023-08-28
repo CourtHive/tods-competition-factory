@@ -1,11 +1,11 @@
 import { unique } from '../../utilities';
 
+import { HydratedParticipant } from '../../types/hydrated';
 import {
   MISSING_PARTICIPANT,
   MISSING_PARTICIPANTS,
   MISSING_POLICY_ATTRIBUTES,
 } from '../../constants/errorConditionConstants';
-import { HydratedParticipant } from '../../types/hydrated';
 
 /**
  *
@@ -23,8 +23,8 @@ import { HydratedParticipant } from '../../types/hydrated';
  */
 
 type GetAttributeGroupingsArgs = {
+  participants: HydratedParticipant[];
   targetParticipantIds: string[];
-  participants: HydratedParticipant;
   policyAttributes: any;
   idCollections?: any;
 };
@@ -65,14 +65,6 @@ export function getAttributeGroupings({
   return groupings;
 }
 
-/**
- *
- * @param {object[]} policyAtributtes - participant attributes to be processed to create groupings
- * @param {object=} participant - participant from which attribute values will be extracted
- * @param {object[]=} participants - participant from which attribute values will be extracted
- * @param {object} idCollections
- *
- */
 type ExtractAttributeValuesArgs = {
   participants?: HydratedParticipant[];
   participant?: HydratedParticipant;

@@ -12,7 +12,7 @@ export type ResultType = {
   success?: boolean;
   valid?: boolean;
   context?: any;
-  info?: string;
+  info?: any;
 };
 
 export function decorateResult({
