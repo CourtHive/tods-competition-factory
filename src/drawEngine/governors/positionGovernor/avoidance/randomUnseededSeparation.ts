@@ -217,7 +217,7 @@ export function randomUnseededSeparation({
   if (!candidate) return { error: NO_CANDIDATES };
 
   const alreadyAssignedParticipantIds = (
-    getPositionAssignments({ structure })?.positionAssignments || []
+    getPositionAssignments({ structure })?.positionAssignments ?? []
   )
     .filter((assignment) => assignment.participantId)
     .map((assignment) => assignment.participantId);

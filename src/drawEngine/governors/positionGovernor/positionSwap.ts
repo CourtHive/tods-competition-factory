@@ -33,14 +33,13 @@ export function swapDrawPositionAssignments({
   structureId,
   event,
 }) {
-  const stack = 'swapDrawPositionAssignments';
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
   if (drawPositions?.length !== 2) {
     return { error: INVALID_VALUES, drawPositions };
   }
 
-  let matchUpsMap = getMatchUpsMap({ drawDefinition });
+  const matchUpsMap = getMatchUpsMap({ drawDefinition });
 
   const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
     inContext: true,
@@ -89,7 +88,6 @@ export function swapDrawPositionAssignments({
   modifyPositionAssignmentsNotice({
     tournamentId: tournamentRecord?.tournamentId,
     drawDefinition,
-    source: stack,
     structure,
     event,
   });
@@ -100,10 +98,11 @@ export function swapDrawPositionAssignments({
       matchUpFilters: { matchUpTypes: [TEAM_MATCHUP] },
       inContext: true,
       structure,
-    }).matchUps.filter((matchUp) =>
-      matchUp.drawPositions?.some((drawPosition) =>
-        drawPositions.includes(drawPosition)
-      )
+    }).matchUps.filter(
+      (matchUp) =>
+        matchUp.drawPositions?.some((drawPosition) =>
+          drawPositions.includes(drawPosition)
+        )
     );
     const structureMatchUps = getAllStructureMatchUps({
       structure,
@@ -152,8 +151,8 @@ function eliminationSwap({
   event,
 }) {
   // if not a CONTAINER then swap occurs within elimination structure
-  const assignments = structure?.positionAssignments.filter((assignment) =>
-    drawPositions?.includes(assignment.drawPosition)
+  const assignments = structure?.positionAssignments.filter(
+    (assignment) => drawPositions?.includes(assignment.drawPosition)
   );
 
   if (!assignments) {
@@ -236,9 +235,8 @@ function swapParticipantIdWithBYE({
   });
   if (result.error) return result;
 
-  result = assignDrawPositionBye({
+  assignDrawPositionBye({
     drawPosition: originalParticipantIdDrawPosition,
-    inContextDrawMatchUps,
     tournamentRecord,
     drawDefinition,
     structureId,

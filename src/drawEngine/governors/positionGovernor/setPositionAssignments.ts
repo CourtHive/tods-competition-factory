@@ -96,7 +96,6 @@ export function setPositionAssignments({
       } else if (participantId) {
         const result = assignDrawPosition({
           provisionalPositioning,
-          automaticPlacement: true,
           inContextDrawMatchUps,
           tournamentRecord,
           drawDefinition,
@@ -112,7 +111,6 @@ export function setPositionAssignments({
     modifyPositionAssignmentsNotice({
       tournamentId: tournamentRecord?.tournamentId,
       drawDefinition,
-      source: stack,
       structure,
       event,
     });
@@ -122,8 +120,8 @@ export function setPositionAssignments({
     ({ structureId }) => structureId
   );
   modifyDrawNotice({
+    tournamentId: tournamentRecord?.tournamentId,
     eventId: event?.eventId,
-    tournamentRecord,
     drawDefinition,
     structureIds,
   });

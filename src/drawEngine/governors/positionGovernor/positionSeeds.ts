@@ -4,7 +4,10 @@ import { findStructure } from '../../getters/findStructure';
 import { assignDrawPosition } from './positionAssignment';
 import { generateRange } from '../../../utilities';
 
-import { MISSING_DRAW_POSITION } from '../../../constants/errorConditionConstants';
+import {
+  ErrorType,
+  MISSING_DRAW_POSITION,
+} from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function positionSeedBlocks({
@@ -23,9 +26,9 @@ export function positionSeedBlocks({
   structure,
   event,
 }) {
+  const seedPositions: number[] = [];
+  const errors: any[] = [];
   let placedSeedBlocks = 0;
-  const seedPositions = [];
-  const errors = [];
 
   if (!structure)
     ({ structure } = findStructure({ drawDefinition, structureId }));
@@ -40,7 +43,6 @@ export function positionSeedBlocks({
       appliedPolicies,
       drawDefinition,
       structure,
-      event,
     });
     if (result.error) errors.push(result.error);
     validSeedBlocks = result.validSeedBlocks;
@@ -54,7 +56,6 @@ export function positionSeedBlocks({
         provisionalPositioning,
         inContextDrawMatchUps,
         tournamentRecord,
-        validSeedBlocks,
         drawDefinition,
         seedingProfile,
         seedBlockInfo,
@@ -65,7 +66,7 @@ export function positionSeedBlocks({
       });
       if (result?.success) {
         placedSeedBlocks++;
-        seedPositions.push(...result.seedPositions);
+        seedPositions.push(...(result.seedPositions || []));
       }
       if (result.error) {
         errors.push({ seedPositionError: result.error });
@@ -88,7 +89,7 @@ function positionSeedBlock({
   structureId,
   matchUpsMap,
   event,
-}) {
+}): { success?: boolean; error?: ErrorType; seedPositions?: number[] } {
   const { unplacedSeedParticipantIds, unfilledPositions } = getNextSeedBlock({
     provisionalPositioning,
     randomize: true,
@@ -101,10 +102,10 @@ function positionSeedBlock({
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
   const { avoidance } = appliedPolicies || {};
   if (avoidance && participants && unplacedSeedParticipantIds?.length > 2) {
-    // console.log('implement seed placement avoidance');
+    // TODO: 'implement seed placement avoidance';
   }
 
-  const seedPositions = [];
+  const seedPositions: number[] = [];
 
   for (const participantId of unplacedSeedParticipantIds) {
     const drawPosition = unfilledPositions.pop();
@@ -112,7 +113,6 @@ function positionSeedBlock({
     seedPositions.push(drawPosition);
 
     const result = assignDrawPosition({
-      automaticPlacement: true,
       provisionalPositioning,
       inContextDrawMatchUps,
       tournamentRecord,
