@@ -66,16 +66,10 @@ type ClearDrawPositionArgs = {
   event?: Event;
 };
 */
-export function clearDrawPosition({
-  inContextDrawMatchUps,
-  tournamentRecord,
-  drawDefinition,
-  participantId,
-  drawPosition,
-  structureId,
-  matchUpsMap,
-  event,
-}) {
+export function clearDrawPosition(params) {
+  let { inContextDrawMatchUps, participantId, drawPosition } = params;
+  const { tournamentRecord, drawDefinition, structureId, matchUpsMap, event } =
+    params;
   // }: ClearDrawPositionArgs) {
   const { structure } = findStructure({ drawDefinition, structureId });
   const positionAssignments =
