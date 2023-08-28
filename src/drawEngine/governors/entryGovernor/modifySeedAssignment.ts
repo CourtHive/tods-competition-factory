@@ -1,6 +1,7 @@
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 import { modifySeedAssignmentsNotice } from '../../notifications/drawNotifications';
 import { findStructure } from '../../getters/findStructure';
+import { ensureInt } from '../../../utilities/ensureInt';
 import { isNumeric } from '../../../utilities/math';
 
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -46,7 +47,7 @@ export function modifySeedAssignment({
     seedValue === undefined ||
     seedValue === '' ||
     (typeof seedValue === 'string' &&
-      seedValue.split('-').every((v) => isNumeric(v) && parseInt(v) > 0));
+      seedValue.split('-').every((v) => isNumeric(v) && ensureInt(v) > 0));
 
   if (!validValue) return { error: INVALID_VALUES };
 

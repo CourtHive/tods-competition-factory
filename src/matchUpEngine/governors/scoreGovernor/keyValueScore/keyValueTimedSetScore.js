@@ -1,3 +1,4 @@
+import { ensureInt } from '../../../../utilities/ensureInt';
 import { removeFromScore } from './keyValueUtilities';
 import { processOutcome } from './processOutcome';
 
@@ -111,21 +112,21 @@ export function keyValueTimedSetScore({
     let currentSetScore;
 
     if (sets[setIndex].side2Score === undefined) {
-      const newValue = parseInt(
+      const newValue = ensureInt(
         (sets[setIndex].side1Score || 0).toString() + value
       )
         .toString()
         .slice(0, 2);
-      sets[setIndex].side1Score = parseInt(newValue);
+      sets[setIndex].side1Score = ensureInt(newValue);
       currentSetScore = sets[setIndex].side1Score.toString();
       updated = true;
     } else {
-      const newValue = parseInt(
+      const newValue = ensureInt(
         (sets[setIndex].side2Score || 0).toString() + value
       )
         .toString()
         .slice(0, 2);
-      sets[setIndex].side2Score = parseInt(newValue);
+      sets[setIndex].side2Score = ensureInt(newValue);
       currentSetScore = [
         sets[setIndex].side1Score,
         sets[setIndex].side2Score,

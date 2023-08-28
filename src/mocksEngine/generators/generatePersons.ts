@@ -3,6 +3,7 @@ import { definedAttributes } from '../../utilities/objects';
 import { generatePersonData } from './generatePersonData';
 import { dateFromDay } from '../../utilities/dateTime';
 import { countries } from '../../fixtures/countryData';
+import { ensureInt } from '../../utilities/ensureInt';
 import {
   generateRange,
   randomMember,
@@ -159,12 +160,12 @@ export function generatePersons(params?) {
   });
 
   const rangeStart =
-    parseInt(ageMinDate?.slice(0, 4) || 0) ||
-    parseInt(ageMaxDate?.slice(0, 4) || 0) - 3;
+    ensureInt(ageMinDate?.slice(0, 4) || 0) ||
+    ensureInt(ageMaxDate?.slice(0, 4) || 0) - 3;
 
   const rangeEnd =
-    parseInt(ageMaxDate?.slice(0, 4) || 0) ||
-    parseInt(ageMinDate?.slice(0, 4) || 0) + 3;
+    ensureInt(ageMaxDate?.slice(0, 4) || 0) ||
+    ensureInt(ageMinDate?.slice(0, 4) || 0) + 3;
 
   const yearRange = (ageMinDate || ageMaxDate) && [rangeStart, rangeEnd];
 

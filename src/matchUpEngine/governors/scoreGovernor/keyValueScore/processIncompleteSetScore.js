@@ -1,3 +1,4 @@
+import { ensureInt } from '../../../../utilities/ensureInt';
 import { getWinningSide } from './winningSide';
 
 import { SPACE_CHARACTER, SET_TIEBREAK_BRACKETS } from './constants';
@@ -13,7 +14,7 @@ export function processIncompleteSetScore({
   if (!sets?.length) return { sets: [] };
 
   const set = sets[sets.length - 1];
-  value = parseInt(value);
+  value = ensureInt(value);
   const { validSide2Score, requiresTiebreak } = checkValidSide2Score({
     analysis,
     set,

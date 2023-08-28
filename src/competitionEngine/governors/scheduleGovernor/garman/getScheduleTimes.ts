@@ -13,6 +13,7 @@ import {
 } from '../../../../utilities/dateTime';
 
 import { ScheduleTimesResult } from '../../../../types/factoryTypes';
+import { ensureInt } from '../../../../utilities/ensureInt';
 
 export function getScheduleTimes(params): {
   scheduleTimes: ScheduleTimesResult[];
@@ -140,8 +141,7 @@ export function getScheduleTimes(params): {
     previousAvailableCourts = availableToScheduleCount;
     cumulativeMatches += calculationDifference;
 
-    const stringifiedNumber = cumulativeMatches.toString();
-    const addToSchedule = parseInt(stringifiedNumber) - totalMatchUps;
+    const addToSchedule = ensureInt(cumulativeMatches) - totalMatchUps;
     totalMatchUps += addToSchedule;
 
     return {

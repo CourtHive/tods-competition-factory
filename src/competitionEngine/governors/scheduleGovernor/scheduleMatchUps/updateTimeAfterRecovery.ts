@@ -1,4 +1,5 @@
 import { processNextMatchUps } from './processNextMatchUps';
+import { ensureInt } from '../../../../utilities/ensureInt';
 import {
   addParticipantPotentialRecovery,
   checkParticipantProfileInitialization,
@@ -34,11 +35,10 @@ export function updateTimeAfterRecovery({
 }: UpdateTimeAfterRecoveryArgs) {
   const endTime = extractTime(matchUp?.schedule?.endTime);
   const timeAfterRecovery = endTime
-    ? addMinutesToTimeString(endTime, parseInt(recoveryMinutes.toString()))
+    ? addMinutesToTimeString(endTime, ensureInt(recoveryMinutes))
     : addMinutesToTimeString(
         scheduleTime,
-        parseInt(averageMatchUpMinutes.toString()) +
-          parseInt(recoveryMinutes.toString())
+        ensureInt(averageMatchUpMinutes) + ensureInt(recoveryMinutes)
       );
 
   const typeChangeTimeAfterRecovery =
@@ -47,8 +47,8 @@ export function updateTimeAfterRecovery({
       ? addMinutesToTimeString(extractTime(endTime), typeChangeRecoveryMinutes)
       : addMinutesToTimeString(
           scheduleTime,
-          parseInt(averageMatchUpMinutes.toString()) +
-            parseInt(typeChangeRecoveryMinutes)
+          ensureInt(averageMatchUpMinutes) +
+            ensureInt(typeChangeRecoveryMinutes)
         ));
   const participantIdDependencies =
     matchUpDependencies?.[matchUp.matchUpId]?.participantIds || [];

@@ -4,6 +4,7 @@ import { getPositionAssignments } from '../../../../drawEngine/getters/positions
 import { getStructureGroups } from '../../publishingGovernor/getStructureGroups';
 import { getStructureLinks } from '../../../../drawEngine/getters/linkGetter';
 import { stageOrder } from '../../../../constants/drawDefinitionConstants';
+import { ensureInt } from '../../../../utilities/ensureInt';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
@@ -133,7 +134,7 @@ export function analyzeDraws({ tournamentRecord }) {
     });
 
     const isMatchPlay =
-      parseInt(mainStructure.activeRounds[0]) === 1 &&
+      ensureInt(mainStructure.activeRounds[0]) === 1 &&
       mainStructure.activeRounds.length === 1 &&
       activeStructuresCount === 1;
 

@@ -3,6 +3,7 @@ import { allDrawMatchUps } from '../../../getters/matchUpsGetter/matchUpsGetter'
 import { decorateResult } from '../../../../global/functions/decorateResult';
 import { getMatchUpId } from '../../../../global/functions/extractors';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
+import { ensureInt } from '../../../../utilities/ensureInt';
 import {
   addDrawNotice,
   addMatchUpsNotice,
@@ -141,13 +142,13 @@ export function addDrawDefinition(params) {
   const flightNumbers =
     flightProfile?.flights
       ?.map(
-        ({ flightNumber }) => !isNaN(flightNumber) && parseInt(flightNumber)
+        ({ flightNumber }) => !isNaN(flightNumber) && ensureInt(flightNumber)
       )
       ?.filter(Boolean) || [];
 
   const drawOrders =
     event.drawDefinitions
-      .map(({ drawOrder }) => !isNaN(drawOrder) && parseInt(drawOrder))
+      .map(({ drawOrder }) => !isNaN(drawOrder) && ensureInt(drawOrder))
       ?.filter(Boolean) || [];
 
   let drawOrder = Math.max(0, ...drawOrders, ...flightNumbers) + 1;

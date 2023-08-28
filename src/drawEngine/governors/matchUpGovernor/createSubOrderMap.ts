@@ -1,5 +1,6 @@
 import { findExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 import { hasParticipantId } from '../../../global/functions/filters';
+import { ensureInt } from '../../../utilities/ensureInt';
 import { instanceCount } from '../../../utilities';
 
 import { SUB_ORDER } from '../../../constants/extensionConstants';
@@ -12,7 +13,7 @@ export function createSubOrderMap({ positionAssignments }) {
         element: assignment,
         name: SUB_ORDER,
       });
-      const value = parseInt(extension?.value);
+      const value = ensureInt(extension?.value);
       const subOrder = !isNaN(value) && value;
       return subOrder && { participantId: assignment.participantId, subOrder };
     })

@@ -1,4 +1,5 @@
 import { getDrawPosition } from '../../global/functions/extractors';
+import { ensureInt } from '../../utilities/ensureInt';
 import {
   makeDeepCopy,
   generateRange,
@@ -59,7 +60,7 @@ export function resolveDrawPositions({
   }
 
   const resolvedDrawPositions = Object.keys(drawPositionResolutions).map((dp) =>
-    parseInt(dp)
+    ensureInt(dp)
   );
   let remainingDrawPositions = unassignedDrawPositions.filter(
     (drawPosition) => !resolvedDrawPositions.includes(drawPosition)
@@ -104,9 +105,9 @@ export function resolveDrawPositions({
         const participantId = randomPop(candidates);
         const drawPositions = chunkSignature
           .split('|')
-          .map((dp) => parseInt(dp))
+          .map((dp) => ensureInt(dp))
           .filter((drawPosition) =>
-            remainingDrawPositions.includes(parseInt(drawPosition))
+            remainingDrawPositions.includes(ensureInt(drawPosition))
           );
         if (drawPositions.length) {
           const drawPosition = randomPop(drawPositions);

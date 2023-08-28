@@ -1,19 +1,41 @@
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { getInitialRoundNumber } from '../../getters/getInitialRoundNumber';
-import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
+import {
+  MatchUpsMap,
+  getMatchUpsMap,
+} from '../../getters/getMatchUps/getMatchUpsMap';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import { updateMatchUpStatusCodes } from './matchUpStatusCodes';
 import { findStructure } from '../../getters/findStructure';
 
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { HydratedMatchUp } from '../../../types/hydrated';
 import {
   BYE,
   DEFAULTED,
   TO_BE_PLAYED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
+import {
+  DrawDefinition,
+  Event,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
+type RemoveSubsequentDrawPositionArgs = {
+  inContextDrawMatchUps?: HydratedMatchUp[];
+  dualMatchUp?: HydratedMatchUp;
+  tournamentRecord?: Tournament;
+  drawDefinition: DrawDefinition;
+  sourceMatchUpStatus?: string;
+  targetDrawPosition: number;
+  matchUpsMap?: MatchUpsMap;
+  sourceMatchUpId?: string;
+  roundNumber: number;
+  structureId: string;
+  event?: Event;
+};
 export function removeSubsequentRoundsParticipant({
   inContextDrawMatchUps,
   sourceMatchUpStatus,
@@ -26,9 +48,9 @@ export function removeSubsequentRoundsParticipant({
   roundNumber,
   matchUpsMap,
   event,
-}) {
+}: RemoveSubsequentDrawPositionArgs) {
   const { structure } = findStructure({ drawDefinition, structureId });
-  if (structure.structureType === CONTAINER) return;
+  if (structure.structureType === CONTAINER) return { ...SUCCESS };
 
   matchUpsMap = matchUpsMap || getMatchUpsMap({ drawDefinition });
   const mappedMatchUps = matchUpsMap?.mappedMatchUps || {};
@@ -40,7 +62,7 @@ export function removeSubsequentRoundsParticipant({
   });
 
   const relevantMatchUps = matchUps?.filter(
-    (matchUp) =>
+    (matchUp: any) =>
       matchUp.roundNumber >= roundNumber &&
       matchUp.roundNumber !== initialRoundNumber &&
       matchUp.drawPositions?.includes(targetDrawPosition)
@@ -51,8 +73,8 @@ export function removeSubsequentRoundsParticipant({
     structureId,
   });
 
-  for (const matchUp of relevantMatchUps) {
-    const result = removeDrawPosition({
+  for (const matchUp of relevantMatchUps || []) {
+    removeDrawPosition({
       inContextDrawMatchUps,
       sourceMatchUpStatus,
       positionAssignments,
@@ -65,7 +87,6 @@ export function removeSubsequentRoundsParticipant({
       matchUp,
       event,
     });
-    if (result.error) return result;
   }
 
   return { ...SUCCESS };
@@ -107,8 +128,8 @@ function removeDrawPosition({
       drawPosition === targetDrawPosition ? undefined : drawPosition
     )
     .filter(Boolean);
-  const matchUpAssignments = positionAssignments.filter(({ drawPosition }) =>
-    matchUp.drawPositions?.includes(drawPosition)
+  const matchUpAssignments = positionAssignments.filter(
+    ({ drawPosition }) => matchUp.drawPositions?.includes(drawPosition)
   );
   const matchUpContainsBye = matchUpAssignments.filter(
     (assignment) => assignment.bye

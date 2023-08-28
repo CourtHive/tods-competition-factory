@@ -2,6 +2,7 @@ import { getStructureRoundProfile } from '../../getters/getMatchUps/getStructure
 import { getFinishingPositionSourceRoundsMap } from './structureUtils';
 import { generateRange, numericSort } from '../../../utilities';
 import { getPositionsPlayedOff } from './getPositionsPlayedOff';
+import { ensureInt } from '../../../utilities/ensureInt';
 
 import { DrawDefinition } from '../../../types/tournamentFromSchema';
 import {
@@ -69,7 +70,7 @@ export function getSourceRounds({
         ? rounds
         : rounds.concat(round.roundNumber);
     }, [])
-    .map((roundNumber) => parseInt(roundNumber))
+    .map((roundNumber) => ensureInt(roundNumber))
     .filter((roundNumber) => !excludeRoundNumbers.includes(roundNumber));
 
   // generate a map of finishingPosition: { roundNumber }
@@ -86,7 +87,7 @@ export function getSourceRounds({
         ? rounds
         : rounds.concat(round.roundNumber);
     }, [])
-    .map((round) => parseInt(round));
+    .map((round) => ensureInt(round));
 
   // available playoffSourceRounds are those relevantPlayoffSourceRounds which are not included in playoffSourceRounds
   const playoffSourceRounds = relevantPlayoffSourceRounds

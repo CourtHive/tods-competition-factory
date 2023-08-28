@@ -8,6 +8,7 @@ import { decorateResult } from '../../../global/functions/decorateResult';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { pushGlobalLog } from '../../../global/functions/globalLog';
 import { findStructure } from '../../getters/findStructure';
+import { ensureInt } from '../../../utilities/ensureInt';
 import { positionTargets } from './positionTargets';
 import { overlap } from '../../../utilities';
 import {
@@ -178,7 +179,7 @@ export function drawPositionRemovals({
     matchUps: structureMatchUps,
   });
   const roundNumbers = Object.keys(roundProfile).map((roundNumber) =>
-    parseInt(roundNumber)
+    ensureInt(roundNumber)
   );
 
   let targetDrawPosition = drawPosition;

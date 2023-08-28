@@ -9,6 +9,7 @@ import { modifyMatchUpScore } from './modifyMatchUpScore';
 
 import { INVALID_MATCHUP } from '../../../constants/errorConditionConstants';
 import { DISABLE_AUTO_CALC } from '../../../constants/extensionConstants';
+import { MatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   COMPLETED,
@@ -16,7 +17,22 @@ import {
   IN_PROGRESS,
   TO_BE_PLAYED,
 } from '../../../constants/matchUpStatusConstants';
+import {
+  DrawDefinition,
+  Event,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
+type UpdateTieMatchUpScoreArgs = {
+  tournamentRecord?: Tournament;
+  drawDefinition: DrawDefinition;
+  exitWhenNoValues?: boolean;
+  matchUpsMap?: MatchUpsMap;
+  matchUpStatus?: string;
+  removeScore?: boolean;
+  matchUpId: string;
+  event?: Event;
+};
 export function updateTieMatchUpScore({
   tournamentRecord,
   exitWhenNoValues,
@@ -26,7 +42,7 @@ export function updateTieMatchUpScore({
   matchUpsMap,
   matchUpId,
   event,
-}) {
+}: UpdateTieMatchUpScoreArgs) {
   const result = findMatchUp({ drawDefinition, event, matchUpId });
   if (result.error) return result;
 
