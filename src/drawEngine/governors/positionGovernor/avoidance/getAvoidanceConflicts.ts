@@ -2,7 +2,7 @@ import { getRoundRobinGroupMatchUps } from '../../../generators/roundRobinGroups
 import { overlap } from '../../../../utilities/arrays';
 
 export function getAvoidanceConflicts({ isRoundRobin, groupedParticipants }) {
-  const avoidanceConflicts = [];
+  const avoidanceConflicts: any[] = [];
   if (isRoundRobin) {
     groupedParticipants.forEach((participantGroup) => {
       const drawPositions = participantGroup.map(

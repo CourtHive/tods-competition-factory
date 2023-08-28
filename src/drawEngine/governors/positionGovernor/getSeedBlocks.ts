@@ -136,8 +136,8 @@ type GetSeedGroupsArgs = {
   drawSize: number;
 };
 export function getSeedGroups({
-  drawSize,
   roundRobinGroupsCount,
+  drawSize,
 }: GetSeedGroupsArgs) {
   const stack = 'getSeedGroups';
 

@@ -10,8 +10,8 @@ import { modifyMatchUpScore } from './modifyMatchUpScore';
 import { instanceCount } from '../../../utilities';
 import { isAdHoc } from '../queryGovernor/isAdHoc';
 
-import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
+import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { MatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
@@ -373,7 +373,6 @@ type RemoveDirectedByeArgs = {
 export function removeDirectedBye({
   inContextDrawMatchUps,
   tournamentRecord,
-  sourceMatchUpId,
   drawDefinition,
   drawPosition,
   matchUpsMap,
@@ -383,10 +382,8 @@ export function removeDirectedBye({
   const structureId = targetLink.target.structureId;
 
   clearDrawPosition({
-    sourceMatchUpStatus: BYE,
     inContextDrawMatchUps,
     tournamentRecord,
-    sourceMatchUpId,
     drawDefinition,
     matchUpsMap,
     drawPosition,

@@ -41,7 +41,7 @@ export function generatePositioningCandidate(params) {
     allGroups,
   } = params;
 
-  const errors = [];
+  const errors: any[] = [];
   let groupKey;
 
   const groupSize = Math.min(

@@ -26,23 +26,18 @@ export function initializeStructureSeedAssignments({
   const structure = result.structure;
 
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
-  const drawSize = positionAssignments.length;
+  const drawSize = positionAssignments?.length || 0;
 
   if (seedsCount > drawSize)
     return { error: SEEDSCOUNT_GREATER_THAN_DRAW_SIZE };
 
   const roundRobinGroupsCount = structure.structures?.length;
-  const roundsCount = structure.structures?.[0]?.matchUps?.reduce(
-    (maxRoundNumber, { roundNumber }) => Math.max(roundNumber, maxRoundNumber),
-    0
-  );
   const groupSeedingThreshold =
     isConvertableInteger(seedingProfile?.groupSeedingThreshold) &&
     seedingProfile.groupSeedingThreshold;
 
   const seedGroups = getSeedGroups({
     roundRobinGroupsCount,
-    roundsCount,
     drawSize,
   })?.seedGroups;
 

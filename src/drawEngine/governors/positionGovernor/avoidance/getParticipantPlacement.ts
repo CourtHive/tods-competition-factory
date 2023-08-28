@@ -50,8 +50,6 @@ export function getParticipantPlacement({
     participantIdGroups,
     drawPositionChunks,
     unfilledPositions,
-    largestGroupSize,
-    allGroups,
   });
   const { unassigned, unpaired, pairedNoConflict } = drawPositionOptions;
 
