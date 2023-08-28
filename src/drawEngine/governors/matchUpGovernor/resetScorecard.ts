@@ -10,8 +10,8 @@ import { isActiveDownstream } from './isActiveDownstream';
 import { updateTieMatchUpScore } from './tieMatchUpScore';
 import { setMatchUpStatus } from './setMatchUpStatus';
 
+import { TypeEnum } from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { TEAM } from '../../../constants/matchUpTypes';
 import {
   MATCHUP_NOT_FOUND,
   MISSING_DRAW_DEFINITION,
@@ -53,7 +53,7 @@ export function resetScorecard(params) {
 
   // Get map of all drawMatchUps and inContextDrawMatchUPs ---------------------
   const matchUpsMap = getMatchUpsMap({ drawDefinition });
-  let { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
+  const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
     nextMatchUps: true,
     inContext: true,
     drawDefinition,
@@ -72,7 +72,7 @@ export function resetScorecard(params) {
   if (!matchUp || !inContextDrawMatchUps) return { error: MATCHUP_NOT_FOUND };
 
   // only accept matchUpType: TEAM
-  if (!matchUp.matchUpType === TEAM) return { error: INVALID_MATCHUP };
+  if (matchUp.matchUpType !== TypeEnum.Team) return { error: INVALID_MATCHUP };
 
   // Get winner/loser position targets ----------------------------------------
   const targetData = positionTargets({
@@ -97,7 +97,7 @@ export function resetScorecard(params) {
   const activeDownstream = isActiveDownstream(params);
   if (activeDownstream) return { error: CANNOT_CHANGE_WINNING_SIDE };
 
-  for (const tieMatchUp of matchUp.tieMatchUps) {
+  for (const tieMatchUp of matchUp.tieMatchUps || []) {
     const result = setMatchUpStatus({
       matchUpId: tieMatchUp.matchUpId,
       matchUpTieId: matchUpId,
@@ -110,7 +110,7 @@ export function resetScorecard(params) {
     if (result.error) return decorateResult({ result, stack });
   }
 
-  let result = updateTieMatchUpScore({
+  const result = updateTieMatchUpScore({
     event: params.event,
     removeScore: true,
     tournamentRecord,
@@ -128,7 +128,7 @@ export function resetScorecard(params) {
       event,
     })?.tieFormat;
 
-    if (inheritedTieFormat) {
+    if (matchUp.tieFormat && inheritedTieFormat) {
       const {
         matchUpCountDifference,
         descendantDifferences,

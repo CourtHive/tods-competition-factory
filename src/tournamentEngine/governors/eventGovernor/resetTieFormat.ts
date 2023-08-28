@@ -16,28 +16,36 @@ import {
   MISSING_TOURNAMENT_RECORD,
   NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
+import {
+  DrawDefinition,
+  Event,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
 /**
  * remove the tieFormat from a TEAM matchUp if there is a tieFormat further up the hierarchy
  * modify the matchUp's tieMatchUps to correspond to the tieFormat found further up the hierarchy
- *
- * @param {string} matchUpId
- * @param {string} drawId
- * @returns
  */
 
+type ResetTieFormatArgs = {
+  tournamentRecord: Tournament;
+  drawDefinition: DrawDefinition;
+  matchUpId: string;
+  uuids?: string[];
+  event?: Event;
+};
 export function resetTieFormat({
   tournamentRecord,
   drawDefinition,
   matchUpId,
   event,
   uuids,
-}) {
+}: ResetTieFormatArgs) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (typeof matchUpId !== 'string') return { error: MISSING_MATCHUP_ID };
   const stack = 'resetTieFormat';
 
-  let result = findMatchUp({
+  const result = findMatchUp({
     tournamentRecord,
     matchUpId,
   });
@@ -58,10 +66,10 @@ export function resetTieFormat({
 
   if (!tieFormat) return { error: NOT_FOUND, info: 'No inherited tieFormat' };
 
-  const deletedMatchUpIds = [];
-  const collectionIds = [];
-  const newMatchUps = [];
-  const tieMatchUps = [];
+  const deletedMatchUpIds: string[] = [];
+  const collectionIds: string[] = [];
+  const tieMatchUps: any[] = [];
+  const newMatchUps: any[] = [];
 
   for (const collectionDefinition of tieFormat.collectionDefinitions) {
     // delete any matchUp.tieMatchUps that are not found in the ancestor tieFormat collectionDefinitions
@@ -107,7 +115,7 @@ export function resetTieFormat({
     tieMatchUps.push(...newMatchUps);
     addMatchUpsNotice({
       tournamentId: tournamentRecord?.tournamentId,
-      eventId: event.eventId,
+      eventId: event?.eventId,
       matchUps: newMatchUps,
       drawDefinition,
     });
@@ -129,7 +137,7 @@ export function resetTieFormat({
   modifyMatchUpNotice({
     tournamentId: tournamentRecord?.tournamentId,
     structureId: structure.structureId,
-    eventId: event.eventId,
+    eventId: event?.eventId,
     context: stack,
     drawDefinition,
     matchUp,
