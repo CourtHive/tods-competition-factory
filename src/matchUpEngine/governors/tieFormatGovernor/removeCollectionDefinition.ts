@@ -31,6 +31,7 @@ import {
   IN_PROGRESS,
 } from '../../../constants/matchUpStatusConstants';
 import {
+  ErrorType,
   MISSING_DRAW_DEFINITION,
   NOT_FOUND,
   NO_MODIFICATIONS_APPLIED,
@@ -39,8 +40,11 @@ import {
   DrawDefinition,
   Event,
   MatchUp,
+  TieFormat,
   Tournament,
 } from '../../../types/tournamentFromSchema';
+import { HydratedMatchUp } from '../../../types/hydrated';
+import { decorateResult } from '../../../global/functions/decorateResult';
 
 /*
  * if an eventId is provided, will be removed from an event tieFormat
@@ -73,7 +77,14 @@ export function removeCollectionDefinition({
   eventId,
   matchUp,
   event,
-}: RemoveCollectionDefinitionArgs) {
+}: RemoveCollectionDefinitionArgs): {
+  targetMatchUps?: HydratedMatchUp[];
+  deletedMatchUpIds?: string[];
+  tieFormat?: TieFormat;
+  success?: boolean;
+  error?: ErrorType;
+} {
+  const stack = 'removeCollectionDefinition';
   let result = !matchUp
     ? getTieFormat({
         drawDefinition,
@@ -84,7 +95,7 @@ export function removeCollectionDefinition({
       })
     : undefined;
 
-  if (result?.error) return result;
+  if (result?.error) return decorateResult({ result, stack });
 
   const structure = result?.structure;
   matchUp = matchUp || result?.matchUp;
@@ -92,14 +103,13 @@ export function removeCollectionDefinition({
   const tieFormat = copyTieFormat(existingTieFormat);
 
   result = validateTieFormat({ tieFormat });
-  if (result.error) return result;
+  if (result.error) return decorateResult({ result, stack });
 
   const targetCollection = tieFormat?.collectionDefinitions?.find(
     (collectionDefinition) => collectionDefinition.collectionId === collectionId
   );
-  if (!targetCollection) return { error: NOT_FOUND, collectionId };
-
-  const stack = 'removeCollectionDefinition';
+  if (!targetCollection)
+    return decorateResult({ result: { error: NOT_FOUND, collectionId } });
 
   tieFormat.collectionDefinitions = tieFormat.collectionDefinitions.filter(
     (collectionDefinition) => collectionDefinition.collectionId !== collectionId
@@ -275,7 +285,7 @@ export function removeCollectionDefinition({
 
   const prunedTieFormat = definedAttributes(tieFormat);
   result = validateTieFormat({ tieFormat: prunedTieFormat });
-  if (result.error) return result;
+  if (result.error) return decorateResult({ result, stack });
 
   // TODO: implement use of tieFormats and tieFormatId
   if (eventId && event) {
@@ -307,9 +317,9 @@ export function removeCollectionDefinition({
   }
 
   return {
-    ...SUCCESS,
     tieFormat: prunedTieFormat,
-    targetMatchUps,
     deletedMatchUpIds,
+    targetMatchUps,
+    ...SUCCESS,
   };
 }

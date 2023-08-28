@@ -27,7 +27,7 @@ export function modifyTieFormat({
   if (!validateTieFormat(modifiedTieFormat))
     return { error: INVALID_TIE_FORMAT };
 
-  let result = getTieFormat({
+  const result = getTieFormat({
     drawDefinition,
     structureId,
     matchUpId,
@@ -43,16 +43,16 @@ export function modifyTieFormat({
     ({ collectionId }) => collectionId
   );
 
-  const modifiedCollectionDefinitions = [];
-  const addedCollectionDefinitions = [];
-  const updatedCollectionIds = [];
+  const modifiedCollectionDefinitions: any[] = [];
+  const addedCollectionDefinitions: any[] = [];
+  const updatedCollectionIds: string[] = [];
 
   modifiedTieFormat.collectionDefinitions.forEach((def) => {
     updatedCollectionIds.push(def.collectionId);
 
-    if (existingCollectionIds.includes(def.collectionId)) {
+    if (modifiedTieFormat && existingCollectionIds.includes(def.collectionId)) {
       compareTieFormats({
-        descendent: modifiedTieFormat,
+        descendant: modifiedTieFormat,
         ancestor: tieFormat,
       })?.different && modifiedCollectionDefinitions.push(def);
     } else {

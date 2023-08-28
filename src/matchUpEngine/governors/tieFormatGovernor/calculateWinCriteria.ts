@@ -1,9 +1,14 @@
 import { getGroupValueGroups } from '../../../drawEngine/generators/getGroupValueGroups';
+import { CollectionDefinition } from '../../../types/tournamentFromSchema';
 
+type CalculateWinCriteriaArgs = {
+  collectionDefinitions?: CollectionDefinition[];
+  collectionGroups?: any[];
+};
 export function calculateWinCriteria({
   collectionDefinitions = [],
   collectionGroups = [],
-} = {}) {
+}: CalculateWinCriteriaArgs) {
   let valueTotal = 0;
 
   const { groupValueNumbers } = getGroupValueGroups({ collectionGroups });
@@ -38,10 +43,10 @@ export function calculateWinCriteria({
         valueTotal += collectionValueProfile.matchUpValue;
       }
     } else if (matchUpValue) {
-      valueTotal += matchUpCount * matchUpValue;
+      valueTotal += (matchUpCount || 0) * matchUpValue;
     } else {
       // default is to give each matchUp a value of 1
-      valueTotal += matchUpCount;
+      valueTotal += matchUpCount || 0;
     }
   }
 

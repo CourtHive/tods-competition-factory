@@ -16,10 +16,12 @@ import {
 
 import { TIE_FORMAT_MODIFICATIONS } from '../../../constants/extensionConstants';
 import {
+  ErrorType,
   INVALID_VALUES,
   MISSING_VALUE,
   NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
+import { TieFormat } from '../../../types/tournamentFromSchema';
 
 // all child matchUps need to be checked for collectionAssignments / collectionPositions which need to be removed when collectionDefinition.collectionIds are removed
 export function modifyCollectionDefinition({
@@ -46,7 +48,7 @@ export function modifyCollectionDefinition({
   matchUpValue,
   scoreValue,
   setValue,
-}) {
+}): { error?: ErrorType; tieFormat?: TieFormat } {
   if (matchUpFormat && !isValid(matchUpFormat)) {
     return { error: INVALID_VALUES };
   }
@@ -82,8 +84,8 @@ export function modifyCollectionDefinition({
   if (Object.values(valueAssignments).filter(Boolean).length > 1)
     return decorateResult({
       result: {
-        error: INVALID_VALUES,
         info: 'Only one value assignment allowed per collectionDefinition',
+        error: INVALID_VALUES,
       },
       stack,
     });
@@ -109,7 +111,8 @@ export function modifyCollectionDefinition({
   const value = collectionValue || matchUpValue || scoreValue || setValue;
   if (value || collectionValueProfiles) {
     if (value) {
-      if (!isConvertableInteger(value)) return { error: INVALID_VALUES, value };
+      if (!isConvertableInteger(value))
+        return decorateResult({ result: { error: INVALID_VALUES, value } });
     } else if (collectionValueProfiles) {
       const result = validateCollectionValueProfile({
         matchUpCount: collectionDefinition.matchUpCount,
@@ -186,7 +189,6 @@ export function modifyCollectionDefinition({
     updateInProgressMatchUps,
     tournamentRecord,
     drawDefinition,
-    structureId,
     structure,
     eventId,
     matchUp,

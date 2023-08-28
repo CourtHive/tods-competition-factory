@@ -2,6 +2,7 @@ import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps
 import { allDrawMatchUps } from '../../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
 import { scoreHasValue } from '../queryGovernor/scoreHasValue';
 
+import { MatchUp } from '../../../types/tournamentFromSchema';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
   COMPLETED,
@@ -16,7 +17,7 @@ export function getTargetTeamMatchUps({
   matchUpId,
   matchUp,
 }) {
-  let matchUps = [];
+  let matchUps: MatchUp[] = [];
   if (matchUpId && matchUp) {
     matchUps = [matchUp];
   } else if (structureId && structure) {
