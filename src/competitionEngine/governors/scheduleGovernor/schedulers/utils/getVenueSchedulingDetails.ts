@@ -21,12 +21,16 @@ export function getVenueSchedulingDetails({
   matchUps,
   courts,
   venues,
-}) {
+}): {
+  venueScheduledRoundDetails: { [key: string]: any };
+  allDateScheduledMatchUpIds: string[];
+  allDateMatchUpIds: string[];
+} {
   const venueScheduledRoundDetails = {};
 
   // checking that matchUpDependencies is scoped to only those matchUps that are already or are to be scheduled on the same date
-  const allDateScheduledMatchUpIds = [];
-  const allDateMatchUpIds = [];
+  const allDateScheduledMatchUpIds: string[] = [];
+  const allDateMatchUpIds: string[] = [];
 
   // first pass through all venues is to build up an array of all matchUpIds in the schedulingProfile for current scheduleDate
   for (const venue of venues) {
@@ -45,7 +49,7 @@ export function getVenueSchedulingDetails({
       rounds,
     });
 
-    allDateMatchUpIds.push(...orderedMatchUpIds);
+    allDateMatchUpIds.push(...(orderedMatchUpIds || []));
 
     const { groupedRounds } = getGroupedRounds({
       scheduledRoundsDetails,
@@ -55,8 +59,7 @@ export function getVenueSchedulingDetails({
 
     let dateScheduledMatchUpIds;
     let dateScheduledMatchUps;
-    let scheduleTimes = [];
-    let clearDate;
+    let scheduleTimes: any = [];
 
     if (useGarman) {
       // determines court availability taking into account already scheduled matchUps on the scheduleDate
@@ -74,20 +77,21 @@ export function getVenueSchedulingDetails({
         }));
     }
 
-    ({ clearDate, dateScheduledMatchUpIds, dateScheduledMatchUps } =
-      processAlreadyScheduledMatchUps({
-        matchUpPotentialParticipantIds,
-        individualParticipantProfiles,
-        dateScheduledMatchUpIds,
-        greatestAverageMinutes,
-        matchUpNotBeforeTimes,
-        matchUpScheduleTimes,
-        matchUpDependencies,
-        clearScheduleDates,
-        scheduleDate,
-        minutesMap,
-        matchUps,
-      }));
+    const processResult = processAlreadyScheduledMatchUps({
+      matchUpPotentialParticipantIds,
+      individualParticipantProfiles,
+      dateScheduledMatchUpIds,
+      greatestAverageMinutes,
+      matchUpNotBeforeTimes,
+      matchUpScheduleTimes,
+      matchUpDependencies,
+      clearScheduleDates,
+      scheduleDate,
+      minutesMap,
+      matchUps,
+    });
+    const clearDate = processResult.clearDate;
+    ({ dateScheduledMatchUpIds, dateScheduledMatchUps } = processResult);
 
     const { matchUpsToSchedule, matchUpMap } = getMatchUpsToSchedule({
       matchUpPotentialParticipantIds,
