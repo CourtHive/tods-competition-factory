@@ -7,3 +7,5 @@ export type FactoryEngine = {
 export type TournamentRecordsArgs = {
   tournamentRecords: { [key: string]: Tournament } | Tournament[];
 };
+
+export type ScheduleTimesResult = { scheduleTime: string };
