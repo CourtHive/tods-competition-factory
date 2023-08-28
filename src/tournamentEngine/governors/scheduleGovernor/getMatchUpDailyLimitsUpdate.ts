@@ -9,7 +9,7 @@ import { SCHEDULE_LIMITS } from '../../../constants/extensionConstants';
 export function getMatchUpDailyLimitsUpdate({ tournamentRecord }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
-  const methods = [];
+  const methods: any[] = [];
 
   const { extension } = findTournamentExtension({
     name: SCHEDULE_LIMITS,

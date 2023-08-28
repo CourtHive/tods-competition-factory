@@ -38,7 +38,7 @@ export function bulkScheduleMatchUps({
     return { error: MISSING_SCHEDULE };
 
   let inContextMatchUps;
-  const warnings = [];
+  const warnings: any[] = [];
   let scheduled = 0;
 
   // Optimize getting matchUps for all tournamentRecords
@@ -103,8 +103,8 @@ export function bulkScheduleMatchUps({
         drawMatchUps,
         matchUpId,
       });
-      if (result.warnings?.length) warnings.push(...result.warnings);
-      if (result.success) scheduled += 1;
+      if (result?.warnings?.length) warnings.push(...result.warnings);
+      if (result?.success) scheduled += 1;
       if (result.error) return result;
     }
   }

@@ -24,7 +24,6 @@ export function positionUnseededParticipants({
   unseededByePositions,
   multipleStructures,
   tournamentRecord,
-  candidatesCount,
   drawDefinition,
   seedBlockInfo,
   participants,
@@ -44,7 +43,6 @@ export function positionUnseededParticipants({
     provisionalPositioning,
     drawDefinition,
     structure,
-    event,
   });
 
   const assignedSeedParticipantIds = seedAssignments
@@ -76,7 +74,7 @@ export function positionUnseededParticipants({
     (entry) => entry.participantId
   );
   const unfilledDrawPositions = positionAssignments
-    .filter((assignment) => {
+    ?.filter((assignment) => {
       return (
         !assignment.participantId && !assignment.bye && !assignment.qualifier
       );
@@ -85,13 +83,13 @@ export function positionUnseededParticipants({
 
   if (
     !multipleStructures &&
-    unseededParticipantIds.length > unfilledDrawPositions.length
+    unseededParticipantIds.length > (unfilledDrawPositions?.length || 0)
   ) {
     return decorateResult({
       result: { error: INSUFFICIENT_DRAW_POSITIONS },
       context: {
         unseededParticipantsCount: unseededParticipantIds.length,
-        unfilledDrawPositionsCount: unfilledDrawPositions.length,
+        unfilledDrawPositionsCount: unfilledDrawPositions?.length,
       },
       stack,
     });
@@ -125,7 +123,6 @@ export function positionUnseededParticipants({
       inContextDrawMatchUps,
       unseededByePositions,
       tournamentRecord,
-      candidatesCount,
       drawDefinition,
       seedBlockInfo,
       participants,
@@ -170,7 +167,6 @@ function randomUnseededDistribution({
     const drawPosition = shuffledDrawPositions.pop();
     if (!multipleStructures || drawPosition) {
       const result = assignDrawPosition({
-        automaticPlacement: true,
         provisionalPositioning,
         inContextDrawMatchUps,
         tournamentRecord,

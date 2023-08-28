@@ -98,7 +98,7 @@ export function removeCollectionDefinition({
   if (result?.error) return decorateResult({ result, stack });
 
   const structure = result?.structure;
-  matchUp = matchUp || result?.matchUp;
+  matchUp = matchUp ?? result?.matchUp;
   const existingTieFormat = result?.tieFormat;
   const tieFormat = copyTieFormat(existingTieFormat);
 
@@ -209,8 +209,8 @@ export function removeCollectionDefinition({
     const collectionMatchUps = matchUp.tieMatchUps?.filter(
       (tieMatchUp) => tieMatchUp.collectionId === collectionId
     );
-    for (const collectionMatchUp of collectionMatchUps || []) {
-      let result = setMatchUpStatus({
+    for (const collectionMatchUp of collectionMatchUps ?? []) {
+      let result: any = setMatchUpStatus({
         matchUpId: collectionMatchUp.matchUpId,
         tieMatchUpId: matchUp?.matchUpId,
         winningSide: undefined,
@@ -220,6 +220,7 @@ export function removeCollectionDefinition({
         event,
       });
       if (result.error) return result;
+
       result = findMatchUp({
         drawDefinition,
         matchUpId,
@@ -232,10 +233,10 @@ export function removeCollectionDefinition({
   const deletedMatchUpIds: string[] = [];
   for (const matchUp of targetMatchUps) {
     // remove any collectionAssignments from LineUps that include collectionId
-    for (const side of matchUp?.sides || []) {
-      side.lineUp = (side.lineUp || []).map((assignment) => ({
+    for (const side of matchUp?.sides ?? []) {
+      side.lineUp = (side.lineUp ?? []).map((assignment) => ({
         participantId: assignment.participantId,
-        collectionAssignments: (assignment?.collectionAssignments || []).filter(
+        collectionAssignments: (assignment?.collectionAssignments ?? []).filter(
           (collectionAssignment) =>
             collectionAssignment.collectionId !== collectionId
         ),
@@ -243,7 +244,7 @@ export function removeCollectionDefinition({
     }
 
     // delete any tieMatchUps that contain collectionId
-    matchUp.tieMatchUps = (matchUp.tieMatchUps || []).filter((matchUp) => {
+    matchUp.tieMatchUps = (matchUp.tieMatchUps ?? []).filter((matchUp) => {
       const deleteTarget = matchUp.collectionId === collectionId;
       if (deleteTarget) deletedMatchUpIds.push(matchUp.matchUpId);
       return !deleteTarget;

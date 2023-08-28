@@ -40,6 +40,7 @@ import {
   MISSING_VALUE,
   ANACHRONISM,
   INVALID_VALUES,
+  ErrorType,
 } from '../../../constants/errorConditionConstants';
 import {
   START_TIME,
@@ -50,7 +51,21 @@ import {
   COURT_ORDER,
 } from '../../../constants/timeItemConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
-import { DrawDefinition, Event } from '../../../types/tournamentFromSchema';
+import {
+  DrawDefinition,
+  Event,
+  TimeItem,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
+
+type AddScheduleAttributeArgs = {
+  tournamentRecord?: Tournament;
+  removePriorValues?: boolean;
+  drawDefinition: DrawDefinition;
+  disableNotice?: boolean;
+  matchUpId: string;
+  event?: Event;
+};
 
 function timeDate(value, scheduledDate) {
   const time = validTimeString.test(value) ? value : extractTime(value);
@@ -91,7 +106,12 @@ export function addMatchUpScheduleItems({
   matchUpId,
   schedule,
   event,
-}: AddMatchUpScheduleItemsArgs) {
+}: AddMatchUpScheduleItemsArgs): {
+  error?: ErrorType;
+  success?: boolean;
+  warnings?: any[];
+  info?: any;
+} {
   if (!schedule) return { error: MISSING_VALUE, info: 'Missing schedule' };
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
@@ -323,7 +343,7 @@ export function addMatchUpScheduledDate({
   drawDefinition,
   disableNotice,
   matchUpId,
-}) {
+}: AddScheduleAttributeArgs & { scheduledDate?: string }) {
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
   // TODO: if there is existing scheduledDate and no other relevant timeItems, delete prior
@@ -331,7 +351,7 @@ export function addMatchUpScheduledDate({
   // TODO: check that 1) scheduledDate is valid date and 2) is in range for tournament
   // this must be done in tournamentEngine wrapper
 
-  const validDate = dateValidation.test(dateToSchedule);
+  const validDate = dateToSchedule && dateValidation.test(dateToSchedule);
   if (dateToSchedule && !validDate) return { error: INVALID_DATE };
 
   const scheduledDate = extractDate(dateToSchedule);
@@ -359,13 +379,13 @@ export function addMatchUpCourtOrder({
   disableNotice,
   courtOrder,
   matchUpId,
-}) {
+}: AddScheduleAttributeArgs & { courtOrder?: number }) {
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
   if (courtOrder && !isConvertableInteger(courtOrder))
     return { error: INVALID_VALUES, info: 'courtOrder must be numeric' };
 
-  const itemValue = ensureInt(courtOrder);
+  const itemValue = courtOrder && ensureInt(courtOrder);
   const timeItem = {
     itemType: COURT_ORDER,
     itemValue,
@@ -390,16 +410,19 @@ export function addMatchUpOfficial({
   participantId,
   officialType,
   matchUpId,
+}: AddScheduleAttributeArgs & {
+  participantId?: string;
+  officialType?: string;
 }) {
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
   // TODO: check that 1) participantId has the appropriate participantRole
 
-  const timeItem = {
+  const timeItem: TimeItem = {
     itemType: 'SCHEDULE.ASSIGNMENT.OFFICIAL',
-    itemSubTypes: [officialType],
     itemValue: participantId,
   };
+  if (officialType) timeItem.itemSubTypes = [officialType];
 
   return addMatchUpTimeItem({
     duplicateValues: false,
@@ -420,13 +443,13 @@ export function addMatchUpStartTime({
   matchUpId,
   startTime,
   event,
-}) {
+}: AddScheduleAttributeArgs & { startTime?: string }) {
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
   if (!validTimeValue(startTime)) return { error: INVALID_TIME };
 
   const { matchUp } = findMatchUp({ drawDefinition, event, matchUpId });
   const { scheduledDate } = scheduledMatchUpDate({ matchUp });
-  const timeItems = matchUp?.timeItems || [];
+  const timeItems = matchUp?.timeItems ?? [];
 
   const earliestRelevantTimeValue = timeItems
     .filter((timeItem: any) =>
@@ -477,13 +500,16 @@ export function addMatchUpEndTime({
   matchUpId,
   endTime,
   event,
+}: AddScheduleAttributeArgs & {
+  validateTimeSeries?: boolean;
+  endTime?: string;
 }) {
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
   if (!validTimeValue(endTime)) return { error: INVALID_TIME };
 
   const { matchUp } = findMatchUp({ drawDefinition, event, matchUpId });
   const { scheduledDate } = scheduledMatchUpDate({ matchUp });
-  const timeItems = matchUp?.timeItems || [];
+  const timeItems = matchUp?.timeItems ?? [];
 
   const latestRelevantTimeValue = timeItems
     .filter((timeItem: any) =>
@@ -535,13 +561,15 @@ export function addMatchUpStopTime({
   matchUpId,
   stopTime,
   event,
+}: AddScheduleAttributeArgs & {
+  stopTime?: string;
 }) {
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
   if (!validTimeValue(stopTime)) return { error: INVALID_TIME };
 
   const { matchUp } = findMatchUp({ drawDefinition, event, matchUpId });
   const { scheduledDate } = scheduledMatchUpDate({ matchUp });
-  const timeItems = matchUp?.timeItems || [];
+  const timeItems = matchUp?.timeItems ?? [];
 
   // can't add a STOP_TIME if the matchUp is not STARTED or RESUMED, or has START_TIME
   // if latest relevaant timeItem is a STOP_TIME then overwrite
@@ -616,13 +644,15 @@ export function addMatchUpResumeTime({
   resumeTime,
   matchUpId,
   event,
+}: AddScheduleAttributeArgs & {
+  resumeTime?: string;
 }) {
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
   if (!validTimeValue(resumeTime)) return { error: INVALID_TIME };
 
   const { matchUp } = findMatchUp({ drawDefinition, event, matchUpId });
   const { scheduledDate } = scheduledMatchUpDate({ matchUp });
-  const timeItems = matchUp?.timeItems || [];
+  const timeItems = matchUp?.timeItems ?? [];
 
   // can't add a RESUME_TIME if the matchUp is not STOPPED, or if it has ENDED
   // if latest relevaant timeItem is a RESUME_TIME then overwrite

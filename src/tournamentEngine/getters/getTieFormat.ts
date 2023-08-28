@@ -5,12 +5,31 @@ import { findMatchUp } from './matchUpsGetter/findMatchUp';
 
 import { SUCCESS } from '../../constants/resultConstants';
 import {
+  ErrorType,
   MISSING_DRAW_ID,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
+import {
+  DrawDefinition,
+  Event,
+  MatchUp,
+  Structure,
+  TieFormat,
+  Tournament,
+} from '../../types/tournamentFromSchema';
 
 // method exclusively for external use
+type GetTieFormatArgs = {
+  tournamentRecord: Tournament;
+  drawDefinition?: DrawDefinition;
+  structure?: Structure;
+  structureId?: string;
+  matchUpId: string;
+  eventId?: string;
+  drawId?: string;
+  event?: Event;
+};
 export function getTieFormat({
   tournamentRecord, // passed in automatically by tournamentEngine
   drawDefinition, // passed in automatically by tournamentEngine when drawId provided
@@ -20,7 +39,16 @@ export function getTieFormat({
   eventId, // optional - if only the default matchUpFormat for an event is required
   drawId, // avoid brute force search for matchUp
   event, // passed in automatically by tournamentEngine when drawId or eventId provided
-}) {
+}: GetTieFormatArgs): {
+  structureDefaultTieFormat?: TieFormat;
+  eventDefaultTieFormat?: TieFormat;
+  drawDefaultTieFormat?: TieFormat;
+  tieFormat?: TieFormat;
+  structure?: Structure;
+  error?: ErrorType;
+  success?: boolean;
+  matchUp?: MatchUp;
+} {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!drawId && !event && !structureId && !matchUpId)
     return decorateResult({
@@ -46,7 +74,7 @@ export function getTieFormat({
     drawDefinition = matchUpResult?.drawDefinition;
   }
 
-  structure = structure || matchUpResult?.structure;
+  structure = structure ?? matchUpResult?.structure;
   if (!structure && structureId && !matchUpId) {
     if (!drawDefinition) return { error: MISSING_DRAW_ID };
     const structureResult = findStructure({ drawDefinition, structureId });
@@ -74,9 +102,11 @@ export function getTieFormat({
 
   return {
     ...SUCCESS,
+    matchUp: matchUpResult?.matchUp,
     structureDefaultTieFormat,
     eventDefaultTieFormat,
     drawDefaultTieFormat,
     tieFormat,
+    structure,
   };
 }

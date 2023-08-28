@@ -18,10 +18,23 @@ import {
   MISSING_PARTICIPANT_ID,
   PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
+import {
+  DrawDefinition,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
 export function addMatchUpScheduleItems(params) {
   return addScheduleItems(params);
 }
+
+type AddScheduleAttributeArgs = {
+  tournamentRecord?: Tournament;
+  drawDefinition: DrawDefinition;
+  removePriorValues?: boolean;
+  disableNotice?: boolean;
+  matchUpId: string;
+  event?: Event;
+};
 
 export function addMatchUpScheduledDate({
   removePriorValues,
@@ -30,6 +43,8 @@ export function addMatchUpScheduledDate({
   disableNotice,
   scheduledDate,
   matchUpId,
+}: AddScheduleAttributeArgs & {
+  scheduledDate?: string;
 }) {
   // TODO: check that scheduledDate is within range of event dates / tournament dates
 
@@ -50,6 +65,8 @@ export function addMatchUpScheduledTime({
   scheduledTime,
   disableNotice,
   matchUpId,
+}: AddScheduleAttributeArgs & {
+  scheduledTime?: string;
 }) {
   // TODO: check that scheduledTime is within range of event dates / tournament dates
 

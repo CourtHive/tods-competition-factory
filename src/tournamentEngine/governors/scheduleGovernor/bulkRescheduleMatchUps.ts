@@ -40,8 +40,8 @@ export function bulkRescheduleMatchUps({
     return { error: MISSING_MATCHUP_IDS };
   if (typeof scheduleChange !== 'object') return { error: INVALID_VALUES };
 
-  const rescheduledMatchUpIds = [];
-  const notRescheduledMatchUpIds = [];
+  const rescheduledMatchUpIds: string[] = [];
+  const notRescheduledMatchUpIds: string[] = [];
   const { minutesChange, daysChange } = scheduleChange;
   if (!minutesChange && !daysChange) return { ...SUCCESS };
 
@@ -119,7 +119,7 @@ export function bulkRescheduleMatchUps({
           doNotReschedule = newTime < 0 || newTime > dayTotalMinutes;
 
           if (!doNotReschedule) {
-            let timeString = addMinutesToTimeString(
+            const timeString = addMinutesToTimeString(
               scheduledTime,
               minutesChange
             );

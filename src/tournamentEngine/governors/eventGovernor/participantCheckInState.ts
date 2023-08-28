@@ -63,10 +63,10 @@ export function checkOutParticipant({
   if (event) {
     const tournamentParticipants = tournamentRecord.participants;
     const result = drawEngineCheckOutParticipant({
-      drawDefinition,
       tournamentParticipants,
-      matchUpId,
+      drawDefinition,
       participantId,
+      matchUpId,
     });
     if (result.error) return result;
   } else {

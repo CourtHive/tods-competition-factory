@@ -19,12 +19,28 @@ import {
   activeMatchUpStatuses,
   completedMatchUpStatuses,
 } from '../../../constants/matchUpStatusConstants';
+import {
+  DrawDefinition,
+  Event,
+  Participant,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
+import { HydratedMatchUp } from '../../../types/hydrated';
 
 /*
   function is only able to check whether participant is alredy checked in 
   if given full context, which means tournamentParticipants loaded in drawEngine
   Otherwise a participant may be checked in multiple times
 */
+type CheckInOutParticipantArgs = {
+  tournamentParticipants?: Participant[];
+  tournamentRecord?: Tournament;
+  drawDefinition: DrawDefinition;
+  matchUp?: HydratedMatchUp;
+  participantId: string;
+  matchUpId: string;
+  event?: Event;
+};
 export function checkInParticipant({
   tournamentParticipants,
   tournamentRecord,
@@ -33,12 +49,12 @@ export function checkInParticipant({
   matchUpId,
   matchUp,
   event,
-}) {
+}: CheckInOutParticipantArgs) {
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
   if (!matchUpId) return { error: MISSING_MATCHUP };
 
   tournamentParticipants =
-    tournamentParticipants || tournamentRecord?.participants;
+    tournamentParticipants ?? tournamentRecord?.participants;
 
   if (tournamentParticipants?.length) {
     if (!matchUp) {
@@ -86,12 +102,12 @@ export function checkOutParticipant({
   matchUpId,
   matchUp,
   event,
-}) {
+}: CheckInOutParticipantArgs) {
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
   if (!matchUpId && !matchUp) return { error: MISSING_MATCHUP_ID };
 
   tournamentParticipants =
-    tournamentParticipants || tournamentRecord?.participants;
+    tournamentParticipants ?? tournamentRecord?.participants;
 
   if (!matchUp) {
     const result = findMatchUp({
@@ -102,14 +118,15 @@ export function checkOutParticipant({
       event,
     });
     if (result.error) return result;
+    if (!result.matchUp) return { error: MATCHUP_NOT_FOUND };
     matchUp = result.matchUp;
   }
 
   const { matchUpStatus, score } = matchUp;
 
   if (
-    activeMatchUpStatuses.includes(matchUpStatus) ||
-    completedMatchUpStatuses.includes(matchUpStatus) ||
+    (matchUpStatus && activeMatchUpStatuses.includes(matchUpStatus)) ||
+    (matchUpStatus && completedMatchUpStatuses.includes(matchUpStatus)) ||
     scoreHasValue({ score })
   ) {
     return { error: INVALID_ACTION };

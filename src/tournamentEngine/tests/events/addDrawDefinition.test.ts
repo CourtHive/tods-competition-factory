@@ -20,7 +20,7 @@ test.each([tournamentEngineSync, asyncTournamentEngine])(
 
     await tournamentEngine.setState(tournamentRecord);
     let result = await tournamentEngine.addEvent({ event });
-    let { event: eventResult } = result;
+    const { event: eventResult } = result;
     expect(result.success).toEqual(true);
 
     const { eventId } = eventResult;
@@ -46,7 +46,7 @@ test.each([tournamentEngineSync, asyncTournamentEngine])(
     });
     expect(result.success).toEqual(true);
 
-    let { flightProfile } = await tournamentEngine.getFlightProfile({
+    const { flightProfile } = await tournamentEngine.getFlightProfile({
       eventId,
     });
     expect(flightProfile.flights.length).toEqual(1);
