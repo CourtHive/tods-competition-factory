@@ -12,7 +12,13 @@ import {
   dayMinutesToTimeString,
 } from '../../../../utilities/dateTime';
 
-export function getScheduleTimes(params) {
+import { ScheduleTimesResult } from '../../../../types/factoryTypes';
+
+export function getScheduleTimes(params): {
+  scheduleTimes: ScheduleTimesResult[];
+  totalMatchUps: number;
+  timingProfile: any;
+} {
   let {
     date = getUTCdateString(),
     startTime = '08:00',
