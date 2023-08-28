@@ -58,9 +58,10 @@ export function generateScheduleTimes({
     tournamentRecords,
   });
 
-  const courts = allCourts.filter(
-    (court) => !venueIds || venueIds.includes(court.venueId)
-  );
+  const courts =
+    allCourts?.filter(
+      (court) => !venueIds || venueIds.includes(court.venueId)
+    ) || [];
 
   startTime =
     startTime || getDateTimeBoundary({ courts, scheduleDate, startTime: true });

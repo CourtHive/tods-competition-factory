@@ -23,10 +23,11 @@ export function updateTimeAfterRecovery({
 }) {
   const endTime = extractTime(matchUp?.schedule?.endTime);
   const timeAfterRecovery = endTime
-    ? addMinutesToTimeString(endTime, parseInt(recoveryMinutes))
+    ? addMinutesToTimeString(endTime, parseInt(recoveryMinutes.toString()))
     : addMinutesToTimeString(
         scheduleTime,
-        parseInt(averageMatchUpMinutes) + parseInt(recoveryMinutes)
+        parseInt(averageMatchUpMinutes.toString()) +
+          parseInt(recoveryMinutes.toString())
       );
 
   const typeChangeTimeAfterRecovery =
@@ -35,7 +36,8 @@ export function updateTimeAfterRecovery({
       ? addMinutesToTimeString(extractTime(endTime), typeChangeRecoveryMinutes)
       : addMinutesToTimeString(
           scheduleTime,
-          parseInt(averageMatchUpMinutes) + parseInt(typeChangeRecoveryMinutes)
+          parseInt(averageMatchUpMinutes.toString()) +
+            parseInt(typeChangeRecoveryMinutes)
         ));
   const participantIdDependencies =
     matchUpDependencies?.[matchUp.matchUpId]?.participantIds || [];
