@@ -1,11 +1,18 @@
 import { getVenuesAndCourts } from '../../../../getters/venuesAndCourtsGetter';
-import { getMatchUpId } from '../../../../../global/functions/extractors';
 import { getScheduleTimes } from '../../garman/getScheduleTimes';
 import { calculatePeriodLength } from './calculatePeriodLength';
 import { getDateTimeBoundary } from './getTimeBoundary';
 import { generateBookings } from './generateBookings';
 
-import { MISSING_TOURNAMENT_RECORDS } from '../../../../../constants/errorConditionConstants';
+import {
+  ErrorType,
+  MISSING_TOURNAMENT_RECORDS,
+} from '../../../../../constants/errorConditionConstants';
+
+import { ScheduleTimesResult } from '../../../../../types/factoryTypes';
+import { Tournament } from '../../../../../types/tournamentFromSchema';
+import { HydratedMatchUp } from '../../../../../types/hydrated';
+import { extractAttributes } from '../../../../../utilities';
 
 /**
  *
@@ -21,6 +28,23 @@ import { MISSING_TOURNAMENT_RECORDS } from '../../../../../constants/errorCondit
  * @param {number} periodLengh - number of minutes in a scheduling period
  * @returns
  */
+
+type GenerateScheduleTimesArgs = {
+  tournamentRecords?: { [key: string]: Tournament };
+  calculateStartTimeFromCourts?: boolean;
+  remainingScheduleTimes?: string[];
+  defaultRecoveryMinutes?: number;
+  averageMatchUpMinutes?: number;
+  tournamentRecord?: Tournament;
+  clearScheduleDates?: boolean;
+  matchUps?: HydratedMatchUp;
+  periodLength?: number;
+  scheduleDate: string;
+  venueIds: string[];
+  startTime?: string;
+  endTime?: string;
+};
+
 export function generateScheduleTimes({
   calculateStartTimeFromCourts = true,
   remainingScheduleTimes,
@@ -35,7 +59,13 @@ export function generateScheduleTimes({
   venueIds,
   matchUps,
   endTime,
-}) {
+}: GenerateScheduleTimesArgs): {
+  dateScheduledMatchUps?: HydratedMatchUp[];
+  scheduleTimes?: ScheduleTimesResult[];
+  dateScheduledMatchUpIds?: string[];
+  error?: ErrorType;
+  venueId?: string;
+} {
   if (tournamentRecord && !tournamentRecords) {
     tournamentRecords = { [tournamentRecord.tournamentId]: tournamentRecord };
   }
@@ -98,7 +128,9 @@ export function generateScheduleTimes({
     (venues?.length === 1 && venues[0].venueId) ||
     undefined;
 
-  const dateScheduledMatchUpIds = dateScheduledMatchUps?.map(getMatchUpId);
+  const dateScheduledMatchUpIds = dateScheduledMatchUps?.map(
+    extractAttributes('matchUpId')
+  );
 
   return {
     dateScheduledMatchUpIds,
