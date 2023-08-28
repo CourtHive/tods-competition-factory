@@ -66,7 +66,7 @@ export function randomUnseededSeparation({
   // roundsToSeparate determines desired degree of separation between players with matching attribute values
   // targetDivisions derives roundsToSeparate from the number of rounds
 
-  let { structure } = findStructure({ drawDefinition, structureId });
+  const { structure } = findStructure({ drawDefinition, structureId });
   const { matchUps } = getAllStructureMatchUps({
     provisionalPositioning,
     matchUpsMap,
@@ -75,7 +75,7 @@ export function randomUnseededSeparation({
   });
 
   if (targetDivisions && isPowerOf2(targetDivisions) && !roundsToSeparate) {
-    const exponent = deriveExponent(targetDivisions);
+    const exponent: number = deriveExponent(targetDivisions) || 0;
     const roundsCount = matchUps.reduce(
       (count, matchUp) =>
         matchUp.roundNumber > count ? matchUp.roundNumber : count,
@@ -84,17 +84,17 @@ export function randomUnseededSeparation({
     roundsToSeparate = roundsCount < exponent ? 1 : roundsCount - exponent + 1;
   }
 
-  let { positionAssignments } = structureAssignedDrawPositions({ structure });
+  const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const participantsWithGroupings = addParticipantGroupings({
     participantsProfile: { convertExtensions: true },
     participants,
   });
 
-  const unassignedPositions = positionAssignments.filter(
+  const unassignedPositions = positionAssignments?.filter(
     (assignment) => !assignment.participantId
   );
 
-  const allDrawPositions = positionAssignments.map(
+  const allDrawPositions = positionAssignments?.map(
     (assignment) => assignment.drawPosition
   );
 
@@ -108,7 +108,7 @@ export function randomUnseededSeparation({
     ? roundRobinParticipantGroups(params)
     : eliminationParticipantGroups(params);
 
-  const idCollections = {};
+  const idCollections: any = {};
   idCollections.groupParticipants = participants
     .filter((participant) => participant.participantType === GROUP)
     .map((participant) => participant.participantId);
@@ -136,12 +136,12 @@ export function randomUnseededSeparation({
     })
   );
 
-  let unplacedParticipantIds = getUnplacedParticipantIds({
+  const unplacedParticipantIds = getUnplacedParticipantIds({
     participantIds: unseededParticipantIds,
     positionAssignments,
   });
 
-  if (unplacedParticipantIds.length > unassignedPositions.length) {
+  if (unplacedParticipantIds.length > (unassignedPositions?.length || 0)) {
     return { error: INSUFFICIENT_DRAW_POSITIONS };
   }
 
@@ -166,7 +166,7 @@ export function randomUnseededSeparation({
   );
 
   candidate = noPairPriorityCandidates.reduce(
-    (p, c) => (!p || (c.conflicts || 0) < (p.conflicts || 0) ? c : p),
+    (p: any, c) => (!p || (c.conflicts || 0) < (p.conflicts || 0) ? c : p),
     undefined
   );
 
@@ -194,7 +194,7 @@ export function randomUnseededSeparation({
       .filter((candidate) => !candidate.errors?.length);
 
     candidate = candidates.reduce(
-      (p, c) => (!p || (c.conflicts || 0) < (p.conflicts || 0) ? c : p),
+      (p: any, c) => (!p || (c.conflicts || 0) < (p.conflicts || 0) ? c : p),
       undefined
     );
   }
