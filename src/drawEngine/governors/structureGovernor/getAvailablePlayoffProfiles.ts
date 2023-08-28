@@ -10,25 +10,18 @@ import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConsta
 import {
   CONTAINER,
   FIRST_MATCHUP,
-  MAIN,
   VOLUNTARY_CONSOLATION,
 } from '../../../constants/drawDefinitionConstants';
 
 export function getAvailablePlayoffProfiles({ drawDefinition, structureId }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
-  let { structures } = getDrawStructures({
-    stageSeqence: 1,
-    drawDefinition,
-    stage: MAIN,
-  });
-
   // positions which are being played off by existing structure(s)
   const { positionsNotPlayedOff, positionsPlayedOff } = getPositionsPlayedOff({
     drawDefinition,
   });
 
-  ({ structures } = getDrawStructures({ drawDefinition }));
+  const { structures } = getDrawStructures({ drawDefinition });
   const filteredStructures = structures.filter(
     (structure) =>
       (!structureId && structure.stage !== VOLUNTARY_CONSOLATION) ||
@@ -81,10 +74,10 @@ function availablePlayoffProfiles({
 
   if (structure.structureType === CONTAINER || structure.structures) {
     const positionsCount = getPositionAssignments({ structure })
-      .positionAssignments.length;
+      ?.positionAssignments?.length;
 
     const groupCount = structure.structures.length;
-    const groupSize = positionsCount / groupCount;
+    const groupSize = (positionsCount ?? 0) / groupCount;
     const finishingPositionsPlayedOff =
       links.source?.flatMap(({ source }) => source?.finishingPositions || []) ||
       [];
@@ -104,7 +97,7 @@ function availablePlayoffProfiles({
       }
     );
     const positionsInTargetStructures = [
-      ...positionsPlayedOff,
+      ...(positionsPlayedOff ?? []),
       ...positionsNotPlayedOff,
     ];
     const availablePlayoffPositions = generateRange(
@@ -184,7 +177,7 @@ function availablePlayoffProfiles({
       sides.find((side) => side.participantFed && !side.participantId)
     ).length;
 
-    if (availableToProgress === targetRoundMatchUps.length) {
+    if (playoffRounds && availableToProgress === targetRoundMatchUps.length) {
       playoffRounds.push(roundNumber);
       const loser = roundProfile[roundNumber].finishingPositionRange?.loser;
       if (loser) {
@@ -207,7 +200,7 @@ function availablePlayoffProfiles({
     }
   }
 
-  playoffRounds.sort(numericSort);
+  if (playoffRounds) playoffRounds.sort(numericSort);
   playoffRoundsRanges.sort((a, b) => a.roundNumber - b.roundNumber);
 
   return { playoffRounds, playoffRoundsRanges, error };

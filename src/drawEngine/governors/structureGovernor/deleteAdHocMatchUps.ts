@@ -1,4 +1,3 @@
-import { getMatchUpIds } from '../../../global/functions/extractors';
 import {
   deleteMatchUpsNotice,
   modifyDrawNotice,
@@ -13,22 +12,27 @@ import {
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
+import {
+  DrawDefinition,
+  Event,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
+import { extractAttributes } from '../../../utilities';
 
-/**
- *
- * @param {string} drawId - allows tournamentEngine to find drawDefinition
- * @param {object} drawDefinition
- * @param {string} structureId
- * @param {string[]} matchUpIds - ids of matchUps to be deleted
- *
- */
+type DeleteAdHocMatchUpsArgs = {
+  tournamentRecord?: Tournament;
+  drawDefinition: DrawDefinition;
+  matchUpIds?: string[];
+  structureId: string;
+  event?: Event;
+};
 export function deleteAdHocMatchUps({
   tournamentRecord,
   matchUpIds = [],
   drawDefinition,
   structureId,
   event,
-}) {
+}: DeleteAdHocMatchUpsArgs) {
   if (typeof drawDefinition !== 'object')
     return { error: MISSING_DRAW_DEFINITION };
   if (typeof structureId !== 'string') return { error: MISSING_STRUCTURE_ID };
@@ -41,7 +45,7 @@ export function deleteAdHocMatchUps({
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
   const existingMatchUps = structure?.matchUps;
-  const structureHasRoundPositions = existingMatchUps.find(
+  const structureHasRoundPositions = existingMatchUps?.find(
     (matchUp) => !!matchUp.roundPosition
   );
 
@@ -53,10 +57,13 @@ export function deleteAdHocMatchUps({
     return { error: INVALID_STRUCTURE };
   }
 
-  const matchUpsToDelete = existingMatchUps.filter(({ matchUpId }) =>
-    matchUpIds.includes(matchUpId)
+  const matchUpsToDelete =
+    existingMatchUps?.filter(({ matchUpId }) =>
+      matchUpIds.includes(matchUpId)
+    ) ?? [];
+  const matchUpIdsToDelete = matchUpsToDelete.map(
+    extractAttributes('matchUpId')
   );
-  const matchUpIdsToDelete = getMatchUpIds(matchUpsToDelete);
 
   const drawPositionsToDelete = matchUpsToDelete
     .map(({ drawPositions }) => drawPositions)
@@ -65,26 +72,28 @@ export function deleteAdHocMatchUps({
   if (drawPositionsToDelete.length) {
     // remove positionAssignments with drawPositions to delete
     structure.positionAssignments = structure.positionAssignments
-      .filter(
+      ?.filter(
         ({ drawPosition }) => !drawPositionsToDelete.includes(drawPosition)
       )
       // sort just for sanity
       .sort((a, b) => a.drawPosition - b.drawPosition);
 
-    structure.matchUps = structure.matchUps.filter(
+    structure.matchUps = structure?.matchUps?.filter(
       ({ matchUpId }) => !matchUpIdsToDelete.includes(matchUpId)
     );
 
     // build up a re-mapping of remaining drawPositions to close any gaps in sequential order
     const newDrawPositionsMap = Object.assign(
       {},
-      ...structure.positionAssignments.map(({ drawPosition }, index) => ({
-        [drawPosition]: index + 1,
-      }))
+      ...(structure.positionAssignments ?? []).map(
+        ({ drawPosition }, index) => ({
+          [drawPosition]: index + 1,
+        })
+      )
     );
 
     // remap positionAssignments
-    structure.positionAssignments = structure.positionAssignments.map(
+    structure.positionAssignments = (structure.positionAssignments ?? []).map(
       (assignment) => ({
         ...assignment,
         drawPosition: newDrawPositionsMap[assignment.drawPosition],
@@ -97,7 +106,7 @@ export function deleteAdHocMatchUps({
         matchUp.drawPositions?.map(
           (drawPosition) => newDrawPositionsMap[drawPosition]
         ) || []);
-    structure.matchUps.forEach(remapDrawPositions);
+    structure.matchUps?.forEach(remapDrawPositions);
 
     deleteMatchUpsNotice({
       tournamentId: tournamentRecord?.tournamentId,
