@@ -1,13 +1,6 @@
 import { getStructureRoundProfile } from '../../getters/getMatchUps/getStructureRoundProfile';
 import { generateRange, unique } from '../../../utilities';
 
-/**
- *
- * @param {object} drawDefinition - passed in by drawEngine
- * @param {string} structureId
- * @param {number[]} finishingPositions - drawPositions for which the sourceRound will be determined
- */
-
 export function getFinishingPositionSourceRoundsMap({
   finishingPositions,
   drawDefinition,
@@ -18,9 +11,9 @@ export function getFinishingPositionSourceRoundsMap({
     structureId,
   });
 
-  const roundNumbers = Object.keys(roundProfile);
-  return roundNumbers.reduce((sourceRounds, roundNumber) => {
-    const rangeDefinitions = roundValues(roundProfile[roundNumber]);
+  const roundNumbers = roundProfile && Object.keys(roundProfile);
+  return roundNumbers?.reduce((sourceRounds, roundNumber) => {
+    const rangeDefinitions = roundValues(roundProfile?.[roundNumber]);
     rangeDefinitions.forEach((rangeDefinition) => {
       finishingPositions.forEach((position) => {
         if (positionIsInRange({ position, rangeDefinition })) {
@@ -32,12 +25,6 @@ export function getFinishingPositionSourceRoundsMap({
   }, {});
 }
 
-/**
- *
- * @param {number} position - a drawPosition
- * @param {number[]} rangeDefinition - [min, max] - if only [min] then max is coerced to min
- *
- */
 export function positionIsInRange({ position, rangeDefinition }) {
   if (!Array.isArray(rangeDefinition)) return false;
   if (
