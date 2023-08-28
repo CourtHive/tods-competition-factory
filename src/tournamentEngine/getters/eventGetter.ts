@@ -10,6 +10,7 @@ import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../constants/errorConditionConstants';
+import { Tournament } from '../../types/tournamentFromSchema';
 
 export function getEvent({ tournamentRecord, drawDefinition, event, context }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -44,14 +45,16 @@ export function getEvents({ tournamentRecord, context, inContext }) {
   return { events: eventCopies };
 }
 
-/**
- *
- * @param {object} tournamentRecord
- * @param {string=} eventId
- * @param {string=} drawId
- */
-
-export function findEvent({ tournamentRecord, eventId, drawId }) {
+type FindEventArgs = {
+  tournamentRecord: Tournament;
+  eventId?: string;
+  drawId?: string;
+};
+export function findEvent({
+  tournamentRecord,
+  eventId,
+  drawId,
+}: FindEventArgs) {
   const stack = 'findEvent';
   if (!tournamentRecord)
     return decorateResult({

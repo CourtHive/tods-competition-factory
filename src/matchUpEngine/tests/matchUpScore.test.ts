@@ -15,8 +15,8 @@ it('can generate score object', () => {
     matchUpStatus: COMPLETED,
   });
 
-  expect(score.scoreStringSide1).toEqual('6-2 1-6 1-6');
-  expect(score.scoreStringSide2).toEqual('2-6 6-1 6-1');
+  expect(score?.scoreStringSide1).toEqual('6-2 1-6 1-6');
+  expect(score?.scoreStringSide2).toEqual('2-6 6-1 6-1');
 });
 
 it('generates correct scoreStrings for tiebreak sets', () => {

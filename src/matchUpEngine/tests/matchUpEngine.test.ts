@@ -17,7 +17,7 @@ it.each([matchUpEngineSync, asyncMatchUpEngine])(
     result = await matchUpEngine.setState('foo');
     expect(result.error).toEqual(INVALID_OBJECT);
 
-    const matchUp = { matchUpId: '123' };
+    const matchUp: any = { matchUpId: '123' };
     result = await matchUpEngine.setState([matchUp]);
     expect(result.success).toEqual(true);
 

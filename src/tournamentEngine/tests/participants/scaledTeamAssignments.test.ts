@@ -116,8 +116,8 @@ it('can automatically assign participants to teams using individualParticipantId
     teamParticipant.individualParticipants
       .map(
         (participant) =>
-          participantScaleItem({ participant, scaleAttributes }).scaleItem
-            .scaleValue
+          participantScaleItem({ participant, scaleAttributes })?.scaleItem
+            ?.scaleValue
       )
       .reduce((a, b) => (a || 0) + (b || 0))
   );
@@ -183,8 +183,8 @@ it('can automatically assign participants to teams using scaledParticipants', ()
 
   const scaledParticipants = individualParticipants.map((participant) => ({
     participantId: participant.participantId,
-    scaleValue: participantScaleItem({ participant, scaleAttributes }).scaleItem
-      .scaleValue,
+    scaleValue: participantScaleItem({ participant, scaleAttributes })
+      ?.scaleItem?.scaleValue,
   }));
 
   const teamParticipantIds = teamParticipants.map(getParticipantId);
@@ -214,8 +214,8 @@ it('can automatically assign participants to teams using scaledParticipants', ()
     teamParticipant.individualParticipants
       .map(
         (participant) =>
-          participantScaleItem({ participant, scaleAttributes }).scaleItem
-            .scaleValue
+          participantScaleItem({ participant, scaleAttributes })?.scaleItem
+            ?.scaleValue
       )
       .reduce((a, b) => (a || 0) + (b || 0))
   );
@@ -281,8 +281,8 @@ it('will cleanup UNGROUPED participant entries if TEAM entry is added AFTER team
 
   const scaledParticipants = individualParticipants.map((participant) => ({
     participantId: participant.participantId,
-    scaleValue: participantScaleItem({ participant, scaleAttributes }).scaleItem
-      .scaleValue,
+    scaleValue: participantScaleItem({ participant, scaleAttributes })
+      ?.scaleItem?.scaleValue,
   }));
 
   const teamParticipantIds = teamParticipants.map(getParticipantId);
@@ -306,8 +306,8 @@ it('will cleanup UNGROUPED participant entries if TEAM entry is added AFTER team
     teamParticipant.individualParticipants
       .map(
         (participant) =>
-          participantScaleItem({ participant, scaleAttributes }).scaleItem
-            .scaleValue
+          participantScaleItem({ participant, scaleAttributes })?.scaleItem
+            ?.scaleValue
       )
       .reduce((a, b) => (a || 0) + (b || 0))
   );
@@ -371,8 +371,8 @@ it('will generate teams for scaledTeamAssignment when given teamsCount', () => {
 
   const scaledParticipants = individualParticipants.map((participant) => ({
     participantId: participant.participantId,
-    scaleValue: participantScaleItem({ participant, scaleAttributes }).scaleItem
-      .scaleValue,
+    scaleValue: participantScaleItem({ participant, scaleAttributes })
+      ?.scaleItem?.scaleValue,
   }));
 
   result = tournamentEngine.scaledTeamAssignment({
@@ -395,8 +395,8 @@ it('will generate teams for scaledTeamAssignment when given teamsCount', () => {
     teamParticipant.individualParticipants
       .map(
         (participant) =>
-          participantScaleItem({ participant, scaleAttributes }).scaleItem
-            .scaleValue
+          participantScaleItem({ participant, scaleAttributes })?.scaleItem
+            ?.scaleValue
       )
       .reduce((a, b) => (a || 0) + (b || 0))
   );
@@ -503,8 +503,8 @@ it('can determine teams from DIRECT_ACCEPTANCE entries of a TEAM event', () => {
     teamParticipant.individualParticipants
       .map(
         (participant) =>
-          participantScaleItem({ participant, scaleAttributes }).scaleItem
-            .scaleValue
+          participantScaleItem({ participant, scaleAttributes })?.scaleItem
+            ?.scaleValue
       )
       .reduce((a, b) => (a || 0) + (b || 0))
   );

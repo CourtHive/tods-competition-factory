@@ -29,8 +29,8 @@ it('can auto schedule matchUps which are missing winnerMatchUpId and loserMatchU
 
   const { startDate } = competitionEngine.getCompetitionDateRange();
 
-  let result = competitionEngine.scheduleProfileRounds();
-  let scheduledIdsCount = result.scheduledMatchUpIds[startDate].length;
+  const result = competitionEngine.scheduleProfileRounds();
+  const scheduledIdsCount = result.scheduledMatchUpIds[startDate].length;
 
   ({ matchUps } = competitionEngine.allCompetitionMatchUps({
     afterRecoveryTimes: true,

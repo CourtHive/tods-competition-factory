@@ -27,7 +27,7 @@ test('generated completed mock matchUp', () => {
     matchUps: [matchUp],
   } = tournamentEngine.allTournamentMatchUps();
 
-  let analysis = matchUpEngine.analyzeMatchUp({ matchUp });
+  const analysis = matchUpEngine.analyzeMatchUp({ matchUp });
   expect(analysis.calculatedWinningSide).toEqual(1);
   expect(analysis.validMatchUpWinningSide).toEqual(true);
 });
@@ -42,7 +42,7 @@ test('matchUpEngine state test', () => {
     matchUps: [matchUp],
   } = tournamentEngine.allTournamentMatchUps();
 
-  let analysis = matchUpEngine.setState(matchUp).analyzeMatchUp();
+  const analysis = matchUpEngine.setState(matchUp).analyzeMatchUp();
   expect(analysis.calculatedWinningSide).toEqual(1);
   expect(analysis.validMatchUpWinningSide).toEqual(true);
 });

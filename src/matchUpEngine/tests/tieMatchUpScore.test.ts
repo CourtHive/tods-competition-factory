@@ -42,7 +42,7 @@ it('calculates tieMatchUpScore properly with 1 point per game won and tiebreak s
     ({ matchUpType }) => matchUpType === SINGLES
   );
 
-  let outcome = {
+  const outcome = {
     winningSide: 2,
     score: {
       sets: [
@@ -67,7 +67,7 @@ it('calculates tieMatchUpScore properly with 1 point per game won and tiebreak s
       ],
     },
   };
-  let result = tournamentEngine.setMatchUpStatus({
+  const result = tournamentEngine.setMatchUpStatus({
     matchUpId: singlesMatchUp.matchUpId,
     drawId: singlesMatchUp.drawId,
     outcome,
@@ -77,7 +77,7 @@ it('calculates tieMatchUpScore properly with 1 point per game won and tiebreak s
   matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
   singlesMatchUp = matchUps.find(({ matchUpType }) => matchUpType === SINGLES);
   expect(singlesMatchUp.score.scoreStringSide1).toEqual('6-1 1-6 [1-10]');
-  let teamMatchUp = matchUps.find(
+  const teamMatchUp = matchUps.find(
     ({ matchUpType }) => matchUpType === TEAM_MATCHUP
   );
   expect(teamMatchUp.score.scoreStringSide1).toEqual('7-8');

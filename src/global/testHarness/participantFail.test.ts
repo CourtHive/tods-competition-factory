@@ -5,7 +5,7 @@ import fs from 'fs';
 import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
 
 it('hydrated tieMatchUps can be processed successfully', () => {
-  let tournamentRecordJSON = fs.readFileSync(
+  const tournamentRecordJSON = fs.readFileSync(
     './src/global/testHarness/participantFail.tods.json',
     'utf-8'
   );

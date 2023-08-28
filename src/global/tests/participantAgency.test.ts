@@ -91,6 +91,7 @@ it.each([
       );
 
       const participantFactors = Object.assign(
+        {},
         ...participantIdsWithAgency.map((participantId) => {
           const range = generateRange(0, unassignedDrawPositions.length - 1);
           const preferences = [1, 2, 3].map(() => {
@@ -102,8 +103,8 @@ it.each([
       );
 
       const { drawPositionResolutions, report } = resolveDrawPositions({
-        participantFactors,
         positionAssignments,
+        participantFactors,
       });
       expect(typeof report === 'object').toEqual(true);
       // logging for diagnostics

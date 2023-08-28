@@ -1,6 +1,10 @@
 import { findTournamentParticipant } from '../../getters/participants/participantGetter';
-import { participantScaleItem } from '../../accessors/participantScaleItem';
 import {
+  ScaleItem,
+  participantScaleItem,
+} from '../../accessors/participantScaleItem';
+import {
+  ErrorType,
   MISSING_PARTICIPANT_ID,
   MISSING_TOURNAMENT_RECORD,
   PARTICIPANT_NOT_FOUND,
@@ -10,7 +14,7 @@ export function getParticipantScaleItem({
   tournamentRecord,
   scaleAttributes,
   participantId,
-}) {
+}): { error?: ErrorType; scaleItem?: ScaleItem } {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
 

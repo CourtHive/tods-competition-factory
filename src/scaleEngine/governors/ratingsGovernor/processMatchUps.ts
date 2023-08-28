@@ -57,7 +57,7 @@ export function processMatchUps({
       scaleName: dynamicScaleName,
     };
 
-    const sideParticipantIds = Object.assign(
+    const sideParticipantIds: string[] = Object.assign(
       {},
       ...sides.map(({ sideNumber, participant }) => ({
         [sideNumber]: [
@@ -88,20 +88,22 @@ export function processMatchUps({
 
           const scaleValue = accessor ? { [accessor]: undefined } : undefined;
 
-          return {
-            [participantId]: dynamicScaleItem ||
-              scaleItem || {
-                scaleName: outputScaleName,
-                scaleType: RATING,
-                eventType: matchUpType,
-                scaleDate: endDate,
-                scaleValue,
-              },
-          };
+          return (
+            participantId && {
+              [participantId]: dynamicScaleItem ??
+                scaleItem ?? {
+                  scaleName: outputScaleName,
+                  scaleType: RATING,
+                  eventType: matchUpType,
+                  scaleDate: endDate,
+                  scaleValue,
+                },
+            }
+          );
         })
     );
 
-    const parsedFormat = parse(matchUpFormat) || {};
+    const parsedFormat: any = parse(matchUpFormat) ?? {};
     const bestOf = parsedFormat?.bestOf || 1;
     const setsTo = parsedFormat?.setsTo || 1;
 

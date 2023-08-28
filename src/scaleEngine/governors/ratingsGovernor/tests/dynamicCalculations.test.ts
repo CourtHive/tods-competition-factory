@@ -32,7 +32,7 @@ test.each(scenarios)(
     expect(matchUps.length).toEqual(7);
 
     const matchUpIds = matchUps.map(({ matchUpId }) => matchUpId);
-    let result = scaleEngine.processMatchUps({
+    const result = scaleEngine.processMatchUps({
       considerGames,
       matchUpIds,
       ratingType,
@@ -52,7 +52,7 @@ test.each(scenarios)(
         participant.statistics[0].denominator
       );
       if (asDynamic) {
-        const accessor = ratingsParameters[ratingType]?.accessor;
+        const accessor = ratingType && ratingsParameters[ratingType]?.accessor;
         participant.timeItems.forEach((timeItem) => {
           const { itemType, itemValue } = timeItem;
           expect(typeof itemValue).toEqual(accessor ? 'object' : 'string');

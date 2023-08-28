@@ -33,7 +33,7 @@ export function generateCandidate({
       (actors.length * opponentCount * valueSortedPairings.length) / 2;
   } while (iterations > maxIterations && opponentCount > 2);
 
-  let stipulatedPairs = [];
+  const stipulatedPairs: string[] = [];
 
   // for each actor generate a roundCandidate using opponentCount of pairing values
   actors.forEach((actor) => {
@@ -65,17 +65,23 @@ export function generateCandidate({
   return { candidate, deltaCandidate, candidatesCount, iterations };
 }
 
+type RoundCandiateArgs = {
+  rankedMatchUpValues: any;
+  valueSortedPairings: any;
+  stipulated?: any[];
+  deltaObjects: any;
+};
 function roundCandidate({
   rankedMatchUpValues,
   valueSortedPairings,
   stipulated = [],
   deltaObjects,
-}) {
+}: RoundCandiateArgs) {
   // roundPlayers starts with the stipulated pairing
-  const roundPlayers = [].concat(...stipulated);
+  const roundPlayers: any[] = [].concat(...stipulated);
 
   // aggregates the pairings generated for a roundCandidate
-  const participantIdPairings = [];
+  const participantIdPairings: any[] = [];
 
   // candidateValue is the sum of all participantIdPairings in a roundCandidate
   // the winning candidate has the LOWEST total value
@@ -83,7 +89,8 @@ function roundCandidate({
 
   // candidateValue is initialized with any stipulated pairings
   stipulated.filter(Boolean).forEach((participantIds) => {
-    const pairing = pairingHash(...participantIds);
+    const [p1, p2] = participantIds;
+    const pairing = pairingHash(p1, p2);
     const value = rankedMatchUpValues[pairing];
     participantIdPairings.push({ participantIds, value });
     candidateValue += rankedMatchUpValues[pairing];
@@ -100,7 +107,7 @@ function roundCandidate({
 
     if (!opponentExists) {
       roundPlayers.push(...participantIds);
-      let value = rankedPairing.value;
+      const value = rankedPairing.value;
       candidateValue += value;
       participantIdPairings.push({ participantIds, value });
     }
@@ -111,7 +118,8 @@ function roundCandidate({
 
   // determine the greatest delta in the candidate's pairings
   const maxDelta = participantIdPairings.reduce((p, c) => {
-    const hash = pairingHash(...c.participantIds);
+    const [p1, p2] = c.participantIds;
+    const hash = pairingHash(p1, p2);
     const delta = deltaObjects[hash];
     return delta > p ? delta : p;
   }, 0);

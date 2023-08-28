@@ -15,15 +15,14 @@ test.skip('benchmark drawGeneration times', () => {
   const eventId = 'E9F2D1DF-736D-45A6-8ED7-42F044C6B80E';
   const drawDefinitionValues = {};
   timeKeeper('start', 'withAvoidances');
-  let result = tournamentEngine.generateDrawDefinition(drawDefinitionValues);
+  tournamentEngine.generateDrawDefinition(drawDefinitionValues);
   timeKeeper('stop', 'withAvoidances');
   console.log(timeKeeper('report', 'allTimers'));
-  result = timeKeeper('reset', 'allTimers');
+  timeKeeper('reset', 'allTimers');
 
   tournamentEngine.removeEventExtension({ eventId, name: 'appliedPolicies' });
   timeKeeper('start', 'noAvoidances');
-  result = tournamentEngine.generateDrawDefinition(drawDefinitionValues);
+  tournamentEngine.generateDrawDefinition(drawDefinitionValues);
   timeKeeper('stop', 'noAvoidances');
   console.log(timeKeeper('report', 'allTimers'));
-  if (result.error) console.log({ result });
 });
