@@ -35,6 +35,12 @@ import {
   NOT_FOUND,
   NO_MODIFICATIONS_APPLIED,
 } from '../../../constants/errorConditionConstants';
+import {
+  DrawDefinition,
+  Event,
+  MatchUp,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
 /*
  * if an eventId is provided, will be removed from an event tieFormat
@@ -42,6 +48,19 @@ import {
  * if a matchUpId is provided, will be removed from matchUp.tieFormat
  * if a structureId is provided, will be removed from structure.tieFormat
  */
+type RemoveCollectionDefinitionArgs = {
+  updateInProgressMatchUps?: boolean;
+  tieFormatComparison?: boolean;
+  tournamentRecord?: Tournament;
+  drawDefinition: DrawDefinition;
+  tieFormatName?: string;
+  collectionId: string;
+  structureId: string;
+  matchUpId: string;
+  matchUp?: MatchUp;
+  eventId?: string;
+  event?: Event;
+};
 export function removeCollectionDefinition({
   updateInProgressMatchUps = true,
   tieFormatComparison,
@@ -54,22 +73,22 @@ export function removeCollectionDefinition({
   eventId,
   matchUp,
   event,
-}) {
-  let result =
-    !matchUp &&
-    getTieFormat({
-      drawDefinition,
-      structureId,
-      matchUpId,
-      eventId,
-      event,
-    });
+}: RemoveCollectionDefinitionArgs) {
+  let result = !matchUp
+    ? getTieFormat({
+        drawDefinition,
+        structureId,
+        matchUpId,
+        eventId,
+        event,
+      })
+    : undefined;
 
-  if (result.error) return result;
+  if (result?.error) return result;
 
-  const { structure } = result;
-  matchUp = matchUp || result.matchUp;
-  const existingTieFormat = result.tieFormat;
+  const structure = result?.structure;
+  matchUp = matchUp || result?.matchUp;
+  const existingTieFormat = result?.tieFormat;
   const tieFormat = copyTieFormat(existingTieFormat);
 
   result = validateTieFormat({ tieFormat });
@@ -124,7 +143,7 @@ export function removeCollectionDefinition({
   }
 
   // check all scoped lineUps in the drawDefinition to identify collectionAssignments
-  let matchUps = [];
+  let matchUps: MatchUp[] = [];
 
   if (matchUpId && matchUp) {
     matchUps = [matchUp];
@@ -148,10 +167,10 @@ export function removeCollectionDefinition({
   // all team matchUps in scope which are completed or which have a score should not be modified
   // UNLESS all collectionMatchUps have no score
   const targetMatchUps = (matchUps || []).filter((matchUp) => {
-    const collectionMatchUps = matchUp.tieMatchUps.filter(
+    const collectionMatchUps = matchUp.tieMatchUps?.filter(
       (tieMatchUp) => tieMatchUp.collectionId === collectionId
     );
-    const collectionScore = collectionMatchUps.some(scoreHasValue);
+    const collectionScore = collectionMatchUps?.some(scoreHasValue);
 
     const tieFormatDifference =
       tieFormatComparison && matchUp.tieFormat
@@ -177,13 +196,13 @@ export function removeCollectionDefinition({
   }
 
   if (matchUpId && matchUp && updateInProgressMatchUps) {
-    const collectionMatchUps = matchUp.tieMatchUps.filter(
+    const collectionMatchUps = matchUp.tieMatchUps?.filter(
       (tieMatchUp) => tieMatchUp.collectionId === collectionId
     );
-    for (const collectionMatchUp of collectionMatchUps) {
+    for (const collectionMatchUp of collectionMatchUps || []) {
       let result = setMatchUpStatus({
         matchUpId: collectionMatchUp.matchUpId,
-        tieMatchUpId: matchUp.matchUpId,
+        tieMatchUpId: matchUp?.matchUpId,
         winningSide: undefined,
         removeScore: true,
         tournamentRecord,
@@ -196,11 +215,11 @@ export function removeCollectionDefinition({
         matchUpId,
       });
       if (result.error) return result;
-      matchUp = result.matchUp;
+      matchUp = result?.matchUp;
     }
   }
 
-  const deletedMatchUpIds = [];
+  const deletedMatchUpIds: string[] = [];
   for (const matchUp of targetMatchUps) {
     // remove any collectionAssignments from LineUps that include collectionId
     for (const side of matchUp?.sides || []) {
@@ -259,10 +278,10 @@ export function removeCollectionDefinition({
   if (result.error) return result;
 
   // TODO: implement use of tieFormats and tieFormatId
-  if (eventId) {
+  if (eventId && event) {
     event.tieFormat = prunedTieFormat;
     // NOTE: there is not a modifyEventNotice
-  } else if (matchUpId) {
+  } else if (matchUpId && matchUp) {
     matchUp.tieFormat = prunedTieFormat;
   } else if (structure) {
     structure.tieFormat = prunedTieFormat;

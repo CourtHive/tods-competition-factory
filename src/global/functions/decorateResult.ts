@@ -10,8 +10,8 @@ export type ResultType = {
   error?: ErrorType;
   errors?: string[];
   success?: boolean;
-  context?: object;
   valid?: boolean;
+  context?: any;
   info?: string;
 };
 

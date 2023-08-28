@@ -7,7 +7,11 @@ import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { isActiveMatchUp } from '../../getters/activeMatchUp';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 
-import { INVALID_MATCHUP } from '../../../constants/errorConditionConstants';
+import {
+  ErrorType,
+  INVALID_MATCHUP,
+  MATCHUP_NOT_FOUND,
+} from '../../../constants/errorConditionConstants';
 import { DISABLE_AUTO_CALC } from '../../../constants/extensionConstants';
 import { MatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -42,9 +46,17 @@ export function updateTieMatchUpScore({
   matchUpsMap,
   matchUpId,
   event,
-}: UpdateTieMatchUpScoreArgs) {
+}: UpdateTieMatchUpScoreArgs): {
+  removeWinningSide?: boolean;
+  tieFormatRemoved?: boolean;
+  winningSide?: number;
+  error?: ErrorType;
+  success?: boolean;
+  score?: any;
+} {
   const result = findMatchUp({ drawDefinition, event, matchUpId });
   if (result.error) return result;
+  if (!result.matchUp) return { error: MATCHUP_NOT_FOUND };
 
   const { matchUp, structure } = result;
 
@@ -105,12 +117,12 @@ export function updateTieMatchUpScore({
       IN_PROGRESS) ||
     TO_BE_PLAYED;
 
-  const removeWinningSide = matchUp.winningSide && !hasWinner;
+  const removeWinningSide = !!(matchUp.winningSide && !hasWinner);
   const hasResults = matchUp.tieMatchUps.find(
     ({ score, winningSide, matchUpStatus }) =>
       (score?.sets?.length &&
         (score.sets[0].side1Score || score.sets[0].side2Score)) ||
-      completedMatchUpStatuses.includes(matchUpStatus) ||
+      (matchUpStatus && completedMatchUpStatuses.includes(matchUpStatus)) ||
       winningSide
   );
 

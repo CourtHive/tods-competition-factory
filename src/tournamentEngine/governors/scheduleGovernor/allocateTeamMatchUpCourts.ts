@@ -10,8 +10,22 @@ import {
   MISSING_MATCHUP_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
+import {
+  DrawDefinition,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
 // allocate courts for a TEAM matchUp
+type AllocateTeamMatchUpCourtsArgs = {
+  tournamentRecords?: { [key: string]: Tournament };
+  tournamentRecord?: Tournament;
+  drawDefinition: DrawDefinition;
+  removePriorValues?: boolean;
+  disableNotice?: boolean;
+  courtDayDate?: string;
+  matchUpId: string;
+  courtIds: any;
+};
 export function allocateTeamMatchUpCourts({
   removePriorValues,
   tournamentRecords,
@@ -21,7 +35,7 @@ export function allocateTeamMatchUpCourts({
   courtDayDate,
   matchUpId,
   courtIds,
-}) {
+}: AllocateTeamMatchUpCourtsArgs) {
   if (!tournamentRecord && !tournamentRecords)
     return { error: MISSING_TOURNAMENT_RECORD };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
@@ -30,7 +44,7 @@ export function allocateTeamMatchUpCourts({
     matchUpId,
   });
   if (result.error) return result;
-  if (result.matchUp.matchUpType !== TEAM_MATCHUP)
+  if (result?.matchUp?.matchUpType !== TEAM_MATCHUP)
     return { error: INVALID_MATCHUP };
 
   const validCourtIds =
@@ -42,9 +56,11 @@ export function allocateTeamMatchUpCourts({
 
   let itemValue;
   if (courtIds) {
-    const tournaments = tournamentRecords || {
-      [tournamentRecord.tournamentId]: tournamentRecord,
-    };
+    const tournaments: any = tournamentRecords
+      ? tournamentRecord
+      : tournamentRecord && {
+          [tournamentRecord.tournamentId]: tournamentRecord,
+        };
     const result = getVenuesAndCourts({
       tournamentRecords: tournaments,
     });

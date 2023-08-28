@@ -992,6 +992,9 @@
         "surfaceCategory": {
           "$ref": "#/definitions/SurfaceCategoryEnum"
         },
+        "tieFormatId": {
+          "type": "string"
+        },
         "tieFormat": {
           "$ref": "#/definitions/TieFormat"
         },

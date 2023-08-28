@@ -2672,7 +2672,7 @@ tournamentEngine.modifyCollectionDefinition({
   gender, // optional
 
   // value assignment, only one is allowed to have a value
-  collectionValueProfile, // optional - [{ collectionPosition: 1, value: 2 }] - there must be a value provided for all matchUp positions
+  collectionValueProfiles, // optional - [{ collectionPosition: 1, value: 2 }] - there must be a value provided for all matchUp positions
   collectionValue, // optional - value awarded for winning more than half of the matchUps in the collection
   matchUpValue, // optional - value awarded for each matchUp won
   scoreValue, // optional - value awarded for each game or point won (points for tiebreak sets)

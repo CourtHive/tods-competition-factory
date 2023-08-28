@@ -61,7 +61,7 @@ export function addCollectionGroup({
         stack,
       });
     // TODO: calculate the total value of the collectionDefinition
-    // either matchUpCount * matchUpValue or collectionValue or collectionValueProfile total
+    // either matchUpCount * matchUpValue or collectionValue or collectionValueProfiles total
     // if not gropuDEfinition.winCriteria.aggregateValue then caluculate valueGoal automatically
   }
 

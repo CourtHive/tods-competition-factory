@@ -24,7 +24,7 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
       const { roundMatchUps } = getRoundMatchUps({ matchUps });
 
       // if this is a round robin then we have sidesTo information, not winnerTo and loserTo
-      if (nextRoundNumber && roundMatchUps[nextRoundNumber]) {
+      if (nextRoundNumber && roundMatchUps?.[nextRoundNumber]) {
         const sidesTo = drawPositions.sort().map((drawPosition, index) => {
           const nextRoundMatchUp = roundMatchUps[nextRoundNumber].find(
             (matchUp) => matchUp.drawPositions?.includes(drawPosition)
@@ -47,7 +47,8 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
         drawDefinition,
         matchUpId,
       });
-      let { winnerMatchUp, loserMatchUp } = targetData.targetMatchUps;
+      let { winnerMatchUp } = targetData.targetMatchUps;
+      const { loserMatchUp } = targetData.targetMatchUps;
 
       if (!inContextMatchUp.winnerMatchUpId && winnerMatchUp) {
         inContextMatchUp.winnerMatchUpId = winnerMatchUp.matchUpId;
@@ -217,8 +218,8 @@ function getNextToBePlayedMatchUp({
   return { matchUp: undefined };
 }
 
-function getUpcomingInfo({ upcomingMatchUp } = {}) {
-  if (!upcomingMatchUp) return;
+function getUpcomingInfo(params) {
+  if (!params?.upcomingMatchUp) return;
   return (({
     matchUpId,
     structureId,
@@ -233,5 +234,5 @@ function getUpcomingInfo({ upcomingMatchUp } = {}) {
     roundNumber,
     roundPosition,
     structureName,
-  }))(upcomingMatchUp);
+  }))(params.upcomingMatchUp);
 }

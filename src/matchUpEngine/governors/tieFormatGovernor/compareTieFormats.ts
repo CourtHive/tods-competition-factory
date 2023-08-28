@@ -132,7 +132,7 @@ function getCollectionsValue(definitions, aggregator) {
   const totalValue = aggregator.collectionIds.reduce((total, collectionId) => {
     const collectionDefinition = definitions[collectionId];
     const {
-      collectionValueProfile,
+      collectionValueProfiles,
       collectionValue,
       matchUpCount,
       matchUpValue,
@@ -140,10 +140,10 @@ function getCollectionsValue(definitions, aggregator) {
 
     totalMatchUps += matchUpCount;
 
-    if (collectionValueProfile)
+    if (collectionValueProfiles)
       return (
         total +
-        collectionValueProfile.reduce(
+        collectionValueProfiles.reduce(
           (total, profile) => total + profile.value,
           0
         )

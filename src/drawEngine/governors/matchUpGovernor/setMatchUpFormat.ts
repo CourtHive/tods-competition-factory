@@ -16,6 +16,7 @@ import {
   INVALID_EVENT_TYPE,
   INVALID_MATCHUP,
   ErrorType,
+  MATCHUP_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 import {
   DrawDefinition,
@@ -60,6 +61,7 @@ export function setMatchUpFormat(params: SetMatchUpFormatArgs): {
       event,
     });
     if (result.error) return result;
+    if (!result.matchUp) return { error: MATCHUP_NOT_FOUND };
     const matchUp = result.matchUp;
     if (matchUp?.matchUpType === TEAM)
       return {

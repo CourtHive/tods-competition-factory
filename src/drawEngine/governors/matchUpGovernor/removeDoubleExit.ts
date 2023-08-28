@@ -92,14 +92,13 @@ export function removeDoubleExit(params) {
       feedRound,
     });
     if (appliedPolicies?.progression?.doubleExitPropagateBye) {
-      const result = removeDirectedBye({
-        targetLink: loserTargetLink,
+      removeDirectedBye({
         drawPosition: loserTargetDrawPosition,
+        targetLink: loserTargetLink,
         inContextDrawMatchUps,
         drawDefinition,
         matchUpsMap,
       });
-      if (result.error) return decorateResult({ result, stack });
     } else {
       const result = conditionallyRemoveDrawPosition({
         ...params,
@@ -191,8 +190,8 @@ export function conditionallyRemoveDrawPosition(params) {
       const possibleBranchDrawPositions = sourceDrawPositions.concat(
         pairedPreviousDrawPositions
       );
-      drawPositionToRemove = possibleBranchDrawPositions.find((drawPosition) =>
-        targetDrawPositions?.includes(drawPosition)
+      drawPositionToRemove = possibleBranchDrawPositions.find(
+        (drawPosition) => targetDrawPositions?.includes(drawPosition)
       );
     }
   }
@@ -208,14 +207,13 @@ export function conditionallyRemoveDrawPosition(params) {
       roundNumber,
       roundPosition,
     });
-    const result = removeDirectedWinner({
+    removeDirectedWinner({
       winningDrawPosition: drawPositionToRemove,
       winnerMatchUp: nextWinnerMatchUp,
       inContextDrawMatchUps,
       drawDefinition,
       matchUpsMap,
     });
-    if (result.error) return decorateResult({ result, stack });
   }
 
   let result = removeDoubleExit({

@@ -336,6 +336,7 @@ export interface MatchUp {
   startDate?: string;
   surfaceCategory?: SurfaceCategoryEnum;
   tieFormat?: TieFormat;
+  tieFormatId?: string;
   tieMatchUps?: MatchUp[];
   timeItems?: TimeItem[];
   updatedAt?: Date | string;

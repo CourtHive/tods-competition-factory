@@ -27,6 +27,11 @@ import {
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
 } from '../../../constants/errorConditionConstants';
+import {
+  DrawDefinition,
+  MatchUp,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
 /*
  * collectionDefinition will be added to an event tieFormat (if present)
@@ -53,20 +58,20 @@ export function addCollectionDefinition({
   if (!valid) return { error: INVALID_VALUES, errors };
   const stack = 'addCollectionDefinition';
 
-  let result =
-    !matchUp &&
-    getTieFormat({
-      drawDefinition,
-      structureId,
-      matchUpId,
-      eventId,
-      event,
-    });
+  let result = !matchUp
+    ? getTieFormat({
+        drawDefinition,
+        structureId,
+        matchUpId,
+        eventId,
+        event,
+      })
+    : undefined;
   if (result?.error) return { error: result.error };
 
-  const { structure } = result;
-  matchUp = matchUp || result.matchUp;
-  const existingTieFormat = result.tieFormat;
+  const structure = result?.structure;
+  matchUp = matchUp || result?.matchUp;
+  const existingTieFormat = result?.tieFormat;
   const tieFormat = copyTieFormat(existingTieFormat);
 
   result = validateTieFormat({ tieFormat });
@@ -112,9 +117,9 @@ export function addCollectionDefinition({
     }
   }
 
-  const modifiedStructureIds = [];
-  const addedMatchUps = [];
-  let targetMatchUps = [];
+  const modifiedStructureIds: string[] = [];
+  const addedMatchUps: any[] = [];
+  let targetMatchUps: any[] = [];
 
   const prunedTieFormat = definedAttributes(tieFormat);
   result = validateTieFormat({ tieFormat: prunedTieFormat });
@@ -141,9 +146,9 @@ export function addCollectionDefinition({
     }
 
     queueNoficiations({
-      structureIds: modifiedStructureIds,
       modifiedMatchUps: targetMatchUps,
       eventId: event?.eventId,
+      modifiedStructureIds,
       tournamentRecord,
       drawDefinition,
       addedMatchUps,
@@ -162,8 +167,8 @@ export function addCollectionDefinition({
 
     queueNoficiations({
       modifiedMatchUps: targetMatchUps,
-      structureIds: [structureId],
       eventId: event?.eventId,
+      modifiedStructureIds,
       tournamentRecord,
       drawDefinition,
       addedMatchUps,
@@ -174,7 +179,7 @@ export function addCollectionDefinition({
       return { error: CANNOT_MODIFY_TIEFORMAT };
 
     matchUp.tieFormat = prunedTieFormat;
-    const newMatchUps = generateCollectionMatchUps({
+    const newMatchUps: MatchUp[] = generateCollectionMatchUps({
       collectionDefinition,
       uuids,
     });
@@ -186,6 +191,7 @@ export function addCollectionDefinition({
     queueNoficiations({
       modifiedMatchUps: [matchUp],
       eventId: event?.eventId,
+      modifiedStructureIds,
       tournamentRecord,
       drawDefinition,
       addedMatchUps,
@@ -208,7 +214,6 @@ export function addCollectionDefinition({
     }
 
     queueNoficiations({
-      structureIds: modifiedStructureIds,
       modifiedMatchUps: targetMatchUps,
       eventId: event?.eventId,
       tournamentRecord,
@@ -247,7 +252,7 @@ function updateStructureMatchUps({
   structure,
   uuids,
 }) {
-  const newMatchUps = [];
+  const newMatchUps: MatchUp[] = [];
   const matchUps = getAllStructureMatchUps({
     matchUpFilters: { matchUpTypes: [TEAM] },
     structure,
@@ -260,7 +265,7 @@ function updateStructureMatchUps({
   );
 
   for (const matchUp of targetMatchUps) {
-    const tieMatchUps = generateCollectionMatchUps({
+    const tieMatchUps: MatchUp[] = generateCollectionMatchUps({
       collectionDefinition,
       uuids,
     });
@@ -272,6 +277,15 @@ function updateStructureMatchUps({
   return { newMatchUps, targetMatchUps };
 }
 
+type QueueNotificationsArgs = {
+  modifiedStructureIds?: string[];
+  tournamentRecord: Tournament;
+  drawDefinition: DrawDefinition;
+  modifiedMatchUps: MatchUp[];
+  addedMatchUps: MatchUp[];
+  eventId: string;
+  stack: string;
+};
 function queueNoficiations({
   modifiedStructureIds,
   tournamentRecord,
@@ -280,7 +294,7 @@ function queueNoficiations({
   addedMatchUps,
   eventId,
   stack,
-}) {
+}: QueueNotificationsArgs) {
   addMatchUpsNotice({
     tournamentId: tournamentRecord?.tournamentId,
     matchUps: addedMatchUps,

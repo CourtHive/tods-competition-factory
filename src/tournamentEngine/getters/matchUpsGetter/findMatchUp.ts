@@ -6,6 +6,11 @@ import { getContextContent } from '../getContextContent';
 import { findEvent } from '../eventGetter';
 
 import {
+  DrawDefinition,
+  Tournament,
+  Event,
+} from '../../../types/tournamentFromSchema';
+import {
   DRAW_DEFINITION_NOT_FOUND,
   MATCHUP_NOT_FOUND,
   MISSING_MATCHUP_ID,
@@ -18,6 +23,19 @@ export function publicFindMatchUp(params) {
   return { matchUp: makeDeepCopy(matchUp, true, true), error };
 }
 
+type FindMatchUpType = {
+  tournamentRecord: Tournament;
+  drawDefinition?: DrawDefinition;
+  participantsProfile?: any;
+  afterRecoveryTimes?: any;
+  contextContent?: any;
+  contextProfile?: any;
+  inContext?: boolean;
+  matchUpId: string;
+  eventId?: string;
+  drawId?: string;
+  event?: Event;
+};
 export function findMatchUp({
   participantsProfile,
   afterRecoveryTimes,
@@ -25,13 +43,12 @@ export function findMatchUp({
   contextContent,
   contextProfile,
   drawDefinition,
-  nextMatchUps,
   matchUpId,
   inContext,
   eventId,
   drawId,
   event,
-}) {
+}: FindMatchUpType) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (typeof matchUpId !== 'string') return { error: MISSING_MATCHUP_ID };
 
@@ -59,10 +76,10 @@ export function findMatchUp({
 
   const additionalContext = {
     surfaceCategory: event?.surfaceCategory || tournamentRecord.surfaceCategory,
-    indoorOutDoor: event?.indoorOutDoor || tournamentRecord.indoorOutDoor,
+    indoorOutDoor: event?.indoorOutdoor || tournamentRecord.indoorOutdoor,
     endDate: event?.endDate || tournamentRecord.endDate,
     tournamentId: tournamentRecord.tournamentId,
-    eventId: event.eventId,
+    eventId: eventId || event?.eventId,
     drawId,
   };
 
@@ -80,7 +97,6 @@ export function findMatchUp({
     contextContent,
     drawDefinition,
     contextProfile,
-    nextMatchUps,
     matchUpId,
     inContext,
     event,

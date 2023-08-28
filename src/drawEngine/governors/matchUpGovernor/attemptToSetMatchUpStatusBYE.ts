@@ -15,6 +15,7 @@ export function attemptToSetMatchUpStatusBYE({
   structure,
   matchUp,
 }) {
+  const stack = 'attemptToSetMatchUpStatusBYE';
   if (matchUp?.winningSide) {
     return decorateResult({
       result: { error: INVALID_MATCHUP_STATUS },
@@ -23,8 +24,6 @@ export function attemptToSetMatchUpStatusBYE({
     });
   }
 
-  const stack = 'attemptToSetMatchUpStatusBYE';
-
   // It is not possible to change matchUp status to BYE unless
   // matchUp.drawPositions includes BYE assigned position
   const { positionAssignments } = structureAssignedDrawPositions({
@@ -32,11 +31,11 @@ export function attemptToSetMatchUpStatusBYE({
   });
 
   const byeAssignedDrawPositions = positionAssignments
-    .filter((assignment) => assignment.bye)
+    ?.filter((assignment) => assignment.bye)
     .map((assignment) => assignment.drawPosition);
 
-  const matchUpIncludesBye = matchUp.drawPositions?.some((position) =>
-    byeAssignedDrawPositions.includes(position)
+  const matchUpIncludesBye = matchUp.drawPositions?.some(
+    (position) => byeAssignedDrawPositions?.includes(position)
   );
 
   if (matchUpIncludesBye) {

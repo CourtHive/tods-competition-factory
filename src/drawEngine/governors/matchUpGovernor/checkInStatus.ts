@@ -118,7 +118,7 @@ export function checkOutParticipant({
   if (tournamentParticipants?.length) {
     const { checkedInParticipantIds, allRelevantParticipantIds } =
       getCheckedInParticipantIds({ matchUp });
-    if (!allRelevantParticipantIds.includes(participantId))
+    if (!allRelevantParticipantIds?.includes(participantId))
       return { error: INVALID_PARTICIPANT_ID };
     if (!checkedInParticipantIds.includes(participantId)) {
       return { error: PARTICIPANT_NOT_CHECKED_IN };

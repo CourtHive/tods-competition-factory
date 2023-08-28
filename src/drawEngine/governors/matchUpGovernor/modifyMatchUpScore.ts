@@ -23,11 +23,18 @@ import {
   AWAITING_RESULT,
   completedMatchUpStatuses,
   DOUBLE_WALKOVER,
-  IN_PROGRESS,
   SUSPENDED,
   DEFAULTED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
+import {
+  DrawDefinition,
+  Event,
+  MatchUp,
+  MatchUpStatusEnum,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
+import { MATCHUP_NOT_FOUND } from '../../../constants/errorConditionConstants';
 
 /**
  *
@@ -51,6 +58,22 @@ import {
  * @param {string[]=} notes
  */
 
+type ModifyMatchUpScoreArgs = {
+  matchUpStatus?: MatchUpStatusEnum;
+  tournamentRecord?: Tournament;
+  matchUpStatusCodes?: string[];
+  drawDefinition?: DrawDefinition;
+  removeWinningSide?: boolean;
+  matchUpFormat?: string;
+  removeScore?: boolean;
+  winningSide?: number;
+  matchUpId: string;
+  matchUp: MatchUp; // matchUp without context
+  notes?: string;
+  event?: Event;
+  score?: any;
+};
+
 export function modifyMatchUpScore({
   matchUpStatusCodes,
   removeWinningSide,
@@ -65,20 +88,22 @@ export function modifyMatchUpScore({
   event,
   notes,
   score,
-}) {
+}: ModifyMatchUpScoreArgs) {
   const stack = 'modifyMatchUpScore';
   let structure;
 
   const isDualMatchUp = matchUp.matchUpType === TEAM;
 
-  if (isDualMatchUp) {
+  if (isDualMatchUp && drawDefinition) {
     if (matchUpId && matchUp.matchUpId !== matchUpId) {
       // the modification is to be applied to a tieMatchUp
-      ({ matchUp, structure } = findMatchUp({
+      const findResult = findMatchUp({
         drawDefinition,
         matchUpId,
         event,
-      }));
+      });
+      if (!findResult.matchUp) return { error: MATCHUP_NOT_FOUND };
+      ({ matchUp, structure } = findResult);
     } else {
       // the modification is to be applied to the TEAM matchUp
     }
@@ -106,7 +131,7 @@ export function modifyMatchUpScore({
   if (winningSide) matchUp.winningSide = winningSide;
   if (removeWinningSide) matchUp.winningSide = undefined;
 
-  if (!structure) {
+  if (!structure && drawDefinition) {
     ({ structure } = findMatchUp({
       drawDefinition,
       matchUpId,
@@ -115,12 +140,13 @@ export function modifyMatchUpScore({
   }
 
   if (
+    matchUpStatus &&
     !matchUp.winningSide &&
     scoreHasValue(matchUp) &&
     !completedMatchUpStatuses.includes(matchUpStatus) &&
     ![AWAITING_RESULT, SUSPENDED].includes(matchUpStatus)
   ) {
-    matchUp.matchUpStatus = IN_PROGRESS;
+    matchUp.matchUpStatus = MatchUpStatusEnum.InProgress;
   }
 
   let defaultedProcessCodes;
@@ -148,7 +174,7 @@ export function modifyMatchUpScore({
       : matchUpFormat ||
         matchUp.matchUpFormat ||
         structure?.matchUpFormat ||
-        drawDefinition.matchUpFormat ||
+        drawDefinition?.matchUpFormat ||
         event?.matchUpFormat;
 
     const itemStructure = structure.structures.find((itemStructure) => {
@@ -218,9 +244,10 @@ export function modifyMatchUpScore({
       }
     } else {
       for (const processCode of defaultedProcessCodes || []) {
-        const codeIndex = matchUp.processCodes.lastIndexOf(processCode);
+        const codeIndex =
+          processCode && matchUp?.processCodes?.lastIndexOf(processCode);
         // remove only one instance of processCode
-        matchUp.processCodes.splice(codeIndex, 1);
+        matchUp?.processCodes?.splice(codeIndex, 1);
       }
     }
   }

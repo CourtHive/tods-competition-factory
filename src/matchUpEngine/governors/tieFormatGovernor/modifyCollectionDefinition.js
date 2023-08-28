@@ -41,7 +41,7 @@ export function modifyCollectionDefinition({
   event,
 
   // value assignment, only one is allowed to have a value
-  collectionValueProfile,
+  collectionValueProfiles,
   collectionValue,
   matchUpValue,
   scoreValue,
@@ -63,7 +63,7 @@ export function modifyCollectionDefinition({
   const stack = 'modifyCollectionDefinition';
 
   const valueAssignments = {
-    collectionValueProfile,
+    collectionValueProfiles,
     collectionValue,
     matchUpValue,
     scoreValue,
@@ -107,13 +107,13 @@ export function modifyCollectionDefinition({
     return decorateResult({ result: { error: NOT_FOUND }, stack });
 
   const value = collectionValue || matchUpValue || scoreValue || setValue;
-  if (value || collectionValueProfile) {
+  if (value || collectionValueProfiles) {
     if (value) {
       if (!isConvertableInteger(value)) return { error: INVALID_VALUES, value };
-    } else if (collectionValueProfile) {
+    } else if (collectionValueProfiles) {
       const result = validateCollectionValueProfile({
         matchUpCount: collectionDefinition.matchUpCount,
-        collectionValueProfile,
+        collectionValueProfiles,
       });
       if (result.errors) {
         return decorateResult({
