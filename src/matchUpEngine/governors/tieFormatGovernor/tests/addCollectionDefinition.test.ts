@@ -64,7 +64,8 @@ it('can add collectionDefinitions to tieFormat in a drawDefinition', () => {
   const matchUpIds = result.addedMatchUps.map(({ matchUpId }) => matchUpId);
   expect(matchUpIds).toEqual(['a03', 'a02', 'a01']);
 
-  let { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
+  let { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const { event } = tournamentEngine.getEvent({ drawId });
   expect(drawDefinition.tieFormat.collectionDefinitions.length).toEqual(3);
   expect(drawDefinition.tieFormat.winCriteria.valueGoal).toEqual(7);
   expect(event.tieFormat.winCriteria.valueGoal).toEqual(5);
@@ -122,14 +123,15 @@ it('can add collectionDefinitions to tieFormat in a drawDefinition', () => {
 });
 
 it('can add collectionDefinitions to tieFormat in a structure', () => {
-  let matchUpAddNotices = [];
-  let matchUpModifyNotices = [];
+  const matchUpAddNotices: number[] = [];
+  const matchUpModifyNotices: any[] = [];
 
   const subscriptions = {
     addMatchUps: (payload) => {
       if (Array.isArray(payload)) {
-        payload.forEach(({ matchUps }) => {
-          matchUpAddNotices.push(matchUps.length);
+        payload.forEach((item) => {
+          const count: number = item.matchUps.length;
+          matchUpAddNotices.push(count);
         });
       }
     },
@@ -175,7 +177,7 @@ it('can add collectionDefinitions to tieFormat in a structure', () => {
     9
   );
 
-  let { matchUps: firstRoundDualMatchUps } =
+  const { matchUps: firstRoundDualMatchUps } =
     tournamentEngine.allTournamentMatchUps({
       contextFilters: {
         stages: [MAIN],
@@ -200,7 +202,7 @@ it('can add collectionDefinitions to tieFormat in a structure', () => {
 
   expect(firstRoundDualMatchUps.length).toEqual(2);
 
-  let outcome = {
+  const outcome = {
     winningSide: 1,
     score: {
       scoreStringSide1: '8-1',
@@ -218,7 +220,7 @@ it('can add collectionDefinitions to tieFormat in a structure', () => {
 
   firstRoundDualMatchUps[0].tieMatchUps.forEach((matchUp) => {
     const { matchUpId } = matchUp;
-    let result = tournamentEngine.setMatchUpStatus({
+    const result = tournamentEngine.setMatchUpStatus({
       matchUpId,
       outcome,
       drawId,
@@ -247,7 +249,7 @@ it('can add collectionDefinitions to tieFormat in a structure', () => {
     matchUpValue: 1,
   };
 
-  let modifiedCount = matchUpModifyNotices.length;
+  const modifiedCount = matchUpModifyNotices.length;
 
   // test adding to tieFormat on drawDefinition
   let result = tournamentEngine.addCollectionDefinition({
@@ -281,7 +283,7 @@ it('can add collectionDefinitions to tieFormat in a structure', () => {
 
   firstRoundDualMatchUps[1].tieMatchUps.forEach((matchUp) => {
     const { matchUpId } = matchUp;
-    let result = tournamentEngine.setMatchUpStatus({
+    const result = tournamentEngine.setMatchUpStatus({
       matchUpId,
       outcome,
       drawId,
@@ -353,8 +355,8 @@ it('can add collectionDefinitions to tieFormat in a structure', () => {
 });
 
 it('added collectionDefinitions do not appear in inProgress matchUps', () => {
-  const matchUpAddNotices = [];
-  const matchUpModifyNotices = [];
+  const matchUpAddNotices: number[] = [];
+  const matchUpModifyNotices: any[] = [];
 
   const subscriptions = {
     addMatchUps: (payload) => {
@@ -411,7 +413,7 @@ it('added collectionDefinitions do not appear in inProgress matchUps', () => {
       },
     });
 
-  let { matchUps: secondRoundDualMatchUps } =
+  const { matchUps: secondRoundDualMatchUps } =
     tournamentEngine.allTournamentMatchUps({
       contextFilters: {
         stages: [MAIN],
@@ -425,7 +427,7 @@ it('added collectionDefinitions do not appear in inProgress matchUps', () => {
 
   expect(firstRoundDualMatchUps.length).toEqual(2);
 
-  let outcome = {
+  const outcome = {
     winningSide: 1,
     score: {
       scoreStringSide1: '8-1',
@@ -571,6 +573,7 @@ it('properly calculates valueGoal when adding collectionDefinition with tiebreak
     tieFormatName,
   };
 
+  tournamentEngine.devContext(true);
   const {
     tournamentRecord,
     drawIds: [drawId],
@@ -582,15 +585,15 @@ it('properly calculates valueGoal when adding collectionDefinition with tiebreak
   let result = tournamentEngine.setState(tournamentRecord);
   expect(result.success).toEqual(true);
 
-  let { event } = tournamentEngine.getEvent({ drawId });
+  const { event } = tournamentEngine.getEvent({ drawId });
   expect(event.tieFormat.tieFormatName).toEqual(tieFormatName);
   expect(event.tieFormat.winCriteria).toEqual({ valueGoal: 3 });
 
-  let [matchUp] = tournamentEngine.allTournamentMatchUps({
+  const [matchUp] = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: { matchUpTypes: [TEAM_MATCHUP] },
   }).matchUps;
 
-  let params = {
+  let params: any = {
     collectionDefinition: {
       collectionId: '1d9791e8-61b5-47a9-b1b2-ab79b2753109',
       collectionName: 'Tiebreak Match',

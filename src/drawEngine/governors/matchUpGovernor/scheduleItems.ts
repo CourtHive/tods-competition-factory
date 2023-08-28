@@ -426,15 +426,15 @@ export function addMatchUpStartTime({
 
   const { matchUp } = findMatchUp({ drawDefinition, event, matchUpId });
   const { scheduledDate } = scheduledMatchUpDate({ matchUp });
-  const timeItems = matchUp.timeItems || [];
+  const timeItems = matchUp?.timeItems || [];
 
   const earliestRelevantTimeValue = timeItems
-    .filter((timeItem) =>
+    .filter((timeItem: any) =>
       [STOP_TIME, RESUME_TIME, END_TIME].includes(timeItem?.itemType)
     )
     .map((timeItem) => timeDate(timeItem.itemValue, scheduledDate))
     .reduce(
-      (earliest, timeValue) =>
+      (earliest: any, timeValue) =>
         !earliest || timeValue < earliest ? timeValue : earliest,
       undefined
     );
@@ -445,7 +445,7 @@ export function addMatchUpStartTime({
     timeDate(startTime, scheduledDate) < earliestRelevantTimeValue
   ) {
     // there can be only one START_TIME; if a prior START_TIME exists, remove it
-    if (matchUp.timeItems) {
+    if (matchUp?.timeItems) {
       matchUp.timeItems = matchUp.timeItems.filter(
         (timeItem) => timeItem.itemType !== START_TIME
       );
@@ -483,15 +483,15 @@ export function addMatchUpEndTime({
 
   const { matchUp } = findMatchUp({ drawDefinition, event, matchUpId });
   const { scheduledDate } = scheduledMatchUpDate({ matchUp });
-  const timeItems = matchUp.timeItems || [];
+  const timeItems = matchUp?.timeItems || [];
 
   const latestRelevantTimeValue = timeItems
-    .filter((timeItem) =>
+    .filter((timeItem: any) =>
       [START_TIME, RESUME_TIME, STOP_TIME].includes(timeItem?.itemType)
     )
     .map((timeItem) => timeDate(timeItem.itemValue, scheduledDate))
     .reduce(
-      (latest, timeValue) =>
+      (latest: any, timeValue) =>
         !latest || timeValue > latest ? timeValue : latest,
       undefined
     );
@@ -503,7 +503,7 @@ export function addMatchUpEndTime({
     timeDate(endTime, scheduledDate) > latestRelevantTimeValue
   ) {
     // there can be only one END_TIME; if a prior END_TIME exists, remove it
-    if (matchUp.timeItems) {
+    if (matchUp?.timeItems) {
       matchUp.timeItems = matchUp.timeItems.filter(
         (timeItem) => timeItem.itemType !== END_TIME
       );
@@ -541,19 +541,19 @@ export function addMatchUpStopTime({
 
   const { matchUp } = findMatchUp({ drawDefinition, event, matchUpId });
   const { scheduledDate } = scheduledMatchUpDate({ matchUp });
-  const timeItems = matchUp.timeItems || [];
+  const timeItems = matchUp?.timeItems || [];
 
   // can't add a STOP_TIME if the matchUp is not STARTED or RESUMED, or has START_TIME
   // if latest relevaant timeItem is a STOP_TIME then overwrite
 
-  const hasEndTime = timeItems.reduce((hasEndTime, timeItem) => {
+  const hasEndTime = timeItems.reduce((hasEndTime: any, timeItem) => {
     return timeItem.itemType === END_TIME || hasEndTime;
   }, undefined);
 
   if (hasEndTime) return { error: EXISTING_END_TIME };
 
   const relevantTimeItems = timeItems
-    .filter((timeItem) =>
+    .filter((timeItem: any) =>
       [START_TIME, RESUME_TIME, STOP_TIME].includes(timeItem?.itemType)
     )
     .sort(
@@ -574,13 +574,13 @@ export function addMatchUpStopTime({
     )
     .map((timeItem) => timeDate(timeItem.itemValue, scheduledDate))
     .reduce(
-      (latest, timeValue) =>
+      (latest: any, timeValue) =>
         !latest || timeValue > latest ? timeValue : latest,
       undefined
     );
 
   if (timeDate(stopTime, scheduledDate) > latestRelevantTimeValue) {
-    if (matchUp.timeItems && lastRelevantTimeItemIsStop) {
+    if (matchUp?.timeItems && lastRelevantTimeItemIsStop) {
       const targetTimeStamp = lastRelevantTimeItem.createdAt;
       matchUp.timeItems = matchUp.timeItems.filter(
         (timeItem) => timeItem.createdAt !== targetTimeStamp
@@ -622,19 +622,19 @@ export function addMatchUpResumeTime({
 
   const { matchUp } = findMatchUp({ drawDefinition, event, matchUpId });
   const { scheduledDate } = scheduledMatchUpDate({ matchUp });
-  const timeItems = matchUp.timeItems || [];
+  const timeItems = matchUp?.timeItems || [];
 
   // can't add a RESUME_TIME if the matchUp is not STOPPED, or if it has ENDED
   // if latest relevaant timeItem is a RESUME_TIME then overwrite
 
-  const hasEndTime = timeItems.reduce((hasEndTime, timeItem) => {
+  const hasEndTime = timeItems.reduce((hasEndTime: any, timeItem) => {
     return timeItem.itemType === END_TIME || hasEndTime;
   }, undefined);
 
   if (hasEndTime) return { error: EXISTING_END_TIME };
 
   const relevantTimeItems = timeItems
-    .filter((timeItem) =>
+    .filter((timeItem: any) =>
       [START_TIME, RESUME_TIME, STOP_TIME].includes(timeItem?.itemType)
     )
     .sort(
@@ -655,13 +655,13 @@ export function addMatchUpResumeTime({
     )
     .map((timeItem) => timeDate(timeItem.itemValue, scheduledDate))
     .reduce(
-      (latest, timeValue) =>
+      (latest: any, timeValue) =>
         !latest || timeValue > latest ? timeValue : latest,
       undefined
     );
 
   if (timeDate(resumeTime, scheduledDate) > latestRelevantTimeValue) {
-    if (matchUp.timeItems && lastRelevantTimeItemIsResume) {
+    if (matchUp?.timeItems && lastRelevantTimeItemIsResume) {
       const targetTimeStamp = lastRelevantTimeItem.createdAt;
       matchUp.timeItems = matchUp.timeItems.filter(
         (timeItem) => timeItem.createdAt !== targetTimeStamp

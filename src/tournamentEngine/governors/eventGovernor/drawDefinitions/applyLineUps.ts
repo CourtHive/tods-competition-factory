@@ -14,6 +14,7 @@ import {
   INVALID_MATCHUP,
   INVALID_PARTICIPANT_TYPE,
   INVALID_VALUES,
+  MATCHUP_NOT_FOUND,
   MISSING_DRAW_POSITIONS,
   MISSING_TOURNAMENT_RECORD,
   PARTICIPANT_NOT_FOUND,
@@ -41,6 +42,7 @@ export function applyLineUps({
     matchUpId,
   });
   if (result.error) return result;
+  if (!result.matchUp) return { error: MATCHUP_NOT_FOUND };
 
   const { matchUp: inContextMatchUp, structure } = result;
   const { drawPositions, matchUpType } = inContextMatchUp;
@@ -84,7 +86,7 @@ export function applyLineUps({
         return { error: INVALID_PARTICIPANT_TYPE };
 
       const sideNumber = inContextMatchUp.sides?.find(
-        (side) =>
+        (side: any) =>
           side.participant?.individualParticipantIds?.includes(participantId)
       )?.sideNumber;
       if (sideNumber) sideNumbers.push(sideNumber);
@@ -173,6 +175,7 @@ export function applyLineUps({
 
   result = findMatchUp({ drawDefinition, matchUpId });
   if (result.error) return result;
+  if (!result.matchUp) return { error: MATCHUP_NOT_FOUND };
 
   const { matchUp } = result;
   if (!matchUp.sides) matchUp.sides = [];

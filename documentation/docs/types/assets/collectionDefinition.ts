@@ -3,8 +3,8 @@ export const collectionDefinition = {
   collectionName: '{\\"type\\":\\"string\\",\\"required\\":\\"false\\"}',
   collectionGroupNumber: '{\\"type\\":\\"number\\",\\"required\\":\\"false\\"}',
   collectionValue: '{\\"type\\":\\"number\\",\\"required\\":\\"false\\"}',
-  collectionValueProfile:
-    '{\\"type\\":\\"object\\",\\"object\\":\\"collectionValueProfile\\",\\"array\\":\\"true\\",\\"required\\":\\"true\\"}',
+  collectionValueProfiles:
+    '{\\"type\\":\\"object\\",\\"object\\":\\"collectionValueProfiles\\",\\"array\\":\\"true\\",\\"required\\":\\"true\\"}',
   matchUpCount: '{\\"type\\":\\"number\\",\\"required\\":\\"true\\"}',
   matchUpFormat:
     '{\\"type\\":\\"string\\",\\"required\\":\\"false\\",\\"note\\":\\"TODS matchup format, e.g. \'SET3-S:6/TB7\'\\"}',

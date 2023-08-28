@@ -296,37 +296,39 @@ export function setMatchUpStatus(params) {
       matchUpsMap,
       event,
     });
-    const tieFormat = resolveTieFormat({
-      matchUp: dualMatchUp,
-      drawDefinition,
-      structure,
-      event,
-    })?.tieFormat;
+    if (dualMatchUp) {
+      const tieFormat = resolveTieFormat({
+        matchUp: dualMatchUp,
+        drawDefinition,
+        structure,
+        event,
+      })?.tieFormat;
 
-    const { projectedWinningSide } = getProjectedDualWinningSide({
-      matchUpStatus,
-      dualMatchUp,
-      matchUpsMap,
-      winningSide,
-      tieFormat,
-      structure,
-      matchUp,
-      event,
-      score,
-    });
+      const { projectedWinningSide } = getProjectedDualWinningSide({
+        matchUpStatus,
+        dualMatchUp,
+        matchUpsMap,
+        winningSide,
+        tieFormat,
+        structure,
+        matchUp,
+        event,
+        score,
+      });
 
-    const existingDualMatchUpWinningSide = dualMatchUp.winningSide;
-    dualWinningSideChange =
-      projectedWinningSide !== existingDualMatchUpWinningSide;
+      const existingDualMatchUpWinningSide = dualMatchUp.winningSide;
+      dualWinningSideChange =
+        projectedWinningSide !== existingDualMatchUpWinningSide;
 
-    Object.assign(params, {
-      isCollectionMatchUp: true,
-      dualWinningSideChange,
-      projectedWinningSide,
-      matchUpTieId,
-      dualMatchUp,
-      tieFormat,
-    });
+      Object.assign(params, {
+        isCollectionMatchUp: true,
+        dualWinningSideChange,
+        projectedWinningSide,
+        matchUpTieId,
+        dualMatchUp,
+        tieFormat,
+      });
+    }
   }
 
   // with propagating winningSide changes, activeDownstream does not apply to collection matchUps

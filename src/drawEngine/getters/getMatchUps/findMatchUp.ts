@@ -3,8 +3,11 @@ import { getMatchUp } from '../../accessors/matchUpAccessor/matchUps';
 import { getAllStructureMatchUps } from './getAllStructureMatchUps';
 import { getDrawStructures } from '../findStructure';
 import { makeDeepCopy } from '../../../utilities';
+
+import { HydratedMatchUp } from '../../../types/hydrated';
 import { MatchUpsMap } from './getMatchUpsMap';
 import {
+  ErrorType,
   INVALID_VALUES,
   MATCHUP_NOT_FOUND,
   MISSING_DRAW_DEFINITION,
@@ -14,6 +17,7 @@ import {
   DrawDefinition,
   Event,
   Participant,
+  Structure,
 } from '../../../types/tournamentFromSchema';
 
 /*
@@ -47,7 +51,11 @@ export function findMatchUp({
   inContext,
   context,
   event,
-}: FindMatchUpArgs) {
+}: FindMatchUpArgs): {
+  matchUp?: HydratedMatchUp;
+  structure?: Structure;
+  error?: ErrorType;
+} {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
   if (typeof matchUpId !== 'string') return { error: INVALID_VALUES };

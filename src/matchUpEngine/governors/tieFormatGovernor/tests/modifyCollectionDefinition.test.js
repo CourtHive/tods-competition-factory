@@ -115,7 +115,7 @@ it('can modify collectionDefinitions for a tieFormat on a drawDefinition', () =>
   expect(definition.setValue).toEqual(1);
 
   result = tournamentEngine.modifyCollectionDefinition({
-    collectionValueProfile: [
+    collectionValueProfiles: [
       { collectionPosition: 1, value: 3 },
       { collectionPosition: 2, value: 1 },
       { collectionPosition: 3, value: 1 },
@@ -130,10 +130,10 @@ it('can modify collectionDefinitions for a tieFormat on a drawDefinition', () =>
     (collectionDefinition) => collectionDefinition.collectionId === collectionId
   );
   expect(definition.setValue).toBeUndefined();
-  expect(definition.collectionValueProfile).not.toBeUndefined();
+  expect(definition.collectionValueProfiles).not.toBeUndefined();
 
   result = tournamentEngine.modifyCollectionDefinition({
-    collectionValueProfile: [
+    collectionValueProfiles: [
       { collectionPosition: 1, value: 3 },
       { collectionPosition: 1, value: 1 },
       { collectionPosition: 1, value: 1 },
@@ -144,7 +144,7 @@ it('can modify collectionDefinitions for a tieFormat on a drawDefinition', () =>
   expect(result.error).toEqual(INVALID_VALUES);
 
   result = tournamentEngine.modifyCollectionDefinition({
-    collectionValueProfile: [
+    collectionValueProfiles: [
       { collectionPosition: 1, value: 3 },
       { collectionPosition: 2, value: 2 },
     ],

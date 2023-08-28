@@ -3,18 +3,26 @@ import { getTournamentParticipants } from '../../getters/participants/getTournam
 import { getMatchUpsMap } from '../../../drawEngine/getters/getMatchUps/getMatchUpsMap';
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
 import { findMatchUp } from '../../../drawEngine/getters/getMatchUps/findMatchUp';
-import { getParticipantIds } from '../../../global/functions/extractors';
+import { extractAttributes } from '../../../utilities';
 
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { TEAM } from '../../../constants/participantConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { HydratedMatchUp } from '../../../types/hydrated';
 import {
   EVENT_NOT_FOUND,
+  ErrorType,
   INVALID_MATCHUP,
   MATCHUP_NOT_FOUND,
   MISSING_DRAW_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
+import {
+  MatchUp,
+  Participant,
+  Structure,
+  TieFormat,
+} from '../../../types/tournamentFromSchema';
 
 // for a given tieMatchUpId (SINGLES or DOUBLES) return:
 // the tieMatchUp, the dualMatchUp within which it occurs, an inContext copy of the dualMatchUp
@@ -24,7 +32,22 @@ export function getTieMatchUpContext({
   drawDefinition,
   tieMatchUpId,
   event,
-}) {
+}): {
+  inContextDualMatchUp?: HydratedMatchUp;
+  inContextTieMatchUp?: HydratedMatchUp;
+  teamParticipants?: Participant[];
+  relevantAssignments?: any[];
+  collectionPosition?: number;
+  drawPositions?: number[];
+  tieFormat?: TieFormat;
+  collectionId?: string;
+  dualMatchUp?: MatchUp;
+  matchUpTieId?: string;
+  structure?: Structure;
+  matchUpType?: string;
+  tieMatchUp?: MatchUp;
+  error?: ErrorType;
+} {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!drawDefinition) return { error: MISSING_DRAW_ID };
   if (!event) return { error: EVENT_NOT_FOUND };
@@ -47,6 +70,7 @@ export function getTieMatchUpContext({
     matchUpsMap,
     event,
   });
+  if (!inContextTieMatchUp) return { error: MATCHUP_NOT_FOUND };
 
   const {
     collectionPosition,
@@ -56,15 +80,17 @@ export function getTieMatchUpContext({
     matchUpType,
   } = inContextTieMatchUp;
 
-  if (![SINGLES, DOUBLES].includes(matchUpType))
+  if (matchUpType && ![SINGLES, DOUBLES].includes(matchUpType))
     return { error: INVALID_MATCHUP };
 
   const { positionAssignments } = getPositionAssignments({ structure });
-  const relevantAssignments = positionAssignments?.filter((assignment) =>
-    drawPositions?.includes(assignment.drawPosition)
+  const relevantAssignments = positionAssignments?.filter(
+    (assignment) => drawPositions?.includes(assignment.drawPosition)
   );
 
-  const participantIds = getParticipantIds(relevantAssignments);
+  const participantIds = relevantAssignments?.map(
+    extractAttributes('participantId')
+  );
   const { tournamentParticipants: teamParticipants } =
     getTournamentParticipants({
       tournamentRecord,

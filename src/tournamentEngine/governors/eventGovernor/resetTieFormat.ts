@@ -52,7 +52,7 @@ export function resetTieFormat({
   if (result.error) return result;
 
   const { matchUp, structure } = result;
-  if (!matchUp.tieMatchUps)
+  if (!matchUp?.tieMatchUps)
     return { error: INVALID_MATCHUP, info: 'Must be a TEAM matchUp' };
 
   // if there is no tieFormat there is nothing to do
@@ -106,8 +106,11 @@ export function resetTieFormat({
     }
   }
 
-  for (const tieMatchUp of matchUp.tieMatchUps || []) {
-    if (!collectionIds.includes(tieMatchUp.collectionId))
+  for (const tieMatchUp of matchUp?.tieMatchUps || []) {
+    if (
+      tieMatchUp.collectionId &&
+      !collectionIds.includes(tieMatchUp.collectionId)
+    )
       deletedMatchUpIds.push(tieMatchUp.matchUpId);
   }
 
@@ -130,18 +133,20 @@ export function resetTieFormat({
     });
   }
 
-  matchUp.tieMatchUps = tieMatchUps;
-  matchUp.tieFormatId = undefined;
-  matchUp.tieFormat = undefined;
+  if (matchUp) {
+    matchUp.tieMatchUps = tieMatchUps;
+    matchUp.tieFormatId = undefined;
+    matchUp.tieFormat = undefined;
 
-  modifyMatchUpNotice({
-    tournamentId: tournamentRecord?.tournamentId,
-    structureId: structure.structureId,
-    eventId: event?.eventId,
-    context: stack,
-    drawDefinition,
-    matchUp,
-  });
+    modifyMatchUpNotice({
+      tournamentId: tournamentRecord?.tournamentId,
+      structureId: structure?.structureId,
+      eventId: event?.eventId,
+      context: stack,
+      drawDefinition,
+      matchUp,
+    });
+  }
 
   return { ...SUCCESS, newMatchUps, deletedMatchUpIds };
 }

@@ -6,6 +6,7 @@ import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { findStructure } from '../../getters/findStructure';
 import { drawEngine } from '../../sync';
 import { expect } from 'vitest';
+import { MATCHUP_NOT_FOUND } from '../../../constants/errorConditionConstants';
 
 export function completeMatchUp(params) {
   const {
@@ -145,20 +146,21 @@ function verifyRoundCounts({ roundMatchUps, expectedRounds }) {
 
 export function getMatchUpWinnerLoserIds({ drawDefinition, matchUpId }) {
   const { matchUp } = findMatchUp({
+    inContext: true,
     drawDefinition,
     matchUpId,
-    inContext: true,
   });
+  if (!matchUp) return { error: MATCHUP_NOT_FOUND };
   const { sides, winningSide } = matchUp;
 
   const sideWinning =
     winningSide &&
-    sides.reduce((sideWinning, side) => {
+    sides?.reduce((sideWinning: any, side) => {
       return side.sideNumber === winningSide ? side : sideWinning;
     }, undefined);
   const sideLosing =
     winningSide &&
-    sides.reduce((sideLosing, side) => {
+    sides?.reduce((sideLosing: any, side) => {
       return side.sideNumber === 3 - winningSide ? side : sideLosing;
     }, undefined);
 

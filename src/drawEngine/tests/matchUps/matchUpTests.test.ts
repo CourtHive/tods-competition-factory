@@ -73,8 +73,8 @@ it('matchUps returned with context cannot modify original', () => {
     drawDefinition,
     matchUpId,
   });
-  expect(retrievedMatchUp.drawId).toEqual(undefined);
-  expect(retrievedMatchUp.structureId).toEqual(undefined);
+  expect(retrievedMatchUp?.drawId).toEqual(undefined);
+  expect(retrievedMatchUp?.structureId).toEqual(undefined);
 
   // retrieve matchUp with context and add an attribute
   const { matchUp: contextMatchUp } = findMatchUp({
@@ -82,11 +82,11 @@ it('matchUps returned with context cannot modify original', () => {
     matchUpId,
     inContext: true,
   });
-  contextMatchUp.newAttribute = 'newAttribute';
+  if (contextMatchUp) contextMatchUp.newAttribute = 'newAttribute';
 
   // contextMatchUp should include drawId and structureId
-  expect(contextMatchUp.drawId).toEqual(drawId);
-  expect(contextMatchUp.structureId).toEqual(structureId);
+  expect(contextMatchUp?.drawId).toEqual(drawId);
+  expect(contextMatchUp?.structureId).toEqual(structureId);
 
   // refetch the drawDefintion after the modification has been made
   ({ drawDefinition } = drawEngine.getState());
@@ -97,9 +97,9 @@ it('matchUps returned with context cannot modify original', () => {
     drawDefinition,
     matchUpId,
   }));
-  expect(retrievedMatchUp.newAttribute).toEqual(undefined);
-  expect(retrievedMatchUp.drawId).toEqual(undefined);
-  expect(retrievedMatchUp.structureId).toEqual(undefined);
+  expect(retrievedMatchUp?.newAttribute).toEqual(undefined);
+  expect(retrievedMatchUp?.drawId).toEqual(undefined);
+  expect(retrievedMatchUp?.structureId).toEqual(undefined);
 });
 
 it('can return matchUps from a ROUND_ROBIN structure', () => {
@@ -161,7 +161,7 @@ it('can set matchUpFormat', () => {
     drawDefinition,
     matchUpId,
   });
-  expect(modifiedMatchUp.matchUpFormat).toEqual(matchUpFormat);
+  expect(modifiedMatchUp?.matchUpFormat).toEqual(matchUpFormat);
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore

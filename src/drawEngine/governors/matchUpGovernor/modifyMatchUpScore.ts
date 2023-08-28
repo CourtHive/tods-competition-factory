@@ -34,6 +34,7 @@ import {
   MatchUpStatusEnum,
   Tournament,
 } from '../../../types/tournamentFromSchema';
+import { MATCHUP_NOT_FOUND } from '../../../constants/errorConditionConstants';
 
 /**
  *
@@ -96,11 +97,13 @@ export function modifyMatchUpScore({
   if (isDualMatchUp && drawDefinition) {
     if (matchUpId && matchUp.matchUpId !== matchUpId) {
       // the modification is to be applied to a tieMatchUp
-      ({ matchUp, structure } = findMatchUp({
+      const findResult = findMatchUp({
         drawDefinition,
         matchUpId,
         event,
-      }));
+      });
+      if (!findResult.matchUp) return { error: MATCHUP_NOT_FOUND };
+      ({ matchUp, structure } = findResult);
     } else {
       // the modification is to be applied to the TEAM matchUp
     }

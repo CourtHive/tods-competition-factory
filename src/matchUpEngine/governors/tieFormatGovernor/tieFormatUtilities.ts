@@ -7,8 +7,11 @@ import {
 } from '../../../global/functions/decorateResult';
 
 import { INVALID_TIE_FORMAT } from '../../../constants/errorConditionConstants';
-import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  CollectionDefinition,
+  TypeEnum,
+} from '../../../types/tournamentFromSchema';
 
 type ValidateTieFormatArgs = {
   checkCollectionIds?: boolean;
@@ -121,11 +124,16 @@ export function validateTieFormat(params: ValidateTieFormatArgs): ResultType {
   return result;
 }
 
+type ValidateCollectionDefinitionArgs = {
+  collectionDefinition: CollectionDefinition;
+  checkValueDefinition?: boolean;
+  checkCollectionIds?: boolean;
+};
 export function validateCollectionDefinition({
   checkValueDefinition = true, // disabling allows collection to be added with no value, e.g. "Exhibition Matches"
   collectionDefinition,
   checkCollectionIds,
-}) {
+}: ValidateCollectionDefinitionArgs) {
   const errors: string[] = [];
 
   if (typeof collectionDefinition !== 'object') {
@@ -136,7 +144,7 @@ export function validateCollectionDefinition({
   }
 
   const {
-    collectionValueProfile,
+    collectionValueProfiles,
     collectionGroupNumber,
     collectionValue,
     collectionId,
@@ -156,7 +164,10 @@ export function validateCollectionDefinition({
     errors.push(`matchUpCount is not type number: ${matchUpCount}`);
     return { errors };
   }
-  if (![SINGLES, DOUBLES].includes(matchUpType)) {
+  if (
+    matchUpType &&
+    ![TypeEnum.Singles, TypeEnum.Doubles].includes(matchUpType)
+  ) {
     errors.push(`matchUpType must be SINGLES or DOUBLES: ${matchUpType}`);
     return { errors };
   }
@@ -165,12 +176,12 @@ export function validateCollectionDefinition({
     checkValueDefinition &&
     !matchUpValue &&
     !collectionValue &&
-    !collectionValueProfile &&
+    !collectionValueProfiles &&
     !scoreValue &&
     !setValue
   ) {
     errors.push(
-      'Missing value definition for matchUps: matchUpValue, collectionValue, or collectionValueProfile'
+      'Missing value definition for matchUps: matchUpValue, collectionValue, or collectionValueProfiles'
     );
     return { errors };
   }
@@ -183,9 +194,9 @@ export function validateCollectionDefinition({
     errors.push(`collectionValue is not type number: ${collectionValue}`);
     return { errors };
   }
-  if (collectionValueProfile) {
+  if (collectionValueProfiles) {
     const result = validateCollectionValueProfile({
-      collectionValueProfile,
+      collectionValueProfiles,
       matchUpCount,
     });
     if (result.errors) {
@@ -221,21 +232,24 @@ export function checkTieFormat(tieFormat) {
 }
 
 export function validateCollectionValueProfile({
-  collectionValueProfile,
+  collectionValueProfiles,
   matchUpCount,
 }) {
   const errors: string[] = [];
-  if (!Array.isArray(collectionValueProfile)) {
+  if (!Array.isArray(collectionValueProfiles)) {
     errors.push(
-      `collectionValueProfile is not an array: ${collectionValueProfile}`
+      `collectionValueProfiles is not an array: ${collectionValueProfiles}`
     );
     return { errors };
   }
-  if (collectionValueProfile.length !== matchUpCount) {
-    errors.push(`collectionValueProfile does not align with matchUpsCount`);
+  if (
+    collectionValueProfiles.length &&
+    collectionValueProfiles.length !== matchUpCount
+  ) {
+    errors.push(`collectionValueProfiles do not align with matchUpsCount`);
     return { errors };
   }
-  for (const valueProfile of collectionValueProfile) {
+  for (const valueProfile of collectionValueProfiles) {
     if (typeof valueProfile !== 'object') {
       errors.push(`valueProfile is not type object: ${valueProfile}`);
       return { errors };
@@ -253,7 +267,7 @@ export function validateCollectionValueProfile({
       return { errors };
     }
   }
-  const collectionPositions = collectionValueProfile.map(
+  const collectionPositions = collectionValueProfiles.map(
     (valueProfile) => valueProfile.collectionPosition
   );
   if (collectionPositions.length !== unique(collectionPositions).length) {

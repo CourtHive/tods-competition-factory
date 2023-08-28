@@ -10,6 +10,7 @@ import { modifyMatchUpScore } from './modifyMatchUpScore';
 import {
   ErrorType,
   INVALID_MATCHUP,
+  MATCHUP_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 import { DISABLE_AUTO_CALC } from '../../../constants/extensionConstants';
 import { MatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
@@ -55,6 +56,7 @@ export function updateTieMatchUpScore({
 } {
   const result = findMatchUp({ drawDefinition, event, matchUpId });
   if (result.error) return result;
+  if (!result.matchUp) return { error: MATCHUP_NOT_FOUND };
 
   const { matchUp, structure } = result;
 
@@ -115,12 +117,12 @@ export function updateTieMatchUpScore({
       IN_PROGRESS) ||
     TO_BE_PLAYED;
 
-  const removeWinningSide = matchUp.winningSide && !hasWinner;
+  const removeWinningSide = !!(matchUp.winningSide && !hasWinner);
   const hasResults = matchUp.tieMatchUps.find(
     ({ score, winningSide, matchUpStatus }) =>
       (score?.sets?.length &&
         (score.sets[0].side1Score || score.sets[0].side2Score)) ||
-      completedMatchUpStatuses.includes(matchUpStatus) ||
+      (matchUpStatus && completedMatchUpStatuses.includes(matchUpStatus)) ||
       winningSide
   );
 

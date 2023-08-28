@@ -44,7 +44,7 @@ export function allocateTeamMatchUpCourts({
     matchUpId,
   });
   if (result.error) return result;
-  if (result.matchUp.matchUpType !== TEAM_MATCHUP)
+  if (result?.matchUp?.matchUpType !== TEAM_MATCHUP)
     return { error: INVALID_MATCHUP };
 
   const validCourtIds =

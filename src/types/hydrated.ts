@@ -8,10 +8,10 @@ export type HydratedVenue = {
   [key: string]: any;
 } & Venue;
 
-export type HydratedMatchUp = {
-  [key: string | number | symbol]: any;
-} & MatchUp;
+export type HydratedMatchUp = MatchUp & {
+  [key: string | number]: any;
+};
 
 export type HydratedParticipant = {
-  [key: string | number | symbol]: any;
+  [key: string | number]: any;
 } & Participant;
