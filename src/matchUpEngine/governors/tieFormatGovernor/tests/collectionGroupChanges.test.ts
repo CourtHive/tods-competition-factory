@@ -61,7 +61,7 @@ it('can remove collectionGroups from tieFormats', () => {
 });
 
 it('can remove collectionGroups and recalculate score in matchUps which are in progress', () => {
-  let matchUpModifyNotices = [];
+  const matchUpModifyNotices: any[] = [];
 
   const subscriptions = {
     modifyMatchUp: (payload) => {
@@ -106,7 +106,7 @@ it('can remove collectionGroups and recalculate score in matchUps which are in p
     firstRoundDualMatchUps.map(({ score }) => score).filter(Boolean).length
   ).toEqual(0);
 
-  let outcome = {
+  const outcome = {
     winningSide: 1,
     score: {
       scoreStringSide1: '8-1',

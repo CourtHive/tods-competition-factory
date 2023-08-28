@@ -7,7 +7,7 @@ import { USTA_BREWER_CUP } from '../../../../constants/tieFormatConstants';
 import { TEAM } from '../../../../constants/eventConstants';
 
 it('changing value assignment of collectionDefinition that is part of collectionGroup will delete the group', () => {
-  const deletedMatchUpIds = [];
+  const deletedMatchUpIds: string[] = [];
   let result = setSubscriptions({
     subscriptions: {
       [DELETED_MATCHUP_IDS]: (notices) => {
@@ -64,7 +64,7 @@ it('changing value assignment of collectionDefinition that is part of collection
 });
 
 it('changing value assignment of collectionDefinition that is part of collectionGroup will delete the group', () => {
-  const deletedMatchUpIds = [];
+  const deletedMatchUpIds: string[] = [];
   let result = setSubscriptions({
     subscriptions: {
       [DELETED_MATCHUP_IDS]: (notices) => {

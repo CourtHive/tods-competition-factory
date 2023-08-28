@@ -37,7 +37,7 @@ export function removeStructure({
     return { error: CANNOT_REMOVE_MAIN_STRUCTURE };
   }
 
-  const removedMatchUpIds = [];
+  const removedMatchUpIds: string[] = [];
   const idsToRemove = [structureId];
   const getTargetedStructureIds = (structureId) =>
     drawDefinition.links
@@ -81,7 +81,8 @@ export function removeStructure({
       );
     }
 
-    const targetedStructureIds = targetedStructureIdsMap[idBeingRemoved];
+    const targetedStructureIds =
+      idBeingRemoved && targetedStructureIdsMap[idBeingRemoved];
     if (targetedStructureIds?.length) idsToRemove.push(...targetedStructureIds);
   }
 

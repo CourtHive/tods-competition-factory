@@ -13,7 +13,7 @@ import {
 } from '../../../../constants/tieFormatConstants';
 
 it('can remove a collectionDefinition from a drawDefinition tieFormat', () => {
-  const deletedMatchUpIds = [];
+  const deletedMatchUpIds: string[] = [];
   let result = setSubscriptions({
     subscriptions: {
       [DELETED_MATCHUP_IDS]: (notices) => {
@@ -64,7 +64,7 @@ it('can remove a collectionDefinition from a drawDefinition tieFormat', () => {
 });
 
 it('can remove a collectionDefinition from a structure tieFormat', () => {
-  const deletedMatchUpIds = [];
+  const deletedMatchUpIds: string[] = [];
   let result = setSubscriptions({
     subscriptions: {
       [DELETED_MATCHUP_IDS]: (notices) => {
@@ -141,7 +141,7 @@ it('can remove a collectionDefinition from a structure tieFormat', () => {
 // * will also remove collectionGroupNumber from all relevant collectionDefinitions
 // ...valueGoal needs to be recalculated
 it('removing collectionDefinition that is part of collectionGroup will remove collectionGroup', () => {
-  const deletedMatchUpIds = [];
+  const deletedMatchUpIds: string[] = [];
   let result = setSubscriptions({
     subscriptions: {
       [DELETED_MATCHUP_IDS]: (notices) => {
@@ -198,8 +198,8 @@ it('removing collectionDefinition that is part of collectionGroup will remove co
 });
 
 it('deleted collectionDefinitions are not removed from inProgress matchUps', () => {
-  const matchUpModifyNotices = [];
-  const deletedMatchUpIds = [];
+  const matchUpModifyNotices: any[] = [];
+  const deletedMatchUpIds: string[] = [];
 
   const subscriptions = {
     [DELETED_MATCHUP_IDS]: (notices) => {
@@ -262,7 +262,7 @@ it('deleted collectionDefinitions are not removed from inProgress matchUps', () 
       },
     });
 
-  let { matchUps: secondRoundDualMatchUps } =
+  const { matchUps: secondRoundDualMatchUps } =
     tournamentEngine.allTournamentMatchUps({
       contextFilters: {
         stages: [MAIN],
@@ -280,7 +280,7 @@ it('deleted collectionDefinitions are not removed from inProgress matchUps', () 
   const teamMatchUpId = teamMatchUp.matchUpId;
   expect(teamMatchUp.tieMatchUps.length).toEqual(9);
 
-  let outcome = {
+  const outcome = {
     winningSide: 1,
     score: {
       scoreStringSide1: '8-1',
@@ -418,7 +418,7 @@ test('removing collection when matchUps are scored and team participant has adva
     });
   expect(secondRoundDualMatchUps[0].drawPositions).toEqual(undefined);
 
-  let outcome = {
+  const outcome = {
     winningSide: 1,
     score: {
       scoreStringSide1: '8-1',
@@ -436,7 +436,7 @@ test('removing collection when matchUps are scored and team participant has adva
 
   for (const tieMatchUp of firstRoundDualMatchUps[0].tieMatchUps) {
     const matchUpId = tieMatchUp.matchUpId;
-    let result = tournamentEngine.setMatchUpStatus({
+    const result = tournamentEngine.setMatchUpStatus({
       matchUpId,
       outcome,
       drawId,

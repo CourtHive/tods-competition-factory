@@ -7,7 +7,30 @@ import { validateTieFormat } from './tieFormatUtilities';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  DrawDefinition,
+  Event,
+  MatchUp,
+  Structure,
+  TieFormat,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
+type CollectionGroupUpdateArgs = {
+  updateInProgressMatchUps?: boolean;
+  drawDefinition: DrawDefinition;
+  tournamentRecord?: Tournament;
+  wasAggregateValue?: boolean;
+  originalValueGoal?: number;
+  tieFormatName?: string;
+  structure?: Structure;
+  structureId?: string;
+  tieFormat: TieFormat;
+  matchUpId?: string;
+  matchUp?: MatchUp;
+  eventId?: string;
+  event?: Event;
+};
 export function collectionGroupUpdate({
   updateInProgressMatchUps,
   originalValueGoal,
@@ -22,7 +45,7 @@ export function collectionGroupUpdate({
   matchUp,
   eventId,
   event,
-}) {
+}: CollectionGroupUpdateArgs) {
   // calculate new winCriteria for tieFormat
   // if existing winCriteria is aggregateValue, retain
   const { aggregateValue, valueGoal } = calculateWinCriteria(tieFormat);
@@ -52,8 +75,8 @@ export function collectionGroupUpdate({
   updateTargetTeamMatchUps({
     updateInProgressMatchUps,
     tournamentRecord,
-    drawDefinition,
     targetMatchUps,
+    drawDefinition,
     tieFormat,
     event,
   });
@@ -63,10 +86,10 @@ export function collectionGroupUpdate({
   if (result.error) return result;
 
   // TODO: implement use of tieFormats and tieFormatId
-  if (eventId) {
+  if (eventId && event) {
     event.tieFormat = prunedTieFormat;
     // NOTE: there is not yet a modifyEventNotice
-  } else if (matchUpId) {
+  } else if (matchUpId && matchUp) {
     matchUp.tieFormat = tieFormat;
   } else if (structure) {
     structure.tieFormat = prunedTieFormat;

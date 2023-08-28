@@ -1,8 +1,8 @@
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { collectionGroupUpdate } from './collectionGroupUpdate';
+import { getTieFormat } from './getTieFormat/getTieFormat';
 import { validateTieFormat } from './tieFormatUtilities';
 import { copyTieFormat } from './copyTieFormat';
-import { getTieFormat } from './getTieFormat/getTieFormat';
 
 import {
   INVALID_VALUES,
@@ -28,21 +28,20 @@ export function addCollectionGroup({
 
   // TODO: validate groupDefinition
 
-  let result =
-    !matchUp &&
-    getTieFormat({
-      tournamentRecord,
-      drawDefinition,
-      structureId,
-      matchUpId,
-      eventId,
-      event,
-    });
-  if (result.error) return decorateResult({ result, stack });
+  let result = !matchUp
+    ? getTieFormat({
+        drawDefinition,
+        structureId,
+        matchUpId,
+        eventId,
+        event,
+      })
+    : undefined;
+  if (result?.error) return decorateResult({ result, stack });
 
-  const { structure } = result;
-  matchUp = matchUp || result.matchUp;
-  const existingTieFormat = result.tieFormat;
+  const structure = result?.structure;
+  matchUp = matchUp || result?.matchUp;
+  const existingTieFormat = result?.tieFormat;
   const originalValueGoal = existingTieFormat.winCriteria.valueGoal;
   const tieFormat = copyTieFormat(existingTieFormat);
 

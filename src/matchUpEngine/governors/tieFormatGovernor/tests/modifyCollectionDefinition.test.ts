@@ -34,7 +34,8 @@ it('can modify collectionDefinitions for a tieFormat on a drawDefinition', () =>
   });
   expect(result.error).toEqual(NOT_FOUND);
 
-  let { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
+  let { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const { event } = tournamentEngine.getEvent({ drawId });
   expect(drawDefinition.tieFormat).toBeUndefined();
   const collectionId = event.tieFormat.collectionDefinitions[0].collectionId;
 
@@ -172,7 +173,8 @@ it('can modify collectionDefinitions for a tieFormat on a structure', () => {
   });
   expect(result.error).toEqual(NOT_FOUND);
 
-  let { event, drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const { event } = tournamentEngine.getEvent({ drawId });
+  let { drawDefinition } = tournamentEngine.getEvent({ drawId });
   expect(drawDefinition.tieFormat).toBeUndefined();
   const structureId = drawDefinition.structures[0].structureId;
   const collectionId = event.tieFormat.collectionDefinitions[0].collectionId;
@@ -272,7 +274,7 @@ it('can modify collectionDefinitions for a tieFormat on a structure', () => {
   }).matchUps;
   expect(matchUps[0].tieFormat.winCriteria.aggregateValue).toEqual(true);
 
-  let outcome = {
+  const outcome = {
     score: {
       scoreStringSide1: '0-1',
       scoreStringSide2: '1-0',

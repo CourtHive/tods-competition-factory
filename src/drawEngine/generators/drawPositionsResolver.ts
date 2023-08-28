@@ -127,7 +127,7 @@ export function resolveDrawPositions({
     if (!remainingDrawPositions.length) break;
   }
 
-  const report = {
+  const report: any = {
     chunkResolution,
   };
 
@@ -166,8 +166,8 @@ function resolvePreferences({
   // e.g. in the first pass expect there to be drawPositions for which there is no contention
   const minimumContentionCount = Math.min(
     ...Object.values(drawPositionsMap)
-      .filter((f) => f.length)
-      .map((v) => v.length)
+      .filter((f: any) => f.length)
+      .map((v: any) => v.length)
   );
   const minimumContentionPositions = Object.keys(drawPositionsMap).filter(
     (drawPosition) =>
@@ -188,7 +188,7 @@ function resolvePreferences({
   // now filter resolved positions from every participant's preferences
   // this has the effect of promoting preferences if first preferences are no longer available
   let remainingPreferences;
-  Object.values(participantPreferences).forEach((pd) => {
+  Object.values(participantPreferences).forEach((pd: any) => {
     pd.preferences = pd.preferences.filter((dp) => {
       const notResolved = !minimumContentionPositions.includes(dp.toString());
       if (notResolved) remainingPreferences = true;
