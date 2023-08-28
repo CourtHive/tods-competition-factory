@@ -17,7 +17,7 @@ export function stressTests({ matchUpFormat, setTo, games2Win = 2 }) {
   // NOTE: matchUp object used in these tests has { scoreString, sets } instead of using new { score } object
 
   it('can enter retirement or default after second set if matchUp is incomplete', () => {
-    let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+    let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
     const values = [
       { lowSide: 2, value: '1' },
@@ -32,7 +32,7 @@ export function stressTests({ matchUpFormat, setTo, games2Win = 2 }) {
   });
 
   it('retains spacing after side 1 outcome is removed', () => {
-    let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+    let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
     const values = [
       { lowSide: 2, value: '1' },
@@ -52,7 +52,7 @@ export function stressTests({ matchUpFormat, setTo, games2Win = 2 }) {
   });
 
   it('does not allow additional scoreString entry after outcomes', () => {
-    let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+    let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
     const values = [
       { lowSide: 2, value: '1' },
@@ -97,7 +97,7 @@ export function stressTests({ matchUpFormat, setTo, games2Win = 2 }) {
 
   it('can support second set matchUp status outcomes', () => {
     let updated;
-    let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+    let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
     // can't enter interrupted when no scoreString has been entered
     ({ matchUp, updated } = scoreMatchUp({ value: 'i', lowSide: 1, matchUp }));
@@ -165,7 +165,7 @@ export function stressTests({ matchUpFormat, setTo, games2Win = 2 }) {
   });
 
   it('preserves space between set scores after outcome removal', () => {
-    let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+    let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
     const values = [
       { lowSide: 2, value: 1 },
@@ -186,7 +186,7 @@ export function stressTests({ matchUpFormat, setTo, games2Win = 2 }) {
 
 export function singleSetStressTests({ matchUpFormat, setTo }) {
   it('entering - multiple times does nothing after first action', () => {
-    let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+    let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
     const values = [
       { lowSide: 2, value: 3 },
@@ -206,7 +206,7 @@ export function singleSetStressTests({ matchUpFormat, setTo }) {
   });
 
   it('supports use of - to modify side 2 scoreString', () => {
-    let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+    let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
     const values = [
       { lowSide: 2, value: 2 },
@@ -221,11 +221,11 @@ export function singleSetStressTests({ matchUpFormat, setTo }) {
   });
 
   it('can recover from randomly generated inputs', () => {
-    let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+    let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
     const keyCount = 20;
 
-    let values = generateRange(0, keyCount).map(() => {
+    let values: any = generateRange(0, keyCount).map(() => {
       return {
         lowSide: randomMember([1, 2]),
         value: randomMember(SCORE_TEST_KEYS),
@@ -258,7 +258,7 @@ export function singleSetStressTests({ matchUpFormat, setTo }) {
   });
 
   it('can enter retirement or default for incomplete first set', () => {
-    let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+    let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
     const values = [
       { lowSide: 1, value: '1' },
@@ -278,7 +278,7 @@ export function singleSetStressTests({ matchUpFormat, setTo }) {
   });
 
   it('does not allow additional 1st set scoreString entry after outcomes', () => {
-    let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+    let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
     const values = [
       { lowSide: 1, value: '1' },
@@ -297,7 +297,7 @@ export function singleSetStressTests({ matchUpFormat, setTo }) {
 
   it('can support 1st set matchUp status outcomes', () => {
     let updated;
-    let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+    let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
     // can't enter interrupted when no scoreString has been entered
     ({ matchUp, updated } = scoreMatchUp({ value: 'i', lowSide: 1, matchUp }));

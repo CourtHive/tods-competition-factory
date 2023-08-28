@@ -10,7 +10,7 @@ singleSetStressTests({ matchUpFormat: FORMAT_NOAD_SET_TIEBREAK, setTo: 6 });
 
 it('handles set tiebreak with NoAD', () => {
   const matchUpFormat = FORMAT_NOAD_SET_TIEBREAK;
-  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+  let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
   const values = [
     { lowSide: 2, value: '6' },
@@ -34,7 +34,7 @@ it('handles set tiebreak with NoAD', () => {
 
 it('handles best of 3 matchUp tiebreaks to 7', () => {
   const matchUpFormat = FORMAT_BEST_OF_3_MATCH_TB7;
-  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+  let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
   const values = [
     { lowSide: 2, value: '3' },
@@ -63,7 +63,7 @@ it('handles best of 3 matchUp tiebreaks to 7', () => {
 
 it('handles best of 3 matchUp tiebreaks to 10', () => {
   const matchUpFormat = FORMAT_BEST_OF_3_MATCH_TB10;
-  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+  let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
   const values = [
     { lowSide: 2, value: '3' },

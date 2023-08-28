@@ -6,15 +6,17 @@ import {
   FORMAT_ATP_DOUBLES,
 } from '../../../../../fixtures/scoring/matchUpFormats';
 
-function scoreMatchUp({ lowSide, value, matchUp }) {
-  let info;
+function scoreMatchUp(params) {
+  const { lowSide, value } = params;
+  let matchUp = params.matchUp;
+  let info = '';
   ({ matchUp, info } = keyValueMatchUpScore({ lowSide, value, matchUp }));
   return { matchUp, info };
 }
 
 function enterValues({ values, matchUp }) {
   let info;
-  const messages = [];
+  const messages: any[] = [];
   values.forEach((item) => {
     const { lowSide, value } = item;
     ({ matchUp, info } = scoreMatchUp({ lowSide, value, matchUp }));
@@ -26,7 +28,7 @@ function enterValues({ values, matchUp }) {
 it('can enter a straight set win for side 1 or side 2', () => {
   let updated;
   const matchUpFormat = FORMAT_STANDARD;
-  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+  let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
   ({ matchUp } = keyValueMatchUpScore({
     lowSide: 2,
@@ -49,7 +51,7 @@ it('can enter a straight set win for side 1 or side 2', () => {
   expect(matchUp?.scoreString.trim()).toEqual('6-3 6-2');
   expect(matchUp?.sets.length).toEqual(2);
 
-  ({ matchUp, updated } = keyValueMatchUpScore({
+  ({ updated } = keyValueMatchUpScore({
     lowSide: 2,
     value: 2,
     matchUp,
@@ -80,7 +82,7 @@ it('can enter a straight set win for side 1 or side 2', () => {
   expect(matchUp?.scoreString.trim()).toEqual('3-6 2-6');
   expect(matchUp?.sets.length).toEqual(2);
 
-  ({ matchUp, updated } = keyValueMatchUpScore({
+  ({ updated } = keyValueMatchUpScore({
     lowSide: 1,
     value: 2,
     matchUp,
@@ -92,7 +94,7 @@ it('can enter a straight set win for side 1 or side 2', () => {
 it('can enter a three set win for either side', () => {
   let updated;
   const matchUpFormat = FORMAT_STANDARD;
-  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+  let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
   ({ matchUp } = keyValueMatchUpScore({
     lowSide: 1,
@@ -124,7 +126,7 @@ it('can enter a three set win for either side', () => {
   expect(matchUp?.scoreString.trim()).toEqual('4-6 6-2 1-6');
   expect(matchUp?.sets.length).toEqual(3);
 
-  ({ matchUp, updated } = keyValueMatchUpScore({
+  ({ updated } = keyValueMatchUpScore({
     lowSide: 1,
     value: 2,
     matchUp,
@@ -163,7 +165,7 @@ it('can enter a three set win for either side', () => {
   expect(matchUp?.scoreString.trim()).toEqual('4-6 6-2 6-1');
   expect(matchUp?.sets.length).toEqual(3);
 
-  ({ matchUp, updated } = keyValueMatchUpScore({
+  ({ updated } = keyValueMatchUpScore({
     lowSide: 1,
     value: 2,
     matchUp,
@@ -174,7 +176,7 @@ it('can enter a three set win for either side', () => {
 
 it('can enter a first set tiebreak scoreString', () => {
   const matchUpFormat = FORMAT_STANDARD;
-  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+  let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
   ({ matchUp } = keyValueMatchUpScore({
     lowSide: 2,
@@ -209,7 +211,7 @@ it('can enter a first set tiebreak scoreString', () => {
 
 it('can handle scoreString deletions', () => {
   const matchUpFormat = FORMAT_STANDARD;
-  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+  let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
   const v1 = [
     { lowSide: 2, value: 3 },
@@ -240,7 +242,7 @@ it('can handle scoreString deletions', () => {
 it('recognizes incomplete matchUp tiebreaks', () => {
   let info;
   const matchUpFormat = FORMAT_ATP_DOUBLES;
-  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+  let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
   const v1 = [
     { lowSide: 2, value: 3 },
@@ -270,16 +272,16 @@ it('recognizes incomplete matchUp tiebreaks', () => {
   expect(info).not.toBeUndefined();
   expect(matchUp.scoreString.trim()).toEqual('6-3 3-6 [1');
 
-  ({ matchUp, info } = scoreMatchUp({ value: '1', lowSide: 1, matchUp }));
+  ({ matchUp } = scoreMatchUp({ value: '1', lowSide: 1, matchUp }));
   expect(matchUp.scoreString.trim()).toEqual('6-3 3-6 [11-13');
 
-  ({ matchUp, info } = scoreMatchUp({ value: ']', matchUp }));
+  ({ matchUp } = scoreMatchUp({ value: ']', matchUp }));
   expect(matchUp.winningSide).toEqual(2);
 });
 
 it('can support 2nd set tiebreaks with 3rd set matchUp tiebreaks', () => {
   const matchUpFormat = FORMAT_ATP_DOUBLES;
-  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+  let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
   const v1 = [
     { lowSide: 2, value: '3' },

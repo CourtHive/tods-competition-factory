@@ -11,14 +11,10 @@ import {
   TIMED20,
 } from '../../../../../fixtures/scoring/matchUpFormats';
 
-function enterKeyValues({
-  sets,
-  scoreString,
-  matchUpFormat,
-  matchUpStatus,
-  shiftFirst,
-  valuePairs,
-}) {
+function enterKeyValues(params) {
+  const { matchUpFormat, shiftFirst, valuePairs } = params;
+  let { matchUpStatus, scoreString, sets } = params;
+
   let updated, winningSide;
 
   valuePairs.forEach((valuePair) => {

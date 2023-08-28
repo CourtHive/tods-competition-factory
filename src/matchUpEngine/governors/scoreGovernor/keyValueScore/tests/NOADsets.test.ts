@@ -5,7 +5,7 @@ import { FORMAT_STANDARD_NOAD } from '../../../../../fixtures/scoring/matchUpFor
 
 it('handles set scoring with NoAD', () => {
   const matchUpFormat = FORMAT_STANDARD_NOAD;
-  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+  let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
   const values = [
     { lowSide: 2, value: '5' },
@@ -20,7 +20,7 @@ it('handles set scoring with NoAD', () => {
 
 it('handles set scoring with NoAD when incomplete score', () => {
   const matchUpFormat = FORMAT_STANDARD_NOAD;
-  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+  let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
   const values = [{ lowSide: 2, value: '5' }];
   ({ matchUp } = enterValues({ values, matchUp }));
@@ -40,7 +40,7 @@ it('handles set scoring with NoAD when incomplete score', () => {
 
 it('handles set scoring with NoAD when incomplete score and low score on side1 is setTo - 1', () => {
   const matchUpFormat = FORMAT_STANDARD_NOAD;
-  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
+  let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
   const values = [{ lowSide: 1, value: '5' }];
   ({ matchUp } = enterValues({ values, matchUp }));
