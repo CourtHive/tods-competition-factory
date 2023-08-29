@@ -8,6 +8,7 @@ import { findCourt } from '../../getters/courtGetter';
 import { MODIFY_VENUE } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
+  ErrorType,
   MISSING_COURT_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
@@ -19,7 +20,7 @@ export function modifyCourtAvailability({
   venueMatchUps,
   courtId,
   force,
-}) {
+}): { error?: ErrorType; success?: boolean; totalMergeCount?: number } {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!courtId) return { error: MISSING_COURT_ID };
 

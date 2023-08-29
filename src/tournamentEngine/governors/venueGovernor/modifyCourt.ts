@@ -29,7 +29,7 @@ export function modifyCourt({
   const result = findCourt({ tournamentRecord, courtId });
   if (result.error) return result;
 
-  const { court, venue } = result;
+  const { venue, court } = result;
 
   // not valid to modify a courtId
   const validAttributes = Object.keys(courtTemplate()).filter(
@@ -52,9 +52,10 @@ export function modifyCourt({
     (attribute) => validReplacements.includes(attribute)
   );
 
-  validReplacementAttributes.forEach((attribute) =>
-    Object.assign(court, { [attribute]: modifications[attribute] })
-  );
+  if (court)
+    validReplacementAttributes.forEach((attribute) =>
+      Object.assign(court, { [attribute]: modifications[attribute] })
+    );
 
   if (modifications.dateAvailability) {
     const result = modifyCourtAvailability({
@@ -72,7 +73,7 @@ export function modifyCourt({
     addNotice({
       payload: { venue, tournamentId: tournamentRecord.tournamentId },
       topic: MODIFY_VENUE,
-      key: venue.venueId,
+      key: venue?.venueId,
     });
   }
 

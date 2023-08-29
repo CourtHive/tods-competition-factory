@@ -6,8 +6,18 @@ import {
   MISSING_COURT_ID,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../../constants/errorConditionConstants';
+import { Tournament } from '../../../types/tournamentFromSchema';
 
-export function deleteCourt({ tournamentRecords, courtId, force }) {
+type DeleteCourtArgs = {
+  tournamentRecords: { [key: string]: Tournament };
+  courtId: string;
+  force?: boolean;
+};
+export function deleteCourt({
+  tournamentRecords,
+  courtId,
+  force,
+}: DeleteCourtArgs) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (typeof courtId !== 'string') return { error: MISSING_COURT_ID };
 
