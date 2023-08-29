@@ -46,7 +46,7 @@ export function getBlockSortedRandomDrawPositions({
   validSeedBlocks,
   byesToPlace,
 }) {
-  const drawPositions = [];
+  const drawPositions: number[] = [];
 
   validSeedBlocks.forEach((seedBlock) => {
     const leftToPlace = byesToPlace - drawPositions.length;

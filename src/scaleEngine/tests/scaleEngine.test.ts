@@ -12,7 +12,7 @@ test('basic engine methods', () => {
   const version = scaleEngine.version();
   expect(version).not.toBeUndefined();
 
-  let result = scaleEngine.getState();
+  let result: any = scaleEngine.getState();
   expect(result.tournamentRecord).not.toBeUndefined();
 
   result = scaleEngine.reset();

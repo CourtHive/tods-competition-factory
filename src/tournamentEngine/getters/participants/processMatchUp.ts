@@ -112,7 +112,8 @@ export function processMatchUp({
     doublesTieParticipants.push(...participants);
   }
 
-  sides?.forEach(({ participantId, sideNumber } = {}) => {
+  sides?.forEach((params) => {
+    const { participantId, sideNumber } = params;
     if (!participantId) return;
 
     const { drawType, drawEntries } = drawDetails[drawId];
@@ -120,8 +121,7 @@ export function processMatchUp({
       sideNumber === 1 ? score?.scoreStringSide1 : score?.scoreStringSide2;
     const participantWon = winningSide && sideNumber === winningSide;
     const opponent = matchUp.sides.find(
-      ({ sideNumber: otherSideNumber } = {}) =>
-        otherSideNumber === 3 - sideNumber
+      (side) => side.sideNumber === 3 - sideNumber
     );
     const opponentParticipantId = opponent?.participantId;
     const relevantOpponents =
@@ -140,10 +140,11 @@ export function processMatchUp({
     const relevantParticipantIds = getRelevantParticipantIds(participantId);
 
     // for TEAM matchUps add all PAIR participants
-    const addedPairParticipantIds = [];
+    const addedPairParticipantIds: string[] = [];
     doublesTieParticipants
       ?.filter((participant) => participant.sideNumber === sideNumber)
-      .forEach(({ participantId }) => {
+      .forEach((p) => {
+        const participantId = p.participantId;
         if (participantId && !addedPairParticipantIds.includes(participantId)) {
           relevantParticipantIds.push({
             relevantParticipantId: participantId,

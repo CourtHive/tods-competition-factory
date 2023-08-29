@@ -12,7 +12,6 @@ export function getSeedOrderByePositions({
   seedBlockInfo,
   byesToPlace,
   structure,
-  event,
 }) {
   if (!seedBlockInfo) {
     seedBlockInfo = getValidSeedBlocks({
@@ -20,20 +19,20 @@ export function getSeedOrderByePositions({
       appliedPolicies,
       drawDefinition,
       structure,
-      event,
     });
   }
 
-  let { validSeedBlocks, isFeedIn, isLucky, isContainer } = seedBlockInfo;
+  const { isFeedIn, isLucky, isContainer } = seedBlockInfo;
+  let { validSeedBlocks } = seedBlockInfo;
   if (appliedPolicies?.seeding?.containerByesIgnoreSeeding)
     validSeedBlocks = [];
 
-  const positionedSeeds = getStructurePositionedSeeds({
-    provisionalPositioning,
-    drawDefinition,
-    structure,
-    event,
-  });
+  const positionedSeeds =
+    getStructurePositionedSeeds({
+      provisionalPositioning,
+      drawDefinition,
+      structure,
+    }) ?? [];
 
   const relevantDrawPositions = unique(
     [].concat(...relevantMatchUps.map((matchUp) => matchUp.drawPositions))
@@ -52,8 +51,9 @@ export function getSeedOrderByePositions({
   const valueOrderedBlockSortedPositionedSeeds = validSeedBlocks.reduce(
     (result, seedBlock) => {
       const positionedSeedsInBlock = relevantPositionedSeeds
-        .filter((positionedSeed) =>
-          seedBlock.drawPositions?.includes(positionedSeed.drawPosition)
+        .filter(
+          (positionedSeed) =>
+            seedBlock.drawPositions?.includes(positionedSeed.drawPosition)
         )
         .sort(seedValueSort);
       return result.concat(...positionedSeedsInBlock);
@@ -113,8 +113,8 @@ function getOrderedByePositions({
   // sort seededMatchUps so that pairedPositions represent seed order
   const seedOrderSortedDrawPositionPairs = orderedSeedDrawPositions
     .map((drawPosition) =>
-      consideredDrawPositionPairs.find((drawPositions) =>
-        drawPositions?.includes(drawPosition)
+      consideredDrawPositionPairs.find(
+        (drawPositions) => drawPositions?.includes(drawPosition)
       )
     )
     .filter(Boolean);

@@ -12,7 +12,27 @@ import {
   ITEM,
   QUALIFYING,
 } from '../../../../constants/drawDefinitionConstants';
+import {
+  DrawDefinition,
+  Event,
+  Structure,
+  Tournament,
+} from '../../../../types/tournamentFromSchema';
+import { MatchUpsMap } from '../../../getters/getMatchUps/getMatchUpsMap';
 
+type PositionByesArgs = {
+  provisionalPositioning?: boolean;
+  tournamentRecord?: Tournament;
+  drawDefinition: DrawDefinition;
+  matchUpsMap?: MatchUpsMap;
+  appliedPolicies?: any;
+  structure?: Structure;
+  structureId?: string;
+  seedBlockInfo?: any;
+  seedsOnly?: boolean;
+  seedLimit?: number;
+  event?: Event;
+};
 export function positionByes({
   provisionalPositioning,
   tournamentRecord,
@@ -25,13 +45,13 @@ export function positionByes({
   seedLimit,
   seedsOnly,
   event,
-}) {
+}: PositionByesArgs) {
   if (!structure)
     ({ structure } = findStructure({ drawDefinition, structureId }));
-  if (!structureId) ({ structureId } = structure);
+  if (!structureId) structureId = structure?.structureId;
 
   const blockOrdered = !(
-    structure.structures || structure.stage === QUALIFYING
+    structure?.structures || structure?.stage === QUALIFYING
   );
 
   const { byesCount, placedByes, relevantMatchUps } = getByesData({
@@ -41,7 +61,7 @@ export function positionByes({
     structure,
     event,
   });
-  const byesToPlace = byesCount - placedByes;
+  const byesToPlace = byesCount - (placedByes || 0);
   if (byesToPlace <= 0) return { ...SUCCESS };
 
   const {
@@ -57,10 +77,10 @@ export function positionByes({
     seedBlockInfo,
     byesToPlace,
     structure,
-    event,
   });
 
   const ignoreSeededByes =
+    structure?.structureType &&
     [CONTAINER, ITEM].includes(structure.structureType) &&
     appliedPolicies?.seeding?.containerByesIgnoreSeeding;
 
@@ -78,7 +98,6 @@ export function positionByes({
     structure,
     isFeedIn,
     isLucky,
-    event,
   });
 
   const isOdd = (x) => x % 2;
@@ -91,7 +110,7 @@ export function positionByes({
   // derived from theoretical seeding of firstRoundParticipants
   // HOWEVER, if separated and evenly distributed drawPositions result
   // in a BYE/BYE pairing, prioritize remaining unpaired positions
-  let byePositions = [].concat(...seedOrderByePositions);
+  let byePositions: number[] = [].concat(...seedOrderByePositions);
 
   if (!seedsOnly) {
     while (unseededByePositions.length) {

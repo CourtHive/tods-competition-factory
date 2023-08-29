@@ -34,7 +34,6 @@ export function automatedPositioning({
   placeByes = true,
   tournamentRecord,
   appliedPolicies,
-  candidatesCount,
   drawDefinition,
   seedingProfile,
   participants,
@@ -45,7 +44,7 @@ export function automatedPositioning({
   drawType,
   event,
 }) {
-  const positioningReport = [];
+  const positioningReport: any[] = [];
 
   //-----------------------------------------------------------
   // handle notification state for all exit conditions
@@ -65,7 +64,7 @@ export function automatedPositioning({
   };
   //-----------------------------------------------------------
 
-  let result = findStructure({ drawDefinition, structureId });
+  const result = findStructure({ drawDefinition, structureId });
   if (result.error) return handleErrorCondition(result);
   const { structure } = result;
 
@@ -115,7 +114,6 @@ export function automatedPositioning({
     appliedPolicies,
     drawDefinition,
     structure,
-    event,
   });
   if (seedBlockInfo.error) return seedBlockInfo;
   const { validSeedBlocks } = seedBlockInfo;
@@ -127,20 +125,20 @@ export function automatedPositioning({
   ) {
     // since WATERFALL attempts to place ALL participants
     // BYEs must be placed first to ensure lower seeds get BYEs
-    let result =
-      placeByes &&
-      positionByes({
-        provisionalPositioning,
-        tournamentRecord,
-        appliedPolicies,
-        drawDefinition,
-        seedBlockInfo,
-        matchUpsMap,
-        structure,
-        seedLimit,
-        seedsOnly,
-        event,
-      });
+    let result = placeByes
+      ? positionByes({
+          provisionalPositioning,
+          tournamentRecord,
+          appliedPolicies,
+          drawDefinition,
+          seedBlockInfo,
+          matchUpsMap,
+          structure,
+          seedLimit,
+          seedsOnly,
+          event,
+        })
+      : undefined;
     if (result?.error) return handleErrorCondition(result);
     unseededByePositions = result.unseededByePositions;
 
@@ -170,7 +168,7 @@ export function automatedPositioning({
     // otherwise... seeds need to be placed first so that BYEs
     // can follow the seedValues of placed seeds
     if (drawType !== LUCKY_DRAW) {
-      let result = positionSeedBlocks({
+      const result = positionSeedBlocks({
         seedingProfile: structure.seedingProfile || seedingProfile,
         provisionalPositioning,
         inContextDrawMatchUps,
@@ -193,40 +191,40 @@ export function automatedPositioning({
       });
     }
 
-    const result =
-      placeByes &&
-      positionByes({
-        provisionalPositioning,
-        tournamentRecord,
-        appliedPolicies,
-        drawDefinition,
-        seedBlockInfo,
-        matchUpsMap,
-        structure,
-        seedLimit,
-        seedsOnly,
-        event,
-      });
+    const result = placeByes
+      ? positionByes({
+          provisionalPositioning,
+          tournamentRecord,
+          appliedPolicies,
+          drawDefinition,
+          seedBlockInfo,
+          matchUpsMap,
+          structure,
+          seedLimit,
+          seedsOnly,
+          event,
+        })
+      : undefined;
 
     if (result?.error) {
       console.log('positionByes', { result });
       return handleErrorCondition(result);
     }
-    unseededByePositions = result.unseededByePositions;
+    unseededByePositions = result?.unseededByePositions;
     positioningReport.push({
       action: 'positionByes',
-      byeDrawPositions: result.byeDrawPositions,
+      byeDrawPositions: result?.byeDrawPositions,
       unseededByePositions,
     });
   }
 
-  const conflicts = {};
+  const conflicts: any = {};
 
   if (!seedsOnly) {
     // qualifiers are randomly placed BEFORE unseeded because in FEED_IN draws they may have roundTargets
     // this can be modified ONLY if a check is place for round targeting and qualifiers are placed first
     // in this specific circumstance
-    let result = positionQualifiers({
+    let result: any = positionQualifiers({
       inContextDrawMatchUps,
       tournamentRecord,
       appliedPolicies,
@@ -252,13 +250,11 @@ export function automatedPositioning({
       unseededByePositions,
       multipleStructures,
       tournamentRecord,
-      appliedPolicies,
-      validSeedBlocks,
-      candidatesCount,
       drawDefinition,
       seedBlockInfo,
       participants,
       matchUpsMap,
+      structureId,
       structure,
       event,
     });
