@@ -1,6 +1,9 @@
 import { getPositionRangeMap } from '../governors/structureGovernor/getPositionRangeMap';
 import { firstRoundLoserConsolation } from './firstRoundLoserConsolation';
-import { decorateResult } from '../../global/functions/decorateResult';
+import {
+  ResultType,
+  decorateResult,
+} from '../../global/functions/decorateResult';
 import { generateCurtisConsolation } from './curtisConsolation';
 import { generatePlayoffStructures } from './playoffStructures';
 import { structureSort } from '../getters/structureSort';
@@ -10,7 +13,10 @@ import { generateRoundRobin } from './roundRobin';
 import { treeMatchUps } from './eliminationTree';
 import { nextPowerOf2 } from '../../utilities';
 
-import { INVALID_VALUES } from '../../constants/errorConditionConstants';
+import {
+  ErrorType,
+  INVALID_VALUES,
+} from '../../constants/errorConditionConstants';
 import { POLICY_TYPE_FEED_IN } from '../../constants/policyConstants';
 import { WIN_RATIO } from '../../constants/statsConstants';
 import {
@@ -33,6 +39,7 @@ import {
   ROUND_ROBIN,
   SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
+import { DrawLink, Structure } from '../../types/tournamentFromSchema';
 
 export function processPlayoffGroups({
   compassAttributes = COMPASS_ATTRIBUTES,
@@ -50,7 +57,15 @@ export function processPlayoffGroups({
   idPrefix,
   isMock,
   uuids,
-}) {
+}):
+  | ResultType
+  | {
+      error?: ErrorType;
+      finishingPositionTargets?: any;
+      structures?: Structure[];
+      positionRangeMap?: any;
+      links?: DrawLink[];
+    } {
   feedPolicy = feedPolicy || policyDefinitions?.[POLICY_TYPE_FEED_IN];
   const stack = 'processPlayoffGroups';
 

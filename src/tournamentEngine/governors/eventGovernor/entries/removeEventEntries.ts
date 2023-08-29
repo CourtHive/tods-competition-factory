@@ -3,14 +3,15 @@ import { refreshEntryPositions } from '../../../../global/functions/producers/re
 import { decorateResult } from '../../../../global/functions/decorateResult';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 
+import { Event, Tournament } from '../../../../types/tournamentFromSchema';
+import { HydratedParticipant } from '../../../../types/hydrated';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   MISSING_EVENT,
   MISSING_PARTICIPANT_IDS,
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
+  ErrorType,
 } from '../../../../constants/errorConditionConstants';
-import { Event, Tournament } from '../../../../types/tournamentFromSchema';
-import { HydratedParticipant } from '../../../../types/hydrated';
 
 type RemoveEventEntriesArgs = {
   tournamentParticipants?: HydratedParticipant[];
@@ -25,7 +26,11 @@ export function removeEventEntries({
   tournamentRecord,
   participantIds,
   event,
-}: RemoveEventEntriesArgs) {
+}: RemoveEventEntriesArgs): {
+  participantIdsRemoved?: string[];
+  success?: boolean;
+  error?: ErrorType;
+} {
   const stack = 'removeEventEntries';
   if (!event?.eventId) return { error: MISSING_EVENT };
   if (!Array.isArray(participantIds))

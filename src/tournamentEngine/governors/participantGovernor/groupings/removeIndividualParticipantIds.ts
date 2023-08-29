@@ -34,13 +34,20 @@ import {
   Tournament,
 } from '../../../../types/tournamentFromSchema';
 
+type RemoveIndividualParticipantIdsArgs = {
+  addIndividualParticipantsToEvents?: boolean;
+  individualParticipantIds: string[];
+  groupingParticipantId: string;
+  tournamentRecord: Tournament;
+  suppressErrors?: boolean;
+};
 export function removeIndividualParticipantIds({
   addIndividualParticipantsToEvents,
   individualParticipantIds,
   groupingParticipantId,
   tournamentRecord,
   suppressErrors,
-}) {
+}: RemoveIndividualParticipantIdsArgs) {
   const stack = 'removeIndividualParticipantIds';
   if (!tournamentRecord)
     return decorateResult({
@@ -52,9 +59,11 @@ export function removeIndividualParticipantIds({
 
   const tournamentParticipants = tournamentRecord.participants || [];
 
-  const groupingParticipant = tournamentParticipants.find((participant) => {
-    return participant.participantId === groupingParticipantId;
-  });
+  const groupingParticipant: any = tournamentParticipants.find(
+    (participant) => {
+      return participant.participantId === groupingParticipantId;
+    }
+  );
   if (!groupingParticipant)
     return decorateResult({ result: { error: PARTICIPANT_NOT_FOUND }, stack });
 

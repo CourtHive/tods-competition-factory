@@ -16,6 +16,7 @@ import {
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
+import { Participant } from '../../../types/tournamentFromSchema';
 
 // add persons to a tournamentRecord and create participants in the process
 // include ability to specify a doubles partner by personId
@@ -33,7 +34,7 @@ export function addPersons({
     .map(({ person }) => person?.personId)
     .filter(Boolean);
 
-  const newPersonIds = [];
+  const newPersonIds: string[] = [];
 
   const personsToAdd = persons
     .filter(
@@ -83,7 +84,7 @@ export function addPersons({
   if (result.error) return result;
   addedIndividualParticipantsCount = result.addedCount || 0;
 
-  const pairParticipants = [];
+  const pairParticipants: Participant[] = [];
 
   const tournamentParticipants =
     getTournamentParticipants({

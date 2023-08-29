@@ -59,14 +59,15 @@ export function removeDrawPositionAssignment(params) {
         event,
       });
       if (result.error) return decorateResult({ result, stack });
-      modifyEntriesStatus({
-        participantIds: individualParticipantIds,
-        tournamentRecord,
-        drawDefinition,
-        entryStatus,
-        drawId,
-        event,
-      });
+      if (individualParticipantIds)
+        modifyEntriesStatus({
+          participantIds: individualParticipantIds,
+          tournamentRecord,
+          drawDefinition,
+          entryStatus,
+          drawId,
+          event,
+        });
     } else {
       modifyEntriesStatus({
         participantIds: [participantId],

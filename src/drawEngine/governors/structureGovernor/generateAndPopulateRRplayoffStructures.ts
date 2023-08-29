@@ -102,7 +102,7 @@ export function generateAndPopulateRRplayoffStructures(params) {
     drawDefinition,
   });
   const finishingPositionParticipantIds = {};
-  positionAssignments.forEach((assignment) => {
+  positionAssignments?.forEach((assignment) => {
     const result = findExtension({
       element: assignment,
       name: TALLY,

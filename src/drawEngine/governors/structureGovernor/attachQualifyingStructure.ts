@@ -16,19 +16,18 @@ import {
   DrawDefinition,
   DrawLink,
   Structure,
-  Tournament,
 } from '../../../types/tournamentFromSchema';
 
 type AttachQualifyingArgs = {
-  tournamentRecord?: Tournament;
   drawDefinition: DrawDefinition;
   structure: Structure;
+  tournamentId?: string;
   eventId?: string;
   link: DrawLink;
 };
 export function attachQualifyingStructure({
-  tournamentRecord,
   drawDefinition,
+  tournamentId,
   structure,
   eventId,
   link,
@@ -57,8 +56,8 @@ export function attachQualifyingStructure({
   const matchUps = getAllStructureMatchUps({ structure })?.matchUps || [];
 
   addMatchUpsNotice({
-    tournamentId: tournamentRecord?.tournamentId,
     drawDefinition,
+    tournamentId,
     matchUps,
     eventId,
   });

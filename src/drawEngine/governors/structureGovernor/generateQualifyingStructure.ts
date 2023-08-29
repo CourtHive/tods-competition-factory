@@ -7,9 +7,11 @@ import { generateRoundRobin } from '../../generators/roundRobin';
 import { treeMatchUps } from '../../generators/eliminationTree';
 import { findStructure } from '../../getters/findStructure';
 
+import { DrawLink, Structure } from '../../../types/tournamentFromSchema';
 import { ROUND_TARGET } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
+  ErrorType,
   MISSING_DRAW_DEFINITION,
   MISSING_DRAW_SIZE,
 } from '../../../constants/errorConditionConstants';
@@ -22,7 +24,14 @@ import {
 
 // for use when adding a qualifying structure to an existing drawDefinition
 // not for use when generating structures from qualifyingProfiles
-export function generateQualifyingStructure(params) {
+export function generateQualifyingStructure(params): {
+  qualifyingDrawPositionsCount?: number;
+  qualifiersCount?: number;
+  structure?: Structure;
+  error?: ErrorType;
+  success?: boolean;
+  link?: DrawLink;
+} {
   if (!params.drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   const stack = 'generateQualifyingStructure';
 
