@@ -7,7 +7,16 @@ import {
   minutesDifference,
   timeToDate,
 } from '../../../../utilities/dateTime';
+import { HydratedMatchUp } from '../../../../types/hydrated';
 
+type CheckRecoveryTimeArgs = {
+  individualParticipantProfiles: { [key: string]: any };
+  matchUpNotBeforeTimes: { [key: string]: any };
+  matchUpDependencies: { [key: string]: any };
+  matchUp: HydratedMatchUp;
+  scheduleTime: string;
+  details?: any;
+};
 export function checkRecoveryTime({
   individualParticipantProfiles,
   matchUpNotBeforeTimes,
@@ -15,7 +24,7 @@ export function checkRecoveryTime({
   scheduleTime,
   matchUp,
   details,
-}) {
+}: CheckRecoveryTimeArgs) {
   const participantIdDependencies = (
     matchUpDependencies?.[matchUp.matchUpId]?.participantIds || []
   ).flat();

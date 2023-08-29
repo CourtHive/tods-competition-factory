@@ -1,7 +1,7 @@
 import { getContainedStructures } from '../../../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
 import { getMatchUpDependencies } from '../scheduleMatchUps/getMatchUpDependencies';
 import { extractDate, isValidDateString } from '../../../../utilities/dateTime';
-import { getSchedulingProfile } from '../schedulingProfile/schedulingProfile';
+import { getSchedulingProfile } from './schedulingProfile';
 import { getVenuesAndCourts } from '../../../getters/venuesAndCourtsGetter';
 import { jinnScheduler } from '../schedulers/jinnScheduler/jinnScheduler';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
@@ -12,12 +12,23 @@ import { getMatchUpDailyLimits } from '../getMatchUpDailyLimits';
 
 import { DO_NOT_SCHEDULE } from '../../../../constants/requestConstants';
 import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
+import { Tournament } from '../../../../types/tournamentFromSchema';
 import {
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORDS,
   NO_VALID_DATES,
 } from '../../../../constants/errorConditionConstants';
 
+type ScheduleProfileRoundsArgs = {
+  tournamentRecords: { [key: string]: Tournament };
+  checkPotentialRequestConflicts?: boolean;
+  scheduleCompletedMatchUps?: boolean;
+  clearScheduleDates?: boolean;
+  scheduleDates?: string[];
+  periodLength?: number;
+  dryRun?: boolean;
+  pro?: boolean;
+};
 // abstraction layer to allow other schedulers to be defined at a later time
 export function scheduleProfileRounds({
   checkPotentialRequestConflicts = true,
@@ -28,7 +39,7 @@ export function scheduleProfileRounds({
   periodLength,
   dryRun,
   pro,
-}) {
+}: ScheduleProfileRoundsArgs) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!Array.isArray(scheduleDates)) return { error: INVALID_VALUES };
 
@@ -81,7 +92,7 @@ export function scheduleProfileRounds({
   if (clearScheduleDates && !dryRun) {
     const scheduledDates = Array.isArray(clearScheduleDates)
       ? clearScheduleDates
-      : undefined;
+      : [];
     clearScheduledMatchUps({ tournamentRecords, scheduledDates });
   }
 

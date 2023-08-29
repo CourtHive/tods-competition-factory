@@ -10,20 +10,33 @@ import { completedMatchUpStatuses } from '../../../../constants/matchUpStatusCon
 import drawDefinitionConstants from '../../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
+  ErrorType,
   INVALID_TOURNAMENT_RECORD,
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORDS,
   NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
+import { HydratedMatchUp } from '../../../../types/hydrated';
+import { Tournament } from '../../../../types/tournamentFromSchema';
 
 const { stageOrder } = drawDefinitionConstants;
 
+type GetProfileRoundsArgs = {
+  tournamentRecords?: { [key: string]: Tournament };
+  tournamentRecord?: Tournament;
+  schedulingProfile?: any;
+  withRoundId?: boolean;
+};
 export function getProfileRounds({
-  schedulingProfile,
   tournamentRecords,
+  schedulingProfile,
   tournamentRecord,
   withRoundId,
-}) {
+}: GetProfileRoundsArgs): {
+  segmentedRounds?: { [key: string]: any };
+  profileRounds?: any[];
+  error?: ErrorType;
+} {
   if (tournamentRecord && !tournamentRecords) {
     if (typeof tournamentRecord !== 'object') {
       return { error: INVALID_TOURNAMENT_RECORD };
@@ -41,7 +54,7 @@ export function getProfileRounds({
     if (profileValidity.error) return profileValidity;
   }
 
-  if (!schedulingProfile) {
+  if (!schedulingProfile && tournamentRecords) {
     const result = getSchedulingProfile({ tournamentRecords });
     if (result.error) return result;
     schedulingProfile = result.schedulingProfile;
@@ -49,7 +62,7 @@ export function getProfileRounds({
 
   if (!schedulingProfile) return { error: NOT_FOUND };
 
-  const segmentedRounds = {};
+  const segmentedRounds: { [key: string]: any } = {};
 
   const profileRounds = schedulingProfile
     .map(({ venues, scheduleDate }) =>
@@ -134,20 +147,32 @@ function getRoundProfile(matchUps) {
     byeCount,
   };
 }
-
+type GetRoundsArgs = {
+  tournamentRecords?: { [key: string]: Tournament };
+  excludeScheduleDateProfileRounds?: boolean;
+  inContextMatchUps?: HydratedMatchUp[];
+  excludeScheduledRounds?: boolean;
+  excludeCompletedRounds?: boolean;
+  tournamentRecord?: Tournament;
+  withSplitRounds?: boolean;
+  schedulingProfile?: any;
+  withRoundId?: boolean;
+  matchUpFilters?: any;
+  context?: any;
+};
 export function getRounds({
   excludeScheduleDateProfileRounds,
   excludeScheduledRounds,
   excludeCompletedRounds,
   inContextMatchUps,
-  schedulingProfile,
   tournamentRecords,
+  schedulingProfile,
   tournamentRecord,
   withSplitRounds,
   matchUpFilters,
   withRoundId,
   context,
-}) {
+}: GetRoundsArgs) {
   if (
     inContextMatchUps &&
     !Array.isArray(
@@ -185,12 +210,13 @@ export function getRounds({
     .flat();
 
   const { segmentedRounds, profileRounds } =
-    excludeScheduleDateProfileRounds ||
-    excludeCompletedRounds ||
-    schedulingProfile ||
-    withSplitRounds
-      ? getProfileRounds({ tournamentRecords, schedulingProfile })
-      : {};
+    (tournamentRecords &&
+      (excludeScheduleDateProfileRounds ||
+        excludeCompletedRounds ||
+        schedulingProfile ||
+        withSplitRounds) &&
+      getProfileRounds({ tournamentRecords, schedulingProfile })) ||
+    {};
 
   const profileRoundsMap =
     excludeScheduleDateProfileRounds &&
@@ -201,12 +227,14 @@ export function getRounds({
 
   const consideredMatchUps =
     inContextMatchUps ||
-    allCompetitionMatchUps({ tournamentRecords, matchUpFilters })?.matchUps ||
+    (tournamentRecords &&
+      allCompetitionMatchUps({ tournamentRecords, matchUpFilters })
+        ?.matchUps) ||
     [];
 
-  const excludedRounds = [];
+  const excludedRounds: any[] = [];
 
-  let rounds =
+  const rounds =
     (consideredMatchUps &&
       Object.values(
         consideredMatchUps.reduce((rounds, matchUp) => {
@@ -254,7 +282,7 @@ export function getRounds({
           };
         }, {})
       )
-        .map((round) => {
+        .map((round: any) => {
           const { minFinishingSum, winnerFinishingPositionRange } =
             getFinishingPositionDetails(round.matchUps);
           const segmentsCount = round.segmentsCount;
@@ -376,6 +404,7 @@ function getRoundTiming({ round, matchUps, events, tournamentRecords }) {
     if (result.error) return result;
     const formatMinutes = result.averageMinutes * formatCount;
     if (!isNaN(roundMinutes)) roundMinutes += formatMinutes;
+    return undefined;
   });
 
   return { roundMinutes };

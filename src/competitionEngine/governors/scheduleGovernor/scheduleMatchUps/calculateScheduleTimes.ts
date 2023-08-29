@@ -12,7 +12,10 @@ import {
   timeStringMinutes,
 } from '../../../../utilities/dateTime';
 
-import { MISSING_TOURNAMENT_RECORDS } from '../../../../constants/errorConditionConstants';
+import {
+  ErrorType,
+  MISSING_TOURNAMENT_RECORDS,
+} from '../../../../constants/errorConditionConstants';
 import { Tournament } from '../../../../types/tournamentFromSchema';
 
 /**
@@ -54,7 +57,14 @@ export function calculateScheduleTimes({
   startTime,
   venueIds,
   endTime,
-}: CalculateScheduleTimesArgs) {
+}: CalculateScheduleTimesArgs): {
+  dateScheduledMatchUpIds?: string[];
+  totalMatchUps?: number;
+  scheduleTimes?: any[];
+  timingProfile?: any;
+  error?: ErrorType;
+  venueId?: string;
+} {
   if (
     typeof tournamentRecords !== 'object' ||
     !Object.keys(tournamentRecords).length

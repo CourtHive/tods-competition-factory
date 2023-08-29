@@ -1,8 +1,16 @@
 import { getMatchUpDailyLimits as getDailyLimit } from '../../../tournamentEngine/governors/scheduleGovernor/getMatchUpDailyLimits';
 
 import { MISSING_TOURNAMENT_RECORDS } from '../../../constants/errorConditionConstants';
+import { Tournament } from '../../../types/tournamentFromSchema';
 
-export function getMatchUpDailyLimits({ tournamentRecords, tournamentId }) {
+type GetMatchUpDailyLimitsArgs = {
+  tournamentRecords: { [key: string]: Tournament };
+  tournamentId?: string;
+};
+export function getMatchUpDailyLimits({
+  tournamentRecords,
+  tournamentId,
+}: GetMatchUpDailyLimitsArgs) {
   if (
     typeof tournamentRecords !== 'object' ||
     !Object.keys(tournamentRecords).length
