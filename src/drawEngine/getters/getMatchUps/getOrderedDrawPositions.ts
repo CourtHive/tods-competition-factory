@@ -1,3 +1,4 @@
+import { ensureInt } from '../../../utilities/ensureInt';
 import {
   allNumeric,
   overlap,
@@ -49,7 +50,7 @@ export function getOrderedDrawPositions({
   // and fed positions are always { sideNumber: 1 }
   if (isFeedRound) {
     const drawPosition = drawPositions.find(
-      (drawPosition) => !isNaN(parseInt(drawPosition))
+      (drawPosition) => !isNaN(ensureInt(drawPosition))
     );
     const orderedDrawPositions = [drawPosition, undefined];
     return { orderedDrawPositions, displayOrder: orderedDrawPositions };

@@ -1,15 +1,21 @@
+import { Court } from '../../../../types/tournamentFromSchema';
 import { addMinutes, timeToDate } from '../../../../utilities/dateTime';
 import { getCourtDateAvailability } from './getCourtDateAvailability';
 import { getEnoughTime } from './getEnoughTime';
 
-export function getCourtsAvailableAtPeriodStart({
-  averageMatchUpMinutes,
-  includeBookingTypes,
-  periodLength,
-  periodStart,
-  courts,
-  date,
-}) {
+type GetCourtsAvailableAtPeriodStartArgs = {
+  averageMatchUpMinutes: number;
+  includeBookingTypes?: boolean;
+  periodStart: string;
+  courts: any[];
+  date: string;
+};
+export function getCourtsAvailableAtPeriodStart(
+  params: GetCourtsAvailableAtPeriodStartArgs
+) {
+  const { averageMatchUpMinutes, includeBookingTypes, periodStart, date } =
+    params;
+  const courts = params.courts as Court[];
   const periodStartTime = timeToDate(periodStart);
   const periodEndTime = addMinutes(periodStartTime, averageMatchUpMinutes);
 
@@ -18,7 +24,6 @@ export function getCourtsAvailableAtPeriodStart({
     includeBookingTypes,
     periodStartTime,
     periodEndTime,
-    periodLength,
   });
 
   const availableCourts =

@@ -134,6 +134,18 @@ const cjsExports = [{ input: 'src/index.ts', cjs: true }].map(createExport);
 export default [
   ...cjsExports,
   ...esmExports,
+  /*
+  {
+    input: 'src/drawEngine/governors/entryGovernor/index.ts',
+    output: [
+      {
+        file: `src/drawEngine/governors/entryGovernor/index.d.ts`,
+        format: 'es',
+      },
+    ],
+    plugins: [dts()],
+  },
+  */
   {
     input: 'src/mocksEngine/index.ts',
     output: [{ file: `${distPath}/mocksEngine.d.ts`, format: 'es' }],

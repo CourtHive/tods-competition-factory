@@ -1,5 +1,6 @@
 import { countGames, countSets, countPoints } from './scoreCounters';
 import { calculatePercentages } from './calculatePercentages';
+import { ensureInt } from '../../../utilities/ensureInt';
 import { intersection } from '../../../utilities';
 
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
@@ -329,8 +330,8 @@ function processScore({
   for (const set of sets || []) {
     const { winningSide: setWinningSide, side1Score, side2Score } = set;
     if (setWinningSide) setsTally[setWinningSide - 1] += 1;
-    gamesTally[0].push(parseInt(side1Score || 0));
-    gamesTally[1].push(parseInt(side2Score || 0));
+    gamesTally[0].push(ensureInt(side1Score || 0));
+    gamesTally[1].push(ensureInt(side2Score || 0));
   }
 
   const gamesTotal = [

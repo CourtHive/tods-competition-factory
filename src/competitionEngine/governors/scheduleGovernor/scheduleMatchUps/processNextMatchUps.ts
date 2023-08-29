@@ -1,12 +1,19 @@
 import { getIndividualParticipantIds } from './getIndividualParticipantIds';
 import { unique } from '../../../../utilities';
+import { HydratedMatchUp } from '../../../../types/hydrated';
 
+type ProcessNextMatchUpsArgs = {
+  matchUpPotentialParticipantIds: { [key: string]: string[] };
+  matchUpNotBeforeTimes: { [key: string]: any };
+  timeAfterRecovery?: number;
+  matchUp: HydratedMatchUp;
+};
 export function processNextMatchUps({
   matchUpPotentialParticipantIds,
   matchUpNotBeforeTimes,
   timeAfterRecovery,
   matchUp,
-}) {
+}: ProcessNextMatchUpsArgs) {
   const { individualParticipantIds } = getIndividualParticipantIds(matchUp);
   timeAfterRecovery = timeAfterRecovery || matchUp.schedule?.timeAfterRecovery;
 
@@ -30,8 +37,9 @@ export function processNextMatchUps({
   // and the last one to be processed shouldn't overwrite later value
   const updateNotBeforeTime = (matchUpId) => {
     if (
-      !matchUpNotBeforeTimes[matchUpId] ||
-      timeAfterRecovery > matchUpNotBeforeTimes[matchUpId]
+      timeAfterRecovery &&
+      (!matchUpNotBeforeTimes[matchUpId] ||
+        timeAfterRecovery > matchUpNotBeforeTimes[matchUpId])
     ) {
       matchUpNotBeforeTimes[matchUpId] = timeAfterRecovery;
     }

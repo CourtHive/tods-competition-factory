@@ -2,6 +2,7 @@ import { addEventExtension } from '../tournamentGovernor/addRemoveExtensions';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { getParticipantIds } from '../../../global/functions/extractors';
 import { getFlightProfile } from '../../getters/getFlightProfile';
+import { ensureInt } from '../../../utilities/ensureInt';
 import { intersection, UUID } from '../../../utilities';
 
 import { FLIGHT_PROFILE } from '../../../constants/extensionConstants';
@@ -43,7 +44,7 @@ export function addFlight({
   const flightNumbers =
     flightProfile?.flights
       ?.map(
-        ({ flightNumber }) => !isNaN(flightNumber) && parseInt(flightNumber)
+        ({ flightNumber }) => !isNaN(flightNumber) && ensureInt(flightNumber)
       )
       ?.filter(Boolean) || [];
 

@@ -3,15 +3,14 @@ import {
   tournamentMatchUps,
 } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
 
+import { TournamentRecordsArgs } from '../../types/factoryTypes';
+import { HydratedMatchUp } from '../../types/hydrated';
 import {
   ErrorType,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../constants/errorConditionConstants';
-import { Tournament } from '../../types/tournamentFromSchema';
-import { HydratedMatchUp } from '../../types/hydrated';
 
-type CompetitionMatchUpsArgs = {
-  tournamentRecords: { [key: string]: Tournament } | Tournament[];
+type CompetitionMatchUpsArgs = TournamentRecordsArgs & {
   scheduleVisibilityFilters?: boolean;
   participantsProfile?: any;
   afterRecoveryTimes?: any;

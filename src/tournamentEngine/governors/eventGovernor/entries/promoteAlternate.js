@@ -1,4 +1,5 @@
 import { decorateResult } from '../../../../global/functions/decorateResult';
+import { ensureInt } from '../../../../utilities/ensureInt';
 
 import { MAIN } from '../../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
@@ -156,7 +157,7 @@ function promoteWithinElement({
             entry.entryStatus === DIRECT_ACCEPTANCE &&
             !isNaN(entry.entryPosition)
         )
-        .map(({ entryPosition }) => parseInt(entryPosition || 0)),
+        .map(({ entryPosition }) => ensureInt(entryPosition || 0)),
       0
     );
     participantEntry.entryPosition = maxEntryPosition || 0;

@@ -22,12 +22,15 @@ import {
 } from './stateMethods';
 
 import { SUCCESS } from '../constants/resultConstants';
+import { FactoryEngine } from '../types/factoryTypes';
 
-export function matchUpEngineAsync(test) {
+export function matchUpEngineAsync(
+  test?: boolean
+): FactoryEngine & { error?: any } {
   const result = createInstanceState();
   if (result.error && !test) return result;
 
-  const engine = {
+  const engine: FactoryEngine = {
     getState: (params) => getState(params),
     version: () => factoryVersion(),
     reset: () => {

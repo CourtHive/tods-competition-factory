@@ -6492,10 +6492,10 @@ merge2@^1.3.0, merge2@^1.4.1:
   resolved "https://registry.yarnpkg.com/merge2/-/merge2-1.4.1.tgz#4368892f885e907455a6fd7dc55c0c9d404990ae"
   integrity sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==
 
-mermaid@10.3.1:
-  version "10.3.1"
-  resolved "https://registry.yarnpkg.com/mermaid/-/mermaid-10.3.1.tgz#2f3c7e9f6bd7a8da2bef71cce2a542c8eba2a62e"
-  integrity sha512-hkenh7WkuRWPcob3oJtrN3W+yzrrIYuWF1OIfk/d0xGE8UWlvDhfexaHmDwwe8DKQgqMLI8DWEPwGprxkumjuw==
+mermaid@10.4.0:
+  version "10.4.0"
+  resolved "https://registry.yarnpkg.com/mermaid/-/mermaid-10.4.0.tgz#f89bf0ada161cbbe4dba2776e805119f7245a102"
+  integrity sha512-4QCQLp79lvz7UZxow5HUX7uWTPJOaQBVExduo91tliXC7v78i6kssZOPHxLL+Xs30KU72cpPn3g3imw/xm/gaw==
   dependencies:
     "@braintree/sanitize-url" "^6.0.1"
     "@types/d3-scale" "^4.0.3"
@@ -9098,10 +9098,10 @@ to-regex-range@^5.0.1:
   dependencies:
     is-number "^7.0.0"
 
-tods-competition-factory@1.4.13:
-  version "1.4.13"
-  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-1.4.13.tgz#2aef6fff967cbda8e4bc536c68d0931c29dd3b30"
-  integrity sha512-yEI5WcUfJ8scxofsJQ9APa+VnekDSnWr4fdiJrs1NR0d1NsKFXCcFm6PB/VyCNi4KyR5C7AQwv4XH219d7n3xw==
+tods-competition-factory@1.4.21:
+  version "1.4.21"
+  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-1.4.21.tgz#0508270f0c1eec8d8cab94475e3161d8e193ce6e"
+  integrity sha512-3tWo0wMkIf9hRAOkeficIQ7fQ7uRWk+3zQ3B9GEPhtv6jgdqio9yRu/RF5vCcmg0J87V4Xc41PQYWDdO35HxoA==
 
 tods-competition-factory@^1.2.32:
   version "1.4.1"

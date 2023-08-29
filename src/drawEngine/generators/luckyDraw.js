@@ -2,6 +2,7 @@ import { isConvertableInteger } from '../../utilities/math';
 import { generateRange, isPowerOf2 } from '../../utilities';
 import { addFinishingRounds } from './addFinishingRounds';
 import { generateMatchUpId } from './generateMatchUpId';
+import { ensureInt } from '../../utilities/ensureInt';
 import { treeMatchUps } from './eliminationTree';
 import { buildRound } from './buildRound';
 
@@ -93,7 +94,7 @@ export function luckyDraw(params) {
 }
 
 function luckyRoundProfiles(drawSize) {
-  const intDrawSize = parseInt(drawSize);
+  const intDrawSize = ensureInt(drawSize);
   let participantsCount = intDrawSize % 2 ? intDrawSize + 1 : intDrawSize;
   const preFeedRound = !!(Math.ceil(participantsCount / 2) % 2);
   const rounds = [{ participantsCount, preFeedRound }];

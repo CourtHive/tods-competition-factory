@@ -49,12 +49,19 @@ function drawUpdatedAt(
 
   return { ...SUCCESS };
 }
+
+type AddMatchUpsNoticeArgs = {
+  drawDefinition?: DrawDefinition;
+  tournamentId?: string;
+  matchUps: MatchUp[];
+  eventId?: string;
+};
 export function addMatchUpsNotice({
   drawDefinition,
   tournamentId,
   matchUps,
   eventId,
-}) {
+}: AddMatchUpsNoticeArgs) {
   if (drawDefinition) drawUpdatedAt(drawDefinition);
   addNotice({
     payload: { matchUps, tournamentId, eventId },
@@ -63,13 +70,21 @@ export function addMatchUpsNotice({
 
   return { ...SUCCESS };
 }
+
+type DeleteMatchUpsNoticeArga = {
+  drawDefinition?: DrawDefinition;
+  tournamentId?: string;
+  matchUpIds: string[];
+  eventId?: string;
+  action?: any;
+};
 export function deleteMatchUpsNotice({
   drawDefinition,
   tournamentId,
   matchUpIds,
   eventId,
   action,
-}) {
+}: DeleteMatchUpsNoticeArga) {
   if (drawDefinition) drawUpdatedAt(drawDefinition);
   addNotice({
     topic: DELETED_MATCHUP_IDS,
@@ -163,7 +178,16 @@ export function addDrawNotice({
   return { ...SUCCESS };
 }
 
-export function deleteDrawNotice({ tournamentId, eventId, drawId }) {
+type DeleteDrawNoticeArgs = {
+  tournamentId?: string;
+  eventId?: string;
+  drawId: string;
+};
+export function deleteDrawNotice({
+  tournamentId,
+  eventId,
+  drawId,
+}: DeleteDrawNoticeArgs) {
   addNotice({
     payload: { drawId, tournamentId, eventId },
     topic: DELETED_DRAW_IDS,

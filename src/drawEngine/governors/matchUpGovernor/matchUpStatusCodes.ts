@@ -5,9 +5,9 @@ import { MatchUp } from '../../../types/tournamentFromSchema';
 
 type UpdateMatchUpStatusCodesArgs = {
   inContextDrawMatchUps: any[];
-  sourceMatchUpStatus: string;
+  sourceMatchUpStatus?: string;
   matchUpsMap: MatchUpsMap;
-  sourceMatchUpId: string;
+  sourceMatchUpId?: string;
   matchUp: MatchUp;
 };
 

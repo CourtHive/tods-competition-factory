@@ -3,7 +3,7 @@ import { logColors } from './logColors';
 
 const globalLog: any[] = [];
 
-export function pushGlobalLog(value: any, devContextOverride) {
+export function pushGlobalLog(value: any, devContextOverride?) {
   if (typeof value === 'string') value = { method: value };
   if (devContextOverride || getDevContext()) globalLog.push(value);
 }
@@ -20,7 +20,7 @@ export function getGlobalLog(purge) {
   return globalLogCopy;
 }
 
-export function printGlobalLog(purge) {
+export function printGlobalLog(purge?) {
   const globalLogCopy = getGlobalLog(purge);
   const modifiedText = globalLogCopy.map((line) => {
     const { color, keyColors, method, newline } = line;

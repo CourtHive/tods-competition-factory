@@ -6,14 +6,25 @@ import { deletionMessage } from './deletionMessage';
 
 import { MODIFY_VENUE } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  DrawDefinition,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
+type DeleteCourtArgs = {
+  drawDefinition?: DrawDefinition;
+  tournamentRecord: Tournament;
+  disableNotice?: boolean;
+  courtId: string;
+  force?: boolean;
+};
 export function deleteCourt({
   tournamentRecord,
   drawDefinition,
   disableNotice,
   courtId,
   force,
-}) {
+}: DeleteCourtArgs) {
   const result = findCourt({ tournamentRecord, courtId });
   if (result.error) return result;
   const venue = result.venue;

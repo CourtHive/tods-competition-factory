@@ -18,27 +18,32 @@ import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { WIN_RATIO } from '../../../constants/statsConstants';
 
-export function getParticipantEntries({
-  participantFilters,
-  convertExtensions,
-  policyDefinitions,
-  tournamentRecord,
-  usePublishState,
-  contextProfile,
-  participantMap,
+export function getParticipantEntries(params) {
+  const {
+    participantFilters,
+    convertExtensions,
+    policyDefinitions,
+    tournamentRecord,
+    usePublishState,
+    contextProfile,
+    participantMap,
 
-  withPotentialMatchUps,
-  withRankingProfile,
-  withScheduleTimes,
-  scheduleAnalysis,
-  withTeamMatchUps,
-  withStatistics,
-  withOpponents,
-  withMatchUps,
-  withSeeding,
-  withEvents,
-  withDraws,
-}) {
+    withPotentialMatchUps,
+    withRankingProfile,
+    withScheduleTimes,
+    withScheduleItems,
+    scheduleAnalysis,
+    withTeamMatchUps,
+    withStatistics,
+    withOpponents,
+    withMatchUps,
+    withSeeding,
+    withEvents,
+    withDraws,
+  } = params;
+
+  if (withScheduleItems) console.log({ withScheduleItems });
+
   const targetParticipantIds = participantFilters?.participantIds;
   const getRelevantParticipantIds = (participantId) => {
     const relevantParticipantIds = [participantId];

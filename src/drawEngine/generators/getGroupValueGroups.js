@@ -1,3 +1,5 @@
+import { ensureInt } from '../../utilities/ensureInt';
+
 export function getGroupValueGroups({ collectionGroups = [] } = {}) {
   // set up to handle groupValue
   const groupValueGroups = Object.assign(
@@ -17,7 +19,7 @@ export function getGroupValueGroups({ collectionGroups = [] } = {}) {
 
   // must be coerced to numbers
   const groupValueNumbers = Object.keys(groupValueGroups).map((num) =>
-    parseInt(num)
+    ensureInt(num)
   );
 
   return { groupValueGroups, groupValueNumbers };

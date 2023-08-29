@@ -184,6 +184,7 @@ export interface DrawDefinition {
   startDate?: string;
   structures?: Structure[];
   tieFormat?: TieFormat;
+  tieFormatId?: string;
   timeItems?: TimeItem[];
   updatedAt?: Date | string;
 }
@@ -227,6 +228,7 @@ export enum EntryStatusEnum {
   OrganiserAcceptance = 'ORGANISER_ACCEPTANCE',
   Qualifier = 'QUALIFIER',
   SpecialExempt = 'SPECIAL_EXEMPT',
+  Registered = 'Registered',
   Ungrouped = 'UNGROUPED',
   Unpaired = 'UNPAIRED',
   Wildcard = 'WILDCARD',
@@ -335,6 +337,7 @@ export interface MatchUp {
   startDate?: string;
   surfaceCategory?: SurfaceCategoryEnum;
   tieFormat?: TieFormat;
+  tieFormatId?: string;
   tieMatchUps?: MatchUp[];
   timeItems?: TimeItem[];
   updatedAt?: Date | string;
@@ -654,6 +657,7 @@ export interface Structure {
   structureOrder?: number;
   structureType?: StructureTypeEnum;
   tieFormat?: TieFormat;
+  tieFormatId?: string;
   timeItems?: TimeItem[];
   updatedAt?: Date | string;
 }

@@ -6,11 +6,17 @@ import {
   PAIR,
   TEAM,
 } from '../../../../constants/participantConstants';
+import { Participant } from '../../../../types/tournamentFromSchema';
+
+type AddParticipantGroupingsArgs = {
+  participants?: Participant[];
+  participantsProfile?: any;
+};
 
 export function addParticipantGroupings({
   participantsProfile,
   participants = [],
-}) {
+}: AddParticipantGroupingsArgs) {
   const participantsWithGroupings = makeDeepCopy(
     participants,
     participantsProfile?.convertExtensions,

@@ -1,6 +1,7 @@
 import { isValid } from '../../../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
 import { getModifiedMatchUpFormatTiming } from './getModifiedMatchUpTiming';
 import { modifyMatchUpFormatTiming } from './modifyMatchUpFormatTiming';
+import { ensureInt } from '../../../../utilities/ensureInt';
 
 import { SINGLES } from '../../../../constants/matchUpTypes';
 import {
@@ -53,8 +54,8 @@ export function modifyEventMatchUpFormatTiming({
     return timing;
   };
 
-  const validAverageMinutes = !isNaN(parseInt(averageMinutes));
-  const validRecoveryMinutes = !isNaN(parseInt(recoveryMinutes));
+  const validAverageMinutes = !isNaN(ensureInt(averageMinutes));
+  const validRecoveryMinutes = !isNaN(ensureInt(recoveryMinutes));
 
   const newAverageTimes = averageTimes
     .map(newTiming)

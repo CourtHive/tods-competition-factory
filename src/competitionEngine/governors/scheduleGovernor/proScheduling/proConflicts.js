@@ -1,6 +1,7 @@
 import { getMatchUpDependencies } from '../scheduleMatchUps/getMatchUpDependencies';
 import { generateRange, instanceCount, unique } from '../../../../utilities';
 import { matchUpSort } from '../../../../drawEngine/getters/matchUpSort';
+import { ensureInt } from '../../../../utilities/ensureInt';
 
 import {
   MISSING_CONTEXT,
@@ -30,10 +31,10 @@ export function proConflicts({ tournamentRecords, matchUps } = {}) {
   const maxCourtOrder = Math.max(
     ...matchUps
       .map(({ schedule }) => schedule?.courtOrder || 1)
-      .map((order) => parseInt(order))
+      .map((order) => ensureInt(order))
   );
   const filteredRows = generateRange(1, maxCourtOrder + 1).map((courtOrder) =>
-    matchUps.filter((m) => parseInt(m.schedule?.courtOrder) === courtOrder)
+    matchUps.filter((m) => ensureInt(m.schedule?.courtOrder) === courtOrder)
   );
 
   const matchUpsMap = {};

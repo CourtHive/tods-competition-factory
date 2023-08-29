@@ -597,6 +597,9 @@
         },
         "tieFormat": {
           "$ref": "#/definitions/TieFormat"
+        },
+        "tieFormatId": {
+          "type": "string"
         }
       },
       "required": ["drawId"],
@@ -678,6 +681,7 @@
         "LUCKY_LOSER",
         "ORGANISER_ACCEPTANCE",
         "QUALIFIER",
+        "REGISTERED",
         "SPECIAL_EXEMPT",
         "WILDCARD",
         "WITHDRAWN",
@@ -990,6 +994,9 @@
         },
         "surfaceCategory": {
           "$ref": "#/definitions/SurfaceCategoryEnum"
+        },
+        "tieFormatId": {
+          "type": "string"
         },
         "tieFormat": {
           "$ref": "#/definitions/TieFormat"
@@ -1916,6 +1923,9 @@
         },
         "tieFormat": {
           "$ref": "#/definitions/TieFormat"
+        },
+        "tieFormatId": {
+          "type": "string"
         }
       },
       "required": ["structureId"],

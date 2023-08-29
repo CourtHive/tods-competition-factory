@@ -151,7 +151,7 @@ export function getTargetMatchUp({
       matchUp?.drawPositions[matchUpDrawPositionIndex];
   }
 
-  const relevantAssignment = positionAssignments.find(
+  const relevantAssignment = positionAssignments?.find(
     ({ drawPosition }) => drawPosition === targetDrawPosition
   );
   if (relevantAssignment) {

@@ -1,5 +1,6 @@
 import { checkParticipantProfileInitialization } from './checkParticipantProfileInitialization';
 import { analyzeScheduleOverlap } from './analyzeScheduleOverlap';
+import { ensureInt } from '../../../../utilities/ensureInt';
 import {
   addMinutesToTimeString,
   extractTime,
@@ -38,10 +39,10 @@ export function checkRecoveryTime({
       // if (details && timeBetween < 0) {
       const endTime = extractTime(matchUp?.schedule?.endTime);
       const timeAfterRecovery = endTime
-        ? addMinutesToTimeString(endTime, parseInt(recoveryMinutes))
+        ? addMinutesToTimeString(endTime, ensureInt(recoveryMinutes))
         : addMinutesToTimeString(
             scheduleTime,
-            parseInt(averageMatchUpMinutes) + parseInt(recoveryMinutes)
+            ensureInt(averageMatchUpMinutes) + ensureInt(recoveryMinutes)
           );
 
       const potentialParticipantBookings = Object.keys(

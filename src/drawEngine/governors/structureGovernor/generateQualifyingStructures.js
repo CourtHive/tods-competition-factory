@@ -137,9 +137,9 @@ export function generateQualifyingStructures({
         }
 
         // always set to the final round of the last generated qualifying structure
-        targetRoundQualifiersCount = matchUps?.filter(
-          (matchUp) => matchUp.roundNumber === roundLimit
-        )?.length;
+        targetRoundQualifiersCount =
+          matchUps?.filter((matchUp) => matchUp.roundNumber === roundLimit)
+            ?.length || 0;
       }
 
       if (stageSequence > 1) {
@@ -152,9 +152,10 @@ export function generateQualifyingStructures({
         });
         links.push(link);
         // if more than one qualifying stageSequence, remove last stageSequence qualifier positions from count
-        qualifyingDrawPositionsCount += drawSize - targetRoundQualifiersCount;
+        qualifyingDrawPositionsCount +=
+          (drawSize || 0) - targetRoundQualifiersCount;
       } else {
-        qualifyingDrawPositionsCount += drawSize;
+        qualifyingDrawPositionsCount += drawSize || 0;
       }
 
       // IMPORTANT: order of operations is important here!!

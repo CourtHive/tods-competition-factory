@@ -4,8 +4,12 @@ import { getPositionAssignments } from '../../../../drawEngine/getters/positions
 import { getStructureGroups } from '../../publishingGovernor/getStructureGroups';
 import { getStructureLinks } from '../../../../drawEngine/getters/linkGetter';
 import { stageOrder } from '../../../../constants/drawDefinitionConstants';
+import { ensureInt } from '../../../../utilities/ensureInt';
 
-import { MISSING_TOURNAMENT_RECORD } from '../../../../constants/errorConditionConstants';
+import {
+  ErrorType,
+  MISSING_TOURNAMENT_RECORD,
+} from '../../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 
 type DrawsAnalysis = {
@@ -16,7 +20,11 @@ type DrawsAnalysis = {
   drawAnalysis: any;
 };
 
-export function analyzeDraws({ tournamentRecord }) {
+export function analyzeDraws({ tournamentRecord }): {
+  error?: ErrorType;
+  drawsAnalysis?: any;
+  success?: boolean;
+} {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   const drawsAnalysis: DrawsAnalysis = {
     positionsNoOutcomes: [], // all positions assigned and no outcomes
@@ -78,7 +86,7 @@ export function analyzeDraws({ tournamentRecord }) {
       const positionsAssigned = positionAssignments?.filter(
         ({ participantId }) => participantId
       );
-      positionsAssignedCount += positionsAssigned.length;
+      positionsAssignedCount += positionsAssigned?.length || 0;
 
       const unassignedPositionsCount =
         (positionAssignments?.length || 0) - (positionsAssigned?.length || 0);
@@ -133,7 +141,7 @@ export function analyzeDraws({ tournamentRecord }) {
     });
 
     const isMatchPlay =
-      parseInt(mainStructure.activeRounds[0]) === 1 &&
+      ensureInt(mainStructure.activeRounds[0]) === 1 &&
       mainStructure.activeRounds.length === 1 &&
       activeStructuresCount === 1;
 
