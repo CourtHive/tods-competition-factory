@@ -10,7 +10,7 @@ import {
   MISSING_TOURNAMENT_ID,
 } from '../constants/errorConditionConstants';
 
-export function setState(tournament, deepCopyOption) {
+export function setState(tournament, deepCopyOption?) {
   if (typeof tournament !== 'object') return { error: INVALID_OBJECT };
   const tournamentId =
     tournament.unifiedTournamentId?.tournamentId || tournament.tournamentId;
@@ -25,11 +25,13 @@ export function setState(tournament, deepCopyOption) {
   return tournamentRecord;
 }
 
-export function getState({
-  convertExtensions,
-  removeExtensions,
-  tournamentId,
-} = {}) {
+type GetStateArgs = {
+  convertExtensions?: boolean;
+  removeExtensions?: boolean;
+  tournamentId?: string;
+};
+export function getState(params: GetStateArgs) {
+  const { convertExtensions, removeExtensions, tournamentId } = params || {};
   if (typeof tournamentId !== 'string') return {};
   const tournamentRecord = getTournamentRecord(tournamentId);
   return {
@@ -43,6 +45,7 @@ export function getState({
 }
 
 export function paramsMiddleware(tournamentRecord, params) {
+  if (!tournamentRecord) return params;
   if (params?.someParam) {
     params = {
       ...params,

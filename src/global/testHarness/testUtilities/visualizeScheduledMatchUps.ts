@@ -46,9 +46,10 @@ export function visualizeScheduledMatchUps({
     const structureMatchUps = scheduledMatchUps.filter(
       (matchUp) => matchUp.structureId === structureId
     );
-    const { roundMatchUps } = getRoundMatchUps({
-      matchUps: structureMatchUps,
-    });
+    const roundMatchUps =
+      getRoundMatchUps({
+        matchUps: structureMatchUps,
+      })?.roundMatchUps || [];
     Object.keys(roundMatchUps).forEach((roundNumber) => {
       pushGlobalLog(
         {

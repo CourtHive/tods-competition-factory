@@ -12,6 +12,7 @@ import {
 } from '../../../constants/drawDefinitionConstants';
 
 it('can generate an event with a draw and attach it to a tournamentRecord', () => {
+  tournamentEngine.devContext(true);
   const matchUpAddNotices: number[] = [];
   const subscriptions = {
     addMatchUps: (payload) => {

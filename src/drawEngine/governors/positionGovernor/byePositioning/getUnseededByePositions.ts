@@ -27,14 +27,13 @@ export function getUnseededByePositions({
   structure,
   isFeedIn,
   isLucky,
-  event,
 }) {
   const seedingProfile = appliedPolicies?.seeding?.seedingProfile;
   const isQualifying = structure.stage === QUALIFYING;
 
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const filledDrawPositions = positionAssignments
-    .filter((assignment) => assignment.participantId)
+    ?.filter((assignment) => assignment.participantId)
     .map((assignment) => assignment.drawPosition);
 
   const matchUpFilters = { isCollectionMatchUp: false };
@@ -53,7 +52,7 @@ export function getUnseededByePositions({
   );
   const drawPositionOffset = Math.min(...relevantDrawPositions) - 1;
 
-  const filledRelevantDrawPositions = filledDrawPositions.filter(
+  const filledRelevantDrawPositions = filledDrawPositions?.filter(
     (drawPosition) => relevantDrawPositions.includes(drawPosition)
   );
 
@@ -93,7 +92,7 @@ export function getUnseededByePositions({
   const notSeedByePosition = (drawPosition) =>
     !seedOrderByePositions.includes(drawPosition);
   const unfilledDrawPosition = (drawPosition) =>
-    !filledRelevantDrawPositions.includes(drawPosition);
+    !filledRelevantDrawPositions?.includes(drawPosition);
   const quarterSeparateBlock = (block) => {
     const sortedChunked = chunkArray(
       block.sort(numericSort),
@@ -105,7 +104,7 @@ export function getUnseededByePositions({
     const drawPositionCount = [].concat(
       ...filteredChunks.flat(Infinity)
     ).length;
-    const orderedDrawPositions = [];
+    const orderedDrawPositions: number[] = [];
     for (let i = 0; i < drawPositionCount; i++) {
       const { newlyFilteredChunks, drawPosition } =
         getNextDrawPosition(filteredChunks);
@@ -124,13 +123,13 @@ export function getUnseededByePositions({
     appliedPolicies,
     drawDefinition,
     structure,
-    event,
   });
 
-  const validBlockDrawPositions = validSeedBlocks.map((block) =>
-    block.drawPositions?.map(
-      (drawPosition) => drawPosition + drawPositionOffset
-    )
+  const validBlockDrawPositions = validSeedBlocks?.map(
+    (block) =>
+      block.drawPositions?.map(
+        (drawPosition) => drawPosition + drawPositionOffset
+      )
   );
 
   let unfilledSeedBlocks;
@@ -152,7 +151,7 @@ export function getUnseededByePositions({
       .filter((block) => block.length);
   } else if (isQualifying) {
     // if qualifying don't quarter/halve separate because seeding is WATERFALL
-    unfilledSeedBlocks = validBlockDrawPositions.map((block) =>
+    unfilledSeedBlocks = validBlockDrawPositions?.map((block) =>
       block.filter(unfilledDrawPosition)
     );
   } else {
@@ -160,7 +159,7 @@ export function getUnseededByePositions({
       // console.log({ isLucky });
     }
     unfilledSeedBlocks = validBlockDrawPositions
-      .map(quarterSeparateBlock)
+      ?.map(quarterSeparateBlock)
       .filter((block) => block.length);
   }
 

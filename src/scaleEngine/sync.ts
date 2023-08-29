@@ -1,29 +1,27 @@
-import { notifySubscribersAsync } from '../global/state/notifySubscribers';
-import { setState, getState, paramsMiddleware } from './stateMethods';
+import { getState, paramsMiddleware, setState } from './stateMethods';
+import { notifySubscribers } from '../global/state/notifySubscribers';
 import { factoryVersion } from '../global/functions/factoryVersion';
 import { makeDeepCopy } from '../utilities';
 import {
-  createInstanceState,
   removeTournamentRecord,
   getTournamentRecord,
   getTournamentId,
   setTournamentId,
+  getDevContext,
   deleteNotices,
   setDeepCopy,
 } from '../global/state/globalState';
 
 import rankingsGovernor from './governors/rankingsGovernor';
 import ratingsGovernor from './governors/ratingsGovernor';
+import { FactoryEngine } from '../types/factoryTypes';
 
-export function scaleEngineAsync(test) {
-  const result = createInstanceState();
-  if (result.error && !test) return result;
-
-  const engine = {
-    getState: ({ convertExtensions, removeExtensions } = {}) =>
+export const scaleEngine = (() => {
+  const engine: FactoryEngine = {
+    getState: (params?) =>
       getState({
-        convertExtensions,
-        removeExtensions,
+        convertExtensions: params?.convertExtensions,
+        removeExtensions: params?.removeExtensions,
         tournamentId: getTournamentId(),
       }),
     setTournamentId: (newTournamentId) => setTournamentId(newTournamentId),
@@ -31,9 +29,7 @@ export function scaleEngineAsync(test) {
 
   engine.version = () => factoryVersion();
   engine.reset = () => {
-    const tournamentId = getTournamentId();
-    if (!tournamentId) return processResult();
-    const result = removeTournamentRecord(tournamentId);
+    const result = removeTournamentRecord(getTournamentId());
     return processResult(result);
   };
   engine.setState = (tournament, deepCopyOption, deepCopyAttributes) => {
@@ -57,19 +53,18 @@ export function scaleEngineAsync(test) {
 
   return engine;
 
-  async function executeFunctionAsync(tournamentRecord, method, params) {
+  function executeFunction(tournamentRecord, method, params) {
     delete engine.success;
     delete engine.error;
 
     const augmentedParams = paramsMiddleware(tournamentRecord, params);
-
-    return await method({
+    return method({
       ...augmentedParams,
       tournamentRecord,
     });
   }
 
-  async function engineInvoke(method, params) {
+  function engineInvoke(method, params) {
     const tournamentRecord =
       params?.sandBoxRecord ||
       params?.sandboxRecord ||
@@ -79,7 +74,7 @@ export function scaleEngineAsync(test) {
     const snapshot =
       params?.rollbackOnError && makeDeepCopy(tournamentRecord, false, true);
 
-    const result = await executeFunctionAsync(tournamentRecord, method, params);
+    const result = executeFunction(tournamentRecord, method, params);
 
     if (result?.error && snapshot) setState(snapshot);
 
@@ -87,23 +82,39 @@ export function scaleEngineAsync(test) {
       result?.success &&
       params?.delayNotify !== true &&
       params?.doNotNotify !== true;
-    if (notify) await notifySubscribersAsync();
+    if (notify) notifySubscribers();
     if (notify || !result?.success || params?.doNotNotify) deleteNotices();
 
     return result;
   }
 
   function importGovernors(governors) {
-    for (const governor of governors) {
-      const governorMethods = Object.keys(governor);
-
-      for (const governorMethod of governorMethods) {
-        engine[governorMethod] = async (params) => {
-          return await engineInvoke(governor[governorMethod], params);
+    governors.forEach((governor) => {
+      Object.keys(governor).forEach((method) => {
+        engine[method] = (params) => {
+          if (getDevContext()) {
+            return engineInvoke(governor[method], params);
+          } else {
+            try {
+              return engineInvoke(governor[method], params);
+            } catch (err) {
+              let error;
+              if (typeof err === 'string') {
+                error = err.toUpperCase();
+              } else if (err instanceof Error) {
+                error = err.message;
+              }
+              console.log('ERROR', {
+                error,
+                method,
+                params: JSON.stringify(params),
+              });
+            }
+          }
         };
-      }
-    }
+      });
+    });
   }
-}
+})();
 
-export default scaleEngineAsync;
+export default scaleEngine;
