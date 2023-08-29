@@ -17,11 +17,17 @@ import {
 } from '../../../../tournamentEngine/governors/scheduleGovernor/scheduleItems';
 
 import {
+  ErrorType,
+  MISSING_DRAW_DEFINITION,
   MISSING_DRAW_ID,
   MISSING_TOURNAMENT_ID,
   MISSING_TOURNAMENT_RECORD,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../../../constants/errorConditionConstants';
+import {
+  DrawDefinition,
+  Tournament,
+} from '../../../../types/tournamentFromSchema';
 
 export function addMatchUpScheduleItems(params) {
   const result = getDrawDefinition(params);
@@ -35,6 +41,7 @@ export function addMatchUpScheduledDate(params) {
   const result = getDrawDefinition(params);
   if (result.error) return result;
   const { tournamentRecord, drawDefinition } = result;
+  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   const { disableNotice, scheduledDate, matchUpId, removePriorValues } = params;
 
@@ -54,6 +61,8 @@ export function addMatchUpScheduledTime(params) {
   const { tournamentRecord, drawDefinition } = result;
 
   const { disableNotice, scheduledTime, matchUpId, removePriorValues } = params;
+  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+
   return addScheduledTime({
     removePriorValues,
     tournamentRecord,
@@ -145,8 +154,10 @@ export function assignMatchUpVenue(params) {
   if (result.error) return result;
   const { tournamentRecord, drawDefinition } = result;
   const { matchUpId, venueId, disableNotice, removePriorValues } = params;
+  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   return assignVenue({
+    tournamentRecords: params.tournamentRecords,
     removePriorValues,
     tournamentRecord,
     drawDefinition,
@@ -186,6 +197,7 @@ export function allocateTeamMatchUpCourts(params) {
   const result = getDrawDefinition(params);
   if (result.error) return result;
   const { tournamentRecord, drawDefinition } = result;
+  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   const {
     removePriorValues,
@@ -213,28 +225,32 @@ export function addMatchUpCourtOrder(params) {
   if (result.error) return result;
   const { tournamentRecord, drawDefinition } = result;
 
-  const {
-    removePriorValues,
-    tournamentRecords,
-    disableNotice,
-    courtOrder,
-    matchUpId,
-    courtId,
-  } = params;
+  const { removePriorValues, disableNotice, courtOrder, matchUpId } = params;
 
   return addCourtOrder({
     removePriorValues,
-    tournamentRecords,
     tournamentRecord,
     drawDefinition,
     disableNotice,
     courtOrder,
     matchUpId,
-    courtId,
   });
 }
 
-function getDrawDefinition({ tournamentRecords, tournamentId, drawId }) {
+type GetDrawDefinitionArgs = {
+  tournamentRecords: { [key: string]: Tournament };
+  tournamentId?: string;
+  drawId: string;
+};
+function getDrawDefinition({
+  tournamentRecords,
+  tournamentId,
+  drawId,
+}: GetDrawDefinitionArgs): {
+  error?: ErrorType;
+  drawDefinition?: DrawDefinition;
+  tournamentRecord?: Tournament;
+} {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!drawId) return { error: MISSING_DRAW_ID };
   if (typeof tournamentId !== 'string') {

@@ -45,7 +45,6 @@ export function automatedPlayoffPositioning(params) {
   const {
     applyPositioning = true,
     provisionalPositioning,
-    candidatesCount = 1,
     tournamentRecord,
     drawDefinition,
     seedingProfile,
@@ -70,7 +69,7 @@ export function automatedPlayoffPositioning(params) {
     drawDefinition,
     structureId,
   });
-  const structurePositionAssignments = [];
+  const structurePositionAssignments: any[] = [];
 
   const participants = tournamentRecord?.participants;
 
@@ -81,7 +80,6 @@ export function automatedPlayoffPositioning(params) {
         structureId: playoffStructureId,
         provisionalPositioning,
         applyPositioning,
-        candidatesCount,
         drawDefinition,
         seedingProfile,
         participants,

@@ -4,6 +4,7 @@ import { hasParticipantId } from '../../../global/functions/filters';
 import { deepMerge } from '../../../utilities/deepMerge';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
+import { Participant } from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   ADD_PARTICIPANTS,
@@ -11,21 +12,20 @@ import {
 } from '../../../constants/topicConstants';
 
 export function mergeParticipants({
-  tournamentRecord,
   participants: incomingParticipants = [],
+  tournamentRecord,
   arraysToMerge,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.participants) tournamentRecord.participants = [];
 
-  const incomingIdMap = Object.assign(
-    ...incomingParticipants
-      .filter(hasParticipantId)
-      .map((p) => ({ [p.participantId]: p }))
-  );
+  const mappedParticipants = incomingParticipants
+    .filter(hasParticipantId)
+    .map((p: any) => ({ [p.participantId]: p }));
+  const incomingIdMap = Object.assign({}, ...mappedParticipants);
 
   // check for overlap with existing players, add any newly retrieved attributes to existing
-  const modifiedParticipants = [];
+  const modifiedParticipants: Participant[] = [];
   tournamentRecord.participants = tournamentRecord.participants.map(
     (participant) => {
       if (incomingIdMap[participant.participantId]) {
@@ -36,9 +36,8 @@ export function mergeParticipants({
         );
         modifiedParticipants.push(mergedParticipant);
         return mergedParticipant;
-      } else {
-        return participant;
       }
+      return participant;
     }
   );
 
@@ -73,7 +72,9 @@ export function mergeParticipants({
     });
   }
 
-  if (newParticipants.length || modifiedParticipants.length) {
-    return { ...SUCCESS };
-  }
+  return {
+    modifiedParticipantsCount: modifiedParticipants.length,
+    newParticipantsCount: newParticipants.length,
+    ...SUCCESS,
+  };
 }

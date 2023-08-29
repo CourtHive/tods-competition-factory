@@ -43,24 +43,33 @@ export function getMatchUpsStats({
     return p;
   };
 
-  const pctspd = pctSpread(gamesMap).reduce((p, c) => categorize(p, c), {
-    [COMPETITIVE]: 0,
-    [ROUTINE]: 0,
-    [DECISIVE]: 0,
-    [WALKOVER]: 0,
-  });
-  const total = Object.keys(pctspd).reduce((a, k) => (pctspd[k] || 0) + a, 0);
+  const pctspd: { [key: string]: number } = pctSpread(gamesMap).reduce(
+    (p, c) => categorize(p, c),
+    {
+      [COMPETITIVE]: 0,
+      [ROUTINE]: 0,
+      [DECISIVE]: 0,
+      [WALKOVER]: 0,
+    }
+  );
+  const total: number = Object.keys(pctspd).reduce(
+    (a, k) => (pctspd[k] || 0) + a,
+    0
+  );
 
-  const competitiveBands = Object.keys(pctspd).map((k) => ({
-    [k]: (pctspd[k] / total).toFixed(4) * 100,
-  }));
+  const competitiveBands: any = Object.keys(pctspd).map((k: any) => {
+    const value = parseFloat((pctspd[k] / total).toFixed(4));
+    return {
+      [k]: value * 100,
+    };
+  });
 
   const retiredCount = relevantMatchUps.filter(
     ({ matchUpStatus }) => matchUpStatus === RETIRED
-  );
+  ).length;
 
   competitiveBands.push({
-    [RETIRED]: (retiredCount / total).toFixed(4) * 100,
+    [RETIRED]: parseFloat((retiredCount / total).toFixed(4)) * 100,
   });
 
   return {

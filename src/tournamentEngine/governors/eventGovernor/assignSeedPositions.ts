@@ -38,7 +38,6 @@ export function assignSeedPositions(params) {
     provisionalPositioning,
     drawDefinition,
     structureId,
-    event,
   });
   if (result.error) return result;
   const { seedAssignments, seedLimit } = result;
@@ -56,6 +55,7 @@ export function assignSeedPositions(params) {
   assignments.forEach((newAssignment) => {
     const { seedNumber } = newAssignment;
     if (
+      seedLimit &&
       seedNumber <= seedLimit &&
       (!useExistingSeedLimit || mergeObject[seedNumber])
     ) {
@@ -66,7 +66,7 @@ export function assignSeedPositions(params) {
   /**
    * ensure that no participantId is assigned to multiple seedNumbers
    */
-  const updatedAssignments = Object.values(mergeObject);
+  const updatedAssignments: any[] = Object.values(mergeObject);
   const participantIds = updatedAssignments
     .map((assignment) => assignment?.participantId)
     .filter(Boolean);

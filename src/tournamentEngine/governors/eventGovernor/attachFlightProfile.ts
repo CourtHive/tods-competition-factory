@@ -20,7 +20,7 @@ export function attachFlightProfile({ deleteExisting, event, flightProfile }) {
     return decorateResult({ result: { error: MISSING_EVENT }, stack });
 
   const { flightProfile: existingFlightProfile } = getFlightProfile({ event });
-  if (existingFlightProfile && attachFlightProfile && !deleteExisting)
+  if (existingFlightProfile && !deleteExisting)
     return decorateResult({ result: { error: EXISTING_PROFILE }, stack });
 
   if (event.drawDefinitions?.length)

@@ -13,6 +13,7 @@ import {
 } from '../../../../utilities/dateTime';
 
 import { MISSING_TOURNAMENT_RECORDS } from '../../../../constants/errorConditionConstants';
+import { Tournament } from '../../../../types/tournamentFromSchema';
 
 /**
  *
@@ -28,6 +29,19 @@ import { MISSING_TOURNAMENT_RECORDS } from '../../../../constants/errorCondition
  * @param {number} periodLengh - number of minutes in a scheduling period
  * @returns
  */
+type CalculateScheduleTimesArgs = {
+  tournamentRecords: { [key: string]: Tournament };
+  calculateStartTimeFromCourts?: boolean;
+  remainingScheduleTimes?: string[];
+  defaultRecoveryMinutes?: number;
+  averageMatchUpMinutes?: number;
+  clearScheduleDates?: boolean;
+  periodLength?: number;
+  scheduleDate: string;
+  venueIds?: string[];
+  startTime?: string;
+  endTime?: string;
+};
 export function calculateScheduleTimes({
   calculateStartTimeFromCourts = true,
   defaultRecoveryMinutes = 0,
@@ -40,7 +54,7 @@ export function calculateScheduleTimes({
   startTime,
   venueIds,
   endTime,
-}) {
+}: CalculateScheduleTimesArgs) {
   if (
     typeof tournamentRecords !== 'object' ||
     !Object.keys(tournamentRecords).length
@@ -60,12 +74,12 @@ export function calculateScheduleTimes({
     tournamentRecords,
   });
 
-  const courts = allCourts.filter(
+  const courts = allCourts?.filter(
     (court) => !venueIds || venueIds.includes(court.venueId)
   );
 
   if (!startTime) {
-    startTime = courts.reduce((minStartTime, court) => {
+    startTime = courts?.reduce((minStartTime, court) => {
       const dateAvailability = court.dateAvailability?.find(
         // if no date is specified consider it to be default for all tournament dates
         (availability) =>
@@ -84,7 +98,7 @@ export function calculateScheduleTimes({
   }
 
   if (!endTime) {
-    endTime = courts.reduce((maxEndTime, court) => {
+    endTime = courts?.reduce((maxEndTime, court) => {
       const dateAvailability = court.dateAvailability?.find(
         // if no date is specified consider it to be default for all tournament dates
         (availability) =>
@@ -101,9 +115,10 @@ export function calculateScheduleTimes({
   }
 
   // get a mapping of eventIds to category details
+  const tournaments = Object.values(tournamentRecords);
   const eventDetails = Object.assign(
     {},
-    ...Object.values(tournamentRecords)
+    ...tournaments
       .map((tournamentRecord) =>
         (tournamentRecord.events || []).map((event) => {
           const { scheduleTiming } = getScheduleTiming({
@@ -129,11 +144,12 @@ export function calculateScheduleTimes({
     tournamentRecords,
     matchUpFilters,
   });
+  const dateMatchUps = matchUpsWithSchedule?.dateMatchUps || [];
+  const completedMatchUps = matchUpsWithSchedule?.completedMatchUps || [];
 
-  const relevantMatchUps = [].concat(
-    ...(matchUpsWithSchedule.dateMatchUps || []),
-    ...(matchUpsWithSchedule.completedMatchUps || [])
-  );
+  const relevantMatchUps: any[] = [];
+  relevantMatchUps.push(...dateMatchUps);
+  relevantMatchUps.push(...completedMatchUps);
 
   const defaultTiming = {
     averageTimes: [{ minutes: { default: averageMatchUpMinutes } }],

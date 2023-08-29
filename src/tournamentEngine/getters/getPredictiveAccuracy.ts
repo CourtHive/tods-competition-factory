@@ -21,22 +21,23 @@ import {
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
 
-export function getPredictiveAccuracy({
-  tournamentRecord,
-  ascending = true,
-  drawDefinition,
-  excludeMargin,
-  exclusionRule,
-  valueAccessor,
-  zoneDoubling,
-  matchUpType,
-  zoneMargin,
-  scaleName,
-  matchUps,
-  eventId,
-  drawId,
-  event,
-}) {
+export function getPredictiveAccuracy(params) {
+  let { matchUps } = params;
+  const {
+    tournamentRecord,
+    ascending = true,
+    drawDefinition,
+    excludeMargin,
+    exclusionRule,
+    valueAccessor,
+    zoneDoubling,
+    matchUpType,
+    zoneMargin,
+    scaleName,
+    eventId,
+    drawId,
+    event,
+  } = params;
   if (!tournamentRecord && !matchUps)
     return { error: MISSING_TOURNAMENT_RECORD };
 
@@ -123,7 +124,6 @@ export function getPredictiveAccuracy({
           valueAccessor,
           matchUpType,
           scaleName,
-          score,
           sides,
         });
         const valuesGap = Math.abs(sideValues[0].value - sideValues[1].value);
@@ -172,13 +172,20 @@ function getGroupingBands({ zoneData }) {
   return bands;
 }
 
+type GetSideValuesArgs = {
+  valueAccessor: string;
+  exclusionRule?: any;
+  matchUpType: string;
+  scaleName: string;
+  sides: any;
+};
 function getSideValues({
   exclusionRule,
   valueAccessor,
   matchUpType,
   scaleName,
   sides,
-}) {
+}: GetSideValuesArgs) {
   const sortedRange = exclusionRule?.range.sort();
 
   const checkExcludeParticipant = (scaleValue) => {
@@ -193,11 +200,11 @@ function getSideValues({
   return sides
     .sort((a, b) => a.sideNumber - b.sideNumber)
     .map(({ participant }) => {
-      const exclusionValues = [];
+      const exclusionValues: number[] = [];
       const individualParticipants = participant?.individualParticipants;
       if (individualParticipants?.length) {
-        let scaleValues = [];
-        let value = 0;
+        const scaleValues: any[] = [];
+        let value: any = 0;
 
         for (const participant of individualParticipants) {
           const { scaleValue, value: pValue } = getSideValue({
@@ -267,7 +274,7 @@ function getGroupingAccuracy({
   scaleName,
   matchUps,
 }) {
-  const accuracy = { affirmative: [], negative: [], excluded: [] };
+  const accuracy: any = { affirmative: [], negative: [], excluded: [] };
 
   for (const matchUp of matchUps) {
     const { matchUpType, sides, score, winningSide } = matchUp;
@@ -290,7 +297,6 @@ function getGroupingAccuracy({
       valueAccessor,
       matchUpType,
       scaleName,
-      score,
       sides,
     });
 

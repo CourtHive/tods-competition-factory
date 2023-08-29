@@ -42,8 +42,9 @@ export function checkRequestConflicts({
   }
 
   const relevantPersonRequests = personIds
-    .map((personId) =>
-      personRequests[personId]?.map((request) => ({ ...request, personId }))
+    .map(
+      (personId) =>
+        personRequests[personId]?.map((request) => ({ ...request, personId }))
     )
     .filter(Boolean)
     .flat()
@@ -53,7 +54,7 @@ export function checkRequestConflicts({
         sameDay(scheduleDate, request.date)
     );
 
-  const conflicts = [];
+  const conflicts: any[] = [];
   const matchUpId = matchUp?.matchUpId;
   const scheduleStart = timeToDate(
     extractTime(scheduleTime),
