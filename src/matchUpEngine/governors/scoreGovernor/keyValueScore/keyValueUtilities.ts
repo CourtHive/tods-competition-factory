@@ -44,8 +44,22 @@ function removeOutcome({ scoreString }) {
 
   return { scoreString, removed };
 }
-
-export function removeFromScore({ analysis, scoreString, sets, lowSide }) {
+type RemoveFromScoreArgs = {
+  scoreString: string;
+  lowSide?: number;
+  analysis: any;
+  sets: any[];
+};
+export function removeFromScore({
+  analysis,
+  scoreString,
+  sets,
+  lowSide,
+}: RemoveFromScoreArgs): {
+  outcomeRemoved?: boolean;
+  scoreString?: string;
+  sets?: any[];
+} {
   let newScore, newSets;
   if (!scoreString) return { scoreString, sets };
 
@@ -115,8 +129,8 @@ export function removeFromScore({ analysis, scoreString, sets, lowSide }) {
         const highIndex = lowSide === 1 ? 1 : 0;
 
         matchTiebreakScores[highIndex] =
-          matchTiebreakScores[1 - highIndex] + (NoAD ? 1 : 2);
-        if (matchTiebreakScores[highIndex] < tiebreakTo)
+          (matchTiebreakScores?.[1 - highIndex] || 0) + (NoAD ? 1 : 2);
+        if ((matchTiebreakScores[highIndex] || 0) < tiebreakTo)
           matchTiebreakScores[highIndex] = tiebreakTo;
 
         newScore = scoreString.slice(0, lastMatchTiebreakOpenBracketIndex + 1);
@@ -247,11 +261,8 @@ export function lastNumericIndex(str) {
   return arrayIndices.pop();
 }
 
-export function getHighTiebreakValue({
-  lowValue = 0,
-  NoAD = false,
-  tiebreakTo,
-} = {}) {
+export function getHighTiebreakValue(params?) {
+  const { lowValue = 0, NoAD = false, tiebreakTo } = params || {};
   const winBy = NoAD ? 1 : 2;
   if (lowValue + 1 >= tiebreakTo) {
     return lowValue + winBy;
@@ -265,7 +276,7 @@ export function getMatchUpWinner({
   winningSide,
   sets,
 }) {
-  const matchUpScoringFormat = parse(matchUpFormat);
+  const matchUpScoringFormat: any = parse(matchUpFormat);
   const { bestOf } = matchUpScoringFormat;
   const scoreGoal = Math.ceil(bestOf / 2);
   const sideScores = sets?.reduce(

@@ -1,13 +1,21 @@
 import { getStructureLinks } from './linkGetter';
 import { findStructure } from './findStructure';
+import { DrawDefinition } from '../../types/tournamentFromSchema';
 
+type GetSourceStructureDetailArgs = {
+  drawDefinition: DrawDefinition;
+  finishingPosition?: number;
+  targetRoundNumber: number;
+  structureId: string;
+  linkType: string;
+};
 export function getSourceStructureIdsAndRelevantLinks({
   finishingPosition,
   targetRoundNumber,
   drawDefinition,
   structureId, // structure for which source and target links are to be found
   linkType, // only return links which match linkType
-}) {
+}: GetSourceStructureDetailArgs) {
   const { links } =
     getStructureLinks({
       drawDefinition,

@@ -43,7 +43,16 @@ export function processIncompleteSetScore({
   return { sets, scoreString, updated };
 }
 
-function checkValidSide2Score({ analysis, set = {}, value }) {
+type CheckValidSide2ScoreArgs = {
+  analysis: any;
+  value: any;
+  set: any;
+};
+function checkValidSide2Score({
+  analysis,
+  set = {},
+  value,
+}: CheckValidSide2ScoreArgs) {
   const setFormat =
     (analysis.isDecidingSet && analysis.matchUpScoringFormat.finalSetFormat) ||
     analysis.matchUpScoringFormat.setFormat;

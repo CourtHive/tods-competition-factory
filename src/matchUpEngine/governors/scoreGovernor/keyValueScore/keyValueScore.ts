@@ -171,7 +171,6 @@ export function keyValueScore(params) {
       scoreString,
       sets,
       lowSide,
-      auto,
     }));
     if (!scoreString) sets = [];
     matchUpStatus = undefined;
@@ -189,7 +188,6 @@ export function keyValueScore(params) {
         scoreString,
         sets,
         lowSide,
-        auto,
       }));
       matchUpStatus = undefined;
     }

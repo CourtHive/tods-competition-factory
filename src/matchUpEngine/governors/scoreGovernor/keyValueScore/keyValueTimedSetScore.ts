@@ -4,16 +4,9 @@ import { processOutcome } from './processOutcome';
 
 import { BACKSPACE, OUTCOMEKEYS, SCORE_JOINER, SPACE_KEY } from './constants';
 
-export function keyValueTimedSetScore({
-  analysis,
-  lowSide,
-  scoreString,
-  sets,
-  winningSide,
-  matchUpStatus,
-  info,
-  value,
-}) {
+export function keyValueTimedSetScore(params) {
+  let { sets, info, scoreString, winningSide, matchUpStatus } = params;
+  const { analysis, lowSide, value } = params;
   let updated, outcomeRemoved;
   if (!sets?.length && value !== BACKSPACE) sets = [{ setNumber: 1 }];
   const setIndex = sets.length - 1;
