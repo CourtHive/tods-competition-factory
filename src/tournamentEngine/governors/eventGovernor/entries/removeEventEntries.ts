@@ -9,14 +9,23 @@ import {
   MISSING_PARTICIPANT_IDS,
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
 } from '../../../../constants/errorConditionConstants';
+import { Event, Tournament } from '../../../../types/tournamentFromSchema';
+import { HydratedParticipant } from '../../../../types/hydrated';
 
+type RemoveEventEntriesArgs = {
+  tournamentParticipants?: HydratedParticipant[];
+  tournamentRecord?: Tournament;
+  autoEntryPositions?: boolean;
+  participantIds: string[];
+  event: Event;
+};
 export function removeEventEntries({
   autoEntryPositions = true,
   tournamentParticipants,
   tournamentRecord,
   participantIds,
   event,
-}) {
+}: RemoveEventEntriesArgs) {
   const stack = 'removeEventEntries';
   if (!event?.eventId) return { error: MISSING_EVENT };
   if (!Array.isArray(participantIds))
@@ -62,7 +71,7 @@ export function removeEventEntries({
     });
   }
 
-  const participantIdsRemoved = [];
+  const participantIdsRemoved: string[] = [];
 
   event.entries = (event.entries || []).filter((entry) => {
     const keepEntry = !participantIds.includes(entry?.participantId);

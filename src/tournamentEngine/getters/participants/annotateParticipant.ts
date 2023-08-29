@@ -9,31 +9,33 @@ import { intersection } from '../../../utilities';
 
 import { SCALE, SEEDING } from '../../../constants/scaleConstants';
 import { WIN_RATIO } from '../../../constants/statsConstants';
+import { HydratedMatchUp } from '../../../types/hydrated';
 import {
   BYE,
   DEFAULTED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
 
-export function annotateParticipant({
-  withScaleValues = true,
-  eventsPublishStatuses,
-  withEvents = true,
-  withDraws = true,
-  participantIdMap,
-  scheduleAnalysis,
-  derivedDrawInfo,
-  usePublishState,
-  withStatistics,
-  withOpponents,
-  withMatchUps,
-  withSeeding,
-  participant,
-  withISO2,
-  withIOC,
-}) {
-  const scheduleConflicts = [];
-  const scheduleItems = [];
+export function annotateParticipant(params) {
+  const {
+    withScaleValues = true,
+    eventsPublishStatuses,
+    withEvents = true,
+    withDraws = true,
+    participantIdMap,
+    scheduleAnalysis,
+    derivedDrawInfo,
+    usePublishState,
+    withStatistics,
+    withOpponents,
+    withMatchUps,
+    withSeeding,
+    participant,
+    withISO2,
+    withIOC,
+  } = params;
+  const scheduleConflicts: any[] = [];
+  const scheduleItems: any[] = [];
 
   if (withIOC || withISO2)
     addNationalityCode({ participant, withIOC, withISO2 });
@@ -69,8 +71,8 @@ export function annotateParticipant({
     statValue,
   };
 
-  const participantDraws = Object.values(draws);
-  const participantEvents = Object.values(events);
+  const participantDraws: any[] = Object.values(draws);
+  const participantEvents: any[] = Object.values(events);
 
   if (withDraws && participantDraws) {
     participant.draws = participantDraws;
@@ -245,31 +247,34 @@ export function annotateParticipant({
     participant.opponents = participantOpponents;
     participantDraws?.forEach((draw) => {
       draw.opponents = participantOpponents.filter(
-        (opponent) => opponent.drawId === draw.drawId
+        (opponent: any) => opponent.drawId === draw.drawId
       );
     });
   }
 
-  const participantPotentialMatchUps = Object.values(potentialMatchUps);
-  const participantMatchUps = Object.values(matchUps);
+  const participantPotentialMatchUps: HydratedMatchUp[] =
+    Object.values(potentialMatchUps);
+  const participantMatchUps: HydratedMatchUp[] = Object.values(matchUps);
 
   if (withMatchUps) {
     participant.potentialMatchUps = participantPotentialMatchUps;
     participant.matchUps = participantMatchUps;
   }
 
-  const allParticipantMatchUps = participantMatchUps.concat(
+  const allParticipantMatchUps: HydratedMatchUp[] = participantMatchUps.concat(
     participantPotentialMatchUps
   );
 
   // scheduledMatchUps are a participant's matchUps separated by date and sorted by scheduledTime
-  const { scheduledMatchUps } = participantScheduledMatchUps({
-    matchUps: allParticipantMatchUps,
-  });
+  const scheduledMatchUps =
+    participantScheduledMatchUps({
+      matchUps: allParticipantMatchUps,
+    })?.scheduledMatchUps || [];
 
   const { scheduledMinutesDifference } = scheduleAnalysis || {};
 
-  Object.keys(scheduledMatchUps).forEach((date) => {
+  const dates: string[] = Object.keys(scheduledMatchUps);
+  dates.forEach((date) => {
     scheduledMatchUps[date].filter(Boolean).forEach((matchUp, i) => {
       const {
         schedule: {

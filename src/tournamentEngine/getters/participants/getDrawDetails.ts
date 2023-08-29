@@ -3,14 +3,24 @@ import { getDrawStructures } from '../../../drawEngine/getters/findStructure';
 import { structureSort } from '../../../drawEngine/getters/structureSort';
 
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
+import { Entry, Event } from '../../../types/tournamentFromSchema';
 
 // ADD: orderedStructures with stage, stageSequence info
-export function getDrawDetails({ event, eventEntries, sortConfig }) {
+type GetDrawDetailsArgs = {
+  event: Event & { [key: string]: any };
+  eventEntries?: Entry[];
+  sortConfig?: any;
+};
+export function getDrawDetails({
+  eventEntries,
+  sortConfig,
+  event,
+}: GetDrawDetailsArgs) {
   const derivedInfo = {};
 
   const drawDetails = Object.assign(
     {},
-    ...(event.drawDefinitions || []).map((drawDefinition) => {
+    ...(event.drawDefinitions || []).map((drawDefinition: any) => {
       const entriesMap = Object.assign(
         {},
         ...(eventEntries || [])

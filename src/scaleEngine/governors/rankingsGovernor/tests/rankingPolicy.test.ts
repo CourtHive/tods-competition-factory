@@ -70,7 +70,9 @@ const fpMapExpectation = [
     [[0, 0, 0, 0], '31-32', 450],
   ];
 
-const policyDefinitions = { [POLICY_TYPE_RANKING_POINTS]: { awardProfiles } };
+const policyDefinitions: any = {
+  [POLICY_TYPE_RANKING_POINTS]: { awardProfiles },
+};
 
 it('can discover default awardProfiles', () => {
   const awardCriteria = {};
@@ -196,10 +198,12 @@ it.each(scenarios)('supports drawSize thresholds', (scenario) => {
   expect(result.success).toEqual(true);
   const personPoints = result.personPoints;
 
-  let fpMap = getFpMap(participants, personPoints);
+  const fpMap = getFpMap(participants, personPoints);
 
   for (const expectation of scenario.expectations) {
-    let target = fpMap.find((e) => e[positionKey] === expectation.positionKey);
+    const target = fpMap.find(
+      (e) => e[positionKey] === expectation.positionKey
+    );
     if (target) {
       if (expectation.pointTotal) {
         expect(target[pointTotal]).toEqual(expectation.pointTotal);
@@ -267,9 +271,9 @@ it.each(requireWinScenarios)(
 
     result = scaleEngine.getTournamentPoints({ policyDefinitions });
     expect(result.success).toEqual(true);
-    let personPoints = result.personPoints;
+    const personPoints = result.personPoints;
 
-    let fpMap = getFpMap(participants, personPoints);
+    const fpMap = getFpMap(participants, personPoints);
     const totalPointsAwarded = fpMap
       .map((entry) => entry[pointTotal])
       .reduce((a, b) => (a || 0) + (b || 0), 0);

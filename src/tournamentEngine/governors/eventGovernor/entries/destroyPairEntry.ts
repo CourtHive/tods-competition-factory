@@ -1,7 +1,6 @@
 import { destroyGroupEntry } from './destroyGroupEntry';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../../constants/errorConditionConstants';
-import { UNGROUPED } from '../../../../constants/entryStatusConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 
 /**
@@ -24,7 +23,7 @@ export function destroyPairEntry({
 }) {
   return destroyGroupEntry({
     removeGroupParticipant,
-    individualEntryStatus: UNGROUPED,
+    // individualEntryStatus: UNGROUPED,
     tournamentRecord,
     drawDefinition,
     participantId,
@@ -39,7 +38,7 @@ export function destroyPairEntries(params) {
   const { participantIds, ...rest } = params;
 
   let destroyedCount = 0;
-  const errors = [];
+  const errors: any[] = [];
 
   for (const participantId of participantIds) {
     const result = destroyGroupEntry({ participantId, ...rest });

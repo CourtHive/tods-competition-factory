@@ -22,8 +22,8 @@ export function getScaleValues({ participant }) {
         .filter((timeItem) => timeItem?.itemType === scaleType)
         .sort(
           (a, b) =>
-            new Date(a.createdAt || undefined) -
-            new Date(b.createdAt || undefined)
+            new Date(a.createdAt || undefined).getTime() -
+            new Date(b.createdAt || undefined).getTime()
         )
         .pop();
 

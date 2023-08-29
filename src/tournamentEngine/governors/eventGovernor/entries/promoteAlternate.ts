@@ -150,7 +150,7 @@ function promoteWithinElement({
       });
     }
 
-    let maxEntryPosition = Math.max(
+    const maxEntryPosition = Math.max(
       ...element.entries
         .filter(
           (entry) =>

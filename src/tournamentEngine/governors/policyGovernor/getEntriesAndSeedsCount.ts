@@ -3,7 +3,16 @@ import { getStageEntries } from '../../getters/participants/getStageEntries';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { getSeedsCount } from './getSeedsCount';
 
-import { MISSING_EVENT } from '../../../constants/errorConditionConstants';
+import {
+  ErrorType,
+  MISSING_EVENT,
+} from '../../../constants/errorConditionConstants';
+import {
+  DrawDefinition,
+  Event,
+  Entry,
+  StageTypeEnum,
+} from '../../../types/tournamentFromSchema';
 
 /**
  *
@@ -16,6 +25,14 @@ import { MISSING_EVENT } from '../../../constants/errorConditionConstants';
  *
  * @returns {object} - { entries, seedsCount, stageEntries } or { error }
  */
+type GetEntriesAndSeedsCountArgs = {
+  drawDefinition: DrawDefinition;
+  policyDefinitions: any;
+  stage: StageTypeEnum;
+  drawSize?: number;
+  drawId?: string;
+  event: Event;
+};
 export function getEntriesAndSeedsCount({
   policyDefinitions,
   drawDefinition,
@@ -23,7 +40,12 @@ export function getEntriesAndSeedsCount({
   drawId,
   event,
   stage,
-}) {
+}: GetEntriesAndSeedsCountArgs): {
+  stageEntries?: Entry[];
+  seedsCount?: number;
+  entries?: Entry[];
+  error?: ErrorType;
+} {
   if (!event) return { error: MISSING_EVENT };
 
   const { entries, stageEntries } = getStageEntries({

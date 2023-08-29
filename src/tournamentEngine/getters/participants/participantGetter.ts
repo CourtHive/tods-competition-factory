@@ -1,12 +1,17 @@
 import { findParticipant } from '../../../global/functions/deducers/findParticipant';
 import { makeDeepCopy } from '../../../utilities';
 
+import { Participant } from '../../../types/tournamentFromSchema';
 import {
+  ErrorType,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
 
-export function findTournamentParticipant({ tournamentRecord, participantId }) {
+export function findTournamentParticipant({
+  tournamentRecord,
+  participantId,
+}): { error?: ErrorType; participant?: Participant } {
   const participants = tournamentRecord.participants || [];
   const participant = participants.reduce((participant, candidate) => {
     return candidate.participantId === participantId ? candidate : participant;
@@ -19,7 +24,6 @@ export function publicFindParticipant({
   policyDefinitions,
   convertExtensions,
   participantId,
-  inContext,
   personId,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -32,7 +36,6 @@ export function publicFindParticipant({
     policyDefinitions,
     participantId,
     personId,
-    inContext,
   });
   return { participant: makeDeepCopy(participant, convertExtensions, true) };
 }

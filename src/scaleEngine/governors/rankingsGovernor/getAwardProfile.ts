@@ -1,14 +1,15 @@
-export function getAwardProfile({
-  participation = {},
-  awardProfiles,
-  startDate,
-  eventType,
-  drawSize,
-  drawType,
-  category,
-  endDate,
-  level,
-}) {
+export function getAwardProfile(params) {
+  const {
+    participation = {},
+    awardProfiles,
+    startDate,
+    eventType,
+    drawSize,
+    drawType,
+    category,
+    endDate,
+    level,
+  } = params;
   const { participationOrder, flightNumber, rankingStage } = participation;
 
   const isValidDateRange = (profile) => {

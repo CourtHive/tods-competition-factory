@@ -32,7 +32,7 @@ export function addStructureParticipation({
   const structureParticipation =
     participantAggregator.structureParticipation[structureId];
 
-  const { winner, loser } = matchUpFinishingPositionRanges;
+  const { winner, loser } = matchUpFinishingPositionRanges as any;
   const finishingPositionRange = participantWon ? winner : loser;
   if (participantWon) {
     structureParticipation.winCount += 1;
@@ -44,13 +44,14 @@ export function addStructureParticipation({
     }
   }
 
-  if (finishingPositionRange && (
-      !structureParticipation.finishingPositionRange ||
+  if (
+    finishingPositionRange &&
+    (!structureParticipation.finishingPositionRange ||
       diff(finishingPositionRange) <
-        diff(structureParticipation.finishingPositionRange)
-    )) {
-      structureParticipation.finishingPositionRange = finishingPositionRange;
-    }
+        diff(structureParticipation.finishingPositionRange))
+  ) {
+    structureParticipation.finishingPositionRange = finishingPositionRange;
+  }
 
   if (finishingRound) {
     if (

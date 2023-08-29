@@ -29,28 +29,29 @@ import {
  * @param {boolean} usePublishState - when hydrating participants consider publish state (currently applies to seeding)
  *
  */
-export function getTournamentParticipants({
-  participantFilters = {},
-  convertExtensions,
-  policyDefinitions,
-  withScheduleItems,
-  scheduleAnalysis,
-  withSignInStatus,
-  withTeamMatchUps, // not implemented
-  tournamentRecord,
-  usePublishState,
-  withScaleValues,
-  withStatistics,
-  withGroupings,
-  withOpponents,
-  withMatchUps,
-  withSeeding,
-  withEvents,
-  withDraws,
-  inContext,
-  withISO2,
-  withIOC,
-}) {
+export function getTournamentParticipants(params) {
+  const {
+    participantFilters = {},
+    convertExtensions,
+    policyDefinitions,
+    withScheduleItems,
+    scheduleAnalysis,
+    withSignInStatus,
+    withTeamMatchUps, // not implemented
+    tournamentRecord,
+    usePublishState,
+    withScaleValues,
+    withStatistics,
+    withGroupings,
+    withOpponents,
+    withMatchUps,
+    withSeeding,
+    withEvents,
+    withDraws,
+    inContext,
+    withISO2,
+    withIOC,
+  } = params;
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.participants) return { error: MISSING_PARTICIPANTS };
 
