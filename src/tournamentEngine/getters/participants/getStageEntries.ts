@@ -12,7 +12,7 @@ type GetStageEntriesArgs = {
   entryStatuses?: EntryStatusEnum[];
   drawDefinition: DrawDefinition;
   selected?: boolean;
-  drawId: string;
+  drawId?: string;
   stage?: string;
   event: Event;
 };

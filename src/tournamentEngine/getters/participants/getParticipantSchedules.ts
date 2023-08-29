@@ -1,16 +1,21 @@
 import { getMatchUpDependencies } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/getMatchUpDependencies';
 import { allTournamentMatchUps } from '../matchUpsGetter/matchUpsGetter';
 
+import { Tournament } from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_OBJECT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 
+type GetParticipantSchedulesArgs = {
+  tournamentRecord: Tournament;
+  participantFilters?: any;
+};
 export function getParticipantSchedules({
   participantFilters = {},
   tournamentRecord,
-}) {
+}: GetParticipantSchedulesArgs) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
   if (typeof participantFilters !== 'object')
@@ -30,10 +35,11 @@ export function getParticipantSchedules({
     ({ schedule }) => schedule && Object.keys(schedule).length
   );
 
-  const { sourceMatchUpIds } = getMatchUpDependencies({
-    tournamentRecord,
-    matchUps,
-  });
+  const sourceMatchUpIds =
+    getMatchUpDependencies({
+      tournamentRecord,
+      matchUps,
+    }).sourceMatchUpIds || [];
 
   const participantAggregator = {};
   for (const matchUp of scheduledMatchUps) {
@@ -59,6 +65,7 @@ export function getParticipantSchedules({
                 .filter(({ winningSide, bye }) => !winningSide && !bye);
             }
           }
+          return undefined;
         })
         .filter(Boolean)
         .flat() || [];
@@ -102,20 +109,19 @@ export function getParticipantSchedules({
     }
   }
 
-  const participantSchedules = Object.values(participantAggregator).filter(
-    ({ participant }) => {
-      return !(
-        (participantFilters.participantIds &&
-          !participantFilters.participantIds.includes(
-            participant.participantId
-          )) ||
-        (participantFilters.participantTypes &&
-          !participantFilters.participantTypes.includes(
-            participant.participantType
-          ))
-      );
-    }
-  );
+  const aggregators: any[] = Object.values(participantAggregator);
+  const participantSchedules = aggregators.filter(({ participant }) => {
+    return !(
+      (participantFilters.participantIds &&
+        !participantFilters.participantIds.includes(
+          participant.participantId
+        )) ||
+      (participantFilters.participantTypes &&
+        !participantFilters.participantTypes.includes(
+          participant.participantType
+        ))
+    );
+  });
 
   return {
     participantSchedules,

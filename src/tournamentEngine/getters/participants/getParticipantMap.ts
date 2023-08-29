@@ -5,6 +5,7 @@ import { getScaleValues } from './getScaleValues';
 
 import { POLICY_TYPE_PARTICIPANT } from '../../../constants/policyConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
+import { HydratedParticipant } from '../../../types/hydrated';
 import {
   GROUP,
   PAIR,
@@ -39,7 +40,7 @@ export function getParticipantMap({
   const participantAttributes = policyDefinitions?.[POLICY_TYPE_PARTICIPANT];
   const filterAttributes = participantAttributes?.participant;
 
-  const participantMap = {};
+  const participantMap: { [key: string]: any } = {};
   // initialize all participants first, to preserve order
   for (const participant of tournamentRecord.participants || []) {
     const participantId = participant?.participantId;
@@ -114,7 +115,9 @@ function signedIn(participant) {
 }
 
 function addIndividualParticipants({ participantMap }) {
-  for (const { participant } of Object.values(participantMap)) {
+  const participantObjects: any[] = Object.values(participantMap);
+  for (const participantObject of participantObjects) {
+    const participant = participantObject.participant as HydratedParticipant;
     if (participant.individualParticipantIds?.length) {
       participant.individualParticipants = [];
       for (const participantId of participant.individualParticipantIds) {

@@ -17,6 +17,8 @@ import { UNGROUPED, UNPAIRED } from '../../../constants/entryStatusConstants';
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { WIN_RATIO } from '../../../constants/statsConstants';
+import { HydratedMatchUp } from '../../../types/hydrated';
+import { MappedMatchUps } from '../../../drawEngine/getters/getMatchUps/getMatchUpsMap';
 
 export function getParticipantEntries(params) {
   const {
@@ -79,12 +81,12 @@ export function getParticipantEntries(params) {
     withSeeding,
   };
 
-  const participantIdsWithConflicts = [];
+  const participantIdsWithConflicts: string[] = [];
   const eventsPublishStatuses = {};
-  const derivedEventInfo = {};
-  const derivedDrawInfo = {};
-  const mappedMatchUps = {};
-  const matchUps = [];
+  const derivedEventInfo: any = {};
+  const derivedDrawInfo: any = {};
+  const mappedMatchUps: MappedMatchUps = {};
+  const matchUps: HydratedMatchUp[] = [];
 
   const getRanking = ({ eventType, scaleNames, participantId }) =>
     participantMap[participantId].participant?.rankings?.[eventType]?.find(
@@ -203,9 +205,8 @@ export function getParticipantEntries(params) {
           entries,
           drawId,
         } = drawDefinition;
-        const flightNumber = flights?.find(
-          (flight) => flight.drawId === drawId
-        )?.flightNumber;
+        const flightNumber = flights?.find((flight) => flight.drawId === drawId)
+          ?.flightNumber;
 
         const scaleNames = [
           category?.categoryName,
@@ -513,7 +514,8 @@ export function getParticipantEntries(params) {
   }
 
   if (withStatistics || withRankingProfile || !!scheduleAnalysis) {
-    for (const participantAggregator of Object.values(participantMap)) {
+    const aggregators: any[] = Object.values(participantMap);
+    for (const participantAggregator of aggregators) {
       const {
         wins,
         losses,
@@ -608,7 +610,7 @@ export function getParticipantEntries(params) {
         }, {});
 
         // sort scheduleItems for each date
-        Object.values(dateItems).forEach((items) => items.sort(timeSort));
+        Object.values(dateItems).forEach((items: any) => items.sort(timeSort));
 
         for (const scheduleItem of scheduleItems) {
           const {
