@@ -9,18 +9,40 @@ import { PERSON_REQUESTS } from '../../../../constants/extensionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { DO_NOT_SCHEDULE } from '../../../../constants/requestConstants';
 import {
+  ErrorType,
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../../../constants/errorConditionConstants';
+import { Tournament } from '../../../../types/tournamentFromSchema';
 
-export function getPersonRequests({ tournamentRecords, requestType }) {
+type Request = {
+  requestType: string;
+  requestId: string;
+  startTime: string;
+  endTime: string;
+  date: string;
+};
+type PersonRequests = {
+  [key: string]: Request[];
+};
+type GetPersonRequestsArgs = {
+  tournamentRecords: { [key: string]: Tournament };
+  requestType?: string;
+};
+export function getPersonRequests({
+  tournamentRecords,
+  requestType,
+}: GetPersonRequestsArgs): {
+  personRequests?: PersonRequests;
+  error?: ErrorType;
+} {
   if (
     typeof tournamentRecords !== 'object' ||
     !Object.keys(tournamentRecords).length
   )
     return { error: MISSING_TOURNAMENT_RECORDS };
 
-  const personRequests = {};
+  const personRequests: PersonRequests = {};
 
   // create merged view of person requests across tournamentRecords
   // ... possible for a person to be in multiple linked tournamentRecords
@@ -50,12 +72,21 @@ export function getPersonRequests({ tournamentRecords, requestType }) {
   return { personRequests };
 }
 
-export function savePersonRequests({ tournamentRecords, personRequests }) {
+type SavePersonRequestsArgs = {
+  tournamentRecords: { [key: string]: Tournament };
+  personRequests?: PersonRequests;
+};
+export function savePersonRequests({
+  tournamentRecords,
+  personRequests,
+}: SavePersonRequestsArgs) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
+  if (!personRequests) return { ...SUCCESS };
 
-  for (const tournamentRecord of Object.values(tournamentRecords)) {
-    const { participants: tournamentParticipants } = tournamentRecord;
-    const relevantPersonRequests = [];
+  const tournaments = Object.values(tournamentRecords);
+  for (const tournamentRecord of tournaments) {
+    const tournamentParticipants = tournamentRecord.participants || [];
+    const relevantPersonRequests: any[] = [];
     for (const personId of Object.keys(personRequests)) {
       if (findParticipant({ tournamentParticipants, personId })) {
         const requests = personRequests[personId];
@@ -76,16 +107,16 @@ export function savePersonRequests({ tournamentRecords, personRequests }) {
   return { ...SUCCESS };
 }
 
-/*
-  request = {
-    date,
-    startTime,
-    endTime,
-    requestType: 'DO_NOT_SCHEDULE' // required
-  }
-*/
-
-export function addPersonRequests({ tournamentRecords, personId, requests }) {
+type AddPersonRequestsArgs = {
+  tournamentRecords: { [key: string]: Tournament };
+  requests: Request[];
+  personId: string;
+};
+export function addPersonRequests({
+  tournamentRecords,
+  personId,
+  requests,
+}: AddPersonRequestsArgs) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (typeof personId !== 'string') return { error: INVALID_VALUES };
   if (!Array.isArray(requests)) return { error: INVALID_VALUES };
@@ -98,7 +129,7 @@ export function addPersonRequests({ tournamentRecords, personId, requests }) {
     requests,
   });
 
-  if (mergeCount) {
+  if (mergeCount && personRequests) {
     return savePersonRequests({ tournamentRecords, personRequests });
   } else {
     return { error: INVALID_VALUES };
@@ -117,15 +148,15 @@ function mergePersonRequests({ personRequests, personId, requests }) {
   const filteredRequests = requests
     .filter(({ requestType }) => requestType)
     .map((request) => {
-      let { date, requestType, startTime, endTime } = request;
+      let { date, startTime, endTime } = request;
 
       // validate requestType
-      if (requestType === DO_NOT_SCHEDULE) {
+      if (request.requestType === DO_NOT_SCHEDULE) {
         date = extractDate(date);
         startTime = extractTime(startTime);
         endTime = extractTime(endTime);
         if (date && startTime && endTime) {
-          return { date, startTime, endTime, requestType };
+          return { date, startTime, endTime, requestType: request.requestType };
         }
       }
       return request;
@@ -157,29 +188,32 @@ export function removePersonRequests({
 
   const { personRequests } = getPersonRequests({ tournamentRecords });
   const filterRequests = (personId) => {
-    personRequests[personId] = personRequests[personId].filter((request) => {
-      return (
-        (!requestType || request.requestType !== requestType) &&
-        (!requestId || request.requestId !== requestId) &&
-        (!date || request.date !== date)
-      );
-    });
-    if (!personRequests[personId].length) delete personRequests[personId];
+    if (personRequests) {
+      personRequests[personId] = personRequests[personId].filter((request) => {
+        return (
+          (!requestType || request.requestType !== requestType) &&
+          (!requestId || request.requestId !== requestId) &&
+          (!date || request.date !== date)
+        );
+      });
+
+      if (!personRequests?.[personId]?.length) delete personRequests[personId];
+    }
   };
 
   const removeAll = !requestType && !requestId && !personId && !date;
 
   if (!removeAll) {
-    if (personId && personRequests[personId]) {
+    if (personId && personRequests?.[personId]) {
       filterRequests(personId);
-    } else {
+    } else if (personRequests) {
       for (const personId of Object.keys(personRequests)) {
         filterRequests(personId);
       }
     }
   }
 
-  if (removeAll || !Object.keys(personRequests).length) {
+  if (removeAll || !personRequests || !Object.keys(personRequests).length) {
     return removeExtension({ tournamentRecords, name: PERSON_REQUESTS });
   } else {
     return savePersonRequests({ tournamentRecords, personRequests });
@@ -201,25 +235,27 @@ export function modifyPersonRequests({
 
   const { personRequests } = getPersonRequests({ tournamentRecords });
   const modifyRequests = (personId) => {
-    personRequests[personId] = personRequests[personId]
-      .map((request) => {
-        // if requestId not in requestIds then return unmodified
-        if (!requestIds.includes(request.requestId)) return request;
+    if (personRequests) {
+      personRequests[personId] = personRequests[personId]
+        .map((request) => {
+          // if requestId not in requestIds then return unmodified
+          if (!requestIds.includes(request.requestId)) return request;
 
-        // find the updatedRequest
-        const modification = requests.find(
-          (updatedRequest) => updatedRequest.requestId === request.requestId
-        );
-        // FEATURE: returning an updatedRequest without a requestType will remove it
-        if (!modification.requestType) return;
+          // find the updatedRequest
+          const modification = requests.find(
+            (updatedRequest) => updatedRequest.requestId === request.requestId
+          );
+          // FEATURE: returning an updatedRequest without a requestType will remove it
+          if (!modification.requestType) return;
 
-        return Object.assign(request, modification);
-      })
-      .filter(Boolean);
+          return Object.assign(request, modification);
+        })
+        .filter(Boolean);
+    }
   };
-  if (personId && personRequests[personId]) {
+  if (personId && personRequests?.[personId]) {
     modifyRequests(personId);
-  } else {
+  } else if (personRequests) {
     for (const personId of Object.keys(personRequests)) {
       modifyRequests(personId);
     }

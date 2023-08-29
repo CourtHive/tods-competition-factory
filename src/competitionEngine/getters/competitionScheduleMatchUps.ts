@@ -8,12 +8,25 @@ import {
   getTournamentTimeItem,
 } from '../../tournamentEngine/governors/queryGovernor/timeItems';
 
-import { MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
+import {
+  ErrorType,
+  MISSING_TOURNAMENT_RECORDS,
+} from '../../constants/errorConditionConstants';
 import { PUBLIC, PUBLISH, STATUS } from '../../constants/timeItemConstants';
 import { COMPLETED } from '../../constants/matchUpStatusConstants';
 import { TournamentRecordsArgs } from '../../types/factoryTypes';
+import { Venue } from '../../types/tournamentFromSchema';
+import { HydratedMatchUp } from '../../types/hydrated';
 
-export function competitionScheduleMatchUps(params) {
+export function competitionScheduleMatchUps(params): {
+  completedMatchUps?: HydratedMatchUp[];
+  dateMatchUps?: HydratedMatchUp[];
+  courtPrefix?: string;
+  error?: ErrorType;
+  venues?: Venue[];
+  courtsData?: any;
+  rows?: any[];
+} {
   if (
     typeof params?.tournamentRecords !== 'object' ||
     !Object.keys(params?.tournamentRecords).length

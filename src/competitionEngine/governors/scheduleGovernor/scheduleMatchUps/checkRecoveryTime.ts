@@ -32,7 +32,7 @@ export function checkRecoveryTime({
         participantId,
       });
 
-      let profile = individualParticipantProfiles[participantId];
+      const profile = individualParticipantProfiles[participantId];
       if (!profile.timeAfterRecovery) return true;
 
       // details are provided by jinnScheduler and this enables treating a participant's scheduled matchUps as "bookings"
