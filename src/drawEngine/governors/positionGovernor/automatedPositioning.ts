@@ -3,7 +3,10 @@ import { getSeedPattern, getValidSeedBlocks } from '../../getters/seedGetter';
 import { positionUnseededParticipants } from './positionUnseededParticipants';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { decorateResult } from '../../../global/functions/decorateResult';
-import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
+import {
+  MatchUpsMap,
+  getMatchUpsMap,
+} from '../../getters/getMatchUps/getMatchUpsMap';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import { getQualifiersCount } from '../../getters/getQualifiersCount';
@@ -18,14 +21,38 @@ import {
   enableNotifications,
 } from '../../../global/state/globalState';
 
+import { HydratedMatchUp, HydratedParticipant } from '../../../types/hydrated';
 import { DIRECT_ENTRY_STATUSES } from '../../../constants/entryStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   LUCKY_DRAW,
   WATERFALL,
 } from '../../../constants/drawDefinitionConstants';
+import {
+  DrawDefinition,
+  Event,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
 // TODO: Throw an error if an attempt is made to automate positioning for a structure that already has completed matchUps
+type AutomatedPositioningArgs = {
+  inContextDrawMatchUps?: HydratedMatchUp[];
+  participants?: HydratedParticipant[];
+  provisionalPositioning?: boolean;
+  tournamentRecord?: Tournament;
+  drawDefinition: DrawDefinition;
+  multipleStructures?: boolean;
+  applyPositioning?: boolean;
+  matchUpsMap?: MatchUpsMap;
+  appliedPolicies?: any;
+  placeByes?: boolean;
+  seedingProfile?: any;
+  structureId: string;
+  seedsOnly?: boolean;
+  seedLimit?: number;
+  drawType?: string;
+  event?: Event;
+};
 export function automatedPositioning({
   applyPositioning = true,
   provisionalPositioning,
@@ -43,7 +70,7 @@ export function automatedPositioning({
   seedsOnly,
   drawType,
   event,
-}) {
+}: AutomatedPositioningArgs) {
   const positioningReport: any[] = [];
 
   //-----------------------------------------------------------

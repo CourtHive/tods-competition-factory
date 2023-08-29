@@ -29,7 +29,7 @@ import {
   VOLUNTARY_CONSOLATION,
 } from '../../../constants/drawDefinitionConstants';
 
-export function generateVoluntaryConsolation(params = {}) {
+export function generateVoluntaryConsolation(params) {
   const {
     drawType = SINGLE_ELIMINATION,
     attachConsolation = true,
@@ -40,9 +40,9 @@ export function generateVoluntaryConsolation(params = {}) {
     placeByes,
     isMock,
     event,
-  } = params;
+  } = params || {};
 
-  let { drawDefinition } = params;
+  let drawDefinition = params?.drawDefinition;
 
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
@@ -120,7 +120,7 @@ export function generateVoluntaryConsolation(params = {}) {
   const generatorResult = generator?.();
   if (generatorResult.error) return generatorResult;
 
-  let { structures, links } = generatorResult;
+  const { structures, links } = generatorResult;
 
   const matchUps = structures
     .map((structure) => getAllStructureMatchUps({ structure }).matchUps)

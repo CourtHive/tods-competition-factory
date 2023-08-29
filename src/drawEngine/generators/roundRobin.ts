@@ -27,7 +27,7 @@ type GenerateRoundRobinArgs = {
   structureOptions?: any;
   appliedPolicies?: any;
   matchUpType: TypeEnum;
-  roundTarget?: string;
+  roundTarget?: number;
   seedingProfile?: any;
   structureId: string;
   drawSize: number;
