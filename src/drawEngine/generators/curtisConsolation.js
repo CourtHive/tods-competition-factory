@@ -12,18 +12,19 @@ import {
   LOSER,
 } from '../../constants/drawDefinitionConstants';
 
-export function generateCurtisConsolation({
-  finishingPositionOffset,
-  structureName = MAIN,
-  stageSequence = 1,
-  staggeredEntry,
-  matchUpType,
-  structureId,
-  idPrefix,
-  drawSize,
-  isMock,
-  uuids,
-}) {
+export function generateCurtisConsolation(params) {
+  const {
+    finishingPositionOffset,
+    structureName = MAIN,
+    stageSequence = 1,
+    staggeredEntry,
+    matchUpType,
+    structureId,
+    idPrefix,
+    drawSize,
+    isMock,
+    uuids,
+  } = params;
   const mainParams = {
     finishingPositionOffset,
     matchUpType,

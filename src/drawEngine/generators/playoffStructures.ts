@@ -3,8 +3,16 @@ import { feedInMatchUps } from './feedInMatchUps';
 import { treeMatchUps } from './eliminationTree';
 import { generateRange } from '../../utilities';
 
-import { MAIN, TOP_DOWN, LOSER } from '../../constants/drawDefinitionConstants';
+import { ErrorType } from '../../constants/errorConditionConstants';
+import { MAIN } from '../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
+import {
+  DrawLink,
+  LinkTypeEnum,
+  MatchUp,
+  PositioningProfileEnum,
+  Structure,
+} from '../../types/tournamentFromSchema';
 
 /**
  *
@@ -21,29 +29,37 @@ import { SUCCESS } from '../../constants/resultConstants';
  * @param {string} stage - [QUALIFYING, MAIN, CONSOLATION, PLAY-OFF]
  *
  */
-export function generatePlayoffStructures({
-  finishingPositionOffset = 0,
-  addNameBaseToAttributeName,
-  playoffStructureNameBase,
-  finishingPositionNaming,
-  finishingPositionLimit,
-  playoffAttributes,
-  stageSequence = 1,
-  exitProfile = '0',
-  exitProfileLimit,
-  roundOffsetLimit,
-  roundOffset = 0,
-  drawDefinition,
-  staggeredEntry, // not propagated to child structurs
-  sequenceLimit,
-  stage = MAIN,
-  structureId,
-  matchUpType,
-  idPrefix,
-  drawSize,
-  isMock,
-  uuids,
-}) {
+export function generatePlayoffStructures(params): {
+  structures?: Structure[];
+  structureName?: string;
+  structureId?: string;
+  matchUps?: MatchUp[];
+  links?: DrawLink[];
+  error?: ErrorType;
+} {
+  let { matchUpType } = params;
+  const {
+    finishingPositionOffset = 0,
+    addNameBaseToAttributeName,
+    playoffStructureNameBase,
+    finishingPositionNaming,
+    finishingPositionLimit,
+    playoffAttributes,
+    stageSequence = 1,
+    exitProfile = '0',
+    exitProfileLimit,
+    roundOffsetLimit,
+    roundOffset = 0,
+    drawDefinition,
+    staggeredEntry, // not propagated to child structurs
+    sequenceLimit,
+    stage = MAIN,
+    structureId,
+    idPrefix,
+    drawSize,
+    isMock,
+    uuids,
+  } = params;
   const generateStructure =
     !playoffAttributes || !exitProfileLimit || playoffAttributes?.[exitProfile];
 
@@ -54,9 +70,9 @@ export function generatePlayoffStructures({
   )
     return {};
 
-  const allMatchUps = [];
-  const structures = [];
-  const links = [];
+  const allMatchUps: any[] = [];
+  const structures: Structure[] = [];
+  const links: DrawLink[] = [];
 
   matchUpType = matchUpType || drawDefinition?.matchUpType;
 
@@ -161,21 +177,23 @@ export function generatePlayoffStructures({
       stage,
     });
 
-    const link = {
-      linkType: LOSER,
-      source: {
-        roundNumber,
-        structureId: structure?.structureId,
-      },
-      target: {
-        roundNumber: 1,
-        feedProfile: TOP_DOWN,
-        structureId: targetStructureId,
-      },
-    };
+    if (structure.structureId && targetStructureId) {
+      const link = {
+        linkType: LinkTypeEnum.Loser,
+        source: {
+          roundNumber,
+          structureId: structure.structureId,
+        },
+        target: {
+          roundNumber: 1,
+          feedProfile: PositioningProfileEnum.TopDown,
+          structureId: targetStructureId,
+        },
+      };
 
-    if (structure && targetStructureId) childLinks.push(link);
-    if (childLinks?.length) links.push(...childLinks);
+      if (childLinks && structure) childLinks.push(link);
+      if (childLinks?.length) links.push(...childLinks);
+    }
     if (childStructures?.length) structures.push(...childStructures);
     if (childMatchUps?.length) allMatchUps.push(...childMatchUps);
 

@@ -88,10 +88,10 @@ export function generateTieMatchUpScore(params): TieMatchUpScore | ResultType {
     const group = groupValueGroups[groupNumber];
     const {
       allGroupMatchUpsCompleted,
-      groupValue,
       matchUpCount,
-      sideWins,
       winCriteria,
+      groupValue,
+      sideWins,
       values,
     } = group;
 

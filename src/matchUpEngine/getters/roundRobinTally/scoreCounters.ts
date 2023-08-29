@@ -60,8 +60,8 @@ interface CountGames {
 }
 
 export function countGames({
-  winningSide: matchUpWinningSide,
   matchUpFormat = FORMAT_STANDARD,
+  winningSide: matchUpWinningSide,
   matchUpStatus,
   tallyPolicy,
   score,
@@ -95,8 +95,7 @@ export function countGames({
       const based = parsedMatchUpFormat?.[whichFormat]?.based;
       const isTiebreakSet = parsedMatchUpFormat?.[whichFormat].tiebreakSet;
 
-      const { side1Score, side2Score, side1TiebreakScore, side2TiebreakScore } =
-        set;
+      const { side1Score, side2Score } = set;
 
       if (isGamesBased(based)) {
         gamesTally[0].push(ensureInt(side1Score || 0));
@@ -104,15 +103,17 @@ export function countGames({
       }
 
       // count a tiebreak as a game won
-      if (
-        !based &&
-        !isTiebreakSet &&
-        set.winningSide &&
-        (side1TiebreakScore || side2TiebreakScore) &&
-        tallyPolicy?.gamesCreditForTiebreaks !== false
-      ) {
-        gamesTally[set.winningSide - 1].push(1);
-      }
+      /*
+       *if (
+       *  !based &&
+       *  !isTiebreakSet &&
+       *  set.winningSide &&
+       *  (side1TiebreakScore || side2TiebreakScore) &&
+       *  tallyPolicy?.gamesCreditForTiebreaks !== false
+       *) {
+       *  gamesTally[set.winningSide - 1].push(1);
+       *}
+       */
 
       // count a tiebreak set also as a game won
       if (
