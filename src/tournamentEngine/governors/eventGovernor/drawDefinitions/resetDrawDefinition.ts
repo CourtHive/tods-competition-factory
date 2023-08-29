@@ -21,6 +21,7 @@ import {
   SCHEDULED_TIME,
   ALLOCATE_COURTS,
 } from '../../../../constants/timeItemConstants';
+import { TimeItem } from '../../../../types/tournamentFromSchema';
 
 export function resetDrawDefinition({
   tournamentRecord,
@@ -70,47 +71,51 @@ export function resetDrawDefinition({
     for (const inContextMatchUp of inContextMatchUps) {
       const { matchUpId, roundNumber, sides } = inContextMatchUp;
       const matchUp = getRawMatchUp(matchUpId);
-      delete matchUp.extensions;
-      delete matchUp.notes;
+      if (matchUp) {
+        delete matchUp.extensions;
+        delete matchUp.notes;
 
-      if (matchUp.matchUpStatus !== BYE) {
-        Object.assign(matchUp, toBePlayed);
+        if (matchUp.matchUpStatus !== BYE) {
+          Object.assign(matchUp, toBePlayed);
+        }
+
+        if (roundNumber && roundNumber > 1 && matchUp.drawPositions) {
+          const fedDrawPositions = sides
+            ?.map(
+              ({ drawPosition, participantFed }) =>
+                !participantFed && drawPosition
+            )
+            .filter(Boolean);
+          const drawPositions = matchUp.drawPositions.map((drawPosition) =>
+            !fedDrawPositions.includes(drawPosition) ? drawPosition : undefined
+          ) as number[];
+          matchUp.drawPositions = drawPositions;
+        }
+
+        if (removeScheduling) {
+          delete matchUp.timeItems;
+        } else if (matchUp.timeItems?.length) {
+          matchUp.timeItems = matchUp.timeItems.filter(
+            (timeItem: TimeItem) =>
+              timeItem.itemType &&
+              ![
+                ALLOCATE_COURTS,
+                ASSIGN_COURT,
+                ASSIGN_VENUE,
+                ASSIGN_OFFICIAL,
+                SCHEDULED_DATE,
+                SCHEDULED_TIME,
+              ].includes(timeItem.itemType)
+          );
+        }
+
+        modifyMatchUpNotice({
+          tournamentId: tournamentRecord?.tournamentId,
+          context: 'resetDrawDefiniton',
+          drawDefinition,
+          matchUp,
+        });
       }
-
-      if (roundNumber && roundNumber > 1 && matchUp.drawPositions) {
-        const fedDrawPositions = sides
-          ?.map(
-            ({ drawPosition, participantFed }) =>
-              !participantFed && drawPosition
-          )
-          .filter(Boolean);
-        matchUp.drawPositions = matchUp.drawPositions.map((drawPosition) =>
-          !fedDrawPositions.includes(drawPosition) ? drawPosition : undefined
-        );
-      }
-
-      if (removeScheduling) {
-        delete matchUp.timeItems;
-      } else if (matchUp.timeItems?.length) {
-        matchUp.timeItems = matchUp.timeItems.filter(
-          (timeItem) =>
-            ![
-              ALLOCATE_COURTS,
-              ASSIGN_COURT,
-              ASSIGN_VENUE,
-              ASSIGN_OFFICIAL,
-              SCHEDULED_DATE,
-              SCHEDULED_TIME,
-            ].includes(timeItem.itemType)
-        );
-      }
-
-      modifyMatchUpNotice({
-        tournamentId: tournamentRecord?.tournamentId,
-        context: 'resetDrawDefiniton',
-        drawDefinition,
-        matchUp,
-      });
     }
   }
 
