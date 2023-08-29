@@ -6,10 +6,12 @@ import { arrayIndices } from '../../../../utilities/arrays';
 import { removeEventEntries } from './removeEventEntries';
 import { addEventEntries } from './addEventEntries';
 
+import { UNGROUPED } from '../../../../constants/entryStatusConstants';
 import { TEAM, DOUBLES } from '../../../../constants/eventConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
 import { PAIR } from '../../../../constants/participantConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
 import {
+  ErrorType,
   INVALID_EVENT_TYPE,
   INVALID_PARTICIPANT_TYPE,
   MISSING_EVENT,
@@ -19,9 +21,12 @@ import {
   PARTICIPANT_NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
 import {
-  STRUCTURE_SELECTED_STATUSES,
-  UNGROUPED,
-} from '../../../../constants/entryStatusConstants';
+  DrawDefinition,
+  Tournament,
+  Event,
+  TypeEnum,
+  ParticipantTypeEnum,
+} from '../../../../types/tournamentFromSchema';
 
 /**
  * When grouped participant entries are destroyed, individualParticipantIds will be added as { individualEntryStatus } participant entries
@@ -34,6 +39,16 @@ import {
  *
  */
 
+type DestroyGroupEntryArgs = {
+  removeGroupParticipant?: boolean;
+  tournamentRecord: Tournament;
+  drawDefinition: DrawDefinition;
+  participantId: string;
+  drawId: string;
+  stage?: string;
+  event: Event;
+};
+
 export function destroyGroupEntry({
   removeGroupParticipant,
   tournamentRecord,
@@ -42,14 +57,21 @@ export function destroyGroupEntry({
   drawId,
   stage,
   event,
-}) {
+}: DestroyGroupEntryArgs): {
+  success?: boolean;
+  error?: ErrorType;
+  participantRemoved?: boolean;
+} {
   const stack = 'destroyGroupEntry';
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!participantId)
     return decorateResult({ result: { error: MISSING_PARTICIPANT_ID }, stack });
   if (!event) return { error: MISSING_EVENT };
 
-  if (![DOUBLES, TEAM].includes(event.eventType)) {
+  if (
+    !event.eventType ||
+    ![TypeEnum.Doubles, TypeEnum.Team].includes(event.eventType)
+  ) {
     return decorateResult({ result: { error: INVALID_EVENT_TYPE }, stack });
   }
 
@@ -63,7 +85,10 @@ export function destroyGroupEntry({
   }
 
   if (
-    ![PAIR, TEAM].includes(participant.participantType) ||
+    !participant.participantType ||
+    ![ParticipantTypeEnum.Pair, ParticipantTypeEnum.Team].includes(
+      participant.participantType
+    ) ||
     (participant.participantType === TEAM && event.eventType !== TEAM) ||
     (participant.participantType === PAIR && event.eventType !== DOUBLES)
   ) {
@@ -77,7 +102,6 @@ export function destroyGroupEntry({
   if (!entry) return { error: PARTICIPANT_ENTRY_NOT_FOUND };
 
   const { stageEntries } = getStageEntries({
-    entryStatusees: STRUCTURE_SELECTED_STATUSES,
     selected: false,
     drawDefinition,
     drawId,
@@ -95,7 +119,7 @@ export function destroyGroupEntry({
 
   // find only those individualParticipantIds which do not occur MULTIPLE TIMES in PAIRs/GROUPs in the event.entries or drawEntries
   // this scenario can occur in e.g. ITA tournaments where an individual participant is paired multiple times across flights
-  const individualParticipantIds = participant.individualParticipantIds.filter(
+  const individualParticipantIds = participant.individualParticipantIds?.filter(
     (participantId) =>
       arrayIndices(participantId, individualParticipantIdsInGroups).length === 1
   );
@@ -106,13 +130,11 @@ export function destroyGroupEntry({
   let result = removeEventEntries({
     participantIds: [participantId],
     tournamentRecord,
-    drawDefinition,
-    drawId,
     event,
   });
   if (result.error) return result;
 
-  if (individualParticipantIds.length) {
+  if (individualParticipantIds?.length) {
     result = addEventEntries({
       participantIds: individualParticipantIds,
       entryStatus: UNGROUPED,

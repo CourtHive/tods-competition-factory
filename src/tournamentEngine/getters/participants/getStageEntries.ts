@@ -1,7 +1,21 @@
 import { getFlightProfile } from '../getFlightProfile';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../../constants/entryStatusConstants';
+import {
+  DrawDefinition,
+  Entry,
+  EntryStatusEnum,
+  Event,
+} from '../../../types/tournamentFromSchema';
 
+type GetStageEntriesArgs = {
+  entryStatuses?: EntryStatusEnum[];
+  drawDefinition: DrawDefinition;
+  selected?: boolean;
+  drawId: string;
+  stage?: string;
+  event: Event;
+};
 export function getStageEntries({
   selected = true,
   drawDefinition,
@@ -9,8 +23,8 @@ export function getStageEntries({
   drawId,
   event,
   stage,
-}) {
-  let entries = event.entries || [];
+}: GetStageEntriesArgs) {
+  let entries: Entry[] = event.entries || [];
 
   if (drawId) {
     const { flightProfile } = getFlightProfile({ event });
@@ -19,7 +33,7 @@ export function getStageEntries({
     );
     if (flight) {
       entries = flight.drawEntries;
-    } else {
+    } else if (drawDefinition.entries) {
       entries = drawDefinition?.entries;
     }
   }
@@ -30,7 +44,9 @@ export function getStageEntries({
         !entry.entryStatus ||
         entryStatuses.includes(entry.entryStatus)) &&
       (!stage || !entry.entryStage || entry.entryStage === stage) &&
-      (!selected || STRUCTURE_SELECTED_STATUSES.includes(entry.entryStatus))
+      (!selected ||
+        (entry.entryStatus &&
+          STRUCTURE_SELECTED_STATUSES.includes(entry.entryStatus)))
   );
   return { entries, stageEntries };
 }
