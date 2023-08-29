@@ -25,7 +25,7 @@ export function enableCourts({ tournamentRecord, courtIds, enableAll, dates }) {
           });
 
           if (extension) {
-            let value = extension.value;
+            const value = extension.value;
             if (Array.isArray(value.dates)) {
               value.dates = value.dates.filter((date) => !dates.includes(date));
             }
