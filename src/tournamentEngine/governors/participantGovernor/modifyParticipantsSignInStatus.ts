@@ -15,6 +15,7 @@ import {
   SIGNED_OUT,
   SIGN_IN_STATUS,
 } from '../../../constants/participantConstants';
+import { Participant } from '../../../types/tournamentFromSchema';
 
 export function modifyParticipantsSignInStatus({
   tournamentRecord,
@@ -37,7 +38,7 @@ export function modifyParticipantsSignInStatus({
   if (invalidParticipantIds.length)
     return { error: INVALID_VALUES, context: { invalidParticipantIds } };
 
-  const modifiedParticipants = [];
+  const modifiedParticipants: Participant[] = [];
   const createdAt = new Date().toISOString();
   for (const participant of participants) {
     const { participantId } = participant;
@@ -48,8 +49,8 @@ export function modifyParticipantsSignInStatus({
         createdAt,
       };
       const result = addParticipantTimeItem({
-        tournamentRecord,
         duplicateValues: false,
+        tournamentRecord,
         participantId,
         timeItem,
       });

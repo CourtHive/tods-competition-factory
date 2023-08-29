@@ -65,7 +65,7 @@ export function modifyParticipant(params) {
   )
     return { error: CANNOT_MODIFY_PARTICIPANT_TYPE };
 
-  const newValues = {};
+  const newValues: any = {};
 
   // validate participant attributes
   if (contacts) newValues.contacts = contacts;
@@ -181,7 +181,7 @@ function updatePerson({
   newValues,
   person,
 }) {
-  const newPersonValues = {};
+  const newPersonValues: any = {};
   const {
     standardFamilyName,
     standardGivenName,

@@ -11,6 +11,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
+import { TimeItem, Tournament } from '../../../types/tournamentFromSchema';
 
 export function addTimeItem({
   duplicateValues = true,
@@ -74,6 +75,14 @@ export function addTimeItem({
   return { ...SUCCESS };
 }
 
+type AddParticipantTimeItemArgs = {
+  tournamentRecord: Tournament;
+  removePriorValues?: boolean;
+  duplicateValues?: boolean;
+  creationTime?: boolean;
+  participantId: string;
+  timeItem: TimeItem;
+};
 export function addParticipantTimeItem({
   creationTime = true,
   removePriorValues,
@@ -81,7 +90,7 @@ export function addParticipantTimeItem({
   duplicateValues,
   participantId,
   timeItem,
-}) {
+}: AddParticipantTimeItemArgs) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
 

@@ -51,7 +51,7 @@ export function addFlight({
   const flightNumber = Math.max(0, ...flightNumbers) + 1;
 
   const flightDrawId = drawId || UUID();
-  const flight = {
+  const flight: any = {
     drawId: flightDrawId,
     flightNumber,
     drawEntries,
