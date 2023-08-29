@@ -3,8 +3,8 @@ export function getCollectionPositionAssignments({
   collectionId,
   lineUp,
 }) {
-  let assignedParticipantIds = [];
-  const substitutions = [];
+  let assignedParticipantIds: string[] = [];
+  const substitutions: any[] = [];
 
   if (lineUp) {
     const getOrderValue = (order) => (order === undefined ? -1 : order);
