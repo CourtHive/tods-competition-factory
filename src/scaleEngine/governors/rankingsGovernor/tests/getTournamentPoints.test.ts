@@ -132,7 +132,7 @@ it.skip('can generate points from tournamentRecords', () => {
   expect(Object.values(result.personPoints).length).toEqual(16);
   expect(
     Object.values(result.personPoints)
-      .map((p) => p[0].points)
+      .map((p: any) => p[0].points)
       .sort((a, b) => a - b)
   ).toEqual(
     // prettier-ignore

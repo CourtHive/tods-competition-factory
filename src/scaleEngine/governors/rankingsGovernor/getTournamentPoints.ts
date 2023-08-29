@@ -41,7 +41,7 @@ export function getTournamentPoints({
 
   const awardProfiles = pointsPolicy.awardProfiles;
   let requireWinFirstRound = pointsPolicy.requireWinFirstRound;
-  let requireWinForPoints = pointsPolicy.requireWinForPoints;
+  const requireWinForPoints = pointsPolicy.requireWinForPoints;
 
   const { participants, derivedEventInfo, derivedDrawInfo, mappedMatchUps } =
     getParticipants({
@@ -50,14 +50,14 @@ export function getTournamentPoints({
       tournamentRecord,
     });
 
-  const participantsWithOutcomes = participants.filter((p) => p.draws?.length);
+  const participantsWithOutcomes = participants?.filter((p) => p.draws?.length);
 
   // keep track of points earned per person / per team
   const personPoints = {};
   const teamPoints = {};
   const pairPoints = {};
 
-  for (const participant of participantsWithOutcomes) {
+  for (const participant of participantsWithOutcomes || []) {
     const { participantType, participantId, person, draws } = participant;
 
     for (const draw of draws) {
@@ -143,8 +143,8 @@ export function getTournamentPoints({
             } = awardProfile;
 
             const ppwProfile = Array.isArray(awardProfile.perWinPoints)
-              ? awardProfile.perWinPoints?.find((pwp) =>
-                  pwp.participationOrders?.includes(participationOrder)
+              ? awardProfile.perWinPoints?.find(
+                  (pwp) => pwp.participationOrders?.includes(participationOrder)
                 )
               : awardProfile.perWinPoints;
 
@@ -160,7 +160,7 @@ export function getTournamentPoints({
               !participationOrders ||
               participationOrders.includes(participationOrder);
 
-            if (isValidOrder && finishingPositionRanges) {
+            if (isValidOrder && finishingPositionRanges && accessor) {
               const valueObj = finishingPositionRanges[accessor];
               if (valueObj) {
                 // positionAwards.push(accessor);
@@ -174,7 +174,12 @@ export function getTournamentPoints({
               }
             }
 
-            if (!awardPoints && finishingRound && participationOrder === 1) {
+            if (
+              !awardPoints &&
+              finishingRound &&
+              participationOrder === 1 &&
+              accessor
+            ) {
               const valueObj = finishingRound[accessor];
               if (valueObj) {
                 // positionAwards.push(accessor);

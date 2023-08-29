@@ -29,7 +29,7 @@ import {
 } from '../../../constants/extensionConstants';
 
 export function addParticipantContext(params) {
-  const participantIdsWithConflicts = [];
+  const participantIdsWithConflicts: string[] = [];
   const eventsPublishStatuses = {};
 
   const derivedDrawInfo = {};
@@ -175,7 +175,7 @@ export function addParticipantContext(params) {
       });
 
       const { eventId, eventName, eventType, category } = event;
-      const eventInfo = { eventId, eventName, eventType, category };
+      const eventInfo: any = { eventId, eventName, eventType, category };
       const extensionKeys =
         event && Object.keys(event).filter((key) => key.startsWith('_'));
       extensionKeys?.forEach(
@@ -209,9 +209,9 @@ export function addParticipantContext(params) {
       }
 
       // don't allow system extensions to be copied to participants
-      const disallowedConstants = [].concat(
-        ...Object.values(extensionConstants)
-      );
+      const disallowedConstants: string[] = [
+        ...Object.values(extensionConstants),
+      ];
       const disallowedKeys = disallowedConstants.map(
         (constant) => `_${constant}`
       );

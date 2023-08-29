@@ -57,7 +57,7 @@ it('can award points for flights', () => {
   result = tournamentEngine.tournamentMatchUps();
   expect(result.completedMatchUps.length).toEqual(30);
 
-  const policyDefinitions = {
+  const policyDefinitions: any = {
     [POLICY_TYPE_RANKING_POINTS]: {
       awardProfiles: [awardProfilePercentageFlights],
     },
