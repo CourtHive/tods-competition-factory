@@ -16,17 +16,30 @@ import {
   DIRECT_ACCEPTANCE,
   UNGROUPED,
 } from '../../../../constants/entryStatusConstants';
+import {
+  EntryStatusEnum,
+  Event,
+  Tournament,
+} from '../../../../types/tournamentFromSchema';
 
 // should NOT remove entries that are present in drawDefinition.entries
 // if those entries are assigned positions in any structures...
+type ModifyEventEntriesArgs = {
+  unpairedParticipantIds?: string[];
+  participantIdPairs?: string[][];
+  entryStatus?: EntryStatusEnum;
+  tournamentRecord: Tournament;
+  entryStage?: string;
+  event: Event;
+};
 export function modifyEventEntries({
-  event,
-  tournamentRecord,
-  entryStage = MAIN,
-  participantIdPairs = [],
-  unpairedParticipantIds = [],
   entryStatus = DIRECT_ACCEPTANCE,
-}) {
+  unpairedParticipantIds = [],
+  participantIdPairs = [],
+  entryStage = MAIN,
+  tournamentRecord,
+  event,
+}: ModifyEventEntriesArgs) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
 
@@ -68,7 +81,7 @@ export function modifyEventEntries({
   );
 
   // create new participant objects
-  const newParticipants = newParticipantIdPairs.map(
+  const newParticipants: any[] = newParticipantIdPairs.map(
     (individualParticipantIds) => ({
       participantType: PAIR,
       participantRole: COMPETITOR,
@@ -77,15 +90,15 @@ export function modifyEventEntries({
   );
 
   const result = addParticipants({
-    tournamentRecord,
     participants: newParticipants,
+    tournamentRecord,
   });
 
   if (result.error) return result;
 
   // get all participantIds for PAIR participants
-  const pairParticipantEntries = participantIdPairs
-    .map((participantIds) => {
+  const pairParticipantEntries: any[] = participantIdPairs
+    .map((participantIds: string[]) => {
       const { participant } = getPairedParticipant({
         tournamentRecord,
         participantIds,
@@ -98,7 +111,7 @@ export function modifyEventEntries({
       entryStage,
     }));
 
-  const unpairedParticipantEntries = unpairedParticipantIds.map(
+  const unpairedParticipantEntries: any[] = unpairedParticipantIds.map(
     (participantId) => ({
       entryStatus: UNGROUPED,
       participantId,

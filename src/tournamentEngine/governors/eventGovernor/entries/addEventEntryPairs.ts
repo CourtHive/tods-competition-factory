@@ -5,12 +5,11 @@ import { addNotice } from '../../../../global/state/globalState';
 import { intersection } from '../../../../utilities/arrays';
 import { addEventEntries } from './addEventEntries';
 
-import { DOUBLES } from '../../../../constants/matchUpTypes';
-import { COMPETITOR } from '../../../../constants/participantRoles';
-import { ALTERNATE } from '../../../../constants/entryStatusConstants';
 import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';
-import { MAIN } from '../../../../constants/drawDefinitionConstants';
 import { ADD_PARTICIPANTS } from '../../../../constants/topicConstants';
+import { ALTERNATE } from '../../../../constants/entryStatusConstants';
+import { COMPETITOR } from '../../../../constants/participantRoles';
+import { DOUBLES } from '../../../../constants/matchUpTypes';
 import { UUID } from '../../../../utilities';
 import {
   INVALID_EVENT_TYPE,
@@ -18,6 +17,13 @@ import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../../constants/errorConditionConstants';
+import {
+  DrawDefinition,
+  EntryStatusEnum,
+  Event,
+  StageTypeEnum,
+  Tournament,
+} from '../../../../types/tournamentFromSchema';
 
 /**
  *
@@ -31,22 +37,33 @@ import {
  * @param {string} entryStage - entryStage enum
  *
  */
+
+type AddEventEntryPairsArgs = {
+  allowDuplicateParticipantIdPairs?: boolean;
+  participantIdPairs?: string[][];
+  entryStatus?: EntryStatusEnum;
+  tournamentRecord: Tournament;
+  drawDefinition: DrawDefinition;
+  entryStage?: StageTypeEnum;
+  uuids?: string[];
+  event: Event;
+};
 export function addEventEntryPairs({
   allowDuplicateParticipantIdPairs,
+  entryStage = StageTypeEnum.Main,
   entryStatus = ALTERNATE,
   participantIdPairs = [],
-  entryStage = MAIN,
   tournamentRecord,
   drawDefinition,
   event,
   uuids,
-}) {
+}: AddEventEntryPairsArgs) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
   if (event.eventType !== DOUBLES) return { error: INVALID_EVENT_TYPE };
 
   const tournamentParticipants = tournamentRecord.participants || [];
-  const individualParticipantIds = tournamentParticipants
+  const individualParticipantIds: string[] = tournamentParticipants
     .filter((participant) => participant.participantType === INDIVIDUAL)
     .map((participant) => participant.participantId);
 
@@ -70,12 +87,12 @@ export function addEventEntryPairs({
     .map((participant) => participant.individualParticipantIds);
 
   // create provisional participant objects
-  const provisionalParticipants = participantIdPairs.map(
+  const provisionalParticipants: any[] = participantIdPairs.map(
     (individualParticipantIds) => ({
       participantId: uuids?.pop() || UUID(),
-      participantType: PAIR,
       participantRole: COMPETITOR,
       individualParticipantIds,
+      participantType: PAIR,
     })
   );
 
@@ -91,7 +108,7 @@ export function addEventEntryPairs({
       });
 
   let info;
-  let addedParticipants = [];
+  let addedParticipants: any[] = [];
   if (newParticipants) {
     const result = addParticipants({
       allowDuplicateParticipantIdPairs,

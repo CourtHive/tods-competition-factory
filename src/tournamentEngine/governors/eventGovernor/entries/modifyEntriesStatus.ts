@@ -11,6 +11,7 @@ import { getFlightProfile } from '../../../getters/getFlightProfile';
 
 import { validStages } from '../../../../constants/drawDefinitionConstants';
 import { DOUBLES, TEAM_EVENT } from '../../../../constants/eventConstants';
+import { INDIVIDUAL } from '../../../../constants/participantConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   ENTRY_STATUS_NOT_ALLOWED_FOR_EVENT,
@@ -29,14 +30,33 @@ import {
   VALID_ENTRY_STATUSES,
   WITHDRAWN,
 } from '../../../../constants/entryStatusConstants';
+
 import {
-  INDIVIDUAL,
-  PAIR,
-  TEAM,
-} from '../../../../constants/participantConstants';
+  DrawDefinition,
+  Entry,
+  EntryStatusEnum,
+  Event,
+  Extension,
+  ParticipantTypeEnum,
+  StageTypeEnum,
+  Tournament,
+} from '../../../../types/tournamentFromSchema';
 
 // disallow changing entryStatus to WITHDRAWN or UNGROUPED for assignedParticipants
-
+type ModifyEntriesStatusArgs = {
+  drawDefinition?: DrawDefinition;
+  autoEntryPositions?: boolean;
+  tournamentRecord: Tournament;
+  entryStatus?: EntryStatusEnum;
+  ignoreAssignment?: boolean;
+  entryStage: StageTypeEnum;
+  participantIds: string[];
+  extension?: Extension;
+  eventSync?: boolean;
+  drawId: string;
+  stage?: StageTypeEnum;
+  event?: Event;
+};
 export function modifyEntriesStatus({
   autoEntryPositions = true,
   ignoreAssignment, // override check for existing assignments
@@ -50,7 +70,7 @@ export function modifyEntriesStatus({
   drawId,
   stage,
   event,
-}) {
+}: ModifyEntriesStatusArgs) {
   if (!participantIds || !Array.isArray(participantIds))
     return {
       error: INVALID_PARTICIPANT_ID,
@@ -66,7 +86,7 @@ export function modifyEntriesStatus({
     return { error: INVALID_STAGE };
 
   const stack = 'modifyEntriesStatus';
-  const modifiedDrawIds = [];
+  const modifiedDrawIds: string[] = [];
 
   if (!entryStatus && !extension)
     return decorateResult({
@@ -77,7 +97,7 @@ export function modifyEntriesStatus({
 
   if (
     extension &&
-    !isValidExtension({ extension, rquiredAttributes: ['name'] })
+    !isValidExtension({ extension, requiredAttributes: ['name'] })
   )
     // valid without value (will remove extension)
     return decorateResult({
@@ -88,8 +108,8 @@ export function modifyEntriesStatus({
     });
 
   // build up an array of participantIds which are assigned positions in structures
-  const assignedParticipantIds = [];
-  event.drawDefinitions?.forEach((drawDefinition) => {
+  const assignedParticipantIds: string[] = [];
+  event?.drawDefinitions?.forEach((drawDefinition) => {
     const participantIds = getAssignedParticipantIds({
       stages: stage && [stage],
       drawDefinition,
@@ -101,13 +121,21 @@ export function modifyEntriesStatus({
 
   const validEntryStatusForAllParticipantIds = participantIds.every(
     (participantId) => {
-      const { participantType } = findParticipant({
+      const participantType = findParticipant({
         tournamentParticipants,
         participantId,
-      });
+      })?.participantType;
       return (
-        !([PAIR, TEAM].includes(participantType) && isUngrouped(entryStatus)) &&
         !(
+          participantType &&
+          [ParticipantTypeEnum.Pair, ParticipantTypeEnum.Team].includes(
+            participantType
+          ) &&
+          isUngrouped(entryStatus)
+        ) &&
+        !(
+          entryStatus &&
+          event?.eventType &&
           participantType === INDIVIDUAL &&
           [DOUBLES, TEAM_EVENT].includes(event.eventType) &&
           [ALTERNATE, ...EQUIVALENT_ACCEPTANCE_STATUSES].includes(entryStatus)
@@ -119,30 +147,31 @@ export function modifyEntriesStatus({
   if (!validEntryStatusForAllParticipantIds)
     return { error: INVALID_ENTRY_STATUS };
 
-  const { flightProfile } = getFlightProfile({ event });
+  const flightProfile = event && getFlightProfile({ event }).flightProfile;
   const flight = flightProfile?.flights?.find(
     (flight) => flight.drawId === drawId
   );
 
   // ------------------------------------------------------------------------
   // reusable functions
-  const updateEntryStatus = (entries = []) => {
-    const filteredEntries = entries
+  const updateEntryStatus = (entries?) => {
+    const filteredEntries = (entries || [])
       // filter out entries by stage (if specified)
-      .filter((entry) => {
+      .filter((entry: Entry) => {
         return !stage || !entry.entryStage || stage === entry.entryStage;
       })
       // filter by specified participantIds
       .filter(({ participantId }) => participantIds.includes(participantId));
 
     const isAssigned = (entry) =>
+      entryStatus &&
       assignedParticipantIds.includes(entry.participantId) &&
       !(
         EQUIVALENT_ACCEPTANCE_STATUSES.includes(entry.entryStatus) &&
         EQUIVALENT_ACCEPTANCE_STATUSES.includes(entryStatus)
       );
 
-    const success = filteredEntries.every((entry) => {
+    const success = filteredEntries.every((entry: Entry) => {
       if (isAssigned(entry) && !ignoreAssignment) return false;
       if (entryStatus) {
         entry.entryStatus = entryStatus;
@@ -170,9 +199,11 @@ export function modifyEntriesStatus({
   };
 
   const autoPosition = ({ flight, drawDefinition }) => {
-    event.entries = refreshEntryPositions({
-      entries: event.entries || [],
-    });
+    if (event) {
+      event.entries = refreshEntryPositions({
+        entries: event.entries || [],
+      });
+    }
     if (flight) {
       flight.drawEntries = refreshEntryPositions({
         entries: flight.drawEntries,
@@ -184,7 +215,8 @@ export function modifyEntriesStatus({
       });
     }
   };
-  const updateDrawEntries = ({ flight, drawDefinition }) => {
+  const updateDrawEntries = (params) => {
+    const { flight, drawDefinition } = params;
     const stack = 'updateDrawEntries';
     if (flight) {
       const result = updateEntryStatus(flight.drawEntries);
@@ -203,9 +235,9 @@ export function modifyEntriesStatus({
   // ------------------------------------------------------------------------
   // before modifying, if autoEntryPositions: true, pre-assign entryPositions
   const entryPositionsExist =
-    event.entries?.find(({ entryPosition }) => !isNaN(entryPosition)) ||
-    flight?.drawEntries?.find(({ entryPosition }) => !isNaN(entryPosition)) ||
-    drawDefinition?.entries?.find(({ entryPosition }) => !isNaN(entryPosition));
+    event?.entries?.find(({ entryPosition }) => entryPosition) ||
+    flight?.drawEntries?.find(({ entryPosition }) => entryPosition) ||
+    drawDefinition?.entries?.find(({ entryPosition }) => entryPosition);
 
   if (autoEntryPositions && !entryPositionsExist)
     autoPosition({ flight, drawDefinition });
@@ -220,25 +252,26 @@ export function modifyEntriesStatus({
   // ------------------------------------------------------------------------
   // update any flights which have no draw generated to keep entries in sync
   const generatedDrawIds =
-    event.drawDefinitions?.map(({ drawId }) => drawId) || [];
+    event?.drawDefinitions?.map(({ drawId }) => drawId) || [];
   const flightsNoDraw =
     flightProfile?.flights?.filter(
       (flight) => !generatedDrawIds.includes(flight.drawId)
     ) || [];
 
   for (const flight of flightsNoDraw) {
-    const result = updateDrawEntries({ flight });
-    if (result.error) return decorateResult({ result, stack });
+    const result = flight && updateDrawEntries({ flight });
+    if (result?.error) return decorateResult({ result, stack });
   }
 
   // ------------------------------------------------------------------------
   const singleDraw =
     flightProfile?.flights?.length === 1 &&
-    event.drawDefinitions?.length <= flightProfile?.flights?.length;
+    (event?.drawDefinitions?.length || 0) <= flightProfile?.flights?.length;
 
   if (
     !flight &&
     !drawDefinition &&
+    entryStatus &&
     DRAW_SPECIFIC_STATUSES.includes(entryStatus)
   ) {
     return { error: ENTRY_STATUS_NOT_ALLOWED_FOR_EVENT };
@@ -251,8 +284,8 @@ export function modifyEntriesStatus({
   ) {
     // if entryStatus is WITHDRAWN then participantIds appearing in ANY flight or drawDefinition must be removed
 
-    const result = updateEntryStatus(event.entries);
-    if (result.error) return decorateResult({ result, stack });
+    const result = updateEntryStatus(event?.entries);
+    if (result?.error) return decorateResult({ result, stack });
 
     let error;
     if (entryStatus === WITHDRAWN) {
@@ -268,7 +301,7 @@ export function modifyEntriesStatus({
         return true;
       });
 
-      event.drawDefinitions?.every((drawDefinition) => {
+      event?.drawDefinitions?.every((drawDefinition) => {
         const result = updateEntryStatus(drawDefinition.entries);
         if (result.error) {
           error = result.error;
@@ -285,7 +318,7 @@ export function modifyEntriesStatus({
 
   if (autoEntryPositions) autoPosition({ flight, drawDefinition });
 
-  for (const drawDefinition of event.drawDefinitions || []) {
+  for (const drawDefinition of event?.drawDefinitions || []) {
     if (
       modifiedDrawIds.length &&
       !modifiedDrawIds.includes(drawDefinition.drawId)
@@ -294,7 +327,7 @@ export function modifyEntriesStatus({
 
     modifyDrawNotice({
       tournamentId: tournamentRecord.tournamentId,
-      eventId: event.eventId,
+      eventId: event?.eventId,
       drawDefinition,
     });
   }

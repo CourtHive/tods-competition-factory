@@ -68,8 +68,8 @@ export function addEventEntries(params) {
 
   if (!event?.eventId) return { error: EVENT_NOT_FOUND };
 
-  const removedEntries = [];
-  const addedEntries = [];
+  const addedParticipantIdEntries: string[] = [];
+  const removedEntries: any[] = [];
 
   if (
     (extensions &&
@@ -85,7 +85,7 @@ export function addEventEntries(params) {
   }
 
   const checkTypedParticipants = !!tournamentRecord;
-  const misMatchedGender = [];
+  const misMatchedGender: any[] = [];
   let info;
 
   const typedParticipantIds =
@@ -176,7 +176,7 @@ export function addEventEntries(params) {
         });
       }
       if (entryStageSequence) entry.entryStageSequence = entryStageSequence;
-      addedEntries.push(entry.participantId);
+      addedParticipantIdEntries.push(entry.participantId);
       event.entries.push(entry);
     }
   });
@@ -251,7 +251,8 @@ export function addEventEntries(params) {
     });
   }
 
-  const addedEntriesCount = addedEntries.length - removedEntries.length;
+  const addedEntriesCount =
+    addedParticipantIdEntries.length - removedEntries.length;
 
   return decorateResult({
     result: { ...SUCCESS, addedEntriesCount },

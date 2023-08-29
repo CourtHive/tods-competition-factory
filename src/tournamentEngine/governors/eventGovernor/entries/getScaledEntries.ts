@@ -2,6 +2,12 @@ import { getParticipantScaleItem } from '../../queryGovernor/getParticipantScale
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../../constants/errorConditionConstants';
 import { STRUCTURE_SELECTED_STATUSES } from '../../../../constants/entryStatusConstants';
+import {
+  Entry,
+  Event,
+  Tournament,
+} from '../../../../types/tournamentFromSchema';
+import { ScaleAttributes } from '../../../../types/scales';
 
 /**
  *
@@ -13,6 +19,16 @@ import { STRUCTURE_SELECTED_STATUSES } from '../../../../constants/entryStatusCo
  * @param {function} scaleSortMethod - OPTIONAL - function(a, b) {} - custom sorting function
  * @param {boolean} sortDescending - OPTIONL - default sorting method is ASCENDING; only applies to default sorting method
  */
+type GetScaledEntriesArgs = {
+  scaleAttributes: ScaleAttributes;
+  tournamentRecord: Tournament;
+  sortDescending?: boolean;
+  stageSequence?: number;
+  scaleSortMethod?: any;
+  entries?: Entry[];
+  stage?: string;
+  event?: Event;
+};
 export function getScaledEntries({
   sortDescending = false,
   tournamentRecord,
@@ -22,12 +38,12 @@ export function getScaledEntries({
   entries,
   event,
   stage,
-}) {
+}: GetScaledEntriesArgs) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   entries = entries || event?.entries || [];
 
   const stageEntries = entries.filter(
-    (entry) =>
+    (entry: any) =>
       (!stage || !entry.entryStage || entry.entryStage === stage) &&
       (!stageSequence ||
         !entry.entryStageSequence ||
@@ -49,7 +65,7 @@ export function getScaledEntries({
     .filter((scaledEntry) => {
       const scaleValue = scaledEntry.scaleValue;
       // if a custom sort method is not provided, filter out entries with non-float values
-      if (!scaleSortMethod && (isNaN(scaleValue) || !parseFloat(scaleValue)))
+      if (!scaleSortMethod && scaleValue && typeof scaleValue !== 'number')
         return false;
       return scaleValue;
     })
