@@ -12,7 +12,7 @@ export function auditAutoScheduling({
 
   const getCount = (obj) => {
     if (!obj) return 0;
-    const values = Object.values(obj);
+    const values: any[] = Object.values(obj);
     return values.reduce((count, value) => count + value.length || 0, 0);
   };
 

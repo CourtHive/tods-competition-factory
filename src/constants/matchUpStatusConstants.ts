@@ -1,3 +1,5 @@
+import { MatchUpStatusEnum } from '../types/tournamentFromSchema';
+
 export const ABANDONED = 'ABANDONED';
 export const AWAITING_RESULT = 'AWAITING_RESULT';
 export const BYE = 'BYE';
@@ -81,15 +83,15 @@ export const nonDirectingMatchUpStatuses = [
 ];
 
 export const completedMatchUpStatuses = [
-  CANCELLED,
-  ABANDONED,
-  COMPLETED,
-  DEAD_RUBBER,
-  DEFAULTED,
-  DOUBLE_WALKOVER,
-  DOUBLE_DEFAULT,
-  RETIRED,
-  WALKOVER,
+  MatchUpStatusEnum.Cancelled,
+  MatchUpStatusEnum.Abandoned,
+  MatchUpStatusEnum.Completed,
+  MatchUpStatusEnum.DeadRubber,
+  MatchUpStatusEnum.Defaulted,
+  MatchUpStatusEnum.DoubleWalkover,
+  MatchUpStatusEnum.DoubleDefault,
+  MatchUpStatusEnum.Retired,
+  MatchUpStatusEnum.Walkover,
 ];
 
 export const activeMatchUpStatuses = [

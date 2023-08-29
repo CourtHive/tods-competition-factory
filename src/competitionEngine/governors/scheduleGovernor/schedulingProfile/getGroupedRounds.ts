@@ -6,12 +6,12 @@ export function getGroupedRounds({
   greatestAverageMinutes,
   garmanSinglePass,
 }) {
-  let lastHash;
+  const groupedRounds: any[] = [];
   let groupedMatchUpIds = [];
-  let averageMinutes;
-  let recoveryMinutes;
   let roundPeriodLength;
-  let groupedRounds = [];
+  let recoveryMinutes;
+  let averageMinutes;
+  let lastHash;
 
   for (const roundDetails of scheduledRoundsDetails.filter(Boolean)) {
     if (!lastHash) lastHash = roundDetails.hash;

@@ -120,9 +120,9 @@ export function scheduleMatchUps({
       sameDay(scheduleDate, extractDate(matchUp.schedule.scheduledDate))
     ) {
       processNextMatchUps({
-        matchUp,
-        matchUpNotBeforeTimes,
         matchUpPotentialParticipantIds,
+        matchUpNotBeforeTimes,
+        matchUp,
       });
     }
   });
@@ -150,21 +150,20 @@ export function scheduleMatchUps({
     });
 
   const requestConflicts = {};
-  const skippedScheduleTimes = [];
+  const skippedScheduleTimes: string[] = [];
   const matchUpScheduleTimes = {};
   const recoveryTimeDeferred = {};
   const dependencyDeferred = {};
 
   // first build up a map of matchUpNotBeforeTimes and matchUpPotentialParticipantIds
   // based on already scheduled matchUps
-  const dateScheduledMatchUps = competitionMatchUps.filter(({ matchUpId }) =>
-    dateScheduledMatchUpIds.includes(matchUpId)
+  const dateScheduledMatchUps = competitionMatchUps.filter(
+    ({ matchUpId }) => dateScheduledMatchUpIds?.includes(matchUpId)
   );
   dateScheduledMatchUps.forEach((matchUp) => {
     modifyParticipantMatchUpsCount({
       matchUpPotentialParticipantIds,
       individualParticipantProfiles,
-      scheduleDate,
       matchUp,
       value: 1,
     });
@@ -173,14 +172,12 @@ export function scheduleMatchUps({
       matchUpScheduleTimes[matchUp.matchUpId] = scheduleTime;
       const mappedRecoveryMinutes = recoveryMinutesMap?.[matchUp.matchUpId];
       updateTimeAfterRecovery({
-        individualParticipantProfiles,
-        matchUpPotentialParticipantIds,
-        matchUpNotBeforeTimes,
-        matchUpDependencies,
-
         recoveryMinutes: mappedRecoveryMinutes || recoveryMinutes,
+        matchUpPotentialParticipantIds,
+        individualParticipantProfiles,
+        matchUpNotBeforeTimes,
         averageMatchUpMinutes,
-        scheduleDate,
+        matchUpDependencies,
         scheduleTime,
         matchUp,
       });
@@ -189,7 +186,7 @@ export function scheduleMatchUps({
 
   // matchUps are assumed to be in the desired order for scheduling
   let matchUpsToSchedule = targetMatchUps.filter((matchUp) => {
-    const alreadyScheduled = dateScheduledMatchUpIds.includes(
+    const alreadyScheduled = dateScheduledMatchUpIds?.includes(
       matchUp.matchUpId
     );
 
@@ -248,9 +245,9 @@ export function scheduleMatchUps({
 
         // since this matchUp is to be scheduled, update the matchUpPotentialParticipantIds
         processNextMatchUps({
-          matchUp,
-          matchUpNotBeforeTimes,
           matchUpPotentialParticipantIds,
+          matchUpNotBeforeTimes,
+          matchUp,
         });
 
         return aggregator;
@@ -284,7 +281,6 @@ export function scheduleMatchUps({
       const { matchUpId } = matchUp;
       const { dependenciesScheduled, remainingDependencies } =
         checkDependenciesScheduled({
-          matchUps: competitionMatchUps,
           matchUpScheduleTimes,
           matchUpDependencies,
           allDateMatchUpIds,
@@ -336,7 +332,6 @@ export function scheduleMatchUps({
         matchUpNotBeforeTimes,
         averageMatchUpMinutes,
         matchUpDependencies,
-        scheduleDate,
         scheduleTime,
         matchUp,
       });
@@ -359,13 +354,12 @@ export function scheduleMatchUps({
     modifyParticipantMatchUpsCount({
       individualParticipantProfiles,
       matchUpPotentialParticipantIds,
-      scheduleDate,
       value: -1,
       matchUp,
     });
   });
 
-  let scheduledMatchUpIds = [];
+  const scheduledMatchUpIds: string[] = [];
   Object.keys(matchUpMap).forEach((tournamentId) => {
     const tournamentRecord = tournamentRecords[tournamentId];
     if (tournamentRecord) {
@@ -397,6 +391,7 @@ export function scheduleMatchUps({
 
                 if (venueId) {
                   assignMatchUpVenue({
+                    tournamentRecords,
                     tournamentRecord,
                     drawDefinition,
                     matchUpId,
@@ -418,7 +413,7 @@ export function scheduleMatchUps({
   return {
     ...SUCCESS,
     requestConflicts: Object.values(requestConflicts),
-    remainingScheduleTimes: scheduleTimes.map(
+    remainingScheduleTimes: scheduleTimes?.map(
       ({ scheduleTime }) => scheduleTime
     ),
     individualParticipantProfiles,
