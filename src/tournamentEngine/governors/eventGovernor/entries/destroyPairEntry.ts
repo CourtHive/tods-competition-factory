@@ -2,6 +2,11 @@ import { destroyGroupEntry } from './destroyGroupEntry';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
+import {
+  DrawDefinition,
+  Tournament,
+  Event,
+} from '../../../../types/tournamentFromSchema';
 
 /**
  *
@@ -13,6 +18,14 @@ import { SUCCESS } from '../../../../constants/resultConstants';
  *
  */
 
+type DestroyPairEntryArgs = {
+  removeGroupParticipant?: boolean;
+  tournamentRecord: Tournament;
+  drawDefinition: DrawDefinition;
+  participantId: string;
+  drawId?: string;
+  event: Event;
+};
 export function destroyPairEntry({
   removeGroupParticipant,
   tournamentRecord,
@@ -20,10 +33,9 @@ export function destroyPairEntry({
   participantId,
   drawId,
   event,
-}) {
+}: DestroyPairEntryArgs) {
   return destroyGroupEntry({
     removeGroupParticipant,
-    // individualEntryStatus: UNGROUPED,
     tournamentRecord,
     drawDefinition,
     participantId,

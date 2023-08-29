@@ -54,7 +54,7 @@ export function setMatchUpStatus(params) {
       policy.allowChangePropagation) ||
     undefined;
 
-  let { outcome } = params;
+  const { outcome } = params;
 
   if (matchUpFormat) {
     const result = setMatchUpFormat({

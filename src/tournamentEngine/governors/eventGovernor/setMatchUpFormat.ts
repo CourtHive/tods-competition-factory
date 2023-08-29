@@ -73,14 +73,13 @@ export function setMatchUpFormat({
       structureIds,
       structureId,
       matchUpId,
-      force,
     });
     if (result.error) return result;
     modificationsCount += 1;
   }
 
   const processStructures = (drawDefinition) => {
-    const modifiedStructureIds = [];
+    const modifiedStructureIds: string[] = [];
 
     for (const structure of drawDefinition.structures || []) {
       if (
@@ -92,10 +91,10 @@ export function setMatchUpFormat({
         continue;
 
       if (structureIds.length && structure.matchUpFormat !== matchUpFormat) {
-          structure.matchUpFormat = matchUpFormat;
-          modifiedStructureIds.push(structure.structureId);
-          modificationsCount += 1;
-        }
+        structure.matchUpFormat = matchUpFormat;
+        modifiedStructureIds.push(structure.structureId);
+        modificationsCount += 1;
+      }
 
       const matchUps =
         (force || scheduledDates) &&
@@ -137,10 +136,13 @@ export function setMatchUpFormat({
       }
     }
 
-    if (!modifiedStructureIds.length && drawDefinition.matchUpFormat !== matchUpFormat) {
-        drawDefinition.matchUpFormat = matchUpFormat;
-        modificationsCount += 1;
-      }
+    if (
+      !modifiedStructureIds.length &&
+      drawDefinition.matchUpFormat !== matchUpFormat
+    ) {
+      drawDefinition.matchUpFormat = matchUpFormat;
+      modificationsCount += 1;
+    }
 
     return modifiedStructureIds;
   };

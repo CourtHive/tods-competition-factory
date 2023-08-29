@@ -49,7 +49,7 @@ type ModifyEntriesStatusArgs = {
   tournamentRecord: Tournament;
   entryStatus?: EntryStatusEnum;
   ignoreAssignment?: boolean;
-  entryStage: StageTypeEnum;
+  entryStage?: StageTypeEnum;
   participantIds: string[];
   extension?: Extension;
   eventSync?: boolean;

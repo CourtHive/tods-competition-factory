@@ -44,7 +44,7 @@ type DestroyGroupEntryArgs = {
   tournamentRecord: Tournament;
   drawDefinition: DrawDefinition;
   participantId: string;
-  drawId: string;
+  drawId?: string;
   stage?: string;
   event: Event;
 };
@@ -150,8 +150,8 @@ export function destroyGroupEntry({
   let participantRemoved;
   if (removeGroupParticipant) {
     const result = deleteParticipants({
-      tournamentRecord,
       participantIds: [participantId],
+      tournamentRecord,
     });
     if (result.success) participantRemoved = true;
   }

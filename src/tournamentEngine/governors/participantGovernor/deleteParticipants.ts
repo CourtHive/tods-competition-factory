@@ -16,6 +16,7 @@ import {
   MISSING_PARTICIPANT_IDS,
   MISSING_TOURNAMENT_RECORD,
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
+  ErrorType,
 } from '../../../constants/errorConditionConstants';
 import {
   PAIR,
@@ -30,7 +31,11 @@ import {
  * @returns {object}
  */
 
-export function deleteParticipants(params) {
+export function deleteParticipants(params): {
+  participantsRemovedCount?: number;
+  success?: boolean;
+  error?: ErrorType;
+} {
   if (!params?.tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!params?.participantIds?.length)
     return { error: MISSING_PARTICIPANT_IDS };

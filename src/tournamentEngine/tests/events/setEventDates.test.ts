@@ -18,7 +18,7 @@ test.each([tournamentEngineSync, asyncTournamentEngine])(
     await tournamentEngine.setState(tournamentRecord);
 
     const newEvent = { eventName: 'Test Event' };
-    let {
+    const {
       event: { eventId, startDate: eventStartDate, endDate: eventEndDate },
       success,
     } = await tournamentEngine.addEvent({
@@ -79,7 +79,7 @@ test.each([tournamentEngineSync, asyncTournamentEngine])(
     await tournamentEngine.setState(tournamentRecord);
 
     const newEvent = { eventName: 'Test Event' };
-    let {
+    const {
       event: { eventId, startDate: eventStartDate, endDate: eventEndDate },
       success,
     } = await tournamentEngine.addEvent({

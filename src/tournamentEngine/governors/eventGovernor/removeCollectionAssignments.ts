@@ -23,8 +23,8 @@ export function removeCollectionAssignments({
       drawDefinition,
     })?.lineUp;
 
-  const previousParticipantIds = [];
-  const assignmentsRemoved = [];
+  const previousParticipantIds: string[] = [];
+  const assignmentsRemoved: any[] = [];
 
   const modifiedLineUp =
     lineUp
