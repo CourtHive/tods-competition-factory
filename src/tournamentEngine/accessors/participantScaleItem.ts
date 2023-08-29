@@ -1,10 +1,10 @@
 import { getAccessorValue } from '../../utilities/getAccessorValue';
 
 import type { Participant } from '../../types/tournamentFromSchema';
-import { ResultType } from '../../global/functions/decorateResult';
 import { SCALE } from '../../constants/scaleConstants';
 import { ScaleAttributes } from '../../types/scales';
 import {
+  ErrorType,
   INVALID_SCALE_ITEM,
   INVALID_VALUES,
   MISSING_PARTICIPANT,
@@ -17,23 +17,22 @@ export interface ParticipantScaleItemArgs {
   participant: Participant;
 }
 
-type ScaleItem = {
-  scaleDate: string;
-  scaleValue: string;
-  scaleName: string;
-  scaleType: string;
-  eventType: string;
-};
-
-type ParticipantScaleItem = {
-  scaleItem: ScaleItem;
+export type ScaleItem = {
+  scaleDate?: string | Date;
+  scaleValue?: string;
+  scaleName?: string;
+  scaleType?: string;
+  eventType?: string;
 };
 
 export function participantScaleItem({
   requireTimeStamp,
   scaleAttributes,
   participant,
-}: ParticipantScaleItemArgs): ParticipantScaleItem | ResultType {
+}: ParticipantScaleItemArgs): {
+  scaleItem?: ScaleItem;
+  error?: ErrorType;
+} {
   if (!participant) return { error: MISSING_PARTICIPANT };
   if (typeof scaleAttributes !== 'object') return { error: INVALID_VALUES };
 

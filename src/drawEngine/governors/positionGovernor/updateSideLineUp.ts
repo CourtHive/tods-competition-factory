@@ -2,7 +2,23 @@ import { findExtension } from '../../../tournamentEngine/governors/queryGovernor
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 
 import { LINEUPS } from '../../../constants/extensionConstants';
+import { HydratedMatchUp } from '../../../types/hydrated';
+import {
+  DrawDefinition,
+  Event,
+  MatchUp,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
+type UpdateSideLineUpArgs = {
+  inContextTargetMatchUp?: HydratedMatchUp;
+  drawPositionSideIndex: number;
+  tournamentRecord?: Tournament;
+  drawDefinition: DrawDefinition;
+  teamParticipantId: string;
+  matchUp: MatchUp;
+  event?: Event;
+};
 export function updateSideLineUp({
   inContextTargetMatchUp,
   drawPositionSideIndex,
@@ -11,7 +27,7 @@ export function updateSideLineUp({
   drawDefinition,
   matchUp,
   event,
-}) {
+}: UpdateSideLineUpArgs) {
   // update matchUp.sides to include lineUps
   const drawPositionSideNumber =
     inContextTargetMatchUp?.sides?.[drawPositionSideIndex]?.sideNumber;
@@ -29,7 +45,7 @@ export function updateSideLineUp({
   const lineUp = value[teamParticipantId];
 
   if (sideExists) {
-    matchUp.sides.forEach((side) => {
+    matchUp?.sides?.forEach((side) => {
       if (side.sideNumber === drawPositionSideNumber) {
         side.lineUp = lineUp;
       }

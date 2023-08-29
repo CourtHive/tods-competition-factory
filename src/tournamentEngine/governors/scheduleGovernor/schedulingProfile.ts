@@ -10,6 +10,7 @@ import {
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
+import { Tournament } from '../../../types/tournamentFromSchema';
 
 export function setSchedulingProfile({ tournamentRecord, schedulingProfile }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -74,11 +75,16 @@ export function getSchedulingProfile({ tournamentRecord }): {
   return { schedulingProfile, modifications: 0 };
 }
 
+type CheckSchedulingProfile = {
+  tournamentRecord?: Tournament;
+  schedulingProfile?: any[];
+  requireCourts?: boolean;
+};
 export function checkSchedulingProfile({
+  requireCourts = true,
   tournamentRecord,
   schedulingProfile,
-  requireCourts = true,
-}) {
+}: CheckSchedulingProfile) {
   if (!schedulingProfile) {
     const { modifications, issues } = getSchedulingProfile({
       tournamentRecord,

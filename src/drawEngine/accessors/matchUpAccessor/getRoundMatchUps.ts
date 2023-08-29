@@ -1,5 +1,6 @@
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 import { definedAttributes } from '../../../utilities/objects';
+import { ensureInt } from '../../../utilities/ensureInt';
 import {
   chunkArray,
   generateRange,
@@ -8,9 +9,12 @@ import {
   numericSort,
 } from '../../../utilities';
 
-import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import { TEAM } from '../../../constants/matchUpTypes';
+import {
+  ErrorType,
+  INVALID_VALUES,
+} from '../../../constants/errorConditionConstants';
 
 type RoundProfile = {
   [key: number]: {
@@ -37,10 +41,19 @@ type GetRoundMatchUpsArgs = {
   interpolate?: boolean;
 };
 
+export type RoundMatchUpsResult = {
+  roundMatchUps?: HydratedMatchUp[];
+  hasOddMatchUpsCount?: boolean;
+  roundProfile?: RoundProfile;
+  maxMatchUpsCount?: number;
+  roundNumbers?: number[];
+  error?: ErrorType;
+};
+
 export function getRoundMatchUps({
   matchUps = [],
   interpolate,
-}: GetRoundMatchUpsArgs) {
+}: GetRoundMatchUpsArgs): RoundMatchUpsResult {
   if (!Array.isArray(matchUps)) return { error: INVALID_VALUES };
 
   // create an array of arrays of matchUps grouped by roundNumber
@@ -48,7 +61,7 @@ export function getRoundMatchUps({
     .reduce((roundNumbers: number[], matchUp) => {
       const roundNumber =
         typeof matchUp.roundNumber === 'string'
-          ? parseInt(matchUp.roundNumber)
+          ? ensureInt(matchUp.roundNumber)
           : (matchUp.roundNumber as number);
       return !matchUp.roundNumber || roundNumbers.includes(roundNumber)
         ? roundNumbers
@@ -77,7 +90,7 @@ export function getRoundMatchUps({
   const finishingRoundMap = matchUps.reduce((mapping, matchUp) => {
     const roundNumber =
       typeof matchUp.roundNumber === 'string'
-        ? parseInt(matchUp.roundNumber)
+        ? ensureInt(matchUp.roundNumber)
         : (matchUp.roundNumber as number);
     if (!mapping[roundNumber])
       mapping[roundNumber] = definedAttributes({
@@ -94,7 +107,7 @@ export function getRoundMatchUps({
   if (interpolate) {
     const maxRoundNumber = Math.max(
       ...Object.keys(roundMatchUps)
-        .map((key) => parseInt(key))
+        .map((key) => ensureInt(key))
         .filter((f) => !isNaN(f))
     );
     const maxRoundMatchUpsCount = roundMatchUps[maxRoundNumber]?.length;
@@ -141,7 +154,7 @@ export function getRoundMatchUps({
   let roundIndex = 0;
   let feedRoundIndex = 0;
   const roundNumbers = Object.keys(roundMatchUps)
-    .map((key) => parseInt(key))
+    .map((key) => ensureInt(key))
     .filter((f) => !isNaN(f));
   roundNumbers.forEach((roundNumber) => {
     const currentRoundMatchUps = roundMatchUps[roundNumber].sort(

@@ -2,13 +2,21 @@ import { addDrawDefinitionExtension } from '../../../tournamentEngine/governors/
 import { findDrawDefinitionExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 
 import { ENTRY_PROFILE } from '../../../constants/extensionConstants';
+import { DrawDefinition } from '../../../types/tournamentFromSchema';
 
-export function modifyEntryProfile({ drawDefinition, attributes }) {
+type ModifyEntryProfileArgs = {
+  drawDefinition: DrawDefinition;
+  attributes: any[];
+};
+export function modifyEntryProfile({
+  drawDefinition,
+  attributes,
+}: ModifyEntryProfileArgs) {
   let { extension } = findDrawDefinitionExtension({
     name: ENTRY_PROFILE,
     drawDefinition,
   });
-  const entryProfile = extension?.value || drawDefinition.entryProfile || {};
+  const entryProfile = extension?.value || {};
 
   attributes.forEach((attribute) => {
     Object.keys(attribute).forEach((key) => {

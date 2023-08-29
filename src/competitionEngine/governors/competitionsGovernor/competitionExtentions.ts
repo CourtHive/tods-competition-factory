@@ -8,19 +8,20 @@ import {
   removeTournamentExtension,
 } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 
-import { Extension, Tournament } from '../../../types/tournamentFromSchema';
+import { TournamentRecordsArgs } from '../../../types/factoryTypes';
 import { MISSING_NAME } from '../../../constants/infoConstants';
+import { Extension } from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   EVENT_NOT_FOUND,
+  ErrorType,
   INVALID_VALUES,
   MISSING_EVENT,
   MISSING_VALUE,
   NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
-type AddExtensionArgs = {
-  tournamentRecords: { [key: string]: Tournament } | Tournament[];
+type AddExtensionArgs = TournamentRecordsArgs & {
   extension: Extension;
 };
 export function addExtension({
@@ -38,8 +39,7 @@ export function addExtension({
   return { ...SUCCESS };
 }
 
-type FindRemoveExtensionArgs = {
-  tournamentRecords: { [key: string]: Tournament } | Tournament[];
+type FindRemoveExtensionArgs = TournamentRecordsArgs & {
   name: string;
 };
 export function findExtension({
@@ -65,7 +65,12 @@ export function findExtension({
 export function removeExtension({
   tournamentRecords,
   name,
-}: FindRemoveExtensionArgs) {
+}: FindRemoveExtensionArgs): {
+  success?: boolean;
+  removed?: number;
+  error?: ErrorType;
+  info?: any;
+} {
   if (!name) return { error: MISSING_VALUE, info: MISSING_NAME };
 
   let removed = 0;
@@ -80,8 +85,7 @@ export function removeExtension({
   return { ...SUCCESS, removed };
 }
 
-type AddEventExtensionArgs = {
-  tournamentRecords: { [key: string]: Tournament } | Tournament[];
+type AddEventExtensionArgs = TournamentRecordsArgs & {
   extension: Extension;
   eventId: string;
 };

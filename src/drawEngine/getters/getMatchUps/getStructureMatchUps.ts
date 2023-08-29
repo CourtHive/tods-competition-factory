@@ -114,7 +114,7 @@ export function getStructureMatchUps({
 
   const { assignedPositions } = structureAssignedDrawPositions({ structure });
   const participantAssignedDrawPositions = assignedPositions
-    .filter((assignment) => assignment.participantId)
+    ?.filter((assignment) => assignment.participantId)
     .map((assignment) => assignment.drawPosition);
 
   const byeMatchUps: any[] = [];
@@ -150,18 +150,19 @@ export function getStructureMatchUps({
         matchUp.drawPositions?.filter(Boolean).length === 2;
       const drawPositionsAssigned =
         !isCollectionMatchUp &&
-        matchUp.drawPositions?.every((drawPosition) =>
-          participantAssignedDrawPositions.includes(drawPosition)
+        matchUp.drawPositions?.every(
+          (drawPosition) =>
+            participantAssignedDrawPositions?.includes(drawPosition)
         );
 
       const byeAssignedDrawPositions = assignedPositions
-        .filter((assignment) => assignment.bye)
+        ?.filter((assignment) => assignment.bye)
         .map((assignment) => assignment.drawPosition);
 
       const isByeMatchUp =
         !isCollectionMatchUp &&
-        matchUp.drawPositions?.find((drawPosition) =>
-          byeAssignedDrawPositions.includes(drawPosition)
+        matchUp.drawPositions?.find(
+          (drawPosition) => byeAssignedDrawPositions?.includes(drawPosition)
         );
 
       const validUpcomingMatchUpStatus = upcomingMatchUpStatuses.includes(

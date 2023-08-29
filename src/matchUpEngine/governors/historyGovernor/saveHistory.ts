@@ -6,7 +6,7 @@ import { MatchUp } from '../../../types/tournamentFromSchema';
 type SaveHistoryArgs = {
   undoHistory?: any[];
   matchUp: MatchUp;
-  history: any[];
+  history?: any[];
 };
 export function saveHistory({
   undoHistory,

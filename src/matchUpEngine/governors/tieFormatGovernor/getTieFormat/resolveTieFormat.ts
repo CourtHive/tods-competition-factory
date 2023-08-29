@@ -9,7 +9,7 @@ import {
 // use with resolved objects, not uuid references to objects
 
 type ResolveTieFormatArgs = {
-  drawDefinition: DrawDefinition;
+  drawDefinition?: DrawDefinition;
   structure?: Structure;
   matchUp?: object;
   event?: Event;

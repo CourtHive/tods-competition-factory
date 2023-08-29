@@ -22,7 +22,7 @@ export function addPositionActionTelemetry({ drawDefinition, positionAction }) {
     if (mainStructure) {
       const initialAssignments = getPositionAssignments({
         structure: mainStructure,
-      }).positionAssignments.map(
+      }).positionAssignments?.map(
         ({ drawPosition, participantId, bye, qualifier }) => ({
           drawPosition,
           participantId,

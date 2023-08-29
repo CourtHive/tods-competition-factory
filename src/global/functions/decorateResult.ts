@@ -10,9 +10,9 @@ export type ResultType = {
   error?: ErrorType;
   errors?: string[];
   success?: boolean;
-  context?: object;
   valid?: boolean;
-  info?: string;
+  context?: any;
+  info?: any;
 };
 
 export function decorateResult({

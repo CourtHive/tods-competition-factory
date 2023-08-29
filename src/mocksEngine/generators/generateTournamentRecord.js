@@ -5,7 +5,7 @@ import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEven
 import { isValidExtension } from '../../global/validation/isValidExtension';
 import { formatDate, isValidDateString } from '../../utilities/dateTime';
 import { addTournamentParticipants } from './addTournamentParticipants';
-import { generateSchedulingProfile } from './generateSchedulingProfile';
+import { generateScheduledRounds } from './generateScheduledRounds';
 import { generateEventWithFlights } from './generateEventWithFlights';
 import { cycleMutationStatus } from '../../global/state/globalState';
 import { generateEventWithDraw } from './generateEventWithDraw';
@@ -205,7 +205,7 @@ export function generateTournamentRecord({
   let scheduledRounds;
   let schedulerResult = {};
   if (schedulingProfile) {
-    const result = generateSchedulingProfile({
+    const result = generateScheduledRounds({
       schedulingProfile,
       tournamentRecord,
     });

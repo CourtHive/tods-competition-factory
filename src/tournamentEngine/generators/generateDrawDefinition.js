@@ -17,6 +17,7 @@ import { newDrawDefinition } from '../../drawEngine/stateMethods';
 import { mustBeAnArray } from '../../utilities/mustBeAnArray';
 import { isConvertableInteger } from '../../utilities/math';
 import { tieFormatDefaults } from './tieFormatDefaults';
+import { ensureInt } from '../../utilities/ensureInt';
 import { nextPowerOf2 } from '../../utilities';
 import { prepareStage } from './prepareStage';
 import {
@@ -143,7 +144,7 @@ export function generateDrawDefinition(params) {
 
   let seedsCount =
     typeof params.seedsCount !== 'number'
-      ? parseInt(params.seedsCount || 0)
+      ? ensureInt(params.seedsCount || 0)
       : params.seedsCount || 0;
 
   const eventType = event?.eventType;

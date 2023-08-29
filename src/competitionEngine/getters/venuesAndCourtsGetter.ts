@@ -4,10 +4,14 @@ import { getInContextCourt } from '../../global/functions/deducers/getInContextC
 import { findExtension } from '../../global/functions/deducers/findExtension';
 import { makeDeepCopy } from '../../utilities';
 
-import { MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
+import {
+  ErrorType,
+  MISSING_TOURNAMENT_RECORDS,
+} from '../../constants/errorConditionConstants';
 import { Tournament, Venue } from '../../types/tournamentFromSchema';
 import { HydratedCourt, HydratedVenue } from '../../types/hydrated';
 import { DISABLED } from '../../constants/extensionConstants';
+import { TournamentRecordsArgs } from '../../types/factoryTypes';
 
 type GetVenuesAndCourtsArgs = {
   tournamentRecords: Tournament[] | { [key: string]: Tournament };
@@ -84,11 +88,20 @@ type Accumulator = {
   venues: Venue[];
 };
 
+type GetCompeitionVenuesArgs = TournamentRecordsArgs & {
+  requireCourts?: boolean;
+  dates?: string[];
+};
+
 export function getCompetitionVenues({
   tournamentRecords,
   requireCourts,
   dates,
-}) {
+}: GetCompeitionVenuesArgs): {
+  venueIds?: string[];
+  error?: ErrorType;
+  venues?: Venue[];
+} {
   if (
     typeof tournamentRecords !== 'object' ||
     !Object.keys(tournamentRecords).length

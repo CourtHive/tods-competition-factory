@@ -1,40 +1,19 @@
-export enum EntryStatusEnum {
-  CONFIRMED = 'CONFIRMED',
-  DIRECT_ACCEPTANCE = 'DIRECT_ACCEPTANCE',
-  ORGANISER_ACCEPTANCE = 'ORGANISER_ACCEPTANCE',
-  REGISTERED = 'REGISTERED',
+import { EntryStatusEnum } from '../types/tournamentFromSchema';
 
-  ALTERNATE = 'ALTERNATE',
-  WITHDRAWN = 'WITHDRAWN',
-
-  SPECIAL_EXEMPT = 'SPECIAL_EXEMPT',
-  JUNIOR_EXEMPT = 'JUNIOR_EXEMPT',
-
-  // applies only to { participantType: INDIVIDUAL } entries in { eventType: DOUBLES }
-  UNPAIRED = 'UNPAIRED', // legacy - being replaced by UNGROUPED
-  UNGROUPED = 'UNGROUPED',
-
-  // These entryStatus enums apply only to draw.entries
-  LUCKY_LOSER = 'LUCKY_LOSER',
-  FEED_IN = 'FEED_IN',
-  QUALIFIER = 'QUALIFIER',
-  WILDCARD = 'WILDCARD',
-}
-
-export const ALTERNATE = EntryStatusEnum.ALTERNATE;
-export const CONFIRMED = EntryStatusEnum.CONFIRMED;
-export const DIRECT_ACCEPTANCE = EntryStatusEnum.DIRECT_ACCEPTANCE;
-export const FEED_IN = EntryStatusEnum.FEED_IN;
-export const JUNIOR_EXEMPT = EntryStatusEnum.JUNIOR_EXEMPT;
-export const LUCKY_LOSER = EntryStatusEnum.LUCKY_LOSER;
-export const ORGANISER_ACCEPTANCE = EntryStatusEnum.ORGANISER_ACCEPTANCE;
-export const QUALIFIER = EntryStatusEnum.QUALIFIER;
-export const REGISTERED = EntryStatusEnum.REGISTERED;
-export const SPECIAL_EXEMPT = EntryStatusEnum.SPECIAL_EXEMPT;
-export const UNGROUPED = EntryStatusEnum.UNGROUPED;
-export const UNPAIRED = EntryStatusEnum.UNPAIRED;
-export const WILDCARD = EntryStatusEnum.WILDCARD;
-export const WITHDRAWN = EntryStatusEnum.WITHDRAWN;
+export const ALTERNATE = EntryStatusEnum.Alternate;
+export const CONFIRMED = EntryStatusEnum.Confirmed;
+export const DIRECT_ACCEPTANCE = EntryStatusEnum.DirectAcceptance;
+export const FEED_IN = EntryStatusEnum.FeedIn;
+export const JUNIOR_EXEMPT = EntryStatusEnum.JuniorExempt;
+export const LUCKY_LOSER = EntryStatusEnum.LuckyLoser;
+export const ORGANISER_ACCEPTANCE = EntryStatusEnum.OrganiserAcceptance;
+export const QUALIFIER = EntryStatusEnum.Qualifier;
+export const REGISTERED = EntryStatusEnum.Registered;
+export const SPECIAL_EXEMPT = EntryStatusEnum.SpecialExempt;
+export const UNGROUPED = EntryStatusEnum.Ungrouped;
+export const UNPAIRED = EntryStatusEnum.Unpaired;
+export const WILDCARD = EntryStatusEnum.Wildcard;
+export const WITHDRAWN = EntryStatusEnum.Withdrawn;
 
 export const EQUIVALENT_ACCEPTANCE_STATUSES = [
   CONFIRMED,

@@ -14,6 +14,7 @@ import {
   MISSING_VENUE_ID,
   VENUE_NOT_FOUND,
 } from '../../constants/errorConditionConstants';
+import { TournamentRecordsArgs } from '../../types/factoryTypes';
 
 type GetVenuesAndCourtsArgs = {
   tournamentRecord: Tournament;
@@ -70,7 +71,7 @@ export function getVenuesAndCourts({
 }
 
 type FindVenueArgs = {
-  tournamentRecords?: Tournament[];
+  tournamentRecords?: TournamentRecordsArgs;
   tournamentRecord?: Tournament;
   venueId: string;
 };

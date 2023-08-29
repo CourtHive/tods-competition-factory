@@ -42,10 +42,11 @@ export function getTieFormat({
 }: GetTieFormatArgs):
   | ResultType
   | {
-      success: boolean;
-      tieFormat: string;
-      matchUp: MatchUp;
-      structure: Structure;
+      error?: ErrorType;
+      success?: boolean;
+      tieFormat?: string;
+      matchUp?: MatchUp;
+      structure?: Structure;
     } {
   let tieFormat;
 

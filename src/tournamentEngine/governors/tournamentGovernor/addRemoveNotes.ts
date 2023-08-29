@@ -4,7 +4,7 @@ import {
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
 
-export function addNotes(params) {
+export function addNotes(params?) {
   if (typeof params !== 'object') return { error: MISSING_VALUE };
   if (typeof params.element !== 'object') return { error: INVALID_VALUES };
   if (!params.notes) return { error: MISSING_VALUE };
@@ -17,7 +17,7 @@ export function addNotes(params) {
   return { ...SUCCESS };
 }
 
-export function removeNotes(params) {
+export function removeNotes(params?) {
   if (typeof params !== 'object') return { error: MISSING_VALUE };
   if (typeof params.element !== 'object') return { error: INVALID_VALUES };
 

@@ -18,15 +18,15 @@ function generateSetScores(setValues) {
   );
 }
 
-/**
- *
- * @param {object[]} setValues - array of values arrays [side1Score, side2Score, side1TiebreakScore, side2TiebreakScore]
- */
+type GenerateMatchUpOutcomeArgs = {
+  matchUpFormat?: string;
+  setValues: any[];
+};
 
 export function generateMatchUpOutcome({
-  setValues,
   matchUpFormat = 'SET3-S:6/TB7',
-}) {
+  setValues,
+}: GenerateMatchUpOutcomeArgs): any {
   const generatedSets = generateSetScores(setValues);
   const sets = generatedSets.map((set) => {
     const { setNumber } = set;

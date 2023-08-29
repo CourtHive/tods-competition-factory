@@ -41,18 +41,20 @@ export function automatedPositioning({
   });
 }
 
-export function automatedPlayoffPositioning({
-  applyPositioning = true,
-  provisionalPositioning,
-  candidatesCount = 1,
-  tournamentRecord,
-  drawDefinition,
-  seedingProfile,
-  structureId,
-  placeByes,
-  seedsOnly,
-  event,
-}) {
+export function automatedPlayoffPositioning(params) {
+  const {
+    applyPositioning = true,
+    provisionalPositioning,
+    candidatesCount = 1,
+    tournamentRecord,
+    drawDefinition,
+    seedingProfile,
+    structureId,
+    placeByes,
+    seedsOnly,
+    event,
+  } = params;
+
   if (!event) return { error: EVENT_NOT_FOUND };
   if (!drawDefinition) return { error: DRAW_DEFINITION_NOT_FOUND };
 

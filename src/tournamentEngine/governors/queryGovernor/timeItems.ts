@@ -3,6 +3,7 @@ import { findTournamentParticipant } from '../../getters/participants/participan
 import { ResultType } from '../../../global/functions/decorateResult';
 import { ELEMENT_REQUIRED } from '../../../constants/infoConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { Event, Tournament } from '../../../types/tournamentFromSchema';
 import {
   INVALID_VALUES,
   MISSING_DRAW_ID,
@@ -85,12 +86,18 @@ export function getDrawDefinitionTimeItem({
   return (timeItem && { timeItem, previousItems }) || { info };
 }
 
+type GetEventTimeItemArgs = {
+  returnPreviousValues?: boolean;
+  itemSubTypes?: string[];
+  itemType: string;
+  event: Event;
+};
 export function getEventTimeItem({
   returnPreviousValues,
   itemSubTypes,
   itemType,
   event,
-}) {
+}: GetEventTimeItemArgs) {
   if (!event) return { error: MISSING_EVENT };
   if (!event.timeItems) return { info: NOT_FOUND };
 
@@ -103,12 +110,18 @@ export function getEventTimeItem({
   return (timeItem && { timeItem, previousItems }) || { info };
 }
 
+type GetTournamentTimeItemArgs = {
+  returnPreviousValues?: boolean;
+  tournamentRecord: Tournament;
+  itemSubTypes?: string[];
+  itemType: string;
+};
 export function getTournamentTimeItem({
   returnPreviousValues,
   tournamentRecord,
   itemSubTypes,
   itemType,
-}) {
+}: GetTournamentTimeItemArgs) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.timeItems) return { info: NOT_FOUND };
 

@@ -1,8 +1,20 @@
 import { addParticipantGroupings } from '../../../drawEngine/governors/positionGovernor/avoidance/addParticipantGroupings';
 import { addNationalityCode } from '../../governors/participantGovernor/addNationalityCode';
-import { getParticipantMap } from '../participants/getParticipantMap';
 import { getScaleValues } from '../participants/getScaleValues';
 
+import { getParticipantMap } from '../participants/getParticipantMap';
+import { Tournament } from '../../../types/tournamentFromSchema';
+import { HydratedParticipant } from '../../../types/hydrated';
+import { makeDeepCopy } from '../../../utilities';
+
+type HydrateParticipantsArgs = {
+  tournamentRecord: Tournament;
+  useParticipantMap?: boolean;
+  participantsProfile?: any;
+  policyDefinitions?: any;
+  contextProfile?: any;
+  inContext?: boolean;
+};
 export function hydrateParticipants({
   participantsProfile,
   useParticipantMap,
@@ -10,7 +22,7 @@ export function hydrateParticipants({
   tournamentRecord,
   contextProfile,
   inContext,
-}) {
+}: HydrateParticipantsArgs) {
   if (useParticipantMap) {
     const participantMap = getParticipantMap({
       ...participantsProfile,
@@ -23,7 +35,8 @@ export function hydrateParticipants({
     return { participantMap };
   }
 
-  let participants = tournamentRecord.participants || [];
+  let participants: HydratedParticipant[] =
+    makeDeepCopy(tournamentRecord.participants, false, true) || [];
 
   if (participantsProfile?.withIOC || participantsProfile?.withISO2)
     participants.forEach((participant) =>

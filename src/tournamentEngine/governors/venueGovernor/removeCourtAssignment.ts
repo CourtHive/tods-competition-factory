@@ -23,7 +23,7 @@ import {
 
 type RemoveCourtAssignmentArgs = {
   drawDefinition?: DrawDefinition;
-  tournamentRecord: Tournament;
+  tournamentRecord?: Tournament;
   matchUpId: string;
   drawId?: string;
 };

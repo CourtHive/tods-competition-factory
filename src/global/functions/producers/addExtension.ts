@@ -3,6 +3,7 @@ import { decorateResult } from '../decorateResult';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
+  ErrorType,
   INVALID_VALUES,
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
@@ -15,7 +16,11 @@ type AddExtensionArgs = {
   element: any;
 };
 
-export function addExtension(params: AddExtensionArgs) {
+export function addExtension(params?: AddExtensionArgs): {
+  success?: boolean;
+  error?: ErrorType;
+} {
+  if (typeof params !== 'object') return { error: MISSING_VALUE };
   const stack = 'addExtension';
   if (!params?.element)
     return decorateResult({ result: { error: MISSING_VALUE }, stack });

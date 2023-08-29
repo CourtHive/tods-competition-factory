@@ -1,4 +1,5 @@
 import { parse } from '../../governors/matchUpFormatGovernor/parse';
+import { ensureInt } from '../../../utilities/ensureInt';
 
 import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
 import {
@@ -98,8 +99,8 @@ export function countGames({
         set;
 
       if (isGamesBased(based)) {
-        gamesTally[0].push(parseInt(side1Score || 0));
-        gamesTally[1].push(parseInt(side2Score || 0));
+        gamesTally[0].push(ensureInt(side1Score || 0));
+        gamesTally[1].push(ensureInt(side2Score || 0));
       }
 
       // count a tiebreak as a game won
@@ -138,7 +139,7 @@ export function countGames({
       const getComplement = (value) => {
         if (!parsedMatchUpFormat || value === '') return;
         if (+value === tiebreakAt - 1 || +value === tiebreakAt)
-          return parseInt(tiebreakAt || 0) + 1;
+          return ensureInt(tiebreakAt || 0) + 1;
         if (+value < tiebreakAt) return gamesForSet;
         return tiebreakAt;
       };
@@ -196,13 +197,13 @@ export function countPoints({ matchUpFormat, score }) {
     const based = parsedMatchUpFormat?.[whichFormat]?.based;
     if (isPointsBased(based)) {
       const { side1Score, side2Score } = set;
-      if (side1Score) pointsTally[0] += parseInt(side1Score || 0);
-      if (side2Score) pointsTally[1] += parseInt(side2Score || 0);
+      if (side1Score) pointsTally[0] += ensureInt(side1Score || 0);
+      if (side2Score) pointsTally[1] += ensureInt(side2Score || 0);
     } else {
       if (set.side1TiebreakScore)
-        pointsTally[0] += parseInt(set.side1TiebreakScore || 0);
+        pointsTally[0] += ensureInt(set.side1TiebreakScore || 0);
       if (set.side2TiebreakScore)
-        pointsTally[1] += parseInt(set.side2TiebreakScore || 0);
+        pointsTally[1] += ensureInt(set.side2TiebreakScore || 0);
     }
   });
   return pointsTally;

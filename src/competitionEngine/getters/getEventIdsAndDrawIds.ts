@@ -1,3 +1,4 @@
+import { TournamentRecordsArgs } from '../../types/factoryTypes';
 import {
   ErrorType,
   MISSING_TOURNAMENT_RECORDS,
@@ -18,7 +19,9 @@ type AggregatorResut = {
 
 // Returns arrays of all drawIds and eventIds across tournamentRecords
 // Returns an combined array of drawIds and eventIds for each tournamentId
-export function getEventIdsAndDrawIds({ tournamentRecords }): AggregatorResut {
+export function getEventIdsAndDrawIds({
+  tournamentRecords,
+}: TournamentRecordsArgs): AggregatorResut {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
 
   const tournamentIds = Object.keys(tournamentRecords);

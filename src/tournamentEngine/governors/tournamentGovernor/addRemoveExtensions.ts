@@ -5,6 +5,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   EVENT_NOT_FOUND,
+  ErrorType,
   INVALID_VALUES,
   MISSING_EVENT,
   MISSING_PARTICIPANT_ID,
@@ -24,7 +25,12 @@ import {
   Tournament,
 } from '../../../types/tournamentFromSchema';
 
-export function removeExtension(params) {
+type RemoveExtensionResult = {
+  success?: boolean;
+  error?: ErrorType;
+  info?: any;
+};
+export function removeExtension(params?): RemoveExtensionResult {
   if (!params || typeof params !== 'object') return { error: MISSING_VALUE };
   if (!params?.element) return { error: MISSING_VALUE, info: ELEMENT_REQUIRED };
   if (typeof params?.element !== 'object') return { error: INVALID_VALUES };
@@ -47,7 +53,10 @@ type AddExtensionArgs = {
   event?: Event;
 };
 
-export function addTournamentExtension(params: AddExtensionArgs) {
+export function addTournamentExtension(params: AddExtensionArgs): {
+  success?: boolean;
+  error?: ErrorType;
+} {
   if (!params || typeof params !== 'object') return { error: MISSING_VALUE };
   if (!params.tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   return addExtension({
@@ -77,7 +86,7 @@ export function addEventExtension(params: AddExtensionArgs) {
   });
 }
 
-export function addParticipantExtension(params) {
+export function addParticipantExtension(params?) {
   if (!params || typeof params !== 'object') return { error: MISSING_VALUE };
   if (!params.participantId) return { error: MISSING_PARTICIPANT_ID };
   const tournamentParticipants = params.tournamentRecord?.participants || [];
@@ -93,7 +102,11 @@ export function addParticipantExtension(params) {
   });
 }
 
-export function removeTournamentExtension(params) {
+export function removeTournamentExtension(params): {
+  success?: boolean;
+  error?: ErrorType;
+  info?: any;
+} {
   if (!params || typeof params !== 'object') return { error: MISSING_VALUE };
   if (!params.tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   return removeExtension({
@@ -114,7 +127,7 @@ export function removeEventExtension(params) {
   return removeExtension({ element: params.event, name: params.name });
 }
 
-export function removeParticipantExtension(params) {
+export function removeParticipantExtension(params?) {
   if (!params || typeof params !== 'object') return { error: MISSING_VALUE };
   if (!params.participantId) return { error: MISSING_PARTICIPANT_ID };
   const tournamentParticipants = params.tournamentRecord?.participants || [];

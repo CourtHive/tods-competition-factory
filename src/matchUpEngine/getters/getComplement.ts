@@ -1,3 +1,5 @@
+import { ensureInt } from '../../utilities/ensureInt';
+
 type SetComplementArgs = {
   lowValue?: string | number;
   tiebreakAt?: number;
@@ -11,8 +13,7 @@ export const getSetComplement = (
 ): number[] | false => {
   const { isSide1, lowValue, setTo, tiebreakAt, NoAD } = params;
   if (lowValue === undefined) return false;
-  let valueAsNumber =
-    typeof lowValue === 'string' ? parseInt(lowValue) : lowValue;
+  let valueAsNumber = ensureInt(lowValue);
 
   // Not necessary?
   if (valueAsNumber?.toString().length > 2) {

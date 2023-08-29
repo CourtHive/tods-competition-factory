@@ -18,7 +18,6 @@ export function attemptToSetWinningSide(params) {
     appliedPolicies,
     disableAutoCalc,
     drawDefinition,
-    matchUpsMap,
     dualMatchUp,
     winningSide,
     structure,
@@ -34,7 +33,6 @@ export function attemptToSetWinningSide(params) {
     // only applies when progression is based on WIN_RATIO, e.g. ROUND_ROBIN_WITH_PLAYOFF
     const { connectedStructureIds } = checkConnectedStructures({
       drawDefinition,
-      matchUpsMap,
       structure,
       matchUp,
     });
@@ -45,7 +43,6 @@ export function attemptToSetWinningSide(params) {
     }
 
     const result = removeDirectedParticipants(params);
-
     if (result.error) return result;
   }
 

@@ -58,7 +58,7 @@ const globalState: GlobalStateTypes = {
   deepCopy: true,
 };
 
-let _globalStateProvider = syncGlobalState;
+let _globalStateProvider: any = syncGlobalState;
 
 const requiredStateProviderMethods = [
   'addNotice',
@@ -78,7 +78,7 @@ const requiredStateProviderMethods = [
   'setTournamentRecords',
 ];
 
-export function setStateProvider(globalStateProvider) {
+export function setStateProvider(globalStateProvider?) {
   if (typeof globalStateProvider !== 'object') {
     throw new Error(`Global state provider can not be undefined or null`);
   } else {
@@ -193,7 +193,7 @@ export function timeKeeper(action = 'reset', timer = 'default') {
   return globalState.timers[timer];
 }
 
-export function setDevContext(value) {
+export function setDevContext(value?) {
   globalState.devContext = value;
 }
 
@@ -236,10 +236,12 @@ export function deepCopyEnabled() {
   };
 }
 
-export function setSubscriptions({ subscriptions = undefined } = {}) {
-  if (!subscriptions)
+export function setSubscriptions(params) {
+  if (!params?.subscriptions)
     return { error: MISSING_VALUE, info: 'missing subscriptions' };
-  return _globalStateProvider.setSubscriptions({ subscriptions });
+  return _globalStateProvider.setSubscriptions({
+    subscriptions: params.subscriptions,
+  });
 }
 
 export function cycleMutationStatus() {

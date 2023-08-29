@@ -14,7 +14,7 @@ import {
 /**
  * Work in progress: utility for scoring dialogs to submit score change
  */
-export function submitScoreChange(params) {
+export function submitScoreChange(params?) {
   const { matchUp, sideNumber, setNumber, value } = params || {};
 
   if (!matchUp) {

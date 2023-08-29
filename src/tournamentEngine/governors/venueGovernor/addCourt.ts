@@ -86,7 +86,7 @@ export function addCourt({
   }
 }
 
-type AddCourtsArgs = {
+export type AddCourtsArgs = {
   venueAbbreviationRoot?: string;
   tournamentRecord: Tournament;
   dateAvailability?: any[];
@@ -126,7 +126,7 @@ export function addCourts({
   if (!isNumeric(courtsCount) || !courtNames)
     return { error: MISSING_COURTS_INFO };
 
-  courtsCount = courtsCount || courtNames.length;
+  courtsCount = courtsCount ?? courtNames.length;
   const courts = generateRange(0, courtsCount).map((i) => {
     const courtTiming = courtTimings?.[i];
     const courtAvailability = courtTiming

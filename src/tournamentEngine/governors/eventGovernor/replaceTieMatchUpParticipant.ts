@@ -57,10 +57,10 @@ export function replaceTieMatchUpParticipantId(params) {
     tieFormat,
   } = matchUpContext;
 
-  const { matchUpType } = inContextTieMatchUp;
+  const matchUpType = inContextTieMatchUp?.matchUpType;
 
-  const side = inContextTieMatchUp.sides?.find(
-    (side) =>
+  const side: any = inContextTieMatchUp?.sides?.find(
+    (side: any) =>
       side.participant?.participantId === existingParticipantId ||
       side.participant?.individualParticipantIds?.includes(
         existingParticipantId
@@ -102,8 +102,8 @@ export function replaceTieMatchUpParticipantId(params) {
   );
   if (
     matchUpActionsPolicy?.participants?.enforceGender &&
-    [MALE, FEMALE].includes(inContextTieMatchUp.gender) &&
-    inContextTieMatchUp.gender !== newParticipant.person?.sex
+    [MALE, FEMALE].includes(inContextTieMatchUp?.gender) &&
+    inContextTieMatchUp?.gender !== newParticipant.person?.sex
   ) {
     return { error: INVALID_PARTICIPANT, info: 'Gender mismatch' };
   }
@@ -118,23 +118,25 @@ export function replaceTieMatchUpParticipantId(params) {
 
   const lineUps = extension?.value || {};
 
-  if (!dualMatchUp.sides?.length) {
+  if (!dualMatchUp?.sides?.length) {
     const extractSideDetail = ({
       displaySideNumber,
       drawPosition,
       sideNumber,
     }) => ({ drawPosition, sideNumber, displaySideNumber });
 
-    dualMatchUp.sides = inContextDualMatchUp.sides.map((side) => {
-      const participantId = side.participantId;
-      return {
-        ...extractSideDetail(side),
-        lineUp: (participantId && lineUps[participantId]) || [],
-      };
-    });
+    if (dualMatchUp) {
+      dualMatchUp.sides = inContextDualMatchUp?.sides?.map((side: any) => {
+        const participantId = side.participantId;
+        return {
+          ...extractSideDetail(side),
+          lineUp: (participantId && lineUps[participantId]) || [],
+        };
+      });
+    }
   }
 
-  const dualMatchUpSide = dualMatchUp.sides.find(
+  const dualMatchUpSide = dualMatchUp?.sides?.find(
     ({ sideNumber }) => sideNumber === side.sideNumber
   );
 
@@ -149,16 +151,18 @@ export function replaceTieMatchUpParticipantId(params) {
     });
   }
 
-  const allTieIndividualParticipantIds = inContextTieMatchUp.sides?.flatMap(
-    ({ participant }) =>
-      participant?.individualParticipantIds || participant?.participantId || []
+  const allTieIndividualParticipantIds = inContextTieMatchUp?.sides?.flatMap(
+    (side: any) =>
+      side.participant?.individualParticipantIds ||
+      side.participant?.participantId ||
+      []
   );
 
-  if (allTieIndividualParticipantIds.includes(newParticipantId)) {
+  if (allTieIndividualParticipantIds?.includes(newParticipantId)) {
     return decorateResult({ result: { error: EXISTING_PARTICIPANT }, stack });
   }
 
-  const teamParticipantId = inContextDualMatchUp.sides?.find(
+  const teamParticipantId = inContextDualMatchUp?.sides?.find(
     ({ sideNumber }) => sideNumber === side.sideNumber
   )?.participantId;
 
@@ -168,7 +172,7 @@ export function replaceTieMatchUpParticipantId(params) {
   );
 
   const substitutionOrder = teamLineUp?.reduce(
-    (order, teamCompetitor) =>
+    (order, teamCompetitor: any) =>
       teamCompetitor.substitutionOrder > order
         ? teamCompetitor.substitutionOrder
         : order,
@@ -229,7 +233,7 @@ export function replaceTieMatchUpParticipantId(params) {
         const assignment: any = { collectionId, collectionPosition };
         if (substitution) {
           assignment.previousParticipantId = existingParticipantId;
-          assignment.substitutionOrder = substitutionOrder + 1;
+          assignment.substitutionOrder = (substitutionOrder || 0) + 1;
         }
         modifiedCompetitor.collectionAssignments.push(assignment);
       }
@@ -240,7 +244,7 @@ export function replaceTieMatchUpParticipantId(params) {
   if (!newParticipantIdInLineUp) {
     const collectionAssignment: any = { collectionId, collectionPosition };
     if (substitution) {
-      collectionAssignment.substitutionOrder = substitutionOrder + 1;
+      collectionAssignment.substitutionOrder = (substitutionOrder || 0) + 1;
       collectionAssignment.previousParticipantId = existingParticipantId;
     }
     const assignment = {
@@ -269,7 +273,7 @@ export function replaceTieMatchUpParticipantId(params) {
 
   dualMatchUpSide.lineUp = modifiedLineUp;
 
-  if (teamParticipantId) {
+  if (teamParticipantId && tieFormat) {
     const result = updateTeamLineUp({
       participantId: teamParticipantId,
       lineUp: modifiedLineUp,
@@ -322,36 +326,41 @@ export function replaceTieMatchUpParticipantId(params) {
 
   if (substitution || side.substitutions?.length === 1) {
     if (substitution) {
-      const processCodes = tieMatchUp.processCodes || [];
+      const processCodes = tieMatchUp?.processCodes || [];
       if (substitutionProcessCodes)
         processCodes.push(...substitutionProcessCodes);
 
-      tieMatchUp.processCodes = processCodes;
+      if (tieMatchUp) tieMatchUp.processCodes = processCodes;
     } else {
       // if there was only one substitution, remove processCode(s)
       for (const substitutionProcessCode of substitutionProcessCodes || []) {
-        const codeIndex = tieMatchUp.processCodes.lastIndexOf(
+        const codeIndex = tieMatchUp?.processCodes?.lastIndexOf(
           substitutionProcessCode
         );
         // remove only one instance of substitutionProcessCode
-        tieMatchUp.processCodes.splice(codeIndex, 1);
+        codeIndex !== undefined &&
+          tieMatchUp?.processCodes?.splice(codeIndex, 1);
       }
     }
 
+    if (tieMatchUp) {
+      modifyMatchUpNotice({
+        tournamentId: tournamentRecord?.tournamentId,
+        matchUp: tieMatchUp,
+        context: stack,
+        drawDefinition,
+      });
+    }
+  }
+
+  if (dualMatchUp) {
     modifyMatchUpNotice({
       tournamentId: tournamentRecord?.tournamentId,
-      matchUp: tieMatchUp,
+      matchUp: dualMatchUp,
       context: stack,
       drawDefinition,
     });
   }
-
-  modifyMatchUpNotice({
-    tournamentId: tournamentRecord?.tournamentId,
-    matchUp: dualMatchUp,
-    context: stack,
-    drawDefinition,
-  });
 
   return { ...SUCCESS, modifiedLineUp, participantRemoved, participantAdded };
 }

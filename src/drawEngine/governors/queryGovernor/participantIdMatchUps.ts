@@ -2,12 +2,22 @@ import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { makeDeepCopy, unique } from '../../../utilities';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
+import {
+  DrawDefinition,
+  Event,
+  Participant,
+} from '../../../types/tournamentFromSchema';
 
+type GetParticipantIdMatchUps = {
+  tournamentParticipants?: Participant[];
+  drawDefinition: DrawDefinition;
+  event?: Event;
+};
 export function getParticipantIdMatchUps({
   tournamentParticipants,
   drawDefinition,
   event,
-}) {
+}: GetParticipantIdMatchUps) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   const result = getAllDrawMatchUps({
