@@ -10,6 +10,7 @@ import {
   LUCKY_PARTICIPANT,
   LUCKY_PARTICIPANT_METHOD,
 } from '../../../../constants/positionActionConstants';
+import { Participant } from '../../../../types/tournamentFromSchema';
 
 export function getValidLuckyLosersAction({
   tournamentParticipants = [],
@@ -56,9 +57,9 @@ export function getValidLuckyLosersAction({
       { sourceStructureIds: [], targetStructureIds: [] }
     ) || {};
 
-  const availableLuckyLoserParticipantIds = [];
+  const availableLuckyLoserParticipantIds: string[] = [];
 
-  let relevantLinks =
+  const relevantLinks =
     drawDefinition.links?.filter(
       (link) => link.target?.structureId === structure.structureId
     ) || [];
@@ -75,7 +76,7 @@ export function getValidLuckyLosersAction({
       sourceStructure?.finishingPosition === ROUND_OUTCOME &&
       (sourceStructureIds?.length !== 1 || targetStructureIds?.length !== 1);
 
-    const matchUpFilters = {};
+    const matchUpFilters: any = {};
     if (restrictBySourceRound) {
       const { matchUps } = getAllStructureMatchUps({
         drawDefinition,
@@ -124,11 +125,12 @@ export function getValidLuckyLosersAction({
     });
   }
 
-  const availableLuckyLosers = tournamentParticipants?.filter((participant) =>
-    availableLuckyLoserParticipantIds?.includes(participant.participantId)
+  const availableLuckyLosers = tournamentParticipants?.filter(
+    (participant: Participant) =>
+      availableLuckyLoserParticipantIds?.includes(participant.participantId)
   );
 
-  availableLuckyLosers?.forEach((luckyLoser) => {
+  availableLuckyLosers?.forEach((luckyLoser: any) => {
     const entry = (drawDefinition.entries || []).find(
       (entry) => entry.participantId === luckyLoser.participantId
     );

@@ -65,7 +65,7 @@ export function modifyPairAssignment({
     return { error: INVALID_PARTICIPANT, participant };
 
   const existingIndividualParticipantIds = participant.individualParticipantIds;
-  const individualParticipantIds = [
+  const individualParticipantIds: string[] = [
     replacementIndividualParticipantId,
     ...existingIndividualParticipantIds.filter(
       (individualParticipantId) =>
@@ -74,7 +74,7 @@ export function modifyPairAssignment({
   ];
 
   const { participant: existingPairParticipant } = getPairedParticipant({
-    participantIds: [individualParticipantIds],
+    participantIds: individualParticipantIds,
     tournamentRecord,
   });
 

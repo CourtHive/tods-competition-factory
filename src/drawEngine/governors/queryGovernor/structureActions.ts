@@ -28,12 +28,9 @@ export function isCompletedStructure(params) {
   if (!params?.drawDefinition) return false;
   const structureMatchUps = getStructureMatchUps(params);
 
-  let {
-    includesTeamMatchUps,
-    completedMatchUps,
-    pendingMatchUps,
-    upcomingMatchUps,
-  } = structureMatchUps || {};
+  const includesTeamMatchUps = structureMatchUps?.includesTeamMatchUps;
+  let { completedMatchUps, pendingMatchUps, upcomingMatchUps } =
+    structureMatchUps || {};
 
   if (includesTeamMatchUps) {
     completedMatchUps = completedMatchUps.filter(

@@ -4,16 +4,26 @@ import {
   POLICY_TYPE_POSITION_ACTIONS,
   POLICY_TYPE_MATCHUP_ACTIONS,
 } from '../../../../constants/policyConstants';
+import {
+  DrawDefinition,
+  Structure,
+} from '../../../../types/tournamentFromSchema';
 
 export const POSITION_ACTION = 'positionAction';
 export const MATCHUP_ACTION = 'matchUpAction';
 
+type GetEnabledStructuresArgs = {
+  drawDefinition: DrawDefinition;
+  appliedPolicies?: any;
+  structure?: Structure;
+  actionType?: string;
+};
 export function getEnabledStructures({
   actionType = POSITION_ACTION,
   appliedPolicies,
   drawDefinition,
   structure,
-}) {
+}: GetEnabledStructuresArgs) {
   const policyType =
     (actionType === POSITION_ACTION && POLICY_TYPE_POSITION_ACTIONS) ||
     (actionType === MATCHUP_ACTION && POLICY_TYPE_MATCHUP_ACTIONS);
@@ -23,7 +33,8 @@ export function getEnabledStructures({
     (actionType === MATCHUP_ACTION && POLICY_MATCHUP_ACTIONS_DEFAULT);
 
   const actionsPolicy =
-    appliedPolicies?.[policyType] || defaultPolicy?.[policyType];
+    policyType &&
+    (appliedPolicies?.[policyType] || defaultPolicy?.[policyType]);
 
   const relevantLinks = drawDefinition.links?.filter(
     (link) => link?.target?.structureId === structure?.structureId
@@ -42,13 +53,13 @@ export function getEnabledStructures({
             targetFeedProfiles.includes(feedProfile)
           ))) &&
       (!stages?.length ||
-        (Array.isArray(stages) && stages?.includes(structure.stage))) &&
+        (Array.isArray(stages) && stages?.includes(structure?.stage))) &&
       (!structureTypes?.length ||
         (Array.isArray(structureTypes) &&
-          structureTypes?.includes(structure.structureType))) &&
+          structureTypes?.includes(structure?.structureType))) &&
       (!stageSequences?.length ||
         (Array.isArray(stageSequences) &&
-          stageSequences.includes(structure.stageSequence)))
+          stageSequences.includes(structure?.stageSequence)))
     );
   });
 
@@ -100,15 +111,13 @@ export function getPolicyActions({
         feedProfiles.some((feedProfile) =>
           targetFeedProfiles.includes(feedProfile)
         ));
-    if (
+    return (
       matchesStageSequence &&
       matchesStructureType &&
       matchesFeedProfile &&
       structurePolicy &&
       matchesStage
-    ) {
-      return true;
-    }
+    );
   });
 
   return { policyActions };

@@ -12,14 +12,27 @@ import {
   MISSING_STRUCTURE,
   MISSING_TARGET_LINK,
 } from '../../../constants/errorConditionConstants';
+import {
+  DrawDefinition,
+  DrawLink,
+  Structure,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
+type AttachQualifyingArgs = {
+  tournamentRecord?: Tournament;
+  drawDefinition: DrawDefinition;
+  structure: Structure;
+  eventId?: string;
+  link: DrawLink;
+};
 export function attachQualifyingStructure({
   tournamentRecord,
   drawDefinition,
   structure,
   eventId,
   link,
-}) {
+}: AttachQualifyingArgs) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structure) return { error: MISSING_STRUCTURE };
   if (!link) return { error: MISSING_TARGET_LINK };
@@ -36,6 +49,8 @@ export function attachQualifyingStructure({
       result,
     });
 
+  if (!drawDefinition.structures) drawDefinition.structures = [];
+  if (!drawDefinition.links) drawDefinition.links = [];
   drawDefinition.structures.push(structure);
   drawDefinition.links.push(link);
 

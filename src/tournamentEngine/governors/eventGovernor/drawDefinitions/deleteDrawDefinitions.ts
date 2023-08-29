@@ -38,7 +38,17 @@ import {
   PUBLISH,
   STATUS,
 } from '../../../../constants/timeItemConstants';
+import { Event, Tournament } from '../../../../types/tournamentFromSchema';
 
+type DeleteDrawDefinitionArgs = {
+  tournamentRecord: Tournament;
+  policyDefinitions?: any;
+  autoPublish?: boolean;
+  drawIds?: string[];
+  auditData?: any;
+  eventId?: string;
+  event?: Event;
+};
 export function deleteDrawDefinitions({
   autoPublish = true,
   policyDefinitions,
@@ -47,7 +57,7 @@ export function deleteDrawDefinitions({
   auditData,
   eventId,
   event,
-}) {
+}: DeleteDrawDefinitionArgs) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   const stack = 'deleteDrawDefinitions';
 
@@ -56,7 +66,7 @@ export function deleteDrawDefinitions({
     policyDefinitions = appliedPolicies;
   }
 
-  const drawId = Array.isArray(drawIds) && drawIds[0];
+  const drawId = Array.isArray(drawIds) ? drawIds[0] : undefined;
 
   if (!event) {
     const result = findEvent({ tournamentRecord, eventId, drawId });
@@ -64,11 +74,11 @@ export function deleteDrawDefinitions({
     event = result.event;
   }
 
-  const auditTrail = [];
-  const matchUpIds = [];
-  const deletedDrawsDetail = [];
+  const deletedDrawsDetail: any[] = [];
+  const matchUpIds: string[] = [];
+  const auditTrail: any[] = [];
 
-  if (!event.drawDefinitions)
+  if (!event?.drawDefinitions)
     return decorateResult({
       result: { ...SUCCESS },
       info: 'event has no drawDefinition',
@@ -121,13 +131,17 @@ export function deleteDrawDefinitions({
           stage: MAIN,
         })?.structures?.[0];
 
-        const positionAssignments =
+        const pa =
           mainStructure &&
           getPositionAssignments({
             structureId: mainStructure.structureId,
             tournamentRecord,
             drawDefinition,
-          })?.positionAssignments.map(positionAssignmentMap);
+          });
+
+        const positionAssignments = pa?.positionAssignments.map(
+          positionAssignmentMap
+        );
 
         const qualifyingStructures = getDrawStructures({
           stage: QUALIFYING,
@@ -137,11 +151,14 @@ export function deleteDrawDefinitions({
         const qualifyingPositionAssignments = qualifyingStructures?.length
           ? qualifyingStructures.map((qualifyingStructure) => {
               const stageSequence = qualifyingStructure.stageSequence;
-              const positionAssignments = getPositionAssignments({
+              const pa: any = getPositionAssignments({
                 structureId: qualifyingStructure.structureId,
                 tournamentRecord,
                 drawDefinition,
-              })?.positionAssignments.map(positionAssignmentMap);
+              });
+              const positionAssignments = pa?.positionAssignments.map(
+                positionAssignmentMap
+              );
               return { positionAssignments, stageSequence };
             })
           : undefined;
@@ -150,7 +167,7 @@ export function deleteDrawDefinitions({
           action: DELETE_DRAW_DEFINITIONS,
           payload: {
             drawDefinitions: [drawDefinition],
-            eventId: event.eventId,
+            eventId: eventId || event?.eventId,
             auditData,
           },
         };
@@ -158,8 +175,8 @@ export function deleteDrawDefinitions({
         deletedDrawsDetail.push(
           definedAttributes({
             tournamentId: tournamentRecord.tournamentId,
+            eventId: eventId || event?.eventId,
             qualifyingPositionAssignments,
-            eventId: event.eventId,
             positionAssignments,
             auditData,
             drawType,

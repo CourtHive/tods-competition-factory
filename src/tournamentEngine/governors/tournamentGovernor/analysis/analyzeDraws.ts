@@ -6,7 +6,10 @@ import { getStructureLinks } from '../../../../drawEngine/getters/linkGetter';
 import { stageOrder } from '../../../../constants/drawDefinitionConstants';
 import { ensureInt } from '../../../../utilities/ensureInt';
 
-import { MISSING_TOURNAMENT_RECORD } from '../../../../constants/errorConditionConstants';
+import {
+  ErrorType,
+  MISSING_TOURNAMENT_RECORD,
+} from '../../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 
 type DrawsAnalysis = {
@@ -17,7 +20,11 @@ type DrawsAnalysis = {
   drawAnalysis: any;
 };
 
-export function analyzeDraws({ tournamentRecord }) {
+export function analyzeDraws({ tournamentRecord }): {
+  error?: ErrorType;
+  drawsAnalysis?: any;
+  success?: boolean;
+} {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   const drawsAnalysis: DrawsAnalysis = {
     positionsNoOutcomes: [], // all positions assigned and no outcomes

@@ -22,7 +22,7 @@ export function updateDrawIdsOrder({ event, orderedDrawIdsMap }) {
       info: 'orderedDrawIdsMap must be an object',
     };
 
-  const drawOrders = Object.values(orderedDrawIdsMap);
+  const drawOrders: number[] = Object.values(orderedDrawIdsMap);
 
   const validDrawOrders = drawOrders.every((drawOrder) => !isNaN(drawOrder));
   if (!validDrawOrders)

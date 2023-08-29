@@ -24,7 +24,7 @@ export function keyValueSetScore({ analysis, lowSide, scoreString, value }) {
     setScores.join(SCORE_JOINER) + (needsTiebreak ? open : SPACE_CHARACTER);
   scoreString = (scoreString || '') + addition;
 
-  const set = {
+  const set: any = {
     side1Score: setScores[0],
     side2Score: setScores[1],
   };

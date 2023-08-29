@@ -54,7 +54,7 @@ export function pruneDrawDefinition({
     // only ifMatchPlay can the positionAssignments be reallocated
     if (isMatchPlay) {
       const matchPlayMatchUps = relevantMatchUps
-        .sort((a, b) => a.roundPosition - b.roundPosition)
+        .sort((a: any, b: any) => a.roundPosition - b.roundPosition)
         .filter(
           ({ roundNumber }) =>
             !structureData.inactiveRounds.includes(roundNumber)
@@ -70,7 +70,8 @@ export function pruneDrawDefinition({
       const existingDrawPositionPairings = matchPlayMatchUps.map(
         ({ drawPositions }) => drawPositions
       );
-      const existingDrawPositions = existingDrawPositionPairings.flat();
+      const existingDrawPositions: string[] =
+        existingDrawPositionPairings.flat();
       const drawPositionsMap = Object.assign(
         {},
         ...existingDrawPositions.map((drawPosition, i) => ({
@@ -78,7 +79,7 @@ export function pruneDrawDefinition({
         }))
       );
 
-      matchPlayMatchUps.forEach((matchUp) => {
+      matchPlayMatchUps.forEach((matchUp: any) => {
         if (matchPlayDrawPositions) {
           matchUp.drawPositions = matchUp.drawPositions.map(
             (drawPosition) => drawPositionsMap[drawPosition]

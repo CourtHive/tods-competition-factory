@@ -6,7 +6,10 @@ import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { isDirectingMatchUpStatus } from '../matchUpGovernor/checkStatusType';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { isActiveDownstream } from '../matchUpGovernor/isActiveDownstream';
-import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
+import {
+  getMatchUpsMap,
+  MatchUpsMap,
+} from '../../getters/getMatchUps/getMatchUpsMap';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
@@ -73,6 +76,12 @@ import {
   DOUBLES_MATCHUP,
   SINGLES_MATCHUP,
 } from '../../../constants/matchUpTypes';
+import { HydratedMatchUp, HydratedParticipant } from '../../../types/hydrated';
+import {
+  DrawDefinition,
+  Event,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
 /**
  *
@@ -91,6 +100,19 @@ import {
  * @param {object=} event
  *
  */
+type MatchUpActionsArgs = {
+  tournamentParticipants?: HydratedParticipant[];
+  restrictAdHocRoundParticipants?: boolean;
+  inContextDrawMatchUps?: HydratedMatchUp[];
+  tournamentRecord?: Tournament;
+  drawDefinition: DrawDefinition;
+  matchUpsMap?: MatchUpsMap;
+  policyDefinitions?: any;
+  participantId?: string;
+  sideNumber?: number;
+  matchUpId: string;
+  event?: Event;
+};
 export function matchUpActions({
   restrictAdHocRoundParticipants = true, // disallow the same participant being in the same round multiple times
   policyDefinitions: specifiedPolicyDefinitions,
@@ -103,7 +125,7 @@ export function matchUpActions({
   sideNumber,
   matchUpId,
   event,
-}) {
+}: MatchUpActionsArgs) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
@@ -161,34 +183,37 @@ export function matchUpActions({
     }));
   }
 
-  const inContextMatchUp = inContextDrawMatchUps.find(
+  const inContextMatchUp = inContextDrawMatchUps?.find(
     (drawMatchUp) => drawMatchUp.matchUpId === matchUpId
   );
 
-  const side =
+  const side: any =
     sideNumber &&
-    inContextMatchUp.sides?.find((side) => side.sideNumber === sideNumber);
+    inContextMatchUp?.sides?.find((side) => side.sideNumber === sideNumber);
 
   const matchUpParticipantIds =
-    inContextMatchUp.sides
-      ?.map((side) => side.participantId || side.participant?.participantid)
+    inContextMatchUp?.sides
+      ?.map(
+        (side: any) => side.participantId || side.participant?.participantid
+      )
       .filter(Boolean) || [];
 
   const { assignedPositions, allPositionsAssigned } =
     structureAssignedDrawPositions({ structure });
   const { structureId } = structure || {};
 
-  const validActions = [];
+  const validActions: any[] = [];
   if (!structureId) return { validActions };
 
   if (isAdHoc({ drawDefinition, structure })) {
-    const roundMatchUps = (structure.matchUps || []).filter(
+    const roundMatchUps = (structure?.matchUps || []).filter(
       ({ roundNumber }) => roundNumber === matchUp.roundNumber
     );
     const enteredParticipantIds =
       drawDefinition?.entries
-        .filter(({ entryStatus }) =>
-          DIRECT_ENTRY_STATUSES.includes(entryStatus)
+        ?.filter(
+          ({ entryStatus }) =>
+            entryStatus && DIRECT_ENTRY_STATUSES.includes(entryStatus)
         )
         .map(getParticipantId) || [];
 
@@ -233,7 +258,9 @@ export function matchUpActions({
     );
 
     if (otherFlightEntries) {
-      const { flightProfile } = getFlightProfile({ event });
+      const flightProfile: any = event
+        ? getFlightProfile({ event })
+        : undefined;
       const otherFlightEnteredParticipantIds = flightProfile?.flights
         ?.filter((flight) => flight.drawId !== drawId)
         .flatMap((flight) =>
@@ -294,11 +321,11 @@ export function matchUpActions({
   });
 
   const participantAssignedDrawPositions = assignedPositions
-    .filter((assignment) => assignment.participantId)
+    ?.filter((assignment) => assignment.participantId)
     .map((assignment) => assignment.drawPosition);
 
   const byeAssignedDrawPositions = assignedPositions
-    .filter((assignment) => assignment.bye)
+    ?.filter((assignment) => assignment.bye)
     .map((assignment) => assignment.drawPosition);
 
   const isCollectionMatchUp = matchUp.collectionId;
@@ -306,7 +333,7 @@ export function matchUpActions({
     matchUp.matchUpStatus === BYE ||
     (!isCollectionMatchUp &&
       matchUp.drawPositions?.reduce((isByeMatchUp, drawPosition) => {
-        return byeAssignedDrawPositions.includes(drawPosition) || isByeMatchUp;
+        return byeAssignedDrawPositions?.includes(drawPosition) || isByeMatchUp;
       }, false));
 
   if (isByeMatchUp) return { validActions, isByeMatchUp };
@@ -322,9 +349,11 @@ export function matchUpActions({
 
   const structureScoringPolicies = appliedPolicies?.scoring?.structures;
   const stageSpecificPolicies =
+    structure?.stage &&
     structureScoringPolicies?.stage &&
     structureScoringPolicies?.stage[structure.stage];
   const sequenceSpecificPolicies =
+    structure?.stageSequence &&
     stageSpecificPolicies?.stageSequence &&
     stageSpecificPolicies.stageSequence[structure.stageSequence];
   const requireAllPositionsAssigned =
@@ -337,17 +366,16 @@ export function matchUpActions({
     matchUp.sides &&
     matchUp.sides.filter((side) => side?.participantId).length === 2;
 
-  let activeDownstream;
-  const isDoubleExit = [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(
-    matchUp.matchUpStatus
-  );
+  const isDoubleExit =
+    matchUp.matchUpStatus &&
+    [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(matchUp.matchUpStatus);
 
   const targetData = positionTargets({
     inContextDrawMatchUps,
     drawDefinition,
     matchUpId,
   });
-  activeDownstream = isActiveDownstream({
+  const activeDownstream = isActiveDownstream({
     inContextDrawMatchUps,
     drawDefinition,
     targetData,
@@ -355,8 +383,8 @@ export function matchUpActions({
 
   const matchUpDrawPositionsAreAssigned =
     inContextMatchUp?.drawPositions?.length === 2 &&
-    inContextMatchUp.drawPositions.every((drawPosition) =>
-      participantAssignedDrawPositions.includes(drawPosition)
+    inContextMatchUp.drawPositions.every(
+      (drawPosition) => participantAssignedDrawPositions?.includes(drawPosition)
     ) &&
     inContextMatchUp?.sides?.length === 2 &&
     inContextMatchUp.sides.every(({ participantId }) => participantId);
@@ -422,42 +450,46 @@ export function matchUpActions({
     }
   }
 
-  if (isCollectionMatchUp) {
+  if (isCollectionMatchUp && inContextMatchUp) {
+    const firstFoundSide: any = inContextMatchUp.sides?.find(
+      (side: any) => side.participant
+    );
     const assignedGender =
       inContextMatchUp.gender === MIXED &&
       inContextMatchUp.sideNumber &&
-      inContextMatchUp.sides.filter(({ particiapntId }) => particiapntId)
+      inContextMatchUp.sides?.filter((side: any) => side.particiapntId)
         .length === 1 &&
-      inContextMatchUp.sides.find((side) => side.participant)?.participant
-        ?.person?.sex;
+      firstFoundSide?.participant?.person?.sex;
     const matchUpType = inContextMatchUp.matchUpType;
     const gender = matchUpActionsPolicy?.participants?.enforceGender
       ? inContextMatchUp.gender
       : undefined;
 
     const allParticipants = inContextMatchUp.sides
-      .flatMap(
-        (side) => side.participant?.individualParticipants || side.participant
+      ?.flatMap(
+        (side: any) =>
+          side.participant?.individualParticipants || side.participant
       )
       .filter(Boolean);
-    const allParticipantIds = allParticipants.map(getParticipantId);
+    const allParticipantIds = allParticipants?.map(getParticipantId);
 
     const existingParticipants = inContextMatchUp.sides
-      .filter((side) => !sideNumber || side.sideNumber === sideNumber)
+      ?.filter((side) => !sideNumber || side.sideNumber === sideNumber)
       .flatMap(
-        (side) => side.participant?.individualParticipants || side.participant
+        (side: any) =>
+          side.participant?.individualParticipants || side.participant
       )
       .filter(Boolean);
-    const existingParticipantIds = existingParticipants.map(getParticipantId);
+    const existingParticipantIds = existingParticipants?.map(getParticipantId);
 
-    const inContextDualMatchUp = inContextDrawMatchUps.find(
+    const inContextDualMatchUp = inContextDrawMatchUps?.find(
       (drawMatchUp) => drawMatchUp.matchUpId === inContextMatchUp.matchUpTieId
     );
-    const availableIndividualParticipants = inContextDualMatchUp.sides.map(
-      (side) =>
+    const availableIndividualParticipants = inContextDualMatchUp?.sides?.map(
+      (side: any) =>
         side.participant.individualParticipants.filter(
           ({ participantId, person }) =>
-            !existingParticipantIds.includes(participantId) &&
+            !existingParticipantIds?.includes(participantId) &&
             (!gender ||
               gender === ANY ||
               person.sex === gender ||
@@ -470,33 +502,33 @@ export function matchUpActions({
 
     // if no sideNumber is provided, segregate available by sideNumber and specify sideNumber
     const availableParticipants = sideNumber
-      ? availableIndividualParticipants[sideNumber - 1]
-      : availableIndividualParticipants.map((available, i) => ({
+      ? availableIndividualParticipants?.[sideNumber - 1]
+      : availableIndividualParticipants?.map((available, i) => ({
           participants: available,
           sideNumber: i + 1,
         }));
 
     const availableParticipantIds = sideNumber
-      ? availableIndividualParticipants[sideNumber - 1]?.map(getParticipantId)
-      : availableIndividualParticipants.map((available, i) => ({
+      ? availableIndividualParticipants?.[sideNumber - 1]?.map(getParticipantId)
+      : availableIndividualParticipants?.map((available, i) => ({
           participants: available?.map(getParticipantId),
           sideNumber: i + 1,
         }));
 
     const assignmentAvailable =
       (sideNumber &&
-        ((matchUpType === SINGLES_MATCHUP && !existingParticipantIds.length) ||
+        ((matchUpType === SINGLES_MATCHUP && !existingParticipantIds?.length) ||
           (matchUpType === DOUBLES_MATCHUP &&
-            existingParticipantIds.length < 2))) ||
+            (existingParticipantIds?.length || 0) < 2))) ||
       (!sideNumber &&
         ((matchUpType === SINGLES_MATCHUP &&
-          existingParticipantIds.length < 2) ||
+          (existingParticipantIds?.length || 0) < 2) ||
           (matchUpType === DOUBLES_MATCHUP &&
-            existingParticipantIds.length < 4)));
+            (existingParticipantIds?.length || 0) < 4)));
 
     // extra step to avoid edge case where individual participant is part of both teams
     const availableIds = availableParticipantIds.filter(
-      (id) => !allParticipantIds.includes(id)
+      (id) => !allParticipantIds?.includes(id)
     );
     const available = availableParticipants.filter(({ participantId }) =>
       availableIds.includes(participantId)
@@ -597,8 +629,9 @@ export function matchUpActions({
         (sideNumber && side?.participant)) &&
       (substituteWithoutScore || scoreHasValue(matchUp)) &&
       (substituteAfterCompleted ||
-        !completedMatchUpStatuses.includes(matchUp.matchUpStatus)) &&
-      existingParticipants.length &&
+        (matchUp.matchUpStatus &&
+          !completedMatchUpStatuses.includes(matchUp.matchUpStatus))) &&
+      existingParticipants?.length &&
       availableParticipants.length
     ) {
       // action is not valid if there are no existing assignments or no available substitutions

@@ -7,6 +7,11 @@ import {
   DRAW_DEFINITION_NOT_FOUND,
   MISSING_TOURNAMENT_RECORD,
 } from '../../constants/errorConditionConstants';
+import {
+  DrawDefinition,
+  Event,
+  Tournament,
+} from '../../types/tournamentFromSchema';
 
 /**
  *
@@ -22,6 +27,16 @@ import {
  * @param {object=} event
  *
  */
+type MatchUpActionsArgs = {
+  drawDefinition?: DrawDefinition;
+  tournamentRecord: Tournament;
+  policyDefinitions?: any;
+  participantId?: string;
+  sideNumber?: number;
+  matchUpId: string;
+  drawId?: string;
+  event?: Event;
+};
 export function matchUpActions({
   policyDefinitions,
   tournamentRecord,
@@ -31,7 +46,7 @@ export function matchUpActions({
   matchUpId,
   drawId,
   event,
-}) {
+}: MatchUpActionsArgs) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!drawId) {
     // if matchUp did not have context, find drawId by brute force
@@ -43,9 +58,12 @@ export function matchUpActions({
     const drawDefinitions = events
       .map((event) => event.drawDefinitions || [])
       .flat();
-    drawDefinition = drawDefinitions.reduce((drawDefinition, candidate) => {
-      return candidate.drawId === drawId ? candidate : drawDefinition;
-    }, undefined);
+    drawDefinition = drawDefinitions.reduce(
+      (drawDefinition: any, candidate) => {
+        return candidate.drawId === drawId ? candidate : drawDefinition;
+      },
+      undefined
+    );
   }
 
   const { policyDefinitions: attachedPolicy } = getPolicyDefinitions({
@@ -57,7 +75,7 @@ export function matchUpActions({
 
   policyDefinitions = policyDefinitions || attachedPolicy;
 
-  if (drawId) {
+  if (drawDefinition) {
     return drawEngineMatchupActions({
       tournamentParticipants: tournamentRecord.participants,
       policyDefinitions,
@@ -65,7 +83,6 @@ export function matchUpActions({
       participantId,
       sideNumber,
       matchUpId,
-      drawId,
       event,
     });
   } else {

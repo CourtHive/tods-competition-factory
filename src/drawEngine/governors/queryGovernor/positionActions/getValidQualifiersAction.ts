@@ -17,6 +17,7 @@ import {
   QUALIFYING,
   WINNER,
 } from '../../../../constants/drawDefinitionConstants';
+import { HydratedParticipant } from '../../../../types/hydrated';
 
 export function getValidQualifiersAction({
   /*
@@ -33,10 +34,10 @@ export function getValidQualifiersAction({
   structureId,
   drawId,
 }) {
-  const qualifyingParticipantIds = [];
-  const qualifyingParticipants = [];
-  const validAssignmentActions = [];
-  const sourceStructureIds = [];
+  const qualifyingParticipants: HydratedParticipant[] = [];
+  const qualifyingParticipantIds: string[] = [];
+  const validAssignmentActions: any[] = [];
+  const sourceStructureIds: string[] = [];
 
   const assignedParticipantIds = positionAssignments
     .map((assignment) => assignment.participantId)
@@ -92,10 +93,12 @@ export function getValidQualifiersAction({
     if (!requireCompletedStructures || structureCompleted) {
       const qualifyingRoundNumber = structure.qualifyingRoundNumber;
       const { matchUps } = getAllStructureMatchUps({
-        matchUpFilters: { roundNumbers: [qualifyingRoundNumber] },
+        matchUpFilters: {
+          roundNumbers: [qualifyingRoundNumber],
+          hasWinningSide: true,
+        },
         afterRecoveryTimes: false,
         tournamentParticipants,
-        hasWinningSide: true,
         inContext: true,
         structure,
       });
@@ -137,26 +140,29 @@ export function getValidQualifiersAction({
 
     if (!requireCompletedStructures || structureCompleted) {
       const { positionAssignments } = getPositionAssignments({ structure });
-      const relevantParticipantIds = positionAssignments
-        .map((assignment) => {
-          const participantId = assignment.participantId;
-          const results = findExtension({
-            element: assignment,
-            name: TALLY,
-          }).extension?.value;
+      const relevantParticipantIds: any =
+        positionAssignments
+          ?.map((assignment) => {
+            const participantId = assignment.participantId;
+            const results = findExtension({
+              element: assignment,
+              name: TALLY,
+            }).extension?.value;
 
-          return results
-            ? { participantId, groupOrder: results?.groupOrder }
-            : {};
-        })
-        .filter(
-          ({ groupOrder, participantId }) =>
-            // TODO: is this limiting RR qualifiers to groupOrder: 1?
-            groupOrder === 1 && !assignedParticipantIds.includes(participantId)
-        )
-        .map(({ participantId }) => participantId);
+            return results
+              ? { participantId, groupOrder: results?.groupOrder }
+              : {};
+          })
+          .filter(
+            ({ groupOrder, participantId }) =>
+              // TODO: is this limiting RR qualifiers to groupOrder: 1?
+              groupOrder === 1 &&
+              !assignedParticipantIds.includes(participantId)
+          )
+          .map(({ participantId }) => participantId) ?? [];
 
-      qualifyingParticipantIds.push(...relevantParticipantIds);
+      if (relevantParticipantIds)
+        qualifyingParticipantIds.push(...relevantParticipantIds);
 
       if (returnParticipants) {
         const relevantParticipants = tournamentParticipants.filter(
