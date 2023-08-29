@@ -178,7 +178,16 @@ export function addDrawNotice({
   return { ...SUCCESS };
 }
 
-export function deleteDrawNotice({ tournamentId, eventId, drawId }) {
+type DeleteDrawNoticeArgs = {
+  tournamentId?: string;
+  eventId?: string;
+  drawId: string;
+};
+export function deleteDrawNotice({
+  tournamentId,
+  eventId,
+  drawId,
+}: DeleteDrawNoticeArgs) {
   addNotice({
     payload: { drawId, tournamentId, eventId },
     topic: DELETED_DRAW_IDS,

@@ -46,46 +46,49 @@ export function assignMatchUpSideParticipant({
   const isAdHoc =
     !structure?.structures &&
     !(drawDefinition.drawType && drawDefinition.drawType !== AD_HOC) &&
-    !structure?.matchUps.find(({ roundPosition }) => !!roundPosition);
+    !structure?.matchUps?.find(({ roundPosition }) => !!roundPosition);
 
   if (!isAdHoc) return { error: INVALID_DRAW_TYPE };
 
   // if no participantId / participant is being un-assigned, there cannot be a score or completed outcome
   if (
     !participantId &&
-    (matchUp.score?.scoreStringSide1 ||
-      completedMatchUpStatuses.includes(matchUp.matchUpstatus) ||
-      [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(matchUp.matchUpStatus))
+    (matchUp?.score?.scoreStringSide1 ||
+      completedMatchUpStatuses.includes(matchUp?.matchUpstatus) ||
+      (matchUp?.matchUpStatus &&
+        [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(matchUp.matchUpStatus)))
   )
     return {
       error: CANNOT_REMOVE_PARTICIPANTS,
       info: 'matchUp has completed status or score',
     };
 
-  matchUp.sides = [1, 2].map((currentSideNumber) => {
-    const existingSide = matchUp.sides?.find(
-      (side) => side.sideNumber === currentSideNumber
-    ) || { sideNumber: currentSideNumber };
+  if (matchUp) {
+    matchUp.sides = [1, 2].map((currentSideNumber) => {
+      const existingSide = matchUp.sides?.find(
+        (side) => side.sideNumber === currentSideNumber
+      ) || { sideNumber: currentSideNumber };
 
-    return sideNumber === currentSideNumber
-      ? { ...existingSide, participantId }
-      : existingSide;
-  });
+      return sideNumber === currentSideNumber
+        ? { ...existingSide, participantId }
+        : existingSide;
+    });
 
-  // makes it possible to use this method with no sideNumber provided
-  // each time a participant is assigned the sides are swapped
-  if (noSideNumberProvided) {
-    for (const side of matchUp.sides) {
-      side.sideNumber = 3 - side.sideNumber;
+    // makes it possible to use this method with no sideNumber provided
+    // each time a participant is assigned the sides are swapped
+    if (noSideNumberProvided) {
+      for (const side of matchUp.sides) {
+        if (side.sideNumber) side.sideNumber = 3 - side.sideNumber;
+      }
     }
-  }
 
-  modifyMatchUpNotice({
-    tournamentId: tournamentRecord?.tournamentId,
-    context: 'assignSideParticipant',
-    drawDefinition,
-    matchUp,
-  });
+    modifyMatchUpNotice({
+      tournamentId: tournamentRecord?.tournamentId,
+      context: 'assignSideParticipant',
+      drawDefinition,
+      matchUp,
+    });
+  }
 
   return { ...SUCCESS, sidesSwapped: noSideNumberProvided };
 }
