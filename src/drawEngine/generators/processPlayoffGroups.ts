@@ -55,9 +55,9 @@ export function processPlayoffGroups({
   const stack = 'processPlayoffGroups';
 
   let finishingPositionOffset = 0;
-  const finishingPositionTargets = [];
-  const structures = [];
-  const links = [];
+  const finishingPositionTargets: any[] = [];
+  const structures: any[] = [];
+  const links: any[] = [];
 
   const { error, positionRangeMap } = getPositionRangeMap({
     structureId: sourceStructureId,

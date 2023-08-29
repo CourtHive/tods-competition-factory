@@ -1,6 +1,11 @@
 import { ensureInt } from '../../utilities/ensureInt';
 
-export function getGroupValueGroups({ collectionGroups = [] } = {}) {
+type GetGroupValueGroupsArgs = {
+  collectionGroups: any[];
+};
+export function getGroupValueGroups({
+  collectionGroups = [],
+}: GetGroupValueGroupsArgs) {
   // set up to handle groupValue
   const groupValueGroups = Object.assign(
     {},
