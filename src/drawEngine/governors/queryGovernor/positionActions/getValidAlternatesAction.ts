@@ -21,6 +21,11 @@ import {
   UNPAIRED,
   WITHDRAWN,
 } from '../../../../constants/entryStatusConstants';
+import {
+  Entry,
+  Participant,
+  Structure,
+} from '../../../../types/tournamentFromSchema';
 
 export function getValidAlternatesAction({
   tournamentParticipants = [],
@@ -138,18 +143,19 @@ export function getValidAlternatesAction({
   }
 
   const availableAlternates = returnParticipants
-    ? tournamentParticipants?.filter((participant) =>
+    ? tournamentParticipants?.filter((participant: Participant) =>
         availableAlternatesParticipantIds.includes(participant.participantId)
       )
     : undefined;
-  availableAlternates?.forEach((alternate) => {
+  availableAlternates?.forEach((alternate: any) => {
     const entry = (drawDefinition.entries || []).find(
-      (entry) => entry.participantId === alternate.participantId
+      (entry: Entry) => entry.participantId === alternate.participantId
     );
     alternate.entryPosition = entry?.entryPosition;
   });
   availableAlternates?.sort(
-    (a, b) => (a.entryPosition || Infinity) - (b.entryPosition || Infinity)
+    (a: any, b: any) =>
+      (a.entryPosition || Infinity) - (b.entryPosition || Infinity)
   );
 
   if (availableAlternatesParticipantIds.length) {
@@ -167,11 +173,16 @@ export function getValidAlternatesAction({
   return {};
 }
 
+type EligibleEntryStageArgs = {
+  restrictQualifyingAlternates?: boolean;
+  structure: Structure;
+  entry: Entry;
+};
 export function eligibleEntryStage({
   restrictQualifyingAlternates,
   structure,
   entry,
-}) {
+}: EligibleEntryStageArgs) {
   const { stage } = structure;
   if (
     !entry.entryStage ||
@@ -180,4 +191,5 @@ export function eligibleEntryStage({
     (entry.entryStage === MAIN && stage === CONSOLATION)
   )
     return true;
+  return undefined;
 }

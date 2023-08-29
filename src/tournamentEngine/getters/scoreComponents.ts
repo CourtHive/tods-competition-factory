@@ -27,7 +27,7 @@ export function getScoreComponents({ score }) {
     },
     [0, 0]
   );
-  let stb = sets.reduce(
+  const stb = sets.reduce(
     (p, c) => {
       p[0] += c.side1TiebreakScore || 0;
       p[1] += c.side2TiebreakScore || 0;
