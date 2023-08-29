@@ -43,7 +43,7 @@ export function generateQualifyingStructure(params) {
     uuids,
   } = params;
 
-  let roundLimit, roundsCount, structure, link, matchUps;
+  let roundLimit, roundsCount, structure, matchUps;
   let qualifiersCount = 0;
   let finishingPositions;
   let stageSequence = 1;
@@ -172,13 +172,13 @@ export function generateQualifyingStructure(params) {
 
   // order of operations is important here!! finalQualifier positions is not yet updated when this step occurs
   const linkType = drawType === ROUND_ROBIN ? POSITION : WINNER;
-  ({ link } = generateQualifyingLink({
+  const { link } = generateQualifyingLink({
     sourceStructureId: structure.structureId,
     sourceRoundNumber: roundLimit,
     targetStructureId,
     finishingPositions,
     linkType,
-  }));
+  });
 
   return {
     qualifyingDrawPositionsCount: drawSize,

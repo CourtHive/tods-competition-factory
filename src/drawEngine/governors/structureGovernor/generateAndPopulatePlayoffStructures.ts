@@ -25,10 +25,14 @@ import {
 } from '../../../constants/errorConditionConstants';
 import {
   CONTAINER,
-  LOSER,
   PLAY_OFF,
-  TOP_DOWN,
 } from '../../../constants/drawDefinitionConstants';
+import {
+  DrawLink,
+  LinkTypeEnum,
+  PositioningProfileEnum,
+  Structure,
+} from '../../../types/tournamentFromSchema';
 
 /**
  *
@@ -131,23 +135,27 @@ export function generateAndPopulatePlayoffStructures(params) {
       });
 
     validRoundNumbers.forEach((roundNumber) => {
-      if (!availablePlayoffRounds?.includes(roundNumber))
+      if (!availablePlayoffRounds?.includes(roundNumber)) {
         return decorateResult({
           result: { error: INVALID_VALUES },
           context: { roundNumber },
           stack,
         });
+      }
+      return undefined;
     });
   }
 
   if (playoffPositions) {
     playoffPositions.forEach((playoffPosition) => {
-      if (!playoffPositionsReturned.includes(playoffPosition))
+      if (!playoffPositionsReturned?.includes(playoffPosition)) {
         return decorateResult({
           result: { error: INVALID_VALUES },
           context: { playoffPosition },
           stack,
         });
+      }
+      return undefined;
     });
   }
 
@@ -156,10 +164,10 @@ export function generateAndPopulatePlayoffStructures(params) {
     ? availablePlayoffRoundsRanges
     : playoffRoundsRanges;
 
-  const newStructures = [];
-  const newLinks = [];
+  const newStructures: Structure[] = [];
+  const newLinks: DrawLink[] = [];
 
-  for (const roundNumber of sourceRounds) {
+  for (const roundNumber of sourceRounds || []) {
     const roundInfo = roundsRanges?.find(
       (roundInfo) => roundInfo.roundNumber === roundNumber
     );
@@ -175,6 +183,7 @@ export function generateAndPopulatePlayoffStructures(params) {
 
     const stageSequence = 2;
     const sequenceLimit =
+      roundNumber &&
       roundProfile?.[roundNumber] &&
       stageSequence + roundProfile[roundNumber] - 1;
 
@@ -202,16 +211,16 @@ export function generateAndPopulatePlayoffStructures(params) {
     if (structures?.length) newStructures.push(...structures);
     if (links?.length) newLinks.push(...links);
 
-    if (result.structureId) {
-      const link = {
-        linkType: LOSER,
+    if (result.structureId && roundNumber) {
+      const link: DrawLink = {
+        linkType: LinkTypeEnum.Loser,
         source: {
           structureId: sourceStructureId,
           roundNumber,
         },
         target: {
           structureId: result.structureId,
-          feedProfile: TOP_DOWN,
+          feedProfile: PositioningProfileEnum.TopDown,
           roundNumber: 1,
         },
       };
@@ -268,7 +277,6 @@ export function generateAndPopulatePlayoffStructures(params) {
       inContextDrawMatchUps,
       drawDefinition,
       matchUpId,
-      structure,
     });
     const result = directParticipants({
       inContextDrawMatchUps,
@@ -287,7 +295,7 @@ export function generateAndPopulatePlayoffStructures(params) {
   });
 
   // the matchUps in the source structure must have goesTo details added
-  const matchUpModifications = [];
+  const matchUpModifications: any[] = [];
   const goesToMap = addGoesTo({
     inContextDrawMatchUps,
     drawDefinition,
@@ -304,7 +312,7 @@ export function generateAndPopulatePlayoffStructures(params) {
   });
 
   sourceStructureMatchUps.forEach((matchUp) => {
-    const loserMatchUpId = goesToMap.loserMatchUpIds[matchUp.matchUpId];
+    const loserMatchUpId = goesToMap?.loserMatchUpIds[matchUp.matchUpId];
     if (loserMatchUpId && matchUp.loserMatchUpId !== loserMatchUpId) {
       matchUp.loserMatchUpId = loserMatchUpId;
       const modification = {
@@ -315,7 +323,7 @@ export function generateAndPopulatePlayoffStructures(params) {
       };
       matchUpModifications.push(modification);
     }
-    const winnerMatchUpId = goesToMap.winnerMatchUpIds[matchUp.matchUpId];
+    const winnerMatchUpId = goesToMap?.winnerMatchUpIds[matchUp.matchUpId];
     if (winnerMatchUpId && matchUp.winnerMatchUpId !== winnerMatchUpId) {
       matchUp.winnerMatchUpId = winnerMatchUpId;
       const modification = {

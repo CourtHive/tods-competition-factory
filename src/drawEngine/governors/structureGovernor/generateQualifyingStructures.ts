@@ -15,6 +15,7 @@ import {
   ROUND_ROBIN,
   WINNER,
 } from '../../../constants/drawDefinitionConstants';
+import { DrawLink, Structure } from '../../../types/tournamentFromSchema';
 
 export function generateQualifyingStructures({
   qualifyingProfiles,
@@ -24,9 +25,9 @@ export function generateQualifyingStructures({
   uuids,
 }) {
   const stack = 'generateQualifyingSTructures';
-  const qualifyingDetails = [];
-  const structures = [];
-  const links = [];
+  const qualifyingDetails: any[] = [];
+  const structures: Structure[] = [];
+  const links: DrawLink[] = [];
 
   const sequenceSort = (a, b) => a.stageSequence - b.stageSequence;
   const roundTargetSort = (a, b) => a.roundTarget - b.roundTarget;
@@ -34,7 +35,7 @@ export function generateQualifyingStructures({
   let qualifyingDrawPositionsCount = 0,
     totalQualifiersCount = 0,
     finishingPositions,
-    roundTarget = 1;
+    roundTarget: number = 1;
 
   for (const roundTargetProfile of qualifyingProfiles.sort(roundTargetSort)) {
     const structureProfiles = roundTargetProfile.structureProfiles || [];
@@ -58,10 +59,10 @@ export function generateQualifyingStructures({
         structureOptions,
         matchUpFormat,
         structureName,
-        matchUpType,
         structureId,
         drawType,
       } = structureProfile;
+      const matchUpType = structureProfile.matchUpType;
 
       let roundLimit, structure, matchUps;
 
@@ -89,15 +90,15 @@ export function generateQualifyingStructures({
             structureName:
               structureProfile.structureName || qualifyingStructureName,
             structureId: structureId || uuids?.pop(),
-            qualifyingPositions,
+            // qualifyingPositions,
             stage: QUALIFYING,
             structureOptions,
             appliedPolicies,
             stageSequence,
             matchUpType,
             roundTarget,
-            idPrefix,
             drawSize,
+            idPrefix,
             isMock,
             uuids,
           });
@@ -110,8 +111,8 @@ export function generateQualifyingStructures({
           qualifyingRoundNumber,
           qualifyingPositions,
           matchUpType,
-          idPrefix,
           drawSize,
+          idPrefix,
           isMock,
           uuids,
         }));

@@ -28,8 +28,31 @@ import {
   WINNER,
   POSITION,
 } from '../../../constants/drawDefinitionConstants';
+import {
+  DrawDefinition,
+  Structure,
+  TieFormat,
+} from '../../../types/tournamentFromSchema';
 
-export function generateDrawStructuresAndLinks(params = {}) {
+type GenerateDrawStructuresAndLinksArgs = {
+  enforceMinimumDrawSize?: boolean;
+  drawDefinition: DrawDefinition;
+  overwriteExisting?: boolean;
+  drawTypeCoercion?: boolean;
+  staggeredEntry?: boolean;
+  qualifyingProfiles?: any;
+  appliedPolicies?: any;
+  tieFormat?: TieFormat;
+  matchUpType?: string;
+  drawType?: string;
+  drawSize: number;
+  idPrefix?: string;
+  isMock?: boolean;
+  uuids?: string[];
+};
+export function generateDrawStructuresAndLinks(
+  params: GenerateDrawStructuresAndLinksArgs
+) {
   const {
     enforceMinimumDrawSize = true,
     overwriteExisting,
@@ -37,18 +60,18 @@ export function generateDrawStructuresAndLinks(params = {}) {
     appliedPolicies,
     staggeredEntry, // optional - specifies main structure FEED_IN for drawTypes CURTIS_CONSOLATION, FEED_IN_CHAMPIONSHIPS, FMLC
     drawDefinition,
+    tieFormat,
     drawSize,
     isMock,
     uuids,
-  } = params;
+  } = params || {};
 
   const stack = 'generateDrawStructuresAndLinks';
   let drawType = params.drawType || SINGLE_ELIMINATION;
-  const structures = [],
-    links = [];
+  const structures: Structure[] = [],
+    links: any[] = [];
 
-  let { tieFormat, matchUpType } = params;
-  matchUpType = matchUpType || SINGLES;
+  const matchUpType = params?.matchUpType || SINGLES;
 
   const existingQualifyingStructures = drawDefinition?.structures?.filter(
     ({ stage }) => stage === QUALIFYING
@@ -126,7 +149,6 @@ export function generateDrawStructuresAndLinks(params = {}) {
       idPrefix: params.idPrefix,
       qualifyingProfiles,
       appliedPolicies,
-      matchUpType,
       isMock,
       uuids,
     });
