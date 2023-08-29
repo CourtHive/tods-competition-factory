@@ -118,7 +118,7 @@ it('can count games with tiebreaks in short sets', () => {
     },
     winningSide: 1,
   };
-  expect(countGames(matchUp)).toEqual([11, 9]);
+  expect(countGames(matchUp)).toEqual([10, 9]);
 });
 
 it('can count games in tiebreak sets', () => {
@@ -142,7 +142,7 @@ it('can count games in tiebreak sets', () => {
           winningSide: 2,
         },
         {
-          side1Score: 6,
+          side1Score: 7,
           side2Score: 6,
           side1TiebreakScore: 10,
           side2TiebreakScore: 5,

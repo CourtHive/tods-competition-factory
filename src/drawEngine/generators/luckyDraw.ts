@@ -27,13 +27,13 @@ export function luckyDraw(params) {
   const roundProfiles = luckyRoundProfiles(drawSize);
 
   const firstRound = roundProfiles.shift();
-  const nodes = generateRange(1, firstRound.participantsCount + 1).map(
+  const nodes = generateRange(1, (firstRound?.participantsCount || 0) + 1).map(
     (drawPosition) => ({
       drawPosition,
     })
   );
 
-  let matchUps = [];
+  let matchUps: any[] = [];
   let roundNumber = 1;
 
   ({ matchUps } = buildRound({
@@ -97,7 +97,7 @@ function luckyRoundProfiles(drawSize) {
   const intDrawSize = ensureInt(drawSize);
   let participantsCount = intDrawSize % 2 ? intDrawSize + 1 : intDrawSize;
   const preFeedRound = !!(Math.ceil(participantsCount / 2) % 2);
-  const rounds = [{ participantsCount, preFeedRound }];
+  const rounds: any[] = [{ participantsCount, preFeedRound }];
   while (participantsCount > 2) {
     const nextRound = Math.ceil(participantsCount / 2);
     const nextIsFinal = nextRound === 1;
