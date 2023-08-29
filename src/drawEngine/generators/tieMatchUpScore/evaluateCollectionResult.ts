@@ -43,9 +43,11 @@ export function evaluateCollectionResult({
   });
 
   if (matchUpValue) {
+    // if tiebreak set count as set value and game value
     collectionMatchUps.forEach((matchUp) => {
-      if (matchUp.winningSide)
+      if (matchUp.winningSide) {
         sideMatchUpValues[matchUp.winningSide - 1] += matchUpValue;
+      }
     });
   } else if (setValue) {
     collectionMatchUps.forEach((matchUp) => {

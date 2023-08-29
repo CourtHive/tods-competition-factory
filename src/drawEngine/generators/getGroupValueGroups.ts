@@ -5,8 +5,8 @@ export function getGroupValueGroups({ collectionGroups = [] } = {}) {
   const groupValueGroups = Object.assign(
     {},
     ...collectionGroups
-      .filter((group) => group?.groupValue && group?.groupNumber)
-      .map((group) => ({
+      .filter((group: any) => group?.groupValue && group?.groupNumber)
+      .map((group: any) => ({
         [group.groupNumber]: {
           ...group,
           allGroupMatchUpsCompleted: true,
