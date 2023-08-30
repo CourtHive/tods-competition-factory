@@ -35,9 +35,9 @@ const features = [
     imageUrl: 'img/vitest-logo.svg',
     description: (
       <>
-        Built following a Test Driven Development process utilizing Jest. With
-        ~450 test suites and ~1800 total tests covering greater than 96% of the
-        code base, quality control is assured.
+        Written in 100% TypeScript following a Test Driven Development process
+        utilizing Jest. ~450 test suites and ~1800 total tests covering greater
+        than 96% of the code base.
       </>
     ),
   },

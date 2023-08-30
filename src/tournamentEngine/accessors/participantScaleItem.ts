@@ -1,8 +1,8 @@
 import { getAccessorValue } from '../../utilities/getAccessorValue';
 
 import type { Participant } from '../../types/tournamentFromSchema';
+import { ScaleAttributes } from '../../types/factoryTypes';
 import { SCALE } from '../../constants/scaleConstants';
-import { ScaleAttributes } from '../../types/scales';
 import {
   ErrorType,
   INVALID_SCALE_ITEM,
@@ -12,8 +12,8 @@ import {
 } from '../../constants/errorConditionConstants';
 
 export interface ParticipantScaleItemArgs {
-  requireTimeStamp?: boolean;
   scaleAttributes: ScaleAttributes;
+  requireTimeStamp?: boolean;
   participant: Participant;
 }
 

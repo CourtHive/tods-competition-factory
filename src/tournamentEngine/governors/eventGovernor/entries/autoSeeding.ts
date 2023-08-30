@@ -2,6 +2,8 @@ import { getEntriesAndSeedsCount } from '../../policyGovernor/getEntriesAndSeeds
 import { generateSeedingScaleItems } from './generateSeedingScaleItems';
 import { getScaledEntries } from './getScaledEntries';
 
+import { INVALID_VALUES } from '../../../../constants/errorConditionConstants';
+
 /**
  *
  * @param {object} tournamentRecord - passed automatically if tournamentEngine.setState() has been called
@@ -44,16 +46,19 @@ export function autoSeeding({
   });
 
   if (result.error) return result;
-  const { entries, seedsCount, stageEntries } = result;
 
-  const { scaledEntries } = getScaledEntries({
-    tournamentRecord,
-    scaleAttributes,
-    scaleSortMethod,
-    sortDescending,
-    entries,
-    stage,
-  });
+  const { entries, seedsCount, stageEntries } = result;
+  if (!stageEntries || !seedsCount) return { error: INVALID_VALUES };
+
+  const scaledEntries =
+    getScaledEntries({
+      tournamentRecord,
+      scaleAttributes,
+      scaleSortMethod,
+      sortDescending,
+      entries,
+      stage,
+    }).scaledEntries ?? [];
 
   const { scaleItemsWithParticipantIds } = generateSeedingScaleItems({
     scaleAttributes,

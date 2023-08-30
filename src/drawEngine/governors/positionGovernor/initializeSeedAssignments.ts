@@ -6,22 +6,23 @@ import { findStructure } from '../../getters/findStructure';
 import { generateRange } from '../../../utilities';
 import { getSeedGroups } from './getSeedBlocks';
 
+import { POLICY_TYPE_SEEDING } from '../../../constants/policyConstants';
+import { DrawDefinition } from '../../../types/tournamentFromSchema';
+import { SUCCESS } from '../../../constants/resultConstants';
+import { SeedingProfile } from '../../../types/factoryTypes';
 import {
   ErrorType,
   SEEDSCOUNT_GREATER_THAN_DRAW_SIZE,
 } from '../../../constants/errorConditionConstants';
-import { POLICY_TYPE_SEEDING } from '../../../constants/policyConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { DrawDefinition } from '../../../types/tournamentFromSchema';
 
 type InitializeStructureSeedAssignmentsArgs = {
   requireParticipantCount?: boolean;
   enforcePolicyLimits?: boolean;
   drawSizeProgression?: boolean;
+  seedingProfile: SeedingProfile;
   drawDefinition: DrawDefinition;
   participantCount: number;
   appliedPolicies?: any;
-  seedingProfile?: any;
   structureId: string;
   seedsCount: number;
 };

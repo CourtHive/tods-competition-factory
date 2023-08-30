@@ -655,6 +655,9 @@
         },
         "participantId": {
           "type": "string"
+        },
+        "scaleValue": {
+          "type": "number"
         }
       },
       "required": ["participantId"],

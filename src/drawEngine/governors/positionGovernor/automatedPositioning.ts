@@ -2,7 +2,10 @@ import { getAppliedPolicies } from '../../../global/functions/deducers/getApplie
 import { getSeedPattern, getValidSeedBlocks } from '../../getters/seedGetter';
 import { positionUnseededParticipants } from './positionUnseededParticipants';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
-import { decorateResult } from '../../../global/functions/decorateResult';
+import {
+  ResultType,
+  decorateResult,
+} from '../../../global/functions/decorateResult';
 import {
   MatchUpsMap,
   getMatchUpsMap,
@@ -24,6 +27,7 @@ import {
 import { HydratedMatchUp, HydratedParticipant } from '../../../types/hydrated';
 import { DIRECT_ENTRY_STATUSES } from '../../../constants/entryStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { SeedingProfile } from '../../../types/factoryTypes';
 import {
   LUCKY_DRAW,
   WATERFALL,
@@ -31,14 +35,17 @@ import {
 import {
   DrawDefinition,
   Event,
+  PositionAssignment,
   Tournament,
 } from '../../../types/tournamentFromSchema';
+import { ErrorType } from '../../../constants/errorConditionConstants';
 
 // TODO: Throw an error if an attempt is made to automate positioning for a structure that already has completed matchUps
 type AutomatedPositioningArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];
   participants?: HydratedParticipant[];
   provisionalPositioning?: boolean;
+  seedingProfile?: SeedingProfile;
   tournamentRecord?: Tournament;
   drawDefinition: DrawDefinition;
   multipleStructures?: boolean;
@@ -46,7 +53,6 @@ type AutomatedPositioningArgs = {
   matchUpsMap?: MatchUpsMap;
   appliedPolicies?: any;
   placeByes?: boolean;
-  seedingProfile?: any;
   structureId: string;
   seedsOnly?: boolean;
   seedLimit?: number;
@@ -70,7 +76,15 @@ export function automatedPositioning({
   seedsOnly,
   drawType,
   event,
-}: AutomatedPositioningArgs) {
+}: AutomatedPositioningArgs):
+  | ResultType
+  | {
+      positionAssignments?: PositionAssignment[];
+      positioningReport?: any;
+      error?: ErrorType;
+      success?: boolean;
+      conflicts?: any[];
+    } {
   const positioningReport: any[] = [];
 
   //-----------------------------------------------------------
