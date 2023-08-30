@@ -2,7 +2,10 @@ import { getAppliedPolicies } from '../../../global/functions/deducers/getApplie
 import { getSeedPattern, getValidSeedBlocks } from '../../getters/seedGetter';
 import { positionUnseededParticipants } from './positionUnseededParticipants';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
-import { decorateResult } from '../../../global/functions/decorateResult';
+import {
+  ResultType,
+  decorateResult,
+} from '../../../global/functions/decorateResult';
 import {
   MatchUpsMap,
   getMatchUpsMap,
@@ -32,8 +35,10 @@ import {
 import {
   DrawDefinition,
   Event,
+  PositionAssignment,
   Tournament,
 } from '../../../types/tournamentFromSchema';
+import { ErrorType } from '../../../constants/errorConditionConstants';
 
 // TODO: Throw an error if an attempt is made to automate positioning for a structure that already has completed matchUps
 type AutomatedPositioningArgs = {
@@ -71,7 +76,15 @@ export function automatedPositioning({
   seedsOnly,
   drawType,
   event,
-}: AutomatedPositioningArgs) {
+}: AutomatedPositioningArgs):
+  | ResultType
+  | {
+      positionAssignments?: PositionAssignment[];
+      positioningReport?: any;
+      error?: ErrorType;
+      success?: boolean;
+      conflicts?: any[];
+    } {
   const positioningReport: any[] = [];
 
   //-----------------------------------------------------------

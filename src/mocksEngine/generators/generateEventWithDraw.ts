@@ -523,6 +523,7 @@ export function generateEventWithDraw(params) {
           if (result.error) return result;
         }
         // TODO: check if RRWPO & automate & complete
+        return undefined;
       };
 
       // NOTE: completionGoal implies something less than "all matchUps"
