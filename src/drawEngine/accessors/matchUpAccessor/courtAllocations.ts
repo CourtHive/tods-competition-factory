@@ -17,7 +17,10 @@ export function matchUpAllocatedCourts({
       visibilityThreshold,
     });
 
-  return !schedule || (itemTimeStamp && timeStamp && itemTimeStamp > timeStamp)
+  return !schedule ||
+    (itemTimeStamp &&
+      timeStamp &&
+      new Date(itemTimeStamp).getTime() > new Date(timeStamp).getTime())
     ? { allocatedCourts: makeDeepCopy(allocatedCourts, false, true) }
     : schedule;
 }

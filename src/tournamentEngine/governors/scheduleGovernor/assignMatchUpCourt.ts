@@ -4,10 +4,25 @@ import { findCourt } from '../../getters/courtGetter';
 
 import { ASSIGN_COURT } from '../../../constants/timeItemConstants';
 import {
+  ErrorType,
   MISSING_MATCHUP_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
+import {
+  DrawDefinition,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
+type AssignMatchUpCourtArgs = {
+  removePriorValues?: boolean;
+  tournamentRecords?: { [key: string]: Tournament };
+  tournamentRecord: Tournament;
+  drawDefinition: DrawDefinition;
+  disableNotice?: boolean;
+  courtDayDate: string;
+  matchUpId: string;
+  courtId: string;
+};
 export function assignMatchUpCourt({
   removePriorValues,
   tournamentRecords,
@@ -17,7 +32,7 @@ export function assignMatchUpCourt({
   courtDayDate,
   matchUpId,
   courtId, // not required as "unasigning" court can be achieved by setting value to `undefined`
-}) {
+}: AssignMatchUpCourtArgs): { error?: ErrorType; success?: boolean } {
   if (!tournamentRecord && !tournamentRecords)
     return { error: MISSING_TOURNAMENT_RECORD };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };

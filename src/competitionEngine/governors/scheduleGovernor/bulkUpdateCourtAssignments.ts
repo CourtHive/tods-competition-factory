@@ -65,10 +65,12 @@ export function bulkUpdateCourtAssignments({
         } else {
           error = { error: UNABLE_TO_ASSIGN_COURT };
         }
+        return undefined;
       });
 
       return true;
     });
+    return undefined;
   });
 
   return error || SUCCESS;
