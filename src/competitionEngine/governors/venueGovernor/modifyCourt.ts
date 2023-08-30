@@ -5,14 +5,23 @@ import {
   MISSING_TOURNAMENT_RECORDS,
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
+import { Tournament } from '../../../types/tournamentFromSchema';
+
+type ModifyCourtArgs = {
+  tournamentRecords: { [key: string]: Tournament };
+  disableNotice?: boolean;
+  modifications: any;
+  courtId: string;
+  force?: boolean;
+};
 
 export function modifyCourt({
   tournamentRecords,
-  modifications,
   disableNotice,
+  modifications,
   courtId,
   force,
-}) {
+}: ModifyCourtArgs) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!courtId) return { error: MISSING_VALUE, info: 'missing courtId' };
 
@@ -22,8 +31,8 @@ export function modifyCourt({
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     const result = courtModification({
       tournamentRecord,
-      modifications,
       disableNotice,
+      modifications,
       courtId,
       force,
     });

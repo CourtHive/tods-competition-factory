@@ -6,6 +6,31 @@ import {
   SWAP_PARTICIPANTS,
   SWAP_PARTICIPANT_METHOD,
 } from '../../../../constants/positionActionConstants';
+import {
+  DrawDefinition,
+  Event,
+  PositionAssignment,
+  Structure,
+} from '../../../../types/tournamentFromSchema';
+import { HydratedParticipant } from '../../../../types/hydrated';
+
+type GetValidSwapActionArgs = {
+  tournamentParticipants?: HydratedParticipant[];
+  positionAssignments?: PositionAssignment[];
+  possiblyDisablingAction?: boolean;
+  inactiveDrawPositions?: number[];
+  onlyAssignedPositions?: boolean;
+  activeDrawPositions: number[];
+  returnParticipants?: boolean;
+  drawDefinition: DrawDefinition;
+  byeDrawPositions: number[];
+  isByePosition?: boolean;
+  drawPosition: number;
+  structure: Structure;
+  structureId: string;
+  drawId: string;
+  event?: Event;
+};
 
 export function getValidSwapAction({
   onlyAssignedPositions = true,
@@ -23,7 +48,7 @@ export function getValidSwapAction({
   structure,
   drawId,
   event,
-}) {
+}: GetValidSwapActionArgs) {
   if (activeDrawPositions.includes(drawPosition)) return {};
 
   // assignmentCheck is used to filter out unassigned drawPositions
@@ -90,7 +115,7 @@ export function getValidSwapAction({
     }))
   );
 
-  const availableAssignments = filteredAssignments.map((assignment) => {
+  const availableAssignments = filteredAssignments.map((assignment: any) => {
     const participant = availableParticipantsMap?.[assignment.participantId];
 
     const sourceDrawPositionRange =

@@ -12,15 +12,26 @@ import {
   MISSING_TOURNAMENT_RECORD,
   NO_VALID_ATTRIBUTES,
 } from '../../../constants/errorConditionConstants';
+import { Tournament } from '../../../types/tournamentFromSchema';
+import { HydratedMatchUp } from '../../../types/hydrated';
+
+type ModifyCourtArgs = {
+  venueMatchUps?: HydratedMatchUp[];
+  tournamentRecord: Tournament;
+  disableNotice?: boolean;
+  modifications: any;
+  courtId: string;
+  force?: boolean;
+};
 
 export function modifyCourt({
   tournamentRecord,
-  modifications,
   disableNotice,
   venueMatchUps,
+  modifications,
   courtId,
   force,
-}) {
+}: ModifyCourtArgs) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!courtId) return { error: MISSING_COURT_ID };
   if (!modifications || typeof modifications !== 'object')

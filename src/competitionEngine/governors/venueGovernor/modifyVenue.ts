@@ -7,13 +7,20 @@ import {
   MISSING_VENUE_ID,
   VENUE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
+import { Tournament } from '../../../types/tournamentFromSchema';
 
+type ModifyVenueArgs = {
+  tournamentRecords: { [key: string]: Tournament };
+  modifications: any;
+  venueId: string;
+  force?: boolean;
+};
 export function modifyVenue({
   tournamentRecords,
   modifications,
   venueId,
   force,
-}) {
+}: ModifyVenueArgs) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (typeof venueId !== 'string') return { error: MISSING_VENUE_ID };
 

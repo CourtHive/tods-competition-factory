@@ -131,7 +131,7 @@ export function proScheduler({
       courts,
     });
 
-    const venueTimeBoundaries = dateCourts.reduce((timeBoundaries, court) => {
+    const venueTimeBoundaries = dateCourts?.reduce((timeBoundaries, court) => {
       const { earliestCourtTime, courtEndTime } = getEarliestCourtTime({
         date: scheduleDate,
         averageMinutes: 0,
@@ -159,7 +159,7 @@ export function proScheduler({
 
     const addDateCourtBooking = ({ courtId, booking }) =>
       dateCourts
-        .find((court) => court.courtId === courtId)
+        ?.find((court) => court.courtId === courtId)
         ?.dateAvailability[0].bookings.push(booking);
 
     // const failSafe = (allDateMatchUpIds.length / courts.length) * 2;
@@ -176,8 +176,8 @@ export function proScheduler({
         // when a matchUp is scheduled, add it to details.dateScheduledMatchUps
 
         const venuePassFailSafe = details.matchUpsToSchedule.length;
-        const matchUpIdsScheduled = [];
-        const courtIdsScheduled = [];
+        const matchUpIdsScheduled: string[] = [];
+        const courtIdsScheduled: string[] = [];
         let venuePassComplete;
         let passIterations = 0;
 
@@ -212,7 +212,6 @@ export function proScheduler({
                 matchUpScheduleTimes,
                 matchUpDependencies,
                 allDateMatchUpIds,
-                matchUps,
                 matchUp,
               });
 
@@ -225,8 +224,8 @@ export function proScheduler({
               continue;
             }
 
-            const schedulingConflicts = [];
-            const courtTime = dateCourts.reduce((courtTime, court) => {
+            const schedulingConflicts: any[] = [];
+            const courtTime = dateCourts?.reduce((courtTime, court) => {
               if (courtIdsScheduled.includes(court.courtId)) return courtTime;
 
               const { earliestCourtTime: scheduleTime } = getEarliestCourtTime({
@@ -308,7 +307,6 @@ export function proScheduler({
                 averageMatchUpMinutes,
                 matchUpDependencies,
                 recoveryMinutes,
-                scheduleDate,
                 scheduleTime,
                 matchUp,
               });

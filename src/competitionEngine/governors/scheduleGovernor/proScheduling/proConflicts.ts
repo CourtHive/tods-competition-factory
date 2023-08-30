@@ -19,7 +19,7 @@ import {
 } from '../../../../constants/scheduleConstants';
 
 // NOTE: matchUps are assumed to be { inContext: true, nextMatchUps: true }
-export function proConflicts({ tournamentRecords, matchUps } = {}) {
+export function proConflicts({ tournamentRecords, matchUps }) {
   if (!Array.isArray(matchUps)) return { error: MISSING_MATCHUPS };
   if (matchUps.some(({ matchUpId, hasContext }) => matchUpId && !hasContext)) {
     return {
@@ -119,7 +119,7 @@ export function proConflicts({ tournamentRecords, matchUps } = {}) {
       0
     );
 
-  const rowIssues = rowProfiles.map(() => []);
+  const rowIssues: any[] = rowProfiles.map(() => []);
   const annotate = (matchUpId, issue, issueType, issueIds) => {
     if (!matchUpsMap[matchUpId].schedule[SCHEDULE_STATE]) {
       // store issue for display below by order of severity
@@ -129,9 +129,9 @@ export function proConflicts({ tournamentRecords, matchUps } = {}) {
       // update row issues
       rowIssues[rowIndices[matchUpId]].push({
         matchUpId,
-        issue,
         issueType,
         issueIds,
+        issue,
       });
 
       // update court issues

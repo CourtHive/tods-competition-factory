@@ -16,6 +16,29 @@ import {
   QUALIFYING,
   VOLUNTARY_CONSOLATION,
 } from '../../../constants/drawDefinitionConstants';
+import {
+  DrawDefinition,
+  Event,
+  MatchUpStatusEnum,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
+
+type GetEligibleVoluntaryConsolationParticipantsArgs = {
+  excludedMatchUpStatuses?: MatchUpStatusEnum[];
+  includeEventParticipants?: boolean;
+  includeQualifyingStage?: boolean;
+  tournamentRecord?: Tournament;
+  drawDefinition: DrawDefinition;
+  finishingRoundLimit?: number;
+  roundNumberLimit?: number;
+  policyDefinitions?: any;
+  matchUpsLimit?: number;
+  requirePlay?: boolean;
+  requireLoss?: boolean;
+  allEntries?: boolean;
+  winsLimit?: number;
+  event?: Event;
+};
 
 export function getEligibleVoluntaryConsolationParticipants({
   excludedMatchUpStatuses = [],
@@ -32,27 +55,30 @@ export function getEligibleVoluntaryConsolationParticipants({
   allEntries, // boolean - consider all entries, regardless of whether placed in draw
   winsLimit,
   event,
-}) {
+}: GetEligibleVoluntaryConsolationParticipantsArgs) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   const stages = [MAIN, PLAY_OFF];
   if (includeQualifyingStage) stages.push(QUALIFYING);
 
-  const matchUps = includeEventParticipants
-    ? allEventMatchUps({
-        contextFilters: { stages },
-        matchUpFilters: { matchUpTypes: [event.eventType] },
-        tournamentRecord,
-        inContext: true,
-        event,
-      })?.matchUps || []
-    : allDrawMatchUps({
-        contextFilters: { stages },
-        matchUpFilters: { matchUpTypes: [event.eventType] },
-        tournamentRecord,
-        inContext: true,
-        drawDefinition,
-      })?.matchUps || [];
+  const matchUps =
+    includeEventParticipants && event
+      ? allEventMatchUps({
+          contextFilters: { stages },
+          matchUpFilters: { matchUpTypes: [event.eventType].filter(Boolean) },
+          tournamentRecord,
+          inContext: true,
+          event,
+        })?.matchUps || []
+      : allDrawMatchUps({
+          contextFilters: { stages },
+          matchUpFilters: {
+            matchUpTypes: [drawDefinition?.matchUpType].filter(Boolean),
+          },
+          tournamentRecord,
+          inContext: true,
+          drawDefinition,
+        })?.matchUps || [];
 
   const voluntaryConsolationEntries = getStageEntries({
     stage: VOLUNTARY_CONSOLATION,
@@ -110,12 +136,9 @@ export function getEligibleVoluntaryConsolationParticipants({
       matchUp.matchUpStatus !== DOUBLE_WALKOVER
     )
       continue;
-    if (
-      !isNaN(finishingRoundLimit) &&
-      matchUp.finishingRound >= finishingRoundLimit
-    )
+    if (finishingRoundLimit && matchUp.finishingRound >= finishingRoundLimit)
       continue;
-    if (!isNaN(roundNumberLimit) && matchUp.finishingRound <= roundNumberLimit)
+    if (roundNumberLimit && matchUp.finishingRound <= roundNumberLimit)
       continue;
 
     const losingSide = matchUp.sides?.find(
@@ -170,15 +193,21 @@ export function getEligibleVoluntaryConsolationParticipants({
     !requireLoss &&
     allEntries;
 
-  const enteredParticipantIds =
-    considerEntered &&
-    (includeEventParticipants && event ? event.entries : drawDefinition.entries)
-      .filter((entry) => ![WITHDRAWN, UNGROUPED].includes(entry.entryStatus))
-      .map(({ participantId }) => participantId);
+  const enteredParticipantIds = considerEntered
+    ? (
+        (includeEventParticipants && event
+          ? event.entries
+          : drawDefinition.entries) || []
+      )
+        .filter(
+          (entry: any) => ![WITHDRAWN, UNGROUPED].includes(entry.entryStatus)
+        )
+        .map(({ participantId }) => participantId)
+    : [];
 
   const losingParticipantIds = Object.keys(losingParticipants);
   const consideredParticipants = considerEntered
-    ? tournamentRecord?.participants.filter(({ participantId }) =>
+    ? (tournamentRecord?.participants || []).filter(({ participantId }) =>
         enteredParticipantIds.includes(participantId)
       )
     : (requireLoss && Object.values(losingParticipants)) ||
@@ -189,7 +218,7 @@ export function getEligibleVoluntaryConsolationParticipants({
   const satisfiesPlay = (participantId) =>
     !requirePlay || (participantMatchUps[participantId] || 0) >= 0;
   const satisfiesWinsLimit = (participantId) =>
-    isNaN(winsLimit) || (participantWins[participantId] || 0) <= winsLimit;
+    !winsLimit || (participantWins[participantId] || 0) <= winsLimit;
   const satisfiesMatchUpsLimit = (participantId) =>
     !matchUpsLimit || participantMatchUps[participantId] <= matchUpsLimit;
   const notPreviouslySelected = (participantId) =>
@@ -197,19 +226,19 @@ export function getEligibleVoluntaryConsolationParticipants({
 
   const eligibleParticipants = consideredParticipants
     .filter(
-      ({ participantId }) =>
-        satisfiesLoss(participantId) &&
-        satisfiesPlay(participantId) &&
-        satisfiesWinsLimit(participantId) &&
-        satisfiesMatchUpsLimit(participantId) &&
-        notPreviouslySelected(participantId)
+      (participant: any) =>
+        satisfiesLoss(participant.participantId) &&
+        satisfiesPlay(participant.participantId) &&
+        satisfiesWinsLimit(participant.participantId) &&
+        satisfiesMatchUpsLimit(participant.participantId) &&
+        notPreviouslySelected(participant.participantId)
     )
-    .map((participant) => {
+    .map((participant: any) => {
       return {
         ...participant,
         individualParticipants: participant.individualParticipantIds?.map(
           (participantId) =>
-            tournamentRecord.participants?.find(
+            tournamentRecord?.participants?.find(
               (individual) => individual.participantId === participantId
             )
         ),

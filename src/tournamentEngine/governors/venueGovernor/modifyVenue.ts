@@ -15,18 +15,26 @@ import { MODIFY_VENUE } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   COURT_NOT_FOUND,
+  ErrorType,
   INVALID_OBJECT,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VENUE_ID,
   NO_VALID_ATTRIBUTES,
 } from '../../../constants/errorConditionConstants';
+import { Tournament, Venue } from '../../../types/tournamentFromSchema';
 
+type ModifyVenueArgs = {
+  tournamentRecord: Tournament;
+  modifications: any;
+  venueId: string;
+  force?: boolean;
+};
 export function modifyVenue({
   tournamentRecord,
   modifications,
   venueId,
   force,
-}) {
+}: ModifyVenueArgs): { error?: ErrorType; success?: boolean; venue?: Venue } {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!modifications || typeof modifications !== 'object')
     return { error: INVALID_OBJECT };
@@ -92,10 +100,9 @@ export function modifyVenue({
         courtIdsToModify.includes(court.courtId)
       );
     } else {
-      const info = deletionMessage({
+      return deletionMessage({
         matchUpsCount: scheduleDeletionsCount,
       });
-      return { error: info };
     }
   }
 

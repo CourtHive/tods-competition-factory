@@ -2,8 +2,16 @@ import { attachPolicies as attachTournamentPolicies } from '../../../tournamentE
 
 import { MISSING_TOURNAMENT_RECORDS } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { Tournament } from '../../../types/tournamentFromSchema';
 
-export function attachPolicies({ tournamentRecords, policyDefinitions }) {
+type AttachPoliciesArgs = {
+  tournamentRecords: { [key: string]: Tournament };
+  policyDefinitions: any;
+};
+export function attachPolicies({
+  tournamentRecords,
+  policyDefinitions,
+}: AttachPoliciesArgs) {
   if (
     typeof tournamentRecords !== 'object' ||
     !Object.keys(tournamentRecords).length

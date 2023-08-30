@@ -9,8 +9,10 @@ import { generateScheduledRounds } from './generateScheduledRounds';
 import { generateEventWithFlights } from './generateEventWithFlights';
 import { cycleMutationStatus } from '../../global/state/globalState';
 import { generateEventWithDraw } from './generateEventWithDraw';
+import { Extension } from '../../types/tournamentFromSchema';
 import { definedAttributes } from '../../utilities/objects';
 import { generateVenues } from './generateVenues';
+import { randomPop } from '../../utilities';
 
 import defaultRatingsParameters from '../../fixtures/ratings/ratingsParameters';
 import { SUCCESS } from '../../constants/resultConstants';
@@ -19,50 +21,49 @@ import {
   INVALID_VALUES,
 } from '../../constants/errorConditionConstants';
 
-/**
- *
- * Generate a complete tournamentRecord from the following attributes
- *
- * @param {object} tournamentAttributes - Object attributes will be applied to generated tournamentRecord
- * @param {object[]} tournamentExtensions - Array of extensions to be attached to tournamentRecord
- * @param {object[]} drawProfiles - optional - [{ category, drawSize, drawType, eventType, matchUpFormat, tieFormat, tieFormatName }]
- * @param {object[]} eventProfiles - optional - [{ category, eventType, matchUpFormat, tieFormat, tieFormatName }]
- * @param {object[]} venueProfiles - optional - [{ courtsCount, venueName, dateAvailability, startTime, endTime }]
- * @param {string[]} uuids - array of unique identifiers to be used in entity generators
- * @param {string} startDate - optional - ISO string date
- * @param {string} endDate - optional - ISO string date
- * @param {object} participantsProfile - optional - { participantsCount, participantType }
- * @param {object} policyDefinitions - optional - { [policyType]: policyDefinitions, [policyType2]: policyDefinitions }
- * @param {object} matchUpStatusProfile - optional - whole number percent for each target matchUpStatus { [matchUpStatus]: percentLikelihood }
- * @param {object} schedulingProfile
- * @param {boolean} autoEntryPositions - true by default; if false, { entryPosition } will not be present on entries array
- * @param {boolean} completeAllMatchUps - optional - boolean (legacy support for scoreString to apply to all matchUps)
- * @param {boolean} randomWinningSide
- * @param {boolean} autoSchedule
- *
- */
-export function generateTournamentRecord({
-  scheduleCompletedMatchUps, // explicit override for scheduler
-  ratingsParameters = defaultRatingsParameters,
-  tournamentName = 'Mock Tournament',
-  tournamentExtensions,
-  tournamentAttributes,
-  matchUpStatusProfile,
-  participantsProfile,
-  completeAllMatchUps,
-  autoEntryPositions,
-  hydrateCollections,
-  randomWinningSide,
-  policyDefinitions,
-  schedulingProfile,
-  eventProfiles,
-  venueProfiles,
-  drawProfiles,
-  autoSchedule,
-  startDate,
-  endDate,
-  uuids,
-} = {}) {
+const mockTournamentNames = [
+  'Mock Tournament',
+  'CourtHive Challenge',
+  'Racket Rally',
+  'Generated Tournament',
+  'Factory Follies',
+  'Open Competition',
+];
+
+type GenerateTournamentRecordArgs = {
+  scheduleCompletedMatchUps?: boolean;
+  tournamentExtensions?: Extension[];
+  completeAllMatchUps?: boolean;
+  tournamentName?: string;
+  autoSchedule?: boolean;
+  startDate?: string;
+  endDate?: string;
+  uuids?: string[];
+
+  [key: string]: any;
+};
+
+export function generateTournamentRecord(params: GenerateTournamentRecordArgs) {
+  let { tournamentAttributes, startDate, endDate } = params;
+  const {
+    tournamentName = randomPop(mockTournamentNames),
+    ratingsParameters = defaultRatingsParameters,
+    scheduleCompletedMatchUps,
+    tournamentExtensions,
+    matchUpStatusProfile,
+    completeAllMatchUps,
+    participantsProfile,
+    autoEntryPositions,
+    hydrateCollections,
+    randomWinningSide,
+    policyDefinitions,
+    schedulingProfile,
+    autoSchedule,
+    eventProfiles,
+    venueProfiles,
+    drawProfiles,
+    uuids,
+  } = params;
   if (
     (startDate && !isValidDateString(startDate)) ||
     (endDate && !isValidDateString(endDate))
@@ -92,7 +93,9 @@ export function generateTournamentRecord({
 
   // attach any valid tournamentExtensions
   if (tournamentExtensions?.length && Array.isArray(tournamentExtensions)) {
-    const extensions = tournamentExtensions.filter(isValidExtension);
+    const extensions = tournamentExtensions.filter((extension) =>
+      isValidExtension({ extension })
+    );
 
     if (extensions?.length)
       Object.assign(tournamentRecord, { extensions, isMock: true });
@@ -117,9 +120,9 @@ export function generateTournamentRecord({
   });
   if (!result.success) return result;
 
-  const drawIds = [],
-    eventIds = [],
-    allUniqueParticipantIds = [];
+  const allUniqueParticipantIds: string[] = [],
+    eventIds: string[] = [],
+    drawIds: string[] = [];
 
   if (Array.isArray(drawProfiles)) {
     let drawIndex = 0;
