@@ -7,6 +7,7 @@ import {
   addMatchUpsNotice,
 } from '../../../drawEngine/notifications/drawNotifications';
 
+import { Event, Tournament } from '../../../types/tournamentFromSchema';
 import { tieFormats } from '../../../fixtures/scoring/tieFormats';
 import { SINGLES, TEAM } from '../../../constants/eventConstants';
 import { ADD_MATCHUPS } from '../../../constants/topicConstants';
@@ -19,12 +20,18 @@ import {
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 
+type AddEventArgs = {
+  suppressNotifications?: boolean;
+  tournamentRecord: Tournament;
+  internalUse?: boolean;
+  event: any;
+};
 export function addEvent({
   suppressNotifications,
   tournamentRecord,
   internalUse,
   event,
-}) {
+}: AddEventArgs) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.events) tournamentRecord.events = [];
   if (!event) return { error: MISSING_EVENT };
@@ -80,12 +87,13 @@ export function addEvent({
 
   if (!eventRecord.eventId) eventRecord.eventId = UUID();
 
-  const eventExists = tournamentRecord.events.reduce((exists, event) => {
+  const eventExists = tournamentRecord.events.reduce((exists: any, event) => {
     return exists || event.eventId === eventRecord.eventId;
   }, undefined);
 
   if (!eventExists) {
-    tournamentRecord.events.push(eventRecord);
+    const newEvent = eventRecord as Event;
+    tournamentRecord.events.push(newEvent);
 
     if (!suppressNotifications) {
       const { topics } = getTopics();

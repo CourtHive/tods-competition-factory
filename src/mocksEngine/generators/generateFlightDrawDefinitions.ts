@@ -12,6 +12,7 @@ import { hasParticipantId } from '../../global/functions/filters';
 import { completeDrawMatchUps } from './completeDrawMatchUps';
 import { generateRange } from '../../utilities';
 
+import { ErrorType } from '../../constants/errorConditionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import { SEEDING } from '../../constants/scaleConstants';
 import {
@@ -27,7 +28,7 @@ export function generateFlightDrawDefinitions({
   tournamentRecord,
   drawProfiles,
   event,
-}) {
+}): { success?: boolean; drawIds?: string[]; error?: ErrorType } {
   const flightProfile = getFlightProfile({ event }).flightProfile;
   const { eventName, eventType, category } = event;
   const { startDate } = tournamentRecord;

@@ -347,7 +347,7 @@ export function anonymizeTournamentRecord({
   const groupParticipantsCount = groupParticipants.length;
   const groupNames = nameMocks({
     count: groupParticipantsCount,
-    nameRood: 'Group',
+    nameRoot: 'Group',
   }).names;
   groupParticipants.forEach((teamParticipant, i) => {
     teamParticipant.participantName = groupNames[i];

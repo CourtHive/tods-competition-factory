@@ -14,21 +14,22 @@ import { UUID } from '../../utilities';
 import { SINGLES, DOUBLES, TEAM } from '../../constants/eventConstants';
 import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';
 
-export function generateEventWithFlights({
-  allUniqueParticipantIds,
-  matchUpStatusProfile,
-  participantsProfile,
-  completeAllMatchUps,
-  autoEntryPositions,
-  hydrateCollections,
-  randomWinningSide,
-  ratingsParameters,
-  tournamentRecord,
-  eventProfile,
-  eventIndex,
-  publish,
-  uuids,
-}) {
+export function generateEventWithFlights(params) {
+  const {
+    allUniqueParticipantIds,
+    matchUpStatusProfile,
+    participantsProfile,
+    completeAllMatchUps,
+    autoEntryPositions,
+    hydrateCollections,
+    randomWinningSide,
+    ratingsParameters,
+    tournamentRecord,
+    eventProfile,
+    eventIndex,
+    publish,
+    uuids,
+  } = params;
   let gender = eventProfile.gender;
   let eventName = eventProfile.eventName;
 
