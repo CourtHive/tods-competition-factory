@@ -18,27 +18,28 @@ import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { DOUBLES, SINGLES } from '../../../constants/eventConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
-export function modifyTournamentRecord({
-  ratingsParameters = defaultRatingsParameters,
-  participantsProfile = {},
-  matchUpStatusProfile,
-  completeAllMatchUps,
-  autoEntryPositions,
-  hydrateCollections,
-  randomWinningSide,
-  schedulingProfile,
-  tournamentRecord,
-  eventProfiles,
-  venueProfiles,
-  autoSchedule,
-  drawProfiles,
-  uuids,
-}) {
+export function modifyTournamentRecord(params) {
+  const {
+    ratingsParameters = defaultRatingsParameters,
+    participantsProfile = {},
+    matchUpStatusProfile,
+    completeAllMatchUps,
+    autoEntryPositions,
+    hydrateCollections,
+    randomWinningSide,
+    schedulingProfile,
+    tournamentRecord,
+    eventProfiles,
+    venueProfiles,
+    autoSchedule,
+    drawProfiles,
+    uuids,
+  } = params;
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
-  const allUniqueParticipantIds = [];
-  const eventIds = [];
-  const drawIds = [];
+  const allUniqueParticipantIds: string[] = [];
+  const eventIds: string[] = [];
+  const drawIds: string[] = [];
 
   eventProfiles?.forEach((eventProfile) => {
     const event = tournamentRecord.events?.find(
@@ -73,7 +74,7 @@ export function modifyTournamentRecord({
   if (eventProfiles) {
     let eventIndex = tournamentRecord.events?.length || 0;
     for (const eventProfile of eventProfiles) {
-      let { ratingsParameters } = eventProfile;
+      const { ratingsParameters } = eventProfile;
 
       const event = tournamentRecord.events?.find(
         (event, index) =>
@@ -85,7 +86,7 @@ export function modifyTournamentRecord({
       );
 
       if (!event) {
-        const result = generateEventWithFlights({
+        const result: any = generateEventWithFlights({
           startDate: tournamentRecord.startDate,
           allUniqueParticipantIds,
           matchUpStatusProfile,
@@ -156,7 +157,7 @@ export function modifyTournamentRecord({
             eventParticipantType,
           });
 
-          let result = generateFlights({
+          let result: any = generateFlights({
             uniqueDrawParticipants,
             autoEntryPositions,
             stageParticipants,

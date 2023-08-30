@@ -1,6 +1,14 @@
+import { HydratedMatchUp } from '../../types/hydrated';
 import { extractDate, extractTime } from '../../utilities/dateTime';
 
-export function scheduledSortedMatchUps({ matchUps = [], schedulingProfile }) {
+type ScheduledSortedMatchUpsArgs = {
+  matchUps: HydratedMatchUp[];
+  schedulingProfile: any[];
+};
+export function scheduledSortedMatchUps({
+  matchUps = [],
+  schedulingProfile,
+}: ScheduledSortedMatchUpsArgs) {
   const profileHash = {};
 
   // hash is used to store a sort order value for scheduled rounds
@@ -26,7 +34,7 @@ export function scheduledSortedMatchUps({ matchUps = [], schedulingProfile }) {
     });
   }
 
-  const sortedMatchUps = [];
+  const sortedMatchUps: HydratedMatchUp[] = [];
   const dateGroups = { noScheduledDate: [] };
 
   // 1. Segregate matchUps by date (date can come from schedule.scheduledDate or schedule.scheduledTime)
