@@ -1,6 +1,14 @@
 import { isConvertableInteger } from '../../../utilities/math';
 import { getTargetElement } from './getTargetElement';
 
+type GetAwardPointsArgs = {
+  participantWon?: boolean;
+  flightNumber?: number;
+  drawSize: number;
+  valueObj: any;
+  flights?: any;
+  level?: number;
+};
 export function getAwardPoints({
   participantWon,
   flightNumber,
@@ -8,7 +16,7 @@ export function getAwardPoints({
   drawSize,
   flights,
   level,
-}) {
+}: GetAwardPointsArgs) {
   const getFlightValue = (flightNumber, targetElement) => {
     if (!flightNumber) return;
     if (Array.isArray(targetElement)) {
@@ -89,7 +97,7 @@ export function getAwardPoints({
     awardPoints = valueObj;
   }
 
-  if (flights?.pct?.[flightNumber]) {
+  if (flightNumber && flights?.pct?.[flightNumber]) {
     awardPoints = Math.round(awardPoints * flights.pct[flightNumber]);
   }
 

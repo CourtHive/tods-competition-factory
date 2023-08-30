@@ -2,15 +2,25 @@ import { addCourts } from '../../tournamentEngine/governors/venueGovernor/addCou
 import { addVenue } from '../../tournamentEngine/governors/venueGovernor/addVenue';
 import { dateRange, formatDate } from '../../utilities/dateTime';
 import { UUID } from '../../utilities';
+import { Tournament } from '../../types/tournamentFromSchema';
 
-export function generateVenues({ tournamentRecord, venueProfiles }) {
+type GenerateVenuesArgs = {
+  tournamentRecord: Tournament;
+  venueProfiles: any[];
+  uuids?: string[];
+};
+export function generateVenues({
+  tournamentRecord,
+  venueProfiles,
+  uuids,
+}: GenerateVenuesArgs) {
   const { startDate, endDate } = tournamentRecord;
   const venueIds: string[] = [];
 
   for (const [index, venueProfile] of venueProfiles.entries()) {
     const {
       venueAbbreviation,
-      venueId = UUID(),
+      venueId = uuids?.pop() || UUID(),
       dateAvailability,
       startTime = '07:00',
       endTime = '19:00',

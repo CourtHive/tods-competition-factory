@@ -10,7 +10,7 @@ import {
 } from '../../../constants/drawDefinitionConstants';
 import {
   MISSING_DRAW_DEFINITION,
-  MISSING_STRUCTURE,
+  MISSING_STRUCTURE_ID,
 } from '../../../constants/errorConditionConstants';
 
 it.each([2, 3, 4, 5, 6, 7, 8, 31, 32])(
@@ -143,7 +143,7 @@ it('can add a qualifying structure to an existing drawDefinition', () => {
     drawSize: 32,
     drawId,
   });
-  expect(result.error).toEqual(MISSING_STRUCTURE);
+  expect(result.error).toEqual(MISSING_STRUCTURE_ID);
 
   result = tournamentEngine.addQualifyingStructure({
     targetStructureId: mainStructure.structureId,

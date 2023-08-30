@@ -16,10 +16,13 @@ import {
   SCHEDULED_DATE,
   SCHEDULED_TIME,
 } from '../../../constants/timeItemConstants';
-import { Tournament } from '../../../types/tournamentFromSchema';
+import {
+  MatchUpStatusEnum,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
 type ClearScheduledMatchUpsArgs = {
-  ignoreMatchUpStatuses?: string[];
+  ignoreMatchUpStatuses?: MatchUpStatusEnum[];
   scheduleAttributes?: string[];
   tournamentRecord: Tournament;
   scheduledDates?: string[];

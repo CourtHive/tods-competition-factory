@@ -82,6 +82,7 @@ export function getDrawPositionCollectionAssignment({
             }
           );
         }
+        return undefined;
       })
       .filter(Boolean) || {};
 

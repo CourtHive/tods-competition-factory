@@ -22,7 +22,7 @@
     "seeding",
     "tennis"
   ],
-  "version": "1.4.21",
+  "version": "1.4.23",
   "license": "MIT",
   "private": false,
   "homepage": "https://courthive.github.io/tods-competition-factory/",
@@ -148,7 +148,7 @@
     "lint-staged": "14.0.0",
     "np": "8.0.4",
     "pinst": "^3.0.0",
-    "prettier": "3.0.2",
+    "prettier": "3.0.3",
     "prettier-eslint": "15.0.1",
     "quicktype": "23.0.73",
     "rimraf": "5.0.1",

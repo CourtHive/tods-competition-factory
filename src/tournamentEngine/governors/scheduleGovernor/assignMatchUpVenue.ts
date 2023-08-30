@@ -6,14 +6,13 @@ import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_MATCHUP_ID,
 } from '../../../constants/errorConditionConstants';
-import { TournamentRecordsArgs } from '../../../types/factoryTypes';
 import {
   DrawDefinition,
   Tournament,
 } from '../../../types/tournamentFromSchema';
 
 type AssignMatchUpVenueArgs = {
-  tournamentRecords: TournamentRecordsArgs;
+  tournamentRecords?: { [key: string]: Tournament };
   tournamentRecord?: Tournament;
   drawDefinition: DrawDefinition;
   removePriorValues?: boolean;

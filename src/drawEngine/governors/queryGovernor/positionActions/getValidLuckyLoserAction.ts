@@ -5,12 +5,34 @@ import { getParticipantId } from '../../../../global/functions/extractors';
 import { findStructure } from '../../../getters/findStructure';
 
 import { ROUND_OUTCOME } from '../../../../constants/drawDefinitionConstants';
+import {
+  DrawDefinition,
+  Event,
+  Participant,
+  PositionAssignment,
+  Structure,
+} from '../../../../types/tournamentFromSchema';
 import { TEAM } from '../../../../constants/eventConstants';
 import {
   LUCKY_PARTICIPANT,
   LUCKY_PARTICIPANT_METHOD,
 } from '../../../../constants/positionActionConstants';
-import { Participant } from '../../../../types/tournamentFromSchema';
+import { HydratedParticipant } from '../../../../types/hydrated';
+
+type GetValidLuckLoserActionArgs = {
+  tournamentParticipants?: HydratedParticipant[];
+  positionAssignments: PositionAssignment[];
+  sourceStructuresComplete?: boolean;
+  possiblyDisablingAction?: boolean;
+  isWinRatioFedStructure?: boolean;
+  activeDrawPositions: number[];
+  drawDefinition: DrawDefinition;
+  structure: Structure;
+  drawPosition: number;
+  structureId: string;
+  drawId: string;
+  event?: Event;
+};
 
 export function getValidLuckyLosersAction({
   tournamentParticipants = [],
@@ -25,7 +47,7 @@ export function getValidLuckyLosersAction({
   structure,
   drawId,
   event,
-}) {
+}: GetValidLuckLoserActionArgs) {
   if (
     activeDrawPositions.includes(drawPosition) ||
     // can't be a lucky loser if still have matches to play in a round robin structure!!
@@ -45,7 +67,7 @@ export function getValidLuckyLosersAction({
 
   const { sourceStructureIds, targetStructureIds } =
     drawDefinition.links?.reduce(
-      (ids, link) => {
+      (ids: any, link) => {
         const sourceStructureId = link.source?.structureId;
         const targetStructureId = link.target?.structureId;
         if (!ids.sourceStructureIds.includes(sourceStructureId))

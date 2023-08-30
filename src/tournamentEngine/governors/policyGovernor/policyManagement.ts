@@ -7,6 +7,7 @@ import {
 
 import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { Event, Tournament } from '../../../types/tournamentFromSchema';
 import {
   MISSING_EVENT,
   MISSING_POLICY_DEFINITION,
@@ -18,11 +19,20 @@ import {
   ErrorType,
 } from '../../../constants/errorConditionConstants';
 
+type AttachPoliciesArgs = {
+  tournamentRecord: Tournament;
+  allowReplacement?: boolean;
+  policyDefinitions: any;
+};
 export function attachPolicies({
   tournamentRecord,
   policyDefinitions,
   allowReplacement,
-}): { success?: boolean; error?: ErrorType; applied?: any } {
+}: AttachPoliciesArgs): {
+  success?: boolean;
+  error?: ErrorType;
+  applied?: any;
+} {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!policyDefinitions || typeof policyDefinitions !== 'object') {
     return { error: MISSING_POLICY_DEFINITION };
@@ -55,11 +65,16 @@ export function attachPolicies({
     : { ...SUCCESS, applied };
 }
 
+type AttachEventPoliciesArgs = {
+  allowReplacement?: boolean;
+  policyDefinitions: any;
+  event: Event;
+};
 export function attachEventPolicies({
   policyDefinitions,
   allowReplacement,
   event,
-}) {
+}: AttachEventPoliciesArgs) {
   if (!event) {
     return { error: MISSING_EVENT };
   }

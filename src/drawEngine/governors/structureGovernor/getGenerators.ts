@@ -26,8 +26,9 @@ import {
   WIN_RATIO,
   LUCKY_DRAW,
 } from '../../../constants/drawDefinitionConstants';
+import { ErrorType } from '../../../constants/errorConditionConstants';
 
-export function getGenerators(params) {
+export function getGenerators(params): { generators?: any; error?: ErrorType } {
   const {
     compassAttributes = COMPASS_ATTRIBUTES,
     olympicAttributes = OLYMPIC_ATTRIBUTES,

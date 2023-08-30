@@ -23,8 +23,8 @@ it('can create group participants', () => {
   tournamentEngine.setState(tournamentRecord);
   const { tournamentParticipants: individualParticipants } =
     getTournamentParticipants({
-      tournamentRecord,
       participantFilters: { participantTypes: [INDIVIDUAL] },
+      tournamentRecord,
     });
 
   const [participant1, participant2] = individualParticipants;

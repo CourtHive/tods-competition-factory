@@ -16,7 +16,7 @@ export function attachQualifyingStructure({
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   const result = attachQualifying({
-    tournamentRecord,
+    tournamentId: tournamentRecord.tournamentId,
     drawDefinition,
     structure,
     link,

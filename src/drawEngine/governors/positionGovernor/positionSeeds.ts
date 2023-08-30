@@ -4,12 +4,36 @@ import { findStructure } from '../../getters/findStructure';
 import { assignDrawPosition } from './positionAssignment';
 import { generateRange } from '../../../utilities';
 
+import { HydratedMatchUp, HydratedParticipant } from '../../../types/hydrated';
+import { MatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   ErrorType,
   MISSING_DRAW_POSITION,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  DrawDefinition,
+  Event,
+  Structure,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
+type PositionSeedBlocksArgs = {
+  inContextDrawMatchUps?: HydratedMatchUp[];
+  participants?: HydratedParticipant[];
+  provisionalPositioning?: boolean;
+  tournamentRecord?: Tournament;
+  drawDefinition: DrawDefinition;
+  matchUpsMap?: MatchUpsMap;
+  structure?: Structure;
+  appliedPolicies?: any;
+  validSeedBlocks?: any;
+  groupsCount?: number;
+  structureId?: string;
+  seedingProfile?: any;
+  seedBlockInfo?: any;
+  event?: Event;
+};
 export function positionSeedBlocks({
   provisionalPositioning,
   inContextDrawMatchUps,
@@ -25,33 +49,35 @@ export function positionSeedBlocks({
   matchUpsMap,
   structure,
   event,
-}) {
+}: PositionSeedBlocksArgs) {
   const seedPositions: number[] = [];
   const errors: any[] = [];
   let placedSeedBlocks = 0;
 
   if (!structure)
     ({ structure } = findStructure({ drawDefinition, structureId }));
-  if (!structureId) ({ structureId } = structure);
+  if (!structureId) structureId = structure?.structureId;
 
   if (!appliedPolicies) {
     appliedPolicies = getAppliedPolicies({ drawDefinition }).appliedPolicies;
   }
   if (!validSeedBlocks) {
-    const result = getValidSeedBlocks({
-      provisionalPositioning,
-      appliedPolicies,
-      drawDefinition,
-      structure,
-    });
-    if (result.error) errors.push(result.error);
-    validSeedBlocks = result.validSeedBlocks;
+    const result =
+      structure &&
+      getValidSeedBlocks({
+        provisionalPositioning,
+        appliedPolicies,
+        drawDefinition,
+        structure,
+      });
+    if (result?.error) errors.push(result.error);
+    validSeedBlocks = result?.validSeedBlocks;
   }
 
   groupsCount = groupsCount || validSeedBlocks.length;
 
   generateRange(0, groupsCount).forEach(() => {
-    if (placedSeedBlocks < groupsCount) {
+    if (placedSeedBlocks < (groupsCount || 0)) {
       const result = positionSeedBlock({
         provisionalPositioning,
         inContextDrawMatchUps,

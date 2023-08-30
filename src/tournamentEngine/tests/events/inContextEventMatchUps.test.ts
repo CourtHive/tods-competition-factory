@@ -11,8 +11,8 @@ it('can return event matchUps with context and upcoming matchUps', () => {
     },
   ];
   const { drawIds, tournamentRecord } = generateTournamentRecord({
-    drawProfiles,
     inContext: true,
+    drawProfiles,
   });
 
   const drawId = drawIds[0];

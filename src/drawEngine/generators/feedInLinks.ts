@@ -7,7 +7,16 @@ import {
   LOSER,
   FIRST_MATCHUP,
 } from '../../constants/drawDefinitionConstants';
+import { Structure } from '../../types/tournamentFromSchema';
 
+type FeedInLinksArgs = {
+  mainStructure: Structure;
+  consolationStructure;
+  roundOffset?: number;
+  roundsCount: number;
+  feedPolicy?: any;
+  fmlc?: boolean;
+};
 export function feedInLinks({
   consolationStructure,
   roundOffset = 0,
@@ -15,7 +24,7 @@ export function feedInLinks({
   roundsCount,
   feedPolicy,
   fmlc,
-}) {
+}: FeedInLinksArgs) {
   const consolationMatchUps = consolationStructure.matchUps;
   const roundsFed = consolationMatchUps.reduce((p, matchUp) => {
     const drawPositions = (matchUp.drawPositions || []).filter(Boolean);

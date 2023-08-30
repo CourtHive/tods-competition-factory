@@ -145,6 +145,7 @@ export function addMatchUpResumeTime({
 }
 
 export function addMatchUpCourtOrder({
+  removePriorValues,
   tournamentRecord,
   drawDefinition,
   disableNotice,
@@ -152,6 +153,7 @@ export function addMatchUpCourtOrder({
   matchUpId,
 }) {
   return addCourtOrder({
+    removePriorValues,
     tournamentRecord,
     drawDefinition,
     disableNotice,
