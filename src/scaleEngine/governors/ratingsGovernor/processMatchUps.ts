@@ -45,9 +45,9 @@ export function processMatchUps({
       matchUp;
 
     const scaleAttributes = {
-      scaleType: RATING,
       eventType: matchUpType,
       scaleName: ratingType,
+      scaleType: RATING,
     };
 
     const dynamicScaleName = `${ratingType}.DYNAMIC`;

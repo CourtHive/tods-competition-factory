@@ -94,6 +94,7 @@ export function generateEventWithDraw(params) {
     drawProfileCopy.drawSize ||
     (drawProfileCopy.ignoreDefaults ? undefined : 32);
 
+  const eventId = drawProfileCopy.eventId || UUID();
   const eventType = drawProfile.eventType || drawProfile.matchUpType || SINGLES;
   const participantType = eventType === DOUBLES ? PAIR : INDIVIDUAL;
 
@@ -102,7 +103,7 @@ export function generateEventWithDraw(params) {
     (eventType === TEAM &&
       tieFormatDefaults({
         namedFormat: tieFormatName,
-        event: { category, gender },
+        event: { eventId, category, gender },
         hydrateCollections,
       })) ||
     undefined;
@@ -132,7 +133,6 @@ export function generateEventWithDraw(params) {
       ? drawSize
       : drawProfile.participantsCount) || 0;
 
-  const eventId = drawProfileCopy.eventId || UUID();
   // TODO: implement use of tieFormats and tieFormatId
   const event = { eventName, eventType, tieFormat, category, eventId, gender };
 

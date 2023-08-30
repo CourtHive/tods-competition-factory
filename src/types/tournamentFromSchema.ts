@@ -1,3 +1,5 @@
+import { SeedingProfile } from './factoryTypes';
+
 export interface Tournament {
   createdAt?: Date | string;
   /**
@@ -208,6 +210,7 @@ export interface Entry {
   participantId: string;
   timeItems?: TimeItem[];
   updatedAt?: Date | string;
+  scaleValue?: number;
 }
 
 export enum StageTypeEnum {
@@ -646,7 +649,7 @@ export interface Structure {
   roundLimit?: number;
   roundOffset?: number;
   seedAssignments?: SeedAssignment[];
-  seedingProfile?: PositioningProfileEnum;
+  seedingProfile?: SeedingProfile;
   seedLimit?: number;
   stage?: StageTypeEnum;
   stageSequence?: number;

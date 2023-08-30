@@ -37,7 +37,7 @@ import {
   USTA_ZONAL,
 } from '../../constants/tieFormatConstants';
 
-import { Category, GenderEnum } from '../../types/tournamentFromSchema';
+import { Event } from '../../types/tournamentFromSchema';
 
 const bestOf3tbSets = 'SET3-S:6/TB7';
 const STANDARD = 'STANDARD';
@@ -114,8 +114,8 @@ const namedFormats = {
 type TieFormatDefaultArgs = {
   hydrateCollections?: boolean;
   namedFormat?: string;
-  event?: { category: Category; gender: GenderEnum };
   uuids?: string[];
+  event?: Event;
 };
 
 export const tieFormatDefaults = (params?: TieFormatDefaultArgs) => {

@@ -29,8 +29,8 @@ const scaleAttributes = {
   scaleName: 'WTN',
 };
 const { scaleItem } = tournamentEngine.getParticipantScaleItem({
-  participantId,
   scaleAttributes,
+  participantId,
 });
 ```
 
@@ -54,9 +54,9 @@ const scaleValue = {
 
 // provide an "accessor" describing the attribute path to the nested value in the scaleValue.
 const scaleAttributes = {
-  scaleType: RATING,
-  eventType: DOUBLES,
-  scaleName: 'NTRP',
   accessor: 'ntrpRating',
+  eventType: DOUBLES,
+  scaleType: RATING,
+  scaleName: 'NTRP',
 };
 ```

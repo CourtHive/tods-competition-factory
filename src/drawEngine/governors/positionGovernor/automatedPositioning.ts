@@ -24,6 +24,7 @@ import {
 import { HydratedMatchUp, HydratedParticipant } from '../../../types/hydrated';
 import { DIRECT_ENTRY_STATUSES } from '../../../constants/entryStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { SeedingProfile } from '../../../types/factoryTypes';
 import {
   LUCKY_DRAW,
   WATERFALL,
@@ -39,6 +40,7 @@ type AutomatedPositioningArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];
   participants?: HydratedParticipant[];
   provisionalPositioning?: boolean;
+  seedingProfile?: SeedingProfile;
   tournamentRecord?: Tournament;
   drawDefinition: DrawDefinition;
   multipleStructures?: boolean;
@@ -46,7 +48,6 @@ type AutomatedPositioningArgs = {
   matchUpsMap?: MatchUpsMap;
   appliedPolicies?: any;
   placeByes?: boolean;
-  seedingProfile?: any;
   structureId: string;
   seedsOnly?: boolean;
   seedLimit?: number;

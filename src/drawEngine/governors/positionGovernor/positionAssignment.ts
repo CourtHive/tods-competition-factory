@@ -27,6 +27,8 @@ import { isAdHoc } from '../queryGovernor/isAdHoc';
 import { cleanupLineUps } from './cleanupLineUps';
 
 import { SUCCESS } from '../../../constants/resultConstants';
+import { SeedingProfile } from '../../../types/factoryTypes';
+import { HydratedMatchUp } from '../../../types/hydrated';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
   INVALID_DRAW_POSITION,
@@ -44,7 +46,6 @@ import {
   PLAY_OFF,
   QUALIFYING,
 } from '../../../constants/drawDefinitionConstants';
-import { HydratedMatchUp } from '../../../types/hydrated';
 import {
   DrawDefinition,
   Event,
@@ -57,13 +58,13 @@ type AssignDrawPositionArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];
   sourceMatchUpStatus?: MatchUpStatusEnum;
   provisionalPositioning?: boolean;
+  seedingProfile?: SeedingProfile;
   tournamentRecord?: Tournament;
   drawDefinition: DrawDefinition;
   isQualifierPosition?: boolean;
   matchUpsMap?: MatchUpsMap;
   participantId: string;
   drawPosition: number;
-  seedingProfile?: any;
   seedBlockInfo?: any;
   structureId: string;
   event?: Event;

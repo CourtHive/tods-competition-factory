@@ -8,6 +8,7 @@ import { isValidSeedPosition } from '../../getters/seedGetter';
 import { findStructure } from '../../getters/findStructure';
 
 import { SUCCESS } from '../../../constants/resultConstants';
+import { SeedingProfile } from '../../../types/factoryTypes';
 import {
   INVALID_DRAW_POSITION_FOR_SEEDING,
   INVALID_PARTICIPANT_ID,
@@ -22,9 +23,9 @@ import {
 type AssignSeedArgs = {
   provisionalPositioning?: boolean;
   tournamentRecord?: Tournament;
+  seedingProfile?: SeedingProfile;
   drawDefinition: DrawDefinition;
   participantId: string;
-  seedingProfile?: any;
   seedBlockInfo?: any;
   structureId: string;
   seedNumber: number;

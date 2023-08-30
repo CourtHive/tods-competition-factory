@@ -1,6 +1,7 @@
 import { unique, UUID } from '../../utilities';
 
 import { ROUND_OUTCOME } from '../../constants/drawDefinitionConstants';
+import { SeedingProfile } from '../../types/factoryTypes';
 import {
   MatchUp,
   SeedAssignment,
@@ -11,6 +12,7 @@ type StructureTemplateArgs = {
   seedAssignments?: SeedAssignment[];
   qualifyingRoundNumber?: number;
   structureAbbreviation?: string;
+  seedingProfile?: SeedingProfile;
   finishingPosition?: string;
   structures?: Structure[];
   structureOrder?: number;
@@ -22,7 +24,6 @@ type StructureTemplateArgs = {
   matchUps?: MatchUp[];
   roundOffset?: number;
   structureId?: string;
-  seedingProfile?: any;
   roundLimit?: number;
   stageOrder?: number;
   stage?: string;

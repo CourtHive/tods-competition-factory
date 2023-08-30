@@ -12,7 +12,10 @@ import { addDrawEntry } from '../../drawEngine/governors/entryGovernor/addDrawEn
 import { getQualifiersCount } from '../../drawEngine/getters/getQualifiersCount';
 import { getAllowedDrawTypes } from '../governors/policyGovernor/allowedTypes';
 import structureTemplate from '../../drawEngine/generators/structureTemplate';
-import { decorateResult } from '../../global/functions/decorateResult';
+import {
+  ResultType,
+  decorateResult,
+} from '../../global/functions/decorateResult';
 import { newDrawDefinition } from '../../drawEngine/stateMethods';
 import { mustBeAnArray } from '../../utilities/mustBeAnArray';
 import { isConvertableInteger } from '../../utilities/math';
@@ -34,6 +37,7 @@ import { POLICY_TYPE_SEEDING } from '../../constants/policyConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import { TEAM } from '../../constants/matchUpTypes';
 import {
+  ErrorType,
   INVALID_DRAW_TYPE,
   INVALID_VALUES,
   MISSING_DRAW_SIZE,
@@ -48,21 +52,68 @@ import {
   QUALIFYING,
   ROUND_ROBIN,
   ROUND_ROBIN_WITH_PLAYOFF,
-  SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
 import {
   QUALIFIER,
   STRUCTURE_ENTERED_TYPES,
 } from '../../constants/entryStatusConstants';
-import { LinkTypeEnum } from '../../types/tournamentFromSchema';
+import {
+  DrawDefinition,
+  DrawTypeEnum,
+  Entry,
+  Event,
+  LinkTypeEnum,
+  StageTypeEnum,
+  TieFormat,
+  Tournament,
+  TypeEnum,
+} from '../../types/tournamentFromSchema';
 
-/**
- * automated = true, // can be true/false or "truthy" { seedsOnly: true }
- */
-export function generateDrawDefinition(params) {
+type GenerateDrawDefinitionArgs = {
+  automated?: boolean | { seedsOnly: boolean };
+  ignoreAllowedDrawTypes?: boolean;
+  qualifyingPlaceholder?: boolean;
+  considerEventEntries?: boolean;
+  hydrateCollections?: boolean;
+  tournamentRecord: Tournament;
+  voluntaryConsolation?: any;
+  ignoreStageSpace?: boolean;
+  qualifyingProfiles?: any[];
+  qualifyingOnly?: boolean;
+  drawType?: DrawTypeEnum;
+  matchUpFormat?: string;
+  matchUpType?: TypeEnum;
+  policyDefinitions?: any;
+  tieFormatName?: string;
+  tieFormat?: TieFormat;
+  drawEntries?: Entry[];
+  addToEvent?: boolean;
+  seedsCount?: number;
+  placeByes?: boolean;
+  drawName?: string;
+  drawSize?: number;
+  idPrefix?: string;
+  isMock?: boolean;
+  uuids?: string[];
+  drawId?: string;
+  event: Event;
+};
+
+export function generateDrawDefinition(params: GenerateDrawDefinitionArgs):
+  | ResultType
+  | {
+      existingDrawDefinition?: boolean;
+      qualifyingConflicts?: any[];
+      positioningReports?: any[];
+      drawDefinition?: DrawDefinition;
+      structureId?: string;
+      success?: boolean;
+      error?: ErrorType;
+      conflicts?: any[];
+    } {
   const stack = 'generateDrawDefinition';
   const {
-    drawType = SINGLE_ELIMINATION,
+    drawType = DrawTypeEnum.SingleElimination,
     considerEventEntries = true, // in the absence of drawSize and drawEntries, look to event.entries
     ignoreAllowedDrawTypes,
     voluntaryConsolation,
@@ -100,16 +151,18 @@ export function generateDrawDefinition(params) {
     tournamentRecord &&
     getAllowedDrawTypes({
       tournamentRecord,
-      categoryType: event?.categoryType,
-      categoryName: event?.categoryName,
+      categoryType: event?.category?.categoryType,
+      categoryName: event?.category?.categoryName,
     });
   if (allowedDrawTypes?.length && !allowedDrawTypes.includes(drawType)) {
     return decorateResult({ result: { error: INVALID_DRAW_TYPE }, stack });
   }
 
   const eventEntries =
-    event?.entries?.filter((entry) =>
-      [...STRUCTURE_ENTERED_TYPES, QUALIFIER].includes(entry.entryStatus)
+    event?.entries?.filter(
+      (entry: Entry) =>
+        entry.entryStatus &&
+        [...STRUCTURE_ENTERED_TYPES, QUALIFIER].includes(entry.entryStatus)
     ) || [];
 
   const consideredEntries = (
@@ -133,7 +186,10 @@ export function generateDrawDefinition(params) {
   // coersion of drawSize and seedsCount to integers
   const drawSize =
     derivedDrawSize ||
-    (isConvertableInteger(params.drawSize) && parseInt(params.drawSize));
+    (params.drawSize &&
+      isConvertableInteger(params.drawSize) &&
+      ensureInt(params.drawSize)) ||
+    false; // required for isNaN check
 
   if (isNaN(drawSize) && drawType !== AD_HOC) {
     return decorateResult({
@@ -152,7 +208,9 @@ export function generateDrawDefinition(params) {
 
   const existingDrawDefinition =
     params.drawId &&
-    event?.drawDefinitions?.find((d) => d.drawId === params.drawId);
+    (event?.drawDefinitions?.find(
+      (d) => d.drawId === params.drawId
+    ) as DrawDefinition);
 
   // drawDefinition cannot have both tieFormat and matchUpFormat
   let { tieFormat, matchUpFormat } = params;
@@ -166,9 +224,10 @@ export function generateDrawDefinition(params) {
   if (matchUpType === TEAM && eventType === TEAM) {
     // if there is an existingDrawDefinition which has a tieFormat on MAIN structure
     // use this tieFormat ONLY when no tieFormat is specified in params
-    const existingMainTieFormat = existingDrawDefinition?.structures?.find(
-      ({ stage }) => stage === MAIN
-    )?.tieFormat;
+    const existingMainTieFormat =
+      existingDrawDefinition &&
+      existingDrawDefinition.structures?.find(({ stage }) => stage === MAIN)
+        ?.tieFormat;
 
     tieFormat =
       tieFormat ||
@@ -226,7 +285,7 @@ export function generateDrawDefinition(params) {
         if (result.error) return decorateResult({ result, stack });
 
         drawDefinition.tieFormat = result.tieFormat || tieFormat;
-      } else {
+      } else if (matchUpFormat) {
         const result = setMatchUpFormat({
           tournamentRecord,
           drawDefinition,
@@ -284,9 +343,11 @@ export function generateDrawDefinition(params) {
   }
 
   // find existing MAIN structureId if existingDrawDefinition
-  let structureId = existingDrawDefinition?.structures?.find(
-    (structure) => structure.stage === MAIN && structure.stageSequence === 1
-  )?.structureId;
+  let structureId =
+    existingDrawDefinition &&
+    existingDrawDefinition.structures?.find(
+      (structure) => structure.stage === MAIN && structure.stageSequence === 1
+    )?.structureId;
   const entries = drawEntries || eventEntries;
   const positioningReports: any[] = [];
   let drawTypeResult;
@@ -297,10 +358,11 @@ export function generateDrawDefinition(params) {
     !params.qualifyingProfiles?.length &&
     !existingDrawDefinition;
 
-  const existingQualifyingStructures =
-    existingDrawDefinition?.structures.filter(
-      (structure) => structure.stage === QUALIFYING
-    );
+  const existingQualifyingStructures = existingDrawDefinition
+    ? existingDrawDefinition.structures?.filter(
+        (structure) => structure.stage === QUALIFYING
+      )
+    : [];
   const existingQualifyingPlaceholderStructureId =
     existingQualifyingStructures?.length === 1 &&
     !existingQualifyingStructures[0].matchUps?.length &&
@@ -308,42 +370,42 @@ export function generateDrawDefinition(params) {
 
   if (existingQualifyingPlaceholderStructureId) {
     const qualifyingProfiles = params.qualifyingProfiles;
-    const qualifyingResult =
-      qualifyingProfiles?.length &&
-      generateQualifyingStructures({
-        idPrefix: params.idPrefix,
-        isMock: params.isMock,
-        uuids: params.uuids,
-        qualifyingProfiles,
-        appliedPolicies,
-      });
+    const qualifyingResult = qualifyingProfiles?.length
+      ? generateQualifyingStructures({
+          idPrefix: params.idPrefix,
+          isMock: params.isMock,
+          uuids: params.uuids,
+          qualifyingProfiles,
+          appliedPolicies,
+        })
+      : undefined;
 
     if (qualifyingResult?.error) {
       return qualifyingResult;
     }
 
-    drawDefinition.structures = drawDefinition.structures.filter(
+    drawDefinition.structures = drawDefinition.structures?.filter(
       ({ structureId }) =>
         structureId !== existingQualifyingPlaceholderStructureId
     );
-    drawDefinition.links = drawDefinition.links.filter(
+    drawDefinition.links = drawDefinition.links?.filter(
       ({ source }) =>
         source.structureId !== existingQualifyingPlaceholderStructureId
     );
 
     const { qualifiersCount, qualifyingDrawPositionsCount, qualifyingDetails } =
-      qualifyingResult;
+      qualifyingResult || {};
 
     if (qualifyingDrawPositionsCount) {
       if (qualifyingResult?.structures) {
-        drawDefinition.structures.push(...qualifyingResult.structures);
+        drawDefinition.structures?.push(...qualifyingResult.structures);
       }
       if (qualifyingResult?.links) {
-        drawDefinition.links.push(...qualifyingResult.links);
+        drawDefinition.links?.push(...qualifyingResult.links);
       }
     }
 
-    const mainStructure = drawDefinition.structures.find(
+    const mainStructure = drawDefinition.structures?.find(
       ({ stage, stageSequence }) => stage === MAIN && stageSequence === 1
     );
     const { qualifiersCount: existingQualifiersCount } = getQualifiersCount({
@@ -373,11 +435,11 @@ export function generateDrawDefinition(params) {
     if (result.error) return result;
 
     for (const entry of (drawEntries || []).filter(
-      ({ entryStage }) => entryStage === QUALIFYING
+      ({ entryStage }) => entryStage === StageTypeEnum.Qualifying
     )) {
       const entryData = {
         ...entry,
-        entryStage: entry.entryStage || MAIN,
+        entryStage: entry.entryStage || StageTypeEnum.Main,
         drawDefinition,
       };
       // ignore errors (EXITING_PARTICIPANT)
@@ -406,6 +468,7 @@ export function generateDrawDefinition(params) {
       if (link?.error) return link;
 
       if (link) {
+        if (!drawDefinition.links) drawDefinition.links = [];
         drawDefinition.links.push(link);
       }
     }
@@ -431,11 +494,15 @@ export function generateDrawDefinition(params) {
     // add all entries to the draw
     for (const entry of entries) {
       // if drawEntries and entryStage !== stage ignore
-      if (drawEntries && entry.entryStage && entry.entryStage !== MAIN)
+      if (
+        drawEntries &&
+        entry.entryStage &&
+        entry.entryStage !== StageTypeEnum.Main
+      )
         continue;
       const entryData = {
         ...entry,
-        entryStage: entry.entryStage || MAIN,
+        entryStage: entry.entryStage || StageTypeEnum.Main,
         ignoreStageSpace,
         drawDefinition,
       };
@@ -559,7 +626,7 @@ export function generateDrawDefinition(params) {
 
       roundTarget += 1;
     }
-  } else if (generateQualifyingPlaceholder) {
+  } else if (structureId && generateQualifyingPlaceholder) {
     const qualifyingStructure = structureTemplate({
       structureName: QUALIFYING,
       stage: QUALIFYING,
@@ -570,7 +637,9 @@ export function generateDrawDefinition(params) {
       sourceRoundNumber: 0,
       linkType: LinkTypeEnum.Position,
     });
+    if (!drawDefinition.structures) drawDefinition.structures = [];
     drawDefinition.structures.push(qualifyingStructure);
+    if (!drawDefinition.links) drawDefinition.links = [];
     drawDefinition.links.push(link);
   }
 

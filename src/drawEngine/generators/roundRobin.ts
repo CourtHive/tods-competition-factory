@@ -20,15 +20,16 @@ import {
   MatchUpStatusEnum,
   TypeEnum,
 } from '../../types/tournamentFromSchema';
+import { SeedingProfile } from '../../types/factoryTypes';
 
 type GenerateRoundRobinArgs = {
+  seedingProfile?: SeedingProfile;
   structureName?: string;
   stageSequence?: number;
   structureOptions?: any;
   appliedPolicies?: any;
   matchUpType: TypeEnum;
   roundTarget?: number;
-  seedingProfile?: any;
   structureId: string;
   drawSize: number;
   idPrefix?: string;

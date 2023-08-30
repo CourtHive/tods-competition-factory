@@ -13,8 +13,9 @@ import { getStageEntries } from '../../getters/stageGetter';
 import { getGenerators } from './getGenerators';
 
 import { SUCCESS } from '../../../constants/resultConstants';
-import { SINGLES } from '../../../constants/matchUpTypes';
+import { SeedingProfile } from '../../../types/factoryTypes';
 import {
+  ErrorType,
   INVALID_DRAW_SIZE,
   INVALID_STRUCTURE,
   MISSING_DRAW_DEFINITION,
@@ -28,8 +29,40 @@ import {
   SINGLE_ELIMINATION,
   VOLUNTARY_CONSOLATION,
 } from '../../../constants/drawDefinitionConstants';
+import {
+  DrawDefinition,
+  DrawLink,
+  Event,
+  Structure,
+  TieFormat,
+  Tournament,
+  TypeEnum,
+} from '../../../types/tournamentFromSchema';
 
-export function generateVoluntaryConsolation(params) {
+type GenerateVoluntaryConsolationArgs = {
+  tournamentRecord?: Tournament;
+  seedingProfile?: SeedingProfile;
+  drawDefinition: DrawDefinition;
+  attachConsolation?: boolean;
+  applyPositioning?: boolean;
+  staggeredEntry?: boolean;
+  structureName?: string;
+  matchUpType?: TypeEnum;
+  tieFormat?: TieFormat;
+  automated?: boolean;
+  placeByes?: boolean;
+  drawType?: string;
+  isMock?: boolean;
+  event?: Event;
+};
+export function generateVoluntaryConsolation(
+  params: GenerateVoluntaryConsolationArgs
+): {
+  structures?: Structure[];
+  links?: DrawLink[];
+  success?: boolean;
+  error?: ErrorType;
+} {
   const {
     drawType = SINGLE_ELIMINATION,
     attachConsolation = true,
@@ -40,7 +73,7 @@ export function generateVoluntaryConsolation(params) {
     placeByes,
     isMock,
     event,
-  } = params || {};
+  } = params;
 
   let drawDefinition = params?.drawDefinition;
 
@@ -82,7 +115,7 @@ export function generateVoluntaryConsolation(params) {
   tieFormat = copyTieFormat(
     tieFormat || resolveTieFormat({ drawDefinition })?.tieFormat
   );
-  matchUpType = matchUpType || drawDefinition.matchUpType || SINGLES;
+  matchUpType = matchUpType || drawDefinition.matchUpType || TypeEnum.Singles;
 
   const { structures: stageStructures } = getDrawStructures({
     stageSequence: 1,
@@ -137,10 +170,12 @@ export function generateVoluntaryConsolation(params) {
     drawDefinition = makeDeepCopy(drawDefinition, false, true);
   }
 
+  if (!drawDefinition.links) drawDefinition.links = [];
   if (links.length) drawDefinition.links.push(...links);
   const generatedStructureIds = structures.map(
     ({ structureId }) => structureId
   );
+  if (!drawDefinition.structures) drawDefinition.structures = [];
   const existingStructureIds = drawDefinition.structures.map(
     ({ structureId }) => structureId
   );

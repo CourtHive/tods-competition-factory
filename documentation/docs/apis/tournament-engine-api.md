@@ -177,11 +177,11 @@ tournamentEngine.addEvent({ event });
 
 ## addEventEntries
 
-Adds `participantIds` to `event.entries`; optionally pass drawId to add participantIds to `flightProfile.drawEntries` at the same time.
+Adds `participantIds` to `event.entries`; optionally pass drawId to add participantIds to `flightProfile.flight[].drawEntries` at the same time.
 
 :::note
 
-Will **_not_** throw an error if unable to add entries into specified `flightProfile.drawEntries`,
+Will **_not_** throw an error if unable to add entries into specified `flightProfile.flight[].drawEntries`,
 which can occur if a `drawDefinition` has already been generated and an attempt is made to add
 a participant with `entryStatus: DIRECT_ACCEPTANCE`.
 
@@ -895,7 +895,7 @@ Only generates seeding. To apply `tournamentEngine.setParticipantScaleItems({ sc
 const { scaleItemsWithParticipantIds } = tournamentEngine.autoSeeding({
   eventId,
   policyDefinitions, // seeding policyDefinition determines the # of seeds for given participantCount/drawSize
-  scaleAttributes, // { scaleType, scaleName, }
+  scaleAttributes, // { scaleType, scaleName, eventType, accessor }
   scaleName, // Optional - defaults to scaleAttributes.scaleName
   drawSize, // Optional - defaults to calculation based on # of entries
   drawId, // Optional - will use flight.drawEntries or drawDefinition.entries rather than event.entries

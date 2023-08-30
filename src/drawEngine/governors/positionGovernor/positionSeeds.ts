@@ -7,6 +7,7 @@ import { generateRange } from '../../../utilities';
 import { HydratedMatchUp, HydratedParticipant } from '../../../types/hydrated';
 import { MatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { SeedingProfile } from '../../../types/factoryTypes';
 import {
   ErrorType,
   MISSING_DRAW_POSITION,
@@ -23,6 +24,7 @@ type PositionSeedBlocksArgs = {
   participants?: HydratedParticipant[];
   provisionalPositioning?: boolean;
   tournamentRecord?: Tournament;
+  seedingProfile?: SeedingProfile;
   drawDefinition: DrawDefinition;
   matchUpsMap?: MatchUpsMap;
   structure?: Structure;
@@ -30,7 +32,6 @@ type PositionSeedBlocksArgs = {
   validSeedBlocks?: any;
   groupsCount?: number;
   structureId?: string;
-  seedingProfile?: any;
   seedBlockInfo?: any;
   event?: Event;
 };
