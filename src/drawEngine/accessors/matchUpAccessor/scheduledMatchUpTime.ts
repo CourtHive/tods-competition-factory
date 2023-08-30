@@ -16,7 +16,10 @@ export function scheduledMatchUpTime({
       visibilityThreshold,
     });
 
-  return !schedule || (itemTimeStamp && timeStamp && itemTimeStamp > timeStamp)
+  return !schedule ||
+    (itemTimeStamp &&
+      timeStamp &&
+      new Date(itemTimeStamp).getTime() > new Date(timeStamp).getTime())
     ? { scheduledTime }
     : schedule;
 }

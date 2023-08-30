@@ -8,6 +8,7 @@ import { isCompletedStructure } from '../structureActions';
 import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConstants';
 import { BYE } from '../../../../constants/matchUpStatusConstants';
 import { TALLY } from '../../../../constants/extensionConstants';
+import { HydratedParticipant } from '../../../../types/hydrated';
 import {
   QUALIFYING_PARTICIPANT,
   QUALIFYING_PARTICIPANT_METHOD,
@@ -17,7 +18,6 @@ import {
   QUALIFYING,
   WINNER,
 } from '../../../../constants/drawDefinitionConstants';
-import { HydratedParticipant } from '../../../../types/hydrated';
 
 export function getValidQualifiersAction({
   /*

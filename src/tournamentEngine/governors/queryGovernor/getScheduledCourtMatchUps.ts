@@ -2,6 +2,7 @@ import { scheduledSortedMatchUps } from '../../../global/sorting/scheduledSorted
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
 import { getSchedulingProfile } from '../scheduleGovernor/schedulingProfile';
 
+import { Tournament } from '../../../types/tournamentFromSchema';
 import {
   MISSING_COURT_ID,
   MISSING_TOURNAMENT_RECORD,
@@ -53,12 +54,18 @@ export function getScheduledCourtMatchUps(params) {
   }
 }
 
+type GetScheduledVenueMatchUpsArgs = {
+  scheduleVisibilityFilters?: any;
+  tournamentRecord: Tournament;
+  matchUpFilters?: any;
+  venueId: string;
+};
 export function getScheduledVenueMatchUps({
   scheduleVisibilityFilters,
   tournamentRecord,
   matchUpFilters,
   venueId,
-}) {
+}: GetScheduledVenueMatchUpsArgs) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!venueId) return { error: MISSING_VENUE_ID };
 

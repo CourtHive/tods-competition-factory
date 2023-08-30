@@ -12,6 +12,7 @@ import { hasParticipantId } from '../../global/functions/filters';
 import { completeDrawMatchUps } from './completeDrawMatchUps';
 import { generateRange } from '../../utilities';
 
+import { ErrorType } from '../../constants/errorConditionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import { SEEDING } from '../../constants/scaleConstants';
 import {
@@ -27,7 +28,11 @@ export function generateFlightDrawDefinitions({
   tournamentRecord,
   drawProfiles,
   event,
-}) {
+}): {
+  drawIds?: string[];
+  success?: boolean;
+  error?: ErrorType;
+} {
   const flightProfile = getFlightProfile({ event }).flightProfile;
   const { eventName, eventType, category } = event;
   const { startDate } = tournamentRecord;
@@ -90,7 +95,7 @@ export function generateFlightDrawDefinitions({
           event,
           stage,
         });
-        if (result.error) return result;
+        if (result.error) return { error: result.error, drawIds: [] };
 
         const { drawDefinition } = result;
 
@@ -109,7 +114,7 @@ export function generateFlightDrawDefinitions({
           drawDefinition,
           event,
         });
-        if (result.error) return result;
+        if (result.error) return { error: result.error, drawIds: [] };
 
         if (drawProfile.drawType === AD_HOC && drawProfile.drawMatic) {
           const roundsCount = drawProfile.roundsCount || 1;
@@ -120,7 +125,7 @@ export function generateFlightDrawDefinitions({
               drawDefinition,
               roundNumber, // this is not a real parameter
             });
-            if (result.error) return result;
+            if (result.error) return { error: result.error, drawIds: [] };
           }
         }
 
@@ -156,7 +161,8 @@ export function generateFlightDrawDefinitions({
             matchUpFormat,
             event,
           });
-          if (result.error) return result;
+          if (result.error) return { error: result.error, drawIds: [] };
+
           const completedCount = result.completedCount;
 
           if (drawProfile?.drawType === ROUND_ROBIN_WITH_PLAYOFF) {
@@ -169,7 +175,7 @@ export function generateFlightDrawDefinitions({
               drawDefinition,
               event,
             });
-            if (result.error) return result;
+            if (result.error) return { error: result.error, drawIds: [] };
 
             const playoffCompletionGoal = completionGoal
               ? completionGoal - (completedCount || 0)
@@ -186,7 +192,7 @@ export function generateFlightDrawDefinitions({
               matchUpFormat,
               event,
             });
-            if (result.error) return result;
+            if (result.error) return { error: result.error, drawIds: [] };
           }
         }
       }

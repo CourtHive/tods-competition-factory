@@ -11,15 +11,21 @@ import {
   MISSING_SCHEDULE,
   MISSING_MATCHUP_IDS,
   MISSING_TOURNAMENT_RECORD,
+  ErrorType,
 } from '../../../constants/errorConditionConstants';
+import { Tournament } from '../../../types/tournamentFromSchema';
 
-/**
- *
- * @param {object} tournamentRecord - passed in automatically by tournamentEngine
- * @param {string[]} matchUpIds - array of matchUpIds to be scheduled
- * @param {object} schedule - { venueId?: string; scheduledDate?: string; scheduledTime?: string }
- *
- */
+type BulkScheduleMachUpsArgs = {
+  tournamentRecords: { [key: string]: Tournament };
+  errorOnAnachronism?: boolean;
+  tournamentRecord: Tournament;
+  checkChronology?: boolean;
+  matchUpDependencies?: any;
+  matchUpIds?: string[];
+  matchUpDetails?: any;
+  schedule?: any;
+};
+
 export function bulkScheduleMatchUps({
   errorOnAnachronism = false,
   checkChronology = true,
@@ -29,7 +35,11 @@ export function bulkScheduleMatchUps({
   matchUpDetails,
   matchUpIds,
   schedule,
-}) {
+}: BulkScheduleMachUpsArgs): {
+  error?: ErrorType;
+  scheduled?: number;
+  warnings?: any[];
+} {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!matchUpDetails && (!matchUpIds || !Array.isArray(matchUpIds)))
     return { error: MISSING_MATCHUP_IDS };

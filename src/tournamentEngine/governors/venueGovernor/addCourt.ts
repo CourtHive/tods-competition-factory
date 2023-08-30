@@ -18,21 +18,28 @@ import {
   VENUE_NOT_FOUND,
   COURT_EXISTS,
 } from '../../../constants/errorConditionConstants';
-import { Tournament } from '../../../types/tournamentFromSchema';
+import { Court, Tournament } from '../../../types/tournamentFromSchema';
 
+type AddCourtArgs = {
+  tournamentRecord: Tournament;
+  disableNotice?: boolean;
+  courtId?: string;
+  venueId: string;
+  court?: any;
+};
 export function addCourt({
   tournamentRecord,
   disableNotice,
   venueId,
   courtId,
   court,
-}) {
+}: AddCourtArgs) {
   const { venue } = findVenue({ tournamentRecord, venueId });
   if (!venue) return { error: VENUE_NOT_FOUND };
 
   if (!venue.courts) venue.courts = [];
 
-  const courtRecord = { ...courtTemplate(), venueId, courtId };
+  const courtRecord: any = { ...courtTemplate(), venueId, courtId };
   if (!courtRecord.courtId) {
     courtRecord.courtId = UUID();
   }
@@ -46,7 +53,7 @@ export function addCourt({
   } else {
     // build new dateAvailability object with date/time extraction
     const dateAvailability = (court?.dateAvailability || []).map(
-      (availabilty) => ({
+      (availabilty: any) => ({
         ...availabilty,
         date: extractDate(availabilty.date),
         startTime: extractTime(availabilty.startTime),
@@ -61,8 +68,9 @@ export function addCourt({
       })
     );
 
-    for (const attribute of Object.keys(courtRecord)) {
-      if (court[attribute]) {
+    const attributes = Object.keys(courtRecord);
+    for (const attribute of attributes) {
+      if (court?.[attribute]) {
         if (attribute === 'dateAvailability') {
           const result = validDateAvailability({ dateAvailability });
           if (!result.valid && result.error) return result;
@@ -72,7 +80,9 @@ export function addCourt({
         }
       }
     }
-    venue.courts.push(courtRecord);
+
+    const newCourt = courtRecord as Court;
+    venue.courts.push(newCourt);
 
     if (!disableNotice) {
       addNotice({

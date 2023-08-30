@@ -13,7 +13,7 @@ import {
 import { Court, Tournament, Venue } from '../../types/tournamentFromSchema';
 
 type FindCourtArgs = {
-  tournamentRecords?: Tournament[];
+  tournamentRecords?: { [key: string]: Tournament };
   tournamentRecord?: Tournament;
   courtId: string;
 };

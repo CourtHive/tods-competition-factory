@@ -24,7 +24,6 @@ import {
   ENTRY_STATUS_NOT_ALLOWED_FOR_EVENT,
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
   INVALID_ENTRY_STATUS,
-  INVALID_VALUES,
 } from '../../../../constants/errorConditionConstants';
 import {
   ALTERNATE,
@@ -204,12 +203,13 @@ it('can add and remove extensions from entries', () => {
   );
   expect(entriesWithExtensions.length).toEqual(0);
 
+  // is valid without a value for the purpose of removing an extension which has no value
   result = tournamentEngine.modifyEntriesStatus({
     participantIds: unassignedParticipantIds,
-    extension: { name: 'statusDetail', invalidAttribute: 'invalid' },
+    extension: { name: 'statusDetail' },
     eventId,
   });
-  expect(result.error).toEqual(INVALID_VALUES);
+  expect(result.success).toEqual(true);
 
   result = tournamentEngine.modifyEntriesStatus({
     extension: { name: 'statusDetail', value: 'available' },

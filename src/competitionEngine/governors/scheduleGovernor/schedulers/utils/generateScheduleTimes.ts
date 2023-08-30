@@ -37,7 +37,7 @@ type GenerateScheduleTimesArgs = {
   averageMatchUpMinutes?: number;
   tournamentRecord?: Tournament;
   clearScheduleDates?: boolean;
-  matchUps?: HydratedMatchUp;
+  matchUps?: HydratedMatchUp[];
   periodLength?: number;
   scheduleDate: string;
   venueIds: string[];

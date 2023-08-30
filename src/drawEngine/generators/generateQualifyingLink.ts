@@ -1,16 +1,25 @@
 import { definedAttributes } from '../../utilities/objects';
 
 import { MISSING_STRUCTURE_ID } from '../../constants/errorConditionConstants';
-import { DRAW, WINNER } from '../../constants/drawDefinitionConstants';
+import { DRAW } from '../../constants/drawDefinitionConstants';
+import { LinkTypeEnum } from '../../types/tournamentFromSchema';
 
+type GenerateQualifyingLinkArgs = {
+  targetEntryRound?: number;
+  sourceRoundNumber: number;
+  finishingPositions?: any;
+  sourceStructureId: string;
+  targetStructureId: string;
+  linkType?: LinkTypeEnum;
+};
 export function generateQualifyingLink({
   targetEntryRound = 1,
   finishingPositions,
   sourceRoundNumber,
   sourceStructureId,
   targetStructureId,
-  linkType = WINNER,
-}) {
+  linkType = LinkTypeEnum.Winner,
+}: GenerateQualifyingLinkArgs) {
   if (!sourceStructureId || !targetStructureId)
     return { error: MISSING_STRUCTURE_ID };
 
