@@ -19,7 +19,7 @@ type GenerateBookingsArgs = {
   dateScheduledMatchUps?: HydratedMatchUp[];
   defaultRecoveryMinutes?: number;
   averageMatchUpMinutes?: number;
-  matchUps?: HydratedMatchUp;
+  matchUps?: HydratedMatchUp[];
   periodLength?: number;
   scheduleDate?: string;
   venueIds?: string[];
@@ -72,11 +72,13 @@ export function generateBookings({
   };
 
   if (!dateScheduledMatchUps) {
-    dateScheduledMatchUps = matchUps?.filter(
-      (matchUp) =>
-        hasSchedule(matchUp) &&
+    dateScheduledMatchUps = matchUps?.filter((matchUp) => {
+      const schedule = matchUp.schedule;
+      return (
+        hasSchedule({ schedule }) &&
         (!scheduleDate || matchUp.schedule.scheduledDate === scheduleDate)
-    );
+      );
+    });
   }
 
   const relevantMatchUps = dateScheduledMatchUps?.filter(

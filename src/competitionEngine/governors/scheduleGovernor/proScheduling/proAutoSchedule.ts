@@ -4,22 +4,31 @@ import { bulkScheduleMatchUps } from '../bulkScheduleMatchUps';
 import { matchUpSort } from '../../../../forge/transform';
 import { isObject } from '../../../../utilities/objects';
 
-import {
-  BYE,
-  completedMatchUpStatuses,
-} from '../../../../constants/matchUpStatusConstants';
+import { completedMatchUpStatuses } from '../../../../constants/matchUpStatusConstants';
 import {
   INVALID_VALUES,
   MISSING_CONTEXT,
 } from '../../../../constants/errorConditionConstants';
+import { HydratedMatchUp } from '../../../../types/hydrated';
+import {
+  MatchUpStatusEnum,
+  Tournament,
+} from '../../../../types/tournamentFromSchema';
 
 // NOTE: matchUps are assumed to be { inContext: true, nextMatchUps: true }
+
+type ProAutoScheduleArgs = {
+  tournamentRecords: { [key: string]: Tournament };
+  scheduleCompletedMatchUps?: boolean;
+  matchUps: HydratedMatchUp[];
+  scheduledDate: string;
+};
 export function proAutoSchedule({
   scheduleCompletedMatchUps,
   tournamentRecords,
   scheduledDate,
   matchUps,
-} = {}) {
+}: ProAutoScheduleArgs) {
   if (!Array.isArray(matchUps)) return { error: INVALID_VALUES };
   if (matchUps.some(({ hasContext }) => !hasContext)) {
     return {
@@ -40,7 +49,7 @@ export function proAutoSchedule({
   if (result.error) return result;
   const { rows } = result;
 
-  const gridMatchUps = [];
+  const gridMatchUps: HydratedMatchUp[] = [];
 
   const getMatchUpParticipantIds = (matchUp) =>
     [
@@ -55,10 +64,10 @@ export function proAutoSchedule({
       .flat(Infinity)
       .filter(Boolean);
 
-  const gridRows = rows.reduce((gridRows, row) => {
-    const matchUpIds = [],
-      participantIds = [];
-    Object.values(row).forEach((c) => {
+  const gridRows = rows?.reduce((gridRows, row) => {
+    const matchUpIds: string[] = [],
+      participantIds: string[] = [];
+    Object.values(row).forEach((c: any) => {
       if (isObject(c)) {
         if (c.matchUpId) {
           matchUpIds.push(c.matchUpId);
@@ -71,7 +80,7 @@ export function proAutoSchedule({
       }
     });
     const availableCourts = Object.values(row).filter(
-      (c) => isObject(c) && !c.matchUpId
+      (c: any) => isObject(c) && !c.matchUpId
     );
     return gridRows.concat({
       matchUpIds,
@@ -84,7 +93,8 @@ export function proAutoSchedule({
   matchUps
     .filter(
       ({ matchUpStatus }) =>
-        matchUpStatus !== BYE &&
+        matchUpStatus &&
+        matchUpStatus !== MatchUpStatusEnum.Bye &&
         (scheduleCompletedMatchUps ||
           !completedMatchUpStatuses.includes(matchUpStatus))
     )
@@ -96,27 +106,32 @@ export function proAutoSchedule({
     tournamentRecords,
   }).matchUpDependencies;
 
-  const previousRowMatchUpIds = [];
-  const scheduled = [];
+  const scheduled: HydratedMatchUp[] = [];
+  const previousRowMatchUpIds: string[] = [];
 
   while (matchUps.length && gridRows.length) {
     const row = gridRows.shift();
-    const unscheduledMatchUps = [];
+    const unscheduledMatchUps: HydratedMatchUp[] = [];
     while (matchUps.length && row.availableCourts.length) {
       const unscheduledMatchUpIds = matchUps
         .concat(unscheduledMatchUps)
         .map((m) => m.matchUpId);
       const matchUp = matchUps.shift();
-      const { matchUpId } = matchUp;
-      const linkedMatchUpIds = deps[matchUpId].matchUpIds.concat(
-        deps[matchUpId].dependentMatchUpIds
-      );
-      const unscheduledContainSource = unscheduledMatchUpIds.some((id) =>
-        deps[matchUpId].matchUpIds.includes(id)
-      );
-      const previousIncludesDependent = previousRowMatchUpIds.some((id) =>
-        deps[matchUpId].dependentMatchUpIds.includes(id)
-      );
+      const matchUpId = matchUp?.matchUpId;
+      const linkedMatchUpIds =
+        matchUpId &&
+        deps[matchUpId].matchUpIds.concat(deps[matchUpId].dependentMatchUpIds);
+
+      const unscheduledContainSource =
+        matchUpId &&
+        unscheduledMatchUpIds.some((id) =>
+          deps[matchUpId].matchUpIds.includes(id)
+        );
+      const previousIncludesDependent =
+        matchUpId &&
+        previousRowMatchUpIds.some((id) =>
+          deps[matchUpId].dependentMatchUpIds.includes(id)
+        );
       const rowIncludesLinked = row.matchUpIds.some((id) =>
         linkedMatchUpIds.includes(id)
       );
@@ -127,6 +142,7 @@ export function proAutoSchedule({
       );
 
       if (
+        matchUp &&
         !rowIncludesLinked &&
         !unscheduledContainSource &&
         !rowContainsParticipants &&
@@ -140,7 +156,7 @@ export function proAutoSchedule({
 
         row.participantIds.push(...participantIds);
         row.matchUpIds.push(matchUpId);
-      } else {
+      } else if (matchUp) {
         unscheduledMatchUps.push(matchUp);
       }
     }

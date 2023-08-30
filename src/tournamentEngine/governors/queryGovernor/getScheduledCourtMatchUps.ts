@@ -2,12 +2,12 @@ import { scheduledSortedMatchUps } from '../../../global/sorting/scheduledSorted
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
 import { getSchedulingProfile } from '../scheduleGovernor/schedulingProfile';
 
+import { Tournament } from '../../../types/tournamentFromSchema';
 import {
   MISSING_COURT_ID,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VENUE_ID,
 } from '../../../constants/errorConditionConstants';
-import { Tournament } from '../../../types/tournamentFromSchema';
 
 export function getScheduledCourtMatchUps(params) {
   if (!params?.tournamentRecord && !Array.isArray(params?.venueMatchUps))

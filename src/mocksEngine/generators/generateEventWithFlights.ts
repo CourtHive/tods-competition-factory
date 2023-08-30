@@ -57,7 +57,7 @@ export function generateEventWithFlights(params) {
         })
       : undefined);
 
-  let targetParticipants = tournamentRecord.participants;
+  const targetParticipants = tournamentRecord.participants;
 
   for (const drawProfile of drawProfiles) {
     if (!gender && drawProfile.gender) gender = drawProfile?.gender;
@@ -139,14 +139,14 @@ export function generateEventWithFlights(params) {
   // only update on event since category is used in participant generation
   if (newEvent.category) newEvent.category.categoryName = categoryName;
 
-  let result = addEvent({
+  let result: any = addEvent({
     suppressNotifications: false,
     internalUse: true,
     tournamentRecord,
     event: newEvent,
   });
   if (result.error) return result;
-  const { event } = result;
+  const event = result?.event;
 
   // Generate Flights ---------------------------------------------------------
   const { stageParticipants } = getStageParticipants({

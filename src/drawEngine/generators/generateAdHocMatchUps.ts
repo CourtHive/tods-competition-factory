@@ -10,7 +10,6 @@ import {
 } from '../notifications/drawNotifications';
 
 import { ROUND_OUTCOME } from '../../constants/drawDefinitionConstants';
-import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
   INVALID_VALUES,
@@ -19,7 +18,14 @@ import {
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
   EXISTING_MATCHUP_ID,
+  ErrorType,
 } from '../../constants/errorConditionConstants';
+import {
+  DrawDefinition,
+  MatchUp,
+  MatchUpStatusEnum,
+  Tournament,
+} from '../../types/tournamentFromSchema';
 
 /**
  *
@@ -33,6 +39,19 @@ import {
  * @param {boolen} newRound - optional - whether to auto-increment to the next roundNumber
  * @returns
  */
+
+type GenerateAdHocMatchUpsArgs = {
+  participantIdPairings?: any[];
+  tournamentRecord?: Tournament;
+  drawDefinition: DrawDefinition;
+  addToStructure?: boolean;
+  matchUpsCount?: number;
+  matchUpIds?: string[];
+  roundNumber?: number;
+  structureId: string;
+  newRound?: boolean;
+};
+
 export function generateAdHocMatchUps({
   participantIdPairings,
   addToStructure = true,
@@ -43,7 +62,12 @@ export function generateAdHocMatchUps({
   roundNumber,
   structureId,
   newRound,
-}) {
+}: GenerateAdHocMatchUpsArgs): {
+  matchUpsCount?: number;
+  matchUps?: MatchUp[];
+  error?: ErrorType;
+  info?: any;
+} {
   if (typeof drawDefinition !== 'object')
     return { error: MISSING_DRAW_DEFINITION };
 
@@ -67,29 +91,33 @@ export function generateAdHocMatchUps({
 
   let structureHasRoundPositions;
   const existingMatchUps = structure?.matchUps;
-  const lastRoundNumber = existingMatchUps.reduce((roundNumber, matchUp) => {
-    if (matchUp.roundPosition) structureHasRoundPositions = true;
-    return matchUp.roundNumber > roundNumber
-      ? matchUp.roundNumber
-      : roundNumber;
-  }, 0);
+  const lastRoundNumber = existingMatchUps?.reduce(
+    (roundNumber: number, matchUp: any) => {
+      if (matchUp.roundPosition) structureHasRoundPositions = true;
+      return (matchUp?.roundNumber || 0) > roundNumber
+        ? matchUp.roundNumber
+        : roundNumber;
+    },
+    0
+  );
 
   // structure must not be a container of other structures
   // structure must not contain matchUps with roundPosition
   // structure must not determine finishingPosition by ROUND_OUTCOME
   if (
-    structure.structures ||
+    structure?.structures ||
     structureHasRoundPositions ||
-    structure.finishingPosition === ROUND_OUTCOME
+    structure?.finishingPosition === ROUND_OUTCOME
   ) {
     return { error: INVALID_STRUCTURE };
   }
 
-  if (roundNumber && roundNumber - 1 > lastRoundNumber)
+  if (roundNumber && roundNumber - 1 > (lastRoundNumber || 0))
     return { error: INVALID_VALUES, info: 'roundNumber error' };
 
   const nextRoundNumber =
-    roundNumber || (newRound ? lastRoundNumber + 1 : lastRoundNumber || 1);
+    roundNumber ||
+    (newRound ? (lastRoundNumber || 0) + 1 : lastRoundNumber || 1);
 
   participantIdPairings =
     participantIdPairings ||
@@ -107,9 +135,9 @@ export function generateAdHocMatchUps({
     );
 
     return {
+      matchUpStatus: MatchUpStatusEnum.ToBePlayed,
       matchUpId: matchUpIds.pop() || UUID(),
       roundNumber: nextRoundNumber,
-      matchUpStatus: TO_BE_PLAYED,
       sides,
     };
   });

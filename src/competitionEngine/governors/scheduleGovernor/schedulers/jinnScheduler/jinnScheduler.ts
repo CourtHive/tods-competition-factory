@@ -110,10 +110,10 @@ export function jinnScheduler({
         venues,
       });
 
-    const failSafe = 10;
-    let schedulingComplete;
+    const maxScheduleTimeAttempts = 10; // TODO: calculate this based on max court start/end range and averageMinutes
     let schedulingIterations = 0;
-    let maxScheduleTimeAttempts = 10; // TODO: calculate this based on max court start/end range and averageMinutes
+    let schedulingComplete;
+    const failSafe = 10;
 
     while (!schedulingComplete) {
       // for each venue schedule a round
@@ -161,7 +161,6 @@ export function jinnScheduler({
                   matchUpScheduleTimes,
                   matchUpDependencies,
                   allDateMatchUpIds,
-                  matchUps,
                   matchUp,
                 });
               if (!dependenciesScheduled) {
@@ -226,7 +225,6 @@ export function jinnScheduler({
                 averageMatchUpMinutes,
                 matchUpDependencies,
                 recoveryMinutes,
-                scheduleDate,
                 scheduleTime,
                 matchUp,
               });

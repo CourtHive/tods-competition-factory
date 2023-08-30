@@ -6,7 +6,7 @@ import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getInitialRoundNumber } from '../../getters/getInitialRoundNumber';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import {
-  // MatchUpsMap,
+  MatchUpsMap,
   getMatchUpsMap,
 } from '../../getters/getMatchUps/getMatchUpsMap';
 import { pushGlobalLog } from '../../../global/functions/globalLog';
@@ -41,9 +41,8 @@ import {
   DRAW_POSITION_ACTIVE,
   MISSING_DRAW_POSITION,
   DRAW_POSITION_NOT_CLEARED,
-  // ErrorType,
+  ErrorType,
 } from '../../../constants/errorConditionConstants';
-/*
 import { HydratedMatchUp } from '../../../types/hydrated';
 import {
   DrawDefinition,
@@ -52,9 +51,7 @@ import {
   Structure,
   Tournament,
 } from '../../../types/tournamentFromSchema';
-*/
 
-/*
 type ClearDrawPositionArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];
   tournamentRecord?: Tournament;
@@ -65,12 +62,10 @@ type ClearDrawPositionArgs = {
   structureId: string;
   event?: Event;
 };
-*/
-export function clearDrawPosition(params) {
+export function clearDrawPosition(params: ClearDrawPositionArgs) {
   let { inContextDrawMatchUps, participantId, drawPosition } = params;
   const { tournamentRecord, drawDefinition, structureId, matchUpsMap, event } =
     params;
-  // }: ClearDrawPositionArgs) {
   const { structure } = findStructure({ drawDefinition, structureId });
   const positionAssignments =
     structureAssignedDrawPositions({
@@ -133,7 +128,6 @@ export function clearDrawPosition(params) {
   return { ...SUCCESS, participantId };
 }
 
-/*
 type DrawPositionRemovalsArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];
   tournamentRecord?: Tournament;
@@ -143,7 +137,6 @@ type DrawPositionRemovalsArgs = {
   structureId: string;
   event?: Event;
 };
-*/
 export function drawPositionRemovals({
   inContextDrawMatchUps,
   tournamentRecord,
@@ -152,8 +145,7 @@ export function drawPositionRemovals({
   matchUpsMap,
   structureId,
   event,
-  // }: DrawPositionRemovalsArgs) {
-}) {
+}: DrawPositionRemovalsArgs) {
   const { structure } = findStructure({ drawDefinition, structureId });
   const positionAssignments =
     structureAssignedDrawPositions({
@@ -350,7 +342,6 @@ function removeSubsequentRoundsParticipant({
   );
 }
 
-/*
 type RemoveDrawPositionArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];
   positionAssignments: PositionAssignment[];
@@ -362,7 +353,6 @@ type RemoveDrawPositionArgs = {
   structure: Structure;
   event?: Event;
 };
-*/
 function removeDrawPosition({
   inContextDrawMatchUps,
   positionAssignments,
@@ -373,8 +363,7 @@ function removeDrawPosition({
   matchUpsMap,
   structure,
   event,
-  // }: RemoveDrawPositionArgs) {
-}) {
+}: RemoveDrawPositionArgs) {
   const stack = 'removeDrawPosition';
   const initialDrawPositions = targetMatchUp.drawPositions?.slice();
   const initialMatchUpStatus = targetMatchUp.matchUpStatus;
@@ -393,22 +382,18 @@ function removeDrawPosition({
     initialRoundNumber &&
     targetMatchUp.roundNumber > initialRoundNumber
   ) {
-    // const drawPositions: any[] = (targetMatchUp.drawPositions || [])
-    const drawPositions = (targetMatchUp.drawPositions || []).map(
+    const drawPositions: any[] = (targetMatchUp.drawPositions || []).map(
       (currentDrawPosition) =>
         currentDrawPosition === drawPosition ? undefined : currentDrawPosition
     );
-    // .filter(Boolean);
-    // targetMatchUp.drawPositions = drawPositions as number[];
-    targetMatchUp.drawPositions = drawPositions;
+    targetMatchUp.drawPositions = drawPositions as number[];
   }
 
   if (targetMatchUp.matchUpType === TEAM) {
     const inContextTargetMatchUp = inContextDrawMatchUps?.find(
       (matchUp) => matchUp.matchUpId === targetMatchUp.matchUpId
     );
-    // const sides: any[] = inContextTargetMatchUp?.sides || [];
-    const sides = inContextTargetMatchUp?.sides || [];
+    const sides: any[] = inContextTargetMatchUp?.sides || [];
     const drawPositionSideIndex = sides.reduce(
       (index, side, i) => (side.drawPosition === drawPosition ? i : index),
       undefined
@@ -422,9 +407,9 @@ function removeDrawPosition({
 
       modifyMatchUpNotice({
         tournamentId: tournamentRecord?.tournamentId,
+        context: `${stack}-TEAM`,
         eventId: event?.eventId,
         matchUp: targetMatchUp,
-        context: `${stack}-TEAM`,
         drawDefinition,
       });
     }
@@ -446,8 +431,8 @@ function removeDrawPosition({
     },
   } = targetData;
 
-  const matchUpAssignments = positionAssignments.filter(({ drawPosition }) =>
-    targetMatchUp.drawPositions?.includes(drawPosition)
+  const matchUpAssignments = positionAssignments.filter(
+    ({ drawPosition }) => targetMatchUp.drawPositions?.includes(drawPosition)
   );
   const matchUpContainsBye = matchUpAssignments.filter(
     (assignment) => assignment.bye
@@ -593,8 +578,7 @@ function consolationCleanup({
   loserMatchUp,
   matchUpsMap,
   event,
-  // }): { error?: ErrorType; success?: boolean } {
-}) {
+}): { error?: ErrorType; success?: boolean } {
   const { structure } = findStructure({
     structureId: loserMatchUp.structureId,
     drawDefinition,

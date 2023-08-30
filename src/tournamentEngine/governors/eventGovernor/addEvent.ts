@@ -15,6 +15,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import { UUID, definedAttributes } from '../../../utilities';
 import {
   EVENT_EXISTS,
+  ErrorType,
   INVALID_VALUES,
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
@@ -31,7 +32,12 @@ export function addEvent({
   tournamentRecord,
   internalUse,
   event,
-}: AddEventArgs) {
+}: AddEventArgs): {
+  error?: ErrorType;
+  info?: any;
+  context?: any;
+  event?: Event;
+} {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.events) tournamentRecord.events = [];
   if (!event) return { error: MISSING_EVENT };

@@ -6,12 +6,12 @@ import { HydratedMatchUp } from '../../../../../types/hydrated';
 
 type ProcessAlreadyScheduledMatchUpsArgs = {
   matchUpPotentialParticipantIds: { [key: string]: string[] };
+  matchUpNotBeforeTimes: { [key: string]: any };
+  matchUpScheduleTimes: { [key: string]: any };
   dateScheduledMatchUps?: HydratedMatchUp[];
   individualParticipantProfiles: any;
   dateScheduledMatchUpIds: string[];
   greatestAverageMinutes?: number;
-  matchUpNotBeforeTimes: string[];
-  matchUpScheduleTimes: string[];
   clearScheduleDates?: boolean;
   matchUps: HydratedMatchUp[];
   matchUpDependencies: any;

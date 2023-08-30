@@ -9,13 +9,20 @@ import {
 
 import { MISSING_VALUE } from '../../../../../constants/errorConditionConstants';
 
+type GetEarliestCourtTimeArgs = {
+  averageMinutes: number;
+  startTime?: string;
+  endTime?: string;
+  court: any;
+  date: string;
+};
 export function getEarliestCourtTime({
   averageMinutes,
   startTime,
   endTime,
   court,
   date,
-}) {
+}: GetEarliestCourtTimeArgs) {
   if (!Array.isArray(court.dateAvailability))
     return { error: MISSING_VALUE, stack: 'getEarliestCourtTime' };
 

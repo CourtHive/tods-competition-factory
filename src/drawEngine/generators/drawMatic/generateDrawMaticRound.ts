@@ -44,7 +44,7 @@ export function generateDrawMaticRound({
   //  'P-I-0|P-I-3': 1
   // }
 
-  const valueObjects = {};
+  const valueObjects: any = {};
   for (const pairing of encounters) {
     if (!valueObjects[pairing]) valueObjects[pairing] = 0;
     valueObjects[pairing] += ENCOUNTER_VALUE;
@@ -199,7 +199,7 @@ function getPairings({
 
 function getPairingsData({ participantIds }) {
   const possiblePairings = {};
-  const uniquePairings = [];
+  const uniquePairings: any = [];
 
   participantIds.forEach((participantId) => {
     possiblePairings[participantId] = participantIds.filter(
@@ -219,12 +219,13 @@ function getPairingsData({ participantIds }) {
 }
 
 function getEncounters({ matchUps }) {
-  let encounters = [];
+  const encounters: any = [];
 
   for (const matchUp of matchUps) {
     const participantIds = matchUp.sides.map(getParticipantId);
     if (participantIds.length === 2) {
-      const pairing = pairingHash(...participantIds);
+      const [p1, p2] = participantIds;
+      const pairing = pairingHash(p1, p2);
       if (!encounters.includes(pairing)) encounters.push(pairing);
     }
   }
@@ -233,10 +234,10 @@ function getEncounters({ matchUps }) {
 }
 
 function getParticipantPairingValues({ possiblePairings, valueObjects }) {
-  let pairingValues = {};
+  const pairingValues = {};
 
   for (const participantId of Object.keys(possiblePairings)) {
-    let participantValues = possiblePairings[participantId].map((opponent) =>
+    const participantValues = possiblePairings[participantId].map((opponent) =>
       pairingValue(participantId, opponent)
     );
     pairingValues[participantId] = participantValues.sort(
@@ -245,7 +246,7 @@ function getParticipantPairingValues({ possiblePairings, valueObjects }) {
   }
 
   function pairingValue(participantId, opponent) {
-    let key = pairingHash(participantId, opponent);
+    const key = pairingHash(participantId, opponent);
     return { opponent, value: valueObjects[key] };
   }
   return { pairingValues };

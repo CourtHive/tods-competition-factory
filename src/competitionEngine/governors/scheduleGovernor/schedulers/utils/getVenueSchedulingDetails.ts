@@ -2,8 +2,29 @@ import { getScheduledRoundsDetails } from '../../schedulingProfile/getScheduledR
 import { processAlreadyScheduledMatchUps } from './processAlreadyScheduledMatchUps';
 import { getGroupedRounds } from '../../schedulingProfile/getGroupedRounds';
 import { getMatchUpsToSchedule } from './getMatchUpsToSchedule';
-import { extractDate } from '../../../../../utilities/dateTime';
 import { generateScheduleTimes } from './generateScheduleTimes';
+import { extractDate } from '../../../../../utilities/dateTime';
+
+import { Tournament } from '../../../../../types/tournamentFromSchema';
+import { HydratedMatchUp } from '../../../../../types/hydrated';
+
+type GetVenueSchedulingDetailsArgs = {
+  matchUpPotentialParticipantIds: { [key: string]: string[] };
+  individualParticipantProfiles: { [key: string]: any };
+  tournamentRecords: { [key: string]: Tournament };
+  matchUpScheduleTimes: { [key: string]: string };
+  matchUpNotBeforeTimes: { [key: string]: any };
+  matchUpDependencies: { [key: string]: any };
+  scheduleCompletedMatchUps?: boolean;
+  containedStructureIds: string[];
+  clearScheduleDates?: boolean;
+  matchUps: HydratedMatchUp[];
+  periodLength?: number;
+  scheduleDate: string;
+  useGarman?: boolean;
+  courts: any[]; // scheduling information; not an actualy court
+  venues: any[]; // scheduling information; not an actualy venue
+};
 
 export function getVenueSchedulingDetails({
   matchUpPotentialParticipantIds,
@@ -21,7 +42,7 @@ export function getVenueSchedulingDetails({
   matchUps,
   courts,
   venues,
-}): {
+}: GetVenueSchedulingDetailsArgs): {
   venueScheduledRoundDetails: { [key: string]: any };
   allDateScheduledMatchUpIds: string[];
   allDateMatchUpIds: string[];

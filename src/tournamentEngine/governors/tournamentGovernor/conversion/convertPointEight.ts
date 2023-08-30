@@ -73,7 +73,7 @@ export function convertPointEight({ tournament }) {
 }
 
 function deriveDraws(stages) {
-  const drawDefinitions = [];
+  const drawDefinitions: any[] = [];
 
   for (const legacyStage of stages || []) {
     const { stageType } = legacyStage;

@@ -13,6 +13,7 @@ import {
   assignDrawPositionBye,
 } from './byePositioning/assignDrawPositionBye';
 
+import { MatchUpStatusEnum } from '../../../types/tournamentFromSchema';
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -20,13 +21,6 @@ import {
   MISSING_MATCHUP,
   MISSING_STRUCTURE,
 } from '../../../constants/errorConditionConstants';
-import {
-  BYE,
-  DEFAULTED,
-  DOUBLE_DEFAULT,
-  DOUBLE_WALKOVER,
-  WALKOVER,
-} from '../../../constants/matchUpStatusConstants';
 
 export function doubleExitAdvancement(params) {
   const {
@@ -47,7 +41,7 @@ export function doubleExitAdvancement(params) {
   const { loserMatchUp, winnerMatchUp, loserTargetDrawPosition } =
     targetMatchUps;
 
-  if (loserMatchUp && loserMatchUp.matchUpStatus !== BYE) {
+  if (loserMatchUp && loserMatchUp.matchUpStatus !== MatchUpStatusEnum.Bye) {
     const { loserTargetLink } = targetLinks;
     if (appliedPolicies?.progression?.doubleExitPropagateBye) {
       const result = advanceByeToLoserMatchUp({
@@ -108,8 +102,13 @@ function conditionallyAdvanceDrawPosition(params) {
   );
 
   const DOUBLE_EXIT =
-    params.matchUpStatus === DOUBLE_DEFAULT ? DOUBLE_DEFAULT : DOUBLE_WALKOVER;
-  const EXIT = params.matchUpStatus === DOUBLE_DEFAULT ? DEFAULTED : WALKOVER;
+    params.matchUpStatus === MatchUpStatusEnum.DoubleDefault
+      ? MatchUpStatusEnum.DoubleDefault
+      : MatchUpStatusEnum.DoubleWalkover;
+  const EXIT =
+    params.matchUpStatus === MatchUpStatusEnum.DoubleDefault
+      ? MatchUpStatusEnum.Defaulted
+      : MatchUpStatusEnum.Walkover;
 
   const stack = 'conditionallyAdvanceDrawPosition';
 
@@ -148,7 +147,6 @@ function conditionallyAdvanceDrawPosition(params) {
     matchUpId: targetMatchUp.matchUpId,
     inContextDrawMatchUps,
     drawDefinition,
-    structure,
   });
   const { targetMatchUps, targetLinks } = targetData;
 
@@ -187,8 +185,9 @@ function conditionallyAdvanceDrawPosition(params) {
 
   // assign the WALKOVER status to targetMatchUp
   const existingExit =
-    [WALKOVER, DEFAULTED].includes(noContextTargetMatchUp.matchUpStatus) &&
-    !drawPositions.length;
+    [MatchUpStatusEnum.Walkover, MatchUpStatusEnum.Defaulted].includes(
+      noContextTargetMatchUp.matchUpStatus
+    ) && !drawPositions.length;
   const isFinal = noContextTargetMatchUp.finishingRound === 1;
 
   const matchUpStatus = existingExit && !isFinal ? DOUBLE_EXIT : EXIT;
@@ -196,7 +195,7 @@ function conditionallyAdvanceDrawPosition(params) {
   const inContextPairedPreviousMatchUp = inContextDrawMatchUps.find(
     (candidate) => candidate.matchUpId === pairedPreviousMatchUp.matchUpId
   );
-  let matchUpStatusCodes = [];
+  let matchUpStatusCodes: any[] = [];
   let sourceSideNumber;
 
   if (sourceMatchUp) {
@@ -230,27 +229,27 @@ function conditionallyAdvanceDrawPosition(params) {
   if (sourceSideNumber === 1) {
     matchUpStatusCodes = [
       {
-        sideNumber: 1,
-        previousMatchUpStatus: sourceMatchUpStatus,
         matchUpStatus: producedMatchUpStatus(sourceMatchUpStatus),
+        previousMatchUpStatus: sourceMatchUpStatus,
+        sideNumber: 1,
       },
       {
-        sideNumber: 2,
-        previousMatchUpStatus: pairedMatchUpStatus,
         matchUpStatus: producedMatchUpStatus(pairedMatchUpStatus),
+        previousMatchUpStatus: pairedMatchUpStatus,
+        sideNumber: 2,
       },
     ];
   } else if (sourceSideNumber === 2) {
     matchUpStatusCodes = [
       {
-        sideNumber: 1,
-        previousMatchUpStatus: pairedMatchUpStatus,
         matchUpStatus: producedMatchUpStatus(pairedMatchUpStatus),
+        previousMatchUpStatus: pairedMatchUpStatus,
+        sideNumber: 1,
       },
       {
-        sideNumber: 2,
-        previousMatchUpStatus: sourceMatchUpStatus,
         matchUpStatus: producedMatchUpStatus(sourceMatchUpStatus),
+        previousMatchUpStatus: sourceMatchUpStatus,
+        sideNumber: 2,
       },
     ];
   }
@@ -289,7 +288,7 @@ function conditionallyAdvanceDrawPosition(params) {
       : targetMatchUpDrawPositions[0];
 
   const { positionAssignments } = getPositionAssignments({ structure });
-  const assignment = positionAssignments.find(
+  const assignment = positionAssignments?.find(
     (assignment) => assignment.drawPosition === drawPositionToAdvance
   );
 
@@ -302,13 +301,12 @@ function conditionallyAdvanceDrawPosition(params) {
     nextWinnerMatchUpDrawPositions.length === 1;
 
   if (drawPositionToAdvance) {
-    if (assignment.bye) {
+    if (assignment?.bye) {
       // WO/WO advanced by BYE
       const targetData = positionTargets({
         matchUpId: noContextNextWinnerMatchUp.matchUpId,
         inContextDrawMatchUps,
         drawDefinition,
-        structure,
       });
 
       if (nextWinnerMatchUpHasDrawPosition) {
@@ -341,7 +339,9 @@ function conditionallyAdvanceDrawPosition(params) {
           matchUpsMap,
         });
       } else if (
-        [WALKOVER, DEFAULTED].includes(nextWinnerMatchUp.matchUpStatus)
+        [MatchUpStatusEnum.Walkover, MatchUpStatusEnum.Defaulted].includes(
+          nextWinnerMatchUp.matchUpStatus
+        )
       ) {
         // if the next targetMatchUp is a double walkover or double default
         const result = doubleExitAdvancement({
@@ -377,9 +377,10 @@ function conditionallyAdvanceDrawPosition(params) {
       });
     }
 
-    const matchUpStatus = [WALKOVER, DEFAULTED].includes(
-      noContextNextWinnerMatchUp.matchUpStatus
-    )
+    const matchUpStatus = [
+      MatchUpStatusEnum.Walkover,
+      MatchUpStatusEnum.Defaulted,
+    ].includes(noContextNextWinnerMatchUp.matchUpStatus)
       ? EXIT
       : DOUBLE_EXIT;
 
@@ -432,7 +433,9 @@ function advanceByeToLoserMatchUp(params) {
 }
 
 function producedMatchUpStatus(previousMatchUpStatus) {
-  if (previousMatchUpStatus === DOUBLE_WALKOVER) return WALKOVER;
-  if (previousMatchUpStatus === DOUBLE_DEFAULT) return DEFAULTED;
+  if (previousMatchUpStatus === MatchUpStatusEnum.DoubleWalkover)
+    return MatchUpStatusEnum.Walkover;
+  if (previousMatchUpStatus === MatchUpStatusEnum.DoubleDefault)
+    return MatchUpStatusEnum.Defaulted;
   return previousMatchUpStatus;
 }

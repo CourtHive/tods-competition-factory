@@ -2,6 +2,7 @@ import { bulkScheduleMatchUps as bulkSchedule } from '../../../tournamentEngine/
 import { getMatchUpDependencies } from './scheduleMatchUps/getMatchUpDependencies';
 import { getMatchUpId } from '../../../global/functions/extractors';
 
+import { Tournament } from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_VALUES,
@@ -9,6 +10,14 @@ import {
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
 
+type BulkScheduleMatchUpsArgs = {
+  tournamentRecords: { [key: string]: Tournament };
+  errorOnAnachronism?: boolean;
+  checkChronology?: boolean;
+  matchUpContextIds?: any;
+  matchUpDetails: any;
+  schedule?: any;
+};
 export function bulkScheduleMatchUps({
   errorOnAnachronism,
   matchUpContextIds,
@@ -16,7 +25,7 @@ export function bulkScheduleMatchUps({
   checkChronology,
   matchUpDetails,
   schedule,
-}) {
+}: BulkScheduleMatchUpsArgs) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!Array.isArray(matchUpContextIds) && !Array.isArray(matchUpDetails))
     return { error: INVALID_VALUES };
@@ -24,7 +33,7 @@ export function bulkScheduleMatchUps({
   if ((!matchUpDetails || matchUpContextIds) && !schedule)
     return { error: MISSING_VALUE, info: 'schedule is required' };
 
-  const warnings = [];
+  const warnings: any[] = [];
   let scheduled = 0;
 
   const { matchUpDependencies } = getMatchUpDependencies({
@@ -46,6 +55,7 @@ export function bulkScheduleMatchUps({
         matchUpDetails: tournamentMatchUpDetails,
         matchUpDependencies,
         errorOnAnachronism,
+        tournamentRecords,
         tournamentRecord,
         checkChronology,
         matchUpIds,
