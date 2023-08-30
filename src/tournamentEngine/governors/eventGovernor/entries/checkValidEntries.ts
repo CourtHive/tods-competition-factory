@@ -1,7 +1,6 @@
 import { isUngrouped } from '../../../../global/functions/isUngrouped';
 
 import { WITHDRAWN } from '../../../../constants/entryStatusConstants';
-import { FEMALE, MALE } from '../../../../constants/genderConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   INDIVIDUAL,
@@ -18,8 +17,23 @@ import {
   MISSING_EVENT,
   MISSING_PARTICIPANTS,
 } from '../../../../constants/errorConditionConstants';
+import {
+  Event,
+  GenderEnum,
+  Participant,
+  TypeEnum,
+} from '../../../../types/tournamentFromSchema';
 
-export function checkValidEntries({ event, participants, ignoreGender }) {
+type CheckValidEntriesArgs = {
+  participants: Participant[];
+  ignoreGender?: boolean;
+  event: Event;
+};
+export function checkValidEntries({
+  participants,
+  ignoreGender,
+  event,
+}: CheckValidEntriesArgs) {
   if (!participants) return { error: MISSING_PARTICIPANTS };
   if (!Array.isArray(participants)) return { error: INVALID_VALUES };
   if (!event) return { error: MISSING_EVENT };
@@ -45,18 +59,21 @@ export function checkValidEntries({ event, participants, ignoreGender }) {
   const invalidEntries = enteredParticipants.filter((participant) => {
     const entryStatus = entryStatusMap[participant.participantId];
     const ungroupedParticipant =
-      [DOUBLES_EVENT, TEAM_EVENT].includes(eventType) &&
+      eventType &&
+      [TypeEnum.Doubles, TypeEnum.Team].includes(eventType) &&
       participant.participantType === INDIVIDUAL &&
       (isUngrouped(entryStatus) || entryStatus === WITHDRAWN);
     const mismatch =
       participant.participantType !== participantType && !ungroupedParticipant;
 
     // TODO: implement gender checking for teams & pairs
+    const personGender = participant?.person?.sex as unknown;
     const wrongGender =
       !ignoreGender &&
-      eventType === INDIVIDUAL &&
-      [MALE, FEMALE].includes(eventGender) &&
-      participant.sex !== eventGender;
+      eventGender &&
+      eventType === TypeEnum.Singles &&
+      [GenderEnum.Male, GenderEnum.Female].includes(eventGender) &&
+      personGender !== eventGender;
 
     return mismatch || wrongGender;
   });

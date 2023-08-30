@@ -60,9 +60,10 @@ export function modifyVenue({
     (attribute) => validReplacements.includes(attribute)
   );
 
-  validReplacementAttributes.forEach((attribute) =>
-    Object.assign(venue, { [attribute]: modifications[attribute] })
-  );
+  venue &&
+    validReplacementAttributes.forEach((attribute) =>
+      Object.assign(venue, { [attribute]: modifications[attribute] })
+    );
 
   const existingCourtIds = venue?.courts?.map((court) => court.courtId) || [];
   const courtIdsToModify =
@@ -71,11 +72,11 @@ export function modifyVenue({
     (courtId) => !courtIdsToModify.includes(courtId)
   );
   if (courtIdsToDelete.length) {
-    const courtsToDelete = venue.courts.filter((court) =>
+    const courtsToDelete = venue?.courts?.filter((court) =>
       courtIdsToDelete.includes(court.courtId)
     );
     const scheduleDeletionsCount = courtsToDelete
-      .map((court) => {
+      ?.map((court) => {
         // check whether deleting court would remove schedule from any matchUps
         const result = getScheduledCourtMatchUps({
           courtId: court.courtId,
@@ -86,8 +87,8 @@ export function modifyVenue({
       })
       .reduce((a, b) => a + b);
 
-    if (!scheduleDeletionsCount || force) {
-      venue.courts = venue.courts.filter((court) =>
+    if (venue && (!scheduleDeletionsCount || force)) {
+      venue.courts = venue.courts?.filter((court) =>
         courtIdsToModify.includes(court.courtId)
       );
     } else {
@@ -123,11 +124,13 @@ export function modifyVenue({
 
   checkSchedulingProfile({ tournamentRecord });
 
-  addNotice({
-    payload: { venue, tournamentId: tournamentRecord.tournamentId },
-    topic: MODIFY_VENUE,
-    key: venue.venueId,
-  });
+  if (venue) {
+    addNotice({
+      payload: { venue, tournamentId: tournamentRecord.tournamentId },
+      topic: MODIFY_VENUE,
+      key: venue?.venueId,
+    });
+  }
 
   return { ...SUCCESS, venue: makeDeepCopy(venue) };
 }

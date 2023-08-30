@@ -13,36 +13,37 @@ import { AD_HOC, QUALIFYING } from '../../constants/drawDefinitionConstants';
 import { RANKING, SEEDING } from '../../constants/scaleConstants';
 import { ROUND_TARGET } from '../../constants/extensionConstants';
 
-export function prepareStage({
-  preparedStructureIds = [],
-  provisionalPositioning,
-  inContextDrawMatchUps,
-  tournamentRecord,
-  appliedPolicies,
-  qualifyingOnly,
-  drawDefinition,
-  seedingProfile,
-  participants,
-  matchUpsMap,
-  automated,
-  placeByes,
-  drawType,
-  drawSize,
-  entries,
-  event,
+export function prepareStage(params) {
+  let { seedsCount } = params;
+  const preparedStructureIds: string[] = params.preparedStructureIds || [];
+  const {
+    provisionalPositioning,
+    inContextDrawMatchUps,
+    tournamentRecord,
+    appliedPolicies,
+    qualifyingOnly,
+    drawDefinition,
+    seedingProfile,
+    participants,
+    matchUpsMap,
+    automated,
+    placeByes,
+    drawType,
+    drawSize,
+    entries,
+    event,
 
-  enforcePolicyLimits = true,
-  seedAssignmentProfile, // mainly used by mocksEngine for scenario testing
-  seedByRanking = true,
-  seededParticipants,
-  assignSeedsCount, // used for testing bye placement next to seeds
-  seedingScaleName,
-  seedsCount,
+    enforcePolicyLimits = true,
+    seedAssignmentProfile, // mainly used by mocksEngine for scenario testing
+    seedByRanking = true,
+    seededParticipants,
+    assignSeedsCount, // used for testing bye placement next to seeds
+    seedingScaleName,
 
-  stageSequence = 1,
-  roundTarget,
-  stage,
-}) {
+    stageSequence = 1,
+    roundTarget,
+    stage,
+  } = params;
   const eventType = event?.eventType;
   const stageEntries = entries.filter((entry) => {
     const entryRoundTarget = findExtension({
@@ -82,7 +83,6 @@ export function prepareStage({
     appliedPolicies,
     drawDefinition,
     structure,
-    event,
   });
 
   const { seedLimit } = initializeStructureSeedAssignments({

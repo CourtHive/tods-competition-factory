@@ -6,10 +6,25 @@ import { findStructure } from '../../getters/findStructure';
 import { generateRange } from '../../../utilities';
 import { getSeedGroups } from './getSeedBlocks';
 
-import { SEEDSCOUNT_GREATER_THAN_DRAW_SIZE } from '../../../constants/errorConditionConstants';
+import {
+  ErrorType,
+  SEEDSCOUNT_GREATER_THAN_DRAW_SIZE,
+} from '../../../constants/errorConditionConstants';
 import { POLICY_TYPE_SEEDING } from '../../../constants/policyConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { DrawDefinition } from '../../../types/tournamentFromSchema';
 
+type InitializeStructureSeedAssignmentsArgs = {
+  requireParticipantCount?: boolean;
+  enforcePolicyLimits?: boolean;
+  drawSizeProgression?: boolean;
+  drawDefinition: DrawDefinition;
+  participantCount: number;
+  appliedPolicies?: any;
+  seedingProfile?: any;
+  structureId: string;
+  seedsCount: number;
+};
 export function initializeStructureSeedAssignments({
   requireParticipantCount = true,
   enforcePolicyLimits = true,
@@ -20,7 +35,11 @@ export function initializeStructureSeedAssignments({
   seedingProfile,
   structureId,
   seedsCount,
-}) {
+}: InitializeStructureSeedAssignmentsArgs): {
+  error?: ErrorType;
+  success?: boolean;
+  seedLimit?: number;
+} {
   const result = findStructure({ drawDefinition, structureId });
   if (result.error) return result;
   const structure = result.structure;

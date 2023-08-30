@@ -7,6 +7,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_VENUE_ID,
 } from '../../../constants/errorConditionConstants';
+import { Tournament } from '../../../types/tournamentFromSchema';
 
 export function getScheduledCourtMatchUps(params) {
   if (!params?.tournamentRecord && !Array.isArray(params?.venueMatchUps))
@@ -53,12 +54,18 @@ export function getScheduledCourtMatchUps(params) {
   }
 }
 
+type GetScheduledVenueMatchUpsArgs = {
+  scheduleVisibilityFilters?: any;
+  tournamentRecord: Tournament;
+  matchUpFilters?: any;
+  venueId: string;
+};
 export function getScheduledVenueMatchUps({
   scheduleVisibilityFilters,
   tournamentRecord,
   matchUpFilters,
   venueId,
-}) {
+}: GetScheduledVenueMatchUpsArgs) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!venueId) return { error: MISSING_VENUE_ID };
 

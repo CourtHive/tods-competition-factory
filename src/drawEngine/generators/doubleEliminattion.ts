@@ -1,5 +1,5 @@
-import { doubleEliminationLinks } from '../../drawEngine/generators/doubleEliminationLinks';
-import { structureTemplate } from '../../drawEngine/generators/structureTemplate';
+import { doubleEliminationLinks } from './doubleEliminationLinks';
+import { structureTemplate } from './structureTemplate';
 import { feedInMatchUps } from './feedInMatchUps';
 import { treeMatchUps } from './eliminationTree';
 
@@ -11,6 +11,7 @@ import {
   CONSOLATION,
   PLAY_OFF,
 } from '../../constants/drawDefinitionConstants';
+import { Structure } from '../../types/tournamentFromSchema';
 
 export function generateDoubleElimination({
   structureName,
@@ -20,7 +21,7 @@ export function generateDoubleElimination({
   isMock,
   uuids,
 }) {
-  const structures = [];
+  const structures: Structure[] = [];
 
   // feedIn MAIN structure needs 1st round feed and final round feed
   const { matchUps } = feedInMatchUps({

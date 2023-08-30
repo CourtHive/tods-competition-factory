@@ -2,13 +2,14 @@ import structureTemplate from './structureTemplate';
 import { feedInMatchUps } from './feedInMatchUps';
 import { treeMatchUps } from './eliminationTree';
 
+import { MAIN, CONSOLATION } from '../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
-  MAIN,
-  CONSOLATION,
-  TOP_DOWN,
-  LOSER,
-} from '../../constants/drawDefinitionConstants';
+  DrawLink,
+  LinkTypeEnum,
+  PositioningProfileEnum,
+  Structure,
+} from '../../types/tournamentFromSchema';
 
 export function firstRoundLoserConsolation(params) {
   const {
@@ -46,8 +47,8 @@ export function firstRoundLoserConsolation(params) {
     stage,
   });
 
-  const structures = [mainStructure];
-  const links = [];
+  const structures: Structure[] = [mainStructure];
+  const links: DrawLink[] = [];
 
   if (drawSize > 2) {
     const consolationDrawPositions = drawSize / 2;
@@ -75,15 +76,15 @@ export function firstRoundLoserConsolation(params) {
     });
     structures.push(consolationStructure);
 
-    const link = {
-      linkType: LOSER,
+    const link: DrawLink = {
+      linkType: LinkTypeEnum.Loser,
       source: {
         roundNumber: 1,
         structureId: mainStructure.structureId,
       },
       target: {
         roundNumber: 1,
-        feedProfile: TOP_DOWN,
+        feedProfile: PositioningProfileEnum.TopDown,
         structureId: consolationStructure.structureId,
       },
     };
