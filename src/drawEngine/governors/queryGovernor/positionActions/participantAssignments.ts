@@ -32,11 +32,11 @@ export function getValidAssignmentActions({
   event,
 }) {
   const { drawId } = drawDefinition;
-  const validAssignmentActions = [];
+  const validAssignmentActions: any[] = [];
 
   let unplacedSeedParticipantIds,
     unplacedSeedAssignments,
-    unfilledPositions = [];
+    unfilledPositions: number[] = [];
 
   const ignoreSeedPositions =
     appliedPolicies?.[POLICY_TYPE_SEEDING]?.validSeedPositions?.ignore;
@@ -102,8 +102,9 @@ export function getValidAssignmentActions({
     );
 
     const participantsAvailable = returnParticipants
-      ? tournamentParticipants?.filter((participant) =>
-          availableParticipantIds?.includes(participant.participantId)
+      ? tournamentParticipants?.filter(
+          (participant) =>
+            availableParticipantIds?.includes(participant.participantId)
         )
       : undefined;
 
@@ -133,8 +134,9 @@ export function getValidAssignmentActions({
 
     if (unplacedSeedAssignments?.length) {
       // return any valid seedAssignments
-      const validToAssign = unplacedSeedAssignments.filter((seedAssignment) =>
-        unplacedSeedParticipantIds?.includes(seedAssignment.participantId)
+      const validToAssign = unplacedSeedAssignments.filter(
+        (seedAssignment) =>
+          unplacedSeedParticipantIds?.includes(seedAssignment.participantId)
       );
 
       validToAssign.sort(validAssignmentsSort);
