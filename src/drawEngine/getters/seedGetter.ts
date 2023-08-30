@@ -328,7 +328,7 @@ type IsValidSeedPositionArgs = {
   drawPosition: number;
   seedBlockInfo?: any;
   structureId: string;
-  seedNumber: number;
+  seedNumber?: number;
 };
 
 export function isValidSeedPosition({

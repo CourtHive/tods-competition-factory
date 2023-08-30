@@ -7,6 +7,7 @@ import { getNextSeedBlock } from '../../../getters/seedGetter';
 import { unique } from '../../../../utilities';
 
 import { POLICY_TYPE_SEEDING } from '../../../../constants/policyConstants';
+import { HydratedParticipant } from '../../../../types/hydrated';
 import { TEAM } from '../../../../constants/eventConstants';
 import {
   ASSIGN_BYE,
@@ -14,7 +15,28 @@ import {
   ASSIGN_PARTICIPANT,
   ASSIGN_PARTICIPANT_METHOD,
 } from '../../../../constants/positionActionConstants';
+import {
+  DrawDefinition,
+  Event,
+  PositionAssignment,
+} from '../../../../types/tournamentFromSchema';
 
+type GetValidAssignmentActionsArgs = {
+  tournamentParticipants?: HydratedParticipant[];
+  positionAssignments: PositionAssignment[];
+  positionSourceStructureIds: string[];
+  unassignedParticipantIds: string[];
+  possiblyDisablingAction?: boolean;
+  provisionalPositioning?: boolean;
+  isWinRatioFedStructure?: boolean;
+  returnParticipants?: boolean;
+  drawDefinition: DrawDefinition;
+  isByePosition?: boolean;
+  appliedPolicies?: any;
+  drawPosition: number;
+  structureId: string;
+  event?: Event;
+};
 export function getValidAssignmentActions({
   positionSourceStructureIds,
   unassignedParticipantIds,
@@ -30,7 +52,7 @@ export function getValidAssignmentActions({
   drawPosition,
   structureId,
   event,
-}) {
+}: GetValidAssignmentActionsArgs) {
   const { drawId } = drawDefinition;
   const validAssignmentActions: any[] = [];
 

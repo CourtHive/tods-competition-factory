@@ -96,7 +96,6 @@ export function positionActions(params) {
   const structureId = structure.structureId;
 
   result = getStructureDrawPositionProfiles({
-    tournamentRecord,
     drawDefinition,
     structureId,
   });
@@ -110,7 +109,7 @@ export function positionActions(params) {
 
   const {
     drawPositionInitialRounds,
-    qualifyingDrawPositions,
+    // qualifyingDrawPositions,
     inactiveDrawPositions,
     activeDrawPositions,
     byeDrawPositions,
@@ -179,15 +178,15 @@ export function positionActions(params) {
     structure.stageSequence !== 1;
 
   const { drawId } = drawDefinition;
-  const validActions = [];
+  const validActions: any[] = [];
 
   const { assignedPositions, positionAssignments } =
     structureAssignedDrawPositions({ structure });
-  const positionAssignment = assignedPositions.find(
+  const positionAssignment = assignedPositions?.find(
     (assignment) => assignment.drawPosition === drawPosition
   );
 
-  const drawPositions = positionAssignments.map(
+  const drawPositions = positionAssignments?.map(
     (assignment) => assignment.drawPosition
   );
 
@@ -223,7 +222,7 @@ export function positionActions(params) {
     .map((entry) => entry.participantId);
 
   const isByePosition = byeDrawPositions.includes(drawPosition);
-  const isQualifierPosition = qualifyingDrawPositions.includes(drawPosition);
+  // const isQualifierPosition = qualifyingDrawPositions.includes(drawPosition);
   const isActiveDrawPosition = activeDrawPositions.includes(drawPosition);
 
   if (actionsDisabled)
@@ -239,6 +238,7 @@ export function positionActions(params) {
   if (
     isAvailableAction({ policyActions, action: ASSIGN_PARTICIPANT }) &&
     !isActiveDrawPosition &&
+    positionAssignments &&
     !disablePlacementActions &&
     (!positionAssignment || isByePosition)
   ) {
@@ -249,14 +249,12 @@ export function positionActions(params) {
       isWinRatioFedStructure,
       tournamentParticipants,
       positionAssignments,
-      activeDrawPositions,
       returnParticipants,
       appliedPolicies,
       drawDefinition,
       isByePosition,
       drawPosition,
       structureId,
-      structure,
       event,
     });
     validAssignmentActions?.forEach((action) => validActions.push(action));
@@ -265,17 +263,13 @@ export function positionActions(params) {
   if (isAvailableAction({ policyActions, action: QUALIFYING_PARTICIPANT })) {
     const { validAssignmentActions } = getValidQualifiersAction({
       drawPositionInitialRounds,
-      isWinRatioFedStructure,
       tournamentParticipants,
-      isQualifierPosition,
       positionAssignments,
-      activeDrawPositions,
       returnParticipants,
       appliedPolicies,
       drawDefinition,
       drawPosition,
       structureId,
-      structure,
       drawId,
     });
     validAssignmentActions?.forEach((action) => validActions.push(action));
@@ -343,7 +337,6 @@ export function positionActions(params) {
       const { seedAssignments } = getStructureSeedAssignments({
         drawDefinition,
         structure,
-        event,
       });
       const { seedNumber, seedValue } =
         seedAssignments.find(
@@ -379,7 +372,6 @@ export function positionActions(params) {
       const { seedAssignments } = getStructureSeedAssignments({
         drawDefinition,
         structure,
-        event,
       });
       const { seedNumber } =
         seedAssignments.find(
@@ -473,7 +465,8 @@ export function positionActions(params) {
 
   if (
     isAvailableAction({ policyActions, action: LUCKY_PARTICIPANT }) &&
-    !disablePlacementActions
+    !disablePlacementActions &&
+    positionAssignments
   ) {
     const { validLuckyLosersAction } = getValidLuckyLosersAction({
       sourceStructuresComplete,
@@ -482,8 +475,6 @@ export function positionActions(params) {
       tournamentParticipants,
       activeDrawPositions,
       positionAssignments,
-      returnParticipants,
-      appliedPolicies,
       drawDefinition,
       drawPosition,
       structureId,
@@ -499,13 +490,9 @@ export function positionActions(params) {
   ) {
     const { validModifyAssignedPairAction } = getValidModifyAssignedPairAction({
       tournamentParticipants,
-      positionAssignment,
       returnParticipants,
-      drawDefinition,
       drawPosition,
       participant,
-      structureId,
-      structure,
       drawId,
       event,
     });
