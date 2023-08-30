@@ -7,7 +7,11 @@ import { generateRoundRobin } from '../../generators/roundRobin';
 import { treeMatchUps } from '../../generators/eliminationTree';
 import { findStructure } from '../../getters/findStructure';
 
-import { DrawLink, Structure } from '../../../types/tournamentFromSchema';
+import {
+  DrawLink,
+  LinkTypeEnum,
+  Structure,
+} from '../../../types/tournamentFromSchema';
 import { ROUND_TARGET } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -16,10 +20,8 @@ import {
   MISSING_DRAW_SIZE,
 } from '../../../constants/errorConditionConstants';
 import {
-  POSITION,
   QUALIFYING,
   ROUND_ROBIN,
-  WINNER,
 } from '../../../constants/drawDefinitionConstants';
 
 // for use when adding a qualifying structure to an existing drawDefinition
@@ -180,7 +182,8 @@ export function generateQualifyingStructure(params): {
   }
 
   // order of operations is important here!! finalQualifier positions is not yet updated when this step occurs
-  const linkType = drawType === ROUND_ROBIN ? POSITION : WINNER;
+  const linkType =
+    drawType === ROUND_ROBIN ? LinkTypeEnum.Position : LinkTypeEnum.Winner;
   const { link } = generateQualifyingLink({
     sourceStructureId: structure.structureId,
     sourceRoundNumber: roundLimit,

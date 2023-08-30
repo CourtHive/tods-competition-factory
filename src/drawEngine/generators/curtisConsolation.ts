@@ -8,9 +8,13 @@ import {
   MAIN,
   CONSOLATION,
   PLAY_OFF,
-  TOP_DOWN,
-  LOSER,
 } from '../../constants/drawDefinitionConstants';
+import {
+  DrawLink,
+  LinkTypeEnum,
+  PositioningProfileEnum,
+  Structure,
+} from '../../types/tournamentFromSchema';
 
 export function generateCurtisConsolation(params) {
   const {
@@ -46,8 +50,8 @@ export function generateCurtisConsolation(params) {
     matchUps,
   });
 
-  const structures = [mainStructure];
-  const links = [];
+  const structures: Structure[] = [mainStructure];
+  const links: DrawLink[] = [];
 
   if (drawSize > 2) {
     const feedRoundOffsets = [0, 2].slice(0, drawSize / 16);
@@ -101,15 +105,15 @@ export function generateCurtisConsolation(params) {
         matchUpType,
       });
 
-      const playoffLink = {
-        linkType: LOSER,
+      const playoffLink: DrawLink = {
+        linkType: LinkTypeEnum.Loser,
         source: {
           roundNumber: mainDrawRoundsCount - 1,
           structureId: mainStructure.structureId,
         },
         target: {
           structureId: playoffStructure.structureId,
-          feedProfile: TOP_DOWN,
+          feedProfile: PositioningProfileEnum.TopDown,
           roundNumber: 1,
         },
       };

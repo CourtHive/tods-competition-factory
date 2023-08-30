@@ -171,6 +171,8 @@ export function assignMatchUpCourt(params) {
   const result = getDrawDefinition(params);
   if (result.error) return result;
   const { tournamentRecord, drawDefinition } = result;
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   const {
     removePriorValues,
@@ -247,9 +249,9 @@ function getDrawDefinition({
   tournamentId,
   drawId,
 }: GetDrawDefinitionArgs): {
-  error?: ErrorType;
   drawDefinition?: DrawDefinition;
   tournamentRecord?: Tournament;
+  error?: ErrorType;
 } {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!drawId) return { error: MISSING_DRAW_ID };

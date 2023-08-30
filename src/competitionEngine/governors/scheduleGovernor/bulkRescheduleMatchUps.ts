@@ -17,8 +17,8 @@ export function bulkRescheduleMatchUps({
     return { error: MISSING_MATCHUP_IDS };
   if (typeof scheduleChange !== 'object') return { error: INVALID_VALUES };
 
-  const rescheduled = [];
-  let notRescheduled = [];
+  const rescheduled: any[] = [];
+  let notRescheduled: any[] = [];
 
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     const result = bulkReschedule({
@@ -34,7 +34,7 @@ export function bulkRescheduleMatchUps({
 
     // this is a check in case something has been rescheduled multiple times in the same call
     const notRescheduledIds = getMatchUpIds(result.notRescheduled);
-    const removeFromNotScheduledIds = [];
+    const removeFromNotScheduledIds: string[] = [];
     result.rescheduled?.forEach((matchUp) => {
       const { matchUpId } = matchUp;
       if (notRescheduledIds.includes(matchUpId)) {

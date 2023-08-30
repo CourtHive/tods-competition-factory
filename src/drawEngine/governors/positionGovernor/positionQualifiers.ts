@@ -12,14 +12,15 @@ import {
   INVALID_STAGE,
   NO_DRAW_POSITIONS_AVAILABLE_FOR_QUALIFIERS,
 } from '../../../constants/errorConditionConstants';
+import { ensureInt } from '../../../utilities/ensureInt';
 
 export function positionQualifiers(params) {
   let { structure, structureId } = params; // participants is being passed in
   if (!structure) ({ structure } = findStructure(params));
   if (!structureId) ({ structureId } = structure);
 
-  let stack = 'positionQualifiers';
-  const qualifierDrawPositions = [];
+  const stack = 'positionQualifiers';
+  const qualifierDrawPositions: number[] = [];
 
   if (structure.stage === CONSOLATION) {
     return decorateResult({ result: { error: INVALID_STAGE }, stack });
@@ -33,7 +34,7 @@ export function positionQualifiers(params) {
 
   for (const roundNumber of Object.keys(unplacedRoundQualifierCounts)) {
     const unfilledDrawPositions = positionAssignments
-      .filter((assignment) => {
+      ?.filter((assignment) => {
         return (
           roundDrawPositions[roundNumber].includes(assignment.drawPosition) &&
           !assignment.participantId &&
@@ -43,7 +44,9 @@ export function positionQualifiers(params) {
       })
       .map((assignment) => assignment.drawPosition);
 
-    if (unplacedRoundQualifierCounts[roundNumber] > unfilledDrawPositions)
+    if (
+      unplacedRoundQualifierCounts[roundNumber] > (unfilledDrawPositions || 0)
+    )
       return decorateResult({
         result: { error: NO_DRAW_POSITIONS_AVAILABLE_FOR_QUALIFIERS },
         context: { unfilledDrawPositions },
@@ -53,7 +56,7 @@ export function positionQualifiers(params) {
     generateRange(0, unplacedRoundQualifierCounts[roundNumber]).forEach(() => {
       const drawPosition = randomPop(unfilledDrawPositions);
       qualifierDrawPositions.push(drawPosition);
-      positionAssignments.forEach((assignment) => {
+      positionAssignments?.forEach((assignment) => {
         if (assignment.drawPosition === drawPosition) {
           assignment.qualifier = true;
           delete assignment.participantId;
@@ -83,31 +86,33 @@ export function getQualifiersData({ drawDefinition, structure, structureId }) {
   });
 
   // now figure out which drawPositions are in which rounds
-  const targetRoundNumbers = Object.keys(roundQualifiersCounts);
+  const trn = roundQualifiersCounts ? Object.keys(roundQualifiersCounts) : [];
+  const targetRoundNumbers = trn.map((n) => ensureInt(n));
   const { matchUps } = getAllStructureMatchUps({ structure });
   const { roundProfile } = getRoundMatchUps({ matchUps });
   const roundDrawPositions = Object.assign(
     {},
     ...targetRoundNumbers
-      .filter((roundNumber) => roundProfile[roundNumber])
+      .filter((roundNumber) => roundProfile?.[roundNumber])
       .map((roundNumber) => ({
-        [roundNumber]: roundProfile[roundNumber]?.drawPositions.filter(Boolean),
+        [roundNumber]:
+          roundProfile?.[roundNumber]?.drawPositions?.filter(Boolean) ?? [],
       }))
   );
 
   const assignedQualifierPositions = positionAssignments
-    .filter((assignment) => assignment.qualifier)
+    ?.filter((assignment) => assignment.qualifier)
     .map((assignment) => assignment.drawPosition);
 
   const unplacedQualifiersCount =
-    qualifiersCount - assignedQualifierPositions.length;
-  const placedQualifiersCount = assignedQualifierPositions.length;
+    qualifiersCount - (assignedQualifierPositions?.length ?? 0);
+  const placedQualifiersCount = assignedQualifierPositions?.length;
 
   const unplacedRoundQualifierCounts = Object.assign(
     {},
     ...targetRoundNumbers.map((roundNumber) => {
       const assignedQualifierPositions = positionAssignments
-        .filter(
+        ?.filter(
           (assignment) =>
             assignment.qualifier &&
             roundDrawPositions[roundNumber]?.drawPositions?.includes(
@@ -117,8 +122,8 @@ export function getQualifiersData({ drawDefinition, structure, structureId }) {
         .map((assignment) => assignment.drawPosition);
       return {
         [roundNumber]:
-          roundQualifiersCounts[roundNumber] -
-          assignedQualifierPositions.length,
+          (roundQualifiersCounts?.[roundNumber] ?? 0) -
+          (assignedQualifierPositions?.length ?? 0),
       };
     })
   );

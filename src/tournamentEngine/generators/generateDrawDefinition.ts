@@ -45,7 +45,6 @@ import {
   FEED_IN,
   LUCKY_DRAW,
   MAIN,
-  POSITION,
   QUALIFYING,
   ROUND_ROBIN,
   ROUND_ROBIN_WITH_PLAYOFF,
@@ -55,6 +54,7 @@ import {
   QUALIFIER,
   STRUCTURE_ENTERED_TYPES,
 } from '../../constants/entryStatusConstants';
+import { LinkTypeEnum } from '../../types/tournamentFromSchema';
 
 /**
  * automated = true, // can be true/false or "truthy" { seedsOnly: true }
@@ -131,7 +131,7 @@ export function generateDrawDefinition(params) {
     nextPowerOf2(consideredEntries.length);
 
   // coersion of drawSize and seedsCount to integers
-  let drawSize =
+  const drawSize =
     derivedDrawSize ||
     (isConvertableInteger(params.drawSize) && parseInt(params.drawSize));
 
@@ -212,7 +212,7 @@ export function generateDrawDefinition(params) {
   // if there is a defined matchUpFormat/tieFormat only attach to drawDefinition...
   // ...when there is not an equivalent definition on the parent event
   if (matchUpFormat || tieFormat) {
-    let equivalentInScope =
+    const equivalentInScope =
       (matchUpFormat && event?.matchUpFormat === matchUpFormat) ||
       (event?.tieFormat &&
         tieFormat &&
@@ -227,11 +227,10 @@ export function generateDrawDefinition(params) {
 
         drawDefinition.tieFormat = result.tieFormat || tieFormat;
       } else {
-        let result = setMatchUpFormat({
+        const result = setMatchUpFormat({
           tournamentRecord,
           drawDefinition,
           matchUpFormat,
-          tieFormat,
           event,
         });
         if (result.error) {
@@ -253,15 +252,13 @@ export function generateDrawDefinition(params) {
 
   if (policyDefinitions) {
     if (typeof policyDefinitions !== 'object') {
-      return decorateResult(
-        {
-          result: {
-            info: 'policyDefinitions must be an object',
-            error: INVALID_VALUES,
-          },
+      return decorateResult({
+        result: {
+          info: 'policyDefinitions must be an object',
+          error: INVALID_VALUES,
         },
-        stack
-      );
+        stack,
+      });
     } else {
       const policiesToAttach = {};
       for (const key of Object.keys(policyDefinitions)) {
@@ -291,9 +288,9 @@ export function generateDrawDefinition(params) {
     (structure) => structure.stage === MAIN && structure.stageSequence === 1
   )?.structureId;
   const entries = drawEntries || eventEntries;
-  const positioningReports = [];
+  const positioningReports: any[] = [];
   let drawTypeResult;
-  let conflicts = [];
+  let conflicts: any[] = [];
 
   const generateQualifyingPlaceholder =
     params.qualifyingPlaceholder &&
@@ -319,7 +316,6 @@ export function generateDrawDefinition(params) {
         uuids: params.uuids,
         qualifyingProfiles,
         appliedPolicies,
-        matchUpType,
       });
 
     if (qualifyingResult?.error) {
@@ -481,14 +477,14 @@ export function generateDrawDefinition(params) {
     conflicts = structureResult.conflicts;
   }
 
-  const qualifyingConflicts = [];
+  const qualifyingConflicts: any[] = [];
 
   if (params.qualifyingProfiles) {
     const sequenceSort = (a, b) => a.stageSequence - b.stageSequence;
     const roundTargetSort = (a, b) => a.roundTarget - b.roundTarget;
 
     // keep track of structures already prepared in case of multiple matching structures
-    const preparedStructureIds = [];
+    const preparedStructureIds: string[] = [];
     let roundTarget = 1;
 
     for (const roundTargetProfile of params.qualifyingProfiles.sort(
@@ -572,7 +568,7 @@ export function generateDrawDefinition(params) {
       sourceStructureId: qualifyingStructure.structureId,
       targetStructureId: structureId,
       sourceRoundNumber: 0,
-      linkType: POSITION,
+      linkType: LinkTypeEnum.Position,
     });
     drawDefinition.structures.push(qualifyingStructure);
     drawDefinition.links.push(link);

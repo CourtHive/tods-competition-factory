@@ -48,13 +48,13 @@ export function positionParticipantAction(params) {
     drawDefinition,
     structureId,
   });
-  const positionAssignment = positionAssignments.find(
+  const positionAssignment = positionAssignments?.find(
     (assignment) => assignment.drawPosition === drawPosition
   );
 
   if (positionAssignment?.participantId) {
     const removedParticipantId = positionAssignment.participantId;
-    let result = assignDrawPosition({
+    const result = assignDrawPosition({
       inContextDrawMatchUps,
       tournamentRecord,
       drawDefinition,
@@ -72,7 +72,7 @@ export function positionParticipantAction(params) {
     });
   }
 
-  let result = clearDrawPosition({
+  const result = clearDrawPosition({
     inContextDrawMatchUps,
     tournamentRecord,
     drawDefinition,
@@ -84,7 +84,7 @@ export function positionParticipantAction(params) {
   if (result.error) return decorateResult({ result, stack });
   const removedParticipantId = result.participantId;
 
-  result = assignDrawPosition({
+  const assignResult = assignDrawPosition({
     inContextDrawMatchUps,
     isQualifierPosition,
     tournamentRecord,
@@ -95,7 +95,8 @@ export function positionParticipantAction(params) {
     matchUpsMap,
     event,
   });
-  if (!result.success) return decorateResult({ result, stack });
+  if (!assignResult.success)
+    return decorateResult({ result: assignResult, stack });
 
   return successNotice({ removedParticipantId });
 

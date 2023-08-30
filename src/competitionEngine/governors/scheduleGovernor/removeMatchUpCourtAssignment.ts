@@ -34,7 +34,7 @@ export function removeMatchUpCourtAssignment(params) {
   const result = findMatchUp({ drawDefinition, event, matchUpId });
   if (result.error) return result;
 
-  if (result.matchUp.matchUpType === TEAM_MATCHUP) {
+  if (result?.matchUp?.matchUpType === TEAM_MATCHUP) {
     const { itemValue: allocatedCourts } = latestVisibleTimeItemValue({
       timeItems: result.matchUp.timeItems || [],
       itemType: ALLOCATE_COURTS,

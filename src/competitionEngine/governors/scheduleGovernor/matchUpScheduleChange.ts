@@ -7,6 +7,7 @@ import { allCompetitionMatchUps } from '../../getters/matchUpsGetter';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
+  ErrorType,
   MISSING_TOURNAMENT_RECORDS,
   MISSING_VALUE,
   NO_MODIFICATIONS_APPLIED,
@@ -52,10 +53,10 @@ export function matchUpScheduleChange(params) {
     tournamentRecords: params.tournamentRecords,
   });
 
-  const sourceMatchUp = matchUps.find(
+  const sourceMatchUp = matchUps?.find(
     ({ matchUpId }) => matchUpId === sourceMatchUpId
   );
-  const targetMatchUp = matchUps.find(
+  const targetMatchUp = matchUps?.find(
     ({ matchUpId }) => matchUpId === targetMatchUpId
   );
 
@@ -115,7 +116,7 @@ export function matchUpScheduleChange(params) {
     ? SUCCESS
     : decorateResult({ result: { error: NO_MODIFICATIONS_APPLIED }, stack });
 
-  function assignMatchUp(params) {
+  function assignMatchUp(params): { error?: ErrorType; success?: boolean } {
     const { tournamentRecords, tournamentId, matchUp, drawId } = params;
 
     const tournamentRecord = tournamentRecords[tournamentId];

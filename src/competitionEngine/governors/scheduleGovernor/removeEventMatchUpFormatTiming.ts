@@ -6,8 +6,16 @@ import {
   MISSING_TOURNAMENT_RECORDS,
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
+import { Tournament } from '../../../types/tournamentFromSchema';
 
-export function removeEventMatchUpFormatTiming({ tournamentRecords, eventId }) {
+type RemoveEventMatchUpFormatTimingArgs = {
+  tournamentRecords: { [key: string]: Tournament };
+  eventId: string;
+};
+export function removeEventMatchUpFormatTiming({
+  tournamentRecords,
+  eventId,
+}: RemoveEventMatchUpFormatTimingArgs) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (typeof eventId !== 'string')
     return { error: MISSING_VALUE, info: 'missing eventId' };
