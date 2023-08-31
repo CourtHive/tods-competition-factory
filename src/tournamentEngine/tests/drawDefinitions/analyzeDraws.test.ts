@@ -50,9 +50,9 @@ test.each(range)(
     });
 
     const placedParticipantIds = mainStructure.positionAssignments
-      .map(({ participantId }) => participantId)
+      ?.map(({ participantId }) => participantId)
       .filter(Boolean);
-    expect(placedParticipantIds.length).toEqual(0);
+    expect(placedParticipantIds?.length).toEqual(0);
 
     let result = tournamentEngine.analyzeDraws();
     expect(result.drawsAnalysis.inactive.includes(drawId)).toEqual(true);

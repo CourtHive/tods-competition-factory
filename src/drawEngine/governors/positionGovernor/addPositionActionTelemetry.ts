@@ -13,9 +13,11 @@ export function addPositionActionTelemetry({ drawDefinition, positionAction }) {
     element: drawDefinition,
   });
 
-  const existingValue = Array.isArray(extension?.value) ? extension.value : [];
+  const existingValue = Array.isArray(extension?.value)
+    ? extension?.value || []
+    : [];
 
-  if (!existingValue.length) {
+  if (!existingValue?.length) {
     const mainStructure = drawDefinition.structures.find(
       (structure) => structure.stage === MAIN
     );

@@ -47,9 +47,9 @@ it('can notify subscriber when audit information is added', () => {
     name: DRAW_DELETIONS,
     element: event,
   });
-  expect(extension.value.length).toEqual(1);
+  expect(extension?.value?.length).toEqual(1);
   expect(
-    extension.value[0].deletedDrawsDetail[0].positionAssignments
+    extension?.value[0].deletedDrawsDetail[0].positionAssignments
   ).not.toBeUndefined();
 
   expect(notificationsCounter).toEqual(1);

@@ -143,11 +143,12 @@ export function assignDrawPositionBye({
   }
 
   // ########## gather reusable data for performance optimization ###########
-  const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
-    inContext: true,
-    drawDefinition,
-    matchUpsMap,
-  });
+  const inContextDrawMatchUps =
+    getAllDrawMatchUps({
+      inContext: true,
+      drawDefinition,
+      matchUpsMap,
+    }).matchUps || [];
 
   const matchUpFilters = { isCollectionMatchUp: false };
   const { matchUps } = getAllStructureMatchUps({
@@ -390,7 +391,7 @@ export function advanceDrawPosition({
   });
 
   // only handling situation where winningMatchUp is in same structure
-  if (winnerMatchUp && winnerMatchUp.structureId === structure.structureId) {
+  if (winnerMatchUp && winnerMatchUp.structureId === structure?.structureId) {
     // NOTE: error conditions are ignored
     advanceWinner({
       drawPositionToAdvance,
@@ -409,7 +410,7 @@ export function advanceDrawPosition({
   if (
     loserMatchUp &&
     losingDrawPosiitonIsBye &&
-    loserMatchUp.structureId !== structure.structureId
+    loserMatchUp.structureId !== structure?.structureId
   ) {
     const { roundNumber } = loserMatchUp;
 

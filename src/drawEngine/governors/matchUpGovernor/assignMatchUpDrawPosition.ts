@@ -71,11 +71,12 @@ export function assignMatchUpDrawPosition({
   }
 
   if (!inContextDrawMatchUps) {
-    ({ matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
-      inContext: true,
-      drawDefinition,
-      matchUpsMap,
-    }));
+    inContextDrawMatchUps =
+      getAllDrawMatchUps({
+        inContext: true,
+        drawDefinition,
+        matchUpsMap,
+      }).matchUps || [];
   }
 
   const inContextMatchUp = inContextDrawMatchUps.find(
@@ -121,11 +122,12 @@ export function assignMatchUpDrawPosition({
 
   if (matchUp && positionAdded) {
     // necessary to update inContextDrawMatchUps
-    ({ matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
-      inContext: true,
-      drawDefinition,
-      matchUpsMap,
-    }));
+    inContextDrawMatchUps =
+      getAllDrawMatchUps({
+        inContext: true,
+        drawDefinition,
+        matchUpsMap,
+      }).matchUps || [];
     const exitWinningSide =
       (isDoubleExitExit &&
         getExitWinningSide({

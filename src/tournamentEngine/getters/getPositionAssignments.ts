@@ -26,5 +26,10 @@ export function getPositionAssignments({
   if (!structure && !drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structure && !structureId) return { error: MISSING_STRUCTURE_ID };
 
-  return positionAssignments({ drawDefinition, structureId, structure });
+  const { error, positionAssignments: assignments } = positionAssignments({
+    drawDefinition,
+    structureId,
+    structure,
+  });
+  return { error, positionAssignments: assignments || [] };
 }

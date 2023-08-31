@@ -4,6 +4,7 @@ import { getAllStructureMatchUps } from './getAllStructureMatchUps';
 import { findStructure } from '../findStructure';
 
 import { ResultType } from '../../../global/functions/decorateResult';
+import { TEAM } from '../../../constants/matchUpTypes';
 import {
   DrawDefinition,
   Event,
@@ -11,12 +12,10 @@ import {
   Structure,
   Tournament,
 } from '../../../types/tournamentFromSchema';
-import { TEAM } from '../../../constants/matchUpTypes';
 import {
   ABANDONED,
   upcomingMatchUpStatuses,
 } from '../../../constants/matchUpStatusConstants';
-import { ErrorType } from '../../../constants/errorConditionConstants';
 
 /*
   completedMatchUps are those matchUps where a winningSide is defined
@@ -34,7 +33,6 @@ type GroupsMatchUpsResult = {
   pendingMatchUps?: any[];
   structure?: Structure;
   byeMatchUps?: any[];
-  error?: ErrorType;
 };
 
 type GetStructureMatchUpsArgs = {
@@ -83,7 +81,7 @@ export function getStructureMatchUps({
   structure,
   context,
   event,
-}: GetStructureMatchUpsArgs): GroupsMatchUpsResult | ResultType {
+}: GetStructureMatchUpsArgs): ResultType & GroupsMatchUpsResult {
   if (!structure && structureId) {
     ({ structure } = findStructure({ drawDefinition, structureId }));
   }
@@ -109,19 +107,20 @@ export function getStructureMatchUps({
     context,
     event,
   });
-  if (result.error) return result;
-  const { matchUps } = result;
-
-  const { assignedPositions } = structureAssignedDrawPositions({ structure });
-  const participantAssignedDrawPositions = assignedPositions
-    ?.filter((assignment) => assignment.participantId)
-    .map((assignment) => assignment.drawPosition);
 
   const byeMatchUps: any[] = [];
   const pendingMatchUps: any[] = [];
   const upcomingMatchUps: any[] = [];
   const abandonedMatchUps: any[] = [];
   const completedMatchUps: any[] = [];
+
+  if (result.error) result;
+  const { matchUps } = result;
+
+  const { assignedPositions } = structureAssignedDrawPositions({ structure });
+  const participantAssignedDrawPositions = assignedPositions
+    ?.filter((assignment) => assignment.participantId)
+    .map((assignment) => assignment.drawPosition);
 
   let includesTeamMatchUps;
 

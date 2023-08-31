@@ -1,6 +1,7 @@
 import { getEventMatchUpFormatTiming as getTiming } from '../../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/getEventMatchUpFormatTiming';
 import { findEvent } from '../../../../tournamentEngine/getters/eventGetter';
 
+import { Tournament } from '../../../../types/tournamentFromSchema';
 import {
   EVENT_NOT_FOUND,
   INVALID_VALUES,
@@ -10,13 +11,20 @@ import {
 /**
  * method requires an array of target matchUpFormats either be defined in scoring policy or passed in as parameter
  */
+type GetEventMatchUpFormatTimingArgs = {
+  tournamentRecords: { [key: string]: Tournament };
+  matchUpFormats: string[];
+  categoryType?: string;
+  tournamentId?: string;
+  eventId: string;
+};
 export function getEventMatchUpFormatTiming({
   tournamentRecords,
   matchUpFormats,
   categoryType,
   tournamentId,
   eventId,
-}) {
+}: GetEventMatchUpFormatTimingArgs) {
   if (!eventId) return { error: MISSING_EVENT };
 
   const tournamentIds = Object.keys(tournamentRecords).filter(

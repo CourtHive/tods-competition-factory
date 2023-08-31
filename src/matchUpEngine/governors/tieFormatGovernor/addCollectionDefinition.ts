@@ -104,8 +104,8 @@ export function addCollectionDefinition({
   tieFormat.winCriteria = definedAttributes({ aggregateValue, valueGoal });
 
   // if valueGoal has changed, force renaming of the tieFormat
-  const originalValueGoal = existingTieFormat.winCriteria.valueGoal;
-  const wasAggregateValue = existingTieFormat.winCriteria.aggregateValue;
+  const originalValueGoal = existingTieFormat?.winCriteria.valueGoal;
+  const wasAggregateValue = existingTieFormat?.winCriteria.aggregateValue;
   if (
     (originalValueGoal && originalValueGoal !== valueGoal) ||
     (aggregateValue && !wasAggregateValue)

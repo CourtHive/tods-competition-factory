@@ -10,6 +10,7 @@ import { INVALID_TIE_FORMAT } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   CollectionDefinition,
+  TieFormat,
   TypeEnum,
 } from '../../../types/tournamentFromSchema';
 
@@ -219,7 +220,9 @@ export function validateCollectionDefinition({
 }
 
 // add collectionIds if missing
-export function checkTieFormat(tieFormat) {
+export function checkTieFormat(
+  tieFormat
+): ResultType & { tieFormat?: TieFormat } {
   const result = validateTieFormat({ tieFormat, checkCollectionIds: false });
   if (result.error) return result;
 

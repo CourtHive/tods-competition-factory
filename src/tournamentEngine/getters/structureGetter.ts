@@ -4,12 +4,12 @@ import {
 } from '../../drawEngine/getters/findStructure';
 
 import { PLAY_OFF } from '../../constants/drawDefinitionConstants';
+import { Structure } from '../../types/tournamentFromSchema';
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../constants/errorConditionConstants';
-import { Structure } from '../../types/tournamentFromSchema';
 
 export function getPlayoffStructures({ drawDefinition, structureId }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };

@@ -1,4 +1,7 @@
-import { decorateResult } from '../../../global/functions/decorateResult';
+import {
+  ResultType,
+  decorateResult,
+} from '../../../global/functions/decorateResult';
 import { dateValidation } from '../../../fixtures/validations/regex';
 import { extractDate } from '../../../utilities/dateTime';
 
@@ -21,8 +24,10 @@ export function setEventStartDate({ tournamentRecord, event, startDate }) {
   const { tournamentStartDate, tournamentEndDate } = result;
 
   // use extractDate() to ensure that only the YYYY-MM-DD part of date is used for comparison
-  const newEventStartDate = new Date(extractDate(startDate));
+  const newEventStartDate = new Date(extractDate(startDate)).getTime();
   if (
+    !tournamentStartDate ||
+    !tournamentEndDate ||
     newEventStartDate < tournamentStartDate ||
     newEventStartDate > tournamentEndDate
   )
@@ -49,8 +54,10 @@ export function setEventEndDate({ tournamentRecord, event, endDate }) {
   const { tournamentStartDate, tournamentEndDate } = result;
 
   // use extractDate() to ensure that only the YYYY-MM-DD part of date is used for comparison
-  const newEventEndDate = new Date(extractDate(endDate));
+  const newEventEndDate = new Date(extractDate(endDate)).getTime();
   if (
+    !tournamentStartDate ||
+    !tournamentEndDate ||
     newEventEndDate < tournamentStartDate ||
     newEventEndDate > tournamentEndDate
   )
@@ -96,7 +103,9 @@ export function setEventDates({ tournamentRecord, event, startDate, endDate }) {
   return { ...SUCCESS };
 }
 
-function getTournamentDates(tournamentRecord) {
+function getTournamentDates(
+  tournamentRecord
+): ResultType & { tournamentStartDate?: number; tournamentEndDate?: number } {
   const { startDate, endDate } = tournamentRecord;
   if (!dateValidation.test(startDate) || !dateValidation.test(endDate)) {
     return decorateResult({
@@ -107,7 +116,7 @@ function getTournamentDates(tournamentRecord) {
 
   // use extractDate() to ensure that only the YYYY-MM-DD part of date is used for comparison
   return {
-    tournamentStartDate: new Date(extractDate(startDate)),
-    tournamentEndDate: new Date(extractDate(endDate)),
+    tournamentStartDate: new Date(extractDate(startDate)).getTime(),
+    tournamentEndDate: new Date(extractDate(endDate)).getTime(),
   };
 }

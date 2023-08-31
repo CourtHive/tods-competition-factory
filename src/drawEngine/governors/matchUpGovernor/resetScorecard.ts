@@ -65,7 +65,7 @@ export function resetScorecard(params) {
     (matchUp) => matchUp.matchUpId === matchUpId
   );
 
-  const inContextMatchUp = inContextDrawMatchUps.find(
+  const inContextMatchUp = inContextDrawMatchUps?.find(
     (matchUp) => matchUp.matchUpId === matchUpId
   );
 
@@ -81,7 +81,7 @@ export function resetScorecard(params) {
     matchUpId,
   });
 
-  const structureId = inContextMatchUp.structureId;
+  const structureId = inContextMatchUp?.structureId;
   const { structure } = findStructure({ drawDefinition, structureId });
 
   Object.assign(params, {

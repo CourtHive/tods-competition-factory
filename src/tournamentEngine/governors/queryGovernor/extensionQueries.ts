@@ -10,7 +10,6 @@ import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
   NOT_FOUND,
-  ErrorType,
 } from '../../../constants/errorConditionConstants';
 import {
   DrawDefinition,
@@ -26,16 +25,14 @@ type FindExtensionType = {
   name: string;
 };
 
-type ExtensionResult = {
-  info: ErrorType | undefined;
+type ExtensionResult = ResultType & {
   extension?: Extension;
-  error?: ErrorType;
 };
 
 export function findExtension({
   element,
   name,
-}: FindExtensionType): ExtensionResult | ResultType {
+}: FindExtensionType): ExtensionResult {
   if (!element || !name)
     return decorateResult({ result: { error: MISSING_VALUE }, stack });
   if (!Array.isArray(element.extensions)) return { info: NOT_FOUND };
@@ -66,7 +63,10 @@ type FindEventExtensionType = {
   name: string;
 };
 
-export function findEventExtension({ event, name }: FindEventExtensionType) {
+export function findEventExtension({
+  event,
+  name,
+}: FindEventExtensionType): ResultType & { extension?: Extension } {
   if (!event)
     return decorateResult({ result: { error: MISSING_EVENT }, stack });
   return findExtension({ element: event, name });
@@ -80,7 +80,7 @@ type FindDrawDefinitionExtensionType = {
 export function findDrawDefinitionExtension({
   drawDefinition,
   name,
-}: FindDrawDefinitionExtensionType): ExtensionResult | ResultType {
+}: FindDrawDefinitionExtensionType): ExtensionResult & ResultType {
   if (!drawDefinition)
     return decorateResult({
       result: { error: MISSING_DRAW_DEFINITION },

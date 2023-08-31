@@ -6,7 +6,10 @@ import {
 } from '../../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
 
 import { POLICY_TYPE_VOLUNTARY_CONSOLATION } from '../../../constants/policyConstants';
-import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
+import {
+  ErrorType,
+  MISSING_DRAW_DEFINITION,
+} from '../../../constants/errorConditionConstants';
 import { UNGROUPED, WITHDRAWN } from '../../../constants/entryStatusConstants';
 import { DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -20,6 +23,7 @@ import {
   DrawDefinition,
   Event,
   MatchUpStatusEnum,
+  Participant,
   Tournament,
 } from '../../../types/tournamentFromSchema';
 
@@ -55,7 +59,11 @@ export function getEligibleVoluntaryConsolationParticipants({
   allEntries, // boolean - consider all entries, regardless of whether placed in draw
   winsLimit,
   event,
-}: GetEligibleVoluntaryConsolationParticipantsArgs) {
+}: GetEligibleVoluntaryConsolationParticipantsArgs): {
+  eligibleParticipants?: Participant[];
+  losingParticipantIds?: string[];
+  error?: ErrorType;
+} {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   const stages = [MAIN, PLAY_OFF];

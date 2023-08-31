@@ -12,10 +12,6 @@ import { addDrawEntry } from '../../drawEngine/governors/entryGovernor/addDrawEn
 import { getQualifiersCount } from '../../drawEngine/getters/getQualifiersCount';
 import { getAllowedDrawTypes } from '../governors/policyGovernor/allowedTypes';
 import structureTemplate from '../../drawEngine/generators/structureTemplate';
-import {
-  ResultType,
-  decorateResult,
-} from '../../global/functions/decorateResult';
 import { newDrawDefinition } from '../../drawEngine/stateMethods';
 import { mustBeAnArray } from '../../utilities/mustBeAnArray';
 import { isConvertableInteger } from '../../utilities/math';
@@ -68,6 +64,10 @@ import {
   Tournament,
   TypeEnum,
 } from '../../types/tournamentFromSchema';
+import {
+  ResultType,
+  decorateResult,
+} from '../../global/functions/decorateResult';
 
 type GenerateDrawDefinitionArgs = {
   automated?: boolean | { seedsOnly: boolean };
@@ -99,18 +99,18 @@ type GenerateDrawDefinitionArgs = {
   event: Event;
 };
 
-export function generateDrawDefinition(params: GenerateDrawDefinitionArgs):
-  | ResultType
-  | {
-      existingDrawDefinition?: boolean;
-      qualifyingConflicts?: any[];
-      positioningReports?: any[];
-      drawDefinition?: DrawDefinition;
-      structureId?: string;
-      success?: boolean;
-      error?: ErrorType;
-      conflicts?: any[];
-    } {
+export function generateDrawDefinition(
+  params: GenerateDrawDefinitionArgs
+): ResultType & {
+  existingDrawDefinition?: boolean;
+  qualifyingConflicts?: any[];
+  positioningReports?: any[];
+  drawDefinition?: DrawDefinition;
+  structureId?: string;
+  success?: boolean;
+  error?: ErrorType;
+  conflicts?: any[];
+} {
   const stack = 'generateDrawDefinition';
   const {
     drawType = DrawTypeEnum.SingleElimination,
@@ -541,7 +541,7 @@ export function generateDrawDefinition(params: GenerateDrawDefinitionArgs):
       positioningReports.push({ [MAIN]: structureResult.positioningReport });
 
     structureId = structureResult.structureId;
-    conflicts = structureResult.conflicts;
+    if (structureResult.conflicts) conflicts = structureResult.conflicts;
   }
 
   const qualifyingConflicts: any[] = [];

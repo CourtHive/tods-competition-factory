@@ -93,7 +93,7 @@ it('supports multi-sequence qualifying structures', () => {
   const q1positioned = q1pa?.filter((q) => q.participantId);
   expect(q1positioned?.length).toEqual(32);
 
-  let { roundMatchUps } = getRoundMatchUps({ matchUps: q1.matchUps });
+  let { roundMatchUps } = getRoundMatchUps({ matchUps: q1.matchUps || [] });
   let roundNumbers = roundMatchUps
     ? Object.keys(roundMatchUps).map((r) => parseInt(r))
     : [];
@@ -114,7 +114,7 @@ it('supports multi-sequence qualifying structures', () => {
   const q2positioned = q2pa?.filter((q) => q.participantId);
   expect(q2positioned?.length).toEqual(12);
 
-  ({ roundMatchUps } = getRoundMatchUps({ matchUps: q2.matchUps }));
+  ({ roundMatchUps } = getRoundMatchUps({ matchUps: q2.matchUps || [] }));
   roundNumbers = roundMatchUps
     ? Object.keys(roundMatchUps).map((r) => parseInt(r))
     : [];

@@ -46,7 +46,7 @@ export function getTargetMatchUp({
   });
 
   const structureMatchUps = inContextDrawMatchUps?.filter(
-    (matchUp) => matchUp.structureId === targetStructure.structureId
+    (matchUp) => matchUp.structureId === targetStructure?.structureId
   );
   const targetRoundMatchUps = structureMatchUps.filter(
     (matchUp) => matchUp.roundNumber === roundNumber && !matchUp.matchUpTieId // exclude tieMatchUps

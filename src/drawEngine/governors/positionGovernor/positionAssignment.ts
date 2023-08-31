@@ -11,7 +11,10 @@ import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getInitialRoundNumber } from '../../getters/getInitialRoundNumber';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 // import { addPositionActionTelemetry } from './addPositionActionTelemetry';
-import { decorateResult } from '../../../global/functions/decorateResult';
+import {
+  ResultType,
+  decorateResult,
+} from '../../../global/functions/decorateResult';
 import {
   MatchUpsMap,
   getMatchUpsMap,
@@ -38,6 +41,7 @@ import {
   MISSING_PARTICIPANT_ID,
   INVALID_MATCHUP,
   ErrorType,
+  STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 import {
   CONSOLATION,
@@ -84,7 +88,9 @@ export function assignDrawPosition({
   matchUpsMap,
   structureId,
   event,
-}: AssignDrawPositionArgs) {
+}: AssignDrawPositionArgs): ResultType & {
+  positionAssignments?: PositionAssignment[];
+} {
   const stack = 'assignDrawPosition';
 
   if (!participantId && !isQualifierPosition)
@@ -103,6 +109,7 @@ export function assignDrawPosition({
   const result = findStructure({ drawDefinition, structureId });
   if (result.error) return decorateResult({ result, stack });
   const { structure } = result;
+  if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
   // there are no drawPositions assigned for ADHOC structures
   if (isAdHoc({ drawDefinition, structure }))
@@ -211,8 +218,8 @@ export function assignDrawPosition({
   if (isQualifierPosition) positionAssignment.qualifier = true;
 
   if (
-    structure?.stageSequence > 1 ||
-    [CONSOLATION, PLAY_OFF].includes(structure.stage)
+    (structure?.stageSequence || 0) > 1 ||
+    (structure.stage && [CONSOLATION, PLAY_OFF].includes(structure.stage))
   ) {
     const targetStage = structure.stage === QUALIFYING ? QUALIFYING : MAIN;
     const targetStructure = drawDefinition.structures?.find(

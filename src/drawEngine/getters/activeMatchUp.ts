@@ -18,7 +18,7 @@ type IsActiveMatchUpArgs = {
   winningSide?: number;
   tieMatchUps?: any[];
   sides?: any[];
-  score: Score;
+  score?: Score;
 };
 export function isActiveMatchUp({
   matchUpStatus,

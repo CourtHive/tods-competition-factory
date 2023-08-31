@@ -346,7 +346,7 @@ export function isValidSeedPosition({
 
   let validSeedBlocks = seedBlockInfo?.validSeedBlocks;
 
-  if (!validSeedBlocks) {
+  if (!validSeedBlocks && structure) {
     validSeedBlocks = getValidSeedBlocks({
       appliedPolicies,
       drawDefinition,
@@ -396,12 +396,13 @@ export function getNextSeedBlock(params) {
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
   const validSeedBlocks =
     seedBlockInfo?.validSeedBlocks ||
-    getValidSeedBlocks({
-      provisionalPositioning,
-      appliedPolicies,
-      drawDefinition,
-      structure,
-    })?.validSeedBlocks;
+    (structure &&
+      getValidSeedBlocks({
+        provisionalPositioning,
+        appliedPolicies,
+        drawDefinition,
+        structure,
+      })?.validSeedBlocks);
   const unfilledSeedBlocks = (validSeedBlocks || []).filter((seedBlock) => {
     const unfilledPositions = seedBlock.drawPositions.filter(
       (drawPosition) => !assignedDrawPositions?.includes(drawPosition)

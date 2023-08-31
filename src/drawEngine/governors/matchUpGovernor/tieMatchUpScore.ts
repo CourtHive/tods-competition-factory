@@ -105,7 +105,7 @@ export function updateTieMatchUpScore({
     sets: set ? [set] : [],
   };
 
-  const hasWinner = [1, 2].includes(winningSide);
+  const hasWinner = winningSide && [1, 2].includes(winningSide);
   const newMatchUpStatus =
     (hasWinner && COMPLETED) ||
     (isActiveMatchUp({

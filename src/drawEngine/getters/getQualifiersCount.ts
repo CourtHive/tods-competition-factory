@@ -51,7 +51,7 @@ export function getQualifiersCount(params: GetQualifiersCountArgs) {
         drawDefinition,
       })?.structure;
 
-      if (sourceStructure.stage === QUALIFYING) {
+      if (sourceStructure?.stage === QUALIFYING) {
         const sourceRoundNumber = relevantLink.source.roundNumber;
         const roundTarget = relevantLink.target.roundNumber;
         let count = 0;

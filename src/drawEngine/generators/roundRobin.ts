@@ -9,6 +9,7 @@ import {
 
 import { ROUND_TARGET } from '../../constants/extensionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
+import { SeedingProfile } from '../../types/factoryTypes';
 import {
   MAIN,
   ITEM,
@@ -20,7 +21,6 @@ import {
   MatchUpStatusEnum,
   TypeEnum,
 } from '../../types/tournamentFromSchema';
-import { SeedingProfile } from '../../types/factoryTypes';
 
 type GenerateRoundRobinArgs = {
   seedingProfile?: SeedingProfile;
@@ -28,7 +28,7 @@ type GenerateRoundRobinArgs = {
   stageSequence?: number;
   structureOptions?: any;
   appliedPolicies?: any;
-  matchUpType: TypeEnum;
+  matchUpType?: TypeEnum;
   roundTarget?: number;
   structureId: string;
   drawSize: number;
@@ -161,7 +161,7 @@ export function getValidGroupSizes({ drawSize, groupSizeLimit = 10 }) {
 
 type RoundRobinMatchUpsArgs = {
   structureOrder: number;
-  matchUpType: TypeEnum;
+  matchUpType?: TypeEnum;
   groupSize: number;
   drawSize: number;
   idPrefix?: string;

@@ -116,7 +116,7 @@ export function bulkMatchUpStatusUpdate(params) {
 
     for (const outcome of events[eventId]) {
       const { drawId } = outcome;
-      const drawDefinition = event.drawDefinitions.find(
+      const drawDefinition = event?.drawDefinitions?.find(
         (drawDefinition) => drawDefinition.drawId === drawId
       );
       if (drawDefinition) {

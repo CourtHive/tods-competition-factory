@@ -42,7 +42,7 @@ it.each(tieKeys)('can generate all exported tieFormatConstants', (tieKey) => {
 
   const tieFormat = tournamentRecord.events[0].tieFormat;
 
-  let result = validateTieFormat({ tieFormat });
+  let result: any = validateTieFormat({ tieFormat });
   expect(result.valid).toEqual(true);
 
   if (tieFormatName) {
