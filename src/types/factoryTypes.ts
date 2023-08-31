@@ -32,8 +32,8 @@ export type ScaleAttributes = {
 };
 
 export type ScaleItem = {
+  scaleDate?: string | Date;
   eventType: TypeEnum;
-  scaleDate: string;
   scaleName: string;
   scaleType: string;
   scaleValue: any;

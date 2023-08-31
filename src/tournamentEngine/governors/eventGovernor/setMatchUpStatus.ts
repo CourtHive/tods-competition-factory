@@ -11,21 +11,36 @@ import {
   MISSING_MATCHUP_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
+import {
+  DrawDefinition,
+  Event,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
 /**
- *
  * Sets either matchUpStatus or score and winningSide; values to be set are passed in outcome object.
- *
- * @param {string} drawId - id of draw within which matchUp is found
- * @param {string} matchUpId - id of matchUp to be modified
- * @param {string} matchUpFormat - optional - matchUpFormat if different from draw/event default
- * @param {object} outcome - { score, winningSide, matchUpStatus }
- *
  */
-export function setMatchUpStatus(params) {
+
+type SetMatchUpStatusArgs = {
+  tournamentRecords?: { [key: string]: Tournament };
+  allowChangePropagation?: boolean;
+  tournamentRecord: Tournament;
+  drawDefinition: DrawDefinition;
+  disableAutoCalc?: boolean;
+  enableAutoCalc?: boolean;
+  matchUpFormat?: string;
+  policyDefinitions: any;
+  matchUpId: string;
+  drawId?: string;
+  schedule?: any;
+  notes?: string;
+  event?: Event;
+  outcome?: any;
+};
+export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
   const {
-    policyDefinitions,
     tournamentRecords,
+    policyDefinitions,
     tournamentRecord,
     disableAutoCalc,
     enableAutoCalc,
@@ -85,8 +100,8 @@ export function setMatchUpStatus(params) {
     winningSide: outcome?.winningSide,
     allowChangePropagation,
     score: outcome?.score,
-    policyDefinitions,
     tournamentRecords,
+    policyDefinitions,
     tournamentRecord,
     disableAutoCalc,
     enableAutoCalc,
@@ -101,7 +116,8 @@ export function setMatchUpStatus(params) {
 
 export function bulkMatchUpStatusUpdate(params) {
   if (!params.tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  const { tournamentRecords, tournamentRecord, outcomes } = params;
+  const { tournamentRecords, tournamentRecord, outcomes, policyDefinitions } =
+    params;
   const events = {};
 
   // group outcomes by events to optimize
@@ -119,11 +135,12 @@ export function bulkMatchUpStatusUpdate(params) {
       const drawDefinition = event?.drawDefinitions?.find(
         (drawDefinition) => drawDefinition.drawId === drawId
       );
-      if (drawDefinition) {
+      if (drawDefinition && drawId) {
         const { matchUpFormat, matchUpId } = outcome;
         const result = setMatchUpStatus({
           schedule: outcome?.schedule,
           tournamentRecords,
+          policyDefinitions,
           tournamentRecord,
           drawDefinition,
           matchUpFormat,

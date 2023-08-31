@@ -1,11 +1,8 @@
 import { findTournamentParticipant } from '../../getters/participants/participantGetter';
 
+import { participantScaleItem } from '../../accessors/participantScaleItem';
 import { Tournament } from '../../../types/tournamentFromSchema';
-import { ScaleAttributes } from '../../../types/factoryTypes';
-import {
-  ScaleItem,
-  participantScaleItem,
-} from '../../accessors/participantScaleItem';
+import { ScaleAttributes, ScaleItem } from '../../../types/factoryTypes';
 import {
   ErrorType,
   MISSING_PARTICIPANT_ID,

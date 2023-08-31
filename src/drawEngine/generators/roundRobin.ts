@@ -21,6 +21,7 @@ import {
   MatchUpStatusEnum,
   TypeEnum,
 } from '../../types/tournamentFromSchema';
+import { ResultType } from '../../global/functions/decorateResult';
 
 type GenerateRoundRobinArgs = {
   seedingProfile?: SeedingProfile;
@@ -124,13 +125,13 @@ function deriveGroups({ appliedPolicies, structureOptions, drawSize }) {
     groupSizeLimit,
     drawSize,
   });
-  const maxValidGroupSize = Math.max(...validGroupSizes);
+  const maxValidGroupSize = validGroupSizes && Math.max(...validGroupSizes);
 
-  const validGroupSize = groupSize && validGroupSizes.includes(groupSize);
+  const validGroupSize = groupSize && validGroupSizes?.includes(groupSize);
 
   if (!validGroupSize) {
     // if no groupSize specified or if groupSize is not valid
-    if ((groupSize && groupSize > 4) || !validGroupSizes.includes(4)) {
+    if ((groupSize && groupSize > 4) || !validGroupSizes?.includes(4)) {
       groupSize = maxValidGroupSize;
     } else {
       groupSize = 4;
@@ -141,7 +142,14 @@ function deriveGroups({ appliedPolicies, structureOptions, drawSize }) {
   return { groupSize, groupCount };
 }
 
-export function getValidGroupSizes({ drawSize, groupSizeLimit = 10 }) {
+type GetValidGroupSizesArgs = {
+  groupSizeLimit?: number;
+  drawSize: number;
+};
+export function getValidGroupSizes({
+  drawSize,
+  groupSizeLimit = 10,
+}: GetValidGroupSizesArgs): ResultType & { validGroupSizes?: number[] } {
   const validGroupSizes = generateRange(3, groupSizeLimit + 1).filter(
     (groupSize) => {
       const groupsCount = Math.ceil(drawSize / groupSize);
