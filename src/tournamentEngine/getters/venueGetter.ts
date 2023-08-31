@@ -6,6 +6,8 @@ import { addVenue } from '../governors/venueGovernor/addVenue';
 import { makeDeepCopy } from '../../utilities';
 
 import { Tournament, Venue } from '../../types/tournamentFromSchema';
+import { HydratedCourt, HydratedVenue } from '../../types/hydrated';
+import { ResultType } from '../../global/functions/decorateResult';
 import { DISABLED } from '../../constants/extensionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
@@ -27,7 +29,10 @@ export function getVenuesAndCourts({
   tournamentRecord,
   ignoreDisabled,
   dates, // used in conjunction with ignoreDisabled
-}: GetVenuesAndCourtsArgs) {
+}: GetVenuesAndCourtsArgs): ResultType & {
+  venues?: HydratedVenue[];
+  courts?: HydratedCourt[];
+} {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
   const venues = makeDeepCopy(tournamentRecord.venues ?? [], convertExtensions)

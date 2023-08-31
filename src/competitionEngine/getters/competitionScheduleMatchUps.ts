@@ -8,17 +8,35 @@ import {
   getTournamentTimeItem,
 } from '../../tournamentEngine/governors/queryGovernor/timeItems';
 
+import { PUBLIC, PUBLISH, STATUS } from '../../constants/timeItemConstants';
+import { Tournament, Venue } from '../../types/tournamentFromSchema';
+import { COMPLETED } from '../../constants/matchUpStatusConstants';
+import { TournamentRecordsArgs } from '../../types/factoryTypes';
+import { HydratedMatchUp } from '../../types/hydrated';
 import {
   ErrorType,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../constants/errorConditionConstants';
-import { PUBLIC, PUBLISH, STATUS } from '../../constants/timeItemConstants';
-import { COMPLETED } from '../../constants/matchUpStatusConstants';
-import { TournamentRecordsArgs } from '../../types/factoryTypes';
-import { Venue } from '../../types/tournamentFromSchema';
-import { HydratedMatchUp } from '../../types/hydrated';
+import { getTournamentId } from '../../global/state/globalState';
 
-export function competitionScheduleMatchUps(params): {
+type CompetitionScheduleMatchUpsArgs = {
+  tournamentRecords: { [key: string]: Tournament };
+  matchUpFilters?: { [key: string]: any };
+  contextFilters?: { [key: string]: any };
+  courtCompletedMatchUps?: boolean;
+  alwaysReturnCompleted?: boolean;
+  withCourtGridRows?: boolean;
+  activeTournamentId?: string;
+  sortDateMatchUps?: boolean;
+  minCourtGridRows?: number;
+  usePublishState?: boolean;
+  sortCourtsData?: boolean;
+  status?: string;
+};
+
+export function competitionScheduleMatchUps(
+  params: CompetitionScheduleMatchUpsArgs
+): {
   completedMatchUps?: HydratedMatchUp[];
   dateMatchUps?: HydratedMatchUp[];
   courtPrefix?: string;
@@ -50,12 +68,13 @@ export function competitionScheduleMatchUps(params): {
     sortCourtsData,
   } = params;
 
-  const timeItem =
-    usePublishState &&
-    getTournamentTimeItem({
-      tournamentRecord: tournamentRecords[activeTournamentId],
-      itemType: `${PUBLISH}.${STATUS}`,
-    }).timeItem;
+  const timeItem = usePublishState
+    ? getTournamentTimeItem({
+        tournamentRecord:
+          tournamentRecords[activeTournamentId || getTournamentId()],
+        itemType: `${PUBLISH}.${STATUS}`,
+      }).timeItem
+    : undefined;
   const publishStatus = timeItem?.itemValue?.[status];
 
   const allCompletedMatchUps = alwaysReturnCompleted
@@ -78,9 +97,9 @@ export function competitionScheduleMatchUps(params): {
     };
   }
 
-  const publishedDrawIds =
-    usePublishState &&
-    getCompetitionPublishedDrawIds({ tournamentRecords }).drawIds;
+  const publishedDrawIds = usePublishState
+    ? getCompetitionPublishedDrawIds({ tournamentRecords }).drawIds
+    : undefined;
 
   if (publishedDrawIds?.length) {
     if (!contextFilters.drawIds) {

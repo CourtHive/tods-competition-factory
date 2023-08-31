@@ -14,17 +14,6 @@ import {
   StageTypeEnum,
 } from '../../../types/tournamentFromSchema';
 
-/**
- *
- * @param {string} eventId - resolved by tournamentEngine to the event object
- *
- * @param {object} policyDefinitions - seeding policyDefinitions determines the # of seeds for given participantCount/drawSize
- * @param {number} drawSize - OPTIONAL - defaults to calculation based on # of entries
- * @param {string} drawId - OPTIONAL - will use flight.drawEntries or drawDefinition.entries rather than event.entries
- * @param {string} stage - OPTIONAL - filters entries by specified stage
- *
- * @returns {object} - { entries, seedsCount, stageEntries } or { error }
- */
 type GetEntriesAndSeedsCountArgs = {
   drawDefinition: DrawDefinition;
   policyDefinitions: any;

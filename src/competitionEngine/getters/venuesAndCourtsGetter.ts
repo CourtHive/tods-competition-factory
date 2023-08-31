@@ -4,14 +4,15 @@ import { getInContextCourt } from '../../global/functions/deducers/getInContextC
 import { findExtension } from '../../global/functions/deducers/findExtension';
 import { makeDeepCopy } from '../../utilities';
 
+import { Tournament, Venue } from '../../types/tournamentFromSchema';
+import { HydratedCourt, HydratedVenue } from '../../types/hydrated';
+import { ResultType } from '../../global/functions/decorateResult';
+import { TournamentRecordsArgs } from '../../types/factoryTypes';
+import { DISABLED } from '../../constants/extensionConstants';
 import {
   ErrorType,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../constants/errorConditionConstants';
-import { Tournament, Venue } from '../../types/tournamentFromSchema';
-import { HydratedCourt, HydratedVenue } from '../../types/hydrated';
-import { DISABLED } from '../../constants/extensionConstants';
-import { TournamentRecordsArgs } from '../../types/factoryTypes';
 
 type GetVenuesAndCourtsArgs = {
   tournamentRecords: Tournament[] | { [key: string]: Tournament };
@@ -26,7 +27,10 @@ export function getVenuesAndCourts({
   ignoreDisabled,
   venueIds = [],
   dates, // used in conjunction with ignoreDisabled
-}: GetVenuesAndCourtsArgs) {
+}: GetVenuesAndCourtsArgs): ResultType & {
+  venues?: HydratedVenue[];
+  courts?: HydratedCourt[];
+} {
   if (
     typeof tournamentRecords !== 'object' ||
     !Object.keys(tournamentRecords).length
@@ -113,7 +117,7 @@ export function getCompetitionVenues({
     (accumulator: Accumulator, tournamentId) => {
       const tournamentRecord = tournamentRecords[tournamentId];
       const { venues } = teVenuesAndCourts({ tournamentRecord, dates });
-      venues.forEach((venue) => {
+      venues?.forEach((venue) => {
         const { venueId, courts } = venue;
         const includeVenue = !requireCourts || courts?.length;
         if (includeVenue && !accumulator.venueIds.includes(venueId)) {
