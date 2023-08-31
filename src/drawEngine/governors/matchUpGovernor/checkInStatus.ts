@@ -5,6 +5,7 @@ import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { addMatchUpTimeItem } from './timeItems';
 
 import { CHECK_IN, CHECK_OUT } from '../../../constants/timeItemConstants';
+import { HydratedMatchUp } from '../../../types/hydrated';
 import {
   INVALID_ACTION,
   INVALID_PARTICIPANT_ID,
@@ -25,7 +26,6 @@ import {
   Participant,
   Tournament,
 } from '../../../types/tournamentFromSchema';
-import { HydratedMatchUp } from '../../../types/hydrated';
 
 /*
   function is only able to check whether participant is alredy checked in 
@@ -57,7 +57,7 @@ export function checkInParticipant({
     tournamentParticipants ?? tournamentRecord?.participants;
 
   if (tournamentParticipants?.length) {
-    if (!matchUp) {
+    if (!matchUp && drawDefinition) {
       const result = findMatchUp({
         tournamentParticipants,
         inContext: true,

@@ -112,7 +112,7 @@ export function setMatchUpStatus(params) {
     (matchUp) => matchUp.matchUpId === matchUpId
   );
 
-  const inContextMatchUp = inContextDrawMatchUps.find(
+  const inContextMatchUp = inContextDrawMatchUps?.find(
     (matchUp) => matchUp.matchUpId === matchUpId
   );
 
@@ -126,11 +126,12 @@ export function setMatchUpStatus(params) {
     };
   }
 
-  const structureId = inContextMatchUp.structureId;
+  const structureId = inContextMatchUp?.structureId;
   const { structure } = findStructure({ drawDefinition, structureId });
 
   // Check validity of matchUpStatus considering assigned drawPositions -------
-  const assignedDrawPositions = inContextMatchUp.drawPositions?.filter(Boolean);
+  const assignedDrawPositions =
+    inContextMatchUp?.drawPositions?.filter(Boolean);
 
   let dualWinningSideChange;
   if (matchUp.matchUpType === TEAM) {
@@ -190,7 +191,7 @@ export function setMatchUpStatus(params) {
     };
   }
 
-  const matchUpTieId = inContextMatchUp.matchUpTieId;
+  const matchUpTieId = inContextMatchUp?.matchUpTieId;
 
   // Get winner/loser position targets ----------------------------------------
   const targetData = positionTargets({
@@ -259,7 +260,7 @@ export function setMatchUpStatus(params) {
   }
 
   const qualifyingMatch =
-    inContextMatchUp.stage === QUALIFYING &&
+    inContextMatchUp?.stage === QUALIFYING &&
     inContextMatchUp.finishingRound === 1;
   const qualifierAdvancing = qualifyingMatch && winningSide;
   const removingQualifier =
@@ -305,6 +306,7 @@ export function setMatchUpStatus(params) {
       })?.tieFormat;
 
       const { projectedWinningSide } = getProjectedDualWinningSide({
+        drawDefinition,
         matchUpStatus,
         dualMatchUp,
         matchUpsMap,

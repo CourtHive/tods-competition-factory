@@ -298,10 +298,10 @@ it('supports ROUND_ROBIN in multi-sequence qualifying structures', () => {
   expect(firstLink.target.feedProfile).toEqual(DRAW);
   expect(secondLink.target.feedProfile).toEqual(DRAW);
 
-  const participantAssignment = q2.positionAssignments.find(
+  const participantAssignment = q2.positionAssignments?.find(
     ({ participantId }) => participantId
   );
-  const participantDrawPosition = participantAssignment.drawPosition;
+  const participantDrawPosition = participantAssignment?.drawPosition;
 
   const result = tournamentEngine.positionActions({
     policyDefinitions: POLICY_POSITION_ACTIONS_UNRESTRICTED,

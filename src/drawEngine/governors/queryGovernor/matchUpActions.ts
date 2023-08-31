@@ -82,24 +82,11 @@ import {
   Event,
   Tournament,
 } from '../../../types/tournamentFromSchema';
+import {
+  decorateResult,
+  ResultType,
+} from '../../../global/functions/decorateResult';
 
-/**
- *
- * return an array of all validActions for a given matchUp
- *
- * @param {boolean=} restrictAdHocRoundParticipants
- * @param {object[]=} tournamentParticipants
- * @param {object[]=} inContextDrawMatchUps
- * @param {object=} tournamentRecord
- * @param {object=} policyDefinitions
- * @param {string=} participantId
- * @param {object} drawDefinition
- * @param {object=} matchUpsMap
- * @param {number=} sideNumber
- * @param {string} matchUpId
- * @param {object=} event
- *
- */
 type MatchUpActionsArgs = {
   tournamentParticipants?: HydratedParticipant[];
   restrictAdHocRoundParticipants?: boolean;
@@ -125,12 +112,20 @@ export function matchUpActions({
   sideNumber,
   matchUpId,
   event,
-}: MatchUpActionsArgs) {
+}: MatchUpActionsArgs): ResultType & {
+  structureIsComplete?: boolean;
+  isDoubleExit?: boolean;
+  isByeMatchUp?: boolean;
+  validActions?: any[];
+} {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
   if (sideNumber && ![1, 2].includes(sideNumber))
-    return { error: INVALID_VALUES, context: { sideNumber } };
+    return decorateResult({
+      result: { error: INVALID_VALUES },
+      context: { sideNumber },
+    });
 
   const otherFlightEntries =
     specifiedPolicyDefinitions?.[POLICY_TYPE_POSITION_ACTIONS]

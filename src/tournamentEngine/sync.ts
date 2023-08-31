@@ -34,7 +34,7 @@ import {
   METHOD_NOT_FOUND,
 } from '../constants/errorConditionConstants';
 
-export const tournamentEngine = (function () {
+export const tournamentEngine = ((): FactoryEngine => {
   const engine: FactoryEngine = {
     getState: (params) =>
       getState({

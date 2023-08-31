@@ -1,4 +1,7 @@
-import { decorateResult } from '../../../global/functions/decorateResult';
+import {
+  ResultType,
+  decorateResult,
+} from '../../../global/functions/decorateResult';
 import { getValidGroupSizes } from '../../generators/roundRobin';
 import { isConvertableInteger } from '../../../utilities/math';
 import {
@@ -30,14 +33,19 @@ type GetSeedBlocksArgs = {
   cluster?: boolean;
 };
 
-export function getSeedBlocks(params: GetSeedBlocksArgs) {
+export function getSeedBlocks(
+  params: GetSeedBlocksArgs
+): ResultType & { seedBlocks?: any; success?: boolean } {
   const { roundRobinGroupsCount, participantsCount, cluster } = params;
   if (!isConvertableInteger(participantsCount))
-    return decorateResult({
-      result: { error: INVALID_VALUES },
-      context: { participantsCount },
-      stack: 'getSeedBlocks',
-    });
+    return {
+      seedBlocks: undefined,
+      ...decorateResult({
+        result: { error: INVALID_VALUES },
+        context: { participantsCount },
+        stack: 'getSeedBlocks',
+      }),
+    };
 
   const drawSize = nextPowerOf2(participantsCount);
 
@@ -138,23 +146,29 @@ type GetSeedGroupsArgs = {
 export function getSeedGroups({
   roundRobinGroupsCount,
   drawSize,
-}: GetSeedGroupsArgs) {
+}: GetSeedGroupsArgs): ResultType & { seedGroups?: any } {
   const stack = 'getSeedGroups';
 
   if (!isConvertableInteger(drawSize))
-    return decorateResult({
-      result: { error: INVALID_VALUES },
-      context: { drawSize },
-      stack,
-    });
+    return {
+      seedGroups: undefined,
+      ...decorateResult({
+        result: { error: INVALID_VALUES },
+        context: { drawSize },
+        stack,
+      }),
+    };
 
   if (roundRobinGroupsCount) {
     if (!isConvertableInteger(roundRobinGroupsCount))
-      return decorateResult({
-        result: { error: INVALID_VALUES },
-        context: { roundRobinGroupsCount },
-        stack,
-      });
+      return {
+        seedGroups: undefined,
+        ...decorateResult({
+          result: { error: INVALID_VALUES },
+          context: { roundRobinGroupsCount },
+          stack,
+        }),
+      };
 
     let seedNumber = 1;
     const roundsCount = Math.floor(drawSize / roundRobinGroupsCount);
@@ -192,7 +206,10 @@ type GetSeedingThresholdsArgs = {
 export function getSeedingThresholds({
   roundRobinGroupsCount,
   participantsCount,
-}: GetSeedingThresholdsArgs) {
+}: GetSeedingThresholdsArgs): ResultType & {
+  seedingThresholds?: any;
+  success?: boolean;
+} {
   if (roundRobinGroupsCount) {
     const { validGroupSizes } = getValidGroupSizes({
       drawSize: participantsCount,

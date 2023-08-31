@@ -13,6 +13,7 @@ import {
   MISSING_MATCHUP_ID,
   MISSING_PARTICIPANT_ID,
 } from '../../../constants/errorConditionConstants';
+import { Side } from '../../../types/tournamentFromSchema';
 
 export function substituteParticipant({
   substituteParticipantId,
@@ -49,28 +50,28 @@ export function substituteParticipant({
     matchUpsMap,
   });
 
-  const inContextMatchUp = inContextDrawMatchUps.find(
+  const inContextMatchUp = inContextDrawMatchUps?.find(
     (drawMatchUp) => drawMatchUp.matchUpId === matchUpId
   );
 
-  const inContextDualMatchUp = inContextDrawMatchUps.find(
-    (drawMatchUp) => drawMatchUp.matchUpId === inContextMatchUp.matchUpTieId
+  const inContextDualMatchUp = inContextDrawMatchUps?.find(
+    (drawMatchUp) => drawMatchUp.matchUpId === inContextMatchUp?.matchUpTieId
   );
 
   // ensure that existingParticipantId and substituteParticipantId are on the same team
-  const relevantSide = inContextDualMatchUp.sides.find((side) =>
+  const relevantSide = inContextDualMatchUp?.sides?.find((side: any) =>
     side.participant.individualParticipants.some(
       ({ participantId }) => participantId === existingParticipantId
     )
-  );
+  ) as Side & { [key: string]: any };
 
   if (!relevantSide || (sideNumber && relevantSide.sideNumber !== sideNumber))
     return { error: INVALID_PARTICIPANT_ID };
 
   // if no sideNumber is provided, segregate available by sideNumber and specify sideNumber
   const availableParticipantIds =
-    relevantSide.participant.individualParticipants
-      .map(getParticipantId)
+    relevantSide.participant?.individualParticipants
+      ?.map(getParticipantId)
       .filter((participantId) => participantId !== existingParticipantId);
 
   if (!availableParticipantIds.includes(substituteParticipantId))

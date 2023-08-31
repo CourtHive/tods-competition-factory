@@ -1,7 +1,7 @@
 export function findCategoryTiming({
+  timesBlockArray,
   categoryName,
   categoryType,
-  timesBlockArray,
 }) {
   return timesBlockArray
     .filter((f) => Array.isArray(f))

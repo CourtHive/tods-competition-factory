@@ -38,7 +38,7 @@ import {
   PositionAssignment,
   Tournament,
 } from '../../../types/tournamentFromSchema';
-import { ErrorType } from '../../../constants/errorConditionConstants';
+import { STRUCTURE_NOT_FOUND } from '../../../constants/errorConditionConstants';
 
 // TODO: Throw an error if an attempt is made to automate positioning for a structure that already has completed matchUps
 type AutomatedPositioningArgs = {
@@ -76,15 +76,12 @@ export function automatedPositioning({
   seedsOnly,
   drawType,
   event,
-}: AutomatedPositioningArgs):
-  | ResultType
-  | {
-      positionAssignments?: PositionAssignment[];
-      positioningReport?: any;
-      error?: ErrorType;
-      success?: boolean;
-      conflicts?: any[];
-    } {
+}: AutomatedPositioningArgs): ResultType & {
+  positionAssignments?: PositionAssignment[];
+  positioningReport?: any;
+  success?: boolean;
+  conflicts?: any[];
+} {
   const positioningReport: any[] = [];
 
   //-----------------------------------------------------------
@@ -107,7 +104,8 @@ export function automatedPositioning({
 
   const result = findStructure({ drawDefinition, structureId });
   if (result.error) return handleErrorCondition(result);
-  const { structure } = result;
+  const structure = result.structure;
+  if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
   if (!appliedPolicies) {
     appliedPolicies = getAppliedPolicies({

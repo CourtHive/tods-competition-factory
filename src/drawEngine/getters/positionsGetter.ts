@@ -7,13 +7,19 @@ import {
   MISSING_POSITION_ASSIGNMENTS,
 } from '../../constants/errorConditionConstants';
 
+import { ResultType } from '../../global/functions/decorateResult';
 import {
   DrawDefinition,
   PositionAssignment,
   Structure,
 } from '../../types/tournamentFromSchema';
 
-export function getAllPositionedParticipantIds({ drawDefinition }) {
+export function getAllPositionedParticipantIds({
+  drawDefinition,
+}): ResultType & {
+  allPositionedParticipantIds?: string[];
+  stagePositionedParticipantIds?: { [key: string]: string[] };
+} {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   const stagePositionedParticipantIds = {};
 
@@ -82,12 +88,20 @@ export function structureAssignedDrawPositions({
   drawDefinition,
   structureId,
   structure,
-}: StructureAssignedDrawPositionsArgs) {
-  const { positionAssignments } = getPositionAssignments({
-    drawDefinition,
-    structureId,
-    structure,
-  });
+}: StructureAssignedDrawPositionsArgs): {
+  positionAssignments: PositionAssignment[];
+  allPositionsAssigned?: boolean;
+  unassignedPositions;
+  assignedPositions;
+  qualifierPositions;
+  byePositions;
+} {
+  const positionAssignments =
+    getPositionAssignments({
+      drawDefinition,
+      structureId,
+      structure,
+    })?.positionAssignments || [];
   const assignedPositions = positionAssignments?.filter((assignment) => {
     return assignment.participantId ?? assignment.bye ?? assignment.qualifier;
   });

@@ -61,9 +61,9 @@ export function replaceQualifier(params) {
             positionAssignment.participantId = newWinningParticipantId;
 
             // update positionAssignments on structure
-            if (structure.positionAssignments) {
+            if (structure?.positionAssignments) {
               structure.positionAssignments = positionAssignments;
-            } else if (structure.structures) {
+            } else if (structure?.structures) {
               const assignmentMap = Object.assign(
                 {},
                 ...(positionAssignments || []).map((assignment) => ({
@@ -71,7 +71,7 @@ export function replaceQualifier(params) {
                 }))
               );
               for (const subStructure of structure.structures) {
-                subStructure.positionAssignments.forEach(
+                subStructure.positionAssignments?.forEach(
                   (assignment) =>
                     (assignment.participantId =
                       assignmentMap[assignment.drawPosition])

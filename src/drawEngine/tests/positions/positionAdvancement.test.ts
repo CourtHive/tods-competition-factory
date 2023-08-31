@@ -1,11 +1,11 @@
 import { getStructureMatchUps } from '../../getters/getMatchUps/getStructureMatchUps';
 import { positionTargets } from '../../governors/positionGovernor/positionTargets';
+import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
-import { feedInChampionship } from '../primitives/feedIn';
 import { getDrawStructures } from '../../getters/findStructure';
+import { feedInChampionship } from '../primitives/feedIn';
 import { drawEngine } from '../../sync';
 import { expect, it } from 'vitest';
-import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
 
 import {
   MAIN,
@@ -33,8 +33,8 @@ it('can direct participants in First Match Consolation (FIRST_MATCH_LOSER_CONSOL
 
   // not requiring participants, just checking round Positions
   const { upcomingMatchUps, pendingMatchUps } = getStructureMatchUps({
-    structure,
     requireParticipants: false,
+    structure,
   });
 
   const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
@@ -43,7 +43,7 @@ it('can direct participants in First Match Consolation (FIRST_MATCH_LOSER_CONSOL
   });
 
   // test first matchUp in roundNumber: 1
-  let matchUpId = upcomingMatchUps.reduce((matchUpId, matchUp) => {
+  let matchUpId = upcomingMatchUps?.reduce((matchUpId, matchUp) => {
     return matchUp.roundNumber === 1 && matchUp.roundPosition === 1
       ? matchUp.matchUpId
       : matchUpId;
@@ -69,7 +69,7 @@ it('can direct participants in First Match Consolation (FIRST_MATCH_LOSER_CONSOL
   expect(matchUp.structureId).not.toEqual(loserMatchUp.structureId);
 
   // test last matchUp in roundNumber: 1
-  matchUpId = upcomingMatchUps.reduce((matchUpId, matchUp) => {
+  matchUpId = upcomingMatchUps?.reduce((matchUpId, matchUp) => {
     return matchUp.roundNumber === 1 && matchUp.roundPosition === drawSize / 2
       ? matchUp.matchUpId
       : matchUpId;
@@ -94,7 +94,7 @@ it('can direct participants in First Match Consolation (FIRST_MATCH_LOSER_CONSOL
   expect(matchUp.structureId).toEqual(winnerMatchUp.structureId);
   expect(matchUp.structureId).not.toEqual(loserMatchUp.structureId);
 
-  ({ matchUpId } = pendingMatchUps[0]);
+  matchUpId = pendingMatchUps?.[0]?.matchUpId;
   const {
     matchUp: matchUp2ndRound,
     targetMatchUps: {
@@ -135,7 +135,7 @@ it('can direct participants in FEED_IN_CHAMPIONSHIP structure', () => {
     structure,
     requireParticipants: false,
   });
-  expect(upcomingMatchUps.length).toEqual(drawSize / 2);
+  expect(upcomingMatchUps?.length).toEqual(drawSize / 2);
 
   const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
     inContext: true,
@@ -143,7 +143,7 @@ it('can direct participants in FEED_IN_CHAMPIONSHIP structure', () => {
   });
 
   // test first matchUp in roundNumber: 1
-  let matchUpId = upcomingMatchUps.reduce((matchUpId, matchUp) => {
+  let matchUpId = upcomingMatchUps?.reduce((matchUpId, matchUp) => {
     return matchUp.roundNumber === 1 && matchUp.roundPosition === 1
       ? matchUp.matchUpId
       : matchUpId;
@@ -170,7 +170,7 @@ it('can direct participants in FEED_IN_CHAMPIONSHIP structure', () => {
   expect(loserMatchUp.roundPosition).toEqual(1);
 
   // test last matchUp in roundNumber: 1
-  matchUpId = upcomingMatchUps.reduce((matchUpId, matchUp) => {
+  matchUpId = upcomingMatchUps?.reduce((matchUpId, matchUp) => {
     return matchUp.roundNumber === 1 && matchUp.roundPosition === drawSize / 2
       ? matchUp.matchUpId
       : matchUpId;
@@ -196,7 +196,7 @@ it('can direct participants in FEED_IN_CHAMPIONSHIP structure', () => {
   expect(winnerMatchUp.roundPosition).toEqual(drawSize / 4);
   expect(loserMatchUp.roundPosition).toEqual(drawSize / 4);
 
-  ({ matchUpId } = pendingMatchUps[0]);
+  matchUpId = pendingMatchUps?.[0].matchUpId;
   const {
     matchUp: matchUp2ndRound,
     targetMatchUps: {
@@ -247,8 +247,8 @@ it('can direct participants in COMPASS', () => {
 
   // not requiring participants, just checking round Positions
   const { upcomingMatchUps, pendingMatchUps } = getStructureMatchUps({
-    structure,
     requireParticipants: false,
+    structure,
   });
 
   const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
@@ -256,7 +256,7 @@ it('can direct participants in COMPASS', () => {
     drawDefinition,
   });
 
-  let { matchUpId } = upcomingMatchUps[0];
+  let matchUpId = upcomingMatchUps?.[0].matchUpId;
   const {
     matchUp,
     targetLinks: { loserTargetLink },
@@ -288,7 +288,7 @@ it('can direct participants in COMPASS', () => {
   expect(matchUp.structureId).toEqual(winnerMatchUp.structureId);
   expect(matchUp.structureId).not.toEqual(loserMatchUp.structureId);
 
-  ({ matchUpId } = pendingMatchUps[0]);
+  matchUpId = pendingMatchUps?.[0].matchUpId;
   const {
     matchUp: matchUp2ndRound,
     targetLinks: { loserTargetLink: round2loserTargetLink },

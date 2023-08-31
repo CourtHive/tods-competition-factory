@@ -7,7 +7,10 @@ import {
   ErrorType,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../../constants/errorConditionConstants';
-import { TournamentRecordsArgs } from '../../../types/factoryTypes';
+import {
+  QueueMethod,
+  TournamentRecordsArgs,
+} from '../../../types/factoryTypes';
 
 /**
  * Specific to deployments where both client and server are running competitionEngine.
@@ -24,7 +27,7 @@ type GetExtensionUpdateArgs = TournamentRecordsArgs & {
 export function getExtensionUpdate({
   tournamentRecords,
   extensionName,
-}: GetExtensionUpdateArgs): { error?: ErrorType; methods?: any[] } {
+}: GetExtensionUpdateArgs): { error?: ErrorType } | { methods: QueueMethod[] } {
   if (
     typeof tournamentRecords !== 'object' ||
     !Object.keys(tournamentRecords).length

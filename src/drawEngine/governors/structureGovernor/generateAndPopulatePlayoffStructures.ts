@@ -22,7 +22,6 @@ import { makeDeepCopy } from '../../../utilities';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
-  ErrorType,
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
   STRUCTURE_NOT_FOUND,
@@ -59,16 +58,13 @@ type GenerateAndPopulateArgs = {
 };
 export function generateAndPopulatePlayoffStructures(
   params: GenerateAndPopulateArgs
-):
-  | ResultType
-  | {
-      drawDefinition?: DrawDefinition;
-      matchUpModifications?: any[];
-      structures?: Structure[];
-      links?: DrawLink[];
-      success?: boolean;
-      error?: ErrorType;
-    } {
+): ResultType & {
+  drawDefinition?: DrawDefinition;
+  matchUpModifications?: any[];
+  structures?: Structure[];
+  links?: DrawLink[];
+  success?: boolean;
+} {
   const stack = 'genPlayoffStructure';
   if (!params.drawDefinition)
     return decorateResult({
@@ -267,14 +263,14 @@ export function generateAndPopulatePlayoffStructures(
 
   const newStructureIds = newStructures.map(({ structureId }) => structureId);
   const addedMatchUpIds = inContextDrawMatchUps
-    .filter(({ structureId }) => newStructureIds.includes(structureId))
+    ?.filter(({ structureId }) => newStructureIds.includes(structureId))
     .map(getMatchUpId);
 
-  const addedMatchUps = matchUpsMap?.drawMatchUps?.filter(({ matchUpId }) =>
-    addedMatchUpIds.includes(matchUpId)
+  const addedMatchUps = matchUpsMap?.drawMatchUps?.filter(
+    ({ matchUpId }) => addedMatchUpIds?.includes(matchUpId)
   );
 
-  if (addedMatchUps.length) {
+  if (addedMatchUps?.length) {
     const tieFormat = resolveTieFormat({ drawDefinition, event })?.tieFormat;
 
     if (tieFormat) {
@@ -286,13 +282,13 @@ export function generateAndPopulatePlayoffStructures(
   }
 
   // now advance any players from completed matchUps into the newly added structures
-  const completedMatchUps = inContextDrawMatchUps.filter(
+  const completedMatchUps = inContextDrawMatchUps?.filter(
     (matchUp) =>
       matchUpIsComplete({ matchUp }) &&
       matchUp.structureId === sourceStructureId
   );
 
-  completedMatchUps.forEach((matchUp) => {
+  completedMatchUps?.forEach((matchUp) => {
     const { matchUpId, score, winningSide } = matchUp;
     const targetData = positionTargets({
       inContextDrawMatchUps,

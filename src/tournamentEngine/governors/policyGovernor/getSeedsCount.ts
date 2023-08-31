@@ -1,10 +1,10 @@
 import { getPolicyDefinitions } from '../../../global/functions/deducers/getAppliedPolicies';
 import { getEliminationDrawSize } from '../../../drawEngine/getters/getEliminationDrawSize';
+import { isConvertableInteger } from '../../../utilities/math';
 import {
   ResultType,
   decorateResult,
 } from '../../../global/functions/decorateResult';
-import { isConvertableInteger } from '../../../utilities/math';
 
 import { POLICY_TYPE_SEEDING } from '../../../constants/policyConstants';
 import {
@@ -14,7 +14,6 @@ import {
   MISSING_SEEDCOUNT_THRESHOLDS,
   PARTICIPANT_COUNT_EXCEEDS_DRAW_SIZE,
   INVALID_VALUES,
-  ErrorType,
 } from '../../../constants/errorConditionConstants';
 
 /**
@@ -27,9 +26,7 @@ import {
  * @param {object} drawDefinition - optional - retrieved automatically if drawId is provided
  * @param {string} drawId - allows drawDefinition and event to be retrieved by tournamentEngine from tournament record
  */
-export function getSeedsCount(
-  params?
-): { seedsCount?: number; error?: ErrorType } | ResultType {
+export function getSeedsCount(params?): ResultType & { seedsCount?: number } {
   let {
     policyDefinitions,
     drawSize,

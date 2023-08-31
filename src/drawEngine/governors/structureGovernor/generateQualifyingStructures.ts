@@ -1,12 +1,16 @@
 import { generateQualifyingLink } from '../../generators/generateQualifyingLink';
 import { addExtension } from '../../../global/functions/producers/addExtension';
 import { coerceEven, isConvertableInteger } from '../../../utilities/math';
-import { decorateResult } from '../../../global/functions/decorateResult';
+import {
+  ResultType,
+  decorateResult,
+} from '../../../global/functions/decorateResult';
 import structureTemplate from '../../generators/structureTemplate';
 import { generateRoundRobin } from '../../generators/roundRobin';
 import { treeMatchUps } from '../../generators/eliminationTree';
 
 import { MISSING_DRAW_SIZE } from '../../../constants/errorConditionConstants';
+import { DrawLink, Structure } from '../../../types/tournamentFromSchema';
 import { ROUND_TARGET } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -15,7 +19,6 @@ import {
   ROUND_ROBIN,
   WINNER,
 } from '../../../constants/drawDefinitionConstants';
-import { DrawLink, Structure } from '../../../types/tournamentFromSchema';
 
 export function generateQualifyingStructures({
   qualifyingProfiles,
@@ -23,7 +26,14 @@ export function generateQualifyingStructures({
   idPrefix,
   isMock,
   uuids,
-}) {
+}): ResultType & {
+  qualifyingDrawPositionsCount?: number;
+  structures?: Structure[];
+  qualifiersCount?: number;
+  qualifyingDetails?: any;
+  links?: DrawLink[];
+  success?: boolean;
+} {
   const stack = 'generateQualifyingSTructures';
   const qualifyingDetails: any[] = [];
   const structures: Structure[] = [];

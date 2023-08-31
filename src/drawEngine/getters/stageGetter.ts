@@ -176,10 +176,10 @@ function getPlayoffEntries({
 
     // for group participant results to be tallied,
     // the source structure must be a container of other structures
-    if (sourceStructure.structureType === CONTAINER) {
+    if (sourceStructure?.structureType === CONTAINER) {
       const playoffStructures = sourceStructure.structures || [];
       playoffStructures.forEach((structure) => {
-        const { positionAssignments } = structure;
+        const positionAssignments = structure.positionAssignments || [];
         const { structureId: playoffStructureId } = structure;
         const groupingValue = playoffStructureId;
 
@@ -192,7 +192,10 @@ function getPlayoffEntries({
                 element: assignment,
                 name: TALLY,
               }).extension?.value;
-              return results ? { [participantId]: results } : undefined;
+
+              return results && participantId
+                ? { [participantId]: results }
+                : undefined;
             })
             .filter(Boolean)
         );

@@ -1,5 +1,8 @@
 import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
-import { decorateResult } from '../../../global/functions/decorateResult';
+import {
+  ResultType,
+  decorateResult,
+} from '../../../global/functions/decorateResult';
 import { instanceCount, intersection } from '../../../utilities';
 import { getTieFormat } from './getTieFormat/getTieFormat';
 import { copyTieFormat } from './copyTieFormat';
@@ -139,7 +142,7 @@ export function updateTieFormat({
       inheritedTieFormat,
       structure,
     })?.modifiedCount;
-    modifiedStructuresCount += modified;
+    if (modified) modifiedStructuresCount += modified;
 
     structure.tieFormat = tieFormat;
     modifiedCount += 1;
@@ -188,7 +191,9 @@ export function updateTieFormat({
     return modifiedStructureIds.length;
   }
 
-  function processStructure({ inheritedTieFormat, structure }) {
+  function processStructure({ inheritedTieFormat, structure }): ResultType & {
+    modifiedCount?: number;
+  } {
     let modifiedCount = 0;
     const structureMatchUps =
       getAllStructureMatchUps({

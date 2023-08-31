@@ -31,6 +31,7 @@ import {
   MISSING_DRAW_POSITION,
   MISSING_EVENT,
   MISSING_STRUCTURE_ID,
+  STRUCTURE_NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
 import {
   ADD_NICKNAME_METHOD,
@@ -86,13 +87,15 @@ export function positionActions(params) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!params.structureId) return { error: MISSING_STRUCTURE_ID };
 
-  let result = findStructure({
+  let result: any = findStructure({
     structureId: params.structureId,
     drawDefinition,
   });
   if (result.error) return result;
 
   const structure = result.containingStructure || result.structure;
+  if (!structure) return { error: STRUCTURE_NOT_FOUND };
+
   const structureId = structure.structureId;
 
   result = getStructureDrawPositionProfiles({

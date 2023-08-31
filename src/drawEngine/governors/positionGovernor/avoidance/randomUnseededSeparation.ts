@@ -113,7 +113,7 @@ export function randomUnseededSeparation({
     (assignment) => assignment.drawPosition
   );
 
-  const isRoundRobin = structure.structureType === CONTAINER;
+  const isRoundRobin = structure?.structureType === CONTAINER;
 
   const params = isRoundRobin
     ? { structure, matchUps, allDrawPositions, roundsToSeparate }

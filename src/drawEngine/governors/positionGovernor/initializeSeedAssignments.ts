@@ -13,6 +13,7 @@ import { SeedingProfile } from '../../../types/factoryTypes';
 import {
   ErrorType,
   SEEDSCOUNT_GREATER_THAN_DRAW_SIZE,
+  STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
 type InitializeStructureSeedAssignmentsArgs = {
@@ -44,6 +45,7 @@ export function initializeStructureSeedAssignments({
   const result = findStructure({ drawDefinition, structureId });
   if (result.error) return result;
   const structure = result.structure;
+  if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const drawSize = positionAssignments?.length || 0;
@@ -70,10 +72,10 @@ export function initializeStructureSeedAssignments({
   });
 
   if (
+    maxSeedsCount &&
     appliedPolicies?.[POLICY_TYPE_SEEDING] &&
     seedsCount > maxSeedsCount &&
-    enforcePolicyLimits &&
-    maxSeedsCount
+    enforcePolicyLimits
   ) {
     seedsCount = maxSeedsCount;
   }

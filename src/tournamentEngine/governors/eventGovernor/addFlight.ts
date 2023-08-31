@@ -1,9 +1,8 @@
 import { addEventExtension } from '../tournamentGovernor/addRemoveExtensions';
+import { extractAttributes, intersection, UUID } from '../../../utilities';
 import { decorateResult } from '../../../global/functions/decorateResult';
-import { getParticipantIds } from '../../../global/functions/extractors';
 import { getFlightProfile } from '../../getters/getFlightProfile';
 import { ensureInt } from '../../../utilities/ensureInt';
-import { intersection, UUID } from '../../../utilities';
 
 import { FLIGHT_PROFILE } from '../../../constants/extensionConstants';
 import {
@@ -12,7 +11,16 @@ import {
   MISSING_EVENT,
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
+import { Entry, Event } from '../../../types/tournamentFromSchema';
 
+type AddFlightArgs = {
+  qualifyingPositions?: number;
+  drawEntries?: Entry[];
+  drawName?: string;
+  drawId: string;
+  stage?: string;
+  event: Event;
+};
 export function addFlight({
   qualifyingPositions,
   drawEntries = [], // [{ entryPosition, entryStatus, participantId }]
@@ -20,7 +28,7 @@ export function addFlight({
   drawId,
   event,
   stage,
-}) {
+}: AddFlightArgs) {
   const stack = 'addFlight';
   if (!event)
     return decorateResult({ result: { error: MISSING_EVENT }, stack });
@@ -29,8 +37,12 @@ export function addFlight({
 
   if (drawEntries?.length) {
     // check that all drawEntries are in event.entries
-    const enteredParticipantIds = getParticipantIds(event.entries || []);
-    const flightParticipantIds = getParticipantIds(drawEntries);
+    const enteredParticipantIds = (event.entries || []).map(
+      extractAttributes('participantId')
+    );
+    const flightParticipantIds = drawEntries.map(
+      extractAttributes('participantId')
+    );
     if (
       intersection(flightParticipantIds, enteredParticipantIds).length !==
       flightParticipantIds.length

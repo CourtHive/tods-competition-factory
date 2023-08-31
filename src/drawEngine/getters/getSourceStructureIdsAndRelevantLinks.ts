@@ -41,7 +41,7 @@ export function getSourceStructureIdsAndRelevantLinks({
       // if finishingPosition has been specified and does not match, ignore link
       if (
         finishingPosition &&
-        sourceStructure.finishingPosition !== finishingPosition
+        sourceStructure?.finishingPosition !== finishingPosition
       )
         return;
       return link;

@@ -80,7 +80,7 @@ test.each([competitionEngineSync])(
         name: extensionName,
         element: event,
       });
-      expect(extension.value).toEqual(extensionValue);
+      expect(extension?.value).toEqual(extensionValue);
     });
   }
 );

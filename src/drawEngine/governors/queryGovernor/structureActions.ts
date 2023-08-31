@@ -33,13 +33,13 @@ export function isCompletedStructure(params) {
     structureMatchUps || {};
 
   if (includesTeamMatchUps) {
-    completedMatchUps = completedMatchUps.filter(
+    completedMatchUps = completedMatchUps?.filter(
       ({ matchUpType }) => matchUpType === TEAM
     );
-    pendingMatchUps = pendingMatchUps.filter(
+    pendingMatchUps = pendingMatchUps?.filter(
       ({ matchUpType }) => matchUpType === TEAM
     );
-    upcomingMatchUps = upcomingMatchUps.filter(
+    upcomingMatchUps = upcomingMatchUps?.filter(
       ({ matchUpType }) => matchUpType === TEAM
     );
   }
@@ -47,7 +47,7 @@ export function isCompletedStructure(params) {
   const isComplete =
     completedMatchUps?.length &&
     !pendingMatchUps?.length &&
-    !upcomingMatchUps.length;
+    !upcomingMatchUps?.length;
 
   return !!isComplete;
 }

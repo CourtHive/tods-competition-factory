@@ -250,10 +250,11 @@ export function addDrawDefinition(params) {
 
     if (!suppressNotifications) {
       const { matchUps } = allDrawMatchUps({ drawDefinition, event });
-      addMatchUpsNotice({
-        tournamentId: tournamentRecord?.tournamentId,
-        matchUps,
-      });
+      matchUps &&
+        addMatchUpsNotice({
+          tournamentId: tournamentRecord?.tournamentId,
+          matchUps,
+        });
 
       addDrawNotice({ drawDefinition, tournamentId, eventId });
     }

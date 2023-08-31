@@ -55,7 +55,7 @@ export function setPositionAssignments({
 
     if (
       intersection(structureDrawPositions, submittedDrawPositions).length !==
-      structureDrawPositions.length
+      structureDrawPositions?.length
     ) {
       return decorateResult({
         result: { error: INVALID_VALUES },

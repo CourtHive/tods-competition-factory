@@ -196,7 +196,7 @@ function removeParticipantIdsFromGroupingParticipant({
             name: LINEUPS,
           });
           let lineUp = extension?.value[groupingParticipant.participantId];
-          if (lineUp) {
+          if (extension && lineUp) {
             lineUp = lineUp.filter(
               (assignment) => assignment.participantId !== participantId
             );
@@ -216,7 +216,7 @@ function removeParticipantIdsFromGroupingParticipant({
                 (assignment) => assignment.participantId === participantId
               );
               if (containsParticipant) {
-                side.lineUp = side.lineUp.filter(
+                side.lineUp = lineUp.filter(
                   (assignment) => assignment.participantId !== participantId
                 );
                 modifyMatchUpNotice({

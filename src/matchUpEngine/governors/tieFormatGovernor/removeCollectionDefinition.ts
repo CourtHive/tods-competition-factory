@@ -139,8 +139,8 @@ export function removeCollectionDefinition({
   tieFormat.winCriteria = definedAttributes({ aggregateValue, valueGoal });
 
   // if valueGoal has changed, force renaming of the tieFormat
-  const originalValueGoal = existingTieFormat.winCriteria.valueGoal;
-  const wasAggregateValue = existingTieFormat.winCriteria.aggregateValue;
+  const originalValueGoal = existingTieFormat?.winCriteria.valueGoal;
+  const wasAggregateValue = existingTieFormat?.winCriteria.aggregateValue;
   if (
     (originalValueGoal && originalValueGoal !== valueGoal) ||
     (aggregateValue && !wasAggregateValue)
@@ -158,20 +158,23 @@ export function removeCollectionDefinition({
   if (matchUpId && matchUp) {
     matchUps = [matchUp];
   } else if (structureId && structure) {
-    matchUps = getAllStructureMatchUps({
-      matchUpFilters: { matchUpTypes: [TEAM] },
-      structure,
-    })?.matchUps;
+    matchUps =
+      getAllStructureMatchUps({
+        matchUpFilters: { matchUpTypes: [TEAM] },
+        structure,
+      })?.matchUps || [];
   } else if (drawDefinition) {
-    matchUps = allDrawMatchUps({
-      matchUpFilters: { matchUpTypes: [TEAM] },
-      drawDefinition,
-    })?.matchUps;
+    matchUps =
+      allDrawMatchUps({
+        matchUpFilters: { matchUpTypes: [TEAM] },
+        drawDefinition,
+      })?.matchUps || [];
   } else if (event) {
-    matchUps = allEventMatchUps({
-      matchUpFilters: { matchUpTypes: [TEAM] },
-      drawDefinition,
-    })?.matchUps;
+    matchUps =
+      allEventMatchUps({
+        matchUpFilters: { matchUpTypes: [TEAM] },
+        drawDefinition,
+      })?.matchUps || [];
   }
 
   // all team matchUps in scope which are completed or which have a score should not be modified

@@ -6,31 +6,34 @@ import { unique } from '../../../../utilities';
 
 import { POLICY_TYPE_SCORING } from '../../../../constants/policyConstants';
 import { SCHEDULE_TIMING } from '../../../../constants/extensionConstants';
+import { Event, Tournament } from '../../../../types/tournamentFromSchema';
 import {
+  ErrorType,
   MISSING_EVENT,
   MISSING_SCORING_POLICY,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../../constants/errorConditionConstants';
 
-/**
- * method requires an array of target matchUpFormats either be defined in scoring policy or passed in as parameter
- *
- * @param {string[]} matchUpFormats - optional - array of targetd matchUpFormats
- * @param {string} eventId - resolved to { event } by tournamentEngine
- * @param {string} categoryType - optional filter
- *
- * @returns { eventMatchUpFormatTiming }
- */
+type GetEventMatchUpFormatTimingArgs = {
+  tournamentRecord: Tournament;
+  matchUpFormats?: string[];
+  categoryType?: string;
+  event: Event;
+};
+
 export function getEventMatchUpFormatTiming({
   tournamentRecord,
   matchUpFormats, // optional - can be retrieved from policy
   categoryType, // optional - categoryType is not part of event attributes
   event,
-}) {
+}: GetEventMatchUpFormatTimingArgs): {
+  eventMatchUpFormatTiming?: any;
+  error?: ErrorType;
+} {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
 
-  let matchUpFormatDefinitions = [];
+  let matchUpFormatDefinitions: any[] = [];
   if (!matchUpFormats?.length) {
     const { policy } = findPolicy({
       policyType: POLICY_TYPE_SCORING,

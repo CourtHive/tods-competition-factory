@@ -41,7 +41,7 @@ export function generateRoundRobinWithPlayOff(params) {
     ...params,
   });
 
-  structures.push(...playoffStructures);
+  if (playoffStructures) structures.push(...playoffStructures);
 
   return {
     ...SUCCESS,

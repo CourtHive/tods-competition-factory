@@ -2,22 +2,30 @@ import { addParticipantGroupings } from '../../governors/positionGovernor/avoida
 import { addUpcomingMatchUps } from '../../governors/matchUpGovernor/addUpcomingMatchUps';
 import { getContextContent } from '../../../tournamentEngine/getters/getContextContent';
 import { getExitProfiles } from '../../governors/queryGovernor/getExitProfile';
-import { decorateResult } from '../../../global/functions/decorateResult';
+import {
+  ResultType,
+  decorateResult,
+} from '../../../global/functions/decorateResult';
 import { MatchUpsMap, getMatchUpsMap } from './getMatchUpsMap';
 import { getStructureMatchUps } from './getStructureMatchUps';
 import { getDrawStructures } from '../findStructure';
 import { filterMatchUps } from './filterMatchUps';
 
 import { SUCCESS } from '../../../constants/resultConstants';
+import { HydratedMatchUp } from '../../../types/hydrated';
 import {
   ErrorType,
   MISSING_DRAW_DEFINITION,
+  STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
 /*
   return ALL matchUps within a drawDefinition, regardless of state
 */
-export function getAllDrawMatchUps(params) {
+export function getAllDrawMatchUps(params): ResultType & {
+  matchUps?: HydratedMatchUp[];
+  matchUpsMap?: MatchUpsMap;
+} {
   const stack = 'getAllDrawMatchUps';
   Object.assign(params, { requireParticipants: false });
 
@@ -113,6 +121,7 @@ export function getDrawMatchUps(params): GroupsMatchUpsResult {
   }
 
   const { structures } = getDrawStructures({ drawDefinition });
+  if (!structures) return { error: STRUCTURE_NOT_FOUND };
 
   if (!matchUpsMap) {
     matchUpsMap = getMatchUpsMap({ drawDefinition });
@@ -127,10 +136,10 @@ export function getDrawMatchUps(params): GroupsMatchUpsResult {
   structures.forEach((structure) => {
     const {
       byeMatchUps = [],
-      pendingMatchUps,
-      upcomingMatchUps,
-      completedMatchUps,
-      abandonedMatchUps,
+      pendingMatchUps = [],
+      upcomingMatchUps = [],
+      completedMatchUps = [],
+      abandonedMatchUps = [],
     } = getStructureMatchUps({
       // if nextMatchUps then the filters can't be applied at this level
       matchUpFilters: !nextMatchUps ? matchUpFilters : undefined,

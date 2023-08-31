@@ -38,7 +38,7 @@ it('can return matchUps from an SINGLE_ELIMINATION structure', () => {
     requireParticipants: false,
     structure,
   });
-  expect(upcomingMatchUps.length).toEqual(8);
+  expect(upcomingMatchUps?.length).toEqual(8);
 
   const { matchUpType } = getMatchUpType({
     matchUp: matchUps[0],
@@ -116,13 +116,13 @@ it('can return matchUps from a ROUND_ROBIN structure', () => {
     structure,
     requireParticipants: false,
   });
-  expect(upcomingMatchUps.length).toEqual(24);
+  expect(upcomingMatchUps?.length).toEqual(24);
   const { upcomingMatchUps: filteredActiveMatchUps } = getStructureMatchUps({
     matchUpFilters: { roundNumbers: [1] },
     requireParticipants: false,
     structure,
   });
-  expect(filteredActiveMatchUps.length).toEqual(8);
+  expect(filteredActiveMatchUps?.length).toEqual(8);
 
   const allDrawMatchUps = drawEngine.drawMatchUps({
     requireParticipants: false,
@@ -149,7 +149,7 @@ it('can set matchUpFormat', () => {
   });
 
   const matchUpFormat = 'SET1-S:T10';
-  const matchUp = upcomingMatchUps[0];
+  const matchUp = upcomingMatchUps?.[0];
   expect(matchUp.matchUpFormat).toEqual(undefined);
 
   const matchUpId = matchUp.matchUpId as string;

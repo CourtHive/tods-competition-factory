@@ -1,4 +1,7 @@
-import { decorateResult } from '../../global/functions/decorateResult';
+import {
+  ResultType,
+  decorateResult,
+} from '../../global/functions/decorateResult';
 import { definedAttributes, makeDeepCopy } from '../../utilities';
 import { getFlightProfile } from './getFlightProfile';
 
@@ -10,7 +13,11 @@ import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../constants/errorConditionConstants';
-import { Tournament } from '../../types/tournamentFromSchema';
+import {
+  DrawDefinition,
+  Tournament,
+  Event,
+} from '../../types/tournamentFromSchema';
 
 export function getEvent({ tournamentRecord, drawDefinition, event, context }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -54,13 +61,20 @@ export function findEvent({
   tournamentRecord,
   eventId,
   drawId,
-}: FindEventArgs) {
+}: FindEventArgs): ResultType & {
+  event: Event | undefined;
+  drawDefinition: DrawDefinition | undefined;
+} {
   const stack = 'findEvent';
   if (!tournamentRecord)
-    return decorateResult({
-      result: { error: MISSING_TOURNAMENT_RECORD },
-      stack,
-    });
+    return {
+      event: undefined,
+      drawDefinition: undefined,
+      ...decorateResult({
+        result: { error: MISSING_TOURNAMENT_RECORD },
+        stack,
+      }),
+    };
   const events = tournamentRecord?.events || [];
 
   if (drawId) {
@@ -93,15 +107,23 @@ export function findEvent({
   if (eventId) {
     const event = events.find((event) => event.eventId === eventId);
     if (!event)
-      return decorateResult({ result: { error: EVENT_NOT_FOUND }, stack });
-    return { event };
+      return {
+        event: undefined,
+        drawDefinition: undefined,
+        ...decorateResult({ result: { error: EVENT_NOT_FOUND }, stack }),
+      };
+    return { event, drawDefinition: undefined };
   }
 
-  return decorateResult({
-    result: { error: DRAW_DEFINITION_NOT_FOUND },
-    context: { drawId, eventId },
-    stack,
-  });
+  return {
+    event: undefined,
+    drawDefinition: undefined,
+    ...decorateResult({
+      result: { error: DRAW_DEFINITION_NOT_FOUND },
+      context: { drawId, eventId },
+      stack,
+    }),
+  };
 }
 
 export function getDrawDefinition({ tournamentRecord, drawId }) {

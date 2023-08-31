@@ -9,13 +9,16 @@ import {
   DrawDefinition,
   Tournament,
   Event,
+  Structure,
 } from '../../../types/tournamentFromSchema';
 import {
   DRAW_DEFINITION_NOT_FOUND,
+  ErrorType,
   MATCHUP_NOT_FOUND,
   MISSING_MATCHUP_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
+import { HydratedMatchUp } from '../../../types/hydrated';
 
 export function publicFindMatchUp(params) {
   Object.assign(params, { inContext: true });
@@ -48,7 +51,12 @@ export function findMatchUp({
   eventId,
   drawId,
   event,
-}: FindMatchUpType) {
+}: FindMatchUpType): {
+  drawDefinition?: DrawDefinition;
+  matchUp?: HydratedMatchUp;
+  structure?: Structure;
+  error?: ErrorType;
+} {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (typeof matchUpId !== 'string') return { error: MISSING_MATCHUP_ID };
 

@@ -8,8 +8,12 @@ import { randomMember } from '../../../utilities';
 import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { DRAW } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { STRUCTURE_NOT_FOUND } from '../../../constants/errorConditionConstants';
+import { ResultType } from '../../../global/functions/decorateResult';
 
-export function placeQualifier(params) {
+export function placeQualifier(
+  params
+): ResultType & { qualifierPlaced?: boolean } {
   let qualifierPlaced;
   const {
     inContextDrawMatchUps,
@@ -53,6 +57,7 @@ export function placeQualifier(params) {
           structureId: mainDrawTargetMatchUp.structureId,
           drawDefinition,
         });
+        if (!structure) return { error: STRUCTURE_NOT_FOUND };
         const positionAssignments = getPositionAssignments({
           structure,
         }).positionAssignments;
@@ -75,7 +80,7 @@ export function placeQualifier(params) {
                 }))
               );
               for (const subStructure of structure.structures) {
-                subStructure.positionAssignments.forEach(
+                subStructure.positionAssignments?.forEach(
                   (assignment) =>
                     (assignment.participantId =
                       assignmentMap[assignment.drawPosition])

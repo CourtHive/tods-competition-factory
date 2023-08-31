@@ -123,7 +123,7 @@ export function directWinner({
       if (result.error) return decorateResult({ result, stack });
     } else {
       // qualifiers do not get automatically directed
-      if (structure.stage !== QUALIFYING) {
+      if (structure?.stage !== QUALIFYING) {
         const error = 'winner target position unavaiallble';
         console.log(error);
         return { error };
@@ -138,13 +138,15 @@ export function directWinner({
       const seedAssignment = structure.seedAssignments.find(
         ({ participantId }) => participantId === winnerParticipantId
       );
-      if (seedAssignment) {
+      const participantId = seedAssignment?.participantId;
+      if (seedAssignment && participantId) {
         assignSeed({
           eventId: winnerMatchUp?.eventId,
           structureId: targetStructureId,
           ...seedAssignment,
           tournamentRecord,
           drawDefinition,
+          participantId,
         });
       }
     }

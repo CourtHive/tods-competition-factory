@@ -174,13 +174,15 @@ export function directLoser(params) {
     const seedAssignment = structure.seedAssignments.find(
       ({ participantId }) => participantId === loserParticipantId
     );
-    if (seedAssignment) {
+    const participantId = seedAssignment?.participantId;
+    if (seedAssignment && participantId) {
       assignSeed({
         eventId: loserMatchUp?.eventId,
         structureId: targetStructureId,
         ...seedAssignment,
         tournamentRecord,
         drawDefinition,
+        participantId,
       });
     }
   }

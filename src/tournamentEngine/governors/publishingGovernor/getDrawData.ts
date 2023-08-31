@@ -95,10 +95,10 @@ export function getDrawData(params): {
         });
 
         // capture the seedAssignments for MAIN/QUALIFYING { stageSequence: 1 }
-        if (structure.stage === MAIN && structure.stageSequence === 1) {
+        if (structure?.stage === MAIN && structure.stageSequence === 1) {
           mainStageSeedAssignments = seedAssignments;
         }
-        if (structure.stage === QUALIFYING && structure.stageSequence === 1) {
+        if (structure?.stage === QUALIFYING && structure.stageSequence === 1) {
           qualificationStageSeedAssignments = seedAssignments;
         }
 
