@@ -18,6 +18,7 @@ import {
   ErrorType,
   MISSING_DRAW_DEFINITION,
   MISSING_DRAW_SIZE,
+  STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 import {
   QUALIFYING,
@@ -76,11 +77,13 @@ export function generateQualifyingStructure(params): {
     });
   }
 
+  if (!result.structure) return { error: STRUCTURE_NOT_FOUND };
+
   const targetStructure = result.structure;
   const matchUpType = targetStructure.matchUpType;
 
   if (targetStructure.stage === QUALIFYING) {
-    if (targetStructure.stageSequence > 1) {
+    if (targetStructure.stageSequence && targetStructure.stageSequence > 1) {
       stageSequence = targetStructure.stageSequence - 1;
     } else {
       // stageSequence must be modified for entire qualifying chain
@@ -104,6 +107,7 @@ export function generateQualifyingStructure(params): {
             structureId: targetTargetStructureId,
             drawDefinition,
           });
+          if (!result.structure) return { error: STRUCTURE_NOT_FOUND };
           if (result.error) {
             return decorateResult({
               context: { targetTargetStructureId },

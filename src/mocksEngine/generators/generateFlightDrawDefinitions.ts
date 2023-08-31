@@ -12,7 +12,11 @@ import { hasParticipantId } from '../../global/functions/filters';
 import { completeDrawMatchUps } from './completeDrawMatchUps';
 import { generateRange } from '../../utilities';
 
-import { ErrorType } from '../../constants/errorConditionConstants';
+import {
+  DRAW_DEFINITION_NOT_FOUND,
+  ErrorType,
+  STRUCTURE_NOT_FOUND,
+} from '../../constants/errorConditionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import { SEEDING } from '../../constants/scaleConstants';
 import {
@@ -96,8 +100,8 @@ export function generateFlightDrawDefinitions({
           stage,
         });
         if (result.error) return { error: result.error, drawIds: [] };
-
         const { drawDefinition } = result;
+        if (!drawDefinition) return { error: DRAW_DEFINITION_NOT_FOUND };
 
         const drawExtensions = drawProfiles[index]?.drawExtensions;
         if (Array.isArray(drawExtensions)) {
@@ -130,7 +134,7 @@ export function generateFlightDrawDefinitions({
         }
 
         if (drawProfile?.withPlayoffs) {
-          const structureId = drawDefinition.structures[0].structureId;
+          const structureId = drawDefinition.structures?.[0].structureId;
           const result = addPlayoffStructures({
             idPrefix: drawProfile.idPrefix,
             ...drawProfile.withPlayoffs,
@@ -166,9 +170,10 @@ export function generateFlightDrawDefinitions({
           const completedCount = result.completedCount;
 
           if (drawProfile?.drawType === ROUND_ROBIN_WITH_PLAYOFF) {
-            const mainStructure = drawDefinition.structures.find(
+            const mainStructure = drawDefinition.structures?.find(
               (structure) => structure.stage === MAIN
             );
+            if (!mainStructure) return { error: STRUCTURE_NOT_FOUND };
             let result = automatedPlayoffPositioning({
               structureId: mainStructure.structureId,
               tournamentRecord,

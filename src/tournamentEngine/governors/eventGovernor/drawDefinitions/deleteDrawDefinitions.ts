@@ -131,15 +131,15 @@ export function deleteDrawDefinitions({
           stage: MAIN,
         })?.structures?.[0];
 
-        const pa =
-          mainStructure &&
-          getPositionAssignments({
-            structureId: mainStructure.structureId,
-            tournamentRecord,
-            drawDefinition,
-          });
+        const pa: any = mainStructure
+          ? getPositionAssignments({
+              structureId: mainStructure.structureId,
+              tournamentRecord,
+              drawDefinition,
+            })
+          : undefined;
 
-        const positionAssignments = pa?.positionAssignments.map(
+        const positionAssignments = pa?.positionAssignments?.map(
           positionAssignmentMap
         );
 
@@ -185,7 +185,7 @@ export function deleteDrawDefinitions({
           })
         );
         const { matchUps } = allDrawMatchUps({ event, drawDefinition });
-        matchUps.forEach(({ matchUpId }) => matchUpIds.push(matchUpId));
+        matchUps?.forEach(({ matchUpId }) => matchUpIds.push(matchUpId));
       }
       return !drawIds.includes(drawDefinition.drawId);
     }
@@ -265,7 +265,7 @@ function addDrawDeletionTelemetry({ event, deletedDrawsDetail, auditData }) {
   const updatedExtension = {
     name: DRAW_DELETIONS,
     value: Array.isArray(extension?.value)
-      ? extension.value.concat(deletionData)
+      ? extension?.value.concat(deletionData)
       : [deletionData],
   };
   addExtension({ element: event, extension: updatedExtension });

@@ -57,7 +57,7 @@ export function getStructureDrawPositionProfiles(
     event,
   });
 
-  const inContextStructureMatchUps = inContextDrawMatchUps.filter(
+  const inContextStructureMatchUps = inContextDrawMatchUps?.filter(
     (matchUp) =>
       matchUp.structureId === structureId ||
       containedStructureIds.includes(matchUp.structureId)
@@ -75,7 +75,7 @@ export function getStructureDrawPositionProfiles(
   const drawPositionInitialRounds = {};
   const activeMatchUps: any[] = [];
 
-  for (const matchUp of inContextDrawMatchUps) {
+  for (const matchUp of inContextDrawMatchUps || []) {
     if (
       matchUp.structureId === structureId ||
       containedStructureIds.includes(matchUp.structureId)
@@ -88,7 +88,7 @@ export function getStructureDrawPositionProfiles(
       )) {
         if (
           !drawPositionInitialRounds[drawPosition] ||
-          drawPositionInitialRounds[drawPosition] > roundNumber
+          (roundNumber && drawPositionInitialRounds[drawPosition] > roundNumber)
         ) {
           drawPositionInitialRounds[drawPosition] = roundNumber;
         }
@@ -113,7 +113,7 @@ export function getStructureDrawPositionProfiles(
 
   const activeDrawPositions = unique(
     inContextStructureMatchUps
-      .map(({ matchUpId, drawPositions }) =>
+      ?.map(({ matchUpId, drawPositions }) =>
         activeDependentMatchUpIds.includes(matchUpId) ? drawPositions : []
       )
       .flat()

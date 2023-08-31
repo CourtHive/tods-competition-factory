@@ -111,7 +111,7 @@ it('can assign ROUND_ROBIN draw drawPositions', () => {
   } = getDrawStructures({ drawDefinition, stage });
   const { structureId } = structure;
   expect(structure.structureType).toEqual(CONTAINER);
-  expect(structure.structures.length).toEqual(4);
+  expect(structure.structures?.length).toEqual(4);
 
   const entryStatuses = [
     EntryStatusEnum.DirectAcceptance,

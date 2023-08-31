@@ -9,6 +9,7 @@ import { MISSING_EVENT } from '../../../../constants/errorConditionConstants';
 import SEEDING_USTA from '../../../../fixtures/policies/POLICY_SEEDING_USTA';
 import { ADD_SCALE_ITEMS } from '../../../../constants/topicConstants';
 import { SINGLES } from '../../../../constants/eventConstants';
+import { TypeEnum } from '../../../../types/tournamentFromSchema';
 
 it('can autoSeed by Rankings', () => {
   const {
@@ -86,8 +87,8 @@ it('can autoSeed by Rankings', () => {
   expect(scaleValues).toEqual([8, 7, 6, 5, 4, 3, 1, 2]);
 
   let seedingScaleAttributes = {
+    eventType: TypeEnum.Singles,
     scaleType: SEEDING,
-    eventType: SINGLES,
     scaleName: 'U18',
   };
   result = tournamentEngine.setParticipantScaleItems({
@@ -242,8 +243,8 @@ it('can autoSeed by Rankings', () => {
   expect(result.success).toEqual(true);
 
   seedingScaleAttributes = {
+    eventType: TypeEnum.Singles,
     scaleType: SEEDING,
-    eventType: SINGLES,
     scaleName: 'U18',
   };
   ({ scaledEntries } = tournamentEngine.getScaledEntries({

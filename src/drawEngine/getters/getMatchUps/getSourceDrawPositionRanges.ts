@@ -24,7 +24,7 @@ export function getSourceDrawPositionRanges({
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
 
   const { structure } = findStructure({ drawDefinition, structureId });
-  if (structure.stage !== CONSOLATION)
+  if (structure?.stage !== CONSOLATION)
     return { error: INVALID_STAGE, info: 'Structure is not CONSOLATION stage' };
 
   const { links } = drawDefinition;

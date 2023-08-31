@@ -18,6 +18,7 @@ import { HydratedMatchUp } from '../../../types/hydrated';
 import {
   ErrorType,
   MISSING_DRAW_POSITIONS,
+  STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 import {
   DrawDefinition,
@@ -219,6 +220,7 @@ export function removeDirectedWinner({
   if (winnerTargetLink) {
     const structureId = winnerTargetLink.target.structureId;
     const { structure } = findStructure({ drawDefinition, structureId });
+    if (!structure) return { error: STRUCTURE_NOT_FOUND };
     const { positionAssignments } = structureAssignedDrawPositions({
       structure,
     });
@@ -312,6 +314,7 @@ function removeDirectedLoser({
   const stack = 'removeDirectedLoser';
   const structureId = loserTargetLink.target.structureId;
   const { structure } = findStructure({ drawDefinition, structureId });
+  if (!structure) return { error: STRUCTURE_NOT_FOUND };
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const relevantDrawPosition = positionAssignments?.find(
     (assignment) => assignment.participantId === loserParticipantId

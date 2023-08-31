@@ -50,7 +50,7 @@ export function removeSubsequentRoundsParticipant({
   event,
 }: RemoveSubsequentDrawPositionArgs) {
   const { structure } = findStructure({ drawDefinition, structureId });
-  if (structure.structureType === CONTAINER) return { ...SUCCESS };
+  if (structure?.structureType === CONTAINER) return { ...SUCCESS };
 
   matchUpsMap = matchUpsMap || getMatchUpsMap({ drawDefinition });
   const mappedMatchUps = matchUpsMap?.mappedMatchUps || {};

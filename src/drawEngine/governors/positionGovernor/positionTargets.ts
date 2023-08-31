@@ -52,7 +52,7 @@ export function positionTargets({
     drawDefinition,
   });
 
-  const { finishingPosition } = structure;
+  const finishingPosition = structure?.finishingPosition;
   if (finishingPosition === ROUND_OUTCOME) {
     return targetByRoundOutcome({
       inContextDrawMatchUps,

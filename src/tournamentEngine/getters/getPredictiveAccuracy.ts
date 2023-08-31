@@ -20,6 +20,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
+import { TypeEnum } from '../../types/tournamentFromSchema';
 
 export function getPredictiveAccuracy(params) {
   let { matchUps } = params;
@@ -174,8 +175,8 @@ function getGroupingBands({ zoneData }) {
 
 type GetSideValuesArgs = {
   valueAccessor: string;
+  matchUpType: TypeEnum;
   exclusionRule?: any;
-  matchUpType: string;
   scaleName: string;
   sides: any;
 };

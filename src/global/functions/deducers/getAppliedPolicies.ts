@@ -1,6 +1,7 @@
 import { makeDeepCopy } from '../../../utilities';
 
 import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
+import { PolicyDefinitions } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   ErrorType,
@@ -76,7 +77,10 @@ export function getPolicyDefinitions({
   drawDefinition,
   structure,
   event,
-}: GetPolicyDefinitionsArgs): { error?: ErrorType; policyDefinitions?: any } {
+}: GetPolicyDefinitionsArgs): {
+  error?: ErrorType;
+  policyDefinitions?: PolicyDefinitions;
+} {
   if (!Array.isArray(policyTypes)) return { error: MISSING_POLICY_TYPE };
 
   const { appliedPolicies } = getAppliedPolicies({

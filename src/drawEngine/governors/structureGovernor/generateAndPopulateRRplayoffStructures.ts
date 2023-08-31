@@ -73,14 +73,14 @@ export function generateAndPopulateRRplayoffStructures(params) {
     ({ structureId }) => structureId
   );
   const addedMatchUpIds = inContextDrawMatchUps
-    .filter(({ structureId }) => newStructureIds.includes(structureId))
+    ?.filter(({ structureId }) => newStructureIds.includes(structureId))
     .map(getMatchUpId);
 
-  const addedMatchUps = matchUpsMap?.drawMatchUps?.filter(({ matchUpId }) =>
-    addedMatchUpIds.includes(matchUpId)
+  const addedMatchUps = matchUpsMap?.drawMatchUps?.filter(
+    ({ matchUpId }) => addedMatchUpIds?.includes(matchUpId)
   );
 
-  if (addedMatchUps.length) {
+  if (addedMatchUps?.length) {
     const tieFormat = resolveTieFormat({ drawDefinition, event })?.tieFormat;
 
     if (tieFormat) {

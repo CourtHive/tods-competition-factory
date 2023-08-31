@@ -13,20 +13,6 @@ import {
   Tournament,
 } from '../../types/tournamentFromSchema';
 
-/**
- *
- * return an array of all validActions for a given matchUp
- *
- * @param {object} tournamentRecord - provided automatically if tournamentEngine state has been set
- * @param {string} drawId - if provided then drawDefinition will be found automatically
- * @param {object} drawDefinition
- * @param {string} matchUpId - id of matchUp for which validActions will be returned
- * @param {object=} policyDefinitions
- * @param {string=} participantId
- * @param {number=} sideNumber
- * @param {object=} event
- *
- */
 type MatchUpActionsArgs = {
   drawDefinition?: DrawDefinition;
   tournamentRecord: Tournament;

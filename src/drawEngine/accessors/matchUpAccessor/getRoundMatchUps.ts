@@ -37,7 +37,7 @@ type RoundProfile = {
 };
 
 type GetRoundMatchUpsArgs = {
-  matchUps: HydratedMatchUp[];
+  matchUps?: HydratedMatchUp[];
   interpolate?: boolean;
 };
 
@@ -54,7 +54,8 @@ export function getRoundMatchUps({
   matchUps = [],
   interpolate,
 }: GetRoundMatchUpsArgs): RoundMatchUpsResult {
-  if (!Array.isArray(matchUps)) return { error: INVALID_VALUES };
+  if (!Array.isArray(matchUps))
+    return { roundMatchUps: [], error: INVALID_VALUES };
 
   // create an array of arrays of matchUps grouped by roundNumber
   const roundMatchUpsArray = matchUps

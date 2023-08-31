@@ -3,12 +3,12 @@ import { mustBeAnArray } from '../../utilities/mustBeAnArray';
 import { isConvertableInteger } from '../../utilities/math';
 import { unique } from '../../utilities';
 
+import type { Score } from '../../types/tournamentFromSchema';
+import { ResultType } from '../functions/decorateResult';
 import {
   INVALID_SCORE,
   INVALID_VALUES,
 } from '../../constants/errorConditionConstants';
-
-import type { Score } from '../../types/tournamentFromSchema';
 
 type validateScoreTypes = {
   existingMatchUpStatus?: string;
@@ -24,7 +24,7 @@ export function validateScore({
   matchUpStatus,
   winningSide,
   score,
-}: validateScoreTypes) {
+}: validateScoreTypes): ResultType & { valid?: boolean } {
   if (typeof score !== 'object') return { error: INVALID_VALUES };
   const { sets, scoreStringSide1, scoreStringSide2 } = score;
   const info = 'scoreString must be a string!';

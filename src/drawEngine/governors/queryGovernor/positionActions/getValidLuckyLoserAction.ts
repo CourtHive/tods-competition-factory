@@ -140,7 +140,7 @@ export function getValidLuckyLosersAction({
           participantId && !assignedParticipantIds.includes(participantId)
       );
 
-    availableParticipantIds.forEach((participantId) => {
+    availableParticipantIds?.forEach((participantId) => {
       // ensure if 'restrictBySourceRound' is false and there are multiple links that participants aren't added multiple times
       if (!availableLuckyLoserParticipantIds.includes(participantId))
         availableLuckyLoserParticipantIds.push(participantId);

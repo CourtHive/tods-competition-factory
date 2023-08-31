@@ -139,10 +139,10 @@ export function getScheduledRoundsDetails({
     }
 
     const tournamentRecord = tournamentRecords[round.tournamentId];
-    const { event } = findEvent({
+    const event = findEvent({
       drawId: round.drawId,
       tournamentRecord,
-    });
+    }).event;
 
     const matchUpFormatOrder: string[] = [];
     for (const matchUp of roundMatchUps) {
@@ -157,7 +157,7 @@ export function getScheduledRoundsDetails({
     }
 
     for (const matchUpFormat of matchUpFormatOrder) {
-      const { eventType, category, categoryType } = event || {};
+      const { eventType, category } = event || {};
       const { categoryName, ageCategoryCode } = category || {};
       const {
         typeChangeRecoveryMinutes,
@@ -166,11 +166,11 @@ export function getScheduledRoundsDetails({
         error,
       } = findMatchUpFormatTiming({
         categoryName: categoryName || ageCategoryCode,
+        categoryType: category?.categoryType,
         tournamentId: round.tournamentId,
         eventId: round.eventId,
         tournamentRecords,
         matchUpFormat,
-        categoryType,
         eventType,
       });
       if (error) return { error, round };

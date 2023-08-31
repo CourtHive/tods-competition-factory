@@ -80,7 +80,7 @@ export function getValidAlternatesAction({
   const availableDrawEnteredParticipantIds = drawEnteredParticipantIds.filter(
     (participantId) =>
       [QUALIFYING, MAIN, PLAY_OFF].includes(structure.stage)
-        ? !allPositionedParticipantIds.includes(participantId)
+        ? !allPositionedParticipantIds?.includes(participantId)
         : !assignedParticipantIds.includes(participantId)
   );
 
@@ -95,7 +95,7 @@ export function getValidAlternatesAction({
           entry,
         }) &&
         ([QUALIFYING, MAIN, PLAY_OFF].includes(structure.stage)
-          ? !allPositionedParticipantIds.includes(entry.participantId)
+          ? !allPositionedParticipantIds?.includes(entry.participantId)
           : !assignedParticipantIds.includes(entry.participantId))
     )
     .sort(

@@ -1,11 +1,14 @@
-import { decorateResult } from '../decorateResult';
+import { ResultType, decorateResult } from '../decorateResult';
 
+import { Extension } from '../../../types/tournamentFromSchema';
 import {
   MISSING_VALUE,
   NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
-export function findExtension({ element, name }) {
+export function findExtension({ element, name }): ResultType & {
+  extension?: Extension;
+} {
   const stack = 'findExtension';
   if (!element || !name)
     return decorateResult({ result: { error: MISSING_VALUE }, stack });

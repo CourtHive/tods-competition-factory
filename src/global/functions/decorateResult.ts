@@ -5,8 +5,6 @@ import { SUCCESS } from '../../constants/resultConstants';
 
 export type ResultType = {
   stack?: string | string[];
-  result?: ResultType;
-  [key: string]: any;
   error?: ErrorType;
   errors?: string[];
   success?: boolean;
@@ -15,12 +13,19 @@ export type ResultType = {
   info?: any;
 };
 
+type DecorateResultArgs = {
+  stack?: string | string[];
+  context?: any;
+  result: any;
+  info?: any;
+};
+
 export function decorateResult({
   context,
   result,
   stack,
   info,
-}: ResultType): ResultType {
+}: DecorateResultArgs): ResultType {
   if (result && !Array.isArray(result?.stack)) result.stack = [];
   if (result && Array.isArray(result?.stack) && typeof stack === 'string') {
     result.stack.push(stack);

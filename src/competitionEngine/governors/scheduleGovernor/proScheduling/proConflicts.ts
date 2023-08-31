@@ -3,7 +3,10 @@ import { generateRange, instanceCount, unique } from '../../../../utilities';
 import { matchUpSort } from '../../../../drawEngine/getters/matchUpSort';
 import { ensureInt } from '../../../../utilities/ensureInt';
 
+import { Tournament } from '../../../../types/tournamentFromSchema';
+import { HydratedMatchUp } from '../../../../types/hydrated';
 import {
+  ErrorType,
   MISSING_CONTEXT,
   MISSING_MATCHUPS,
 } from '../../../../constants/errorConditionConstants';
@@ -19,7 +22,16 @@ import {
 } from '../../../../constants/scheduleConstants';
 
 // NOTE: matchUps are assumed to be { inContext: true, nextMatchUps: true }
-export function proConflicts({ tournamentRecords, matchUps }) {
+type ProConflictsArgs = {
+  tournamentRecords: { [key: string]: Tournament };
+  matchUps: HydratedMatchUp[];
+};
+export function proConflicts({
+  tournamentRecords,
+  matchUps,
+}: ProConflictsArgs):
+  | { error: ErrorType; info?: any }
+  | { courtIssues: { [key: string]: any }; rowIssues: { [key: string]: any } } {
   if (!Array.isArray(matchUps)) return { error: MISSING_MATCHUPS };
   if (matchUps.some(({ matchUpId, hasContext }) => matchUpId && !hasContext)) {
     return {
@@ -37,9 +49,9 @@ export function proConflicts({ tournamentRecords, matchUps }) {
     matchUps.filter((m) => ensureInt(m.schedule?.courtOrder) === courtOrder)
   );
 
-  const matchUpsMap = {};
-  const courtIssues = {};
-  const rowIndices = {};
+  const rowIndices: { [key: string]: number } = {};
+  const courtIssues: { [key: string]: any } = {};
+  const mappedMatchUps: any = {};
 
   const sortedFiltered = filteredRows.flat().filter(Boolean).sort(matchUpSort);
 
@@ -52,9 +64,16 @@ export function proConflicts({ tournamentRecords, matchUps }) {
     drawIds,
   }).matchUpDependencies;
 
+  type Profile = {
+    sourceMatchUpIds: string[];
+    targetMatchUpIds: string[];
+    participantIds: string[];
+    matchUpIds: string[];
+  };
+
   const rowProfiles = filteredRows.map((row, rowIndex) =>
     row.reduce(
-      (profile, matchUp) => {
+      (profile: Profile, matchUp) => {
         if (!matchUp.matchUpId) return profile;
 
         const {
@@ -70,7 +89,7 @@ export function proConflicts({ tournamentRecords, matchUps }) {
         courtIssues[courtId] = [];
 
         profile.matchUpIds.push(matchUpId);
-        matchUpsMap[matchUpId] = matchUp;
+        mappedMatchUps[matchUpId] = matchUp;
 
         const sourceMatchUpIds = deps[matchUpId].matchUpIds;
         sourceMatchUpIds.length &&
@@ -78,9 +97,9 @@ export function proConflicts({ tournamentRecords, matchUps }) {
 
         const matchUpParticipantIds =
           sides
-            ?.map(({ participantId, participant }) => [
-              participant?.individualParticipantIds,
-              participantId,
+            ?.map((side: any) => [
+              side.participant?.individualParticipantIds,
+              side.participantId,
             ])
             .flat()
             .filter(Boolean) || [];
@@ -121,10 +140,10 @@ export function proConflicts({ tournamentRecords, matchUps }) {
 
   const rowIssues: any[] = rowProfiles.map(() => []);
   const annotate = (matchUpId, issue, issueType, issueIds) => {
-    if (!matchUpsMap[matchUpId].schedule[SCHEDULE_STATE]) {
+    if (!mappedMatchUps[matchUpId].schedule[SCHEDULE_STATE]) {
       // store issue for display below by order of severity
-      matchUpsMap[matchUpId].schedule[SCHEDULE_STATE] = issue;
-      matchUpsMap[matchUpId].schedule[SCHEDULE_ISSUE_IDS] = issueIds;
+      mappedMatchUps[matchUpId].schedule[SCHEDULE_STATE] = issue;
+      mappedMatchUps[matchUpId].schedule[SCHEDULE_ISSUE_IDS] = issueIds;
 
       // update row issues
       rowIssues[rowIndices[matchUpId]].push({
@@ -135,7 +154,7 @@ export function proConflicts({ tournamentRecords, matchUps }) {
       });
 
       // update court issues
-      const courtId = matchUpsMap[matchUpId].schedule.courtId;
+      const courtId = mappedMatchUps[matchUpId].schedule.courtId;
       if (!courtIssues[courtId]) courtIssues[courtId] = [];
       courtIssues[courtId].push({ matchUpId, issue, issueType, issueIds });
     }
@@ -145,7 +164,7 @@ export function proConflicts({ tournamentRecords, matchUps }) {
     const previousRow = rowIndex ? rowProfiles[rowIndex - 1] : undefined;
     const subsequentRows = rowProfiles.slice(rowIndex + 1);
 
-    const participantConflicts = {};
+    const participantConflicts: { [key: string]: any } = {};
 
     const instances = instanceCount(row.participantIds);
     const conflictedParticipantIds = Object.keys(instances).filter(
@@ -264,12 +283,12 @@ export function proConflicts({ tournamentRecords, matchUps }) {
         // IF: connected matchUps are on the same court with sufficient time between them
         // OR: connected matchUps are on the same court and the target matchUp has 'FOLLOWED_BY'
         // THEN: no WARNING will be given
-        const consideredCourtId = matchUpsMap[matchUpId].schedule.courtId;
+        const consideredCourtId = mappedMatchUps[matchUpId].schedule.courtId;
         const warningMatchUpIds = sourceMatchUpIds.filter((id) =>
           previousRow.matchUpIds.includes(id)
         );
         const allSameCourt = warningMatchUpIds.some(
-          (id) => matchUpsMap[id].schedule.courtId === consideredCourtId
+          (id) => mappedMatchUps[id].schedule.courtId === consideredCourtId
         );
         if (!allSameCourt) {
           warningMatchUpIds.forEach((id) =>

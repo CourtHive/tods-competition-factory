@@ -390,12 +390,10 @@ it('properly orders round robin participants; drawSize: 5, SET3-S:4/TB7-F:TB7', 
     const assignment = positionAssignments?.find(
       (assignment) => assignment.drawPosition === drawPosition
     );
-    const {
-      extension: { value: participantResult },
-    } = findExtension({
+    const participantResult = findExtension({
       element: assignment,
       name: TALLY,
-    });
+    }).extension?.value;
     const eventParticipantResult = participantResults.find(
       (result) => result.drawPosition === drawPosition
     ).participantResult;
@@ -584,12 +582,10 @@ it('recognize when participants are tied with position order', () => {
     const result = participantResults.find(
       (result) => result.drawPosition === drawPosition
     ).participantResult;
-    const {
-      extension: { value: participantResult },
-    } = findExtension({
+    const participantResult = findExtension({
       element: assignment,
       name: TALLY,
-    });
+    }).extension?.value;
 
     const {
       ties,
@@ -676,12 +672,10 @@ it('recognize when participants are tied with position order', () => {
     structure,
   }));
 
-  const {
-    extension: { value: tally },
-  } = findExtension({
+  const tally = findExtension({
     element: positionAssignments?.[0],
     name: TALLY,
-  });
+  }).extension?.value;
   expect(tally.subOrder).toEqual(
     participantResults[0].participantResult.subOrder
   );
@@ -692,12 +686,10 @@ it('recognize when participants are tied with position order', () => {
     const result = participantResults.find(
       (result) => result.drawPosition === drawPosition
     ).participantResult;
-    const {
-      extension: { value: participantResult },
-    } = findExtension({
+    const participantResult = findExtension({
       element: assignment,
       name: TALLY,
-    });
+    }).extension?.value;
 
     const {
       ties,
@@ -824,12 +816,10 @@ it('properly handles walkovers in calculating participant positions', () => {
   ];
 
   positionAssignments?.forEach((assignment, i) => {
-    const {
-      extension: { value: participantResult },
-    } = findExtension({
+    const participantResult = findExtension({
       element: assignment,
       name: TALLY,
-    });
+    }).extension?.value;
 
     expect(assignment.drawPosition).toEqual(i + 1);
     const expectation = expectations[i];
@@ -930,12 +920,10 @@ it('properly handles DEFAULTS in calculating participant positions', () => {
   ];
 
   positionAssignments?.forEach((assignment, i) => {
-    const {
-      extension: { value: participantResult },
-    } = findExtension({
+    const participantResult = findExtension({
       element: assignment,
       name: TALLY,
-    });
+    }).extension?.value;
 
     expect(assignment.drawPosition).toEqual(i + 1);
     const expectation = expectations[i];
@@ -1038,12 +1026,10 @@ it('recognize when TEAM participants are tied with position order', () => {
     const result = participantResults.find(
       (result) => result.drawPosition === drawPosition
     ).participantResult;
-    const {
-      extension: { value: participantResult },
-    } = findExtension({
+    const participantResult = findExtension({
       element: assignment,
       name: TALLY,
-    });
+    }).extension?.value;
 
     // check that the results in eventData are equivalent
     expect(result).toEqual(participantResult);
@@ -1096,12 +1082,10 @@ it('recognize when TEAM participants are tied with position order', () => {
     structure,
   }));
 
-  const {
-    extension: { value: tally },
-  } = findExtension({
+  const tally = findExtension({
     element: positionAssignments?.[0],
     name: TALLY,
-  });
+  }).extension?.value;
   expect(tally.subOrder).toEqual(
     participantResults[0].participantResult.subOrder
   );

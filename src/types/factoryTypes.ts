@@ -1,4 +1,4 @@
-import { Entry, Tournament } from './tournamentFromSchema';
+import { Entry, Tournament, TypeEnum } from './tournamentFromSchema';
 
 export type FactoryEngine = {
   [key: string]: any;
@@ -16,17 +16,17 @@ export type SeedingProfile = {
 };
 
 export type ScaleAttributes = {
-  eventType: string;
+  eventType: TypeEnum;
   scaleType: string;
   scaleName: string;
   accessor?: string; // optional - string determining how to access attribute if scaleValue is an object
 };
 
 export type ScaleItem = {
+  eventType: TypeEnum;
   scaleDate: string;
   scaleName: string;
   scaleType: string;
-  eventType: string;
   scaleValue: any;
 };
 
@@ -37,8 +37,18 @@ export type Flight = {
   drawName: string; // custom name for generated draw
   drawId: string; // unique identifier for generating drawDefinitions
 };
+
 export type FlightProfile = {
   scaleAttributes?: ScaleAttributes;
   splitMethod?: string;
   flights: Flight[];
+};
+
+export type PolicyDefinitions = {
+  [key: string]: any;
+};
+
+export type QueueMethod = {
+  params: { [key: string]: any };
+  method: string;
 };

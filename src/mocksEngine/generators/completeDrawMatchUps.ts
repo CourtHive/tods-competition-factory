@@ -58,7 +58,7 @@ export function completeDrawMatchUps(params): {
     drawDefinition,
   });
 
-  if (firstRoundDualMatchUps.length) {
+  if (firstRoundDualMatchUps?.length) {
     const categoryName =
       event.category?.ageCategoryCode || event.category?.categoryName;
     if (categoryName) {

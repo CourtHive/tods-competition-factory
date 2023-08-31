@@ -9,7 +9,6 @@ import { POLICY_TYPE_ROUND_ROBIN_TALLY } from '../../../constants/policyConstant
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
-  ErrorType,
   INVALID_VALUES,
   MISSING_MATCHUPS,
 } from '../../../constants/errorConditionConstants';
@@ -40,9 +39,8 @@ type TallyResultType = {
   bracketComplete?: boolean;
   participantResults?: any;
   readableReport?: string;
-  error?: ErrorType;
   report?: string[];
-  order?: string[];
+  order?: any[];
 };
 
 export function tallyParticipantResults({
@@ -52,7 +50,7 @@ export function tallyParticipantResults({
   matchUps = [],
   subOrderMap,
   perPlayer,
-}: TallyParticipantResultsArgs): TallyResultType | ResultType {
+}: TallyParticipantResultsArgs): TallyResultType & ResultType {
   if (!Array.isArray(matchUps)) return { error: MISSING_MATCHUPS };
 
   const structureIds = matchUps.reduce(

@@ -15,7 +15,6 @@ import USTA_WTT_ITT_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_WTT_
 import USTA_ZONAL_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_ZONAL.json';
 import LAVER_CUP_TIE_FORMAT from '../../fixtures/scoring/tieFormats/LAVER_CUP.json';
 import USTA_TOC_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_TOC.json';
-import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
 import {
   COLLEGE_D3,
   COLLEGE_DEFAULT,
@@ -37,7 +36,7 @@ import {
   USTA_ZONAL,
 } from '../../constants/tieFormatConstants';
 
-import { Event } from '../../types/tournamentFromSchema';
+import { Event, TypeEnum } from '../../types/tournamentFromSchema';
 
 const bestOf3tbSets = 'SET3-S:6/TB7';
 const STANDARD = 'STANDARD';
@@ -145,15 +144,15 @@ export const tieFormatDefaults = (params?: TieFormatDefaultArgs) => {
         {
           collectionId: uuids?.pop() || UUID(),
           matchUpFormat: 'SET3-S:6/TB7-F:TB10',
+          matchUpType: TypeEnum.Doubles,
           collectionName: 'Doubles',
-          matchUpType: DOUBLES,
           ...template.doubles,
         },
         {
           collectionId: uuids?.pop() || UUID(),
+          matchUpType: TypeEnum.Singles,
           matchUpFormat: bestOf3tbSets,
           collectionName: 'Singles',
-          matchUpType: SINGLES,
           ...template.singles,
         },
       ],

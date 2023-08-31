@@ -6,26 +6,38 @@ import { findStructure } from '../../getters/findStructure';
 
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { SUB_ORDER } from '../../../constants/extensionConstants';
+
+import { ResultType } from '../../../global/functions/decorateResult';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_DRAW_POSITION,
   MISSING_STRUCTURE_ID,
+  STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
+import {
+  DrawDefinition,
+  Event,
+  Structure,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
 /**
  *
  * Used to order ROUND_ROBIN participants when finishingPosition ties cannot be broken algorithmically.
  * Assigns a subOrder value to a participant within a structure by drawPosition.
- *
- * @param {object} drawDefinition - added automatically by drawEngine if state is present or by tournamentEngine with drawId
- * @param {string} drawId - used by tournamentEngine to retrieve drawDefinition
- * @param {string} structureId - structure identifier within drawDefinition
- * @param {number} drawPosition - drawPosition of the participant where subOrder is to be added
- * @param {number} subOrder - order in which tied participant should receive finishing position
- *
  */
+
+type SetSubOrderArgs = {
+  tournamentRecord?: Tournament;
+  drawDefinition: DrawDefinition;
+  drawPosition: number;
+  structureId: string;
+  subOrder: number;
+  event?: Event;
+};
+
 export function setSubOrder({
   tournamentRecord,
   drawDefinition,
@@ -33,25 +45,27 @@ export function setSubOrder({
   structureId,
   subOrder,
   event,
-}) {
+}: SetSubOrderArgs): ResultType {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
   if (!drawPosition) return { error: MISSING_DRAW_POSITION };
 
   const { structure } = findStructure({ drawDefinition, structureId });
-  let targetStructure = structure;
+  if (!structure) return { error: STRUCTURE_NOT_FOUND };
+  let targetStructure: Structure | undefined = structure;
 
-  if (structure.structureType === CONTAINER) {
-    targetStructure = structure.structures.find((currentStructure) =>
-      currentStructure.positionAssignments.find(
-        (assignment) => assignment.drawPosition === drawPosition
-      )
+  if (structure.structures && structure.structureType === CONTAINER) {
+    targetStructure = structure.structures?.find(
+      (currentStructure) =>
+        currentStructure.positionAssignments?.find(
+          (assignment) => assignment.drawPosition === drawPosition
+        )
     );
   }
 
-  const positionAssignments = targetStructure.positionAssignments;
+  const positionAssignments = targetStructure?.positionAssignments;
 
-  const assignment = positionAssignments.find(
+  const assignment = positionAssignments?.find(
     (assignment) => assignment.drawPosition === drawPosition
   );
 

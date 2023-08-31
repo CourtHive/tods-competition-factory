@@ -11,7 +11,7 @@ type GetDrawSizeArgs = {
 };
 export function getEliminationDrawSize({
   participantCount,
-}: GetDrawSizeArgs): ResultType | { drawSize: number } {
+}: GetDrawSizeArgs): ResultType & { drawSize?: number } {
   if (!participantCount) return { error: INVALID_VALUES };
 
   const drawSize = nextPowerOf2(participantCount);

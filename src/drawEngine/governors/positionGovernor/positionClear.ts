@@ -23,13 +23,9 @@ import {
   modifyMatchUpNotice,
 } from '../../notifications/drawNotifications';
 
+import { CONTAINER, DRAW } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
-import {
-  CONTAINER,
-  DRAW,
-  QUALIFYING,
-} from '../../../constants/drawDefinitionConstants';
 import {
   BYE,
   DEFAULTED,
@@ -42,6 +38,7 @@ import {
   MISSING_DRAW_POSITION,
   DRAW_POSITION_NOT_CLEARED,
   ErrorType,
+  STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import {
@@ -147,6 +144,7 @@ export function drawPositionRemovals({
   event,
 }: DrawPositionRemovalsArgs) {
   const { structure } = findStructure({ drawDefinition, structureId });
+  if (!structure) return { error: STRUCTURE_NOT_FOUND };
   const positionAssignments =
     structureAssignedDrawPositions({
       drawDefinition,
@@ -304,6 +302,7 @@ function removeSubsequentRoundsParticipant({
   structureId,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
+  if (!structure) return { error: STRUCTURE_NOT_FOUND };
   if (structure.structureType === CONTAINER) return;
 
   matchUpsMap = matchUpsMap || getMatchUpsMap({ drawDefinition });
@@ -340,6 +339,7 @@ function removeSubsequentRoundsParticipant({
       structure,
     })
   );
+  return { ...SUCCESS };
 }
 
 type RemoveDrawPositionArgs = {
@@ -427,7 +427,7 @@ function removeDrawPosition({
       loserMatchUp,
       winnerMatchUp,
       loserMatchUpDrawPositionIndex,
-      winnerMatchUpDrawPositionIndex,
+      // winnerMatchUpDrawPositionIndex,
     },
   } = targetData;
 
@@ -555,16 +555,18 @@ function removeDrawPosition({
     // does not apply to traversals that are based on QUALIFYING
     winnerTargetLink.target.feedProfile !== DRAW
   ) {
+    /*
     const { structure } = findStructure({
       structureId: targetData.matchUp.structureId,
       drawDefinition,
     });
 
-    if (structure.structureType !== QUALIFYING)
+    if (/* is not a qualifying structure *?)
       console.log('linked structure winnerMatchUp removal', {
         winnerMatchUpDrawPositionIndex,
         winnerTargetLink,
       });
+      */
   }
 
   return { ...SUCCESS };
