@@ -1,3 +1,4 @@
+import { RoundProfile } from '../../../types/factoryTypes';
 import { ensureInt } from '../../../utilities/ensureInt';
 import {
   allNumeric,
@@ -6,11 +7,16 @@ import {
   numericSort,
 } from '../../../utilities';
 
+type GetOrderedDrawPositionsArgs = {
+  roundProfile: RoundProfile;
+  drawPositions: number[];
+  roundNumber: number;
+};
 export function getOrderedDrawPositions({
   drawPositions,
   roundProfile,
   roundNumber,
-}) {
+}: GetOrderedDrawPositionsArgs) {
   const unassignedDrawPositions = [undefined, undefined];
 
   if (noNumeric(drawPositions)) {

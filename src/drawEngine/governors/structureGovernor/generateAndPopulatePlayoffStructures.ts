@@ -20,6 +20,7 @@ import { getSourceRounds } from './getSourceRounds';
 import { makeDeepCopy } from '../../../utilities';
 
 import { SUCCESS } from '../../../constants/resultConstants';
+import { RoundProfile } from '../../../types/factoryTypes';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
   INVALID_VALUES,
@@ -45,11 +46,11 @@ type GenerateAndPopulateArgs = {
   playoffStructureNameBase?: string;
   tournamentRecord?: Tournament;
   drawDefinition: DrawDefinition;
+  roundProfiles?: RoundProfile[];
   playoffPositions?: number[];
   exitProfileLimit?: boolean;
   playoffAttributes?: any;
   roundNumbers?: number[];
-  roundProfiles?: any[];
   structureId: string;
   idPrefix?: string;
   isMock?: boolean;

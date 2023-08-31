@@ -8,15 +8,16 @@ import { unique } from '../../../utilities';
 import { SIGN_IN_STATUS } from '../../../constants/participantConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 
+import { ParticipantFilters } from '../../../types/factoryTypes';
 import type {
   Participant,
   Tournament,
 } from '../../../types/tournamentFromSchema';
 
 type FilterParticipantsArgs = {
+  participantFilters: ParticipantFilters;
   tournamentRecord: Tournament;
   participants: Participant[];
-  participantFilters: any;
 };
 
 export function filterParticipants({
@@ -45,8 +46,8 @@ export function filterParticipants({
 
   const tournamentEvents =
     (isValidFilterArray(eventIds) &&
-      tournamentRecord?.events?.filter((event) =>
-        eventIds.includes(event.eventId)
+      tournamentRecord?.events?.filter(
+        (event) => eventIds?.includes(event.eventId)
       )) ||
     tournamentRecord?.events ||
     [];
@@ -60,6 +61,7 @@ export function filterParticipants({
     getEventEntries({ eventEntryStatuses, tournamentEvents });
 
   const positionedParticipantIds =
+    positionedParticipants !== undefined &&
     [true, false].includes(positionedParticipants) &&
     tournamentEvents.reduce((participantIds, event) => {
       return participantIds.concat(
@@ -74,7 +76,7 @@ export function filterParticipants({
     }, []);
 
   const participantHasAccessorValues = (participant) => {
-    return accessorValues.reduce((hasValues, keyValue) => {
+    return accessorValues?.reduce((hasValues, keyValue) => {
       const { accessor, value } = keyValue;
       const { values } = getAccessorValue({
         element: participant,
@@ -88,7 +90,7 @@ export function filterParticipants({
     const participantSignInStatus = getTimeItem({
       element: participant,
       itemType: SIGN_IN_STATUS,
-    } as any);
+    } as any)?.timeItem?.itemValue;
     const {
       participantRoleResponsibilities: responsibilities,
       participantType,
@@ -115,9 +117,11 @@ export function filterParticipants({
         participantIds?.includes(participantId) ||
         (signInStatus && participantSignInStatus === signInStatus) ||
         (participantTypes &&
+          participantType &&
           isValidFilterArray(participantTypes) &&
           participantTypes.includes(participantType)) ||
         (participantRoles &&
+          participantRole &&
           isValidFilterArray(participantRoles) &&
           participantRoles.includes(participantRole)) ||
         (participantRoleResponsibilities &&
@@ -145,10 +149,12 @@ export function filterParticipants({
         (!participantIds || participantIds.includes(participantId)) &&
         (!signInStatus || participantSignInStatus === signInStatus) &&
         (!participantTypes ||
-          (isValidFilterArray(participantTypes) &&
+          (participantType &&
+            isValidFilterArray(participantTypes) &&
             participantTypes.includes(participantType))) &&
         (!participantRoles ||
-          (isValidFilterArray(participantRoles) &&
+          (participantRole &&
+            isValidFilterArray(participantRoles) &&
             participantRoles.includes(participantRole))) &&
         (!participantRoleResponsibilities ||
           (isValidFilterArray(responsibilities) &&

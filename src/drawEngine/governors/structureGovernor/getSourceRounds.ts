@@ -5,6 +5,7 @@ import { getPositionsPlayedOff } from './getPositionsPlayedOff';
 import { ensureInt } from '../../../utilities/ensureInt';
 
 import { DrawDefinition } from '../../../types/tournamentFromSchema';
+import { RoundProfile } from '../../../types/factoryTypes';
 import {
   ErrorType,
   MISSING_DRAW_DEFINITION,
@@ -24,8 +25,8 @@ type SourceRoundsResult = {
   playedOffSourceRounds?: number[];
   playoffSourceRounds?: number[];
   playoffRoundsRanges?: any;
+  roundProfile?: RoundProfile;
   sourceRounds?: number[];
-  roundProfile?: any;
   error?: ErrorType;
   info?: string;
 };
@@ -105,7 +106,7 @@ export function getSourceRounds({
     .map((round) => {
       const rangeDefinition =
         roundProfile?.[round].finishingPositionRange.loser;
-      const [min, max] = rangeDefinition;
+      const [min, max] = rangeDefinition ?? [0, 0];
       return generateRange(min, (max || min) + 1);
     })
     .flat()
