@@ -32,20 +32,22 @@ export function getEntryStatusReports({
     withDraws: true,
   });
 
-  const nonTeamMatchUps = allTournamentMatchUps({
-    matchUpFilters: { matchUpTypes: [SINGLES_MATCHUP, DOUBLES_MATCHUP] },
-    tournamentRecord,
-  }).matchUps;
+  const nonTeamMatchUps =
+    allTournamentMatchUps({
+      matchUpFilters: { matchUpTypes: [SINGLES_MATCHUP, DOUBLES_MATCHUP] },
+      tournamentRecord,
+    }).matchUps || [];
 
   const nonTeamEnteredParticipantIds = nonTeamMatchUps
-    .flatMap(({ sides, matchUpType }) =>
-      sides
-        .flatMap(({ participant, participantId }) =>
-          matchUpType === DOUBLES_MATCHUP
-            ? participant?.individualParticipantIds
-            : participant?.participantId || participantId
-        )
-        .filter(Boolean)
+    .flatMap(
+      ({ sides, matchUpType }) =>
+        sides
+          ?.flatMap((side: any) =>
+            matchUpType === DOUBLES_MATCHUP
+              ? side.participant?.individualParticipantIds
+              : side.participant?.participantId || side.participantId
+          )
+          .filter(Boolean)
     )
     .filter(Boolean);
 

@@ -1,12 +1,17 @@
 import { SignedInStatusEnum } from '../constants/participantConstants';
+import { HydratedParticipant } from './hydrated';
 import {
+  DrawDefinition,
   Entry,
+  Event,
   Extension,
   GenderEnum,
   MatchUpFinishingPositionRange,
+  Participant,
   ParticipantRoleEnum,
   ParticipantTypeEnum,
   SexEnum,
+  Side,
   TimeItem,
   Tournament,
   TypeEnum,
@@ -168,4 +173,31 @@ export type ParticipantsProfile = {
   participantFilters?: any;
   scheduleAnalysis?: any;
   policyDefinitions?: any;
+};
+
+export type GetMatchUpsArgs = {
+  participantMap?: { [key: string]: HydratedParticipant[] };
+  participantsProfile?: ParticipantsProfile;
+  participants?: HydratedParticipant[];
+  tournamentAppliedPolicies?: any;
+  scheduleVisibilityFilters?: any;
+  afterRecoveryTimes?: boolean;
+  tournamentRecord?: Tournament;
+  drawDefinition?: DrawDefinition;
+  useParticipantMap?: boolean;
+  policyDefinitions?: any;
+  nextMatchUps?: boolean;
+  tournamentId?: string;
+  contextFilters?: any;
+  contextContent?: any;
+  matchUpFilters?: any;
+  contextProfile?: any;
+  inContext?: boolean;
+  context?: any;
+  event?: Event;
+};
+
+export type HydratedSide = Side & {
+  individualParticipants?: Participant[];
+  participant?: Participant;
 };

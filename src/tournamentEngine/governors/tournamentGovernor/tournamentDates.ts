@@ -98,7 +98,7 @@ export function setTournamentEndDate({ tournamentRecord, endDate }) {
 
 // unschedule scheduled matchUps that fall outside of tournament dates
 export function removeInvalidScheduling({ tournamentRecord }) {
-  const { matchUps } = allTournamentMatchUps({ tournamentRecord });
+  const matchUps = allTournamentMatchUps({ tournamentRecord }).matchUps || [];
 
   const startDate =
     tournamentRecord.startDate && new Date(tournamentRecord.startDate);

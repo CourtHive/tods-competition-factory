@@ -49,18 +49,19 @@ export function allCompetitionMatchUps({
   const competitionMatchUps: HydratedMatchUp[] = tournamentIds
     .map((tournamentId) => {
       const tournamentRecord = tournamentRecords[tournamentId];
-      const { matchUps } = allTournamentMatchUps({
-        scheduleVisibilityFilters,
-        afterRecoveryTimes,
-        participantsProfile,
-        policyDefinitions,
-        tournamentRecord,
-        matchUpFilters,
-        contextFilters,
-        nextMatchUps,
-        inContext,
-      });
-      return matchUps;
+      return (
+        allTournamentMatchUps({
+          scheduleVisibilityFilters,
+          afterRecoveryTimes,
+          participantsProfile,
+          policyDefinitions,
+          tournamentRecord,
+          matchUpFilters,
+          contextFilters,
+          nextMatchUps,
+          inContext,
+        }).matchUps || []
+      );
     })
     .flat();
 

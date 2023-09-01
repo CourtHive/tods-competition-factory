@@ -62,7 +62,7 @@ export function findMatchUp({
   if (typeof matchUpId !== 'string') return { error: MISSING_MATCHUP_ID };
 
   if (!drawDefinition || !event) {
-    const { matchUps } = allTournamentMatchUps({ tournamentRecord });
+    const matchUps = allTournamentMatchUps({ tournamentRecord }).matchUps || [];
 
     const inContextMatchUp = matchUps.find(
       (matchUp) => matchUp.matchUpId === matchUpId

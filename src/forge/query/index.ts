@@ -46,10 +46,9 @@ export {
   allCompetitionMatchUps,
   competitionMatchUps,
 } from '../../competitionEngine/getters/matchUpsGetter';
-// TODO
 export {
-  // allTournamentMatchUps,
-  // allDrawMatchUps,
+  allTournamentMatchUps,
+  allDrawMatchUps,
   // allEventMatchUps,
   drawMatchUps,
   // eventMatchUps,
