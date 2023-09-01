@@ -110,11 +110,12 @@ export function applyLineUps({
           collectionParticipantIds[aggregator] = [];
         }
 
-        const participantCount = collectionParticipantIds[aggregator].length;
+        const participantsCount = collectionParticipantIds[aggregator].length;
 
         if (
-          (collectionDefinition.matchUpType === SINGLES && participantCount) ||
-          (collectionDefinition.matchUpType === DOUBLES && participantCount > 1)
+          (collectionDefinition.matchUpType === SINGLES && participantsCount) ||
+          (collectionDefinition.matchUpType === DOUBLES &&
+            participantsCount > 1)
         ) {
           // cannot have more than one assignment for singles or two for doubles
           return {
@@ -128,9 +129,9 @@ export function applyLineUps({
     }
 
     // ensure that doubles pair participants exist, otherwise create
-    const collectionParticipantIdPairs = Object.values(
+    const collectionParticipantIdPairs: string[][] = Object.values(
       collectionParticipantIds
-    ) as string[][];
+    );
     for (const participantIds of collectionParticipantIdPairs) {
       if (participantIds.length === 2) {
         const { participant: pairedParticipant } = getPairedParticipant({
@@ -185,12 +186,10 @@ export function applyLineUps({
     const assignment = sideAssignments[sideNumber];
     if (!assignment) {
       continue;
+    } else if (!side) {
+      matchUp.sides.push({ lineUp: assignment, sideNumber });
     } else {
-      if (!side) {
-        matchUp.sides.push({ lineUp: assignment, sideNumber });
-      } else {
-        side.lineUp = assignment;
-      }
+      side.lineUp = assignment;
     }
   }
 

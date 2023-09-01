@@ -37,13 +37,13 @@ export function avoidanceTest(params) {
     endDate: '2020-01-06',
 
     participantsProfile: {
-      sex,
-      participantType,
-      participantsCount,
-      inContext: true,
-
-      valuesInstanceLimit,
       nationalityCodesCount: valuesCount,
+      valuesInstanceLimit,
+      participantsCount,
+      participantType,
+      inContext: true,
+      sex,
+
       addressProps: {
         citiesCount: valuesCount,
         statesCount: valuesCount,

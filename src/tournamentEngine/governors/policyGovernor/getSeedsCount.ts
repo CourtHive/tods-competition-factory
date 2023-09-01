@@ -20,17 +20,18 @@ import {
  *
  * @param {boolean} requireParticipantCount - whether or not to consider participantCount
  * @param {boolean} drawSizeProgression - drawSizeProgression indicates that rules for all smaller drawSizes should be considered
- * @param {number} participantCount - number of participants in draw structure
+ * @param {number} participantCount - number of participants in draw structure // TODO: migrate to participantsCount
  * @param {number} drawSize - number of positions available in draw structure
  * @param {object} policyDefinitions - polictyDefinition object
  * @param {object} drawDefinition - optional - retrieved automatically if drawId is provided
  * @param {string} drawId - allows drawDefinition and event to be retrieved by tournamentEngine from tournament record
  */
+
 export function getSeedsCount(params?): ResultType & { seedsCount?: number } {
   let {
+    drawSizeProgression = false,
     policyDefinitions,
     drawSize,
-    drawSizeProgression = false,
   } = params || {};
   const {
     requireParticipantCount = true,

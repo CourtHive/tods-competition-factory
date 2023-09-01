@@ -894,7 +894,7 @@ Only generates seeding. To apply `tournamentEngine.setParticipantScaleItems({ sc
 ```js
 const { scaleItemsWithParticipantIds } = tournamentEngine.autoSeeding({
   eventId,
-  policyDefinitions, // seeding policyDefinition determines the # of seeds for given participantCount/drawSize
+  policyDefinitions, // seeding policyDefinition determines the # of seeds for given participantsCount/drawSize
   scaleAttributes, // { scaleType, scaleName, eventType, accessor }
   scaleName, // Optional - defaults to scaleAttributes.scaleName
   drawSize, // Optional - defaults to calculation based on # of entries

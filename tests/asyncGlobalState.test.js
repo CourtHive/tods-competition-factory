@@ -118,8 +118,8 @@ it.skip('can setStateProvier', async () => {
     drawIds: [drawId],
     eventIds: [eventId],
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [{ drawSize }],
     participantsProfile: { participantsCount },
+    drawProfiles: [{ drawSize }],
   }));
 
   expect(allMatchUps.length).toEqual(drawSize - 1);

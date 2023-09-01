@@ -22,7 +22,7 @@ test('participants can be merged', () => {
     },
   });
 
-  let { tournamentRecord } = mocksEngine.generateTournamentRecord({
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     participantsProfile: { participantsCount: 10 },
   });
 
@@ -90,8 +90,6 @@ test('participants can be merged', () => {
 
   result = tournamentEngine.newTournamentRecord();
   expect(result.success).toEqual(true);
-
-  tournamentRecord = tournamentEngine.getState();
 
   result = tournamentEngine.mergeParticipants({ participants });
   expect(result.success).toEqual(true);

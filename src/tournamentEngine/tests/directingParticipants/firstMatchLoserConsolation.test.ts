@@ -21,15 +21,15 @@ tournamentEngine.devContext(true);
 
 it('directs participant to FIRST_MATCH_LOSER_CONSOLATION consolation when walkover', () => {
   const participantsProfile = {
-    participantsCount: 16,
     participantType: INDIVIDUAL,
+    participantsCount: 16,
   };
   const drawProfiles = [
     {
-      drawSize: 16,
-      eventType: SINGLES,
-      participantsCount: 14,
       drawType: FIRST_MATCH_LOSER_CONSOLATION,
+      participantsCount: 14,
+      eventType: SINGLES,
+      drawSize: 16,
       outcomes: [
         {
           roundNumber: 1,
@@ -89,15 +89,15 @@ it('directs participant to FIRST_MATCH_LOSER_CONSOLATION consolation when walkov
 
 it('correctly places consolation bye for winner of 2nd round match who had bye', () => {
   const participantsProfile = {
-    participantsCount: 16,
     participantType: INDIVIDUAL,
+    participantsCount: 16,
   };
   const drawProfiles = [
     {
-      drawSize: 16,
-      eventType: SINGLES,
-      participantsCount: 14,
       drawType: FIRST_MATCH_LOSER_CONSOLATION,
+      participantsCount: 14,
+      eventType: SINGLES,
+      drawSize: 16,
       outcomes: [
         {
           roundNumber: 1,
@@ -157,15 +157,15 @@ it('correctly places consolation bye for winner of 2nd round match who had bye',
 
 it('correctly places consolation BYE for WALKOVER outcome 2nd round match with participant who had bye', () => {
   const participantsProfile = {
-    participantsCount: 16,
     participantType: INDIVIDUAL,
+    participantsCount: 16,
   };
   const drawProfiles = [
     {
-      drawSize: 16,
-      eventType: SINGLES,
-      participantsCount: 14,
       drawType: FIRST_MATCH_LOSER_CONSOLATION,
+      participantsCount: 14,
+      eventType: SINGLES,
+      drawSize: 16,
       outcomes: [
         {
           roundNumber: 1,
@@ -223,15 +223,15 @@ it('correctly places consolation BYE for WALKOVER outcome 2nd round match with p
 
 it('correctly places WALKOVER loser of 2nd round match who had bye into consolation', () => {
   const participantsProfile = {
-    participantsCount: 16,
     participantType: INDIVIDUAL,
+    participantsCount: 16,
   };
   const drawProfiles = [
     {
-      drawSize: 16,
-      eventType: SINGLES,
-      participantsCount: 14,
       drawType: FIRST_MATCH_LOSER_CONSOLATION,
+      participantsCount: 14,
+      eventType: SINGLES,
+      drawSize: 16,
       outcomes: [
         {
           roundNumber: 1,
@@ -290,15 +290,15 @@ it('correctly places WALKOVER loser of 2nd round match who had bye into consolat
 
 it('correctly places WALKOVER loser of 2nd round match who had BYE into consolation', () => {
   const participantsProfile = {
-    participantsCount: 16,
     participantType: INDIVIDUAL,
+    participantsCount: 16,
   };
   const drawProfiles = [
     {
-      drawSize: 16,
-      eventType: SINGLES,
-      participantsCount: 14,
       drawType: FIRST_MATCH_LOSER_CONSOLATION,
+      participantsCount: 14,
+      eventType: SINGLES,
+      drawSize: 16,
       outcomes: [
         {
           roundNumber: 1,
@@ -357,15 +357,15 @@ it('correctly places WALKOVER loser of 2nd round match who had BYE into consolat
 
 it('correctly places DEFAULTED loser of 2nd round match who had BYE into consolation', () => {
   const participantsProfile = {
-    participantsCount: 16,
     participantType: INDIVIDUAL,
+    participantsCount: 16,
   };
   const drawProfiles = [
     {
-      drawSize: 16,
-      eventType: SINGLES,
-      participantsCount: 14,
       drawType: FIRST_MATCH_LOSER_CONSOLATION,
+      participantsCount: 14,
+      eventType: SINGLES,
+      drawSize: 16,
       outcomes: [
         {
           roundNumber: 1,

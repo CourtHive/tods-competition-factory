@@ -24,8 +24,8 @@ import {
 
 it('can return valid actions for matchUps', () => {
   const participantsProfile = {
-    participantsCount: 16,
     participantType: INDIVIDUAL,
+    participantsCount: 16,
     sex: FEMALE,
   };
   const drawProfiles = [

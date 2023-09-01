@@ -1,10 +1,13 @@
 import { SignedInStatusEnum } from '../constants/participantConstants';
 import {
   Entry,
+  Extension,
   GenderEnum,
   MatchUpFinishingPositionRange,
   ParticipantRoleEnum,
   ParticipantTypeEnum,
+  SexEnum,
+  TimeItem,
   Tournament,
   TypeEnum,
 } from './tournamentFromSchema';
@@ -97,4 +100,65 @@ export type ParticipantFilters = {
   participantIds?: string[];
   genders?: GenderEnum;
   eventIds?: string[];
+};
+
+export type StructureSortConfig = {
+  deprioritizeCompleted?: boolean;
+  mode?: { [key: string]: number };
+};
+
+export type PersonData = {
+  participantExtensions?: Extension[];
+  participantTimeItems?: TimeItem[];
+  [key: string]: any;
+};
+
+export type AddressProps = {
+  postalCodesCount?: number;
+  citiesCount?: number;
+  statesCount?: number;
+  [key: string]: any;
+};
+
+export type TeamKey = {
+  personAttribute?: string;
+  teamNames?: string[];
+};
+
+export type ParticipantsProfile = {
+  participantType?: ParticipantTypeEnum;
+  scaledParticipantsCount?: number;
+  rankingRange?: [number, number];
+  nationalityCodesCount?: number;
+  scaleAllParticipants?: boolean;
+  personExtensions?: Extension[];
+  valuesInstanceLimit?: number;
+  addressProps?: AddressProps;
+  convertExtensions?: boolean;
+  participantsCount?: number; // participantCount?
+  withScaleValues?: boolean;
+  consideredDate?: string;
+  withGroupings?: boolean;
+  personData?: PersonData;
+  personIds?: string[];
+  inContext?: boolean;
+  withISO2?: boolean;
+  withIOC?: boolean;
+  teamKey?: TeamKey;
+  idPrefix?: string;
+  category?: any;
+  sex?: SexEnum;
+
+  // Usage via participantsProfile unconfirmed...
+  usePublishState?: boolean;
+  withStatistics?: boolean;
+  withOpponents?: boolean;
+  withMatchUps?: boolean;
+  withSeeding?: boolean;
+  withEvents?: boolean;
+  withDraws?: boolean;
+
+  participantFilters?: any;
+  scheduleAnalysis?: any;
+  policyDefinitions?: any;
 };

@@ -49,7 +49,7 @@ export function getEntriesAndSeedsCount({
     participantCount,
   });
   const result = getSeedsCount({
-    drawSize: drawSize || eliminationDrawSize,
+    drawSize: drawSize ?? eliminationDrawSize,
     policyDefinitions,
     participantCount,
   });
