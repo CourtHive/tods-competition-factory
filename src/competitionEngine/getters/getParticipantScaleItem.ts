@@ -2,18 +2,31 @@ import { participantScaleItem } from '../../tournamentEngine/accessors/participa
 import { publicFindParticipant } from './participantGetter';
 
 import { SUCCESS } from '../../constants/resultConstants';
+import { Tournament } from '../../types/tournamentFromSchema';
+import { ScaleAttributes, ScaleItem } from '../../types/factoryTypes';
+import { ResultType } from '../../global/functions/decorateResult';
 
+type GetParticipantScaleItemArgs = {
+  tournamentRecords: { [key: string]: Tournament };
+  scaleAttributes: ScaleAttributes;
+  policyDefinitions?: any;
+  participantId?: string;
+  inContext?: boolean;
+  personId?: string;
+};
 export function getParticipantScaleItem({
-  policyDefinitions,
   tournamentRecords,
+  policyDefinitions,
   scaleAttributes,
   participantId,
   inContext,
   personId,
-}) {
+}: GetParticipantScaleItemArgs): ResultType & {
+  scaleItem?: ScaleItem;
+} {
   let result: any = publicFindParticipant({
-    policyDefinitions,
     tournamentRecords,
+    policyDefinitions,
     participantId,
     inContext,
     personId,

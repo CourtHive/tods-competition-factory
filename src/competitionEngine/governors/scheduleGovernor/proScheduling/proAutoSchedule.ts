@@ -42,7 +42,6 @@ export function proAutoSchedule({
     courtCompletedMatchUps: true,
     withCourtGridRows: true,
     minCourtGridRows: 10,
-    nextMatchUps: true,
     tournamentRecords,
     matchUpFilters,
   });

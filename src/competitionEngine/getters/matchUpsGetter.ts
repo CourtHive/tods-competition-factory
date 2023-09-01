@@ -3,6 +3,7 @@ import {
   tournamentMatchUps,
 } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
 
+import { ResultType } from '../../global/functions/decorateResult';
 import { TournamentRecordsArgs } from '../../types/factoryTypes';
 import { HydratedMatchUp } from '../../types/hydrated';
 import {
@@ -18,6 +19,7 @@ type CompetitionMatchUpsArgs = TournamentRecordsArgs & {
   nextMatchUps?: boolean;
   matchUpFilters?: any;
   contextFilters?: any;
+  inContext?: boolean;
 };
 
 export function allCompetitionMatchUps({
@@ -29,6 +31,7 @@ export function allCompetitionMatchUps({
   matchUpFilters,
   contextFilters,
   nextMatchUps,
+  inContext,
 }: CompetitionMatchUpsArgs): {
   matchUps?: HydratedMatchUp[];
   error?: ErrorType;
@@ -52,6 +55,7 @@ export function allCompetitionMatchUps({
         matchUpFilters,
         contextFilters,
         nextMatchUps,
+        inContext,
       });
       return matchUps;
     })
@@ -79,7 +83,14 @@ export function competitionMatchUps({
   matchUpFilters,
   contextFilters,
   nextMatchUps,
-}: CompetitionMatchUpsArgs) {
+  inContext,
+}: CompetitionMatchUpsArgs): ResultType & {
+  abandonedMatchUps?: HydratedMatchUp[];
+  completedMatchUps?: HydratedMatchUp[];
+  upcomingMatchUps?: HydratedMatchUp[];
+  pendingMatchUps?: HydratedMatchUp[];
+  byeMatchUps?: HydratedMatchUp[];
+} {
   if (
     typeof tournamentRecords !== 'object' ||
     !Object.keys(tournamentRecords).length
@@ -97,6 +108,7 @@ export function competitionMatchUps({
       matchUpFilters,
       contextFilters,
       nextMatchUps,
+      inContext,
     });
   });
 

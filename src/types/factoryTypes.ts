@@ -1,4 +1,13 @@
-import { Entry, Tournament, TypeEnum } from './tournamentFromSchema';
+import { SignedInStatusEnum } from '../constants/participantConstants';
+import {
+  Entry,
+  GenderEnum,
+  MatchUpFinishingPositionRange,
+  ParticipantRoleEnum,
+  ParticipantTypeEnum,
+  Tournament,
+  TypeEnum,
+} from './tournamentFromSchema';
 
 export type FactoryEngine = {
   [key: string]: any;
@@ -23,8 +32,8 @@ export type ScaleAttributes = {
 };
 
 export type ScaleItem = {
+  scaleDate?: string | Date;
   eventType: TypeEnum;
-  scaleDate: string;
   scaleName: string;
   scaleType: string;
   scaleValue: any;
@@ -51,4 +60,41 @@ export type PolicyDefinitions = {
 export type QueueMethod = {
   params: { [key: string]: any };
   method: string;
+};
+
+export type RoundProfile = {
+  [key: number]: {
+    finishingPositionRange: MatchUpFinishingPositionRange;
+    pairedDrawPositions: number[][];
+    abbreviatedRoundName?: string;
+    participantsCount?: number;
+    drawPositions?: number[];
+    inactiveRound?: boolean;
+    feedRoundIndex?: number;
+    inactiveCount?: number;
+    finishingRound?: number;
+    preFeedRound?: boolean;
+    matchUpsCount: number;
+    roundFactor?: number;
+    feedRound?: boolean;
+    roundIndex?: number;
+    roundNumber: number;
+    roundName?: string;
+  };
+};
+
+export type ParticipantFilters = {
+  [key: string]: any;
+  positionedParticipants?: boolean; // boolean - participantIds that are included in any structure.positionAssignments
+  eventEntryStatuses?: string[]; // {string[]} participantIds that are in entry.entries with entryStatuses
+  drawEntryStatuses?: string[]; // {string[]} participantIds that are in draw.entries or flightProfile.flights[].drawEnteredParticipantIds with entryStatuses
+  accessorValues?: { accessor: string; value: any }[];
+  participantRoleResponsibilities?: string[];
+  participantRoles?: ParticipantRoleEnum[];
+  participantTypes?: ParticipantTypeEnum[];
+  signInStatus?: SignedInStatusEnum;
+  enableOrFiltering?: boolean;
+  participantIds?: string[];
+  genders?: GenderEnum;
+  eventIds?: string[];
 };

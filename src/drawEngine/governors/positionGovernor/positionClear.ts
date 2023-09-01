@@ -188,7 +188,7 @@ export function drawPositionRemovals({
     ensureInt(roundNumber)
   );
 
-  let targetDrawPosition = drawPosition;
+  let targetDrawPosition: any = drawPosition;
   const pairingDetails = roundNumbers
     ?.map((roundNumber) => {
       // find the pair of drawPositions which includes the targetDrawPosition
@@ -197,7 +197,7 @@ export function drawPositionRemovals({
         drawPositions.includes(targetDrawPosition)
       );
       // find the drawPosition which is paired with the targetDrawPosition
-      const pairedDrawPosition = relevantPair?.find(
+      const pairedDrawPosition: any = relevantPair?.find(
         (currentDrawPosition) => currentDrawPosition !== targetDrawPosition
       );
       // find the assignment for the paired drawPosition
@@ -209,7 +209,7 @@ export function drawPositionRemovals({
       const pairedDrawPositionIsBye = pairedDrawPositionAssignment?.bye;
       // whether or not the pairedDrawPosition is present in the next round
       const pairedDrawPositionInNextRound =
-        nextRoundProfile?.pairedDrawPositions?.find((pairedPositions) =>
+        nextRoundProfile?.pairedDrawPositions?.find((pairedPositions: any) =>
           pairedPositions.includes(pairedDrawPosition)
         );
       // pairedDrawPosition is a transitiveBye if it is a BYE and if it is present in next round
@@ -236,7 +236,7 @@ export function drawPositionRemovals({
     })
     .filter((f) => f?.targetDrawPosition);
 
-  const tasks = pairingDetails?.reduce((tasks, pairingDetail) => {
+  const tasks: any = pairingDetails?.reduce((tasks, pairingDetail: any) => {
     const {
       roundNumber,
       relevantPair,
@@ -255,7 +255,7 @@ export function drawPositionRemovals({
     return tasks.concat(...newTasks);
   }, []);
 
-  tasks.forEach(({ roundNumber, targetDrawPosition, relevantPair }) => {
+  tasks?.forEach(({ roundNumber, targetDrawPosition, relevantPair }) => {
     const targetMatchUp = roundMatchUps?.[roundNumber].find((matchUp) =>
       overlap(
         matchUp.drawPositions.filter(Boolean),

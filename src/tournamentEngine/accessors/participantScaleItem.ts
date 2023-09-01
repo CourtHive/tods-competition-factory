@@ -1,7 +1,7 @@
 import { getAccessorValue } from '../../utilities/getAccessorValue';
 
-import type { Participant } from '../../types/tournamentFromSchema';
-import { ScaleAttributes } from '../../types/factoryTypes';
+import { ScaleAttributes, ScaleItem } from '../../types/factoryTypes';
+import type { Participant, TypeEnum } from '../../types/tournamentFromSchema';
 import { SCALE } from '../../constants/scaleConstants';
 import {
   ErrorType,
@@ -16,14 +16,6 @@ export interface ParticipantScaleItemArgs {
   requireTimeStamp?: boolean;
   participant: Participant;
 }
-
-export type ScaleItem = {
-  scaleDate?: string | Date;
-  scaleValue?: string;
-  scaleName?: string;
-  scaleType?: string;
-  eventType?: string;
-};
 
 export function participantScaleItem({
   requireTimeStamp,
@@ -62,11 +54,11 @@ export function participantScaleItem({
       const scaleValue = accessorValue?.value || timeItem.itemValue;
 
       const scaleItem = {
+        eventType: eventType as TypeEnum,
         scaleDate: timeItem.itemDate,
         scaleValue,
         scaleName,
         scaleType,
-        eventType,
       };
       return { scaleItem };
     } else {

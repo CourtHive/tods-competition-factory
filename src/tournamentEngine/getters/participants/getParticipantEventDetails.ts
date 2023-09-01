@@ -7,6 +7,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 import { Tournament } from '../../../types/tournamentFromSchema';
+import { ResultType } from '../../../global/functions/decorateResult';
 
 /**
  * Returns { eventDetails: { eventName, eventId }} for events in which participantId or TEAM/PAIR including participantId appears
@@ -20,7 +21,9 @@ type getParticipantEventDetailsType = {
 export function getParticipantEventDetails({
   tournamentRecord,
   participantId,
-}: getParticipantEventDetailsType) {
+}: getParticipantEventDetailsType): ResultType & {
+  eventDetails?: { eventName?: string; eventId: string }[];
+} {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
 

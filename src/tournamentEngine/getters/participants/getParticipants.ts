@@ -4,7 +4,8 @@ import { filterParticipants } from './filterParticipants';
 import { getParticipantMap } from './getParticipantMap';
 import { definedAttributes } from '../../../utilities';
 
-import { MatchUp } from '../../../types/tournamentFromSchema';
+import { MatchUp, Tournament } from '../../../types/tournamentFromSchema';
+import { ParticipantFilters } from '../../../types/factoryTypes';
 import { HydratedParticipant } from '../../../types/hydrated';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -12,7 +13,32 @@ import {
   ErrorType,
 } from '../../../constants/errorConditionConstants';
 
-export function getParticipants(params): {
+type GetParticipantsArgs = {
+  participantFilters?: ParticipantFilters;
+  withIndividualParticipants?: boolean;
+  withPotentialMatchUps?: boolean;
+  withRankingProfile?: boolean;
+  convertExtensions?: boolean;
+  withScheduleItems?: boolean;
+  tournamentRecord: Tournament;
+  scheduleAnalysis?: boolean;
+  withSignInStatus?: boolean;
+  withTeamMatchUps?: boolean;
+  withScaleValues?: boolean;
+  usePublishState?: boolean;
+  withStatistics?: boolean;
+  withOpponents?: boolean;
+  policyDefinitions?: any;
+  withMatchUps?: boolean;
+  internalUse?: boolean;
+  withSeeding?: boolean;
+  withEvents?: boolean;
+  contextProfile?: any;
+  withDraws?: boolean;
+  withISO2?: boolean;
+  withIOC?: boolean;
+};
+export function getParticipants(params: GetParticipantsArgs): {
   eventsPublishStatuses?: { [key: string]: any };
   participantMap?: { [key: string]: any };
   participantIdsWithConflicts?: string[];
