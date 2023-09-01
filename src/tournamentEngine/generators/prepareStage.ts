@@ -102,7 +102,7 @@ export function prepareStage(params): ResultType & {
     : undefined;
 
   const { seedLimit } = initializeStructureSeedAssignments({
-    participantCount: stageEntries.length,
+    participantsCount: stageEntries.length,
     enforcePolicyLimits,
     appliedPolicies,
     drawDefinition,

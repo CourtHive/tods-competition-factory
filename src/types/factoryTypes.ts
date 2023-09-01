@@ -139,7 +139,7 @@ export type ParticipantsProfile = {
   valuesInstanceLimit?: number;
   addressProps?: AddressProps;
   convertExtensions?: boolean;
-  participantsCount?: number; // participantCount?
+  participantsCount?: number;
   addParticipants?: boolean;
   withScaleValues?: boolean;
   personAttribute?: string;

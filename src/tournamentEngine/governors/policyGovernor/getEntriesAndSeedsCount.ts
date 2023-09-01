@@ -43,15 +43,15 @@ export function getEntriesAndSeedsCount({
     stage,
     event,
   });
-  const participantCount = stageEntries.length;
+  const participantsCount = stageEntries.length;
 
   const { drawSize: eliminationDrawSize } = getEliminationDrawSize({
-    participantCount,
+    participantsCount,
   });
   const result = getSeedsCount({
     drawSize: drawSize ?? eliminationDrawSize,
+    participantsCount,
     policyDefinitions,
-    participantCount,
   });
   if (result.error)
     return decorateResult({ result, stack: 'getEntriesAndSeedsCount' });

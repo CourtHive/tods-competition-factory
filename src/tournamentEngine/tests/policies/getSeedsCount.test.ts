@@ -13,7 +13,7 @@ import {
   POLICY_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
-it('can accurately determine seedsCount from drawSize and participantCount', () => {
+it('can accurately determine seedsCount from drawSize and participantsCount', () => {
   let seedsCount, error;
   ({ seedsCount, error } = getSeedsCount());
   expect(seedsCount).toEqual(undefined);
@@ -25,7 +25,7 @@ it('can accurately determine seedsCount from drawSize and participantCount', () 
 
   ({ seedsCount, error } = getSeedsCount({
     policyDefinitions: SEEDING_USTA,
-    participantCount: 'fifteen',
+    participantsCount: 'fifteen',
   }));
   expect(error).toEqual(INVALID_VALUES);
 
@@ -37,7 +37,7 @@ it('can accurately determine seedsCount from drawSize and participantCount', () 
 
   ({ seedsCount, error } = getSeedsCount({
     policyDefinitions: {},
-    participantCount: 15,
+    participantsCount: 15,
   }));
   expect(error).toEqual(INVALID_POLICY_DEFINITION);
 
@@ -50,7 +50,7 @@ it('can accurately determine seedsCount from drawSize and participantCount', () 
 
   ({ seedsCount, error } = getSeedsCount({
     policyDefinitions,
-    participantCount: 15,
+    participantsCount: 15,
   }));
   expect(error).toEqual(MISSING_SEEDCOUNT_THRESHOLDS);
 
@@ -66,7 +66,7 @@ it('can accurately determine seedsCount from drawSize and participantCount', () 
 
   ({ seedsCount, error } = getSeedsCount({
     policyDefinitions,
-    participantCount: 15,
+    participantsCount: 15,
   }));
   // expect 0 because there is no drawSizeProgression and no appropriate threshold
   expect(seedsCount).toEqual(0);
@@ -74,48 +74,48 @@ it('can accurately determine seedsCount from drawSize and participantCount', () 
   ({ seedsCount, error } = getSeedsCount({
     drawSizeProgression: true,
     policyDefinitions,
-    participantCount: 15,
+    participantsCount: 15,
   }));
   // expect 2 because { drawSizeProgression: true }
   expect(seedsCount).toEqual(2);
 
   ({ seedsCount, error } = getSeedsCount({
     policyDefinitions: SEEDING_USTA,
-    participantCount: 15,
+    participantsCount: 15,
   }));
   expect(seedsCount).toEqual(4);
 
   ({ seedsCount, error } = getSeedsCount({
     policyDefinitions: SEEDING_USTA,
-    participantCount: 15,
+    participantsCount: 15,
     drawSize: 16,
   }));
   expect(seedsCount).toEqual(4);
 
   ({ seedsCount, error } = getSeedsCount({
     policyDefinitions: SEEDING_USTA,
-    participantCount: 15,
+    participantsCount: 15,
     drawSize: 128,
   }));
   expect(seedsCount).toEqual(4);
 
   ({ seedsCount, error } = getSeedsCount({
     policyDefinitions: SEEDING_USTA,
-    participantCount: 64,
+    participantsCount: 64,
     drawSize: 128,
   }));
   expect(seedsCount).toEqual(16);
 
   ({ seedsCount, error } = getSeedsCount({
     policyDefinitions: SEEDING_USTA,
-    participantCount: 65,
+    participantsCount: 65,
     drawSize: 128,
   }));
   expect(seedsCount).toEqual(16);
 
   ({ seedsCount, error } = getSeedsCount({
     policyDefinitions: SEEDING_USTA,
-    participantCount: 97,
+    participantsCount: 97,
     drawSize: 128,
   }));
   expect(seedsCount).toEqual(32);
@@ -123,7 +123,7 @@ it('can accurately determine seedsCount from drawSize and participantCount', () 
   ({ seedsCount, error } = getSeedsCount({
     policyDefinitions: SEEDING_USTA,
     drawSizeProgression: true,
-    participantCount: 16,
+    participantsCount: 16,
     drawSize: 128,
   }));
   expect(seedsCount).toEqual(4);

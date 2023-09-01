@@ -618,7 +618,7 @@ const { structures, stageStructures } = drawEngine.getDrawStructures({
 ## getEliminationDrawSize
 
 ```js
-const { drawSize } = drawEngine.getEliminationDrawSize({ participantCount });
+const { drawSize } = drawEngine.getEliminationDrawSize({ participantsCount });
 ```
 
 ---

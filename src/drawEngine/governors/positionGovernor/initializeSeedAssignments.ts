@@ -22,7 +22,8 @@ type InitializeStructureSeedAssignmentsArgs = {
   drawSizeProgression?: boolean;
   seedingProfile: SeedingProfile;
   drawDefinition: DrawDefinition;
-  participantCount: number; // TODO: migrate to participantsCount
+  participantsCount?: number; // TODO: migrate to participantsCount
+  participantCount?: number; // TODO: migrate to participantsCount
   appliedPolicies?: any;
   structureId: string;
   seedsCount: number;
@@ -31,6 +32,7 @@ export function initializeStructureSeedAssignments({
   requireParticipantCount = true,
   enforcePolicyLimits = true,
   drawSizeProgression,
+  participantsCount,
   participantCount,
   appliedPolicies,
   drawDefinition,
@@ -42,6 +44,7 @@ export function initializeStructureSeedAssignments({
   success?: boolean;
   seedLimit?: number;
 } {
+  participantsCount = participantsCount || participantCount;
   const result = findStructure({ drawDefinition, structureId });
   if (result.error) return result;
   const structure = result.structure;
@@ -67,7 +70,7 @@ export function initializeStructureSeedAssignments({
     policyDefinitions: appliedPolicies,
     requireParticipantCount,
     drawSizeProgression,
-    participantCount,
+    participantsCount,
     drawSize,
   });
 
