@@ -188,7 +188,7 @@ export function allDrawMatchUps(params: GetMatchUpsArgs) {
   });
 }
 
-export function allEventMatchUps(params) {
+export function allEventMatchUps(params: GetMatchUpsArgs) {
   let { participants = [], contextContent, participantMap } = params;
   const {
     scheduleVisibilityFilters,
@@ -213,7 +213,7 @@ export function allEventMatchUps(params) {
   const additionalContext = {
     ...context,
     ...definedAttributes({
-      indoorOutDoor: event.indoorOutDoor || tournamentRecord?.indoorOutDoor,
+      indoorOutDoor: event.indoorOutdoor || tournamentRecord?.indoorOutdoor,
       surfaceCategory:
         event.surfaceCategory || tournamentRecord?.surfaceCategory,
       endDate: event.endDate || tournamentRecord?.endDate,
@@ -237,14 +237,16 @@ export function allEventMatchUps(params) {
   }
 
   if (!participants?.length && !participantMap && tournamentRecord) {
-    ({ participants, participantMap } = hydrateParticipants({
+    const hydratedParticipantResult = hydrateParticipants({
       participantsProfile,
       useParticipantMap,
       policyDefinitions,
       tournamentRecord,
       contextProfile,
       inContext,
-    }));
+    });
+    participantMap = hydratedParticipantResult.participantMap;
+    participants = hydratedParticipantResult.participants || [];
   }
 
   const drawDefinitions = event.drawDefinitions || [];
@@ -372,7 +374,7 @@ export function tournamentMatchUps(
   );
 }
 
-export function eventMatchUps(params): GroupsMatchUpsResult {
+export function eventMatchUps(params: GetMatchUpsArgs): GroupsMatchUpsResult {
   let {
     participants: tournamentParticipants,
     contextContent,
@@ -407,7 +409,7 @@ export function eventMatchUps(params): GroupsMatchUpsResult {
       eventName,
       endDate: endDate || tournamentRecord?.endDate,
       tournamentId: tournamentId || tournamentRecord?.tournamentId,
-      indoorOutDoor: event.indoorOutDoor || tournamentRecord?.indoorOutDoor,
+      indoorOutDoor: event.indoorOutdoor || tournamentRecord?.indoorOutdoor,
       surfaceCategory:
         event.surfaceCategory || tournamentRecord?.surfaceCategory,
     }),

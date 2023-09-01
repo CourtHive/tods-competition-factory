@@ -9,7 +9,7 @@ import { SCHEDULE_TIMING } from '../../../../constants/extensionConstants';
 import { Event, Tournament } from '../../../../types/tournamentFromSchema';
 
 type GetScheduleTimingArgs = {
-  tournamentRecord: Tournament;
+  tournamentRecord?: Tournament;
   categoryName?: string;
   categoryType?: string;
   event?: Event;
@@ -34,10 +34,12 @@ export function getScheduleTiming({
     event,
   });
 
-  const { extension: tournamentExtension } = findTournamentExtension({
-    name: SCHEDULE_TIMING,
-    tournamentRecord,
-  });
+  const tournamentExtension = tournamentRecord
+    ? findTournamentExtension({
+        name: SCHEDULE_TIMING,
+        tournamentRecord,
+      }).extension
+    : undefined;
   const tournamentScheduling = tournamentExtension?.value;
 
   const eventExtension =
