@@ -50,39 +50,14 @@ import {
   context is used to pass in additional parameters to be assigned to each matchUp
 */
 
-/**
- * 
-  @param {object=} scheduleVisibilityFilters 
-  @param {object=} tournamentAppliedPolicies
-  @param {object=} provisionalPositioning
-  @param {object[]=} tournamentParticipants
-  @param {object=} afterRecoveryTimes
-  @param {object=} policyDefinitions
-  @param {object=} tournamentRecord
-  @param {object=} seedAssignments
-  @param {object=} contextFilters
-  @param {object=} contextContent
-  @param {object=} matchUpFilters
-  @param {object=} participantMap
-  @param {object=} scheduleTiming
-  @param {object=} drawDefinition
-  @param {object=} contextProfile
-  @param {object=} exitProfiles
-  @param {object=} context
-  @param {object=} matchUpsMap,
-  @param {object=} structure,
-  @param {boolean=} inContext,
-  @param {object=} event,
- */
-
 type GetAllStructureMatchUps = {
   tournamentParticipants?: Participant[];
+  provisionalPositioning?: boolean;
   scheduleVisibilityFilters?: any;
   tournamentAppliedPolicies?: any;
   tournamentRecord?: Tournament;
-  provisionalPositioning?: any;
+  afterRecoveryTimes?: boolean;
   matchUpsMap?: MatchUpsMap;
-  afterRecoveryTimes?: any;
   policyDefinitions?: any;
   seedAssignments?: any;
   structure?: Structure;

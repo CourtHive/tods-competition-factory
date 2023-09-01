@@ -87,11 +87,11 @@ export function getDrawMatchUps(params): GroupsMatchUpsResult {
     event,
   } = params;
 
-  let allAbandonedMatchUps = [];
-  let allCompletedMatchUps = [];
-  let allUpcomingMatchUps = [];
-  let allPendingMatchUps = [];
-  let allByeMatchUps = [];
+  let allAbandonedMatchUps: HydratedMatchUp[] = [];
+  let allCompletedMatchUps: HydratedMatchUp[] = [];
+  let allUpcomingMatchUps: HydratedMatchUp[] = [];
+  let allPendingMatchUps: HydratedMatchUp[] = [];
+  let allByeMatchUps: HydratedMatchUp[] = [];
 
   if (contextProfile && !contextContent) {
     contextContent = getContextContent({

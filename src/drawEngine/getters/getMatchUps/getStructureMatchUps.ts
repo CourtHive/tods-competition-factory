@@ -4,6 +4,7 @@ import { getAllStructureMatchUps } from './getAllStructureMatchUps';
 import { findStructure } from '../findStructure';
 
 import { ResultType } from '../../../global/functions/decorateResult';
+import { HydratedMatchUp } from '../../../types/hydrated';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
   DrawDefinition,
@@ -26,13 +27,13 @@ import {
 */
 
 type GroupsMatchUpsResult = {
+  abandonedMatchUps?: HydratedMatchUp[];
+  completedMatchUps?: HydratedMatchUp[];
+  upcomingMatchUps?: HydratedMatchUp[];
+  pendingMatchUps?: HydratedMatchUp[];
+  byeMatchUps?: HydratedMatchUp[];
   includesTeamMatchUps?: boolean;
-  abandonedMatchUps?: any[];
-  completedMatchUps?: any[];
-  upcomingMatchUps?: any[];
-  pendingMatchUps?: any[];
   structure?: Structure;
-  byeMatchUps?: any[];
 };
 
 type GetStructureMatchUpsArgs = {
@@ -42,7 +43,7 @@ type GetStructureMatchUpsArgs = {
   requireParticipants?: boolean;
   tournamentRecord?: Tournament;
   drawDefinition?: DrawDefinition;
-  afterRecoveryTimes?: any;
+  afterRecoveryTimes?: boolean;
   policyDefinitions?: any;
   structure?: Structure;
   matchUpFilters?: any;

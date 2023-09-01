@@ -30,9 +30,9 @@ export function publicFindMatchUp(params) {
 
 type FindMatchUpArgs = {
   tournamentParticipants?: Participant[];
+  afterRecoveryTimes?: boolean;
   drawDefinition: DrawDefinition;
   matchUpsMap?: MatchUpsMap;
-  afterRecoveryTimes?: any;
   contextContent?: any;
   contextProfile?: any;
   inContext?: boolean;

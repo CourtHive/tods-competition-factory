@@ -13,6 +13,13 @@ import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
+import { HydratedParticipant } from '../../../types/hydrated';
+import { ParticipantsProfile } from '../../../types/factoryTypes';
+import {
+  DrawDefinition,
+  Event,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
 export function allTournamentMatchUps(params) {
   if (!params?.tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -460,6 +467,27 @@ export function eventMatchUps(params) {
   }, {});
 }
 
+type DrawMatchUpsArgs = {
+  participantMap?: { [key: string]: HydratedParticipant[] };
+  participantsProfile?: ParticipantsProfile;
+  participants?: HydratedParticipant[];
+  tournamentAppliedPolicies?: any;
+  scheduleVisibilityFilters?: any;
+  afterRecoveryTimes?: boolean;
+  useParticipantMap?: boolean;
+  tournamentRecord: Tournament;
+  drawDefinition: DrawDefinition;
+  policyDefinitions?: any;
+  nextMatchUps?: boolean;
+  tournamentId?: string;
+  contextFilters?: any;
+  contextContent?: any;
+  matchUpFilters?: any;
+  contextProfile?: any;
+  inContext?: boolean;
+  context?: any;
+  event: Event;
+};
 export function drawMatchUps({
   participants: tournamentParticipants,
   tournamentAppliedPolicies,
@@ -480,7 +508,7 @@ export function drawMatchUps({
   inContext,
   context,
   event,
-}) {
+}: DrawMatchUpsArgs) {
   if (!event) return { error: MISSING_EVENT };
   const { eventId, eventName, endDate } = event || {};
 
@@ -491,7 +519,7 @@ export function drawMatchUps({
       eventName,
       endDate: endDate || event?.endDate || tournamentRecord?.endDate,
       tournamentId: tournamentId || tournamentRecord?.tournamentId,
-      indoorOutDoor: event?.indoorOutDoor || tournamentRecord?.indoorOutDoor,
+      indoorOutDoor: event?.indoorOutdoor || tournamentRecord?.indoorOutdoor,
       surfaceCategory:
         event?.surfaceCategory || tournamentRecord?.surfaceCategory,
     }),

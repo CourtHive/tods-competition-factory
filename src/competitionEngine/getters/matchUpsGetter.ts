@@ -17,7 +17,7 @@ import {
 type CompetitionMatchUpsArgs = TournamentRecordsArgs & {
   participantsProfile?: ParticipantsProfile;
   scheduleVisibilityFilters?: boolean;
-  afterRecoveryTimes?: any;
+  afterRecoveryTimes?: boolean;
   policyDefinitions?: any;
   nextMatchUps?: boolean;
   matchUpFilters?: any;

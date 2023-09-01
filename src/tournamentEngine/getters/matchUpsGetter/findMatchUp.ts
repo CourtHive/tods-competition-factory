@@ -31,7 +31,7 @@ type FindMatchUpType = {
   participantsProfile?: ParticipantsProfile;
   tournamentRecord: Tournament;
   drawDefinition?: DrawDefinition;
-  afterRecoveryTimes?: any;
+  afterRecoveryTimes?: boolean;
   contextContent?: any;
   contextProfile?: any;
   inContext?: boolean;

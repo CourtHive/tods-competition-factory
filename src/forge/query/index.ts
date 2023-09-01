@@ -34,12 +34,10 @@ export { getSeedsCount } from '../../tournamentEngine/governors/policyGovernor/g
 export { participantScaleItem } from '../../tournamentEngine/accessors/participantScaleItem';
 export { getCompetitionVenues } from '../../competitionEngine/getters/venuesAndCourtsGetter';
 export { getValidGroupSizes } from '../../drawEngine/generators/roundRobin';
-/*
 export {
   getRounds,
   getProfileRounds,
 } from '../../competitionEngine/governors/scheduleGovernor/schedulingProfile/getRounds';
-*/
 export {
   getCompetitionParticipants,
   publicFindParticipant as findParticipant,
@@ -48,13 +46,12 @@ export {
   allCompetitionMatchUps,
   competitionMatchUps,
 } from '../../competitionEngine/getters/matchUpsGetter';
-/*
+// TODO
 export {
-  allTournamentMatchUps,
-  allDrawMatchUps,
-  allEventMatchUps,
+  // allTournamentMatchUps,
+  // allDrawMatchUps,
+  // allEventMatchUps,
   drawMatchUps,
-  eventMatchUps,
-  tournamentMatchUps,
+  // eventMatchUps,
+  // tournamentMatchUps,
 } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
-*/
