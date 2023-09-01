@@ -46,10 +46,10 @@ export function checkDailyLimits({
       const profile = individualParticipantProfiles[participantId];
       if (profile) {
         return [matchUpType, TOTAL].find((counterName) => {
-          const participantCount = profile.counters?.[counterName] || 0;
+          const participantsCount = profile.counters?.[counterName] || 0;
           const dailyLimit = matchUpDailyLimits[counterName] || 0;
           return (
-            participantCount && dailyLimit && participantCount >= dailyLimit
+            participantsCount && dailyLimit && participantsCount >= dailyLimit
           );
         });
       }

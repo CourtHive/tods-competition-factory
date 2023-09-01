@@ -10,9 +10,9 @@ import { DOUBLES } from '../../../../constants/eventConstants';
 
 it('can add doubles events to a tournament record', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile: { participantType: PAIR, participantsCount: 32 },
     startDate: '2020-01-01',
     endDate: '2020-01-06',
-    participantsProfile: { participantType: PAIR, participantsCount: 32 },
   });
   const { participants } = tournamentRecord;
 

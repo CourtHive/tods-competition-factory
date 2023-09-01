@@ -1,16 +1,17 @@
 import { makeDeepCopy } from '../../../../utilities';
 
+import { Participant } from '../../../../types/tournamentFromSchema';
+import { ParticipantsProfile } from '../../../../types/factoryTypes';
 import {
   GROUP,
   INDIVIDUAL,
   PAIR,
   TEAM,
 } from '../../../../constants/participantConstants';
-import { Participant } from '../../../../types/tournamentFromSchema';
 
 type AddParticipantGroupingsArgs = {
+  participantsProfile?: ParticipantsProfile;
   participants?: Participant[];
-  participantsProfile?: any;
 };
 
 export function addParticipantGroupings({

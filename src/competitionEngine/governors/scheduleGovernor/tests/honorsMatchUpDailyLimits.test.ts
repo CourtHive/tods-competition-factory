@@ -17,9 +17,9 @@ it('can set and honor matchUpDailyLimits', () => {
   const venueProfiles = [{ courtsCount: 6 }];
 
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-    drawProfiles,
-    venueProfiles,
     participantsProfile: { participantsCount },
+    venueProfiles,
+    drawProfiles,
   });
 
   expect(tournamentRecord.participants.length).toEqual(participantsCount);

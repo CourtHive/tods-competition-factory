@@ -13,6 +13,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
   NO_PARTICIPANTS_GENERATED,
 } from '../../constants/errorConditionConstants';
+import { Tournament } from '../../types/tournamentFromSchema';
 
 /**
  *
@@ -23,6 +24,16 @@ import {
  * @param {string[]} uuids - optional - array of unique identifiers for genrated team participants
  * @returns { success: true } or { error }
  */
+
+type GenerateTeamsArgs = {
+  participantAttribute?: string;
+  tournamentRecord: Tournament;
+  addParticipants?: boolean;
+  personAttribute?: string;
+  teamNames?: string[];
+  accessor?: string;
+  uuids?: string[];
+};
 export function generateTeamsFromParticipantAttribute({
   addParticipants = true, // optional boolean to disable add
   participantAttribute,
@@ -31,7 +42,7 @@ export function generateTeamsFromParticipantAttribute({
   teamNames,
   accessor,
   uuids,
-}) {
+}: GenerateTeamsArgs) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
   const teams = {};
@@ -52,9 +63,8 @@ export function generateTeamsFromParticipantAttribute({
 
     const attributeValue =
       accessorValue ||
-      (personAttribute
-        ? individualParticipant.person[personAttribute]
-        : individualParticipant[participantAttribute]);
+      (personAttribute && individualParticipant.person?.[personAttribute]) ||
+      (participantAttribute && individualParticipant[participantAttribute]);
 
     if (attributeValue) {
       if (!Object.keys(teams).includes(attributeValue)) {
@@ -107,6 +117,7 @@ export function generateTeamsFromParticipantAttribute({
     const participant = teams[attributeValue];
     const { participantId } = participant;
     if (!overlappingTeamParticipantIds.includes(participantId)) {
+      if (!tournamentRecord.participants) tournamentRecord.participants = [];
       if (addParticipants) tournamentRecord.participants.push(participant);
       newParticipants.push(participant);
       participantsAdded++;

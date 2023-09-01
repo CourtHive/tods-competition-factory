@@ -508,7 +508,7 @@ export const MISSING_PARTICIPANT_IDS = {
   code: 'ERR_MISSING_PARTICIPANT_IDS',
 };
 export const MISSING_PARTICIPANT_COUNT = {
-  message: 'Missing participantCount',
+  message: 'Missing participantsCount',
   code: 'ERR_MISSING_PARTICIPANT_COUNT',
 };
 export const PARTICIPANT_NOT_CHECKED_IN = {
@@ -534,7 +534,7 @@ export const EXISTING_PARTICIPANT = {
   code: 'ERR_EXISTING_PARTICIPANT',
 };
 export const PARTICIPANT_COUNT_EXCEEDS_DRAW_SIZE = {
-  message: 'participantCount exceeds drawSize',
+  message: 'participantsCount exceeds drawSize',
   code: 'ERR_INVALID_PARTICIPANT_COUNT',
 };
 

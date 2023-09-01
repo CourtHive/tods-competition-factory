@@ -22,8 +22,8 @@ it('will successfully place participants avoiding states', () => {
     OH: 1,
   };
   const participantsProfile = {
-    participantsCount: 32,
     nationalityCodesCount: 1,
+    participantsCount: 32,
     addressProps: {
       citiesCount: 60,
       statesProfile,

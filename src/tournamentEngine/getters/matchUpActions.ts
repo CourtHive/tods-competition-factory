@@ -36,7 +36,7 @@ export function matchUpActions({
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!drawId) {
     // if matchUp did not have context, find drawId by brute force
-    const { matchUps } = allTournamentMatchUps({ tournamentRecord });
+    const matchUps = allTournamentMatchUps({ tournamentRecord }).matchUps || [];
     drawId = matchUps.reduce((drawId, candidate) => {
       return candidate.matchUpId === matchUpId ? candidate.drawId : drawId;
     }, undefined);

@@ -1,5 +1,5 @@
 import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotifications';
-import { tournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
+import { allTournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
 import { findMatchUp } from '../../../drawEngine/getters/getMatchUps/findMatchUp';
 import { getMatchUp } from '../../../drawEngine/accessors/matchUpAccessor';
 import { findEvent } from '../../getters/eventGetter';
@@ -47,7 +47,9 @@ export function removeCourtAssignment({
     ({ matchUp } = findMatchUp({ drawDefinition, matchUpId }));
   } else {
     if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-    const { matchUps } = tournamentMatchUps({ tournamentRecord });
+    const matchUps =
+      allTournamentMatchUps({ tournamentRecord, inContext: false }).matchUps ||
+      [];
     ({ matchUp } = getMatchUp({ matchUps, matchUpId }));
   }
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };

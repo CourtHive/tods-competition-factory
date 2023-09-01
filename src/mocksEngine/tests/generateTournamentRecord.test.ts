@@ -33,8 +33,8 @@ test('drawProfiles and participantsProfile work as expected', () => {
   const { drawIds, eventIds, venueIds, tournamentRecord } =
     mocksEngine.generateTournamentRecord({
       participantsProfile: {
-        participantsCount: 100,
         addressProps: { citiesCount: 10 },
+        participantsCount: 100,
       },
       drawProfiles: [{ drawSize: 16, eventType: DOUBLES }, { drawSize: 8 }],
     });
@@ -103,8 +103,8 @@ test.each([
   ];
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     participantsProfile: {
-      participantsCount: 100,
       addressProps: { citiesCount: 10 },
+      participantsCount: 100,
     },
     drawProfiles: [{ drawSize: 32, idPrefix, drawType }],
     eventProfiles,

@@ -61,14 +61,17 @@ export function deleteParticipants(params): {
   });
 
   const getPlacedPairParticipantIds = () => {
-    const { matchUps } = allTournamentMatchUps({
-      matchUpFilters: { drawIds: teamDrawIds, matchUpTypes: [DOUBLES] },
-      tournamentRecord,
-    });
+    const matchUps =
+      allTournamentMatchUps({
+        matchUpFilters: { drawIds: teamDrawIds, matchUpTypes: [DOUBLES] },
+        tournamentRecord,
+      }).matchUps || [];
+
     const placedPairParticipantIds = matchUps
-      .map(({ sides }) => sides.map(({ participantId }) => participantId))
+      .map(({ sides }) => sides?.map(({ participantId }) => participantId))
       .flat()
       .filter(Boolean);
+
     return intersection(placedPairParticipantIds, participantIds);
   };
 

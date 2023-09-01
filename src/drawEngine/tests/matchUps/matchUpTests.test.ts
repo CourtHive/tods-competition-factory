@@ -150,9 +150,9 @@ it('can set matchUpFormat', () => {
 
   const matchUpFormat = 'SET1-S:T10';
   const matchUp = upcomingMatchUps?.[0];
-  expect(matchUp.matchUpFormat).toEqual(undefined);
+  expect(matchUp?.matchUpFormat).toEqual(undefined);
 
-  const matchUpId = matchUp.matchUpId as string;
+  const matchUpId = matchUp?.matchUpId as string;
   const drawDefinition = drawEngine.getState().drawDefinition as DrawDefinition;
   let result = setMatchUpFormat({ drawDefinition, matchUpId, matchUpFormat });
   expect(result.success).toEqual(true);

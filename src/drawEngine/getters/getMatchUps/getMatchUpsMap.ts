@@ -4,10 +4,11 @@ import {
   MatchUp,
   Structure,
 } from '../../../types/tournamentFromSchema';
+import { HydratedMatchUp } from '../../../types/hydrated';
 
 export type MappedMatchUps = {
   [key: string]: {
-    matchUps: MatchUp[] | undefined;
+    matchUps: HydratedMatchUp[] | MatchUp[] | undefined;
     itemStructureIds: string[];
     structureName?: string;
   };

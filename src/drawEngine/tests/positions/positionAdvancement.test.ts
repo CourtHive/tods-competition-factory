@@ -43,7 +43,7 @@ it('can direct participants in First Match Consolation (FIRST_MATCH_LOSER_CONSOL
   });
 
   // test first matchUp in roundNumber: 1
-  let matchUpId = upcomingMatchUps?.reduce((matchUpId, matchUp) => {
+  let matchUpId = upcomingMatchUps?.reduce((matchUpId: any, matchUp) => {
     return matchUp.roundNumber === 1 && matchUp.roundPosition === 1
       ? matchUp.matchUpId
       : matchUpId;
@@ -69,7 +69,7 @@ it('can direct participants in First Match Consolation (FIRST_MATCH_LOSER_CONSOL
   expect(matchUp.structureId).not.toEqual(loserMatchUp.structureId);
 
   // test last matchUp in roundNumber: 1
-  matchUpId = upcomingMatchUps?.reduce((matchUpId, matchUp) => {
+  matchUpId = upcomingMatchUps?.reduce((matchUpId: any, matchUp) => {
     return matchUp.roundNumber === 1 && matchUp.roundPosition === drawSize / 2
       ? matchUp.matchUpId
       : matchUpId;
@@ -143,7 +143,7 @@ it('can direct participants in FEED_IN_CHAMPIONSHIP structure', () => {
   });
 
   // test first matchUp in roundNumber: 1
-  let matchUpId = upcomingMatchUps?.reduce((matchUpId, matchUp) => {
+  let matchUpId = upcomingMatchUps?.reduce((matchUpId: any, matchUp) => {
     return matchUp.roundNumber === 1 && matchUp.roundPosition === 1
       ? matchUp.matchUpId
       : matchUpId;
@@ -170,7 +170,7 @@ it('can direct participants in FEED_IN_CHAMPIONSHIP structure', () => {
   expect(loserMatchUp.roundPosition).toEqual(1);
 
   // test last matchUp in roundNumber: 1
-  matchUpId = upcomingMatchUps?.reduce((matchUpId, matchUp) => {
+  matchUpId = upcomingMatchUps?.reduce((matchUpId: any, matchUp) => {
     return matchUp.roundNumber === 1 && matchUp.roundPosition === drawSize / 2
       ? matchUp.matchUpId
       : matchUpId;
@@ -256,14 +256,14 @@ it('can direct participants in COMPASS', () => {
     drawDefinition,
   });
 
-  let matchUpId = upcomingMatchUps?.[0].matchUpId;
+  let matchUpId = upcomingMatchUps?.[0].matchUpId || ''; // keep TypeScript happy!
   const {
     matchUp,
     targetLinks: { loserTargetLink },
     targetMatchUps: { winnerMatchUp, loserMatchUp },
   } = positionTargets({
-    drawDefinition,
     inContextDrawMatchUps,
+    drawDefinition,
     matchUpId,
   });
 
@@ -288,7 +288,7 @@ it('can direct participants in COMPASS', () => {
   expect(matchUp.structureId).toEqual(winnerMatchUp.structureId);
   expect(matchUp.structureId).not.toEqual(loserMatchUp.structureId);
 
-  matchUpId = pendingMatchUps?.[0].matchUpId;
+  matchUpId = pendingMatchUps?.[0].matchUpId || ''; // keep TypeScript happy
   const {
     matchUp: matchUp2ndRound,
     targetLinks: { loserTargetLink: round2loserTargetLink },
@@ -297,8 +297,8 @@ it('can direct participants in COMPASS', () => {
       loserMatchUp: loserMatchUp2ndRound,
     },
   } = positionTargets({
-    drawDefinition,
     inContextDrawMatchUps,
+    drawDefinition,
     matchUpId,
   });
 

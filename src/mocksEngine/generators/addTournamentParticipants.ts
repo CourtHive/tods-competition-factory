@@ -5,14 +5,15 @@ import { generateParticipants } from './generateParticipants';
 import { getParticipantsCount } from './getParticipantsCount';
 import { generateRange, UUID } from '../../utilities';
 
+import { Participant, Tournament } from '../../types/tournamentFromSchema';
 import { INDIVIDUAL, TEAM } from '../../constants/participantConstants';
+import { ParticipantsProfile } from '../../types/factoryTypes';
 import { COMPETITOR } from '../../constants/participantRoles';
 import { SUCCESS } from '../../constants/resultConstants';
-import { Participant, Tournament } from '../../types/tournamentFromSchema';
 
 type AddTournamentParticipantsArgs = {
+  participantsProfile?: ParticipantsProfile;
   tournamentRecord: Tournament;
-  participantsProfile?: any;
   eventProfiles?: any[];
   drawProfiles?: any[];
   startDate?: string;

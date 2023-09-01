@@ -4,17 +4,20 @@ import {
 } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
 
 import { ResultType } from '../../global/functions/decorateResult';
-import { TournamentRecordsArgs } from '../../types/factoryTypes';
 import { HydratedMatchUp } from '../../types/hydrated';
+import {
+  ParticipantsProfile,
+  TournamentRecordsArgs,
+} from '../../types/factoryTypes';
 import {
   ErrorType,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../constants/errorConditionConstants';
 
 type CompetitionMatchUpsArgs = TournamentRecordsArgs & {
+  participantsProfile?: ParticipantsProfile;
   scheduleVisibilityFilters?: boolean;
-  participantsProfile?: any;
-  afterRecoveryTimes?: any;
+  afterRecoveryTimes?: boolean;
   policyDefinitions?: any;
   nextMatchUps?: boolean;
   matchUpFilters?: any;
@@ -46,18 +49,19 @@ export function allCompetitionMatchUps({
   const competitionMatchUps: HydratedMatchUp[] = tournamentIds
     .map((tournamentId) => {
       const tournamentRecord = tournamentRecords[tournamentId];
-      const { matchUps } = allTournamentMatchUps({
-        scheduleVisibilityFilters,
-        afterRecoveryTimes,
-        participantsProfile,
-        policyDefinitions,
-        tournamentRecord,
-        matchUpFilters,
-        contextFilters,
-        nextMatchUps,
-        inContext,
-      });
-      return matchUps;
+      return (
+        allTournamentMatchUps({
+          scheduleVisibilityFilters,
+          afterRecoveryTimes,
+          participantsProfile,
+          policyDefinitions,
+          tournamentRecord,
+          matchUpFilters,
+          contextFilters,
+          nextMatchUps,
+          inContext,
+        }).matchUps || []
+      );
     })
     .flat();
 

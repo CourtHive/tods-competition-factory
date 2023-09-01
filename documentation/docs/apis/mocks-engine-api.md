@@ -215,7 +215,7 @@ const {
 } = mocksEngine.generateTournamentRecord({
   endDate, // optional - ISO string date
   startDate, // optional - ISO string date
-  participantsProfile, // optional - { participantCount, participantType } - see mocksEngine.generateParticipants()
+  participantsProfile, // optional - { participantsCount, participantType } - see mocksEngine.generateParticipants()
   policyDefinitions, // optional - { [policyType]: policyDefinition, [policyType2]: policyDefinition }
   matchUpStatusProfile, // optional - whole number percent for each target matchUpStatus { [matchUpStatus]: percentLikelihood }
   drawProfiles, // optional - array of profiles for draws to be generated; each draw creates an event

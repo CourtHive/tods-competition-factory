@@ -14,7 +14,7 @@ import {
 
 type FindPolicyArgs = {
   drawDefinition?: DrawDefinition;
-  tournamentRecord: Tournament;
+  tournamentRecord?: Tournament;
   structure?: Structure;
   policyType: string;
   event?: Event;

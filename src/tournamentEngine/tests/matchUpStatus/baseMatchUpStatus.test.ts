@@ -141,8 +141,8 @@ it('allows AWAITING_RESULT status with no outcome', () => {
     drawIds: [drawId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles,
     participantsProfile,
+    drawProfiles,
   });
 
   const { upcomingMatchUps } = tournamentEngine
@@ -186,8 +186,8 @@ it('does not allow IN_PROGRESS or AWAITING_RESULT status when < 2 drawPositions'
     drawIds: [drawId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles,
     participantsProfile,
+    drawProfiles,
   });
 
   const { pendingMatchUps } = tournamentEngine
@@ -230,8 +230,8 @@ it('attaches notes to matchUps', () => {
     drawIds: [drawId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles,
     participantsProfile,
+    drawProfiles,
   });
 
   const { upcomingMatchUps } = tournamentEngine

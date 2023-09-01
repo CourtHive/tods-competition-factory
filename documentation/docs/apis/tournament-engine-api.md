@@ -894,7 +894,7 @@ Only generates seeding. To apply `tournamentEngine.setParticipantScaleItems({ sc
 ```js
 const { scaleItemsWithParticipantIds } = tournamentEngine.autoSeeding({
   eventId,
-  policyDefinitions, // seeding policyDefinition determines the # of seeds for given participantCount/drawSize
+  policyDefinitions, // seeding policyDefinition determines the # of seeds for given participantsCount/drawSize
   scaleAttributes, // { scaleType, scaleName, eventType, accessor }
   scaleName, // Optional - defaults to scaleAttributes.scaleName
   drawSize, // Optional - defaults to calculation based on # of entries
@@ -2351,7 +2351,7 @@ const { scaledEntries } = tournamentEngine.getScaledEntries({
 
 ## getSeedsCount
 
-Takes a policyDefinition, drawSize and participantCount and returrns the number of seeds valid for the specified drawSize
+Takes a policyDefinition, drawSize and participantsCount and returrns the number of seeds valid for the specified drawSize
 
 :::note
 `drawSizeProgression` will be overridden by a `{ drawSizeProgression }` value in a policyDefinition.
@@ -2361,7 +2361,7 @@ Takes a policyDefinition, drawSize and participantCount and returrns the number 
 const { seedsCount, error } = tournamentEngine.getSeedsCount({
   drawSizeProgression, // optional - fits the seedsCount to the participantsCount rather than the drawSize
   policyDefinitions: SEEDING_USTA,
-  participantCount: 15,
+  participantsCount: 15,
   drawSize: 128,
 });
 ```

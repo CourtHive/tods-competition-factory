@@ -11,6 +11,7 @@ import {
   MISSING_STRUCTURE_ID,
   MISSING_DRAW_DEFINITION,
 } from '../../constants/errorConditionConstants';
+import { StructureSortConfig } from '../../types/factoryTypes';
 
 type FindStructureArgs = {
   drawDefinition?: DrawDefinition;
@@ -54,13 +55,13 @@ export function findStructure({
 }
 
 type GetDrawStructuresArgs = {
+  sortConfig?: StructureSortConfig;
   drawDefinition?: DrawDefinition;
   withStageGrouping?: boolean;
   stageSequences?: string[];
   stageSequence?: number;
   roundTarget?: number;
   stages?: string[];
-  sortConfig?: any;
   stage?: string;
 };
 
@@ -99,7 +100,7 @@ export function getDrawStructures({
       ?.filter(isStage)
       .filter(isStageSequence)
       .filter(isRoundTarget)
-      .sort((a, b) => structureSort(a, b, sortConfig)) || [];
+      .sort((a, b) => structureSort(a, b, sortConfig)) ?? [];
 
   const stageStructures = withStageGrouping
     ? Object.assign(

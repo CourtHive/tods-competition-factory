@@ -96,7 +96,7 @@ it('can automatically assign participants to teams using individualParticipantId
     scaleType: RANKING,
     scaleName: '18U',
   };
-  result = tournamentEngine.scaledTeamAssignment({
+  tournamentEngine.scaledTeamAssignment({
     individualParticipantIds,
     teamParticipantIds,
     scaleAttributes,
@@ -195,7 +195,7 @@ it('can automatically assign participants to teams using scaledParticipants', ()
   });
   expect(result.success).toEqual(true);
 
-  result = tournamentEngine.scaledTeamAssignment({
+  tournamentEngine.scaledTeamAssignment({
     teamParticipantIds,
     scaledParticipants,
   });
@@ -287,7 +287,7 @@ it('will cleanup UNGROUPED participant entries if TEAM entry is added AFTER team
   }));
 
   const teamParticipantIds = teamParticipants.map(getParticipantId);
-  result = tournamentEngine.scaledTeamAssignment({
+  tournamentEngine.scaledTeamAssignment({
     teamParticipantIds,
     scaledParticipants,
   });
@@ -354,7 +354,7 @@ it('will generate teams for scaledTeamAssignment when given teamsCount', () => {
   const individualParticipants = tournamentRecord.participants;
   const individualParticipantIds = individualParticipants.map(getParticipantId);
 
-  let result = tournamentEngine.addEventEntries({
+  const result = tournamentEngine.addEventEntries({
     participantIds: individualParticipantIds,
     entryStatus: UNGROUPED,
     eventId,
@@ -376,7 +376,7 @@ it('will generate teams for scaledTeamAssignment when given teamsCount', () => {
       ?.scaleItem?.scaleValue,
   }));
 
-  result = tournamentEngine.scaledTeamAssignment({
+  tournamentEngine.scaledTeamAssignment({
     scaledParticipants,
     teamsCount: 8,
   });
@@ -405,11 +405,6 @@ it('will generate teams for scaledTeamAssignment when given teamsCount', () => {
   // 4 teams received an additional team member, rankings 97, 98, 99, 100
   // all teams are balanced apart from the final four placements
   expect(teamScaleTotals).toEqual([679, 680, 681, 682, 582, 582, 582, 582]);
-
-  /*
-  event = tournamentEngine.getEvent({ eventId }).event;
-  expect(event.entries.length).toEqual(teamParticipants.length);
-  */
 });
 
 it('can determine teams from DIRECT_ACCEPTANCE entries of a TEAM event', () => {
@@ -483,7 +478,7 @@ it('can determine teams from DIRECT_ACCEPTANCE entries of a TEAM event', () => {
   });
   expect(result.error).toEqual(INVALID_VALUES);
 
-  result = tournamentEngine.scaledTeamAssignment({
+  tournamentEngine.scaledTeamAssignment({
     individualParticipantIds,
     scaleAttributes,
     eventId,

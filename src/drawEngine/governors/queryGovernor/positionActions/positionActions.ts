@@ -61,17 +61,38 @@ import {
   QUALIFYING,
   WIN_RATIO,
 } from '../../../../constants/drawDefinitionConstants';
+import {
+  DrawDefinition,
+  Event,
+  Participant,
+  Tournament,
+} from '../../../../types/tournamentFromSchema';
+import { ResultType } from '../../../../global/functions/decorateResult';
 
 /**
- *
  * return an array of all possible validActions for a given drawPosition within a structure
- *
- * @param {object} drawDefinition - passed in automatically by drawEngine if state has been set
- * @param {number} drawPosition - number of drawPosition for which actions are to be returned
- * @param {string} structureId - id of structure of drawPosition
- *
  */
-export function positionActions(params) {
+
+type PositionActionsArgs = {
+  tournamentParticipants?: Participant[];
+  provisionalPositioning?: boolean;
+  tournamentRecord?: Tournament;
+  returnParticipants?: boolean;
+  drawDefinition: DrawDefinition;
+  policyDefinitions?: any;
+  drawPosition: number;
+  structureId: string;
+  matchUpId?: string;
+  event?: Event;
+};
+
+export function positionActions(params: PositionActionsArgs): ResultType & {
+  isActiveDrawPosition?: boolean;
+  hasPositionAssigned?: boolean;
+  isDrawPosition?: boolean;
+  isByePosition?: boolean;
+  validActions?: any[];
+} {
   const {
     policyDefinitions: specifiedPolicyDefinitions,
     tournamentParticipants = [],
@@ -225,7 +246,6 @@ export function positionActions(params) {
     .map((entry) => entry.participantId);
 
   const isByePosition = byeDrawPositions.includes(drawPosition);
-  // const isQualifierPosition = qualifyingDrawPositions.includes(drawPosition);
   const isActiveDrawPosition = activeDrawPositions.includes(drawPosition);
 
   if (actionsDisabled)

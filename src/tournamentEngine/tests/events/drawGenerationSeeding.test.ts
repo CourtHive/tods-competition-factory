@@ -12,7 +12,7 @@ import { INDIVIDUAL } from '../../../constants/participantConstants';
 import { SEEDING } from '../../../constants/scaleConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 import {
-  MISSING_DRAW_SIZE,
+  MISSING_PARTICIPANT_COUNT,
   UNRECOGNIZED_DRAW_TYPE,
 } from '../../../constants/errorConditionConstants';
 
@@ -86,13 +86,13 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
 
   const drawDefinitions: any[] = [];
   flightProfile.flights?.forEach((flight) => {
-    const participantCount = flight.drawEntries.length;
+    const participantsCount = flight.drawEntries.length;
     const { drawSize } = drawEngine.getEliminationDrawSize({
-      participantCount,
+      participantsCount,
     });
     const { seedsCount } = tournamentEngine.getSeedsCount({
       policyDefinitions: SEEDING_USTA,
-      participantCount,
+      participantsCount,
       drawSize,
     });
     result = tournamentEngine.generateDrawDefinition({
@@ -140,7 +140,7 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
       stage: QUALIFYING,
       eventId,
     });
-    expect(result.error).toEqual(MISSING_DRAW_SIZE);
+    expect(result.error).toEqual(MISSING_PARTICIPANT_COUNT);
   });
 
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
@@ -206,12 +206,12 @@ it('can constrain seedsCount by policyDefinitions', () => {
     expect(result.success).toEqual(true);
   });
 
-  const participantCount = 32;
+  const participantsCount = 32;
   const drawSize = 32;
 
   const { seedsCount } = tournamentEngine.getSeedsCount({
     policyDefinitions: SEEDING_USTA,
-    participantCount,
+    participantsCount,
     drawSize,
   });
 
@@ -281,11 +281,11 @@ it('can constrain seedsCount by policyDefinitions', () => {
   });
 
   const drawSize = 32;
-  const participantCount = 32;
+  const participantsCount = 32;
 
   const { seedsCount } = tournamentEngine.getSeedsCount({
     policyDefinitions: SEEDING_USTA,
-    participantCount,
+    participantsCount,
     drawSize,
   });
 

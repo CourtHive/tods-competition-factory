@@ -22,10 +22,12 @@ export function getParticipantSchedules({
     return { error: INVALID_OBJECT, context: { participantFilters } };
 
   const contextFilters = { eventIds: participantFilters.eventIds };
-  const matchUps = allTournamentMatchUps({
-    tournamentRecord,
-    contextFilters,
-  }).matchUps;
+  const matchUps =
+    allTournamentMatchUps({
+      tournamentRecord,
+      contextFilters,
+    }).matchUps || [];
+
   const matchUpsMap = Object.assign(
     {},
     ...matchUps.map((matchUp) => ({ [matchUp.matchUpId]: matchUp }))
@@ -48,10 +50,10 @@ export function getParticipantSchedules({
 
     const participants =
       sides
-        ?.map(({ participant }) => {
-          if (participant) {
-            return [participant].concat(
-              ...(participant.individualParticipants || [])
+        ?.map((side: any) => {
+          if (side.participant) {
+            return [side.participant].concat(
+              ...(side.participant.individualParticipants || [])
             );
           } else {
             if (

@@ -39,8 +39,8 @@ it('can generate team events using participantsProfile.teamKey and personData', 
     ],
     participantsProfile: {
       teamKey: {
-        personAttribute: 'birthDate',
         teamNames: [`Queen's Club`, 'United'],
+        personAttribute: 'birthDate',
       },
       personData,
     },

@@ -27,19 +27,17 @@ export { getOrderedDrawPositions } from '../../drawEngine/getters/getMatchUps/ge
 export { getRoundContextProfile } from '../../drawEngine/getters/getMatchUps/getRoundContextProfile';
 export { filterParticipants } from '../../tournamentEngine/getters/participants/filterParticipants';
 export { getParticipantScaleItem } from '../../competitionEngine/getters/getParticipantScaleItem';
-// export { positionActions } from '../../tournamentEngine/governors/queryGovernor/positionQueries';
-// export { getEventData } from '../../tournamentEngine/governors/publishingGovernor/getEventData';
+export { positionActions } from '../../tournamentEngine/governors/queryGovernor/positionQueries';
+export { getEventData } from '../../tournamentEngine/governors/publishingGovernor/getEventData';
 export { getRoundMatchUps } from '../../drawEngine/accessors/matchUpAccessor/getRoundMatchUps';
 export { getSeedsCount } from '../../tournamentEngine/governors/policyGovernor/getSeedsCount';
 export { participantScaleItem } from '../../tournamentEngine/accessors/participantScaleItem';
 export { getCompetitionVenues } from '../../competitionEngine/getters/venuesAndCourtsGetter';
 export { getValidGroupSizes } from '../../drawEngine/generators/roundRobin';
-/*
 export {
   getRounds,
   getProfileRounds,
 } from '../../competitionEngine/governors/scheduleGovernor/schedulingProfile/getRounds';
-*/
 export {
   getCompetitionParticipants,
   publicFindParticipant as findParticipant,
@@ -48,7 +46,6 @@ export {
   allCompetitionMatchUps,
   competitionMatchUps,
 } from '../../competitionEngine/getters/matchUpsGetter';
-/*
 export {
   allTournamentMatchUps,
   allDrawMatchUps,
@@ -57,4 +54,3 @@ export {
   eventMatchUps,
   tournamentMatchUps,
 } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
-*/

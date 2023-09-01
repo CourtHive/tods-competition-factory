@@ -97,7 +97,7 @@ type MatchUpActionsArgs = {
   policyDefinitions?: any;
   participantId?: string;
   sideNumber?: number;
-  matchUpId: string;
+  matchUpId?: string;
   event?: Event;
 };
 export function matchUpActions({
@@ -166,7 +166,7 @@ export function matchUpActions({
     structure,
   });
 
-  matchUpsMap = matchUpsMap || getMatchUpsMap({ drawDefinition });
+  matchUpsMap = matchUpsMap ?? getMatchUpsMap({ drawDefinition });
 
   if (!inContextDrawMatchUps) {
     ({ matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
@@ -191,17 +191,17 @@ export function matchUpActions({
       ?.map(
         (side: any) => side.participantId || side.participant?.participantid
       )
-      .filter(Boolean) || [];
+      .filter(Boolean) ?? [];
 
   const { assignedPositions, allPositionsAssigned } =
     structureAssignedDrawPositions({ structure });
-  const { structureId } = structure || {};
+  const { structureId } = structure ?? {};
 
   const validActions: any[] = [];
   if (!structureId) return { validActions };
 
   if (isAdHoc({ drawDefinition, structure })) {
-    const roundMatchUps = (structure?.matchUps || []).filter(
+    const roundMatchUps = (structure?.matchUps ?? []).filter(
       ({ roundNumber }) => roundNumber === matchUp.roundNumber
     );
     const enteredParticipantIds =
@@ -210,10 +210,10 @@ export function matchUpActions({
           ({ entryStatus }) =>
             entryStatus && DIRECT_ENTRY_STATUSES.includes(entryStatus)
         )
-        .map(getParticipantId) || [];
+        .map(getParticipantId) ?? [];
 
     const roundAssignedParticipantIds = roundMatchUps
-      .map((matchUp) => (matchUp.sides || []).flatMap(getParticipantId))
+      .map((matchUp) => (matchUp.sides ?? []).flatMap(getParticipantId))
       .filter(Boolean);
 
     const availableParticipantIds = enteredParticipantIds.filter(
@@ -228,7 +228,7 @@ export function matchUpActions({
     );
 
     participantsAvailable?.forEach((participant) => {
-      const entry = (drawDefinition.entries || []).find(
+      const entry = (drawDefinition.entries ?? []).find(
         (entry) => entry.participantId === participant.participantId
       );
       participant.entryPosition = entry?.entryPosition;
@@ -244,7 +244,7 @@ export function matchUpActions({
       });
     }
 
-    const eventEntries = event?.entries || [];
+    const eventEntries = event?.entries ?? [];
     const availableEventAlternatesParticipantIds =
       getEventAlternateParticipantIds({ eventEntries, structure });
 
@@ -290,7 +290,7 @@ export function matchUpActions({
       availableAlternatesParticipantIds.includes(participant.participantId)
     );
     availableAlternates.forEach((alternate) => {
-      const entry = (drawDefinition.entries || []).find(
+      const entry = (drawDefinition.entries ?? []).find(
         (entry) => entry.participantId === alternate.participantId
       );
       alternate.entryPosition = entry?.entryPosition;
@@ -514,12 +514,12 @@ export function matchUpActions({
       (sideNumber &&
         ((matchUpType === SINGLES_MATCHUP && !existingParticipantIds?.length) ||
           (matchUpType === DOUBLES_MATCHUP &&
-            (existingParticipantIds?.length || 0) < 2))) ||
+            (existingParticipantIds?.length ?? 0) < 2))) ||
       (!sideNumber &&
         ((matchUpType === SINGLES_MATCHUP &&
-          (existingParticipantIds?.length || 0) < 2) ||
+          (existingParticipantIds?.length ?? 0) < 2) ||
           (matchUpType === DOUBLES_MATCHUP &&
-            (existingParticipantIds?.length || 0) < 4)));
+            (existingParticipantIds?.length ?? 0) < 4)));
 
     // extra step to avoid edge case where individual participant is part of both teams
     const availableIds = availableParticipantIds.filter(

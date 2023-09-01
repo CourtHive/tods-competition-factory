@@ -20,7 +20,7 @@ it('can dehydrate matchUps in tournamentRecords', () => {
     inContext: false,
   }).matchUps;
 
-  const allUnhydrated = unhydratedMatchUps.every(
+  const allUnhydrated = unhydratedMatchUps?.every(
     (matchUp) =>
       matchUp.matchUpFormat &&
       !matchUp.eventName &&
@@ -62,7 +62,7 @@ it('can dehydrate matchUps in tournamentRecords', () => {
     inContext: false,
   }).matchUps;
 
-  const allHydrated = hydratedMatchUps.every(
+  const allHydrated = hydratedMatchUps?.every(
     (matchUp) =>
       matchUp.matchUpFormat &&
       matchUp.eventName &&

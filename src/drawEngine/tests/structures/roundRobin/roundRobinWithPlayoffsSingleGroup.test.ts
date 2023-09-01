@@ -24,7 +24,7 @@ it('can generate Playoffs for Round Robin with 2 groups of 5, each with BYE', ()
   ];
 
   // NOTE: with drawSize: 8 this will throw an error
-  // drawSize: 9 allows getValidGroupSizes to ignore participantCount limitations
+  // drawSize: 9 allows getValidGroupSizes to ignore participantsCount limitations
   roundRobinWithPlayoffsTest({
     finishingGroupSizes: [2, 2, 2, 2],
     participantsCount: 8,

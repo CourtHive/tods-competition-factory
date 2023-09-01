@@ -107,7 +107,7 @@ export function addEvent({
     if (!suppressNotifications) {
       const { topics } = getTopics();
       if (topics.includes(ADD_MATCHUPS)) {
-        const { matchUps } = allEventMatchUps({ event });
+        const matchUps = allEventMatchUps({ event }).matchUps || [];
         addMatchUpsNotice({
           tournamentId: tournamentRecord?.tournamentId,
           eventId: event.eventId,

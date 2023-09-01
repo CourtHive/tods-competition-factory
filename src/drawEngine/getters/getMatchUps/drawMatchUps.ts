@@ -11,10 +11,10 @@ import { getStructureMatchUps } from './getStructureMatchUps';
 import { getDrawStructures } from '../findStructure';
 import { filterMatchUps } from './filterMatchUps';
 
+import { GroupsMatchUpsResult } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import {
-  ErrorType,
   MISSING_DRAW_DEFINITION,
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
@@ -53,17 +53,6 @@ export function getAllDrawMatchUps(params): ResultType & {
   return { matchUps, matchUpsMap };
 }
 
-type GroupsMatchUpsResult = {
-  matchUpsMap?: MatchUpsMap;
-  abandonedMatchUps?: any[];
-  completedMatchUps?: any[];
-  upcomingMatchUps?: any[];
-  pendingMatchUps?: any[];
-  byeMatchUps?: any[];
-  success?: boolean;
-  error?: ErrorType;
-};
-
 export function getDrawMatchUps(params): GroupsMatchUpsResult {
   if (!params?.drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   let { tournamentParticipants, contextContent, matchUpsMap } = params;
@@ -87,11 +76,11 @@ export function getDrawMatchUps(params): GroupsMatchUpsResult {
     event,
   } = params;
 
-  let allAbandonedMatchUps = [];
-  let allCompletedMatchUps = [];
-  let allUpcomingMatchUps = [];
-  let allPendingMatchUps = [];
-  let allByeMatchUps = [];
+  let allAbandonedMatchUps: HydratedMatchUp[] = [];
+  let allCompletedMatchUps: HydratedMatchUp[] = [];
+  let allUpcomingMatchUps: HydratedMatchUp[] = [];
+  let allPendingMatchUps: HydratedMatchUp[] = [];
+  let allByeMatchUps: HydratedMatchUp[] = [];
 
   if (contextProfile && !contextContent) {
     contextContent = getContextContent({
