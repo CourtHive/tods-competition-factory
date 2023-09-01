@@ -10,7 +10,10 @@ import {
 } from '../../../drawEngine/getters/getMatchUps/drawMatchUps';
 
 import { ResultType } from '../../../global/functions/decorateResult';
-import { GetMatchUpsArgs } from '../../../types/factoryTypes';
+import {
+  GetMatchUpsArgs,
+  GroupsMatchUpsResult,
+} from '../../../types/factoryTypes';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import {
   MISSING_EVENT,
@@ -70,29 +73,30 @@ export function allTournamentMatchUps(params: GetMatchUpsArgs): ResultType & {
   });
 
   const matchUps = events
-    .map((event) => {
+    .flatMap((event) => {
       additionalContext.eventDrawsCount = event.drawDefinitions?.length || 0;
 
-      return allEventMatchUps({
-        context: additionalContext,
-        scheduleVisibilityFilters,
-        tournamentAppliedPolicies,
-        participantsProfile,
-        afterRecoveryTimes,
-        policyDefinitions,
-        tournamentRecord,
-        contextContent,
-        contextFilters,
-        contextProfile,
-        matchUpFilters,
-        participantMap,
-        nextMatchUps,
-        participants,
-        inContext,
-        event,
-      }).matchUps;
+      return (
+        allEventMatchUps({
+          context: additionalContext,
+          scheduleVisibilityFilters,
+          tournamentAppliedPolicies,
+          participantsProfile,
+          afterRecoveryTimes,
+          policyDefinitions,
+          tournamentRecord,
+          contextContent,
+          contextFilters,
+          contextProfile,
+          matchUpFilters,
+          participantMap,
+          nextMatchUps,
+          participants,
+          inContext,
+          event,
+        }).matchUps || []
+      );
     })
-    .flat(Infinity)
     // TODO: these matchUps must be hydrated with participants
     // NOTE: matchUps on the tournamentRecord have no drawPositions; all data apart from participant context must be present
     .concat(...(tournamentRecord.matchUps || []));
@@ -249,9 +253,9 @@ export function allEventMatchUps(params) {
     event,
   }).scheduleTiming;
 
-  const matchUps = drawDefinitions
-    .map((drawDefinition) => {
-      const { matchUps } = getAllDrawMatchUps({
+  const matchUps: HydratedMatchUp[] = drawDefinitions.flatMap(
+    (drawDefinition) =>
+      getAllDrawMatchUps({
         tournamentParticipants: participants,
         tournamentAppliedPolicies,
         scheduleVisibilityFilters,
@@ -270,15 +274,15 @@ export function allEventMatchUps(params) {
         nextMatchUps,
         inContext,
         event,
-      });
-      return matchUps;
-    })
-    .flat(Infinity);
+      }).matchUps || []
+  );
 
   return { matchUps };
 }
 
-export function tournamentMatchUps(params) {
+export function tournamentMatchUps(
+  params: GetMatchUpsArgs
+): GroupsMatchUpsResult {
   if (!params?.tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   let contextContent = params.contextContent;
   const {
@@ -295,9 +299,7 @@ export function tournamentMatchUps(params) {
     nextMatchUps,
     context,
   } = params;
-  const tournamentId =
-    tournamentRecord.unifiedTournamentId?.tournamentId ||
-    tournamentRecord.tournamentId;
+  const tournamentId = params.tournamentId || tournamentRecord.tournamentId;
   const events = tournamentRecord?.events || [];
 
   const { participants, participantMap } = hydrateParticipants({
@@ -370,7 +372,7 @@ export function tournamentMatchUps(params) {
   );
 }
 
-export function eventMatchUps(params) {
+export function eventMatchUps(params): GroupsMatchUpsResult {
   let {
     participants: tournamentParticipants,
     contextContent,

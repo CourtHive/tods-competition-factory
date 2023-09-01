@@ -26,6 +26,7 @@ import {
   Participant,
   Tournament,
 } from '../../../types/tournamentFromSchema';
+import { HydratedSide } from '../../../types/factoryTypes';
 
 type GetEligibleVoluntaryConsolationParticipantsArgs = {
   excludedMatchUpStatuses?: MatchUpStatusEnum[];
@@ -140,23 +141,34 @@ export function getEligibleVoluntaryConsolationParticipants({
   for (const matchUp of matchUps) {
     if (
       requirePlay &&
+      matchUp.winningSide &&
       ![1, 2].includes(matchUp.winningSide) &&
       matchUp.matchUpStatus !== DOUBLE_WALKOVER
     )
       continue;
-    if (finishingRoundLimit && matchUp.finishingRound >= finishingRoundLimit)
+    if (
+      matchUp.finishingRound &&
+      finishingRoundLimit &&
+      matchUp.finishingRound >= finishingRoundLimit
+    )
       continue;
-    if (roundNumberLimit && matchUp.finishingRound <= roundNumberLimit)
+    if (
+      matchUp.finishingRound &&
+      roundNumberLimit &&
+      matchUp.finishingRound <= roundNumberLimit
+    )
       continue;
 
     const losingSide = matchUp.sides?.find(
-      ({ sideNumber }) => sideNumber === 3 - matchUp.winningSide
-    );
+      ({ sideNumber }) =>
+        matchUp.winningSide && sideNumber === 3 - matchUp.winningSide
+    ) as HydratedSide;
     const winningSide = matchUp.sides?.find(
-      ({ sideNumber }) => sideNumber === matchUp.winningSide
-    );
+      ({ sideNumber }) =>
+        matchUp.winningSide && sideNumber === matchUp.winningSide
+    ) as HydratedSide;
 
-    matchUp.sides.forEach((side) => {
+    matchUp.sides?.forEach((side: HydratedSide) => {
       const participantId = side?.participant?.participantId;
       if (participantId) {
         matchUpParticipants[participantId] = side.participant;
@@ -177,7 +189,10 @@ export function getEligibleVoluntaryConsolationParticipants({
       if (!participantMatchUps[participantId])
         participantMatchUps[participantId] = 0;
 
-      if (!excludedMatchUpStatuses.includes(matchUp.matchUpStatus))
+      if (
+        matchUp.matchUpStatus &&
+        !excludedMatchUpStatuses.includes(matchUp.matchUpStatus)
+      )
         participantMatchUps[participantId] += 1;
     }
 
@@ -190,7 +205,10 @@ export function getEligibleVoluntaryConsolationParticipants({
       if (!participantMatchUps[participantId])
         participantMatchUps[participantId] = 0;
 
-      if (!excludedMatchUpStatuses.includes(matchUp.matchUpStatus))
+      if (
+        matchUp.matchUpStatus &&
+        !excludedMatchUpStatuses.includes(matchUp.matchUpStatus)
+      )
         participantMatchUps[participantId] += 1;
     }
   }

@@ -18,7 +18,6 @@ import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { WIN_RATIO } from '../../../constants/statsConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
-import { MappedMatchUps } from '../../../drawEngine/getters/getMatchUps/getMatchUpsMap';
 
 export function getParticipantEntries(params) {
   const {
@@ -82,11 +81,11 @@ export function getParticipantEntries(params) {
   };
 
   const participantIdsWithConflicts: string[] = [];
+  const mappedMatchUps: { [key: string]: HydratedMatchUp } = {};
+  const matchUps: HydratedMatchUp[] = [];
   const eventsPublishStatuses = {};
   const derivedEventInfo: any = {};
   const derivedDrawInfo: any = {};
-  const mappedMatchUps: MappedMatchUps = {};
-  const matchUps: HydratedMatchUp[] = [];
 
   const getRanking = ({ eventType, scaleNames, participantId }) =>
     participantMap[participantId].participant?.rankings?.[eventType]?.find(
@@ -380,16 +379,17 @@ export function getParticipantEntries(params) {
       withDraws
     ) {
       const nextMatchUps = !!scheduleAnalysis || withPotentialMatchUps;
-      const eventMatchUps = allEventMatchUps({
-        afterRecoveryTimes: !!scheduleAnalysis,
-        policyDefinitions,
-        tournamentRecord,
-        inContext: true,
-        contextProfile,
-        participantMap,
-        nextMatchUps,
-        event,
-      })?.matchUps;
+      const eventMatchUps =
+        allEventMatchUps({
+          afterRecoveryTimes: !!scheduleAnalysis,
+          policyDefinitions,
+          tournamentRecord,
+          inContext: true,
+          contextProfile,
+          participantMap,
+          nextMatchUps,
+          event,
+        })?.matchUps || [];
 
       for (const matchUp of eventMatchUps) {
         const {

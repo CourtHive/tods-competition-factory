@@ -1,4 +1,6 @@
+import { ErrorType } from '../constants/errorConditionConstants';
 import { SignedInStatusEnum } from '../constants/participantConstants';
+import { MatchUpsMap } from '../drawEngine/getters/getMatchUps/getMatchUpsMap';
 import { HydratedParticipant } from './hydrated';
 import {
   DrawDefinition,
@@ -200,4 +202,16 @@ export type GetMatchUpsArgs = {
 export type HydratedSide = Side & {
   individualParticipants?: Participant[];
   participant?: Participant;
+};
+
+export type GroupsMatchUpsResult = {
+  matchUpsMap?: MatchUpsMap;
+  abandonedMatchUps?: any[];
+  completedMatchUps?: any[];
+  upcomingMatchUps?: any[];
+  pendingMatchUps?: any[];
+  matchUpsCount?: number;
+  byeMatchUps?: any[];
+  success?: boolean;
+  error?: ErrorType;
 };

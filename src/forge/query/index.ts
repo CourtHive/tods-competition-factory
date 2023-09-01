@@ -52,5 +52,5 @@ export {
   // allEventMatchUps,
   drawMatchUps,
   // eventMatchUps,
-  // tournamentMatchUps,
+  tournamentMatchUps,
 } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
