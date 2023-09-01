@@ -4,16 +4,19 @@ import {
 } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
 
 import { ResultType } from '../../global/functions/decorateResult';
-import { TournamentRecordsArgs } from '../../types/factoryTypes';
 import { HydratedMatchUp } from '../../types/hydrated';
+import {
+  ParticipantsProfile,
+  TournamentRecordsArgs,
+} from '../../types/factoryTypes';
 import {
   ErrorType,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../constants/errorConditionConstants';
 
 type CompetitionMatchUpsArgs = TournamentRecordsArgs & {
+  participantsProfile?: ParticipantsProfile;
   scheduleVisibilityFilters?: boolean;
-  participantsProfile?: any;
   afterRecoveryTimes?: any;
   policyDefinitions?: any;
   nextMatchUps?: boolean;

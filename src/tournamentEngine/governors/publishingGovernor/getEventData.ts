@@ -7,7 +7,10 @@ import { getDrawData } from './getDrawData';
 
 import { PUBLIC, PUBLISH, STATUS } from '../../../constants/timeItemConstants';
 import { Event, Tournament } from '../../../types/tournamentFromSchema';
-import { StructureSortConfig } from '../../../types/factoryTypes';
+import {
+  ParticipantsProfile,
+  StructureSortConfig,
+} from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   ErrorType,
@@ -16,11 +19,11 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 type GetEventDataArgs = {
+  participantsProfile?: ParticipantsProfile;
   includePositionAssignments?: boolean;
   sortConfig?: StructureSortConfig;
   tournamentRecord: Tournament;
   usePublishState?: boolean;
-  participantsProfile?: any;
   policyDefinitions?: any;
   status?: string;
   event: Event;

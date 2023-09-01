@@ -3,14 +3,15 @@ import { addNationalityCode } from '../../governors/participantGovernor/addNatio
 import { getScaleValues } from '../participants/getScaleValues';
 
 import { getParticipantMap } from '../participants/getParticipantMap';
+import { ParticipantsProfile } from '../../../types/factoryTypes';
 import { Tournament } from '../../../types/tournamentFromSchema';
 import { HydratedParticipant } from '../../../types/hydrated';
 import { makeDeepCopy } from '../../../utilities';
 
 type HydrateParticipantsArgs = {
+  participantsProfile?: ParticipantsProfile;
   tournamentRecord: Tournament;
   useParticipantMap?: boolean;
-  participantsProfile?: any;
   policyDefinitions?: any;
   contextProfile?: any;
   inContext?: boolean;

@@ -121,8 +121,12 @@ export type AddressProps = {
 };
 
 export type TeamKey = {
+  participantAttribute?: string;
+  addParticipants?: boolean;
   personAttribute?: string;
   teamNames?: string[];
+  accessor?: string;
+  uuids?: string[];
 };
 
 export type ParticipantsProfile = {
@@ -136,7 +140,9 @@ export type ParticipantsProfile = {
   addressProps?: AddressProps;
   convertExtensions?: boolean;
   participantsCount?: number; // participantCount?
+  addParticipants?: boolean;
   withScaleValues?: boolean;
+  personAttribute?: string;
   consideredDate?: string;
   withGroupings?: boolean;
   personData?: PersonData;
@@ -146,6 +152,7 @@ export type ParticipantsProfile = {
   withIOC?: boolean;
   teamKey?: TeamKey;
   idPrefix?: string;
+  uuids?: string[];
   category?: any;
   sex?: SexEnum;
 

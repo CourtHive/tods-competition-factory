@@ -5,6 +5,8 @@ import { allTournamentMatchUps } from './matchUpsGetter';
 import { getContextContent } from '../getContextContent';
 import { findEvent } from '../eventGetter';
 
+import { ParticipantsProfile } from '../../../types/factoryTypes';
+import { HydratedMatchUp } from '../../../types/hydrated';
 import {
   DrawDefinition,
   Tournament,
@@ -18,7 +20,6 @@ import {
   MISSING_MATCHUP_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
-import { HydratedMatchUp } from '../../../types/hydrated';
 
 export function publicFindMatchUp(params) {
   Object.assign(params, { inContext: true });
@@ -27,9 +28,9 @@ export function publicFindMatchUp(params) {
 }
 
 type FindMatchUpType = {
+  participantsProfile?: ParticipantsProfile;
   tournamentRecord: Tournament;
   drawDefinition?: DrawDefinition;
-  participantsProfile?: any;
   afterRecoveryTimes?: any;
   contextContent?: any;
   contextProfile?: any;
