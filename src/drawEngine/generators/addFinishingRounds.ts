@@ -23,7 +23,7 @@ export function addFinishingRounds({
   matchUps,
   lucky,
   fmlc,
-}: AddFinishingRoundsArgs) {
+}: AddFinishingRoundsArgs): MatchUp[] {
   if (!Array.isArray(matchUps)) return [];
 
   const { roundProfile, roundNumbers = [] } = getRoundMatchUps({

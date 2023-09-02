@@ -30,11 +30,12 @@ type AddPenaltyArgs = {
   participantIds: string[];
   extensions?: Extension[];
   penaltyCode: string;
-  penaltyId: string;
-  matchUpId: string;
-  issuedAt: string;
+  penaltyId?: string;
+  matchUpId?: string;
+  issuedAt?: string;
   notes?: string;
 };
+
 export function addPenalty({
   refereeParticipantId,
   tournamentRecord,

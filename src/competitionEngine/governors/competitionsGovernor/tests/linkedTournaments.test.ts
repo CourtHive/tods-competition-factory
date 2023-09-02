@@ -31,7 +31,7 @@ test('unlinkTournament coverage', () => {
   result = unlinkTournament({ tournamentRecords: {}, tournamentId: 'bogus' });
   expect(result.error).toEqual(MISSING_TOURNAMENT_ID);
   result = unlinkTournament({
-    tournamentRecords: { tournamentId: {} },
+    tournamentRecords: { ['tournamentId']: { tournamentId: 'tournamentId' } },
     tournamentId: 'tournamentId',
   });
   expect(result.success).toEqual(true);

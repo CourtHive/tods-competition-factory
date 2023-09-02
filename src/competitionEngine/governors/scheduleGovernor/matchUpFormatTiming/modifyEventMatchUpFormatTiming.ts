@@ -6,7 +6,18 @@ import {
   INVALID_VALUES,
   MISSING_EVENT,
 } from '../../../../constants/errorConditionConstants';
+import { Tournament } from '../../../../types/tournamentFromSchema';
+import { ResultType } from '../../../../global/functions/decorateResult';
 
+type ModifyEventMatchUpFormatTimingArgs = {
+  tournamentRecords: { [key: string]: Tournament };
+  recoveryMinutes?: number;
+  averageMinutes?: number;
+  matchUpFormat: string;
+  categoryType?: string;
+  tournamentId?: string;
+  eventId: string;
+};
 export function modifyEventMatchUpFormatTiming({
   tournamentRecords,
   recoveryMinutes,
@@ -15,7 +26,7 @@ export function modifyEventMatchUpFormatTiming({
   categoryType,
   tournamentId,
   eventId,
-}) {
+}: ModifyEventMatchUpFormatTimingArgs): ResultType {
   if (!eventId) return { error: MISSING_EVENT };
 
   const tournamentIds = Object.keys(tournamentRecords).filter(

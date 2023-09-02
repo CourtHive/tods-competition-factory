@@ -7,15 +7,35 @@ import {
   removePenalty as penaltyRemove,
 } from '../../../tournamentEngine/governors/participantGovernor/participantPenalties';
 
+import { TournamentRecords } from '../../../types/factoryTypes';
+import {
+  Extension,
+  Penalty,
+  PenaltyTypeEnum,
+} from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_TOURNAMENT_RECORDS,
   PARTICIPANT_NOT_FOUND,
   PENALTY_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { Penalty, Tournament } from '../../../types/tournamentFromSchema';
+import { ResultType } from '../../../global/functions/decorateResult';
 
-export function addPenalty(params) {
+type AddPenaltyArgs = {
+  tournamentRecords: TournamentRecords;
+  penaltyType: PenaltyTypeEnum;
+  participantIds: string[];
+  extensions?: Extension[];
+  penaltyCode: string;
+  penaltyId?: string;
+  matchUpId?: string;
+  issuedAt?: string;
+  notes?: string;
+};
+
+export function addPenalty(
+  params: AddPenaltyArgs
+): ResultType & { penaltyId?: string } {
   const { tournamentRecords, participantIds } = params;
 
   let penaltyId;
@@ -77,7 +97,7 @@ export function removePenalty(params) {
 }
 
 type GetCompetitionPenaltiesArgs = {
-  tournamentRecords: { [key: string]: Tournament };
+  tournamentRecords: TournamentRecords;
 };
 export function getCompetitionPenalties({
   tournamentRecords,

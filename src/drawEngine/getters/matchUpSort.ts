@@ -1,4 +1,5 @@
 import { stageOrder } from '../../constants/drawDefinitionConstants';
+import { HydratedMatchUp } from '../../types/hydrated';
 
 /**
  * Sorting function to arrange matchUps by stage, stageSequence, roundNumber, roundPosition (where applicable)
@@ -9,11 +10,11 @@ import { stageOrder } from '../../constants/drawDefinitionConstants';
  * @param {object} b - matchUp object
  *
  */
-export function matchUpSort(a, b) {
+export function matchUpSort(a: HydratedMatchUp, b: HydratedMatchUp): number {
   return (
     stageDifference(a, b) ||
     (a?.stageSequence || 0) - (b?.stageSequence || 0) ||
-    a?.roundNumber - b?.roundNumber ||
+    (a?.roundNumber && b.roundNumber && a?.roundNumber - b?.roundNumber) ||
     (a?.roundPosition || 0) - (b?.roundPosition || 0)
   );
 }

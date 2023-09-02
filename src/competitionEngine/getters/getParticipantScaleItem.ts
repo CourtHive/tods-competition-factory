@@ -1,13 +1,16 @@
 import { participantScaleItem } from '../../tournamentEngine/accessors/participantScaleItem';
 import { publicFindParticipant } from './participantGetter';
 
-import { SUCCESS } from '../../constants/resultConstants';
-import { Tournament } from '../../types/tournamentFromSchema';
-import { ScaleAttributes, ScaleItem } from '../../types/factoryTypes';
 import { ResultType } from '../../global/functions/decorateResult';
+import { SUCCESS } from '../../constants/resultConstants';
+import {
+  ScaleAttributes,
+  ScaleItem,
+  TournamentRecords,
+} from '../../types/factoryTypes';
 
 type GetParticipantScaleItemArgs = {
-  tournamentRecords: { [key: string]: Tournament };
+  tournamentRecords: TournamentRecords;
   scaleAttributes: ScaleAttributes;
   policyDefinitions?: any;
   participantId?: string;
