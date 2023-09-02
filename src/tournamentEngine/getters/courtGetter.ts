@@ -47,9 +47,10 @@ export function findCourt({
     return { ...SUCCESS, court, venue };
   } else if (tournamentRecords) {
     // if tournamentRecords is provided then call is from competitionEngine
-    const linkedTournamentIds = getLinkedTournamentIds({
-      tournamentRecords,
-    }).linkedTournamentIds;
+    const linkedTournamentIds =
+      getLinkedTournamentIds({
+        tournamentRecords,
+      }).linkedTournamentIds || [];
 
     const relevantIds = linkedTournamentIds[tournamentRecord.tournamentId];
 

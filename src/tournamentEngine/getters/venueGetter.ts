@@ -93,9 +93,10 @@ export function findVenue({
   }, undefined);
 
   if (!venue && tournamentRecords) {
-    const linkedTournamentIds = getLinkedTournamentIds({
-      tournamentRecords,
-    }).linkedTournamentIds;
+    const linkedTournamentIds =
+      getLinkedTournamentIds({
+        tournamentRecords,
+      }).linkedTournamentIds || [];
 
     const relevantIds = linkedTournamentIds[tournamentRecord.tournamentId];
 
