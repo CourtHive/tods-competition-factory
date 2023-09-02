@@ -13,8 +13,8 @@ import {
 type validateScoreTypes = {
   existingMatchUpStatus?: string;
   matchUpStatus?: string;
-  matchUpFormat: string;
-  winningSide: number;
+  matchUpFormat?: string;
+  winningSide?: number;
   score: Score;
 };
 
