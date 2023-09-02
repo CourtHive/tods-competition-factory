@@ -20,7 +20,7 @@ type GetProjectedDualWinningSideArgs = {
   matchUpStatus?: string;
   tieFormat?: TieFormat;
   structure?: Structure;
-  winningSide: number;
+  winningSide?: number;
   matchUp: MatchUp;
   event?: Event;
   score?: any;

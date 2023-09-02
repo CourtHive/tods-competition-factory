@@ -52,13 +52,48 @@ import {
   validMatchUpStatuses,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
+import {
+  DrawDefinition,
+  Event,
+  MatchUpStatusEnum,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
 // WOULDBENICE: return object containing all modified { matchUpIds, structureIds, drawIds }
-export function setMatchUpStatus(params) {
+
+type SetMatchUpStatusArgs = {
+  tournamentRecords?: { [key: string]: Tournament };
+  matchUpStatus?: MatchUpStatusEnum;
+  allowChangePropagation?: boolean;
+  disableScoreValidation?: boolean;
+  projectedWinningSide?: number;
+  matchUpStatusCodes?: string[];
+  tournamentRecord?: Tournament;
+  drawDefinition: DrawDefinition;
+  disableAutoCalc?: boolean;
+  enableAutoCalc?: boolean;
+  policyDefinitions?: any;
+  matchUpFormat?: string;
+  matchUpTieId?: string;
+  tieMatchUpId?: string;
+  removeScore?: boolean;
+  winningSide?: number;
+  matchUpId: string;
+  schedule?: any;
+  notes?: string;
+  outcome?: any;
+  event?: Event;
+  score?: any;
+};
+
+export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
   const stack = 'setMatchUpStatus';
 
   // always clear score if DOUBLE_WALKOVER or WALKOVER
-  if ([WALKOVER, DOUBLE_WALKOVER].includes(params.matchUpStatus))
+  if (
+    params.matchUpStatus &&
+    [WALKOVER, DOUBLE_WALKOVER].includes(params.matchUpStatus)
+  )
     params.score = undefined;
 
   // matchUpStatus in params is the new status
@@ -84,6 +119,7 @@ export function setMatchUpStatus(params) {
 
   // Check matchUpStatus, matchUpStatus/winningSide validity ------------------
   if (
+    matchUpStatus &&
     [CANCELLED, INCOMPLETE, ABANDONED, TO_BE_PLAYED].includes(matchUpStatus) &&
     winningSide
   )
@@ -177,6 +213,7 @@ export function setMatchUpStatus(params) {
 
   if (
     matchUp.matchUpType === TEAM &&
+    matchUpStatus &&
     [
       AWAITING_RESULT,
       // for the following statuses should all tieMatchUp results be removed?
@@ -268,8 +305,11 @@ export function setMatchUpStatus(params) {
     matchUp.winningSide &&
     !winningSide && // function calls last
     (!params.matchUpStatus ||
-      isNonDirectingMatchUpStatus(params.matchUpStatus)) &&
-    !scoreHasValue(params.outcome);
+      (params.matchUpStatus &&
+        isNonDirectingMatchUpStatus({
+          matchUpStatus: params.matchUpStatus,
+        }))) &&
+    (!params.outcome || !scoreHasValue({ outcome: params.outcome }));
   const qualifierChanging =
     qualifierAdvancing && // oop
     winningSide !== matchUp.winningSide &&
@@ -341,8 +381,9 @@ export function setMatchUpStatus(params) {
     if (
       activeDownstream &&
       !winningSide &&
-      (isNonDirectingMatchUpStatus({ matchUpStatus }) ||
-        [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(matchUpStatus))
+      ((matchUpStatus && isNonDirectingMatchUpStatus({ matchUpStatus })) ||
+        (matchUpStatus &&
+          [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(matchUpStatus)))
     ) {
       return {
         error: INCOMPATIBLE_MATCHUP_STATUS,
