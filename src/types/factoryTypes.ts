@@ -215,3 +215,7 @@ export type GroupsMatchUpsResult = {
   success?: boolean;
   error?: ErrorType;
 };
+
+export type TournamentRecords = {
+  [key: string]: Tournament;
+};

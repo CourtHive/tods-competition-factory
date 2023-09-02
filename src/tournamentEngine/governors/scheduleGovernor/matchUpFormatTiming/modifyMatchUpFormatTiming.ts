@@ -16,9 +16,9 @@ import {
 
 export function modifyMatchUpFormatTiming({
   tournamentRecord,
+  recoveryTimes,
   matchUpFormat,
   averageTimes,
-  recoveryTimes,
   event,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

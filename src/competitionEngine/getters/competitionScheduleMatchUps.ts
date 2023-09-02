@@ -9,20 +9,23 @@ import {
 } from '../../tournamentEngine/governors/queryGovernor/timeItems';
 
 import { PUBLIC, PUBLISH, STATUS } from '../../constants/timeItemConstants';
-import { Tournament, Venue } from '../../types/tournamentFromSchema';
 import { COMPLETED } from '../../constants/matchUpStatusConstants';
-import { TournamentRecordsArgs } from '../../types/factoryTypes';
+import { getTournamentId } from '../../global/state/globalState';
+import { Venue } from '../../types/tournamentFromSchema';
 import { HydratedMatchUp } from '../../types/hydrated';
+import {
+  TournamentRecords,
+  TournamentRecordsArgs,
+} from '../../types/factoryTypes';
 import {
   ErrorType,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../constants/errorConditionConstants';
-import { getTournamentId } from '../../global/state/globalState';
 
 type CompetitionScheduleMatchUpsArgs = {
-  tournamentRecords: { [key: string]: Tournament };
   matchUpFilters?: { [key: string]: any };
   contextFilters?: { [key: string]: any };
+  tournamentRecords: TournamentRecords;
   courtCompletedMatchUps?: boolean;
   alwaysReturnCompleted?: boolean;
   withCourtGridRows?: boolean;

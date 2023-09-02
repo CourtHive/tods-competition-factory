@@ -82,10 +82,10 @@ export function modifyEventMatchUpFormatTiming({
     return { error: INVALID_VALUES };
 
   return modifyMatchUpFormatTiming({
-    tournamentRecord,
-    event,
-    matchUpFormat,
     averageTimes: validAverageMinutes && newAverageTimes,
     recoveryTimes: validRecoveryMinutes && newRecoveryTimes,
+    tournamentRecord,
+    matchUpFormat,
+    event,
   });
 }
