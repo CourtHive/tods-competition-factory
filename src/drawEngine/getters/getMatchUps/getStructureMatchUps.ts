@@ -3,6 +3,7 @@ import { structureAssignedDrawPositions } from '../positionsGetter';
 import { getAllStructureMatchUps } from './getAllStructureMatchUps';
 import { findStructure } from '../findStructure';
 
+import { ScheduleVisibilityFilters } from '../../../types/factoryTypes';
 import { ResultType } from '../../../global/functions/decorateResult';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import { TEAM } from '../../../constants/matchUpTypes';
@@ -37,8 +38,8 @@ type GroupsMatchUpsResult = {
 };
 
 type GetStructureMatchUpsArgs = {
+  scheduleVisibilityFilters?: ScheduleVisibilityFilters;
   tournamentParticipants?: Participant[];
-  scheduleVisibilityFilters?: any;
   tournamentAppliedPolicies?: any;
   requireParticipants?: boolean;
   tournamentRecord?: Tournament;

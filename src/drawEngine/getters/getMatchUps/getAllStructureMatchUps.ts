@@ -29,6 +29,7 @@ import {
 } from './getMatchUpsMap';
 
 import { MISSING_STRUCTURE } from '../../../constants/errorConditionConstants';
+import { ScheduleVisibilityFilters } from '../../../types/factoryTypes';
 import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { MIXED } from '../../../constants/genderConstants';
@@ -51,9 +52,9 @@ import {
 */
 
 type GetAllStructureMatchUps = {
+  scheduleVisibilityFilters?: ScheduleVisibilityFilters;
   tournamentParticipants?: Participant[];
   provisionalPositioning?: boolean;
-  scheduleVisibilityFilters?: any;
   tournamentAppliedPolicies?: any;
   tournamentRecord?: Tournament;
   afterRecoveryTimes?: boolean;
@@ -326,7 +327,7 @@ export function getAllStructureMatchUps({
 
   // isCollectionBye is an attempt to embed BYE status in matchUp.tieMatchUps
   type AddMatchUpContextArgs = {
-    scheduleVisibilityFilters?: any;
+    scheduleVisibilityFilters?: ScheduleVisibilityFilters;
     sourceDrawPositionRanges?: any;
     initialRoundOfPlay?: number;
     drawPositionsRanges?: any;

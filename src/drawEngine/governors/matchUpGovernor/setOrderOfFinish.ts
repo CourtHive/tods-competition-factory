@@ -54,7 +54,7 @@ export function setOrderOfFinish({
   )
     .filter(({ matchUpId }) => targetMatchUpIds.includes(matchUpId))
     .reduce(
-      (aggregator, matchUp) => {
+      (aggregator: any, matchUp) => {
         const { matchUpTieId, matchUpType, roundNumber, structureId } = matchUp;
         if (!aggregator.matchUpTypes.includes(matchUpType))
           aggregator.matchUpTypes.push(matchUpType);

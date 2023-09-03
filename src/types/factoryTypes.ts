@@ -1,7 +1,7 @@
 import { ErrorType } from '../constants/errorConditionConstants';
 import { SignedInStatusEnum } from '../constants/participantConstants';
 import { MatchUpsMap } from '../drawEngine/getters/getMatchUps/getMatchUpsMap';
-import { HydratedParticipant } from './hydrated';
+import { HydratedMatchUp, HydratedParticipant } from './hydrated';
 import {
   DrawDefinition,
   Entry,
@@ -177,12 +177,18 @@ export type ParticipantsProfile = {
   policyDefinitions?: any;
 };
 
+export type ScheduleVisibilityFilters = {
+  visibilityThreshold: string;
+  eventIds?: string[];
+  drawIds?: string[];
+}[];
+
 export type GetMatchUpsArgs = {
   participantMap?: { [key: string]: HydratedParticipant[] };
+  scheduleVisibilityFilters?: ScheduleVisibilityFilters;
   participantsProfile?: ParticipantsProfile;
   participants?: HydratedParticipant[];
   tournamentAppliedPolicies?: any;
-  scheduleVisibilityFilters?: any;
   afterRecoveryTimes?: boolean;
   tournamentRecord?: Tournament;
   drawDefinition?: DrawDefinition;
@@ -205,13 +211,13 @@ export type HydratedSide = Side & {
 };
 
 export type GroupsMatchUpsResult = {
+  abandonedMatchUps?: HydratedMatchUp[];
+  completedMatchUps?: HydratedMatchUp[];
+  upcomingMatchUps?: HydratedMatchUp[];
+  pendingMatchUps?: HydratedMatchUp[];
+  byeMatchUps?: HydratedMatchUp[];
   matchUpsMap?: MatchUpsMap;
-  abandonedMatchUps?: any[];
-  completedMatchUps?: any[];
-  upcomingMatchUps?: any[];
-  pendingMatchUps?: any[];
   matchUpsCount?: number;
-  byeMatchUps?: any[];
   success?: boolean;
   error?: ErrorType;
 };

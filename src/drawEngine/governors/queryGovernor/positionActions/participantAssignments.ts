@@ -1,10 +1,11 @@
-// import { getQualifiersData } from '../../positionGovernor/positionQualifiers';
 import { getDrawMatchUps } from '../../../getters/getMatchUps/drawMatchUps';
 import { getNumericSeedValue } from '../../../getters/getNumericSeedValue';
-import { getParticipantId } from '../../../../global/functions/extractors';
-import { definedAttributes } from '../../../../utilities/objects';
 import { getNextSeedBlock } from '../../../getters/seedGetter';
 import { unique } from '../../../../utilities';
+import {
+  definedAttributes,
+  extractAttributes,
+} from '../../../../utilities/objects';
 
 import { POLICY_TYPE_SEEDING } from '../../../../constants/policyConstants';
 import { HydratedParticipant } from '../../../../types/hydrated';
@@ -115,7 +116,7 @@ export function getValidAssignmentActions({
         .filter(
           ({ matchUpType }) => event?.eventType !== TEAM || matchUpType === TEAM
         )
-        ?.map(({ sides }) => sides.map(getParticipantId))
+        ?.map(({ sides }) => sides?.map(extractAttributes('participantId')))
         .flat()
         .filter(
           (participantId) =>

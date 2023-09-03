@@ -2,6 +2,7 @@ import { scheduledSortedMatchUps } from '../../../global/sorting/scheduledSorted
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
 import { getSchedulingProfile } from '../scheduleGovernor/schedulingProfile';
 
+import { ScheduleVisibilityFilters } from '../../../types/factoryTypes';
 import { ResultType } from '../../../global/functions/decorateResult';
 import { Tournament } from '../../../types/tournamentFromSchema';
 import { HydratedMatchUp } from '../../../types/hydrated';
@@ -12,8 +13,8 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 type GetScheduledCourtMatchUpsArgs = {
+  scheduleVisibilityFilters?: ScheduleVisibilityFilters;
   venueMatchUps?: HydratedMatchUp[];
-  scheduleVisibilityFilters?: any;
   tournamentRecord: Tournament;
   matchUpFilters?: any;
   courtId: string;
