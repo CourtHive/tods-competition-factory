@@ -1,4 +1,5 @@
 import { validDateAvailability } from '../../governors/venueGovernor/dateAvailability';
+import { Availability } from '../../../types/tournamentFromSchema';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 import { expect, it, test } from 'vitest';
@@ -15,7 +16,7 @@ const d210102 = '2021-01-02';
 const d220202 = '2022-02-02';
 
 test('will not allow saving of Invalid Date in dateAvailability', () => {
-  let dateAvailability: any = [
+  let dateAvailability: Availability[] = [
     { date: d210102, startTime: '09:00', endTime: '16:00' },
   ];
   let result = validDateAvailability({ dateAvailability });
@@ -66,6 +67,8 @@ test('will not allow saving of Invalid Date in dateAvailability', () => {
 
   dateAvailability = [
     {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       bookings: 'not an array',
       startTime: '08:00',
       endTime: '19:00',
@@ -77,6 +80,8 @@ test('will not allow saving of Invalid Date in dateAvailability', () => {
 
   dateAvailability = [
     {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       bookings: ['not an object'],
       startTime: '08:00',
       endTime: '19:00',

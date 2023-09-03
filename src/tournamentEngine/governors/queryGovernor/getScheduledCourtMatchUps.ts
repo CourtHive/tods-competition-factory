@@ -2,14 +2,26 @@ import { scheduledSortedMatchUps } from '../../../global/sorting/scheduledSorted
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
 import { getSchedulingProfile } from '../scheduleGovernor/schedulingProfile';
 
+import { ResultType } from '../../../global/functions/decorateResult';
 import { Tournament } from '../../../types/tournamentFromSchema';
+import { HydratedMatchUp } from '../../../types/hydrated';
 import {
   MISSING_COURT_ID,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VENUE_ID,
 } from '../../../constants/errorConditionConstants';
 
-export function getScheduledCourtMatchUps(params) {
+type GetScheduledCourtMatchUpsArgs = {
+  venueMatchUps?: HydratedMatchUp[];
+  scheduleVisibilityFilters?: any;
+  tournamentRecord: Tournament;
+  matchUpFilters?: any;
+  courtId: string;
+};
+
+export function getScheduledCourtMatchUps(
+  params: GetScheduledCourtMatchUpsArgs
+): ResultType & { matchUps?: HydratedMatchUp[] } {
   if (!params?.tournamentRecord && !Array.isArray(params?.venueMatchUps))
     return { error: MISSING_TOURNAMENT_RECORD };
   if (!params?.courtId) return { error: MISSING_COURT_ID };
