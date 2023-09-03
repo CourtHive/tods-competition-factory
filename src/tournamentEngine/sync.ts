@@ -48,7 +48,7 @@ export const tournamentEngine = ((): FactoryEngine => {
       if (result.error) return result;
       setTournamentRecord(result);
       setTournamentId(tournamentId);
-      return Object.assign({ tournamentId }, SUCCESS);
+      return { ...SUCCESS, tournamentId };
     },
     setTournamentId: (newTournamentId) => setTournamentId(newTournamentId),
     version: () => factoryVersion(),

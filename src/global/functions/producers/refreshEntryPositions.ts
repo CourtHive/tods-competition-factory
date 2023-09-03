@@ -29,7 +29,7 @@ export function refreshEntryPositions(params) {
         )
         .map((entry, index) => {
           const entryPosition = index + 1;
-          return Object.assign(entry, { entryPosition });
+          return { ...entry, entryPosition };
         });
     })
     .flat();

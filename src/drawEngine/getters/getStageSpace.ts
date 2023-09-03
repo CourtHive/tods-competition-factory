@@ -32,13 +32,13 @@ export function getStageSpace({
   stageSequence,
   stage,
 }: GetStageSpaceArgs): {
-  error?: ErrorType;
-  success?: boolean;
   positionsAvailable?: number;
+  success?: boolean;
+  error?: ErrorType;
 } {
   if (entryStatus === ALTERNATE) {
     if (stageAlternatesCount({ stage, drawDefinition })) {
-      return Object.assign({ positionsAvailable: Infinity }, SUCCESS);
+      return { positionsAvailable: Infinity, ...SUCCESS };
     } else {
       return { error: ENTRY_STATUS_NOT_ALLOWED_IN_STAGE };
     }

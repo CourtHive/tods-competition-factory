@@ -41,5 +41,5 @@ export function unPublishEvent({
     },
   });
 
-  return Object.assign({ eventId: event.eventId }, SUCCESS);
+  return { eventId: event.eventId, ...SUCCESS };
 }
