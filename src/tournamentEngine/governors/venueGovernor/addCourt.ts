@@ -29,7 +29,7 @@ type AddCourtArgs = {
   disableNotice?: boolean;
   courtId?: string;
   venueId: string;
-  court?: any;
+  court?: any; // courtId may not yet be present
 };
 export function addCourt({
   tournamentRecord,

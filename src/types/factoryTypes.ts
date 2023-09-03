@@ -219,9 +219,3 @@ export type GroupsMatchUpsResult = {
 export type TournamentRecords = {
   [key: string]: Tournament;
 };
-
-export type DateAvailability = {
-  startTime: string;
-  endTime: string;
-  date: string;
-}[];
