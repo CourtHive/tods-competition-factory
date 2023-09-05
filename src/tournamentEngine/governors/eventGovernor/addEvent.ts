@@ -37,9 +37,9 @@ export function addEvent({
   event,
 }: AddEventArgs): {
   error?: ErrorType;
-  info?: any;
   context?: any;
   event?: Event;
+  info?: any;
 } {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.events) tournamentRecord.events = [];

@@ -7,7 +7,11 @@ import { generateRange } from '../../../utilities';
 import { HydratedMatchUp, HydratedParticipant } from '../../../types/hydrated';
 import { MatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { PolicyDefinitions, SeedingProfile } from '../../../types/factoryTypes';
+import {
+  PolicyDefinitions,
+  SeedBlock,
+  SeedingProfile,
+} from '../../../types/factoryTypes';
 import {
   ErrorType,
   MISSING_DRAW_POSITION,
@@ -25,11 +29,11 @@ type PositionSeedBlocksArgs = {
   appliedPolicies?: PolicyDefinitions;
   provisionalPositioning?: boolean;
   tournamentRecord?: Tournament;
+  validSeedBlocks?: SeedBlock[];
   seedingProfile?: SeedingProfile;
   drawDefinition: DrawDefinition;
   matchUpsMap?: MatchUpsMap;
   structure?: Structure;
-  validSeedBlocks?: any;
   groupsCount?: number;
   structureId?: string;
   seedBlockInfo?: any;
@@ -75,7 +79,7 @@ export function positionSeedBlocks({
     validSeedBlocks = result?.validSeedBlocks;
   }
 
-  groupsCount = groupsCount ?? validSeedBlocks.length;
+  groupsCount = groupsCount ?? validSeedBlocks?.length ?? 0;
 
   generateRange(0, groupsCount).forEach(() => {
     if (placedSeedBlocks < (groupsCount || 0)) {

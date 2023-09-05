@@ -19,7 +19,7 @@ import {
 } from '../../utilities';
 
 import { DrawDefinition, Structure } from '../../types/tournamentFromSchema';
-import { PolicyDefinitions } from '../../types/factoryTypes';
+import { PolicyDefinitions, SeedBlock } from '../../types/factoryTypes';
 import {
   CLUSTER,
   CONTAINER,
@@ -55,7 +55,7 @@ export function getValidSeedBlocks({
   allPositions,
   structure,
 }: GetValidSeedBlocksArgs) {
-  let validSeedBlocks: any[] = [];
+  let validSeedBlocks: SeedBlock[] = [];
 
   if (!structure) return { error: MISSING_STRUCTURE };
 
@@ -190,8 +190,8 @@ export function getValidSeedBlocks({
     blocks.forEach((block) => validSeedBlocks.push(block));
   }
 
-  const seedDrawPositions = [].concat(
-    ...validSeedBlocks.map((seedBlock) => seedBlock.drawPositions)
+  const seedDrawPositions = validSeedBlocks.flatMap(
+    (seedBlock) => seedBlock.drawPositions
   );
   const validSeedPositions = seedDrawPositions.reduce(
     (result, drawPosition) => {
@@ -245,7 +245,7 @@ export function getContainerBlocks({ seedingProfile, structure }) {
 }
 
 function getSeedBlockPattern({ positioning, seedGroups, drawPositionBlocks }) {
-  const validSeedBlocks: any[] = [];
+  const validSeedBlocks: SeedBlock[] = [];
 
   const topDown = (a, b) => a - b;
   const bottomUp = (a, b) => b - a;
@@ -254,7 +254,7 @@ function getSeedBlockPattern({ positioning, seedGroups, drawPositionBlocks }) {
     if (i && positioning !== WATERFALL) {
       shuffleArray(seedGroup);
     }
-    seedGroup.forEach((seedNumber, j) => {
+    seedGroup.forEach((seedNumber: number, j) => {
       const blockIndex = i % 2 ? drawPositionBlocks.length - j - 1 : j;
       const drawPosition = drawPositionBlocks[blockIndex]
         .sort(i % 2 ? bottomUp : topDown)

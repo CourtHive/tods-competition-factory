@@ -20,8 +20,8 @@ it('can add doubles events to a tournament record', () => {
 
   const eventName = 'Test Event';
   const event = {
-    eventName,
     eventType: DOUBLES,
+    eventName,
   };
 
   let result = tournamentEngine.addEvent({ event });
@@ -40,8 +40,8 @@ it('can add doubles events to a tournament record', () => {
 
   const pairParticipantId = updatedEvent.entries[0].participantId;
   result = tournamentEngine.destroyPairEntry({
-    eventId,
     participantId: pairParticipantId,
+    eventId,
   });
 
   ({ event: updatedEvent } = tournamentEngine.getEvent({ eventId }));
@@ -55,17 +55,17 @@ it('can add doubles events to a tournament record', () => {
   );
 
   result = tournamentEngine.modifyEntriesStatus({
-    eventId,
     participantIds: unpairedParticipantIds,
     entryStatus: WITHDRAWN,
+    eventId,
   });
   expect(result.success).toEqual(true);
 
   const values = {
+    event: eventResult,
     automated: true,
     drawSize: 32,
     eventId,
-    event: eventResult,
   };
   const { success: drawGenrationSuccess, drawDefinition } =
     tournamentEngine.generateDrawDefinition(values);

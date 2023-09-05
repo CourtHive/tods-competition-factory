@@ -31,7 +31,7 @@ export function getContextContent({
     tournamentRecord,
     drawDefinition,
     event,
-  });
+  }).policyDefinitions;
 
   if (contextProfile.withCompetitiveness) {
     const policy =

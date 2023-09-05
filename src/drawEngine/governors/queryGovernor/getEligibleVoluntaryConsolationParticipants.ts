@@ -102,17 +102,17 @@ export function getEligibleVoluntaryConsolationParticipants({
   const matchUpParticipants = {};
   const participantWins = {};
 
-  policyDefinitions =
-    policyDefinitions ||
-    getPolicyDefinitions({
+  if (!policyDefinitions) {
+    policyDefinitions = getPolicyDefinitions({
       policyTypes: [POLICY_TYPE_VOLUNTARY_CONSOLATION],
       tournamentRecord,
       drawDefinition,
       event,
-    });
+    }).policyDefinitions;
+  }
 
   // support POLICY_TYPE_VOLUNTARY_CONSOLATION
-  const policy = policyDefinitions[POLICY_TYPE_VOLUNTARY_CONSOLATION];
+  const policy = policyDefinitions?.[POLICY_TYPE_VOLUNTARY_CONSOLATION];
   excludedMatchUpStatuses =
     (excludedMatchUpStatuses.length && excludedMatchUpStatuses) ||
     policy?.excludedMatchUpStatuses ||

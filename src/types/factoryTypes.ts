@@ -1,7 +1,8 @@
-import { ErrorType } from '../constants/errorConditionConstants';
-import { SignedInStatusEnum } from '../constants/participantConstants';
 import { MatchUpsMap } from '../drawEngine/getters/getMatchUps/getMatchUpsMap';
+import { SignedInStatusEnum } from '../constants/participantConstants';
 import { HydratedMatchUp, HydratedParticipant } from './hydrated';
+import { ErrorType } from '../constants/errorConditionConstants';
+import { ValidPolicyTypes } from '../constants/policyConstants';
 import {
   DrawDefinition,
   Entry,
@@ -28,6 +29,11 @@ export type TournamentRecordsArgs = {
 };
 
 export type ScheduleTimesResult = { scheduleTime: string };
+
+export type SeedBlock = {
+  drawPositions: number[];
+  seedNumbers: number[];
+};
 
 export type SeedingProfile = {
   groupSeedingThreshold?: number;
@@ -64,7 +70,7 @@ export type FlightProfile = {
 };
 
 export type PolicyDefinitions = {
-  [key: string]: any;
+  [key in ValidPolicyTypes]?: any;
 };
 
 export type QueueMethod = {
