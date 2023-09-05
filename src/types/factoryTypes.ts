@@ -321,3 +321,25 @@ export type TournamentRecords = {
 };
 
 export type ExitProfiles = { [key: string]: string[] };
+
+type MinutesMapping = {
+  categoryNames: string[];
+  minutes: any;
+};
+
+export type ScheduleTiming = {
+  matchUpRecoveryTimes: {
+    [key: string]: {
+      recoveryTiming: MinutesMapping[];
+      matchUpFormatCodes: string[];
+    };
+  }[];
+  matchUpAverageTimes: {
+    [key: string]: {
+      [key: string]: {
+        averageTiming: MinutesMapping[];
+        matchUpFormatCodes: string[];
+      };
+    };
+  }[];
+};

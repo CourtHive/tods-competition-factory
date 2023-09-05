@@ -24,6 +24,7 @@ import {
   ExitProfiles,
   ParticipantMap,
   PolicyDefinitions,
+  ScheduleTiming,
   ScheduleVisibilityFilters,
 } from '../../../types/factoryTypes';
 
@@ -52,6 +53,7 @@ type GetStructureMatchUpsArgs = {
   policyDefinitions?: PolicyDefinitions;
   contextContent?: ContextContent;
   participantMap?: ParticipantMap;
+  scheduleTiming?: ScheduleTiming;
   requireParticipants?: boolean;
   tournamentRecord?: Tournament;
   contextProfile?: ContextProfile;
@@ -62,7 +64,6 @@ type GetStructureMatchUpsArgs = {
   structure?: Structure;
   matchUpFilters?: any;
   contextFilters?: any;
-  scheduleTiming?: any;
   structureId?: string;
   inContext?: boolean;
   context?: any;
