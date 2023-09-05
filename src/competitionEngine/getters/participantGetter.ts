@@ -3,7 +3,10 @@ import { getTournamentParticipants } from '../../tournamentEngine/getters/partic
 import { findParticipant } from '../../global/functions/deducers/findParticipant';
 import { deepMerge } from '../../utilities/deepMerge';
 
-import { TournamentRecordsArgs } from '../../types/factoryTypes';
+import {
+  PolicyDefinitions,
+  TournamentRecordsArgs,
+} from '../../types/factoryTypes';
 import { MatchUp } from '../../types/tournamentFromSchema';
 import { HydratedParticipant } from '../../types/hydrated';
 import { SUCCESS } from '../../constants/resultConstants';
@@ -46,8 +49,8 @@ export function getParticipants(params) {
     Object.assign(derivedEventInfo, eventInfo);
     Object.assign(derivedDrawInfo, drawInfo);
 
-    participants.push(...(tournamentParticipants || []));
-    matchUps.push(...(tournamentMatchUps || []));
+    participants.push(...(tournamentParticipants ?? []));
+    matchUps.push(...(tournamentMatchUps ?? []));
 
     idsWithConflicts?.forEach((participantId) => {
       if (!participantIdsWithConflicts.includes(participantId))
@@ -111,7 +114,7 @@ export function getCompetitionParticipants(params) {
 }
 
 type PublicFindParticipantArgs = TournamentRecordsArgs & {
-  policyDefinitions: any;
+  policyDefinitions?: PolicyDefinitions;
   participantId?: string;
   inContext?: boolean;
   personId?: string;

@@ -7,9 +7,10 @@ import {
   groupRounds,
 } from './roundRobinGroups';
 
+import { PolicyDefinitions, SeedingProfile } from '../../types/factoryTypes';
+import { ResultType } from '../../global/functions/decorateResult';
 import { ROUND_TARGET } from '../../constants/extensionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
-import { SeedingProfile } from '../../types/factoryTypes';
 import {
   MAIN,
   ITEM,
@@ -21,14 +22,13 @@ import {
   MatchUpStatusEnum,
   TypeEnum,
 } from '../../types/tournamentFromSchema';
-import { ResultType } from '../../global/functions/decorateResult';
 
 type GenerateRoundRobinArgs = {
+  appliedPolicies?: PolicyDefinitions;
   seedingProfile?: SeedingProfile;
   structureName?: string;
   stageSequence?: number;
   structureOptions?: any;
-  appliedPolicies?: any;
   matchUpType?: TypeEnum;
   roundTarget?: number;
   structureId: string;

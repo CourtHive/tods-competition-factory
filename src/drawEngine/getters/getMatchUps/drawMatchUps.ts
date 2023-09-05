@@ -42,8 +42,7 @@ export function getAllDrawMatchUps(params): ResultType & {
     matchUpsMap,
   } = result;
 
-  const matchUps = [].concat(
-    ...(abandonedMatchUps || []),
+  const matchUps: HydratedMatchUp[] = (abandonedMatchUps || []).concat(
     ...(completedMatchUps || []),
     ...(upcomingMatchUps || []),
     ...(pendingMatchUps || []),

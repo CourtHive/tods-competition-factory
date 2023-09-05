@@ -23,6 +23,8 @@ import {
 import { MISSING_TOURNAMENT_RECORD } from '../../../../constants/errorConditionConstants';
 import { STRUCTURE_ENTERED_TYPES } from '../../../../constants/entryStatusConstants';
 import { DELETE_DRAW_DEFINITIONS } from '../../../../constants/auditConstants';
+import { Event, Tournament } from '../../../../types/tournamentFromSchema';
+import { PolicyDefinitions } from '../../../../types/factoryTypes';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { AUDIT } from '../../../../constants/topicConstants';
 import {
@@ -38,11 +40,10 @@ import {
   PUBLISH,
   STATUS,
 } from '../../../../constants/timeItemConstants';
-import { Event, Tournament } from '../../../../types/tournamentFromSchema';
 
 type DeleteDrawDefinitionArgs = {
+  policyDefinitions?: PolicyDefinitions;
   tournamentRecord: Tournament;
-  policyDefinitions?: any;
   autoPublish?: boolean;
   drawIds?: string[];
   auditData?: any;

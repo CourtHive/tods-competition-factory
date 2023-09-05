@@ -4,6 +4,7 @@ import { definedAttributes } from '../../../../utilities/objects';
 import { unique } from '../../../../utilities';
 
 import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConstants';
+import { PolicyDefinitions } from '../../../../types/factoryTypes';
 import {
   CONSOLATION,
   MAIN,
@@ -33,11 +34,11 @@ import {
 type GetValidAlternatesActionArgs = {
   positionAssignments: PositionAssignment[];
   tournamentParticipants?: Participant[];
+  appliedPolicies?: PolicyDefinitions;
   possiblyDisablingAction?: boolean;
   activeDrawPositions: number[];
   returnParticipants?: boolean;
   drawDefinition: DrawDefinition;
-  appliedPolicies?: any;
   drawPosition: number;
   structureId?: string;
   structure: Structure;

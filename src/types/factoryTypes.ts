@@ -1,7 +1,8 @@
-import { ErrorType } from '../constants/errorConditionConstants';
-import { SignedInStatusEnum } from '../constants/participantConstants';
 import { MatchUpsMap } from '../drawEngine/getters/getMatchUps/getMatchUpsMap';
-import { HydratedParticipant } from './hydrated';
+import { SignedInStatusEnum } from '../constants/participantConstants';
+import { HydratedMatchUp, HydratedParticipant } from './hydrated';
+import { ErrorType } from '../constants/errorConditionConstants';
+import { ValidPolicyTypes } from '../constants/policyConstants';
 import {
   DrawDefinition,
   Entry,
@@ -28,6 +29,11 @@ export type TournamentRecordsArgs = {
 };
 
 export type ScheduleTimesResult = { scheduleTime: string };
+
+export type SeedBlock = {
+  drawPositions: number[];
+  seedNumbers: number[];
+};
 
 export type SeedingProfile = {
   groupSeedingThreshold?: number;
@@ -64,7 +70,7 @@ export type FlightProfile = {
 };
 
 export type PolicyDefinitions = {
-  [key: string]: any;
+  [key in ValidPolicyTypes]?: any;
 };
 
 export type QueueMethod = {
@@ -136,6 +142,12 @@ export type TeamKey = {
   uuids?: string[];
 };
 
+export type ScheduleAnalysis =
+  | boolean
+  | {
+      scheduledMinutesDifference: number;
+    };
+
 export type ParticipantsProfile = {
   participantType?: ParticipantTypeEnum;
   scaledParticipantsCount?: number;
@@ -172,22 +184,28 @@ export type ParticipantsProfile = {
   withEvents?: boolean;
   withDraws?: boolean;
 
+  scheduleAnalysis?: ScheduleAnalysis;
+  policyDefinitions?: PolicyDefinitions;
   participantFilters?: any;
-  scheduleAnalysis?: any;
-  policyDefinitions?: any;
 };
+
+export type ScheduleVisibilityFilters = {
+  visibilityThreshold: string;
+  eventIds?: string[];
+  drawIds?: string[];
+}[];
 
 export type GetMatchUpsArgs = {
   participantMap?: { [key: string]: HydratedParticipant[] };
+  scheduleVisibilityFilters?: ScheduleVisibilityFilters;
+  tournamentAppliedPolicies?: PolicyDefinitions;
   participantsProfile?: ParticipantsProfile;
   participants?: HydratedParticipant[];
-  tournamentAppliedPolicies?: any;
-  scheduleVisibilityFilters?: any;
-  afterRecoveryTimes?: boolean;
+  policyDefinitions?: PolicyDefinitions;
   tournamentRecord?: Tournament;
   drawDefinition?: DrawDefinition;
+  afterRecoveryTimes?: boolean;
   useParticipantMap?: boolean;
-  policyDefinitions?: any;
   nextMatchUps?: boolean;
   tournamentId?: string;
   contextFilters?: any;
@@ -205,13 +223,13 @@ export type HydratedSide = Side & {
 };
 
 export type GroupsMatchUpsResult = {
+  abandonedMatchUps?: HydratedMatchUp[];
+  completedMatchUps?: HydratedMatchUp[];
+  upcomingMatchUps?: HydratedMatchUp[];
+  pendingMatchUps?: HydratedMatchUp[];
+  byeMatchUps?: HydratedMatchUp[];
   matchUpsMap?: MatchUpsMap;
-  abandonedMatchUps?: any[];
-  completedMatchUps?: any[];
-  upcomingMatchUps?: any[];
-  pendingMatchUps?: any[];
   matchUpsCount?: number;
-  byeMatchUps?: any[];
   success?: boolean;
   error?: ErrorType;
 };

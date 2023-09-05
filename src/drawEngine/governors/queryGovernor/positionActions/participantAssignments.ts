@@ -1,12 +1,14 @@
-// import { getQualifiersData } from '../../positionGovernor/positionQualifiers';
 import { getDrawMatchUps } from '../../../getters/getMatchUps/drawMatchUps';
 import { getNumericSeedValue } from '../../../getters/getNumericSeedValue';
-import { getParticipantId } from '../../../../global/functions/extractors';
-import { definedAttributes } from '../../../../utilities/objects';
 import { getNextSeedBlock } from '../../../getters/seedGetter';
 import { unique } from '../../../../utilities';
+import {
+  definedAttributes,
+  extractAttributes,
+} from '../../../../utilities/objects';
 
 import { POLICY_TYPE_SEEDING } from '../../../../constants/policyConstants';
+import { PolicyDefinitions } from '../../../../types/factoryTypes';
 import { HydratedParticipant } from '../../../../types/hydrated';
 import { TEAM } from '../../../../constants/eventConstants';
 import {
@@ -26,13 +28,13 @@ type GetValidAssignmentActionsArgs = {
   positionAssignments: PositionAssignment[];
   positionSourceStructureIds: string[];
   unassignedParticipantIds: string[];
+  appliedPolicies?: PolicyDefinitions;
   possiblyDisablingAction?: boolean;
   provisionalPositioning?: boolean;
   isWinRatioFedStructure?: boolean;
   returnParticipants?: boolean;
   drawDefinition: DrawDefinition;
   isByePosition?: boolean;
-  appliedPolicies?: any;
   drawPosition: number;
   structureId: string;
   event?: Event;
@@ -110,12 +112,12 @@ export function getValidAssignmentActions({
     });
 
     const availableParticipantIds = unique(
-      (completedMatchUps || [])
+      (completedMatchUps ?? [])
         // filter completedMatchUps to exclude SINGLES/DOUBLES for TEAM events
         .filter(
           ({ matchUpType }) => event?.eventType !== TEAM || matchUpType === TEAM
         )
-        ?.map(({ sides }) => sides.map(getParticipantId))
+        ?.map(({ sides }) => sides?.map(extractAttributes('participantId')))
         .flat()
         .filter(
           (participantId) =>
@@ -131,7 +133,7 @@ export function getValidAssignmentActions({
       : undefined;
 
     participantsAvailable?.forEach((participant) => {
-      const entry = (drawDefinition.entries || []).find(
+      const entry = (drawDefinition.entries ?? []).find(
         (entry) => entry.participantId === participant.participantId
       );
       participant.entryPosition = entry?.entryPosition;
@@ -167,17 +169,7 @@ export function getValidAssignmentActions({
       );
     } else {
       // otherwise look for any unplaced entries
-      // 1) unassigned DIRECT_ACCEPTANCE or WILDCARD structure entries
       availableParticipantIds = unassignedParticipantIds;
-      /*
-      // 2) unassigned qualifer entries
-      const { unplacedQualifiersCount } = getQualifiersData({
-        drawDefinition,
-        structureId,
-        structure,
-      });
-      if (unplacedQualifiersCount) console.log({ unplacedQualifiersCount });
-      */
     }
 
     // add structureId and drawPosition to the payload so the client doesn't need to discover

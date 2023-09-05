@@ -15,13 +15,13 @@ import {
 } from './tieFormatUtilities';
 
 import { TIE_FORMAT_MODIFICATIONS } from '../../../constants/extensionConstants';
+import { TieFormat } from '../../../types/tournamentFromSchema';
 import {
   ErrorType,
   INVALID_VALUES,
   MISSING_VALUE,
   NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { TieFormat } from '../../../types/tournamentFromSchema';
 
 // all child matchUps need to be checked for collectionAssignments / collectionPositions which need to be removed when collectionDefinition.collectionIds are removed
 export function modifyCollectionDefinition({

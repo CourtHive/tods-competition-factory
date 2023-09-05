@@ -6,6 +6,8 @@ import { findStructure } from '../../../getters/findStructure';
 import { getByesData } from '../../../getters/getByesData';
 import { shuffleArray } from '../../../../utilities';
 
+import { MatchUpsMap } from '../../../getters/getMatchUps/getMatchUpsMap';
+import { PolicyDefinitions } from '../../../../types/factoryTypes';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   CONTAINER,
@@ -18,14 +20,13 @@ import {
   Structure,
   Tournament,
 } from '../../../../types/tournamentFromSchema';
-import { MatchUpsMap } from '../../../getters/getMatchUps/getMatchUpsMap';
 
 type PositionByesArgs = {
+  appliedPolicies?: PolicyDefinitions;
   provisionalPositioning?: boolean;
   tournamentRecord?: Tournament;
   drawDefinition: DrawDefinition;
   matchUpsMap?: MatchUpsMap;
-  appliedPolicies?: any;
   structure?: Structure;
   structureId?: string;
   seedBlockInfo?: any;
@@ -51,7 +52,7 @@ export function positionByes({
   if (!structureId) structureId = structure?.structureId;
 
   const blockOrdered = !(
-    structure?.structures || structure?.stage === QUALIFYING
+    structure?.structures ?? structure?.stage === QUALIFYING
   );
 
   const { byesCount, placedByes, relevantMatchUps } = getByesData({

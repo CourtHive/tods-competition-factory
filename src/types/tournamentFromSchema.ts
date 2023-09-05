@@ -1295,7 +1295,7 @@ export interface Court {
 }
 
 export interface Availability {
-  bookings?: Booking;
+  bookings?: Booking[];
   createdAt?: Date | string;
   date?: string;
   endTime?: string;

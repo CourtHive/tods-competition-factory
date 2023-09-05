@@ -21,7 +21,7 @@ it('can set and reset policy governor', () => {
 
   const { drawDefinition } = drawEngine.getState();
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
-  const { seedingProfile, policyName } = appliedPolicies.seeding;
+  const { seedingProfile, policyName } = appliedPolicies?.seeding || {};
 
   expect(policyName).toEqual('ITF SEEDING');
   expect(seedingProfile).not.toBeUndefined();

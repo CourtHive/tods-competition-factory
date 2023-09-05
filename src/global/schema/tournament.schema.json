@@ -3319,7 +3319,10 @@
           "type": "boolean"
         },
         "bookings": {
-          "$ref": "#/definitions/Booking"
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Booking"
+          }
         },
         "date": {
           "type": "string",

@@ -53,19 +53,17 @@ export function drawEngineAsync(
         drawId: params?.drawId,
         drawType: params?.drawType,
       });
-      return Object.assign(
-        {
-          drawId: drawDefinition.drawId,
-          drawDefinition: makeDeepCopy(drawDefinition),
-        },
-        SUCCESS
-      );
+      return {
+        drawDefinition: makeDeepCopy(drawDefinition),
+        drawId: drawDefinition.drawId,
+        ...SUCCESS,
+      };
     },
     setDrawDescription: (params) => {
       if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
       drawDefinition.description = params?.description;
       modifyDrawNotice({ drawDefinition });
-      return Object.assign({ drawId: drawDefinition.drawId }, SUCCESS);
+      return { drawId: drawDefinition.drawId, ...SUCCESS };
     },
   };
 

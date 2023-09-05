@@ -53,7 +53,7 @@ export function tournamentEngineAsync(
 
       setTournamentRecord(result);
       setTournamentId(result.tournamentId);
-      return Object.assign({ tournamentId: result.tournamentId }, SUCCESS);
+      return { tournamentId: result.tournamentId, ...SUCCESS };
     },
     setTournamentId: (newTournamentId) => setTournamentId(newTournamentId),
   };

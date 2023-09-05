@@ -3,6 +3,7 @@ import { getStageEntries } from '../../getters/participants/getStageEntries';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { getSeedsCount } from './getSeedsCount';
 
+import { PolicyDefinitions } from '../../../types/factoryTypes';
 import {
   ErrorType,
   MISSING_EVENT,
@@ -15,8 +16,8 @@ import {
 } from '../../../types/tournamentFromSchema';
 
 type GetEntriesAndSeedsCountArgs = {
+  policyDefinitions: PolicyDefinitions;
   drawDefinition: DrawDefinition;
-  policyDefinitions: any;
   stage: StageTypeEnum;
   drawSize?: number;
   drawId?: string;

@@ -28,6 +28,7 @@ import {
 import { POLICY_TYPE_PROGRESSION } from '../../../constants/policyConstants';
 import { DISABLE_AUTO_CALC } from '../../../constants/extensionConstants';
 import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
+import { PolicyDefinitions } from '../../../types/factoryTypes';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
   CANNOT_CHANGE_WINNING_SIDE,
@@ -63,6 +64,7 @@ import {
 
 type SetMatchUpStatusArgs = {
   tournamentRecords?: { [key: string]: Tournament };
+  policyDefinitions?: PolicyDefinitions;
   matchUpStatus?: MatchUpStatusEnum;
   allowChangePropagation?: boolean;
   disableScoreValidation?: boolean;
@@ -72,7 +74,6 @@ type SetMatchUpStatusArgs = {
   drawDefinition: DrawDefinition;
   disableAutoCalc?: boolean;
   enableAutoCalc?: boolean;
-  policyDefinitions?: any;
   matchUpFormat?: string;
   matchUpTieId?: string;
   tieMatchUpId?: string;
@@ -285,12 +286,13 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
     });
   }
 
-  const { appliedPolicies } = getAppliedPolicies({
-    policyTypes: [POLICY_TYPE_PROGRESSION],
-    tournamentRecord,
-    drawDefinition,
-    event,
-  });
+  const appliedPolicies =
+    getAppliedPolicies({
+      policyTypes: [POLICY_TYPE_PROGRESSION],
+      tournamentRecord,
+      drawDefinition,
+      event,
+    })?.appliedPolicies ?? {};
 
   if (typeof params.policyDefinitions === 'object') {
     Object.assign(appliedPolicies, params.policyDefinitions);
