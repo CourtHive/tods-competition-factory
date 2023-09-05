@@ -4,6 +4,7 @@ import { publicFindParticipant } from './participantGetter';
 import { ResultType } from '../../global/functions/decorateResult';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
+  PolicyDefinitions,
   ScaleAttributes,
   ScaleItem,
   TournamentRecords,
@@ -11,8 +12,8 @@ import {
 
 type GetParticipantScaleItemArgs = {
   tournamentRecords: TournamentRecords;
+  policyDefinitions?: PolicyDefinitions;
   scaleAttributes: ScaleAttributes;
-  policyDefinitions?: any;
   participantId?: string;
   inContext?: boolean;
   personId?: string;

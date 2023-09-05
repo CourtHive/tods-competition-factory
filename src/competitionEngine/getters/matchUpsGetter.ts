@@ -7,6 +7,7 @@ import { ResultType } from '../../global/functions/decorateResult';
 import { HydratedMatchUp } from '../../types/hydrated';
 import {
   ParticipantsProfile,
+  PolicyDefinitions,
   ScheduleVisibilityFilters,
   TournamentRecordsArgs,
 } from '../../types/factoryTypes';
@@ -18,8 +19,8 @@ import {
 type CompetitionMatchUpsArgs = TournamentRecordsArgs & {
   scheduleVisibilityFilters?: ScheduleVisibilityFilters;
   participantsProfile?: ParticipantsProfile;
+  policyDefinitions?: PolicyDefinitions;
   afterRecoveryTimes?: boolean;
-  policyDefinitions?: any;
   nextMatchUps?: boolean;
   matchUpFilters?: any;
   contextFilters?: any;

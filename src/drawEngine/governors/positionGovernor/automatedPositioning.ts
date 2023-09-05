@@ -24,10 +24,11 @@ import {
   enableNotifications,
 } from '../../../global/state/globalState';
 
-import { HydratedMatchUp, HydratedParticipant } from '../../../types/hydrated';
+import { STRUCTURE_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { DIRECT_ENTRY_STATUSES } from '../../../constants/entryStatusConstants';
+import { HydratedMatchUp, HydratedParticipant } from '../../../types/hydrated';
+import { PolicyDefinitions, SeedingProfile } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { SeedingProfile } from '../../../types/factoryTypes';
 import {
   LUCKY_DRAW,
   WATERFALL,
@@ -38,12 +39,12 @@ import {
   PositionAssignment,
   Tournament,
 } from '../../../types/tournamentFromSchema';
-import { STRUCTURE_NOT_FOUND } from '../../../constants/errorConditionConstants';
 
 // TODO: Throw an error if an attempt is made to automate positioning for a structure that already has completed matchUps
 type AutomatedPositioningArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];
   participants?: HydratedParticipant[];
+  appliedPolicies?: PolicyDefinitions;
   provisionalPositioning?: boolean;
   seedingProfile?: SeedingProfile;
   tournamentRecord?: Tournament;
@@ -51,7 +52,6 @@ type AutomatedPositioningArgs = {
   multipleStructures?: boolean;
   applyPositioning?: boolean;
   matchUpsMap?: MatchUpsMap;
-  appliedPolicies?: any;
   placeByes?: boolean;
   structureId: string;
   seedsOnly?: boolean;
@@ -136,7 +136,7 @@ export function automatedPositioning({
   if (!entries?.length && !qualifiersCount)
     return handleSuccessCondition({ ...SUCCESS });
 
-  matchUpsMap = matchUpsMap || getMatchUpsMap({ drawDefinition });
+  matchUpsMap = matchUpsMap ?? getMatchUpsMap({ drawDefinition });
 
   if (!inContextDrawMatchUps) {
     ({ matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
@@ -184,7 +184,7 @@ export function automatedPositioning({
     positioningReport.push({ action: 'positionByes', unseededByePositions });
 
     result = positionSeedBlocks({
-      seedingProfile: structure.seedingProfile || seedingProfile,
+      seedingProfile: structure.seedingProfile ?? seedingProfile,
       provisionalPositioning,
       inContextDrawMatchUps,
       tournamentRecord,
@@ -208,7 +208,7 @@ export function automatedPositioning({
     // can follow the seedValues of placed seeds
     if (drawType !== LUCKY_DRAW) {
       const result = positionSeedBlocks({
-        seedingProfile: structure.seedingProfile || seedingProfile,
+        seedingProfile: structure.seedingProfile ?? seedingProfile,
         provisionalPositioning,
         inContextDrawMatchUps,
         tournamentRecord,

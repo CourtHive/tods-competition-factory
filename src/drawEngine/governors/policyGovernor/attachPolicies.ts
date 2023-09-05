@@ -19,7 +19,8 @@ export function attachPolicies({ drawDefinition, policyDefinitions }) {
   }
 
   if (!drawDefinition.extensions) drawDefinition.extensions = [];
-  const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
+  const appliedPolicies =
+    getAppliedPolicies({ drawDefinition })?.appliedPolicies ?? {};
 
   const applied = Object.keys(policyDefinitions).every((policyType) => {
     if (!appliedPolicies[policyType]) {

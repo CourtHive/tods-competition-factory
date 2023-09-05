@@ -24,6 +24,8 @@ import {
 } from './actionPolicyUtils';
 
 import { DIRECT_ENTRY_STATUSES } from '../../../../constants/entryStatusConstants';
+import { ResultType } from '../../../../global/functions/decorateResult';
+import { PolicyDefinitions } from '../../../../types/factoryTypes';
 import { PAIR } from '../../../../constants/participantConstants';
 import {
   INVALID_DRAW_POSITION,
@@ -67,7 +69,6 @@ import {
   Participant,
   Tournament,
 } from '../../../../types/tournamentFromSchema';
-import { ResultType } from '../../../../global/functions/decorateResult';
 
 /**
  * return an array of all possible validActions for a given drawPosition within a structure
@@ -75,11 +76,11 @@ import { ResultType } from '../../../../global/functions/decorateResult';
 
 type PositionActionsArgs = {
   tournamentParticipants?: Participant[];
+  policyDefinitions?: PolicyDefinitions;
   provisionalPositioning?: boolean;
   tournamentRecord?: Tournament;
   returnParticipants?: boolean;
   drawDefinition: DrawDefinition;
-  policyDefinitions?: any;
   drawPosition: number;
   structureId: string;
   matchUpId?: string;
@@ -139,12 +140,13 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
     byeDrawPositions,
   } = result;
 
-  const { appliedPolicies } = getAppliedPolicies({
-    tournamentRecord,
-    drawDefinition,
-    structure,
-    event,
-  });
+  const appliedPolicies =
+    getAppliedPolicies({
+      tournamentRecord,
+      drawDefinition,
+      structure,
+      event,
+    }).appliedPolicies ?? {};
 
   Object.assign(appliedPolicies, specifiedPolicyDefinitions || {});
 

@@ -9,6 +9,7 @@ import { HydratedParticipant } from '../../../types/hydrated';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   ParticipantFilters,
+  PolicyDefinitions,
   ScheduleAnalysis,
 } from '../../../types/factoryTypes';
 import {
@@ -20,6 +21,7 @@ type GetParticipantsArgs = {
   participantFilters?: ParticipantFilters;
   withIndividualParticipants?: boolean;
   scheduleAnalysis?: ScheduleAnalysis;
+  policyDefinitions?: PolicyDefinitions;
   withPotentialMatchUps?: boolean;
   withRankingProfile?: boolean;
   convertExtensions?: boolean;
@@ -31,7 +33,6 @@ type GetParticipantsArgs = {
   usePublishState?: boolean;
   withStatistics?: boolean;
   withOpponents?: boolean;
-  policyDefinitions?: any;
   withMatchUps?: boolean;
   internalUse?: boolean;
   withSeeding?: boolean;

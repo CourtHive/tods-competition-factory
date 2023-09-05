@@ -3,6 +3,7 @@ import { getTournamentParticipants } from '../../getters/participants/getTournam
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 import { ResultType } from '../../../global/functions/decorateResult';
+import { PolicyDefinitions } from '../../../types/factoryTypes';
 import {
   DrawDefinition,
   Event,
@@ -10,11 +11,11 @@ import {
 } from '../../../types/tournamentFromSchema';
 
 type PositionActionsArgs = {
+  policyDefinitions?: PolicyDefinitions;
   provisionalPositioning?: boolean;
   returnParticipants?: boolean;
   tournamentRecord: Tournament;
   drawDefinition: DrawDefinition;
-  policyDefinitions?: any;
   drawPosition: number;
   structureId: string;
   matchUpId?: string;

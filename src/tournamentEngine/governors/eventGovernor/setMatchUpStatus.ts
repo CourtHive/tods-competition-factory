@@ -5,6 +5,7 @@ import { findPolicy } from '../policyGovernor/findPolicy';
 import { findEvent } from '../../getters/eventGetter';
 
 import { POLICY_TYPE_SCORING } from '../../../constants/policyConstants';
+import { PolicyDefinitions } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_DRAW_ID,
@@ -23,13 +24,13 @@ import {
 
 type SetMatchUpStatusArgs = {
   tournamentRecords?: { [key: string]: Tournament };
+  policyDefinitions?: PolicyDefinitions;
   allowChangePropagation?: boolean;
   tournamentRecord: Tournament;
   drawDefinition: DrawDefinition;
   disableAutoCalc?: boolean;
   enableAutoCalc?: boolean;
   matchUpFormat?: string;
-  policyDefinitions: any;
   matchUpId: string;
   drawId?: string;
   schedule?: any;

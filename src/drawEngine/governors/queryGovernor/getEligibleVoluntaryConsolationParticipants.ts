@@ -6,13 +6,14 @@ import {
 } from '../../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
 
 import { POLICY_TYPE_VOLUNTARY_CONSOLATION } from '../../../constants/policyConstants';
+import { HydratedSide, PolicyDefinitions } from '../../../types/factoryTypes';
+import { UNGROUPED, WITHDRAWN } from '../../../constants/entryStatusConstants';
+import { DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   ErrorType,
   MISSING_DRAW_DEFINITION,
 } from '../../../constants/errorConditionConstants';
-import { UNGROUPED, WITHDRAWN } from '../../../constants/entryStatusConstants';
-import { DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MAIN,
   PLAY_OFF,
@@ -26,17 +27,16 @@ import {
   Participant,
   Tournament,
 } from '../../../types/tournamentFromSchema';
-import { HydratedSide } from '../../../types/factoryTypes';
 
 type GetEligibleVoluntaryConsolationParticipantsArgs = {
   excludedMatchUpStatuses?: MatchUpStatusEnum[];
+  policyDefinitions?: PolicyDefinitions;
   includeEventParticipants?: boolean;
   includeQualifyingStage?: boolean;
   tournamentRecord?: Tournament;
   drawDefinition: DrawDefinition;
   finishingRoundLimit?: number;
   roundNumberLimit?: number;
-  policyDefinitions?: any;
   matchUpsLimit?: number;
   requirePlay?: boolean;
   requireLoss?: boolean;

@@ -1,5 +1,6 @@
 import { POLICY_POSITION_ACTIONS_DEFAULT } from '../../../../fixtures/policies/POLICY_POSITION_ACTIONS_DEFAULT';
 import { POLICY_MATCHUP_ACTIONS_DEFAULT } from '../../../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
+import { PolicyDefinitions } from '../../../../types/factoryTypes';
 import {
   POLICY_TYPE_POSITION_ACTIONS,
   POLICY_TYPE_MATCHUP_ACTIONS,
@@ -13,8 +14,8 @@ export const POSITION_ACTION = 'positionAction';
 export const MATCHUP_ACTION = 'matchUpAction';
 
 type GetEnabledStructuresArgs = {
+  appliedPolicies?: PolicyDefinitions;
   drawDefinition: DrawDefinition;
-  appliedPolicies?: any;
   structure?: Structure;
   actionType?: string;
 };
@@ -40,7 +41,7 @@ export function getEnabledStructures({
     (link) => link?.target?.structureId === structure?.structureId
   );
   const targetFeedProfiles =
-    relevantLinks?.map(({ target }) => target.feedProfile) || [];
+    relevantLinks?.map(({ target }) => target.feedProfile) ?? [];
 
   const { enabledStructures, disabledStructures } = actionsPolicy || {};
   const actionsDisabled = disabledStructures?.find((structurePolicy) => {
@@ -134,5 +135,5 @@ export function isAvailableAction({ action, policyActions }) {
     policyActions?.enabledActions.length === 0 ||
     policyActions?.enabledActions.includes(action);
 
-  return enabled && !disabled ? true : false;
+  return enabled && !disabled;
 }

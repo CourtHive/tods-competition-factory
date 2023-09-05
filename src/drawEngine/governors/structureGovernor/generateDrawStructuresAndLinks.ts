@@ -8,6 +8,7 @@ import { ensureInt } from '../../../utilities/ensureInt';
 import { isPowerOf2 } from '../../../utilities';
 import { getGenerators } from './getGenerators';
 
+import { PolicyDefinitions } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/matchUpTypes';
 import {
@@ -35,13 +36,13 @@ import {
 } from '../../../types/tournamentFromSchema';
 
 type GenerateDrawStructuresAndLinksArgs = {
+  appliedPolicies?: PolicyDefinitions;
   enforceMinimumDrawSize?: boolean;
   drawDefinition: DrawDefinition;
   overwriteExisting?: boolean;
   drawTypeCoercion?: boolean;
   staggeredEntry?: boolean;
   qualifyingProfiles?: any;
-  appliedPolicies?: any;
   tieFormat?: TieFormat;
   matchUpType?: string;
   drawType?: string;
@@ -67,11 +68,11 @@ export function generateDrawStructuresAndLinks(
   } = params || {};
 
   const stack = 'generateDrawStructuresAndLinks';
-  let drawType = params.drawType || SINGLE_ELIMINATION;
+  let drawType = params.drawType ?? SINGLE_ELIMINATION;
   const structures: Structure[] = [],
     links: any[] = [];
 
-  const matchUpType = params?.matchUpType || SINGLES;
+  const matchUpType = params?.matchUpType ?? SINGLES;
 
   const existingQualifyingStructures = drawDefinition?.structures?.filter(
     ({ stage }) => stage === QUALIFYING
@@ -108,7 +109,7 @@ export function generateDrawStructuresAndLinks(
         (link) => link.target.structureId === structure.structureId
       );
       const drawPositionsCount =
-        getPositionAssignments({ structure })?.positionAssignments?.length || 0;
+        getPositionAssignments({ structure })?.positionAssignments?.length ?? 0;
       if (!relevantLink) return drawPositionsCount;
 
       const sourceStructureId = relevantLink?.source.structureId;

@@ -1,12 +1,13 @@
 import { attachPolicies as attachTournamentPolicies } from '../../../tournamentEngine/governors/policyGovernor/policyManagement';
 
 import { MISSING_TOURNAMENT_RECORDS } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 import { Tournament } from '../../../types/tournamentFromSchema';
+import { PolicyDefinitions } from '../../../types/factoryTypes';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 type AttachPoliciesArgs = {
   tournamentRecords: { [key: string]: Tournament };
-  policyDefinitions: any;
+  policyDefinitions: PolicyDefinitions;
 };
 export function attachPolicies({
   tournamentRecords,

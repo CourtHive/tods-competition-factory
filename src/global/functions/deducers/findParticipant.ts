@@ -3,6 +3,7 @@ import { attributeFilter, makeDeepCopy } from '../../../utilities';
 
 import { POLICY_TYPE_PARTICIPANT } from '../../../constants/policyConstants';
 import { Participant } from '../../../types/tournamentFromSchema';
+import { PolicyDefinitions } from '../../../types/factoryTypes';
 
 type HydratedParticipant = {
   [key: string | number | symbol]: unknown;
@@ -10,7 +11,7 @@ type HydratedParticipant = {
 
 type FindParticipantArgs = {
   tournamentParticipants: Participant[];
-  policyDefinitions?: any;
+  policyDefinitions?: PolicyDefinitions;
   participantId?: string;
   internalUse?: boolean;
   contextProfile?: any;

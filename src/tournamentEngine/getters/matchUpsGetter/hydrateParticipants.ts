@@ -3,16 +3,19 @@ import { addNationalityCode } from '../../governors/participantGovernor/addNatio
 import { getScaleValues } from '../participants/getScaleValues';
 
 import { getParticipantMap } from '../participants/getParticipantMap';
-import { ParticipantsProfile } from '../../../types/factoryTypes';
 import { Tournament } from '../../../types/tournamentFromSchema';
 import { HydratedParticipant } from '../../../types/hydrated';
 import { makeDeepCopy } from '../../../utilities';
+import {
+  ParticipantsProfile,
+  PolicyDefinitions,
+} from '../../../types/factoryTypes';
 
 type HydrateParticipantsArgs = {
   participantsProfile?: ParticipantsProfile;
+  policyDefinitions?: PolicyDefinitions;
   tournamentRecord: Tournament;
   useParticipantMap?: boolean;
-  policyDefinitions?: any;
   contextProfile?: any;
   inContext?: boolean;
 };

@@ -6,8 +6,9 @@ import {
 } from '../tournamentGovernor/addRemoveExtensions';
 
 import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 import { Event, Tournament } from '../../../types/tournamentFromSchema';
+import { PolicyDefinitions } from '../../../types/factoryTypes';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_EVENT,
   MISSING_POLICY_DEFINITION,
@@ -20,9 +21,9 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 type AttachPoliciesArgs = {
+  policyDefinitions: PolicyDefinitions;
   tournamentRecord: Tournament;
   allowReplacement?: boolean;
-  policyDefinitions: any;
 };
 export function attachPolicies({
   tournamentRecord,
@@ -39,7 +40,8 @@ export function attachPolicies({
   }
 
   if (!tournamentRecord.extensions) tournamentRecord.extensions = [];
-  const { appliedPolicies } = getAppliedPolicies({ tournamentRecord });
+  const appliedPolicies =
+    getAppliedPolicies({ tournamentRecord }).appliedPolicies ?? {};
 
   const applied = Object.keys(policyDefinitions)
     .map((policyType) => {
@@ -66,8 +68,8 @@ export function attachPolicies({
 }
 
 type AttachEventPoliciesArgs = {
+  policyDefinitions: PolicyDefinitions;
   allowReplacement?: boolean;
-  policyDefinitions: any;
   event: Event;
 };
 export function attachEventPolicies({
@@ -84,7 +86,7 @@ export function attachEventPolicies({
 
   let policiesApplied = 0;
   if (!event.extensions) event.extensions = [];
-  const { appliedPolicies } = getAppliedPolicies({ event });
+  const appliedPolicies = getAppliedPolicies({ event }).appliedPolicies ?? {};
 
   Object.keys(policyDefinitions).forEach((policyType) => {
     if (!appliedPolicies[policyType] || allowReplacement) {

@@ -19,6 +19,7 @@ import {
 } from '../../utilities';
 
 import { DrawDefinition, Structure } from '../../types/tournamentFromSchema';
+import { PolicyDefinitions } from '../../types/factoryTypes';
 import {
   CLUSTER,
   CONTAINER,
@@ -40,10 +41,10 @@ import {
  */
 
 type GetValidSeedBlocksArgs = {
+  appliedPolicies?: PolicyDefinitions;
   provisionalPositioning?: boolean;
   drawDefinition?: DrawDefinition;
   allPositions?: boolean;
-  appliedPolicies?: any;
   structure: Structure;
 };
 
@@ -224,7 +225,7 @@ export function getContainerBlocks({ seedingProfile, structure }) {
   })?.positionAssignments;
   const positioning = getSeedPattern(seedingProfile);
 
-  const drawSize = positionAssignments?.length || 0;
+  const drawSize = positionAssignments?.length ?? 0;
   const { seedGroups } = getSeedGroups({
     roundRobinGroupsCount,
     drawSize,
@@ -309,22 +310,15 @@ function constructPower2Blocks(params) {
 }
 
 /**
- *
- * @param {Object} drawDefinition - TODS JSON Object containing draw components
- * @param {string} structureId - identifier for relevant structure within drawDefinition
- * @param {number} drawPosition - position being checked for valid seed placement
- * @param {number} seedNumber - used with srict seeding policy to determine valid seedBlock
- *
  * method operates in three modes:
  * 1. Lenient (default) - any valid seed number can go in any valid seed position
  * 2. Ignore - method is bypassed and always returns true
  * 3. Strict - drawPosition is only valid if it is found in seedBlock which contains seedNumber
- *
  */
 
 type IsValidSeedPositionArgs = {
+  appliedPolicies?: PolicyDefinitions;
   drawDefinition: DrawDefinition;
-  appliedPolicies?: any;
   drawPosition: number;
   seedBlockInfo?: any;
   structureId: string;
@@ -387,7 +381,7 @@ export function getNextSeedBlock(params) {
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const positionsWithParticipants = positionAssignments?.filter(
     (assignment) =>
-      assignment.participantId || assignment.bye || assignment.qualifier
+      assignment.participantId ?? assignment.bye ?? assignment.qualifier
   );
   const assignedDrawPositions = positionsWithParticipants
     ?.map((assignment) => assignment.drawPosition)

@@ -29,7 +29,6 @@ import {
 } from './getMatchUpsMap';
 
 import { MISSING_STRUCTURE } from '../../../constants/errorConditionConstants';
-import { ScheduleVisibilityFilters } from '../../../types/factoryTypes';
 import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { MIXED } from '../../../constants/genderConstants';
@@ -45,6 +44,10 @@ import {
   Event,
   Structure,
 } from '../../../types/tournamentFromSchema';
+import {
+  PolicyDefinitions,
+  ScheduleVisibilityFilters,
+} from '../../../types/factoryTypes';
 
 /*
   return all matchUps within a structure and its child structures
@@ -54,12 +57,12 @@ import {
 type GetAllStructureMatchUps = {
   scheduleVisibilityFilters?: ScheduleVisibilityFilters;
   tournamentParticipants?: Participant[];
+  policyDefinitions?: PolicyDefinitions;
   provisionalPositioning?: boolean;
   tournamentAppliedPolicies?: any;
   tournamentRecord?: Tournament;
   afterRecoveryTimes?: boolean;
   matchUpsMap?: MatchUpsMap;
-  policyDefinitions?: any;
   seedAssignments?: any;
   structure?: Structure;
   contextFilters?: any;
@@ -161,12 +164,11 @@ export function getAllStructureMatchUps({
   const { appliedPolicies: drawAppliedPolicies } = getAppliedPolicies({
     drawDefinition,
   });
-  const appliedPolicies = Object.assign(
-    {},
-    tournamentAppliedPolicies,
-    drawAppliedPolicies,
-    policyDefinitions
-  );
+  const appliedPolicies = {
+    ...tournamentAppliedPolicies,
+    ...drawAppliedPolicies,
+    ...policyDefinitions,
+  };
 
   const structureScoringPolicies = appliedPolicies?.scoring?.structures;
   const stageSpecificPolicies =
@@ -230,7 +232,7 @@ export function getAllStructureMatchUps({
     matchUps,
   });
   const { roundNamingProfile, roundProfile } = result;
-  roundMatchUps = result?.roundMatchUps || [];
+  roundMatchUps = result?.roundMatchUps ?? [];
 
   // must make a pass before hydration and addition of tieMatchUps
   if (matchUpFilters) {
@@ -314,7 +316,7 @@ export function getAllStructureMatchUps({
   }
 
   if (matchUpFilters?.matchUpTypes || matchUpFilters?.matchUpIds || inContext) {
-    roundMatchUps = getRoundMatchUps({ matchUps }).roundMatchUps || [];
+    roundMatchUps = getRoundMatchUps({ matchUps }).roundMatchUps ?? [];
   }
 
   if (resolveTieFormat({ drawDefinition, structure, event })?.tieFormat) {
@@ -328,6 +330,7 @@ export function getAllStructureMatchUps({
   // isCollectionBye is an attempt to embed BYE status in matchUp.tieMatchUps
   type AddMatchUpContextArgs = {
     scheduleVisibilityFilters?: ScheduleVisibilityFilters;
+    appliedPolicies?: PolicyDefinitions;
     sourceDrawPositionRanges?: any;
     initialRoundOfPlay?: number;
     drawPositionsRanges?: any;
@@ -336,7 +339,6 @@ export function getAllStructureMatchUps({
     additionalContext?: any;
     roundNamingProfile?: any;
     isRoundRobin?: boolean;
-    appliedPolicies?: any;
     matchUpTieId?: string;
     sideLineUps?: any[];
     roundProfile?: any;
@@ -518,9 +520,8 @@ export function getAllStructureMatchUps({
             if (setNumber === bestOf) {
               if (finalSetFormat?.tiebreakSet || finalSetFormat?.timed)
                 set.tiebreakSet = true;
-            } else {
-              if (setFormat?.tiebreakSet || setFormat?.timed)
-                set.tiebreakSet = true;
+            } else if (setFormat?.tiebreakSet || setFormat?.timed) {
+              set.tiebreakSet = true;
             }
             return set;
           });

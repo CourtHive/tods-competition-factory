@@ -5,6 +5,7 @@ import { expect } from 'vitest';
 import { ALTERNATE } from '../../constants/entryStatusConstants';
 import { MAIN } from '../../constants/drawDefinitionConstants';
 import { BYE } from '../../constants/matchUpStatusConstants';
+import { PolicyDefinitions } from '../../types/factoryTypes';
 import {
   ASSIGN_PARTICIPANT,
   REMOVE_ASSIGNMENT,
@@ -69,8 +70,8 @@ export function assignDrawPosition({ drawId, structureId, drawPosition }) {
 }
 
 type RemoveAssignmentArgs = {
+  policyDefinitions?: PolicyDefinitions;
   replaceWithBye?: boolean;
-  policyDefinitions?: any;
   drawPosition: number;
   structureId: string;
   drawId: string;

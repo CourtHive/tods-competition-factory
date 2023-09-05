@@ -179,8 +179,8 @@ export type ParticipantsProfile = {
   withDraws?: boolean;
 
   scheduleAnalysis?: ScheduleAnalysis;
+  policyDefinitions?: PolicyDefinitions;
   participantFilters?: any;
-  policyDefinitions?: any;
 };
 
 export type ScheduleVisibilityFilters = {
@@ -192,14 +192,14 @@ export type ScheduleVisibilityFilters = {
 export type GetMatchUpsArgs = {
   participantMap?: { [key: string]: HydratedParticipant[] };
   scheduleVisibilityFilters?: ScheduleVisibilityFilters;
+  tournamentAppliedPolicies?: PolicyDefinitions;
   participantsProfile?: ParticipantsProfile;
   participants?: HydratedParticipant[];
-  tournamentAppliedPolicies?: any;
+  policyDefinitions?: PolicyDefinitions;
   tournamentRecord?: Tournament;
   drawDefinition?: DrawDefinition;
   afterRecoveryTimes?: boolean;
   useParticipantMap?: boolean;
-  policyDefinitions?: any;
   nextMatchUps?: boolean;
   tournamentId?: string;
   contextFilters?: any;

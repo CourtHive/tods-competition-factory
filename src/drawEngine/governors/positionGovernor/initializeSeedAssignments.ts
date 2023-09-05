@@ -6,10 +6,10 @@ import { findStructure } from '../../getters/findStructure';
 import { generateRange } from '../../../utilities';
 import { getSeedGroups } from './getSeedBlocks';
 
+import { PolicyDefinitions, SeedingProfile } from '../../../types/factoryTypes';
 import { POLICY_TYPE_SEEDING } from '../../../constants/policyConstants';
 import { DrawDefinition } from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { SeedingProfile } from '../../../types/factoryTypes';
 import {
   ErrorType,
   SEEDSCOUNT_GREATER_THAN_DRAW_SIZE,
@@ -17,6 +17,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 type InitializeStructureSeedAssignmentsArgs = {
+  appliedPolicies?: PolicyDefinitions;
   requireParticipantCount?: boolean;
   enforcePolicyLimits?: boolean;
   drawSizeProgression?: boolean;
@@ -24,7 +25,6 @@ type InitializeStructureSeedAssignmentsArgs = {
   drawDefinition: DrawDefinition;
   participantsCount?: number; // TODO: migrate to participantsCount
   participantCount?: number; // TODO: migrate to participantsCount
-  appliedPolicies?: any;
   structureId: string;
   seedsCount: number;
 };
@@ -44,7 +44,7 @@ export function initializeStructureSeedAssignments({
   success?: boolean;
   seedLimit?: number;
 } {
-  participantsCount = participantsCount || participantCount;
+  participantsCount = participantsCount ?? participantCount;
   const result = findStructure({ drawDefinition, structureId });
   if (result.error) return result;
   const structure = result.structure;

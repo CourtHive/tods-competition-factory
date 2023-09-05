@@ -9,7 +9,6 @@ import { unique } from '../../../utilities';
 import { POLICY_TYPE_RANKING_POINTS } from '../../../constants/policyConstants';
 import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { RANKING_POINTS } from '../../../constants/extensionConstants';
-import { ParticipantFilters } from '../../../types/factoryTypes';
 import { Tournament } from '../../../types/tournamentFromSchema';
 import { TEAM_EVENT } from '../../../constants/eventConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -21,11 +20,15 @@ import {
   PAIR,
   TEAM_PARTICIPANT,
 } from '../../../constants/participantConstants';
+import {
+  ParticipantFilters,
+  PolicyDefinitions,
+} from '../../../types/factoryTypes';
 
 type GetTournamentPointsArgs = {
   participantFilters?: ParticipantFilters;
+  policyDefinitions?: PolicyDefinitions;
   tournamentRecord: Tournament;
-  policyDefinitions?: any;
   saveRankings?: boolean;
   level?: number;
 };

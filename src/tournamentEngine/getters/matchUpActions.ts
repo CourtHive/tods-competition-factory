@@ -3,6 +3,7 @@ import { getPolicyDefinitions } from '../../global/functions/deducers/getApplied
 import { allTournamentMatchUps } from './matchUpsGetter/matchUpsGetter';
 
 import { POLICY_TYPE_POSITION_ACTIONS } from '../../constants/policyConstants';
+import { PolicyDefinitions } from '../../types/factoryTypes';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   MISSING_TOURNAMENT_RECORD,
@@ -14,9 +15,9 @@ import {
 } from '../../types/tournamentFromSchema';
 
 type MatchUpActionsArgs = {
+  policyDefinitions?: PolicyDefinitions;
   drawDefinition?: DrawDefinition;
   tournamentRecord: Tournament;
-  policyDefinitions?: any;
   participantId?: string;
   sideNumber?: number;
   matchUpId: string;

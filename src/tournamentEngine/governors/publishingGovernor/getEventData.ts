@@ -7,11 +7,12 @@ import { getDrawData } from './getDrawData';
 
 import { PUBLIC, PUBLISH, STATUS } from '../../../constants/timeItemConstants';
 import { Event, Tournament } from '../../../types/tournamentFromSchema';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   ParticipantsProfile,
+  PolicyDefinitions,
   StructureSortConfig,
 } from '../../../types/factoryTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
 import {
   ErrorType,
   MISSING_EVENT,
@@ -21,10 +22,10 @@ import {
 type GetEventDataArgs = {
   participantsProfile?: ParticipantsProfile;
   includePositionAssignments?: boolean;
+  policyDefinitions?: PolicyDefinitions;
   sortConfig?: StructureSortConfig;
   tournamentRecord: Tournament;
   usePublishState?: boolean;
-  policyDefinitions?: any;
   status?: string;
   event: Event;
 };
