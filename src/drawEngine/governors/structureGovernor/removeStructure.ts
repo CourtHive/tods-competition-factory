@@ -88,11 +88,17 @@ export function removeStructure({
 
   // now get all remaining matchUps in the draw
   const { matchUps } = getAllDrawMatchUps({ drawDefinition });
-  matchUps.forEach((matchUp) => {
-    if (removedMatchUpIds.includes(matchUp.winnerMatchUpId)) {
+  matchUps?.forEach((matchUp) => {
+    if (
+      matchUp.winnerMatchUpId &&
+      removedMatchUpIds.includes(matchUp.winnerMatchUpId)
+    ) {
       delete matchUp.winnerMatchUpId;
     }
-    if (removedMatchUpIds.includes(matchUp.loserMatchUpId)) {
+    if (
+      matchUp.loserMatchUpId &&
+      removedMatchUpIds.includes(matchUp.loserMatchUpId)
+    ) {
       delete matchUp.loserMatchUpId;
     }
   });

@@ -1,5 +1,6 @@
 import { unique } from '../../../utilities';
 
+import { TypeEnum } from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   RANKING,
@@ -8,13 +9,30 @@ import {
   SEEDING,
 } from '../../../constants/scaleConstants';
 
+type ScaleType = {
+  scaleName: string;
+  scaleDate: string;
+  scaleValue: any;
+};
+type ScalesType = {
+  [TypeEnum.Singles]?: ScaleType;
+  [TypeEnum.Doubles]?: ScaleType;
+  [TypeEnum.Team]?: ScaleType;
+};
+
+type ScaleTypes = {
+  seedings: ScalesType;
+  rankings: ScalesType;
+  ratings: ScalesType;
+};
+
 export function getScaleValues({ participant }) {
   const scaleItems = participant.timeItems?.filter(
     ({ itemType }) =>
       itemType?.startsWith(SCALE) &&
       [RANKING, RATING, SEEDING].includes(itemType.split('.')[1])
   );
-  const scales = { ratings: {}, rankings: {}, seedings: {} };
+  const scales: ScaleTypes = { ratings: {}, rankings: {}, seedings: {} };
 
   if (scaleItems?.length) {
     const latestScaleItem = (scaleType) =>

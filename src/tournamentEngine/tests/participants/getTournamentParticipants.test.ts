@@ -120,8 +120,8 @@ it('can retrieve tournament participants', () => {
 
 test('accessorValues can filter participants by sex', () => {
   const participantsProfile = {
-    participantsCount: 100,
     nationalityCodesCount: 10,
+    participantsCount: 100,
     sex: FEMALE,
   };
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
@@ -140,8 +140,8 @@ test('accessorValues can filter participants by sex', () => {
 
 it('can accept a privacy policy to filter tournament participants attributes', () => {
   const participantsProfile = {
-    participantsCount: 100,
     nationalityCodesCount: 10,
+    participantsCount: 100,
     participantType: PAIR,
   };
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({

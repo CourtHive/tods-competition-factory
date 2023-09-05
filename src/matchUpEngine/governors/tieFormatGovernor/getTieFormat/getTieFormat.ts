@@ -19,6 +19,7 @@ import {
   Event,
   MatchUp,
   Structure,
+  TieFormat,
 } from '../../../../types/tournamentFromSchema';
 
 type GetTieFormatArgs = {
@@ -39,15 +40,12 @@ export function getTieFormat({
   matchUp,
   eventId, // optional - if an eventId is present only return tieFormat for event
   event,
-}: GetTieFormatArgs):
-  | ResultType
-  | {
-      error?: ErrorType;
-      success?: boolean;
-      tieFormat?: string;
-      matchUp?: MatchUp;
-      structure?: Structure;
-    } {
+}: GetTieFormatArgs): ResultType & {
+  structure?: Structure;
+  tieFormat?: TieFormat;
+  success?: boolean;
+  matchUp?: MatchUp;
+} {
   let tieFormat;
 
   structureId = structure?.structureId ?? structureId;

@@ -1,5 +1,8 @@
 import { removeParticipantIdsFromAllTeams } from './removeIndividualParticipantIds';
-import { decorateResult } from '../../../../global/functions/decorateResult';
+import {
+  ResultType,
+  decorateResult,
+} from '../../../../global/functions/decorateResult';
 import { addNotice, getTopics } from '../../../../global/state/globalState';
 import { updateTeamEventEntries } from './updateTeamEventEntries';
 import { makeDeepCopy } from '../../../../utilities';
@@ -19,7 +22,10 @@ import {
   TEAM,
 } from '../../../../constants/participantConstants';
 
-import { Tournament } from '../../../../types/tournamentFromSchema';
+import {
+  Participant,
+  Tournament,
+} from '../../../../types/tournamentFromSchema';
 
 type AddIndividualParticipantIdsType = {
   individualParticipantIds: string[]; // individual participantIds to be added to grouping participant
@@ -32,7 +38,10 @@ export function addIndividualParticipantIds({
   groupingParticipantId,
   removeFromOtherTeams,
   tournamentRecord,
-}: AddIndividualParticipantIdsType) {
+}: AddIndividualParticipantIdsType): ResultType & {
+  groupingParticipant?: Participant;
+  added?: number;
+} {
   const stack = 'addIndividualParticipantIds';
   if (!tournamentRecord)
     return decorateResult({

@@ -51,12 +51,10 @@ it('can add schedule items', () => {
   let startTime, stopTime, resumeTime, endTime;
 
   // test matchUp duration with start and stop time
-  // startTime = '08:05';
   startTime = '2020-01-01T08:05:00Z';
   result = drawEngine.addMatchUpStartTime({ matchUpId, startTime });
   expect(result.success).toEqual(true);
 
-  // endTime = '09:05';
   endTime = '2020-01-01T09:05:00Z';
   result = drawEngine.addMatchUpEndTime({ matchUpId, endTime });
   expect(result.success).toEqual(true);

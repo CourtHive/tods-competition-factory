@@ -6,17 +6,34 @@ import { getVenueData } from './getVenueData';
 import { getDrawData } from './getDrawData';
 
 import { PUBLIC, PUBLISH, STATUS } from '../../../constants/timeItemConstants';
+import { Event, Tournament } from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  ParticipantsProfile,
+  PolicyDefinitions,
+  StructureSortConfig,
+} from '../../../types/factoryTypes';
 import {
   ErrorType,
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 
-export function getEventData(params): {
+type GetEventDataArgs = {
+  participantsProfile?: ParticipantsProfile;
+  includePositionAssignments?: boolean;
+  policyDefinitions?: PolicyDefinitions;
+  sortConfig?: StructureSortConfig;
+  tournamentRecord: Tournament;
+  usePublishState?: boolean;
+  status?: string;
+  event: Event;
+};
+
+export function getEventData(params: GetEventDataArgs): {
+  error?: ErrorType;
   success?: boolean;
   eventData?: any;
-  error?: ErrorType;
 } {
   const {
     includePositionAssignments,

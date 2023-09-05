@@ -4,6 +4,7 @@ import { definedAttributes } from '../../../../utilities/objects';
 import { unique } from '../../../../utilities';
 
 import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConstants';
+import { PolicyDefinitions } from '../../../../types/factoryTypes';
 import {
   CONSOLATION,
   MAIN,
@@ -22,10 +23,29 @@ import {
   WITHDRAWN,
 } from '../../../../constants/entryStatusConstants';
 import {
+  DrawDefinition,
   Entry,
+  Event,
   Participant,
+  PositionAssignment,
   Structure,
 } from '../../../../types/tournamentFromSchema';
+
+type GetValidAlternatesActionArgs = {
+  positionAssignments: PositionAssignment[];
+  tournamentParticipants?: Participant[];
+  appliedPolicies?: PolicyDefinitions;
+  possiblyDisablingAction?: boolean;
+  activeDrawPositions: number[];
+  returnParticipants?: boolean;
+  drawDefinition: DrawDefinition;
+  drawPosition: number;
+  structureId?: string;
+  structure: Structure;
+  validActions: any[];
+  drawId: string;
+  event?: Event;
+};
 
 export function getValidAlternatesAction({
   tournamentParticipants = [],
@@ -41,7 +61,7 @@ export function getValidAlternatesAction({
   structure,
   drawId,
   event,
-}) {
+}: GetValidAlternatesActionArgs) {
   if (activeDrawPositions.includes(drawPosition)) return {};
 
   const validAssignmentParticipantIds = validActions.find(
@@ -55,7 +75,7 @@ export function getValidAlternatesAction({
     appliedPolicies?.[POLICY_TYPE_POSITION_ACTIONS]
       ?.restrictQualifyingAlternates;
 
-  const drawEnteredParticipantIds = (drawDefinition.entries || [])
+  const drawEnteredParticipantIds = (drawDefinition.entries ?? [])
     .filter(
       ({ entryStage }) =>
         !restrictQualifyingAlternates ||
@@ -64,7 +84,7 @@ export function getValidAlternatesAction({
           : entryStage !== QUALIFYING)
     )
     .sort(
-      (a, b) => (a.entryPosition || Infinity) - (b.entryPosition || Infinity)
+      (a, b) => (a.entryPosition ?? Infinity) - (b.entryPosition ?? Infinity)
     )
     .map(({ participantId }) => participantId)
     .filter(Boolean);
@@ -79,12 +99,12 @@ export function getValidAlternatesAction({
 
   const availableDrawEnteredParticipantIds = drawEnteredParticipantIds.filter(
     (participantId) =>
-      [QUALIFYING, MAIN, PLAY_OFF].includes(structure.stage)
-        ? !allPositionedParticipantIds.includes(participantId)
+      structure.stage && [QUALIFYING, MAIN, PLAY_OFF].includes(structure.stage)
+        ? !allPositionedParticipantIds?.includes(participantId)
         : !assignedParticipantIds.includes(participantId)
   );
 
-  const eventEntries = event.entries || [];
+  const eventEntries = event?.entries ?? [];
   const availableEventAlternatesParticipantIds = eventEntries
     .filter(
       (entry) =>
@@ -94,12 +114,13 @@ export function getValidAlternatesAction({
           structure,
           entry,
         }) &&
-        ([QUALIFYING, MAIN, PLAY_OFF].includes(structure.stage)
-          ? !allPositionedParticipantIds.includes(entry.participantId)
+        (structure.stage &&
+        [QUALIFYING, MAIN, PLAY_OFF].includes(structure.stage)
+          ? !allPositionedParticipantIds?.includes(entry.participantId)
           : !assignedParticipantIds.includes(entry.participantId))
     )
     .sort(
-      (a, b) => (a.entryPosition || Infinity) - (b.entryPosition || Infinity)
+      (a, b) => (a.entryPosition ?? Infinity) - (b.entryPosition ?? Infinity)
     )
     .map((entry) => entry.participantId);
 
@@ -110,7 +131,9 @@ export function getValidAlternatesAction({
   );
 
   if (otherFlightEntries) {
-    const { flightProfile } = getFlightProfile({ event });
+    const flightProfile = event
+      ? getFlightProfile({ event }).flightProfile
+      : undefined;
     const otherFlightEnteredParticipantIds = flightProfile?.flights
       ?.filter((flight) => flight.drawId !== drawId)
       .map((flight) =>
@@ -148,7 +171,7 @@ export function getValidAlternatesAction({
       )
     : undefined;
   availableAlternates?.forEach((alternate: any) => {
-    const entry = (drawDefinition.entries || []).find(
+    const entry = (drawDefinition.entries ?? []).find(
       (entry: Entry) => entry.participantId === alternate.participantId
     );
     alternate.entryPosition = entry?.entryPosition;

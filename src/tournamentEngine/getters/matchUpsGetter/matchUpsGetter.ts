@@ -9,12 +9,20 @@ import {
   getDrawMatchUps,
 } from '../../../drawEngine/getters/getMatchUps/drawMatchUps';
 
+import { ResultType } from '../../../global/functions/decorateResult';
+import { HydratedMatchUp } from '../../../types/hydrated';
+import {
+  GetMatchUpsArgs,
+  GroupsMatchUpsResult,
+} from '../../../types/factoryTypes';
 import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 
-export function allTournamentMatchUps(params) {
+export function allTournamentMatchUps(params: GetMatchUpsArgs): ResultType & {
+  matchUps?: HydratedMatchUp[];
+} {
   if (!params?.tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   let { participantMap, participants } = params;
   const {
@@ -32,9 +40,7 @@ export function allTournamentMatchUps(params) {
     context,
   } = params;
 
-  const tournamentId =
-    tournamentRecord.unifiedTournamentId?.tournamentId ||
-    tournamentRecord.tournamentId;
+  const tournamentId = params.tournamentId || tournamentRecord.tournamentId;
   const events = tournamentRecord?.events || [];
 
   if (!participants) {
@@ -52,10 +58,10 @@ export function allTournamentMatchUps(params) {
     tournamentRecord,
   });
 
-  const additionalContext = {
+  const additionalContext: { [key: string]: any } = {
     ...context,
     tournamentId,
-    indoorOutDoor: tournamentRecord.indoorOutDoor,
+    indoorOutDoor: tournamentRecord.indoorOutdoor,
     surfaceCategory: tournamentRecord.surfaceCategory,
     endDate: tournamentRecord.endDate,
   };
@@ -67,29 +73,30 @@ export function allTournamentMatchUps(params) {
   });
 
   const matchUps = events
-    .map((event) => {
+    .flatMap((event) => {
       additionalContext.eventDrawsCount = event.drawDefinitions?.length || 0;
 
-      return allEventMatchUps({
-        context: additionalContext,
-        scheduleVisibilityFilters,
-        tournamentAppliedPolicies,
-        participantsProfile,
-        afterRecoveryTimes,
-        policyDefinitions,
-        tournamentRecord,
-        contextContent,
-        contextFilters,
-        contextProfile,
-        matchUpFilters,
-        participantMap,
-        nextMatchUps,
-        participants,
-        inContext,
-        event,
-      }).matchUps;
+      return (
+        allEventMatchUps({
+          context: additionalContext,
+          scheduleVisibilityFilters,
+          tournamentAppliedPolicies,
+          participantsProfile,
+          afterRecoveryTimes,
+          policyDefinitions,
+          tournamentRecord,
+          contextContent,
+          contextFilters,
+          contextProfile,
+          matchUpFilters,
+          participantMap,
+          nextMatchUps,
+          participants,
+          inContext,
+          event,
+        }).matchUps || []
+      );
     })
-    .flat(Infinity)
     // TODO: these matchUps must be hydrated with participants
     // NOTE: matchUps on the tournamentRecord have no drawPositions; all data apart from participant context must be present
     .concat(...(tournamentRecord.matchUps || []));
@@ -97,7 +104,7 @@ export function allTournamentMatchUps(params) {
   return { matchUps };
 }
 
-export function allDrawMatchUps(params) {
+export function allDrawMatchUps(params: GetMatchUpsArgs) {
   let {
     participants: tournamentParticipants,
     participantMap,
@@ -132,7 +139,7 @@ export function allDrawMatchUps(params) {
     category,
     gender,
     matchUpFormat,
-    indoorOutDoor: event?.indoorOutDoor || tournamentRecord?.indoorOutDoor,
+    indoorOutDoor: event?.indoorOutdoor || tournamentRecord?.indoorOutdoor,
     surfaceCategory:
       event?.surfaceCategory || tournamentRecord?.surfaceCategory,
     endDate: event?.endDate,
@@ -181,7 +188,7 @@ export function allDrawMatchUps(params) {
   });
 }
 
-export function allEventMatchUps(params) {
+export function allEventMatchUps(params: GetMatchUpsArgs) {
   let { participants = [], contextContent, participantMap } = params;
   const {
     scheduleVisibilityFilters,
@@ -206,7 +213,7 @@ export function allEventMatchUps(params) {
   const additionalContext = {
     ...context,
     ...definedAttributes({
-      indoorOutDoor: event.indoorOutDoor || tournamentRecord?.indoorOutDoor,
+      indoorOutDoor: event.indoorOutdoor || tournamentRecord?.indoorOutdoor,
       surfaceCategory:
         event.surfaceCategory || tournamentRecord?.surfaceCategory,
       endDate: event.endDate || tournamentRecord?.endDate,
@@ -230,14 +237,16 @@ export function allEventMatchUps(params) {
   }
 
   if (!participants?.length && !participantMap && tournamentRecord) {
-    ({ participants, participantMap } = hydrateParticipants({
+    const hydratedParticipantResult = hydrateParticipants({
       participantsProfile,
       useParticipantMap,
       policyDefinitions,
       tournamentRecord,
       contextProfile,
       inContext,
-    }));
+    });
+    participantMap = hydratedParticipantResult.participantMap;
+    participants = hydratedParticipantResult.participants || [];
   }
 
   const drawDefinitions = event.drawDefinitions || [];
@@ -246,9 +255,9 @@ export function allEventMatchUps(params) {
     event,
   }).scheduleTiming;
 
-  const matchUps = drawDefinitions
-    .map((drawDefinition) => {
-      const { matchUps } = getAllDrawMatchUps({
+  const matchUps: HydratedMatchUp[] = drawDefinitions.flatMap(
+    (drawDefinition) =>
+      getAllDrawMatchUps({
         tournamentParticipants: participants,
         tournamentAppliedPolicies,
         scheduleVisibilityFilters,
@@ -267,15 +276,15 @@ export function allEventMatchUps(params) {
         nextMatchUps,
         inContext,
         event,
-      });
-      return matchUps;
-    })
-    .flat(Infinity);
+      }).matchUps || []
+  );
 
   return { matchUps };
 }
 
-export function tournamentMatchUps(params) {
+export function tournamentMatchUps(
+  params: GetMatchUpsArgs
+): GroupsMatchUpsResult {
   if (!params?.tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   let contextContent = params.contextContent;
   const {
@@ -292,9 +301,7 @@ export function tournamentMatchUps(params) {
     nextMatchUps,
     context,
   } = params;
-  const tournamentId =
-    tournamentRecord.unifiedTournamentId?.tournamentId ||
-    tournamentRecord.tournamentId;
+  const tournamentId = params.tournamentId || tournamentRecord.tournamentId;
   const events = tournamentRecord?.events || [];
 
   const { participants, participantMap } = hydrateParticipants({
@@ -367,7 +374,7 @@ export function tournamentMatchUps(params) {
   );
 }
 
-export function eventMatchUps(params) {
+export function eventMatchUps(params: GetMatchUpsArgs): GroupsMatchUpsResult {
   let {
     participants: tournamentParticipants,
     contextContent,
@@ -402,7 +409,7 @@ export function eventMatchUps(params) {
       eventName,
       endDate: endDate || tournamentRecord?.endDate,
       tournamentId: tournamentId || tournamentRecord?.tournamentId,
-      indoorOutDoor: event.indoorOutDoor || tournamentRecord?.indoorOutDoor,
+      indoorOutDoor: event.indoorOutdoor || tournamentRecord?.indoorOutdoor,
       surfaceCategory:
         event.surfaceCategory || tournamentRecord?.surfaceCategory,
     }),
@@ -480,8 +487,7 @@ export function drawMatchUps({
   inContext,
   context,
   event,
-}) {
-  if (!event) return { error: MISSING_EVENT };
+}: GetMatchUpsArgs) {
   const { eventId, eventName, endDate } = event || {};
 
   const additionalContext = {
@@ -491,7 +497,7 @@ export function drawMatchUps({
       eventName,
       endDate: endDate || event?.endDate || tournamentRecord?.endDate,
       tournamentId: tournamentId || tournamentRecord?.tournamentId,
-      indoorOutDoor: event?.indoorOutDoor || tournamentRecord?.indoorOutDoor,
+      indoorOutDoor: event?.indoorOutdoor || tournamentRecord?.indoorOutdoor,
       surfaceCategory:
         event?.surfaceCategory || tournamentRecord?.surfaceCategory,
     }),
@@ -509,7 +515,7 @@ export function drawMatchUps({
       }));
   }
 
-  if (contextProfile && !contextContent)
+  if (event && contextProfile && !contextContent)
     contextContent = getContextContent({
       policyDefinitions,
       tournamentRecord,

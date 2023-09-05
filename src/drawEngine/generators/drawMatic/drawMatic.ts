@@ -5,7 +5,7 @@ import { isAdHoc } from '../../governors/queryGovernor/isAdHoc';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../../constants/entryStatusConstants';
 import { AD_HOC, stageOrder } from '../../../constants/drawDefinitionConstants';
-import { SINGLES } from '../../../constants/eventConstants';
+import { TypeEnum } from '../../../types/tournamentFromSchema';
 import { RATING } from '../../../constants/scaleConstants';
 import {
   INVALID_DRAW_DEFINITION,
@@ -130,7 +130,7 @@ export function drawMatic({
 
 function getScaleValue({ scaleName = 'dynamic', eventType, participant }) {
   const scaleAttributes = {
-    eventType: eventType || SINGLES,
+    eventType: eventType || TypeEnum.Singles,
     scaleType: RATING,
     scaleName,
   };

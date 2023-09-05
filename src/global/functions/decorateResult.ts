@@ -4,14 +4,19 @@ import { ErrorType } from '../../constants/errorConditionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 
 export type ResultType = {
+  context?: { [key: string]: any };
   stack?: string | string[];
-  result?: ResultType;
-  [key: string]: any;
   error?: ErrorType;
   errors?: string[];
   success?: boolean;
   valid?: boolean;
-  context?: any;
+  info?: any;
+};
+
+type DecorateResultArgs = {
+  context?: { [key: string]: any };
+  stack?: string | string[];
+  result: any;
   info?: any;
 };
 
@@ -20,7 +25,7 @@ export function decorateResult({
   result,
   stack,
   info,
-}: ResultType): ResultType {
+}: DecorateResultArgs): ResultType {
   if (result && !Array.isArray(result?.stack)) result.stack = [];
   if (result && Array.isArray(result?.stack) && typeof stack === 'string') {
     result.stack.push(stack);

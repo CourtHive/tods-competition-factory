@@ -21,17 +21,19 @@ export function getTargetTeamMatchUps({
   if (matchUpId && matchUp) {
     matchUps = [matchUp];
   } else if (structureId && structure) {
-    matchUps = getAllStructureMatchUps({
-      matchUpFilters: { matchUpTypes: [TEAM] },
-      // inContext: false,
-      structure,
-    })?.matchUps;
+    matchUps =
+      getAllStructureMatchUps({
+        matchUpFilters: { matchUpTypes: [TEAM] },
+        // inContext: false,
+        structure,
+      })?.matchUps || [];
   } else if (drawDefinition) {
-    matchUps = allDrawMatchUps({
-      matchUpFilters: { matchUpTypes: [TEAM] },
-      // inContext: false,
-      drawDefinition,
-    })?.matchUps;
+    matchUps =
+      allDrawMatchUps({
+        matchUpFilters: { matchUpTypes: [TEAM] },
+        // inContext: false,
+        drawDefinition,
+      })?.matchUps || [];
   }
 
   // all team matchUps in scope which are completed or which have a tieFormat should not be modified

@@ -24,6 +24,8 @@ import {
 } from './actionPolicyUtils';
 
 import { DIRECT_ENTRY_STATUSES } from '../../../../constants/entryStatusConstants';
+import { ResultType } from '../../../../global/functions/decorateResult';
+import { PolicyDefinitions } from '../../../../types/factoryTypes';
 import { PAIR } from '../../../../constants/participantConstants';
 import {
   INVALID_DRAW_POSITION,
@@ -31,6 +33,7 @@ import {
   MISSING_DRAW_POSITION,
   MISSING_EVENT,
   MISSING_STRUCTURE_ID,
+  STRUCTURE_NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
 import {
   ADD_NICKNAME_METHOD,
@@ -60,17 +63,37 @@ import {
   QUALIFYING,
   WIN_RATIO,
 } from '../../../../constants/drawDefinitionConstants';
+import {
+  DrawDefinition,
+  Event,
+  Participant,
+  Tournament,
+} from '../../../../types/tournamentFromSchema';
 
 /**
- *
  * return an array of all possible validActions for a given drawPosition within a structure
- *
- * @param {object} drawDefinition - passed in automatically by drawEngine if state has been set
- * @param {number} drawPosition - number of drawPosition for which actions are to be returned
- * @param {string} structureId - id of structure of drawPosition
- *
  */
-export function positionActions(params) {
+
+type PositionActionsArgs = {
+  tournamentParticipants?: Participant[];
+  policyDefinitions?: PolicyDefinitions;
+  provisionalPositioning?: boolean;
+  tournamentRecord?: Tournament;
+  returnParticipants?: boolean;
+  drawDefinition: DrawDefinition;
+  drawPosition: number;
+  structureId: string;
+  matchUpId?: string;
+  event?: Event;
+};
+
+export function positionActions(params: PositionActionsArgs): ResultType & {
+  isActiveDrawPosition?: boolean;
+  hasPositionAssigned?: boolean;
+  isDrawPosition?: boolean;
+  isByePosition?: boolean;
+  validActions?: any[];
+} {
   const {
     policyDefinitions: specifiedPolicyDefinitions,
     tournamentParticipants = [],
@@ -86,13 +109,15 @@ export function positionActions(params) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!params.structureId) return { error: MISSING_STRUCTURE_ID };
 
-  let result = findStructure({
+  let result: any = findStructure({
     structureId: params.structureId,
     drawDefinition,
   });
   if (result.error) return result;
 
   const structure = result.containingStructure || result.structure;
+  if (!structure) return { error: STRUCTURE_NOT_FOUND };
+
   const structureId = structure.structureId;
 
   result = getStructureDrawPositionProfiles({
@@ -115,12 +140,13 @@ export function positionActions(params) {
     byeDrawPositions,
   } = result;
 
-  const { appliedPolicies } = getAppliedPolicies({
-    tournamentRecord,
-    drawDefinition,
-    structure,
-    event,
-  });
+  const appliedPolicies =
+    getAppliedPolicies({
+      tournamentRecord,
+      drawDefinition,
+      structure,
+      event,
+    }).appliedPolicies ?? {};
 
   Object.assign(appliedPolicies, specifiedPolicyDefinitions || {});
 
@@ -222,7 +248,6 @@ export function positionActions(params) {
     .map((entry) => entry.participantId);
 
   const isByePosition = byeDrawPositions.includes(drawPosition);
-  // const isQualifierPosition = qualifyingDrawPositions.includes(drawPosition);
   const isActiveDrawPosition = activeDrawPositions.includes(drawPosition);
 
   if (actionsDisabled)
@@ -339,7 +364,7 @@ export function positionActions(params) {
         structure,
       });
       const { seedNumber, seedValue } =
-        seedAssignments.find(
+        seedAssignments?.find(
           (assignment) => assignment.participantId === participantId
         ) || {};
 
@@ -374,7 +399,7 @@ export function positionActions(params) {
         structure,
       });
       const { seedNumber } =
-        seedAssignments.find(
+        seedAssignments?.find(
           (assignment) => assignment.participantId === participantId
         ) || {};
 

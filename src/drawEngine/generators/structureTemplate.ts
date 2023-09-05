@@ -1,6 +1,7 @@
 import { unique, UUID } from '../../utilities';
 
 import { ROUND_OUTCOME } from '../../constants/drawDefinitionConstants';
+import { SeedingProfile } from '../../types/factoryTypes';
 import {
   MatchUp,
   SeedAssignment,
@@ -11,6 +12,7 @@ type StructureTemplateArgs = {
   seedAssignments?: SeedAssignment[];
   qualifyingRoundNumber?: number;
   structureAbbreviation?: string;
+  seedingProfile?: SeedingProfile;
   finishingPosition?: string;
   structures?: Structure[];
   structureOrder?: number;
@@ -22,7 +24,6 @@ type StructureTemplateArgs = {
   matchUps?: MatchUp[];
   roundOffset?: number;
   structureId?: string;
-  seedingProfile?: any;
   roundLimit?: number;
   stageOrder?: number;
   stage?: string;
@@ -49,7 +50,7 @@ export const structureTemplate = ({
   stage,
 }: StructureTemplateArgs) => {
   const structure: any = {
-    structureId: structureId || UUID(),
+    structureId: structureId ?? UUID(),
     structureAbbreviation,
     finishingPosition,
     seedAssignments,
@@ -60,7 +61,16 @@ export const structureTemplate = ({
 
   if (structureOrder) structure.structureOrder = structureOrder;
   if (structureType) structure.structureType = structureType;
-  if (seedingProfile) structure.seedingProfile = seedingProfile;
+  if (seedingProfile) {
+    if (typeof seedingProfile === 'string') {
+      structure.seedingProfile = seedingProfile;
+    } else if (
+      typeof seedingProfile === 'object' &&
+      typeof seedingProfile.positioning === 'string'
+    ) {
+      structure.seedingProfile = seedingProfile.positioning;
+    }
+  }
   if (matchUpType) structure.matchUpType = matchUpType;
   if (roundOffset) structure.roundOffset = roundOffset;
   if (stageOrder) structure.stageOrder = stageOrder;

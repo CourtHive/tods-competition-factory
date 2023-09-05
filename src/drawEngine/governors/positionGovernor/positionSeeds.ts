@@ -8,6 +8,11 @@ import { HydratedMatchUp, HydratedParticipant } from '../../../types/hydrated';
 import { MatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
+  PolicyDefinitions,
+  SeedBlock,
+  SeedingProfile,
+} from '../../../types/factoryTypes';
+import {
   ErrorType,
   MISSING_DRAW_POSITION,
 } from '../../../constants/errorConditionConstants';
@@ -21,16 +26,16 @@ import {
 type PositionSeedBlocksArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];
   participants?: HydratedParticipant[];
+  appliedPolicies?: PolicyDefinitions;
   provisionalPositioning?: boolean;
   tournamentRecord?: Tournament;
+  validSeedBlocks?: SeedBlock[];
+  seedingProfile?: SeedingProfile;
   drawDefinition: DrawDefinition;
   matchUpsMap?: MatchUpsMap;
   structure?: Structure;
-  appliedPolicies?: any;
-  validSeedBlocks?: any;
   groupsCount?: number;
   structureId?: string;
-  seedingProfile?: any;
   seedBlockInfo?: any;
   event?: Event;
 };
@@ -74,7 +79,7 @@ export function positionSeedBlocks({
     validSeedBlocks = result?.validSeedBlocks;
   }
 
-  groupsCount = groupsCount || validSeedBlocks.length;
+  groupsCount = groupsCount ?? validSeedBlocks?.length ?? 0;
 
   generateRange(0, groupsCount).forEach(() => {
     if (placedSeedBlocks < (groupsCount || 0)) {
@@ -92,7 +97,7 @@ export function positionSeedBlocks({
       });
       if (result?.success) {
         placedSeedBlocks++;
-        seedPositions.push(...(result.seedPositions || []));
+        seedPositions.push(...(result.seedPositions ?? []));
       }
       if (result.error) {
         errors.push({ seedPositionError: result.error });
@@ -126,7 +131,7 @@ function positionSeedBlock({
   });
 
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
-  const { avoidance } = appliedPolicies || {};
+  const { avoidance } = appliedPolicies ?? {};
   if (avoidance && participants && unplacedSeedParticipantIds?.length > 2) {
     // TODO: 'implement seed placement avoidance';
   }

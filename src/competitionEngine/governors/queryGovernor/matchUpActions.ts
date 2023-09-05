@@ -11,8 +11,8 @@ type MatchUpActionsArgs = TournamentRecordsArgs & {
   tournamentId: string;
   sideNumber?: number;
   matchUpId: string;
-  drawId: string;
   eventId?: string;
+  drawId: string;
 };
 export function matchUpActions(params?: MatchUpActionsArgs) {
   const {

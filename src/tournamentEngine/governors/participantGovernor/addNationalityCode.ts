@@ -1,6 +1,16 @@
 import { countries } from '../../../fixtures/countryData';
+import { HydratedParticipant } from '../../../types/hydrated';
 
-export function addNationalityCode({ participant, withISO2, withIOC }) {
+type AddNationalityCodeArgs = {
+  participant: HydratedParticipant;
+  withISO2?: boolean;
+  withIOC?: boolean;
+};
+export function addNationalityCode({
+  participant,
+  withISO2,
+  withIOC,
+}: AddNationalityCodeArgs) {
   const { person, individualParticipants } = participant;
   const persons = [person, individualParticipants?.map(({ person }) => person)]
     .flat()

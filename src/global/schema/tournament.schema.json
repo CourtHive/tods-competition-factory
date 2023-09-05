@@ -655,6 +655,9 @@
         },
         "participantId": {
           "type": "string"
+        },
+        "scaleValue": {
+          "type": "number"
         }
       },
       "required": ["participantId"],
@@ -855,6 +858,10 @@
         "TOP_DOWN",
         "WATERFALL"
       ]
+    },
+    "SeedingProfileEnum": {
+      "type": "string",
+      "enum": ["CLUSTER", "SEPARATE", "WATERFALL"]
     },
     "Interleave": {
       "type": "object",
@@ -3316,7 +3323,10 @@
           "type": "boolean"
         },
         "bookings": {
-          "$ref": "#/definitions/Booking"
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Booking"
+          }
         },
         "date": {
           "type": "string",

@@ -19,6 +19,7 @@ import {
 } from '../../utilities';
 
 import { DrawDefinition, Structure } from '../../types/tournamentFromSchema';
+import { PolicyDefinitions, SeedBlock } from '../../types/factoryTypes';
 import {
   CLUSTER,
   CONTAINER,
@@ -40,10 +41,10 @@ import {
  */
 
 type GetValidSeedBlocksArgs = {
+  appliedPolicies?: PolicyDefinitions;
   provisionalPositioning?: boolean;
   drawDefinition?: DrawDefinition;
   allPositions?: boolean;
-  appliedPolicies?: any;
   structure: Structure;
 };
 
@@ -54,7 +55,7 @@ export function getValidSeedBlocks({
   allPositions,
   structure,
 }: GetValidSeedBlocksArgs) {
-  let validSeedBlocks: any[] = [];
+  let validSeedBlocks: SeedBlock[] = [];
 
   if (!structure) return { error: MISSING_STRUCTURE };
 
@@ -189,8 +190,8 @@ export function getValidSeedBlocks({
     blocks.forEach((block) => validSeedBlocks.push(block));
   }
 
-  const seedDrawPositions = [].concat(
-    ...validSeedBlocks.map((seedBlock) => seedBlock.drawPositions)
+  const seedDrawPositions = validSeedBlocks.flatMap(
+    (seedBlock) => seedBlock.drawPositions
   );
   const validSeedPositions = seedDrawPositions.reduce(
     (result, drawPosition) => {
@@ -224,7 +225,7 @@ export function getContainerBlocks({ seedingProfile, structure }) {
   })?.positionAssignments;
   const positioning = getSeedPattern(seedingProfile);
 
-  const drawSize = positionAssignments?.length || 0;
+  const drawSize = positionAssignments?.length ?? 0;
   const { seedGroups } = getSeedGroups({
     roundRobinGroupsCount,
     drawSize,
@@ -244,7 +245,7 @@ export function getContainerBlocks({ seedingProfile, structure }) {
 }
 
 function getSeedBlockPattern({ positioning, seedGroups, drawPositionBlocks }) {
-  const validSeedBlocks: any[] = [];
+  const validSeedBlocks: SeedBlock[] = [];
 
   const topDown = (a, b) => a - b;
   const bottomUp = (a, b) => b - a;
@@ -253,7 +254,7 @@ function getSeedBlockPattern({ positioning, seedGroups, drawPositionBlocks }) {
     if (i && positioning !== WATERFALL) {
       shuffleArray(seedGroup);
     }
-    seedGroup.forEach((seedNumber, j) => {
+    seedGroup.forEach((seedNumber: number, j) => {
       const blockIndex = i % 2 ? drawPositionBlocks.length - j - 1 : j;
       const drawPosition = drawPositionBlocks[blockIndex]
         .sort(i % 2 ? bottomUp : topDown)
@@ -309,22 +310,15 @@ function constructPower2Blocks(params) {
 }
 
 /**
- *
- * @param {Object} drawDefinition - TODS JSON Object containing draw components
- * @param {string} structureId - identifier for relevant structure within drawDefinition
- * @param {number} drawPosition - position being checked for valid seed placement
- * @param {number} seedNumber - used with srict seeding policy to determine valid seedBlock
- *
  * method operates in three modes:
  * 1. Lenient (default) - any valid seed number can go in any valid seed position
  * 2. Ignore - method is bypassed and always returns true
  * 3. Strict - drawPosition is only valid if it is found in seedBlock which contains seedNumber
- *
  */
 
 type IsValidSeedPositionArgs = {
+  appliedPolicies?: PolicyDefinitions;
   drawDefinition: DrawDefinition;
-  appliedPolicies?: any;
   drawPosition: number;
   seedBlockInfo?: any;
   structureId: string;
@@ -346,7 +340,7 @@ export function isValidSeedPosition({
 
   let validSeedBlocks = seedBlockInfo?.validSeedBlocks;
 
-  if (!validSeedBlocks) {
+  if (!validSeedBlocks && structure) {
     validSeedBlocks = getValidSeedBlocks({
       appliedPolicies,
       drawDefinition,
@@ -387,7 +381,7 @@ export function getNextSeedBlock(params) {
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const positionsWithParticipants = positionAssignments?.filter(
     (assignment) =>
-      assignment.participantId || assignment.bye || assignment.qualifier
+      assignment.participantId ?? assignment.bye ?? assignment.qualifier
   );
   const assignedDrawPositions = positionsWithParticipants
     ?.map((assignment) => assignment.drawPosition)
@@ -396,12 +390,13 @@ export function getNextSeedBlock(params) {
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
   const validSeedBlocks =
     seedBlockInfo?.validSeedBlocks ||
-    getValidSeedBlocks({
-      provisionalPositioning,
-      appliedPolicies,
-      drawDefinition,
-      structure,
-    })?.validSeedBlocks;
+    (structure &&
+      getValidSeedBlocks({
+        provisionalPositioning,
+        appliedPolicies,
+        drawDefinition,
+        structure,
+      })?.validSeedBlocks);
   const unfilledSeedBlocks = (validSeedBlocks || []).filter((seedBlock) => {
     const unfilledPositions = seedBlock.drawPositions.filter(
       (drawPosition) => !assignedDrawPositions?.includes(drawPosition)
@@ -411,28 +406,28 @@ export function getNextSeedBlock(params) {
   const nextSeedBlock = unfilledSeedBlocks[0];
 
   const assignedSeedParticipantIds = seedAssignments
-    .map((assignment) => assignment.participantId)
+    ?.map((assignment) => assignment.participantId)
     .filter(Boolean);
   const assignedPositionParticipantIds = positionAssignments
     ?.map((assignment) => assignment.participantId)
     .filter(Boolean);
-  const placedSeedParticipantIds = assignedSeedParticipantIds.filter(
+  const placedSeedParticipantIds = assignedSeedParticipantIds?.filter(
     (participantId) => assignedPositionParticipantIds?.includes(participantId)
   );
 
-  const unplacedSeedIds = assignedSeedParticipantIds.filter(
+  const unplacedSeedIds = assignedSeedParticipantIds?.filter(
     (participantId) => !assignedPositionParticipantIds?.includes(participantId)
   );
 
-  const unplacedSeedAssignments = seedAssignments.filter((assignment) =>
-    unplacedSeedIds.includes(assignment.participantId)
+  const unplacedSeedAssignments = seedAssignments?.filter(
+    (assignment) => unplacedSeedIds?.includes(assignment.participantId)
   );
 
-  const seedsWithoutDrawPositions = seedAssignments.filter(
+  const seedsWithoutDrawPositions = seedAssignments?.filter(
     (assignment) => !assignment.participantId
   );
   const seedsLeftToAssign =
-    unplacedSeedAssignments.length || seedsWithoutDrawPositions.length;
+    unplacedSeedAssignments?.length || seedsWithoutDrawPositions?.length;
   const unfilled =
     (seedsLeftToAssign &&
       nextSeedBlock?.drawPositions.filter(
@@ -454,8 +449,9 @@ export function getNextSeedBlock(params) {
     .filter(Boolean);
 
   const placedSeedNumbers = seedAssignments
-    .filter((assignment) =>
-      placedSeedParticipantIds.includes(assignment.participantId)
+    ?.filter(
+      (assignment) =>
+        placedSeedParticipantIds?.includes(assignment.participantId)
     )
     .map((assignment) => assignment.seedNumber);
   const blockSeedNumbers = nextSeedBlock?.seedNumbers || [];
@@ -463,11 +459,13 @@ export function getNextSeedBlock(params) {
   // unplacedSeedNumbers and unplacedSeedNumberIds will only be used
   // when policy specifies that seedNumbers/seedValues must be unique
   const unplacedSeedNumbers = blockSeedNumbers.filter(
-    (seedNumber) => !placedSeedNumbers.includes(seedNumber)
+    (seedNumber) => !placedSeedNumbers?.includes(seedNumber)
   );
 
   const unplacedSeedNumberIds = seedAssignments
-    .filter((assignment) => unplacedSeedNumbers.includes(assignment.seedNumber))
+    ?.filter((assignment) =>
+      unplacedSeedNumbers.includes(assignment.seedNumber)
+    )
     .map((assignment) => assignment.participantId);
 
   const duplicateSeedNumbers = appliedPolicies?.seeding?.duplicateSeedNumbers;

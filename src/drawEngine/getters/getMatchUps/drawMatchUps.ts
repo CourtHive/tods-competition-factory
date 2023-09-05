@@ -2,22 +2,30 @@ import { addParticipantGroupings } from '../../governors/positionGovernor/avoida
 import { addUpcomingMatchUps } from '../../governors/matchUpGovernor/addUpcomingMatchUps';
 import { getContextContent } from '../../../tournamentEngine/getters/getContextContent';
 import { getExitProfiles } from '../../governors/queryGovernor/getExitProfile';
-import { decorateResult } from '../../../global/functions/decorateResult';
+import {
+  ResultType,
+  decorateResult,
+} from '../../../global/functions/decorateResult';
 import { MatchUpsMap, getMatchUpsMap } from './getMatchUpsMap';
 import { getStructureMatchUps } from './getStructureMatchUps';
 import { getDrawStructures } from '../findStructure';
 import { filterMatchUps } from './filterMatchUps';
 
+import { GroupsMatchUpsResult } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { HydratedMatchUp } from '../../../types/hydrated';
 import {
-  ErrorType,
   MISSING_DRAW_DEFINITION,
+  STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
 /*
   return ALL matchUps within a drawDefinition, regardless of state
 */
-export function getAllDrawMatchUps(params) {
+export function getAllDrawMatchUps(params): ResultType & {
+  matchUps?: HydratedMatchUp[];
+  matchUpsMap?: MatchUpsMap;
+} {
   const stack = 'getAllDrawMatchUps';
   Object.assign(params, { requireParticipants: false });
 
@@ -34,8 +42,7 @@ export function getAllDrawMatchUps(params) {
     matchUpsMap,
   } = result;
 
-  const matchUps = [].concat(
-    ...(abandonedMatchUps || []),
+  const matchUps: HydratedMatchUp[] = (abandonedMatchUps || []).concat(
     ...(completedMatchUps || []),
     ...(upcomingMatchUps || []),
     ...(pendingMatchUps || []),
@@ -44,17 +51,6 @@ export function getAllDrawMatchUps(params) {
 
   return { matchUps, matchUpsMap };
 }
-
-type GroupsMatchUpsResult = {
-  matchUpsMap?: MatchUpsMap;
-  abandonedMatchUps?: any[];
-  completedMatchUps?: any[];
-  upcomingMatchUps?: any[];
-  pendingMatchUps?: any[];
-  byeMatchUps?: any[];
-  success?: boolean;
-  error?: ErrorType;
-};
 
 export function getDrawMatchUps(params): GroupsMatchUpsResult {
   if (!params?.drawDefinition) return { error: MISSING_DRAW_DEFINITION };
@@ -79,11 +75,11 @@ export function getDrawMatchUps(params): GroupsMatchUpsResult {
     event,
   } = params;
 
-  let allAbandonedMatchUps = [];
-  let allCompletedMatchUps = [];
-  let allUpcomingMatchUps = [];
-  let allPendingMatchUps = [];
-  let allByeMatchUps = [];
+  let allAbandonedMatchUps: HydratedMatchUp[] = [];
+  let allCompletedMatchUps: HydratedMatchUp[] = [];
+  let allUpcomingMatchUps: HydratedMatchUp[] = [];
+  let allPendingMatchUps: HydratedMatchUp[] = [];
+  let allByeMatchUps: HydratedMatchUp[] = [];
 
   if (contextProfile && !contextContent) {
     contextContent = getContextContent({
@@ -113,6 +109,7 @@ export function getDrawMatchUps(params): GroupsMatchUpsResult {
   }
 
   const { structures } = getDrawStructures({ drawDefinition });
+  if (!structures) return { error: STRUCTURE_NOT_FOUND };
 
   if (!matchUpsMap) {
     matchUpsMap = getMatchUpsMap({ drawDefinition });
@@ -127,10 +124,10 @@ export function getDrawMatchUps(params): GroupsMatchUpsResult {
   structures.forEach((structure) => {
     const {
       byeMatchUps = [],
-      pendingMatchUps,
-      upcomingMatchUps,
-      completedMatchUps,
-      abandonedMatchUps,
+      pendingMatchUps = [],
+      upcomingMatchUps = [],
+      completedMatchUps = [],
+      abandonedMatchUps = [],
     } = getStructureMatchUps({
       // if nextMatchUps then the filters can't be applied at this level
       matchUpFilters: !nextMatchUps ? matchUpFilters : undefined,
@@ -143,11 +140,11 @@ export function getDrawMatchUps(params): GroupsMatchUpsResult {
       afterRecoveryTimes,
       policyDefinitions,
       tournamentRecord,
-      contextProfile,
-      contextContent,
-      drawDefinition,
       participantMap,
       scheduleTiming,
+      contextContent,
+      contextProfile,
+      drawDefinition,
       exitProfiles,
       matchUpsMap,
       structure,

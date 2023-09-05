@@ -231,7 +231,7 @@ const { matchUps } = drawEngine.allDrawMatchUps({
   tournamentParticipants, // optional - provide an array of tournamentParticipants to add into matchUps
   requireParticipants, // optional - require that participants be loaded into drawEngine or passed into method
   tournamentAppliedPolicies, // any policies, such as privacy, to be applied to matchUps
-  contextProfile, // optional: { inferGender: true, withCompetitiveness: true, withScaleValues, true, exclude: ['attribute', 'to', 'exclude']}
+  contextProfile, // optional: { inferGender: true, withCompetitiveness: true, withScaleValues: true, exclude: ['attribute', 'to', 'exclude']}
 });
 ```
 
@@ -520,7 +520,7 @@ drawEngine.generateDrawTypeAndModifyDrawDefinition({
   playoffMatchUpFormat, // optional - default playoffMatchUpFormat
 
   staggeredEntry, // optional - accepts non-base-2 drawSizes and generates feed arms for "extra" drawPositions
-  seedingProfile, // optional - WATERFALL seeding for ROUND_ROBIN structures, CLUSTER or SEPARATE seeding for elimination structures
+  seedingProfile, // optional { positioning, groupSeedingThreshold }; WATERFALL seeding for ROUND_ROBIN structures, CLUSTER or SEPARATE seeding for elimination structures
   feedPolicy, // optional - provides fine-grain control for FEED_IN_CONSOLATION feed links
 
   qualifyingPositions, // optional - number of drawPositions to be filled by qualifiers
@@ -618,7 +618,7 @@ const { structures, stageStructures } = drawEngine.getDrawStructures({
 ## getEliminationDrawSize
 
 ```js
-const { drawSize } = drawEngine.getEliminationDrawSize({ participantCount });
+const { drawSize } = drawEngine.getEliminationDrawSize({ participantsCount });
 ```
 
 ---

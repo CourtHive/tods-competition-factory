@@ -85,7 +85,7 @@ export function savePersonRequests({
 
   const tournaments = Object.values(tournamentRecords);
   for (const tournamentRecord of tournaments) {
-    const tournamentParticipants = tournamentRecord.participants || [];
+    const tournamentParticipants = tournamentRecord.participants ?? [];
     const relevantPersonRequests: any[] = [];
     for (const personId of Object.keys(personRequests)) {
       if (findParticipant({ tournamentParticipants, personId })) {
@@ -141,9 +141,6 @@ export function addPersonRequests({
 // ... only pertains to { requestType: DO_NOT_SCHEDULE }
 function mergePersonRequests({ personRequests, personId, requests }) {
   if (!personRequests[personId]) personRequests[personId] = [];
-  /*
-    const existingPersonRequests = personRequests[personId];
-  */
 
   const filteredRequests = requests
     .filter(({ requestType }) => requestType)

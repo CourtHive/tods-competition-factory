@@ -3,7 +3,7 @@ import { isValid } from '../../../../matchUpEngine/governors/matchUpFormatGovern
 import { findEvent } from '../../../../tournamentEngine/getters/eventGetter';
 
 import { UNRECOGNIZED_MATCHUP_FORMAT } from '../../../../constants/errorConditionConstants';
-import { Tournament } from '../../../../types/tournamentFromSchema';
+import { Tournament, TypeEnum } from '../../../../types/tournamentFromSchema';
 
 type FindMatchUpFormatTiming = {
   tournamentRecords: { [key: string]: Tournament };
@@ -13,7 +13,7 @@ type FindMatchUpFormatTiming = {
   categoryName?: string;
   categoryType?: string;
   tournamentId: string;
-  eventType: string;
+  eventType?: TypeEnum;
   eventId?: string;
 };
 export function findMatchUpFormatTiming({
@@ -38,7 +38,9 @@ export function findMatchUpFormatTiming({
   tournamentIds.forEach((currentTournamentId) => {
     if (timing) return;
     const tournamentRecord = tournamentRecords[currentTournamentId];
-    const event = eventId && findEvent({ tournamentRecord, eventId })?.event;
+    const event = eventId
+      ? findEvent({ tournamentRecord, eventId })?.event
+      : undefined;
     timing = getMatchUpFormatTiming({
       tournamentRecord,
       matchUpFormat,

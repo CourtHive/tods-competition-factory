@@ -42,7 +42,7 @@ export function addCollectionGroup({
   const structure = result?.structure;
   matchUp = matchUp || result?.matchUp;
   const existingTieFormat = result?.tieFormat;
-  const originalValueGoal = existingTieFormat.winCriteria.valueGoal;
+  const originalValueGoal = existingTieFormat?.winCriteria.valueGoal;
   const tieFormat = copyTieFormat(existingTieFormat);
 
   result = validateTieFormat({ tieFormat });

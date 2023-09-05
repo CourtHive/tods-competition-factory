@@ -177,11 +177,11 @@ tournamentEngine.addEvent({ event });
 
 ## addEventEntries
 
-Adds `participantIds` to `event.entries`; optionally pass drawId to add participantIds to `flightProfile.drawEntries` at the same time.
+Adds `participantIds` to `event.entries`; optionally pass drawId to add participantIds to `flightProfile.flight[].drawEntries` at the same time.
 
 :::note
 
-Will **_not_** throw an error if unable to add entries into specified `flightProfile.drawEntries`,
+Will **_not_** throw an error if unable to add entries into specified `flightProfile.flight[].drawEntries`,
 which can occur if a `drawDefinition` has already been generated and an attempt is made to add
 a participant with `entryStatus: DIRECT_ACCEPTANCE`.
 
@@ -635,7 +635,7 @@ const { matchUps } = tournamentEngine.allTournamentMatchUps({
   matchUpFilters, // optional; [ scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
   contextFilters, // filters based on context attributes
   nextMatchUps, // include winnerTo and loserTo matchUps
-  contextProfile, // optional: { inferGender: true, withCompetitiveness: true, withScaleValues, true, exclude: ['attribute', 'to', 'exclude']}
+  contextProfile, // optional: { inferGender: true, withCompetitiveness: true, withScaleValues: true, exclude: ['attribute', 'to', 'exclude']}
 });
 ```
 
@@ -894,8 +894,8 @@ Only generates seeding. To apply `tournamentEngine.setParticipantScaleItems({ sc
 ```js
 const { scaleItemsWithParticipantIds } = tournamentEngine.autoSeeding({
   eventId,
-  policyDefinitions, // seeding policyDefinition determines the # of seeds for given participantCount/drawSize
-  scaleAttributes, // { scaleType, scaleName, }
+  policyDefinitions, // seeding policyDefinition determines the # of seeds for given participantsCount/drawSize
+  scaleAttributes, // { scaleType, scaleName, eventType, accessor }
   scaleName, // Optional - defaults to scaleAttributes.scaleName
   drawSize, // Optional - defaults to calculation based on # of entries
   drawId, // Optional - will use flight.drawEntries or drawDefinition.entries rather than event.entries
@@ -2351,7 +2351,7 @@ const { scaledEntries } = tournamentEngine.getScaledEntries({
 
 ## getSeedsCount
 
-Takes a policyDefinition, drawSize and participantCount and returrns the number of seeds valid for the specified drawSize
+Takes a policyDefinition, drawSize and participantsCount and returrns the number of seeds valid for the specified drawSize
 
 :::note
 `drawSizeProgression` will be overridden by a `{ drawSizeProgression }` value in a policyDefinition.
@@ -2361,7 +2361,7 @@ Takes a policyDefinition, drawSize and participantCount and returrns the number 
 const { seedsCount, error } = tournamentEngine.getSeedsCount({
   drawSizeProgression, // optional - fits the seedsCount to the participantsCount rather than the drawSize
   policyDefinitions: SEEDING_USTA,
-  participantCount: 15,
+  participantsCount: 15,
   drawSize: 128,
 });
 ```

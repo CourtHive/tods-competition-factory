@@ -4,19 +4,51 @@ import { filterParticipants } from './filterParticipants';
 import { getParticipantMap } from './getParticipantMap';
 import { definedAttributes } from '../../../utilities';
 
-import { MatchUp } from '../../../types/tournamentFromSchema';
+import { MatchUp, Tournament } from '../../../types/tournamentFromSchema';
 import { HydratedParticipant } from '../../../types/hydrated';
 import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  ContextProfile,
+  ParticipantFilters,
+  PolicyDefinitions,
+  ScheduleAnalysis,
+  ParticipantMap,
+} from '../../../types/factoryTypes';
 import {
   MISSING_TOURNAMENT_RECORD,
   ErrorType,
 } from '../../../constants/errorConditionConstants';
 
-export function getParticipants(params): {
+type GetParticipantsArgs = {
+  participantFilters?: ParticipantFilters;
+  withIndividualParticipants?: boolean;
+  scheduleAnalysis?: ScheduleAnalysis;
+  policyDefinitions?: PolicyDefinitions;
+  withPotentialMatchUps?: boolean;
+  contextProfile?: ContextProfile;
+  tournamentRecord: Tournament;
+  withRankingProfile?: boolean;
+  convertExtensions?: boolean;
+  withScheduleItems?: boolean;
+  withSignInStatus?: boolean;
+  withTeamMatchUps?: boolean;
+  withScaleValues?: boolean;
+  usePublishState?: boolean;
+  withStatistics?: boolean;
+  withOpponents?: boolean;
+  withMatchUps?: boolean;
+  internalUse?: boolean;
+  withSeeding?: boolean;
+  withEvents?: boolean;
+  withDraws?: boolean;
+  withISO2?: boolean;
+  withIOC?: boolean;
+};
+export function getParticipants(params: GetParticipantsArgs): {
   eventsPublishStatuses?: { [key: string]: any };
-  participantMap?: { [key: string]: any };
   participantIdsWithConflicts?: string[];
   participants?: HydratedParticipant[];
+  participantMap?: ParticipantMap;
   derivedEventInfo?: any;
   derivedDrawInfo?: any;
   matchUps?: MatchUp[];
@@ -106,12 +138,12 @@ export function getParticipants(params): {
     ({
       potentialMatchUps,
       scheduleConflicts,
+      participant,
       statistics,
       opponents,
       matchUps,
       events,
       draws,
-      ...p
     }) => {
       const participantDraws: any[] = Object.values(draws);
       const participantOpponents = Object.values(opponents);
@@ -125,7 +157,7 @@ export function getParticipants(params): {
 
       return definedAttributes(
         {
-          ...p.participant,
+          ...participant,
           scheduleConflicts: scheduleAnalysis ? scheduleConflicts : undefined,
           draws: withDraws || withRankingProfile ? participantDraws : undefined,
           events:

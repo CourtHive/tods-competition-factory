@@ -10,9 +10,9 @@ import { DOUBLES } from '../../../../constants/eventConstants';
 
 it('can add doubles events to a tournament record', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile: { participantType: PAIR, participantsCount: 32 },
     startDate: '2020-01-01',
     endDate: '2020-01-06',
-    participantsProfile: { participantType: PAIR, participantsCount: 32 },
   });
   const { participants } = tournamentRecord;
 
@@ -20,8 +20,8 @@ it('can add doubles events to a tournament record', () => {
 
   const eventName = 'Test Event';
   const event = {
-    eventName,
     eventType: DOUBLES,
+    eventName,
   };
 
   let result = tournamentEngine.addEvent({ event });
@@ -40,8 +40,8 @@ it('can add doubles events to a tournament record', () => {
 
   const pairParticipantId = updatedEvent.entries[0].participantId;
   result = tournamentEngine.destroyPairEntry({
-    eventId,
     participantId: pairParticipantId,
+    eventId,
   });
 
   ({ event: updatedEvent } = tournamentEngine.getEvent({ eventId }));
@@ -55,17 +55,17 @@ it('can add doubles events to a tournament record', () => {
   );
 
   result = tournamentEngine.modifyEntriesStatus({
-    eventId,
     participantIds: unpairedParticipantIds,
     entryStatus: WITHDRAWN,
+    eventId,
   });
   expect(result.success).toEqual(true);
 
   const values = {
+    event: eventResult,
     automated: true,
     drawSize: 32,
     eventId,
-    event: eventResult,
   };
   const { success: drawGenrationSuccess, drawDefinition } =
     tournamentEngine.generateDrawDefinition(values);

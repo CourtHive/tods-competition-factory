@@ -11,8 +11,8 @@ import {
 type AnalyzeScoreArgs = {
   existingMatchUpStatus?: string;
   matchUpStatus?: string;
-  matchUpFormat: string;
-  winningSide: number;
+  matchUpFormat?: string;
+  winningSide?: number;
   score: Score;
 };
 export function analyzeScore({
@@ -34,16 +34,23 @@ export function analyzeScore({
     },
     [0, 0]
   );
-  const matchUpWinningSideIndex = winningSide && winningSide - 1;
-  const matchUpLosingSideIndex = 1 - matchUpWinningSideIndex;
-  const winningSideSetsCount = setsWinCounts[matchUpWinningSideIndex];
-  const losingSideSetsCount = setsWinCounts[matchUpLosingSideIndex];
+  const matchUpWinningSideIndex = winningSide ? winningSide - 1 : undefined;
+  const matchUpLosingSideIndex =
+    matchUpWinningSideIndex !== undefined
+      ? 1 - matchUpWinningSideIndex
+      : undefined;
+  const winningSideSetsCount =
+    matchUpWinningSideIndex !== undefined &&
+    setsWinCounts[matchUpWinningSideIndex];
+  const losingSideSetsCount =
+    matchUpLosingSideIndex !== undefined &&
+    setsWinCounts[matchUpLosingSideIndex];
 
-  const matchUpScoringFormat = parse(matchUpFormat);
+  const matchUpScoringFormat = matchUpFormat ? parse(matchUpFormat) : undefined;
   const maxSetsCount = Math.max(...setsWinCounts);
   const maxSetsInstances = instanceCount(setsWinCounts)[maxSetsCount];
 
-  const { bestOf } = matchUpScoringFormat || {};
+  const bestOf = matchUpScoringFormat?.bestOf;
   const setsToWin = (bestOf && Math.ceil(bestOf / 2)) || 1;
 
   const relevantMatchUpStatus = matchUpStatus || existingMatchUpStatus;

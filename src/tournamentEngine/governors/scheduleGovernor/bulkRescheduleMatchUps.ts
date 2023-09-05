@@ -58,15 +58,17 @@ export function bulkRescheduleMatchUps({
 
   // return success if there are no scheduled matchUps to reschedule
   const scheduledNotCompletedMatchUps = matchUps
-    ?.filter(hasSchedule)
-    .filter(notCompleted);
-  if (!scheduledNotCompletedMatchUps.length) return { ...SUCCESS };
+    ?.filter((matchUp) => hasSchedule({ schedule: matchUp.schedule }))
+    .filter((matchUp) =>
+      notCompleted({ matchUpStatus: matchUp.matchUpStatus })
+    );
+  if (!scheduledNotCompletedMatchUps?.length) return { ...SUCCESS };
 
   const { tournamentInfo } = getTournamentInfo({ tournamentRecord });
   const { startDate, endDate } = tournamentInfo;
 
   // first organize matchUpIds by drawId
-  const drawIdMap = scheduledNotCompletedMatchUps.reduce(
+  const drawIdMap = scheduledNotCompletedMatchUps?.reduce(
     (drawIdMap, matchUp) => {
       const { matchUpId, drawId } = matchUp;
       if (drawIdMap[drawId]) {
@@ -97,7 +99,7 @@ export function bulkRescheduleMatchUps({
         const inContextMatchUp = scheduledNotCompletedMatchUps.find(
           (matchUp) => matchUp.matchUpId === matchUpId
         );
-        const schedule = inContextMatchUp.schedule;
+        const schedule = inContextMatchUp?.schedule;
         const { scheduledTime, scheduledDate } = schedule;
 
         let doNotReschedule, newScheduledTime, newScheduledDate;
@@ -159,10 +161,11 @@ export function bulkRescheduleMatchUps({
     }
   }
 
-  const { matchUps: updatedInContext } = allTournamentMatchUps({
-    matchUpFilters: { matchUpIds },
-    tournamentRecord,
-  });
+  const updatedInContext =
+    allTournamentMatchUps({
+      matchUpFilters: { matchUpIds },
+      tournamentRecord,
+    }).matchUps || [];
 
   const rescheduled = updatedInContext.filter(({ matchUpId }) =>
     rescheduledMatchUpIds.includes(matchUpId)

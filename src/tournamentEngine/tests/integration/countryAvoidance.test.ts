@@ -126,7 +126,7 @@ it('can generate ROUND_ROBIN drawDefinition using country avoidance with INDIVID
     console.log('RR conflicts:', conflicts?.unseededConflicts);
 
   const matchUps = allDrawMatchUps({ drawDefinition }).matchUps;
-  expect(matchUps.length).toEqual(48);
+  expect(matchUps?.length).toEqual(48);
   const structure = drawDefinition.structures[0];
   const { positionAssignments } = getPositionAssignments({ structure });
   const assignedPositions = positionAssignments?.filter(

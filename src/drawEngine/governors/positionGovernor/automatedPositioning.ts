@@ -2,7 +2,10 @@ import { getAppliedPolicies } from '../../../global/functions/deducers/getApplie
 import { getSeedPattern, getValidSeedBlocks } from '../../getters/seedGetter';
 import { positionUnseededParticipants } from './positionUnseededParticipants';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
-import { decorateResult } from '../../../global/functions/decorateResult';
+import {
+  ResultType,
+  decorateResult,
+} from '../../../global/functions/decorateResult';
 import {
   MatchUpsMap,
   getMatchUpsMap,
@@ -21,8 +24,10 @@ import {
   enableNotifications,
 } from '../../../global/state/globalState';
 
-import { HydratedMatchUp, HydratedParticipant } from '../../../types/hydrated';
+import { STRUCTURE_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { DIRECT_ENTRY_STATUSES } from '../../../constants/entryStatusConstants';
+import { HydratedMatchUp, HydratedParticipant } from '../../../types/hydrated';
+import { PolicyDefinitions, SeedingProfile } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   LUCKY_DRAW,
@@ -31,6 +36,7 @@ import {
 import {
   DrawDefinition,
   Event,
+  PositionAssignment,
   Tournament,
 } from '../../../types/tournamentFromSchema';
 
@@ -38,15 +44,15 @@ import {
 type AutomatedPositioningArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];
   participants?: HydratedParticipant[];
+  appliedPolicies?: PolicyDefinitions;
   provisionalPositioning?: boolean;
+  seedingProfile?: SeedingProfile;
   tournamentRecord?: Tournament;
   drawDefinition: DrawDefinition;
   multipleStructures?: boolean;
   applyPositioning?: boolean;
   matchUpsMap?: MatchUpsMap;
-  appliedPolicies?: any;
   placeByes?: boolean;
-  seedingProfile?: any;
   structureId: string;
   seedsOnly?: boolean;
   seedLimit?: number;
@@ -70,7 +76,12 @@ export function automatedPositioning({
   seedsOnly,
   drawType,
   event,
-}: AutomatedPositioningArgs) {
+}: AutomatedPositioningArgs): ResultType & {
+  positionAssignments?: PositionAssignment[];
+  positioningReport?: any;
+  success?: boolean;
+  conflicts?: any[];
+} {
   const positioningReport: any[] = [];
 
   //-----------------------------------------------------------
@@ -93,7 +104,8 @@ export function automatedPositioning({
 
   const result = findStructure({ drawDefinition, structureId });
   if (result.error) return handleErrorCondition(result);
-  const { structure } = result;
+  const structure = result.structure;
+  if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
   if (!appliedPolicies) {
     appliedPolicies = getAppliedPolicies({
@@ -124,7 +136,7 @@ export function automatedPositioning({
   if (!entries?.length && !qualifiersCount)
     return handleSuccessCondition({ ...SUCCESS });
 
-  matchUpsMap = matchUpsMap || getMatchUpsMap({ drawDefinition });
+  matchUpsMap = matchUpsMap ?? getMatchUpsMap({ drawDefinition });
 
   if (!inContextDrawMatchUps) {
     ({ matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
@@ -171,8 +183,12 @@ export function automatedPositioning({
 
     positioningReport.push({ action: 'positionByes', unseededByePositions });
 
+    const profileSeeding = structure.seedingProfile
+      ? { positioning: structure.seedingProfile }
+      : seedingProfile;
+
     result = positionSeedBlocks({
-      seedingProfile: structure.seedingProfile || seedingProfile,
+      seedingProfile: profileSeeding,
       provisionalPositioning,
       inContextDrawMatchUps,
       tournamentRecord,
@@ -188,15 +204,18 @@ export function automatedPositioning({
     if (result.error) return handleErrorCondition(result);
 
     positioningReport.push({
-      action: 'positionSeedBlocks',
       seedPositions: result.seedPositions,
+      action: 'positionSeedBlocks',
     });
   } else {
     // otherwise... seeds need to be placed first so that BYEs
     // can follow the seedValues of placed seeds
     if (drawType !== LUCKY_DRAW) {
+      const profileSeeding = structure.seedingProfile
+        ? { positioning: structure.seedingProfile }
+        : seedingProfile;
       const result = positionSeedBlocks({
-        seedingProfile: structure.seedingProfile || seedingProfile,
+        seedingProfile: profileSeeding,
         provisionalPositioning,
         inContextDrawMatchUps,
         tournamentRecord,

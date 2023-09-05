@@ -1,12 +1,17 @@
 import { getTournamentInfo } from '../../../tournamentEngine/governors/publishingGovernor/getTournamentInfo';
 import { extractDate } from '../../../utilities/dateTime';
 
+import { Tournament } from '../../../types/tournamentFromSchema';
 import {
   ErrorType,
   MISSING_DATE,
 } from '../../../constants/errorConditionConstants';
 
-export function getCompetitionDateRange({ tournamentRecords }): {
+export function getCompetitionDateRange({
+  tournamentRecords,
+}: {
+  [key: string]: Tournament;
+}): {
   startDate?: Date | undefined;
   endDate?: Date | undefined;
   error?: ErrorType;

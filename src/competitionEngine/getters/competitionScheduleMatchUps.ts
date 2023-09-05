@@ -8,17 +8,39 @@ import {
   getTournamentTimeItem,
 } from '../../tournamentEngine/governors/queryGovernor/timeItems';
 
+import { MatchUpFilters } from '../../drawEngine/getters/getMatchUps/filterMatchUps';
+import { PUBLIC, PUBLISH, STATUS } from '../../constants/timeItemConstants';
+import { COMPLETED } from '../../constants/matchUpStatusConstants';
+import { getTournamentId } from '../../global/state/globalState';
+import { MatchUpStatusEnum, Venue } from '../../types/tournamentFromSchema';
+import { HydratedMatchUp } from '../../types/hydrated';
+import {
+  TournamentRecords,
+  TournamentRecordsArgs,
+} from '../../types/factoryTypes';
 import {
   ErrorType,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../constants/errorConditionConstants';
-import { PUBLIC, PUBLISH, STATUS } from '../../constants/timeItemConstants';
-import { COMPLETED } from '../../constants/matchUpStatusConstants';
-import { TournamentRecordsArgs } from '../../types/factoryTypes';
-import { Venue } from '../../types/tournamentFromSchema';
-import { HydratedMatchUp } from '../../types/hydrated';
 
-export function competitionScheduleMatchUps(params): {
+type CompetitionScheduleMatchUpsArgs = {
+  tournamentRecords: TournamentRecords;
+  courtCompletedMatchUps?: boolean;
+  alwaysReturnCompleted?: boolean;
+  contextFilters?: MatchUpFilters;
+  matchUpFilters?: MatchUpFilters;
+  withCourtGridRows?: boolean;
+  activeTournamentId?: string;
+  sortDateMatchUps?: boolean;
+  minCourtGridRows?: number;
+  usePublishState?: boolean;
+  sortCourtsData?: boolean;
+  status?: string;
+};
+
+export function competitionScheduleMatchUps(
+  params: CompetitionScheduleMatchUpsArgs
+): {
   completedMatchUps?: HydratedMatchUp[];
   dateMatchUps?: HydratedMatchUp[];
   courtPrefix?: string;
@@ -36,7 +58,6 @@ export function competitionScheduleMatchUps(params): {
   const getResult: any = getSchedulingProfile(params);
   const schedulingProfile = getResult.schedulingProfile;
 
-  const { matchUpFilters = {}, contextFilters = {} } = params;
   const {
     sortDateMatchUps = true,
     courtCompletedMatchUps,
@@ -50,19 +71,23 @@ export function competitionScheduleMatchUps(params): {
     sortCourtsData,
   } = params;
 
-  const timeItem =
-    usePublishState &&
-    getTournamentTimeItem({
-      tournamentRecord: tournamentRecords[activeTournamentId],
-      itemType: `${PUBLISH}.${STATUS}`,
-    }).timeItem;
+  const timeItem = usePublishState
+    ? getTournamentTimeItem({
+        tournamentRecord:
+          tournamentRecords[activeTournamentId ?? getTournamentId()],
+        itemType: `${PUBLISH}.${STATUS}`,
+      }).timeItem
+    : undefined;
   const publishStatus = timeItem?.itemValue?.[status];
 
   const allCompletedMatchUps = alwaysReturnCompleted
     ? competitionMatchUps({
         ...params,
-        matchUpFilters: { ...matchUpFilters, matchUpStatuses: [COMPLETED] },
-        contextFilters,
+        matchUpFilters: {
+          ...params.matchUpFilters,
+          matchUpStatuses: [MatchUpStatusEnum.Completed],
+        },
+        contextFilters: params.contextFilters,
       }).completedMatchUps
     : [];
 
@@ -78,66 +103,74 @@ export function competitionScheduleMatchUps(params): {
     };
   }
 
-  const publishedDrawIds =
-    usePublishState &&
-    getCompetitionPublishedDrawIds({ tournamentRecords }).drawIds;
+  const publishedDrawIds = usePublishState
+    ? getCompetitionPublishedDrawIds({ tournamentRecords }).drawIds
+    : undefined;
 
   if (publishedDrawIds?.length) {
-    if (!contextFilters.drawIds) {
-      contextFilters.drawIds = publishedDrawIds;
+    if (!params.contextFilters) params.contextFilters = {};
+    if (!params.contextFilters?.drawIds) {
+      params.contextFilters.drawIds = publishedDrawIds;
     } else {
-      contextFilters.drawIds = contextFilters.drawIds.filter((drawId) =>
-        publishedDrawIds.includes(drawId)
+      params.contextFilters.drawIds = params.contextFilters.drawIds.filter(
+        (drawId) => publishedDrawIds.includes(drawId)
       );
     }
   }
 
   if (publishStatus?.eventIds?.length) {
-    if (matchUpFilters.eventIds) {
-      if (!matchUpFilters.eventIds.length) {
-        matchUpFilters.eventIds = publishStatus.eventIds;
+    if (!params.matchUpFilters) params.matchUpFilters = {};
+    if (params.matchUpFilters?.eventIds) {
+      if (!params.matchUpFilters.eventIds.length) {
+        params.matchUpFilters.eventIds = publishStatus.eventIds;
       } else {
-        matchUpFilters.eventIds = matchUpFilters.eventIds.filter((eventId) =>
-          publishStatus.eventIds.includes(eventId)
+        params.matchUpFilters.eventIds = params.matchUpFilters.eventIds.filter(
+          (eventId) => publishStatus.eventIds.includes(eventId)
         );
       }
     } else {
-      matchUpFilters.eventIds = publishStatus.eventIds;
+      params.matchUpFilters.eventIds = publishStatus.eventIds;
     }
   }
 
   if (publishStatus?.scheduledDates?.length) {
-    if (matchUpFilters.scheduledDates) {
-      if (!matchUpFilters.scheduledDates.length) {
-        matchUpFilters.scheduledDates = publishStatus.scheduledDates;
+    if (!params.matchUpFilters) params.matchUpFilters = {};
+    if (params.matchUpFilters.scheduledDates) {
+      if (!params.matchUpFilters.scheduledDates.length) {
+        params.matchUpFilters.scheduledDates = publishStatus.scheduledDates;
       } else {
-        matchUpFilters.scheduledDates = matchUpFilters.scheduledDates.filter(
-          (scheduledDate) =>
+        params.matchUpFilters.scheduledDates =
+          params.matchUpFilters.scheduledDates.filter((scheduledDate) =>
             publishStatus.scheduledDates.includes(scheduledDate)
-        );
+          );
       }
     } else {
-      matchUpFilters.scheduledDates = publishStatus.scheduledDates;
+      params.matchUpFilters.scheduledDates = publishStatus.scheduledDates;
     }
   }
 
   // optimization: if all completed matchUps have already been retrieved, skip the hydration process
   if (alwaysReturnCompleted) {
-    if (matchUpFilters.excludeMatchUpStatuses?.length) {
-      if (!matchUpFilters.excludeMatchUpStatuses.includes(COMPLETED)) {
-        matchUpFilters.excludeMatchUpStatuses.push(COMPLETED);
+    if (!params.matchUpFilters) params.matchUpFilters = {};
+    if (params.matchUpFilters?.excludeMatchUpStatuses?.length) {
+      if (!params.matchUpFilters.excludeMatchUpStatuses.includes(COMPLETED)) {
+        params.matchUpFilters.excludeMatchUpStatuses.push(COMPLETED);
       }
     } else {
-      matchUpFilters.excludeMatchUpStatuses = [COMPLETED];
+      params.matchUpFilters.excludeMatchUpStatuses = [COMPLETED];
     }
   }
 
   const { completedMatchUps, upcomingMatchUps, pendingMatchUps } =
-    competitionMatchUps({ ...params, matchUpFilters, contextFilters });
+    competitionMatchUps({
+      ...params,
+      matchUpFilters: params.matchUpFilters,
+      contextFilters: params.contextFilters,
+    });
 
   const relevantMatchUps = [
-    ...(upcomingMatchUps || []),
-    ...(pendingMatchUps || []),
+    ...(upcomingMatchUps ?? []),
+    ...(pendingMatchUps ?? []),
   ];
 
   const dateMatchUps = sortDateMatchUps
@@ -147,7 +180,7 @@ export function competitionScheduleMatchUps(params): {
   const courtsData = courts?.map((court) => {
     const matchUps = getCourtMatchUps(court);
     return {
-      surfaceCategory: court?.surfaceCategory || '',
+      surfaceCategory: court?.surfaceCategory ?? '',
       matchUps,
       ...court,
     };
@@ -175,7 +208,7 @@ export function competitionScheduleMatchUps(params): {
 
   function getCourtMatchUps({ courtId }) {
     const matchUpsToConsider = courtCompletedMatchUps
-      ? dateMatchUps.concat(completedMatchUps || [])
+      ? dateMatchUps.concat(completedMatchUps ?? [])
       : dateMatchUps;
     const courtMatchUps = matchUpsToConsider.filter(
       (matchUp) =>
@@ -200,7 +233,7 @@ function getCompetitionPublishedDrawIds({
   const drawIds: string[] = [];
 
   for (const tournamentRecord of Object.values(tournamentRecords)) {
-    for (const event of tournamentRecord.events || []) {
+    for (const event of tournamentRecord.events ?? []) {
       const { timeItem } = getEventTimeItem({
         itemType: `${PUBLISH}.${STATUS}`,
         event,
@@ -211,7 +244,7 @@ function getCompetitionPublishedDrawIds({
         drawIds.push(...pubState.drawIds);
       } else {
         // if there are no drawIds specified then all draws are published
-        const eventDrawIds = (event.drawDefinitions || [])
+        const eventDrawIds = (event.drawDefinitions ?? [])
           .map(({ drawId }) => drawId)
           .filter(Boolean);
         drawIds.push(...eventDrawIds);

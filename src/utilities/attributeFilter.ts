@@ -1,4 +1,5 @@
-export function attributeFilter(params?: any) {
+// NOTE: type really does need to be any!
+export function attributeFilter(params?: any): any {
   if (params === null) return {};
   const { source, template } = params || {};
   if (!template) return source;

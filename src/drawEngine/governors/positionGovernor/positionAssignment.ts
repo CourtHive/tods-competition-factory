@@ -11,7 +11,10 @@ import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getInitialRoundNumber } from '../../getters/getInitialRoundNumber';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 // import { addPositionActionTelemetry } from './addPositionActionTelemetry';
-import { decorateResult } from '../../../global/functions/decorateResult';
+import {
+  ResultType,
+  decorateResult,
+} from '../../../global/functions/decorateResult';
 import {
   MatchUpsMap,
   getMatchUpsMap,
@@ -27,6 +30,8 @@ import { isAdHoc } from '../queryGovernor/isAdHoc';
 import { cleanupLineUps } from './cleanupLineUps';
 
 import { SUCCESS } from '../../../constants/resultConstants';
+import { SeedingProfile } from '../../../types/factoryTypes';
+import { HydratedMatchUp } from '../../../types/hydrated';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
   INVALID_DRAW_POSITION,
@@ -36,6 +41,7 @@ import {
   MISSING_PARTICIPANT_ID,
   INVALID_MATCHUP,
   ErrorType,
+  STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 import {
   CONSOLATION,
@@ -44,7 +50,6 @@ import {
   PLAY_OFF,
   QUALIFYING,
 } from '../../../constants/drawDefinitionConstants';
-import { HydratedMatchUp } from '../../../types/hydrated';
 import {
   DrawDefinition,
   Event,
@@ -57,13 +62,13 @@ type AssignDrawPositionArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];
   sourceMatchUpStatus?: MatchUpStatusEnum;
   provisionalPositioning?: boolean;
+  seedingProfile?: SeedingProfile;
   tournamentRecord?: Tournament;
   drawDefinition: DrawDefinition;
   isQualifierPosition?: boolean;
   matchUpsMap?: MatchUpsMap;
   participantId: string;
   drawPosition: number;
-  seedingProfile?: any;
   seedBlockInfo?: any;
   structureId: string;
   event?: Event;
@@ -83,7 +88,9 @@ export function assignDrawPosition({
   matchUpsMap,
   structureId,
   event,
-}: AssignDrawPositionArgs) {
+}: AssignDrawPositionArgs): ResultType & {
+  positionAssignments?: PositionAssignment[];
+} {
   const stack = 'assignDrawPosition';
 
   if (!participantId && !isQualifierPosition)
@@ -102,6 +109,7 @@ export function assignDrawPosition({
   const result = findStructure({ drawDefinition, structureId });
   if (result.error) return decorateResult({ result, stack });
   const { structure } = result;
+  if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
   // there are no drawPositions assigned for ADHOC structures
   if (isAdHoc({ drawDefinition, structure }))
@@ -113,7 +121,7 @@ export function assignDrawPosition({
     structure,
   });
 
-  const relevantAssignment = seedAssignments.find(
+  const relevantAssignment = seedAssignments?.find(
     (assignment) => assignment.participantId === participantId
   );
   const participantSeedNumber = relevantAssignment?.seedNumber;
@@ -210,8 +218,8 @@ export function assignDrawPosition({
   if (isQualifierPosition) positionAssignment.qualifier = true;
 
   if (
-    structure?.stageSequence > 1 ||
-    [CONSOLATION, PLAY_OFF].includes(structure.stage)
+    (structure?.stageSequence || 0) > 1 ||
+    (structure.stage && [CONSOLATION, PLAY_OFF].includes(structure.stage))
   ) {
     const targetStage = structure.stage === QUALIFYING ? QUALIFYING : MAIN;
     const targetStructure = drawDefinition.structures?.find(

@@ -77,13 +77,15 @@ it.each(scenarios)('can seed drawType: ROUND_ROBIN', (scenario) => {
     drawDefinition,
     structure,
   });
-  const assignedSeeds = seedAssignments.filter((assignment) => {
+  const assignedSeeds = seedAssignments?.filter((assignment) => {
     const { participantId, seedNumber, seedValue } = assignment;
-    participantDetails[participantId].seedNumber = seedNumber;
-    participantDetails[participantId].seedValue = seedValue;
+    if (participantId) {
+      participantDetails[participantId].seedNumber = seedNumber;
+      participantDetails[participantId].seedValue = seedValue;
+    }
     return participantId;
   });
-  expect(seedAssignments.length).toEqual(assignedSeeds.length);
+  expect(seedAssignments?.length).toEqual(assignedSeeds?.length);
 
   const groups = chunkArray(Object.values(participantDetails), 4);
   const seedsPerGroup = unique(

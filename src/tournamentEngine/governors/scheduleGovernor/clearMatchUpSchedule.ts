@@ -50,7 +50,8 @@ export function clearMatchUpSchedule({
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };
 
   const newTimeItems = (matchUp.timeItems || []).filter(
-    (timeItem) => !scheduleAttributes.includes(timeItem?.itemType)
+    (timeItem) =>
+      timeItem?.itemType && !scheduleAttributes.includes(timeItem?.itemType)
   );
   matchUp.timeItems = newTimeItems;
 

@@ -1,5 +1,8 @@
 import { attachFlightProfile as attachProfile } from '../governors/eventGovernor/attachFlightProfile';
 import { getScaledEntries } from '../governors/eventGovernor/entries/getScaledEntries';
+import { getParticipantId } from '../../global/functions/extractors';
+import { getDevContext } from '../../global/state/globalState';
+import { getFlightProfile } from '../getters/getFlightProfile';
 import {
   chunkArray,
   generateRange,
@@ -7,26 +10,31 @@ import {
   UUID,
   shuffleArray,
 } from '../../utilities';
-import { getParticipantId } from '../../global/functions/extractors';
-import { getDevContext } from '../../global/state/globalState';
-import { getFlightProfile } from '../getters/getFlightProfile';
 
 import { DIRECT_ENTRY_STATUSES } from '../../constants/entryStatusConstants';
+import { FlightProfile, ScaleAttributes } from '../../types/factoryTypes';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
   EXISTING_PROFILE,
+  ErrorType,
   MISSING_EVENT,
 } from '../../constants/errorConditionConstants';
 import {
   SPLIT_SHUTTLE,
   SPLIT_WATERFALL,
 } from '../../constants/flightConstants';
+import {
+  Entry,
+  Event,
+  StageTypeEnum,
+  Tournament,
+} from '../../types/tournamentFromSchema';
 
 /**
  * @param {object} event - automatically retrieved by tournamentEngine given eventId
  * @param {string} eventId - unique identifier for event
  * @param {string} splitMethod - one of the supported methods for splitting entries
- * @param {object} scaleAttributes - { scaleName, scaleType, evenTType }
+ * @param {object} scaleAttributes - { scaleName, scaleType, eventType }
  * @param {object[]} scaledEntries - pre-sorted entries
  * @param {function} scaleSortMethod - ignored if scaledEntries present
  * @param {boolean} sortDescending - ignored if scaledEntries present
@@ -38,7 +46,29 @@ import {
  * @param {string} stage - OPTIONAL - only consider event entries matching stage
  */
 
-export function generateFlightProfile(params) {
+type GenerateFlightProfileArgs = {
+  scaleAttributes: ScaleAttributes;
+  attachFlightProfile?: boolean;
+  tournamentRecord: Tournament;
+  deleteExisting?: boolean;
+  sortDescending?: boolean;
+  drawNameRoot?: string;
+  scaleSortMethod?: any;
+  stage?: StageTypeEnum;
+  drawNames?: string[];
+  scaledEntries?: any;
+  flightsCount: number;
+  splitMethod: string;
+  uuids?: string[];
+  event: Event;
+};
+
+export function generateFlightProfile(params: GenerateFlightProfileArgs): {
+  flightProfile?: FlightProfile;
+  splitEntries?: Entry[][];
+  success?: boolean;
+  error?: ErrorType;
+} {
   const {
     drawNameRoot = 'Flight',
     attachFlightProfile,
@@ -81,9 +111,10 @@ export function generateFlightProfile(params) {
           !scaledEntryParticipantIds.includes(participantId)
       )
       .filter(
-        (entry) =>
+        (entry: Entry) =>
           (!stage || !entry.entryStage || entry.entryStage === stage) &&
-          DIRECT_ENTRY_STATUSES.includes(entry.entryStatus)
+          (!entry.entryStatus || // absence of entryStatus is equivalent to DIRECT_ACCEPTANCE
+            DIRECT_ENTRY_STATUSES.includes(entry.entryStatus))
       )
   );
 
@@ -106,9 +137,9 @@ export function generateFlightProfile(params) {
     return (entriesChunk || [])
       .map(({ participantId, scaleValue }) => {
         const entry = eventEntries.find(
-          (entry) => entry.participantId === participantId
+          (entry: Entry) => entry.participantId === participantId
         );
-        if (scaleValue) entry.scaleValue = scaleValue;
+        if (entry?.scaleValue && scaleValue) entry.scaleValue = scaleValue;
         return entry;
       })
       .sort((a, b) => a.scaleValue - b.scaleValue)

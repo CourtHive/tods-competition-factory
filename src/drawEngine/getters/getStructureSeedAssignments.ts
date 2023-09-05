@@ -1,12 +1,18 @@
 import { getStageEntries } from './stageGetter';
 import { findStructure } from './findStructure';
 
-import { DrawDefinition, Structure } from '../../types/tournamentFromSchema';
 import { PLAY_OFF } from '../../constants/drawDefinitionConstants';
 import {
+  ErrorType,
   MISSING_SEED_ASSIGNMENTS,
   STRUCTURE_NOT_FOUND,
 } from '../../constants/errorConditionConstants';
+import {
+  DrawDefinition,
+  SeedAssignment,
+  StageTypeEnum,
+  Structure,
+} from '../../types/tournamentFromSchema';
 
 type GetStructureSeedAssignmentsArgs = {
   provisionalPositioning?: boolean;
@@ -20,9 +26,15 @@ export function getStructureSeedAssignments({
   drawDefinition,
   structureId,
   structure,
-}: GetStructureSeedAssignmentsArgs) {
+}: GetStructureSeedAssignmentsArgs): {
+  seedAssignments?: SeedAssignment[];
+  stageSequence?: number;
+  stage?: StageTypeEnum;
+  seedLimit?: number;
+  error?: ErrorType;
+} {
   let error,
-    seedAssignments: any[] = [];
+    seedAssignments: SeedAssignment[] = [];
   if (!structure) {
     ({ structure, error } = findStructure({ drawDefinition, structureId }));
   }

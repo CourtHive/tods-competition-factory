@@ -1,12 +1,17 @@
 import { findTournamentExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 import { addExtension, removeExtension } from './competitionExtentions';
-import { decorateResult } from '../../../global/functions/decorateResult';
+import {
+  ResultType,
+  decorateResult,
+} from '../../../global/functions/decorateResult';
 import {
   addTournamentExtension,
   removeTournamentExtension,
 } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 
 import { LINKED_TOURNAMENTS } from '../../../constants/extensionConstants';
+import { Tournament } from '../../../types/tournamentFromSchema';
+import { TournamentRecords } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_VALUES,
@@ -14,7 +19,11 @@ import {
   MISSING_TOURNAMENT_RECORDS,
 } from '../../../constants/errorConditionConstants';
 
-export function getLinkedTournamentIds({ tournamentRecords }) {
+type LinkTournamentsArgs = { tournamentRecords: { [key: string]: Tournament } };
+
+export function getLinkedTournamentIds({
+  tournamentRecords,
+}: LinkTournamentsArgs): ResultType & { linkedTournamentIds?: string[] } {
   if (
     typeof tournamentRecords !== 'object' ||
     !Object.keys(tournamentRecords).length
@@ -45,11 +54,11 @@ export function getLinkedTournamentIds({ tournamentRecords }) {
 
 /**
  * Links all tournaments which are currently loaded into competitionEngine state
- *
- * @param {object[]} tournamentRecords - provided by competitionEngine - all currently loaded tournamentRecords
- * @returns { success, error }
  */
-export function linkTournaments({ tournamentRecords }) {
+
+export function linkTournaments({
+  tournamentRecords,
+}: LinkTournamentsArgs): ResultType {
   if (
     typeof tournamentRecords !== 'object' ||
     !Object.keys(tournamentRecords).length
@@ -71,7 +80,12 @@ export function linkTournaments({ tournamentRecords }) {
   return { ...SUCCESS };
 }
 
-export function unlinkTournaments({ tournamentRecords }) {
+type UnlinkTournamentsArgs = {
+  tournamentRecords: TournamentRecords;
+};
+export function unlinkTournaments({
+  tournamentRecords,
+}: UnlinkTournamentsArgs): ResultType {
   if (
     typeof tournamentRecords !== 'object' ||
     !Object.keys(tournamentRecords).length
@@ -89,7 +103,14 @@ export function unlinkTournaments({ tournamentRecords }) {
   return decorateResult({ result, stack: 'unlinkTournaments' });
 }
 
-export function unlinkTournament({ tournamentRecords, tournamentId }) {
+type UnlinkTournamentArgs = {
+  tournamentRecords: TournamentRecords;
+  tournamentId: string;
+};
+export function unlinkTournament({
+  tournamentRecords,
+  tournamentId,
+}: UnlinkTournamentArgs): ResultType {
   if (typeof tournamentRecords !== 'object') return { error: INVALID_VALUES };
   if (!tournamentId) return { error: MISSING_TOURNAMENT_ID };
 

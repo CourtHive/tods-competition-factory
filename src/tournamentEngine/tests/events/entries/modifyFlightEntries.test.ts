@@ -16,9 +16,7 @@ import {
 } from '../../../../constants/errorConditionConstants';
 
 it('will modify flight.drawEntries when no drawDefinition is present', () => {
-  const participantsProfile = {
-    participantsCount: 40,
-  };
+  const participantsProfile = { participantsCount: 40 };
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     participantsProfile,
   });

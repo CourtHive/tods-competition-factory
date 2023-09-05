@@ -53,7 +53,7 @@ it('can generate a tournament with events and draws', () => {
   const { extensions } = drawDefinition;
   expect(extensions.length).toEqual(2);
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
-  expect(appliedPolicies.seeding.policyName).toEqual('NATIONAL SEEDING');
+  expect(appliedPolicies?.seeding?.policyName).toEqual('NATIONAL SEEDING');
 
   // find main structureId more intelligently
   const mainStructureId = drawDefinition.structures[0].structureId;

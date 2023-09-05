@@ -4,6 +4,14 @@ import { getAllStructureMatchUps } from './getAllStructureMatchUps';
 import { findStructure } from '../findStructure';
 
 import { ResultType } from '../../../global/functions/decorateResult';
+import { HydratedMatchUp } from '../../../types/hydrated';
+import { TEAM } from '../../../constants/matchUpTypes';
+import { MatchUpFilters } from './filterMatchUps';
+import { MatchUpsMap } from './getMatchUpsMap';
+import {
+  ABANDONED,
+  upcomingMatchUpStatuses,
+} from '../../../constants/matchUpStatusConstants';
 import {
   DrawDefinition,
   Event,
@@ -11,12 +19,15 @@ import {
   Structure,
   Tournament,
 } from '../../../types/tournamentFromSchema';
-import { TEAM } from '../../../constants/matchUpTypes';
 import {
-  ABANDONED,
-  upcomingMatchUpStatuses,
-} from '../../../constants/matchUpStatusConstants';
-import { ErrorType } from '../../../constants/errorConditionConstants';
+  ContextContent,
+  ContextProfile,
+  ExitProfiles,
+  ParticipantMap,
+  PolicyDefinitions,
+  ScheduleTiming,
+  ScheduleVisibilityFilters,
+} from '../../../types/factoryTypes';
 
 /*
   completedMatchUps are those matchUps where a winningSide is defined
@@ -27,37 +38,36 @@ import { ErrorType } from '../../../constants/errorConditionConstants';
 */
 
 type GroupsMatchUpsResult = {
+  abandonedMatchUps?: HydratedMatchUp[];
+  completedMatchUps?: HydratedMatchUp[];
+  upcomingMatchUps?: HydratedMatchUp[];
+  pendingMatchUps?: HydratedMatchUp[];
+  byeMatchUps?: HydratedMatchUp[];
   includesTeamMatchUps?: boolean;
-  abandonedMatchUps?: any[];
-  completedMatchUps?: any[];
-  upcomingMatchUps?: any[];
-  pendingMatchUps?: any[];
   structure?: Structure;
-  byeMatchUps?: any[];
-  error?: ErrorType;
 };
 
 type GetStructureMatchUpsArgs = {
+  scheduleVisibilityFilters?: ScheduleVisibilityFilters;
+  tournamentAppliedPolicies?: PolicyDefinitions;
   tournamentParticipants?: Participant[];
-  scheduleVisibilityFilters?: any;
-  tournamentAppliedPolicies?: any;
+  policyDefinitions?: PolicyDefinitions;
+  context?: { [key: string]: any };
+  matchUpFilters?: MatchUpFilters;
+  contextFilters?: MatchUpFilters;
+  contextContent?: ContextContent;
+  participantMap?: ParticipantMap;
+  scheduleTiming?: ScheduleTiming;
   requireParticipants?: boolean;
   tournamentRecord?: Tournament;
+  contextProfile?: ContextProfile;
   drawDefinition?: DrawDefinition;
-  afterRecoveryTimes?: any;
-  policyDefinitions?: any;
+  afterRecoveryTimes?: boolean;
+  exitProfiles?: ExitProfiles;
+  matchUpsMap?: MatchUpsMap;
   structure?: Structure;
-  matchUpFilters?: any;
-  contextContent?: any;
-  contextFilters?: any;
-  participantMap?: any;
-  scheduleTiming?: any;
   structureId?: string;
   inContext?: boolean;
-  contextProfile?: any;
-  exitProfiles?: any;
-  matchUpsMap?: any;
-  context?: any;
   event?: Event;
 };
 
@@ -83,7 +93,7 @@ export function getStructureMatchUps({
   structure,
   context,
   event,
-}: GetStructureMatchUpsArgs): GroupsMatchUpsResult | ResultType {
+}: GetStructureMatchUpsArgs): ResultType & GroupsMatchUpsResult {
   if (!structure && structureId) {
     ({ structure } = findStructure({ drawDefinition, structureId }));
   }
@@ -109,6 +119,13 @@ export function getStructureMatchUps({
     context,
     event,
   });
+
+  const abandonedMatchUps: HydratedMatchUp[] = [];
+  const completedMatchUps: HydratedMatchUp[] = [];
+  const upcomingMatchUps: HydratedMatchUp[] = [];
+  const pendingMatchUps: HydratedMatchUp[] = [];
+  const byeMatchUps: HydratedMatchUp[] = [];
+
   if (result.error) return result;
   const { matchUps } = result;
 
@@ -116,12 +133,6 @@ export function getStructureMatchUps({
   const participantAssignedDrawPositions = assignedPositions
     ?.filter((assignment) => assignment.participantId)
     .map((assignment) => assignment.drawPosition);
-
-  const byeMatchUps: any[] = [];
-  const pendingMatchUps: any[] = [];
-  const upcomingMatchUps: any[] = [];
-  const abandonedMatchUps: any[] = [];
-  const completedMatchUps: any[] = [];
 
   let includesTeamMatchUps;
 

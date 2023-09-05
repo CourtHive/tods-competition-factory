@@ -2,14 +2,28 @@ import { scheduledSortedMatchUps } from '../../../global/sorting/scheduledSorted
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
 import { getSchedulingProfile } from '../scheduleGovernor/schedulingProfile';
 
+import { MatchUpFilters } from '../../../drawEngine/getters/getMatchUps/filterMatchUps';
+import { ScheduleVisibilityFilters } from '../../../types/factoryTypes';
+import { ResultType } from '../../../global/functions/decorateResult';
 import { Tournament } from '../../../types/tournamentFromSchema';
+import { HydratedMatchUp } from '../../../types/hydrated';
 import {
   MISSING_COURT_ID,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VENUE_ID,
 } from '../../../constants/errorConditionConstants';
 
-export function getScheduledCourtMatchUps(params) {
+type GetScheduledCourtMatchUpsArgs = {
+  scheduleVisibilityFilters?: ScheduleVisibilityFilters;
+  venueMatchUps?: HydratedMatchUp[];
+  matchUpFilters?: MatchUpFilters;
+  tournamentRecord: Tournament;
+  courtId: string;
+};
+
+export function getScheduledCourtMatchUps(
+  params: GetScheduledCourtMatchUpsArgs
+): ResultType & { matchUps?: HydratedMatchUp[] } {
   if (!params?.tournamentRecord && !Array.isArray(params?.venueMatchUps))
     return { error: MISSING_TOURNAMENT_RECORD };
   if (!params?.courtId) return { error: MISSING_COURT_ID };
@@ -55,9 +69,9 @@ export function getScheduledCourtMatchUps(params) {
 }
 
 type GetScheduledVenueMatchUpsArgs = {
-  scheduleVisibilityFilters?: any;
+  scheduleVisibilityFilters?: ScheduleVisibilityFilters;
+  matchUpFilters?: MatchUpFilters;
   tournamentRecord: Tournament;
-  matchUpFilters?: any;
   venueId: string;
 };
 export function getScheduledVenueMatchUps({

@@ -10,6 +10,7 @@ import { findStructure } from '../../getters/findStructure';
 import { expect } from 'vitest';
 
 import { drawEngine } from '../../sync';
+import { STRUCTURE_NOT_FOUND } from '../../../constants/errorConditionConstants';
 
 export function verifyStructure(params) {
   let { drawDefinition } = params;
@@ -28,6 +29,7 @@ export function verifyStructure(params) {
     ({ drawDefinition } = drawEngine.getState());
   }
   const { structure } = findStructure({ drawDefinition, structureId });
+  if (!structure) return { error: STRUCTURE_NOT_FOUND };
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const { seedAssignments } = getStructureSeedAssignments({
     drawDefinition,
@@ -67,11 +69,11 @@ export function verifyStructure(params) {
   ).toEqual(expectedQualifierAssignments);
 
   const seededParticipantIds = seedAssignments
-    .map((assignment) => assignment.participantId)
+    ?.map((assignment) => assignment.participantId)
     .filter(Boolean);
   const seedAssignedDrawPositions = positionAssignments
-    ?.filter((assignment) =>
-      seededParticipantIds.includes(assignment.participantId)
+    ?.filter(
+      (assignment) => seededParticipantIds?.includes(assignment.participantId)
     )
     .map((assignment) => assignment.drawPosition);
   if (expectedSeeds !== undefined)

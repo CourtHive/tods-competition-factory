@@ -12,32 +12,42 @@ import {
   MISSING_TIE_FORMAT,
 } from '../../../constants/errorConditionConstants';
 
+import { MatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { ResultType } from '../../../global/functions/decorateResult';
+import { HydratedMatchUp } from '../../../types/hydrated';
+import {
+  DrawDefinition,
+  Event,
+  Structure,
+  TieFormat,
+} from '../../../types/tournamentFromSchema';
 
 /**
  * Calculates the number of wins per side and winningSide. When provided with `sideAdjustments`
  * will calculate prjected score and winningSide which is necessary for checking validity of score
- *
- * @param {object} matchUp - TODS matchUp: { matchUpType: 'TEAM', tieMatchUps: [] }
- * @param {object=} tieFormat - TODS tieFormat which defines the winCriteria for determining a winningSide
- * @param {string} separator - used to separate the two side scores in a scoreString
- * @param {number[]} sideAdjustments - used for projecting the score of a TEAM matchUp; sideAdjustments is only relevant for winCriteria based on matchUp winningSide
- * @param {any} drawDefinition
- * @param {string=} separator
- * @param {number[]=} sideAdjustments
- * @param {any=} matchUpsMap
- * @param {any=} event
- *
  */
 
 type TieMatchUpScore = {
-  scoreStringSide1: string;
-  scoreStringSide2: string;
+  scoreStringSide1?: string;
+  scoreStringSide2?: string;
   winningSide?: number;
-  set: any;
+  set?: any;
 };
 
-export function generateTieMatchUpScore(params): TieMatchUpScore | ResultType {
+type GenerateTieMatchUpScoreArgs = {
+  sideAdjustments?: [number, number];
+  drawDefinition?: DrawDefinition;
+  matchUpsMap?: MatchUpsMap;
+  matchUp: HydratedMatchUp;
+  structure?: Structure;
+  tieFormat?: TieFormat;
+  separator?: string;
+  event?: Event;
+};
+
+export function generateTieMatchUpScore(
+  params: GenerateTieMatchUpScoreArgs
+): TieMatchUpScore & ResultType {
   const {
     sideAdjustments = [0, 0], // currently unused?
     separator = '-',
@@ -142,7 +152,8 @@ export function generateTieMatchUpScore(params): TieMatchUpScore | ResultType {
     } else if (aggregateValue) {
       const allTieMatchUpsCompleted = tieMatchUps.every(
         (matchUp) =>
-          completedMatchUpStatuses.includes(matchUp.matchUpStatus) ||
+          (matchUp.matchUpStatus &&
+            completedMatchUpStatuses.includes(matchUp.matchUpStatus)) ||
           matchUp.winningSide
       );
       if (allTieMatchUpsCompleted && sideScores[0] !== sideScores[1]) {
@@ -154,18 +165,19 @@ export function generateTieMatchUpScore(params): TieMatchUpScore | ResultType {
       const matchUpId = matchUp.matchUpId;
       const inContextMatchUp = matchUp.hasContext
         ? matchUp
-        : matchUpsMap?.matchUpId ||
-          findMatchUp({
-            inContext: true,
-            drawDefinition,
-            matchUpId,
-          })?.matchUp;
+        : matchUpsMap?.drawMatchUps?.[matchUpId] ||
+          (drawDefinition &&
+            findMatchUp({
+              inContext: true,
+              drawDefinition,
+              matchUpId,
+            })?.matchUp);
 
       if (inContextMatchUp) {
         const { completedTieMatchUps, order } = tallyParticipantResults({
           matchUps: [inContextMatchUp],
         });
-        if (completedTieMatchUps && order.length) {
+        if (completedTieMatchUps && order?.length) {
           const winningParticipantId = order[0].participantId;
           winningSide = inContextMatchUp.sides.find(
             ({ participantId }) => participantId === winningParticipantId

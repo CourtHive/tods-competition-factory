@@ -4,24 +4,41 @@ import { positionTargets } from '../positionGovernor/positionTargets';
 import { findStructure } from '../../getters/findStructure';
 import { isActiveDownstream } from './isActiveDownstream';
 
-import { DRAW } from '../../../constants/drawDefinitionConstants';
 import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
+import { ResultType } from '../../../global/functions/decorateResult';
+import { DRAW } from '../../../constants/drawDefinitionConstants';
+import { HydratedMatchUp } from '../../../types/hydrated';
+import {
+  DrawDefinition,
+  Event,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
-export function removeQualifier(params) {
+type RemoveQualifierArgs = {
+  inContextDrawMatchUps: HydratedMatchUp[];
+  inContextMatchUp: HydratedMatchUp;
+  tournamentRecord?: Tournament;
+  drawDefinition: DrawDefinition;
+  targetData: any;
+  event?: Event;
+};
+export function removeQualifier(
+  params: RemoveQualifierArgs
+): ResultType & { qualifierRemoved?: boolean } {
   let qualifierRemoved;
   const { inContextDrawMatchUps, inContextMatchUp, drawDefinition } = params;
 
   const winnerTargetLink = params.targetData.targetLinks?.winnerTargetLink;
 
   if (winnerTargetLink.target.feedProfile === DRAW) {
-    const previousWinningParticipantId = inContextMatchUp.sides.find(
+    const previousWinningParticipantId = inContextMatchUp.sides?.find(
       ({ sideNumber }) => sideNumber === inContextMatchUp.winningSide
     )?.participantId;
     const mainDrawTargetMatchUp = inContextDrawMatchUps.find(
       (m) =>
         m.structureId === winnerTargetLink.target.structureId &&
         m.roundNumber === winnerTargetLink.target.roundNumber &&
-        m.sides.some(
+        m.sides?.some(
           ({ participantId }) => participantId === previousWinningParticipantId
         )
     );
@@ -53,9 +70,9 @@ export function removeQualifier(params) {
             positionAssignment.participantId = undefined;
 
             // update positionAssignments on structure
-            if (structure.positionAssignments) {
+            if (structure?.positionAssignments) {
               structure.positionAssignments = positionAssignments;
-            } else if (structure.structures) {
+            } else if (structure?.structures) {
               const assignmentMap = Object.assign(
                 {},
                 ...(positionAssignments || []).map((assignment) => ({
@@ -63,8 +80,8 @@ export function removeQualifier(params) {
                 }))
               );
 
-              for (const subStructure of structure.structures) {
-                subStructure.positionAssignments.forEach(
+              for (const subStructure of structure?.structures || []) {
+                subStructure.positionAssignments?.forEach(
                   (assignment) =>
                     (assignment.participantId =
                       assignmentMap[assignment.drawPosition])

@@ -47,12 +47,13 @@ export function generateEventWithFlights(params) {
     category,
   } = eventProfile;
 
+  const eventId = eventProfile.eventId || UUID();
   const tieFormat =
     eventProfile.tieFormat ||
     (eventType === TEAM
       ? tieFormatDefaults({
           namedFormat: tieFormatName,
-          event: { category, gender },
+          event: { eventId, category, gender },
           hydrateCollections,
         })
       : undefined);
@@ -98,8 +99,6 @@ export function generateEventWithFlights(params) {
 
   const categoryName =
     category?.categoryName || category?.ageCategoryCode || category?.ratingType;
-
-  const eventId = eventProfile.eventId || UUID();
 
   eventName = eventName || categoryName || 'Generated Event';
 

@@ -5,15 +5,27 @@ import { assignSeed } from '../../drawEngine/governors/entryGovernor/seedAssignm
 import { findExtension } from '../governors/queryGovernor/extensionQueries';
 import { getDrawStructures } from '../../drawEngine/getters/findStructure';
 import { getValidSeedBlocks } from '../../drawEngine/getters/seedGetter';
-import { decorateResult } from '../../global/functions/decorateResult';
 import { getParticipantId } from '../../global/functions/extractors';
+import {
+  ResultType,
+  decorateResult,
+} from '../../global/functions/decorateResult';
 
+import { STRUCTURE_NOT_FOUND } from '../../constants/errorConditionConstants';
+import { Entry, PositionAssignment } from '../../types/tournamentFromSchema';
 import { DIRECT_ENTRY_STATUSES } from '../../constants/entryStatusConstants';
 import { AD_HOC, QUALIFYING } from '../../constants/drawDefinitionConstants';
 import { RANKING, SEEDING } from '../../constants/scaleConstants';
 import { ROUND_TARGET } from '../../constants/extensionConstants';
 
-export function prepareStage(params) {
+export function prepareStage(params): ResultType & {
+  positionAssignments?: PositionAssignment[];
+  positioningReport?: any;
+  stageEntries?: Entry[];
+  structureId?: string;
+  seedsCount?: number;
+  conflicts?: any[];
+} {
   let { seedsCount } = params;
   const preparedStructureIds: string[] = params.preparedStructureIds || [];
   const {
@@ -71,22 +83,26 @@ export function prepareStage(params) {
     roundTarget,
     stage,
   });
-  const multipleStructures = structures.length > 1;
+  const multipleStructures = (structures?.length || 0) > 1;
 
-  const structure = structures.find(
+  const structure = structures?.find(
     ({ structureId }) => !preparedStructureIds.includes(structureId)
   );
-  const { structureId } = structure || {};
+  if (!structure)
+    return decorateResult({ result: { error: STRUCTURE_NOT_FOUND } });
+  const structureId = structure?.structureId;
 
-  const seedBlockInfo = getValidSeedBlocks({
-    provisionalPositioning,
-    appliedPolicies,
-    drawDefinition,
-    structure,
-  });
+  const seedBlockInfo = structure
+    ? getValidSeedBlocks({
+        provisionalPositioning,
+        appliedPolicies,
+        drawDefinition,
+        structure,
+      })
+    : undefined;
 
   const { seedLimit } = initializeStructureSeedAssignments({
-    participantCount: stageEntries.length,
+    participantsCount: stageEntries.length,
     enforcePolicyLimits,
     appliedPolicies,
     drawDefinition,
@@ -192,9 +208,9 @@ export function prepareStage(params) {
       });
   }
 
+  let conflicts: any[] = [];
   let positionAssignments;
   let positioningReport;
-  let conflicts = [];
 
   if (
     automated !== false &&
@@ -219,7 +235,7 @@ export function prepareStage(params) {
       drawType,
       event,
     });
-    conflicts = result?.conflicts;
+    if (result.conflicts) conflicts = result?.conflicts;
     positionAssignments = result?.positionAssignments;
     positioningReport = result?.positioningReport;
 

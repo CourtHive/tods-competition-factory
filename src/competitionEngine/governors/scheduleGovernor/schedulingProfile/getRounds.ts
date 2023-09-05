@@ -6,9 +6,12 @@ import { definedAttributes } from '../../../../utilities/objects';
 import { extractDate } from '../../../../utilities/dateTime';
 import { getSchedulingProfile } from './schedulingProfile';
 
+import { MatchUpFilters } from '../../../../drawEngine/getters/getMatchUps/filterMatchUps';
 import { completedMatchUpStatuses } from '../../../../constants/matchUpStatusConstants';
 import drawDefinitionConstants from '../../../../constants/drawDefinitionConstants';
+import { Tournament } from '../../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../../constants/resultConstants';
+import { HydratedMatchUp } from '../../../../types/hydrated';
 import {
   ErrorType,
   INVALID_TOURNAMENT_RECORD,
@@ -16,8 +19,6 @@ import {
   MISSING_TOURNAMENT_RECORDS,
   NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
-import { HydratedMatchUp } from '../../../../types/hydrated';
-import { Tournament } from '../../../../types/tournamentFromSchema';
 
 const { stageOrder } = drawDefinitionConstants;
 
@@ -153,12 +154,12 @@ type GetRoundsArgs = {
   inContextMatchUps?: HydratedMatchUp[];
   excludeScheduledRounds?: boolean;
   excludeCompletedRounds?: boolean;
+  context?: { [key: string]: any };
+  matchUpFilters?: MatchUpFilters;
   tournamentRecord?: Tournament;
   withSplitRounds?: boolean;
   schedulingProfile?: any;
   withRoundId?: boolean;
-  matchUpFilters?: any;
-  context?: any;
 };
 export function getRounds({
   excludeScheduleDateProfileRounds,
@@ -205,7 +206,7 @@ export function getRounds({
   if (needsTournamentRecords && noTournamentRecords)
     return { error: MISSING_TOURNAMENT_RECORDS };
 
-  const events = Object.values(tournamentRecords || {})
+  const events = Object.values(tournamentRecords ?? {})
     .map(({ events }) => events)
     .flat();
 

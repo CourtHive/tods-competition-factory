@@ -12,6 +12,7 @@ import {
   MISSING_DRAW_DEFINITION,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../../constants/errorConditionConstants';
+import { MatchUp } from '../../../../types/tournamentFromSchema';
 
 export function pruneDrawDefinition({
   matchPlayDrawPositions = true, // when simply extracting matchUps for aggregation, drawPositions are unnecessary
@@ -22,7 +23,7 @@ export function pruneDrawDefinition({
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
-  let relevantMatchUps = [];
+  let relevantMatchUps: MatchUp[] = [];
 
   const { drawsAnalysis } = analyzeDraws({ tournamentRecord });
   if (drawsAnalysis.canBePruned.includes(drawId)) {
@@ -42,7 +43,7 @@ export function pruneDrawDefinition({
 
     const matchUps = mainStructure.matchUps || [];
     relevantMatchUps = matchUps
-      .sort((a, b) => a.roundPosition - b.roundPosition)
+      .sort((a: any, b: any) => a.roundPosition - b.roundPosition)
       .filter(
         ({ roundNumber }) => !structureData.inactiveRounds.includes(roundNumber)
       );
@@ -67,10 +68,10 @@ export function pruneDrawDefinition({
       );
       deletedMatchUpIds.push(...matchUpIdsToDelete);
 
-      const existingDrawPositionPairings = matchPlayMatchUps.map(
-        ({ drawPositions }) => drawPositions
-      );
-      const existingDrawPositions: string[] =
+      const existingDrawPositionPairings = matchPlayMatchUps
+        .flatMap((matchUp) => matchUp.drawPositions || [])
+        .filter(Boolean);
+      const existingDrawPositions: number[] =
         existingDrawPositionPairings.flat();
       const drawPositionsMap = Object.assign(
         {},
@@ -90,8 +91,8 @@ export function pruneDrawDefinition({
       });
 
       if (matchPlayDrawPositions) {
-        const updatedPositionAssignments = mainStructure.positionAssignments
-          .filter((assignment) =>
+        const updatedPositionAssignments = mainStructure?.positionAssignments
+          ?.filter((assignment) =>
             existingDrawPositions.includes(assignment.drawPosition)
           )
           .map((assignment) => {

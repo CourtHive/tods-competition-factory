@@ -34,7 +34,7 @@ import {
   METHOD_NOT_FOUND,
 } from '../constants/errorConditionConstants';
 
-export const tournamentEngine = (function () {
+export const tournamentEngine = ((): FactoryEngine => {
   const engine: FactoryEngine = {
     getState: (params) =>
       getState({
@@ -48,7 +48,7 @@ export const tournamentEngine = (function () {
       if (result.error) return result;
       setTournamentRecord(result);
       setTournamentId(tournamentId);
-      return Object.assign({ tournamentId }, SUCCESS);
+      return { ...SUCCESS, tournamentId };
     },
     setTournamentId: (newTournamentId) => setTournamentId(newTournamentId),
     version: () => factoryVersion(),

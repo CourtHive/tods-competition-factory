@@ -10,9 +10,9 @@ it('can add events, venues, and schedule matchUps', () => {
   const participantsCount = 32;
 
   const { tournamentRecord: record } = mocksEngine.generateTournamentRecord({
+    participantsProfile: { participantsCount },
     startDate,
     endDate,
-    participantsProfile: { participantsCount },
   });
   const { participants } = record;
   tournamentEngine.setState(record);

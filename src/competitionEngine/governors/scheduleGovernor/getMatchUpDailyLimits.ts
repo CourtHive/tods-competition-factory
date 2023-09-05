@@ -2,6 +2,7 @@ import { getMatchUpDailyLimits as getDailyLimit } from '../../../tournamentEngin
 
 import { MISSING_TOURNAMENT_RECORDS } from '../../../constants/errorConditionConstants';
 import { Tournament } from '../../../types/tournamentFromSchema';
+import { ResultType } from '../../../global/functions/decorateResult';
 
 type GetMatchUpDailyLimitsArgs = {
   tournamentRecords: { [key: string]: Tournament };
@@ -10,7 +11,9 @@ type GetMatchUpDailyLimitsArgs = {
 export function getMatchUpDailyLimits({
   tournamentRecords,
   tournamentId,
-}: GetMatchUpDailyLimitsArgs) {
+}: GetMatchUpDailyLimitsArgs): ResultType & {
+  matchUpDailyLimits?: any;
+} {
   if (
     typeof tournamentRecords !== 'object' ||
     !Object.keys(tournamentRecords).length

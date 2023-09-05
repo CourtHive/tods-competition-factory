@@ -8,7 +8,11 @@ import { getAvgWTN } from './getAvgWTN';
 
 import { MISSING_TOURNAMENT_ID } from '../../../constants/errorConditionConstants';
 import { ADD_SCALE_ITEMS } from '../../../constants/topicConstants';
-import { Tournament } from '../../../types/tournamentFromSchema';
+import {
+  Participant,
+  Side,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 import { SEEDING } from '../../../constants/scaleConstants';
 import {
   CONSOLATION,
@@ -25,6 +29,7 @@ import {
   DRAW_DELETIONS,
   FLIGHT_PROFILE,
 } from '../../../constants/extensionConstants';
+import { HydratedParticipant } from '../../../types/hydrated';
 
 type GetStructureReportsArgs = {
   extensionProfiles?: any[];
@@ -166,27 +171,30 @@ export function getStructureReports({
                   [QUALIFYING, MAIN, CONSOLATION, PLAY_OFF].includes(s.stage)
               )
               .map((s: any) => {
-                const finalMatchUp =
-                  [MAIN, PLAY_OFF].includes(s.stage) &&
-                  matchUps.find(
-                    (matchUp) =>
-                      matchUp.structureId === s.structureId &&
-                      matchUp.finishingRound === 1 &&
-                      matchUp.winningSide
-                  );
+                const finalMatchUp = [MAIN, PLAY_OFF].includes(s.stage)
+                  ? matchUps.find(
+                      (matchUp) =>
+                        matchUp.structureId === s.structureId &&
+                        matchUp.finishingRound === 1 &&
+                        matchUp.winningSide
+                    )
+                  : undefined;
 
-                const winningParticipant = finalMatchUp?.sides?.find(
-                  (side) => side.sideNumber === finalMatchUp.winningSide
-                )?.participant;
+                const winningSide = finalMatchUp?.sides?.find(
+                  (side: any) => side.sideNumber === finalMatchUp.winningSide
+                ) as Side & { participant?: Participant };
+
+                const winningParticipant =
+                  winningSide?.participant as HydratedParticipant;
 
                 const winningTeamId =
                   winningParticipant?.participantType === TEAM_PARTICIPANT &&
                   winningParticipant.participantId;
 
-                const { individualParticipants } =
-                  (winningParticipant?.participantType === PAIR &&
-                    winningParticipant) ||
-                  {};
+                const individualParticipants =
+                  winningParticipant?.participantType === PAIR
+                    ? winningParticipant.individualParticipants
+                    : [];
 
                 const winningPersonWTN = getDetailsWTN({
                   participant:

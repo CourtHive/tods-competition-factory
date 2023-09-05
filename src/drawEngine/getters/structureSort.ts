@@ -2,6 +2,7 @@ import { findExtension } from '../../tournamentEngine/governors/queryGovernor/ex
 
 import { completedMatchUpStatuses } from '../../constants/matchUpStatusConstants';
 import { ROUND_TARGET } from '../../constants/extensionConstants';
+import { Structure } from '../../types/tournamentFromSchema';
 import {
   aggregateOrder,
   finishOrder,
@@ -11,7 +12,7 @@ import {
   MAIN,
 } from '../../constants/drawDefinitionConstants';
 
-export function structureSort(a, b, config?) {
+export function structureSort(a: Structure, b: Structure, config?): number {
   const getRoundTarget = (element) =>
     findExtension({ element, name: ROUND_TARGET })?.extension?.value;
 
@@ -23,9 +24,10 @@ export function structureSort(a, b, config?) {
   const orderProtocol = finish || aggregate || stageOrder;
 
   const isMain1 = (s) => s?.stage === MAIN && s?.stageSequence === 1;
-  const protocolSequence = (s) => (isMain1(s) ? -1 : orderProtocol[s?.stage]);
+  const protocolSequence = (s): number =>
+    isMain1(s) ? -1 : orderProtocol[s?.stage];
 
-  const completedStructure = (s) =>
+  const completedStructure = (s): number =>
     s?.matchUps.every(({ matchUpStatus }) =>
       completedMatchUpStatuses.includes(matchUpStatus) ? 1 : -1
     );
@@ -33,7 +35,8 @@ export function structureSort(a, b, config?) {
   return (
     (completed && completedStructure(a) - completedStructure(b)) ||
     (aggregate && protocolSequence(a) - protocolSequence(b)) ||
-    (orderProtocol[a?.stage] || 0) - (orderProtocol[b?.stage] || 0) ||
+    ((a?.stage && orderProtocol[a.stage]) || 0) -
+      ((b?.stage && orderProtocol[b.stage]) || 0) ||
     (getRoundTarget(a) || 0) - (getRoundTarget(b) || 0) ||
     (!finish &&
       !aggregate &&
@@ -45,7 +48,7 @@ export function structureSort(a, b, config?) {
   );
 }
 
-export function getMinFinishingPositionRange(structure) {
+export function getMinFinishingPositionRange(structure): number {
   return (structure?.matchUps || []).reduce((rangeSum, matchUp) => {
     const sum = (matchUp.finishingPositionRange?.winner || []).reduce(
       (a, b) => a + b,

@@ -63,7 +63,7 @@ it('can define seedAssignments', () => {
     drawDefinition: drawDefinitionAfterAssignments,
     structureId,
   });
-  expect(seedAssignments.length).toEqual(seedsCount);
+  expect(seedAssignments?.length).toEqual(seedsCount);
 });
 
 it('generates valild seedBlocks given different policies', () => {
@@ -493,11 +493,13 @@ function checkSeedBlocks({ drawSize, policy, expectedBlocks }) {
   const { structure } = findStructure({ drawDefinition, structureId });
 
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
-  const { validSeedBlocks } = getValidSeedBlocks({
-    appliedPolicies,
-    drawDefinition,
-    structure,
-  });
+  const validSeedBlocks =
+    structure &&
+    getValidSeedBlocks({
+      appliedPolicies,
+      drawDefinition,
+      structure,
+    }).validSeedBlocks;
 
   expect(validSeedBlocks).toBeDefined();
 

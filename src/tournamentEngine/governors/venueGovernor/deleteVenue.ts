@@ -32,10 +32,11 @@ export function deleteVenue({
   if (typeof venueId !== 'string') return { error: MISSING_VENUE_ID };
 
   const contextFilters = { venueIds: [venueId] };
-  const { matchUps: matchUpsToUnschedule } = allTournamentMatchUps({
-    tournamentRecord,
-    contextFilters,
-  });
+  const matchUpsToUnschedule =
+    allTournamentMatchUps({
+      tournamentRecord,
+      contextFilters,
+    }).matchUps || [];
 
   if (!matchUpsToUnschedule.length || force) {
     // if no matchUpsToUnschedule this does nothing but avoid the deletionMessage

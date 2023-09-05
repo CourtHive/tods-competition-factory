@@ -39,12 +39,12 @@ export function getVenuesReport({
   });
   if (result.error) return result;
 
-  const venues = result.venues.filter(
+  const venues = result?.venues?.filter(
     ({ venueId }) => !venueIds?.length || venueIds.includes(venueId)
   );
 
   const courtDates = result.courts
-    .reduce((dates: string[], court) => {
+    ?.reduce((dates: string[], court) => {
       court.dateAvailability?.forEach((availability: any) => {
         const date: string = availability.date;
         if (!dates.includes(date)) dates.push(date);
@@ -53,14 +53,14 @@ export function getVenuesReport({
     }, [])
     .filter((date) => !dates.length || dates.includes(date));
 
-  const matchUpFilters = { venueIds: venues.map(({ venueId }) => venueId) };
+  const matchUpFilters = { venueIds: venues?.map(({ venueId }) => venueId) };
   const { matchUps } = allCompetitionMatchUps({
     afterRecoveryTimes: true,
     tournamentRecords,
     matchUpFilters,
   });
 
-  const venuesReport = venues.map((venue) =>
+  const venuesReport = venues?.map((venue) =>
     getVenueReport(courtDates, venue, matchUps)
   );
   return { venuesReport };

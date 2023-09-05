@@ -1,6 +1,7 @@
 import { findTournamentParticipant } from '../../getters/participants/participantGetter';
 import { getTimeItem } from '../queryGovernor/timeItems';
 
+import { TimeItem, Tournament } from '../../../types/tournamentFromSchema';
 import { ELEMENT_REQUIRED } from '../../../constants/infoConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -11,7 +12,6 @@ import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
-import { TimeItem, Tournament } from '../../../types/tournamentFromSchema';
 
 export function addTimeItem({
   duplicateValues = true,

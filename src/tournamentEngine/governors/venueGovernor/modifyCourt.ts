@@ -4,6 +4,9 @@ import courtTemplate from '../../generators/courtTemplate';
 import { findCourt } from '../../getters/courtGetter';
 import { makeDeepCopy } from '../../../utilities';
 
+import { HydratedCourt, HydratedMatchUp } from '../../../types/hydrated';
+import { ResultType } from '../../../global/functions/decorateResult';
+import { Tournament } from '../../../types/tournamentFromSchema';
 import { MODIFY_VENUE } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -12,8 +15,6 @@ import {
   MISSING_TOURNAMENT_RECORD,
   NO_VALID_ATTRIBUTES,
 } from '../../../constants/errorConditionConstants';
-import { Tournament } from '../../../types/tournamentFromSchema';
-import { HydratedMatchUp } from '../../../types/hydrated';
 
 type ModifyCourtArgs = {
   venueMatchUps?: HydratedMatchUp[];
@@ -31,7 +32,7 @@ export function modifyCourt({
   modifications,
   courtId,
   force,
-}: ModifyCourtArgs) {
+}: ModifyCourtArgs): ResultType & { court?: HydratedCourt } {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!courtId) return { error: MISSING_COURT_ID };
   if (!modifications || typeof modifications !== 'object')

@@ -9,13 +9,17 @@ import { ADD_PARTICIPANTS } from '../../../../constants/topicConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { OTHER } from '../../../../constants/participantRoles';
 import {
+  ErrorType,
   INVALID_PARTICIPANT_TYPE,
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
 } from '../../../../constants/errorConditionConstants';
 
-import { Tournament } from '../../../../types/tournamentFromSchema';
+import {
+  Participant,
+  Tournament,
+} from '../../../../types/tournamentFromSchema';
 
 type CreateGroupParticipantType = {
   participantRoleResponsibilities?: string[];
@@ -33,7 +37,13 @@ export function createGroupParticipant({
   tournamentRecord,
   participantId,
   groupName,
-  }: CreateGroupParticipantType) {
+}: CreateGroupParticipantType): {
+  participant?: Participant;
+  participantId?: string;
+  success?: boolean;
+  error?: ErrorType;
+  info?: any;
+} {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!groupName) return { error: MISSING_VALUE, info: 'Missing groupName' };
   if (!Array.isArray(individualParticipantIds))

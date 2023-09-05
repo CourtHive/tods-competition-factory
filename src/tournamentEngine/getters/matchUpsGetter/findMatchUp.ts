@@ -5,13 +5,21 @@ import { allTournamentMatchUps } from './matchUpsGetter';
 import { getContextContent } from '../getContextContent';
 import { findEvent } from '../eventGetter';
 
+import { HydratedMatchUp } from '../../../types/hydrated';
+import {
+  ContextContent,
+  ContextProfile,
+  ParticipantsProfile,
+} from '../../../types/factoryTypes';
 import {
   DrawDefinition,
   Tournament,
   Event,
+  Structure,
 } from '../../../types/tournamentFromSchema';
 import {
   DRAW_DEFINITION_NOT_FOUND,
+  ErrorType,
   MATCHUP_NOT_FOUND,
   MISSING_MATCHUP_ID,
   MISSING_TOURNAMENT_RECORD,
@@ -24,12 +32,12 @@ export function publicFindMatchUp(params) {
 }
 
 type FindMatchUpType = {
-  tournamentRecord: Tournament;
+  participantsProfile?: ParticipantsProfile;
+  contextContent?: ContextContent;
+  contextProfile?: ContextProfile;
   drawDefinition?: DrawDefinition;
-  participantsProfile?: any;
-  afterRecoveryTimes?: any;
-  contextContent?: any;
-  contextProfile?: any;
+  afterRecoveryTimes?: boolean;
+  tournamentRecord: Tournament;
   inContext?: boolean;
   matchUpId: string;
   eventId?: string;
@@ -48,12 +56,17 @@ export function findMatchUp({
   eventId,
   drawId,
   event,
-}: FindMatchUpType) {
+}: FindMatchUpType): {
+  drawDefinition?: DrawDefinition;
+  matchUp?: HydratedMatchUp;
+  structure?: Structure;
+  error?: ErrorType;
+} {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (typeof matchUpId !== 'string') return { error: MISSING_MATCHUP_ID };
 
   if (!drawDefinition || !event) {
-    const { matchUps } = allTournamentMatchUps({ tournamentRecord });
+    const matchUps = allTournamentMatchUps({ tournamentRecord }).matchUps || [];
 
     const inContextMatchUp = matchUps.find(
       (matchUp) => matchUp.matchUpId === matchUpId
@@ -91,7 +104,7 @@ export function findMatchUp({
   });
 
   const { matchUp, structure } = drawEngineFindMatchUp({
-    context: inContext && additionalContext,
+    context: inContext ? additionalContext : undefined,
     tournamentParticipants,
     afterRecoveryTimes,
     contextContent,

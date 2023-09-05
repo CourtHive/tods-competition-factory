@@ -10,34 +10,15 @@ import {
 } from '../../../utilities';
 
 import { HydratedMatchUp } from '../../../types/hydrated';
+import { RoundProfile } from '../../../types/factoryTypes';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
   ErrorType,
   INVALID_VALUES,
 } from '../../../constants/errorConditionConstants';
 
-type RoundProfile = {
-  [key: number]: {
-    abbreviatedRoundName?: string;
-    finishingPositionRange?: any;
-    pairedDrawPositions?: any[];
-    feedRoundIndex?: number;
-    preFeedRound?: boolean;
-    inactiveRound?: boolean;
-    finishingRound?: number;
-    inactiveCount?: number;
-    drawPositions?: any[];
-    matchUpsCount: number;
-    roundFactor?: number;
-    roundIndex?: number;
-    feedRound?: boolean;
-    roundNumber: number;
-    roundName?: string;
-  };
-};
-
 type GetRoundMatchUpsArgs = {
-  matchUps: HydratedMatchUp[];
+  matchUps?: HydratedMatchUp[];
   interpolate?: boolean;
 };
 
@@ -54,7 +35,8 @@ export function getRoundMatchUps({
   matchUps = [],
   interpolate,
 }: GetRoundMatchUpsArgs): RoundMatchUpsResult {
-  if (!Array.isArray(matchUps)) return { error: INVALID_VALUES };
+  if (!Array.isArray(matchUps))
+    return { roundMatchUps: [], error: INVALID_VALUES };
 
   // create an array of arrays of matchUps grouped by roundNumber
   const roundMatchUpsArray = matchUps

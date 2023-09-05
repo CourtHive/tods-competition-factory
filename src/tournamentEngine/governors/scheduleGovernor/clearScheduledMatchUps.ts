@@ -47,30 +47,34 @@ export function clearScheduledMatchUps({
   }
   if (venueIds.length) scheduleAttributes.push('venueId');
 
-  const { matchUps: inContextMatchUps } = allTournamentMatchUps({
-    matchUpFilters: { scheduledDates },
-    tournamentRecord,
-  });
+  const inContextMatchUps =
+    allTournamentMatchUps({
+      matchUpFilters: { scheduledDates },
+      tournamentRecord,
+    }).matchUps || [];
 
   const relevantMatchUpIds = inContextMatchUps
     .filter(
       (matchUp) =>
+        matchUp.matchUpStatus &&
         !ignoreMatchUpStatuses.includes(matchUp.matchUpStatus) &&
         hasSchedule({ schedule: matchUp.schedule, scheduleAttributes }) &&
         (!venueIds?.length || venueIds.includes(matchUp.schedule.venueId))
     )
     .map(getMatchUpId);
 
-  const { matchUps } = allTournamentMatchUps({
-    tournamentRecord,
-    inContext: false,
-  });
+  const matchUps =
+    allTournamentMatchUps({
+      tournamentRecord,
+      inContext: false,
+    }).matchUps || [];
 
   let clearedScheduleCount = 0;
   for (const matchUp of matchUps) {
     if (relevantMatchUpIds.includes(matchUp.matchUpId)) {
       matchUp.timeItems = (matchUp.timeItems || []).filter(
         (timeItem) =>
+          timeItem?.itemType &&
           ![
             ALLOCATE_COURTS,
             ASSIGN_COURT,

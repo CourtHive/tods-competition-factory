@@ -9,6 +9,8 @@ import dts from 'rollup-plugin-dts';
 import fs from 'fs-extra';
 import path from 'path';
 
+const srcIndex = 'src/index.ts';
+
 const esmBundle = (config) => ({
   external: (id) => !/^[./]/.test(id),
   plugins: [esbuild(), json()],
@@ -24,14 +26,12 @@ const esmBundle = (config) => ({
 });
 
 const esmProfile = [
-  { input: 'src/index.ts', outputFile: 'dist/index.mjs' },
-  /*
+  { input: srcIndex, outputFile: 'dist/index.mjs' },
   {
     outputFile: 'dist/forge/utilities.mjs',
     input: 'src/utilities/index.ts',
     outputName: 'utilities',
   },
-  */
   {
     outputFile: 'dist/forge/generate.mjs',
     input: 'src/forge/generate/index.ts',
@@ -129,28 +129,9 @@ function createExport({ input, folder, packageName, cjs, esm }) {
   };
 }
 
-const cjsExports = [{ input: 'src/index.ts', cjs: true }].map(createExport);
+const cjsExports = [{ input: srcIndex, cjs: true }].map(createExport);
 
-export default [
-  ...cjsExports,
-  ...esmExports,
-  /*
-  {
-    input: 'src/drawEngine/governors/entryGovernor/index.ts',
-    output: [
-      {
-        file: `src/drawEngine/governors/entryGovernor/index.d.ts`,
-        format: 'es',
-      },
-    ],
-    plugins: [dts()],
-  },
-  */
-  {
-    input: 'src/mocksEngine/index.ts',
-    output: [{ file: `${distPath}/mocksEngine.d.ts`, format: 'es' }],
-    plugins: [dts()],
-  },
+const forgeTypes = [
   {
     input: 'src/forge/query/index.ts',
     output: [{ file: `${distPath}/forge/query.d.ts`, format: 'es' }],
@@ -166,11 +147,45 @@ export default [
     output: [{ file: `${distPath}/forge/generate.d.ts`, format: 'es' }],
     plugins: [dts()],
   },
-  /*
   {
     input: 'src/utilities/index.ts',
     output: [{ file: `${distPath}/forge/utilities.d.ts`, format: 'es' }],
     plugins: [dts()],
   },
+];
+
+const governorTypes = [
+  {
+    input: 'src/tournamentEngine/governors/publishingGovernor/index.ts',
+    output: [
+      { file: 'src/tournamentEngine/governors/publishingGovernor/index.d.ts' },
+    ],
+    plugins: [dts()],
+  },
+];
+
+const engineTypes = [
+  /*
+  {
+    input: srcIndex,
+    plugins: [dts()],
+    output: {
+      file: `${distPath}/tods-competition-factory.d.ts`,
+      format: 'es',
+    },
+  },
+  {
+    input: 'src/mocksEngine/index.ts',
+    output: [{ file: `${distPath}/mocksEngine.d.ts`, format: 'es' }],
+    plugins: [dts()],
+  },
   */
+];
+
+export default [
+  ...cjsExports,
+  ...esmExports,
+  ...forgeTypes,
+  ...governorTypes,
+  ...engineTypes,
 ];

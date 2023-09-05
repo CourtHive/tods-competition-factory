@@ -9,6 +9,7 @@ import { unique } from '../../../utilities';
 import { POLICY_TYPE_RANKING_POINTS } from '../../../constants/policyConstants';
 import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { RANKING_POINTS } from '../../../constants/extensionConstants';
+import { Tournament } from '../../../types/tournamentFromSchema';
 import { TEAM_EVENT } from '../../../constants/eventConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -19,14 +20,25 @@ import {
   PAIR,
   TEAM_PARTICIPANT,
 } from '../../../constants/participantConstants';
+import {
+  ParticipantFilters,
+  PolicyDefinitions,
+} from '../../../types/factoryTypes';
 
+type GetTournamentPointsArgs = {
+  participantFilters?: ParticipantFilters;
+  policyDefinitions?: PolicyDefinitions;
+  tournamentRecord: Tournament;
+  saveRankings?: boolean;
+  level?: number;
+};
 export function getTournamentPoints({
   participantFilters,
   policyDefinitions,
   tournamentRecord,
   saveRankings,
   level,
-}) {
+}: GetTournamentPointsArgs) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
   const { policyDefinitions: attachedPolicies } = getPolicyDefinitions({

@@ -2,6 +2,8 @@ import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGove
 import { generateTieMatchUpScore } from '../../generators/tieMatchUpScore/generateTieMatchUpScore';
 import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
+import { MatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
+import { HydratedMatchUp } from '../../../types/hydrated';
 import { makeDeepCopy } from '../../../utilities';
 import {
   DrawDefinition,
@@ -10,8 +12,6 @@ import {
   Structure,
   TieFormat,
 } from '../../../types/tournamentFromSchema';
-import { MatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
-import { HydratedMatchUp } from '../../../types/hydrated';
 
 type GetProjectedDualWinningSideArgs = {
   drawDefinition?: DrawDefinition;
@@ -20,7 +20,7 @@ type GetProjectedDualWinningSideArgs = {
   matchUpStatus?: string;
   tieFormat?: TieFormat;
   structure?: Structure;
-  winningSide: number;
+  winningSide?: number;
   matchUp: MatchUp;
   event?: Event;
   score?: any;

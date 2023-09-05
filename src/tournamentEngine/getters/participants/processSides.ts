@@ -2,7 +2,7 @@ import { addStructureParticipation } from './addStructureParticipation';
 import { addScheduleItem } from './addScheduleItem';
 
 import { DEFAULTED, WALKOVER } from '../../../constants/matchUpStatusConstants';
-import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
+import { TypeEnum } from '../../../types/tournamentFromSchema';
 import {
   PAIR,
   TEAM_PARTICIPANT,
@@ -200,7 +200,7 @@ export function processSides(params) {
           const addTeamMatchUp = (participantId) =>
             (participantMap[participantId].matchUps[matchUpTieId] = {
               participantWon: tieWinningSide === sideNumber,
-              matchUpType: TEAM_MATCHUP,
+              matchUpType: TypeEnum.Team,
               matchUpId: matchUpTieId,
               sideNumber,
             });

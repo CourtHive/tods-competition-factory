@@ -24,9 +24,9 @@ export function checkInParticipant({
     ({ matchUpId } = matchUp);
   }
 
-  const { event, drawDefinition } = findEvent({ tournamentRecord, drawId });
+  const { drawDefinition } = findEvent({ tournamentRecord, drawId });
 
-  if (event) {
+  if (drawDefinition) {
     const tournamentParticipants = tournamentRecord.participants;
     const result = drawEngineCheckInParticipant({
       tournamentParticipants,
@@ -58,9 +58,9 @@ export function checkOutParticipant({
     ({ matchUpId } = matchUp);
   }
 
-  const { event, drawDefinition } = findEvent({ tournamentRecord, drawId });
+  const { drawDefinition } = findEvent({ tournamentRecord, drawId });
 
-  if (event) {
+  if (drawDefinition) {
     const tournamentParticipants = tournamentRecord.participants;
     const result = drawEngineCheckOutParticipant({
       tournamentParticipants,

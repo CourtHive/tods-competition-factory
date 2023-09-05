@@ -28,6 +28,7 @@ import {
 import { POLICY_TYPE_PROGRESSION } from '../../../constants/policyConstants';
 import { DISABLE_AUTO_CALC } from '../../../constants/extensionConstants';
 import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
+import { PolicyDefinitions } from '../../../types/factoryTypes';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
   CANNOT_CHANGE_WINNING_SIDE,
@@ -52,13 +53,48 @@ import {
   validMatchUpStatuses,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
+import {
+  DrawDefinition,
+  Event,
+  MatchUpStatusEnum,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
 // WOULDBENICE: return object containing all modified { matchUpIds, structureIds, drawIds }
-export function setMatchUpStatus(params) {
+
+type SetMatchUpStatusArgs = {
+  tournamentRecords?: { [key: string]: Tournament };
+  policyDefinitions?: PolicyDefinitions;
+  matchUpStatus?: MatchUpStatusEnum;
+  allowChangePropagation?: boolean;
+  disableScoreValidation?: boolean;
+  projectedWinningSide?: number;
+  matchUpStatusCodes?: string[];
+  tournamentRecord?: Tournament;
+  drawDefinition: DrawDefinition;
+  disableAutoCalc?: boolean;
+  enableAutoCalc?: boolean;
+  matchUpFormat?: string;
+  matchUpTieId?: string;
+  tieMatchUpId?: string;
+  removeScore?: boolean;
+  winningSide?: number;
+  matchUpId: string;
+  schedule?: any;
+  notes?: string;
+  outcome?: any;
+  event?: Event;
+  score?: any;
+};
+
+export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
   const stack = 'setMatchUpStatus';
 
   // always clear score if DOUBLE_WALKOVER or WALKOVER
-  if ([WALKOVER, DOUBLE_WALKOVER].includes(params.matchUpStatus))
+  if (
+    params.matchUpStatus &&
+    [WALKOVER, DOUBLE_WALKOVER].includes(params.matchUpStatus)
+  )
     params.score = undefined;
 
   // matchUpStatus in params is the new status
@@ -84,6 +120,7 @@ export function setMatchUpStatus(params) {
 
   // Check matchUpStatus, matchUpStatus/winningSide validity ------------------
   if (
+    matchUpStatus &&
     [CANCELLED, INCOMPLETE, ABANDONED, TO_BE_PLAYED].includes(matchUpStatus) &&
     winningSide
   )
@@ -112,7 +149,7 @@ export function setMatchUpStatus(params) {
     (matchUp) => matchUp.matchUpId === matchUpId
   );
 
-  const inContextMatchUp = inContextDrawMatchUps.find(
+  const inContextMatchUp = inContextDrawMatchUps?.find(
     (matchUp) => matchUp.matchUpId === matchUpId
   );
 
@@ -126,11 +163,12 @@ export function setMatchUpStatus(params) {
     };
   }
 
-  const structureId = inContextMatchUp.structureId;
+  const structureId = inContextMatchUp?.structureId;
   const { structure } = findStructure({ drawDefinition, structureId });
 
   // Check validity of matchUpStatus considering assigned drawPositions -------
-  const assignedDrawPositions = inContextMatchUp.drawPositions?.filter(Boolean);
+  const assignedDrawPositions =
+    inContextMatchUp?.drawPositions?.filter(Boolean);
 
   let dualWinningSideChange;
   if (matchUp.matchUpType === TEAM) {
@@ -176,6 +214,7 @@ export function setMatchUpStatus(params) {
 
   if (
     matchUp.matchUpType === TEAM &&
+    matchUpStatus &&
     [
       AWAITING_RESULT,
       // for the following statuses should all tieMatchUp results be removed?
@@ -190,7 +229,7 @@ export function setMatchUpStatus(params) {
     };
   }
 
-  const matchUpTieId = inContextMatchUp.matchUpTieId;
+  const matchUpTieId = inContextMatchUp?.matchUpTieId;
 
   // Get winner/loser position targets ----------------------------------------
   const targetData = positionTargets({
@@ -247,19 +286,20 @@ export function setMatchUpStatus(params) {
     });
   }
 
-  const { appliedPolicies } = getAppliedPolicies({
-    policyTypes: [POLICY_TYPE_PROGRESSION],
-    tournamentRecord,
-    drawDefinition,
-    event,
-  });
+  const appliedPolicies =
+    getAppliedPolicies({
+      policyTypes: [POLICY_TYPE_PROGRESSION],
+      tournamentRecord,
+      drawDefinition,
+      event,
+    })?.appliedPolicies ?? {};
 
   if (typeof params.policyDefinitions === 'object') {
     Object.assign(appliedPolicies, params.policyDefinitions);
   }
 
   const qualifyingMatch =
-    inContextMatchUp.stage === QUALIFYING &&
+    inContextMatchUp?.stage === QUALIFYING &&
     inContextMatchUp.finishingRound === 1;
   const qualifierAdvancing = qualifyingMatch && winningSide;
   const removingQualifier =
@@ -267,8 +307,11 @@ export function setMatchUpStatus(params) {
     matchUp.winningSide &&
     !winningSide && // function calls last
     (!params.matchUpStatus ||
-      isNonDirectingMatchUpStatus(params.matchUpStatus)) &&
-    !scoreHasValue(params.outcome);
+      (params.matchUpStatus &&
+        isNonDirectingMatchUpStatus({
+          matchUpStatus: params.matchUpStatus,
+        }))) &&
+    (!params.outcome || !scoreHasValue({ outcome: params.outcome }));
   const qualifierChanging =
     qualifierAdvancing && // oop
     winningSide !== matchUp.winningSide &&
@@ -305,6 +348,7 @@ export function setMatchUpStatus(params) {
       })?.tieFormat;
 
       const { projectedWinningSide } = getProjectedDualWinningSide({
+        drawDefinition,
         matchUpStatus,
         dualMatchUp,
         matchUpsMap,
@@ -339,8 +383,9 @@ export function setMatchUpStatus(params) {
     if (
       activeDownstream &&
       !winningSide &&
-      (isNonDirectingMatchUpStatus({ matchUpStatus }) ||
-        [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(matchUpStatus))
+      ((matchUpStatus && isNonDirectingMatchUpStatus({ matchUpStatus })) ||
+        (matchUpStatus &&
+          [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(matchUpStatus)))
     ) {
       return {
         error: INCOMPATIBLE_MATCHUP_STATUS,

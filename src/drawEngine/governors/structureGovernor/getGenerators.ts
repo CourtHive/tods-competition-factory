@@ -44,7 +44,7 @@ export function getGenerators(params): { generators?: any; error?: ErrorType } {
   const { appliedPolicies } = getAppliedPolicies(params);
   const feedPolicy =
     params.policyDefinitions?.[POLICY_TYPE_FEED_IN] ||
-    appliedPolicies[POLICY_TYPE_FEED_IN];
+    appliedPolicies?.[POLICY_TYPE_FEED_IN];
 
   // disable feeding from MAIN final unless policy specifies
   params.skipRounds =

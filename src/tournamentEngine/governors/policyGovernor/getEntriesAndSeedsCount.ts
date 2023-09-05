@@ -3,6 +3,7 @@ import { getStageEntries } from '../../getters/participants/getStageEntries';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { getSeedsCount } from './getSeedsCount';
 
+import { PolicyDefinitions } from '../../../types/factoryTypes';
 import {
   ErrorType,
   MISSING_EVENT,
@@ -14,20 +15,9 @@ import {
   StageTypeEnum,
 } from '../../../types/tournamentFromSchema';
 
-/**
- *
- * @param {string} eventId - resolved by tournamentEngine to the event object
- *
- * @param {object} policyDefinitions - seeding policyDefinitions determines the # of seeds for given participantCount/drawSize
- * @param {number} drawSize - OPTIONAL - defaults to calculation based on # of entries
- * @param {string} drawId - OPTIONAL - will use flight.drawEntries or drawDefinition.entries rather than event.entries
- * @param {string} stage - OPTIONAL - filters entries by specified stage
- *
- * @returns {object} - { entries, seedsCount, stageEntries } or { error }
- */
 type GetEntriesAndSeedsCountArgs = {
+  policyDefinitions: PolicyDefinitions;
   drawDefinition: DrawDefinition;
-  policyDefinitions: any;
   stage: StageTypeEnum;
   drawSize?: number;
   drawId?: string;
@@ -54,15 +44,15 @@ export function getEntriesAndSeedsCount({
     stage,
     event,
   });
-  const participantCount = stageEntries.length;
+  const participantsCount = stageEntries.length;
 
   const { drawSize: eliminationDrawSize } = getEliminationDrawSize({
-    participantCount,
+    participantsCount,
   });
   const result = getSeedsCount({
-    drawSize: drawSize || eliminationDrawSize,
+    drawSize: drawSize ?? eliminationDrawSize,
+    participantsCount,
     policyDefinitions,
-    participantCount,
   });
   if (result.error)
     return decorateResult({ result, stack: 'getEntriesAndSeedsCount' });

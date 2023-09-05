@@ -1,8 +1,8 @@
 import { findTournamentParticipant } from '../../getters/participants/participantGetter';
-import {
-  ScaleItem,
-  participantScaleItem,
-} from '../../accessors/participantScaleItem';
+
+import { participantScaleItem } from '../../accessors/participantScaleItem';
+import { Tournament } from '../../../types/tournamentFromSchema';
+import { ScaleAttributes, ScaleItem } from '../../../types/factoryTypes';
 import {
   ErrorType,
   MISSING_PARTICIPANT_ID,
@@ -10,11 +10,16 @@ import {
   PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
+type GetParticipantScaleItemArgs = {
+  scaleAttributes: ScaleAttributes;
+  tournamentRecord: Tournament;
+  participantId: string;
+};
 export function getParticipantScaleItem({
   tournamentRecord,
   scaleAttributes,
   participantId,
-}): { error?: ErrorType; scaleItem?: ScaleItem } {
+}: GetParticipantScaleItemArgs): { error?: ErrorType; scaleItem?: ScaleItem } {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
 

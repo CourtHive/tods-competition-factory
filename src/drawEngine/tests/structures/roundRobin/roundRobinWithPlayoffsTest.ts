@@ -7,7 +7,7 @@ import { generateRange } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
 import { expect } from 'vitest';
 
-import { SINGLES } from '../../../../constants/eventConstants';
+import { TypeEnum } from '../../../../types/tournamentFromSchema';
 import {
   MAIN,
   PLAY_OFF,
@@ -42,7 +42,7 @@ export function roundRobinWithPlayoffsTest(params) {
 
   const event = {
     eventName: 'Round Robin w/ Playoffs',
-    eventType: SINGLES,
+    eventType: TypeEnum.Singles,
   };
 
   let result = tournamentEngine.addEvent({ event });

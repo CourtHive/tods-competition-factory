@@ -6,7 +6,7 @@ import tournamentEngine from '../../sync';
 import { expect, it } from 'vitest';
 
 import { TEAM_PARTICIPANT } from '../../../constants/participantConstants';
-import { SINGLES, TEAM_EVENT } from '../../../constants/eventConstants';
+import { TEAM_EVENT } from '../../../constants/eventConstants';
 import { UNGROUPED } from '../../../constants/entryStatusConstants';
 import { COMPETITOR } from '../../../constants/participantRoles';
 import { RANKING } from '../../../constants/scaleConstants';
@@ -15,13 +15,14 @@ import {
   INVALID_VALUES,
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
+import { TypeEnum } from '../../../types/tournamentFromSchema';
 
 const EVENT_NAME = 'Team Event';
 
 it('can automatically assign participants to teams using individualParticipantIds and scaleAttributes', () => {
   const participantsCount = 100;
 
-  const eventProfiles = [{ eventName: EVENT_NAME, eventType: TEAM_EVENT }];
+  const eventProfiles = [{ eventName: EVENT_NAME, eventType: TypeEnum.Team }];
   const participantsProfile = {
     scaledParticipantsCount: participantsCount,
     category: { categoryName: '18U' },
@@ -91,11 +92,11 @@ it('can automatically assign participants to teams using individualParticipantId
   expect(result.error).toEqual(INVALID_VALUES);
 
   const scaleAttributes = {
+    eventType: TypeEnum.Singles,
     scaleType: RANKING,
-    eventType: SINGLES,
     scaleName: '18U',
   };
-  result = tournamentEngine.scaledTeamAssignment({
+  tournamentEngine.scaledTeamAssignment({
     individualParticipantIds,
     teamParticipantIds,
     scaleAttributes,
@@ -176,8 +177,8 @@ it('can automatically assign participants to teams using scaledParticipants', ()
   expect(result.success).toEqual(true);
 
   const scaleAttributes = {
+    eventType: TypeEnum.Singles,
     scaleType: RANKING,
-    eventType: SINGLES,
     scaleName: '18U',
   };
 
@@ -194,7 +195,7 @@ it('can automatically assign participants to teams using scaledParticipants', ()
   });
   expect(result.success).toEqual(true);
 
-  result = tournamentEngine.scaledTeamAssignment({
+  tournamentEngine.scaledTeamAssignment({
     teamParticipantIds,
     scaledParticipants,
   });
@@ -274,8 +275,8 @@ it('will cleanup UNGROUPED participant entries if TEAM entry is added AFTER team
   expect(result.success).toEqual(true);
 
   const scaleAttributes = {
+    eventType: TypeEnum.Singles,
     scaleType: RANKING,
-    eventType: SINGLES,
     scaleName: '18U',
   };
 
@@ -286,7 +287,7 @@ it('will cleanup UNGROUPED participant entries if TEAM entry is added AFTER team
   }));
 
   const teamParticipantIds = teamParticipants.map(getParticipantId);
-  result = tournamentEngine.scaledTeamAssignment({
+  tournamentEngine.scaledTeamAssignment({
     teamParticipantIds,
     scaledParticipants,
   });
@@ -353,7 +354,7 @@ it('will generate teams for scaledTeamAssignment when given teamsCount', () => {
   const individualParticipants = tournamentRecord.participants;
   const individualParticipantIds = individualParticipants.map(getParticipantId);
 
-  let result = tournamentEngine.addEventEntries({
+  const result = tournamentEngine.addEventEntries({
     participantIds: individualParticipantIds,
     entryStatus: UNGROUPED,
     eventId,
@@ -364,8 +365,8 @@ it('will generate teams for scaledTeamAssignment when given teamsCount', () => {
   expect(event.entries.length).toEqual(participantsCount);
 
   const scaleAttributes = {
+    eventType: TypeEnum.Singles,
     scaleType: RANKING,
-    eventType: SINGLES,
     scaleName: '18U',
   };
 
@@ -375,7 +376,7 @@ it('will generate teams for scaledTeamAssignment when given teamsCount', () => {
       ?.scaleItem?.scaleValue,
   }));
 
-  result = tournamentEngine.scaledTeamAssignment({
+  tournamentEngine.scaledTeamAssignment({
     scaledParticipants,
     teamsCount: 8,
   });
@@ -404,11 +405,6 @@ it('will generate teams for scaledTeamAssignment when given teamsCount', () => {
   // 4 teams received an additional team member, rankings 97, 98, 99, 100
   // all teams are balanced apart from the final four placements
   expect(teamScaleTotals).toEqual([679, 680, 681, 682, 582, 582, 582, 582]);
-
-  /*
-  event = tournamentEngine.getEvent({ eventId }).event;
-  expect(event.entries.length).toEqual(teamParticipants.length);
-  */
 });
 
 it('can determine teams from DIRECT_ACCEPTANCE entries of a TEAM event', () => {
@@ -471,8 +467,8 @@ it('can determine teams from DIRECT_ACCEPTANCE entries of a TEAM event', () => {
   expect(result.success).toEqual(true);
 
   const scaleAttributes = {
+    eventType: TypeEnum.Singles,
     scaleType: RANKING,
-    eventType: SINGLES,
     scaleName: '18U',
   };
 
@@ -482,7 +478,7 @@ it('can determine teams from DIRECT_ACCEPTANCE entries of a TEAM event', () => {
   });
   expect(result.error).toEqual(INVALID_VALUES);
 
-  result = tournamentEngine.scaledTeamAssignment({
+  tournamentEngine.scaledTeamAssignment({
     individualParticipantIds,
     scaleAttributes,
     eventId,

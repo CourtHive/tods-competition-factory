@@ -16,6 +16,8 @@ import {
   MISSING_MATCHUPS,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
+import { HydratedSide } from '../../../types/factoryTypes';
+import { TypeEnum } from '../../../types/tournamentFromSchema';
 
 export function processMatchUps({
   tournamentRecord,
@@ -34,39 +36,46 @@ export function processMatchUps({
 
   const modifiedScaleValues = {};
 
-  const { matchUps } = allTournamentMatchUps({
-    matchUpFilters: { matchUpIds, matchUpStatuses: completedMatchUpStatuses },
-    tournamentRecord,
-    inContext: true,
-  });
+  const matchUps =
+    allTournamentMatchUps({
+      matchUpFilters: { matchUpIds, matchUpStatuses: completedMatchUpStatuses },
+      tournamentRecord,
+      inContext: true,
+    }).matchUps || [];
 
   for (const matchUp of matchUps.sort(matchUpSort)) {
-    const { endDate, matchUpFormat, matchUpType, score, sides, winningSide } =
-      matchUp;
+    const { endDate, matchUpFormat, score, sides, winningSide } = matchUp;
+
+    const matchUpType = matchUp.matchUpType as TypeEnum;
 
     const scaleAttributes = {
-      scaleType: RATING,
       eventType: matchUpType,
       scaleName: ratingType,
+      scaleType: RATING,
     };
 
     const dynamicScaleName = `${ratingType}.DYNAMIC`;
     const dynamicScaleAttributes = {
-      scaleType: RATING,
-      eventType: matchUpType,
       scaleName: dynamicScaleName,
+      eventType: matchUpType,
+      scaleType: RATING,
     };
 
     const sideParticipantIds: string[] = Object.assign(
       {},
-      ...sides.map(({ sideNumber, participant }) => ({
-        [sideNumber]: [
-          participant?.participantId,
-          ...(participant?.individualParticipantIds || []),
-        ]
-          .filter(Boolean)
-          .flat(),
-      }))
+      ...(sides || []).map((side: HydratedSide) => {
+        const { sideNumber, participant } = side;
+        return (
+          sideNumber && {
+            [sideNumber]: [
+              participant?.participantId,
+              ...(participant?.individualParticipantIds || []),
+            ]
+              .filter(Boolean)
+              .flat(),
+          }
+        );
+      })
     );
 
     const outputScaleName = asDynamic ? dynamicScaleName : ratingType;
@@ -103,7 +112,7 @@ export function processMatchUps({
         })
     );
 
-    const parsedFormat: any = parse(matchUpFormat) ?? {};
+    const parsedFormat: any = matchUpFormat ? parse(matchUpFormat) : {};
     const bestOf = parsedFormat?.bestOf || 1;
     const setsTo = parsedFormat?.setsTo || 1;
 
@@ -112,8 +121,12 @@ export function processMatchUps({
     const countables = (score?.sets && aggregateSets(score.sets)) ||
       (winningSide === 1 && [1, 0]) || [0, 1];
 
-    const winningSideParticipantIds = sideParticipantIds[winningSide];
-    const losingSideParticipantIds = sideParticipantIds[3 - winningSide];
+    const winningSideParticipantIds = winningSide
+      ? sideParticipantIds[winningSide]
+      : [];
+    const losingSideParticipantIds = winningSide
+      ? sideParticipantIds[3 - winningSide]
+      : [];
     for (const winnerParticipantId of winningSideParticipantIds) {
       const winnerScaleValue = scaleItemMap[winnerParticipantId]?.scaleValue;
       const winnerRating =
@@ -128,8 +141,10 @@ export function processMatchUps({
             ? loserScaleValue[accessor]
             : loserScaleValue;
 
-        const winnerCountables = countables[winningSide];
-        const loserCountables = countables[3 - winningSide];
+        const winnerCountables = winningSide ? countables[winningSide] : [0, 0];
+        const loserCountables = winningSide
+          ? countables[3 - winningSide]
+          : [0, 0];
         const { newWinnerRating, newLoserRating } = calculateNewRatings({
           winnerCountables,
           loserCountables,

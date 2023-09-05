@@ -68,14 +68,12 @@ export function getScheduledRoundsDetails({
   const matchUpFormatCohorts = {};
   const hashes: string[] = [];
   const orderedMatchUpIds: string[] = [];
-  const sortedRounds = rounds.sort(
-    (a, b) => (a.sortOrder || 0) - (b.sortOrder || 0)
-  );
+  rounds.sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0));
 
   // ---------------------------------------------------------
   // populate required variables if not provided by parameters
   containedStructureIds =
-    containedStructureIds ||
+    containedStructureIds ??
     Object.assign(
       {},
       ...Object.values(tournamentRecords).map(
@@ -97,23 +95,23 @@ export function getScheduledRoundsDetails({
   const averageMinutesMap = {};
   const minutesMap = {};
 
-  const scheduledRoundsDetails = sortedRounds.flatMap((round) => {
+  const scheduledRoundsDetails = rounds.flatMap((round) => {
     const roundPeriodLength = round.periodLength || periodLength;
-    const structureIds = containedStructureIds?.[round.structureId] || [
-      round.structureId,
-    ];
-    const roundMatchUpFilters = {
-      tournamentIds: [round.tournamentId],
-      roundNumbers: [round.roundNumber],
-      matchUpIds: round.matchUpIds,
-      eventIds: [round.eventId],
-      drawIds: [round.drawId],
-      structureIds,
-    };
+    const structureIds: string[] = [];
+    if (containedStructureIds?.[round.structureId]) {
+      structureIds.push(...containedStructureIds[round.structureId]);
+    } else {
+      structureIds.push(round.structureId);
+    }
     let roundMatchUps = matchUps
       ? filterMatchUps({
-          ...roundMatchUpFilters,
+          tournamentIds: [round.tournamentId],
+          roundNumbers: [round.roundNumber],
+          matchUpIds: round.matchUpIds,
+          eventIds: [round.eventId],
+          drawIds: [round.drawId],
           processContext: true,
+          structureIds,
           matchUps,
         }).sort(matchUpSort)
       : [];
@@ -139,10 +137,10 @@ export function getScheduledRoundsDetails({
     }
 
     const tournamentRecord = tournamentRecords[round.tournamentId];
-    const { event } = findEvent({
+    const event = findEvent({
       drawId: round.drawId,
       tournamentRecord,
-    });
+    }).event;
 
     const matchUpFormatOrder: string[] = [];
     for (const matchUp of roundMatchUps) {
@@ -157,20 +155,20 @@ export function getScheduledRoundsDetails({
     }
 
     for (const matchUpFormat of matchUpFormatOrder) {
-      const { eventType, category, categoryType } = event || {};
-      const { categoryName, ageCategoryCode } = category || {};
+      const { eventType, category } = event ?? {};
+      const { categoryName, ageCategoryCode } = category ?? {};
       const {
         typeChangeRecoveryMinutes,
         recoveryMinutes,
         averageMinutes,
         error,
       } = findMatchUpFormatTiming({
-        categoryName: categoryName || ageCategoryCode,
+        categoryName: categoryName ?? ageCategoryCode,
+        categoryType: category?.categoryType,
         tournamentId: round.tournamentId,
         eventId: round.eventId,
         tournamentRecords,
         matchUpFormat,
-        categoryType,
         eventType,
       });
       if (error) return { error, round };

@@ -3,21 +3,29 @@ import {
   tournamentMatchUps,
 } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
 
-import { TournamentRecordsArgs } from '../../types/factoryTypes';
+import { MatchUpFilters } from '../../drawEngine/getters/getMatchUps/filterMatchUps';
+import { ResultType } from '../../global/functions/decorateResult';
 import { HydratedMatchUp } from '../../types/hydrated';
+import {
+  ParticipantsProfile,
+  PolicyDefinitions,
+  ScheduleVisibilityFilters,
+  TournamentRecordsArgs,
+} from '../../types/factoryTypes';
 import {
   ErrorType,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../constants/errorConditionConstants';
 
 type CompetitionMatchUpsArgs = TournamentRecordsArgs & {
-  scheduleVisibilityFilters?: boolean;
-  participantsProfile?: any;
-  afterRecoveryTimes?: any;
-  policyDefinitions?: any;
+  scheduleVisibilityFilters?: ScheduleVisibilityFilters;
+  participantsProfile?: ParticipantsProfile;
+  policyDefinitions?: PolicyDefinitions;
+  matchUpFilters?: MatchUpFilters;
+  contextFilters?: MatchUpFilters;
+  afterRecoveryTimes?: boolean;
   nextMatchUps?: boolean;
-  matchUpFilters?: any;
-  contextFilters?: any;
+  inContext?: boolean;
 };
 
 export function allCompetitionMatchUps({
@@ -29,6 +37,7 @@ export function allCompetitionMatchUps({
   matchUpFilters,
   contextFilters,
   nextMatchUps,
+  inContext,
 }: CompetitionMatchUpsArgs): {
   matchUps?: HydratedMatchUp[];
   error?: ErrorType;
@@ -43,17 +52,19 @@ export function allCompetitionMatchUps({
   const competitionMatchUps: HydratedMatchUp[] = tournamentIds
     .map((tournamentId) => {
       const tournamentRecord = tournamentRecords[tournamentId];
-      const { matchUps } = allTournamentMatchUps({
-        scheduleVisibilityFilters,
-        afterRecoveryTimes,
-        participantsProfile,
-        policyDefinitions,
-        tournamentRecord,
-        matchUpFilters,
-        contextFilters,
-        nextMatchUps,
-      });
-      return matchUps;
+      return (
+        allTournamentMatchUps({
+          scheduleVisibilityFilters,
+          afterRecoveryTimes,
+          participantsProfile,
+          policyDefinitions,
+          tournamentRecord,
+          matchUpFilters,
+          contextFilters,
+          nextMatchUps,
+          inContext,
+        }).matchUps ?? []
+      );
     })
     .flat();
 
@@ -79,7 +90,14 @@ export function competitionMatchUps({
   matchUpFilters,
   contextFilters,
   nextMatchUps,
-}: CompetitionMatchUpsArgs) {
+  inContext,
+}: CompetitionMatchUpsArgs): ResultType & {
+  abandonedMatchUps?: HydratedMatchUp[];
+  completedMatchUps?: HydratedMatchUp[];
+  upcomingMatchUps?: HydratedMatchUp[];
+  pendingMatchUps?: HydratedMatchUp[];
+  byeMatchUps?: HydratedMatchUp[];
+} {
   if (
     typeof tournamentRecords !== 'object' ||
     !Object.keys(tournamentRecords).length
@@ -97,6 +115,7 @@ export function competitionMatchUps({
       matchUpFilters,
       contextFilters,
       nextMatchUps,
+      inContext,
     });
   });
 

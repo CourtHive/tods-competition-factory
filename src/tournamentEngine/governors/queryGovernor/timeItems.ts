@@ -3,7 +3,11 @@ import { findTournamentParticipant } from '../../getters/participants/participan
 import { ResultType } from '../../../global/functions/decorateResult';
 import { ELEMENT_REQUIRED } from '../../../constants/infoConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { Event, Tournament } from '../../../types/tournamentFromSchema';
+import {
+  Event,
+  TimeItem,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 import {
   INVALID_VALUES,
   MISSING_DRAW_ID,
@@ -16,7 +20,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 type TimeItemResult = {
-  timeItem?: { name: string; value: any };
+  timeItem?: TimeItem;
   previousItems?: any;
   success?: boolean;
   code?: string;
@@ -35,7 +39,7 @@ export function getTimeItem({
   itemSubTypes,
   itemType,
   element,
-}: TimeItemArgs): TimeItemResult | ResultType {
+}: TimeItemArgs): TimeItemResult & ResultType {
   if (!element) return { error: MISSING_VALUE, info: ELEMENT_REQUIRED };
   if (itemSubTypes && !Array.isArray(itemSubTypes))
     return { error: INVALID_VALUES, context: { itemSubTypes } };

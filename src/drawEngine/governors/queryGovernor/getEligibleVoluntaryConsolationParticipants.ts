@@ -6,32 +6,33 @@ import {
 } from '../../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
 
 import { POLICY_TYPE_VOLUNTARY_CONSOLATION } from '../../../constants/policyConstants';
-import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
+import { VOLUNTARY_CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import { UNGROUPED, WITHDRAWN } from '../../../constants/entryStatusConstants';
+import { HydratedSide, PolicyDefinitions } from '../../../types/factoryTypes';
 import { DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
-  MAIN,
-  PLAY_OFF,
-  QUALIFYING,
-  VOLUNTARY_CONSOLATION,
-} from '../../../constants/drawDefinitionConstants';
+  ErrorType,
+  MISSING_DRAW_DEFINITION,
+} from '../../../constants/errorConditionConstants';
 import {
   DrawDefinition,
   Event,
   MatchUpStatusEnum,
+  Participant,
+  StageTypeEnum,
   Tournament,
 } from '../../../types/tournamentFromSchema';
 
 type GetEligibleVoluntaryConsolationParticipantsArgs = {
   excludedMatchUpStatuses?: MatchUpStatusEnum[];
+  policyDefinitions?: PolicyDefinitions;
   includeEventParticipants?: boolean;
   includeQualifyingStage?: boolean;
   tournamentRecord?: Tournament;
   drawDefinition: DrawDefinition;
   finishingRoundLimit?: number;
   roundNumberLimit?: number;
-  policyDefinitions?: any;
   matchUpsLimit?: number;
   requirePlay?: boolean;
   requireLoss?: boolean;
@@ -55,26 +56,35 @@ export function getEligibleVoluntaryConsolationParticipants({
   allEntries, // boolean - consider all entries, regardless of whether placed in draw
   winsLimit,
   event,
-}: GetEligibleVoluntaryConsolationParticipantsArgs) {
+}: GetEligibleVoluntaryConsolationParticipantsArgs): {
+  eligibleParticipants?: Participant[];
+  losingParticipantIds?: string[];
+  error?: ErrorType;
+} {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
-  const stages = [MAIN, PLAY_OFF];
-  if (includeQualifyingStage) stages.push(QUALIFYING);
+  const stages = [StageTypeEnum.Main, StageTypeEnum.PlayOff];
+  if (includeQualifyingStage) stages.push(StageTypeEnum.Qualifying);
+
+  const eventMatchUpFilters = event?.eventType
+    ? { matchUpTypes: [event.eventType] }
+    : undefined;
+  const drawMatchUpFilters = drawDefinition?.matchUpType
+    ? { matchUpTypes: [drawDefinition.matchUpType] }
+    : undefined;
 
   const matchUps =
     includeEventParticipants && event
       ? allEventMatchUps({
           contextFilters: { stages },
-          matchUpFilters: { matchUpTypes: [event.eventType].filter(Boolean) },
+          matchUpFilters: eventMatchUpFilters,
           tournamentRecord,
           inContext: true,
           event,
         })?.matchUps || []
       : allDrawMatchUps({
           contextFilters: { stages },
-          matchUpFilters: {
-            matchUpTypes: [drawDefinition?.matchUpType].filter(Boolean),
-          },
+          matchUpFilters: drawMatchUpFilters,
           tournamentRecord,
           inContext: true,
           drawDefinition,
@@ -93,17 +103,17 @@ export function getEligibleVoluntaryConsolationParticipants({
   const matchUpParticipants = {};
   const participantWins = {};
 
-  policyDefinitions =
-    policyDefinitions ||
-    getPolicyDefinitions({
+  if (!policyDefinitions) {
+    policyDefinitions = getPolicyDefinitions({
       policyTypes: [POLICY_TYPE_VOLUNTARY_CONSOLATION],
       tournamentRecord,
       drawDefinition,
       event,
-    });
+    }).policyDefinitions;
+  }
 
   // support POLICY_TYPE_VOLUNTARY_CONSOLATION
-  const policy = policyDefinitions[POLICY_TYPE_VOLUNTARY_CONSOLATION];
+  const policy = policyDefinitions?.[POLICY_TYPE_VOLUNTARY_CONSOLATION];
   excludedMatchUpStatuses =
     (excludedMatchUpStatuses.length && excludedMatchUpStatuses) ||
     policy?.excludedMatchUpStatuses ||
@@ -132,23 +142,34 @@ export function getEligibleVoluntaryConsolationParticipants({
   for (const matchUp of matchUps) {
     if (
       requirePlay &&
+      matchUp.winningSide &&
       ![1, 2].includes(matchUp.winningSide) &&
       matchUp.matchUpStatus !== DOUBLE_WALKOVER
     )
       continue;
-    if (finishingRoundLimit && matchUp.finishingRound >= finishingRoundLimit)
+    if (
+      matchUp.finishingRound &&
+      finishingRoundLimit &&
+      matchUp.finishingRound >= finishingRoundLimit
+    )
       continue;
-    if (roundNumberLimit && matchUp.finishingRound <= roundNumberLimit)
+    if (
+      matchUp.finishingRound &&
+      roundNumberLimit &&
+      matchUp.finishingRound <= roundNumberLimit
+    )
       continue;
 
     const losingSide = matchUp.sides?.find(
-      ({ sideNumber }) => sideNumber === 3 - matchUp.winningSide
-    );
+      ({ sideNumber }) =>
+        matchUp.winningSide && sideNumber === 3 - matchUp.winningSide
+    ) as HydratedSide;
     const winningSide = matchUp.sides?.find(
-      ({ sideNumber }) => sideNumber === matchUp.winningSide
-    );
+      ({ sideNumber }) =>
+        matchUp.winningSide && sideNumber === matchUp.winningSide
+    ) as HydratedSide;
 
-    matchUp.sides.forEach((side) => {
+    matchUp.sides?.forEach((side: HydratedSide) => {
       const participantId = side?.participant?.participantId;
       if (participantId) {
         matchUpParticipants[participantId] = side.participant;
@@ -169,7 +190,10 @@ export function getEligibleVoluntaryConsolationParticipants({
       if (!participantMatchUps[participantId])
         participantMatchUps[participantId] = 0;
 
-      if (!excludedMatchUpStatuses.includes(matchUp.matchUpStatus))
+      if (
+        matchUp.matchUpStatus &&
+        !excludedMatchUpStatuses.includes(matchUp.matchUpStatus)
+      )
         participantMatchUps[participantId] += 1;
     }
 
@@ -182,7 +206,10 @@ export function getEligibleVoluntaryConsolationParticipants({
       if (!participantMatchUps[participantId])
         participantMatchUps[participantId] = 0;
 
-      if (!excludedMatchUpStatuses.includes(matchUp.matchUpStatus))
+      if (
+        matchUp.matchUpStatus &&
+        !excludedMatchUpStatuses.includes(matchUp.matchUpStatus)
+      )
         participantMatchUps[participantId] += 1;
     }
   }

@@ -6,15 +6,14 @@ import { getTallyReport } from './getTallyReport';
 import { getGroupOrder } from './getGroupOrder';
 
 import { POLICY_TYPE_ROUND_ROBIN_TALLY } from '../../../constants/policyConstants';
+import { ResultType } from '../../../global/functions/decorateResult';
 import { BYE } from '../../../constants/matchUpStatusConstants';
+import { PolicyDefinitions } from '../../../types/factoryTypes';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
-  ErrorType,
   INVALID_VALUES,
   MISSING_MATCHUPS,
 } from '../../../constants/errorConditionConstants';
-
-import { ResultType } from '../../../global/functions/decorateResult';
 
 /**
  *
@@ -27,8 +26,8 @@ import { ResultType } from '../../../global/functions/decorateResult';
  */
 
 type TallyParticipantResultsArgs = {
+  policyDefinitions?: PolicyDefinitions;
   generateReport?: boolean;
-  policyDefinitions?: any;
   matchUpFormat?: string;
   perPlayer?: number;
   subOrderMap?: any;
@@ -40,9 +39,8 @@ type TallyResultType = {
   bracketComplete?: boolean;
   participantResults?: any;
   readableReport?: string;
-  error?: ErrorType;
   report?: string[];
-  order?: string[];
+  order?: any[];
 };
 
 export function tallyParticipantResults({
@@ -52,7 +50,7 @@ export function tallyParticipantResults({
   matchUps = [],
   subOrderMap,
   perPlayer,
-}: TallyParticipantResultsArgs): TallyResultType | ResultType {
+}: TallyParticipantResultsArgs): TallyResultType & ResultType {
   if (!Array.isArray(matchUps)) return { error: MISSING_MATCHUPS };
 
   const structureIds = matchUps.reduce(

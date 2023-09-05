@@ -58,7 +58,7 @@ export function completeDrawMatchUps(params): {
     drawDefinition,
   });
 
-  if (firstRoundDualMatchUps.length) {
+  if (firstRoundDualMatchUps?.length) {
     const categoryName =
       event.category?.ageCategoryCode || event.category?.categoryName;
     if (categoryName) {
@@ -237,6 +237,7 @@ export function completeDrawMatchUps(params): {
 export function completeDrawMatchUp(params) {
   const {
     matchUpStatusCodes,
+    policyDefinitions,
     tournamentRecord,
     drawDefinition,
     targetMatchUp,
@@ -262,6 +263,7 @@ export function completeDrawMatchUp(params) {
 
   return setMatchUpStatus({
     tournamentRecord,
+    policyDefinitions,
     drawDefinition,
     matchUpFormat,
     matchUpId,
@@ -275,6 +277,7 @@ function smartComplete(params) {
   const {
     matchUpStatusProfile = {},
     tournamentRecord,
+    policyDefinitions,
     drawDefinition,
     matchUpStatus,
     matchUpFormat,
@@ -294,6 +297,7 @@ function smartComplete(params) {
   });
 
   return setMatchUpStatus({
+    policyDefinitions,
     tournamentRecord,
     drawDefinition,
     matchUpFormat,

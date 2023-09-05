@@ -194,7 +194,7 @@ export function anonymizeTournamentRecord({
 
     // use idMap to update all IDs in flightProfiles
     if (Array.isArray(flightProfile?.value?.flights)) {
-      flightProfile.value.flights?.forEach((flight) => {
+      flightProfile?.value.flights?.forEach((flight) => {
         flight.drawId = idMap[flight.drawId];
         if (Array.isArray(flight.drawEntries)) {
           for (const entry of flight.drawEntries) {
@@ -360,7 +360,7 @@ export function anonymizeTournamentRecord({
 
   // use idMap to update all IDs in schedulingProfile
   if (Array.isArray(schedulingProfile?.value)) {
-    schedulingProfile.value.forEach((round) => {
+    schedulingProfile?.value.forEach((round) => {
       round.tournamentId = idMap[round.tournamentId];
       round.structureId = idMap[round.structureId];
       round.eventId = idMap[round.eventId];
@@ -375,7 +375,7 @@ export function anonymizeTournamentRecord({
 
   // use idMap to update all IDs in personRequests
   if (Array.isArray(personRequests?.value)) {
-    personRequests.value.forEach((request) => {
+    personRequests?.value.forEach((request) => {
       request.personId = idMap[request.personId];
     });
   }

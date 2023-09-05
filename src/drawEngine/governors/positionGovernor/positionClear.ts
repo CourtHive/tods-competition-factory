@@ -23,13 +23,9 @@ import {
   modifyMatchUpNotice,
 } from '../../notifications/drawNotifications';
 
+import { CONTAINER, DRAW } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
-import {
-  CONTAINER,
-  DRAW,
-  QUALIFYING,
-} from '../../../constants/drawDefinitionConstants';
 import {
   BYE,
   DEFAULTED,
@@ -42,6 +38,7 @@ import {
   MISSING_DRAW_POSITION,
   DRAW_POSITION_NOT_CLEARED,
   ErrorType,
+  STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import {
@@ -147,6 +144,7 @@ export function drawPositionRemovals({
   event,
 }: DrawPositionRemovalsArgs) {
   const { structure } = findStructure({ drawDefinition, structureId });
+  if (!structure) return { error: STRUCTURE_NOT_FOUND };
   const positionAssignments =
     structureAssignedDrawPositions({
       drawDefinition,
@@ -190,7 +188,7 @@ export function drawPositionRemovals({
     ensureInt(roundNumber)
   );
 
-  let targetDrawPosition = drawPosition;
+  let targetDrawPosition: any = drawPosition;
   const pairingDetails = roundNumbers
     ?.map((roundNumber) => {
       // find the pair of drawPositions which includes the targetDrawPosition
@@ -199,7 +197,7 @@ export function drawPositionRemovals({
         drawPositions.includes(targetDrawPosition)
       );
       // find the drawPosition which is paired with the targetDrawPosition
-      const pairedDrawPosition = relevantPair?.find(
+      const pairedDrawPosition: any = relevantPair?.find(
         (currentDrawPosition) => currentDrawPosition !== targetDrawPosition
       );
       // find the assignment for the paired drawPosition
@@ -211,7 +209,7 @@ export function drawPositionRemovals({
       const pairedDrawPositionIsBye = pairedDrawPositionAssignment?.bye;
       // whether or not the pairedDrawPosition is present in the next round
       const pairedDrawPositionInNextRound =
-        nextRoundProfile?.pairedDrawPositions?.find((pairedPositions) =>
+        nextRoundProfile?.pairedDrawPositions?.find((pairedPositions: any) =>
           pairedPositions.includes(pairedDrawPosition)
         );
       // pairedDrawPosition is a transitiveBye if it is a BYE and if it is present in next round
@@ -238,7 +236,7 @@ export function drawPositionRemovals({
     })
     .filter((f) => f?.targetDrawPosition);
 
-  const tasks = pairingDetails?.reduce((tasks, pairingDetail) => {
+  const tasks: any = pairingDetails?.reduce((tasks, pairingDetail: any) => {
     const {
       roundNumber,
       relevantPair,
@@ -257,7 +255,7 @@ export function drawPositionRemovals({
     return tasks.concat(...newTasks);
   }, []);
 
-  tasks.forEach(({ roundNumber, targetDrawPosition, relevantPair }) => {
+  tasks?.forEach(({ roundNumber, targetDrawPosition, relevantPair }) => {
     const targetMatchUp = roundMatchUps?.[roundNumber].find((matchUp) =>
       overlap(
         matchUp.drawPositions.filter(Boolean),
@@ -304,6 +302,7 @@ function removeSubsequentRoundsParticipant({
   structureId,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
+  if (!structure) return { error: STRUCTURE_NOT_FOUND };
   if (structure.structureType === CONTAINER) return;
 
   matchUpsMap = matchUpsMap || getMatchUpsMap({ drawDefinition });
@@ -340,6 +339,7 @@ function removeSubsequentRoundsParticipant({
       structure,
     })
   );
+  return { ...SUCCESS };
 }
 
 type RemoveDrawPositionArgs = {
@@ -427,7 +427,7 @@ function removeDrawPosition({
       loserMatchUp,
       winnerMatchUp,
       loserMatchUpDrawPositionIndex,
-      winnerMatchUpDrawPositionIndex,
+      // winnerMatchUpDrawPositionIndex,
     },
   } = targetData;
 
@@ -555,16 +555,18 @@ function removeDrawPosition({
     // does not apply to traversals that are based on QUALIFYING
     winnerTargetLink.target.feedProfile !== DRAW
   ) {
+    /*
     const { structure } = findStructure({
       structureId: targetData.matchUp.structureId,
       drawDefinition,
     });
 
-    if (structure.structureType !== QUALIFYING)
+    if (/* is not a qualifying structure *?)
       console.log('linked structure winnerMatchUp removal', {
         winnerMatchUpDrawPositionIndex,
         winnerTargetLink,
       });
+      */
   }
 
   return { ...SUCCESS };

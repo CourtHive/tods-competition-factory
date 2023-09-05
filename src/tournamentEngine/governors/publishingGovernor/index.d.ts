@@ -1,4 +1,172 @@
-export interface Tournament {
+declare function publishEventSeeding({
+  removePriorValues,
+  stageSeedingScaleNames,
+  seedingScaleNames,
+  tournamentRecord,
+  status,
+  drawIds,
+  event,
+}: {
+  removePriorValues?: boolean | undefined;
+  stageSeedingScaleNames: any;
+  seedingScaleNames: any;
+  tournamentRecord: any;
+  status?: string | undefined;
+  drawIds?: never[] | undefined;
+  event: any;
+}):
+  | {
+      error: {
+        message: string;
+        code: string;
+      };
+    }
+  | {
+      success: boolean;
+      error?: undefined;
+    };
+declare function unPublishEventSeeding({
+  removePriorValues,
+  seedingScaleNames,
+  tournamentRecord,
+  status,
+  stages,
+  event,
+}: {
+  removePriorValues?: boolean | undefined;
+  seedingScaleNames: any;
+  tournamentRecord: any;
+  status?: string | undefined;
+  stages: any;
+  event: any;
+}):
+  | {
+      error: {
+        message: string;
+        code: string;
+      };
+    }
+  | {
+      success: boolean;
+      error?: undefined;
+    };
+
+declare function unPublishOrderOfPlay({
+  removePriorValues,
+  tournamentRecord,
+  status,
+}: {
+  removePriorValues?: boolean | undefined;
+  tournamentRecord: any;
+  status?: string | undefined;
+}):
+  | {
+      error: {
+        message: string;
+        code: string;
+      };
+    }
+  | {
+      success: boolean;
+      error?: undefined;
+    };
+declare function publishOrderOfPlay({
+  scheduledDates,
+  removePriorValues,
+  tournamentRecord,
+  status,
+  eventIds,
+}: {
+  scheduledDates?: never[] | undefined;
+  removePriorValues: any;
+  tournamentRecord: any;
+  status?: string | undefined;
+  eventIds?: never[] | undefined;
+}):
+  | {
+      error: {
+        message: string;
+        code: string;
+      };
+    }
+  | {
+      success: boolean;
+      error?: undefined;
+    };
+
+type ErrorType = {
+  message: string;
+  info?: string;
+  code: string;
+};
+
+declare function getTournamentInfo({
+  tournamentRecord,
+}: {
+  tournamentRecord: any;
+}): {
+  tournamentInfo?: any;
+  error?: ErrorType;
+};
+
+declare function getAllEventData({
+  tournamentRecord,
+  policyDefinitions,
+}: {
+  policyDefinitions?: any;
+  tournamentRecord: any;
+}):
+  | {
+      error: {
+        message: string;
+        code: string;
+      };
+      allEventData?: undefined;
+    }
+  | {
+      allEventData: {
+        tournamentInfo: any;
+        venuesData: any;
+        eventsData: any;
+      };
+      error?: undefined;
+    };
+
+declare function unPublishEvent({
+  removePriorValues,
+  tournamentRecord,
+  status,
+  event,
+}: {
+  removePriorValues?: boolean | undefined;
+  tournamentRecord: any;
+  status?: string | undefined;
+  event: any;
+}):
+  | ({
+      eventId: any;
+    } & {
+      success: boolean;
+    })
+  | {
+      error: {
+        message: string;
+        code: string;
+      };
+    };
+
+declare function getEventData(params: any): {
+  success?: boolean;
+  eventData?: any;
+  error?: ErrorType;
+};
+
+type SeedingProfile = {
+  groupSeedingThreshold?: number;
+  positioning?: string;
+};
+
+interface Tournament {
   createdAt?: Date | string;
   /**
    * Date on which the tournament ends
@@ -37,8 +205,7 @@ export interface Tournament {
   updatedAt?: Date | string;
   venues?: Venue[];
 }
-
-export interface Event {
+interface Event {
   allowedDrawTypes?: DrawTypeEnum[];
   category?: Category;
   createdAt?: Date | string;
@@ -74,8 +241,7 @@ export interface Event {
   updatedAt?: Date | string;
   wheelchairClass?: WheelchairClassEnum;
 }
-
-export enum DrawTypeEnum {
+declare enum DrawTypeEnum {
   AdHoc = 'AD_HOC',
   Compass = 'COMPASS',
   CurtisConsolation = 'CURTIS_CONSOLATION',
@@ -96,8 +262,7 @@ export enum DrawTypeEnum {
   RoundRobinWithPlayoff = 'ROUND_ROBIN_WITH_PLAYOFF',
   SingleElimination = 'SINGLE_ELIMINATION',
 }
-
-export interface Category {
+interface Category {
   ageCategoryCode?: string;
   ageMax?: number;
   ageMaxDate?: string;
@@ -118,8 +283,7 @@ export interface Category {
   type?: CategoryEnum;
   updatedAt?: Date | string;
 }
-
-export enum BallTypeEnum {
+declare enum BallTypeEnum {
   HighAltitude = 'HIGH_ALTITUDE',
   Stage1Green = 'STAGE1GREEN',
   Stage2Orange = 'STAGE2ORANGE',
@@ -129,34 +293,29 @@ export enum BallTypeEnum {
   Type1Fast = 'TYPE1FAST',
   Type3Slow = 'TYPE3SLOW',
 }
-
-export interface Extension {
+interface Extension {
   description?: string;
   name: string;
   value: any;
 }
-
-export interface TimeItem {
+interface TimeItem {
   createdAt?: Date | string;
   itemDate?: Date | string;
   itemSubTypes?: string[];
   itemType?: string;
   itemValue?: any;
 }
-
-export enum CategoryEnum {
+declare enum CategoryEnum {
   Age = 'AGE',
   Both = 'BOTH',
   Level = 'LEVEL',
 }
-
-export enum DisciplineEnum {
+declare enum DisciplineEnum {
   BeachTennis = 'BEACH_TENNIS',
   Tennis = 'TENNIS',
   WheelchairTennis = 'WHEELCHAIR_TENNIS',
 }
-
-export interface DrawDefinition {
+interface DrawDefinition {
   automated?: boolean;
   createdAt?: Date | string;
   drawId: string;
@@ -188,14 +347,12 @@ export interface DrawDefinition {
   timeItems?: TimeItem[];
   updatedAt?: Date | string;
 }
-
-export enum DrawStatusEnum {
+declare enum DrawStatusEnum {
   Complete = 'COMPLETE',
   InProgress = 'IN_PROGRESS',
   ToBePlayed = 'TO_BE_PLAYED',
 }
-
-export interface Entry {
+interface Entry {
   createdAt?: Date | string;
   entryId?: string;
   entryPosition?: number;
@@ -210,16 +367,14 @@ export interface Entry {
   updatedAt?: Date | string;
   scaleValue?: number;
 }
-
-export enum StageTypeEnum {
+declare enum StageTypeEnum {
   Consolation = 'CONSOLATION',
   Main = 'MAIN',
   PlayOff = 'PLAY_OFF',
   Qualifying = 'QUALIFYING',
   VoluntaryConsolation = 'VOLUNTARY_CONSOLATION',
 }
-
-export enum EntryStatusEnum {
+declare enum EntryStatusEnum {
   Alternate = 'ALTERNATE',
   Confirmed = 'CONFIRMED',
   DirectAcceptance = 'DIRECT_ACCEPTANCE',
@@ -235,8 +390,7 @@ export enum EntryStatusEnum {
   Wildcard = 'WILDCARD',
   Withdrawn = 'WITHDRAWN',
 }
-
-export interface DrawLink {
+interface DrawLink {
   createdAt?: Date | string;
   extensions?: Extension[];
   isMock?: boolean;
@@ -248,14 +402,12 @@ export interface DrawLink {
   timeItems?: TimeItem[];
   updatedAt?: Date | string;
 }
-
-export enum LinkTypeEnum {
+declare enum LinkTypeEnum {
   Loser = 'LOSER',
   Position = 'POSITION',
   Winner = 'WINNER',
 }
-
-export interface DrawLinkSource {
+interface DrawLinkSource {
   createdAt?: Date | string;
   drawId?: string;
   extensions?: Extension[];
@@ -267,8 +419,7 @@ export interface DrawLinkSource {
   timeItems?: TimeItem[];
   updatedAt?: Date | string;
 }
-
-export interface DrawLinkTarget {
+interface DrawLinkTarget {
   createdAt?: Date | string;
   drawId?: string;
   extensions?: Extension[];
@@ -282,8 +433,7 @@ export interface DrawLinkTarget {
   timeItems?: TimeItem[];
   updatedAt?: Date | string;
 }
-
-export enum PositioningProfileEnum {
+declare enum PositioningProfileEnum {
   BottomUp = 'BOTTOM_UP',
   Draw = 'DRAW',
   LossPosition = 'LOSS_POSITION',
@@ -291,24 +441,16 @@ export enum PositioningProfileEnum {
   TopDown = 'TOP_DOWN',
   Waterfall = 'WATERFALL',
 }
-export enum SeedingProfileEnum {
-  Cluster = 'CLUSTER',
-  Separate = 'SEPARATE',
-  Waterfall = 'WATERFALL',
-}
-
-export interface Interleave {
+interface Interleave {
   interleave: number;
   offset: number;
 }
-
-export enum TypeEnum {
+declare enum TypeEnum {
   Doubles = 'DOUBLES',
   Singles = 'SINGLES',
   Team = 'TEAM',
 }
-
-export interface MatchUp {
+interface MatchUp {
   collectionId?: string;
   collectionPosition?: number;
   createdAt?: Date | string;
@@ -350,19 +492,16 @@ export interface MatchUp {
   winnerMatchUpId?: string;
   winningSide?: number;
 }
-
-export interface MatchUpFinishingPositionRange {
+interface MatchUpFinishingPositionRange {
   loser: number[];
   winner: number[];
 }
-
-export enum IndoorOutdoorEnum {
+declare enum IndoorOutdoorEnum {
   Indoor = 'INDOOR',
   Mixed = 'MIXED',
   Outdoor = 'OUTDOOR',
 }
-
-export enum MatchUpStatusEnum {
+declare enum MatchUpStatusEnum {
   Abandoned = 'ABANDONED',
   AwaitingResult = 'AWAITING_RESULT',
   Bye = 'BYE',
@@ -380,8 +519,7 @@ export enum MatchUpStatusEnum {
   ToBePlayed = 'TO_BE_PLAYED',
   Walkover = 'WALKOVER',
 }
-
-export interface Score {
+interface Score {
   createdAt?: Date | string;
   extensions?: Extension[];
   isMock?: boolean;
@@ -392,8 +530,7 @@ export interface Score {
   timeItems?: TimeItem[];
   updatedAt?: Date | string;
 }
-
-export interface Set {
+interface Set {
   createdAt?: Date | string;
   extensions?: Extension[];
   games?: Game[];
@@ -412,8 +549,7 @@ export interface Set {
   updatedAt?: Date | string;
   winningSide?: number;
 }
-
-export interface Game {
+interface Game {
   createdAt?: Date | string;
   extensions?: Extension[];
   gameDuration?: string;
@@ -427,8 +563,7 @@ export interface Game {
   winningSide?: number;
   winReason?: WinReasonEnum;
 }
-
-export interface Point {
+interface Point {
   createdAt?: Date | string;
   extensions?: Extension[];
   isMock?: boolean;
@@ -443,8 +578,7 @@ export interface Point {
   winningSide?: number;
   winReason?: WinReasonEnum;
 }
-
-export interface Shot {
+interface Shot {
   bounceAt?: CourtPosition;
   createdAt?: Date | string;
   extensions?: Extension[];
@@ -462,8 +596,7 @@ export interface Shot {
   timeItems?: TimeItem[];
   updatedAt?: Date | string;
 }
-
-export interface CourtPosition {
+interface CourtPosition {
   createdAt?: Date | string;
   extensions?: Extension[];
   isMock?: boolean;
@@ -475,16 +608,14 @@ export interface CourtPosition {
   x?: number;
   y?: number;
 }
-
-export enum CourtPositionEnum {
+declare enum CourtPositionEnum {
   Baseline = 'BASELINE',
   LeftServiceCourt = 'LEFT_SERVICE_COURT',
   Net = 'NET',
   RightServiceCourt = 'RIGHT_SERVICE_COURT',
   Serviceline = 'SERVICELINE',
 }
-
-export enum ShotDetailEnum {
+declare enum ShotDetailEnum {
   Drive = 'DRIVE',
   DriveVolley = 'DRIVE_VOLLEY',
   DropShot = 'DROP_SHOT',
@@ -496,21 +627,18 @@ export enum ShotDetailEnum {
   Trick = 'TRICK',
   Volley = 'VOLLEY',
 }
-
-export enum ShotOutcomeEnum {
+declare enum ShotOutcomeEnum {
   In = 'IN',
   Let = 'LET',
   Net = 'NET',
   Out = 'OUT',
 }
-
-export enum ShotTypeEnum {
+declare enum ShotTypeEnum {
   Backhand = 'BACKHAND',
   Forehand = 'FOREHAND',
   Serve = 'SERVE',
 }
-
-export enum WinReasonEnum {
+declare enum WinReasonEnum {
   Ace = 'ACE',
   DoubleFault = 'DOUBLE_FAULT',
   Error = 'ERROR',
@@ -520,8 +648,7 @@ export enum WinReasonEnum {
   Unforced = 'UNFORCED',
   Winner = 'WINNER',
 }
-
-export interface Side {
+interface Side {
   createdAt?: Date | string;
   extensions?: Extension[];
   isMock?: boolean;
@@ -532,8 +659,7 @@ export interface Side {
   timeItems?: TimeItem[];
   updatedAt?: Date | string;
 }
-
-export interface TeamCompetitor {
+interface TeamCompetitor {
   collectionAssignments?: CollectionAssignment[];
   createdAt?: Date | string;
   extensions?: Extension[];
@@ -543,21 +669,18 @@ export interface TeamCompetitor {
   timeItems?: TimeItem[];
   updatedAt?: Date | string;
 }
-
-export interface CollectionAssignment {
+interface CollectionAssignment {
   collectionId: string;
   collectionPosition: number;
 }
-
-export enum SurfaceCategoryEnum {
+declare enum SurfaceCategoryEnum {
   Artificial = 'ARTIFICIAL',
   Carpet = 'CARPET',
   Clay = 'CLAY',
   Grass = 'GRASS',
   Hard = 'HARD',
 }
-
-export interface TieFormat {
+interface TieFormat {
   collectionDefinitions: CollectionDefinition[];
   collectionGroups?: CollectionGroup[];
   createdAt?: Date | string;
@@ -569,8 +692,7 @@ export interface TieFormat {
   updatedAt?: Date | string;
   winCriteria: WinCriteria;
 }
-
-export interface CollectionDefinition {
+interface CollectionDefinition {
   category?: Category;
   collectionGroupNumber?: number;
   collectionId: string;
@@ -594,8 +716,7 @@ export interface CollectionDefinition {
   updatedAt?: Date | string;
   winCriteria?: WinCriteria;
 }
-
-export interface CollectionValueProfile {
+interface CollectionValueProfile {
   collectionPosition: number;
   createdAt?: Date | string;
   extensions?: Extension[];
@@ -605,15 +726,13 @@ export interface CollectionValueProfile {
   timeItems?: TimeItem[];
   updatedAt?: Date | string;
 }
-
-export enum GenderEnum {
+declare enum GenderEnum {
   Any = 'ANY',
   Female = 'FEMALE',
   Male = 'MALE',
   Mixed = 'MIXED',
 }
-
-export interface WinCriteria {
+interface WinCriteria {
   aggregateValue?: boolean;
   createdAt?: Date | string;
   extensions?: Extension[];
@@ -623,8 +742,7 @@ export interface WinCriteria {
   updatedAt?: Date | string;
   valueGoal: number;
 }
-
-export interface CollectionGroup {
+interface CollectionGroup {
   createdAt?: Date | string;
   extensions?: Extension[];
   groupName?: string;
@@ -636,8 +754,7 @@ export interface CollectionGroup {
   updatedAt?: Date | string;
   winCriteria?: WinCriteria;
 }
-
-export interface Structure {
+interface Structure {
   createdAt?: Date | string;
   extensions?: Extension[];
   finishingPosition?: FinishingPositionEnum;
@@ -652,7 +769,7 @@ export interface Structure {
   roundLimit?: number;
   roundOffset?: number;
   seedAssignments?: SeedAssignment[];
-  seedingProfile?: SeedingProfileEnum;
+  seedingProfile?: SeedingProfile;
   seedLimit?: number;
   stage?: StageTypeEnum;
   stageSequence?: number;
@@ -667,13 +784,11 @@ export interface Structure {
   timeItems?: TimeItem[];
   updatedAt?: Date | string;
 }
-
-export enum FinishingPositionEnum {
+declare enum FinishingPositionEnum {
   RoundOutcome = 'ROUND_OUTCOME',
   WinRatio = 'WIN_RATIO',
 }
-
-export interface PositionAssignment {
+interface PositionAssignment {
   bye?: boolean;
   createdAt?: Date | string;
   drawPosition: number;
@@ -685,8 +800,7 @@ export interface PositionAssignment {
   timeItems?: TimeItem[];
   updatedAt?: Date | string;
 }
-
-export interface SeedAssignment {
+interface SeedAssignment {
   createdAt?: Date | string;
   extensions?: Extension[];
   isMock?: boolean;
@@ -697,13 +811,11 @@ export interface SeedAssignment {
   timeItems?: TimeItem[];
   updatedAt?: Date | string;
 }
-
-export enum StructureTypeEnum {
+declare enum StructureTypeEnum {
   Container = 'CONTAINER',
   Item = 'ITEM',
 }
-
-export enum TournamentLevelEnum {
+declare enum TournamentLevelEnum {
   Club = 'CLUB',
   District = 'DISTRICT',
   International = 'INTERNATIONAL',
@@ -713,13 +825,11 @@ export enum TournamentLevelEnum {
   Regional = 'REGIONAL',
   Zonal = 'ZONAL',
 }
-
-export enum WheelchairClassEnum {
+declare enum WheelchairClassEnum {
   Quad = 'QUAD',
   Standard = 'STANDARD',
 }
-
-export enum CountryCodeEnum {
+declare enum CountryCodeEnum {
   ASM = 'ASM',
   ATA = 'ATA',
   Abw = 'ABW',
@@ -973,8 +1083,7 @@ export enum CountryCodeEnum {
   Zmb = 'ZMB',
   Zwe = 'ZWE',
 }
-
-export interface OnlineResource {
+interface OnlineResource {
   createdAt?: Date | string;
   extensions?: Extension[];
   identifier?: string;
@@ -987,15 +1096,13 @@ export interface OnlineResource {
   timeItems?: TimeItem[];
   updatedAt?: Date | string;
 }
-
-export enum OnlineResourceTypeEnum {
+declare enum OnlineResourceTypeEnum {
   Email = 'EMAIL',
   Other = 'OTHER',
   SocialMedia = 'SOCIAL_MEDIA',
   URL = 'URL',
 }
-
-export interface Participant {
+interface Participant {
   contacts?: Contact[];
   createdAt?: Date | string;
   extensions?: Extension[];
@@ -1018,8 +1125,7 @@ export interface Participant {
   timeItems?: TimeItem[];
   updatedAt?: Date | string;
 }
-
-export interface Contact {
+interface Contact {
   createdAt?: Date | string;
   emailAddress?: string;
   extensions?: Extension[];
@@ -1033,8 +1139,7 @@ export interface Contact {
   timeItems?: TimeItem[];
   updatedAt?: Date | string;
 }
-
-export enum ParticipantRoleEnum {
+declare enum ParticipantRoleEnum {
   Administration = 'ADMINISTRATION',
   Captain = 'CAPTAIN',
   Coach = 'COACH',
@@ -1045,20 +1150,17 @@ export enum ParticipantRoleEnum {
   Other = 'OTHER',
   Security = 'SECURITY',
 }
-
-export enum ParticipantStatusEnum {
+declare enum ParticipantStatusEnum {
   Active = 'ACTIVE',
   Withdrawn = 'WITHDRAWN',
 }
-
-export enum ParticipantTypeEnum {
+declare enum ParticipantTypeEnum {
   Group = 'GROUP',
   Individual = 'INDIVIDUAL',
   Pair = 'PAIR',
   Team = 'TEAM',
 }
-
-export interface Penalty {
+interface Penalty {
   createdAt?: Date | string;
   extensions?: Extension[];
   isMock?: boolean;
@@ -1072,8 +1174,7 @@ export interface Penalty {
   timeItems?: TimeItem[];
   updatedAt?: Date | string;
 }
-
-export enum PenaltyTypeEnum {
+declare enum PenaltyTypeEnum {
   BallAbuse = 'BALL_ABUSE',
   Coaching = 'COACHING',
   DressCodeViolation = 'DRESS_CODE_VIOLATION',
@@ -1092,8 +1193,7 @@ export enum PenaltyTypeEnum {
   UnsportsmanlikeConduct = 'UNSPORTSMANLIKE_CONDUCT',
   VerbalAbuse = 'VERBAL_ABUSE',
 }
-
-export interface Person {
+interface Person {
   addresses?: Address[];
   biographicalInformation?: BiographicalInformation;
   birthDate?: string;
@@ -1123,8 +1223,7 @@ export interface Person {
   updatedAt?: Date | string;
   wheelchair?: boolean;
 }
-
-export interface Address {
+interface Address {
   addressLine1?: string;
   addressLine2?: string;
   addressLine3?: string;
@@ -1144,8 +1243,7 @@ export interface Address {
   timeZone?: string;
   updatedAt?: Date | string;
 }
-
-export enum AddressTypeEnum {
+declare enum AddressTypeEnum {
   Home = 'HOME',
   Mail = 'MAIL',
   Primary = 'PRIMARY',
@@ -1153,8 +1251,7 @@ export enum AddressTypeEnum {
   Venue = 'VENUE',
   Work = 'WORK',
 }
-
-export interface BiographicalInformation {
+interface BiographicalInformation {
   ageBeganTennis?: number;
   ageTurnedPro?: number;
   birthCountryCode?: CountryCodeEnum;
@@ -1175,32 +1272,27 @@ export interface BiographicalInformation {
   weight?: number;
   weightUnit?: WeightUnitEnum;
 }
-
-export enum PlayingDoubleHandCodeEnum {
+declare enum PlayingDoubleHandCodeEnum {
   Backhand = 'BACKHAND',
   Both = 'BOTH',
   Forehand = 'FOREHAND',
   None = 'NONE',
 }
-
-export enum LengthUnitEnum {
+declare enum LengthUnitEnum {
   Centimeter = 'CENTIMETER',
   Meter = 'METER',
   Millimeter = 'MILLIMETER',
 }
-
-export enum PlayingHandCodeEnum {
+declare enum PlayingHandCodeEnum {
   Ambidextrous = 'AMBIDEXTROUS',
   Left = 'LEFT',
   Right = 'RIGHT',
 }
-
-export enum WeightUnitEnum {
+declare enum WeightUnitEnum {
   Gram = 'GRAM',
   Kilogram = 'KILOGRAM',
 }
-
-export interface UnifiedPersonID {
+interface UnifiedPersonID {
   createdAt?: Date | string;
   extensions?: Extension[];
   isMock?: boolean;
@@ -1211,14 +1303,12 @@ export interface UnifiedPersonID {
   uniqueOrganisationName?: string;
   updatedAt?: Date | string;
 }
-
-export enum SexEnum {
+declare enum SexEnum {
   Female = 'FEMALE',
   Male = 'MALE',
   Other = 'OTHER',
 }
-
-export interface RegistrationProfile {
+interface RegistrationProfile {
   createdAt?: Date | string;
   entriesClose?: Date | string;
   entriesOpen?: Date | string;
@@ -1229,8 +1319,7 @@ export interface RegistrationProfile {
   updatedAt?: Date | string;
   withdrawalDeadline?: Date | string;
 }
-
-export interface PrizeMoney {
+interface PrizeMoney {
   amount: number;
   createdAt?: Date | string;
   currencyCode: string;
@@ -1240,8 +1329,7 @@ export interface PrizeMoney {
   timeItems?: TimeItem[];
   updatedAt?: Date | string;
 }
-
-export interface UnifiedTournamentID {
+interface UnifiedTournamentID {
   createdAt?: Date | string;
   extensions?: Extension[];
   isMock?: boolean;
@@ -1252,8 +1340,7 @@ export interface UnifiedTournamentID {
   uniqueOrganisationName?: string;
   updatedAt?: Date | string;
 }
-
-export interface Venue {
+interface Venue {
   addresses?: Address[];
   contacts?: Contact[];
   courts?: Court[];
@@ -1273,8 +1360,7 @@ export interface Venue {
   venueOtherIds?: UnifiedVenueID[];
   venueType?: string;
 }
-
-export interface Court {
+interface Court {
   altitude?: number;
   courtDimensions?: string;
   courtId: string;
@@ -1296,9 +1382,8 @@ export interface Court {
   timeItems?: TimeItem[];
   updatedAt?: Date | string;
 }
-
-export interface Availability {
-  bookings?: Booking[];
+interface Availability {
+  bookings?: Booking;
   createdAt?: Date | string;
   date?: string;
   endTime?: string;
@@ -1309,8 +1394,7 @@ export interface Availability {
   timeItems?: TimeItem[];
   updatedAt?: Date | string;
 }
-
-export interface Booking {
+interface Booking {
   bookingType?: string;
   createdAt?: Date | string;
   endTime?: string;
@@ -1321,8 +1405,7 @@ export interface Booking {
   timeItems?: TimeItem[];
   updatedAt?: Date | string;
 }
-
-export interface UnifiedVenueID {
+interface UnifiedVenueID {
   createdAt?: Date | string;
   extensions?: Extension[];
   isMock?: boolean;
@@ -1333,3 +1416,68 @@ export interface UnifiedVenueID {
   updatedAt?: Date | string;
   venueId: string;
 }
+
+type GetVenueDataArgs = {
+  tournamentRecord: Tournament;
+  venueId: string;
+};
+declare function getVenueData({
+  tournamentRecord,
+  venueId,
+}: GetVenueDataArgs): {
+  success?: boolean;
+  error?: ErrorType;
+  venueData?: any;
+};
+
+type GetCourtInfoArgs = {
+  tournamentRecord: Tournament;
+  internalUse?: boolean;
+  courtId: string;
+};
+declare function getCourtInfo({
+  tournamentRecord,
+  internalUse,
+  courtId,
+}: GetCourtInfoArgs): {
+  error?: ErrorType;
+  success?: boolean;
+  courtInfo?: any;
+};
+
+declare function publishEvent(params: any):
+  | {
+      error: {
+        message: string;
+        code: string;
+      };
+    }
+  | {
+      eventData: any;
+      success: boolean;
+      error?: undefined;
+    };
+
+declare function getDrawData(params: any): {
+  structures?: any[];
+  success?: boolean;
+  error?: ErrorType;
+  drawInfo?: any;
+};
+
+declare const publishingGovernor: {
+  getTournamentInfo: typeof getTournamentInfo;
+  getVenueData: typeof getVenueData;
+  getCourtInfo: typeof getCourtInfo;
+  getAllEventData: typeof getAllEventData;
+  getEventData: typeof getEventData;
+  getDrawData: typeof getDrawData;
+  unPublishEventSeeding: typeof unPublishEventSeeding;
+  publishEventSeeding: typeof publishEventSeeding;
+  unPublishEvent: typeof unPublishEvent;
+  publishEvent: typeof publishEvent;
+  unPublishOrderOfPlay: typeof unPublishOrderOfPlay;
+  publishOrderOfPlay: typeof publishOrderOfPlay;
+};
+
+export { publishingGovernor as default };

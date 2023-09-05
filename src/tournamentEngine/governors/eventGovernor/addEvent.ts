@@ -7,10 +7,8 @@ import {
   addMatchUpsNotice,
 } from '../../../drawEngine/notifications/drawNotifications';
 
-import { Event, Tournament } from '../../../types/tournamentFromSchema';
-import { tieFormats } from '../../../fixtures/scoring/tieFormats';
-import { SINGLES, TEAM } from '../../../constants/eventConstants';
 import { ADD_MATCHUPS } from '../../../constants/topicConstants';
+import { tieFormats } from '../../../fixtures/scoring/tieFormats';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { UUID, definedAttributes } from '../../../utilities';
 import {
@@ -20,12 +18,17 @@ import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
+import {
+  Event,
+  Tournament,
+  TypeEnum,
+} from '../../../types/tournamentFromSchema';
 
 type AddEventArgs = {
   suppressNotifications?: boolean;
   tournamentRecord: Tournament;
   internalUse?: boolean;
-  event: any;
+  event: any; // any because eventId need not be present
 };
 export function addEvent({
   suppressNotifications,
@@ -33,10 +36,10 @@ export function addEvent({
   internalUse,
   event,
 }: AddEventArgs): {
+  context?: { [key: string]: any };
   error?: ErrorType;
-  info?: any;
-  context?: any;
   event?: Event;
+  info?: any;
 } {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.events) tournamentRecord.events = [];
@@ -65,7 +68,7 @@ export function addEvent({
     {},
     {
       drawDefinitions: [],
-      eventType: SINGLES,
+      eventType: TypeEnum.Singles,
       entries: [],
       startDate,
       endDate,
@@ -73,7 +76,7 @@ export function addEvent({
     event
   );
 
-  if (event.eventType === TEAM) {
+  if (event.eventType === TypeEnum.Team) {
     if (event.tieFormat) {
       const result = validateTieFormat({ tieFormat: event.tieFormat });
       if (result.error) return result;
@@ -104,7 +107,7 @@ export function addEvent({
     if (!suppressNotifications) {
       const { topics } = getTopics();
       if (topics.includes(ADD_MATCHUPS)) {
-        const { matchUps } = allEventMatchUps({ event });
+        const matchUps = allEventMatchUps({ event }).matchUps || [];
         addMatchUpsNotice({
           tournamentId: tournamentRecord?.tournamentId,
           eventId: event.eventId,

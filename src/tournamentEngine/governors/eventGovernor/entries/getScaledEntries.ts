@@ -1,13 +1,16 @@
 import { getParticipantScaleItem } from '../../queryGovernor/getParticipantScaleItem';
 
-import { MISSING_TOURNAMENT_RECORD } from '../../../../constants/errorConditionConstants';
+import {
+  ErrorType,
+  MISSING_TOURNAMENT_RECORD,
+} from '../../../../constants/errorConditionConstants';
 import { STRUCTURE_SELECTED_STATUSES } from '../../../../constants/entryStatusConstants';
+import { ScaleAttributes } from '../../../../types/factoryTypes';
 import {
   Entry,
   Event,
   Tournament,
 } from '../../../../types/tournamentFromSchema';
-import { ScaleAttributes } from '../../../../types/scales';
 
 /**
  *
@@ -38,7 +41,7 @@ export function getScaledEntries({
   entries,
   event,
   stage,
-}: GetScaledEntriesArgs) {
+}: GetScaledEntriesArgs): { error?: ErrorType; scaledEntries?: any[] } {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   entries = entries || event?.entries || [];
 

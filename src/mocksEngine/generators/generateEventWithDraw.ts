@@ -46,6 +46,10 @@ import {
   ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
+import {
+  DRAW_DEFINITION_NOT_FOUND,
+  STRUCTURE_NOT_FOUND,
+} from '../../constants/errorConditionConstants';
 
 export function generateEventWithDraw(params) {
   const {
@@ -94,6 +98,7 @@ export function generateEventWithDraw(params) {
     drawProfileCopy.drawSize ||
     (drawProfileCopy.ignoreDefaults ? undefined : 32);
 
+  const eventId = drawProfileCopy.eventId || UUID();
   const eventType = drawProfile.eventType || drawProfile.matchUpType || SINGLES;
   const participantType = eventType === DOUBLES ? PAIR : INDIVIDUAL;
 
@@ -102,7 +107,7 @@ export function generateEventWithDraw(params) {
     (eventType === TEAM &&
       tieFormatDefaults({
         namedFormat: tieFormatName,
-        event: { category, gender },
+        event: { eventId, category, gender },
         hydrateCollections,
       })) ||
     undefined;
@@ -132,7 +137,6 @@ export function generateEventWithDraw(params) {
       ? drawSize
       : drawProfile.participantsCount) || 0;
 
-  const eventId = drawProfileCopy.eventId || UUID();
   // TODO: implement use of tieFormats and tieFormatId
   const event = { eventName, eventType, tieFormat, category, eventId, gender };
 
@@ -434,6 +438,7 @@ export function generateEventWithDraw(params) {
   });
 
   if (result.error) return result;
+  if (!result.drawDefinition) return { error: DRAW_DEFINITION_NOT_FOUND };
 
   const { drawDefinition } = result;
   const drawId = drawDefinition.drawId;
@@ -463,7 +468,7 @@ export function generateEventWithDraw(params) {
     }
 
     if (drawProfile.withPlayoffs) {
-      const structureId = drawDefinition.structures[0].structureId;
+      const structureId = drawDefinition.structures?.[0].structureId;
       const result = addPlayoffStructures({
         ...drawProfile.withPlayoffs,
         tournamentRecord,
@@ -496,10 +501,12 @@ export function generateEventWithDraw(params) {
         const completedCount = result.completedCount;
 
         if (drawType === ROUND_ROBIN_WITH_PLAYOFF) {
-          const mainStructure = drawDefinition.structures.find(
+          const mainStructure = drawDefinition.structures?.find(
             (structure) => structure.stage === MAIN
           );
-          let result = automatedPlayoffPositioning({
+          if (!mainStructure) return { error: STRUCTURE_NOT_FOUND };
+
+          automatedPlayoffPositioning({
             structureId: mainStructure.structureId,
             tournamentRecord,
             drawDefinition,
@@ -510,7 +517,7 @@ export function generateEventWithDraw(params) {
           const playoffCompletionGoal = completionGoal
             ? completionGoal - (completedCount || 0)
             : undefined;
-          result = completeDrawMatchUps({
+          const result = completeDrawMatchUps({
             completionGoal: completionGoal ? playoffCompletionGoal : undefined,
             matchUpStatusProfile,
             completeAllMatchUps,
@@ -523,6 +530,7 @@ export function generateEventWithDraw(params) {
           if (result.error) return result;
         }
         // TODO: check if RRWPO & automate & complete
+        return undefined;
       };
 
       // NOTE: completionGoal implies something less than "all matchUps"
@@ -551,15 +559,16 @@ export function generateEventWithDraw(params) {
             scoreString,
           } = outcomeDef;
 
-          const structureMatchUpIds = matchUps.reduce((sm, matchUp) => {
-            const { structureId, matchUpId } = matchUp;
-            if (sm[structureId]) {
-              sm[structureId].push(matchUpId);
-            } else {
-              sm[structureId] = [matchUpId];
-            }
-            return sm;
-          }, {});
+          const structureMatchUpIds =
+            matchUps?.reduce((sm, matchUp) => {
+              const { structureId, matchUpId } = matchUp;
+              if (sm[structureId]) {
+                sm[structureId].push(matchUpId);
+              } else {
+                sm[structureId] = [matchUpId];
+              }
+              return sm;
+            }, {}) ?? [];
 
           const orderedStructures = Object.assign(
             {},
@@ -568,7 +577,7 @@ export function generateEventWithDraw(params) {
             }))
           );
 
-          const targetMatchUps = matchUps.filter((matchUp) => {
+          const targetMatchUps = matchUps?.filter((matchUp) => {
             return (
               (!stage || matchUp.stage === stage) &&
               (!stageSequence || matchUp.stageSequence === stageSequence) &&
@@ -582,7 +591,7 @@ export function generateEventWithDraw(params) {
           });
 
           // targeting only one matchUp, specified by the index in the array of returned matchUps
-          const targetMatchUp = targetMatchUps[matchUpIndex];
+          const targetMatchUp = targetMatchUps?.[matchUpIndex];
 
           const result = completeDrawMatchUp({
             matchUpStatusCodes,

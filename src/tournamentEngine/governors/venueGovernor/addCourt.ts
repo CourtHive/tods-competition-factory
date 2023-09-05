@@ -18,14 +18,18 @@ import {
   VENUE_NOT_FOUND,
   COURT_EXISTS,
 } from '../../../constants/errorConditionConstants';
-import { Court, Tournament } from '../../../types/tournamentFromSchema';
+import {
+  Availability,
+  Court,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
 type AddCourtArgs = {
   tournamentRecord: Tournament;
   disableNotice?: boolean;
   courtId?: string;
   venueId: string;
-  court?: any;
+  court?: any; // courtId may not yet be present
 };
 export function addCourt({
   tournamentRecord,
@@ -97,9 +101,9 @@ export function addCourt({
 }
 
 export type AddCourtsArgs = {
+  dateAvailability?: Availability[];
   venueAbbreviationRoot?: string;
   tournamentRecord: Tournament;
-  dateAvailability?: any[];
   courtNameRoot?: string;
   courtNames?: string[];
   courtTimings?: any[];

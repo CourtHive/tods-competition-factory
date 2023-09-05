@@ -6,22 +6,25 @@ import { findStructure } from '../../getters/findStructure';
 import { generateRange } from '../../../utilities';
 import { getSeedGroups } from './getSeedBlocks';
 
+import { PolicyDefinitions, SeedingProfile } from '../../../types/factoryTypes';
+import { POLICY_TYPE_SEEDING } from '../../../constants/policyConstants';
+import { DrawDefinition } from '../../../types/tournamentFromSchema';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   ErrorType,
   SEEDSCOUNT_GREATER_THAN_DRAW_SIZE,
+  STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { POLICY_TYPE_SEEDING } from '../../../constants/policyConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { DrawDefinition } from '../../../types/tournamentFromSchema';
 
 type InitializeStructureSeedAssignmentsArgs = {
+  appliedPolicies?: PolicyDefinitions;
   requireParticipantCount?: boolean;
   enforcePolicyLimits?: boolean;
   drawSizeProgression?: boolean;
+  seedingProfile: SeedingProfile;
   drawDefinition: DrawDefinition;
-  participantCount: number;
-  appliedPolicies?: any;
-  seedingProfile?: any;
+  participantsCount?: number; // TODO: migrate to participantsCount
+  participantCount?: number; // TODO: migrate to participantsCount
   structureId: string;
   seedsCount: number;
 };
@@ -29,6 +32,7 @@ export function initializeStructureSeedAssignments({
   requireParticipantCount = true,
   enforcePolicyLimits = true,
   drawSizeProgression,
+  participantsCount,
   participantCount,
   appliedPolicies,
   drawDefinition,
@@ -36,13 +40,15 @@ export function initializeStructureSeedAssignments({
   structureId,
   seedsCount,
 }: InitializeStructureSeedAssignmentsArgs): {
-  error?: ErrorType;
-  success?: boolean;
   seedLimit?: number;
+  success?: boolean;
+  error?: ErrorType;
 } {
+  participantsCount = participantsCount ?? participantCount;
   const result = findStructure({ drawDefinition, structureId });
   if (result.error) return result;
   const structure = result.structure;
+  if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const drawSize = positionAssignments?.length || 0;
@@ -64,15 +70,15 @@ export function initializeStructureSeedAssignments({
     policyDefinitions: appliedPolicies,
     requireParticipantCount,
     drawSizeProgression,
-    participantCount,
+    participantsCount,
     drawSize,
   });
 
   if (
+    maxSeedsCount &&
     appliedPolicies?.[POLICY_TYPE_SEEDING] &&
     seedsCount > maxSeedsCount &&
-    enforcePolicyLimits &&
-    maxSeedsCount
+    enforcePolicyLimits
   ) {
     seedsCount = maxSeedsCount;
   }

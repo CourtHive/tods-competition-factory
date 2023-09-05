@@ -12,6 +12,7 @@ import {
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
 } from '../../../constants/errorConditionConstants';
+import { DrawDefinition } from '../../../types/tournamentFromSchema';
 
 /**
  *
@@ -19,7 +20,15 @@ import {
  * @param {object[]} finishingOrder - [{ matchUpId, orderOfFinish }] where order of finish is whole number
  * @returns { success, error }
  */
-export function setOrderOfFinish({ drawDefinition, finishingOrder }) {
+
+type SetOrderOfFinishArgs = {
+  finishingOrder: { matchUpId: string; orderOfFinish: number }[];
+  drawDefinition: DrawDefinition;
+};
+export function setOrderOfFinish({
+  drawDefinition,
+  finishingOrder,
+}: SetOrderOfFinishArgs) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   const stack = 'setOrderOfFinish';
 
@@ -45,7 +54,7 @@ export function setOrderOfFinish({ drawDefinition, finishingOrder }) {
   )
     .filter(({ matchUpId }) => targetMatchUpIds.includes(matchUpId))
     .reduce(
-      (aggregator, matchUp) => {
+      (aggregator: any, matchUp) => {
         const { matchUpTieId, matchUpType, roundNumber, structureId } = matchUp;
         if (!aggregator.matchUpTypes.includes(matchUpType))
           aggregator.matchUpTypes.push(matchUpType);
@@ -127,9 +136,8 @@ export function setOrderOfFinish({ drawDefinition, finishingOrder }) {
     if (orderOfFinish) {
       if (!isConvertableInteger(orderOfFinish))
         return decorateResult({
+          context: { orderOfFinish, matchUp },
           result: { error: INVALID_VALUES },
-          context: { orderOfFinish },
-          matchUp,
           stack,
         });
       orderOfFinishValues.push(orderOfFinish);

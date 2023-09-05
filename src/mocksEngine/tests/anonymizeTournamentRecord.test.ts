@@ -59,7 +59,7 @@ test.each(mockProfiles)('it can anonymize tournamentRecords', (mockProfile) => {
     name: FLIGHT_PROFILE,
   });
 
-  const originalFlightEntries = flightProfile.value.flights[0].drawEntries.map(
+  const originalFlightEntries = flightProfile?.value.flights[0].drawEntries.map(
     ({ participantId }) => participantId
   );
 
@@ -91,7 +91,7 @@ test.each(mockProfiles)('it can anonymize tournamentRecords', (mockProfile) => {
     event: tournamentRecord.events[0],
     name: FLIGHT_PROFILE,
   }));
-  const flightEntries = flightProfile.value.flights[0].drawEntries.map(
+  const flightEntries = flightProfile?.value.flights[0].drawEntries.map(
     ({ participantId }) => participantId
   );
   expect(intersection(originalFlightEntries, flightEntries).length).toEqual(0);

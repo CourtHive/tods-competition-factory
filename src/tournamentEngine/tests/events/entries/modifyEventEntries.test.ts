@@ -3,17 +3,17 @@ import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../sync';
 import { expect, it } from 'vitest';
 
-import {
-  DOUBLES_EVENT,
-  SINGLES_EVENT,
-} from '../../../../constants/eventConstants';
 import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';
+import { QUALIFYING } from '../../../../constants/drawDefinitionConstants';
+import { ALTERNATE } from '../../../../constants/entryStatusConstants';
 import {
   INVALID_PARTICIPANT_IDS,
   MISSING_EVENT,
 } from '../../../../constants/errorConditionConstants';
-import { ALTERNATE } from '../../../../constants/entryStatusConstants';
-import { QUALIFYING } from '../../../../constants/drawDefinitionConstants';
+import {
+  DOUBLES_EVENT,
+  SINGLES_EVENT,
+} from '../../../../constants/eventConstants';
 
 it('can modify entries for a DOUBLES event and create PAIR participants', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({

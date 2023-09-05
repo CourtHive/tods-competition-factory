@@ -4,13 +4,28 @@ import { isAdHoc } from '../../governors/queryGovernor/isAdHoc';
 
 import { POLICY_ROUND_NAMING_DEFAULT } from '../../../fixtures/policies/POLICY_ROUND_NAMING_DEFAULT';
 import { POLICY_TYPE_ROUND_NAMING } from '../../../constants/policyConstants';
+import { ResultType } from '../../../global/functions/decorateResult';
 import { MAIN } from '../../../constants/drawDefinitionConstants';
+import { Structure } from '../../../types/tournamentFromSchema';
+import { HydratedMatchUp } from '../../../types/hydrated';
+import { RoundProfile } from '../../../types/factoryTypes';
 
+type GetRoundContextProfileArgs = {
+  matchUps: HydratedMatchUp[];
+  roundNamingPolicy: any;
+  structure: Structure;
+};
 export function getRoundContextProfile({
   roundNamingPolicy,
   structure,
   matchUps,
-}) {
+}: GetRoundContextProfileArgs): ResultType & {
+  roundNamingProfile?: {
+    [key: string]: { roundName: string; abbreviatedRoundName: string };
+  };
+  roundMatchUps?: HydratedMatchUp[];
+  roundProfile?: RoundProfile;
+} {
   const { hasOddMatchUpsCount, roundProfile, roundMatchUps } = getRoundMatchUps(
     { matchUps }
   );
@@ -44,7 +59,7 @@ export function getRoundContextProfile({
 
   const stageInitial = stage && stage !== MAIN && stage[0];
   const stageConstants = roundNamingPolicy?.stageConstants;
-  const stageConstant = stageConstants?.[stage] || stageInitial;
+  const stageConstant = (stage && stageConstants?.[stage]) || stageInitial;
 
   const roundProfileKeys = roundProfile ? Object.keys(roundProfile) : [];
   if (isRoundRobin || isAdHocStructure || isLuckyStructure) {

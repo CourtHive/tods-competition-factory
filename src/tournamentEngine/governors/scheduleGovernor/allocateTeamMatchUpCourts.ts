@@ -66,13 +66,13 @@ export function allocateTeamMatchUpCourts({
     });
     if (result.error) return result;
 
-    const specifiedCourts = result.courts.filter((court) =>
+    const specifiedCourts = result.courts?.filter((court) =>
       courtIds.includes(court.courtId)
     );
-    if (specifiedCourts.length !== courtIds.length) {
+    if (specifiedCourts?.length !== courtIds.length) {
       return { error: INVALID_VALUES, context: { courtIds } };
     }
-    itemValue = specifiedCourts.map((court) => ({
+    itemValue = specifiedCourts?.map((court) => ({
       venueId: court.venueId,
       courtId: court.courtId,
     }));

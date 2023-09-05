@@ -179,7 +179,7 @@ function availablePlayoffProfiles({
 
     if (playoffRounds && availableToProgress === targetRoundMatchUps.length) {
       playoffRounds.push(roundNumber);
-      const loser = roundProfile[roundNumber].finishingPositionRange?.loser;
+      const loser = roundProfile?.[roundNumber].finishingPositionRange?.loser;
       if (loser) {
         const minFinishingPosition = Math.min(...loser);
         const maxFinishingPosition = minFinishingPosition + availableToProgress;

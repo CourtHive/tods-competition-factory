@@ -1,20 +1,29 @@
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 import { chunkArray, generateRange, numericSort } from '../../../utilities';
 import { groupConsecutiveNumbers, unique } from '../../../utilities/arrays';
-import { getMappedStructureMatchUps } from './getMatchUpsMap';
+import { MatchUpsMap, getMappedStructureMatchUps } from './getMatchUpsMap';
 import { getRangeString } from './getRangeString';
 
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_STRUCTURE_ID,
+  MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
+import { DrawDefinition } from '../../../types/tournamentFromSchema';
+import { RoundProfile } from '../../../types/factoryTypes';
 
+type GetDrawPositionRangesArgs = {
+  drawDefinition: DrawDefinition;
+  roundProfile?: RoundProfile;
+  matchUpsMap: MatchUpsMap;
+  structureId: string;
+};
 export function getDrawPositionsRanges({
   drawDefinition,
   roundProfile,
   structureId,
   matchUpsMap,
-}) {
+}: GetDrawPositionRangesArgs) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
 
@@ -26,10 +35,12 @@ export function getDrawPositionsRanges({
     ({ roundProfile } = getRoundMatchUps({
       matchUps: structureMatchUps,
     }));
+
+    if (!roundProfile) return { error: MISSING_VALUE };
   }
 
   const firstRoundFirstDrawPosition = Math.min(
-    ...(roundProfile[1]?.drawPositions || [])
+    ...(roundProfile?.[1]?.drawPositions || [])
   );
   const firstRoundFirstDrawPositionOffset =
     (firstRoundFirstDrawPosition || 1) - 1;
@@ -38,8 +49,8 @@ export function getDrawPositionsRanges({
   const drawPositionsRanges = Object.assign(
     {},
     ...(roundNumbers || []).map((roundNumber) => {
-      const { matchUpsCount } = roundProfile[roundNumber];
-      const firstRoundDrawPositions = roundProfile[1]?.drawPositions || [];
+      const matchUpsCount = roundProfile?.[roundNumber]?.matchUpsCount;
+      const firstRoundDrawPositions = roundProfile?.[1]?.drawPositions || [];
       const firstRoundDrawPositionsChunks = chunkArray(
         firstRoundDrawPositions,
         firstRoundDrawPositions.length / matchUpsCount
@@ -57,7 +68,7 @@ export function getDrawPositionsRanges({
       const currentRoundDrawPositionChunks = roundNumbers
         .map((value) => {
           if (value > roundNumber) return undefined;
-          const { drawPositions } = roundProfile[value];
+          const drawPositions = roundProfile?.[value]?.drawPositions ?? [];
           return chunkArray(
             drawPositions,
             drawPositions.length / matchUpsCount

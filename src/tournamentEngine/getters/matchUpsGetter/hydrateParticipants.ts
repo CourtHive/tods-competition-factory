@@ -6,13 +6,18 @@ import { getParticipantMap } from '../participants/getParticipantMap';
 import { Tournament } from '../../../types/tournamentFromSchema';
 import { HydratedParticipant } from '../../../types/hydrated';
 import { makeDeepCopy } from '../../../utilities';
+import {
+  ContextProfile,
+  ParticipantsProfile,
+  PolicyDefinitions,
+} from '../../../types/factoryTypes';
 
 type HydrateParticipantsArgs = {
+  participantsProfile?: ParticipantsProfile;
+  policyDefinitions?: PolicyDefinitions;
+  contextProfile?: ContextProfile;
   tournamentRecord: Tournament;
   useParticipantMap?: boolean;
-  participantsProfile?: any;
-  policyDefinitions?: any;
-  contextProfile?: any;
   inContext?: boolean;
 };
 export function hydrateParticipants({
@@ -29,7 +34,6 @@ export function hydrateParticipants({
       ...contextProfile,
       policyDefinitions,
       tournamentRecord,
-      inContext,
     })?.participantMap;
 
     return { participantMap };

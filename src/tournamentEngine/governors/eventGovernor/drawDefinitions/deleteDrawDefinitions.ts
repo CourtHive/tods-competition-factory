@@ -23,6 +23,8 @@ import {
 import { MISSING_TOURNAMENT_RECORD } from '../../../../constants/errorConditionConstants';
 import { STRUCTURE_ENTERED_TYPES } from '../../../../constants/entryStatusConstants';
 import { DELETE_DRAW_DEFINITIONS } from '../../../../constants/auditConstants';
+import { Event, Tournament } from '../../../../types/tournamentFromSchema';
+import { PolicyDefinitions } from '../../../../types/factoryTypes';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { AUDIT } from '../../../../constants/topicConstants';
 import {
@@ -38,11 +40,10 @@ import {
   PUBLISH,
   STATUS,
 } from '../../../../constants/timeItemConstants';
-import { Event, Tournament } from '../../../../types/tournamentFromSchema';
 
 type DeleteDrawDefinitionArgs = {
+  policyDefinitions?: PolicyDefinitions;
   tournamentRecord: Tournament;
-  policyDefinitions?: any;
   autoPublish?: boolean;
   drawIds?: string[];
   auditData?: any;
@@ -131,15 +132,15 @@ export function deleteDrawDefinitions({
           stage: MAIN,
         })?.structures?.[0];
 
-        const pa =
-          mainStructure &&
-          getPositionAssignments({
-            structureId: mainStructure.structureId,
-            tournamentRecord,
-            drawDefinition,
-          });
+        const pa: any = mainStructure
+          ? getPositionAssignments({
+              structureId: mainStructure.structureId,
+              tournamentRecord,
+              drawDefinition,
+            })
+          : undefined;
 
-        const positionAssignments = pa?.positionAssignments.map(
+        const positionAssignments = pa?.positionAssignments?.map(
           positionAssignmentMap
         );
 
@@ -185,7 +186,7 @@ export function deleteDrawDefinitions({
           })
         );
         const { matchUps } = allDrawMatchUps({ event, drawDefinition });
-        matchUps.forEach(({ matchUpId }) => matchUpIds.push(matchUpId));
+        matchUps?.forEach(({ matchUpId }) => matchUpIds.push(matchUpId));
       }
       return !drawIds.includes(drawDefinition.drawId);
     }
@@ -265,7 +266,7 @@ function addDrawDeletionTelemetry({ event, deletedDrawsDetail, auditData }) {
   const updatedExtension = {
     name: DRAW_DELETIONS,
     value: Array.isArray(extension?.value)
-      ? extension.value.concat(deletionData)
+      ? extension?.value.concat(deletionData)
       : [deletionData],
   };
   addExtension({ element: event, extension: updatedExtension });
