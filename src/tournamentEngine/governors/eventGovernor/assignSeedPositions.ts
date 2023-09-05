@@ -2,7 +2,9 @@ import { getStructureSeedAssignments } from '../../../drawEngine/getters/getStru
 import { assignSeed } from '../../../drawEngine/governors/entryGovernor/seedAssignment';
 import { uniqueValues } from '../../../utilities/arrays';
 
+import { ResultType } from '../../../global/functions/decorateResult';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { SeedingProfile } from '../../../types/factoryTypes';
 import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_DRAW_ID,
@@ -10,12 +12,31 @@ import {
   NO_MODIFICATIONS_APPLIED,
   INVALID_PARTICIPANT_SEEDING,
 } from '../../../constants/errorConditionConstants';
+import {
+  DrawDefinition,
+  SeedAssignment,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
 /*
  * Provides the ability to assign seedPositions *after* a structure has been generated
  * To be used *before* participants are positioned
  */
-export function assignSeedPositions(params) {
+
+type AssignSeedPositionsArgs = {
+  provisionalPositioning?: boolean;
+  useExistingSeedLimit?: boolean;
+  seedingProfile?: SeedingProfile;
+  assignments: SeedAssignment[];
+  tournamentRecord: Tournament;
+  drawDefinition: DrawDefinition;
+  structureId: string;
+  drawId: string;
+  event: Event;
+};
+export function assignSeedPositions(
+  params: AssignSeedPositionsArgs
+): ResultType | { modifications?: number; success?: boolean } {
   const {
     provisionalPositioning,
     useExistingSeedLimit,
@@ -47,7 +68,7 @@ export function assignSeedPositions(params) {
    */
   const mergeObject = Object.assign(
     {},
-    ...seedAssignments
+    ...(seedAssignments || [])
       .filter((assignment) => assignment.seedNumber)
       .map((assignment) => ({ [assignment.seedNumber]: assignment }))
   );

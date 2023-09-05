@@ -3,7 +3,7 @@ import mocksEngine from '../../../mocksEngine';
 import { tournamentEngine } from '../../sync';
 import { expect, it } from 'vitest';
 
-import { MAIN } from '../../../constants/drawDefinitionConstants';
+import { CLUSTER, MAIN } from '../../../constants/drawDefinitionConstants';
 
 it('can generate draw with appropriate ITF seeding', () => {
   const seeding = {
@@ -11,7 +11,7 @@ it('can generate draw with appropriate ITF seeding', () => {
     duplicateSeedNumbers: true,
     drawSizeProgression: true,
     validSeedPositions: { ignore: true },
-    seedingProfile: { positioning: 'CLUSTER' },
+    seedingProfile: { positioning: CLUSTER },
     seedsCountThresholds: [
       { drawSize: 4, minimumParticipantCount: 3, seedsCount: 2 },
       { drawSize: 16, minimumParticipantCount: 12, seedsCount: 4 },

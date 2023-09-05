@@ -238,7 +238,7 @@ it('can advance players in Round Robin with Playoffs => 2 x 4 x 4', () => {
       groupsCount * structureFinishingPositions.length
     );
 
-    const positionAssignments = updatedStructure?.positionAssignments || [];
+    const positionAssignments = updatedStructure?.positionAssignments ?? [];
     const pairedPositions = chunkArray(positionAssignments, 2);
     const pairedParticipantIds = pairedPositions
       .map((positions) => positions.map((position) => position.participantId))
@@ -308,12 +308,12 @@ it('can advance players in Round Robin with Playoffs', () => {
 
   const matchUpFormat = FORMAT_STANDARD;
   let { drawDefinition } = tournamentEngine.generateDrawDefinition({
-    eventId,
+    seedingProfile: { positioning: WATERFALL },
+    structureOptions,
+    matchUpFormat,
     drawType,
     drawSize,
-    matchUpFormat,
-    structureOptions,
-    seedingProfile: WATERFALL,
+    eventId,
   });
 
   expect(drawDefinition.links.length).toEqual(playoffGroups.length);
@@ -474,7 +474,7 @@ it('can advance players in Round Robin with Playoffs', () => {
       groupsCount * structureFinishingPositions.length
     );
 
-    const positionAssignments = updatedStructure?.positionAssignments || [];
+    const positionAssignments = updatedStructure?.positionAssignments ?? [];
     const pairedPositions = chunkArray(positionAssignments, 2);
     const pairedParticipantIds = pairedPositions
       .map((positions) => positions.map((position) => position.participantId))

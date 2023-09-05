@@ -69,11 +69,11 @@ export function verifyStructure(params) {
   ).toEqual(expectedQualifierAssignments);
 
   const seededParticipantIds = seedAssignments
-    .map((assignment) => assignment.participantId)
+    ?.map((assignment) => assignment.participantId)
     .filter(Boolean);
   const seedAssignedDrawPositions = positionAssignments
-    ?.filter((assignment) =>
-      seededParticipantIds.includes(assignment.participantId)
+    ?.filter(
+      (assignment) => seededParticipantIds?.includes(assignment.participantId)
     )
     .map((assignment) => assignment.drawPosition);
   if (expectedSeeds !== undefined)

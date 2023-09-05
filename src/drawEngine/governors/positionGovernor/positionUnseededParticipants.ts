@@ -46,7 +46,7 @@ export function positionUnseededParticipants({
   });
 
   const assignedSeedParticipantIds = seedAssignments
-    .map((assignment) => assignment.participantId)
+    ?.map((assignment) => assignment.participantId)
     .filter(Boolean);
 
   const { stage, stageSequence } = structure;
@@ -68,7 +68,7 @@ export function positionUnseededParticipants({
     stage,
   });
   const unseededEntries = entries.filter(
-    (entry) => !assignedSeedParticipantIds.includes(entry.participantId)
+    (entry) => !assignedSeedParticipantIds?.includes(entry.participantId)
   );
   const unseededParticipantIds = unseededEntries.map(
     (entry) => entry.participantId

@@ -364,7 +364,7 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
         structure,
       });
       const { seedNumber, seedValue } =
-        seedAssignments.find(
+        seedAssignments?.find(
           (assignment) => assignment.participantId === participantId
         ) || {};
 
@@ -399,7 +399,7 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
         structure,
       });
       const { seedNumber } =
-        seedAssignments.find(
+        seedAssignments?.find(
           (assignment) => assignment.participantId === participantId
         ) || {};
 

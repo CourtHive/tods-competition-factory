@@ -44,6 +44,7 @@ import {
   Event,
   Structure,
   DrawDefinition,
+  SeedAssignment,
 } from '../../../types/tournamentFromSchema';
 import {
   ContextContent,
@@ -62,6 +63,7 @@ type GetAllStructureMatchUps = {
   scheduleVisibilityFilters?: ScheduleVisibilityFilters;
   tournamentParticipants?: Participant[];
   policyDefinitions?: PolicyDefinitions;
+  seedAssignments?: SeedAssignment[];
   provisionalPositioning?: boolean;
   tournamentAppliedPolicies?: any;
   contextContent?: ContextContent;
@@ -71,7 +73,6 @@ type GetAllStructureMatchUps = {
   tournamentRecord?: Tournament;
   afterRecoveryTimes?: boolean;
   matchUpsMap?: MatchUpsMap;
-  seedAssignments?: any;
   structure?: Structure;
   contextFilters?: any;
   matchUpFilters?: any;
@@ -203,11 +204,11 @@ export function getAllStructureMatchUps({
     });
 
   // enables passing in seedAssignments rather than using structureSeedAssignments
-  seedAssignments = seedAssignments || structureSeedAssignments;
+  seedAssignments = seedAssignments ?? structureSeedAssignments;
 
   const { roundOffset, structureId, structureName, stage, stageSequence } =
     structure;
-  const { drawId, drawName, drawType } = drawDefinition || {};
+  const { drawId, drawName, drawType } = drawDefinition ?? {};
 
   exitProfiles =
     exitProfiles ||
@@ -442,11 +443,10 @@ export function getAllStructureMatchUps({
 
     // if part of a tie matchUp and collectionDefinition has a category definition, prioritize
     const matchUpCategory = collectionDefinition?.category
-      ? Object.assign(
-          {},
-          context?.category || {},
-          collectionDefinition.category
-        )
+      ? {
+          ...(context?.category || {}),
+          ...collectionDefinition.category,
+        }
       : context?.category;
 
     const processCodes =
@@ -469,10 +469,9 @@ export function getAllStructureMatchUps({
 
     // order is important here as Round Robin matchUps already have inContext structureId
     const onlyDefined = (obj) => definedAttributes(obj, undefined, true);
-    const matchUpWithContext = Object.assign(
-      {},
-      onlyDefined(context),
-      onlyDefined({
+    const matchUpWithContext = {
+      ...onlyDefined(context),
+      ...onlyDefined({
         matchUpFormat: matchUp.matchUpType === TEAM ? undefined : matchUpFormat,
         tieFormat: matchUp.matchUpType !== TEAM ? undefined : tieFormat,
         roundOfPlay:
@@ -508,8 +507,8 @@ export function getAllStructureMatchUps({
         drawId,
         stage,
       }),
-      makeDeepCopy(onlyDefined(matchUp), true, true)
-    );
+      ...makeDeepCopy(onlyDefined(matchUp), true, true),
+    };
 
     if (matchUpFormat && matchUp.score?.scoreStringSide1) {
       const parsedFormat = parse(matchUpFormat);

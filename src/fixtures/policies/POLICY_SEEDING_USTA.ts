@@ -6,7 +6,7 @@ export const POLICY_SEEDING_USTA = {
     validSeedPositions: { ignore: true },
     duplicateSeedNumbers: true,
     drawSizeProgression: true,
-    seedingProfile: SEPARATE,
+    seedingProfile: { positioning: SEPARATE },
     policyName: 'USTA SEEDING',
 
     seedsCountThresholds: [

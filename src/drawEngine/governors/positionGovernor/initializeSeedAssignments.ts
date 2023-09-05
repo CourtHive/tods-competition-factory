@@ -40,9 +40,9 @@ export function initializeStructureSeedAssignments({
   structureId,
   seedsCount,
 }: InitializeStructureSeedAssignmentsArgs): {
-  error?: ErrorType;
-  success?: boolean;
   seedLimit?: number;
+  success?: boolean;
+  error?: ErrorType;
 } {
   participantsCount = participantsCount ?? participantCount;
   const result = findStructure({ drawDefinition, structureId });
