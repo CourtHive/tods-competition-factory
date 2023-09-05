@@ -5,9 +5,12 @@ import { getParticipantMap } from './getParticipantMap';
 import { definedAttributes } from '../../../utilities';
 
 import { MatchUp, Tournament } from '../../../types/tournamentFromSchema';
-import { ParticipantFilters } from '../../../types/factoryTypes';
 import { HydratedParticipant } from '../../../types/hydrated';
 import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  ParticipantFilters,
+  ScheduleAnalysis,
+} from '../../../types/factoryTypes';
 import {
   MISSING_TOURNAMENT_RECORD,
   ErrorType,
@@ -16,12 +19,12 @@ import {
 type GetParticipantsArgs = {
   participantFilters?: ParticipantFilters;
   withIndividualParticipants?: boolean;
+  scheduleAnalysis?: ScheduleAnalysis;
   withPotentialMatchUps?: boolean;
   withRankingProfile?: boolean;
   convertExtensions?: boolean;
   withScheduleItems?: boolean;
   tournamentRecord: Tournament;
-  scheduleAnalysis?: boolean;
   withSignInStatus?: boolean;
   withTeamMatchUps?: boolean;
   withScaleValues?: boolean;

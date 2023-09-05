@@ -136,6 +136,12 @@ export type TeamKey = {
   uuids?: string[];
 };
 
+export type ScheduleAnalysis =
+  | boolean
+  | {
+      scheduledMinutesDifference: number;
+    };
+
 export type ParticipantsProfile = {
   participantType?: ParticipantTypeEnum;
   scaledParticipantsCount?: number;
@@ -172,8 +178,8 @@ export type ParticipantsProfile = {
   withEvents?: boolean;
   withDraws?: boolean;
 
+  scheduleAnalysis?: ScheduleAnalysis;
   participantFilters?: any;
-  scheduleAnalysis?: any;
   policyDefinitions?: any;
 };
 
@@ -189,9 +195,9 @@ export type GetMatchUpsArgs = {
   participantsProfile?: ParticipantsProfile;
   participants?: HydratedParticipant[];
   tournamentAppliedPolicies?: any;
-  afterRecoveryTimes?: boolean;
   tournamentRecord?: Tournament;
   drawDefinition?: DrawDefinition;
+  afterRecoveryTimes?: boolean;
   useParticipantMap?: boolean;
   policyDefinitions?: any;
   nextMatchUps?: boolean;
