@@ -194,7 +194,7 @@ export type ScheduleVisibilityFilters = {
   visibilityThreshold: string;
   eventIds?: string[];
   drawIds?: string[];
-}[];
+};
 
 export type ContextContent = {
   policies?: PolicyDefinitions;

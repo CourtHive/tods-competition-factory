@@ -21,7 +21,6 @@ import {
 } from '../../../utilities/dateTime';
 
 import { MISSING_MATCHUP } from '../../../constants/errorConditionConstants';
-import { ScheduleTiming } from '../../../types/factoryTypes';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import { TEAM } from '../../../constants/eventConstants';
 import {
@@ -29,9 +28,13 @@ import {
   Tournament,
   TypeEnum,
 } from '../../../types/tournamentFromSchema';
+import {
+  ScheduleTiming,
+  ScheduleVisibilityFilters,
+} from '../../../types/factoryTypes';
 
 type GetMatchUpScheduleDetailsArgs = {
-  scheduleVisibilityFilters?: any;
+  scheduleVisibilityFilters?: ScheduleVisibilityFilters;
   scheduleTiming?: ScheduleTiming;
   afterRecoveryTimes?: boolean;
   tournamentRecord?: Tournament;
@@ -91,7 +94,7 @@ export function getMatchUpScheduleDetails({
 
   let schedule;
   const { visibilityThreshold, eventIds, drawIds } =
-    scheduleVisibilityFilters || {};
+    scheduleVisibilityFilters ?? {};
 
   if (
     (!eventIds || eventIds.includes(matchUp.eventId)) &&

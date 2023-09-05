@@ -68,7 +68,7 @@ export function getScheduledCourtMatchUps(
 }
 
 type GetScheduledVenueMatchUpsArgs = {
-  scheduleVisibilityFilters?: any;
+  scheduleVisibilityFilters?: ScheduleVisibilityFilters;
   tournamentRecord: Tournament;
   matchUpFilters?: any;
   venueId: string;

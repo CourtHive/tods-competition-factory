@@ -7,13 +7,48 @@ import { extractDate, sameDay } from '../../../utilities/dateTime';
 
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
 import { HydratedMatchUp } from '../../../types/hydrated';
+import {
+  MatchUpStatusEnum,
+  StageTypeEnum,
+} from '../../../types/tournamentFromSchema';
 
-type FilterArgs = {
+export type MatchUpFilterArgs = {
   matchUps: HydratedMatchUp[];
-  [key: string | number | symbol]: unknown;
+  excludeMatchUpStatuses?: boolean;
+  isCollectionMatchUp?: boolean;
+  matchUpStatuses?: MatchUpStatusEnum;
+  hasWinningSide?: boolean;
+  matchUpFormats?: string[];
+  roundPositions?: number[];
+  matchUpFormat?: string;
+  collectionIds?: string[];
+  isMatchUpTie?: boolean;
+  roundNumbers?: number[];
+  matchUpIds?: string[];
+  roundNames?: string[];
+
+  // only applies to inContext matchUps and only when processContext boolean is true
+  processContext?: boolean;
+
+  stageSequences?: string[];
+  scheduledDates?: string[];
+  participantIds?: string[];
+  stages?: StageTypeEnum[];
+  tournamentIds?: string[];
+  matchUpTypes?: string[];
+  structureIds?: string[];
+  scheduledDate?: string;
+  readyToScore?: boolean;
+  courtIds?: string[];
+  eventIds?: string[];
+  venueIds?: string[];
+  drawIds?: string[];
+
+  filterMatchUpTypes?: boolean;
+  filterMatchUpIds?: boolean;
 };
 
-export function filterMatchUps(params: FilterArgs) {
+export function filterMatchUps(params: MatchUpFilterArgs) {
   const {
     matchUps,
 
@@ -153,25 +188,28 @@ export function filterMatchUps(params: FilterArgs) {
     }
     if (
       targetCollectionIds.length &&
-      !targetCollectionIds.includes(matchUp.collectionId)
+      (!matchUp.collectionId ||
+        !targetCollectionIds.includes(matchUp.collectionId))
     ) {
       return false;
     }
     if (
       targetRoundNames.length &&
-      !targetRoundNames.includes(matchUp.roundName)
+      (!matchUp.roundName || !targetRoundNames.includes(matchUp.roundName))
     ) {
       return false;
     }
     if (
       targetRoundNumbers.length &&
-      !targetRoundNumbers.includes(matchUp.roundNumber)
+      (!matchUp.roundNumber ||
+        !targetRoundNumbers.includes(matchUp.roundNumber))
     ) {
       return false;
     }
     if (
       targetRoundPositions.length &&
-      !targetRoundPositions.includes(matchUp.roundPosition)
+      (!matchUp.roundPosition ||
+        !targetRoundPositions.includes(matchUp.roundPosition))
     ) {
       return false;
     }
@@ -195,13 +233,15 @@ export function filterMatchUps(params: FilterArgs) {
     }
     if (
       targetMatchUpTypes.length &&
-      !targetMatchUpTypes.includes(matchUp.matchUpType)
+      (!matchUp.matchUpType ||
+        !targetMatchUpTypes.includes(matchUp.matchUpType))
     ) {
       return false;
     }
     if (
       targetMatchUpFormats.length &&
-      !targetMatchUpFormats.includes(matchUp.matchUpFormat)
+      (!matchUp.matchUpFormat ||
+        !targetMatchUpFormats.includes(matchUp.matchUpFormat))
     ) {
       return false;
     }
