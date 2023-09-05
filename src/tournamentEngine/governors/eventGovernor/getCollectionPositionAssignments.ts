@@ -1,10 +1,12 @@
+import { Substitution } from '../../../types/factoryTypes';
+
 export function getCollectionPositionAssignments({
   collectionPosition,
   collectionId,
   lineUp,
 }) {
   let assignedParticipantIds: string[] = [];
-  const substitutions: any[] = [];
+  const substitutions: Substitution[] = [];
 
   if (lineUp) {
     const getOrderValue = (order) => (order === undefined ? -1 : order);

@@ -2,7 +2,7 @@ import { getCollectionPositionAssignments } from '../../../tournamentEngine/gove
 import { getPairedParticipant } from '../../../tournamentEngine/governors/participantGovernor/getPairedParticipant';
 import { getTeamLineUp } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/getTeamLineUp';
 
-import { ParticipantMap } from '../../../types/factoryTypes';
+import { ParticipantMap, Substitution } from '../../../types/factoryTypes';
 import { DOUBLES } from '../../../constants/matchUpTypes';
 import {
   DrawDefinition,
@@ -32,7 +32,13 @@ export function getDrawPositionCollectionAssignment({
   collectionId,
   sideLineUps,
   matchUpType,
-}: GetDrawPositionCollectionAssignmentArgs) {
+}: GetDrawPositionCollectionAssignmentArgs):
+  | undefined
+  | {
+      substitutions: Substitution[];
+      teamParticipant: Participant;
+      participantId?: string;
+    } {
   if (!collectionId || !collectionPosition) return;
 
   const drawPositionCollectionAssignment =
