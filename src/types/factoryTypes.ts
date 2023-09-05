@@ -4,6 +4,7 @@ import { HydratedMatchUp, HydratedParticipant } from './hydrated';
 import { ErrorType } from '../constants/errorConditionConstants';
 import { ValidPolicyTypes } from '../constants/policyConstants';
 import {
+  Category,
   DrawDefinition,
   Entry,
   Event,
@@ -70,7 +71,7 @@ export type FlightProfile = {
 };
 
 export type PolicyDefinitions = {
-  [key in ValidPolicyTypes]?: any;
+  [key in ValidPolicyTypes]?: { [key: string]: any };
 };
 
 export type QueueMethod = {
@@ -100,15 +101,14 @@ export type RoundProfile = {
 };
 
 export type ParticipantFilters = {
-  [key: string]: any;
-  positionedParticipants?: boolean; // boolean - participantIds that are included in any structure.positionAssignments
-  eventEntryStatuses?: string[]; // {string[]} participantIds that are in entry.entries with entryStatuses
-  drawEntryStatuses?: string[]; // {string[]} participantIds that are in draw.entries or flightProfile.flights[].drawEnteredParticipantIds with entryStatuses
   accessorValues?: { accessor: string; value: any }[];
   participantRoleResponsibilities?: string[];
   participantRoles?: ParticipantRoleEnum[];
   participantTypes?: ParticipantTypeEnum[];
   signInStatus?: SignedInStatusEnum;
+  positionedParticipants?: boolean; // boolean - participantIds that are included in any structure.positionAssignments
+  eventEntryStatuses?: string[]; // {string[]} participantIds that are in entry.entries with entryStatuses
+  drawEntryStatuses?: string[]; // {string[]} participantIds that are in draw.entries or flightProfile.flights[].drawEnteredParticipantIds with entryStatuses
   enableOrFiltering?: boolean;
   participantIds?: string[];
   genders?: GenderEnum;
@@ -167,12 +167,12 @@ export type ParticipantsProfile = {
   personData?: PersonData;
   personIds?: string[];
   inContext?: boolean;
+  category?: Category;
   withISO2?: boolean;
   withIOC?: boolean;
   teamKey?: TeamKey;
   idPrefix?: string;
   uuids?: string[];
-  category?: any;
   sex?: SexEnum;
 
   // Usage via participantsProfile unconfirmed...
@@ -184,9 +184,9 @@ export type ParticipantsProfile = {
   withEvents?: boolean;
   withDraws?: boolean;
 
+  participantFilters?: ParticipantFilters;
   scheduleAnalysis?: ScheduleAnalysis;
   policyDefinitions?: PolicyDefinitions;
-  participantFilters?: any;
 };
 
 export type ScheduleVisibilityFilters = {
@@ -195,6 +195,17 @@ export type ScheduleVisibilityFilters = {
   drawIds?: string[];
 }[];
 
+export type ContextContent = {
+  policies?: PolicyDefinitions;
+};
+
+export type ContextProfile = {
+  withCompetitiveness?: boolean;
+  withScaleValues?: boolean;
+  inferGender?: boolean;
+  exclude?: string[];
+};
+
 export type GetMatchUpsArgs = {
   participantMap?: { [key: string]: HydratedParticipant[] };
   scheduleVisibilityFilters?: ScheduleVisibilityFilters;
@@ -202,18 +213,18 @@ export type GetMatchUpsArgs = {
   participantsProfile?: ParticipantsProfile;
   participants?: HydratedParticipant[];
   policyDefinitions?: PolicyDefinitions;
+  context?: { [key: string]: any };
+  contextContent?: ContextContent;
   tournamentRecord?: Tournament;
+  contextProfile?: ContextProfile;
   drawDefinition?: DrawDefinition;
   afterRecoveryTimes?: boolean;
   useParticipantMap?: boolean;
   nextMatchUps?: boolean;
   tournamentId?: string;
   contextFilters?: any;
-  contextContent?: any;
   matchUpFilters?: any;
-  contextProfile?: any;
   inContext?: boolean;
-  context?: any;
   event?: Event;
 };
 

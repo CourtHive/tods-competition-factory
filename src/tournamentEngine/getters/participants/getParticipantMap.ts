@@ -5,6 +5,8 @@ import { getScaleValues } from './getScaleValues';
 
 import { POLICY_TYPE_PARTICIPANT } from '../../../constants/policyConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
+import { Tournament } from '../../../types/tournamentFromSchema';
+import { PolicyDefinitions } from '../../../types/factoryTypes';
 import { HydratedParticipant } from '../../../types/hydrated';
 import {
   GROUP,
@@ -26,6 +28,18 @@ const membershipMap = {
 
 // build up an object with participantId keys which map to deepCopied participants
 // and which include all relevant groupings for each individualParticipant
+
+type GetParticpantsMapArgs = {
+  withIndividualParticipants?: boolean;
+  policyDefinitions?: PolicyDefinitions;
+  tournamentRecord: Tournament;
+  convertExtensions?: boolean;
+  withSignInStatus?: boolean;
+  withScaleValues?: boolean;
+  internalUse?: boolean;
+  withISO2?: boolean;
+  withIOC?: boolean;
+};
 export function getParticipantMap({
   withIndividualParticipants,
   convertExtensions,
@@ -36,7 +50,7 @@ export function getParticipantMap({
   internalUse,
   withISO2,
   withIOC,
-}) {
+}: GetParticpantsMapArgs) {
   const participantAttributes = policyDefinitions?.[POLICY_TYPE_PARTICIPANT];
   const filterAttributes = participantAttributes?.participant;
 

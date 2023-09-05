@@ -7,6 +7,8 @@ import { ResultType } from '../../../global/functions/decorateResult';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
+  ContextContent,
+  ContextProfile,
   PolicyDefinitions,
   ScheduleVisibilityFilters,
 } from '../../../types/factoryTypes';
@@ -45,19 +47,19 @@ type GetStructureMatchUpsArgs = {
   tournamentParticipants?: Participant[];
   policyDefinitions?: PolicyDefinitions;
   tournamentAppliedPolicies?: any;
+  contextContent?: ContextContent;
   requireParticipants?: boolean;
   tournamentRecord?: Tournament;
+  contextProfile?: ContextProfile;
   drawDefinition?: DrawDefinition;
   afterRecoveryTimes?: boolean;
   structure?: Structure;
   matchUpFilters?: any;
-  contextContent?: any;
   contextFilters?: any;
   participantMap?: any;
   scheduleTiming?: any;
   structureId?: string;
   inContext?: boolean;
-  contextProfile?: any;
   exitProfiles?: any;
   matchUpsMap?: any;
   context?: any;

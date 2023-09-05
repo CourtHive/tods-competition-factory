@@ -5,6 +5,7 @@ import { isAdHoc } from '../../governors/queryGovernor/isAdHoc';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../../constants/entryStatusConstants';
 import { AD_HOC, stageOrder } from '../../../constants/drawDefinitionConstants';
+import { TypeEnum } from '../../../types/tournamentFromSchema';
 import { RATING } from '../../../constants/scaleConstants';
 import {
   INVALID_DRAW_DEFINITION,
@@ -12,7 +13,6 @@ import {
   INVALID_VALUES,
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { TypeEnum } from '../../../types/tournamentFromSchema';
 
 /**
  *

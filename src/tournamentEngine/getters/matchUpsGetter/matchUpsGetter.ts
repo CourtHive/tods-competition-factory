@@ -10,11 +10,11 @@ import {
 } from '../../../drawEngine/getters/getMatchUps/drawMatchUps';
 
 import { ResultType } from '../../../global/functions/decorateResult';
+import { HydratedMatchUp } from '../../../types/hydrated';
 import {
   GetMatchUpsArgs,
   GroupsMatchUpsResult,
 } from '../../../types/factoryTypes';
-import { HydratedMatchUp } from '../../../types/hydrated';
 import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
@@ -58,7 +58,7 @@ export function allTournamentMatchUps(params: GetMatchUpsArgs): ResultType & {
     tournamentRecord,
   });
 
-  const additionalContext = {
+  const additionalContext: { [key: string]: any } = {
     ...context,
     tournamentId,
     indoorOutDoor: tournamentRecord.indoorOutdoor,

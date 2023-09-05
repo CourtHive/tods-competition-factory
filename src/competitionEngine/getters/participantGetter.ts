@@ -25,7 +25,7 @@ export function getParticipants(params) {
     return { error: MISSING_TOURNAMENT_RECORDS };
   }
 
-  const participantMap: { [key: string]: HydratedParticipant } = {};
+  const participantMap: { [key: string]: any } = {};
   const participants: HydratedParticipant[] = [];
   const derivedEventInfo: any = {};
   const derivedDrawInfo: any = {};

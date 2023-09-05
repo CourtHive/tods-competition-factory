@@ -43,8 +43,11 @@ import {
   Tournament,
   Event,
   Structure,
+  DrawDefinition,
 } from '../../../types/tournamentFromSchema';
 import {
+  ContextContent,
+  ContextProfile,
   PolicyDefinitions,
   ScheduleVisibilityFilters,
 } from '../../../types/factoryTypes';
@@ -60,18 +63,18 @@ type GetAllStructureMatchUps = {
   policyDefinitions?: PolicyDefinitions;
   provisionalPositioning?: boolean;
   tournamentAppliedPolicies?: any;
+  contextContent?: ContextContent;
+  drawDefinition?: DrawDefinition;
+  contextProfile?: ContextProfile;
   tournamentRecord?: Tournament;
   afterRecoveryTimes?: boolean;
   matchUpsMap?: MatchUpsMap;
   seedAssignments?: any;
   structure?: Structure;
   contextFilters?: any;
-  contextContent?: any;
   matchUpFilters?: any;
   participantMap?: any;
   scheduleTiming?: any;
-  drawDefinition?: any;
-  contextProfile?: any;
   inContext?: boolean;
   exitProfiles?: any;
   event?: Event;
@@ -250,12 +253,14 @@ export function getAllStructureMatchUps({
       matchUpsMap,
       structureId,
     });
-    const { drawPositionsRanges } = getDrawPositionsRanges({
-      drawDefinition,
-      roundProfile,
-      matchUpsMap,
-      structureId,
-    });
+    const drawPositionsRanges = drawDefinition
+      ? getDrawPositionsRanges({
+          drawDefinition,
+          roundProfile,
+          matchUpsMap,
+          structureId,
+        }).drawPositionsRanges
+      : undefined;
 
     matchUps = matchUps.map((matchUp) =>
       addMatchUpContext({
@@ -758,7 +763,7 @@ export function getAllStructureMatchUps({
 
     if (Array.isArray(contextProfile?.exclude)) {
       // loop through all attributes and delete them from matchUpWithContext
-      contextProfile.exclude.forEach(
+      contextProfile?.exclude.forEach(
         (attribute) => delete matchUpWithContext[attribute]
       );
     }

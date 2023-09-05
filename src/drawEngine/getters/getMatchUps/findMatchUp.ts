@@ -4,6 +4,7 @@ import { getAllStructureMatchUps } from './getAllStructureMatchUps';
 import { getDrawStructures } from '../findStructure';
 import { makeDeepCopy } from '../../../utilities';
 
+import { ContextContent, ContextProfile } from '../../../types/factoryTypes';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import { MatchUpsMap } from './getMatchUpsMap';
 import {
@@ -30,11 +31,11 @@ export function publicFindMatchUp(params) {
 
 type FindMatchUpArgs = {
   tournamentParticipants?: Participant[];
+  contextContent?: ContextContent;
+  contextProfile?: ContextProfile;
   afterRecoveryTimes?: boolean;
   drawDefinition: DrawDefinition;
   matchUpsMap?: MatchUpsMap;
-  contextContent?: any;
-  contextProfile?: any;
   inContext?: boolean;
   matchUpId: string;
   context?: any;

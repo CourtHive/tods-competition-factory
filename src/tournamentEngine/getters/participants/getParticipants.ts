@@ -8,6 +8,7 @@ import { MatchUp, Tournament } from '../../../types/tournamentFromSchema';
 import { HydratedParticipant } from '../../../types/hydrated';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
+  ContextProfile,
   ParticipantFilters,
   PolicyDefinitions,
   ScheduleAnalysis,
@@ -23,10 +24,11 @@ type GetParticipantsArgs = {
   scheduleAnalysis?: ScheduleAnalysis;
   policyDefinitions?: PolicyDefinitions;
   withPotentialMatchUps?: boolean;
+  contextProfile?: ContextProfile;
+  tournamentRecord: Tournament;
   withRankingProfile?: boolean;
   convertExtensions?: boolean;
   withScheduleItems?: boolean;
-  tournamentRecord: Tournament;
   withSignInStatus?: boolean;
   withTeamMatchUps?: boolean;
   withScaleValues?: boolean;
@@ -37,7 +39,6 @@ type GetParticipantsArgs = {
   internalUse?: boolean;
   withSeeding?: boolean;
   withEvents?: boolean;
-  contextProfile?: any;
   withDraws?: boolean;
   withISO2?: boolean;
   withIOC?: boolean;
