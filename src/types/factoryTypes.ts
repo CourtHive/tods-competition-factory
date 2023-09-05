@@ -319,3 +319,5 @@ export type GroupsMatchUpsResult = {
 export type TournamentRecords = {
   [key: string]: Tournament;
 };
+
+export type ExitProfiles = { [key: string]: string[] };

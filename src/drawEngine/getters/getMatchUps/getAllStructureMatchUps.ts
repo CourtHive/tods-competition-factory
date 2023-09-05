@@ -49,6 +49,7 @@ import {
 import {
   ContextContent,
   ContextProfile,
+  ExitProfiles,
   ParticipantMap,
   PolicyDefinitions,
   ScheduleVisibilityFilters,
@@ -61,24 +62,24 @@ import {
 
 type GetAllStructureMatchUps = {
   scheduleVisibilityFilters?: ScheduleVisibilityFilters;
+  tournamentAppliedPolicies?: PolicyDefinitions;
   tournamentParticipants?: Participant[];
   policyDefinitions?: PolicyDefinitions;
   seedAssignments?: SeedAssignment[];
   provisionalPositioning?: boolean;
-  tournamentAppliedPolicies?: any;
   contextContent?: ContextContent;
   participantMap?: ParticipantMap;
   drawDefinition?: DrawDefinition;
   contextProfile?: ContextProfile;
   tournamentRecord?: Tournament;
   afterRecoveryTimes?: boolean;
+  exitProfiles?: ExitProfiles;
   matchUpsMap?: MatchUpsMap;
   structure?: Structure;
   contextFilters?: any;
   matchUpFilters?: any;
   scheduleTiming?: any;
   inContext?: boolean;
-  exitProfiles?: any;
   event?: Event;
   context?: any;
 };
