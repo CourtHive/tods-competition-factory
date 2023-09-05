@@ -29,7 +29,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-json-tree": "0.18.0",
-    "tods-competition-factory": "1.4.26"
+    "tods-competition-factory": "1.4.27"
   },
   "browserslist": {
     "production": [
