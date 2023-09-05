@@ -6,6 +6,7 @@ import { findStructure } from '../findStructure';
 import { ResultType } from '../../../global/functions/decorateResult';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import { TEAM } from '../../../constants/matchUpTypes';
+import { MatchUpFilters } from './filterMatchUps';
 import { MatchUpsMap } from './getMatchUpsMap';
 import {
   ABANDONED,
@@ -51,6 +52,9 @@ type GetStructureMatchUpsArgs = {
   tournamentAppliedPolicies?: PolicyDefinitions;
   tournamentParticipants?: Participant[];
   policyDefinitions?: PolicyDefinitions;
+  context?: { [key: string]: any };
+  matchUpFilters?: MatchUpFilters;
+  contextFilters?: MatchUpFilters;
   contextContent?: ContextContent;
   participantMap?: ParticipantMap;
   scheduleTiming?: ScheduleTiming;
@@ -62,11 +66,8 @@ type GetStructureMatchUpsArgs = {
   exitProfiles?: ExitProfiles;
   matchUpsMap?: MatchUpsMap;
   structure?: Structure;
-  matchUpFilters?: any;
-  contextFilters?: any;
   structureId?: string;
   inContext?: boolean;
-  context?: any;
   event?: Event;
 };
 

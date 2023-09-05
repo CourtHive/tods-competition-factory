@@ -3,6 +3,7 @@ import {
   tournamentMatchUps,
 } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
 
+import { MatchUpFilters } from '../../drawEngine/getters/getMatchUps/filterMatchUps';
 import { ResultType } from '../../global/functions/decorateResult';
 import { HydratedMatchUp } from '../../types/hydrated';
 import {
@@ -20,10 +21,10 @@ type CompetitionMatchUpsArgs = TournamentRecordsArgs & {
   scheduleVisibilityFilters?: ScheduleVisibilityFilters;
   participantsProfile?: ParticipantsProfile;
   policyDefinitions?: PolicyDefinitions;
+  matchUpFilters?: MatchUpFilters;
+  contextFilters?: MatchUpFilters;
   afterRecoveryTimes?: boolean;
   nextMatchUps?: boolean;
-  matchUpFilters?: any;
-  contextFilters?: any;
   inContext?: boolean;
 };
 
@@ -62,7 +63,7 @@ export function allCompetitionMatchUps({
           contextFilters,
           nextMatchUps,
           inContext,
-        }).matchUps || []
+        }).matchUps ?? []
       );
     })
     .flat();

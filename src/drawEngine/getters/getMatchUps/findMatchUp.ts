@@ -31,6 +31,7 @@ export function publicFindMatchUp(params) {
 
 type FindMatchUpArgs = {
   tournamentParticipants?: Participant[];
+  context?: { [key: string]: any };
   contextContent?: ContextContent;
   contextProfile?: ContextProfile;
   afterRecoveryTimes?: boolean;
@@ -38,7 +39,6 @@ type FindMatchUpArgs = {
   matchUpsMap?: MatchUpsMap;
   inContext?: boolean;
   matchUpId: string;
-  context?: any;
   event?: Event;
 };
 export function findMatchUp({

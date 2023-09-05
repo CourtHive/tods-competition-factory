@@ -14,9 +14,9 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 type AddVenueArgs = {
+  context?: { [key: string]: any };
   disableNotice?: boolean;
   tournamentRecord: any;
-  context?: any;
   venue: Venue;
 };
 

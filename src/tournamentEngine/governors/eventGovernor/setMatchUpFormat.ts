@@ -9,7 +9,6 @@ import {
 } from '../../../drawEngine/notifications/drawNotifications';
 
 import { DOUBLES, SINGLES, TEAM } from '../../../constants/eventConstants';
-import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_EVENT_TYPE,
@@ -20,6 +19,7 @@ import {
   NO_MODIFICATIONS_APPLIED,
   UNRECOGNIZED_MATCHUP_FORMAT,
 } from '../../../constants/errorConditionConstants';
+import { MatchUpStatusEnum } from '../../../types/tournamentFromSchema';
 
 export function setMatchUpFormat({
   tournamentRecord,
@@ -99,14 +99,14 @@ export function setMatchUpFormat({
       const matchUps =
         (force || scheduledDates) &&
         getAllStructureMatchUps({
-          matchUpFilters: { matchUpStatuses: [TO_BE_PLAYED] },
+          matchUpFilters: { matchUpStatuses: [MatchUpStatusEnum.ToBePlayed] },
           structure,
         });
 
       const inContextMatchUps =
         scheduledDates &&
         getAllStructureMatchUps({
-          matchUpFilters: { matchUpStatuses: [TO_BE_PLAYED] },
+          matchUpFilters: { matchUpStatuses: [MatchUpStatusEnum.ToBePlayed] },
           contextFilters: { scheduledDates },
           afterRecoveryTimes: false,
           inContext: true,

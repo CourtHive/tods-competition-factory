@@ -1,5 +1,5 @@
 export type ScheduledMatchUpArgs = {
-  visibilityThreshold?: any;
+  visibilityThreshold?: string;
   timeStamp?: string;
   schedule?: any;
   matchUp: any;
