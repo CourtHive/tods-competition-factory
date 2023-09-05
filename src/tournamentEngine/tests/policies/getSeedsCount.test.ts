@@ -56,7 +56,7 @@ it('can accurately determine seedsCount from drawSize and participantsCount', ()
 
   policyDefinitions = {
     [POLICY_TYPE_SEEDING]: {
-      seedingProfile: CLUSTER,
+      seedingProfile: { positioning: CLUSTER },
       duplicateSeedNumbers: true,
       seedsCountThresholds: [
         { drawSize: 4, minimumParticipantCount: 3, seedsCount: 2 },

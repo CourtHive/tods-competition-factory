@@ -3,10 +3,6 @@ import { getTournamentParticipants } from '../../tournamentEngine/getters/partic
 import { findParticipant } from '../../global/functions/deducers/findParticipant';
 import { deepMerge } from '../../utilities/deepMerge';
 
-import {
-  PolicyDefinitions,
-  TournamentRecordsArgs,
-} from '../../types/factoryTypes';
 import { MatchUp } from '../../types/tournamentFromSchema';
 import { HydratedParticipant } from '../../types/hydrated';
 import { SUCCESS } from '../../constants/resultConstants';
@@ -15,6 +11,11 @@ import {
   MISSING_TOURNAMENT_RECORDS,
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
+import {
+  ParticipantMap,
+  PolicyDefinitions,
+  TournamentRecordsArgs,
+} from '../../types/factoryTypes';
 
 export function getParticipants(params) {
   const { tournamentRecords } = params || {};
@@ -25,7 +26,7 @@ export function getParticipants(params) {
     return { error: MISSING_TOURNAMENT_RECORDS };
   }
 
-  const participantMap: { [key: string]: HydratedParticipant } = {};
+  const participantMap: ParticipantMap = {};
   const participants: HydratedParticipant[] = [];
   const derivedEventInfo: any = {};
   const derivedDrawInfo: any = {};

@@ -5,8 +5,12 @@ import { allTournamentMatchUps } from './matchUpsGetter';
 import { getContextContent } from '../getContextContent';
 import { findEvent } from '../eventGetter';
 
-import { ParticipantsProfile } from '../../../types/factoryTypes';
 import { HydratedMatchUp } from '../../../types/hydrated';
+import {
+  ContextContent,
+  ContextProfile,
+  ParticipantsProfile,
+} from '../../../types/factoryTypes';
 import {
   DrawDefinition,
   Tournament,
@@ -29,11 +33,11 @@ export function publicFindMatchUp(params) {
 
 type FindMatchUpType = {
   participantsProfile?: ParticipantsProfile;
-  tournamentRecord: Tournament;
+  contextContent?: ContextContent;
+  contextProfile?: ContextProfile;
   drawDefinition?: DrawDefinition;
   afterRecoveryTimes?: boolean;
-  contextContent?: any;
-  contextProfile?: any;
+  tournamentRecord: Tournament;
   inContext?: boolean;
   matchUpId: string;
   eventId?: string;
@@ -100,7 +104,7 @@ export function findMatchUp({
   });
 
   const { matchUp, structure } = drawEngineFindMatchUp({
-    context: inContext && additionalContext,
+    context: inContext ? additionalContext : undefined,
     tournamentParticipants,
     afterRecoveryTimes,
     contextContent,

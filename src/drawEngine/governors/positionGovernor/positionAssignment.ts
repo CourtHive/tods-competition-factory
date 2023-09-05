@@ -121,7 +121,7 @@ export function assignDrawPosition({
     structure,
   });
 
-  const relevantAssignment = seedAssignments.find(
+  const relevantAssignment = seedAssignments?.find(
     (assignment) => assignment.participantId === participantId
   );
   const participantSeedNumber = relevantAssignment?.seedNumber;

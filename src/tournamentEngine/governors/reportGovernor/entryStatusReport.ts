@@ -145,7 +145,7 @@ export function getEntryStatusReports({
       const participantId = entry.participantId;
       const individualParticipantIds = participantMap?.[
         participantId
-      ].participant.individualParticipantIds.filter(
+      ].participant.individualParticipantIds?.filter(
         // ensure that for TEAM events individuals who did not compete are not included
         (id) => nonTeamEnteredParticipantIds.includes(id)
       );

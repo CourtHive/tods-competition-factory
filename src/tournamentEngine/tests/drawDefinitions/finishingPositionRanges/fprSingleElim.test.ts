@@ -51,7 +51,7 @@ it('generates correct finishingPositionRanges for SINGLE_ELIMINATION draws', () 
   const { extensions } = drawDefinition;
   expect(extensions.length).toEqual(2);
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
-  expect(appliedPolicies?.seeding.policyName).toEqual('ITF SEEDING');
+  expect(appliedPolicies?.seeding?.policyName).toEqual('ITF SEEDING');
 
   // find main structureId more intelligently
   const mainStructureId = drawDefinition.structures[0].structureId;

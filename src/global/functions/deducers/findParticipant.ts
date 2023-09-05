@@ -1,9 +1,9 @@
 import { getScaleValues } from '../../../tournamentEngine/getters/participants/getScaleValues';
 import { attributeFilter, makeDeepCopy } from '../../../utilities';
 
+import { ContextProfile, PolicyDefinitions } from '../../../types/factoryTypes';
 import { POLICY_TYPE_PARTICIPANT } from '../../../constants/policyConstants';
 import { Participant } from '../../../types/tournamentFromSchema';
-import { PolicyDefinitions } from '../../../types/factoryTypes';
 
 type HydratedParticipant = {
   [key: string | number | symbol]: unknown;
@@ -12,9 +12,9 @@ type HydratedParticipant = {
 type FindParticipantArgs = {
   tournamentParticipants: Participant[];
   policyDefinitions?: PolicyDefinitions;
+  contextProfile?: ContextProfile;
   participantId?: string;
   internalUse?: boolean;
-  contextProfile?: any;
   personId?: string;
 };
 

@@ -21,8 +21,28 @@ import {
 } from '../../../utilities/dateTime';
 
 import { MISSING_MATCHUP } from '../../../constants/errorConditionConstants';
+import { HydratedMatchUp } from '../../../types/hydrated';
 import { TEAM } from '../../../constants/eventConstants';
+import {
+  Event,
+  Tournament,
+  TypeEnum,
+} from '../../../types/tournamentFromSchema';
+import {
+  ScheduleTiming,
+  ScheduleVisibilityFilters,
+} from '../../../types/factoryTypes';
 
+type GetMatchUpScheduleDetailsArgs = {
+  scheduleVisibilityFilters?: ScheduleVisibilityFilters;
+  scheduleTiming?: ScheduleTiming;
+  afterRecoveryTimes?: boolean;
+  tournamentRecord?: Tournament;
+  matchUpFormat?: string;
+  matchUpType?: TypeEnum;
+  matchUp: HydratedMatchUp;
+  event?: Event;
+};
 export function getMatchUpScheduleDetails({
   scheduleVisibilityFilters,
   afterRecoveryTimes,
@@ -32,7 +52,7 @@ export function getMatchUpScheduleDetails({
   matchUpType,
   matchUp,
   event,
-}) {
+}: GetMatchUpScheduleDetailsArgs) {
   if (!matchUp) return { error: MISSING_MATCHUP };
 
   // matchUpType is required to derive averageMatchUpMinutes and recoveryMinutes.
@@ -45,7 +65,7 @@ export function getMatchUpScheduleDetails({
     (event || tournamentRecord) &&
     matchUp.drawId
   ) {
-    let drawDefinition = event?.drawDefinitions.find(
+    let drawDefinition = event?.drawDefinitions?.find(
       (drawDefinition) => drawDefinition.drawId === matchUp.drawId
     );
 
@@ -74,7 +94,7 @@ export function getMatchUpScheduleDetails({
 
   let schedule;
   const { visibilityThreshold, eventIds, drawIds } =
-    scheduleVisibilityFilters || {};
+    scheduleVisibilityFilters ?? {};
 
   if (
     (!eventIds || eventIds.includes(matchUp.eventId)) &&
@@ -95,9 +115,10 @@ export function getMatchUpScheduleDetails({
       typeChangeRecoveryMinutes,
       typeChangeTimeAfterRecovery;
 
-    if (scheduleTiming?.policy && scheduledTime && afterRecoveryTimes) {
+    const eventType = matchUp.matchUpType ?? matchUpType;
+    if (scheduleTiming && scheduledTime && afterRecoveryTimes && eventType) {
       const timingDetails = {
-        matchUpFormat: matchUp.matchUpFormat || matchUpFormat,
+        matchUpFormat: matchUp.matchUpFormat ?? matchUpFormat,
         ...scheduleTiming,
       };
       ({
@@ -105,8 +126,8 @@ export function getMatchUpScheduleDetails({
         recoveryMinutes = 0,
         typeChangeRecoveryMinutes = 0,
       } = matchUpFormatTimes({
-        eventType: matchUp.matchUpType || matchUpType,
         timingDetails,
+        eventType,
       }));
 
       if (averageMinutes || recoveryMinutes) {
@@ -199,9 +220,9 @@ export function getMatchUpScheduleDetails({
     });
   }
 
-  const hasCompletedStatus = completedMatchUpStatuses.includes(
-    matchUp.matchUpStatus
-  );
+  const hasCompletedStatus =
+    matchUp.matchUpStatus &&
+    completedMatchUpStatuses.includes(matchUp.matchUpStatus);
 
   const { scheduledDate } = scheduledMatchUpDate({ matchUp });
   const { scheduledTime } = scheduledMatchUpTime({ matchUp });

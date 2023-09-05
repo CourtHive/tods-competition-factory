@@ -406,28 +406,28 @@ export function getNextSeedBlock(params) {
   const nextSeedBlock = unfilledSeedBlocks[0];
 
   const assignedSeedParticipantIds = seedAssignments
-    .map((assignment) => assignment.participantId)
+    ?.map((assignment) => assignment.participantId)
     .filter(Boolean);
   const assignedPositionParticipantIds = positionAssignments
     ?.map((assignment) => assignment.participantId)
     .filter(Boolean);
-  const placedSeedParticipantIds = assignedSeedParticipantIds.filter(
+  const placedSeedParticipantIds = assignedSeedParticipantIds?.filter(
     (participantId) => assignedPositionParticipantIds?.includes(participantId)
   );
 
-  const unplacedSeedIds = assignedSeedParticipantIds.filter(
+  const unplacedSeedIds = assignedSeedParticipantIds?.filter(
     (participantId) => !assignedPositionParticipantIds?.includes(participantId)
   );
 
-  const unplacedSeedAssignments = seedAssignments.filter((assignment) =>
-    unplacedSeedIds.includes(assignment.participantId)
+  const unplacedSeedAssignments = seedAssignments?.filter(
+    (assignment) => unplacedSeedIds?.includes(assignment.participantId)
   );
 
-  const seedsWithoutDrawPositions = seedAssignments.filter(
+  const seedsWithoutDrawPositions = seedAssignments?.filter(
     (assignment) => !assignment.participantId
   );
   const seedsLeftToAssign =
-    unplacedSeedAssignments.length || seedsWithoutDrawPositions.length;
+    unplacedSeedAssignments?.length || seedsWithoutDrawPositions?.length;
   const unfilled =
     (seedsLeftToAssign &&
       nextSeedBlock?.drawPositions.filter(
@@ -449,8 +449,9 @@ export function getNextSeedBlock(params) {
     .filter(Boolean);
 
   const placedSeedNumbers = seedAssignments
-    .filter((assignment) =>
-      placedSeedParticipantIds.includes(assignment.participantId)
+    ?.filter(
+      (assignment) =>
+        placedSeedParticipantIds?.includes(assignment.participantId)
     )
     .map((assignment) => assignment.seedNumber);
   const blockSeedNumbers = nextSeedBlock?.seedNumbers || [];
@@ -458,11 +459,13 @@ export function getNextSeedBlock(params) {
   // unplacedSeedNumbers and unplacedSeedNumberIds will only be used
   // when policy specifies that seedNumbers/seedValues must be unique
   const unplacedSeedNumbers = blockSeedNumbers.filter(
-    (seedNumber) => !placedSeedNumbers.includes(seedNumber)
+    (seedNumber) => !placedSeedNumbers?.includes(seedNumber)
   );
 
   const unplacedSeedNumberIds = seedAssignments
-    .filter((assignment) => unplacedSeedNumbers.includes(assignment.seedNumber))
+    ?.filter((assignment) =>
+      unplacedSeedNumbers.includes(assignment.seedNumber)
+    )
     .map((assignment) => assignment.participantId);
 
   const duplicateSeedNumbers = appliedPolicies?.seeding?.duplicateSeedNumbers;

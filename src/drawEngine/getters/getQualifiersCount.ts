@@ -52,7 +52,8 @@ export function getQualifiersCount(params: GetQualifiersCountArgs) {
       })?.structure;
 
       if (sourceStructure?.stage === QUALIFYING) {
-        const sourceRoundNumber = relevantLink.source.roundNumber;
+        const sourceRoundNumber: number = relevantLink.source
+          .roundNumber as number;
         const roundTarget = relevantLink.target.roundNumber;
         let count = 0;
 

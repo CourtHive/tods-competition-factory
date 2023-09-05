@@ -50,7 +50,7 @@ export const structureTemplate = ({
   stage,
 }: StructureTemplateArgs) => {
   const structure: any = {
-    structureId: structureId || UUID(),
+    structureId: structureId ?? UUID(),
     structureAbbreviation,
     finishingPosition,
     seedAssignments,
@@ -61,7 +61,16 @@ export const structureTemplate = ({
 
   if (structureOrder) structure.structureOrder = structureOrder;
   if (structureType) structure.structureType = structureType;
-  if (seedingProfile) structure.seedingProfile = seedingProfile;
+  if (seedingProfile) {
+    if (typeof seedingProfile === 'string') {
+      structure.seedingProfile = seedingProfile;
+    } else if (
+      typeof seedingProfile === 'object' &&
+      typeof seedingProfile.positioning === 'string'
+    ) {
+      structure.seedingProfile = seedingProfile.positioning;
+    }
+  }
   if (matchUpType) structure.matchUpType = matchUpType;
   if (roundOffset) structure.roundOffset = roundOffset;
   if (stageOrder) structure.stageOrder = stageOrder;

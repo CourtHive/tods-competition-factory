@@ -859,6 +859,10 @@
         "WATERFALL"
       ]
     },
+    "SeedingProfileEnum": {
+      "type": "string",
+      "enum": ["CLUSTER", "SEPARATE", "WATERFALL"]
+    },
     "Interleave": {
       "type": "object",
       "properties": {

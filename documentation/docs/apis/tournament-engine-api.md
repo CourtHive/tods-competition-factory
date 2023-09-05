@@ -635,7 +635,7 @@ const { matchUps } = tournamentEngine.allTournamentMatchUps({
   matchUpFilters, // optional; [ scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
   contextFilters, // filters based on context attributes
   nextMatchUps, // include winnerTo and loserTo matchUps
-  contextProfile, // optional: { inferGender: true, withCompetitiveness: true, withScaleValues, true, exclude: ['attribute', 'to', 'exclude']}
+  contextProfile, // optional: { inferGender: true, withCompetitiveness: true, withScaleValues: true, exclude: ['attribute', 'to', 'exclude']}
 });
 ```
 

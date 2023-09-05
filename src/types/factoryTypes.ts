@@ -1,9 +1,11 @@
+import { MatchUpFilters } from '../drawEngine/getters/getMatchUps/filterMatchUps';
 import { MatchUpsMap } from '../drawEngine/getters/getMatchUps/getMatchUpsMap';
 import { SignedInStatusEnum } from '../constants/participantConstants';
 import { HydratedMatchUp, HydratedParticipant } from './hydrated';
 import { ErrorType } from '../constants/errorConditionConstants';
 import { ValidPolicyTypes } from '../constants/policyConstants';
 import {
+  Category,
   DrawDefinition,
   Entry,
   Event,
@@ -15,6 +17,7 @@ import {
   ParticipantTypeEnum,
   SexEnum,
   Side,
+  StageTypeEnum,
   TimeItem,
   Tournament,
   TypeEnum,
@@ -70,7 +73,7 @@ export type FlightProfile = {
 };
 
 export type PolicyDefinitions = {
-  [key in ValidPolicyTypes]?: any;
+  [key in ValidPolicyTypes]?: { [key: string]: any };
 };
 
 export type QueueMethod = {
@@ -100,15 +103,14 @@ export type RoundProfile = {
 };
 
 export type ParticipantFilters = {
-  [key: string]: any;
-  positionedParticipants?: boolean; // boolean - participantIds that are included in any structure.positionAssignments
-  eventEntryStatuses?: string[]; // {string[]} participantIds that are in entry.entries with entryStatuses
-  drawEntryStatuses?: string[]; // {string[]} participantIds that are in draw.entries or flightProfile.flights[].drawEnteredParticipantIds with entryStatuses
   accessorValues?: { accessor: string; value: any }[];
   participantRoleResponsibilities?: string[];
   participantRoles?: ParticipantRoleEnum[];
   participantTypes?: ParticipantTypeEnum[];
   signInStatus?: SignedInStatusEnum;
+  positionedParticipants?: boolean; // boolean - participantIds that are included in any structure.positionAssignments
+  eventEntryStatuses?: string[]; // {string[]} participantIds that are in entry.entries with entryStatuses
+  drawEntryStatuses?: string[]; // {string[]} participantIds that are in draw.entries or flightProfile.flights[].drawEnteredParticipantIds with entryStatuses
   enableOrFiltering?: boolean;
   participantIds?: string[];
   genders?: GenderEnum;
@@ -167,12 +169,12 @@ export type ParticipantsProfile = {
   personData?: PersonData;
   personIds?: string[];
   inContext?: boolean;
+  category?: Category;
   withISO2?: boolean;
   withIOC?: boolean;
   teamKey?: TeamKey;
   idPrefix?: string;
   uuids?: string[];
-  category?: any;
   sex?: SexEnum;
 
   // Usage via participantsProfile unconfirmed...
@@ -184,36 +186,117 @@ export type ParticipantsProfile = {
   withEvents?: boolean;
   withDraws?: boolean;
 
+  participantFilters?: ParticipantFilters;
   scheduleAnalysis?: ScheduleAnalysis;
   policyDefinitions?: PolicyDefinitions;
-  participantFilters?: any;
 };
 
 export type ScheduleVisibilityFilters = {
   visibilityThreshold: string;
   eventIds?: string[];
   drawIds?: string[];
-}[];
+};
+
+export type ContextContent = {
+  policies?: PolicyDefinitions;
+};
+
+export type ContextProfile = {
+  withCompetitiveness?: boolean;
+  withScaleValues?: boolean;
+  inferGender?: boolean;
+  exclude?: string[];
+};
+
+type Counters = {
+  walkoverWins: number;
+  defaultWins: number;
+  walkovers: number;
+  defaults: number;
+  losses: number;
+  wins: number;
+};
+
+export type ScheduleConflict = {
+  priorScheduledMatchUpId: string;
+  matchUpIdWithConflict: string;
+};
+
+export type StructureParticipation = {
+  rankingStage: StageTypeEnum;
+  walkoverWinCount: number;
+  defaultWinCount: number;
+  stageSequence: number;
+  structureId: string;
+  winCount: number;
+  drawId: string;
+};
+
+export type MappedParticipant = {
+  structureParticipation:
+    | { [key: string]: StructureParticipation }
+    | StructureParticipation[];
+  potentialMatchUps: {
+    tournamentId: string;
+    matchUpId: string;
+    eventId: string;
+    drawId: string;
+  }[];
+  scheduleConflicts: ScheduleConflict[];
+  scheduleItems: any[];
+  participant: HydratedParticipant & {
+    groupParticipantIds: string[];
+    pairParticipantIds: string[];
+    teamParticipantIds: string[];
+    groups: {
+      participantRoleResponsibilities?: string[];
+      participantOtherName?: string;
+      participantName: string;
+      participantId: string;
+    }[];
+    teams: {
+      participantRoleResponsibilities?: string[];
+      participantOtherName?: string;
+      participantName: string;
+      participantId: string;
+      teamId: string;
+    }[];
+  };
+  // NOTE: for the following an Object is used for the aggregation step and the reuslt is returned as an array
+  statistics: { [key: string]: any } | any[];
+  opponents: { [key: string]: any } | any[];
+  pairIdMap: { [key: string]: any } | any[];
+  matchUps: { [key: string]: any } | any[];
+  events: { [key: string]: any } | any[];
+  draws: { [key: string]: any } | any[];
+  counters: Counters & {
+    [TypeEnum.Doubles]: Counters;
+    [TypeEnum.Singles]: Counters;
+    [TypeEnum.Team]: Counters;
+  };
+};
+
+export type ParticipantMap = { [key: string]: MappedParticipant };
 
 export type GetMatchUpsArgs = {
-  participantMap?: { [key: string]: HydratedParticipant[] };
   scheduleVisibilityFilters?: ScheduleVisibilityFilters;
   tournamentAppliedPolicies?: PolicyDefinitions;
   participantsProfile?: ParticipantsProfile;
   participants?: HydratedParticipant[];
   policyDefinitions?: PolicyDefinitions;
+  context?: { [key: string]: any };
+  contextFilters?: MatchUpFilters;
+  matchUpFilters?: MatchUpFilters;
+  contextContent?: ContextContent;
+  participantMap?: ParticipantMap;
   tournamentRecord?: Tournament;
+  contextProfile?: ContextProfile;
   drawDefinition?: DrawDefinition;
   afterRecoveryTimes?: boolean;
   useParticipantMap?: boolean;
   nextMatchUps?: boolean;
   tournamentId?: string;
-  contextFilters?: any;
-  contextContent?: any;
-  matchUpFilters?: any;
-  contextProfile?: any;
   inContext?: boolean;
-  context?: any;
   event?: Event;
 };
 
@@ -236,4 +319,28 @@ export type GroupsMatchUpsResult = {
 
 export type TournamentRecords = {
   [key: string]: Tournament;
+};
+
+export type ExitProfiles = { [key: string]: string[] };
+
+type MinutesMapping = {
+  categoryNames: string[];
+  minutes: any;
+};
+
+export type ScheduleTiming = {
+  matchUpRecoveryTimes: {
+    [key: string]: {
+      recoveryTiming: MinutesMapping[];
+      matchUpFormatCodes: string[];
+    };
+  }[];
+  matchUpAverageTimes: {
+    [key: string]: {
+      [key: string]: {
+        averageTiming: MinutesMapping[];
+        matchUpFormatCodes: string[];
+      };
+    };
+  }[];
 };

@@ -1,5 +1,3 @@
-import { SeedingProfile } from './factoryTypes';
-
 export interface Tournament {
   createdAt?: Date | string;
   /**
@@ -291,6 +289,11 @@ export enum PositioningProfileEnum {
   LossPosition = 'LOSS_POSITION',
   Random = 'RANDOM',
   TopDown = 'TOP_DOWN',
+  Waterfall = 'WATERFALL',
+}
+export enum SeedingProfileEnum {
+  Cluster = 'CLUSTER',
+  Separate = 'SEPARATE',
   Waterfall = 'WATERFALL',
 }
 
@@ -649,7 +652,7 @@ export interface Structure {
   roundLimit?: number;
   roundOffset?: number;
   seedAssignments?: SeedAssignment[];
-  seedingProfile?: SeedingProfile;
+  seedingProfile?: SeedingProfileEnum;
   seedLimit?: number;
   stage?: StageTypeEnum;
   stageSequence?: number;

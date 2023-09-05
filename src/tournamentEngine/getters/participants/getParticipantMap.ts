@@ -3,8 +3,10 @@ import { getTimeItem } from '../../governors/queryGovernor/timeItems';
 import { attributeFilter, makeDeepCopy } from '../../../utilities';
 import { getScaleValues } from './getScaleValues';
 
+import { ParticipantMap, PolicyDefinitions } from '../../../types/factoryTypes';
 import { POLICY_TYPE_PARTICIPANT } from '../../../constants/policyConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
+import { Tournament } from '../../../types/tournamentFromSchema';
 import { HydratedParticipant } from '../../../types/hydrated';
 import {
   GROUP,
@@ -26,6 +28,18 @@ const membershipMap = {
 
 // build up an object with participantId keys which map to deepCopied participants
 // and which include all relevant groupings for each individualParticipant
+
+type GetParticpantsMapArgs = {
+  withIndividualParticipants?: boolean;
+  policyDefinitions?: PolicyDefinitions;
+  tournamentRecord: Tournament;
+  convertExtensions?: boolean;
+  withSignInStatus?: boolean;
+  withScaleValues?: boolean;
+  internalUse?: boolean;
+  withISO2?: boolean;
+  withIOC?: boolean;
+};
 export function getParticipantMap({
   withIndividualParticipants,
   convertExtensions,
@@ -36,11 +50,13 @@ export function getParticipantMap({
   internalUse,
   withISO2,
   withIOC,
-}) {
+}: GetParticpantsMapArgs): {
+  participantMap: ParticipantMap;
+} {
   const participantAttributes = policyDefinitions?.[POLICY_TYPE_PARTICIPANT];
   const filterAttributes = participantAttributes?.participant;
 
-  const participantMap: { [key: string]: any } = {};
+  const participantMap: ParticipantMap = {};
   // initialize all participants first, to preserve order
   for (const participant of tournamentRecord.participants || []) {
     const participantId = participant?.participantId;

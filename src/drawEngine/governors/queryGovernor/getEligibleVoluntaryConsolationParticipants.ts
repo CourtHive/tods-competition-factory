@@ -6,8 +6,9 @@ import {
 } from '../../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
 
 import { POLICY_TYPE_VOLUNTARY_CONSOLATION } from '../../../constants/policyConstants';
-import { HydratedSide, PolicyDefinitions } from '../../../types/factoryTypes';
+import { VOLUNTARY_CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import { UNGROUPED, WITHDRAWN } from '../../../constants/entryStatusConstants';
+import { HydratedSide, PolicyDefinitions } from '../../../types/factoryTypes';
 import { DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -15,16 +16,11 @@ import {
   MISSING_DRAW_DEFINITION,
 } from '../../../constants/errorConditionConstants';
 import {
-  MAIN,
-  PLAY_OFF,
-  QUALIFYING,
-  VOLUNTARY_CONSOLATION,
-} from '../../../constants/drawDefinitionConstants';
-import {
   DrawDefinition,
   Event,
   MatchUpStatusEnum,
   Participant,
+  StageTypeEnum,
   Tournament,
 } from '../../../types/tournamentFromSchema';
 
@@ -67,23 +63,28 @@ export function getEligibleVoluntaryConsolationParticipants({
 } {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
-  const stages = [MAIN, PLAY_OFF];
-  if (includeQualifyingStage) stages.push(QUALIFYING);
+  const stages = [StageTypeEnum.Main, StageTypeEnum.PlayOff];
+  if (includeQualifyingStage) stages.push(StageTypeEnum.Qualifying);
+
+  const eventMatchUpFilters = event?.eventType
+    ? { matchUpTypes: [event.eventType] }
+    : undefined;
+  const drawMatchUpFilters = drawDefinition?.matchUpType
+    ? { matchUpTypes: [drawDefinition.matchUpType] }
+    : undefined;
 
   const matchUps =
     includeEventParticipants && event
       ? allEventMatchUps({
           contextFilters: { stages },
-          matchUpFilters: { matchUpTypes: [event.eventType].filter(Boolean) },
+          matchUpFilters: eventMatchUpFilters,
           tournamentRecord,
           inContext: true,
           event,
         })?.matchUps || []
       : allDrawMatchUps({
           contextFilters: { stages },
-          matchUpFilters: {
-            matchUpTypes: [drawDefinition?.matchUpType].filter(Boolean),
-          },
+          matchUpFilters: drawMatchUpFilters,
           tournamentRecord,
           inContext: true,
           drawDefinition,

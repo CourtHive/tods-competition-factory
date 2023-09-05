@@ -19,12 +19,12 @@ export function addStructureParticipation({
 
   if (!participantAggregator.structureParticipation[structureId]) {
     participantAggregator.structureParticipation[structureId] = {
-      structureId,
       rankingStage: stage,
       walkoverWinCount: 0,
       defaultWinCount: 0,
       stageSequence,
       winCount: 0,
+      structureId,
       drawId,
     };
   }

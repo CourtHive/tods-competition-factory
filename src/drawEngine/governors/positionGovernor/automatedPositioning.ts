@@ -183,8 +183,12 @@ export function automatedPositioning({
 
     positioningReport.push({ action: 'positionByes', unseededByePositions });
 
+    const profileSeeding = structure.seedingProfile
+      ? { positioning: structure.seedingProfile }
+      : seedingProfile;
+
     result = positionSeedBlocks({
-      seedingProfile: structure.seedingProfile ?? seedingProfile,
+      seedingProfile: profileSeeding,
       provisionalPositioning,
       inContextDrawMatchUps,
       tournamentRecord,
@@ -200,15 +204,18 @@ export function automatedPositioning({
     if (result.error) return handleErrorCondition(result);
 
     positioningReport.push({
-      action: 'positionSeedBlocks',
       seedPositions: result.seedPositions,
+      action: 'positionSeedBlocks',
     });
   } else {
     // otherwise... seeds need to be placed first so that BYEs
     // can follow the seedValues of placed seeds
     if (drawType !== LUCKY_DRAW) {
+      const profileSeeding = structure.seedingProfile
+        ? { positioning: structure.seedingProfile }
+        : seedingProfile;
       const result = positionSeedBlocks({
-        seedingProfile: structure.seedingProfile ?? seedingProfile,
+        seedingProfile: profileSeeding,
         provisionalPositioning,
         inContextDrawMatchUps,
         tournamentRecord,
