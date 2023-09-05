@@ -9,6 +9,7 @@ import { TEAM } from '../../../constants/matchUpTypes';
 import {
   ContextContent,
   ContextProfile,
+  ParticipantMap,
   PolicyDefinitions,
   ScheduleVisibilityFilters,
 } from '../../../types/factoryTypes';
@@ -48,6 +49,7 @@ type GetStructureMatchUpsArgs = {
   policyDefinitions?: PolicyDefinitions;
   tournamentAppliedPolicies?: any;
   contextContent?: ContextContent;
+  participantMap?: ParticipantMap;
   requireParticipants?: boolean;
   tournamentRecord?: Tournament;
   contextProfile?: ContextProfile;
@@ -56,7 +58,6 @@ type GetStructureMatchUpsArgs = {
   structure?: Structure;
   matchUpFilters?: any;
   contextFilters?: any;
-  participantMap?: any;
   scheduleTiming?: any;
   structureId?: string;
   inContext?: boolean;

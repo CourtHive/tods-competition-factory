@@ -16,6 +16,7 @@ import {
   ParticipantTypeEnum,
   SexEnum,
   Side,
+  StageTypeEnum,
   TimeItem,
   Tournament,
   TypeEnum,
@@ -206,8 +207,77 @@ export type ContextProfile = {
   exclude?: string[];
 };
 
+type Counters = {
+  walkoverWins: number;
+  defaultWins: number;
+  walkovers: number;
+  defaults: number;
+  losses: number;
+  wins: number;
+};
+
+export type ScheduleConflict = {
+  priorScheduledMatchUpId: string;
+  matchUpIdWithConflict: string;
+};
+
+export type StructureParticipation = {
+  rankingStage: StageTypeEnum;
+  walkoverWinCount: number;
+  defaultWinCount: number;
+  stageSequence: number;
+  structureId: string;
+  winCount: number;
+  drawId: string;
+};
+
+export type MappedParticipant = {
+  structureParticipation:
+    | { [key: string]: StructureParticipation }
+    | StructureParticipation[];
+  potentialMatchUps: {
+    tournamentId: string;
+    matchUpId: string;
+    eventId: string;
+    drawId: string;
+  }[];
+  scheduleConflicts: ScheduleConflict[];
+  scheduleItems: any[];
+  participant: HydratedParticipant & {
+    groupParticipantIds: string[];
+    pairParticipantIds: string[];
+    teamParticipantIds: string[];
+    groups: {
+      participantRoleResponsibilities?: string[];
+      participantOtherName?: string;
+      participantName: string;
+      participantId: string;
+    }[];
+    teams: {
+      participantRoleResponsibilities?: string[];
+      participantOtherName?: string;
+      participantName: string;
+      participantId: string;
+      teamId: string;
+    }[];
+  };
+  // NOTE: for the following an Object is used for the aggregation step and the reuslt is returned as an array
+  statistics: { [key: string]: any } | any[];
+  opponents: { [key: string]: any } | any[];
+  pairIdMap: { [key: string]: any } | any[];
+  matchUps: { [key: string]: any } | any[];
+  events: { [key: string]: any } | any[];
+  draws: { [key: string]: any } | any[];
+  counters: Counters & {
+    [TypeEnum.Doubles]: Counters;
+    [TypeEnum.Singles]: Counters;
+    [TypeEnum.Team]: Counters;
+  };
+};
+
+export type ParticipantMap = { [key: string]: MappedParticipant };
+
 export type GetMatchUpsArgs = {
-  participantMap?: { [key: string]: HydratedParticipant[] };
   scheduleVisibilityFilters?: ScheduleVisibilityFilters;
   tournamentAppliedPolicies?: PolicyDefinitions;
   participantsProfile?: ParticipantsProfile;
@@ -215,6 +285,7 @@ export type GetMatchUpsArgs = {
   policyDefinitions?: PolicyDefinitions;
   context?: { [key: string]: any };
   contextContent?: ContextContent;
+  participantMap?: ParticipantMap;
   tournamentRecord?: Tournament;
   contextProfile?: ContextProfile;
   drawDefinition?: DrawDefinition;

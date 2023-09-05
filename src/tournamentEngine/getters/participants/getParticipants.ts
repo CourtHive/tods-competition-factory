@@ -12,6 +12,7 @@ import {
   ParticipantFilters,
   PolicyDefinitions,
   ScheduleAnalysis,
+  ParticipantMap,
 } from '../../../types/factoryTypes';
 import {
   MISSING_TOURNAMENT_RECORD,
@@ -45,9 +46,9 @@ type GetParticipantsArgs = {
 };
 export function getParticipants(params: GetParticipantsArgs): {
   eventsPublishStatuses?: { [key: string]: any };
-  participantMap?: { [key: string]: any };
   participantIdsWithConflicts?: string[];
   participants?: HydratedParticipant[];
+  participantMap?: ParticipantMap;
   derivedEventInfo?: any;
   derivedDrawInfo?: any;
   matchUps?: MatchUp[];
@@ -137,12 +138,12 @@ export function getParticipants(params: GetParticipantsArgs): {
     ({
       potentialMatchUps,
       scheduleConflicts,
+      participant,
       statistics,
       opponents,
       matchUps,
       events,
       draws,
-      ...p
     }) => {
       const participantDraws: any[] = Object.values(draws);
       const participantOpponents = Object.values(opponents);
@@ -156,7 +157,7 @@ export function getParticipants(params: GetParticipantsArgs): {
 
       return definedAttributes(
         {
-          ...p.participant,
+          ...participant,
           scheduleConflicts: scheduleAnalysis ? scheduleConflicts : undefined,
           draws: withDraws || withRankingProfile ? participantDraws : undefined,
           events:

@@ -3,10 +3,10 @@ import { getTimeItem } from '../../governors/queryGovernor/timeItems';
 import { attributeFilter, makeDeepCopy } from '../../../utilities';
 import { getScaleValues } from './getScaleValues';
 
+import { ParticipantMap, PolicyDefinitions } from '../../../types/factoryTypes';
 import { POLICY_TYPE_PARTICIPANT } from '../../../constants/policyConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { Tournament } from '../../../types/tournamentFromSchema';
-import { PolicyDefinitions } from '../../../types/factoryTypes';
 import { HydratedParticipant } from '../../../types/hydrated';
 import {
   GROUP,
@@ -50,11 +50,13 @@ export function getParticipantMap({
   internalUse,
   withISO2,
   withIOC,
-}: GetParticpantsMapArgs) {
+}: GetParticpantsMapArgs): {
+  participantMap: ParticipantMap;
+} {
   const participantAttributes = policyDefinitions?.[POLICY_TYPE_PARTICIPANT];
   const filterAttributes = participantAttributes?.participant;
 
-  const participantMap: { [key: string]: any } = {};
+  const participantMap: ParticipantMap = {};
   // initialize all participants first, to preserve order
   for (const participant of tournamentRecord.participants || []) {
     const participantId = participant?.participantId;

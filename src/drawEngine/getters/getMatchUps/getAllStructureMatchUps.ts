@@ -48,6 +48,7 @@ import {
 import {
   ContextContent,
   ContextProfile,
+  ParticipantMap,
   PolicyDefinitions,
   ScheduleVisibilityFilters,
 } from '../../../types/factoryTypes';
@@ -64,6 +65,7 @@ type GetAllStructureMatchUps = {
   provisionalPositioning?: boolean;
   tournamentAppliedPolicies?: any;
   contextContent?: ContextContent;
+  participantMap?: ParticipantMap;
   drawDefinition?: DrawDefinition;
   contextProfile?: ContextProfile;
   tournamentRecord?: Tournament;
@@ -73,7 +75,6 @@ type GetAllStructureMatchUps = {
   structure?: Structure;
   contextFilters?: any;
   matchUpFilters?: any;
-  participantMap?: any;
   scheduleTiming?: any;
   inContext?: boolean;
   exitProfiles?: any;
