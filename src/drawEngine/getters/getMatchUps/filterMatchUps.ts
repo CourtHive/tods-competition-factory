@@ -12,18 +12,17 @@ import {
   StageTypeEnum,
 } from '../../../types/tournamentFromSchema';
 
-export type MatchUpFilterArgs = {
-  matchUps: HydratedMatchUp[];
-  excludeMatchUpStatuses?: boolean;
+export type MatchUpFilters = {
+  matchUpStatuses?: MatchUpStatusEnum[];
+  excludeMatchUpStatuses?: string[];
   isCollectionMatchUp?: boolean;
-  matchUpStatuses?: MatchUpStatusEnum;
-  hasWinningSide?: boolean;
   matchUpFormats?: string[];
   roundPositions?: number[];
-  matchUpFormat?: string;
+  hasWinningSide?: boolean;
   collectionIds?: string[];
-  isMatchUpTie?: boolean;
   roundNumbers?: number[];
+  isMatchUpTie?: boolean;
+  matchUpFormat?: string;
   matchUpIds?: string[];
   roundNames?: string[];
 
@@ -48,7 +47,11 @@ export type MatchUpFilterArgs = {
   filterMatchUpIds?: boolean;
 };
 
-export function filterMatchUps(params: MatchUpFilterArgs) {
+type FilterMatchUpsArgs = MatchUpFilters & {
+  matchUps: HydratedMatchUp[];
+};
+
+export function filterMatchUps(params: FilterMatchUpsArgs) {
   const {
     matchUps,
 
@@ -215,12 +218,14 @@ export function filterMatchUps(params: MatchUpFilterArgs) {
     }
     if (
       targetMatchUpStatuses.length &&
-      !targetMatchUpStatuses.includes(matchUp.matchUpStatus)
+      (!matchUp.matchUpStatus ||
+        !targetMatchUpStatuses.includes(matchUp.matchUpStatus))
     ) {
       return false;
     }
     if (
       excludeTargetMatchUpStatuses.length &&
+      matchUp.matchUpStatus &&
       excludeTargetMatchUpStatuses.includes(matchUp.matchUpStatus)
     ) {
       return false;

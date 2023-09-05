@@ -1,3 +1,4 @@
+import { MatchUpFilters } from '../drawEngine/getters/getMatchUps/filterMatchUps';
 import { MatchUpsMap } from '../drawEngine/getters/getMatchUps/getMatchUpsMap';
 import { SignedInStatusEnum } from '../constants/participantConstants';
 import { HydratedMatchUp, HydratedParticipant } from './hydrated';
@@ -284,6 +285,8 @@ export type GetMatchUpsArgs = {
   participants?: HydratedParticipant[];
   policyDefinitions?: PolicyDefinitions;
   context?: { [key: string]: any };
+  contextFilters?: MatchUpFilters;
+  matchUpFilters?: MatchUpFilters;
   contextContent?: ContextContent;
   participantMap?: ParticipantMap;
   tournamentRecord?: Tournament;
@@ -293,8 +296,6 @@ export type GetMatchUpsArgs = {
   useParticipantMap?: boolean;
   nextMatchUps?: boolean;
   tournamentId?: string;
-  contextFilters?: any;
-  matchUpFilters?: any;
   inContext?: boolean;
   event?: Event;
 };

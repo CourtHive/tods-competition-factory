@@ -183,7 +183,7 @@ export function modifyMatchUpScore({
       );
     });
 
-    const matchUpFilters = isDualMatchUp && { matchUpTypes: [TEAM] };
+    const matchUpFilters = isDualMatchUp ? { matchUpTypes: [TEAM] } : undefined;
     const { matchUps } = getAllStructureMatchUps({
       afterRecoveryTimes: false,
       structure: itemStructure,

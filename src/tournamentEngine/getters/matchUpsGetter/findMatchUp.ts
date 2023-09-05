@@ -104,7 +104,7 @@ export function findMatchUp({
   });
 
   const { matchUp, structure } = drawEngineFindMatchUp({
-    context: inContext && additionalContext,
+    context: inContext ? additionalContext : undefined,
     tournamentParticipants,
     afterRecoveryTimes,
     contextContent,

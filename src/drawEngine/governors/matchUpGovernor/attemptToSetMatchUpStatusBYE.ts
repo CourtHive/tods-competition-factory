@@ -43,8 +43,8 @@ export function attemptToSetMatchUpStatusBYE({
     matchUp.matchUpStatusCodes = [];
     modifyMatchUpNotice({
       tournamentId: tournamentRecord?.tournamentId,
-      drawDefinition,
       context: stack,
+      drawDefinition,
       matchUp,
     });
     return { ...SUCCESS };

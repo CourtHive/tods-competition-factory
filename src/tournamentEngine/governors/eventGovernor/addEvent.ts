@@ -28,7 +28,7 @@ type AddEventArgs = {
   suppressNotifications?: boolean;
   tournamentRecord: Tournament;
   internalUse?: boolean;
-  event: any;
+  event: any; // any because eventId need not be present
 };
 export function addEvent({
   suppressNotifications,
@@ -36,8 +36,8 @@ export function addEvent({
   internalUse,
   event,
 }: AddEventArgs): {
+  context?: { [key: string]: any };
   error?: ErrorType;
-  context?: any;
   event?: Event;
   info?: any;
 } {

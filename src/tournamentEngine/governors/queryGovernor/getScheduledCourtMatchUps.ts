@@ -2,6 +2,7 @@ import { scheduledSortedMatchUps } from '../../../global/sorting/scheduledSorted
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
 import { getSchedulingProfile } from '../scheduleGovernor/schedulingProfile';
 
+import { MatchUpFilters } from '../../../drawEngine/getters/getMatchUps/filterMatchUps';
 import { ScheduleVisibilityFilters } from '../../../types/factoryTypes';
 import { ResultType } from '../../../global/functions/decorateResult';
 import { Tournament } from '../../../types/tournamentFromSchema';
@@ -15,8 +16,8 @@ import {
 type GetScheduledCourtMatchUpsArgs = {
   scheduleVisibilityFilters?: ScheduleVisibilityFilters;
   venueMatchUps?: HydratedMatchUp[];
+  matchUpFilters?: MatchUpFilters;
   tournamentRecord: Tournament;
-  matchUpFilters?: any;
   courtId: string;
 };
 
@@ -69,8 +70,8 @@ export function getScheduledCourtMatchUps(
 
 type GetScheduledVenueMatchUpsArgs = {
   scheduleVisibilityFilters?: ScheduleVisibilityFilters;
+  matchUpFilters?: MatchUpFilters;
   tournamentRecord: Tournament;
-  matchUpFilters?: any;
   venueId: string;
 };
 export function getScheduledVenueMatchUps({

@@ -2,19 +2,37 @@ import { getCollectionPositionAssignments } from '../../../tournamentEngine/gove
 import { getPairedParticipant } from '../../../tournamentEngine/governors/participantGovernor/getPairedParticipant';
 import { getTeamLineUp } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/getTeamLineUp';
 
+import { ParticipantMap } from '../../../types/factoryTypes';
 import { DOUBLES } from '../../../constants/matchUpTypes';
+import {
+  DrawDefinition,
+  Participant,
+  PositionAssignment,
+} from '../../../types/tournamentFromSchema';
+
+type GetDrawPositionCollectionAssignmentArgs = {
+  positionAssignments: PositionAssignment[];
+  tournamentParticipants?: Participant[];
+  participantMap?: ParticipantMap;
+  drawDefinition?: DrawDefinition;
+  collectionPosition?: number;
+  drawPositions?: number[];
+  collectionId: string;
+  matchUpType?: string;
+  sideLineUps?: any;
+};
 
 export function getDrawPositionCollectionAssignment({
   tournamentParticipants,
   positionAssignments,
   collectionPosition,
   drawPositions = [],
-  drawDefinition,
   participantMap,
+  drawDefinition,
   collectionId,
   sideLineUps,
   matchUpType,
-}) {
+}: GetDrawPositionCollectionAssignmentArgs) {
   if (!collectionId || !collectionPosition) return;
 
   const drawPositionCollectionAssignment =
@@ -30,7 +48,8 @@ export function getDrawPositionCollectionAssignment({
 
         const teamParticipant =
           side?.teamParticipant ||
-          participantMap?.[teamParticipantId]?.participant ||
+          (teamParticipantId &&
+            participantMap?.[teamParticipantId]?.participant) ||
           tournamentParticipants?.find(
             ({ participantId }) => participantId === teamParticipantId
           );

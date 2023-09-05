@@ -4,18 +4,18 @@ import { ErrorType } from '../../constants/errorConditionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 
 export type ResultType = {
+  context?: { [key: string]: any };
   stack?: string | string[];
   error?: ErrorType;
   errors?: string[];
   success?: boolean;
   valid?: boolean;
-  context?: any;
   info?: any;
 };
 
 type DecorateResultArgs = {
+  context?: { [key: string]: any };
   stack?: string | string[];
-  context?: any;
   result: any;
   info?: any;
 };
