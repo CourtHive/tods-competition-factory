@@ -165,8 +165,11 @@ function randomUnseededDistribution({
   drawSize,
   event,
 }) {
+  // when { drawSize: 2 } reverse the order so that popping results in equivalent order
   const shuffledDrawPositions =
-    drawSize > 2 ? shuffleArray(unfilledDrawPositions) : unfilledDrawPositions;
+    drawSize > 2
+      ? shuffleArray(unfilledDrawPositions)
+      : unfilledDrawPositions.reverse();
 
   for (const participantId of unseededParticipantIds) {
     const drawPosition = shuffledDrawPositions.pop();

@@ -3494,8 +3494,8 @@ Set the participantIds of participants in the draw who are representing players 
 
 ```js
 tournamentEngine.setDrawParticipantRepresentativeIds({
-  drawId,
   representativeParticipantIds,
+  drawId,
 });
 ```
 
