@@ -37,11 +37,26 @@ export function setEntryPosition({
     }
   });
 
+  // if there are other entries with equivalent entryPosition, incremnt to differentiate
+  // decimal values will be replaced with whole numbers by refreshEntryPositions()
+  const differentiateDuplicates = (obj) => {
+    obj.entries.forEach((entry) => {
+      if (
+        entry.entryPosition === entryPosition &&
+        entry.participantId !== participantId
+      ) {
+        entry.entryPosition += 0.1;
+      }
+    });
+  };
+
   if (!skipRefresh) {
     if (event?.entries) {
+      differentiateDuplicates(event);
       event.entries = refreshEntryPositions({ entries: event.entries });
     }
     if (drawDefinition?.entries) {
+      differentiateDuplicates(drawDefinition);
       drawDefinition.entries = refreshEntryPositions({
         entries: drawDefinition.entries,
       });

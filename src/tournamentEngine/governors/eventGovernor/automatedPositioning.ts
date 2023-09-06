@@ -25,6 +25,7 @@ type AutomatedPositioningArgs = {
   structureId: string;
   placeByes?: boolean;
   seedsOnly?: boolean;
+  drawSize: number;
   event: Event;
 };
 export function automatedPositioning({
@@ -35,6 +36,7 @@ export function automatedPositioning({
   structureId,
   placeByes,
   seedsOnly,
+  drawSize,
   event,
 }: AutomatedPositioningArgs) {
   if (!event) return { error: EVENT_NOT_FOUND };
@@ -51,6 +53,7 @@ export function automatedPositioning({
     structureId,
     placeByes,
     seedsOnly,
+    drawSize,
   });
 }
 

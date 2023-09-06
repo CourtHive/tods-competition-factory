@@ -232,6 +232,7 @@ export function prepareStage(params): ResultType & {
       placeByes,
       seedLimit,
       seedsOnly,
+      drawSize,
       drawType,
       event,
     });

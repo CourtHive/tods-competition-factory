@@ -164,8 +164,8 @@ it('disables placement actions for Round Robin Playoffs until all groups are com
     const { structureId } = structure;
     // position participants
     tournamentEngine.automatedPositioning({
-      drawId,
       structureId,
+      drawId,
     });
   });
 

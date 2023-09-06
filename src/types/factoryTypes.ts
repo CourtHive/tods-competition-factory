@@ -344,3 +344,9 @@ export type ScheduleTiming = {
     };
   }[];
 };
+
+export type Substitution = {
+  previousParticipantId: string;
+  substitutionOrder: number;
+  participantId: string;
+};
