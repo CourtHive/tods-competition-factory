@@ -30,6 +30,7 @@ export function positionUnseededParticipants({
   matchUpsMap,
   structureId,
   structure,
+  drawSize,
   event,
 }) {
   const stack = 'positionUnseededParticipants';
@@ -129,6 +130,7 @@ export function positionUnseededParticipants({
       matchUpsMap,
       structureId,
       avoidance,
+      drawSize,
       entries,
     });
   } else {
@@ -143,6 +145,7 @@ export function positionUnseededParticipants({
       seedBlockInfo,
       structureId,
       matchUpsMap,
+      drawSize,
       event,
     });
   }
@@ -159,9 +162,11 @@ function randomUnseededDistribution({
   seedBlockInfo,
   matchUpsMap,
   structureId,
+  drawSize,
   event,
 }) {
-  const shuffledDrawPositions = shuffleArray(unfilledDrawPositions);
+  const shuffledDrawPositions =
+    drawSize > 2 ? shuffleArray(unfilledDrawPositions) : unfilledDrawPositions;
 
   for (const participantId of unseededParticipantIds) {
     const drawPosition = shuffledDrawPositions.pop();

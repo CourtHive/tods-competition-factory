@@ -90,8 +90,8 @@ export function generateCurtisConsolation(params) {
     // when drawSize === 32 then all rounds feed into the two consolation structures
     if ((drawSize >= 4 && drawSize <= 16) || drawSize > 32) {
       const { matchUps: playoffMatchUps } = treeMatchUps({
-        finishingPositionOffset: 2,
         idPrefix: idPrefix && `${idPrefix}-p3t4`,
+        finishingPositionOffset: 2,
         drawSize: 2,
         matchUpType,
         isMock,

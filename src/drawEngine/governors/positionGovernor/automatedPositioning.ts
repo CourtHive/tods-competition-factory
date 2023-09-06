@@ -57,6 +57,7 @@ type AutomatedPositioningArgs = {
   seedsOnly?: boolean;
   seedLimit?: number;
   drawType?: string;
+  drawSize?: number;
   event?: Event;
 };
 export function automatedPositioning({
@@ -75,6 +76,7 @@ export function automatedPositioning({
   seedLimit,
   seedsOnly,
   drawType,
+  drawSize,
   event,
 }: AutomatedPositioningArgs): ResultType & {
   positionAssignments?: PositionAssignment[];
@@ -302,6 +304,7 @@ export function automatedPositioning({
       matchUpsMap,
       structureId,
       structure,
+      drawSize,
       event,
     });
 

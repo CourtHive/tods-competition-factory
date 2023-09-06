@@ -50,6 +50,7 @@ type RandomUnseededDistribution = {
   matchUpsMap?: MatchUpsMap;
   seedBlockInfo?: any;
   structureId: string;
+  drawSize: number;
   avoidance?: any;
   entries?: any;
   event?: Event;
@@ -66,6 +67,7 @@ export function randomUnseededSeparation({
   matchUpsMap,
   structureId,
   avoidance,
+  drawSize,
   entries, // entries for the specific stage of drawDefinition
   event,
 }: RandomUnseededDistribution) {
@@ -177,6 +179,7 @@ export function randomUnseededSeparation({
       policyAttributes,
       idCollections,
       allGroups,
+      drawSize,
     })
   );
 
@@ -200,6 +203,7 @@ export function randomUnseededSeparation({
         policyAttributes,
         idCollections,
         allGroups,
+        drawSize,
         entries,
       })
     );
