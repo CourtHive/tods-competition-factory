@@ -3,6 +3,7 @@
 benchmarks
 coverage
 node_modules
+node_*
 scratch
 dist
 *.un~
