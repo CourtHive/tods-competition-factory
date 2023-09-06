@@ -14,7 +14,7 @@ const features = [
     description: (
       <>
         The Competition Factory consumes, produces, and generates ITF standard
-        TODS documents (a JSON format) ensuring that all mutations are valid.
+        TODS documents (a JSON format) and ensures that all mutations are valid.
       </>
     ),
   },
@@ -24,9 +24,10 @@ const features = [
     imageLink: 'https://courthive.github.io/TMX/#/',
     description: (
       <>
-        Based on years of experience running thousands of events for governing
-        bodies, Competition Factory now powers the tournament management
-        platform of the USTA and the Intercollegiate Tennis Association.
+        Based on years of experience running thousands of events for numerous
+        governing bodies, Competition Factory now powers the tournament
+        management platform of the USTA and the Intercollegiate Tennis
+        Association.
       </>
     ),
   },
@@ -36,8 +37,8 @@ const features = [
     description: (
       <>
         Written in 100% TypeScript following a Test Driven Development process
-        utilizing Jest. ~450 test suites and ~1800 total tests covering greater
-        than 96% of the code base.
+        utilizing Vitest. More than 460 test files and 1800 total tests cover
+        more than 96% of the code base.
       </>
     ),
   },
