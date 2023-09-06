@@ -1,5 +1,5 @@
 import { HydratedMatchUp } from '../../../types/hydrated';
-import { getDetailsWTN } from './getDetailsWTN';
+import { getDetailsWTN } from '../queryGovernor/getDetailsWTN';
 
 type GetAvgWTNArgs = {
   matchUps: HydratedMatchUp[];
@@ -28,7 +28,7 @@ export function getAvgWTN({
     )
     .reduce((participants, matchUp) => {
       countMatchUpFormat(matchUp);
-      (matchUp.sides || [])
+      (matchUp.sides ?? [])
         .flatMap((side: any) =>
           (
             side?.participant?.individualParticipants || [side?.participant]
@@ -67,7 +67,9 @@ export function getAvgWTN({
     : 0;
 
   const counts: number[] = Object.values(matchUpFormatCounts);
-  const matchUpsCount = counts.reduce((p: number, c) => (p += c || 0), 0);
+  const matchUpsCount = counts.reduce((p: number, c) => {
+    return p + (c || 0);
+  }, 0);
 
   return {
     matchUpFormatCounts,
