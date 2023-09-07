@@ -25,9 +25,9 @@ import {
 } from '../../constants/matchUpStatusConstants';
 
 export function completeDrawMatchUps(params): {
+  completedCount?: number;
   success?: boolean;
   error?: ErrorType;
-  completedCount?: number;
 } {
   const {
     matchUpStatusProfile,
