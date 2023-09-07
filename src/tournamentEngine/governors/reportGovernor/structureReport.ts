@@ -8,12 +8,13 @@ import { getAvgWTN } from './getAvgWTN';
 
 import { MISSING_TOURNAMENT_ID } from '../../../constants/errorConditionConstants';
 import { ADD_SCALE_ITEMS } from '../../../constants/topicConstants';
+import { HydratedParticipant } from '../../../types/hydrated';
+import { SEEDING } from '../../../constants/scaleConstants';
 import {
   Participant,
   Side,
   Tournament,
 } from '../../../types/tournamentFromSchema';
-import { SEEDING } from '../../../constants/scaleConstants';
 import {
   CONSOLATION,
   MAIN,
@@ -29,7 +30,6 @@ import {
   DRAW_DELETIONS,
   FLIGHT_PROFILE,
 } from '../../../constants/extensionConstants';
-import { HydratedParticipant } from '../../../types/hydrated';
 
 type GetStructureReportsArgs = {
   extensionProfiles?: any[];
