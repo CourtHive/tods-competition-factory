@@ -5,6 +5,7 @@ import { findTournamentId } from './findTournamentId';
 import { TournamentRecordsArgs } from '../../../types/factoryTypes';
 import { DrawDefinition } from '../../../types/tournamentFromSchema';
 import {
+  EVENT_NOT_FOUND,
   MISSING_EVENT,
   MISSING_TOURNAMENT_ID,
   MISSING_TOURNAMENT_RECORD,
@@ -37,6 +38,7 @@ export function addDrawDefinition({
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
   const result = findEvent({ tournamentRecord, eventId });
+  if (!result.event) return { error: EVENT_NOT_FOUND };
   if (result.error) return result;
 
   return addDefinition({
