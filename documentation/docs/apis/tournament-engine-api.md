@@ -1680,18 +1680,47 @@ const { playoffRounds, playoffRoundsRanges, positionsPlayedOff } =
   });
 ```
 
-...For a SINGLE_ELIMINATION struture with drawSize: 16 this would return:
+...for a SINGLE_ELIMINATION struture with `{ drawSize: 16 }` this would return:
 
 ```js
-    {
-      playoffRounds: [ 1, 2, 3 ],
-      playoffRoundsRanges: [
-        { round: 1, range: '9-16' },
-        { round: 2, range: '5-8' },
-        { round: 3, range: '3-4' }
-      ]
-    }
+{
+  playoffRounds: [ 1, 2, 3 ],
+  playoffRoundsRanges: [
+    { round: 1, range: '9-16' },
+    { round: 2, range: '5-8' },
+    { round: 3, range: '3-4' }
+  ]
+}
+```
 
+...for a ROUND_ROBIN struture with `{ drawSize: 16 }` and `{ groupSize: 4 }` this would return:
+
+```js
+{
+    "finishingPositionsAvailable": [ 1, 2, 3, 4 ],
+    "playoffFinishingPositionRanges": [
+        {
+            "finishingPosition": 1,
+            "finishingPositions": [ 1, 2, 3, 4 ],
+            "finishingPositionRange": "1-4"
+        },
+        {
+            "finishingPosition": 2,
+            "finishingPositions": [ 5, 6, 7, 8 ],
+            "finishingPositionRange": "5-8"
+        },
+        {
+            "finishingPosition": 3,
+            "finishingPositions": [ 9, 10, 11, 12 ],
+            "finishingPositionRange": "9-12"
+        },
+        {
+            "finishingPosition": 4,
+            "finishingPositions": [ 13, 14, 15, 16 ],
+            "finishingPositionRange": "13-16"
+        }
+    ],
+}
 ```
 
 When no `structureId` is provided, returns an array of `availablePlayoffProfiles` with entries for each structure in a specified `drawDefinition`.
