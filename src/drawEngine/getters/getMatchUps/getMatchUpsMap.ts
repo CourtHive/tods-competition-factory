@@ -1,10 +1,11 @@
 import { makeDeepCopy } from '../../../utilities';
+
+import { HydratedMatchUp } from '../../../types/hydrated';
 import {
   DrawDefinition,
   MatchUp,
   Structure,
 } from '../../../types/tournamentFromSchema';
-import { HydratedMatchUp } from '../../../types/hydrated';
 
 export type MappedMatchUps = {
   [key: string]: {
@@ -31,7 +32,7 @@ export function getMatchUpsMap({
   const mappedMatchUps: MappedMatchUps = {};
   const drawMatchUps: MatchUp[] = [];
 
-  (drawDefinition?.structures || [structure])
+  (drawDefinition?.structures ?? [structure])
     .filter((structure) => structure && typeof structure === 'object')
     .forEach((structure) => {
       if (!structure) return;
@@ -93,7 +94,7 @@ export function getMappedStructureMatchUps({
   structureId,
   inContext,
 }: GetMappedStructureMatchUpsArgs) {
-  mappedMatchUps = matchUpsMap?.mappedMatchUps || mappedMatchUps;
+  mappedMatchUps = matchUpsMap?.mappedMatchUps ?? mappedMatchUps;
   const structureMatchUpsMap = mappedMatchUps[structureId];
   const itemStructureMatchUps = (structureMatchUpsMap?.itemStructureIds || [])
     .map((itemStructureId) => {

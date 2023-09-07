@@ -1,6 +1,6 @@
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
 import { getParticipants } from '../../getters/participants/getParticipants';
-import { getDetailsWTN } from './getDetailsWTN';
+import { getDetailsWTN } from '../queryGovernor/getDetailsWTN';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 import { STRUCTURE_SELECTED_STATUSES } from '../../../constants/entryStatusConstants';

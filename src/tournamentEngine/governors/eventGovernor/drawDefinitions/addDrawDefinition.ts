@@ -1,6 +1,9 @@
 import { addEventExtension } from '../../tournamentGovernor/addRemoveExtensions';
 import { allDrawMatchUps } from '../../../getters/matchUpsGetter/matchUpsGetter';
-import { decorateResult } from '../../../../global/functions/decorateResult';
+import {
+  ResultType,
+  decorateResult,
+} from '../../../../global/functions/decorateResult';
 import { getMatchUpId } from '../../../../global/functions/extractors';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 import { ensureInt } from '../../../../utilities/ensureInt';
@@ -22,8 +25,27 @@ import {
   MISSING_DRAW_ID,
   MISSING_EVENT,
 } from '../../../../constants/errorConditionConstants';
+import {
+  DrawDefinition,
+  Event,
+  Tournament,
+} from '../../../../types/tournamentFromSchema';
 
-export function addDrawDefinition(params) {
+type AddDrawDefinitionArgs = {
+  flight?: { flightNumber: number };
+  suppressNotifications?: boolean;
+  tournamentRecord?: Tournament;
+  modifyEventEntries?: boolean;
+  drawDefinition: DrawDefinition;
+  existingDrawCount?: number;
+  allowReplacement?: boolean;
+  checkEntryStatus?: boolean;
+  event: Event;
+};
+
+export function addDrawDefinition(
+  params: AddDrawDefinitionArgs
+): ResultType & { modifiedEventEntryStatusCount?: number } {
   const {
     flight: flightDefinition,
     suppressNotifications,
@@ -67,15 +89,21 @@ export function addDrawDefinition(params) {
     );
 
   if (sourceDrawIdError)
-    return { error: MISSING_DRAW_DEFINITION, sourceDrawId };
+    return decorateResult({
+      result: { error: MISSING_DRAW_DEFINITION },
+      info: { sourceDrawId },
+    });
 
   const flightConflict =
     relevantFlight && relevantFlight.drawId !== drawDefinition.drawId;
   if (flightConflict) {
-    return { error: INVALID_DRAW_DEFINITION, relevantFlight };
+    return decorateResult({
+      result: { error: INVALID_DRAW_DEFINITION },
+      info: { relevantFlight },
+    });
   }
 
-  const drawEntriesPresentInFlight = drawEntries.every(
+  const drawEntriesPresentInFlight = drawEntries?.every(
     ({ participantId, entryStatus }) => {
       const flightEntry = relevantFlight?.drawEntries.find(
         (entry) => entry.participantId === participantId
@@ -112,16 +140,20 @@ export function addDrawDefinition(params) {
   }
 
   if (modifyEventEntries) {
-    drawEntries.filter(Boolean).forEach((drawEntry) => {
-      if (STRUCTURE_SELECTED_STATUSES.includes(drawEntry?.entryStatus)) {
+    drawEntries?.filter(Boolean).forEach((drawEntry) => {
+      if (
+        drawEntry?.entryStatus &&
+        STRUCTURE_SELECTED_STATUSES.includes(drawEntry?.entryStatus)
+      ) {
         const eventEntry = eventEntries
-          .filter(Boolean)
+          ?.filter(Boolean)
           .find(
             (eventEntry) => eventEntry.participantId === drawEntry.participantId
           );
         if (
+          eventEntry &&
           drawEntry.entryStatus &&
-          eventEntry.entryStatus !== drawEntry.entryStatus
+          eventEntry?.entryStatus !== drawEntry.entryStatus
         ) {
           eventEntry.entryStatus = drawEntry.entryStatus;
           modifiedEventEntryStatusCount += 1;
@@ -147,9 +179,9 @@ export function addDrawDefinition(params) {
       ?.filter(Boolean) || [];
 
   const drawOrders =
-    event.drawDefinitions
-      .map(({ drawOrder }) => !isNaN(drawOrder) && ensureInt(drawOrder))
-      ?.filter(Boolean) || [];
+    (event.drawDefinitions
+      .map(({ drawOrder }) => drawOrder && ensureInt(drawOrder))
+      ?.filter(Boolean) as number[]) || [];
 
   let drawOrder = Math.max(0, ...drawOrders, ...flightNumbers) + 1;
 

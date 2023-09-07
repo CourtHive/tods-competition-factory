@@ -1,4 +1,4 @@
-import { getTieFormatDesc } from '../../../tournamentEngine/governors/reportGovernor/getTieFormatDescription';
+import { getTieFormatDesc } from './getTieFormatDescription';
 import { difference, unique } from '../../../utilities/arrays';
 
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -29,11 +29,11 @@ export function compareTieFormats({
   } = getTieFormatDesc(ancestor);
 
   const matchUpFormatDifferences = unique(
-    (descendantMatchUpFormats || [])
-      .filter((format) => !(ancestorMatchUpFormats || []).includes(format))
+    (descendantMatchUpFormats ?? [])
+      .filter((format) => !(ancestorMatchUpFormats ?? []).includes(format))
       .concat(
-        (ancestorMatchUpFormats || []).filter(
-          (format) => !(descendantMatchUpFormats || []).includes(format)
+        (ancestorMatchUpFormats ?? []).filter(
+          (format) => !(descendantMatchUpFormats ?? []).includes(format)
         )
       )
   );
@@ -96,9 +96,8 @@ export function compareTieFormats({
   );
 
   descendantDifferences.groupsCount =
-    ancestor?.collectionGroups?.length ||
-    0 - (descendant?.collectionGroups?.length || 0) ||
-    0;
+    ancestor?.collectionGroups?.length ??
+    (0 - (descendant?.collectionGroups?.length ?? 0) || 0);
 
   ancestorDifferences.groupsCount = descendantDifferences.groupsCount
     ? -1 * descendantDifferences.groupsCount
