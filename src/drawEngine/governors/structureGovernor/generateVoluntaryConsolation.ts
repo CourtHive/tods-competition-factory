@@ -204,6 +204,7 @@ export function generateVoluntaryConsolation(
       drawDefinition,
       structureId,
       placeByes,
+      drawSize,
       event,
     });
   }

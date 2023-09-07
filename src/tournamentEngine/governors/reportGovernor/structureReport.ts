@@ -1,9 +1,9 @@
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
 import { findTournamentExtension } from '../queryGovernor/extensionQueries';
 import { getAccessorValue } from '../../../utilities/getAccessorValue';
-import { getTieFormatDesc } from './getTieFormatDescription';
+import { getTieFormatDesc } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormatDescription';
 import { getTimeItem } from '../queryGovernor/timeItems';
-import { getDetailsWTN } from './getDetailsWTN';
+import { getDetailsWTN } from '../queryGovernor/getDetailsWTN';
 import { getAvgWTN } from './getAvgWTN';
 
 import { MISSING_TOURNAMENT_ID } from '../../../constants/errorConditionConstants';
@@ -48,7 +48,7 @@ export function getStructureReports({
 
   const extensionValues = Object.assign(
     {},
-    ...(extensionProfiles || []).map(({ name, label, accessor }) => {
+    ...(extensionProfiles ?? []).map(({ name, label, accessor }) => {
       const element = findTournamentExtension({
         tournamentRecord,
         name,
@@ -68,7 +68,7 @@ export function getStructureReports({
     allTournamentMatchUps({
       participantsProfile,
       tournamentRecord,
-    }).matchUps || [];
+    }).matchUps ?? [];
 
   const getSeedingBasis = (timeItems) => {
     const timeItem = getTimeItem({
@@ -222,7 +222,7 @@ export function getStructureReports({
                 } = winningPerson2WTN || {};
 
                 const { ageCategoryCode, categoryName, subType } =
-                  category || {};
+                  category ?? {};
                 const matchUpFormat = s.matchUpFormat || drawMatchUpFormat;
                 const matchUpsInitialFormat =
                   matchUpFormatCounts[matchUpFormat] || 0;

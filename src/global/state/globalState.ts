@@ -114,7 +114,7 @@ export function createInstanceState() {
  */
 export function getDevContext(contextCriteria?): any {
   if (!contextCriteria || typeof contextCriteria !== 'object') {
-    return globalState.devContext || false;
+    return globalState.devContext ?? false;
   } else {
     if (typeof globalState.devContext !== 'object') return false;
     return (
@@ -125,7 +125,7 @@ export function getDevContext(contextCriteria?): any {
   }
 }
 
-export function timeKeeper(action = 'reset', timer = 'default') {
+export function timeKeeper(action = 'reset', timer = 'default'): any {
   const timeNow = Date.now();
 
   if (action === 'report') {
@@ -140,7 +140,7 @@ export function timeKeeper(action = 'reset', timer = 'default') {
           const elapsedPeriod =
             currentTimer.state === 'stopped'
               ? 0
-              : (timeNow - (currentTimer?.startTime || 0)) / 1000;
+              : (timeNow - (currentTimer?.startTime ?? 0)) / 1000;
 
           const elapsedTime = currentTimer.elapsedTime + elapsedPeriod;
           return {
@@ -153,7 +153,7 @@ export function timeKeeper(action = 'reset', timer = 'default') {
       const elapsedPeriod =
         globalState.timers[timer].state === 'stopped'
           ? 0
-          : (timeNow - (globalState.timers[timer]?.startTime || 0)) / 1000;
+          : (timeNow - (globalState.timers[timer]?.startTime ?? 0)) / 1000;
 
       const elapsedTime = globalState.timers[timer].elapsedTime + elapsedPeriod;
 
@@ -185,7 +185,7 @@ export function timeKeeper(action = 'reset', timer = 'default') {
     globalState.timers[timer].state !== 'stopped' &&
     (globalState.timers[timer].state = 'stopped') &&
     (globalState.timers[timer].elapsedTime +=
-      (timeNow - (globalState.timers[timer]?.startTime || 0)) / 1000);
+      (timeNow - (globalState.timers[timer]?.startTime ?? 0)) / 1000);
   action === 'start' &&
     (globalState.timers[timer].startTime = timeNow) &&
     (globalState.timers[timer].state = 'active');

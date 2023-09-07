@@ -27,7 +27,7 @@ export function countSets({
   const { sets } = score || {};
   const matchUpWinnerIndex = matchUpWinningSide - 1;
   const parsedMatchUpFormat = parse(matchUpFormat);
-  const setsToWin = getSetsToWin(parsedMatchUpFormat?.bestOf || 1);
+  const setsToWin = getSetsToWin(parsedMatchUpFormat?.bestOf ?? 1);
 
   if (
     (matchUpStatus === DEFAULTED && tallyPolicy?.setsCreditForDefaults) ||
@@ -72,7 +72,7 @@ export function countGames({
 
   const matchUpWinnerIndex = matchUpWinningSide - 1;
   const parsedMatchUpFormat = parse(matchUpFormat);
-  const bestOf = parsedMatchUpFormat?.bestOf || 1;
+  const bestOf = parsedMatchUpFormat?.bestOf ?? 1;
   const setsToWin = getSetsToWin(bestOf);
   const tiebreakAt = parsedMatchUpFormat?.setFormat?.tiebreakAt || 0;
 
@@ -185,7 +185,7 @@ export function countGames({
 
 export function countPoints({ matchUpFormat, score }) {
   const parsedMatchUpFormat = parse(matchUpFormat);
-  const bestOf = parsedMatchUpFormat?.bestOf || 1;
+  const bestOf = parsedMatchUpFormat?.bestOf ?? 1;
   const setsToWin = getSetsToWin(bestOf);
   const pointsTally = [0, 0];
 
