@@ -60,7 +60,7 @@ export function completeDrawMatchUps(params): {
 
   if (firstRoundDualMatchUps?.length) {
     const categoryName =
-      event.category?.ageCategoryCode || event.category?.categoryName;
+      event?.category?.ageCategoryCode || event?.category?.categoryName;
     if (categoryName) {
       const scaleAccessor = {
         scaleName: categoryName,
@@ -99,7 +99,7 @@ export function completeDrawMatchUps(params): {
             const tieMatchUpId = singlesMatchUp.matchUpId;
             singlesMatchUp.sides.forEach((side) => {
               const { drawPosition } = side;
-              const teamParticipant = teamParticipants.find(
+              const teamParticipant = teamParticipants?.find(
                 (teamParticipant) => {
                   const { participantId } = teamParticipant;
                   const assignment = positionAssignments.find(
@@ -128,7 +128,7 @@ export function completeDrawMatchUps(params): {
             const tieMatchUpId = doublesMatchUp.matchUpId;
             doublesMatchUp.sides.forEach((side) => {
               const { drawPosition } = side;
-              const teamParticipant = teamParticipants.find(
+              const teamParticipant = teamParticipants?.find(
                 (teamParticipant) => {
                   const { participantId } = teamParticipant;
                   const assignment = positionAssignments.find(

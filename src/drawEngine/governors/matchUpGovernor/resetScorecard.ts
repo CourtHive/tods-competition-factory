@@ -2,13 +2,16 @@ import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGove
 import { compareTieFormats } from '../../../matchUpEngine/governors/tieFormatGovernor/compareTieFormats';
 import { resetTieFormat } from '../../../tournamentEngine/governors/eventGovernor/resetTieFormat';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
-import { decorateResult } from '../../../global/functions/decorateResult';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { findStructure } from '../../getters/findStructure';
 import { isActiveDownstream } from './isActiveDownstream';
 import { updateTieMatchUpScore } from './tieMatchUpScore';
 import { setMatchUpStatus } from './setMatchUpStatus';
+import {
+  ResultType,
+  decorateResult,
+} from '../../../global/functions/decorateResult';
 
 import { TypeEnum } from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -33,7 +36,7 @@ import {
  * @returns
  */
 
-export function resetScorecard(params) {
+export function resetScorecard(params): ResultType {
   const { tournamentRecord, drawDefinition, matchUpId, event } = params;
   const stack = 'resetScorecard';
 
@@ -97,7 +100,7 @@ export function resetScorecard(params) {
   const activeDownstream = isActiveDownstream(params);
   if (activeDownstream) return { error: CANNOT_CHANGE_WINNING_SIDE };
 
-  for (const tieMatchUp of matchUp.tieMatchUps || []) {
+  for (const tieMatchUp of matchUp.tieMatchUps ?? []) {
     const result = setMatchUpStatus({
       matchUpId: tieMatchUp.matchUpId,
       matchUpTieId: matchUpId,
