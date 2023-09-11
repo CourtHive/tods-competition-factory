@@ -36,7 +36,7 @@ export function getEntryStatusReports({
     allTournamentMatchUps({
       matchUpFilters: { matchUpTypes: [SINGLES_MATCHUP, DOUBLES_MATCHUP] },
       tournamentRecord,
-    }).matchUps || [];
+    }).matchUps ?? [];
 
   const nonTeamEnteredParticipantIds = nonTeamMatchUps
     .flatMap(
@@ -64,7 +64,7 @@ export function getEntryStatusReports({
 
     if (!participantEntryReports[id]) participantEntryReports[id] = [];
 
-    const { participant, events } = participantMap?.[id] || {};
+    const { participant, events } = participantMap?.[id] ?? {};
     const entryDetailsWTN = getDetailsWTN({ participant, eventType });
     const ranking = events?.[eventId]?.ranking;
 
@@ -87,7 +87,7 @@ export function getEntryStatusReports({
   };
 
   // Who was in a draw and how they got there...
-  for (const event of tournamentRecord.events || []) {
+  for (const event of tournamentRecord.events ?? []) {
     const entryStatuses: { [key: string]: { count: number; pct?: number } } =
       {};
     const countEntryStatus = (entryStatus) => {
@@ -105,7 +105,7 @@ export function getEntryStatusReports({
       // to ensure that only assignedParticipants are included
       const stageFilter = ({ stage, stageSequence }) =>
         (stage === MAIN && stageSequence === 1) || stage === QUALIFYING;
-      const structures: any[] = params.structures || [];
+      const structures: any[] = params.structures ?? [];
       const assignedParticipantIds = structures
         .filter(stageFilter)
         .flatMap(({ positionAssignments }) => positionAssignments)
@@ -220,7 +220,7 @@ export function getEntryStatusReports({
     };
   }
 
-  const individualParticipants = Object.values(participantMap || {}).filter(
+  const individualParticipants = Object.values(participantMap ?? {}).filter(
     ({ participant: { participantType, participantRole } }) =>
       participantType === INDIVIDUAL && participantRole === COMPETITOR
   );
