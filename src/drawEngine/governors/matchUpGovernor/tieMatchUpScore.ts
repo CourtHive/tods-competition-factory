@@ -7,14 +7,14 @@ import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { isActiveMatchUp } from '../../getters/activeMatchUp';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 
+import { DISABLE_AUTO_CALC } from '../../../constants/extensionConstants';
+import { MatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   ErrorType,
   INVALID_MATCHUP,
   MATCHUP_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { DISABLE_AUTO_CALC } from '../../../constants/extensionConstants';
-import { MatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
-import { SUCCESS } from '../../../constants/resultConstants';
 import {
   COMPLETED,
   completedMatchUpStatuses,
@@ -109,7 +109,7 @@ export function updateTieMatchUpScore({
   const newMatchUpStatus =
     (hasWinner && COMPLETED) ||
     (isActiveMatchUp({
-      matchUpStatus: matchUpStatus || matchUp.matchUpStatus,
+      matchUpStatus: matchUpStatus ?? matchUp.matchUpStatus,
       tieMatchUps: matchUp.tieMatchUps,
       winningSide: matchUp.winningSide,
       score: scoreObject,

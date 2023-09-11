@@ -331,6 +331,15 @@
         "tieFormat": {
           "$ref": "#/definitions/TieFormat"
         },
+        "tieFormatId": {
+          "type": "string"
+        },
+        "tieFormats": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TieFormat"
+          }
+        },
         "wheelchairClass": {
           "$ref": "#/definitions/WheelchairClassEnum"
         }
