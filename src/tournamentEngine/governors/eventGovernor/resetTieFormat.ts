@@ -11,6 +11,10 @@ import {
 import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
+  ResultType,
+  decorateResult,
+} from '../../../global/functions/decorateResult';
+import {
   INVALID_MATCHUP,
   MISSING_MATCHUP_ID,
   MISSING_TOURNAMENT_RECORD,
@@ -19,6 +23,7 @@ import {
 import {
   DrawDefinition,
   Event,
+  MatchUp,
   Tournament,
 } from '../../../types/tournamentFromSchema';
 
@@ -26,6 +31,8 @@ import {
  * remove the tieFormat from a TEAM matchUp if there is a tieFormat further up the hierarchy
  * modify the matchUp's tieMatchUps to correspond to the tieFormat found further up the hierarchy
  */
+
+// TODO: if a reference to a tieFormat is removed (tieFormatId), check whether tieFormat can be excised from { tieFormats }
 
 type ResetTieFormatArgs = {
   tournamentRecord: Tournament;
@@ -40,10 +47,20 @@ export function resetTieFormat({
   matchUpId,
   event,
   uuids,
-}: ResetTieFormatArgs) {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (typeof matchUpId !== 'string') return { error: MISSING_MATCHUP_ID };
+}: ResetTieFormatArgs): ResultType & {
+  deletedMatchUpIds?: string[];
+  newMatchUps?: MatchUp[];
+  success?: boolean;
+} {
   const stack = 'resetTieFormat';
+
+  if (!tournamentRecord)
+    return decorateResult({
+      result: { error: MISSING_TOURNAMENT_RECORD },
+      stack,
+    });
+  if (typeof matchUpId !== 'string')
+    return decorateResult({ result: { error: MISSING_MATCHUP_ID }, stack });
 
   const result = findMatchUp({
     tournamentRecord,
@@ -53,7 +70,11 @@ export function resetTieFormat({
 
   const { matchUp, structure } = result;
   if (!matchUp?.tieMatchUps)
-    return { error: INVALID_MATCHUP, info: 'Must be a TEAM matchUp' };
+    return decorateResult({
+      result: { error: INVALID_MATCHUP },
+      info: 'Must be a TEAM matchUp',
+      stack,
+    });
 
   // if there is no tieFormat there is nothing to do
   if (!matchUp.tieFormat) return { ...SUCCESS };
@@ -64,7 +85,12 @@ export function resetTieFormat({
     event,
   })?.tieFormat;
 
-  if (!tieFormat) return { error: NOT_FOUND, info: 'No inherited tieFormat' };
+  if (!tieFormat)
+    return decorateResult({
+      result: { error: NOT_FOUND },
+      info: 'No inherited tieFormat',
+      stack,
+    });
 
   const deletedMatchUpIds: string[] = [];
   const collectionIds: string[] = [];

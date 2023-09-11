@@ -70,6 +70,8 @@ export interface Event {
   surfaceCategory?: SurfaceCategoryEnum;
   tennisOfficialIds?: string[];
   tieFormat?: TieFormat;
+  tieFormatId?: string;
+  tieFormats?: TieFormat[];
   timeItems?: TimeItem[];
   updatedAt?: Date | string;
   wheelchairClass?: WheelchairClassEnum;
@@ -564,6 +566,7 @@ export interface TieFormat {
   extensions?: Extension[];
   isMock?: boolean;
   notes?: string;
+  tieFormatId?: string;
   tieFormatName?: string;
   timeItems?: TimeItem[];
   updatedAt?: Date | string;

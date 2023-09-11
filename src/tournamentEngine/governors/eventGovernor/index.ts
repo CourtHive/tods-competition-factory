@@ -127,6 +127,7 @@ import { addQualifyingStructure } from './drawDefinitions/addQualifyingStructure
 import { generateDrawDefinition } from '../../generators/generateDrawDefinition';
 import { renameStructures } from './drawDefinitions/renameStructures';
 
+import { aggregateTieFormats } from './aggregateTieFormats';
 import { updateTieMatchUpScore } from './updateTieMatchUpScore';
 import { disableTieAutoCalc } from './disableTieAutoCalc';
 import { enableTieAutoCalc } from './enableTieAutoCalc';
@@ -223,8 +224,9 @@ const eventGovernor = {
 
   bulkMatchUpStatusUpdate,
   updateTieMatchUpScore,
-  setMatchUpStatus,
+  aggregateTieFormats,
   setMatchUpFormat,
+  setMatchUpStatus,
 
   assignDrawPosition,
   assignSeedPositions,

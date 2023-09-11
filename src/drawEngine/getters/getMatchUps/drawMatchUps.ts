@@ -2,14 +2,14 @@ import { addParticipantGroupings } from '../../governors/positionGovernor/avoida
 import { addUpcomingMatchUps } from '../../governors/matchUpGovernor/addUpcomingMatchUps';
 import { getContextContent } from '../../../tournamentEngine/getters/getContextContent';
 import { getExitProfiles } from '../../governors/queryGovernor/getExitProfile';
-import {
-  ResultType,
-  decorateResult,
-} from '../../../global/functions/decorateResult';
 import { MatchUpsMap, getMatchUpsMap } from './getMatchUpsMap';
 import { getStructureMatchUps } from './getStructureMatchUps';
 import { getDrawStructures } from '../findStructure';
 import { filterMatchUps } from './filterMatchUps';
+import {
+  ResultType,
+  decorateResult,
+} from '../../../global/functions/decorateResult';
 
 import { GroupsMatchUpsResult } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -42,11 +42,11 @@ export function getAllDrawMatchUps(params): ResultType & {
     matchUpsMap,
   } = result;
 
-  const matchUps: HydratedMatchUp[] = (abandonedMatchUps || []).concat(
-    ...(completedMatchUps || []),
-    ...(upcomingMatchUps || []),
-    ...(pendingMatchUps || []),
-    ...(byeMatchUps || [])
+  const matchUps: HydratedMatchUp[] = (abandonedMatchUps ?? []).concat(
+    ...(completedMatchUps ?? []),
+    ...(upcomingMatchUps ?? []),
+    ...(pendingMatchUps ?? []),
+    ...(byeMatchUps ?? [])
   );
 
   return { matchUps, matchUpsMap };
