@@ -14,13 +14,6 @@ import {
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
-/**
- *
- * @param {object} drawDefinition - provided automatically by drawEngine
- * @param {string} structureId - optional - defaults to the first structure of latest stage
- * @param {string[]} participantIds - optional - allows a subset of drawDefinition.entries to be specified
- *
- */
 export function drawMatic({
   tournamentParticipants,
   restrictEntryStatus,
@@ -116,9 +109,9 @@ export function drawMatic({
     tournamentParticipants,
     tournamentRecord,
     generateMatchUps,
+    participantIds,
     addToStructure,
     drawDefinition,
-    participantIds,
     maxIterations,
     adHocRatings,
     structureId,

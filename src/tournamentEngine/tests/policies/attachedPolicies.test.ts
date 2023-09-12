@@ -16,41 +16,6 @@ import {
   POLICY_TYPE_SEEDING,
 } from '../../../constants/policyConstants';
 
-/*
-// example used to generate ITF seeding positions
-it('generateDrawDefinition will find seeding policy attached to tournamentRecord', () => {
-  const {
-    tournamentRecord,
-    drawIds: [drawId],
-  } = mocksEngine.generateTournamentRecord({
-    policyDefinitions: { ...ROUND_NAMING_POLICY, ...POLICY_SEEDING_ITF },
-    participantsProfile: {
-      category: { ratingType: WTN, ratingMin: 5, ratingMax: 8 },
-      participantsCount: 256,
-    },
-    drawProfiles: [{ drawSize: 256, seedsCount: 64 }],
-  });
-  tournamentEngine.setState(tournamentRecord);
-  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
-  const { seedAssignments, positionAssignments } = drawDefinition.structures[0];
-  const drawPositionsMap = Object.assign(
-    {},
-    ...positionAssignments.map((assignment) => ({
-      [assignment.participantId]: assignment.drawPosition,
-    }))
-  );
-  const seedPositions = seedAssignments
-    .map((assignment) => {
-      const drawPosition = drawPositionsMap[assignment.participantId];
-      const seedNumber = assignment.seedNumber;
-      return { seedNumber, drawPosition };
-    })
-    .sort((a, b) => a.seedNumber - b.seedNumber);
-
-  console.log(seedPositions);
-});
-*/
-
 it('generateDrawDefinition will find seeding policy attached to tournamentRecord', () => {
   const {
     tournamentRecord,
@@ -134,9 +99,8 @@ it('policyDefinitions can be passed directly into generateDrawDefintion from dra
   } = mocksEngine.generateTournamentRecord({
     drawProfiles: [
       {
-        drawSize: 32,
-        drawType: AD_HOC,
         policyDefinitions: { ...ROUND_NAMING_POLICY, ...POLICY_SEEDING_ITF },
+        drawSize: 32,
       },
     ],
   });

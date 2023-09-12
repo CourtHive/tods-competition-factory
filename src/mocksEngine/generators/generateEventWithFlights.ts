@@ -1,3 +1,4 @@
+import { addEventEntries } from '../../tournamentEngine/governors/eventGovernor/entries/addEventEntries';
 import { attachEventPolicies } from '../../tournamentEngine/governors/policyGovernor/policyManagement';
 import { addEventTimeItem } from '../../tournamentEngine/governors/tournamentGovernor/addTimeItem';
 import { publishEvent } from '../../tournamentEngine/governors/publishingGovernor/publishEvent';
@@ -9,10 +10,11 @@ import { isValidExtension } from '../../global/validation/isValidExtension';
 import { generateEventParticipants } from './generateEventParticipants';
 import { getStageParticipants } from '../getters/getStageParticipants';
 import { generateFlights } from './generateFlights';
-import { UUID } from '../../utilities';
+import { UUID, extractAttributes } from '../../utilities';
 
 import { SINGLES, DOUBLES, TEAM } from '../../constants/eventConstants';
 import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';
+import { MAIN } from '../../constants/drawDefinitionConstants';
 
 export function generateEventWithFlights(params) {
   const {
@@ -138,14 +140,15 @@ export function generateEventWithFlights(params) {
   // only update on event since category is used in participant generation
   if (newEvent.category) newEvent.category.categoryName = categoryName;
 
-  let result: any = addEvent({
+  let drawIds;
+  const eventResult: any = addEvent({
     suppressNotifications: false,
     internalUse: true,
     tournamentRecord,
     event: newEvent,
   });
-  if (result.error) return result;
-  const event = result?.event;
+  if (eventResult.error) return eventResult;
+  const event = eventResult?.event;
 
   // Generate Flights ---------------------------------------------------------
   const { stageParticipants } = getStageParticipants({
@@ -155,29 +158,45 @@ export function generateEventWithFlights(params) {
     targetParticipants,
   });
 
-  result = generateFlights({
-    uniqueDrawParticipants,
-    autoEntryPositions,
-    stageParticipants,
-    tournamentRecord,
-    drawProfiles,
-    category,
-    gender,
-    event,
-  });
-  if (result.error) return result;
+  if (drawProfiles?.length) {
+    const flightResult = generateFlights({
+      uniqueDrawParticipants,
+      autoEntryPositions,
+      stageParticipants,
+      tournamentRecord,
+      drawProfiles,
+      category,
+      gender,
+      event,
+    });
+    if (flightResult.error) return flightResult;
 
-  result = generateFlightDrawDefinitions({
-    matchUpStatusProfile,
-    completeAllMatchUps,
-    randomWinningSide,
-    tournamentRecord,
-    drawProfiles,
-    event,
-  });
-  if (result.error) return result;
+    const drawDefinitionResult = generateFlightDrawDefinitions({
+      matchUpStatusProfile,
+      completeAllMatchUps,
+      randomWinningSide,
+      tournamentRecord,
+      drawProfiles,
+      event,
+    });
+    if (drawDefinitionResult.error) return drawDefinitionResult;
+    drawIds = drawDefinitionResult.drawIds;
+  } else if (eventProfile?.participantsProfile?.participantsCount) {
+    const eventParticipantIds = uniqueDrawParticipants.map(
+      extractAttributes('participantId')
+    );
 
-  const drawIds = result.drawIds;
+    if (eventParticipantIds.length) {
+      const result = addEventEntries({
+        participantIds: eventParticipantIds,
+        autoEntryPositions,
+        tournamentRecord,
+        stage: MAIN,
+        event,
+      });
+      if (result.error) return result;
+    }
+  }
 
   if (publish) {
     publishEvent({ tournamentRecord, event });

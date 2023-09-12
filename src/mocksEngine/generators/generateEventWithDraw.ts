@@ -454,7 +454,10 @@ export function generateEventWithDraw(params) {
   if (generate) {
     addDrawDefinition({ drawDefinition, event, suppressNotifications: true });
 
-    if (drawType === AD_HOC && drawProfile.drawMatic) {
+    if (
+      drawType === AD_HOC &&
+      (drawProfile.drawMatic || drawProfile.automated)
+    ) {
       const roundsCount = drawProfile.roundsCount || 1;
       for (const roundNumber of generateRange(1, roundsCount + 1)) {
         const result = drawMatic({

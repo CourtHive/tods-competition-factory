@@ -503,11 +503,13 @@ export function generateDrawDefinition(
         entry.entryStage !== StageTypeEnum.Main
       )
         continue;
+
       const entryData = {
         ...entry,
+        ignoreStageSpace: ignoreStageSpace || drawType === AD_HOC,
         entryStage: entry.entryStage ?? StageTypeEnum.Main,
-        ignoreStageSpace,
         drawDefinition,
+        drawType,
       };
       const result = addDrawEntry(entryData);
       if (drawEntries && result.error) {

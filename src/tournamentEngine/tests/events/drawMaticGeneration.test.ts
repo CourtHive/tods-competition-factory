@@ -33,7 +33,7 @@ it.each(scenarios)(
       drawIds: [drawId],
     } = mocksEngine.generateTournamentRecord({
       drawProfiles: [
-        { drawSize, drawType: AD_HOC, eventType, drawMatic: true },
+        { drawSize, drawType: AD_HOC, eventType, automated: true },
       ],
       participantsProfile: { idPrefix: 'P' },
     });
@@ -86,7 +86,7 @@ it.each(scenarios)(
       {
         eventType,
         drawProfiles: [
-          { drawType: AD_HOC, drawSize, drawMatic: true, roundsCount },
+          { drawType: AD_HOC, drawSize, automated: true, roundsCount },
         ],
       },
     ];

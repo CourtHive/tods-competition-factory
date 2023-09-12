@@ -120,7 +120,10 @@ export function generateFlightDrawDefinitions({
         });
         if (result.error) return { error: result.error, drawIds: [] };
 
-        if (drawProfile.drawType === AD_HOC && drawProfile.drawMatic) {
+        if (
+          drawProfile.drawType === AD_HOC &&
+          (drawProfile.drawMatic || drawProfile.automated)
+        ) {
           const roundsCount = drawProfile.roundsCount || 1;
           for (const roundNumber of generateRange(1, roundsCount + 1)) {
             const result = drawMatic({

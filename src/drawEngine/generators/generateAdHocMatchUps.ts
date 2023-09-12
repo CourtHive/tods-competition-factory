@@ -27,29 +27,18 @@ import {
   Tournament,
 } from '../../types/tournamentFromSchema';
 
-/**
- *
- * @param {string} drawId - required - tournamentEngine discovers and passes { drawDefinition }
- * @param {object} drawDefinition - required
- * @param {string} structureId - required - structure for which matchUps are being generated
- * @param {boolean} addMatchUps - whether to add matchUps to structure once generated
- * @param {integer} matchUpsCount - number of matchUps to be generated
- * @param {string[]} matchUpIds - optional - when not provided UUIDs will be generated
- * @param {integer} roundNumber - optional - round for which matchUps will be generated
- * @param {boolen} newRound - optional - whether to auto-increment to the next roundNumber
- * @returns
- */
-
 type GenerateAdHocMatchUpsArgs = {
-  participantIdPairings?: any[];
+  participantIdPairings?: {
+    participantIds: [string | undefined, string | undefined];
+  }[];
   tournamentRecord?: Tournament;
   drawDefinition: DrawDefinition;
-  addToStructure?: boolean;
-  matchUpsCount?: number;
+  addToStructure?: boolean; // optional - whether to add matchUps to structure once generated
+  matchUpsCount?: number; // number of matchUps to be generated
   matchUpIds?: string[];
   roundNumber?: number;
   structureId: string;
-  newRound?: boolean;
+  newRound?: boolean; // optional - whether to auto-increment to the next roundNumber
 };
 
 export function generateAdHocMatchUps({
@@ -116,17 +105,20 @@ export function generateAdHocMatchUps({
     return { error: INVALID_VALUES, info: 'roundNumber error' };
 
   const nextRoundNumber =
-    roundNumber ||
-    (newRound ? (lastRoundNumber || 0) + 1 : lastRoundNumber || 1);
+    roundNumber ??
+    (newRound ? (lastRoundNumber ?? 0) + 1 : lastRoundNumber ?? 1);
 
   participantIdPairings =
-    participantIdPairings ||
-    generateRange(0, matchUpsCount).map(() => ({ participantIds: [] }));
-  const matchUps = participantIdPairings.map((pairing) => {
+    participantIdPairings ??
+    generateRange(0, matchUpsCount).map(() => ({
+      participantIds: [undefined, undefined],
+    }));
+
+  const matchUps = participantIdPairings?.map((pairing) => {
+    const idStack = pairing?.participantIds ?? [undefined, undefined];
     // ensure there are always 2 sides in generated matchUps
-    const participantIds = (pairing?.participantIds || [])
-      .concat([undefined, undefined])
-      .slice(0, 2);
+    idStack.push(...[undefined, undefined]);
+    const participantIds = idStack.slice(0, 2);
     const sides = participantIds.map((participantId, i) =>
       definedAttributes({
         sideNumber: i + 1,
@@ -136,7 +128,7 @@ export function generateAdHocMatchUps({
 
     return {
       matchUpStatus: MatchUpStatusEnum.ToBePlayed,
-      matchUpId: matchUpIds.pop() || UUID(),
+      matchUpId: matchUpIds.pop() ?? UUID(),
       roundNumber: nextRoundNumber,
       sides,
     };
@@ -202,7 +194,7 @@ export function addAdHocMatchUps({
     allTournamentMatchUps({
       tournamentRecord,
       inContext: false,
-    })?.matchUps?.map(getMatchUpId) || [];
+    })?.matchUps?.map(getMatchUpId) ?? [];
 
   const newMatchUpIds = matchUps.map(getMatchUpId);
 
