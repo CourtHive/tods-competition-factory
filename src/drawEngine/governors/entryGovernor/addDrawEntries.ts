@@ -21,6 +21,7 @@ import {
   INVALID_VALUES,
 } from '../../../constants/errorConditionConstants';
 import {
+  AD_HOC,
   MAIN,
   VOLUNTARY_CONSOLATION,
 } from '../../../constants/drawDefinitionConstants';
@@ -45,6 +46,7 @@ type AddDrawEntryArgs = {
   extension?: Extension;
   participantId: string;
   roundTarget?: number;
+  drawType?: string;
 };
 
 export function addDrawEntry(params: AddDrawEntryArgs) {
@@ -59,12 +61,16 @@ export function addDrawEntry(params: AddDrawEntryArgs) {
     roundTarget,
     extensions,
     extension,
+    drawType,
   } = params;
 
   const stack = 'addDrawEntry';
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!entryStage) return { error: MISSING_STAGE };
-  if (!getValidStage({ stage: entryStage, drawDefinition })) {
+  if (
+    drawType !== AD_HOC &&
+    !getValidStage({ stage: entryStage, drawDefinition })
+  ) {
     return decorateResult({ result: { error: INVALID_STAGE }, stack });
   }
   const spaceAvailable = getStageSpace({

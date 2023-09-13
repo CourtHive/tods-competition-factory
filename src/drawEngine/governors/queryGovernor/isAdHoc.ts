@@ -1,5 +1,5 @@
-import { AD_HOC } from '../../../constants/drawDefinitionConstants';
 import { DrawDefinition, Structure } from '../../../types/tournamentFromSchema';
+import { AD_HOC } from '../../../constants/drawDefinitionConstants';
 
 type IsAdHocArgs = {
   drawDefinition?: DrawDefinition;

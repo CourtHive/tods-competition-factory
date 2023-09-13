@@ -3659,17 +3659,18 @@ cosmiconfig@^7.0.0, cosmiconfig@^7.0.1:
     path-type "^4.0.0"
     yaml "^1.10.0"
 
-courthive-components@^0.2.4:
-  version "0.2.6"
-  resolved "https://registry.yarnpkg.com/courthive-components/-/courthive-components-0.2.6.tgz#d0d67ca3c386c3e69878ecba4952a86b6a46635a"
-  integrity sha512-nJAMR3UkdgjFFDVcH92pWukEi5TE+eid9nVTioLrSj1QlvnQp1tx+hSZJI5OZceukZooBFoi4V7f/yAZItetEQ==
+courthive-components@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/courthive-components/-/courthive-components-0.7.0.tgz#2ec908cb47ad231fa271740c58d4362e6682b08d"
+  integrity sha512-Dlg2b+y8EGBxpdcMzvoziTlnU8PZdQ9QwalSPOQj0iX69aoSnnSPo3avEjZ3KV4nxYgXgrSqRc9msbaxjkK1iQ==
   dependencies:
     "@stitches/core" "^1.2.8"
     bulma "^0.9.4"
     class-variance-authority "^0.7.0"
     classnames "^2.3.2"
     dayjs "^1.11.9"
-    tods-competition-factory "^1.2.32"
+    husky "^8.0.3"
+    tods-competition-factory "^1.4.11"
 
 cross-fetch@3.1.5, cross-fetch@^3.1.5:
   version "3.1.5"
@@ -5509,6 +5510,11 @@ human-signals@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/human-signals/-/human-signals-2.1.0.tgz#dc91fcba42e4d06e4abaed33b3e7a3c02f514ea0"
   integrity sha512-B4FFZ6q/T2jhhksgkbEW3HBvWIfDW85snkQgawt07S7J5QXTk6BkNV+0yAeZrM5QpMAdYlocGoljn0sJ/WQkFw==
+
+husky@^8.0.3:
+  version "8.0.3"
+  resolved "https://registry.yarnpkg.com/husky/-/husky-8.0.3.tgz#4936d7212e46d1dea28fef29bb3a108872cd9184"
+  integrity sha512-+dQSyqPh4x1hlO1swXBiNb2HzTDN1I2IGLQx1GrBuiqFJfoMrnZWwVmatvSiO+Iz8fBUnf+lekwNo4c2LlXItg==
 
 hyphenate-style-name@^1.0.2, hyphenate-style-name@^1.0.3:
   version "1.0.4"
@@ -9098,15 +9104,10 @@ to-regex-range@^5.0.1:
   dependencies:
     is-number "^7.0.0"
 
-tods-competition-factory@1.4.30:
+tods-competition-factory@1.4.30, tods-competition-factory@^1.4.11:
   version "1.4.30"
   resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-1.4.30.tgz#bea2ffa610f8c6a1b9d058b90ba94b207e97a27c"
   integrity sha512-NNAve1XyjcYAwYZeT+0jI+z9yMiczAI71jNqWXO6jo140iHYZObD6xHW6cWOdf918gScfo7MNEj04ZemrPaOQg==
-
-tods-competition-factory@^1.2.32:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-1.4.1.tgz#55d62ec1552cef842cb350086078a75bcada30ed"
-  integrity sha512-HACZTvckG6ajqyxfxzhTEmkbWHKsffH0Nh347Ib5XuT+UscNSSkFJS1hsWQ+VcjlC52rVyuqwZqf8YrcAajpnA==
 
 toidentifier@1.0.1:
   version "1.0.1"

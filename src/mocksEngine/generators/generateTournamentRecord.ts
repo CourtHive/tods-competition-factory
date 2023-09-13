@@ -75,7 +75,7 @@ export function generateTournamentRecord(params: GenerateTournamentRecordArgs) {
 
   if (!startDate) {
     const tournamentDate = new Date();
-    startDate = formatDate(endDate || tournamentDate);
+    startDate = formatDate(endDate ?? tournamentDate);
     endDate = formatDate(tournamentDate.setDate(tournamentDate.getDate() + 7));
   }
   if (!endDate) {

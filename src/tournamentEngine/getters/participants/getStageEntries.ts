@@ -24,7 +24,7 @@ export function getStageEntries({
   event,
   stage,
 }: GetStageEntriesArgs) {
-  let entries: Entry[] = event.entries || [];
+  let entries: Entry[] = event.entries ?? [];
 
   if (drawId) {
     const { flightProfile } = getFlightProfile({ event });

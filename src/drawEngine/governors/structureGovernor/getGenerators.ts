@@ -5,13 +5,14 @@ import { generateDoubleElimination } from '../../generators/doubleEliminattion';
 import { generateCurtisConsolation } from '../../generators/curtisConsolation';
 import { generatePlayoffStructures } from '../../generators/playoffStructures';
 import structureTemplate from '../../generators/structureTemplate';
-import { generateRoundRobin } from '../../generators/roundRobin';
 import { feedInChampionship } from '../../generators/feedInChamp';
+import { generateRoundRobin } from '../../generators/roundRobin';
 import { feedInMatchUps } from '../../generators/feedInMatchUps';
 import { treeMatchUps } from '../../generators/eliminationTree';
 import { luckyDraw } from '../../generators/luckyDraw';
 
 import { POLICY_TYPE_FEED_IN } from '../../../constants/policyConstants';
+import { ErrorType } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 // prettier-ignore
 import {
@@ -26,7 +27,6 @@ import {
   WIN_RATIO,
   LUCKY_DRAW,
 } from '../../../constants/drawDefinitionConstants';
-import { ErrorType } from '../../../constants/errorConditionConstants';
 
 export function getGenerators(params): { generators?: any; error?: ErrorType } {
   const {

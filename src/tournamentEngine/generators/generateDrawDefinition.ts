@@ -12,13 +12,18 @@ import { addDrawEntry } from '../../drawEngine/governors/entryGovernor/addDrawEn
 import { getQualifiersCount } from '../../drawEngine/getters/getQualifiersCount';
 import { getAllowedDrawTypes } from '../governors/policyGovernor/allowedTypes';
 import structureTemplate from '../../drawEngine/generators/structureTemplate';
+import { drawMatic } from '../../drawEngine/generators/drawMatic/drawMatic';
 import { newDrawDefinition } from '../../drawEngine/stateMethods';
 import { mustBeAnArray } from '../../utilities/mustBeAnArray';
 import { isConvertableInteger } from '../../utilities/math';
 import { tieFormatDefaults } from './tieFormatDefaults';
 import { ensureInt } from '../../utilities/ensureInt';
-import { nextPowerOf2 } from '../../utilities';
 import { prepareStage } from './prepareStage';
+import {
+  extractAttributes,
+  generateRange,
+  nextPowerOf2,
+} from '../../utilities';
 import {
   checkTieFormat,
   validateTieFormat,
@@ -53,6 +58,7 @@ import {
 import {
   QUALIFIER,
   STRUCTURE_ENTERED_TYPES,
+  STRUCTURE_SELECTED_STATUSES,
 } from '../../constants/entryStatusConstants';
 import {
   DrawDefinition,
@@ -69,6 +75,7 @@ import {
   ResultType,
   decorateResult,
 } from '../../global/functions/decorateResult';
+import { generateAdHocMatchUps } from '../../drawEngine/generators/generateAdHocMatchUps';
 
 type GenerateDrawDefinitionArgs = {
   automated?: boolean | { seedsOnly: boolean };
@@ -92,6 +99,7 @@ type GenerateDrawDefinitionArgs = {
   tieFormatName?: string;
   tieFormat?: TieFormat;
   drawEntries?: Entry[];
+  roundsCount?: number;
   addToEvent?: boolean;
   seedsCount?: number;
   placeByes?: boolean;
@@ -503,11 +511,13 @@ export function generateDrawDefinition(
         entry.entryStage !== StageTypeEnum.Main
       )
         continue;
+
       const entryData = {
         ...entry,
+        ignoreStageSpace: ignoreStageSpace ?? drawType === AD_HOC,
         entryStage: entry.entryStage ?? StageTypeEnum.Main,
-        ignoreStageSpace,
         drawDefinition,
+        drawType,
       };
       const result = addDrawEntry(entryData);
       if (drawEntries && result.error) {
@@ -543,6 +553,36 @@ export function generateDrawDefinition(
 
     structureId = structureResult.structureId;
     if (structureResult.conflicts) conflicts = structureResult.conflicts;
+
+    if (drawType === AD_HOC && params.roundsCount) {
+      const entries = event?.entries?.filter(
+        ({ entryStage, entryStatus }) =>
+          (!entryStage || entryStage === MAIN) &&
+          entryStatus &&
+          STRUCTURE_SELECTED_STATUSES.includes(entryStatus)
+      );
+      const participantIds = entries?.map(extractAttributes('participantId'));
+      const matchUpsCount = entries ? Math.floor(entries.length / 2) : 0;
+      generateRange(1, params.roundsCount + 1).forEach(() => {
+        if (params.automated) {
+          drawMatic({
+            generateMatchUps: true,
+            eventType: matchUpType,
+            tournamentRecord,
+            participantIds,
+            drawDefinition,
+          });
+        } else {
+          generateAdHocMatchUps({
+            addToStructure: true,
+            tournamentRecord,
+            newRound: true,
+            drawDefinition,
+            matchUpsCount,
+          });
+        }
+      });
+    }
   }
 
   const qualifyingConflicts: any[] = [];

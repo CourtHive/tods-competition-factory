@@ -24,7 +24,7 @@ const scenarios = [
 ];
 
 it.each(scenarios)(
-  'can generate AD_HOC with arbitrary drawSizes and assign positions',
+  'can generate AD_HOC with arbitrary drawSizes',
   (scenario) => {
     const { drawSize, eventType } = scenario;
 
@@ -33,7 +33,13 @@ it.each(scenarios)(
       drawIds: [drawId],
     } = mocksEngine.generateTournamentRecord({
       drawProfiles: [
-        { drawSize, drawType: AD_HOC, eventType, drawMatic: true },
+        {
+          drawType: AD_HOC,
+          automated: true,
+          roundsCount: 1,
+          eventType,
+          drawSize,
+        },
       ],
       participantsProfile: { idPrefix: 'P' },
     });
@@ -86,7 +92,7 @@ it.each(scenarios)(
       {
         eventType,
         drawProfiles: [
-          { drawType: AD_HOC, drawSize, drawMatic: true, roundsCount },
+          { drawType: AD_HOC, drawSize, automated: true, roundsCount },
         ],
       },
     ];

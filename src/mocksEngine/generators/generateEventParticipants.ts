@@ -30,7 +30,10 @@ export function generateEventParticipants(params) {
   const mainParticipantsCount = uniqueParticipantsCount[MAIN] || 0;
   const qualifyingParticipantsCount = uniqueParticipantsCount[QUALIFYING] || 0;
 
-  const participantsCount = mainParticipantsCount + qualifyingParticipantsCount;
+  const participantsCount = eventProfile.drawProfiles?.length
+    ? mainParticipantsCount + qualifyingParticipantsCount
+    : eventProfile.participantsProfile?.participantsCount ?? 0;
+
   const sex = [MALE, FEMALE].includes(gender) ? gender : undefined;
 
   const idPrefix = participantsProfile?.idPrefix
@@ -45,8 +48,8 @@ export function generateEventParticipants(params) {
     participantType: eventParticipantType,
     participantsCount,
     ratingsParameters,
-    idPrefix,
     category,
+    idPrefix,
     sex,
   });
 

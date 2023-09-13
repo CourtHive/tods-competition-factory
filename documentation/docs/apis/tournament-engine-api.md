@@ -1397,7 +1397,7 @@ Draws with `{ drawType: AD_HOC }` allow `matchUps` to be dynamically added. In t
 ```js
 const result = tournamentEngine.generateAdHocMatchUps({
   addToStructure, // boolean - defaults to true
-  participantIdPairings, // required - array of array of pairings [['id1', 'id2'], ['id3', 'id4']]
+  participantIdPairings, // optional - array of array of pairings [['id1', 'id2'], ['id3', 'id4']]
   drawId, // required - drawId of drawDefinition in which target structure is found
   structureId, // required when more than one structure is present - structureId of structure for which matchUps are being generated
   matchUpIds, // optional - if matchUpIds are not specified UUIDs are generated
