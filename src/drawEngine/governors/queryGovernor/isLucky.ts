@@ -6,12 +6,12 @@ import { HydratedMatchUp } from '../../../types/hydrated';
 
 type IsLuckyArgs = {
   roundMatchUps?: HydratedMatchUp[];
-  hasOddMatchUpsCount?: boolean;
+  isNotEliminationStructure?: boolean;
   drawDefinition?: DrawDefinition;
   structure?: Structure;
 };
 export function isLucky({
-  hasOddMatchUpsCount,
+  isNotEliminationStructure,
   drawDefinition,
   roundMatchUps,
   structure,
@@ -19,7 +19,7 @@ export function isLucky({
   if (!structure) return false;
 
   if (!roundMatchUps) {
-    ({ hasOddMatchUpsCount, roundMatchUps } = getRoundMatchUps({
+    ({ isNotEliminationStructure, roundMatchUps } = getRoundMatchUps({
       matchUps: structure.matchUps ?? [],
     }));
   }
@@ -33,7 +33,7 @@ export function isLucky({
   );
 
   return (
-    hasOddMatchUpsCount &&
+    isNotEliminationStructure &&
     !structure?.structures &&
     hasFirstRoundDrawPositions &&
     noSecondRoundDrawPositions &&

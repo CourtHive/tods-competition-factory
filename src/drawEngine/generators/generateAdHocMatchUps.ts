@@ -37,7 +37,7 @@ type GenerateAdHocMatchUpsArgs = {
   matchUpsCount?: number; // number of matchUps to be generated
   matchUpIds?: string[];
   roundNumber?: number;
-  structureId: string;
+  structureId?: string;
   newRound?: boolean; // optional - whether to auto-increment to the next roundNumber
 };
 

@@ -5,8 +5,16 @@ import { isAdHoc } from '../../governors/queryGovernor/isAdHoc';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../../constants/entryStatusConstants';
 import { AD_HOC, stageOrder } from '../../../constants/drawDefinitionConstants';
-import { TypeEnum } from '../../../types/tournamentFromSchema';
+import { HydratedParticipant } from '../../../types/hydrated';
 import { RATING } from '../../../constants/scaleConstants';
+import {
+  DrawDefinition,
+  EntryStatusEnum,
+  Event,
+  Structure,
+  Tournament,
+  TypeEnum,
+} from '../../../types/tournamentFromSchema';
 import {
   INVALID_DRAW_DEFINITION,
   INVALID_PARTICIPANT_ID,
@@ -14,20 +22,38 @@ import {
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
+type DrawMaticArgs = {
+  tournamentParticipants?: HydratedParticipant[];
+  restrictEntryStatus?: boolean;
+  drawDefinition?: DrawDefinition;
+  tournamentRecord: Tournament;
+  generateMatchUps?: boolean;
+  addToStructure?: boolean;
+  participantIds?: string[];
+  maxIterations?: number;
+  structure?: Structure;
+  matchUpIds?: string[];
+  structureId?: string;
+  eventType?: TypeEnum;
+  scaleName?: string;
+  event?: Event;
+};
+
 export function drawMatic({
   tournamentParticipants,
   restrictEntryStatus,
   tournamentRecord,
   generateMatchUps,
   addToStructure,
-  drawDefinition,
   participantIds,
+  drawDefinition,
   maxIterations,
   structureId,
   matchUpIds,
   scaleName, // custom rating name to seed dynamic ratings
+  eventType,
   event,
-}) {
+}: DrawMaticArgs) {
   if (
     typeof drawDefinition !== 'object' ||
     (drawDefinition.drawType && drawDefinition.drawType !== AD_HOC)
@@ -36,25 +62,29 @@ export function drawMatic({
   }
 
   if (
-    !Array.isArray(drawDefinition.entries) ||
-    (participantIds && !Array.isArray(participantIds))
-  )
+    !Array.isArray(drawDefinition?.entries) &&
+    participantIds &&
+    !Array.isArray(participantIds)
+  ) {
     return { error: INVALID_VALUES, info: 'Missing Entries' };
+  }
 
-  const { eventType } = event || {};
+  eventType = eventType ?? event?.eventType;
 
-  const enteredParticipantIds = drawDefinition.entries
-    .filter(
-      ({ entryStatus }) =>
+  const enteredParticipantIds = drawDefinition?.entries
+    ?.filter((entry) => {
+      const entryStatus = entry.entryStatus as EntryStatusEnum;
+      return (
         !restrictEntryStatus ||
         STRUCTURE_SELECTED_STATUSES.includes(entryStatus)
-    )
+      );
+    })
     .map(getParticipantId);
 
   if (participantIds) {
     // ensure all participantIds are in drawDefinition.entries
     const invalidParticipantIds = participantIds.filter(
-      (participantId) => !enteredParticipantIds.includes(participantId)
+      (participantId) => !enteredParticipantIds?.includes(participantId)
     );
 
     if (invalidParticipantIds?.length)
@@ -68,10 +98,10 @@ export function drawMatic({
 
   // if no structureId is specified find the latest AD_HOC stage which has matchUps
   if (!structureId) {
-    const targetStructure = drawDefinition.structures
+    const targetStructure = drawDefinition?.structures
       ?.filter((structure) => structure.stageSequence === 1)
-      ?.reduce((targetStructure, structure) => {
-        const orderNumber = stageOrder[structure.stage];
+      ?.reduce((targetStructure: any, structure: any) => {
+        const orderNumber = structure.stage && stageOrder[structure.stage];
         const structureIsAdHoc = isAdHoc({ drawDefinition, structure });
 
         return structureIsAdHoc &&
@@ -82,7 +112,7 @@ export function drawMatic({
     structureId = targetStructure?.structureId;
   }
 
-  const structure = drawDefinition.structures?.find(
+  const structure = drawDefinition?.structures?.find(
     (structure) => structure.structureId === structureId
   );
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
@@ -92,7 +122,7 @@ export function drawMatic({
   if (!structureIsAdHoc) return { error: INVALID_DRAW_DEFINITION };
 
   const adHocRatings = {};
-  for (const participantId of participantIds) {
+  for (const participantId of participantIds ?? []) {
     const participant = tournamentParticipants?.find(
       (participant) => participant.participantId === participantId
     );

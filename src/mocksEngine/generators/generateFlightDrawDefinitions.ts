@@ -2,7 +2,6 @@ import { addDrawDefinition } from '../../tournamentEngine/governors/eventGoverno
 import { automatedPlayoffPositioning } from '../../tournamentEngine/governors/eventGovernor/automatedPositioning';
 import { addPlayoffStructures } from '../../drawEngine/governors/structureGovernor/addPlayoffStructures';
 import { setParticipantScaleItem } from '../../tournamentEngine/governors/participantGovernor/addScaleItems';
-import { drawMatic } from '../../tournamentEngine/governors/eventGovernor/drawDefinitions/drawMatic';
 import { generateDrawDefinition } from '../../tournamentEngine/generators/generateDrawDefinition';
 import { getFlightProfile } from '../../tournamentEngine/getters/getFlightProfile';
 import { addExtension } from '../../global/functions/producers/addExtension';
@@ -12,15 +11,14 @@ import { hasParticipantId } from '../../global/functions/filters';
 import { completeDrawMatchUps } from './completeDrawMatchUps';
 import { generateRange } from '../../utilities';
 
+import { SUCCESS } from '../../constants/resultConstants';
+import { SEEDING } from '../../constants/scaleConstants';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   ErrorType,
   STRUCTURE_NOT_FOUND,
 } from '../../constants/errorConditionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import { SEEDING } from '../../constants/scaleConstants';
 import {
-  AD_HOC,
   MAIN,
   ROUND_ROBIN_WITH_PLAYOFF,
 } from '../../constants/drawDefinitionConstants';
@@ -120,22 +118,6 @@ export function generateFlightDrawDefinitions({
         });
         if (result.error) return { error: result.error, drawIds: [] };
 
-        if (
-          drawProfile.drawType === AD_HOC &&
-          (drawProfile.drawMatic || drawProfile.automated)
-        ) {
-          const roundsCount = drawProfile.roundsCount || 1;
-          for (const roundNumber of generateRange(1, roundsCount + 1)) {
-            const result = drawMatic({
-              generateMatchUps: true,
-              tournamentRecord,
-              drawDefinition,
-              roundNumber, // this is not a real parameter
-            });
-            if (result.error) return { error: result.error, drawIds: [] };
-          }
-        }
-
         if (drawProfile?.withPlayoffs) {
           const structureId = drawDefinition.structures?.[0].structureId;
           const result = addPlayoffStructures({
@@ -186,7 +168,7 @@ export function generateFlightDrawDefinitions({
             if (result.error) return { error: result.error, drawIds: [] };
 
             const playoffCompletionGoal = completionGoal
-              ? completionGoal - (completedCount || 0)
+              ? completionGoal - (completedCount ?? 0)
               : undefined;
             result = completeDrawMatchUps({
               completeAllMatchUps: !completionGoal && completeAllMatchUps,

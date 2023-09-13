@@ -4,13 +4,12 @@ import { setParticipantScaleItem } from '../../tournamentEngine/governors/partic
 import { addPlayoffStructures } from '../../drawEngine/governors/structureGovernor/addPlayoffStructures';
 import { addEventEntries } from '../../tournamentEngine/governors/eventGovernor/entries/addEventEntries';
 import { addParticipants } from '../../tournamentEngine/governors/participantGovernor/addParticipants';
-import { drawMatic } from '../../tournamentEngine/governors/eventGovernor/drawDefinitions/drawMatic';
 import { addEventTimeItem } from '../../tournamentEngine/governors/tournamentGovernor/addTimeItem';
 import { generateDrawDefinition } from '../../tournamentEngine/generators/generateDrawDefinition';
 import { publishEvent } from '../../tournamentEngine/governors/publishingGovernor/publishEvent';
+import { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
 import { addFlight } from '../../tournamentEngine/governors/eventGovernor/addFlight';
 import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaults';
-import { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
 import { addExtension } from '../../global/functions/producers/addExtension';
 import { isValidExtension } from '../../global/validation/isValidExtension';
 import { getParticipantId } from '../../global/functions/extractors';
@@ -40,7 +39,6 @@ import { COMPETITOR } from '../../constants/participantRoles';
 import { SEEDING } from '../../constants/timeItemConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
-  AD_HOC,
   MAIN,
   QUALIFYING,
   ROUND_ROBIN_WITH_PLAYOFF,
@@ -453,22 +451,6 @@ export function generateEventWithDraw(params) {
 
   if (generate) {
     addDrawDefinition({ drawDefinition, event, suppressNotifications: true });
-
-    if (
-      drawType === AD_HOC &&
-      (drawProfile.drawMatic || drawProfile.automated)
-    ) {
-      const roundsCount = drawProfile.roundsCount || 1;
-      for (const roundNumber of generateRange(1, roundsCount + 1)) {
-        const result = drawMatic({
-          generateMatchUps: true,
-          tournamentRecord,
-          drawDefinition,
-          roundNumber, // this is not a real parameter
-        });
-        if (result.error) return result;
-      }
-    }
 
     if (drawProfile.withPlayoffs) {
       const structureId = drawDefinition.structures?.[0].structureId;

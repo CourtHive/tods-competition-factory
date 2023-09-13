@@ -32,7 +32,6 @@ it('can generate H2H reports with Competitors In Common', () => {
     }).drawDefinition;
 
     const completionResult = completeDrawMatchUps({ drawDefinition });
-    console.log({ completionResult });
     expect(completionResult.success).toEqual(true);
 
     const addDrawResult = tournamentEngine.addDrawDefinition({

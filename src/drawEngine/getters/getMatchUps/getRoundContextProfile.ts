@@ -26,14 +26,13 @@ export function getRoundContextProfile({
   roundMatchUps?: HydratedMatchUp[];
   roundProfile?: RoundProfile;
 } {
-  const { hasOddMatchUpsCount, roundProfile, roundMatchUps } = getRoundMatchUps(
-    { matchUps }
-  );
+  const { isNotEliminationStructure, roundProfile, roundMatchUps } =
+    getRoundMatchUps({ matchUps });
   const { structureAbbreviation, stage } = structure;
 
   const isAdHocStructure = isAdHoc({ structure });
   const isLuckyStructure = isLucky({
-    hasOddMatchUpsCount,
+    isNotEliminationStructure,
     roundMatchUps,
     structure,
   });
