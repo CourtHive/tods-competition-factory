@@ -5,6 +5,7 @@ import { getStructureSeedAssignments } from '../../../getters/getStructureSeedAs
 import { getAssignedParticipantIds } from '../../../getters/getAssignedParticipantIds';
 import { getValidModifyAssignedPairAction } from './getValidModifyAssignedPairAction';
 import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
+import { MatchUpsMap } from '../../../getters/getMatchUps/getMatchUpsMap';
 import { getValidLuckyLosersAction } from './getValidLuckyLoserAction';
 import { getValidAlternatesAction } from './getValidAlternatesAction';
 import { getValidAssignmentActions } from './participantAssignments';
@@ -27,6 +28,7 @@ import { DIRECT_ENTRY_STATUSES } from '../../../../constants/entryStatusConstant
 import { ResultType } from '../../../../global/functions/decorateResult';
 import { PolicyDefinitions } from '../../../../types/factoryTypes';
 import { PAIR } from '../../../../constants/participantConstants';
+import { HydratedMatchUp } from '../../../../types/hydrated';
 import {
   INVALID_DRAW_POSITION,
   MISSING_DRAW_DEFINITION,
@@ -75,12 +77,15 @@ import {
  */
 
 type PositionActionsArgs = {
+  inContextDrawMatchUps?: HydratedMatchUp[];
+  restrictAdHocRoundParticipants?: boolean;
   tournamentParticipants?: Participant[];
   policyDefinitions?: PolicyDefinitions;
   provisionalPositioning?: boolean;
   tournamentRecord?: Tournament;
   returnParticipants?: boolean;
   drawDefinition: DrawDefinition;
+  matchUpsMap?: MatchUpsMap;
   drawPosition: number;
   structureId: string;
   matchUpId?: string;
