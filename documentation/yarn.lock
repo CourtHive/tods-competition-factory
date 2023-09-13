@@ -3660,9 +3660,9 @@ cosmiconfig@^7.0.0, cosmiconfig@^7.0.1:
     yaml "^1.10.0"
 
 courthive-components@^0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/courthive-components/-/courthive-components-0.7.0.tgz#2ec908cb47ad231fa271740c58d4362e6682b08d"
-  integrity sha512-Dlg2b+y8EGBxpdcMzvoziTlnU8PZdQ9QwalSPOQj0iX69aoSnnSPo3avEjZ3KV4nxYgXgrSqRc9msbaxjkK1iQ==
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/courthive-components/-/courthive-components-0.7.3.tgz#2fa5f46d524ba18b30c3ccf339b7a0fecc040b8e"
+  integrity sha512-bLAPNP2ZyzED2uWhnkoTorK78JEotOdz8ZUIViqj9u3oggqYABn9IBoPExiKYhePr8SFTnB2/iLrHaZ1POfZwA==
   dependencies:
     "@stitches/core" "^1.2.8"
     bulma "^0.9.4"
@@ -3670,7 +3670,7 @@ courthive-components@^0.7.0:
     classnames "^2.3.2"
     dayjs "^1.11.9"
     husky "^8.0.3"
-    tods-competition-factory "^1.4.11"
+    tods-competition-factory "^1.4.31"
 
 cross-fetch@3.1.5, cross-fetch@^3.1.5:
   version "3.1.5"
@@ -9104,10 +9104,15 @@ to-regex-range@^5.0.1:
   dependencies:
     is-number "^7.0.0"
 
-tods-competition-factory@1.4.30, tods-competition-factory@^1.4.11:
+tods-competition-factory@1.4.30:
   version "1.4.30"
   resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-1.4.30.tgz#bea2ffa610f8c6a1b9d058b90ba94b207e97a27c"
   integrity sha512-NNAve1XyjcYAwYZeT+0jI+z9yMiczAI71jNqWXO6jo140iHYZObD6xHW6cWOdf918gScfo7MNEj04ZemrPaOQg==
+
+tods-competition-factory@^1.4.31:
+  version "1.4.31"
+  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-1.4.31.tgz#34d9a14c5df2497691e478abda0a0c77f2ad490c"
+  integrity sha512-hwrMMq4OUtOyC1Nx5n0sPx6EE+fneDhDcYThIi0jeYbOm0II3Raxt4D6AeQRdPMKchyD0uj+iYm4kOKtjwdjPA==
 
 toidentifier@1.0.1:
   version "1.0.1"
