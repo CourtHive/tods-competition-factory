@@ -14,7 +14,7 @@ import { getParticipantId } from '../../../global/functions/extractors';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { isCompletedStructure } from './structureActions';
-import { unique } from '../../../utilities';
+import { makeDeepCopy, unique } from '../../../utilities';
 import { isAdHoc } from './isAdHoc';
 import {
   getEnabledStructures,
@@ -64,6 +64,10 @@ import {
   REMOVE_SUBSTITUTION,
 } from '../../../constants/matchUpActionConstants';
 import {
+  decorateResult,
+  ResultType,
+} from '../../../global/functions/decorateResult';
+import {
   ALTERNATE,
   DIRECT_ENTRY_STATUSES,
   UNGROUPED,
@@ -75,23 +79,20 @@ import {
   POLICY_TYPE_POSITION_ACTIONS,
 } from '../../../constants/policyConstants';
 import {
-  DOUBLES_MATCHUP,
-  SINGLES_MATCHUP,
-} from '../../../constants/matchUpTypes';
-import {
   DrawDefinition,
   Event,
+  Participant,
   Tournament,
 } from '../../../types/tournamentFromSchema';
 import {
-  decorateResult,
-  ResultType,
-} from '../../../global/functions/decorateResult';
+  DOUBLES_MATCHUP,
+  SINGLES_MATCHUP,
+} from '../../../constants/matchUpTypes';
 
 type MatchUpActionsArgs = {
-  tournamentParticipants?: HydratedParticipant[];
   inContextDrawMatchUps?: HydratedMatchUp[];
   restrictAdHocRoundParticipants?: boolean;
+  tournamentParticipants?: Participant[];
   policyDefinitions?: PolicyDefinitions;
   tournamentRecord?: Tournament;
   drawDefinition: DrawDefinition;
@@ -216,6 +217,7 @@ export function matchUpActions({
 
     const roundAssignedParticipantIds = roundMatchUps
       .map((matchUp) => (matchUp.sides ?? []).flatMap(getParticipantId))
+      .flat()
       .filter(Boolean);
 
     const availableParticipantIds = enteredParticipantIds.filter(
@@ -224,15 +226,18 @@ export function matchUpActions({
         (!restrictAdHocRoundParticipants ||
           !roundAssignedParticipantIds.includes(participantId))
     );
-    const participantsAvailable = tournamentParticipants?.filter(
-      (participant) =>
-        availableParticipantIds?.includes(participant.participantId)
-    );
+    const participantsAvailable = tournamentParticipants
+      ?.filter(
+        (participant) =>
+          availableParticipantIds?.includes(participant.participantId)
+      )
+      .map((participant) => makeDeepCopy(participant, undefined, true));
 
-    participantsAvailable?.forEach((participant) => {
+    participantsAvailable?.forEach((participant: HydratedParticipant) => {
       const entry = (drawDefinition.entries ?? []).find(
         (entry) => entry.participantId === participant.participantId
       );
+      // TODO: determine if this is in fact used downstream
       participant.entryPosition = entry?.entryPosition;
     });
 
@@ -288,10 +293,12 @@ export function matchUpActions({
             !roundAssignedParticipantIds.includes(participantId))
       );
 
-    const availableAlternates = tournamentParticipants?.filter((participant) =>
-      availableAlternatesParticipantIds.includes(participant.participantId)
-    );
-    availableAlternates.forEach((alternate) => {
+    const availableAlternates = tournamentParticipants
+      ?.filter((participant) =>
+        availableAlternatesParticipantIds.includes(participant.participantId)
+      )
+      .map((participant) => makeDeepCopy(participant, undefined, true));
+    availableAlternates.forEach((alternate: HydratedParticipant) => {
       const entry = (drawDefinition.entries ?? []).find(
         (entry) => entry.participantId === alternate.participantId
       );

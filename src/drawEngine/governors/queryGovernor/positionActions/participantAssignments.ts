@@ -1,7 +1,7 @@
 import { getDrawMatchUps } from '../../../getters/getMatchUps/drawMatchUps';
 import { getNumericSeedValue } from '../../../getters/getNumericSeedValue';
 import { getNextSeedBlock } from '../../../getters/seedGetter';
-import { unique } from '../../../../utilities';
+import { makeDeepCopy, unique } from '../../../../utilities';
 import {
   definedAttributes,
   extractAttributes,
@@ -126,16 +126,19 @@ export function getValidAssignmentActions({
     );
 
     const participantsAvailable = returnParticipants
-      ? tournamentParticipants?.filter(
-          (participant) =>
-            availableParticipantIds?.includes(participant.participantId)
-        )
+      ? tournamentParticipants
+          ?.filter(
+            (participant) =>
+              availableParticipantIds?.includes(participant.participantId)
+          )
+          .map((participant) => makeDeepCopy(participant, undefined, true))
       : undefined;
 
     participantsAvailable?.forEach((participant) => {
       const entry = (drawDefinition.entries ?? []).find(
         (entry) => entry.participantId === participant.participantId
       );
+      // TODO: determine if this is in fact used downstream
       participant.entryPosition = entry?.entryPosition;
     });
     if (participantsAvailable?.length) {
@@ -174,9 +177,11 @@ export function getValidAssignmentActions({
 
     // add structureId and drawPosition to the payload so the client doesn't need to discover
     const participantsAvailable = returnParticipants
-      ? tournamentParticipants?.filter((participant) =>
-          availableParticipantIds.includes(participant.participantId)
-        )
+      ? tournamentParticipants
+          ?.filter((participant) =>
+            availableParticipantIds.includes(participant.participantId)
+          )
+          .map((participant) => makeDeepCopy(participant, undefined, true))
       : undefined;
     if (participantsAvailable?.length) {
       validAssignmentActions.push(
