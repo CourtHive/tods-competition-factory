@@ -6,7 +6,6 @@ export const REMOVE_ASSIGNMENT_METHOD = 'removeDrawPositionAssignment';
 export const SWAP_PARTICIPANT_METHOD = 'swapDrawPositionAssignments';
 export const MODIFY_PAIR_ASSIGNMENT_METHOD = 'modifyPairAssignment';
 export const ADD_NICKNAME_METHOD = 'modifyParticipantOtherName';
-export const ASSIGN_SIDE_METHOD = 'assignMatchUpSideParticipant';
 export const ASSIGN_PARTICIPANT_METHOD = 'assignDrawPosition';
 export const REMOVE_SEED_METHOD = 'removeSeededParticipant';
 export const ASSIGN_BYE_METHOD = 'assignDrawPositionBye';

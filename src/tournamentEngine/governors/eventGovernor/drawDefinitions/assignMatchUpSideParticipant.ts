@@ -8,6 +8,7 @@ import {
   INVALID_DRAW_TYPE,
   INVALID_PARTICIPANT_ID,
   INVALID_VALUES,
+  MATCHUP_NOT_FOUND,
   MISSING_DRAW_DEFINITION,
   MISSING_MATCHUP_ID,
 } from '../../../../constants/errorConditionConstants';
@@ -42,6 +43,8 @@ export function assignMatchUpSideParticipant({
     matchUpId,
     event,
   });
+
+  if (!matchUp) return { error: MATCHUP_NOT_FOUND };
 
   const isAdHoc =
     !structure?.structures &&

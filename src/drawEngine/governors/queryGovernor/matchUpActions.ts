@@ -6,16 +6,16 @@ import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { isDirectingMatchUpStatus } from '../matchUpGovernor/checkStatusType';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { isActiveDownstream } from '../matchUpGovernor/isActiveDownstream';
-import {
-  getMatchUpsMap,
-  MatchUpsMap,
-} from '../../getters/getMatchUps/getMatchUpsMap';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { isCompletedStructure } from './structureActions';
 import { makeDeepCopy, unique } from '../../../utilities';
 import { isAdHoc } from './isAdHoc';
+import {
+  getMatchUpsMap,
+  MatchUpsMap,
+} from '../../getters/getMatchUps/getMatchUpsMap';
 import {
   getEnabledStructures,
   getPolicyActions,
@@ -32,7 +32,6 @@ import {
   ADD_PENALTY,
   ADD_PENALTY_METHOD,
   ASSIGN_PARTICIPANT,
-  ASSIGN_SIDE_METHOD,
 } from '../../../constants/positionActionConstants';
 import {
   INVALID_VALUES,
@@ -62,6 +61,8 @@ import {
   REMOVE_TEAM_POSITION_METHOD,
   REMOVE_PARTICIPANT,
   REMOVE_SUBSTITUTION,
+  ASSIGN_SIDE_METHOD,
+  REMOVE_SIDE_METHOD,
 } from '../../../constants/matchUpActionConstants';
 import {
   decorateResult,
@@ -152,6 +153,7 @@ export function matchUpActions({
 
   Object.assign(appliedPolicies, specifiedPolicyDefinitions || {});
 
+  const isAdHocMatchUp = isAdHoc({ drawDefinition, structure });
   const matchUpActionsPolicy =
     appliedPolicies?.[POLICY_TYPE_MATCHUP_ACTIONS] ||
     POLICY_MATCHUP_ACTIONS_DEFAULT[POLICY_TYPE_MATCHUP_ACTIONS];
@@ -203,7 +205,7 @@ export function matchUpActions({
   const validActions: any[] = [];
   if (!structureId) return { validActions };
 
-  if (isAdHoc({ drawDefinition, structure })) {
+  if (isAdHocMatchUp) {
     const roundMatchUps = (structure?.matchUps ?? []).filter(
       ({ roundNumber }) => roundNumber === matchUp.roundNumber
     );
@@ -317,6 +319,19 @@ export function matchUpActions({
         type: ALTERNATE,
       });
     }
+
+    if (!scoreHasValue(matchUp) && sideNumber) {
+      const side = matchUp.sides?.find(
+        (side) => side.sideNumber === sideNumber
+      );
+      if (side?.participantId) {
+        validActions.push({
+          payload: { drawId, matchUpId, structureId, sideNumber },
+          method: REMOVE_SIDE_METHOD,
+          type: REMOVE_PARTICIPANT,
+        });
+      }
+    }
   }
 
   const structureIsComplete = isCompletedStructure({
@@ -398,8 +413,8 @@ export function matchUpActions({
     !(isDoubleExit && activeDownstream);
 
   const addPenaltyAction = {
-    type: ADD_PENALTY,
     method: ADD_PENALTY_METHOD,
+    type: ADD_PENALTY,
     payload: {
       drawId,
       matchUpId,
@@ -411,9 +426,9 @@ export function matchUpActions({
   };
   if (isInComplete) {
     validActions.push({
-      type: SCHEDULE,
-      method: SCHEDULE_METHOD,
       payload: { drawId, matchUpId, schedule: {} },
+      method: SCHEDULE_METHOD,
+      type: SCHEDULE,
     });
   }
 
@@ -531,14 +546,14 @@ export function matchUpActions({
             (existingParticipantIds?.length ?? 0) < 4)));
 
     // extra step to avoid edge case where individual participant is part of both teams
-    const availableIds = availableParticipantIds.filter(
+    const availableIds = availableParticipantIds?.filter(
       (id) => !allParticipantIds?.includes(id)
     );
-    const available = availableParticipants.filter(({ participantId }) =>
+    const available = availableParticipants?.filter(({ participantId }) =>
       availableIds.includes(participantId)
     );
 
-    if (assignmentAvailable && availableIds.length) {
+    if (assignmentAvailable && availableIds?.length) {
       validActions.push({
         availableParticipantIds: availableIds,
         method: ASSIGN_TEAM_POSITION_METHOD,

@@ -2,6 +2,7 @@ import { generateAndPopulatePlayoffStructures } from '../../../drawEngine/govern
 import { setDrawParticipantRepresentativeIds } from './drawDefinitions/setDrawParticipantRepresentativeIds';
 import { getDrawParticipantRepresentativeIds } from './drawDefinitions/getDrawParticipantRepresentativeIds';
 import { assignMatchUpSideParticipant } from './drawDefinitions/assignMatchUpSideParticipant';
+import { removeMatchUpSideParticipant } from './drawDefinitions/removeMatchUpSideParticipant';
 import { replaceTieMatchUpParticipantId } from './replaceTieMatchUpParticipant';
 import { deleteDrawDefinitions } from './drawDefinitions/deleteDrawDefinitions';
 import { setMatchUpStatus, bulkMatchUpStatusUpdate } from './setMatchUpStatus';
@@ -234,6 +235,7 @@ const eventGovernor = {
   substituteParticipant,
   swapDrawPositionAssignments,
   assignMatchUpSideParticipant,
+  removeMatchUpSideParticipant,
   removeDrawPositionAssignment,
   alternateDrawPositionAssignment,
   withdrawParticipantAtDrawPosition,

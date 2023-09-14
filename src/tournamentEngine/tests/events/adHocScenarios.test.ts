@@ -1,10 +1,11 @@
 import { extractAttributes } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
-import { expect, test } from 'vitest';
+import { expect, it, test } from 'vitest';
 
-import { SINGLES_EVENT } from '../../../constants/eventConstants';
+import { REMOVE_PARTICIPANT } from '../../../constants/matchUpActionConstants';
 import { AD_HOC } from '../../../constants/drawDefinitionConstants';
+import { SINGLES_EVENT } from '../../../constants/eventConstants';
 
 test('generateDrawDefinition can generate specified number of rounds', () => {
   const participantsCount = 28;
@@ -56,6 +57,7 @@ test('generateDrawDefinition can generate specified number of rounds', () => {
 });
 
 test('adHoc matchUpActions can restrict adHoc round participants to diallow recurrence in the same round', () => {
+  tournamentEngine.devContext(true);
   const participantsCount = 28;
 
   const roundsCount = 3;
@@ -114,13 +116,13 @@ test('adHoc matchUpActions can restrict adHoc round participants to diallow recu
   const availableParticipantIds = assignAction.availableParticipantIds;
   expect(availableParticipantIds.length).toEqual(participantsCount);
 
-  const targetParticipantId = availableParticipantIds[0];
-  const payload = {
+  let targetParticipantId = availableParticipantIds[0];
+  let payload = {
     ...assignAction.payload,
     participantId: targetParticipantId,
   };
 
-  const assignResult = tournamentEngine[assignAction.method](payload);
+  let assignResult = tournamentEngine[assignAction.method](payload);
   expect(assignResult.success).toEqual(true);
 
   validActions = tournamentEngine.positionActions({
@@ -142,4 +144,54 @@ test('adHoc matchUpActions can restrict adHoc round participants to diallow recu
   expect(
     assignAction.availableParticipantIds.includes(targetParticipantId)
   ).toEqual(true);
+
+  validActions = tournamentEngine.positionActions({
+    ...matchUps[0],
+    sideNumber: 2,
+  }).validActions;
+
+  targetParticipantId = availableParticipantIds[0];
+  assignAction = validActions.find((action) => action.type === 'ASSIGN');
+  payload = {
+    ...assignAction.payload,
+    participantId: targetParticipantId,
+  };
+
+  assignResult = tournamentEngine[assignAction.method](payload);
+  expect(assignResult.success).toEqual(true);
+
+  const targetMatchUp = tournamentEngine
+    .allTournamentMatchUps()
+    .matchUps.find((matchUp) => matchUp.matchUpId === matchUps[0].matchUpId);
+
+  expect(
+    targetMatchUp.sides.map(extractAttributes('participantId')).filter(Boolean)
+      .length
+  ).toEqual(2);
+
+  validActions = tournamentEngine.positionActions({
+    ...matchUps[0],
+    sideNumber: 1,
+  }).validActions;
+
+  const removeParticiapntAction = validActions.find(
+    ({ type }) => type === REMOVE_PARTICIPANT
+  );
+  expect(removeParticiapntAction).not.toBeUndefined();
+  const removeResult = tournamentEngine[removeParticiapntAction.method](
+    removeParticiapntAction.payload
+  );
+  expect(removeResult.success).toEqual(true);
+});
+
+it('can remove adHoc rounds', () => {
+  console.log('implement removing adHoc rounds');
+});
+
+it('can add matchUps to an existing adHoc round', () => {
+  console.log('implement adding adHoc');
+});
+
+it('can delete adHoc matchUps', () => {
+  console.log('implement deletion of adHoc matchUps');
 });

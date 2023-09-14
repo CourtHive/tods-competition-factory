@@ -3,7 +3,10 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 import { expect, it } from 'vitest';
 
-import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
+import {
+  ROUND_ROBIN,
+  SINGLE_ELIMINATION,
+} from '../../../constants/drawDefinitionConstants';
 
 it('cann add ROUND_ROBIN playoff structures', () => {
   const {
@@ -69,12 +72,12 @@ it('cann add ROUND_ROBIN playoff structures', () => {
         playoffGroups: [
           {
             finishingPositions: [1],
-            drawType: 'SINGLE_ELIMINATION',
+            drawType: SINGLE_ELIMINATION,
             structureName: 'Playoff 1-2',
           },
           {
             finishingPositions: [3],
-            drawType: 'SINGLE_ELIMINATION',
+            drawType: SINGLE_ELIMINATION,
             structureName: 'Playoff 5-6',
           },
         ],
@@ -105,12 +108,12 @@ it('cann add ROUND_ROBIN playoff structures', () => {
         playoffGroups: [
           {
             finishingPositions: [2],
-            drawType: 'SINGLE_ELIMINATION',
+            drawType: SINGLE_ELIMINATION,
             structureName: 'Playoff 3-4',
           },
           {
             finishingPositions: [4],
-            drawType: 'SINGLE_ELIMINATION',
+            drawType: SINGLE_ELIMINATION,
             structureName: 'Playoff 7-8',
           },
         ],
