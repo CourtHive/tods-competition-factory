@@ -1,6 +1,7 @@
 import { modifyMatchUpNotice } from '../../../../drawEngine/notifications/drawNotifications';
 import { findMatchUp } from '../../../../drawEngine/getters/getMatchUps/findMatchUp';
 
+import { AD_HOC } from '../../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   INVALID_DRAW_TYPE,
@@ -11,7 +12,6 @@ import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
 } from '../../../../constants/errorConditionConstants';
-import { AD_HOC } from '../../../../constants/drawDefinitionConstants';
 
 export function removeMatchUpSideParticipant({
   tournamentRecord,
@@ -25,6 +25,7 @@ export function removeMatchUpSideParticipant({
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
   if (!sideNumber) return { error: MISSING_VALUE };
 
+  // TODO: move to drawEngine and passthrough
   if (![1, 2].includes(sideNumber))
     return { error: INVALID_VALUES, sideNumber };
 

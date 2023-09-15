@@ -381,6 +381,22 @@ tournamentEngine.addMatchUpStopTime({
 
 ---
 
+## addMatchUpCourtOrder
+
+When using Pro-scheduling, assign order on court
+
+```js
+tournamentEngine.addMatchUpCourtOrder({
+  removePriorValues, // optional boolean
+  drawId, // drawId where matchUp is found
+  courtOrder,
+  matchUpId,
+  courtId,
+});
+```
+
+---
+
 ## addParticipant
 
 Adds an INDIVIDUAL, PAIR or TEAM participant to tournament participants. Includes integrity checks for `{ participantType: PAIR }` to ensure `participant.individualParticipantIds` are valid.
@@ -676,28 +692,27 @@ Low level function normally called by higher order convenience functions.
 
 ```js
 tournamentEngine.assignDrawPosition({
-  drawId,
-  structureId,
-  drawPosition,
   participantId, // optional - if assigning position to a participant
+  drawPosition,
+  structureId,
   qualifier, // optional boolean, if assigning a space for a qualifier
+  drawId,
   bye, // optional boolean, if assigning a bye
 });
 ```
 
 ---
 
-## addMatchUpCourtOrder
+## assignMatchUpSideParticipant
 
-When using Pro-scheduling, assign order on court
+Assign participant to AD_HOC matchUp.
 
 ```js
-tournamentEngine.addMatchUpCourtOrder({
-  removePriorValues, // optional boolean
-  drawId, // drawId where matchUp is found
-  courtOrder,
+assignMatchUpSideParticipant({
+  participantId,
+  sideNumber,
   matchUpId,
-  courtId,
+  drawId,
 });
 ```
 
@@ -1399,7 +1414,7 @@ const result = tournamentEngine.generateAdHocMatchUps({
   addToStructure, // boolean - defaults to true
   participantIdPairings, // optional - array of array of pairings [['id1', 'id2'], ['id3', 'id4']]
   drawId, // required - drawId of drawDefinition in which target structure is found
-  structureId, // required when more than one structure is present - structureId of structure for which matchUps are being generated
+  structureId, // required only when more than one structure is present and { addToStructure: true }
   matchUpIds, // optional - if matchUpIds are not specified UUIDs are generated
   roundNumber, // optional - specify round for which matchUps will be generated
   newRound, // optional - boolean defaults to false - whether to auto-increment to next roundNumber
@@ -3278,6 +3293,20 @@ const { removed, notRemoved, cannotRemove } =
 
 ---
 
+## removeMatchUpSideParticipant
+
+Removes participant assigned to AD_HOC matchUp.
+
+```js
+removeMatchUpSideParticipant({
+  sideNumber, // number - required
+  matchUpId, // required
+  drawId, // required
+});
+```
+
+---
+
 ## removeParticipantIdsFromAllTeams
 
 ```js
@@ -3303,6 +3332,24 @@ Removes a penalty from all relevant tournament participants.
 
 ```js
 tournamentEngine.removePenalty({ penaltyId });
+```
+
+---
+
+## removeRoundMatchUps
+
+```js
+const {
+  deltedMatchUpsCount, // number
+  roundRemoved, // boolean
+  success, // boolean
+  error, // if any
+} = tournamentEngine.removeRoundMatchUps({
+  removeCompletedMatchUps, // optional boolean - whether to remove completed matchUps
+  roundNumber, // required - roundNumber to remove
+  structureId, // required
+  drawId, // required
+});
 ```
 
 ---

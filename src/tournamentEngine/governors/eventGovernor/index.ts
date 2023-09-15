@@ -4,10 +4,11 @@ import { getDrawParticipantRepresentativeIds } from './drawDefinitions/getDrawPa
 import { assignMatchUpSideParticipant } from './drawDefinitions/assignMatchUpSideParticipant';
 import { removeMatchUpSideParticipant } from './drawDefinitions/removeMatchUpSideParticipant';
 import { replaceTieMatchUpParticipantId } from './replaceTieMatchUpParticipant';
-import { deleteDrawDefinitions } from './drawDefinitions/deleteDrawDefinitions';
 import { setMatchUpStatus, bulkMatchUpStatusUpdate } from './setMatchUpStatus';
 import { assignTieMatchUpParticipantId } from './assignTieMatchUpParticipant';
 import { removeTieMatchUpParticipantId } from './removeTieMatchUpParticipant';
+import { deleteDrawDefinitions } from './drawDefinitions/deleteDrawDefinitions';
+import { removeRoundMatchUps } from './drawDefinitions/removeRoundMatchUps';
 import { assignDrawPosition } from './drawDefinitions/assignDrawPosition';
 import { addDrawDefinition } from './drawDefinitions/addDrawDefinition';
 import { addDrawEntries } from './drawDefinitions/addDrawEntries';
@@ -233,6 +234,7 @@ const eventGovernor = {
   assignSeedPositions,
   assignDrawPositionBye,
   substituteParticipant,
+  removeRoundMatchUps,
   swapDrawPositionAssignments,
   assignMatchUpSideParticipant,
   removeMatchUpSideParticipant,
