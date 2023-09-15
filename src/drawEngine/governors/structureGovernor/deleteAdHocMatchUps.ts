@@ -1,6 +1,9 @@
+import { getMissingSequenceNumbers } from '../../../utilities/arrays';
+import { extractAttributes, unique } from '../../../utilities';
 import {
   deleteMatchUpsNotice,
   modifyDrawNotice,
+  modifyMatchUpNotice,
 } from '../../notifications/drawNotifications';
 
 import { ROUND_OUTCOME } from '../../../constants/drawDefinitionConstants';
@@ -17,7 +20,6 @@ import {
   Event,
   Tournament,
 } from '../../../types/tournamentFromSchema';
-import { extractAttributes } from '../../../utilities';
 
 type DeleteAdHocMatchUpsArgs = {
   tournamentRecord?: Tournament;
@@ -65,48 +67,10 @@ export function deleteAdHocMatchUps({
     extractAttributes('matchUpId')
   );
 
-  const drawPositionsToDelete = matchUpsToDelete
-    .map(({ drawPositions }) => drawPositions)
-    .flat();
-
-  if (drawPositionsToDelete.length) {
-    // remove positionAssignments with drawPositions to delete
-    structure.positionAssignments = structure.positionAssignments
-      ?.filter(
-        ({ drawPosition }) => !drawPositionsToDelete.includes(drawPosition)
-      )
-      // sort just for sanity
-      .sort((a, b) => a.drawPosition - b.drawPosition);
-
-    structure.matchUps = structure?.matchUps?.filter(
+  if (matchUpIdsToDelete.length) {
+    structure.matchUps = (structure.matchUps ?? []).filter(
       ({ matchUpId }) => !matchUpIdsToDelete.includes(matchUpId)
     );
-
-    // build up a re-mapping of remaining drawPositions to close any gaps in sequential order
-    const newDrawPositionsMap = Object.assign(
-      {},
-      ...(structure.positionAssignments ?? []).map(
-        ({ drawPosition }, index) => ({
-          [drawPosition]: index + 1,
-        })
-      )
-    );
-
-    // remap positionAssignments
-    structure.positionAssignments = (structure.positionAssignments ?? []).map(
-      (assignment) => ({
-        ...assignment,
-        drawPosition: newDrawPositionsMap[assignment.drawPosition],
-      })
-    );
-
-    // remap remaining matchUp.drawPositions
-    const remapDrawPositions = (matchUp) =>
-      (matchUp.drawPositions =
-        matchUp.drawPositions?.map(
-          (drawPosition) => newDrawPositionsMap[drawPosition]
-        ) || []);
-    structure.matchUps?.forEach(remapDrawPositions);
 
     deleteMatchUpsNotice({
       tournamentId: tournamentRecord?.tournamentId,
@@ -115,6 +79,23 @@ export function deleteAdHocMatchUps({
       eventId: event?.eventId,
       drawDefinition,
     });
+
+    const roundNumbers = unique(
+      structure.matchUps.map(extractAttributes('roundNumber'))
+    );
+    const missingRoundNumbers = getMissingSequenceNumbers(roundNumbers);
+    if (missingRoundNumbers.length) {
+      const roundNumbersToConsider = missingRoundNumbers.reverse();
+      for (const roundNumber of roundNumbersToConsider) {
+        structure.matchUps.forEach((matchUp) => {
+          if (matchUp.roundNumber && matchUp.roundNumber > roundNumber) {
+            modifyMatchUpNotice;
+            matchUp.roundNumber -= 1;
+          }
+        });
+      }
+    }
+
     modifyDrawNotice({
       structureIds: [structureId],
       eventId: event?.eventId,

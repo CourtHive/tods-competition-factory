@@ -1,3 +1,5 @@
+import { isConvertableInteger } from './math';
+
 // returns only unique values within an array
 export function unique(arr) {
   return arr.filter((item, i, s) => s.lastIndexOf(item) === i);
@@ -211,4 +213,11 @@ export function getRanges(array) {
         ranges.push([a]);
       return ranges;
     }, []);
+}
+
+export function getMissingSequenceNumbers(arr, start = 1) {
+  if (!Array.isArray(arr) || !arr.every(isConvertableInteger)) return [];
+  const min = Math.min(...arr, start);
+  const max = Math.max(...arr);
+  return generateRange(min, max + 1).filter((n) => !arr.includes(n));
 }

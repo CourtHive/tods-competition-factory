@@ -1,5 +1,5 @@
 import { completeDrawMatchUps } from '../../../mocksEngine/generators/completeDrawMatchUps';
-import { extractAttributes, unique } from '../../../utilities';
+import { extractAttributes, intersection, unique } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 import { expect, it, test } from 'vitest';
@@ -402,8 +402,56 @@ it('can add matchUps to an existing adHoc round', () => {
   expect(generationResult.matchUps[0].roundNumber).toEqual(2);
   matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
   expect(matchUps.length).toEqual((participantsCount / 2) * roundsCount + 12);
-});
 
-it('can delete adHoc matchUps', () => {
-  console.log('implement deletion of adHoc matchUps');
+  const firstRoundMatchUp = matchUps.find(
+    ({ roundNumber }) => roundNumber === 1
+  );
+  const secondRoundMatchUp = matchUps.find(
+    ({ roundNumber }) => roundNumber === 2
+  );
+  const thirdRoundMatchUp = matchUps.find(
+    ({ roundNumber }) => roundNumber === 3
+  );
+
+  const beforeMatchUpsCount = matchUps.length;
+  const matchUpIds = [
+    firstRoundMatchUp.matchUpId,
+    secondRoundMatchUp.matchUpId,
+    thirdRoundMatchUp.matchUpId,
+  ];
+  const structureId = matchUps[0].structureId;
+
+  let deletionResult = tournamentEngine.deleteAdHocMatchUps({
+    structureId,
+    matchUpIds,
+    drawId,
+  });
+  expect(deletionResult.success).toEqual(true);
+
+  matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+  const afterMatchUpsCount = matchUps.length;
+  expect(afterMatchUpsCount).toEqual(beforeMatchUpsCount - matchUpIds.length);
+
+  const roundTwoMatchUpIds = matchUps
+    .filter(({ roundNumber }) => roundNumber === 2)
+    .map(extractAttributes('matchUpId'));
+
+  deletionResult = tournamentEngine.deleteAdHocMatchUps({
+    matchUpIds: roundTwoMatchUpIds,
+    structureId,
+    drawId,
+  });
+  expect(deletionResult.success).toEqual(true);
+
+  matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+  const finalMatchUpIds = matchUps.map(extractAttributes('matchUpId'));
+  expect(intersection(finalMatchUpIds, roundTwoMatchUpIds).length).toEqual(0);
+  expect(matchUps.length).toEqual(
+    afterMatchUpsCount - roundTwoMatchUpIds.length
+  );
+
+  matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+  const roundNumbers = unique(matchUps.map(extractAttributes('roundNumber')));
+  // all { roundNumber: 3 } matchUps were re-numbered
+  expect(roundNumbers).toEqual([1, 2]);
 });

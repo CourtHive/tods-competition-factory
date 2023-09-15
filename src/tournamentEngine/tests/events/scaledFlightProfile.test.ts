@@ -1,3 +1,4 @@
+import { ensureInt } from '../../../utilities/ensureInt';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 import { expect, it } from 'vitest';
@@ -208,7 +209,7 @@ it('will randomly sort unranked participants when creating flights', () => {
       eventId,
     });
   expect(flightProfile.flights.length).toEqual(3);
-  const entryPositions = splitEntries[2].map((e) => e.entryPosition);
+  const entryPositions = splitEntries[2].map((e) => ensureInt(e.entryPosition));
   const nonSequential = entryPositions.some(
     (entryPosition, i) => entryPosition > entryPositions[i + 1]
   );

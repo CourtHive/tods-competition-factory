@@ -1,7 +1,10 @@
-import { deleteMatchUpsNotice } from '../../../../drawEngine/notifications/drawNotifications';
 import { isAdHoc } from '../../../../drawEngine/governors/queryGovernor/isAdHoc';
 import { findStructure } from '../../../../drawEngine/getters/findStructure';
 import { numericSort } from '../../../../utilities';
+import {
+  deleteMatchUpsNotice,
+  modifyMatchUpNotice,
+} from '../../../../drawEngine/notifications/drawNotifications';
 
 import { completedMatchUpStatuses } from '../../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
@@ -115,9 +118,19 @@ function removeAdHocRound({
       const stillContainsRoundNumber = updatedMatchUps.some(
         (matchUp) => matchUp.roundNumber === roundNumber
       );
+
       if (!stillContainsRoundNumber) {
         updatedMatchUps.forEach((matchUp) => {
-          if (matchUp.roundNumber > roundNumber) matchUp.roundNumber -= 1;
+          if (matchUp.roundNumber > roundNumber) {
+            matchUp.roundNumber -= 1;
+
+            modifyMatchUpNotice({
+              drawDefinition,
+              tournamentId,
+              eventId,
+              matchUp,
+            });
+          }
         });
         roundRemoved = true;
       }
