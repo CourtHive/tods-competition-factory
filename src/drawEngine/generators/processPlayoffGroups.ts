@@ -2,12 +2,12 @@ import { getPositionRangeMap } from '../governors/structureGovernor/getPositionR
 import { firstRoundLoserConsolation } from './firstRoundLoserConsolation';
 import { generateCurtisConsolation } from './curtisConsolation';
 import { generatePlayoffStructures } from './playoffStructures';
+import { nextPowerOf2, numericSort } from '../../utilities';
 import { structureSort } from '../getters/structureSort';
 import structureTemplate from './structureTemplate';
 import { feedInChampionship } from './feedInChamp';
 import { generateRoundRobin } from './roundRobin';
 import { treeMatchUps } from './eliminationTree';
-import { nextPowerOf2 } from '../../utilities';
 import {
   ResultType,
   decorateResult,
@@ -83,7 +83,7 @@ export function processPlayoffGroups({
       if (!finishingPositions.length) return false;
 
       const sequential = finishingPositions
-        .sort()
+        .sort(numericSort)
         .map((pos, i) => (finishingPositions[i + 1] || pos) - pos)
         .every((val) => val < 2);
 

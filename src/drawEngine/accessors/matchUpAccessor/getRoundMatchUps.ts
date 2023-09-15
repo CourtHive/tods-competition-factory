@@ -1,3 +1,4 @@
+import { validMatchUps } from '../../../matchUpEngine/governors/queryGovernor/validMatchUp';
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 import { definedAttributes } from '../../../utilities/objects';
 import { ensureInt } from '../../../utilities/ensureInt';
@@ -36,7 +37,7 @@ export function getRoundMatchUps({
   matchUps = [],
   interpolate,
 }: GetRoundMatchUpsArgs): RoundMatchUpsResult {
-  if (!Array.isArray(matchUps))
+  if (!validMatchUps(matchUps))
     return { roundMatchUps: [], error: INVALID_VALUES };
 
   // create an array of arrays of matchUps grouped by roundNumber

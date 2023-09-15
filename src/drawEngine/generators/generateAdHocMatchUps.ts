@@ -1,4 +1,5 @@
 import { allTournamentMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
+import { validMatchUps } from '../../matchUpEngine/governors/queryGovernor/validMatchUp';
 import { getMatchUpId } from '../../global/functions/extractors';
 import { generateRange, overlap, UUID } from '../../utilities';
 import { mustBeAnArray } from '../../utilities/mustBeAnArray';
@@ -161,7 +162,7 @@ export function addAdHocMatchUps({
 
   if (typeof structureId !== 'string') return { error: MISSING_STRUCTURE_ID };
 
-  if (!Array.isArray(matchUps))
+  if (!validMatchUps(matchUps))
     return { error: INVALID_VALUES, info: mustBeAnArray('matchUps') };
 
   const structure = drawDefinition.structures?.find(
@@ -173,14 +174,6 @@ export function addAdHocMatchUps({
   const structureHasRoundPositions = existingMatchUps.find(
     (matchUp) => !!matchUp.roundPosition
   );
-
-  if (
-    structure.structures ||
-    structureHasRoundPositions ||
-    structure.finishingPosition === ROUND_OUTCOME
-  ) {
-    return { error: INVALID_STRUCTURE };
-  }
 
   if (
     structure.structures ||

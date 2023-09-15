@@ -1,5 +1,6 @@
 import { matchUpFormatTimes } from '../../../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/getMatchUpFormatTiming';
 import { getScheduleTiming } from '../../../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/getScheduleTiming';
+import { validMatchUps } from '../../../../../matchUpEngine/governors/queryGovernor/validMatchUp';
 import { calculatePeriodLength } from './calculatePeriodLength';
 import { hasSchedule } from '../../scheduleMatchUps/hasSchedule';
 import {
@@ -37,7 +38,7 @@ export function generateBookings({
   if (typeof tournamentRecords !== 'object')
     return { error: MISSING_TOURNAMENT_RECORDS };
 
-  if (!Array.isArray(matchUps) && !Array.isArray(dateScheduledMatchUps))
+  if (!validMatchUps(matchUps) && !Array.isArray(dateScheduledMatchUps))
     return { error: MISSING_MATCHUPS };
 
   periodLength =

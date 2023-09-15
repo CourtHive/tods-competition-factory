@@ -5,13 +5,13 @@ import { structureSort } from './structureSort';
 import { DrawDefinition, Structure } from '../../types/tournamentFromSchema';
 import { ITEM, validStages } from '../../constants/drawDefinitionConstants';
 import { ROUND_TARGET } from '../../constants/extensionConstants';
+import { StructureSortConfig } from '../../types/factoryTypes';
 import {
   MISSING_STRUCTURES,
   STRUCTURE_NOT_FOUND,
   MISSING_STRUCTURE_ID,
   MISSING_DRAW_DEFINITION,
 } from '../../constants/errorConditionConstants';
-import { StructureSortConfig } from '../../types/factoryTypes';
 
 type FindStructureArgs = {
   drawDefinition?: DrawDefinition;

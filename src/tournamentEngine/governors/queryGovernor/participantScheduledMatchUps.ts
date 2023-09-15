@@ -1,15 +1,16 @@
 import { hasSchedule } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/hasSchedule';
+import { validMatchUps } from '../../../matchUpEngine/governors/queryGovernor/validMatchUp';
 import {
   extractDate,
   extractTime,
   timeSort,
 } from '../../../utilities/dateTime';
 
+import { HydratedMatchUp } from '../../../types/hydrated';
 import {
   INVALID_VALUES,
   MISSING_MATCHUPS,
 } from '../../../constants/errorConditionConstants';
-import { HydratedMatchUp } from '../../../types/hydrated';
 
 type ParticiapntScheduledMatchUps = {
   scheduleAttributes?: string[];
@@ -19,7 +20,7 @@ export function participantScheduledMatchUps({
   scheduleAttributes = ['scheduledDate', 'scheduledTime'],
   matchUps = [],
 }: ParticiapntScheduledMatchUps) {
-  if (!Array.isArray(matchUps)) return { error: MISSING_MATCHUPS };
+  if (!validMatchUps(matchUps)) return { error: MISSING_MATCHUPS };
   if (!Array.isArray(scheduleAttributes)) return { error: INVALID_VALUES };
 
   const scheduledMatchUps = matchUps

@@ -1,6 +1,8 @@
 export const REPLACE_TEAM_POSITION_METHOD = 'replaceTieMatchUpParticipantId';
 export const ASSIGN_TEAM_POSITION_METHOD = 'assignTieMatchUpParticipantId';
 export const REMOVE_TEAM_POSITION_METHOD = 'removeTieMatchUpParticipantId';
+export const ASSIGN_SIDE_METHOD = 'assignMatchUpSideParticipant';
+export const REMOVE_SIDE_METHOD = 'removeMatchUpSideParticipant';
 export const SUBSTITUTION_METHOD = 'substituteParticipant';
 export const REMOVE_SUBSTITUTION = 'REMOVE_SUBSTITUTION';
 export const REPLACE_PARTICIPANT = 'REPLACE_PARTICIPANT';

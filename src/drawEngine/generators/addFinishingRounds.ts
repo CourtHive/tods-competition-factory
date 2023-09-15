@@ -1,3 +1,4 @@
+import { validMatchUps } from '../../matchUpEngine/governors/queryGovernor/validMatchUp';
 import { getRoundMatchUps } from '../accessors/matchUpAccessor/getRoundMatchUps';
 import { extractAttributes, generateRange } from '../../utilities';
 import { getDevContext } from '../../global/state/globalState';
@@ -24,7 +25,7 @@ export function addFinishingRounds({
   lucky,
   fmlc,
 }: AddFinishingRoundsArgs): MatchUp[] {
-  if (!Array.isArray(matchUps)) return [];
+  if (!validMatchUps(matchUps)) return [];
 
   const { roundProfile, roundNumbers = [] } = getRoundMatchUps({
     interpolate: true, // for structures which do not contain a final round of one matchUps (structure winner)
