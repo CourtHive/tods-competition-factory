@@ -1,6 +1,7 @@
 import { removeExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { tallyParticipantResults } from '../../../matchUpEngine/getters/roundRobinTally/roundRobinTally';
 import { getPolicyDefinitions } from '../../../global/functions/deducers/getAppliedPolicies';
+import { validMatchUps } from '../../../matchUpEngine/governors/queryGovernor/validMatchUp';
 import { addExtension } from '../../../global/functions/producers/addExtension';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { createSubOrderMap } from './createSubOrderMap';
@@ -18,7 +19,7 @@ export function updateAssignmentParticipantResults({
   matchUps,
   event,
 }) {
-  if (!Array.isArray(matchUps)) return { error: INVALID_VALUES };
+  if (!validMatchUps(matchUps)) return { error: INVALID_VALUES };
   if (!positionAssignments) return { error: INVALID_VALUES };
 
   const { policyDefinitions } = getPolicyDefinitions({

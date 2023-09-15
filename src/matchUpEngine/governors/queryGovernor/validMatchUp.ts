@@ -8,7 +8,10 @@ export function validMatchUp(matchUp) {
   const validDrawPositions =
     !drawPositions ||
     (Array.isArray(drawPositions) &&
-      drawPositions.every((dp) => isConvertableInteger(dp)));
+      drawPositions.length <= 2 &&
+      drawPositions.every(
+        (dp) => isConvertableInteger(dp) || dp === undefined
+      ));
   return validMatchUpId && validDrawPositions;
 }
 

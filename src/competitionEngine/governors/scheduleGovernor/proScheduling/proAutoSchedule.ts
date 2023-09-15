@@ -1,3 +1,4 @@
+import { validMatchUps } from '../../../../matchUpEngine/governors/queryGovernor/validMatchUp';
 import { competitionScheduleMatchUps } from '../../../getters/competitionScheduleMatchUps';
 import { getMatchUpDependencies } from '../scheduleMatchUps/getMatchUpDependencies';
 import { bulkScheduleMatchUps } from '../bulkScheduleMatchUps';
@@ -5,11 +6,11 @@ import { matchUpSort } from '../../../../forge/transform';
 import { isObject } from '../../../../utilities/objects';
 
 import { completedMatchUpStatuses } from '../../../../constants/matchUpStatusConstants';
+import { HydratedMatchUp } from '../../../../types/hydrated';
 import {
   INVALID_VALUES,
   MISSING_CONTEXT,
 } from '../../../../constants/errorConditionConstants';
-import { HydratedMatchUp } from '../../../../types/hydrated';
 import {
   MatchUpStatusEnum,
   Tournament,
@@ -29,7 +30,7 @@ export function proAutoSchedule({
   scheduledDate,
   matchUps,
 }: ProAutoScheduleArgs) {
-  if (!Array.isArray(matchUps)) return { error: INVALID_VALUES };
+  if (!validMatchUps(matchUps)) return { error: INVALID_VALUES };
   if (matchUps.some(({ hasContext }) => !hasContext)) {
     return {
       info: 'matchUps must have { inContext: true, nextMatchUps: true }',

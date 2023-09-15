@@ -547,7 +547,7 @@ export function getAllStructureMatchUps({
         roundNumber,
       });
 
-      const isFeedRound = roundProfile[roundNumber]?.feedRound;
+      const isFeedRound = roundProfile?.[roundNumber]?.feedRound;
       const reversedDisplayOrder = displayOrder[0] !== orderedDrawPositions[0];
 
       // ensure there are two sides generated

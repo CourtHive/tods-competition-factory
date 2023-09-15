@@ -26,7 +26,7 @@ export function getOrderedDrawPositions({
     };
   }
 
-  const targetRoundProfile = roundProfile[roundNumber];
+  const targetRoundProfile = roundProfile?.[roundNumber];
   const pairedDrawPositions = targetRoundProfile?.pairedDrawPositions;
   const displayOrder =
     pairedDrawPositions?.find((pair) =>

@@ -1,4 +1,5 @@
 import { matchUpIsComplete } from '../../governors/queryGovernor/matchUpIsComplete';
+import { validMatchUps } from '../../governors/queryGovernor/validMatchUp';
 import { getDevContext } from '../../../global/state/globalState';
 import { getParticipantResults } from './getParticipantResults';
 import { unique } from '../../../utilities/arrays';
@@ -51,7 +52,7 @@ export function tallyParticipantResults({
   subOrderMap,
   perPlayer,
 }: TallyParticipantResultsArgs): TallyResultType & ResultType {
-  if (!Array.isArray(matchUps)) return { error: MISSING_MATCHUPS };
+  if (!validMatchUps(matchUps)) return { error: MISSING_MATCHUPS };
 
   const structureIds = matchUps.reduce(
     (structureIds, { structureId }) =>

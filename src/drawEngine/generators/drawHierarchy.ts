@@ -1,3 +1,4 @@
+import { validMatchUps } from '../../matchUpEngine/governors/queryGovernor/validMatchUp';
 import { getRoundMatchUps } from '../accessors/matchUpAccessor/getRoundMatchUps';
 import { generateRange, makeDeepCopy, unique, UUID } from '../../utilities';
 import { ensureInt } from '../../utilities/ensureInt';
@@ -41,7 +42,7 @@ export function buildDrawHierarchy({
     }
   }
 
-  if (!Array.isArray(matchUps) || !matchUps.length) return {};
+  if (!validMatchUps(matchUps) || !matchUps.length) return {};
 
   const drawPositionSort = (a, b) => ensureInt(a) - ensureInt(b);
   const allDrawPositions = unique(

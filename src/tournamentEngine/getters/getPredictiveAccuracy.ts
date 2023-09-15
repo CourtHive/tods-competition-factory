@@ -1,4 +1,5 @@
 import { scoreHasValue } from '../../matchUpEngine/governors/queryGovernor/scoreHasValue';
+import { validMatchUps } from '../../matchUpEngine/governors/queryGovernor/validMatchUp';
 import {
   allDrawMatchUps,
   allEventMatchUps,
@@ -7,6 +8,7 @@ import {
 
 import { COMPETITIVE, DECISIVE, ROUTINE } from '../../constants/statsConstants';
 import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
+import { TypeEnum } from '../../types/tournamentFromSchema';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
   ABANDONED,
@@ -20,7 +22,6 @@ import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
-import { TypeEnum } from '../../types/tournamentFromSchema';
 
 export function getPredictiveAccuracy(params) {
   let { matchUps } = params;
@@ -45,7 +46,7 @@ export function getPredictiveAccuracy(params) {
   if (matchUpType && ![SINGLES, DOUBLES].includes(matchUpType))
     return { error: INVALID_VALUES, info: { matchUpType } };
 
-  if (!Array.isArray(matchUps) && matchUps)
+  if (matchUps && !validMatchUps(matchUps))
     return { error: INVALID_VALUES, context: { matchUps } };
 
   const contextProfile = { withScaleValues: true, withCompetitiveness: true };

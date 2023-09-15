@@ -1,3 +1,4 @@
+import { validMatchUps } from '../../matchUpEngine/governors/queryGovernor/validMatchUp';
 import { getBand, getScoreComponents, pctSpread } from './scoreComponents';
 import { findPolicy } from '../governors/policyGovernor/findPolicy';
 
@@ -18,7 +19,7 @@ export function getMatchUpsStats({
   tournamentRecord,
   matchUps,
 }) {
-  if (!Array.isArray(matchUps)) return { error: MISSING_MATCHUPS };
+  if (!validMatchUps(matchUps)) return { error: MISSING_MATCHUPS };
 
   const policy =
     !competitiveProfile &&

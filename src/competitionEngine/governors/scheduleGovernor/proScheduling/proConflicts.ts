@@ -1,3 +1,4 @@
+import { validMatchUps } from '../../../../matchUpEngine/governors/queryGovernor/validMatchUp';
 import { getMatchUpDependencies } from '../scheduleMatchUps/getMatchUpDependencies';
 import { generateRange, instanceCount, unique } from '../../../../utilities';
 import { matchUpSort } from '../../../../drawEngine/getters/matchUpSort';
@@ -32,7 +33,7 @@ export function proConflicts({
 }: ProConflictsArgs):
   | { error: ErrorType; info?: any }
   | { courtIssues: { [key: string]: any }; rowIssues: { [key: string]: any } } {
-  if (!Array.isArray(matchUps)) return { error: MISSING_MATCHUPS };
+  if (!validMatchUps(matchUps)) return { error: MISSING_MATCHUPS };
   if (matchUps.some(({ matchUpId, hasContext }) => matchUpId && !hasContext)) {
     return {
       info: 'matchUps must have { inContext: true, nextMatchUps: true }',
