@@ -162,7 +162,6 @@ export function proScheduler({
         ?.find((court) => court.courtId === courtId)
         ?.dateAvailability[0].bookings.push(booking);
 
-    // const failSafe = (allDateMatchUpIds.length / courts.length) * 2;
     const failSafe = 10;
     let schedulingIterations = 0;
     let schedulingComplete;
@@ -359,14 +358,12 @@ export function proScheduler({
               details.matchUpsToSchedule = details.matchUpsToSchedule.filter(
                 (matchUp) => matchUp.matchUpId !== matchUpId
               );
-            } else {
-              if (schedulingConflicts?.length) {
-                if (!scheduleDateRequestConflicts[scheduleDate])
-                  scheduleDateRequestConflicts[scheduleDate] = [];
-                scheduleDateRequestConflicts[scheduleDate].push(
-                  ...schedulingConflicts
-                );
-              }
+            } else if (schedulingConflicts?.length) {
+              if (!scheduleDateRequestConflicts[scheduleDate])
+                scheduleDateRequestConflicts[scheduleDate] = [];
+              scheduleDateRequestConflicts[scheduleDate].push(
+                ...schedulingConflicts
+              );
             }
           }
 
@@ -475,19 +472,21 @@ export function proScheduler({
 
     for (const venue of dateSchedulingProfile.venues) {
       for (const round of venue.rounds) {
-        const matchUpIds = round.matchUps.map(({ matchUpId }) => matchUpId);
-        const canScheduleMatchUpIds = matchUpIds.filter((matchUpId) =>
+        const matchUpIds = (round.matchUps ?? []).map(
+          ({ matchUpId }) => matchUpId
+        );
+        const canScheduleMatchUpIds = matchUpIds?.filter((matchUpId) =>
           scheduledMatchUpIds[scheduleDate].includes(matchUpId)
         );
         round.canScheduledMatchUpIds = canScheduleMatchUpIds;
-        let possibleToSchedulePct =
+        let possibleToSchedulePct: any =
           Math.round(
-            (canScheduleMatchUpIds.length / round.matchUpsCount) * 10000
+            ((canScheduleMatchUpIds?.length || 0) / round.matchUpsCount) * 10000
           ) / 100;
         if (possibleToSchedulePct === Infinity || isNaN(possibleToSchedulePct))
-          possibleToSchedulePct = 0;
+          possibleToSchedulePct = undefined;
         round.possibleToSchedulePct = possibleToSchedulePct;
-        if (round.matchUpsCount === canScheduleMatchUpIds.length) {
+        if (round.matchUpsCount === canScheduleMatchUpIds?.length) {
           round.possibleToSchedule = true;
         }
       }
