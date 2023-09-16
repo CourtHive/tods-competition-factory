@@ -151,11 +151,11 @@ export function matchUpActions({
       event,
     }).appliedPolicies ?? {};
 
-  Object.assign(appliedPolicies, specifiedPolicyDefinitions || {});
+  Object.assign(appliedPolicies, specifiedPolicyDefinitions ?? {});
 
   const isAdHocMatchUp = isAdHoc({ drawDefinition, structure });
   const matchUpActionsPolicy =
-    appliedPolicies?.[POLICY_TYPE_MATCHUP_ACTIONS] ||
+    appliedPolicies?.[POLICY_TYPE_MATCHUP_ACTIONS] ??
     POLICY_MATCHUP_ACTIONS_DEFAULT[POLICY_TYPE_MATCHUP_ACTIONS];
 
   const { enabledStructures } = getEnabledStructures({
