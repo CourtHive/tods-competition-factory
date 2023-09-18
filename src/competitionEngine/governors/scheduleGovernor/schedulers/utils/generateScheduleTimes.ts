@@ -76,7 +76,7 @@ export function generateScheduleTimes({
     return { error: MISSING_TOURNAMENT_RECORDS };
 
   periodLength =
-    periodLength ||
+    periodLength ??
     calculatePeriodLength({
       recoveryMinutes: defaultRecoveryMinutes,
       averageMatchUpMinutes,
@@ -91,12 +91,12 @@ export function generateScheduleTimes({
   const courts =
     allCourts?.filter(
       (court) => !venueIds || venueIds.includes(court.venueId)
-    ) || [];
+    ) ?? [];
 
   startTime =
-    startTime || getDateTimeBoundary({ courts, scheduleDate, startTime: true });
+    startTime ?? getDateTimeBoundary({ courts, scheduleDate, startTime: true });
   endTime =
-    endTime || getDateTimeBoundary({ courts, scheduleDate, endTime: true });
+    endTime ?? getDateTimeBoundary({ courts, scheduleDate, endTime: true });
 
   const { bookings, dateScheduledMatchUps } = generateBookings({
     defaultRecoveryMinutes,
