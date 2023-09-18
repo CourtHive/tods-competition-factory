@@ -70,7 +70,7 @@ export function getVenueSchedulingDetails({
       rounds,
     });
 
-    allDateMatchUpIds.push(...(orderedMatchUpIds || []));
+    allDateMatchUpIds.push(...(orderedMatchUpIds ?? []));
 
     const { groupedRounds } = getGroupedRounds({
       scheduledRoundsDetails,

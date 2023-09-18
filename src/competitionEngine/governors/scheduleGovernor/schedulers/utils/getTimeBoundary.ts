@@ -30,7 +30,8 @@ export function getDateTimeBoundary({
         (startTime &&
           timeStringMinutes(comparisonTime) <
             timeStringMinutes(boundaryTime)) ||
-        timeStringMinutes(comparisonTime) > timeStringMinutes(boundaryTime))
+        (endTime &&
+          timeStringMinutes(comparisonTime) > timeStringMinutes(boundaryTime)))
       ? comparisonTime
       : boundaryTime;
   }, undefined);
@@ -44,7 +45,8 @@ export function getCourtsTimeBoundary({ startTime, endTime, courts }) {
         (startTime &&
           timeStringMinutes(comparisonTime) <
             timeStringMinutes(boundaryTime)) ||
-        timeStringMinutes(comparisonTime) > timeStringMinutes(boundaryTime))
+        (endTime &&
+          timeStringMinutes(comparisonTime) > timeStringMinutes(boundaryTime)))
       ? comparisonTime
       : boundaryTime;
   }, undefined);
@@ -62,9 +64,8 @@ export function getCourtTimeBoundary({ startTime, endTime, court }) {
     if (startTime) {
       if (timeStringMinutes(candidate) < timeStringMinutes(boundary))
         boundary = candidate;
-    } else {
-      if (timeStringMinutes(boundary) > timeStringMinutes(candidate))
-        boundary = candidate;
+    } else if (timeStringMinutes(boundary) > timeStringMinutes(candidate)) {
+      boundary = candidate;
     }
 
     return boundary;

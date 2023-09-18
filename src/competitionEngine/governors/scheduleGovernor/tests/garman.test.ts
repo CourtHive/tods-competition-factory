@@ -83,20 +83,20 @@ it('replcates revised garman spreadsheet funcationality', () => {
 it('correctly determines courts available at periodStart', () => {
   const courts = [
     {
-      courtId: 0,
       dateAvailability: [{ date, startTime: '9:00', endTime: '17:00' }],
+      courtId: 'c0',
     },
     {
-      courtId: 1,
       dateAvailability: [{ date, startTime: '9:00', endTime: '17:00' }],
+      courtId: 'c1',
     },
     {
-      courtId: 2,
       dateAvailability: [{ date, startTime: '11:00', endTime: '18:00' }],
+      courtId: 'c2',
     },
     {
-      courtId: 3,
       dateAvailability: [{ date, startTime: '11:00', endTime: '18:00' }],
+      courtId: 'c3',
     },
   ];
 

@@ -154,9 +154,9 @@ export function scheduleProfileRounds({
     courts,
   };
 
-  if (!pro) {
-    return jinnScheduler(params);
-  } else {
+  if (pro) {
     return proScheduler(params);
+  } else {
+    return jinnScheduler(params);
   }
 }
