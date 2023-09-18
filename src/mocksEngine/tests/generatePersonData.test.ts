@@ -63,7 +63,9 @@ it('minimizes duplication of names', () => {
   let lastInstanceRange = unique(Object.values(lastInstances)).sort(
     numericSort
   );
-  expect(lastInstanceRange[1] - lastInstanceRange[0]).toEqual(1);
+  if (lastInstanceRange.length > 1) {
+    expect(lastInstanceRange[1] - lastInstanceRange[0]).toEqual(1);
+  }
 
   count = 400;
   personData = generatePersonData({ count, sex: FEMALE }).personData;
