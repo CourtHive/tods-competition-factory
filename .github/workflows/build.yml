@@ -32,7 +32,7 @@ jobs:
           cache: npm
 
       - name: Install Dependencies
-        run: npm --frozen-lockfile --ignore-scripts
+        run: npm i
 
       - name: Lint source files
         run: npm run lint
