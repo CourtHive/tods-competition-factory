@@ -29,22 +29,19 @@ jobs:
           # File containing the version Spec of the version to use.  Examples: .nvmrc, .node-version, .tool-versions.
           node-version-file: .tool-versions
           # Used to specify a package manager for caching in the default directory. Supported values: npm, yarn, pnpm.
-          cache: pnpm
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2.4.0
+          cache: npm
             
       - name: Install Dependencies
-        run: pnpm --frozen-lockfile --ignore-scripts
+        run: npm --frozen-lockfile --ignore-scripts
 
       - name: Lint source files
-        run: pnpm lint
+        run: npm lint
 
       - name: Check Typescript errors
-        run: pnpm check-types
+        run: npm check-types
 
       - name: Run tests
-        run: pnpm test
+        run: npm test
 
       - name: Build Application
-        run: pnpm build
+        run: npm build
