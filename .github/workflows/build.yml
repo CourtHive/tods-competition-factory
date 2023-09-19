@@ -32,7 +32,7 @@ jobs:
           cache: npm
 
       - name: Install Dependencies
-        run: npm i
+        run: npm i --ignore-scripts
 
       - name: Lint source files
         run: npm run lint
