@@ -35,10 +35,10 @@ jobs:
         run: npm --frozen-lockfile --ignore-scripts
 
       - name: Lint source files
-        run: npm lint
+        run: npm run lint
 
       - name: Check Typescript errors
-        run: npm check-types
+        run: npm run check-types
 
       - name: Run tests
         run: npm test
