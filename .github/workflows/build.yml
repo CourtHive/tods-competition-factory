@@ -21,7 +21,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4  
+      - uses: actions/checkout@v4
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v3.8.1
@@ -30,7 +30,7 @@ jobs:
           node-version-file: .tool-versions
           # Used to specify a package manager for caching in the default directory. Supported values: npm, yarn, pnpm.
           cache: npm
-            
+
       - name: Install Dependencies
         run: npm --frozen-lockfile --ignore-scripts
 
@@ -44,4 +44,4 @@ jobs:
         run: npm test
 
       - name: Build Application
-        run: npm build
+        run: npm run build
