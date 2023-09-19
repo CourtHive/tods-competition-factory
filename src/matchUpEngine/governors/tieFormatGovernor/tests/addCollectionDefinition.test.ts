@@ -2,6 +2,7 @@ import { setSubscriptions } from '../../../../global/state/globalState';
 import { mocksEngine, tournamentEngine } from '../../../..';
 import { expect, it } from 'vitest';
 
+import { COLLEGE_D3 } from '../../../../constants/tieFormatConstants';
 import { TEAM } from '../../../../constants/eventConstants';
 import {
   DOUBLES,
@@ -22,9 +23,7 @@ it('can add collectionDefinitions to tieFormat in a drawDefinition', () => {
     drawIds: [drawId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [
-      { drawSize: 2, eventType: TEAM, tieFormatName: 'COLLEGE_D3' },
-    ],
+    drawProfiles: [{ drawSize: 2, eventType: TEAM, tieFormatName: COLLEGE_D3 }],
   });
 
   tournamentEngine.setState(tournamentRecord);
@@ -153,10 +152,10 @@ it('can add collectionDefinitions to tieFormat in a structure', () => {
   } = mocksEngine.generateTournamentRecord({
     drawProfiles: [
       {
-        drawSize: 4,
-        eventType: TEAM,
-        tieFormatName: 'COLLEGE_D3',
         drawType: FIRST_ROUND_LOSER_CONSOLATION,
+        tieFormatName: COLLEGE_D3,
+        eventType: TEAM,
+        drawSize: 4,
       },
     ],
   });
@@ -381,9 +380,7 @@ it('added collectionDefinitions do not appear in inProgress matchUps', () => {
     drawIds: [drawId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [
-      { drawSize: 4, eventType: TEAM, tieFormatName: 'COLLEGE_D3' },
-    ],
+    drawProfiles: [{ drawSize: 4, eventType: TEAM, tieFormatName: COLLEGE_D3 }],
   });
 
   tournamentEngine.setState(tournamentRecord);

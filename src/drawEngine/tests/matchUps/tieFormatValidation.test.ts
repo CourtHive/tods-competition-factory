@@ -8,7 +8,10 @@ import {
   tournamentEngine,
 } from '../../..';
 
-import { TEAM_DOUBLES_3_AGGREGATION } from '../../../constants/tieFormatConstants';
+import {
+  COLLEGE_D3,
+  TEAM_DOUBLES_3_AGGREGATION,
+} from '../../../constants/tieFormatConstants';
 import { INVALID_TIE_FORMAT } from '../../../constants/errorConditionConstants';
 import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
@@ -119,7 +122,7 @@ test('various tieFormat defaults', () => {
     true
   );
 
-  format = tieFormatDefaults({ namedFormat: 'COLLEGE_D3' });
+  format = tieFormatDefaults({ namedFormat: COLLEGE_D3 });
   expect(format.winCriteria.valueGoal).toEqual(5);
   result = validateTieFormat({ tieFormat: format });
   expect(result.valid).toEqual(true);
@@ -171,9 +174,7 @@ it('can use tieFormatName to generate TEAM events', () => {
     eventIds: [eventId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [
-      { drawSize: 2, eventType: TEAM, tieFormatName: 'COLLEGE_D3' },
-    ],
+    drawProfiles: [{ drawSize: 2, eventType: TEAM, tieFormatName: COLLEGE_D3 }],
   });
 
   tournamentEngine.setState(tournamentRecord);

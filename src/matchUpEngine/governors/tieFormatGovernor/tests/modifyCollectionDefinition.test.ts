@@ -2,6 +2,7 @@ import { mocksEngine, tournamentEngine } from '../../../..';
 import { expect, it } from 'vitest';
 
 import { TIE_FORMAT_MODIFICATIONS } from '../../../../constants/extensionConstants';
+import { COLLEGE_D3 } from '../../../../constants/tieFormatConstants';
 import { TEAM } from '../../../../constants/eventConstants';
 import {
   CANNOT_MODIFY_TIEFORMAT,
@@ -21,9 +22,7 @@ it('can modify collectionDefinitions for a tieFormat on a drawDefinition', () =>
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
     policyDefinitions,
-    drawProfiles: [
-      { drawSize: 2, eventType: TEAM, tieFormatName: 'COLLEGE_D3' },
-    ],
+    drawProfiles: [{ drawSize: 2, eventType: TEAM, tieFormatName: COLLEGE_D3 }],
   });
 
   tournamentEngine.setState(tournamentRecord);
@@ -160,9 +159,7 @@ it('can modify collectionDefinitions for a tieFormat on a structure', () => {
     drawIds: [drawId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [
-      { drawSize: 2, eventType: TEAM, tieFormatName: 'COLLEGE_D3' },
-    ],
+    drawProfiles: [{ drawSize: 2, eventType: TEAM, tieFormatName: COLLEGE_D3 }],
   });
 
   tournamentEngine.setState(tournamentRecord);
