@@ -2,6 +2,7 @@ import { mocksEngine, tournamentEngine } from '../../../..';
 import { expect, it } from 'vitest';
 
 import { NOT_FOUND } from '../../../../constants/errorConditionConstants';
+import { COLLEGE_D3 } from '../../../../constants/tieFormatConstants';
 import { TEAM } from '../../../../constants/eventConstants';
 
 it('can add collectionDefinitions to tieFormat in a drawDefinition', () => {
@@ -10,9 +11,7 @@ it('can add collectionDefinitions to tieFormat in a drawDefinition', () => {
     eventIds: [eventId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [
-      { drawSize: 2, eventType: TEAM, tieFormatName: 'COLLEGE_D3' },
-    ],
+    drawProfiles: [{ drawSize: 2, eventType: TEAM, tieFormatName: COLLEGE_D3 }],
   });
 
   tournamentEngine.setState(tournamentRecord);

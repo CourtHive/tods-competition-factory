@@ -15,6 +15,5 @@ dist
 documentation/.docusaurus
 documentation/build
 .DS_Store
-package-lock.json
 *decoy*
 /html

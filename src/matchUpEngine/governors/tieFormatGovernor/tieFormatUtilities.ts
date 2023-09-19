@@ -1,4 +1,5 @@
 import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
+import { isConvertableInteger } from '../../../utilities/math';
 import { matchUpFormatCode } from '../matchUpFormatGovernor';
 import { unique, UUID } from '../../../utilities';
 import {
@@ -127,11 +128,9 @@ export function validateTieFormat(params: ValidateTieFormatArgs): ResultType {
 
 type ValidateCollectionDefinitionArgs = {
   collectionDefinition: CollectionDefinition;
-  checkValueDefinition?: boolean;
   checkCollectionIds?: boolean;
 };
 export function validateCollectionDefinition({
-  checkValueDefinition = true, // disabling allows collection to be added with no value, e.g. "Exhibition Matches"
   collectionDefinition,
   checkCollectionIds,
 }: ValidateCollectionDefinitionArgs) {
@@ -173,14 +172,15 @@ export function validateCollectionDefinition({
     return { errors };
   }
 
-  if (
-    checkValueDefinition &&
-    !matchUpValue &&
-    !collectionValue &&
-    !collectionValueProfiles &&
-    !scoreValue &&
-    !setValue
-  ) {
+  const valueDeclarations = [!!collectionValueProfiles?.length]
+    .concat(
+      [matchUpValue, collectionValue, scoreValue, setValue].map(
+        isConvertableInteger
+      )
+    )
+    .filter(Boolean);
+
+  if (valueDeclarations.length !== 1) {
     errors.push(
       'Missing value definition for matchUps: matchUpValue, collectionValue, or collectionValueProfiles'
     );

@@ -222,9 +222,7 @@ it('deleted collectionDefinitions are not removed from inProgress matchUps', () 
     drawIds: [drawId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [
-      { drawSize: 4, eventType: TEAM, tieFormatName: 'COLLEGE_D3' },
-    ],
+    drawProfiles: [{ drawSize: 4, eventType: TEAM, tieFormatName: COLLEGE_D3 }],
   });
 
   tournamentEngine.setState(tournamentRecord);
