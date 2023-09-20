@@ -15,9 +15,9 @@
   },
   "dependencies": {
     "@cmfcmf/docusaurus-search-local": "^1.1.0",
-    "@docusaurus/core": "2.4.1",
-    "@docusaurus/preset-classic": "2.4.1",
-    "@docusaurus/theme-live-codeblock": "2.4.1",
+    "@docusaurus/core": "2.4.3",
+    "@docusaurus/preset-classic": "2.4.3",
+    "@docusaurus/theme-live-codeblock": "2.4.3",
     "@material-ui/core": "4.12.4",
     "@mdx-js/react": "1.6.22",
     "@types/react": "18.2.22",
