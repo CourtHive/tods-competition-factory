@@ -27,6 +27,8 @@ export function removeStructure({
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
 
   const structures = drawDefinition.structures || [];
+  const removedStructureIds: string[] = [];
+
   const mainStageSequence1 = structures.find(
     ({ stage, stageSequence }) => stage === MAIN && stageSequence === 1
   );
@@ -68,21 +70,31 @@ export function removeStructure({
     const matchUpIds = getMatchUpIds(matchUps);
     removedMatchUpIds.push(...matchUpIds);
 
-    if (!isMainStageSequence1 || idBeingRemoved !== structureId) {
-      drawDefinition.links =
-        drawDefinition.links?.filter(
-          (link) =>
-            link.source.structureId !== idBeingRemoved &&
-            link.target.structureId !== idBeingRemoved
-        ) || [];
+    drawDefinition.links =
+      drawDefinition.links?.filter(
+        (link) =>
+          link.source.structureId !== idBeingRemoved &&
+          link.target.structureId !== idBeingRemoved
+      ) || [];
 
-      drawDefinition.structures = structures.filter(
-        (structure) => structure.structureId !== idBeingRemoved
+    if (!isMainStageSequence1 || idBeingRemoved !== structureId) {
+      drawDefinition.structures = drawDefinition.structures.filter(
+        (structure) => {
+          if (idBeingRemoved && idBeingRemoved === structure.structureId)
+            removedStructureIds.push(idBeingRemoved);
+          return structure.structureId !== idBeingRemoved;
+        }
       );
     }
 
     const targetedStructureIds =
-      idBeingRemoved && targetedStructureIdsMap[idBeingRemoved];
+      idBeingRemoved &&
+      targetedStructureIdsMap[idBeingRemoved].filter(
+        (id: string) =>
+          // IMPORTANT: only delete MAIN stageSequence: 1 if specified to protect against DOUBLE_ELIMINATION scenario
+          id !== mainStageSequence1.structureId ||
+          structureId === mainStageSequence1.structureId
+      );
     if (targetedStructureIds?.length) idsToRemove.push(...targetedStructureIds);
   }
 
@@ -122,5 +134,5 @@ export function removeStructure({
   });
   modifyDrawNotice({ drawDefinition, eventId: event?.eventId });
 
-  return { ...SUCCESS, removedMatchUpIds };
+  return { ...SUCCESS, removedMatchUpIds, removedStructureIds };
 }

@@ -164,9 +164,9 @@ it('will allow generation of 3-4 playoffs in FMLC if there are players who COULD
   expect(playoffRounds).toEqual([2]);
   expect(playoffRoundsRanges).toEqual([
     {
-      roundNumber: 2,
-      finishingPositions: [3, 4],
       finishingPositionRange: '3-4',
+      finishingPositions: [3, 4],
+      roundNumber: 2,
     },
   ]);
 });
@@ -183,18 +183,18 @@ it('will exclude playoff rounds where participants have progressed to other stru
         drawSize: 8,
         outcomes: [
           {
-            roundNumber: 1,
             roundPosition: 2,
+            roundNumber: 1,
             winningSide: 1,
           },
           {
-            roundNumber: 1,
             roundPosition: 3,
+            roundNumber: 1,
             winningSide: 2,
           },
           {
-            roundNumber: 2,
             roundPosition: 1,
+            roundNumber: 2,
             winningSide: 2,
           },
         ],
@@ -223,8 +223,8 @@ it('will exclude playoff rounds where participants have progressed to other stru
 it('can accurately determine no playoff rounds available for MAIN draw of FIC', () => {
   const drawProfiles = [
     {
-      drawSize: 64,
       drawType: FEED_IN_CHAMPIONSHIP,
+      drawSize: 64,
     },
   ];
   const {
@@ -253,8 +253,8 @@ it('can accurately determine no playoff rounds available for MAIN draw of FIC', 
 it('can accurately determine available playoff rounds for CONSOLATION draw of FIC', () => {
   const drawProfiles = [
     {
-      drawSize: 64,
       drawType: FEED_IN_CHAMPIONSHIP,
+      drawSize: 64,
     },
   ];
   const {
@@ -297,8 +297,8 @@ it('can generate only specified playoff rounds and give them custom names', () =
 
   const drawProfiles = [
     {
-      drawSize: 64,
       drawType: FEED_IN_CHAMPIONSHIP,
+      drawSize: 64,
     },
   ];
   const {
@@ -406,11 +406,7 @@ it('can determine playoff structures available from playoff structures', () => {
   setSubscriptions({ subscriptions });
 
   // generate a standard elimination draw
-  const drawProfiles = [
-    {
-      drawSize: 64,
-    },
-  ];
+  const drawProfiles = [{ drawSize: 64 }];
   const {
     drawIds: [drawId],
     tournamentRecord,
@@ -461,8 +457,8 @@ it('can determine playoff structures available from playoff structures', () => {
 it('can determine available playoff rounds for CONSOLATION draw of FEED_IN', () => {
   const drawProfiles = [
     {
-      drawSize: 56,
       drawType: FEED_IN,
+      drawSize: 56,
     },
   ];
   const {
@@ -491,8 +487,8 @@ it('can determine available playoff rounds for CONSOLATION draw of FEED_IN', () 
 it('can determine playoff structures available from playoff structures', () => {
   const drawProfiles = [
     {
-      drawSize: 64,
       drawType: FEED_IN_CHAMPIONSHIP_TO_R16,
+      drawSize: 64,
     },
   ];
   const {

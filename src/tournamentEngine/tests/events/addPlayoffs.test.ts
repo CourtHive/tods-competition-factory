@@ -9,6 +9,7 @@ import {
   FIRST_MATCH_LOSER_CONSOLATION,
   PLAY_OFF,
 } from '../../../constants/drawDefinitionConstants';
+import { deriveExponent } from '../../../utilities/math';
 
 it('errors if attempting generation of existing playoff structure', () => {
   const {
@@ -130,7 +131,7 @@ it.each([
 
 it.each([32, 64])(
   'can delete playoffStructures beyond stageSequence 2',
-  (drawSize) => {
+  (drawSize: number) => {
     const drawProfiles = [{ drawSize, drawType: PLAY_OFF }];
     const {
       tournamentRecord,
@@ -144,6 +145,8 @@ it.each([32, 64])(
       drawDefinition: { structures },
     } = tournamentEngine.getEvent({ drawId });
     const [{ structureId }] = structures;
+
+    const generatedStructuresCount = structures.length;
 
     const apResult = tournamentEngine.getAvailablePlayoffProfiles({
       structureId,
@@ -160,20 +163,28 @@ it.each([32, 64])(
       .filter(({ stageSequence }) => stageSequence === 2)
       .map(({ structureId }) => structureId);
 
-    const expectedRemainingStructuresCount =
-      structures.length - stageSequence2structureIds.length;
+    const deletedStructureCounts = stageSequence2structureIds.map(
+      (structureId) => {
+        const result = tournamentEngine.removeStructure({
+          structureId,
+          drawId,
+        });
+        expect(result.success).toEqual(true);
+        return result.removedStructureIds.length;
+      }
+    );
 
-    stageSequence2structureIds.forEach((structureId) => {
-      const result = tournamentEngine.removeStructure({
-        structureId,
-        drawId,
-      });
-      expect(result.success).toEqual(true);
-    });
+    expect(deletedStructureCounts.length).toEqual(
+      stageSequence2structureIds.length
+    );
+
+    expect(deletedStructureCounts.reduce((a, b) => a + b, 0)).toEqual(
+      generatedStructuresCount - 1
+    );
 
     structures = tournamentEngine.getEvent({ drawId }).drawDefinition
       .structures;
-    expect(structures.length).toEqual(expectedRemainingStructuresCount);
+    expect(structures.length).toEqual(1);
 
     ({ playoffRounds, playoffRoundsRanges } =
       tournamentEngine.getAvailablePlayoffProfiles({
@@ -181,9 +192,8 @@ it.each([32, 64])(
         drawId,
       }));
 
-    // only the SF round is left to play off
-    expect(playoffRoundsRanges[0].finishingPositionRange).toEqual('3-4');
-    expect(playoffRounds.length).toEqual(1);
+    const expectdPlayoffRounds = (deriveExponent(drawSize) || 0) - 1;
+    expect(playoffRounds.length).toEqual(expectdPlayoffRounds);
   }
 );
 
@@ -194,6 +204,7 @@ it('can add 3-4 playoff structure to a SINGLE ELIMINATION structure', () => {
     drawSize: 16,
   });
   expect(success).toEqual(true);
+
   const { links, structures } = drawDefinition;
   expect(links.length).toEqual(1);
   expect(structures.length).toEqual(2);
@@ -263,11 +274,11 @@ function tournamentEngineAddPlayoffsTest(params) {
   } = tournamentEngine.getEvent({ drawId });
 
   const result = tournamentEngine.addPlayoffStructures({
-    drawId,
-    structureId,
-    roundNumbers,
-    playoffPositions,
     playoffStructureNameBase,
+    playoffPositions,
+    roundNumbers,
+    structureId,
+    drawId,
   });
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   return { ...result, drawDefinition };

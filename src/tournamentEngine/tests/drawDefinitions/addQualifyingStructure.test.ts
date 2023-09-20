@@ -209,8 +209,8 @@ it('can generate and attach a qualifying structure to an existing drawDefinition
     ({ stage }) => stage === QUALIFYING
   );
   result = tournamentEngine.removeStructure({
-    drawId,
     structureId: qualifyingStructure.structureId,
+    drawId,
   });
   expect(result.success).toEqual(true);
 

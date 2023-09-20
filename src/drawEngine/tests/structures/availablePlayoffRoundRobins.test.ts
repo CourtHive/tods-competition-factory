@@ -33,19 +33,19 @@ const scenarios = [
       generatedStructuresCount: 10, // original 2 plus 8 for COMPASS
       playoffFinishingPositionRanges: [
         {
-          finishingPosition: 2,
           finishingPositions: [9, 10, 11, 12, 13, 14, 15, 16],
           finishingPositionRange: '9-16',
+          finishingPosition: 2,
         },
         {
-          finishingPosition: 3,
           finishingPositions: [17, 18, 19, 20, 21, 22, 23, 24],
           finishingPositionRange: '17-24',
+          finishingPosition: 3,
         },
         {
-          finishingPosition: 4,
           finishingPositions: [25, 26, 27, 28, 29, 30, 31, 32],
           finishingPositionRange: '25-32',
+          finishingPosition: 4,
         },
       ],
     },
@@ -56,37 +56,37 @@ const scenarios = [
       drawType: ROUND_ROBIN,
       drawSize: 8,
     },
-    completeAllMatchUps: true,
     allPositionsAssigned: true,
+    completeAllMatchUps: true,
     playoffGroups: [
       {
-        finishingPositions: [1],
         structureName: '3-4 Playoff',
         drawType: SINGLE_ELIMINATION,
+        finishingPositions: [1],
       },
     ],
     expectation: {
       generatedStructuresCount: 2,
       playoffFinishingPositionRanges: [
         {
-          finishingPosition: 1,
-          finishingPositions: [1, 2],
           finishingPositionRange: '1-2',
+          finishingPositions: [1, 2],
+          finishingPosition: 1,
         },
         {
-          finishingPosition: 2,
-          finishingPositions: [3, 4],
           finishingPositionRange: '3-4',
+          finishingPositions: [3, 4],
+          finishingPosition: 2,
         },
         {
-          finishingPosition: 3,
-          finishingPositions: [5, 6],
           finishingPositionRange: '5-6',
+          finishingPositions: [5, 6],
+          finishingPosition: 3,
         },
         {
-          finishingPosition: 4,
-          finishingPositions: [7, 8],
           finishingPositionRange: '7-8',
+          finishingPositions: [7, 8],
+          finishingPosition: 4,
         },
       ],
     },

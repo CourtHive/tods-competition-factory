@@ -1,11 +1,15 @@
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
-import { decorateResult } from '../../../global/functions/decorateResult';
 import { addGoesTo } from '../matchUpGovernor/addGoesTo';
+import { extractAttributes } from '../../../utilities';
 import {
   addMatchUpsNotice,
   modifyDrawNotice,
   modifyMatchUpNotice,
 } from '../../notifications/drawNotifications';
+import {
+  ResultType,
+  decorateResult,
+} from '../../../global/functions/decorateResult';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -40,7 +44,7 @@ export function attachStructures({
   structures,
   links = [],
   event,
-}: AttachStructuresArgs) {
+}: AttachStructuresArgs): ResultType & { addedStructureIds?: string[] } {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!Array.isArray(structures) || !Array.isArray(links))
     return { error: INVALID_VALUES };
@@ -161,5 +165,7 @@ export function attachStructures({
     });
   }
 
-  return { ...SUCCESS };
+  const addedStructureIds = newStructures.map(extractAttributes('structureId'));
+
+  return { ...SUCCESS, addedStructureIds };
 }
