@@ -78,7 +78,7 @@ export function removeStructure({
       ) || [];
 
     if (!isMainStageSequence1 || idBeingRemoved !== structureId) {
-      drawDefinition.structures = drawDefinition.structures.filter(
+      drawDefinition.structures = (drawDefinition.structures ?? []).filter(
         (structure) => {
           if (idBeingRemoved && idBeingRemoved === structure.structureId)
             removedStructureIds.push(idBeingRemoved);
