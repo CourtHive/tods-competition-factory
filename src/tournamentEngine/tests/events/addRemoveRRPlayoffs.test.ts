@@ -13,6 +13,11 @@ import {
   ROUND_ROBIN,
   SINGLE_ELIMINATION,
 } from '../../../constants/drawDefinitionConstants';
+import {
+  ADD_MATCHUPS,
+  DELETED_MATCHUP_IDS,
+} from '../../../constants/topicConstants';
+import { setSubscriptions } from '../../../global/state/globalState';
 
 it('cann add ROUND_ROBIN playoff structures', () => {
   const {
@@ -174,6 +179,26 @@ const scenarios: any[] = [
 it.each(scenarios)(
   'cann ADD and REMOVE various types of playoff structures to/from ROUND_ROBIN draws',
   (scenario) => {
+    const deletedMatchUpIds: string[] = [];
+    let matchUpAddNotices: number[] = [];
+
+    const subscriptions = {
+      [ADD_MATCHUPS]: (payload) => {
+        if (Array.isArray(payload)) {
+          payload.forEach(({ matchUps }) => {
+            matchUpAddNotices.push(matchUps.length);
+          });
+        }
+      },
+      [DELETED_MATCHUP_IDS]: (notices) => {
+        notices.forEach(({ matchUpIds }) =>
+          deletedMatchUpIds.push(...matchUpIds)
+        );
+      },
+    };
+
+    setSubscriptions({ subscriptions });
+
     const baseMatchUpsCount = 48;
     const drawSize = 32;
 
@@ -188,6 +213,7 @@ it.each(scenarios)(
 
     let result = tournamentEngine.setState(tournamentRecord);
     expect(result.success).toEqual(true);
+    matchUpAddNotices = [];
 
     let matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
     expect(matchUps.length).toEqual(
@@ -269,6 +295,11 @@ it.each(scenarios)(
       drawId,
     });
     expect(result.success).toEqual(true);
+
+    // only deleted 1 of the playoff structures
+    expect(matchUpAddNotices[0] / groupsCount).toEqual(
+      deletedMatchUpIds.length
+    );
 
     drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
     const deletedStructuresCount =
