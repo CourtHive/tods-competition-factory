@@ -67,8 +67,8 @@ it('can generate payload for publishing a Round Robin with Playoffs', () => {
 
   const eventName = 'Round Robin w/ Playoffs';
   const event = {
-    eventName,
     eventType: SINGLES,
+    eventName,
   };
 
   const venueAbbreviation = 'GHC';
@@ -159,11 +159,10 @@ it('can generate payload for publishing a Round Robin with Playoffs', () => {
   expect(playoffStructures.length).toEqual(4);
   expect(playoffStructures[0].positionAssignments.length).toEqual(4);
 
-  const policyDefinitions = Object.assign(
-    {},
-    ROUND_NAMING_POLICY,
-    PARTICIPANT_PRIVACY_DEFAULT
-  );
+  const policyDefinitions = {
+    ...PARTICIPANT_PRIVACY_DEFAULT,
+    ...ROUND_NAMING_POLICY,
+  };
 
   result = tournamentEngine.publishEvent({ policyDefinitions });
   expect(result.error).toEqual(MISSING_EVENT);
@@ -242,8 +241,8 @@ it('can generate payload for publishing a compass draw', () => {
 
   const eventName = 'CourtHive Compass';
   const event = {
-    eventName,
     eventType: SINGLES,
+    eventName,
   };
 
   const venueAbbreviation = 'CCC';
@@ -315,11 +314,10 @@ it('can generate payload for publishing a compass draw', () => {
   );
   expect(mainStructure.structureName).toEqual('EAST');
 
-  const policyDefinitions = Object.assign(
-    {},
-    ROUND_NAMING_POLICY,
-    PARTICIPANT_PRIVACY_DEFAULT
-  );
+  const policyDefinitions = {
+    ...PARTICIPANT_PRIVACY_DEFAULT,
+    ...ROUND_NAMING_POLICY,
+  };
 
   const { eventData, success: publishSuccess } = tournamentEngine.publishEvent({
     policyDefinitions,
@@ -373,8 +371,8 @@ it('can generate payload for publishing a FIRST_MATCH_LOSER_CONSOLATION draw', (
 
   const eventName = 'CourtHive Compass';
   const event = {
-    eventName,
     eventType: SINGLES,
+    eventName,
   };
 
   const venueAbbreviation = 'CCC';
@@ -446,11 +444,10 @@ it('can generate payload for publishing a FIRST_MATCH_LOSER_CONSOLATION draw', (
   );
   expect(mainStructure.structureName).toEqual('MAIN');
 
-  const policyDefinitions = Object.assign(
-    {},
-    ROUND_NAMING_POLICY,
-    PARTICIPANT_PRIVACY_DEFAULT
-  );
+  const policyDefinitions = {
+    ...PARTICIPANT_PRIVACY_DEFAULT,
+    ...ROUND_NAMING_POLICY,
+  };
 
   const { eventData, success: publishSuccess } = tournamentEngine.publishEvent({
     policyDefinitions,
@@ -539,11 +536,10 @@ it('can filter out unPublished draws when publishing event', () => {
   });
 
   const drawIds = flightProfile.flights.map(({ drawId }) => drawId);
-  const policyDefinitions = Object.assign(
-    {},
-    ROUND_NAMING_POLICY,
-    PARTICIPANT_PRIVACY_DEFAULT
-  );
+  const policyDefinitions = {
+    ...PARTICIPANT_PRIVACY_DEFAULT,
+    ...ROUND_NAMING_POLICY,
+  };
 
   const drawId = drawIds[0];
   const { eventData, success: publishSuccess } = tournamentEngine.publishEvent({
@@ -584,11 +580,10 @@ it('can add or remove drawIds from a published event', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  const policyDefinitions = Object.assign(
-    {},
-    PARTICIPANT_PRIVACY_DEFAULT,
-    ROUND_NAMING_POLICY
-  );
+  const policyDefinitions = {
+    ...PARTICIPANT_PRIVACY_DEFAULT,
+    ...ROUND_NAMING_POLICY,
+  };
 
   let { eventData, success: publishSuccess } = tournamentEngine.publishEvent({
     drawIds: ['draw1', 'draw2'],
