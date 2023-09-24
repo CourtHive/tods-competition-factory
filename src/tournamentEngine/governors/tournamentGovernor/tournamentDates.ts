@@ -5,6 +5,7 @@ import { dateValidation } from '../../../fixtures/validations/regex';
 import { addNotice } from '../../../global/state/globalState';
 
 import { MODIFY_TOURNAMENT_DETAIL } from '../../../constants/topicConstants';
+import { Tournament } from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_DATE,
@@ -13,7 +14,6 @@ import {
   MISSING_TOURNAMENT_RECORD,
   SCHEDULE_NOT_CLEARED,
 } from '../../../constants/errorConditionConstants';
-import { Tournament } from '../../../types/tournamentFromSchema';
 
 type SetTournamentDatesArgs = {
   tournamentRecord: Tournament;
@@ -98,7 +98,7 @@ export function setTournamentEndDate({ tournamentRecord, endDate }) {
 
 // unschedule scheduled matchUps that fall outside of tournament dates
 export function removeInvalidScheduling({ tournamentRecord }) {
-  const matchUps = allTournamentMatchUps({ tournamentRecord }).matchUps || [];
+  const matchUps = allTournamentMatchUps({ tournamentRecord }).matchUps ?? [];
 
   const startDate =
     tournamentRecord.startDate && new Date(tournamentRecord.startDate);
