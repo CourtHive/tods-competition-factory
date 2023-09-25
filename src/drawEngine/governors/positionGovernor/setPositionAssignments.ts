@@ -2,6 +2,7 @@ import { assignDrawPositionBye } from './byePositioning/assignDrawPositionBye';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
+import { getPositionAssignments } from '../../getters/positionsGetter';
 import { findStructure } from '../../getters/findStructure';
 import { assignDrawPosition } from './positionAssignment';
 import { intersection } from '../../../utilities';
@@ -12,7 +13,6 @@ import {
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
-  INVALID_STRUCTURE,
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
   STRUCTURE_NOT_FOUND,
@@ -40,15 +40,10 @@ export function setPositionAssignments({
     const structure = result.structure;
 
     if (!structure) return { error: STRUCTURE_NOT_FOUND };
-    if (structure.structures)
-      return {
-        error: INVALID_STRUCTURE,
-        info: 'cannot be Round Robin group container',
-      };
+    const structureDrawPositions = getPositionAssignments({
+      structure,
+    }).positionAssignments?.map(({ drawPosition }) => drawPosition);
 
-    const structureDrawPositions = structure.positionAssignments?.map(
-      ({ drawPosition }) => drawPosition
-    );
     const submittedDrawPositions = positionAssignments?.map(
       ({ drawPosition }) => drawPosition
     );
