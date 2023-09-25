@@ -236,7 +236,6 @@ export function automatedPositioning({
       });
 
       if (result.error) return handleErrorCondition(result);
-      console.log(result);
 
       positioningReport.push({
         action: 'positionSeedBlocks',
