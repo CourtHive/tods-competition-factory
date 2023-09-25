@@ -217,8 +217,8 @@ export function roundRobinWithPlayoffsTest(params) {
     drawId,
   }));
   const allPositionsFilled = allPlayoffPositionsFilled({
-    drawDefinition: updatedDrawDefinition,
     structureId: mainStructure.structureId,
+    drawDefinition: updatedDrawDefinition,
   });
   expect(allPositionsFilled).toEqual(true);
 

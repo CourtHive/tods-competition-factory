@@ -1,5 +1,6 @@
 import { getPlayoffStructures } from '../../../tournamentEngine/getters/structureGetter';
 import { getStructureMatchUps } from '../../getters/getMatchUps/getStructureMatchUps';
+import { getPositionAssignments } from '../../getters/positionsGetter';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../../constants/entryStatusConstants';
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
@@ -77,15 +78,17 @@ export function allPlayoffPositionsFilled(params) {
   let participantIdsCount = 0;
   const allPositionsFilled = (playoffStructures || []).reduce(
     (allFilled, structure) => {
-      const structurePositionsFilled = !structure?.positionAssignments?.filter(
+      const positionAssignments =
+        getPositionAssignments({ structure }).positionAssignments ?? [];
+      const structurePositionsFilled = positionAssignments?.filter(
         (assignment) => {
           if (assignment.participantId) participantIdsCount++;
-          return !assignment?.bye && !assignment?.participantId;
+          return assignment?.bye || assignment?.participantId;
         }
       ).length;
       return structurePositionsFilled && allFilled;
     },
-    true
+    !!playoffStructures.length
   );
 
   // account for playoffStructure with only one participant
