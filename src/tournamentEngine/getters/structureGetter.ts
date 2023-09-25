@@ -3,7 +3,6 @@ import {
   getDrawStructures,
 } from '../../drawEngine/getters/findStructure';
 
-import { PLAY_OFF } from '../../constants/drawDefinitionConstants';
 import { Structure } from '../../types/tournamentFromSchema';
 import {
   MISSING_DRAW_DEFINITION,
@@ -21,9 +20,7 @@ export function getPlayoffStructures({ drawDefinition, structureId }) {
     .map((link) => link.target?.structureId);
 
   const playoffStructures = (drawDefinition?.structures || []).filter(
-    (structure) =>
-      targetStructureIds.includes(structure.structureId) &&
-      structure.stage === PLAY_OFF
+    (structure) => targetStructureIds.includes(structure.structureId)
   );
 
   return { playoffStructures, structure };
