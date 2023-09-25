@@ -2,14 +2,6 @@ import { getAppliedPolicies } from '../../../global/functions/deducers/getApplie
 import { getSeedPattern, getValidSeedBlocks } from '../../getters/seedGetter';
 import { positionUnseededParticipants } from './positionUnseededParticipants';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
-import {
-  ResultType,
-  decorateResult,
-} from '../../../global/functions/decorateResult';
-import {
-  MatchUpsMap,
-  getMatchUpsMap,
-} from '../../getters/getMatchUps/getMatchUpsMap';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import { getQualifiersCount } from '../../getters/getQualifiersCount';
@@ -19,6 +11,14 @@ import { findStructure } from '../../getters/findStructure';
 import { positionQualifiers } from './positionQualifiers';
 import { positionSeedBlocks } from './positionSeeds';
 import { makeDeepCopy } from '../../../utilities';
+import {
+  ResultType,
+  decorateResult,
+} from '../../../global/functions/decorateResult';
+import {
+  MatchUpsMap,
+  getMatchUpsMap,
+} from '../../getters/getMatchUps/getMatchUpsMap';
 import {
   disableNotifications,
   enableNotifications,
@@ -89,7 +89,11 @@ export function automatedPositioning({
   //-----------------------------------------------------------
   // handle notification state for all exit conditions
   if (!applyPositioning) {
+    // when positioning is not being applied no notifications are generated
+    // because only the positionAssignments are returned
     disableNotifications();
+    // positioningAssignments are applied to a copy of the drawDefinition,
+    // not the actual drawDefinition...
     drawDefinition = makeDeepCopy(drawDefinition, false, true);
   }
 
@@ -232,6 +236,7 @@ export function automatedPositioning({
       });
 
       if (result.error) return handleErrorCondition(result);
+      console.log(result);
 
       positioningReport.push({
         action: 'positionSeedBlocks',
