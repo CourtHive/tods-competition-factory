@@ -245,7 +245,7 @@ export function getParticipantEntries(params) {
             });
 
             if (stage === MAIN) {
-              drawSize = positionAssignments?.length || 0;
+              drawSize = positionAssignments?.length ?? 0;
               mainPositionAssignments = positionAssignments;
               mainSeedAssignments = seedAssignments;
             } else if (stageSequence === 1) {
@@ -312,11 +312,9 @@ export function getParticipantEntries(params) {
                 // overwrite any event seeding with actual draw seeding (which may differ)
                 participantMap[id].events[eventId].seedValue =
                   mainSeeding || qualifyingSeeding;
-              } else {
-                // if seeding for this specific drawIds is NOT published, remove from event
-                if (participantMap[id].events[eventId].seedValue) {
-                  participantMap[id].events[eventId].seedValue = undefined;
-                }
+              } else if (participantMap[id].events[eventId]?.seedValue) {
+                // if seeding for specific drawIds is NOT published, remove from event
+                participantMap[id].events[eventId].seedValue = undefined;
               }
             }
 
@@ -389,7 +387,7 @@ export function getParticipantEntries(params) {
           participantMap,
           nextMatchUps,
           event,
-        })?.matchUps || [];
+        })?.matchUps ?? [];
 
       for (const matchUp of eventMatchUps) {
         const {
