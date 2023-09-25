@@ -256,8 +256,8 @@ it('can advance players in Round Robin with Playoffs => 2 x 4 x 4', () => {
     drawId,
   });
   const allPositionsFilled = allPlayoffPositionsFilled({
-    drawDefinition: updatedDrawDefinition,
     structureId: mainStructure.structureId,
+    drawDefinition: updatedDrawDefinition,
   });
   expect(allPositionsFilled).toEqual(true);
 });
@@ -492,8 +492,8 @@ it('can advance players in Round Robin with Playoffs', () => {
     drawId,
   });
   const allPositionsFilled = allPlayoffPositionsFilled({
-    drawDefinition: updatedDrawDefinition,
     structureId: mainStructure.structureId,
+    drawDefinition: updatedDrawDefinition,
   });
   expect(allPositionsFilled).toEqual(true);
 });

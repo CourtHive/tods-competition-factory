@@ -237,6 +237,19 @@ const { matchUps } = drawEngine.allDrawMatchUps({
 
 ---
 
+## allPlayoffPositionsFilled
+
+Returns boolean value for whether playoff positions (which have been generated) are populated with `participantIds` or `BYEs`.
+
+```js
+const allPositionsFilled = allPlayoffPositionsFilled({
+  drawDefinition,
+  structureId,
+});
+```
+
+---
+
 ## allStructureMatchUps
 
 Returns all matchUps from a single structure within a draw.
