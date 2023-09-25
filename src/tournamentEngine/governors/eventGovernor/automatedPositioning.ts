@@ -1,5 +1,6 @@
 import { automatedPositioning as drawEngineAutomatedPositioning } from '../../../drawEngine/governors/positionGovernor/automatedPositioning';
 import { isCompletedStructure } from '../../../drawEngine/governors/queryGovernor/structureActions';
+import { getMinFinishingPositionRange } from '../../../drawEngine/getters/structureSort';
 import { getPlayoffStructures } from '../../getters/structureGetter';
 
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -103,10 +104,12 @@ export function automatedPlayoffPositioning(
     return { error: INCOMPLETE_SOURCE_STRUCTURE };
   }
 
-  const { playoffStructures } = getPlayoffStructures({
+  const playoffStructures = getPlayoffStructures({
     drawDefinition,
     structureId,
-  });
+  }).playoffStructures?.sort(
+    (a, b) => getMinFinishingPositionRange(a) - getMinFinishingPositionRange(b)
+  );
   const structurePositionAssignments: StructurePositionAssignmentType[] = [];
 
   const participants = tournamentRecord?.participants;

@@ -4,11 +4,6 @@ import { getEntryProfile } from './getEntryProfile';
 import { findStructure } from './findStructure';
 import { numericSort } from '../../utilities';
 
-import {
-  DrawDefinition,
-  DrawLink,
-  EntryStatusEnum,
-} from '../../types/tournamentFromSchema';
 import { ROUND_TARGET, TALLY } from '../../constants/extensionConstants';
 import { ErrorType } from '../../constants/errorConditionConstants';
 import {
@@ -23,6 +18,11 @@ import {
   WILDCARD,
   DIRECT_ENTRY_STATUSES,
 } from '../../constants/entryStatusConstants';
+import {
+  DrawDefinition,
+  DrawLink,
+  EntryStatusEnum,
+} from '../../types/tournamentFromSchema';
 
 export function stageExists({ stage, drawDefinition }) {
   const { entryProfile } = getEntryProfile({ drawDefinition });
@@ -93,6 +93,7 @@ type GetStageEntriesArgs = {
   entryStatuses?: EntryStatusEnum[];
   provisionalPositioning?: boolean;
   drawDefinition: DrawDefinition;
+  placementGroup?: number;
   stageSequence?: number;
   structureId?: string;
   roundTarget?: number;
@@ -102,6 +103,7 @@ type GetStageEntriesArgs = {
 
 export function getStageEntries({
   provisionalPositioning,
+  placementGroup,
   drawDefinition,
   stageSequence,
   entryStatuses,
@@ -145,7 +147,9 @@ export function getStageEntries({
     if (error) {
       console.log('playoff entries error'); // TODO: bubble this up...
     }
-    return playoffEntries?.length ? playoffEntries : entries;
+    return (playoffEntries?.length ? playoffEntries : entries).filter(
+      (entry) => !placementGroup || entry.placementGroup === placementGroup
+    );
   }
   return entries;
 }

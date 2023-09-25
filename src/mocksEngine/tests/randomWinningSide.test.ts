@@ -3,6 +3,8 @@ import { instanceCount } from '../../utilities';
 import { it, expect } from 'vitest';
 import mocksEngine from '..';
 
+import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats';
+import { SINGLES } from '../../constants/eventConstants';
 import {
   FEED_IN_CHAMPIONSHIP,
   FIRST_MATCH_LOSER_CONSOLATION,
@@ -10,8 +12,6 @@ import {
   ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
-import { SINGLES } from '../../constants/eventConstants';
-import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats';
 
 it.each([
   [SINGLE_ELIMINATION, 16],

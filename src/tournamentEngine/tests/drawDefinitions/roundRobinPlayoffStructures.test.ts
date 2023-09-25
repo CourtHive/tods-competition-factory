@@ -1,33 +1,44 @@
+import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { isCompletedStructure } from '../../../drawEngine/governors/queryGovernor/structureActions';
+import { allDrawMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
 import { structureSort } from '../../../drawEngine/getters/structureSort';
-import { overlap, unique } from '../../../utilities';
 import tournamentEngine from '../../sync';
 import { mocksEngine } from '../../..';
 import { expect, it } from 'vitest';
+import {
+  extractAttributes,
+  intersection,
+  overlap,
+  unique,
+} from '../../../utilities';
 
+import { COMPLETED } from '../../../constants/matchUpStatusConstants';
 import {
   COMPASS,
+  MAIN,
   PLAY_OFF,
   ROUND_ROBIN_WITH_PLAYOFF,
 } from '../../../constants/drawDefinitionConstants';
 
 it('is possible to have COMPASS playoff for Round Robin with playoffs', () => {
+  const completionGoal = 48;
   const mockProfile = {
     tournamentName: 'RR with Compass',
-    completeAllMatchUps: true,
     drawProfiles: [
       {
         drawType: ROUND_ROBIN_WITH_PLAYOFF,
+        completionGoal,
         drawSize: 32,
         structureOptions: {
           playoffGroups: [
             {
-              finishingPositions: [1, 2],
               structureName: 'Gold Flight',
+              finishingPositions: [1, 2],
               drawType: COMPASS,
             },
             {
-              finishingPositions: [3, 4],
               structureName: 'Silver Flight',
+              finishingPositions: [3, 4],
               drawType: PLAY_OFF,
             },
           ],
@@ -98,4 +109,42 @@ it('is possible to have COMPASS playoff for Round Robin with playoffs', () => {
     'Silver Flight 29-32',
     'Silver Flight 31-32',
   ]);
+
+  const drawMatchUps = allDrawMatchUps({ drawDefinition }).matchUps;
+  const completedCount: number =
+    drawMatchUps
+      ?.map((m) => (m.matchUpStatus === COMPLETED ? 1 : 0))
+      .reduce((a: number, b: number) => a + b, 0) ?? 0;
+  expect(completedCount).toEqual(completionGoal);
+
+  const mainStructure = drawDefinition.structures.find(
+    ({ stage, stageSequence }) => stage === MAIN && stageSequence === 1
+  );
+  const structureMatchUps = getAllStructureMatchUps({
+    structure: mainStructure,
+  }).matchUps;
+  expect(structureMatchUps.length).toEqual(completionGoal);
+
+  const structureCompletedCount: number =
+    drawMatchUps
+      ?.map((m) => (m.matchUpStatus === COMPLETED ? 1 : 0))
+      .reduce((a: number, b: number) => a + b, 0) ?? 0;
+  expect(structureCompletedCount).toEqual(completionGoal);
+
+  const mainStructureId = mainStructure.structureId;
+  const structureIsComplete = isCompletedStructure({
+    structureId: mainStructureId,
+    drawDefinition,
+  });
+  expect(structureIsComplete).toEqual(true);
+
+  const g1 = drawDefinition.structures
+    .find((s) => s.structureName === 'Gold Flight EAST')
+    .positionAssignments.map(extractAttributes('participantId'));
+
+  const g2 = drawDefinition.structures
+    .find((s) => s.structureName === 'Silver Flight 17-32')
+    .positionAssignments.map(extractAttributes('participantId'));
+
+  expect(intersection(g1, g2)).toEqual([]);
 });

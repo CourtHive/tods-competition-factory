@@ -25,8 +25,8 @@ it('will not schedule RR PLAY_OFF rounds before MAIN rounds', () => {
       eventType: SINGLES,
       drawProfiles: [
         {
-          drawSize: 16,
           drawType: ROUND_ROBIN_WITH_PLAYOFF,
+          drawSize: 16,
         },
       ],
     },

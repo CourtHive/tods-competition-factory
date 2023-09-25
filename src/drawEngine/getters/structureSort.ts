@@ -40,9 +40,9 @@ export function structureSort(a: Structure, b: Structure, config?): number {
     (getRoundTarget(a) || 0) - (getRoundTarget(b) || 0) ||
     (!finish &&
       !aggregate &&
-      (b?.positionAssignments?.length || Infinity) -
-        (a?.positionAssignments?.length || Infinity)) ||
-    (a?.stageSequence || 0) - (b?.stageSequence || 0) ||
+      (b?.positionAssignments?.length ?? Infinity) -
+        (a?.positionAssignments?.length ?? Infinity)) ||
+    (a?.stageSequence ?? 0) - (b?.stageSequence ?? 0) ||
     (getMinFinishingPositionRange(a) || 0) -
       (getMinFinishingPositionRange(b) || 0)
   );
