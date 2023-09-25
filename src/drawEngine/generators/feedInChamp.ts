@@ -11,11 +11,12 @@ import { DrawLink } from '../../types/tournamentFromSchema';
 export function feedInChampionship(params) {
   const {
     finishingPositionOffset,
-    policyDefinitions,
     stageSequence = 1,
+    policyDefinitions,
     feedsFromFinal,
     staggeredEntry,
     structureName,
+    stage = MAIN,
     structureId,
     matchUpType,
     skipRounds,
@@ -47,9 +48,9 @@ export function feedInChampionship(params) {
     structureId: structureId || uuids?.pop(),
     structureName: structureName || MAIN,
     stageSequence,
-    stage: MAIN,
     matchUpType,
     matchUps,
+    stage,
   });
 
   const structures = [mainStructure];

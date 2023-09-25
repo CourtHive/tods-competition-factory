@@ -55,8 +55,8 @@ export function generatePlayoffStructures(params): {
     sequenceLimit,
     stage = MAIN,
     structureId,
-    idPrefix,
     drawSize,
+    idPrefix,
     isMock,
     uuids,
   } = params;

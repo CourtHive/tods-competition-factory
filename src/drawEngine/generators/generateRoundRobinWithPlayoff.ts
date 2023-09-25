@@ -12,11 +12,7 @@ import { SUCCESS } from '../../constants/resultConstants';
 export function generateRoundRobinWithPlayOff(params) {
   const { drawDefinition, structureOptions, requireSequential } = params;
 
-  const mainDrawProperties = Object.assign(
-    { structureName: MAIN }, // default structureName
-    params,
-    { stage: MAIN }
-  );
+  const mainDrawProperties = { structureName: MAIN, ...params, stage: MAIN }; // default structureName
   const { structures, groupCount, groupSize } =
     generateRoundRobin(mainDrawProperties);
 

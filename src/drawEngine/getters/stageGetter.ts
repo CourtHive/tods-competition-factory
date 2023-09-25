@@ -2,6 +2,7 @@ import { findExtension } from '../../tournamentEngine/governors/queryGovernor/ex
 import { modifyEntryProfile } from '../governors/entryGovernor/modifyEntryProfile';
 import { getEntryProfile } from './getEntryProfile';
 import { findStructure } from './findStructure';
+import { numericSort } from '../../utilities';
 
 import {
   DrawDefinition,
@@ -177,9 +178,9 @@ function getPlayoffEntries({
     // for group participant results to be tallied,
     // the source structure must be a container of other structures
     if (sourceStructure?.structureType === CONTAINER) {
-      const playoffStructures = sourceStructure.structures || [];
+      const playoffStructures = sourceStructure.structures ?? [];
       playoffStructures.forEach((structure) => {
-        const positionAssignments = structure.positionAssignments || [];
+        const positionAssignments = structure.positionAssignments ?? [];
         const { structureId: playoffStructureId } = structure;
         const groupingValue = playoffStructureId;
 
@@ -234,7 +235,9 @@ function getPlayoffEntries({
             const finishingPosition =
               groupOrder || (provisionalPositioning && provisionalOrder);
             const placementGroup =
-              (finishingPositions ?? []).sort().indexOf(finishingPosition) + 1;
+              (finishingPositions ?? [])
+                .sort(numericSort)
+                .indexOf(finishingPosition) + 1;
 
             playoffEntries.push({
               entryStage: PLAY_OFF,

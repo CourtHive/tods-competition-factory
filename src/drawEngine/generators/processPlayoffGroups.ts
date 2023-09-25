@@ -202,13 +202,13 @@ export function processPlayoffGroups({
       };
       if (playoffDrawType === COMPASS) {
         Object.assign(params, {
-          roundOffsetLimit: 3,
           playoffAttributes: compassAttributes,
+          roundOffsetLimit: 3,
         });
       } else if (playoffDrawType === OLYMPIC) {
         Object.assign(params, {
-          roundOffsetLimit: 2,
           playoffAttributes: olympicAttributes,
+          roundOffsetLimit: 2,
         });
       }
 

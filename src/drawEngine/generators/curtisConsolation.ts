@@ -22,10 +22,11 @@ export function generateCurtisConsolation(params) {
     structureName = MAIN,
     stageSequence = 1,
     staggeredEntry,
+    stage = MAIN,
     matchUpType,
     structureId,
-    idPrefix,
     drawSize,
+    idPrefix,
     isMock,
     uuids,
   } = params;
@@ -46,8 +47,8 @@ export function generateCurtisConsolation(params) {
     structureName,
     stageSequence,
     matchUpType,
-    stage: MAIN,
     matchUps,
+    stage,
   });
 
   const structures: Structure[] = [mainStructure];
