@@ -875,7 +875,7 @@ tournamentEngine.attachStructures({
 
 ## automatedPlayoffPositioning
 
-Uses Round Robin Tallies to position participants in playoff structure(s).
+For Round Robin structures, uses Round Robin Tallies to position participants in playoff structure(s).
 
 ```js
 tournamentEngine.automatedPlayoffPositioning({
