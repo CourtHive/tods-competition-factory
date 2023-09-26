@@ -10,11 +10,11 @@ import {
   getTiebreakComplement,
 } from '../../matchUpEngine/getters/getComplement';
 
+import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats';
 import {
   INVALID_MATCHUP_FORMAT,
   INVALID_VALUES,
 } from '../../constants/errorConditionConstants';
-
 import {
   COMPLETED,
   DEFAULTED,
@@ -53,8 +53,8 @@ const defaultStatusProfile = {
 export function generateOutcome(params) {
   let { defaultWithScorePercent = 2, winningSide } = params;
   const {
-    matchUpFormat = 'SET3-S:6/TB7',
     matchUpStatusProfile = defaultStatusProfile, // { matchUpStatusProfile: {} } will always return only { matchUpStatus: COMPLETED }
+    matchUpFormat = FORMAT_STANDARD,
     pointsPerMinute = 1,
     sideWeight = 4,
   } = params;

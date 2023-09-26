@@ -7,6 +7,7 @@ import { generateRange } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
 import { expect } from 'vitest';
 
+import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
 import { TypeEnum } from '../../../../types/tournamentFromSchema';
 import {
   MAIN,
@@ -54,7 +55,7 @@ export function roundRobinWithPlayoffsTest(params) {
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result.success).toEqual(true);
 
-  const matchUpFormat = 'SET3-S:6/TB7';
+  const matchUpFormat = FORMAT_STANDARD;
   const { drawDefinition } = tournamentEngine.generateDrawDefinition({
     seedingProfile: { positioning: WATERFALL },
     structureOptions,

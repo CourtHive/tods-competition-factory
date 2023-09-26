@@ -5,6 +5,7 @@ import { setMatchUpFormat } from '../../drawEngine/governors/matchUpGovernor/set
 import { addDrawDefinition } from '../governors/eventGovernor/drawDefinitions/addDrawDefinition';
 import { getTournamentParticipants } from '../getters/participants/getTournamentParticipants';
 import { generateQualifyingLink } from '../../drawEngine/generators/generateQualifyingLink';
+import { generateAdHocMatchUps } from '../../drawEngine/generators/generateAdHocMatchUps';
 import { attachPolicies } from '../../drawEngine/governors/policyGovernor/attachPolicies';
 import { checkValidEntries } from '../governors/eventGovernor/entries/checkValidEntries';
 import { getAppliedPolicies } from '../../global/functions/deducers/getAppliedPolicies';
@@ -34,6 +35,7 @@ import {
 } from '../../drawEngine/governors/entryGovernor/stageEntryCounts';
 
 import POLICY_SEEDING_USTA from '../../fixtures/policies/POLICY_SEEDING_USTA';
+import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats';
 import { POLICY_TYPE_SEEDING } from '../../constants/policyConstants';
 import { PolicyDefinitions } from '../../types/factoryTypes';
 import { SUCCESS } from '../../constants/resultConstants';
@@ -75,7 +77,6 @@ import {
   ResultType,
   decorateResult,
 } from '../../global/functions/decorateResult';
-import { generateAdHocMatchUps } from '../../drawEngine/generators/generateAdHocMatchUps';
 
 type GenerateDrawDefinitionArgs = {
   automated?: boolean | { seedsOnly: boolean };
@@ -263,7 +264,7 @@ export function generateDrawDefinition(
   } else if (!matchUpFormat) {
     tieFormat = undefined;
     if (!event?.matchUpFormat) {
-      matchUpFormat = 'SET3-S:6/TB7';
+      matchUpFormat = FORMAT_STANDARD;
     }
   }
 

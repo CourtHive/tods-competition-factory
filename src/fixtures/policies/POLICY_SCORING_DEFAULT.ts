@@ -1,5 +1,6 @@
 import { POLICY_TYPE_SCORING } from '../../constants/policyConstants';
 import { MAIN } from '../../constants/drawDefinitionConstants';
+import { FORMAT_STANDARD } from '../scoring/matchUpFormats';
 
 /**
  * without a SCORING_POLICY which sets { requireAllPositionsAssigned: false },  all stage:MAIN, stageSequence:1 drawPositions must be assigned **BEFORE** scoring is enabled,
@@ -7,7 +8,7 @@ import { MAIN } from '../../constants/drawDefinitionConstants';
  */
 export const POLICY_SCORING_DEFAULT = {
   [POLICY_TYPE_SCORING]: {
-    defaultMatchUpFormat: 'SET3-S:6/TB7',
+    defaultMatchUpFormat: FORMAT_STANDARD,
     requireAllPositionsAssigned: false,
     processCodes: {
       incompleteAssignmentsOnDefault: ['RANKING.IGNORE'],

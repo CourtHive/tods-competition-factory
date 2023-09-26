@@ -3,6 +3,10 @@ import { mocksEngine } from '../../..';
 
 import { SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
 import { TypeEnum } from '../../../types/tournamentFromSchema';
+import {
+  FORMAT_ATP_DOUBLES,
+  FORMAT_STANDARD,
+} from '../../../fixtures/scoring/matchUpFormats';
 
 export function generateTeamTournament(params?) {
   const {
@@ -18,7 +22,7 @@ export function generateTeamTournament(params?) {
     collectionDefinitions: [
       {
         collectionId: 'doublesCollectionId',
-        matchUpFormat: 'SET3-S:6/TB7-F:TB10',
+        matchUpFormat: FORMAT_ATP_DOUBLES,
         matchUpType: TypeEnum.Doubles,
         matchUpCount: doublesCount,
         collectionName: 'Doubles',
@@ -26,7 +30,7 @@ export function generateTeamTournament(params?) {
       },
       {
         collectionId: 'singlesCollectionId',
-        matchUpFormat: 'SET3-S:6/TB7',
+        matchUpFormat: FORMAT_STANDARD,
         matchUpType: TypeEnum.Singles,
         matchUpCount: singlesCount,
         collectionName: 'Singles',

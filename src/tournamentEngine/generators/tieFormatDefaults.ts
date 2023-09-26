@@ -16,6 +16,10 @@ import USTA_ZONAL_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_ZONAL.
 import LAVER_CUP_TIE_FORMAT from '../../fixtures/scoring/tieFormats/LAVER_CUP.json';
 import USTA_TOC_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_TOC.json';
 import {
+  FORMAT_ATP_DOUBLES,
+  FORMAT_STANDARD,
+} from '../../fixtures/scoring/matchUpFormats';
+import {
   COLLEGE_D3,
   COLLEGE_DEFAULT,
   COLLEGE_JUCO,
@@ -38,7 +42,6 @@ import {
 
 import { Event, TypeEnum } from '../../types/tournamentFromSchema';
 
-const bestOf3tbSets = 'SET3-S:6/TB7';
 const STANDARD = 'STANDARD';
 
 const namedFormats = {
@@ -56,9 +59,9 @@ const namedFormats = {
       matchUpFormat: 'SET1-S:8/TB7@7',
     },
     singles: {
+      matchUpFormat: FORMAT_STANDARD,
       matchUpCount: 6,
       matchUpValue: 1,
-      matchUpFormat: bestOf3tbSets,
     },
     tieFormatName: COLLEGE_D3,
     valueGoal: 5,
@@ -68,12 +71,12 @@ const namedFormats = {
     doubles: {
       matchUpCount: 3,
       collectionValue: 1,
-      matchUpFormat: bestOf3tbSets,
+      matchUpFormat: FORMAT_STANDARD,
     },
     singles: {
       matchUpCount: 6,
       matchUpValue: 1,
-      matchUpFormat: bestOf3tbSets,
+      matchUpFormat: FORMAT_STANDARD,
     },
     tieFormatName: COLLEGE_DEFAULT,
     valueGoal: 4,
@@ -88,7 +91,7 @@ const namedFormats = {
     singles: {
       matchUpCount: 6,
       matchUpValue: 1,
-      matchUpFormat: bestOf3tbSets,
+      matchUpFormat: FORMAT_STANDARD,
     },
     tieFormatName: COLLEGE_JUCO,
     valueGoal: 5,
@@ -143,7 +146,7 @@ export const tieFormatDefaults = (params?: TieFormatDefaultArgs) => {
       collectionDefinitions: [
         {
           collectionId: uuids?.pop() || UUID(),
-          matchUpFormat: 'SET3-S:6/TB7-F:TB10',
+          matchUpFormat: FORMAT_ATP_DOUBLES,
           matchUpType: TypeEnum.Doubles,
           collectionName: 'Doubles',
           ...template.doubles,
@@ -151,7 +154,7 @@ export const tieFormatDefaults = (params?: TieFormatDefaultArgs) => {
         {
           collectionId: uuids?.pop() || UUID(),
           matchUpType: TypeEnum.Singles,
-          matchUpFormat: bestOf3tbSets,
+          matchUpFormat: FORMAT_STANDARD,
           collectionName: 'Singles',
           ...template.singles,
         },

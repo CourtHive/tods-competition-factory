@@ -1,6 +1,8 @@
 import { generateScoreString } from '../../../matchUpEngine/generators/generateScoreString';
 import { analyzeMatchUp } from '../../../matchUpEngine/getters/analyzeMatchUp';
 
+import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
+
 function generateSetScores(setValues) {
   return setValues.map(
     (
@@ -24,7 +26,7 @@ type GenerateMatchUpOutcomeArgs = {
 };
 
 export function generateMatchUpOutcome({
-  matchUpFormat = 'SET3-S:6/TB7',
+  matchUpFormat = FORMAT_STANDARD,
   setValues,
 }: GenerateMatchUpOutcomeArgs): any {
   const generatedSets = generateSetScores(setValues);

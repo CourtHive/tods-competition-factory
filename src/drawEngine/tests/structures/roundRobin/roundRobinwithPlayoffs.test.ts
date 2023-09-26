@@ -269,16 +269,16 @@ it('can advance players in Round Robin with Playoffs', () => {
         setValues,
       });
       const result = tournamentEngine.setMatchUpStatus({
-        drawId,
         matchUpId,
         outcome,
+        drawId,
       });
       expect(result.success).toEqual(true);
 
       ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
       const thisStructureIsCompleted = isCompletedStructure({
-        drawDefinition,
         structureId: structure.structureId,
+        drawDefinition,
       });
       expect(thisStructureIsCompleted).toEqual(
         matchUpIndex + 1 === matchUpsPerStructure
@@ -287,8 +287,8 @@ it('can advance players in Round Robin with Playoffs', () => {
       const matchUpInstance =
         structureOrder * matchUpsPerStructure + (matchUpIndex + 1);
       const mainStructureIsCompleted = isCompletedStructure({
-        drawDefinition,
         structureId: mainStructure.structureId,
+        drawDefinition,
       });
       const expectCompletedStructure =
         matchUpInstance === allStructureMatchUpsCount;
@@ -297,8 +297,8 @@ it('can advance players in Round Robin with Playoffs', () => {
   });
 
   const { matchUps: eventMatchUps } = tournamentEngine.allEventMatchUps({
-    eventId,
     inContext: true,
+    eventId,
   });
 
   const finishingPositionGroups = {};
