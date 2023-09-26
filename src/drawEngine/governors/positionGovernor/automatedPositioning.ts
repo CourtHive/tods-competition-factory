@@ -52,6 +52,7 @@ type AutomatedPositioningArgs = {
   multipleStructures?: boolean;
   applyPositioning?: boolean;
   matchUpsMap?: MatchUpsMap;
+  placementGroup?: number;
   placeByes?: boolean;
   structureId: string;
   seedsOnly?: boolean;
@@ -68,6 +69,7 @@ export function automatedPositioning({
   placeByes = true,
   tournamentRecord,
   appliedPolicies,
+  placementGroup,
   drawDefinition,
   seedingProfile,
   participants,
@@ -134,6 +136,7 @@ export function automatedPositioning({
     stageSequence: structure.stageSequence,
     provisionalPositioning,
     stage: structure.stage,
+    placementGroup,
     drawDefinition,
     entryStatuses,
     structureId,

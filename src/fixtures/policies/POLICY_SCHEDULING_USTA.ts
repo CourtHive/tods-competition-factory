@@ -1,5 +1,6 @@
-import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
 import { POLICY_TYPE_SCHEDULING } from '../../constants/policyConstants';
+import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
+import { FORMAT_STANDARD } from '../scoring/matchUpFormats';
 
 // categoryTypes
 const ADULT = 'ADULT';
@@ -22,7 +23,7 @@ export const POLICY_SCHEDULING_USTA = {
     },
     matchUpAverageTimes: [
       {
-        matchUpFormatCodes: ['SET3-S:6/TB7'], // Best of 3 tiebreak sets
+        matchUpFormatCodes: [FORMAT_STANDARD], // Best of 3 tiebreak sets
         averageTimes: [
           {
             categoryNames: [],

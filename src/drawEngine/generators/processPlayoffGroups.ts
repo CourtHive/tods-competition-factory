@@ -118,10 +118,10 @@ export function processPlayoffGroups({
     }
 
     const params = {
+      structureId: playoffGroup.structureId ?? uuids?.pop(),
       structureName: playoffGroup.structureName,
       idPrefix: idPrefix && `${idPrefix}-po`,
       appliedPolicies: policyDefinitions,
-      structureId: uuids?.pop(),
       finishingPositionOffset,
       stage: PLAY_OFF,
       stageSequence,
@@ -162,9 +162,9 @@ export function processPlayoffGroups({
       });
 
       const playoffStructure = structureTemplate({
+        structureId: playoffGroup.structureId ?? uuids?.pop(),
         structureName: playoffGroup.structureName,
         matchUpFormat: playoffMatchUpFormat,
-        structureId: uuids?.pop(),
         stage: PLAY_OFF,
         stageSequence,
         matchUps,
@@ -189,6 +189,7 @@ export function processPlayoffGroups({
       const { structureName } = playoffGroup;
 
       const params = {
+        structureId: playoffGroup.structureId ?? uuids?.pop(),
         playoffStructureNameBase: structureName,
         idPrefix: idPrefix && `${idPrefix}-po`,
         addNameBaseToAttributeName: true,
@@ -245,6 +246,7 @@ export function processPlayoffGroups({
     ) {
       const uuidsFMLC = [uuids?.pop(), uuids?.pop()];
       const params = {
+        structureId: playoffGroup.structureId ?? uuids?.pop(),
         structureName: playoffGroup.structureName,
         idPrefix: idPrefix && `${idPrefix}-po`,
         finishingPositionOffset,
@@ -301,9 +303,9 @@ export function processPlayoffGroups({
       updateStructureAndLinks({ playoffStructures, playoffLinks });
     } else if ([AD_HOC].includes(playoffDrawType)) {
       const structure = structureTemplate({
+        structureId: playoffGroup.structureId ?? uuids?.pop(),
         structureName: playoffGroup.structureName,
         finishingPosition: WIN_RATIO,
-        structureId: uuids?.pop(),
         stage: PLAY_OFF,
         stageSequence,
         matchUps: [],

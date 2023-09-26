@@ -61,12 +61,12 @@ it('can complete matchUps in playoff structures', () => {
 function generateScenario({ drawSize, structureOptions }) {
   const drawProfiles = [
     {
-      drawSize,
-      eventType: SINGLES,
-      participantsCount: drawSize,
-      matchUpFormat: FORMAT_STANDARD,
       drawType: ROUND_ROBIN_WITH_PLAYOFF,
+      matchUpFormat: FORMAT_STANDARD,
+      participantsCount: drawSize,
+      eventType: SINGLES,
       structureOptions,
+      drawSize,
     },
   ];
   const {

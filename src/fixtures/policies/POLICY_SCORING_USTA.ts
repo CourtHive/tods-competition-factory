@@ -1,5 +1,6 @@
 import { POLICY_TYPE_SCORING } from '../../constants/policyConstants';
 import { MAIN } from '../../constants/drawDefinitionConstants';
+import { FORMAT_STANDARD } from '../scoring/matchUpFormats';
 
 export const POLICY_SCORING_USTA = {
   [POLICY_TYPE_SCORING]: {
@@ -13,11 +14,11 @@ export const POLICY_SCORING_USTA = {
         },
       },
     },
-    defaultMatchUpFormat: 'SET3-S:6/TB7',
+    defaultMatchUpFormat: FORMAT_STANDARD,
     matchUpFormats: [
       {
         description: 'Best of 3 tiebreak sets',
-        matchUpFormat: 'SET3-S:6/TB7',
+        matchUpFormat: FORMAT_STANDARD,
         categoryNames: [],
         categoryTypes: [],
       },

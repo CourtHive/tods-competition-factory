@@ -214,7 +214,6 @@ it('can advance players in Round Robin with Playoffs => 2 x 4 x 4', () => {
     const { drawDefinition: updatedDrawDefinition } = tournamentEngine.getEvent(
       { drawId }
     );
-    // const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
     const { structure: updatedStructure } = findStructure({
       drawDefinition: updatedDrawDefinition,
       structureId,

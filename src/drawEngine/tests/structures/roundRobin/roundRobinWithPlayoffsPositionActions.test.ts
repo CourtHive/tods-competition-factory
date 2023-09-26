@@ -191,11 +191,11 @@ it('Playoff drawPosition assignment includes group winners who lost no matchUps'
 
   const drawProfiles = [
     {
-      drawSize,
-      eventType: SINGLES,
-      participantsCount: drawSize,
       drawType: ROUND_ROBIN_WITH_PLAYOFF,
+      participantsCount: drawSize,
+      eventType: SINGLES,
       structureOptions,
+      drawSize,
     },
   ];
   const {
@@ -272,11 +272,10 @@ it('Playoff drawPosition assignment includes group winners who lost no matchUps'
 
   // first test with POLICY_SEEDING_USTA included in policyDefinitions
   let drawPosition = 1;
-  let policyDefinitions: any = Object.assign(
-    {},
-    POLICY_POSITION_ACTIONS_UNRESTRICTED,
-    POLICY_SEEDING_USTA
-  );
+  let policyDefinitions: any = {
+    ...POLICY_POSITION_ACTIONS_UNRESTRICTED,
+    ...POLICY_SEEDING_USTA,
+  };
   result = tournamentEngine.positionActions({
     structureId: playoffStructureIds[0],
     policyDefinitions,
@@ -370,11 +369,11 @@ it('Playoff drawPosition assignment includes group winners who lost no matchUps'
 
   const drawProfiles = [
     {
-      drawSize,
-      eventType: SINGLES,
-      participantsCount: drawSize,
       drawType: ROUND_ROBIN_WITH_PLAYOFF,
+      participantsCount: drawSize,
+      eventType: SINGLES,
       structureOptions,
+      drawSize,
     },
   ];
   const {
@@ -386,7 +385,7 @@ it('Playoff drawPosition assignment includes group winners who lost no matchUps'
   });
   tournamentEngine.setState(tournamentRecord);
 
-  let { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
 
   const mainStructure = drawDefinition.structures.find(
     (structure) => structure.stage === MAIN
@@ -452,8 +451,6 @@ it('Playoff drawPosition assignment includes group winners who lost no matchUps'
     drawId,
   });
   expect(result.success).toEqual(true);
-
-  ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
 
   const structureId = playoffStructureIds[0];
   const { matchUps } = tournamentEngine.allTournamentMatchUps({
