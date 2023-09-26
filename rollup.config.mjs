@@ -155,6 +155,7 @@ const forgeTypes = [
 ];
 
 const governorTypes = [
+  /*
   {
     input: 'src/tournamentEngine/governors/publishingGovernor/index.ts',
     output: [
@@ -162,6 +163,7 @@ const governorTypes = [
     ],
     plugins: [dts()],
   },
+  */
 ];
 
 const engineTypes = [
