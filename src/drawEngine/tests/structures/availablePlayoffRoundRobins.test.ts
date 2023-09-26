@@ -1,7 +1,8 @@
 import { isCompletedStructure } from '../../governors/queryGovernor/structureActions';
 import { generateMatchUpOutcome } from '../primitives/generateMatchUpOutcome';
-import { tournamentEngine, mocksEngine } from '../../..';
+import { getPositionAssignments } from '../../getters/positionsGetter';
 import { extractAttributes, intersection } from '../../../utilities';
+import { tournamentEngine, mocksEngine } from '../../..';
 import { expect, it } from 'vitest';
 
 import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
@@ -117,19 +118,16 @@ const scenarios = [
         drawType: SINGLE_ELIMINATION,
         structureName: '1-4 Playoff',
         finishingPositions: [1],
-        structureId: 'po-1',
       },
       {
         drawType: FIRST_MATCH_LOSER_CONSOLATION,
         structureName: '5-8 Playoff',
         finishingPositions: [2],
-        structureId: 'po-2',
       },
       {
         structureName: '5-8 Playoff',
         finishingPositions: [3],
         drawType: ROUND_ROBIN,
-        structureId: 'po-3',
       },
     ],
     expectation: {
@@ -165,18 +163,15 @@ const scenarios = [
     playoffGroups: [
       {
         finishingPositions: [1],
-        structureId: 'pos-1',
         drawType: COMPASS,
       },
       {
         drawType: FEED_IN_CHAMPIONSHIP,
         finishingPositions: [2],
-        structureId: 'pos-2',
       },
       {
         drawType: MODIFIED_FEED_IN_CHAMPIONSHIP,
         finishingPositions: [3],
-        structureId: 'pos-3',
       },
     ],
     expectation: {
@@ -372,11 +367,38 @@ it.each(scenarios)(
       expect(intersection(s1pa, s3pa).length).toEqual(0);
       expect(intersection(s2pa, s3pa).length).toEqual(0);
 
+      drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+
+      structurePositionAssignments.forEach((pa) => {
+        const s1 = drawDefinition.structures.find(
+          (s) => s.structureId === pa.structureId
+        );
+        const s1pa = getPositionAssignments({
+          structure: s1,
+        }).positionAssignments;
+        expect(
+          s1pa?.map(extractAttributes('participantId')).filter(Boolean)
+        ).toEqual([]);
+      });
+
       result = tournamentEngine.setPositionAssignments({
         structurePositionAssignments,
         drawId,
       });
       expect(result.success).toEqual(true);
+
+      drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+      structurePositionAssignments.forEach((pa) => {
+        const s1 = drawDefinition.structures.find(
+          (s) => s.structureId === pa.structureId
+        );
+        const s1pa = getPositionAssignments({
+          structure: s1,
+        }).positionAssignments;
+        expect(
+          s1pa?.map(extractAttributes('participantId')).filter(Boolean).length
+        ).toEqual(4);
+      });
     }
   }
 );
