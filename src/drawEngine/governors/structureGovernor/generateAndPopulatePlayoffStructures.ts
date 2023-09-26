@@ -6,10 +6,6 @@ import { generatePlayoffStructures } from '../../generators/playoffStructures';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { directParticipants } from '../matchUpGovernor/directParticipants';
 import { getAvailablePlayoffProfiles } from './getAvailablePlayoffProfiles';
-import {
-  ResultType,
-  decorateResult,
-} from '../../../global/functions/decorateResult';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { getMatchUpId } from '../../../global/functions/extractors';
 import { generateTieMatchUps } from '../../generators/tieMatchUps';
@@ -18,6 +14,10 @@ import { ensureInt } from '../../../utilities/ensureInt';
 import { addGoesTo } from '../matchUpGovernor/addGoesTo';
 import { getSourceRounds } from './getSourceRounds';
 import { makeDeepCopy } from '../../../utilities';
+import {
+  ResultType,
+  decorateResult,
+} from '../../../global/functions/decorateResult';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { RoundProfile } from '../../../types/factoryTypes';
@@ -185,7 +185,7 @@ export function generateAndPopulatePlayoffStructures(
   const newStructures: Structure[] = [];
   const newLinks: DrawLink[] = [];
 
-  for (const roundNumber of sourceRounds || []) {
+  for (const roundNumber of sourceRounds ?? []) {
     const roundInfo = roundsRanges?.find(
       (roundInfo) => roundInfo.roundNumber === roundNumber
     );
