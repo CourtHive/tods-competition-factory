@@ -158,8 +158,8 @@ export function getParticipantEntries(params) {
         // IMPORTANT NOTE!
         // id is the pair, team or individual participant currently being processed
         // whereas participantId is the id of the entry into the event
-        const addEventEntry = (id) => {
-          if (participantMap[id]?.events[eventId]) return;
+        const addEventEntry = (id: string) => {
+          if (participantMap[id]?.events?.[eventId]) return;
           const participant = participantMap[id];
 
           processEventEntry({
@@ -265,7 +265,7 @@ export function getParticipantEntries(params) {
         );
 
         const publishedSeeding =
-          eventsPublishStatuses[eventId]?.publishedSeeding;
+          eventsPublishStatuses?.[eventId]?.publishedSeeding;
 
         const seedingPublished =
           !usePublishState ||
@@ -288,7 +288,7 @@ export function getParticipantEntries(params) {
           // id is the pair, team or individual participant currently being processed
           // whereas participantId is the id of the entry into the draw
           const addDrawEntry = (id) => {
-            if (participantMap[id].draws[drawId]) return;
+            if (participantMap[id].draws?.[drawId]) return;
 
             const includeSeeding = withSeeding && seedingPublished;
 

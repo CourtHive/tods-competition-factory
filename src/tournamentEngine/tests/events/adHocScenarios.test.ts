@@ -94,8 +94,8 @@ test('adHoc matchUpActions can restrict adHoc round participants to diallow recu
 
   // generating AD_HOC without { automated: true } will not place participants
   const manualDrawDefinition = tournamentEngine.generateDrawDefinition({
-    drawType: AD_HOC,
     automated: false,
+    drawType: AD_HOC,
     roundsCount,
     eventId,
   }).drawDefinition;
@@ -206,6 +206,25 @@ test('adHoc matchUpActions can restrict adHoc round participants to diallow recu
     modifiedMatchUp.sides.find(({ sideNumber }) => sideNumber === 1)
       .participantId
   ).toBeUndefined();
+
+  const { outcome } = mocksEngine.generateOutcomeFromScoreString({
+    scoreString: '7-5 7-5',
+    winningSide: 1,
+  });
+
+  const drawId = manualDrawDefinition.drawId;
+  const scoringResult = tournamentEngine.setMatchUpStatus({
+    matchUpId: targetMatchUp.matchUpId,
+    outcome,
+    drawId,
+  });
+  expect(scoringResult.success).toEqual(true);
+
+  const drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+  expect(
+    drawDefinition.structures[0].positionAssignments[0].extensions[0].value
+      .gamesWon
+  ).toEqual(10);
 });
 
 it('can remove adHoc rounds', () => {

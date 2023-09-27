@@ -320,9 +320,9 @@ it('can propagate BYE to 2nd round feed arm when 1st round Double-BYE creates 2n
   });
 
   const result = tournamentEngine.setMatchUpStatus({
-    drawId,
     matchUpId,
     outcome,
+    drawId,
   });
   expect(result.success).toEqual(true);
 
