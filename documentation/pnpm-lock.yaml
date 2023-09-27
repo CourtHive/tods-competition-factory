@@ -54,8 +54,8 @@ dependencies:
     specifier: 0.18.0
     version: 0.18.0(@types/react@18.2.23)(react@18.2.0)
   tods-competition-factory:
-    specifier: 1.6.13
-    version: 1.6.13
+    specifier: 1.6.15
+    version: 1.6.15
 
 packages:
 
@@ -3774,6 +3774,7 @@ packages:
 
   /balanced-match@1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
+    requiresBuild: true
     dev: false
 
   /base16@1.0.0:
@@ -3876,6 +3877,7 @@ packages:
 
   /brace-expansion@1.1.11:
     resolution: {integrity: sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA==}
+    requiresBuild: true
     dependencies:
       balanced-match: 1.0.2
       concat-map: 0.0.1
@@ -4318,6 +4320,7 @@ packages:
 
   /concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
+    requiresBuild: true
     dev: false
 
   /configstore@5.0.1:
@@ -4482,7 +4485,7 @@ packages:
       classnames: 2.3.2
       dayjs: 1.11.10
       husky: 8.0.3
-      tods-competition-factory: 1.6.13
+      tods-competition-factory: 1.6.15
     dev: false
 
   /cross-fetch@3.1.5:
@@ -10155,8 +10158,8 @@ packages:
       is-number: 7.0.0
     dev: false
 
-  /tods-competition-factory@1.6.13:
-    resolution: {integrity: sha512-+b/3kU7xXtWX9VnSZj3vbJ3/2z5ldpTIj1tJKM2WmdPkIfCpVOubRvx2ORUJHhB6PQD1ILt3Z8ZBW+kC4dh87w==}
+  /tods-competition-factory@1.6.15:
+    resolution: {integrity: sha512-3yx8jnpKmUVxx48kyaCzq8xDK5dlkR84ueQ975ZpSCfAjoDGEAL3veh2dF89VhaVNAmpdkRXaXU8JTWq6Ub++w==}
     engines: {node: '>=18.17.1 < 19'}
     dev: false
 
