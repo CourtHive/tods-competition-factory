@@ -101,9 +101,9 @@ export function getParticipants(params: GetParticipantsArgs): {
   });
 
   const entriesResult = getParticipantEntries({
-    withMatchUps: withMatchUps || withRankingProfile,
-    withEvents: withEvents || withRankingProfile,
-    withDraws: withDraws || withRankingProfile,
+    withMatchUps: withMatchUps ?? withRankingProfile,
+    withEvents: withEvents ?? withRankingProfile,
+    withDraws: withDraws ?? withRankingProfile,
     withPotentialMatchUps,
     participantFilters,
     withRankingProfile,
@@ -133,7 +133,7 @@ export function getParticipants(params: GetParticipantsArgs): {
 
   participantMap = entriesResult.participantMap;
 
-  const nextMatchUps = scheduleAnalysis || withPotentialMatchUps;
+  const nextMatchUps = scheduleAnalysis ?? withPotentialMatchUps;
   const processedParticipants = Object.values(participantMap).map(
     ({
       potentialMatchUps,
