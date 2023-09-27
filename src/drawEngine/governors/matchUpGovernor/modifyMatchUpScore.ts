@@ -9,11 +9,15 @@ import { decorateResult } from '../../../global/functions/decorateResult';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { getTopics } from '../../../global/state/globalState';
+import { isAdHoc } from '../queryGovernor/isAdHoc';
+import { isLucky } from '../queryGovernor/isLucky';
+import { unique } from '../../../utilities';
 import {
   modifyMatchUpNotice,
   updateInContextMatchUp,
 } from '../../notifications/drawNotifications';
 
+import { MATCHUP_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { UPDATE_INCONTEXT_MATCHUP } from '../../../constants/topicConstants';
 import { POLICY_TYPE_SCORING } from '../../../constants/policyConstants';
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
@@ -34,7 +38,6 @@ import {
   MatchUpStatusEnum,
   Tournament,
 } from '../../../types/tournamentFromSchema';
-import { MATCHUP_NOT_FOUND } from '../../../constants/errorConditionConstants';
 
 /**
  *
@@ -43,19 +46,6 @@ import { MATCHUP_NOT_FOUND } from '../../../constants/errorConditionConstants';
  * Mutates passed matchUp object.
  * Moving forward this will be used for integrity checks and any middleware that needs to execute
  *
- * @param {object} drawDefinition
- * @param {object=} matchUp
- * @param {object=} event
- * @param {string=} matchUpId
- * @param {object=} score
- * @param {string=} matchUpStatus - e.g. COMPLETED, BYE, TO_BE_PLAYED, WALKOVER, DEFAULTED
- * @param {string[]=} matchUpStatusCodes - optional - organization specific
- * @param {number=} winningSide - optional - 1 or 2
- * @param {boolean=} removeWinningSide
- * @param {boolean=} removeScore
- * @param {object=} tournamentRecord
- * @param {string=} matchUpFormat
- * @param {string[]=} notes
  */
 
 type ModifyMatchUpScoreArgs = {
@@ -107,8 +97,8 @@ export function modifyMatchUpScore({
     } else {
       // the modification is to be applied to the TEAM matchUp
     }
-  } else {
-    if (matchUp.matchUpId !== matchUpId) console.log('!!!!!');
+  } else if (matchUp.matchUpId !== matchUpId) {
+    console.log('!!!!!');
   }
 
   if (
@@ -166,41 +156,66 @@ export function modifyMatchUpScore({
         ?.incompleteAssignmentsOnDefault;
   }
 
-  // if the matchUp has a collectionId it is a tieMatchUp contained in a dual matchUp
-  if (structure?.structureType === CONTAINER && !matchUp.collectionId) {
-    // matchUpFormat set here is only used in updateAssignmentParticipantResults
-    matchUpFormat = isDualMatchUp
-      ? 'SET1-S:T100'
-      : matchUpFormat ||
-        matchUp.matchUpFormat ||
-        structure?.matchUpFormat ||
-        drawDefinition?.matchUpFormat ||
-        event?.matchUpFormat;
+  if (!matchUp.collectionId) {
+    const isRoundRobin = structure?.structureType === CONTAINER;
+    const isAdHocStructure = isAdHoc({ drawDefinition, structure });
+    if (
+      isLucky({ drawDefinition, structure }) ||
+      isAdHocStructure ||
+      isRoundRobin
+    ) {
+      const updateTally = (structure) => {
+        // matchUpFormat set here is only used in updateAssignmentParticipantResults
+        matchUpFormat = isDualMatchUp
+          ? 'SET1-S:T100'
+          : matchUpFormat ??
+            matchUp.matchUpFormat ??
+            structure?.matchUpFormat ??
+            drawDefinition?.matchUpFormat ??
+            event?.matchUpFormat;
 
-    const itemStructure = structure.structures.find((itemStructure) => {
-      return itemStructure?.matchUps.find(
-        (matchUp) => matchUp.matchUpId === matchUpId
-      );
-    });
+        const matchUpFilters = isDualMatchUp
+          ? { matchUpTypes: [TEAM] }
+          : undefined;
+        const { matchUps } = getAllStructureMatchUps({
+          afterRecoveryTimes: false,
+          inContext: true,
+          matchUpFilters,
+          structure,
+          event,
+        });
 
-    const matchUpFilters = isDualMatchUp ? { matchUpTypes: [TEAM] } : undefined;
-    const { matchUps } = getAllStructureMatchUps({
-      afterRecoveryTimes: false,
-      structure: itemStructure,
-      inContext: true,
-      matchUpFilters,
-      event,
-    });
+        if (isAdHocStructure) {
+          structure.positionAssignments = unique(
+            matchUps
+              .flatMap((matchUp) =>
+                (matchUp.sides ?? []).map((side) => side.participantId)
+              )
+              .filter(Boolean)
+          ).map((participantId) => ({ participantId }));
+        }
 
-    const result = updateAssignmentParticipantResults({
-      positionAssignments: itemStructure.positionAssignments,
-      tournamentRecord,
-      drawDefinition,
-      matchUpFormat,
-      matchUps,
-      event,
-    });
-    if (result.error) return decorateResult({ result, stack });
+        return updateAssignmentParticipantResults({
+          positionAssignments: structure.positionAssignments,
+          tournamentRecord,
+          drawDefinition,
+          matchUpFormat,
+          matchUps,
+          event,
+        });
+      };
+
+      const itemStructure =
+        isRoundRobin &&
+        structure.structures.find((itemStructure) => {
+          return itemStructure?.matchUps.find(
+            (matchUp) => matchUp.matchUpId === matchUpId
+          );
+        });
+
+      const result = updateTally(itemStructure || structure);
+      if (result.error) return decorateResult({ result, stack });
+    }
   }
 
   if (notes) {
