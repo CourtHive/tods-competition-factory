@@ -18,7 +18,8 @@ export function getSide({
   sideNumber,
 }) {
   const assignment = positionAssignments.find(
-    (assignment) => assignment.drawPosition === drawPosition
+    (assignment) =>
+      assignment.drawPosition && assignment.drawPosition === drawPosition
   );
   const participantId = drawPositionCollectionAssignment
     ? drawPositionCollectionAssignment[drawPosition]?.participantId
