@@ -71,7 +71,7 @@ export function getValidSeedBlocks({
   });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const positionsCount = positionAssignments?.length;
-  const seedsCount = seedAssignments?.length || 0;
+  const seedsCount = seedAssignments?.length ?? 0;
 
   let allDrawPositions: number[] = [];
   const roundNumbers = Object.keys(roundMatchUps)
@@ -427,7 +427,9 @@ export function getNextSeedBlock(params) {
     (assignment) => !assignment.participantId
   );
   const seedsLeftToAssign =
-    unplacedSeedAssignments?.length || seedsWithoutDrawPositions?.length;
+    unplacedSeedAssignments?.length && unplacedSeedAssignments.length > 0
+      ? unplacedSeedAssignments.length
+      : seedsWithoutDrawPositions?.length ?? 0;
   const unfilled =
     (seedsLeftToAssign &&
       nextSeedBlock?.drawPositions.filter(
