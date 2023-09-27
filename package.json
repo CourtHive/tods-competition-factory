@@ -22,7 +22,7 @@
     "seeding",
     "tennis"
   ],
-  "version": "1.6.13",
+  "version": "1.6.15",
   "license": "MIT",
   "private": false,
   "homepage": "https://courthive.github.io/tods-competition-factory/",
@@ -77,10 +77,11 @@
     "registry": "https://registry.npmjs.org"
   },
   "scripts": {
-    "release": "np --no-tests",
-    "release:major": "npm version $(semver $npm_package_version -i major) && npm publish --tag latest",
-    "release:minor": "npm version $(semver $npm_package_version -i minor) && npm publish --tag latest",
-    "release:patch": "npm version $(semver $npm_package_version -i patch) && npm publish --tag latest",
+    "commits": "git log $(git describe --tags --abbrev=0)..HEAD --oneline --no-merges --pretty=format:'%s: %h' | sed '/factory/d'",
+    "release": "npm run release:patch",
+    "release:major": "npm run commits && npm version $(semver $npm_package_version -i major) && npm publish --tag latest",
+    "release:minor": "npm run commits && npm version $(semver $npm_package_version -i minor) && npm publish --tag latest",
+    "release:patch": "npm run commits && npm version $(semver $npm_package_version -i patch) && npm publish --tag latest",
     "start": "rollup --config -w",
     "build": "rimraf dist && rollup --config",
     "test": "vitest",
@@ -147,7 +148,6 @@
     "fs-extra": "11.1.1",
     "husky": "8.0.3",
     "lint-staged": "^14.0.1",
-    "np": "8.0.4",
     "pinst": "^3.0.0",
     "prettier": "3.0.3",
     "prettier-eslint": "15.0.1",
@@ -172,6 +172,5 @@
   "browserslist": [
     "defaults and supports es6-module",
     "maintained node versions"
-  ],
-  "dependencies": {}
+  ]
 }
