@@ -14,7 +14,9 @@ test.skip('can execute abitrary methods', () => {
     'utf-8'
   );
   const tournamentRecord = JSON.parse(tournamentRecordJSON);
-  let result = tournamentEngine.devContext(true).setState(tournamentRecord);
+  let result = tournamentEngine
+    .devContext(true)
+    .setState(tournamentRecord, false);
   expect(result.success).toEqual(true);
 
   // START: preMutation

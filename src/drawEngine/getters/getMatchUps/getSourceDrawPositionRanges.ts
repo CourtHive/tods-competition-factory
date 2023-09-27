@@ -44,10 +44,11 @@ export function getSourceDrawPositionRanges({
         structureId: sourceStructureId,
         matchUpsMap,
       });
-      const { roundProfile } = getRoundMatchUps({
+      const roundMatchUpsResult = getRoundMatchUps({
         matchUps: structureMatchUps,
       });
 
+      const roundProfile = roundMatchUpsResult.roundProfile;
       return { [sourceStructureId]: roundProfile };
     })
   );
