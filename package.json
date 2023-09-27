@@ -77,7 +77,7 @@
     "registry": "https://registry.npmjs.org"
   },
   "scripts": {
-    "commits": "git log $(git describe --tags --abbrev=0)..HEAD --oneline --no-merges --pretty=format:'%s: % h' | sed '/factory/d'",
+    "commits": "git log $(git describe --tags --abbrev=0)..HEAD --oneline --no-merges --pretty=format:'%s: %h' | sed '/factory/d'",
     "release": "npm run release:patch",
     "release:major": "npm run commits && npm version $(semver $npm_package_version -i major) && npm publish --tag latest",
     "release:minor": "npm run commits && npm version $(semver $npm_package_version -i minor) && npm publish --tag latest",
