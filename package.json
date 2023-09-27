@@ -79,9 +79,9 @@
   "scripts": {
     "commits": "git log $(git describe --tags --abbrev=0)..HEAD --oneline --no-merges | sed '/factory/d'",
     "release": "np --no-tests",
-    "release:major": "npm run build && npm run commits && npm version $(semver $npm_package_version -i major) && npm publish --tag latest",
-    "release:minor": "npm run build && npm run commits && npm version $(semver $npm_package_version -i minor) && npm publish --tag latest",
-    "release:patch": "npm run build && npm run commits && npm version $(semver $npm_package_version -i patch) && npm publish --tag latest",
+    "release:major": "npm run commits && npm version $(semver $npm_package_version -i major) && npm publish --tag latest",
+    "release:minor": "npm run commits && npm version $(semver $npm_package_version -i minor) && npm publish --tag latest",
+    "release:patch": "npm run commits && npm version $(semver $npm_package_version -i patch) && npm publish --tag latest",
     "start": "rollup --config -w",
     "build": "rimraf dist && rollup --config",
     "test": "vitest",
