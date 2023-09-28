@@ -1,3 +1,6 @@
+// undocumented access to mocksEngine method
+import { completeDrawMatchUps } from '../../../mocksEngine/generators/completeDrawMatchUps';
+
 import { addExtension } from '../../../global/functions/producers/addExtension';
 import { convertPointEight } from './conversion/convertPointEight';
 import { setTournamentStatus } from './setTournamentStatus';
@@ -45,6 +48,8 @@ const tournamentGovernor = {
   removeNotes,
   analyzeDraws,
   analyzeTournament,
+
+  completeDrawMatchUps,
 
   getRounds,
   getProfileRounds,
