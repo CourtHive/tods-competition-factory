@@ -2,6 +2,7 @@ import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_MATCHUP,
   MISSING_DRAW_DEFINITION,
@@ -11,7 +12,6 @@ import {
   Event,
   Tournament,
 } from '../../../types/tournamentFromSchema';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 type ResetMatchUpLineUps = {
   tournamentRecord?: Tournament;
