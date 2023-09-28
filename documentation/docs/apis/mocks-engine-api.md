@@ -42,19 +42,6 @@ const {
 
 ---
 
-## completeDrawMatchUps
-
-```js
-mocksEngine.completeDrawMatchUps({
-  matchUpStatusProfile, // optional - whole number percent for each target matchUpStatus { [matchUpStatus]: percentLikelihood }
-  randomWinningSide, // optional boolean - randomize matchUp winningSide
-  completionGoal, // optional # of matchUps to attempt to complete
-  drawId, // required
-});
-```
-
----
-
 ## generateOutcomeFromScoreString
 
 Generates `outcome` object from parseable score string.
