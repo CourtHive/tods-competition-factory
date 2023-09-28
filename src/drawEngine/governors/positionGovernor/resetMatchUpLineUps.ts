@@ -1,7 +1,6 @@
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 
-import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_MATCHUP,
@@ -30,12 +29,11 @@ export function resetMatchUpLineUps({
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   const matchUp = findMatchUp({
-    inContext: true,
     drawDefinition,
     matchUpId,
   })?.matchUp;
 
-  if (matchUp?.matchUpType !== TEAM_MATCHUP) return { error: INVALID_MATCHUP };
+  if (!matchUp?.tieMatchUps) return { error: INVALID_MATCHUP };
 
   let modificationsCount = 0;
 
