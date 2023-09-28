@@ -11,12 +11,15 @@ import { matchUpSort } from '../../drawEngine/getters/matchUpSort';
 import { getMatchUpId } from '../../global/functions/extractors';
 import { generateOutcome } from './generateOutcome';
 
-import { ErrorType } from '../../constants/errorConditionConstants';
 import { MAIN, QUALIFYING } from '../../constants/drawDefinitionConstants';
 import { DOUBLES, SINGLES, TEAM } from '../../constants/matchUpTypes';
 import { ASCENDING } from '../../constants/sortingConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import { RANKING } from '../../constants/scaleConstants';
+import {
+  ErrorType,
+  MISSING_DRAW_DEFINITION,
+} from '../../constants/errorConditionConstants';
 import {
   BYE,
   COMPLETED,
@@ -30,16 +33,23 @@ export function completeDrawMatchUps(params): {
   error?: ErrorType;
 } {
   const {
-    matchUpStatusProfile,
+    matchUpStatusProfile, // { matchUpStatusProfile: {} } will always return only { matchUpStatus: COMPLETED }
     completeAllMatchUps,
     // qualifyingProfiles, // CONSIDER: allowing completionGoal per structureProfile
     randomWinningSide,
     tournamentRecord,
-    drawDefinition,
     completionGoal,
-    matchUpFormat,
+    drawDefinition,
     event,
   } = params;
+
+  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+
+  const matchUpFormat =
+    params.matchUpFormat ||
+    drawDefinition.matchUpFormat ||
+    event?.matchUpFormat;
+
   const sortedStructures = drawDefinition.structures
     .slice()
     .sort(structureSort);
