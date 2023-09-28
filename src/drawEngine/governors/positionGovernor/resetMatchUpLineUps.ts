@@ -1,3 +1,4 @@
+import { updateTeamLineUp } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/updateTeamLineUp';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 
@@ -20,9 +21,9 @@ type ResetMatchUpLineUps = {
   event?: Event;
 };
 export function resetMatchUpLineUps({
+  inheritance = true,
   tournamentRecord,
   drawDefinition,
-  inheritance,
   matchUpId,
   event,
 }: ResetMatchUpLineUps) {
@@ -39,10 +40,27 @@ export function resetMatchUpLineUps({
 
   (matchUp.sides || []).forEach((side) => {
     modificationsCount += 1;
-    if (inheritance) {
-      delete side.lineUp;
-    } else {
-      side.lineUp = [];
+    delete side.lineUp;
+
+    if (inheritance === false) {
+      // remove lineup for team participantId from drawDefinition LINE_UP extension
+      const inContextMatchUp = findMatchUp({
+        inContext: true,
+        drawDefinition,
+        matchUpId,
+      })?.matchUp;
+
+      const tieFormat = inContextMatchUp?.tieFormat;
+      const participantId = side.participantId;
+
+      if (tieFormat && participantId) {
+        updateTeamLineUp({
+          drawDefinition,
+          participantId,
+          lineUp: [],
+          tieFormat,
+        });
+      }
     }
 
     modifyMatchUpNotice({
