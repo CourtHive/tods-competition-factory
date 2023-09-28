@@ -26,7 +26,7 @@ mocksEngine.anonymizeTournamentRecord({
 ```js
 const { outcome } = mocksEngine.generateOutcome({
   matchUpFormat, // optional - generate outcome with score constrained by matchUpFormat
-  matchUpStatusProfile: {}, // optional - an empty object always returns { matchUpStatus: COMPLETED }
+  matchUpStatusProfile: {}, // optional - whole number percent for each target matchUpStatus { [matchUpStatus]: percentLikelihood }
   pointsPerMinute, // optional - defaults to 1 - used for generating timed set scores
   winningSide: 1, // optional - to specify a specific winningSide
   sideWeight, // optional - defaults to 4 - controls how often "deciding sets" are generated
@@ -38,6 +38,19 @@ const {
   winningSide,
   matchUpStatus,
 } = outcome;
+```
+
+---
+
+## completeDrawMatchUps
+
+```js
+mocksEngine.completeDrawMatchUps({
+  matchUpStatusProfile, // optional - whole number percent for each target matchUpStatus { [matchUpStatus]: percentLikelihood }
+  randomWinningSide, // optional boolean - randomize matchUp winningSide
+  completionGoal, // optional # of matchUps to attempt to complete
+  drawId, // required
+});
 ```
 
 ---
