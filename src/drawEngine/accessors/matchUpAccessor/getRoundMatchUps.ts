@@ -24,7 +24,7 @@ type GetRoundMatchUpsArgs = {
 };
 
 export type RoundMatchUpsResult = {
-  isNotEliminationStructure?: boolean;
+  roundsNotPowerOf2?: boolean;
   roundMatchUps?: HydratedMatchUp[];
   hasNoRoundPositions?: boolean;
   roundProfile?: RoundProfile;
@@ -252,7 +252,7 @@ export function getRoundMatchUps({
     }
   });
 
-  const isNotEliminationStructure = !!Object.values(roundProfile).find(
+  const roundsNotPowerOf2 = !!Object.values(roundProfile).find(
     ({ matchUpsCount }) => !isPowerOf2(matchUpsCount)
   );
 
@@ -261,8 +261,8 @@ export function getRoundMatchUps({
   );
 
   return {
-    isNotEliminationStructure,
     hasNoRoundPositions,
+    roundsNotPowerOf2,
     maxMatchUpsCount,
     roundMatchUps,
     roundNumbers,

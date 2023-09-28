@@ -68,8 +68,8 @@ export function positionByes({
   const {
     strictSeedOrderByePositions,
     blockSeedOrderByePositions,
+    isLuckyStructure,
     isFeedIn,
-    isLucky,
   } = getSeedOrderByePositions({
     provisionalPositioning,
     relevantMatchUps,
@@ -93,12 +93,12 @@ export function positionByes({
   let { unseededByePositions } = getUnseededByePositions({
     provisionalPositioning,
     seedOrderByePositions,
+    isLuckyStructure,
     appliedPolicies,
     drawDefinition,
     seedLimit,
     structure,
     isFeedIn,
-    isLucky,
   });
 
   const isOdd = (x) => x % 2;
