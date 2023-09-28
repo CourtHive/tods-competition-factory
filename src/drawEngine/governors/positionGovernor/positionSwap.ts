@@ -8,7 +8,7 @@ import { addPositionActionTelemetry } from './addPositionActionTelemetry';
 import { findStructure } from '../../getters/findStructure';
 import { assignDrawPosition } from './positionAssignment';
 import { updateSideLineUp } from './updateSideLineUp';
-import { cleanupLineUps } from './cleanupLineUps';
+import { resetLineUps } from './resetLineUps';
 import { makeDeepCopy } from '../../../utilities';
 import {
   modifyDrawNotice,
@@ -284,7 +284,7 @@ function eliminationParticipantSwap({
     (assignment) => newAssignments[assignment.drawPosition] || assignment
   );
 
-  cleanupLineUps({
+  resetLineUps({
     inContextDrawMatchUps,
     tournamentRecord,
     drawDefinition,
@@ -321,7 +321,7 @@ function roundRobinSwap({
   if (assignments.filter(({ qualifier }) => qualifier).length === 2)
     return { ...SUCCESS };
 
-  cleanupLineUps({
+  resetLineUps({
     inContextDrawMatchUps,
     tournamentRecord,
     drawDefinition,
