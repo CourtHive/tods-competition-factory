@@ -133,6 +133,7 @@ import { aggregateTieFormats } from './aggregateTieFormats';
 import { updateTieMatchUpScore } from './updateTieMatchUpScore';
 import { disableTieAutoCalc } from './disableTieAutoCalc';
 import { enableTieAutoCalc } from './enableTieAutoCalc';
+import { resetMatchUpLineUps } from './drawDefinitions/resetMatchUpLineUps';
 
 const eventGovernor = {
   generateQualifyingStructure,
@@ -264,6 +265,7 @@ const eventGovernor = {
   removeTieMatchUpParticipantId,
   replaceTieMatchUpParticipantId,
 
+  resetMatchUpLineUps,
   updateTeamLineUp,
   validateLineUp,
   getTeamLineUp,

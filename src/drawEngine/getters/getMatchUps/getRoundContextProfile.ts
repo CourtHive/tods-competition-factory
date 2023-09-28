@@ -26,16 +26,11 @@ export function getRoundContextProfile({
   roundMatchUps?: HydratedMatchUp[];
   roundProfile?: RoundProfile;
 } {
-  const { isNotEliminationStructure, roundProfile, roundMatchUps } =
-    getRoundMatchUps({ matchUps });
+  const { roundProfile, roundMatchUps } = getRoundMatchUps({ matchUps });
   const { structureAbbreviation, stage } = structure;
 
   const isAdHocStructure = isAdHoc({ structure });
-  const isLuckyStructure = isLucky({
-    isNotEliminationStructure,
-    roundMatchUps,
-    structure,
-  });
+  const isLuckyStructure = isLucky({ structure });
 
   const isRoundRobin = structure.structures;
   const roundNamingProfile = {};

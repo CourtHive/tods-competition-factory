@@ -1,6 +1,8 @@
 import { getAppliedPolicies } from '../../global/functions/deducers/getAppliedPolicies';
 import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
 import { getStructureSeedAssignments } from './getStructureSeedAssignments';
+import { chunkArray, generateRange, shuffleArray } from '../../utilities';
+import { isLucky } from '../governors/queryGovernor/isLucky';
 import { getNumericSeedValue } from './getNumericSeedValue';
 import { findStructure } from './findStructure';
 import {
@@ -11,12 +13,6 @@ import {
   getPositionAssignments,
   structureAssignedDrawPositions,
 } from './positionsGetter';
-import {
-  chunkArray,
-  generateRange,
-  isPowerOf2,
-  shuffleArray,
-} from '../../utilities';
 
 import { DrawDefinition, Structure } from '../../types/tournamentFromSchema';
 import { PolicyDefinitions, SeedBlock } from '../../types/factoryTypes';
@@ -59,7 +55,7 @@ export function getValidSeedBlocks({
 
   if (!structure) return { error: MISSING_STRUCTURE };
 
-  const { roundMatchUps } = getAllStructureMatchUps({
+  const { matchUps, roundMatchUps } = getAllStructureMatchUps({
     matchUpFilters: { roundNumbers: [1] },
     provisionalPositioning,
     structure,
@@ -108,15 +104,17 @@ export function getValidSeedBlocks({
   const { stage, structureType, roundLimit } = structure;
   const isContainer = structureType === CONTAINER;
   const isFeedIn = !isContainer && uniqueDrawPositionsByRound?.length;
-  // if there are first round draw positions it is not AdHoc
-  // if the baseDrawSize is not a power of 2 then it isLucky
-  const isLucky = firstRoundDrawPositions?.length && !isPowerOf2(baseDrawSize);
   const qualifyingBlocks = !isContainer && stage === QUALIFYING && roundLimit;
 
   const fedSeedBlockPositions = seedRangeDrawPositionBlocks.flat(Infinity);
   const fedSeedNumberOffset = isFeedIn ? fedSeedBlockPositions?.length : 0;
   const countLimit = allPositions ? positionsCount : seedsCount;
-  const firstRoundSeedsCount = isLucky
+  const isLuckyStructure = isLucky({
+    drawDefinition,
+    structure,
+    matchUps,
+  });
+  const firstRoundSeedsCount = isLuckyStructure
     ? 0
     : (!isFeedIn && countLimit) ||
       (countLimit &&
@@ -168,10 +166,7 @@ export function getValidSeedBlocks({
     validSeedBlocks = seedRangeDrawPositionBlocks.map((block) => {
       return { seedNumbers: block, drawPositions: block };
     });
-  } else if (isLucky) {
-    // if there are first round draw positions it is not AdHoc
-    // if the baseDrawSize is not a power of 2 then it isLucky
-    // firstRoundSeedsCount = 0;
+  } else if (isLuckyStructure) {
     const blocks = chunkArray(firstRoundDrawPositions, 2).map((block, i) => ({
       drawPositions: [block[0]],
       seedNumbers: [i + 1],
@@ -179,7 +174,7 @@ export function getValidSeedBlocks({
     blocks.forEach((block) => validSeedBlocks.push(block));
   }
 
-  if (!isContainer && !isLucky && !qualifyingBlocks) {
+  if (!isContainer && !isLuckyStructure && !qualifyingBlocks) {
     const { blocks } = constructPower2Blocks({
       drawPositionOffset: firstRoundDrawPositionOffset,
       seedNumberOffset: fedSeedNumberOffset,
@@ -200,7 +195,7 @@ export function getValidSeedBlocks({
     true
   );
 
-  if (!isLucky && !isFeedIn && !isContainer && !validSeedPositions) {
+  if (!isLuckyStructure && !isFeedIn && !isContainer && !validSeedPositions) {
     return {
       error: INVALID_SEED_POSITION,
       validSeedBlocks: [],
@@ -210,10 +205,10 @@ export function getValidSeedBlocks({
   }
 
   return {
+    isLuckyStructure,
     validSeedBlocks,
     isContainer,
     isFeedIn,
-    isLucky,
   };
 }
 

@@ -21,12 +21,12 @@ import {
 export function getUnseededByePositions({
   provisionalPositioning,
   seedOrderByePositions,
+  isLuckyStructure,
   appliedPolicies,
   drawDefinition,
   seedLimit,
   structure,
   isFeedIn,
-  isLucky,
 }) {
   const seedingProfile = appliedPolicies?.seeding?.seedingProfile;
   const isQualifying = structure.stage === QUALIFYING;
@@ -155,8 +155,8 @@ export function getUnseededByePositions({
       block.filter(unfilledDrawPosition)
     );
   } else {
-    if (isLucky) {
-      // console.log({ isLucky });
+    if (isLuckyStructure) {
+      // console.log({ isLuckyStructure });
     }
     unfilledSeedBlocks = validBlockDrawPositions
       ?.map(quarterSeparateBlock)

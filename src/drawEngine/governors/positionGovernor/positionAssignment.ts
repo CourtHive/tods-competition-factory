@@ -27,7 +27,7 @@ import { getTargetMatchUps } from './getTargetMatchUps';
 import { updateSideLineUp } from './updateSideLineUp';
 import { clearDrawPosition } from './positionClear';
 import { isAdHoc } from '../queryGovernor/isAdHoc';
-import { cleanupLineUps } from './cleanupLineUps';
+import { resetLineUps } from './resetLineUps';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SeedingProfile } from '../../../types/factoryTypes';
@@ -204,7 +204,7 @@ export function assignDrawPosition({
     }
 
     // cleanup side[].lineUps of previous participantId in TEAM matchUps
-    cleanupLineUps({
+    resetLineUps({
       assignments: [positionAssignment],
       inContextDrawMatchUps,
       tournamentRecord,

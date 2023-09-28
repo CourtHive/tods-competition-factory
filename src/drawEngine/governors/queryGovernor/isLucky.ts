@@ -5,38 +5,31 @@ import { LUCKY_DRAW } from '../../../constants/drawDefinitionConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
 
 type IsLuckyArgs = {
-  roundMatchUps?: HydratedMatchUp[];
-  isNotEliminationStructure?: boolean;
   drawDefinition?: DrawDefinition;
+  matchUps?: HydratedMatchUp[];
+  roundsNotPowerOf2?: boolean;
   structure?: Structure;
 };
 export function isLucky({
-  isNotEliminationStructure,
+  roundsNotPowerOf2,
   drawDefinition,
-  roundMatchUps,
   structure,
+  matchUps,
 }: IsLuckyArgs) {
   if (!structure) return false;
 
-  if (!roundMatchUps) {
-    ({ isNotEliminationStructure, roundMatchUps } = getRoundMatchUps({
-      matchUps: structure.matchUps ?? [],
-    }));
-  }
+  matchUps = matchUps ?? structure.matchUps ?? [];
+  roundsNotPowerOf2 =
+    roundsNotPowerOf2 ?? getRoundMatchUps({ matchUps }).roundsNotPowerOf2;
 
-  const hasFirstRoundDrawPositions = !!roundMatchUps?.[1]?.find(
-    ({ drawPositions }) => drawPositions
-  );
-
-  const noSecondRoundDrawPositions = !roundMatchUps?.[2]?.find(
-    ({ drawPositions }) => drawPositions
-  );
+  const hasDrawPositions =
+    !!structure.positionAssignments?.find(({ drawPosition }) => drawPosition) ||
+    !!matchUps?.find(({ drawPositions }) => drawPositions?.length);
 
   return (
-    isNotEliminationStructure &&
+    (!drawDefinition?.drawType || drawDefinition.drawType !== LUCKY_DRAW) &&
     !structure?.structures &&
-    hasFirstRoundDrawPositions &&
-    noSecondRoundDrawPositions &&
-    !(drawDefinition?.drawType && drawDefinition.drawType !== LUCKY_DRAW)
+    roundsNotPowerOf2 &&
+    hasDrawPositions
   );
 }

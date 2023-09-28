@@ -6,6 +6,7 @@ import { setPositionAssignments } from './setPositionAssignments';
 import { automatedPositioning } from './automatedPositioning';
 import { swapDrawPositionAssignments } from './positionSwap';
 import { getNextSeedBlock } from '../../getters/seedGetter';
+import { resetMatchUpLineUps } from './resetMatchUpLineUps';
 import { assignDrawPosition } from './positionAssignment';
 import { clearDrawPosition } from './positionClear';
 import { setSubOrder } from './setSubOrder';
@@ -22,6 +23,7 @@ const positionGovernor = {
   alternateDrawPositionAssignment,
 
   resolveDrawPositions,
+  resetMatchUpLineUps,
 
   // probably not part of drawEngine final
   initializeStructureSeedAssignments,

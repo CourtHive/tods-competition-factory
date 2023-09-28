@@ -22,7 +22,7 @@ export function getSeedOrderByePositions({
     });
   }
 
-  const { isFeedIn, isLucky, isContainer } = seedBlockInfo;
+  const { isFeedIn, isLuckyStructure, isContainer } = seedBlockInfo;
   let { validSeedBlocks } = seedBlockInfo;
   if (appliedPolicies?.seeding?.containerByesIgnoreSeeding)
     validSeedBlocks = [];
@@ -87,10 +87,10 @@ export function getSeedOrderByePositions({
   return {
     strictSeedOrderByePositions,
     blockSeedOrderByePositions,
+    isLuckyStructure,
     positionedSeeds,
     isContainer,
     isFeedIn,
-    isLucky,
   };
 }
 

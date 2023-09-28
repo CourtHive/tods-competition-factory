@@ -65,7 +65,7 @@ test('generateDrawDefinition can generate specified number of rounds', () => {
 
   const roundResult = tournamentEngine.getRoundMatchUps({ matchUps });
   expect(roundResult.maxMatchUpsCount).toEqual(participantsCount / 2);
-  expect(roundResult.isNotEliminationStructure).toEqual(true);
+  expect(roundResult.roundsNotPowerOf2).toEqual(true);
   expect(roundResult.hasNoRoundPositions).toEqual(true);
   expect(roundResult.roundNumbers).toEqual([1, 2, 3]);
 });
