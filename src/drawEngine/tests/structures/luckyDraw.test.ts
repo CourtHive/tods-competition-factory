@@ -105,8 +105,9 @@ test('drawProfile scenario coverage', () => {
   tournamentEngine.setState(tournamentRecord);
 });
 
-test('drawProfile participant generation', () => {
-  const drawSize = 9;
+// TODO: check BYE placement
+// BYE always go to drawPosition: 2
+test.each([5, 6, 7, 8, 9])('drawProfile participant generation', (drawSize) => {
   const drawProfiles = [
     {
       drawType: LUCKY_DRAW,
@@ -129,9 +130,10 @@ test('drawProfile participant generation', () => {
     drawDefinition,
     structureId,
   });
-  const allPositionsFilled = positionAssignments?.every(
-    (assignment) => assignment.bye || assignment.participantId
+
+  const filledDrawPositions = positionAssignments?.filter(
+    (assignment) => assignment.participantId
   );
-  expect(allPositionsFilled).toEqual(true);
+  expect(filledDrawPositions?.length).toEqual(drawSize);
   expect(tournamentRecord.participants.length).toEqual(drawSize);
 });
