@@ -35,8 +35,8 @@ export function completeDrawMatchUps(params): {
     // qualifyingProfiles, // CONSIDER: allowing completionGoal per structureProfile
     randomWinningSide,
     tournamentRecord,
-    drawDefinition,
     completionGoal,
+    drawDefinition,
     matchUpFormat,
     event,
   } = params;
