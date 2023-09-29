@@ -36,20 +36,22 @@ export function resetMatchUpLineUps({
 
   if (!matchUp?.tieMatchUps) return { error: INVALID_MATCHUP };
 
+  const inContextMatchUp = findMatchUp({
+    inContext: true,
+    drawDefinition,
+    matchUpId,
+    event,
+  })?.matchUp;
+
   let modificationsCount = 0;
 
-  (matchUp.sides || []).forEach((side) => {
+  (matchUp?.sides || []).forEach((side) => {
+    if (side.lineUp) delete side.lineUp;
+  });
+  (inContextMatchUp?.sides || []).forEach((side) => {
     modificationsCount += 1;
-    delete side.lineUp;
 
     if (inheritance === false) {
-      // remove lineup for team participantId from drawDefinition LINE_UP extension
-      const inContextMatchUp = findMatchUp({
-        inContext: true,
-        drawDefinition,
-        matchUpId,
-      })?.matchUp;
-
       const tieFormat = inContextMatchUp?.tieFormat;
       const participantId = side.participantId;
 
@@ -65,7 +67,7 @@ export function resetMatchUpLineUps({
 
     modifyMatchUpNotice({
       tournamentId: tournamentRecord?.tournamentId,
-      context: 'resetLineUps',
+      context: 'resetMatchUpLineUps',
       eventId: event?.eventId,
       drawDefinition,
       matchUp,

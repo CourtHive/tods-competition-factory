@@ -32,6 +32,7 @@ import { MISSING_STRUCTURE } from '../../../constants/errorConditionConstants';
 import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { MIXED } from '../../../constants/genderConstants';
+import { HydratedMatchUp } from '../../../types/hydrated';
 import { SINGLES } from '../../../constants/matchUpTypes';
 import { TEAM } from '../../../constants/eventConstants';
 import {
@@ -55,7 +56,6 @@ import {
   ScheduleTiming,
   ScheduleVisibilityFilters,
 } from '../../../types/factoryTypes';
-import { HydratedMatchUp } from '../../../types/hydrated';
 
 /*
   return all matchUps within a structure and its child structures
@@ -267,8 +267,8 @@ export function getAllStructureMatchUps({
         }).drawPositionsRanges
       : undefined;
 
-    matchUps = matchUps.map((matchUp) =>
-      addMatchUpContext({
+    matchUps = matchUps.map((matchUp) => {
+      return addMatchUpContext({
         scheduleVisibilityFilters,
         sourceDrawPositionRanges,
         drawPositionsRanges,
@@ -279,8 +279,8 @@ export function getAllStructureMatchUps({
         roundProfile,
         matchUp,
         event,
-      })
-    );
+      });
+    });
 
     const matchUpTies = matchUps?.filter((matchUp) =>
       Array.isArray(matchUp.tieMatchUps)
@@ -720,6 +720,7 @@ export function getAllStructureMatchUps({
           };
         }
       );
+
       matchUpWithContext.tieMatchUps = matchUpWithContext.tieMatchUps.map(
         (matchUp) => {
           const matchUpTieId = matchUpWithContext.matchUpId;
