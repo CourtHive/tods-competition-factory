@@ -197,9 +197,9 @@ it('generates valild seedBlocks given different policies', () => {
     },
   ];
   checkSeedBlocks({
-    drawSize: 256,
-    policy: SEEDING_USTA,
     expectedBlocks: USTA256expectedBlocks,
+    policy: SEEDING_USTA,
+    drawSize: 256,
   });
 });
 
@@ -222,14 +222,14 @@ it('can assign seedNumbers and drawPositions to seeded participants', () => {
     },
   });
   expect(result.success).toEqual(true);
-  const drawSize = 64;
   const seedsCount = 16;
+  const drawSize = 64;
   const stage = MAIN;
 
   const { drawDefinition } = mocksEngine.generateEventWithDraw({
     drawProfile: {
-      enforcePolicyLimits: false,
       policyDefinitions: SEEDING_NATIONAL,
+      enforcePolicyLimits: false,
       automated: false,
       seedsCount,
       drawSize,
@@ -238,9 +238,9 @@ it('can assign seedNumbers and drawPositions to seeded participants', () => {
   drawEngine.setState(drawDefinition);
 
   const { structures: stageStructures } = getDrawStructures({
+    stageSequence: 1,
     drawDefinition,
     stage,
-    stageSequence: 1,
   });
   const { structureId } = stageStructures[0];
   result = drawEngine.initializeStructureSeedAssignments({
@@ -262,24 +262,13 @@ it('can assign seedNumbers and drawPositions to seeded participants', () => {
   const participantId2 = participants[1].participantId;
   const participantId3 = participants[2].participantId;
 
-  // attempt to assign a seedNumber higher than seedsCount for structure
-  // NOTE: this boundary was abandoned
-  /*
-  result = drawEngine.assignSeed({
-    seedNumber: 17,
-    participantId,
-    structureId,
-  });
-  expect(result).toHaveProperty(ERROR);
-  */
-
   let { unplacedSeedNumbers, unfilledPositions } = drawEngine.getNextSeedBlock({
     structureId,
   });
   const seedNumber = unplacedSeedNumbers.pop();
   let drawPosition = unfilledPositions.pop();
-  expect(seedNumber).toEqual(1);
   expect(drawPosition).toEqual(1);
+  expect(seedNumber).toEqual(1);
 
   // attempt to assign a valid seedNumber to a participantId
   result = drawEngine.assignSeed({ structureId, seedNumber, participantId });
@@ -287,64 +276,64 @@ it('can assign seedNumbers and drawPositions to seeded participants', () => {
 
   // attempt to assign an invalid position to a seeded participant
   result = drawEngine.assignDrawPosition({
-    structureId,
     drawPosition: 2,
     participantId,
+    structureId,
   });
   expect(result).toHaveProperty(ERROR);
 
   // attempt to assign a valid position to a seeded participant
   result = drawEngine.assignDrawPosition({
-    structureId,
-    drawPosition,
     participantId,
+    drawPosition,
+    structureId,
   });
   expect(result.success).toEqual(true);
 
   // assign an unseeded participant to a drawPosition which is not a seed position
   result = drawEngine.assignDrawPosition({
-    structureId,
-    drawPosition: 2,
     participantId: participantId2,
+    drawPosition: 2,
+    structureId,
   });
   expect(result.success).toEqual(true);
 
   // attempt to assign a seedNumber to a participant already in a non-seed drawPosition
   result = drawEngine.assignSeed({
-    structureId,
-    seedNumber: 2,
     participantId: participantId2,
+    seedNumber: 2,
+    structureId,
   });
   expect(result).toHaveProperty(ERROR);
 
   // assign an unseeded participant to a drawPosition which *is* a seed position
   result = drawEngine.assignDrawPosition({
-    structureId,
-    drawPosition: 64,
     participantId: participantId2,
+    drawPosition: 64,
+    structureId,
   });
   // expect ERROR as this participantId is already assigned to another position
   expect(result).toHaveProperty(ERROR);
 
   // clear draw position by specifying the participantId to derive the drawPosition
   result = drawEngine.clearDrawPosition({
-    structureId,
     participantId: participantId2,
+    structureId,
   });
   expect(result.success).toEqual(true);
 
   // nominate participant as 2nd seed
   result = drawEngine.assignSeed({
-    structureId,
-    seedNumber: 2,
     participantId: participantId2,
+    seedNumber: 2,
+    structureId,
   });
   expect(result.success).toEqual(true);
 
   result = drawEngine.assignDrawPosition({
-    structureId,
-    drawPosition: 64,
     participantId: participantId2,
+    drawPosition: 64,
+    structureId,
   });
   expect(result.success).toEqual(true);
 
@@ -356,9 +345,9 @@ it('can assign seedNumbers and drawPositions to seeded participants', () => {
 
   // nominate participant as 4th seed
   result = drawEngine.assignSeed({
-    structureId,
-    seedNumber: 4,
     participantId: participantId3,
+    seedNumber: 4,
+    structureId,
   });
   expect(result.success).toEqual(true);
 
@@ -378,8 +367,8 @@ it('can assign seedNumbers and drawPositions to seeded participants', () => {
 
   result = drawEngine.modifySeedAssignment({
     participantId: participantId3,
-    structureId,
     seedValue: 'xxx',
+    structureId,
   });
   expect(result.error).toEqual(INVALID_VALUES);
 
@@ -424,9 +413,9 @@ it('can assign seedNumbers and drawPositions to seeded participants', () => {
   drawPosition = unfilledPositions.pop();
   expect(drawPosition).toEqual(48);
   result = drawEngine.assignDrawPosition({
-    structureId,
-    drawPosition,
     participantId: participantId3,
+    drawPosition,
+    structureId,
   });
   expect(result.success).toEqual(true);
 
@@ -474,10 +463,7 @@ it('can assign seedNumbers and drawPositions to seeded participants', () => {
 
 function checkSeedBlocks({ drawSize, policy, expectedBlocks }) {
   const { drawDefinition } = mocksEngine.generateEventWithDraw({
-    drawProfile: {
-      automated: false,
-      drawSize,
-    },
+    drawProfile: { automated: false, drawSize },
   });
   drawEngine.setState(drawDefinition);
   const structureId = drawDefinition.structures[0].structureId;
