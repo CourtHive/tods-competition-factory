@@ -20,7 +20,7 @@ const scenarios = [
   { eventType: SINGLES, drawSize: 6, roundsCount: 3 },
   { eventType: SINGLES, drawSize: 8, roundsCount: 3 },
   { eventType: SINGLES, drawSize: 10, roundsCount: 3 },
-  { eventType: DOUBLES, drawSize: 10 },
+  { eventType: DOUBLES, drawSize: 10, roundsCount: 1 },
 ];
 
 it.each(scenarios)(
@@ -202,8 +202,9 @@ it('cannot use drawMatic when there are no entries present', () => {
   });
 
   let result = tournamentEngine.generateDrawDefinition({
-    drawType: AD_HOC,
     addToEvent: true,
+    drawType: AD_HOC,
+    automated: true,
     eventId,
   });
 

@@ -1,14 +1,28 @@
 import { getParticipantId } from '../../../global/functions/extractors';
 import { generateCandidate, pairingHash } from './generateCandidate';
 import { generateAdHocMatchUps } from '../generateAdHocMatchUps';
+import { findStructure } from '../../getters/findStructure';
+import { isObject } from '../../../utilities/objects';
 
+import { ResultType } from '../../../global/functions/decorateResult';
 import { TEAM } from '../../../constants/participantConstants';
+import { HydratedParticipant } from '../../../types/hydrated';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { DOUBLES } from '../../../constants/eventConstants';
 import {
+  MISSING_DRAW_DEFINITION,
   MISSING_PARTICIPANT_IDS,
+  MISSING_STRUCTURE,
   NO_CANDIDATES,
+  STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
+import {
+  DrawDefinition,
+  MatchUp,
+  Structure,
+  Tournament,
+  TypeEnum,
+} from '../../../types/tournamentFromSchema';
 
 // this should be in policyDefinitions
 const ENCOUNTER_VALUE = 50;
@@ -16,6 +30,23 @@ const SAME_TEAM_VALUE = 60;
 const DEFAULT_RATING = 0;
 
 const MAX_ITERATIONS = 5000;
+
+type GenerateDrawMaticRoundArgs = {
+  tournamentParticipants?: HydratedParticipant[];
+  adHocRatings?: { [key: string]: number };
+  restrictEntryStatus?: boolean;
+  drawDefinition: DrawDefinition;
+  generateMatchUps?: boolean;
+  tournamentRecord: Tournament;
+  participantIds?: string[];
+  addToStructure?: boolean;
+  maxIterations?: number;
+  matchUpIds?: string[];
+  structure?: Structure;
+  structureId?: string;
+  eventType?: TypeEnum;
+  drawId?: string;
+};
 
 export function generateDrawMaticRound({
   maxIterations = MAX_ITERATIONS,
@@ -30,13 +61,28 @@ export function generateDrawMaticRound({
   matchUpIds,
   eventType,
   structure,
-}) {
+}: GenerateDrawMaticRoundArgs):
+  | ResultType
+  | {
+      participantIdPairings: string[][];
+      candidatesCount: number;
+      matchUps: MatchUp[];
+      iterations: number;
+      success: boolean;
+    } {
+  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+  if (!structure && !structureId) return { error: STRUCTURE_NOT_FOUND };
+  if (!structure) {
+    structure = findStructure({ drawDefinition, structureId }).structure;
+  }
+  if (!isObject(structure)) return { error: MISSING_STRUCTURE };
+
   if (!participantIds?.length) {
     return { error: MISSING_PARTICIPANT_IDS };
   }
 
   // create valueObject for each previous encounter within the structure
-  const { encounters } = getEncounters({ matchUps: structure.matchUps });
+  const { encounters } = getEncounters({ matchUps: structure?.matchUps ?? [] });
   // valueObjects provide "weighting" to each possible pairing of participants
   // {
   //  'P-I-0|P-I-1': 1,
@@ -97,12 +143,12 @@ export function generateDrawMaticRound({
   let matchUps;
   if (generateMatchUps) {
     const result = generateAdHocMatchUps({
+      structureId: structure?.structureId,
       participantIdPairings,
       tournamentRecord,
       addToStructure,
       newRound: true,
       drawDefinition,
-      structureId,
       matchUpIds,
     });
     if (result.error) return result;

@@ -2,6 +2,7 @@ import { participantScaleItem } from '../../../tournamentEngine/accessors/partic
 import { getParticipantId } from '../../../global/functions/extractors';
 import { generateDrawMaticRound } from './generateDrawMaticRound';
 import { isAdHoc } from '../../governors/queryGovernor/isAdHoc';
+import { isObject } from '../../../utilities/objects';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../../constants/entryStatusConstants';
 import { AD_HOC, stageOrder } from '../../../constants/drawDefinitionConstants';
@@ -22,7 +23,7 @@ import {
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
-type DrawMaticArgs = {
+export type DrawMaticArgs = {
   tournamentParticipants?: HydratedParticipant[];
   restrictEntryStatus?: boolean;
   drawDefinition?: DrawDefinition;
@@ -35,8 +36,10 @@ type DrawMaticArgs = {
   matchUpIds?: string[];
   structureId?: string;
   eventType?: TypeEnum;
-  scaleName?: string;
   event?: Event;
+
+  scaleAccessor?: string;
+  scaleName?: string;
 };
 
 export function drawMatic({
@@ -47,6 +50,7 @@ export function drawMatic({
   addToStructure,
   participantIds,
   drawDefinition,
+  scaleAccessor,
   maxIterations,
   structureId,
   matchUpIds,
@@ -121,6 +125,9 @@ export function drawMatic({
   const structureIsAdHoc = isAdHoc({ drawDefinition, structure });
   if (!structureIsAdHoc) return { error: INVALID_DRAW_DEFINITION };
 
+  tournamentParticipants =
+    tournamentParticipants ?? tournamentRecord.participants ?? [];
+
   const adHocRatings = {};
   for (const participantId of participantIds ?? []) {
     const participant = tournamentParticipants?.find(
@@ -130,10 +137,18 @@ export function drawMatic({
     let scaleValue = getScaleValue({ eventType, participant });
     // if no dynamic value found and a seeding scaleValue is provided...
     if (!scaleValue && scaleName) {
-      scaleValue = getScaleValue({ scaleName, eventType, participant });
+      scaleValue = getScaleValue({
+        scaleAccessor,
+        participant,
+        scaleName,
+        eventType,
+      });
     }
     if (scaleValue) adHocRatings[participantId] = scaleValue;
   }
+
+  // TODO: update dynamic ratings based on matchUps present from last played round
+  // use scaleEngine.processMatchUps(); see dynamicCalculations.test.ts
 
   return generateDrawMaticRound({
     tournamentParticipants,
@@ -144,14 +159,25 @@ export function drawMatic({
     drawDefinition,
     maxIterations,
     adHocRatings,
-    structureId,
     matchUpIds,
     structure,
     eventType,
   });
 }
 
-function getScaleValue({ scaleName = 'dynamic', eventType, participant }) {
+type GetScaleValueArgs = {
+  scaleAccessor?: string;
+  eventType?: TypeEnum;
+  scaleName?: string;
+  participant: any;
+};
+
+function getScaleValue({
+  eventType = TypeEnum.Singles,
+  scaleName = 'dynamic',
+  scaleAccessor,
+  participant,
+}: GetScaleValueArgs) {
   const scaleAttributes = {
     eventType: eventType || TypeEnum.Singles,
     scaleType: RATING,
@@ -163,5 +189,9 @@ function getScaleValue({ scaleName = 'dynamic', eventType, participant }) {
       scaleAttributes,
       participant,
     });
-  return result?.scaleItem?.scaleValue;
+
+  const scaleValue = result?.scaleItem?.scaleValue;
+  return scaleAccessor && isObject(scaleValue)
+    ? scaleValue[scaleAccessor]
+    : scaleValue;
 }
