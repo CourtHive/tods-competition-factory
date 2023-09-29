@@ -8,16 +8,16 @@ import { calculateNewRatings } from './calculateNewRatings';
 import { aggregateSets } from './aggregators';
 
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
+import { TypeEnum } from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { RATING } from '../../../constants/scaleConstants';
+import { HydratedSide } from '../../../types/factoryTypes';
 import { ELO } from '../../../constants/ratingConstants';
 import {
   INVALID_VALUES,
   MISSING_MATCHUPS,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
-import { HydratedSide } from '../../../types/factoryTypes';
-import { TypeEnum } from '../../../types/tournamentFromSchema';
 
 export function processMatchUps({
   tournamentRecord,

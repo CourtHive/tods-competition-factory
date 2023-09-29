@@ -1217,12 +1217,20 @@ tournamentEngine.disableVenues({ venueIds });
 ## drawMatic
 
 ```js
-const { matchUps } = tournamentEngine.drawMatic({
-  addToStructure, // optional - defaults to true
-  structureId, // optional; if no structureId is specified find the latest AD_HOC stage which has matchUps
-  scaleName, // optional; custom rating name to seed dynamic ratings
-  drawId,
-});
+const { matchUps, participantIdPairings, iterations, candidatesCount } =
+  tournamentEngine.drawMatic({
+    restrictEntryStatus, // optional - only allow STRUCTURE_SELECTED_STATUSES
+    generateMatchUps, // optional - defaults to true; when false only returns { participantIdPairings }
+    addToStructure, // optional - defaults to true
+    maxIterations, // optional - defaults to 5000
+    structureId, // optional; if no structureId is specified find the latest AD_HOC stage which has matchUps
+    matchUpIds, // optional array of uuids to be used when generating matchUps
+    eventType, // optional - override eventType of event within which draw appears; e.g. to force use of SINGLES ratings in DOUBLES events
+    drawId, // required
+
+    scaleAccessor, // optional string to access value within scaleValue, e.g. 'wtnRating'
+    scaleName, // optional; custom rating name to seed dynamic ratings
+  });
 ```
 
 ---
@@ -1504,6 +1512,32 @@ const drawDefinitionValues = {
 
 const { drawDefinition } =
   tournamentEngine.generateDrawDefinition(drawDefinitionValues);
+```
+
+---
+
+## generateDrawMaticRound
+
+Typically not called directly. `tournamentEngine.drawMatic` is a higher level wrapper which automates derivation of `adHocRatings`.
+
+```js
+const {
+  participantIdPairings,
+  candidatesCount,
+  iterations,
+  matchUps,
+  success,
+} = generateDrawMaticRound({
+  maxIterations,// optional - defaults to 5000
+  generateMatchUps = true, // optional - defaults to true; when false only returns { participantIdPairings }
+  participantIds, // required
+  addToStructure, // optional - defaults to true
+  adHocRatings, // optional { [participantId]: numericRating }
+  structureId, // required
+  matchUpIds, // optional array of uuids to be used when generating matchUps
+  eventType, // optional - override eventType of event within which draw appears; e.g. to force use of SINGLES ratings in DOUBLES events
+  drawId, // required
+});
 ```
 
 ---

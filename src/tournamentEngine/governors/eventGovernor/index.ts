@@ -128,6 +128,7 @@ import { attachQualifyingStructure } from './drawDefinitions/attachQualifyingStr
 import { addQualifyingStructure } from './drawDefinitions/addQualifyingStructure';
 import { generateDrawDefinition } from '../../generators/generateDrawDefinition';
 import { renameStructures } from './drawDefinitions/renameStructures';
+import { generateDrawMaticRound } from '../../../forge/generate';
 
 import { aggregateTieFormats } from './aggregateTieFormats';
 import { updateTieMatchUpScore } from './updateTieMatchUpScore';
@@ -256,9 +257,10 @@ const eventGovernor = {
   toggleParticipantCheckInState,
 
   addDrawDefinitionTimeItem,
-  generateDrawDefinition,
-  generateDrawStructuresAndLinks,
   generateDrawTypeAndModifyDrawDefinition,
+  generateDrawStructuresAndLinks,
+  generateDrawMaticRound,
+  generateDrawDefinition,
 
   applyLineUps,
   assignTieMatchUpParticipantId,

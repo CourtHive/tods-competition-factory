@@ -13,18 +13,12 @@ import { addDrawEntry } from '../../drawEngine/governors/entryGovernor/addDrawEn
 import { getQualifiersCount } from '../../drawEngine/getters/getQualifiersCount';
 import { getAllowedDrawTypes } from '../governors/policyGovernor/allowedTypes';
 import structureTemplate from '../../drawEngine/generators/structureTemplate';
-import { drawMatic } from '../../drawEngine/generators/drawMatic/drawMatic';
 import { newDrawDefinition } from '../../drawEngine/stateMethods';
 import { mustBeAnArray } from '../../utilities/mustBeAnArray';
 import { isConvertableInteger } from '../../utilities/math';
 import { tieFormatDefaults } from './tieFormatDefaults';
 import { ensureInt } from '../../utilities/ensureInt';
 import { prepareStage } from './prepareStage';
-import {
-  extractAttributes,
-  generateRange,
-  nextPowerOf2,
-} from '../../utilities';
 import {
   checkTieFormat,
   validateTieFormat,
@@ -33,6 +27,15 @@ import {
   setStageDrawSize,
   setStageQualifiersCount,
 } from '../../drawEngine/governors/entryGovernor/stageEntryCounts';
+import {
+  DrawMaticArgs,
+  drawMatic,
+} from '../../drawEngine/generators/drawMatic/drawMatic';
+import {
+  extractAttributes,
+  generateRange,
+  nextPowerOf2,
+} from '../../utilities';
 
 import POLICY_SEEDING_USTA from '../../fixtures/policies/POLICY_SEEDING_USTA';
 import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats';
@@ -81,16 +84,17 @@ import {
 type GenerateDrawDefinitionArgs = {
   automated?: boolean | { seedsOnly: boolean };
   policyDefinitions?: PolicyDefinitions;
-  ignoreAllowedDrawTypes?: boolean;
-  qualifyingPlaceholder?: boolean;
-  considerEventEntries?: boolean;
-  hydrateCollections?: boolean;
-  tournamentRecord: Tournament;
   voluntaryConsolation?: {
     structureAbbreviation?: string;
     structureName?: string;
     structureId?: string;
   };
+  ignoreAllowedDrawTypes?: boolean;
+  qualifyingPlaceholder?: boolean;
+  considerEventEntries?: boolean;
+  hydrateCollections?: boolean;
+  tournamentRecord: Tournament;
+  drawMatic?: DrawMaticArgs;
   ignoreStageSpace?: boolean;
   qualifyingProfiles?: any[];
   qualifyingOnly?: boolean;
@@ -566,12 +570,29 @@ export function generateDrawDefinition(
       const matchUpsCount = entries ? Math.floor(entries.length / 2) : 0;
       generateRange(1, params.roundsCount + 1).forEach(() => {
         if (params.automated) {
+          const {
+            restrictEntryStatus,
+            generateMatchUps,
+            addToStructure,
+            maxIterations,
+            structureId,
+            matchUpIds,
+            scaleName,
+          } = params.drawMatic ?? {};
+
           drawMatic({
-            generateMatchUps: true,
-            eventType: matchUpType,
             tournamentRecord,
             participantIds,
             drawDefinition,
+
+            eventType: params.drawMatic?.eventType ?? matchUpType,
+            generateMatchUps: generateMatchUps ?? true,
+            restrictEntryStatus,
+            addToStructure,
+            maxIterations,
+            structureId,
+            matchUpIds,
+            scaleName, // custom rating name to seed dynamic ratings
           });
         } else {
           generateAdHocMatchUps({
