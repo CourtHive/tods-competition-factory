@@ -68,7 +68,7 @@ export function getScaledEntries({
     .filter((scaledEntry) => {
       const scaleValue = scaledEntry.scaleValue;
       // if a custom sort method is not provided, filter out entries with non-float values
-      if (!scaleSortMethod && scaleValue && typeof scaleValue !== 'number')
+      if (!scaleSortMethod && (isNaN(scaleValue) || !parseFloat(scaleValue)))
         return false;
       return scaleValue;
     })
