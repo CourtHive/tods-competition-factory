@@ -7,6 +7,7 @@ import { MODIFY_DRAW_DEFINITION } from '../../../constants/topicConstants';
 import { COMPASS } from '../../../constants/drawDefinitionConstants';
 import { TEAM } from '../../../constants/participantConstants';
 import { SINGLES } from '../../../constants/matchUpTypes';
+import { extractAttributes } from '../../../utilities';
 
 const scenario = {
   drawType: COMPASS,
@@ -139,7 +140,7 @@ it('can propagate and remove lineUps', () => {
       expect(sides[1].lineUp).not.toBeDefined();
     });
 
-  const noContextTeamMatchUps = tournamentEngine.allTournamentMatchUps({
+  let noContextTeamMatchUps = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: { matchUpTypes: [TEAM] },
     inContext: false,
   }).matchUps;
@@ -218,7 +219,7 @@ it('can propagate and remove lineUps', () => {
     expect(lineUp).toEqual([]);
   }
 
-  teamMatchUps = tournamentEngine.devContext(true).allTournamentMatchUps({
+  teamMatchUps = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: { matchUpTypes: [TEAM] },
   }).matchUps;
 
@@ -235,6 +236,59 @@ it('can propagate and remove lineUps', () => {
       true
     );
 
+    expect(sides[0].lineUp).not.toBeDefined();
+    expect(sides[1].lineUp).not.toBeDefined();
+  });
+
+  let westRound1MatchUps = teamMatchUps.filter(
+    ({ structureName, roundNumber }) =>
+      structureName === 'WEST' && roundNumber === 1
+  );
+
+  westRound1MatchUps.forEach(({ sides }) => {
+    expect(sides[0].lineUp).toBeDefined();
+    expect(sides[1].lineUp).toBeDefined();
+  });
+
+  const westRound1MatchUpIds = westRound1MatchUps.map(
+    extractAttributes('matchUpId')
+  );
+
+  noContextTeamMatchUps = tournamentEngine
+    .devContext(true)
+    .allTournamentMatchUps({
+      matchUpFilters: { matchUpTypes: [TEAM] },
+      inContext: false,
+    }).matchUps;
+
+  westRound1MatchUps = noContextTeamMatchUps.filter(({ matchUpId }) =>
+    westRound1MatchUpIds.includes(matchUpId)
+  );
+
+  // in this case { inheritance: true } causes lineUps to be removed from no context matchUps
+  // but inherited lineUps are retained
+  westRound1MatchUps.forEach(({ matchUpId, sides }) => {
+    expect(sides[0].lineUp).toBeDefined();
+    expect(sides[1].lineUp).toBeDefined();
+
+    const resetResult = tournamentEngine.resetMatchUpLineUps({
+      inheritance: true,
+      matchUpId,
+      drawId,
+    });
+    expect(resetResult.success).toEqual(true);
+  });
+
+  noContextTeamMatchUps = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { matchUpTypes: [TEAM] },
+    inContext: false,
+  }).matchUps;
+
+  westRound1MatchUps = noContextTeamMatchUps.filter(({ matchUpId }) =>
+    westRound1MatchUpIds.includes(matchUpId)
+  );
+
+  westRound1MatchUps.forEach(({ sides }) => {
     expect(sides[0].lineUp).not.toBeDefined();
     expect(sides[1].lineUp).not.toBeDefined();
   });

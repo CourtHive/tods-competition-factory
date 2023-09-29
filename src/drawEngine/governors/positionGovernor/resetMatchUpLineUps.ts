@@ -48,6 +48,7 @@ export function resetMatchUpLineUps({
   (matchUp?.sides || []).forEach((side) => {
     if (side.lineUp) delete side.lineUp;
   });
+
   (inContextMatchUp?.sides || []).forEach((side) => {
     modificationsCount += 1;
 
