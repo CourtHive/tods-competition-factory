@@ -47,7 +47,7 @@ export function attachStructures({
 }: AttachStructuresArgs): ResultType & { addedStructureIds?: string[] } {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!Array.isArray(structures) || !Array.isArray(links))
-    return { error: INVALID_VALUES };
+    return decorateResult({ result: { error: INVALID_VALUES } });
 
   const stack = 'attachStructures';
 

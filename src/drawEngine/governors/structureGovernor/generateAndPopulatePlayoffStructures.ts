@@ -1,6 +1,7 @@
 import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
 import { matchUpIsComplete } from '../../../matchUpEngine/governors/queryGovernor/matchUpIsComplete';
 import { generateAndPopulateRRplayoffStructures } from './generateAndPopulateRRplayoffStructures';
+import { assignDrawPositionBye } from '../positionGovernor/byePositioning/assignDrawPositionBye';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { generatePlayoffStructures } from '../../generators/playoffStructures';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
@@ -19,6 +20,7 @@ import {
   decorateResult,
 } from '../../../global/functions/decorateResult';
 
+import { BYE } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { RoundProfile } from '../../../types/factoryTypes';
 import { TEAM } from '../../../constants/matchUpTypes';
@@ -307,6 +309,39 @@ export function generateAndPopulatePlayoffStructures(
       structure,
       matchUp,
       score,
+      event,
+    });
+    if (result.error) console.log(result.error);
+  });
+
+  const byeMatchUps = inContextDrawMatchUps?.filter(
+    (matchUp) =>
+      matchUp.matchUpStatus === BYE && matchUp.structureId === sourceStructureId
+  );
+
+  byeMatchUps?.forEach((matchUp) => {
+    const { matchUpId } = matchUp;
+    const targetData = positionTargets({
+      inContextDrawMatchUps,
+      drawDefinition,
+      matchUpId,
+    });
+    const {
+      targetLinks: { loserTargetLink },
+      targetMatchUps: {
+        loserMatchUpDrawPositionIndex, // only present when positionTargets found without loserMatchUpId
+        loserMatchUp,
+      },
+    } = targetData;
+    const targetStructureId = loserTargetLink.target.structureId;
+    const targetDrawPosition =
+      loserMatchUp.drawPositions[loserMatchUpDrawPositionIndex];
+
+    const result = assignDrawPositionBye({
+      drawPosition: targetDrawPosition,
+      structureId: targetStructureId,
+      tournamentRecord,
+      drawDefinition,
       event,
     });
     if (result.error) console.log(result.error);
