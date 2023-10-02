@@ -11,6 +11,7 @@ import {
   getScheduledVenueMatchUps,
 } from '../queryGovernor/getScheduledCourtMatchUps';
 
+import { Tournament, Venue } from '../../../types/tournamentFromSchema';
 import { MODIFY_VENUE } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -21,7 +22,6 @@ import {
   MISSING_VENUE_ID,
   NO_VALID_ATTRIBUTES,
 } from '../../../constants/errorConditionConstants';
-import { Tournament, Venue } from '../../../types/tournamentFromSchema';
 
 type ModifyVenueArgs = {
   tournamentRecord: Tournament;
