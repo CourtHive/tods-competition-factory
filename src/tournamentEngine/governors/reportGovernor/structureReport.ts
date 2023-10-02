@@ -32,9 +32,9 @@ import {
 } from '../../../constants/extensionConstants';
 
 type GetStructureReportsArgs = {
+  tournamentRecord: Tournament;
   extensionProfiles?: any[];
   firstFlightOnly?: boolean;
-  tournamentRecord: Tournament;
 };
 
 export function getStructureReports({
