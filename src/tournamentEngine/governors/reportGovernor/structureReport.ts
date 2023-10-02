@@ -1,9 +1,9 @@
+import { getTieFormatDesc } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormatDescription';
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
 import { findTournamentExtension } from '../queryGovernor/extensionQueries';
 import { getAccessorValue } from '../../../utilities/getAccessorValue';
-import { getTieFormatDesc } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormatDescription';
-import { getTimeItem } from '../queryGovernor/timeItems';
 import { getDetailsWTN } from '../queryGovernor/getDetailsWTN';
+import { getTimeItem } from '../queryGovernor/timeItems';
 import { getAvgWTN } from './getAvgWTN';
 
 import { MISSING_TOURNAMENT_ID } from '../../../constants/errorConditionConstants';
