@@ -199,15 +199,15 @@ function targetByRoundOutcome({
     matchUp,
     targetLinks: { loserTargetLink, winnerTargetLink, byeTargetLink },
     targetMatchUps: {
-      byeMatchUp,
-      loserMatchUp,
-      winnerMatchUp,
-      byeTargetDrawPosition,
-      loserTargetDrawPosition,
-      winnerTargetDrawPosition,
-      byeMatchUpDrawPositionIndex,
-      loserMatchUpDrawPositionIndex,
       winnerMatchUpDrawPositionIndex,
+      loserMatchUpDrawPositionIndex,
+      byeMatchUpDrawPositionIndex,
+      winnerTargetDrawPosition,
+      loserTargetDrawPosition,
+      byeTargetDrawPosition,
+      winnerMatchUp,
+      loserMatchUp,
+      byeMatchUp,
     },
     targetMatchUpIds: !!(winnerMatchUpId || loserMatchUpId),
   });
@@ -215,8 +215,8 @@ function targetByRoundOutcome({
 
 function targetByWinRatio({ matchUp }) {
   return {
-    matchUp,
     targetLinks: { loserTargetLink: undefined, winnerTargetLink: undefined }, // returned for testing
     targetMatchUps: { loserMatchUp: undefined, winnerMatchUp: undefined },
+    matchUp,
   };
 }
