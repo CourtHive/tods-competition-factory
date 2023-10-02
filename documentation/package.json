@@ -20,16 +20,16 @@
     "@docusaurus/theme-live-codeblock": "2.4.3",
     "@material-ui/core": "4.12.4",
     "@mdx-js/react": "1.6.22",
-    "@types/react": "18.2.23",
+    "@types/react": "18.2.24",
     "clsx": "2.0.0",
     "courthive-components": "^0.7.0",
     "material-ui": "0.20.2",
     "mdx-mermaid": "2.0.0",
-    "mermaid": "10.4.0",
+    "mermaid": "10.5.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-json-tree": "0.18.0",
-    "tods-competition-factory": "1.6.21"
+    "tods-competition-factory": "1.6.23"
   },
   "browserslist": {
     "production": [
