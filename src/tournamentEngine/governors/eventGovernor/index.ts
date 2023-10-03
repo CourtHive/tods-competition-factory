@@ -117,6 +117,7 @@ import { modifyCollectionDefinition } from '../../../matchUpEngine/governors/tie
 import { addCollectionDefinition } from '../../../matchUpEngine/governors/tieFormatGovernor/addCollectionDefinition';
 import { removeCollectionGroup } from '../../../matchUpEngine/governors/tieFormatGovernor/removeCollectionGroup';
 import { addCollectionGroup } from '../../../matchUpEngine/governors/tieFormatGovernor/addCollectionGroup';
+import { setStructureOrder } from '../../../drawEngine/governors/structureGovernor/setStructureOrder';
 import { modifyTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/modifyTieFormat';
 import { resetScorecard } from './resetScorecard';
 import { resetTieFormat } from './resetTieFormat';
@@ -130,18 +131,19 @@ import { generateDrawDefinition } from '../../generators/generateDrawDefinition'
 import { renameStructures } from './drawDefinitions/renameStructures';
 import { generateDrawMaticRound } from '../../../forge/generate';
 
+import { resetMatchUpLineUps } from './drawDefinitions/resetMatchUpLineUps';
 import { aggregateTieFormats } from './aggregateTieFormats';
 import { updateTieMatchUpScore } from './updateTieMatchUpScore';
 import { disableTieAutoCalc } from './disableTieAutoCalc';
 import { enableTieAutoCalc } from './enableTieAutoCalc';
-import { resetMatchUpLineUps } from './drawDefinitions/resetMatchUpLineUps';
 
 const eventGovernor = {
   generateQualifyingStructure,
   attachQualifyingStructure,
   attachPlayoffStructures,
-  attachStructures,
   addQualifyingStructure,
+  setStructureOrder,
+  attachStructures,
   renameStructures,
 
   disableTieAutoCalc,

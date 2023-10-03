@@ -11,6 +11,7 @@ import {
 } from '../../../../utilities/dateTime';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
+import { HydratedMatchUp } from '../../../../types/hydrated';
 import {
   MUTUALLY_EXCLUSIVE_TIME_MODIFIERS,
   SCHEDULED_TIME,
@@ -26,7 +27,6 @@ import {
   MatchUp,
   Tournament,
 } from '../../../../types/tournamentFromSchema';
-import { HydratedMatchUp } from '../../../../types/hydrated';
 
 type AddScheduleAttributeArgs = {
   tournamentRecord?: Tournament;
