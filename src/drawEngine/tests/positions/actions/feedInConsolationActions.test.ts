@@ -174,16 +174,16 @@ it('can modify score for main draw match after loser directed to consolation', (
     tournamentRecord,
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles,
     participantsProfile,
+    drawProfiles,
   });
 
   let result = tournamentEngine.setState(tournamentRecord);
   expect(result.success).toEqual(true);
 
   const { matchUps } = tournamentEngine.allDrawMatchUps({
-    drawId,
     inContext: true,
+    drawId,
   });
 
   const targetMatchUp = matchUps.find(
@@ -198,9 +198,9 @@ it('can modify score for main draw match after loser directed to consolation', (
   );
 
   result = tournamentEngine.positionActions({
-    drawId,
-    structureId,
     drawPosition: drawPositions[0],
+    structureId,
+    drawId,
   });
   expect(
     result.validActions.map(({ type }) => type).includes(ADD_PENALTY)
