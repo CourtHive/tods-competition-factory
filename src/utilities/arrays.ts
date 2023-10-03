@@ -16,6 +16,10 @@ export function shuffleArray(arr) {
     .map((a) => a[1]);
 }
 
+export function numericSortValue(v) {
+  return isConvertableInteger(v) ? v : Infinity;
+}
+
 // return an object whose attributes are values and whose values are counts for values
 // e.g. values=[1,2,2,3,4,4,5] produces { 1: 1, 2: 2, 3: 1, 4: 2, 5: 1}
 export function instanceCount(values): { [key: number | string]: number } {
