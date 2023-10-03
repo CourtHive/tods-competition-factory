@@ -450,3 +450,65 @@ it('can SWAP assigned participantIds in a ROUND_ROBIN', () => {
   expect(options.includes(ALTERNATE_PARTICIPANT)).toEqual(true);
   expect(options.includes(REMOVE_ASSIGNMENT)).toEqual(true);
 });
+
+it('can swap Qualifier assignments with BYE assignments', () => {
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [
+      {
+        participantsCount: 10,
+        qualifyingProfiles: [
+          {
+            roundTarget: 1,
+            structureProfiles: [
+              { stageSequence: 1, drawSize: 16, qualifyingPositions: 4 },
+            ],
+          },
+        ],
+        drawSize: 16,
+      },
+    ],
+  });
+
+  const result = tournamentEngine.setState(tournamentRecord);
+  expect(result.success).toEqual(true);
+
+  const { positionAssignments, structureId } =
+    tournamentEngine.getPositionAssignments({
+      drawId,
+    });
+
+  // get the first BYE position, of 2
+  const byeDrawPosition = positionAssignments.find(
+    ({ bye }) => bye
+  ).drawPosition;
+
+  // get the last qualifier position, of 4
+  const qualifierDrawPosition = positionAssignments
+    .filter(({ qualifier }) => qualifier)
+    .pop().drawPosition;
+
+  const { validActions } = tournamentEngine.positionActions({
+    drawPosition: byeDrawPosition,
+    structureId,
+    drawId,
+  });
+
+  const swapAction = validActions.find(
+    ({ type }) => type === SWAP_PARTICIPANTS
+  );
+  expect(swapAction).toBeDefined();
+
+  const targetAssignment = swapAction.availableAssignments.find(
+    ({ drawPosition }) => drawPosition === qualifierDrawPosition
+  );
+  expect(targetAssignment.qualifier).toEqual(true);
+
+  swapAction.payload.drawPositions.push(qualifierDrawPosition);
+  const executionResult = tournamentEngine[swapAction.method]({
+    ...swapAction.payload,
+  });
+  expect(executionResult.success).toEqual(true);
+});
