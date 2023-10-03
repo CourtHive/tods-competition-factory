@@ -102,7 +102,7 @@ export function generateDrawMaticRound({
   if (teamParticipants) {
     // add SAME_TEAM_VALUE for participants who appear on the same team
     for (const teamParticipant of teamParticipants) {
-      const participantIds = teamParticipant.individualParticipantIds || [];
+      const participantIds = teamParticipant.individualParticipantIds ?? [];
       const { uniquePairings } = getPairingsData({ participantIds });
       for (const pairing of uniquePairings) {
         if (!valueObjects[pairing]) valueObjects[pairing] = 0;
