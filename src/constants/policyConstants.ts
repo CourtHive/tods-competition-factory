@@ -9,6 +9,7 @@ export const POLICY_TYPE_PARTICIPANT = 'participant';
 export const POLICY_TYPE_PROGRESSION = 'progression';
 export const POLICY_TYPE_SCHEDULING = 'scheduling';
 export const POLICY_TYPE_AVOIDANCE = 'avoidance';
+export const POLICY_TYPE_DISPLAY = 'display'; // storage for client type displays, e.g. { public: {}, admin: {} }
 export const POLICY_TYPE_SCORING = 'scoring';
 export const POLICY_TYPE_SEEDING = 'seeding';
 export const POLICY_TYPE_FEED_IN = 'feedIn';
@@ -27,6 +28,7 @@ export type ValidPolicyTypes =
   | typeof POLICY_TYPE_PROGRESSION
   | typeof POLICY_TYPE_SCHEDULING
   | typeof POLICY_TYPE_AVOIDANCE
+  | typeof POLICY_TYPE_DISPLAY
   | typeof POLICY_TYPE_FEED_IN
   | typeof POLICY_TYPE_SCORING
   | typeof POLICY_TYPE_SEEDING
@@ -45,6 +47,7 @@ export const policyConstants = {
   POLICY_TYPE_PROGRESSION,
   POLICY_TYPE_SCHEDULING,
   POLICY_TYPE_AVOIDANCE,
+  POLICY_TYPE_DISPLAY,
   POLICY_TYPE_FEED_IN,
   POLICY_TYPE_SCORING,
   POLICY_TYPE_SEEDING,
