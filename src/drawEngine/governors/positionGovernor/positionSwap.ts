@@ -3,13 +3,13 @@ import { conditionallyDisableLinkPositioning } from './conditionallyDisableLinkP
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { assignDrawPositionBye } from './byePositioning/assignDrawPositionBye';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
-import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { addPositionActionTelemetry } from './addPositionActionTelemetry';
-import { findStructure } from '../../getters/findStructure';
+import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { assignDrawPosition } from './positionAssignment';
+import { findStructure } from '../../getters/findStructure';
 import { updateSideLineUp } from './updateSideLineUp';
-import { resetLineUps } from './resetLineUps';
 import { makeDeepCopy } from '../../../utilities';
+import { resetLineUps } from './resetLineUps';
 import {
   modifyDrawNotice,
   modifyPositionAssignmentsNotice,
@@ -170,9 +170,10 @@ function eliminationSwap({
   if (assignments.filter(({ qualifier }) => qualifier).length === 2)
     return { ...SUCCESS };
 
+  const isQualifierSwap = assignments.some(({ qualifier }) => qualifier);
   const isByeSwap = assignments.some(({ bye }) => bye);
 
-  if (isByeSwap) {
+  if (isByeSwap && !isQualifierSwap) {
     return swapParticipantIdWithBYE({
       inContextDrawMatchUps,
       tournamentRecord,
@@ -183,7 +184,7 @@ function eliminationSwap({
       event,
     });
   } else {
-    return eliminationParticipantSwap({
+    return eliminationPosiitonSwap({
       inContextDrawMatchUps,
       tournamentRecord,
       drawDefinition,
@@ -260,7 +261,7 @@ function swapParticipantIdWithBYE({
   return { ...SUCCESS };
 }
 
-function eliminationParticipantSwap({
+function eliminationPosiitonSwap({
   inContextDrawMatchUps,
   tournamentRecord,
   drawDefinition,
@@ -331,9 +332,10 @@ function roundRobinSwap({
     event,
   });
 
+  const isQualifierSwap = assignments.some(({ qualifier }) => qualifier);
   const isByeSwap = assignments.some(({ bye }) => bye);
 
-  if (isByeSwap) {
+  if (isByeSwap && !isQualifierSwap) {
     swapParticipantIdWithBYE({
       inContextDrawMatchUps,
       tournamentRecord,
