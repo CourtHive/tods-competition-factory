@@ -73,7 +73,7 @@ export function modifyVenue({
       Object.assign(venue, { [attribute]: modifications[attribute] })
     );
 
-  const existingCourtIds = venue?.courts?.map((court) => court.courtId) || [];
+  const existingCourtIds = venue?.courts?.map((court) => court.courtId) ?? [];
   const courtIdsToModify =
     modifications.courts?.map((court) => court.courtId) || [];
   const courtIdsToDelete = existingCourtIds.filter(
@@ -91,7 +91,7 @@ export function modifyVenue({
           tournamentRecord,
           venueMatchUps,
         });
-        return result.matchUps?.length || 0;
+        return result.matchUps?.length ?? 0;
       })
       .reduce((a, b) => a + b);
 

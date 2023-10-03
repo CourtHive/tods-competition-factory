@@ -181,7 +181,7 @@ export function prepareStage(params): ResultType & {
       }));
     }
 
-    const scaledEntriesCount = scaledEntries?.length || 0;
+    const scaledEntriesCount = scaledEntries?.length ?? 0;
     if (scaledEntriesCount < seedsCount) seedsCount = scaledEntriesCount;
 
     scaledEntries
