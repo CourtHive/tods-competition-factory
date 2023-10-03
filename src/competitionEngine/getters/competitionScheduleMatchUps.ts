@@ -9,10 +9,10 @@ import {
 } from '../../tournamentEngine/governors/queryGovernor/timeItems';
 
 import { MatchUpFilters } from '../../drawEngine/getters/getMatchUps/filterMatchUps';
+import { MatchUpStatusEnum, Venue } from '../../types/tournamentFromSchema';
 import { PUBLIC, PUBLISH, STATUS } from '../../constants/timeItemConstants';
 import { COMPLETED } from '../../constants/matchUpStatusConstants';
 import { getTournamentId } from '../../global/state/globalState';
-import { MatchUpStatusEnum, Venue } from '../../types/tournamentFromSchema';
 import { HydratedMatchUp } from '../../types/hydrated';
 import {
   TournamentRecords,

@@ -1,5 +1,5 @@
+import { setSubscriptions, tournamentEngine } from '../../../..';
 import mocksEngine from '../../../../mocksEngine';
-import { tournamentEngine } from '../../../..';
 import competitionEngine from '../../../sync';
 import { expect, it } from 'vitest';
 
@@ -249,6 +249,19 @@ it('can add events, venues, and schedule matchUps', () => {
   expect(upcomingMatchUps[0].timeItems.length).toEqual(13);
   expect(upcomingMatchUps[0].schedule.courtOrder).toEqual(1);
 
+  const matchUpModifyNotices: any[] = [];
+  const subscriptions = {
+    modifyMatchUp: (payload) => {
+      if (Array.isArray(payload)) {
+        payload.forEach(({ matchUp }) => {
+          matchUpModifyNotices.push(matchUp);
+        });
+      }
+    },
+  };
+
+  setSubscriptions({ subscriptions });
+
   result = competitionEngine.matchUpScheduleChange();
   expect(result.error).toEqual(MISSING_VALUE);
 
@@ -263,6 +276,8 @@ it('can add events, venues, and schedule matchUps', () => {
   });
   expect(result.success).toEqual(true);
 
+  expect(matchUpModifyNotices.length).toEqual(1);
+
   ({ upcomingMatchUps } = competitionEngine.competitionMatchUps());
   expect(upcomingMatchUps[0].timeItems.length).toEqual(14);
 
@@ -272,6 +287,7 @@ it('can add events, venues, and schedule matchUps', () => {
     targetCourtId: courtId,
   });
   expect(result.success).toEqual(true);
+  expect(matchUpModifyNotices.length).toEqual(2);
 
   ({ upcomingMatchUps } = competitionEngine.competitionMatchUps());
   expect(upcomingMatchUps[0].timeItems.length).toEqual(14);
@@ -284,18 +300,21 @@ it('can add events, venues, and schedule matchUps', () => {
     courtDayDate: startDate,
   });
   expect(result.success).toEqual(true);
+  expect(matchUpModifyNotices.length).toEqual(3);
 
   result = competitionEngine.matchUpScheduleChange({
     sourceMatchUpContextIds: { drawId, matchUpId, tournamentId },
     targetMatchUpContextIds: {
-      drawId,
       matchUpId: upcoming[1].matchUpId,
       tournamentId,
+      drawId,
     },
     targetCourtId: courts[1].courtId,
     sourceCourtId: courtId,
   });
   expect(result.success).toEqual(true);
+  // in this case two notices have been genrated
+  expect(matchUpModifyNotices.length).toEqual(5);
 
   ({ upcomingMatchUps } = competitionEngine.competitionMatchUps());
   expect(upcomingMatchUps[0].timeItems.length).toEqual(15);
@@ -341,6 +360,18 @@ it('can schedule many attributes at once', () => {
 
   let { matchUps } = tournamentEngine.allTournamentMatchUps();
 
+  const matchUpModifyNotices: any[] = [];
+  const subscriptions = {
+    modifyMatchUp: (payload) => {
+      if (Array.isArray(payload)) {
+        payload.forEach(({ matchUp }) => {
+          matchUpModifyNotices.push(matchUp);
+        });
+      }
+    },
+  };
+  setSubscriptions({ subscriptions });
+
   let { tournamentId, drawId, matchUpId } = matchUps[0];
   let result = competitionEngine.addMatchUpScheduleItems({
     tournamentId,
@@ -355,6 +386,7 @@ it('can schedule many attributes at once', () => {
     },
   });
   expect(result.success).toEqual(true);
+  expect(matchUpModifyNotices.length).toEqual(1);
 
   const modifiedMatchUpId = matchUpId;
 

@@ -1,6 +1,9 @@
 import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
 import { findMatchUp } from '../../../drawEngine/getters/getMatchUps/findMatchUp';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { findStructure } from '../../../drawEngine/getters/findStructure';
+import { isConvertableInteger } from '../../../utilities/math';
+import { numericSortValue } from '../../../utilities/arrays';
 import { copyTieFormat } from './copyTieFormat';
 import {
   modifyDrawNotice,
@@ -29,7 +32,8 @@ function getOrderedTieFormat({ tieFormat, orderMap }) {
   });
 
   orderedTieFormat.collectionDefinitions.sort(
-    (a, b) => a.collectionOrder - b.collectionOrder
+    (a, b) =>
+      numericSortValue(a.collectionOrder) - numericSortValue(b.collectionOrder)
   );
 
   return orderedTieFormat;
@@ -56,7 +60,14 @@ export function orderCollectionDefinitions({
   matchUp,
   event,
 }: OrderCollectionDefinitionsArgs) {
-  if (typeof orderMap !== 'object') return { error: INVALID_VALUES, orderMap };
+  if (
+    typeof orderMap !== 'object' ||
+    !Object.values(orderMap).every((val) => isConvertableInteger(val))
+  )
+    return decorateResult({
+      result: { error: INVALID_VALUES },
+      context: { orderMap },
+    });
 
   if (eventId && event?.tieFormat) {
     updateEventTieFormat({ tournamentRecord, event, orderMap });

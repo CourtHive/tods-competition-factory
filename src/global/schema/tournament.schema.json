@@ -277,6 +277,9 @@
         "eventLevel": {
           "$ref": "#/definitions/TournamentLevelEnum"
         },
+        "eventOrder": {
+          "type": "number"
+        },
         "eventType": {
           "$ref": "#/definitions/EventTypeEnum"
         },

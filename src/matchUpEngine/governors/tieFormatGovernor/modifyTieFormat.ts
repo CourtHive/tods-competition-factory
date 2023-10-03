@@ -2,6 +2,7 @@ import { decorateResult } from '../../../global/functions/decorateResult';
 import { modifyCollectionDefinition } from './modifyCollectionDefinition';
 import { removeCollectionDefinition } from './removeCollectionDefinition';
 import { addCollectionDefinition } from './addCollectionDefinition';
+import { numericSortValue } from '../../../utilities/arrays';
 import { getTieFormat } from './getTieFormat/getTieFormat';
 import { validateTieFormat } from './tieFormatUtilities';
 import { compareTieFormats } from './compareTieFormats';
@@ -126,7 +127,8 @@ export function modifyTieFormat({
     processedTieFormat.collectionDefinitions
       .sort(
         (a, b) =>
-          (a.collectionOrder || Infinity) - (b.collectionOrder || Infinity)
+          numericSortValue(a.collectionOrder) -
+          numericSortValue(b.collectionOrder)
       )
       .map((def, i) => ({ ...def, collectionOrder: i + 1 }));
 

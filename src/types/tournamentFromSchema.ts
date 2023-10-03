@@ -53,6 +53,7 @@ export interface Event {
   eventId: string;
   eventLevel?: TournamentLevelEnum;
   eventName?: string;
+  eventOrder?: number;
   eventRank?: string;
   eventType?: TypeEnum;
   extensions?: Extension[];
