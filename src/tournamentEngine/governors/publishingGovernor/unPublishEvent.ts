@@ -27,8 +27,8 @@ export function unPublishEvent({
   });
 
   const itemValue = timeItem?.itemValue || { [status]: {} };
-  delete itemValue[status].drawIds;
   delete itemValue[status].structureIds;
+  delete itemValue[status].drawIds;
 
   const updatedTimeItem = { itemValue, itemType };
 
