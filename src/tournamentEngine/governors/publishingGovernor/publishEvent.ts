@@ -82,8 +82,9 @@ export function publishEvent(params) {
     structureIds = unique(structureIds.push(...structureIdsToAdd));
   }
 
+  const existingStatusValue = timeItem?.itemValue?.[status];
   const updatedTimeItem = {
-    itemValue: { [status]: { drawIds, structureIds } },
+    itemValue: { [status]: { ...existingStatusValue, drawIds, structureIds } },
     itemType,
   };
   addEventTimeItem({ event, timeItem: updatedTimeItem, removePriorValues });
