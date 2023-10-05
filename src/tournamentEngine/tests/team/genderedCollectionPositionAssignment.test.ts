@@ -3,13 +3,13 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 import { expect, it } from 'vitest';
 
+import { INVALID_PARTICIPANT } from '../../../constants/errorConditionConstants';
 import { USTA_GOLD_TEAM_CHALLENGE } from '../../../constants/tieFormatConstants';
 import { ASSIGN_PARTICIPANT } from '../../../constants/positionActionConstants';
 import { SINGLES_MATCHUP, TEAM_MATCHUP } from '../../../constants/matchUpTypes';
 import { INDIVIDUAL } from '../../../constants/participantConstants';
 import { FEMALE, MALE } from '../../../constants/genderConstants';
 import { TEAM_EVENT } from '../../../constants/eventConstants';
-import { INVALID_PARTICIPANT } from '../../../constants/errorConditionConstants';
 
 it('can enforce collection gender', () => {
   // 1. generate gendered tieFormat
