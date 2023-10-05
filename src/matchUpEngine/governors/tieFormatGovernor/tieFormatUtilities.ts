@@ -67,13 +67,12 @@ export function validateTieFormat(params: ValidateTieFormatArgs): ResultType {
   let aggregateValueImperative;
   const validCollections = tieFormat.collectionDefinitions.every(
     (collectionDefinition) => {
-      const { setValue, scoreValue, collectionValue, gender } =
-        collectionDefinition;
+      const { setValue, scoreValue, collectionValue } = collectionDefinition;
       if ((setValue || scoreValue) && !collectionValue)
         aggregateValueImperative = true;
       const { valid, errors: collectionDefinitionErrors } =
         validateCollectionDefinition({
-          referenceGender: gender,
+          referenceGender: params.gender,
           collectionDefinition,
           checkCollectionIds,
           checkGender,
@@ -223,7 +222,8 @@ export function validateCollectionDefinition({
     checkGender &&
     referenceGender &&
     gender &&
-    [GenderEnum.Male, GenderEnum.Female].includes(referenceGender)
+    [GenderEnum.Male, GenderEnum.Female].includes(referenceGender) &&
+    referenceGender !== gender
   ) {
     errors.push(`Invalid gender: ${gender}`);
   }

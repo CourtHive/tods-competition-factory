@@ -15,6 +15,7 @@ it('will throw errors if gendered tieFormat not aligned with event gender', () =
     tournamentRecord,
     eventIds: [eventId],
   } = mocksEngine.generateTournamentRecord({
+    participantsProfile: { gender: MALE },
     eventProfiles: [
       {
         drawProfiles: [{ drawSize: 16, generate: false }],
