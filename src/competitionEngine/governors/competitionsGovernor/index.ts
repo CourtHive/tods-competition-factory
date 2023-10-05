@@ -27,7 +27,27 @@ import {
   getCompetitionPenalties,
 } from './participantPenalties';
 
+import { modifyCollectionDefinition } from './modifyCollectionDefinition';
+import { orderCollectionDefinitions } from './orderCollectionDefinitions';
+import { removeCollectionDefinition } from './removeCollectionDefinition';
+import { addCollectionDefinition } from './addCollectionDefinition';
+import { removeCollectionGroup } from './removeCollectionGroup';
+import { addCollectionGroup } from './addCollectionGroup';
+import { modifyTieFormat } from './modifyTieFormat';
+import { resetScorecard } from './resetScorecard';
+import { resetTieFormat } from './resetTieFormat';
+
 const competitionGovernor = {
+  modifyCollectionDefinition,
+  removeCollectionDefinition,
+  orderCollectionDefinitions,
+  addCollectionDefinition,
+  removeCollectionGroup,
+  addCollectionGroup,
+  modifyTieFormat,
+  resetScorecard,
+  resetTieFormat,
+
   addExtension,
   findExtension,
   removeExtension,
