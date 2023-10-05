@@ -165,9 +165,9 @@ export function generateDrawDefinition(
     }).appliedPolicies ?? {};
 
   const enforceGender =
-    params.enforceGender ||
+    params.enforceGender ??
     policyDefinitions?.[POLICY_TYPE_MATCHUP_ACTIONS]?.participants
-      ?.enforceGender ||
+      ?.enforceGender ??
     appliedPolicies?.[POLICY_TYPE_MATCHUP_ACTIONS]?.participants?.enforceGender;
 
   // entries participantTypes must correspond with eventType
