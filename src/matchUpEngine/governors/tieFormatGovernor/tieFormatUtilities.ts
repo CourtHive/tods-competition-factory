@@ -11,16 +11,20 @@ import { INVALID_TIE_FORMAT } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   CollectionDefinition,
+  GenderEnum,
   TieFormat,
   TypeEnum,
 } from '../../../types/tournamentFromSchema';
 
 type ValidateTieFormatArgs = {
   checkCollectionIds?: boolean;
+  enforceGender?: boolean;
+  gender?: GenderEnum;
   tieFormat?: any; // not using TieFormat type because incoming value is potentially invalid
 };
 
 export function validateTieFormat(params: ValidateTieFormatArgs): ResultType {
+  const checkGender = !!(params?.enforceGender !== false && params?.gender);
   const checkCollectionIds = params?.checkCollectionIds;
   const tieFormat = params?.tieFormat;
 
@@ -31,9 +35,9 @@ export function validateTieFormat(params: ValidateTieFormatArgs): ResultType {
     errors.push('tieFormat must be an object');
     return decorateResult({
       result: {
+        context: { tieFormat, errors },
         error: INVALID_TIE_FORMAT,
         stack,
-        context: { tieFormat, errors },
       },
     });
   }
@@ -42,9 +46,9 @@ export function validateTieFormat(params: ValidateTieFormatArgs): ResultType {
     errors.push('tieFormat.winCriteria must be an object');
     return decorateResult({
       result: {
+        context: { tieFormat, errors },
         error: INVALID_TIE_FORMAT,
         stack,
-        context: { tieFormat, errors },
       },
     });
   }
@@ -53,9 +57,9 @@ export function validateTieFormat(params: ValidateTieFormatArgs): ResultType {
     errors.push(mustBeAnArray('tieFormat.collectionDefinitions'));
     return decorateResult({
       result: {
+        context: { tieFormat, errors },
         error: INVALID_TIE_FORMAT,
         stack,
-        context: { tieFormat, errors },
       },
     });
   }
@@ -63,13 +67,16 @@ export function validateTieFormat(params: ValidateTieFormatArgs): ResultType {
   let aggregateValueImperative;
   const validCollections = tieFormat.collectionDefinitions.every(
     (collectionDefinition) => {
-      const { setValue, scoreValue, collectionValue } = collectionDefinition;
+      const { setValue, scoreValue, collectionValue, gender } =
+        collectionDefinition;
       if ((setValue || scoreValue) && !collectionValue)
         aggregateValueImperative = true;
       const { valid, errors: collectionDefinitionErrors } =
         validateCollectionDefinition({
+          referenceGender: gender,
           collectionDefinition,
           checkCollectionIds,
+          checkGender,
         });
 
       if (valid) {
@@ -129,10 +136,14 @@ export function validateTieFormat(params: ValidateTieFormatArgs): ResultType {
 type ValidateCollectionDefinitionArgs = {
   collectionDefinition: CollectionDefinition;
   checkCollectionIds?: boolean;
+  referenceGender?: GenderEnum;
+  checkGender?: boolean;
 };
 export function validateCollectionDefinition({
   collectionDefinition,
   checkCollectionIds,
+  referenceGender,
+  checkGender,
 }: ValidateCollectionDefinitionArgs) {
   const errors: string[] = [];
 
@@ -154,22 +165,20 @@ export function validateCollectionDefinition({
     matchUpType,
     scoreValue,
     setValue,
+    gender,
   } = collectionDefinition;
 
   if (checkCollectionIds && typeof collectionId !== 'string') {
     errors.push(`collectionId is not type string: ${collectionId}`);
-    return { errors };
   }
   if (typeof matchUpCount !== 'number') {
     errors.push(`matchUpCount is not type number: ${matchUpCount}`);
-    return { errors };
   }
   if (
     matchUpType &&
     ![TypeEnum.Singles, TypeEnum.Doubles].includes(matchUpType)
   ) {
     errors.push(`matchUpType must be SINGLES or DOUBLES: ${matchUpType}`);
-    return { errors };
   }
 
   const valueDeclarations = [!!collectionValueProfiles?.length]
@@ -184,16 +193,13 @@ export function validateCollectionDefinition({
     errors.push(
       'Missing value definition for matchUps: matchUpValue, collectionValue, or collectionValueProfiles'
     );
-    return { errors };
   }
 
   if (matchUpValue && typeof matchUpValue !== 'number') {
     errors.push(`matchUpValue is not type number: ${matchUpValue}`);
-    return { errors };
   }
   if (collectionValue && typeof collectionValue !== 'number') {
     errors.push(`collectionValue is not type number: ${collectionValue}`);
-    return { errors };
   }
   if (collectionValueProfiles) {
     const result = validateCollectionValueProfile({
@@ -202,19 +208,27 @@ export function validateCollectionDefinition({
     });
     if (result.errors) {
       errors.push(...result.errors);
-      return { errors };
     }
   }
 
   if (collectionGroupNumber && typeof collectionGroupNumber !== 'number') {
-    errors.push(`collectionValue is not type number: ${collectionValue}`);
-    return { errors };
+    errors.push(`collectionGroupNumber is not type number: ${collectionValue}`);
   }
 
   if (matchUpFormat && !matchUpFormatCode.isValid(matchUpFormat)) {
     errors.push(`Invalid matchUpFormat: ${matchUpFormat}`);
-    return { errors };
   }
+
+  if (
+    checkGender &&
+    referenceGender &&
+    gender &&
+    [GenderEnum.Male, GenderEnum.Female].includes(referenceGender)
+  ) {
+    errors.push(`Invalid gender: ${gender}`);
+  }
+
+  if (errors.length) return { errors };
 
   return { valid: true };
 }
