@@ -1,11 +1,11 @@
 import { generateScoreString } from '../../generators/generateScoreString';
 import { definedAttributes } from '../../../utilities';
 
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   ErrorType,
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 export function reverseScore(params?): {
   reversedScore?: any;

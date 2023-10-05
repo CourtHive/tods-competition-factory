@@ -3223,9 +3223,9 @@ tournamentEngine.removeCollectionGroup({
   tieFormatName: 'New tieFormat', // if no name is provided then there will be no name
   collectionGroupNumber: 1,
   structureId, // optional
+  matchUpId, // optional
   eventId, // optional
   drawId, // optional; required if structureId is targeted
-  matchUpId, // optional
 });
 ```
 
@@ -3488,8 +3488,8 @@ Removes all scores from `tieMatchUps` within a TEAM `matchUp`; preserves `lineUp
 ```js
 tournamentEngine.resetScorecard({
   tiebreakReset, // optional boolean - check for tiebreak scenarios and reset tieFormat
-  matchUpId,
-  drawId,
+  matchUpId, // required - must be a TEAM matchUp
+  drawId, // required
 });
 ```
 
