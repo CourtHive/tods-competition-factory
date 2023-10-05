@@ -39,7 +39,10 @@ import {
 
 import POLICY_SEEDING_USTA from '../../fixtures/policies/POLICY_SEEDING_USTA';
 import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats';
-import { POLICY_TYPE_SEEDING } from '../../constants/policyConstants';
+import {
+  POLICY_TYPE_MATCHUP_ACTIONS,
+  POLICY_TYPE_SEEDING,
+} from '../../constants/policyConstants';
 import { PolicyDefinitions } from '../../types/factoryTypes';
 import { SUCCESS } from '../../constants/resultConstants';
 import { TEAM } from '../../constants/matchUpTypes';
@@ -141,7 +144,6 @@ export function generateDrawDefinition(
     ignoreStageSpace,
     tournamentRecord,
     qualifyingOnly,
-    enforceGender,
     tieFormatName,
     drawEntries,
     addToEvent,
@@ -155,6 +157,18 @@ export function generateDrawDefinition(
     tournamentRecord,
     inContext: true,
   });
+
+  const appliedPolicies =
+    getAppliedPolicies({
+      tournamentRecord,
+      event,
+    }).appliedPolicies ?? {};
+
+  const enforceGender =
+    params.enforceGender ||
+    policyDefinitions?.[POLICY_TYPE_MATCHUP_ACTIONS]?.participants
+      ?.enforceGender ||
+    appliedPolicies?.[POLICY_TYPE_MATCHUP_ACTIONS]?.participants?.enforceGender;
 
   // entries participantTypes must correspond with eventType
   // this is only possible if the event is provided
@@ -328,12 +342,6 @@ export function generateDrawDefinition(
       if (matchUpType) drawDefinition.matchUpType = matchUpType;
     }
   }
-
-  const appliedPolicies =
-    getAppliedPolicies({
-      tournamentRecord,
-      event,
-    }).appliedPolicies ?? {};
 
   if (policyDefinitions) {
     if (typeof policyDefinitions !== 'object') {
