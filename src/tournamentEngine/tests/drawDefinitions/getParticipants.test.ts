@@ -4,8 +4,8 @@ import tournamentEngine from '../../sync';
 import { expect, it } from 'vitest';
 
 import { QUALIFYING_PARTICIPANT } from '../../../constants/positionActionConstants';
-import { MAIN } from '../../../constants/drawDefinitionConstants';
 import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
+import { MAIN } from '../../../constants/drawDefinitionConstants';
 
 it('can generate and seed a qualifying structure', () => {
   const {

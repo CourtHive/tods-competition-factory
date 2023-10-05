@@ -6,16 +6,38 @@ import { getEventData } from './getEventData';
 import { unique } from '../../../utilities';
 
 import { PUBLISH, PUBLIC, STATUS } from '../../../constants/timeItemConstants';
+import { Event, Tournament } from '../../../types/tournamentFromSchema';
 import { PUBLISH_EVENT } from '../../../constants/topicConstants';
+import { PolicyDefinitions } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 
-export function publishEvent(params) {
-  let { policyDefinitions, drawIds, structureIds } = params;
+type PublishEventType = {
+  includePositionAssignments?: boolean;
+  policyDefinitions?: PolicyDefinitions;
+  removePriorValues?: boolean;
+  tournamentRecord: Tournament;
+  structureIds?: string[];
+  drawIds?: string[];
+  stages?: string[];
+  status?: string;
+  event?: Event;
+
+  structureIdsToRemove?: string[];
+  structureIdsToAdd?: string[];
+  drawIdsToRemove?: string[];
+  stagesToRemove?: string[];
+  drawIdsToAdd?: string[];
+  stagesToAdd?: string[];
+};
+
+export function publishEvent(params: PublishEventType) {
+  let { policyDefinitions, drawIds, structureIds, stages } = params;
   const {
+    includePositionAssignments,
     removePriorValues,
     tournamentRecord,
     status = PUBLIC,
@@ -24,7 +46,9 @@ export function publishEvent(params) {
     drawIdsToRemove,
     drawIdsToAdd,
 
-    includePositionAssignments,
+    stagesToRemove,
+    stagesToAdd,
+
     structureIdsToRemove,
     structureIdsToAdd,
   } = params;
@@ -69,7 +93,7 @@ export function publishEvent(params) {
     !structureIds &&
     (structureIdsToAdd?.length || structureIdsToRemove?.length)
   ) {
-    structureIds = timeItem?.itemValue?.PUBLIC?.drawIds || [];
+    structureIds = timeItem?.itemValue?.PUBLIC?.structureIds || [];
   }
 
   structureIds = (structureIds || []).filter(
@@ -79,12 +103,26 @@ export function publishEvent(params) {
   );
 
   if (structureIdsToAdd?.length) {
-    structureIds = unique(structureIds.push(...structureIdsToAdd));
+    structureIds = unique(structureIds.concat(...structureIdsToAdd));
+  }
+
+  if (!stages && (stagesToAdd?.length || stagesToRemove?.length)) {
+    stages = timeItem?.itemValue?.PUBLIC?.stages || [];
+  }
+
+  stages = (stages || []).filter(
+    (stage) => !stagesToRemove?.length || !stagesToRemove.includes(stage)
+  );
+
+  if (stagesToAdd?.length) {
+    stages = unique(stages.concat(...stagesToAdd));
   }
 
   const existingStatusValue = timeItem?.itemValue?.[status];
   const updatedTimeItem = {
-    itemValue: { [status]: { ...existingStatusValue, drawIds, structureIds } },
+    itemValue: {
+      [status]: { ...existingStatusValue, drawIds, structureIds, stages },
+    },
     itemType,
   };
   addEventTimeItem({ event, timeItem: updatedTimeItem, removePriorValues });
@@ -92,8 +130,8 @@ export function publishEvent(params) {
   const { eventData } = getEventData({
     includePositionAssignments,
     usePublishState: true,
-    policyDefinitions,
     tournamentRecord,
+    policyDefinitions,
     event,
   });
 

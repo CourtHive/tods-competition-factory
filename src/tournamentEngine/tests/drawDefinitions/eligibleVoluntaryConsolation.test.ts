@@ -204,8 +204,8 @@ test('DOUBLE_WALKOVER produceds participants eligible for voluntary consolation 
   expect(result.success).toEqual(true);
 
   matchUps = tournamentEngine.allTournamentMatchUps({
-    constextFilters: { stages: [MAIN] },
     matchUpFilters: { roundNumbers: [1] },
+    constextFilters: { stages: [MAIN] },
   }).matchUps;
 
   let { outcome } = mocksEngine.generateOutcomeFromScoreString({

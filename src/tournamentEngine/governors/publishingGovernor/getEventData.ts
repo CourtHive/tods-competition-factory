@@ -69,6 +69,11 @@ export function getEventData(params: GetEventDataArgs): {
     tournamentRecord,
   });
 
+  const stageFilter = ({ stage }) =>
+    !usePublishState ||
+    !publishStatus?.stages?.length ||
+    publishStatus.stages.includes(stage);
+
   const structureFilter = ({ structureId }) =>
     !usePublishState ||
     !publishStatus?.structureIds?.length ||
@@ -102,7 +107,7 @@ export function getEventData(params: GetEventDataArgs): {
     )
     .map(({ structures, ...drawData }) => ({
       ...drawData,
-      structures: structures?.filter(structureFilter),
+      structures: structures?.filter(structureFilter)?.filter(stageFilter),
     }))
     .filter((drawData) => drawData.structures?.length);
 

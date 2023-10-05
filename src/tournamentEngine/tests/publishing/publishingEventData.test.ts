@@ -3,6 +3,7 @@ import tournamentEngine from '../../sync';
 import { expect, it } from 'vitest';
 
 import PARTICIPANT_PRIVACY_DEFAULT from '../../../fixtures/policies/POLICY_PRIVACY_DEFAULT';
+import { DIRECT_ACCEPTANCE } from '../../../constants/entryStatusConstants';
 import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
 import { INDIVIDUAL } from '../../../constants/participantConstants';
 import { PUBLIC } from '../../../constants/timeItemConstants';
@@ -19,7 +20,9 @@ import {
   FIRST_MATCH_LOSER_CONSOLATION,
   MAIN,
   PLAY_OFF,
+  QUALIFYING,
   ROUND_ROBIN_WITH_PLAYOFF,
+  VOLUNTARY_CONSOLATION,
   WATERFALL,
 } from '../../../constants/drawDefinitionConstants';
 
@@ -628,4 +631,118 @@ it('can add or remove drawIds from a published event', () => {
   }));
   expect(publishSuccess).toEqual(true);
   expect(eventData.drawsData.length).toEqual(2);
+});
+
+it('can add or remove stages from a published draw', () => {
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [
+      {
+        drawSize: 16,
+        qualifyingProfiles: [
+          {
+            structureProfiles: [
+              {
+                qualifyingPositions: 4,
+                drawSize: 8,
+              },
+            ],
+          },
+        ],
+      },
+    ],
+    completeAllMatchUps: true,
+  });
+
+  let result = tournamentEngine.devContext(true).setState(tournamentRecord);
+  expect(result.success).toEqual(true);
+
+  const { eligibleParticipants } =
+    tournamentEngine.getEligibleVoluntaryConsolationParticipants({
+      matchUpsLimit: 1,
+      drawId,
+    });
+
+  const eligileParticipantIds = eligibleParticipants.map(
+    ({ participantId }) => participantId
+  );
+
+  result = tournamentEngine.addDrawEntries({
+    participantIds: eligileParticipantIds,
+    entryStage: VOLUNTARY_CONSOLATION,
+    entryStatus: DIRECT_ACCEPTANCE,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.generateVoluntaryConsolation({
+    automated: true,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  const event = tournamentEngine.getEvent({ drawId }).event;
+  const eventId = event.eventId;
+
+  const policyDefinitions = {
+    ...PARTICIPANT_PRIVACY_DEFAULT,
+    ...ROUND_NAMING_POLICY,
+  };
+
+  let { eventData, success: publishSuccess } = tournamentEngine.publishEvent({
+    policyDefinitions,
+    eventId,
+  });
+  expect(publishSuccess).toEqual(true);
+
+  expect(eventData.drawsData[0].structures.map(({ stage }) => stage)).toEqual([
+    'QUALIFYING',
+    'MAIN',
+    'VOLUNTARY_CONSOLATION',
+  ]);
+
+  ({ eventData, success: publishSuccess } = tournamentEngine.publishEvent({
+    stages: [QUALIFYING],
+    policyDefinitions,
+    eventId,
+  }));
+  expect(publishSuccess).toEqual(true);
+  expect(eventData.drawsData[0].structures.map(({ stage }) => stage)).toEqual([
+    'QUALIFYING',
+  ]);
+
+  ({ eventData, success: publishSuccess } = tournamentEngine.publishEvent({
+    stagesToAdd: [MAIN],
+    policyDefinitions,
+    eventId,
+  }));
+  expect(publishSuccess).toEqual(true);
+  expect(eventData.drawsData[0].structures.map(({ stage }) => stage)).toEqual([
+    'QUALIFYING',
+    'MAIN',
+  ]);
+
+  ({ eventData, success: publishSuccess } = tournamentEngine.publishEvent({
+    stagesToAdd: [VOLUNTARY_CONSOLATION],
+    stagesToRemove: [QUALIFYING],
+    policyDefinitions,
+    eventId,
+  }));
+  expect(publishSuccess).toEqual(true);
+  expect(eventData.drawsData[0].structures.map(({ stage }) => stage)).toEqual([
+    'MAIN',
+    'VOLUNTARY_CONSOLATION',
+  ]);
+
+  ({ eventData, success: publishSuccess } = tournamentEngine.publishEvent({
+    policyDefinitions,
+    stages: [MAIN],
+    eventId,
+  }));
+  expect(publishSuccess).toEqual(true);
+  expect(eventData.drawsData[0].structures.map(({ stage }) => stage)).toEqual([
+    'MAIN',
+  ]);
 });
