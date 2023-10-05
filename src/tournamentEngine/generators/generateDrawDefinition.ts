@@ -99,6 +99,7 @@ type GenerateDrawDefinitionArgs = {
   qualifyingProfiles?: any[];
   qualifyingOnly?: boolean;
   drawType?: DrawTypeEnum;
+  enforceGender?: boolean;
   matchUpFormat?: string;
   matchUpType?: TypeEnum;
   tieFormatName?: string;
@@ -140,6 +141,7 @@ export function generateDrawDefinition(
     ignoreStageSpace,
     tournamentRecord,
     qualifyingOnly,
+    enforceGender,
     tieFormatName,
     drawEntries,
     addToEvent,
@@ -157,7 +159,9 @@ export function generateDrawDefinition(
   // entries participantTypes must correspond with eventType
   // this is only possible if the event is provided
   const validEntriesResult =
-    event && participants && checkValidEntries({ event, participants });
+    event &&
+    participants &&
+    checkValidEntries({ event, participants, enforceGender });
 
   if (validEntriesResult?.error)
     return decorateResult({ result: validEntriesResult, stack });
@@ -233,11 +237,6 @@ export function generateDrawDefinition(
   // drawDefinition cannot have both tieFormat and matchUpFormat
   let { tieFormat, matchUpFormat } = params;
 
-  if (tieFormat) {
-    const result = validateTieFormat({ tieFormat });
-    if (result.error) return decorateResult({ result, stack });
-  }
-
   // TODO: implement use of tieFormatId and tieFormats array
   if (matchUpType === TEAM && eventType === TEAM) {
     // if there is an existingDrawDefinition which has a tieFormat on MAIN structure
@@ -270,6 +269,15 @@ export function generateDrawDefinition(
     if (!event?.matchUpFormat) {
       matchUpFormat = FORMAT_STANDARD;
     }
+  }
+
+  if (tieFormat) {
+    const result = validateTieFormat({
+      gender: event?.gender,
+      enforceGender,
+      tieFormat,
+    });
+    if (result.error) return decorateResult({ result, stack });
   }
 
   const invalidDrawId = params.drawId && typeof params.drawId !== 'string';

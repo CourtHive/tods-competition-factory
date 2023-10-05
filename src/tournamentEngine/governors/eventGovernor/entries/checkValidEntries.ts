@@ -26,12 +26,12 @@ import {
 
 type CheckValidEntriesArgs = {
   participants: Participant[];
-  ignoreGender?: boolean;
+  enforceGender?: boolean;
   event: Event;
 };
 export function checkValidEntries({
+  enforceGender = true,
   participants,
-  ignoreGender,
   event,
 }: CheckValidEntriesArgs) {
   if (!participants) return { error: MISSING_PARTICIPANTS };
@@ -69,7 +69,7 @@ export function checkValidEntries({
     // TODO: implement gender checking for teams & pairs
     const personGender = participant?.person?.sex as unknown;
     const wrongGender =
-      !ignoreGender &&
+      enforceGender &&
       eventGender &&
       eventType === TypeEnum.Singles &&
       [GenderEnum.Male, GenderEnum.Female].includes(eventGender) &&
