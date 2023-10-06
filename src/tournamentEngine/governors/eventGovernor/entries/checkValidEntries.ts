@@ -18,22 +18,30 @@ import {
   MISSING_PARTICIPANTS,
 } from '../../../../constants/errorConditionConstants';
 import {
+  Entry,
   Event,
   GenderEnum,
   Participant,
+  Tournament,
   TypeEnum,
 } from '../../../../types/tournamentFromSchema';
 
 type CheckValidEntriesArgs = {
+  tournamentRecord?: Tournament;
   participants: Participant[];
+  consideredEntries?: Entry[];
   enforceGender?: boolean;
   event: Event;
 };
 export function checkValidEntries({
   enforceGender = true,
+  consideredEntries,
+  tournamentRecord,
   participants,
   event,
 }: CheckValidEntriesArgs) {
+  participants = participants || tournamentRecord?.participants;
+
   if (!participants) return { error: MISSING_PARTICIPANTS };
   if (!Array.isArray(participants)) return { error: INVALID_VALUES };
   if (!event) return { error: MISSING_EVENT };
@@ -46,7 +54,7 @@ export function checkValidEntries({
 
   const entryStatusMap = Object.assign(
     {},
-    ...(event.entries || []).map((entry) => ({
+    ...(consideredEntries || event.entries || []).map((entry) => ({
       [entry.participantId]: entry.entryStatus,
     }))
   );

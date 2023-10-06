@@ -1021,6 +1021,18 @@ tournamentEngine.checkOutParticipant({
 
 ---
 
+## checkValidEntries
+
+```js
+const { error, success } = tournamentEngine.checkValidEntries({
+  consideredEntries, // optional array of entries to check
+  enforceGender, // optional boolean - defaults to true
+  eventId, // required
+});
+```
+
+---
+
 ## clearMatchUpSchedule
 
 ```js
