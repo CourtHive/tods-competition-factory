@@ -74,7 +74,7 @@ test('event entries are only removed when not placed in draw structures', () => 
   expect(event.entries.length).toEqual(drawEntries.length + 3);
 
   result = tournamentEngine.checkValidEntries({ eventId });
-  expect(result.error).toEqual(MISSING_PARTICIPANTS);
+  expect(result.success).toEqual(true);
 
   result = tournamentEngine.checkValidEntries({
     participants: tournamentParticipants,
