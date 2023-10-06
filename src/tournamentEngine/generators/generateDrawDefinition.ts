@@ -39,10 +39,6 @@ import {
 
 import POLICY_SEEDING_USTA from '../../fixtures/policies/POLICY_SEEDING_USTA';
 import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats';
-import {
-  POLICY_TYPE_MATCHUP_ACTIONS,
-  POLICY_TYPE_SEEDING,
-} from '../../constants/policyConstants';
 import { PolicyDefinitions } from '../../types/factoryTypes';
 import { SUCCESS } from '../../constants/resultConstants';
 import { TEAM } from '../../constants/matchUpTypes';
@@ -64,10 +60,19 @@ import {
   ROUND_ROBIN_WITH_PLAYOFF,
 } from '../../constants/drawDefinitionConstants';
 import {
+  ResultType,
+  decorateResult,
+} from '../../global/functions/decorateResult';
+import {
   QUALIFIER,
   STRUCTURE_ENTERED_TYPES,
   STRUCTURE_SELECTED_STATUSES,
 } from '../../constants/entryStatusConstants';
+import {
+  POLICY_TYPE_DRAWS,
+  POLICY_TYPE_MATCHUP_ACTIONS,
+  POLICY_TYPE_SEEDING,
+} from '../../constants/policyConstants';
 import {
   DrawDefinition,
   DrawTypeEnum,
@@ -79,10 +84,6 @@ import {
   Tournament,
   TypeEnum,
 } from '../../types/tournamentFromSchema';
-import {
-  ResultType,
-  decorateResult,
-} from '../../global/functions/decorateResult';
 
 type GenerateDrawDefinitionArgs = {
   automated?: boolean | { seedsOnly: boolean };
@@ -137,7 +138,6 @@ export function generateDrawDefinition(
   const stack = 'generateDrawDefinition';
   const {
     considerEventEntries = true, // in the absence of drawSize and drawEntries, look to event.entries
-    drawTypeCoercion = true,
     ignoreAllowedDrawTypes,
     voluntaryConsolation,
     hydrateCollections,
@@ -152,6 +152,17 @@ export function generateDrawDefinition(
     event,
   } = params;
 
+  const appliedPolicies =
+    getAppliedPolicies({
+      tournamentRecord,
+      event,
+    }).appliedPolicies ?? {};
+
+  const drawTypeCoercion =
+    params.drawTypeCoercion ??
+    appliedPolicies?.[POLICY_TYPE_DRAWS]?.drawTypeCoercion ??
+    true;
+
   const drawType =
     (drawTypeCoercion &&
       params.drawSize === 2 &&
@@ -165,12 +176,6 @@ export function generateDrawDefinition(
     tournamentRecord,
     inContext: true,
   });
-
-  const appliedPolicies =
-    getAppliedPolicies({
-      tournamentRecord,
-      event,
-    }).appliedPolicies ?? {};
 
   const enforceGender =
     params.enforceGender ??

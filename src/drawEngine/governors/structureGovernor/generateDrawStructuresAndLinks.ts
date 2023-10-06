@@ -8,6 +8,7 @@ import { ensureInt } from '../../../utilities/ensureInt';
 import { isPowerOf2 } from '../../../utilities';
 import { getGenerators } from './getGenerators';
 
+import { POLICY_TYPE_DRAWS } from '../../../constants/policyConstants';
 import { PolicyDefinitions } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/matchUpTypes';
@@ -57,7 +58,6 @@ export function generateDrawStructuresAndLinks(
 ) {
   const {
     enforceMinimumDrawSize = true,
-    drawTypeCoercion = true, // coerce to SINGLE_ELIMINATION for drawSize: 2
     overwriteExisting,
     appliedPolicies,
     staggeredEntry, // optional - specifies main structure FEED_IN for drawTypes CURTIS_CONSOLATION, FEED_IN_CHAMPIONSHIPS, FMLC
@@ -67,6 +67,11 @@ export function generateDrawStructuresAndLinks(
     isMock,
     uuids,
   } = params || {};
+
+  const drawTypeCoercion =
+    params.drawTypeCoercion ??
+    appliedPolicies?.[POLICY_TYPE_DRAWS]?.drawTypeCoercion ??
+    true;
 
   const stack = 'generateDrawStructuresAndLinks';
   let drawType =
