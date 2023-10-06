@@ -109,9 +109,13 @@ export function processPlayoffGroups({
         .map((p) => positionRangeMap[p]?.finishingPositions)
         .flat();
 
-    const playoffDrawType = playoffGroup.drawType || SINGLE_ELIMINATION;
     const participantsInDraw = groupCount * finishingPositions.length;
     const drawSize = nextPowerOf2(participantsInDraw);
+
+    const playoffDrawType =
+      (drawSize === 2 && SINGLE_ELIMINATION) ||
+      playoffGroup.drawType ||
+      SINGLE_ELIMINATION;
 
     if (positionsPlayedOff) {
       finishingPositionOffset = Math.min(...positionsPlayedOff) - 1;

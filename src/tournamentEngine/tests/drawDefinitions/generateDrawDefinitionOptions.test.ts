@@ -7,7 +7,9 @@ import { INVALID_DRAW_SIZE } from '../../../constants/errorConditionConstants';
 
 it('can be configured to not enforce minimum drawSize for multi-structure draws', () => {
   const result = mocksEngine.generateTournamentRecord({
-    drawProfiles: [{ drawSize: 2, drawType: CURTIS_CONSOLATION }],
+    drawProfiles: [
+      { drawSize: 2, drawType: CURTIS_CONSOLATION, drawTypeCoercion: false },
+    ],
   });
 
   expect(result.error).toEqual(INVALID_DRAW_SIZE);
@@ -18,9 +20,10 @@ it('can be configured to not enforce minimum drawSize for multi-structure draws'
   } = mocksEngine.generateTournamentRecord({
     drawProfiles: [
       {
-        drawSize: 2,
-        drawType: CURTIS_CONSOLATION,
         enforceMinimumDrawSize: false,
+        drawType: CURTIS_CONSOLATION,
+        drawTypeCoercion: false,
+        drawSize: 2,
       },
     ],
   });

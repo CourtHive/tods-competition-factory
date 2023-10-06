@@ -220,12 +220,18 @@ it('does not generate multi-structure draws with fewer than 4 participants', () 
   reset();
   initialize();
   mainDrawPositions({ drawSize: 2 });
-  drawEngine.generateDrawTypeAndModifyDrawDefinition({ drawType: CURTIS });
+  drawEngine.generateDrawTypeAndModifyDrawDefinition({
+    drawType: CURTIS,
+    drawTypeCoercion: false,
+  });
   let { drawDefinition } = drawEngine.getState();
   expect(drawDefinition.structures.length).toEqual(0);
   expect(drawDefinition.links.length).toEqual(0);
 
-  drawEngine.generateDrawTypeAndModifyDrawDefinition({ drawType: COMPASS });
+  drawEngine.generateDrawTypeAndModifyDrawDefinition({
+    drawType: COMPASS,
+    drawTypeCoercion: false,
+  });
   ({ drawDefinition } = drawEngine.getState());
   expect(drawDefinition.structures.length).toEqual(0);
   expect(drawDefinition.links.length).toEqual(0);
