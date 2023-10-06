@@ -37,7 +37,7 @@ const features = [
     description: (
       <>
         Written in 100% TypeScript following a Test Driven Development process
-        utilizing Vitest. More than 460 test files and 1800 total tests cover
+        utilizing Vitest. More than 470 test files and 1850 total tests cover
         more than 96% of the code base.
       </>
     ),

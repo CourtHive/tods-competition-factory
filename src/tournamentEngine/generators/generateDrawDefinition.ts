@@ -97,9 +97,10 @@ type GenerateDrawDefinitionArgs = {
   considerEventEntries?: boolean;
   hydrateCollections?: boolean;
   tournamentRecord: Tournament;
-  drawMatic?: DrawMaticArgs;
+  drawTypeCoercion?: boolean;
   ignoreStageSpace?: boolean;
   qualifyingProfiles?: any[];
+  drawMatic?: DrawMaticArgs;
   qualifyingOnly?: boolean;
   drawType?: DrawTypeEnum;
   enforceGender?: boolean;
@@ -135,8 +136,8 @@ export function generateDrawDefinition(
 } {
   const stack = 'generateDrawDefinition';
   const {
-    drawType = DrawTypeEnum.SingleElimination,
     considerEventEntries = true, // in the absence of drawSize and drawEntries, look to event.entries
+    drawTypeCoercion = true,
     ignoreAllowedDrawTypes,
     voluntaryConsolation,
     hydrateCollections,
@@ -150,6 +151,13 @@ export function generateDrawDefinition(
     placeByes,
     event,
   } = params;
+
+  const drawType =
+    (drawTypeCoercion &&
+      params.drawSize === 2 &&
+      DrawTypeEnum.SingleElimination) ||
+    params.drawType ||
+    DrawTypeEnum.SingleElimination;
 
   // get participants both for entry validation and for automated placement
   // automated placement requires them to be "inContext" for avoidance policies to work

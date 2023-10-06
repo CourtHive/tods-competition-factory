@@ -31,6 +31,7 @@ import {
 } from '../../../constants/drawDefinitionConstants';
 import {
   DrawDefinition,
+  DrawTypeEnum,
   Structure,
   TieFormat,
 } from '../../../types/tournamentFromSchema';
@@ -56,8 +57,8 @@ export function generateDrawStructuresAndLinks(
 ) {
   const {
     enforceMinimumDrawSize = true,
+    drawTypeCoercion = true, // coerce to SINGLE_ELIMINATION for drawSize: 2
     overwriteExisting,
-    drawTypeCoercion, // coerce to SINGLE_ELIMINATION for drawSize: 2
     appliedPolicies,
     staggeredEntry, // optional - specifies main structure FEED_IN for drawTypes CURTIS_CONSOLATION, FEED_IN_CHAMPIONSHIPS, FMLC
     drawDefinition,
@@ -68,7 +69,13 @@ export function generateDrawStructuresAndLinks(
   } = params || {};
 
   const stack = 'generateDrawStructuresAndLinks';
-  let drawType = params.drawType ?? SINGLE_ELIMINATION;
+  let drawType =
+    (drawTypeCoercion &&
+      params.drawSize === 2 &&
+      DrawTypeEnum.SingleElimination) ||
+    params.drawType ||
+    DrawTypeEnum.SingleElimination;
+
   const structures: Structure[] = [],
     links: any[] = [];
 
