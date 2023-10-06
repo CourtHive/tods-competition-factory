@@ -279,8 +279,12 @@ export function addNotice(notice: Notice) {
   return _globalStateProvider.addNotice(notice);
 }
 
-export function getNotices(topic: string) {
-  return _globalStateProvider.getNotices(topic);
+export type GetNoticesArgs = {
+  topic: string;
+};
+
+export function getNotices(params: GetNoticesArgs): string[] {
+  return _globalStateProvider.getNotices(params);
 }
 
 export type DeleteNoticeArgs = {

@@ -2,8 +2,10 @@ import { SUCCESS } from '../../constants/resultConstants';
 import {
   CallListenerArgs,
   DeleteNoticeArgs,
+  GetNoticesArgs,
   HandleCaughtErrorArgs,
   ImplemtationGlobalStateTypes,
+  Notice,
 } from './globalState';
 import {
   INVALID_TOURNAMENT_RECORD,
@@ -122,7 +124,7 @@ export function cycleMutationStatus() {
   return status;
 }
 
-export function addNotice({ topic, payload, key }) {
+export function addNotice({ topic, payload, key }: Notice) {
   syncGlobalState.modified = true;
   if (typeof topic !== 'string' || typeof payload !== 'object') {
     return;
@@ -142,7 +144,7 @@ export function addNotice({ topic, payload, key }) {
   syncGlobalState.notices.push({ topic, payload, key });
 }
 
-export function getNotices({ topic }) {
+export function getNotices({ topic }: GetNoticesArgs) {
   const notices = syncGlobalState.notices
     .filter((notice) => notice.topic === topic)
     .map((notice) => notice.payload);

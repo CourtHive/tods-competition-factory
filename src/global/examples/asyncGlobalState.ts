@@ -1,7 +1,9 @@
 import { executionAsyncId, createHook } from 'async_hooks';
 import {
+  GetNoticesArgs,
   HandleCaughtErrorArgs,
   ImplemtationGlobalStateTypes,
+  Notice,
 } from '../state/globalState';
 
 const NOT_FOUND = 'Not found';
@@ -163,7 +165,7 @@ function cycleMutationStatus() {
   return status;
 }
 
-function addNotice({ topic, payload, key }) {
+function addNotice({ topic, payload, key }: Notice) {
   const instanceState = getInstanceState();
   instanceState.modified = true;
 
@@ -187,7 +189,7 @@ function addNotice({ topic, payload, key }) {
   return { success: true };
 }
 
-function getNotices({ topic }) {
+function getNotices({ topic }: GetNoticesArgs) {
   const instanceState = getInstanceState();
 
   const notices = instanceState.notices
