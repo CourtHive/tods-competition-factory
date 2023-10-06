@@ -216,3 +216,19 @@ async function callListener({ topic, notices }) {
     await method(notices);
   }
 }
+
+export function handleCaughtError({ err, params, methodName }) {
+  let error;
+  if (typeof err === 'string') {
+    error = err.toUpperCase();
+  } else if (err instanceof Error) {
+    error = err.message;
+  }
+
+  console.log('ERROR', {
+    tournamentId: getTournamentId(),
+    params: JSON.stringify(params),
+    methodName,
+    error,
+  });
+}

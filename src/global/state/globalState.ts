@@ -306,3 +306,7 @@ export function setTournamentId(tournamentId: string): {
 export function removeTournamentRecord(tournamentId) {
   return _globalStateProvider.removeTournamentRecord(tournamentId);
 }
+
+export function handleCaughtError({ err, params, methodName }) {
+  return _globalStateProvider.handleCaughtError({ err, params, methodName });
+}

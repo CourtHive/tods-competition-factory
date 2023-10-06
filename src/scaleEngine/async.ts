@@ -10,6 +10,8 @@ import {
   setTournamentId,
   deleteNotices,
   setDeepCopy,
+  handleCaughtError,
+  getDevContext,
 } from '../global/state/globalState';
 
 import rankingsGovernor from './governors/rankingsGovernor';
@@ -98,9 +100,17 @@ export function scaleEngineAsync(test?): FactoryEngine & { error?: any } {
     for (const governor of governors) {
       const governorMethods = Object.keys(governor);
 
-      for (const governorMethod of governorMethods) {
-        engine[governorMethod] = async (params) => {
-          return await engineInvoke(governor[governorMethod], params);
+      for (const methodName of governorMethods) {
+        engine[methodName] = async (params) => {
+          if (getDevContext()) {
+            return await engineInvoke(governor[methodName], params);
+          } else {
+            try {
+              return await engineInvoke(governor[methodName], params);
+            } catch (err) {
+              handleCaughtError({ err, params, methodName });
+            }
+          }
         };
       }
     }

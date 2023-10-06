@@ -25,6 +25,7 @@ import {
   setTournamentRecord,
   cycleMutationStatus,
   getDevContext,
+  handleCaughtError,
 } from '../global/state/globalState';
 
 import { SUCCESS } from '../constants/resultConstants';
@@ -164,29 +165,16 @@ export function tournamentEngineAsync(
     for (const governor of governors) {
       const governorMethods = Object.keys(governor);
 
-      for (const method of governorMethods) {
-        engine[method] = async (params) => {
+      for (const methodName of governorMethods) {
+        engine[methodName] = async (params) => {
           // if devContext is true then don't trap errors
           if (getDevContext()) {
-            return await engineInvoke(governor[method], params);
+            return await engineInvoke(governor[methodName], params);
           } else {
             try {
-              return await engineInvoke(governor[method], params);
+              return await engineInvoke(governor[methodName], params);
             } catch (err) {
-              const tournamentId = getTournamentId();
-              let error;
-              if (typeof err === 'string') {
-                error = err.toUpperCase();
-              } else if (err instanceof Error) {
-                error = err.message;
-              }
-
-              console.log('ERROR', {
-                params: JSON.stringify(params),
-                tournamentId,
-                method,
-                error,
-              });
+              handleCaughtError({ err, params, methodName });
             }
           }
         };

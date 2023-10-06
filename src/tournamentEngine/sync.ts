@@ -25,6 +25,7 @@ import {
   setTournamentRecord,
   getDeepCopyIterations,
   cycleMutationStatus,
+  handleCaughtError,
 } from '../global/state/globalState';
 
 import { FactoryEngine } from '../types/factoryTypes';
@@ -199,19 +200,7 @@ export const tournamentEngine = ((): FactoryEngine => {
             try {
               return engineInvoke(governor[methodName], params, methodName);
             } catch (err) {
-              let error;
-              if (typeof err === 'string') {
-                error = err.toUpperCase();
-              } else if (err instanceof Error) {
-                error = err.message;
-              }
-
-              console.log('ERROR', {
-                tournamentId: getTournamentId(),
-                params: JSON.stringify(params),
-                methodName,
-                error,
-              });
+              handleCaughtError({ err, params, methodName });
             }
           }
         };

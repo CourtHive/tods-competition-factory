@@ -19,6 +19,7 @@ import {
   setTournamentRecords,
   getTournamentId,
   cycleMutationStatus,
+  handleCaughtError,
 } from '../global/state/globalState';
 
 import {
@@ -196,20 +197,7 @@ export const competitionEngine = (function () {
             try {
               return engineInvoke(governor[methodName], params, methodName);
             } catch (err) {
-              const activeTournamentId = getTournamentId();
-              let error;
-              if (typeof err === 'string') {
-                error = err.toUpperCase();
-              } else if (err instanceof Error) {
-                error = err.message;
-              }
-
-              console.log('ERROR', {
-                params: JSON.stringify(params),
-                activeTournamentId,
-                methodName,
-                error,
-              });
+              handleCaughtError({ err, params, methodName });
             }
           }
         };

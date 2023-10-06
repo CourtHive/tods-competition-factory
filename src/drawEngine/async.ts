@@ -18,6 +18,7 @@ import {
   getDevContext,
   deleteNotices,
   createInstanceState,
+  handleCaughtError,
 } from '../global/state/globalState';
 
 import { MISSING_DRAW_DEFINITION } from '../constants/errorConditionConstants';
@@ -111,26 +112,15 @@ export function drawEngineAsync(
     for (const governor of governors) {
       const governorMethods = Object.keys(governor);
 
-      for (const governorMethod of governorMethods) {
-        engine[governorMethod] = async (params) => {
+      for (const methodName of governorMethods) {
+        engine[methodName] = async (params) => {
           if (getDevContext()) {
-            return await invoke({ params, governor, governorMethod });
+            return await invoke({ params, governor, methodName });
           } else {
             try {
-              return await invoke({ params, governor, governorMethod });
+              return await invoke({ params, governor, methodName });
             } catch (err) {
-              let error;
-              if (typeof err === 'string') {
-                error = err.toUpperCase();
-              } else if (err instanceof Error) {
-                error = err.message;
-              }
-              console.log('ERROR', {
-                params: JSON.stringify(params),
-                drawId: drawDefinition?.drawId,
-                method: governorMethod,
-                error,
-              });
+              handleCaughtError({ err, params, methodName });
             }
           }
         };
@@ -138,7 +128,7 @@ export function drawEngineAsync(
     }
   }
 
-  async function invoke({ params, governor, governorMethod }) {
+  async function invoke({ params, governor, methodName }) {
     delete engine.success;
     delete engine.error;
 
@@ -154,7 +144,7 @@ export function drawEngineAsync(
       drawDefinition,
     };
 
-    const result = governor[governorMethod](params);
+    const result = governor[methodName](params);
 
     if (result?.error) {
       if (snapshot) setState(snapshot);
