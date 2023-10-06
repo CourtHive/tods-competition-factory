@@ -99,7 +99,12 @@ export const scaleEngine = (() => {
             try {
               return engineInvoke(governor[methodName], params);
             } catch (err) {
-              handleCaughtError({ err, params, methodName });
+              handleCaughtError({
+                engineName: 'scaleEngine',
+                methodName,
+                params,
+                err,
+              });
             }
           }
         };

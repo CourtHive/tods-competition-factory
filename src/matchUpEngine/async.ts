@@ -85,7 +85,12 @@ export function matchUpEngineAsync(
             try {
               return await invoke({ params, governor, methodName });
             } catch (err) {
-              handleCaughtError({ err, params, methodName });
+              handleCaughtError({
+                engineName: 'matchUpEngine',
+                methodName,
+                params,
+                err,
+              });
             }
           }
         };

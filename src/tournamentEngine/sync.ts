@@ -200,7 +200,12 @@ export const tournamentEngine = ((): FactoryEngine => {
             try {
               return engineInvoke(governor[methodName], params, methodName);
             } catch (err) {
-              handleCaughtError({ err, params, methodName });
+              handleCaughtError({
+                engineName: 'tournamentEngine',
+                methodName,
+                params,
+                err,
+              });
             }
           }
         };

@@ -174,7 +174,12 @@ export function tournamentEngineAsync(
             try {
               return await engineInvoke(governor[methodName], params);
             } catch (err) {
-              handleCaughtError({ err, params, methodName });
+              handleCaughtError({
+                engineName: 'tournamentEngine',
+                methodName,
+                params,
+                err,
+              });
             }
           }
         };

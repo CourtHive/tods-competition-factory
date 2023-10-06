@@ -112,7 +112,12 @@ export const drawEngine = (function () {
             try {
               return invoke({ params, governor, methodName });
             } catch (err) {
-              handleCaughtError({ err, params, methodName });
+              handleCaughtError({
+                engineName: 'drawEngine',
+                methodName,
+                params,
+                err,
+              });
             }
           }
         };

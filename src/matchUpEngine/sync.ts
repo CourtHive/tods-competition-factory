@@ -77,7 +77,12 @@ export const matchUpEngine = (() => {
             try {
               return invoke({ params, governor, methodName });
             } catch (err) {
-              handleCaughtError({ err, params, methodName });
+              handleCaughtError({
+                engineName: 'matchUpEngine',
+                methodName,
+                params,
+                err,
+              });
             }
           }
         };

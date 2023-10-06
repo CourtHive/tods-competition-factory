@@ -197,7 +197,12 @@ export const competitionEngine = (function () {
             try {
               return engineInvoke(governor[methodName], params, methodName);
             } catch (err) {
-              handleCaughtError({ err, params, methodName });
+              handleCaughtError({
+                engineName: 'competitionEngine',
+                methodName,
+                params,
+                err,
+              });
             }
           }
         };

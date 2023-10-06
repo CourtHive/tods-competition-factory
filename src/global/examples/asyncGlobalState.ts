@@ -1,4 +1,8 @@
 import { executionAsyncId, createHook } from 'async_hooks';
+import {
+  HandleCaughtErrorArgs,
+  ImplemtationGlobalStateTypes,
+} from '../state/globalState';
 
 const NOT_FOUND = 'Not found';
 const INVALID_VALUES = 'Invalid values';
@@ -28,7 +32,7 @@ const asyncHook = createHook({
 asyncHook.enable();
 
 function createInstanceState() {
-  const instanceState = {
+  const instanceState: ImplemtationGlobalStateTypes = {
     disableNotifications: false,
     tournamentId: undefined,
     tournamentRecords: {},
@@ -69,6 +73,7 @@ export default {
   setTournamentId,
   setTournamentRecord,
   setTournamentRecords,
+  handleCaughtError,
 };
 
 export function disableNotifications() {
@@ -217,7 +222,12 @@ async function callListener({ topic, notices }) {
   }
 }
 
-export function handleCaughtError({ err, params, methodName }) {
+export function handleCaughtError({
+  engineName,
+  methodName,
+  params,
+  err,
+}: HandleCaughtErrorArgs) {
   let error;
   if (typeof err === 'string') {
     error = err.toUpperCase();
@@ -228,6 +238,7 @@ export function handleCaughtError({ err, params, methodName }) {
   console.log('ERROR', {
     tournamentId: getTournamentId(),
     params: JSON.stringify(params),
+    engine: engineName,
     methodName,
     error,
   });

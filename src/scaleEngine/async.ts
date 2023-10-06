@@ -108,7 +108,12 @@ export function scaleEngineAsync(test?): FactoryEngine & { error?: any } {
             try {
               return await engineInvoke(governor[methodName], params);
             } catch (err) {
-              handleCaughtError({ err, params, methodName });
+              handleCaughtError({
+                engineName: 'scaleEngine',
+                methodName,
+                params,
+                err,
+              });
             }
           }
         };
