@@ -178,16 +178,6 @@ export function generateDrawDefinition(
       ?.enforceGender ??
     appliedPolicies?.[POLICY_TYPE_MATCHUP_ACTIONS]?.participants?.enforceGender;
 
-  // entries participantTypes must correspond with eventType
-  // this is only possible if the event is provided
-  const validEntriesResult =
-    event &&
-    participants &&
-    checkValidEntries({ event, participants, enforceGender });
-
-  if (validEntriesResult?.error)
-    return decorateResult({ result: validEntriesResult, stack });
-
   // if tournamentRecord is provided, and unless instructed to ignore valid types,
   // check for restrictions on allowed drawTypes
   const allowedDrawTypes =
@@ -214,6 +204,21 @@ export function generateDrawDefinition(
     drawEntries ||
     (considerEventEntries ? eventEntries : [])
   ).filter(({ entryStage }) => !entryStage || entryStage === MAIN);
+
+  // entries participantTypes must correspond with eventType
+  // this is only possible if the event is provided
+  const validEntriesResult =
+    event &&
+    participants &&
+    checkValidEntries({
+      consideredEntries,
+      enforceGender,
+      participants,
+      event,
+    });
+
+  if (validEntriesResult?.error)
+    return decorateResult({ result: validEntriesResult, stack });
 
   const derivedDrawSize =
     !params.drawSize &&
