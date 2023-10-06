@@ -12,6 +12,7 @@ import {
   getDevContext,
   deleteNotices,
   createInstanceState,
+  handleCaughtError,
 } from '../global/state/globalState';
 import {
   getMatchUp,
@@ -76,24 +77,19 @@ export function matchUpEngineAsync(
     for (const governor of governors) {
       const governorMethods = Object.keys(governor);
 
-      for (const governorMethod of governorMethods) {
-        engine[governorMethod] = async (params) => {
+      for (const methodName of governorMethods) {
+        engine[methodName] = async (params) => {
           if (getDevContext()) {
-            return await invoke({ params, governor, governorMethod });
+            return await invoke({ params, governor, methodName });
           } else {
             try {
-              return await invoke({ params, governor, governorMethod });
+              return await invoke({ params, governor, methodName });
             } catch (err) {
-              let error;
-              if (typeof err === 'string') {
-                error = err.toUpperCase();
-              } else if (err instanceof Error) {
-                error = err.message;
-              }
-              console.log('ERROR', {
-                params: JSON.stringify(params),
-                method: governorMethod,
-                error,
+              handleCaughtError({
+                engineName: 'matchUpEngine',
+                methodName,
+                params,
+                err,
               });
             }
           }
@@ -102,7 +98,7 @@ export function matchUpEngineAsync(
     }
   }
 
-  async function invoke({ params, governor, governorMethod }) {
+  async function invoke({ params, governor, methodName }) {
     engine.success = false;
     engine.error = undefined;
 
@@ -119,7 +115,7 @@ export function matchUpEngineAsync(
       matchUp,
     };
 
-    const result = governor[governorMethod](params);
+    const result = governor[methodName](params);
 
     if (result?.error) {
       if (snapshot) setState(snapshot);

@@ -1,5 +1,12 @@
-import { TournamentRecordsArgs } from '../../types/factoryTypes';
 import { SUCCESS } from '../../constants/resultConstants';
+import {
+  CallListenerArgs,
+  DeleteNoticeArgs,
+  GetNoticesArgs,
+  HandleCaughtErrorArgs,
+  ImplemtationGlobalStateTypes,
+  Notice,
+} from './globalState';
 import {
   INVALID_TOURNAMENT_RECORD,
   INVALID_VALUES,
@@ -7,15 +14,7 @@ import {
   NOT_FOUND,
 } from '../../constants/errorConditionConstants';
 
-type GlobalStateTypes = TournamentRecordsArgs & {
-  tournamentId: string | undefined;
-  disableNotifications: boolean;
-  subscriptions: any;
-  modified: boolean;
-  notices: any[];
-};
-
-const syncGlobalState: GlobalStateTypes = {
+const syncGlobalState: ImplemtationGlobalStateTypes = {
   disableNotifications: false,
   tournamentId: undefined,
   tournamentRecords: {},
@@ -42,6 +41,7 @@ export default {
   setTournamentId,
   setTournamentRecord,
   setTournamentRecords,
+  handleCaughtError,
 };
 
 export function disableNotifications() {
@@ -124,7 +124,7 @@ export function cycleMutationStatus() {
   return status;
 }
 
-export function addNotice({ topic, payload, key }) {
+export function addNotice({ topic, payload, key }: Notice) {
   syncGlobalState.modified = true;
   if (typeof topic !== 'string' || typeof payload !== 'object') {
     return;
@@ -144,7 +144,7 @@ export function addNotice({ topic, payload, key }) {
   syncGlobalState.notices.push({ topic, payload, key });
 }
 
-export function getNotices({ topic }) {
+export function getNotices({ topic }: GetNoticesArgs) {
   const notices = syncGlobalState.notices
     .filter((notice) => notice.topic === topic)
     .map((notice) => notice.payload);
@@ -155,7 +155,7 @@ export function deleteNotices() {
   syncGlobalState.notices = [];
 }
 
-export function deleteNotice({ topic, key }) {
+export function deleteNotice({ topic, key }: DeleteNoticeArgs) {
   syncGlobalState.notices = syncGlobalState.notices.filter(
     (notice) => (!topic || notice.topic === topic) && notice.key !== key
   );
@@ -166,9 +166,31 @@ export function getTopics() {
   return { topics };
 }
 
-export function callListener({ topic, notices }) {
+export function callListener({ topic, notices }: CallListenerArgs) {
   const method = syncGlobalState.subscriptions[topic];
   if (method && typeof method === 'function') {
     method(notices);
   }
+}
+
+export function handleCaughtError({
+  engineName,
+  methodName,
+  params,
+  err,
+}: HandleCaughtErrorArgs) {
+  let error;
+  if (typeof err === 'string') {
+    error = err.toUpperCase();
+  } else if (err instanceof Error) {
+    error = err.message;
+  }
+
+  console.log('ERROR', {
+    tournamentId: getTournamentId(),
+    params: JSON.stringify(params),
+    engine: engineName,
+    methodName,
+    error,
+  });
 }

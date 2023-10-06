@@ -1,4 +1,10 @@
 import { executionAsyncId, createHook } from 'async_hooks';
+import {
+  GetNoticesArgs,
+  HandleCaughtErrorArgs,
+  ImplemtationGlobalStateTypes,
+  Notice,
+} from '../state/globalState';
 
 const NOT_FOUND = 'Not found';
 const INVALID_VALUES = 'Invalid values';
@@ -28,7 +34,7 @@ const asyncHook = createHook({
 asyncHook.enable();
 
 function createInstanceState() {
-  const instanceState = {
+  const instanceState: ImplemtationGlobalStateTypes = {
     disableNotifications: false,
     tournamentId: undefined,
     tournamentRecords: {},
@@ -69,6 +75,7 @@ export default {
   setTournamentId,
   setTournamentRecord,
   setTournamentRecords,
+  handleCaughtError,
 };
 
 export function disableNotifications() {
@@ -158,7 +165,7 @@ function cycleMutationStatus() {
   return status;
 }
 
-function addNotice({ topic, payload, key }) {
+function addNotice({ topic, payload, key }: Notice) {
   const instanceState = getInstanceState();
   instanceState.modified = true;
 
@@ -182,7 +189,7 @@ function addNotice({ topic, payload, key }) {
   return { success: true };
 }
 
-function getNotices({ topic }) {
+function getNotices({ topic }: GetNoticesArgs) {
   const instanceState = getInstanceState();
 
   const notices = instanceState.notices
@@ -215,4 +222,26 @@ async function callListener({ topic, notices }) {
   if (method && typeof method === 'function') {
     await method(notices);
   }
+}
+
+export function handleCaughtError({
+  engineName,
+  methodName,
+  params,
+  err,
+}: HandleCaughtErrorArgs) {
+  let error;
+  if (typeof err === 'string') {
+    error = err.toUpperCase();
+  } else if (err instanceof Error) {
+    error = err.message;
+  }
+
+  console.log('ERROR', {
+    tournamentId: getTournamentId(),
+    params: JSON.stringify(params),
+    engine: engineName,
+    methodName,
+    error,
+  });
 }

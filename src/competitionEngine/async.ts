@@ -20,6 +20,7 @@ import {
   getTournamentRecords,
   getTournamentId,
   cycleMutationStatus,
+  handleCaughtError,
 } from '../global/state/globalState';
 import {
   getState,
@@ -152,28 +153,20 @@ export function competitionEngineAsync(
   async function importGovernors(governors) {
     for (const governor of governors) {
       const govKeys = Object.keys(governor);
-      for (const method of govKeys) {
-        engine[method] = async function (params) {
+      for (const methodName of govKeys) {
+        engine[methodName] = async function (params) {
           // if devContext is true then don't trap errors
           if (getDevContext()) {
-            return await engineInvoke(governor[method], params);
+            return await engineInvoke(governor[methodName], params);
           } else {
             try {
-              return await engineInvoke(governor[method], params);
+              return await engineInvoke(governor[methodName], params);
             } catch (err) {
-              const activeTournamentId = getTournamentId();
-              let error;
-              if (typeof err === 'string') {
-                error = err.toUpperCase();
-              } else if (err instanceof Error) {
-                error = err.message;
-              }
-
-              console.log('ERROR', {
-                params: JSON.stringify(params),
-                activeTournamentId,
-                method,
-                error,
+              handleCaughtError({
+                engineName: 'competitionEngine',
+                methodName,
+                params,
+                err,
               });
             }
           }
