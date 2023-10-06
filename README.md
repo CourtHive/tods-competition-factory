@@ -39,7 +39,7 @@ By default a deep copy of documents are made as they are loaded into each state 
 ## Other Utilities
 
 1. [**mocksEngine**](./overview/mocks-engine-overview) - generates complete tournament objects, or tournamentRecords, as well as mock persons, participants and matchUp outcomes.
-   It is used extensively in the ~1800 tests that are run against the factory methods before every package release.
+   It is used extensively in the ~1850 tests that are run against the factory methods before every package release.
 2. [**scoreGovernor**](./scoreGovernor) - is a collection of scoring related utilities which provide analysis/validation or generate values, but do not make any mutations.
 3. [**matchUpFormatCode**](./codes/matchup-format) - is an ITF matchUp format code parser, stringifier, and validator.
 4. [**ageCategoryCode**](./codes/age-category) - is an ITF ageCategoryCode parser.
