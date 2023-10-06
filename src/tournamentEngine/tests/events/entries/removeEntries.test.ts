@@ -8,7 +8,6 @@ import { COMPETITOR } from '../../../../constants/participantRoles';
 import { MALE } from '../../../../constants/genderConstants';
 import {
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
-  MISSING_PARTICIPANTS,
   MISSING_PARTICIPANT_IDS,
 } from '../../../../constants/errorConditionConstants';
 import {
