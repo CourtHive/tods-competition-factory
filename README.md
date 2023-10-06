@@ -1,6 +1,6 @@
-[![NPM](https://img.shields.io/npm/v/tods-competition-factory)](https://www.npmjs.com/package/tods-competition-factory)
-
 # Competition Factory
+
+[![NPM](https://img.shields.io/npm/v/tods-competition-factory)](https://www.npmjs.com/package/tods-competition-factory)
 
 [Online Documentation with examples](https://courthive.github.io/tods-competition-factory/)
 
