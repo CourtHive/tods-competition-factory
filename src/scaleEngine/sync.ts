@@ -10,6 +10,7 @@ import {
   getDevContext,
   deleteNotices,
   setDeepCopy,
+  handleCaughtError,
 } from '../global/state/globalState';
 
 import rankingsGovernor from './governors/rankingsGovernor';
@@ -90,24 +91,19 @@ export const scaleEngine = (() => {
 
   function importGovernors(governors) {
     governors.forEach((governor) => {
-      Object.keys(governor).forEach((method) => {
-        engine[method] = (params) => {
+      Object.keys(governor).forEach((methodName) => {
+        engine[methodName] = (params) => {
           if (getDevContext()) {
-            return engineInvoke(governor[method], params);
+            return engineInvoke(governor[methodName], params);
           } else {
             try {
-              return engineInvoke(governor[method], params);
+              return engineInvoke(governor[methodName], params);
             } catch (err) {
-              let error;
-              if (typeof err === 'string') {
-                error = err.toUpperCase();
-              } else if (err instanceof Error) {
-                error = err.message;
-              }
-              console.log('ERROR', {
-                error,
-                method,
-                params: JSON.stringify(params),
+              handleCaughtError({
+                engineName: 'scaleEngine',
+                methodName,
+                params,
+                err,
               });
             }
           }

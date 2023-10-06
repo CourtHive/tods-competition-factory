@@ -148,7 +148,10 @@ export function addEventEntryPairs({
   });
 
   if (newParticipants.length) {
-    addNotice({ topic: ADD_PARTICIPANTS, participants: newParticipants });
+    addNotice({
+      payload: { participants: newParticipants },
+      topic: ADD_PARTICIPANTS,
+    });
   }
 
   const newParticipantIds = newParticipants.map(getParticipantId);

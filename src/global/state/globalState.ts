@@ -1,11 +1,18 @@
 import { intersection } from '../../utilities/arrays';
 import syncGlobalState from './syncGlobalState';
 
+import { TournamentRecordsArgs } from '../../types/factoryTypes';
 import {
   ErrorType,
   MISSING_ASYNC_STATE_PROVIDER,
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
+
+export type Notice = {
+  topic: string;
+  payload: any;
+  key?: string;
+};
 
 type IteratorsType = {
   makeDeepCopy: number;
@@ -46,6 +53,14 @@ type GlobalStateTypes = {
   deepCopy: boolean;
 };
 
+export type ImplemtationGlobalStateTypes = TournamentRecordsArgs & {
+  tournamentId?: string | undefined;
+  disableNotifications: boolean;
+  subscriptions: any;
+  notices: Notice[];
+  modified: boolean;
+};
+
 const globalState: GlobalStateTypes = {
   tournamentFactoryVersion: '0.0.0',
   timers: { default: { elapsedTime: 0 } },
@@ -66,6 +81,8 @@ const requiredStateProviderMethods = [
   'cycleMutationStatus',
   'deleteNotice',
   'deleteNotices',
+  'disableNotifications',
+  'enableNotifications',
   'getNotices',
   'getTopics',
   'getTournamentId',
@@ -78,7 +95,7 @@ const requiredStateProviderMethods = [
   'setTournamentRecords',
 ];
 
-export function setStateProvider(globalStateProvider?) {
+export function setStateProvider(globalStateProvider?: { [key: string]: any }) {
   if (typeof globalStateProvider !== 'object') {
     throw new Error(`Global state provider can not be undefined or null`);
   } else {
@@ -112,7 +129,7 @@ export function createInstanceState() {
 /**
  * if contextCriteria, check whether all contextCriteria keys values are equivalent with globalState.devContext object
  */
-export function getDevContext(contextCriteria?): any {
+export function getDevContext(contextCriteria?: any): any {
   if (!contextCriteria || typeof contextCriteria !== 'object') {
     return globalState.devContext ?? false;
   } else {
@@ -125,7 +142,10 @@ export function getDevContext(contextCriteria?): any {
   }
 }
 
-export function timeKeeper(action = 'reset', timer = 'default'): any {
+export function timeKeeper(
+  action: string = 'reset',
+  timer: string = 'default'
+): any {
   const timeNow = Date.now();
 
   if (action === 'report') {
@@ -193,11 +213,11 @@ export function timeKeeper(action = 'reset', timer = 'default'): any {
   return globalState.timers[timer];
 }
 
-export function setDevContext(value?) {
+export function setDevContext(value?: any) {
   globalState.devContext = value;
 }
 
-export function setDeepCopyIterations(value) {
+export function setDeepCopyIterations(value: number) {
   globalState.iterators.makeDeepCopy = value;
 }
 
@@ -213,7 +233,14 @@ export function enableNotifications() {
   _globalStateProvider.enableNotifications();
 }
 
-export function setDeepCopy(value, attributes) {
+export type DeepCopyAttributes = {
+  threshold?: number;
+  stringify?: string[];
+  ignore?: string[];
+  toJSON?: string[];
+};
+
+export function setDeepCopy(value: boolean, attributes: DeepCopyAttributes) {
   if (typeof value === 'boolean') {
     globalState.deepCopy = value;
   }
@@ -236,7 +263,7 @@ export function deepCopyEnabled() {
   };
 }
 
-export function setSubscriptions(params) {
+export function setSubscriptions(params: any) {
   if (!params?.subscriptions)
     return { error: MISSING_VALUE, info: 'missing subscriptions' };
   return _globalStateProvider.setSubscriptions({
@@ -248,15 +275,19 @@ export function cycleMutationStatus() {
   return _globalStateProvider.cycleMutationStatus();
 }
 
-export function addNotice(notice) {
+export function addNotice(notice: Notice) {
   return _globalStateProvider.addNotice(notice);
 }
 
-export function getNotices(topic) {
-  return _globalStateProvider.getNotices(topic);
+export type GetNoticesArgs = {
+  topic: string;
+};
+
+export function getNotices(params: GetNoticesArgs): string[] {
+  return _globalStateProvider.getNotices(params);
 }
 
-type DeleteNoticeArgs = {
+export type DeleteNoticeArgs = {
   topic?: string;
   key: string;
 };
@@ -272,6 +303,10 @@ export function getTopics() {
   return _globalStateProvider.getTopics();
 }
 
+export type CallListenerArgs = {
+  notices: Notice[];
+  topic: string;
+};
 export async function callListener(payload) {
   return _globalStateProvider.callListener(payload);
 }
@@ -280,7 +315,7 @@ export function getTournamentId() {
   return _globalStateProvider.getTournamentId();
 }
 
-export function getTournamentRecord(tournamentId) {
+export function getTournamentRecord(tournamentId: string) {
   return _globalStateProvider.getTournamentRecord(tournamentId);
 }
 
@@ -288,11 +323,11 @@ export function getTournamentRecords() {
   return _globalStateProvider.getTournamentRecords();
 }
 
-export function setTournamentRecord(tournamentRecord) {
+export function setTournamentRecord(tournamentRecord: any) {
   return _globalStateProvider.setTournamentRecord(tournamentRecord);
 }
 
-export function setTournamentRecords(tournamentRecords) {
+export function setTournamentRecords(tournamentRecords: any) {
   return _globalStateProvider.setTournamentRecords(tournamentRecords);
 }
 
@@ -303,6 +338,32 @@ export function setTournamentId(tournamentId: string): {
   return _globalStateProvider.setTournamentId(tournamentId);
 }
 
-export function removeTournamentRecord(tournamentId) {
+export function removeTournamentRecord(tournamentId: string) {
   return _globalStateProvider.removeTournamentRecord(tournamentId);
+}
+
+export type HandleCaughtErrorArgs = {
+  engineName?: string;
+  methodName: string;
+  params: any;
+  err: any;
+};
+
+export function handleCaughtError({
+  engineName,
+  methodName,
+  params,
+  err,
+}: HandleCaughtErrorArgs) {
+  const caughtErrorHandler =
+    (typeof _globalStateProvider.handleCaughtError === 'function' &&
+      _globalStateProvider.handleCaughtError) ||
+    syncGlobalState.handleCaughtError;
+
+  return caughtErrorHandler({
+    engineName,
+    methodName,
+    params,
+    err,
+  });
 }

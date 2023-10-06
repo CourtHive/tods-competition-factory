@@ -17,6 +17,7 @@ import {
   setDevContext,
   getDevContext,
   deleteNotices,
+  handleCaughtError,
 } from '../global/state/globalState';
 
 import { MISSING_DRAW_DEFINITION } from '../constants/errorConditionConstants';
@@ -103,25 +104,19 @@ export const drawEngine = (function () {
 
   function importGovernors(governors) {
     governors.forEach((governor) => {
-      Object.keys(governor).forEach((governorMethod) => {
-        engine[governorMethod] = (params) => {
+      Object.keys(governor).forEach((methodName) => {
+        engine[methodName] = (params) => {
           if (getDevContext()) {
-            return invoke({ params, governor, governorMethod });
+            return invoke({ params, governor, methodName });
           } else {
             try {
-              return invoke({ params, governor, governorMethod });
+              return invoke({ params, governor, methodName });
             } catch (err) {
-              let error;
-              if (typeof err === 'string') {
-                error = err.toUpperCase();
-              } else if (err instanceof Error) {
-                error = err.message;
-              }
-              console.log('ERROR', {
-                params: JSON.stringify(params),
-                drawId: drawDefinition?.drawId,
-                method: governorMethod,
-                error,
+              handleCaughtError({
+                engineName: 'drawEngine',
+                methodName,
+                params,
+                err,
               });
             }
           }
@@ -130,7 +125,7 @@ export const drawEngine = (function () {
     });
   }
 
-  function invoke({ params, governor, governorMethod }) {
+  function invoke({ params, governor, methodName }) {
     delete engine.success;
     delete engine.error;
 
@@ -147,7 +142,7 @@ export const drawEngine = (function () {
       drawDefinition,
     };
 
-    const result = governor[governorMethod](params);
+    const result = governor[methodName](params);
 
     if (result?.error) {
       if (snapshot) setState(snapshot);
