@@ -41,7 +41,7 @@ jobs:
         run: pnpm check-types
 
       - name: Run tests
-        run: npm test
+        run: pnpm test
 
       - name: Build Application
         run: pnpm build
