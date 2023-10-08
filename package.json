@@ -155,7 +155,7 @@
     "rimraf": "5.0.5",
     "rollup": "4.0.2",
     "rollup-plugin-dts": "6.0.2",
-    "rollup-plugin-esbuild": "6.0.2",
+    "rollup-plugin-esbuild": "6.1.0",
     "semver": "^7.5.1",
     "source-map-resolve": "0.6.0",
     "tslib": "2.6.2",
