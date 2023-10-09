@@ -13,7 +13,6 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
@@ -29,19 +28,19 @@ jobs:
           # File containing the version Spec of the version to use.  Examples: .nvmrc, .node-version, .tool-versions.
           node-version-file: .tool-versions
           # Used to specify a package manager for caching in the default directory. Supported values: npm, yarn, pnpm.
-          cache: npm
+          cache: yarn
 
       - name: Install Dependencies
-        run: npm i --ignore-scripts
+        run: yarn --frozen-lockfile --ignore-scripts
 
       - name: Lint source files
-        run: npm run lint
+        run: yarn lint
 
       - name: Check Typescript errors
-        run: npm run check-types
+        run: yarn check-types
 
       - name: Run tests
-        run: npm test
+        run: yarn test
 
       - name: Build Application
-        run: npm run build
+        run: yarn build
