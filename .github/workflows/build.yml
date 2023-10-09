@@ -22,27 +22,25 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
 
-      - uses: ./.github/actions/pnpm-setup
-
       - name: Setup Node.js environment
         uses: actions/setup-node@v3.8.1
         with:
           # File containing the version Spec of the version to use.  Examples: .nvmrc, .node-version, .tool-versions.
           node-version-file: .tool-versions
           # Used to specify a package manager for caching in the default directory. Supported values: npm, yarn, pnpm.
-          cache: pnpm
+          cache: yarn
 
       - name: Install Dependencies
-        run: pnpm i --ignore-scripts
+        run: yarn --frozen-lockfile --ignore-scripts
 
       - name: Lint source files
-        run: pnpm lint
+        run: yarn lint
 
       - name: Check Typescript errors
-        run: pnpm check-types
+        run: yarn check-types
 
       - name: Run tests
-        run: pnpm test
+        run: yarn test
 
       - name: Build Application
-        run: pnpm build
+        run: yarn build
