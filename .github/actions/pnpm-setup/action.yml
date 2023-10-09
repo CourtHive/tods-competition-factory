@@ -11,7 +11,7 @@ runs:
       with:
         node-version-file: .node-version
 
-    - uses: pnpm/action-setup@v2.4.0
+    - uses: pnpm/action-setup@v2
       with:
         run_install: false
 
