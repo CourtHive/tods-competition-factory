@@ -34,7 +34,7 @@ dependencies:
     version: 2.0.0
   courthive-components:
     specifier: ^0.7.0
-    version: 0.7.5
+    version: 0.7.5(@babel/core@7.22.20)
   material-ui:
     specifier: 0.20.2
     version: 0.20.2(react-dom@18.2.0)(react@18.2.0)
@@ -54,8 +54,8 @@ dependencies:
     specifier: 0.18.0
     version: 0.18.0(@types/react@18.2.25)(react@18.2.0)
   tods-competition-factory:
-    specifier: 1.7.0
-    version: 1.7.0
+    specifier: 1.7.1
+    version: 1.7.1(@babel/core@7.22.20)
 
 packages:
 
@@ -1198,6 +1198,18 @@ packages:
 
   /@babel/plugin-transform-optional-chaining@7.22.15(@babel/core@7.22.20):
     resolution: {integrity: sha512-ngQ2tBhq5vvSJw2Q2Z9i7ealNkpDMU0rGWnHPKqRZO0tzZ5tlaoz4hDvhXioOoaE0X2vfNss1djwg0DXlfu30A==}
+    engines: {node: '>=6.9.0'}
+    peerDependencies:
+      '@babel/core': ^7.0.0-0
+    dependencies:
+      '@babel/core': 7.22.20
+      '@babel/helper-plugin-utils': 7.22.5
+      '@babel/helper-skip-transparent-expression-wrappers': 7.22.5
+      '@babel/plugin-syntax-optional-chaining': 7.8.3(@babel/core@7.22.20)
+    dev: false
+
+  /@babel/plugin-transform-optional-chaining@7.23.0(@babel/core@7.22.20):
+    resolution: {integrity: sha512-sBBGXbLJjxTzLBF5rFWaikMnOGOk/BmK6vVByIdEggZ7Vn6CvWXZyRkkLFK6WE0IF8jSliyOkUN6SScFgzCM0g==}
     engines: {node: '>=6.9.0'}
     peerDependencies:
       '@babel/core': ^7.0.0-0
@@ -4475,7 +4487,7 @@ packages:
       typescript: 5.2.2
     dev: false
 
-  /courthive-components@0.7.5:
+  /courthive-components@0.7.5(@babel/core@7.22.20):
     resolution: {integrity: sha512-XPeFcyGRSVRVpQQ8KbtM9NJbNPN55T6di6MqFaMRNSac/it0RQ4FGU/bNCACg/NZ5kqRjzBlp9ncroc3CEVcQg==}
     engines: {node: '>=16.16.0 < 19'}
     dependencies:
@@ -4485,7 +4497,9 @@ packages:
       classnames: 2.3.2
       dayjs: 1.11.10
       husky: 8.0.3
-      tods-competition-factory: 1.7.0
+      tods-competition-factory: 1.7.1(@babel/core@7.22.20)
+    transitivePeerDependencies:
+      - '@babel/core'
     dev: false
 
   /cross-fetch@3.1.5:
@@ -10158,9 +10172,14 @@ packages:
       is-number: 7.0.0
     dev: false
 
-  /tods-competition-factory@1.7.0:
-    resolution: {integrity: sha512-WOAuuYBEcY4hbaIZm6zSBWuySSJj2L3YRZWgQy0kolQNIAgsLr9MxyAW0RDIgM/hY4pVzIPtUp+ryKB1RabC3g==}
+  /tods-competition-factory@1.7.1(@babel/core@7.22.20):
+    resolution: {integrity: sha512-8xx6xnCk3h14kuHrPRWXGZ7CAN+ZpWyi3es1cB75lZrp7EKqDVm1G788kwwgnLlGgJoevwm2c9u3lT1H1cCLhw==}
     engines: {node: '>=18.17.1 < 19'}
+    dependencies:
+      '@babel/plugin-transform-nullish-coalescing-operator': 7.22.11(@babel/core@7.22.20)
+      '@babel/plugin-transform-optional-chaining': 7.23.0(@babel/core@7.22.20)
+    transitivePeerDependencies:
+      - '@babel/core'
     dev: false
 
   /toidentifier@1.0.1:
