@@ -100,7 +100,7 @@ export function generateAdHocMatchUps({
         ? matchUp.roundNumber
         : roundNumber;
     },
-    1
+    0
   );
 
   // structure must not be a container of other structures
@@ -119,7 +119,7 @@ export function generateAdHocMatchUps({
 
   const nextRoundNumber =
     roundNumber ??
-    (newRound ? (lastRoundNumber ?? 0) + 1 : lastRoundNumber ?? 1);
+    ((newRound && (lastRoundNumber ?? 0) + 1) || lastRoundNumber || 1);
 
   participantIdPairings =
     participantIdPairings ??
