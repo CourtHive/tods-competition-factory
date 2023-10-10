@@ -19,6 +19,7 @@ import {
 } from './tieFormatUtilities';
 
 import { TIE_FORMAT_MODIFICATIONS } from '../../../constants/extensionConstants';
+import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../../constants/policyConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
@@ -43,8 +44,10 @@ export function addCollectionDefinition({
   updateInProgressMatchUps = true,
   collectionDefinition,
   tournamentRecord,
+  referenceGender,
   drawDefinition,
   tieFormatName,
+  enforceGender,
   structureId,
   matchUpId,
   matchUp,
@@ -52,8 +55,24 @@ export function addCollectionDefinition({
   uuids,
   event,
 }) {
+  const appliedPolicies =
+    getAppliedPolicies({
+      tournamentRecord,
+      drawDefinition,
+      event,
+    }).appliedPolicies ?? {};
+
+  enforceGender =
+    enforceGender ??
+    appliedPolicies?.[POLICY_TYPE_MATCHUP_ACTIONS]?.participants?.enforceGender;
+
+  const checkGender = !!(enforceGender !== false && event?.gender);
+
   const { valid, errors } = validateCollectionDefinition({
     collectionDefinition,
+    referenceGender,
+    checkGender,
+    event,
   });
   if (!valid) return { error: INVALID_VALUES, errors };
   const stack = 'addCollectionDefinition';
@@ -225,7 +244,6 @@ export function addCollectionDefinition({
     return { error: MISSING_DRAW_DEFINITION };
   }
 
-  const { appliedPolicies } = getAppliedPolicies({ tournamentRecord });
   if (appliedPolicies?.audit?.[TIE_FORMAT_MODIFICATIONS]) {
     const auditData = definedAttributes({
       drawId: drawDefinition?.drawId,
