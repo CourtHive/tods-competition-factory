@@ -10,6 +10,7 @@ import {
   modifyDrawNotice,
 } from '../notifications/drawNotifications';
 
+import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
 import { ROUND_OUTCOME } from '../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
@@ -28,7 +29,6 @@ import {
   MatchUpStatusEnum,
   Tournament,
 } from '../../types/tournamentFromSchema';
-import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
 
 type GenerateAdHocMatchUpsArgs = {
   participantIdPairings?: {
@@ -65,16 +65,30 @@ export function generateAdHocMatchUps({
 
   if (!structureId && drawDefinition.structures?.length === 1)
     structureId = drawDefinition.structures?.[0]?.structureId;
+
   if (typeof structureId !== 'string') return { error: MISSING_STRUCTURE_ID };
 
-  if (newRound && !matchUpsCount) {
+  // if drawDefinition and structureId are provided it is possible to infer roundNumber
+  const structure = drawDefinition.structures?.find(
+    (structure) => structure.structureId === structureId
+  );
+  if (!structure) return { error: STRUCTURE_NOT_FOUND };
+
+  if (!matchUpsCount) {
     const selectedEntries =
       drawDefinition?.entries?.filter((entry) => {
         const entryStatus = entry.entryStatus as EntryStatusEnum;
         return STRUCTURE_SELECTED_STATUSES.includes(entryStatus);
       }) ?? [];
+    const roundMatchUpsCount = Math.floor(selectedEntries?.length / 2) || 1;
 
-    matchUpsCount = Math.floor(selectedEntries?.length / 2) || 1;
+    if (newRound) {
+      matchUpsCount = roundMatchUpsCount;
+    } else {
+      const maxRemaining =
+        roundMatchUpsCount - (structure.matchUps?.length || 0); // TODO: minus the number of existing matchUps in roundNumber
+      if (maxRemaining > 0) matchUpsCount = maxRemaining;
+    }
   }
 
   if (
@@ -86,13 +100,8 @@ export function generateAdHocMatchUps({
     return { error: INVALID_VALUES, info: 'matchUpsCount or pairings error' };
   }
 
-  // if drawDefinition and structureId are provided it is possible to infer roundNumber
-  const structure = drawDefinition?.structures?.find(
-    (structure) => structure.structureId === structureId
-  );
-
   let structureHasRoundPositions;
-  const existingMatchUps = structure?.matchUps;
+  const existingMatchUps = structure.matchUps ?? [];
   const lastRoundNumber = existingMatchUps?.reduce(
     (roundNumber: number, matchUp: any) => {
       if (matchUp.roundPosition) structureHasRoundPositions = true;
@@ -107,9 +116,9 @@ export function generateAdHocMatchUps({
   // structure must not contain matchUps with roundPosition
   // structure must not determine finishingPosition by ROUND_OUTCOME
   if (
-    structure?.structures ||
+    structure.structures ||
     structureHasRoundPositions ||
-    structure?.finishingPosition === ROUND_OUTCOME
+    structure.finishingPosition === ROUND_OUTCOME
   ) {
     return { error: INVALID_STRUCTURE };
   }
@@ -119,7 +128,7 @@ export function generateAdHocMatchUps({
 
   const nextRoundNumber =
     roundNumber ??
-    (newRound ? (lastRoundNumber ?? 0) + 1 : lastRoundNumber ?? 1);
+    ((newRound && (lastRoundNumber ?? 0) + 1) || lastRoundNumber || 1);
 
   participantIdPairings =
     participantIdPairings ??

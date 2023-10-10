@@ -57,8 +57,13 @@ it('can generate AD_HOC drawDefinitions, add and delete matchUps', () => {
 
   const structureId = drawDefinition.structures[0].structureId;
 
-  result = tournamentEngine.generateAdHocMatchUps({ drawId, structureId });
-  expect(result.error).toEqual(INVALID_VALUES);
+  // will infer number of matchUps to generate based on selectedEntries
+  result = tournamentEngine.generateAdHocMatchUps({
+    addToStructure: false,
+    structureId,
+    drawId,
+  });
+  expect(result.matchUpsCount).toEqual(16);
 
   result = tournamentEngine.generateAdHocMatchUps({
     matchUpsCount: 3,
