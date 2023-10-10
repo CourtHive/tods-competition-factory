@@ -43,12 +43,10 @@ it.each([competitionEngineSync, asyncCompetitionEngine])(
         ].includes(method);
         if (!successExpected) console.log({ method });
         expect(successExpected).toEqual(true);
+      } else if (['devContext'].includes(method)) {
+        expect(result.version).not.toBeUndefined();
       } else {
-        if (['devContext'].includes(method)) {
-          expect(result.version).not.toBeUndefined();
-        } else {
-          expect(result.error).not.toBeUndefined();
-        }
+        expect(result.error).not.toBeUndefined();
       }
     }
   }
@@ -171,12 +169,10 @@ it.each([scaleEngineSync, asyncScaleEngine])(
       } else if (result.success || result.valid) {
         const successExpected = ['reset', 'devContext'].includes(method);
         expect(successExpected).toEqual(true);
+      } else if (['devContext'].includes(method)) {
+        expect(result.version).not.toBeUndefined();
       } else {
-        if (['devContext'].includes(method)) {
-          expect(result.version).not.toBeUndefined();
-        } else {
-          expect(result.error).not.toBeUndefined();
-        }
+        expect(result.error).not.toBeUndefined();
       }
     }
   }
