@@ -7,10 +7,14 @@ import {
   ResultType,
 } from '../../../global/functions/decorateResult';
 
-import { INVALID_TIE_FORMAT } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
+  INVALID_OBJECT,
+  INVALID_TIE_FORMAT,
+} from '../../../constants/errorConditionConstants';
+import {
   CollectionDefinition,
+  Event,
   GenderEnum,
   TieFormat,
   TypeEnum,
@@ -137,20 +141,23 @@ type ValidateCollectionDefinitionArgs = {
   checkCollectionIds?: boolean;
   referenceGender?: GenderEnum;
   checkGender?: boolean;
+  event?: Event;
 };
 export function validateCollectionDefinition({
   collectionDefinition,
   checkCollectionIds,
+  checkGender = true,
   referenceGender,
-  checkGender,
+  event,
 }: ValidateCollectionDefinitionArgs) {
+  referenceGender = referenceGender ?? event?.gender;
   const errors: string[] = [];
 
   if (typeof collectionDefinition !== 'object') {
     errors.push(
       `collectionDefinition must be an object: ${collectionDefinition}`
     );
-    return { errors };
+    return { errors, error: INVALID_OBJECT };
   }
 
   const {
@@ -228,7 +235,7 @@ export function validateCollectionDefinition({
     errors.push(`Invalid gender: ${gender}`);
   }
 
-  if (errors.length) return { errors };
+  if (errors.length) return { errors, error: INVALID_OBJECT };
 
   return { valid: true };
 }

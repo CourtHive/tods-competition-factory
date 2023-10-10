@@ -19,6 +19,7 @@ import {
 } from './tieFormatUtilities';
 
 import { TIE_FORMAT_MODIFICATIONS } from '../../../constants/extensionConstants';
+import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../../constants/policyConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
@@ -28,7 +29,10 @@ import {
   MISSING_DRAW_DEFINITION,
 } from '../../../constants/errorConditionConstants';
 import {
+  CollectionDefinition,
   DrawDefinition,
+  Event,
+  GenderEnum,
   MatchUp,
   Tournament,
 } from '../../../types/tournamentFromSchema';
@@ -39,21 +43,56 @@ import {
  * if a structureId is provided, will be added to structure.tieFormat
  * TODO: determine whether all contained instances of tieFormat should be updated
  */
+
+type AddCollectionDefinitionArgs = {
+  collectionDefinition: CollectionDefinition;
+  updateInProgressMatchUps?: boolean;
+  drawDefinition: DrawDefinition;
+  tournamentRecord: Tournament;
+  referenceGender?: GenderEnum;
+  tieFormatName?: string;
+  enforceGender?: boolean;
+  structureId: string;
+  matchUpId?: string;
+  matchUp?: MatchUp;
+  eventId?: string;
+  uuids?: string[];
+  event?: Event;
+};
+
 export function addCollectionDefinition({
   updateInProgressMatchUps = true,
   collectionDefinition,
   tournamentRecord,
+  referenceGender,
   drawDefinition,
   tieFormatName,
+  enforceGender,
   structureId,
   matchUpId,
   matchUp,
   eventId,
   uuids,
   event,
-}) {
+}: AddCollectionDefinitionArgs) {
+  const appliedPolicies =
+    getAppliedPolicies({
+      tournamentRecord,
+      drawDefinition,
+      event,
+    }).appliedPolicies ?? {};
+
+  enforceGender =
+    enforceGender ??
+    appliedPolicies?.[POLICY_TYPE_MATCHUP_ACTIONS]?.participants?.enforceGender;
+
+  const checkGender = !!(enforceGender !== false && event?.gender);
+
   const { valid, errors } = validateCollectionDefinition({
     collectionDefinition,
+    referenceGender,
+    checkGender,
+    event,
   });
   if (!valid) return { error: INVALID_VALUES, errors };
   const stack = 'addCollectionDefinition';
@@ -70,7 +109,7 @@ export function addCollectionDefinition({
   if (result?.error) return { error: result.error };
 
   const structure = result?.structure;
-  matchUp = matchUp || result?.matchUp;
+  matchUp = matchUp ?? result?.matchUp;
   const existingTieFormat = result?.tieFormat;
   const tieFormat = copyTieFormat(existingTieFormat);
 
@@ -125,13 +164,13 @@ export function addCollectionDefinition({
   result = validateTieFormat({ tieFormat: prunedTieFormat });
   if (result?.error) return { error: result.error };
 
-  if (eventId) {
+  if (eventId && event) {
     event.tieFormat = prunedTieFormat;
 
     // all team matchUps in the event which do not have tieFormats and where draws/strucures do not have tieFormats should have matchUps added
-    for (const drawDefinition of event.drawDefinitions || []) {
+    for (const drawDefinition of event.drawDefinitions ?? []) {
       if (drawDefinition.tieFormat) continue;
-      for (const structure of drawDefinition.structures || []) {
+      for (const structure of drawDefinition.structures ?? []) {
         if (structure.tieFormat) continue;
         const result = updateStructureMatchUps({
           updateInProgressMatchUps,
@@ -201,7 +240,7 @@ export function addCollectionDefinition({
     // all team matchUps in the drawDefinition which do not have tieFormats and where strucures do not have tieFormats should have matchUps added
     drawDefinition.tieFormat = prunedTieFormat;
 
-    for (const structure of drawDefinition.structures || []) {
+    for (const structure of drawDefinition.structures ?? []) {
       const result = updateStructureMatchUps({
         updateInProgressMatchUps,
         collectionDefinition,
@@ -225,7 +264,6 @@ export function addCollectionDefinition({
     return { error: MISSING_DRAW_DEFINITION };
   }
 
-  const { appliedPolicies } = getAppliedPolicies({ tournamentRecord });
   if (appliedPolicies?.audit?.[TIE_FORMAT_MODIFICATIONS]) {
     const auditData = definedAttributes({
       drawId: drawDefinition?.drawId,
@@ -279,11 +317,11 @@ function updateStructureMatchUps({
 
 type QueueNotificationsArgs = {
   modifiedStructureIds?: string[];
-  tournamentRecord: Tournament;
+  tournamentRecord?: Tournament;
   drawDefinition: DrawDefinition;
   modifiedMatchUps: MatchUp[];
   addedMatchUps: MatchUp[];
-  eventId: string;
+  eventId?: string;
   stack: string;
 };
 function queueNoficiations({

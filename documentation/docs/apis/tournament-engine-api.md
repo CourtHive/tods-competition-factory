@@ -4143,6 +4143,20 @@ tournamentEngine.withdrawParticipantAtDrawPosition({
 
 ---
 
+## validateCollectionDefinition
+
+```js
+const { valid } = validateCollectionDefinition({
+  collectionDefinition, // required
+  checkCollectionIds, // optional boolean - check that collectionIds are present
+  referenceGender, // optional - expected gender if eventId is not provided
+  checkGender, // optional boolean - defaults to true
+  eventId, // required only for checking gender
+});
+```
+
+---
+
 ## validateTeamLineUp
 
 ```js

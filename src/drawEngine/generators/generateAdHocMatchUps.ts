@@ -23,10 +23,12 @@ import {
 } from '../../constants/errorConditionConstants';
 import {
   DrawDefinition,
+  EntryStatusEnum,
   MatchUp,
   MatchUpStatusEnum,
   Tournament,
 } from '../../types/tournamentFromSchema';
+import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
 
 type GenerateAdHocMatchUpsArgs = {
   participantIdPairings?: {
@@ -64,6 +66,16 @@ export function generateAdHocMatchUps({
   if (!structureId && drawDefinition.structures?.length === 1)
     structureId = drawDefinition.structures?.[0]?.structureId;
   if (typeof structureId !== 'string') return { error: MISSING_STRUCTURE_ID };
+
+  if (newRound && !matchUpsCount) {
+    const selectedEntries =
+      drawDefinition?.entries?.filter((entry) => {
+        const entryStatus = entry.entryStatus as EntryStatusEnum;
+        return STRUCTURE_SELECTED_STATUSES.includes(entryStatus);
+      }) ?? [];
+
+    matchUpsCount = Math.floor(selectedEntries?.length / 2) || 1;
+  }
 
   if (
     (participantIdPairings && !Array.isArray(participantIdPairings)) ||

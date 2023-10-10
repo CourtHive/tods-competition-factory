@@ -222,7 +222,12 @@ Provides validation for `tieFormat` objects. See [tieFormats and lineUps](concep
 const {
   valid, // boolean whether valid or not
   error,
-} = scoreGovernor.validateTieFormat({ tieFormat });
+} = scoreGovernor.validateTieFormat({
+  checkCollectionIds, // ensure collectionId is present on all collections
+  enforceGender,
+  tieFormat,
+  gender,
+});
 ```
 
 ---

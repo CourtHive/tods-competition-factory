@@ -1,3 +1,5 @@
+import { updateAssignmentParticipantResults } from '../matchUpGovernor/updateAssignmentParticipantResults';
+import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import { getMissingSequenceNumbers } from '../../../utilities/arrays';
 import { extractAttributes, unique } from '../../../utilities';
 import {
@@ -59,10 +61,12 @@ export function deleteAdHocMatchUps({
     return { error: INVALID_STRUCTURE };
   }
 
+  const matchUpIdsWithScoreValue: string[] = [];
   const matchUpsToDelete =
-    existingMatchUps?.filter(({ matchUpId }) =>
-      matchUpIds.includes(matchUpId)
-    ) ?? [];
+    existingMatchUps?.filter(({ matchUpId, score }) => {
+      if (scoreHasValue({ score })) matchUpIdsWithScoreValue.push(matchUpId);
+      return matchUpIds.includes(matchUpId);
+    }) ?? [];
   const matchUpIdsToDelete = matchUpsToDelete.map(
     extractAttributes('matchUpId')
   );
@@ -85,15 +89,46 @@ export function deleteAdHocMatchUps({
     );
     const missingRoundNumbers = getMissingSequenceNumbers(roundNumbers);
     if (missingRoundNumbers.length) {
-      const roundNumbersToConsider = missingRoundNumbers.reverse();
-      for (const roundNumber of roundNumbersToConsider) {
+      missingRoundNumbers.reverse();
+      for (const roundNumber of missingRoundNumbers) {
         structure.matchUps.forEach((matchUp) => {
           if (matchUp.roundNumber && matchUp.roundNumber > roundNumber) {
-            modifyMatchUpNotice;
             matchUp.roundNumber -= 1;
+            modifyMatchUpNotice({
+              tournamentId: tournamentRecord?.tournamentId,
+              context: ['adHoc round deletion'],
+              eventId: event?.eventId,
+              drawDefinition,
+              matchUp,
+            });
           }
         });
       }
+    }
+
+    if (matchUpIdsWithScoreValue.length) {
+      structure.positionAssignments = unique(
+        structure.matchUps
+          .flatMap((matchUp) =>
+            (matchUp.sides ?? []).map((side) => side.participantId)
+          )
+          .filter(Boolean)
+      ).map((participantId) => ({ participantId }));
+
+      const matchUpFormat =
+        structure?.matchUpFormat ??
+        drawDefinition?.matchUpFormat ??
+        event?.matchUpFormat;
+
+      const result = updateAssignmentParticipantResults({
+        positionAssignments: structure.positionAssignments,
+        matchUps: structure.matchUps,
+        tournamentRecord,
+        drawDefinition,
+        matchUpFormat,
+        event,
+      });
+      if (result.error) console.log(result);
     }
 
     modifyDrawNotice({

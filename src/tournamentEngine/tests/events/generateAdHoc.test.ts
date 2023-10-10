@@ -51,7 +51,6 @@ it('can generate AD_HOC drawDefinitions, add and delete matchUps', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  let { matchUps } = tournamentEngine.allTournamentMatchUps();
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   expect(drawDefinition.structures.length).toEqual(1);
   expect(drawDefinition.structures[0].finishingPosition).toEqual(WIN_RATIO);
@@ -86,7 +85,7 @@ it('can generate AD_HOC drawDefinitions, add and delete matchUps', () => {
   });
   expect(result.success).toEqual(true);
 
-  ({ matchUps } = tournamentEngine.allTournamentMatchUps());
+  let { matchUps } = tournamentEngine.allTournamentMatchUps();
   expect(matchUps.length).toEqual(7);
 
   result = tournamentEngine.generateAdHocMatchUps({
@@ -350,6 +349,7 @@ it('will not allow addition of AD_HOC matchUps to other draw types', () => {
 
   const drawDefinition = result.drawDefinition;
   result = tournamentEngine.addDrawDefinition({ drawDefinition, eventId });
+  expect(result.success).toEqual(true);
 
   result = tournamentEngine.generateAdHocMatchUps({
     drawId: drawDefinition.drawId,
