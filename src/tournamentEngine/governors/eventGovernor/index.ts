@@ -122,6 +122,7 @@ import { modifyTieFormat } from '../../../matchUpEngine/governors/tieFormatGover
 import { resetScorecard } from './resetScorecard';
 import { resetTieFormat } from './resetTieFormat';
 
+import { validateCollectionDefinition } from '../../../matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
 import { generateDrawTypeAndModifyDrawDefinition } from '../../generators/generateDrawTypeAndModifyDrawDefinition';
 import { generateDrawStructuresAndLinks } from '../../generators/generateDrawStructuresAndLinks';
 import { generateQualifyingStructure } from './drawDefinitions/generateQualifyingStructure';
@@ -149,6 +150,7 @@ const eventGovernor = {
   disableTieAutoCalc,
   enableTieAutoCalc,
 
+  validateCollectionDefinition,
   modifyCollectionDefinition,
   orderCollectionDefinitions,
   removeCollectionDefinition,
