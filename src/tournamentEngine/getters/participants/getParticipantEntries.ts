@@ -561,12 +561,14 @@ export function getParticipantEntries(params) {
                 if (!participation) return;
 
                 if (!finishingPositionRange)
-                  finishingPositionRange = participation.finishingPositionRange;
+                  finishingPositionRange =
+                    participation?.finishingPositionRange;
                 if (
                   diff(finishingPositionRange) >
-                  diff(participation.finishingPositionRange)
+                  diff(participation?.finishingPositionRange)
                 )
-                  finishingPositionRange = participation.finishingPositionRange;
+                  finishingPositionRange =
+                    participation?.finishingPositionRange;
 
                 const notQualifying = participation.stage !== QUALIFYING;
                 if (notQualifying) nonQualifyingOrder += 1;
@@ -583,10 +585,12 @@ export function getParticipantEntries(params) {
               })
               .filter(Boolean);
 
-            participantAggregator.draws[drawId].finishingPositionRange =
-              finishingPositionRange;
-            participantAggregator.draws[drawId].structureParticipation =
-              orderedParticipation;
+            if (participantAggregator.draws[drawId]) {
+              participantAggregator.draws[drawId].finishingPositionRange =
+                finishingPositionRange;
+              participantAggregator.draws[drawId].structureParticipation =
+                orderedParticipation;
+            }
           }
         }
       }

@@ -164,7 +164,7 @@ export function getRoundMatchUps({
       finishingRoundMap[roundNumber]?.abbreviatedRoundName;
 
     roundProfile[roundNumber].finishingPositionRange =
-      roundMatchUps[roundNumber][0].finishingPositionRange;
+      roundMatchUps[roundNumber]?.[0]?.finishingPositionRange;
 
     if (roundNumber === 1 || !roundProfile[roundNumber - 1]) {
       const orderedDrawPositions = currentRoundDrawPositions.sort(numericSort);
