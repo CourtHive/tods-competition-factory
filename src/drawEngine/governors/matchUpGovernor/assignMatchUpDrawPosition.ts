@@ -76,7 +76,7 @@ export function assignMatchUpDrawPosition({
         inContext: true,
         drawDefinition,
         matchUpsMap,
-      }).matchUps || [];
+      }).matchUps ?? [];
   }
 
   const inContextMatchUp = inContextDrawMatchUps.find(
@@ -93,7 +93,7 @@ export function assignMatchUpDrawPosition({
     (matchUp) => matchUp.matchUpId === matchUpId
   );
 
-  const drawPositions: number[] = matchUp?.drawPositions || [];
+  const drawPositions: number[] = matchUp?.drawPositions ?? [];
   const { positionAdded, positionAssigned, updatedDrawPositions } =
     getUpdatedDrawPositions({ drawPosition, drawPositions });
 
@@ -127,7 +127,7 @@ export function assignMatchUpDrawPosition({
         inContext: true,
         drawDefinition,
         matchUpsMap,
-      }).matchUps || [];
+      }).matchUps ?? [];
     const exitWinningSide =
       (isDoubleExitExit &&
         getExitWinningSide({
@@ -227,7 +227,7 @@ export function assignMatchUpDrawPosition({
     const inContextTargetMatchUp = inContextDrawMatchUps?.find(
       ({ matchUpId }) => matchUpId === matchUp.matchUpId
     );
-    const sides: any[] = inContextTargetMatchUp?.sides || [];
+    const sides: any[] = inContextTargetMatchUp?.sides ?? [];
     const drawPositionSideIndex = sides.reduce(
       (index, side, i) => (side.drawPosition === drawPosition ? i : index),
       undefined
