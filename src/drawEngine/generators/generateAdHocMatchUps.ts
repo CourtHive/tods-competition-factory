@@ -10,6 +10,7 @@ import {
   modifyDrawNotice,
 } from '../notifications/drawNotifications';
 
+import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
 import { ROUND_OUTCOME } from '../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
@@ -28,7 +29,6 @@ import {
   MatchUpStatusEnum,
   Tournament,
 } from '../../types/tournamentFromSchema';
-import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
 
 type GenerateAdHocMatchUpsArgs = {
   participantIdPairings?: {
@@ -100,7 +100,7 @@ export function generateAdHocMatchUps({
         ? matchUp.roundNumber
         : roundNumber;
     },
-    0
+    1
   );
 
   // structure must not be a container of other structures
