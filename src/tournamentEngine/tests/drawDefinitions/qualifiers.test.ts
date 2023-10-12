@@ -2,6 +2,7 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 import { expect, it } from 'vitest';
 
+import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import {
   COMPLETED,
   TO_BE_PLAYED,
@@ -24,6 +25,32 @@ const scenarios = [
   },
   {
     secondRoundDrawPositions: [2],
+    secondRoundMatchUpsCount: 12,
+    qualifyingPositions: 2,
+    ignoreDefaults: false,
+    matchUpsCount: 45,
+    drawSize: 16,
+  },
+  {
+    secondRoundMatchUpsCount: 12,
+    qualifyingBYEPositions: 2,
+    qualifyingPositions: 1,
+    ignoreDefaults: false,
+    participantsCount: 14,
+    matchUpsCount: 46,
+    drawSize: 16,
+  },
+  {
+    secondRoundMatchUpsCount: 10,
+    qualifyingBYEPositions: 3,
+    qualifyingPositions: 1,
+    ignoreDefaults: false,
+    participantsCount: 5,
+    matchUpsCount: 38,
+    drawSize: 8,
+  },
+  {
+    secondRoundDrawPositions: [2],
     secondRoundMatchUpsCount: 4,
     qualifyingRoundNumber: 4,
     matchUpsCount: 15,
@@ -37,6 +64,7 @@ const scenarios = [
     drawSize: 16,
   },
   {
+    secondRoundDrawPositions: [2],
     secondRoundMatchUpsCount: 0,
     qualifyingRoundNumber: 1,
     matchUpsCount: 8,
@@ -47,11 +75,12 @@ const scenarios = [
 it.each(scenarios)(
   'can qualify specified number of participants',
   (scenario) => {
+    const ignoreDefaults = scenario.ignoreDefaults !== false;
     let result = mocksEngine.generateTournamentRecord({
       drawProfiles: [
         {
-          ignoreDefaults: true,
           qualifyingProfiles: [{ structureProfiles: [scenario] }],
+          ignoreDefaults,
         },
       ],
     });
@@ -63,9 +92,26 @@ it.each(scenarios)(
 
     tournamentEngine.setState(tournamentRecord);
     const { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
-    expect(drawDefinition.entries.length).toEqual(scenario.drawSize);
-    expect(event.entries.length).toEqual(scenario.drawSize);
+    if (ignoreDefaults) {
+      expect(drawDefinition.entries.length).toEqual(scenario.drawSize);
+      expect(event.entries.length).toEqual(scenario.drawSize);
+    }
     expect(drawDefinition.links[0].source.roundNumber).not.toBeUndefined;
+
+    const qualifyingBYEsCount = drawDefinition.structures
+      .find(({ stage }) => stage === QUALIFYING)
+      .positionAssignments.filter((p) => p.bye).length;
+    if (scenario.qualifyingBYEPositions) {
+      expect(qualifyingBYEsCount).toEqual(scenario.qualifyingBYEPositions);
+    }
+
+    const qualifyingPositions = drawDefinition.structures
+      .find(({ stage }) => stage === MAIN)
+      .positionAssignments.filter((p) => p.qualifier).length;
+
+    if (ignoreDefaults === false) {
+      expect(qualifyingPositions).toEqual(scenario.qualifyingPositions);
+    }
 
     let { matchUps } = tournamentEngine.allDrawMatchUps({ drawId });
     expect(matchUps.length).toEqual(scenario.matchUpsCount);
@@ -103,9 +149,12 @@ it.each(scenarios)(
       let secondRoundDrawPositions = secondRoundMatchUps
         .map(({ drawPositions }) => drawPositions)
         .flat();
-      expect(secondRoundDrawPositions).toEqual(
-        scenario.secondRoundDrawPositions
-      );
+
+      if (scenario.secondRoundDrawPositions) {
+        expect(secondRoundDrawPositions).toEqual(
+          scenario.secondRoundDrawPositions
+        );
+      }
 
       ({ outcome } = mocksEngine.generateOutcomeFromScoreString({
         matchUpStatus: TO_BE_PLAYED,
@@ -121,11 +170,14 @@ it.each(scenarios)(
       secondRoundMatchUps = matchUps.filter(
         ({ roundNumber }) => roundNumber === 2
       );
-      secondRoundDrawPositions = secondRoundMatchUps
-        .map(({ drawPositions }) => drawPositions)
-        .flat()
-        .filter(Boolean);
-      expect(secondRoundDrawPositions).toEqual([]);
+
+      if (scenario.secondRoundDrawPositions) {
+        secondRoundDrawPositions = secondRoundMatchUps
+          .map(({ drawPositions }) => drawPositions)
+          .flat()
+          .filter(Boolean);
+        expect(secondRoundDrawPositions).toEqual([]);
+      }
     }
   }
 );
