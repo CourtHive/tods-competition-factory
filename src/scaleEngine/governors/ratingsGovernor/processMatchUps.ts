@@ -8,9 +8,9 @@ import { calculateNewRatings } from './calculateNewRatings';
 import { aggregateSets } from './aggregators';
 
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
+import { DYNAMIC, RATING } from '../../../constants/scaleConstants';
 import { TypeEnum } from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { RATING } from '../../../constants/scaleConstants';
 import { HydratedSide } from '../../../types/factoryTypes';
 import { ELO } from '../../../constants/ratingConstants';
 import {
@@ -54,7 +54,7 @@ export function processMatchUps({
       scaleType: RATING,
     };
 
-    const dynamicScaleName = `${ratingType}.DYNAMIC`;
+    const dynamicScaleName = `${ratingType}.${DYNAMIC}`;
     const dynamicScaleAttributes = {
       scaleName: dynamicScaleName,
       eventType: matchUpType,

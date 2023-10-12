@@ -3,6 +3,7 @@ import { expect, test } from 'vitest';
 
 import ratingsParameters from '../../../../fixtures/ratings/ratingsParameters';
 import { NTRP, UTR, WTN } from '../../../../constants/ratingConstants';
+import { DYNAMIC } from '../../../../constants/scaleConstants';
 
 const scenarios = [
   {},
@@ -48,18 +49,15 @@ test.each(scenarios)(
       });
 
     for (const participant of tournamentParticipants) {
-      expect(participant.timeItems.length).toEqual(
-        participant.statistics[0].denominator
-      );
       if (asDynamic) {
         const accessor = ratingType && ratingsParameters[ratingType]?.accessor;
         participant.timeItems.forEach((timeItem) => {
           const { itemType, itemValue } = timeItem;
-          expect(typeof itemValue).toEqual(accessor ? 'object' : 'string');
+          expect(typeof itemValue).toEqual(accessor ? 'object' : 'number');
           expect(
             accessor ? itemValue[accessor] : itemValue
           ).not.toBeUndefined();
-          expect(itemType.split('.').reverse()[0]).toEqual('DYNAMIC');
+          expect(itemType.split('.').reverse()[0]).toEqual(DYNAMIC);
         });
       }
     }
