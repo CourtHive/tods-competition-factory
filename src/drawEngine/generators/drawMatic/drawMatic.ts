@@ -30,8 +30,10 @@ export type DrawMaticArgs = {
   drawDefinition?: DrawDefinition;
   tournamentRecord: Tournament;
   generateMatchUps?: boolean;
-  addToStructure?: boolean;
   participantIds?: string[];
+  addToStructure?: boolean;
+  encounterValue?: number;
+  sameTeamValue?: number;
   maxIterations?: number;
   structure?: Structure;
   matchUpIds?: string[];
@@ -47,10 +49,12 @@ export function drawMatic({
   tournamentParticipants,
   restrictEntryStatus,
   adHocRatings = {},
-  tournamentRecord,
   generateMatchUps,
+  tournamentRecord,
   addToStructure,
   participantIds,
+  encounterValue,
+  sameTeamValue,
   drawDefinition,
   scaleAccessor,
   maxIterations,
@@ -160,10 +164,12 @@ export function drawMatic({
 
   return generateDrawMaticRound({
     tournamentParticipants,
-    tournamentRecord,
     generateMatchUps,
-    participantIds,
+    tournamentRecord,
     addToStructure,
+    participantIds,
+    encounterValue,
+    sameTeamValue,
     drawDefinition,
     maxIterations,
     adHocRatings,

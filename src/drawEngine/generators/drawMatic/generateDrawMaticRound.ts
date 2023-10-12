@@ -28,7 +28,7 @@ import {
 const ENCOUNTER_VALUE = 100;
 const SAME_TEAM_VALUE = 100;
 
-const MAX_ITERATIONS = 5000;
+const MAX_ITERATIONS = 4000;
 
 type GenerateDrawMaticRoundArgs = {
   tournamentParticipants?: HydratedParticipant[];
@@ -40,6 +40,8 @@ type GenerateDrawMaticRoundArgs = {
   salted?: number | boolean;
   participantIds?: string[];
   addToStructure?: boolean;
+  encounterValue?: number;
+  sameTeamValue?: number;
   maxIterations?: number;
   matchUpIds?: string[];
   structure?: Structure;
@@ -50,6 +52,8 @@ type GenerateDrawMaticRoundArgs = {
 };
 
 export function generateDrawMaticRound({
+  encounterValue = ENCOUNTER_VALUE,
+  sameTeamValue = SAME_TEAM_VALUE,
   maxIterations = MAX_ITERATIONS,
   generateMatchUps = true,
   tournamentParticipants,
@@ -72,6 +76,8 @@ export function generateDrawMaticRound({
       matchUps: MatchUp[];
       iterations: number;
       success: boolean;
+      maxDelta: number;
+      maxDiff: number;
     } {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structure && !structureId) return { error: STRUCTURE_NOT_FOUND };
@@ -96,7 +102,7 @@ export function generateDrawMaticRound({
   const valueObjects: any = {};
   for (const pairing of encounters) {
     if (!valueObjects[pairing]) valueObjects[pairing] = 0;
-    valueObjects[pairing] += ENCOUNTER_VALUE;
+    valueObjects[pairing] += encounterValue;
   }
 
   const teamParticipants = tournamentParticipants?.filter(
@@ -109,7 +115,7 @@ export function generateDrawMaticRound({
       const { uniquePairings } = getPairingsData({ participantIds });
       for (const pairing of uniquePairings) {
         if (!valueObjects[pairing]) valueObjects[pairing] = 0;
-        valueObjects[pairing] += SAME_TEAM_VALUE;
+        valueObjects[pairing] += sameTeamValue;
       }
     }
   }
@@ -140,7 +146,7 @@ export function generateDrawMaticRound({
     salted,
   };
 
-  const { candidatesCount, participantIdPairings, iterations } =
+  const { candidatesCount, participantIdPairings, iterations, candidate } =
     getPairings(params);
 
   if (!candidatesCount) return { error: NO_CANDIDATES };
@@ -160,11 +166,15 @@ export function generateDrawMaticRound({
     matchUps = result.matchUps;
   }
 
+  const { maxDelta, maxDiff } = candidate;
+
   return {
     ...SUCCESS,
     participantIdPairings,
     candidatesCount,
     iterations,
     matchUps,
+    maxDelta,
+    maxDiff,
   };
 }
