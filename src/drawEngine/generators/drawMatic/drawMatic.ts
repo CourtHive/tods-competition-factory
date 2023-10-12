@@ -30,6 +30,7 @@ export type DrawMaticArgs = {
   drawDefinition?: DrawDefinition;
   tournamentRecord: Tournament;
   generateMatchUps?: boolean;
+  salted?: number | boolean;
   participantIds?: string[];
   addToStructure?: boolean;
   encounterValue?: number;
@@ -62,6 +63,7 @@ export function drawMatic({
   matchUpIds,
   scaleName, // custom rating name to seed dynamic ratings
   eventType,
+  salted,
   event,
 }: DrawMaticArgs) {
   if (
@@ -176,6 +178,7 @@ export function drawMatic({
     matchUpIds,
     structure,
     eventType,
+    salted,
   });
 }
 
