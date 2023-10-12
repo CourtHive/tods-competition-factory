@@ -6,8 +6,8 @@ import { isObject } from '../../../utilities/objects';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../../constants/entryStatusConstants';
 import { AD_HOC, stageOrder } from '../../../constants/drawDefinitionConstants';
+import { DYNAMIC, RATING } from '../../../constants/scaleConstants';
 import { HydratedParticipant } from '../../../types/hydrated';
-import { RATING } from '../../../constants/scaleConstants';
 import {
   DrawDefinition,
   EntryStatusEnum,
@@ -25,6 +25,7 @@ import {
 
 export type DrawMaticArgs = {
   tournamentParticipants?: HydratedParticipant[];
+  adHocRatings?: { [key: string]: number };
   restrictEntryStatus?: boolean;
   drawDefinition?: DrawDefinition;
   tournamentRecord: Tournament;
@@ -45,6 +46,7 @@ export type DrawMaticArgs = {
 export function drawMatic({
   tournamentParticipants,
   restrictEntryStatus,
+  adHocRatings = {},
   tournamentRecord,
   generateMatchUps,
   addToStructure,
@@ -128,13 +130,17 @@ export function drawMatic({
   tournamentParticipants =
     tournamentParticipants ?? tournamentRecord.participants ?? [];
 
-  const adHocRatings = {};
   for (const participantId of participantIds ?? []) {
     const participant = tournamentParticipants?.find(
       (participant) => participant.participantId === participantId
     );
     // first see if there is already a dynamic value
-    let scaleValue = getScaleValue({ eventType, participant });
+    let scaleValue = getScaleValue({
+      scaleName: `${scaleName}.${DYNAMIC}`,
+      scaleAccessor,
+      participant,
+      eventType,
+    });
     // if no dynamic value found and a seeding scaleValue is provided...
     if (!scaleValue && scaleName) {
       scaleValue = getScaleValue({
@@ -144,11 +150,13 @@ export function drawMatic({
         eventType,
       });
     }
-    if (scaleValue) adHocRatings[participantId] = scaleValue;
+
+    if (scaleValue && !adHocRatings[participantId])
+      adHocRatings[participantId] = scaleValue;
   }
 
   // TODO: update dynamic ratings based on matchUps present from last played round
-  // use scaleEngine.processMatchUps(); see dynamicCalculations.test.ts
+  // use scaleEngine.generateDynamicRatings(); see dynamicCalculations.test.ts
 
   return generateDrawMaticRound({
     tournamentParticipants,
@@ -168,19 +176,21 @@ export function drawMatic({
 type GetScaleValueArgs = {
   scaleAccessor?: string;
   eventType?: TypeEnum;
-  scaleName?: string;
+  scaleType?: string;
+  scaleName: string;
   participant: any;
 };
 
 function getScaleValue({
-  eventType = TypeEnum.Singles,
-  scaleName = 'dynamic',
+  scaleType = RATING,
   scaleAccessor,
   participant,
+  scaleName,
+  eventType,
 }: GetScaleValueArgs) {
   const scaleAttributes = {
     eventType: eventType || TypeEnum.Singles,
-    scaleType: RATING,
+    scaleType,
     scaleName,
   };
   const result =

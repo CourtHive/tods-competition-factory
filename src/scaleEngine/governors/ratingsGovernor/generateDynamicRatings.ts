@@ -8,9 +8,9 @@ import { calculateNewRatings } from './calculateNewRatings';
 import { aggregateSets } from './aggregators';
 
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
+import { DYNAMIC, RATING } from '../../../constants/scaleConstants';
 import { TypeEnum } from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { RATING } from '../../../constants/scaleConstants';
 import { HydratedSide } from '../../../types/factoryTypes';
 import { ELO } from '../../../constants/ratingConstants';
 import {
@@ -19,7 +19,8 @@ import {
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 
-export function processMatchUps({
+export function generateDynamicRatings({
+  removePriorValues = true,
   tournamentRecord,
   ratingType = ELO,
   considerGames,
@@ -54,7 +55,7 @@ export function processMatchUps({
       scaleType: RATING,
     };
 
-    const dynamicScaleName = `${ratingType}.DYNAMIC`;
+    const dynamicScaleName = `${ratingType}.${DYNAMIC}`;
     const dynamicScaleAttributes = {
       scaleName: dynamicScaleName,
       eventType: matchUpType,
@@ -102,9 +103,9 @@ export function processMatchUps({
               [participantId]: dynamicScaleItem ??
                 scaleItem ?? {
                   scaleName: outputScaleName,
-                  scaleType: RATING,
                   eventType: matchUpType,
                   scaleDate: endDate,
+                  scaleType: RATING,
                   scaleValue,
                 },
             }
@@ -145,6 +146,7 @@ export function processMatchUps({
         const loserCountables = winningSide
           ? countables[3 - winningSide]
           : [0, 0];
+
         const { newWinnerRating, newLoserRating } = calculateNewRatings({
           winnerCountables,
           loserCountables,
@@ -155,30 +157,39 @@ export function processMatchUps({
         });
 
         const newWinnerScaleValue = accessor
-          ? { ...winnerScaleValue, [accessor]: newWinnerRating }
+          ? {
+              ...winnerScaleValue,
+              [accessor]: newWinnerRating,
+            }
           : newWinnerRating;
         const newLoserScaleValue = accessor
-          ? { ...loserScaleValue, [accessor]: newLoserRating }
+          ? {
+              ...loserScaleValue,
+              [accessor]: newLoserRating,
+            }
           : newLoserRating;
         scaleItemMap[winnerParticipantId].scaleValue = newWinnerScaleValue;
         scaleItemMap[loserParticipantId].scaleValue = newLoserScaleValue;
 
         let result = setParticipantScaleItem({
+          participantId: winnerParticipantId,
+          removePriorValues,
+          tournamentRecord,
           scaleItem: {
             ...scaleItemMap[winnerParticipantId],
             scaleName: outputScaleName,
           },
-          participantId: winnerParticipantId,
-          tournamentRecord,
         });
         if (result.error) return result;
+
         result = setParticipantScaleItem({
+          participantId: loserParticipantId,
+          removePriorValues,
+          tournamentRecord,
           scaleItem: {
             ...scaleItemMap[loserParticipantId],
             scaleName: outputScaleName,
           },
-          participantId: loserParticipantId,
-          tournamentRecord,
         });
         if (result.error) return result;
       }
