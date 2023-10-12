@@ -20,6 +20,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function processMatchUps({
+  removePriorValues = true,
   tournamentRecord,
   ratingType = ELO,
   considerGames,
@@ -172,7 +173,7 @@ export function processMatchUps({
 
         let result = setParticipantScaleItem({
           participantId: winnerParticipantId,
-          removePriorValues: true,
+          removePriorValues,
           tournamentRecord,
           scaleItem: {
             ...scaleItemMap[winnerParticipantId],
@@ -183,7 +184,7 @@ export function processMatchUps({
 
         result = setParticipantScaleItem({
           participantId: loserParticipantId,
-          removePriorValues: true,
+          removePriorValues,
           tournamentRecord,
           scaleItem: {
             ...scaleItemMap[loserParticipantId],
