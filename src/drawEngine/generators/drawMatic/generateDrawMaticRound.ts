@@ -143,8 +143,6 @@ export function generateDrawMaticRound({
   const { candidatesCount, participantIdPairings, iterations } =
     getPairings(params);
 
-  // console.log({ candidatesCount, participantIdPairings, iterations });
-
   if (!candidatesCount) return { error: NO_CANDIDATES };
 
   let matchUps;
