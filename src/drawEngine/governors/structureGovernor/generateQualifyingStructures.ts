@@ -1,13 +1,13 @@
 import { generateQualifyingLink } from '../../generators/generateQualifyingLink';
 import { addExtension } from '../../../global/functions/producers/addExtension';
 import { coerceEven, isConvertableInteger } from '../../../utilities/math';
+import structureTemplate from '../../generators/structureTemplate';
+import { generateRoundRobin } from '../../generators/roundRobin';
+import { treeMatchUps } from '../../generators/eliminationTree';
 import {
   ResultType,
   decorateResult,
 } from '../../../global/functions/decorateResult';
-import structureTemplate from '../../generators/structureTemplate';
-import { generateRoundRobin } from '../../generators/roundRobin';
-import { treeMatchUps } from '../../generators/eliminationTree';
 
 import { MISSING_DRAW_SIZE } from '../../../constants/errorConditionConstants';
 import { DrawLink, Structure } from '../../../types/tournamentFromSchema';

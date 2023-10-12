@@ -30,8 +30,11 @@ export type DrawMaticArgs = {
   drawDefinition?: DrawDefinition;
   tournamentRecord: Tournament;
   generateMatchUps?: boolean;
-  addToStructure?: boolean;
+  salted?: number | boolean;
   participantIds?: string[];
+  addToStructure?: boolean;
+  encounterValue?: number;
+  sameTeamValue?: number;
   maxIterations?: number;
   structure?: Structure;
   matchUpIds?: string[];
@@ -47,10 +50,12 @@ export function drawMatic({
   tournamentParticipants,
   restrictEntryStatus,
   adHocRatings = {},
-  tournamentRecord,
   generateMatchUps,
+  tournamentRecord,
   addToStructure,
   participantIds,
+  encounterValue,
+  sameTeamValue,
   drawDefinition,
   scaleAccessor,
   maxIterations,
@@ -58,6 +63,7 @@ export function drawMatic({
   matchUpIds,
   scaleName, // custom rating name to seed dynamic ratings
   eventType,
+  salted,
   event,
 }: DrawMaticArgs) {
   if (
@@ -160,16 +166,19 @@ export function drawMatic({
 
   return generateDrawMaticRound({
     tournamentParticipants,
-    tournamentRecord,
     generateMatchUps,
-    participantIds,
+    tournamentRecord,
     addToStructure,
+    participantIds,
+    encounterValue,
+    sameTeamValue,
     drawDefinition,
     maxIterations,
     adHocRatings,
     matchUpIds,
     structure,
     eventType,
+    salted,
   });
 }
 
