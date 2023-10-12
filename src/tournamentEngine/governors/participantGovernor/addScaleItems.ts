@@ -8,6 +8,7 @@ import {
   addTournamentTimeItem,
 } from '../tournamentGovernor/addTimeItem';
 
+import { Participant } from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SCALE } from '../../../constants/scaleConstants';
 import {
@@ -24,7 +25,6 @@ import {
   AUDIT,
   MODIFY_PARTICIPANTS,
 } from '../../../constants/topicConstants';
-import { Participant } from '../../../types/tournamentFromSchema';
 
 export function setParticipantScaleItem(params) {
   const { removePriorValues, tournamentRecord, participantId, scaleItem } =

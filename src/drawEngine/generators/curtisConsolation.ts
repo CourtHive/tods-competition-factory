@@ -21,6 +21,7 @@ export function generateCurtisConsolation(params) {
     finishingPositionOffset,
     structureName = MAIN,
     stageSequence = 1,
+    structureNameMap,
     staggeredEntry,
     stage = MAIN,
     matchUpType,
@@ -30,6 +31,7 @@ export function generateCurtisConsolation(params) {
     isMock,
     uuids,
   } = params;
+
   const mainParams = {
     finishingPositionOffset,
     matchUpType,
@@ -59,8 +61,9 @@ export function generateCurtisConsolation(params) {
     const consolationItems = feedRoundOffsets.map((roundOffset, index) => {
       const stageSequence = index + 1;
       const { consolationStructure } = consolationFeedStructure({
-        structureId: uuids?.pop(),
         idPrefix: idPrefix && `${idPrefix}-c${index}`,
+        structureId: uuids?.pop(),
+        structureNameMap,
         stageSequence,
         roundOffset,
         matchUpType,
@@ -98,9 +101,9 @@ export function generateCurtisConsolation(params) {
         isMock,
       });
       const playoffStructure = structureTemplate({
+        structureName: structureNameMap?.[PLAY_OFF] || PLAY_OFF,
         structureId: uuids?.pop(),
         matchUps: playoffMatchUps,
-        structureName: PLAY_OFF,
         stageSequence: 2,
         stage: PLAY_OFF,
         matchUpType,
@@ -129,6 +132,7 @@ export function generateCurtisConsolation(params) {
 
 function consolationFeedStructure({
   stageSequence = 1,
+  structureNameMap,
   roundOffset = 0,
   matchUpType,
   structureId,
@@ -152,7 +156,8 @@ function consolationFeedStructure({
       uuids,
     });
 
-  const structureName = `${CONSOLATION} ${index + 1}`;
+  const defaultName = `${CONSOLATION} ${index + 1}`;
+  const structureName = structureNameMap?.[defaultName] || defaultName;
   const consolationStructure = structureTemplate({
     matchUps: consolationMatchUps,
     stage: CONSOLATION,

@@ -123,6 +123,7 @@ export function processPlayoffGroups({
 
     const params = {
       structureId: playoffGroup.structureId ?? uuids?.pop(),
+      structureNameMap: playoffGroup.structureNameMap,
       structureName: playoffGroup.structureName,
       idPrefix: idPrefix && `${idPrefix}-po`,
       appliedPolicies: policyDefinitions,

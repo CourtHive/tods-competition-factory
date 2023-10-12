@@ -1,3 +1,4 @@
+export const DYNAMIC = 'DYNAMIC';
 export const RANKING = 'RANKING';
 export const RATING = 'RATING';
 export const SCALE = 'SCALE';
