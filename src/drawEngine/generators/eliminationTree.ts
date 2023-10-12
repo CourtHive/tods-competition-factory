@@ -88,10 +88,7 @@ export function treeMatchUps({
   }));
   roundNumber++;
 
-  roundLimit =
-    roundLimit ||
-    qualifyingRoundNumber ||
-    (qualifyingPositions ? drawSize / 2 / qualifyingPositions : undefined);
+  roundLimit = roundLimit || qualifyingRoundNumber;
 
   while (roundNodes.length > 1) {
     if (qualifyingPositions && roundNodes.length === qualifyingPositions) {
