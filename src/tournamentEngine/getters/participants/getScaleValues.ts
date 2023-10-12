@@ -50,7 +50,11 @@ export function getScaleValues({ participant }) {
     for (const itemType of itemTypes) {
       const scaleItem = latestScaleItem(itemType);
       if (scaleItem) {
-        const [, type, format, scaleName] = scaleItem.itemType.split('.');
+        const [, type, format, scaleName, modifier] =
+          scaleItem.itemType.split('.');
+
+        const namedScale = modifier ? `${scaleName}.${modifier}` : scaleName;
+
         const scaleType =
           (type === SEEDING && 'seedings') ||
           (type === RANKING && 'rankings') ||
@@ -60,7 +64,7 @@ export function getScaleValues({ participant }) {
         scales[scaleType][format].push({
           scaleValue: scaleItem.itemValue,
           scaleDate: scaleItem.itemDate,
-          scaleName,
+          scaleName: namedScale,
         });
       }
     }
