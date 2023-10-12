@@ -45,6 +45,7 @@ type GenerateDrawMaticRoundArgs = {
   structure?: Structure;
   structureId?: string;
   eventType?: TypeEnum;
+  scaleName?: string;
   drawId?: string;
 };
 
@@ -62,6 +63,7 @@ export function generateDrawMaticRound({
   matchUpIds,
   eventType,
   structure,
+  scaleName,
 }: GenerateDrawMaticRoundArgs):
   | ResultType
   | {
@@ -133,6 +135,7 @@ export function generateDrawMaticRound({
     deltaObjects,
     valueObjects,
     eventType,
+    scaleName,
     structure,
     salted,
   };

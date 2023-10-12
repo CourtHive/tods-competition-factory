@@ -11,6 +11,7 @@ export function getPairings({
   deltaObjects, // difference in rating between paired participants
   valueObjects, // calculated value of a pairing of participants, used for sorting pairings
   eventType,
+  scaleName,
   salted,
 }) {
   // modify valueObjects by ratings ratingsDifference squared
@@ -19,6 +20,7 @@ export function getPairings({
     const ratings = getSideRatings({
       tournamentParticipants,
       adHocRatings,
+      scaleName,
       eventType,
       pairing,
     });
@@ -31,7 +33,9 @@ export function getPairings({
     deltaObjects[pairing] = pairingDelta;
 
     if (!valueObjects[pairing]) valueObjects[pairing] = 0;
-    valueObjects[pairing] += Math.pow(ratingsDifference, 2);
+    valueObjects[pairing] += ratingsDifference
+      ? Math.pow(ratingsDifference, 2)
+      : 0;
   });
 
   /**
