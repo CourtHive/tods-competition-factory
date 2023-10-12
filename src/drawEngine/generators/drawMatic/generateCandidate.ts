@@ -1,38 +1,56 @@
+import { chunkArray, randomPop, shuffleArray } from '../../../utilities';
+
+type GenerateCandidateArgs = {
+  valueSortedPairings: { [key: string]: number }[];
+  deltaObjects: { [key: string]: number };
+  valueObjects: { [key: string]: number };
+  maxIterations: number;
+  pairingValues: any;
+};
+
 export function generateCandidate({
-  maxIterations = 5000, // cap the processing intensity of the candidate generator
+  maxIterations = 4000, // cap the processing intensity of the candidate generator
   valueSortedPairings, // pairings sorted by value from low to high
   pairingValues,
+  valueObjects,
   deltaObjects,
-}) {
-  const rankedMatchUpValues = Object.assign(
+}: GenerateCandidateArgs) {
+  const pairingValueMap = Object.assign(
     {},
     ...valueSortedPairings.map((rm) => ({ [rm.pairing]: rm.value }))
   );
 
+  const actors = Object.keys(pairingValues);
+  let proposedCandidates: any[] = [];
+
   // generate an initial candidate value with no stipulated pairings
-  let candidate = roundCandidate({
-    rankedMatchUpValues,
+  const initialProposal = roundCandidate({
+    actorsCount: actors.length,
     valueSortedPairings,
+    pairingValueMap,
     deltaObjects,
+    valueObjects,
   });
 
-  let deltaCandidate = candidate;
-
-  const actors = Object.keys(pairingValues);
+  const candidateHashes: any[] = [candidateHash(initialProposal)];
+  proposedCandidates.push(initialProposal);
+  let lowCandidateValue = initialProposal.value;
+  let deltaCandidate = initialProposal;
 
   // iterations is the number of loops over valueSortedPairings
   let candidatesCount = 0;
-  let iterations;
+  let iterations = 0;
+
+  let opponentCount = actors.length;
+  let calculatedIterations;
 
   // calculate the number of opponents to consider for each participantId
-  let opponentCount = actors.length;
-
   do {
     opponentCount -= 1;
-    iterations =
-      (actors.length * opponentCount * valueSortedPairings.length) / 2;
-  } while (iterations > maxIterations && opponentCount > 2);
+    calculatedIterations = actors.length * pairingValues[actors[0]].length;
+  } while (calculatedIterations > maxIterations && opponentCount > 5);
 
+  // keep track of proposed pairings
   const stipulatedPairs: string[] = [];
 
   // for each actor generate a roundCandidate using opponentCount of pairing values
@@ -41,41 +59,80 @@ export function generateCandidate({
 
     // opponentCount limits the number of opponents to consider
     participantIdPairings.slice(0, opponentCount).forEach((pairing) => {
+      iterations += 1;
       const stipulatedPair = pairingHash(actor, pairing.opponent);
+
       if (!stipulatedPairs.includes(stipulatedPair)) {
         const proposed = roundCandidate({
           // each roundCandidate starts with stipulated pairings
           stipulated: [[actor, pairing.opponent]],
-          rankedMatchUpValues,
+          actorsCount: actors.length,
           valueSortedPairings,
+          pairingValueMap,
           deltaObjects,
+          valueObjects,
         });
 
-        if (proposed.maxDelta < deltaCandidate.maxDelta)
-          deltaCandidate = proposed;
+        // ensure no duplicate candidates are considered
+        if (!candidateHashes.includes(candidateHash(proposed))) {
+          candidateHashes.push(candidateHash(proposed));
+          proposedCandidates.push(proposed);
 
-        if (proposed.value < candidate.value) candidate = proposed;
+          const { maxDelta, value } = proposed;
 
-        stipulatedPairs.push(stipulatedPair);
-        candidatesCount += 1;
+          if (maxDelta < deltaCandidate.maxDelta) deltaCandidate = proposed;
+
+          if (
+            value < lowCandidateValue ||
+            (value === lowCandidateValue && Math.round(Math.random())) // randomize if equivalent values
+          ) {
+            lowCandidateValue = value;
+          }
+
+          stipulatedPairs.push(stipulatedPair);
+          candidatesCount += 1;
+        }
       }
     });
+    proposedCandidates = proposedCandidates.filter(
+      (proposed) => Math.abs(proposed.value - lowCandidateValue) < 5
+    );
   });
 
-  return { candidate, deltaCandidate, candidatesCount, iterations };
+  proposedCandidates.sort((a, b) => a.maxDiff - b.maxDiff);
+  const candidate = randomPop(proposedCandidates);
+
+  return {
+    candidatesCount,
+    deltaCandidate,
+    maxIterations,
+    iterations,
+    candidate,
+  };
+}
+
+function candidateHash(candidate) {
+  return candidate.participantIdPairings
+    .map(({ participantIds }) => participantIds.sort().join('|'))
+    .sort()
+    .join('/');
 }
 
 type RoundCandiateArgs = {
-  rankedMatchUpValues: any;
+  pairingValueMap: any;
   valueSortedPairings: any;
+  actorsCount: number;
   stipulated?: any[];
   deltaObjects: any;
+  valueObjects: any;
 };
 function roundCandidate({
-  rankedMatchUpValues,
   valueSortedPairings,
   stipulated = [],
+  pairingValueMap,
   deltaObjects,
+  valueObjects,
+  actorsCount,
 }: RoundCandiateArgs) {
   // roundPlayers starts with the stipulated pairing
   const roundPlayers: any[] = [].concat(...stipulated);
@@ -91,14 +148,24 @@ function roundCandidate({
   stipulated.filter(Boolean).forEach((participantIds) => {
     const [p1, p2] = participantIds;
     const pairing = pairingHash(p1, p2);
-    const value = rankedMatchUpValues[pairing];
+    const value = pairingValueMap[pairing];
     participantIdPairings.push({ participantIds, value });
-    candidateValue += rankedMatchUpValues[pairing];
+    candidateValue += pairingValueMap[pairing];
   });
 
+  // valueSortedPairings is an array sorted from lowest value to highest value
+  // introduce random shuffling of chunks of valueSortedPairings
+  const consideredPairings = chunkArray(valueSortedPairings, actorsCount)
+    .map((pairings) =>
+      shuffleArray(pairings).map((pairing) => ({
+        ...pairing,
+        value: pairing.value + Math.random() * Math.round(Math.random()),
+      }))
+    )
+    .flat();
+
   // go through the valueSortedPairings (of all possible unique pairings)
-  // this is an array sorted from lowest value to highest value
-  valueSortedPairings.forEach((rankedPairing) => {
+  consideredPairings.forEach((rankedPairing) => {
     const participantIds = rankedPairing.pairing.split('|');
     const opponentExists = participantIds.reduce(
       (p, c) => roundPlayers.includes(c) || p,
@@ -124,7 +191,15 @@ function roundCandidate({
     return delta > p ? delta : p;
   }, 0);
 
-  return { value: candidateValue, participantIdPairings, maxDelta };
+  // determine the greatest delta in the candidate's pairings
+  const maxDiff = participantIdPairings.reduce((p, c) => {
+    const [p1, p2] = c.participantIds;
+    const hash = pairingHash(p1, p2);
+    const diff = valueObjects[hash];
+    return diff > p ? diff : p;
+  }, 0);
+
+  return { value: candidateValue, participantIdPairings, maxDelta, maxDiff };
 }
 
 export function pairingHash(id1, id2) {
