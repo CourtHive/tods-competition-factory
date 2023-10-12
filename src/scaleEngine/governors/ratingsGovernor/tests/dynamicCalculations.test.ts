@@ -33,7 +33,7 @@ test.each(scenarios)(
     expect(matchUps.length).toEqual(7);
 
     const matchUpIds = matchUps.map(({ matchUpId }) => matchUpId);
-    const result = scaleEngine.processMatchUps({
+    const result = scaleEngine.generateDynamicRatings({
       considerGames,
       matchUpIds,
       ratingType,

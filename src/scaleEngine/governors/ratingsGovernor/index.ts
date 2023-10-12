@@ -1,9 +1,9 @@
 import { calculateNewRatings } from './calculateNewRatings';
-import { processMatchUps } from './processMatchUps';
+import { generateDynamicRatings } from './generateDynamicRatings';
 
 const governor = {
   calculateNewRatings,
-  processMatchUps,
+  generateDynamicRatings,
 };
 
 export default governor;

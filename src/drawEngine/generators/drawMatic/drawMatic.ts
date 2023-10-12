@@ -156,7 +156,7 @@ export function drawMatic({
   }
 
   // TODO: update dynamic ratings based on matchUps present from last played round
-  // use scaleEngine.processMatchUps(); see dynamicCalculations.test.ts
+  // use scaleEngine.generateDynamicRatings(); see dynamicCalculations.test.ts
 
   return generateDrawMaticRound({
     tournamentParticipants,

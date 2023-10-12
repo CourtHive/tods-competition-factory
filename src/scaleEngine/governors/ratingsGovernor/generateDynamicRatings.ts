@@ -19,7 +19,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 
-export function processMatchUps({
+export function generateDynamicRatings({
   removePriorValues = true,
   tournamentRecord,
   ratingType = ELO,
