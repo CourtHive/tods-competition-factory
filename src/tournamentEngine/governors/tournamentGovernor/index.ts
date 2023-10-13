@@ -5,6 +5,7 @@ import { addExtension } from '../../../global/functions/producers/addExtension';
 import { convertPointEight } from './conversion/convertPointEight';
 import { setTournamentStatus } from './setTournamentStatus';
 import { addNotes, removeNotes } from './addRemoveNotes';
+import { addOnlineResource } from './addOnlineResource';
 import { analyzeTournament } from './analyzeTournament';
 import { analyzeDraws } from './analysis/analyzeDraws';
 
@@ -44,10 +45,12 @@ import {
 } from './addRemoveExtensions';
 
 const tournamentGovernor = {
-  addNotes,
-  removeNotes,
-  analyzeDraws,
   analyzeTournament,
+  analyzeDraws,
+
+  addOnlineResource,
+  removeNotes,
+  addNotes,
 
   completeDrawMatchUps,
 
