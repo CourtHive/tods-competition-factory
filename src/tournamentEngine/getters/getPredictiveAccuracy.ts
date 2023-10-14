@@ -121,7 +121,7 @@ export function getPredictiveAccuracy(params) {
   const zoneData =
     zoneMargin &&
     relevantMatchUps
-      .map(({ competitiveness, matchUpType, score, sides }) => {
+      .map(({ competitiveProfile, matchUpType, score, sides }) => {
         const sideValues = getSideValues({
           valueAccessor,
           matchUpType,
@@ -130,7 +130,11 @@ export function getPredictiveAccuracy(params) {
         });
         const valuesGap = Math.abs(sideValues[0].value - sideValues[1].value);
 
-        return { competitiveness, score, valuesGap };
+        return {
+          competitiveness: competitiveProfile?.competitiveness,
+          valuesGap,
+          score,
+        };
       })
       .filter(({ valuesGap }) => {
         return valuesGap <= marginCalc;

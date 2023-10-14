@@ -29,7 +29,9 @@ it('can generate competitive statistics for matchUps and add competitiveness', (
   expect(Math.round(sum)).toEqual(100);
 
   let matchUpsCompetitiveness = instanceCount(
-    matchUps.map(({ competitiveness }) => competitiveness).filter(Boolean)
+    matchUps
+      .map(({ competitiveProfile }) => competitiveProfile.competitiveness)
+      .filter(Boolean)
   );
   expect(matchUpsCompetitiveness[ROUTINE]).not.toBeUndefined();
 
@@ -40,7 +42,9 @@ it('can generate competitive statistics for matchUps and add competitiveness', (
   }).matchUps;
 
   matchUpsCompetitiveness = instanceCount(
-    matchUps.map(({ competitiveness }) => competitiveness).filter(Boolean)
+    matchUps
+      .map(({ competitiveProfile }) => competitiveProfile.competitiveness)
+      .filter(Boolean)
   );
   expect(matchUpsCompetitiveness[ROUTINE]).not.toBeUndefined();
 
@@ -51,7 +55,9 @@ it('can generate competitive statistics for matchUps and add competitiveness', (
   }).matchUps;
 
   matchUpsCompetitiveness = instanceCount(
-    matchUps.map(({ competitiveness }) => competitiveness).filter(Boolean)
+    matchUps
+      .map(({ competitiveProfile }) => competitiveProfile.competitiveness)
+      .filter(Boolean)
   );
   expect(matchUpsCompetitiveness[ROUTINE]).not.toBeUndefined();
 });
@@ -103,7 +109,7 @@ it('can determine competitive band for matchUps', () => {
 
   const competitiveness = matchUps.map(
     (matchUp) =>
-      tournamentEngine.getMatchUpCompetitiveness({ matchUp }).competitiveness
+      tournamentEngine.getMatchUpCompetitiveProfile({ matchUp }).competitiveness
   );
 
   expect(competitiveness).toEqual([DECISIVE, ROUTINE, COMPETITIVE, DECISIVE]);

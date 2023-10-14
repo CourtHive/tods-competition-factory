@@ -2039,15 +2039,16 @@ const { flightProfile } = tournamentEngine.getFlightProfile({ eventId });
 
 ---
 
-## getMatchUpCompetitiveness
+## getMatchUpCompetitiveProfile
 
 Returns a categorization of a matchUp as "Competitive", "Routine" or "Decisive"
 
 ```js
-const { competitiveness } = tournamentEngine.getMatchUpCompetitiveness({
-  competitiveProfile, // optional { [DECISIVE]: 20, [ROUTINE]: 50 } // can be attached to tournamentRecord as a policy
-  matchUp,
-});
+const { competitiveness, pctSpread } =
+  tournamentEngine.getMatchUpCompetitiveProfile({
+    profileBands, // optional { [DECISIVE]: 20, [ROUTINE]: 50 } // can be attached to tournamentRecord as a policy
+    matchUp,
+  });
 ```
 
 ---
@@ -2158,7 +2159,7 @@ Returns percentages of matchUps which fall into `cmpetitiveBands` defined as "Co
 
 ```js
 const { competitiveBands } = tournamentEngine.getMatchUpsStats({
-  competitiveProfile, // optional { [DECISIVE]: 20, [ROUTINE]: 50 } // can also be set in policyDefinitions
+  profileBands, // optional { [DECISIVE]: 20, [ROUTINE]: 50 } // can also be set in policyDefinitions
   matchUps,
 });
 ```

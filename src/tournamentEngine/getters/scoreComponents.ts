@@ -54,5 +54,5 @@ export function pctSpread(pcts) {
   return pcts
     .map(gamesPercent)
     .sort()
-    .map((p) => p.toFixed(2));
+    .map((p) => parseFloat(p.toFixed(2)));
 }

@@ -13,18 +13,19 @@ import {
 
 type GetMatchUpCompetitivenessArgs = {
   tournamentRecord?: Tournament;
-  competitiveProfile?: any;
+  profileBands?: any;
   matchUp: MatchUp;
 };
 
-export function getMatchUpCompetitiveness({
-  competitiveProfile,
+export function getMatchUpCompetitiveProfile({
+  profileBands,
   tournamentRecord,
   matchUp,
 }: GetMatchUpCompetitivenessArgs): {
+  competitiveness?: any;
+  pctSpread?: number;
   success?: boolean;
   error?: ErrorType;
-  competitiveness?: any;
 } {
   if (!matchUp) return { error: MISSING_MATCHUP };
   const { score, winningSide } = matchUp;
@@ -32,7 +33,7 @@ export function getMatchUpCompetitiveness({
   if (!winningSide) return { error: INVALID_VALUES };
 
   const policy =
-    !competitiveProfile &&
+    !profileBands &&
     tournamentRecord &&
     findPolicy({
       policyType: POLICY_TYPE_COMPETITIVE_BANDS,
@@ -40,14 +41,14 @@ export function getMatchUpCompetitiveness({
     }).policy;
 
   const bandProfiles =
-    competitiveProfile ||
-    policy?.competitiveProfile ||
+    profileBands ||
+    policy?.profileBands ||
     POLICY_COMPETITIVE_BANDS_DEFAULT[POLICY_TYPE_COMPETITIVE_BANDS]
-      .competitiveProfile;
+      .profileBands;
 
   const scoreComponents = getScoreComponents({ score });
   const spread = pctSpread([scoreComponents]);
   const competitiveness = getBand(spread, bandProfiles);
 
-  return { ...SUCCESS, competitiveness };
+  return { ...SUCCESS, competitiveness, pctSpread: spread };
 }
