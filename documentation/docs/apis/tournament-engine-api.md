@@ -2827,19 +2827,6 @@ tournamentEngine.modifyDrawName({
 
 ---
 
-## modifyEventMatchUpFormatTiming
-
-```js
-tournamentEngine.modifyEventMatchUpFormatTiming({
-  recoveryMinutes,
-  averageMinutes,
-  matchUpFormat,
-  eventId,
-});
-```
-
----
-
 ## modifyMatchUpFormatTiming
 
 ```js
@@ -2895,6 +2882,34 @@ tournamentEngine.modifyEventEntries({
   entryStage = MAIN,
   eventId,
 })
+```
+
+---
+
+## modifyEvent
+
+```js
+tournamentEngine.modifyEvent({
+  eventUpdates: {
+    eventGender, // optional - must validate against current event entries, if any
+    eventType, // optional - must validate against current event entries, if any
+    eventName, // optional
+  },
+  eventId,
+});
+```
+
+---
+
+## modifyEventMatchUpFormatTiming
+
+```js
+tournamentEngine.modifyEventMatchUpFormatTiming({
+  recoveryMinutes,
+  averageMinutes,
+  matchUpFormat,
+  eventId,
+});
 ```
 
 ---
@@ -4099,21 +4114,6 @@ tournamentEngine.updateDrawIdsOrder({
     'id-Of-draw-1': 1,
     'id-of-draw-2': 2,
   },
-});
-```
-
----
-
-## updateEvent
-
-```js
-tournamentEngine.updateEvent({
-  eventUpdates: {
-    eventGender, // optional - must validate against current event entries, if any
-    eventType, // optional - must validate against current event entries, if any
-    eventName, // optional
-  },
-  eventId,
 });
 ```
 
