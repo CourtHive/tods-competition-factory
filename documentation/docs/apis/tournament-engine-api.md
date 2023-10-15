@@ -2039,15 +2039,16 @@ const { flightProfile } = tournamentEngine.getFlightProfile({ eventId });
 
 ---
 
-## getMatchUpCompetitiveness
+## getMatchUpCompetitiveProfile
 
 Returns a categorization of a matchUp as "Competitive", "Routine" or "Decisive"
 
 ```js
-const { competitiveness } = tournamentEngine.getMatchUpCompetitiveness({
-  competitiveProfile, // optional { [DECISIVE]: 20, [ROUTINE]: 50 } // can be attached to tournamentRecord as a policy
-  matchUp,
-});
+const { competitiveness, pctSpread } =
+  tournamentEngine.getMatchUpCompetitiveProfile({
+    profileBands, // optional { [DECISIVE]: 20, [ROUTINE]: 50 } // can be attached to tournamentRecord as a policy
+    matchUp,
+  });
 ```
 
 ---
@@ -2158,7 +2159,7 @@ Returns percentages of matchUps which fall into `cmpetitiveBands` defined as "Co
 
 ```js
 const { competitiveBands } = tournamentEngine.getMatchUpsStats({
-  competitiveProfile, // optional { [DECISIVE]: 20, [ROUTINE]: 50 } // can also be set in policyDefinitions
+  profileBands, // optional { [DECISIVE]: 20, [ROUTINE]: 50 } // can also be set in policyDefinitions
   matchUps,
 });
 ```
@@ -2401,9 +2402,8 @@ const [{ drawPosition, participantId, qualifier, bye }] = positionAssignments;
 const { accuracy, zoneDistribution } = tournamentEngine.getPredictiveAccuracy({
   exclusionRule: { valueAccessor: 'confidence', range: [0, 70] }, // exclude low confidence values
   zoneMargin: 3, // optional - creates +/- range and report competitiveness distribution
-  matchUpFilters: { matchUpStatuses: [COMPLETED] }, // only consider COMPLETED matchUps
-  ascending: true, // scale goes from low to high
-  valueAccessor: 'wtnRating',
+  ascending: false, // optional - scale goes from low to high with high being the "best"
+  valueAccessor: 'wtnRating', // optional if `scaleName` is defined in factory `ratingsParameters`
   scaleName: WTN,
 });
 ```

@@ -6,8 +6,8 @@ type ScheduledSortedMatchUpsArgs = {
   schedulingProfile: any[];
 };
 export function scheduledSortedMatchUps({
-  matchUps = [],
   schedulingProfile,
+  matchUps = [],
 }: ScheduledSortedMatchUpsArgs) {
   const profileHash = {};
 

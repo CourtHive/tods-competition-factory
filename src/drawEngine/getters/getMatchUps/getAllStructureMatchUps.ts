@@ -1,5 +1,5 @@
 import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
-import { getMatchUpCompetitiveness } from '../../../tournamentEngine/getters/getMatchUpCompetitiveness';
+import { getMatchUpCompetitiveProfile } from '../../../tournamentEngine/getters/getMatchUpCompetitiveProfile';
 import { getMatchUpScheduleDetails } from '../../accessors/matchUpAccessor/getMatchUpScheduleDetails';
 import { getDrawPositionCollectionAssignment } from './getDrawPositionCollectionAssignment';
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
@@ -465,9 +465,9 @@ export function getAllStructureMatchUps({
       (event?.processCodes?.length && event?.processCodes) ||
       tournamentRecord?.processCodes;
 
-    const competitiveness =
+    const competitiveProfile =
       contextProfile?.withCompetitiveness &&
-      getMatchUpCompetitiveness({ ...contextContent, matchUp }).competitiveness;
+      getMatchUpCompetitiveProfile({ ...contextContent, matchUp });
 
     // necessry for SINGLES/DOUBLES matchUps that are part of TEAM tournaments
     const finishingPositionRange =
@@ -492,7 +492,7 @@ export function getAllStructureMatchUps({
         finishingPositionRange,
         abbreviatedRoundName,
         drawPositionsRange,
-        competitiveness,
+        competitiveProfile,
         structureName,
         stageSequence,
         drawPositions,

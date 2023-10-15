@@ -1,4 +1,5 @@
 import { chunkArray, randomPop, shuffleArray } from '../../../utilities';
+import { stringSort } from '../../../global/sorting/stringSort';
 
 type GenerateCandidateArgs = {
   valueSortedPairings: { [key: string]: number }[];
@@ -203,5 +204,5 @@ function roundCandidate({
 }
 
 export function pairingHash(id1, id2) {
-  return [id1, id2].sort().join('|');
+  return [id1, id2].sort(stringSort).join('|');
 }
