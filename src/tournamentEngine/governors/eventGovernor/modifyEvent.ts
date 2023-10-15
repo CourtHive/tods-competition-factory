@@ -6,7 +6,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 
-export function updateEvent({
+export function modifyEvent({
   tournamentRecord,
   eventUpdates,
   eventId,
