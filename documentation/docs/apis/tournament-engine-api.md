@@ -4104,6 +4104,21 @@ tournamentEngine.updateDrawIdsOrder({
 
 ---
 
+## updateEvent
+
+```js
+tournamentEngine.updateEvent({
+  eventUpdates: {
+    eventGender, // optional - must validate against current event entries, if any
+    eventType, // optional - must validate against current event entries, if any
+    eventName, // optional
+  },
+  eventId,
+});
+```
+
+---
+
 ## updateTeamLineUp
 
 ```js

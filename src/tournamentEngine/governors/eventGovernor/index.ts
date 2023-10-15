@@ -137,6 +137,7 @@ import { aggregateTieFormats } from './aggregateTieFormats';
 import { updateTieMatchUpScore } from './updateTieMatchUpScore';
 import { disableTieAutoCalc } from './disableTieAutoCalc';
 import { enableTieAutoCalc } from './enableTieAutoCalc';
+import { updateEvent } from './updateEvent';
 
 const eventGovernor = {
   generateQualifyingStructure,
@@ -161,11 +162,12 @@ const eventGovernor = {
   resetScorecard,
   resetTieFormat,
 
-  addEvent,
-  deleteEvents,
-  setEventDates,
   setEventStartDate,
   setEventEndDate,
+  setEventDates,
+  deleteEvents,
+  updateEvent,
+  addEvent,
 
   removeSeededParticipant,
   removeScaleValues,
