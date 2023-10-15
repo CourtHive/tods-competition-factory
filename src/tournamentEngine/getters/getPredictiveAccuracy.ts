@@ -1,5 +1,6 @@
 import { scoreHasValue } from '../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import { validMatchUps } from '../../matchUpEngine/governors/queryGovernor/validMatchUp';
+import ratingsParameters from '../../fixtures/ratings/ratingsParameters';
 import {
   allDrawMatchUps,
   allEventMatchUps,
@@ -27,11 +28,9 @@ export function getPredictiveAccuracy(params) {
   let { matchUps } = params;
   const {
     tournamentRecord,
-    ascending = true,
     drawDefinition,
     excludeMargin,
     exclusionRule,
-    valueAccessor,
     zoneDoubling,
     matchUpType,
     zoneMargin,
@@ -40,6 +39,7 @@ export function getPredictiveAccuracy(params) {
     drawId,
     event,
   } = params;
+
   if (!tournamentRecord && !matchUps)
     return { error: MISSING_TOURNAMENT_RECORD };
 
@@ -48,6 +48,10 @@ export function getPredictiveAccuracy(params) {
 
   if (matchUps && !validMatchUps(matchUps))
     return { error: INVALID_VALUES, context: { matchUps } };
+
+  const scaleProfile = ratingsParameters[scaleName];
+  const ascending = scaleProfile?.ascending ?? params.ascending ?? false;
+  const valueAccessor = scaleProfile?.accessor ?? params.valueAccessor;
 
   const contextProfile = { withScaleValues: true, withCompetitiveness: true };
   const contextFilters = {
@@ -353,8 +357,8 @@ function getGroupingAccuracy({
       continue;
     }
 
-    // when ascending is true winning value will be less than losing value
-    const signedGap = ascending ? valuesGap * -1 : valuesGap;
+    // when ascending is true winning value will be greater than losing value
+    const signedGap = ascending ? valuesGap : valuesGap * -1;
 
     const winningScoreString =
       winningSide === 1 ? score?.scoreStringSide1 : score?.scoreStringSide2;

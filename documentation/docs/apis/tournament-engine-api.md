@@ -2402,8 +2402,8 @@ const [{ drawPosition, participantId, qualifier, bye }] = positionAssignments;
 const { accuracy, zoneDistribution } = tournamentEngine.getPredictiveAccuracy({
   exclusionRule: { valueAccessor: 'confidence', range: [0, 70] }, // exclude low confidence values
   zoneMargin: 3, // optional - creates +/- range and report competitiveness distribution
-  ascending: true, // scale goes from low to high
-  valueAccessor: 'wtnRating',
+  ascending: false, // optional - scale goes from low to high with high being the "best"
+  valueAccessor: 'wtnRating', // optional if `scaleName` is defined in factory `ratingsParameters`
   scaleName: WTN,
 });
 ```
