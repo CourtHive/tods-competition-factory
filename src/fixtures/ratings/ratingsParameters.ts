@@ -1,13 +1,19 @@
 import { ELO, NTRP, UTR, WTN } from '../../constants/ratingConstants';
 
 export const ratingsParameters = {
-  [ELO]: { range: [0, 3000], decimalsCount: 0, defaultInitialization: 1500 },
+  [ELO]: {
+    defaultInitialization: 1500,
+    decimalsCount: 0,
+    range: [0, 3000],
+    ascending: true,
+  },
   [NTRP]: {
     accessors: ['ntrpRating', 'dntrpRatingHundredths'],
     attributes: { ustaRatingType: '' },
     accessor: 'dntrpRatingHundredths',
     defaultInitialization: 3,
     decimalsCount: 1,
+    ascending: true,
     range: [1, 7],
   },
   [UTR]: {
@@ -15,6 +21,7 @@ export const ratingsParameters = {
     accessors: ['utrRating'],
     accessor: 'utrRating',
     decimalsCount: 2,
+    ascending: true,
     range: [1, 16],
   },
   [WTN]: {
@@ -22,6 +29,7 @@ export const ratingsParameters = {
     accessors: ['wtnRating', 'confidence'],
     defaultInitialization: 23,
     accessor: 'wtnRating',
+    ascending: false,
     decimalsCount: 2,
     range: [40, 1],
   },
