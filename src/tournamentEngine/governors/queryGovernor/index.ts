@@ -2,7 +2,7 @@ import { getMatchUpScheduleDetails as drawEngineGetMatchUpScheduleDetails } from
 import { getPolicyDefinitions } from '../../../global/functions/deducers/getAppliedPolicies';
 import { getMaxEntryPosition } from '../../../global/functions/deducers/getMaxEntryPosition';
 import { isValid } from '../../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
-import { getMatchUpCompetitiveness } from '../../getters/getMatchUpCompetitiveness';
+import { getMatchUpCompetitiveProfile } from '../../getters/getMatchUpCompetitiveProfile';
 import { findExtension } from '../../../global/functions/deducers/findExtension';
 import { participantScheduledMatchUps } from './participantScheduledMatchUps';
 import { getPositionAssignments } from '../../getters/getPositionAssignments';
@@ -85,7 +85,7 @@ const queryGovernor = {
   isValidMatchUpFormat: isValid,
 
   getMaxEntryPosition,
-  getMatchUpCompetitiveness,
+  getMatchUpCompetitiveProfile,
 
   findVenue,
   getCourts,

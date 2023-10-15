@@ -14,25 +14,21 @@ import {
   WALKOVER,
 } from '../../constants/statsConstants';
 
-export function getMatchUpsStats({
-  competitiveProfile,
-  tournamentRecord,
-  matchUps,
-}) {
+export function getMatchUpsStats({ profileBands, tournamentRecord, matchUps }) {
   if (!validMatchUps(matchUps)) return { error: MISSING_MATCHUPS };
 
   const policy =
-    !competitiveProfile &&
+    !profileBands &&
     findPolicy({
       policyType: POLICY_TYPE_COMPETITIVE_BANDS,
       tournamentRecord,
     }).policy;
 
   const bandProfiles =
-    competitiveProfile ||
-    policy?.competitiveProfile ||
+    profileBands ||
+    policy?.profileBands ||
     POLICY_COMPETITIVE_BANDS_DEFAULT[POLICY_TYPE_COMPETITIVE_BANDS]
-      .competitiveProfile;
+      .profileBands;
 
   const relevantMatchUps = matchUps.filter(({ winningSide }) => winningSide);
 

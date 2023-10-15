@@ -5,7 +5,7 @@ import { DECISIVE, ROUTINE } from '../../constants/statsConstants';
 export const POLICY_COMPETITIVE_BANDS_DEFAULT = {
   [POLICY_TYPE_COMPETITIVE_BANDS]: {
     policyName: 'Competitive Bands Default',
-    competitiveProfile: {
+    profileBands: {
       [DECISIVE]: 20,
       [ROUTINE]: 50,
     },
