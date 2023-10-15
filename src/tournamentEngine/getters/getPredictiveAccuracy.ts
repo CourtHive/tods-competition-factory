@@ -1,6 +1,7 @@
 import { scoreHasValue } from '../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import { validMatchUps } from '../../matchUpEngine/governors/queryGovernor/validMatchUp';
 import ratingsParameters from '../../fixtures/ratings/ratingsParameters';
+import { isConvertableInteger } from '../../utilities/math';
 import {
   allDrawMatchUps,
   allEventMatchUps,
@@ -23,7 +24,6 @@ import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
-import { isConvertableInteger } from '../../utilities/math';
 
 export function getPredictiveAccuracy(params) {
   let { matchUps } = params;
