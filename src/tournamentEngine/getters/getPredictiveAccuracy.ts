@@ -23,6 +23,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
+import { isConvertableInteger } from '../../utilities/math';
 
 export function getPredictiveAccuracy(params) {
   let { matchUps } = params;
@@ -33,9 +34,9 @@ export function getPredictiveAccuracy(params) {
     exclusionRule,
     zoneDoubling,
     matchUpType,
-    zoneMargin,
     scaleName,
     eventId,
+    zonePct,
     drawId,
     event,
   } = params;
@@ -52,6 +53,15 @@ export function getPredictiveAccuracy(params) {
   const scaleProfile = ratingsParameters[scaleName];
   const ascending = scaleProfile?.ascending ?? params.ascending ?? false;
   const valueAccessor = scaleProfile?.accessor ?? params.valueAccessor;
+
+  const ratingsRangeDifference =
+    Array.isArray(scaleProfile?.range) &&
+    Math.abs(scaleProfile.range[0] - scaleProfile.range[1]);
+
+  const zoneMargin =
+    isConvertableInteger(zonePct) && ratingsRangeDifference
+      ? (zonePct / 100) * ratingsRangeDifference
+      : params.zoneMargin || ratingsRangeDifference;
 
   const contextProfile = { withScaleValues: true, withCompetitiveness: true };
   const contextFilters = {
