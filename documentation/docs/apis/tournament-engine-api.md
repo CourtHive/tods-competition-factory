@@ -2044,11 +2044,13 @@ const { flightProfile } = tournamentEngine.getFlightProfile({ eventId });
 Returns a categorization of a matchUp as "Competitive", "Routine" or "Decisive"
 
 ```js
-const { competitiveness, pctSpread } =
-  tournamentEngine.getMatchUpCompetitiveProfile({
-    profileBands, // optional { [DECISIVE]: 20, [ROUTINE]: 50 } // can be attached to tournamentRecord as a policy
-    matchUp,
-  });
+const {
+  competitiveness, // [COMPETITIVE, DECISIVE, ROUTINE]
+  pctSpread, // 0-100 - rounded loser's percent of games required to win
+} = tournamentEngine.getMatchUpCompetitiveProfile({
+  profileBands, // optional { [DECISIVE]: 20, [ROUTINE]: 50 } // can be attached to tournamentRecord as a policy
+  matchUp,
+});
 ```
 
 ---
