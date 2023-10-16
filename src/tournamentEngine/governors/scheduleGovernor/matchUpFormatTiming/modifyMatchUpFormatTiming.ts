@@ -52,8 +52,8 @@ export function modifyMatchUpFormatTiming({
       recoveryTimes,
     });
     addTournamentExtension({
-      tournamentRecord,
       extension: { name, value },
+      tournamentRecord,
     });
   }
 

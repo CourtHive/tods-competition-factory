@@ -54,8 +54,8 @@ dependencies:
     specifier: 0.18.0
     version: 0.18.0(@types/react@18.2.28)(react@18.2.0)
   tods-competition-factory:
-    specifier: 1.7.5
-    version: 1.7.5(@babel/core@7.22.20)
+    specifier: 1.7.6
+    version: 1.7.6(@babel/core@7.22.20)
 
 packages:
 
@@ -293,7 +293,7 @@ packages:
       '@babel/helpers': 7.22.15
       '@babel/parser': 7.22.16
       '@babel/template': 7.22.15
-      '@babel/traverse': 7.22.20
+      '@babel/traverse': 7.23.2
       '@babel/types': 7.22.19
       convert-source-map: 1.9.0
       debug: 4.3.4
@@ -319,7 +319,7 @@ packages:
       '@babel/helpers': 7.22.15
       '@babel/parser': 7.22.16
       '@babel/template': 7.22.15
-      '@babel/traverse': 7.22.20
+      '@babel/traverse': 7.23.2
       '@babel/types': 7.22.19
       convert-source-map: 1.9.0
       debug: 4.3.4
@@ -335,6 +335,16 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/types': 7.22.19
+      '@jridgewell/gen-mapping': 0.3.3
+      '@jridgewell/trace-mapping': 0.3.19
+      jsesc: 2.5.2
+    dev: false
+
+  /@babel/generator@7.23.0:
+    resolution: {integrity: sha512-lN85QRR+5IbYrMWM6Y4pE/noaQtg4pNiqeNGX60eqOfo6gtEj6uw/JagelB8vVztSd7R6M5n1+PQkDbHbBRU4g==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      '@babel/types': 7.23.0
       '@jridgewell/gen-mapping': 0.3.3
       '@jridgewell/trace-mapping': 0.3.19
       jsesc: 2.5.2
@@ -423,11 +433,19 @@ packages:
       '@babel/types': 7.22.19
     dev: false
 
+  /@babel/helper-function-name@7.23.0:
+    resolution: {integrity: sha512-OErEqsrxjZTJciZ4Oo+eoZqeW9UIiOcuYKRJA4ZAgV9myA+pOXhhmpfNCKjEH/auVfEYVFJ6y1Tc4r0eIApqiw==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      '@babel/template': 7.22.15
+      '@babel/types': 7.23.0
+    dev: false
+
   /@babel/helper-hoist-variables@7.22.5:
     resolution: {integrity: sha512-wGjk9QZVzvknA6yKIUURb8zY3grXCcOZt+/7Wcy8O2uctxhplmUPkOdlgoNhmdVee2c92JXbf1xpMtVNbfoxRw==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.22.19
+      '@babel/types': 7.23.0
     dev: false
 
   /@babel/helper-member-expression-to-functions@7.22.15:
@@ -530,7 +548,7 @@ packages:
     resolution: {integrity: sha512-AsUnxuLhRYsisFiaJwvp1QF+I3KjD5FOxut14q/GzovUe6orHLesW2C7d754kRm53h5gqrz6sFl6sxc4BVtE/g==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.22.19
+      '@babel/types': 7.23.0
     dev: false
 
   /@babel/helper-string-parser@7.22.5:
@@ -562,7 +580,7 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/template': 7.22.15
-      '@babel/traverse': 7.22.20
+      '@babel/traverse': 7.23.2
       '@babel/types': 7.22.19
     transitivePeerDependencies:
       - supports-color
@@ -583,6 +601,14 @@ packages:
     hasBin: true
     dependencies:
       '@babel/types': 7.22.19
+    dev: false
+
+  /@babel/parser@7.23.0:
+    resolution: {integrity: sha512-vvPKKdMemU85V9WE/l5wZEmImpCtLqbnTvqDS2U1fJ96KrxoW7KrXhNsNCblQlg8Ck4b85yxdTyelsMUgFUXiw==}
+    engines: {node: '>=6.0.0'}
+    hasBin: true
+    dependencies:
+      '@babel/types': 7.23.0
     dev: false
 
   /@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression@7.22.15(@babel/core@7.22.20):
@@ -1617,22 +1643,22 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/code-frame': 7.22.13
-      '@babel/parser': 7.22.16
-      '@babel/types': 7.22.19
+      '@babel/parser': 7.23.0
+      '@babel/types': 7.23.0
     dev: false
 
-  /@babel/traverse@7.22.20:
-    resolution: {integrity: sha512-eU260mPZbU7mZ0N+X10pxXhQFMGTeLb9eFS0mxehS8HZp9o1uSnFeWQuG1UPrlxgA7QoUzFhOnilHDp0AXCyHw==}
+  /@babel/traverse@7.23.2:
+    resolution: {integrity: sha512-azpe59SQ48qG6nu2CzcMLbxUudtN+dOM9kDbUqGq3HXUJRlo7i8fvPoxQUzYgLZ4cMVmuZgm8vvBpNeRhd6XSw==}
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/code-frame': 7.22.13
-      '@babel/generator': 7.22.15
+      '@babel/generator': 7.23.0
       '@babel/helper-environment-visitor': 7.22.20
-      '@babel/helper-function-name': 7.22.5
+      '@babel/helper-function-name': 7.23.0
       '@babel/helper-hoist-variables': 7.22.5
       '@babel/helper-split-export-declaration': 7.22.6
-      '@babel/parser': 7.22.16
-      '@babel/types': 7.22.19
+      '@babel/parser': 7.23.0
+      '@babel/types': 7.23.0
       debug: 4.3.4
       globals: 11.12.0
     transitivePeerDependencies:
@@ -1641,6 +1667,15 @@ packages:
 
   /@babel/types@7.22.19:
     resolution: {integrity: sha512-P7LAw/LbojPzkgp5oznjE6tQEIWbp4PkkfrZDINTro9zgBRtI324/EYsiSI7lhPbpIQ+DCeR2NNmMWANGGfZsg==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      '@babel/helper-string-parser': 7.22.5
+      '@babel/helper-validator-identifier': 7.22.20
+      to-fast-properties: 2.0.0
+    dev: false
+
+  /@babel/types@7.23.0:
+    resolution: {integrity: sha512-0oIyUfKoI3mSqMvsxBdclDwxXKXAUA8v/apZbc+iSyARYou1o8ZGDxbUYyLFoW2arqS2jDGqJuZvv1d/io1axg==}
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/helper-string-parser': 7.22.5
@@ -1736,7 +1771,7 @@ packages:
       '@babel/preset-typescript': 7.22.15(@babel/core@7.22.20)
       '@babel/runtime': 7.22.15
       '@babel/runtime-corejs3': 7.22.15
-      '@babel/traverse': 7.22.20
+      '@babel/traverse': 7.23.2
       '@docusaurus/cssnano-preset': 2.4.3
       '@docusaurus/logger': 2.4.3
       '@docusaurus/mdx-loader': 2.4.3(@docusaurus/types@2.4.3)(react-dom@18.2.0)(react@18.2.0)
@@ -1845,7 +1880,7 @@ packages:
       react-dom: ^16.8.4 || ^17.0.0
     dependencies:
       '@babel/parser': 7.22.16
-      '@babel/traverse': 7.22.20
+      '@babel/traverse': 7.23.2
       '@docusaurus/logger': 2.4.3
       '@docusaurus/utils': 2.4.3(@docusaurus/types@2.4.3)
       '@mdx-js/mdx': 1.6.22
@@ -4485,7 +4520,7 @@ packages:
       classnames: 2.3.2
       dayjs: 1.11.10
       husky: 8.0.3
-      tods-competition-factory: 1.7.5(@babel/core@7.22.20)
+      tods-competition-factory: 1.7.6(@babel/core@7.22.20)
     transitivePeerDependencies:
       - '@babel/core'
     dev: false
@@ -10160,8 +10195,8 @@ packages:
       is-number: 7.0.0
     dev: false
 
-  /tods-competition-factory@1.7.5(@babel/core@7.22.20):
-    resolution: {integrity: sha512-utncm4QBWrCgjls8FRmri3SoLtH4qQjDDNmYR/biUtvoGA3ctZbFKAGJA7AQLZ80rYOTclaIocNOp2pqAkVqTQ==}
+  /tods-competition-factory@1.7.6(@babel/core@7.22.20):
+    resolution: {integrity: sha512-DDMqbzsobFBCpkRnQU8wscdF+gCiRAvrrZHN9hnpFgxLYqO9OFhOxd/j0UaVbPxoajJkr5giSDc66P3iwpJ81Q==}
     engines: {node: '>=18.17.1 < 19'}
     dependencies:
       '@babel/plugin-transform-nullish-coalescing-operator': 7.22.11(@babel/core@7.22.20)
