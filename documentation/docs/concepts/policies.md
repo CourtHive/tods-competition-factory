@@ -29,7 +29,7 @@ The structure of a **_policyDefinitions_** object is as follows:
 - [Round Robin Tally Policy](../policies/tallyPolicy): Configures calculations which determine participant finishing positions
 - [Feed Policy](../policies/feedPolicy): Determining the the patterns which direct participants into consolation feed rounds
 - Progression Policy: Configuration related to participant progression, e.g. automatic qualifier placement, double-exit effects
-- Round Naming Policy: Specifies how rounds of draw structures should be named
+- [Round Naming Policy](../policies/roundNaming): Specifies how rounds of draw structures should be named
 - Scoring Policy: Restricts available matchUpFormats, defines a default and conditions for "ready to score"
 - Voluntary Consolation Policy: Specifies { winsLimit, finishingRoundLimit } for voluntary consolation eligibility
 
