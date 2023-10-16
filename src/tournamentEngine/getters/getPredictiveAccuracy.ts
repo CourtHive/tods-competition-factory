@@ -1,6 +1,7 @@
 import { scoreHasValue } from '../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import { validMatchUps } from '../../matchUpEngine/governors/queryGovernor/validMatchUp';
 import ratingsParameters from '../../fixtures/ratings/ratingsParameters';
+import { isConvertableInteger } from '../../utilities/math';
 import {
   allDrawMatchUps,
   allEventMatchUps,
@@ -9,8 +10,14 @@ import {
 
 import { COMPETITIVE, DECISIVE, ROUTINE } from '../../constants/statsConstants';
 import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
-import { TypeEnum } from '../../types/tournamentFromSchema';
 import { SUCCESS } from '../../constants/resultConstants';
+import { HydratedMatchUp } from '../../types/hydrated';
+import {
+  DrawDefinition,
+  Event,
+  Tournament,
+  TypeEnum,
+} from '../../types/tournamentFromSchema';
 import {
   ABANDONED,
   DEAD_RUBBER,
@@ -24,7 +31,25 @@ import {
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
 
-export function getPredictiveAccuracy(params) {
+type getPredictiveAccuracyArgs = {
+  exclusionRule?: { valueAccessor: string; range: [number, number] };
+  tournamentRecord: Tournament;
+  drawDefinition: DrawDefinition;
+  matchUps?: HydratedMatchUp[];
+  valueAccessor?: string;
+  excludeMargin?: number;
+  zoneDoubling?: boolean;
+  matchUpType: TypeEnum;
+  zoneMargin?: number;
+  ascending?: boolean;
+  scaleName: string;
+  eventId?: string;
+  zonePct?: number;
+  drawId?: string;
+  event?: Event;
+};
+
+export function getPredictiveAccuracy(params: getPredictiveAccuracyArgs) {
   let { matchUps } = params;
   const {
     tournamentRecord,
@@ -33,9 +58,9 @@ export function getPredictiveAccuracy(params) {
     exclusionRule,
     zoneDoubling,
     matchUpType,
-    zoneMargin,
     scaleName,
     eventId,
+    zonePct,
     drawId,
     event,
   } = params;
@@ -52,6 +77,15 @@ export function getPredictiveAccuracy(params) {
   const scaleProfile = ratingsParameters[scaleName];
   const ascending = scaleProfile?.ascending ?? params.ascending ?? false;
   const valueAccessor = scaleProfile?.accessor ?? params.valueAccessor;
+
+  const ratingsRangeDifference = Array.isArray(scaleProfile?.range)
+    ? Math.abs(scaleProfile.range[0] - scaleProfile.range[1])
+    : 0;
+
+  const zoneMargin =
+    isConvertableInteger(zonePct) && ratingsRangeDifference
+      ? (zonePct || 0 / 100) * ratingsRangeDifference
+      : params.zoneMargin || ratingsRangeDifference;
 
   const contextProfile = { withScaleValues: true, withCompetitiveness: true };
   const contextFilters = {
@@ -103,7 +137,7 @@ export function getPredictiveAccuracy(params) {
   const relevantMatchUps = matchUps.filter(
     ({ winningSide, score, sides, matchUpStatus }) =>
       ![RETIRED, DEFAULTED, WALKOVER, DEAD_RUBBER, ABANDONED].includes(
-        matchUpStatus
+        matchUpStatus || ''
       ) &&
       scoreHasValue({ score }) &&
       sides?.length === 2 &&
@@ -120,31 +154,33 @@ export function getPredictiveAccuracy(params) {
   });
 
   const marginCalc =
-    !zoneDoubling || matchUpType === SINGLES ? zoneMargin : zoneMargin * 2;
+    !zoneDoubling || matchUpType === SINGLES
+      ? zoneMargin
+      : (zoneMargin || 0) * 2;
 
-  const zoneData =
-    zoneMargin &&
-    relevantMatchUps
-      .map(({ competitiveProfile, matchUpType, score, sides }) => {
-        const sideValues = getSideValues({
-          valueAccessor,
-          matchUpType,
-          scaleName,
-          sides,
-        });
-        const valuesGap = Math.abs(sideValues[0].value - sideValues[1].value);
+  const zoneData = zoneMargin
+    ? relevantMatchUps
+        .map(({ competitiveProfile, matchUpType, score, sides }) => {
+          const sideValues = getSideValues({
+            valueAccessor,
+            matchUpType,
+            scaleName,
+            sides,
+          });
+          const valuesGap = Math.abs(sideValues[0].value - sideValues[1].value);
 
-        return {
-          competitiveness: competitiveProfile?.competitiveness,
-          valuesGap,
-          score,
-        };
-      })
-      .filter(({ valuesGap }) => {
-        return valuesGap <= marginCalc;
-      });
+          return {
+            competitiveness: competitiveProfile?.competitiveness,
+            valuesGap,
+            score,
+          };
+        })
+        .filter(({ valuesGap }) => {
+          return valuesGap <= marginCalc;
+        })
+    : [];
 
-  const zoneBands = zoneData?.length && getGroupingBands({ zoneData });
+  const zoneBands: any = getGroupingBands({ zoneData });
   const totalZoneMatchUps =
     zoneBands && [].concat(Object.values(zoneBands)).flat().length;
 
@@ -184,7 +220,7 @@ function getGroupingBands({ zoneData }) {
 
 type GetSideValuesArgs = {
   valueAccessor: string;
-  matchUpType: TypeEnum;
+  matchUpType?: TypeEnum;
   exclusionRule?: any;
   scaleName: string;
   sides: any;
@@ -342,7 +378,7 @@ function getGroupingAccuracy({
     const valuesGap =
       sideValues[winningIndex].value - sideValues[1 - winningIndex].value;
 
-    const floatMargin = parseFloat(excludeMargin);
+    const floatMargin = parseFloat(excludeMargin || 0);
     const excludeGap = floatMargin && Math.abs(valuesGap) < floatMargin;
 
     if (excludeGap) {

@@ -1,5 +1,9 @@
 import { deepCopyEnabled } from '../global/state/globalState';
 
+export function isString(obj) {
+  return typeof obj === 'string';
+}
+
 export function isObject(obj) {
   return typeof obj === 'object';
 }

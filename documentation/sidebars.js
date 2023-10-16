@@ -31,6 +31,7 @@ module.exports = {
             'policies/positioningSeeds',
             'policies/scheduling',
             'policies/rankingPolicy',
+            'policies/roundNaming',
             'policies/tallyPolicy',
             'policies/feedPolicy',
           ],

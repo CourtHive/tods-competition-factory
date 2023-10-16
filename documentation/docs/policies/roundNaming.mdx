@@ -1,0 +1,58 @@
+---
+title: Round Naming
+---
+
+A **Round Naming** policy defines both round names and round name abbreviations used when hydrating `matchUps`.
+If no policy has been attached at any level of the tournament record hierarchy, the default policy (see below) is used.
+
+**Round Naming** policies can be attached to a tournament record, an event, or a drawDefinition:
+
+```js
+tournamentEngine.attachPolicies({ policyDefinitions: { [policyType]: {} } });
+tournamentEngine.attachEventPolicies({
+  policyDefinitions: { [policyType]: {} },
+  eventId,
+});
+tournamentEngine.generateDrawDefinition({ ...params, policyDefinitions });
+tournamentEngine.modifyDrawDefinition({
+  drawUpdates: { policyDefinitions },
+  drawId,
+});
+
+drawEngine.attachPolicies({ policyDefinitions: { [policyType]: {} } });
+```
+
+## Default Round Naming policy
+
+```js
+{
+  [POLICY_TYPE_ROUND_NAMING]: {
+    policyName: 'Round Naming Default',
+    namingConventions: {
+      round: 'Round', // used for Ad Hoc or non-power-of-2 rounds
+    },
+    // key is matchUpsCount for the round
+    abbreviatedRoundNamingMap: {
+      1: 'F',
+      2: 'SF',
+      4: 'QF',
+    },
+    // key is matchUpsCount for the round
+    roundNamingMap: {
+      1: 'Final',
+      2: 'Semifinal',
+      4: 'Quarterfinal',
+    },
+    affixes: {
+      roundNumber: 'R',
+      preFeedRound: 'Q',
+    },
+    stageConstants: {
+      [MAIN]: '',
+      [PLAY_OFF]: 'P',
+      [QUALIFYING]: 'Q',
+      [CONSOLATION]: 'C',
+    },
+  },
+};
+```

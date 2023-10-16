@@ -51,6 +51,14 @@ export function getRoundContextProfile({
   const roundNamePrefix =
     roundNamingPolicy?.affixes || defaultRoundNamingPolicy.affixes;
 
+  const roundNumberAffix =
+    roundNamePrefix.roundNumber || defaultRoundNamingPolicy.affixes.roundNumber;
+
+  const namingConventions =
+    roundNamingPolicy?.namingConventions ||
+    defaultRoundNamingPolicy.namingConventions;
+  const roundNameFallback = namingConventions.round;
+
   const stageInitial = stage && stage !== MAIN && stage[0];
   const stageConstants = roundNamingPolicy?.stageConstants;
   const stageConstant = (stage && stageConstants?.[stage]) || stageInitial;
@@ -60,8 +68,8 @@ export function getRoundContextProfile({
     Object.assign(
       roundNamingProfile,
       ...roundProfileKeys.map((key) => {
-        const roundName = `Round ${key}`;
-        const abbreviatedRoundName = `R${key}`;
+        const roundName = `${roundNameFallback} ${key}`;
+        const abbreviatedRoundName = `${roundNumberAffix}${key}`;
         return { [key]: { roundName, abbreviatedRoundName } };
       })
     );

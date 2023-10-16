@@ -2044,11 +2044,13 @@ const { flightProfile } = tournamentEngine.getFlightProfile({ eventId });
 Returns a categorization of a matchUp as "Competitive", "Routine" or "Decisive"
 
 ```js
-const { competitiveness, pctSpread } =
-  tournamentEngine.getMatchUpCompetitiveProfile({
-    profileBands, // optional { [DECISIVE]: 20, [ROUTINE]: 50 } // can be attached to tournamentRecord as a policy
-    matchUp,
-  });
+const {
+  competitiveness, // [COMPETITIVE, DECISIVE, ROUTINE]
+  pctSpread, // 0-100 - rounded loser's percent of games required to win
+} = tournamentEngine.getMatchUpCompetitiveProfile({
+  profileBands, // optional { [DECISIVE]: 20, [ROUTINE]: 50 } // can be attached to tournamentRecord as a policy
+  matchUp,
+});
 ```
 
 ---
@@ -2401,9 +2403,12 @@ const [{ drawPosition, participantId, qualifier, bye }] = positionAssignments;
 ```js
 const { accuracy, zoneDistribution } = tournamentEngine.getPredictiveAccuracy({
   exclusionRule: { valueAccessor: 'confidence', range: [0, 70] }, // exclude low confidence values
+
   zoneMargin: 3, // optional - creates +/- range and report competitiveness distribution
-  ascending: false, // optional - scale goes from low to high with high being the "best"
+  zonePct: 20, // optional - precedence over zoneMargin, defaults to 100% of rating range
+
   valueAccessor: 'wtnRating', // optional if `scaleName` is defined in factory `ratingsParameters`
+  ascending: false, // optional - scale goes from low to high with high being the "best"
   scaleName: WTN,
 });
 ```
@@ -2824,19 +2829,6 @@ tournamentEngine.modifyDrawName({
 
 ---
 
-## modifyEventMatchUpFormatTiming
-
-```js
-tournamentEngine.modifyEventMatchUpFormatTiming({
-  recoveryMinutes,
-  averageMinutes,
-  matchUpFormat,
-  eventId,
-});
-```
-
----
-
 ## modifyMatchUpFormatTiming
 
 ```js
@@ -2892,6 +2884,34 @@ tournamentEngine.modifyEventEntries({
   entryStage = MAIN,
   eventId,
 })
+```
+
+---
+
+## modifyEvent
+
+```js
+tournamentEngine.modifyEvent({
+  eventUpdates: {
+    eventGender, // optional - must validate against current event entries, if any
+    eventType, // optional - must validate against current event entries, if any
+    eventName, // optional
+  },
+  eventId,
+});
+```
+
+---
+
+## modifyEventMatchUpFormatTiming
+
+```js
+tournamentEngine.modifyEventMatchUpFormatTiming({
+  recoveryMinutes,
+  averageMinutes,
+  matchUpFormat,
+  eventId,
+});
 ```
 
 ---

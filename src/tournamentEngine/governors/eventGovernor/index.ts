@@ -74,26 +74,27 @@ import { removeStructure } from '../../../drawEngine/governors/structureGovernor
 import { toggleParticipantCheckInState } from './drawDefinitions/toggleParticipantCheckInState';
 import { deleteFlightAndFlightDraw } from './drawDefinitions/deleteFlightAndFlightDraw';
 import { refreshEventDrawOrder } from './drawDefinitions/refreshEventDrawOrder';
-import {
-  addAdHocMatchUps,
-  generateAdHocMatchUps,
-} from './drawDefinitions/generateAdHocMatchUps';
 import { generateFlightProfile } from '../../generators/generateFlightProfile';
 import { generateVoluntaryConsolation } from './generateVoluntaryConsolation';
 import { addVoluntaryConsolationStage } from './addVoluntaryConsolationStage';
 import { substituteParticipant } from './drawDefinitions/substituteParticipant';
 import { deleteAdHocMatchUps } from './drawDefinitions/deleteAdHocMatchUps';
+import { modifyDrawDefinition } from './drawDefinitions/modifyDrawDefinition';
 import { resetDrawDefinition } from './drawDefinitions/resetDrawDefinition';
 import { pruneDrawDefinition } from './drawDefinitions/pruneDrawDefinition';
 import { updateDrawIdsOrder } from './drawDefinitions/updateDrawIdsOrder';
 import { setOrderOfFinish } from './drawDefinitions/setOrderOfFinish';
 import { generateLineUps } from '../../generators/generateLineUps';
+import { modifyEventEntries } from './entries/modifyEventEntries';
 import { getFlightProfile } from '../../getters/getFlightProfile';
 import { modifyDrawName } from './drawDefinitions/modifyDrawName';
-import { modifyEventEntries } from './entries/modifyEventEntries';
 import { attachFlightProfile } from './attachFlightProfile';
 import { drawMatic } from './drawDefinitions/drawMatic';
 import { addFlight } from './addFlight';
+import {
+  addAdHocMatchUps,
+  generateAdHocMatchUps,
+} from './drawDefinitions/generateAdHocMatchUps';
 import {
   attachConsolationStructures,
   attachPlayoffStructures,
@@ -137,6 +138,7 @@ import { aggregateTieFormats } from './aggregateTieFormats';
 import { updateTieMatchUpScore } from './updateTieMatchUpScore';
 import { disableTieAutoCalc } from './disableTieAutoCalc';
 import { enableTieAutoCalc } from './enableTieAutoCalc';
+import { modifyEvent } from './modifyEvent';
 
 const eventGovernor = {
   generateQualifyingStructure,
@@ -161,11 +163,12 @@ const eventGovernor = {
   resetScorecard,
   resetTieFormat,
 
-  addEvent,
-  deleteEvents,
-  setEventDates,
   setEventStartDate,
   setEventEndDate,
+  setEventDates,
+  deleteEvents,
+  modifyEvent,
+  addEvent,
 
   removeSeededParticipant,
   removeScaleValues,
@@ -178,6 +181,7 @@ const eventGovernor = {
   getAvailablePlayoffProfiles,
   deleteDrawDefinitions,
   addPlayoffStructures,
+  modifyDrawDefinition,
   addDrawDefinition,
   removeStructure,
   modifyDrawName,

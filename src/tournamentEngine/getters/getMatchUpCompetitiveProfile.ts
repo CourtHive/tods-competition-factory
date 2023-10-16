@@ -49,6 +49,7 @@ export function getMatchUpCompetitiveProfile({
   const scoreComponents = getScoreComponents({ score });
   const spread = pctSpread([scoreComponents]);
   const competitiveness = getBand(spread, bandProfiles);
+  const pctSpreadValue = Array.isArray(spread) ? spread[0] : spread;
 
-  return { ...SUCCESS, competitiveness, pctSpread: spread };
+  return { ...SUCCESS, competitiveness, pctSpread: pctSpreadValue };
 }

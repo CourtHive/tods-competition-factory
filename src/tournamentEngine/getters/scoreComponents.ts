@@ -7,11 +7,15 @@ import {
 
 const add = (a, b) => (a || 0) + (b || 0);
 
-export function getBand(spread, bandProfiles) {
+export function getBand(
+  spread: number | [number],
+  bandProfiles: { [key: string]: number }
+) {
+  const spreadValue = Array.isArray(spread) ? spread[0] : spread;
   return (
-    (isNaN(spread) && WALKOVER) ||
-    (spread <= bandProfiles[DECISIVE] && DECISIVE) ||
-    (spread <= bandProfiles[ROUTINE] && ROUTINE) ||
+    (isNaN(spreadValue) && WALKOVER) ||
+    (spreadValue <= bandProfiles[DECISIVE] && DECISIVE) ||
+    (spreadValue <= bandProfiles[ROUTINE] && ROUTINE) ||
     COMPETITIVE
   );
 }
