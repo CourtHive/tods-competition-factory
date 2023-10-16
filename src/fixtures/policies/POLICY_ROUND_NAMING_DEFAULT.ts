@@ -9,6 +9,9 @@ import {
 export const POLICY_ROUND_NAMING_DEFAULT = {
   [POLICY_TYPE_ROUND_NAMING]: {
     policyName: 'Round Naming Default',
+    namingConventions: {
+      round: 'Round',
+    },
     abbreviatedRoundNamingMap: {
       // key is matchUpsCount for the round
       1: 'F',
