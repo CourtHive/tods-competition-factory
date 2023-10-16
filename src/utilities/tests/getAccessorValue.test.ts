@@ -22,15 +22,15 @@ it('can extract values from nested objects', () => {
   expect(values).toEqual(['Name']);
 
   ({ value, values } = getAccessorValue({
-    element,
     accessor: 'person.addresses.street',
+    element,
   }));
   expect(value).toEqual(MAIN_STREET);
   expect(values).toEqual([MAIN_STREET]);
 
   ({ value, values } = getAccessorValue({
-    element,
     accessor: 'person.addresses.city',
+    element,
   }));
   expect(value).toEqual('New York');
   expect(values).toEqual(['New York', 'San Francisco']);
