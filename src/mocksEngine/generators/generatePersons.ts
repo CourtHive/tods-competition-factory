@@ -74,7 +74,7 @@ export function generatePersons(params?) {
     const validatedPersonData = personData.filter((person) => {
       if (typeof person.firstName !== 'string') return false;
       if (typeof person.lastName !== 'string') return false;
-      if (![MALE, FEMALE].includes(person.sex)) return false;
+      if (person.sex && ![MALE, FEMALE].includes(person.sex)) return false;
       if (
         person.nationalityCode &&
         (typeof person.nationalityCode !== 'string' ||
@@ -97,7 +97,9 @@ export function generatePersons(params?) {
     }
   }
 
-  const shuffledPersons = shuffleArray(validPersonData);
+  const shuffledPersons = personData
+    ? validPersonData
+    : shuffleArray(validPersonData);
 
   if (shuffledPersons.length < count) {
     const {
