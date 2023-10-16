@@ -1,9 +1,9 @@
 import { makeDeepCopy } from './makeDeepCopy';
 
 type ProcessKeysArgs = {
-  targetElement: any;
-  attributes: string[];
   significantCharacters?: boolean;
+  attributes: string[];
+  targetElement: any;
 };
 
 export function getAccessorValue({ element, accessor }) {
@@ -26,9 +26,14 @@ export function getAccessorValue({ element, accessor }) {
   }: ProcessKeysArgs) {
     for (const [index, attribute] of attributes.entries()) {
       if (targetElement?.[attribute]) {
-        if (Array.isArray(targetElement[attribute])) {
+        const remainingKeys = attributes.slice(index + 1);
+        if (!remainingKeys.length) {
+          if (!value) value = targetElement[attribute];
+          if (!values.includes(targetElement[attribute])) {
+            values.push(targetElement[attribute]);
+          }
+        } else if (Array.isArray(targetElement[attribute])) {
           const values = targetElement[attribute];
-          const remainingKeys = attributes.slice(index);
           values.forEach((nestedTarget) =>
             processKeys({
               targetElement: nestedTarget,
@@ -51,6 +56,7 @@ export function getAccessorValue({ element, accessor }) {
         const extractedValue = significantCharacters
           ? targetElement.slice(0, significantCharacters)
           : targetElement;
+
         if (value) {
           if (!values.includes(extractedValue)) {
             values.push(extractedValue);
