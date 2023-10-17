@@ -1,3 +1,5 @@
+import { capitalizeFirst } from '../../../utilities/strings';
+
 import { Person } from '../../../types/tournamentFromSchema';
 
 type FormatPersonNameArgs = {
@@ -22,17 +24,6 @@ export function formatPersonName({
 
   if (!person) return;
   const spacer = hasSpacing(personFormat) ? ' ' : '';
-  const capitalizeFirst = (str) =>
-    str
-      .split(' ')
-      .map((name) =>
-        name
-          .split('')
-          .map((c, i) => (i ? c.toLowerCase() : c.toUpperCase()))
-          .join('')
-      )
-      .join(' ');
-
   let firstName = capitalizeFirst(person?.standardGivenName ?? '');
   let lastName = capitalizeFirst(person?.standardFamilyName ?? '');
 
