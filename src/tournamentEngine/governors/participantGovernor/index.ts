@@ -17,6 +17,7 @@ import { modifyParticipantsSignInStatus } from './modifyParticipantsSignInStatus
 import { scaledTeamAssignment } from '../../generators/scaledTeamAssignment';
 import { createGroupParticipant } from './groupings/createGroupParticipant';
 import { modifyParticipantOtherName } from './modifyParticipantOtherName';
+import { regenerateParticipantNames } from './regenerateParticipantNames';
 import { getTournamentPersons } from '../../getters/getTournamentPersons';
 import { addParticipant, addParticipants } from './addParticipants';
 import { modifyParticipantName } from './modifyParticipantName';
@@ -58,6 +59,7 @@ const participantGovernor = {
   getParticipantMembership,
 
   generateTeamsFromParticipantAttribute,
+  regenerateParticipantNames,
 
   getParticipantIdFinishingPositions,
 

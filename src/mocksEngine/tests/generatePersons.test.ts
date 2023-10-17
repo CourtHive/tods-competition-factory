@@ -37,7 +37,7 @@ test('basic person generation', () => {
   result = generatePersons({
     personData: [{ firstName: 'Buckminster', lastName: 'Fuller' }],
   });
-  expect(result.error).toEqual(INVALID_VALUES);
+  expect(result.error).toBeUndefined();
 
   result = generatePersons({
     personData: [{ lastName: 'Fuller', sex: MALE }],

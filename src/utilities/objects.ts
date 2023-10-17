@@ -1,4 +1,5 @@
 import { deepCopyEnabled } from '../global/state/globalState';
+import { getAccessorValue } from './getAccessorValue';
 
 export function isString(obj) {
   return typeof obj === 'string';
@@ -8,6 +9,24 @@ export function isObject(obj) {
   return typeof obj === 'object';
 }
 
+export function createMap(objectArray, attribute) {
+  if (!Array.isArray(objectArray)) return {};
+
+  return Object.assign(
+    {},
+    ...(objectArray ?? [])
+      .filter(isObject)
+      .map((obj) => {
+        return (
+          obj[attribute] && {
+            [obj[attribute]]: obj,
+          }
+        );
+      })
+      .filter(Boolean)
+  );
+}
+
 // e.g. result.find(hav({ attr: value })) -or- result.filter(hav({ attr: value }))
 export const hasAttributeValues = (a) => (o) =>
   Object.keys(a).every((key) => o[key] === a[key]);
@@ -15,22 +34,19 @@ export const hasAttributeValues = (a) => (o) =>
 // extracts targeted attributes
 // e.g. const byeAssignments = positionAssignments.filter(xa('bye')).map(xa('drawPosition'));
 // supports xa('string'), xa(['string', 'string']), xa({ attr1: true, attr2: true })
-export const extractAttributes = (atz) => (o) =>
-  !atz || typeof o !== 'object'
+export const extractAttributes = (accessor) => (element) =>
+  !accessor || typeof element !== 'object'
     ? undefined
-    : (Array.isArray(atz) && atz.map((a) => ({ [a]: o[a] }))) ||
-      (typeof atz === 'object' &&
-        Object.keys(atz).map((key) => ({ [key]: o[key] }))) ||
-      (typeof atz === 'string' && getAttr(o, atz));
-
-function getAttr(o, attr) {
-  const attrs = attr.split('.');
-  for (const a of attrs) {
-    o = o?.[a];
-    if (!o) return;
-  }
-  return o;
-}
+    : (Array.isArray(accessor) &&
+        accessor.map((a) => ({
+          [a]: getAccessorValue({ element, accessor: a })?.value,
+        }))) ||
+      (typeof accessor === 'object' &&
+        Object.keys(accessor).map((key) => ({
+          [key]: getAccessorValue({ element, accessor: key })?.value,
+        }))) ||
+      (typeof accessor === 'string' && getAccessorValue({ element, accessor }))
+        ?.value;
 
 export function definedAttributes(
   obj: object,

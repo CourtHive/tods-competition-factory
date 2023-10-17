@@ -1,5 +1,8 @@
 import { DrawDefinition } from '../../../types/tournamentFromSchema';
-import { AD_HOC } from '../../../constants/drawDefinitionConstants';
+import {
+  AD_HOC,
+  VOLUNTARY_CONSOLATION,
+} from '../../../constants/drawDefinitionConstants';
 
 type IsAdHocArgs = {
   drawDefinition?: DrawDefinition;
@@ -19,6 +22,7 @@ export function isAdHoc({ drawDefinition, structure }: IsAdHocArgs): boolean {
 
   return (
     !structure?.structures &&
+    structure?.stage !== VOLUNTARY_CONSOLATION &&
     !(drawDefinition?.drawType && drawDefinition.drawType !== AD_HOC) &&
     !hasRoundPosition &&
     !hasDrawPosition
