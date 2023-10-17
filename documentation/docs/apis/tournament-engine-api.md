@@ -3237,6 +3237,22 @@ tournamentEngine.qualifierDrawPositionAssignment({
 
 ---
 
+## regenerateParticipantNames
+
+Regenerate `.participantName` for SINGLES and DOUBLES `participants`.
+
+Upper/lower case and order are derived from `personFormat` string which must contain "last" and may contain "first" or "f", for first initial.
+
+```js
+const formats = {
+  PAIR: { personFormat: 'LAST', doublesJointer: '/' },
+  INDIVIDUAL: { personFormat: 'LAST, First' },
+};
+tournamentEngine.regenerateParticipantNames({ formats });
+```
+
+---
+
 ## removeCollectionDefinition
 
 ```js
