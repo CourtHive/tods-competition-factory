@@ -1,3 +1,4 @@
+import { constantToString } from '../../utilities/strings';
 import { structureTemplate } from './structureTemplate';
 import { feedInMatchUps } from './feedInMatchUps';
 import { treeMatchUps } from './eliminationTree';
@@ -101,7 +102,8 @@ export function generateCurtisConsolation(params) {
         isMock,
       });
       const playoffStructure = structureTemplate({
-        structureName: structureNameMap?.[PLAY_OFF] || PLAY_OFF,
+        structureName:
+          structureNameMap?.[PLAY_OFF] || constantToString(PLAY_OFF),
         structureId: uuids?.pop(),
         matchUps: playoffMatchUps,
         stageSequence: 2,

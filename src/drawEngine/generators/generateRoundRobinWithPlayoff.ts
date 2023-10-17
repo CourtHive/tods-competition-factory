@@ -3,6 +3,7 @@
 // groups of finishing drawPositions which playoff
 
 import { processPlayoffGroups } from './processPlayoffGroups';
+import { constantToString } from '../../utilities/strings';
 import { generateRoundRobin } from './roundRobin';
 
 import { INVALID_CONFIGURATION } from '../../constants/errorConditionConstants';
@@ -23,7 +24,7 @@ export function generateRoundRobinWithPlayOff(params) {
 
   // define a default playoff group if none specified
   const playoffGroups = structureOptions?.playoffGroups || [
-    { finishingPositions: [1], structureName: PLAY_OFF },
+    { finishingPositions: [1], structureName: constantToString(PLAY_OFF) },
   ];
   const [mainStructure] = structures;
 

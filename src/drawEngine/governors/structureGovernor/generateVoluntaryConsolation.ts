@@ -9,16 +9,18 @@ import { generateTieMatchUps } from '../../generators/tieMatchUps';
 import { makeDeepCopy, nextPowerOf2 } from '../../../utilities';
 import { getDrawStructures } from '../../getters/findStructure';
 import { definedAttributes } from '../../../utilities/objects';
+import { constantToString } from '../../../utilities/strings';
 import { getStageEntries } from '../../getters/stageGetter';
 import { getGenerators } from './getGenerators';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SeedingProfile } from '../../../types/factoryTypes';
 import {
+  EXISTING_STRUCTURE,
   ErrorType,
   INVALID_DRAW_SIZE,
-  INVALID_STRUCTURE,
   MISSING_DRAW_DEFINITION,
+  STAGE_SEQUENCE_LIMIT,
   UNRECOGNIZED_DRAW_TYPE,
 } from '../../../constants/errorConditionConstants';
 import {
@@ -113,9 +115,9 @@ export function generateVoluntaryConsolation(
   }
 
   tieFormat = copyTieFormat(
-    tieFormat || resolveTieFormat({ drawDefinition })?.tieFormat
+    tieFormat ?? resolveTieFormat({ drawDefinition })?.tieFormat
   );
-  matchUpType = matchUpType || drawDefinition.matchUpType || TypeEnum.Singles;
+  matchUpType = matchUpType ?? drawDefinition.matchUpType ?? TypeEnum.Singles;
 
   const { structures: stageStructures } = getDrawStructures({
     stageSequence: 1,
@@ -125,17 +127,18 @@ export function generateVoluntaryConsolation(
 
   // invalid to have more than one existing VOLUNTARY_CONSOLATION structure
   const structureCount = stageStructures.length;
-  if (structureCount > 1) return { error: INVALID_STRUCTURE };
+  if (structureCount > 1) return { error: STAGE_SEQUENCE_LIMIT };
 
   // invalid to already have matchUps generated for any existing structure
   if (stageStructures?.[0]?.matchUps?.length)
-    return { error: INVALID_STRUCTURE };
+    return { error: EXISTING_STRUCTURE };
   const structureId = stageStructures?.[0]?.structureId;
 
   Object.assign(
     params,
     definedAttributes({
-      structureName: params.structureName || VOLUNTARY_CONSOLATION,
+      structureName:
+        params.structureName ?? constantToString(VOLUNTARY_CONSOLATION),
       structureId,
       matchUpType,
       tieFormat,

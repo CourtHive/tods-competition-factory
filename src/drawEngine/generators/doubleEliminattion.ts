@@ -1,8 +1,10 @@
 import { doubleEliminationLinks } from './doubleEliminationLinks';
+import { constantToString } from '../../utilities/strings';
 import { structureTemplate } from './structureTemplate';
 import { feedInMatchUps } from './feedInMatchUps';
 import { treeMatchUps } from './eliminationTree';
 
+import { Structure } from '../../types/tournamentFromSchema';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
   MAIN,
@@ -11,7 +13,6 @@ import {
   CONSOLATION,
   PLAY_OFF,
 } from '../../constants/drawDefinitionConstants';
-import { Structure } from '../../types/tournamentFromSchema';
 
 export function generateDoubleElimination({
   structureName,
@@ -32,7 +33,7 @@ export function generateDoubleElimination({
     isMock,
   });
   const mainStructure = structureTemplate({
-    structureName: structureName || MAIN,
+    structureName: structureName || constantToString(MAIN),
     structureId: uuids?.pop(),
     stageSequence: 1,
     stage: MAIN,
@@ -55,9 +56,9 @@ export function generateDoubleElimination({
   });
 
   const consolationStructure = structureTemplate({
+    structureName: constantToString(BACKDRAW),
     matchUps: consolationMatchUps,
     structureId: uuids?.pop(),
-    structureName: BACKDRAW,
     stage: CONSOLATION,
     stageSequence: 2,
     matchUpType,
@@ -72,9 +73,9 @@ export function generateDoubleElimination({
     isMock,
   });
   const deciderStructure = structureTemplate({
+    structureName: constantToString(DECIDER),
     matchUps: deciderMatchUps,
     structureId: uuids?.pop(),
-    structureName: DECIDER,
     stageSequence: 3,
     stage: PLAY_OFF,
     matchUpType,

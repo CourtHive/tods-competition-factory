@@ -1,3 +1,4 @@
+import { constantToString } from '../../../../utilities/strings';
 import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
 import { extractTime } from '../../../../utilities/dateTime';
 import { mocksEngine, tournamentEngine } from '../../../..';
@@ -160,17 +161,17 @@ it.each([
 
     const main1stRound = scheduledMatchUps.filter(
       ({ structureName, roundNumber }) =>
-        structureName === MAIN && roundNumber === 1
+        structureName === constantToString(MAIN) && roundNumber === 1
     );
     const main2ndRound = scheduledMatchUps.filter(
       ({ structureName, roundNumber }) =>
-        structureName === MAIN && roundNumber === 2
+        structureName === constantToString(MAIN) && roundNumber === 2
     );
     expect(main1stRound.length).toEqual(40);
     expect(main2ndRound.length).toEqual(24);
 
     const consolationMatchUps = scheduledMatchUps.filter(
-      ({ structureName }) => structureName === CONSOLATION
+      ({ structureName }) => structureName === constantToString(CONSOLATION)
     );
     expect(consolationMatchUps.length).toEqual(16);
 

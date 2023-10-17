@@ -120,10 +120,12 @@ test('structureSort can sort by stage and stageSequence', () => {
   );
 
   const flatStructures = tournamentRecord.events
-    ?.flatMap(({ drawDefinitions, eventType }) =>
-      drawDefinitions?.flatMap(({ structures, drawId }) =>
-        structures?.map((s) => ({ ...s, drawId, eventType }))
-      )
+    ?.flatMap(
+      ({ drawDefinitions, eventType }) =>
+        drawDefinitions?.flatMap(
+          ({ structures, drawId }) =>
+            structures?.map((s) => ({ ...s, drawId, eventType }))
+        )
     )
     .sort((a, b) =>
       utilities.structureSort(a, b, { mode: AGGREGATE_EVENT_STRUCTURES })
@@ -137,9 +139,10 @@ test('structureSort can sort by stage and stageSequence', () => {
     );
 
   const expectation = [
+    'Main',
     'MAIN',
-    'PLAY_OFF',
-    'CONSOLATION',
+    'Play Off',
+    'Consolation',
     'CONSOLATION 1',
     'CONSOLATION 2',
   ];

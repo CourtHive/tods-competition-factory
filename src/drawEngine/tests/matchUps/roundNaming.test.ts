@@ -1,6 +1,7 @@
+import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
+import { constantToString } from '../../../utilities/strings';
 import { drawEngine } from '../../sync';
 import { expect, it } from 'vitest';
-import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
 
 import { POLICY_ROUND_NAMING_DEFAULT } from '../../../fixtures/policies/POLICY_ROUND_NAMING_DEFAULT';
 import {
@@ -20,7 +21,7 @@ it('can return matchUps with roundNames from an SINGLE_ELIMINATION structure', (
   } = drawEngine.generateDrawTypeAndModifyDrawDefinition({
     drawType: SINGLE_ELIMINATION,
   });
-  expect(structure.structureName).toEqual(MAIN);
+  expect(structure.structureName).toEqual(constantToString(MAIN));
   const result = drawEngine.attachPolicies({
     policyDefinitions: POLICY_ROUND_NAMING_DEFAULT,
   });
@@ -71,7 +72,7 @@ it('can return matchUps with roundNames from a FIRST_MATCH_LOSER_CONSOLATION str
   const {
     structures: [mainStructure, consolationStructure],
   } = result;
-  expect(mainStructure.structureName).toEqual(MAIN);
+  expect(mainStructure.structureName).toEqual(constantToString(MAIN));
   result = drawEngine.attachPolicies({
     policyDefinitions: POLICY_ROUND_NAMING_DEFAULT,
   });
@@ -131,7 +132,7 @@ it('can return matchUps with roundNames from a FEED_IN structure and identify fe
   const {
     structures: [structure],
   } = drawEngine.generateDrawTypeAndModifyDrawDefinition({ drawType: FEED_IN });
-  expect(structure.structureName).toEqual(MAIN);
+  expect(structure.structureName).toEqual(constantToString(MAIN));
   const result = drawEngine.attachPolicies({
     policyDefinitions: POLICY_ROUND_NAMING_DEFAULT,
   });

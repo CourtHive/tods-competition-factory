@@ -105,7 +105,7 @@ test('changing winningSide can propagate changes through FMLC', () => {
 
   const firstMatchUp = completedMatchUps.find(
     ({ roundNumber, roundPosition, structureName }) =>
-      roundNumber === 1 && roundPosition === 1 && structureName === 'MAIN'
+      roundNumber === 1 && roundPosition === 1 && structureName === 'Main'
   );
   const firstMatchUpWinnerParticipantId = firstMatchUp.sides.find(
     ({ sideNumber }) => sideNumber === firstMatchUp.winningSide
@@ -115,7 +115,7 @@ test('changing winningSide can propagate changes through FMLC', () => {
   ).participantId;
   const consolationFinal = completedMatchUps.find(
     ({ finishingRound, structureName }) =>
-      finishingRound === 1 && structureName === 'CONSOLATION'
+      finishingRound === 1 && structureName === 'Consolation'
   );
   const consolationFinalParticipantId = consolationFinal.sides.find(
     ({ sideNumber }) => sideNumber === consolationFinal.winningSide

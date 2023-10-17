@@ -9,6 +9,7 @@ import { feedInChampionship } from '../../generators/feedInChamp';
 import { generateRoundRobin } from '../../generators/roundRobin';
 import { feedInMatchUps } from '../../generators/feedInMatchUps';
 import { treeMatchUps } from '../../generators/eliminationTree';
+import { constantToString } from '../../../utilities/strings';
 import { luckyDraw } from '../../generators/luckyDraw';
 
 import { POLICY_TYPE_FEED_IN } from '../../../constants/policyConstants';
@@ -52,11 +53,12 @@ export function getGenerators(params): { generators?: any; error?: ErrorType } {
     (drawSize <= 4 && (feedPolicy?.feedMainFinal ? 0 : 1)) ||
     0;
 
+  const main = constantToString(MAIN);
   const singleElimination = () => {
     const { matchUps } = treeMatchUps(params);
     const structure = structureTemplate({
-      structureName: structureName || MAIN,
       structureId: structureId || uuids?.pop(),
+      structureName: structureName || main,
       stageSequence,
       matchUpType,
       matchUps,
@@ -69,8 +71,8 @@ export function getGenerators(params): { generators?: any; error?: ErrorType } {
   const generators = {
     [AD_HOC]: () => {
       const structure = structureTemplate({
-        structureName: structureName || MAIN,
         structureId: structureId || uuids?.pop(),
+        structureName: structureName || main,
         finishingPosition: WIN_RATIO,
         stageSequence,
         matchUps: [],
@@ -83,8 +85,8 @@ export function getGenerators(params): { generators?: any; error?: ErrorType } {
     [LUCKY_DRAW]: () => {
       const { matchUps } = luckyDraw(params);
       const structure = structureTemplate({
-        structureName: structureName || MAIN,
         structureId: structureId || uuids?.pop(),
+        structureName: structureName || main,
         stageSequence,
         matchUpType,
         matchUps,
@@ -115,8 +117,8 @@ export function getGenerators(params): { generators?: any; error?: ErrorType } {
       const { matchUps } = feedInMatchUps({ drawSize, uuids, matchUpType });
 
       const structure = structureTemplate({
-        structureName: structureName || MAIN,
         structureId: structureId || uuids?.pop(),
+        structureName: structureName || main,
         stageSequence,
         matchUpType,
         stage: MAIN,
