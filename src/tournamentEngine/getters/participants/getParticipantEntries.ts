@@ -309,8 +309,12 @@ export function getParticipantEntries(params) {
 
             if (
               (withEvents || withRankingProfile) &&
-              participantMap[id].events[eventId]
+              participantMap[id] &&
+              eventId
             ) {
+              if (!participantMap[id].events[eventId])
+                participantMap[id].events[eventId] = {};
+
               if (includeSeeding) {
                 // overwrite any event seeding with actual draw seeding (which may differ)
                 participantMap[id].events[eventId].seedValue =

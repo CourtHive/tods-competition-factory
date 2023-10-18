@@ -31,7 +31,7 @@ import {
  *
  */
 
-type NamingEntry = {
+export type NamingEntry = {
   [key: string]: { name: string; abbreviation: string };
 };
 
@@ -45,7 +45,7 @@ type GeneratePlayoffStructuresArgs = {
   drawDefinition?: DrawDefinition;
   exitProfileLimit?: boolean;
   roundOffsetLimit?: number;
-  staggeredEntry?: boolean;
+  staggeredEntry?: boolean; // should only apply to playoffs from round robins
   sequenceLimit?: number;
   stageSequence?: number;
   matchUpType?: string;
