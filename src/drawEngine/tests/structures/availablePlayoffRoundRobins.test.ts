@@ -1,7 +1,11 @@
 import { isCompletedStructure } from '../../governors/queryGovernor/structureActions';
 import { generateMatchUpOutcome } from '../primitives/generateMatchUpOutcome';
 import { getPositionAssignments } from '../../getters/positionsGetter';
-import { extractAttributes, intersection } from '../../../utilities';
+import {
+  extractAttributes,
+  generateRange,
+  intersection,
+} from '../../../utilities';
 import { tournamentEngine, mocksEngine } from '../../..';
 import { expect, it } from 'vitest';
 
@@ -12,6 +16,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 import {
   COMPASS,
+  CURTIS_CONSOLATION,
   FEED_IN_CHAMPIONSHIP,
   FIRST_MATCH_LOSER_CONSOLATION,
   MAIN,
@@ -195,6 +200,87 @@ const scenarios = [
       ],
     },
   },
+  {
+    drawProfile: {
+      structureOptions: { groupSize: 3 },
+      drawType: ROUND_ROBIN,
+      completionGoal: 0,
+      drawSize: 128,
+    },
+    allPositionsAssigned: false,
+    completeAllMatchUps: false,
+    playoffGroups: [
+      {
+        playoffStructureNameBase: 'One',
+        structureName: '1-43 Playoff',
+        drawType: CURTIS_CONSOLATION,
+        finishingPositions: [1],
+        structureNameMap: {
+          'Consolation 1': 'C1',
+          'Consolation 2': 'C2',
+          'Play Off': 'PO',
+        },
+      },
+      {
+        playoffStructureNameBase: 'Two',
+        structureName: '44-86 Playoff',
+        drawType: CURTIS_CONSOLATION,
+        finishingPositions: [2],
+        structureNameMap: {
+          'Consolation 1': 'C1',
+          'Consolation 2': 'C2',
+          'Play Off': 'PO',
+        },
+      },
+      {
+        playoffStructureNameBase: 'Three',
+        structureName: '87-128 Playoff',
+        drawType: CURTIS_CONSOLATION,
+        finishingPositions: [3],
+        roundOffsetLimit: 2,
+        structureNameMap: {
+          'Consolation 1': 'C1',
+          'Consolation 2': 'C2',
+          'Play Off': 'PO',
+        },
+      },
+    ],
+    expectation: {
+      initialStructuresCount: 1,
+      totalStructuresCount: 13,
+      playoffFinishingPositionRanges: [
+        {
+          finishingPositions: generateRange(1, 44),
+          finishingPositionRange: '1-43',
+          finishingPosition: 1,
+        },
+        {
+          finishingPositions: generateRange(44, 87),
+          finishingPositionRange: '44-86',
+          finishingPosition: 2,
+        },
+        {
+          finishingPositions: generateRange(87, 129),
+          finishingPositionRange: '87-128',
+          finishingPosition: 3,
+        },
+      ],
+      structureNames: [
+        '1-43 Playoff',
+        'One C1',
+        'One C2',
+        'One PO',
+        '44-86 Playoff',
+        'Two C1',
+        'Two C2',
+        'Two PO',
+        '87-128 Playoff',
+        'Three C1',
+        'Three C2',
+        'Three PO',
+      ],
+    },
+  },
 ];
 
 it.each(scenarios)(
@@ -285,6 +371,11 @@ it.each(scenarios)(
       }
 
       const { structures, links, matchUpModifications } = result;
+      if (expectation.structureNames) {
+        expect(structures.map(extractAttributes('structureName'))).toEqual(
+          expectation.structureNames
+        );
+      }
       result = tournamentEngine.attachPlayoffStructures({
         matchUpModifications,
         structures,
@@ -299,7 +390,7 @@ it.each(scenarios)(
       expect(result.success).toEqual(true);
     }
 
-    if (!completeAllMatchUps) {
+    if (!completeAllMatchUps && drawProfile.completionGoal) {
       const matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
       const mainMatchUps = matchUps.filter((m) => m.stage === MAIN);
 

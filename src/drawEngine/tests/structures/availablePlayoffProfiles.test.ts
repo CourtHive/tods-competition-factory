@@ -1,5 +1,6 @@
 import { getAvailablePlayoffProfiles } from '../../governors/structureGovernor/getAvailablePlayoffProfiles';
 import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
+import { constantToString } from '../../../utilities/strings';
 import tournamentEngine from '../../../tournamentEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import { setSubscriptions } from '../../..';
@@ -319,7 +320,7 @@ it('can generate only specified playoff rounds and give them custom names', () =
   const { structureId } = consolationStructure;
 
   const playoffAttributes = {
-    '0-2': { name: 'BRONZE', abbreviation: 'B' },
+    '0-2': { name: 'Bronze', abbreviation: 'B' },
   };
   const result = tournamentEngine.addPlayoffStructures({
     exitProfileLimit: true,
@@ -331,7 +332,11 @@ it('can generate only specified playoff rounds and give them custom names', () =
   expect(result.success).toEqual(true);
   ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
   const structureNames = drawDefinition.structures.map((s) => s.structureName);
-  expect(structureNames).toEqual(['MAIN', 'CONSOLATION', 'BRONZE']);
+  expect(structureNames).toEqual([
+    constantToString(MAIN),
+    constantToString(CONSOLATION),
+    'Bronze',
+  ]);
   expect(drawDefinition.links.length).toEqual(7);
 
   expect(matchUpAddNotices).toEqual([125, 15]);

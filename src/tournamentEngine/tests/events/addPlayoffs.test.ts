@@ -1,3 +1,5 @@
+import { constantToString } from '../../../utilities/strings';
+import { deriveExponent } from '../../../utilities/math';
 import { generateRange } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import { setSubscriptions } from '../../..';
@@ -7,9 +9,9 @@ import { expect, it } from 'vitest';
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 import {
   FIRST_MATCH_LOSER_CONSOLATION,
+  MAIN,
   PLAY_OFF,
 } from '../../../constants/drawDefinitionConstants';
-import { deriveExponent } from '../../../utilities/math';
 
 it('errors if attempting generation of existing playoff structure', () => {
   const {
@@ -106,7 +108,12 @@ it.each([
       const structureNames = structures.map(
         ({ structureName }) => structureName
       );
-      expect(structureNames).toEqual(['MAIN', 'Silver', 'Gold', 'Playoff 3-4']);
+      expect(structureNames).toEqual([
+        constantToString(MAIN),
+        'Silver',
+        'Gold',
+        'Playoff 3-4',
+      ]);
 
       ({ matchUps } = tournamentEngine.allDrawMatchUps({ drawId }));
       expect(matchUps.length).toEqual(playoffMatchesCount);

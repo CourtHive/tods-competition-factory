@@ -1,3 +1,4 @@
+import { constantToString } from '../../utilities/strings';
 import structureTemplate from './structureTemplate';
 import { feedInMatchUps } from './feedInMatchUps';
 import { treeMatchUps } from './eliminationTree';
@@ -45,8 +46,8 @@ export function feedInChampionship(params) {
     : treeMatchUps(mainParams);
 
   const mainStructure = structureTemplate({
+    structureName: structureName || constantToString(MAIN),
     structureId: structureId || uuids?.pop(),
-    structureName: structureName || MAIN,
     stageSequence,
     matchUpType,
     matchUps,
@@ -73,9 +74,9 @@ export function feedInChampionship(params) {
 
   if (drawSize > 2) {
     const consolationStructure = structureTemplate({
+      structureName: constantToString(CONSOLATION),
       matchUps: consolationMatchUps,
       structureId: uuids?.pop(),
-      structureName: CONSOLATION,
       stage: CONSOLATION,
       stageSequence: 1,
       matchUpType,

@@ -1,5 +1,5 @@
 export { nearestPowerOf2, nextPowerOf2, isPowerOf2, isOdd } from './math';
-export { extractAttributes, hasAttributeValues } from './objects';
+export { extractAttributes, hasAttributeValues, createMap } from './objects';
 export { generateHashCode, definedAttributes } from './objects';
 export { attributeFilter } from './attributeFilter';
 export { generateTimeCode } from './timeCode';

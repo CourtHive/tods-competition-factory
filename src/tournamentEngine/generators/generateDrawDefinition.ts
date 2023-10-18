@@ -16,6 +16,7 @@ import structureTemplate from '../../drawEngine/generators/structureTemplate';
 import { newDrawDefinition } from '../../drawEngine/stateMethods';
 import { mustBeAnArray } from '../../utilities/mustBeAnArray';
 import { isConvertableInteger } from '../../utilities/math';
+import { constantToString } from '../../utilities/strings';
 import { tieFormatDefaults } from './tieFormatDefaults';
 import { ensureInt } from '../../utilities/ensureInt';
 import { prepareStage } from './prepareStage';
@@ -725,7 +726,7 @@ export function generateDrawDefinition(
     }
   } else if (structureId && generateQualifyingPlaceholder) {
     const qualifyingStructure = structureTemplate({
-      structureName: QUALIFYING,
+      structureName: constantToString(QUALIFYING),
       stage: QUALIFYING,
     });
     const { link } = generateQualifyingLink({

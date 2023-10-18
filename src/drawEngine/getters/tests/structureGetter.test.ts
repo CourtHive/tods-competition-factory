@@ -1,5 +1,6 @@
 import { feedInChampionship } from '../../tests/primitives/feedIn';
 import { findStructure, getDrawStructures } from '../findStructure';
+import { constantToString } from '../../../utilities/strings';
 import { drawEngine } from '../../sync';
 import { expect, it } from 'vitest';
 import {
@@ -85,11 +86,11 @@ it('can find structures by stage', () => {
   const {
     structures: [structure],
   } = getDrawStructures({ drawDefinition, stage: MAIN });
-  expect(structure.structureName).toEqual(MAIN);
+  expect(structure.structureName).toEqual(constantToString(MAIN));
   const {
     structures: [consolation],
   } = getDrawStructures({ drawDefinition, stage: CONSOLATION });
-  expect(consolation.structureName).toEqual(CONSOLATION);
+  expect(consolation.structureName).toEqual(constantToString(CONSOLATION));
 
   const result = getDrawStructures({ stage: CONSOLATION });
   expect(result).toHaveProperty(ERROR);

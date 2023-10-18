@@ -307,12 +307,19 @@ export function getParticipantEntries(params) {
             if (seedAssignments && qualifyingSeeding)
               seedAssignments[QUALIFYING] = mainSeeding;
 
-            if (withEvents || withRankingProfile) {
+            if (
+              (withEvents || withRankingProfile) &&
+              participantMap[id] &&
+              eventId
+            ) {
+              if (!participantMap[id].events[eventId])
+                participantMap[id].events[eventId] = {};
+
               if (includeSeeding) {
                 // overwrite any event seeding with actual draw seeding (which may differ)
                 participantMap[id].events[eventId].seedValue =
                   mainSeeding || qualifyingSeeding;
-              } else if (participantMap[id].events[eventId]?.seedValue) {
+              } else if (participantMap[id].events[eventId].seedValue) {
                 // if seeding for specific drawIds is NOT published, remove from event
                 participantMap[id].events[eventId].seedValue = undefined;
               }

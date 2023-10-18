@@ -5,6 +5,7 @@ import { expect, it } from 'vitest';
 
 import { VOLUNTARY_CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import { DIRECT_ACCEPTANCE } from '../../../constants/entryStatusConstants';
+import { EXISTING_STRUCTURE } from '../../../constants/errorConditionConstants';
 
 it('can generate a draw with voluntary consolation stage', () => {
   const {
@@ -169,7 +170,7 @@ it('can generate a draw with voluntary consolation stage and delay attachment', 
   expect(matchUps.length).toEqual(0);
 
   expect(notificationsCounter).toEqual(3);
-  result = tournamentEngine.attachConsolationStructures({
+  tournamentEngine.attachConsolationStructures({
     structures: result.structures,
     links: result.links,
     drawId,
@@ -246,6 +247,12 @@ it('can generate a draw with voluntary consolation stage with 5 entries', () => 
   expect(result.success).toEqual(true);
   expect(result.links.length).toEqual(0);
   expect(result.structures.length).toEqual(1);
+
+  result = tournamentEngine.generateVoluntaryConsolation({
+    automated: true,
+    drawId,
+  });
+  expect(result.error).toEqual(EXISTING_STRUCTURE);
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps({
     contextFilters: { stages: [VOLUNTARY_CONSOLATION] },

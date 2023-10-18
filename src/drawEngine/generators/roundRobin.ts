@@ -1,4 +1,5 @@
 import { addExtension } from '../../global/functions/producers/addExtension';
+import { constantToString } from '../../utilities/strings';
 import { structureTemplate } from './structureTemplate';
 import { generateRange, UUID } from '../../utilities';
 import {
@@ -40,7 +41,7 @@ type GenerateRoundRobinArgs = {
 };
 
 export function generateRoundRobin({
-  structureName = MAIN,
+  structureName = constantToString(MAIN),
   stageSequence = 1,
   structureOptions,
   appliedPolicies,

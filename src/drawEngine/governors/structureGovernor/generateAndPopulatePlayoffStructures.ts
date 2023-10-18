@@ -3,7 +3,6 @@ import { matchUpIsComplete } from '../../../matchUpEngine/governors/queryGoverno
 import { generateAndPopulateRRplayoffStructures } from './generateAndPopulateRRplayoffStructures';
 import { assignDrawPositionBye } from '../positionGovernor/byePositioning/assignDrawPositionBye';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
-import { generatePlayoffStructures } from '../../generators/playoffStructures';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { directParticipants } from '../matchUpGovernor/directParticipants';
 import { getAvailablePlayoffProfiles } from './getAvailablePlayoffProfiles';
@@ -19,6 +18,10 @@ import {
   ResultType,
   decorateResult,
 } from '../../../global/functions/decorateResult';
+import {
+  NamingEntry,
+  generatePlayoffStructures,
+} from '../../generators/playoffStructures';
 
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -45,13 +48,16 @@ import {
 
 type GenerateAndPopulateArgs = {
   addNameBaseToAttributeName?: boolean;
+  finishingPositionNaming?: NamingEntry;
   playoffStructureNameBase?: string;
+  playoffAttributes?: NamingEntry;
+  finishingPositionLimit?: number;
   tournamentRecord?: Tournament;
   drawDefinition: DrawDefinition;
   roundProfiles?: RoundProfile[];
   playoffPositions?: number[];
+  roundOffsetLimit?: number;
   exitProfileLimit?: boolean;
-  playoffAttributes?: any;
   roundNumbers?: number[];
   structureId: string;
   idPrefix?: string;
@@ -84,8 +90,11 @@ export function generateAndPopulatePlayoffStructures(
     structureId: sourceStructureId,
     addNameBaseToAttributeName,
     playoffStructureNameBase,
+    finishingPositionNaming,
+    finishingPositionLimit,
     playoffAttributes,
     playoffPositions,
+    roundOffsetLimit,
     tournamentRecord,
     exitProfileLimit,
     roundProfiles,
@@ -223,6 +232,10 @@ export function generateAndPopulatePlayoffStructures(
       idPrefix,
       isMock,
       uuids,
+
+      finishingPositionNaming,
+      finishingPositionLimit,
+      roundOffsetLimit,
     });
     if (result.error) return decorateResult({ result, stack });
 

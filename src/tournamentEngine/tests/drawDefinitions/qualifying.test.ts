@@ -481,10 +481,6 @@ it('Fish Farm: supports qualifying structures with multiple roundTargets', () =>
 
   tournamentEngine.setState(tournamentRecord);
 
-  // const { tournamentParticipants } =
-  //   tournamentEngine.getTournamentParticipants();
-  // expect(tournamentParticipants.length).toEqual(112);
-
   const { matchUps } = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: { matchUpStatuses: [COMPLETED] },
   });
@@ -504,7 +500,7 @@ it('Fish Farm: supports qualifying structures with multiple roundTargets', () =>
   const structureNames = drawDefinition.structures.map(
     ({ structureName }) => structureName
   );
-  expect(structureNames).toEqual(['QUALIFYING 1-1', 'QUALIFYING 2-1', 'MAIN']);
+  expect(structureNames).toEqual(['QUALIFYING 1-1', 'QUALIFYING 2-1', 'Main']);
 
   const rrQLink = drawDefinition.links.find(
     ({ linkType }) => linkType === POSITION

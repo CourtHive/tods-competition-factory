@@ -121,10 +121,20 @@ export function processPlayoffGroups({
       finishingPositionOffset = Math.min(...positionsPlayedOff) - 1;
     }
 
-    const params = {
+    const playoffGroupParams = {
+      addNameBaseToAttributeName: playoffGroup.addNameBaseToAttributeName,
+      playoffStructureNameBase: playoffGroup.playoffStructureNameBase,
+      finishingPositionNaming: playoffGroup.finishingPositionNaming,
+      finishingPositionLimit: playoffGroup.finishingPositionLimit,
       structureId: playoffGroup.structureId ?? uuids?.pop(),
+      playoffAttributes: playoffGroup.playoffAttributes,
       structureNameMap: playoffGroup.structureNameMap,
       structureName: playoffGroup.structureName,
+      sequenceLimit: playoffGroup.sequenceLimit,
+    };
+
+    const params = {
+      ...playoffGroupParams,
       idPrefix: idPrefix && `${idPrefix}-po`,
       appliedPolicies: policyDefinitions,
       finishingPositionOffset,

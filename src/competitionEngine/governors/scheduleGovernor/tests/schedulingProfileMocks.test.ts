@@ -9,9 +9,12 @@ import { BYE } from '../../../../constants/matchUpStatusConstants';
 import { DOUBLES } from '../../../../constants/eventConstants';
 import { PAIR } from '../../../../constants/participantConstants';
 import {
+  CONSOLATION,
   FEED_IN_CHAMPIONSHIP_TO_R16,
+  MAIN,
   ROUND_ROBIN,
 } from '../../../../constants/drawDefinitionConstants';
+import { constantToString } from '../../../../utilities/strings';
 
 it('can schedule potential rounds properly in scenarios with recovery times greater than average matchUp times', () => {
   const firstVenueId = 'firstVenueId';
@@ -123,7 +126,12 @@ it('can schedule potential rounds properly in scenarios with recovery times grea
   const allMatchUpIds: string[] = [];
 
   // expect that 4 structures exist per drawDefinition, as follows:
-  const expectations = { MAIN: 31, CONSOLATION: 23, Silver: 3, Gold: 1 };
+  const expectations = {
+    [constantToString(MAIN)]: 31,
+    [constantToString(CONSOLATION)]: 23,
+    Silver: 3,
+    Gold: 1,
+  };
 
   for (const drawId of drawIds) {
     const { drawDefinition, event } = tournamentEngine.getEvent({ drawId });

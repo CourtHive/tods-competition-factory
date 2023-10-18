@@ -1,3 +1,4 @@
+import { constantToString } from '../../utilities/strings';
 import structureTemplate from './structureTemplate';
 import { feedInMatchUps } from './feedInMatchUps';
 import { treeMatchUps } from './eliminationTree';
@@ -39,8 +40,8 @@ export function firstRoundLoserConsolation(params) {
     : treeMatchUps(mainParams);
 
   const mainStructure = structureTemplate({
+    structureName: structureName || constantToString(MAIN),
     structureId: structureId || uuids?.pop(),
-    structureName: structureName || MAIN,
     stageSequence,
     matchUpType,
     matchUps,
@@ -62,9 +63,10 @@ export function firstRoundLoserConsolation(params) {
       isMock,
     });
 
+    const consolation = constantToString(CONSOLATION);
     const consolationStructureName =
       params.consolationStructureName ||
-      (structureName ? `${structureName} ${CONSOLATION}` : CONSOLATION);
+      (structureName ? `${structureName} ${consolation}` : consolation);
 
     const consolationStructure = structureTemplate({
       structureName: consolationStructureName,

@@ -1,3 +1,4 @@
+import { constantToString } from '../../../utilities/strings';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 import { expect, it } from 'vitest';
@@ -445,7 +446,7 @@ it('can generate payload for publishing a FIRST_MATCH_LOSER_CONSOLATION draw', (
   const mainStructure = drawDefinition.structures.find(
     (structure) => structure.stage === MAIN && structure.stageSequence === 1
   );
-  expect(mainStructure.structureName).toEqual('MAIN');
+  expect(mainStructure.structureName).toEqual(constantToString(MAIN));
 
   const policyDefinitions = {
     ...PARTICIPANT_PRIVACY_DEFAULT,
