@@ -1,3 +1,5 @@
+import { isConvertableInteger } from '../../../utilities/math';
+
 import {
   COMPLETED,
   completedMatchUpStatuses,
@@ -42,20 +44,20 @@ export function evaluateCollectionResult({
     if (matchUp.winningSide) sideWins[matchUp.winningSide - 1] += 1;
   });
 
-  if (matchUpValue) {
+  if (isConvertableInteger(matchUpValue)) {
     // if tiebreak set count as set value and game value
     collectionMatchUps.forEach((matchUp) => {
       if (matchUp.winningSide) {
         sideMatchUpValues[matchUp.winningSide - 1] += matchUpValue;
       }
     });
-  } else if (setValue) {
+  } else if (isConvertableInteger(setValue)) {
     collectionMatchUps.forEach((matchUp) => {
       matchUp.score?.sets?.forEach((set) => {
         if (set.winningSide) sideMatchUpValues[set.winningSide - 1] += setValue;
       });
     });
-  } else if (scoreValue) {
+  } else if (isConvertableInteger(scoreValue)) {
     collectionMatchUps.forEach((matchUp) => {
       matchUp.score?.sets?.forEach((set) => {
         const {
@@ -91,19 +93,22 @@ export function evaluateCollectionResult({
           collectionDefinition,
           collectionPosition,
         });
-        sideMatchUpValues[matchUp.winningSide - 1] += matchUpValue;
+
+        if (isConvertableInteger(matchUpValue)) {
+          sideMatchUpValues[matchUp.winningSide - 1] += matchUpValue;
+        }
       }
     });
   }
 
   // processed separately so that setValue, scoreValue and collecitonValueProfile can be used in conjunction with collectionValue
-  if (collectionValue) {
+  if (isConvertableInteger(collectionValue)) {
     let collectionWinningSide;
 
     if (winCriteria?.aggregateValue) {
       if (allCollectionMatchUpsCompleted) {
         if (
-          (matchUpValue || setValue || scoreValue) &&
+          isConvertableInteger(matchUpValue || setValue || scoreValue) &&
           sideMatchUpValues[0] !== sideMatchUpValues[1]
         ) {
           collectionWinningSide =
@@ -149,7 +154,7 @@ export function evaluateCollectionResult({
 
   if (!belongsToValueGroup) {
     sideCollectionValues.forEach(
-      (sideCollectionValue, i) => (sideTieValues[i] += sideCollectionValue)
+      (sideCollectionValue, i) => (sideTieValues[i] += sideCollectionValue || 0)
     );
   } else {
     groupValueGroups[collectionGroupNumber].sideWins[0] += sideWins[0] || 0;

@@ -1,7 +1,8 @@
+import { isConvertableInteger } from '../../utilities/math';
 import { ensureInt } from '../../utilities/ensureInt';
 
 type GetGroupValueGroupsArgs = {
-  collectionGroups: any[];
+  collectionGroups: { groupValue?: number; groupNumber?: number }[];
 };
 export function getGroupValueGroups({
   collectionGroups = [],
@@ -10,7 +11,10 @@ export function getGroupValueGroups({
   const groupValueGroups = Object.assign(
     {},
     ...collectionGroups
-      .filter((group: any) => group?.groupValue && group?.groupNumber)
+      .filter(
+        (group: any) =>
+          isConvertableInteger(group?.groupValue) && group?.groupNumber
+      )
       .map((group: any) => ({
         [group.groupNumber]: {
           ...group,

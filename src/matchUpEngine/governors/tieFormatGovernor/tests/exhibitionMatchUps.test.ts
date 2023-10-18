@@ -1,10 +1,10 @@
 import { mocksEngine, tournamentEngine } from '../../../..';
 import { expect, it } from 'vitest';
 
+import { INVALID_VALUES } from '../../../../constants/errorConditionConstants';
 import { COLLEGE_D3 } from '../../../../constants/tieFormatConstants';
 import { SINGLES_MATCHUP } from '../../../../constants/matchUpTypes';
 import { TEAM } from '../../../../constants/eventConstants';
-import { INVALID_VALUES } from '../../../../constants/errorConditionConstants';
 
 const PRO_SET = 'SET1-S:8/TB7@7';
 
@@ -28,6 +28,9 @@ it('can add collectionDefinitions to tieFormat in a drawDefinition', () => {
   });
 
   expect(matchUp.tieMatchUps.length).toEqual(9);
+
+  const initialTieFormat = tournamentEngine.getEvent(matchUp).event.tieFormat;
+  expect(initialTieFormat.winCriteria.valueGoal).toEqual(5);
 
   const collectionDefinition: any = {
     matchUpType: SINGLES_MATCHUP,
@@ -60,6 +63,6 @@ it('can add collectionDefinitions to tieFormat in a drawDefinition', () => {
     collectionDefinition,
     drawId,
   });
-  expect(result.tieFormat.winCriteria.valueGoal).toEqual(7);
+  expect(result.tieFormat.winCriteria.valueGoal).toEqual(5);
   expect(result.addedMatchUps.length).toEqual(3);
 });

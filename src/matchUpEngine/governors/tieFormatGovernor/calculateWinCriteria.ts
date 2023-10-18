@@ -1,9 +1,10 @@
 import { getGroupValueGroups } from '../../../drawEngine/generators/getGroupValueGroups';
 import { CollectionDefinition } from '../../../types/tournamentFromSchema';
+import { isConvertableInteger } from '../../../utilities/math';
 
 type CalculateWinCriteriaArgs = {
+  collectionGroups?: { groupValue?: number; groupNumber?: number }[];
   collectionDefinitions?: CollectionDefinition[];
-  collectionGroups?: any[];
 };
 export function calculateWinCriteria({
   collectionDefinitions = [],
@@ -30,23 +31,26 @@ export function calculateWinCriteria({
       collectionGroupNumber &&
       groupValueNumbers.includes(collectionGroupNumber);
 
-    if (setValue || scoreValue) {
+    if (isConvertableInteger(setValue || scoreValue)) {
       // because setValues and scoreValues are unpredictable,
       // any collectionDefintion that has either of these two values without a collectionValue forces the tieFormat to aggregateValue
       aggregateValueImperative = true;
     } else if (belongsToValueGroup) {
       continue;
-    } else if (collectionValue) {
+    } else if (
+      typeof collectionValue === 'number' &&
+      isConvertableInteger(collectionValue)
+    ) {
       valueTotal += collectionValue;
     } else if (collectionValueProfiles?.length) {
       for (const collectionValueProfile of collectionValueProfiles) {
         valueTotal += collectionValueProfile.matchUpValue;
       }
-    } else if (matchUpValue) {
+    } else if (
+      typeof matchUpValue === 'number' &&
+      isConvertableInteger(matchUpValue)
+    ) {
       valueTotal += (matchUpCount || 0) * matchUpValue;
-    } else {
-      // default is to give each matchUp a value of 1
-      valueTotal += matchUpCount || 0;
     }
   }
 
