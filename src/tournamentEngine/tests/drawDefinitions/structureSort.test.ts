@@ -142,8 +142,8 @@ test('structureSort can sort by stage and stageSequence', () => {
     'Main',
     'Play Off',
     'Consolation',
-    'CONSOLATION 1',
-    'CONSOLATION 2',
+    'Consolation 1',
+    'Consolation 2',
   ];
   expect(Object.keys(flatStructures)).toEqual(expectation);
   expect(structureMap).toEqual(expectation);

@@ -19,8 +19,9 @@ import {
 
 export function generateCurtisConsolation(params) {
   const {
-    finishingPositionOffset,
     structureName = constantToString(MAIN),
+    playoffStructureNameBase,
+    finishingPositionOffset,
     stageSequence = 1,
     structureNameMap,
     staggeredEntry,
@@ -64,6 +65,7 @@ export function generateCurtisConsolation(params) {
       const { consolationStructure } = consolationFeedStructure({
         idPrefix: idPrefix && `${idPrefix}-c${index}`,
         structureId: uuids?.pop(),
+        playoffStructureNameBase,
         structureNameMap,
         stageSequence,
         roundOffset,
@@ -101,13 +103,19 @@ export function generateCurtisConsolation(params) {
         matchUpType,
         isMock,
       });
+      const defaultName = constantToString(PLAY_OFF);
+      const mappedStructureName =
+        structureNameMap?.[defaultName] || defaultName;
+      const structureName = playoffStructureNameBase
+        ? `${playoffStructureNameBase} ${mappedStructureName}`
+        : mappedStructureName;
+
       const playoffStructure = structureTemplate({
-        structureName:
-          structureNameMap?.[PLAY_OFF] || constantToString(PLAY_OFF),
         structureId: uuids?.pop(),
         matchUps: playoffMatchUps,
         stageSequence: 2,
         stage: PLAY_OFF,
+        structureName,
         matchUpType,
       });
 
@@ -133,6 +141,7 @@ export function generateCurtisConsolation(params) {
 }
 
 function consolationFeedStructure({
+  playoffStructureNameBase,
   stageSequence = 1,
   structureNameMap,
   roundOffset = 0,
@@ -157,9 +166,12 @@ function consolationFeedStructure({
       isMock,
       uuids,
     });
+  const defaultName = `${constantToString(CONSOLATION)} ${index + 1}`;
+  const mappedStructureName = structureNameMap?.[defaultName] || defaultName;
+  const structureName = playoffStructureNameBase
+    ? `${playoffStructureNameBase} ${mappedStructureName}`
+    : mappedStructureName;
 
-  const defaultName = `${CONSOLATION} ${index + 1}`;
-  const structureName = structureNameMap?.[defaultName] || defaultName;
   const consolationStructure = structureTemplate({
     matchUps: consolationMatchUps,
     stage: CONSOLATION,

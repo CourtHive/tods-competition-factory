@@ -90,8 +90,11 @@ export function generateAndPopulatePlayoffStructures(
     structureId: sourceStructureId,
     addNameBaseToAttributeName,
     playoffStructureNameBase,
+    finishingPositionNaming,
+    finishingPositionLimit,
     playoffAttributes,
     playoffPositions,
+    roundOffsetLimit,
     tournamentRecord,
     exitProfileLimit,
     roundProfiles,
@@ -100,9 +103,6 @@ export function generateAndPopulatePlayoffStructures(
     isMock,
     event,
     uuids,
-    finishingPositionNaming,
-    finishingPositionLimit,
-    roundOffsetLimit,
   } = params;
 
   // The goal here is to return { structures, links } and not modify existing drawDefinition
