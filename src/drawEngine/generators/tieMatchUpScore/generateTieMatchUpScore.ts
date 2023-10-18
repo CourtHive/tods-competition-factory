@@ -123,12 +123,12 @@ export function generateTieMatchUpScore(
     }
 
     if (groupWinningSide) {
-      sideTieValues[groupWinningSide - 1] += groupValue;
+      sideTieValues[groupWinningSide - 1] += groupValue || 0;
     }
   }
 
   const sideScores = sideTieValues.map(
-    (sideTieValue, i) => sideTieValue + sideAdjustments[i]
+    (sideTieValue, i) => (sideTieValue || 0) + sideAdjustments[i]
   );
 
   const set = {
