@@ -48,6 +48,7 @@ import {
   isConvertableInteger,
 } from './utilities/math';
 import {
+  createMap,
   definedAttributes,
   extractAttributes,
   generateHashCode,
@@ -61,6 +62,7 @@ export const utilities = {
   structureSort,
   matchUpSort,
   tidyScore,
+  createMap,
   generateScoreString,
   calculateWinCriteria,
   compareTieFormats,
