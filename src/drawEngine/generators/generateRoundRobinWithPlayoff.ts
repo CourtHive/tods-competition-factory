@@ -13,7 +13,11 @@ import { SUCCESS } from '../../constants/resultConstants';
 export function generateRoundRobinWithPlayOff(params) {
   const { drawDefinition, structureOptions, requireSequential } = params;
 
-  const mainDrawProperties = { structureName: MAIN, ...params, stage: MAIN }; // default structureName
+  const mainDrawProperties = {
+    structureName: constantToString(MAIN),
+    ...params,
+    stage: MAIN,
+  }; // default structureName
   const { structures, groupCount, groupSize } =
     generateRoundRobin(mainDrawProperties);
 

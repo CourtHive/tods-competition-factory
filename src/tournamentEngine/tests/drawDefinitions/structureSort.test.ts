@@ -140,7 +140,6 @@ test('structureSort can sort by stage and stageSequence', () => {
 
   const expectation = [
     'Main',
-    'MAIN',
     'Play Off',
     'Consolation',
     'CONSOLATION 1',

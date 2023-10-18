@@ -20,7 +20,7 @@ import {
 export function generateCurtisConsolation(params) {
   const {
     finishingPositionOffset,
-    structureName = MAIN,
+    structureName = constantToString(MAIN),
     stageSequence = 1,
     structureNameMap,
     staggeredEntry,
