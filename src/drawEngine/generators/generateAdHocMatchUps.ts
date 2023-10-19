@@ -84,9 +84,12 @@ export function generateAdHocMatchUps({
 
     if (newRound) {
       matchUpsCount = roundMatchUpsCount;
-    } else {
-      const maxRemaining =
-        roundMatchUpsCount - (structure.matchUps?.length || 0); // TODO: minus the number of existing matchUps in roundNumber
+    } else if (roundNumber) {
+      const existingRoundMatchUps =
+        structure.matchUps?.filter(
+          (matchUp) => matchUp.roundNumber === roundNumber
+        )?.length || 0;
+      const maxRemaining = roundMatchUpsCount - existingRoundMatchUps;
       if (maxRemaining > 0) matchUpsCount = maxRemaining;
     }
   }
