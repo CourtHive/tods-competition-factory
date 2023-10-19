@@ -129,7 +129,6 @@ export function destroyGroupEntry({
   // remove the group participant from event entries
   let result = removeEventEntries({
     participantIds: [participantId],
-    tournamentRecord,
     event,
   });
   if (result.error) return result;

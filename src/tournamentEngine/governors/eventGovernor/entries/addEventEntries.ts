@@ -229,7 +229,6 @@ export function addEventEntries(params) {
       removeEventEntries({
         participantIds: ungroupedParticipantIdsToRemove,
         autoEntryPositions: false, // because the method will be called below if necessary
-        tournamentRecord,
         event,
       });
     }

@@ -8,7 +8,7 @@ import { COMPETITOR } from '../../../../constants/participantRoles';
 import { MALE } from '../../../../constants/genderConstants';
 import {
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
-  MISSING_PARTICIPANT_IDS,
+  INVALID_PARTICIPANT_ID,
 } from '../../../../constants/errorConditionConstants';
 import {
   ALTERNATE,
@@ -84,7 +84,8 @@ test('event entries are only removed when not placed in draw structures', () => 
   result = tournamentEngine.removeEventEntries({
     eventId,
   });
-  expect(result.error).toEqual(MISSING_PARTICIPANT_IDS);
+  expect(result.participantIdsRemoved.length).toEqual(0);
+  expect(result.success).toEqual(true);
 
   result = tournamentEngine.removeEventEntries({
     participantIds: [participantId],
@@ -113,7 +114,7 @@ test('event entries are only removed when not placed in draw structures', () => 
     participantIds: [undefined],
     eventId,
   });
-  expect(result.error).toEqual(MISSING_PARTICIPANT_IDS);
+  expect(result.error).toEqual(INVALID_PARTICIPANT_ID);
 
   // now check the entry is removed from flight and draw entries as well
   ({ flightProfile } = tournamentEngine.getFlightProfile({ eventId }));
