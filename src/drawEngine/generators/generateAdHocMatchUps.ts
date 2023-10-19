@@ -74,6 +74,18 @@ export function generateAdHocMatchUps({
   );
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
+  let structureHasRoundPositions;
+  const existingMatchUps = structure.matchUps ?? [];
+  const lastRoundNumber = existingMatchUps?.reduce(
+    (roundNumber: number, matchUp: any) => {
+      if (matchUp.roundPosition) structureHasRoundPositions = true;
+      return (matchUp?.roundNumber || 0) > roundNumber
+        ? matchUp.roundNumber
+        : roundNumber;
+    },
+    0
+  );
+
   if (!matchUpsCount) {
     const selectedEntries =
       drawDefinition?.entries?.filter((entry) => {
@@ -84,10 +96,11 @@ export function generateAdHocMatchUps({
 
     if (newRound) {
       matchUpsCount = roundMatchUpsCount;
-    } else if (roundNumber) {
+    } else {
+      const targetRoundNumber = roundNumber || lastRoundNumber || 1;
       const existingRoundMatchUps =
         structure.matchUps?.filter(
-          (matchUp) => matchUp.roundNumber === roundNumber
+          (matchUp) => matchUp.roundNumber === targetRoundNumber
         )?.length || 0;
       const maxRemaining = roundMatchUpsCount - existingRoundMatchUps;
       if (maxRemaining > 0) matchUpsCount = maxRemaining;
@@ -102,18 +115,6 @@ export function generateAdHocMatchUps({
   ) {
     return { error: INVALID_VALUES, info: 'matchUpsCount or pairings error' };
   }
-
-  let structureHasRoundPositions;
-  const existingMatchUps = structure.matchUps ?? [];
-  const lastRoundNumber = existingMatchUps?.reduce(
-    (roundNumber: number, matchUp: any) => {
-      if (matchUp.roundPosition) structureHasRoundPositions = true;
-      return (matchUp?.roundNumber || 0) > roundNumber
-        ? matchUp.roundNumber
-        : roundNumber;
-    },
-    0
-  );
 
   // structure must not be a container of other structures
   // structure must not contain matchUps with roundPosition
