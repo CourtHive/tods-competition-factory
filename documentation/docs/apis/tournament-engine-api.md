@@ -3331,13 +3331,17 @@ tournamentEngine.removeDrawEntries({
 
 ## removeEventEntries
 
-Removes `participantIds` from `event.entries` with integrity checks.
+Removes `event.entries` with integrity checks.
+
+Filters `participantIds` by specified `entryStatuses` and/or `stage`. If no `participantIds` are provided, removes all `entries` that match both `entryStatuses` and `stage`.
 
 ```js
 tournamentEngine.removeEventEntries({
-  eventId,
-  participantIds,
   autoEntryPositions, // optional - keeps entries ordered by entryStage/entryStatus and auto-increments
+  participantIds, // optional array of participantIds to remove
+  entryStatuses, // optional array of entryStatuses to remove
+  stage, // optional - remove entries for specified stage
+  eventId,
 });
 ```
 

@@ -1,30 +1,39 @@
-import { getTournamentParticipants } from '../../../getters/participants/getTournamentParticipants';
+import { getAssignedParticipantIds } from '../../../../drawEngine/getters/getAssignedParticipantIds';
 import { refreshEntryPositions } from '../../../../global/functions/producers/refreshEntryPositions';
+import { intersection, extractAttributes as xa } from '../../../../utilities';
 import { decorateResult } from '../../../../global/functions/decorateResult';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
+import { isString } from '../../../../utilities/objects';
 
-import { Event, Tournament } from '../../../../types/tournamentFromSchema';
 import { HydratedParticipant } from '../../../../types/hydrated';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   MISSING_EVENT,
-  MISSING_PARTICIPANT_IDS,
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
   ErrorType,
+  INVALID_PARTICIPANT_ID,
 } from '../../../../constants/errorConditionConstants';
+import {
+  EntryStatusEnum,
+  Event,
+  StageTypeEnum,
+  Tournament,
+} from '../../../../types/tournamentFromSchema';
 
 type RemoveEventEntriesArgs = {
   tournamentParticipants?: HydratedParticipant[];
+  entryStatuses?: EntryStatusEnum[];
   tournamentRecord?: Tournament;
   autoEntryPositions?: boolean;
   participantIds: string[];
+  stage?: StageTypeEnum;
   event: Event;
 };
 export function removeEventEntries({
   autoEntryPositions = true,
-  tournamentParticipants,
-  tournamentRecord,
-  participantIds,
+  participantIds = [],
+  entryStatuses,
+  stage,
   event,
 }: RemoveEventEntriesArgs): {
   participantIdsRemoved?: string[];
@@ -33,48 +42,68 @@ export function removeEventEntries({
 } {
   const stack = 'removeEventEntries';
   if (!event?.eventId) return { error: MISSING_EVENT };
-  if (!Array.isArray(participantIds))
-    return decorateResult({
-      result: { error: MISSING_PARTICIPANT_IDS },
-      stack,
-    });
 
-  participantIds = participantIds?.filter(Boolean);
-  if (!participantIds?.length)
-    return decorateResult({
-      result: { error: MISSING_PARTICIPANT_IDS },
-      stack,
-    });
-
-  const { eventId } = event;
-
-  if (!tournamentParticipants) {
-    // cannot use getParticipants() because event objects don't have drawIds array
-    tournamentParticipants = getTournamentParticipants({
-      participantFilters: { participantIds },
-      tournamentRecord,
-      withEvents: true,
-      withDraws: true,
-    }).tournamentParticipants;
+  if (
+    !Array.isArray(participantIds) ||
+    participantIds.some((participantId) => !isString(participantId))
+  ) {
+    return decorateResult({ result: { error: INVALID_PARTICIPANT_ID }, stack });
   }
 
-  const enteredParticipantIds = tournamentParticipants?.every((participant) => {
-    const eventObject = participant.events.find(
-      (event) => event.eventId === eventId
-    );
-    const drawIds = eventObject?.drawIds || [];
-    return participant.draws.filter(
-      (drawInfo) =>
-        drawIds.includes(drawInfo.drawId) && drawInfo.positionAssignments
-    ).length;
-  });
+  // do not filter by stages; must kmow all participantIds assigned to any stage!
+  const assignedParticipantIds = (event.drawDefinitions ?? []).flatMap(
+    (drawDefinition) => getAssignedParticipantIds({ drawDefinition })
+  );
 
-  if (enteredParticipantIds) {
+  const statusParticipantIds = (
+    (entryStatuses?.length &&
+      event.entries?.filter(
+        (entry) =>
+          entry.entryStatus && entryStatuses.includes(entry.entryStatus)
+      )) ||
+    []
+  )
+    .map(xa('participantId'))
+    .filter((participantId) => !assignedParticipantIds.includes(participantId));
+
+  const stageParticipantIds = (
+    (stage &&
+      event.entries?.filter(
+        (entry) => entry.entryStage && entry.entryStage === stage
+      )) ||
+    []
+  )
+    .map(xa('participantId'))
+    .filter((participantId) => !assignedParticipantIds.includes(participantId));
+
+  if (participantIds.length) {
+    participantIds = participantIds.filter(
+      (participantId) =>
+        (!entryStatuses?.length ||
+          statusParticipantIds.includes(participantId)) &&
+        (!stage || stageParticipantIds.includes(participantId))
+    );
+  } else if (statusParticipantIds.length && stageParticipantIds.length) {
+    participantIds = intersection(statusParticipantIds, stageParticipantIds);
+  } else if (statusParticipantIds.length) {
+    participantIds = statusParticipantIds;
+  } else if (stageParticipantIds.length) {
+    participantIds = stageParticipantIds;
+  }
+
+  if (
+    participantIds?.length &&
+    assignedParticipantIds.some((participantId) =>
+      participantIds.includes(participantId)
+    )
+  ) {
     return decorateResult({
       result: { error: EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT },
       stack,
     });
   }
+
+  if (!participantIds?.length) return { ...SUCCESS, participantIdsRemoved: [] };
 
   const participantIdsRemoved: string[] = [];
 

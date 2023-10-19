@@ -98,8 +98,6 @@ export function deleteParticipants(params): {
   // If not active in draws, remove participantIds from all entries
   for (const event of tournamentRecord.events || []) {
     const result = removeEventEntries({
-      tournamentParticipants,
-      tournamentRecord,
       participantIds,
       event,
     });

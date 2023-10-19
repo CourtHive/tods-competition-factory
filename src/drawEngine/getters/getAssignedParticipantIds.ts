@@ -1,12 +1,26 @@
 import { getPositionAssignments } from './positionsGetter';
 import { extractAttributes } from '../../utilities';
 
+import {
+  DrawDefinition,
+  StageTypeEnum,
+} from '../../types/tournamentFromSchema';
+
 // build up an array of participantIds which are assigned positions in structures
 // optionally filter to included only specified stages
 
-export function getAssignedParticipantIds({ drawDefinition, stages }) {
+type GetAssignedParticipantIdsArgs = {
+  drawDefinition: DrawDefinition;
+  stages?: StageTypeEnum[];
+};
+
+export function getAssignedParticipantIds({
+  drawDefinition,
+  stages,
+}: GetAssignedParticipantIdsArgs): string[] {
   const stageStructures = (drawDefinition?.structures || []).filter(
-    (structure) => !stages?.length || stages.includes(structure.stage)
+    (structure) =>
+      !stages?.length || (structure.stage && stages.includes(structure.stage))
   );
   return stageStructures
     .map((structure) => {
