@@ -492,8 +492,6 @@ it('can add matchUps to an existing adHoc round', () => {
     roundOneMatchUpIds.length / 2
   );
 
-  console.log(roundOneMatchUpIds.length, halfOfRoundOneMatchUpIds.length);
-
   deletionResult = tournamentEngine.deleteAdHocMatchUps({
     matchUpIds: halfOfRoundOneMatchUpIds,
     structureId,
