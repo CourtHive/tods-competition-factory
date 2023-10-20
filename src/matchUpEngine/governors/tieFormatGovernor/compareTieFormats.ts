@@ -1,8 +1,9 @@
-import { getTieFormatDesc } from './getTieFormatDescription';
+import { isConvertableInteger } from '../../../utilities/math';
 import { difference, unique } from '../../../utilities/arrays';
+import { getTieFormatDesc } from './getTieFormatDescription';
 
-import { SUCCESS } from '../../../constants/resultConstants';
 import { TieFormat } from '../../../types/tournamentFromSchema';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 type CompareTieFormatsArgs = {
   considerations?: any;
@@ -58,9 +59,6 @@ export function compareTieFormats({
         .join('|')
   );
 
-  const different =
-    nameDifference || orderDifference || ancestorDesc !== descendantDesc;
-
   const descendantCollectionDefinitions = Object.assign(
     {},
     ...(descendant?.collectionDefinitions || []).map(
@@ -86,13 +84,11 @@ export function compareTieFormats({
   );
 
   descendantDifferences.collectionsValue = getCollectionsValue(
-    descendantCollectionDefinitions,
-    descendantDifferences
+    descendantCollectionDefinitions
   );
 
   ancestorDifferences.collectionsValue = getCollectionsValue(
-    ancestorCollectionDefinitions,
-    ancestorDifferences
+    ancestorCollectionDefinitions
   );
 
   descendantDifferences.groupsCount =
@@ -110,6 +106,12 @@ export function compareTieFormats({
     descendantDifferences.collectionsValue.totalMatchUps -
     ancestorDifferences.collectionsValue.totalMatchUps;
 
+  const different =
+    nameDifference ||
+    orderDifference ||
+    ancestorDesc !== descendantDesc ||
+    valueDifference !== 0;
+
   return {
     matchUpFormatDifferences,
     matchUpCountDifference,
@@ -125,16 +127,19 @@ export function compareTieFormats({
   };
 }
 
-function getCollectionsValue(definitions, aggregator) {
+function getCollectionsValue(definitions) {
   let totalMatchUps = 0;
 
-  const totalValue = aggregator.collectionIds.reduce((total, collectionId) => {
+  const collectionIds = Object.keys(definitions);
+  const totalValue = collectionIds.reduce((total, collectionId) => {
     const collectionDefinition = definitions[collectionId];
     const {
       collectionValueProfiles,
       collectionValue,
       matchUpCount,
       matchUpValue,
+      scoreValue,
+      setValue,
     } = collectionDefinition;
 
     totalMatchUps += matchUpCount;
@@ -148,10 +153,20 @@ function getCollectionsValue(definitions, aggregator) {
         )
       );
 
-    if (matchUpValue && matchUpCount)
-      return total + matchUpValue * matchUpCount;
+    if (matchUpCount) {
+      if (isConvertableInteger(matchUpValue))
+        return total + matchUpValue * matchUpCount;
 
-    return total + collectionValue;
+      if (isConvertableInteger(scoreValue))
+        return total + scoreValue * matchUpCount;
+
+      if (isConvertableInteger(setValue))
+        return total + setValue * matchUpCount;
+
+      return total + collectionValue;
+    }
+
+    return total;
   }, 0);
 
   return { totalValue, totalMatchUps };
