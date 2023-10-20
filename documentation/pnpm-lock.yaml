@@ -40,10 +40,10 @@ dependencies:
     version: 0.20.2(react-dom@18.2.0)(react@18.2.0)
   mdx-mermaid:
     specifier: 2.0.0
-    version: 2.0.0(mermaid@10.5.0)(react@18.2.0)(unist-util-visit@4.1.2)
+    version: 2.0.0(mermaid@10.5.1)(react@18.2.0)(unist-util-visit@4.1.2)
   mermaid:
-    specifier: 10.5.0
-    version: 10.5.0
+    specifier: 10.5.1
+    version: 10.5.1
   react:
     specifier: ^18.2.0
     version: 18.2.0
@@ -7398,14 +7398,14 @@ packages:
     resolution: {integrity: sha512-/sKlQJCBYVY9Ers9hqzKou4H6V5UWc/M59TH2dvkt+84itfnq7uFOMLpOiOS4ujvHP4etln18fmIxA5R5fll0g==}
     dev: false
 
-  /mdx-mermaid@2.0.0(mermaid@10.5.0)(react@18.2.0)(unist-util-visit@4.1.2):
+  /mdx-mermaid@2.0.0(mermaid@10.5.1)(react@18.2.0)(unist-util-visit@4.1.2):
     resolution: {integrity: sha512-vmkh4yg/EgkhAWxdFsyol5Tgk9aTnM16njgGIYk3R3SdbejPt8YV+HRYycAOstR1TJefMNAmjAyqkRjukLP7qg==}
     peerDependencies:
       mermaid: '>=8.11.0'
       react: ^16.8.4 || ^17.0.0 || ^18.0.0
       unist-util-visit: ^4.1.0
     dependencies:
-      mermaid: 10.5.0
+      mermaid: 10.5.1
       react: 18.2.0
       unist-util-visit: 4.1.2
     optionalDependencies:
@@ -7449,8 +7449,8 @@ packages:
     engines: {node: '>= 8'}
     dev: false
 
-  /mermaid@10.5.0:
-    resolution: {integrity: sha512-9l0o1uUod78D3/FVYPGSsgV+Z0tSnzLBDiC9rVzvelPxuO80HbN1oDr9ofpPETQy9XpypPQa26fr09VzEPfvWA==}
+  /mermaid@10.5.1:
+    resolution: {integrity: sha512-+4mkGW5PptHDSae4YZ/Jw1pEOf0irrB/aCL6BwZcJPhr5+84UJBrQnHTvyPqCUz67tXkrDvSzWv4B+J2hLO78g==}
     dependencies:
       '@braintree/sanitize-url': 6.0.4
       '@types/d3-scale': 4.0.4
