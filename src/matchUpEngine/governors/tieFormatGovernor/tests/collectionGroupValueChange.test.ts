@@ -58,6 +58,7 @@ it('changing value assignment of collectionDefinition that is part of collection
   });
   expect(result.success).toEqual(true);
 
+  expect(result.modifications.length).toEqual(4);
   expect(result.tieFormat.tieFormatName).toBeUndefined();
   expect(result.tieFormat.winCriteria.aggregateValue).toEqual(true);
   expect(result.tieFormat.collectionGroups.length).toEqual(0);

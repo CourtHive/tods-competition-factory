@@ -1,8 +1,4 @@
 import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
-import {
-  ResultType,
-  decorateResult,
-} from '../../../global/functions/decorateResult';
 import { instanceCount, intersection } from '../../../utilities';
 import { getTieFormat } from './getTieFormat/getTieFormat';
 import { copyTieFormat } from './copyTieFormat';
@@ -11,6 +7,10 @@ import {
   modifyDrawNotice,
   modifyMatchUpNotice,
 } from '../../../drawEngine/notifications/drawNotifications';
+import {
+  ResultType,
+  decorateResult,
+} from '../../../global/functions/decorateResult';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/matchUpTypes';

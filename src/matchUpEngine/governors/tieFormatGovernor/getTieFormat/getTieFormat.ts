@@ -1,15 +1,17 @@
 import { findMatchUp } from '../../../../drawEngine/getters/getMatchUps/findMatchUp';
+import { findStructure } from '../../../../drawEngine/getters/findStructure';
+import { getObjectTieFormat } from './getObjectTieFormat';
+import { getItemTieFormat } from './getItemTieFormat';
 import {
   ResultType,
   decorateResult,
 } from '../../../../global/functions/decorateResult';
-import { findStructure } from '../../../../drawEngine/getters/findStructure';
-import { getObjectTieFormat } from './getObjectTieFormat';
-import { getItemTieFormat } from './getItemTieFormat';
 
+import { TEAM_MATCHUP } from '../../../../constants/matchUpTypes';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   ErrorType,
+  INVALID_MATCHUP,
   MISSING_DRAW_DEFINITION,
   MISSING_TIE_FORMAT,
 } from '../../../../constants/errorConditionConstants';
@@ -46,6 +48,7 @@ export function getTieFormat({
   success?: boolean;
   matchUp?: MatchUp;
 } {
+  const stack = 'getTieFormat';
   let tieFormat;
 
   structureId = structure?.structureId ?? structureId;
@@ -68,6 +71,9 @@ export function getTieFormat({
         matchUpId,
       });
       if (result.error) return result;
+      if (result.matchUp?.matchUpType !== TEAM_MATCHUP) {
+        return decorateResult({ result: { error: INVALID_MATCHUP }, stack });
+      }
 
       if (!structure) structure = result.structure;
       if (!matchUp) matchUp = result.matchUp;
@@ -108,7 +114,7 @@ export function getTieFormat({
   }
 
   if (!tieFormat)
-    return decorateResult({ result: { error: MISSING_TIE_FORMAT } });
+    return decorateResult({ result: { error: MISSING_TIE_FORMAT }, stack });
 
   return { ...SUCCESS, tieFormat, matchUp, structure };
 }

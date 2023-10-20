@@ -14,6 +14,10 @@ import {
   modifyMatchUpNotice,
 } from '../../../drawEngine/notifications/drawNotifications';
 import {
+  ResultType,
+  decorateResult,
+} from '../../../global/functions/decorateResult';
+import {
   validateCollectionDefinition,
   validateTieFormat,
 } from './tieFormatUtilities';
@@ -34,6 +38,7 @@ import {
   Event,
   GenderEnum,
   MatchUp,
+  TieFormat,
   Tournament,
 } from '../../../types/tournamentFromSchema';
 
@@ -74,7 +79,11 @@ export function addCollectionDefinition({
   eventId,
   uuids,
   event,
-}: AddCollectionDefinitionArgs) {
+}: AddCollectionDefinitionArgs): ResultType & {
+  tieFormat?: TieFormat;
+  targetMatchUps?: any;
+  addedMatchUps?: any;
+} {
   const appliedPolicies =
     getAppliedPolicies({
       tournamentRecord,
@@ -123,10 +132,10 @@ export function addCollectionDefinition({
       ({ collectionId }) => collectionId
     );
     if (collectionIds.includes(collectionDefinition.collectionId))
-      return {
-        collectionId: collectionDefinition.collectionId,
-        error: DUPLICATE_VALUE,
-      };
+      return decorateResult({
+        context: { collectionId: collectionDefinition.collectionId },
+        result: { error: DUPLICATE_VALUE },
+      });
   }
 
   tieFormat.collectionDefinitions.push(collectionDefinition);
@@ -215,7 +224,10 @@ export function addCollectionDefinition({
     });
   } else if (matchUpId && matchUp) {
     if (!validUpdate({ matchUp, updateInProgressMatchUps }))
-      return { error: CANNOT_MODIFY_TIEFORMAT };
+      return decorateResult({
+        result: { error: CANNOT_MODIFY_TIEFORMAT },
+        stack,
+      });
 
     matchUp.tieFormat = prunedTieFormat;
     const newMatchUps: MatchUp[] = generateCollectionMatchUps({
@@ -277,10 +289,10 @@ export function addCollectionDefinition({
   }
 
   return {
-    ...SUCCESS,
     tieFormat: prunedTieFormat,
     targetMatchUps,
     addedMatchUps,
+    ...SUCCESS,
   };
 }
 

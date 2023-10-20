@@ -40,52 +40,50 @@ export function modifyTieFormat({
   const { matchUp, tieFormat: existingTieFormat } = result;
   const tieFormat = copyTieFormat(existingTieFormat);
 
+  if (
+    !compareTieFormats({ ancestor: tieFormat, descendant: modifiedTieFormat })
+      ?.different
+  ) {
+    return { ...SUCCESS };
+  }
+
   const existingCollectionIds = tieFormat.collectionDefinitions.map(
     ({ collectionId }) => collectionId
   );
-
-  const modifiedCollectionDefinitions: any[] = [];
-  const addedCollectionDefinitions: any[] = [];
-  const updatedCollectionIds: string[] = [];
-
-  modifiedTieFormat.collectionDefinitions.forEach((def) => {
-    updatedCollectionIds.push(def.collectionId);
-
-    if (modifiedTieFormat && existingCollectionIds.includes(def.collectionId)) {
-      compareTieFormats({
-        descendant: modifiedTieFormat,
-        ancestor: tieFormat,
-      })?.different && modifiedCollectionDefinitions.push(def);
-    } else {
-      addedCollectionDefinitions.push(def);
-    }
-  });
-
+  const updatedCollectionIds = modifiedTieFormat.collectionDefinitions.map(
+    ({ collectionId }) => collectionId
+  );
   const removedCollectionIds = existingCollectionIds.filter(
     (collectionId) => !updatedCollectionIds.includes(collectionId)
   );
 
-  const tieFormatName = modifiedTieFormat.tieFormatName;
+  const addedCollectionDefinitions: any[] =
+    modifiedTieFormat.collectionDefinitions.filter(
+      ({ collectionId }) => !existingCollectionIds.includes(collectionId)
+    );
 
+  const modifications: any[] = [];
   let processedTieFormat;
 
   // TODO: if matchUpCount is changing pre-check for cmopleted tieMatchUps
   // TODO: if gender is changing pre-check for misgendered collectionAssignments
-  for (const collectionDefinition of modifiedCollectionDefinitions) {
+  for (const collectionDefinition of modifiedTieFormat.collectionDefinitions) {
     const result = modifyCollectionDefinition({
       updateInProgressMatchUps,
       ...collectionDefinition,
       tournamentRecord,
       drawDefinition,
-      tieFormatName,
       structureId,
       matchUpId,
       eventId,
       event,
     });
+    if (result.modifications) modifications.push(...result.modifications);
     if (result.error) return decorateResult({ result, stack });
     if (result.tieFormat) processedTieFormat = result.tieFormat;
   }
+
+  const tieFormatName = modifiedTieFormat.tieFormatName;
 
   for (const collectionDefinition of addedCollectionDefinitions) {
     const result = addCollectionDefinition({
@@ -123,6 +121,20 @@ export function modifyTieFormat({
     if (result.tieFormat) processedTieFormat = result.tieFormat;
   }
 
+  const changedTieFormatName =
+    existingTieFormat?.tieFormatName !== tieFormatName;
+
+  // if tieFormat has changed, force renaming of the tieFormat
+  if (changedTieFormatName) {
+    processedTieFormat.tieFormatName = tieFormatName;
+    modifications.push({ tieFormatName });
+  } else if (modifications.length) {
+    delete processedTieFormat.tieFormatName;
+    modifications.push(
+      'tieFormatName removed: modifications without new tieFormatName'
+    );
+  }
+
   processedTieFormat.collectionDefinitions =
     processedTieFormat.collectionDefinitions
       .sort(
@@ -132,5 +144,5 @@ export function modifyTieFormat({
       )
       .map((def, i) => ({ ...def, collectionOrder: i + 1 }));
 
-  return { ...SUCCESS, processedTieFormat };
+  return { ...SUCCESS, processedTieFormat, modifications };
 }

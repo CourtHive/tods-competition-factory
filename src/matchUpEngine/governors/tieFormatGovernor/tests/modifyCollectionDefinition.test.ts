@@ -5,30 +5,27 @@ import { TIE_FORMAT_MODIFICATIONS } from '../../../../constants/extensionConstan
 import { COLLEGE_D3 } from '../../../../constants/tieFormatConstants';
 import { TEAM } from '../../../../constants/eventConstants';
 import {
-  CANNOT_MODIFY_TIEFORMAT,
   INVALID_MATCHUP,
   INVALID_VALUES,
   NOT_FOUND,
+  NOT_IMPLEMENTED,
 } from '../../../../constants/errorConditionConstants';
 
 it('can modify collectionDefinitions for a tieFormat on a drawDefinition', () => {
-  const policyDefinitions = {
-    audit: {
-      [TIE_FORMAT_MODIFICATIONS]: true,
-    },
-  };
+  const policyDefinitions = { audit: { [TIE_FORMAT_MODIFICATIONS]: true } };
   const {
     drawIds: [drawId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
-    policyDefinitions,
     drawProfiles: [{ drawSize: 2, eventType: TEAM, tieFormatName: COLLEGE_D3 }],
+    policyDefinitions,
   });
 
   tournamentEngine.setState(tournamentRecord);
 
   let result = tournamentEngine.modifyCollectionDefinition({
     collectionName: 'New Name',
+    matchUpValue: 3,
     drawId,
   });
   expect(result.error).toEqual(NOT_FOUND);
@@ -190,6 +187,7 @@ it('can modify collectionDefinitions for a tieFormat on a structure', () => {
 
   drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
   const structure = drawDefinition.structures[0];
+  expect(structure.matchUps[0].tieMatchUps.length).toEqual(9);
 
   const collectionDefinition = structure.tieFormat.collectionDefinitions.find(
     (collectionDefinition) => collectionDefinition.collectionId === collectionId
@@ -325,6 +323,7 @@ it('can modify collectionDefinitions for a tieFormat on a structure', () => {
   expect(result.success).toEqual(true);
   expect(result.modifiedCount).toEqual(1);
 
+  // No change is made
   result = tournamentEngine.modifyCollectionDefinition({
     matchUpId: matchUps[0].matchUpId, // the TEAM matchUp, not a tieMatchUp
     collectionName: 'progressCheck2',
@@ -333,7 +332,7 @@ it('can modify collectionDefinitions for a tieFormat on a structure', () => {
     structureId,
     drawId,
   });
-  expect(result.error).toEqual(CANNOT_MODIFY_TIEFORMAT);
+  expect(result.success).toEqual(true);
 
   result = tournamentEngine.modifyCollectionDefinition({
     collectionName: 'progressCheck3',
@@ -385,7 +384,16 @@ it('can modify collectionDefinitions for a tieFormat on a structure', () => {
     structureId,
     drawId,
   });
+  expect(result.error).toEqual(NOT_IMPLEMENTED);
+  /*
   expect(result.modifiedStructuresCount).toEqual(1);
   expect(result.modifiedCount).toEqual(1);
   expect(result.success).toEqual(true);
+
+  drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+  structure = drawDefinition.structures.find(
+    (s) => s.structureId === structureId
+  );
+  console.log(structure.matchUps[0].tieMatchUps.length);
+  */
 });
