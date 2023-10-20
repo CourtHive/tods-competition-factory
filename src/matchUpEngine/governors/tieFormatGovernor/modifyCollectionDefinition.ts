@@ -1,5 +1,4 @@
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
-import { decorateResult } from '../../../global/functions/decorateResult';
 import { genderConstants } from '../../../constants/genderConstants';
 import { isConvertableInteger } from '../../../utilities/math';
 import { definedAttributes } from '../../../utilities/objects';
@@ -8,7 +7,12 @@ import { getTieFormat } from './getTieFormat/getTieFormat';
 import { isValid } from '../matchUpFormatGovernor/isValid';
 import { tieFormatTelemetry } from './tieFormatTelemetry';
 import { updateTieFormat } from './updateTieFormat';
+import { intersection } from '../../../utilities';
 import { copyTieFormat } from './copyTieFormat';
+import {
+  ResultType,
+  decorateResult,
+} from '../../../global/functions/decorateResult';
 import {
   validateCollectionValueProfile,
   validateTieFormat,
@@ -16,11 +20,12 @@ import {
 
 import { TIE_FORMAT_MODIFICATIONS } from '../../../constants/extensionConstants';
 import { TieFormat } from '../../../types/tournamentFromSchema';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
-  ErrorType,
   INVALID_VALUES,
   MISSING_VALUE,
   NOT_FOUND,
+  NOT_IMPLEMENTED,
 } from '../../../constants/errorConditionConstants';
 
 // all child matchUps need to be checked for collectionAssignments / collectionPositions which need to be removed when collectionDefinition.collectionIds are removed
@@ -29,9 +34,9 @@ export function modifyCollectionDefinition({
   tournamentRecord,
   collectionOrder,
   collectionName,
+  tieFormatName,
   drawDefinition,
   matchUpFormat,
-  tieFormatName,
   matchUpCount,
   collectionId,
   matchUpType,
@@ -48,21 +53,37 @@ export function modifyCollectionDefinition({
   matchUpValue,
   scoreValue,
   setValue,
-}): { error?: ErrorType; tieFormat?: TieFormat } {
+}): ResultType & { tieFormat?: TieFormat; modifications?: any[] } {
+  const stack = 'modifyCollectionDefinition';
+
   if (matchUpFormat && !isValid(matchUpFormat)) {
-    return { error: INVALID_VALUES };
+    return decorateResult({
+      result: { error: INVALID_VALUES },
+      context: { matchUpFormat },
+      stack,
+    });
   }
   if (collectionName && typeof collectionName !== 'string') {
-    return { error: INVALID_VALUES };
+    return decorateResult({
+      result: { error: INVALID_VALUES },
+      context: { collectionName },
+      stack,
+    });
   }
   if (gender && !Object.values(genderConstants).includes(gender)) {
-    return { error: INVALID_VALUES };
+    return decorateResult({
+      result: { error: INVALID_VALUES },
+      context: { gender },
+      stack,
+    });
   }
   if (category && typeof category !== 'object') {
-    return { error: INVALID_VALUES };
+    return decorateResult({
+      result: { error: INVALID_VALUES },
+      context: { category },
+      stack,
+    });
   }
-
-  const stack = 'modifyCollectionDefinition';
 
   const valueAssignments = {
     collectionValueProfiles,
@@ -83,10 +104,8 @@ export function modifyCollectionDefinition({
 
   if (Object.values(valueAssignments).filter(Boolean).length > 1)
     return decorateResult({
-      result: {
-        info: 'Only one value assignment allowed per collectionDefinition',
-        error: INVALID_VALUES,
-      },
+      info: 'Only one value assignment allowed per collectionDefinition',
+      result: { error: INVALID_VALUES },
       stack,
     });
 
@@ -97,49 +116,96 @@ export function modifyCollectionDefinition({
     eventId,
     event,
   });
-  if (result.error) return decorateResult({ result, stack });
+  if (result.error) {
+    return decorateResult({ result, stack });
+  }
 
   const { matchUp, structure, tieFormat: existingTieFormat } = result;
   const tieFormat = copyTieFormat(existingTieFormat);
 
-  const collectionDefinition = tieFormat.collectionDefinitions.find(
+  const sourceCollectionDefinition =
+    existingTieFormat?.collectionDefinitions.find(
+      (collectionDefinition) =>
+        collectionDefinition.collectionId === collectionId
+    );
+  const targetCollectionDefinition = tieFormat?.collectionDefinitions.find(
     (collectionDefinition) => collectionDefinition.collectionId === collectionId
   );
-  if (!collectionDefinition)
+
+  if (!sourceCollectionDefinition)
     return decorateResult({ result: { error: NOT_FOUND }, stack });
 
-  const value = collectionValue || matchUpValue || scoreValue || setValue;
-  if (value || collectionValueProfiles) {
-    if (value) {
-      if (!isConvertableInteger(value))
-        return decorateResult({ result: { error: INVALID_VALUES, value } });
-    } else if (collectionValueProfiles) {
-      const result = validateCollectionValueProfile({
-        matchUpCount: collectionDefinition.matchUpCount,
-        collectionValueProfiles,
+  const value = collectionValue ?? matchUpValue ?? scoreValue ?? setValue;
+  if (collectionValueProfiles) {
+    const result = validateCollectionValueProfile({
+      matchUpCount: matchUpCount || sourceCollectionDefinition?.matchUpCount,
+      collectionValueProfiles,
+    });
+    if (result.errors) {
+      return decorateResult({
+        result: { error: INVALID_VALUES },
+        info: result.errors,
+        stack,
       });
-      if (result.errors) {
-        return decorateResult({
-          result: { error: INVALID_VALUES, info: result.errors },
-          stack,
-        });
-      }
     }
+  } else if (value && !isConvertableInteger(value)) {
+    return decorateResult({
+      result: { error: INVALID_VALUES },
+      info: 'value is not an integer',
+      context: { value },
+      stack,
+    });
+  }
 
+  const equivalentValueProfiles = (a, b) =>
+    intersection(Object.keys(a), Object.keys(b)).length ===
+      Object.keys(a).length &&
+    intersection(Object.values(a), Object.values(b)).length ===
+      Object.values(a).length;
+
+  const valueProfileModified =
+    collectionValueProfiles &&
+    (!sourceCollectionDefinition.collectionValueProfiles ||
+      !equivalentValueProfiles(
+        sourceCollectionDefinition.collectionValueProfiles,
+        collectionValueProfiles
+      ));
+
+  const valueModified =
+    (isConvertableInteger(collectionValue) &&
+      sourceCollectionDefinition.collectionValue !== collectionValue) ||
+    (isConvertableInteger(matchUpValue) &&
+      sourceCollectionDefinition.matchUpValue !== matchUpValue) ||
+    (isConvertableInteger(scoreValue) &&
+      sourceCollectionDefinition.scoreValue !== scoreValue) ||
+    (isConvertableInteger(setValue) &&
+      sourceCollectionDefinition.setValue !== setValue) ||
+    valueProfileModified;
+
+  const modifications: any[] = [];
+  if (valueModified) {
     // cleanup any previously existing value assignment
-    collectionDefinition.collectionValue = undefined;
-    collectionDefinition.matchUpValue = undefined;
-    collectionDefinition.scoreValue = undefined;
-    collectionDefinition.setValue = undefined;
+    targetCollectionDefinition.collectionValueProfiles = undefined;
+    targetCollectionDefinition.collectionValue = undefined;
+    targetCollectionDefinition.matchUpValue = undefined;
+    targetCollectionDefinition.scoreValue = undefined;
+    targetCollectionDefinition.setValue = undefined;
 
     // add new value assignment
-    Object.assign(collectionDefinition, valueAssignments);
+    Object.assign(targetCollectionDefinition, valueAssignments);
+    modifications.push({
+      collectionId,
+      ...definedAttributes(valueAssignments),
+    });
   }
 
   // must remove all collectionGroups which contain the collection which has been modified
-  if ((scoreValue || setValue) && collectionDefinition.collectionGroupNumber) {
+  if (
+    (isConvertableInteger(scoreValue) || isConvertableInteger(setValue)) &&
+    targetCollectionDefinition.collectionGroupNumber
+  ) {
     const targetCollectionGroupNumber =
-      collectionDefinition.collectionGroupNumber;
+      targetCollectionDefinition.collectionGroupNumber;
     tieFormat.collectionDefinitions = tieFormat.collectionDefinitions.map(
       (collectionDefinition) => {
         const { collectionGroupNumber, ...rest } = collectionDefinition;
@@ -153,37 +219,104 @@ export function modifyCollectionDefinition({
     tieFormat.collectionGroups = tieFormat.collectionGroups.filter(
       ({ groupNumber }) => groupNumber !== targetCollectionGroupNumber
     );
+    modifications.push({
+      collectionId,
+      change: 'collectionGroupNumber removed',
+    });
   }
 
   // calculate new winCriteria for tieFormat
   // if existing winCriteria is aggregateValue, retain
   const { aggregateValue, valueGoal } = calculateWinCriteria(tieFormat);
-  tieFormat.winCriteria = definedAttributes({ aggregateValue, valueGoal });
-
-  // if valueGoal has changed, force renaming of the tieFormat
-  const originalValueGoal = existingTieFormat?.winCriteria.valueGoal;
-  const wasAggregateValue = existingTieFormat?.winCriteria.aggregateValue;
+  const winCriteria = definedAttributes({ aggregateValue, valueGoal });
   if (
-    (originalValueGoal && originalValueGoal !== valueGoal) ||
-    (aggregateValue && !wasAggregateValue)
+    winCriteria.aggregateValue !==
+      existingTieFormat?.winCriteria.aggregateValue ||
+    winCriteria.valueGoal !== existingTieFormat?.winCriteria.valueGoal
   ) {
-    delete tieFormat.tieFormatName;
+    tieFormat.winCriteria = winCriteria;
+    modifications.push({ collectionId, winCriteria });
   }
 
-  if (tieFormatName) tieFormat.tieFormatName = tieFormatName;
+  if (
+    isConvertableInteger(collectionOrder) &&
+    sourceCollectionDefinition.collectionOrder !== collectionOrder
+  ) {
+    targetCollectionDefinition.collectionOrder = collectionOrder;
+    modifications.push({ collectionId, collectionOrder });
+  }
+  if (
+    collectionName &&
+    sourceCollectionDefinition.collectionName !== collectionName
+  ) {
+    targetCollectionDefinition.collectionName = collectionName;
+    modifications.push({ collectionId, collectionName });
+  }
+  if (
+    matchUpFormat &&
+    sourceCollectionDefinition.matchUpFormat !== matchUpFormat
+  ) {
+    targetCollectionDefinition.matchUpFormat = matchUpFormat;
+    modifications.push({ collectionId, matchUpFormat });
+  }
+  if (
+    isConvertableInteger(matchUpCount) &&
+    sourceCollectionDefinition.matchUpCount !== matchUpCount
+  ) {
+    // TODO: need to calculate tieMatchUp additions/deletions
+    // targetCollectionDefinition.matchUpCount = matchUpCount;
+    // modifications.push({ structureId, matchUpCount });
 
-  if (collectionOrder) collectionDefinition.collectionOrder = collectionOrder;
-  if (collectionName) collectionDefinition.collectionName = collectionName;
-  if (matchUpFormat) collectionDefinition.matchUpFormat = matchUpFormat;
-  // if (matchUpCount) collectionDefinition.matchUpCount = matchUpCount; // TODO: need to calculate tieMatchUp additions/deletions
-  if (matchUpType) collectionDefinition.matchUpType = matchUpType;
-  if (category) collectionDefinition.category = category;
-  if (gender) collectionDefinition.gender = gender; // TODO: remove all inappropriately gendered participants
+    return decorateResult({
+      result: { error: NOT_IMPLEMENTED },
+      context: { matchUpCount },
+      stack,
+    });
+  }
+  if (matchUpType && sourceCollectionDefinition.matchUpType !== matchUpType) {
+    // targetCollectionDefinition.matchUpType = matchUpType;
+    // modifications.push({ collectionId, matchUpType });
+    return decorateResult({
+      result: { error: NOT_IMPLEMENTED },
+      context: { matchUpType },
+      stack,
+    });
+  }
+  if (category && sourceCollectionDefinition.category !== category) {
+    targetCollectionDefinition.category = category;
+    modifications.push({ collectionId, category });
+  }
+  if (gender && sourceCollectionDefinition.gender !== gender) {
+    // TODO: remove all inappropriately gendered participants
+    targetCollectionDefinition.gender = gender;
+    modifications.push({ collectionId, gender });
+  }
 
   const prunedTieFormat = definedAttributes(tieFormat);
   result = validateTieFormat({ tieFormat: prunedTieFormat });
-  if (result.error) return decorateResult({ result, stack });
+  if (result.error) {
+    return decorateResult({ result, stack });
+  }
 
+  if (!modifications.length) {
+    return decorateResult({ result: { ...SUCCESS, modifications } });
+  }
+
+  // Note: this logic needs to exist both here and in `modifyTieFormat`
+  // it is duplicated because this method can be called independently
+  const changedTieFormatName =
+    existingTieFormat?.tieFormatName !== tieFormatName;
+
+  // if tieFormat has changed, force renaming of the tieFormat
+  if (changedTieFormatName) {
+    prunedTieFormat.tieFormatName = tieFormatName;
+    modifications.push({ tieFormatName });
+  } else if (modifications.length) {
+    delete prunedTieFormat.tieFormatName;
+    modifications.push(
+      'tieFormatName removed: modifications without new tieFormatName'
+    );
+  }
   result = updateTieFormat({
     tieFormat: prunedTieFormat,
     updateInProgressMatchUps,
@@ -194,12 +327,13 @@ export function modifyCollectionDefinition({
     matchUp,
     event,
   });
+
   if (!result.error) {
     const { appliedPolicies } = getAppliedPolicies({ tournamentRecord });
     if (appliedPolicies?.audit?.[TIE_FORMAT_MODIFICATIONS]) {
       const auditData = definedAttributes({
+        collectionDefinition: targetCollectionDefinition,
         drawId: drawDefinition?.drawId,
-        collectionDefinition,
         action: stack,
         structureId,
         matchUpId,
@@ -209,5 +343,5 @@ export function modifyCollectionDefinition({
     }
   }
 
-  return decorateResult({ result, stack });
+  return decorateResult({ result: { ...result, modifications }, stack });
 }
