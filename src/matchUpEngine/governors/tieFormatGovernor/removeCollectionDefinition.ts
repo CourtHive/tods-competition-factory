@@ -59,8 +59,8 @@ type RemoveCollectionDefinitionArgs = {
   drawDefinition: DrawDefinition;
   tieFormatName?: string;
   collectionId: string;
-  structureId: string;
-  matchUpId: string;
+  structureId?: string;
+  matchUpId?: string;
   matchUp?: MatchUp;
   eventId?: string;
   event?: Event;

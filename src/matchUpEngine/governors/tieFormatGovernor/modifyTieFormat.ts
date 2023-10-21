@@ -2,6 +2,7 @@ import { decorateResult } from '../../../global/functions/decorateResult';
 import { modifyCollectionDefinition } from './modifyCollectionDefinition';
 import { removeCollectionDefinition } from './removeCollectionDefinition';
 import { addCollectionDefinition } from './addCollectionDefinition';
+import { extractAttributes as xa } from '../../../utilities';
 import { numericSortValue } from '../../../utilities/arrays';
 import { getTieFormat } from './getTieFormat/getTieFormat';
 import { validateTieFormat } from './tieFormatUtilities';
@@ -10,6 +11,25 @@ import { copyTieFormat } from './copyTieFormat';
 
 import { INVALID_TIE_FORMAT } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  DrawDefinition,
+  Event,
+  TieFormat,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
+
+type ModifyTieFormatArgs = {
+  updateInProgressMatchUps?: boolean;
+  tieFormatComparison?: boolean;
+  tournamentRecord: Tournament;
+  drawDefinition: DrawDefinition;
+  modifiedTieFormat: TieFormat;
+  structureId?: string;
+  matchUpId?: string;
+  eventId?: string;
+  uuids?: string[];
+  event?: Event;
+};
 
 export function modifyTieFormat({
   updateInProgressMatchUps = false,
@@ -22,11 +42,16 @@ export function modifyTieFormat({
   eventId,
   uuids,
   event,
-}) {
+}: ModifyTieFormatArgs) {
   const stack = 'updateTieFormat';
 
-  if (!validateTieFormat(modifiedTieFormat))
-    return { error: INVALID_TIE_FORMAT };
+  if (!validateTieFormat({ tieFormat: modifiedTieFormat }).valid) {
+    return decorateResult({
+      result: { error: INVALID_TIE_FORMAT },
+      info: 'falied validation',
+      stack,
+    });
+  }
 
   const result = getTieFormat({
     drawDefinition,
@@ -40,11 +65,18 @@ export function modifyTieFormat({
   const { matchUp, tieFormat: existingTieFormat } = result;
   const tieFormat = copyTieFormat(existingTieFormat);
 
-  if (
-    !compareTieFormats({ ancestor: tieFormat, descendant: modifiedTieFormat })
-      ?.different
-  ) {
-    return { ...SUCCESS };
+  const comparison = compareTieFormats({
+    descendant: modifiedTieFormat,
+    ancestor: tieFormat,
+  });
+  if (comparison.invalid) {
+    return decorateResult({
+      context: { invalid: comparison.invalid },
+      result: { error: INVALID_TIE_FORMAT },
+    });
+  }
+  if (!comparison?.different) {
+    return decorateResult({ result: { ...SUCCESS }, info: 'Nothing to do' });
   }
 
   const existingCollectionIds = tieFormat.collectionDefinitions.map(
@@ -62,16 +94,23 @@ export function modifyTieFormat({
       ({ collectionId }) => !existingCollectionIds.includes(collectionId)
     );
 
+  const addedCollectionIds = addedCollectionDefinitions.map(xa('collectionId'));
+
   const modifications: any[] = [];
   let processedTieFormat;
 
+  const tieFormatName = modifiedTieFormat.tieFormatName;
   // TODO: if matchUpCount is changing pre-check for cmopleted tieMatchUps
   // TODO: if gender is changing pre-check for misgendered collectionAssignments
   for (const collectionDefinition of modifiedTieFormat.collectionDefinitions) {
+    if (addedCollectionIds.includes(collectionDefinition.collectionId))
+      continue;
+
     const result = modifyCollectionDefinition({
       updateInProgressMatchUps,
       ...collectionDefinition,
       tournamentRecord,
+      tieFormatName,
       drawDefinition,
       structureId,
       matchUpId,
@@ -82,8 +121,6 @@ export function modifyTieFormat({
     if (result.error) return decorateResult({ result, stack });
     if (result.tieFormat) processedTieFormat = result.tieFormat;
   }
-
-  const tieFormatName = modifiedTieFormat.tieFormatName;
 
   for (const collectionDefinition of addedCollectionDefinitions) {
     const result = addCollectionDefinition({
@@ -128,7 +165,11 @@ export function modifyTieFormat({
   if (changedTieFormatName) {
     processedTieFormat.tieFormatName = tieFormatName;
     modifications.push({ tieFormatName });
-  } else if (modifications.length) {
+  } else if (
+    modifications.length ||
+    addedCollectionIds.length ||
+    removedCollectionIds.length
+  ) {
     delete processedTieFormat.tieFormatName;
     modifications.push(
       'tieFormatName removed: modifications without new tieFormatName'
@@ -144,5 +185,9 @@ export function modifyTieFormat({
       )
       .map((def, i) => ({ ...def, collectionOrder: i + 1 }));
 
-  return { ...SUCCESS, processedTieFormat, modifications };
+  return {
+    processedTieFormat: copyTieFormat(processedTieFormat),
+    modifications,
+    ...SUCCESS,
+  };
 }

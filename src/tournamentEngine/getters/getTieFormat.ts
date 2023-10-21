@@ -1,7 +1,8 @@
 import { resolveTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
+import { copyTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';
 import { decorateResult } from '../../global/functions/decorateResult';
 import { findStructure } from '../../drawEngine/getters/findStructure';
-import { findMatchUp } from './matchUpsGetter/findMatchUp';
+import { publicFindMatchUp } from './matchUpsGetter/findMatchUp';
 
 import { SUCCESS } from '../../constants/resultConstants';
 import {
@@ -19,7 +20,8 @@ import {
   Tournament,
 } from '../../types/tournamentFromSchema';
 
-// method exclusively for external use
+// NOTE: method exclusively for external use
+
 type GetTieFormatArgs = {
   tournamentRecord: Tournament;
   drawDefinition?: DrawDefinition;
@@ -60,7 +62,7 @@ export function getTieFormat({
     event = tournamentRecord.events?.find((event) => event.eventId === eventId);
   }
 
-  const matchUpResult = findMatchUp({
+  const matchUpResult = publicFindMatchUp({
     tournamentRecord,
     drawDefinition,
     matchUpId,
@@ -103,10 +105,10 @@ export function getTieFormat({
   return {
     ...SUCCESS,
     matchUp: matchUpResult?.matchUp,
-    structureDefaultTieFormat,
-    eventDefaultTieFormat,
-    drawDefaultTieFormat,
-    tieFormat,
+    structureDefaultTieFormat: copyTieFormat(structureDefaultTieFormat),
+    eventDefaultTieFormat: copyTieFormat(eventDefaultTieFormat),
+    drawDefaultTieFormat: copyTieFormat(drawDefaultTieFormat),
+    tieFormat: copyTieFormat(tieFormat),
     structure,
   };
 }

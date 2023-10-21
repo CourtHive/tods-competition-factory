@@ -35,7 +35,7 @@ export function validateTieFormat(params: ValidateTieFormatArgs): ResultType {
   const stack = 'validateTieFormat';
   const errors: string[] = [];
 
-  if (typeof tieFormat !== 'object') {
+  if (!params || !tieFormat || typeof tieFormat !== 'object') {
     errors.push('tieFormat must be an object');
     return decorateResult({
       result: {
@@ -208,7 +208,7 @@ export function validateCollectionDefinition({
     errors.push(`collectionValue is not type number: ${collectionValue}`);
   }
   if (collectionValueProfiles) {
-    const result = validateCollectionValueProfile({
+    const result = validateCollectionValueProfiles({
       collectionValueProfiles,
       matchUpCount,
     });
@@ -255,7 +255,7 @@ export function checkTieFormat(
   return { tieFormat };
 }
 
-export function validateCollectionValueProfile({
+export function validateCollectionValueProfiles({
   collectionValueProfiles,
   matchUpCount,
 }) {
