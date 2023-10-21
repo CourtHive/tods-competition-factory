@@ -176,7 +176,7 @@ export function modifyCollectionDefinition({
   const value = collectionValue ?? matchUpValue ?? scoreValue ?? setValue;
   if (collectionValueProfiles) {
     const result = validateCollectionValueProfiles({
-      matchUpCount: matchUpCount || sourceCollectionDefinition?.matchUpCount,
+      matchUpCount: matchUpCount ?? sourceCollectionDefinition?.matchUpCount,
       collectionValueProfiles,
     });
     if (result.errors) {
@@ -301,17 +301,20 @@ export function modifyCollectionDefinition({
     isConvertableInteger(matchUpCount) &&
     sourceCollectionDefinition.matchUpCount !== matchUpCount
   ) {
-    // TODO: need to calculate tieMatchUp additions/deletions
-    // targetCollectionDefinition.matchUpCount = matchUpCount;
-    // modifications.push({ structureId, matchUpCount });
+    targetCollectionDefinition.matchUpCount = matchUpCount;
+    modifications.push({ structureId, matchUpCount });
 
+    /**
+    // TODO: need to calculate tieMatchUp additions/deletions
     return decorateResult({
       result: { error: NOT_IMPLEMENTED },
       context: { matchUpCount },
       stack,
     });
+    */
   }
   if (matchUpType && sourceCollectionDefinition.matchUpType !== matchUpType) {
+    // TODO: updateTieFormat needs to support
     // targetCollectionDefinition.matchUpType = matchUpType;
     // modifications.push({ collectionId, matchUpType });
     return decorateResult({
@@ -330,8 +333,8 @@ export function modifyCollectionDefinition({
     modifications.push({ collectionId, gender });
   }
 
-  const prunedTieFormat = definedAttributes(tieFormat);
-  result = validateTieFormat({ tieFormat: prunedTieFormat });
+  const modifiedTieFormat = definedAttributes(tieFormat);
+  result = validateTieFormat({ tieFormat: modifiedTieFormat });
   if (result.error) {
     return decorateResult({ result, stack });
   }
@@ -347,16 +350,16 @@ export function modifyCollectionDefinition({
 
   // if tieFormat has changed, force renaming of the tieFormat
   if (changedTieFormatName) {
-    prunedTieFormat.tieFormatName = tieFormatName;
+    modifiedTieFormat.tieFormatName = tieFormatName;
     modifications.push({ tieFormatName });
   } else if (modifications.length) {
-    delete prunedTieFormat.tieFormatName;
+    delete modifiedTieFormat.tieFormatName;
     modifications.push(
       'tieFormatName removed: modifications without new tieFormatName'
     );
   }
   result = updateTieFormat({
-    tieFormat: prunedTieFormat,
+    tieFormat: modifiedTieFormat,
     updateInProgressMatchUps,
     tournamentRecord,
     drawDefinition,

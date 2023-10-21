@@ -69,7 +69,7 @@ export function findMatchUp({
   if (typeof matchUpId !== 'string') return { error: MISSING_MATCHUP_ID };
 
   if (!drawDefinition || !event) {
-    const matchUps = allTournamentMatchUps({ tournamentRecord }).matchUps || [];
+    const matchUps = allTournamentMatchUps({ tournamentRecord }).matchUps ?? [];
 
     const inContextMatchUp = matchUps.find(
       (matchUp) => matchUp.matchUpId === matchUpId
@@ -91,11 +91,11 @@ export function findMatchUp({
     contextContent = getContextContent({ tournamentRecord, contextProfile });
 
   const additionalContext = {
-    surfaceCategory: event?.surfaceCategory || tournamentRecord.surfaceCategory,
-    indoorOutDoor: event?.indoorOutdoor || tournamentRecord.indoorOutdoor,
-    endDate: event?.endDate || tournamentRecord.endDate,
+    surfaceCategory: event?.surfaceCategory ?? tournamentRecord.surfaceCategory,
+    indoorOutDoor: event?.indoorOutdoor ?? tournamentRecord.indoorOutdoor,
+    endDate: event?.endDate ?? tournamentRecord.endDate,
     tournamentId: tournamentRecord.tournamentId,
-    eventId: eventId || event?.eventId,
+    eventId: eventId ?? event?.eventId,
     drawId,
   };
 
