@@ -1,8 +1,8 @@
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
-import { getTieFormat } from '../../../tournamentEngine/getters/getTieFormat';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { collectionGroupUpdate } from './collectionGroupUpdate';
 import { definedAttributes } from '../../../utilities/objects';
+import { getTieFormat } from './getTieFormat/getTieFormat';
 import { tieFormatTelemetry } from './tieFormatTelemetry';
 import { validateTieFormat } from './tieFormatUtilities';
 import { copyTieFormat } from './copyTieFormat';
@@ -49,7 +49,6 @@ export function removeCollectionGroup({
 
   let result = !matchUp
     ? getTieFormat({
-        tournamentRecord,
         drawDefinition,
         structureId,
         matchUpId,
