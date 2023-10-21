@@ -45,8 +45,13 @@ export function modifyTieFormat({
 }: ModifyTieFormatArgs) {
   const stack = 'updateTieFormat';
 
-  if (!validateTieFormat({ tieFormat: modifiedTieFormat }).valid)
-    return { error: INVALID_TIE_FORMAT };
+  if (!validateTieFormat({ tieFormat: modifiedTieFormat }).valid) {
+    return decorateResult({
+      result: { error: INVALID_TIE_FORMAT },
+      info: 'falied validation',
+      stack,
+    });
+  }
 
   const result = getTieFormat({
     drawDefinition,
@@ -66,8 +71,8 @@ export function modifyTieFormat({
   });
   if (comparison.invalid) {
     return decorateResult({
-      result: { error: INVALID_TIE_FORMAT },
       context: { invalid: comparison.invalid },
+      result: { error: INVALID_TIE_FORMAT },
     });
   }
   if (!comparison?.different) {
@@ -180,5 +185,9 @@ export function modifyTieFormat({
       )
       .map((def, i) => ({ ...def, collectionOrder: i + 1 }));
 
-  return { ...SUCCESS, processedTieFormat, modifications };
+  return {
+    processedTieFormat: copyTieFormat(processedTieFormat),
+    modifications,
+    ...SUCCESS,
+  };
 }

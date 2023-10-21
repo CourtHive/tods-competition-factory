@@ -188,7 +188,9 @@ function getCollectionsValue(definitions) {
     const valueKeys = Object.keys(valueAssignments).filter(
       (key) => ![undefined, null].includes(valueAssignments[key])
     );
-    if (valueKeys.length !== 1) invalidValues.push({ collectionId });
+    if (valueKeys.length !== 1) {
+      invalidValues.push({ collectionId });
+    }
 
     const valueKey = valueKeys[0];
     if (valueKey) {
