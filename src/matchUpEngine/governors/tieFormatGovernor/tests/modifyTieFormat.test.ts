@@ -101,6 +101,8 @@ it('can add collectionDefinitions to tieFormat in a structure', () => {
   // tieFormatName should have been removed
   expect(result.modifications.length).toBeGreaterThan(0);
   expect(result.processedTieFormat.tieFormatName).toBeUndefined();
+  tieFormatResult = tournamentEngine.getTieFormat({ eventId, drawId });
+  expect(tieFormatResult.tieFormat.winCriteria.valueGoal).toEqual(6);
 
   expect(matchUpModifyNotices.length).toEqual(3);
   expect(matchUpAddNotices).toEqual([matchUpCount * teamMatchUps.length]); // matchUpCount * number of ties
@@ -112,7 +114,14 @@ it('can add collectionDefinitions to tieFormat in a structure', () => {
     );
   }
 
-  const targetCollectionDefinition =
+  tieFormatResult = tournamentEngine.getTieFormat({ eventId, drawId });
+  let target = tieFormatResult.tieFormat.collectionDefinitions.find(
+    (def) => def.collectionId === collectionId
+  );
+  expect(target.collectionValue).toEqual(2);
+  expect(target.matchUpValue).toBeUndefined();
+
+  let targetCollectionDefinition =
     result.processedTieFormat.collectionDefinitions.find(
       (def) => def.collectionId === collectionId
     );
@@ -124,14 +133,31 @@ it('can add collectionDefinitions to tieFormat in a structure', () => {
   });
   expect(result.error).toEqual(INVALID_TIE_FORMAT);
 
+  tieFormatResult = tournamentEngine.getTieFormat({ eventId, drawId });
+  target = tieFormatResult.tieFormat.collectionDefinitions.find(
+    (def) => def.collectionId === collectionId
+  );
+  expect(target.collectionValue).toEqual(2);
+  expect(target.matchUpValue).toBeUndefined();
+
+  targetCollectionDefinition =
+    tieFormatResult.tieFormat.collectionDefinitions.find(
+      (def) => def.collectionId === collectionId
+    );
   targetCollectionDefinition.collectionValue = undefined;
+  targetCollectionDefinition.matchUpValue = 1;
 
   result = tournamentEngine.modifyTieFormat({
-    modifiedTieFormat: result.processedTieFormat,
+    modifiedTieFormat: tieFormatResult.tieFormat,
     eventId,
     drawId,
   });
+  expect(result.success).toEqual(true);
+
   tieFormatResult = tournamentEngine.getTieFormat({ eventId, drawId });
-  expect(tieFormatResult.tieFormat.winCriteria.valueGoal).toEqual(6);
-  // console.log(tieFormatResult.tieFormat);
+  target = tieFormatResult.tieFormat.collectionDefinitions.find(
+    (def) => def.collectionId === collectionId
+  );
+  expect(target.collectionValue).toBeUndefined();
+  expect(target.matchUpValue).toEqual(1);
 });
