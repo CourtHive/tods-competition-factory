@@ -16,9 +16,9 @@ export function generateTieMatchUps({
   isMock,
   uuids,
 }: GenerateTieMatchUpsArgs) {
-  const { collectionDefinitions } = tieFormat || {};
+  const { collectionDefinitions } = tieFormat ?? {};
 
-  const tieMatchUps = (collectionDefinitions || [])
+  const tieMatchUps = (collectionDefinitions ?? [])
     .map((collectionDefinition) =>
       generateCollectionMatchUps({ collectionDefinition, uuids, isMock })
     )
@@ -29,12 +29,14 @@ export function generateTieMatchUps({
 }
 
 type GenerateCollectionMatchUpsArgs = {
+  collectionPositionOffset?: number;
   collectionDefinition: any;
   matchUpsLimit?: number;
   isMock?: boolean;
   uuids?: string[];
 };
 export function generateCollectionMatchUps({
+  collectionPositionOffset = 0,
   collectionDefinition,
   matchUpsLimit, // internal use allows generation of missing matchUps on "reset"
   isMock,
@@ -43,10 +45,10 @@ export function generateCollectionMatchUps({
   const { matchUpCount, matchUpType, collectionId, processCodes } =
     collectionDefinition || {};
 
-  const numberToGenerate = matchUpsLimit || matchUpCount || 0;
+  const numberToGenerate = matchUpsLimit ?? matchUpCount ?? 0;
 
   return generateRange(0, numberToGenerate).map((index) => {
-    const collectionPosition = index + 1;
+    const collectionPosition = collectionPositionOffset + index + 1;
     return {
       sides: [{ sideNumber: 1 }, { sideNumber: 2 }],
       matchUpId: uuids?.pop() || UUID(),
