@@ -1,13 +1,13 @@
 import { isCompletedStructure } from '../../governors/queryGovernor/structureActions';
 import { generateMatchUpOutcome } from '../primitives/generateMatchUpOutcome';
 import { getPositionAssignments } from '../../getters/positionsGetter';
+import { tournamentEngine, mocksEngine } from '../../..';
+import { expect, it } from 'vitest';
 import {
   extractAttributes,
   generateRange,
   intersection,
 } from '../../../utilities';
-import { tournamentEngine, mocksEngine } from '../../..';
-import { expect, it } from 'vitest';
 
 import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
 import {
@@ -338,7 +338,7 @@ it.each(scenarios)(
       drawId,
     });
     expect(result.error).toEqual(MISSING_VALUE);
-    expect(result.error.info).not.toBeUndefined();
+    expect(result.info).not.toBeUndefined();
 
     const invalidFinishingPosition =
       Math.max(...availableFinishingPositions, 0) + 1;
