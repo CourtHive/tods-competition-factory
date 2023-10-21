@@ -135,8 +135,9 @@ export function modifyCollectionDefinition({
     !Object.values(valueAssignments).filter(Boolean).length &&
     !collectionOrder &&
     !collectionName &&
+    !matchUpFormat &&
     !matchUpCount &&
-    !matchUpFormat
+    !matchUpType
   )
     return decorateResult({ result: { error: MISSING_VALUE }, stack });
 
@@ -171,7 +172,12 @@ export function modifyCollectionDefinition({
   );
 
   if (!sourceCollectionDefinition)
-    return decorateResult({ result: { error: NOT_FOUND }, stack });
+    return decorateResult({
+      info: 'source collectionDefinition',
+      result: { error: NOT_FOUND },
+      context: { collectionId },
+      stack,
+    });
 
   const value = collectionValue ?? matchUpValue ?? scoreValue ?? setValue;
   if (collectionValueProfiles) {
@@ -302,16 +308,7 @@ export function modifyCollectionDefinition({
     sourceCollectionDefinition.matchUpCount !== matchUpCount
   ) {
     targetCollectionDefinition.matchUpCount = matchUpCount;
-    modifications.push({ structureId, matchUpCount });
-
-    /**
-    // TODO: need to calculate tieMatchUp additions/deletions
-    return decorateResult({
-      result: { error: NOT_IMPLEMENTED },
-      context: { matchUpCount },
-      stack,
-    });
-    */
+    modifications.push({ collectionId, matchUpCount });
   }
   if (matchUpType && sourceCollectionDefinition.matchUpType !== matchUpType) {
     // TODO: updateTieFormat needs to support
