@@ -25,12 +25,6 @@ import {
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 
-export function publicFindMatchUp(params) {
-  Object.assign(params, { inContext: true });
-  const { matchUp, error } = findMatchUp(params);
-  return { matchUp: makeDeepCopy(matchUp, true, true), error };
-}
-
 type FindMatchUpType = {
   participantsProfile?: ParticipantsProfile;
   contextContent?: ContextContent;
@@ -44,6 +38,20 @@ type FindMatchUpType = {
   drawId?: string;
   event?: Event;
 };
+
+type FindMatchUpResult = {
+  drawDefinition?: DrawDefinition;
+  matchUp?: HydratedMatchUp;
+  structure?: Structure;
+  error?: ErrorType;
+};
+
+export function publicFindMatchUp(params: FindMatchUpType): FindMatchUpResult {
+  Object.assign(params, { inContext: true });
+  const { matchUp, error } = findMatchUp(params);
+  return { matchUp: makeDeepCopy(matchUp, true, true), error };
+}
+
 export function findMatchUp({
   participantsProfile,
   afterRecoveryTimes,
@@ -56,12 +64,7 @@ export function findMatchUp({
   eventId,
   drawId,
   event,
-}: FindMatchUpType): {
-  drawDefinition?: DrawDefinition;
-  matchUp?: HydratedMatchUp;
-  structure?: Structure;
-  error?: ErrorType;
-} {
+}: FindMatchUpType): FindMatchUpResult {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (typeof matchUpId !== 'string') return { error: MISSING_MATCHUP_ID };
 
