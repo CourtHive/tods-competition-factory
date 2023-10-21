@@ -46,9 +46,13 @@ module.exports = {
       type: 'category',
       label: 'Mocks Engine',
       items: [
-        'engines/mocks-engine-overview',
-        { type: 'doc', label: 'API', id: 'apis/mocks-engine-api' },
+        {
+          type: 'doc',
+          label: 'Overview',
+          id: 'engines/mocks-engine-overview',
+        },
         'engines/mocks-engine-examples',
+        { type: 'doc', label: 'API', id: 'apis/mocks-engine-api' },
       ],
     },
     {
@@ -143,9 +147,15 @@ module.exports = {
       type: 'category',
       label: 'Utilities',
       items: [
+        {
+          type: 'doc',
+          label: 'Overview',
+          id: 'utilities/utilities-overview',
+        },
         'utilities/make-deep-copy',
         'utilities/structure-sort',
         'utilities/json-to-csv',
+        { type: 'doc', label: 'API', id: 'utilities/utilities-api' },
       ],
     },
   ],
