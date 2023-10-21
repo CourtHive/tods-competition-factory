@@ -30,7 +30,13 @@ export function decorateResult({
   if (result && Array.isArray(result?.stack) && typeof stack === 'string') {
     result.stack.push(stack);
   }
-  if (info && result?.error) result.error.info = info;
+  if (info) {
+    if (result?.error) {
+      result.error.info = info;
+    } else {
+      result.info = info;
+    }
+  }
   if (result && typeof context === 'object' && Object.keys(context).length) {
     Object.assign(result, definedAttributes(context));
   }
