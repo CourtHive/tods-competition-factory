@@ -1,3 +1,4 @@
+import { stringSort } from '../../../global/sorting/stringSort';
 import { isConvertableInteger } from '../../../utilities/math';
 import { difference, unique } from '../../../utilities/arrays';
 import { getTieFormatDesc } from './getTieFormatDescription';
@@ -106,11 +107,42 @@ export function compareTieFormats({
     descendantDifferences.collectionsValue.totalMatchUps -
     ancestorDifferences.collectionsValue.totalMatchUps;
 
+  const assignmentValuesCountDifference =
+    ancestorDifferences.collectionsValue.assignmentValues.length !==
+    descendantDifferences.collectionsValue.assignmentValues.length;
+
+  const assignmentValuesDifference =
+    ancestorDifferences.collectionsValue.assignmentValues.some(
+      (assignment, i) => {
+        const comparisonAssignment =
+          descendantDifferences.collectionsValue.assignmentValues[i];
+        if (!comparisonAssignment) return true;
+
+        if (assignment.valueKey !== comparisonAssignment.valueKey) return true;
+        if (assignment.value !== comparisonAssignment.value) return true;
+        if (Array.isArray(assignment.value)) {
+          return assignment.value.every(
+            (value, i) => comparisonAssignment.value[i] === value
+          );
+        }
+
+        return false;
+      }
+    );
+
   const different =
     nameDifference ||
     orderDifference ||
     ancestorDesc !== descendantDesc ||
+    assignmentValuesCountDifference ||
+    assignmentValuesDifference ||
     valueDifference !== 0;
+
+  const invalidValues = [
+    ...ancestorDifferences.collectionsValue.invalidValues,
+    ...descendantDifferences.collectionsValue.invalidValues,
+  ];
+  const invalid = invalidValues.length && invalidValues;
 
   return {
     matchUpFormatDifferences,
@@ -124,13 +156,16 @@ export function compareTieFormats({
     ancestorDesc,
     ...SUCCESS,
     different,
+    invalid,
   };
 }
 
 function getCollectionsValue(definitions) {
+  const invalidValues: { collectionId: string }[] = [];
+  const assignmentValues: { valueKey: string; value: number | number[] }[] = [];
   let totalMatchUps = 0;
 
-  const collectionIds = Object.keys(definitions);
+  const collectionIds = Object.keys(definitions).sort(stringSort);
   const totalValue = collectionIds.reduce((total, collectionId) => {
     const collectionDefinition = definitions[collectionId];
     const {
@@ -141,6 +176,28 @@ function getCollectionsValue(definitions) {
       scoreValue,
       setValue,
     } = collectionDefinition;
+
+    const valueAssignments = {
+      collectionValueProfiles,
+      collectionValue,
+      matchUpValue,
+      scoreValue,
+      setValue,
+    };
+
+    const valueKeys = Object.keys(valueAssignments).filter(
+      (key) => ![undefined, null].includes(valueAssignments[key])
+    );
+    if (valueKeys.length !== 1) invalidValues.push({ collectionId });
+
+    const valueKey = valueKeys[0];
+    if (valueKey) {
+      const value =
+        valueKey === 'collectionValueProfiles'
+          ? Object.values(collectionValueProfiles)
+          : valueAssignments[valueKey];
+      assignmentValues.push({ valueKey, value });
+    }
 
     totalMatchUps += matchUpCount;
 
@@ -169,5 +226,5 @@ function getCollectionsValue(definitions) {
     return total;
   }, 0);
 
-  return { totalValue, totalMatchUps };
+  return { totalValue, totalMatchUps, invalidValues, assignmentValues };
 }
