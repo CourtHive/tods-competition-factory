@@ -57,7 +57,7 @@ type AddCollectionDefinitionArgs = {
   referenceGender?: GenderEnum;
   tieFormatName?: string;
   enforceGender?: boolean;
-  structureId: string;
+  structureId?: string;
   matchUpId?: string;
   matchUp?: MatchUp;
   eventId?: string;
@@ -259,7 +259,7 @@ export function addCollectionDefinition({
         structure,
         uuids,
       });
-      modifiedStructureIds.push(structureId);
+      modifiedStructureIds.push(structure.structureId);
       addedMatchUps.push(...result.newMatchUps);
       targetMatchUps.push(...result.targetMatchUps);
     }

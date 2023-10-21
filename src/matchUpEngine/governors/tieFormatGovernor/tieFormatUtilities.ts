@@ -208,7 +208,7 @@ export function validateCollectionDefinition({
     errors.push(`collectionValue is not type number: ${collectionValue}`);
   }
   if (collectionValueProfiles) {
-    const result = validateCollectionValueProfile({
+    const result = validateCollectionValueProfiles({
       collectionValueProfiles,
       matchUpCount,
     });
@@ -255,7 +255,7 @@ export function checkTieFormat(
   return { tieFormat };
 }
 
-export function validateCollectionValueProfile({
+export function validateCollectionValueProfiles({
   collectionValueProfiles,
   matchUpCount,
 }) {

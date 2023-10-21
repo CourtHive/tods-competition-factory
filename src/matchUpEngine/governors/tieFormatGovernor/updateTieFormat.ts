@@ -44,7 +44,7 @@ function mapsCheck(map1, map2) {
 type UpdateTieFormatArgs = {
   updateInProgressMatchUps?: boolean;
   tournamentRecord?: Tournament;
-  drawDefinition: DrawDefinition;
+  drawDefinition?: DrawDefinition;
   structure?: Structure;
   tieFormat: TieFormat;
   matchUp?: MatchUp;
@@ -146,11 +146,12 @@ export function updateTieFormat({
 
     structure.tieFormat = tieFormat;
     modifiedCount += 1;
-    modifyDrawNotice({
-      structureIds: [structure.structureId],
-      eventId: event?.eventId,
-      drawDefinition,
-    });
+    drawDefinition &&
+      modifyDrawNotice({
+        structureIds: [structure.structureId],
+        eventId: event?.eventId,
+        drawDefinition,
+      });
   } else if (drawDefinition) {
     processDrawDefinition({ drawDefinition });
     drawDefinition.tieFormat = tieFormat;

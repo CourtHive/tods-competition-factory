@@ -14,13 +14,22 @@ import {
   decorateResult,
 } from '../../../global/functions/decorateResult';
 import {
-  validateCollectionValueProfile,
+  validateCollectionValueProfiles,
   validateTieFormat,
 } from './tieFormatUtilities';
 
 import { TIE_FORMAT_MODIFICATIONS } from '../../../constants/extensionConstants';
-import { TieFormat } from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  Category,
+  CollectionValueProfile,
+  DrawDefinition,
+  Event,
+  GenderEnum,
+  TieFormat,
+  Tournament,
+  TypeEnum,
+} from '../../../types/tournamentFromSchema';
 import {
   INVALID_VALUES,
   MISSING_VALUE,
@@ -29,6 +38,32 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 // all child matchUps need to be checked for collectionAssignments / collectionPositions which need to be removed when collectionDefinition.collectionIds are removed
+type ModifyCollectionDefinitionArgs = {
+  updateInProgressMatchUps?: boolean;
+  tournamentRecord?: Tournament;
+  drawDefinition?: DrawDefinition;
+  collectionOrder?: number;
+  collectionName?: string;
+  tieFormatName?: string;
+  matchUpFormat?: string;
+  matchUpType?: TypeEnum;
+  matchUpCount?: number;
+  collectionId: string;
+  structureId?: string;
+  category?: Category;
+  gender?: GenderEnum;
+  matchUpId?: string;
+  eventId?: string;
+  event?: Event;
+
+  // value assignment, only one is allowed to have a value
+  collectionValueProfiles?: CollectionValueProfile[];
+  collectionValue?: number;
+  matchUpValue?: number;
+  scoreValue?: number;
+  setValue?: number;
+};
+
 export function modifyCollectionDefinition({
   updateInProgressMatchUps = false,
   tournamentRecord,
@@ -53,7 +88,10 @@ export function modifyCollectionDefinition({
   matchUpValue,
   scoreValue,
   setValue,
-}): ResultType & { tieFormat?: TieFormat; modifications?: any[] } {
+}: ModifyCollectionDefinitionArgs): ResultType & {
+  tieFormat?: TieFormat;
+  modifications?: any[];
+} {
   const stack = 'modifyCollectionDefinition';
 
   if (matchUpFormat && !isValid(matchUpFormat)) {
@@ -137,7 +175,7 @@ export function modifyCollectionDefinition({
 
   const value = collectionValue ?? matchUpValue ?? scoreValue ?? setValue;
   if (collectionValueProfiles) {
-    const result = validateCollectionValueProfile({
+    const result = validateCollectionValueProfiles({
       matchUpCount: matchUpCount || sourceCollectionDefinition?.matchUpCount,
       collectionValueProfiles,
     });
