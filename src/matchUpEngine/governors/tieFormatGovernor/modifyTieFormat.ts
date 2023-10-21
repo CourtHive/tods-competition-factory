@@ -100,7 +100,6 @@ export function modifyTieFormat({
   let processedTieFormat;
 
   const tieFormatName = modifiedTieFormat.tieFormatName;
-  // TODO: if matchUpCount is changing pre-check for cmopleted tieMatchUps
   // TODO: if gender is changing pre-check for misgendered collectionAssignments
   for (const collectionDefinition of modifiedTieFormat.collectionDefinitions) {
     if (addedCollectionIds.includes(collectionDefinition.collectionId))
