@@ -116,5 +116,10 @@ export function getTieFormat({
   if (!tieFormat)
     return decorateResult({ result: { error: MISSING_TIE_FORMAT }, stack });
 
-  return { ...SUCCESS, tieFormat, matchUp, structure };
+  return {
+    ...SUCCESS,
+    structure,
+    tieFormat,
+    matchUp,
+  };
 }

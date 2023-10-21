@@ -35,7 +35,7 @@ export function validateTieFormat(params: ValidateTieFormatArgs): ResultType {
   const stack = 'validateTieFormat';
   const errors: string[] = [];
 
-  if (typeof tieFormat !== 'object') {
+  if (!params || !tieFormat || typeof tieFormat !== 'object') {
     errors.push('tieFormat must be an object');
     return decorateResult({
       result: {
