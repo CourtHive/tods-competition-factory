@@ -365,10 +365,8 @@ export function generateDrawDefinition(
   if (policyDefinitions) {
     if (typeof policyDefinitions !== 'object') {
       return decorateResult({
-        result: {
-          info: 'policyDefinitions must be an object',
-          error: INVALID_VALUES,
-        },
+        info: 'policyDefinitions must be an object',
+        result: { error: INVALID_VALUES },
         stack,
       });
     } else {
@@ -657,8 +655,9 @@ export function generateDrawDefinition(
     for (const roundTargetProfile of params.qualifyingProfiles) {
       if (!Array.isArray(roundTargetProfile.structureProfiles))
         return decorateResult({
-          result: { error: MISSING_VALUE },
           info: mustBeAnArray('structureProfiles'),
+          result: { error: MISSING_VALUE },
+          stack,
         });
 
       roundTarget = roundTargetProfile.roundTarget || roundTarget;

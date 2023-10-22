@@ -53,10 +53,8 @@ export function addCollectionGroup({
     const { collectionId, collectionGroupNumber } = collectionDefinition;
     if (collectionGroupNumber && collectionIds.includes(collectionId))
       return decorateResult({
-        result: {
-          error: INVALID_VALUES,
-          info: 'collectionIds cannot be part of other collectionGroups',
-        },
+        info: 'collectionIds cannot be part of other collectionGroups',
+        result: { error: INVALID_VALUES },
         stack,
       });
     // TODO: calculate the total value of the collectionDefinition

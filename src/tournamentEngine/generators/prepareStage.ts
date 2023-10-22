@@ -26,6 +26,8 @@ export function prepareStage(params): ResultType & {
   seedsCount?: number;
   conflicts?: any[];
 } {
+  const stack = 'prepareStage';
+
   let { seedsCount } = params;
   const preparedStructureIds: string[] = params.preparedStructureIds || [];
   const {
@@ -89,7 +91,7 @@ export function prepareStage(params): ResultType & {
     ({ structureId }) => !preparedStructureIds.includes(structureId)
   );
   if (!structure)
-    return decorateResult({ result: { error: STRUCTURE_NOT_FOUND } });
+    return decorateResult({ result: { error: STRUCTURE_NOT_FOUND }, stack });
   const structureId = structure?.structureId;
 
   const seedBlockInfo = structure
@@ -241,7 +243,7 @@ export function prepareStage(params): ResultType & {
     positioningReport = result?.positioningReport;
 
     if (result.error) {
-      return decorateResult({ result, stack: 'prepareStage' });
+      return decorateResult({ result, stack });
     }
   }
 

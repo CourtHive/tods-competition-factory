@@ -145,8 +145,8 @@ export function directLoser(params) {
     if (result.error) return decorateResult({ result, stack });
   } else if (loserParticipantId && isFeedRound) {
     // if target.roundNumber > 1 then it is a feed round and should always take the lower drawPosition
-    const fedDrawPosition =
-      unfilledTargetMatchUpDrawPositions.sort(numericSort)[0];
+    unfilledTargetMatchUpDrawPositions.sort(numericSort);
+    const fedDrawPosition = unfilledTargetMatchUpDrawPositions[0];
     const result = assignDrawPosition({
       participantId: loserParticipantId,
       structureId: targetStructureId,

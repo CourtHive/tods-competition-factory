@@ -38,33 +38,27 @@ export function validateTieFormat(params: ValidateTieFormatArgs): ResultType {
   if (!params || !tieFormat || typeof tieFormat !== 'object') {
     errors.push('tieFormat must be an object');
     return decorateResult({
-      result: {
-        context: { tieFormat, errors },
-        error: INVALID_TIE_FORMAT,
-        stack,
-      },
+      result: { error: INVALID_TIE_FORMAT },
+      context: { tieFormat, errors },
+      stack,
     });
   }
 
   if (typeof tieFormat.winCriteria !== 'object') {
     errors.push('tieFormat.winCriteria must be an object');
     return decorateResult({
-      result: {
-        context: { tieFormat, errors },
-        error: INVALID_TIE_FORMAT,
-        stack,
-      },
+      result: { error: INVALID_TIE_FORMAT },
+      context: { tieFormat, errors },
+      stack,
     });
   }
 
   if (!Array.isArray(tieFormat.collectionDefinitions)) {
     errors.push(mustBeAnArray('tieFormat.collectionDefinitions'));
     return decorateResult({
-      result: {
-        context: { tieFormat, errors },
-        error: INVALID_TIE_FORMAT,
-        stack,
-      },
+      result: { error: INVALID_TIE_FORMAT },
+      context: { tieFormat, errors },
+      stack,
     });
   }
 
@@ -106,11 +100,9 @@ export function validateTieFormat(params: ValidateTieFormatArgs): ResultType {
       );
     }
     return decorateResult({
-      result: {
-        context: { tieFormat, errors, aggregateValueImperative },
-        error: INVALID_TIE_FORMAT,
-        stack,
-      },
+      context: { tieFormat, errors, aggregateValueImperative },
+      result: { error: INVALID_TIE_FORMAT },
+      stack,
     });
   }
 
@@ -126,11 +118,9 @@ export function validateTieFormat(params: ValidateTieFormatArgs): ResultType {
   const result = { valid, errors };
   if (!valid) {
     return decorateResult({
-      result: {
-        context: { tieFormat, errors },
-        error: INVALID_TIE_FORMAT,
-        stack,
-      },
+      result: { error: INVALID_TIE_FORMAT },
+      context: { tieFormat, errors },
+      stack,
     });
   }
   return result;

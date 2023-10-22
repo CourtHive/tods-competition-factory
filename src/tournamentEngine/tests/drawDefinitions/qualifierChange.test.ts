@@ -87,7 +87,7 @@ it('generates expected finishingPositions for qualifying structures', () => {
   };
   result = tournamentEngine[qualifierAssingmentAction.method](payload);
   expect(result.success).toEqual(true);
-  expect(result.context.removedParticipantId).toBeUndefined(); // there was no participant present in drawPosition
+  expect(result.removedParticipantId).toBeUndefined(); // there was no participant present in drawPosition
 
   // Find the match in the final round of qualifying which was won by qualifyingParticipant
   let qualifyingMatchUp = matchUps.find(

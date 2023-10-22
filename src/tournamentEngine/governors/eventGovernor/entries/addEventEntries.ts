@@ -77,8 +77,8 @@ export function addEventEntries(params) {
     (extension && !isValidExtension({ extension }))
   ) {
     return decorateResult({
-      result: { error: INVALID_VALUES },
       context: definedAttributes({ extension, extensions }),
+      result: { error: INVALID_VALUES },
       info: 'Invalid extension(s)',
       stack,
     });
@@ -239,8 +239,8 @@ export function addEventEntries(params) {
 
   if (invalidParticipantIds)
     return decorateResult({
-      result: { error: INVALID_PARTICIPANT_IDS },
       context: { misMatchedGender, gender: event.gender },
+      result: { error: INVALID_PARTICIPANT_IDS },
       stack,
     });
 

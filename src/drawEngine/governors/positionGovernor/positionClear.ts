@@ -325,7 +325,7 @@ function removeSubsequentRoundsParticipant({
     getPositionAssignments({
       drawDefinition,
       structureId,
-    }).positionAssignments || [];
+    }).positionAssignments ?? [];
 
   relevantMatchUps?.forEach((matchUp) =>
     removeDrawPosition({
@@ -369,7 +369,7 @@ function removeDrawPosition({
   const initialMatchUpStatus = targetMatchUp.matchUpStatus;
   const initialWinningSide = targetMatchUp.winningSide;
 
-  matchUpsMap = matchUpsMap || getMatchUpsMap({ drawDefinition });
+  matchUpsMap = matchUpsMap ?? getMatchUpsMap({ drawDefinition });
   const mappedMatchUps = matchUpsMap.mappedMatchUps;
   const matchUps = mappedMatchUps[structure.structureId].matchUps;
   const { initialRoundNumber } = getInitialRoundNumber({
@@ -382,7 +382,7 @@ function removeDrawPosition({
     initialRoundNumber &&
     targetMatchUp.roundNumber > initialRoundNumber
   ) {
-    const drawPositions: any[] = (targetMatchUp.drawPositions || []).map(
+    const drawPositions: any[] = (targetMatchUp.drawPositions ?? []).map(
       (currentDrawPosition) =>
         currentDrawPosition === drawPosition ? undefined : currentDrawPosition
     );
@@ -393,7 +393,7 @@ function removeDrawPosition({
     const inContextTargetMatchUp = inContextDrawMatchUps?.find(
       (matchUp) => matchUp.matchUpId === targetMatchUp.matchUpId
     );
-    const sides: any[] = inContextTargetMatchUp?.sides || [];
+    const sides: any[] = inContextTargetMatchUp?.sides ?? [];
     const drawPositionSideIndex = sides.reduce(
       (index, side, i) => (side.drawPosition === drawPosition ? i : index),
       undefined

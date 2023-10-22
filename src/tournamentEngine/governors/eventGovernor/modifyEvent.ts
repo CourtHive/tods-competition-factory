@@ -52,14 +52,14 @@ export function modifyEvent({
         const status: any = entryStatus;
         return [...STRUCTURE_SELECTED_STATUSES, ALTERNATE].includes(status);
       })
-      .map(({ participantId }) => participantId) || [];
+      .map(({ participantId }) => participantId) ?? [];
 
   const enteredParticipants = enteredParticipantIds
     ? getParticipants({
         participantFilters: { participantIds: enteredParticipantIds },
         withIndividualParticipants: true,
         tournamentRecord,
-      }).participants || []
+      }).participants ?? []
     : [];
 
   const genderAccumulator: string[] = [];
@@ -80,7 +80,7 @@ export function modifyEvent({
 
   const validGender =
     !enteredParticipantGenders.length ||
-    [MIXED, ANY].includes(eventUpdates.gender || '') ||
+    [MIXED, ANY].includes(eventUpdates.gender ?? '') ||
     (enteredParticipantGenders.length === 1 &&
       enteredParticipantGenders[0] === eventUpdates.gender);
 
@@ -98,7 +98,7 @@ export function modifyEvent({
       TEAM,
     ];
 
-  const validEventType = validEventTypes.includes(eventUpdates.eventType || '');
+  const validEventType = validEventTypes.includes(eventUpdates.eventType ?? '');
 
   if (eventUpdates.eventType && !validEventType)
     return decorateResult({
@@ -106,7 +106,7 @@ export function modifyEvent({
       result: { error: INVALID_VALUES },
     });
 
-  if (eventUpdates.eventType) event.eventType === eventUpdates.eventType;
+  if (eventUpdates.eventType) event.eventType = eventUpdates.eventType;
   if (eventUpdates.eventName) event.eventName = eventUpdates.eventName;
   if (eventUpdates.gender) event.gender = eventUpdates.gender;
 

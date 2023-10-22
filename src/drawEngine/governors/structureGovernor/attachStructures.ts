@@ -45,11 +45,11 @@ export function attachStructures({
   links = [],
   event,
 }: AttachStructuresArgs): ResultType & { addedStructureIds?: string[] } {
+  const stack = 'attachStructures';
+
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!Array.isArray(structures) || !Array.isArray(links))
-    return decorateResult({ result: { error: INVALID_VALUES } });
-
-  const stack = 'attachStructures';
+    return decorateResult({ result: { error: INVALID_VALUES }, stack });
 
   const linkHash = (link) =>
     [

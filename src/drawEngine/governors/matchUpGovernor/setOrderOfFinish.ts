@@ -34,10 +34,8 @@ export function setOrderOfFinish({
 
   if (!Array.isArray(finishingOrder))
     return decorateResult({
-      result: {
-        error: INVALID_VALUES,
-      },
       info: mustBeAnArray('finishingOrder'),
+      result: { error: INVALID_VALUES },
       stack,
     });
 
@@ -46,11 +44,11 @@ export function setOrderOfFinish({
     drawDefinition,
   });
 
-  const matchUpIds: string[] = completedMatchUps?.map(getMatchUpId) || [];
+  const matchUpIds: string[] = completedMatchUps?.map(getMatchUpId) ?? [];
   const targetMatchUpIds = finishingOrder.map(getMatchUpId);
 
   const { matchUpTypes, roundNumbers, structureIds, matchUpTieIds } = (
-    completedMatchUps || []
+    completedMatchUps ?? []
   )
     .filter(({ matchUpId }) => targetMatchUpIds.includes(matchUpId))
     .reduce(
@@ -82,10 +80,8 @@ export function setOrderOfFinish({
     structureIds.length > 1
   ) {
     return decorateResult({
-      result: {
-        error: INVALID_VALUES,
-      },
       info: 'matchUpType, structureId and roundNumber must be equivalent',
+      result: { error: INVALID_VALUES },
       stack,
     });
   }
@@ -131,7 +127,7 @@ export function setOrderOfFinish({
   );
 
   // throw an error if an existing matchUp has an invalid orderOfFinish value
-  for (const matchUp of otherCohortMatchUps || []) {
+  for (const matchUp of otherCohortMatchUps ?? []) {
     const { orderOfFinish } = matchUp || {};
     if (orderOfFinish) {
       if (!isConvertableInteger(orderOfFinish))
@@ -150,10 +146,8 @@ export function setOrderOfFinish({
     Math.max(...orderOfFinishValues) > orderOfFinishValues.length
   ) {
     return decorateResult({
-      result: {
-        error: INVALID_VALUES,
-      },
       info: 'Values not unique or greater than expected number of values',
+      result: { error: INVALID_VALUES },
       stack,
     });
   }

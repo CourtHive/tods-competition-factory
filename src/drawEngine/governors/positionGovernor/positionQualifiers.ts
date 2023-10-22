@@ -5,6 +5,7 @@ import { decorateResult } from '../../../global/functions/decorateResult';
 import { getQualifiersCount } from '../../getters/getQualifiersCount';
 import { generateRange, randomPop } from '../../../utilities';
 import { findStructure } from '../../getters/findStructure';
+import { ensureInt } from '../../../utilities/ensureInt';
 
 import { CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -12,12 +13,9 @@ import {
   INVALID_STAGE,
   NO_DRAW_POSITIONS_AVAILABLE_FOR_QUALIFIERS,
 } from '../../../constants/errorConditionConstants';
-import { ensureInt } from '../../../utilities/ensureInt';
 
 export function positionQualifiers(params) {
-  let { structure, structureId } = params; // participants is being passed in
-  if (!structure) ({ structure } = findStructure(params));
-  if (!structureId) ({ structureId } = structure);
+  const structure = params.structure ?? findStructure(params).structure;
 
   const stack = 'positionQualifiers';
   const qualifierDrawPositions: number[] = [];

@@ -240,9 +240,9 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
 
   if (score && matchUp.matchUpType !== TEAM && !disableScoreValidation) {
     const matchUpFormat =
-      matchUp.matchUpFormat ||
-      structure?.matchUpFormat ||
-      drawDefinition?.matchUpFormat ||
+      matchUp.matchUpFormat ??
+      structure?.matchUpFormat ??
+      drawDefinition?.matchUpFormat ??
       event?.matchUpFormat;
 
     const result = validateScore({
@@ -280,9 +280,9 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
     !bothSideParticipants
   ) {
     return decorateResult({
-      result: { error: INVALID_MATCHUP_STATUS },
       info: 'present in participantRequiredMatchUpStatuses',
       context: { matchUpStatus, bothSideParticipants },
+      result: { error: INVALID_MATCHUP_STATUS },
     });
   }
 
@@ -468,8 +468,8 @@ function winningSideWithDownstreamDependencies(params) {
     return applyMatchUpValues(params);
   } else {
     return decorateResult({
-      result: { error: CANNOT_CHANGE_WINNING_SIDE },
       stack: 'winningSideWithDownstreamDependencies',
+      result: { error: CANNOT_CHANGE_WINNING_SIDE },
       context: { winningSide, matchUp },
     });
   }

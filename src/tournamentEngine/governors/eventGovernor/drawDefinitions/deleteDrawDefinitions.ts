@@ -81,8 +81,8 @@ export function deleteDrawDefinitions({
 
   if (!event?.drawDefinitions)
     return decorateResult({
-      result: { ...SUCCESS },
       info: 'event has no drawDefinition',
+      result: { ...SUCCESS },
       stack,
     });
 
@@ -94,8 +94,8 @@ export function deleteDrawDefinitions({
 
   if (!drawIds.length)
     return decorateResult({
-      result: { ...SUCCESS },
       info: 'nothing to do; no matching drawIds in event.',
+      result: { ...SUCCESS },
       stack,
     });
 

@@ -116,7 +116,7 @@ export function generateAndPopulatePlayoffStructures(
   });
 
   if (!structure)
-    return decorateResult({ result: { error: STRUCTURE_NOT_FOUND } });
+    return decorateResult({ result: { error: STRUCTURE_NOT_FOUND }, stack });
 
   if (structure.structureType === CONTAINER || structure.structures) {
     return generateAndPopulateRRplayoffStructures({

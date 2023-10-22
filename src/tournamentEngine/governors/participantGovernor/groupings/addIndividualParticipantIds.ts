@@ -63,10 +63,8 @@ export function addIndividualParticipantIds({
     ![TEAM, GROUP].includes(groupingParticipant.participantType)
   ) {
     return decorateResult({
-      result: {
-        error: INVALID_PARTICIPANT_TYPE,
-      },
       context: { participantType: groupingParticipant.participantType },
+      result: { error: INVALID_PARTICIPANT_TYPE },
       stack,
     });
   }
