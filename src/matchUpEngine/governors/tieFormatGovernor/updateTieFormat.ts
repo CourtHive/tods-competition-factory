@@ -94,7 +94,6 @@ export function updateTieFormat({
   event,
   uuids,
 }: UpdateTieFormatArgs): UpdateTieFormatResult {
-  console.log('booo', { matchUp });
   const stack = 'updateTieFormat';
   const tournamentId = tournamentRecord?.tournamentId;
   let modifiedStructuresCount = 0;
