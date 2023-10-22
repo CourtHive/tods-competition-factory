@@ -84,6 +84,7 @@ export function addCollectionDefinition({
   targetMatchUps?: any;
   addedMatchUps?: any;
 } {
+  const stack = 'addCollectionDefinition';
   const appliedPolicies =
     getAppliedPolicies({
       tournamentRecord,
@@ -103,10 +104,11 @@ export function addCollectionDefinition({
     checkGender,
     event,
   });
-  if (!valid) return { error: INVALID_VALUES, errors };
-  const stack = 'addCollectionDefinition';
+  if (!valid) {
+    return decorateResult({ result: { error: INVALID_VALUES, errors }, stack });
+  }
 
-  let result = !matchUp
+  let result = !matchUp?.tieFormat
     ? getTieFormat({
         drawDefinition,
         structureId,
@@ -115,15 +117,19 @@ export function addCollectionDefinition({
         event,
       })
     : undefined;
-  if (result?.error) return { error: result.error };
+
+  if (result?.error)
+    return decorateResult({ result: { error: result.error }, stack });
 
   const structure = result?.structure;
   matchUp = matchUp ?? result?.matchUp;
-  const existingTieFormat = result?.tieFormat;
+  const existingTieFormat = matchUp?.tieFormat ?? result?.tieFormat;
   const tieFormat = copyTieFormat(existingTieFormat);
 
   result = validateTieFormat({ tieFormat });
-  if (result?.error) return { error: result.error };
+  if (result?.error) {
+    return decorateResult({ result: { error: result.error }, stack });
+  }
 
   if (!collectionDefinition.collectionId) {
     collectionDefinition.collectionId = UUID();
@@ -171,7 +177,9 @@ export function addCollectionDefinition({
 
   const prunedTieFormat = definedAttributes(tieFormat);
   result = validateTieFormat({ tieFormat: prunedTieFormat });
-  if (result?.error) return { error: result.error };
+  if (result?.error) {
+    return decorateResult({ result: { error: result.error }, stack });
+  }
 
   if (eventId && event) {
     event.tieFormat = prunedTieFormat;
