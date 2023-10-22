@@ -36,8 +36,7 @@ export function addExtension(params?: AddExtensionArgs): {
 
   if (!params.element.extensions) params.element.extensions = [];
 
-  const creationTime =
-    params.creationTime !== undefined ? params.creationTime : true;
+  const creationTime = params?.creationTime ?? true;
 
   if (creationTime) {
     const createdAt = new Date().toISOString();

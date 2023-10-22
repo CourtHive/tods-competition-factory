@@ -8,15 +8,15 @@ import {
   tournamentEngine,
 } from '../../..';
 
-import {
-  COLLEGE_D3,
-  TEAM_DOUBLES_3_AGGREGATION,
-} from '../../../constants/tieFormatConstants';
 import { INVALID_TIE_FORMAT } from '../../../constants/errorConditionConstants';
 import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { tieFormats } from '../../../fixtures/scoring/tieFormats';
 import { TEAM } from '../../../constants/eventConstants';
+import {
+  COLLEGE_D3,
+  TEAM_DOUBLES_3_AGGREGATION,
+} from '../../../constants/tieFormatConstants';
 
 const matchUpFormat = FORMAT_STANDARD;
 
@@ -54,7 +54,7 @@ const errorConditions = [
 it.each(errorConditions)('can validate tieFormats', (errorCondition: any) => {
   const result: any = validateTieFormat(errorCondition);
   expect(result.error).toEqual(INVALID_TIE_FORMAT);
-  expect(result?.context?.errors?.length).toBeGreaterThanOrEqual(1);
+  expect(result?.errors?.length).toBeGreaterThanOrEqual(1);
 });
 
 // prettier-ignore

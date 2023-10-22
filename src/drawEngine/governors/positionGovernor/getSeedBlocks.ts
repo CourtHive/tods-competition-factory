@@ -164,8 +164,8 @@ export function getSeedGroups({
       return {
         seedGroups: undefined,
         ...decorateResult({
-          result: { error: INVALID_VALUES },
           context: { roundRobinGroupsCount },
+          result: { error: INVALID_VALUES },
           stack,
         }),
       };
@@ -221,8 +221,8 @@ export function getSeedingThresholds({
 
     if (invalid) {
       return decorateResult({
-        result: { error: INVALID_VALUES },
         context: { roundRobinGroupsCount },
+        result: { error: INVALID_VALUES },
       });
     }
   }

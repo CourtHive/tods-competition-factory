@@ -50,7 +50,7 @@ export function findCourt({
     const linkedTournamentIds =
       getLinkedTournamentIds({
         tournamentRecords,
-      }).linkedTournamentIds || [];
+      }).linkedTournamentIds ?? [];
 
     const relevantIds = linkedTournamentIds[tournamentRecord.tournamentId];
 

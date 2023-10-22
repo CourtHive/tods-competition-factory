@@ -129,13 +129,13 @@ export function addDrawDefinition(
     return decorateResult({
       result: {
         error: INVALID_DRAW_DEFINITION,
-        context: {
-          drawEntriesPresentInFlight,
-          matchingEventEntries,
-          relevantFlight,
-        },
-        info: 'Draw entries are not present in flight or do not match entryStatuses',
       },
+      context: {
+        drawEntriesPresentInFlight,
+        matchingEventEntries,
+        relevantFlight,
+      },
+      info: 'Draw entries are not present in flight or do not match entryStatuses',
     });
   }
 
@@ -165,9 +165,9 @@ export function addDrawDefinition(
   if (eventEntries && !matchingEventEntries)
     return decorateResult({
       result: {
-        error: INVALID_DRAW_DEFINITION,
-        context: { matchingEventEntries, eventEntries },
         info: 'Draw entries do not match event entryStatuses',
+        context: { matchingEventEntries, eventEntries },
+        error: INVALID_DRAW_DEFINITION,
       },
     });
 

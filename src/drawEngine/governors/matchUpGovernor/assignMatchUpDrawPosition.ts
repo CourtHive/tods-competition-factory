@@ -279,9 +279,7 @@ export function assignMatchUpDrawPosition({
     return { ...SUCCESS };
   } else {
     return decorateResult({
-      result: {
-        error: DRAW_POSITION_ASSIGNED,
-      },
+      result: { error: DRAW_POSITION_ASSIGNED },
       context: { drawPosition },
       stack,
     });

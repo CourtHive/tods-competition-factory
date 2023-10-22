@@ -43,7 +43,7 @@ export function modifyTieFormat({
   uuids,
   event,
 }: ModifyTieFormatArgs) {
-  const stack = 'updateTieFormat';
+  const stack = 'modifyTieFormat';
 
   if (!validateTieFormat({ tieFormat: modifiedTieFormat }).valid) {
     return decorateResult({
@@ -73,10 +73,15 @@ export function modifyTieFormat({
     return decorateResult({
       context: { invalid: comparison.invalid },
       result: { error: INVALID_TIE_FORMAT },
+      stack,
     });
   }
   if (!comparison?.different) {
-    return decorateResult({ result: { ...SUCCESS }, info: 'Nothing to do' });
+    return decorateResult({
+      result: { ...SUCCESS },
+      info: 'Nothing to do',
+      stack,
+    });
   }
 
   const existingCollectionIds = tieFormat.collectionDefinitions.map(

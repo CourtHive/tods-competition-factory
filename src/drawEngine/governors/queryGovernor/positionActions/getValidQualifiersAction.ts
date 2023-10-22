@@ -196,7 +196,7 @@ export function getValidQualifiersAction({
   return { validAssignmentActions, sourceStructureIds };
 }
 
-/*
+/**
   if (sourceStructureIds.length > 1)
     return decorateResult({
       stack: 'getValidQualifiersSaction',

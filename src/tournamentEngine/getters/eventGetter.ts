@@ -1,9 +1,9 @@
+import { definedAttributes, makeDeepCopy } from '../../utilities';
+import { getFlightProfile } from './getFlightProfile';
 import {
   ResultType,
   decorateResult,
 } from '../../global/functions/decorateResult';
-import { definedAttributes, makeDeepCopy } from '../../utilities';
-import { getFlightProfile } from './getFlightProfile';
 
 import { SUCCESS } from '../../constants/resultConstants';
 import {
@@ -62,25 +62,21 @@ export function findEvent({
   eventId,
   drawId,
 }: FindEventArgs): ResultType & {
-  event: Event | undefined;
-  drawDefinition: DrawDefinition | undefined;
+  event?: Event;
+  drawDefinition?: DrawDefinition;
 } {
   const stack = 'findEvent';
   if (!tournamentRecord)
-    return {
-      event: undefined,
-      drawDefinition: undefined,
-      ...decorateResult({
-        result: { error: MISSING_TOURNAMENT_RECORD },
-        stack,
-      }),
-    };
-  const events = tournamentRecord?.events || [];
+    return decorateResult({
+      result: { error: MISSING_TOURNAMENT_RECORD },
+      stack,
+    });
+  const events = tournamentRecord?.events ?? [];
 
   if (drawId) {
     let drawDefinition;
     const event = events.find((event) => {
-      const drawDefinitions = event?.drawDefinitions || [];
+      const drawDefinitions = event?.drawDefinitions ?? [];
       const targetDrawDefinition = drawDefinitions.find(
         (drawDefinition) => drawDefinition.drawId === drawId
       );

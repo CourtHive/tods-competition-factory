@@ -200,7 +200,7 @@ export function assignTieMatchUpParticipantId(params: any) {
   );
 
   const lineUp =
-    dualMatchUpSide?.lineUp ||
+    dualMatchUpSide?.lineUp ??
     getTeamLineUp({
       participantId: teamParticipantId,
       drawDefinition,

@@ -116,7 +116,9 @@ export function positionParticipantAction(params) {
     addPositionActionTelemetry({ drawDefinition, positionAction });
 
     return decorateResult({
-      result: { ...SUCCESS, context: { removedParticipantId }, stack },
+      context: { removedParticipantId },
+      result: { ...SUCCESS },
+      stack,
     });
   }
 }

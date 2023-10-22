@@ -94,6 +94,7 @@ export function updateTieFormat({
   event,
   uuids,
 }: UpdateTieFormatArgs): UpdateTieFormatResult {
+  console.log('booo', { matchUp });
   const stack = 'updateTieFormat';
   const tournamentId = tournamentRecord?.tournamentId;
   let modifiedStructuresCount = 0;
@@ -155,6 +156,7 @@ export function updateTieFormat({
         return decorateResult({
           result: { error: CANNOT_MODIFY_TIEFORMAT },
           info: 'matchUp is IN_PROGRESS or COMPLETE',
+          stack,
         });
       }
     } else if (changesArePossible) {

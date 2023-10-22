@@ -97,10 +97,8 @@ export function addParticipant({
       !pairOverride
     ) {
       return decorateResult({
-        result: {
-          error: INVALID_PARTICIPANT_IDS,
-          info: 'PAIR must be 2 individualParticipantIds',
-        },
+        info: 'PAIR must be 2 individualParticipantIds',
+        result: { error: INVALID_PARTICIPANT_IDS },
         stack,
       });
     } else {
