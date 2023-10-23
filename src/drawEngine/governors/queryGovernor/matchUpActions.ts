@@ -513,9 +513,8 @@ export function matchUpActions({
               gender === ANY ||
               person.sex === gender ||
               // case where one gendered member has been assigned
-              (gender === MIXED &&
-                assignedGender &&
-                person.sex !== assignedGender))
+              (gender === MIXED && !assignedGender) ||
+              (assignedGender && person.sex !== assignedGender))
         )
     );
 
