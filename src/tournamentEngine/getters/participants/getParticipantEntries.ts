@@ -307,6 +307,28 @@ export function getParticipantEntries(params) {
             if (seedAssignments && qualifyingSeeding)
               seedAssignments[QUALIFYING] = mainSeeding;
 
+            const seedValue = mainSeeding || qualifyingSeeding;
+            if (seedValue) {
+              if (!participantMap[id].participant.seedings[eventType])
+                participantMap[id].participant.seedings[eventType] = [];
+
+              participantMap[id].participant.seedings[eventType].push({
+                scaleValue: seedValue,
+                scaleName: drawId,
+              });
+
+              if (seedAssignments) {
+                if (!participantMap[id].events[eventId].seedAssignments)
+                  participantMap[id].events[eventId].seedAssignments = {};
+
+                Object.keys(seedAssignments).forEach(
+                  (stage) =>
+                    (participantMap[id].events[eventId].seedAssignments[stage] =
+                      seedAssignments[stage])
+                );
+              }
+            }
+
             if (
               (withEvents || withRankingProfile) &&
               participantMap[id] &&
@@ -317,8 +339,7 @@ export function getParticipantEntries(params) {
 
               if (includeSeeding) {
                 // overwrite any event seeding with actual draw seeding (which may differ)
-                participantMap[id].events[eventId].seedValue =
-                  mainSeeding || qualifyingSeeding;
+                participantMap[id].events[eventId].seedValue = seedValue;
               } else if (participantMap[id].events[eventId].seedValue) {
                 // if seeding for specific drawIds is NOT published, remove from event
                 participantMap[id].events[eventId].seedValue = undefined;
