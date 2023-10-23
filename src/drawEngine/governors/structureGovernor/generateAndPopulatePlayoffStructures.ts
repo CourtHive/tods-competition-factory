@@ -346,18 +346,21 @@ export function generateAndPopulatePlayoffStructures(
         loserMatchUp,
       },
     } = targetData;
-    const targetStructureId = loserTargetLink.target.structureId;
-    const targetDrawPosition =
-      loserMatchUp.drawPositions[loserMatchUpDrawPositionIndex];
 
-    const result = assignDrawPositionBye({
-      drawPosition: targetDrawPosition,
-      structureId: targetStructureId,
-      tournamentRecord,
-      drawDefinition,
-      event,
-    });
-    if (result.error) console.log(result.error);
+    if (loserTargetLink && loserMatchUp) {
+      const targetStructureId = loserTargetLink.target.structureId;
+      const targetDrawPosition =
+        loserMatchUp.drawPositions[loserMatchUpDrawPositionIndex];
+
+      const result = assignDrawPositionBye({
+        drawPosition: targetDrawPosition,
+        structureId: targetStructureId,
+        tournamentRecord,
+        drawDefinition,
+        event,
+      });
+      if (result.error) console.log(result.error);
+    }
   });
 
   // the matchUps in the source structure must have goesTo details added
