@@ -6,28 +6,12 @@
       "collectionName": "Men's Singles",
       "matchUpFormat": "SET1-S:T60",
       "gender": "MALE",
-      "matchUpCount": 3
+      "matchUpCount": 1
     },
     {
       "scoreValue": 1,
       "matchUpType": "SINGLES",
       "collectionName": "Women's Singles",
-      "matchUpFormat": "SET1-S:T60",
-      "gender": "FEMALE",
-      "matchUpCount": 3
-    },
-    {
-      "scoreValue": 1,
-      "matchUpType": "DOUBLES",
-      "collectionName": "Men's Doubles",
-      "matchUpFormat": "SET1-S:T60",
-      "gender": "MALE",
-      "matchUpCount": 1
-    },
-    {
-      "matchUpValue": 1,
-      "matchUpType": "DOUBLES",
-      "collectionName": "Women's Doubles",
       "matchUpFormat": "SET1-S:T60",
       "gender": "FEMALE",
       "matchUpCount": 1
@@ -41,7 +25,7 @@
       "matchUpCount": 1
     }
   ],
-  "tieFormatName": "Time Tennis",
+  "tieFormatName": "Time Tennis Pro Circuit",
   "winCriteria": {
     "aggregateValue": true
   }
