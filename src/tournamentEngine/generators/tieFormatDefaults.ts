@@ -5,14 +5,15 @@ import TEAM_AGGREGATION_TIE_FORMAT from '../../fixtures/scoring/tieFormats/TEAM_
 import USTA_SOUTHERN_LEVEL_5_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_SOUTHERN_LEVEL_5.json';
 import USTA_SECTION_BATTLE_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_SECTION_BATTLE.json';
 import USTA_INTERSECTIONAL_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_INTERSECTIONAL.json';
+import TIME_TENNIS_PRO_TIE_FORMAT from '../../fixtures/scoring/tieFormats/TIME_TENNIS_PRO_CIRCUIT.json';
 import DOMINANT_DUO_MIXED_TIE_FORMAT from '../../fixtures/scoring/tieFormats/DOMINANT_DUO_MIXED.json';
+import TIME_TENNIS_DUAL_TIE_FORMAT from '../../fixtures/scoring/tieFormats/TIME_TENNIS_DUAL.json';
 import USTA_BREWER_CUP_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_BREWER_CUP.json';
 import USTA_OZAKI_CUP_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_OZAKI_CUP.json';
 import DOMINANT_DUO_TIE_FORMAT from '../../fixtures/scoring/tieFormats/DOMINANT_DUO.json';
 import USTA_COLLEGE_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_COLLEGE.json';
 import USTA_LEVEL_1_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_LEVEL_1.json';
 import USTA_WTT_ITT_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_WTT_ITT.json';
-import TIME_TENNIS_TIE_FORMAT from '../../fixtures/scoring/tieFormats/TIME_TENNIS.json';
 import USTA_ZONAL_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_ZONAL.json';
 import LAVER_CUP_TIE_FORMAT from '../../fixtures/scoring/tieFormats/LAVER_CUP.json';
 import USTA_TOC_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_TOC.json';
@@ -39,7 +40,8 @@ import {
   USTA_SECTION_BATTLE,
   USTA_SOUTHERN_LEVEL_5,
   USTA_ZONAL,
-  TIME_TENNIS,
+  TIME_TENNIS_DUAL,
+  TIME_TENNIS_PRO_CIRCUIT,
 } from '../../constants/tieFormatConstants';
 
 import { Event, TypeEnum } from '../../types/tournamentFromSchema';
@@ -102,7 +104,8 @@ const namedFormats = {
   [DOMINANT_DUO]: DOMINANT_DUO_TIE_FORMAT,
   [DOMINANT_DUO_MIXED]: DOMINANT_DUO_MIXED_TIE_FORMAT,
   [TEAM_DOUBLES_3_AGGREGATION]: TEAM_AGGREGATION_TIE_FORMAT,
-  [TIME_TENNIS]: TIME_TENNIS_TIE_FORMAT,
+  [TIME_TENNIS_DUAL]: TIME_TENNIS_DUAL_TIE_FORMAT,
+  [TIME_TENNIS_PRO_CIRCUIT]: TIME_TENNIS_PRO_TIE_FORMAT,
   [USTA_BREWER_CUP]: USTA_BREWER_CUP_TIE_FORMAT,
   [USTA_OZAKI_CUP]: USTA_OZAKI_CUP_TIE_FORMAT,
   [USTA_COLLEGE]: USTA_COLLEGE_TIE_FORMAT,
@@ -133,7 +136,7 @@ export const tieFormatDefaults = (params?: TieFormatDefaultArgs) => {
   const uuids = Array.isArray(params?.uuids) ? params?.uuids : [];
 
   let tieFormat;
-  const { category, gender } = params?.event || {};
+  const { category, gender } = params?.event ?? {};
   const template = makeDeepCopy(namedFormats[namedFormat], false, true);
 
   if (!template.hydrate) {
@@ -148,14 +151,14 @@ export const tieFormatDefaults = (params?: TieFormatDefaultArgs) => {
       },
       collectionDefinitions: [
         {
-          collectionId: uuids?.pop() || UUID(),
+          collectionId: uuids?.pop() ?? UUID(),
           matchUpFormat: FORMAT_ATP_DOUBLES,
           matchUpType: TypeEnum.Doubles,
           collectionName: 'Doubles',
           ...template.doubles,
         },
         {
-          collectionId: uuids?.pop() || UUID(),
+          collectionId: uuids?.pop() ?? UUID(),
           matchUpType: TypeEnum.Singles,
           matchUpFormat: FORMAT_STANDARD,
           collectionName: 'Singles',
