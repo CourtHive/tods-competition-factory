@@ -189,9 +189,11 @@ export function getParticipantEntries(params) {
         assignments
           ? Object.assign(
               {},
-              ...assignments.map((assignment) => ({
-                [assignment.participantId]: assignment,
-              }))
+              ...assignments.map(
+                ({ participantId, seedValue, seedNumber }) => ({
+                  [participantId]: { seedValue, seedNumber },
+                })
+              )
             )
           : undefined;
 
@@ -297,25 +299,39 @@ export function getParticipantEntries(params) {
               ? mainSeedingMap?.[participantId]?.seedValue ||
                 mainSeedingMap?.[participantId]?.seedNumber
               : undefined;
+            const mainSeedingAssignments = mainSeeding
+              ? mainSeedingMap?.[participantId]
+              : undefined;
             const qualifyingSeeding = includeSeeding
               ? qualifyingSeedingMap?.[participantId]?.seedValue ||
                 qualifyingSeedingMap?.[participantId]?.seedNumber
               : undefined;
+            const qualifyingSeedingAssignments = qualifyingSeeding
+              ? qualifyingSeedingMap?.[participantId]
+              : undefined;
 
             if (seedAssignments && mainSeeding)
-              seedAssignments[MAIN] = mainSeeding;
+              seedAssignments[MAIN] = mainSeedingAssignments;
             if (seedAssignments && qualifyingSeeding)
-              seedAssignments[QUALIFYING] = mainSeeding;
+              seedAssignments[QUALIFYING] = qualifyingSeedingAssignments;
 
             const seedValue = mainSeeding || qualifyingSeeding;
             if (seedValue) {
               if (!participantMap[id].participant.seedings[eventType])
                 participantMap[id].participant.seedings[eventType] = [];
 
-              participantMap[id].participant.seedings[eventType].push({
-                scaleValue: seedValue,
-                scaleName: drawId,
-              });
+              if (mainSeedingAssignments) {
+                participantMap[id].participant.seedings[eventType].push({
+                  ...mainSeedingAssignments,
+                  scaleName: drawId,
+                });
+              }
+              if (qualifyingSeedingAssignments) {
+                participantMap[id].participant.seedings[eventType].push({
+                  ...qualifyingSeedingAssignments,
+                  scaleName: drawId,
+                });
+              }
 
               if (seedAssignments) {
                 if (!participantMap[id].events[eventId].seedAssignments)
