@@ -114,7 +114,7 @@ export function processSides(params) {
         }
       }
 
-      if (withOpponents) {
+      if (withOpponents && opponentParticipantId) {
         participantMap[participantId].opponents[opponentParticipantId] = {
           participantId: opponentParticipantId,
           matchUpId,
