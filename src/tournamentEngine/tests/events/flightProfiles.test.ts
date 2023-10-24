@@ -20,10 +20,10 @@ it('can create and return flighProfiles', () => {
   let { flightProfile } = tournamentEngine.getFlightProfile({ eventId });
   expect(flightProfile).toBeUndefined();
 
-  let { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+  let { participants } = tournamentEngine.getParticipants({
     participantFilters: { participantTypes: [INDIVIDUAL] },
   });
-  const participantIds = tournamentParticipants.map((p) => p.participantId);
+  const participantIds = participants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result.success).toEqual(true);
 
@@ -72,14 +72,16 @@ it('can create and return flighProfiles', () => {
     'Flight 4',
   ]);
   expect(flightProfile.flights.every(({ drawId }) => drawId));
-  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+  ({ participants } = tournamentEngine.getParticipants({
     convertExtensions: true,
     withStatistics: true,
     withOpponents: true,
     withMatchUps: true,
+    withEvents: true,
+    withDraws: true,
   }));
 
-  expect(tournamentParticipants[0].events[0].drawIds.length).toBeGreaterThan(0);
+  expect(participants[0].draws.length).toBeGreaterThan(0);
 
   expect(flightProfile.flights.length).toEqual(4);
   const drawIds = flightProfile.flights.map(({ drawId }) => drawId);
@@ -112,12 +114,10 @@ it('can create and return flighProfiles with drawDefinitions', () => {
   let { flightProfile } = tournamentEngine.getFlightProfile({ eventId });
   expect(flightProfile).toBeUndefined();
 
-  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
-    {
-      participantFilters: { participantTypes: [INDIVIDUAL] },
-    }
-  );
-  const participantIds = tournamentParticipants.map((p) => p.participantId);
+  const { participants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [INDIVIDUAL] },
+  });
+  const participantIds = participants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result.success).toEqual(true);
 

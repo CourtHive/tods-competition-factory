@@ -25,12 +25,10 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
   const { eventId } = eventResult;
   expect(result.success).toEqual(true);
 
-  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
-    {
-      participantFilters: { participantTypes: [INDIVIDUAL] },
-    }
-  );
-  const participantIds = tournamentParticipants.map((p) => p.participantId);
+  const { participants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [INDIVIDUAL] },
+  });
+  const participantIds = participants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result.success).toEqual(true);
 
@@ -184,11 +182,10 @@ it('will randomly sort unranked participants when creating flights', () => {
   const scaledParticipants = participants.filter((p) => p.rankings?.SINGLES);
   expect(scaledParticipants.length).toEqual(scaledParticipantsCount);
 
-  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
-    {
+  const { participants: tournamentParticipants } =
+    tournamentEngine.getParticipants({
       participantFilters: { participantTypes: [INDIVIDUAL] },
-    }
-  );
+    });
   const participantIds = tournamentParticipants.map((p) => p.participantId);
   const result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result.success).toEqual(true);

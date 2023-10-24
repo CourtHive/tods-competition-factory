@@ -7,8 +7,8 @@ it('can modify participant names', () => {
 
   tournamentEngine.setState(tournamentRecord);
   let {
-    tournamentParticipants: [participant],
-  } = tournamentEngine.getTournamentParticipants();
+    participants: [participant],
+  } = tournamentEngine.getParticipants();
 
   const { participantId } = participant;
   let result = tournamentEngine.modifyParticipantName({ participantId });
@@ -22,8 +22,8 @@ it('can modify participant names', () => {
   expect(result.success).toEqual(true);
 
   ({
-    tournamentParticipants: [participant],
-  } = tournamentEngine.getTournamentParticipants());
+    participants: [participant],
+  } = tournamentEngine.getParticipants());
 
   expect(participant.participantName).toEqual(participantName);
 });

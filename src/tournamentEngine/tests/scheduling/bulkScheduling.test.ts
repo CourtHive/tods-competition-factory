@@ -202,11 +202,13 @@ test('recognizes scheduling conflicts', () => {
       scheduleAnalysis: true,
     });
 
-  const { tournamentParticipants, participantIdsWithConflicts: teConflicts } =
-    tournamentEngine.getTournamentParticipants({
-      scheduleAnalysis: true,
-      withMatchUps: true,
-    });
+  const {
+    participants: tournamentParticipants,
+    participantIdsWithConflicts: teConflicts,
+  } = tournamentEngine.getParticipants({
+    scheduleAnalysis: true,
+    withMatchUps: true,
+  });
 
   expect(ceConflicts.length).toEqual(16);
   expect(teConflicts.length).toEqual(16);
@@ -237,10 +239,9 @@ test('recognizes scheduling conflicts', () => {
     ({ participantId }) => teConflicts.includes(participantId)
   );
 
-  expect(
-    typeof participantWithConflict.potentialMatchUps[0].schedule
-      .scheduleConflict
-  ).toEqual('string');
+  const matchUpId = participantWithConflict.potentialMatchUps[0].matchUpId;
+  const scheduleConflict = mappedMatchUps[matchUpId].schedule.scheduleConflict;
+  expect(typeof scheduleConflict).toEqual('string');
 
   const targetParticipantId = participantWithConflict.participantId;
   expect(

@@ -15,25 +15,18 @@ test('recognizes scheduling conflicts', () => {
   const venueProfiles = [{ courtsCount: 6 }];
   const eventProfiles = [
     {
+      drawProfiles: [{ idPrefix: 'd1', drawSize: 16 }],
       eventType: SINGLES,
-      drawProfiles: [
-        {
-          drawSize: 16,
-        },
-      ],
     },
     {
+      drawProfiles: [{ idPrefix: 'd2', drawSize: 16 }],
       eventType: DOUBLES,
-      drawProfiles: [
-        {
-          drawSize: 16,
-        },
-      ],
     },
   ];
   const startDate = '2022-01-01';
   const endDate = '2022-01-07';
   const { eventIds, tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile: { idPrefix: 'xyz' },
     venueProfiles,
     eventProfiles,
     startDate,
@@ -89,24 +82,23 @@ test('recognizes scheduling conflicts', () => {
     ).toEqual(false);
   });
 
-  const tp = tournamentEngine.getTournamentParticipants({
+  const pp = tournamentEngine.getParticipants({
     participantFilters: { participantTypes: [INDIVIDUAL] },
     scheduleAnalysis: true,
     withStatistics: true,
     withMatchUps: true,
   });
 
-  expect(tp.participantIdsWithConflicts.length).toEqual(16);
+  expect(pp.participantIdsWithConflicts.length).toEqual(16);
 
-  const participantWithConflict = tp.tournamentParticipants.find(
-    ({ participantId }) =>
-      tp.participantIdsWithConflicts.includes(participantId)
+  const ppWithConflict = pp.participants.find(({ participantId }) =>
+    pp.participantIdsWithConflicts.includes(participantId)
   );
-
-  expect(
-    typeof participantWithConflict.potentialMatchUps[0].schedule
-      .scheduleConflict
-  ).toEqual('string');
+  const firstPotential =
+    pp.mappedMatchUps[ppWithConflict.potentialMatchUps[0].matchUpId];
+  expect(firstPotential.schedule.scheduleConflict.startsWith('d1-1')).toEqual(
+    true
+  );
 
   const { competitionParticipants, participantIdsWithConflicts } =
     competitionEngine.getCompetitionParticipants({
