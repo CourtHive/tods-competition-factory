@@ -1,11 +1,14 @@
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 import { getPositionAssignments } from '../../getters/positionsGetter';
+import tournamentEngine from '../../../tournamentEngine/sync';
 import { intersection } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import { it, expect } from 'vitest';
 
+import { SINGLES_EVENT } from '../../../constants/eventConstants';
 import {
+  MAIN,
   ROUND_ROBIN,
   WATERFALL,
 } from '../../../constants/drawDefinitionConstants';
@@ -100,6 +103,39 @@ it.each(scenarios)('can generate and verify', (scenario) => {
       { ...drawProfile, enforcePolicyLimits: false, drawType: ROUND_ROBIN },
     ],
   });
+
+  const {
+    tournamentRecord,
+    eventIds: [eventId],
+    drawIds: [drawId],
+  } = result;
+
+  const p = tournamentEngine.setState(tournamentRecord).getParticipants({
+    withScaleValues: true,
+    withSeeding: true,
+    withEvents: true,
+    withDraws: true,
+  });
+  const participantsWithSeedings = p.participants.filter(
+    (participant) => participant.seedings?.[SINGLES_EVENT]
+  );
+  expect(participantsWithSeedings.length).toEqual(
+    scenario.drawProfile.seedsCount
+  );
+
+  for (const participant of participantsWithSeedings) {
+    const { participantId } = participant;
+    expect(participant.seedings[SINGLES_EVENT].length).toBeDefined();
+    expect(
+      p.participantMap[participantId].events[eventId].seedAssignments[MAIN]
+        .seedValue
+    ).toBeDefined();
+    expect(
+      p.participantMap[participantId].draws[drawId].seedAssignments[MAIN]
+        .seedValue
+    ).toBeDefined();
+  }
+
   const structure =
     result.tournamentRecord.events[0].drawDefinitions[0].structures[0];
   const containedStructures = structure.structures;

@@ -18,9 +18,9 @@ import {
 it('can recognize valid SWAP positions', () => {
   const drawProfiles = [
     {
-      drawSize: 32,
-      alternatesCount: 2,
       participantsCount: 30,
+      alternatesCount: 2,
+      drawSize: 32,
     },
   ];
   const { drawIds, tournamentRecord } = mocksEngine.generateTournamentRecord({
@@ -39,9 +39,9 @@ it('can recognize valid SWAP positions', () => {
 
   const drawPosition = 1;
   let result = tournamentEngine.positionActions({
-    drawId,
-    structureId,
     drawPosition,
+    structureId,
+    drawId,
   });
   expect(result.isDrawPosition).toEqual(true);
   expect(result.isByePosition).toEqual(false);
@@ -79,9 +79,9 @@ it('can recognize valid SWAP positions', () => {
   );
 
   result = tournamentEngine.positionActions({
-    drawId,
-    structureId,
     drawPosition: 3,
+    structureId,
+    drawId,
   });
   options = result.validActions?.map((validAction) => validAction.type);
   expect(options.includes(SWAP_PARTICIPANTS)).toEqual(true);
@@ -111,13 +111,13 @@ it('can SWAP assignment.bye with assignment.participantId with 32 drawSize', () 
 
   const drawProfiles = [
     {
-      drawSize: 32,
       participantsCount: 30,
+      drawSize: 32,
     },
   ];
   const { drawIds, tournamentRecord } = mocksEngine.generateTournamentRecord({
-    drawProfiles,
     inContext: true,
+    drawProfiles,
   });
 
   tournamentEngine.setState(tournamentRecord);
@@ -171,9 +171,9 @@ it('can SWAP assignment.bye with assignment.participantId with 32 drawSize', () 
   );
 
   result = tournamentEngine.positionActions({
-    drawId,
-    structureId,
     drawPosition,
+    structureId,
+    drawId,
   });
   expect(result.isDrawPosition).toEqual(true);
   expect(result.isByePosition).toEqual(true);
@@ -190,13 +190,13 @@ it('can SWAP assignment.bye with assignment.participantId with 32 drawSize', () 
 it('can SWAP assignment.bye with assignment.participantId', () => {
   const drawProfiles = [
     {
-      drawSize: 4,
       participantsCount: 3,
+      drawSize: 4,
     },
   ];
   const { drawIds, tournamentRecord } = mocksEngine.generateTournamentRecord({
-    drawProfiles,
     inContext: true,
+    drawProfiles,
   });
 
   tournamentEngine.setState(tournamentRecord);
@@ -216,9 +216,9 @@ it('can SWAP assignment.bye with assignment.participantId', () => {
 
   const drawPosition = 4;
   let result = tournamentEngine.positionActions({
-    drawId,
-    structureId,
     drawPosition,
+    structureId,
+    drawId,
   });
   expect(result.isDrawPosition).toEqual(true);
   expect(result.isByePosition).toEqual(false);
@@ -256,9 +256,9 @@ it('can SWAP assignment.bye with assignment.participantId', () => {
   );
 
   result = tournamentEngine.positionActions({
-    drawId,
-    structureId,
     drawPosition,
+    structureId,
+    drawId,
   });
   expect(result.isDrawPosition).toEqual(true);
   expect(result.isByePosition).toEqual(true);
@@ -278,8 +278,8 @@ it('can SWAP assignment.bye with assignment.participantId', () => {
 it('can SWAP assigned participantIds', () => {
   const drawProfiles = [
     {
-      drawSize: 4,
       alternatesCount: 2,
+      drawSize: 4,
     },
   ];
   const { drawIds, tournamentRecord } = mocksEngine.generateTournamentRecord({
@@ -306,9 +306,9 @@ it('can SWAP assigned participantIds', () => {
 
   const drawPosition = 4;
   let result = tournamentEngine.positionActions({
-    drawId,
-    structureId,
     drawPosition,
+    structureId,
+    drawId,
   });
   expect(result.isDrawPosition).toEqual(true);
   expect(result.isByePosition).toEqual(false);
@@ -346,9 +346,9 @@ it('can SWAP assigned participantIds', () => {
   );
 
   result = tournamentEngine.positionActions({
-    drawId,
-    structureId,
     drawPosition,
+    structureId,
+    drawId,
   });
   expect(result.isDrawPosition).toEqual(true);
   expect(result.isByePosition).toEqual(false);
@@ -370,9 +370,9 @@ it('can SWAP assigned participantIds', () => {
 it('can SWAP assigned participantIds in a ROUND_ROBIN', () => {
   const drawProfiles = [
     {
-      drawSize: 4,
-      alternatesCount: 2,
       drawType: ROUND_ROBIN,
+      alternatesCount: 2,
+      drawSize: 4,
     },
   ];
   const { drawIds, tournamentRecord } = mocksEngine.generateTournamentRecord({
@@ -400,9 +400,9 @@ it('can SWAP assigned participantIds in a ROUND_ROBIN', () => {
   ).participantId;
 
   let result = tournamentEngine.positionActions({
-    drawId,
-    structureId,
     drawPosition,
+    structureId,
+    drawId,
   });
   expect(result.isDrawPosition).toEqual(true);
   expect(result.isByePosition).toEqual(false);
@@ -438,9 +438,9 @@ it('can SWAP assigned participantIds in a ROUND_ROBIN', () => {
   );
 
   result = tournamentEngine.positionActions({
-    drawId,
-    structureId,
     drawPosition,
+    structureId,
+    drawId,
   });
   expect(result.isDrawPosition).toEqual(true);
   expect(result.isByePosition).toEqual(false);
