@@ -1,10 +1,10 @@
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
 import { timeSort, timeStringMinutes } from '../../../utilities/dateTime';
 import { extensionsToAttributes } from '../../../utilities/makeDeepCopy';
+import { structureSort } from '../../../drawEngine/getters/structureSort';
 import { getEventPublishStatuses } from './getEventPublishStatuses';
 import { getEventSeedAssignments } from './getEventSeedAssignments';
 import { allEventMatchUps } from '../matchUpsGetter/matchUpsGetter';
-import { structureSort } from '../../../forge/transform';
 import { processEventEntry } from './processEventEntry';
 import { isObject } from '../../../utilities/objects';
 import { getFlightProfile } from '../getFlightProfile';
