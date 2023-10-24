@@ -8,23 +8,21 @@ import { unique } from '../../../utilities';
 import { SIGN_IN_STATUS } from '../../../constants/participantConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 
+import type { Tournament } from '../../../types/tournamentFromSchema';
 import { ParticipantFilters } from '../../../types/factoryTypes';
-import type {
-  Participant,
-  Tournament,
-} from '../../../types/tournamentFromSchema';
+import { HydratedParticipant } from '../../../types/hydrated';
 
 type FilterParticipantsArgs = {
   participantFilters: ParticipantFilters;
+  participants: HydratedParticipant[];
   tournamentRecord: Tournament;
-  participants: Participant[];
 };
 
 export function filterParticipants({
   participantFilters = {},
   tournamentRecord,
   participants = [],
-}: FilterParticipantsArgs): Participant[] {
+}: FilterParticipantsArgs): HydratedParticipant[] {
   if (!Object.keys(participantFilters).length) {
     return participants;
   }

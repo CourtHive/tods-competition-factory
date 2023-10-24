@@ -3,6 +3,7 @@ import tournamentEngine from '../../sync';
 import { expect, test } from 'vitest';
 
 import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../constants/drawDefinitionConstants';
+import { POLICY_TYPE_POSITION_ACTIONS } from '../../../constants/policyConstants';
 import { DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
 import {
   ADD_NICKNAME,
@@ -14,7 +15,6 @@ import {
   SWAP_PARTICIPANTS,
   WITHDRAW_PARTICIPANT,
 } from '../../../constants/positionActionConstants';
-import { POLICY_TYPE_POSITION_ACTIONS } from '../../../constants/policyConstants';
 
 const getTarget = ({ matchUps, roundNumber, roundPosition }) =>
   matchUps.find(

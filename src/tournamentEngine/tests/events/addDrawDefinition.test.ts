@@ -26,11 +26,10 @@ test.each([tournamentEngineSync, asyncTournamentEngine])(
     const { eventId } = eventResult;
     expect(eventId).toEqual('customId');
 
-    const { tournamentParticipants } =
-      await tournamentEngine.getTournamentParticipants({
-        participantFilters: { participantTypes: [INDIVIDUAL] },
-      });
-    const participantIds = tournamentParticipants.map((p) => p.participantId);
+    const { participants } = await tournamentEngine.getParticipants({
+      participantFilters: { participantTypes: [INDIVIDUAL] },
+    });
+    const participantIds = participants.map((p) => p.participantId);
     result = await tournamentEngine.addEventEntries({
       participantIds,
       eventId,

@@ -10,12 +10,11 @@ it('can retrieve team lineUps', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { tournamentParticipants: teamParticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantTypes: [TEAM] },
-    });
-  const { tournamentParticipants: individualParticipants } =
-    tournamentEngine.getTournamentParticipants({
+  const { participants: teamParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [TEAM] },
+  });
+  const { participants: individualParticipants } =
+    tournamentEngine.getParticipants({
       participantFilters: { participantTypes: [INDIVIDUAL] },
     });
 

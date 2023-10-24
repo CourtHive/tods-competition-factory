@@ -53,12 +53,12 @@ it('can generate TEAM events', () => {
   tournamentEngine.setState(tournamentRecord);
   const tournamentId = tournamentRecord.tournamentId;
 
-  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
-    { participantFilters: { participantTypes: [TEAM] } }
-  );
+  const { participants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [TEAM] },
+  });
   // since teams are generated from nationalityCodes expect there to be
   // the same number of teams as nationalityCodes
-  expect(tournamentParticipants.length).toEqual(drawSize);
+  expect(participants.length).toEqual(drawSize);
 
   let { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
   expect(drawDefinition.entries.length).toEqual(drawSize);

@@ -113,13 +113,11 @@ it('can schedule potential rounds properly in scenarios with recovery times grea
   expect(attachedSchedulingProfile.length).toEqual(1);
   expect(attachedSchedulingProfile[0].venues[0].rounds.length).toEqual(9);
 
-  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
-    {
-      participantFilters: { participantTypes: [PAIR] },
-    }
-  );
+  const { participants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [PAIR] },
+  });
 
-  expect(tournamentParticipants.length).toEqual(88); // expect (2 * 32 unique) + (24 unique) = 88
+  expect(participants.length).toEqual(88); // expect (2 * 32 unique) + (24 unique) = 88
 
   const eventEnteredParticipantIds: string[] = [];
   const nonByeMatchUpsCount: number[] = [];

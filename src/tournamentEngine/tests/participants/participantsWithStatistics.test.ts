@@ -78,16 +78,15 @@ it('will return participant events including all entryStatuses', () => {
     alternateParticipantIds[0]
   );
 
-  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
-    {
-      participantFilters: { participantIds: [alternateParticipantIds[0]] },
-      withStatistics: true,
-      withOpponents: true,
-      withMatchUps: true,
-    }
-  );
-  expect(tournamentParticipants[0].draws[0].entryStatus).toEqual(ALTERNATE);
-  const { opponents, matchUps } = tournamentParticipants[0];
+  const { participants } = tournamentEngine.getParticipants({
+    participantFilters: { participantIds: [alternateParticipantIds[0]] },
+    withStatistics: true,
+    withOpponents: true,
+    withMatchUps: true,
+    withEvents: true,
+  });
+  expect(participants[0].events[0].entryStatus).toEqual(ALTERNATE);
+  const { opponents, matchUps } = participants[0];
   expect(alternateParticipantIds[0]).not.toEqual(opponents[0].participantId);
   expect(matchUps[0].opponentParticipantInfo[0].participantId).toEqual(
     opponents[0].participantId

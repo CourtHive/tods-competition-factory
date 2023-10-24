@@ -89,11 +89,10 @@ it.each(mockScenarios)(
       drawId,
     });
     const participantIds = positionAssignments.map(getParticipantId);
-    const { tournamentParticipants } =
-      tournamentEngine.getTournamentParticipants({
-        participantFilters: { participantIds },
-      });
-    tournamentParticipants.forEach(({ timeItems }) => {
+    const { participants } = tournamentEngine.getParticipants({
+      participantFilters: { participantIds },
+    });
+    participants.forEach(({ timeItems }) => {
       const { itemValue, itemType } = timeItems[0];
       expect(itemType).toEqual(scenario.expectation.itemType);
       expect(itemValue).not.toBeUndefined();
@@ -108,10 +107,10 @@ test('generates participants with rankings and ratings with additional embellish
 
   tournamentEngine.setState(tournamentRecord);
 
-  let { tournamentParticipants } = tournamentEngine.getTournamentParticipants();
-  const tournamentParticipantsCount = tournamentParticipants.length;
+  let { participants } = tournamentEngine.getParticipants();
+  const tournamentParticipantsCount = participants.length;
 
-  const scaleItems = tournamentParticipants
+  const scaleItems = participants
     .map((p) => p.timeItems?.filter((i) => i.itemType.startsWith('SCALE')))
     .filter(Boolean)
     .flat();
@@ -136,14 +135,14 @@ test('generates participants with rankings and ratings with additional embellish
   });
   expect(typesCount).toEqual(scaleItems.length);
 
-  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+  ({ participants } = tournamentEngine.getParticipants({
     withScaleValues: true,
     inContext: true,
   }));
 
   let withRatings = 0;
   let withRankings = 0;
-  tournamentParticipants.forEach((participant) => {
+  participants.forEach((participant) => {
     if (participant?.rankings[SINGLES]) {
       withRankings += 1;
       expect(participant.rankings[SINGLES].length).toEqual(1);
@@ -156,13 +155,13 @@ test('generates participants with rankings and ratings with additional embellish
   expect(withRankings).toEqual(8);
   expect(withRatings).toEqual(16);
 
-  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+  ({ participants } = tournamentEngine.getParticipants({
     participantFilters: { eventIds: [eventIds[0]] },
     inContext: true,
     withIOC: true,
   }));
 
-  expect(tournamentParticipants.length).toEqual(8);
+  expect(participants.length).toEqual(8);
 
   for (const eventId of eventIds) {
     const { flightProfile } = tournamentEngine.getFlightProfile({ eventId });

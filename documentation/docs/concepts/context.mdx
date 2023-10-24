@@ -45,9 +45,9 @@ Context is also added if `withStatistics, withOpponents, withMatchUps, or schedu
 
 ```js
 const {
-  tournamentParticipants,
+  participants,
   participantIdsWithConflicts, // array of participantIds which have scheduling conflicts
-} = tournamentEngine.getTournamentParticipants({
+} = tournamentEngine.getParticipants({
   inContext: true,
 
   participantFilters: { participantTypes: [PAIR] },

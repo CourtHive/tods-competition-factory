@@ -1,4 +1,4 @@
-import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
+import { getParticipants } from '../../getters/participants/getParticipants';
 import { setSubscriptions } from '../../../global/state/globalState';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
@@ -21,11 +21,11 @@ it('can create group participants', () => {
   expect(result.success).toEqual(true);
 
   tournamentEngine.setState(tournamentRecord);
-  const { tournamentParticipants: individualParticipants } =
-    getTournamentParticipants({
+  const individualParticipants =
+    getParticipants({
       participantFilters: { participantTypes: [INDIVIDUAL] },
       tournamentRecord,
-    });
+    }).participants ?? [];
 
   const [participant1, participant2] = individualParticipants;
 
@@ -60,11 +60,10 @@ it('can create group participants', () => {
 
   const { tournamentRecord: updatedTournamentRecord } =
     tournamentEngine.getState();
-  const { tournamentParticipants: groupParticipants } =
-    getTournamentParticipants({
-      tournamentRecord: updatedTournamentRecord,
-      participantFilters: { participantTypes: [GROUP] },
-    });
+  const { participants: groupParticipants } = getParticipants({
+    tournamentRecord: updatedTournamentRecord,
+    participantFilters: { participantTypes: [GROUP] },
+  });
 
-  expect(groupParticipants.length).toEqual(1);
+  expect(groupParticipants?.length).toEqual(1);
 });

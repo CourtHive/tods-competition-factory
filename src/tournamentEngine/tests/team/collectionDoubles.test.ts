@@ -61,10 +61,9 @@ it('can both assign and remove individualParticipants in DOUBLES matchUps that a
     .map(getParticipantId);
 
   // get the teamParticipants for each side in the matchUp
-  const { tournamentParticipants: teamParticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantIds: teamParticipantIds },
-    });
+  const { participants: teamParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantIds: teamParticipantIds },
+  });
 
   // get the participantId for the first team
   const [firstParticipant] = teamParticipants;
@@ -154,10 +153,9 @@ it('An EXISTING_OUTCOME will prevent removal of individualParticipants in DOUBLE
     .filter(({ drawPosition }) => drawPositions.includes(drawPosition))
     .map(getParticipantId);
 
-  const { tournamentParticipants: teamParticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantIds: teamParticipantIds },
-    });
+  const { participants: teamParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantIds: teamParticipantIds },
+  });
 
   // assign individual participants to the first doubles matchUp
   teamParticipants.forEach((teamParticipant) => {
@@ -254,10 +252,9 @@ it('An EXISTING_OUTCOME will prevent removal of individualParticipants in DOUBLE
     expect(side.participant.individualParticipantIds.length).toEqual(1);
   });
 
-  let { tournamentParticipants: pairParticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantTypes: [PAIR] },
-    });
+  let { participants: pairParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [PAIR] },
+  });
 
   let individualParticipantIdsCount = pairParticipants
     .map(
@@ -285,10 +282,9 @@ it('An EXISTING_OUTCOME will prevent removal of individualParticipants in DOUBLE
     expect(side.lineUp[1].collectionAssignments.length).toEqual(0);
   });
 
-  ({ tournamentParticipants: pairParticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantTypes: [PAIR] },
-    }));
+  ({ participants: pairParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [PAIR] },
+  }));
 
   individualParticipantIdsCount = pairParticipants
     .map(
@@ -347,16 +343,14 @@ it('can create new PAIR participants and remove/replace individualParticipants',
     .map(getParticipantId);
 
   // expect that there are initially six pair participants, 3 generated for each side
-  let { tournamentParticipants: pairParticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantTypes: [PAIR] },
-    });
+  let { participants: pairParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [PAIR] },
+  });
   expect(pairParticipants.length).toEqual(6);
 
-  const { tournamentParticipants: teamParticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantIds: teamParticipantIds },
-    });
+  const { participants: teamParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantIds: teamParticipantIds },
+  });
 
   teamParticipants.forEach((teamParticipant) => {
     const { participantId } = teamParticipant;
@@ -403,10 +397,9 @@ it('can create new PAIR participants and remove/replace individualParticipants',
   });
 
   // confirm new doubles pairs have been created
-  ({ tournamentParticipants: pairParticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantTypes: [PAIR] },
-    }));
+  ({ participants: pairParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [PAIR] },
+  }));
   expect(pairParticipants.length).toEqual(8);
 
   teamParticipants.forEach((teamParticipant) => {
@@ -484,15 +477,13 @@ it('can assign PAIR participants to tieMatchUps', () => {
       matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [1] },
     });
 
-  const { tournamentParticipants: pairParticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantTypes: [PAIR] },
-    });
+  const { participants: pairParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [PAIR] },
+  });
 
-  const { tournamentParticipants: teamParticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantTypes: [TEAM] },
-    });
+  const { participants: teamParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [TEAM] },
+  });
 
   // get positionAssignments to determine drawPositions
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
@@ -559,24 +550,22 @@ it('handles pair dependencies across draws', () => {
   );
   expect(intersection(drawEntries[0], drawEntries[1]).length).toEqual(2);
 
-  const { tournamentParticipants: individualParticipants } =
-    tournamentEngine.getTournamentParticipants({
+  const { participants: individualParticipants } =
+    tournamentEngine.getParticipants({
       participantFilters: { participantTypes: [INDIVIDUAL] },
+      withIndividualParticipants: true,
       withEvents: true,
       withDraws: true,
-      inContext: true,
     });
 
   individualParticipants.forEach((individualParticipant) =>
-    // no individuals have lineUp assignments
-    expect(individualParticipant.draws.length).toEqual(0)
+    expect(individualParticipant.draws.length).toEqual(2)
   );
 
-  let { tournamentParticipants: pairParticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantTypes: [PAIR] },
-      withDraws: true,
-    });
+  let { participants: pairParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [PAIR] },
+    withDraws: true,
+  });
 
   expect(pairParticipants.length).toEqual(6);
   pairParticipants.forEach((pairParticipant) =>
@@ -584,10 +573,9 @@ it('handles pair dependencies across draws', () => {
     expect(pairParticipant.draws.length).toEqual(0)
   );
 
-  const { tournamentParticipants: teamParticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantTypes: [TEAM] },
-    });
+  const { participants: teamParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [TEAM] },
+  });
 
   // get positionAssignments to determine drawPositions
   const { drawDefinition } = tournamentEngine.getEvent({ drawId: drawIds[0] });
@@ -595,17 +583,15 @@ it('handles pair dependencies across draws', () => {
 
   assignPairParticipants({ drawId: drawIds[0] });
 
-  ({ tournamentParticipants: pairParticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantTypes: [PAIR] },
-      withDraws: true,
-    }));
+  ({ participants: pairParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [PAIR] },
+    withDraws: true,
+  }));
 
   // expect no new pairs were created and each pairParticipant is in BOTH draws
   expect(pairParticipants.length).toEqual(6);
   pairParticipants.forEach((pairParticipant) => {
-    // individuals now have lineUp assignments for DOUBLES matchUps
-    expect(pairParticipant.draws.length).toEqual(2);
+    expect(pairParticipant.draws.length).toEqual(1);
   });
 
   // assign the same pairs to matchUps in the second draw
@@ -654,10 +640,9 @@ it('handles pair dependencies across draws', () => {
 
   // expect that the pair participants have not been destroyed
   // in the process of breaking apart the pair participants
-  ({ tournamentParticipants: pairParticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantTypes: [PAIR] },
-    }));
+  ({ participants: pairParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [PAIR] },
+  }));
 
   expect(pairParticipants.length).toEqual(6);
 
@@ -694,8 +679,8 @@ it('handles pair dependencies across draws', () => {
             // when the first individualParticipantId is removed and the pair can't be destroyed
             // a new PAIR participant is created with only one individualParticipant
             if (i === 0) {
-              ({ tournamentParticipants: pairParticipants } =
-                tournamentEngine.getTournamentParticipants({
+              ({ participants: pairParticipants } =
+                tournamentEngine.getParticipants({
                   participantFilters: { participantTypes: [PAIR] },
                 }));
 

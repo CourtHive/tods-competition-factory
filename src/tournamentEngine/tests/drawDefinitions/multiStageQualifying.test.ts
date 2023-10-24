@@ -54,12 +54,11 @@ it('supports multi-sequence qualifying structures', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { tournamentParticipants } =
-    tournamentEngine.getTournamentParticipants();
+  const { participants } = tournamentEngine.getParticipants();
 
   // if there are qualifiers then all participants are unique
   // 32 + 32 unique + 32 qualifying + 16 qualifying = 112
-  expect(tournamentParticipants.length).toEqual(112);
+  expect(participants.length).toEqual(112);
 
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   expect(drawDefinition.structures.length).toEqual(3);

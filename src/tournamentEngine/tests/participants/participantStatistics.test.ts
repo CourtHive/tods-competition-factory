@@ -21,8 +21,8 @@ test.each(scenarios)(
     const { matchUps } = tournamentEngine.allTournamentMatchUps();
     expect(matchUps.length).toEqual(matchUpsCount);
 
-    const { tournamentParticipants } =
-      tournamentEngine.getTournamentParticipants({
+    const { participants: tournamentParticipants } =
+      tournamentEngine.getParticipants({
         withStatistics: true,
         withMatchUps: true,
       });

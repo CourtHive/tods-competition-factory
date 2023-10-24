@@ -173,7 +173,7 @@ The highest level auto-scheduling method is `competitionEngine.scheduleProfileRo
 
 ## Schedule Conflict Reporting
 
-Schedule Conflicts are reported for participants that are returned from `tournamentEngine.getTournamentParticipants`
+Schedule Conflicts are reported for participants that are returned from `tournamentEngine.getParticipants`
 or `competitionEngine.getCompetitionParticipants`.
 
 The attribute `scheduleConflicts` is an array of objects containing pairs of `matchUpIds`
@@ -190,9 +190,9 @@ A conflict occurs when a matchUp's `scheduledTime + averageMinutes + recoveryMin
 
 ```js
 const {
-  tournamentParticipants,
+  participants,
   participantIdsWithConflicts, // array of participantIds which have scheduling conflicts
-} = tournamentEngine.getTournamentParticipants({
+} = tournamentEngine.getParticipants({
   inContext: true,
 
   scheduleAnalysis: {

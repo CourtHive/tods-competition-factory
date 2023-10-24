@@ -1,11 +1,12 @@
-import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
 import { findParticipant } from '../../../global/functions/deducers/findParticipant';
+import { getParticipants } from '../../getters/participants/getParticipants';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { definedAttributes } from '../../../utilities/objects';
 import { addParticipants } from './addParticipants';
 import { UUID } from '../../../utilities';
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
+import { Participant } from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   COMPETITOR,
@@ -16,7 +17,6 @@ import {
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
-import { Participant } from '../../../types/tournamentFromSchema';
 
 // add persons to a tournamentRecord and create participants in the process
 // include ability to specify a doubles partner by personId
@@ -87,10 +87,10 @@ export function addPersons({
   const pairParticipants: Participant[] = [];
 
   const tournamentParticipants =
-    getTournamentParticipants({
+    getParticipants({
       participantFilters: { participantTypes: [INDIVIDUAL] },
       tournamentRecord,
-    })?.tournamentParticipants || [];
+    })?.participants || [];
 
   if (participantRole === COMPETITOR) {
     persons

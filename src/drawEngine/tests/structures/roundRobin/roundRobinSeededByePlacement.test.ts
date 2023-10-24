@@ -169,10 +169,8 @@ it.each([1, 2, 3, 4, 5])(
       // reset necessary here to flush previous state
       tournamentEngine.reset().setState(tournamentRecord);
 
-      const { tournamentParticipants } =
-        tournamentEngine.getTournamentParticipants();
-
-      const participantIds = tournamentParticipants.map((p) => p.participantId);
+      const { participants } = tournamentEngine.getParticipants();
+      const participantIds = participants.map((p) => p.participantId);
       let result = tournamentEngine.addEventEntries({
         eventId,
         participantIds,

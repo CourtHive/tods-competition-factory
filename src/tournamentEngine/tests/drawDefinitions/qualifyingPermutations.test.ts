@@ -51,8 +51,7 @@ it.each(scenarios)(
 
     tournamentEngine.setState(tournamentRecord);
 
-    const participants =
-      tournamentEngine.getTournamentParticipants().tournamentParticipants;
+    const participants = tournamentEngine.getParticipants().participants;
     expect(participants.length).toEqual(participantsCount);
 
     const participantIds = participants.map(getParticipantId);

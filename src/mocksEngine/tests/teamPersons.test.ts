@@ -61,13 +61,11 @@ it('can generate team events using participantsProfile.teamKey and personData', 
     event.entries.filter((entry) => entry.entryStatus === ALTERNATE).length
   ).toEqual(2);
 
-  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
-    { participantFilters: { participantTypes: [TEAM] } }
-  );
+  const { participants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [TEAM] },
+  });
 
-  const names = tournamentParticipants.map(
-    (participant) => participant.participantName
-  );
+  const names = participants.map((participant) => participant.participantName);
   expect(names.length).toEqual(4);
   expect(names.sort()).toEqual([`Queen's Club`, 'Team 1', 'Team 2', 'United']);
 

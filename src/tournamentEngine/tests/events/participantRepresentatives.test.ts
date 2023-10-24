@@ -20,12 +20,10 @@ it('can set and get drawRepresentatitveIds', () => {
     inContext: true,
   });
 
-  const { tournamentParticipants } = tournamentEngine
+  const { participants } = tournamentEngine
     .setState(tournamentRecord)
-    .getTournamentParticipants();
-  const participantIds = tournamentParticipants.map(
-    ({ participantId }) => participantId
-  );
+    .getParticipants();
+  const participantIds = participants.map(({ participantId }) => participantId);
 
   const representativeParticipantIds = participantIds.slice(0, 2);
 

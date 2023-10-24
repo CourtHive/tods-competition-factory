@@ -2,8 +2,9 @@ import { getMatchUpDependencies } from '../../../competitionEngine/governors/sch
 import { getParticipantEntries } from './getParticipantEntries';
 import { filterParticipants } from './filterParticipants';
 import { getParticipantMap } from './getParticipantMap';
-import { definedAttributes } from '../../../utilities';
+import { attributeFilter, definedAttributes } from '../../../utilities';
 
+import { POLICY_TYPE_PARTICIPANT } from '../../../constants/policyConstants';
 import { MatchUp, Tournament } from '../../../types/tournamentFromSchema';
 import { HydratedParticipant } from '../../../types/hydrated';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -91,7 +92,6 @@ export function getParticipants(params: GetParticipantsArgs): {
   let { participantMap } = getParticipantMap({
     withIndividualParticipants,
     convertExtensions,
-    policyDefinitions,
     tournamentRecord,
     withSignInStatus,
     withScaleValues,
@@ -181,12 +181,21 @@ export function getParticipants(params: GetParticipantsArgs): {
     }
   );
 
+  const participantAttributes = policyDefinitions?.[POLICY_TYPE_PARTICIPANT];
+  const template = participantAttributes?.participant;
+
   // filter must be last so attributes can be used for reporting & etc.
-  const participants = filterParticipants({
+  const filteredParticipants = filterParticipants({
     participants: processedParticipants,
     participantFilters,
     tournamentRecord,
   });
+
+  const participants: HydratedParticipant[] = template
+    ? filteredParticipants.map((source) =>
+        attributeFilter({ source, template })
+      )
+    : filteredParticipants;
 
   // IDEA: optimizePayload derive array of matchUpIds required for filteredParticipants
   // filter mappedMatchUps and matchUps to reduce over-the-wire payloads

@@ -18,9 +18,10 @@ it('can report on drawPositions available for placement', () => {
   });
   tournamentEngine.setState(tournamentRecord);
 
-  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
-    { participantFilters: { participantTypes: [INDIVIDUAL] } }
-  );
+  const { participants: tournamentParticipants } =
+    tournamentEngine.getParticipants({
+      participantFilters: { participantTypes: [INDIVIDUAL] },
+    });
 
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   drawEngine.setState(drawDefinition);
@@ -43,9 +44,9 @@ it('can report on drawPositions available for placement', () => {
   let drawPosition = nextUnfilledDrawPositions.pop();
   let participantId = tournamentParticipants[drawPosition - 1].participantId;
   result = drawEngine.assignDrawPosition({
-    structureId,
-    drawPosition,
     participantId,
+    drawPosition,
+    structureId,
   });
   expect(result.success).toEqual(true);
 
@@ -57,9 +58,9 @@ it('can report on drawPositions available for placement', () => {
   drawPosition = nextUnfilledDrawPositions.pop();
   participantId = tournamentParticipants[drawPosition - 1].participantId;
   result = drawEngine.assignDrawPosition({
-    structureId,
-    drawPosition,
     participantId,
+    drawPosition,
+    structureId,
   });
   expect(result.success).toEqual(true);
 

@@ -1,9 +1,9 @@
-import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotifications';
 import { getCollectionPositionAssignments } from './getCollectionPositionAssignments';
 import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
 import { deleteParticipants } from '../participantGovernor/deleteParticipants';
+import { getParticipants } from '../../getters/participants/getParticipants';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { addParticipant } from '../participantGovernor/addParticipants';
 import { updateTeamLineUp } from './drawDefinitions/updateTeamLineUp';
@@ -68,13 +68,13 @@ export function replaceTieMatchUpParticipantId(params) {
   );
   if (!side) return { error: PARTICIPANT_NOT_FOUND };
 
-  const { tournamentParticipants: targetParticipants } =
-    getTournamentParticipants({
+  const targetParticipants =
+    getParticipants({
       tournamentRecord,
       participantFilters: {
         participantIds: [existingParticipantId, newParticipantId],
       },
-    });
+    })?.participants ?? [];
 
   if (targetParticipants.length !== 2)
     return decorateResult({ result: { error: MISSING_PARTICIPANT_ID }, stack });
@@ -100,10 +100,11 @@ export function replaceTieMatchUpParticipantId(params) {
   const newParticipant = targetParticipants.find(
     ({ participantId }) => participantId === newParticipantId
   );
+
   if (
     matchUpActionsPolicy?.participants?.enforceGender &&
     [MALE, FEMALE].includes(inContextTieMatchUp?.gender) &&
-    inContextTieMatchUp?.gender !== newParticipant.person?.sex
+    inContextTieMatchUp?.gender !== newParticipant?.person?.sex
   ) {
     return { error: INVALID_PARTICIPANT, info: 'Gender mismatch' };
   }

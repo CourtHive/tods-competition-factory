@@ -1,13 +1,17 @@
 import { getParticipantId } from '../../../../global/functions/extractors';
 import tournamentEngine from '../../../../tournamentEngine/sync';
+import { extractAttributes } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
 import { expect, it } from 'vitest';
 
-import { ROUND_ROBIN } from '../../../../constants/drawDefinitionConstants';
 import SEEDING_USTA from '../../../../fixtures/policies/POLICY_SEEDING_USTA';
 import { RANKING, RATING } from '../../../../constants/scaleConstants';
 import { SINGLES_EVENT } from '../../../../constants/eventConstants';
 import { WTN } from '../../../../constants/ratingConstants';
+import {
+  MAIN,
+  ROUND_ROBIN,
+} from '../../../../constants/drawDefinitionConstants';
 
 it('can autoSeed by Rankings and then generate Round Robin', () => {
   const participantsCount = 32;
@@ -24,9 +28,9 @@ it('can autoSeed by Rankings and then generate Round Robin', () => {
   });
 
   tournamentEngine.setState(tournamentRecord);
-  let { tournamentParticipants } = tournamentEngine.getTournamentParticipants();
+  let { participants } = tournamentEngine.getParticipants();
 
-  const participantIds = tournamentParticipants.map(getParticipantId);
+  const participantIds = participants.map(getParticipantId);
 
   let result = tournamentEngine.addEventEntries({
     participantIds,
@@ -98,22 +102,109 @@ it('can autoSeed by Rankings and then generate Round Robin', () => {
   const { event } = tournamentEngine.getEvent({ eventId });
   expect(event.entries.length).toEqual(participantsCount);
 
-  tournamentParticipants = tournamentEngine.getTournamentParticipants({
+  participants = tournamentEngine.getParticipants({
+    withScaleValues: true,
     withSeeding: true,
     withEvents: true,
-  }).tournamentParticipants;
+    withDraws: true,
+  }).participants;
 
-  const seededParticipants = tournamentParticipants.filter(
+  let seededParticipants = participants.filter(
     ({ events }) => events?.[0]?.seedValue
   );
 
+  expect(seededParticipants[0].events.length).toEqual(1);
+  expect(seededParticipants[0].draws.length).toEqual(0);
   expect(seededParticipants.length).toEqual(8);
 
+  expect(seededParticipants[0].events[0].seedValue).not.toBeUndefined();
+  // there are no seedAssignments because no draws have been generated from the event with seeding
+  expect(seededParticipants[0].events[0].seedAssignments).toBeUndefined();
+
+  const seededParticipantIds = seededParticipants.map(
+    extractAttributes('participantId')
+  );
+
+  let seedsCount = 0; // without seedsCount seedValue will disappear
   result = tournamentEngine.generateDrawDefinition({
     drawSize: participantsCount,
     drawType: ROUND_ROBIN,
+    drawId: 'drawId',
     automated: true,
+    seedsCount,
     eventId,
   });
   expect(result.success).toEqual(true);
+
+  result = tournamentEngine.addDrawDefinition({
+    drawDefinition: result.drawDefinition,
+    eventId,
+  });
+  expect(result.success).toEqual(true);
+
+  let p = tournamentEngine.getParticipants({
+    withScaleValues: true,
+    withSeeding: true,
+    withEvents: true,
+    withDraws: true,
+  });
+
+  // IMPORTANT: participantMap contains object values for events, draws & etc.
+  expect(typeof p.participantMap[seededParticipantIds[0]].events).toEqual(
+    'object'
+  );
+  expect(
+    Array.isArray(p.participantMap[seededParticipantIds[0]].events)
+  ).toEqual(false);
+
+  // IMPORTANT: participants contains arrays for events, draws & etc.
+  expect(
+    Array.isArray(
+      p.participants.find((pt) => pt.participantId === seededParticipantIds[0])
+        .events
+    )
+  ).toEqual(true);
+
+  seededParticipants = p.participants.filter(
+    ({ events }) => events?.[0]?.seedValue
+  );
+  expect(seededParticipants.length).toEqual(seedsCount);
+
+  seedsCount = 8; // without seedsCount seedValue will disappear
+  result = tournamentEngine.generateDrawDefinition({
+    drawSize: participantsCount,
+    drawType: ROUND_ROBIN,
+    drawId: 'drawId',
+    automated: true,
+    seedsCount,
+    eventId,
+  });
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.addDrawDefinition({
+    drawDefinition: result.drawDefinition,
+    allowReplacement: true,
+    eventId,
+  });
+  expect(result.success).toEqual(true);
+
+  p = tournamentEngine.getParticipants({
+    withScaleValues: true,
+    withSeeding: true,
+    withEvents: true,
+    withDraws: true,
+  });
+
+  seededParticipants = p.participants.filter(
+    ({ events }) => events?.[0]?.seedValue
+  );
+  expect(seededParticipants.length).toEqual(seedsCount);
+
+  seededParticipants = p.participants.filter(({ seedings }) => seedings);
+  expect(
+    seededParticipants[0].draws[0].seedAssignments[MAIN].seedValue
+  ).toBeDefined();
+  expect(
+    seededParticipants[0].events[0].seedAssignments[MAIN].seedValue
+  ).toBeDefined();
 });

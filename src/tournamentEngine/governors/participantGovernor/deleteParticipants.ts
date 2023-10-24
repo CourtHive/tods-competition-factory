@@ -1,7 +1,7 @@
-import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
 import { removeParticipantIdsFromAllTeams } from './groupings/removeIndividualParticipantIds';
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
 import { removeEventEntries } from '../eventGovernor/entries/removeEventEntries';
+import { getParticipants } from '../../getters/participants/getParticipants';
 import { addEventEntries } from '../eventGovernor/entries/addEventEntries';
 import { addNotice } from '../../../global/state/globalState';
 import { intersection } from '../../../utilities';
@@ -54,11 +54,12 @@ export function deleteParticipants(params): {
     .flat(Infinity);
 
   // cannot use getParticipants() because event objects don't have drawIds array
-  const { tournamentParticipants } = getTournamentParticipants({
-    participantFilters: { participantIds },
-    tournamentRecord,
-    withDraws: true,
-  });
+  const tournamentParticipants =
+    getParticipants({
+      participantFilters: { participantIds },
+      tournamentRecord,
+      withDraws: true,
+    }).participants ?? [];
 
   const getPlacedPairParticipantIds = () => {
     const matchUps =

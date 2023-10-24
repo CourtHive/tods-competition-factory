@@ -24,23 +24,23 @@ it('can use drawProfiles to generate gendered SINGLES event', () => {
   const { eventIds, tournamentRecord } = result;
   tournamentEngine.setState(tournamentRecord);
 
-  let { tournamentParticipants } = tournamentEngine.getTournamentParticipants();
+  let { participants } = tournamentEngine.getParticipants();
 
-  expect(tournamentParticipants.length).toEqual(32);
+  expect(participants.length).toEqual(32);
 
-  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+  ({ participants } = tournamentEngine.getParticipants({
     participantFilters: { eventIds },
   }));
 
-  expect(tournamentParticipants.length).toEqual(32);
+  expect(participants.length).toEqual(32);
 
-  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+  ({ participants } = tournamentEngine.getParticipants({
     participantFilters: { positionedParticipants: true },
   }));
 
-  expect(tournamentParticipants.length).toEqual(32);
+  expect(participants.length).toEqual(32);
 
-  const genders = tournamentParticipants.reduce(
+  const genders = participants.reduce(
     (genders, participant) =>
       genders.includes(participant.person?.sex)
         ? genders
@@ -68,23 +68,23 @@ it('can use eventProfiles to generate gendered SINGLES event', () => {
   const { eventIds, tournamentRecord } = result;
   tournamentEngine.setState(tournamentRecord);
 
-  let { tournamentParticipants } = tournamentEngine.getTournamentParticipants();
+  let { participants } = tournamentEngine.getParticipants();
 
-  expect(tournamentParticipants.length).toEqual(32);
+  expect(participants.length).toEqual(32);
 
-  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+  ({ participants } = tournamentEngine.getParticipants({
     participantFilters: { eventIds },
   }));
 
-  expect(tournamentParticipants.length).toEqual(32);
+  expect(participants.length).toEqual(32);
 
-  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+  ({ participants } = tournamentEngine.getParticipants({
     participantFilters: { positionedParticipants: true },
   }));
 
-  expect(tournamentParticipants.length).toEqual(32);
+  expect(participants.length).toEqual(32);
 
-  const genders = tournamentParticipants.reduce(
+  const genders = participants.reduce(
     (genders, participant) =>
       genders.includes(participant.person?.sex)
         ? genders

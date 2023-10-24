@@ -14,11 +14,11 @@ it('hydrated tieMatchUps can be processed successfully', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  let result = tournamentEngine.getTournamentParticipants();
-  expect(result.tournamentParticipants.length);
+  let result = tournamentEngine.getParticipants();
+  expect(result.participants.length);
 
-  result = tournamentEngine.getTournamentParticipants({ inContext: true });
-  expect(result.tournamentParticipants.length);
+  result = tournamentEngine.getParticipants({ inContext: true });
+  expect(result.participants.length);
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: { matchUpTypes: [SINGLES, DOUBLES] },

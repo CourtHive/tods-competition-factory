@@ -19,18 +19,16 @@ it('can modify entries for a DOUBLES event and create PAIR participants', () => 
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     participantsProfile: { participantsCount: 32 },
   });
-  let { tournamentParticipants } = tournamentEngine
-    .setState(tournamentRecord)
-    .getTournamentParticipants();
+  let participants =
+    tournamentEngine.setState(tournamentRecord).getParticipants()
+      .participants ?? [];
 
   let participantTypes = unique(
-    tournamentParticipants.map(({ participantType }) => participantType)
+    participants.map(({ participantType }) => participantType)
   );
   expect(participantTypes).toEqual([INDIVIDUAL]);
 
-  const participantIds = tournamentParticipants.map(
-    ({ participantId }) => participantId
-  );
+  const participantIds = participants.map(({ participantId }) => participantId);
   expect(participantIds.length).toEqual(32);
   const participantIdPairs = chunkArray(participantIds, 2);
 
@@ -56,9 +54,9 @@ it('can modify entries for a DOUBLES event and create PAIR participants', () => 
   result = tournamentEngine.modifyEventEntries({ eventId, participantIdPairs });
   expect(result.success).toEqual(true);
 
-  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants());
+  participants = tournamentEngine.getParticipants().participants ?? [];
   participantTypes = unique(
-    tournamentParticipants.map(({ participantType }) => participantType)
+    participants.map(({ participantType }) => participantType)
   );
 
   // modifyEventEntries has automatically created PAIR participants

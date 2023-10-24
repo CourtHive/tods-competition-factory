@@ -59,7 +59,10 @@ export function generateTeamTournament(params?) {
     drawIds,
     eventIds: [eventId],
     tournamentRecord,
-  } = mocksEngine.generateTournamentRecord({ eventProfiles });
+  } = mocksEngine.generateTournamentRecord({
+    participantsProfile: { idPrefix: 'xxx' },
+    eventProfiles,
+  });
 
   const [drawId] = drawIds;
 

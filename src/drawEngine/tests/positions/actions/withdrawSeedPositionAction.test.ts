@@ -9,6 +9,7 @@ import {
   SINGLES_EVENT,
 } from '../../../../constants/eventConstants';
 
+// TODO: complete!
 it('can re-position seeds when a seed is withdrawn', () => {
   const targetDrawId = 'someCompletedMatchUps';
   const drawProfiles = [
@@ -87,7 +88,7 @@ it('can re-position seeds when a seed is withdrawn', () => {
       };
 
       result = tournamentEngine[removeAction.method](params);
-      // expect(result.success).toEqual(true);
+      expect(result.success).toEqual(true);
     }
   }
 });

@@ -29,15 +29,14 @@ test('adding individualParticipantIds to TEAM participants removes them from tea
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { tournamentParticipants: individualParticipants } =
-    tournamentEngine.getTournamentParticipants({
+  const { participants: individualParticipants } =
+    tournamentEngine.getParticipants({
       participantFilters: { participantTypes: [INDIVIDUAL] },
     });
 
-  const { tournamentParticipants: teamParticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantTypes: [TEAM] },
-    });
+  const { participants: teamParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [TEAM] },
+  });
 
   const individualParticipantIdsInTeams = teamParticipants
     .map(({ individualParticipantIds }) => individualParticipantIds)
@@ -100,8 +99,8 @@ test('will remove UNGROUPED individual participants when their team is added to 
   const { eventId } = eventResult;
   expect(result.success).toEqual(true);
 
-  const { tournamentParticipants: individualParticipants } =
-    tournamentEngine.getTournamentParticipants({
+  const { participants: individualParticipants } =
+    tournamentEngine.getParticipants({
       participantFilters: { participantTypes: [INDIVIDUAL] },
     });
   const individualParticipantIds = individualParticipants.map(
@@ -129,13 +128,11 @@ test('will remove UNGROUPED individual participants when their team is added to 
       .length
   ).toEqual(0);
 
-  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
-    {
-      participantFilters: { participantTypes: [TEAM] },
-    }
-  );
-  const participantIds = tournamentParticipants.map((p) => p.participantId);
-  expect(tournamentParticipants.length).toEqual(participantsCount);
+  const { participants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [TEAM] },
+  });
+  const participantIds = participants.map((p) => p.participantId);
+  expect(participants.length).toEqual(participantsCount);
 
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result.success).toEqual(true);

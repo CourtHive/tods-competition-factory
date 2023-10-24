@@ -44,8 +44,8 @@ it('can specify qualifiersCount when no qualifying draws are generated', () => {
   expect(directAcceptanceParticipantIds.length).toEqual(28);
 
   const participantIds = tournamentEngine
-    .getTournamentParticipants()
-    .tournamentParticipants.map(({ participantId }) => participantId);
+    .getParticipants()
+    .participants.map(({ participantId }) => participantId);
 
   expect(participantIds.length).toEqual(participantsCount);
 

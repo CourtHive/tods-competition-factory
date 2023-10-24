@@ -1,4 +1,4 @@
-import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
+import { getParticipants } from '../../getters/participants/getParticipants';
 import { getEventTimeItem } from '../queryGovernor/timeItems';
 import { getTournamentInfo } from './getTournamentInfo';
 import { makeDeepCopy } from '../../../utilities';
@@ -61,7 +61,7 @@ export function getEventData(params: GetEventDataArgs): {
 
   const publishStatus = timeItem?.itemValue?.[status];
 
-  const { tournamentParticipants } = getTournamentParticipants({
+  const { participants: tournamentParticipants } = getParticipants({
     withGroupings: true,
     withEvents: false,
     withDraws: false,

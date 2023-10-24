@@ -29,7 +29,6 @@ it('can add doubles events to a tournament record', () => {
     startDate,
     endDate,
   });
-  const { participants } = tournamentRecord;
 
   tournamentEngine.setState(tournamentRecord);
 
@@ -44,7 +43,7 @@ it('can add doubles events to a tournament record', () => {
   const { eventId } = eventResult;
   expect(success).toEqual(true);
 
-  const participantIds = participants
+  const participantIds = tournamentRecord.participants
     .filter((participant) => participant.participantType === PAIR)
     .map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
@@ -78,30 +77,30 @@ it('can add doubles events to a tournament record', () => {
     updatedTournamentRecord.events[0].drawDefinitions[0].matchUpFormat
   ).toEqual(defaultMatchUpFormat);
 
-  let { tournamentParticipants } = tournamentEngine.getTournamentParticipants();
-  expect(tournamentParticipants.length).toEqual(96);
+  let { participants } = tournamentEngine.getParticipants();
+  expect(participants.length).toEqual(96);
 
-  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+  ({ participants } = tournamentEngine.getParticipants({
     participantFilters: { participantTypes: [INDIVIDUAL] },
   }));
-  expect(tournamentParticipants.length).toEqual(64);
+  expect(participants.length).toEqual(64);
 
-  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+  ({ participants } = tournamentEngine.getParticipants({
     participantFilters: { participantTypes: [PAIR] },
   }));
-  expect(tournamentParticipants.length).toEqual(32);
+  expect(participants.length).toEqual(32);
 
-  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+  ({ participants } = tournamentEngine.getParticipants({
     participantFilters: { eventIds: [eventId] },
   }));
-  expect(tournamentParticipants.length).toEqual(96);
+  expect(participants.length).toEqual(96);
 
-  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+  ({ participants } = tournamentEngine.getParticipants({
     participantFilters: { participantRoles: [COMPETITOR] },
   }));
-  expect(tournamentParticipants.length).toEqual(96);
+  expect(participants.length).toEqual(96);
 
-  const individualParticipants = tournamentParticipants.filter(
+  const individualParticipants = participants.filter(
     (participant) => participant.participantType === INDIVIDUAL
   );
   const individualParticipant = individualParticipants[0];
@@ -129,12 +128,11 @@ it('can destroy pair entries in doubles events', () => {
     startDate,
     endDate,
   });
-  const { participants } = tournamentRecord;
   expect(eventIds).toEqual([singlesId, doublesId, teamId]);
 
   tournamentEngine.setState(tournamentRecord);
 
-  const pairParticipantIds = participants
+  const pairParticipantIds = tournamentRecord.participants
     .filter((participant) => participant.participantType === PAIR)
     .map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({
@@ -215,10 +213,8 @@ it('can destroy pair entries in doubles events', () => {
   }));
   expect(updatedEvent.entries.length).toEqual(32);
 
-  let { tournamentParticipants } = tournamentEngine.getTournamentParticipants();
-  let participantIds = tournamentParticipants.map(
-    ({ participantId }) => participantId
-  );
+  let { participants } = tournamentEngine.getParticipants();
+  let participantIds = participants.map(({ participantId }) => participantId);
   const participantsCount = participantIds.length;
 
   result = tournamentEngine.destroyPairEntry({
@@ -229,10 +225,8 @@ it('can destroy pair entries in doubles events', () => {
   expect(result.success).toEqual(true);
   expect(result.participantRemoved).toEqual(true);
 
-  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants());
-  participantIds = tournamentParticipants.map(
-    ({ participantId }) => participantId
-  );
+  ({ participants } = tournamentEngine.getParticipants());
+  participantIds = participants.map(({ participantId }) => participantId);
   expect(participantIds.length).toEqual(participantsCount - 1);
 });
 
@@ -257,15 +251,14 @@ it('can create pair entries in doubles events', () => {
   tournamentEngine.setState(tournamentRecord);
   const eventId = 'firstDoublesId';
 
-  const { tournamentParticipants: individualParticipants } =
-    tournamentEngine.getTournamentParticipants({
+  const { participants: individualParticipants } =
+    tournamentEngine.getParticipants({
       participantFilters: { participantTypes: [INDIVIDUAL] },
     });
 
-  const { tournamentParticipants: pairParticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantTypes: [PAIR] },
-    });
+  const { participants: pairParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [PAIR] },
+  });
 
   const individualParticipantIdsInPairs = pairParticipants
     .map(({ individualParticipantIds }) => individualParticipantIds)
@@ -368,10 +361,9 @@ it('can allow duplicateParticipantIdsPairs and add them to events', () => {
   const { eventId } = eventResult;
   expect(success).toEqual(true);
 
-  let { tournamentParticipants: pairPairticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantTypes: [PAIR] },
-    });
+  let { participants: pairPairticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [PAIR] },
+  });
   expect(pairPairticipants.length).toEqual(32);
 
   const pairParticipantToDuplicate = pairPairticipants.pop();
@@ -397,10 +389,9 @@ it('can allow duplicateParticipantIdsPairs and add them to events', () => {
   ({ event: updatedEvent } = tournamentEngine.getEvent({ eventId }));
   expect(updatedEvent.entries.length).toEqual(32);
 
-  ({ tournamentParticipants: pairPairticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantTypes: [PAIR] },
-    }));
+  ({ participants: pairPairticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [PAIR] },
+  }));
   expect(pairPairticipants.length).toEqual(33);
 
   const { duplicatedPairParticipants } = tournamentEngine.getPairedParticipant({

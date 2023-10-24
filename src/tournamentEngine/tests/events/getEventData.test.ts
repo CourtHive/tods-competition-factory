@@ -73,10 +73,9 @@ it('returns team information for participants in SINGLES and DOUBLES matchUps in
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { tournamentParticipants: teamParticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantTypes: [TEAM] },
-    });
+  const { participants: teamParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [TEAM] },
+  });
   expect(teamParticipants.length).toBeGreaterThan(0);
 
   const { eventData } = tournamentEngine.getEventData({

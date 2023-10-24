@@ -25,14 +25,14 @@ test('engines share state', () => {
   let { tournamentInfo } = tournamentEngine.getTournamentInfo();
   expect(tournamentInfo.tournamentName).toEqual('First Tournament');
 
-  let { tournamentParticipants } = tournamentEngine.getTournamentParticipants();
-  expect(tournamentParticipants.length).toEqual(64);
+  let { participants } = tournamentEngine.getParticipants();
+  expect(participants.length).toEqual(64);
 
   result = tournamentEngine.setTournamentId(tournamentIds[1]);
   expect(result.success).toEqual(true);
 
-  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants());
-  expect(tournamentParticipants.length).toEqual(32);
+  ({ participants } = tournamentEngine.getParticipants());
+  expect(participants.length).toEqual(32);
 
   ({ tournamentInfo } = tournamentEngine.getTournamentInfo());
   expect(tournamentInfo.tournamentName).toEqual('Second Tournament');

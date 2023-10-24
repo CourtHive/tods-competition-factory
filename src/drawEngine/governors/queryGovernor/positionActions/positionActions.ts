@@ -409,14 +409,14 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
         ) || {};
 
       validActions.push({
-        type: REMOVE_SEED,
         method: REMOVE_SEED_METHOD,
+        type: REMOVE_SEED,
         participant,
         seedNumber,
         payload: {
-          drawId,
-          structureId,
           participantId,
+          structureId,
+          drawId,
         },
       });
     }
@@ -428,11 +428,11 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
           method: ADD_PENALTY_METHOD,
           participant,
           payload: {
-            drawId,
             penaltyCode: undefined,
             penaltyType: undefined,
             participantIds: [],
             notes: undefined,
+            drawId,
           },
         };
         validActions.push(addPenaltyAction);

@@ -209,12 +209,11 @@ it('supports ROUND_ROBIN in multi-sequence qualifying structures', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { tournamentParticipants } =
-    tournamentEngine.getTournamentParticipants();
+  const { participants } = tournamentEngine.getParticipants();
 
   // if there are qualifiers then all participants are unique
   // 32 + 32 unique + 16 qualifying + 16 qualifying = 112
-  expect(tournamentParticipants.length).toEqual(96);
+  expect(participants.length).toEqual(96);
 
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   expect(drawDefinition.structures.length).toEqual(3);
@@ -622,8 +621,7 @@ it('qualifying structures with multiple chains can share the same roundTarget', 
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { tournamentParticipants } =
-    tournamentEngine.getTournamentParticipants();
+  const { participants } = tournamentEngine.getParticipants();
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: { matchUpStatuses: [COMPLETED] },
@@ -638,7 +636,7 @@ it('qualifying structures with multiple chains can share the same roundTarget', 
 
   // if there are qualifiers then all participants are unique
   // 32 + 32 unique + 32 qualifying + 16 qualifying RR = 128
-  expect(tournamentParticipants.length).toEqual(112);
+  expect(participants.length).toEqual(112);
 
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   expect(drawDefinition.structures.length).toEqual(3);

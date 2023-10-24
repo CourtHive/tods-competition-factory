@@ -118,8 +118,7 @@ it('can use drawMatic to generate rounds in existing AD_HOC draws', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { tournamentParticipants } =
-    tournamentEngine.getTournamentParticipants();
+  const { participants } = tournamentEngine.getParticipants();
 
   const {
     event: { eventId },
@@ -127,7 +126,7 @@ it('can use drawMatic to generate rounds in existing AD_HOC draws', () => {
     event: { eventName: 'Match Play' },
   });
 
-  const participantIds = tournamentParticipants.map((p) => p.participantId);
+  const participantIds = participants.map((p) => p.participantId);
   let result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result.success).toEqual(true);
 

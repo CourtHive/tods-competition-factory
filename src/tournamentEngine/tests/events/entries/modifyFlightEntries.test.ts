@@ -28,12 +28,10 @@ it('will modify flight.drawEntries when no drawDefinition is present', () => {
   const { eventId } = eventResult;
   expect(result.success).toEqual(true);
 
-  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
-    {
-      participantFilters: { participantTypes: [INDIVIDUAL] },
-    }
-  );
-  const participantIds = tournamentParticipants.map((p) => p.participantId);
+  const { participants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [INDIVIDUAL] },
+  });
+  const participantIds = participants.map((p) => p.participantId);
 
   // taking 36 of 40 participants to generate 3 flights of 12
   result = tournamentEngine.addEventEntries({

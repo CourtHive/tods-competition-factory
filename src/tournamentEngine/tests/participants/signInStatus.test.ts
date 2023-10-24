@@ -19,10 +19,9 @@ it('can sign participants in and out', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { tournamentParticipants } =
-    tournamentEngine.getTournamentParticipants();
+  const { participants } = tournamentEngine.getParticipants();
 
-  const { participantId } = tournamentParticipants[0];
+  const { participantId } = participants[0];
 
   let result = tournamentEngine.getParticipantSignInStatus({
     participantId,

@@ -1,5 +1,4 @@
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
-import { definedAttributes, extractAttributes } from '../../../utilities';
 import { timeSort, timeStringMinutes } from '../../../utilities/dateTime';
 import { extensionsToAttributes } from '../../../utilities/makeDeepCopy';
 import { getEventPublishStatuses } from './getEventPublishStatuses';
@@ -11,6 +10,11 @@ import { isObject } from '../../../utilities/objects';
 import { getFlightProfile } from '../getFlightProfile';
 import { addScheduleItem } from './addScheduleItem';
 import { processSides } from './processSides';
+import {
+  definedAttributes,
+  extractAttributes as xa,
+  unique,
+} from '../../../utilities';
 
 import { DEFAULTED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 import { UNGROUPED, UNPAIRED } from '../../../constants/entryStatusConstants';
@@ -101,7 +105,7 @@ export function getParticipantEntries(params) {
 
     const {
       drawDefinitions = [],
-      extensions,
+      extensions = [],
       eventType,
       eventName,
       category,
@@ -111,7 +115,7 @@ export function getParticipantEntries(params) {
     } = event;
 
     const { flightProfile } = getFlightProfile({ event });
-    const flights = flightProfile?.flights;
+    const flights = flightProfile?.flights ?? [];
 
     const publishStatuses = getEventPublishStatuses({ event });
     const publishedSeeding = publishStatuses?.publishedSeeding;
@@ -183,6 +187,8 @@ export function getParticipantEntries(params) {
         individualParticipantIds.forEach(addEventEntry);
       }
     }
+    const eventPublishedSeeding =
+      eventsPublishStatuses?.[eventId]?.publishedSeeding;
 
     if (withDraws || withRankingProfile || withSeeding) {
       const getSeedingMap = (assignments) =>
@@ -197,17 +203,27 @@ export function getParticipantEntries(params) {
             )
           : undefined;
 
-      for (const drawDefinition of drawDefinitions) {
+      const drawIds = unique([
+        ...drawDefinitions.map(xa('drawId')),
+        ...flights.map(xa('drawId')),
+      ]);
+
+      for (const drawId of drawIds) {
+        const drawDefinition = drawDefinitions.find(
+          (drawDefinition) => drawDefinition.drawId === drawId
+        );
+        const flight = flights?.find((flight) => flight.drawId === drawId);
+
+        const entries = drawDefinition?.entries || flight?.drawEntries;
+
         const {
           structures = [],
           drawOrder,
           drawName,
           drawType,
-          entries,
-          drawId,
-        } = drawDefinition;
-        const flightNumber = flights?.find((flight) => flight.drawId === drawId)
-          ?.flightNumber;
+        } = drawDefinition ?? {};
+
+        const flightNumber = flight?.flightNumber;
 
         const scaleNames = [
           category?.categoryName,
@@ -217,7 +233,7 @@ export function getParticipantEntries(params) {
         // used in rankings pipeline.
         // the structures in which a particpant particpates are ordered
         // to enable differentiation for Points-per-round and points-per-win
-        const orderedStructureIds = (drawDefinition.structures || [])
+        const orderedStructureIds = (drawDefinition?.structures || [])
           .sort((a, b) => structureSort(a, b))
           .map(({ structureId, structures }) => {
             return [
@@ -262,18 +278,17 @@ export function getParticipantEntries(params) {
         const mainSeedingMap = getSeedingMap(mainSeedAssignments);
         const qualifyingSeedingMap = getSeedingMap(qualifyingSeedAssignments);
 
-        const relevantEntries = entries.filter(({ participantId }) =>
-          assignedParticipantIds.includes(participantId)
-        );
-
-        const publishedSeeding =
-          eventsPublishStatuses?.[eventId]?.publishedSeeding;
+        const relevantEntries = !drawDefinition
+          ? entries
+          : entries.filter(({ participantId }) =>
+              assignedParticipantIds.includes(participantId)
+            );
 
         const seedingPublished =
           !usePublishState ||
-          (publishedSeeding?.published &&
-            (publishedSeeding?.drawIds?.length === 0 ||
-              publishedSeeding?.drawIds?.includes(drawId)));
+          (eventPublishedSeeding?.published &&
+            (eventPublishedSeeding?.drawIds?.length === 0 ||
+              eventPublishedSeeding?.drawIds?.includes(drawId)));
 
         for (const entry of relevantEntries) {
           const { entryStatus, entryStage, entryPosition, participantId } =
@@ -511,7 +526,7 @@ export function getParticipantEntries(params) {
         ) {
           const potentialParticipantIds = potentialParticipants
             .flat()
-            .map(extractAttributes('participantId'))
+            .map(xa('participantId'))
             .filter(Boolean);
           potentialParticipantIds?.forEach((participantId) => {
             const relevantParticipantIds =

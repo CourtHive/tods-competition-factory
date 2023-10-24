@@ -112,10 +112,9 @@ test.each(scenarios)(
     });
     tournamentEngine.setState(tournamentRecord);
 
-    const { tournamentParticipants } =
-      tournamentEngine.getTournamentParticipants();
+    const { participants } = tournamentEngine.getParticipants();
 
-    tournamentParticipants.forEach((participant) => {
+    participants.forEach((participant) => {
       const included =
         firstNames.includes(participant.person.standardGivenName) &&
         lastNames.includes(participant.person.standardFamilyName);
@@ -148,10 +147,9 @@ test('it can attach participant extensions and timeItems from personData', () =>
   });
   tournamentEngine.setState(tournamentRecord);
 
-  const { tournamentParticipants } =
-    tournamentEngine.getTournamentParticipants();
+  const { participants } = tournamentEngine.getParticipants();
 
-  tournamentParticipants.forEach((participant) => {
+  participants.forEach((participant) => {
     expect(participant.extensions).toEqual(participantExtensions);
     expect(participant.timeItems).toEqual(participantTimeItems);
   });

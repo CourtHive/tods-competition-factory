@@ -514,12 +514,10 @@ it('can filter out unPublished draws when publishing event', () => {
   const { eventId } = eventResult;
   expect(result.success).toEqual(true);
 
-  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
-    {
-      participantFilters: { participantTypes: [INDIVIDUAL] },
-    }
-  );
-  const participantIds = tournamentParticipants.map((p) => p.participantId);
+  const { participants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [INDIVIDUAL] },
+  });
+  const participantIds = participants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result.success).toEqual(true);
 

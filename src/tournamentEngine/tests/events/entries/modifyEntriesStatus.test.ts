@@ -49,10 +49,10 @@ it('can modify entryStatus within event.entries', () => {
     drawProfiles,
   });
 
-  const { tournamentParticipants } = tournamentEngine
+  const { participants } = tournamentEngine
     .setState(tournamentRecord)
-    .getTournamentParticipants();
-  const participantIds = getParticipantIds(tournamentParticipants);
+    .getParticipants();
+  const participantIds = getParticipantIds(participants);
 
   let result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result.success).toEqual(true);
@@ -157,10 +157,10 @@ it('can add and remove extensions from entries', () => {
     drawProfiles,
   });
 
-  const { tournamentParticipants } = tournamentEngine
+  const { participants } = tournamentEngine
     .setState(tournamentRecord)
-    .getTournamentParticipants();
-  const participantIds = getParticipantIds(tournamentParticipants);
+    .getParticipants();
+  const participantIds = getParticipantIds(participants);
 
   let result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result.success).toEqual(true);
@@ -252,14 +252,13 @@ it('can account for individuals appearing in multiple doubles pairs', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { tournamentParticipants: individualParticipants } =
-    tournamentEngine.getTournamentParticipants({
+  const { participants: individualParticipants } =
+    tournamentEngine.getParticipants({
       participantFilters: { participantTypes: [INDIVIDUAL] },
     });
-  const { tournamentParticipants: pairParticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantTypes: [PAIR] },
-    });
+  const { participants: pairParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [PAIR] },
+  });
   expect(individualParticipants.length).toEqual(16);
   expect(pairParticipants.length).toEqual(8);
 
@@ -472,8 +471,8 @@ it('disallows invalid entryTypes for TEAM events', () => {
   tournamentEngine.setState(tournamentRecord);
 
   const {
-    tournamentParticipants: [individualParticipant],
-  } = tournamentEngine.getTournamentParticipants({
+    participants: [individualParticipant],
+  } = tournamentEngine.getParticipants({
     participantFilters: { participantTypes: [INDIVIDUAL] },
   });
 

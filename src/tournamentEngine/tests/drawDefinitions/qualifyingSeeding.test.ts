@@ -107,8 +107,7 @@ it.each(scenarios)(
     const event = tournamentEngine.getEvent({ eventId }).event;
     expect(event.entries.length).toEqual(0);
 
-    const participants =
-      tournamentEngine.getTournamentParticipants().tournamentParticipants;
+    const participants = tournamentEngine.getParticipants().participants;
     expect(participants.length).toEqual(participantsCount);
 
     const scaledParticipants = participants.filter(

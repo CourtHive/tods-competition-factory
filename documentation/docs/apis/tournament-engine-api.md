@@ -610,7 +610,7 @@ Returns all matchUps from all structures within a draw.
 
 ```js
 const { matchUps } = tournamentEngine.allDrawMatchUps({
-  participantsProfile, // optional - ability to specify additions to context (see parameters of getTournamentParticipants())
+  participantsProfile, // optional - ability to specify additions to context (see parameters of getParticipants())
   contextFilters, // filters based on context attributes
   matchUpFilters, // attribute filters
   nextMatchUps, // optioanl - boolean - to include winnerTo and loserTo
@@ -628,7 +628,7 @@ Returns all matchUps for an event.
 
 ```js
 const { matchUps } = allEventMatchUps({
-  participantsProfile, // optional - ability to specify additions to context (see parameters of getTournamentParticipants())
+  participantsProfile, // optional - ability to specify additions to context (see parameters of getParticipants())
   scheduleVisibilityFilters, // { visibilityThreshold: Date, eventIds, drawIds }
   matchUpFilters, // optional; [ scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
   contextFilters, // filters based on context attributes
@@ -647,7 +647,7 @@ Return an array of all matchUps contained within a tournament. These matchUps ar
 ```js
 const { matchUps } = tournamentEngine.allTournamentMatchUps({
   scheduleVisibilityFilters, // { visibilityThreshold: Date, eventIds, drawIds }
-  participantsProfile, // optional - ability to specify additions to context (see parameters of getTournamentParticipants())
+  participantsProfile, // optional - ability to specify additions to context (see parameters of getParticipants())
   matchUpFilters, // optional; [ scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
   contextFilters, // filters based on context attributes
   nextMatchUps, // include winnerTo and loserTo matchUps
@@ -1315,11 +1315,11 @@ that the server context can not be blocked by any long-running external processe
 ```js
 const result = tournamentEngine.executionQueue([
   {
-    method: 'getTournamentParticipants',
+    method: 'getParticipants',
     params: { participantFilters: { participantTypes: [PAIR] } },
   },
   {
-    method: 'getTournamentParticipants',
+    method: 'getParticipants',
     params: { participantFilters: { participantTypes: [INDIVIDUAL] } },
   },
 ]);
@@ -1956,7 +1956,7 @@ See [publishEvent](#publishevent) for details on `policyDefinitions`.
 
 ```js
 const { eventData } = tournamentEngine.getEventData({
-  participantsProfile, // optional - ability to specify additions to context (see parameters of getTournamentParticipants())
+  participantsProfile, // optional - ability to specify additions to context (see parameters of getParticipants())
   policyDefinitions, // optional
   usePublishState, // optional - filter out draws which are not published
   eventId,
@@ -2207,7 +2207,7 @@ const { participant } = tournamentEngine.getPairedParticipant({
 
 ## getParticipantEventDetails
 
-Returns an array of eventDetails in which a specified `participantId` appears. For details on draw entry within events use `tournamentEngine.getTournamentParticipants({ inContext: true })`.
+Returns an array of eventDetails in which a specified `participantId` appears. For details on draw entry within events use `tournamentEngine.getParticipants({ inContext: true })`.
 
 ```js
 const { eventDetails } = tournamentEngine.getParticipantEventDetails({
@@ -2570,6 +2570,10 @@ const {
 ---
 
 ## getTournamentParticipants
+
+:::warning
+TO BE DEPRECATED: transition to use `getParticipants()`
+:::
 
 Returns **deepCopies** of tournament participants filtered by participantFilters which are arrays of desired participant attribute values.
 

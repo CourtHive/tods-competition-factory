@@ -27,10 +27,9 @@ it('can propagate and remove lineUps', () => {
   let drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
   const { positionAssignments } = drawDefinition.structures[0];
 
-  const { tournamentParticipants: teamParticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantTypes: [TEAM] },
-    });
+  const { participants: teamParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [TEAM] },
+  });
 
   let { matchUps: teamMatchUps } = tournamentEngine
     .devContext(false)
@@ -305,10 +304,9 @@ it('can propagate COMPASS lineUps properly', () => {
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   const { positionAssignments } = drawDefinition.structures[0];
 
-  const { tournamentParticipants: teamParticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantTypes: [TEAM] },
-    });
+  const { participants: teamParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [TEAM] },
+  });
 
   let { matchUps: teamMatchUps } = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: {

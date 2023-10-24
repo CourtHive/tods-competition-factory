@@ -36,15 +36,13 @@ test('accessorValues can target person.sex when participantType: PAIR', () => {
   );
   expect(participantWithTimeItems.ratings).toBeUndefined();
 
-  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
-    {
-      convertExtensions: true,
-      withScaleValues: true,
-      inContext: true,
-    }
-  );
+  const { participants } = tournamentEngine.getParticipants({
+    withIndividualParticipants: true,
+    convertExtensions: true,
+    withScaleValues: true,
+  });
 
-  const ratedParticipant = tournamentParticipants.find(
+  const ratedParticipant = participants.find(
     (p) =>
       p.participantType === PAIR &&
       p.individualParticipants &&
@@ -54,14 +52,14 @@ test('accessorValues can target person.sex when participantType: PAIR', () => {
     expect(Object.keys(participant.ratings)).not.toBeUndefined();
   }
 
-  let targetParticipant = tournamentParticipants.find(
+  let targetParticipant = participants.find(
     (participant) =>
       participant.participantId === participantWithTimeItems.participantId
   );
   expect(Object.keys(targetParticipant.ratings)).not.toBeUndefined();
 
   const { value, values } = getAccessorValue({
-    element: tournamentParticipants[0],
+    element: participants[0],
     accessor: 'individualParticipants.person.sex',
   });
   expect(value).toEqual(MALE);

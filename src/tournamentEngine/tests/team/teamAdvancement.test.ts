@@ -82,10 +82,9 @@ it.each(scenarios)('can advance teamParticipants', (scenario) => {
   let { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
   const { positionAssignments } = drawDefinition.structures[0];
 
-  const { tournamentParticipants: teamParticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantTypes: [TEAM] },
-    });
+  const { participants: teamParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [TEAM] },
+  });
 
   firstRoundDualMatchUps.forEach((dualMatchUp) =>
     assignParticipants({
@@ -281,8 +280,8 @@ test('participants for other teams cannot be assigned without teamParticipantId'
       matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [1] },
     });
 
-  const { tournamentParticipants: individualParticipants } =
-    tournamentEngine.getTournamentParticipants({
+  const { participants: individualParticipants } =
+    tournamentEngine.getParticipants({
       participantFilters: { participantTypes: [INDIVIDUAL] },
     });
 
@@ -576,10 +575,9 @@ test('properly removes lineUps when team drawPositions are swapped', () => {
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   const { positionAssignments } = drawDefinition.structures[0];
 
-  const { tournamentParticipants: teamParticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantTypes: [TEAM] },
-    });
+  const { participants: teamParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [TEAM] },
+  });
 
   firstRoundDualMatchUps.forEach((dualMatchUp) =>
     assignParticipants({

@@ -34,13 +34,11 @@ test('it can use tieFormatName in addEvent', () => {
   );
   expect(eventResult.tieFormat).toEqual(tieFormats[LAVER_CUP]);
 
-  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
-    {
-      participantFilters: { participantTypes: [TEAM] },
-    }
-  );
-  const participantIds = tournamentParticipants.map((p) => p.participantId);
-  expect(tournamentParticipants.length).toEqual(participantsCount);
+  const { participants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [TEAM] },
+  });
+  const participantIds = participants.map((p) => p.participantId);
+  expect(participants.length).toEqual(participantsCount);
 
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result.success).toEqual(true);
@@ -60,13 +58,11 @@ test('it will provide default tieFormat for TEAM events', () => {
   const { eventId } = eventResult;
   expect(result.success).toEqual(true);
 
-  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
-    {
-      participantFilters: { participantTypes: [TEAM] },
-    }
-  );
-  const participantIds = tournamentParticipants.map((p) => p.participantId);
-  expect(tournamentParticipants.length).toEqual(participantsCount);
+  const { participants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [TEAM] },
+  });
+  const participantIds = participants.map((p) => p.participantId);
+  expect(participants.length).toEqual(participantsCount);
 
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result.success).toEqual(true);
@@ -86,10 +82,8 @@ it('can generate draws with unique TEAM participants', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
-    {
-      participantFilters: { participantTypes: [TEAM] },
-    }
-  );
-  expect(tournamentParticipants.length).toEqual(8);
+  const { participants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [TEAM] },
+  });
+  expect(participants.length).toEqual(8);
 });

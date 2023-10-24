@@ -98,6 +98,7 @@ export function processSides(params) {
           matchUpId,
           eventId,
           drawId,
+          stage,
         };
         if (withOpponents) {
           const opponentParticipantInfo = getOpponentInfo(
@@ -111,6 +112,15 @@ export function processSides(params) {
           participantMap[participantId].matchUps[matchUpId].collectionId =
             collectionId;
         }
+      }
+
+      if (withOpponents && opponentParticipantId) {
+        participantMap[participantId].opponents[opponentParticipantId] = {
+          participantId: opponentParticipantId,
+          matchUpId,
+          eventId,
+          drawId,
+        };
       }
 
       if (withRankingProfile) {
@@ -147,29 +157,30 @@ export function processSides(params) {
       }
     };
 
-    const addPartnerParticiapntId = (element, partnerParticipantId) => {
-      if (element) {
-        if (!element.partnerParticipantIds) element.partnerParticipantIds = [];
-        if (!element.partnerParticipantIds.includes(partnerParticipantId))
-          element.partnerParticipantIds.push(partnerParticipantId);
-      }
-    };
+    const addPartner = ({ participant, partnerParticipantId }) => {
+      const addPartnerParticiapntId = (element, partnerParticipantId) => {
+        if (element) {
+          if (!element.partnerParticipantIds)
+            element.partnerParticipantIds = [];
+          if (!element.partnerParticipantIds.includes(partnerParticipantId))
+            element.partnerParticipantIds.push(partnerParticipantId);
+        }
+      };
 
-    const addPartner = ({ participantId, partnerParticipantId }) => {
       if (withDraws)
         addPartnerParticiapntId(
-          participantMap[participantId]?.draws?.[drawId],
+          participant?.draws?.[drawId],
           partnerParticipantId
         );
       if (withEvents) {
         addPartnerParticiapntId(
-          participantMap[participantId]?.events?.[eventId],
+          participant?.events?.[eventId],
           partnerParticipantId
         );
       }
       if (withMatchUps) {
         addPartnerParticiapntId(
-          participantMap[participantId]?.matchUps?.[matchUpId],
+          participant?.matchUps?.[matchUpId],
           partnerParticipantId
         );
       }
@@ -179,15 +190,6 @@ export function processSides(params) {
       const opponentParticipantId = opponents?.[sideNumber];
 
       addMatchUp(participantId, opponentParticipantId);
-
-      if (withOpponents && opponentParticipantId) {
-        participantMap[participantId].opponents[opponentParticipantId] = {
-          participantId: opponentParticipantId,
-          matchUpId,
-          eventId,
-          drawId,
-        };
-      }
 
       const isPair =
         participantMap[participantId]?.participant.participantType === PAIR;
@@ -235,7 +237,8 @@ export function processSides(params) {
         );
         individualParticipantIds.forEach((participantId, i) => {
           const partnerParticipantId = individualParticipantIds[1 - i];
-          addPartner({ participantId, partnerParticipantId });
+          const participant = participantMap[participantId];
+          participant && addPartner({ participant, partnerParticipantId });
         });
 
         // in TEAM events PAIR participants do not appear in entries
@@ -248,11 +251,12 @@ export function processSides(params) {
               participantMap[teamParticipantId]?.events[eventId];
 
             if (teamEntry) {
-              participantMap[participantId].events[eventId] = teamEntry;
+              participantMap[participantId].events[eventId] = { ...teamEntry };
               individualParticipantIds.forEach(
                 (individualParticiapntId) =>
-                  (participantMap[individualParticiapntId].events[eventId] =
-                    teamEntry)
+                  (participantMap[individualParticiapntId].events[eventId] = {
+                    ...teamEntry,
+                  })
               );
             } else {
               console.log('Missing teamEntry', { eventId, teamParticipantId });

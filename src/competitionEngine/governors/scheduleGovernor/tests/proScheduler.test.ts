@@ -6,6 +6,8 @@ import competitionEngine from '../../../sync';
 import { expect, it, test } from 'vitest';
 
 import { TO_BE_PLAYED } from '../../../../constants/matchUpStatusConstants';
+import { SINGLES_EVENT } from '../../../../constants/eventConstants';
+import { MALE } from '../../../../constants/genderConstants';
 
 it('supports pro-scheduling', () => {
   const startDate = '2022-08-27'; // date on which pro scheduling was first successfully run
@@ -163,7 +165,7 @@ test('pro-scheduling respects DO_NOT_SCHEDULE requests', () => {
         standardFamilyName: `test-${index}`,
         standardGivenName: `test`,
         nationalityCode: 'BRA',
-        sex: 'MALE',
+        sex: MALE,
       };
     });
   };
@@ -171,16 +173,15 @@ test('pro-scheduling respects DO_NOT_SCHEDULE requests', () => {
   const persons = generatePersons(3);
   tournamentEngine.addPersons({ persons });
 
-  const { tournamentParticipants } =
-    tournamentEngine.getTournamentParticipants();
-  const participantIds = tournamentParticipants.map(
+  const { participants } = tournamentEngine.getParticipants();
+  const participantIds = participants.map(
     (participant) => participant.participantId
   );
 
   const event = {
     eventName: 'Test Event',
-    eventType: 'SINGLES',
-    eventGender: 'MALE',
+    eventType: SINGLES_EVENT,
+    eventGender: MALE,
   };
 
   const {
@@ -224,14 +225,14 @@ test('pro-scheduling respects DO_NOT_SCHEDULE requests', () => {
   let roundSchedules = matchUps
     .filter(({ matchUpStatus }) => matchUpStatus === TO_BE_PLAYED)
     .map(({ schedule: { scheduledTime, courtName }, roundNumber }) => [
-      roundNumber,
       scheduledTime,
+      roundNumber,
       courtName,
     ]);
 
   expect(roundSchedules).toStrictEqual([
-    [1, '2022-01-01T08:00', '1'],
-    [2, '2022-01-01T09:30', '1'],
+    ['2022-01-01T08:00', 1, '1'],
+    ['2022-01-01T09:30', 2, '1'],
   ]);
 
   // add a DO_NOT_SCHEDULE for the first person

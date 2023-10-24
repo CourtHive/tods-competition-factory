@@ -104,10 +104,10 @@ it('can add multiple participants at once', () => {
   expect(result.notAdded.length).toEqual(1);
   expect(result.info).not.toBeUndefined();
 
-  let { tournamentParticipants } = tournamentEngine.getTournamentParticipants();
-  expect(tournamentParticipants.length).toEqual(2);
+  let { participants } = tournamentEngine.getParticipants();
+  expect(participants.length).toEqual(2);
 
-  const individualParticipantIds = tournamentParticipants.map(
+  const individualParticipantIds = participants.map(
     (participant) => participant.participantId
   );
 
@@ -123,6 +123,6 @@ it('can add multiple participants at once', () => {
   expect(result.success).toEqual(true);
   expect(result.notAdded.length).toEqual(2);
 
-  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants());
-  expect(tournamentParticipants.length).toEqual(3);
+  ({ participants } = tournamentEngine.getParticipants());
+  expect(participants.length).toEqual(3);
 });
