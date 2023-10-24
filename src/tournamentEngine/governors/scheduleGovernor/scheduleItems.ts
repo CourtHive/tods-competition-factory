@@ -1,6 +1,6 @@
 import { addMatchUpScheduledTime as addScheduledTime } from '../../../drawEngine/governors/matchUpGovernor/scheduleTimeItems/scheduledTime';
-import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
 import { findParticipant } from '../../../global/functions/deducers/findParticipant';
+import { getParticipants } from '../../getters/participants/getParticipants';
 import {
   addMatchUpScheduleItems as addScheduleItems,
   addMatchUpScheduledDate as addScheduledDate,
@@ -13,13 +13,13 @@ import {
 } from '../../../drawEngine/governors/matchUpGovernor/scheduleItems';
 
 import { INDIVIDUAL } from '../../../constants/participantConstants';
-import { OFFICIAL } from '../../../constants/participantRoles';
 import {
   MISSING_PARTICIPANT_ID,
   PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 import {
   DrawDefinition,
+  ParticipantRoleEnum,
   Tournament,
 } from '../../../types/tournamentFromSchema';
 
@@ -172,13 +172,14 @@ export function addMatchUpOfficial({
 }) {
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
 
-  const { tournamentParticipants } = getTournamentParticipants({
-    tournamentRecord,
-    participantFilters: {
-      participantTypes: [INDIVIDUAL],
-      participantRoles: [OFFICIAL],
-    },
-  });
+  const tournamentParticipants =
+    getParticipants({
+      tournamentRecord,
+      participantFilters: {
+        participantTypes: [INDIVIDUAL],
+        participantRoles: [ParticipantRoleEnum.Official],
+      },
+    }).participants ?? [];
 
   const participant = findParticipant({
     tournamentParticipants,

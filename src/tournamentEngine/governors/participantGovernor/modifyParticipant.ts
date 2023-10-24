@@ -1,6 +1,6 @@
-import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
 import { findTournamentParticipant } from '../../getters/participants/participantGetter';
 import { addIndividualParticipantIds } from './groupings/addIndividualParticipantIds';
+import { getParticipants } from '../../getters/participants/getParticipants';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { participantRoles } from '../../../constants/participantRoles';
 import { genderConstants } from '../../../constants/genderConstants';
@@ -77,11 +77,10 @@ export function modifyParticipant(params) {
     newValues.participantOtherName = participantOtherName;
 
   if (Array.isArray(individualParticipantIds)) {
-    const { tournamentParticipants: individualParticipants } =
-      getTournamentParticipants({
-        participantFilters: { participantTypes: [participantTypes.INDIVIDUAL] },
-        tournamentRecord,
-      });
+    const { participants: individualParticipants } = getParticipants({
+      participantFilters: { participantTypes: [participantTypes.INDIVIDUAL] },
+      tournamentRecord,
+    });
     const allIndividualParticipantIds =
       individualParticipants?.map(getParticipantId);
 

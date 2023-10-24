@@ -17,6 +17,7 @@ import {
   TournamentRecordsArgs,
 } from '../../types/factoryTypes';
 
+// TODO: getTournamentParticipants migration
 export function getParticipants(params) {
   const { tournamentRecords } = params || {};
   if (

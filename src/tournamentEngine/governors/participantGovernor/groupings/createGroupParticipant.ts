@@ -1,4 +1,4 @@
-import { getTournamentParticipants } from '../../../getters/participants/getTournamentParticipants';
+import { getParticipants } from '../../../getters/participants/getParticipants';
 import { addNotice, getTopics } from '../../../../global/state/globalState';
 import { definedAttributes } from '../../../../utilities/objects';
 import { makeDeepCopy, UUID } from '../../../../utilities';
@@ -52,11 +52,12 @@ export function createGroupParticipant({
       error: INVALID_VALUES,
     };
 
-  const { tournamentParticipants } = getTournamentParticipants({
-    participantFilters: { participantTypes: [INDIVIDUAL] },
-    tournamentRecord,
-  });
-  const tournamentIndividualParticipantIds = tournamentParticipants.map(
+  const participants =
+    getParticipants({
+      participantFilters: { participantTypes: [INDIVIDUAL] },
+      tournamentRecord,
+    }).participants ?? [];
+  const tournamentIndividualParticipantIds = participants.map(
     (participant) => participant.participantId
   );
 
