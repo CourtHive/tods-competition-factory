@@ -10,6 +10,7 @@ import {
 } from '../../../drawEngine/getters/getMatchUps/drawMatchUps';
 
 import { ResultType } from '../../../global/functions/decorateResult';
+import { MatchUp } from '../../../types/tournamentFromSchema';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import {
   GetMatchUpsArgs,
@@ -19,7 +20,6 @@ import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
-import { MatchUp } from '../../../types/tournamentFromSchema';
 
 export function allTournamentMatchUps(params?: GetMatchUpsArgs): ResultType & {
   matchUps?: HydratedMatchUp[];

@@ -23,7 +23,6 @@ type HydrateParticipantsArgs = {
 export function hydrateParticipants({
   participantsProfile,
   useParticipantMap,
-  policyDefinitions,
   tournamentRecord,
   contextProfile,
   inContext,
@@ -32,7 +31,6 @@ export function hydrateParticipants({
     const participantMap = getParticipantMap({
       ...participantsProfile,
       ...contextProfile,
-      policyDefinitions,
       tournamentRecord,
     })?.participantMap;
 
