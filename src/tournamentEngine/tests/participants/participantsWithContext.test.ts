@@ -150,35 +150,28 @@ it('can add statistics to tournament participants', () => {
   const positionAssignments =
     event.drawDefinitions[0].structures[0].positionAssignments;
 
-  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
-    {
-      convertExtensions: true,
-      withStatistics: true,
-      withOpponents: true,
-      withMatchUps: true,
-    }
-  );
+  const { participants, derivedEventInfo } = tournamentEngine.getParticipants({
+    withPotentialMatchUps: true,
+    convertExtensions: true,
+    withStatistics: true,
+    withOpponents: true,
+    withMatchUps: true,
+    withEvents: true,
+    withDraws: true,
+  });
   // specified 200 participantType: DOUBLES => 200 PAIR + 400 INDIVIDUAL
   // specified category on bot DOUBLES (30 + 30 + 30) and SINGLES (30) + 120
-  expect(tournamentParticipants.length).toEqual(720);
-  const categoriesPresent = tournamentParticipants.every((participant) =>
-    participant.events.every(({ category }) => category)
+  expect(participants.length).toEqual(720);
+
+  const categoriesPresent = participants.every((participant) =>
+    participant.events.every(
+      ({ eventId }) => derivedEventInfo[eventId].category
+    )
   );
   expect(categoriesPresent).toBeTruthy();
 
-  /*
-  const getParticipant = ({ drawPosition }) => {
-    const participantId = positionAssignments.find(
-      (assignment) => assignment.drawPosition === drawPosition
-    ).participantId;
-    return tournamentParticipants.find(
-      (participant) => participant.participantId === participantId
-    );
-  };
-  */
-
   const doublesParticipant = getParticipant({
-    tournamentParticipants,
+    tournamentParticipants: participants,
     positionAssignments,
     drawPosition: 1,
   });
@@ -190,18 +183,18 @@ it('can add statistics to tournament participants', () => {
 
   const individualParticipantId =
     doublesParticipant.individualParticipantIds[0];
-  const individualParticipant = tournamentParticipants.find(
+  const individualParticipant = participants.find(
     (participant) => participant.participantId === individualParticipantId
   );
-  expect(individualParticipant.events[0].drawIds.length).toBeGreaterThan(0);
+  expect(individualParticipant.draws.length).toBeGreaterThan(0);
   expect(individualParticipant.statistics[0].statValue).toBeGreaterThan(0);
   expect(individualParticipant.events[0]._ustaLevel).toEqual(1);
 
-  expect(individualParticipant.events[0].eventType).toEqual(DOUBLES);
+  expect(
+    derivedEventInfo[individualParticipant.events[0].eventId].eventType
+  ).toEqual(DOUBLES);
 
-  const hasPotentials = tournamentParticipants.find(
-    (p) => p.potentialMatchUps?.length
-  );
+  const hasPotentials = participants.find((p) => p.potentialMatchUps?.length);
   expect(hasPotentials).not.toBeUndefined();
 });
 

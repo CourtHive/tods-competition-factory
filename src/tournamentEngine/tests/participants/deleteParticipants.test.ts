@@ -13,11 +13,9 @@ import { DOUBLES, TEAM } from '../../../constants/eventConstants';
 it('can delete participants', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
   tournamentEngine.setState(tournamentRecord);
-  let { tournamentParticipants } = tournamentEngine.getTournamentParticipants();
+  let { participants } = tournamentEngine.getParticipants();
 
-  const participantIds = tournamentParticipants.map(
-    ({ participantId }) => participantId
-  );
+  const participantIds = participants.map(({ participantId }) => participantId);
   expect(participantIds.length).toBeGreaterThan(0);
 
   const participantIdsToDelete = participantIds.slice(0, 16);
@@ -26,8 +24,8 @@ it('can delete participants', () => {
   });
   expect(result.success).toEqual(true);
 
-  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants());
-  expect(tournamentParticipants.length).toEqual(16);
+  ({ participants } = tournamentEngine.getParticipants());
+  expect(participants.length).toEqual(16);
 });
 
 it('will not delete participants in draws', () => {
@@ -36,11 +34,9 @@ it('will not delete participants in draws', () => {
     drawProfiles,
   });
   tournamentEngine.setState(tournamentRecord);
-  let { tournamentParticipants } = tournamentEngine.getTournamentParticipants();
+  let { participants } = tournamentEngine.getParticipants();
 
-  const participantIds = tournamentParticipants.map(
-    ({ participantId }) => participantId
-  );
+  const participantIds = participants.map(({ participantId }) => participantId);
   expect(participantIds.length).toBeGreaterThan(0);
 
   const participantIdsToDelete = participantIds.slice(0, 16);
@@ -49,8 +45,8 @@ it('will not delete participants in draws', () => {
   });
   expect(result.error).toEqual(EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT);
 
-  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants());
-  expect(tournamentParticipants.length).toEqual(32);
+  ({ participants } = tournamentEngine.getParticipants());
+  expect(participants.length).toEqual(32);
 });
 
 it('will not delete pair participants in team draws', () => {
@@ -63,10 +59,9 @@ it('will not delete pair participants in team draws', () => {
 
   tournamentEngine.setState(result.tournamentRecord);
 
-  const { tournamentParticipants: pairParticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantTypes: [PAIR] },
-    });
+  const { participants: pairParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [PAIR] },
+  });
 
   const pairParticipantIds = pairParticipants.map(
     ({ participantId }) => participantId
@@ -97,10 +92,9 @@ it('will clean up entries when participants are deleted', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { tournamentParticipants: teamParticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantTypes: [TEAM] },
-    });
+  const { participants: teamParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [TEAM] },
+  });
 
   const pairParticipantIds = teamParticipants.map(
     ({ participantId }) => participantId

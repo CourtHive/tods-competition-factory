@@ -32,9 +32,10 @@ test('participants can be merged', () => {
   modifiedParticipant.person.previousNames = ['Previous Name'];
   const { participantId } = modifiedParticipant;
 
-  let { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
-    participantFilters: { participantIds: [participantId] },
-  });
+  let { participants: tournamentParticipants } =
+    tournamentEngine.getParticipants({
+      participantFilters: { participantIds: [participantId] },
+    });
 
   expect(modifiedParticipant.person).not.toEqual(
     tournamentParticipants[0].person
@@ -45,7 +46,7 @@ test('participants can be merged', () => {
   });
   expect(result.success).toEqual(true);
 
-  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+  ({ participants: tournamentParticipants } = tournamentEngine.getParticipants({
     participantFilters: { participantIds: [participantId] },
   }));
   expect(modifiedParticipant.person).toEqual(tournamentParticipants[0].person);
@@ -57,7 +58,7 @@ test('participants can be merged', () => {
   });
   expect(result.success).toEqual(true);
 
-  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+  ({ participants: tournamentParticipants } = tournamentEngine.getParticipants({
     participantFilters: { participantIds: [participantId] },
   }));
   expect(modifiedParticipant.person).toEqual(tournamentParticipants[0].person);
@@ -70,7 +71,7 @@ test('participants can be merged', () => {
   });
   expect(result.success).toEqual(true);
 
-  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+  ({ participants: tournamentParticipants } = tournamentEngine.getParticipants({
     participantFilters: { participantIds: [participantId] },
   }));
   expect(tournamentParticipants[0].person.previousNames.length).toEqual(3);
@@ -85,7 +86,8 @@ test('participants can be merged', () => {
   });
   expect(result.success).toEqual(true);
 
-  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants());
+  ({ participants: tournamentParticipants } =
+    tournamentEngine.getParticipants());
   expect(tournamentParticipants.length).toEqual(20);
 
   result = tournamentEngine.newTournamentRecord();
@@ -94,7 +96,8 @@ test('participants can be merged', () => {
   result = tournamentEngine.mergeParticipants({ participants });
   expect(result.success).toEqual(true);
 
-  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants());
+  ({ participants: tournamentParticipants } =
+    tournamentEngine.getParticipants());
   expect(tournamentParticipants.length).toEqual(10);
 
   expect(participantAddEventsCounter).toEqual(3);

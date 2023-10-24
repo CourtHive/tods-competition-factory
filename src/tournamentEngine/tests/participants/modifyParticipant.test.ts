@@ -25,8 +25,8 @@ it('can modify PAIR participants', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { tournamentParticipants: individualParticipants } =
-    tournamentEngine.getTournamentParticipants({
+  const { participants: individualParticipants } =
+    tournamentEngine.getParticipants({
       participantFilters: { participantTypes: [INDIVIDUAL] },
     });
   expect(individualParticipants.length).toEqual(20);
@@ -60,10 +60,9 @@ it('can modify PAIR participants', () => {
   expect(result.success).toEqual(true);
   expect(result.participant.participantOtherName).toEqual('Other');
 
-  const { tournamentParticipants: pairParticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantTypes: [PAIR] },
-    });
+  const { participants: pairParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [PAIR] },
+  });
   expect(pairParticipants.length).toEqual(10);
   const pairParticipant = pairParticipants[0];
 
@@ -126,10 +125,9 @@ it('can modify TEAM participants', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { tournamentParticipants: teamParticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantTypes: [TEAM] },
-    });
+  const { participants: teamParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [TEAM] },
+  });
   expect(teamParticipants.length).toEqual(10);
 
   const firstTeam = teamParticipants[0];
@@ -168,10 +166,9 @@ it('will not modify participantType', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { tournamentParticipants: teamParticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantTypes: [TEAM] },
-    });
+  const { participants: teamParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [TEAM] },
+  });
   expect(teamParticipants.length).toEqual(10);
 
   const firstTeam = teamParticipants[0];
