@@ -228,7 +228,9 @@ it('can identify winningParticipants and map WTN and ranking', () => {
 
   expect(
     instanceCount(
-      participantEntryReports.map((r) => r.mainSeeding).filter(Boolean)
+      participantEntryReports
+        .map((r) => r.mainSeeding?.seedValue)
+        .filter(Boolean)
     )
   ).toEqual({ 1: 4, 2: 4 });
   expect(Object.keys(participantEntryReports[0]).sort()).toEqual([
