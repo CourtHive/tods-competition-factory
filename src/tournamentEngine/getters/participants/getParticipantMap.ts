@@ -1,13 +1,12 @@
 import { addNationalityCode } from '../../governors/participantGovernor/addNationalityCode';
 import { getTimeItem } from '../../governors/queryGovernor/timeItems';
-import { attributeFilter, makeDeepCopy } from '../../../utilities';
+import { makeDeepCopy } from '../../../utilities';
 import { getScaleValues } from './getScaleValues';
 
-import { ParticipantMap, PolicyDefinitions } from '../../../types/factoryTypes';
-import { POLICY_TYPE_PARTICIPANT } from '../../../constants/policyConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { Tournament } from '../../../types/tournamentFromSchema';
 import { HydratedParticipant } from '../../../types/hydrated';
+import { ParticipantMap } from '../../../types/factoryTypes';
 import {
   GROUP,
   PAIR,
@@ -31,7 +30,6 @@ const membershipMap = {
 
 type GetParticpantsMapArgs = {
   withIndividualParticipants?: boolean;
-  policyDefinitions?: PolicyDefinitions;
   tournamentRecord: Tournament;
   convertExtensions?: boolean;
   withSignInStatus?: boolean;
@@ -43,7 +41,6 @@ type GetParticpantsMapArgs = {
 export function getParticipantMap({
   withIndividualParticipants,
   convertExtensions,
-  policyDefinitions,
   tournamentRecord,
   withSignInStatus,
   withScaleValues,
@@ -53,9 +50,6 @@ export function getParticipantMap({
 }: GetParticpantsMapArgs): {
   participantMap: ParticipantMap;
 } {
-  const participantAttributes = policyDefinitions?.[POLICY_TYPE_PARTICIPANT];
-  const filterAttributes = participantAttributes?.participant;
-
   const participantMap: ParticipantMap = {};
   // initialize all participants first, to preserve order
   for (const participant of tournamentRecord.participants || []) {
@@ -69,25 +63,16 @@ export function getParticipantMap({
       convertExtensions,
       internalUse
     );
-    const filteredParticipant = filterAttributes
-      ? attributeFilter({
-          template: participantAttributes.participant,
-          source: participantCopy,
-        })
-      : participantCopy;
 
     const { participantId, individualParticipantIds, participantType } =
-      filteredParticipant;
+      participantCopy;
 
-    Object.assign(
-      participantMap[participantId].participant,
-      filteredParticipant
-    );
+    Object.assign(participantMap[participantId].participant, participantCopy);
 
     if (individualParticipantIds) {
       processIndividualParticipantIds({
         individualParticipantIds,
-        filteredParticipant,
+        participantCopy,
         participantMap,
         participantType,
         participantId,
@@ -147,7 +132,7 @@ function addIndividualParticipants({ participantMap }) {
 
 function processIndividualParticipantIds({
   individualParticipantIds,
-  filteredParticipant,
+  participantCopy,
   participantMap,
   participantType,
   participantId,
@@ -164,7 +149,7 @@ function processIndividualParticipantIds({
         participantName,
         participantId,
         teamId,
-      } = filteredParticipant;
+      } = participantCopy;
       const membership = membershipMap[participantType];
       individualParticipant[membership].push({
         participantRoleResponsibilities,
