@@ -1,10 +1,10 @@
-import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
 import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotifications';
 import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
 import { deleteParticipants } from '../participantGovernor/deleteParticipants';
 import { modifyParticipant } from '../participantGovernor/modifyParticipant';
+import { getParticipants } from '../../getters/participants/getParticipants';
 import { removeCollectionAssignments } from './removeCollectionAssignments';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { addParticipant } from '../participantGovernor/addParticipants';
@@ -27,8 +27,23 @@ import {
   MISSING_PARTICIPANT_ID,
   PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
+import {
+  DrawDefinition,
+  Event,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
-export function removeTieMatchUpParticipantId(params) {
+type RemoveTieMatchUpParticipantIdArgs = {
+  tournamentRecord: Tournament;
+  drawDefinition: DrawDefinition;
+  participantId: string;
+  tieMatchUpId: string;
+  event: Event;
+};
+
+export function removeTieMatchUpParticipantId(
+  params: RemoveTieMatchUpParticipantIdArgs
+) {
   const { tournamentRecord, drawDefinition, participantId, event } = params;
   const stack = 'removeTieMatchUpParticiapantId';
 
@@ -64,43 +79,42 @@ export function removeTieMatchUpParticipantId(params) {
     tieFormat,
   } = matchUpContext;
 
-  if (!dualMatchUp) return { error: MISSING_MATCHUP };
+  if (!dualMatchUp)
+    return decorateResult({ result: { error: MISSING_MATCHUP }, stack });
 
   const side: any = inContextTieMatchUp?.sides?.find(
     (side: any) =>
       side.participant?.participantId === participantId ||
       side.participant?.individualParticipantIds?.includes(participantId)
   );
-  if (!side) return { error: PARTICIPANT_NOT_FOUND };
+  if (!side)
+    return decorateResult({ result: { error: PARTICIPANT_NOT_FOUND }, stack });
 
   if (
     !side.substitutions?.length &&
     (scoreHasValue({ score: inContextTieMatchUp?.score }) ||
       inContextTieMatchUp?.winningSide)
   )
-    return { error: EXISTING_OUTCOME };
+    return decorateResult({ result: { error: EXISTING_OUTCOME }, stack });
 
   const teamParticipantId = inContextDualMatchUp?.sides?.find(
     ({ sideNumber }) => sideNumber === side.sideNumber
   )?.participantId;
 
-  if (!teamParticipantId) return { error: PARTICIPANT_NOT_FOUND };
+  if (!teamParticipantId)
+    return decorateResult({ result: { error: PARTICIPANT_NOT_FOUND }, stack });
 
-  const {
-    tournamentParticipants: [participantToRemove],
-  } = getTournamentParticipants({
+  const participantToRemove = getParticipants({
+    participantFilters: { participantIds: [participantId] },
     tournamentRecord,
-    participantFilters: {
-      participantIds: [participantId],
-    },
-  });
+  })?.participants?.[0];
 
   if (!participantToRemove) {
-    return { error: PARTICIPANT_NOT_FOUND };
+    return decorateResult({ result: { error: PARTICIPANT_NOT_FOUND }, stack });
   }
 
   if (matchUpType === SINGLES && participantToRemove.participantType === PAIR) {
-    return { error: INVALID_PARTICIPANT };
+    return decorateResult({ result: { error: INVALID_PARTICIPANT }, stack });
   }
 
   const participantIds =
@@ -193,31 +207,33 @@ export function removeTieMatchUpParticipantId(params) {
     );
 
     const { participantId: pairParticipantId } = tieMatchUpSide || {};
-    const {
-      tournamentParticipants: [pairParticipant],
-    } = getTournamentParticipants({
-      tournamentRecord,
-      participantFilters: {
-        participantIds: [pairParticipantId],
-      },
-      withEvents: true,
-    });
+
+    const pairParticipant =
+      pairParticipantId &&
+      getParticipants({
+        participantFilters: { participantIds: [pairParticipantId] },
+        tournamentRecord,
+        withDraws: true,
+      })?.participants?.[0];
 
     if (pairParticipant) {
       const individualParticipantIds: string[] =
-        pairParticipant?.individualParticipantIds.filter(
+        pairParticipant?.individualParticipantIds?.filter(
           (currentId) => currentId !== participantId
-        );
+        ) ?? [];
 
       if (previousParticipantIds)
         individualParticipantIds.push(...previousParticipantIds);
 
       if (individualParticipantIds.length > 2) {
-        return { error: INVALID_PARTICIPANT_IDS };
+        return decorateResult({
+          result: { error: INVALID_PARTICIPANT_IDS },
+          stack,
+        });
       }
 
       // don't modify pair participant that is part of other events/draws
-      if (!pairParticipant.draws.length) {
+      if (!pairParticipant.draws?.length) {
         if (individualParticipantIds.length) {
           pairParticipant.individualParticipantIds = individualParticipantIds;
           const result = modifyParticipant({
@@ -225,7 +241,7 @@ export function removeTieMatchUpParticipantId(params) {
             pairOverride: true,
             tournamentRecord,
           });
-          if (result.error) return result;
+          if (result.error) return decorateResult({ result, stack });
         } else {
           const result = deleteParticipants({
             participantIds: [pairParticipantId],
@@ -250,12 +266,15 @@ export function removeTieMatchUpParticipantId(params) {
               pairOverride: true,
               tournamentRecord,
             });
-            if (result.error) return result;
+            if (result.error) return decorateResult({ result, stack });
           }
         }
       }
     } else {
-      return { error: PARTICIPANT_NOT_FOUND };
+      return decorateResult({
+        result: { error: PARTICIPANT_NOT_FOUND },
+        stack,
+      });
     }
   }
 

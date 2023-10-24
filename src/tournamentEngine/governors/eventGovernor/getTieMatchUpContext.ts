@@ -1,8 +1,8 @@
 import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
-import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
 import { getMatchUpsMap } from '../../../drawEngine/getters/getMatchUps/getMatchUpsMap';
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
 import { findMatchUp } from '../../../drawEngine/getters/getMatchUps/findMatchUp';
+import { getParticipants } from '../../getters/participants/getParticipants';
 import { extractAttributes } from '../../../utilities';
 
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
@@ -18,21 +18,31 @@ import {
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 import {
+  DrawDefinition,
+  Event,
   MatchUp,
   Participant,
   Structure,
   TieFormat,
+  Tournament,
 } from '../../../types/tournamentFromSchema';
 
 // for a given tieMatchUpId (SINGLES or DOUBLES) return:
 // the tieMatchUp, the dualMatchUp within which it occurs, an inContext copy of the dualMatchUp
 // the tieFormat, collectionId and collectionPosition & etc.
+
+type GetTieMatchUpContextArgs = {
+  tournamentRecord: Tournament;
+  drawDefinition: DrawDefinition;
+  tieMatchUpId: string;
+  event: Event;
+};
 export function getTieMatchUpContext({
   tournamentRecord,
   drawDefinition,
   tieMatchUpId,
   event,
-}): {
+}: GetTieMatchUpContextArgs): {
   inContextDualMatchUp?: HydratedMatchUp;
   inContextTieMatchUp?: HydratedMatchUp;
   teamParticipants?: Participant[];
@@ -91,14 +101,13 @@ export function getTieMatchUpContext({
   const participantIds = relevantAssignments?.map(
     extractAttributes('participantId')
   );
-  const { tournamentParticipants: teamParticipants } =
-    getTournamentParticipants({
-      tournamentRecord,
-      participantFilters: {
-        participantTypes: [TEAM],
-        participantIds,
-      },
-    });
+  const { participants: teamParticipants } = getParticipants({
+    tournamentRecord,
+    participantFilters: {
+      participantTypes: [TEAM],
+      participantIds,
+    },
+  });
 
   const { matchUp: dualMatchUp } = findMatchUp({
     matchUpId: matchUpTieId,

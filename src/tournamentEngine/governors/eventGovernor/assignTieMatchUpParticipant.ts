@@ -1,9 +1,9 @@
-import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotifications';
 import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
 import { deleteParticipants } from '../participantGovernor/deleteParticipants';
 import { modifyParticipant } from '../participantGovernor/modifyParticipant';
+import { getParticipants } from '../../getters/participants/getParticipants';
 import { removeCollectionAssignments } from './removeCollectionAssignments';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { addParticipant } from '../participantGovernor/addParticipants';
@@ -89,14 +89,10 @@ export function assignTieMatchUpParticipantId(params: any) {
         (side) => side.sideNumber === params.sideNumber
       )?.participantId);
 
-  const {
-    tournamentParticipants: [participantToAssign],
-  } = getTournamentParticipants({
+  const participantToAssign = getParticipants({
+    participantFilters: { participantIds: [participantId] },
     tournamentRecord,
-    participantFilters: {
-      participantIds: [participantId],
-    },
-  });
+  })?.participants?.[0];
 
   if (!participantToAssign) {
     return decorateResult({ result: { error: PARTICIPANT_NOT_FOUND }, stack });

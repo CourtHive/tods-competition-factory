@@ -583,7 +583,7 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     REMOVE_SUBSTITUTION,
   ]);
 
-  result = tournamentEngine.matchUpActions({
+  result = tournamentEngine.devContext(true).matchUpActions({
     sideNumber: 3 - targetSideNumber,
     matchUpId: doublesMatchUpId,
     drawId,
