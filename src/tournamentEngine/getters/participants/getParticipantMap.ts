@@ -58,12 +58,12 @@ export function getParticipantMap({
 
   const participantMap: ParticipantMap = {};
   // initialize all participants first, to preserve order
-  for (const participant of tournamentRecord.participants || []) {
+  for (const participant of tournamentRecord.participants ?? []) {
     const participantId = participant?.participantId;
     participantId && initializeParticipantId({ participantMap, participantId });
   }
 
-  for (const participant of tournamentRecord.participants || []) {
+  for (const participant of tournamentRecord.participants ?? []) {
     const participantCopy = makeDeepCopy(
       participant,
       convertExtensions,
