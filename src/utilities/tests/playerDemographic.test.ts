@@ -43,8 +43,8 @@ it('can export CSV files with player demographic data', () => {
   });
   expect(result.success).toEqual(true);
 
-  const { tournamentParticipants: individualParticipants } =
-    tournamentEngine.getTournamentParticipants({
+  const { participants: individualParticipants } =
+    tournamentEngine.getParticipants({
       participantFilters: { participantTypes: [INDIVIDUAL] },
       convertExtensions: true,
       withScaleValues: true,

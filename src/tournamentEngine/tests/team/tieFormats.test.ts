@@ -52,12 +52,10 @@ it.each(tieKeys)('can generate all exported tieFormatConstants', (tieKey) => {
   }
   expect(tieFormat.collectionDefinitions.length).toEqual(collectionsCount);
 
-  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
-    {
-      participantFilters: { participantTypes: [TEAM] },
-    }
-  );
-  const participantIds = tournamentParticipants.map((p) => p.participantId);
+  const { participants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [TEAM] },
+  });
+  const participantIds = participants.map((p) => p.participantId);
 
   const eventId = eventIds[1];
   result = tournamentEngine.addEventEntries({ eventId, participantIds });

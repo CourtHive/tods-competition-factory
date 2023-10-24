@@ -50,18 +50,15 @@ test('event entries are only removed when not placed in draw structures', () => 
   });
   expect(result.success).toEqual(true);
 
-  const { tournamentParticipants } =
-    tournamentEngine.getTournamentParticipants();
+  const { participants } = tournamentEngine.getParticipants();
 
   if (gender) {
-    tournamentParticipants.forEach((participant) => {
+    participants.forEach((participant) => {
       expect(participant.person.sex).toEqual(gender);
     });
   }
 
-  const participantIds = tournamentParticipants.map(
-    ({ participantId }) => participantId
-  );
+  const participantIds = participants.map(({ participantId }) => participantId);
   expect(participantIds.includes(participantId)).toEqual(true);
 
   let { event } = tournamentEngine.getEvent({ eventId });
@@ -76,7 +73,7 @@ test('event entries are only removed when not placed in draw structures', () => 
   expect(result.success).toEqual(true);
 
   result = tournamentEngine.checkValidEntries({
-    participants: tournamentParticipants,
+    participants,
     eventId,
   });
   expect(result.success).toEqual(true);

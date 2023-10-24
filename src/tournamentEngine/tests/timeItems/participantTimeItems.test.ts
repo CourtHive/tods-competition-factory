@@ -14,10 +14,9 @@ it('can add and read timeItems from participants', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { tournamentParticipants } =
-    tournamentEngine.getTournamentParticipants();
+  const { participants } = tournamentEngine.getParticipants();
 
-  const { participantId } = tournamentParticipants[0];
+  const { participantId } = participants[0];
 
   let timeItem: any = undefined;
   let result = tournamentEngine.addParticipantTimeItem({

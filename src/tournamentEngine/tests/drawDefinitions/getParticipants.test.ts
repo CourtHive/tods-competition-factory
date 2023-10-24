@@ -99,21 +99,21 @@ it('can generate and seed a qualifying structure', () => {
   }
   expect(incompleteMatchUps.length).toEqual(0);
 
-  const tournamentParticipants = tournamentEngine.getTournamentParticipants({
+  const participants = tournamentEngine.getParticipants({
+    withIndividualParticipants: true,
     convertExtensions: true,
     withStatistics: true,
     withOpponents: true,
     withGroupings: true,
     withMatchUps: true,
     withSeeding: true,
-    inContext: true,
     withDraws: true,
     participantFilters: {
       participantRoles: ['COMPETITOR'],
     },
-  }).tournamentParticipants;
+  }).participants;
 
-  const mmw = tournamentParticipants.find((p) => {
+  const mmw = participants.find((p) => {
     const stages = p.matchUps.map((m) => m.stage);
     return stages.includes('MAIN') && stages.includes('QUALIFYING');
   });

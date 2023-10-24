@@ -40,11 +40,10 @@ it('will successfully place participants avoiding states', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { tournamentParticipants } =
-    tournamentEngine.getTournamentParticipants();
-  expect(tournamentParticipants.length).toEqual(64);
+  const { participants } = tournamentEngine.getParticipants();
+  expect(participants.length).toEqual(64);
 
-  const states = tournamentParticipants.map(
+  const states = participants.map(
     (participant) => participant.person.addresses[0].state
   );
   expect(instanceCount(states)).toEqual(statesProfile);

@@ -40,9 +40,8 @@ test('it can addPersons and create INDIVIDUAL and PAIR participants', () => {
   expect(result.success).toEqual(true);
   expect(result.addedCount).toEqual(personsCount);
 
-  const { tournamentParticipants } =
-    tournamentEngine.getTournamentParticipants();
-  expect(tournamentParticipants.length).toEqual(persons?.length);
+  const { participants } = tournamentEngine.getParticipants();
+  expect(participants.length).toEqual(persons?.length);
 
   persons[0].pairedPersons = [{ personId: persons[1].personId }];
   result = tournamentEngine.addPersons({ persons });

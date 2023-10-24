@@ -27,9 +27,8 @@ test('groupValue can be used in tieFormats and lineUps can be applied after scor
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { tournamentParticipants } =
-    tournamentEngine.getTournamentParticipants();
-  expect(tournamentParticipants.length).toEqual(40);
+  const { participants } = tournamentEngine.getParticipants();
+  expect(participants.length).toEqual(40);
 
   const { matchUps: singlesMatchUps } = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: { matchUpTypes: [SINGLES] },
@@ -197,9 +196,9 @@ test('groupValue can be used in tieFormats and lineUps can be applied after scor
 
   const lineUps = lineUpSides.map((side) => Object.values(side));
 
-  const doublesCount = tournamentEngine.getTournamentParticipants({
+  const doublesCount = tournamentEngine.getParticipants({
     participantFilters: { participantTypes: [PAIR] },
-  }).tournamentParticipants.length;
+  }).participants.length;
   expect(doublesCount).toEqual(12);
 
   result = tournamentEngine.applyLineUps({
@@ -209,9 +208,9 @@ test('groupValue can be used in tieFormats and lineUps can be applied after scor
   });
   expect(result.success).toEqual(true);
 
-  const newDoublesCount = tournamentEngine.getTournamentParticipants({
+  const newDoublesCount = tournamentEngine.getParticipants({
     participantFilters: { participantTypes: [PAIR] },
-  }).tournamentParticipants.length;
+  }).participants.length;
 
   // expect that some new doubles pairs have been created
   expect(newDoublesCount).toBeGreaterThan(doublesCount);

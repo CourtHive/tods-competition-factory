@@ -24,15 +24,14 @@ test.skip('participants can play for a team even when not part of team', () => {
       matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [1] },
     });
 
-  const { tournamentParticipants: individualParticipants } =
-    tournamentEngine.getTournamentParticipants({
+  const { participants: individualParticipants } =
+    tournamentEngine.getParticipants({
       participantFilters: { participantTypes: [INDIVIDUAL] },
     });
 
-  const { tournamentParticipants: teamParticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantTypes: [TEAM] },
-    });
+  const { participants: teamParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [TEAM] },
+  });
 
   // get positionAssignments to determine drawPositions
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });

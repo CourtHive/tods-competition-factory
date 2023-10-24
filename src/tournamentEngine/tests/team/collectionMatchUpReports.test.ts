@@ -1,6 +1,5 @@
 import { getParticipantId } from '../../../global/functions/extractors';
 import { generateTeamTournament } from './generateTestTeamTournament';
-import { setDevContext } from '../../../global/state/globalState';
 import tournamentEngine from '../../sync';
 import { expect, test } from 'vitest';
 
@@ -20,8 +19,9 @@ test('collection matchUps appear in participant reports', () => {
       .filter(({ drawPosition }) => drawPositions.includes(drawPosition))
       .map(getParticipantId);
 
-    const { tournamentParticipants: teamParticipants } =
-      tournamentEngine.getTournamentParticipants({
+    const { participants: teamParticipants } = tournamentEngine
+      .devContext(true)
+      .getParticipants({
         participantFilters: { participantIds: teamParticipantIds },
       });
 
@@ -104,23 +104,19 @@ test('collection matchUps appear in participant reports', () => {
     }
   });
 
-  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
-    {
-      participantFilters: { participantTypes: [INDIVIDUAL] },
-      withGroupings: true,
-      withMatchUps: true,
-    }
-  );
-  expect(
-    tournamentParticipants[0].draws[0].partnerParticipantIds.length
-  ).toEqual(1);
-  expect(
-    tournamentParticipants[0].events[0].partnerParticipantIds.length
-  ).toEqual(1);
+  const { participants } = tournamentEngine.devContext(true).getParticipants({
+    participantFilters: { participantTypes: [INDIVIDUAL] },
+    // withGroupings: true,
+    // withMatchUps: true,
+    withEvents: true,
+    withDraws: true,
+  });
+  expect(participants[0].draws[0].partnerParticipantIds.length).toEqual(1);
+  expect(participants[0].events[0].partnerParticipantIds.length).toEqual(1);
 
   // check that the generated pairParticipant was used...
   // ...and that the intermediate pairParticipants (with one individualParticipantId), were deleted
-  expect(tournamentParticipants[0].pairParticipantIds.length).toEqual(1);
+  expect(participants[0].pairParticipantIds.length).toEqual(1);
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: { matchUpTypes: [DOUBLES] },
@@ -132,9 +128,8 @@ test('collection matchUps appear in participant reports', () => {
     .filter(Boolean);
   expect(placedParticipantIds.length).toEqual(drawSize);
 
-  setDevContext({ ppp: true });
-  const { tournamentParticipants: placedPairParticipants } =
-    tournamentEngine.getTournamentParticipants({
+  const { participants: placedPairParticipants } =
+    tournamentEngine.getParticipants({
       participantFilters: { participantIds: placedParticipantIds },
       withGroupings: true,
       withMatchUps: true,

@@ -19,12 +19,10 @@ it('can generateDrawDefinition and place qualifiers', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
-    {
-      participantFilters: { participantTypes: [INDIVIDUAL] },
-    }
-  );
-  const participantIds = tournamentParticipants.map((p) => p.participantId);
+  const { participants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [INDIVIDUAL] },
+  });
+  const participantIds = participants.map((p) => p.participantId);
   const mainParticipantIds = participantIds.slice(0, 12);
   const qualifyingParticipantIds = participantIds.slice(12, 28);
 
