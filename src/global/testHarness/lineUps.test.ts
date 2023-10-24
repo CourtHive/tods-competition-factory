@@ -11,13 +11,13 @@ it('can get competitionScheduleMatchUps', () => {
   const tournamentRecord = JSON.parse(tournamentRecordJSON);
   tournamentEngine.setState(tournamentRecord);
 
-  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
-    { withMatchUps: true }
-  );
+  const { participants } = tournamentEngine.getParticipants({
+    withMatchUps: true,
+  });
 
   const participantId = 'BFFDEFF0-C0EA-453D-A813-DCCB767C150A';
 
-  const participant = tournamentParticipants.find(
+  const participant = participants.find(
     (participant) => participant.participantId === participantId
   );
 

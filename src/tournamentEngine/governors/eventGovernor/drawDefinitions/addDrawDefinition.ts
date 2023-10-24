@@ -1,9 +1,5 @@
 import { addEventExtension } from '../../tournamentGovernor/addRemoveExtensions';
 import { allDrawMatchUps } from '../../../getters/matchUpsGetter/matchUpsGetter';
-import {
-  ResultType,
-  decorateResult,
-} from '../../../../global/functions/decorateResult';
 import { getMatchUpId } from '../../../../global/functions/extractors';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 import { ensureInt } from '../../../../utilities/ensureInt';
@@ -13,6 +9,10 @@ import {
   deleteMatchUpsNotice,
   modifyDrawNotice,
 } from '../../../../drawEngine/notifications/drawNotifications';
+import {
+  ResultType,
+  decorateResult,
+} from '../../../../global/functions/decorateResult';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../../../constants/entryStatusConstants';
 import { FLIGHT_PROFILE } from '../../../../constants/extensionConstants';
@@ -127,9 +127,7 @@ export function addDrawDefinition(
 
   if (relevantFlight && !drawEntriesPresentInFlight) {
     return decorateResult({
-      result: {
-        error: INVALID_DRAW_DEFINITION,
-      },
+      result: { error: INVALID_DRAW_DEFINITION },
       context: {
         drawEntriesPresentInFlight,
         matchingEventEntries,

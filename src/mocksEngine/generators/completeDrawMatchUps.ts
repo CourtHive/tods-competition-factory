@@ -1,7 +1,7 @@
 import { assignTieMatchUpParticipantId } from '../../tournamentEngine/governors/eventGovernor/assignTieMatchUpParticipant';
-import { getTournamentParticipants } from '../../tournamentEngine/getters/participants/getTournamentParticipants';
 import { getAllStructureMatchUps } from '../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
 import { setMatchUpStatus } from '../../tournamentEngine/governors/eventGovernor/setMatchUpStatus';
+import { getParticipants } from '../../tournamentEngine/getters/participants/getParticipants';
 import { getAllDrawMatchUps } from '../../drawEngine/getters/getMatchUps/drawMatchUps';
 import { generateLineUps } from '../../tournamentEngine/generators/generateLineUps';
 import { generateOutcomeFromScoreString } from './generateOutcomeFromScoreString';
@@ -12,6 +12,7 @@ import { getMatchUpId } from '../../global/functions/extractors';
 import { generateOutcome } from './generateOutcome';
 
 import { MAIN, QUALIFYING } from '../../constants/drawDefinitionConstants';
+import { ParticipantTypeEnum } from '../../types/tournamentFromSchema';
 import { DOUBLES, SINGLES, TEAM } from '../../constants/matchUpTypes';
 import { ASCENDING } from '../../constants/sortingConstants';
 import { SUCCESS } from '../../constants/resultConstants';
@@ -92,11 +93,10 @@ export function completeDrawMatchUps(params): {
         structureId,
       });
       if (positionAssignments?.length) {
-        const { tournamentParticipants: teamParticipants } =
-          getTournamentParticipants({
-            participantFilters: { participantTypes: [TEAM] },
-            tournamentRecord,
-          });
+        const { participants: teamParticipants } = getParticipants({
+          participantFilters: { participantTypes: [ParticipantTypeEnum.Team] },
+          tournamentRecord,
+        });
         const assignParticipants = (dualMatchUp) => {
           const singlesMatchUps = dualMatchUp.tieMatchUps.filter(
             ({ matchUpType }) => matchUpType === SINGLES
@@ -121,7 +121,8 @@ export function completeDrawMatchUps(params): {
 
               if (teamParticipant) {
                 const individualParticipantId =
-                  teamParticipant.individualParticipantIds[i];
+                  teamParticipant.individualParticipantIds?.[i];
+
                 assignTieMatchUpParticipantId({
                   teamParticipantId: teamParticipant.participantId,
                   participantId: individualParticipantId,
@@ -150,11 +151,11 @@ export function completeDrawMatchUps(params): {
 
               if (teamParticipant) {
                 const individualParticipantIds =
-                  teamParticipant.individualParticipantIds.slice(
+                  teamParticipant.individualParticipantIds?.slice(
                     i * 2,
                     i * 2 + 2
                   );
-                individualParticipantIds.forEach((individualParticipantId) => {
+                individualParticipantIds?.forEach((individualParticipantId) => {
                   assignTieMatchUpParticipantId({
                     teamParticipantId: teamParticipant.participantId,
                     participantId: individualParticipantId,

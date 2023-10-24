@@ -202,13 +202,11 @@ test('eventProfiles and participantsProfile work as expected', () => {
   expect(events[1].surfaceCategory).toEqual(CLAY);
 
   tournamentEngine.setState(tournamentRecord);
-  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
-    {
-      participantFilters: { participantTypes: [INDIVIDUAL] },
-    }
-  );
+  const { participants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [INDIVIDUAL] },
+  });
 
-  const addressComponents = tournamentParticipants.reduce(
+  const addressComponents = participants.reduce(
     (components, participant) => {
       const { city, state, postalCode } = participant.person.addresses[0];
       const nationalityCode = participant.person.nationalityCode;
@@ -234,10 +232,9 @@ test('eventProfiles and participantsProfile work as expected', () => {
     );
   });
 
-  const { tournamentParticipants: pairParticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantTypes: [PAIR] },
-    });
+  const { participants: pairParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [PAIR] },
+  });
 
   expect(pairParticipants.length).toEqual(doublesDrawSize);
 

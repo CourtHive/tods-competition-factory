@@ -3,7 +3,6 @@ import { generateQualifyingStructures } from '../../drawEngine/governors/structu
 import { addVoluntaryConsolationStructure } from '../governors/eventGovernor/addVoluntaryConsolationStructure';
 import { setMatchUpFormat } from '../../drawEngine/governors/matchUpGovernor/setMatchUpFormat';
 import { addDrawDefinition } from '../governors/eventGovernor/drawDefinitions/addDrawDefinition';
-import { getTournamentParticipants } from '../getters/participants/getTournamentParticipants';
 import { generateQualifyingLink } from '../../drawEngine/generators/generateQualifyingLink';
 import { generateAdHocMatchUps } from '../../drawEngine/generators/generateAdHocMatchUps';
 import { attachPolicies } from '../../drawEngine/governors/policyGovernor/attachPolicies';
@@ -13,6 +12,7 @@ import { addDrawEntry } from '../../drawEngine/governors/entryGovernor/addDrawEn
 import { getQualifiersCount } from '../../drawEngine/getters/getQualifiersCount';
 import { getAllowedDrawTypes } from '../governors/policyGovernor/allowedTypes';
 import structureTemplate from '../../drawEngine/generators/structureTemplate';
+import { getParticipants } from '../getters/participants/getParticipants';
 import { newDrawDefinition } from '../../drawEngine/stateMethods';
 import { mustBeAnArray } from '../../utilities/mustBeAnArray';
 import { isConvertableInteger } from '../../utilities/math';
@@ -173,9 +173,9 @@ export function generateDrawDefinition(
 
   // get participants both for entry validation and for automated placement
   // automated placement requires them to be "inContext" for avoidance policies to work
-  const { tournamentParticipants: participants } = getTournamentParticipants({
+  const { participants } = getParticipants({
+    withIndividualParticipants: true,
     tournamentRecord,
-    inContext: true,
   });
 
   const enforceGender =

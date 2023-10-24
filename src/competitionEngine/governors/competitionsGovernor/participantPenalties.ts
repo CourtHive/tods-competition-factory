@@ -1,5 +1,4 @@
-import { getTournamentParticipants } from '../../../tournamentEngine/getters/participants/getTournamentParticipants';
-import { getParticipantIds } from '../../../global/functions/extractors';
+import { getParticipants } from '../../../tournamentEngine/getters/participants/getParticipants';
 import {
   getTournamentPenalties,
   addPenalty as penaltyAdd,
@@ -7,19 +6,20 @@ import {
   removePenalty as penaltyRemove,
 } from '../../../tournamentEngine/governors/participantGovernor/participantPenalties';
 
+import { ResultType } from '../../../global/functions/decorateResult';
 import { TournamentRecords } from '../../../types/factoryTypes';
+import { SUCCESS } from '../../../constants/resultConstants';
+import { extractAttributes } from '../../../utilities';
 import {
   Extension,
   Penalty,
   PenaltyTypeEnum,
 } from '../../../types/tournamentFromSchema';
-import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_TOURNAMENT_RECORDS,
   PARTICIPANT_NOT_FOUND,
   PENALTY_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { ResultType } from '../../../global/functions/decorateResult';
 
 type AddPenaltyArgs = {
   tournamentRecords: TournamentRecords;
@@ -40,13 +40,14 @@ export function addPenalty(
 
   let penaltyId;
   for (const tournamentRecord of Object.values(tournamentRecords)) {
-    const { tournamentParticipants } = getTournamentParticipants({
-      tournamentRecord,
-    });
+    const participants =
+      getParticipants({
+        tournamentRecord,
+      }).participants ?? [];
 
-    const tournamentParticipantIds = getParticipantIds(
-      tournamentParticipants
-    ).filter((participantId) => participantIds.includes(participantId));
+    const tournamentParticipantIds = participants
+      ?.map(extractAttributes('participantId'))
+      .filter((participantId) => participantIds.includes(participantId));
 
     if (tournamentParticipantIds.length) {
       const result = penaltyAdd({

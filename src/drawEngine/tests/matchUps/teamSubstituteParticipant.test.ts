@@ -154,10 +154,9 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
   );
   expect(lineUpExtension).toBeUndefined();
 
-  const { tournamentParticipants: teamParticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantTypes: [TEAM_PARTICIPANT] },
-    });
+  const { participants: teamParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [TEAM_PARTICIPANT] },
+  });
 
   const { matchUps: teamMatchUps } = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: {
@@ -177,11 +176,10 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
   );
   expect(lineUpExtension).not.toBeUndefined();
 
-  const { tournamentParticipants: pairParticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantTypes: [PAIR] },
-      withDraws: true,
-    });
+  const { participants: pairParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [PAIR] },
+    withDraws: true,
+  });
 
   expect(pairParticipants.length).toEqual(32);
 
@@ -725,10 +723,9 @@ it('can substitute a single individual participant in a TEAM tieMatchUp when onl
   );
   expect(lineUpExtension).toBeUndefined();
 
-  const { tournamentParticipants: teamParticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantTypes: [TEAM_PARTICIPANT] },
-    });
+  const { participants: teamParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [TEAM_PARTICIPANT] },
+  });
 
   const { matchUps: teamMatchUps } = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: {

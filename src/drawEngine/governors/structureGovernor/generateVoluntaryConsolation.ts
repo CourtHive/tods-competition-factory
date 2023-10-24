@@ -1,4 +1,3 @@
-import { getTournamentParticipants } from '../../../tournamentEngine/getters/participants/getTournamentParticipants';
 import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
 import { validateTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
 import { copyTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';
@@ -40,6 +39,7 @@ import {
   Tournament,
   TypeEnum,
 } from '../../../types/tournamentFromSchema';
+import { getParticipants } from '../../../tournamentEngine/getters/participants/getParticipants';
 
 type GenerateVoluntaryConsolationArgs = {
   tournamentRecord?: Tournament;
@@ -83,10 +83,12 @@ export function generateVoluntaryConsolation(
 
   // get participants both for entry validation and for automated placement
   // automated placement requires them to be "inContext" for avoidance policies to work
-  const tournamentParticipants = getTournamentParticipants({
-    tournamentRecord,
-    inContext: true,
-  })?.tournamentParticipants;
+  const participants = tournamentRecord
+    ? getParticipants({
+        withIndividualParticipants: true,
+        tournamentRecord,
+      })?.participants
+    : [];
 
   const stage = VOLUNTARY_CONSOLATION;
   const entries = getStageEntries({
@@ -201,10 +203,10 @@ export function generateVoluntaryConsolation(
   if (automated) {
     automatedPositioning({
       seedingProfile: params.seedingProfile,
-      participants: tournamentParticipants,
       applyPositioning,
       tournamentRecord,
       drawDefinition,
+      participants,
       structureId,
       placeByes,
       drawSize,

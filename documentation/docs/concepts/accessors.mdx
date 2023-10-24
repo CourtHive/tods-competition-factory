@@ -35,16 +35,15 @@ function AccessorsDemo(props) {
   // ... and add them to the tournament
   tournamentEngine.addParticipants({ participants });
 
-  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
-    {
+  const { participants: tournamentParticipants } =
+    tournamentEngine.getParticipants({
       participantFilters: {
         accessorValues: [
           { accessor: 'person.sex', value: 'FEMALE' },
           // { accessor: 'person.nationalityCode', value: 'FRA' },
         ],
       },
-    }
-  );
+    });
 
   return <Participants data={tournamentParticipants} />;
 }

@@ -11,12 +11,12 @@ const tournamentRecordJSON = fs.readFileSync(
 const tournamentRecord = JSON.parse(tournamentRecordJSON);
 
 it('will not store sandbox tournament in state', () => {
-  let result = tournamentEngine.getTournamentParticipants({
+  let result = tournamentEngine.getParticipants({
     sandboxTournament: tournamentRecord,
   });
 
-  expect(result.tournamentParticipants.length).toBeGreaterThan(1);
+  expect(result.participants.length).toBeGreaterThan(1);
 
-  result = tournamentEngine.getTournamentParticipants();
+  result = tournamentEngine.getParticipants();
   expect(result.error).toEqual(MISSING_TOURNAMENT_RECORD);
 });

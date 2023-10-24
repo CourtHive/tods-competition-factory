@@ -42,13 +42,12 @@ test.each(scenarios)(
     expect(result.success).toEqual(true);
     expect(result.processedMatchUpIds.length).toEqual(matchUpIds.length);
 
-    const { tournamentParticipants } =
-      tournamentEngine.getTournamentParticipants({
-        withStatistics: true,
-        withMatchUps: true,
-      });
+    const { participants } = tournamentEngine.getParticipants({
+      withStatistics: true,
+      withMatchUps: true,
+    });
 
-    for (const participant of tournamentParticipants) {
+    for (const participant of participants) {
       if (asDynamic) {
         const accessor = ratingType && ratingsParameters[ratingType]?.accessor;
         participant.timeItems.forEach((timeItem) => {

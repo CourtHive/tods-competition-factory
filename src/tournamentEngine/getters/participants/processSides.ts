@@ -113,6 +113,15 @@ export function processSides(params) {
         }
       }
 
+      if (withOpponents) {
+        participantMap[participantId].opponents[opponentParticipantId] = {
+          participantId: opponentParticipantId,
+          matchUpId,
+          eventId,
+          drawId,
+        };
+      }
+
       if (withRankingProfile) {
         addStructureParticipation({
           finishingPositionRange,
@@ -180,6 +189,7 @@ export function processSides(params) {
 
       addMatchUp(participantId, opponentParticipantId);
 
+      /*
       if (withOpponents && opponentParticipantId) {
         participantMap[participantId].opponents[opponentParticipantId] = {
           participantId: opponentParticipantId,
@@ -188,6 +198,7 @@ export function processSides(params) {
           drawId,
         };
       }
+      */
 
       const isPair =
         participantMap[participantId]?.participant.participantType === PAIR;
