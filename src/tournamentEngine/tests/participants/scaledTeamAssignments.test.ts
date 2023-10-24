@@ -102,11 +102,12 @@ it('can automatically assign participants to teams using individualParticipantId
     scaleAttributes,
   });
 
-  teamParticipants = tournamentEngine.getTournamentParticipants({
+  teamParticipants = tournamentEngine.getParticipants({
     participantFilters: { participantTypes: [TEAM_PARTICIPANT] },
+    withIndividualParticipants: true,
     withScaleValues: true,
     inContext: true,
-  }).tournamentParticipants;
+  }).participants;
 
   const teamMemberCounts = teamParticipants.map(
     (teamParticipant) => teamParticipant.individualParticipants.length
@@ -200,11 +201,11 @@ it('can automatically assign participants to teams using scaledParticipants', ()
     scaledParticipants,
   });
 
-  teamParticipants = tournamentEngine.getTournamentParticipants({
+  teamParticipants = tournamentEngine.getParticipants({
     participantFilters: { participantTypes: [TEAM_PARTICIPANT] },
+    withIndividualParticipants: true,
     withScaleValues: true,
-    inContext: true,
-  }).tournamentParticipants;
+  }).participants;
 
   const teamMemberCounts = teamParticipants.map(
     (teamParticipant) => teamParticipant.individualParticipants.length
@@ -292,11 +293,11 @@ it('will cleanup UNGROUPED participant entries if TEAM entry is added AFTER team
     scaledParticipants,
   });
 
-  teamParticipants = tournamentEngine.getTournamentParticipants({
+  teamParticipants = tournamentEngine.getParticipants({
     participantFilters: { participantTypes: [TEAM_PARTICIPANT] },
+    withIndividualParticipants: true,
     withScaleValues: true,
-    inContext: true,
-  }).tournamentParticipants;
+  }).participants;
 
   const teamMemberCounts = teamParticipants.map(
     (teamParticipant) => teamParticipant.individualParticipants.length
@@ -381,11 +382,11 @@ it('will generate teams for scaledTeamAssignment when given teamsCount', () => {
     teamsCount: 8,
   });
 
-  const teamParticipants = tournamentEngine.getTournamentParticipants({
+  const teamParticipants = tournamentEngine.getParticipants({
     participantFilters: { participantTypes: [TEAM_PARTICIPANT] },
+    withIndividualParticipants: true,
     withScaleValues: true,
-    inContext: true,
-  }).tournamentParticipants;
+  }).participants;
 
   const teamMemberCounts = teamParticipants.map(
     (teamParticipant) => teamParticipant.individualParticipants.length
@@ -484,11 +485,11 @@ it('can determine teams from DIRECT_ACCEPTANCE entries of a TEAM event', () => {
     eventId,
   });
 
-  teamParticipants = tournamentEngine.getTournamentParticipants({
+  teamParticipants = tournamentEngine.getParticipants({
     participantFilters: { participantTypes: [TEAM_PARTICIPANT] },
+    withIndividualParticipants: true,
     withScaleValues: true,
-    inContext: true,
-  }).tournamentParticipants;
+  }).participants;
 
   const teamMemberCounts = teamParticipants.map(
     (teamParticipant) => teamParticipant.individualParticipants.length

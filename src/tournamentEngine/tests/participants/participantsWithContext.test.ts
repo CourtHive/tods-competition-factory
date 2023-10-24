@@ -228,54 +228,38 @@ it('can add statistics to tournament participants', () => {
   const positionAssignments =
     event.drawDefinitions[0].structures[0].positionAssignments;
 
-  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
-    {
-      convertExtensions: true,
-      withStatistics: true,
-      withOpponents: true,
-      withMatchUps: true,
-    }
-  );
-  expect(tournamentParticipants.length).toEqual(12);
-
-  /*
-  const getParticipant = ({ drawPosition }) => {
-    const participantId = positionAssignments.find(
-      (assignment) => assignment.drawPosition === drawPosition
-    ).participantId;
-    return tournamentParticipants.find(
-      (participant) => participant.participantId === participantId
-    );
-  };
-  */
+  const { participants } = tournamentEngine.getParticipants({
+    withIndividualParticipants: true,
+    convertExtensions: true,
+    withStatistics: true,
+    withOpponents: true,
+    withMatchUps: true,
+    withEvents: true,
+  });
+  expect(participants.length).toEqual(12);
 
   const doublesParticipant = getParticipant({
-    tournamentParticipants,
+    tournamentParticipants: participants,
     positionAssignments,
     drawPosition: 1,
   });
 
-  const {
-    individualParticipantIds,
-    events: [{ partnerParticipantId: pairPartnerId }],
-  } = doublesParticipant;
-
-  expect(pairPartnerId).toBeUndefined();
+  const { individualParticipantIds } = doublesParticipant;
 
   const individualParticipantId =
     doublesParticipant.individualParticipantIds[0];
-  const individualParticipant = tournamentParticipants.find(
+  const individualParticipant = participants.find(
     (participant) => participant.participantId === individualParticipantId
   );
 
   const {
-    events: [{ partnerParticipantId }],
+    events: [{ partnerParticipantIds }],
   } = individualParticipant;
 
   // check that the individual and partner equal individualParticipantIds for the PAIR
   expect(
     intersection(
-      [individualParticipantId, partnerParticipantId],
+      [individualParticipantId, ...partnerParticipantIds],
       individualParticipantIds
     ).length
   ).toEqual(2);

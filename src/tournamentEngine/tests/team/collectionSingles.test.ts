@@ -50,10 +50,9 @@ it('can both assign and remove individualParticipants in SINGLES matchUps that a
     .filter(({ drawPosition }) => drawPositions.includes(drawPosition))
     .map(getParticipantId);
 
-  const { tournamentParticipants: teamParticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantIds: teamParticipantIds },
-    });
+  const { participants: teamParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantIds: teamParticipantIds },
+  });
 
   const assignedIndividualParticipantIds: string[] = [];
 
@@ -153,8 +152,8 @@ it('can both assign and remove individualParticipants in SINGLES matchUps that a
     expect(side.lineUp[0].collectionAssignments.length).toEqual(1);
   });
 
-  const { tournamentParticipants: doublesParticipants } =
-    tournamentEngine.getTournamentParticipants({
+  const { participants: doublesParticipants } =
+    tournamentEngine.getParticipants({
       participantFilters: { participantTypes: [PAIR] },
     });
 
@@ -246,10 +245,10 @@ it('can assign SINGLES participants to collectionPositions and complete matchUps
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
-    { participantFilters: { participantTypes: [TEAM] } }
-  );
-  expect(tournamentParticipants.length).toEqual(drawSize);
+  const { participants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [TEAM] },
+  });
+  expect(participants.length).toEqual(drawSize);
 
   let { matchUps: singlesMatchUps } = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: { matchUpTypes: [SINGLES] },
@@ -272,8 +271,8 @@ it('can assign SINGLES participants to collectionPositions and complete matchUps
     ).participantId;
 
     let {
-      tournamentParticipants: [teamParticipant],
-    } = tournamentEngine.getTournamentParticipants({
+      participants: [teamParticipant],
+    } = tournamentEngine.getParticipants({
       participantFilters: { participantIds: [sideTeamParticipantId] },
     });
     const individualParticipantId = teamParticipant.individualParticipantIds[0];
@@ -293,8 +292,8 @@ it('can assign SINGLES participants to collectionPositions and complete matchUps
     });
     expect(result.error).toEqual(MISSING_PARTICIPANT_ID);
 
-    const { tournamentParticipants: doublesParticipants } =
-      tournamentEngine.getTournamentParticipants({
+    const { participants: doublesParticipants } =
+      tournamentEngine.getParticipants({
         participantFilters: { participantTypes: [PAIR] },
       });
 
@@ -360,8 +359,8 @@ it('can assign SINGLES participants to collectionPositions and complete matchUps
       (assignment) => assignment.drawPosition === side.drawPosition
     ).participantId;
     ({
-      tournamentParticipants: [teamParticipant],
-    } = tournamentEngine.getTournamentParticipants({
+      participants: [teamParticipant],
+    } = tournamentEngine.getParticipants({
       participantFilters: { participantIds: [sideTeamParticipantId] },
     }));
 

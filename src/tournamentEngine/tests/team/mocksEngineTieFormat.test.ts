@@ -61,23 +61,21 @@ it('can generate draws in TEAM events with tieFormat and assign participants to 
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { tournamentParticipants: individualParticipants } =
-    tournamentEngine.getTournamentParticipants({
+  const { participants: individualParticipants } =
+    tournamentEngine.getParticipants({
       participantFilters: { participantTypes: [INDIVIDUAL] },
     });
 
   expect(individualParticipants.length).toEqual(40);
 
-  const { tournamentParticipants: pairParticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantTypes: [PAIR] },
-    });
+  const { participants: pairParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [PAIR] },
+  });
   expect(pairParticipants.length).toEqual(20);
 
-  const { tournamentParticipants: teamParticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantTypes: [TEAM] },
-    });
+  const { participants: teamParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [TEAM] },
+  });
   expect(teamParticipants.length).toEqual(drawSize);
 
   const { event, drawDefinition } = tournamentEngine.getEvent({ drawId });
@@ -140,23 +138,21 @@ it('can generate TEAM draws and use tieFormat and assign participants to collect
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { tournamentParticipants: individualParticipants } =
-    tournamentEngine.getTournamentParticipants({
+  const { participants: individualParticipants } =
+    tournamentEngine.getParticipants({
       participantFilters: { participantTypes: [INDIVIDUAL] },
     });
 
   expect(individualParticipants.length).toEqual(40);
 
-  const { tournamentParticipants: pairParticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantTypes: [PAIR] },
-    });
+  const { participants: pairParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [PAIR] },
+  });
   expect(pairParticipants.length).toEqual(20);
 
-  const { tournamentParticipants: teamParticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantTypes: [TEAM] },
-    });
+  const { participants: teamParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [TEAM] },
+  });
   expect(teamParticipants.length).toEqual(drawSize);
 
   const { event, drawDefinition } = tournamentEngine.getEvent({ drawId });
