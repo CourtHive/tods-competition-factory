@@ -105,7 +105,7 @@ export function getParticipantEntries(params) {
 
     const {
       drawDefinitions = [],
-      extensions,
+      extensions = [],
       eventType,
       eventName,
       category,
