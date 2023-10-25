@@ -91,8 +91,8 @@ type AddEventExtensionArgs = TournamentRecordsArgs & {
 };
 export function addEventExtension({
   tournamentRecords,
-  eventId,
   extension,
+  eventId,
 }: AddEventExtensionArgs) {
   if (typeof eventId !== 'string') return { error: MISSING_EVENT };
   if (!isValidExtension({ extension })) return { error: INVALID_VALUES };

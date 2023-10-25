@@ -215,7 +215,7 @@ export function JSON2CSV(arrayOfJSON?, config?) {
     : rows.join(rowJoiner);
 }
 
-export function flattenJSON(obj, keyJoiner: string, path: string[] = []) {
+export function flattenJSON(obj, keyJoiner: string = '.', path: string[] = []) {
   return (
     typeof obj === 'object' &&
     Object.keys(obj).reduce((result, key: string) => {
