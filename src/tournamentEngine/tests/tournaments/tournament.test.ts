@@ -114,10 +114,10 @@ it('can generate a tournament with events and draws', () => {
   const matchUp = upcomingMatchUps[0];
   const { matchUpId } = matchUp;
   const matchUpFormat = 'SET1-S:T10';
-  result = tournamentEngine.setMatchUpStatus({
-    drawId,
-    matchUpId,
+  tournamentEngine.setMatchUpStatus({
     matchUpFormat,
+    matchUpId,
+    drawId,
   });
   const { upcomingMatchUps: modifiedUpcoming } =
     tournamentEngine.tournamentMatchUps();
@@ -129,10 +129,10 @@ it('can generate a tournament with events and draws', () => {
   const sets = parseScoreString({ scoreString: '6-3' });
   const score = { sets };
   result = tournamentEngine.setMatchUpStatus({
-    drawId,
-    matchUpId,
     matchUpFormat: secondMatchUpFormat,
     outcome: { score },
+    matchUpId,
+    drawId,
   });
   expect(result.success).toEqual(true);
 
