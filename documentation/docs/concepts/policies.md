@@ -24,6 +24,7 @@ The structure of a **_policyDefinitions_** object is as follows:
 - [Avoidance Policy](../policies/avoidance): Can be attached to drawDefinitions to specify the attriubutes by which participants should be separated
 - [Participant Policy](../policies/participantPolicy.md) Enables participant details to be filtered to respect privacy concerns
 - [Position Actions Policy](../policies/positionActions): Determines valid actions for positions in a draw structure
+- [MatchUp Actions Policy](../policies/matchUpActions): Determines valid actions for matchUps (substitutions, penalties, referree, scheduling)
 - [Seeding Policy](../policies/positioningSeeds): Sets seeding pattern and thresholds for number of seeds allowed for draw sizes
 - [Scheduling Policy](../policies/scheduling): Defines average and rest/recovery times for matchUpFormats, categoryNames, and categoryTypes
 - [Round Robin Tally Policy](../policies/tallyPolicy): Configures calculations which determine participant finishing positions

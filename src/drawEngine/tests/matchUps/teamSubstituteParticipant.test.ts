@@ -602,9 +602,7 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
 
   // since there has been a substitution, processCodes should be present
   targetMatchUp = tournamentEngine.allTournamentMatchUps({
-    matchUpFilters: {
-      matchUpIds: [doublesMatchUpId],
-    },
+    matchUpFilters: { matchUpIds: [doublesMatchUpId] },
     inContext: false,
   }).matchUps[0];
 

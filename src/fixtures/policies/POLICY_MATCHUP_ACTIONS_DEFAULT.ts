@@ -22,6 +22,9 @@ export const POLICY_MATCHUP_ACTIONS_DEFAULT = {
     processCodes: {
       substitution: ['RANKING.IGNORE', 'RATING.IGNORE'],
     },
+
+    substituteAfterCompleted: false,
+    substituteWithoutScore: false,
   },
 };
 

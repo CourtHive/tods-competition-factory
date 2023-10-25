@@ -162,19 +162,19 @@ export function removeCollectionDefinition({
       getAllStructureMatchUps({
         matchUpFilters: { matchUpTypes: [TEAM] },
         structure,
-      })?.matchUps || [];
+      })?.matchUps ?? [];
   } else if (drawDefinition) {
     matchUps =
       allDrawMatchUps({
         matchUpFilters: { matchUpTypes: [TEAM] },
         drawDefinition,
-      })?.matchUps || [];
+      })?.matchUps ?? [];
   } else if (event) {
     matchUps =
       allEventMatchUps({
         matchUpFilters: { matchUpTypes: [TEAM] },
         drawDefinition,
-      })?.matchUps || [];
+      })?.matchUps ?? [];
   }
 
   // all team matchUps in scope which are completed or which have a score should not be modified

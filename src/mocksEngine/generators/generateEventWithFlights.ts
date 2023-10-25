@@ -42,6 +42,7 @@ export function generateEventWithFlights(params) {
     eventExtensions,
     surfaceCategory,
     tieFormatName,
+    processCodes,
     discipline,
     eventLevel,
     timeItems,
@@ -107,6 +108,7 @@ export function generateEventWithFlights(params) {
   const newEvent = {
     ...eventAttributes,
     surfaceCategory,
+    processCodes,
     discipline,
     eventLevel,
     eventName,
