@@ -1,0 +1,25 @@
+{
+  "matchUpActions": {
+    "policyName": "matchUpActionsDefault",
+
+    "enabledStructures": [
+      {
+        "stages": [],
+        "stageSequences": [],
+        "enabledActions": [],
+        "disabledActions": []
+      }
+    ],
+
+    "participants": {
+      "enforceGender": "true"
+    },
+
+    "processCodes": {
+      "substitution": ["RANKING.IGNORE", "RATING.IGNORE"]
+    },
+
+    "substituteAfterCompleted": "false",
+    "substituteWithoutScore": "false"
+  }
+}

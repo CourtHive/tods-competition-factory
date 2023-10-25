@@ -1,0 +1,46 @@
+---
+title: MatchUp Actions
+---
+
+import RenderJSON from '../components/RenderJSON';
+import MatchUpActions from './matchUpActions.json';
+
+See [Actions](/docs/concepts/actions) for context.
+
+`matchUpActions` returns an array of valid actions for a specified `matchUpId`. Valid actions can be determined, in part, by
+`policyDefinitions`. In the Competition Factory source there are four examples of matchUp action policies:
+
+1. Default position actions
+2. No movement (disallows swapping participants & etc.)
+3. Disabled position actions
+4. Unrestricted position actions (all available actions)
+
+```js
+const {
+  isByeMatchUp, // boolean; true if matchUp includes a BYE
+  structureIsComplete, // boolean; true if structure is ready for positioning
+  validActions, // array of possible actions given current matchUpStatus
+} = tournamentEngine.matchUpActions({
+  restrictAdHocRoundParticipants, // optional - true by default; applies to AD_HOC; disallow the same participant being in the same round multiple times
+  sideNumber, // optional - select side to which action should apply; applies to AD_HOC position assignments
+  matchUpId, // required - reference to targeted matchUp
+  drawId, // optional - not strictly required; method will find matchUp by brute force without it
+});
+
+const {
+  type, // 'REFEREE', 'SCHEDULE', 'PENALTY', 'STATUS', 'SCORE', 'START', 'END', 'SUBSTITUTION'.
+  method, // tournamentEngine method relating to action type
+  payload, // attributes to be passed to method
+  // additional method-specific options for values to be added to payload when calling method
+} = validAction;
+```
+
+### policyDefinitions Example
+
+<RenderJSON
+  data={MatchUpActions}
+  root={'policyDefinitions'}
+  colorScheme={'summerfruit'}
+  invertTheme={true}
+  expandToLevel={1}
+/>

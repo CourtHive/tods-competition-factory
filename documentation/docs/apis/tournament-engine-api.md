@@ -2737,7 +2737,7 @@ const {
 });
 
 const {
-  type, // 'REFEREE', 'SCHEDULE', 'PENALTY', 'STATUS', 'SCORE', 'START', 'END'.
+  type, // 'REFEREE', 'SCHEDULE', 'PENALTY', 'STATUS', 'SCORE', 'START', 'END', 'SUBSTITUTION'.
   method, // tournamentEngine method relating to action type
   payload, // attributes to be passed to method
   // additional method-specific options for values to be added to payload when calling method
