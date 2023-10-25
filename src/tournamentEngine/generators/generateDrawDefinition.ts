@@ -106,6 +106,7 @@ type GenerateDrawDefinitionArgs = {
   qualifyingOnly?: boolean;
   drawType?: DrawTypeEnum;
   enforceGender?: boolean;
+  processCodes?: string[];
   matchUpFormat?: string;
   matchUpType?: TypeEnum;
   tieFormatName?: string;
@@ -324,7 +325,11 @@ export function generateDrawDefinition(
 
   let drawDefinition =
     existingDrawDefinition ??
-    newDrawDefinition({ drawType, drawId: params.drawId });
+    newDrawDefinition({
+      drawType,
+      drawId: params.drawId,
+      processCodes: params.processCodes,
+    });
 
   // if there is a defined matchUpFormat/tieFormat only attach to drawDefinition...
   // ...when there is not an equivalent definition on the parent event

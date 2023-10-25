@@ -33,17 +33,24 @@ function validDefinitionKeys(definition) {
 }
 
 type NewDrawDefinitionArgs = {
+  processCodes?: string[];
   matchUpType?: string;
   drawType?: string;
   drawId?: string;
 };
 export function newDrawDefinition({
   drawId = UUID(),
+  processCodes,
   matchUpType,
   drawType,
 }: NewDrawDefinitionArgs) {
   const drawDefinition = definitionTemplate();
-  return Object.assign(drawDefinition, { drawId, drawType, matchUpType });
+  return Object.assign(drawDefinition, {
+    processCodes,
+    matchUpType,
+    drawType,
+    drawId,
+  });
 }
 
 export function paramsMiddleware(drawDefinition) {
