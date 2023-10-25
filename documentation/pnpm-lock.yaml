@@ -54,8 +54,8 @@ dependencies:
     specifier: 0.18.0
     version: 0.18.0(@types/react@18.2.31)(react@18.2.0)
   tods-competition-factory:
-    specifier: 1.7.19
-    version: 1.7.19(@babel/core@7.22.20)
+    specifier: 1.8.0
+    version: 1.8.0(@babel/core@7.22.20)
 
 packages:
 
@@ -4511,7 +4511,7 @@ packages:
       classnames: 2.3.2
       dayjs: 1.11.10
       husky: 8.0.3
-      tods-competition-factory: 1.7.19(@babel/core@7.22.20)
+      tods-competition-factory: 1.8.0(@babel/core@7.22.20)
     transitivePeerDependencies:
       - '@babel/core'
     dev: false
@@ -10186,8 +10186,8 @@ packages:
       is-number: 7.0.0
     dev: false
 
-  /tods-competition-factory@1.7.19(@babel/core@7.22.20):
-    resolution: {integrity: sha512-4PV6Owg+7sQWOVMb1k55VAW0952d6NBQnK+TI+pFnm8yMFVceiSxckB6K6VzdndYt0wq6VVtG98b68VO1rYiQQ==}
+  /tods-competition-factory@1.8.0(@babel/core@7.22.20):
+    resolution: {integrity: sha512-C/3KvWJX/YpzOiG3fFtoIMtH376F39bW8jtbZgwwHgvYnZb4f/AeudY4zAr/6QuV9p6Nh8bU0qrPNKimXMHDLA==}
     engines: {node: '>=18.17.1 < 21'}
     dependencies:
       '@babel/plugin-transform-nullish-coalescing-operator': 7.22.11(@babel/core@7.22.20)
