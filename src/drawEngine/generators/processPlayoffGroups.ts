@@ -120,6 +120,16 @@ export function processPlayoffGroups({
       finishingPositionOffset = Math.min(...positionsPlayedOff) - 1;
     }
 
+    const finishingPositionRange =
+      positionsPlayedOff &&
+      `${Math.min(...positionsPlayedOff)}-${Math.max(...positionsPlayedOff)}`;
+
+    const structureName =
+      playoffGroup.structureName ||
+      (finishingPositionRange &&
+        playoffGroup.playoffAttributes?.[finishingPositionRange]?.name) ||
+      playoffGroup.playoffAttributes?.['0']?.name;
+
     const playoffGroupParams = {
       addNameBaseToAttributeName: playoffGroup.addNameBaseToAttributeName,
       playoffStructureNameBase: playoffGroup.playoffStructureNameBase,
@@ -128,8 +138,8 @@ export function processPlayoffGroups({
       structureId: playoffGroup.structureId ?? uuids?.pop(),
       playoffAttributes: playoffGroup.playoffAttributes,
       structureNameMap: playoffGroup.structureNameMap,
-      structureName: playoffGroup.structureName,
       sequenceLimit: playoffGroup.sequenceLimit,
+      structureName,
     };
 
     const params = {
@@ -177,9 +187,9 @@ export function processPlayoffGroups({
 
       const playoffStructure = structureTemplate({
         structureId: playoffGroup.structureId ?? uuids?.pop(),
-        structureName: playoffGroup.structureName,
         matchUpFormat: playoffMatchUpFormat,
         stage: PLAY_OFF,
+        structureName,
         stageSequence,
         matchUps,
       });
@@ -200,9 +210,8 @@ export function processPlayoffGroups({
         finishingPositions,
       });
     } else if ([COMPASS, OLYMPIC, PLAY_OFF].includes(playoffDrawType)) {
-      const { structureName } = playoffGroup;
-
       const params = {
+        playoffAttributes: playoffGroup.playoffAttributes ?? playoffAttributes,
         structureId: playoffGroup.structureId ?? uuids?.pop(),
         playoffStructureNameBase: structureName,
         idPrefix: idPrefix && `${idPrefix}-po`,
@@ -215,14 +224,21 @@ export function processPlayoffGroups({
         isMock,
         uuids,
       };
+
       if (playoffDrawType === COMPASS) {
         Object.assign(params, {
-          playoffAttributes: playoffAttributes ?? COMPASS_ATTRIBUTES,
+          playoffAttributes:
+            playoffGroup?.playoffAttributes ??
+            playoffAttributes ??
+            COMPASS_ATTRIBUTES,
           roundOffsetLimit: 3,
         });
       } else if (playoffDrawType === OLYMPIC) {
         Object.assign(params, {
-          playoffAttributes: playoffAttributes ?? OLYMPIC_ATTRIBUTES,
+          playoffAttributes:
+            playoffGroup?.playoffAttributes ??
+            playoffAttributes ??
+            OLYMPIC_ATTRIBUTES,
           roundOffsetLimit: 2,
         });
       }
@@ -261,11 +277,11 @@ export function processPlayoffGroups({
       const uuidsFMLC = [uuids?.pop(), uuids?.pop()];
       const params = {
         structureId: playoffGroup.structureId ?? uuids?.pop(),
-        structureName: playoffGroup.structureName,
         idPrefix: idPrefix && `${idPrefix}-po`,
         finishingPositionOffset,
         uuids: uuidsFMLC,
         stage: PLAY_OFF,
+        structureName,
         matchUpType,
         feedPolicy,
         drawSize,

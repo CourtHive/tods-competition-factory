@@ -19,10 +19,10 @@ import {
 
 export function generateCurtisConsolation(params) {
   const {
-    structureName = constantToString(MAIN),
     playoffStructureNameBase,
     finishingPositionOffset,
     stageSequence = 1,
+    playoffAttributes,
     structureNameMap,
     staggeredEntry,
     stage = MAIN,
@@ -45,7 +45,10 @@ export function generateCurtisConsolation(params) {
   const { matchUps, roundsCount: mainDrawRoundsCount } = staggeredEntry
     ? feedInMatchUps(mainParams)
     : treeMatchUps(mainParams);
-
+  const structureName =
+    params.structureName ??
+    playoffAttributes?.['0']?.name ??
+    constantToString(MAIN);
   const mainStructure = structureTemplate({
     structureId: structureId || uuids?.pop(),
     structureName,
@@ -66,6 +69,7 @@ export function generateCurtisConsolation(params) {
         idPrefix: idPrefix && `${idPrefix}-c${index}`,
         structureId: uuids?.pop(),
         playoffStructureNameBase,
+        playoffAttributes,
         structureNameMap,
         stageSequence,
         roundOffset,
@@ -103,7 +107,8 @@ export function generateCurtisConsolation(params) {
         matchUpType,
         isMock,
       });
-      const defaultName = constantToString(PLAY_OFF);
+      const defaultName =
+        playoffAttributes?.['3-4']?.name ?? constantToString(PLAY_OFF);
       const mappedStructureName =
         structureNameMap?.[defaultName] || defaultName;
       const structureName = playoffStructureNameBase
@@ -143,6 +148,7 @@ export function generateCurtisConsolation(params) {
 function consolationFeedStructure({
   playoffStructureNameBase,
   stageSequence = 1,
+  playoffAttributes,
   structureNameMap,
   roundOffset = 0,
   matchUpType,
@@ -166,7 +172,11 @@ function consolationFeedStructure({
       isMock,
       uuids,
     });
-  const defaultName = `${constantToString(CONSOLATION)} ${index + 1}`;
+  const indexedStructureName =
+    (index === 0 && playoffAttributes?.['0-1']?.name) ||
+    (index === 1 && playoffAttributes?.['0-3']?.name);
+  const defaultName =
+    indexedStructureName || `${constantToString(CONSOLATION)} ${index + 1}`;
   const mappedStructureName = structureNameMap?.[defaultName] || defaultName;
   const structureName = playoffStructureNameBase
     ? `${playoffStructureNameBase} ${mappedStructureName}`

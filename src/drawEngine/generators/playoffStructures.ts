@@ -113,7 +113,9 @@ export function generatePlayoffStructures(
   const attributeProfile = playoffAttributes?.[exitProfile];
   const base =
     (playoffStructureNameBase && `${playoffStructureNameBase} `) || '';
-  const customNaming = finishingPositionNaming?.[finishingPositionRange];
+  const customNaming =
+    playoffAttributes?.[finishingPositionRange] ??
+    finishingPositionNaming?.[finishingPositionRange];
 
   const structureName =
     customNaming?.name ||

@@ -47,7 +47,8 @@ export function feedInChampionship(params) {
     : treeMatchUps(mainParams);
 
   const mainStructure = structureTemplate({
-    structureName: structureName || constantToString(MAIN),
+    structureName:
+      structureName || playoffAttributes?.['0']?.name || constantToString(MAIN),
     structureId: structureId || uuids?.pop(),
     stageSequence,
     matchUpType,
@@ -76,7 +77,7 @@ export function feedInChampionship(params) {
   if (drawSize > 2) {
     const consolationStructure = structureTemplate({
       structureName:
-        playoffAttributes?.['0-1'] ?? constantToString(CONSOLATION),
+        playoffAttributes?.['0-1']?.name ?? constantToString(CONSOLATION),
       matchUps: consolationMatchUps,
       structureId: uuids?.pop(),
       stage: CONSOLATION,
