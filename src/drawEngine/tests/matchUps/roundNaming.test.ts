@@ -205,34 +205,34 @@ it('can return matchUps with roundNames from a OLYMPIC structure', () => {
       roundName,
       structureName,
     } = matchUp;
-    if (roundNumber === 1 && structureName === 'EAST') {
+    if (roundNumber === 1 && structureName === 'East') {
       expect(roundName).toEqual('E-R16');
       expect(finishingRound).toEqual(4);
     }
-    if (roundNumber === 2 && structureName === 'EAST')
+    if (roundNumber === 2 && structureName === 'East')
       expect(abbreviatedRoundName).toEqual('E-QF');
-    if (roundNumber === 3 && structureName === 'EAST')
+    if (roundNumber === 3 && structureName === 'East')
       expect(abbreviatedRoundName).toEqual('E-SF');
-    if (roundNumber === 4 && structureName === 'EAST') {
+    if (roundNumber === 4 && structureName === 'East') {
       expect(abbreviatedRoundName).toEqual('E-F');
       expect(finishingRound).toEqual(1);
     }
 
-    if (roundNumber === 1 && structureName === 'WEST')
+    if (roundNumber === 1 && structureName === 'West')
       expect(abbreviatedRoundName).toEqual('W-QF');
-    if (roundNumber === 2 && structureName === 'WEST')
+    if (roundNumber === 2 && structureName === 'West')
       expect(abbreviatedRoundName).toEqual('W-SF');
-    if (roundNumber === 3 && structureName === 'WEST')
+    if (roundNumber === 3 && structureName === 'West')
       expect(abbreviatedRoundName).toEqual('W-F');
 
-    if (roundNumber === 1 && structureName === 'NORTH')
+    if (roundNumber === 1 && structureName === 'North')
       expect(abbreviatedRoundName).toEqual('N-SF');
-    if (roundNumber === 2 && structureName === 'NORTH')
+    if (roundNumber === 2 && structureName === 'North')
       expect(abbreviatedRoundName).toEqual('N-F');
 
-    if (roundNumber === 1 && structureName === 'SOUTH')
+    if (roundNumber === 1 && structureName === 'South')
       expect(abbreviatedRoundName).toEqual('S-SF');
-    if (roundNumber === 2 && structureName === 'SOUTH')
+    if (roundNumber === 2 && structureName === 'South')
       expect(abbreviatedRoundName).toEqual('S-F');
   });
 });

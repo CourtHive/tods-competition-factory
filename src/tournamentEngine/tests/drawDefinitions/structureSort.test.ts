@@ -43,25 +43,25 @@ test('structureSort can sort by stage and stageSequence', () => {
 
   expect(structureNames).toEqual([
     'Qualifying',
-    'EAST',
-    'WEST',
-    'NORTH',
-    'SOUTH',
-    'NORTHEAST',
-    'NORTHWEST',
-    'SOUTHWEST',
-    'SOUTHEAST',
+    'East',
+    'West',
+    'North',
+    'South',
+    'Northeast',
+    'Northwest',
+    'Southwest',
+    'Southeast',
   ]);
 
   const fpSort = [
-    'EAST',
-    'NORTHEAST',
-    'NORTH',
-    'WEST',
-    'NORTHWEST',
-    'SOUTHWEST',
-    'SOUTH',
-    'SOUTHEAST',
+    'East',
+    'Northeast',
+    'North',
+    'West',
+    'Northwest',
+    'Southwest',
+    'South',
+    'Southeast',
     'Qualifying',
   ];
 

@@ -14,16 +14,16 @@ it('can generate COMPASS and fill all drawPositions', () => {
   seedsCount = 8;
   participantsCount = 30; // we will have 2 BYEs
   expectedCompassByes = {
-    EAST: { byeDrawPositions: [2, 31], roundPositions: [1, 16] },
-    WEST: { byeDrawPositions: [1, 16], roundPositions: [1, 8] },
-    SOUTH: { byeDrawPositions: [1, 8], roundPositions: [1, 4] },
-    SOUTHEAST: { byeDrawPositions: [1, 4], roundPositions: [1, 2] },
+    East: { byeDrawPositions: [2, 31], roundPositions: [1, 16] },
+    West: { byeDrawPositions: [1, 16], roundPositions: [1, 8] },
+    South: { byeDrawPositions: [1, 8], roundPositions: [1, 4] },
+    Southeast: { byeDrawPositions: [1, 4], roundPositions: [1, 2] },
   };
   expectedByeDrawPositions = {
-    EAST: { advancedFiltered: [2, 1, 8], unadvancedFiltered: 0 },
-    WEST: { advancedFiltered: [2, 1, 4], unadvancedFiltered: 0 },
-    SOUTH: { advancedFiltered: [2, 1, 2], unadvancedFiltered: 0 },
-    SOUTHEAST: {
+    East: { advancedFiltered: [2, 1, 8], unadvancedFiltered: 0 },
+    West: { advancedFiltered: [2, 1, 4], unadvancedFiltered: 0 },
+    South: { advancedFiltered: [2, 1, 2], unadvancedFiltered: 0 },
+    Southeast: {
       pendingAdvancedDrawPositions: [2, 3],
       pendingAdvancedRoundPosition: 1,
       pendingAdvancedLength: 1,
@@ -49,16 +49,16 @@ it('can generate COMPASS and fill all drawPositions', () => {
   seedsCount = 8;
   participantsCount = 28; // we will have 4 BYEs
   expectedCompassByes = {
-    EAST: { byeDrawPositions: [2, 10, 23, 31], roundPositions: [1, 5, 12, 16] },
-    WEST: { byeDrawPositions: [1, 5, 12, 16], roundPositions: [1, 3, 6, 8] },
-    SOUTH: { byeDrawPositions: [1, 3, 6, 8], roundPositions: [1, 2, 3, 4] },
-    SOUTHEAST: { byeDrawPositions: [1, 2, 3, 4], roundPositions: [1, 2, 1] },
+    East: { byeDrawPositions: [2, 10, 23, 31], roundPositions: [1, 5, 12, 16] },
+    West: { byeDrawPositions: [1, 5, 12, 16], roundPositions: [1, 3, 6, 8] },
+    South: { byeDrawPositions: [1, 3, 6, 8], roundPositions: [1, 2, 3, 4] },
+    Southeast: { byeDrawPositions: [1, 2, 3, 4], roundPositions: [1, 2, 1] },
   };
   expectedByeDrawPositions = {
-    EAST: { advancedFiltered: [4, 1, 3], unadvancedFiltered: 0 },
-    WEST: { advancedFiltered: [4, 1, 2], unadvancedFiltered: 0 },
-    SOUTH: { advancedFiltered: [0], unadvancedFiltered: 0 },
-    SOUTHEAST: {
+    East: { advancedFiltered: [4, 1, 3], unadvancedFiltered: 0 },
+    West: { advancedFiltered: [4, 1, 2], unadvancedFiltered: 0 },
+    South: { advancedFiltered: [0], unadvancedFiltered: 0 },
+    Southeast: {
       pendingAdvancedRoundPosition: undefined,
       pendingAdvancedDrawPositions: undefined,
       pendingAdvancedLength: 0,
@@ -85,7 +85,7 @@ it('can generate COMPASS and fill all drawPositions', () => {
 function testByeRemoval({ stage, expectedByeRemoval }) {
   const { structures } = drawEngine.getDrawStructures({ stage });
 
-  const directionEast = findStructureByName(structures, 'EAST');
+  const directionEast = findStructureByName(structures, 'East');
   const { structureId } = directionEast;
   const byeDrawPositions = assignedByes(directionEast.positionAssignments);
 

@@ -45,4 +45,4 @@ If the effects of a change to a `matchUpStatus` are limited to a single structur
 
 ## Multi-structure effects
 
-When there are multiple structures in a draw, such as COMPASS or DOUBLE ELIMINATION draws, then losers (and sometimes winners) can move across structures. For instance a first round loser in an EAST structure will move into the first round of the WEST structure. When this happens the `positionAssignments` for the target structure must be updated to map the `participantId` to the `drawPosition` where they have been assigned.
+When there are multiple structures in a draw, such as COMPASS or DOUBLE ELIMINATION draws, then losers (and sometimes winners) can move across structures. For instance a first round loser in an East structure will move into the first round of the West structure. When this happens the `positionAssignments` for the target structure must be updated to map the `participantId` to the `drawPosition` where they have been assigned.

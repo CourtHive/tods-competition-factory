@@ -54,7 +54,7 @@ it('can propagate and remove lineUps', () => {
           ?.participantId
     );
 
-  // assign individual participants to all first round EAST matchUps
+  // assign individual participants to all first round East matchUps
   teamMatchUps
     .filter(
       ({ stageSequence, roundNumber }) =>
@@ -98,7 +98,7 @@ it('can propagate and remove lineUps', () => {
       });
   };
 
-  // complete all first round EAST matchUps
+  // complete all first round East matchUps
   scoreSinglesMatchUps(scoringOutcome);
 
   teamMatchUps = tournamentEngine.allTournamentMatchUps({
@@ -108,7 +108,7 @@ it('can propagate and remove lineUps', () => {
   teamMatchUps
     .filter(
       ({ structureName, roundNumber }) =>
-        structureName === 'WEST' && roundNumber === 1
+        structureName === 'West' && roundNumber === 1
     )
     .forEach(({ sides }) => {
       expect(losingParticipantIds.includes(sides[0].participantId)).toEqual(
@@ -122,7 +122,7 @@ it('can propagate and remove lineUps', () => {
       expect(sides[0].lineUp).not.toEqual(sides[1].lineUp);
     });
 
-  // clear all first round EAST matchUps
+  // clear all first round East matchUps
   scoreSinglesMatchUps(clearingOutcome);
 
   teamMatchUps = tournamentEngine.allTournamentMatchUps({
@@ -132,7 +132,7 @@ it('can propagate and remove lineUps', () => {
   teamMatchUps
     .filter(
       ({ structureName, roundNumber }) =>
-        structureName === 'WEST' && roundNumber === 1
+        structureName === 'West' && roundNumber === 1
     )
     .forEach(({ sides }) => {
       expect(sides[0].lineUp).not.toBeDefined();
@@ -147,13 +147,13 @@ it('can propagate and remove lineUps', () => {
   const matchUpsWithLineUps = noContextTeamMatchUps.filter(
     ({ sides }) => sides?.some((side) => side.lineUp)
   );
-  // only first round EAST matchUps with scoreValue should have lineUp attached
+  // only first round East matchUps with scoreValue should have lineUp attached
   expect(matchUpsWithLineUps.length).toEqual(8);
   for (const noContextMatchUp of matchUpsWithLineUps) {
     expect(noContextMatchUp.roundNumber).toEqual(1);
   }
 
-  // re-complete all first round EAST matchUps
+  // re-complete all first round East matchUps
   scoreSinglesMatchUps(scoringOutcome);
 
   const getAssignmentsCount = (drawDefinition) =>
@@ -181,10 +181,10 @@ it('can propagate and remove lineUps', () => {
 
   let eastRound2MatchUps = teamMatchUps.filter(
     ({ structureName, roundNumber }) =>
-      structureName === 'EAST' && roundNumber === 2
+      structureName === 'East' && roundNumber === 2
   );
 
-  // teams which have advanced to EAST roundNumber: 2
+  // teams which have advanced to East roundNumber: 2
   eastRound2MatchUps.forEach(({ matchUpId, sides }) => {
     expect(winningParticipantIds.includes(sides[0].participantId)).toEqual(
       true
@@ -224,7 +224,7 @@ it('can propagate and remove lineUps', () => {
 
   eastRound2MatchUps = teamMatchUps.filter(
     ({ structureName, roundNumber }) =>
-      structureName === 'EAST' && roundNumber === 2
+      structureName === 'East' && roundNumber === 2
   );
 
   eastRound2MatchUps.forEach(({ sides }) => {
@@ -241,7 +241,7 @@ it('can propagate and remove lineUps', () => {
 
   let westRound1MatchUps = teamMatchUps.filter(
     ({ structureName, roundNumber }) =>
-      structureName === 'WEST' && roundNumber === 1
+      structureName === 'West' && roundNumber === 1
   );
 
   westRound1MatchUps.forEach(({ sides }) => {
@@ -314,7 +314,7 @@ it('can propagate COMPASS lineUps properly', () => {
     },
   });
 
-  // assign individual participants to all first round EAST matchUps
+  // assign individual participants to all first round East matchUps
   teamMatchUps
     .filter(
       ({ stageSequence, roundNumber }) =>
@@ -340,7 +340,7 @@ it('can propagate COMPASS lineUps properly', () => {
     },
   });
 
-  // complete all EAST matchUps
+  // complete all East matchUps
   singlesMatchUps
     .filter(({ stageSequence }) => stageSequence === 1)
     .forEach(({ matchUpId }) => {

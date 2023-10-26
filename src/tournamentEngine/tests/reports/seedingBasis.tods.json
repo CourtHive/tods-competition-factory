@@ -7726,7 +7726,7 @@
                 }
               ],
               "stageSequence": 1,
-              "structureName": "EAST",
+              "structureName": "East",
               "stage": "MAIN",
               "matchUps": [
                 {
@@ -8299,7 +8299,7 @@
               "finishingPosition": "ROUND_OUTCOME",
               "seedAssignments": [],
               "stageSequence": 2,
-              "structureName": "WEST",
+              "structureName": "West",
               "stage": "MAIN",
               "roundOffset": 1,
               "matchUps": [
@@ -8568,7 +8568,7 @@
               "finishingPosition": "ROUND_OUTCOME",
               "seedAssignments": [],
               "stageSequence": 2,
-              "structureName": "NORTH",
+              "structureName": "North",
               "stage": "MAIN",
               "roundOffset": 2,
               "matchUps": [
@@ -8701,7 +8701,7 @@
               "finishingPosition": "ROUND_OUTCOME",
               "seedAssignments": [],
               "stageSequence": 3,
-              "structureName": "SOUTH",
+              "structureName": "South",
               "stage": "MAIN",
               "roundOffset": 2,
               "matchUps": [
@@ -8834,7 +8834,7 @@
               "finishingPosition": "ROUND_OUTCOME",
               "seedAssignments": [],
               "stageSequence": 2,
-              "structureName": "NORTHEAST",
+              "structureName": "Northeast",
               "stage": "MAIN",
               "roundOffset": 3,
               "matchUps": [
@@ -8899,7 +8899,7 @@
               "finishingPosition": "ROUND_OUTCOME",
               "seedAssignments": [],
               "stageSequence": 3,
-              "structureName": "NORTHWEST",
+              "structureName": "Northwest",
               "stage": "MAIN",
               "roundOffset": 3,
               "matchUps": [
@@ -8964,7 +8964,7 @@
               "finishingPosition": "ROUND_OUTCOME",
               "seedAssignments": [],
               "stageSequence": 3,
-              "structureName": "SOUTHWEST",
+              "structureName": "Southwest",
               "stage": "MAIN",
               "roundOffset": 3,
               "matchUps": [
@@ -9029,7 +9029,7 @@
               "finishingPosition": "ROUND_OUTCOME",
               "seedAssignments": [],
               "stageSequence": 4,
-              "structureName": "SOUTHEAST",
+              "structureName": "Southeast",
               "stage": "MAIN",
               "roundOffset": 3,
               "matchUps": [

@@ -51,7 +51,7 @@ it('can find structures by stage and stageSequence', () => {
   expect(stage2Structures?.length).toEqual(3);
   expect(
     stage2Structures?.map((structure) => structure.structureName)
-  ).toMatchObject(['WEST', 'NORTH', 'NORTHEAST']);
+  ).toMatchObject(['West', 'North', 'Northeast']);
 
   const { structures: stage3Structures } = getDrawStructures({
     drawDefinition,
@@ -61,7 +61,7 @@ it('can find structures by stage and stageSequence', () => {
   expect(stage3Structures?.length).toEqual(3);
   expect(
     stage3Structures?.map((structure) => structure.structureName)
-  ).toMatchObject(['SOUTH', 'NORTHWEST', 'SOUTHWEST']);
+  ).toMatchObject(['South', 'Northwest', 'Southwest']);
 
   const { structures: stage4Structures } = getDrawStructures({
     drawDefinition,
@@ -70,7 +70,7 @@ it('can find structures by stage and stageSequence', () => {
   });
   expect(
     stage4Structures?.map((structure) => structure.structureName)
-  ).toMatchObject(['SOUTHEAST']);
+  ).toMatchObject(['Southeast']);
 
   const { structures: consolationStructures } = getDrawStructures({
     drawDefinition,

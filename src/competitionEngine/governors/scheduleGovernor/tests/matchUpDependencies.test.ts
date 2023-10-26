@@ -64,13 +64,13 @@ it('can build a dependency map across structures', () => {
 
   const targetMatchUp = matchUps.find(
     ({ structureName, roundNumber }) =>
-      structureName === 'WEST' && roundNumber === 1
+      structureName === 'West' && roundNumber === 1
   );
   const dependencies = matchUpDependencies[targetMatchUp.matchUpId].matchUpIds;
   matchUps
     .filter(({ matchUpId }) => dependencies.includes(matchUpId))
     .forEach(({ structureName, roundNumber, roundPosition }) => {
-      expect(structureName).toEqual('EAST');
+      expect(structureName).toEqual('East');
       expect(roundNumber).toEqual(1);
       expect([1, 2].includes(roundPosition)).toEqual(true);
     });
