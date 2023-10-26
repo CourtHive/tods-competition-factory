@@ -42,7 +42,7 @@ test('structureSort can sort by stage and stageSequence', () => {
     .map(({ structureName }) => structureName);
 
   expect(structureNames).toEqual([
-    'QUALIFYING',
+    'Qualifying',
     'EAST',
     'WEST',
     'NORTH',
@@ -62,7 +62,7 @@ test('structureSort can sort by stage and stageSequence', () => {
     'SOUTHWEST',
     'SOUTH',
     'SOUTHEAST',
-    'QUALIFYING',
+    'Qualifying',
   ];
 
   structureNames = drawDefinition.structures

@@ -276,8 +276,8 @@ it('supports ROUND_ROBIN in multi-sequence qualifying structures', () => {
   qualifyingRoundNumber = Math.max(...roundNumbers);
   expect(qualifyingRoundNumber).toEqual(2);
 
-  expect(q1.structureName).toEqual('QUALIFYING 1');
-  expect(q2.structureName).toEqual('QUALIFYING 2');
+  expect(q1.structureName).toEqual('Qualifying 1');
+  expect(q2.structureName).toEqual('Qualifying 2');
 
   const firstLink = drawDefinition.links.find(
     (link) => link.source.structureId === q1.structureId
@@ -499,7 +499,7 @@ it('Fish Farm: supports qualifying structures with multiple roundTargets', () =>
   const structureNames = drawDefinition.structures.map(
     ({ structureName }) => structureName
   );
-  expect(structureNames).toEqual(['QUALIFYING 1-1', 'QUALIFYING 2-1', 'Main']);
+  expect(structureNames).toEqual(['Qualifying 1-1', 'Qualifying 2-1', 'Main']);
 
   const rrQLink = drawDefinition.links.find(
     ({ linkType }) => linkType === POSITION
@@ -511,7 +511,7 @@ it('Fish Farm: supports qualifying structures with multiple roundTargets', () =>
   const rrQstructure = drawDefinition.structures.find(
     ({ structureId }) => structureId === rrQstructureId
   );
-  expect(rrQstructure.structureName).toEqual('QUALIFYING 2-1');
+  expect(rrQstructure.structureName).toEqual('Qualifying 2-1');
 
   const {
     structures: [mainStructure],
@@ -652,7 +652,7 @@ it('qualifying structures with multiple chains can share the same roundTarget', 
   const rrQstructure = drawDefinition.structures.find(
     ({ structureId }) => structureId === rrQstructureId
   );
-  expect(rrQstructure.structureName).toEqual('QUALIFYING 1-1');
+  expect(rrQstructure.structureName).toEqual('Qualifying 1-1');
 
   const {
     structures: [mainStructure],
