@@ -1,17 +1,18 @@
 import { getParticipants } from '../../getters/participants/getParticipants';
+import { isObject, isString } from '../../../utilities/objects';
+import { unique } from '../../../utilities';
 import {
   ResultType,
   decorateResult,
 } from '../../../global/functions/decorateResult';
-import { isObject, isString } from '../../../utilities/objects';
-import { unique } from '../../../utilities';
 
 import { DOUBLES, SINGLES, TEAM } from '../../../constants/eventConstants';
-import { ANY, MIXED } from '../../../constants/genderConstants';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
+import { ANY, MIXED } from '../../../constants/genderConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_VALUES,
+  MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 import {
@@ -42,9 +43,25 @@ export function modifyEvent({
   eventId,
   event,
 }: ModifyEventArgs): ResultType {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!isString(eventId) || !isObject(eventUpdates))
-    return { error: INVALID_VALUES };
+  const stack = 'modifyEvent';
+
+  if (!tournamentRecord)
+    return decorateResult({
+      result: { error: MISSING_TOURNAMENT_RECORD },
+      stack,
+    });
+  if (!isString(eventId))
+    return decorateResult({
+      result: { error: MISSING_EVENT },
+      context: { eventId },
+      stack,
+    });
+  if (!isObject(eventUpdates))
+    return decorateResult({
+      result: { error: INVALID_VALUES },
+      context: { eventUpdates },
+      stack,
+    });
 
   const enteredParticipantIds: string[] =
     event?.entries
@@ -86,8 +103,9 @@ export function modifyEvent({
 
   if (eventUpdates.gender && !validGender)
     return decorateResult({
-      context: { gender: eventUpdates.gender },
+      context: { gender: eventUpdates.gender, validGender },
       result: { error: INVALID_VALUES },
+      stack,
     });
 
   const validEventTypes = (enteredParticipantTypes.includes(TEAM) && [TEAM]) ||
@@ -102,8 +120,9 @@ export function modifyEvent({
 
   if (eventUpdates.eventType && !validEventType)
     return decorateResult({
-      context: { participantType: eventUpdates.eventType },
+      context: { participantType: eventUpdates.eventType, validEventType },
       result: { error: INVALID_VALUES },
+      stack,
     });
 
   if (eventUpdates.eventType) event.eventType = eventUpdates.eventType;

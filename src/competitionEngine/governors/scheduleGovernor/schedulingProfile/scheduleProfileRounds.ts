@@ -97,8 +97,7 @@ export function scheduleProfileRounds({
   }
 
   const { courts } = getVenuesAndCourts({
-    dates: scheduleDates,
-    ignoreDisabled: true,
+    ignoreDisabled: false,
     tournamentRecords,
   });
 
