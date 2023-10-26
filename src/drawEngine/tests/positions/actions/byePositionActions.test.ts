@@ -59,7 +59,7 @@ it('will not allow BYE removal when there are active matchUps in connected struc
 
   let targetMatchUp = matchUpsToBePlayed.find(
     ({ structureName, roundNumber, roundPosition }) =>
-      structureName === 'EAST' && roundNumber === 1 && roundPosition === 7
+      structureName === 'East' && roundNumber === 1 && roundPosition === 7
   );
   const eastStructureId = targetMatchUp.structureId;
 
@@ -72,7 +72,7 @@ it('will not allow BYE removal when there are active matchUps in connected struc
 
   targetMatchUp = matchUpsToBePlayed.find(
     ({ structureName, roundNumber, roundPosition }) =>
-      structureName === 'WEST' && roundNumber === 1 && roundPosition === 3
+      structureName === 'West' && roundNumber === 1 && roundPosition === 3
   );
 
   result = tournamentEngine.setMatchUpStatus({
@@ -85,7 +85,7 @@ it('will not allow BYE removal when there are active matchUps in connected struc
 
   targetMatchUp = matchUpsToBePlayed.find(
     ({ structureName, roundNumber, roundPosition }) =>
-      structureName === 'WEST' && roundNumber === 1 && roundPosition === 2
+      structureName === 'West' && roundNumber === 1 && roundPosition === 2
   );
   const westStructureId = targetMatchUp.structureId;
 
@@ -103,7 +103,7 @@ it('will not allow BYE removal when there are active matchUps in connected struc
   drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
   structure = drawDefinition.structures.find(
     ({ structureName, stageSequence }) =>
-      stageSequence === 3 && structureName === 'SOUTH'
+      stageSequence === 3 && structureName === 'South'
   );
   expect(
     structure.positionAssignments.filter(({ participantId }) => participantId)
@@ -112,7 +112,7 @@ it('will not allow BYE removal when there are active matchUps in connected struc
 
   targetMatchUp = matchUpsToBePlayed.find(
     ({ structureName, roundNumber, roundPosition }) =>
-      structureName === 'SOUTH' && roundNumber === 2 && roundPosition === 1
+      structureName === 'South' && roundNumber === 2 && roundPosition === 1
   );
   const southStructureId = targetMatchUp.structureId;
 
@@ -130,8 +130,8 @@ it('will not allow BYE removal when there are active matchUps in connected struc
   // the original 5 + 3x WALKOVER + completed west
   expect(completedMatchUps.length).toEqual(9);
 
-  // Now attempt to get positionActions for BYEs in SOUTH, WEST and EAST
-  // none of those SOUTH should be removable... and the BYEs on the bottom of WEST, EAST should not be swappable, removable or replaceable
+  // Now attempt to get positionActions for BYEs in South, West and East
+  // none of those South should be removable... and the BYEs on the bottom of West, East should not be swappable, removable or replaceable
 
   tournamentEngine.devContext({ positionActions: true });
   result = tournamentEngine.positionActions({

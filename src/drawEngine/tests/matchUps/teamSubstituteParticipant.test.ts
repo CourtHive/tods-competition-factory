@@ -131,7 +131,7 @@ function assignIndividualParticipants(params) {
       .forEach(assignDoublesParticipants);
   };
 
-  // assign individual participants to all first round EAST matchUps
+  // assign individual participants to all first round East matchUps
   teamMatchUps
     .filter(
       ({ stageSequence, roundNumber }) =>

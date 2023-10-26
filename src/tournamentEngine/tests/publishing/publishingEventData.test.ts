@@ -316,7 +316,7 @@ it('can generate payload for publishing a compass draw', () => {
   const mainStructure = drawDefinition.structures.find(
     (structure) => structure.stage === MAIN && structure.stageSequence === 1
   );
-  expect(mainStructure.structureName).toEqual('EAST');
+  expect(mainStructure.structureName).toEqual('East');
 
   const policyDefinitions = {
     ...PARTICIPANT_PRIVACY_DEFAULT,

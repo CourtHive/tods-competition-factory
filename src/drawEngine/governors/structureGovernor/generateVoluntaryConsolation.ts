@@ -1,5 +1,6 @@
 import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
 import { validateTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
+import { getParticipants } from '../../../tournamentEngine/getters/participants/getParticipants';
 import { copyTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { automatedPositioning } from '../positionGovernor/automatedPositioning';
@@ -12,8 +13,8 @@ import { constantToString } from '../../../utilities/strings';
 import { getStageEntries } from '../../getters/stageGetter';
 import { getGenerators } from './getGenerators';
 
+import { PlayoffAttributes, SeedingProfile } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { SeedingProfile } from '../../../types/factoryTypes';
 import {
   EXISTING_STRUCTURE,
   ErrorType,
@@ -39,9 +40,9 @@ import {
   Tournament,
   TypeEnum,
 } from '../../../types/tournamentFromSchema';
-import { getParticipants } from '../../../tournamentEngine/getters/participants/getParticipants';
 
 type GenerateVoluntaryConsolationArgs = {
+  playoffAttributes?: PlayoffAttributes;
   tournamentRecord?: Tournament;
   seedingProfile?: SeedingProfile;
   drawDefinition: DrawDefinition;

@@ -1,4 +1,5 @@
 import { modifyDrawNotice } from '../notifications/drawNotifications';
+import { constantToString } from '../../utilities/strings';
 import structureTemplate from './structureTemplate';
 
 import { MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
@@ -6,7 +7,7 @@ import { VOLUNTARY_CONSOLATION } from '../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 
 export function addVoluntaryConsolationStructure({
-  structureName = VOLUNTARY_CONSOLATION,
+  structureName = constantToString(VOLUNTARY_CONSOLATION),
   structureAbbreviation,
   drawDefinition,
   matchUpType,

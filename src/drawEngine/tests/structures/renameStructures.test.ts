@@ -23,14 +23,14 @@ it('can rename structures', () => {
     }))
   );
   expect(Object.values(structureMap)).toEqual([
-    'EAST',
-    'WEST',
-    'NORTH',
-    'SOUTH',
-    'NORTHEAST',
-    'NORTHWEST',
-    'SOUTHWEST',
-    'SOUTHEAST',
+    'East',
+    'West',
+    'North',
+    'South',
+    'Northeast',
+    'Northwest',
+    'Southwest',
+    'Southeast',
   ]);
 
   const newNames = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];

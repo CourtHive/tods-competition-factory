@@ -120,8 +120,8 @@ it('supports multi-sequence qualifying structures', () => {
   qualifyingRoundNumber = Math.max(...roundNumbers);
   expect(qualifyingRoundNumber).toEqual(2);
 
-  expect(q1.structureName).toEqual('QUALIFYING 1');
-  expect(q2.structureName).toEqual('QUALIFYING 2');
+  expect(q1.structureName).toEqual('Qualifying 1');
+  expect(q2.structureName).toEqual('Qualifying 2');
 
   const firstLink = drawDefinition.links.find(
     (link) => link.source.structureId === q1.structureId

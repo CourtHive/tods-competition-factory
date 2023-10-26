@@ -7,14 +7,14 @@ import { COMPASS } from '../../../constants/drawDefinitionConstants';
 
 it('can generate COMPASS and properly place BYEs in consolation structures 32/25', () => {
   const expectations_NO_BYES = {
-    EAST: 0,
-    WEST: 0,
-    NORTH: 0,
-    SOUTH: 0,
-    NORTHEAST: 0,
-    SOUTHWEST: 0,
-    NORTHWEST: 0,
-    SOUTHEAST: 0,
+    East: 0,
+    West: 0,
+    North: 0,
+    South: 0,
+    Northeast: 0,
+    Southwest: 0,
+    Northwest: 0,
+    Southeast: 0,
   };
   compassByesTest({
     drawSize: 32,
@@ -25,14 +25,14 @@ it('can generate COMPASS and properly place BYEs in consolation structures 32/25
   });
 
   const expectations32_25 = {
-    EAST: 7,
-    WEST: 7,
-    NORTH: 0,
-    SOUTH: 7,
-    NORTHEAST: 0,
-    SOUTHWEST: 0,
-    NORTHWEST: 0,
-    SOUTHEAST: 4,
+    East: 7,
+    West: 7,
+    North: 0,
+    South: 7,
+    Northeast: 0,
+    Southwest: 0,
+    Northwest: 0,
+    Southeast: 4,
   };
   compassByesTest({
     drawSize: 32,
@@ -43,14 +43,14 @@ it('can generate COMPASS and properly place BYEs in consolation structures 32/25
   });
 
   const expectations32_17 = {
-    EAST: 15,
-    WEST: 15,
-    NORTH: 0,
-    SOUTH: 8,
-    NORTHEAST: 0,
-    SOUTHWEST: 4,
-    NORTHWEST: 0,
-    SOUTHEAST: 4,
+    East: 15,
+    West: 15,
+    North: 0,
+    South: 8,
+    Northeast: 0,
+    Southwest: 4,
+    Northwest: 0,
+    Southeast: 4,
   };
   compassByesTest({
     drawSize: 32,
@@ -94,14 +94,14 @@ function compassByesTest({
 
   expect(structures.length).toEqual(8);
   expect(structures.map((structure) => structure.structureName)).toEqual([
-    'EAST',
-    'WEST',
-    'NORTH',
-    'SOUTH',
-    'NORTHEAST',
-    'NORTHWEST',
-    'SOUTHWEST',
-    'SOUTHEAST',
+    'East',
+    'West',
+    'North',
+    'South',
+    'Northeast',
+    'Northwest',
+    'Southwest',
+    'Southeast',
   ]);
 
   structures.forEach((structure) => {

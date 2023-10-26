@@ -15,6 +15,7 @@ import {
 export function firstRoundLoserConsolation(params) {
   const {
     finishingPositionOffset = 0,
+    playoffAttributes,
     stageSequence = 1,
     staggeredEntry,
     structureName,
@@ -40,7 +41,8 @@ export function firstRoundLoserConsolation(params) {
     : treeMatchUps(mainParams);
 
   const mainStructure = structureTemplate({
-    structureName: structureName || constantToString(MAIN),
+    structureName:
+      structureName || playoffAttributes?.['0']?.name || constantToString(MAIN),
     structureId: structureId || uuids?.pop(),
     stageSequence,
     matchUpType,
@@ -65,7 +67,8 @@ export function firstRoundLoserConsolation(params) {
 
     const consolation = constantToString(CONSOLATION);
     const consolationStructureName =
-      params.consolationStructureName ||
+      playoffAttributes?.['0-1']?.name ??
+      params.consolationStructureName ??
       (structureName ? `${structureName} ${consolation}` : consolation);
 
     const consolationStructure = structureTemplate({

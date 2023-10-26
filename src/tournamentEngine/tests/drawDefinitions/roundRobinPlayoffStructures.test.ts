@@ -90,14 +90,14 @@ it('is possible to have COMPASS playoff for Round Robin with playoffs', () => {
   );
   expect(groupedNames.length).toEqual(2);
   expect(groupedNames[0].sort()).toEqual([
-    'Gold Flight EAST',
-    'Gold Flight NORTH',
-    'Gold Flight NORTHEAST',
-    'Gold Flight NORTHWEST',
-    'Gold Flight SOUTH',
-    'Gold Flight SOUTHEAST',
-    'Gold Flight SOUTHWEST',
-    'Gold Flight WEST',
+    'Gold Flight East',
+    'Gold Flight North',
+    'Gold Flight Northeast',
+    'Gold Flight Northwest',
+    'Gold Flight South',
+    'Gold Flight Southeast',
+    'Gold Flight Southwest',
+    'Gold Flight West',
   ]);
   expect(groupedNames[1].sort()).toEqual([
     'Silver Flight 17-32',
@@ -139,7 +139,7 @@ it('is possible to have COMPASS playoff for Round Robin with playoffs', () => {
   expect(structureIsComplete).toEqual(true);
 
   const g1 = drawDefinition.structures
-    .find((s) => s.structureName === 'Gold Flight EAST')
+    .find((s) => s.structureName === 'Gold Flight East')
     .positionAssignments.map(extractAttributes('participantId'));
 
   const g2 = drawDefinition.structures

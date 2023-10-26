@@ -1029,7 +1029,7 @@
               "finishingPosition": "ROUND_OUTCOME",
               "seedAssignments": [],
               "stageSequence": 1,
-              "structureName": "EAST",
+              "structureName": "East",
               "stage": "MAIN",
               "positionAssignments": [
                 {
@@ -1118,7 +1118,7 @@
               "finishingPosition": "ROUND_OUTCOME",
               "seedAssignments": [],
               "stageSequence": 2,
-              "structureName": "WEST",
+              "structureName": "West",
               "stage": "MAIN",
               "positionAssignments": [
                 {
@@ -1197,7 +1197,7 @@
               "finishingPosition": "ROUND_OUTCOME",
               "seedAssignments": [],
               "stageSequence": 3,
-              "structureName": "SOUTH",
+              "structureName": "South",
               "stage": "MAIN",
               "positionAssignments": [
                 {

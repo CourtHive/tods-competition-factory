@@ -38,9 +38,9 @@ import {
   nextPowerOf2,
 } from '../../utilities';
 
+import { PlayoffAttributes, PolicyDefinitions } from '../../types/factoryTypes';
 import POLICY_SEEDING_USTA from '../../fixtures/policies/POLICY_SEEDING_USTA';
 import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats';
-import { PolicyDefinitions } from '../../types/factoryTypes';
 import { SUCCESS } from '../../constants/resultConstants';
 import { TEAM } from '../../constants/matchUpTypes';
 import {
@@ -88,6 +88,7 @@ import {
 
 type GenerateDrawDefinitionArgs = {
   automated?: boolean | { seedsOnly: boolean };
+  playoffAttributes?: PlayoffAttributes;
   policyDefinitions?: PolicyDefinitions;
   voluntaryConsolation?: {
     structureAbbreviation?: string;
@@ -109,6 +110,7 @@ type GenerateDrawDefinitionArgs = {
   processCodes?: string[];
   matchUpFormat?: string;
   matchUpType?: TypeEnum;
+  structureName?: string;
   tieFormatName?: string;
   tieFormat?: TieFormat;
   drawEntries?: Entry[];

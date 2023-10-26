@@ -21,7 +21,7 @@ export const structure = {
   structureId:
     '{\\"type\\":\\"string\\",\\"required\\":\\"true\\",\\"note\\":\\"id unique within drawDefinition\\"}',
   structureName:
-    '{\\"type\\":\\"string\\",\\"required\\":\\"false\\",\\"note\\":\\"e.g. NORTH, SOUTH for Compass Draws\\"}',
+    '{\\"type\\":\\"string\\",\\"required\\":\\"false\\",\\"note\\":\\"e.g. North, South for Compass Draws\\"}',
   structures:
     '{\\"type\\":\\"object\\",\\"object\\":\\"structure\\",\\"array\\":\\"true\\",\\"required\\":\\"false\\",\\"note\\":\\"Contained structures, e.g. round robin groups\\"}',
   structureType:

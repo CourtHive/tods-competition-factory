@@ -27,7 +27,7 @@ it('can generate compass draws', () => {
   let structureNames = drawDefinition.structures.map(
     (structure) => structure.structureName
   );
-  ['EAST', 'WEST'].forEach((direction) =>
+  ['East', 'West'].forEach((direction) =>
     expect(structureNames.includes(direction)).toEqual(true)
   );
 
@@ -40,7 +40,7 @@ it('can generate compass draws', () => {
   structureNames = drawDefinition.structures.map(
     (structure) => structure.structureName
   );
-  ['EAST', 'WEST', 'NORTH', 'SOUTH'].forEach((direction) =>
+  ['East', 'West', 'North', 'South'].forEach((direction) =>
     expect(structureNames.includes(direction)).toEqual(true)
   );
 
@@ -59,14 +59,14 @@ it('can generate compass draws', () => {
     (structure) => structure.structureName
   );
   [
-    'EAST',
-    'WEST',
-    'NORTH',
-    'SOUTH',
-    'NORTHEAST',
-    'SOUTHWEST',
-    'NORTHWEST',
-    'SOUTHEAST',
+    'East',
+    'West',
+    'North',
+    'South',
+    'Northeast',
+    'Southwest',
+    'Northwest',
+    'Southeast',
   ].forEach((direction) => {
     expect(structureNames.includes(direction)).toEqual(true);
   });
@@ -100,8 +100,8 @@ it('generates compass draws with correct links', () => {
   expect(
     confirmUniqueLink({
       links,
-      sourceStructureId: structureNameMap['EAST'],
-      targetStructureId: structureNameMap['WEST'],
+      sourceStructureId: structureNameMap['East'],
+      targetStructureId: structureNameMap['West'],
       sourceRound: 1,
       targetRound: 1,
     })
@@ -109,8 +109,8 @@ it('generates compass draws with correct links', () => {
   expect(
     confirmUniqueLink({
       links,
-      sourceStructureId: structureNameMap['WEST'],
-      targetStructureId: structureNameMap['SOUTH'],
+      sourceStructureId: structureNameMap['West'],
+      targetStructureId: structureNameMap['South'],
       sourceRound: 1,
       targetRound: 1,
     })
@@ -118,8 +118,8 @@ it('generates compass draws with correct links', () => {
   expect(
     confirmUniqueLink({
       links,
-      sourceStructureId: structureNameMap['SOUTH'],
-      targetStructureId: structureNameMap['SOUTHEAST'],
+      sourceStructureId: structureNameMap['South'],
+      targetStructureId: structureNameMap['Southeast'],
       sourceRound: 1,
       targetRound: 1,
     })
@@ -127,8 +127,8 @@ it('generates compass draws with correct links', () => {
   expect(
     confirmUniqueLink({
       links,
-      sourceStructureId: structureNameMap['NORTH'],
-      targetStructureId: structureNameMap['NORTHWEST'],
+      sourceStructureId: structureNameMap['North'],
+      targetStructureId: structureNameMap['Northwest'],
       sourceRound: 1,
       targetRound: 1,
     })
@@ -136,8 +136,8 @@ it('generates compass draws with correct links', () => {
   expect(
     confirmUniqueLink({
       links,
-      sourceStructureId: structureNameMap['WEST'],
-      targetStructureId: structureNameMap['SOUTHWEST'],
+      sourceStructureId: structureNameMap['West'],
+      targetStructureId: structureNameMap['Southwest'],
       sourceRound: 2,
       targetRound: 1,
     })
@@ -145,8 +145,8 @@ it('generates compass draws with correct links', () => {
   expect(
     confirmUniqueLink({
       links,
-      sourceStructureId: structureNameMap['EAST'],
-      targetStructureId: structureNameMap['NORTH'],
+      sourceStructureId: structureNameMap['East'],
+      targetStructureId: structureNameMap['North'],
       sourceRound: 2,
       targetRound: 1,
     })
@@ -154,8 +154,8 @@ it('generates compass draws with correct links', () => {
   expect(
     confirmUniqueLink({
       links,
-      sourceStructureId: structureNameMap['EAST'],
-      targetStructureId: structureNameMap['NORTHEAST'],
+      sourceStructureId: structureNameMap['East'],
+      targetStructureId: structureNameMap['Northeast'],
       sourceRound: 3,
       targetRound: 1,
     })
@@ -165,8 +165,8 @@ it('generates compass draws with correct links', () => {
   expect(
     confirmUniqueLink({
       links,
-      sourceStructureId: structureNameMap['EAST'],
-      targetStructureId: structureNameMap['WEST'],
+      sourceStructureId: structureNameMap['East'],
+      targetStructureId: structureNameMap['West'],
       sourceRound: 2,
       targetRound: 1,
     })
@@ -174,8 +174,8 @@ it('generates compass draws with correct links', () => {
   expect(
     confirmUniqueLink({
       links,
-      sourceStructureId: structureNameMap['EAST'],
-      targetStructureId: structureNameMap['SOUTH'],
+      sourceStructureId: structureNameMap['East'],
+      targetStructureId: structureNameMap['South'],
       sourceRound: 1,
       targetRound: 1,
     })
@@ -202,7 +202,7 @@ it('generates compass draws with correct finishing drawPositions', () => {
 
   let matchUp = findMatchInStructures({
     structures,
-    structureId: structureNameMap['EAST'],
+    structureId: structureNameMap['East'],
     roundNumber: 1,
     roundPosition: 1,
   });
@@ -210,7 +210,7 @@ it('generates compass draws with correct finishing drawPositions', () => {
 
   matchUp = findMatchInStructures({
     structures,
-    structureId: structureNameMap['WEST'],
+    structureId: structureNameMap['West'],
     roundNumber: 1,
     roundPosition: 1,
   });
@@ -218,7 +218,7 @@ it('generates compass draws with correct finishing drawPositions', () => {
 
   matchUp = findMatchInStructures({
     structures,
-    structureId: structureNameMap['SOUTH'],
+    structureId: structureNameMap['South'],
     roundNumber: 1,
     roundPosition: 1,
   });
@@ -226,7 +226,7 @@ it('generates compass draws with correct finishing drawPositions', () => {
 
   matchUp = findMatchInStructures({
     structures,
-    structureId: structureNameMap['SOUTHEAST'],
+    structureId: structureNameMap['Southeast'],
     roundNumber: 1,
     roundPosition: 1,
   });
@@ -234,7 +234,7 @@ it('generates compass draws with correct finishing drawPositions', () => {
 
   matchUp = findMatchInStructures({
     structures,
-    structureId: structureNameMap['NORTH'],
+    structureId: structureNameMap['North'],
     roundNumber: 1,
     roundPosition: 1,
   });
@@ -242,7 +242,7 @@ it('generates compass draws with correct finishing drawPositions', () => {
 
   matchUp = findMatchInStructures({
     structures,
-    structureId: structureNameMap['NORTHWEST'],
+    structureId: structureNameMap['Northwest'],
     roundNumber: 1,
     roundPosition: 1,
   });
@@ -250,7 +250,7 @@ it('generates compass draws with correct finishing drawPositions', () => {
 
   matchUp = findMatchInStructures({
     structures,
-    structureId: structureNameMap['NORTHEAST'],
+    structureId: structureNameMap['Northeast'],
     roundNumber: 1,
     roundPosition: 1,
   });
@@ -258,7 +258,7 @@ it('generates compass draws with correct finishing drawPositions', () => {
 
   matchUp = findMatchInStructures({
     structures,
-    structureId: structureNameMap['SOUTHWEST'],
+    structureId: structureNameMap['Southwest'],
     roundNumber: 1,
     roundPosition: 1,
   });
@@ -282,7 +282,7 @@ it('generates compass draws with correct finishing drawPositions', () => {
 
   matchUp = findMatchInStructures({
     structures,
-    structureId: structureNameMap['EAST'],
+    structureId: structureNameMap['East'],
     roundNumber: 1,
     roundPosition: 1,
   });
@@ -290,7 +290,7 @@ it('generates compass draws with correct finishing drawPositions', () => {
 
   matchUp = findMatchInStructures({
     structures,
-    structureId: structureNameMap['WEST'],
+    structureId: structureNameMap['West'],
     roundNumber: 1,
     roundPosition: 1,
   });
@@ -298,7 +298,7 @@ it('generates compass draws with correct finishing drawPositions', () => {
 
   matchUp = findMatchInStructures({
     structures,
-    structureId: structureNameMap['SOUTH'],
+    structureId: structureNameMap['South'],
     roundNumber: 1,
     roundPosition: 1,
   });
@@ -306,7 +306,7 @@ it('generates compass draws with correct finishing drawPositions', () => {
 
   matchUp = findMatchInStructures({
     structures,
-    structureId: structureNameMap['SOUTHEAST'],
+    structureId: structureNameMap['Southeast'],
     roundNumber: 1,
     roundPosition: 1,
   });
@@ -314,7 +314,7 @@ it('generates compass draws with correct finishing drawPositions', () => {
 
   matchUp = findMatchInStructures({
     structures,
-    structureId: structureNameMap['NORTH'],
+    structureId: structureNameMap['North'],
     roundNumber: 1,
     roundPosition: 1,
   });
@@ -322,7 +322,7 @@ it('generates compass draws with correct finishing drawPositions', () => {
 
   matchUp = findMatchInStructures({
     structures,
-    structureId: structureNameMap['NORTHWEST'],
+    structureId: structureNameMap['Northwest'],
     roundNumber: 1,
     roundPosition: 1,
   });
@@ -330,7 +330,7 @@ it('generates compass draws with correct finishing drawPositions', () => {
 
   matchUp = findMatchInStructures({
     structures,
-    structureId: structureNameMap['NORTHEAST'],
+    structureId: structureNameMap['Northeast'],
     roundNumber: 1,
     roundPosition: 1,
   });
@@ -338,7 +338,7 @@ it('generates compass draws with correct finishing drawPositions', () => {
 
   matchUp = findMatchInStructures({
     structures,
-    structureId: structureNameMap['SOUTHWEST'],
+    structureId: structureNameMap['Southwest'],
     roundNumber: 1,
     roundPosition: 1,
   });

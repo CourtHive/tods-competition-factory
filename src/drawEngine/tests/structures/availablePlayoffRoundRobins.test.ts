@@ -211,15 +211,15 @@ const scenarios = [
     completeAllMatchUps: false,
     playoffGroups: [
       {
+        playoffAttributes: {
+          '1-43': { name: '1-43 Playoff', abbreviation: 'P1-43' },
+          '0-1': { name: 'C1', abbreviation: 'C1' },
+          '0-3': { name: 'C2', abbreviation: 'C2' },
+          '3-4': { name: '3-4 Playoff', abbreviation: 'P3-4' },
+        },
         playoffStructureNameBase: 'One',
-        structureName: '1-43 Playoff',
         drawType: CURTIS_CONSOLATION,
         finishingPositions: [1],
-        structureNameMap: {
-          'Consolation 1': 'C1',
-          'Consolation 2': 'C2',
-          'Play Off': 'PO',
-        },
       },
       {
         playoffStructureNameBase: 'Two',
@@ -269,7 +269,7 @@ const scenarios = [
         '1-43 Playoff',
         'One C1',
         'One C2',
-        'One PO',
+        'One 3-4 Playoff',
         '44-86 Playoff',
         'Two C1',
         'Two C2',

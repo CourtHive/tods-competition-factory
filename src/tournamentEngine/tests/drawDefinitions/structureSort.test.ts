@@ -42,27 +42,27 @@ test('structureSort can sort by stage and stageSequence', () => {
     .map(({ structureName }) => structureName);
 
   expect(structureNames).toEqual([
-    'QUALIFYING',
-    'EAST',
-    'WEST',
-    'NORTH',
-    'SOUTH',
-    'NORTHEAST',
-    'NORTHWEST',
-    'SOUTHWEST',
-    'SOUTHEAST',
+    'Qualifying',
+    'East',
+    'West',
+    'North',
+    'South',
+    'Northeast',
+    'Northwest',
+    'Southwest',
+    'Southeast',
   ]);
 
   const fpSort = [
-    'EAST',
-    'NORTHEAST',
-    'NORTH',
-    'WEST',
-    'NORTHWEST',
-    'SOUTHWEST',
-    'SOUTH',
-    'SOUTHEAST',
-    'QUALIFYING',
+    'East',
+    'Northeast',
+    'North',
+    'West',
+    'Northwest',
+    'Southwest',
+    'South',
+    'Southeast',
+    'Qualifying',
   ];
 
   structureNames = drawDefinition.structures

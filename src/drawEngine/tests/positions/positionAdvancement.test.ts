@@ -282,8 +282,8 @@ it('can direct participants in COMPASS', () => {
   expect(winnerMatchUp.roundPosition).toEqual(1);
   expect(loserMatchUp.roundPosition).toEqual(1);
 
-  expect(loserTargetLink.source.structureId).toEqual(structureNameMap['EAST']);
-  expect(loserTargetLink.target.structureId).toEqual(structureNameMap['WEST']);
+  expect(loserTargetLink.source.structureId).toEqual(structureNameMap['East']);
+  expect(loserTargetLink.target.structureId).toEqual(structureNameMap['West']);
 
   expect(matchUp.structureId).toEqual(winnerMatchUp.structureId);
   expect(matchUp.structureId).not.toEqual(loserMatchUp.structureId);
@@ -311,10 +311,10 @@ it('can direct participants in COMPASS', () => {
   expect(loserMatchUp.roundPosition).toEqual(1);
 
   expect(round2loserTargetLink.source.structureId).toEqual(
-    structureNameMap['EAST']
+    structureNameMap['East']
   );
   expect(round2loserTargetLink.target.structureId).toEqual(
-    structureNameMap['NORTH']
+    structureNameMap['North']
   );
 
   expect(matchUp2ndRound.structureId).toEqual(

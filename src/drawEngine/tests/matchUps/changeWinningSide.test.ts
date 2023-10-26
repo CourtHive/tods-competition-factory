@@ -30,7 +30,7 @@ test('changing winningSide can propagate changes through multiple structures', (
 
   const firstMatchUp = completedMatchUps.find(
     ({ roundNumber, roundPosition, structureName }) =>
-      roundNumber === 1 && roundPosition === 1 && structureName === 'EAST'
+      roundNumber === 1 && roundPosition === 1 && structureName === 'East'
   );
   const firstMatchUpWinnerParticipantId = firstMatchUp.sides.find(
     ({ sideNumber }) => sideNumber === firstMatchUp.winningSide
@@ -40,7 +40,7 @@ test('changing winningSide can propagate changes through multiple structures', (
   ).participantId;
   const westFinal = completedMatchUps.find(
     ({ finishingRound, structureName }) =>
-      finishingRound === 1 && structureName === 'WEST'
+      finishingRound === 1 && structureName === 'West'
   );
   const westFinalWinnerParticipantId = westFinal.sides.find(
     ({ sideNumber }) => sideNumber === westFinal.winningSide

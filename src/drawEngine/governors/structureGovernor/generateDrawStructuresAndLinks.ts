@@ -9,7 +9,6 @@ import { isPowerOf2 } from '../../../utilities';
 import { getGenerators } from './getGenerators';
 
 import { POLICY_TYPE_DRAWS } from '../../../constants/policyConstants';
-import { PolicyDefinitions } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/matchUpTypes';
 import {
@@ -36,8 +35,13 @@ import {
   Structure,
   TieFormat,
 } from '../../../types/tournamentFromSchema';
+import {
+  PlayoffAttributes,
+  PolicyDefinitions,
+} from '../../../types/factoryTypes';
 
 type GenerateDrawStructuresAndLinksArgs = {
+  playoffAttributes?: PlayoffAttributes;
   appliedPolicies?: PolicyDefinitions;
   enforceMinimumDrawSize?: boolean;
   drawDefinition: DrawDefinition;
@@ -45,6 +49,7 @@ type GenerateDrawStructuresAndLinksArgs = {
   drawTypeCoercion?: boolean;
   staggeredEntry?: boolean;
   qualifyingProfiles?: any;
+  structureName?: string;
   tieFormat?: TieFormat;
   matchUpType?: string;
   drawType?: string;

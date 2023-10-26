@@ -31,10 +31,8 @@ import {
 
 export function getGenerators(params): { generators?: any; error?: ErrorType } {
   const {
-    compassAttributes = COMPASS_ATTRIBUTES,
-    olympicAttributes = OLYMPIC_ATTRIBUTES,
+    playoffAttributes,
     stageSequence = 1,
-    structureName,
     structureId,
     stage = MAIN,
     matchUpType,
@@ -53,13 +51,17 @@ export function getGenerators(params): { generators?: any; error?: ErrorType } {
     (drawSize <= 4 && (feedPolicy?.feedMainFinal ? 0 : 1)) ||
     0;
 
-  const main = constantToString(MAIN);
+  const structureName =
+    params.structureName ??
+    playoffAttributes?.['0']?.name ??
+    constantToString(MAIN);
+
   const singleElimination = () => {
     const { matchUps } = treeMatchUps(params);
     const structure = structureTemplate({
       structureId: structureId || uuids?.pop(),
-      structureName: structureName || main,
       stageSequence,
+      structureName,
       matchUpType,
       matchUps,
       stage,
@@ -72,9 +74,9 @@ export function getGenerators(params): { generators?: any; error?: ErrorType } {
     [AD_HOC]: () => {
       const structure = structureTemplate({
         structureId: structureId || uuids?.pop(),
-        structureName: structureName || main,
         finishingPosition: WIN_RATIO,
         stageSequence,
+        structureName,
         matchUps: [],
         matchUpType,
         stage,
@@ -86,8 +88,8 @@ export function getGenerators(params): { generators?: any; error?: ErrorType } {
       const { matchUps } = luckyDraw(params);
       const structure = structureTemplate({
         structureId: structureId || uuids?.pop(),
-        structureName: structureName || main,
         stageSequence,
+        structureName,
         matchUpType,
         matchUps,
         stage,
@@ -101,13 +103,13 @@ export function getGenerators(params): { generators?: any; error?: ErrorType } {
       generatePlayoffStructures({
         ...params,
         roundOffsetLimit: 3,
-        playoffAttributes: compassAttributes,
+        playoffAttributes: playoffAttributes ?? COMPASS_ATTRIBUTES,
       }),
     [OLYMPIC]: () =>
       generatePlayoffStructures({
         ...params,
         roundOffsetLimit: 2,
-        playoffAttributes: olympicAttributes,
+        playoffAttributes: playoffAttributes ?? OLYMPIC_ATTRIBUTES,
       }),
     [PLAY_OFF]: () => {
       return generatePlayoffStructures(params);
@@ -118,8 +120,8 @@ export function getGenerators(params): { generators?: any; error?: ErrorType } {
 
       const structure = structureTemplate({
         structureId: structureId || uuids?.pop(),
-        structureName: structureName || main,
         stageSequence,
+        structureName,
         matchUpType,
         stage: MAIN,
         matchUps,

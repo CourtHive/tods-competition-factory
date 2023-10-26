@@ -5,6 +5,7 @@ import { decorateResult } from '../../../global/functions/decorateResult';
 import structureTemplate from '../../generators/structureTemplate';
 import { generateRoundRobin } from '../../generators/roundRobin';
 import { treeMatchUps } from '../../generators/eliminationTree';
+import { constantToString } from '../../../utilities/strings';
 import { findStructure } from '../../getters/findStructure';
 
 import {
@@ -127,8 +128,8 @@ export function generateQualifyingStructure(params): {
   const qualifyingStructureName =
     structureName ||
     (roundTargetName || stageSequenceName
-      ? `${QUALIFYING} ${roundTargetName}${stageSequenceName}`
-      : QUALIFYING);
+      ? `${constantToString(QUALIFYING)} ${roundTargetName}${stageSequenceName}`
+      : constantToString(QUALIFYING));
 
   if (drawType === ROUND_ROBIN) {
     const { maxRoundNumber /*, groupSize*/, structures, groupCount } =
