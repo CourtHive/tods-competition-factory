@@ -3,6 +3,7 @@ export { factoryVersion as version } from './global/functions/factoryVersion';
 export { scoreGovernor } from './matchUpEngine/governors/scoreGovernor';
 export { fixtures } from './fixtures';
 
+import { visualizeScheduledMatchUps } from './global/testHarness/testUtilities/visualizeScheduledMatchUps';
 import { calculateWinCriteria } from './matchUpEngine/governors/tieFormatGovernor/calculateWinCriteria';
 import { proConflicts } from './competitionEngine/governors/scheduleGovernor/proScheduling/proConflicts';
 import { validateTieFormat } from './matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
@@ -105,6 +106,7 @@ export const utilities = {
   UUID,
   UUIDS,
   validateTieFormat,
+  visualizeScheduledMatchUps,
 };
 
 // START- Asynchronous and Synchronous engine exports

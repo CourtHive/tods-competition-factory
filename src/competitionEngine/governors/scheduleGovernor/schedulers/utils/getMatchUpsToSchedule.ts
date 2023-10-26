@@ -16,10 +16,13 @@ export function getMatchUpsToSchedule({
   scheduleCompletedMatchUps,
   dateScheduledMatchUpIds,
   matchUpNotBeforeTimes,
+  matchUpScheduleTimes,
   orderedMatchUpIds,
   clearDate,
   matchUps,
 }) {
+  const alreadyScheduledMatchUpIds = Object.keys(matchUpScheduleTimes);
+
   // this must be done to preserve the order of matchUpIds
   const matchUpsToSchedule = orderedMatchUpIds
     .map((matchUpId) =>
@@ -28,7 +31,9 @@ export function getMatchUpsToSchedule({
     .filter(Boolean)
     .filter((matchUp) => {
       const alreadyScheduled =
-        !clearDate && dateScheduledMatchUpIds.includes(matchUp.matchUpId);
+        !clearDate &&
+        (dateScheduledMatchUpIds.includes(matchUp.matchUpId) ||
+          alreadyScheduledMatchUpIds.includes(matchUp.matchUpId));
 
       const doNotSchedule = [
         BYE,
