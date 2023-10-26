@@ -111,6 +111,7 @@ export function getVenueSchedulingDetails({
       minutesMap,
       matchUps,
     });
+
     const clearDate = processResult.clearDate;
     ({ dateScheduledMatchUpIds, dateScheduledMatchUps } = processResult);
 
@@ -119,6 +120,7 @@ export function getVenueSchedulingDetails({
       scheduleCompletedMatchUps,
       dateScheduledMatchUpIds,
       matchUpNotBeforeTimes,
+      matchUpScheduleTimes,
       orderedMatchUpIds,
       clearDate,
       matchUps,
