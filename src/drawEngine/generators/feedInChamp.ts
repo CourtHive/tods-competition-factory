@@ -13,6 +13,7 @@ export function feedInChampionship(params) {
   const {
     finishingPositionOffset,
     stageSequence = 1,
+    playoffAttributes,
     policyDefinitions,
     feedsFromFinal,
     staggeredEntry,
@@ -74,7 +75,8 @@ export function feedInChampionship(params) {
 
   if (drawSize > 2) {
     const consolationStructure = structureTemplate({
-      structureName: constantToString(CONSOLATION),
+      structureName:
+        playoffAttributes?.['0-1'] ?? constantToString(CONSOLATION),
       matchUps: consolationMatchUps,
       structureId: uuids?.pop(),
       stage: CONSOLATION,

@@ -15,6 +15,7 @@ import {
 export function firstRoundLoserConsolation(params) {
   const {
     finishingPositionOffset = 0,
+    playoffAttributes,
     stageSequence = 1,
     staggeredEntry,
     structureName,
@@ -65,7 +66,8 @@ export function firstRoundLoserConsolation(params) {
 
     const consolation = constantToString(CONSOLATION);
     const consolationStructureName =
-      params.consolationStructureName ||
+      playoffAttributes?.['0-1'] ??
+      params.consolationStructureName ??
       (structureName ? `${structureName} ${consolation}` : consolation);
 
     const consolationStructure = structureTemplate({

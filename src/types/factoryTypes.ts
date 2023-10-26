@@ -350,3 +350,7 @@ export type Substitution = {
   substitutionOrder: number;
   participantId: string;
 };
+
+export type PlayoffAttributes = {
+  [key: string | number]: { name: string; abbreviation: string };
+};

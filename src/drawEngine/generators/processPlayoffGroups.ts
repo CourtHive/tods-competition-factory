@@ -39,10 +39,9 @@ import {
 } from '../../constants/drawDefinitionConstants';
 
 export function processPlayoffGroups({
-  compassAttributes = COMPASS_ATTRIBUTES,
-  olympicAttributes = OLYMPIC_ATTRIBUTES,
   requireSequential = true,
   playoffMatchUpFormat,
+  playoffAttributes,
   sourceStructureId,
   policyDefinitions,
   stageSequence,
@@ -218,12 +217,12 @@ export function processPlayoffGroups({
       };
       if (playoffDrawType === COMPASS) {
         Object.assign(params, {
-          playoffAttributes: compassAttributes,
+          playoffAttributes: playoffAttributes ?? COMPASS_ATTRIBUTES,
           roundOffsetLimit: 3,
         });
       } else if (playoffDrawType === OLYMPIC) {
         Object.assign(params, {
-          playoffAttributes: olympicAttributes,
+          playoffAttributes: playoffAttributes ?? OLYMPIC_ATTRIBUTES,
           roundOffsetLimit: 2,
         });
       }

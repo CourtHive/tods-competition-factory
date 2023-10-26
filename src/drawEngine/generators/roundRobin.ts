@@ -27,6 +27,7 @@ import {
 type GenerateRoundRobinArgs = {
   appliedPolicies?: PolicyDefinitions;
   seedingProfile?: SeedingProfile;
+  groupNameBase?: string;
   structureName?: string;
   stageSequence?: number;
   structureOptions?: any;
@@ -42,6 +43,7 @@ type GenerateRoundRobinArgs = {
 
 export function generateRoundRobin({
   structureName = constantToString(MAIN),
+  groupNameBase = 'Group',
   stageSequence = 1,
   structureOptions,
   appliedPolicies,
@@ -79,7 +81,7 @@ export function generateRoundRobin({
     );
 
     return structureTemplate({
-      structureName: `Group ${structureOrder}`,
+      structureName: `${groupNameBase} ${structureOrder}`,
       structureId: uuids?.pop(),
       structureType: ITEM,
       finishingPosition,
