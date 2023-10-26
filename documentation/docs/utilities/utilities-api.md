@@ -191,3 +191,11 @@ const { extension } = findExtension({ element, name });
 ## validateTieFormat
 
 ---
+
+## visualizeScheduledMatchUps
+
+Generate color-coded printout of matchUp schedule details
+
+```js
+visualizeScheduledMatchUps({ scheduledMatchUps, showGlobalLogs: true });
+```
