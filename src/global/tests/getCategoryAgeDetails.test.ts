@@ -2,17 +2,22 @@ import { getCategoryAgeDetails } from '../functions/getCategoryAgeDetails';
 import { expect, it } from 'vitest';
 
 const consideredDate = '2023-10-26';
+const late2005 = '2005-10-27';
+const late2004 = '2004-10-27';
+const late2012 = '2012-10-25';
+const mid2018 = '2018-06-06';
+
 const scenarios = [
   {
     category: {
       ageCategoryCode: 'U18',
-      ageMinDate: '2018-06-06',
-      ageMaxDate: '2018-06-06',
+      ageMinDate: mid2018,
+      ageMaxDate: mid2018,
     },
     expectation: {
       errors: ['Invalid submitted ageMinDate: 2018-06-06'],
-      ageMinDate: '2005-10-27',
-      ageMaxDate: '2018-06-06',
+      ageMinDate: late2005,
+      ageMaxDate: mid2018,
       consideredDate,
       ageMax: 17,
     },
@@ -24,7 +29,7 @@ const scenarios = [
     },
     expectation: {
       ageMaxDate: '2015-10-28',
-      ageMinDate: '2005-10-27',
+      ageMinDate: late2005,
       consideredDate,
       ageMax: 17,
       ageMin: 8,
@@ -38,8 +43,8 @@ const scenarios = [
     },
     expectation: {
       errors: ['Invalid submitted ageMin: 19', 'Invalid submitted ageMax: 20'],
-      consideredDate: '2023-10-26',
-      ageMinDate: '2004-10-27',
+      ageMinDate: late2004,
+      consideredDate,
       ageMax: 18,
     },
   },
@@ -51,9 +56,9 @@ const scenarios = [
     },
     expectation: {
       errors: ['Invalid submitted ageMax: 20', 'Invalid submitted ageMin: 19'],
-      consideredDate: '2023-10-26',
       ageMaxDate: '2004-10-30',
-      ageMinDate: '2005-10-27',
+      ageMinDate: late2005,
+      consideredDate,
       ageMax: 17,
     },
   },
@@ -63,9 +68,9 @@ const scenarios = [
       ageMin: 1,
     },
     expectation: {
-      consideredDate: '2023-10-26',
       ageMaxDate: '2022-10-25',
       ageMinDate: '2009-10-27',
+      consideredDate,
       ageMax: 13,
       ageMin: 1,
     },
@@ -76,28 +81,28 @@ const scenarios = [
       ageMin: 9,
     },
     expectation: {
-      consideredDate: '2023-10-26',
       ageMaxDate: '2014-10-25',
-      ageMinDate: '2005-10-27',
+      ageMinDate: late2005,
+      consideredDate,
       ageMax: 17,
       ageMin: 9,
     },
   },
   {
-    expectation: { consideredDate: '2023-10-26', ageMinDate: '2018-06-06' },
-    category: { ageCategoryCode: 'OPEN', ageMinDate: '2018-06-06' },
+    category: { ageCategoryCode: 'OPEN', ageMinDate: mid2018 },
+    expectation: { consideredDate, ageMinDate: mid2018 },
   },
   {
-    expectation: { consideredDate: '2023-10-26' },
+    expectation: { consideredDate },
     category: { ageCategoryCode: 'OPEN' },
   },
   {
     category: { categoryName: 'C50-70', ageMin: 10, ageMax: 60 },
     expectation: {
-      consideredDate: '2023-10-26',
       ageMaxDate: '2013-10-25',
       ageMinDate: '1962-10-27',
       combinedAge: true,
+      consideredDate,
       ageMax: 70,
       ageMin: 50,
     },
@@ -105,9 +110,9 @@ const scenarios = [
   {
     category: { ageCategoryCode: 'U18-10O' },
     expectation: {
-      consideredDate: '2023-10-26',
-      ageMaxDate: '2012-10-25',
-      ageMinDate: '2005-10-27',
+      ageMaxDate: late2012,
+      ageMinDate: late2005,
+      consideredDate,
       ageMax: 17,
       ageMin: 10,
     },
@@ -115,9 +120,9 @@ const scenarios = [
   {
     category: { ageCategoryCode: '10O-18U' },
     expectation: {
-      consideredDate: '2023-10-26',
-      ageMaxDate: '2012-10-25',
-      ageMinDate: '2004-10-27',
+      ageMaxDate: late2012,
+      ageMinDate: late2004,
+      consideredDate,
       ageMax: 18,
       ageMin: 10,
     },
@@ -126,9 +131,9 @@ const scenarios = [
     category: { ageCategoryCode: '10O-18U', ageMin: 9 },
     expectation: {
       errors: ['Invalid submitted ageMin: 9'],
-      consideredDate: '2023-10-26',
-      ageMaxDate: '2012-10-25',
-      ageMinDate: '2004-10-27',
+      ageMaxDate: late2012,
+      ageMinDate: late2004,
+      consideredDate,
       ageMax: 18,
       ageMin: 10,
     },
