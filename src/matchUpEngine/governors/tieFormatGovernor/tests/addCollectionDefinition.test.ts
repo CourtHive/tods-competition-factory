@@ -2,6 +2,7 @@ import { setSubscriptions } from '../../../../global/state/globalState';
 import { mocksEngine, tournamentEngine } from '../../../..';
 import { expect, it } from 'vitest';
 
+import { INVALID_CATEGORY } from '../../../../constants/errorConditionConstants';
 import { COLLEGE_D3 } from '../../../../constants/tieFormatConstants';
 import { TEAM } from '../../../../constants/eventConstants';
 import {
@@ -618,4 +619,55 @@ it('properly calculates valueGoal when adding collectionDefinition with tiebreak
   };
   result = tournamentEngine.removeCollectionDefinition(params);
   expect(result.tieFormat.winCriteria).toEqual({ valueGoal: 3 });
+});
+
+it('can validate collectionDefinition.category when adding collectionDefinitions', () => {
+  const ageCategoryCode = 'U18';
+  const {
+    drawIds: [drawId],
+    tournamentRecord,
+  } = mocksEngine.generateTournamentRecord({
+    eventProfiles: [
+      {
+        drawProfiles: [{ drawSize: 2, tieFormatName: COLLEGE_D3 }],
+        category: { ageCategoryCode },
+        eventType: TEAM,
+      },
+    ],
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  let event = tournamentEngine.getEvent({ drawId }).event;
+  expect(event.drawDefinitions[0].tieFormat.tieFormatName).toEqual(COLLEGE_D3);
+  expect(event.category.ageCategoryCode).toEqual(ageCategoryCode);
+
+  const tieFormatName = 'New tieFormatName';
+  const params = {
+    collectionDefinition: {
+      collectionId: '1d9791e8-61b5-47a9-b1b2-ab79b2753109',
+      category: { ageCategoryCode: 'U20' },
+      matchUpFormat: 'SET1-S:TB10',
+      matchUpType: 'SINGLES',
+      matchUpValue: 1,
+      matchUpCount: 1,
+    },
+    updateInProgressMatchUps: true,
+    tieFormatName,
+    drawId,
+  };
+
+  let result = tournamentEngine.addCollectionDefinition(params);
+  expect(result.error).toEqual(INVALID_CATEGORY);
+  event = tournamentEngine.getEvent({ drawId }).event;
+  expect(event.drawDefinitions[0].tieFormat.tieFormatName).toEqual(COLLEGE_D3);
+
+  params.collectionDefinition.category.ageCategoryCode = 'U16';
+  result = tournamentEngine.addCollectionDefinition(params);
+  expect(result.success).toEqual(true);
+  expect(result.tieFormat.tieFormatName).toEqual(tieFormatName);
+  event = tournamentEngine.getEvent({ drawId }).event;
+  expect(event.drawDefinitions[0].tieFormat.tieFormatName).toEqual(
+    tieFormatName
+  );
 });

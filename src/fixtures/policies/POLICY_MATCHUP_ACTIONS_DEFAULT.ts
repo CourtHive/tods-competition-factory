@@ -16,6 +16,7 @@ export const POLICY_MATCHUP_ACTIONS_DEFAULT = {
     ],
 
     participants: {
+      enforceCategory: true, // validate collectionDefinition.category against event.category
       enforceGender: true, // disallow placing FEMALEs in MALE events and vice versa
     },
 

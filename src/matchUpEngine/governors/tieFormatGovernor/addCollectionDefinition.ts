@@ -29,10 +29,10 @@ import { TEAM } from '../../../constants/matchUpTypes';
 import {
   CANNOT_MODIFY_TIEFORMAT,
   DUPLICATE_VALUE,
-  INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
 } from '../../../constants/errorConditionConstants';
 import {
+  Category,
   CollectionDefinition,
   DrawDefinition,
   Event,
@@ -53,10 +53,12 @@ type AddCollectionDefinitionArgs = {
   collectionDefinition: CollectionDefinition;
   updateInProgressMatchUps?: boolean;
   drawDefinition: DrawDefinition;
+  referenceCategory?: Category;
   tournamentRecord: Tournament;
   referenceGender?: GenderEnum;
-  tieFormatName?: string;
+  enforceCategory?: boolean;
   enforceGender?: boolean;
+  tieFormatName?: string;
   structureId?: string;
   matchUpId?: string;
   matchUp?: MatchUp;
@@ -68,7 +70,9 @@ type AddCollectionDefinitionArgs = {
 export function addCollectionDefinition({
   updateInProgressMatchUps = true,
   collectionDefinition,
+  referenceCategory,
   tournamentRecord,
+  enforceCategory,
   referenceGender,
   drawDefinition,
   tieFormatName,
@@ -92,20 +96,33 @@ export function addCollectionDefinition({
       event,
     }).appliedPolicies ?? {};
 
+  const matchUpActionsPolicy = appliedPolicies?.[POLICY_TYPE_MATCHUP_ACTIONS];
+
+  enforceCategory =
+    enforceCategory ?? matchUpActionsPolicy?.participants?.enforceCategory;
+
   enforceGender =
-    enforceGender ??
-    appliedPolicies?.[POLICY_TYPE_MATCHUP_ACTIONS]?.participants?.enforceGender;
+    enforceGender ?? matchUpActionsPolicy?.participants?.enforceGender;
 
-  const checkGender = !!(enforceGender !== false && event?.gender);
+  const checkCategory = !!(
+    (referenceCategory ?? event?.category) &&
+    enforceCategory !== false
+  );
+  const checkGender = !!(
+    (referenceGender ?? event?.gender) &&
+    enforceGender !== false
+  );
 
-  const { valid, errors } = validateCollectionDefinition({
+  const validationResult = validateCollectionDefinition({
+    referenceCategory: referenceCategory ?? event?.category,
     collectionDefinition,
     referenceGender,
+    checkCategory,
     checkGender,
     event,
   });
-  if (!valid) {
-    return decorateResult({ result: { error: INVALID_VALUES, errors }, stack });
+  if (validationResult.error) {
+    return decorateResult({ result: validationResult, stack });
   }
 
   let result = !matchUp?.tieFormat
