@@ -32,12 +32,12 @@ it('is possible to have COMPASS playoff for Round Robin with playoffs', () => {
         structureOptions: {
           playoffGroups: [
             {
-              structureName: 'Gold Flight',
+              playoffStructureNameBase: 'Gold Flight',
               finishingPositions: [1, 2],
               drawType: COMPASS,
             },
             {
-              structureName: 'Silver Flight',
+              playoffStructureNameBase: 'Silver Flight',
               finishingPositions: [3, 4],
               drawType: PLAY_OFF,
             },

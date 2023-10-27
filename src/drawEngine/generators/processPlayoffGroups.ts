@@ -212,8 +212,9 @@ export function processPlayoffGroups({
     } else if ([COMPASS, OLYMPIC, PLAY_OFF].includes(playoffDrawType)) {
       const params = {
         playoffAttributes: playoffGroup.playoffAttributes ?? playoffAttributes,
+        playoffStructureNameBase: playoffGroup.playoffStructureNameBase,
         structureId: playoffGroup.structureId ?? uuids?.pop(),
-        playoffStructureNameBase: structureName,
+        structureName: playoffGroup.structureName,
         idPrefix: idPrefix && `${idPrefix}-po`,
         addNameBaseToAttributeName: true,
         finishingPositionOffset,
@@ -276,7 +277,9 @@ export function processPlayoffGroups({
     ) {
       const uuidsFMLC = [uuids?.pop(), uuids?.pop()];
       const params = {
+        playoffStructureNameBase: playoffGroup.playoffStructureNameBase,
         structureId: playoffGroup.structureId ?? uuids?.pop(),
+        playoffAttributes: playoffGroup.playoffAttributes,
         idPrefix: idPrefix && `${idPrefix}-po`,
         finishingPositionOffset,
         uuids: uuidsFMLC,

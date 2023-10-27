@@ -75,13 +75,18 @@ export function feedInChampionship(params) {
   });
 
   if (drawSize > 2) {
+    const name =
+      playoffAttributes?.['0-1']?.name ?? constantToString(CONSOLATION);
+    const structureName = params.playoffStructureNameBase
+      ? `${params.playoffStructureNameBase} ${name}`
+      : name;
+
     const consolationStructure = structureTemplate({
-      structureName:
-        playoffAttributes?.['0-1']?.name ?? constantToString(CONSOLATION),
       matchUps: consolationMatchUps,
       structureId: uuids?.pop(),
       stage: CONSOLATION,
       stageSequence: 1,
+      structureName,
       matchUpType,
     });
     structures.push(consolationStructure);

@@ -48,6 +48,7 @@ type GeneratePlayoffStructuresArgs = {
   staggeredEntry?: boolean; // should only apply to playoffs from round robins
   sequenceLimit?: number;
   stageSequence?: number;
+  structureName?: string;
   matchUpType?: string;
   roundOffset?: number;
   structureId?: string;
@@ -118,6 +119,7 @@ export function generatePlayoffStructures(
     finishingPositionNaming?.[finishingPositionRange];
 
   const structureName =
+    params.structureName ||
     customNaming?.name ||
     (attributeProfile?.name &&
       (addNameBaseToAttributeName

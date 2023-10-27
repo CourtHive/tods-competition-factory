@@ -169,8 +169,8 @@ export function prepareStage(params): ResultType & {
 
     if (!scaledEntries?.length && seedByRanking) {
       const rankingScaleAttributes = {
-        scaleType: RANKING,
         scaleName: categoryName || ageCategoryCode,
+        scaleType: RANKING,
         eventType,
       };
 
