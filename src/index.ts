@@ -14,6 +14,7 @@ import { getScaleValues } from './tournamentEngine/getters/participants/getScale
 import { scoreHasValue } from './matchUpEngine/governors/queryGovernor/scoreHasValue';
 import { garman } from './competitionEngine/governors/scheduleGovernor/garman/garman';
 import { generateScoreString } from './matchUpEngine/generators/generateScoreString';
+import { categoryCanContain } from './global/functions/deducers/categoryCanContain';
 import { getTimeItem } from './tournamentEngine/governors/queryGovernor/timeItems';
 import { getCategoryAgeDetails } from './global/functions/getCategoryAgeDetails';
 import { parseScoreString } from './mocksEngine/utilities/parseScoreString';
@@ -98,6 +99,7 @@ export const utilities = {
   numericSort,
   overlap,
   getCategoryAgeDetails,
+  categoryCanContain,
   randomMember,
   randomPop,
   shuffleArray,

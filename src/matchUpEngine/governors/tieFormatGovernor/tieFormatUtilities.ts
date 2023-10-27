@@ -1,3 +1,4 @@
+import { categoryCanContain } from '../../../global/functions/deducers/categoryCanContain';
 import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
 import { isConvertableInteger } from '../../../utilities/math';
 import { matchUpFormatCode } from '../matchUpFormatGovernor';
@@ -9,10 +10,12 @@ import {
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
+  INVALID_CATEGORY,
   INVALID_OBJECT,
   INVALID_TIE_FORMAT,
 } from '../../../constants/errorConditionConstants';
 import {
+  Category,
   CollectionDefinition,
   Event,
   GenderEnum,
@@ -22,12 +25,17 @@ import {
 
 type ValidateTieFormatArgs = {
   checkCollectionIds?: boolean;
+  enforceCategory?: boolean;
   enforceGender?: boolean;
+  category?: Category;
   gender?: GenderEnum;
   tieFormat?: any; // not using TieFormat type because incoming value is potentially invalid
 };
 
 export function validateTieFormat(params: ValidateTieFormatArgs): ResultType {
+  const checkCategory = !!(
+    params?.enforceCategory !== false && params?.category
+  );
   const checkGender = !!(params?.enforceGender !== false && params?.gender);
   const checkCollectionIds = params?.checkCollectionIds;
   const tieFormat = params?.tieFormat;
@@ -70,9 +78,11 @@ export function validateTieFormat(params: ValidateTieFormatArgs): ResultType {
         aggregateValueImperative = true;
       const { valid, errors: collectionDefinitionErrors } =
         validateCollectionDefinition({
+          referenceCategory: params.category,
           referenceGender: params.gender,
           collectionDefinition,
           checkCollectionIds,
+          checkCategory,
           checkGender,
         });
 
@@ -128,26 +138,31 @@ export function validateTieFormat(params: ValidateTieFormatArgs): ResultType {
 
 type ValidateCollectionDefinitionArgs = {
   collectionDefinition: CollectionDefinition;
+  referenceCategory?: Category;
   checkCollectionIds?: boolean;
   referenceGender?: GenderEnum;
+  checkCategory?: boolean;
   checkGender?: boolean;
   event?: Event;
 };
 export function validateCollectionDefinition({
+  checkCategory = true,
   collectionDefinition,
   checkCollectionIds,
   checkGender = true,
+  referenceCategory,
   referenceGender,
   event,
 }: ValidateCollectionDefinitionArgs) {
   referenceGender = referenceGender ?? event?.gender;
+  const stack = 'validateCollectionDefinition';
   const errors: string[] = [];
 
   if (typeof collectionDefinition !== 'object') {
     errors.push(
       `collectionDefinition must be an object: ${collectionDefinition}`
     );
-    return { errors, error: INVALID_OBJECT };
+    return decorateResult({ result: { errors, error: INVALID_OBJECT }, stack });
   }
 
   const {
@@ -161,6 +176,7 @@ export function validateCollectionDefinition({
     matchUpType,
     scoreValue,
     setValue,
+    category,
     gender,
   } = collectionDefinition;
 
@@ -225,7 +241,21 @@ export function validateCollectionDefinition({
     errors.push(`Invalid gender: ${gender}`);
   }
 
-  if (errors.length) return { errors, error: INVALID_OBJECT };
+  if (checkCategory && referenceCategory && category) {
+    const result = categoryCanContain({
+      category: referenceCategory,
+      childCategory: category,
+    });
+    if (!result.valid)
+      return decorateResult({
+        result: { error: INVALID_CATEGORY },
+        context: result,
+        stack,
+      });
+  }
+
+  if (errors.length)
+    return decorateResult({ result: { errors, error: INVALID_OBJECT }, stack });
 
   return { valid: true };
 }
