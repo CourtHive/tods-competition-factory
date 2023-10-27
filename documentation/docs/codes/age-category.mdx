@@ -9,9 +9,9 @@ See [ITF Standard Codes](https://itftennis.atlassian.net/wiki/spaces/TODS/pages/
 A `consideredDate` is required for calculating `ageMaxDate` and `ageMinDate`, values which can be used to validate a `participant` entry into an event.
 
 ```js
-import { parseAgeCategoryCode } from 'tods-competition-factory';
+import { getCategoryAgeDetails } from 'tods-competition-factory';
 
-const { ageMax, ageMin, ageMaxDate, ageMinDate } = parseAgeCategoryCode({
+const { ageMax, ageMin, ageMaxDate, ageMinDate } = getCategoryAgeDetails({
   category: { ageCategoryCode },
   consideredDate, // required - typically the startDate or endDate of a tournament
 });
@@ -19,7 +19,7 @@ const { ageMax, ageMin, ageMaxDate, ageMinDate } = parseAgeCategoryCode({
 
 ```jsx live
 function AgeCategoryDemo(props) {
-  const result = utilities.parseAgeCategoryCode({
+  const result = utilities.getCategoryAgeDetails({
     category: { ageCategoryCode: '18U' },
     consideredDate: '2022-01-01',
   });

@@ -1,4 +1,4 @@
-import { parseAgeCategoryCode } from '../../global/functions/parseAgeCategoryCode';
+import { getCategoryAgeDetails } from '../../global/functions/getCategoryAgeDetails';
 import { definedAttributes } from '../../utilities/objects';
 import { generatePersonData } from './generatePersonData';
 import { dateFromDay } from '../../utilities/dateTime';
@@ -156,7 +156,7 @@ export function generatePersons(params?) {
     });
   }
 
-  const { ageMinDate, ageMaxDate } = parseAgeCategoryCode({
+  const { ageMinDate, ageMaxDate } = getCategoryAgeDetails({
     consideredDate,
     category,
   });

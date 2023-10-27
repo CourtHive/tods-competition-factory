@@ -15,7 +15,7 @@ import { scoreHasValue } from './matchUpEngine/governors/queryGovernor/scoreHasV
 import { garman } from './competitionEngine/governors/scheduleGovernor/garman/garman';
 import { generateScoreString } from './matchUpEngine/generators/generateScoreString';
 import { getTimeItem } from './tournamentEngine/governors/queryGovernor/timeItems';
-import { parseAgeCategoryCode } from './global/functions/parseAgeCategoryCode';
+import { getCategoryAgeDetails } from './global/functions/getCategoryAgeDetails';
 import { parseScoreString } from './mocksEngine/utilities/parseScoreString';
 import { roundRobinGroups } from './drawEngine/generators/roundRobinGroups';
 import { addExtension } from './global/functions/producers/addExtension';
@@ -97,7 +97,7 @@ export const utilities = {
   nextPowerOf2,
   numericSort,
   overlap,
-  parseAgeCategoryCode,
+  getCategoryAgeDetails,
   randomMember,
   randomPop,
   shuffleArray,
