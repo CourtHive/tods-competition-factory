@@ -3,6 +3,7 @@ import {
   deepCopyEnabled,
   getDevContext,
   setDeepCopyIterations,
+  getProvider,
 } from '../global/state/globalState';
 
 export function makeDeepCopy(
@@ -12,6 +13,14 @@ export function makeDeepCopy(
   removeExtensions?, // optional - strip all extension attributes
   iteration = 0 // escape hatch - check against iteration threshold
 ) {
+  if (getProvider().makeDeepCopy)
+    return getProvider().makeDeepCopy(
+      sourceObject,
+      convertExtensions,
+      internalUse,
+      removeExtensions
+    );
+
   const deepCopy = deepCopyEnabled();
 
   const { stringify, toJSON, ignore, modulate } = deepCopy || {};

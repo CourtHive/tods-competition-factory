@@ -21,9 +21,8 @@ export function generateRoundRobinWithPlayOff(params) {
   const { structures, groupCount, groupSize } =
     generateRoundRobin(mainDrawProperties);
 
-  // TODO: test for and handle this situation
   if (groupCount < 1) {
-    console.log(INVALID_CONFIGURATION);
+    return { error: INVALID_CONFIGURATION };
   }
 
   // define a default playoff group if none specified

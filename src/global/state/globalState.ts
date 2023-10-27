@@ -342,6 +342,10 @@ export function removeTournamentRecord(tournamentId: string) {
   return _globalStateProvider.removeTournamentRecord(tournamentId);
 }
 
+export function getProvider() {
+  return _globalStateProvider;
+}
+
 export type HandleCaughtErrorArgs = {
   engineName?: string;
   methodName: string;

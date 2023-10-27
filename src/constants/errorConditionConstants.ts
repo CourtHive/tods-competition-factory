@@ -696,6 +696,10 @@ export const INVALID_OBJECT = {
   message: 'Invalid object',
   code: 'ERR_INVALID_OBJECT',
 };
+export const INVALID_CATEGORY = {
+  message: 'Invalid category',
+  code: 'ERR_INVALID_CATEGORY',
+};
 export const INVALID_VALUES = {
   message: 'Invalid values',
   code: 'ERR_INVALID_VALUES',
@@ -805,6 +809,7 @@ export const errorConditionConstants = {
   INVALID_ACTION,
   INVALID_ASSIGNMENT,
   INVALID_BOOKINGS,
+  INVALID_CATEGORY,
   INVALID_CONFIGURATION,
   INVALID_DATE_AVAILABILITY,
   INVALID_DATE,

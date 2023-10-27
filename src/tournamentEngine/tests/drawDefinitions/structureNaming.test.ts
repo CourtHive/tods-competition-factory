@@ -9,6 +9,8 @@ import {
   FEED_IN_CHAMPIONSHIP,
   FIRST_MATCH_LOSER_CONSOLATION,
   FIRST_ROUND_LOSER_CONSOLATION,
+  ROUND_ROBIN,
+  ROUND_ROBIN_WITH_PLAYOFF,
 } from '../../../constants/drawDefinitionConstants';
 
 it('can customize naming of COMPASS draw structures', () => {
@@ -227,4 +229,131 @@ it('can customize naming of added playoff structures with finishingPositionRange
   const drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
   const structureNames = drawDefinition.structures.map(xa('structureName'));
   expect(structureNames).toEqual(['Initial', 'Silver', 'Gold']);
+});
+
+it('can customize naming of ROUND_ROBIN groups and playoff structures', () => {
+  const playoffAttributes = {
+    '0': { name: 'Initial', abbreviation: 'I' },
+  };
+
+  const { tournamentRecord, drawIds } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [
+      {
+        groupNameBase: 'Grupo',
+        drawType: ROUND_ROBIN,
+        playoffAttributes,
+        drawSize: 32,
+      },
+      {
+        groupNames: ['Blue', 'Red', 'Green', 'Orange', 'Violet'],
+        groupNameBase: 'Color',
+        drawType: ROUND_ROBIN,
+        playoffAttributes,
+        drawSize: 32,
+      },
+    ],
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  let drawDefinition = tournamentEngine.getEvent({
+    drawId: drawIds[0],
+  }).drawDefinition;
+  let structureNames = drawDefinition.structures.map(xa('structureName'));
+  expect(structureNames).toEqual(['Initial']);
+
+  let groupNames = drawDefinition.structures[0].structures.map(
+    xa('structureName')
+  );
+  expect(groupNames).toEqual([
+    'Grupo 1',
+    'Grupo 2',
+    'Grupo 3',
+    'Grupo 4',
+    'Grupo 5',
+    'Grupo 6',
+    'Grupo 7',
+    'Grupo 8',
+  ]);
+
+  drawDefinition = tournamentEngine.getEvent({
+    drawId: drawIds[1],
+  }).drawDefinition;
+  structureNames = drawDefinition.structures.map(xa('structureName'));
+  expect(structureNames).toEqual(['Initial']);
+
+  groupNames = drawDefinition.structures[0].structures.map(xa('structureName'));
+  expect(groupNames).toEqual([
+    'Blue',
+    'Red',
+    'Green',
+    'Orange',
+    'Violet',
+    'Color 6',
+    'Color 7',
+    'Color 8',
+  ]);
+});
+
+it('can customize naming of all ROUND_ROBIN_WITH_PLAYOFF structures', () => {
+  const playoffAttributes = {
+    '0': { name: 'Initial', abbreviation: 'I' },
+    '0-1': { name: 'Backdraw', abbreviation: 'B' },
+  };
+  const structureOptions = {
+    playoffGroups: [
+      {
+        drawType: FIRST_MATCH_LOSER_CONSOLATION,
+        playoffStructureNameBase: 'Y',
+        finishingPositions: [1, 2],
+        playoffAttributes,
+      },
+      {
+        playoffAttributes: {
+          '0': { name: 'First', abbreviation: '1' },
+          '0-1': { name: 'Second', abbreviation: '2' },
+          '0-2': { name: 'Third', abbreviation: '3' },
+          '0-2-1': { name: 'Fourth', abbreviation: '4' },
+          '0-3': { name: 'Fifth', abbreviation: '5' },
+          '0-1-2': { name: 'Sixth', abbreviation: '6' },
+          '0-1-1': { name: 'Seventh', abbreviation: '7' },
+          '0-1-1-1': { name: 'Eighth', abbreviation: '8' },
+        },
+        playoffStructureNameBase: 'X',
+        finishingPositions: [3, 4],
+        drawType: COMPASS,
+      },
+    ],
+    groupSize: 4,
+  };
+  const drawProfiles = [
+    {
+      drawType: ROUND_ROBIN_WITH_PLAYOFF,
+      structureName: 'Base',
+      structureOptions,
+      drawSize: 32,
+    },
+  ];
+  const {
+    drawIds: [drawId],
+    tournamentRecord,
+  } = mocksEngine.generateTournamentRecord({ drawProfiles });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+  const structureNames = drawDefinition.structures.map(xa('structureName'));
+  expect(structureNames).toEqual([
+    'Base',
+    'Initial',
+    'X First',
+    'Y Backdraw',
+    'X Second',
+    'X Third',
+    'X Seventh',
+    'X Fifth',
+    'X Fourth',
+    'X Sixth',
+    'X Eighth',
+  ]);
 });

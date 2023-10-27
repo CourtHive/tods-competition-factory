@@ -8,7 +8,6 @@ import {
   groupRounds,
 } from './roundRobinGroups';
 
-import { PolicyDefinitions, SeedingProfile } from '../../types/factoryTypes';
 import { ResultType } from '../../global/functions/decorateResult';
 import { ROUND_TARGET } from '../../constants/extensionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
@@ -23,8 +22,14 @@ import {
   MatchUpStatusEnum,
   TypeEnum,
 } from '../../types/tournamentFromSchema';
+import {
+  PlayoffAttributes,
+  PolicyDefinitions,
+  SeedingProfile,
+} from '../../types/factoryTypes';
 
 type GenerateRoundRobinArgs = {
+  playoffAttributes?: PlayoffAttributes;
   appliedPolicies?: PolicyDefinitions;
   seedingProfile?: SeedingProfile;
   groupNameBase?: string;
@@ -32,6 +37,7 @@ type GenerateRoundRobinArgs = {
   stageSequence?: number;
   structureOptions?: any;
   matchUpType?: TypeEnum;
+  groupNames?: string[];
   roundTarget?: number;
   structureId: string;
   drawSize: number;
@@ -41,22 +47,30 @@ type GenerateRoundRobinArgs = {
   stage?: string;
 };
 
-export function generateRoundRobin({
-  structureName = constantToString(MAIN),
-  groupNameBase = 'Group',
-  stageSequence = 1,
-  structureOptions,
-  appliedPolicies,
-  seedingProfile,
-  stage = MAIN,
-  matchUpType,
-  roundTarget,
-  structureId,
-  drawSize,
-  idPrefix,
-  isMock,
-  uuids,
-}: GenerateRoundRobinArgs) {
+export function generateRoundRobin(params: GenerateRoundRobinArgs) {
+  const {
+    groupNameBase = 'Group',
+    playoffAttributes,
+    stageSequence = 1,
+    structureOptions,
+    appliedPolicies,
+    seedingProfile,
+    stage = MAIN,
+    matchUpType,
+    roundTarget,
+    structureId,
+    groupNames,
+    drawSize,
+    idPrefix,
+    isMock,
+    uuids,
+  } = params;
+
+  const structureName =
+    params.structureName ??
+    playoffAttributes?.['0']?.name ??
+    constantToString(MAIN);
+
   const { groupCount, groupSize } = deriveGroups({
     structureOptions,
     appliedPolicies,
@@ -80,12 +94,15 @@ export function generateRoundRobin({
       ...matchUps.map(({ roundNumber }) => roundNumber)
     );
 
+    const structureName =
+      groupNames?.[structureOrder - 1] ?? `${groupNameBase} ${structureOrder}`;
+
     return structureTemplate({
-      structureName: `${groupNameBase} ${structureOrder}`,
       structureId: uuids?.pop(),
       structureType: ITEM,
       finishingPosition,
       structureOrder,
+      structureName,
       matchUps,
     });
   });

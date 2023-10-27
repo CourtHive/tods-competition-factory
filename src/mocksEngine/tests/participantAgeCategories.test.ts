@@ -1,23 +1,23 @@
-import { parseAgeCategoryCode } from '../../global/functions/parseAgeCategoryCode';
+import { getCategoryAgeDetails } from '../../global/functions/getCategoryAgeDetails';
 import { test, expect } from 'vitest';
 import { mocksEngine } from '../..';
 
 // prettier-ignore
 const ageCategoryScenarios = [
-  { category: { ageCategoryCode: 'U18' }, expectation: { ageMinDate: '2004-01-01', ageMax: 17 }},
-  { category: { categoryName: 'U18' }, expectation: { ageMinDate: '2004-01-01', ageMax: 17 }},
+  { category: { ageCategoryCode: 'U18' }, expectation: { ageMinDate: '2004-01-02', ageMax: 17 }},
+  { category: { categoryName: 'U18' }, expectation: { ageMinDate: '2004-01-02', ageMax: 17 }},
   { category: { categoryName: 'No age specification' }, expectation: { }},
-  { category: { ageCategoryCode: 'U16' }, expectation: { ageMinDate: '2006-01-01', ageMax: 15 } },
-  { category: { ageCategoryCode: '18U' }, expectation: { ageMinDate: '2003-01-01', ageMax: 18 } },
+  { category: { ageCategoryCode: 'U16' }, expectation: { ageMinDate: '2006-01-02', ageMax: 15 } },
+  { category: { ageCategoryCode: '18U' }, expectation: { ageMinDate: '2003-01-02', ageMax: 18 } },
   { category: { ageCategoryCode: '14O' }, expectation: { ageMaxDate: '2007-12-31', ageMin: 14 } },
-  { category: { ageCategoryCode: 'O14' }, expectation: { ageMaxDate: '2006-12-31', ageMin: 15 } },
-  { category: { ageCategoryCode: '8O-U14' }, expectation: { ageMinDate: '2008-01-01', ageMin: 8, ageMaxDate: '2013-12-31', ageMax: 13 } },
+  { category: { ageCategoryCode: 'O14' }, expectation: { ageMaxDate: '2008-12-31', ageMin: 15 } },
+  { category: { ageCategoryCode: '8O-U14' }, expectation: { ageMinDate: '2008-01-02', ageMin: 8, ageMaxDate: '2013-12-31', ageMax: 13 } },
   { category: { ageCategoryCode: 'C50-70' }, expectation: { ageMin: 50, ageMax: 70, combinedAge: true } },
 ];
 
 test.each(ageCategoryScenarios)('it can parse ageCategoryCodes', (scenario) => {
   const consideredDate = '2022-01-01';
-  const result = parseAgeCategoryCode({
+  const result = getCategoryAgeDetails({
     category: scenario.category,
     consideredDate,
   });
