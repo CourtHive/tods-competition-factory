@@ -1,7 +1,7 @@
 import { mocksEngine, tournamentEngine } from '../../../..';
 import { expect, it } from 'vitest';
 
-import { INVALID_VALUES } from '../../../../constants/errorConditionConstants';
+import { INVALID_COLLECTION_DEFINITION } from '../../../../constants/errorConditionConstants';
 import { COLLEGE_D3 } from '../../../../constants/tieFormatConstants';
 import { SINGLES_MATCHUP } from '../../../../constants/matchUpTypes';
 import { TEAM } from '../../../../constants/eventConstants';
@@ -44,7 +44,7 @@ it('can add collectionDefinitions to tieFormat in a drawDefinition', () => {
     collectionDefinition,
     drawId,
   });
-  expect(result.error).toEqual(INVALID_VALUES);
+  expect(result.error).toEqual(INVALID_COLLECTION_DEFINITION);
 
   collectionDefinition.collectionValue = 1;
   collectionDefinition.matchUpValue = 1;
@@ -53,7 +53,7 @@ it('can add collectionDefinitions to tieFormat in a drawDefinition', () => {
     collectionDefinition,
     drawId,
   });
-  expect(result.error).toEqual(INVALID_VALUES);
+  expect(result.error).toEqual(INVALID_COLLECTION_DEFINITION);
 
   collectionDefinition.collectionValue = undefined;
   collectionDefinition.matchUpValue = 0;

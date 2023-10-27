@@ -11,6 +11,7 @@ import {
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_CATEGORY,
+  INVALID_COLLECTION_DEFINITION,
   INVALID_OBJECT,
   INVALID_TIE_FORMAT,
 } from '../../../constants/errorConditionConstants';
@@ -255,7 +256,10 @@ export function validateCollectionDefinition({
   }
 
   if (errors.length)
-    return decorateResult({ result: { errors, error: INVALID_OBJECT }, stack });
+    return decorateResult({
+      result: { errors, error: INVALID_COLLECTION_DEFINITION },
+      stack,
+    });
 
   return { valid: true };
 }

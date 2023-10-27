@@ -692,6 +692,10 @@ export const INVALID_CONFIGURATION = {
   message: 'Invalid configuration',
   code: 'ERR_INVALID_CONFIG',
 };
+export const INVALID_COLLECTION_DEFINITION = {
+  message: 'Invalid collectionDefinition',
+  code: 'ERR_INVALID_COLLECTION_DEFINITION',
+};
 export const INVALID_OBJECT = {
   message: 'Invalid object',
   code: 'ERR_INVALID_OBJECT',
@@ -810,6 +814,7 @@ export const errorConditionConstants = {
   INVALID_ASSIGNMENT,
   INVALID_BOOKINGS,
   INVALID_CATEGORY,
+  INVALID_COLLECTION_DEFINITION,
   INVALID_CONFIGURATION,
   INVALID_DATE_AVAILABILITY,
   INVALID_DATE,
