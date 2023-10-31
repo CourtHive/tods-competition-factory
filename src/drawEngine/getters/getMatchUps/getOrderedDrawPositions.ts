@@ -31,7 +31,7 @@ export function getOrderedDrawPositions({
   const displayOrder =
     pairedDrawPositions?.find((pair) =>
       overlap(pair || [], drawPositions.filter(Boolean))
-    ) || unassignedDrawPositions;
+    ) ?? unassignedDrawPositions;
 
   // ############# IMPORTANT DO NOT CHANGE #################
   // when both present, drawPositions are always sorted numerically
@@ -42,7 +42,7 @@ export function getOrderedDrawPositions({
   // previous round lookback is provided by the roundProfile
   const isFeedRound = targetRoundProfile?.feedRound;
   if (allNumeric(drawPositions)) {
-    const orderedDrawPositions = drawPositions.sort(numericSort);
+    const orderedDrawPositions = [...drawPositions].sort(numericSort);
 
     return {
       orderedDrawPositions:

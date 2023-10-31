@@ -475,7 +475,6 @@ function checkSeedBlocks({ drawSize, policy, expectedBlocks }) {
   drawEngine.attachPolicies({ policyDefinitions: policy });
   drawEngine.initializeStructureSeedAssignments({ structureId, seedsCount });
 
-  // const { drawDefinition } = drawEngine.getState();
   const { structure } = findStructure({ drawDefinition, structureId });
 
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
@@ -491,11 +490,11 @@ function checkSeedBlocks({ drawSize, policy, expectedBlocks }) {
 
   if (validSeedBlocks) {
     validSeedBlocks.forEach((seedBlock, i) => {
-      expect(seedBlock.seedNumbers.sort(numericSort)).toMatchObject(
+      expect([...seedBlock.seedNumbers].sort(numericSort)).toMatchObject(
         expectedBlocks[i].seedNumbers.sort(numericSort)
       );
-      expect(seedBlock.drawPositions.sort(numericSort)).toMatchObject(
-        expectedBlocks[i].drawPositions.sort(numericSort)
+      expect([...seedBlock.drawPositions].sort(numericSort)).toMatchObject(
+        [...expectedBlocks[i].drawPositions].sort(numericSort)
       );
     });
   }

@@ -1,3 +1,4 @@
+import { definedAttributes } from '../../../utilities';
 import { isConvertableInteger } from '../../../utilities/math';
 
 import { SET, NOAD, TIMED, setTypes } from './constants';
@@ -25,8 +26,9 @@ type SetFormat = {
 type ParsedFormat = {
   finalSetFormat?: any;
   simplified?: boolean;
+  exactly?: number;
   setFormat?: any;
-  bestOf: number;
+  bestOf?: number;
 };
 
 export function parse(matchUpFormatCode: string): ParsedFormat | undefined {
@@ -43,7 +45,7 @@ export function parse(matchUpFormatCode: string): ParsedFormat | undefined {
         setFormat,
         bestOf: 1,
       };
-      if (parsedFormat.setFormat) return parsedFormat;
+      if (setFormat) return parsedFormat;
     }
     if (type === SET) return setsMatch(matchUpFormatCode);
   }
@@ -54,16 +56,25 @@ export function parse(matchUpFormatCode: string): ParsedFormat | undefined {
 function setsMatch(formatstring: string): any {
   const parts = formatstring.split('-');
 
-  const bestOf = getNumber(parts[0].slice(3));
+  const setsCount = getNumber(parts[0].slice(3));
+  const bestOf = setsCount === 1 || setsCount % 2 !== 0 ? setsCount : undefined;
+  const exactly =
+    setsCount !== 1 && setsCount % 2 === 0 ? setsCount : undefined;
   const setFormat = parts && parseSetFormat(parts[1]);
   const finalSetFormat = parts && parseSetFormat(parts[2]);
-  const validBestOf = bestOf && bestOf < 6;
+  const timed =
+    (setFormat && setFormat.timed) || (finalSetFormat && finalSetFormat.timed);
+  const validSetsCount = (bestOf && bestOf < 6) || (timed && exactly);
   const validFinalSet = !parts[2] || finalSetFormat;
   const validSetsFormat = setFormat;
 
-  const result: ParsedFormat = { bestOf, setFormat };
+  const result: ParsedFormat = definedAttributes({
+    setFormat,
+    exactly,
+    bestOf,
+  });
   if (finalSetFormat) result.finalSetFormat = finalSetFormat;
-  if (validBestOf && validSetsFormat && validFinalSet) return result;
+  if (validSetsCount && validSetsFormat && validFinalSet) return result;
 }
 
 function parseSetFormat(formatstring: string): SetFormat | undefined | false {
