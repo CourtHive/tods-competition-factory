@@ -590,17 +590,17 @@ it('properly calculates valueGoal when adding collectionDefinition with tiebreak
   const [matchUp] = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: { matchUpTypes: [TEAM_MATCHUP] },
   }).matchUps;
-
+  const collectionId = '1d9791e8-61b5-47a9-b1b2-ab79b2753109';
   let params: any = {
     collectionDefinition: {
-      collectionId: '1d9791e8-61b5-47a9-b1b2-ab79b2753109',
       collectionName: 'Tiebreak Match',
-      collectionOrder: 3,
-      matchUpValue: 1,
+      processCodes: ['RANKING.IGNORE'],
       matchUpFormat: 'SET1-S:TB10',
       matchUpType: 'SINGLES',
+      collectionOrder: 3,
+      matchUpValue: 1,
       matchUpCount: 1,
-      processCodes: ['RANKING.IGNORE'],
+      collectionId,
     },
     tieFormatName: 'added tie collection',
     matchUpId: matchUp.matchUpId,
@@ -611,10 +611,10 @@ it('properly calculates valueGoal when adding collectionDefinition with tiebreak
   expect(result.tieFormat.winCriteria).toEqual({ valueGoal: 3 });
 
   params = {
-    collectionId: '1d9791e8-61b5-47a9-b1b2-ab79b2753109',
     tieFormatName: 'remove tie collection',
     updateInProgressMatchUps: true,
     matchUpId: matchUp.matchUpId,
+    collectionId,
     drawId,
   };
   result = tournamentEngine.removeCollectionDefinition(params);
@@ -645,7 +645,6 @@ it('can validate collectionDefinition.category when adding collectionDefinitions
   const tieFormatName = 'New tieFormatName';
   const params = {
     collectionDefinition: {
-      collectionId: '1d9791e8-61b5-47a9-b1b2-ab79b2753109',
       category: { ageCategoryCode: 'U20' },
       matchUpFormat: 'SET1-S:TB10',
       matchUpType: 'SINGLES',
