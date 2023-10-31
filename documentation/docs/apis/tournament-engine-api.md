@@ -1933,9 +1933,6 @@ const {
 });
 ```
 
-- @param {string} eventId - id of the event to retreive
-- @param {object} context - attributes to be added into each event object.
-
 ---
 
 ## getEvents
