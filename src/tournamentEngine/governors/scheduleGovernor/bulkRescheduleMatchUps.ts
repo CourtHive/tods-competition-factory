@@ -125,10 +125,14 @@ export function bulkRescheduleMatchUps({
               scheduledTime,
               minutesChange
             );
-            newScheduledTime =
-              scheduledTimeDate && newScheduledDate
-                ? `${newScheduledDate}T${timeString}`
-                : timeString;
+
+            const timeStringDate =
+              (scheduledTimeDate && newScheduledDate) ||
+              (scheduledDate === scheduledTimeDate && scheduledTimeDate);
+
+            newScheduledTime = timeStringDate
+              ? `${timeStringDate}T${timeString}`
+              : timeString;
           }
         }
 

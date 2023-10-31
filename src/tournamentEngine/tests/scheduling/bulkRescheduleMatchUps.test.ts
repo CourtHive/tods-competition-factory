@@ -37,14 +37,14 @@ it('can bulk reschedule matchUps that have been auto-scheduled', () => {
       eventType: SINGLES,
       drawProfiles: [
         {
-          drawSize: 16,
           drawType: MODIFIED_FEED_IN_CHAMPIONSHIP,
+          drawSize: 16,
         },
         {
-          drawSize: 32,
+          drawType: CURTIS_CONSOLATION,
           qualifyingPositions: 4,
           drawName: 'Main Draw',
-          drawType: CURTIS_CONSOLATION,
+          drawSize: 32,
         },
       ],
     },
@@ -73,10 +73,10 @@ it('can bulk reschedule matchUps that have been auto-scheduled', () => {
   // add first round of each draw to scheduling profile
   for (const drawId of drawIds) {
     const {
-      event: { eventId },
       drawDefinition: {
         structures: [{ structureId }],
       },
+      event: { eventId },
     } = tournamentEngine.getEvent({ drawId });
     const result = competitionEngine.addSchedulingProfileRound({
       round: { tournamentId, eventId, drawId, structureId, roundNumber: 1 },
@@ -130,26 +130,26 @@ it('can bulk reschedule matchUps that have been auto-scheduled', () => {
   expect(result.error).toEqual(MISSING_MATCHUP_IDS);
 
   result = tournamentEngine.bulkRescheduleMatchUps({
-    matchUpIds,
     scheduleChange: 'not an object',
+    matchUpIds,
   });
   expect(result.error).toEqual(INVALID_VALUES);
 
   result = tournamentEngine.bulkRescheduleMatchUps({
-    matchUpIds,
     scheduleChange: { daysChange: 'NaN', minutesChange: 0 },
+    matchUpIds,
   });
   expect(result.error).toEqual(INVALID_VALUES);
 
   result = tournamentEngine.bulkRescheduleMatchUps({
-    matchUpIds,
     scheduleChange: { daysChange: 0, minutesChange: 'NaN' },
+    matchUpIds,
   });
   expect(result.error).toEqual(INVALID_VALUES);
 
   result = tournamentEngine.bulkRescheduleMatchUps({
-    matchUpIds,
     scheduleChange: { daysChange: 0, minutesChange: 0 },
+    matchUpIds,
   });
   expect(result.success).toEqual(true);
 
@@ -176,8 +176,8 @@ it('can bulk reschedule matchUps that have been auto-scheduled', () => {
     '2022-01-01T08:00'
   );
   result = tournamentEngine.bulkRescheduleMatchUps({
-    matchUpIds,
     scheduleChange: { minutesChange: 300 },
+    matchUpIds,
   });
   expect(result.success).toEqual(true);
   expect(result.rescheduled.length).toEqual(scheduledMatchUps.length);
@@ -189,55 +189,55 @@ it('can bulk reschedule matchUps that have been auto-scheduled', () => {
   );
 
   result = competitionEngine.bulkRescheduleMatchUps({
-    matchUpIds,
     scheduleChange: { daysChange: 'NaN', minutesChange: 0 },
-  });
-  expect(result.error).toEqual(INVALID_VALUES);
-
-  result = competitionEngine.bulkRescheduleMatchUps({
     matchUpIds,
-    scheduleChange: 'not an object',
   });
   expect(result.error).toEqual(INVALID_VALUES);
 
   result = competitionEngine.bulkRescheduleMatchUps({
-    matchUpIds: ['bogus matchUpId'],
+    scheduleChange: 'not an object',
+    matchUpIds,
+  });
+  expect(result.error).toEqual(INVALID_VALUES);
+
+  result = competitionEngine.bulkRescheduleMatchUps({
     scheduleChange: { minutesChange: 800 },
+    matchUpIds: ['bogus matchUpId'],
   });
   expect(result.success).toEqual(true);
 
   // nothing should be rescheduled because scheduledTimes would be next day
   result = tournamentEngine.bulkRescheduleMatchUps({
-    matchUpIds,
     scheduleChange: { minutesChange: 800 },
+    matchUpIds,
   });
   expect(result.success).toEqual(true);
   expect(result.notRescheduled.length).toEqual(scheduledMatchUps.length);
 
   result = competitionEngine.bulkRescheduleMatchUps({
-    matchUpIds,
     scheduleChange: { minutesChange: 800 },
+    matchUpIds,
   });
   expect(result.success).toEqual(true);
   expect(result.rescheduled.length).toEqual(0);
   expect(result.notRescheduled.length).toEqual(scheduledMatchUps.length);
 
   result = competitionEngine.bulkRescheduleMatchUps({
-    matchUpIds,
     scheduleChange: { minutesChange: 30 },
+    matchUpIds,
   });
   expect(result.success).toEqual(true);
   expect(result.rescheduled.length).toEqual(scheduledMatchUps.length);
 
   result = competitionEngine.bulkRescheduleMatchUps({
-    matchUpIds,
     scheduleChange: { daysChange: 2 },
+    matchUpIds,
   });
   expect(result.success).toEqual(true);
 
   result = competitionEngine.bulkRescheduleMatchUps({
-    matchUpIds,
     scheduleChange: { daysChange: -3, minutesChange: -750 },
+    matchUpIds,
   });
   expect(result.success).toEqual(true);
 
@@ -251,16 +251,16 @@ it('can bulk reschedule matchUps that have been auto-scheduled', () => {
   );
 
   result = competitionEngine.bulkRescheduleMatchUps({
-    matchUpIds,
     scheduleChange: { daysChange: -1 },
+    matchUpIds,
   });
   expect(result.success).toEqual(true);
   expect(result.notRescheduled.length).toEqual(scheduledMatchUps.length);
 
   const matchUpId = scheduledMatchUps[0].matchUpId;
   result = competitionEngine.bulkRescheduleMatchUps({
-    matchUpIds: [matchUpId],
     scheduleChange: { minutesChange: -61 },
+    matchUpIds: [matchUpId],
   });
   expect(result.success).toEqual(true);
   expect(result.notRescheduled.length).toEqual(1);
