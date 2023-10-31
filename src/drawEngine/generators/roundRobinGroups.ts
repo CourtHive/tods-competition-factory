@@ -16,7 +16,7 @@ export function getRoundRobinGroupMatchUps({ drawPositions }) {
 }
 
 export function drawPositionsHash(drawPositions) {
-  return drawPositions.sort(numericSort).join('|');
+  return [...drawPositions].sort(numericSort).join('|');
 }
 
 export function groupRounds({ groupSize, drawPositionOffset }) {
@@ -47,7 +47,7 @@ export function groupRounds({ groupSize, drawPositionOffset }) {
   bRow = [...bRow, aDown].filter(Boolean) as number[];
 
   const sum = (x) => x[0].reduce((a, b) => a + b);
-  return rounds
+  return [...rounds]
     .reverse()
     .sort((a, b) => sum(a) - sum(b))
     .map((round) =>

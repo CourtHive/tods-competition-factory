@@ -4,6 +4,7 @@ import { positionTargets } from '../positionGovernor/positionTargets';
 import { timeStringMinutes } from '../../../utilities/dateTime';
 import { findStructure } from '../../getters/findStructure';
 import { ensureInt } from '../../../utilities/ensureInt';
+import { numericSort } from '../../../utilities';
 
 import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import {
@@ -20,23 +21,25 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
     if (structure?.finishingPosition === WIN_RATIO) {
       const { roundNumber } = inContextMatchUp;
       const nextRoundNumber = roundNumber && ensureInt(roundNumber) + 1;
-      const matchUps = structure.matchUps || [];
+      const matchUps = structure.matchUps ?? [];
       const { roundMatchUps } = getRoundMatchUps({ matchUps });
 
       // if this is a round robin then we have sidesTo information, not winnerTo and loserTo
       if (nextRoundNumber && roundMatchUps?.[nextRoundNumber]) {
-        const sidesTo = drawPositions.sort().map((drawPosition, index) => {
-          const nextRoundMatchUp = roundMatchUps[nextRoundNumber].find(
-            (matchUp) => matchUp.drawPositions?.includes(drawPosition)
-          );
-          return {
-            matchUpId: nextRoundMatchUp?.matchUpId,
-            roundNumber: nextRoundNumber,
-            schedule: nextRoundMatchUp?.schedule,
-            sideNumber: index + 1,
-            structureName: structure.structureName,
-          };
-        });
+        const sidesTo = [...drawPositions]
+          .sort(numericSort)
+          .map((drawPosition, index) => {
+            const nextRoundMatchUp = roundMatchUps[nextRoundNumber].find(
+              (matchUp) => matchUp.drawPositions?.includes(drawPosition)
+            );
+            return {
+              matchUpId: nextRoundMatchUp?.matchUpId,
+              roundNumber: nextRoundNumber,
+              schedule: nextRoundMatchUp?.schedule,
+              sideNumber: index + 1,
+              structureName: structure.structureName,
+            };
+          });
         Object.assign(inContextMatchUp, { sidesTo });
       }
     } else {

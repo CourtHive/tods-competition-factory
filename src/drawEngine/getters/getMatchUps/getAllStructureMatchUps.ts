@@ -372,7 +372,7 @@ export function getAllStructureMatchUps({
     matchUp,
     event,
   }: AddMatchUpContextArgs) {
-    additionalContext = additionalContext || {};
+    additionalContext = additionalContext ?? {};
     const tieFormat = resolveTieFormat({
       drawDefinition,
       structure,
@@ -389,9 +389,9 @@ export function getAllStructureMatchUps({
 
     const matchUpFormat = matchUp.collectionId
       ? collectionDefinition?.matchUpFormat
-      : matchUp.matchUpFormat ||
-        structure?.matchUpFormat ||
-        drawDefinition?.matchUpFormat ||
+      : matchUp.matchUpFormat ??
+        structure?.matchUpFormat ??
+        drawDefinition?.matchUpFormat ??
         event?.matchUpFormat;
 
     const matchUpType =
@@ -415,7 +415,7 @@ export function getAllStructureMatchUps({
     const drawPositions: number[] =
       tieDrawPositions ?? matchUp.drawPositions ?? [];
     const { collectionPosition, collectionId, roundPosition } = matchUp;
-    const roundNumber = matchUp.roundNumber || additionalContext.roundNumber;
+    const roundNumber = matchUp.roundNumber ?? additionalContext.roundNumber;
 
     const drawPositionCollectionAssignment = collectionId
       ? getDrawPositionCollectionAssignment({
@@ -471,7 +471,7 @@ export function getAllStructureMatchUps({
 
     // necessry for SINGLES/DOUBLES matchUps that are part of TEAM tournaments
     const finishingPositionRange =
-      matchUp.finishingPositionRange ||
+      matchUp.finishingPositionRange ??
       additionalContext.finishingPositionRange;
 
     // order is important here as Round Robin matchUps already have inContext structureId
@@ -485,7 +485,7 @@ export function getAllStructureMatchUps({
           stage !== QUALIFYING &&
           isConvertableInteger(initialRoundOfPlay) &&
           initialRoundOfPlay + (roundNumber || 0),
-        endDate: matchUp.endDate || endDate,
+        endDate: matchUp.endDate ?? endDate,
         gender: collectionDefinition?.gender,
         discipline: event?.discipline,
         category: matchUpCategory,
