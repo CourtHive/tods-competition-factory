@@ -2,9 +2,10 @@ import { SET, NOAD } from './constants';
 
 export function stringify(matchUpFormatObject, preserveRedundant?: boolean) {
   if (typeof matchUpFormatObject !== 'object') return;
-  if (matchUpFormatObject.timed && !isNaN(matchUpFormatObject.minutes))
-    return timedSetFormat(matchUpFormatObject);
-  if (matchUpFormatObject.bestOf && matchUpFormatObject.setFormat)
+  if (
+    (matchUpFormatObject.bestOf || matchUpFormatObject.exactly) &&
+    matchUpFormatObject.setFormat
+  )
     return getSetFormat(matchUpFormatObject, preserveRedundant);
   return undefined;
 }
@@ -21,15 +22,18 @@ function timedSetFormat(matchUpFormatObject) {
 }
 
 function getSetFormat(matchUpFormatObject, preserveRedundant?: boolean) {
-  const bestOfValue = getNumber(matchUpFormatObject.bestOf);
+  const bestOfValue = getNumber(matchUpFormatObject.bestOf) || undefined;
+  const exactly = getNumber(matchUpFormatObject.exactly) || undefined;
+  const setLimit = bestOfValue || exactly;
+
   if (
     matchUpFormatObject.setFormat?.timed &&
     matchUpFormatObject.simplified &&
-    bestOfValue === 1
+    setLimit === 1
   ) {
     return timedSetFormat(matchUpFormatObject.setFormat);
   }
-  const bestOfCode = (bestOfValue && `${SET}${bestOfValue}`) || '';
+  const setLimitCode = (setLimit && `${SET}${setLimit}`) || '';
   const setCountValue = stringifySet(
     matchUpFormatObject.setFormat,
     preserveRedundant
@@ -39,17 +43,18 @@ function getSetFormat(matchUpFormatObject, preserveRedundant?: boolean) {
     matchUpFormatObject.finalSetFormat,
     preserveRedundant
   );
+
   const finalSetCode =
-    (bestOfValue &&
-      bestOfValue > 1 &&
+    (setLimit &&
+      setLimit > 1 &&
       finalSetCountValue &&
       setCountValue !== finalSetCountValue && // don't include final set code if equivalent to other sets
       `F:${finalSetCountValue}`) ||
     '';
-  const valid = bestOfCode && setCountValue;
+  const valid = setLimitCode && setCountValue;
 
   if (valid) {
-    return [bestOfCode, setCode, finalSetCode].filter((f) => f).join('-');
+    return [setLimitCode, setCode, finalSetCode].filter((f) => f).join('-');
   }
   return undefined;
 }

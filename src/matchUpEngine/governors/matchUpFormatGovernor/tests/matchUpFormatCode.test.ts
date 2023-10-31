@@ -161,6 +161,22 @@ const validFormats = [
 
 const singleSetTimed = [
   {
+    format: 'T120P',
+    obj: {
+      setFormat: { timed: true, based: 'P', minutes: 120 },
+      simplified: true,
+      bestOf: 1,
+    },
+  },
+  {
+    format: 'T120G',
+    obj: {
+      setFormat: { timed: true, based: 'G', minutes: 120 },
+      simplified: true,
+      bestOf: 1,
+    },
+  },
+  {
     format: 'T120',
     obj: {
       setFormat: { timed: true, minutes: 120 },
@@ -341,4 +357,31 @@ it('supports modifiers for timed sets', () => {
   expect(stringified).toEqual(format);
   const valid = matchUpFormatCode.isValid(format);
   expect(valid).toEqual(true);
+});
+
+it('supports an even number of timed sets', () => {
+  const format = 'SET4-S:T10P';
+  const parsed = matchUpFormatCode.parse(format);
+  expect(parsed).toEqual({
+    setFormat: { timed: true, minutes: 10, based: 'P' },
+    exactly: 4,
+  });
+  const stringified = matchUpFormatCode.stringify(parsed);
+  expect(stringified).toEqual(format);
+
+  const withFinalSetFormat = 'SET4-S:T10P-F:T5P';
+  const finalSetParsed = matchUpFormatCode.parse(withFinalSetFormat);
+  expect(finalSetParsed).toEqual({
+    finalSetFormat: { timed: true, minutes: 5, based: 'P' },
+    setFormat: { timed: true, minutes: 10, based: 'P' },
+    exactly: 4,
+  });
+  const stringifiedWithFinalSet = matchUpFormatCode.stringify(finalSetParsed);
+  expect(stringifiedWithFinalSet).toEqual(withFinalSetFormat);
+});
+
+it('rejects an even number of non-timed sets', () => {
+  const format = 'SET4-S:6';
+  const parsed = matchUpFormatCode.parse(format);
+  expect(parsed).toBeUndefined();
 });

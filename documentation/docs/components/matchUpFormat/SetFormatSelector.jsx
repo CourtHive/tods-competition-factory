@@ -27,7 +27,7 @@ const SetFormatSelector = ({
     matchUpFormatParsed?.finalSetFormat &&
     matchUpFormatParsed?.finalSetFormat?.noTiebreak;
 
-  const timed = matchUpFormatParsed?.timed || setFormat?.timed;
+  const timed = setFormat?.timed;
 
   const initialState = {
     exact: matchUpFormatParsed?.bestOf === 1 ? 'exact' : 'bestof',

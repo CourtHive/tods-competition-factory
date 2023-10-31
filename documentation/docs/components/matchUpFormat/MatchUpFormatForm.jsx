@@ -13,8 +13,7 @@ const MatchUpFormatForm = ({ disabled, matchUpFormatParsed, onChange }) => {
   const classes = useStyles();
 
   const defaultMatchUpFormats = matchUpFormats().formats;
-  const timed =
-    matchUpFormatParsed?.timed || matchUpFormatParsed?.setFormat?.timed;
+  const timed = matchUpFormatParsed?.setFormat?.timed;
 
   const updateMatchUpFormat = (matchUpFormat) => {
     onChange?.(matchUpFormat);

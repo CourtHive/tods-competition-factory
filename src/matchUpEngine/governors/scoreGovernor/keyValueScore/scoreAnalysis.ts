@@ -32,7 +32,7 @@ export function getScoreAnalysis({
     (isDecidingSet && matchUpScoringFormat?.finalSetFormat) ||
     matchUpScoringFormat?.setFormat ||
     {};
-  const isTimedSet = setFormat?.timed || matchUpScoringFormat?.timed;
+  const isTimedSet = setFormat?.timed;
 
   const finalSet = isDecidingSet && sets[matchUpScoringFormat?.bestOf - 1];
   const finalSetIsComplete = finalSet?.winningSide;
