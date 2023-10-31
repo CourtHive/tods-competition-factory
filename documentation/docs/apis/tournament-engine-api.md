@@ -406,7 +406,6 @@ To add PAIR participants it is only necessary to provide an array of 2 valid ind
 :::
 
 ```js
-const participantId = UUID();
 const participant = {
   participantId, // automatically generated if not provided
   participantRole: COMPETITOR,
@@ -442,7 +441,7 @@ Add a penaltyItem to one or more participants.
 const createdAt = new Date().toISOString();
 const penaltyData = {
   refereeParticipantId, // optional
-  participantIds: [participantId],
+  participantIds: ['participantId'],
   penaltyCode: 'Organization specific code', // optional
   penaltyType: BALL_ABUSE,
   matchUpId,
@@ -708,7 +707,7 @@ tournamentEngine.assignDrawPosition({
 Assign participant to AD_HOC matchUp.
 
 ```js
-assignMatchUpSideParticipant({
+tournamentEngine.assignMatchUpSideParticipant({
   participantId,
   sideNumber,
   matchUpId,
@@ -755,10 +754,9 @@ Assign **seedNumbers** to **participantIds** within a target draw structure.
 **seedNumber** is unique while **seedValue** can be any string representation, e.g `"5-8"`
 
 ```js
-let assignments = [{ seedNumber: 1, seedValue: '1', participantId }];
 tournamentEngine.assignSeedPositions({
+  assignments, // [{ seedNumber: 1, seedValue: '1', participantId: 'pid' }];
   structureId,
-  assignments,
   eventId,
   drawId,
 
@@ -777,7 +775,7 @@ Used when interactively assigning participants to `matchUps`. When individual `p
 ```js
 tournamentEngine.assignTieMatchUpParticipantId({
   teamParticipantId, // optional - participant team can be derived from participantId. This supports assigning "borrowed" players from other teams.
-  participantId, // participantId of INDIVIDUAL or PAIR participant to be assigned to a matchUp
+  participantId, // id of INDIVIDUAL or PAIR participant to be assigned to a matchUp
   tieMatchUpId, // matchUpId of a SINGLES or DOUBLES that is part of a matchUp between teams
   sideNumber, // optional - only necessary if a participant is part of both teams (edge case!)
   drawId, // identifies draw in which matchUp is present
@@ -1001,9 +999,9 @@ Set the check-in state for a participant. Used to determine when both participan
 
 ```js
 tournamentEngine.checkInParticipant({
-  drawId,
-  matchUpId,
   participantId,
+  matchUpId,
+  drawId,
 });
 ```
 
@@ -1013,9 +1011,9 @@ tournamentEngine.checkInParticipant({
 
 ```js
 tournamentEngine.checkOutParticipant({
-  drawId,
-  matchUpId,
   participantId,
+  matchUpId,
+  drawId,
 });
 ```
 
@@ -1372,11 +1370,9 @@ const {
 
 ## findParticipant
 
-Find tournament participant by either `participantId` or `personId`.
-
 ```js
 const { participant } = tournamentEngine.findParticipant({
-  participantId,
+  participantId, // required only if no personId provided
   personId, // required only if no participantId provided
 });
 ```
@@ -1486,7 +1482,7 @@ const drawDefinitionValues = {
   hydrateCollections, // optional - propagate { category, gender } for event to collectionDefinitions in tieFormats
   tieFormat, // optional - { collectionDefinitions, winCriteria } for 'dual' or 'tie' matchUps
   seedsCount, // optional - number of seeds to generate if no seededParticipants provided
-  seededParticipants, // optional - { participantId, seedNumber, seedValue }
+  seededParticipants, // optional - { participantId: 'id', seedNumber: 1, seedValue, '1' }
   seedingScaleName, // optional - custom scale for determining seeded participants
 
   // { positioing: WATERFALL } seeding for ROUND_ROBIN structures
@@ -1545,7 +1541,7 @@ const {
   generateMatchUps = true, // optional - defaults to true; when false only returns { participantIdPairings }
   participantIds, // required
   addToStructure, // optional - defaults to true
-  adHocRatings, // optional { [participantId]: numericRating }
+  adHocRatings, // optional { ['participantId']: numericRating }
   structureId, // required
   matchUpIds, // optional array of uuids to be used when generating matchUps
   eventType, // optional - override eventType of event within which draw appears; e.g. to force use of SINGLES ratings in DOUBLES events
@@ -1933,9 +1929,6 @@ const {
 });
 ```
 
-- @param {string} eventId - id of the event to retreive
-- @param {object} context - attributes to be added into each event object.
-
 ---
 
 ## getEvents
@@ -1991,7 +1984,7 @@ const {
 } = tournamentEngine.getEventProperties({ eventId });
 ```
 
-... where **entryScaleAttributes** is an array of { prticipantId, participantName, seed, ranking, rating }
+... where **entryScaleAttributes** is an array of `{ participantId, participantName, seed, ranking, rating }`
 
 ---
 
@@ -2230,7 +2223,7 @@ const idMap = tournamentEngine.getParticipantIdFinishingPositions({
 });
 
 const { relevantMatchUps, finishingPositionRanges, finishingPositionRange } =
-  idMap[participantId];
+  idMap['participantId'];
 ```
 
 ---
@@ -2270,7 +2263,7 @@ const {
   eventsPublishStatuses,
   derivedEventInfo,
   derivedDrawInfo,
-  participantsMap, // object { [participantId]: participant }
+  participantsMap, // object { ['participantId']: participant }
   mappedMatchUps, // object { [matchUpId]: matchUp }; when { withMatchUps: true }
   participants, // array of participants
   matchUps, // array of all matchUps; when { withMatchUps: true }
@@ -2334,8 +2327,8 @@ const scaleAttributes = {
 const {
   scaleItem: { scaleValue },
 } = tournamentEngine.getParticipantScaleItem({
-  participantId,
   scaleAttributes,
+  participantId,
 });
 ```
 
@@ -2941,7 +2934,7 @@ Modifies an individualParticipantId within a PAIR particiapnt entered into an ev
 tournamentEngine.modifyPairAssignment({
   replacementIndividualParticipantId,
   existingIndividualParticipantId,
-  participantId, // only valid to pass a participantId when { participantType: PAIR }
+  participantId,
   eventId, // optional if drawId is provided
   drawId, // optional if eventId is provided; scopes change to specified draw
   uuids, // optional array of uuids for use when generating new participant
@@ -2966,7 +2959,7 @@ tournamentEngine.modifyParticipant({
 
 ```js
 const penaltyData = {
-  participantIds: [participantId],
+  participantIds: ['participantId'],
   penaltyType: BALL_ABUSE,
   matchUpId,
   issuedAt,
@@ -2988,7 +2981,7 @@ Modify the signInStatus of multiple participants, referenced by participantId.
 
 ```js
 tournamentEngine.modifyParticipantsSignInStatus({
-  participantIds: [participantId],
+  participantIds: ['participantId'],
   signInState: SIGNED_IN,
 });
 ```
@@ -3500,7 +3493,7 @@ const { removedMatchUpIds } = tournamentEngine.removeStructure({
 
 ```js
 tournamentEngine.removeTieMatchUpParticipantId({
-  participantId, // participantId of INDIVIDUAL or PAIR be removed
+  participantId, // id of INDIVIDUAL or PAIR be removed
   tieMatchUpId, // tieMatchUp, matchUpType either DOUBLES or SINGLES
   drawId, // draw within which tieMatchUp is found
 });
@@ -3629,7 +3622,7 @@ const scaleAttributes = {
 };
 
 const scaledParticipants = individualParticipants.map((participant) => ({
-  participantId: participant.participantId,
+  participantId: 'participantId',
   scaleValue: participantScaleItem({ participant, scaleAttributes }).scaleItem
     .scaleValue,
 }));
@@ -3637,7 +3630,7 @@ const scaledParticipants = individualParticipants.map((participant) => ({
 const teamParticipantIds = teamParticipants.map(getParticipantId);
 
 tournamentEngine.scaledTeamAssignment({
-  scaledParticipants, // [{ participantId, scaleValue}]
+  scaledParticipants, // [{ participantId: 'participantId', scaleValue: '10' }]
   teamParticipantIds,
 });
 ```
@@ -3696,9 +3689,8 @@ tournamentEngine.setEntryPosition({
 Set entry position for multiple event entries.
 
 ```js
-const entryPositions = [{ entryPosition, participantId }];
 tournamentEngine.setEntryPositions({
-  entryPositions, // arrah of [{ entryPosition, participantId }]
+  entryPositions, // array of [{ entryPosition: 1, participantId: 'participantid' }]
   eventId, // optional if drawId is provided
   drawId, // optional if eventId is provided
 });
@@ -3861,7 +3853,7 @@ result = tournamentEngine.setParticipantScaleItem({
 ```js
 const scaleItemsWithParticipantIds = [
   {
-    participantId,
+    participantId: 'participantId',
     scaleItems: [
       {
         scaleValue: 8.3,
@@ -4066,9 +4058,9 @@ tournamentEngine.swapDrawPositionAssignments({
 
 ```js
 tournamentEngine.toggleParticipantCheckInState({
-  drawId,
-  matchUpId,
   participantId,
+  matchUpId,
+  drawId,
 });
 ```
 
@@ -4149,7 +4141,7 @@ tournamentEngine.updateDrawIdsOrder({
 
 ```js
 tournamentEngine.updateTeamLineUp({
-  participantId, // participantId of the team for which lineUp is being updated
+  participantId, // id of the team for which lineUp is being updated
   tieFormat, // valid tieFormat - used to validate collectionIds
   lineUp, // valid lineUp array - see tournamentEngine.validateTeamLineUp
   drawId, // required as latest lineUp modification is stored in an extension on drawDefinition

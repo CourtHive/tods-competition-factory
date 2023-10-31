@@ -24,9 +24,6 @@ element._extensionName: { a: 1 }
 
 This is useful for inContext representations of elements such as participants where "accessor strings" can be used to directly access values rather than searching through arrays of extensions; a good example of this is in Avoidance Policies.
 
-- @param {object} element - any JSON object to be converted
-- @param {boolean} convertExtensions - whether or not to convert extensions
-
 ## Disabling deep copies
 
 In server environments where it is desireable for objects originating in back end storage (such as Mongo) to be modified directly, it is possible to disable `makeDeepCopy` several ways:
