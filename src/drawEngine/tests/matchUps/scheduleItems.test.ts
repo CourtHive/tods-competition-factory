@@ -25,8 +25,8 @@ it('can add schedule items', () => {
 
   const scheduledDate = '2020-01-01';
   let result = drawEngine.addMatchUpScheduledDate({
-    matchUpId,
     scheduledDate,
+    matchUpId,
   });
   expect(result.success).toEqual(true);
 
@@ -36,8 +36,9 @@ it('can add schedule items', () => {
   expect(timeItems.length).toEqual(1);
 
   let scheduledTime = '2020-01-02T08:00';
+  // NOTE: the date will be stripped from the time since there is already a scheduledDate
   result = drawEngine.addMatchUpScheduledTime({ matchUpId, scheduledTime });
-  expect(result.error).toEqual(INVALID_TIME);
+  expect(result.success).toEqual(true);
 
   scheduledTime = '2020-01-01T08:00';
   result = drawEngine.addMatchUpScheduledTime({ matchUpId, scheduledTime });
