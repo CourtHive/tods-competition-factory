@@ -1,3 +1,4 @@
+import { addDays } from '../../../../utilities/dateTime';
 import { mocksEngine } from '../../../../mocksEngine';
 import { competitionEngine } from '../../../sync';
 import { expect, it } from 'vitest';
@@ -15,10 +16,10 @@ it('can generate tournament rounds and profileRounds', () => {
   const startDate = '2022-02-02';
   const venueProfiles = [
     {
-      venueId: 'venueId',
       venueName: 'Club Courts',
       venueAbbreviation: 'CC',
       startTime: '08:00',
+      venueId: 'venueId',
       endTime: '20:00',
       courtsCount: 6,
     },
@@ -36,14 +37,14 @@ it('can generate tournament rounds and profileRounds', () => {
           venueId: venueProfiles[0].venueId,
           rounds: [
             {
-              drawId: 'd2',
-              winnerFinishingPositionRange: '1-16',
               roundSegment: { segmentNumber: 1, segmentsCount: 2 },
+              winnerFinishingPositionRange: '1-16',
+              drawId: 'd2',
             },
             {
-              drawId: 'd2',
-              winnerFinishingPositionRange: '1-16',
               roundSegment: { segmentNumber: 2, segmentsCount: 2 },
+              winnerFinishingPositionRange: '1-16',
+              drawId: 'd2',
             },
             { drawId: 'd2', winnerFinishingPositionRange: '1-8' },
           ],
@@ -96,4 +97,52 @@ it('can generate tournament rounds and profileRounds', () => {
   expect(result.success).toEqual(true);
   // when excluding rounds scheduled on a specific date, 3 will be filtered out
   expect(result.rounds.length).toEqual(16);
+});
+
+it('can filter out rounds which are not relevant to specified venueId', () => {
+  const venueProfiles = [
+    {
+      venueName: 'Club Courts',
+      venueAbbreviation: 'CC',
+      startTime: '08:00',
+      venueId: 'venueId',
+      endTime: '20:00',
+      courtsCount: 6,
+    },
+  ];
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawSize: 8, drawId: 'd1' }],
+    venueProfiles,
+  });
+  let result = competitionEngine.setState(tournamentRecord);
+  expect(result.success).toEqual(true);
+
+  result = competitionEngine.getRounds();
+  expect(result.excludedRounds.length).toEqual(0);
+  expect(result.rounds.length).toEqual(3);
+
+  result = competitionEngine.getRounds({ venueId: 'fakeId' });
+  expect(result.excludedRounds.length).toEqual(3);
+  expect(result.rounds.length).toEqual(0);
+
+  result = competitionEngine.getRounds({ venueId: 'venueId' });
+  expect(result.excludedRounds.length).toEqual(0);
+  expect(result.rounds.length).toEqual(3);
+
+  const { startDate, endDate } = tournamentRecord;
+  const dateBefore = addDays(startDate, -1);
+  const dateAfter = addDays(endDate, 1);
+
+  result = competitionEngine.getRounds({ scheduleDate: startDate });
+  expect(result.excludedRounds.length).toEqual(0);
+  expect(result.rounds.length).toEqual(3);
+  result = competitionEngine.getRounds({ scheduleDate: endDate });
+  expect(result.excludedRounds.length).toEqual(0);
+  expect(result.rounds.length).toEqual(3);
+  result = competitionEngine.getRounds({ scheduleDate: dateBefore });
+  expect(result.excludedRounds.length).toEqual(3);
+  expect(result.rounds.length).toEqual(0);
+  result = competitionEngine.getRounds({ scheduleDate: dateAfter });
+  expect(result.excludedRounds.length).toEqual(3);
+  expect(result.rounds.length).toEqual(0);
 });
