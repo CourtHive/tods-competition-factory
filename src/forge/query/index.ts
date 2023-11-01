@@ -16,6 +16,7 @@ export { getMatchUpDailyLimitsUpdate } from '../../competitionEngine/governors/s
 export { generateSeedingScaleItems } from '../../tournamentEngine/governors/eventGovernor/entries/generateSeedingScaleItems';
 export { matchUpActions as competitionMatchUpActions } from '../../competitionEngine/governors/queryGovernor/matchUpActions';
 export { getVenuesAndCourts as getCompetitionVenuesAndCourts } from '../../competitionEngine/getters/venuesAndCourtsGetter';
+export { getProfileRounds } from '../../competitionEngine/governors/scheduleGovernor/schedulingProfile/getProfileRounds';
 export { getParticipantEventDetails } from '../../tournamentEngine/getters/participants/getParticipantEventDetails';
 export { getCompetitionDateRange } from '../../competitionEngine/governors/queryGovernor/getCompetitionDateRange';
 export { getEntriesAndSeedsCount } from '../../tournamentEngine/governors/policyGovernor/getEntriesAndSeedsCount';
@@ -23,6 +24,7 @@ export { getMatchUpDailyLimits } from '../../competitionEngine/governors/schedul
 export { getVenuesAndCourts as getTournamentVenuesAndCourts } from '../../tournamentEngine/getters/venueGetter';
 export { matchUpActions as tournamentMatchUpActions } from '../../tournamentEngine/getters/matchUpActions';
 export { competitionScheduleMatchUps } from '../../competitionEngine/getters/competitionScheduleMatchUps';
+export { getRounds } from '../../competitionEngine/governors/scheduleGovernor/schedulingProfile/getRounds';
 export { getOrderedDrawPositions } from '../../drawEngine/getters/getMatchUps/getOrderedDrawPositions';
 export { getRoundContextProfile } from '../../drawEngine/getters/getMatchUps/getRoundContextProfile';
 export { filterParticipants } from '../../tournamentEngine/getters/participants/filterParticipants';
@@ -34,10 +36,6 @@ export { getSeedsCount } from '../../tournamentEngine/governors/policyGovernor/g
 export { participantScaleItem } from '../../tournamentEngine/accessors/participantScaleItem';
 export { getCompetitionVenues } from '../../competitionEngine/getters/venuesAndCourtsGetter';
 export { getValidGroupSizes } from '../../drawEngine/generators/roundRobin';
-export {
-  getRounds,
-  getProfileRounds,
-} from '../../competitionEngine/governors/scheduleGovernor/schedulingProfile/getRounds';
 export {
   getCompetitionParticipants,
   publicFindParticipant as findParticipant,

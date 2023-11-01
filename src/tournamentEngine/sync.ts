@@ -110,26 +110,35 @@ export const tournamentEngine = ((): FactoryEngine => {
     const devContext = getDevContext();
 
     const log: any = { method: methodName };
-    const logErrors =
-      typeof devContext.result === 'object' && devContext.result.error;
+    const logError =
+      result.error &&
+      (devContext.errors === true ||
+        (Array.isArray(devContext.errors) &&
+          devContext.errors.includes(methodName)));
+    const exclude =
+      Array.isArray(devContext.exclude) &&
+      devContext.exclude.includes(methodName);
     if (
+      !exclude &&
       ![undefined, false].includes(devContext.perf) &&
       (isNaN(devContext.perf) || elapsed > devContext.perf)
     )
       log.elapsed = elapsed;
     if (
-      logErrors ||
-      (devContext.params && !Array.isArray(devContext.params)) ||
-      (Array.isArray(devContext.params) &&
-        devContext.params?.includes(methodName))
+      !exclude &&
+      (logError ||
+        (devContext.params && !Array.isArray(devContext.params)) ||
+        (Array.isArray(devContext.params) &&
+          devContext.params?.includes(methodName)))
     ) {
       log.params = params;
     }
     if (
-      logErrors ||
-      (!logErrors && devContext.result && !Array.isArray(devContext.result)) ||
-      (Array.isArray(devContext.result) &&
-        devContext.result?.includes(methodName))
+      !exclude &&
+      (logError ||
+        (devContext.result && !Array.isArray(devContext.result)) ||
+        (Array.isArray(devContext.result) &&
+          devContext.result?.includes(methodName)))
     ) {
       log.result = result;
     }

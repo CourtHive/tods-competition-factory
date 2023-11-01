@@ -819,6 +819,8 @@ const { rounds, excludedRounds } = competitionEngine.getRounds({
   withSplitRounds, // optional boolean - read schedulingProfile and split rounds where defined
   matchUpFilters, // optional - filter competition matchUps before deriving rounds
   withRoundId, // optional boolean - return a unique id for each derived round
+  scheduleDate, // optional - filters out events which are not valid on specified date
+  venueId, // optional - filters out events which are not valid for specified venue
   context, // optional - object to be spread into derived rounds
 });
 ```
