@@ -9,10 +9,8 @@ import { addOnlineResource } from './addOnlineResource';
 import { analyzeTournament } from './analyzeTournament';
 import { analyzeDraws } from './analysis/analyzeDraws';
 
-import {
-  getRounds,
-  getProfileRounds,
-} from '../../../competitionEngine/governors/scheduleGovernor/schedulingProfile/getRounds';
+import { getProfileRounds } from '../../../competitionEngine/governors/scheduleGovernor/schedulingProfile/getProfileRounds';
+import { getRounds } from '../../../competitionEngine/governors/scheduleGovernor/schedulingProfile/getRounds';
 
 import {
   setTournamentName,
