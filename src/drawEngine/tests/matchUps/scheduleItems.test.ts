@@ -2,7 +2,6 @@ import { drawEngine } from '../../sync';
 import { mocksEngine } from '../../..';
 import { expect, it } from 'vitest';
 
-import { INVALID_TIME } from '../../../constants/errorConditionConstants';
 import { DOUBLES } from '../../../constants/eventConstants';
 import { ERROR } from '../../../constants/resultConstants';
 
