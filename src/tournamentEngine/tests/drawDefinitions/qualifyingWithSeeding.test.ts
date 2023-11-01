@@ -57,8 +57,8 @@ it.each(scenarios)(
     expect(scaledParticipants.length).toEqual(participantsCount);
 
     const scaleAttributes = {
-      scaleType: RATING,
       eventType: SINGLES,
+      scaleType: RATING,
       scaleName: ELO,
     };
     let result = tournamentEngine.participantScaleItem({
