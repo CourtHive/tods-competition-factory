@@ -48,7 +48,9 @@ type AddMatchUpScheduledTimeArgs = {
 };
 
 export function addMatchUpScheduledTime(params: AddMatchUpScheduledTimeArgs) {
+  const stack = 'addMatchUpScheduledTime';
   let matchUp = params.matchUp;
+
   const {
     removePriorValues,
     tournamentRecord,
@@ -57,30 +59,24 @@ export function addMatchUpScheduledTime(params: AddMatchUpScheduledTimeArgs) {
     scheduledTime,
     matchUpId,
   } = params;
-  if (!matchUpId) return { error: MISSING_MATCHUP_ID };
+
+  if (!matchUpId)
+    return decorateResult({ result: { error: MISSING_MATCHUP_ID }, stack });
 
   // must support undefined as a value so that scheduledTime can be cleared
-  if (!validTimeValue(scheduledTime)) return { error: INVALID_TIME };
+  if (!validTimeValue(scheduledTime))
+    return decorateResult({ result: { error: INVALID_TIME }, stack });
 
   if (!matchUp) {
     const result = findMatchUp({ drawDefinition, matchUpId });
-    if (result.error) return result;
+    if (result.error) return decorateResult({ result, stack });
     matchUp = result.matchUp;
   }
 
   const timeDate = extractDate(scheduledTime);
-  const stack = 'addMatchUpScheduledTime';
 
-  if (timeDate) {
-    const scheduledDate = scheduledMatchUpDate({ matchUp }).scheduledDate;
-    if (scheduledDate && scheduledDate !== timeDate) {
-      return decorateResult({
-        info: `date in time: ${timeDate} does not corresponde to scheduledDate: ${scheduledDate}`,
-        result: { error: INVALID_TIME },
-        stack,
-      });
-    }
-  }
+  const scheduledDate = scheduledMatchUpDate({ matchUp }).scheduledDate;
+  const keepDate = timeDate && !scheduledDate;
 
   const existingTimeModifiers =
     matchUpTimeModifiers({ matchUp }).timeModifiers || [];
@@ -95,11 +91,11 @@ export function addMatchUpScheduledTime(params: AddMatchUpScheduledTimeArgs) {
       matchUpId,
       matchUp,
     });
-    if (result?.error) return result;
+    if (result?.error) return decorateResult({ result, stack });
   }
 
   // All times stored as military time
-  const militaryTime = convertTime(scheduledTime, true, true);
+  const militaryTime = convertTime(scheduledTime, true, keepDate);
   const itemValue = militaryTime;
   const timeItem = {
     itemType: SCHEDULED_TIME,
@@ -129,14 +125,20 @@ export function addMatchUpTimeModifiers({
   matchUp?: HydratedMatchUp;
   timeModifiers: any[];
 }) {
-  if (!matchUpId) return { error: MISSING_MATCHUP_ID };
+  const stack = 'addMatchUpTimeModifiers';
+  if (!matchUpId)
+    return decorateResult({ result: { error: MISSING_MATCHUP_ID }, stack });
 
   if (timeModifiers !== undefined && !Array.isArray(timeModifiers))
-    return { error: INVALID_VALUES, info: mustBeAnArray('timeModifiers') };
+    return decorateResult({
+      info: mustBeAnArray('timeModifiers'),
+      result: { error: INVALID_VALUES },
+      stack,
+    });
 
   if (!matchUp) {
     const result = findMatchUp({ drawDefinition, matchUpId });
-    if (result.error) return result;
+    if (result.error) return decorateResult({ result, stack });
     matchUp = result.matchUp;
   }
   let existingTimeModifiers =
@@ -164,7 +166,7 @@ export function addMatchUpTimeModifiers({
       drawDefinition,
       matchUpId,
     });
-    if (result.error) return result;
+    if (result.error) return decorateResult({ result, stack });
   }
 
   // undefined value when array is empty;

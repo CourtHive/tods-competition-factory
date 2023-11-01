@@ -3,6 +3,7 @@ import { tournamentEngine } from '../../sync';
 import { expect, it } from 'vitest';
 
 import { SINGLES } from '../../../constants/eventConstants';
+import { extractTime } from '../../../utilities/dateTime';
 
 it('can add events, venues, and schedule matchUps', () => {
   const startDate = '2020-01-01';
@@ -129,7 +130,7 @@ it('can add events, venues, and schedule matchUps', () => {
   });
   expect(result.success).toEqual(true);
 
-  const scheduledTime = '2020-01-03T13:00';
+  const scheduledTime = '2020-01-03T13:00'; // date component will be stripped away
   result = tournamentEngine.addMatchUpScheduledTime({
     scheduledTime,
     matchUpId,
@@ -144,7 +145,9 @@ it('can add events, venues, and schedule matchUps', () => {
   expect(matchUps[0].schedule.scheduledDate).toEqual(
     scheduledDate.split('T')[0] // time component was stripped
   );
-  expect(matchUps[0].schedule.scheduledTime).toEqual(scheduledTime);
+  expect(matchUps[0].schedule.scheduledTime).toEqual(
+    extractTime(scheduledTime)
+  );
 
   const venueName = 'New venue name';
   const venueAbbreviation = 'NVN';
