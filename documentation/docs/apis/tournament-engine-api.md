@@ -2814,12 +2814,12 @@ const result = tournamentEngine.modifyCourtAvailability({
 
 ---
 
-## modifyDrawName
+## modifyDrawDefinition
 
 ```js
-tournamentEngine.modifyDrawName({
-  drawName,
-  eventId,
+tournamentEngine.modifyDrawDefinition({
+  drawUpdates: { policyDefinitions: { ...policies } },
+  drawName: 'League Play',
   drawId,
 });
 ```
