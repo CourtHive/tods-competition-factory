@@ -288,7 +288,6 @@ export function getRounds({
           const validDate = validStartDate && validEndDate;
 
           const validVenue = !venueId || event?.validVenueIds.includes(venueId);
-          console.log({ venueId, v: event?.validVenueIds, validVenue });
 
           const keepRound =
             keepComplete && keepScheduled && validVenue && validDate;
