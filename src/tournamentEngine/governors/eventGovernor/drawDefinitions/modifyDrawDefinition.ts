@@ -15,7 +15,7 @@ import {
   Tournament,
 } from '../../../../types/tournamentFromSchema';
 import {
-  INVALID_END_TIME,
+  INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
 } from '../../../../constants/errorConditionConstants';
 
@@ -33,7 +33,7 @@ export function modifyDrawDefinition({
   drawId,
   event,
 }: ModifyDrawArgs): ResultType {
-  if (!isObject(drawUpdates)) return { error: INVALID_END_TIME };
+  if (!isObject(drawUpdates)) return { error: INVALID_VALUES };
 
   const flightProfile = getFlightProfile({ event }).flightProfile;
 

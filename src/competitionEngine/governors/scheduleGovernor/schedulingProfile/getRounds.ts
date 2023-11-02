@@ -275,12 +275,17 @@ export function getRounds({
               ? events?.find(({ eventId }) => eventId === round.eventId)
               : undefined;
 
-          const validDate =
+          const validStartDate =
             !scheduleDate ||
-            (event?.startDate &&
-              event?.endDate &&
-              new Date(scheduleDate) >= new Date(event?.startDate) &&
-              new Date(scheduleDate) <= new Date(event?.endDate));
+            !tournamentRecord?.startDate ||
+            new Date(scheduleDate) >=
+              new Date(event?.startDate || tournamentRecord?.startDate);
+          const validEndDate =
+            !scheduleDate ||
+            !tournamentRecord?.endDate ||
+            new Date(scheduleDate) <=
+              new Date(event?.endDate || tournamentRecord?.endDate);
+          const validDate = validStartDate && validEndDate;
 
           const validVenue = !venueId || event?.validVenueIds.includes(venueId);
 
