@@ -4,13 +4,13 @@ import { groupConsecutiveNumbers, unique } from '../../../utilities/arrays';
 import { MatchUpsMap, getMappedStructureMatchUps } from './getMatchUpsMap';
 import { getRangeString } from './getRangeString';
 
+import { DrawDefinition } from '../../../types/tournamentFromSchema';
+import { RoundProfile } from '../../../types/factoryTypes';
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_STRUCTURE_ID,
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
-import { DrawDefinition } from '../../../types/tournamentFromSchema';
-import { RoundProfile } from '../../../types/factoryTypes';
 
 type GetDrawPositionRangesArgs = {
   drawDefinition: DrawDefinition;

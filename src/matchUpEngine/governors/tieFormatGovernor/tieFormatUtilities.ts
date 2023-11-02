@@ -12,6 +12,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_CATEGORY,
   INVALID_COLLECTION_DEFINITION,
+  INVALID_GENDER,
   INVALID_OBJECT,
   INVALID_TIE_FORMAT,
 } from '../../../constants/errorConditionConstants';
@@ -240,6 +241,11 @@ export function validateCollectionDefinition({
     referenceGender !== gender
   ) {
     errors.push(`Invalid gender: ${gender}`);
+    return decorateResult({
+      context: { referenceGender, gender },
+      result: { error: INVALID_GENDER },
+      stack,
+    });
   }
 
   if (checkCategory && referenceCategory && category) {
