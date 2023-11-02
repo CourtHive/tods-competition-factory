@@ -15,6 +15,7 @@ export interface Tournament {
   notes?: string;
   onlineResources?: OnlineResource[];
   parentOrganisationId?: string;
+  parentOrganisation?: Organisation;
   participants?: Participant[];
   processCodes?: string[];
   promotionalName?: string;
@@ -36,6 +37,16 @@ export interface Tournament {
   tournamentRank?: string;
   updatedAt?: Date | string;
   venues?: Venue[];
+}
+
+export interface Organisation {
+  onlineResources?: OnlineResource[];
+  organisationAbbreviation: string;
+  parentOrganisationId?: string;
+  extensions?: Extension[];
+  organisationName: string;
+  organisationId: string;
+  notes?: string;
 }
 
 export interface Event {
