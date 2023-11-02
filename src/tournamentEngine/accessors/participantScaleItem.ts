@@ -1,14 +1,14 @@
 import { getAccessorValue } from '../../utilities/getAccessorValue';
 
-import { ScaleAttributes, ScaleItem } from '../../types/factoryTypes';
 import type { Participant, TypeEnum } from '../../types/tournamentFromSchema';
+import { ScaleAttributes, ScaleItem } from '../../types/factoryTypes';
+import { ResultType } from '../../global/functions/decorateResult';
+import { SUCCESS } from '../../constants/resultConstants';
 import { SCALE } from '../../constants/scaleConstants';
 import {
-  ErrorType,
   INVALID_SCALE_ITEM,
   INVALID_VALUES,
   MISSING_PARTICIPANT,
-  SCALE_ITEM_NOT_FOUND,
 } from '../../constants/errorConditionConstants';
 
 export interface ParticipantScaleItemArgs {
@@ -21,15 +21,12 @@ export function participantScaleItem({
   requireTimeStamp,
   scaleAttributes,
   participant,
-}: ParticipantScaleItemArgs): {
-  scaleItem?: ScaleItem;
-  error?: ErrorType;
-} {
+}: ParticipantScaleItemArgs): ResultType & { scaleItem?: ScaleItem } {
   if (!participant) return { error: MISSING_PARTICIPANT };
   if (typeof scaleAttributes !== 'object') return { error: INVALID_VALUES };
 
   if (!participant.timeItems) participant.timeItems = [];
-  if (participant && Array.isArray(participant.timeItems)) {
+  if (Array.isArray(participant.timeItems)) {
     const { accessor, scaleType, eventType, scaleName } = scaleAttributes;
     const filterType = [SCALE, scaleType, eventType, scaleName].join('.');
     const filteredTimeItems = participant.timeItems
@@ -60,11 +57,9 @@ export function participantScaleItem({
         scaleName,
         scaleType,
       };
-      return { scaleItem };
-    } else {
-      return { error: SCALE_ITEM_NOT_FOUND };
+      return { ...SUCCESS, scaleItem };
     }
   }
 
-  return { error: MISSING_PARTICIPANT };
+  return { ...SUCCESS, scaleItem: undefined };
 }

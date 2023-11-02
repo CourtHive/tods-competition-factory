@@ -3,10 +3,7 @@ import mocksEngine from '../../../mocksEngine';
 import { tournamentEngine } from '../../sync';
 import { expect, it } from 'vitest';
 
-import {
-  SCALE_ITEM_NOT_FOUND,
-  VALUE_UNCHANGED,
-} from '../../../constants/errorConditionConstants';
+import { VALUE_UNCHANGED } from '../../../constants/errorConditionConstants';
 import { RANKING } from '../../../constants/timeItemConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/eventConstants';
@@ -66,7 +63,7 @@ it('can set participant scaleItems', () => {
     participantId,
   }));
   expect(result?.scaleValue).toEqual(undefined);
-  expect(error).toEqual(SCALE_ITEM_NOT_FOUND);
+  expect(error).toBeUndefined();
 
   ({
     scaleItem: result,
@@ -77,7 +74,7 @@ it('can set participant scaleItems', () => {
     participantId,
   }));
   expect(result?.scaleValue).toEqual(undefined);
-  expect(error).toEqual(SCALE_ITEM_NOT_FOUND);
+  expect(error).toBeUndefined();
   expect(tournamentId).toEqual(tournamentRecord.tournamentId);
 
   scaleItem = {
