@@ -664,10 +664,6 @@ export const INVALID_SCALE_ITEM = {
   message: 'Invalid scaleItem',
   code: 'ERR_INVALID_SCALE_ITEM',
 };
-export const SCALE_ITEM_NOT_FOUND = {
-  message: 'No scaleItem found',
-  code: 'ERR_NOT_FOUND_SCALE_ITEM',
-};
 
 export const MODIFICATIONS_FAILED = {
   message: 'Modifications failed',
@@ -938,7 +934,6 @@ export const errorConditionConstants = {
   PENALTY_NOT_FOUND,
   POLICY_NOT_ATTACHED,
   POLICY_NOT_FOUND,
-  SCALE_ITEM_NOT_FOUND,
   SCHEDULE_NOT_CLEARED,
   SCHEDULED_MATCHUPS,
   SEEDSCOUNT_GREATER_THAN_DRAW_SIZE,
