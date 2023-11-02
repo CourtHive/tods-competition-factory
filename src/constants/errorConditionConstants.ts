@@ -700,6 +700,10 @@ export const INVALID_OBJECT = {
   message: 'Invalid object',
   code: 'ERR_INVALID_OBJECT',
 };
+export const INVALID_GENDER = {
+  message: 'Invalid gender',
+  code: 'ERR_INVALID_GENDER',
+};
 export const INVALID_CATEGORY = {
   message: 'Invalid category',
   code: 'ERR_INVALID_CATEGORY',
@@ -826,6 +830,7 @@ export const errorConditionConstants = {
   INVALID_ENTRIES,
   INVALID_EVENT_TYPE,
   INVALID_GAME_SCORES,
+  INVALID_GENDER,
   INVALID_MATCHUP_FORMAT,
   INVALID_MATCHUP_STATUS,
   INVALID_MATCHUP_STATUS_BYE,

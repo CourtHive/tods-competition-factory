@@ -3,8 +3,8 @@ import { getAvoidanceConflicts } from './getAvoidanceConflicts';
 export function getSwapOptions({
   positionedParticipants,
   potentialDrawPositions,
-  avoidanceConflicts,
   drawPositionGroups,
+  avoidanceConflicts,
   isRoundRobin,
 }) {
   return avoidanceConflicts
