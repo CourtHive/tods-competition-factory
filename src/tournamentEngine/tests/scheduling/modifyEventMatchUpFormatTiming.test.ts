@@ -3,7 +3,7 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 import { expect, it } from 'vitest';
 
-import POLICY_SCHEDULING_USTA from '../../../fixtures/policies/POLICY_SCHEDULING_USTA';
+import POLICY_SCHEDULING_DEFAULT from '../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
 import POLICY_SCORING_USTA from '../../../fixtures/policies/POLICY_SCORING_USTA';
 import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
 import { SCHEDULE_TIMING } from '../../../constants/extensionConstants';
@@ -25,7 +25,7 @@ it('can modify event timing for matchUpFormat codes', () => {
   tournamentEngine.setState(tournamentRecord);
 
   tournamentEngine.attachPolicies({
-    policyDefinitions: POLICY_SCHEDULING_USTA,
+    policyDefinitions: POLICY_SCHEDULING_DEFAULT,
   });
 
   const timingResult = tournamentEngine.getEventMatchUpFormatTiming({
@@ -33,13 +33,12 @@ it('can modify event timing for matchUpFormat codes', () => {
   });
 
   let eventMatchUpFormatTiming = timingResult.eventMatchUpFormatTiming;
-  expect(eventMatchUpFormatTiming).toBeUndefined();
-  expect(timingResult.error).not.toBeUndefined();
+  expect(eventMatchUpFormatTiming).not.toBeUndefined();
 
   let result = tournamentEngine.modifyEventMatchUpFormatTiming({
-    eventId,
     matchUpFormat: FORMAT_STANDARD,
     averageMinutes: 127,
+    eventId,
   });
   expect(result.success).toEqual(true);
 
@@ -117,12 +116,12 @@ it('can modify event timing for matchUpFormat codes', () => {
   result = tournamentEngine.getEventMatchUpFormatTiming({
     eventId,
   });
-  expect(result.error).not.toBeUndefined();
+  expect(result.error).toBeUndefined();
 
   const policyDefinitions = POLICY_SCORING_USTA;
   tournamentEngine.attachPolicies({
-    policyDefinitions,
     allowReplacement: true,
+    policyDefinitions,
   });
   result = tournamentEngine.getAllowedMatchUpFormats({
     categoryName: undefined,

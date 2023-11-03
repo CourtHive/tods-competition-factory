@@ -4,7 +4,7 @@ import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
 import { expect, test } from 'vitest';
 
-import POLICY_SCHEDULING_USTA from '../../../../fixtures/policies/POLICY_SCHEDULING_USTA';
+import POLICY_SCHEDULING_DEFAULT from '../../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
 import { SINGLE_ELIMINATION } from '../../../../constants/drawDefinitionConstants';
 import {
   INVALID_DATE,
@@ -118,7 +118,7 @@ test.each([
     competitionEngine.setState(tournamentRecord);
 
     competitionEngine.attachPolicies({
-      policyDefinitions: POLICY_SCHEDULING_USTA,
+      policyDefinitions: POLICY_SCHEDULING_DEFAULT,
     });
 
     const { tournamentId } = tournamentRecord;

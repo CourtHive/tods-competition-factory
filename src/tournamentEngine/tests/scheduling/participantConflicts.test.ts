@@ -6,7 +6,7 @@ import mocksEngine from '../../../mocksEngine';
 import { tournamentEngine } from '../../sync';
 import { expect, test } from 'vitest';
 
-import POLICY_SCHEDULING_USTA from '../../../fixtures/policies/POLICY_SCHEDULING_USTA';
+import POLICY_SCHEDULING_DEFAULT from '../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
 import { INDIVIDUAL } from '../../../constants/participantConstants';
 
 const { SINGLES, DOUBLES } = eventConstants;
@@ -36,7 +36,7 @@ test('recognizes scheduling conflicts', () => {
   competitionEngine.setState(tournamentRecord);
 
   competitionEngine.attachPolicies({
-    policyDefinitions: POLICY_SCHEDULING_USTA,
+    policyDefinitions: POLICY_SCHEDULING_DEFAULT,
   });
 
   let { matchUps } = competitionEngine.allCompetitionMatchUps({

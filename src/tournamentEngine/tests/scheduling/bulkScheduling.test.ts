@@ -6,7 +6,7 @@ import mocksEngine from '../../../mocksEngine';
 import { tournamentEngine } from '../../sync';
 import { expect, it, test } from 'vitest';
 
-import POLICY_SCHEDULING_USTA from '../../../fixtures/policies/POLICY_SCHEDULING_USTA';
+import POLICY_SCHEDULING_DEFAULT from '../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
 import SEEDING_ITF_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 import { SINGLES_EVENT } from '../../../constants/eventConstants';
 import {
@@ -143,7 +143,7 @@ test('recognizes scheduling conflicts', () => {
   competitionEngine.setState(tournamentRecord);
 
   competitionEngine.attachPolicies({
-    policyDefinitions: POLICY_SCHEDULING_USTA,
+    policyDefinitions: POLICY_SCHEDULING_DEFAULT,
   });
 
   let { matchUps } = competitionEngine.allCompetitionMatchUps();
@@ -225,6 +225,7 @@ test('recognizes scheduling conflicts', () => {
   expect(Object.values(participantMap).length).toEqual(16);
   expect(participants.length).toEqual(16);
   expect(gpConflicts.length).toEqual(16);
+  expect(mappedMatchUps).toBeDefined();
 
   ({
     participantIdsWithConflicts: gpConflicts,

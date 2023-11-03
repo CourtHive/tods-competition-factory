@@ -4,7 +4,7 @@ import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
 import { expect, test } from 'vitest';
 
-import POLICY_SCHEDULING_USTA from '../../../../fixtures/policies/POLICY_SCHEDULING_USTA';
+import POLICY_SCHEDULING_DEFAULT from '../../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
 import POLICY_SCORING_USTA from '../../../../fixtures/policies/POLICY_SCORING_USTA';
 import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
 import { ADD_MATCHUPS } from '../../../../constants/topicConstants';
@@ -257,17 +257,17 @@ test('can modify event timing for matchUpFormat codes', () => {
   competitionEngine.setState([firstTournament, secondTournament]);
 
   competitionEngine.attachPolicies({
-    policyDefinitions: POLICY_SCHEDULING_USTA,
+    policyDefinitions: POLICY_SCHEDULING_DEFAULT,
   });
 
   let result = competitionEngine.getEventMatchUpFormatTiming({
     eventId,
   });
-  expect(result.error).toEqual(MISSING_SCORING_POLICY);
+  // even with no policy, timing is defined / falls back to defaults
+  expect(result.eventMatchUpFormatTiming).toBeDefined();
 
-  let { eventMatchUpFormatTiming, error } = result;
-  expect(eventMatchUpFormatTiming).toBeUndefined();
-  expect(error).not.toBeUndefined();
+  let { eventMatchUpFormatTiming } = result;
+  expect(eventMatchUpFormatTiming).toBeDefined();
 
   result = competitionEngine.modifyEventMatchUpFormatTiming({
     matchUpFormat: FORMAT_STANDARD,
@@ -349,13 +349,13 @@ test('can modify event timing for matchUpFormat codes', () => {
     90, 90,
   ]);
 
-  ({ eventMatchUpFormatTiming, error } =
-    competitionEngine.getEventMatchUpFormatTiming({
+  ({ eventMatchUpFormatTiming } = competitionEngine.getEventMatchUpFormatTiming(
+    {
       eventId,
-    }));
+    }
+  ));
 
-  expect(eventMatchUpFormatTiming).toBeUndefined();
-  expect(error).toEqual(MISSING_SCORING_POLICY);
+  expect(eventMatchUpFormatTiming).toBeDefined();
 
   const policyDefinitions = POLICY_SCORING_USTA;
   competitionEngine.attachPolicies({
@@ -372,16 +372,14 @@ test('can modify event timing for matchUpFormat codes', () => {
     eventMatchUpFormatTiming.length
   );
 
-  ({ eventMatchUpFormatTiming, error } =
-    competitionEngine.getEventMatchUpFormatTiming({
-      eventId: 'bogusId',
-    }));
-  expect(error).toEqual(EVENT_NOT_FOUND);
+  result = competitionEngine.getEventMatchUpFormatTiming({
+    eventId: 'bogusId',
+  });
+  expect(result.error).toEqual(EVENT_NOT_FOUND);
 
-  ({ eventMatchUpFormatTiming, error } =
-    competitionEngine.getEventMatchUpFormatTiming({
-      tournamentId: 'bogusId',
-      eventId,
-    }));
-  expect(error).toEqual(INVALID_VALUES);
+  result = competitionEngine.getEventMatchUpFormatTiming({
+    tournamentId: 'bogusId',
+    eventId,
+  });
+  expect(result.error).toEqual(INVALID_VALUES);
 });
