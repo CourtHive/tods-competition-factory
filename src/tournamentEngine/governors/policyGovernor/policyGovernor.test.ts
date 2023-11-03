@@ -158,10 +158,10 @@ it('can find policies whether on event or tournamentRecord', () => {
   const newTournamentRecord = tournamentEngine.newTournamentRecord();
   tournamentEngine.setState(newTournamentRecord);
 
-  const { error } = tournamentEngine.findPolicy({
+  let result = tournamentEngine.findPolicy({
     policyType: POLICY_TYPE_SCORING,
   });
-  expect(error).toEqual(POLICY_NOT_FOUND);
+  expect(result.info).toEqual(POLICY_NOT_FOUND.message);
 
   const testPolicyName = 'TEST';
   const scoringPolicy = {
@@ -169,7 +169,7 @@ it('can find policies whether on event or tournamentRecord', () => {
       policyName: testPolicyName,
     },
   };
-  let result = tournamentEngine.attachPolicies({
+  result = tournamentEngine.attachPolicies({
     policyDefinitions: scoringPolicy,
   });
   expect(result.success).toEqual(true);

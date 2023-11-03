@@ -168,9 +168,9 @@ it.each([
 
     const { competitionParticipants, participantIdsWithConflicts } =
       competitionEngine.getCompetitionParticipants({
-        inContext: true,
-        withMatchUps: true,
         withScheduleItems: true,
+        withMatchUps: true,
+        inContext: true,
       });
     expect(participantIdsWithConflicts.length).toEqual(0);
     expect(competitionParticipants.length).toEqual(8);

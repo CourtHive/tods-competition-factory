@@ -65,7 +65,12 @@ it.each([asyncTournamentEngine, tournamentEngineSync])(
       } else if (method === 'getRoundMatchUps') {
         expect(result.roundMatchUps).toEqual({});
       } else if (
-        ['credits', 'version', 'participantScheduledMatchUps'].includes(method)
+        [
+          'credits',
+          'version',
+          'participantScheduledMatchUps',
+          'getPolicyDefinitions',
+        ].includes(method)
       ) {
         expect(result).not.toBeUndefined();
       } else if (method === 'getState') {

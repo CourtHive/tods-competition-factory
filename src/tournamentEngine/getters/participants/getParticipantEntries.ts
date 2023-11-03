@@ -35,8 +35,6 @@ export function getParticipantEntries(params) {
 
     withPotentialMatchUps,
     withRankingProfile,
-    withScheduleTimes,
-    withScheduleItems,
     scheduleAnalysis,
     withTeamMatchUps,
     withStatistics,
@@ -47,7 +45,8 @@ export function getParticipantEntries(params) {
     withDraws,
   } = params;
 
-  if (withScheduleItems) console.log({ withScheduleItems });
+  const withScheduleTimes =
+    params.withScheduleTimes ?? params.withScheduleItems;
 
   const targetParticipantIds = participantFilters?.participantIds;
   const getRelevantParticipantIds = (participantId) => {
