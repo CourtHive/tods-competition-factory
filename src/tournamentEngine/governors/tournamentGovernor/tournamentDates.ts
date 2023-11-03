@@ -26,7 +26,6 @@ export function setTournamentDates({
   endDate,
 }: SetTournamentDatesArgs) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-
   if (
     (startDate && !dateValidation.test(startDate)) ||
     (endDate && !dateValidation.test(endDate))
@@ -86,12 +85,10 @@ export function setTournamentDates({
   return { ...SUCCESS, unscheduledMatchUpIds };
 }
 
-// TODO: check all courts in all venues for dateAvailability that is outside of tournament date range
 export function setTournamentStartDate({ tournamentRecord, startDate }) {
   return setTournamentDates({ tournamentRecord, startDate });
 }
 
-// TODO: check all courts in all venues for dateAvailability that is outside of tournament date range
 export function setTournamentEndDate({ tournamentRecord, endDate }) {
   return setTournamentDates({ tournamentRecord, endDate });
 }
