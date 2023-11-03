@@ -1,6 +1,7 @@
 export { getEligibleVoluntaryConsolationParticipants } from '../../drawEngine/governors/queryGovernor/getEligibleVoluntaryConsolationParticipants';
 export { isValid as isValidMatchUpFormat } from '../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
 export { parse as parseMatchUpFormat } from '../../matchUpEngine/governors/matchUpFormatGovernor/parse';
+export { getAssignedParticipantIds } from '../../drawEngine/getters/getAssignedParticipantIds';
 export { getPolicyDefinitions } from '../../global/functions/deducers/getAppliedPolicies';
 export { getTimeItem } from '../../tournamentEngine/governors/queryGovernor/timeItems';
 export { findMatchUp } from '../../tournamentEngine/getters/matchUpsGetter/findMatchUp';

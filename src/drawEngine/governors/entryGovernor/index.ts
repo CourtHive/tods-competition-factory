@@ -5,6 +5,7 @@
   ensures entries may not be removed if draw stage is active
 */
 
+import { getAssignedParticipantIds } from '../../getters/getAssignedParticipantIds';
 import { addDrawEntry, addDrawEntries } from './addDrawEntries';
 import { modifySeedAssignment } from './modifySeedAssignment';
 import { assignSeed } from './seedAssignment';
@@ -17,6 +18,7 @@ import {
 } from './stageEntryCounts';
 
 const entryGovernor = {
+  getAssignedParticipantIds,
   setStageAlternatesCount,
   setStageWildcardsCount,
   setStageQualifiersCount,

@@ -9,6 +9,7 @@ import { proConflicts } from './competitionEngine/governors/scheduleGovernor/pro
 import { validateTieFormat } from './matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
 import { compareTieFormats } from './matchUpEngine/governors/tieFormatGovernor/compareTieFormats';
 import { dehydrateMatchUps } from './tournamentEngine/governors/tournamentGovernor/dehydrate';
+import { getAssignedParticipantIds } from './drawEngine/getters/getAssignedParticipantIds';
 import { findExtension } from './tournamentEngine/governors/queryGovernor/extensionQueries';
 import { participantScaleItem } from './tournamentEngine/accessors/participantScaleItem';
 import { getScaleValues } from './tournamentEngine/getters/participants/getScaleValues';
@@ -79,6 +80,7 @@ export const utilities = {
   generateRange,
   generateScoreString,
   generateTimeCode,
+  getAssignedParticipantIds,
   getCategoryAgeDetails,
   getScaleValues,
   getTimeItem,

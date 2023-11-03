@@ -1,15 +1,14 @@
-/**
- *
- * @param {string[]} participantIds
- * @param {string[]} positionAssignments - assignment objects which associate drawPositions with participantIds
- *
- * Returns an array of participantsIds which have not been assigned
- */
+import { PositionAssignment } from '../../../../types/tournamentFromSchema';
+
+type GetUnplaced = {
+  positionAssignments: PositionAssignment[];
+  participantIds: string[];
+};
 
 export function getUnplacedParticipantIds({
-  participantIds,
   positionAssignments,
-}) {
+  participantIds,
+}: GetUnplaced) {
   const assignedParticipantIds = positionAssignments.map(
     (assignment) => assignment.participantId
   );

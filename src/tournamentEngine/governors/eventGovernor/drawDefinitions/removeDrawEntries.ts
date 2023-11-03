@@ -23,10 +23,11 @@ export function removeDrawEntries({
   if (!drawId) return { error: MISSING_DRAW_ID };
   if (!participantIds?.length) return { error: MISSING_PARTICIPANT_IDS };
 
-  const assignedParticipantIds = getAssignedParticipantIds({
-    drawDefinition,
-    stages,
-  });
+  const assignedParticipantIds =
+    getAssignedParticipantIds({
+      drawDefinition,
+      stages,
+    }).assignedParticipantIds ?? [];
   const someAssignedParticipantIds = overlap(
     assignedParticipantIds,
     participantIds

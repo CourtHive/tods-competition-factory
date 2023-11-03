@@ -1,6 +1,9 @@
 import { getPositionAssignments } from './positionsGetter';
 import { extractAttributes } from '../../utilities';
 
+import { MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
+import { ResultType } from '../../global/functions/decorateResult';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   DrawDefinition,
   StageTypeEnum,
@@ -17,12 +20,15 @@ type GetAssignedParticipantIdsArgs = {
 export function getAssignedParticipantIds({
   drawDefinition,
   stages,
-}: GetAssignedParticipantIdsArgs): string[] {
+}: GetAssignedParticipantIdsArgs): ResultType & {
+  assignedParticipantIds?: string[];
+} {
+  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   const stageStructures = (drawDefinition?.structures || []).filter(
     (structure) =>
       !stages?.length || (structure.stage && stages.includes(structure.stage))
   );
-  return stageStructures
+  const assignedParticipantIds = stageStructures
     .map((structure) => {
       const { positionAssignments } = getPositionAssignments({
         structure,
@@ -32,4 +38,6 @@ export function getAssignedParticipantIds({
         : [];
     })
     .flat();
+
+  return { ...SUCCESS, assignedParticipantIds };
 }

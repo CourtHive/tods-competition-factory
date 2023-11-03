@@ -52,7 +52,8 @@ export function removeEventEntries({
 
   // do not filter by stages; must kmow all participantIds assigned to any stage!
   const assignedParticipantIds = (event.drawDefinitions ?? []).flatMap(
-    (drawDefinition) => getAssignedParticipantIds({ drawDefinition })
+    (drawDefinition) =>
+      getAssignedParticipantIds({ drawDefinition }).assignedParticipantIds ?? []
   );
 
   const statusParticipantIds = (
