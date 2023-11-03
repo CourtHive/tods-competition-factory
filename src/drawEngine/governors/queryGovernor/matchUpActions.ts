@@ -567,7 +567,6 @@ export function matchUpActions({
     }
 
     if (
-      // isInComplete && // TODO: determine whether removal should be disallowed for completed matchUps => policy consideration?
       existingParticipantIds?.length &&
       (!scoreHasValue(matchUp) || side?.substitutions?.length)
     ) {

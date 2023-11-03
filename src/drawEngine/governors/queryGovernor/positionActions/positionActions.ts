@@ -153,7 +153,7 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
       event,
     }).appliedPolicies ?? {};
 
-  Object.assign(appliedPolicies, specifiedPolicyDefinitions || {});
+  Object.assign(appliedPolicies, specifiedPolicyDefinitions ?? {});
 
   const {
     actionsPolicy: positionActionsPolicy,
@@ -371,7 +371,7 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
       const { seedNumber, seedValue } =
         seedAssignments?.find(
           (assignment) => assignment.participantId === participantId
-        ) || {};
+        ) ?? {};
 
       validActions.push({
         type: SEED_VALUE,
@@ -406,7 +406,7 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
       const { seedNumber } =
         seedAssignments?.find(
           (assignment) => assignment.participantId === participantId
-        ) || {};
+        ) ?? {};
 
       validActions.push({
         method: REMOVE_SEED_METHOD,
