@@ -241,10 +241,11 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
     stages,
   });
 
-  const stageAssignedParticipantIds = getAssignedParticipantIds({
-    drawDefinition,
-    stages,
-  });
+  const stageAssignedParticipantIds =
+    getAssignedParticipantIds({
+      drawDefinition,
+      stages,
+    }).assignedParticipantIds ?? [];
 
   const unassignedParticipantIds = stageEntries
     .filter(

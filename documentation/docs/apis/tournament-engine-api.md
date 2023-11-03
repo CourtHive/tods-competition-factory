@@ -1936,7 +1936,14 @@ const {
 Return **deepCopies** of all events in a tournament record.
 
 ```js
-const { events } = tournamentEngine.getEvents();
+const { events } = tournamentEngine.getEvents({
+  withScaleValues, // optional boolean
+  scaleEventType, // override event.eventType for accessing scales, e.g. SINGLES override for DOUBLES events
+  inContext, // optional boolean hydrates with tournamentId
+  eventIds, // optional array
+  drawIds, // optional array
+  context, // optional object to spread into all targeted events
+});
 ```
 
 ---

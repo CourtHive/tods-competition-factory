@@ -18,10 +18,11 @@ export function removeEntry({
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
 
-  const assignedParticipantIds = getAssignedParticipantIds({
-    drawDefinition,
-    stages,
-  });
+  const assignedParticipantIds =
+    getAssignedParticipantIds({
+      drawDefinition,
+      stages,
+    }).assignedParticipantIds ?? [];
   const isAssignedParticipant = assignedParticipantIds.includes(participantId);
 
   if (isAssignedParticipant)

@@ -125,6 +125,7 @@ import { resetTieFormat } from './resetTieFormat';
 
 import { validateCollectionDefinition } from '../../../matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
 import { generateDrawTypeAndModifyDrawDefinition } from '../../generators/generateDrawTypeAndModifyDrawDefinition';
+import { getAssignedParticipantIds } from '../../../drawEngine/getters/getAssignedParticipantIds';
 import { generateDrawStructuresAndLinks } from '../../generators/generateDrawStructuresAndLinks';
 import { generateQualifyingStructure } from './drawDefinitions/generateQualifyingStructure';
 import { attachQualifyingStructure } from './drawDefinitions/attachQualifyingStructure';
@@ -179,6 +180,7 @@ const eventGovernor = {
 
   getAvailablePlayoffRounds: getAvailablePlayoffProfiles, // to be deprecated
   getAvailablePlayoffProfiles,
+  getAssignedParticipantIds,
   deleteDrawDefinitions,
   addPlayoffStructures,
   modifyDrawDefinition,

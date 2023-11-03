@@ -1,8 +1,16 @@
+import { numericSort } from './sorting';
 import { ensureInt } from './ensureInt';
 
 export function isPowerOf2(n?) {
   if (isNaN(n)) return false;
   return n && (n & (n - 1)) === 0;
+}
+
+export function median(arr: number[]): number | undefined {
+  if (!arr.length) return undefined;
+  const s = [...arr].sort(numericSort);
+  const mid = Math.floor(s.length / 2);
+  return s.length % 2 ? s[mid] : (s[mid - 1] + s[mid]) / 2;
 }
 
 export function deriveExponent(n) {
