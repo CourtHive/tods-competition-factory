@@ -33,6 +33,7 @@ import {
   INVALID_VALUES,
   METHOD_NOT_FOUND,
 } from '../constants/errorConditionConstants';
+import { engineLogging } from '../global/functions/producers/engineLogging';
 
 export const competitionEngine = (function () {
   const engine: FactoryEngine = {
@@ -111,42 +112,7 @@ export const competitionEngine = (function () {
       ...params,
     });
     const elapsed = Date.now() - start;
-    const devContext = getDevContext();
-
-    const log: any = { method: methodName };
-    const logError =
-      result.error &&
-      (devContext.errors === true ||
-        (Array.isArray(devContext.errors) &&
-          devContext.errors.includes(methodName)));
-    const exclude =
-      Array.isArray(devContext.exclude) &&
-      devContext.exclude.includes(methodName);
-    if (
-      !exclude &&
-      ![undefined, false].includes(devContext.perf) &&
-      (isNaN(devContext.perf) || elapsed > devContext.perf)
-    )
-      log.elapsed = elapsed;
-    if (
-      !exclude &&
-      (logError ||
-        (devContext.params && !Array.isArray(devContext.params)) ||
-        (Array.isArray(devContext.params) &&
-          devContext.params?.includes(methodName)))
-    ) {
-      log.params = params;
-    }
-    if (
-      !exclude &&
-      (logError ||
-        (devContext.result && !Array.isArray(devContext.result)) ||
-        (Array.isArray(devContext.result) &&
-          devContext.result?.includes(methodName)))
-    ) {
-      log.result = result;
-    }
-    if (Object.keys(log).length > 1) console.log('ce:', log);
+    engineLogging({ result, methodName, elapsed, params, engine: 'ce:' });
 
     return result;
   }
