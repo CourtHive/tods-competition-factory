@@ -1,3 +1,4 @@
+import { visualizeScheduledMatchUps } from '../../../../global/testHarness/testUtilities/visualizeScheduledMatchUps';
 import { extractTime, timeStringMinutes } from '../../../../utilities/dateTime';
 import { getParticipantId } from '../../../../global/functions/extractors';
 import tournamentEngine from '../../../../tournamentEngine/sync';
@@ -171,11 +172,17 @@ it.each([
     expect(roundMap.length).toEqual(scheduledCount);
     // console.log(roundMap); // useful for eye-balling
 
-    const { competitionParticipants, participantIdsWithConflicts } =
-      competitionEngine.getCompetitionParticipants({
-        inContext: true,
-        withMatchUps: true,
-      });
+    const participantsResult = competitionEngine.getCompetitionParticipants({
+      withIndividualParticipants: true,
+      withPotentialMatchUps: true,
+      withMatchUps: true,
+      inContext: true,
+    });
+    const {
+      competitionParticipants,
+      participantIdsWithConflicts,
+      mappedMatchUps,
+    } = participantsResult;
     expect(competitionParticipants.length).toEqual(48);
 
     expect(participantIdsWithConflicts.length).toEqual(0);
@@ -185,14 +192,18 @@ it.each([
       const { matchUps = [], potentialMatchUps = [] } = participant;
       const scheduledMatchUps = matchUps
         .concat(...potentialMatchUps)
-        .filter(hasSchedule);
+        .filter(({ matchUpId }) => hasSchedule(mappedMatchUps[matchUpId]));
       if (scheduledMatchUps.length > 1) {
         participantsWithMultipleScheduledMatchUps += 1;
         const firstMatchAfterRecoveryMinutes = timeStringMinutes(
-          scheduledMatchUps[0].schedule.timeAfterRecovery
+          mappedMatchUps[scheduledMatchUps[0].matchUpId].schedule
+            .timeAfterRecovery
         );
         const secondMatchStartMinutes = timeStringMinutes(
-          extractTime(scheduledMatchUps[1].schedule.scheduledTime)
+          extractTime(
+            mappedMatchUps[scheduledMatchUps[1].matchUpId].schedule
+              .scheduledTime
+          )
         );
         expect(secondMatchStartMinutes).toBeGreaterThanOrEqual(
           firstMatchAfterRecoveryMinutes
@@ -350,16 +361,19 @@ it('can clear scheduled matchUps', () => {
 
   const scheduleAttributes = ['scheduledDate', 'scheduledTime'];
   const hasSchedule = ({ schedule }) => {
-    const matchUpScheduleKeys = Object.keys(schedule)
-      .filter((key) => scheduleAttributes.includes(key))
-      .filter((key) => schedule[key]);
-    return !!matchUpScheduleKeys.length;
+    const matchUpScheduleKeys =
+      schedule &&
+      Object.keys(schedule)
+        .filter((key) => scheduleAttributes.includes(key))
+        .filter((key) => schedule[key]);
+    return !!matchUpScheduleKeys?.length;
   };
 
   let { matchUps } = competitionEngine.allCompetitionMatchUps({
     afterRecoveryTimes: true,
   });
   let scheduledMatchUps = matchUps.filter(hasSchedule);
+  visualizeScheduledMatchUps({ scheduledMatchUps, showGlobalLog: false });
   expect(scheduledMatchUps.length).toEqual(scheduledCount);
   expect(scheduledMatchUps[0].schedule.timeAfterRecovery).toEqual('10:30');
 
@@ -381,11 +395,14 @@ it('can clear scheduled matchUps', () => {
     ['15:30', 2, 1, 'B Draw'],
   ]);
 
-  const { competitionParticipants, participantIdsWithConflicts } =
-    competitionEngine.getCompetitionParticipants({
-      inContext: true,
-      withMatchUps: true,
-    });
+  const {
+    competitionParticipants,
+    participantIdsWithConflicts,
+    mappedMatchUps,
+  } = competitionEngine.getCompetitionParticipants({
+    withIndividualParticipants: true,
+    withMatchUps: true,
+  });
   expect(participantIdsWithConflicts.length).toEqual(0);
 
   let participantsWithMultipleScheduledMatchUps = 0;
@@ -393,14 +410,17 @@ it('can clear scheduled matchUps', () => {
     const { matchUps = [], potentialMatchUps = [] } = participant;
     const scheduledMatchUps = matchUps
       .concat(...potentialMatchUps)
-      .filter(hasSchedule);
+      .filter(({ matchUpId }) => hasSchedule(mappedMatchUps[matchUpId]));
     if (scheduledMatchUps.length > 1) {
       participantsWithMultipleScheduledMatchUps += 1;
       const firstMatchAfterRecoveryMinutes = timeStringMinutes(
-        scheduledMatchUps[0].schedule.timeAfterRecovery
+        mappedMatchUps[scheduledMatchUps[0].matchUpId].schedule
+          .timeAfterRecovery
       );
       const secondMatchStartMinutes = timeStringMinutes(
-        extractTime(scheduledMatchUps[1].schedule.scheduledTime)
+        extractTime(
+          mappedMatchUps[scheduledMatchUps[1].matchUpId].schedule.scheduledTime
+        )
       );
       expect(secondMatchStartMinutes).toBeGreaterThanOrEqual(
         firstMatchAfterRecoveryMinutes

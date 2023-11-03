@@ -35,6 +35,7 @@ export function getParticipantEntries(params) {
 
     withPotentialMatchUps,
     withRankingProfile,
+    withScheduleItems,
     scheduleAnalysis,
     withTeamMatchUps,
     withStatistics,
@@ -44,9 +45,6 @@ export function getParticipantEntries(params) {
     withEvents,
     withDraws,
   } = params;
-
-  const withScheduleTimes =
-    params.withScheduleTimes ?? params.withScheduleItems;
 
   const targetParticipantIds = participantFilters?.participantIds;
   const getRelevantParticipantIds = (participantId) => {
@@ -74,7 +72,7 @@ export function getParticipantEntries(params) {
     withDraws: withDraws || withRankingProfile,
     withPotentialMatchUps,
     withRankingProfile,
-    withScheduleTimes,
+    withScheduleItems,
     scheduleAnalysis,
     withTeamMatchUps,
     withStatistics,
@@ -521,7 +519,7 @@ export function getParticipantEntries(params) {
 
         if (
           Array.isArray(potentialParticipants) &&
-          (nextMatchUps || !!scheduleAnalysis || withScheduleTimes)
+          (nextMatchUps || !!scheduleAnalysis || withScheduleItems)
         ) {
           const potentialParticipantIds = potentialParticipants
             .flat()
@@ -545,7 +543,7 @@ export function getParticipantEntries(params) {
               });
             });
 
-            if (!!scheduleAnalysis || withScheduleTimes) {
+            if (!!scheduleAnalysis || withScheduleItems) {
               addScheduleItem({
                 potential: true,
                 participantMap,
@@ -705,8 +703,13 @@ export function getParticipantEntries(params) {
               potentialMatchUps[scheduleItem.matchUpId] &&
               potentialMatchUps[consideredItem.matchUpId];
 
-            const nextMinutes = timeStringMinutes(consideredItem.scheduledTime);
-            const minutesDifference = Math.abs(nextMinutes - scheduledMinutes);
+            const consideredMinutes = timeStringMinutes(
+              consideredItem.scheduledTime
+            );
+            const minutesDifference = Math.abs(
+              consideredMinutes - scheduledMinutes
+            );
+            const itemIsPrior = consideredMinutes > scheduledMinutes;
 
             // Conflicts can be determined in two ways:
             // 1. scheduledMinutesDifference - the minutes difference between two scheduledTimes
@@ -714,14 +717,15 @@ export function getParticipantEntries(params) {
             const timeOverlap =
               scheduledMinutesDifference && !isNaN(scheduledMinutesDifference)
                 ? minutesDifference <= scheduledMinutesDifference
-                : timeStringMinutes(notBeforeTime) >
-                  timeStringMinutes(consideredItem.scheduledTime);
+                : itemIsPrior &&
+                  timeStringMinutes(consideredItem.scheduledTime) <
+                    timeStringMinutes(notBeforeTime);
 
             // if there is a time overlap capture both the prior matchUpId and the conflicted matchUpId
-            if (timeOverlap && !(bothPotential && sameDraw)) {
+            if (timeOverlap && !(bothPotential && sameDraw) && itemIsPrior) {
               participantAggregator.scheduleConflicts.push({
-                priorScheduledMatchUpId: consideredItem.matchUpId,
-                matchUpIdWithConflict: scheduleItem.matchUpId,
+                priorScheduledMatchUpId: scheduleItem.matchUpId,
+                matchUpIdWithConflict: consideredItem.matchUpId,
               });
             }
           }
