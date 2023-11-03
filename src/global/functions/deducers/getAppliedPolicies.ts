@@ -83,6 +83,7 @@ export function getPolicyDefinitions({
 }: GetPolicyDefinitionsArgs): {
   policyDefinitions?: PolicyDefinitions;
   error?: ErrorType;
+  info?: string;
 } {
   if (!Array.isArray(policyTypes)) return { error: MISSING_POLICY_TYPE };
 
@@ -102,5 +103,5 @@ export function getPolicyDefinitions({
 
   return Object.keys(policyDefinitions).length
     ? { policyDefinitions }
-    : { error: POLICY_NOT_FOUND };
+    : { info: POLICY_NOT_FOUND.message };
 }

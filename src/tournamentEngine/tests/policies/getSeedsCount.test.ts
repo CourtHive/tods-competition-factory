@@ -10,14 +10,12 @@ import {
   MISSING_DRAW_SIZE,
   MISSING_PARTICIPANT_COUNT,
   MISSING_SEEDCOUNT_THRESHOLDS,
-  POLICY_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
 it('can accurately determine seedsCount from drawSize and participantsCount', () => {
   let seedsCount, error;
-  ({ seedsCount, error } = getSeedsCount());
+  ({ seedsCount } = getSeedsCount());
   expect(seedsCount).toEqual(undefined);
-  expect(error).toEqual(POLICY_NOT_FOUND);
 
   ({ seedsCount, error } = getSeedsCount({ policyDefinitions: SEEDING_USTA }));
   expect(seedsCount).toEqual(undefined);

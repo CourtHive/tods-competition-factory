@@ -26,7 +26,7 @@ export function findPolicy({
   policyType,
   structure,
   event,
-}: FindPolicyArgs): { policy?: any; error?: ErrorType } {
+}: FindPolicyArgs): { policy?: any; error?: ErrorType; info?: string } {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
   const { appliedPolicies } = getAppliedPolicies({
@@ -38,5 +38,5 @@ export function findPolicy({
 
   return appliedPolicies?.[policyType]
     ? { policy: appliedPolicies[policyType] }
-    : { error: POLICY_NOT_FOUND };
+    : { info: POLICY_NOT_FOUND?.message };
 }
