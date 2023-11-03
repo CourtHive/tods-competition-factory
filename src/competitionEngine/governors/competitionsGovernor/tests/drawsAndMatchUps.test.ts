@@ -13,7 +13,6 @@ import {
   EVENT_NOT_FOUND,
   INVALID_VALUES,
   MISSING_EVENT,
-  MISSING_SCORING_POLICY,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../../constants/errorConditionConstants';
 
