@@ -642,7 +642,7 @@ Find tournament participant by either `participantId` or `personId`.
 
 ```js
 const { participant, tournamentId } = competitionEngine.findParticipant({
-  participantId,
+  participantId, // required only if no personId provided
   personId, // required only if no participantId provided
 });
 ```

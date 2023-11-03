@@ -1,5 +1,4 @@
 import { getParticipants as participantGetter } from '../../tournamentEngine/getters/participants/getParticipants';
-import { getTournamentParticipants } from '../../tournamentEngine/getters/participants/getTournamentParticipants';
 import { findParticipant } from '../../global/functions/deducers/findParticipant';
 import { deepMerge } from '../../utilities/deepMerge';
 
@@ -12,12 +11,12 @@ import {
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
 import {
+  ContextProfile,
   ParticipantMap,
   PolicyDefinitions,
   TournamentRecordsArgs,
 } from '../../types/factoryTypes';
 
-// TODO: getTournamentParticipants migration
 export function getParticipants(params) {
   const { tournamentRecords } = params || {};
   if (
@@ -126,12 +125,14 @@ export function getCompetitionParticipants(params) {
 
 type PublicFindParticipantArgs = TournamentRecordsArgs & {
   policyDefinitions?: PolicyDefinitions;
+  contextProfile?: ContextProfile;
   participantId?: string;
   personId?: string;
 };
 export function publicFindParticipant({
-  policyDefinitions,
   tournamentRecords,
+  policyDefinitions,
+  contextProfile,
   participantId,
   personId,
 }: PublicFindParticipantArgs): {
@@ -148,15 +149,17 @@ export function publicFindParticipant({
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     tournamentId = tournamentRecord.tournamentId;
 
-    const { tournamentParticipants } = getTournamentParticipants({
-      policyDefinitions,
-      tournamentRecord,
-    });
+    const participants =
+      participantGetter({
+        policyDefinitions,
+        tournamentRecord,
+      }).participants ?? [];
 
     participant = findParticipant({
-      tournamentParticipants,
+      tournamentParticipants: participants,
       internalUse: true,
       policyDefinitions,
+      contextProfile,
       participantId,
       personId,
     });
