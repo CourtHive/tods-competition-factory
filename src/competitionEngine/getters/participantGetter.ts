@@ -118,14 +118,12 @@ export function getCompetitionParticipants(params) {
 type PublicFindParticipantArgs = TournamentRecordsArgs & {
   policyDefinitions?: PolicyDefinitions;
   participantId?: string;
-  inContext?: boolean;
   personId?: string;
 };
 export function publicFindParticipant({
   policyDefinitions,
   tournamentRecords,
   participantId,
-  inContext,
   personId,
 }: PublicFindParticipantArgs): {
   participant?: HydratedParticipant;
@@ -144,7 +142,6 @@ export function publicFindParticipant({
     const { tournamentParticipants } = getTournamentParticipants({
       policyDefinitions,
       tournamentRecord,
-      inContext,
     });
 
     participant = findParticipant({
