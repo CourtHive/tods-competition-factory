@@ -8,7 +8,7 @@ import competitionEngine from '../../../sync';
 import garman from '../garman/garman';
 import { expect, it } from 'vitest';
 
-import POLICY_SCHEDULING_USTA from '../../../../fixtures/policies/POLICY_SCHEDULING_USTA';
+import POLICY_SCHEDULING_DEFAULT from '../../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
 import { BYE } from '../../../../constants/matchUpStatusConstants';
 
 const date = new Date().toISOString().split('T')[0];
@@ -102,7 +102,7 @@ it('properly schedules 2nd round of 128 single elimination draw with 30 courts',
     venueIds: [venueId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
-    policyDefinitions: POLICY_SCHEDULING_USTA,
+    policyDefinitions: POLICY_SCHEDULING_DEFAULT,
     eventProfiles,
     venueProfiles,
     startDate,
@@ -224,7 +224,7 @@ it('properly schedules 1st rounds of two 32 single elimination draws with 10 cou
     venueIds: [venueId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
-    policyDefinitions: POLICY_SCHEDULING_USTA,
+    policyDefinitions: POLICY_SCHEDULING_DEFAULT,
     drawProfiles,
     venueProfiles,
     startDate,

@@ -2,7 +2,7 @@ import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
 import { expect, it } from 'vitest';
 
-import POLICY_SCHEDULING_USTA from '../../../../fixtures/policies/POLICY_SCHEDULING_USTA';
+import POLICY_SCHEDULING_DEFAULT from '../../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
 
 it('will not schedule Round 1 after Round 2 if Round 2 was manually scheduled at the start of the day', () => {
   const venueId = 'venue1';
@@ -28,7 +28,7 @@ it('will not schedule Round 1 after Round 2 if Round 2 was manually scheduled at
   const startDate = '2022-01-01';
   const endDate = '2022-01-07';
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-    policyDefinitions: POLICY_SCHEDULING_USTA,
+    policyDefinitions: POLICY_SCHEDULING_DEFAULT,
     eventProfiles,
     venueProfiles,
     startDate,
@@ -102,7 +102,7 @@ it('will schedule Round 1 after Round 2 if Round 2 was manually scheduled later 
   const startDate = '2022-01-01';
   const endDate = '2022-01-07';
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-    policyDefinitions: POLICY_SCHEDULING_USTA,
+    policyDefinitions: POLICY_SCHEDULING_DEFAULT,
     eventProfiles,
     venueProfiles,
     startDate,

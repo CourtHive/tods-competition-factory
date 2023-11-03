@@ -1,3 +1,4 @@
+import { visualizeScheduledMatchUps } from '../../../global/testHarness/testUtilities/visualizeScheduledMatchUps';
 import { getStructureRoundProfile } from '../../../drawEngine/getters/getMatchUps/getStructureRoundProfile';
 import { getMatchUpIds } from '../../../global/functions/extractors';
 import competitionEngine from '../../../competitionEngine/sync';
@@ -6,7 +7,7 @@ import mocksEngine from '../../../mocksEngine';
 import { tournamentEngine } from '../../sync';
 import { expect, it, test } from 'vitest';
 
-import POLICY_SCHEDULING_USTA from '../../../fixtures/policies/POLICY_SCHEDULING_USTA';
+import POLICY_SCHEDULING_DEFAULT from '../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
 import SEEDING_ITF_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 import { SINGLES_EVENT } from '../../../constants/eventConstants';
 import {
@@ -143,7 +144,7 @@ test('recognizes scheduling conflicts', () => {
   competitionEngine.setState(tournamentRecord);
 
   competitionEngine.attachPolicies({
-    policyDefinitions: POLICY_SCHEDULING_USTA,
+    policyDefinitions: POLICY_SCHEDULING_DEFAULT,
   });
 
   let { matchUps } = competitionEngine.allCompetitionMatchUps();
@@ -173,6 +174,11 @@ test('recognizes scheduling conflicts', () => {
   expect(Object.keys(matchUps[0].schedule).includes('scheduledDate')).toEqual(
     true
   );
+
+  visualizeScheduledMatchUps({
+    scheduledMatchUps: matchUps,
+    showGlobalLog: false,
+  });
 
   ({ roundMatchUps } = drawEngine.getRoundMatchUps({ matchUps }));
   roundMatchUps[1].forEach((firstRoundMatchUp) => {
@@ -210,8 +216,8 @@ test('recognizes scheduling conflicts', () => {
     withMatchUps: true,
   });
 
-  expect(ceConflicts.length).toEqual(16);
   expect(teConflicts.length).toEqual(16);
+  expect(ceConflicts.length).toEqual(16);
 
   const participantResult = competitionEngine.getParticipants({
     scheduleAnalysis: { scheduledMinutesDifference: Infinity },
@@ -225,6 +231,7 @@ test('recognizes scheduling conflicts', () => {
   expect(Object.values(participantMap).length).toEqual(16);
   expect(participants.length).toEqual(16);
   expect(gpConflicts.length).toEqual(16);
+  expect(mappedMatchUps).toBeDefined();
 
   ({
     participantIdsWithConflicts: gpConflicts,

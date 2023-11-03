@@ -9,7 +9,7 @@ import competitionEngine from '../../../sync';
 import { expect, it } from 'vitest';
 
 import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
-import POLICY_SCHEDULING_USTA from '../../../../fixtures/policies/POLICY_SCHEDULING_USTA';
+import POLICY_SCHEDULING_DEFAULT from '../../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
 
 const showGlobalLog = false;
 
@@ -89,7 +89,7 @@ it.each([
       venueIds: [venueId],
       tournamentRecord,
     } = mocksEngine.generateTournamentRecord({
-      policyDefinitions: POLICY_SCHEDULING_USTA,
+      policyDefinitions: POLICY_SCHEDULING_DEFAULT,
       tournamentExtensions: [],
       tournamentAttributes: {},
       autoSchedule: true,
@@ -236,7 +236,7 @@ it.each([
     ];
 
     const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-      policyDefinitions: POLICY_SCHEDULING_USTA,
+      policyDefinitions: POLICY_SCHEDULING_DEFAULT,
       autoSchedule: true,
       schedulingProfile,
       venueProfiles,

@@ -239,7 +239,7 @@ export function matchUpActions({
       const entry = (drawDefinition.entries ?? []).find(
         (entry) => entry.participantId === participant.participantId
       );
-      // TODO: determine if this is in fact used downstream
+      // used to sort available participants
       participant.entryPosition = entry?.entryPosition;
     });
 

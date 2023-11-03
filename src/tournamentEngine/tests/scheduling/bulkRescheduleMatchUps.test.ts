@@ -10,7 +10,7 @@ import {
   extractTime,
 } from '../../../utilities/dateTime';
 
-import POLICY_SCHEDULING_USTA from '../../../fixtures/policies/POLICY_SCHEDULING_USTA';
+import POLICY_SCHEDULING_DEFAULT from '../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
 import { SINGLES } from '../../../constants/eventConstants';
 import {
   CURTIS_CONSOLATION,
@@ -65,7 +65,7 @@ it('can bulk reschedule matchUps that have been auto-scheduled', () => {
   competitionEngine.setState(tournamentRecord);
 
   competitionEngine.attachPolicies({
-    policyDefinitions: POLICY_SCHEDULING_USTA,
+    policyDefinitions: POLICY_SCHEDULING_DEFAULT,
   });
 
   const { tournamentId } = tournamentRecord;

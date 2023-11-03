@@ -10,7 +10,7 @@ const WHEELCHAIR = 'WHEELCHAIR';
 /**
  *
  */
-export const POLICY_SCHEDULING_USTA = {
+export const POLICY_SCHEDULING_DEFAULT = {
   [POLICY_TYPE_SCHEDULING]: {
     defaultTimes: {
       averageTimes: [{ categoryNames: [], minutes: { default: 90 } }],
@@ -183,4 +183,4 @@ export const POLICY_SCHEDULING_USTA = {
   },
 };
 
-export default POLICY_SCHEDULING_USTA;
+export default POLICY_SCHEDULING_DEFAULT;

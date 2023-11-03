@@ -2,17 +2,20 @@ import { isValid } from '../../../../matchUpEngine/governors/matchUpFormatGovern
 import { findEventExtension } from '../../queryGovernor/extensionQueries';
 import { getMatchUpFormatTiming } from './getMatchUpFormatTiming';
 import { findPolicy } from '../../policyGovernor/findPolicy';
-import { unique } from '../../../../utilities';
+import { definedAttributes, unique } from '../../../../utilities';
 
-import { POLICY_TYPE_SCORING } from '../../../../constants/policyConstants';
+import POLICY_SCHEDULING_DEFAULT from '../../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
 import { SCHEDULE_TIMING } from '../../../../constants/extensionConstants';
 import { Event, Tournament } from '../../../../types/tournamentFromSchema';
 import {
   ErrorType,
   MISSING_EVENT,
-  MISSING_SCORING_POLICY,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../../constants/errorConditionConstants';
+import {
+  POLICY_TYPE_SCHEDULING,
+  POLICY_TYPE_SCORING,
+} from '../../../../constants/policyConstants';
 
 type GetEventMatchUpFormatTimingArgs = {
   tournamentRecord: Tournament;
@@ -29,11 +32,14 @@ export function getEventMatchUpFormatTiming({
 }: GetEventMatchUpFormatTimingArgs): {
   eventMatchUpFormatTiming?: any;
   error?: ErrorType;
+  info?: string;
 } {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
 
   let matchUpFormatDefinitions: any[] = [];
+  let info;
+
   if (!matchUpFormats?.length) {
     const { policy } = findPolicy({
       policyType: POLICY_TYPE_SCORING,
@@ -47,20 +53,20 @@ export function getEventMatchUpFormatTiming({
         name: SCHEDULE_TIMING,
         event,
       });
+      let matchUpAverageTimes, matchUpRecoveryTimes;
       if (extension?.value) {
-        matchUpFormatDefinitions = unique(
-          [
-            ...(extension.value.matchUpAverageTimes || []).map(
-              (at) => at.matchUpFormatCodes
-            ),
-            ...(extension.value.matchUpRecoveryTimes || []).map(
-              (at) => at.matchUpFormatCodes
-            ),
-          ].flat()
-        ).map((matchUpFormat) => ({ matchUpFormat }));
+        ({ matchUpAverageTimes, matchUpRecoveryTimes } = extension.value);
       } else {
-        return { error: MISSING_SCORING_POLICY };
+        ({ matchUpAverageTimes, matchUpRecoveryTimes } =
+          POLICY_SCHEDULING_DEFAULT[POLICY_TYPE_SCHEDULING]);
       }
+      matchUpFormatDefinitions = unique(
+        [
+          ...(matchUpAverageTimes || []).map((at) => at.matchUpFormatCodes),
+          ...(matchUpRecoveryTimes || []).map((at) => at.matchUpFormatCodes),
+        ].flat()
+      ).map((matchUpFormat) => ({ matchUpFormat }));
+      info = 'default scheduling policy in use';
     }
   } else {
     const uniqueMatchUpFormats: any[] = [];
@@ -81,7 +87,7 @@ export function getEventMatchUpFormatTiming({
   }
   const { eventType, eventId, category } = event;
   const categoryName =
-    category?.categoryName || category?.ageCategoryCode || eventId;
+    category?.categoryName ?? category?.ageCategoryCode ?? eventId;
 
   if (!eventId) return { error: MISSING_EVENT };
 
@@ -95,16 +101,13 @@ export function getEventMatchUpFormatTiming({
         eventType,
         event,
       });
-      return Object.assign(
-        {},
-        {
-          ...timing,
-          description,
-          matchUpFormat,
-        }
-      );
+      return {
+        matchUpFormat,
+        description,
+        ...timing,
+      };
     }
   );
 
-  return { eventMatchUpFormatTiming };
+  return definedAttributes({ eventMatchUpFormatTiming, info });
 }

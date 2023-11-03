@@ -4,7 +4,7 @@ import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
 import { expect, test } from 'vitest';
 
-import POLICY_SCHEDULING_USTA from '../../../../fixtures/policies/POLICY_SCHEDULING_USTA';
+import POLICY_SCHEDULING_DEFAULT from '../../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
 
 test.each([
   [16, 8, 8, 18],
@@ -34,7 +34,7 @@ test.each([
     const startDate = '2022-01-01';
     const endDate = '2022-01-07';
     let result = mocksEngine.generateTournamentRecord({
-      policyDefinitions: POLICY_SCHEDULING_USTA,
+      policyDefinitions: POLICY_SCHEDULING_DEFAULT,
       venueProfiles,
       drawProfiles,
       startDate,

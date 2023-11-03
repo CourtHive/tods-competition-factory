@@ -2,7 +2,7 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 import { expect, it } from 'vitest';
 
-import POLICY_SCHEDULING_USTA from '../../../fixtures/policies/POLICY_SCHEDULING_USTA';
+import POLICY_SCHEDULING_DEFAULT from '../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
 import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
 import { SCHEDULE_TIMING } from '../../../constants/extensionConstants';
 import { SINGLES } from '../../../constants/eventConstants';
@@ -62,7 +62,7 @@ it.each([
     }
 
     result = tournamentEngine.attachPolicies({
-      policyDefinitions: POLICY_SCHEDULING_USTA,
+      policyDefinitions: POLICY_SCHEDULING_DEFAULT,
     });
     expect(result.success).toEqual(true);
 
@@ -113,7 +113,7 @@ it('can modify timing for multiple matchUpFormat codes', () => {
   tournamentEngine.setState(tournamentRecord);
 
   tournamentEngine.attachPolicies({
-    policyDefinitions: POLICY_SCHEDULING_USTA,
+    policyDefinitions: POLICY_SCHEDULING_DEFAULT,
   });
   tournamentEngine.modifyMatchUpFormatTiming({
     averageTimes: [{ categoryTypes: [JUNIOR], minutes: { default: 127 } }],
@@ -180,7 +180,7 @@ it('can return matchUpFormatTiming for all matchUpFormats in an event', () => {
   tournamentEngine.setState(tournamentRecord);
 
   tournamentEngine.attachPolicies({
-    policyDefinitions: POLICY_SCHEDULING_USTA,
+    policyDefinitions: POLICY_SCHEDULING_DEFAULT,
   });
 
   let matchUpFormat = FORMAT_STANDARD;

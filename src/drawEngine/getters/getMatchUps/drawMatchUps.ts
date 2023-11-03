@@ -90,7 +90,7 @@ export function getDrawMatchUps(params): GroupsMatchUpsResult {
     });
   }
 
-  // getTournamentParticipants() calls getDrawMatchUps()
+  // getParticipants() calls allEventMatchUps()
   // ...so participants must be sourced directly from tournamentRecord
   // ...and groupings must be added independent of that
 

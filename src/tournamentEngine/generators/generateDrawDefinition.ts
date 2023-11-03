@@ -747,7 +747,8 @@ export function generateDrawDefinition(
     drawDefinition.links.push(link);
   }
 
-  drawDefinition.drawName = params.drawName ?? drawType;
+  drawDefinition.drawName =
+    params.drawName ?? (drawType && constantToString(drawType));
 
   if (typeof voluntaryConsolation === 'object') {
     addVoluntaryConsolationStructure({

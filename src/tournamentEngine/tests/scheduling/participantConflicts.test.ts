@@ -6,7 +6,7 @@ import mocksEngine from '../../../mocksEngine';
 import { tournamentEngine } from '../../sync';
 import { expect, test } from 'vitest';
 
-import POLICY_SCHEDULING_USTA from '../../../fixtures/policies/POLICY_SCHEDULING_USTA';
+import POLICY_SCHEDULING_DEFAULT from '../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
 import { INDIVIDUAL } from '../../../constants/participantConstants';
 
 const { SINGLES, DOUBLES } = eventConstants;
@@ -36,7 +36,7 @@ test('recognizes scheduling conflicts', () => {
   competitionEngine.setState(tournamentRecord);
 
   competitionEngine.attachPolicies({
-    policyDefinitions: POLICY_SCHEDULING_USTA,
+    policyDefinitions: POLICY_SCHEDULING_DEFAULT,
   });
 
   let { matchUps } = competitionEngine.allCompetitionMatchUps({
@@ -128,8 +128,7 @@ test('recognizes scheduling conflicts', () => {
     ({ participantId }) =>
       participantId === competitionParticipants[0].participantId
   );
-  // TODO: why is there duplication here
-  expect(targetParticipant.scheduleConflicts.length).toEqual(2);
+  expect(targetParticipant.scheduleConflicts.length).toEqual(1);
   expect(targetParticipant.potentialMatchUps.length).toEqual(2);
 
   const cp = competitionEngine.getCompetitionParticipants({

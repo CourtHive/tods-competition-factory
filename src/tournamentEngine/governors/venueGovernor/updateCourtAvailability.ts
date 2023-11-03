@@ -45,6 +45,13 @@ export function updateCourtAvailability({ tournamentRecord }) {
       );
       return existing || { date, startTime, endTime };
     });
+
+    const defaultAvailability = court.dateAvailability?.find(
+      (availability) => !availability.date
+    );
+    if (defaultAvailability)
+      updatedDateAvailability.unshift(defaultAvailability);
+
     court.dateAvailability = updatedDateAvailability;
   }
 

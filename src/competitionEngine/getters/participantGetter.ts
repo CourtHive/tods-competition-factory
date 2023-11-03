@@ -1,5 +1,4 @@
 import { getParticipants as participantGetter } from '../../tournamentEngine/getters/participants/getParticipants';
-import { getTournamentParticipants } from '../../tournamentEngine/getters/participants/getTournamentParticipants';
 import { findParticipant } from '../../global/functions/deducers/findParticipant';
 import { deepMerge } from '../../utilities/deepMerge';
 
@@ -12,12 +11,12 @@ import {
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
 import {
+  ContextProfile,
   ParticipantMap,
   PolicyDefinitions,
   TournamentRecordsArgs,
 } from '../../types/factoryTypes';
 
-// TODO: getTournamentParticipants migration
 export function getParticipants(params) {
   const { tournamentRecords } = params || {};
   if (
@@ -82,16 +81,20 @@ export function getCompetitionParticipants(params) {
   let competitionParticipants: HydratedParticipant[] = [];
   const participantIdsWithConflicts: string[] = [];
   const competitionParticipantIds: string[] = [];
+  const mappedMatchUps: { [key: string]: MatchUp } = {};
 
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     const {
-      tournamentParticipants,
+      participants,
       participantIdsWithConflicts: idsWithConflicts,
-    } = getTournamentParticipants({
+      mappedMatchUps: matchUpsMap,
+    } = participantGetter({
       tournamentRecord,
       ...params,
     });
-    for (const tournamentParticipant of tournamentParticipants) {
+    if (matchUpsMap) Object.assign(mappedMatchUps, matchUpsMap);
+
+    for (const tournamentParticipant of participants ?? []) {
       const { participantId } = tournamentParticipant;
       if (!competitionParticipantIds.includes(participantId)) {
         competitionParticipantIds.push(participantId);
@@ -112,20 +115,25 @@ export function getCompetitionParticipants(params) {
     });
   }
 
-  return { competitionParticipants, participantIdsWithConflicts, ...SUCCESS };
+  return {
+    competitionParticipants,
+    participantIdsWithConflicts,
+    mappedMatchUps,
+    ...SUCCESS,
+  };
 }
 
 type PublicFindParticipantArgs = TournamentRecordsArgs & {
   policyDefinitions?: PolicyDefinitions;
+  contextProfile?: ContextProfile;
   participantId?: string;
-  inContext?: boolean;
   personId?: string;
 };
 export function publicFindParticipant({
-  policyDefinitions,
   tournamentRecords,
+  policyDefinitions,
+  contextProfile,
   participantId,
-  inContext,
   personId,
 }: PublicFindParticipantArgs): {
   participant?: HydratedParticipant;
@@ -141,16 +149,17 @@ export function publicFindParticipant({
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     tournamentId = tournamentRecord.tournamentId;
 
-    const { tournamentParticipants } = getTournamentParticipants({
-      policyDefinitions,
-      tournamentRecord,
-      inContext,
-    });
+    const participants =
+      participantGetter({
+        policyDefinitions,
+        tournamentRecord,
+      }).participants ?? [];
 
     participant = findParticipant({
-      tournamentParticipants,
+      tournamentParticipants: participants,
       internalUse: true,
       policyDefinitions,
+      contextProfile,
       participantId,
       personId,
     });
