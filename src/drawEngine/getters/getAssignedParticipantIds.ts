@@ -1,5 +1,5 @@
+import { extractAttributes, unique } from '../../utilities';
 import { getPositionAssignments } from './positionsGetter';
-import { extractAttributes } from '../../utilities';
 
 import { MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
 import { ResultType } from '../../global/functions/decorateResult';
@@ -28,16 +28,19 @@ export function getAssignedParticipantIds({
     (structure) =>
       !stages?.length || (structure.stage && stages.includes(structure.stage))
   );
-  const assignedParticipantIds = stageStructures
-    .map((structure) => {
-      const { positionAssignments } = getPositionAssignments({
-        structure,
-      });
-      return positionAssignments
-        ? positionAssignments.map(extractAttributes('participantId'))
-        : [];
-    })
-    .flat();
+  const assignedParticipantIds = unique(
+    stageStructures
+      .map((structure) => {
+        const { positionAssignments } = getPositionAssignments({
+          structure,
+        });
+        return positionAssignments
+          ? positionAssignments.map(extractAttributes('participantId'))
+          : [];
+      })
+      .flat()
+      .filter(Boolean)
+  );
 
   return { ...SUCCESS, assignedParticipantIds };
 }
