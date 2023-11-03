@@ -20,6 +20,7 @@ import {
   STRUCTURE_SELECTED_STATUSES,
 } from '../../../constants/entryStatusConstants';
 import {
+  // Category,
   Event,
   GenderEnum,
   Tournament,
@@ -31,6 +32,13 @@ type ModifyEventArgs = {
   eventUpdates: {
     eventType?: TypeEnum;
     gender?: GenderEnum;
+    /**
+     TODO: logic to determine if category can be changed
+     Considerations:
+     1) all collectionDefinitions can be contained
+     2) all particiapnts have valid ages
+     */
+    // category?: Category;
     eventName?: string;
   };
   eventId: string;

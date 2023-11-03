@@ -128,7 +128,6 @@ test('recognizes scheduling conflicts', () => {
     ({ participantId }) =>
       participantId === competitionParticipants[0].participantId
   );
-  // TODO: why is there duplication here
   expect(targetParticipant.scheduleConflicts.length).toEqual(2);
   expect(targetParticipant.potentialMatchUps.length).toEqual(2);
 
