@@ -82,16 +82,20 @@ export function getCompetitionParticipants(params) {
   let competitionParticipants: HydratedParticipant[] = [];
   const participantIdsWithConflicts: string[] = [];
   const competitionParticipantIds: string[] = [];
+  const mappedMatchUps: { [key: string]: MatchUp } = {};
 
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     const {
-      tournamentParticipants,
+      participants,
       participantIdsWithConflicts: idsWithConflicts,
-    } = getTournamentParticipants({
+      mappedMatchUps: matchUpsMap,
+    } = participantGetter({
       tournamentRecord,
       ...params,
     });
-    for (const tournamentParticipant of tournamentParticipants) {
+    if (matchUpsMap) Object.assign(mappedMatchUps, matchUpsMap);
+
+    for (const tournamentParticipant of participants ?? []) {
       const { participantId } = tournamentParticipant;
       if (!competitionParticipantIds.includes(participantId)) {
         competitionParticipantIds.push(participantId);
@@ -112,20 +116,23 @@ export function getCompetitionParticipants(params) {
     });
   }
 
-  return { competitionParticipants, participantIdsWithConflicts, ...SUCCESS };
+  return {
+    competitionParticipants,
+    participantIdsWithConflicts,
+    mappedMatchUps,
+    ...SUCCESS,
+  };
 }
 
 type PublicFindParticipantArgs = TournamentRecordsArgs & {
   policyDefinitions?: PolicyDefinitions;
   participantId?: string;
-  inContext?: boolean;
   personId?: string;
 };
 export function publicFindParticipant({
   policyDefinitions,
   tournamentRecords,
   participantId,
-  inContext,
   personId,
 }: PublicFindParticipantArgs): {
   participant?: HydratedParticipant;
@@ -144,7 +151,6 @@ export function publicFindParticipant({
     const { tournamentParticipants } = getTournamentParticipants({
       policyDefinitions,
       tournamentRecord,
-      inContext,
     });
 
     participant = findParticipant({

@@ -1,3 +1,4 @@
+import { visualizeScheduledMatchUps } from '../../../global/testHarness/testUtilities/visualizeScheduledMatchUps';
 import { getStructureRoundProfile } from '../../../drawEngine/getters/getMatchUps/getStructureRoundProfile';
 import { getMatchUpIds } from '../../../global/functions/extractors';
 import competitionEngine from '../../../competitionEngine/sync';
@@ -174,6 +175,11 @@ test('recognizes scheduling conflicts', () => {
     true
   );
 
+  visualizeScheduledMatchUps({
+    scheduledMatchUps: matchUps,
+    showGlobalLog: false,
+  });
+
   ({ roundMatchUps } = drawEngine.getRoundMatchUps({ matchUps }));
   roundMatchUps[1].forEach((firstRoundMatchUp) => {
     expect(typeof firstRoundMatchUp.winnerTo.schedule.scheduleConflict).toEqual(
@@ -210,8 +216,8 @@ test('recognizes scheduling conflicts', () => {
     withMatchUps: true,
   });
 
-  expect(ceConflicts.length).toEqual(16);
   expect(teConflicts.length).toEqual(16);
+  expect(ceConflicts.length).toEqual(16);
 
   const participantResult = competitionEngine.getParticipants({
     scheduleAnalysis: { scheduledMinutesDifference: Infinity },

@@ -10,7 +10,7 @@ import {
 
 export function processSides(params) {
   const {
-    withScheduleTimes,
+    withScheduleItems,
     scheduleAnalysis,
     withTeamMatchUps,
     participantMap,
@@ -140,7 +140,7 @@ export function processSides(params) {
         });
       }
 
-      if (scheduleAnalysis || withScheduleTimes) {
+      if (scheduleAnalysis || withScheduleItems) {
         addScheduleItem({
           participantMap,
           participantId,

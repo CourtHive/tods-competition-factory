@@ -128,7 +128,7 @@ test('recognizes scheduling conflicts', () => {
     ({ participantId }) =>
       participantId === competitionParticipants[0].participantId
   );
-  expect(targetParticipant.scheduleConflicts.length).toEqual(2);
+  expect(targetParticipant.scheduleConflicts.length).toEqual(1);
   expect(targetParticipant.potentialMatchUps.length).toEqual(2);
 
   const cp = competitionEngine.getCompetitionParticipants({

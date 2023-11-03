@@ -15,7 +15,6 @@ type GetParticipantScaleItemArgs = {
   policyDefinitions?: PolicyDefinitions;
   scaleAttributes: ScaleAttributes;
   participantId?: string;
-  inContext?: boolean;
   personId?: string;
 };
 export function getParticipantScaleItem({
@@ -23,7 +22,6 @@ export function getParticipantScaleItem({
   policyDefinitions,
   scaleAttributes,
   participantId,
-  inContext,
   personId,
 }: GetParticipantScaleItemArgs): ResultType & {
   scaleItem?: ScaleItem;
@@ -32,7 +30,6 @@ export function getParticipantScaleItem({
     tournamentRecords,
     policyDefinitions,
     participantId,
-    inContext,
     personId,
   });
   if (result.error) return result;

@@ -138,6 +138,7 @@ export function getParticipants(params: GetParticipantsArgs): {
     ({
       potentialMatchUps,
       scheduleConflicts,
+      scheduleItems,
       participant,
       statistics,
       opponents,
@@ -173,6 +174,7 @@ export function getParticipants(params: GetParticipantsArgs): {
             ? Object.values(potentialMatchUps)
             : undefined,
           statistics: withStatistics ? Object.values(statistics) : undefined,
+          scheduleItems: withScheduleItems ? scheduleItems : undefined,
         },
         false,
         false,
