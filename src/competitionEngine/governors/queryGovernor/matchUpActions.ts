@@ -1,5 +1,5 @@
 import { matchUpActions as tournamentMatchUpActions } from '../../../tournamentEngine/getters/matchUpActions';
-import { findEvent } from '../../../tournamentEngine/getters/eventGetter';
+import { findEvent } from '../../../tournamentEngine/getters/findEvent';
 import { TournamentRecordsArgs } from '../../../types/factoryTypes';
 import {
   INVALID_VALUES,

@@ -3,7 +3,7 @@ import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
 import { hydrateParticipants } from './hydrateParticipants';
 import { allTournamentMatchUps } from './matchUpsGetter';
 import { getContextContent } from '../getContextContent';
-import { findEvent } from '../eventGetter';
+import { findEvent } from '../findEvent';
 
 import { HydratedMatchUp } from '../../../types/hydrated';
 import {

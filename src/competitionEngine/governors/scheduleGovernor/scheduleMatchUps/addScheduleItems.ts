@@ -3,7 +3,7 @@ import { assignMatchUpVenue as assignVenue } from '../../../../tournamentEngine/
 import { assignMatchUpCourt as assignCourt } from '../../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpCourt';
 import { decorateResult } from '../../../../global/functions/decorateResult';
 import { findTournamentId } from '../../competitionsGovernor/findTournamentId';
-import { findEvent } from '../../../../tournamentEngine/getters/eventGetter';
+import { findEvent } from '../../../../tournamentEngine/getters/findEvent';
 import {
   addMatchUpScheduledDate as addScheduledDate,
   addMatchUpScheduledTime as addScheduledTime,

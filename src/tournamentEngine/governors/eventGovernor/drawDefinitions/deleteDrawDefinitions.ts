@@ -13,8 +13,8 @@ import { getFlightProfile } from '../../../getters/getFlightProfile';
 import { definedAttributes } from '../../../../utilities/objects';
 import { addNotice } from '../../../../global/state/globalState';
 import { getTimeItem } from '../../queryGovernor/timeItems';
-import { findEvent } from '../../../getters/eventGetter';
 import { makeDeepCopy } from '../../../../utilities';
+import { findEvent } from '../../../getters/findEvent';
 import {
   deleteDrawNotice,
   deleteMatchUpsNotice,

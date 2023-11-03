@@ -1,4 +1,4 @@
-import { findEvent } from '../../getters/eventGetter';
+import { findEvent } from '../../getters/findEvent';
 import {
   checkInParticipant as drawEngineCheckInParticipant,
   checkOutParticipant as drawEngineCheckOutParticipant,

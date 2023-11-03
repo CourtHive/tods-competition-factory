@@ -1,5 +1,5 @@
 import { assignMatchUpCourt } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpCourt';
-import { findEvent } from '../../../tournamentEngine/getters/eventGetter';
+import { findEvent } from '../../../tournamentEngine/getters/findEvent';
 import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
 
 import { SUCCESS } from '../../../constants/resultConstants';
