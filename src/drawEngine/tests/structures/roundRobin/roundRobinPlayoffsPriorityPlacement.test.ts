@@ -167,8 +167,8 @@ it('can advance players in Round Robin with Playoffs => 2 x 4 x 4', () => {
   });
 
   const { matchUps: eventMatchUps } = tournamentEngine.allEventMatchUps({
-    eventId,
     inContext: true,
+    eventId,
   });
 
   const finishingPositionGroups = {};
@@ -403,8 +403,8 @@ it('can advance players in Round Robin with Playoffs', () => {
   });
 
   const { matchUps: eventMatchUps } = tournamentEngine.allEventMatchUps({
-    eventId,
     inContext: true,
+    eventId,
   });
 
   const finishingPositionGroups = {};
