@@ -62,7 +62,7 @@ export function getEvents({
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
   const { tournamentId } = tournamentRecord;
-  const eventCopies = (tournamentRecord.events || [])
+  const eventCopies = (tournamentRecord.events ?? [])
     .filter(
       ({ eventId }) =>
         !eventIds || (Array.isArray(eventIds) && eventIds.includes(eventId))
@@ -129,6 +129,17 @@ export function getEvents({
         } else {
           processParticipant(participant);
         }
+      }
+
+      // add stats for all event-level entries ratings
+      const ratings = eventsMap[eventId].ratings;
+      for (const scaleName of Object.keys(ratings)) {
+        eventsMap[eventId].ratingsStats[scaleName] = {
+          avg: sum(ratings[scaleName]) / ratings[scaleName].length,
+          median: median(ratings[scaleName]),
+          max: Math.max(...ratings[scaleName]),
+          min: Math.min(...ratings[scaleName]),
+        };
       }
 
       const processFlight = (drawId, participantIds) => {
@@ -222,8 +233,8 @@ export function getDrawDefinition({ tournamentRecord, drawId }) {
     return { error: MISSING_DRAW_ID };
   }
 
-  const target = (tournamentRecord.events || []).reduce((target, event) => {
-    const candidate = (event.drawDefinitions || []).reduce(
+  const target = (tournamentRecord.events ?? []).reduce((target, event) => {
+    const candidate = (event.drawDefinitions ?? []).reduce(
       (drawDefinition, candidate) => {
         return candidate.drawId === drawId ? candidate : drawDefinition;
       },
