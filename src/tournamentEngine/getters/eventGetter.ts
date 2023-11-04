@@ -10,6 +10,7 @@ import {
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
 import ratingsParameters from '../../fixtures/ratings/ratingsParameters';
+import { ResultType } from '../../global/functions/decorateResult';
 import { INDIVIDUAL } from '../../constants/participantConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
@@ -22,7 +23,6 @@ import {
   Tournament,
   TypeEnum,
 } from '../../types/tournamentFromSchema';
-import { ResultType } from '../../global/functions/decorateResult';
 
 type GetEventArgs = {
   context: { [key: string]: any };
@@ -174,11 +174,14 @@ export function getEvents({
       // add stats for all event-level entries ratings
       const ratings = eventsMap[eventId].ratings;
       for (const scaleName of Object.keys(ratings)) {
+        const scaleRating = ratings[scaleName];
+        if (!scaleRating.length) continue;
+        const med = median(scaleRating)?.toFixed(2);
         eventsMap[eventId].ratingsStats[scaleName] = {
-          avg: sum(ratings[scaleName]) / ratings[scaleName].length,
-          median: median(ratings[scaleName]),
-          max: Math.max(...ratings[scaleName]),
-          min: Math.min(...ratings[scaleName]),
+          avg: parseFloat((sum(scaleRating) / scaleRating.length).toFixed(2)),
+          median: med ? parseFloat(med) : undefined,
+          max: Math.max(...scaleRating),
+          min: Math.min(...scaleRating),
         };
       }
 
@@ -249,11 +252,14 @@ export function getEvents({
       for (const drawId of processedDrawIds) {
         const ratings = eventsMap[eventId].draws[drawId].ratings;
         for (const scaleName of Object.keys(ratings)) {
+          const scaleRating = ratings[scaleName];
+          if (!scaleRating.length) continue;
+          const med = median(scaleRating)?.toFixed(2);
           eventsMap[eventId].draws[drawId].ratingsStats[scaleName] = {
-            avg: sum(ratings[scaleName]) / ratings[scaleName].length,
-            max: Math.max(...ratings[scaleName]),
-            min: Math.min(...ratings[scaleName]),
-            median: median(ratings[scaleName]),
+            avg: parseFloat((sum(scaleRating) / scaleRating.length).toFixed(2)),
+            median: med ? parseFloat(med) : undefined,
+            max: Math.max(...scaleRating),
+            min: Math.min(...scaleRating),
           };
         }
       }
