@@ -4,11 +4,21 @@ import {
   checkOutParticipant as drawEngineCheckOutParticipant,
 } from '../../../drawEngine/governors/matchUpGovernor/checkInStatus';
 
+import { Tournament } from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { HydratedMatchUp } from '../../../types/hydrated';
 import {
   EVENT_NOT_FOUND,
   PARTICIPANT_ALREADY_CHECKED_IN,
 } from '../../../constants/errorConditionConstants';
+
+type CheckInOutParticipantArgs = {
+  tournamentRecord: Tournament;
+  matchUp?: HydratedMatchUp;
+  participantId: string;
+  matchUpId: string;
+  drawId?: string;
+};
 
 export function checkInParticipant({
   tournamentRecord,
@@ -16,7 +26,7 @@ export function checkInParticipant({
   matchUpId,
   matchUp,
   drawId,
-}) {
+}: CheckInOutParticipantArgs) {
   if (matchUp && !drawId) {
     ({ drawId } = matchUp);
   }
@@ -50,7 +60,7 @@ export function checkOutParticipant({
   matchUpId,
   matchUp,
   drawId,
-}) {
+}: CheckInOutParticipantArgs) {
   if (matchUp && !drawId) {
     ({ drawId } = matchUp);
   }

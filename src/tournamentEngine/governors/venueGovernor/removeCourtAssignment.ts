@@ -48,7 +48,7 @@ export function removeCourtAssignment({
   } else {
     if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
     const matchUps =
-      allTournamentMatchUps({ tournamentRecord, inContext: false }).matchUps ||
+      allTournamentMatchUps({ tournamentRecord, inContext: false }).matchUps ??
       [];
     ({ matchUp } = getMatchUp({ matchUps, matchUpId }));
   }

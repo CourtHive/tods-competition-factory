@@ -8,12 +8,12 @@ import {
   setTournamentRecords,
 } from '../global/state/globalState';
 
+import { Tournament } from '../types/tournamentFromSchema';
 import {
   ErrorType,
   INVALID_OBJECT,
   MISSING_TOURNAMENT_ID,
 } from '../constants/errorConditionConstants';
-import { Tournament } from '../types/tournamentFromSchema';
 
 export function setState(
   tournament,

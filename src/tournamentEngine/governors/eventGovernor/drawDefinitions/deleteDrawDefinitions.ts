@@ -168,7 +168,7 @@ export function deleteDrawDefinitions({
           action: DELETE_DRAW_DEFINITIONS,
           payload: {
             drawDefinitions: [drawDefinition],
-            eventId: eventId || event?.eventId,
+            eventId: eventId ?? event?.eventId,
             auditData,
           },
         };
@@ -176,7 +176,7 @@ export function deleteDrawDefinitions({
         deletedDrawsDetail.push(
           definedAttributes({
             tournamentId: tournamentRecord.tournamentId,
-            eventId: eventId || event?.eventId,
+            eventId: eventId ?? event?.eventId,
             qualifyingPositionAssignments,
             positionAssignments,
             auditData,
