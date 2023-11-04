@@ -1,9 +1,7 @@
 import { allocateTeamMatchUpCourts as allocateCourts } from '../../../../tournamentEngine/governors/scheduleGovernor/allocateTeamMatchUpCourts';
 import { assignMatchUpVenue as assignVenue } from '../../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpVenue';
 import { assignMatchUpCourt as assignCourt } from '../../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpCourt';
-import { decorateResult } from '../../../../global/functions/decorateResult';
-import { findTournamentId } from '../../competitionsGovernor/findTournamentId';
-import { findEvent } from '../../../../tournamentEngine/getters/findEvent';
+import { getDrawDefinition } from '../../../../global/functions/deducers/getDrawDefinition';
 import {
   addMatchUpScheduledDate as addScheduledDate,
   addMatchUpScheduledTime as addScheduledTime,
@@ -17,17 +15,9 @@ import {
 } from '../../../../tournamentEngine/governors/scheduleGovernor/scheduleItems';
 
 import {
-  ErrorType,
   MISSING_DRAW_DEFINITION,
-  MISSING_DRAW_ID,
-  MISSING_TOURNAMENT_ID,
   MISSING_TOURNAMENT_RECORD,
-  MISSING_TOURNAMENT_RECORDS,
 } from '../../../../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  Tournament,
-} from '../../../../types/tournamentFromSchema';
 
 export function addMatchUpScheduleItems(params) {
   const result = getDrawDefinition(params);
@@ -237,38 +227,4 @@ export function addMatchUpCourtOrder(params) {
     courtOrder,
     matchUpId,
   });
-}
-
-type GetDrawDefinitionArgs = {
-  tournamentRecords: { [key: string]: Tournament };
-  tournamentId?: string;
-  drawId: string;
-};
-function getDrawDefinition({
-  tournamentRecords,
-  tournamentId,
-  drawId,
-}: GetDrawDefinitionArgs): {
-  drawDefinition?: DrawDefinition;
-  tournamentRecord?: Tournament;
-  error?: ErrorType;
-} {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
-  if (!drawId) return { error: MISSING_DRAW_ID };
-  if (typeof tournamentId !== 'string') {
-    // find tournamentId by brute force if not provided
-    tournamentId = findTournamentId({ tournamentRecords, drawId });
-    if (!tournamentId) return { error: MISSING_TOURNAMENT_ID };
-  }
-
-  const tournamentRecord = tournamentRecords[tournamentId];
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-
-  const result = findEvent({ tournamentRecord, drawId });
-  if (result.error)
-    return decorateResult({
-      stack: 'addScheduleItems.getDrawDefinition',
-      result,
-    });
-  return { drawDefinition: result.drawDefinition, tournamentRecord };
 }

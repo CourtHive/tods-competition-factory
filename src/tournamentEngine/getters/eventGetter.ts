@@ -1,5 +1,4 @@
 import { getAssignedParticipantIds } from '../../drawEngine/getters/getAssignedParticipantIds';
-import { decorateResult } from '../../global/functions/decorateResult';
 import { getParticipants } from './participants/getParticipants';
 import { getFlightProfile } from './getFlightProfile';
 import { median } from '../../utilities/math';
@@ -15,8 +14,6 @@ import ratingsParameters from '../../fixtures/ratings/ratingsParameters';
 import { INDIVIDUAL } from '../../constants/participantConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
-  DRAW_DEFINITION_NOT_FOUND,
-  MISSING_DRAW_ID,
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../constants/errorConditionConstants';
@@ -225,30 +222,4 @@ export function getEvents({
     events: eventCopies,
     ...SUCCESS,
   });
-}
-
-export function getDrawDefinition({ tournamentRecord, drawId }) {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!drawId) {
-    return { error: MISSING_DRAW_ID };
-  }
-
-  const target = (tournamentRecord.events ?? []).reduce((target, event) => {
-    const candidate = (event.drawDefinitions ?? []).reduce(
-      (drawDefinition, candidate) => {
-        return candidate.drawId === drawId ? candidate : drawDefinition;
-      },
-      undefined
-    );
-    return candidate && candidate.drawId === drawId
-      ? { event, drawDefinition: candidate }
-      : target;
-  }, undefined);
-
-  return target
-    ? { ...target, SUCCESS }
-    : decorateResult({
-        result: { error: DRAW_DEFINITION_NOT_FOUND },
-        stack: 'getDrawDefinition',
-      });
 }
