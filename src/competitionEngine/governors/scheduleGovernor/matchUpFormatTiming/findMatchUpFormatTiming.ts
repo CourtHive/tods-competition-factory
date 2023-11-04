@@ -1,6 +1,6 @@
 import { getMatchUpFormatTiming } from '../../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/getMatchUpFormatTiming';
 import { isValid } from '../../../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
-import { findEvent } from '../../../../tournamentEngine/getters/eventGetter';
+import { findEvent } from '../../../../tournamentEngine/getters/findEvent';
 
 import { UNRECOGNIZED_MATCHUP_FORMAT } from '../../../../constants/errorConditionConstants';
 import { Tournament, TypeEnum } from '../../../../types/tournamentFromSchema';

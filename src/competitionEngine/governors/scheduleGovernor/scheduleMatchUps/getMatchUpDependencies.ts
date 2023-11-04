@@ -6,7 +6,7 @@
 import { allDrawMatchUps } from '../../../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
 import { addGoesTo } from '../../../../drawEngine/governors/matchUpGovernor/addGoesTo';
 import { getIndividualParticipantIds } from './getIndividualParticipantIds';
-import { findEvent } from '../../../../tournamentEngine/getters/eventGetter';
+import { findEvent } from '../../../../tournamentEngine/getters/findEvent';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
 import { matchUpSort } from '../../../../drawEngine/getters/matchUpSort';
 
@@ -72,7 +72,7 @@ export function getMatchUpDependencies(params: GetMatchUpDependenciesArgs): {
   const allLinks: DrawLink[] = allTournamentRecords.reduce(
     (allLinks: any[], tournamentRecord) => {
       return allLinks
-        .concat(tournamentRecord.events || [])
+        .concat(tournamentRecord.events ?? [])
         .map((event) =>
           (event.drawDefinitions || []).map(
             (drawDefinition) => drawDefinition.links || []
@@ -113,7 +113,7 @@ export function getMatchUpDependencies(params: GetMatchUpDependenciesArgs): {
     for (const sourceStructureId of sourceStructureIds) {
       positionDependencies[sourceStructureId] = [];
     }
-    for (const matchUp of matchUps || []) {
+    for (const matchUp of matchUps ?? []) {
       // pertains to Round Robins and e.g. Swiss rounds; Round Robins require hoisting to containing structure
       const sourceStructureId =
         matchUp.containerStructureId || matchUp.structureId;

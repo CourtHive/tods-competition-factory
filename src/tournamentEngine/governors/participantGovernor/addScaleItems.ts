@@ -2,15 +2,16 @@ import { addDrawDefinitionTimeItem } from '../eventGovernor/drawDefinitions/addD
 import { participantScaleItem } from '../../accessors/participantScaleItem';
 import { addNotice, getTopics } from '../../../global/state/globalState';
 import { definedAttributes } from '../../../utilities/objects';
-import { findEvent } from '../../getters/eventGetter';
+import { findEvent } from '../../getters/findEvent';
 import {
   addEventTimeItem,
   addTournamentTimeItem,
 } from '../tournamentGovernor/addTimeItem';
 
-import { Participant } from '../../../types/tournamentFromSchema';
+import { Participant, Tournament } from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SCALE } from '../../../constants/scaleConstants';
+import { ScaleItem } from '../../../types/factoryTypes';
 import {
   INVALID_SCALE_ITEM,
   MISSING_PARTICIPANT,
@@ -26,7 +27,14 @@ import {
   MODIFY_PARTICIPANTS,
 } from '../../../constants/topicConstants';
 
-export function setParticipantScaleItem(params) {
+type SetParticipantScaleItemArgs = {
+  tournamentRecord: Tournament;
+  removePriorValues?: boolean;
+  participantId: string;
+  scaleItem?: ScaleItem;
+};
+
+export function setParticipantScaleItem(params: SetParticipantScaleItemArgs) {
   const { removePriorValues, tournamentRecord, participantId, scaleItem } =
     params;
   let equivalentValue, participant;
@@ -65,15 +73,26 @@ export function setParticipantScaleItem(params) {
     (equivalentValue && {
       ...SUCCESS,
       info: VALUE_UNCHANGED,
-      existingValue: scaleItem.scaleValue,
+      existingValue: scaleItem?.scaleValue,
     }) ||
-    (participant && { ...SUCCESS, newValue: scaleItem.scaleValue }) || {
+    (participant && { ...SUCCESS, newValue: scaleItem?.scaleValue }) || {
       error: PARTICIPANT_NOT_FOUND,
     }
   );
 }
 
-export function setParticipantScaleItems(params) {
+type SetParticipantScaleItemsArgs = {
+  scaleItemsWithParticipantIds: {
+    scaleItems: ScaleItem[];
+    participantId: string;
+  }[];
+  context?: { [key: string]: any };
+  tournamentRecord: Tournament;
+  removePriorValues?: boolean;
+  auditData?: any;
+};
+
+export function setParticipantScaleItems(params: SetParticipantScaleItemsArgs) {
   const {
     scaleItemsWithParticipantIds = [],
     removePriorValues,

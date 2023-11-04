@@ -7,30 +7,36 @@ import {
   extractAttributes as xa,
   makeDeepCopy,
 } from '../../utilities';
-import {
-  ResultType,
-  decorateResult,
-} from '../../global/functions/decorateResult';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
 import ratingsParameters from '../../fixtures/ratings/ratingsParameters';
 import { INDIVIDUAL } from '../../constants/participantConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
-  DRAW_DEFINITION_NOT_FOUND,
-  EVENT_NOT_FOUND,
-  MISSING_DRAW_ID,
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../constants/errorConditionConstants';
 import {
   DrawDefinition,
-  Tournament,
   Event,
+  Tournament,
   TypeEnum,
 } from '../../types/tournamentFromSchema';
+import { ResultType } from '../../global/functions/decorateResult';
 
-export function getEvent({ tournamentRecord, drawDefinition, event, context }) {
+type GetEventArgs = {
+  context: { [key: string]: any };
+  tournamentRecord: Tournament;
+  drawDefinition: DrawDefinition;
+  event: Event;
+};
+
+export function getEvent({
+  tournamentRecord,
+  drawDefinition,
+  context,
+  event,
+}: GetEventArgs) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
 
@@ -48,6 +54,28 @@ export function getEvent({ tournamentRecord, drawDefinition, event, context }) {
     event: eventCopy,
   });
 }
+
+export type RankingStat = {
+  median: number;
+  avg: number;
+  max: number;
+  min: number;
+};
+
+export type EventScaleValues = {
+  [key: string]: {
+    ratingsStats: { [key: string]: RankingStat };
+    ratings: { [key: string]: number[] };
+    ranking: { [key: string]: any };
+    draws: {
+      [key: string]: {
+        ratingsStats: { [key: string]: RankingStat };
+        ratings: { [key: string]: number[] };
+        ranking: { [key: string]: any };
+      };
+    };
+  };
+};
 
 type GetEventsArgs = {
   tournamentRecord: Tournament;
@@ -67,11 +95,14 @@ export function getEvents({
   eventIds,
   drawIds,
   context,
-}: GetEventsArgs) {
+}: GetEventsArgs): ResultType & {
+  eventScaleValues?: EventScaleValues;
+  events?: Event[];
+} {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
   const { tournamentId } = tournamentRecord;
-  const eventCopies = (tournamentRecord.events || [])
+  const eventCopies = (tournamentRecord.events ?? [])
     .filter(
       ({ eventId }) =>
         !eventIds || (Array.isArray(eventIds) && eventIds.includes(eventId))
@@ -138,6 +169,17 @@ export function getEvents({
         } else {
           processParticipant(participant);
         }
+      }
+
+      // add stats for all event-level entries ratings
+      const ratings = eventsMap[eventId].ratings;
+      for (const scaleName of Object.keys(ratings)) {
+        eventsMap[eventId].ratingsStats[scaleName] = {
+          avg: sum(ratings[scaleName]) / ratings[scaleName].length,
+          median: median(ratings[scaleName]),
+          max: Math.max(...ratings[scaleName]),
+          min: Math.min(...ratings[scaleName]),
+        };
       }
 
       const processFlight = (drawId, participantIds) => {
@@ -209,9 +251,9 @@ export function getEvents({
         for (const scaleName of Object.keys(ratings)) {
           eventsMap[eventId].draws[drawId].ratingsStats[scaleName] = {
             avg: sum(ratings[scaleName]) / ratings[scaleName].length,
-            median: median(ratings[scaleName]),
             max: Math.max(...ratings[scaleName]),
             min: Math.min(...ratings[scaleName]),
+            median: median(ratings[scaleName]),
           };
         }
       }
@@ -223,101 +265,4 @@ export function getEvents({
     events: eventCopies,
     ...SUCCESS,
   });
-}
-
-// INTERNAL_USE: to resovle events by eventId or drawId
-type FindEventArgs = {
-  tournamentRecord: Tournament;
-  eventId?: string;
-  drawId?: string;
-};
-export function findEvent({
-  tournamentRecord,
-  eventId,
-  drawId,
-}: FindEventArgs): ResultType & {
-  event?: Event;
-  drawDefinition?: DrawDefinition;
-} {
-  const stack = 'findEvent';
-  if (!tournamentRecord)
-    return decorateResult({
-      result: { error: MISSING_TOURNAMENT_RECORD },
-      stack,
-    });
-  const events = tournamentRecord?.events ?? [];
-
-  if (drawId) {
-    let drawDefinition;
-    const event = events.find((event) => {
-      const drawDefinitions = event?.drawDefinitions ?? [];
-      const targetDrawDefinition = drawDefinitions.find(
-        (drawDefinition) => drawDefinition.drawId === drawId
-      );
-      if (targetDrawDefinition) {
-        drawDefinition = targetDrawDefinition;
-      } else {
-        const { flightProfile } = getFlightProfile({ event });
-        const flight = flightProfile?.flights?.find(
-          (flight) => flight.drawId === drawId
-        );
-        if (flight)
-          return {
-            drawId,
-            entries: flight.drawEntries,
-            drawName: flight.drawName,
-          };
-      }
-      return targetDrawDefinition;
-    });
-
-    if (event) return { event, drawDefinition };
-  }
-
-  if (eventId) {
-    const event = events.find((event) => event.eventId === eventId);
-    if (!event)
-      return {
-        event: undefined,
-        drawDefinition: undefined,
-        ...decorateResult({ result: { error: EVENT_NOT_FOUND }, stack }),
-      };
-    return { event, drawDefinition: undefined };
-  }
-
-  return {
-    event: undefined,
-    drawDefinition: undefined,
-    ...decorateResult({
-      result: { error: DRAW_DEFINITION_NOT_FOUND },
-      context: { drawId, eventId },
-      stack,
-    }),
-  };
-}
-
-export function getDrawDefinition({ tournamentRecord, drawId }) {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!drawId) {
-    return { error: MISSING_DRAW_ID };
-  }
-
-  const target = (tournamentRecord.events || []).reduce((target, event) => {
-    const candidate = (event.drawDefinitions || []).reduce(
-      (drawDefinition, candidate) => {
-        return candidate.drawId === drawId ? candidate : drawDefinition;
-      },
-      undefined
-    );
-    return candidate && candidate.drawId === drawId
-      ? { event, drawDefinition: candidate }
-      : target;
-  }, undefined);
-
-  return target
-    ? { ...target, SUCCESS }
-    : decorateResult({
-        result: { error: DRAW_DEFINITION_NOT_FOUND },
-        stack: 'getDrawDefinition',
-      });
 }

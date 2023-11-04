@@ -1,12 +1,11 @@
 import { addMatchUpScheduledTime } from '../../../../drawEngine/governors/matchUpGovernor/scheduleTimeItems/scheduledTime';
 import { assignMatchUpVenue } from '../../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpVenue';
 import { checkParticipantProfileInitialization } from './checkParticipantProfileInitialization';
-import { getDrawDefinition } from '../../../../tournamentEngine/getters/eventGetter';
+import { getDrawDefinition } from '../../../../global/functions/deducers/getDrawDefinition';
 import { modifyParticipantMatchUpsCount } from './modifyParticipantMatchUpsCount';
 import { checkDependenciesScheduled } from './checkDependenciesScheduled';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
 import { getMatchUpIds } from '../../../../global/functions/extractors';
-import { getDevContext } from '../../../../global/state/globalState';
 import { updateTimeAfterRecovery } from './updateTimeAfterRecovery';
 import { calculateScheduleTimes } from './calculateScheduleTimes';
 import { getMatchUpDependencies } from './getMatchUpDependencies';
@@ -28,7 +27,6 @@ import { SUCCESS } from '../../../../constants/resultConstants';
 import { TOTAL } from '../../../../constants/scheduleConstants';
 import {
   MISSING_TOURNAMENT_RECORDS,
-  MISSING_TOURNAMENT_ID,
   MISSING_MATCHUP_IDS,
   INVALID_DATE,
   INVALID_VALUES,
@@ -260,7 +258,7 @@ export function scheduleMatchUps({
   );
 
   let iterations = 0;
-  const failSafe = scheduleTimes?.length || 0;
+  const failSafe = scheduleTimes?.length ?? 0;
 
   const { personRequests } = getPersonRequests({
     tournamentRecords,
@@ -403,8 +401,6 @@ export function scheduleMatchUps({
           });
         }
       });
-    } else {
-      if (getDevContext()) console.log(MISSING_TOURNAMENT_ID);
     }
   });
 

@@ -1,7 +1,7 @@
 import { getContainedStructures } from '../../../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
 import { filterMatchUps } from '../../../../drawEngine/getters/getMatchUps/filterMatchUps';
 import { findMatchUpFormatTiming } from '../matchUpFormatTiming/findMatchUpFormatTiming';
-import { findEvent } from '../../../../tournamentEngine/getters/eventGetter';
+import { findEvent } from '../../../../tournamentEngine/getters/findEvent';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
 import { matchUpSort } from '../../../../drawEngine/getters/matchUpSort';
 import { getMatchUpId } from '../../../../global/functions/extractors';
@@ -9,7 +9,9 @@ import { mustBeAnArray } from '../../../../utilities/mustBeAnArray';
 import { isConvertableInteger } from '../../../../utilities/math';
 import { isPowerOf2 } from '../../../../utilities';
 
+import { Tournament } from '../../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../../constants/resultConstants';
+import { HydratedMatchUp } from '../../../../types/hydrated';
 import {
   ErrorType,
   MISSING_TOURNAMENT_RECORDS,
@@ -19,8 +21,6 @@ import {
   BYE,
   completedMatchUpStatuses,
 } from '../../../../constants/matchUpStatusConstants';
-import { Tournament } from '../../../../types/tournamentFromSchema';
-import { HydratedMatchUp } from '../../../../types/hydrated';
 
 /**
  *

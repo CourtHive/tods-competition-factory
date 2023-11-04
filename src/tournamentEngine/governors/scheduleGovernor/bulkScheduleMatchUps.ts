@@ -1,11 +1,12 @@
 import { getMatchUpDependencies } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/getMatchUpDependencies';
 import { addMatchUpScheduleItems } from '../../../drawEngine/governors/matchUpGovernor/scheduleItems';
-import { getDrawDefinition } from '../../getters/eventGetter';
+import { getDrawDefinition } from '../../../global/functions/deducers/getDrawDefinition';
 import {
   allDrawMatchUps,
   allTournamentMatchUps,
 } from '../../getters/matchUpsGetter/matchUpsGetter';
 
+import { Tournament } from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_SCHEDULE,
@@ -13,7 +14,6 @@ import {
   MISSING_TOURNAMENT_RECORD,
   ErrorType,
 } from '../../../constants/errorConditionConstants';
-import { Tournament } from '../../../types/tournamentFromSchema';
 
 type BulkScheduleMachUpsArgs = {
   tournamentRecords: { [key: string]: Tournament };
@@ -65,7 +65,7 @@ export function bulkScheduleMatchUps({
     inContextMatchUps =
       allTournamentMatchUps({
         tournamentRecord,
-      })?.matchUps || [];
+      })?.matchUps ?? [];
   }
 
   // first organize matchUpIds by drawId
@@ -86,9 +86,11 @@ export function bulkScheduleMatchUps({
       tournamentRecord,
       drawId,
     });
+    if (!drawDefinition) continue;
+
     const drawMatchUpIds = drawIdMap[drawId].filter(
       (matchUpId) =>
-        matchUpIds?.includes(matchUpId) || detailMatchUpIds?.includes(matchUpId)
+        matchUpIds?.includes(matchUpId) ?? detailMatchUpIds?.includes(matchUpId)
     );
 
     // optimize matchUp retrieval

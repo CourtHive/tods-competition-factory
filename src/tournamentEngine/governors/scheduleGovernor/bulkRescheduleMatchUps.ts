@@ -1,8 +1,8 @@
 import { hasSchedule } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/hasSchedule';
+import { getDrawDefinition } from '../../../global/functions/deducers/getDrawDefinition';
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
 import { getTournamentInfo } from '../publishingGovernor/getTournamentInfo';
-import { getDrawDefinition } from '../../getters/eventGetter';
 import {
   addMinutesToTimeString,
   dateStringDaysChange,
@@ -169,7 +169,7 @@ export function bulkRescheduleMatchUps({
     allTournamentMatchUps({
       matchUpFilters: { matchUpIds },
       tournamentRecord,
-    }).matchUps || [];
+    }).matchUps ?? [];
 
   const rescheduled = updatedInContext.filter(({ matchUpId }) =>
     rescheduledMatchUpIds.includes(matchUpId)

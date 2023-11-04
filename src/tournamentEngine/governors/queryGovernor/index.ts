@@ -49,10 +49,14 @@ import {
   getDrawDefinitionTimeItem,
 } from './timeItems';
 
-import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
+import {
+  MISSING_DRAW_ID,
+  MISSING_TOURNAMENT_RECORD,
+} from '../../../constants/errorConditionConstants';
 
 function getDrawDefinition({ tournamentRecord, drawDefinition }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  if (!drawDefinition) return { error: MISSING_DRAW_ID };
   return { drawDefinition: makeDeepCopy(drawDefinition) };
 }
 

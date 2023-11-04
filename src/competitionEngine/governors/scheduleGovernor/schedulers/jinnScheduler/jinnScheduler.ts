@@ -1,8 +1,8 @@
 import { addMatchUpScheduledTime } from '../../../../../drawEngine/governors/matchUpGovernor/scheduleTimeItems/scheduledTime';
 import { assignMatchUpVenue } from '../../../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpVenue';
 import { checkDependenciesScheduled } from '../../scheduleMatchUps/checkDependenciesScheduled';
+import { getDrawDefinition } from '../../../../../global/functions/deducers/getDrawDefinition';
 import { updateTimeAfterRecovery } from '../../scheduleMatchUps/updateTimeAfterRecovery';
-import { getDrawDefinition } from '../../../../../tournamentEngine/getters/eventGetter';
 import { checkDependendantTiming } from '../../scheduleMatchUps/checkDependentTiming';
 import { checkRequestConflicts } from '../../scheduleMatchUps/checkRequestConflicts';
 import { processNextMatchUps } from '../../scheduleMatchUps/processNextMatchUps';

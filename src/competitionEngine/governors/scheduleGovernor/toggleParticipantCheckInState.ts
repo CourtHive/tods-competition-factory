@@ -1,5 +1,5 @@
 import { toggleParticipantCheckInState as toggle } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/toggleParticipantCheckInState';
-import { getDrawDefinition } from '../../../tournamentEngine/getters/eventGetter';
+import { getDrawDefinition } from '../../../global/functions/deducers/getDrawDefinition';
 
 import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
 

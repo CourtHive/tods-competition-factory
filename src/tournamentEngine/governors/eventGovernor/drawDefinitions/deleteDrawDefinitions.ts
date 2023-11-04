@@ -13,8 +13,8 @@ import { getFlightProfile } from '../../../getters/getFlightProfile';
 import { definedAttributes } from '../../../../utilities/objects';
 import { addNotice } from '../../../../global/state/globalState';
 import { getTimeItem } from '../../queryGovernor/timeItems';
-import { findEvent } from '../../../getters/eventGetter';
 import { makeDeepCopy } from '../../../../utilities';
+import { findEvent } from '../../../getters/findEvent';
 import {
   deleteDrawNotice,
   deleteMatchUpsNotice,
@@ -168,7 +168,7 @@ export function deleteDrawDefinitions({
           action: DELETE_DRAW_DEFINITIONS,
           payload: {
             drawDefinitions: [drawDefinition],
-            eventId: eventId || event?.eventId,
+            eventId: eventId ?? event?.eventId,
             auditData,
           },
         };
@@ -176,7 +176,7 @@ export function deleteDrawDefinitions({
         deletedDrawsDetail.push(
           definedAttributes({
             tournamentId: tournamentRecord.tournamentId,
-            eventId: eventId || event?.eventId,
+            eventId: eventId ?? event?.eventId,
             qualifyingPositionAssignments,
             positionAssignments,
             auditData,

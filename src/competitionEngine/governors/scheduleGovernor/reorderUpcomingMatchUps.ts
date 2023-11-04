@@ -1,9 +1,10 @@
 import { addMatchUpScheduledTime } from '../../../drawEngine/governors/matchUpGovernor/scheduleTimeItems/scheduledTime';
-import { getDrawDefinition } from '../../../tournamentEngine/getters/eventGetter';
+import { getDrawDefinition } from '../../../global/functions/deducers/getDrawDefinition';
 import { decorateResult } from '../../../global/functions/decorateResult';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
+  DRAW_DEFINITION_NOT_FOUND,
   MISSING_TOURNAMENT_RECORDS,
   MISSING_VALUE,
   MODIFICATIONS_FAILED,
@@ -70,6 +71,7 @@ export function reorderUpcomingMatchUps(params) {
       tournamentRecord,
       drawId,
     });
+    if (!drawDefinition) return { error: DRAW_DEFINITION_NOT_FOUND };
 
     return addMatchUpScheduledTime({
       drawDefinition,
