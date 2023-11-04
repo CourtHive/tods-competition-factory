@@ -9,7 +9,6 @@ import {
 } from '../../utilities';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
-import { Tournament, TypeEnum } from '../../types/tournamentFromSchema';
 import ratingsParameters from '../../fixtures/ratings/ratingsParameters';
 import { INDIVIDUAL } from '../../constants/participantConstants';
 import { SUCCESS } from '../../constants/resultConstants';
@@ -17,8 +16,27 @@ import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../constants/errorConditionConstants';
+import {
+  DrawDefinition,
+  Event,
+  Tournament,
+  TypeEnum,
+} from '../../types/tournamentFromSchema';
+import { ResultType } from '../../global/functions/decorateResult';
 
-export function getEvent({ tournamentRecord, drawDefinition, event, context }) {
+type GetEventArgs = {
+  context: { [key: string]: any };
+  tournamentRecord: Tournament;
+  drawDefinition: DrawDefinition;
+  event: Event;
+};
+
+export function getEvent({
+  tournamentRecord,
+  drawDefinition,
+  context,
+  event,
+}: GetEventArgs) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
 
@@ -36,6 +54,28 @@ export function getEvent({ tournamentRecord, drawDefinition, event, context }) {
     event: eventCopy,
   });
 }
+
+export type RankingStat = {
+  median: number;
+  avg: number;
+  max: number;
+  min: number;
+};
+
+export type EventScaleValues = {
+  [key: string]: {
+    ratingsStats: { [key: string]: RankingStat };
+    ratings: { [key: string]: number[] };
+    ranking: { [key: string]: any };
+    draws: {
+      [key: string]: {
+        ratingsStats: { [key: string]: RankingStat };
+        ratings: { [key: string]: number[] };
+        ranking: { [key: string]: any };
+      };
+    };
+  };
+};
 
 type GetEventsArgs = {
   tournamentRecord: Tournament;
@@ -55,7 +95,10 @@ export function getEvents({
   eventIds,
   drawIds,
   context,
-}: GetEventsArgs) {
+}: GetEventsArgs): ResultType & {
+  eventScaleValues?: EventScaleValues;
+  events?: Event[];
+} {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
   const { tournamentId } = tournamentRecord;
@@ -208,9 +251,9 @@ export function getEvents({
         for (const scaleName of Object.keys(ratings)) {
           eventsMap[eventId].draws[drawId].ratingsStats[scaleName] = {
             avg: sum(ratings[scaleName]) / ratings[scaleName].length,
-            median: median(ratings[scaleName]),
             max: Math.max(...ratings[scaleName]),
             min: Math.min(...ratings[scaleName]),
+            median: median(ratings[scaleName]),
           };
         }
       }
