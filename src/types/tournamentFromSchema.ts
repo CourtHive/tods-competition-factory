@@ -542,6 +542,7 @@ export interface Side {
   lineUp?: TeamCompetitor[];
   notes?: string;
   participantId?: string;
+  participant?: Participant;
   sideNumber?: number;
   timeItems?: TimeItem[];
   updatedAt?: Date | string;

@@ -1,4 +1,10 @@
-import { Court, MatchUp, Participant, Venue } from './tournamentFromSchema';
+import {
+  Court,
+  MatchUp,
+  Participant,
+  Side,
+  Venue,
+} from './tournamentFromSchema';
 
 export type HydratedCourt = {
   [key: string]: any;
@@ -15,3 +21,8 @@ export type HydratedMatchUp = MatchUp & {
 export type HydratedParticipant = {
   [key: string | number]: any;
 } & Participant;
+
+export type HydratedSide = Side & {
+  individualParticipants?: HydratedParticipant[];
+  participant?: HydratedParticipant;
+};

@@ -5,7 +5,7 @@ export function engineLogging({ result, methodName, elapsed, params, engine }) {
 
   const log: any = { method: methodName };
   const logError =
-    result.error &&
+    result?.error &&
     (devContext.errors === true ||
       (Array.isArray(devContext.errors) &&
         devContext.errors.includes(methodName)));
@@ -42,6 +42,6 @@ export function engineLogging({ result, methodName, elapsed, params, engine }) {
   }
   if (Object.keys(log).length > 1) console.log(engine, log);
 
-  if (devContext.makeDeepCopy)
+  if (result && devContext.makeDeepCopy)
     result.deepCopyIterations = getDeepCopyIterations();
 }
