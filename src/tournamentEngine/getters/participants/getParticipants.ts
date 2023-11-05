@@ -1,8 +1,8 @@
 import { getMatchUpDependencies } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/getMatchUpDependencies';
+import { attributeFilter, definedAttributes } from '../../../utilities';
 import { getParticipantEntries } from './getParticipantEntries';
 import { filterParticipants } from './filterParticipants';
 import { getParticipantMap } from './getParticipantMap';
-import { attributeFilter, definedAttributes } from '../../../utilities';
 
 import { POLICY_TYPE_PARTICIPANT } from '../../../constants/policyConstants';
 import { MatchUp, Tournament } from '../../../types/tournamentFromSchema';
@@ -90,7 +90,6 @@ export function getParticipants(params: GetParticipantsArgs): {
   }
 
   let { participantMap } = getParticipantMap({
-    withIndividualParticipants,
     convertExtensions,
     tournamentRecord,
     withSignInStatus,
@@ -134,54 +133,58 @@ export function getParticipants(params: GetParticipantsArgs): {
   participantMap = entriesResult.participantMap;
 
   const nextMatchUps = scheduleAnalysis ?? withPotentialMatchUps;
-  const processedParticipants = Object.values(participantMap).map(
-    ({
-      potentialMatchUps,
-      scheduleConflicts,
-      scheduleItems,
-      participant,
-      statistics,
-      opponents,
-      matchUps,
-      events,
-      draws,
-    }) => {
-      const participantDraws: any[] = Object.values(draws);
-      const participantOpponents = Object.values(opponents);
-      if (withOpponents) {
-        participantDraws?.forEach((draw) => {
-          draw.opponents = participantOpponents.filter(
-            (opponent: any) => opponent.drawId === draw.drawId
-          );
-        });
-      }
 
-      return definedAttributes(
-        {
-          ...participant,
-          scheduleConflicts: scheduleAnalysis ? scheduleConflicts : undefined,
-          draws: withDraws || withRankingProfile ? participantDraws : undefined,
-          events:
-            withEvents || withRankingProfile
-              ? Object.values(events)
-              : undefined,
-          matchUps:
-            withMatchUps || withRankingProfile
-              ? Object.values(matchUps)
-              : undefined,
-          opponents: withOpponents ? participantOpponents : undefined,
-          potentialMatchUps: nextMatchUps
-            ? Object.values(potentialMatchUps)
-            : undefined,
-          statistics: withStatistics ? Object.values(statistics) : undefined,
-          scheduleItems: withScheduleItems ? scheduleItems : undefined,
-        },
-        false,
-        false,
-        true
-      );
+  const processParticipant = ({
+    potentialMatchUps,
+    scheduleConflicts,
+    scheduleItems,
+    participant,
+    statistics,
+    opponents,
+    matchUps,
+    events,
+    draws,
+  }): HydratedParticipant => {
+    const participantDraws: any[] = Object.values(draws);
+    const participantOpponents = Object.values(opponents);
+    if (withOpponents) {
+      participantDraws?.forEach((draw) => {
+        draw.opponents = participantOpponents.filter(
+          (opponent: any) => opponent.drawId === draw.drawId
+        );
+      });
     }
-  );
+
+    return definedAttributes(
+      {
+        ...participant,
+        scheduleConflicts: scheduleAnalysis ? scheduleConflicts : undefined,
+        draws: withDraws || withRankingProfile ? participantDraws : undefined,
+        events:
+          withEvents || withRankingProfile ? Object.values(events) : undefined,
+        matchUps:
+          withMatchUps || withRankingProfile
+            ? Object.values(matchUps)
+            : undefined,
+        opponents: withOpponents ? participantOpponents : undefined,
+        potentialMatchUps: nextMatchUps
+          ? Object.values(potentialMatchUps)
+          : undefined,
+        statistics: withStatistics ? Object.values(statistics) : undefined,
+        scheduleItems: withScheduleItems ? scheduleItems : undefined,
+      },
+      false,
+      false,
+      true
+    );
+  };
+
+  const ppMap = new Map<string, HydratedParticipant>();
+  for (const participantId of Object.keys(participantMap)) {
+    ppMap.set(participantId, processParticipant(participantMap[participantId]));
+  }
+
+  const processedParticipants: HydratedParticipant[] = [...ppMap.values()];
 
   const participantAttributes = policyDefinitions?.[POLICY_TYPE_PARTICIPANT];
   const template = participantAttributes?.participant;
@@ -192,6 +195,19 @@ export function getParticipants(params: GetParticipantsArgs): {
     participantFilters,
     tournamentRecord,
   });
+
+  if (withIndividualParticipants) {
+    for (const participant of filteredParticipants) {
+      for (const individualParticipantId of participant.individualParticipantIds ??
+        []) {
+        if (!participant.individualParticipants)
+          participant.individualParticipants = [];
+        participant.individualParticipants.push(
+          ppMap.get(individualParticipantId)
+        );
+      }
+    }
+  }
 
   const participants: HydratedParticipant[] = template
     ? filteredParticipants.map((source) =>
