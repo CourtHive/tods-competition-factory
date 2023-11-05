@@ -59,7 +59,7 @@ export function aggregateTieFormats({
     }
 
     const setTieFormatId = (matchUpId, tieFormatId) => {
-      const matchUp = eventMatchUpResult.eventMatchUps?.find(
+      const matchUp = eventMatchUpResult.matchUps?.find(
         (matchUp) => matchUp.matchUpId === matchUpId
       );
       if (matchUp) {

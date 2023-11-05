@@ -1,11 +1,11 @@
 import { addNationalityCode } from '../../governors/participantGovernor/addNationalityCode';
+import { addIndividualParticipants } from './addIndividualParticipants';
 import { getTimeItem } from '../../governors/queryGovernor/timeItems';
 import { makeDeepCopy } from '../../../utilities';
 import { getScaleValues } from './getScaleValues';
 
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { Tournament } from '../../../types/tournamentFromSchema';
-import { HydratedParticipant } from '../../../types/hydrated';
 import { ParticipantMap } from '../../../types/factoryTypes';
 import {
   GROUP,
@@ -113,21 +113,6 @@ function signedIn(participant) {
   });
 
   return timeItem?.itemValue === SIGNED_IN;
-}
-
-function addIndividualParticipants({ participantMap }) {
-  const participantObjects: any[] = Object.values(participantMap);
-  for (const participantObject of participantObjects) {
-    const participant = participantObject.participant as HydratedParticipant;
-    if (participant.individualParticipantIds?.length) {
-      participant.individualParticipants = [];
-      for (const participantId of participant.individualParticipantIds) {
-        participant.individualParticipants.push(
-          participantMap[participantId].participant
-        );
-      }
-    }
-  }
 }
 
 function processIndividualParticipantIds({

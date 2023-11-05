@@ -10,7 +10,6 @@ import {
 } from '../../../drawEngine/getters/getMatchUps/drawMatchUps';
 
 import { ResultType } from '../../../global/functions/decorateResult';
-import { MatchUp } from '../../../types/tournamentFromSchema';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import {
   GetMatchUpsArgs,
@@ -98,7 +97,7 @@ export function allTournamentMatchUps(params?: GetMatchUpsArgs): ResultType & {
         }).matchUps ?? []
       );
     })
-    // TODO: these matchUps must be hydrated with participants
+    // TODO: tournamentRecord.matchUps must be hydrated with participants
     // NOTE: matchUps on the tournamentRecord have no drawPositions; all data apart from participant context must be present
     .concat(...(tournamentRecord.matchUps ?? []));
 
@@ -211,8 +210,6 @@ export function allEventMatchUps(params: GetMatchUpsArgs) {
   const { eventId, eventName, endDate, category, gender, matchUpFormat } =
     event;
 
-  const eventMatchUps: MatchUp[] = [];
-
   const additionalContext = {
     ...context,
     ...definedAttributes({
@@ -260,7 +257,7 @@ export function allEventMatchUps(params: GetMatchUpsArgs) {
 
   const matchUps: HydratedMatchUp[] = drawDefinitions.flatMap(
     (drawDefinition) => {
-      const { matchUps, matchUpsMap } = getAllDrawMatchUps({
+      const { matchUps } = getAllDrawMatchUps({
         tournamentParticipants: participants,
         tournamentAppliedPolicies,
         scheduleVisibilityFilters,
@@ -281,14 +278,11 @@ export function allEventMatchUps(params: GetMatchUpsArgs) {
         event,
       });
 
-      if (matchUpsMap?.drawMatchUps)
-        eventMatchUps.push(...matchUpsMap.drawMatchUps);
-
       return matchUps ?? [];
     }
   );
 
-  return { matchUps, eventMatchUps };
+  return { matchUps };
 }
 
 export function tournamentMatchUps(

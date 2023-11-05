@@ -36,6 +36,7 @@ type getPredictiveAccuracyArgs = {
   tournamentRecord: Tournament;
   drawDefinition: DrawDefinition;
   matchUps?: HydratedMatchUp[];
+  singlesForDoubles?: boolean;
   valueAccessor?: string;
   excludeMargin?: number;
   zoneDoubling?: boolean;
@@ -52,6 +53,7 @@ type getPredictiveAccuracyArgs = {
 export function getPredictiveAccuracy(params: getPredictiveAccuracyArgs) {
   let { matchUps } = params;
   const {
+    singlesForDoubles,
     tournamentRecord,
     drawDefinition,
     excludeMargin,
@@ -162,6 +164,7 @@ export function getPredictiveAccuracy(params: getPredictiveAccuracyArgs) {
     ? relevantMatchUps
         .map(({ competitiveProfile, matchUpType, score, sides }) => {
           const sideValues = getSideValues({
+            singlesForDoubles,
             valueAccessor,
             matchUpType,
             scaleName,
@@ -219,6 +222,7 @@ function getGroupingBands({ zoneData }) {
 }
 
 type GetSideValuesArgs = {
+  singlesForDoubles?: boolean;
   valueAccessor: string;
   matchUpType?: TypeEnum;
   exclusionRule?: any;
@@ -226,6 +230,7 @@ type GetSideValuesArgs = {
   sides: any;
 };
 function getSideValues({
+  singlesForDoubles,
   exclusionRule,
   valueAccessor,
   matchUpType,
@@ -254,6 +259,7 @@ function getSideValues({
 
         for (const participant of individualParticipants) {
           const { scaleValue, value: pValue } = getSideValue({
+            singlesForDoubles,
             valueAccessor,
             participant,
             matchUpType,
@@ -279,6 +285,7 @@ function getSideValues({
         };
       } else if (participant) {
         const { scaleValue, value } = getSideValue({
+          singlesForDoubles,
           valueAccessor,
           matchUpType,
           participant,
@@ -299,11 +306,18 @@ function getSideValues({
     });
 }
 
-function getSideValue({ participant, valueAccessor, matchUpType, scaleName }) {
-  const ranking = participant?.rankings?.[matchUpType]?.find(
+function getSideValue({
+  singlesForDoubles,
+  valueAccessor,
+  matchUpType,
+  participant,
+  scaleName,
+}) {
+  const type = singlesForDoubles ? SINGLES : matchUpType;
+  const ranking = participant?.rankings?.[type]?.find(
     (ranking) => ranking.scaleName === scaleName
   );
-  const rating = participant?.ratings?.[matchUpType]?.find(
+  const rating = participant?.ratings?.[type]?.find(
     (rating) => rating.scaleName === scaleName
   );
   const scaleValue = (rating || ranking)?.scaleValue;
