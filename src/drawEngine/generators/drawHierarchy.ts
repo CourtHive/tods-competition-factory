@@ -111,7 +111,7 @@ export function buildDrawHierarchy({
   const secondRoundEntries = secondRoundDrawPositions
     .filter((drawPosition) => !firstRoundDrawPositions.includes(drawPosition))
     .sort(drawPositionSort);
-  const secondRoundEntriySides = secondRoundMatchUps
+  const secondRoundEntrySides = secondRoundMatchUps
     .filter(
       (matchUp) =>
         matchUp.drawPositions?.reduce(
@@ -137,7 +137,7 @@ export function buildDrawHierarchy({
       return [drawPosition, missingDrawPositions[index]].sort(drawPositionSort);
     });
 
-    const entrySides = Object.assign({}, ...secondRoundEntriySides);
+    const entrySides = Object.assign({}, ...secondRoundEntrySides);
     const finishingRound = makeDeepCopy(
       firstRoundMatchUps?.[0].finishingRound,
       false,
