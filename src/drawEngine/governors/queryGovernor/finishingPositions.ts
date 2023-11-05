@@ -2,8 +2,8 @@ import { getParticipantIdMatchUps } from './participantIdMatchUps';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { BYE, COMPLETED } from '../../../constants/matchUpStatusConstants';
-import { HydratedParticipant } from '../../../types/hydrated';
 import { DrawDefinition } from '../../../types/tournamentFromSchema';
+import { HydratedParticipant } from '../../../types/hydrated';
 
 type GetParticipantIdFinishingPositionsArgs = {
   tournamentParticipants: HydratedParticipant[];

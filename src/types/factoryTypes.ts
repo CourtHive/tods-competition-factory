@@ -12,11 +12,9 @@ import {
   Extension,
   GenderEnum,
   MatchUpFinishingPositionRange,
-  Participant,
   ParticipantRoleEnum,
   ParticipantTypeEnum,
   SexEnum,
-  Side,
   StageTypeEnum,
   TimeItem,
   Tournament,
@@ -298,11 +296,6 @@ export type GetMatchUpsArgs = {
   tournamentId?: string;
   inContext?: boolean;
   event?: Event;
-};
-
-export type HydratedSide = Side & {
-  individualParticipants?: Participant[];
-  participant?: Participant;
 };
 
 export type GroupsMatchUpsResult = {

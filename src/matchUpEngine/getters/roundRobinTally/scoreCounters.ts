@@ -2,6 +2,7 @@ import { parse } from '../../governors/matchUpFormatGovernor/parse';
 import { ensureInt } from '../../../utilities/ensureInt';
 
 import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
+import { Score } from '../../../types/tournamentFromSchema';
 import {
   DEFAULTED,
   RETIRED,
@@ -11,10 +12,12 @@ import {
 type CountSetsArgs = {
   matchUpFormat?: string;
   matchUpStatus?: string;
-  winningSide: number;
+  winningSide?: number;
   tallyPolicy?: any;
-  score?: any;
+  score?: Score;
 };
+
+export type Tally = [number, number];
 
 export function countSets({
   winningSide: matchUpWinningSide,
@@ -23,15 +26,17 @@ export function countSets({
   tallyPolicy,
   score,
 }: CountSetsArgs) {
-  const setsTally = [0, 0];
-  const { sets } = score || {};
-  const matchUpWinnerIndex = matchUpWinningSide - 1;
+  const setsTally: Tally = [0, 0];
+  const sets = score?.sets;
+  const matchUpWinnerIndex =
+    typeof matchUpWinningSide === 'number' && matchUpWinningSide - 1;
   const parsedMatchUpFormat = parse(matchUpFormat);
   const setsToWin = getSetsToWin(parsedMatchUpFormat?.bestOf ?? 1);
 
   if (
-    (matchUpStatus === DEFAULTED && tallyPolicy?.setsCreditForDefaults) ||
-    (matchUpStatus === WALKOVER && tallyPolicy?.setsCreditForWalkovers)
+    typeof matchUpWinnerIndex === 'number' &&
+    ((matchUpStatus === DEFAULTED && tallyPolicy?.setsCreditForDefaults) ||
+      (matchUpStatus === WALKOVER && tallyPolicy?.setsCreditForWalkovers))
   ) {
     // in the case of WALKOVER or DEFAULT, matchUp winner gets full sets to win value
     setsTally[matchUpWinnerIndex] = setsToWin;
@@ -41,7 +46,7 @@ export function countSets({
       if (setWinningSide) setsTally[setWinningSide - 1] += 1;
     }
   }
-  if (matchUpStatus === RETIRED) {
+  if (typeof matchUpWinnerIndex === 'number' && matchUpStatus === RETIRED) {
     // if the loser has setsToWin then last set was incomplete and needs to be subtracted from loser
     if (+setsTally[1 - matchUpWinnerIndex] === setsToWin)
       setsTally[1 - matchUpWinnerIndex] -= 1;
@@ -54,9 +59,9 @@ export function countSets({
 interface CountGames {
   matchUpFormat?: string;
   matchUpStatus?: string;
-  winningSide: number;
+  winningSide?: number;
   tallyPolicy?: any;
-  score: any;
+  score: Score;
 }
 
 export function countGames({
@@ -70,7 +75,8 @@ export function countGames({
   const { sets } = score || {};
   if (!sets) return [0, 0];
 
-  const matchUpWinnerIndex = matchUpWinningSide - 1;
+  const matchUpWinnerIndex =
+    typeof matchUpWinningSide === 'number' && matchUpWinningSide - 1;
   const parsedMatchUpFormat = parse(matchUpFormat);
   const bestOf = parsedMatchUpFormat?.bestOf ?? 1;
   const setsToWin = getSetsToWin(bestOf);
@@ -79,8 +85,9 @@ export function countGames({
   const gamesTally: number[][] = [[], []];
 
   if (
-    (matchUpStatus === DEFAULTED && tallyPolicy?.gamesCreditForDefaults) ||
-    (matchUpStatus === WALKOVER && tallyPolicy?.gamesCreditForWalkovers)
+    typeof matchUpWinnerIndex === 'number' &&
+    ((matchUpStatus === DEFAULTED && tallyPolicy?.gamesCreditForDefaults) ||
+      (matchUpStatus === WALKOVER && tallyPolicy?.gamesCreditForWalkovers))
   ) {
     const gamesForSet = parsedMatchUpFormat?.setFormat?.setTo || 0;
     const minimumGameWins = setsToWin * gamesForSet;
@@ -102,19 +109,6 @@ export function countGames({
         gamesTally[1].push(ensureInt(side2Score || 0));
       }
 
-      // count a tiebreak as a game won
-      /*
-       *if (
-       *  !based &&
-       *  !isTiebreakSet &&
-       *  set.winningSide &&
-       *  (side1TiebreakScore || side2TiebreakScore) &&
-       *  tallyPolicy?.gamesCreditForTiebreaks !== false
-       *) {
-       *  gamesTally[set.winningSide - 1].push(1);
-       *}
-       */
-
       // count a tiebreak set also as a game won
       if (
         isTiebreakSet &&
@@ -126,7 +120,7 @@ export function countGames({
     });
   }
 
-  if (matchUpStatus === RETIRED) {
+  if (matchUpStatus === RETIRED && typeof matchUpWinnerIndex === 'number') {
     // setFormat must consider whether retirment occurred in a finalSet which has a different format
     const whichFormat =
       sets.length > setsToWin && parsedMatchUpFormat?.finalSetFormat
@@ -183,11 +177,18 @@ export function countGames({
   ];
 }
 
-export function countPoints({ matchUpFormat, score }) {
-  const parsedMatchUpFormat = parse(matchUpFormat);
+export function countPoints({
+  matchUpFormat,
+  score,
+}: {
+  matchUpFormat?: string;
+  score: Score;
+}): { pointsTally: Tally; tiebreaksTally: Tally } {
+  const parsedMatchUpFormat = matchUpFormat ? parse(matchUpFormat) : undefined;
   const bestOf = parsedMatchUpFormat?.bestOf ?? 1;
   const setsToWin = getSetsToWin(bestOf);
-  const pointsTally = [0, 0];
+  const tiebreaksTally: Tally = [0, 0];
+  const pointsTally: Tally = [0, 0];
 
   score?.sets?.forEach((set, i) => {
     const setNumber = set.setNumber || i + 1;
@@ -196,6 +197,7 @@ export function countPoints({ matchUpFormat, score }) {
         ? 'finalSetFormat'
         : 'setFormat';
     const based = parsedMatchUpFormat?.[whichFormat]?.based;
+
     if (isPointsBased(based)) {
       const { side1Score, side2Score } = set;
       if (side1Score) pointsTally[0] += ensureInt(side1Score || 0);
@@ -205,9 +207,13 @@ export function countPoints({ matchUpFormat, score }) {
         pointsTally[0] += ensureInt(set.side1TiebreakScore || 0);
       if (set.side2TiebreakScore)
         pointsTally[1] += ensureInt(set.side2TiebreakScore || 0);
+
+      if ((set.side1TiebreakScore || set.side2TiebreakScore) && set.winningSide)
+        tiebreaksTally[set.winningSide - 1] += 1;
     }
   });
-  return pointsTally;
+
+  return { pointsTally, tiebreaksTally };
 }
 
 function getSetsToWin(bestOfGames) {

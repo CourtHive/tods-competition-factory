@@ -28,7 +28,7 @@ it('can count games in normal sets', () => {
     },
     winningSide: 1,
   };
-  expect(countPoints(matchUp)).toEqual([17, 11]);
+  expect(countPoints(matchUp).pointsTally).toEqual([17, 11]);
 
   matchUp = {
     matchUpStatus: COMPLETED,
@@ -53,7 +53,7 @@ it('can count games in normal sets', () => {
     },
     winningSide: 2,
   };
-  expect(countPoints(matchUp)).toEqual([11, 17]);
+  expect(countPoints(matchUp).pointsTally).toEqual([11, 17]);
 });
 
 it('can count games in tiebreak sets', () => {
@@ -87,5 +87,5 @@ it('can count games in tiebreak sets', () => {
     },
     winningSide: 1,
   };
-  expect(countPoints(matchUp)).toEqual([17, 5]);
+  expect(countPoints(matchUp).pointsTally).toEqual([17, 5]);
 });

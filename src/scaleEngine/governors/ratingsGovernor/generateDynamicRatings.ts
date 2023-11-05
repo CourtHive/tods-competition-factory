@@ -11,13 +11,13 @@ import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConsta
 import { DYNAMIC, RATING } from '../../../constants/scaleConstants';
 import { TypeEnum } from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { HydratedSide } from '../../../types/factoryTypes';
 import { ELO } from '../../../constants/ratingConstants';
 import {
   INVALID_VALUES,
   MISSING_MATCHUPS,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
+import { HydratedSide } from '../../../types/hydrated';
 
 export function generateDynamicRatings({
   removePriorValues = true,

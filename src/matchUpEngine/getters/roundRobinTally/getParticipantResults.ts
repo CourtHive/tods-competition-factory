@@ -4,6 +4,7 @@ import { ensureInt } from '../../../utilities/ensureInt';
 import { intersection } from '../../../utilities';
 
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
+import { HydratedMatchUp } from '../../../types/hydrated';
 import {
   completedMatchUpStatuses,
   DEFAULTED,
@@ -17,11 +18,11 @@ and the games/sets of all tieMatchUps should be aggregated
 */
 
 type GetParticipantResultsArgs = {
+  matchUps: HydratedMatchUp[];
   participantIds?: string[];
   matchUpFormat?: string;
   perPlayer?: number;
   tallyPolicy?: any;
-  matchUps: any[];
 };
 
 export function getParticipantResults({
@@ -75,7 +76,7 @@ export function getParticipantResults({
     const losingParticipantId = winningSide && getLosingSideId(matchUp);
 
     if (!winningParticipantId && !losingParticipantId) {
-      if (completedMatchUpStatuses.includes(matchUpStatus)) {
+      if (matchUpStatus && completedMatchUpStatuses.includes(matchUpStatus)) {
         const participantIdSide1 = getSideId(matchUp, 0);
         const participantIdSide2 = getSideId(matchUp, 1);
         if (participantIdSide1) {
@@ -91,10 +92,10 @@ export function getParticipantResults({
 
         for (const tieMatchUp of tieMatchUps) {
           if (tieMatchUp.winningSide) {
-            const tieWinningParticipantId = sides.find(
+            const tieWinningParticipantId = sides?.find(
               ({ sideNumber }) => sideNumber === tieMatchUp.winningSide
             )?.participantId;
-            const tieLosingParticipantId = sides.find(
+            const tieLosingParticipantId = sides?.find(
               ({ sideNumber }) => sideNumber === tieMatchUp.winningSide
             )?.participantId;
             if (tieWinningParticipantId && tieLosingParticipantId) {
@@ -220,29 +221,34 @@ export function getParticipantResults({
     }
 
     if (manualGamesOverride) {
-      const side1participantId = sides.find(
+      const side1participantId = sides?.find(
         ({ sideNumber }) => sideNumber === 1
       )?.participantId;
-      const side2participantId = sides.find(
+      const side2participantId = sides?.find(
         ({ sideNumber }) => sideNumber === 2
       )?.participantId;
 
       checkInitializeParticipant(participantResults, side1participantId);
       checkInitializeParticipant(participantResults, side2participantId);
 
-      const gamesWonSide1 = score.sets.reduce(
-        (total, set) => total + set.side1Score,
+      const gamesWonSide1 = score?.sets?.reduce(
+        (total, set) => total + (set?.side1Score ?? 0),
         0
       );
-      const gamesWonSide2 = score.sets.reduce(
-        (total, set) => total + set.side2Score,
+      const gamesWonSide2 = score?.sets?.reduce(
+        (total, set) => total + (set.side2Score ?? 0),
         0
       );
 
-      participantResults[side1participantId].gamesWon += gamesWonSide1;
-      participantResults[side2participantId].gamesWon += gamesWonSide2;
-      participantResults[side1participantId].gamesLost += gamesWonSide2;
-      participantResults[side2participantId].gamesLost += gamesWonSide1;
+      if (side1participantId) {
+        participantResults[side1participantId].gamesWon += gamesWonSide1;
+        participantResults[side1participantId].gamesLost += gamesWonSide2;
+      }
+
+      if (side2participantId) {
+        participantResults[side2participantId].gamesWon += gamesWonSide2;
+        participantResults[side2participantId].gamesLost += gamesWonSide1;
+      }
     }
   }
 
@@ -381,7 +387,7 @@ function processMatchUp({
     winningSide,
     score,
   });
-  const pointsTally = countPoints({ score, matchUpFormat });
+  const { pointsTally } = countPoints({ score, matchUpFormat });
 
   if (winningParticipantId) {
     participantResults[winningParticipantId].setsWon +=

@@ -13,7 +13,7 @@ import {
   MISSING_MATCHUP_ID,
   MISSING_PARTICIPANT_ID,
 } from '../../../constants/errorConditionConstants';
-import { Side } from '../../../types/tournamentFromSchema';
+import { HydratedSide } from '../../../types/hydrated';
 
 export function substituteParticipant({
   substituteParticipantId,
@@ -63,7 +63,7 @@ export function substituteParticipant({
     side.participant.individualParticipants.some(
       ({ participantId }) => participantId === existingParticipantId
     )
-  ) as Side & { [key: string]: any };
+  ) as HydratedSide & { [key: string]: any };
 
   if (!relevantSide || (sideNumber && relevantSide.sideNumber !== sideNumber))
     return { error: INVALID_PARTICIPANT_ID };

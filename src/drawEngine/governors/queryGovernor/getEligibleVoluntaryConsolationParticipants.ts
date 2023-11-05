@@ -8,8 +8,8 @@ import {
 import { POLICY_TYPE_VOLUNTARY_CONSOLATION } from '../../../constants/policyConstants';
 import { VOLUNTARY_CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import { UNGROUPED, WITHDRAWN } from '../../../constants/entryStatusConstants';
-import { HydratedSide, PolicyDefinitions } from '../../../types/factoryTypes';
 import { DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
+import { PolicyDefinitions } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   ErrorType,
@@ -23,6 +23,7 @@ import {
   StageTypeEnum,
   Tournament,
 } from '../../../types/tournamentFromSchema';
+import { HydratedSide } from '../../../types/hydrated';
 
 type GetEligibleVoluntaryConsolationParticipantsArgs = {
   excludedMatchUpStatuses?: MatchUpStatusEnum[];
