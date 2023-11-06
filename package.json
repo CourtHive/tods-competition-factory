@@ -22,7 +22,7 @@
     "seeding",
     "tennis"
   ],
-  "version": "1.8.14",
+  "version": "1.8.17",
   "license": "MIT",
   "private": false,
   "homepage": "https://courthive.github.io/tods-competition-factory/",
@@ -114,6 +114,8 @@
   "devDependencies": {
     "@babel/core": "7.23.2",
     "@babel/preset-env": "7.23.2",
+    "@babel/plugin-transform-nullish-coalescing-operator": "^7.22.11",
+    "@babel/plugin-transform-optional-chaining": "^7.23.0",
     "@babel/preset-typescript": "7.23.2",
     "@commitlint/cli": "^18.0.0",
     "@commitlint/config-conventional": "^18.0.0",
@@ -169,9 +171,5 @@
   "browserslist": [
     "defaults and supports es6-module",
     "maintained node versions"
-  ],
-  "dependencies": {
-    "@babel/plugin-transform-nullish-coalescing-operator": "^7.22.11",
-    "@babel/plugin-transform-optional-chaining": "^7.23.0"
-  }
+  ]
 }
