@@ -32,17 +32,6 @@ import {
   TEAM_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
-/**
- * @param {object} tournamentRecord
- * @param {string} participantId
- * @param {object} drawDefinition
- * @param {string} tieMatchUpId
- * @param {number=} sideNumber
- * @param {string} matchUpId
- * @param {string=} drawId
- * @param {object} event
- */
-
 export function assignTieMatchUpParticipantId(params: any) {
   const matchUpContext = getTieMatchUpContext(params);
   if (matchUpContext.error) return matchUpContext;
