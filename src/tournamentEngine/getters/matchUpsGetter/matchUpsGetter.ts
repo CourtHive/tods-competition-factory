@@ -46,8 +46,8 @@ export function allTournamentMatchUps(params?: GetMatchUpsArgs): ResultType & {
   if (!participants) {
     ({ participants, participantMap } = hydrateParticipants({
       participantsProfile,
-      policyDefinitions,
       useParticipantMap,
+      policyDefinitions,
       tournamentRecord,
       contextProfile,
       inContext,
