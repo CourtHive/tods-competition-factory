@@ -15,11 +15,11 @@ import {
 } from '../../../matchUpEngine/getters/roundRobinTally/scoreCounters';
 
 import { TEAM_PARTICIPANT } from '../../../constants/participantConstants';
-import { Side, Tournament } from '../../../types/tournamentFromSchema';
+import { HydratedMatchUp, HydratedSide } from '../../../types/hydrated';
+import { Tournament } from '../../../types/tournamentFromSchema';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { HydratedMatchUp } from '../../../types/hydrated';
 import {
   INVALID_MATCHUP,
   INVALID_PARTICIPANT_IDS,
@@ -64,6 +64,7 @@ type GetTeamStatistics = {
   withIndividualStats?: boolean;
   tournamentRecord: Tournament;
   matchUps?: HydratedMatchUp[];
+  withScaleValues?: boolean;
   teamParticipantId: string;
   tallyPolicy?: any;
 };
@@ -83,13 +84,17 @@ export function getParticipantStats({
   withIndividualStats,
   teamParticipantId,
   tournamentRecord,
+  withScaleValues,
   tallyPolicy,
   matchUps,
 }: GetTeamStatistics): ResultType | TeamStatsResults {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (matchUps && !Array.isArray(matchUps)) return { error: INVALID_MATCHUP };
 
-  matchUps = matchUps || allTournamentMatchUps({ tournamentRecord }).matchUps;
+  const participantsProfile = withScaleValues ? { withScaleValues } : undefined;
+  matchUps =
+    matchUps ||
+    allTournamentMatchUps({ tournamentRecord, participantsProfile }).matchUps;
   if (!matchUps?.length) return { error: MISSING_MATCHUPS };
 
   const teamParticipantIds: string[] = [];
@@ -115,8 +120,11 @@ export function getParticipantStats({
   if (!teamParticipantIds.length)
     teamParticipantIds.push(...teamParticipants.map(xa('participantId')));
 
+  const participantDetails = new Map<
+    string,
+    { participantName: string; ratings: any }
+  >();
   const participantStats = new Map<string, StatCounters>();
-  const participantNameMap = new Map<string, string>();
   const participating = new Map<string, boolean>();
   const teamMap = new Map<string, string[]>();
 
@@ -158,15 +166,17 @@ export function getParticipantStats({
 
   const relevantMatchUps: HydratedMatchUp[] = [];
 
-  const getSideParticipantIds = (sides: Side[]) => {
+  const getSideParticipantIds = (sides: HydratedSide[]) => {
     const sideParticipantIds: [string[], string[]] = [[], []];
 
     for (const side of sides) {
-      if (side.participant?.participantName)
-        participantNameMap.set(
-          side.participant.participantId,
-          side.participant.participantName
-        );
+      const participant = side.participant;
+      if (participant?.participantName) {
+        participantDetails.set(participant.participantId, {
+          participantName: participant.participantName,
+          ratings: participant.ratings,
+        });
+      }
     }
 
     const getCompetitorIds = ({ side, individualParticipantIds }) => {
@@ -298,7 +308,8 @@ export function getParticipantStats({
 
     sideParticipantIds.forEach((ids, index) => {
       for (const id of ids) {
-        const stats = initStats(id, participantNameMap.get(id));
+        const participantName = participantDetails.get(id)?.participantName;
+        const stats = initStats(id, participantName);
         if (stats) {
           const teamSumTally = (stat: string, tally: number[]) =>
             tally.forEach((t, i) => (stats[stat][i] += t));

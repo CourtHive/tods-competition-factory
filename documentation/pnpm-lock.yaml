@@ -34,16 +34,16 @@ dependencies:
     version: 2.0.0
   courthive-components:
     specifier: ^0.7.0
-    version: 0.7.5(@babel/core@7.22.20)
+    version: 0.7.5
   material-ui:
     specifier: 0.20.2
     version: 0.20.2(react-dom@18.2.0)(react@18.2.0)
   mdx-mermaid:
     specifier: 2.0.0
-    version: 2.0.0(mermaid@10.6.0)(react@18.2.0)(unist-util-visit@4.1.2)
+    version: 2.0.0(mermaid@10.6.1)(react@18.2.0)(unist-util-visit@4.1.2)
   mermaid:
-    specifier: 10.6.0
-    version: 10.6.0
+    specifier: 10.6.1
+    version: 10.6.1
   react:
     specifier: ^18.2.0
     version: 18.2.0
@@ -54,8 +54,8 @@ dependencies:
     specifier: 0.18.0
     version: 0.18.0(@types/react@18.2.36)(react@18.2.0)
   tods-competition-factory:
-    specifier: 1.8.16
-    version: 1.8.16(@babel/core@7.22.20)
+    specifier: 1.8.17
+    version: 1.8.17
 
 packages:
 
@@ -4477,7 +4477,7 @@ packages:
       typescript: 5.2.2
     dev: false
 
-  /courthive-components@0.7.5(@babel/core@7.22.20):
+  /courthive-components@0.7.5:
     resolution: {integrity: sha512-XPeFcyGRSVRVpQQ8KbtM9NJbNPN55T6di6MqFaMRNSac/it0RQ4FGU/bNCACg/NZ5kqRjzBlp9ncroc3CEVcQg==}
     engines: {node: '>=16.16.0 < 19'}
     dependencies:
@@ -4487,9 +4487,7 @@ packages:
       classnames: 2.3.2
       dayjs: 1.11.10
       husky: 8.0.3
-      tods-competition-factory: 1.8.16(@babel/core@7.22.20)
-    transitivePeerDependencies:
-      - '@babel/core'
+      tods-competition-factory: 1.8.17
     dev: false
 
   /cross-fetch@3.1.5:
@@ -7377,14 +7375,14 @@ packages:
     resolution: {integrity: sha512-/sKlQJCBYVY9Ers9hqzKou4H6V5UWc/M59TH2dvkt+84itfnq7uFOMLpOiOS4ujvHP4etln18fmIxA5R5fll0g==}
     dev: false
 
-  /mdx-mermaid@2.0.0(mermaid@10.6.0)(react@18.2.0)(unist-util-visit@4.1.2):
+  /mdx-mermaid@2.0.0(mermaid@10.6.1)(react@18.2.0)(unist-util-visit@4.1.2):
     resolution: {integrity: sha512-vmkh4yg/EgkhAWxdFsyol5Tgk9aTnM16njgGIYk3R3SdbejPt8YV+HRYycAOstR1TJefMNAmjAyqkRjukLP7qg==}
     peerDependencies:
       mermaid: '>=8.11.0'
       react: ^16.8.4 || ^17.0.0 || ^18.0.0
       unist-util-visit: ^4.1.0
     dependencies:
-      mermaid: 10.6.0
+      mermaid: 10.6.1
       react: 18.2.0
       unist-util-visit: 4.1.2
     optionalDependencies:
@@ -7428,8 +7426,8 @@ packages:
     engines: {node: '>= 8'}
     dev: false
 
-  /mermaid@10.6.0:
-    resolution: {integrity: sha512-Hcti+Q2NiWnb2ZCijSX89Bn2i7TCUwosBdIn/d+u63Sz7y40XU6EKMctT4UX4qZuZGfKGZpfOeim2/KTrdR7aQ==}
+  /mermaid@10.6.1:
+    resolution: {integrity: sha512-Hky0/RpOw/1il9X8AvzOEChfJtVvmXm+y7JML5C//ePYMy0/9jCEmW1E1g86x9oDfW9+iVEdTV/i+M6KWRNs4A==}
     dependencies:
       '@braintree/sanitize-url': 6.0.4
       '@types/d3-scale': 4.0.4
@@ -10157,14 +10155,9 @@ packages:
       is-number: 7.0.0
     dev: false
 
-  /tods-competition-factory@1.8.16(@babel/core@7.22.20):
-    resolution: {integrity: sha512-d+CixGRrWQ2OXQCDgDell/FklZ/7ztOLTYNb18GqSBQU+kgbzCYQqhSfZ8COCDqYbPc54FLFrHMsm3Dom7rxgQ==}
+  /tods-competition-factory@1.8.17:
+    resolution: {integrity: sha512-y2owBYGzg3JUzplsedL7fr4oACWkREt4gkMisWRsblrfF4mnAc7Cl2V3vfd65+coNx/zCdVzLAqvGcc0FYkU0w==}
     engines: {node: '>=18.17.1 < 21'}
-    dependencies:
-      '@babel/plugin-transform-nullish-coalescing-operator': 7.22.11(@babel/core@7.22.20)
-      '@babel/plugin-transform-optional-chaining': 7.23.0(@babel/core@7.22.20)
-    transitivePeerDependencies:
-      - '@babel/core'
     dev: false
 
   /toidentifier@1.0.1:
