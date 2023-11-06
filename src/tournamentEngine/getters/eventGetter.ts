@@ -187,10 +187,13 @@ export function getEvents({
 
       const processFlight = (drawId, participantIds) => {
         const processParticipant = (participant) => {
-          if (participant?.ratings?.[eventType]) {
+          if (
+            eventsMap[eventId].draws?.[drawId] &&
+            participant?.ratings?.[eventType]
+          ) {
             for (const rating of participant?.ratings?.[eventType] ?? []) {
               const scaleName = rating.scaleName;
-              if (!eventsMap[eventId].draws[drawId].ratings[scaleName])
+              if (!eventsMap[eventId].draws[drawId]?.ratings[scaleName])
                 eventsMap[eventId].draws[drawId].ratings[scaleName] = [];
               const accessor = ratingsParameters[scaleName]?.accessor;
               if (accessor) {
