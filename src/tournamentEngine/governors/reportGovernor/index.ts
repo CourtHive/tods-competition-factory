@@ -1,11 +1,11 @@
 import { getEntryStatusReports } from './entryStatusReport';
+import { getParticipantStats } from './getParticipantStats';
 import { getStructureReports } from './structureReport';
-import { getTeamStats } from './getTeamStats';
 
 const reportGovernor = {
   getStructureReports,
   getEntryStatusReports,
-  getTeamStats,
+  getParticipantStats,
 };
 
 export default reportGovernor;

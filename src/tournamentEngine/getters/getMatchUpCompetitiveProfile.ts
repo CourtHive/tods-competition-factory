@@ -18,8 +18,8 @@ type GetMatchUpCompetitivenessArgs = {
 };
 
 export function getMatchUpCompetitiveProfile({
-  profileBands,
   tournamentRecord,
+  profileBands,
   matchUp,
 }: GetMatchUpCompetitivenessArgs): {
   competitiveness?: any;
