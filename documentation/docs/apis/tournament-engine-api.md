@@ -2363,6 +2363,31 @@ const signInStatus = tournamentEngine.getParticipantSignInStatus({
 
 ---
 
+## getParticipantStats
+
+```js
+const result = tournamentEngine.getParticipantStats({
+  withCompetitiveProfiles, // optional boolean
+  opponentParticipantId, // optional team opponent participantId, otherwise stats vs. all opponents
+  withIndividualStats, // optional boolean
+  teamParticipantId, // optional - when not provided all teams are processed
+  tallyPolicy, // optional
+  matchUps, // optional - specifiy or allow tournamentEngine to get all
+});
+
+const {
+  participatingTeamsCount, // only if no teamPartiicpantId has been specified
+  allParticipantStats, // only if no teamParticipantId has been specified
+  relevantMatchUps, // matchUps which were relevant to the calculations
+  opponentStats, // only if opponentParticipantId has been provided
+  teamStats, // only if teamParticipantId has been provided
+  success, // when no error
+  error, // if error
+} = result;
+```
+
+---
+
 ## getPolicyDefinitions
 
 Finds policies which have been attached to the tournamentRecord, or to a target event, or target drawDefinition, in reverse order.
