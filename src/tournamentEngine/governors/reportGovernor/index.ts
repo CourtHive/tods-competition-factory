@@ -1,6 +1,6 @@
 import { getEntryStatusReports } from './entryStatusReport';
-import { getStructureReports } from './structureReport';
 import { getParticipantStats } from './getParticipantStats';
+import { getStructureReports } from './structureReport';
 
 const reportGovernor = {
   getStructureReports,
