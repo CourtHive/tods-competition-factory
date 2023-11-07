@@ -7,11 +7,11 @@ import { getParticipants } from '../../getters/participants/getParticipants';
 import { removeCollectionAssignments } from './removeCollectionAssignments';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { addParticipant } from '../participantGovernor/addParticipants';
+import { ensureSideLineUps } from './drawDefinitions/ensureSideLineUps';
 import { updateTeamLineUp } from './drawDefinitions/updateTeamLineUp';
-import { findExtension } from '../queryGovernor/extensionQueries';
 import { getTeamLineUp } from './drawDefinitions/getTeamLineUp';
 import { getTieMatchUpContext } from './getTieMatchUpContext';
-import { makeDeepCopy, overlap } from '../../../utilities';
+import { overlap } from '../../../utilities';
 
 import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
 import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../../constants/policyConstants';
@@ -19,7 +19,6 @@ import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { FEMALE, MALE } from '../../../constants/genderConstants';
 import { COMPETITOR } from '../../../constants/participantRoles';
-import { LINEUPS } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_PARTICIPANT,
@@ -31,17 +30,6 @@ import {
   PARTICIPANT_NOT_FOUND,
   TEAM_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-
-/**
- * @param {object} tournamentRecord
- * @param {string} participantId
- * @param {object} drawDefinition
- * @param {string} tieMatchUpId
- * @param {number=} sideNumber
- * @param {string} matchUpId
- * @param {string=} drawId
- * @param {object} event
- */
 
 export function assignTieMatchUpParticipantId(params: any) {
   const matchUpContext = getTieMatchUpContext(params);
@@ -162,30 +150,13 @@ export function assignTieMatchUpParticipantId(params: any) {
 
   if (!collectionDefinition) return { error: MISSING_COLLECTION_DEFINITION };
 
-  if (!dualMatchUp?.sides?.length) {
-    const { extension } = findExtension({
-      element: drawDefinition,
-      name: LINEUPS,
-    });
-
-    const lineUps = makeDeepCopy(extension?.value || {}, false, true);
-
-    const extractSideDetail = ({
-      displaySideNumber,
-      drawPosition,
-      sideNumber,
-    }) => ({ drawPosition, sideNumber, displaySideNumber });
-
-    if (dualMatchUp) {
-      dualMatchUp.sides = inContextDualMatchUp?.sides?.map((side: any) => {
-        const participantId = side.participantId;
-        return {
-          ...extractSideDetail(side),
-          lineUp: (participantId && lineUps[participantId]) || [],
-        };
-      });
-    }
-  }
+  ensureSideLineUps({
+    tournamentId: tournamentRecord.tournamentId,
+    eventId: event.eventId,
+    inContextDualMatchUp,
+    drawDefinition,
+    dualMatchUp,
+  });
 
   const dualMatchUpSide = dualMatchUp?.sides?.find(
     (side) => side.sideNumber === sideNumber
