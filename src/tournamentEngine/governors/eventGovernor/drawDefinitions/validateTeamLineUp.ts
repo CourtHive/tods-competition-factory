@@ -4,10 +4,11 @@ import { unique } from '../../../../utilities/arrays';
 
 import { INVALID_VALUES } from '../../../../constants/errorConditionConstants';
 import { TieFormat } from '../../../../types/tournamentFromSchema';
+import { LineUp } from '../../../../types/factoryTypes';
 
 type ValidateLineUpArgs = {
   tieFormat?: TieFormat;
-  lineUp: any[];
+  lineUp: LineUp;
 };
 export function validateLineUp({ lineUp, tieFormat }: ValidateLineUpArgs) {
   const errors: string[] = [];

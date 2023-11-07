@@ -16,6 +16,7 @@ import {
   ParticipantTypeEnum,
   SexEnum,
   StageTypeEnum,
+  TeamCompetitor,
   TimeItem,
   Tournament,
   TypeEnum,
@@ -347,3 +348,5 @@ export type Substitution = {
 export type PlayoffAttributes = {
   [key: string | number]: { name: string; abbreviation: string };
 };
+
+export type LineUp = TeamCompetitor[];

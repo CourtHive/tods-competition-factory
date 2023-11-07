@@ -1,5 +1,6 @@
-import { getCategoryAgeDetails } from '../getCategoryAgeDetails';
+import { validateCategory } from '../../validation/validateCategory';
 import { definedAttributes } from '../../../utilities';
+
 import { Category } from '../../../types/tournamentFromSchema';
 
 type CategoryCanContainArgs = {
@@ -13,8 +14,8 @@ export function categoryCanContain({
   withDetails,
   category,
 }: CategoryCanContainArgs) {
-  const categoryDetails = getCategoryAgeDetails({ category });
-  const childCategoryDetails = getCategoryAgeDetails({
+  const categoryDetails = validateCategory({ category });
+  const childCategoryDetails = validateCategory({
     category: childCategory,
   });
 
@@ -44,21 +45,49 @@ export function categoryCanContain({
     new Date(childCategoryDetails.ageMaxDate) <
       new Date(categoryDetails.ageMinDate);
 
+  const ratingComparison =
+    category.ratingType &&
+    childCategory.ratingType &&
+    category.ratingType === childCategory.ratingType;
+
+  const invalidRatingRange =
+    ratingComparison &&
+    ((category.ratingMin &&
+      childCategory.ratingMin &&
+      childCategory.ratingMin < category.ratingMin) ||
+      (category.ratingMax &&
+        childCategory.ratingMax &&
+        childCategory.ratingMax > category.ratingMax) ||
+      (category.ratingMin &&
+        childCategory.ratingMax &&
+        childCategory.ratingMax < category.ratingMin) ||
+      (category.ratingMax &&
+        childCategory.ratingMin &&
+        childCategory.ratingMin > category.ratingMax));
+
+  const invalidBallType =
+    category.ballType &&
+    childCategory.ballType &&
+    category.ballType !== childCategory.ballType;
+
   const valid =
-    !invalidAgeMax &&
-    !invalidAgeMin &&
+    !invalidRatingRange &&
     !invalidAgeMinDate &&
-    !invalidAgeMaxDate;
+    !invalidAgeMaxDate &&
+    !invalidBallType &&
+    !invalidAgeMax &&
+    !invalidAgeMin;
 
   const ignoreFalse = true;
-
   const result = definedAttributes(
     {
-      valid,
-      invalidAgeMax,
-      invalidAgeMin,
+      invalidRatingRange,
       invalidAgeMinDate,
       invalidAgeMaxDate,
+      invalidBallType,
+      invalidAgeMax,
+      invalidAgeMin,
+      valid,
     },
     ignoreFalse
   );

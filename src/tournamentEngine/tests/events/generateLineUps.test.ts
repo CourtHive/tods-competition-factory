@@ -16,6 +16,7 @@ import {
   DOMINANT_DUO_MIXED,
   USTA_GOLD_TEAM_CHALLENGE,
 } from '../../../constants/tieFormatConstants';
+import { LineUp } from '../../../types/factoryTypes';
 
 it('can generate lineUps for TEAM events', () => {
   const categoryName = '18U';
@@ -87,18 +88,19 @@ it('can generate lineUps for TEAM events', () => {
     scaleType: RANKING,
     sortOrder: ASC,
   };
-  result = tournamentEngine.generateLineUps({
-    singlesOnly: true,
-    scaleAccessor,
-    drawId,
-  });
+  const lineUpResult: { [key: string]: LineUp } =
+    tournamentEngine.generateLineUps({
+      singlesOnly: true,
+      scaleAccessor,
+      drawId,
+    }).lineUps;
 
-  Object.values(result.lineUps).forEach((lineUp: any) => {
+  Object.values(lineUpResult).forEach((lineUp: LineUp) => {
     // each lineUp should consist of two participants
     expect(lineUp.length).toEqual(2);
     lineUp.forEach((participant) => {
       // each member of the DOMINANT_DUO should have two assignments
-      expect(participant.collectionAssignments.length).toEqual(2);
+      expect(participant.collectionAssignments?.length).toEqual(2);
     });
   });
 });
@@ -125,7 +127,7 @@ it('will assign TEAM positions based on ranking', () => {
     ],
   });
 
-  let result = tournamentEngine.setState(tournamentRecord);
+  const result = tournamentEngine.setState(tournamentRecord);
   expect(result.success).toEqual(true);
 
   const { participants } = tournamentEngine.getParticipants({
@@ -166,13 +168,14 @@ it('will assign TEAM positions based on ranking', () => {
     scaleType: RANKING,
     sortOrder: ASC,
   };
-  result = tournamentEngine.generateLineUps({
-    singlesOnly: true,
-    scaleAccessor,
-    drawId,
-  });
+  const lineUpResult: { [key: string]: LineUp } =
+    tournamentEngine.generateLineUps({
+      singlesOnly: true,
+      scaleAccessor,
+      drawId,
+    }).lineUps;
 
-  Object.values(result.lineUps).forEach((lineUp: any) => {
+  Object.values(lineUpResult).forEach((lineUp: LineUp) => {
     // each lineUp should consist of two participants
     expect(lineUp.length).toEqual(8);
 
@@ -180,7 +183,7 @@ it('will assign TEAM positions based on ranking', () => {
     const collectionDefinitions = {};
 
     lineUp.forEach((participant) => {
-      participant.collectionAssignments.forEach((assignment) => {
+      participant.collectionAssignments?.forEach((assignment) => {
         const { collectionId, collectionPosition } = assignment;
         if (!collectionDefinitions[collectionId]) {
           collectionDefinitions[collectionId] = [];
@@ -192,7 +195,7 @@ it('will assign TEAM positions based on ranking', () => {
       });
       // each member of the USTA_GOLD_TEAM_CHALLENGE should have three assignments
       // SINGLES, same-sex DOUBLES and MIXED DOUBLES
-      expect(participant.collectionAssignments.length).toEqual(3);
+      expect(participant.collectionAssignments?.length).toEqual(3);
     });
     expect(Object.values(collectionDefinitions).map((c) => c)).toEqual([
       [1, 2, 3, 4], // MALE SINGLES

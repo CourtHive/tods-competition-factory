@@ -15,6 +15,7 @@ import {
   DrawDefinition,
   TieFormat,
 } from '../../../../types/tournamentFromSchema';
+import { LineUp } from '../../../../types/factoryTypes';
 
 // update an extension on the drawDefinition that keeps track of the latest lineUp for all team participantIds
 // each matchUp in the draw will use this as the template on first load and then write lineUp to the matchUp
@@ -24,7 +25,7 @@ type UpdateTeamLineUpArgs = {
   participantId: string;
   tieFormat: TieFormat;
   drawId?: string;
-  lineUp: any;
+  lineUp: LineUp;
 };
 
 export function updateTeamLineUp({

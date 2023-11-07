@@ -5,17 +5,21 @@ import { deleteParticipants } from '../participantGovernor/deleteParticipants';
 import { modifyParticipant } from '../participantGovernor/modifyParticipant';
 import { getParticipants } from '../../getters/participants/getParticipants';
 import { removeCollectionAssignments } from './removeCollectionAssignments';
-import { decorateResult } from '../../../global/functions/decorateResult';
 import { addParticipant } from '../participantGovernor/addParticipants';
 import { ensureSideLineUps } from './drawDefinitions/ensureSideLineUps';
 import { updateTeamLineUp } from './drawDefinitions/updateTeamLineUp';
 import { getTeamLineUp } from './drawDefinitions/getTeamLineUp';
 import { getTieMatchUpContext } from './getTieMatchUpContext';
 import { overlap } from '../../../utilities';
+import {
+  ResultType,
+  decorateResult,
+} from '../../../global/functions/decorateResult';
 
 import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
 import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../../constants/policyConstants';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
+import { LineUp, PolicyDefinitions } from '../../../types/factoryTypes';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { FEMALE, MALE } from '../../../constants/genderConstants';
 import { COMPETITOR } from '../../../constants/participantRoles';
@@ -30,8 +34,26 @@ import {
   PARTICIPANT_NOT_FOUND,
   TEAM_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
+import {
+  DrawDefinition,
+  Event,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
-export function assignTieMatchUpParticipantId(params: any) {
+type AssignMatchUpSideParticipantIdArgs = {
+  teamParticipantId?: string | undefined;
+  policyDefinitions?: PolicyDefinitions;
+  tournamentRecord: Tournament;
+  drawDefinition: DrawDefinition;
+  participantId: string;
+  tieMatchUpId: string;
+  sideNumber?: number;
+  event: Event;
+};
+
+export function assignTieMatchUpParticipantId(
+  params: AssignMatchUpSideParticipantIdArgs
+): ResultType & { deletedParticipantId?: string; modifiedLineUp?: LineUp } {
   const matchUpContext = getTieMatchUpContext(params);
   if (matchUpContext.error) return matchUpContext;
   const stack = 'assignTieMatchUpParticipantId';
@@ -72,10 +94,11 @@ export function assignTieMatchUpParticipantId(params: any) {
 
   teamParticipantId =
     teamParticipantId ||
-    (params.sideNumber &&
-      inContextDualMatchUp?.sides?.find(
-        (side) => side.sideNumber === params.sideNumber
-      )?.participantId);
+    (params.sideNumber
+      ? inContextDualMatchUp?.sides?.find(
+          (side) => side.sideNumber === params.sideNumber
+        )?.participantId
+      : undefined);
 
   const participantToAssign = getParticipants({
     participantFilters: { participantIds: [participantId] },
@@ -207,7 +230,7 @@ export function assignTieMatchUpParticipantId(params: any) {
 
   const { modifiedLineUp } = removeResult;
 
-  let deleteParticipantId;
+  let deletedParticipantId;
 
   if (matchUpType === DOUBLES) {
     if (participantType !== PAIR) {
@@ -226,7 +249,7 @@ export function assignTieMatchUpParticipantId(params: any) {
         side: tieMatchUpSide,
       });
       if (result.error) return result;
-      deleteParticipantId = result.deleteParticipantId;
+      deletedParticipantId = result.deletedParticipantId;
 
       if (dualMatchUpSide) dualMatchUpSide.lineUp = modifiedLineUp;
       if (dualMatchUp) {
@@ -272,9 +295,9 @@ export function assignTieMatchUpParticipantId(params: any) {
       drawDefinition,
     });
 
-  if (deleteParticipantId) {
+  if (deletedParticipantId) {
     const { error } = deleteParticipants({
-      participantIds: [deleteParticipantId],
+      participantIds: [deletedParticipantId],
       tournamentRecord,
     });
     if (error) console.log('cleanup');
@@ -283,7 +306,7 @@ export function assignTieMatchUpParticipantId(params: any) {
   return { ...SUCCESS, modifiedLineUp };
 
   function addParticipantId2Pair({ side }) {
-    let deleteParticipantId;
+    let deletedParticipantId;
 
     if (!side.participant) {
       const newPairParticipant = {
@@ -328,12 +351,12 @@ export function assignTieMatchUpParticipantId(params: any) {
         } else {
           // check if there is a pairParticipant that includes both individualParticipantIds
           // if there is, use that and delete the PAIR participant with only one [individualParticipantId]
-          deleteParticipantId = participant?.participantId;
+          deletedParticipantId = participant?.participantId;
         }
       }
     }
 
-    return { ...SUCCESS, deleteParticipantId };
+    return { ...SUCCESS, deletedParticipantId };
   }
 }
 
