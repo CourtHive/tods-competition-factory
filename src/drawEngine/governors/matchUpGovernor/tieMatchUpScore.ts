@@ -4,7 +4,7 @@ import { removeExtension } from '../../../tournamentEngine/governors/tournamentG
 import { generateTieMatchUpScore } from '../../generators/tieMatchUpScore/generateTieMatchUpScore';
 import { copyTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';
 import { findExtension } from '../../../global/functions/deducers/findExtension';
-import { findMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
+import { findDrawMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
 import { isActiveMatchUp } from '../../getters/activeMatchUp';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 
@@ -55,7 +55,7 @@ export function updateTieMatchUpScore({
   success?: boolean;
   score?: any;
 } {
-  const result = findMatchUp({ drawDefinition, event, matchUpId });
+  const result = findDrawMatchUp({ drawDefinition, event, matchUpId });
   if (result.error) return result;
   if (!result.matchUp) return { error: MATCHUP_NOT_FOUND };
 

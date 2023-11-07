@@ -2,8 +2,8 @@ import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGove
 import { validateTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
 import { tallyParticipantResults } from '../../../matchUpEngine/getters/roundRobinTally/roundRobinTally';
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
+import { findDrawMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
 import { evaluateCollectionResult } from './evaluateCollectionResult';
-import { findMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
 import { getGroupValueGroups } from '../getGroupValueGroups';
 
 import {
@@ -167,7 +167,7 @@ export function generateTieMatchUpScore(
         ? matchUp
         : matchUpsMap?.drawMatchUps?.[matchUpId] ||
           (drawDefinition &&
-            findMatchUp({
+            findDrawMatchUp({
               inContext: true,
               drawDefinition,
               matchUpId,

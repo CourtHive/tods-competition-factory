@@ -1,5 +1,5 @@
 import { isValid } from '../../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
-import { findMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
+import { findDrawMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
 import { findStructure } from '../../getters/findStructure';
 import {
   modifyDrawNotice,
@@ -55,7 +55,7 @@ export function setMatchUpFormat(params: SetMatchUpFormatArgs): {
   const stack = 'setMatchUpFormat';
 
   if (matchUpId) {
-    const result = findMatchUp({
+    const result = findDrawMatchUp({
       drawDefinition,
       matchUpId,
       event,

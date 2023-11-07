@@ -1,5 +1,5 @@
 import { modifyMatchUpNotice } from '../../../../drawEngine/notifications/drawNotifications';
-import { findMatchUp } from '../../../../drawEngine/getters/getMatchUps/findDrawMatchUp';
+import { findDrawMatchUp } from '../../../../drawEngine/getters/getMatchUps/findDrawMatchUp';
 import { findExtension } from '../../queryGovernor/extensionQueries';
 import { makeDeepCopy } from '../../../../utilities';
 
@@ -26,7 +26,7 @@ export function ensureSideLineUps({
 }: EnsureSideLineUpsArgs) {
   if (dualMatchUp && !dualMatchUp?.sides?.length) {
     if (!inContextDualMatchUp) {
-      inContextDualMatchUp = findMatchUp({
+      inContextDualMatchUp = findDrawMatchUp({
         matchUpId: dualMatchUp.matchUpId,
         inContext: true,
         drawDefinition,

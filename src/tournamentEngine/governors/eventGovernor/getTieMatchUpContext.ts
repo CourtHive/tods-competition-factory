@@ -1,7 +1,7 @@
 import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
+import { findDrawMatchUp } from '../../../drawEngine/getters/getMatchUps/findDrawMatchUp';
 import { getMatchUpsMap } from '../../../drawEngine/getters/getMatchUps/getMatchUpsMap';
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
-import { findMatchUp } from '../../../drawEngine/getters/getMatchUps/findDrawMatchUp';
 import { getParticipants } from '../../getters/participants/getParticipants';
 import { extractAttributes } from '../../../utilities';
 
@@ -65,14 +65,14 @@ export function getTieMatchUpContext({
   const matchUpsMap = getMatchUpsMap({ drawDefinition });
 
   // tieMatchUp is matchUpType: SINGLES or DOUBLES
-  const { matchUp: tieMatchUp } = findMatchUp({
+  const { matchUp: tieMatchUp } = findDrawMatchUp({
     matchUpId: tieMatchUpId,
     drawDefinition,
     matchUpsMap,
   });
   if (!tieMatchUp) return { error: MATCHUP_NOT_FOUND };
 
-  const { matchUp: inContextTieMatchUp, structure } = findMatchUp({
+  const { matchUp: inContextTieMatchUp, structure } = findDrawMatchUp({
     tournamentParticipants: tournamentRecord.participants,
     matchUpId: tieMatchUpId,
     inContext: true,
@@ -109,13 +109,13 @@ export function getTieMatchUpContext({
     },
   });
 
-  const { matchUp: dualMatchUp } = findMatchUp({
+  const { matchUp: dualMatchUp } = findDrawMatchUp({
     matchUpId: matchUpTieId,
     drawDefinition,
     matchUpsMap,
   });
 
-  const { matchUp: inContextDualMatchUp } = findMatchUp({
+  const { matchUp: inContextDualMatchUp } = findDrawMatchUp({
     matchUpId: matchUpTieId,
     inContext: true,
     drawDefinition,

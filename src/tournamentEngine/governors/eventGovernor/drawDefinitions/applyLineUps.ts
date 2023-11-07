@@ -1,7 +1,7 @@
 import { resolveTieFormat } from '../../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
 import { modifyMatchUpNotice } from '../../../../drawEngine/notifications/drawNotifications';
+import { findDrawMatchUp } from '../../../../drawEngine/getters/getMatchUps/findDrawMatchUp';
 import { getPairedParticipant } from '../../participantGovernor/getPairedParticipant';
-import { findMatchUp } from '../../../../drawEngine/getters/getMatchUps/findDrawMatchUp';
 import { addParticipant } from '../../participantGovernor/addParticipants';
 import { instanceCount } from '../../../../utilities';
 
@@ -35,7 +35,7 @@ export function applyLineUps({
   const stack = 'applyLineUps';
 
   const tournamentParticipants = tournamentRecord.participants || [];
-  let result = findMatchUp({
+  let result = findDrawMatchUp({
     tournamentParticipants,
     inContext: true,
     drawDefinition,
@@ -174,7 +174,7 @@ export function applyLineUps({
 
   if (!Object.keys(sideAssignments).length) return { error: VALUE_UNCHANGED };
 
-  result = findMatchUp({ drawDefinition, matchUpId });
+  result = findDrawMatchUp({ drawDefinition, matchUpId });
   if (result.error) return result;
   if (!result.matchUp) return { error: MATCHUP_NOT_FOUND };
 

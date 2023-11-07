@@ -1,7 +1,7 @@
 import { matchUpTimeModifiers } from '../../../accessors/matchUpAccessor/timeModifiers';
 import { decorateResult } from '../../../../global/functions/decorateResult';
+import { findDrawMatchUp } from '../../../getters/getMatchUps/findDrawMatchUp';
 import { scheduledMatchUpDate } from '../../../accessors/matchUpAccessor';
-import { findMatchUp } from '../../../getters/getMatchUps/findDrawMatchUp';
 import { mustBeAnArray } from '../../../../utilities/mustBeAnArray';
 import { addMatchUpTimeItem } from '../timeItems';
 import {
@@ -68,7 +68,7 @@ export function addMatchUpScheduledTime(params: AddMatchUpScheduledTimeArgs) {
     return decorateResult({ result: { error: INVALID_TIME }, stack });
 
   if (!matchUp) {
-    const result = findMatchUp({ drawDefinition, matchUpId });
+    const result = findDrawMatchUp({ drawDefinition, matchUpId });
     if (result.error) return decorateResult({ result, stack });
     matchUp = result.matchUp;
   }
@@ -137,7 +137,7 @@ export function addMatchUpTimeModifiers({
     });
 
   if (!matchUp) {
-    const result = findMatchUp({ drawDefinition, matchUpId });
+    const result = findDrawMatchUp({ drawDefinition, matchUpId });
     if (result.error) return decorateResult({ result, stack });
     matchUp = result.matchUp;
   }

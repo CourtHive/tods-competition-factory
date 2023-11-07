@@ -1,4 +1,4 @@
-import { findMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
+import { findDrawMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
 import { setMatchUpStatus } from './setMatchUpStatus';
 
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
@@ -15,7 +15,7 @@ export function enableTieAutoCalc({
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
-  const { matchUp } = findMatchUp({
+  const { matchUp } = findDrawMatchUp({
     drawDefinition,
     matchUpId,
     event,

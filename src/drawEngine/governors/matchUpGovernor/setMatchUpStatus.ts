@@ -6,6 +6,7 @@ import { getAppliedPolicies } from '../../../global/functions/deducers/getApplie
 import { addExtension } from '../../../global/functions/producers/addExtension';
 import { getProjectedDualWinningSide } from './getProjectedDualWinningSide';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
+import { findDrawMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { validateScore } from '../../../global/validation/validateScore';
@@ -13,7 +14,6 @@ import { getPositionAssignments } from '../../getters/positionsGetter';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { noDownstreamDependencies } from './noDownstreamDependencies';
 import { pushGlobalLog } from '../../../global/functions/globalLog';
-import { findMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
 import { findStructure } from '../../getters/findStructure';
 import { updateTieMatchUpScore } from './tieMatchUpScore';
 import { isActiveDownstream } from './isActiveDownstream';
@@ -332,7 +332,7 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
   });
 
   if (matchUpTieId) {
-    const { matchUp: dualMatchUp } = findMatchUp({
+    const { matchUp: dualMatchUp } = findDrawMatchUp({
       matchUpId: matchUpTieId,
       inContext: true,
       drawDefinition,

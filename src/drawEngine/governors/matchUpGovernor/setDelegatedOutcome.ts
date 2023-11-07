@@ -1,5 +1,5 @@
 import { addExtension } from '../../../global/functions/producers/addExtension';
-import { findMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
+import { findDrawMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
 
 import { DELEGATED_OUTCOME } from '../../../constants/extensionConstants';
 import {
@@ -20,7 +20,7 @@ export function setDelegatedOutcome({
   if (!matchUp && !matchUpId) return { error: MISSING_MATCHUP };
 
   if (!matchUp) {
-    const result = findMatchUp({
+    const result = findDrawMatchUp({
       drawDefinition,
       matchUpId,
     });

@@ -1,5 +1,5 @@
 import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
-import { findMatchUp } from '../../../drawEngine/getters/getMatchUps/findDrawMatchUp';
+import { findDrawMatchUp } from '../../../drawEngine/getters/getMatchUps/findDrawMatchUp';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { findStructure } from '../../../drawEngine/getters/findStructure';
 import { isConvertableInteger } from '../../../utilities/math';
@@ -74,7 +74,7 @@ export function orderCollectionDefinitions({
   } else if (matchUpId) {
     const result =
       drawDefinition &&
-      findMatchUp({
+      findDrawMatchUp({
         drawDefinition,
         matchUpId,
       });

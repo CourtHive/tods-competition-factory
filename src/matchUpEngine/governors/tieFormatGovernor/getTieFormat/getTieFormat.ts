@@ -1,4 +1,4 @@
-import { findMatchUp } from '../../../../drawEngine/getters/getMatchUps/findDrawMatchUp';
+import { findDrawMatchUp } from '../../../../drawEngine/getters/getMatchUps/findDrawMatchUp';
 import { findStructure } from '../../../../drawEngine/getters/findStructure';
 import { getObjectTieFormat } from './getObjectTieFormat';
 import { getItemTieFormat } from './getItemTieFormat';
@@ -66,7 +66,7 @@ export function getTieFormat({
         matchUp?: MatchUp;
         error?: ErrorType;
         structure?: Structure;
-      } = findMatchUp({
+      } = findDrawMatchUp({
         drawDefinition,
         matchUpId,
       });
