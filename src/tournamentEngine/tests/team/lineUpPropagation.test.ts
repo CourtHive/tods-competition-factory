@@ -1,13 +1,18 @@
+import { findExtension } from '../../governors/queryGovernor/extensionQueries';
 import { generateTeamTournament } from './generateTestTeamTournament';
 import { setSubscriptions } from '../../../global/state/globalState';
 import tournamentEngine from '../../sync';
 import { expect, it } from 'vitest';
 
 import { MODIFY_DRAW_DEFINITION } from '../../../constants/topicConstants';
-import { COMPASS } from '../../../constants/drawDefinitionConstants';
+import { LINEUPS } from '../../../constants/extensionConstants';
 import { TEAM } from '../../../constants/participantConstants';
 import { SINGLES } from '../../../constants/matchUpTypes';
 import { extractAttributes } from '../../../utilities';
+import {
+  COMPASS,
+  ROUND_ROBIN,
+} from '../../../constants/drawDefinitionConstants';
 
 const scenario = {
   drawType: COMPASS,
@@ -22,14 +27,6 @@ it('can propagate and remove lineUps', () => {
   expect(valueGoal).toEqual(scenario.valueGoal);
 
   tournamentEngine.setState(tournamentRecord);
-
-  // get positionAssignments to determine drawPositions
-  let drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-  const { positionAssignments } = drawDefinition.structures[0];
-
-  const { participants: teamParticipants } = tournamentEngine.getParticipants({
-    participantFilters: { participantTypes: [TEAM] },
-  });
 
   let { matchUps: teamMatchUps } = tournamentEngine
     .devContext(false)
@@ -60,14 +57,7 @@ it('can propagate and remove lineUps', () => {
       ({ stageSequence, roundNumber }) =>
         stageSequence === 1 && roundNumber === 1
     )
-    .forEach((dualMatchUp) =>
-      assignParticipants({
-        positionAssignments,
-        teamParticipants,
-        dualMatchUp,
-        drawId,
-      })
-    );
+    .forEach((dualMatchUp) => assignParticipants({ dualMatchUp }));
 
   const scoringOutcome: any = {
     score: { sets: [{ side1Score: 2, side2Score: 1, winningSide: 1 }] },
@@ -162,7 +152,7 @@ it('can propagate and remove lineUps', () => {
         {}
     ).flat().length;
 
-  drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+  let drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
 
   const lineUpAssignmentsCounts = [getAssignmentsCount(drawDefinition)];
   let drawModifications = 0;
@@ -300,14 +290,6 @@ it('can propagate COMPASS lineUps properly', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  // get positionAssignments to determine drawPositions
-  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
-  const { positionAssignments } = drawDefinition.structures[0];
-
-  const { participants: teamParticipants } = tournamentEngine.getParticipants({
-    participantFilters: { participantTypes: [TEAM] },
-  });
-
   let { matchUps: teamMatchUps } = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: {
       matchUpTypes: [TEAM],
@@ -320,18 +302,11 @@ it('can propagate COMPASS lineUps properly', () => {
       ({ stageSequence, roundNumber }) =>
         stageSequence === 1 && roundNumber === 1
     )
-    .forEach((dualMatchUp) =>
-      assignParticipants({
-        positionAssignments,
-        teamParticipants,
-        dualMatchUp,
-        drawId,
-      })
-    );
+    .forEach((dualMatchUp) => assignParticipants({ dualMatchUp }));
 
   const outcome = {
-    winningSide: 1,
     score: { sets: [{ side1Score: 2, side2Score: 1, winningSide: 1 }] },
+    winningSide: 1,
   };
 
   const { matchUps: singlesMatchUps } = tournamentEngine.allTournamentMatchUps({
@@ -370,16 +345,83 @@ it('can propagate COMPASS lineUps properly', () => {
     });
 });
 
-it('can remove players from scorecard / delete propagated lineUp', () => {
-  //
+it('will attach lineUps on score entry', () => {
+  const scenario = {
+    drawType: ROUND_ROBIN,
+    valueGoal: 2,
+    drawSize: 4,
+  };
+  const { tournamentRecord, drawId, valueGoal } =
+    generateTeamTournament(scenario);
+  expect(valueGoal).toEqual(scenario.valueGoal);
+
+  tournamentEngine.setState(tournamentRecord);
+
+  let drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+  let lineUps = findExtension({ element: drawDefinition, name: LINEUPS })
+    ?.extension?.value;
+
+  expect(lineUps).toBeUndefined();
+
+  let teamMatchUps = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [1] },
+  }).matchUps;
+  expect(teamMatchUps.length).toEqual(2);
+
+  const getLineUpsCount = (matchUp) =>
+    matchUp.sides.flatMap((side) => side.lineUp).filter(Boolean).length;
+
+  for (const dualMatchUp of teamMatchUps) {
+    expect(getLineUpsCount(dualMatchUp)).toEqual(0);
+    assignParticipants({ dualMatchUp });
+  }
+
+  drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+  lineUps = findExtension({ element: drawDefinition, name: LINEUPS })?.extension
+    ?.value;
+
+  expect(lineUps).toBeDefined();
+
+  teamMatchUps = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [1] },
+  }).matchUps;
+
+  for (const dualMatchUp of teamMatchUps) {
+    expect(getLineUpsCount(dualMatchUp)).toEqual(4);
+  }
+
+  // for { roundsNumber: 2 } there should be no lineUps
+  teamMatchUps = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [2] },
+  }).matchUps;
+
+  const outcome = {
+    score: { sets: [{ side1Score: 6, side2Score: 1, winningSide: 1 }] },
+    winningSide: 1,
+  };
+  for (const dualMatchUp of teamMatchUps) {
+    expect(getLineUpsCount(dualMatchUp)).toEqual(0);
+    // after confiirming no lineUp, setMatchUpStatus for one tieMatchUp
+    const matchUpId = dualMatchUp.tieMatchUps[0].matchUpId;
+    const result = tournamentEngine.setMatchUpStatus({
+      matchUpId,
+      outcome,
+      drawId,
+    });
+    expect(result.success).toEqual(true);
+  }
+
+  teamMatchUps = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [2] },
+  }).matchUps;
+
+  // when score was set lineUp was propagated to each team matchUp
+  for (const dualMatchUp of teamMatchUps) {
+    expect(getLineUpsCount(dualMatchUp)).toEqual(4);
+  }
 });
 
-function assignParticipants({
-  positionAssignments,
-  teamParticipants,
-  dualMatchUp,
-  drawId,
-}) {
+function assignParticipants({ dualMatchUp }) {
   const singlesMatchUps = dualMatchUp.tieMatchUps.filter(
     ({ matchUpType }) => matchUpType === SINGLES
   );
@@ -387,20 +429,16 @@ function assignParticipants({
     const tieMatchUpId = singlesMatchUp.matchUpId;
     singlesMatchUp.sides.forEach((side) => {
       const { drawPosition } = side;
-      const teamParticipant = teamParticipants.find((teamParticipant) => {
-        const { participantId } = teamParticipant;
-        const assignment = positionAssignments.find(
-          (assignment) => assignment.participantId === participantId
-        );
-        return assignment.drawPosition === drawPosition;
-      });
+      const teamParticipant = dualMatchUp.sides.find(
+        (side) => side.drawPosition === drawPosition
+      )?.participant;
       if (teamParticipant) {
         const individualParticipantId =
           teamParticipant.individualParticipantIds[i];
         const result = tournamentEngine.assignTieMatchUpParticipantId({
           participantId: individualParticipantId,
+          drawId: dualMatchUp.drawId,
           tieMatchUpId,
-          drawId,
         });
         if (!result.success) console.log(result);
         expect(result.success).toEqual(true);
