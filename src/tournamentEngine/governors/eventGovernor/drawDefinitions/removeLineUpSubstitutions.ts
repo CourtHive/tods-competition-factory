@@ -1,17 +1,22 @@
 import { getCollectionPositionAssignments } from '../getCollectionPositionAssignments';
 import { unique } from '../../../../utilities';
 
-export function removeLineUpSubstitutions({ lineUp }) {
+import { LineUp } from '../../../../types/factoryTypes';
+
+export function removeLineUpSubstitutions({ lineUp }: { lineUp: LineUp }) {
   if (!Array.isArray(lineUp)) return;
 
   const participantAssignments = {};
 
   const permutations = unique(
-    lineUp.flatMap(({ collectionAssignments }) =>
-      collectionAssignments.map(({ collectionId, collectionPosition }) =>
-        [collectionId, collectionPosition].join('|')
+    lineUp
+      .flatMap(
+        ({ collectionAssignments }) =>
+          collectionAssignments?.map(({ collectionId, collectionPosition }) =>
+            [collectionId, collectionPosition].join('|')
+          )
       )
-    )
+      .filter(Boolean)
   );
 
   permutations.forEach((permutation) => {

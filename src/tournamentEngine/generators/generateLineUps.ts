@@ -25,6 +25,8 @@ import {
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
 } from '../../constants/errorConditionConstants';
+import { LineUp } from '../../types/factoryTypes';
+import { CollectionAssignment } from '../../types/tournamentFromSchema';
 
 // by default if there are no scaleValues matching the scaleAccessor then participants will be assigned in the array order of [team].individidualParticipantIds
 export function generateLineUps(params) {
@@ -53,7 +55,7 @@ export function generateLineUps(params) {
   if (typeof scaleAccessor !== 'object' && !useDefaultEventRanking)
     return { error: INVALID_VALUES, context: { scaleAccessor } };
 
-  const lineUps = {};
+  const lineUps: { [key: string]: LineUp } = {};
 
   const targetEntries = (drawDefinition?.entries || event.entries).filter(
     (entry) => entry?.entryStatus === DIRECT_ACCEPTANCE
@@ -121,7 +123,8 @@ export function generateLineUps(params) {
       ? singlesSort
       : teamParticipant.individualParticipants.sort(doublesScaleSort);
 
-    const participantAssignments = {};
+    const participantAssignments: { [key: string]: CollectionAssignment[] } =
+      {};
     for (const collectionDefinition of collectionDefinitions) {
       const collectionParticipantIds: string[] = [];
       const { collectionId, matchUpCount, matchUpType, gender } =
@@ -160,10 +163,12 @@ export function generateLineUps(params) {
       });
     }
 
-    const lineUp = Object.keys(participantAssignments).map((participantId) => ({
-      collectionAssignments: participantAssignments[participantId],
-      participantId,
-    }));
+    const lineUp: LineUp = Object.keys(participantAssignments).map(
+      (participantId) => ({
+        collectionAssignments: participantAssignments[participantId],
+        participantId,
+      })
+    );
 
     lineUps[teamParticipant.participantId] = lineUp;
   }

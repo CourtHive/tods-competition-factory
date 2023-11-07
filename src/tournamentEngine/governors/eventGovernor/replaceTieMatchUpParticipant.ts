@@ -4,12 +4,15 @@ import { getCollectionPositionAssignments } from './getCollectionPositionAssignm
 import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
 import { deleteParticipants } from '../participantGovernor/deleteParticipants';
 import { getParticipants } from '../../getters/participants/getParticipants';
-import { decorateResult } from '../../../global/functions/decorateResult';
 import { addParticipant } from '../participantGovernor/addParticipants';
 import { ensureSideLineUps } from './drawDefinitions/ensureSideLineUps';
 import { updateTeamLineUp } from './drawDefinitions/updateTeamLineUp';
 import { getTieMatchUpContext } from './getTieMatchUpContext';
 import { makeDeepCopy } from '../../../utilities';
+import {
+  ResultType,
+  decorateResult,
+} from '../../../global/functions/decorateResult';
 
 import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
 import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../../constants/policyConstants';
@@ -18,6 +21,7 @@ import { COMPETITOR } from '../../../constants/participantRoles';
 import { PAIR } from '../../../constants/participantConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { DOUBLES } from '../../../constants/matchUpTypes';
+import { LineUp } from '../../../types/factoryTypes';
 import {
   EXISTING_PARTICIPANT,
   INVALID_PARTICIPANT,
@@ -26,8 +30,29 @@ import {
   NOT_FOUND,
   PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
+import {
+  DrawDefinition,
+  Event,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
-export function replaceTieMatchUpParticipantId(params) {
+type ReplaceTieMatchUpParticipantIdArgs = {
+  existingParticipantId: string;
+  tournamentRecord: Tournament;
+  drawDefinition: DrawDefinition;
+  newParticipantId: string;
+  substitution?: boolean;
+  tieMatchUpId: string;
+  event: Event;
+};
+
+export function replaceTieMatchUpParticipantId(
+  params: ReplaceTieMatchUpParticipantIdArgs
+): ResultType & {
+  participantRemoved?: string;
+  participantAdded?: string;
+  modifiedLineUp?: LineUp;
+} {
   const matchUpContext = getTieMatchUpContext(params);
   if (matchUpContext.error) return matchUpContext;
   const stack = 'replaceTieMatchUpParticipantid';

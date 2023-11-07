@@ -123,14 +123,15 @@ export function completeDrawMatchUps(params): {
                 const individualParticipantId =
                   teamParticipant.individualParticipantIds?.[i];
 
-                assignTieMatchUpParticipantId({
-                  teamParticipantId: teamParticipant.participantId,
-                  participantId: individualParticipantId,
-                  tournamentRecord,
-                  drawDefinition,
-                  tieMatchUpId,
-                  event,
-                });
+                individualParticipantId &&
+                  assignTieMatchUpParticipantId({
+                    teamParticipantId: teamParticipant.participantId,
+                    participantId: individualParticipantId,
+                    tournamentRecord,
+                    drawDefinition,
+                    tieMatchUpId,
+                    event,
+                  });
               }
             });
           });

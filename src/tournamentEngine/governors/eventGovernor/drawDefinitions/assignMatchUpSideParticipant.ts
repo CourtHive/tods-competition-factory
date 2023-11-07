@@ -1,5 +1,9 @@
 import { modifyMatchUpNotice } from '../../../../drawEngine/notifications/drawNotifications';
 import { findDrawMatchUp } from '../../../../drawEngine/getters/getMatchUps/findDrawMatchUp';
+import {
+  ResultType,
+  decorateResult,
+} from '../../../../global/functions/decorateResult';
 
 import { AD_HOC } from '../../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
@@ -17,6 +21,20 @@ import {
   DOUBLE_DEFAULT,
   DOUBLE_WALKOVER,
 } from '../../../../constants/matchUpStatusConstants';
+import {
+  DrawDefinition,
+  Event,
+  Tournament,
+} from '../../../../types/tournamentFromSchema';
+
+type AssignMatchUpSideParticipantArgs = {
+  tournamentRecord: Tournament;
+  drawDefinition: DrawDefinition;
+  participantId: string;
+  sideNumber: number;
+  matchUpId: string;
+  event: Event;
+};
 
 // method only currently used for AD_HOC matchUps where there are no drawPositions
 export function assignMatchUpSideParticipant({
@@ -26,7 +44,7 @@ export function assignMatchUpSideParticipant({
   sideNumber,
   matchUpId,
   event,
-}) {
+}: AssignMatchUpSideParticipantArgs): ResultType & { sidesSwapped?: boolean } {
   if (participantId && typeof participantId !== 'string')
     return { error: INVALID_PARTICIPANT_ID };
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
@@ -36,7 +54,9 @@ export function assignMatchUpSideParticipant({
   if (noSideNumberProvided) sideNumber = 1;
 
   if (![1, 2].includes(sideNumber))
-    return { error: INVALID_VALUES, sideNumber };
+    return decorateResult({
+      result: { error: INVALID_VALUES, context: { sideNumber } },
+    });
 
   const { matchUp, structure } = findDrawMatchUp({
     drawDefinition,

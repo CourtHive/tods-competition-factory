@@ -6,11 +6,14 @@ import { deleteParticipants } from '../participantGovernor/deleteParticipants';
 import { modifyParticipant } from '../participantGovernor/modifyParticipant';
 import { getParticipants } from '../../getters/participants/getParticipants';
 import { removeCollectionAssignments } from './removeCollectionAssignments';
-import { decorateResult } from '../../../global/functions/decorateResult';
 import { addParticipant } from '../participantGovernor/addParticipants';
 import { ensureSideLineUps } from './drawDefinitions/ensureSideLineUps';
 import { updateTeamLineUp } from './drawDefinitions/updateTeamLineUp';
 import { getTieMatchUpContext } from './getTieMatchUpContext';
+import {
+  ResultType,
+  decorateResult,
+} from '../../../global/functions/decorateResult';
 
 import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
 import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../../constants/policyConstants';
@@ -18,6 +21,7 @@ import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { COMPETITOR } from '../../../constants/participantRoles';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { LineUp } from '../../../types/factoryTypes';
 import {
   EXISTING_OUTCOME,
   INVALID_PARTICIPANT,
@@ -42,7 +46,7 @@ type RemoveTieMatchUpParticipantIdArgs = {
 
 export function removeTieMatchUpParticipantId(
   params: RemoveTieMatchUpParticipantIdArgs
-) {
+): ResultType & { modifiedLineUp?: LineUp } {
   const { tournamentRecord, drawDefinition, participantId, event } = params;
   const stack = 'removeTieMatchUpParticiapantId';
 
@@ -155,8 +159,9 @@ export function removeTieMatchUpParticipantId(
   }
 
   if (!dualMatchUpSide) {
-    console.log({ teamParticipantId, teamParticipants });
-    return { error: PARTICIPANT_NOT_FOUND, participantId };
+    return decorateResult({
+      result: { error: PARTICIPANT_NOT_FOUND, context: { participantId } },
+    });
   }
 
   const { modifiedLineUp, previousParticipantIds } =
