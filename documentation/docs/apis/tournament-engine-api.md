@@ -4218,7 +4218,9 @@ tournamentEngine.withdrawParticipantAtDrawPosition({
 const { valid } = validateCollectionDefinition({
   collectionDefinition, // required
   checkCollectionIds, // optional boolean - check that collectionIds are present
+  referenceCategory, // optional - category for comparision if eventId is not provided
   referenceGender, // optional - expected gender if eventId is not provided
+  checkCategory, // optional boolean - defaults to true
   checkGender, // optional boolean - defaults to true
   eventId, // required only for checking gender
 });
