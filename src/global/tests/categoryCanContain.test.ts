@@ -44,6 +44,55 @@ const scenarios = [
     },
     expectation: { invalidAgeMinDate: true },
   },
+  {
+    scenario: {
+      childCategory: { ratingType: 'WTN' },
+      category: { ratingType: 'WTN' },
+    },
+    expectation: { valid: true },
+  },
+  {
+    scenario: {
+      childCategory: { ratingType: 'WTN', ratingMin: 10 },
+      category: { ratingType: 'WTN', ratingMin: 5 },
+    },
+    expectation: { valid: true },
+  },
+  {
+    scenario: {
+      childCategory: { ratingType: 'WTN', ratingMin: 5 },
+      category: { ratingType: 'WTN', ratingMin: 10 },
+    },
+    expectation: { invalidRatingRange: true },
+  },
+  {
+    scenario: {
+      childCategory: { ratingType: 'WTN', ratingMax: 15 },
+      category: { ratingType: 'WTN', ratingMax: 10 },
+    },
+    expectation: { invalidRatingRange: true },
+  },
+  {
+    scenario: {
+      childCategory: { ratingType: 'WTN', ratingMax: 15 },
+      category: { ratingType: 'WTN', ratingMin: 20 },
+    },
+    expectation: { invalidRatingRange: true },
+  },
+  {
+    scenario: {
+      childCategory: { ratingType: 'WTN', ratingMin: 15 },
+      category: { ratingType: 'WTN', ratingMax: 20 },
+    },
+    expectation: { valid: true },
+  },
+  {
+    scenario: {
+      childCategory: { ratingType: 'WTN', ratingMin: 15 },
+      category: { ratingType: 'WTN', ratingMax: 10 },
+    },
+    expectation: { invalidRatingRange: true },
+  },
 ];
 
 it.each(scenarios.slice(0))(
