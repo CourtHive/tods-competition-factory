@@ -1,8 +1,8 @@
 import { latestVisibleTimeItemValue } from '../../../drawEngine/accessors/matchUpAccessor/latestVisibleTimeItemValue';
 import { assignMatchUpCourt } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpCourt';
 import { addMatchUpTimeItem } from '../../../drawEngine/governors/matchUpGovernor/timeItems';
+import { findDrawMatchUp } from '../../../drawEngine/getters/getMatchUps/findDrawMatchUp';
 import { getDrawDefinition } from '../../../global/functions/deducers/getDrawDefinition';
-import { findMatchUp } from '../../../drawEngine/getters/getMatchUps/findMatchUp';
 
 import { ALLOCATE_COURTS } from '../../../constants/timeItemConstants';
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
@@ -33,7 +33,7 @@ export function removeMatchUpCourtAssignment(params) {
   });
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
-  const result = findMatchUp({ drawDefinition, event, matchUpId });
+  const result = findDrawMatchUp({ drawDefinition, event, matchUpId });
   if (result.error) return result;
 
   if (result?.matchUp?.matchUpType === TEAM_MATCHUP) {

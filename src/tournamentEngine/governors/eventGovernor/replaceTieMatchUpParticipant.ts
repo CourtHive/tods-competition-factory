@@ -6,8 +6,8 @@ import { deleteParticipants } from '../participantGovernor/deleteParticipants';
 import { getParticipants } from '../../getters/participants/getParticipants';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { addParticipant } from '../participantGovernor/addParticipants';
+import { ensureSideLineUps } from './drawDefinitions/ensureSideLineUps';
 import { updateTeamLineUp } from './drawDefinitions/updateTeamLineUp';
-import { findExtension } from '../queryGovernor/extensionQueries';
 import { getTieMatchUpContext } from './getTieMatchUpContext';
 import { makeDeepCopy } from '../../../utilities';
 
@@ -15,7 +15,6 @@ import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../../fixtures/policies/POLICY_MA
 import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../../constants/policyConstants';
 import { FEMALE, MALE } from '../../../constants/genderConstants';
 import { COMPETITOR } from '../../../constants/participantRoles';
-import { LINEUPS } from '../../../constants/extensionConstants';
 import { PAIR } from '../../../constants/participantConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { DOUBLES } from '../../../constants/matchUpTypes';
@@ -112,30 +111,13 @@ export function replaceTieMatchUpParticipantId(params) {
   const substitutionProcessCodes =
     matchUpActionsPolicy?.processCodes?.substitution;
 
-  const { extension } = findExtension({
-    element: drawDefinition,
-    name: LINEUPS,
+  ensureSideLineUps({
+    tournamentId: tournamentRecord.tournamentId,
+    eventId: event.eventId,
+    inContextDualMatchUp,
+    drawDefinition,
+    dualMatchUp,
   });
-
-  const lineUps = extension?.value || {};
-
-  if (!dualMatchUp?.sides?.length) {
-    const extractSideDetail = ({
-      displaySideNumber,
-      drawPosition,
-      sideNumber,
-    }) => ({ drawPosition, sideNumber, displaySideNumber });
-
-    if (dualMatchUp) {
-      dualMatchUp.sides = inContextDualMatchUp?.sides?.map((side: any) => {
-        const participantId = side.participantId;
-        return {
-          ...extractSideDetail(side),
-          lineUp: (participantId && lineUps[participantId]) || [],
-        };
-      });
-    }
-  }
 
   const dualMatchUpSide = dualMatchUp?.sides?.find(
     ({ sideNumber }) => sideNumber === side.sideNumber

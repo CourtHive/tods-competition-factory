@@ -24,12 +24,14 @@ import {
 /*
   public version of findMatchUp
 */
-export function publicFindMatchUp(params) {
+export function publicFindDrawMatchUp(params) {
   Object.assign(params, { inContext: true });
-  return { matchUp: makeDeepCopy(findMatchUp(params).matchUp, false, true) };
+  return {
+    matchUp: makeDeepCopy(findDrawMatchUp(params).matchUp, false, true),
+  };
 }
 
-type FindMatchUpArgs = {
+type FindDrawMatchUpArgs = {
   tournamentParticipants?: Participant[];
   context?: { [key: string]: any };
   contextContent?: ContextContent;
@@ -41,7 +43,7 @@ type FindMatchUpArgs = {
   matchUpId: string;
   event?: Event;
 };
-export function findMatchUp({
+export function findDrawMatchUp({
   tournamentParticipants,
   afterRecoveryTimes,
   contextContent,
@@ -52,7 +54,7 @@ export function findMatchUp({
   inContext,
   context,
   event,
-}: FindMatchUpArgs): {
+}: FindDrawMatchUpArgs): {
   matchUp?: HydratedMatchUp;
   structure?: Structure;
   error?: ErrorType;

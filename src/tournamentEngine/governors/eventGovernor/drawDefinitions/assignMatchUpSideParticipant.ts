@@ -1,5 +1,5 @@
 import { modifyMatchUpNotice } from '../../../../drawEngine/notifications/drawNotifications';
-import { findMatchUp } from '../../../../drawEngine/getters/getMatchUps/findMatchUp';
+import { findDrawMatchUp } from '../../../../drawEngine/getters/getMatchUps/findDrawMatchUp';
 
 import { AD_HOC } from '../../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
@@ -38,7 +38,7 @@ export function assignMatchUpSideParticipant({
   if (![1, 2].includes(sideNumber))
     return { error: INVALID_VALUES, sideNumber };
 
-  const { matchUp, structure } = findMatchUp({
+  const { matchUp, structure } = findDrawMatchUp({
     drawDefinition,
     matchUpId,
     event,

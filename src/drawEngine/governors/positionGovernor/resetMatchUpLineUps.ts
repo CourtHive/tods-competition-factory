@@ -1,6 +1,6 @@
 import { updateTeamLineUp } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/updateTeamLineUp';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { findDrawMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -29,14 +29,14 @@ export function resetMatchUpLineUps({
 }: ResetMatchUpLineUps) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
-  const matchUp = findMatchUp({
+  const matchUp = findDrawMatchUp({
     drawDefinition,
     matchUpId,
   })?.matchUp;
 
   if (!matchUp?.tieMatchUps) return { error: INVALID_MATCHUP };
 
-  const inContextMatchUp = findMatchUp({
+  const inContextMatchUp = findDrawMatchUp({
     inContext: true,
     drawDefinition,
     matchUpId,

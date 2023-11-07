@@ -1,7 +1,7 @@
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { getStructureMatchUps } from '../../getters/getMatchUps/getStructureMatchUps';
 import { setMatchUpFormat } from '../../governors/matchUpGovernor/setMatchUpFormat';
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { findDrawMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
 import { getMatchUpType } from '../../accessors/matchUpAccessor';
 import { getDrawStructures } from '../../getters/findStructure';
 import { drawEngine } from '../../sync';
@@ -69,7 +69,7 @@ it('matchUps returned with context cannot modify original', () => {
 
   // refetch the drawDefintion after the modification has been made
   ({ drawDefinition } = drawEngine.getState());
-  let { matchUp: retrievedMatchUp } = findMatchUp({
+  let { matchUp: retrievedMatchUp } = findDrawMatchUp({
     drawDefinition,
     matchUpId,
   });
@@ -77,7 +77,7 @@ it('matchUps returned with context cannot modify original', () => {
   expect(retrievedMatchUp?.structureId).toEqual(undefined);
 
   // retrieve matchUp with context and add an attribute
-  const { matchUp: contextMatchUp } = findMatchUp({
+  const { matchUp: contextMatchUp } = findDrawMatchUp({
     drawDefinition,
     matchUpId,
     inContext: true,
@@ -93,7 +93,7 @@ it('matchUps returned with context cannot modify original', () => {
 
   // retrieve matchUp from drawDefinition
   // newAttribute should not be present with no context added
-  ({ matchUp: retrievedMatchUp } = findMatchUp({
+  ({ matchUp: retrievedMatchUp } = findDrawMatchUp({
     drawDefinition,
     matchUpId,
   }));
@@ -157,7 +157,7 @@ it('can set matchUpFormat', () => {
   let result = setMatchUpFormat({ drawDefinition, matchUpId, matchUpFormat });
   expect(result.success).toEqual(true);
 
-  const { matchUp: modifiedMatchUp } = findMatchUp({
+  const { matchUp: modifiedMatchUp } = findDrawMatchUp({
     drawDefinition,
     matchUpId,
   });

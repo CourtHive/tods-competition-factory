@@ -1,6 +1,6 @@
 import { getVenuesAndCourts } from '../../../competitionEngine/getters/venuesAndCourtsGetter';
 import { addMatchUpTimeItem } from '../../../drawEngine/governors/matchUpGovernor/timeItems';
-import { findMatchUp } from '../../../drawEngine/getters/getMatchUps/findMatchUp';
+import { findDrawMatchUp } from '../../../drawEngine/getters/getMatchUps/findDrawMatchUp';
 
 import { ALLOCATE_COURTS } from '../../../constants/timeItemConstants';
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
@@ -39,7 +39,7 @@ export function allocateTeamMatchUpCourts({
   if (!tournamentRecord && !tournamentRecords)
     return { error: MISSING_TOURNAMENT_RECORD };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
-  const result = findMatchUp({
+  const result = findDrawMatchUp({
     drawDefinition,
     matchUpId,
   });

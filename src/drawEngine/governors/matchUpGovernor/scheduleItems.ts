@@ -4,8 +4,8 @@ import { assignMatchUpCourt } from '../../../tournamentEngine/governors/schedule
 import { assignMatchUpVenue } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpVenue';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { decorateResult } from '../../../global/functions/decorateResult';
+import { findDrawMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
 import { scheduledMatchUpDate } from '../../accessors/matchUpAccessor';
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { isConvertableInteger } from '../../../utilities/math';
 import { ensureInt } from '../../../utilities/ensureInt';
 import { addMatchUpTimeItem } from './timeItems';
@@ -120,7 +120,7 @@ export function addMatchUpScheduleItems({
   let matchUp, warning;
 
   if (!drawMatchUps) {
-    const result = findMatchUp({ drawDefinition, event, matchUpId });
+    const result = findDrawMatchUp({ drawDefinition, event, matchUpId });
     if (result.error) return result;
     matchUp = result.matchUp;
   } else {
@@ -447,7 +447,7 @@ export function addMatchUpStartTime({
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
   if (!validTimeValue(startTime)) return { error: INVALID_TIME };
 
-  const { matchUp } = findMatchUp({ drawDefinition, event, matchUpId });
+  const { matchUp } = findDrawMatchUp({ drawDefinition, event, matchUpId });
   const { scheduledDate } = scheduledMatchUpDate({ matchUp });
   const timeItems = matchUp?.timeItems ?? [];
 
@@ -507,7 +507,7 @@ export function addMatchUpEndTime({
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
   if (!validTimeValue(endTime)) return { error: INVALID_TIME };
 
-  const { matchUp } = findMatchUp({ drawDefinition, event, matchUpId });
+  const { matchUp } = findDrawMatchUp({ drawDefinition, event, matchUpId });
   const { scheduledDate } = scheduledMatchUpDate({ matchUp });
   const timeItems = matchUp?.timeItems ?? [];
 
@@ -567,7 +567,7 @@ export function addMatchUpStopTime({
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
   if (!validTimeValue(stopTime)) return { error: INVALID_TIME };
 
-  const { matchUp } = findMatchUp({ drawDefinition, event, matchUpId });
+  const { matchUp } = findDrawMatchUp({ drawDefinition, event, matchUpId });
   const { scheduledDate } = scheduledMatchUpDate({ matchUp });
   const timeItems = matchUp?.timeItems ?? [];
 
@@ -650,7 +650,7 @@ export function addMatchUpResumeTime({
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
   if (!validTimeValue(resumeTime)) return { error: INVALID_TIME };
 
-  const { matchUp } = findMatchUp({ drawDefinition, event, matchUpId });
+  const { matchUp } = findDrawMatchUp({ drawDefinition, event, matchUpId });
   const { scheduledDate } = scheduledMatchUpDate({ matchUp });
   const timeItems = matchUp?.timeItems ?? [];
 

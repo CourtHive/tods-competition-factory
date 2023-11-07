@@ -1,6 +1,6 @@
 import { addTimeItem } from '../../../tournamentEngine/governors/tournamentGovernor/addTimeItem';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { findDrawMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
 
 import { MATCHUP_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -36,7 +36,7 @@ export function addMatchUpTimeItem({
   timeItem,
   event,
 }: AddMatchUpTimeItem) {
-  const { matchUp } = findMatchUp({ drawDefinition, event, matchUpId });
+  const { matchUp } = findDrawMatchUp({ drawDefinition, event, matchUpId });
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };
 
   const result = addTimeItem({
@@ -63,7 +63,7 @@ export function resetMatchUpTimeItems({
   matchUpId,
   event,
 }) {
-  const { matchUp } = findMatchUp({ drawDefinition, event, matchUpId });
+  const { matchUp } = findDrawMatchUp({ drawDefinition, event, matchUpId });
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };
   matchUp.timeItems = [];
   modifyMatchUpNotice({

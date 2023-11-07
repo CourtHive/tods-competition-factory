@@ -146,8 +146,8 @@ export function updateInContextMatchUp({ tournamentId, inContextMatchUp }) {
     return { error: MISSING_MATCHUP };
   }
   addNotice({
-    topic: UPDATE_INCONTEXT_MATCHUP,
     payload: { inContextMatchUp, tournamentId },
+    topic: UPDATE_INCONTEXT_MATCHUP,
     key: inContextMatchUp.matchUpId,
   });
 

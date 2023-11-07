@@ -1,7 +1,7 @@
 import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import { getMatchUpParticipantIds } from '../../accessors/participantAccessor';
 import { getCheckedInParticipantIds } from '../../getters/matchUpTimeItems';
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { findDrawMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
 import { addMatchUpTimeItem } from './timeItems';
 
 import { CHECK_IN, CHECK_OUT } from '../../../constants/timeItemConstants';
@@ -58,7 +58,7 @@ export function checkInParticipant({
 
   if (tournamentParticipants?.length) {
     if (!matchUp && drawDefinition) {
-      const result = findMatchUp({
+      const result = findDrawMatchUp({
         tournamentParticipants,
         inContext: true,
         drawDefinition,
@@ -110,7 +110,7 @@ export function checkOutParticipant({
     tournamentParticipants ?? tournamentRecord?.participants;
 
   if (!matchUp) {
-    const result = findMatchUp({
+    const result = findDrawMatchUp({
       tournamentParticipants,
       inContext: true,
       drawDefinition,

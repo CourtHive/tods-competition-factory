@@ -1,8 +1,8 @@
 import { isValid } from '../../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
+import { publicFindDrawMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
 import { getCheckedInParticipantIds } from '../../getters/matchUpTimeItems';
 import { checkInParticipant, checkOutParticipant } from './checkInStatus';
-import { publicFindMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { addFinishingRounds } from '../../generators/addFinishingRounds';
 import { validateScore } from '../../../global/validation/validateScore';
 import { addMatchUpTimeItem, resetMatchUpTimeItems } from './timeItems';
@@ -67,7 +67,7 @@ const matchUpGovernor = {
   drawMatic,
   addMatchUpOfficial,
 
-  findMatchUp: publicFindMatchUp,
+  findMatchUp: publicFindDrawMatchUp,
   getRoundMatchUps,
 
   validDrawPositions,

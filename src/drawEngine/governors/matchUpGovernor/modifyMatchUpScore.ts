@@ -7,7 +7,7 @@ import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { findDrawMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
 import { getTopics } from '../../../global/state/globalState';
 import { isAdHoc } from '../queryGovernor/isAdHoc';
 import { isLucky } from '../queryGovernor/isLucky';
@@ -87,7 +87,7 @@ export function modifyMatchUpScore({
   if (isDualMatchUp && drawDefinition) {
     if (matchUpId && matchUp.matchUpId !== matchUpId) {
       // the modification is to be applied to a tieMatchUp
-      const findResult = findMatchUp({
+      const findResult = findDrawMatchUp({
         drawDefinition,
         matchUpId,
         event,
@@ -122,7 +122,7 @@ export function modifyMatchUpScore({
   if (removeWinningSide) matchUp.winningSide = undefined;
 
   if (!structure && drawDefinition) {
-    ({ structure } = findMatchUp({
+    ({ structure } = findDrawMatchUp({
       drawDefinition,
       matchUpId,
       event,

@@ -8,8 +8,8 @@ import { getParticipants } from '../../getters/participants/getParticipants';
 import { removeCollectionAssignments } from './removeCollectionAssignments';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { addParticipant } from '../participantGovernor/addParticipants';
+import { ensureSideLineUps } from './drawDefinitions/ensureSideLineUps';
 import { updateTeamLineUp } from './drawDefinitions/updateTeamLineUp';
-import { findExtension } from '../queryGovernor/extensionQueries';
 import { getTieMatchUpContext } from './getTieMatchUpContext';
 
 import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
@@ -17,7 +17,6 @@ import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../../constants/policyConstants'
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { COMPETITOR } from '../../../constants/participantRoles';
-import { LINEUPS } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   EXISTING_OUTCOME,
@@ -122,28 +121,13 @@ export function removeTieMatchUpParticipantId(
       ? [participantId]
       : participantToRemove.individualParticipantIds;
 
-  if (!dualMatchUp?.sides?.length) {
-    const { extension } = findExtension({
-      element: drawDefinition,
-      name: LINEUPS,
-    });
-
-    const lineUps = extension?.value || {};
-
-    const extractSideDetail = ({
-      displaySideNumber,
-      drawPosition,
-      sideNumber,
-    }) => ({ drawPosition, sideNumber, displaySideNumber });
-
-    dualMatchUp.sides = inContextDualMatchUp?.sides?.map((side: any) => {
-      const participantId = side.participantId;
-      return {
-        ...extractSideDetail(side),
-        lineUp: (participantId && lineUps[participantId]) || [],
-      };
-    });
-  }
+  ensureSideLineUps({
+    tournamentId: tournamentRecord.tournamentId,
+    eventId: event.eventId,
+    inContextDualMatchUp,
+    drawDefinition,
+    dualMatchUp,
+  });
 
   let dualMatchUpSide = dualMatchUp.sides?.find(
     ({ sideNumber }) => sideNumber === side.sideNumber

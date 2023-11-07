@@ -4,7 +4,7 @@ import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps
 import { updateTieMatchUpScore } from '../../../drawEngine/governors/matchUpGovernor/tieMatchUpScore';
 import { setMatchUpStatus } from '../../../drawEngine/governors/matchUpGovernor/setMatchUpStatus';
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
-import { findMatchUp } from '../../../drawEngine/getters/getMatchUps/findMatchUp';
+import { findDrawMatchUp } from '../../../drawEngine/getters/getMatchUps/findDrawMatchUp';
 import { definedAttributes } from '../../../utilities/objects';
 import { scoreHasValue } from '../queryGovernor/scoreHasValue';
 import { calculateWinCriteria } from './calculateWinCriteria';
@@ -224,7 +224,7 @@ export function removeCollectionDefinition({
       });
       if (result.error) return result;
 
-      result = findMatchUp({
+      result = findDrawMatchUp({
         drawDefinition,
         matchUpId,
       });

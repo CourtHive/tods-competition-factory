@@ -6,9 +6,9 @@ import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { isDirectingMatchUpStatus } from '../matchUpGovernor/checkStatusType';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { isActiveDownstream } from '../matchUpGovernor/isActiveDownstream';
+import { findDrawMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { positionTargets } from '../positionGovernor/positionTargets';
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { isCompletedStructure } from './structureActions';
 import { makeDeepCopy, unique } from '../../../utilities';
 import { isAdHoc } from './isAdHoc';
@@ -135,7 +135,7 @@ export function matchUpActions({
       ?.otherFlightEntries;
 
   const { drawId } = drawDefinition;
-  const { matchUp, structure } = findMatchUp({
+  const { matchUp, structure } = findDrawMatchUp({
     drawDefinition,
     matchUpId,
     event,
