@@ -7,7 +7,7 @@ import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { findMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
 import { getTopics } from '../../../global/state/globalState';
 import { isAdHoc } from '../queryGovernor/isAdHoc';
 import { isLucky } from '../queryGovernor/isLucky';

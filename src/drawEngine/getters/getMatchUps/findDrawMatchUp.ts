@@ -24,7 +24,7 @@ import {
 /*
   public version of findMatchUp
 */
-export function publicFindMatchUp(params) {
+export function publicFindDrawMatchUp(params) {
   Object.assign(params, { inContext: true });
   return { matchUp: makeDeepCopy(findMatchUp(params).matchUp, false, true) };
 }

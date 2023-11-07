@@ -1,7 +1,7 @@
 import { matchUpTimeModifiers } from '../../../accessors/matchUpAccessor/timeModifiers';
 import { decorateResult } from '../../../../global/functions/decorateResult';
 import { scheduledMatchUpDate } from '../../../accessors/matchUpAccessor';
-import { findMatchUp } from '../../../getters/getMatchUps/findMatchUp';
+import { findMatchUp } from '../../../getters/getMatchUps/findDrawMatchUp';
 import { mustBeAnArray } from '../../../../utilities/mustBeAnArray';
 import { addMatchUpTimeItem } from '../timeItems';
 import {

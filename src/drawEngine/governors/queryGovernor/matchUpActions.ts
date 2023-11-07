@@ -8,7 +8,7 @@ import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { isActiveDownstream } from '../matchUpGovernor/isActiveDownstream';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { positionTargets } from '../positionGovernor/positionTargets';
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { findMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
 import { isCompletedStructure } from './structureActions';
 import { makeDeepCopy, unique } from '../../../utilities';
 import { isAdHoc } from './isAdHoc';

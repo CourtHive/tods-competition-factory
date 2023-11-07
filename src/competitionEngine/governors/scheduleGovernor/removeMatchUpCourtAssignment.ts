@@ -2,7 +2,7 @@ import { latestVisibleTimeItemValue } from '../../../drawEngine/accessors/matchU
 import { assignMatchUpCourt } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpCourt';
 import { addMatchUpTimeItem } from '../../../drawEngine/governors/matchUpGovernor/timeItems';
 import { getDrawDefinition } from '../../../global/functions/deducers/getDrawDefinition';
-import { findMatchUp } from '../../../drawEngine/getters/getMatchUps/findMatchUp';
+import { findMatchUp } from '../../../drawEngine/getters/getMatchUps/findDrawMatchUp';
 
 import { ALLOCATE_COURTS } from '../../../constants/timeItemConstants';
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';

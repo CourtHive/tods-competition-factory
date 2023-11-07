@@ -1,4 +1,4 @@
-import { findMatchUp } from '../../../../drawEngine/getters/getMatchUps/findMatchUp';
+import { findMatchUp } from '../../../../drawEngine/getters/getMatchUps/findDrawMatchUp';
 import { findStructure } from '../../../../drawEngine/getters/findStructure';
 import { getObjectTieFormat } from './getObjectTieFormat';
 import { getItemTieFormat } from './getItemTieFormat';

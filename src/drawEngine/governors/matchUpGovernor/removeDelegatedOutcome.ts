@@ -1,5 +1,5 @@
 import { removeExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { findMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
 
 import { DELEGATED_OUTCOME } from '../../../constants/extensionConstants';
 import {

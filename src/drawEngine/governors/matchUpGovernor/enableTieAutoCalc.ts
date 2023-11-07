@@ -1,4 +1,4 @@
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { findMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
 import { setMatchUpStatus } from './setMatchUpStatus';
 
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';

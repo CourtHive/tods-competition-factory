@@ -5,7 +5,7 @@ import { assignMatchUpVenue } from '../../../tournamentEngine/governors/schedule
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { scheduledMatchUpDate } from '../../accessors/matchUpAccessor';
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { findMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
 import { isConvertableInteger } from '../../../utilities/math';
 import { ensureInt } from '../../../utilities/ensureInt';
 import { addMatchUpTimeItem } from './timeItems';

@@ -1,6 +1,6 @@
 import { addTimeItem } from '../../../tournamentEngine/governors/tournamentGovernor/addTimeItem';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { findMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
 
 import { MATCHUP_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';

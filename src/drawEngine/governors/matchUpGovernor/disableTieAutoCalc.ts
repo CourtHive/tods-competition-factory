@@ -1,5 +1,5 @@
 import { addExtension } from '../../../global/functions/producers/addExtension';
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { findMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { DISABLE_AUTO_CALC } from '../../../constants/extensionConstants';

@@ -1,6 +1,6 @@
 import { updateTeamLineUp } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/updateTeamLineUp';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { findMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {

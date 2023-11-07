@@ -2,7 +2,7 @@ import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructu
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 import { getStructureMatchUps } from '../../getters/getMatchUps/getStructureMatchUps';
 import { parseScoreString } from '../../../mocksEngine/utilities/parseScoreString';
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { findMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
 import { findStructure } from '../../getters/findStructure';
 import { drawEngine } from '../../sync';
 import { expect } from 'vitest';

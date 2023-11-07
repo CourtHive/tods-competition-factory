@@ -1,7 +1,7 @@
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { getStructureMatchUps } from '../../getters/getMatchUps/getStructureMatchUps';
 import { setMatchUpFormat } from '../../governors/matchUpGovernor/setMatchUpFormat';
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { findMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
 import { getMatchUpType } from '../../accessors/matchUpAccessor';
 import { getDrawStructures } from '../../getters/findStructure';
 import { drawEngine } from '../../sync';

@@ -13,7 +13,7 @@ import { getPositionAssignments } from '../../getters/positionsGetter';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { noDownstreamDependencies } from './noDownstreamDependencies';
 import { pushGlobalLog } from '../../../global/functions/globalLog';
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { findMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
 import { findStructure } from '../../getters/findStructure';
 import { updateTieMatchUpScore } from './tieMatchUpScore';
 import { isActiveDownstream } from './isActiveDownstream';

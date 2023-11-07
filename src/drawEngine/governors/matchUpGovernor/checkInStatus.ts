@@ -1,7 +1,7 @@
 import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import { getMatchUpParticipantIds } from '../../accessors/participantAccessor';
 import { getCheckedInParticipantIds } from '../../getters/matchUpTimeItems';
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { findMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
 import { addMatchUpTimeItem } from './timeItems';
 
 import { CHECK_IN, CHECK_OUT } from '../../../constants/timeItemConstants';

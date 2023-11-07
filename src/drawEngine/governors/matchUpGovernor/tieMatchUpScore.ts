@@ -1,9 +1,10 @@
+import { ensureSideLineUps } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/ensureSideLineUps';
 import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
 import { removeExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { generateTieMatchUpScore } from '../../generators/tieMatchUpScore/generateTieMatchUpScore';
 import { copyTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';
 import { findExtension } from '../../../global/functions/deducers/findExtension';
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { findMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
 import { isActiveMatchUp } from '../../getters/activeMatchUp';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 
@@ -61,6 +62,13 @@ export function updateTieMatchUpScore({
   const { matchUp, structure } = result;
 
   if (!matchUp.tieMatchUps) return { error: INVALID_MATCHUP };
+
+  ensureSideLineUps({
+    tournamentId: tournamentRecord?.tournamentId,
+    eventId: event?.eventId,
+    dualMatchUp: matchUp,
+    drawDefinition,
+  });
 
   const { extension } = findExtension({
     name: DISABLE_AUTO_CALC,
