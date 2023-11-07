@@ -22,6 +22,7 @@ import { getCategoryAgeDetails } from './global/functions/getCategoryAgeDetails'
 import { parseScoreString } from './mocksEngine/utilities/parseScoreString';
 import { roundRobinGroups } from './drawEngine/generators/roundRobinGroups';
 import { addExtension } from './global/functions/producers/addExtension';
+import { validateCategory } from './global/validation/validateCategory';
 import { isAdHoc } from './drawEngine/governors/queryGovernor/isAdHoc';
 import { structureSort } from './drawEngine/getters/structureSort';
 import { tidyScore } from './utilities/scoreParser/scoreParser';
@@ -111,6 +112,7 @@ export const utilities = {
   unique,
   UUID,
   UUIDS,
+  validateCategory,
   validateTieFormat,
   visualizeScheduledMatchUps,
 };
