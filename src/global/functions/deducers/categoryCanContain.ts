@@ -65,10 +65,16 @@ export function categoryCanContain({
         childCategory.ratingMin &&
         childCategory.ratingMin > category.ratingMax));
 
+  const invalidBallType =
+    category.ballType &&
+    childCategory.ballType &&
+    category.ballType !== childCategory.ballType;
+
   const valid =
     !invalidRatingRange &&
     !invalidAgeMinDate &&
     !invalidAgeMaxDate &&
+    !invalidBallType &&
     !invalidAgeMax &&
     !invalidAgeMin;
 
@@ -78,6 +84,7 @@ export function categoryCanContain({
       invalidRatingRange,
       invalidAgeMinDate,
       invalidAgeMaxDate,
+      invalidBallType,
       invalidAgeMax,
       invalidAgeMin,
       valid,
