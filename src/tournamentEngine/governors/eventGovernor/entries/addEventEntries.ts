@@ -25,26 +25,22 @@ import {
   PAIR,
   TEAM,
 } from '../../../../constants/participantConstants';
+import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
+import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../../../constants/policyConstants';
+import { getAppliedPolicies } from '../../../../global/functions/deducers/getAppliedPolicies';
 
 /**
- *
  * Add entries into an event; optionally add to specified drawDefinition/flightProfile, if possible.
- *
- * @param {object} tournamentRecord - passed in automatically by tournamentEngine
- * @param {string} eventId - tournamentEngine automatically retrieves event
- * @param {string} drawId - optional - also add to drawDefinition.entries & flightProfile.drawEntries (if possible)
- * @param {string[]} participantIds - ids of all participants to add to event
- * @param {string} enryStatus - entryStatus enum
- * @param {string} entryStage - entryStage enum
- *
  */
+
 export function addEventEntries(params) {
   const {
     entryStatus = DIRECT_ACCEPTANCE,
     autoEntryPositions = true,
+    enforceGender = true,
     participantIds = [],
     entryStageSequence,
-    ignoreEventGender,
+    policyDefinitions,
     entryStage = MAIN,
     tournamentRecord,
     ignoreStageSpace,
@@ -68,6 +64,18 @@ export function addEventEntries(params) {
 
   if (!event?.eventId) return { error: EVENT_NOT_FOUND };
 
+  const appliedPolicies =
+    getAppliedPolicies({ tournamentRecord, event }).appliedPolicies ?? {};
+
+  const matchUpActionsPolicy =
+    policyDefinitions?.[POLICY_TYPE_MATCHUP_ACTIONS] ??
+    appliedPolicies?.[POLICY_TYPE_MATCHUP_ACTIONS] ??
+    POLICY_MATCHUP_ACTIONS_DEFAULT[POLICY_TYPE_MATCHUP_ACTIONS];
+
+  const genderEnforced =
+    (enforceGender ?? matchUpActionsPolicy?.participants?.enforceGender) !==
+    false;
+
   const addedParticipantIdEntries: string[] = [];
   const removedEntries: any[] = [];
 
@@ -85,7 +93,7 @@ export function addEventEntries(params) {
   }
 
   const checkTypedParticipants = !!tournamentRecord;
-  const misMatchedGender: any[] = [];
+  const mismatchedGender: any[] = [];
   let info;
 
   const typedParticipantIds =
@@ -104,7 +112,7 @@ export function addEventEntries(params) {
         if (
           validSingles &&
           (!event.gender ||
-            ignoreEventGender ||
+            !genderEnforced ||
             [MIXED, ANY].includes(event.gender) ||
             event.gender === participant.person?.sex)
         ) {
@@ -126,11 +134,11 @@ export function addEventEntries(params) {
         if (
           validSingles &&
           event.gender &&
-          !ignoreEventGender &&
+          genderEnforced &&
           ![MIXED, ANY].includes(event.gender) &&
           event.gender !== participant.person?.sex
         ) {
-          misMatchedGender.push({
+          mismatchedGender.push({
             participantId: participant.participantId,
             sex: participant.person?.sex,
           });
@@ -239,7 +247,7 @@ export function addEventEntries(params) {
 
   if (invalidParticipantIds)
     return decorateResult({
-      context: { misMatchedGender, gender: event.gender },
+      context: { mismatchedGender, gender: event.gender },
       result: { error: INVALID_PARTICIPANT_IDS },
       stack,
     });

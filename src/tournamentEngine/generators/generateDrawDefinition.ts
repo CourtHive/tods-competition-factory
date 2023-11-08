@@ -221,6 +221,7 @@ export function generateDrawDefinition(
     participants &&
     checkValidEntries({
       consideredEntries,
+      appliedPolicies,
       enforceGender,
       participants,
       event,

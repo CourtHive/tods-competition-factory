@@ -1,12 +1,18 @@
 import { matchUpActions as tournamentMatchUpActions } from '../../../tournamentEngine/getters/matchUpActions';
 import { findEvent } from '../../../tournamentEngine/getters/findEvent';
-import { TournamentRecordsArgs } from '../../../types/factoryTypes';
+
 import {
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
+import {
+  PolicyDefinitions,
+  TournamentRecordsArgs,
+} from '../../../types/factoryTypes';
 
 type MatchUpActionsArgs = TournamentRecordsArgs & {
+  policyDefinitions?: PolicyDefinitions;
+  enforceGender?: boolean;
   participantId: string;
   tournamentId: string;
   sideNumber?: number;
@@ -17,6 +23,8 @@ type MatchUpActionsArgs = TournamentRecordsArgs & {
 export function matchUpActions(params?: MatchUpActionsArgs) {
   const {
     tournamentRecords,
+    policyDefinitions,
+    enforceGender,
     participantId,
     tournamentId,
     sideNumber,
@@ -45,7 +53,9 @@ export function matchUpActions(params?: MatchUpActionsArgs) {
 
   return tournamentMatchUpActions({
     drawDefinition: result.drawDefinition,
+    policyDefinitions,
     tournamentRecord,
+    enforceGender,
     participantId,
     sideNumber,
     matchUpId,

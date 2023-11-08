@@ -11,6 +11,7 @@ import {
 } from '../../../types/tournamentFromSchema';
 
 type PositionActionsArgs = {
+  restrictAdHocRoundParticipants?: boolean;
   policyDefinitions?: PolicyDefinitions;
   provisionalPositioning?: boolean;
   returnParticipants?: boolean;

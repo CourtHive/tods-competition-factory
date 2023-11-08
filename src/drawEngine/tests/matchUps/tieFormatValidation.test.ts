@@ -15,8 +15,11 @@ import { tieFormats } from '../../../fixtures/scoring/tieFormats';
 import { TEAM } from '../../../constants/eventConstants';
 import {
   COLLEGE_D3,
+  DOMINANT_DUO,
   TEAM_DOUBLES_3_AGGREGATION,
 } from '../../../constants/tieFormatConstants';
+import { FEMALE, MALE } from '../../../constants/genderConstants';
+import { GenderEnum } from '../../../types/tournamentFromSchema';
 
 const matchUpFormat = FORMAT_STANDARD;
 
@@ -186,4 +189,36 @@ it('can use tieFormatName to generate TEAM events', () => {
   expect(event.tieFormat.tieFormatName).toEqual(
     tieFormats.COLLEGE_D3.tieFormatName
   );
+});
+
+it('cal enforce gender in collectionDefinitions', () => {
+  const tieFormat = tieFormatDefaults({
+    namedFormat: DOMINANT_DUO,
+  });
+  let result = validateTieFormat({ tieFormat });
+  expect(result.valid).toEqual(true);
+
+  const collectionDefinition = {
+    collectionName: 'Gender Specif',
+    matchUpFormat: FORMAT_STANDARD,
+    matchUpType: SINGLES,
+    matchUpCount: 3,
+    matchUpValue: 1,
+    gender: FEMALE,
+  };
+  tieFormat.collectionDefinitions.push(collectionDefinition);
+
+  result = validateTieFormat({ tieFormat });
+  expect(result.valid).toEqual(true);
+
+  result = validateTieFormat({ tieFormat, enforceGender: true });
+  expect(result.valid).toEqual(true);
+
+  result = validateTieFormat({
+    gender: GenderEnum.Male,
+    enforceGender: true,
+    tieFormat,
+  });
+  expect(result.error).toEqual(INVALID_TIE_FORMAT);
+  expect(result.errors).toEqual(['Invalid gender: FEMALE']);
 });

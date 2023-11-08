@@ -1,6 +1,9 @@
 import { isUngrouped } from '../../../../global/functions/isUngrouped';
 
+import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
+import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../../../constants/policyConstants';
 import { WITHDRAWN } from '../../../../constants/entryStatusConstants';
+import { PolicyDefinitions } from '../../../../types/factoryTypes';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   INDIVIDUAL,
@@ -27,6 +30,8 @@ import {
 } from '../../../../types/tournamentFromSchema';
 
 type CheckValidEntriesArgs = {
+  policyDefinitions?: PolicyDefinitions;
+  appliedPolicies?: PolicyDefinitions;
   tournamentRecord?: Tournament;
   participants: Participant[];
   consideredEntries?: Entry[];
@@ -34,9 +39,11 @@ type CheckValidEntriesArgs = {
   event: Event;
 };
 export function checkValidEntries({
-  enforceGender = true,
   consideredEntries,
+  policyDefinitions,
   tournamentRecord,
+  appliedPolicies,
+  enforceGender,
   participants,
   event,
 }: CheckValidEntriesArgs) {
@@ -46,6 +53,15 @@ export function checkValidEntries({
   if (!Array.isArray(participants)) return { error: INVALID_VALUES };
   if (!event) return { error: MISSING_EVENT };
 
+  const matchUpActionsPolicy =
+    policyDefinitions?.[POLICY_TYPE_MATCHUP_ACTIONS] ??
+    appliedPolicies?.[POLICY_TYPE_MATCHUP_ACTIONS] ??
+    POLICY_MATCHUP_ACTIONS_DEFAULT[POLICY_TYPE_MATCHUP_ACTIONS];
+
+  const genderEnforced =
+    (enforceGender ?? matchUpActionsPolicy?.participants?.enforceGender) !==
+    false;
+
   const { eventType, gender: eventGender } = event;
   const participantType =
     (eventType === TEAM_EVENT && TEAM) ||
@@ -54,7 +70,7 @@ export function checkValidEntries({
 
   const entryStatusMap = Object.assign(
     {},
-    ...(consideredEntries || event.entries || []).map((entry) => ({
+    ...(consideredEntries ?? event.entries ?? []).map((entry) => ({
       [entry.participantId]: entry.entryStatus,
     }))
   );
@@ -77,7 +93,7 @@ export function checkValidEntries({
     // TODO: implement gender checking for teams & pairs
     const personGender = participant?.person?.sex as unknown;
     const wrongGender =
-      enforceGender &&
+      genderEnforced &&
       eventGender &&
       eventType === TypeEnum.Singles &&
       [GenderEnum.Male, GenderEnum.Female].includes(eventGender) &&
@@ -93,5 +109,5 @@ export function checkValidEntries({
     return { error: INVALID_ENTRIES, invalidParticipantIds };
   }
 
-  return { ...SUCCESS };
+  return { ...SUCCESS, valid: true };
 }

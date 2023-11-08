@@ -192,8 +192,8 @@ tournamentEngine.addEventEntries({
   entryStatus: ALTERNATE, // optional; defaults to DIRECT_ACCEPTANCE
   entryStage: MAIN, // optional; defaults to MAIN
   autoEntryPositions, // optional - keeps entries ordered by entryStage/entryStatus and auto-increments
-  ignoreEventGender, // optional - override peson.sex correspondes to event.gender
   participantIds,
+  enforceGender, // optional - defaults to true
   eventId,
   drawId, // optional - will add participantIds to specified flightProfile.flight[].drawEntries and drawDefinition.entries (if possible)
 });
