@@ -32,8 +32,8 @@ it('can return matchUps with roundNames from an SINGLE_ELIMINATION structure', (
   expect(matchUps.length).toEqual(15);
 
   let { upcomingMatchUps } = drawEngine.getStructureMatchUps({
-    structureId,
     requireParticipants: false,
+    structureId,
   });
   expect(upcomingMatchUps.length).toEqual(8);
 

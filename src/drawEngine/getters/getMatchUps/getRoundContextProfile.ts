@@ -3,20 +3,22 @@ import { isLucky } from '../../governors/queryGovernor/isLucky';
 import { isAdHoc } from '../../governors/queryGovernor/isAdHoc';
 
 import { POLICY_ROUND_NAMING_DEFAULT } from '../../../fixtures/policies/POLICY_ROUND_NAMING_DEFAULT';
+import { DrawDefinition, Structure } from '../../../types/tournamentFromSchema';
 import { POLICY_TYPE_ROUND_NAMING } from '../../../constants/policyConstants';
+import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { ResultType } from '../../../global/functions/decorateResult';
-import { MAIN } from '../../../constants/drawDefinitionConstants';
-import { Structure } from '../../../types/tournamentFromSchema';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import { RoundProfile } from '../../../types/factoryTypes';
 
 type GetRoundContextProfileArgs = {
+  drawDefinition?: DrawDefinition;
   matchUps: HydratedMatchUp[];
   roundNamingPolicy: any;
   structure: Structure;
 };
 export function getRoundContextProfile({
   roundNamingPolicy,
+  drawDefinition,
   structure,
   matchUps,
 }: GetRoundContextProfileArgs): ResultType & {
@@ -38,6 +40,30 @@ export function getRoundContextProfile({
   const defaultRoundNamingPolicy =
     POLICY_ROUND_NAMING_DEFAULT[POLICY_TYPE_ROUND_NAMING];
 
+  const isQualifying = structure.stage === QUALIFYING;
+  const qualifyingFinishgMap =
+    isQualifying &&
+    (roundNamingPolicy?.qualifyingFinishMap ||
+      defaultRoundNamingPolicy?.qualifyingFinishMap ||
+      {});
+
+  const qualifyingStageSequences: number = isQualifying
+    ? Math.max(
+        ...(drawDefinition?.structures ?? [])
+          .filter((structure) => structure.stage === QUALIFYING)
+          .map(({ stageSequence }) => stageSequence ?? 1),
+        0
+      )
+    : 0;
+
+  const preQualifyingSequence = qualifyingStageSequences
+    ? qualifyingStageSequences - (structure.stageSequence || 1) || ''
+    : '';
+
+  const preQualifyingAffix = preQualifyingSequence
+    ? roundNamingPolicy?.affixes?.preQualifying || ''
+    : '';
+
   const roundNamingMap =
     roundNamingPolicy?.roundNamingMap ||
     defaultRoundNamingPolicy.roundNamingMap ||
@@ -48,11 +74,13 @@ export function getRoundContextProfile({
     defaultRoundNamingPolicy.abbreviatedRoundNamingMap ||
     {};
 
-  const roundNamePrefix =
-    roundNamingPolicy?.affixes || defaultRoundNamingPolicy.affixes;
+  const preFeedAffix =
+    roundNamingPolicy?.affixes?.preFeedRound ||
+    defaultRoundNamingPolicy.affixes.preFeedRound;
 
   const roundNumberAffix =
-    roundNamePrefix.roundNumber || defaultRoundNamingPolicy.affixes.roundNumber;
+    roundNamingPolicy?.affixes?.roundNumber ||
+    defaultRoundNamingPolicy.affixes.roundNumber;
 
   const namingConventions =
     roundNamingPolicy?.namingConventions ||
@@ -60,15 +88,22 @@ export function getRoundContextProfile({
   const roundNameFallback = namingConventions.round;
 
   const stageInitial = stage && stage !== MAIN && stage[0];
-  const stageConstants = roundNamingPolicy?.stageConstants;
+  const stageConstants =
+    roundNamingPolicy?.stageConstants ||
+    defaultRoundNamingPolicy.stageConstants;
   const stageConstant = (stage && stageConstants?.[stage]) || stageInitial;
 
   const roundProfileKeys = roundProfile ? Object.keys(roundProfile) : [];
+  const qualifyingAffix =
+    isQualifying && stageConstants?.[QUALIFYING]
+      ? `${stageConstants?.[QUALIFYING]}-`
+      : '';
+
   if (isRoundRobin || isAdHocStructure || isLuckyStructure) {
     Object.assign(
       roundNamingProfile,
       ...roundProfileKeys.map((key) => {
-        const roundName = `${roundNameFallback} ${key}`;
+        const roundName = `${qualifyingAffix}${roundNameFallback} ${key}`;
         const abbreviatedRoundName = `${roundNumberAffix}${key}`;
         return { [key]: { roundName, abbreviatedRoundName } };
       })
@@ -82,12 +117,18 @@ export function getRoundContextProfile({
         const participantsCount = matchUpsCount * 2;
 
         const sizedRoundName =
+          qualifyingFinishgMap?.[roundProfile?.[round].finishingRound] ||
+          (qualifyingFinishgMap && `${roundNumberAffix}${participantsCount}`) ||
           roundNamingMap[matchUpsCount] ||
-          `${roundNamePrefix.roundNumber}${participantsCount}`;
-        const suffix = preFeedRound ? `-${roundNamePrefix.preFeedRound}` : '';
+          `${roundNumberAffix}${participantsCount}`;
+
+        const suffix = preFeedRound ? `-${preFeedAffix}` : '';
         const profileRoundName = `${sizedRoundName}${suffix}`;
+
         const roundName = [
+          preQualifyingAffix,
           stageConstant,
+          preQualifyingSequence,
           structureAbbreviation,
           profileRoundName,
         ]
@@ -96,10 +137,12 @@ export function getRoundContextProfile({
 
         const sizedAbbreviation =
           abbreviatedRoundNamingMap[matchUpsCount] ||
-          `${roundNamePrefix.roundNumber}${participantsCount}`;
+          `${roundNumberAffix}${participantsCount}`;
         const profileAbbreviation = `${sizedAbbreviation}${suffix}`;
         const abbreviatedRoundName = [
+          preQualifyingAffix,
           stageConstant,
+          preQualifyingSequence,
           structureAbbreviation,
           profileAbbreviation,
         ]

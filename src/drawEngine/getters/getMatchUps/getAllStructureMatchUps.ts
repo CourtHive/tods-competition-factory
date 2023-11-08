@@ -236,6 +236,7 @@ export function getAllStructureMatchUps({
   const roundNamingPolicy = appliedPolicies?.[POLICY_TYPE_ROUND_NAMING];
   const result = getRoundContextProfile({
     roundNamingPolicy,
+    drawDefinition,
     structure,
     matchUps,
   });

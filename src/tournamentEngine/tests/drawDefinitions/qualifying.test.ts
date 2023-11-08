@@ -486,6 +486,15 @@ it('Fish Farm: supports qualifying structures with multiple roundTargets', () =>
   const completedQualifying = matchUps.filter(
     (matchUp) => matchUp.stage === QUALIFYING
   );
+  // prettier-ignore
+  expect(completedQualifying.map(({ roundName }) => roundName)).toEqual([
+    'Q-R32', 'Q-R32', 'Q-R32', 'Q-R32', 'Q-R32', 'Q-R32', 'Q-R32', 'Q-R32', 'Q-R32', 'Q-R32', 'Q-R32',
+    'Q-R32', 'Q-R32', 'Q-R32', 'Q-R32', 'Q-R32', 'Q-R16', 'Q-R16', 'Q-R16', 'Q-R16', 'Q-R16', 'Q-R16',
+    'Q-R16', 'Q-R16', 'Q-Final', 'Q-Final', 'Q-Final', 'Q-Final', 'Q-Round 1', 'Q-Round 1', 'Q-Round 2',
+    'Q-Round 2', 'Q-Round 3', 'Q-Round 3', 'Q-Round 1', 'Q-Round 1', 'Q-Round 2', 'Q-Round 2', 'Q-Round 3',
+    'Q-Round 3', 'Q-Round 1', 'Q-Round 1', 'Q-Round 2', 'Q-Round 2', 'Q-Round 3', 'Q-Round 3', 'Q-Round 1',
+    'Q-Round 1', 'Q-Round 2', 'Q-Round 2', 'Q-Round 3', 'Q-Round 3',
+  ]);
   expect(completedQualifying.length).toEqual(completionGoal);
 
   const completedMain = matchUps.filter((matchUp) => matchUp.stage === MAIN);
