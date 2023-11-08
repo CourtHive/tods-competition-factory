@@ -2,6 +2,7 @@ import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps
 import { getRoundMatchUps } from '../../../drawEngine/accessors/matchUpAccessor/getRoundMatchUps';
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
 import { getDrawStructures } from '../../../drawEngine/getters/findStructure';
+import { unique } from '../../../utilities';
 import tournamentEngine from '../../sync';
 import { mocksEngine } from '../../..';
 import { expect, it } from 'vitest';
@@ -487,13 +488,8 @@ it('Fish Farm: supports qualifying structures with multiple roundTargets', () =>
     (matchUp) => matchUp.stage === QUALIFYING
   );
   // prettier-ignore
-  expect(completedQualifying.map(({ roundName }) => roundName)).toEqual([
-    'Q-R32', 'Q-R32', 'Q-R32', 'Q-R32', 'Q-R32', 'Q-R32', 'Q-R32', 'Q-R32', 'Q-R32', 'Q-R32', 'Q-R32',
-    'Q-R32', 'Q-R32', 'Q-R32', 'Q-R32', 'Q-R32', 'Q-R16', 'Q-R16', 'Q-R16', 'Q-R16', 'Q-R16', 'Q-R16',
-    'Q-R16', 'Q-R16', 'Q-Final', 'Q-Final', 'Q-Final', 'Q-Final', 'Q-Round 1', 'Q-Round 1', 'Q-Round 2',
-    'Q-Round 2', 'Q-Round 3', 'Q-Round 3', 'Q-Round 1', 'Q-Round 1', 'Q-Round 2', 'Q-Round 2', 'Q-Round 3',
-    'Q-Round 3', 'Q-Round 1', 'Q-Round 1', 'Q-Round 2', 'Q-Round 2', 'Q-Round 3', 'Q-Round 3', 'Q-Round 1',
-    'Q-Round 1', 'Q-Round 2', 'Q-Round 2', 'Q-Round 3', 'Q-Round 3',
+  expect(unique(completedQualifying.map(({ roundName }) => roundName))).toEqual([
+    'Q-R32', 'Q-R16', 'Q-Final', 'Q-Round 1', 'Q-Round 2', 'Q-Round 3',
   ]);
   expect(completedQualifying.length).toEqual(completionGoal);
 

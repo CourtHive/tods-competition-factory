@@ -2,6 +2,7 @@ import { isCompletedStructure } from '../../../drawEngine/governors/queryGoverno
 import { getRoundMatchUps } from '../../../drawEngine/accessors/matchUpAccessor/getRoundMatchUps';
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
 import { getDrawStructures } from '../../../drawEngine/getters/findStructure';
+import { unique } from '../../../utilities';
 import tournamentEngine from '../../sync';
 import { mocksEngine } from '../../..';
 import { expect, it } from 'vitest';
@@ -155,6 +156,15 @@ it('supports multi-sequence qualifying structures', () => {
   expect(validTypes).toEqual([
     ASSIGN_BYE, ADD_NICKNAME, ADD_PENALTY,
     REMOVE_ASSIGNMENT, REMOVE_SEED, SEED_VALUE, SWAP_PARTICIPANTS, WITHDRAW_PARTICIPANT,
+  ]);
+
+  const preQualifyingMatchUps = tournamentEngine.allTournamentMatchUps({
+    contextFilters: { stages: [QUALIFYING], stageSequences: [1] },
+  }).matchUps;
+
+  // prettier-ignore
+  expect(unique(preQualifyingMatchUps.map((m) => m.roundName))).toEqual([
+    'PQ1-R32', 'PQ1-R16', 'PQ1-Final',
   ]);
 });
 

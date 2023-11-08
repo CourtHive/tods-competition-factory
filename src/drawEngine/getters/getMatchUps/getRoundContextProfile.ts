@@ -61,7 +61,9 @@ export function getRoundContextProfile({
     : '';
 
   const preQualifyingAffix = preQualifyingSequence
-    ? roundNamingPolicy?.affixes?.preQualifying || ''
+    ? roundNamingPolicy?.affixes?.preQualifying ||
+      defaultRoundNamingPolicy.affixes.preQualifying ||
+      ''
     : '';
 
   const roundNamingMap =
@@ -87,11 +89,12 @@ export function getRoundContextProfile({
     defaultRoundNamingPolicy.namingConventions;
   const roundNameFallback = namingConventions.round;
 
-  const stageInitial = stage && stage !== MAIN && stage[0];
+  const stageInitial = stage && stage !== MAIN ? stage[0] : '';
   const stageConstants =
     roundNamingPolicy?.stageConstants ||
     defaultRoundNamingPolicy.stageConstants;
-  const stageConstant = (stage && stageConstants?.[stage]) || stageInitial;
+  const stageIndicator = (stage && stageConstants?.[stage]) || stageInitial;
+  const stageConstant = `${preQualifyingAffix}${stageIndicator}${preQualifyingSequence}`;
 
   const roundProfileKeys = roundProfile ? Object.keys(roundProfile) : [];
   const qualifyingAffix =
@@ -126,9 +129,7 @@ export function getRoundContextProfile({
         const profileRoundName = `${sizedRoundName}${suffix}`;
 
         const roundName = [
-          preQualifyingAffix,
           stageConstant,
-          preQualifyingSequence,
           structureAbbreviation,
           profileRoundName,
         ]
@@ -140,9 +141,7 @@ export function getRoundContextProfile({
           `${roundNumberAffix}${participantsCount}`;
         const profileAbbreviation = `${sizedAbbreviation}${suffix}`;
         const abbreviatedRoundName = [
-          preQualifyingAffix,
           stageConstant,
-          preQualifyingSequence,
           structureAbbreviation,
           profileAbbreviation,
         ]
