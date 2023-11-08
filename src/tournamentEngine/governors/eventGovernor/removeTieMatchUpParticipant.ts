@@ -21,7 +21,7 @@ import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { COMPETITOR } from '../../../constants/participantRoles';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { LineUp } from '../../../types/factoryTypes';
+import { LineUp, PolicyDefinitions } from '../../../types/factoryTypes';
 import {
   EXISTING_OUTCOME,
   INVALID_PARTICIPANT,
@@ -37,6 +37,7 @@ import {
 } from '../../../types/tournamentFromSchema';
 
 type RemoveTieMatchUpParticipantIdArgs = {
+  policyDefinitions?: PolicyDefinitions;
   tournamentRecord: Tournament;
   drawDefinition: DrawDefinition;
   participantId: string;
@@ -63,7 +64,8 @@ export function removeTieMatchUpParticipantId(
   });
 
   const matchUpActionsPolicy =
-    appliedPolicies?.[POLICY_TYPE_MATCHUP_ACTIONS] ||
+    params.policyDefinitions?.[POLICY_TYPE_MATCHUP_ACTIONS] ??
+    appliedPolicies?.[POLICY_TYPE_MATCHUP_ACTIONS] ??
     POLICY_MATCHUP_ACTIONS_DEFAULT[POLICY_TYPE_MATCHUP_ACTIONS];
 
   const substitutionProcessCodes =

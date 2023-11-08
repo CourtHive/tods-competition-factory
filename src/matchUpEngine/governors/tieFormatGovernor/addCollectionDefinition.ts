@@ -24,6 +24,7 @@ import {
 
 import { TIE_FORMAT_MODIFICATIONS } from '../../../constants/extensionConstants';
 import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../../constants/policyConstants';
+import { PolicyDefinitions } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
@@ -51,6 +52,7 @@ import {
 
 type AddCollectionDefinitionArgs = {
   collectionDefinition: CollectionDefinition;
+  policyDefinitions?: PolicyDefinitions;
   updateInProgressMatchUps?: boolean;
   drawDefinition: DrawDefinition;
   referenceCategory?: Category;
@@ -72,6 +74,7 @@ export function addCollectionDefinition({
   collectionDefinition,
   referenceCategory,
   tournamentRecord,
+  policyDefinitions,
   enforceCategory,
   referenceGender,
   drawDefinition,
@@ -96,22 +99,22 @@ export function addCollectionDefinition({
       event,
     }).appliedPolicies ?? {};
 
-  const matchUpActionsPolicy = appliedPolicies?.[POLICY_TYPE_MATCHUP_ACTIONS];
+  const matchUpActionsPolicy =
+    policyDefinitions?.[POLICY_TYPE_MATCHUP_ACTIONS] ??
+    appliedPolicies?.[POLICY_TYPE_MATCHUP_ACTIONS];
 
   enforceCategory =
     enforceCategory ?? matchUpActionsPolicy?.participants?.enforceCategory;
 
-  enforceGender =
-    enforceGender ?? matchUpActionsPolicy?.participants?.enforceGender;
+  const genderEnforced =
+    (enforceGender ?? matchUpActionsPolicy?.participants?.enforceGender) !==
+    false;
 
   const checkCategory = !!(
     (referenceCategory ?? event?.category) &&
     enforceCategory !== false
   );
-  const checkGender = !!(
-    (referenceGender ?? event?.gender) &&
-    enforceGender !== false
-  );
+  const checkGender = !!((referenceGender ?? event?.gender) && genderEnforced);
 
   const validationResult = validateCollectionDefinition({
     referenceCategory: referenceCategory ?? event?.category,

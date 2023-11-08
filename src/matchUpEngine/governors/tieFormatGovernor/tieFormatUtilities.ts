@@ -242,8 +242,8 @@ export function validateCollectionDefinition({
   ) {
     errors.push(`Invalid gender: ${gender}`);
     return decorateResult({
+      result: { error: INVALID_GENDER, errors },
       context: { referenceGender, gender },
-      result: { error: INVALID_GENDER },
       stack,
     });
   }

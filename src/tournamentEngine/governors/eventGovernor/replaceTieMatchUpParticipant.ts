@@ -21,7 +21,7 @@ import { COMPETITOR } from '../../../constants/participantRoles';
 import { PAIR } from '../../../constants/participantConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { DOUBLES } from '../../../constants/matchUpTypes';
-import { LineUp } from '../../../types/factoryTypes';
+import { LineUp, PolicyDefinitions } from '../../../types/factoryTypes';
 import {
   EXISTING_PARTICIPANT,
   INVALID_PARTICIPANT,
@@ -37,10 +37,12 @@ import {
 } from '../../../types/tournamentFromSchema';
 
 type ReplaceTieMatchUpParticipantIdArgs = {
+  policyDefinitions?: PolicyDefinitions;
   existingParticipantId: string;
   tournamentRecord: Tournament;
   drawDefinition: DrawDefinition;
   newParticipantId: string;
+  enforceGender?: boolean;
   substitution?: boolean;
   tieMatchUpId: string;
   event: Event;
@@ -118,15 +120,19 @@ export function replaceTieMatchUpParticipantId(
   });
 
   const matchUpActionsPolicy =
-    appliedPolicies?.[POLICY_TYPE_MATCHUP_ACTIONS] ||
+    params.policyDefinitions?.[POLICY_TYPE_MATCHUP_ACTIONS] ??
+    appliedPolicies?.[POLICY_TYPE_MATCHUP_ACTIONS] ??
     POLICY_MATCHUP_ACTIONS_DEFAULT[POLICY_TYPE_MATCHUP_ACTIONS];
 
   const newParticipant = targetParticipants.find(
     ({ participantId }) => participantId === newParticipantId
   );
 
+  const genderEnforced =
+    (params.enforceGender ??
+      matchUpActionsPolicy?.participants?.enforceGender) !== false;
   if (
-    matchUpActionsPolicy?.participants?.enforceGender &&
+    genderEnforced &&
     [MALE, FEMALE].includes(inContextTieMatchUp?.gender) &&
     inContextTieMatchUp?.gender !== newParticipant?.person?.sex
   ) {
@@ -241,18 +247,18 @@ export function replaceTieMatchUpParticipantId(
         const assignment: any = { collectionId, collectionPosition };
         if (substitution) {
           assignment.previousParticipantId = existingParticipantId;
-          assignment.substitutionOrder = (substitutionOrder || 0) + 1;
+          assignment.substitutionOrder = (substitutionOrder ?? 0) + 1;
         }
         modifiedCompetitor.collectionAssignments.push(assignment);
       }
 
       return modifiedCompetitor;
-    }) || [];
+    }) ?? [];
 
   if (!newParticipantIdInLineUp) {
     const collectionAssignment: any = { collectionId, collectionPosition };
     if (substitution) {
-      collectionAssignment.substitutionOrder = (substitutionOrder || 0) + 1;
+      collectionAssignment.substitutionOrder = (substitutionOrder ?? 0) + 1;
       collectionAssignment.previousParticipantId = existingParticipantId;
     }
     const assignment = {
@@ -334,7 +340,7 @@ export function replaceTieMatchUpParticipantId(
 
   if (substitution || side.substitutions?.length === 1) {
     if (substitution) {
-      const processCodes = tieMatchUp?.processCodes || [];
+      const processCodes = tieMatchUp?.processCodes ?? [];
       if (substitutionProcessCodes)
         processCodes.push(...substitutionProcessCodes);
 

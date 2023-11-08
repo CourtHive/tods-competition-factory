@@ -176,7 +176,7 @@ export function generateDrawDefinition(
 
   // get participants both for entry validation and for automated placement
   // automated placement requires them to be "inContext" for avoidance policies to work
-  const { participants } = getParticipants({
+  const { participants, participantMap } = getParticipants({
     withIndividualParticipants: true,
     tournamentRecord,
   });
@@ -221,6 +221,8 @@ export function generateDrawDefinition(
     participants &&
     checkValidEntries({
       consideredEntries,
+      appliedPolicies,
+      participantMap,
       enforceGender,
       participants,
       event,

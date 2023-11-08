@@ -98,6 +98,7 @@ type MatchUpActionsArgs = {
   tournamentRecord?: Tournament;
   drawDefinition: DrawDefinition;
   matchUpsMap?: MatchUpsMap;
+  enforceGender?: boolean;
   participantId?: string;
   sideNumber?: number;
   matchUpId?: string;
@@ -110,6 +111,7 @@ export function matchUpActions({
   inContextDrawMatchUps,
   tournamentRecord,
   drawDefinition,
+  enforceGender,
   participantId,
   matchUpsMap,
   sideNumber,
@@ -153,11 +155,11 @@ export function matchUpActions({
 
   Object.assign(appliedPolicies, specifiedPolicyDefinitions ?? {});
 
-  const isAdHocMatchUp = isAdHoc({ drawDefinition, structure });
   const matchUpActionsPolicy =
     appliedPolicies?.[POLICY_TYPE_MATCHUP_ACTIONS] ??
     POLICY_MATCHUP_ACTIONS_DEFAULT[POLICY_TYPE_MATCHUP_ACTIONS];
 
+  const isAdHocMatchUp = isAdHoc({ drawDefinition, structure });
   const { enabledStructures } = getEnabledStructures({
     actionType: MATCHUP_ACTION,
     appliedPolicies,
@@ -480,9 +482,11 @@ export function matchUpActions({
         .length === 1 &&
       firstFoundSide?.participant?.person?.sex;
     const matchUpType = inContextMatchUp.matchUpType;
-    const gender = matchUpActionsPolicy?.participants?.enforceGender
-      ? inContextMatchUp.gender
-      : undefined;
+    const genderEnforced =
+      (enforceGender ?? matchUpActionsPolicy?.participants?.enforceGender) !==
+      false;
+
+    const gender = genderEnforced ? inContextMatchUp.gender : undefined;
 
     const allParticipants = inContextMatchUp.sides
       ?.flatMap(

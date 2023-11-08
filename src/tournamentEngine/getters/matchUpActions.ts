@@ -18,6 +18,7 @@ type MatchUpActionsArgs = {
   policyDefinitions?: PolicyDefinitions;
   drawDefinition?: DrawDefinition;
   tournamentRecord: Tournament;
+  enforceGender?: boolean;
   participantId?: string;
   sideNumber?: number;
   matchUpId: string;
@@ -28,6 +29,7 @@ export function matchUpActions({
   policyDefinitions,
   tournamentRecord,
   drawDefinition,
+  enforceGender,
   participantId,
   sideNumber,
   matchUpId,
@@ -67,6 +69,7 @@ export function matchUpActions({
       tournamentParticipants: tournamentRecord.participants,
       policyDefinitions,
       drawDefinition,
+      enforceGender,
       participantId,
       sideNumber,
       matchUpId,

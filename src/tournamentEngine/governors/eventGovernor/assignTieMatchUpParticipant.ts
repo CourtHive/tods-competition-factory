@@ -45,6 +45,7 @@ type AssignMatchUpSideParticipantIdArgs = {
   policyDefinitions?: PolicyDefinitions;
   tournamentRecord: Tournament;
   drawDefinition: DrawDefinition;
+  enforceGender?: boolean;
   participantId: string;
   tieMatchUpId: string;
   sideNumber?: number;
@@ -93,7 +94,7 @@ export function assignTieMatchUpParticipantId(
   }
 
   teamParticipantId =
-    teamParticipantId ||
+    teamParticipantId ??
     (params.sideNumber
       ? inContextDualMatchUp?.sides?.find(
           (side) => side.sideNumber === params.sideNumber
@@ -116,12 +117,16 @@ export function assignTieMatchUpParticipantId(
   });
 
   const matchUpActionsPolicy =
-    params.policyDefinitions?.[POLICY_TYPE_MATCHUP_ACTIONS] ||
-    appliedPolicies?.[POLICY_TYPE_MATCHUP_ACTIONS] ||
+    params.policyDefinitions?.[POLICY_TYPE_MATCHUP_ACTIONS] ??
+    appliedPolicies?.[POLICY_TYPE_MATCHUP_ACTIONS] ??
     POLICY_MATCHUP_ACTIONS_DEFAULT[POLICY_TYPE_MATCHUP_ACTIONS];
 
+  const genderEnforced =
+    (params.enforceGender ??
+      matchUpActionsPolicy?.participants?.enforceGender) !== false;
+
   if (
-    matchUpActionsPolicy?.participants?.enforceGender &&
+    genderEnforced &&
     [MALE, FEMALE].includes(inContextTieMatchUp?.gender) &&
     inContextTieMatchUp?.gender !== participantToAssign.person?.sex
   ) {
@@ -161,7 +166,7 @@ export function assignTieMatchUpParticipantId(
   const teamSide = inContextTieMatchUp?.sides?.find(
     (side: any) => side.drawPosition === teamDrawPosition
   );
-  const sideNumber = params.sideNumber || teamSide?.sideNumber;
+  const sideNumber = params.sideNumber ?? teamSide?.sideNumber;
 
   if (!tieFormat) {
     return { error: MISSING_TIE_FORMAT };
