@@ -12,6 +12,9 @@ export const POLICY_ROUND_NAMING_DEFAULT = {
     namingConventions: {
       round: 'Round',
     },
+    qualifyingFinishMap: {
+      1: 'Final',
+    },
     abbreviatedRoundNamingMap: {
       // key is matchUpsCount for the round
       1: 'F',
@@ -26,6 +29,7 @@ export const POLICY_ROUND_NAMING_DEFAULT = {
     affixes: {
       roundNumber: 'R',
       preFeedRound: 'Q',
+      preQualifying: 'P',
     },
     stageConstants: {
       [MAIN]: '',

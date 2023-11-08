@@ -8,13 +8,9 @@ import { treeMatchUps } from '../../generators/eliminationTree';
 import { constantToString } from '../../../utilities/strings';
 import { findStructure } from '../../getters/findStructure';
 
-import {
-  DrawLink,
-  LinkTypeEnum,
-  Structure,
-} from '../../../types/tournamentFromSchema';
 import { ROUND_TARGET } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { PolicyDefinitions } from '../../../types/factoryTypes';
 import {
   ErrorType,
   MISSING_DRAW_DEFINITION,
@@ -25,10 +21,37 @@ import {
   QUALIFYING,
   ROUND_ROBIN,
 } from '../../../constants/drawDefinitionConstants';
+import {
+  DrawDefinition,
+  DrawLink,
+  DrawTypeEnum,
+  LinkTypeEnum,
+  Structure,
+} from '../../../types/tournamentFromSchema';
+
+type GenerateQualifyingStructureArgs = {
+  appliedPolicies?: PolicyDefinitions;
+  qualifyingRoundNumber: number;
+  drawDefinition: DrawDefinition;
+  qualifyingPositions: number;
+  participantsCount?: number;
+  targetStructureId: string;
+  drawType?: DrawTypeEnum;
+  structureOptions?: any;
+  structureName?: string;
+  structureId?: string;
+  roundTarget: number;
+  drawSize?: number;
+  idPrefix?: string;
+  isMock?: boolean;
+  uuids?: string[];
+};
 
 // for use when adding a qualifying structure to an existing drawDefinition
 // not for use when generating structures from qualifyingProfiles
-export function generateQualifyingStructure(params): {
+export function generateQualifyingStructure(
+  params: GenerateQualifyingStructureArgs
+): {
   qualifyingDrawPositionsCount?: number;
   qualifiersCount?: number;
   structure?: Structure;
@@ -88,13 +111,13 @@ export function generateQualifyingStructure(params): {
       stageSequence = targetStructure.stageSequence - 1;
     } else {
       // stageSequence must be modified for entire qualifying chain
-      let nextStructureId = targetStructureId;
+      let nextStructureId: string | undefined = targetStructureId;
       let nextStageSequence = 2;
       let chainModified;
 
       while (!chainModified && nextStructureId) {
         targetStructure.stageSequence = nextStageSequence;
-        const targetTargetStructureId = drawDefinition.links.find(
+        const targetTargetStructureId = drawDefinition.links?.find(
           (link) => link.source.structureId === nextStructureId
         )?.target?.structureId;
 

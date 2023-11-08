@@ -131,6 +131,7 @@ import { generateQualifyingStructure } from './drawDefinitions/generateQualifyin
 import { attachQualifyingStructure } from './drawDefinitions/attachQualifyingStructure';
 import { addQualifyingStructure } from './drawDefinitions/addQualifyingStructure';
 import { generateDrawDefinition } from '../../generators/generateDrawDefinition';
+import { isValidForQualifying } from './drawDefinitions/isValidForQualifying';
 import { renameStructures } from './drawDefinitions/renameStructures';
 import { generateDrawMaticRound } from '../../../forge/generate';
 
@@ -146,6 +147,7 @@ const eventGovernor = {
   attachQualifyingStructure,
   attachPlayoffStructures,
   addQualifyingStructure,
+  isValidForQualifying,
   setStructureOrder,
   attachStructures,
   renameStructures,

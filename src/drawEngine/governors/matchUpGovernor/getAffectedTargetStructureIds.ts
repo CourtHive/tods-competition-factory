@@ -5,22 +5,28 @@ import { getStructureLinks } from '../../getters/linkGetter';
 import { overlap } from '../../../utilities';
 
 import { TALLY } from '../../../constants/extensionConstants';
+import {
+  DrawDefinition,
+  MatchUp,
+  Structure,
+} from '../../../types/tournamentFromSchema';
 
 /**
- *
  * Finds all structureIds which are affected by an outcome change in a completed structure
  * Is specific to Round Robins which direct participants by WIN_RATIO
- *
- * @param {object} drawDefinition
- * @param {object} structure
- * @param {object} matchUp
- *
  */
+
+type GetAffectedTargetStructureIds = {
+  drawDefinition: DrawDefinition;
+  structure: Structure;
+  matchUp: MatchUp;
+};
+
 export function getAffectedTargetStructureIds({
   drawDefinition,
   structure,
   matchUp,
-}) {
+}: GetAffectedTargetStructureIds) {
   const { drawPositions } = matchUp;
   const { positionAssignments } = getPositionAssignments({
     drawDefinition,

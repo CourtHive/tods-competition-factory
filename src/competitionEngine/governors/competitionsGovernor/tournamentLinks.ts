@@ -127,8 +127,8 @@ export function unlinkTournament({
     const tournamentRecord = tournamentRecords[currentTournamentId];
 
     const { extension } = findTournamentExtension({
-      tournamentRecord,
       name: LINKED_TOURNAMENTS,
+      tournamentRecord,
     });
 
     // if there is no extension return { ...SUCCESS } because no links exist

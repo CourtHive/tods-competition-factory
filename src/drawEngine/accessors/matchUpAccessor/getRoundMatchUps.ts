@@ -24,11 +24,11 @@ type GetRoundMatchUpsArgs = {
 };
 
 export type RoundMatchUpsResult = {
-  roundsNotPowerOf2?: boolean;
   roundMatchUps?: HydratedMatchUp[];
   hasNoRoundPositions?: boolean;
-  roundProfile?: RoundProfile;
+  roundsNotPowerOf2?: boolean;
   maxMatchUpsCount?: number;
+  roundProfile?: RoundProfile;
   roundNumbers?: number[];
   error?: ErrorType;
 };
