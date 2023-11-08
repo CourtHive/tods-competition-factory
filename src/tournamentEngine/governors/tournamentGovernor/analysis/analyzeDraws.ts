@@ -6,11 +6,11 @@ import { getStructureLinks } from '../../../../drawEngine/getters/linkGetter';
 import { stageOrder } from '../../../../constants/drawDefinitionConstants';
 import { ensureInt } from '../../../../utilities/ensureInt';
 
+import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   ErrorType,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
 
 type DrawsAnalysis = {
   positionsNoOutcomes: string[];
@@ -136,8 +136,8 @@ export function analyzeDraws({ tournamentRecord }): {
     ).length;
 
     const { links } = getStructureLinks({
-      drawDefinition,
       structureId: mainStructure.structureId,
+      drawDefinition,
     });
 
     const isMatchPlay =

@@ -39,7 +39,7 @@ type GenerateRoundRobinArgs = {
   matchUpType?: TypeEnum;
   groupNames?: string[];
   roundTarget?: number;
-  structureId: string;
+  structureId?: string;
   drawSize: number;
   idPrefix?: string;
   isMock?: boolean;

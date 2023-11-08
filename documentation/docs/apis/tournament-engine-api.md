@@ -2720,6 +2720,19 @@ const {
 
 ---
 
+## isValidForQualifying
+
+Provides determination of whether qualifying structure(s) may be added to the structure specified by `structureId`.
+
+```js
+const { valid } = tournamentEngine.isValidForQualifiying({
+  structureId,
+  drawId,
+});
+```
+
+---
+
 ## isValidMatchUpFormat
 
 Returns boolean indicating whether matchUpFormat code is valid.
