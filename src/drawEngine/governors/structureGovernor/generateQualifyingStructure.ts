@@ -33,7 +33,7 @@ type GenerateQualifyingStructureArgs = {
   appliedPolicies?: PolicyDefinitions;
   qualifyingRoundNumber: number;
   drawDefinition: DrawDefinition;
-  qualifyingPositions: number;
+  qualifyingPositions?: number;
   participantsCount?: number;
   targetStructureId: string;
   drawType?: DrawTypeEnum;

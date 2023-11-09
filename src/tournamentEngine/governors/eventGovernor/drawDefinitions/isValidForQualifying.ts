@@ -27,10 +27,8 @@ export function isValidForQualifying({ structureId, drawDefinition }) {
     .flatMap((t) => t.target.feedProfile)
     .filter(Boolean);
 
-  const valid = !!intersection(
-    [BOTTOM_UP, TOP_DOWN, RANDOM],
-    targetFeedProfiles
-  ).length;
+  const valid = !intersection([BOTTOM_UP, TOP_DOWN, RANDOM], targetFeedProfiles)
+    .length;
 
   return { ...SUCCESS, valid };
 }
