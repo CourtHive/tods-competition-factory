@@ -208,8 +208,6 @@ it('can identify winningParticipants and map WTN and ranking', () => {
     'CONFIRMED_pct',
     'DIRECT_ACCEPTANCE_count',
     'DIRECT_ACCEPTANCE_pct',
-    'FEED_IN_count',
-    'FEED_IN_pct',
     'JUNIOR_EXEMPT_count',
     'JUNIOR_EXEMPT_pct',
     'LUCKY_LOSER_count',
