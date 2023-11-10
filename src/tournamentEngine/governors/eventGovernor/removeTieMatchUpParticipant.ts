@@ -240,25 +240,23 @@ export function removeTieMatchUpParticipantId(
           });
           if (result.error) console.log('cleanup', { result });
         }
-      } else {
-        if (individualParticipantIds.length === 1) {
-          const { participant: existingParticipant } = getPairedParticipant({
-            participantIds: individualParticipantIds,
+      } else if (individualParticipantIds.length === 1) {
+        const { participant: existingParticipant } = getPairedParticipant({
+          participantIds: individualParticipantIds,
+          tournamentRecord,
+        });
+        if (!existingParticipant) {
+          const newPairParticipant = {
+            participantRole: COMPETITOR,
+            individualParticipantIds,
+            participantType: PAIR,
+          };
+          const result = addParticipant({
+            participant: newPairParticipant,
+            pairOverride: true,
             tournamentRecord,
           });
-          if (!existingParticipant) {
-            const newPairParticipant = {
-              participantRole: COMPETITOR,
-              individualParticipantIds,
-              participantType: PAIR,
-            };
-            const result = addParticipant({
-              participant: newPairParticipant,
-              pairOverride: true,
-              tournamentRecord,
-            });
-            if (result.error) return decorateResult({ result, stack });
-          }
+          if (result.error) return decorateResult({ result, stack });
         }
       }
     } else {
