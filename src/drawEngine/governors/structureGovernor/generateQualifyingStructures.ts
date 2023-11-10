@@ -193,7 +193,7 @@ export function generateQualifyingStructures({
       linkType,
     });
 
-    targetRoundQualifiersCount = 0;
+    // targetRoundQualifiersCount = 0;
     roundTarget += 1;
   }
 
