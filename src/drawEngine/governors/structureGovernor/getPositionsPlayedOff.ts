@@ -23,8 +23,8 @@ export function getPositionsPlayedOff({
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   structureIds =
-    structureIds ||
-    (drawDefinition.structures || [])
+    structureIds ??
+    (drawDefinition.structures ?? [])
       .filter((structure) => structure.stage !== QUALIFYING)
       .map(({ structureId }) => structureId);
 

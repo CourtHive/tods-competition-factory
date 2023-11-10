@@ -269,7 +269,7 @@ export function annotateParticipant(params) {
   const scheduledMatchUps =
     participantScheduledMatchUps({
       matchUps: allParticipantMatchUps,
-    })?.scheduledMatchUps || [];
+    })?.scheduledMatchUps ?? [];
 
   const { scheduledMinutesDifference } = scheduleAnalysis || {};
 

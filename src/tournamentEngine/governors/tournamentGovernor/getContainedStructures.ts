@@ -35,7 +35,7 @@ export function getContainedStructures({
     .filter(Boolean);
 
   for (const structureContainer of structureContainers) {
-    const { structures, structureId } = structureContainer || {};
+    const { structures, structureId } = structureContainer ?? {};
     structures &&
       structureId &&
       (containedStructures[structureId] = structures?.map(

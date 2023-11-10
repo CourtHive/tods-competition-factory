@@ -26,7 +26,7 @@ export function getParticipantSchedules({
     allTournamentMatchUps({
       tournamentRecord,
       contextFilters,
-    }).matchUps || [];
+    }).matchUps ?? [];
 
   const matchUpsMap = Object.assign(
     {},
@@ -41,7 +41,7 @@ export function getParticipantSchedules({
     getMatchUpDependencies({
       tournamentRecord,
       matchUps,
-    }).sourceMatchUpIds || [];
+    }).sourceMatchUpIds ?? [];
 
   const participantAggregator = {};
   for (const matchUp of scheduledMatchUps) {
@@ -55,22 +55,18 @@ export function getParticipantSchedules({
             return [side.participant].concat(
               ...(side.participant.individualParticipants || [])
             );
-          } else {
-            if (
-              sourceMatchUpIds[matchUp.matchUpId] &&
-              !relevantSourceMatchUps
-            ) {
-              relevantSourceMatchUps = (
-                sourceMatchUpIds[matchUp.matchUpId] || []
-              )
-                .map((matchUpId) => matchUpsMap[matchUpId])
-                .filter(({ winningSide, bye }) => !winningSide && !bye);
-            }
+          } else if (
+            sourceMatchUpIds[matchUp.matchUpId] &&
+            !relevantSourceMatchUps
+          ) {
+            relevantSourceMatchUps = (sourceMatchUpIds[matchUp.matchUpId] || [])
+              .map((matchUpId) => matchUpsMap[matchUpId])
+              .filter(({ winningSide, bye }) => !winningSide && !bye);
           }
           return undefined;
         })
         .filter(Boolean)
-        .flat() || [];
+        .flat() ?? [];
 
     for (const participant of participants) {
       const { participantId } = participant;

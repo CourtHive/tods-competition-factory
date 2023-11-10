@@ -41,7 +41,7 @@ export function pruneDrawDefinition({
       ({ structureId }) => mainStructure.structureId === structureId
     );
 
-    const matchUps = mainStructure.matchUps || [];
+    const matchUps = mainStructure.matchUps ?? [];
     relevantMatchUps = matchUps
       .sort((a: any, b: any) => a.roundPosition - b.roundPosition)
       .filter(
@@ -69,7 +69,7 @@ export function pruneDrawDefinition({
       deletedMatchUpIds.push(...matchUpIdsToDelete);
 
       const existingDrawPositionPairings = matchPlayMatchUps
-        .flatMap((matchUp) => matchUp.drawPositions || [])
+        .flatMap((matchUp) => matchUp.drawPositions ?? [])
         .filter(Boolean);
       const existingDrawPositions: number[] =
         existingDrawPositionPairings.flat();

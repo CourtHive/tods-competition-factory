@@ -175,11 +175,9 @@ export function setMatchUpFormat({
           drawDefinition,
         });
       }
-    } else {
-      if (event.matchUpFormat !== matchUpFormat) {
-        event.matchUpFormat = matchUpFormat;
-        modificationsCount += 1;
-      }
+    } else if (event.matchUpFormat !== matchUpFormat) {
+      event.matchUpFormat = matchUpFormat;
+      modificationsCount += 1;
     }
   }
 

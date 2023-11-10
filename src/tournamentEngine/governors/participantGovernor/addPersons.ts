@@ -90,7 +90,7 @@ export function addPersons({
     getParticipants({
       participantFilters: { participantTypes: [INDIVIDUAL] },
       tournamentRecord,
-    })?.participants || [];
+    })?.participants ?? [];
 
   if (participantRole === COMPETITOR) {
     persons

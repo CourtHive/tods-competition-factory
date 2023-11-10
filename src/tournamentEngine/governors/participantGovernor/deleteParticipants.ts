@@ -66,7 +66,7 @@ export function deleteParticipants(params): {
       allTournamentMatchUps({
         matchUpFilters: { drawIds: teamDrawIds, matchUpTypes: [DOUBLES] },
         tournamentRecord,
-      }).matchUps || [];
+      }).matchUps ?? [];
 
     const placedPairParticipantIds = matchUps
       .map(({ sides }) => sides?.map(({ participantId }) => participantId))

@@ -75,7 +75,7 @@ export function destroyGroupEntry({
     return decorateResult({ result: { error: INVALID_EVENT_TYPE }, stack });
   }
 
-  const tournamentParticipants = tournamentRecord.participants || [];
+  const tournamentParticipants = tournamentRecord.participants ?? [];
   const participant = tournamentParticipants.find(
     (participant) => participant.participantId === participantId
   );
@@ -95,7 +95,7 @@ export function destroyGroupEntry({
     return { error: INVALID_PARTICIPANT_TYPE };
   }
 
-  const eventEntries = event.entries || [];
+  const eventEntries = event.entries ?? [];
   const entry = eventEntries.find(
     (entry) => entry.participantId === participantId
   );
@@ -123,8 +123,6 @@ export function destroyGroupEntry({
     (participantId) =>
       arrayIndices(participantId, individualParticipantIdsInGroups).length === 1
   );
-
-  // const individualParticipantIds = participant.individualParticipantIds;
 
   // remove the group participant from event entries
   let result = removeEventEntries({

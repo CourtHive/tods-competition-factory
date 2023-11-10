@@ -62,7 +62,7 @@ export function addEventEntryPairs({
   if (!event) return { error: MISSING_EVENT };
   if (event.eventType !== DOUBLES) return { error: INVALID_EVENT_TYPE };
 
-  const tournamentParticipants = tournamentRecord.participants || [];
+  const tournamentParticipants = tournamentRecord.participants ?? [];
   const individualParticipantIds: string[] = tournamentParticipants
     .filter((participant) => participant.participantType === INDIVIDUAL)
     .map((participant) => participant.participantId);
@@ -89,7 +89,7 @@ export function addEventEntryPairs({
   // create provisional participant objects
   const provisionalParticipants: any[] = participantIdPairs.map(
     (individualParticipantIds) => ({
-      participantId: uuids?.pop() || UUID(),
+      participantId: uuids?.pop() ?? UUID(),
       participantRole: COMPETITOR,
       individualParticipantIds,
       participantType: PAIR,

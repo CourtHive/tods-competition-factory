@@ -42,7 +42,7 @@ export function getPairedParticipant({
     });
 
   tournamentParticipants =
-    tournamentParticipants || tournamentRecord?.participants || [];
+    tournamentParticipants ?? tournamentRecord?.participants ?? [];
 
   const existingPairedParticipants = tournamentParticipants.filter(
     (participant) =>

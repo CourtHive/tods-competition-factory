@@ -46,7 +46,7 @@ export function generateTeamsFromParticipantAttribute({
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
   const teams = {};
-  const individualParticipants = (tournamentRecord.participants || []).filter(
+  const individualParticipants = (tournamentRecord.participants ?? []).filter(
     ({ participantType, participantRole }) =>
       participantType === INDIVIDUAL && participantRole === COMPETITOR
   );
@@ -69,16 +69,16 @@ export function generateTeamsFromParticipantAttribute({
     if (attributeValue) {
       if (!Object.keys(teams).includes(attributeValue)) {
         teams[attributeValue] = {
-          participantName: teamNames?.[teamIndex] || attributeValue,
-          participantId: uuids?.pop() || UUID(),
+          participantName: teamNames?.[teamIndex] ?? attributeValue,
+          participantId: uuids?.pop() ?? UUID(),
           individualParticipantIds: [],
           participantRole: COMPETITOR,
           participantType: TEAM,
         };
 
         const extension = {
+          value: personAttribute ?? participantAttribute,
           name: GROUPING_ATTRIBUTE,
-          value: personAttribute || participantAttribute,
         };
         addExtension({ element: teams[attributeValue], extension });
 
@@ -93,7 +93,7 @@ export function generateTeamsFromParticipantAttribute({
 
   const groupingAttributes = Object.keys(teams);
 
-  const overlappingTeamParticipantIds = (tournamentRecord.participants || [])
+  const overlappingTeamParticipantIds = (tournamentRecord.participants ?? [])
     .map((participant) => {
       if (participant.participantType !== TEAM) return undefined;
       if (participant.participantRole !== COMPETITOR) return undefined;

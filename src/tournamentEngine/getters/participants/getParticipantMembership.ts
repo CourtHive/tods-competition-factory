@@ -27,7 +27,7 @@ export function getParticipantMembership({
     tournamentRecord,
   });
 
-  const memberOf = (participants || []).filter((participant) => {
+  const memberOf = (participants ?? []).filter((participant) => {
     return participant.individualParticipantIds?.includes(participantId);
   });
 

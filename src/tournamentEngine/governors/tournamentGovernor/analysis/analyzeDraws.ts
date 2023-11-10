@@ -86,10 +86,10 @@ export function analyzeDraws({ tournamentRecord }): {
       const positionsAssigned = positionAssignments?.filter(
         ({ participantId }) => participantId
       );
-      positionsAssignedCount += positionsAssigned?.length || 0;
+      positionsAssignedCount += positionsAssigned?.length ?? 0;
 
       const unassignedPositionsCount =
-        (positionAssignments?.length || 0) - (positionsAssigned?.length || 0);
+        (positionAssignments?.length ?? 0) - (positionsAssigned?.length ?? 0);
 
       const { roundMatchUps, roundProfile, roundNumbers, maxMatchUpsCount } =
         getRoundMatchUps({ matchUps: inContextStructureMatchUps });
@@ -109,7 +109,7 @@ export function analyzeDraws({ tournamentRecord }): {
         Object.values(roundProfile).every((profile) => profile.inactiveRound);
 
       return {
-        positionsAssignedCount: positionsAssigned?.length || 0,
+        positionsAssignedCount: positionsAssigned?.length ?? 0,
         maxWinningSideFirstRoundPosition,
         unassignedPositionsCount,
         inactiveStructure,

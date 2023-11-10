@@ -39,7 +39,7 @@ export function getMatchUpFormatTiming({
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
   // event is optional, so eventType can also be passed in directly
-  eventType = eventType || event?.eventType || TypeEnum.Singles;
+  eventType = eventType ?? event?.eventType ?? TypeEnum.Singles;
   const defaultTiming = {
     averageTimes: [{ minutes: { default: defaultAverageMinutes } }],
     recoveryTimes: [{ minutes: { default: defaultRecoveryMinutes } }],

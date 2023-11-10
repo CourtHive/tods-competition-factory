@@ -58,7 +58,7 @@ export function addPenalty({
 
   // TODO: add penalty timeItem to matchUp.timeItems[]
 
-  const participants = tournamentRecord?.participants || [];
+  const participants = tournamentRecord?.participants ?? [];
   const relevantParticipants = participants.filter((participant) =>
     participantIds.includes(participant.participantId)
   );
@@ -113,14 +113,14 @@ export function removePenalty({
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!penaltyId) return { error: MISSING_PENALTY_ID };
 
-  const participants = tournamentRecord?.participants || [];
+  const participants = tournamentRecord?.participants ?? [];
   const modifiedParticipants: Participant[] = [];
 
   let penaltyRemoved = false;
   let removedPenalty;
   participants.forEach((participant) => {
     let participantModified = false;
-    participant.penalties = (participant.penalties || []).filter((penalty) => {
+    participant.penalties = (participant.penalties ?? []).filter((penalty) => {
       if (penalty.penaltyId === penaltyId) {
         participantModified = true;
         if (!penaltyRemoved) {
@@ -155,10 +155,10 @@ export function getTournamentPenalties({
   tournamentRecord,
 }: GetTournamentPenaltiesArgs): { error?: ErrorType; penalties?: Penalty[] } {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  const participants = tournamentRecord?.participants || [];
+  const participants = tournamentRecord?.participants ?? [];
   const allPenalties = participants.reduce((penalties, participant) => {
     const { participantId } = participant;
-    (participant.penalties || []).forEach((penalty) => {
+    (participant.penalties ?? []).forEach((penalty) => {
       const { penaltyId } = penalty || {};
       if (penalties[penaltyId]) {
         penalties[penaltyId].participants.push(participantId);
@@ -195,7 +195,7 @@ export function modifyPenalty({
   if (!modifications) return { error: INVALID_VALUES, modifications };
   if (!penaltyId) return { error: MISSING_PENALTY_ID };
 
-  const participants = tournamentRecord?.participants || [];
+  const participants = tournamentRecord?.participants ?? [];
 
   const validAttributes = Object.keys(penaltyTemplate()).filter(
     (attribute) => attribute !== 'penaltyId'
@@ -212,7 +212,7 @@ export function modifyPenalty({
   const modifiedParticipants: Participant[] = [];
   participants.forEach((participant) => {
     let participantModified = false;
-    participant.penalties = (participant.penalties || []).map((penalty) => {
+    participant.penalties = (participant.penalties ?? []).map((penalty) => {
       if (penalty.penaltyId === penaltyId) {
         participantModified = true;
         validModificationAttributes.forEach((attribute) =>

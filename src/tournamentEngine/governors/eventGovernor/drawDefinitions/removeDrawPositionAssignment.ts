@@ -14,16 +14,6 @@ import {
   WITHDRAWN,
 } from '../../../../constants/entryStatusConstants';
 
-/**
- *
- * @param {string} drawId - id of drawDefinition within which structure is found
- * @param {string} structureId - id of structure of drawPosition
- * @param {number} drawPosition - number of drawPosition for which actions are to be returned
- * @param {boolean} replaceWithBye - boolean whether or not to replace with BYE
- * @param {boolean} destroyPair - if { participantType: PAIR } it is possible to destroy pair entry before modifying entryStatus
- * @param {string} entryStatus - change the entry status of the removed participant to either ALTERNATE or WITHDRAWN
- *
- */
 export function removeDrawPositionAssignment(params) {
   const {
     tournamentRecord,
@@ -49,7 +39,7 @@ export function removeDrawPositionAssignment(params) {
       tournamentRecord,
       participantId,
     });
-    const { participantType, individualParticipantIds } = participant || {};
+    const { participantType, individualParticipantIds } = participant ?? {};
 
     if (destroyPair && participantType === PAIR) {
       const result = destroyPairEntry({

@@ -38,6 +38,7 @@ type GenerateQualifyingStructureArgs = {
   targetStructureId: string;
   drawType?: DrawTypeEnum;
   structureOptions?: any;
+  matchUpFormat?: string;
   structureName?: string;
   structureId?: string;
   roundTarget: number;
@@ -62,7 +63,7 @@ export function generateQualifyingStructure(
   if (!params.drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   const stack = 'generateQualifyingStructure';
 
-  let drawSize = params.drawSize || coerceEven(params.participantsCount);
+  let drawSize = params.drawSize ?? coerceEven(params.participantsCount);
   const {
     qualifyingRoundNumber,
     qualifyingPositions,
@@ -70,6 +71,7 @@ export function generateQualifyingStructure(
     structureOptions,
     appliedPolicies,
     drawDefinition,
+    matchUpFormat,
     structureName,
     structureId,
     roundTarget,
@@ -116,6 +118,7 @@ export function generateQualifyingStructure(
       let chainModified;
 
       while (!chainModified && nextStructureId) {
+        console.log('check getRoundContextProfile preqQualifyingStageSequence');
         targetStructure.stageSequence = nextStageSequence;
         const targetTargetStructureId = drawDefinition.links?.find(
           (link) => link.source.structureId === nextStructureId
@@ -149,7 +152,7 @@ export function generateQualifyingStructure(
   const stageSequenceName = `${stageSequence}`;
 
   const qualifyingStructureName =
-    structureName ||
+    structureName ??
     (roundTargetName || stageSequenceName
       ? `${constantToString(QUALIFYING)} ${roundTargetName}${stageSequenceName}`
       : constantToString(QUALIFYING));
@@ -157,8 +160,8 @@ export function generateQualifyingStructure(
   if (drawType === ROUND_ROBIN) {
     const { maxRoundNumber /*, groupSize*/, structures, groupCount } =
       generateRoundRobin({
-        structureName: structureName || qualifyingStructureName,
-        structureId: structureId || uuids?.pop(),
+        structureName: structureName ?? qualifyingStructureName,
+        structureId: structureId ?? uuids?.pop(),
         stage: QUALIFYING,
         structureOptions,
         appliedPolicies,
@@ -187,10 +190,11 @@ export function generateQualifyingStructure(
     if (!roundLimit) roundLimit = roundsCount;
 
     structure = structureTemplate({
-      structureName: structureName || qualifyingStructureName,
-      structureId: structureId || uuids?.pop(),
+      structureName: structureName ?? qualifyingStructureName,
+      structureId: structureId ?? uuids?.pop(),
       qualifyingRoundNumber: roundLimit,
       stage: QUALIFYING,
+      matchUpFormat,
       stageSequence,
       matchUpType,
       roundLimit, // redundant

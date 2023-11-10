@@ -88,7 +88,7 @@ export function treeMatchUps({
   }));
   roundNumber++;
 
-  roundLimit = roundLimit || qualifyingRoundNumber;
+  roundLimit = roundLimit ?? qualifyingRoundNumber;
 
   while (roundNodes.length > 1) {
     if (qualifyingPositions && roundNodes.length === qualifyingPositions) {
@@ -123,7 +123,7 @@ export function treeMatchUps({
     roundLimit = roundNumber - 1;
   } else {
     matchUps = matchUps.filter(
-      (matchUp) => roundLimit && (matchUp.roundNumber || 0) <= roundLimit
+      (matchUp) => roundLimit && (matchUp.roundNumber ?? 0) <= roundLimit
     );
   }
 

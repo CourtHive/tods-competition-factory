@@ -85,7 +85,7 @@ export function generateFlightProfile(params: GenerateFlightProfileArgs): {
     stage,
   } = params;
   if (!event) return { error: MISSING_EVENT };
-  const eventEntries = event.entries || [];
+  const eventEntries = event.entries ?? [];
 
   const { flightProfile } = getFlightProfile({ event });
   if (flightProfile && attachFlightProfile && !deleteExisting) {
@@ -153,7 +153,7 @@ export function generateFlightProfile(params: GenerateFlightProfileArgs): {
     const flightNumber = index + 1;
     return {
       flightNumber,
-      drawId: uuids?.pop() || UUID(),
+      drawId: uuids?.pop() ?? UUID(),
       drawEntries: getDrawEntries(splitEntries[index]),
       drawName:
         (drawNames?.length && drawNames[index]) ||

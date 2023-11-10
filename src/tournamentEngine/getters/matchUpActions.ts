@@ -39,13 +39,13 @@ export function matchUpActions({
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!drawId) {
     // if matchUp did not have context, find drawId by brute force
-    const matchUps = allTournamentMatchUps({ tournamentRecord }).matchUps || [];
+    const matchUps = allTournamentMatchUps({ tournamentRecord }).matchUps ?? [];
     drawId = matchUps.reduce((drawId, candidate) => {
       return candidate.matchUpId === matchUpId ? candidate.drawId : drawId;
     }, undefined);
-    const events = tournamentRecord.events || [];
+    const events = tournamentRecord.events ?? [];
     const drawDefinitions = events
-      .map((event) => event.drawDefinitions || [])
+      .map((event) => event.drawDefinitions ?? [])
       .flat();
     drawDefinition = drawDefinitions.reduce(
       (drawDefinition: any, candidate) => {
@@ -62,7 +62,7 @@ export function matchUpActions({
     event,
   });
 
-  policyDefinitions = policyDefinitions || attachedPolicy;
+  policyDefinitions = policyDefinitions ?? attachedPolicy;
 
   if (drawDefinition) {
     return drawEngineMatchupActions({

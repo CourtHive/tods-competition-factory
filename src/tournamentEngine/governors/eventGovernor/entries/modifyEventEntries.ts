@@ -43,7 +43,7 @@ export function modifyEventEntries({
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
 
-  const tournamentParticipants = tournamentRecord.participants || [];
+  const tournamentParticipants = tournamentRecord.participants ?? [];
   const individualParticipantIds = tournamentParticipants
     .filter((participant) => participant.participantType === INDIVIDUAL)
     .map((participant) => participant.participantId);
@@ -120,7 +120,7 @@ export function modifyEventEntries({
   );
 
   // remove all entries matching the stage which has been modified
-  event.entries = (event.entries || []).filter(
+  event.entries = (event.entries ?? []).filter(
     (entry) => entry.entryStage === entryStage
   );
 

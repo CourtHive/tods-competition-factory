@@ -22,9 +22,8 @@ export function sensibleSets({ score, matchUpStatus, attributes }) {
           const maxSetScore = Math.max(...sideScores);
           const maxIndex = setScores.indexOf(maxSetScore);
           const sensibleSetScores = [maxSetScore, maxSetScore - 1];
-          const sensibleSetScore = maxIndex
-            ? sensibleSetScores.reverse().join('-')
-            : sensibleSetScores.join('-');
+          if (maxIndex) sensibleSetScores.reverse();
+          const sensibleSetScore = sensibleSetScores.join('-');
           return sensibleSetScore + tiebreak;
         }
       } else if (set.length === 2 && isNumeric(set)) {
@@ -57,7 +56,7 @@ export function sensibleSets({ score, matchUpStatus, attributes }) {
               (value) =>
                 parseInt(value) > min ||
                 (index && parseInt(value) <= maxSetValue)
-            ) || splitMax[0];
+            ) ?? splitMax[0];
 
           if (reasonable) {
             set = minIndex

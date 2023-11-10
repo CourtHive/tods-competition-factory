@@ -105,7 +105,7 @@ export function scaledTeamAssignment({
   }
 
   let participantIdsToAssign =
-    individualParticipantIds ||
+    individualParticipantIds ??
     scaledParticipants.map(({ participantId }) => participantId);
 
   if (reverseAssignmentOrder) {
@@ -118,11 +118,11 @@ export function scaledTeamAssignment({
   const orderedTeamParticipantIds =
     teamParticipantIds
       ?.slice(initialTeamIndex)
-      .concat(...teamParticipantIds.slice(0, initialTeamIndex)) || [];
+      .concat(...teamParticipantIds.slice(0, initialTeamIndex)) ?? [];
 
   const relevantTeams: any[] = [];
   // build up an array of targeted TEAM participants
-  for (const participant of tournamentRecord.participants || []) {
+  for (const participant of tournamentRecord.participants ?? []) {
     const { participantId, participantType } = participant;
     if (!orderedTeamParticipantIds.includes(participantId)) continue;
     if (participantType !== TEAM_PARTICIPANT)
@@ -132,7 +132,7 @@ export function scaledTeamAssignment({
 
   if (teamsCount && relevantTeams.length < teamsCount) {
     const addCount = teamsCount - (relevantTeams?.length || 0);
-    const nameBase = teamNameBase || 'Team';
+    const nameBase = teamNameBase ?? 'Team';
     const teamParticipants = generateRange(0, addCount).map((i) => ({
       participantName: `${nameBase} ${i + 1}`,
       participantType: TEAM_PARTICIPANT,
@@ -181,7 +181,7 @@ export function scaledTeamAssignment({
   }
 
   if (!scaledParticipants.length) {
-    for (const participant of tournamentRecord.participants || []) {
+    for (const participant of tournamentRecord.participants ?? []) {
       const { participantId, participantType } = participant;
       if (!participantIdsToAssign.includes(participantId)) continue;
       if (participantType !== INDIVIDUAL)
@@ -229,9 +229,9 @@ export function scaledTeamAssignment({
   const relevantTeamParticipantIds = relevantTeams.map(getParticipantId);
   // for all events, check if any relevant teams are present
   // if a relevant team is present, remove any UNGROUPED participants that are part of that team
-  for (const event of tournamentRecord.events || []) {
+  for (const event of tournamentRecord.events ?? []) {
     if (event.eventType !== TEAM_EVENT) continue;
-    const relevantTeamEntries = (event.entries || []).filter((entry) =>
+    const relevantTeamEntries = (event.entries ?? []).filter((entry) =>
       relevantTeamParticipantIds.includes(entry.participantId)
     );
     for (const relevantEntry of relevantTeamEntries) {
@@ -242,12 +242,12 @@ export function scaledTeamAssignment({
       );
       const individualParticipantIds = relevantTeam?.individualParticipantIds;
       // remove any relevant individualParticipant entries from event.entries
-      event.entries = (event.entries || []).filter(
+      event.entries = (event.entries ?? []).filter(
         (entry) => !individualParticipantIds.includes(entry.participantId)
       );
       // also remove any relevant individualParticipant entries from drawDefinition.entries
-      (event.drawDefinitions || []).forEach((drawDefinition) => {
-        drawDefinition.entries = (drawDefinition.entries || []).filter(
+      (event.drawDefinitions ?? []).forEach((drawDefinition) => {
+        drawDefinition.entries = (drawDefinition.entries ?? []).filter(
           (entry) => !individualParticipantIds.includes(entry.participantId)
         );
       });

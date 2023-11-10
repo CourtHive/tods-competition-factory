@@ -65,7 +65,7 @@ export function parseScoreString({
         tiebreakTo,
       });
 
-    const setTiebreak = side1TiebreakPerspective || [];
+    const setTiebreak = side1TiebreakPerspective ?? [];
 
     const [side1Score, side2Score] = setScores || [];
     const [side1TiebreakScore, side2TiebreakScore] =

@@ -176,7 +176,7 @@ export function filterParticipants({
           (entry) => entry.participantId
         );
         if (event.eventType === SINGLES) return enteredParticipantIds;
-        const individualParticipantIds = (tournamentRecord?.participants || [])
+        const individualParticipantIds = (tournamentRecord?.participants ?? [])
           .filter((participant) =>
             enteredParticipantIds.includes(participant.participantId)
           )

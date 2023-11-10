@@ -46,7 +46,6 @@ export function getVenuesAndCourts({
   tournamentIds.forEach((tournamentId) => {
     const tournamentRecord = tournamentRecords[tournamentId];
     for (const venue of tournamentRecord.venues || []) {
-      tournamentRecord.venues;
       if (venueIds.length && !venueIds.includes(venue.venueId)) continue;
       if (ignoreDisabled) {
         const { extension } = findExtension({

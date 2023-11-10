@@ -108,7 +108,7 @@ export function removeEventEntries({
 
   const participantIdsRemoved: string[] = [];
 
-  event.entries = (event.entries || []).filter((entry) => {
+  event.entries = (event.entries ?? []).filter((entry) => {
     const keepEntry = !participantIds.includes(entry?.participantId);
     if (!keepEntry) participantIdsRemoved.push(entry.participantId);
     return keepEntry;
@@ -129,7 +129,7 @@ export function removeEventEntries({
   });
 
   event.drawDefinitions?.forEach((drawDefinition) => {
-    drawDefinition.entries = (drawDefinition.entries || []).filter(
+    drawDefinition.entries = (drawDefinition.entries ?? []).filter(
       (entry) => !participantIds.includes(entry.participantId)
     );
   });
