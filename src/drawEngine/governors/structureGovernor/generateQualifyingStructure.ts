@@ -62,7 +62,7 @@ export function generateQualifyingStructure(
   if (!params.drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   const stack = 'generateQualifyingStructure';
 
-  let drawSize = params.drawSize || coerceEven(params.participantsCount);
+  let drawSize = params.drawSize ?? coerceEven(params.participantsCount);
   const {
     qualifyingRoundNumber,
     qualifyingPositions,
@@ -149,7 +149,7 @@ export function generateQualifyingStructure(
   const stageSequenceName = `${stageSequence}`;
 
   const qualifyingStructureName =
-    structureName ||
+    structureName ??
     (roundTargetName || stageSequenceName
       ? `${constantToString(QUALIFYING)} ${roundTargetName}${stageSequenceName}`
       : constantToString(QUALIFYING));
@@ -157,8 +157,8 @@ export function generateQualifyingStructure(
   if (drawType === ROUND_ROBIN) {
     const { maxRoundNumber /*, groupSize*/, structures, groupCount } =
       generateRoundRobin({
-        structureName: structureName || qualifyingStructureName,
-        structureId: structureId || uuids?.pop(),
+        structureName: structureName ?? qualifyingStructureName,
+        structureId: structureId ?? uuids?.pop(),
         stage: QUALIFYING,
         structureOptions,
         appliedPolicies,
@@ -187,8 +187,8 @@ export function generateQualifyingStructure(
     if (!roundLimit) roundLimit = roundsCount;
 
     structure = structureTemplate({
-      structureName: structureName || qualifyingStructureName,
-      structureId: structureId || uuids?.pop(),
+      structureName: structureName ?? qualifyingStructureName,
+      structureId: structureId ?? uuids?.pop(),
       qualifyingRoundNumber: roundLimit,
       stage: QUALIFYING,
       stageSequence,
