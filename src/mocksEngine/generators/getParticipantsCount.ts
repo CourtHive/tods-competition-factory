@@ -85,14 +85,12 @@ export function getParticipantsCount({
       ) {
         largestDoublesDraw = drawSize + alternatesCount;
       }
-    } else {
-      if (requiresUniqueParticipants) {
-        const additionalParticipantsCount = drawSize + alternatesCount;
-        if (gender) gendersCount[gender] += additionalParticipantsCount;
-        uniqueParticipantsCount += additionalParticipantsCount;
-      } else if (drawSize && drawSize > largestSinglesDraw) {
-        largestSinglesDraw = drawSize + alternatesCount;
-      }
+    } else if (requiresUniqueParticipants) {
+      const additionalParticipantsCount = drawSize + alternatesCount;
+      if (gender) gendersCount[gender] += additionalParticipantsCount;
+      uniqueParticipantsCount += additionalParticipantsCount;
+    } else if (drawSize && drawSize > largestSinglesDraw) {
+      largestSinglesDraw = drawSize + alternatesCount;
     }
   };
 

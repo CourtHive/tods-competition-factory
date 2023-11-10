@@ -29,7 +29,7 @@ export function getParticipantEventDetails({
 
   // relveantParticipantIds is the target participantId along with any TEAM or PAIR participantIds to which participantId belongs
   const relevantParticipantIds = [participantId].concat(
-    (tournamentRecord.participants || [])
+    (tournamentRecord.participants ?? [])
       .filter(
         (participant) =>
           participant?.participantType &&
@@ -39,9 +39,9 @@ export function getParticipantEventDetails({
       .map((participant) => participant.participantId)
   );
 
-  const relevantEvents = (tournamentRecord.events || [])
+  const relevantEvents = (tournamentRecord.events ?? [])
     .filter((event) => {
-      const enteredParticipantIds = (event?.entries || []).map(
+      const enteredParticipantIds = (event?.entries ?? []).map(
         (entry) => entry.participantId
       );
       return overlap(enteredParticipantIds, relevantParticipantIds);

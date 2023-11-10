@@ -46,8 +46,8 @@ export function getPositionAssignments({
     structure,
   });
   return {
-    error,
-    positionAssignments: assignments || [],
+    positionAssignments: assignments ?? [],
     structureId: structure?.structureId,
+    error,
   };
 }

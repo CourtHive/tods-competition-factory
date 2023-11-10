@@ -51,7 +51,7 @@ export function addIndividualParticipantIds({
   if (!groupingParticipantId || !individualParticipantIds)
     return decorateResult({ result: { error: MISSING_VALUE }, stack });
 
-  const tournamentParticipants = tournamentRecord.participants || [];
+  const tournamentParticipants = tournamentRecord.participants ?? [];
   const groupingParticipant = tournamentParticipants.find(
     (participant) => participant.participantId === groupingParticipantId
   );

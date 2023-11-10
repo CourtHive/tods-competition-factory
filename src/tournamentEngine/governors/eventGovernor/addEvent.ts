@@ -64,17 +64,14 @@ export function addEvent({
     };
   }
 
-  const eventRecord = Object.assign(
-    {},
-    {
-      drawDefinitions: [],
-      eventType: TypeEnum.Singles,
-      entries: [],
-      startDate,
-      endDate,
-    },
-    event
-  );
+  const eventRecord = {
+    drawDefinitions: [],
+    eventType: TypeEnum.Singles,
+    entries: [],
+    startDate,
+    endDate,
+    ...event,
+  };
 
   if (event.eventType === TypeEnum.Team) {
     if (event.tieFormat) {
@@ -107,7 +104,7 @@ export function addEvent({
     if (!suppressNotifications) {
       const { topics } = getTopics();
       if (topics.includes(ADD_MATCHUPS)) {
-        const matchUps = allEventMatchUps({ event }).matchUps || [];
+        const matchUps = allEventMatchUps({ event }).matchUps ?? [];
         addMatchUpsNotice({
           tournamentId: tournamentRecord?.tournamentId,
           eventId: event.eventId,

@@ -32,7 +32,7 @@ export function getRelevantParticipantIdsMap({
     ? Object.values(tournamentRecords)
         .map((tournamentRecord: any) => tournamentRecord?.participants || [])
         .flat()
-    : tournamentRecord?.participants || [];
+    : tournamentRecord?.participants ?? [];
 
   const relevantParticipantIdsMap = Object.assign(
     {},

@@ -127,11 +127,10 @@ export function generateParticipants(params): {
       // ratingAttributes allows selected attributes of ratingParameters to be overridden
       const { ratingMax, ratingMin, ratingAttributes } = category;
 
-      const ratingParameters = Object.assign(
-        {},
-        ratingsParameters[ratingType],
-        ratingAttributes || {}
-      );
+      const ratingParameters = {
+        ...ratingsParameters[ratingType],
+        ...(ratingAttributes || {}),
+      };
 
       const {
         attributes = {},

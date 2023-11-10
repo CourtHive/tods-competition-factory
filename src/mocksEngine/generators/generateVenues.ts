@@ -20,7 +20,7 @@ export function generateVenues({
   for (const [index, venueProfile] of venueProfiles.entries()) {
     const {
       venueAbbreviation,
-      venueId = uuids?.pop() || UUID(),
+      venueId = uuids?.pop() ?? UUID(),
       dateAvailability,
       startTime = '07:00',
       endTime = '19:00',

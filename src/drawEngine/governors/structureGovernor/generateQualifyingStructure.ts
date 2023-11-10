@@ -38,6 +38,7 @@ type GenerateQualifyingStructureArgs = {
   targetStructureId: string;
   drawType?: DrawTypeEnum;
   structureOptions?: any;
+  matchUpFormat?: string;
   structureName?: string;
   structureId?: string;
   roundTarget: number;
@@ -70,6 +71,7 @@ export function generateQualifyingStructure(
     structureOptions,
     appliedPolicies,
     drawDefinition,
+    matchUpFormat,
     structureName,
     structureId,
     roundTarget,
@@ -116,6 +118,7 @@ export function generateQualifyingStructure(
       let chainModified;
 
       while (!chainModified && nextStructureId) {
+        console.log('check getRoundContextProfile preqQualifyingStageSequence');
         targetStructure.stageSequence = nextStageSequence;
         const targetTargetStructureId = drawDefinition.links?.find(
           (link) => link.source.structureId === nextStructureId
@@ -191,6 +194,7 @@ export function generateQualifyingStructure(
       structureId: structureId ?? uuids?.pop(),
       qualifyingRoundNumber: roundLimit,
       stage: QUALIFYING,
+      matchUpFormat,
       stageSequence,
       matchUpType,
       roundLimit, // redundant

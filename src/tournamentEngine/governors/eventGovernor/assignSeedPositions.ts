@@ -68,7 +68,7 @@ export function assignSeedPositions(
    */
   const mergeObject = Object.assign(
     {},
-    ...(seedAssignments || [])
+    ...(seedAssignments ?? [])
       .filter((assignment) => assignment.seedNumber)
       .map((assignment) => ({ [assignment.seedNumber]: assignment }))
   );

@@ -90,7 +90,7 @@ export function assignMatchUpSideParticipant({
     matchUp.sides = [1, 2].map((currentSideNumber) => {
       const existingSide = matchUp.sides?.find(
         (side) => side.sideNumber === currentSideNumber
-      ) || { sideNumber: currentSideNumber };
+      ) ?? { sideNumber: currentSideNumber };
 
       return sideNumber === currentSideNumber
         ? { ...existingSide, participantId }

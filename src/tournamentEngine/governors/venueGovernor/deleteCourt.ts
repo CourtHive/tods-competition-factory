@@ -35,7 +35,7 @@ export function deleteCourt({
   });
 
   if (!matchUps?.length || force) {
-    for (const matchUp of matchUps || []) {
+    for (const matchUp of matchUps ?? []) {
       const result = removeCourtAssignment({
         matchUpId: matchUp.matchUpId,
         drawId: matchUp.drawId,
@@ -46,7 +46,7 @@ export function deleteCourt({
     }
 
     if (venue) {
-      venue.courts = (venue.courts || []).filter((courtRecord) => {
+      venue.courts = (venue.courts ?? []).filter((courtRecord) => {
         return courtRecord.courtId !== courtId;
       });
       if (!disableNotice)

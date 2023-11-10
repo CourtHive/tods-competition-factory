@@ -43,7 +43,7 @@ export function getScaledEntries({
   stage,
 }: GetScaledEntriesArgs): { error?: ErrorType; scaledEntries?: any[] } {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  entries = entries || event?.entries || [];
+  entries = entries ?? event?.entries ?? [];
 
   const stageEntries = entries.filter(
     (entry: any) =>

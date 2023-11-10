@@ -52,7 +52,7 @@ export function addPenalty(
     if (tournamentParticipantIds.length) {
       const result = penaltyAdd({
         ...params,
-        penaltyId: params.penaltyId || penaltyId,
+        penaltyId: params.penaltyId ?? penaltyId,
         tournamentRecord,
         participantIds: tournamentParticipantIds,
       });
@@ -112,7 +112,7 @@ export function getCompetitionPenalties({
   const allPenalties: Penalty[] = [];
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     const { penalties } = getTournamentPenalties({ tournamentRecord });
-    allPenalties.push(...(penalties || []));
+    allPenalties.push(...(penalties ?? []));
   }
 
   return { penalties: allPenalties };

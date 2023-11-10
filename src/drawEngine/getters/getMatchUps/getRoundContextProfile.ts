@@ -57,7 +57,7 @@ export function getRoundContextProfile({
     : 0;
 
   const preQualifyingSequence = qualifyingStageSequences
-    ? qualifyingStageSequences - (structure.stageSequence || 1) || ''
+    ? qualifyingStageSequences - (structure.stageSequence ?? 1) || ''
     : '';
 
   const preQualifyingAffix = preQualifyingSequence

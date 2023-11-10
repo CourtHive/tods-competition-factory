@@ -51,7 +51,7 @@ export function clearScheduledMatchUps({
     allTournamentMatchUps({
       matchUpFilters: { scheduledDates },
       tournamentRecord,
-    }).matchUps || [];
+    }).matchUps ?? [];
 
   const relevantMatchUpIds = inContextMatchUps
     .filter(
@@ -67,12 +67,12 @@ export function clearScheduledMatchUps({
     allTournamentMatchUps({
       tournamentRecord,
       inContext: false,
-    }).matchUps || [];
+    }).matchUps ?? [];
 
   let clearedScheduleCount = 0;
   for (const matchUp of matchUps) {
     if (relevantMatchUpIds.includes(matchUp.matchUpId)) {
-      matchUp.timeItems = (matchUp.timeItems || []).filter(
+      matchUp.timeItems = (matchUp.timeItems ?? []).filter(
         (timeItem) =>
           timeItem?.itemType &&
           ![

@@ -57,7 +57,7 @@ export function sensibleSets({ score, matchUpStatus, attributes }) {
               (value) =>
                 parseInt(value) > min ||
                 (index && parseInt(value) <= maxSetValue)
-            ) || splitMax[0];
+            ) ?? splitMax[0];
 
           if (reasonable) {
             set = minIndex

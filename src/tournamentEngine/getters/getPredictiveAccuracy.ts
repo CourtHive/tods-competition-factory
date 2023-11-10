@@ -86,8 +86,8 @@ export function getPredictiveAccuracy(params: getPredictiveAccuracyArgs) {
 
   const zoneMargin =
     isConvertableInteger(zonePct) && ratingsRangeDifference
-      ? (zonePct || 0 / 100) * ratingsRangeDifference
-      : params.zoneMargin || ratingsRangeDifference;
+      ? (zonePct ?? 0 / 100) * ratingsRangeDifference
+      : params.zoneMargin ?? ratingsRangeDifference;
 
   const contextProfile = { withScaleValues: true, withCompetitiveness: true };
   const contextFilters = {
@@ -139,7 +139,7 @@ export function getPredictiveAccuracy(params: getPredictiveAccuracyArgs) {
   const relevantMatchUps = matchUps.filter(
     ({ winningSide, score, sides, matchUpStatus }) =>
       ![RETIRED, DEFAULTED, WALKOVER, DEAD_RUBBER, ABANDONED].includes(
-        matchUpStatus || ''
+        matchUpStatus ?? ''
       ) &&
       scoreHasValue({ score }) &&
       sides?.length === 2 &&

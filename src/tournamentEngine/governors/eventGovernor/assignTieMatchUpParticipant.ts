@@ -41,10 +41,10 @@ import {
 } from '../../../types/tournamentFromSchema';
 
 type AssignMatchUpSideParticipantIdArgs = {
-  teamParticipantId?: string | undefined;
   policyDefinitions?: PolicyDefinitions;
   tournamentRecord: Tournament;
   drawDefinition: DrawDefinition;
+  teamParticipantId?: string;
   enforceGender?: boolean;
   participantId: string;
   tieMatchUpId: string;

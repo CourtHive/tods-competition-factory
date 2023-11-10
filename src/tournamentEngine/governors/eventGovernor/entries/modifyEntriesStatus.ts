@@ -118,7 +118,7 @@ export function modifyEntriesStatus({
     assignedParticipantIds.push(...participantIds);
   });
 
-  const tournamentParticipants = tournamentRecord?.participants || [];
+  const tournamentParticipants = tournamentRecord?.participants ?? [];
 
   const validEntryStatusForAllParticipantIds = participantIds.every(
     (participantId) => {
@@ -202,7 +202,7 @@ export function modifyEntriesStatus({
   const autoPosition = ({ flight, drawDefinition }) => {
     if (event) {
       event.entries = refreshEntryPositions({
-        entries: event.entries || [],
+        entries: event.entries ?? [],
       });
     }
     if (flight) {
@@ -236,9 +236,9 @@ export function modifyEntriesStatus({
   // ------------------------------------------------------------------------
   // before modifying, if autoEntryPositions: true, pre-assign entryPositions
   const entryPositionsExist =
-    event?.entries?.find(({ entryPosition }) => entryPosition) ||
-    flight?.drawEntries?.find(({ entryPosition }) => entryPosition) ||
-    drawDefinition?.entries?.find(({ entryPosition }) => entryPosition);
+    event?.entries?.find(({ entryPosition }) => entryPosition) ??
+    (flight?.drawEntries?.find(({ entryPosition }) => entryPosition) ||
+      drawDefinition?.entries?.find(({ entryPosition }) => entryPosition));
 
   if (autoEntryPositions && !entryPositionsExist)
     autoPosition({ flight, drawDefinition });
@@ -253,7 +253,7 @@ export function modifyEntriesStatus({
   // ------------------------------------------------------------------------
   // update any flights which have no draw generated to keep entries in sync
   const generatedDrawIds =
-    event?.drawDefinitions?.map(({ drawId }) => drawId) || [];
+    event?.drawDefinitions?.map(({ drawId }) => drawId) ?? [];
   const flightsNoDraw =
     flightProfile?.flights?.filter(
       (flight) => !generatedDrawIds.includes(flight.drawId)
@@ -267,7 +267,7 @@ export function modifyEntriesStatus({
   // ------------------------------------------------------------------------
   const singleDraw =
     flightProfile?.flights?.length === 1 &&
-    (event?.drawDefinitions?.length || 0) <= flightProfile?.flights?.length;
+    (event?.drawDefinitions?.length ?? 0) <= flightProfile?.flights?.length;
 
   if (
     !flight &&
@@ -319,7 +319,7 @@ export function modifyEntriesStatus({
 
   if (autoEntryPositions) autoPosition({ flight, drawDefinition });
 
-  for (const drawDefinition of event?.drawDefinitions || []) {
+  for (const drawDefinition of event?.drawDefinitions ?? []) {
     if (
       modifiedDrawIds.length &&
       !modifiedDrawIds.includes(drawDefinition.drawId)

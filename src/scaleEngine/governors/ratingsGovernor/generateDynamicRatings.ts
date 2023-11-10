@@ -12,12 +12,12 @@ import { DYNAMIC, RATING } from '../../../constants/scaleConstants';
 import { TypeEnum } from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { ELO } from '../../../constants/ratingConstants';
+import { HydratedSide } from '../../../types/hydrated';
 import {
   INVALID_VALUES,
   MISSING_MATCHUPS,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
-import { HydratedSide } from '../../../types/hydrated';
 
 export function generateDynamicRatings({
   removePriorValues = true,
@@ -42,9 +42,10 @@ export function generateDynamicRatings({
       matchUpFilters: { matchUpIds, matchUpStatuses: completedMatchUpStatuses },
       tournamentRecord,
       inContext: true,
-    }).matchUps || [];
+    }).matchUps ?? [];
 
-  for (const matchUp of matchUps.sort(matchUpSort)) {
+  matchUps.sort(matchUpSort);
+  for (const matchUp of matchUps) {
     const { endDate, matchUpFormat, score, sides, winningSide } = matchUp;
 
     const matchUpType = matchUp.matchUpType as TypeEnum;
@@ -64,13 +65,13 @@ export function generateDynamicRatings({
 
     const sideParticipantIds: string[] = Object.assign(
       {},
-      ...(sides || []).map((side: HydratedSide) => {
+      ...(sides ?? []).map((side: HydratedSide) => {
         const { sideNumber, participant } = side;
         return (
           sideNumber && {
             [sideNumber]: [
               participant?.participantId,
-              ...(participant?.individualParticipantIds || []),
+              ...(participant?.individualParticipantIds ?? []),
             ]
               .filter(Boolean)
               .flat(),

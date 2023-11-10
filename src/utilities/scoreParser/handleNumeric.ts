@@ -188,7 +188,7 @@ export function handleNumeric(params) {
       if (superParse && score !== superParse) {
         applied.push('parsedSuperPattern');
       }
-      score = superParse || score;
+      score = superParse ?? score;
     }
   }
 

@@ -197,7 +197,7 @@ export function removeTieMatchUpParticipantId(
       (side) => side.sideNumber === dualMatchUpSide?.sideNumber
     );
 
-    const { participantId: pairParticipantId } = tieMatchUpSide || {};
+    const { participantId: pairParticipantId } = tieMatchUpSide ?? {};
 
     const pairParticipant =
       pairParticipantId &&

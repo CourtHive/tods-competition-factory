@@ -62,7 +62,7 @@ export function publishEvent(params: PublishEventType) {
   }
 
   const itemType = `${PUBLISH}.${STATUS}`;
-  const eventDrawIds = event.drawDefinitions?.map(({ drawId }) => drawId) || [];
+  const eventDrawIds = event.drawDefinitions?.map(({ drawId }) => drawId) ?? [];
 
   const { timeItem } = getEventTimeItem({
     itemType,
@@ -76,7 +76,7 @@ export function publishEvent(params: PublishEventType) {
     drawIds = timeItem?.itemValue?.PUBLIC?.drawIds || [];
   }
 
-  drawIds = (drawIds || []).filter(
+  drawIds = (drawIds ?? []).filter(
     (drawId) => !drawIdsToRemove?.length || !drawIdsToRemove.includes(drawId)
   );
 
@@ -96,7 +96,7 @@ export function publishEvent(params: PublishEventType) {
     structureIds = timeItem?.itemValue?.PUBLIC?.structureIds || [];
   }
 
-  structureIds = (structureIds || []).filter(
+  structureIds = (structureIds ?? []).filter(
     (structureId) =>
       !structureIdsToRemove?.length ||
       !structureIdsToRemove.includes(structureId)
@@ -110,7 +110,7 @@ export function publishEvent(params: PublishEventType) {
     stages = timeItem?.itemValue?.PUBLIC?.stages || [];
   }
 
-  stages = (stages || []).filter(
+  stages = (stages ?? []).filter(
     (stage) => !stagesToRemove?.length || !stagesToRemove.includes(stage)
   );
 

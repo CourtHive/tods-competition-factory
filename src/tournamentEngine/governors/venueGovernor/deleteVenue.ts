@@ -36,7 +36,7 @@ export function deleteVenue({
     allTournamentMatchUps({
       tournamentRecord,
       contextFilters,
-    }).matchUps || [];
+    }).matchUps ?? [];
 
   if (!matchUpsToUnschedule.length || force) {
     // if no matchUpsToUnschedule this does nothing but avoid the deletionMessage
@@ -53,7 +53,7 @@ export function deleteVenue({
   }
 
   let deleted;
-  tournamentRecord.venues = (tournamentRecord.venues || []).filter(
+  tournamentRecord.venues = (tournamentRecord.venues ?? []).filter(
     (venue: Venue | undefined) => {
       if (venue?.venueId !== venueId) return true;
       deleted = true;

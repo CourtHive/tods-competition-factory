@@ -6,15 +6,6 @@ import {
   MISSING_TOURNAMENT_RECORD,
 } from '../../../../constants/errorConditionConstants';
 
-/**
- *
- * @param {object} tournamentRecord - passed automatically if tournamentEngine.setState()
- * @param {string} eventId - resolves to event
- * @param {string} drawId - OPTIONAL - resolves drawDefinition - scopes participants to clear to drawDefinition.entries or flightProfile.flight.drawEntries
- * @param {string} scaleName - OPTIONAL - defaults to event.categoryName || event.ageCategoryCode
- * @param {string} stage - OPTIONAL - filter event or draw entries by stage
- * @returns {boolean} { success: true } or { error }
- */
 export function removeSeeding({
   tournamentRecord,
   drawDefinition,

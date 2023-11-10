@@ -47,7 +47,7 @@ export function getTournamentPoints({
   });
 
   const pointsPolicy =
-    policyDefinitions?.[POLICY_TYPE_RANKING_POINTS] ||
+    policyDefinitions?.[POLICY_TYPE_RANKING_POINTS] ??
     attachedPolicies?.[POLICY_TYPE_RANKING_POINTS];
   if (!pointsPolicy) return { error: MISSING_POLICY_DEFINITION };
 
@@ -69,7 +69,7 @@ export function getTournamentPoints({
   const teamPoints = {};
   const pairPoints = {};
 
-  for (const participant of participantsWithOutcomes || []) {
+  for (const participant of participantsWithOutcomes ?? []) {
     const { participantType, participantId, person, draws } = participant;
 
     for (const draw of draws) {
@@ -94,7 +94,6 @@ export function getTournamentPoints({
 
       if (awardProfiles) {
         let requireWin = requireWinForPoints;
-        // const positionAwards = []; // potential use for combining ppw w/ fpp
         let totalWinsCount = 0;
         let positionPoints = 0;
         let perWinPoints = 0;
@@ -166,8 +165,6 @@ export function getTournamentPoints({
             let awardPoints = 0;
             let winRequired;
 
-            // const noPositionAwards = !positionAwards.length;
-
             const isValidOrder =
               !participationOrders ||
               participationOrders.includes(participationOrder);
@@ -175,7 +172,6 @@ export function getTournamentPoints({
             if (isValidOrder && finishingPositionRanges && accessor) {
               const valueObj = finishingPositionRanges[accessor];
               if (valueObj) {
-                // positionAwards.push(accessor);
                 ({ awardPoints, requireWin: winRequired } = getAwardPoints({
                   flightNumber,
                   valueObj,
@@ -194,7 +190,6 @@ export function getTournamentPoints({
             ) {
               const valueObj = finishingRound[accessor];
               if (valueObj) {
-                // positionAwards.push(accessor);
                 ({ awardPoints, requireWin: winRequired } = getAwardPoints({
                   participantWon,
                   flightNumber,

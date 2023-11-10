@@ -25,7 +25,7 @@ export function generateScheduledRounds({
   const containedStructures = getContainedStructures({
     tournamentRecord,
   }).containedStructures;
-  const matchUps = allTournamentMatchUps({ tournamentRecord }).matchUps || [];
+  const matchUps = allTournamentMatchUps({ tournamentRecord }).matchUps ?? [];
 
   const { tournamentId } = tournamentRecord;
   const scheduledRounds: any[] = [];
@@ -68,7 +68,7 @@ export function generateScheduledRounds({
             structureId =
               Object.keys(containedStructures).find((containingStructureId) =>
                 containedStructures[containingStructureId].includes(structureId)
-              ) || structureId;
+              ) ?? structureId;
           }
 
           const roundToSchedule = {

@@ -37,7 +37,7 @@ export function addFlight({
 
   if (drawEntries?.length) {
     // check that all drawEntries are in event.entries
-    const enteredParticipantIds = (event.entries || []).map(
+    const enteredParticipantIds = (event.entries ?? []).map(
       extractAttributes('participantId')
     );
     const flightParticipantIds = drawEntries.map(
