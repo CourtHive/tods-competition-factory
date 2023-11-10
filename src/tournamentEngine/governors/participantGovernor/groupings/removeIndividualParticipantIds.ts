@@ -195,9 +195,9 @@ function removeParticipantIdsFromGroupingParticipant({
             element: drawDefinition,
             name: LINEUPS,
           });
-          let lineUp = extension?.value[groupingParticipant.participantId];
+          const lineUp = extension?.value[groupingParticipant.participantId];
           if (extension && lineUp) {
-            lineUp = lineUp.filter(
+            extension.value[groupingParticipant.participantId] = lineUp.filter(
               (assignment) => assignment.participantId !== participantId
             );
             addExtension({ element: drawDefinition, extension });

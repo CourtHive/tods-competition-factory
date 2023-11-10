@@ -23,7 +23,8 @@ export function getSuper(values, index) {
     index ? values.slice(0, 1) : values.slice(2),
   ].map((n) => parseInt(n.join('')));
   // preserve order
-  const scores = index ? parts.reverse() : parts;
+  if (index) parts.reverse();
+  const scores = parts;
 
   const diff = Math.abs(scores.reduce((a, b) => +a - +b));
   if (diff >= 2) return scores.join('-');
