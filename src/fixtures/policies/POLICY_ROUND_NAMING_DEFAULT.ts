@@ -11,6 +11,7 @@ export const POLICY_ROUND_NAMING_DEFAULT = {
     policyName: 'Round Naming Default',
     namingConventions: {
       round: 'Round',
+      pre: 'Pre',
     },
     qualifyingFinishMap: {
       1: 'Final',
