@@ -24,25 +24,30 @@ export function getTallyReport({ matchUps, order, report }) {
       } else {
         const floatSort = (a, b) =>
           parseFloat(step.reversed ? a : b) - parseFloat(step.reversed ? b : a);
+
+        const participantsCount = step.groups
+          ? Object.values(step.groups).flat(Infinity).length
+          : step.participantIds?.length ?? 0;
+
         const getExplanation = (step) => {
-          Object.keys(step.groups)
-            .sort(floatSort)
-            .forEach((key) => {
-              const participantNames = step.groups[key]
-                .map((participantId) => participants[participantId])
-                .join(', ');
-              const explanation = `${key} ${step.attribute}: ${participantNames}`;
-              readable.push(explanation);
-            });
+          step.groups &&
+            Object.keys(step.groups)
+              .sort(floatSort)
+              .forEach((key) => {
+                const participantNames = step.groups[key]
+                  .map((participantId) => participants[participantId])
+                  .join(', ');
+                const explanation = `${key} ${step.attribute}: ${participantNames}`;
+                readable.push(explanation);
+              });
         };
 
         const reversed = step.reversed ? ' in reverse order' : '';
-        const participantsCount = Object.values(step.groups).flat(
-          Infinity
-        ).length;
+
+        const action = step.groups ? 'grouped' : 'separated';
         const description = `Step ${
           i + 1
-        }: ${participantsCount} particiants were grouped${reversed} by ${
+        }: ${participantsCount} particiants were ${action}${reversed} by ${
           step.attribute
         }`;
         readable.push(description);
@@ -61,7 +66,7 @@ export function getTallyReport({ matchUps, order, report }) {
     const { participantId, resolved } = orderEntry;
     const pOrder = orderEntry.groupOrder || orderEntry.provisionalOrder;
     readable.push(
-      `${pOrder}: ${participants[participantId]} => resolved: ${resolved}`
+      `${pOrder}: ${participants[participantId]} => resolved: ${!!resolved}`
     );
   });
 

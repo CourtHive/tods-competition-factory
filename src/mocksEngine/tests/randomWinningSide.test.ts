@@ -52,9 +52,9 @@ function generateScenario({ drawSize, structureOptions, drawType }) {
     drawIds: [drawId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles,
     completeAllMatchUps: true,
     randomWinningSide: true,
+    drawProfiles,
   });
 
   const { drawDefinition } = tournamentEngine
