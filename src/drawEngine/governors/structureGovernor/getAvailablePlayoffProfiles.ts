@@ -16,9 +16,15 @@ import {
 export function getAvailablePlayoffProfiles({ drawDefinition, structureId }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
+  const { matchUps, matchUpsMap } = allDrawMatchUps({
+    inContext: true,
+    drawDefinition,
+  });
+
   // positions which are being played off by existing structure(s)
   const { positionsNotPlayedOff, positionsPlayedOff } = getPositionsPlayedOff({
     drawDefinition,
+    matchUpsMap,
   });
 
   const { structures } = getDrawStructures({ drawDefinition });
@@ -29,11 +35,6 @@ export function getAvailablePlayoffProfiles({ drawDefinition, structureId }) {
   );
 
   const available = {};
-
-  const matchUps = allDrawMatchUps({
-    inContext: true,
-    drawDefinition,
-  }).matchUps;
 
   for (const structure of filteredStructures) {
     const structureId = structure?.structureId;

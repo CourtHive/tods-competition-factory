@@ -336,7 +336,13 @@ export function getAllStructureMatchUps({
     }));
   }
 
-  return { matchUps, roundMatchUps, roundProfile, collectionPositionMatchUps };
+  return {
+    collectionPositionMatchUps,
+    roundMatchUps,
+    roundProfile,
+    matchUpsMap,
+    matchUps,
+  };
 
   // isCollectionBye is an attempt to embed BYE status in matchUp.tieMatchUps
   type AddMatchUpContextArgs = {
@@ -356,6 +362,7 @@ export function getAllStructureMatchUps({
     roundProfile?: any;
     event?: Event;
   };
+
   function addMatchUpContext({
     scheduleVisibilityFilters,
     sourceDrawPositionRanges,

@@ -2,6 +2,7 @@ import { getStructureRoundProfile } from '../../getters/getMatchUps/getStructure
 import { numericSort, unique } from '../../../utilities';
 import { roundValueRanges } from './structureUtils';
 
+import { MatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { DrawDefinition } from '../../../types/tournamentFromSchema';
 import {
@@ -12,11 +13,13 @@ import {
 // NOTE: positionsNotPlayedOff may not be accurate when structureIds are are provided
 type GetPositionsPlayedOff = {
   drawDefinition: DrawDefinition;
+  matchUpsMap?: MatchUpsMap;
   structureIds?: string[];
 };
 export function getPositionsPlayedOff({
   drawDefinition,
   structureIds,
+  matchUpsMap,
 }: GetPositionsPlayedOff) {
   if (structureIds && !Array.isArray(structureIds))
     return { error: INVALID_VALUES, context: { structureIds } };
@@ -32,6 +35,7 @@ export function getPositionsPlayedOff({
     .map((structureId) => {
       const { roundProfile } = getStructureRoundProfile({
         drawDefinition,
+        matchUpsMap,
         structureId,
       });
       const values = roundProfile && Object.values(roundProfile);
