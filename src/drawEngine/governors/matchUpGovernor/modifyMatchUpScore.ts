@@ -179,8 +179,10 @@ export function modifyMatchUpScore({
           : undefined;
         const { matchUps } = getAllStructureMatchUps({
           afterRecoveryTimes: false,
+          tournamentRecord,
           inContext: true,
           matchUpFilters,
+          drawDefinition,
           structure,
           event,
         });

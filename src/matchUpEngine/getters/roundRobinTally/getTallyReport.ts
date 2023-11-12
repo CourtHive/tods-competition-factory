@@ -61,7 +61,7 @@ export function getTallyReport({ matchUps, order, report }) {
     const { participantId, resolved } = orderEntry;
     const pOrder = orderEntry.groupOrder || orderEntry.provisionalOrder;
     readable.push(
-      `${pOrder}: ${participants[participantId]} => resolved: ${resolved}`
+      `${pOrder}: ${participants[participantId]} => resolved: ${!!resolved}`
     );
   });
 
