@@ -8,6 +8,8 @@ import { findExtension } from '../queryGovernor/extensionQueries';
 import { getStructureGroups } from './getStructureGroups';
 import { makeDeepCopy } from '../../../utilities';
 
+import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
+import { StageTypeEnum } from '../../../types/tournamentFromSchema';
 import { TALLY } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -27,12 +29,6 @@ import {
   RETIRED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
-import {
-  CONSOLATION,
-  MAIN,
-  PLAY_OFF,
-  QUALIFYING,
-} from '../../../constants/drawDefinitionConstants';
 
 export function getDrawData(params): {
   structures?: any[];
@@ -106,15 +102,23 @@ export function getDrawData(params): {
       })
       .sort((a, b) => structureSort(a, b, sortConfig))
       .map((structure) => {
-        const { structureId } = structure;
+        if (!structure) return;
+        const structureId = structure?.structureId;
         let seedAssignments = [];
 
         // pass seedAssignments from { stageSequence: 1 } to other stages
-        if ([MAIN, CONSOLATION, PLAY_OFF].includes(structure.stage)) {
+        if (
+          structure.stage &&
+          [
+            StageTypeEnum.Main,
+            StageTypeEnum.Consolation,
+            StageTypeEnum.PlayOff,
+          ].includes(structure.stage)
+        ) {
           seedAssignments = mainStageSeedAssignments;
         }
 
-        if (structure.stage === QUALIFYING) {
+        if (structure?.stage === QUALIFYING) {
           seedAssignments = qualificationStageSeedAssignments;
         }
 
@@ -157,19 +161,21 @@ export function getDrawData(params): {
           })
           .filter((f) => f?.participantResult);
 
-        const structureInfo: any = (({
-          stageSequence,
-          structureName,
-          structureType,
-          matchUpFormat,
-          stage,
-        }) => ({
-          stageSequence,
-          structureName,
-          structureType,
-          matchUpFormat,
-          stage,
-        }))(structure);
+        const structureInfo: any = structure
+          ? (({
+              stageSequence,
+              structureName,
+              structureType,
+              matchUpFormat,
+              stage,
+            }) => ({
+              stageSequence,
+              structureName,
+              structureType,
+              matchUpFormat,
+              stage,
+            }))(structure)
+          : {};
 
         structureInfo.sourceStructureIds = sourceStructureIds[structureId];
         structureInfo.hasDrawFeedProfile = hasDrawFeedProfile[structureId];
