@@ -1,3 +1,4 @@
+import { getStructureGroups } from '../../../tournamentEngine/governors/publishingGovernor/getStructureGroups';
 import { generateQualifyingLink } from '../../generators/generateQualifyingLink';
 import { addExtension } from '../../../global/functions/producers/addExtension';
 import { coerceEven, isConvertableInteger } from '../../../utilities/math';
@@ -6,11 +7,12 @@ import structureTemplate from '../../generators/structureTemplate';
 import { generateRoundRobin } from '../../generators/roundRobin';
 import { treeMatchUps } from '../../generators/eliminationTree';
 import { constantToString } from '../../../utilities/strings';
-import { findStructure } from '../../getters/findStructure';
 
+import POLICY_ROUND_NAMING_DEFAULT from '../../../fixtures/policies/POLICY_ROUND_NAMING_DEFAULT';
+import { POLICY_TYPE_ROUND_NAMING } from '../../../constants/policyConstants';
 import { ROUND_TARGET } from '../../../constants/extensionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 import { PolicyDefinitions } from '../../../types/factoryTypes';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   ErrorType,
   MISSING_DRAW_DEFINITION,
@@ -25,6 +27,7 @@ import {
   DrawDefinition,
   DrawLink,
   DrawTypeEnum,
+  Event,
   LinkTypeEnum,
   Structure,
 } from '../../../types/tournamentFromSchema';
@@ -46,6 +49,7 @@ type GenerateQualifyingStructureArgs = {
   idPrefix?: string;
   isMock?: boolean;
   uuids?: string[];
+  event?: Event;
 };
 
 // for use when adding a qualifying structure to an existing drawDefinition
@@ -81,81 +85,46 @@ export function generateQualifyingStructure(
     uuids,
   } = params;
 
-  let roundLimit, roundsCount, structure, matchUps;
+  let roundLimit: number | undefined,
+    roundsCount: number | undefined,
+    structure: Structure | undefined,
+    matchUps;
   let qualifiersCount = 0;
   let finishingPositions;
-  let stageSequence = 1;
+  const stageSequence = 1;
 
   if (!isConvertableInteger(drawSize)) {
     return decorateResult({ result: { error: MISSING_DRAW_SIZE }, stack });
   }
 
-  const result = findStructure({
-    structureId: targetStructureId,
-    drawDefinition,
-  });
+  const { structureProfiles } = getStructureGroups({ drawDefinition });
 
-  if (result.error) {
+  const structureProfile = structureProfiles[targetStructureId];
+
+  if (!structureProfile) {
     return decorateResult({
+      result: { error: STRUCTURE_NOT_FOUND },
       context: { targetStructureId },
-      result,
       stack,
     });
   }
 
-  if (!result.structure) return { error: STRUCTURE_NOT_FOUND };
-
-  const targetStructure = result.structure;
-  const matchUpType = targetStructure.matchUpType;
-
-  if (targetStructure.stage === QUALIFYING) {
-    if (targetStructure.stageSequence && targetStructure.stageSequence > 1) {
-      stageSequence = targetStructure.stageSequence - 1;
-    } else {
-      // stageSequence must be modified for entire qualifying chain
-      let nextStructureId: string | undefined = targetStructureId;
-      let nextStageSequence = 2;
-      let chainModified;
-
-      while (!chainModified && nextStructureId) {
-        console.log('check getRoundContextProfile preqQualifyingStageSequence');
-        targetStructure.stageSequence = nextStageSequence;
-        const targetTargetStructureId = drawDefinition.links?.find(
-          (link) => link.source.structureId === nextStructureId
-        )?.target?.structureId;
-
-        nextStructureId = targetTargetStructureId;
-        nextStageSequence += 1;
-
-        if (!targetTargetStructureId) {
-          chainModified = true;
-        } else {
-          const result = findStructure({
-            structureId: targetTargetStructureId,
-            drawDefinition,
-          });
-          if (!result.structure) return { error: STRUCTURE_NOT_FOUND };
-          if (result.error) {
-            return decorateResult({
-              context: { targetTargetStructureId },
-              result,
-              stack,
-            });
-          }
-          if (result.structure.stage !== QUALIFYING) chainModified = true;
-        }
-      }
-    }
-  }
+  const matchUpType = drawDefinition.matchUpType;
 
   const roundTargetName = roundTarget ? `${roundTarget}-` : '';
-  const stageSequenceName = `${stageSequence}`;
+  const isPreQualifying = structureProfile.stage === QUALIFYING;
+  const preQualifyingNaming =
+    appliedPolicies?.[POLICY_TYPE_ROUND_NAMING]?.namingConventions?.pre ??
+    POLICY_ROUND_NAMING_DEFAULT[POLICY_TYPE_ROUND_NAMING]?.namingConventions
+      ?.pre;
+  const pre =
+    isPreQualifying && preQualifyingNaming ? `${preQualifyingNaming}-` : '';
 
   const qualifyingStructureName =
     structureName ??
-    (roundTargetName || stageSequenceName
-      ? `${constantToString(QUALIFYING)} ${roundTargetName}${stageSequenceName}`
-      : constantToString(QUALIFYING));
+    (roundTargetName
+      ? `${pre}${constantToString(QUALIFYING)} ${roundTargetName}`
+      : `${pre}${constantToString(QUALIFYING)}`);
 
   if (drawType === ROUND_ROBIN) {
     const { maxRoundNumber /*, groupSize*/, structures, groupCount } =
@@ -216,13 +185,17 @@ export function generateQualifyingStructure(
   // order of operations is important here!! finalQualifier positions is not yet updated when this step occurs
   const linkType =
     drawType === ROUND_ROBIN ? LinkTypeEnum.Position : LinkTypeEnum.Winner;
-  const { link } = generateQualifyingLink({
-    sourceStructureId: structure.structureId,
-    sourceRoundNumber: roundLimit,
-    targetStructureId,
-    finishingPositions,
-    linkType,
-  });
+
+  const link =
+    structure &&
+    roundLimit &&
+    generateQualifyingLink({
+      sourceStructureId: structure.structureId,
+      sourceRoundNumber: roundLimit,
+      targetStructureId,
+      finishingPositions,
+      linkType,
+    })?.link;
 
   return {
     qualifyingDrawPositionsCount: drawSize,
