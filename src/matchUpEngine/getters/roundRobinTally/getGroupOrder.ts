@@ -108,7 +108,7 @@ export function getGroupOrder(params) {
     .map((key) => orderedTallyGroups[key])
     .map((participantIds) => {
       const result = groupSubSort({ participantIds, ...params });
-      report.push(result.report);
+      report.push(...(result.report || []));
       return result.order;
     })
     .flat(Infinity);
@@ -239,7 +239,7 @@ function processAttribute({
           tallyPolicy,
           matchUps,
         });
-        report.push(result.report);
+        report.push(...(result.report || []));
         return result.order;
       })
       .flat(Infinity);
@@ -256,6 +256,10 @@ function groupSubSort({
   tallyPolicy,
   matchUps,
 }) {
+  const excludedDirectives: any[] = [];
+  const report: any[] = [];
+  let result;
+
   if (participantIds?.length === 1) {
     const participantId = participantIds[0];
     return {
@@ -268,15 +272,14 @@ function groupSubSort({
       (!tallyPolicy.headToHead.disabled && !disableHeadToHead))
   ) {
     const result = headToHeadWinner({ participantIds, participantResults });
-    if (result)
-      return { order: [result], headToHeadWinner: result[0].participantId };
+    if (result) {
+      const headToHeadWinner = result[0].participantId;
+      report.push({ attribute: 'head2Head', participantIds, headToHeadWinner });
+      return { order: [result], headToHeadWinner, report };
+    }
   }
 
   const directives = tallyPolicy?.tallyDirectives || headToHeadTallyDirectives;
-
-  const excludedDirectives: any[] = [];
-  const report: any[] = [];
-  let result;
 
   const filteredDirectives = directives.filter((directive) => {
     // if maxParticipants is defined, filter out the rule if # of participants is greater than maxParticipants
