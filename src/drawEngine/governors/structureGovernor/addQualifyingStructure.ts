@@ -1,8 +1,15 @@
 import { generateQualifyingStructure } from './generateQualifyingStructure';
-import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 import { attachQualifyingStructure } from './attachQualifyingStructure';
 
+import {
+  INVALID_VALUES,
+  MISSING_DRAW_DEFINITION,
+  MISSING_STRUCTURE_ID,
+} from '../../../constants/errorConditionConstants';
+
 export function addQualifyingStructure(params) {
+  if (!params.drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+  if (!params.targetStructureId) return { error: MISSING_STRUCTURE_ID };
   const result = generateQualifyingStructure(params);
   if (result.error) return result;
   const { structure, link } = result;
