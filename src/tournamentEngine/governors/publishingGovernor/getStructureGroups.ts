@@ -5,6 +5,7 @@ import {
   unique,
 } from '../../../utilities';
 
+import { DrawDefinition } from '../../../types/tournamentFromSchema';
 import {
   DRAW,
   VOLUNTARY_CONSOLATION,
@@ -15,7 +16,16 @@ import {
  * the expectation is that all structures within a drawDefintion are linked
  * return a boolean whether this condition is met => allSructuresLinked
  */
-export function getStructureGroups({ drawDefinition }) {
+export function getStructureGroups({
+  drawDefinition,
+}: {
+  drawDefinition: DrawDefinition;
+}): {
+  sourceStructureIds: { [key: string]: boolean };
+  hasDrawFeedProfile: { [key: string]: boolean };
+  structureGroups: string[][];
+  allStructuresLinked: boolean;
+} {
   const links = drawDefinition.links || [];
 
   const sourceStructureIds = {};
@@ -66,7 +76,7 @@ export function getStructureGroups({ drawDefinition }) {
   const structureGroups = [groupedStructureIds].filter(Boolean);
 
   // this is the same as structureGroups, but excludes VOLUNTARY_CONSOLATION
-  const linkCheck = [groupedStructureIds].filter(Boolean);
+  const linkCheck: string[][] = [groupedStructureIds].filter(Boolean);
 
   // iterate through all structures to add missing structureIds
   const structures = drawDefinition.structures || [];
@@ -77,7 +87,7 @@ export function getStructureGroups({ drawDefinition }) {
     });
     if (!existingGroup) {
       structureGroups.push([structureId]);
-      if (stage !== VOLUNTARY_CONSOLATION) linkCheck.push(structureId);
+      if (stage !== VOLUNTARY_CONSOLATION) linkCheck.push([structureId]);
     }
   });
 

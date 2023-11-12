@@ -3,14 +3,22 @@ import {
   getDrawStructures,
 } from '../../drawEngine/getters/findStructure';
 
-import { Structure } from '../../types/tournamentFromSchema';
+import { DrawDefinition, Structure } from '../../types/tournamentFromSchema';
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../constants/errorConditionConstants';
 
-export function getPlayoffStructures({ drawDefinition, structureId }) {
+type GetPlayoffStructuresArgs = {
+  drawDefinition: DrawDefinition;
+  structureId: string;
+};
+
+export function getPlayoffStructures({
+  drawDefinition,
+  structureId,
+}: GetPlayoffStructuresArgs) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   const { structure } = findStructure({ drawDefinition, structureId });
