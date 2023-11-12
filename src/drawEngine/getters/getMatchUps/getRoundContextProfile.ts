@@ -41,12 +41,6 @@ export function getRoundContextProfile({
     POLICY_ROUND_NAMING_DEFAULT[POLICY_TYPE_ROUND_NAMING];
 
   const isQualifying = structure.stage === QUALIFYING;
-  const qualifyingFinishgMap =
-    isQualifying &&
-    (roundNamingPolicy?.qualifyingFinishMap ||
-      defaultRoundNamingPolicy?.qualifyingFinishMap ||
-      {});
-
   const qualifyingStageSequences: number = isQualifying
     ? Math.max(
         ...(drawDefinition?.structures ?? [])
@@ -56,9 +50,10 @@ export function getRoundContextProfile({
       )
     : 0;
 
-  const preQualifyingSequence = qualifyingStageSequences
-    ? qualifyingStageSequences - (structure.stageSequence ?? 1) || ''
-    : '';
+  const preQualifyingSequence =
+    (structure.stageSequence ?? 1) < qualifyingStageSequences
+      ? structure.stageSequence ?? 1
+      : '';
 
   const preQualifyingAffix = preQualifyingSequence
     ? roundNamingPolicy?.affixes?.preQualifying ||
@@ -112,6 +107,12 @@ export function getRoundContextProfile({
       })
     );
   } else {
+    const qualifyingFinishgMap =
+      isQualifying &&
+      (roundNamingPolicy?.qualifyingFinishMap ||
+        defaultRoundNamingPolicy?.qualifyingFinishMap ||
+        {});
+
     Object.assign(
       roundNamingProfile,
       ...roundProfileKeys.map((round) => {
