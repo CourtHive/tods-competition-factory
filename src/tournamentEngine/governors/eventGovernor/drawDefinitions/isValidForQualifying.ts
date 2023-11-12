@@ -7,6 +7,7 @@ import {
   BOTTOM_UP,
   RANDOM,
   TOP_DOWN,
+  WATERFALL,
 } from '../../../../constants/drawDefinitionConstants';
 import {
   INVALID_VALUES,
@@ -27,8 +28,10 @@ export function isValidForQualifying({ structureId, drawDefinition }) {
     .flatMap((t) => t.target.feedProfile)
     .filter(Boolean);
 
-  const valid = !intersection([BOTTOM_UP, TOP_DOWN, RANDOM], targetFeedProfiles)
-    .length;
+  const valid = !intersection(
+    [BOTTOM_UP, TOP_DOWN, RANDOM, WATERFALL],
+    targetFeedProfiles
+  ).length;
 
   return { ...SUCCESS, valid };
 }
