@@ -109,8 +109,8 @@ export function getEntryStatusReports({
       const assignedParticipantIds = structures
         .filter(stageFilter)
         .flatMap(({ positionAssignments }) => positionAssignments)
-        .map(({ participantId }) => participantId)
-        .filter(Boolean);
+        .filter(Boolean)
+        .map(({ participantId }) => participantId);
 
       const entryFilter = ({ participantId }) =>
         assignedParticipantIds.includes(participantId);
