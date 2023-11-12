@@ -1,3 +1,4 @@
+import { getStructureGroups } from '../../../tournamentEngine/governors/publishingGovernor/getStructureGroups';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { findStructure } from '../../getters/findStructure';
@@ -52,6 +53,18 @@ export function attachQualifyingStructure({
   if (!drawDefinition.links) drawDefinition.links = [];
   drawDefinition.structures.push(structure);
   drawDefinition.links.push(link);
+
+  const { maxQualifyingDepth, structureProfiles } = getStructureGroups({
+    drawDefinition,
+  });
+
+  for (const structure of drawDefinition.structures) {
+    const profile = structureProfiles[structure.structureId];
+    if (profile.distanceFromMain) {
+      structure.stageSequence =
+        maxQualifyingDepth + 1 - profile.distanceFromMain;
+    }
+  }
 
   const matchUps = getAllStructureMatchUps({ structure })?.matchUps || [];
 
