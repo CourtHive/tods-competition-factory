@@ -1,6 +1,7 @@
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpIds } from '../../../global/functions/extractors';
+import { extractAttributes as xa } from '../../../utilities';
 import { findStructure } from '../../getters/findStructure';
 import {
   deleteMatchUpsNotice,
@@ -33,14 +34,18 @@ export function removeStructure({
     ({ stage, stageSequence }) => stage === MAIN && stageSequence === 1
   );
   const isMainStageSequence1 = structureId === mainStageSequence1.structureId;
-  const hasQualifying = structures.find(({ stage }) => stage === QUALIFYING);
+  const qualifyingStructureIds = structures
+    .filter(({ stage }) => stage === QUALIFYING)
+    .map(xa('structureId'));
 
-  if (isMainStageSequence1 && !hasQualifying) {
+  if (isMainStageSequence1 && !qualifyingStructureIds.length) {
     return { error: CANNOT_REMOVE_MAIN_STRUCTURE };
   }
 
+  const structureIds = structures.map(xa('structureId'));
   const removedMatchUpIds: string[] = [];
   const idsToRemove = [structureId];
+
   const getTargetedStructureIds = (structureId) =>
     drawDefinition.links
       ?.map(
@@ -51,13 +56,25 @@ export function removeStructure({
       )
       .filter(Boolean);
 
-  const structureIds = structures.map(({ structureId }) => structureId);
+  const getQualifyingSourceStructureIds = (structureId) =>
+    drawDefinition.links
+      ?.map(
+        (link) =>
+          qualifyingStructureIds.includes(link.source.structureId) &&
+          link.target.structureId === structureId &&
+          link.source.structureId
+      )
+      .filter(Boolean);
 
-  const targetedStructureIdsMap = Object.assign(
-    {},
-    ...structureIds.map((structureId) => ({
-      [structureId]: getTargetedStructureIds(structureId),
-    }))
+  const isQualifyingStructure = qualifyingStructureIds.includes(structureId);
+  const relatedStructureIdsMap = new Map<string, string[]>();
+  structureIds.forEach((id) =>
+    relatedStructureIdsMap.set(
+      id,
+      isQualifyingStructure
+        ? getQualifyingSourceStructureIds(id)
+        : getTargetedStructureIds(id)
+    )
   );
 
   while (idsToRemove.length) {
@@ -89,7 +106,8 @@ export function removeStructure({
 
     const targetedStructureIds =
       idBeingRemoved &&
-      targetedStructureIdsMap[idBeingRemoved].filter(
+      // targetedStructureIdsMap[idBeingRemoved].filter(
+      relatedStructureIdsMap.get(idBeingRemoved)?.filter(
         (id: string) =>
           // IMPORTANT: only delete MAIN stageSequence: 1 if specified to protect against DOUBLE_ELIMINATION scenario
           id !== mainStageSequence1.structureId ||
