@@ -774,6 +774,11 @@ export const SCHEDULED_MATCHUPS = {
   code: 'ERR_SCHEDULED_MATCHUPS',
 };
 
+export const SCORES_PRESENT = {
+  message: 'Scores present',
+  code: 'ERR_SCORES_PRESENT',
+};
+
 export const errorConditionConstants = {
   ANACHRONISM,
   CANNOT_CHANGE_WINNING_SIDE,
@@ -936,6 +941,7 @@ export const errorConditionConstants = {
   POLICY_NOT_FOUND,
   SCHEDULE_NOT_CLEARED,
   SCHEDULED_MATCHUPS,
+  SCORES_PRESENT,
   SEEDSCOUNT_GREATER_THAN_DRAW_SIZE,
   STAGE_SEQUENCE_LIMIT,
   STRUCTURE_NOT_FOUND,
