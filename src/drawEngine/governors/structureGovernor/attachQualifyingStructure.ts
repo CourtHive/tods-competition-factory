@@ -1,6 +1,6 @@
-import { getStructureGroups } from '../../../tournamentEngine/governors/publishingGovernor/getStructureGroups';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { decorateResult } from '../../../global/functions/decorateResult';
+import { resequenceStructures } from './resequenceStructures';
 import { findStructure } from '../../getters/findStructure';
 import {
   addMatchUpsNotice,
@@ -54,17 +54,7 @@ export function attachQualifyingStructure({
   drawDefinition.structures.push(structure);
   drawDefinition.links.push(link);
 
-  const { maxQualifyingDepth, structureProfiles } = getStructureGroups({
-    drawDefinition,
-  });
-
-  for (const structure of drawDefinition.structures) {
-    const profile = structureProfiles[structure.structureId];
-    if (profile.distanceFromMain) {
-      structure.stageSequence =
-        maxQualifyingDepth + 1 - profile.distanceFromMain;
-    }
-  }
+  resequenceStructures({ drawDefinition });
 
   const matchUps = getAllStructureMatchUps({ structure })?.matchUps || [];
 
