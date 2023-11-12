@@ -350,3 +350,14 @@ export type PlayoffAttributes = {
 };
 
 export type LineUp = TeamCompetitor[];
+
+export type StructureProfile = {
+  distanceFromMain?: number;
+  drawSources: string[];
+  drawTargets: string[];
+  progeny?: string[];
+  sources: string[];
+  targets: string[];
+  rootStage?: string;
+  stage?: string;
+};

@@ -6,9 +6,15 @@ import {
 } from '../../../utilities';
 
 import { DrawDefinition } from '../../../types/tournamentFromSchema';
+import { StructureProfile } from '../../../types/factoryTypes';
 import {
+  BOTTOM_UP,
   DRAW,
+  QUALIFYING,
+  RANDOM,
+  TOP_DOWN,
   VOLUNTARY_CONSOLATION,
+  WATERFALL,
 } from '../../../constants/drawDefinitionConstants';
 
 /**
@@ -22,17 +28,57 @@ export function getStructureGroups({
   drawDefinition: DrawDefinition;
 }): {
   sourceStructureIds: { [key: string]: boolean };
-  hasDrawFeedProfile: { [key: string]: boolean };
-  structureGroups: string[][];
+  hasDrawFeedProfile: { [key: string]: boolean }; // denotes placement is by DRAW, e.g. manually placed qualifiers
+  structureProfiles: { [key: string]: StructureProfile };
   allStructuresLinked: boolean;
+  structureGroups: string[][];
+  maxQualifyingDepth: number;
 } {
+  const structures = drawDefinition.structures || [];
   const links = drawDefinition.links || [];
+
+  const structureProfiles = new Map<string, StructureProfile>();
+
+  const initStructureProfile = (structureId) => {
+    const profile =
+      structureProfiles.get(structureId) ||
+      (structureProfiles.set(structureId, {
+        drawSources: [],
+        drawTargets: [],
+        progeny: [],
+        sources: [],
+        targets: [],
+      }) &&
+        structureProfiles.get(structureId));
+
+    if (profile && !profile?.stage) {
+      const structure = structures.find(
+        (structure) => structure.structureId === structureId
+      );
+      profile.stage = structure?.stage;
+    }
+
+    return profile;
+  };
 
   const sourceStructureIds = {};
   const hasDrawFeedProfile = {};
   let linkedStructureIds = links.map((link) => {
     const sourceId = link.source.structureId;
     const targetId = link.target.structureId;
+
+    const sourceProfile = initStructureProfile(sourceId);
+    const targetProfile = initStructureProfile(targetId);
+    if (
+      [BOTTOM_UP, TOP_DOWN, RANDOM, WATERFALL].includes(link.target.feedProfile)
+    ) {
+      sourceProfile?.targets.push(targetId);
+      targetProfile?.sources.push(sourceId);
+    } else if (link.target.feedProfile === DRAW) {
+      targetProfile?.drawSources.push(sourceId);
+      sourceProfile?.drawTargets.push(targetId);
+    }
+
     hasDrawFeedProfile[targetId] =
       hasDrawFeedProfile[targetId] || link.target.feedProfile === DRAW;
     sourceStructureIds[targetId] = unique([
@@ -42,6 +88,59 @@ export function getStructureGroups({
 
     return [link.source.structureId, link.target.structureId];
   });
+
+  for (const structureId of structureProfiles.keys()) {
+    const profile = structureProfiles.get(structureId);
+    if (profile) {
+      const sourceIds = profile.targets ?? [];
+      while (sourceIds.length) {
+        const sourceId = sourceIds.pop();
+        const sourceProfile = sourceId && structureProfiles[sourceId];
+        if (sourceProfile?.targets?.length) {
+          sourceIds.push(...sourceProfile.targets);
+        } else if (sourceProfile) {
+          profile.rootStage = sourceProfile.stage;
+        }
+      }
+      if (!profile.rootStage) profile.rootStage = profile.stage;
+
+      if (!profile.targets?.length) {
+        const targetIds = profile.sources ?? [];
+        while (targetIds.length) {
+          const targetId = targetIds.pop();
+          const targetProfile = targetId && structureProfiles[targetId];
+          if (targetProfile?.sources?.length) {
+            for (const id of targetProfile.sources) {
+              if (!profile.progeny?.includes(id)) profile.progeny?.push(id);
+            }
+            targetIds.push(...targetProfile.sources);
+          }
+        }
+      }
+    }
+  }
+
+  let maxQualifyingDepth = 0;
+  for (const structureId of structureProfiles.keys()) {
+    const profile = structureProfiles.get(structureId);
+    if (profile && profile.rootStage === QUALIFYING) {
+      const drawTargets = [profile.drawTargets?.[0]];
+      let distanceFromMain = 0;
+      while (drawTargets.length) {
+        distanceFromMain += 1;
+        const drawTarget = drawTargets.pop();
+        const targetProfile = drawTarget
+          ? structureProfiles.get(drawTarget)
+          : undefined;
+        if (targetProfile?.drawTargets?.length) {
+          drawTargets.push(targetProfile.drawTargets[0]);
+        }
+      }
+      profile.distanceFromMain = distanceFromMain;
+      if (distanceFromMain > maxQualifyingDepth)
+        maxQualifyingDepth = distanceFromMain;
+    }
+  }
 
   // iterate through all groups of structureIds to flatten tree of links between structures
   const iterations = linkedStructureIds.length;
@@ -79,7 +178,6 @@ export function getStructureGroups({
   const linkCheck: string[][] = [groupedStructureIds].filter(Boolean);
 
   // iterate through all structures to add missing structureIds
-  const structures = drawDefinition.structures || [];
   structures.forEach((structure) => {
     const { structureId, stage } = structure;
     const existingGroup = structureGroups.find((group) => {
@@ -93,8 +191,14 @@ export function getStructureGroups({
 
   const allStructuresLinked = allLinkStructuresLinked && linkCheck.length === 1;
 
+  if (!links?.length && structures.length === 1) {
+    initStructureProfile(structures[0].structureId);
+  }
+
   return {
+    structureProfiles: Object.fromEntries(structureProfiles),
     allStructuresLinked,
+    maxQualifyingDepth,
     sourceStructureIds,
     hasDrawFeedProfile,
     structureGroups,
