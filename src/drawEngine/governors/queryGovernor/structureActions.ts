@@ -86,7 +86,7 @@ export function allPlayoffPositionsFilled(params) {
           return assignment?.bye || assignment?.participantId;
         }
       ).length;
-      return structurePositionsFilled && allFilled;
+      return !!(structurePositionsFilled && allFilled);
     },
     !!playoffStructures.length
   );
