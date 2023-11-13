@@ -53,6 +53,7 @@ export function removeStructure({
   );
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
+  // TODO: if structure being rmoved is qualifying structure, ensure no source structures have scored matchUps
   const structureMatchUps = getAllStructureMatchUps({ structure }).matchUps;
   const scoresPresent = structureMatchUps.some(({ score }) =>
     scoreHasValue({ score })
