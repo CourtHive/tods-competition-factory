@@ -15,6 +15,7 @@ import { PolicyDefinitions } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   ErrorType,
+  INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
   MISSING_DRAW_SIZE,
   STRUCTURE_NOT_FOUND,
@@ -64,10 +65,26 @@ export function generateQualifyingStructure(
   success?: boolean;
   link?: DrawLink;
 } {
-  if (!params.drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   const stack = 'generateQualifyingStructure';
 
+  if (!params.drawDefinition)
+    return decorateResult({
+      result: { error: MISSING_DRAW_DEFINITION },
+      stack,
+    });
+
+  if (
+    (params.drawSize && !isConvertableInteger(params.drawSize)) ||
+    (params.participantsCount &&
+      !isConvertableInteger(params.participantsCount)) ||
+    (params.qualifyingPositions &&
+      !isConvertableInteger(params.qualifyingPositions))
+  ) {
+    return decorateResult({ result: { error: INVALID_VALUES }, stack });
+  }
+
   let drawSize = params.drawSize ?? coerceEven(params.participantsCount);
+
   const {
     qualifyingRoundNumber,
     qualifyingPositions,
@@ -85,6 +102,20 @@ export function generateQualifyingStructure(
     uuids,
   } = params;
 
+  if (!params.drawSize)
+    return decorateResult({
+      result: { error: MISSING_DRAW_SIZE },
+      context: { drawSize },
+      stack,
+    });
+
+  if (qualifyingPositions && qualifyingPositions >= params.drawSize)
+    return decorateResult({
+      result: { error: INVALID_VALUES },
+      context: { drawSize, qualifyingPositions },
+      stack,
+    });
+
   let roundLimit: number | undefined,
     roundsCount: number | undefined,
     structure: Structure | undefined,
@@ -92,10 +123,6 @@ export function generateQualifyingStructure(
   let qualifiersCount = 0;
   let finishingPositions;
   const stageSequence = 1;
-
-  if (!isConvertableInteger(drawSize)) {
-    return decorateResult({ result: { error: MISSING_DRAW_SIZE }, stack });
-  }
 
   const { structureProfiles } = getStructureGroups({ drawDefinition });
 
