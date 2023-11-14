@@ -66,12 +66,8 @@ export function getStructureSeedAssignments({
       stage,
     });
 
-  const seedProxies = entries
+  const proxiedEntries = entries
     ? entries
-        .slice(
-          0,
-          returnAllProxies ? entries.length : positionAssignments.length / 2
-        )
         .filter((entry) => entry.placementGroup === 1)
         .sort((a, b) => {
           // GEMscore is used here because headToHead encounters are not relevant
@@ -93,6 +89,11 @@ export function getStructureSeedAssignments({
         })
     : [];
 
+  const seedProxies = proxiedEntries?.slice(
+    0,
+    returnAllProxies ? proxiedEntries.length : positionAssignments.length / 2
+  );
+
   if (seedProxies.length) {
     // seedProxies are only found in PLAY_OFF when ROUND_ROBIN is MAIN stage
     seedAssignments = seedProxies;
@@ -105,5 +106,11 @@ export function getStructureSeedAssignments({
   const seedLimit =
     structure.seedLimit || structure?.positionAssignments?.length;
 
-  return { seedAssignments, seedLimit, stage, stageSequence, error };
+  return {
+    seedAssignments,
+    stageSequence,
+    seedLimit,
+    stage,
+    error,
+  };
 }
