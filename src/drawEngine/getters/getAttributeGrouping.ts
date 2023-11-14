@@ -1,3 +1,4 @@
+import { processAccessors } from './processAccessors';
 import { unique } from '../../utilities';
 
 import { HydratedParticipant } from '../../types/hydrated';
@@ -86,9 +87,13 @@ export function extractAttributeValues({
       policyAttribute || {};
 
     if (key) {
-      const keys = key.split('.');
+      const accessors = key.split('.');
       extractedValues.push(
-        ...processKeys({ value: participant, keys, significantCharacters })
+        ...processAccessors({
+          significantCharacters,
+          value: participant,
+          accessors,
+        })
       );
     } else if (directive) {
       // extractedValues are values to be avoided
@@ -124,41 +129,4 @@ export function extractAttributeValues({
 
   const values = unique(extractedValues);
   return { values };
-}
-
-function processKeys({ value, keys = [], significantCharacters }) {
-  const extractedValues: any[] = [];
-  for (const [index, key] of keys.entries()) {
-    if (value?.[key]) {
-      if (Array.isArray(value[key])) {
-        const values = value[key];
-        const remainingKeys = keys.slice(index);
-        values.forEach((nestedValue) => {
-          const result = processKeys({
-            value: nestedValue,
-            keys: remainingKeys,
-            significantCharacters,
-          });
-          extractedValues.push(...result);
-        });
-      } else {
-        value = value[key];
-        checkValue({ value, index });
-      }
-    }
-  }
-
-  function checkValue({ value, index }) {
-    if (
-      value &&
-      index === keys.length - 1 &&
-      ['string', 'number'].includes(typeof value)
-    ) {
-      const extractedValue = significantCharacters
-        ? value.slice(0, significantCharacters)
-        : value;
-      extractedValues.push(extractedValue);
-    }
-  }
-  return extractedValues;
 }

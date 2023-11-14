@@ -1,31 +1,40 @@
-type ProcessKeys = {
+type ProcessAccessorsArgs = {
   significantCharacters?: number;
   accessors: string[];
   value: any;
 };
+
 export function processAccessors({
   significantCharacters,
   accessors = [],
   value,
-}: ProcessKeys) {
-  const extractedValues: string[] = [];
+}: ProcessAccessorsArgs): string[] {
+  const extractedValues: any[] = [];
   const accessor = accessors[0];
   if (value?.[accessor]) {
+    const remainingKeys = accessors.slice(1);
     if (Array.isArray(value[accessor])) {
       const values = value[accessor];
-      const remainingAccessors = accessors.slice(1);
       values.forEach((nestedValue) => {
-        const extracted = processAccessors({
-          accessors: remainingAccessors,
+        const result = processAccessors({
+          accessors: remainingKeys,
           significantCharacters,
           value: nestedValue,
         });
-        extractedValues.push(...extracted);
-        return extracted;
+        extractedValues.push(...result);
       });
     } else {
       value = value[accessor];
-      checkValue({ value });
+      if (remainingKeys.length) {
+        const result = processAccessors({
+          accessors: remainingKeys,
+          significantCharacters,
+          value,
+        });
+        extractedValues.push(...result);
+      } else {
+        checkValue({ value });
+      }
     }
   }
 
@@ -37,6 +46,5 @@ export function processAccessors({
       extractedValues.push(extractedValue);
     }
   }
-
   return extractedValues;
 }
