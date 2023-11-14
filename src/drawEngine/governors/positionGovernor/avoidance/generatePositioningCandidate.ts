@@ -9,27 +9,30 @@ import {
   randomPop,
 } from '../../../../utilities';
 
-// import { GROUP, PAIR, TEAM } from '../../../../constants/participantConstants';
 import { INVALID_ASSIGNMENT } from '../../../../constants/errorConditionConstants';
+import { PositionAssignment } from '../../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../../constants/resultConstants';
+import { IdCollections } from '../../../../types/factoryTypes';
 
-/**
- *
- * NOTE: some of these parameters are passed directly through to other functions via ...params
- *
- * @param {object[]} initialPositionAssignments - positionAssignments before any new participants placed
- * @param {object[]} participantsWithGroupings - participants with added team/group/pair participantIds arrays
- * @param {string[]} unseededParticipantIds - ids of participants who are unseeded
- * @param {object[]} drawPositionChunks - drawPositions grouped by round starting with the final round
- * @param {object[]} drawPositionGroups - drawPositions paird with their initial round opponent drawPosition
- * @param {object[]} policyAttributes - { key: '' } objects defining accessors for participant values to be compared
- * @param {object} drawDefinition - drawDefinition object
- * @param {boolean} pairedPriority - flag whether to prioritize positions which already have one opponent placed
- * @param {string} structureId - id of the structure in which participants are to be placed
- * @param {object[]} allGroups - map of values and participantIds which have those values
- *
- */
-export function generatePositioningCandidate(params) {
+type GeneratePositioningCandidateArgs = {
+  participantIdGroups?: { [key: string]: string[] };
+  initialPositionAssignments: PositionAssignment[]; // positionAssignments before any new participants placed
+  policyAttributes?: { [key: string]: any }[];
+  drawPositionGroups: [number, number][]; // drawPositions paird with their initial round opponent drawPosition
+  unseededParticipantIds: string[];
+  allGroups: { [key: string]: any }; // map of values and participantIds which have those values
+  unseededByePositions?: number[];
+  drawPositionChunks?: number[][]; // drawPositions grouped by round starting with the final round
+  participantsWithGroupings: any; //  participants with added team/group/pair participantIds arrays
+  opponentsToPlaceCount: number;
+  idCollections: IdCollections;
+  pairedPriority?: boolean; // flag whether to prioritize positions which already have one opponent placed
+  drawSize?: number;
+};
+
+export function generatePositioningCandidate(
+  params: GeneratePositioningCandidateArgs
+) {
   const {
     initialPositionAssignments,
     participantsWithGroupings,

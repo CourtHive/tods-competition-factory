@@ -1,6 +1,7 @@
 import { unique } from '../../utilities';
 
 import { HydratedParticipant } from '../../types/hydrated';
+import { IdCollections } from '../../types/factoryTypes';
 import {
   MISSING_PARTICIPANT,
   MISSING_PARTICIPANTS,
@@ -21,8 +22,8 @@ import {
 type GetAttributeGroupingsArgs = {
   participants: HydratedParticipant[];
   targetParticipantIds: string[];
+  idCollections?: IdCollections;
   policyAttributes: any;
-  idCollections?: any;
 };
 export function getAttributeGroupings({
   targetParticipantIds,
@@ -64,8 +65,8 @@ export function getAttributeGroupings({
 type ExtractAttributeValuesArgs = {
   participants?: HydratedParticipant[];
   participant?: HydratedParticipant;
+  idCollections?: IdCollections; // { [directive]: [participantId]}
   policyAttributes: any;
-  idCollections?: any;
 };
 export function extractAttributeValues({
   policyAttributes,
@@ -89,7 +90,7 @@ export function extractAttributeValues({
       processKeys({ value: participant, keys, significantCharacters });
     } else if (directive) {
       // extractedValues are values to be avoided
-      // e.g. for { directive: 'pairParticipantIds' } the extractedValues would be [ 'partnerParticipantId' ]
+      // e.g. for { directive: 'pairParticipants' } the extractedValues would be [ 'partnerParticipantId' ]
       const includeIds = policyAttribute?.includeIds;
       const collectionIds = (idCollections?.[directive] || []).filter(
         (participantId) => !includeIds || includeIds.includes(participantId)

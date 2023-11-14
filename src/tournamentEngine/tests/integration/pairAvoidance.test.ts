@@ -4,21 +4,22 @@ import { expect, it } from 'vitest';
 
 import { PAIR } from '../../../constants/participantConstants';
 import { eventConstants } from '../../..';
+
 const { SINGLES } = eventConstants;
 
 const pairAvoidancePolicy = {
-  candidatesCount: 20,
-  roundsToSeparate: undefined,
-  policyName: 'Doubles Partner Avoidance',
   policyAttributes: [{ directive: 'pairParticipants' }],
+  policyName: 'Doubles Partner Avoidance',
+  roundsToSeparate: undefined,
+  candidatesCount: 20,
 };
 
 it('can generate SINGLE_ELIMINATION drawDefinition using pair avoidance with Doubles participants', () => {
   const result = avoidanceTest({
-    eventType: SINGLES,
+    avoidance: pairAvoidancePolicy,
     participantType: PAIR,
     participantsCount: 16,
-    avoidance: pairAvoidancePolicy,
+    eventType: SINGLES,
   });
   const { conflicts, report, participants } = result || {};
   const pairedParticipants = participants
