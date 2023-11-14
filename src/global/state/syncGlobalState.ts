@@ -125,7 +125,6 @@ export function cycleMutationStatus() {
 }
 
 export function addNotice({ topic, payload, key }: Notice) {
-  syncGlobalState.modified = true;
   if (typeof topic !== 'string' || typeof payload !== 'object') {
     return;
   }
@@ -141,7 +140,11 @@ export function addNotice({ topic, payload, key }: Notice) {
       (notice) => !(notice.topic === topic && notice.key === key)
     );
   }
+
   syncGlobalState.notices.push({ topic, payload, key });
+  syncGlobalState.modified = true;
+
+  return { ...SUCCESS };
 }
 
 export function getNotices({ topic }: GetNoticesArgs) {
