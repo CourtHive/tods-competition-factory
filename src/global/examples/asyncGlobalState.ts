@@ -172,6 +172,7 @@ function addNotice({ topic, payload, key }: Notice) {
     return;
   }
 
+  if (!instanceState.disableNotifications) instanceState.modified = true;
   if (instanceState.disableNotifications || !instanceState.subscriptions[topic])
     return;
 
@@ -184,7 +185,6 @@ function addNotice({ topic, payload, key }: Notice) {
   // params = undefinedToNull(params) // => see object.js utils
 
   instanceState.notices.push({ topic, payload, key });
-  instanceState.modified = true;
 
   return { success: true };
 }

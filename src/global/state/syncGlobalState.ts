@@ -129,11 +129,14 @@ export function addNotice({ topic, payload, key }: Notice) {
     return;
   }
 
+  if (!syncGlobalState.disableNotifications) syncGlobalState.modified = true;
+
   if (
     syncGlobalState.disableNotifications ||
     !syncGlobalState.subscriptions[topic]
-  )
+  ) {
     return;
+  }
 
   if (key) {
     syncGlobalState.notices = syncGlobalState.notices.filter(
@@ -142,7 +145,6 @@ export function addNotice({ topic, payload, key }: Notice) {
   }
 
   syncGlobalState.notices.push({ topic, payload, key });
-  syncGlobalState.modified = true;
 
   return { ...SUCCESS };
 }
