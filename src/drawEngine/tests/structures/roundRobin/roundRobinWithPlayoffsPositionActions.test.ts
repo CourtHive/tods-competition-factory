@@ -185,8 +185,8 @@ it('Playoff drawPosition assignment includes group winners who lost no matchUps'
   const groupSize = 4;
   const groupsCount = drawSize / groupSize;
   const structureOptions = {
-    groupSize,
     playoffGroups: [{ finishingPositions: [1], structureName: goldFlight }],
+    groupSize,
   };
 
   const drawProfiles = [
@@ -465,10 +465,10 @@ it('Playoff drawPosition assignment includes group winners who lost no matchUps'
     ...POLICY_SEEDING_NATIONAL,
   };
   result = tournamentEngine.positionActions({
-    drawId,
     structureId: playoffStructureIds[0],
-    drawPosition,
     policyDefinitions,
+    drawPosition,
+    drawId,
   });
   expect(result.validActions.length).not.toEqual(0);
 

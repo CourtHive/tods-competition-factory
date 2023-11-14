@@ -77,12 +77,12 @@ export function getSeedOrderByePositions({
   const strictSeedOrderByePositions = getOrderedByePositions({
     orderedSeedDrawPositions: orderedSortedFirstRoundSeededDrawPositions,
     relevantMatchUps,
-  }).slice(0, positionedSeeds.length);
+  }).slice(0, byesToPlace);
 
   const blockSeedOrderByePositions = getOrderedByePositions({
     orderedSeedDrawPositions: blockSortedRandomDrawPositions,
     relevantMatchUps,
-  }).slice(0, positionedSeeds.length);
+  }).slice(0, byesToPlace);
 
   return {
     strictSeedOrderByePositions,

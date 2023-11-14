@@ -366,6 +366,7 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
       validToAssignSeed
     ) {
       const { seedAssignments } = getStructureSeedAssignments({
+        returnAllProxies: true,
         drawDefinition,
         structure,
       });
@@ -401,6 +402,7 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
       validToAssignSeed
     ) {
       const { seedAssignments } = getStructureSeedAssignments({
+        returnAllProxies: true,
         drawDefinition,
         structure,
       });
