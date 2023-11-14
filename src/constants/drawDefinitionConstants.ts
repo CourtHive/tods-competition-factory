@@ -65,6 +65,7 @@ export const FIRST_MATCHUP = 'FIRST_MATCHUP'; // condition for valididty of link
 // draw types
 // PLAY_OFF is also a stage type
 export const AD_HOC = 'AD_HOC';
+export const FLEX_ROUNDS = 'AD_HOC';
 export const FEED_IN = 'FEED_IN';
 export const COMPASS = 'COMPASS';
 export const OLYMPIC = 'OLYMPIC';
@@ -170,6 +171,7 @@ export const drawDefinitionConstants = {
 
   AD_HOC,
   FEED_IN,
+  FLEX_ROUNDS,
   COMPASS,
   PLAY_OFF,
   OLYMPIC,
