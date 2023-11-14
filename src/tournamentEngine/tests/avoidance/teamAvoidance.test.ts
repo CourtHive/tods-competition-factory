@@ -3,9 +3,9 @@ import tournamentEngine from '../../sync';
 import { expect, it } from 'vitest';
 
 import { SINGLES_EVENT, TEAM_EVENT } from '../../../constants/eventConstants';
+import { POLICY_TYPE_AVOIDANCE } from '../../../constants/policyConstants';
 import { TEAM_PARTICIPANT } from '../../../constants/participantConstants';
 import { COLLEGE_D3 } from '../../../constants/tieFormatConstants';
-import { POLICY_TYPE_AVOIDANCE } from '../../../constants/policyConstants';
 import { getConflicts } from './testGetConflicts';
 
 it('can separate team members in an elimination structure', () => {
@@ -78,6 +78,4 @@ it('can separate team members in an elimination structure', () => {
   });
   expect(conflicts?.length).toEqual(0);
   expect(sideParticipants?.length).toEqual(16);
-
-  console.log(sideParticipants);
 });
