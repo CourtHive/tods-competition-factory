@@ -82,7 +82,7 @@ export function automatedPositioning({
   event,
 }: AutomatedPositioningArgs): ResultType & {
   positionAssignments?: PositionAssignment[];
-  positioningReport?: any;
+  positioningReport?: { [key: string]: any };
   success?: boolean;
   conflicts?: any[];
 } {
@@ -262,7 +262,6 @@ export function automatedPositioning({
       : undefined;
 
     if (result?.error) {
-      console.log('positionByes', { result });
       return handleErrorCondition(result);
     }
     unseededByePositions = result?.unseededByePositions;

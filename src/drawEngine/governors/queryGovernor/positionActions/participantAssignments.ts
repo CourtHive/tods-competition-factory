@@ -68,6 +68,7 @@ export function getValidAssignmentActions({
   if (!ignoreSeedPositions) {
     const result = getNextSeedBlock({
       provisionalPositioning,
+      returnAllProxies: true,
       randomize: true,
       drawDefinition,
       structureId,

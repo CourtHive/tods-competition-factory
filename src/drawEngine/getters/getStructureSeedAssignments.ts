@@ -1,3 +1,4 @@
+import { getPositionAssignments } from './positionsGetter';
 import { getStageEntries } from './stageGetter';
 import { findStructure } from './findStructure';
 
@@ -17,12 +18,14 @@ import {
 type GetStructureSeedAssignmentsArgs = {
   provisionalPositioning?: boolean;
   drawDefinition?: DrawDefinition;
+  returnAllProxies?: boolean;
   structure?: Structure;
   structureId?: string;
 };
 
 export function getStructureSeedAssignments({
   provisionalPositioning,
+  returnAllProxies,
   drawDefinition,
   structureId,
   structure,
@@ -35,11 +38,18 @@ export function getStructureSeedAssignments({
 } {
   let error,
     seedAssignments: SeedAssignment[] = [];
+
   if (!structure) {
     ({ structure, error } = findStructure({ drawDefinition, structureId }));
   }
+
+  const positionAssignments = getPositionAssignments({
+    structure,
+  }).positionAssignments;
+
   if (error || !structure)
     return { seedAssignments: [], error: STRUCTURE_NOT_FOUND };
+
   if (!structureId) structureId = structure.structureId;
 
   const { stage, stageSequence } = structure;
@@ -55,8 +65,13 @@ export function getStructureSeedAssignments({
       structureId,
       stage,
     });
+
   const seedProxies = entries
     ? entries
+        .slice(
+          0,
+          returnAllProxies ? entries.length : positionAssignments.length / 2
+        )
         .filter((entry) => entry.placementGroup === 1)
         .sort((a, b) => {
           // GEMscore is used here because headToHead encounters are not relevant
@@ -72,8 +87,8 @@ export function getStructureSeedAssignments({
           return {
             participantId: entry.participantId,
             seedValue: seedNumber,
-            seedNumber,
             seedProxy: true, // flag so that proxy seeding information doesn't get used externally
+            seedNumber,
           };
         })
     : [];

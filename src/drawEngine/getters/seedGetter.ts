@@ -40,12 +40,14 @@ type GetValidSeedBlocksArgs = {
   appliedPolicies?: PolicyDefinitions;
   provisionalPositioning?: boolean;
   drawDefinition?: DrawDefinition;
+  returnAllProxies?: boolean;
   allPositions?: boolean;
   structure: Structure;
 };
 
 export function getValidSeedBlocks({
   provisionalPositioning,
+  returnAllProxies,
   appliedPolicies,
   drawDefinition,
   allPositions,
@@ -62,6 +64,7 @@ export function getValidSeedBlocks({
   });
   const { seedAssignments } = getStructureSeedAssignments({
     provisionalPositioning,
+    returnAllProxies,
     drawDefinition,
     structure,
   });
@@ -369,6 +372,7 @@ export function getNextSeedBlock(params) {
 
   const { structure } = findStructure({ drawDefinition, structureId });
   const { seedAssignments } = getStructureSeedAssignments({
+    returnAllProxies: params.returnAllProxies,
     provisionalPositioning,
     drawDefinition,
     structure,
@@ -387,6 +391,7 @@ export function getNextSeedBlock(params) {
     seedBlockInfo?.validSeedBlocks ||
     (structure &&
       getValidSeedBlocks({
+        returnAllProxies: params.returnAllProxies,
         provisionalPositioning,
         appliedPolicies,
         drawDefinition,
