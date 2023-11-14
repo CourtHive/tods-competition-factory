@@ -3,14 +3,14 @@ import tournamentEngine from '../../sync';
 import { expect, it } from 'vitest';
 
 import { POLICY_TYPE_AVOIDANCE } from '../../../constants/policyConstants';
+import { MAIN } from '../../../constants/drawDefinitionConstants';
+import { getConflicts } from './testGetConflicts';
 
 it('properly handles qualifiers with avoidances', () => {
-  const avoidancePolicy = {
-    policyAttributes: [
-      { key: 'individualParticipants.person.addresses.country' },
-      { key: 'person.addresses.country' },
-    ],
-  };
+  const keyToTest = 'person.addresses.countryCode';
+  const keysToTest = [{ key: keyToTest }];
+
+  const avoidancePolicy = { policyAttributes: keysToTest };
   const policyDefinitions = { [POLICY_TYPE_AVOIDANCE]: avoidancePolicy };
   const qualifiersCount = 8;
   const drawProfiles = [
@@ -33,6 +33,7 @@ it('properly handles qualifiers with avoidances', () => {
 
   tournamentEngine.setState(tournamentRecord);
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+
   expect(
     drawDefinition.structures[0].positionAssignments.every(
       ({ participantId, qualifier }) => participantId || qualifier
@@ -43,4 +44,16 @@ it('properly handles qualifiers with avoidances', () => {
       ({ qualifier }) => qualifier
     ).length
   ).toEqual(qualifiersCount);
+
+  const mainStructureId = drawDefinition.structures.find(
+    (structure) => structure.stage === MAIN
+  ).structureId;
+
+  const { conflicts } = getConflicts({
+    tournamentRecord: tournamentEngine.getState().tournamentRecord,
+    structureId: mainStructureId,
+    keysToTest,
+    drawId,
+  });
+  expect(conflicts?.length).toEqual(0);
 });
