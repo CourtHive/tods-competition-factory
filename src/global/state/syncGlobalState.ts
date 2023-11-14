@@ -125,23 +125,28 @@ export function cycleMutationStatus() {
 }
 
 export function addNotice({ topic, payload, key }: Notice) {
-  syncGlobalState.modified = true;
   if (typeof topic !== 'string' || typeof payload !== 'object') {
     return;
   }
 
+  if (!syncGlobalState.disableNotifications) syncGlobalState.modified = true;
+
   if (
     syncGlobalState.disableNotifications ||
     !syncGlobalState.subscriptions[topic]
-  )
+  ) {
     return;
+  }
 
   if (key) {
     syncGlobalState.notices = syncGlobalState.notices.filter(
       (notice) => !(notice.topic === topic && notice.key === key)
     );
   }
+
   syncGlobalState.notices.push({ topic, payload, key });
+
+  return { ...SUCCESS };
 }
 
 export function getNotices({ topic }: GetNoticesArgs) {

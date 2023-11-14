@@ -9,10 +9,6 @@ import {
 
 /**
  *
- * @param {object[]} participants - all tournament participants; used to access attribute values for grouping
- * @param {string[]} policyAtributtes - participant attributes to be processed to create groupings
- * @param {string[]} targetParticipantIds - participantIds to be processed
- *
  * Each policyAttribute is a string definining how to access the nested participant attribute to be accessed
  * 'person.nationalityCode' targets => { participant: { person: { natinalityCode }}}
  *
@@ -93,7 +89,7 @@ export function extractAttributeValues({
       processKeys({ value: participant, keys, significantCharacters });
     } else if (directive) {
       // extractedValues are values to be avoided
-      // e.g. for { directive: 'pairParticipants' } the extractedValues would be [ 'partnerParticipantId' ]
+      // e.g. for { directive: 'pairParticipantIds' } the extractedValues would be [ 'partnerParticipantId' ]
       const includeIds = policyAttribute?.includeIds;
       const collectionIds = (idCollections?.[directive] || []).filter(
         (participantId) => !includeIds || includeIds.includes(participantId)

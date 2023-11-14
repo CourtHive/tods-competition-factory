@@ -167,12 +167,12 @@ function cycleMutationStatus() {
 
 function addNotice({ topic, payload, key }: Notice) {
   const instanceState = getInstanceState();
-  instanceState.modified = true;
 
   if (typeof topic !== 'string' || typeof payload !== 'object') {
     return;
   }
 
+  if (!instanceState.disableNotifications) instanceState.modified = true;
   if (instanceState.disableNotifications || !instanceState.subscriptions[topic])
     return;
 
