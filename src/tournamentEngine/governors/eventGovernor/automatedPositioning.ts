@@ -78,6 +78,7 @@ export function automatedPlayoffPositioning(
   params: AutomatedPlayoffPositioningArgs
 ): {
   structurePositionAssignments?: StructurePositionAssignmentType[];
+  positioningReports?: { [key: string]: any }[];
   success?: boolean;
   error?: ErrorType;
 } {
@@ -114,6 +115,8 @@ export function automatedPlayoffPositioning(
 
   const participants = tournamentRecord?.participants;
 
+  const positioningReports: { [key: string]: any }[] = [];
+
   if (playoffStructures) {
     for (const structure of playoffStructures) {
       const { structureId: playoffStructureId } = structure;
@@ -136,8 +139,10 @@ export function automatedPlayoffPositioning(
           structureId: playoffStructureId,
         });
       }
+      if (result.positioningReport)
+        positioningReports.push(result.positioningReport);
     }
   }
 
-  return { ...SUCCESS, structurePositionAssignments };
+  return { ...SUCCESS, structurePositionAssignments, positioningReports };
 }

@@ -51,7 +51,7 @@ export function getPositionAssignments({
   structureId,
   structure,
 }: GetPositionAssignmentsArgs): {
-  positionAssignments?: PositionAssignment[];
+  positionAssignments: PositionAssignment[];
   error?: ErrorType;
 } {
   let error: any,

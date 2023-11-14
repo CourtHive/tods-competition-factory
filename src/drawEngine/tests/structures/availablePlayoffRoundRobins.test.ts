@@ -349,7 +349,8 @@ it.each(scenarios)(
     });
     expect(result.error).toEqual(INVALID_VALUES);
 
-    if (playoffGroups) {
+    // if { completeAllMatchUps: true } then the playoffStructures are already generated and popujlated
+    if (playoffGroups && !completeAllMatchUps) {
       result = tournamentEngine.generateAndPopulatePlayoffStructures({
         structureId: mainStructureId,
         playoffGroups,
