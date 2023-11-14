@@ -37,8 +37,9 @@ In this case the **policydefinition** specifies that participants in the generat
 ```js
 const AVOIDANCE_COUNTRY = {
   avoidance: {
-    roundsToSeparate: undefined,
     policyName: 'Nationality Code',
+    roundsToSeparate: undefined,
+    targetDivitions: undefined,
     policyAttributes: [
       { key: 'person.nationalityCode' },
       { key: 'individualParticipants.person.nationalityCode' },

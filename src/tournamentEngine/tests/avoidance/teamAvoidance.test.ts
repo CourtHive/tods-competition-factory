@@ -43,7 +43,11 @@ it('can separate team members in an elimination structure', () => {
 
   const policyAttributes = [{ directive: 'teamParticipants' }];
 
-  const avoidancePolicy = { policyAttributes };
+  const avoidancePolicy = {
+    roundsToSeparate: undefined,
+    targetDivisions: undefined,
+    policyAttributes,
+  };
   const policyDefinitions = { [POLICY_TYPE_AVOIDANCE]: avoidancePolicy };
 
   const drawDefinition = tournamentEngine.generateDrawDefinition({
@@ -74,4 +78,6 @@ it('can separate team members in an elimination structure', () => {
   });
   expect(conflicts?.length).toEqual(0);
   expect(sideParticipants?.length).toEqual(16);
+
+  console.log(sideParticipants);
 });
