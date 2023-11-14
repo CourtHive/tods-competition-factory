@@ -9,10 +9,6 @@ import {
 
 /**
  *
- * @param {object[]} participants - all tournament participants; used to access attribute values for grouping
- * @param {string[]} policyAtributtes - participant attributes to be processed to create groupings
- * @param {string[]} targetParticipantIds - participantIds to be processed
- *
  * Each policyAttribute is a string definining how to access the nested participant attribute to be accessed
  * 'person.nationalityCode' targets => { participant: { person: { natinalityCode }}}
  *
