@@ -89,7 +89,7 @@ export function extractAttributeValues({
       processKeys({ value: participant, keys, significantCharacters });
     } else if (directive) {
       // extractedValues are values to be avoided
-      // e.g. for { directive: 'pairParticipants' } the extractedValues would be [ 'partnerParticipantId' ]
+      // e.g. for { directive: 'pairParticipantIds' } the extractedValues would be [ 'partnerParticipantId' ]
       const includeIds = policyAttribute?.includeIds;
       const collectionIds = (idCollections?.[directive] || []).filter(
         (participantId) => !includeIds || includeIds.includes(participantId)
