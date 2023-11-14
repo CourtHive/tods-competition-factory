@@ -361,3 +361,9 @@ export type StructureProfile = {
   rootStage?: string;
   stage?: string;
 };
+
+export type IdCollections = {
+  groupParticipants: string[];
+  pairParticipants: string[];
+  teamParticipants: string[];
+};
