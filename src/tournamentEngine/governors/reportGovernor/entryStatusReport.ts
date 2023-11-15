@@ -44,8 +44,8 @@ export function getEntryStatusReports({
         sides
           ?.flatMap((side: any) =>
             matchUpType === DOUBLES_MATCHUP
-              ? side.participant?.individualParticipantIds
-              : side.participant?.participantId || side.participantId
+              ? side?.participant?.individualParticipantIds
+              : side?.participant?.participantId || side.participantId
           )
           .filter(Boolean)
     )
@@ -224,7 +224,7 @@ export function getEntryStatusReports({
     ({ participant: { participantType, participantRole } }) =>
       participantType === INDIVIDUAL && participantRole === COMPETITOR
   );
-  const nonParticipatingParticipants = individualParticipants
+  const nonParticipatingParticipantIds = individualParticipants
     .filter(
       ({ participant }) =>
         !nonTeamEnteredParticipantIds.includes(participant.participantId)
@@ -232,9 +232,10 @@ export function getEntryStatusReports({
     .map(({ participant }) => participant.participantId);
 
   const tournamentEntryReport = {
-    nonParticipatingEntriesCount: nonParticipatingParticipants.length,
+    nonParticipatingEntriesCount: nonParticipatingParticipantIds.length,
     individualParticipantsCount: individualParticipants.length,
     eventsCount: Object.values(eventReports).length,
+    nonParticipatingParticipantIds,
     drawDefinitionsCount,
     tournamentId,
   };
