@@ -17,6 +17,7 @@ import {
   PLAY_OFF,
   QUALIFYING,
 } from '../../../constants/drawDefinitionConstants';
+import { POLICY_TYPE_AVOIDANCE } from '../../../constants/policyConstants';
 
 export function positionUnseededParticipants({
   provisionalPositioning,
@@ -101,7 +102,7 @@ export function positionUnseededParticipants({
     drawDefinition,
     event,
   });
-  let { avoidance } = appliedPolicies ?? {};
+  let avoidance = (appliedPolicies ?? {})[POLICY_TYPE_AVOIDANCE];
 
   if (structure.stage === PLAY_OFF) {
     // generate avoidance policies automatically for Playoffs from Round Robin Groups
