@@ -11,7 +11,7 @@ Convenience methods useful for projects working with the Competition Factory.
 Adds extension entry to element `.extensions` attribute; error checking; creates attribute if necessary; overwrites existing value;
 
 ```js
-addExtension({
+utilities.addExtension({
   extension: { name, value },
   creationTime, // boolean - add timeStamp
   element: obj,
@@ -21,6 +21,25 @@ addExtension({
 ---
 
 ## calculateWinCriteria
+
+---
+
+## categoryCanContain
+
+```js
+const {
+  invalidRatingRange,
+  invalidAgeMinDate,
+  invalidAgeMaxDate,
+  invalidBallType,
+  invalidAgeMax,
+  invalidAgeMin,
+  valid,
+} = utilities.categoryCanContain({
+  childCategory: { ageCategoryCode: 'U16' },
+  category: { ageCategoryCode: 'U18' },
+});
+```
 
 ---
 
@@ -63,7 +82,19 @@ addExtension({
 ## findExtension
 
 ```js
-const { extension } = findExtension({ element, name });
+const { extension } = utilities.findExtension({ element, name });
+```
+
+---
+
+## genderValidityCheck
+
+```js
+const { valid, error } = utilities.genderValidityCheck({
+  referenceGender, // if not present then always returns { valid: true }
+  matchUpType, // optional - check whether matchUpType is valid for referenceGender
+  gender,
+});
 ```
 
 ---
@@ -223,5 +254,8 @@ const {
 Generate color-coded printout of matchUp schedule details
 
 ```js
-visualizeScheduledMatchUps({ scheduledMatchUps, showGlobalLogs: true });
+utilities.visualizeScheduledMatchUps({
+  showGlobalLogs: true,
+  scheduledMatchUps,
+});
 ```
