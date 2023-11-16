@@ -1,4 +1,5 @@
 import { getPairedPreviousMatchUp } from '../positionGovernor/getPairedPreviousMatchup';
+import { isString } from '../../../utilities/objects';
 
 import { MatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { MatchUp } from '../../../types/tournamentFromSchema';
@@ -43,10 +44,11 @@ export function updateMatchUpStatusCodes({
 
     matchUp.matchUpStatusCodes = (matchUp.matchUpStatusCodes ?? []).map(
       (code) => {
-        if (code.sideNumber === sourceSideNumber) {
-          return { ...code, previousMatchUpStatus: sourceMatchUpStatus };
+        const value = isString(code) || !isNaN(code) ? { code } : code;
+        if (value.sideNumber === sourceSideNumber) {
+          return { ...value, previousMatchUpStatus: sourceMatchUpStatus };
         }
-        return code;
+        return value;
       }
     );
   }
