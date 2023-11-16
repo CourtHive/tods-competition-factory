@@ -45,12 +45,13 @@ type DevContextType = {
 };
 
 type GlobalStateTypes = {
+  devContext?: DevContextType | boolean;
   tournamentFactoryVersion: string;
   deepCopyAttributes: DeepCopyType;
-  devContext?: DevContextType | boolean;
   iterators: IteratorsType;
   timers: timersType;
   deepCopy: boolean;
+  globalLog?: any;
 };
 
 export type ImplemtationGlobalStateTypes = TournamentRecordsArgs & {
@@ -213,6 +214,14 @@ export function timeKeeper(
   return globalState.timers[timer];
 }
 
+export function setGlobalLog(loggingFx?: any) {
+  if (typeof loggingFx === 'function') {
+    globalState.globalLog = loggingFx;
+  } else {
+    delete globalState.globalLog;
+  }
+}
+
 export function setDevContext(value?: any) {
   globalState.devContext = value;
 }
@@ -370,4 +379,12 @@ export function handleCaughtError({
     params,
     err,
   });
+}
+
+export function globalLog(engine, log) {
+  if (globalState.globalLog) {
+    return globalState.globalLog(engine, log);
+  } else {
+    console.log(engine, log);
+  }
 }
