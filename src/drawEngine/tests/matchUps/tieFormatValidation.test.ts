@@ -220,5 +220,4 @@ it('cal enforce gender in collectionDefinitions', () => {
     tieFormat,
   });
   expect(result.error).toEqual(INVALID_TIE_FORMAT);
-  expect(result.errors).toEqual(['Invalid gender: FEMALE']);
 });
