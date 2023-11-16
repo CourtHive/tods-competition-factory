@@ -1,4 +1,8 @@
-import { getDeepCopyIterations, getDevContext } from '../../state/globalState';
+import {
+  getDeepCopyIterations,
+  getDevContext,
+  globalLog,
+} from '../../state/globalState';
 
 export function engineLogging({ result, methodName, elapsed, params, engine }) {
   const devContext = getDevContext();
@@ -40,7 +44,7 @@ export function engineLogging({ result, methodName, elapsed, params, engine }) {
   ) {
     log.result = result;
   }
-  if (Object.keys(log).length > 1) console.log(engine, log);
+  if (Object.keys(log).length > 1) globalLog(engine, log);
 
   if (result && devContext.makeDeepCopy)
     result.deepCopyIterations = getDeepCopyIterations();

@@ -1,3 +1,4 @@
+import { genderValidityCheck } from '../../../global/functions/deducers/genderValidityCheck';
 import { categoryCanContain } from '../../../global/functions/deducers/categoryCanContain';
 import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
 import { isConvertableInteger } from '../../../utilities/math';
@@ -12,7 +13,6 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_CATEGORY,
   INVALID_COLLECTION_DEFINITION,
-  INVALID_GENDER,
   INVALID_OBJECT,
   INVALID_TIE_FORMAT,
 } from '../../../constants/errorConditionConstants';
@@ -233,19 +233,20 @@ export function validateCollectionDefinition({
     errors.push(`Invalid matchUpFormat: ${matchUpFormat}`);
   }
 
-  if (
-    checkGender &&
-    referenceGender &&
-    gender &&
-    [GenderEnum.Male, GenderEnum.Female].includes(referenceGender) &&
-    referenceGender !== gender
-  ) {
-    errors.push(`Invalid gender: ${gender}`);
-    return decorateResult({
-      result: { error: INVALID_GENDER, errors },
-      context: { referenceGender, gender },
-      stack,
+  if (checkGender) {
+    const result = genderValidityCheck({
+      referenceGender,
+      matchUpType,
+      gender,
     });
+
+    if (result.error) {
+      return decorateResult({
+        context: { referenceGender, gender },
+        result,
+        stack,
+      });
+    }
   }
 
   if (checkCategory && referenceCategory && category) {
