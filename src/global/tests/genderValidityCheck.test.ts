@@ -2,8 +2,10 @@ import { genderValidityCheck } from '../functions/deducers/genderValidityCheck';
 import { expect, it } from 'vitest';
 
 import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '../../constants/matchUpTypes';
-import { GenderEnum } from '../../types/tournamentFromSchema';
 import { INVALID_GENDER } from '../../constants/errorConditionConstants';
+import { GenderEnum } from '../../types/tournamentFromSchema';
+
+const errorInfo = 'MIXED events can only contain MIXED doubles collections';
 
 const scenarios = [
   {
@@ -52,10 +54,10 @@ const scenarios = [
     },
     expectation: {
       error: INVALID_GENDER,
-      info: 'MIXED events can only contain MIXED doubles collections',
       stack: ['genderValidityCheck'],
-      valid: false
-    }
+      info: errorInfo,
+      valid: false,
+    },
   },
   {
     params: {
@@ -63,7 +65,7 @@ const scenarios = [
       matchUpType: DOUBLES_MATCHUP,
       gender: GenderEnum.Mixed,
     },
-    expectation: {valid: true},
+    expectation: { valid: true },
   },
   {
     params: {
@@ -73,9 +75,9 @@ const scenarios = [
     },
     expectation: {
       error: INVALID_GENDER,
-      info: 'MIXED events can only contain MIXED doubles collections',
       stack: ['genderValidityCheck'],
-      valid: false
+      info: errorInfo,
+      valid: false,
     },
   },
   {
@@ -85,9 +87,9 @@ const scenarios = [
       gender: GenderEnum.Female,
     },
     expectation: {
-      info: 'MIXED events can only contain MIXED doubles collections',
       stack: ['genderValidityCheck'],
       error: INVALID_GENDER,
+      info: errorInfo,
       valid: false,
     },
   },
