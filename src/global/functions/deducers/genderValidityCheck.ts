@@ -31,9 +31,13 @@ export function genderValidityCheck({
           stack,
         });
   }
-  if (matchUpType === TypeEnum.Singles && referenceGender === MIXED)
+
+  if (
+    referenceGender === MIXED &&
+    (gender !== MIXED || matchUpType === TypeEnum.Singles)
+  )
     return decorateResult({
-      info: 'matchUpType SINGLES is invalid for gender MIXED',
+      info: 'MIXED events can only contain MIXED doubles collections',
       result: { error: INVALID_GENDER, valid: false },
       stack,
     });
