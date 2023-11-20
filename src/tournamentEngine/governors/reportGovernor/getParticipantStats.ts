@@ -93,7 +93,7 @@ export function getParticipantStats({
 
   const participantsProfile = withScaleValues ? { withScaleValues } : undefined;
   matchUps =
-    matchUps ||
+    matchUps ??
     allTournamentMatchUps({ tournamentRecord, participantsProfile }).matchUps;
   if (!matchUps?.length) return { error: MISSING_MATCHUPS };
 
