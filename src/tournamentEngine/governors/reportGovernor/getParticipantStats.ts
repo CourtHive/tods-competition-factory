@@ -64,8 +64,8 @@ type GetTeamStatistics = {
   withIndividualStats?: boolean;
   tournamentRecord: Tournament;
   matchUps?: HydratedMatchUp[];
+  teamParticipantId?: string;
   withScaleValues?: boolean;
-  teamParticipantId: string;
   tallyPolicy?: any;
 };
 
@@ -176,6 +176,8 @@ export function getParticipantStats({
           participantName: participant.participantName,
           ratings: participant.ratings,
         });
+        const stats = participantStats.get(participant.participantId);
+        if (stats) stats.participantName = participant.participantName;
       }
     }
 

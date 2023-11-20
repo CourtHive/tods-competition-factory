@@ -32,6 +32,7 @@ type FindMatchUpType = {
   drawDefinition?: DrawDefinition;
   afterRecoveryTimes?: boolean;
   tournamentRecord: Tournament;
+  nextMatchUps?: boolean;
   inContext?: boolean;
   matchUpId: string;
   eventId?: string;
@@ -59,6 +60,7 @@ export function findMatchUp({
   contextContent,
   contextProfile,
   drawDefinition,
+  nextMatchUps,
   matchUpId,
   inContext,
   eventId,
@@ -68,8 +70,9 @@ export function findMatchUp({
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (typeof matchUpId !== 'string') return { error: MISSING_MATCHUP_ID };
 
-  if (!drawDefinition || !event) {
-    const matchUps = allTournamentMatchUps({ tournamentRecord }).matchUps ?? [];
+  if (!drawDefinition || !event || nextMatchUps) {
+    const matchUps =
+      allTournamentMatchUps({ tournamentRecord, nextMatchUps }).matchUps ?? [];
 
     const inContextMatchUp = matchUps.find(
       (matchUp) => matchUp.matchUpId === matchUpId
