@@ -64,8 +64,8 @@ type GetTeamStatistics = {
   withIndividualStats?: boolean;
   tournamentRecord: Tournament;
   matchUps?: HydratedMatchUp[];
+  teamParticipantId?: string;
   withScaleValues?: boolean;
-  teamParticipantId: string;
   tallyPolicy?: any;
 };
 
@@ -93,7 +93,7 @@ export function getParticipantStats({
 
   const participantsProfile = withScaleValues ? { withScaleValues } : undefined;
   matchUps =
-    matchUps ||
+    matchUps ??
     allTournamentMatchUps({ tournamentRecord, participantsProfile }).matchUps;
   if (!matchUps?.length) return { error: MISSING_MATCHUPS };
 
@@ -176,6 +176,8 @@ export function getParticipantStats({
           participantName: participant.participantName,
           ratings: participant.ratings,
         });
+        const stats = participantStats.get(participant.participantId);
+        if (stats) stats.participantName = participant.participantName;
       }
     }
 
