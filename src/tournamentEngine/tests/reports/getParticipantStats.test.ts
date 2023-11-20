@@ -45,13 +45,11 @@ it('can return team statistics', () => {
     expect(stats.participantName).toBeDefined()
   );
 
-  /**
   result = tournamentEngine.getParticipantStats({
     withIndividualStats: true,
     opponentParticipantId,
     teamParticipantId,
   });
 
-  console.log(result.allParticipantStats);
-   */
+  expect(result.allParticipantStats.length).toEqual(2);
 });

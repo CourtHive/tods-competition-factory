@@ -38,11 +38,45 @@ const scenarios = [
   },
   {
     params: {
+      referenceGender: GenderEnum.Any,
+      matchUpType: SINGLES_MATCHUP,
+      gender: GenderEnum.Mixed,
+    },
+    expectation: { valid: true },
+  },
+  {
+    params: {
+      referenceGender: GenderEnum.Mixed,
+      matchUpType: SINGLES_MATCHUP,
+      gender: GenderEnum.Mixed,
+    },
+    expectation: {
+      error: INVALID_GENDER,
+      info: 'MIXED events can only contain MIXED doubles collections',
+      stack: ['genderValidityCheck'],
+      valid: false
+    }
+  },
+  {
+    params: {
+      referenceGender: GenderEnum.Mixed,
+      matchUpType: DOUBLES_MATCHUP,
+      gender: GenderEnum.Mixed,
+    },
+    expectation: {valid: true},
+  },
+  {
+    params: {
       referenceGender: GenderEnum.Mixed,
       matchUpType: DOUBLES_MATCHUP,
       gender: GenderEnum.Female,
     },
-    expectation: { valid: true },
+    expectation: {
+      error: INVALID_GENDER,
+      info: 'MIXED events can only contain MIXED doubles collections',
+      stack: ['genderValidityCheck'],
+      valid: false
+    },
   },
   {
     params: {
@@ -51,7 +85,7 @@ const scenarios = [
       gender: GenderEnum.Female,
     },
     expectation: {
-      info: 'matchUpType SINGLES is invalid for gender MIXED',
+      info: 'MIXED events can only contain MIXED doubles collections',
       stack: ['genderValidityCheck'],
       error: INVALID_GENDER,
       valid: false,
