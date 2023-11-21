@@ -1,4 +1,5 @@
 import { getParticipantId } from '../../../global/functions/extractors';
+import { generateRange } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 import { expect, it } from 'vitest';
@@ -83,13 +84,32 @@ const scenarios = [
     seedsCount: 2,
     drawSize: 16,
   },
+  {
+    qualifyingPositions: 16,
+    // prettier-ignore
+    seededDrawPositions: [
+    [ 1, 1 ],    [ 2, 9 ],    [ 3, 17 ],
+    [ 4, 25 ],   [ 5, 33 ],   [ 6, 41 ],
+    [ 7, 49 ],   [ 8, 57 ],   [ 9, 65 ],
+    [ 10, 73 ],  [ 11, 81 ],  [ 12, 89 ],
+    [ 13, 97 ],  [ 14, 105 ], [ 15, 113 ],
+    [ 16, 121 ], [ 17, 128 ], [ 18, 120 ],
+    [ 19, 112 ], [ 20, 104 ], [ 21, 96 ],
+    [ 22, 88 ],  [ 23, 80 ],  [ 24, 72 ],
+    [ 25, 64 ],  [ 26, 56 ],  [ 27, 48 ],
+    [ 28, 40 ],  [ 29, 32 ],  [ 30, 24 ],
+    [ 31, 16 ],  [ 32, 8 ]
+  ],
+    seedsCount: 32,
+    drawSize: 128,
+  },
 ];
 
 it.each(scenarios)(
   'can generate and seed a qualifying structure',
   (scenario) => {
     const ratingType = ELO;
-    const participantsCount = 44;
+    const participantsCount = 144;
     const {
       eventIds: [eventId],
       tournamentRecord,
@@ -116,8 +136,8 @@ it.each(scenarios)(
     expect(scaledParticipants.length).toEqual(participantsCount);
 
     const scaleAttributes = {
-      scaleType: RATING,
       eventType: SINGLES,
+      scaleType: RATING,
       scaleName: ELO,
     };
     let result = tournamentEngine.participantScaleItem({
@@ -156,7 +176,7 @@ it.each(scenarios)(
     expect(result.success).toEqual(true);
 
     const qualifyingSeedingScaleName = 'QS';
-    const scaleValues = [1, 2, 3, 4, 5, 6, 7, 8];
+    const scaleValues = generateRange(1, scenario.seedsCount + 1);
     scaleValues.forEach((scaleValue, index) => {
       const scaleItem = {
         scaleName: qualifyingSeedingScaleName,
@@ -208,11 +228,16 @@ it.each(scenarios)(
         ({ participantId, drawPosition }) => ({ [participantId]: drawPosition })
       )
     );
+
     const seededDrawPositions =
       drawDefinition.structures[0].seedAssignments.map((assignment) => [
         assignment.seedNumber,
         participantIdDrawPositionMap[assignment.participantId],
       ]);
-    expect(seededDrawPositions).toEqual(scenario.seededDrawPositions);
+    if (scenario.seededDrawPositions) {
+      expect(seededDrawPositions).toEqual(scenario.seededDrawPositions);
+    } else {
+      console.log({ seededDrawPositions });
+    }
   }
 );
