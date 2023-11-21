@@ -7,6 +7,7 @@ import { MatchUpFilters } from '../../drawEngine/getters/getMatchUps/filterMatch
 import { ResultType } from '../../global/functions/decorateResult';
 import { HydratedMatchUp } from '../../types/hydrated';
 import {
+  GroupInfo,
   ParticipantsProfile,
   PolicyDefinitions,
   ScheduleVisibilityFilters,
@@ -97,6 +98,7 @@ export function competitionMatchUps({
   upcomingMatchUps?: HydratedMatchUp[];
   pendingMatchUps?: HydratedMatchUp[];
   byeMatchUps?: HydratedMatchUp[];
+  groupInfo?: GroupInfo;
 } {
   if (
     typeof tournamentRecords !== 'object' ||
@@ -119,13 +121,24 @@ export function competitionMatchUps({
     });
   });
 
-  return tournamentsMatchUps.reduce((groupings, matchUpGroupings) => {
-    const keys = Object.keys(matchUpGroupings);
-    keys.forEach((key) => {
-      if (!groupings[key]) groupings[key] = [];
-      groupings[key] = groupings[key].concat(matchUpGroupings[key]);
-    });
+  const groupInfo = {};
+  const competitionMatchUpsResult = tournamentsMatchUps.reduce(
+    (groupings, matchUpGroupings) => {
+      const keys = Object.keys(matchUpGroupings);
+      keys.forEach((key) => {
+        if (Array.isArray(matchUpGroupings[key])) {
+          if (!groupings[key]) groupings[key] = [];
+          groupings[key] = groupings[key].concat(matchUpGroupings[key]);
+        }
+        if (key === 'groupInfo') {
+          Object.assign(groupInfo, matchUpGroupings[key]);
+        }
+      });
 
-    return groupings;
-  }, {});
+      return groupings;
+    },
+    {}
+  );
+
+  return { ...competitionMatchUpsResult, groupInfo };
 }

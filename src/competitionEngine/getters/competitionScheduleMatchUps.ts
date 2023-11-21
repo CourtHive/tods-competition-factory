@@ -1,5 +1,7 @@
 import { getSchedulingProfile } from '../governors/scheduleGovernor/schedulingProfile/schedulingProfile';
 import { scheduledSortedMatchUps } from '../../global/sorting/scheduledSortedMatchUps';
+import { MatchUpFilters } from '../../drawEngine/getters/getMatchUps/filterMatchUps';
+import { getTournamentId } from '../../global/state/globalState';
 import { getVenuesAndCourts } from './venuesAndCourtsGetter';
 import { courtGridRows } from '../generators/courtGridRows';
 import { competitionMatchUps } from './matchUpsGetter';
@@ -8,11 +10,10 @@ import {
   getTournamentTimeItem,
 } from '../../tournamentEngine/governors/queryGovernor/timeItems';
 
-import { MatchUpFilters } from '../../drawEngine/getters/getMatchUps/filterMatchUps';
 import { MatchUpStatusEnum, Venue } from '../../types/tournamentFromSchema';
 import { PUBLIC, PUBLISH, STATUS } from '../../constants/timeItemConstants';
 import { COMPLETED } from '../../constants/matchUpStatusConstants';
-import { getTournamentId } from '../../global/state/globalState';
+import { SUCCESS } from '../../constants/resultConstants';
 import { HydratedMatchUp } from '../../types/hydrated';
 import {
   TournamentRecords,
@@ -161,7 +162,7 @@ export function competitionScheduleMatchUps(
     }
   }
 
-  const { completedMatchUps, upcomingMatchUps, pendingMatchUps } =
+  const { completedMatchUps, upcomingMatchUps, pendingMatchUps, groupInfo } =
     competitionMatchUps({
       ...params,
       matchUpFilters: params.matchUpFilters,
@@ -192,6 +193,7 @@ export function competitionScheduleMatchUps(
       ? allCompletedMatchUps
       : completedMatchUps, // completed matchUps for the filter date
     dateMatchUps, // all incomplete matchUps for the filter date
+    groupInfo,
     venues,
   };
 
@@ -204,7 +206,7 @@ export function competitionScheduleMatchUps(
     result.rows = rows;
   }
 
-  return result;
+  return { ...result, ...SUCCESS };
 
   function getCourtMatchUps({ courtId }) {
     const matchUpsToConsider = courtCompletedMatchUps

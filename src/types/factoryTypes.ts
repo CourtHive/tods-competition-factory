@@ -299,6 +299,13 @@ export type GetMatchUpsArgs = {
   event?: Event;
 };
 
+export type GroupInfo = {
+  [key: string]: {
+    participantName: string;
+    participantId: string;
+  };
+};
+
 export type GroupsMatchUpsResult = {
   abandonedMatchUps?: HydratedMatchUp[];
   completedMatchUps?: HydratedMatchUp[];
@@ -307,6 +314,7 @@ export type GroupsMatchUpsResult = {
   byeMatchUps?: HydratedMatchUp[];
   matchUpsMap?: MatchUpsMap;
   matchUpsCount?: number;
+  groupInfo?: GroupInfo;
   success?: boolean;
   error?: ErrorType;
 };

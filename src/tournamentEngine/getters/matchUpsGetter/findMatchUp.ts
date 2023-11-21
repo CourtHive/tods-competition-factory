@@ -1,7 +1,7 @@
 import { findDrawMatchUp as drawEngineFindMatchUp } from '../../../drawEngine/getters/getMatchUps/findDrawMatchUp';
+import { allDrawMatchUps, allTournamentMatchUps } from './matchUpsGetter';
 import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
 import { hydrateParticipants } from './hydrateParticipants';
-import { allTournamentMatchUps } from './matchUpsGetter';
 import { getContextContent } from '../getContextContent';
 import { findEvent } from '../findEvent';
 
@@ -70,7 +70,8 @@ export function findMatchUp({
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (typeof matchUpId !== 'string') return { error: MISSING_MATCHUP_ID };
 
-  if (!drawDefinition || !event || nextMatchUps) {
+  // brute force
+  if (!drawDefinition || !event) {
     const matchUps =
       allTournamentMatchUps({ tournamentRecord, nextMatchUps }).matchUps ?? [];
 
@@ -109,17 +110,40 @@ export function findMatchUp({
     inContext,
   });
 
-  const { matchUp, structure } = drawEngineFindMatchUp({
-    context: inContext ? additionalContext : undefined,
-    tournamentParticipants,
-    afterRecoveryTimes,
-    contextContent,
-    drawDefinition,
-    contextProfile,
-    matchUpId,
-    inContext,
-    event,
-  });
+  if (nextMatchUps) {
+    const matchUps =
+      allDrawMatchUps({
+        context: inContext ? additionalContext : undefined,
+        participants: tournamentParticipants,
+        afterRecoveryTimes,
+        contextContent,
+        contextProfile,
+        drawDefinition,
+        nextMatchUps,
+        inContext,
+        event,
+      }).matchUps ?? [];
+    const inContextMatchUp = matchUps.find(
+      (matchUp) => matchUp.matchUpId === matchUpId
+    );
+    if (!inContextMatchUp) return { error: MATCHUP_NOT_FOUND };
+    const structure = drawDefinition?.structures?.find(
+      (structure) => structure.structureId === inContextMatchUp.structureId
+    );
+    return { drawDefinition, structure, matchUp: inContextMatchUp };
+  } else {
+    const { matchUp, structure } = drawEngineFindMatchUp({
+      context: inContext ? additionalContext : undefined,
+      tournamentParticipants,
+      afterRecoveryTimes,
+      contextContent,
+      drawDefinition,
+      contextProfile,
+      matchUpId,
+      inContext,
+      event,
+    });
 
-  return { matchUp, structure, drawDefinition };
+    return { matchUp, structure, drawDefinition };
+  }
 }

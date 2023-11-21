@@ -94,6 +94,7 @@ export function getDrawMatchUps(params): GroupsMatchUpsResult {
   // ...so participants must be sourced directly from tournamentRecord
   // ...and groupings must be added independent of that
 
+  let groupInfo;
   if (!tournamentParticipants?.length && tournamentRecord) {
     tournamentParticipants = tournamentRecord?.participants;
 
@@ -101,10 +102,11 @@ export function getDrawMatchUps(params): GroupsMatchUpsResult {
       (inContext || participantsProfile?.withGroupings) &&
       tournamentParticipants?.length
     ) {
-      tournamentParticipants = addParticipantGroupings({
-        participants: tournamentParticipants,
-        participantsProfile,
-      });
+      ({ participantsWithGroupings: tournamentParticipants, groupInfo } =
+        addParticipantGroupings({
+          participants: tournamentParticipants,
+          participantsProfile,
+        }));
     }
   }
 
@@ -175,7 +177,7 @@ export function getDrawMatchUps(params): GroupsMatchUpsResult {
     return matchUps;
   };
 
-  const matchUpGroups = {
+  const drawMatchUpsResult = {
     abandonedMatchUps: applyFilter(allAbandonedMatchUps),
     completedMatchUps: applyFilter(allCompletedMatchUps),
     upcomingMatchUps: applyFilter(allUpcomingMatchUps),
@@ -183,6 +185,7 @@ export function getDrawMatchUps(params): GroupsMatchUpsResult {
     byeMatchUps: applyFilter(allByeMatchUps),
     matchUpsMap,
     ...SUCCESS,
+    groupInfo,
   };
 
   if (nextMatchUps) {
@@ -207,5 +210,5 @@ export function getDrawMatchUps(params): GroupsMatchUpsResult {
     });
   }
 
-  return matchUpGroups;
+  return drawMatchUpsResult;
 }

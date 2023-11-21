@@ -106,8 +106,6 @@ test('collection matchUps appear in participant reports', () => {
 
   const { participants } = tournamentEngine.devContext(true).getParticipants({
     participantFilters: { participantTypes: [INDIVIDUAL] },
-    // withGroupings: true,
-    // withMatchUps: true,
     withEvents: true,
     withDraws: true,
   });

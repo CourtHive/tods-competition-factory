@@ -10,6 +10,7 @@ import {
 } from '../../../drawEngine/getters/getMatchUps/drawMatchUps';
 
 import { ResultType } from '../../../global/functions/decorateResult';
+import { SUCCESS } from '../../../constants/resultConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import {
   GetMatchUpsArgs,
@@ -145,16 +146,20 @@ export function allDrawMatchUps(params: GetMatchUpsArgs) {
     endDate: event?.endDate,
   };
 
+  let groupInfo;
   if (!tournamentParticipants?.length && !participantMap && tournamentRecord) {
-    ({ participants: tournamentParticipants = [], participantMap } =
-      hydrateParticipants({
-        participantsProfile,
-        useParticipantMap,
-        policyDefinitions,
-        tournamentRecord,
-        contextProfile,
-        inContext,
-      }));
+    ({
+      participants: tournamentParticipants = [],
+      participantMap,
+      groupInfo,
+    } = hydrateParticipants({
+      participantsProfile,
+      useParticipantMap,
+      policyDefinitions,
+      tournamentRecord,
+      contextProfile,
+      inContext,
+    }));
   }
 
   if (contextProfile && !contextContent) {
@@ -167,7 +172,7 @@ export function allDrawMatchUps(params: GetMatchUpsArgs) {
     });
   }
 
-  return getAllDrawMatchUps({
+  const allDrawMatchUpsResult = getAllDrawMatchUps({
     context: additionalContext,
     tournamentAppliedPolicies,
     scheduleVisibilityFilters,
@@ -186,6 +191,8 @@ export function allDrawMatchUps(params: GetMatchUpsArgs) {
     inContext,
     event,
   });
+
+  return { ...allDrawMatchUpsResult, groupInfo };
 }
 
 export function allEventMatchUps(params: GetMatchUpsArgs) {
@@ -236,6 +243,7 @@ export function allEventMatchUps(params: GetMatchUpsArgs) {
     });
   }
 
+  let groupInfo;
   if (!participants?.length && !participantMap && tournamentRecord) {
     const hydratedParticipantResult = hydrateParticipants({
       participantsProfile,
@@ -247,6 +255,7 @@ export function allEventMatchUps(params: GetMatchUpsArgs) {
     });
     participantMap = hydratedParticipantResult.participantMap;
     participants = hydratedParticipantResult.participants ?? [];
+    groupInfo = hydratedParticipantResult.groupInfo;
   }
 
   const drawDefinitions = event.drawDefinitions ?? [];
@@ -282,7 +291,7 @@ export function allEventMatchUps(params: GetMatchUpsArgs) {
     }
   );
 
-  return { matchUps };
+  return { matchUps, groupInfo };
 }
 
 export function tournamentMatchUps(
@@ -307,7 +316,7 @@ export function tournamentMatchUps(
   const tournamentId = params.tournamentId ?? tournamentRecord.tournamentId;
   const events = tournamentRecord?.events ?? [];
 
-  const { participants, participantMap } = hydrateParticipants({
+  const { participants, participantMap, groupInfo } = hydrateParticipants({
     participantsProfile,
     policyDefinitions,
     useParticipantMap,
@@ -358,7 +367,7 @@ export function tournamentMatchUps(
       });
     });
 
-  return eventsDrawsMatchUps.reduce(
+  const eventsDrawMatchUpsResult = eventsDrawsMatchUps.reduce(
     (matchUps, eventMatchUps) => {
       const keys =
         eventMatchUps &&
@@ -366,15 +375,19 @@ export function tournamentMatchUps(
           (key) => !['success', 'matchUpsMap'].includes(key)
         );
       keys?.forEach((key) => {
-        if (!matchUps[key]) matchUps[key] = [];
-        matchUps[key] = matchUps[key].concat(eventMatchUps[key]);
-        matchUps.matchUpsCount += eventMatchUps[key].length;
+        if (Array.isArray(eventMatchUps[key])) {
+          if (!matchUps[key]) matchUps[key] = [];
+          matchUps[key] = matchUps[key].concat(eventMatchUps[key]);
+          matchUps.matchUpsCount += eventMatchUps[key].length;
+        }
       });
 
       return matchUps;
     },
     { matchUpsCount: 0 }
   );
+
+  return { ...eventsDrawMatchUpsResult, groupInfo };
 }
 
 export function eventMatchUps(params: GetMatchUpsArgs): GroupsMatchUpsResult {
@@ -418,16 +431,20 @@ export function eventMatchUps(params: GetMatchUpsArgs): GroupsMatchUpsResult {
     }),
   };
 
+  let groupInfo: undefined | any;
   if (!tournamentParticipants && tournamentRecord) {
-    ({ participants: tournamentParticipants, participantMap } =
-      hydrateParticipants({
-        participantsProfile,
-        policyDefinitions,
-        useParticipantMap,
-        tournamentRecord,
-        contextProfile,
-        inContext,
-      }));
+    ({
+      participants: tournamentParticipants,
+      participantMap,
+      groupInfo,
+    } = hydrateParticipants({
+      participantsProfile,
+      policyDefinitions,
+      useParticipantMap,
+      tournamentRecord,
+      contextProfile,
+      inContext,
+    }));
   }
 
   if (contextProfile && !contextContent)
@@ -439,8 +456,8 @@ export function eventMatchUps(params: GetMatchUpsArgs): GroupsMatchUpsResult {
     });
 
   const drawDefinitions = event.drawDefinitions ?? [];
-  return drawDefinitions.reduce((matchUps, drawDefinition) => {
-    const drawMatchUps = getDrawMatchUps({
+  const eventResult = drawDefinitions.reduce((results, drawDefinition) => {
+    const drawMatchUpsResult = getDrawMatchUps({
       context: additionalContext,
       tournamentAppliedPolicies,
       scheduleVisibilityFilters,
@@ -460,14 +477,18 @@ export function eventMatchUps(params: GetMatchUpsArgs): GroupsMatchUpsResult {
       event,
     });
 
-    const keys = Object.keys(drawMatchUps);
+    const keys = Object.keys(drawMatchUpsResult);
     keys?.forEach((key) => {
-      if (!matchUps[key]) matchUps[key] = [];
-      matchUps[key] = matchUps[key].concat(drawMatchUps[key]);
+      if (Array.isArray(drawMatchUpsResult[key])) {
+        if (!results[key]) results[key] = [];
+        results[key] = results[key].concat(drawMatchUpsResult[key]);
+      }
     });
 
-    return matchUps;
+    return results;
   }, {});
+
+  return { ...eventResult, ...SUCCESS, groupInfo };
 }
 
 export function drawMatchUps({
@@ -506,16 +527,20 @@ export function drawMatchUps({
     }),
   };
 
+  let groupInfo;
   if (!tournamentParticipants?.length && tournamentRecord) {
-    ({ participants: tournamentParticipants, participantMap } =
-      hydrateParticipants({
-        participantsProfile,
-        policyDefinitions,
-        useParticipantMap,
-        tournamentRecord,
-        contextProfile,
-        inContext,
-      }));
+    ({
+      participants: tournamentParticipants,
+      participantMap,
+      groupInfo,
+    } = hydrateParticipants({
+      participantsProfile,
+      policyDefinitions,
+      useParticipantMap,
+      tournamentRecord,
+      contextProfile,
+      inContext,
+    }));
   }
 
   if (event && contextProfile && !contextContent)
@@ -527,7 +552,7 @@ export function drawMatchUps({
       event,
     });
 
-  return getDrawMatchUps({
+  const drawMatchUpsResult = getDrawMatchUps({
     context: additionalContext,
     tournamentAppliedPolicies,
     scheduleVisibilityFilters,
@@ -546,4 +571,6 @@ export function drawMatchUps({
     inContext,
     event,
   });
+
+  return { ...drawMatchUpsResult, groupInfo };
 }

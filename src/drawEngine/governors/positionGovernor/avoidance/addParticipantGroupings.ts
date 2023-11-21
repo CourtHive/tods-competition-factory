@@ -12,17 +12,23 @@ import {
 type AddParticipantGroupingsArgs = {
   participantsProfile?: ParticipantsProfile;
   participants?: Participant[];
+  deepCopy?: boolean;
 };
 
 export function addParticipantGroupings({
   participantsProfile,
   participants = [],
+  deepCopy, // will skip deepCopy only if false
 }: AddParticipantGroupingsArgs) {
-  const participantsWithGroupings = makeDeepCopy(
-    participants,
-    participantsProfile?.convertExtensions,
-    true
-  );
+  const groupMap = new Map<
+    string,
+    { participantId: string; participantName: string }
+  >();
+
+  const participantsWithGroupings =
+    deepCopy !== false
+      ? makeDeepCopy(participants, participantsProfile?.convertExtensions, true)
+      : participants;
   const teamParticipants = participantsWithGroupings.filter(
     (participant) => participant.participantType === TEAM
   );
@@ -53,6 +59,11 @@ export function addParticipantGroupings({
               !participant.teamParticipantIds?.includes(team.participantId)
             ) {
               participant.teamParticipantIds.push(team.participantId);
+              if (!groupMap.get(team.participantId))
+                groupMap.set(team.participantId, {
+                  participantName: team.participantName,
+                  participantId: team.participantId,
+                });
               participant.teams.push({
                 participantRoleResponsibilities:
                   team.participantRoleResponsibilities,
@@ -99,5 +110,5 @@ export function addParticipantGroupings({
     }
   });
 
-  return participantsWithGroupings;
+  return { participantsWithGroupings, groupInfo: Object.fromEntries(groupMap) };
 }
