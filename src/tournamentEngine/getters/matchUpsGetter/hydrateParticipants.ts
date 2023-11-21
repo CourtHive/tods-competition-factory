@@ -51,6 +51,7 @@ export function hydrateParticipants({
   ) {
     participants = addParticipantGroupings({
       participantsProfile,
+      deepCopy: false,
       participants,
     });
   }
