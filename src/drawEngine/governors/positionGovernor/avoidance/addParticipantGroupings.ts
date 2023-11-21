@@ -12,17 +12,18 @@ import {
 type AddParticipantGroupingsArgs = {
   participantsProfile?: ParticipantsProfile;
   participants?: Participant[];
+  deepCopy?: boolean;
 };
 
 export function addParticipantGroupings({
   participantsProfile,
   participants = [],
+  deepCopy, // will skip deepCopy only if false
 }: AddParticipantGroupingsArgs) {
-  const participantsWithGroupings = makeDeepCopy(
-    participants,
-    participantsProfile?.convertExtensions,
-    true
-  );
+  const participantsWithGroupings =
+    deepCopy !== false
+      ? makeDeepCopy(participants, participantsProfile?.convertExtensions, true)
+      : participants;
   const teamParticipants = participantsWithGroupings.filter(
     (participant) => participant.participantType === TEAM
   );
