@@ -12,6 +12,7 @@ it('can return team statistics', () => {
   const tournamentRecord = mocksEngine.generateTournamentRecord({
     drawProfiles: [{ eventType: TEAM_EVENT, drawSize }],
     completeAllMatchUps: true,
+    randomWinningSide: true,
   }).tournamentRecord;
 
   tournamentEngine.setState(tournamentRecord);
@@ -32,12 +33,12 @@ it('can return team statistics', () => {
   );
 
   const [teamParticipantId, opponentParticipantId] = sideParticipantIds;
-  const teamParticiapntName = matchUps[0].sides[0].participant.participantName;
 
   result = tournamentEngine.getParticipantStats({
     withIndividualStats: true,
     teamParticipantId,
   });
+  const teamParticiapntName = matchUps[0].sides[0].participant.participantName;
   expect(result.allParticipantStats[0].participantName).toEqual(
     teamParticiapntName
   );
@@ -46,7 +47,7 @@ it('can return team statistics', () => {
   );
 
   result = tournamentEngine.getParticipantStats({
-    withIndividualStats: true,
+    withIndividualStats: false,
     opponentParticipantId,
     teamParticipantId,
   });

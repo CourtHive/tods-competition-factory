@@ -221,22 +221,27 @@ export function getParticipantStats({
           }
         }
       };
+
       if (teamParticipantId) {
         const processForTeam =
           !opponentParticipantId ||
           sides.every((side) => {
-            side.participant &&
+            return (
+              side.participant &&
               (getCompetitorIds({
-                side,
                 individualParticipantIds: teamMap.get(teamParticipantId),
+                side,
               }) ||
                 getCompetitorIds({
-                  side,
                   individualParticipantIds: teamMap.get(opponentParticipantId),
-                }));
+                  side,
+                }))
+            );
           });
-        if (processForTeam)
+
+        if (processForTeam) {
           processSides(teamParticipantId, teamMap.get(teamParticipantId));
+        }
       } else {
         for (const [thisTeamId, individualParticipantIds] of teamMap) {
           processSides(thisTeamId, individualParticipantIds);
