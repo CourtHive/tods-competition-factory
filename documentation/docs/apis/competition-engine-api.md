@@ -483,7 +483,7 @@ const matchUpFilters = {
   scheduledDate, // scheduled date of matchUps to return
 };
 
-const { completedMatchUps, dateMatchUps, courtsData, venues } =
+const { completedMatchUps, dateMatchUps, courtsData, groupInfo, venues } =
   competitionEngine.competitionScheduleMatchUps({
     alwaysReturnCompleted, // boolean - when true return completed matchUps regardless of publish state
     courtCompletedMatchUps, // boolean - include completed matchUps in court.matchUps - useful for pro-scheduling

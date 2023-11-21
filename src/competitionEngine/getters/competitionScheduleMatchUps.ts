@@ -162,7 +162,7 @@ export function competitionScheduleMatchUps(
     }
   }
 
-  const { completedMatchUps, upcomingMatchUps, pendingMatchUps } =
+  const { completedMatchUps, upcomingMatchUps, pendingMatchUps, groupInfo } =
     competitionMatchUps({
       ...params,
       matchUpFilters: params.matchUpFilters,
@@ -193,6 +193,7 @@ export function competitionScheduleMatchUps(
       ? allCompletedMatchUps
       : completedMatchUps, // completed matchUps for the filter date
     dateMatchUps, // all incomplete matchUps for the filter date
+    groupInfo,
     venues,
   };
 

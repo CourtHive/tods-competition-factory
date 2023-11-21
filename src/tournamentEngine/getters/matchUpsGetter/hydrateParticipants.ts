@@ -45,15 +45,17 @@ export function hydrateParticipants({
       addNationalityCode({ participant, ...participantsProfile })
     );
 
+  let groupInfo;
   if (
     (inContext || participantsProfile?.withGroupings) &&
     participants?.length
   ) {
-    participants = addParticipantGroupings({
-      participantsProfile,
-      deepCopy: false,
-      participants,
-    });
+    ({ participantsWithGroupings: participants, groupInfo } =
+      addParticipantGroupings({
+        participantsProfile,
+        deepCopy: false,
+        participants,
+      }));
   }
 
   if (participantsProfile?.withScaleValues && participants?.length) {
@@ -64,5 +66,5 @@ export function hydrateParticipants({
     }
   }
 
-  return { participants };
+  return { participants, groupInfo };
 }

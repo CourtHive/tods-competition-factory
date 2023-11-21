@@ -644,7 +644,7 @@ const { matchUps } = allEventMatchUps({
 Return an array of all matchUps contained within a tournament. These matchUps are returned **inContext**.
 
 ```js
-const { matchUps } = tournamentEngine.allTournamentMatchUps({
+const { matchUps, groupInfo } = tournamentEngine.allTournamentMatchUps({
   scheduleVisibilityFilters, // { visibilityThreshold: Date, eventIds, drawIds }
   participantsProfile, // optional - ability to specify additions to context (see parameters of getParticipants())
   matchUpFilters, // optional; [ scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
@@ -2286,7 +2286,6 @@ const {
     usePublishState,  // optional boolean
     withDraws, // optional - defaults to true if any other context options are specified
     withEvents, // optional - defaults to true if any other context options are specified
-    withGroupings, // optional - include membership in group, pair, and team participants
     withIndividualParticipants, // optional - include hydrated individualParticiapnts for TEAM/PAIR participants
     withIOC, // optional - will add IOC country code and countryName to participant persons
     withISO2, // optional - will add ISO2 country code and countryName to participant persons
@@ -4118,10 +4117,11 @@ Returns tournament matchUps grouped by matchUpStatus. These matchUps are returne
 ```js
 const {
   abandonedMatchUps,
-  byeMatchUps,
   completedMatchUps,
-  pendingMatchUps,
   upcomingMatchUps,
+  pendingMatchUps,
+  byeMatchUps,
+  groupInfo,
 } = tournamentEngine.tournamentMatchUps({
   matchUpFilters, // optional; [ scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
   policyDefinitions, // optional - seeding or avoidance policies to be used when placing participants
