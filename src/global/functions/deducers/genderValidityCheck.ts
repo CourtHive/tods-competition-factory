@@ -19,8 +19,7 @@ export function genderValidityCheck({
   if (
     referenceGender &&
     gender &&
-    [GenderEnum.Male, GenderEnum.Female].includes(referenceGender) &&
-    [GenderEnum.Male, GenderEnum.Female].includes(gender)
+    [GenderEnum.Male, GenderEnum.Female].includes(referenceGender)
   ) {
     const valid = gender === referenceGender;
     return valid

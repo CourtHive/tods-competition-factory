@@ -17,6 +17,42 @@ const scenarios = [
   },
   {
     params: {
+      referenceGender: GenderEnum.Male,
+      gender: GenderEnum.Mixed,
+    },
+    expectation: {
+      error: INVALID_GENDER,
+      stack: ['genderValidityCheck'],
+      gender: 'MIXED',
+      valid: false,
+    },
+  },
+  {
+    params: {
+      referenceGender: GenderEnum.Male,
+      gender: GenderEnum.Any,
+    },
+    expectation: {
+      error: INVALID_GENDER,
+      stack: ['genderValidityCheck'],
+      gender: 'ANY',
+      valid: false,
+    },
+  },
+  {
+    params: {
+      referenceGender: GenderEnum.Female,
+      gender: GenderEnum.Mixed,
+    },
+    expectation: {
+      error: INVALID_GENDER,
+      stack: ['genderValidityCheck'],
+      gender: 'MIXED',
+      valid: false,
+    },
+  },
+  {
+    params: {
       referenceGender: GenderEnum.Female,
       gender: GenderEnum.Female,
     },
