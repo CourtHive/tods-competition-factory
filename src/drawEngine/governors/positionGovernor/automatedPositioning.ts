@@ -161,6 +161,7 @@ export function automatedPositioning({
     provisionalPositioning,
     appliedPolicies,
     drawDefinition,
+    seedingProfile,
     structure,
   });
   if (seedBlockInfo.error) return seedBlockInfo;

@@ -8,7 +8,6 @@ import {
 } from '../../../../utilities/objects';
 
 import { POLICY_TYPE_SEEDING } from '../../../../constants/policyConstants';
-import { PolicyDefinitions } from '../../../../types/factoryTypes';
 import { HydratedParticipant } from '../../../../types/hydrated';
 import { TEAM } from '../../../../constants/eventConstants';
 import {
@@ -22,6 +21,10 @@ import {
   Event,
   PositionAssignment,
 } from '../../../../types/tournamentFromSchema';
+import {
+  PolicyDefinitions,
+  SeedingProfile,
+} from '../../../../types/factoryTypes';
 
 type GetValidAssignmentActionsArgs = {
   tournamentParticipants?: HydratedParticipant[];
@@ -32,6 +35,7 @@ type GetValidAssignmentActionsArgs = {
   possiblyDisablingAction?: boolean;
   provisionalPositioning?: boolean;
   isWinRatioFedStructure?: boolean;
+  seedingProfile?: SeedingProfile;
   returnParticipants?: boolean;
   drawDefinition: DrawDefinition;
   isByePosition?: boolean;
@@ -50,6 +54,7 @@ export function getValidAssignmentActions({
   returnParticipants,
   appliedPolicies,
   drawDefinition,
+  seedingProfile,
   isByePosition,
   drawPosition,
   structureId,
@@ -71,6 +76,7 @@ export function getValidAssignmentActions({
       returnAllProxies: true,
       randomize: true,
       drawDefinition,
+      seedingProfile,
       structureId,
       event,
     });

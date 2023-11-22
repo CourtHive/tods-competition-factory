@@ -38,7 +38,6 @@ import {
   nextPowerOf2,
 } from '../../utilities';
 
-import { PlayoffAttributes, PolicyDefinitions } from '../../types/factoryTypes';
 import POLICY_SEEDING_USTA from '../../fixtures/policies/POLICY_SEEDING_USTA';
 import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats';
 import { SUCCESS } from '../../constants/resultConstants';
@@ -85,6 +84,11 @@ import {
   Tournament,
   TypeEnum,
 } from '../../types/tournamentFromSchema';
+import {
+  PlayoffAttributes,
+  PolicyDefinitions,
+  SeedingProfile,
+} from '../../types/factoryTypes';
 
 type GenerateDrawDefinitionArgs = {
   automated?: boolean | { seedsOnly: boolean };
@@ -98,6 +102,7 @@ type GenerateDrawDefinitionArgs = {
   ignoreAllowedDrawTypes?: boolean;
   qualifyingPlaceholder?: boolean;
   considerEventEntries?: boolean;
+  seedingProfile?: SeedingProfile;
   hydrateCollections?: boolean;
   tournamentRecord: Tournament;
   drawTypeCoercion?: boolean;
@@ -149,6 +154,7 @@ export function generateDrawDefinition(
     ignoreStageSpace,
     tournamentRecord,
     qualifyingOnly,
+    seedingProfile,
     tieFormatName,
     drawEntries,
     addToEvent,
@@ -583,6 +589,7 @@ export function generateDrawDefinition(
       qualifyingOnly: !drawSize || qualifyingOnly, // ooo!! If there is no drawSize then MAIN is not being generated
       appliedPolicies,
       drawDefinition,
+      seedingProfile,
       participants,
       stage: MAIN,
       seedsCount,
@@ -682,7 +689,6 @@ export function generateDrawDefinition(
           seededParticipants,
           seedingScaleName,
           seedsCount = 0,
-          seedingProfile,
           seedByRanking,
           placeByes,
           drawSize,
@@ -691,6 +697,7 @@ export function generateDrawDefinition(
         const qualifyingStageResult = prepareStage({
           ...drawTypeResult,
           ...params,
+          seedingProfile: structureProfile.seedingProfile ?? seedingProfile,
           stageSequence: sequence,
           qualifyingRoundNumber,
           preparedStructureIds,
@@ -701,7 +708,6 @@ export function generateDrawDefinition(
           appliedPolicies,
           drawDefinition,
           qualifyingOnly,
-          seedingProfile,
           seedByRanking,
           participants,
           roundTarget,
