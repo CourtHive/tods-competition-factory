@@ -7,7 +7,6 @@ import { getByesData } from '../../../getters/getByesData';
 import { shuffleArray } from '../../../../utilities';
 
 import { MatchUpsMap } from '../../../getters/getMatchUps/getMatchUpsMap';
-import { PolicyDefinitions } from '../../../../types/factoryTypes';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   CONTAINER,
@@ -20,11 +19,16 @@ import {
   Structure,
   Tournament,
 } from '../../../../types/tournamentFromSchema';
+import {
+  PolicyDefinitions,
+  SeedingProfile,
+} from '../../../../types/factoryTypes';
 
 type PositionByesArgs = {
   appliedPolicies?: PolicyDefinitions;
   provisionalPositioning?: boolean;
   tournamentRecord?: Tournament;
+  seedingProfile?: SeedingProfile;
   drawDefinition: DrawDefinition;
   matchUpsMap?: MatchUpsMap;
   structure?: Structure;
@@ -40,6 +44,7 @@ export function positionByes({
   appliedPolicies,
   drawDefinition,
   seedBlockInfo,
+  seedingProfile,
   matchUpsMap,
   structureId,
   structure,
@@ -75,6 +80,7 @@ export function positionByes({
     relevantMatchUps,
     appliedPolicies,
     drawDefinition,
+    seedingProfile,
     seedBlockInfo,
     byesToPlace,
     structure,

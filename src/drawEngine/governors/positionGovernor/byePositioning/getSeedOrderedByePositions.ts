@@ -9,6 +9,7 @@ export function getSeedOrderByePositions({
   relevantMatchUps,
   appliedPolicies,
   drawDefinition,
+  seedingProfile,
   seedBlockInfo,
   byesToPlace,
   structure,
@@ -18,6 +19,7 @@ export function getSeedOrderByePositions({
       provisionalPositioning,
       appliedPolicies,
       drawDefinition,
+      seedingProfile,
       structure,
     });
   }

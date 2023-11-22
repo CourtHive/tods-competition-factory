@@ -140,7 +140,7 @@ const scenarios = [
   },
 ];
 
-it.each(scenarios.slice(0))(
+it.each(scenarios)(
   'can parse ageCategoryCodes',
   ({ category, expectation }) => {
     const result = getCategoryAgeDetails({ category, consideredDate });

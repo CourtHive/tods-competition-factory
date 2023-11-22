@@ -73,6 +73,7 @@ export function positionSeedBlocks({
         provisionalPositioning,
         appliedPolicies,
         drawDefinition,
+        seedingProfile,
         structure,
       });
     if (result?.error) errors.push(result.error);
@@ -125,6 +126,7 @@ function positionSeedBlock({
     provisionalPositioning,
     randomize: true,
     drawDefinition,
+    seedingProfile,
     seedBlockInfo,
     structureId,
     event,

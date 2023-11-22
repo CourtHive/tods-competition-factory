@@ -40,6 +40,7 @@ export type SeedBlock = {
 export type SeedingProfile = {
   groupSeedingThreshold?: number;
   positioning?: string;
+  nonRandom?: boolean;
 };
 
 export type ScaleAttributes = {

@@ -11,6 +11,7 @@ export function getNextUnfilledDrawPositions({
   provisionalPositioning,
   drawDefinition,
   seedBlockInfo,
+  seedingProfile,
   structureId,
   event,
 }) {
@@ -34,6 +35,7 @@ export function getNextUnfilledDrawPositions({
     provisionalPositioning,
     randomize: true,
     drawDefinition,
+    seedingProfile,
     seedBlockInfo,
     structureId,
     event,
