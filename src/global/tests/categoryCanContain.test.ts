@@ -95,7 +95,7 @@ const scenarios = [
   },
 ];
 
-it.each(scenarios.slice(0))(
+it.each(scenarios)(
   'can determine whether categories can contain other categories',
   ({ scenario, expectation }) => {
     const result = categoryCanContain(scenario);
