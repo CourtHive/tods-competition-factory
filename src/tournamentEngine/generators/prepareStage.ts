@@ -99,6 +99,7 @@ export function prepareStage(params): ResultType & {
         provisionalPositioning,
         appliedPolicies,
         drawDefinition,
+        seedingProfile,
         structure,
       })
     : undefined;

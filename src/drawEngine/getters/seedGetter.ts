@@ -15,7 +15,6 @@ import {
 } from './positionsGetter';
 
 import { DrawDefinition, Structure } from '../../types/tournamentFromSchema';
-import { PolicyDefinitions, SeedBlock } from '../../types/factoryTypes';
 import {
   CLUSTER,
   CONTAINER,
@@ -26,6 +25,15 @@ import {
   INVALID_SEED_POSITION,
   MISSING_STRUCTURE,
 } from '../../constants/errorConditionConstants';
+import {
+  generateBlockPattern,
+  getSubBlock,
+} from '../generators/generateBlockPattern';
+import {
+  PolicyDefinitions,
+  SeedBlock,
+  SeedingProfile,
+} from '../../types/factoryTypes';
 
 /**
  * A seedBlock is an object pairing an array of drawPositions with an array of seedNumbers { drawPositions: [], seedNumbers: []}
@@ -40,6 +48,7 @@ type GetValidSeedBlocksArgs = {
   appliedPolicies?: PolicyDefinitions;
   provisionalPositioning?: boolean;
   drawDefinition?: DrawDefinition;
+  seedingProfile?: SeedingProfile;
   returnAllProxies?: boolean;
   allPositions?: boolean;
   structure: Structure;
@@ -49,6 +58,7 @@ export function getValidSeedBlocks({
   provisionalPositioning,
   returnAllProxies,
   appliedPolicies,
+  seedingProfile,
   drawDefinition,
   allPositions,
   structure,
@@ -95,7 +105,7 @@ export function getValidSeedBlocks({
   const firstRoundDrawPositionOffset =
     (firstRoundDrawPositions && Math.min(...firstRoundDrawPositions) - 1) || 0;
 
-  const seedingProfile = appliedPolicies?.seeding?.seedingProfile;
+  seedingProfile = seedingProfile ?? appliedPolicies?.seeding?.seedingProfile;
   const baseDrawSize = firstRoundDrawPositions?.length || 0;
 
   // firstRoundDrawPositions have been popped
@@ -152,12 +162,14 @@ export function getValidSeedBlocks({
 
       ({ validSeedBlocks } = getSeedBlockPattern({
         drawPositionBlocks: drawPositionChunks,
+        nonRandom: seedingProfile?.nonRandom,
         positioning,
         seedGroups,
       }));
     }
   } else if (isContainer) {
     const result = getContainerBlocks({
+      nonRandom: seedingProfile?.nonRandom,
       seedingProfile,
       structure,
     });
@@ -215,7 +227,7 @@ export function getValidSeedBlocks({
   };
 }
 
-export function getContainerBlocks({ seedingProfile, structure }) {
+export function getContainerBlocks({ seedingProfile, structure, nonRandom }) {
   const containedStructures = structure.structures || [];
   const roundRobinGroupsCount = containedStructures.length;
   const positionAssignments = getPositionAssignments({
@@ -239,29 +251,60 @@ export function getContainerBlocks({ seedingProfile, structure }) {
     drawPositionBlocks,
     positioning,
     seedGroups,
+    nonRandom,
   });
 }
 
-function getSeedBlockPattern({ positioning, seedGroups, drawPositionBlocks }) {
+type GetSeedBlockPatternArgs = {
+  drawPositionBlocks: number[][];
+  seedGroups: number[][];
+  positioning?: string;
+  nonRandom?: boolean;
+};
+
+export function getSeedBlockPattern({
+  drawPositionBlocks,
+  positioning,
+  seedGroups,
+  nonRandom,
+}: GetSeedBlockPatternArgs) {
   const validSeedBlocks: SeedBlock[] = [];
 
-  const topDown = (a, b) => a - b;
-  const bottomUp = (a, b) => b - a;
+  const { divisionGroupings } = generateBlockPattern({
+    size: seedGroups.length,
+    positioning,
+  });
+
   const assignedPositions: number[] = [];
   seedGroups.forEach((seedGroup, i) => {
-    if (i && positioning !== WATERFALL) {
-      shuffleArray(seedGroup);
-    }
+    const relativePositions = getSubBlock({
+      blockPattern: divisionGroupings,
+      index: i,
+    });
     seedGroup.forEach((seedNumber: number, j) => {
       const blockIndex = i % 2 ? drawPositionBlocks.length - j - 1 : j;
-      const drawPosition = drawPositionBlocks[blockIndex]
-        .sort(i % 2 ? bottomUp : topDown)
-        .find((drawPosition) => !assignedPositions.includes(drawPosition));
-      assignedPositions.push(drawPosition);
-      validSeedBlocks.push({
-        seedNumbers: [seedNumber],
-        drawPositions: [drawPosition],
-      });
+      const block = drawPositionBlocks[blockIndex].slice();
+      let consideredDrawPositions = block.filter(
+        (drawPosition, i) => relativePositions.includes(i + 1) && drawPosition
+      );
+      if (positioning !== WATERFALL) {
+        consideredDrawPositions = nonRandom
+          ? consideredDrawPositions
+          : shuffleArray(consideredDrawPositions);
+      } else if (i % 2) {
+        consideredDrawPositions.reverse();
+      }
+      const drawPosition = consideredDrawPositions.find(
+        (drawPosition) => !assignedPositions.includes(drawPosition)
+      );
+
+      if (drawPosition) {
+        assignedPositions.push(drawPosition);
+        validSeedBlocks.push({
+          seedNumbers: [seedNumber],
+          drawPositions: [drawPosition],
+        });
+      }
     });
   });
 
@@ -365,6 +408,7 @@ export function getNextSeedBlock(params) {
   const {
     provisionalPositioning,
     drawDefinition,
+    seedingProfile,
     seedBlockInfo,
     structureId,
     randomize,
@@ -395,6 +439,7 @@ export function getNextSeedBlock(params) {
         provisionalPositioning,
         appliedPolicies,
         drawDefinition,
+        seedingProfile,
         structure,
       })?.validSeedBlocks);
   const unfilledSeedBlocks = (validSeedBlocks || []).filter((seedBlock) => {

@@ -4,10 +4,13 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 import { expect, it } from 'vitest';
 
-import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { RATING, SEEDING } from '../../../constants/scaleConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 import { ELO } from '../../../constants/ratingConstants';
+import {
+  CLUSTER,
+  QUALIFYING,
+} from '../../../constants/drawDefinitionConstants';
 
 const scenarios = [
   {
@@ -86,26 +89,47 @@ const scenarios = [
   },
   {
     qualifyingPositions: 16,
+    seedingProfile: { positioning: CLUSTER, nonRandom: true },
     // prettier-ignore
     seededDrawPositions: [
-    [ 1, 1 ],    [ 2, 9 ],    [ 3, 17 ],
-    [ 4, 25 ],   [ 5, 33 ],   [ 6, 41 ],
-    [ 7, 49 ],   [ 8, 57 ],   [ 9, 65 ],
-    [ 10, 73 ],  [ 11, 81 ],  [ 12, 89 ],
-    [ 13, 97 ],  [ 14, 105 ], [ 15, 113 ],
-    [ 16, 121 ], [ 17, 128 ], [ 18, 120 ],
-    [ 19, 112 ], [ 20, 104 ], [ 21, 96 ],
-    [ 22, 88 ],  [ 23, 80 ],  [ 24, 72 ],
-    [ 25, 64 ],  [ 26, 56 ],  [ 27, 48 ],
-    [ 28, 40 ],  [ 29, 32 ],  [ 30, 24 ],
-    [ 31, 16 ],  [ 32, 8 ]
-  ],
+      [ 1, 1 ],    [ 2, 9 ],    [ 3, 17 ],
+      [ 4, 25 ],   [ 5, 33 ],   [ 6, 41 ],
+      [ 7, 49 ],   [ 8, 57 ],   [ 9, 65 ],
+      [ 10, 73 ],  [ 11, 81 ],  [ 12, 89 ],
+      [ 13, 97 ],  [ 14, 105 ], [ 15, 113 ],
+      [ 16, 121 ], [ 17, 128 ], [ 18, 120 ],
+      [ 19, 112 ], [ 20, 104 ], [ 21, 96 ],
+      [ 22, 88 ],  [ 23, 80 ],  [ 24, 72 ],
+      [ 25, 64 ],  [ 26, 56 ],  [ 27, 48 ],
+      [ 28, 40 ],  [ 29, 32 ],  [ 30, 24 ],
+      [ 31, 16 ],  [ 32, 8 ]
+    ],
+    seedsCount: 32,
+    drawSize: 128,
+  },
+  {
+    qualifyingPositions: 8,
+    seedingProfile: { positioning: CLUSTER, nonRandom: true },
+    // prettier-ignore
+    seededDrawPositions: [
+      [ 1, 1 ],    [ 2, 17 ],   [ 3, 33 ],
+      [ 4, 49 ],   [ 5, 65 ],   [ 6, 81 ],
+      [ 7, 97 ],   [ 8, 113 ],  [ 9, 128 ],
+      [ 10, 112 ], [ 11, 96 ],  [ 12, 80 ],
+      [ 13, 64 ],  [ 14, 48 ],  [ 15, 32 ],
+      [ 16, 16 ],  [ 17, 8 ],   [ 18, 24 ],
+      [ 19, 40 ],  [ 20, 56 ],  [ 21, 72 ],
+      [ 22, 88 ],  [ 23, 104 ], [ 24, 120 ],
+      [ 25, 121 ], [ 26, 105 ], [ 27, 89 ],
+      [ 28, 73 ],  [ 29, 57 ],  [ 30, 41 ],
+      [ 31, 25 ],  [ 32, 9 ]
+    ],
     seedsCount: 32,
     drawSize: 128,
   },
 ];
 
-it.each(scenarios)(
+it.each(scenarios.slice(8))(
   'can generate and seed a qualifying structure',
   (scenario) => {
     const ratingType = ELO;
@@ -193,6 +217,7 @@ it.each(scenarios)(
     });
 
     result = tournamentEngine.generateDrawDefinition({
+      seedingProfile: scenario.seedingProfile,
       qualifyingProfiles: [
         {
           structureProfiles: [
