@@ -462,7 +462,7 @@ export function getAllStructureMatchUps({
           ...(context?.category || {}),
           ...collectionDefinition.category,
         }
-      : context?.category;
+      : context?.category ?? event?.category;
 
     const processCodes =
       (matchUp.processCodes?.length && matchUp.processCodes) ||
@@ -489,12 +489,12 @@ export function getAllStructureMatchUps({
       ...onlyDefined({
         matchUpFormat: matchUp.matchUpType === TEAM ? undefined : matchUpFormat,
         tieFormat: matchUp.matchUpType !== TEAM ? undefined : tieFormat,
+        gender: collectionDefinition?.gender ?? event?.gender,
         roundOfPlay:
           stage !== QUALIFYING &&
           isConvertableInteger(initialRoundOfPlay) &&
           initialRoundOfPlay + (roundNumber || 0),
         endDate: matchUp.endDate ?? endDate,
-        gender: collectionDefinition?.gender,
         discipline: event?.discipline,
         category: matchUpCategory,
         finishingPositionRange,
