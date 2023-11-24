@@ -145,12 +145,12 @@ export function generateDrawDefinition(
   conflicts?: any[];
 } {
   const stack = 'generateDrawDefinition';
+  const policyDefinitions = params.policyDefinitions ?? {};
   const {
     considerEventEntries = true, // in the absence of drawSize and drawEntries, look to event.entries
     ignoreAllowedDrawTypes,
     voluntaryConsolation,
     hydrateCollections,
-    policyDefinitions,
     ignoreStageSpace,
     tournamentRecord,
     qualifyingOnly,
@@ -168,8 +168,16 @@ export function generateDrawDefinition(
       event,
     }).appliedPolicies ?? {};
 
+  if (seedingProfile) {
+    if (!policyDefinitions[POLICY_TYPE_SEEDING]) {
+      policyDefinitions[POLICY_TYPE_SEEDING] = { ...POLICY_SEEDING_USTA };
+    }
+    policyDefinitions[POLICY_TYPE_SEEDING].seedingProfile = seedingProfile;
+  }
+
   const drawTypeCoercion =
     params.drawTypeCoercion ??
+    policyDefinitions?.[POLICY_TYPE_DRAWS]?.drawTypeCoercion ??
     appliedPolicies?.[POLICY_TYPE_DRAWS]?.drawTypeCoercion ??
     true;
 
