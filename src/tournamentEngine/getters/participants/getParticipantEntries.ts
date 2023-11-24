@@ -709,7 +709,7 @@ export function getParticipantEntries(params) {
             const minutesDifference = Math.abs(
               consideredMinutes - scheduledMinutes
             );
-            const itemIsPrior = consideredMinutes > scheduledMinutes;
+            const itemIsPrior = consideredMinutes >= scheduledMinutes;
 
             // Conflicts can be determined in two ways:
             // 1. scheduledMinutesDifference - the minutes difference between two scheduledTimes
