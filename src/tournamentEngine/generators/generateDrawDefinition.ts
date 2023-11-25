@@ -145,7 +145,6 @@ export function generateDrawDefinition(
   conflicts?: any[];
 } {
   const stack = 'generateDrawDefinition';
-  const policyDefinitions = params.policyDefinitions ?? {};
   const {
     considerEventEntries = true, // in the absence of drawSize and drawEntries, look to event.entries
     ignoreAllowedDrawTypes,
@@ -154,7 +153,6 @@ export function generateDrawDefinition(
     ignoreStageSpace,
     tournamentRecord,
     qualifyingOnly,
-    seedingProfile,
     tieFormatName,
     drawEntries,
     addToEvent,
@@ -168,12 +166,7 @@ export function generateDrawDefinition(
       event,
     }).appliedPolicies ?? {};
 
-  if (seedingProfile) {
-    if (!policyDefinitions[POLICY_TYPE_SEEDING]) {
-      policyDefinitions[POLICY_TYPE_SEEDING] = { ...POLICY_SEEDING_USTA };
-    }
-    policyDefinitions[POLICY_TYPE_SEEDING].seedingProfile = seedingProfile;
-  }
+  const policyDefinitions = params.policyDefinitions ?? {};
 
   const drawTypeCoercion =
     params.drawTypeCoercion ??
@@ -187,6 +180,25 @@ export function generateDrawDefinition(
       DrawTypeEnum.SingleElimination) ||
     params.drawType ||
     DrawTypeEnum.SingleElimination;
+
+  const seedingPolicy =
+    policyDefinitions?.[POLICY_TYPE_SEEDING] ??
+    appliedPolicies?.[POLICY_TYPE_SEEDING];
+
+  const seedingProfile =
+    params.seedingProfile ??
+    seedingPolicy?.seedingProfile?.drawTypes?.[drawType] ??
+    seedingPolicy?.seedingProfile;
+
+  // extend policyDefinitions only if a seedingProfile was specified in params
+  if (params.seedingProfile) {
+    if (!policyDefinitions[POLICY_TYPE_SEEDING]) {
+      policyDefinitions[POLICY_TYPE_SEEDING] = {
+        ...POLICY_SEEDING_USTA[POLICY_TYPE_SEEDING],
+      };
+    }
+    policyDefinitions[POLICY_TYPE_SEEDING].seedingProfile = seedingProfile;
+  }
 
   // get participants both for entry validation and for automated placement
   // automated placement requires them to be "inContext" for avoidance policies to work
@@ -411,7 +423,10 @@ export function generateDrawDefinition(
     }
   }
 
-  if (!appliedPolicies[POLICY_TYPE_SEEDING]) {
+  if (
+    !appliedPolicies[POLICY_TYPE_SEEDING] &&
+    !policyDefinitions[POLICY_TYPE_SEEDING]
+  ) {
     attachPolicies({ drawDefinition, policyDefinitions: POLICY_SEEDING_USTA });
     Object.assign(appliedPolicies, POLICY_SEEDING_USTA);
   }
