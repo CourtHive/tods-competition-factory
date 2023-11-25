@@ -150,11 +150,9 @@ export function generateDrawDefinition(
     ignoreAllowedDrawTypes,
     voluntaryConsolation,
     hydrateCollections,
-    policyDefinitions,
     ignoreStageSpace,
     tournamentRecord,
     qualifyingOnly,
-    seedingProfile,
     tieFormatName,
     drawEntries,
     addToEvent,
@@ -168,8 +166,11 @@ export function generateDrawDefinition(
       event,
     }).appliedPolicies ?? {};
 
+  const policyDefinitions = params.policyDefinitions ?? {};
+
   const drawTypeCoercion =
     params.drawTypeCoercion ??
+    policyDefinitions?.[POLICY_TYPE_DRAWS]?.drawTypeCoercion ??
     appliedPolicies?.[POLICY_TYPE_DRAWS]?.drawTypeCoercion ??
     true;
 
@@ -179,6 +180,25 @@ export function generateDrawDefinition(
       DrawTypeEnum.SingleElimination) ||
     params.drawType ||
     DrawTypeEnum.SingleElimination;
+
+  const seedingPolicy =
+    policyDefinitions?.[POLICY_TYPE_SEEDING] ??
+    appliedPolicies?.[POLICY_TYPE_SEEDING];
+
+  const seedingProfile =
+    params.seedingProfile ??
+    seedingPolicy?.seedingProfile?.drawTypes?.[drawType] ??
+    seedingPolicy?.seedingProfile;
+
+  // extend policyDefinitions only if a seedingProfile was specified in params
+  if (params.seedingProfile) {
+    if (!policyDefinitions[POLICY_TYPE_SEEDING]) {
+      policyDefinitions[POLICY_TYPE_SEEDING] = {
+        ...POLICY_SEEDING_USTA[POLICY_TYPE_SEEDING],
+      };
+    }
+    policyDefinitions[POLICY_TYPE_SEEDING].seedingProfile = seedingProfile;
+  }
 
   // get participants both for entry validation and for automated placement
   // automated placement requires them to be "inContext" for avoidance policies to work
@@ -403,7 +423,10 @@ export function generateDrawDefinition(
     }
   }
 
-  if (!appliedPolicies[POLICY_TYPE_SEEDING]) {
+  if (
+    !appliedPolicies[POLICY_TYPE_SEEDING] &&
+    !policyDefinitions[POLICY_TYPE_SEEDING]
+  ) {
     attachPolicies({ drawDefinition, policyDefinitions: POLICY_SEEDING_USTA });
     Object.assign(appliedPolicies, POLICY_SEEDING_USTA);
   }
