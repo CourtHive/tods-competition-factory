@@ -35,8 +35,8 @@ export function generateFlight({
     const result = addEventEntries({
       participantIds: drawParticipantIds,
       autoEntryPositions,
+      entryStage: stage,
       tournamentRecord,
-      stage,
       event,
     });
     if (result.error) return result;

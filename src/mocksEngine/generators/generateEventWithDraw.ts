@@ -28,19 +28,18 @@ import {
   UUID,
 } from '../../utilities';
 
+import { Participant, StageTypeEnum } from '../../types/tournamentFromSchema';
 import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantConstants';
 import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats';
 import { COMPLETED } from '../../constants/matchUpStatusConstants';
 import { SINGLES, DOUBLES } from '../../constants/eventConstants';
 import { ALTERNATE } from '../../constants/entryStatusConstants';
 import { FEMALE, MALE } from '../../constants/genderConstants';
-import { Participant } from '../../types/tournamentFromSchema';
 import { COMPETITOR } from '../../constants/participantRoles';
 import { SEEDING } from '../../constants/timeItemConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
   MAIN,
-  QUALIFYING,
   ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
@@ -361,7 +360,7 @@ export function generateEventWithDraw(params) {
           qualifyingIndex + participantsCount
         );
         const result = addEventEntries({
-          entryStage: QUALIFYING,
+          entryStage: StageTypeEnum.Qualifying,
           entryStageSequence,
           autoEntryPositions,
           tournamentRecord,
