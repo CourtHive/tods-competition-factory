@@ -1,4 +1,5 @@
 import { refreshEntryPositions } from '../../../../global/functions/producers/refreshEntryPositions';
+import { getAppliedPolicies } from '../../../../global/functions/deducers/getAppliedPolicies';
 import { addExtension } from '../../../../global/functions/producers/addExtension';
 import { isValidExtension } from '../../../../global/validation/isValidExtension';
 import { decorateResult } from '../../../../global/functions/decorateResult';
@@ -7,6 +8,8 @@ import { addDrawEntries } from '../drawDefinitions/addDrawEntries';
 import { definedAttributes } from '../../../../utilities/objects';
 import { removeEventEntries } from './removeEventEntries';
 
+import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
+import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../../../constants/policyConstants';
 import { DIRECT_ACCEPTANCE } from '../../../../constants/entryStatusConstants';
 import { ROUND_TARGET } from '../../../../constants/extensionConstants';
 import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
@@ -25,9 +28,6 @@ import {
   PAIR,
   TEAM,
 } from '../../../../constants/participantConstants';
-import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
-import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../../../constants/policyConstants';
-import { getAppliedPolicies } from '../../../../global/functions/deducers/getAppliedPolicies';
 
 /**
  * Add entries into an event; optionally add to specified drawDefinition/flightProfile, if possible.
