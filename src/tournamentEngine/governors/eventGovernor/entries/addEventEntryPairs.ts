@@ -32,16 +32,8 @@ import {
 } from '../../../../constants/genderConstants';
 
 /**
- *
  * Add PAIR participant to an event
  * Creates new { participantType: PAIR } participants if necessary
- *
- * @param {object} tournamentRecord - passed in automatically by tournamentEngine
- * @param {string} eventId - tournamentEngine automatically retrieves event
- * @param {string[][]} participantIdPairs - array paired id arrays for all participants to add to event
- * @param {string} enryStatus - entryStatus enum
- * @param {string} entryStage - entryStage enum
- *
  */
 
 type AddEventEntryPairsArgs = {
