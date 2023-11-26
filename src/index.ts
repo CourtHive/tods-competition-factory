@@ -32,6 +32,7 @@ import { matchUpSort } from './drawEngine/getters/matchUpSort';
 import { dateTime, dateRange } from './utilities/dateTime';
 import { JSON2CSV, flattenJSON } from './utilities/json';
 import { makeDeepCopy } from './utilities/makeDeepCopy';
+import { constantToString } from './utilities/strings';
 import { numericSort } from './utilities/sorting';
 import { UUID, UUIDS } from './utilities/UUID';
 import {
@@ -68,6 +69,7 @@ export const utilities = {
   categoryCanContain,
   chunkArray,
   compareTieFormats,
+  constantToString,
   countValues,
   createMap,
   dateRange,
