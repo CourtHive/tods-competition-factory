@@ -1,5 +1,5 @@
 import { isUngrouped } from '../../../../global/functions/isUngrouped';
-import { chunkArray } from '../../../../utilities';
+import { chunkArray, unique } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
 import { tournamentEngine } from '../../../sync';
 import { expect, it } from 'vitest';
@@ -7,6 +7,7 @@ import { expect, it } from 'vitest';
 import { DOUBLES, SINGLES, TEAM } from '../../../../constants/eventConstants';
 import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';
 import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
+import { FEMALE, MALE, MIXED } from '../../../../constants/genderConstants';
 import { QUALIFYING } from '../../../../constants/drawDefinitionConstants';
 import { ALTERNATE } from '../../../../constants/entryStatusConstants';
 import { COMPETITOR } from '../../../../constants/participantRoles';
@@ -34,8 +35,8 @@ it('can add doubles events to a tournament record', () => {
 
   const eventName = 'Test Event';
   const event = {
-    eventName,
     eventType: DOUBLES,
+    eventName,
   };
 
   result = tournamentEngine.addEvent({ event });
@@ -51,11 +52,11 @@ it('can add doubles events to a tournament record', () => {
 
   const matchUpFormat = 'SET5-S:4/TB7';
   const values = {
+    event: eventResult,
     automated: true,
+    matchUpFormat,
     drawSize: 32,
     eventId,
-    event: eventResult,
-    matchUpFormat,
   };
   const { drawDefinition } = tournamentEngine.generateDrawDefinition(values);
   expect(drawDefinition.matchUpFormat).toEqual(matchUpFormat);
@@ -416,4 +417,84 @@ it('can allow duplicateParticipantIdsPairs and add them to events', () => {
     enteredParticipantIds.includes(pairParticipantToDuplicate.participantId)
   ).toEqual(false);
   expect(enteredParticipantIds.includes(newPairParticipantId)).toEqual(true);
+});
+
+it('will throw errors when pair genders do not match event.gender', () => {
+  const participantsCount = 64;
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile: { participantType: PAIR, participantsCount },
+    eventProfiles: [
+      { eventType: DOUBLES, eventId: 'F', gender: FEMALE },
+      { eventType: DOUBLES, eventId: 'X', gender: MIXED },
+      { eventType: DOUBLES, eventId: 'M', gender: MALE },
+    ],
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const { participants: pairPairticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [PAIR] },
+    withIndividualParticipants: true,
+  });
+  expect(pairPairticipants.length).toEqual(participantsCount);
+
+  const genderedPairs = pairPairticipants.reduce(
+    (genderedPairs, { individualParticipantIds, individualParticipants }) => {
+      const genders = unique(
+        individualParticipants.map((p) => p.person?.sex).sort()
+      );
+      const type = (genders.length === 1 && genders[0]) || MIXED;
+      genderedPairs[type].push(individualParticipantIds);
+      return genderedPairs;
+    },
+    { [MALE]: [], [FEMALE]: [], [MIXED]: [] }
+  );
+
+  let result = tournamentEngine.addEventEntryPairs({
+    participantIdPairs: genderedPairs[MALE],
+    eventId: 'X',
+  });
+  expect(result.error).toEqual(INVALID_PARTICIPANT_IDS);
+  result = tournamentEngine.addEventEntryPairs({
+    participantIdPairs: genderedPairs[FEMALE],
+    eventId: 'X',
+  });
+  expect(result.error).toEqual(INVALID_PARTICIPANT_IDS);
+  result = tournamentEngine.addEventEntryPairs({
+    participantIdPairs: genderedPairs[MIXED],
+    eventId: 'X',
+  });
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.addEventEntryPairs({
+    participantIdPairs: genderedPairs[MALE],
+    eventId: 'F',
+  });
+  expect(result.error).toEqual(INVALID_PARTICIPANT_IDS);
+  result = tournamentEngine.addEventEntryPairs({
+    participantIdPairs: genderedPairs[MIXED],
+    eventId: 'F',
+  });
+  expect(result.error).toEqual(INVALID_PARTICIPANT_IDS);
+  result = tournamentEngine.addEventEntryPairs({
+    participantIdPairs: genderedPairs[FEMALE],
+    eventId: 'F',
+  });
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.addEventEntryPairs({
+    participantIdPairs: genderedPairs[FEMALE],
+    eventId: 'M',
+  });
+  expect(result.error).toEqual(INVALID_PARTICIPANT_IDS);
+  result = tournamentEngine.addEventEntryPairs({
+    participantIdPairs: genderedPairs[MIXED],
+    eventId: 'M',
+  });
+  expect(result.error).toEqual(INVALID_PARTICIPANT_IDS);
+  result = tournamentEngine.addEventEntryPairs({
+    participantIdPairs: genderedPairs[MALE],
+    eventId: 'M',
+  });
+  expect(result.success).toEqual(true);
 });
