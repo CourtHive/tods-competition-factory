@@ -49,7 +49,6 @@ export function getParticipantEntries(params) {
   const targetParticipantIds = participantFilters?.participantIds;
   const getRelevantParticipantIds = (participantId) => {
     const relevantParticipantIds = [participantId];
-    relevantParticipantIds.push(participantId);
     participantMap[
       participantId
     ]?.participant.individualParticipantIds?.forEach(
@@ -58,9 +57,7 @@ export function getParticipantEntries(params) {
     );
 
     return relevantParticipantIds.some(
-      (obj) =>
-        !targetParticipantIds?.length ||
-        targetParticipantIds.includes(obj.relevantParticipantId)
+      (id) => !targetParticipantIds?.length || targetParticipantIds.includes(id)
     )
       ? relevantParticipantIds
       : [];
