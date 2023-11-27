@@ -720,16 +720,19 @@ export function getParticipantEntries(params) {
 
             // if there is a time overlap capture both the prior matchUpId and the conflicted matchUpId
             if (timeOverlap && !(bothPotential && sameDraw) && itemIsPrior) {
-              participantAggregator.scheduleConflicts.push({
+              const key = [scheduleItem.matchUpId, consideredItem.matchUpId]
+                .sort()
+                .join('|');
+              participantAggregator.scheduleConflicts[key] = {
                 priorScheduledMatchUpId: scheduleItem.matchUpId,
                 matchUpIdWithConflict: consideredItem.matchUpId,
-              });
+              };
             }
           }
         }
 
         const pid = participantAggregator.participant.participantId;
-        if (participantAggregator.scheduleConflicts.length) {
+        if (Object.keys(participantAggregator.scheduleConflicts).length) {
           participantIdsWithConflicts.push(pid);
         }
 

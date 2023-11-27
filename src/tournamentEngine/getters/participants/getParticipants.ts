@@ -158,7 +158,9 @@ export function getParticipants(params: GetParticipantsArgs): {
     return definedAttributes(
       {
         ...participant,
-        scheduleConflicts: scheduleAnalysis ? scheduleConflicts : undefined,
+        scheduleConflicts: scheduleAnalysis
+          ? Object.values(scheduleConflicts)
+          : undefined,
         draws: withDraws || withRankingProfile ? participantDraws : undefined,
         events:
           withEvents || withRankingProfile ? Object.values(events) : undefined,
