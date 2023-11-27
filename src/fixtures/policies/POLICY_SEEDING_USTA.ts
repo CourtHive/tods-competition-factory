@@ -1,12 +1,23 @@
 import { POLICY_TYPE_SEEDING } from '../../constants/policyConstants';
-import { SEPARATE } from '../../constants/drawDefinitionConstants';
+import {
+  ROUND_ROBIN,
+  ROUND_ROBIN_WITH_PLAYOFF,
+  SEPARATE,
+  WATERFALL,
+} from '../../constants/drawDefinitionConstants';
 
 export const POLICY_SEEDING_USTA = {
   [POLICY_TYPE_SEEDING]: {
     validSeedPositions: { ignore: true },
     duplicateSeedNumbers: true,
     drawSizeProgression: true,
-    seedingProfile: { positioning: SEPARATE },
+    seedingProfile: {
+      drawTypes: {
+        [ROUND_ROBIN_WITH_PLAYOFF]: { positioning: WATERFALL },
+        [ROUND_ROBIN]: { positioning: WATERFALL },
+      },
+      positioning: SEPARATE,
+    },
     policyName: 'USTA SEEDING',
 
     seedsCountThresholds: [
