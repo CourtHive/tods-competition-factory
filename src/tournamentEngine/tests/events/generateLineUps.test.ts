@@ -3,10 +3,14 @@ import { instanceCount, unique } from '../../../utilities';
 import { tournamentEngine, mocksEngine } from '../../..';
 import { expect, it } from 'vitest';
 
-import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 import { TEAM_EVENT } from '../../../constants/eventConstants';
 import { RANKING } from '../../../constants/scaleConstants';
 import { ASC } from '../../../constants/sortingConstants';
+import { LineUp } from '../../../types/factoryTypes';
+import {
+  INVALID_VALUES,
+  SCORES_PRESENT,
+} from '../../../constants/errorConditionConstants';
 import {
   INDIVIDUAL,
   PAIR,
@@ -16,7 +20,6 @@ import {
   DOMINANT_DUO_MIXED,
   USTA_GOLD_TEAM_CHALLENGE,
 } from '../../../constants/tieFormatConstants';
-import { LineUp } from '../../../types/factoryTypes';
 
 it('can generate lineUps for TEAM events', () => {
   const categoryName = '18U';
@@ -255,6 +258,9 @@ it('can generate lineUps for TEAM events', () => {
   // !!!!!!!!!!!!!!!!!!!!!!!!! DELETE DRAW_DEFINITION !!!!!!!!!!!!!!!!!!!!!!!!!!
   // Now delete the draw and all of the existing pairParticipants
   result = tournamentEngine.deleteDrawDefinitions({ drawIds });
+  expect(result.error).toEqual(SCORES_PRESENT);
+
+  result = tournamentEngine.deleteDrawDefinitions({ drawIds, force: true });
   expect(result.success).toEqual(true);
 
   const { event } = tournamentEngine.getEvent({ eventId });
