@@ -164,14 +164,15 @@ export function swapAssignedPositions({
   const firstAssignment = candidatePositionAssignments.find(
     (assignment) => assignment.drawPosition === firstPosition
   );
-  const secondAssignment = candidatePositionAssignments.find(
-    (assignment) => assignment.drawPosition === secondPosition
-  );
+  const secondAssignment =
+    candidatePositionAssignments.find(
+      (assignment) => assignment.drawPosition === secondPosition
+    ) ?? {};
 
   const updatedFirstAssignmentAttributes = {
-    participantId: secondAssignment.participantId,
-    qualifier: secondAssignment.qualifier,
-    bye: secondAssignment.bye,
+    participantId: secondAssignment?.participantId,
+    qualifier: secondAssignment?.qualifier,
+    bye: secondAssignment?.bye,
   };
   const updatedSecondAssignmentAttributes = {
     participantId: firstAssignment.participantId,

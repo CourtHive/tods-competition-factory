@@ -125,7 +125,11 @@ export function removeStructure({
           link.target.structureId !== idBeingRemoved
       ) || [];
 
-    if (!isMainStageSequence1 || idBeingRemoved !== structureId) {
+    if (
+      !isMainStageSequence1 ||
+      (isMainStageSequence1 && qualifyingStructureIds.length) ||
+      idBeingRemoved !== structureId
+    ) {
       drawDefinition.structures = (drawDefinition.structures ?? []).filter(
         (structure) => {
           if (idBeingRemoved && idBeingRemoved === structure.structureId)
