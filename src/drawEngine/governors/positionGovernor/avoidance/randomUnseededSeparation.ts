@@ -246,7 +246,7 @@ export function randomUnseededSeparation({
         ...assignment,
       });
       if (result.error) return decorateResult({ result, stack });
-    } else {
+    } else if (assignment.participantId) {
       const result = assignDrawPosition({
         automaticPlacement: true,
         inContextDrawMatchUps,
