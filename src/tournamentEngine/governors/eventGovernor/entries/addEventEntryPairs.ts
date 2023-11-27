@@ -24,18 +24,16 @@ import {
   StageTypeEnum,
   Tournament,
 } from '../../../../types/tournamentFromSchema';
+import {
+  ANY,
+  FEMALE,
+  MALE,
+  MIXED,
+} from '../../../../constants/genderConstants';
 
 /**
- *
  * Add PAIR participant to an event
  * Creates new { participantType: PAIR } participants if necessary
- *
- * @param {object} tournamentRecord - passed in automatically by tournamentEngine
- * @param {string} eventId - tournamentEngine automatically retrieves event
- * @param {string[][]} participantIdPairs - array paired id arrays for all participants to add to event
- * @param {string} enryStatus - entryStatus enum
- * @param {string} entryStage - entryStage enum
- *
  */
 
 type AddEventEntryPairsArgs = {
@@ -62,29 +60,48 @@ export function addEventEntryPairs({
   if (!event) return { error: MISSING_EVENT };
   if (event.eventType !== DOUBLES) return { error: INVALID_EVENT_TYPE };
 
-  const tournamentParticipants = tournamentRecord.participants ?? [];
-  const individualParticipantIds: string[] = tournamentParticipants
-    .filter((participant) => participant.participantType === INDIVIDUAL)
-    .map((participant) => participant.participantId);
+  const existingParticipantIdPairs: string[][] = [];
+  const genderMap = new Map<string, string>();
 
-  // ensure all participants are present in the tournament record
-  const invalidParticipantIds = individualParticipantIds.filter(
-    (participantId) => !individualParticipantIds.includes(participantId)
-  );
-  if (invalidParticipantIds.length)
-    return { error: INVALID_PARTICIPANT_IDS, invalidParticipantIds };
+  for (const participant of tournamentRecord.participants ?? []) {
+    const { participantType, participantId, person, individualParticipantIds } =
+      participant;
+    if (participantType === INDIVIDUAL && person?.sex) {
+      genderMap.set(participantId, person.sex);
+    } else if (participantType === PAIR && individualParticipantIds) {
+      existingParticipantIdPairs.push(individualParticipantIds);
+    }
+  }
 
   // ensure all participantIdPairs have two individual participantIds
-  const invalidParticipantIdPairs = participantIdPairs.filter(
-    (pair) => pair.length !== 2
-  );
+  const invalidParticipantIdPairs = participantIdPairs.filter((pair) => {
+    // invalid if not two participantIds
+    if (pair.length !== 2) return true;
+    // invalid if either participantId does not exist
+    if (!genderMap.has(pair[0]) || !genderMap.has(pair[1])) return true;
+    // NOT invalid if event.gender is ANY or no gender is specified
+    if (!event.gender || event.gender === ANY) return false;
+
+    const participantGenders = pair.map((id) => genderMap.get(id));
+    // invalid if event.gender is MALE/FEMALE and both participants do not match
+    let invalidParticiapntGenders =
+      (event.gender === MALE &&
+        (participantGenders[0] !== MALE || participantGenders[1] !== MALE)) ||
+      (event.gender === FEMALE &&
+        (participantGenders[0] !== FEMALE || participantGenders[1] !== FEMALE));
+
+    // invalid if event.gender is MIXED and participant genders are not different
+    if (event.gender === MIXED) {
+      participantGenders.sort();
+      if (participantGenders[0] !== FEMALE || participantGenders[1] !== MALE)
+        invalidParticiapntGenders = true;
+    }
+
+    return invalidParticiapntGenders;
+  });
+
   if (invalidParticipantIdPairs.length)
     return { error: INVALID_PARTICIPANT_IDS, invalidParticipantIdPairs };
-
-  // make an array of all existing PAIR participantIds
-  const existingParticipantIdPairs = tournamentParticipants
-    .filter((participant) => participant.participantType === PAIR)
-    .map((participant) => participant.individualParticipantIds);
 
   // create provisional participant objects
   const provisionalParticipants: any[] = participantIdPairs.map(

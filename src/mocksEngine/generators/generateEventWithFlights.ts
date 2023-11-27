@@ -14,7 +14,7 @@ import { UUID, extractAttributes } from '../../utilities';
 
 import { SINGLES, DOUBLES, TEAM } from '../../constants/eventConstants';
 import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';
-import { MAIN } from '../../constants/drawDefinitionConstants';
+import { StageTypeEnum } from '../../types/tournamentFromSchema';
 
 export function generateEventWithFlights(params) {
   const {
@@ -191,9 +191,9 @@ export function generateEventWithFlights(params) {
     if (eventParticipantIds.length) {
       const result = addEventEntries({
         participantIds: eventParticipantIds,
+        entryStage: StageTypeEnum.Main,
         autoEntryPositions,
         tournamentRecord,
-        stage: MAIN,
         event,
       });
       if (result.error) return result;

@@ -1,18 +1,25 @@
 import { refreshEntryPositions } from '../../../../global/functions/producers/refreshEntryPositions';
+import { getAppliedPolicies } from '../../../../global/functions/deducers/getAppliedPolicies';
 import { addExtension } from '../../../../global/functions/producers/addExtension';
 import { isValidExtension } from '../../../../global/validation/isValidExtension';
-import { decorateResult } from '../../../../global/functions/decorateResult';
 import { isUngrouped } from '../../../../global/functions/isUngrouped';
 import { addDrawEntries } from '../drawDefinitions/addDrawEntries';
 import { definedAttributes } from '../../../../utilities/objects';
 import { removeEventEntries } from './removeEventEntries';
+import {
+  ResultType,
+  decorateResult,
+} from '../../../../global/functions/decorateResult';
 
+import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
+import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../../../constants/policyConstants';
 import { DIRECT_ACCEPTANCE } from '../../../../constants/entryStatusConstants';
 import { ROUND_TARGET } from '../../../../constants/extensionConstants';
 import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
 import { MAIN } from '../../../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
 import { ANY, MIXED } from '../../../../constants/genderConstants';
+import { PolicyDefinitions } from '../../../../types/factoryTypes';
+import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   EVENT_NOT_FOUND,
   INVALID_PARTICIPANT_IDS,
@@ -25,15 +32,39 @@ import {
   PAIR,
   TEAM,
 } from '../../../../constants/participantConstants';
-import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
-import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../../../constants/policyConstants';
-import { getAppliedPolicies } from '../../../../global/functions/deducers/getAppliedPolicies';
+import {
+  DrawDefinition,
+  EntryStatusEnum,
+  Event,
+  Extension,
+  StageTypeEnum,
+  Tournament,
+  TypeEnum,
+} from '../../../../types/tournamentFromSchema';
 
 /**
  * Add entries into an event; optionally add to specified drawDefinition/flightProfile, if possible.
  */
 
-export function addEventEntries(params) {
+type AddEventEntriesArgs = {
+  policyDefinitions?: PolicyDefinitions;
+  drawDefinition?: DrawDefinition;
+  entryStatus?: EntryStatusEnum;
+  autoEntryPositions?: boolean;
+  tournamentRecord: Tournament;
+  entryStageSequence?: number;
+  ignoreStageSpace?: boolean;
+  entryStage?: StageTypeEnum;
+  participantIds?: string[];
+  extensions?: Extension[];
+  enforceGender?: boolean;
+  extension?: Extension;
+  roundTarget?: number;
+  drawId?: string;
+  event: Event;
+};
+
+export function addEventEntries(params: AddEventEntriesArgs): ResultType {
   const {
     entryStatus = DIRECT_ACCEPTANCE,
     autoEntryPositions = true,
@@ -81,7 +112,8 @@ export function addEventEntries(params) {
 
   if (
     (extensions &&
-      (!Array.isArray(extensions) || !extensions.every(isValidExtension))) ||
+      (!Array.isArray(extensions) ||
+        !extensions.every((extension) => isValidExtension({ extension })))) ||
     (extension && !isValidExtension({ extension }))
   ) {
     return decorateResult({
@@ -114,7 +146,7 @@ export function addEventEntries(params) {
           (!event.gender ||
             !genderEnforced ||
             [MIXED, ANY].includes(event.gender) ||
-            event.gender === participant.person?.sex)
+            (event.gender as string) === participant.person?.sex)
         ) {
           return true;
         }
@@ -136,7 +168,7 @@ export function addEventEntries(params) {
           event.gender &&
           genderEnforced &&
           ![MIXED, ANY].includes(event.gender) &&
-          event.gender !== participant.person?.sex
+          (event.gender as string) !== participant.person?.sex
         ) {
           mismatchedGender.push({
             participantId: participant.participantId,
@@ -146,7 +178,7 @@ export function addEventEntries(params) {
         }
 
         return (
-          event.eventType === TEAM &&
+          (event.eventType as string) === TEAM &&
           (participant.participantType === TEAM ||
             (isUngrouped(entryStatus) &&
               participant.participantType === INDIVIDUAL))
@@ -161,7 +193,7 @@ export function addEventEntries(params) {
 
   if (!event.entries) event.entries = [];
   const existingIds = event.entries.map(
-    (e) => e.participantId || e.participant?.participantId
+    (e: any) => e.participantId || e.participant?.participantId
   );
 
   validParticipantIds.forEach((participantId) => {
@@ -185,7 +217,7 @@ export function addEventEntries(params) {
       }
       if (entryStageSequence) entry.entryStageSequence = entryStageSequence;
       addedParticipantIdEntries.push(entry.participantId);
-      event.entries.push(entry);
+      event.entries && event.entries.push(entry);
     }
   });
 
@@ -212,7 +244,10 @@ export function addEventEntries(params) {
   }
 
   // now remove any ungrouped participantIds which exist as part of added grouped participants
-  if ([DOUBLES, TEAM].includes(event.eventType)) {
+  if (
+    event.eventType &&
+    [TypeEnum.Doubles, TypeEnum.Team].includes(event.eventType)
+  ) {
     const enteredParticipantIds = (event.entries || []).map(
       (entry) => entry.participantId
     );
@@ -224,6 +259,7 @@ export function addEventEntries(params) {
       .filter(
         (participant) =>
           enteredParticipantIds.includes(participant.participantId) &&
+          participant.participantType &&
           [PAIR, TEAM].includes(participant.participantType)
       )
       .map((participant) => participant.individualParticipantIds)

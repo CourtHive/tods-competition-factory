@@ -1,3 +1,4 @@
+import { scoreHasValue } from '../../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import { getAppliedPolicies } from '../../../../global/functions/deducers/getAppliedPolicies';
 import { addExtension } from '../../../../global/functions/producers/addExtension';
 import { findExtension } from '../../../../global/functions/deducers/findExtension';
@@ -20,13 +21,16 @@ import {
   deleteMatchUpsNotice,
 } from '../../../../drawEngine/notifications/drawNotifications';
 
-import { MISSING_TOURNAMENT_RECORD } from '../../../../constants/errorConditionConstants';
 import { STRUCTURE_ENTERED_TYPES } from '../../../../constants/entryStatusConstants';
 import { DELETE_DRAW_DEFINITIONS } from '../../../../constants/auditConstants';
 import { Event, Tournament } from '../../../../types/tournamentFromSchema';
 import { PolicyDefinitions } from '../../../../types/factoryTypes';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { AUDIT } from '../../../../constants/topicConstants';
+import {
+  MISSING_TOURNAMENT_RECORD,
+  SCORES_PRESENT,
+} from '../../../../constants/errorConditionConstants';
 import {
   MAIN,
   QUALIFYING,
@@ -48,6 +52,7 @@ type DeleteDrawDefinitionArgs = {
   drawIds?: string[];
   auditData?: any;
   eventId?: string;
+  force?: boolean;
   event?: Event;
 };
 export function deleteDrawDefinitions({
@@ -58,6 +63,7 @@ export function deleteDrawDefinitions({
   auditData,
   eventId,
   event,
+  force,
 }: DeleteDrawDefinitionArgs) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   const stack = 'deleteDrawDefinitions';
@@ -112,9 +118,21 @@ export function deleteDrawDefinitions({
     bye,
   }) => ({ bye, qualifier, drawPosition, participantId });
 
+  const drawIdsWithScoresPresent: string[] = [];
   const filteredDrawDefinitions = event.drawDefinitions.filter(
     (drawDefinition) => {
       if (drawIds.includes(drawDefinition.drawId)) {
+        const matchUps =
+          allDrawMatchUps({ event, drawDefinition })?.matchUps ?? [];
+
+        const scoresPresent = matchUps.some(({ score }) =>
+          scoreHasValue({ score })
+        );
+        if (scoresPresent && !force) {
+          drawIdsWithScoresPresent.push(drawDefinition.drawId);
+          return true;
+        }
+
         const { drawId, drawType, drawName } = drawDefinition;
         const flight = flightProfile?.flights?.find(
           (flight) => flight.drawId === drawDefinition.drawId
@@ -185,12 +203,19 @@ export function deleteDrawDefinitions({
             drawId,
           })
         );
-        const { matchUps } = allDrawMatchUps({ event, drawDefinition });
         matchUps?.forEach(({ matchUpId }) => matchUpIds.push(matchUpId));
       }
       return !drawIds.includes(drawDefinition.drawId);
     }
   );
+
+  if (drawIdsWithScoresPresent.length && !force) {
+    return decorateResult({
+      context: { drawIdsWithScoresPresent },
+      result: { error: SCORES_PRESENT },
+      stack,
+    });
+  }
 
   event.drawDefinitions = filteredDrawDefinitions;
 
