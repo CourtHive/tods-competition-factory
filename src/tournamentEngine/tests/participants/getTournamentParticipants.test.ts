@@ -63,10 +63,17 @@ it('can add ISO country codes to persons', () => {
   tournamentEngine.setState(tournamentRecord);
 
   const { participants } = tournamentEngine.getParticipants({
-    withIndividualParticipants: true,
+    withIndividualParticipants: { person: true, participantName: true },
     withIOC: true,
   });
   expect(participants.length).toEqual(3);
+
+  const pairParticipant = participants.find(
+    ({ participantType }) => participantType === PAIR
+  );
+  expect(Object.keys(pairParticipant.individualParticipants[0]).length).toEqual(
+    2
+  );
   const persons = participants
     .map(
       (participant) =>

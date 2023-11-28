@@ -2286,7 +2286,7 @@ const {
     usePublishState,  // optional boolean
     withDraws, // optional - defaults to true if any other context options are specified
     withEvents, // optional - defaults to true if any other context options are specified
-    withIndividualParticipants, // optional - include hydrated individualParticiapnts for TEAM/PAIR participants
+    withIndividualParticipants, // optional - boolean or attributeFilter template - include hydrated individualParticiapnts for TEAM/PAIR participants
     withIOC, // optional - will add IOC country code and countryName to participant persons
     withISO2, // optional - will add ISO2 country code and countryName to participant persons
     withMatchUps, // optional - include all matchUps in which the participant appears, as well as potentialMatchUps
