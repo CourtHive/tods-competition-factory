@@ -3,6 +3,7 @@ import { attributeFilter, definedAttributes } from '../../../utilities';
 import { getParticipantEntries } from './getParticipantEntries';
 import { filterParticipants } from './filterParticipants';
 import { getParticipantMap } from './getParticipantMap';
+import { isObject } from '../../../utilities/objects';
 
 import { POLICY_TYPE_PARTICIPANT } from '../../../constants/policyConstants';
 import { MatchUp, Tournament } from '../../../types/tournamentFromSchema';
@@ -21,8 +22,8 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 type GetParticipantsArgs = {
+  withIndividualParticipants?: boolean | { [key: string]: any };
   participantFilters?: ParticipantFilters;
-  withIndividualParticipants?: boolean;
   scheduleAnalysis?: ScheduleAnalysis;
   policyDefinitions?: PolicyDefinitions;
   withPotentialMatchUps?: boolean;
@@ -158,7 +159,9 @@ export function getParticipants(params: GetParticipantsArgs): {
     return definedAttributes(
       {
         ...participant,
-        scheduleConflicts: scheduleAnalysis ? scheduleConflicts : undefined,
+        scheduleConflicts: scheduleAnalysis
+          ? Object.values(scheduleConflicts)
+          : undefined,
         draws: withDraws || withRankingProfile ? participantDraws : undefined,
         events:
           withEvents || withRankingProfile ? Object.values(events) : undefined,
@@ -197,13 +200,17 @@ export function getParticipants(params: GetParticipantsArgs): {
   });
 
   if (withIndividualParticipants) {
+    const template = isObject(withIndividualParticipants)
+      ? withIndividualParticipants
+      : undefined;
     for (const participant of filteredParticipants) {
       for (const individualParticipantId of participant.individualParticipantIds ??
         []) {
         if (!participant.individualParticipants)
           participant.individualParticipants = [];
+        const source = ppMap.get(individualParticipantId);
         participant.individualParticipants.push(
-          ppMap.get(individualParticipantId)
+          template ? attributeFilter({ template, source }) : source
         );
       }
     }

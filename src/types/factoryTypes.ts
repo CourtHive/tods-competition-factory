@@ -242,7 +242,7 @@ export type MappedParticipant = {
     eventId: string;
     drawId: string;
   }[];
-  scheduleConflicts: ScheduleConflict[];
+  scheduleConflicts: { [key: string]: ScheduleConflict };
   scheduleItems: any[];
   participant: HydratedParticipant & {
     groupParticipantIds: string[];
