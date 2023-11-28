@@ -14,9 +14,15 @@ import {
   MISSING_TOURNAMENT_RECORD,
   ErrorType,
 } from '../../../constants/errorConditionConstants';
+import {
+  BYE,
+  completedMatchUpStatuses,
+} from '../../../constants/matchUpStatusConstants';
 
 type BulkScheduleMachUpsArgs = {
   tournamentRecords: { [key: string]: Tournament };
+  scheduleCompletedMatchUps?: boolean;
+  scheduleByeMatchUps?: boolean;
   errorOnAnachronism?: boolean;
   tournamentRecord: Tournament;
   checkChronology?: boolean;
@@ -27,6 +33,8 @@ type BulkScheduleMachUpsArgs = {
 };
 
 export function bulkScheduleMatchUps({
+  scheduleCompletedMatchUps = false,
+  scheduleByeMatchUps = false,
   errorOnAnachronism = false,
   checkChronology = true,
   matchUpDependencies,
@@ -70,11 +78,17 @@ export function bulkScheduleMatchUps({
 
   // first organize matchUpIds by drawId
   const drawIdMap = inContextMatchUps.reduce((drawIdMap, matchUp) => {
-    const { matchUpId, drawId } = matchUp;
-    if (drawIdMap[drawId]) {
-      drawIdMap[drawId].push(matchUpId);
-    } else {
-      drawIdMap[drawId] = [matchUpId];
+    const { matchUpId, drawId, matchUpStatus } = matchUp;
+    if (
+      (scheduleByeMatchUps || matchUpStatus !== BYE) &&
+      (scheduleCompletedMatchUps ||
+        !completedMatchUpStatuses.includes(matchUpStatus))
+    ) {
+      if (drawIdMap[drawId]) {
+        drawIdMap[drawId].push(matchUpId);
+      } else {
+        drawIdMap[drawId] = [matchUpId];
+      }
     }
     return drawIdMap;
   }, {});
