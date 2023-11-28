@@ -37,6 +37,7 @@ module.exports = {
             'policies/feedPolicy',
           ],
         },
+        'concepts/publishing',
         'concepts/scheduling',
         'concepts/scaleItems',
         'concepts/timeItems',
