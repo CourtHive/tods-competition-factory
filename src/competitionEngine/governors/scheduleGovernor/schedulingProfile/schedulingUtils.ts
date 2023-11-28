@@ -1,6 +1,10 @@
-import { completedMatchUpStatuses } from '../../../../constants/matchUpStatusConstants';
 import { findMatchUpFormatTiming } from '../matchUpFormatTiming/findMatchUpFormatTiming';
 import { definedAttributes, instanceCount } from '../../../../utilities';
+
+import {
+  BYE,
+  completedMatchUpStatuses,
+} from '../../../../constants/matchUpStatusConstants';
 
 export function getRoundId(obj) {
   const {
@@ -92,7 +96,10 @@ export function getRoundProfile(matchUps) {
     ).length || 0;
   const scheduledCount =
     matchUps.filter(
-      ({ schedule }) => schedule?.scheduledDate && schedule?.scheduledTime
+      ({ schedule, matchUpStatus }) =>
+        schedule?.scheduledDate &&
+        schedule?.scheduledTime &&
+        matchUpStatus !== BYE
     ).length || 0;
   const consideredCount = matchUpsCount - byeCount;
   const isComplete = consideredCount === completedCount;
