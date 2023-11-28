@@ -161,7 +161,7 @@ export function getParticipantEntries(params) {
           const participant = participantMap[id];
 
           processEventEntry({
-            extensionConversions,
+            convertExtensions,
             seedAssignments,
             participant,
             withSeeding,
