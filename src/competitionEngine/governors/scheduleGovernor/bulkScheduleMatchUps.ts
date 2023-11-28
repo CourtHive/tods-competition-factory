@@ -12,6 +12,8 @@ import {
 
 type BulkScheduleMatchUpsArgs = {
   tournamentRecords: { [key: string]: Tournament };
+  scheduleCompletedMatchUps?: boolean;
+  scheduleByeMatchUps?: boolean;
   errorOnAnachronism?: boolean;
   checkChronology?: boolean;
   matchUpContextIds?: any;
@@ -19,6 +21,8 @@ type BulkScheduleMatchUpsArgs = {
   schedule?: any;
 };
 export function bulkScheduleMatchUps({
+  scheduleCompletedMatchUps = false,
+  scheduleByeMatchUps = false,
   errorOnAnachronism,
   matchUpContextIds,
   tournamentRecords,
@@ -53,6 +57,8 @@ export function bulkScheduleMatchUps({
     if (matchUpIds?.length || tournamentMatchUpDetails?.length) {
       const result = bulkSchedule({
         matchUpDetails: tournamentMatchUpDetails,
+        scheduleCompletedMatchUps,
+        scheduleByeMatchUps,
         matchUpDependencies,
         errorOnAnachronism,
         tournamentRecords,
