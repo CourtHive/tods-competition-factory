@@ -120,10 +120,12 @@ export function deleteDrawDefinitions({
 
   const itemType = `${PUBLISH}.${STATUS}`;
   const { timeItem } = getTimeItem({ element: event, itemType });
-  const publishStatus = timeItem?.itemValue?.[PUBLIC];
+  const publishStatus = timeItem?.itemValue?.[PUBLIC] ?? {};
 
-  let updatedStructureIds = publishStatus?.structureIds ?? [];
-  let updatedDrawIds = publishStatus?.drawIds ?? [];
+  let updatedDrawIds =
+    publishStatus.drawIds ??
+    (publishStatus.drawDetails && Object.keys(publishStatus.drawDetails)) ??
+    [];
   let publishedDrawsDeleted;
 
   const drawIdsWithScoresPresent: string[] = [];
@@ -152,19 +154,8 @@ export function deleteDrawDefinitions({
           );
         }
 
-        if (publishStatus?.drawIds?.includes(drawId)) {
+        if (updatedDrawIds.includes(drawId)) {
           updatedDrawIds = updatedDrawIds.filter((id) => id !== drawId);
-          publishedDrawsDeleted = true;
-        }
-        const structureIds = drawDefinition.structures?.map(
-          ({ structureId }) => structureId
-        );
-        if (
-          publishStatus?.structureIds?.some((id) => structureIds?.includes(id))
-        ) {
-          updatedStructureIds = updatedStructureIds.filter(
-            (id) => !structureIds?.includes(id)
-          );
           publishedDrawsDeleted = true;
         }
 
@@ -257,15 +248,19 @@ export function deleteDrawDefinitions({
   // cleanup references to drawId in schedulingProfile extension
   checkSchedulingProfile({ tournamentRecord });
 
-  // TODO: update with drawDetails support
   if (publishedDrawsDeleted) {
+    const drawDetails = {};
+    for (const drawId of updatedDrawIds) {
+      drawDetails[drawId] = publishStatus.drawDetails?.[drawId] ?? {
+        published: true,
+      };
+    }
     const timeItem = {
       itemType: `${PUBLISH}.${STATUS}`,
       itemValue: {
         [PUBLIC]: {
           ...publishStatus,
-          structureIds: updatedStructureIds,
-          drawIds: updatedDrawIds,
+          drawDetails,
         },
       },
     };

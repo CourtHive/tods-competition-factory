@@ -545,8 +545,8 @@ it('can filter out unPublished draws when publishing event', () => {
 
   const drawId = drawIds[0];
   const { eventData, success: publishSuccess } = tournamentEngine.publishEvent({
-    policyDefinitions,
     drawIds: [drawId],
+    policyDefinitions,
     eventId,
   });
   expect(publishSuccess).toEqual(true);

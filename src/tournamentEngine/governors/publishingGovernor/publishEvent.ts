@@ -16,13 +16,15 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export type PublishingDetail = {
+  roundLimit?: number; // only applicable to structureDetails
   published?: boolean;
   embargo?: string;
 };
 
 export type DrawPublishingDetails = {
-  structureDetails?: { [key: string]: PublishingDetail };
-  stages?: { [key: string]: PublishingDetail };
+  structureDetails?: { [key: string]: PublishingDetail }; // if no keys, all published
+  stages?: { [key: string]: PublishingDetail }; // if no keys, all published; stage embargo supercedes structure embargo
+  publishingDetail: PublishingDetail; // draw embargo supercedes structure/stage embargo
   structureIdsToRemove?: string[];
   structureIdsToAdd?: string[];
   stagesToRemove?: string[];
@@ -34,20 +36,14 @@ type PublishEventType = {
   policyDefinitions?: PolicyDefinitions;
   removePriorValues?: boolean;
   tournamentRecord: Tournament;
-  structureIds?: string[];
   drawIds?: string[];
-  stages?: string[];
   status?: string;
   event?: Event;
 
-  drawDetails?: { [key: string]: DrawPublishingDetails };
+  drawDetails?: { [key: string]: DrawPublishingDetails }; // if no keys, all published
 
-  // structureIdsToRemove?: string[];
-  // structureIdsToAdd?: string[];
   drawIdsToRemove?: string[];
-  // stagesToRemove?: string[];
   drawIdsToAdd?: string[];
-  // stagesToAdd?: string[];
 };
 
 export function publishEvent(params: PublishEventType) {
@@ -59,18 +55,8 @@ export function publishEvent(params: PublishEventType) {
     status = PUBLIC,
     event,
 
-    drawDetails,
-
     drawIdsToRemove,
     drawIdsToAdd,
-
-    /*
-    stagesToRemove,
-    stagesToAdd,
-
-    structureIdsToRemove,
-    structureIdsToAdd,
-    */
   } = params;
 
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -86,16 +72,16 @@ export function publishEvent(params: PublishEventType) {
   const itemType = `${PUBLISH}.${STATUS}`;
   const eventDrawIds = event.drawDefinitions?.map(({ drawId }) => drawId) ?? [];
 
-  const { timeItem } = getEventTimeItem({
+  const pubState = getEventTimeItem({
     itemType,
     event,
-  });
+  })?.timeItem?.itemValue?.[status];
 
-  if (!drawIds && !drawIdsToAdd && !drawIdsToRemove && !drawDetails) {
+  if (!drawIds && !drawIdsToAdd && !drawIdsToRemove && !params.drawDetails) {
     // by default publish all drawIds in an event
     drawIds = eventDrawIds;
   } else if (!drawIds && (drawIdsToAdd?.length || drawIdsToRemove?.length)) {
-    drawIds = timeItem?.itemValue?.PUBLIC?.drawIds || [];
+    drawIds = pubState?.drawIds ?? [];
   }
 
   drawIds = (drawIds ?? []).filter(
@@ -109,6 +95,11 @@ export function publishEvent(params: PublishEventType) {
         ...drawIdsToAdd.filter((drawId) => eventDrawIds.includes(drawId))
       )
     );
+  }
+
+  const drawDetails = {};
+  for (const drawId of drawIds ?? []) {
+    drawDetails[drawId] = params.drawDetails?.[drawId] ?? { published: true };
   }
 
   /*
@@ -142,10 +133,9 @@ export function publishEvent(params: PublishEventType) {
   }
   */
 
-  const existingStatusValue = timeItem?.itemValue?.[status];
   const updatedTimeItem = {
     itemValue: {
-      [status]: { ...existingStatusValue, drawIds },
+      [status]: { ...pubState, drawIds },
     },
     itemType,
   };
