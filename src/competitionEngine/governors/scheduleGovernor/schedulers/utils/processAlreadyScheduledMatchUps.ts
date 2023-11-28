@@ -2,6 +2,8 @@ import { modifyParticipantMatchUpsCount } from '../../scheduleMatchUps/modifyPar
 import { updateTimeAfterRecovery } from '../../scheduleMatchUps/updateTimeAfterRecovery';
 import { getMatchUpId } from '../../../../../global/functions/extractors';
 import { hasSchedule } from '../../scheduleMatchUps/hasSchedule';
+
+import { BYE } from '../../../../../constants/matchUpStatusConstants';
 import { HydratedMatchUp } from '../../../../../types/hydrated';
 
 type ProcessAlreadyScheduledMatchUpsArgs = {
@@ -32,10 +34,15 @@ export function processAlreadyScheduledMatchUps({
   minutesMap,
   matchUps,
 }: ProcessAlreadyScheduledMatchUpsArgs) {
+  const byeScheduledMatchUpIds: string[] = [];
+
   if (!dateScheduledMatchUpIds) {
     dateScheduledMatchUps = matchUps?.filter((matchUp) => {
       const schedule = matchUp.schedule || {};
+      const isByeMatchUp = matchUp.matchUpStatus === BYE;
+      if (isByeMatchUp) byeScheduledMatchUpIds.push(matchUp.matchUpId);
       return (
+        !isByeMatchUp &&
         hasSchedule({ schedule }) &&
         (!scheduleDate || matchUp.schedule.scheduledDate === scheduleDate)
       );
@@ -85,5 +92,10 @@ export function processAlreadyScheduledMatchUps({
     }
   }
 
-  return { clearDate, dateScheduledMatchUpIds, dateScheduledMatchUps };
+  return {
+    dateScheduledMatchUpIds,
+    byeScheduledMatchUpIds,
+    dateScheduledMatchUps,
+    clearDate,
+  };
 }

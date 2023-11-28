@@ -9,6 +9,7 @@ import {
 } from '../../../../../utilities/dateTime';
 
 import { Tournament } from '../../../../../types/tournamentFromSchema';
+import { BYE } from '../../../../../constants/matchUpStatusConstants';
 import { HydratedMatchUp } from '../../../../../types/hydrated';
 import {
   MISSING_MATCHUPS,
@@ -83,7 +84,9 @@ export function generateBookings({
   }
 
   const relevantMatchUps = dateScheduledMatchUps?.filter(
-    (matchUp) => !venueIds.length || venueIds.includes(matchUp.schedule.venueId)
+    (matchUp) =>
+      (!venueIds.length || venueIds.includes(matchUp.schedule.venueId)) &&
+      matchUp.matchUpStatus !== BYE
   );
 
   const bookings = relevantMatchUps

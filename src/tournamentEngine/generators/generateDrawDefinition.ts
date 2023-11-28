@@ -35,6 +35,7 @@ import {
 import {
   extractAttributes,
   generateRange,
+  makeDeepCopy,
   nextPowerOf2,
 } from '../../utilities';
 
@@ -166,7 +167,11 @@ export function generateDrawDefinition(
       event,
     }).appliedPolicies ?? {};
 
-  const policyDefinitions = params.policyDefinitions ?? {};
+  const policyDefinitions = makeDeepCopy(
+    params.policyDefinitions ?? {},
+    false,
+    true
+  );
 
   const drawTypeCoercion =
     params.drawTypeCoercion ??

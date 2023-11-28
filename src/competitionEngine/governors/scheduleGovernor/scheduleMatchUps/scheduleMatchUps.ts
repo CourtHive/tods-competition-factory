@@ -146,7 +146,6 @@ export function scheduleMatchUps({
       periodLength,
       venueIds,
     });
-
   const requestConflicts = {};
   const skippedScheduleTimes: string[] = [];
   const matchUpScheduleTimes = {};
