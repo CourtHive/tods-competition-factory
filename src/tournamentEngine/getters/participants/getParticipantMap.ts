@@ -1,6 +1,7 @@
 import { addNationalityCode } from '../../governors/participantGovernor/addNationalityCode';
 import { addIndividualParticipants } from './addIndividualParticipants';
 import { getTimeItem } from '../../governors/queryGovernor/timeItems';
+import { isObject } from '../../../utilities/objects';
 import { makeDeepCopy } from '../../../utilities';
 import { getScaleValues } from './getScaleValues';
 
@@ -29,7 +30,7 @@ const membershipMap = {
 // and which include all relevant groupings for each individualParticipant
 
 type GetParticpantsMapArgs = {
-  withIndividualParticipants?: boolean;
+  withIndividualParticipants?: boolean | { [key: string]: any };
   tournamentRecord: Tournament;
   convertExtensions?: boolean;
   withSignInStatus?: boolean;
@@ -101,7 +102,12 @@ export function getParticipantMap({
       });
   }
 
-  if (withIndividualParticipants) addIndividualParticipants({ participantMap });
+  if (withIndividualParticipants) {
+    const template = isObject(withIndividualParticipants)
+      ? withIndividualParticipants
+      : undefined;
+    addIndividualParticipants({ participantMap, template });
+  }
 
   return { participantMap };
 }
