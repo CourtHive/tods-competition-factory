@@ -1,6 +1,6 @@
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
 import { timeSort, timeStringMinutes } from '../../../utilities/dateTime';
-// import { extensionsToAttributes } from '../../../utilities/makeDeepCopy';
+import { extensionsToAttributes } from '../../../utilities/makeDeepCopy';
 import { structureSort } from '../../../drawEngine/getters/structureSort';
 import { getEventPublishStatuses } from './getEventPublishStatuses';
 import { getEventSeedAssignments } from './getEventSeedAssignments';
@@ -99,6 +99,7 @@ export function getParticipantEntries(params) {
 
     const {
       drawDefinitions = [],
+      extensions = [],
       eventType,
       eventName,
       category,
@@ -115,7 +116,12 @@ export function getParticipantEntries(params) {
     if (publishStatuses) eventsPublishStatuses[eventId] = publishStatuses;
 
     if (withEvents || withSeeding || withRankingProfile) {
+      const extensionConversions = convertExtensions
+        ? Object.assign({}, ...extensionsToAttributes(extensions))
+        : {};
+
       derivedEventInfo[eventId] = {
+        ...extensionConversions,
         eventName,
         eventType,
         category,
