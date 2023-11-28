@@ -118,6 +118,14 @@ export function deleteDrawDefinitions({
     bye,
   }) => ({ bye, qualifier, drawPosition, participantId });
 
+  const itemType = `${PUBLISH}.${STATUS}`;
+  const { timeItem } = getTimeItem({ element: event, itemType });
+  const publishStatus = timeItem?.itemValue?.[PUBLIC];
+
+  let updatedStructureIds = publishStatus?.structureIds ?? [];
+  let updatedDrawIds = publishStatus?.drawIds ?? [];
+  let publishedDrawsDeleted;
+
   const drawIdsWithScoresPresent: string[] = [];
   const filteredDrawDefinitions = event.drawDefinitions.filter(
     (drawDefinition) => {
@@ -142,6 +150,22 @@ export function deleteDrawDefinitions({
           flight.drawEntries = flight.drawEntries?.filter((entry) =>
             STRUCTURE_ENTERED_TYPES.includes(entry.entryStatus)
           );
+        }
+
+        if (publishStatus?.drawIds?.includes(drawId)) {
+          updatedDrawIds = updatedDrawIds.filter((id) => id !== drawId);
+          publishedDrawsDeleted = true;
+        }
+        const structureIds = drawDefinition.structures?.map(
+          ({ structureId }) => structureId
+        );
+        if (
+          publishStatus?.structureIds?.some((id) => structureIds?.includes(id))
+        ) {
+          updatedStructureIds = updatedStructureIds.filter(
+            (id) => !structureIds?.includes(id)
+          );
+          publishedDrawsDeleted = true;
         }
 
         const mainStructure = getDrawStructures({
@@ -182,6 +206,7 @@ export function deleteDrawDefinitions({
             })
           : undefined;
 
+        // TODO: conditionally add auditTrail based on policyDefinitions
         const audit = {
           action: DELETE_DRAW_DEFINITIONS,
           payload: {
@@ -191,6 +216,7 @@ export function deleteDrawDefinitions({
           },
         };
         auditTrail.push(audit);
+
         deletedDrawsDetail.push(
           definedAttributes({
             tournamentId: tournamentRecord.tournamentId,
@@ -231,30 +257,20 @@ export function deleteDrawDefinitions({
   // cleanup references to drawId in schedulingProfile extension
   checkSchedulingProfile({ tournamentRecord });
 
-  const itemType = `${PUBLISH}.${STATUS}`;
-  const { timeItem } = getTimeItem({ element: event, itemType });
-  const publishStatus = timeItem?.itemValue?.[PUBLIC];
-  let publishedDrawsDeleted;
-
-  for (const drawId of drawIds) {
-    const drawPublished = publishStatus?.drawIds?.includes(drawId);
-    if (drawPublished) {
-      publishedDrawsDeleted = true;
-      const updatedDrawIds =
-        publishStatus.drawIds?.filter(
-          (publishedDrawId) => publishedDrawId !== drawId
-        ) || [];
-      const timeItem = {
-        itemType: `${PUBLISH}.${STATUS}`,
-        itemValue: {
-          [PUBLIC]: {
-            drawIds: updatedDrawIds,
-          },
+  // TODO: update with drawDetails support
+  if (publishedDrawsDeleted) {
+    const timeItem = {
+      itemType: `${PUBLISH}.${STATUS}`,
+      itemValue: {
+        [PUBLIC]: {
+          ...publishStatus,
+          structureIds: updatedStructureIds,
+          drawIds: updatedDrawIds,
         },
-      };
-      const result = addEventTimeItem({ event, timeItem });
-      if (result.error) return { error: result.error };
-    }
+      },
+    };
+    const result = addEventTimeItem({ event, timeItem });
+    if (result.error) return { error: result.error };
   }
 
   if (auditTrail.length) {
@@ -274,7 +290,13 @@ export function deleteDrawDefinitions({
   addDrawDeletionTelemetry({ event, deletedDrawsDetail, auditData });
 
   if (autoPublish && publishedDrawsDeleted) {
-    const result = publishEvent({ tournamentRecord, event, policyDefinitions });
+    const result = publishEvent({
+      // TODO: structureIdsToRemove need to be derived
+      drawIdsToRemove: drawIds,
+      tournamentRecord,
+      policyDefinitions,
+      event,
+    });
     if (result.error) console.log('publish error', result);
   }
 

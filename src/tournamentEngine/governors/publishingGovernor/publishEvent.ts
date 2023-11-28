@@ -15,6 +15,20 @@ import {
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 
+export type PublishingDetail = {
+  published?: boolean;
+  embargo?: string;
+};
+
+export type DrawPublishingDetails = {
+  structureDetails?: { [key: string]: PublishingDetail };
+  stages?: { [key: string]: PublishingDetail };
+  structureIdsToRemove?: string[];
+  structureIdsToAdd?: string[];
+  stagesToRemove?: string[];
+  stagesToAdd?: string[];
+};
+
 type PublishEventType = {
   includePositionAssignments?: boolean;
   policyDefinitions?: PolicyDefinitions;
@@ -26,16 +40,18 @@ type PublishEventType = {
   status?: string;
   event?: Event;
 
-  structureIdsToRemove?: string[];
-  structureIdsToAdd?: string[];
+  drawDetails?: { [key: string]: DrawPublishingDetails };
+
+  // structureIdsToRemove?: string[];
+  // structureIdsToAdd?: string[];
   drawIdsToRemove?: string[];
-  stagesToRemove?: string[];
+  // stagesToRemove?: string[];
   drawIdsToAdd?: string[];
-  stagesToAdd?: string[];
+  // stagesToAdd?: string[];
 };
 
 export function publishEvent(params: PublishEventType) {
-  let { policyDefinitions, drawIds, structureIds, stages } = params;
+  let { drawIds } = params;
   const {
     includePositionAssignments,
     removePriorValues,
@@ -43,23 +59,29 @@ export function publishEvent(params: PublishEventType) {
     status = PUBLIC,
     event,
 
+    drawDetails,
+
     drawIdsToRemove,
     drawIdsToAdd,
 
+    /*
     stagesToRemove,
     stagesToAdd,
 
     structureIdsToRemove,
     structureIdsToAdd,
+    */
   } = params;
 
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
 
-  if (!policyDefinitions) {
-    const { appliedPolicies } = getAppliedPolicies({ tournamentRecord, event });
-    policyDefinitions = appliedPolicies;
-  }
+  // publishing will draw on scoring policy, round naming policy and participant (privacy) policy
+  const { appliedPolicies } = getAppliedPolicies({ tournamentRecord, event });
+  const policyDefinitions = {
+    ...appliedPolicies,
+    ...params.policyDefinitions,
+  };
 
   const itemType = `${PUBLISH}.${STATUS}`;
   const eventDrawIds = event.drawDefinitions?.map(({ drawId }) => drawId) ?? [];
@@ -69,7 +91,7 @@ export function publishEvent(params: PublishEventType) {
     event,
   });
 
-  if (!drawIds && !drawIdsToAdd && !drawIdsToRemove) {
+  if (!drawIds && !drawIdsToAdd && !drawIdsToRemove && !drawDetails) {
     // by default publish all drawIds in an event
     drawIds = eventDrawIds;
   } else if (!drawIds && (drawIdsToAdd?.length || drawIdsToRemove?.length)) {
@@ -89,6 +111,7 @@ export function publishEvent(params: PublishEventType) {
     );
   }
 
+  /*
   if (
     !structureIds &&
     (structureIdsToAdd?.length || structureIdsToRemove?.length)
@@ -117,11 +140,12 @@ export function publishEvent(params: PublishEventType) {
   if (stagesToAdd?.length) {
     stages = unique(stages.concat(...stagesToAdd));
   }
+  */
 
   const existingStatusValue = timeItem?.itemValue?.[status];
   const updatedTimeItem = {
     itemValue: {
-      [status]: { ...existingStatusValue, drawIds, structureIds, stages },
+      [status]: { ...existingStatusValue, drawIds },
     },
     itemType,
   };
