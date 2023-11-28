@@ -471,7 +471,7 @@ export function proScheduler({
         );
     }
 
-    if (!dryRun) {
+    if (!dryRun && allDateScheduledByeMatchUpIds?.length) {
       // remove scheduling information for BYE matchUps from any rounds that were scheduled
       // console.log(allDateScheduledByeMatchUpIds);
     }
