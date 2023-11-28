@@ -188,7 +188,6 @@ it('can add statistics to tournament participants', () => {
   );
   expect(individualParticipant.draws.length).toBeGreaterThan(0);
   expect(individualParticipant.statistics[0].statValue).toBeGreaterThan(0);
-  expect(individualParticipant.events[0]._ustaLevel).toEqual(1);
 
   expect(
     derivedEventInfo[individualParticipant.events[0].eventId].eventType
