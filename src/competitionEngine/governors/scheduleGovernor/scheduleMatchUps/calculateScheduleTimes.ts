@@ -12,26 +12,12 @@ import {
   timeStringMinutes,
 } from '../../../../utilities/dateTime';
 
+import { Tournament } from '../../../../types/tournamentFromSchema';
 import {
   ErrorType,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../../../constants/errorConditionConstants';
-import { Tournament } from '../../../../types/tournamentFromSchema';
 
-/**
- *
- * @param {object[]} tournamentRecords - passed in by competitionEngine
- * @param {string[]} venueIds - optional - look for availaiblity only courts at specified venues
- * @param {boolean} calculateStartTimeFromCourts - defaults to true - will override supplied startTime
- * @param {string} startTime - military time string, time only, e.g. '08:00'
- * @param {string} endTime - military time string, time only, e.g. '18:00'
- * @param {string} scheduleDate - date string 'YYYY-MM-DD'
- *
- * NOTE: not using matchUpFormat here because time per format is defined by policy
- * @param {number} averageMatchUpMinutes - number of minutes per match
- * @param {number} periodLengh - number of minutes in a scheduling period
- * @returns
- */
 type CalculateScheduleTimesArgs = {
   tournamentRecords: { [key: string]: Tournament };
   calculateStartTimeFromCourts?: boolean;

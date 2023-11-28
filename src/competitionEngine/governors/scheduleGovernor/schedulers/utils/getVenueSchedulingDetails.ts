@@ -44,6 +44,7 @@ export function getVenueSchedulingDetails({
   venues,
 }: GetVenueSchedulingDetailsArgs): {
   venueScheduledRoundDetails: { [key: string]: any };
+  allDateScheduledByeMatchUpIds: string[];
   allDateScheduledMatchUpIds: string[];
   allDateMatchUpIds: string[];
 } {
@@ -51,6 +52,7 @@ export function getVenueSchedulingDetails({
 
   // checking that matchUpDependencies is scoped to only those matchUps that are already or are to be scheduled on the same date
   const allDateScheduledMatchUpIds: string[] = [];
+  const allDateScheduledByeMatchUpIds: string[] = [];
   const allDateMatchUpIds: string[] = [];
 
   // first pass through all venues is to build up an array of all matchUpIds in the schedulingProfile for current scheduleDate
@@ -112,8 +114,10 @@ export function getVenueSchedulingDetails({
       matchUps,
     });
 
-    const clearDate = processResult.clearDate;
     ({ dateScheduledMatchUpIds, dateScheduledMatchUps } = processResult);
+    const { byeScheduledMatchUpIds, clearDate } = processResult;
+    if (byeScheduledMatchUpIds?.length)
+      allDateScheduledByeMatchUpIds.push(...byeScheduledMatchUpIds);
 
     const { matchUpsToSchedule, matchUpMap } = getMatchUpsToSchedule({
       matchUpPotentialParticipantIds,
@@ -147,6 +151,7 @@ export function getVenueSchedulingDetails({
   }
 
   return {
+    allDateScheduledByeMatchUpIds,
     allDateScheduledMatchUpIds,
     venueScheduledRoundDetails,
     allDateMatchUpIds,

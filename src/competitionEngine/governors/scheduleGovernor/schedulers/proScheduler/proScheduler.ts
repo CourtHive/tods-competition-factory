@@ -94,6 +94,7 @@ export function proScheduler({
     });
 
     const {
+      allDateScheduledByeMatchUpIds,
       allDateScheduledMatchUpIds,
       venueScheduledRoundDetails,
       allDateMatchUpIds,
@@ -468,6 +469,11 @@ export function proScheduler({
         venueScheduledRoundDetails[venueId].matchUpsToSchedule.map(
           getMatchUpId
         );
+    }
+
+    if (!dryRun) {
+      // remove scheduling information for BYE matchUps from any rounds that were scheduled
+      // console.log(allDateScheduledByeMatchUpIds);
     }
 
     for (const venue of dateSchedulingProfile.venues) {
