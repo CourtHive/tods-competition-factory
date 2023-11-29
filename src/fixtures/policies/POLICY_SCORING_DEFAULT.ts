@@ -9,6 +9,10 @@ import { FORMAT_STANDARD } from '../scoring/matchUpFormats';
 export const POLICY_SCORING_DEFAULT = {
   [POLICY_TYPE_SCORING]: {
     defaultMatchUpFormat: FORMAT_STANDARD,
+    allowDeletionWithScoresPresent: {
+      drawDefinitions: false,
+      structures: false,
+    },
     requireAllPositionsAssigned: false,
     processCodes: {
       incompleteAssignmentsOnDefault: ['RANKING.IGNORE'],

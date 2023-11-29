@@ -1,5 +1,6 @@
 import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpIds } from '../../../global/functions/extractors';
 import { resequenceStructures } from './resequenceStructures';
@@ -11,6 +12,7 @@ import {
 } from '../../notifications/drawNotifications';
 
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
+import { POLICY_TYPE_SCORING } from '../../../constants/policyConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   CANNOT_REMOVE_MAIN_STRUCTURE,
@@ -59,7 +61,21 @@ export function removeStructure({
     scoreHasValue({ score })
   );
 
-  if (scoresPresent && !force) return { error: SCORES_PRESENT };
+  if (scoresPresent) {
+    const appliedPolicies = getAppliedPolicies({
+      tournamentRecord,
+      drawDefinition,
+      structure,
+      event,
+    })?.appliedPolicies;
+
+    const allowDeletionWithScoresPresent =
+      force ||
+      appliedPolicies?.[POLICY_TYPE_SCORING]?.allowDeletionWithScoresPresent
+        ?.structures;
+
+    if (!allowDeletionWithScoresPresent) return { error: SCORES_PRESENT };
+  }
 
   const mainStageSequence1 = structures.find(
     ({ stage, stageSequence }) => stage === MAIN && stageSequence === 1

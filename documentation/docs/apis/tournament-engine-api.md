@@ -1086,8 +1086,10 @@ Remove `drawDefinitions` from an `event`. An audit timeItem is added to the tour
 ```js
 tournamentEngine.deleteDrawDefinitions({
   autoPublish, // optional - defaults to true.
+  auditData, // object with attributes to be added to drawDeletions extension
   drawIds: [drawId],
   eventId,
+  force, // boolean - override error when scores present
 });
 ```
 
@@ -1100,8 +1102,10 @@ Removes flight from `event` flightProfile as well as associated `drawDefinition`
 ```js
 tournamentEngine.deleteFlightAndFlightDraw({
   autoPublish, // optional - defaults to true.
+  auditData, // object with attributes to be added to drawDeletions extension
   eventId,
   drawId,
+  force, // boolean - override error when scores present
 });
 ```
 
@@ -1112,7 +1116,11 @@ tournamentEngine.deleteFlightAndFlightDraw({
 Removes flightProfiles and all associated drawDefinitions from a specified event.
 
 ```js
-tournamentEngine.deleteFlightProfileAndFlightDraws({ eventId });
+tournamentEngine.deleteFlightProfileAndFlightDraws({
+  auditData, // object with attributes to be added to drawDeletions extension
+  eventId,
+  force, // boolean - override error when scores present
+});
 ```
 
 ---

@@ -1,3 +1,4 @@
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { getScheduledCourtMatchUps } from '../queryGovernor/getScheduledCourtMatchUps';
 import { minutesDifference, timeToDate } from '../../../utilities/dateTime';
 import { startTimeSort } from '../../../fixtures/validations/time';
@@ -6,6 +7,7 @@ import { validDateAvailability } from './dateAvailability';
 import { findCourt } from '../../getters/courtGetter';
 
 import { Availability, Tournament } from '../../../types/tournamentFromSchema';
+import { POLICY_TYPE_SCHEDULING } from '../../../constants/policyConstants';
 import { MODIFY_VENUE } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
@@ -58,8 +60,17 @@ export function modifyCourtAvailability({
   // TODO: check whether there are matchUps which are no longer possible to play
   // this will only apply to Pro Scheduling
   if (courtMatchUps?.length) {
+    const appliedPolicies = getAppliedPolicies({
+      tournamentRecord,
+    })?.appliedPolicies;
+
+    const allowModificationWhenMatchUpsScheduled =
+      force ||
+      appliedPolicies?.[POLICY_TYPE_SCHEDULING]?.allowDeletionWithScoresPresent
+        ?.courts;
+
     console.log('scheduled court matchUps', courtMatchUps.length);
-    if (force) {
+    if (allowModificationWhenMatchUpsScheduled) {
       // go ahead and remove scheduling
     }
   }

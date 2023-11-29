@@ -1,18 +1,16 @@
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { getScheduledCourtMatchUps } from '../queryGovernor/getScheduledCourtMatchUps';
 import { removeCourtAssignment } from './removeCourtAssignment';
 import { addNotice } from '../../../global/state/globalState';
 import { findCourt } from '../../getters/courtGetter';
 import { deletionMessage } from './deletionMessage';
 
+import { POLICY_TYPE_SCHEDULING } from '../../../constants/policyConstants';
 import { MODIFY_VENUE } from '../../../constants/topicConstants';
+import { Tournament } from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
-import {
-  DrawDefinition,
-  Tournament,
-} from '../../../types/tournamentFromSchema';
 
 type DeleteCourtArgs = {
-  drawDefinition?: DrawDefinition;
   tournamentRecord: Tournament;
   disableNotice?: boolean;
   courtId: string;
@@ -20,7 +18,6 @@ type DeleteCourtArgs = {
 };
 export function deleteCourt({
   tournamentRecord,
-  drawDefinition,
   disableNotice,
   courtId,
   force,
@@ -34,13 +31,21 @@ export function deleteCourt({
     courtId,
   });
 
-  if (!matchUps?.length || force) {
+  const appliedPolicies = getAppliedPolicies({
+    tournamentRecord,
+  })?.appliedPolicies;
+
+  const allowModificationWhenMatchUpsScheduled =
+    force ||
+    appliedPolicies?.[POLICY_TYPE_SCHEDULING]?.allowDeletionWithScoresPresent
+      ?.courts;
+
+  if (!matchUps?.length || allowModificationWhenMatchUpsScheduled) {
     for (const matchUp of matchUps ?? []) {
       const result = removeCourtAssignment({
         matchUpId: matchUp.matchUpId,
         drawId: matchUp.drawId,
         tournamentRecord,
-        drawDefinition,
       });
       if (result.error) return result;
     }

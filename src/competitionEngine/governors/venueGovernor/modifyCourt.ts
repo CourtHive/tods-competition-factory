@@ -1,11 +1,11 @@
 import { modifyCourt as courtModification } from '../../../tournamentEngine/governors/venueGovernor/modifyCourt';
 
+import { Tournament } from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_TOURNAMENT_RECORDS,
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
-import { Tournament } from '../../../types/tournamentFromSchema';
 
 type ModifyCourtArgs = {
   tournamentRecords: { [key: string]: Tournament };
