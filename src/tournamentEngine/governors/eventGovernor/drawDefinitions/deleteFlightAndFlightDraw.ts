@@ -16,6 +16,7 @@ export function deleteFlightAndFlightDraw({
   auditData,
   drawId,
   event,
+  force,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!drawId) return { error: MISSING_DRAW_ID };
@@ -56,6 +57,7 @@ export function deleteFlightAndFlightDraw({
       autoPublish,
       auditData,
       event,
+      force,
     });
     if (result.error) return result;
   }
