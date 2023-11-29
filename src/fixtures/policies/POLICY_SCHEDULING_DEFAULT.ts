@@ -7,11 +7,12 @@ const ADULT = 'ADULT';
 const JUNIOR = 'JUNIOR';
 const WHEELCHAIR = 'WHEELCHAIR';
 
-/**
- *
- */
 export const POLICY_SCHEDULING_DEFAULT = {
   [POLICY_TYPE_SCHEDULING]: {
+    allowModificationWhenMatchUpsScheduled: {
+      courts: false,
+      venues: false,
+    },
     defaultTimes: {
       averageTimes: [{ categoryNames: [], minutes: { default: 90 } }],
       recoveryTimes: [{ minutes: { [DOUBLES]: 30, default: 60 } }],
