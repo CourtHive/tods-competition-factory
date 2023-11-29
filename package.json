@@ -112,8 +112,8 @@
     "trailingComma": "es5"
   },
   "devDependencies": {
-    "@babel/core": "7.23.3",
-    "@babel/preset-env": "7.23.3",
+    "@babel/core": "7.23.5",
+    "@babel/preset-env": "7.23.5",
     "@babel/plugin-transform-nullish-coalescing-operator": "^7.22.11",
     "@babel/plugin-transform-optional-chaining": "^7.23.0",
     "@babel/preset-typescript": "7.23.3",
