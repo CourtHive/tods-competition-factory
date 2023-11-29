@@ -112,8 +112,8 @@
     "trailingComma": "es5"
   },
   "devDependencies": {
-    "@babel/core": "7.23.3",
-    "@babel/preset-env": "7.23.3",
+    "@babel/core": "7.23.5",
+    "@babel/preset-env": "7.23.5",
     "@babel/plugin-transform-nullish-coalescing-operator": "^7.22.11",
     "@babel/plugin-transform-optional-chaining": "^7.23.0",
     "@babel/preset-typescript": "7.23.3",
@@ -160,7 +160,7 @@
     "tslib": "2.6.2",
     "typescript": "5.3.2",
     "variable-diff": "^2.0.2",
-    "vite": "5.0.3",
+    "vite": "5.0.4",
     "vitest": "^0.34.0"
   },
   "lint-staged": {
