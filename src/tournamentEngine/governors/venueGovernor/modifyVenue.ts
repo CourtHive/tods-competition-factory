@@ -1,3 +1,4 @@
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { checkSchedulingProfile } from '../scheduleGovernor/schedulingProfile';
 import { addNotice } from '../../../global/state/globalState';
 import venueTemplate from '../../generators/venueTemplate';
@@ -11,6 +12,7 @@ import {
   getScheduledVenueMatchUps,
 } from '../queryGovernor/getScheduledCourtMatchUps';
 
+import { POLICY_TYPE_SCHEDULING } from '../../../constants/policyConstants';
 import { Tournament, Venue } from '../../../types/tournamentFromSchema';
 import { MODIFY_VENUE } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -39,6 +41,15 @@ export function modifyVenue({
   if (!modifications || typeof modifications !== 'object')
     return { error: INVALID_OBJECT };
   if (!venueId) return { error: MISSING_VENUE_ID };
+
+  const appliedPolicies = getAppliedPolicies({
+    tournamentRecord,
+  })?.appliedPolicies;
+
+  const allowModificationWhenMatchUpsScheduled =
+    force ||
+    appliedPolicies?.[POLICY_TYPE_SCHEDULING]?.allowDeletionWithScoresPresent
+      ?.venues;
 
   const { matchUps: venueMatchUps } = getScheduledVenueMatchUps({
     tournamentRecord,
@@ -95,7 +106,10 @@ export function modifyVenue({
       })
       .reduce((a, b) => a + b);
 
-    if (venue && (!scheduleDeletionsCount || force)) {
+    if (
+      venue &&
+      (!scheduleDeletionsCount || allowModificationWhenMatchUpsScheduled)
+    ) {
       venue.courts = venue.courts?.filter((court) =>
         courtIdsToModify.includes(court.courtId)
       );
