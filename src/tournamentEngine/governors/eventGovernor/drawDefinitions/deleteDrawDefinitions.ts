@@ -23,6 +23,7 @@ import {
 
 import { STRUCTURE_ENTERED_TYPES } from '../../../../constants/entryStatusConstants';
 import { DELETE_DRAW_DEFINITIONS } from '../../../../constants/auditConstants';
+import { POLICY_TYPE_SCORING } from '../../../../constants/policyConstants';
 import { Event, Tournament } from '../../../../types/tournamentFromSchema';
 import { PolicyDefinitions } from '../../../../types/factoryTypes';
 import { SUCCESS } from '../../../../constants/resultConstants';
@@ -55,23 +56,22 @@ type DeleteDrawDefinitionArgs = {
   force?: boolean;
   event?: Event;
 };
-export function deleteDrawDefinitions({
-  autoPublish = true,
-  policyDefinitions,
-  tournamentRecord,
-  drawIds = [],
-  auditData,
-  eventId,
-  event,
-  force,
-}: DeleteDrawDefinitionArgs) {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+export function deleteDrawDefinitions(params: DeleteDrawDefinitionArgs) {
+  if (!params.tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   const stack = 'deleteDrawDefinitions';
 
-  if (!policyDefinitions) {
-    const { appliedPolicies } = getAppliedPolicies({ tournamentRecord, event });
-    policyDefinitions = appliedPolicies;
-  }
+  let drawIds = params.drawIds ?? [];
+  let event = params.event;
+  const {
+    autoPublish = true,
+    tournamentRecord,
+    auditData,
+    eventId,
+    force,
+  } = params;
+
+  const { appliedPolicies } = getAppliedPolicies({ tournamentRecord, event });
+  const policyDefinitions = { ...appliedPolicies, ...params.policyDefinitions };
 
   const drawId = Array.isArray(drawIds) ? drawIds[0] : undefined;
 
@@ -118,6 +118,11 @@ export function deleteDrawDefinitions({
     bye,
   }) => ({ bye, qualifier, drawPosition, participantId });
 
+  const allowDeletionWithScoresPresent =
+    force ||
+    appliedPolicies?.[POLICY_TYPE_SCORING]?.allowDeletionWithScoresPresent
+      ?.drawDefinitions;
+
   const drawIdsWithScoresPresent: string[] = [];
   const filteredDrawDefinitions = event.drawDefinitions.filter(
     (drawDefinition) => {
@@ -128,7 +133,7 @@ export function deleteDrawDefinitions({
         const scoresPresent = matchUps.some(({ score }) =>
           scoreHasValue({ score })
         );
-        if (scoresPresent && !force) {
+        if (scoresPresent && !allowDeletionWithScoresPresent) {
           drawIdsWithScoresPresent.push(drawDefinition.drawId);
           return true;
         }
