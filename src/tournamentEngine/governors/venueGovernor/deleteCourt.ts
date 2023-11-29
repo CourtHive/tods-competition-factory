@@ -36,7 +36,7 @@ export function deleteCourt({
   })?.appliedPolicies;
 
   const allowModificationWhenMatchUpsScheduled =
-    force ||
+    force ??
     appliedPolicies?.[POLICY_TYPE_SCHEDULING]?.allowDeletionWithScoresPresent
       ?.courts;
 

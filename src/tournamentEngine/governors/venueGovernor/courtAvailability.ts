@@ -65,7 +65,7 @@ export function modifyCourtAvailability({
     })?.appliedPolicies;
 
     const allowModificationWhenMatchUpsScheduled =
-      force ||
+      force ??
       appliedPolicies?.[POLICY_TYPE_SCHEDULING]?.allowDeletionWithScoresPresent
         ?.courts;
 

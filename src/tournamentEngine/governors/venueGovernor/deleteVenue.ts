@@ -45,7 +45,7 @@ export function deleteVenue({
   })?.appliedPolicies;
 
   const allowModificationWhenMatchUpsScheduled =
-    force ||
+    force ??
     appliedPolicies?.[POLICY_TYPE_SCHEDULING]?.allowDeletionWithScoresPresent
       ?.venues;
 
