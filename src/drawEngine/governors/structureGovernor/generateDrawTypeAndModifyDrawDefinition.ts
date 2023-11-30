@@ -35,18 +35,19 @@ import {
   MatchUp,
   Structure,
   TieFormat,
+  Tournament,
   TypeEnum,
 } from '../../../types/tournamentFromSchema';
 
 type GenerateDrawTypeAndModify = {
   appliedPolicies?: PolicyDefinitions;
+  tournamentRecord: Tournament;
   drawDefinition: DrawDefinition;
   modifyOriginal?: boolean;
   qualifiersCount?: number;
   stageSequence?: number;
   matchUpFormat?: string;
   matchUpType?: TypeEnum;
-  tournamentId?: string;
   tieFormat?: TieFormat;
   drawSize: number;
   isMock?: boolean;
@@ -169,7 +170,10 @@ export function generateDrawTypeAndModifyDrawDefinition(
 
   const { inContextDrawMatchUps } = addGoesTo({ drawDefinition, matchUpsMap });
 
-  modifyDrawNotice({ drawDefinition, tournamentId: params.tournamentId });
+  modifyDrawNotice({
+    tournamentId: params.tournamentRecord?.tournamentId,
+    drawDefinition,
+  });
 
   return {
     inContextDrawMatchUps,
