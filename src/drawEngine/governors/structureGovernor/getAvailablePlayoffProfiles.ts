@@ -7,13 +7,22 @@ import { getStructureLinks } from '../../getters/linkGetter';
 import { getSourceRounds } from './getSourceRounds';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
+import { DrawDefinition } from '../../../types/tournamentFromSchema';
 import {
   CONTAINER,
   FIRST_MATCHUP,
   VOLUNTARY_CONSOLATION,
 } from '../../../constants/drawDefinitionConstants';
 
-export function getAvailablePlayoffProfiles({ drawDefinition, structureId }) {
+type GetAvailablePlayoffProfileArgs = {
+  drawDefinition: DrawDefinition;
+  structureId: string;
+};
+
+export function getAvailablePlayoffProfiles({
+  drawDefinition,
+  structureId,
+}: GetAvailablePlayoffProfileArgs) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   const { matchUps, matchUpsMap } = allDrawMatchUps({
