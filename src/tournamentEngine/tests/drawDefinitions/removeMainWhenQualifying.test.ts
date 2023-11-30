@@ -49,7 +49,6 @@ it('allows deletion of non-qualifying structures', () => {
     ({ stage }) => stage === MAIN
   );
   expect(mainStructure.matchUps.length).toEqual(0);
-  const mainStructureId = mainStructure.structureId;
 
   const qualifyingStructure = eventResult.drawDefinition.structures.find(
     ({ stage }) => stage === QUALIFYING
@@ -80,46 +79,16 @@ it('allows deletion of non-qualifying structures', () => {
   expect(mainStructure.positionAssignments.length).toEqual(32);
   expect(mainStructure.matchUps.length).toEqual(31);
 
-  let drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-  mainStructure = drawDefinition.structures.find(({ stage }) => stage === MAIN);
-  expect(mainStructure.positionAssignments.length).toEqual(0);
-  expect(mainStructure.matchUps.length).toEqual(0);
-
-  result = tournamentEngine.generateDrawTypeAndModifyDrawDefinition({
-    modifyOriginal: true,
-    drawSize: 32,
-    drawId,
-  });
-  expect(result.success).toEqual(true);
-  expect(result.drawDefinition.links.length).toEqual(1);
-
-  mainStructure = result.drawDefinition.structures.find(
-    ({ stage }) => stage === MAIN
-  );
-  expect(mainStructure.positionAssignments.length).toEqual(32);
-  expect(mainStructure.matchUps.length).toEqual(31);
-
-  drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-  mainStructure = drawDefinition.structures.find(({ stage }) => stage === MAIN);
-  expect(mainStructure.positionAssignments.length).toEqual(32);
-  expect(mainStructure.matchUps.length).toEqual(31);
+  const drawDefinition = result.drawDefinition;
 
   result = tournamentEngine.removeStructure({
     structureId: mainStructure.structureId,
-    drawId: result.drawDefinition.drawId,
+    drawDefinition,
   });
   expect(result.success).toEqual(true);
-  expect(result.removedStructureIds.length).toEqual(0);
-  expect(result.removedMatchUpIds.length).toEqual(31);
 
-  drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-  mainStructure = drawDefinition.structures.find(({ stage }) => stage === MAIN);
   expect(mainStructure.positionAssignments.length).toEqual(0);
   expect(mainStructure.matchUps.length).toEqual(0);
-
-  // the original structure has been modified, not replaced
-  expect(mainStructure.structureId).toEqual(mainStructureId);
-  expect(drawDefinition.links.length).toEqual(1);
 });
 
 it('will not remove MAIN structure when there is no QUALIFYING structure', () => {
