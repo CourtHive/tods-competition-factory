@@ -57,8 +57,6 @@ export function modifyCourtAvailability({
     courtId,
   });
 
-  // TODO: check whether there are matchUps which are no longer possible to play
-  // this will only apply to Pro Scheduling
   if (courtMatchUps?.length) {
     const appliedPolicies = getAppliedPolicies({
       tournamentRecord,
@@ -69,9 +67,17 @@ export function modifyCourtAvailability({
       appliedPolicies?.[POLICY_TYPE_SCHEDULING]?.allowDeletionWithScoresPresent
         ?.courts;
 
-    console.log('scheduled court matchUps', courtMatchUps.length);
-    if (allowModificationWhenMatchUpsScheduled) {
-      // go ahead and remove scheduling
+    // TODO: check whether there are matchUps which are no longer possible to play
+    const matchUpsWithInvalidScheduling = [];
+    if (matchUpsWithInvalidScheduling.length) {
+      if (allowModificationWhenMatchUpsScheduled) {
+        // go ahead and remove scheduling
+      } else {
+        console.log(
+          'throw error: scheduled court matchUps',
+          matchUpsWithInvalidScheduling.length
+        );
+      }
     }
   }
 

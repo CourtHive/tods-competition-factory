@@ -4,6 +4,7 @@ import { expect, it } from 'vitest';
 
 import { SINGLES } from '../../../constants/eventConstants';
 import { extractTime } from '../../../utilities/dateTime';
+import { extractAttributes } from '../../../utilities';
 
 it('can add events, venues, and schedule matchUps', () => {
   const startDate = '2020-01-01';
@@ -103,8 +104,7 @@ it('can add events, venues, and schedule matchUps', () => {
   const courtId = courtIds[0];
 
   let { matchUps } = tournamentEngine.allTournamentMatchUps();
-  const [matchUp] = matchUps;
-  const { matchUpId } = matchUp;
+  const [{ matchUpId }] = matchUps;
 
   result = tournamentEngine.assignMatchUpVenue({
     matchUpId,
@@ -178,9 +178,19 @@ it('can add events, venues, and schedule matchUps', () => {
   expect(result.error).not.toBeUndefined();
 
   result = tournamentEngine.modifyVenue({
-    venueId,
     modifications,
     force: true,
+    venueId,
   });
   expect(result.success).toEqual(true);
+
+  const remainingCourtIds = tournamentEngine
+    .findVenue({ venueId })
+    .venue.courts.map(extractAttributes('courtId'));
+  expect(remainingCourtIds.includes(courtId)).toEqual(false);
+
+  const matchUp = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { matchUpIds: [matchUpId] },
+  }).matchUps[0];
+  expect(matchUp.schedule.courtId).toBeUndefined();
 });

@@ -1,4 +1,5 @@
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
+import { bulkScheduleMatchUps } from '../scheduleGovernor/bulkScheduleMatchUps';
 import { checkSchedulingProfile } from '../scheduleGovernor/schedulingProfile';
 import { addNotice } from '../../../global/state/globalState';
 import venueTemplate from '../../generators/venueTemplate';
@@ -90,6 +91,8 @@ export function modifyVenue({
   const courtIdsToDelete = existingCourtIds.filter(
     (courtId) => !courtIdsToModify.includes(courtId)
   );
+
+  const matchUpsWithCourtId: { matchUpId: string; drawId: string }[] = [];
   if (courtIdsToDelete.length) {
     const courtsToDelete = venue?.courts?.filter((court) =>
       courtIdsToDelete.includes(court.courtId)
@@ -102,6 +105,12 @@ export function modifyVenue({
           tournamentRecord,
           venueMatchUps,
         });
+        for (const matchUp of result.matchUps ?? []) {
+          matchUpsWithCourtId.push({
+            matchUpId: matchUp.matchUpId,
+            drawId: matchUp.drawId,
+          });
+        }
         return result.matchUps?.length ?? 0;
       })
       .reduce((a, b) => a + b);
@@ -113,7 +122,12 @@ export function modifyVenue({
       venue.courts = venue.courts?.filter((court) =>
         courtIdsToModify.includes(court.courtId)
       );
-      // TODO: remove court details from matchUps which were scheduled for deleted courts
+      bulkScheduleMatchUps({
+        schedule: { courtId: '', scheduledDate: '' },
+        matchUpDetails: matchUpsWithCourtId,
+        removePriorValues: true,
+        tournamentRecord,
+      });
     } else {
       return deletionMessage({
         matchUpsCount: scheduleDeletionsCount,
