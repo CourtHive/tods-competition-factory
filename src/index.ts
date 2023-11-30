@@ -3,12 +3,15 @@ export { factoryVersion as version } from './global/functions/factoryVersion';
 export { scoreGovernor } from './matchUpEngine/governors/scoreGovernor';
 export { fixtures } from './fixtures';
 
+import { getAvailablePlayoffProfiles } from './drawEngine/governors/structureGovernor/getAvailablePlayoffProfiles';
 import { visualizeScheduledMatchUps } from './global/testHarness/testUtilities/visualizeScheduledMatchUps';
 import { calculateWinCriteria } from './matchUpEngine/governors/tieFormatGovernor/calculateWinCriteria';
 import { proConflicts } from './competitionEngine/governors/scheduleGovernor/proScheduling/proConflicts';
 import { validateTieFormat } from './matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
 import { compareTieFormats } from './matchUpEngine/governors/tieFormatGovernor/compareTieFormats';
+import { getStructureSeedAssignments } from './drawEngine/getters/getStructureSeedAssignments';
 import { dehydrateMatchUps } from './tournamentEngine/governors/tournamentGovernor/dehydrate';
+import { getSeedingThresholds } from './drawEngine/governors/positionGovernor/getSeedBlocks';
 import { getAssignedParticipantIds } from './drawEngine/getters/getAssignedParticipantIds';
 import { findExtension } from './tournamentEngine/governors/queryGovernor/extensionQueries';
 import { participantScaleItem } from './tournamentEngine/accessors/participantScaleItem';
@@ -20,9 +23,12 @@ import { generateScoreString } from './matchUpEngine/generators/generateScoreStr
 import { categoryCanContain } from './global/functions/deducers/categoryCanContain';
 import { getTimeItem } from './tournamentEngine/governors/queryGovernor/timeItems';
 import { getCategoryAgeDetails } from './global/functions/getCategoryAgeDetails';
+import { checkSetIsComplete } from './matchUpEngine/getters/getSetWinningSide';
+import { getMatchUpContextIds } from './drawEngine/accessors/matchUpAccessor';
 import { parseScoreString } from './mocksEngine/utilities/parseScoreString';
 import { roundRobinGroups } from './drawEngine/generators/roundRobinGroups';
 import { addExtension } from './global/functions/producers/addExtension';
+import { getSetComplement } from './matchUpEngine/getters/getComplement';
 import { validateCategory } from './global/validation/validateCategory';
 import { isAdHoc } from './drawEngine/governors/queryGovernor/isAdHoc';
 import { structureSort } from './drawEngine/getters/structureSort';
@@ -33,8 +39,13 @@ import { dateTime, dateRange } from './utilities/dateTime';
 import { JSON2CSV, flattenJSON } from './utilities/json';
 import { makeDeepCopy } from './utilities/makeDeepCopy';
 import { constantToString } from './utilities/strings';
+import { getValidGroupSizes } from './forge/query';
 import { numericSort } from './utilities/sorting';
 import { UUID, UUIDS } from './utilities/UUID';
+import {
+  allPlayoffPositionsFilled,
+  isCompletedStructure,
+} from './drawEngine/governors/queryGovernor/structureActions';
 import {
   countValues,
   chunkArray,
@@ -65,8 +76,10 @@ import {
 
 export const utilities = {
   addExtension,
+  allPlayoffPositionsFilled,
   calculateWinCriteria,
   categoryCanContain,
+  checkSetIsComplete,
   chunkArray,
   compareTieFormats,
   constantToString,
@@ -86,9 +99,15 @@ export const utilities = {
   generateScoreString,
   generateTimeCode,
   getAssignedParticipantIds,
+  getAvailablePlayoffProfiles,
   getCategoryAgeDetails,
+  getMatchUpContextIds,
   getScaleValues,
+  getSeedingThresholds,
+  getSetComplement,
+  getStructureSeedAssignments,
   getTimeItem,
+  getValidGroupSizes,
   hasAttributeValues,
   instanceCount,
   intersection,
@@ -96,6 +115,7 @@ export const utilities = {
   isConvertableInteger,
   isNumeric,
   isPowerOf2,
+  isCompletedStructure,
   JSON2CSV,
   makeDeepCopy,
   matchUpSort,
