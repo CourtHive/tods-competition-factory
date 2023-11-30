@@ -569,8 +569,8 @@ export function generateDrawDefinition(
   } else {
     drawTypeResult = generateDrawTypeAndModifyDrawDefinition({
       ...params,
+      tournamentId: tournamentRecord.tournamentId,
       modifyOriginal: false,
-      tournamentRecord,
       appliedPolicies,
       drawDefinition,
       matchUpFormat,
