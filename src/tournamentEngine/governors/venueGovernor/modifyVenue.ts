@@ -113,6 +113,7 @@ export function modifyVenue({
       venue.courts = venue.courts?.filter((court) =>
         courtIdsToModify.includes(court.courtId)
       );
+      // TODO: remove court details from matchUps which were scheduled for deleted courts
     } else {
       return deletionMessage({
         matchUpsCount: scheduleDeletionsCount,
