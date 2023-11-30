@@ -5,8 +5,8 @@ import { getSchedulingProfile } from './schedulingProfile';
 import { getVenuesAndCourts } from '../../../getters/venuesAndCourtsGetter';
 import { jinnScheduler } from '../schedulers/jinnScheduler/jinnScheduler';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
-import { proScheduler } from '../schedulers/proScheduler/proScheduler';
 import { getPersonRequests } from '../scheduleMatchUps/personRequests';
+import { v2Scheduler } from '../schedulers/v2Scheduler/v2Scheduler';
 import { clearScheduledMatchUps } from '../clearScheduledMatchUps';
 import { getMatchUpDailyLimits } from '../getMatchUpDailyLimits';
 
@@ -26,6 +26,7 @@ type ScheduleProfileRoundsArgs = {
   clearScheduleDates?: boolean;
   scheduleDates?: string[];
   periodLength?: number;
+  useGarman?: boolean;
   dryRun?: boolean;
   pro?: boolean;
 };
@@ -37,6 +38,7 @@ export function scheduleProfileRounds({
   scheduleDates = [],
   tournamentRecords,
   periodLength,
+  useGarman,
   dryRun,
   pro,
 }: ScheduleProfileRoundsArgs) {
@@ -47,9 +49,9 @@ export function scheduleProfileRounds({
   if (result.error) return result;
 
   const {
-    schedulingProfile = [],
-    issues: schedulingProfileIssues = [],
     modifications: schedulingProfileModifications,
+    issues: schedulingProfileIssues = [],
+    schedulingProfile = [],
   } = result;
 
   // round robin structures contain other structures and the scheduler
@@ -96,10 +98,10 @@ export function scheduleProfileRounds({
     clearScheduledMatchUps({ tournamentRecords, scheduledDates });
   }
 
-  const { courts } = getVenuesAndCourts({
+  const courts = getVenuesAndCourts({
     ignoreDisabled: false,
     tournamentRecords,
-  });
+  }).courts as any[];
 
   const { matchUps } = allCompetitionMatchUps({
     matchUpFilters: { matchUpTypes: [SINGLES, DOUBLES] },
@@ -148,13 +150,14 @@ export function scheduleProfileRounds({
     schedulingProfile,
     personRequests,
     periodLength,
+    useGarman,
     matchUps,
     dryRun,
     courts,
   };
 
   if (pro) {
-    return proScheduler(params);
+    return v2Scheduler(params);
   } else {
     return jinnScheduler(params);
   }

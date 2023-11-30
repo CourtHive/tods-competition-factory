@@ -14,6 +14,7 @@ export function deleteFlightProfileAndFlightDraws({
   tournamentRecord,
   auditData,
   event,
+  force,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
@@ -32,6 +33,7 @@ export function deleteFlightProfileAndFlightDraws({
       auditData,
       drawIds,
       event,
+      force,
     });
     if (result.error) return result;
 

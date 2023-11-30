@@ -10,6 +10,7 @@ import { getVenueSchedulingDetails } from '../utils/getVenueSchedulingDetails';
 import { checkRecoveryTime } from '../../scheduleMatchUps/checkRecoveryTime';
 import { checkDailyLimits } from '../../scheduleMatchUps/checkDailyLimits';
 import { getMatchUpId } from '../../../../../global/functions/extractors';
+import { bulkScheduleMatchUps } from '../../bulkScheduleMatchUps';
 import { auditAutoScheduling } from '../auditAutoScheduling';
 import {
   extractDate,
@@ -31,8 +32,8 @@ export function jinnScheduler({
   matchUpDependencies,
   matchUpDailyLimits,
   clearScheduleDates,
-  schedulingProfile,
   tournamentRecords,
+  schedulingProfile,
   personRequests,
   periodLength,
   matchUps,
@@ -91,24 +92,27 @@ export function jinnScheduler({
       }
     });
 
-    const { venueScheduledRoundDetails, allDateMatchUpIds } =
-      getVenueSchedulingDetails({
-        matchUpPotentialParticipantIds,
-        individualParticipantProfiles,
-        scheduleCompletedMatchUps,
-        containedStructureIds,
-        matchUpNotBeforeTimes,
-        matchUpScheduleTimes,
-        matchUpDependencies,
-        clearScheduleDates,
-        tournamentRecords,
-        useGarman: true,
-        periodLength,
-        scheduleDate,
-        matchUps,
-        courts,
-        venues,
-      });
+    const {
+      allDateScheduledByeMatchUpDetails,
+      venueScheduledRoundDetails,
+      allDateMatchUpIds,
+    } = getVenueSchedulingDetails({
+      matchUpPotentialParticipantIds,
+      individualParticipantProfiles,
+      scheduleCompletedMatchUps,
+      containedStructureIds,
+      matchUpNotBeforeTimes,
+      matchUpScheduleTimes,
+      matchUpDependencies,
+      clearScheduleDates,
+      tournamentRecords,
+      useGarman: true,
+      periodLength,
+      scheduleDate,
+      matchUps,
+      courts,
+      venues,
+    });
 
     const maxScheduleTimeAttempts = 10; // TODO: calculate this based on max court start/end range and averageMinutes
     let schedulingIterations = 0;
@@ -342,6 +346,24 @@ export function jinnScheduler({
             timeStringMinutes(a.scheduleTime) -
             timeStringMinutes(b.scheduleTime)
         );
+    }
+
+    if (!dryRun && allDateScheduledByeMatchUpDetails?.length) {
+      // remove scheduling information for BYE matchUps from any rounds that were scheduled
+      // remove scheduling information for BYE matchUps from any rounds that were scheduled
+      bulkScheduleMatchUps({
+        matchUpDetails: allDateScheduledByeMatchUpDetails,
+        scheduleByeMatchUps: true,
+        removePriorValues: true,
+        tournamentRecords,
+        schedule: {
+          scheduledDate: '',
+          scheduledTime: '',
+          courtOrder: '',
+          courtId: '',
+          venueId: '',
+        },
+      });
     }
 
     for (const venue of dateSchedulingProfile.venues) {

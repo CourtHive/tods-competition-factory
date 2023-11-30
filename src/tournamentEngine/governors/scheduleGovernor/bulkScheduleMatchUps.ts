@@ -20,11 +20,12 @@ import {
 } from '../../../constants/matchUpStatusConstants';
 
 type BulkScheduleMachUpsArgs = {
-  tournamentRecords: { [key: string]: Tournament };
+  tournamentRecords?: { [key: string]: Tournament };
   scheduleCompletedMatchUps?: boolean;
   scheduleByeMatchUps?: boolean;
   errorOnAnachronism?: boolean;
   tournamentRecord: Tournament;
+  removePriorValues?: boolean;
   checkChronology?: boolean;
   matchUpDependencies?: any;
   matchUpIds?: string[];
@@ -38,6 +39,7 @@ export function bulkScheduleMatchUps({
   errorOnAnachronism = false,
   checkChronology = true,
   matchUpDependencies,
+  removePriorValues,
   tournamentRecords,
   tournamentRecord,
   matchUpDetails,
@@ -62,7 +64,10 @@ export function bulkScheduleMatchUps({
   // Optimize getting matchUps for all tournamentRecords
   // if matchUpDependencies are provided, skip this step
   if (checkChronology && !matchUpDependencies) {
-    const result = getMatchUpDependencies({ tournamentRecords });
+    const result = getMatchUpDependencies({
+      tournamentRecords,
+      tournamentRecord,
+    });
     matchUpDependencies = result.matchUpDependencies;
     inContextMatchUps = result.matchUps;
   }
@@ -121,6 +126,7 @@ export function bulkScheduleMatchUps({
         schedule: matchUpSchedule,
         matchUpDependencies,
         errorOnAnachronism,
+        removePriorValues,
         inContextMatchUps,
         tournamentRecords,
         tournamentRecord,

@@ -15,6 +15,7 @@ type BulkScheduleMatchUpsArgs = {
   scheduleCompletedMatchUps?: boolean;
   scheduleByeMatchUps?: boolean;
   errorOnAnachronism?: boolean;
+  removePriorValues?: boolean;
   checkChronology?: boolean;
   matchUpContextIds?: any;
   matchUpDetails: any;
@@ -25,6 +26,7 @@ export function bulkScheduleMatchUps({
   scheduleByeMatchUps = false,
   errorOnAnachronism,
   matchUpContextIds,
+  removePriorValues,
   tournamentRecords,
   checkChronology,
   matchUpDetails,
@@ -61,6 +63,7 @@ export function bulkScheduleMatchUps({
         scheduleByeMatchUps,
         matchUpDependencies,
         errorOnAnachronism,
+        removePriorValues,
         tournamentRecords,
         tournamentRecord,
         checkChronology,

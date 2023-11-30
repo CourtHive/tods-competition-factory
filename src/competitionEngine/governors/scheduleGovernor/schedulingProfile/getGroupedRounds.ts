@@ -37,10 +37,10 @@ export function getGroupedRounds({
 
   if (groupedMatchUpIds.length) {
     groupedRounds.push({
-      averageMinutes,
-      recoveryMinutes,
-      roundPeriodLength,
       matchUpIds: groupedMatchUpIds,
+      roundPeriodLength,
+      recoveryMinutes,
+      averageMinutes,
     });
   }
 

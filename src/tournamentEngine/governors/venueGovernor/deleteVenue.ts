@@ -1,8 +1,11 @@
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
 import { removeCourtAssignment } from './removeCourtAssignment';
 import { addNotice } from '../../../global/state/globalState';
 import { deletionMessage } from './deletionMessage';
 
+import { POLICY_TYPE_SCHEDULING } from '../../../constants/policyConstants';
+import { Tournament, Venue } from '../../../types/tournamentFromSchema';
 import { DELETE_VENUE } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -12,7 +15,6 @@ import {
   MISSING_VENUE_ID,
   VENUE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { Tournament, Venue } from '../../../types/tournamentFromSchema';
 
 type DeleteVenueArgs = {
   tournamentRecord: Tournament;
@@ -38,7 +40,16 @@ export function deleteVenue({
       contextFilters,
     }).matchUps ?? [];
 
-  if (!matchUpsToUnschedule.length || force) {
+  const appliedPolicies = getAppliedPolicies({
+    tournamentRecord,
+  })?.appliedPolicies;
+
+  const allowModificationWhenMatchUpsScheduled =
+    force ??
+    appliedPolicies?.[POLICY_TYPE_SCHEDULING]?.allowDeletionWithScoresPresent
+      ?.venues;
+
+  if (!matchUpsToUnschedule.length || allowModificationWhenMatchUpsScheduled) {
     // if no matchUpsToUnschedule this does nothing but avoid the deletionMessage
     for (const matchUp of matchUpsToUnschedule) {
       const result = removeCourtAssignment({

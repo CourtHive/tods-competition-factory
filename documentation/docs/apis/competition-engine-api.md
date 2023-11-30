@@ -417,8 +417,11 @@ const schedule = {
 const matchUpDetails = [{ tournamentId, matchUpId, schedule }];
 const matchUpContextIds = [{ tournamentId, matchUpId }];
 competitionEngine.bulkScheduleMatchUps({
+  checkChronology, // optional boolean - returns warnings for scheduling errors; throws errors when combined with errorOnAnachronism
+  errorOnAnachronism, // optional boolean - throw error if chronological scheduduling error
+  removePriorValues, // optional boolean - remove all pre-existing scheduling timeItems from matchUps
+  matchUpContextIds, // optional - used together with matchUpIds when all matchUps will ahve the same schedule details applied
   matchUpDetails, // optional - for use when matchUps have different scheduling details
-  matchUpContextIds, // optiona - used together with matchUpIds when all matchUps will ahve the same schedule details applied
   schedule, // optiona - used together with matchUpIds when all matchUps will ahve the same schedule details applied
 });
 ```

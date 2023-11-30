@@ -1,3 +1,5 @@
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
+import { bulkScheduleMatchUps } from '../scheduleGovernor/bulkScheduleMatchUps';
 import { checkSchedulingProfile } from '../scheduleGovernor/schedulingProfile';
 import { addNotice } from '../../../global/state/globalState';
 import venueTemplate from '../../generators/venueTemplate';
@@ -11,6 +13,7 @@ import {
   getScheduledVenueMatchUps,
 } from '../queryGovernor/getScheduledCourtMatchUps';
 
+import { POLICY_TYPE_SCHEDULING } from '../../../constants/policyConstants';
 import { Tournament, Venue } from '../../../types/tournamentFromSchema';
 import { MODIFY_VENUE } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -39,6 +42,15 @@ export function modifyVenue({
   if (!modifications || typeof modifications !== 'object')
     return { error: INVALID_OBJECT };
   if (!venueId) return { error: MISSING_VENUE_ID };
+
+  const appliedPolicies = getAppliedPolicies({
+    tournamentRecord,
+  })?.appliedPolicies;
+
+  const allowModificationWhenMatchUpsScheduled =
+    force ??
+    appliedPolicies?.[POLICY_TYPE_SCHEDULING]?.allowDeletionWithScoresPresent
+      ?.venues;
 
   const { matchUps: venueMatchUps } = getScheduledVenueMatchUps({
     tournamentRecord,
@@ -79,6 +91,8 @@ export function modifyVenue({
   const courtIdsToDelete = existingCourtIds.filter(
     (courtId) => !courtIdsToModify.includes(courtId)
   );
+
+  const matchUpsWithCourtId: { matchUpId: string; drawId: string }[] = [];
   if (courtIdsToDelete.length) {
     const courtsToDelete = venue?.courts?.filter((court) =>
       courtIdsToDelete.includes(court.courtId)
@@ -91,14 +105,29 @@ export function modifyVenue({
           tournamentRecord,
           venueMatchUps,
         });
+        for (const matchUp of result.matchUps ?? []) {
+          matchUpsWithCourtId.push({
+            matchUpId: matchUp.matchUpId,
+            drawId: matchUp.drawId,
+          });
+        }
         return result.matchUps?.length ?? 0;
       })
       .reduce((a, b) => a + b);
 
-    if (venue && (!scheduleDeletionsCount || force)) {
+    if (
+      venue &&
+      (!scheduleDeletionsCount || allowModificationWhenMatchUpsScheduled)
+    ) {
       venue.courts = venue.courts?.filter((court) =>
         courtIdsToModify.includes(court.courtId)
       );
+      bulkScheduleMatchUps({
+        schedule: { courtId: '', scheduledDate: '' },
+        matchUpDetails: matchUpsWithCourtId,
+        removePriorValues: true,
+        tournamentRecord,
+      });
     } else {
       return deletionMessage({
         matchUpsCount: scheduleDeletionsCount,

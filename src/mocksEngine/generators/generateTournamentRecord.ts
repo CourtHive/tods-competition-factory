@@ -58,6 +58,7 @@ export function generateTournamentRecord(params: GenerateTournamentRecordArgs) {
     randomWinningSide,
     policyDefinitions,
     schedulingProfile,
+    periodLength,
     autoSchedule,
     eventProfiles,
     venueProfiles,
@@ -222,6 +223,7 @@ export function generateTournamentRecord(params: GenerateTournamentRecordArgs) {
       schedulerResult = scheduleProfileRounds({
         scheduleCompletedMatchUps,
         tournamentRecords,
+        periodLength,
       });
     }
   }

@@ -1,5 +1,6 @@
 import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpIds } from '../../../global/functions/extractors';
 import { resequenceStructures } from './resequenceStructures';
@@ -11,6 +12,7 @@ import {
 } from '../../notifications/drawNotifications';
 
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
+import { POLICY_TYPE_SCORING } from '../../../constants/policyConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   CANNOT_REMOVE_MAIN_STRUCTURE,
@@ -59,7 +61,21 @@ export function removeStructure({
     scoreHasValue({ score })
   );
 
-  if (scoresPresent && !force) return { error: SCORES_PRESENT };
+  if (scoresPresent) {
+    const appliedPolicies = getAppliedPolicies({
+      tournamentRecord,
+      drawDefinition,
+      structure,
+      event,
+    })?.appliedPolicies;
+
+    const allowDeletionWithScoresPresent =
+      force ||
+      appliedPolicies?.[POLICY_TYPE_SCORING]?.allowDeletionWithScoresPresent
+        ?.structures;
+
+    if (!allowDeletionWithScoresPresent) return { error: SCORES_PRESENT };
+  }
 
   const mainStageSequence1 = structures.find(
     ({ stage, stageSequence }) => stage === MAIN && stageSequence === 1
@@ -75,7 +91,6 @@ export function removeStructure({
 
   const structureIds: string[] = structures.map(xa('structureId'));
   const removedMatchUpIds: string[] = [];
-  const idsToRemove = [structureId];
 
   const getTargetedStructureIds = (structureId) =>
     drawDefinition.links
@@ -108,7 +123,11 @@ export function removeStructure({
     )
   );
 
-  while (idsToRemove.length) {
+  const idsToRemove = isMainStageSequence1
+    ? relatedStructureIdsMap.get(structureId)
+    : [structureId];
+
+  while (idsToRemove?.length) {
     const idBeingRemoved = idsToRemove.pop();
     const { structure } = findStructure({
       structureId: idBeingRemoved,
@@ -141,7 +160,6 @@ export function removeStructure({
 
     const targetedStructureIds =
       idBeingRemoved &&
-      // targetedStructureIdsMap[idBeingRemoved].filter(
       relatedStructureIdsMap.get(idBeingRemoved)?.filter(
         (id: string) =>
           // IMPORTANT: only delete MAIN stageSequence: 1 if specified to protect against DOUBLE_ELIMINATION scenario
@@ -170,6 +188,11 @@ export function removeStructure({
 
   // if this is MAIN stageSequence: 1 there must be qualifying, return to empty state
   if (isMainStageSequence1) {
+    const mainStageSequence1MatchUpIds = (
+      mainStageSequence1.matchUps ?? []
+    )?.map(xa('matchUpId'));
+    removedMatchUpIds.push(...mainStageSequence1MatchUpIds);
+
     mainStageSequence1.positionAssignments = [];
     mainStageSequence1.seedAssignments = [];
     mainStageSequence1.matchUps = [];

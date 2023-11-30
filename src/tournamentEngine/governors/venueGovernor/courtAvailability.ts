@@ -1,3 +1,4 @@
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { getScheduledCourtMatchUps } from '../queryGovernor/getScheduledCourtMatchUps';
 import { minutesDifference, timeToDate } from '../../../utilities/dateTime';
 import { startTimeSort } from '../../../fixtures/validations/time';
@@ -6,6 +7,7 @@ import { validDateAvailability } from './dateAvailability';
 import { findCourt } from '../../getters/courtGetter';
 
 import { Availability, Tournament } from '../../../types/tournamentFromSchema';
+import { POLICY_TYPE_SCHEDULING } from '../../../constants/policyConstants';
 import { MODIFY_VENUE } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
@@ -41,6 +43,10 @@ export function modifyCourtAvailability({
   const dateResult = validDateAvailability({ dateAvailability });
   if (dateResult.error) return dateResult;
 
+  // TODO: build up a map of affected dates and:
+  // 1. whether aggregate time on given dates has increased or decreased
+  // 2. specific periods of time on given dates that are no longer available
+
   const { updatedDateAvailability, totalMergeCount } =
     sortAndMergeDateAvailability(dateAvailability);
   dateAvailability = updatedDateAvailability;
@@ -56,13 +62,34 @@ export function modifyCourtAvailability({
   });
 
   // TODO: check whether there are matchUps which are no longer possible to play
-  // this will only apply to Pro Scheduling
+  // In the first instance, matchUps which are explicitly scheduled on the court for times which are no longer available
+  // NOTE: see dateAvailability.test.ts
   if (courtMatchUps?.length) {
-    console.log('scheduled court matchUps', courtMatchUps.length);
-    if (force) {
-      // go ahead and remove scheduling
+    const appliedPolicies = getAppliedPolicies({
+      tournamentRecord,
+    })?.appliedPolicies;
+
+    const allowModificationWhenMatchUpsScheduled =
+      force ??
+      appliedPolicies?.[POLICY_TYPE_SCHEDULING]?.allowDeletionWithScoresPresent
+        ?.courts;
+
+    // Iterate through courtMatchUps and check that scheduledTime/scheduledDate still avilable
+    const matchUpsWithInvalidScheduling = [];
+
+    if (matchUpsWithInvalidScheduling.length) {
+      if (allowModificationWhenMatchUpsScheduled) {
+        // go ahead and remove scheduling
+      } else {
+        console.log(
+          'throw error: scheduled court matchUps',
+          matchUpsWithInvalidScheduling.length
+        );
+      }
     }
   }
+  // TODO: In the second instance, if there is reduced aggregate court time matchUps scheduled on the affected dates (but not specific court)
+  // would have scheduling impacts impacts
 
   if (court) {
     court.dateAvailability = dateAvailability;
