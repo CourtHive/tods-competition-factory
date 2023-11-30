@@ -12,6 +12,7 @@ import { checkDailyLimits } from '../../scheduleMatchUps/checkDailyLimits';
 import { getMatchUpId } from '../../../../../global/functions/extractors';
 import { generateVirtualCourts } from '../utils/generateVirtualCourts';
 import { getEarliestCourtTime } from '../utils/getEarliestCourtTime';
+import { bulkScheduleMatchUps } from '../../bulkScheduleMatchUps';
 import { auditAutoScheduling } from '../auditAutoScheduling';
 import { generateBookings } from '../utils/generateBookings';
 import {
@@ -94,7 +95,7 @@ export function proScheduler({
     });
 
     const {
-      allDateScheduledByeMatchUpIds,
+      allDateScheduledByeMatchUpDetails,
       allDateScheduledMatchUpIds,
       venueScheduledRoundDetails,
       allDateMatchUpIds,
@@ -471,9 +472,21 @@ export function proScheduler({
         );
     }
 
-    if (!dryRun && allDateScheduledByeMatchUpIds?.length) {
+    if (!dryRun && allDateScheduledByeMatchUpDetails?.length) {
       // remove scheduling information for BYE matchUps from any rounds that were scheduled
-      // console.log(allDateScheduledByeMatchUpIds);
+      bulkScheduleMatchUps({
+        matchUpDetails: allDateScheduledByeMatchUpDetails,
+        scheduleByeMatchUps: true,
+        removePriorValues: true,
+        tournamentRecords,
+        schedule: {
+          scheduledDate: '',
+          scheduledTime: '',
+          courtOrder: '',
+          courtId: '',
+          venueId: '',
+        },
+      });
     }
 
     for (const venue of dateSchedulingProfile.venues) {
