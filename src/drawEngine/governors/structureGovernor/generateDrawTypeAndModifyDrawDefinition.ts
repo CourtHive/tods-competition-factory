@@ -4,8 +4,14 @@ import { copyTieFormat } from '../../../matchUpEngine/governors/tieFormatGoverno
 import { generateDrawStructuresAndLinks } from './generateDrawStructuresAndLinks';
 import { getStageDrawPositionsCount } from '../../getters/getStageDrawPositions';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
-import { decorateResult } from '../../../global/functions/decorateResult';
-import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
+import {
+  ResultType,
+  decorateResult,
+} from '../../../global/functions/decorateResult';
+import {
+  MatchUpsMap,
+  getMatchUpsMap,
+} from '../../getters/getMatchUps/getMatchUpsMap';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { getMatchUpId } from '../../../global/functions/extractors';
 import { generateTieMatchUps } from '../../generators/tieMatchUps';
@@ -19,10 +25,45 @@ import {
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
+import { PolicyDefinitions } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { HydratedMatchUp } from '../../../types/hydrated';
 import { SINGLES } from '../../../constants/matchUpTypes';
+import {
+  DrawDefinition,
+  DrawLink,
+  MatchUp,
+  Structure,
+  TieFormat,
+  Tournament,
+  TypeEnum,
+} from '../../../types/tournamentFromSchema';
 
-export function generateDrawTypeAndModifyDrawDefinition(params) {
+type GenerateDrawTypeAndModify = {
+  appliedPolicies?: PolicyDefinitions;
+  tournamentRecord: Tournament;
+  drawDefinition: DrawDefinition;
+  modifyOriginal?: boolean;
+  qualifiersCount?: number;
+  stageSequence?: number;
+  matchUpFormat?: string;
+  matchUpType?: TypeEnum;
+  tieFormat?: TieFormat;
+  drawSize: number;
+  isMock?: boolean;
+};
+
+export function generateDrawTypeAndModifyDrawDefinition(
+  params: GenerateDrawTypeAndModify
+): ResultType & {
+  inContextDrawMatchUps?: HydratedMatchUp[];
+  drawDefinition?: DrawDefinition;
+  matchUpsMap?: MatchUpsMap;
+  structures?: Structure[];
+  matchUps?: MatchUp[];
+  links?: DrawLink[];
+  success?: boolean;
+} {
   const { modifyOriginal = true, stageSequence = 1, isMock } = params || {};
 
   const stack = 'generateDrawTypeAndModifyDrawDefinition';
@@ -129,7 +170,10 @@ export function generateDrawTypeAndModifyDrawDefinition(params) {
 
   const { inContextDrawMatchUps } = addGoesTo({ drawDefinition, matchUpsMap });
 
-  modifyDrawNotice({ drawDefinition });
+  modifyDrawNotice({
+    tournamentId: params.tournamentRecord?.tournamentId,
+    drawDefinition,
+  });
 
   return {
     inContextDrawMatchUps,

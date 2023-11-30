@@ -34,13 +34,20 @@ export function processAlreadyScheduledMatchUps({
   minutesMap,
   matchUps,
 }: ProcessAlreadyScheduledMatchUpsArgs) {
-  const byeScheduledMatchUpIds: string[] = [];
+  const byeScheduledMatchUpDetails: {
+    tournamentId: string;
+    matchUpId: string;
+  }[] = [];
 
   if (!dateScheduledMatchUpIds) {
     dateScheduledMatchUps = matchUps?.filter((matchUp) => {
       const schedule = matchUp.schedule || {};
       const isByeMatchUp = matchUp.matchUpStatus === BYE;
-      if (isByeMatchUp) byeScheduledMatchUpIds.push(matchUp.matchUpId);
+      if (isByeMatchUp)
+        byeScheduledMatchUpDetails.push({
+          tournamentId: matchUp.tournamentId,
+          matchUpId: matchUp.matchUpId,
+        });
       return (
         !isByeMatchUp &&
         hasSchedule({ schedule }) &&
@@ -94,7 +101,7 @@ export function processAlreadyScheduledMatchUps({
 
   return {
     dateScheduledMatchUpIds,
-    byeScheduledMatchUpIds,
+    byeScheduledMatchUpDetails,
     dateScheduledMatchUps,
     clearDate,
   };

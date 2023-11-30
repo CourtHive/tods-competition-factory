@@ -27,6 +27,7 @@ import {
 } from '../../../fixtures/validations/regex';
 
 import { SUCCESS } from '../../../constants/resultConstants';
+import { HydratedMatchUp } from '../../../types/hydrated';
 import {
   MISSING_MATCHUP_ID,
   INVALID_RESUME_TIME,
@@ -50,7 +51,6 @@ import {
   SCHEDULED_DATE,
   COURT_ORDER,
 } from '../../../constants/timeItemConstants';
-import { HydratedMatchUp } from '../../../types/hydrated';
 import {
   DrawDefinition,
   Event,

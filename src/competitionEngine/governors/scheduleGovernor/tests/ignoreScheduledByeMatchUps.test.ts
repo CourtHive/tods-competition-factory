@@ -1,10 +1,15 @@
+import {
+  chunkArray,
+  intersection,
+  extractAttributes as xa,
+} from '../../../../utilities';
 import { addDays, dateRange } from '../../../../utilities/dateTime';
-import { chunkArray } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
 import { expect, it } from 'vitest';
 
 import { BYE } from '../../../../constants/matchUpStatusConstants';
+import tournamentEngine from '../../../../tournamentEngine/sync';
 
 it('supports pro-scheduling', () => {
   const startDate = '2023-11-28';
@@ -44,6 +49,7 @@ it('supports pro-scheduling', () => {
       drawId,
     })
   );
+  const byeMatchUpIds = byeMatchUps.map(xa('matchUpId'));
 
   const schedule = {
     scheduledDate: startDate,
@@ -77,5 +83,20 @@ it('supports pro-scheduling', () => {
   result = competitionEngine.scheduleProfileRounds({ pro: true });
   expect(result.success).toEqual(true);
 
-  console.log(result);
+  const overlap = intersection(
+    result.scheduledMatchUpIds[startDate],
+    byeMatchUpIds
+  ).length;
+  expect(overlap).toEqual(0);
+
+  const byeMatchUpSchedules = tournamentEngine
+    .allTournamentMatchUps({ matchUpFilters: { matchUpIds: byeMatchUpIds } })
+    .matchUps.map(xa('schedule'));
+
+  expect(byeMatchUpSchedules).toEqual([
+    { milliseconds: 0, time: '00:00:00' },
+    { milliseconds: 0, time: '00:00:00' },
+    { milliseconds: 0, time: '00:00:00' },
+    { milliseconds: 0, time: '00:00:00' },
+  ]);
 });

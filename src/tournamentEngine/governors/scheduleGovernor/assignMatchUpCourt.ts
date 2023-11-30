@@ -14,10 +14,10 @@ import {
 } from '../../../types/tournamentFromSchema';
 
 type AssignMatchUpCourtArgs = {
-  removePriorValues?: boolean;
   tournamentRecords?: { [key: string]: Tournament };
   tournamentRecord: Tournament;
   drawDefinition: DrawDefinition;
+  removePriorValues?: boolean;
   disableNotice?: boolean;
   courtDayDate: string;
   matchUpId: string;
