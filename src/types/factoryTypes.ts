@@ -376,3 +376,14 @@ export type IdCollections = {
   pairParticipants: string[];
   teamParticipants: string[];
 };
+
+type Request = {
+  requestType: string;
+  requestId: string;
+  startTime: string;
+  endTime: string;
+  date: string;
+};
+export type PersonRequests = {
+  [key: string]: Request[];
+};
