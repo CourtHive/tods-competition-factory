@@ -1,5 +1,6 @@
 import { validDateAvailability } from '../../governors/venueGovernor/dateAvailability';
 import { Availability } from '../../../types/tournamentFromSchema';
+import competitionEngine from '../../../competitionEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 import { expect, it, test } from 'vitest';
@@ -136,7 +137,7 @@ test('will not allow saving of Invalid Date in dateAvailability', () => {
   expect(result.error).toEqual(INVALID_TIME);
 });
 
-it('can add events, venues, and schedule matchUps', () => {
+it.only('can add events, venues, and modify court availbility', () => {
   const startDate = '2023-01-01';
   const endDate = '2023-01-06';
 
@@ -152,14 +153,19 @@ it('can add events, venues, and schedule matchUps', () => {
       ],
     },
   ];
+
+  const venueId = 'v1';
   const venueProfiles = [
     {
       venueName: 'venue 1',
       dateAvailability,
       courtsCount: 3,
+      venueId,
     },
   ];
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    // policyDefinitions: { ...POLICY_SCHEDULING_DEFAULT },
+    drawProfiles: [{ drawSize: 8 }],
     venueProfiles,
     startDate,
     endDate,
@@ -198,5 +204,76 @@ it('can add events, venues, and schedule matchUps', () => {
   // overlapping dateAvailability has been merged
   expect(court.dateAvailability).toEqual([
     { date: d220202, startTime: '08:00', endTime: '20:00' },
+  ]);
+
+  const { rounds } = competitionEngine.getRounds();
+  const matchUps = rounds.flatMap((round) => round.matchUps);
+  expect(matchUps.length).toEqual(7);
+
+  const schedulingProfile = [
+    { scheduleDate: startDate, venues: [{ venueId, rounds }] },
+  ];
+
+  result = competitionEngine.setSchedulingProfile({ schedulingProfile });
+  expect(result.success).toEqual(true);
+
+  result = competitionEngine.scheduleProfileRounds({
+    periodLength: 30,
+  });
+  expect(Object.keys(result.matchUpScheduleTimes).length).toEqual(
+    matchUps.length
+  );
+
+  // TODO: scheduling policy specify that e.g. SF rounds should begin at the same time
+  expect(Object.values(result.matchUpScheduleTimes)).toEqual([
+    '09:00', // QF
+    '09:00', // QF
+    '10:30', // QF
+    '11:00', // QF
+    '12:00', // SF
+    '14:00', // SF
+    '15:30', // F
+  ]);
+
+  result = competitionEngine.scheduleProfileRounds({
+    clearScheduleDates: true,
+    periodLength: 15,
+  });
+  expect(Object.values(result.matchUpScheduleTimes)).toEqual([
+    '09:00',
+    '09:00',
+    '10:00',
+    '10:45',
+    '11:30',
+    '14:00',
+    '15:45',
+  ]);
+
+  result = competitionEngine.scheduleProfileRounds({
+    clearScheduleDates: true,
+    periodLength: 10,
+  });
+  expect(Object.values(result.matchUpScheduleTimes)).toEqual([
+    '09:00',
+    '09:00',
+    '10:00',
+    '10:40',
+    '11:30',
+    '14:00',
+    '15:40',
+  ]);
+
+  result = competitionEngine.scheduleProfileRounds({
+    clearScheduleDates: true,
+    periodLength: 5,
+  });
+  expect(Object.values(result.matchUpScheduleTimes)).toEqual([
+    '09:00',
+    '09:00',
+    '09:50',
+    '10:35',
+    '11:20',
+    '14:00',
+    '15:30',
   ]);
 });

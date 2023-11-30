@@ -22,12 +22,12 @@ it('correctly generates second round scheduleTimes', () => {
     date,
   });
   const { scheduleTimes, timingProfile } = garman.getScheduleTimes({
+    averageMatchUpMinutes: 90,
     startTime: '08:00',
     endTime: '21:00',
-    date,
     periodLength: 30,
-    averageMatchUpMinutes: 90,
     courts,
+    date,
   });
 
   const allScheduleTimes = scheduleTimes.reduce(
@@ -89,8 +89,8 @@ it('properly schedules 2nd round of 128 single elimination draw with 30 courts',
       eventName: 'Scheduling Test',
       drawProfiles: [
         {
-          drawSize: 128,
           participantsCount: 127,
+          drawSize: 128,
         },
       ],
     },
