@@ -30,6 +30,7 @@ export function modifyTournamentRecord(params) {
     schedulingProfile,
     tournamentRecord,
     eventProfiles,
+    periodLength,
     venueProfiles,
     autoSchedule,
     drawProfiles,
@@ -248,7 +249,10 @@ export function modifyTournamentRecord(params) {
       const { tournamentId } = tournamentRecord;
       const tournamentRecords = { [tournamentId]: tournamentRecord };
 
-      schedulerResult = scheduleProfileRounds({ tournamentRecords });
+      schedulerResult = scheduleProfileRounds({
+        tournamentRecords,
+        periodLength,
+      });
     }
   }
 

@@ -3,14 +3,14 @@ import tournamentEngine from '../../../../tournamentEngine/sync';
 import { chunkArray } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
-import { expect, it, test } from 'vitest';
+import { expect, test } from 'vitest';
 
 import { TO_BE_PLAYED } from '../../../../constants/matchUpStatusConstants';
 import { SINGLES_EVENT } from '../../../../constants/eventConstants';
 import { MALE } from '../../../../constants/genderConstants';
 
-it('supports pro-scheduling', () => {
-  const startDate = '2022-08-27'; // date on which pro scheduling was first successfully run
+test('supports v2 scheduler', () => {
+  const startDate = '2022-08-27'; // date on which scheduling v2 was first successfully run
   const endDate = addDays(startDate, 3);
   const {
     venueIds: [venueId],
@@ -125,7 +125,7 @@ it('supports pro-scheduling', () => {
   expect(roundSchedules).toEqual(roundScheduleExpectation);
 });
 
-test('pro-scheduling respects DO_NOT_SCHEDULE requests', () => {
+test('scheduling v2 respects DO_NOT_SCHEDULE requests', () => {
   competitionEngine.reset();
 
   const startDate = '2022-01-01';

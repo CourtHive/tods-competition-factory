@@ -24,10 +24,36 @@ import {
   zeroPad,
 } from '../../../../../utilities/dateTime';
 
+import { HydratedCourt, HydratedMatchUp } from '../../../../../types/hydrated';
 import { SUCCESS } from '../../../../../constants/resultConstants';
 import { TOTAL } from '../../../../../constants/scheduleConstants';
+import {
+  PersonRequests,
+  TournamentRecords,
+} from '../../../../../types/factoryTypes';
 
-export function proScheduler({
+// NOTE: non-Garman scheduling
+
+type V2Scheduler = {
+  matchUpDependencies: { [key: string]: any };
+  checkPotentialRequestConflicts?: boolean;
+  tournamentRecords: TournamentRecords;
+  scheduleCompletedMatchUps?: boolean;
+  schedulingProfileModifications: any;
+  personRequests?: PersonRequests;
+  containedStructureIds: string[];
+  schedulingProfileIssues?: any[];
+  dateSchedulingProfiles: any[];
+  matchUps?: HydratedMatchUp[];
+  clearScheduleDates?: boolean;
+  matchUpDailyLimits?: any;
+  courts: HydratedCourt[];
+  schedulingProfile?: any;
+  periodLength?: number;
+  dryRun?: boolean;
+};
+
+export function v2Scheduler({
   schedulingProfileModifications,
   checkPotentialRequestConflicts,
   scheduleCompletedMatchUps, // override which can be used by mocksEngine
@@ -41,10 +67,10 @@ export function proScheduler({
   periodLength = 30,
   schedulingProfile,
   personRequests,
-  matchUps,
+  matchUps = [],
   courts,
   dryRun,
-}) {
+}: V2Scheduler) {
   const recoveryTimeDeferredMatchUpIds = {};
   const dependencyDeferredMatchUpIds = {};
   const scheduleDateRequestConflicts = {};
@@ -56,7 +82,7 @@ export function proScheduler({
   const requestConflicts = {};
 
   // Start SCHEDULING
-  for (const dateSchedulingProfile of dateSchedulingProfiles) {
+  for (const dateSchedulingProfile of dateSchedulingProfiles ?? []) {
     const scheduleDate = extractDate(dateSchedulingProfile?.scheduleDate);
     const venues = dateSchedulingProfile?.venues || [];
     const matchUpPotentialParticipantIds = {};
@@ -81,7 +107,7 @@ export function proScheduler({
 
     // Build up matchUpNotBeforeTimes for all matchUps already scheduled on scheduleDate
     const matchUpNotBeforeTimes = {};
-    matchUps.forEach((matchUp) => {
+    matchUps?.forEach((matchUp) => {
       if (
         matchUp.schedule?.scheduledDate &&
         sameDay(scheduleDate, extractDate(matchUp.schedule.scheduledDate))
@@ -115,7 +141,7 @@ export function proScheduler({
       courts,
       venues,
     });
-    const dateScheduledMatchUps = matchUps.filter(({ matchUpId }) =>
+    const dateScheduledMatchUps = matchUps?.filter(({ matchUpId }) =>
       allDateScheduledMatchUpIds.includes(matchUpId)
     );
 
@@ -513,7 +539,7 @@ export function proScheduler({
   }
 
   // returns the original form of the dateStrings, before extractDate()
-  const scheduledDates = dateSchedulingProfiles.map(
+  const scheduledDates = (dateSchedulingProfiles ?? []).map(
     ({ scheduleDate }) => scheduleDate
   );
 

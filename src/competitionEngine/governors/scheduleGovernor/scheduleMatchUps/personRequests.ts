@@ -6,25 +6,16 @@ import { extractDate, extractTime } from '../../../../utilities/dateTime';
 import { generateTimeCode } from '../../../../utilities';
 
 import { PERSON_REQUESTS } from '../../../../constants/extensionConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
 import { DO_NOT_SCHEDULE } from '../../../../constants/requestConstants';
+import { Tournament } from '../../../../types/tournamentFromSchema';
+import { PersonRequests } from '../../../../types/factoryTypes';
+import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   ErrorType,
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../../../constants/errorConditionConstants';
-import { Tournament } from '../../../../types/tournamentFromSchema';
 
-type Request = {
-  requestType: string;
-  requestId: string;
-  startTime: string;
-  endTime: string;
-  date: string;
-};
-type PersonRequests = {
-  [key: string]: Request[];
-};
 type GetPersonRequestsArgs = {
   tournamentRecords: { [key: string]: Tournament };
   requestType?: string;
