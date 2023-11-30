@@ -1,5 +1,4 @@
 import { isUngrouped } from '../../../../global/functions/isUngrouped';
-import drawEngine from '../../../../drawEngine/sync';
 import mocksEngine from '../../../../mocksEngine';
 import { tournamentEngine } from '../../../sync';
 import { expect, it } from 'vitest';
@@ -61,17 +60,20 @@ it('can add doubles events to a tournament record', () => {
   });
   expect(result.success).toEqual(true);
 
+  const drawId = 'did';
   const values = {
     event: eventResult,
+    addToEvent: true,
     automated: true,
     drawSize: 32,
     eventId,
+    drawId,
   };
   const { success: drawGenrationSuccess, drawDefinition } =
     tournamentEngine.generateDrawDefinition(values);
   expect(drawGenrationSuccess).toEqual(true);
 
-  const { matchUps } = drawEngine.setState(drawDefinition).allDrawMatchUps();
+  const { matchUps } = tournamentEngine.allDrawMatchUps({ drawId });
   expect(matchUps.length).toEqual(31);
 
   const { positionAssignments } = drawDefinition.structures[0];

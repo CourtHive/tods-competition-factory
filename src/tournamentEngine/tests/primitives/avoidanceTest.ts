@@ -1,4 +1,4 @@
-import { drawEngine, tournamentEngine, mocksEngine } from '../../..';
+import { tournamentEngine, mocksEngine } from '../../..';
 import { expect } from 'vitest';
 
 import { SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
@@ -99,13 +99,13 @@ export function avoidanceTest(params) {
   expect(result.success).toEqual(true);
 
   const values = {
-    eventId,
+    policyDefinitions: { [POLICY_TYPE_AVOIDANCE]: avoidance, ...SEEDING_ITF },
+    event: eventResult,
+    automated: true,
+    seedsCount,
     drawSize,
     drawType,
-    seedsCount,
-    automated: true,
-    event: eventResult,
-    policyDefinitions: { [POLICY_TYPE_AVOIDANCE]: avoidance, ...SEEDING_ITF },
+    eventId,
   };
   const { error, conflicts, drawDefinition } =
     tournamentEngine.generateDrawDefinition(values);
@@ -113,11 +113,10 @@ export function avoidanceTest(params) {
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
   expect(result.success).toEqual(true);
 
-  drawEngine.setState(drawDefinition).setParticipants(participants);
-  const { upcomingMatchUps } = drawEngine.drawMatchUps({
-    drawDefinition,
-    requireParticipants: true,
-  });
+  const upcomingMatchUps = tournamentEngine.drawMatchUps({
+    drawId: drawDefinition.drawId,
+    inContext: true,
+  }).upcomingMatchUps;
   const report = upcomingMatchUps.map((m) => ({
     drawPositions: m.drawPositions,
     seeds: m.sides.map((s) => s.seedValue || ''),
