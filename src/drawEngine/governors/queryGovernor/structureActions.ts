@@ -4,15 +4,15 @@ import { getPositionAssignments } from '../../getters/positionsGetter';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../../constants/entryStatusConstants';
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
+import { DrawDefinition, Structure } from '../../../types/tournamentFromSchema';
 import { TEAM } from '../../../constants/matchUpTypes';
 
-/**
- *
- * @param {object} drawDefinition - complete drawDefinition object
- * @param {string} structureId - UUID of structure to be found within drawDefinition
- *
- */
-export function structureActions(params) {
+type StructureActionsArgs = {
+  drawDefinition: DrawDefinition;
+  structureId: string;
+};
+
+export function structureActions(params: StructureActionsArgs) {
   const actions = [];
   if (!params?.drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   const isComplete = isCompletedStructure(params);
@@ -20,12 +20,12 @@ export function structureActions(params) {
   return { actions, state: { isComplete, hasPlayoffPositionsFilled } };
 }
 
-/**
- *
- * @param {object} drawDefinition
- * @param {string} structureId
- */
-export function isCompletedStructure(params) {
+type StructureQueryArgs = {
+  drawDefinition: DrawDefinition;
+  structure?: Structure;
+  structureId?: string;
+};
+export function isCompletedStructure(params: StructureQueryArgs) {
   if (!params?.drawDefinition) return false;
   const structureMatchUps = getStructureMatchUps(params);
 
@@ -53,13 +53,7 @@ export function isCompletedStructure(params) {
   return !!isComplete;
 }
 
-/**
- *
- * @param {object} drawDefinition
- * @param {string} structureId - either drawDefinition and structureId or structure
- * @param {object} structure - optional
- */
-export function allPlayoffPositionsFilled(params) {
+export function allPlayoffPositionsFilled(params: StructureActionsArgs) {
   const { drawDefinition, structureId } = params;
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
@@ -71,8 +65,10 @@ export function allPlayoffPositionsFilled(params) {
   if (!playoffStructures?.length) return false;
 
   const enteredParticipantsCount =
-    drawDefinition?.entries?.filter((entry) =>
-      STRUCTURE_SELECTED_STATUSES.includes(entry?.entryStatus)
+    drawDefinition?.entries?.filter(
+      (entry) =>
+        entry?.entryStatus &&
+        STRUCTURE_SELECTED_STATUSES.includes(entry.entryStatus)
     )?.length || 0;
 
   let participantIdsCount = 0;
