@@ -14,6 +14,7 @@ import {
 
 it('can accurately determine seedsCount from drawSize and participantsCount', () => {
   let seedsCount, error;
+  // @ts-expect-error test
   ({ seedsCount } = getSeedsCount());
   expect(seedsCount).toEqual(undefined);
 
@@ -23,6 +24,7 @@ it('can accurately determine seedsCount from drawSize and participantsCount', ()
 
   ({ seedsCount, error } = getSeedsCount({
     policyDefinitions: SEEDING_USTA,
+    // @ts-expect-error test
     participantsCount: 'fifteen',
   }));
   expect(error).toEqual(INVALID_VALUES);
