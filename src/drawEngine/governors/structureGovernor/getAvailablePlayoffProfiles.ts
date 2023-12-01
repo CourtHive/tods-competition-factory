@@ -16,7 +16,7 @@ import {
 
 type GetAvailablePlayoffProfileArgs = {
   drawDefinition: DrawDefinition;
-  structureId: string;
+  structureId?: string;
 };
 
 export function getAvailablePlayoffProfiles({
