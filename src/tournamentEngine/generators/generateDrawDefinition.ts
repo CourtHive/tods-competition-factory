@@ -786,7 +786,7 @@ export function generateDrawDefinition(
   drawDefinition.drawName =
     params.drawName ?? (drawType && constantToString(drawType));
 
-  if (typeof voluntaryConsolation === 'object') {
+  if (typeof voluntaryConsolation === 'object' && drawSize >= 4) {
     addVoluntaryConsolationStructure({
       ...voluntaryConsolation,
       tournamentRecord,
