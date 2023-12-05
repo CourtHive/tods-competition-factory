@@ -1,4 +1,5 @@
 import { getMatchUpDependencies } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/getMatchUpDependencies';
+import { getDrawPublishStatus } from '../../governors/publishingGovernor/getDrawPublishStatus';
 import { getDerivedPositionAssignments } from './getDerivedPositionAssignments';
 import { findExtension } from '../../governors/queryGovernor/extensionQueries';
 import { getRelevantParticipantIdsMap } from './getRelevantParticipantIdsMap';
@@ -190,8 +191,14 @@ export function addParticipantContext(params) {
       });
 
       if (timeItem?.itemValue?.PUBLIC) {
-        const { drawIds: publishedDrawIds = [], seeding } =
+        const { drawIds, drawDetails, seeding } =
           timeItem.itemValue.PUBLIC || {};
+
+        const publishedDrawIds = drawDetails
+          ? Object.keys(drawDetails).filter((drawId) =>
+              getDrawPublishStatus({ drawId, drawDetails })
+            )
+          : drawIds ?? [];
 
         const publishedSeeding = {
           published: undefined, // seeding can be present for all entries in an event when no flights have been defined

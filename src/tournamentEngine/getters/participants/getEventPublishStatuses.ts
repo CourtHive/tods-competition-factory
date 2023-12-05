@@ -1,3 +1,4 @@
+import { getDrawPublishStatus } from '../../governors/publishingGovernor/getDrawPublishStatus';
 import { getTimeItem } from '../../governors/queryGovernor/timeItems';
 
 import { PUBLIC, PUBLISH, STATUS } from '../../../constants/timeItemConstants';
@@ -21,9 +22,13 @@ export function getEventPublishStatuses({ event }) {
       Object.assign(publishedSeeding, eventPubState.seeding);
     }
 
+    const { drawDetails, drawIds } = eventPubState;
+
     const publishedDrawIds =
-      (eventPubState.drawDetails && Object.keys(eventPubState.drawDetails)) ??
-      eventPubState.drawIds ??
+      Object.keys(drawDetails).filter((drawId) =>
+        getDrawPublishStatus({ drawDetails, drawId })
+      ) ??
+      drawIds ??
       [];
 
     return {

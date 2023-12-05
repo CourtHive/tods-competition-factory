@@ -1,3 +1,4 @@
+import { getDrawPublishStatus } from '../publishingGovernor/getDrawPublishStatus';
 import { getEventTimeItem } from './timeItems';
 
 import { PUBLIC, PUBLISH, STATUS } from '../../../constants/timeItemConstants';
@@ -44,9 +45,11 @@ export function bulkUpdatePublishedEventIds({ tournamentRecord, outcomes }) {
       const { eventId } = event;
       const publishedDrawIds = eventIdsMap[eventId].filter((drawId) => {
         const pubStatus = pubState?.[PUBLIC];
-        const drawIds = pubStatus?.drawIds;
-        const keyedDrawIds = pubStatus?.drawDetails
-          ? Object.keys(pubStatus.drawDetails)
+        const { drawDetails, drawIds } = pubStatus;
+        const keyedDrawIds = drawDetails
+          ? Object.keys(pubStatus.drawDetails).filter((drawId) =>
+              getDrawPublishStatus({ drawId, drawDetails })
+            )
           : [];
         return drawIds?.includes(drawId) || keyedDrawIds.includes(drawId);
       });

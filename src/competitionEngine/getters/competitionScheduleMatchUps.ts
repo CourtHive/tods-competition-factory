@@ -1,3 +1,4 @@
+import { getDrawPublishStatus } from '../../tournamentEngine/governors/publishingGovernor/getDrawPublishStatus';
 import { getSchedulingProfile } from '../governors/scheduleGovernor/schedulingProfile/schedulingProfile';
 import { scheduledSortedMatchUps } from '../../global/sorting/scheduledSortedMatchUps';
 import { MatchUpFilters } from '../../drawEngine/getters/getMatchUps/filterMatchUps';
@@ -243,17 +244,17 @@ function getCompetitionPublishedDrawIds({
         event,
       })?.timeItem?.itemValue?.[PUBLIC];
 
-      if (isObject(eventPubState?.drawDetails)) {
-        drawIds.push(...Object.keys(eventPubState.drawDetails));
+      const drawDetails = eventPubState?.drawDetails;
+
+      if (isObject(drawDetails)) {
+        drawIds.push(
+          ...Object.keys(drawDetails).filter((drawId) =>
+            getDrawPublishStatus({ drawId, drawDetails })
+          )
+        );
       } else if (eventPubState?.drawIds?.length) {
         // LEGACY - deprecate
         drawIds.push(...eventPubState.drawIds);
-      } else {
-        // if there are no drawIds specified then all draws are published
-        const eventDrawIds = (event.drawDefinitions ?? [])
-          .map(({ drawId }) => drawId)
-          .filter(Boolean);
-        drawIds.push(...eventDrawIds);
       }
     }
   }
