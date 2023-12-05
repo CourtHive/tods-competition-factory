@@ -94,6 +94,7 @@ export function competitionScheduleMatchUps(
       }).completedMatchUps
     : [];
 
+  // if { usePublishState: true } only return non-completed matchUps if there is orderOfPlay detail
   if (
     usePublishState &&
     (!tournamentPublishStatus || !Object.keys(tournamentPublishStatus).length)
@@ -108,7 +109,6 @@ export function competitionScheduleMatchUps(
 
   let publishedDrawIds, detailsMap;
   if (usePublishState) {
-    console.log('boo');
     ({ drawIds: publishedDrawIds, detailsMap } =
       getCompetitionPublishedDrawDetails({
         tournamentRecords,
@@ -188,15 +188,51 @@ export function competitionScheduleMatchUps(
     relevantMatchUps = relevantMatchUps.filter((matchUp) => {
       const { drawId, structureId, stage } = matchUp;
       if (!detailsMap[drawId]) return false;
-      if (!detailsMap.structureDetails && !detailsMap.stageDetails) return true;
-      if (detailsMap.stageDetails) {
-        console.log({ stage, stageDetails: detailsMap.stageDetails });
+      if (detailsMap[drawId].stageDetails) {
+        const stageKeys = Object.keys(detailsMap[drawId].stageDetails);
+        const unpublishedStages = stageKeys.filter(
+          (stage) => !detailsMap[drawId].stageDetails[stage].published
+        );
+        const publishedStages = stageKeys.filter(
+          (stage) => detailsMap[drawId].stageDetails[stage].published
+        );
+        if (unpublishedStages.length && unpublishedStages.includes(stage))
+          return false;
+        if (publishedStages.length && publishedStages.includes(stage))
+          return true;
+        return (
+          unpublishedStages.length &&
+          !unpublishedStages.includes(stage) &&
+          !publishedStages.length
+        );
       }
-      if (detailsMap.structureDetails) {
-        console.log({
-          structureId,
-          structureDetails: detailsMap.structureDetails,
-        });
+      if (detailsMap[drawId].structureDetails) {
+        const structureIdKeys = Object.keys(
+          detailsMap[drawId].structureDetails
+        );
+        const unpublishedStructureIds = structureIdKeys.filter(
+          (structureId) =>
+            !detailsMap[drawId].structureDetails[structureId].published
+        );
+        const publishedStructureIds = structureIdKeys.filter(
+          (structureId) =>
+            detailsMap[drawId].structureDetails[structureId].published
+        );
+        if (
+          unpublishedStructureIds.length &&
+          unpublishedStructureIds.includes(structureId)
+        )
+          return false;
+        if (
+          publishedStructureIds.length &&
+          publishedStructureIds.includes(structureId)
+        )
+          return true;
+        return (
+          unpublishedStructureIds.length &&
+          !unpublishedStructureIds.includes(structureId) &&
+          !publishedStructureIds.length
+        );
       }
       return true;
     });
@@ -269,12 +305,11 @@ function getCompetitionPublishedDrawDetails({
         itemType: `${PUBLISH}.${STATUS}`,
         event,
       })?.timeItem?.itemValue?.[PUBLIC];
-      console.log(eventPubState);
 
       const drawDetails = eventPubState?.drawDetails;
 
       if (isObject(drawDetails)) {
-        Object.apply(detailsMap, drawDetails);
+        Object.assign(detailsMap, drawDetails);
         drawIds.push(
           ...Object.keys(drawDetails).filter((drawId) =>
             getDrawPublishStatus({ drawId, drawDetails })
