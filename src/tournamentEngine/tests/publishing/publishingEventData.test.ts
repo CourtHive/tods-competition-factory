@@ -717,7 +717,7 @@ it('can add or remove stages from a published draw', () => {
   });
   expect(result.success).toEqual(true);
 
-  const event = tournamentEngine.getEvent({ drawId }).event;
+  let event = tournamentEngine.getEvent({ drawId }).event;
   const eventId = event.eventId;
 
   const policyDefinitions = {
@@ -777,10 +777,14 @@ it('can add or remove stages from a published draw', () => {
     QUALIFYING,
   ]);
 
+  event = tournamentEngine.getEvent({ drawId }).event;
+  expect(event.timeItems.length).toEqual(4);
+
   ({ eventData, success: publishSuccess } = tournamentEngine.publishEvent({
     drawDetails: {
       ['drawId']: { stagesToAdd: [MAIN] },
     },
+    removePriorValues: true,
     policyDefinitions,
     eventId,
   }));
@@ -790,4 +794,7 @@ it('can add or remove stages from a published draw', () => {
     QUALIFYING,
     MAIN,
   ]);
+
+  event = tournamentEngine.getEvent({ drawId }).event;
+  expect(event.timeItems.length).toEqual(1);
 });
