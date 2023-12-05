@@ -1,4 +1,4 @@
-import { genderValidityCheck } from '../../../global/functions/deducers/genderValidityCheck';
+import { tieFormatGenderValidityCheck } from '../../../global/functions/deducers/tieFormatGenderValidityCheck';
 import { categoryCanContain } from '../../../global/functions/deducers/categoryCanContain';
 import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
 import { isConvertableInteger } from '../../../utilities/math';
@@ -234,7 +234,8 @@ export function validateCollectionDefinition({
   }
 
   if (checkGender) {
-    const result = genderValidityCheck({
+    const result = tieFormatGenderValidityCheck({
+      referenceEvent: event,
       referenceGender,
       matchUpType,
       gender,
