@@ -5,7 +5,6 @@ import { ANY, MIXED } from '../../../constants/genderConstants';
 import { INVALID_GENDER } from '../../../constants/errorConditionConstants';
 
 type GenderValidityCheckArgs = {
-  referenceMatchUpType?: string;
   referenceGender?: GenderEnum;
   matchUpType?: string;
   gender?: GenderEnum;
