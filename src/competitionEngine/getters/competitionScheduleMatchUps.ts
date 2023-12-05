@@ -74,6 +74,7 @@ export function competitionScheduleMatchUps(
     sortCourtsData,
   } = params;
 
+  // PUBLISH.STATUS is attached at the tournament level by `publishOrderOfPlay`
   const tournamentPublishStatus = usePublishState
     ? getTournamentTimeItem({
         tournamentRecord:
@@ -105,9 +106,14 @@ export function competitionScheduleMatchUps(
     };
   }
 
-  const publishedDrawIds = usePublishState
-    ? getCompetitionPublishedDrawIds({ tournamentRecords }).drawIds
-    : undefined;
+  let publishedDrawIds, detailsMap;
+  if (usePublishState) {
+    console.log('boo');
+    ({ drawIds: publishedDrawIds, detailsMap } =
+      getCompetitionPublishedDrawDetails({
+        tournamentRecords,
+      }));
+  }
 
   if (publishedDrawIds?.length) {
     if (!params.contextFilters) params.contextFilters = {};
@@ -172,10 +178,29 @@ export function competitionScheduleMatchUps(
       contextFilters: params.contextFilters,
     });
 
-  const relevantMatchUps = [
+  let relevantMatchUps = [
     ...(upcomingMatchUps ?? []),
     ...(pendingMatchUps ?? []),
   ];
+
+  // add any stage or structure filtering
+  if (detailsMap) {
+    relevantMatchUps = relevantMatchUps.filter((matchUp) => {
+      const { drawId, structureId, stage } = matchUp;
+      if (!detailsMap[drawId]) return false;
+      if (!detailsMap.structureDetails && !detailsMap.stageDetails) return true;
+      if (detailsMap.stageDetails) {
+        console.log({ stage, stageDetails: detailsMap.stageDetails });
+      }
+      if (detailsMap.structureDetails) {
+        console.log({
+          structureId,
+          structureDetails: detailsMap.structureDetails,
+        });
+      }
+      return true;
+    });
+  }
 
   const dateMatchUps = sortDateMatchUps
     ? scheduledSortedMatchUps({ matchUps: relevantMatchUps, schedulingProfile })
@@ -191,11 +216,11 @@ export function competitionScheduleMatchUps(
   });
 
   const result: any = {
-    courtsData,
     completedMatchUps: alwaysReturnCompleted
       ? allCompletedMatchUps
       : completedMatchUps, // completed matchUps for the filter date
     dateMatchUps, // all incomplete matchUps for the filter date
+    courtsData,
     groupInfo,
     venues,
   };
@@ -232,10 +257,11 @@ export function competitionScheduleMatchUps(
   }
 }
 
-function getCompetitionPublishedDrawIds({
+function getCompetitionPublishedDrawDetails({
   tournamentRecords,
 }: TournamentRecordsArgs) {
   const drawIds: string[] = [];
+  const detailsMap: { [key: string]: any } = {};
 
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     for (const event of tournamentRecord.events ?? []) {
@@ -243,10 +269,12 @@ function getCompetitionPublishedDrawIds({
         itemType: `${PUBLISH}.${STATUS}`,
         event,
       })?.timeItem?.itemValue?.[PUBLIC];
+      console.log(eventPubState);
 
       const drawDetails = eventPubState?.drawDetails;
 
       if (isObject(drawDetails)) {
+        Object.apply(detailsMap, drawDetails);
         drawIds.push(
           ...Object.keys(drawDetails).filter((drawId) =>
             getDrawPublishStatus({ drawId, drawDetails })
@@ -259,5 +287,5 @@ function getCompetitionPublishedDrawIds({
     }
   }
 
-  return { drawIds };
+  return { drawIds, detailsMap };
 }

@@ -1,3 +1,4 @@
+import competitionEngine from '../../../competitionEngine/sync';
 import { constantToString } from '../../../utilities/strings';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
@@ -797,4 +798,31 @@ it('can add or remove stages from a published draw', () => {
 
   event = tournamentEngine.getEvent({ drawId }).event;
   expect(event.timeItems.length).toEqual(1);
+
+  result = tournamentEngine.unPublishEvent({ eventId });
+  expect(result.success).toEqual(true);
+
+  event = tournamentEngine.getEvent({ drawId }).event;
+  expect(event.timeItems.length).toEqual(1);
+
+  ({ eventData, success: publishSuccess } = tournamentEngine.publishEvent({
+    drawDetails: {
+      ['drawId']: { stagesToAdd: [QUALIFYING] },
+    },
+    removePriorValues: true,
+    policyDefinitions,
+    eventId,
+  }));
+  expect(publishSuccess).toEqual(true);
+
+  event = tournamentEngine.getEvent({ drawId }).event;
+  expect(event.timeItems.length).toEqual(1);
+
+  expect(eventData.drawsData[0].structures.length).toEqual(1);
+  expect(eventData.drawsData[0].structures[0].stage).toEqual(QUALIFYING);
+
+  result = competitionEngine.competitionScheduleMatchUps({
+    usePublishState: true,
+  });
+  // console.log(result);
 });
