@@ -1,7 +1,8 @@
 import { getParticipants } from '../../getters/participants/getParticipants';
+import { generateRange, makeDeepCopy } from '../../../utilities';
+import { isConvertableInteger } from '../../../utilities/math';
 import { getEventTimeItem } from '../queryGovernor/timeItems';
 import { getTournamentInfo } from './getTournamentInfo';
-import { generateRange, makeDeepCopy } from '../../../utilities';
 import { getVenueData } from './getVenueData';
 import { getDrawData } from './getDrawData';
 
@@ -18,7 +19,6 @@ import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
-import { isConvertableInteger } from '../../../utilities/math';
 
 type GetEventDataArgs = {
   participantsProfile?: ParticipantsProfile;

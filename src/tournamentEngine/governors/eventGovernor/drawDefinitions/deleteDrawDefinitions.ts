@@ -292,8 +292,8 @@ export function deleteDrawDefinitions(params: DeleteDrawDefinitionArgs) {
   if (autoPublish && publishedDrawsDeleted) {
     const result = publishEvent({
       drawIdsToRemove: drawIds,
-      tournamentRecord,
       policyDefinitions,
+      tournamentRecord,
       event,
     });
     if (result.error) return { ...SUCCESS, info: result.error };
