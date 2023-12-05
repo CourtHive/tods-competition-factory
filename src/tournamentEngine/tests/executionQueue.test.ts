@@ -129,15 +129,15 @@ it.each([competitionEngineSync, asyncCompetitionEngine])(
     await competitionEngine.setState(tournamentRecord);
     const result = await competitionEngine.executionQueue([
       {
-        method: 'getCompetitionParticipants',
+        method: 'getParticipants',
         params: { participantFilters: { participantTypes: [PAIR] } },
       },
       {
-        method: 'getCompetitionParticipants',
+        method: 'getParticipants',
         params: { participantFilters: { participantTypes: [INDIVIDUAL] } },
       },
     ]);
-    expect(result.results[0].competitionParticipants.length).toEqual(32);
-    expect(result.results[1].competitionParticipants.length).toEqual(64);
+    expect(result.results[0].participants.length).toEqual(32);
+    expect(result.results[1].participants.length).toEqual(64);
   }
 );
