@@ -1,7 +1,7 @@
 import { getParticipants } from '../../getters/participants/getParticipants';
 import { getEventTimeItem } from '../queryGovernor/timeItems';
 import { getTournamentInfo } from './getTournamentInfo';
-import { makeDeepCopy } from '../../../utilities';
+import { generateRange, makeDeepCopy } from '../../../utilities';
 import { getVenueData } from './getVenueData';
 import { getDrawData } from './getDrawData';
 
@@ -18,6 +18,7 @@ import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
+import { isConvertableInteger } from '../../../utilities/math';
 
 type GetEventDataArgs = {
   participantsProfile?: ParticipantsProfile;
@@ -94,6 +95,28 @@ export function getEventData(params: GetEventDataArgs): {
     return true;
   };
 
+  const roundLimitMapper = ({ drawId, structure }) => {
+    if (!usePublishState) return structure;
+    const roundLimit =
+      publishStatus?.drawDetails?.[drawId]?.structureDetails?.[
+        structure.structureId
+      ]?.roundLimit;
+    if (isConvertableInteger(roundLimit)) {
+      const roundNumbers = generateRange(1, roundLimit + 1);
+      const roundMatchUps = {};
+      const roundProfile = {};
+      for (const roundNumber of roundNumbers) {
+        if (structure.roundMatchUps[roundNumber]) {
+          roundMatchUps[roundNumber] = structure.roundMatchUps[roundNumber];
+          roundProfile[roundNumber] = structure.roundProfile[roundNumber];
+        }
+      }
+      structure.roundMatchUps = roundMatchUps;
+      structure.roundProfile = roundProfile;
+    }
+    return structure;
+  };
+
   const drawDefinitions = event.drawDefinitions || [];
   const drawsData = drawDefinitions
     .filter(drawFilter)
@@ -115,16 +138,20 @@ export function getEventData(params: GetEventDataArgs): {
         })
       )
     )
-    .map(({ structures, ...drawData }) => ({
-      ...drawData,
-      structures: structures
+    .map(({ structures, ...drawData }) => {
+      const filteredStructures = structures
         ?.filter(({ structureId }) =>
           structureFilter({ structureId, drawId: drawData.drawId })
         )
-        ?.filter(({ stage }) =>
-          stageFilter({ stage, drawId: drawData.drawId })
-        ),
-    }))
+        ?.filter(({ stage }) => stageFilter({ stage, drawId: drawData.drawId }))
+        .map((structure) =>
+          roundLimitMapper({ drawId: drawData.drawId, structure })
+        );
+      return {
+        ...drawData,
+        structures: filteredStructures,
+      };
+    })
     .filter((drawData) => drawData.structures?.length);
 
   const { tournamentInfo } = getTournamentInfo({ tournamentRecord });
