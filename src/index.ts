@@ -16,7 +16,7 @@ import { getAssignedParticipantIds } from './drawEngine/getters/getAssignedParti
 import { findExtension } from './tournamentEngine/governors/queryGovernor/extensionQueries';
 import { participantScaleItem } from './tournamentEngine/accessors/participantScaleItem';
 import { getScaleValues } from './tournamentEngine/getters/participants/getScaleValues';
-import { genderValidityCheck } from './global/functions/deducers/genderValidityCheck';
+import { tieFormatGenderValidityCheck } from './global/functions/deducers/tieFormatGenderValidityCheck';
 import { scoreHasValue } from './matchUpEngine/governors/queryGovernor/scoreHasValue';
 import { garman } from './competitionEngine/governors/scheduleGovernor/garman/garman';
 import { generateScoreString } from './matchUpEngine/generators/generateScoreString';
@@ -93,7 +93,7 @@ export const utilities = {
   findExtension,
   flattenJSON,
   garman,
-  genderValidityCheck,
+  tieFormatGenderValidityCheck,
   generateHashCode,
   generateRange,
   generateScoreString,

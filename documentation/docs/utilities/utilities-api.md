@@ -87,18 +87,6 @@ const { extension } = utilities.findExtension({ element, name });
 
 ---
 
-## genderValidityCheck
-
-```js
-const { valid, error } = utilities.genderValidityCheck({
-  referenceGender, // if not present then always returns { valid: true }
-  matchUpType, // optional - check whether matchUpType is valid for referenceGender
-  gender,
-});
-```
-
----
-
 ## generateHashCode
 
 ---
@@ -230,6 +218,19 @@ const {
 ---
 
 ## tidyScore
+
+---
+
+## tieFormatGenderValidityCheck
+
+```js
+const { valid, error } = utilities.tieFormatGenderValidityCheck({
+  referenceGender, // if not present then always returns { valid: true }
+  referenceEvent, // required when { eventType: MIXED }
+  matchUpType, // optional - check whether matchUpType is valid for referenceGender
+  gender,
+});
+```
 
 ---
 
