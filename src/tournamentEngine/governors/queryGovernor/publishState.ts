@@ -41,11 +41,11 @@ export function bulkUpdatePublishedEventIds({ tournamentRecord, outcomes }) {
         event,
       });
       const pubState = timeItem?.itemValue;
+      const pubStatus = pubState?.[PUBLIC];
+      const { drawDetails, drawIds } = pubStatus;
 
       const { eventId } = event;
       const publishedDrawIds = eventIdsMap[eventId].filter((drawId) => {
-        const pubStatus = pubState?.[PUBLIC];
-        const { drawDetails, drawIds } = pubStatus;
         const keyedDrawIds = drawDetails
           ? Object.keys(pubStatus.drawDetails).filter((drawId) =>
               getDrawPublishStatus({ drawId, drawDetails })

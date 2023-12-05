@@ -25,10 +25,11 @@ export function getEventPublishStatuses({ event }) {
     const { drawDetails, drawIds } = eventPubState;
 
     const publishedDrawIds =
-      Object.keys(drawDetails).filter((drawId) =>
-        getDrawPublishStatus({ drawDetails, drawId })
-      ) ??
-      drawIds ??
+      (drawDetails &&
+        Object.keys(drawDetails).filter((drawId) =>
+          getDrawPublishStatus({ drawDetails, drawId })
+        )) ||
+      drawIds ||
       [];
 
     return {
