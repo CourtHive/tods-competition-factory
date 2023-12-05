@@ -1,9 +1,15 @@
-import { genderValidityCheck } from '../functions/deducers/genderValidityCheck';
 import { expect, it } from 'vitest';
+import {
+  anyMixedError,
+  tieFormatGenderValidityCheck,
+  mixedGenderError,
+} from '../functions/deducers/tieFormatGenderValidityCheck';
 
 import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '../../constants/matchUpTypes';
 import { INVALID_GENDER } from '../../constants/errorConditionConstants';
-import { GenderEnum } from '../../types/tournamentFromSchema';
+import { GenderEnum, TypeEnum } from '../../types/tournamentFromSchema';
+
+const referenceEvent = { eventType: TypeEnum.Team, eventId: 'eventId' };
 
 const scenarios = [
   {
@@ -19,8 +25,8 @@ const scenarios = [
       gender: GenderEnum.Mixed,
     },
     expectation: {
+      stack: ['tieFormatGenderValidityCheck'],
       error: INVALID_GENDER,
-      stack: ['genderValidityCheck'],
       gender: 'MIXED',
       valid: false,
     },
@@ -31,8 +37,8 @@ const scenarios = [
       gender: GenderEnum.Any,
     },
     expectation: {
+      stack: ['tieFormatGenderValidityCheck'],
       error: INVALID_GENDER,
-      stack: ['genderValidityCheck'],
       gender: 'ANY',
       valid: false,
     },
@@ -43,8 +49,8 @@ const scenarios = [
       gender: GenderEnum.Female,
     },
     expectation: {
+      stack: ['tieFormatGenderValidityCheck'],
       error: INVALID_GENDER,
-      stack: ['genderValidityCheck'],
       gender: 'FEMALE',
       valid: false,
     },
@@ -55,8 +61,8 @@ const scenarios = [
       gender: GenderEnum.Male,
     },
     expectation: {
+      stack: ['tieFormatGenderValidityCheck'],
       error: INVALID_GENDER,
-      stack: ['genderValidityCheck'],
       gender: 'MALE',
       valid: false,
     },
@@ -67,8 +73,8 @@ const scenarios = [
       gender: GenderEnum.Mixed,
     },
     expectation: {
+      stack: ['tieFormatGenderValidityCheck'],
       error: INVALID_GENDER,
-      stack: ['genderValidityCheck'],
       gender: 'MIXED',
       valid: false,
     },
@@ -86,8 +92,8 @@ const scenarios = [
       gender: GenderEnum.Any,
     },
     expectation: {
+      stack: ['tieFormatGenderValidityCheck'],
       error: INVALID_GENDER,
-      stack: ['genderValidityCheck'],
       gender: 'ANY',
       valid: false,
     },
@@ -115,9 +121,9 @@ const scenarios = [
       gender: GenderEnum.Mixed,
     },
     expectation: {
+      info: anyMixedError,
+      stack: ['tieFormatGenderValidityCheck'],
       error: INVALID_GENDER,
-      stack: ['genderValidityCheck'],
-      info: 'COED events can not contain MIXED singles collections',
       valid: false,
     },
   },
@@ -144,9 +150,9 @@ const scenarios = [
       gender: GenderEnum.Mixed,
     },
     expectation: {
+      stack: ['tieFormatGenderValidityCheck'],
       error: INVALID_GENDER,
-      stack: ['genderValidityCheck'],
-      info: 'MIXED events can not contain mixed singles or coed collections',
+      info: mixedGenderError,
       valid: false,
     },
   },
@@ -155,6 +161,7 @@ const scenarios = [
       referenceGender: GenderEnum.Mixed,
       matchUpType: DOUBLES_MATCHUP,
       gender: GenderEnum.Mixed,
+      referenceEvent,
     },
     expectation: { valid: true },
   },
@@ -163,6 +170,7 @@ const scenarios = [
       referenceGender: GenderEnum.Mixed,
       matchUpType: DOUBLES_MATCHUP,
       gender: GenderEnum.Female,
+      referenceEvent,
     },
     expectation: { valid: true },
   },
@@ -171,6 +179,7 @@ const scenarios = [
       referenceGender: GenderEnum.Mixed,
       matchUpType: SINGLES_MATCHUP,
       gender: GenderEnum.Female,
+      referenceEvent,
     },
     expectation: { valid: true },
   },
@@ -179,6 +188,7 @@ const scenarios = [
       referenceGender: GenderEnum.Mixed,
       matchUpType: SINGLES_MATCHUP,
       gender: GenderEnum.Male,
+      referenceEvent,
     },
     expectation: { valid: true },
   },
@@ -187,6 +197,7 @@ const scenarios = [
       referenceGender: GenderEnum.Mixed,
       matchUpType: DOUBLES_MATCHUP,
       gender: GenderEnum.Male,
+      referenceEvent,
     },
     expectation: { valid: true },
   },
@@ -197,9 +208,9 @@ const scenarios = [
       gender: GenderEnum.Any,
     },
     expectation: {
+      stack: ['tieFormatGenderValidityCheck'],
+      info: mixedGenderError,
       error: INVALID_GENDER,
-      stack: ['genderValidityCheck'],
-      info: 'MIXED events can not contain mixed singles or coed collections',
       valid: false,
     },
   },
@@ -210,15 +221,15 @@ const scenarios = [
       gender: GenderEnum.Any,
     },
     expectation: {
+      stack: ['tieFormatGenderValidityCheck'],
+      info: mixedGenderError,
       error: INVALID_GENDER,
-      stack: ['genderValidityCheck'],
-      info: 'MIXED events can not contain mixed singles or coed collections',
       valid: false,
     },
   },
 ];
 
 it.each(scenarios)('can test gender validity', (scenario) => {
-  const result = genderValidityCheck(scenario.params);
+  const result = tieFormatGenderValidityCheck(scenario.params);
   expect(result).toEqual(scenario.expectation);
 });
