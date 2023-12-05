@@ -291,13 +291,12 @@ export function deleteDrawDefinitions(params: DeleteDrawDefinitionArgs) {
 
   if (autoPublish && publishedDrawsDeleted) {
     const result = publishEvent({
-      // TODO: structureIdsToRemove need to be derived
       drawIdsToRemove: drawIds,
       tournamentRecord,
       policyDefinitions,
       event,
     });
-    if (result.error) console.log('publish error', result);
+    if (result.error) return { ...SUCCESS, info: result.error };
   }
 
   return { ...SUCCESS };

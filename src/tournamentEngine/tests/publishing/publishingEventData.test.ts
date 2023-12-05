@@ -176,7 +176,10 @@ it('can generate payload for publishing a Round Robin with Playoffs', () => {
     eventId,
   });
   expect(publishSuccess).toEqual(true);
-  expect(eventData.eventInfo.publish.state[PUBLIC].drawIds).toEqual([drawId]);
+  expect(
+    eventData.eventInfo.publish.state[PUBLIC].drawDetails[drawId]
+      .publishingDetail
+  ).toEqual({ published: true });
 
   expect(eventData.eventInfo.eventId).toEqual(eventId);
   expect(eventData.eventInfo.eventName).toEqual(eventName);
@@ -286,8 +289,8 @@ it('can generate payload for publishing a compass draw', () => {
     ],
   };
   result = tournamentEngine.modifyVenue({
-    venueId,
     modifications,
+    venueId,
   });
   expect(result.success).toEqual(true);
 
@@ -302,10 +305,10 @@ it('can generate payload for publishing a compass draw', () => {
 
   const matchUpFormat = FORMAT_STANDARD;
   const { drawDefinition } = tournamentEngine.generateDrawDefinition({
-    eventId,
-    drawType,
-    drawSize,
     matchUpFormat,
+    drawSize,
+    drawType,
+    eventId,
   });
 
   expect(drawDefinition.links.length).toEqual(7);
@@ -328,7 +331,10 @@ it('can generate payload for publishing a compass draw', () => {
     eventId,
   });
   expect(publishSuccess).toEqual(true);
-  // expect(eventData.eventInfo.publish.state[PUBLIC].structureIds).toEqual([]);
+  expect(
+    eventData.eventInfo.publish.state[PUBLIC].drawDetails[drawDefinition.drawId]
+      .publishingDetail
+  ).toEqual({ published: true });
 
   expect(eventData.eventInfo.eventId).toEqual(eventId);
   expect(eventData.eventInfo.eventName).toEqual(eventName);
@@ -460,7 +466,10 @@ it('can generate payload for publishing a FIRST_MATCH_LOSER_CONSOLATION draw', (
   expect(publishSuccess).toEqual(true);
 
   const { drawId } = drawDefinition;
-  expect(eventData.eventInfo.publish.state[PUBLIC].drawIds).toEqual([drawId]);
+  expect(
+    eventData.eventInfo.publish.state[PUBLIC].drawDetails[drawId]
+      .publishingDetail
+  ).toEqual({ published: true });
 
   expect(eventData.eventInfo.eventId).toEqual(eventId);
   expect(eventData.eventInfo.eventName).toEqual(eventName);
@@ -550,7 +559,10 @@ it('can filter out unPublished draws when publishing event', () => {
     eventId,
   });
   expect(publishSuccess).toEqual(true);
-  expect(eventData.eventInfo.publish.state[PUBLIC].drawIds).toEqual([drawId]);
+  expect(
+    eventData.eventInfo.publish.state[PUBLIC].drawDetails[drawId]
+      .publishingDetail
+  ).toEqual({ published: true });
 
   result = tournamentEngine.unPublishEvent();
   expect(result.error).toEqual(MISSING_EVENT);
@@ -587,25 +599,25 @@ it('can add or remove drawIds from a published event', () => {
     ...ROUND_NAMING_POLICY,
   };
 
-  let { eventData, success: publishSuccess } = tournamentEngine.publishEvent({
-    drawIds: ['draw1', 'draw2'],
-    policyDefinitions,
-    eventId,
-  });
+  let { eventData, success: publishSuccess } = tournamentEngine
+    .devContext(true)
+    .publishEvent({
+      drawIds: ['draw1', 'draw2'],
+      policyDefinitions,
+      eventId,
+    });
   expect(publishSuccess).toEqual(true);
   expect(eventData.drawsData.length).toEqual(2);
-  /*
-  const secondStructureId = eventData.drawsData[0].structures[1].structureId;
 
+  // remove a drawId
   ({ eventData, success: publishSuccess } = tournamentEngine.publishEvent({
-    structureIds: [secondStructureId],
-    drawIds: ['draw1', 'draw2'],
+    drawIdsToRemove: ['draw1'],
     policyDefinitions,
     eventId,
   }));
   expect(publishSuccess).toEqual(true);
   expect(eventData.drawsData.length).toEqual(1);
-  */
+  expect(eventData.drawsData[0].drawId).toEqual('draw2');
 
   ({ eventData, success: publishSuccess } = tournamentEngine.publishEvent({
     drawIdsToAdd: ['draw3'],
@@ -613,7 +625,7 @@ it('can add or remove drawIds from a published event', () => {
     eventId,
   }));
   expect(publishSuccess).toEqual(true);
-  expect(eventData.drawsData.length).toEqual(3);
+  expect(eventData.drawsData.length).toEqual(2);
 
   // attempt to add a drawId that is already there
   ({ eventData, success: publishSuccess } = tournamentEngine.publishEvent({
@@ -624,14 +636,34 @@ it('can add or remove drawIds from a published event', () => {
   expect(publishSuccess).toEqual(true);
   expect(eventData.drawsData.length).toEqual(3);
 
-  // remove a drawId
+  const secondStructureId = eventData.drawsData[0].structures[1].structureId;
   ({ eventData, success: publishSuccess } = tournamentEngine.publishEvent({
-    drawIdsToRemove: ['draw1'],
+    drawDetails: {
+      ['draw1']: { structureIdsToRemove: [secondStructureId] },
+    },
     policyDefinitions,
     eventId,
   }));
   expect(publishSuccess).toEqual(true);
-  expect(eventData.drawsData.length).toEqual(2);
+  expect(eventData.drawsData.length).toEqual(3);
+  expect(
+    eventData.drawsData.find(({ drawId }) => drawId === 'draw1').structures
+      .length
+  ).toEqual(1);
+
+  ({ eventData, success: publishSuccess } = tournamentEngine.publishEvent({
+    drawDetails: {
+      ['draw1']: { structureIdsToAdd: [secondStructureId] },
+    },
+    policyDefinitions,
+    eventId,
+  }));
+  expect(publishSuccess).toEqual(true);
+  expect(eventData.drawsData.length).toEqual(3);
+  expect(
+    eventData.drawsData.find(({ drawId }) => drawId === 'draw1').structures
+      .length
+  ).toEqual(2);
 });
 
 it('can add or remove stages from a published draw', () => {
@@ -641,6 +673,7 @@ it('can add or remove stages from a published draw', () => {
   } = mocksEngine.generateTournamentRecord({
     drawProfiles: [
       {
+        drawId: 'drawId',
         drawSize: 16,
         qualifyingProfiles: [
           {
@@ -692,61 +725,69 @@ it('can add or remove stages from a published draw', () => {
     ...ROUND_NAMING_POLICY,
   };
 
-  const { eventData, success: publishSuccess } = tournamentEngine.publishEvent({
+  let { eventData, success: publishSuccess } = tournamentEngine.publishEvent({
     policyDefinitions,
     eventId,
   });
   expect(publishSuccess).toEqual(true);
 
   expect(eventData.drawsData[0].structures.map(({ stage }) => stage)).toEqual([
-    'QUALIFYING',
-    'MAIN',
-    'VOLUNTARY_CONSOLATION',
+    QUALIFYING,
+    MAIN,
+    VOLUNTARY_CONSOLATION,
   ]);
 
-  !!QUALIFYING;
-  /*
   ({ eventData, success: publishSuccess } = tournamentEngine.publishEvent({
-    stages: [QUALIFYING],
+    drawDetails: {
+      ['drawId']: { stagesToRemove: [QUALIFYING] },
+    },
     policyDefinitions,
     eventId,
   }));
   expect(publishSuccess).toEqual(true);
+
   expect(eventData.drawsData[0].structures.map(({ stage }) => stage)).toEqual([
-    'QUALIFYING',
+    MAIN,
+    VOLUNTARY_CONSOLATION,
   ]);
 
   ({ eventData, success: publishSuccess } = tournamentEngine.publishEvent({
-    stagesToAdd: [MAIN],
+    drawDetails: {
+      ['drawId']: { stagesToRemove: [VOLUNTARY_CONSOLATION] },
+    },
     policyDefinitions,
     eventId,
   }));
   expect(publishSuccess).toEqual(true);
+
   expect(eventData.drawsData[0].structures.map(({ stage }) => stage)).toEqual([
-    'QUALIFYING',
-    'MAIN',
+    MAIN,
   ]);
 
   ({ eventData, success: publishSuccess } = tournamentEngine.publishEvent({
-    stagesToAdd: [VOLUNTARY_CONSOLATION],
-    stagesToRemove: [QUALIFYING],
+    drawDetails: {
+      ['drawId']: { stageDetails: { QUALIFYING: { published: true } } },
+    },
     policyDefinitions,
     eventId,
   }));
   expect(publishSuccess).toEqual(true);
+
   expect(eventData.drawsData[0].structures.map(({ stage }) => stage)).toEqual([
-    'MAIN',
-    'VOLUNTARY_CONSOLATION',
+    QUALIFYING,
   ]);
 
   ({ eventData, success: publishSuccess } = tournamentEngine.publishEvent({
+    drawDetails: {
+      ['drawId']: { stagesToAdd: [MAIN] },
+    },
     policyDefinitions,
-    stages: [MAIN],
     eventId,
   }));
   expect(publishSuccess).toEqual(true);
+
   expect(eventData.drawsData[0].structures.map(({ stage }) => stage)).toEqual([
-    'MAIN',
+    QUALIFYING,
+    MAIN,
   ]);
-  */
 });

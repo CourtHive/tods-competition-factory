@@ -69,20 +69,30 @@ export function getEventData(params: GetEventDataArgs): {
     tournamentRecord,
   });
 
-  const stageFilter = ({ stage }) =>
-    !usePublishState ||
-    !publishStatus?.stages?.length ||
-    publishStatus.stages.includes(stage);
+  const stageFilter = ({ stage, drawId }) => {
+    if (!usePublishState) return true;
+    const stageDetails = publishStatus?.drawDetails?.[drawId]?.stageDetails;
+    if (!stageDetails || !Object.keys(stageDetails).length) return true;
+    return stageDetails[stage]?.published;
+  };
 
-  const structureFilter = ({ structureId }) =>
-    !usePublishState ||
-    !publishStatus?.structureIds?.length ||
-    publishStatus.structureIds.includes(structureId);
+  const structureFilter = ({ structureId, drawId }) => {
+    if (!usePublishState) return true;
+    const structureDetails =
+      publishStatus?.drawDetails?.[drawId]?.structureDetails;
+    if (!structureDetails || !Object.keys(structureDetails).length) return true;
+    return structureDetails[structureId]?.published;
+  };
 
-  const drawFilter = ({ drawId }) =>
-    !usePublishState ||
-    !publishStatus?.drawIds?.length ||
-    publishStatus.drawIds.includes(drawId);
+  const drawFilter = ({ drawId }) => {
+    if (!usePublishState) return true;
+    if (publishStatus.drawDetails) {
+      return publishStatus.drawDetails[drawId]?.publishingDetail?.published;
+    } else if (publishStatus.drawIds) {
+      return publishStatus.drawIds.includes(drawId);
+    }
+    return true;
+  };
 
   const drawDefinitions = event.drawDefinitions || [];
   const drawsData = drawDefinitions
@@ -107,7 +117,13 @@ export function getEventData(params: GetEventDataArgs): {
     )
     .map(({ structures, ...drawData }) => ({
       ...drawData,
-      structures: structures?.filter(structureFilter)?.filter(stageFilter),
+      structures: structures
+        ?.filter(({ structureId }) =>
+          structureFilter({ structureId, drawId: drawData.drawId })
+        )
+        ?.filter(({ stage }) =>
+          stageFilter({ stage, drawId: drawData.drawId })
+        ),
     }))
     .filter((drawData) => drawData.structures?.length);
 

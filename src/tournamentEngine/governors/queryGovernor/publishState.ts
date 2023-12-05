@@ -22,10 +22,8 @@ export function bulkUpdatePublishedEventIds({ tournamentRecord, outcomes }) {
     if (eventId && drawId) {
       if (!eventIdsMap[eventId]) {
         eventIdsMap[eventId] = [drawId];
-      } else {
-        if (!eventIdsMap[eventId].includes(drawId)) {
-          eventIdsMap[eventId].push(drawId);
-        }
+      } else if (!eventIdsMap[eventId].includes(drawId)) {
+        eventIdsMap[eventId].push(drawId);
       }
     }
     return eventIdsMap;
@@ -45,7 +43,12 @@ export function bulkUpdatePublishedEventIds({ tournamentRecord, outcomes }) {
 
       const { eventId } = event;
       const publishedDrawIds = eventIdsMap[eventId].filter((drawId) => {
-        return pubState?.[PUBLIC]?.drawIds?.includes(drawId);
+        const pubStatus = pubState?.[PUBLIC];
+        const drawIds = pubStatus?.drawIds;
+        const keyedDrawIds = pubStatus?.drawDetails
+          ? Object.keys(pubStatus.drawDetails)
+          : [];
+        return drawIds?.includes(drawId) || keyedDrawIds.includes(drawId);
       });
 
       return publishedDrawIds.length;

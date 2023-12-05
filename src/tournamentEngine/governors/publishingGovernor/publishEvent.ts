@@ -1,9 +1,9 @@
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { addEventTimeItem } from '../tournamentGovernor/addTimeItem';
 import { getEventTimeItem } from '../queryGovernor/timeItems';
 import { addNotice } from '../../../global/state/globalState';
 import { getEventData } from './getEventData';
-import { unique } from '../../../utilities';
 
 import { PUBLISH, PUBLIC, STATUS } from '../../../constants/timeItemConstants';
 import { Event, Tournament } from '../../../types/tournamentFromSchema';
@@ -11,8 +11,10 @@ import { PUBLISH_EVENT } from '../../../constants/topicConstants';
 import { PolicyDefinitions } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
+  DRAW_DEFINITION_NOT_FOUND,
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
+  STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
 export type PublishingDetail = {
@@ -23,7 +25,7 @@ export type PublishingDetail = {
 
 export type DrawPublishingDetails = {
   structureDetails?: { [key: string]: PublishingDetail }; // if no keys, all published
-  stages?: { [key: string]: PublishingDetail }; // if no keys, all published; stage embargo supercedes structure embargo
+  stageDetails?: { [key: string]: PublishingDetail }; // if no keys, all published; stage embargo supercedes structure embargo
   publishingDetail: PublishingDetail; // draw embargo supercedes structure/stage embargo
   structureIdsToRemove?: string[];
   structureIdsToAdd?: string[];
@@ -47,7 +49,6 @@ type PublishEventType = {
 };
 
 export function publishEvent(params: PublishEventType) {
-  let { drawIds } = params;
   const {
     includePositionAssignments,
     removePriorValues,
@@ -72,70 +73,146 @@ export function publishEvent(params: PublishEventType) {
   const itemType = `${PUBLISH}.${STATUS}`;
   const eventDrawIds = event.drawDefinitions?.map(({ drawId }) => drawId) ?? [];
 
+  const keyedDrawIds = params.drawDetails
+    ? Object.keys(params.drawDetails)
+    : [];
+  const specifiedDrawIds = keyedDrawIds.length ? [] : params.drawIds;
+
+  const drawIdsToValidate = (drawIdsToAdd ?? []).concat(
+    ...(drawIdsToRemove ?? []),
+    ...(specifiedDrawIds ?? []),
+    ...keyedDrawIds
+  );
+  const invalidDrawIds = drawIdsToValidate.filter(
+    (drawId) => !eventDrawIds.includes(drawId)
+  );
+  if (invalidDrawIds.length) {
+    return decorateResult({
+      result: { error: DRAW_DEFINITION_NOT_FOUND },
+      context: { invalidDrawIds },
+    });
+  }
+
   const pubState = getEventTimeItem({
     itemType,
     event,
   })?.timeItem?.itemValue?.[status];
 
-  if (!drawIds && !drawIdsToAdd && !drawIdsToRemove && !params.drawDetails) {
-    // by default publish all drawIds in an event
-    drawIds = eventDrawIds;
-  } else if (!drawIds && (drawIdsToAdd?.length || drawIdsToRemove?.length)) {
-    drawIds = pubState?.drawIds ?? [];
+  const drawDetails = pubState?.drawDetails || {};
+  for (const drawId of eventDrawIds) {
+    if (!drawIdsToValidate.length || drawIdsToValidate.includes(drawId)) {
+      if (
+        drawIdsToRemove?.includes(drawId) ||
+        (specifiedDrawIds?.length && !specifiedDrawIds.includes(drawId))
+      ) {
+        drawDetails[drawId] = {
+          ...drawDetails[drawId],
+          publishingDetail: { published: false },
+        };
+      } else if (
+        drawIdsToAdd?.includes(drawId) ||
+        specifiedDrawIds?.includes(drawId) ||
+        !specifiedDrawIds?.length
+      ) {
+        drawDetails[drawId] = {
+          ...drawDetails[drawId],
+          publishingDetail: { published: true },
+        };
+      }
+    }
+
+    if (params.drawDetails?.[drawId]) {
+      const newDetail = params.drawDetails[drawId];
+      let structureDetails =
+        newDetail.structureDetails ?? drawDetails[drawId].structureDetails;
+      const stageDetails =
+        newDetail.stageDetails ?? drawDetails[drawId].stageDetails ?? {};
+
+      const {
+        structureIdsToRemove = [],
+        structureIdsToAdd = [],
+        publishingDetail = {},
+        stagesToRemove = [],
+        stagesToAdd = [],
+      } = newDetail;
+
+      if (structureIdsToAdd || stagesToAdd) publishingDetail.published = true;
+
+      drawDetails[drawId] = {
+        publishingDetail,
+        structureDetails,
+        stageDetails,
+      };
+
+      if (structureIdsToAdd.length || structureIdsToRemove.length) {
+        const drawStructureIds = (
+          event.drawDefinitions?.find(
+            (drawDefinition) => drawDefinition.drawId === drawId
+          )?.structures ?? []
+        ).map(({ structureId }) => structureId);
+        const structureIdsToValidate = (structureIdsToAdd ?? []).concat(
+          structureIdsToRemove ?? []
+        );
+        const invalidStructureIds = structureIdsToValidate.filter(
+          (structureId) => !drawStructureIds.includes(structureId)
+        );
+        if (invalidStructureIds.length) {
+          return decorateResult({
+            result: { error: STRUCTURE_NOT_FOUND },
+            context: { invalidStructureIds },
+          });
+        }
+
+        structureDetails = structureDetails ?? {};
+        for (const structureId of drawStructureIds) {
+          if (structureIdsToRemove.includes(structureId)) {
+            structureDetails[structureId] = { published: false };
+          } else {
+            structureDetails[structureId] = { published: true };
+          }
+        }
+
+        drawDetails[drawId].structureDetails = structureDetails;
+      }
+
+      const drawStages = (
+        event.drawDefinitions?.find(
+          (drawDefinition) => drawDefinition.drawId === drawId
+        )?.structures ?? []
+      ).map(({ stage }) => stage as string);
+
+      if (stagesToAdd.length) {
+        for (const stage of stagesToAdd) {
+          stageDetails[stage] = { published: true };
+        }
+
+        for (const stage of drawStages) {
+          if (!stageDetails[stage]) {
+            stageDetails[stage] = { published: false };
+          }
+        }
+      }
+      if (stagesToAdd.length || stagesToRemove.length) {
+        for (const stage of stagesToRemove) {
+          stageDetails[stage] = { published: false };
+        }
+
+        for (const stage of drawStages) {
+          if (!stageDetails[stage]) {
+            stageDetails[stage] = { published: true };
+          }
+        }
+      }
+
+      if (stagesToAdd.length || stagesToRemove.length) {
+        drawDetails[drawId].stageDetails = stageDetails;
+      }
+    }
   }
-
-  drawIds = (drawIds ?? []).filter(
-    (drawId) => !drawIdsToRemove?.length || !drawIdsToRemove.includes(drawId)
-  );
-
-  if (drawIdsToAdd?.length) {
-    drawIds = unique(
-      drawIds.concat(
-        // ensure that only drawIds which are part of event are included
-        ...drawIdsToAdd.filter((drawId) => eventDrawIds.includes(drawId))
-      )
-    );
-  }
-
-  const drawDetails = {};
-  for (const drawId of drawIds ?? []) {
-    drawDetails[drawId] = params.drawDetails?.[drawId] ?? { published: true };
-  }
-
-  /*
-  if (
-    !structureIds &&
-    (structureIdsToAdd?.length || structureIdsToRemove?.length)
-  ) {
-    structureIds = timeItem?.itemValue?.PUBLIC?.structureIds || [];
-  }
-
-  structureIds = (structureIds ?? []).filter(
-    (structureId) =>
-      !structureIdsToRemove?.length ||
-      !structureIdsToRemove.includes(structureId)
-  );
-
-  if (structureIdsToAdd?.length) {
-    structureIds = unique(structureIds.concat(...structureIdsToAdd));
-  }
-
-  if (!stages && (stagesToAdd?.length || stagesToRemove?.length)) {
-    stages = timeItem?.itemValue?.PUBLIC?.stages || [];
-  }
-
-  stages = (stages ?? []).filter(
-    (stage) => !stagesToRemove?.length || !stagesToRemove.includes(stage)
-  );
-
-  if (stagesToAdd?.length) {
-    stages = unique(stages.concat(...stagesToAdd));
-  }
-  */
 
   const updatedTimeItem = {
     itemValue: {
-      [status]: { ...pubState, drawIds },
+      [status]: { ...pubState, drawDetails },
     },
     itemType,
   };
@@ -148,12 +225,6 @@ export function publishEvent(params: PublishEventType) {
     policyDefinitions,
     event,
   });
-
-  // filter out drawData for unPublished draws
-  const publishState = eventData?.eventInfo?.publish?.state;
-  eventData.drawsData = eventData.drawsData.filter(
-    ({ drawId }) => publishState?.PUBLIC?.drawIds.includes(drawId)
-  );
 
   addNotice({
     payload: { eventData, tournamentId: tournamentRecord.tournamentId },
