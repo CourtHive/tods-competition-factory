@@ -269,7 +269,7 @@ export function deleteDrawDefinitions(params: DeleteDrawDefinitionArgs) {
         },
       },
     };
-    const result = addEventTimeItem({ event, timeItem });
+    const result = addEventTimeItem({ event, timeItem }); // NOTE: removePriorValues, perhaps policy driven?
     if (result.error) return { error: result.error };
   }
 
