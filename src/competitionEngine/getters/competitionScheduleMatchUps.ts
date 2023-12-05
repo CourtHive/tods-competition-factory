@@ -184,7 +184,7 @@ export function competitionScheduleMatchUps(
   ];
 
   // add any stage or structure filtering
-  if (detailsMap) {
+  if (detailsMap && Object.keys(detailsMap).length) {
     relevantMatchUps = relevantMatchUps.filter((matchUp) => {
       const { drawId, structureId, stage } = matchUp;
       if (!detailsMap[drawId]) return false;
