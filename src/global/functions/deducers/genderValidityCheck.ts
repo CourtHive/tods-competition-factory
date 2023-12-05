@@ -1,10 +1,11 @@
 import { GenderEnum, TypeEnum } from '../../../types/tournamentFromSchema';
 import { ResultType, decorateResult } from '../decorateResult';
-import { MIXED } from '../../../constants/genderConstants';
+import { ANY, MIXED } from '../../../constants/genderConstants';
 
 import { INVALID_GENDER } from '../../../constants/errorConditionConstants';
 
 type GenderValidityCheckArgs = {
+  referenceMatchUpType?: string;
   referenceGender?: GenderEnum;
   matchUpType?: string;
   gender?: GenderEnum;
@@ -19,24 +20,34 @@ export function genderValidityCheck({
   if (
     referenceGender &&
     gender &&
-    [GenderEnum.Male, GenderEnum.Female].includes(referenceGender)
-  ) {
-    const valid = gender === referenceGender;
-    return valid
-      ? { valid: true }
-      : decorateResult({
-          result: { valid: false, error: INVALID_GENDER },
-          context: { gender },
-          stack,
-        });
+    [GenderEnum.Male, GenderEnum.Female].includes(referenceGender) &&
+    referenceGender !== gender
+  )
+    return decorateResult({
+      result: { valid: false, error: INVALID_GENDER },
+      context: { gender },
+      stack,
+    });
+
+  if (referenceGender === MIXED) {
+    if (
+      gender === ANY ||
+      (gender === MIXED && matchUpType !== TypeEnum.Doubles)
+    )
+      return decorateResult({
+        info: 'MIXED events can not contain mixed singles or coed collections',
+        result: { error: INVALID_GENDER, valid: false },
+        stack,
+      });
   }
 
   if (
-    referenceGender === MIXED &&
-    (gender !== MIXED || matchUpType === TypeEnum.Singles)
+    referenceGender === ANY &&
+    gender === MIXED &&
+    matchUpType !== TypeEnum.Doubles
   )
     return decorateResult({
-      info: 'MIXED events can only contain MIXED doubles collections',
+      info: 'COED events can not contain MIXED singles collections',
       result: { error: INVALID_GENDER, valid: false },
       stack,
     });
