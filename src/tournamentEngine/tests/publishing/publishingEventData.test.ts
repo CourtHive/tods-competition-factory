@@ -824,5 +824,35 @@ it('can add or remove stages from a published draw', () => {
   result = competitionEngine.competitionScheduleMatchUps({
     usePublishState: true,
   });
-  // console.log(result);
+  expect(result.dateMatchUps.length).toEqual(0);
+  expect(result.groupInfo).toBeUndefined(); // not present when using publish state with no orderOfPlay
+
+  const vm = tournamentEngine.tournamentMatchUps({
+    contextFilters: { stages: [VOLUNTARY_CONSOLATION] },
+  });
+  expect(vm.pendingMatchUps.map((m) => m.stage).length).toBeGreaterThan(0);
+
+  ({ eventData, success: publishSuccess } = tournamentEngine.publishEvent({
+    drawDetails: {
+      ['drawId']: {
+        stageDetails: { VOLUNTARY_CONSOLATION: { published: true } },
+      },
+    },
+    policyDefinitions,
+    eventId,
+  }));
+  expect(publishSuccess).toEqual(true);
+
+  result = competitionEngine.publishOrderOfPlay();
+  expect(result.success).toEqual(true);
+
+  result = competitionEngine.competitionScheduleMatchUps({
+    usePublishState: true,
+  });
+  expect(result.groupInfo).toBeDefined();
+
+  // expect only { stage: VOLUNTARY_CONSOLATION } matchUps to be present
+  expect(
+    result.dateMatchUps.every(({ stage }) => stage === VOLUNTARY_CONSOLATION)
+  ).toEqual(true);
 });
