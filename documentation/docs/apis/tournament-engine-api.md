@@ -3168,19 +3168,13 @@ const policyDefinitions = Object.assign(
 
 const { eventData } = tournamentEngine.publishEvent({
   removePriorValues, // optional boolean - when true will delete prior timeItems
+  policyDefinitions, // optional - e.g. participant privacy policy (if not already attached)
+
   drawIdsToRemove, // optional - drawIds to remove from drawIds already published
   drawIdsToAdd, // optional - drawIds to add to drawIds already published
-  drawIds, // optional - array of drawIds within the event to publish
 
-  structureIdsToRemove, // optional - structureIds to remove from structureIds already published
-  structureIdsToAdd, // optional - structureIds to add to structureIds already published
-  structureIds, // optional array - specify structureIds to publish
+  drawDetails, // { [drawId]: { structureDetails, stageDetails, publishingDetail: { published: true, embargo: UTC Date string } }}
 
-  stagesToRemove, // optional array - stages to remove from stages already published
-  stagesToAdd, // optional array - stages to add to stages already published
-  stages, // optional array - specify stages to publish
-
-  policyDefinitions, // optional - e.g. participant privacy policy (if not already attached)
   eventId, // required - eventId of event to publish
 });
 ```
