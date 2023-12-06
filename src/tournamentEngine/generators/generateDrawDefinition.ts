@@ -345,6 +345,7 @@ export function generateDrawDefinition(
       gender: event?.gender,
       enforceGender,
       tieFormat,
+      event,
     });
     if (result.error) return decorateResult({ result, stack });
   }
@@ -379,7 +380,10 @@ export function generateDrawDefinition(
     // there is no need to attach to the drawDefinition
     if (!equivalentInScope) {
       if (tieFormat) {
-        const result = checkTieFormat(tieFormat);
+        const result = checkTieFormat({
+          eventType: event.eventType,
+          tieFormat,
+        });
         if (result.error) return decorateResult({ result, stack });
 
         drawDefinition.tieFormat = result.tieFormat ?? tieFormat;

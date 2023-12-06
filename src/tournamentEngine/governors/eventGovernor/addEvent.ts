@@ -75,7 +75,10 @@ export function addEvent({
 
   if (event.eventType === TypeEnum.Team) {
     if (event.tieFormat) {
-      const result = validateTieFormat({ tieFormat: event.tieFormat });
+      const result = validateTieFormat({
+        tieFormat: event.tieFormat,
+        eventType: event.eventType,
+      });
       if (result.error) return result;
     } else if (event.tieFormatName) {
       if (!tieFormats[event.tieFormatName]) {
