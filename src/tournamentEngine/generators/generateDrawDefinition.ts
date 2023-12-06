@@ -345,6 +345,7 @@ export function generateDrawDefinition(
       gender: event?.gender,
       enforceGender,
       tieFormat,
+      event,
     });
     if (result.error) return decorateResult({ result, stack });
   }

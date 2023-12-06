@@ -32,6 +32,7 @@ type ValidateTieFormatArgs = {
   category?: Category;
   gender?: GenderEnum;
   tieFormat?: any; // not using TieFormat type because incoming value is potentially invalid
+  event?: Event;
 };
 
 export function validateTieFormat(params: ValidateTieFormatArgs): ResultType {
@@ -41,6 +42,7 @@ export function validateTieFormat(params: ValidateTieFormatArgs): ResultType {
   const checkGender = !!(params?.enforceGender !== false && params?.gender);
   const checkCollectionIds = params?.checkCollectionIds;
   const tieFormat = params?.tieFormat;
+  const event = params?.event;
 
   const stack = 'validateTieFormat';
   const errors: string[] = [];
@@ -86,6 +88,7 @@ export function validateTieFormat(params: ValidateTieFormatArgs): ResultType {
           checkCollectionIds,
           checkCategory,
           checkGender,
+          event,
         });
 
       if (valid) {

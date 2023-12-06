@@ -28,6 +28,7 @@ export function tieFormatGenderValidityCheck({
   gender,
 }: GenderValidityCheckArgs): ResultType {
   const stack = 'tieFormatGenderValidityCheck';
+  console.log('EVENT: ', referenceEvent);
   if (
     referenceGender &&
     gender &&
