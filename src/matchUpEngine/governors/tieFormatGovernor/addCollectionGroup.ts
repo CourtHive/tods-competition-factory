@@ -45,7 +45,7 @@ export function addCollectionGroup({
   const originalValueGoal = existingTieFormat?.winCriteria.valueGoal;
   const tieFormat = copyTieFormat(existingTieFormat);
 
-  result = validateTieFormat({ tieFormat, eventType: event.eventType });
+  result = validateTieFormat({ tieFormat });
   if (result.error) return decorateResult({ result, stack });
 
   // if any of the collectionIds are already part of a different collectionGroup, throw an error

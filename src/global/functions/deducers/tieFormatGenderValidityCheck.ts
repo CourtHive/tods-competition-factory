@@ -1,19 +1,12 @@
 import { ResultType, decorateResult } from '../decorateResult';
 
 import { INVALID_GENDER } from '../../../constants/errorConditionConstants';
+import { GenderEnum, TypeEnum } from '../../../types/tournamentFromSchema';
 import { ANY, MIXED } from '../../../constants/genderConstants';
-import { TEAM } from '../../../constants/matchUpTypes';
-import {
-  Event,
-  GenderEnum,
-  TypeEnum,
-} from '../../../types/tournamentFromSchema';
 
 type GenderValidityCheckArgs = {
   referenceGender?: GenderEnum;
-  referenceEvent?: Event;
   matchUpType?: string;
-  eventType?: TypeEnum;
   gender?: GenderEnum;
 };
 
@@ -39,12 +32,9 @@ export function tieFormatGenderValidityCheck(
       stack,
     });
 
-  const eventType = params.eventType ?? params.referenceEvent?.eventType;
   if (
     referenceGender === MIXED &&
-    (eventType !== TEAM ||
-      gender === ANY ||
-      (gender === MIXED && matchUpType !== TypeEnum.Doubles))
+    (gender === ANY || (gender === MIXED && matchUpType !== TypeEnum.Doubles))
   ) {
     return decorateResult({
       result: { error: INVALID_GENDER, valid: false },

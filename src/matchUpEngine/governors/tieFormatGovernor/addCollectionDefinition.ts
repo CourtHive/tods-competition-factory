@@ -146,8 +146,7 @@ export function addCollectionDefinition({
   const existingTieFormat = matchUp?.tieFormat ?? result?.tieFormat;
   const tieFormat = copyTieFormat(existingTieFormat);
 
-  const eventType = event?.eventType;
-  result = validateTieFormat({ tieFormat, eventType });
+  result = validateTieFormat({ tieFormat });
   if (result?.error) {
     return decorateResult({ result: { error: result.error }, stack });
   }
@@ -197,7 +196,7 @@ export function addCollectionDefinition({
   let targetMatchUps: any[] = [];
 
   const prunedTieFormat = definedAttributes(tieFormat);
-  result = validateTieFormat({ tieFormat: prunedTieFormat, eventType });
+  result = validateTieFormat({ tieFormat: prunedTieFormat });
   if (result?.error) {
     return decorateResult({ result: { error: result.error }, stack });
   }

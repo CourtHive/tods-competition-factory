@@ -6,7 +6,7 @@ import {
 } from '../../../global/functions/decorateResult';
 
 import { Event, Tournament } from '../../../types/tournamentFromSchema';
-import { PUBLISH, STATUS } from '../../../constants/timeItemConstants';
+import { PUBLIC, PUBLISH, STATUS } from '../../../constants/timeItemConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { isObject } from '../../../utilities/objects';
 import {
@@ -34,12 +34,14 @@ type SetEventDisplaySettings = {
   tournamentRecord: Tournament;
   removePriorValues?: boolean;
   eventId?: string;
+  status?: string;
   event: Event;
 };
 export function setEventDisplay({
   removePriorValues,
   tournamentRecord,
   displaySettings,
+  status = PUBLIC,
   event,
 }: SetEventDisplaySettings): ResultType {
   if (!tournamentRecord)
@@ -57,9 +59,7 @@ export function setEventDisplay({
   })?.timeItem?.itemValue?.[status];
 
   const updatedTimeItem = {
-    itemValue: {
-      [status]: { ...pubState, displaySettings },
-    },
+    itemValue: { [status]: { ...pubState, displaySettings } },
     itemType,
   };
   addEventTimeItem({ event, timeItem: updatedTimeItem, removePriorValues });
