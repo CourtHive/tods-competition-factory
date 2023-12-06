@@ -2,6 +2,7 @@ import { publishEventSeeding, unPublishEventSeeding } from './eventSeeding';
 import { publishOrderOfPlay, unPublishOrderOfPlay } from './orderOfPlay';
 import { getTournamentInfo } from './getTournamentInfo';
 import { getAllEventData } from './getAllEventData';
+import { setEventDisplay } from './setEventDisplay';
 import { unPublishEvent } from './unPublishEvent';
 import { getEventData } from './getEventData';
 import { getVenueData } from './getVenueData';
@@ -20,6 +21,7 @@ const publishingGovernor = {
 
   unPublishEventSeeding,
   publishEventSeeding,
+  setEventDisplay,
   unPublishEvent,
   publishEvent,
 

@@ -70,7 +70,6 @@ export function publishEvent(params: PublishEventType) {
     ...params.policyDefinitions,
   };
 
-  const itemType = `${PUBLISH}.${STATUS}`;
   const eventDrawIds = event.drawDefinitions?.map(({ drawId }) => drawId) ?? [];
 
   const keyedDrawIds = params.drawDetails
@@ -93,6 +92,7 @@ export function publishEvent(params: PublishEventType) {
     });
   }
 
+  const itemType = `${PUBLISH}.${STATUS}`;
   const pubState = getEventTimeItem({
     itemType,
     event,
