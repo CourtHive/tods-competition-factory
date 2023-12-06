@@ -1,12 +1,11 @@
-import { addEventTimeItem } from '../tournamentGovernor/addTimeItem';
-import { getEventTimeItem } from '../queryGovernor/timeItems';
+import { modifyEventPublishStatus } from './modifyEventPublishStatus';
 import {
   ResultType,
   decorateResult,
 } from '../../../global/functions/decorateResult';
 
 import { Event, Tournament } from '../../../types/tournamentFromSchema';
-import { PUBLIC, PUBLISH, STATUS } from '../../../constants/timeItemConstants';
+import { PUBLIC } from '../../../constants/timeItemConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { isObject } from '../../../utilities/objects';
 import {
@@ -52,17 +51,14 @@ export function setEventDisplay({
 
   // TODO: validate displaySettings
 
-  const itemType = `${PUBLISH}.${STATUS}`;
-  const pubState = getEventTimeItem({
-    itemType,
+  const result = modifyEventPublishStatus({
+    attribute: 'displaySettings',
+    values: displaySettings,
+    removePriorValues,
+    status,
     event,
-  })?.timeItem?.itemValue?.[status];
-
-  const updatedTimeItem = {
-    itemValue: { [status]: { ...pubState, displaySettings } },
-    itemType,
-  };
-  addEventTimeItem({ event, timeItem: updatedTimeItem, removePriorValues });
+  });
+  if (result.error) return result;
 
   return { ...SUCCESS };
 }
