@@ -29,6 +29,7 @@ type ValidateTieFormatArgs = {
   checkCollectionIds?: boolean;
   enforceCategory?: boolean;
   enforceGender?: boolean;
+  eventType?: TypeEnum;
   category?: Category;
   gender?: GenderEnum;
   tieFormat?: any; // not using TieFormat type because incoming value is potentially invalid
@@ -84,6 +85,7 @@ export function validateTieFormat(params: ValidateTieFormatArgs): ResultType {
         validateCollectionDefinition({
           referenceCategory: params.category,
           referenceGender: params.gender,
+          eventType: params.eventType,
           collectionDefinition,
           checkCollectionIds,
           checkCategory,
@@ -148,6 +150,7 @@ type ValidateCollectionDefinitionArgs = {
   referenceGender?: GenderEnum;
   checkCategory?: boolean;
   checkGender?: boolean;
+  eventType?: TypeEnum;
   event?: Event;
 };
 export function validateCollectionDefinition({
@@ -157,6 +160,7 @@ export function validateCollectionDefinition({
   checkGender = true,
   referenceCategory,
   referenceGender,
+  eventType,
   event,
 }: ValidateCollectionDefinitionArgs) {
   referenceGender = referenceGender ?? event?.gender;
@@ -238,7 +242,7 @@ export function validateCollectionDefinition({
 
   if (checkGender) {
     const result = tieFormatGenderValidityCheck({
-      referenceEvent: event,
+      eventType: eventType ?? event?.eventType,
       referenceGender,
       matchUpType,
       gender,
@@ -275,11 +279,20 @@ export function validateCollectionDefinition({
   return { valid: true };
 }
 
+type CheckTieFormatArgs = {
+  tieFormat: TieFormat;
+  eventType?: TypeEnum;
+};
 // add collectionIds if missing
-export function checkTieFormat(
-  tieFormat
-): ResultType & { tieFormat?: TieFormat } {
-  const result = validateTieFormat({ tieFormat, checkCollectionIds: false });
+export function checkTieFormat({
+  tieFormat,
+  eventType,
+}: CheckTieFormatArgs): ResultType & { tieFormat?: TieFormat } {
+  const result = validateTieFormat({
+    checkCollectionIds: false,
+    eventType,
+    tieFormat,
+  });
   if (result.error) return result;
 
   for (const collectionDefinition of tieFormat.collectionDefinitions) {

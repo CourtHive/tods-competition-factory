@@ -13,6 +13,7 @@ type GenderValidityCheckArgs = {
   referenceGender?: GenderEnum;
   referenceEvent?: Event;
   matchUpType?: string;
+  eventType?: TypeEnum;
   gender?: GenderEnum;
 };
 
@@ -21,14 +22,11 @@ export const mixedGenderError =
 export const anyMixedError =
   'events with { gender: ANY } can not contain MIXED singles collections';
 
-export function tieFormatGenderValidityCheck({
-  referenceEvent,
-  referenceGender,
-  matchUpType,
-  gender,
-}: GenderValidityCheckArgs): ResultType {
+export function tieFormatGenderValidityCheck(
+  params: GenderValidityCheckArgs
+): ResultType {
   const stack = 'tieFormatGenderValidityCheck';
-  console.log('EVENT: ', referenceEvent);
+  const { referenceGender, matchUpType, gender } = params;
   if (
     referenceGender &&
     gender &&
@@ -41,9 +39,10 @@ export function tieFormatGenderValidityCheck({
       stack,
     });
 
+  const eventType = params.eventType ?? params.referenceEvent?.eventType;
   if (
     referenceGender === MIXED &&
-    (referenceEvent?.eventType !== TEAM ||
+    (eventType !== TEAM ||
       gender === ANY ||
       (gender === MIXED && matchUpType !== TypeEnum.Doubles))
   ) {
