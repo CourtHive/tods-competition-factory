@@ -10,6 +10,13 @@ import { generateRange } from '../../utilities';
 
 import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '../../constants/matchUpTypes';
 import { DIRECT_ACCEPTANCE } from '../../constants/entryStatusConstants';
+import {
+  CollectionAssignment,
+  DrawDefinition,
+  Event,
+  TieFormat,
+  Tournament,
+} from '../../types/tournamentFromSchema';
 import { FEMALE, MALE, MIXED } from '../../constants/genderConstants';
 import { COMPETITOR } from '../../constants/participantRoles';
 import { DESCENDING } from '../../constants/sortingConstants';
@@ -18,6 +25,7 @@ import { TEAM_EVENT } from '../../constants/eventConstants';
 import { PAIR } from '../../constants/participantConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import { RANKING } from '../../constants/scaleConstants';
+import { LineUp } from '../../types/factoryTypes';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   INVALID_EVENT_TYPE,
@@ -25,11 +33,20 @@ import {
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
 } from '../../constants/errorConditionConstants';
-import { LineUp } from '../../types/factoryTypes';
-import { CollectionAssignment } from '../../types/tournamentFromSchema';
+
+type GenerateLineUpsArgs = {
+  useDefaultEventRanking?: boolean;
+  tournamentRecord: Tournament;
+  drawDefinition?: DrawDefinition;
+  scaleAccessor: any;
+  singlesOnly?: boolean;
+  tieFormat?: TieFormat;
+  attach?: boolean;
+  event: Event;
+};
 
 // by default if there are no scaleValues matching the scaleAccessor then participants will be assigned in the array order of [team].individidualParticipantIds
-export function generateLineUps(params) {
+export function generateLineUps(params: GenerateLineUpsArgs) {
   let { tieFormat } = params;
   const {
     useDefaultEventRanking,
@@ -47,9 +64,11 @@ export function generateLineUps(params) {
     return { error: DRAW_DEFINITION_NOT_FOUND };
 
   tieFormat =
-    tieFormat || resolveTieFormat({ drawDefinition, event })?.tieFormat;
+    tieFormat ?? resolveTieFormat({ drawDefinition, event })?.tieFormat;
 
-  if (validateTieFormat({ tieFormat }).error)
+  if (
+    validateTieFormat({ tieFormat, eventType: params.event?.eventType }).error
+  )
     return { error: INVALID_TIE_FORMAT };
 
   if (typeof scaleAccessor !== 'object' && !useDefaultEventRanking)
@@ -57,9 +76,11 @@ export function generateLineUps(params) {
 
   const lineUps: { [key: string]: LineUp } = {};
 
-  const targetEntries = (drawDefinition?.entries || event.entries).filter(
-    (entry) => entry?.entryStatus === DIRECT_ACCEPTANCE
-  );
+  const targetEntries = (
+    drawDefinition?.entries ??
+    event?.entries ??
+    []
+  ).filter((entry) => entry?.entryStatus === DIRECT_ACCEPTANCE);
 
   const participantIds = targetEntries.map(getParticipantId);
   const { participants = [] } = getParticipants({
@@ -75,7 +96,7 @@ export function generateLineUps(params) {
   const formatScaleType = (type) => (type === RANKING ? 'rankings' : 'ratings');
 
   const defaultScaleName =
-    event?.category?.categoryName || event?.category?.ageCategoryCode;
+    event?.category?.categoryName ?? event?.category?.ageCategoryCode;
   const {
     scaleName = defaultScaleName,
     scaleType = RANKING,
@@ -115,7 +136,7 @@ export function generateLineUps(params) {
   const doublesScaleSort = (a, b) => sortMethod(a, b, DOUBLES_MATCHUP);
 
   const participantIdPairs: string[][] = [];
-  const collectionDefinitions = tieFormat.collectionDefinitions || [];
+  const collectionDefinitions = tieFormat?.collectionDefinitions ?? [];
   for (const teamParticipant of teamParticipants) {
     const singlesSort =
       teamParticipant.individualParticipants.sort(singlesScaleSort);
@@ -139,8 +160,9 @@ export function generateLineUps(params) {
         generateRange(0, singlesMatchUp ? 1 : 2).forEach((i) => {
           const nextParticipantId = typeSort.find((participant) => {
             const targetGender =
-              ([MALE, FEMALE].includes(gender) && gender) ||
-              (gender === MIXED && [MALE, FEMALE][i]);
+              gender &&
+              (([MALE, FEMALE].includes(gender) && gender) ||
+                (gender === MIXED && [MALE, FEMALE][i]));
             return (
               (!targetGender || targetGender === participant.person.sex) &&
               !collectionParticipantIds.includes(participant.participantId)

@@ -113,7 +113,8 @@ export function generateVoluntaryConsolation(
 
   let { tieFormat, matchUpType } = params;
   if (tieFormat) {
-    const result = validateTieFormat({ tieFormat });
+    const eventType = params.event?.eventType;
+    const result = validateTieFormat({ tieFormat, eventType });
     if (result.error) return result;
   }
 

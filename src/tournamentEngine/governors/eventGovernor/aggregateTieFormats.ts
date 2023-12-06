@@ -49,12 +49,13 @@ export function aggregateTieFormats({
       }
     };
 
-    checkTieFormat(event);
+    const eventType = event.eventType;
+    checkTieFormat({ tieFormat: event.tieFormat, eventType });
 
     for (const drawDefinition of event.drawDefinitions ?? []) {
-      checkTieFormat(drawDefinition);
+      checkTieFormat({ tieFormat: drawDefinition.tieFormat, eventType });
       for (const structure of drawDefinition.structures ?? []) {
-        checkTieFormat(structure);
+        checkTieFormat({ tieFormat: structure.tieFormat, eventType });
       }
     }
 
