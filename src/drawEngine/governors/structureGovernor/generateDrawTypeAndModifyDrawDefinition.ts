@@ -32,6 +32,7 @@ import { SINGLES } from '../../../constants/matchUpTypes';
 import {
   DrawDefinition,
   DrawLink,
+  Event,
   MatchUp,
   Structure,
   TieFormat,
@@ -51,6 +52,7 @@ type GenerateDrawTypeAndModify = {
   tieFormat?: TieFormat;
   drawSize: number;
   isMock?: boolean;
+  event?: Event;
 };
 
 export function generateDrawTypeAndModifyDrawDefinition(
@@ -80,7 +82,8 @@ export function generateDrawTypeAndModifyDrawDefinition(
 
   let { tieFormat, matchUpType } = params;
   if (tieFormat) {
-    const result = validateTieFormat({ tieFormat });
+    const eventType = params.event?.eventType;
+    const result = validateTieFormat({ tieFormat, eventType });
     if (result.error) return result;
   }
 

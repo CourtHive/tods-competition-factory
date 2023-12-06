@@ -331,7 +331,10 @@ export function modifyCollectionDefinition({
   }
 
   const modifiedTieFormat = definedAttributes(tieFormat);
-  result = validateTieFormat({ tieFormat: modifiedTieFormat });
+  result = validateTieFormat({
+    tieFormat: modifiedTieFormat,
+    eventType: event?.eventType,
+  });
   if (result.error) {
     return decorateResult({ result, stack });
   }

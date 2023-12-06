@@ -73,7 +73,7 @@ export function generateTieMatchUpScore(
 
   if (!tieFormat) return { error: MISSING_TIE_FORMAT };
 
-  const result = validateTieFormat({ tieFormat });
+  const result = validateTieFormat({ tieFormat, eventType: event?.eventType });
   if (result.error) return result;
 
   const collectionDefinitions = tieFormat?.collectionDefinitions || [];
