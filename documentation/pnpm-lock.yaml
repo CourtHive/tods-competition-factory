@@ -54,8 +54,8 @@ dependencies:
     specifier: 0.18.0
     version: 0.18.0(@types/react@18.2.42)(react@18.2.0)
   tods-competition-factory:
-    specifier: 1.8.44
-    version: 1.8.44
+    specifier: 1.8.45
+    version: 1.8.45
 
 packages:
 
@@ -4487,7 +4487,7 @@ packages:
       classnames: 2.3.2
       dayjs: 1.11.10
       husky: 8.0.3
-      tods-competition-factory: 1.8.44
+      tods-competition-factory: 1.8.45
     dev: false
 
   /cross-fetch@3.1.5:
@@ -8836,7 +8836,7 @@ packages:
   /puppeteer@18.2.1:
     resolution: {integrity: sha512-7+UhmYa7wxPh2oMRwA++k8UGVDxh3YdWFB52r9C3tM81T6BU7cuusUSxImz0GEYSOYUKk/YzIhkQ6+vc0gHbxQ==}
     engines: {node: '>=14.1.0'}
-    deprecated: < 19.4.0 is no longer supported
+    deprecated: < 21.3.7 is no longer supported
     requiresBuild: true
     dependencies:
       https-proxy-agent: 5.0.1
@@ -10155,8 +10155,8 @@ packages:
       is-number: 7.0.0
     dev: false
 
-  /tods-competition-factory@1.8.44:
-    resolution: {integrity: sha512-R+fVIBAQ7BSyQXwV2TNF/7nUFpenwnQ1oThQyz4GTPEOAovaAi2eKm0L1zxZKTPc30OfNB2JC99XpbCmYIv91g==}
+  /tods-competition-factory@1.8.45:
+    resolution: {integrity: sha512-YwdMv1rQef3T9NzkexWp3f78XCDFt/WQfaEY1pu8A0fztvgFuW2rqxp+T2HmHkfoBn+LsIcooslYzeCkbZGRVg==}
     engines: {node: '>=18.17.1 < 21'}
     dev: false
 
