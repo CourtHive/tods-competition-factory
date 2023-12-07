@@ -1,3 +1,4 @@
+export const ACTIVE_SUSPENSION = 'activeSuspension';
 export const APPLIED_POLICIES = 'appliedPolicies';
 export const AUDIT_POSITION_ACTIONS = 'positionActions';
 export const CONTEXT = 'context';
@@ -9,6 +10,7 @@ export const DRAW_DELETIONS = 'drawDeletions';
 export const DRAW_PROFILE = 'drawProfile';
 export const ENTRY_PROFILE = 'entryProfile';
 export const EVENT_PROFILE = 'eventProfile';
+export const EVENT_WITHDRAWAL_REQUESTS = 'eventWithdrawalRequests';
 export const FACTORY = 'factory';
 export const FLIGHT_PROFILE = 'flightProfile';
 export const GROUPING_ATTRIBUTE = 'groupingAttribute';
@@ -28,6 +30,7 @@ export const TALLY = 'tally';
 export const TIE_FORMAT_MODIFICATIONS = 'tieFormatModification';
 
 export const extensionConstants = {
+  ACTIVE_SUSPENSION,
   APPLIED_POLICIES,
   AUDIT_POSITION_ACTIONS,
   CONTEXT, // used to capture, e.g. context in which a venue was added
@@ -39,6 +42,7 @@ export const extensionConstants = {
   DRAW_PROFILE,
   ENTRY_PROFILE, // used for drawGeneration; not relevant for anonymized tournaments
   EVENT_PROFILE,
+  EVENT_WITHDRAWAL_REQUESTS,
   FLIGHT_PROFILE,
   GROUPING_ATTRIBUTE, // for generating teams; not relevant for anonymized tournaments
   LINEUPS,
