@@ -1,21 +1,32 @@
 import { addEventTimeItem } from '../tournamentGovernor/addTimeItem';
 import { getEventPublishStatus } from './getEventPublishStatus';
+import { isObject } from '../../../utilities/objects';
 
 import { PUBLIC, PUBLISH, STATUS } from '../../../constants/timeItemConstants';
+import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
+import { Event } from '../../../types/tournamentFromSchema';
+
+type ModifyEventPublishStatus = {
+  statusObject: { [key: string]: any };
+  removePriorValues?: boolean;
+  status?: string;
+  event: Event;
+};
 
 export function modifyEventPublishStatus({
   removePriorValues = true,
   status = PUBLIC,
-  attribute,
-  values,
+  statusObject,
   event,
-}) {
-  const pubState = getEventPublishStatus({ event, status });
+}: ModifyEventPublishStatus) {
+  if (!isObject(statusObject)) return { error: INVALID_VALUES };
+  const publishStatus = getEventPublishStatus({ event, status });
   const itemType = `${PUBLISH}.${STATUS}`;
   const updatedTimeItem = {
-    itemValue: { [status]: { ...pubState, [attribute]: values } },
+    itemValue: { [status]: { ...publishStatus, ...statusObject } },
     itemType,
   };
+
   return addEventTimeItem({
     timeItem: updatedTimeItem,
     removePriorValues,

@@ -1,5 +1,7 @@
 import { scoreHasValue } from '../../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import { getAppliedPolicies } from '../../../../global/functions/deducers/getAppliedPolicies';
+import { modifyEventPublishStatus } from '../../publishingGovernor/modifyEventPublishStatus';
+import { getEventPublishStatus } from '../../publishingGovernor/getEventPublishStatus';
 import { addExtension } from '../../../../global/functions/producers/addExtension';
 import { findExtension } from '../../../../global/functions/deducers/findExtension';
 import { allDrawMatchUps } from '../../../getters/matchUpsGetter/matchUpsGetter';
@@ -8,12 +10,10 @@ import { addEventExtension } from '../../tournamentGovernor/addRemoveExtensions'
 import { checkSchedulingProfile } from '../../scheduleGovernor/schedulingProfile';
 import { getDrawStructures } from '../../../../drawEngine/getters/findStructure';
 import { decorateResult } from '../../../../global/functions/decorateResult';
-import { addEventTimeItem } from '../../tournamentGovernor/addTimeItem';
 import { publishEvent } from '../../publishingGovernor/publishEvent';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 import { definedAttributes } from '../../../../utilities/objects';
 import { addNotice } from '../../../../global/state/globalState';
-import { getTimeItem } from '../../queryGovernor/timeItems';
 import { makeDeepCopy } from '../../../../utilities';
 import { findEvent } from '../../../getters/findEvent';
 import {
@@ -40,11 +40,6 @@ import {
   DRAW_DELETIONS,
   FLIGHT_PROFILE,
 } from '../../../../constants/extensionConstants';
-import {
-  PUBLIC,
-  PUBLISH,
-  STATUS,
-} from '../../../../constants/timeItemConstants';
 
 type DeleteDrawDefinitionArgs = {
   policyDefinitions?: PolicyDefinitions;
@@ -123,9 +118,7 @@ export function deleteDrawDefinitions(params: DeleteDrawDefinitionArgs) {
     appliedPolicies?.[POLICY_TYPE_SCORING]?.allowDeletionWithScoresPresent
       ?.drawDefinitions;
 
-  const itemType = `${PUBLISH}.${STATUS}`;
-  const { timeItem } = getTimeItem({ element: event, itemType });
-  const publishStatus = timeItem?.itemValue?.[PUBLIC] ?? {};
+  const publishStatus = getEventPublishStatus({ event }) ?? {};
 
   let updatedDrawIds =
     publishStatus.drawIds ??
@@ -260,16 +253,10 @@ export function deleteDrawDefinitions(params: DeleteDrawDefinitionArgs) {
         published: true,
       };
     }
-    const timeItem = {
-      itemType: `${PUBLISH}.${STATUS}`,
-      itemValue: {
-        [PUBLIC]: {
-          ...publishStatus,
-          drawDetails,
-        },
-      },
-    };
-    const result = addEventTimeItem({ event, timeItem }); // NOTE: removePriorValues, perhaps policy driven?
+    const result = modifyEventPublishStatus({
+      statusObject: { drawDetails },
+      event,
+    });
     if (result.error) return { error: result.error };
   }
 

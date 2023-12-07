@@ -1,13 +1,13 @@
 import { getParticipants } from '../../getters/participants/getParticipants';
 import { generateRange, makeDeepCopy } from '../../../utilities';
+import { getEventPublishStatus } from './getEventPublishStatus';
 import { isConvertableInteger } from '../../../utilities/math';
-import { getEventTimeItem } from '../queryGovernor/timeItems';
 import { getTournamentInfo } from './getTournamentInfo';
 import { getVenueData } from './getVenueData';
 import { getDrawData } from './getDrawData';
 
-import { PUBLIC, PUBLISH, STATUS } from '../../../constants/timeItemConstants';
 import { Event, Tournament } from '../../../types/tournamentFromSchema';
+import { PUBLIC } from '../../../constants/timeItemConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   ParticipantsProfile,
@@ -55,12 +55,7 @@ export function getEventData(params: GetEventDataArgs): {
   const { eventId } = event;
   const { tournamentId, endDate } = tournamentRecord;
 
-  const { timeItem } = getEventTimeItem({
-    itemType: `${PUBLISH}.${STATUS}`,
-    event,
-  });
-
-  const publishStatus = timeItem?.itemValue?.[status];
+  const publishStatus = getEventPublishStatus({ event, status });
 
   const { participants: tournamentParticipants } = getParticipants({
     withGroupings: true,
@@ -202,10 +197,7 @@ export function getEventData(params: GetEventDataArgs): {
     drawsData,
   };
 
-  eventData.eventInfo.publish = {
-    createdAt: timeItem?.createdAt,
-    state: timeItem?.itemValue,
-  };
+  eventData.eventInfo.publish = publishStatus;
 
   return { ...SUCCESS, eventData };
 }

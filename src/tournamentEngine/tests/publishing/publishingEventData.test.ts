@@ -8,7 +8,6 @@ import PARTICIPANT_PRIVACY_DEFAULT from '../../../fixtures/policies/POLICY_PRIVA
 import { DIRECT_ACCEPTANCE } from '../../../constants/entryStatusConstants';
 import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
 import { INDIVIDUAL } from '../../../constants/participantConstants';
-import { PUBLIC } from '../../../constants/timeItemConstants';
 import { SINGLES } from '../../../constants/matchUpTypes';
 import { ROUND_NAMING_POLICY } from './roundNamingPolicy';
 import {
@@ -178,8 +177,7 @@ it('can generate payload for publishing a Round Robin with Playoffs', () => {
   });
   expect(publishSuccess).toEqual(true);
   expect(
-    eventData.eventInfo.publish.state[PUBLIC].drawDetails[drawId]
-      .publishingDetail
+    eventData.eventInfo.publish.drawDetails[drawId].publishingDetail
   ).toEqual({ published: true });
 
   expect(eventData.eventInfo.eventId).toEqual(eventId);
@@ -333,7 +331,7 @@ it('can generate payload for publishing a compass draw', () => {
   });
   expect(publishSuccess).toEqual(true);
   expect(
-    eventData.eventInfo.publish.state[PUBLIC].drawDetails[drawDefinition.drawId]
+    eventData.eventInfo.publish.drawDetails[drawDefinition.drawId]
       .publishingDetail
   ).toEqual({ published: true });
 
@@ -468,8 +466,7 @@ it('can generate payload for publishing a FIRST_MATCH_LOSER_CONSOLATION draw', (
 
   const { drawId } = drawDefinition;
   expect(
-    eventData.eventInfo.publish.state[PUBLIC].drawDetails[drawId]
-      .publishingDetail
+    eventData.eventInfo.publish.drawDetails[drawId].publishingDetail
   ).toEqual({ published: true });
 
   expect(eventData.eventInfo.eventId).toEqual(eventId);
@@ -561,8 +558,7 @@ it('can filter out unPublished draws when publishing event', () => {
   });
   expect(publishSuccess).toEqual(true);
   expect(
-    eventData.eventInfo.publish.state[PUBLIC].drawDetails[drawId]
-      .publishingDetail
+    eventData.eventInfo.publish.drawDetails[drawId].publishingDetail
   ).toEqual({ published: true });
 
   result = tournamentEngine.unPublishEvent();
@@ -779,7 +775,7 @@ it('can add or remove stages from a published draw', () => {
   ]);
 
   event = tournamentEngine.getEvent({ drawId }).event;
-  expect(event.timeItems.length).toEqual(4);
+  expect(event.timeItems.length).toEqual(1);
 
   ({ eventData, success: publishSuccess } = tournamentEngine.publishEvent({
     drawDetails: {

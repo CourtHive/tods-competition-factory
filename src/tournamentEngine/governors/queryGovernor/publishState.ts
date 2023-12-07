@@ -1,7 +1,6 @@
+import { getEventPublishStatus } from '../publishingGovernor/getEventPublishStatus';
 import { getDrawPublishStatus } from '../publishingGovernor/getDrawPublishStatus';
-import { getEventTimeItem } from './timeItems';
 
-import { PUBLIC, PUBLISH, STATUS } from '../../../constants/timeItemConstants';
 import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
@@ -36,13 +35,8 @@ export function bulkUpdatePublishedEventIds({ tournamentRecord, outcomes }) {
   );
   const publishedEventIds = relevantEvents
     .filter((event) => {
-      const { timeItem } = getEventTimeItem({
-        itemType: `${PUBLISH}.${STATUS}`,
-        event,
-      });
-      const pubState = timeItem?.itemValue;
-      const pubStatus = pubState?.[PUBLIC];
-      const { drawDetails, drawIds } = pubStatus;
+      const pubStatus = getEventPublishStatus({ event });
+      const { drawDetails, drawIds } = pubStatus ?? {};
 
       const { eventId } = event;
       const publishedDrawIds = eventIdsMap[eventId].filter((drawId) => {

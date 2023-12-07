@@ -1,11 +1,10 @@
 import { getScheduleTiming } from '../scheduleGovernor/matchUpFormatTiming/getScheduleTiming';
 import { getDrawMatchUps } from '../../../drawEngine/getters/getMatchUps/drawMatchUps';
 import { getVenuesAndCourts } from '../../getters/venueGetter';
-import { getEventTimeItem } from '../queryGovernor/timeItems';
 import { getTournamentInfo } from './getTournamentInfo';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
-import { PUBLISH, STATUS } from '../../../constants/timeItemConstants';
+import { getEventPublishStatus } from './getEventPublishStatus';
 
 export function getAllEventData({ tournamentRecord, policyDefinitions }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -90,14 +89,11 @@ export function getAllEventData({ tournamentRecord, policyDefinitions }) {
       };
     });
 
-    const { timeItem } = getEventTimeItem({
-      itemType: `${PUBLISH}.${STATUS}`,
-      event,
-    });
+    const publish = getEventPublishStatus({ event });
 
     Object.assign(eventInfo, {
-      publish: timeItem?.itemValue,
       drawsData,
+      publish,
     });
 
     return eventInfo;

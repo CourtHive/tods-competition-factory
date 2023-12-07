@@ -1,3 +1,4 @@
+import { modifyEventPublishStatus } from './modifyEventPublishStatus';
 import { addEventTimeItem } from '../tournamentGovernor/addTimeItem';
 import { addNotice } from '../../../global/state/globalState';
 import { getEventTimeItem } from '../queryGovernor/timeItems';
@@ -34,6 +35,18 @@ export function unPublishEvent({
   const updatedTimeItem = { itemValue, itemType };
 
   addEventTimeItem({ event, timeItem: updatedTimeItem, removePriorValues });
+
+  modifyEventPublishStatus({
+    statusObject: {
+      structureIds: undefined,
+      drawIds: undefined,
+      seeding: undefined,
+    },
+    removePriorValues,
+    status,
+    event,
+  });
+
   addNotice({
     topic: UNPUBLISH_EVENT,
     payload: {

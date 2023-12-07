@@ -1,5 +1,7 @@
+import { getEventPublishStatus } from '../../tournamentEngine/governors/publishingGovernor/getEventPublishStatus';
 import { getDrawPublishStatus } from '../../tournamentEngine/governors/publishingGovernor/getDrawPublishStatus';
 import { getSchedulingProfile } from '../governors/scheduleGovernor/schedulingProfile/schedulingProfile';
+import { getTournamentTimeItem } from '../../tournamentEngine/governors/queryGovernor/timeItems';
 import { scheduledSortedMatchUps } from '../../global/sorting/scheduledSortedMatchUps';
 import { MatchUpFilters } from '../../drawEngine/getters/getMatchUps/filterMatchUps';
 import { getTournamentId } from '../../global/state/globalState';
@@ -7,10 +9,6 @@ import { getVenuesAndCourts } from './venuesAndCourtsGetter';
 import { courtGridRows } from '../generators/courtGridRows';
 import { competitionMatchUps } from './matchUpsGetter';
 import { isObject } from '../../utilities/objects';
-import {
-  getEventTimeItem,
-  getTournamentTimeItem,
-} from '../../tournamentEngine/governors/queryGovernor/timeItems';
 
 import { MatchUpStatusEnum, Venue } from '../../types/tournamentFromSchema';
 import { PUBLIC, PUBLISH, STATUS } from '../../constants/timeItemConstants';
@@ -301,12 +299,8 @@ function getCompetitionPublishedDrawDetails({
 
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     for (const event of tournamentRecord.events ?? []) {
-      const eventPubState = getEventTimeItem({
-        itemType: `${PUBLISH}.${STATUS}`,
-        event,
-      })?.timeItem?.itemValue?.[PUBLIC];
-
-      const drawDetails = eventPubState?.drawDetails;
+      const eventPubStatus = getEventPublishStatus({ event });
+      const drawDetails = eventPubStatus?.drawDetails;
 
       if (isObject(drawDetails)) {
         Object.assign(detailsMap, drawDetails);
@@ -315,9 +309,9 @@ function getCompetitionPublishedDrawDetails({
             getDrawPublishStatus({ drawId, drawDetails })
           )
         );
-      } else if (eventPubState?.drawIds?.length) {
+      } else if (eventPubStatus?.drawIds?.length) {
         // LEGACY - deprecate
-        drawIds.push(...eventPubState.drawIds);
+        drawIds.push(...eventPubStatus.drawIds);
       }
     }
   }

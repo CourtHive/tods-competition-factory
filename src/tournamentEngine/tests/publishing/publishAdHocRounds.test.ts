@@ -67,8 +67,9 @@ it('can publish only specific rounds of AD_HOC structures', () => {
   ).toEqual(['1', '2']);
 
   expect(
-    result.eventData.eventInfo.publish.state.PUBLIC.drawDetails[drawId]
-      .structureDetails[structureId].roundLimit
+    result.eventData.eventInfo.publish.drawDetails[drawId].structureDetails[
+      structureId
+    ].roundLimit
   ).toEqual(2);
 
   result = tournamentEngine.publishEvent({

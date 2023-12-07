@@ -1,14 +1,12 @@
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { decorateResult } from '../../../global/functions/decorateResult';
-import { addEventTimeItem } from '../tournamentGovernor/addTimeItem';
-import { getEventTimeItem } from '../queryGovernor/timeItems';
 import { addNotice } from '../../../global/state/globalState';
 import { getEventData } from './getEventData';
 
-import { PUBLISH, PUBLIC, STATUS } from '../../../constants/timeItemConstants';
 import { Event, Tournament } from '../../../types/tournamentFromSchema';
 import { PUBLISH_EVENT } from '../../../constants/topicConstants';
 import { PolicyDefinitions } from '../../../types/factoryTypes';
+import { PUBLIC } from '../../../constants/timeItemConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   DRAW_DEFINITION_NOT_FOUND,
@@ -16,6 +14,8 @@ import {
   MISSING_TOURNAMENT_RECORD,
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
+import { getEventPublishStatus } from './getEventPublishStatus';
+import { modifyEventPublishStatus } from './modifyEventPublishStatus';
 
 export type PublishingDetail = {
   roundLimit?: number; // only applicable to structureDetails
@@ -92,13 +92,9 @@ export function publishEvent(params: PublishEventType) {
     });
   }
 
-  const itemType = `${PUBLISH}.${STATUS}`;
-  const pubState = getEventTimeItem({
-    itemType,
-    event,
-  })?.timeItem?.itemValue?.[status];
+  const pubStatus = getEventPublishStatus({ event, status });
 
-  const drawDetails = pubState?.drawDetails || {};
+  const drawDetails = pubStatus?.drawDetails || {};
   for (const drawId of eventDrawIds) {
     if (!drawIdsToValidate.length || drawIdsToValidate.includes(drawId)) {
       if (
@@ -210,13 +206,12 @@ export function publishEvent(params: PublishEventType) {
     }
   }
 
-  const updatedTimeItem = {
-    itemValue: {
-      [status]: { ...pubState, drawDetails },
-    },
-    itemType,
-  };
-  addEventTimeItem({ event, timeItem: updatedTimeItem, removePriorValues });
+  modifyEventPublishStatus({
+    statusObject: { drawDetails },
+    removePriorValues,
+    status,
+    event,
+  });
 
   const { eventData } = getEventData({
     includePositionAssignments,
