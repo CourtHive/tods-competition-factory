@@ -53,6 +53,7 @@ export function setEventDisplay({
     return decorateResult({ result: { error: MISSING_VALUE } });
 
   // TODO: validate displaySettings
+  // TODO: use displaySettings to filter out scheduling details
 
   const result = modifyEventPublishStatus({
     statusObject: { displaySettings },
