@@ -14,18 +14,21 @@ import {
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
 
-type DateDetails = {
-  scheduleAttributes: { [key: string]: boolean }; // true indicates display; false indicates excise from data
-  scheduleDates: string[];
+type ScheduleDetails = {
+  attributes: { [key: string]: boolean }; // true indicates display; false indicates excise from data
+  dates: string[];
 };
 type DisplayAttributes = {
-  participantAttributes: { [key: string]: boolean }; // true indicates display; false indicates excise from data
-  dateDetails: DateDetails[];
+  participants: { [key: string]: boolean }; // true indicates display; false indicates excise from data
+  scheduleDetails: ScheduleDetails[];
 };
 
 type DisplaySettings = {
-  drawSettings: { [key: string]: DisplayAttributes };
-  displayAttributes: DisplayAttributes;
+  draws: {
+    [key: string]: DisplayAttributes; // drawIds as keys
+    default: DisplayAttributes;
+  };
+  [key: string]: any; // for extensibility and 3rd party use
 };
 
 type SetEventDisplaySettings = {
