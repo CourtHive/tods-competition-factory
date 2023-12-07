@@ -52,8 +52,7 @@ export function setEventDisplay({
   // TODO: validate displaySettings
 
   const result = modifyEventPublishStatus({
-    attribute: 'displaySettings',
-    values: displaySettings,
+    statusObject: { displaySettings },
     removePriorValues,
     status,
     event,
