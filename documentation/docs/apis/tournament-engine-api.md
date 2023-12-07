@@ -1963,7 +1963,7 @@ const { events } = tournamentEngine.getEvents({
 
 Returns event information optimized for publishing: `matchUps` have context and separated into rounds for consumption by visualization libraries such as `tods-react-draws`.
 
-See [publishEvent](#publishevent) for details on `policyDefinitions`.
+See [Policies](../concepts/policies) for more details on `policyDefinitions`.
 
 ```js
 const { eventData } = tournamentEngine.getEventData({
@@ -3157,7 +3157,7 @@ tournamentEngine.promoteAlternates({
 
 Utilizes [getEventData](#geteventdata) to prepare data for display. Differs from [getEventData](#geteventdata) in that it modifies the `publishState` of the event. Subscriptions or middleware may be used to deliver the generated payload for presentation on a public website.
 
-See [Policies](../concepts/policies) for more details on `policyDefinitions`.
+See [Policies](../concepts/policies) for more details on `policyDefinitions` and [Publishing](../concepts/publishing.md) for more on use cases.
 
 ```js
 const policyDefinitions = Object.assign(
@@ -3168,19 +3168,13 @@ const policyDefinitions = Object.assign(
 
 const { eventData } = tournamentEngine.publishEvent({
   removePriorValues, // optional boolean - when true will delete prior timeItems
+  policyDefinitions, // optional - e.g. participant privacy policy (if not already attached)
+
   drawIdsToRemove, // optional - drawIds to remove from drawIds already published
   drawIdsToAdd, // optional - drawIds to add to drawIds already published
-  drawIds, // optional - array of drawIds within the event to publish
 
-  structureIdsToRemove, // optional - structureIds to remove from structureIds already published
-  structureIdsToAdd, // optional - structureIds to add to structureIds already published
-  structureIds, // optional array - specify structureIds to publish
+  drawDetails, // { [drawId]: { structureDetails, stageDetails, publishingDetail: { published: true, embargo: UTC Date string } }}
 
-  stagesToRemove, // optional array - stages to remove from stages already published
-  stagesToAdd, // optional array - stages to add to stages already published
-  stages, // optional array - specify stages to publish
-
-  policyDefinitions, // optional - e.g. participant privacy policy (if not already attached)
   eventId, // required - eventId of event to publish
 });
 ```

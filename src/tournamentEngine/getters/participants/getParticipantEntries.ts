@@ -5,6 +5,7 @@ import { structureSort } from '../../../drawEngine/getters/structureSort';
 import { getEventPublishStatuses } from './getEventPublishStatuses';
 import { getEventSeedAssignments } from './getEventSeedAssignments';
 import { allEventMatchUps } from '../matchUpsGetter/matchUpsGetter';
+import { stringSort } from '../../../global/sorting/stringSort';
 import { processEventEntry } from './processEventEntry';
 import { isObject } from '../../../utilities/objects';
 import { getFlightProfile } from '../getFlightProfile';
@@ -721,7 +722,7 @@ export function getParticipantEntries(params) {
             // if there is a time overlap capture both the prior matchUpId and the conflicted matchUpId
             if (timeOverlap && !(bothPotential && sameDraw) && itemIsPrior) {
               const key = [scheduleItem.matchUpId, consideredItem.matchUpId]
-                .sort()
+                .sort(stringSort)
                 .join('|');
               participantAggregator.scheduleConflicts[key] = {
                 priorScheduledMatchUpId: scheduleItem.matchUpId,

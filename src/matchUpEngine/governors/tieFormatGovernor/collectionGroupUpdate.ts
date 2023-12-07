@@ -82,10 +82,7 @@ export function collectionGroupUpdate({
   });
 
   const prunedTieFormat = definedAttributes(tieFormat);
-  const result = validateTieFormat({
-    eventType: event?.eventType,
-    tieFormat: prunedTieFormat,
-  });
+  const result = validateTieFormat({ tieFormat: prunedTieFormat });
   if (result.error) return result;
 
   // TODO: implement use of tieFormats and tieFormatId

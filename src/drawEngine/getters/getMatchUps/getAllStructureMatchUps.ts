@@ -603,8 +603,7 @@ export function getAllStructureMatchUps({
     }
 
     if (tournamentParticipants && matchUpWithContext.sides) {
-      const participantAttributes =
-        policyDefinitions?.[POLICY_TYPE_PARTICIPANT];
+      const participantAttributes = appliedPolicies?.[POLICY_TYPE_PARTICIPANT];
       const getMappedParticipant = (participantId) => {
         const participant = participantMap?.[participantId]?.participant;
         return (

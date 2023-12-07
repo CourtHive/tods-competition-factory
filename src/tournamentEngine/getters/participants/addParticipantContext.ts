@@ -1,21 +1,19 @@
 import { getMatchUpDependencies } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/getMatchUpDependencies';
+import { getEventPublishStatus } from '../../governors/publishingGovernor/getEventPublishStatus';
+import { getDrawPublishStatus } from '../../governors/publishingGovernor/getDrawPublishStatus';
 import { getDerivedPositionAssignments } from './getDerivedPositionAssignments';
 import { findExtension } from '../../governors/queryGovernor/extensionQueries';
 import { getRelevantParticipantIdsMap } from './getRelevantParticipantIdsMap';
 import { getDerivedSeedAssignments } from './getDerivedSeedAssignments';
+import { definedAttributes, isObject } from '../../../utilities/objects';
+import { getTimeItem } from '../../governors/queryGovernor/timeItems';
 import { allEventMatchUps } from '../matchUpsGetter/matchUpsGetter';
-import { definedAttributes } from '../../../utilities/objects';
 import { annotateParticipant } from './annotateParticipant';
 import { getFlightProfile } from '../getFlightProfile';
 import { makeDeepCopy } from '../../../utilities';
 import { getDrawDetails } from './getDrawDetails';
 import { processMatchUp } from './processMatchUp';
-import {
-  getEventTimeItem,
-  getTimeItem,
-} from '../../governors/queryGovernor/timeItems';
 
-import { PUBLISH, STATUS } from '../../../constants/timeItemConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
   GROUP,
@@ -183,15 +181,16 @@ export function addParticipantContext(params) {
       );
       const eventEntries = event.entries || [];
 
-      const itemType = `${PUBLISH}.${STATUS}`;
-      const { timeItem } = getEventTimeItem({
-        itemType,
-        event,
-      });
+      const pubStatus = getEventPublishStatus({ event });
 
-      if (timeItem?.itemValue?.PUBLIC) {
-        const { drawIds: publishedDrawIds = [], seeding } =
-          timeItem.itemValue.PUBLIC || {};
+      if (isObject(pubStatus)) {
+        const { drawIds, drawDetails, seeding } = pubStatus;
+
+        const publishedDrawIds = drawDetails
+          ? Object.keys(drawDetails).filter((drawId) =>
+              getDrawPublishStatus({ drawId, drawDetails })
+            )
+          : drawIds ?? [];
 
         const publishedSeeding = {
           published: undefined, // seeding can be present for all entries in an event when no flights have been defined
@@ -199,8 +198,7 @@ export function addParticipantContext(params) {
           drawIds: [], // seeding can be specific to drawIds
         };
 
-        if (seeding)
-          Object.assign(publishedSeeding, timeItem.itemValue.PUBLIC.seeding);
+        if (seeding) Object.assign(publishedSeeding, pubStatus.seeding);
 
         eventsPublishStatuses[eventId] = {
           publishedDrawIds,

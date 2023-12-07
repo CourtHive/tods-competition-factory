@@ -21,6 +21,12 @@ const subscriptions = {
   publishEvent: (payload) => (), // payload = [{ eventData }]
   unPublishEvent: (payload) => (), // payload = [{ eventId }]
 
+  publishEventSeeding: (payload) => (), // payload
+  unPublishEventSeeding: (payload) => (), // payload
+
+  publishOrderOfPlay: (payload) => (), // payload
+  unPublishOrderOfPlay: (payload) => (), // payload
+
   addVenue: (payload) => (), // payload [{ venue }]
   modifyVenue: (payload) => (), // payload [{ venue }]
   deleteVenue: (payload) => (), // payload [{ venueId }]
