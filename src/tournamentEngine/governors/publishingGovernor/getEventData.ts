@@ -127,7 +127,9 @@ export function getEventData(params: GetEventDataArgs): {
           noDeepCopy: true,
           policyDefinitions,
           tournamentRecord,
+          usePublishState,
           drawDefinition,
+          publishStatus,
           sortConfig,
           event,
         })
@@ -135,10 +137,11 @@ export function getEventData(params: GetEventDataArgs): {
     )
     .map(({ structures, ...drawData }) => {
       const filteredStructures = structures
-        ?.filter(({ structureId }) =>
-          structureFilter({ structureId, drawId: drawData.drawId })
+        ?.filter(
+          ({ stage, structureId }) =>
+            structureFilter({ structureId, drawId: drawData.drawId }) &&
+            stageFilter({ stage, drawId: drawData.drawId })
         )
-        ?.filter(({ stage }) => stageFilter({ stage, drawId: drawData.drawId }))
         .map((structure) =>
           roundLimitMapper({ drawId: drawData.drawId, structure })
         );

@@ -69,19 +69,21 @@ type GetAllStructureMatchUps = {
   policyDefinitions?: PolicyDefinitions;
   seedAssignments?: SeedAssignment[];
   provisionalPositioning?: boolean;
+  context?: { [key: string]: any };
   contextContent?: ContextContent;
   contextFilters?: MatchUpFilters;
   matchUpFilters?: MatchUpFilters;
   participantMap?: ParticipantMap;
   scheduleTiming?: ScheduleTiming;
-  context?: { [key: string]: any };
   drawDefinition?: DrawDefinition;
   contextProfile?: ContextProfile;
   tournamentRecord?: Tournament;
   afterRecoveryTimes?: boolean;
+  usePublishState?: boolean;
   exitProfiles?: ExitProfiles;
   matchUpsMap?: MatchUpsMap;
   structure?: Structure;
+  publishStatus?: any;
   inContext?: boolean;
   event?: Event;
 };
@@ -95,6 +97,7 @@ export function getAllStructureMatchUps({
   policyDefinitions,
   tournamentRecord,
   seedAssignments,
+  usePublishState,
   contextFilters,
   contextContent,
   matchUpFilters,
@@ -102,6 +105,7 @@ export function getAllStructureMatchUps({
   scheduleTiming,
   contextProfile,
   drawDefinition,
+  publishStatus,
   context = {},
   exitProfiles,
   matchUpsMap,
@@ -276,6 +280,8 @@ export function getAllStructureMatchUps({
         roundNamingProfile,
         initialRoundOfPlay,
         appliedPolicies,
+        usePublishState,
+        publishStatus,
         isRoundRobin,
         roundProfile,
         matchUp,
@@ -354,10 +360,12 @@ export function getAllStructureMatchUps({
     tieDrawPositions?: number[];
     drawPositionsRanges?: any;
     isCollectionBye?: boolean;
+    usePublishState?: boolean;
     matchUp: HydratedMatchUp;
     roundNamingProfile?: any;
     isRoundRobin?: boolean;
     matchUpTieId?: string;
+    publishStatus?: any;
     sideLineUps?: any[];
     roundProfile?: any;
     event?: Event;
@@ -373,6 +381,8 @@ export function getAllStructureMatchUps({
     tieDrawPositions,
     appliedPolicies,
     isCollectionBye,
+    usePublishState,
+    publishStatus,
     matchUpTieId,
     isRoundRobin,
     roundProfile,
@@ -414,8 +424,10 @@ export function getAllStructureMatchUps({
       scheduleVisibilityFilters,
       afterRecoveryTimes,
       tournamentRecord,
+      usePublishState,
       scheduleTiming,
       matchUpFormat,
+      publishStatus,
       matchUpType,
       matchUp,
       event,
@@ -751,6 +763,8 @@ export function getAllStructureMatchUps({
             additionalContext,
             appliedPolicies,
             isCollectionBye,
+            usePublishState,
+            publishStatus,
             matchUpTieId,
             isRoundRobin,
             roundProfile,

@@ -1,5 +1,7 @@
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { decorateResult } from '../../../global/functions/decorateResult';
+import { modifyEventPublishStatus } from './modifyEventPublishStatus';
+import { getEventPublishStatus } from './getEventPublishStatus';
 import { addNotice } from '../../../global/state/globalState';
 import { getEventData } from './getEventData';
 
@@ -14,8 +16,6 @@ import {
   MISSING_TOURNAMENT_RECORD,
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { getEventPublishStatus } from './getEventPublishStatus';
-import { modifyEventPublishStatus } from './modifyEventPublishStatus';
 
 export type PublishingDetail = {
   roundLimit?: number; // only applicable to structureDetails
