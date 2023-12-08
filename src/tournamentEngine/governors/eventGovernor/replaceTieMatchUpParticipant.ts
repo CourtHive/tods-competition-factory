@@ -16,12 +16,12 @@ import {
 
 import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
 import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../../constants/policyConstants';
+import { LineUp, PolicyDefinitions } from '../../../types/factoryTypes';
 import { FEMALE, MALE } from '../../../constants/genderConstants';
 import { COMPETITOR } from '../../../constants/participantRoles';
 import { PAIR } from '../../../constants/participantConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { DOUBLES } from '../../../constants/matchUpTypes';
-import { LineUp, PolicyDefinitions } from '../../../types/factoryTypes';
 import {
   EXISTING_PARTICIPANT,
   INVALID_PARTICIPANT,
