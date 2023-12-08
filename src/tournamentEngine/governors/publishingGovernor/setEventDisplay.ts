@@ -59,12 +59,12 @@ export function setEventDisplay({
     for (const key of Object.keys(displaySettings.draws)) {
       const details = displaySettings.draws[key].scheduleDetails ?? [];
       if (details.length) {
-        const scheduleDetails: any = [];
+        const scheduleDetails: ScheduleDetails[] = [];
         for (const detail of details) {
-          const existingDetail: any = scheduleDetails.find((sd: any) =>
+          const existingDetail = scheduleDetails.find((sd) =>
             objShallowEqual(sd.attributes, detail.attributes)
           );
-          if (existingDetail) {
+          if (existingDetail?.dates && detail.dates) {
             existingDetail.dates.push(...detail.dates);
           } else {
             scheduleDetails.push(detail);
