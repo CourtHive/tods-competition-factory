@@ -1,3 +1,4 @@
+import { ensureSideLineUps } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/ensureSideLineUps';
 import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
 import { removeExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { generateTieMatchUpScore } from '../../generators/tieMatchUpScore/generateTieMatchUpScore';
@@ -210,6 +211,13 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
         score,
       });
     }
+    ensureSideLineUps({
+      tournamentId: tournamentRecord?.tournamentId,
+      inContextDualMatchUp: inContextMatchUp,
+      eventId: event?.eventId,
+      drawDefinition,
+      dualMatchUp: matchUp,
+    });
   }
 
   if (

@@ -24,7 +24,7 @@ export function ensureSideLineUps({
   dualMatchUp,
   eventId,
 }: EnsureSideLineUpsArgs) {
-  if (dualMatchUp && !dualMatchUp?.sides?.length) {
+  if (dualMatchUp) {
     if (!inContextDualMatchUp) {
       inContextDualMatchUp = findDrawMatchUp({
         matchUpId: dualMatchUp.matchUpId,
@@ -46,11 +46,21 @@ export function ensureSideLineUps({
       sideNumber,
     }) => ({ drawPosition, sideNumber, displaySideNumber });
 
-    dualMatchUp.sides = inContextDualMatchUp?.sides?.map((side: any) => {
-      const participantId = side.participantId;
+    dualMatchUp.sides = inContextDualMatchUp?.sides?.map((contextSide: any) => {
+      const participantId = contextSide.participantId;
+      const referenceLineUp =
+        (participantId && lineUps[participantId]) || undefined;
+      const { lineUp: noContextLineUp, ...noContextSideDetail } =
+        dualMatchUp.sides?.find(
+          ({ sideNumber }) => sideNumber === contextSide.sideNumber
+        ) ?? {};
+      const lineUp = noContextLineUp?.length
+        ? noContextLineUp
+        : referenceLineUp;
       return {
-        ...extractSideDetail(side),
-        lineUp: (participantId && lineUps[participantId]) || [],
+        ...extractSideDetail(contextSide),
+        ...noContextSideDetail,
+        lineUp,
       };
     });
 
