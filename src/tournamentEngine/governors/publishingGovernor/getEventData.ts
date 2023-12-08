@@ -1,12 +1,13 @@
 import { getParticipants } from '../../getters/participants/getParticipants';
-import { getEventTimeItem } from '../queryGovernor/timeItems';
+import { generateRange, makeDeepCopy } from '../../../utilities';
+import { getEventPublishStatus } from './getEventPublishStatus';
+import { isConvertableInteger } from '../../../utilities/math';
 import { getTournamentInfo } from './getTournamentInfo';
-import { makeDeepCopy } from '../../../utilities';
 import { getVenueData } from './getVenueData';
 import { getDrawData } from './getDrawData';
 
-import { PUBLIC, PUBLISH, STATUS } from '../../../constants/timeItemConstants';
 import { Event, Tournament } from '../../../types/tournamentFromSchema';
+import { PUBLIC } from '../../../constants/timeItemConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   ParticipantsProfile,
@@ -54,12 +55,7 @@ export function getEventData(params: GetEventDataArgs): {
   const { eventId } = event;
   const { tournamentId, endDate } = tournamentRecord;
 
-  const { timeItem } = getEventTimeItem({
-    itemType: `${PUBLISH}.${STATUS}`,
-    event,
-  });
-
-  const publishStatus = timeItem?.itemValue?.[status];
+  const publishStatus = getEventPublishStatus({ event, status });
 
   const { participants: tournamentParticipants } = getParticipants({
     withGroupings: true,
@@ -69,20 +65,52 @@ export function getEventData(params: GetEventDataArgs): {
     tournamentRecord,
   });
 
-  const stageFilter = ({ stage }) =>
-    !usePublishState ||
-    !publishStatus?.stages?.length ||
-    publishStatus.stages.includes(stage);
+  const stageFilter = ({ stage, drawId }) => {
+    if (!usePublishState) return true;
+    const stageDetails = publishStatus?.drawDetails?.[drawId]?.stageDetails;
+    if (!stageDetails || !Object.keys(stageDetails).length) return true;
+    return stageDetails[stage]?.published;
+  };
 
-  const structureFilter = ({ structureId }) =>
-    !usePublishState ||
-    !publishStatus?.structureIds?.length ||
-    publishStatus.structureIds.includes(structureId);
+  const structureFilter = ({ structureId, drawId }) => {
+    if (!usePublishState) return true;
+    const structureDetails =
+      publishStatus?.drawDetails?.[drawId]?.structureDetails;
+    if (!structureDetails || !Object.keys(structureDetails).length) return true;
+    return structureDetails[structureId]?.published;
+  };
 
-  const drawFilter = ({ drawId }) =>
-    !usePublishState ||
-    !publishStatus?.drawIds?.length ||
-    publishStatus.drawIds.includes(drawId);
+  const drawFilter = ({ drawId }) => {
+    if (!usePublishState) return true;
+    if (publishStatus.drawDetails) {
+      return publishStatus.drawDetails[drawId]?.publishingDetail?.published;
+    } else if (publishStatus.drawIds) {
+      return publishStatus.drawIds.includes(drawId);
+    }
+    return true;
+  };
+
+  const roundLimitMapper = ({ drawId, structure }) => {
+    if (!usePublishState) return structure;
+    const roundLimit =
+      publishStatus?.drawDetails?.[drawId]?.structureDetails?.[
+        structure.structureId
+      ]?.roundLimit;
+    if (isConvertableInteger(roundLimit)) {
+      const roundNumbers = generateRange(1, roundLimit + 1);
+      const roundMatchUps = {};
+      const roundProfile = {};
+      for (const roundNumber of roundNumbers) {
+        if (structure.roundMatchUps[roundNumber]) {
+          roundMatchUps[roundNumber] = structure.roundMatchUps[roundNumber];
+          roundProfile[roundNumber] = structure.roundProfile[roundNumber];
+        }
+      }
+      structure.roundMatchUps = roundMatchUps;
+      structure.roundProfile = roundProfile;
+    }
+    return structure;
+  };
 
   const drawDefinitions = event.drawDefinitions || [];
   const drawsData = drawDefinitions
@@ -99,16 +127,29 @@ export function getEventData(params: GetEventDataArgs): {
           noDeepCopy: true,
           policyDefinitions,
           tournamentRecord,
+          usePublishState,
           drawDefinition,
+          publishStatus,
           sortConfig,
           event,
         })
       )
     )
-    .map(({ structures, ...drawData }) => ({
-      ...drawData,
-      structures: structures?.filter(structureFilter)?.filter(stageFilter),
-    }))
+    .map(({ structures, ...drawData }) => {
+      const filteredStructures = structures
+        ?.filter(
+          ({ stage, structureId }) =>
+            structureFilter({ structureId, drawId: drawData.drawId }) &&
+            stageFilter({ stage, drawId: drawData.drawId })
+        )
+        .map((structure) =>
+          roundLimitMapper({ drawId: drawData.drawId, structure })
+        );
+      return {
+        ...drawData,
+        structures: filteredStructures,
+      };
+    })
     .filter((drawData) => drawData.structures?.length);
 
   const { tournamentInfo } = getTournamentInfo({ tournamentRecord });
@@ -159,10 +200,7 @@ export function getEventData(params: GetEventDataArgs): {
     drawsData,
   };
 
-  eventData.eventInfo.publish = {
-    createdAt: timeItem?.createdAt,
-    state: timeItem?.itemValue,
-  };
+  eventData.eventInfo.publish = publishStatus;
 
   return { ...SUCCESS, eventData };
 }

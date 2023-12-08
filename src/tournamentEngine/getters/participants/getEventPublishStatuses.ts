@@ -1,28 +1,29 @@
-import { getTimeItem } from '../../governors/queryGovernor/timeItems';
-
-import { PUBLISH, STATUS } from '../../../constants/timeItemConstants';
+import { getEventPublishStatus } from '../../governors/publishingGovernor/getEventPublishStatus';
+import { getDrawPublishStatus } from '../../governors/publishingGovernor/getDrawPublishStatus';
 
 export function getEventPublishStatuses({ event }) {
-  const itemType = `${PUBLISH}.${STATUS}`;
+  const eventPubStatus = getEventPublishStatus({ event });
 
-  const { timeItem } = getTimeItem({
-    element: event,
-    itemType,
-  });
-
-  if (timeItem?.itemValue?.PUBLIC) {
-    const { drawIds: publishedDrawIds = [], seeding } =
-      timeItem.itemValue.PUBLIC || {};
-
+  if (eventPubStatus) {
     const publishedSeeding = {
       published: undefined, // seeding can be present for all entries in an event when no flights have been defined
       seedingScaleNames: [],
       drawIds: [], // seeding can be specific to drawIds
     };
 
-    if (seeding) {
-      Object.assign(publishedSeeding, timeItem.itemValue.PUBLIC.seeding);
+    if (eventPubStatus.seeding) {
+      Object.assign(publishedSeeding, eventPubStatus.seeding);
     }
+
+    const { drawDetails, drawIds } = eventPubStatus;
+
+    const publishedDrawIds =
+      (drawDetails &&
+        Object.keys(drawDetails).filter((drawId) =>
+          getDrawPublishStatus({ drawDetails, drawId })
+        )) ||
+      drawIds ||
+      [];
 
     return {
       publishedDrawIds,

@@ -66,9 +66,7 @@ export function generateLineUps(params: GenerateLineUpsArgs) {
   tieFormat =
     tieFormat ?? resolveTieFormat({ drawDefinition, event })?.tieFormat;
 
-  if (
-    validateTieFormat({ tieFormat, eventType: params.event?.eventType }).error
-  )
+  if (validateTieFormat({ tieFormat }).error)
     return { error: INVALID_TIE_FORMAT };
 
   if (typeof scaleAccessor !== 'object' && !useDefaultEventRanking)

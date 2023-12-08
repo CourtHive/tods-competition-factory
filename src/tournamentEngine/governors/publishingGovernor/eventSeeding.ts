@@ -1,9 +1,9 @@
-import { addEventTimeItem } from '../tournamentGovernor/addTimeItem';
-import { getEventTimeItem } from '../queryGovernor/timeItems';
+import { modifyEventPublishStatus } from './modifyEventPublishStatus';
+import { getEventPublishStatus } from './getEventPublishStatus';
 import { addNotice } from '../../../global/state/globalState';
 import { definedAttributes } from '../../../utilities';
 
-import { PUBLIC, PUBLISH, STATUS } from '../../../constants/timeItemConstants';
+import { PUBLIC } from '../../../constants/timeItemConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_EVENT,
@@ -26,41 +26,36 @@ export function publishEventSeeding({
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
 
-  const itemType = `${PUBLISH}.${STATUS}`;
-  const { timeItem } = getEventTimeItem({
-    itemType,
-    event,
-  });
+  const eventPubStatus = getEventPublishStatus({ event, status });
 
-  const itemValue = timeItem?.itemValue || { [status]: {} };
-
-  const updatedSeedingScaleNames = (itemValue[status].seeding
+  const updatedSeedingScaleNames = (eventPubStatus?.seeding
     ?.seedingScaleNames ||
     seedingScaleNames) && {
-    ...itemValue[status].seeding?.seedingScaleNames,
+    ...eventPubStatus?.seeding?.seedingScaleNames,
     ...seedingScaleNames,
   };
 
-  const updatedStageSeedingScaleNames = (itemValue[status].seeding
+  const updatedStageSeedingScaleNames = (eventPubStatus?.seeding
     ?.stageSeedingScaleNames ||
     stageSeedingScaleNames) && {
-    ...itemValue[status].seeding?.stageSeedingScaleNames,
+    ...eventPubStatus?.seeding?.stageSeedingScaleNames,
     ...stageSeedingScaleNames,
   };
 
-  itemValue[status].seeding = definedAttributes({
+  const seeding = definedAttributes({
     stageSeedingScaleNames: updatedStageSeedingScaleNames,
     seedingScaleNames: updatedSeedingScaleNames,
     published: true,
     drawIds,
   });
 
-  const updatedTimeItem = {
-    itemValue,
-    itemType,
-  };
+  modifyEventPublishStatus({
+    statusObject: { seeding },
+    removePriorValues,
+    status,
+    event,
+  });
 
-  addEventTimeItem({ event, timeItem: updatedTimeItem, removePriorValues });
   addNotice({
     topic: PUBLISH_EVENT_SEEDING,
     payload: {
@@ -78,54 +73,58 @@ export function unPublishEventSeeding({
   seedingScaleNames,
   tournamentRecord,
   status = PUBLIC,
+  drawIds,
   stages,
   event,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
 
-  const itemType = `${PUBLISH}.${STATUS}`;
-  const { timeItem } = getEventTimeItem({
-    itemType,
-    event,
-  });
+  const eventPubStatus = getEventPublishStatus({ event });
 
-  const itemValue = timeItem?.itemValue || { [status]: {} };
+  if (eventPubStatus) {
+    const seeding = eventPubStatus.seeding;
 
-  if (itemValue[status]) {
-    if (
-      Array.isArray(stages) &&
-      itemValue[status].seeding?.stageSeedingScaleNames
-    ) {
+    if (Array.isArray(stages) && seeding.stageSeedingScaleNames) {
       for (const stage of stages) {
-        if (itemValue[status].seeding.stageSeedingScaleNames[stage]) {
-          delete itemValue[status].seeding.stageSeedingScaleNames[stage];
+        if (seeding.stageSeedingScaleNames[stage]) {
+          delete seeding.stageSeedingScaleNames[stage];
         }
       }
     }
 
-    if (
-      Array.isArray(seedingScaleNames) &&
-      itemValue[status].seeding?.seedingScaleNames
-    ) {
-      itemValue[status].seeding.seedingScaleNames = itemValue[
-        status
-      ].seeding.seedingScaleNames.filter(
+    if (Array.isArray(seedingScaleNames) && seeding?.seedingScaleNames) {
+      seeding.seedingScaleNames = seeding.seedingScaleNames.filter(
         (scaleName) => !seedingScaleNames.includes(scaleName)
       );
     }
 
-    if (!stages && !seedingScaleNames) {
-      delete itemValue[status].seeding;
+    if (Array.isArray(drawIds) && seeding?.drawIds) {
+      seeding.drawIds = seeding.drawIds.filter(
+        (drawId) => !drawIds.includes(drawId)
+      );
     }
+
+    if (
+      (!Object.values(seeding.stageSeedingScaleNames ?? {}).length &&
+        !seeding.seedingScaleNames?.length &&
+        !seeding.drawIds?.length) ||
+      (!stages && !seedingScaleNames && !drawIds?.length)
+    ) {
+      delete seeding.stageSeedingScaleNames;
+      delete seeding.seedingScaleNames;
+      delete seeding.drawIds;
+      seeding.published = false;
+    }
+
+    modifyEventPublishStatus({
+      statusObject: { seeding },
+      removePriorValues,
+      status,
+      event,
+    });
   }
 
-  const updatedTimeItem = {
-    itemValue,
-    itemType,
-  };
-
-  addEventTimeItem({ event, timeItem: updatedTimeItem, removePriorValues });
   addNotice({
     topic: UNPUBLISH_EVENT_SEEDING,
     payload: {

@@ -619,11 +619,11 @@ that the server context can not be blocked by any long-running external processe
 ```js
 const result = competitionEngine.executionQueue([
   {
-    method: 'getCompetitionParticipants',
+    method: 'getParticipants',
     params: { participantFilters: { participantTypes: [PAIR] } },
   },
   {
-    method: 'getCompetitionParticipants',
+    method: 'getParticipants',
     params: { participantFilters: { participantTypes: [INDIVIDUAL] } },
   },
 ]);
@@ -657,63 +657,6 @@ const { participant, tournamentId } = competitionEngine.findParticipant({
 ```js
 const { startDate, endDate } = competitionEngine.getCompetitionDateRange();
 ```
-
----
-
-## getCompetitionParticipants
-
-Returns **deepCopies** of competition participants filtered by participantFilters which are arrays of desired participant attribute values.
-
-```js
-const participantFilters = {
-  accessorValues: [{ accessor, value }], // optional - see Accessors in Concepts
-  eventEntryStatuses, // boolean
-  participantTypes: [INDIVIDUAL],
-  participantRoles, [COMPETITOR],
-  signInStatus, // specific signIn status
-  eventIds, // events in which participants appear
-};
-const {
-  competitionParticipants,
-  participantIdsWithConflicts // returns array of participantIds which have scheduling conflicts
-} =
-  competitionEngine.getCompetitionParticipants({
-    inContext, // optional - adds individualParticipants for all individualParticipantIds
-
-    withMatchUps, // optional - include all matchUps in which the participant appears, as well as potentialMatchUps
-    withScaleValues, // optional - include { ratings, rankings } attributes extracted from timeItems
-    withStatistics, // optional - adds events, matchUps and statistics, e.g. 'winRatio'
-    withGroupings, // optional - include membership in group, pair, and team participants
-    withOpponents, // optional - include opponent participantIds
-    withSeeding, // optionsl - add event seeding
-    withEvents, // optional - defaults to true if any other context options are specified
-    withDraws, // optional - defaults to true if any other context options are specified
-    withISO2, // optional - will add ISO2 country code and countryName to participant persons
-    withIOC, // optional - will add IOC country code and countryName to participant persons
-
-    scheduleAnalysis: {
-      scheduledMinutesDifference // optional - scheduling conflicts determined by scheduledTime difference between matchUps
-    },
-
-    convertExtensions, // optional - BOOLEAN - convert extensions so _extensionName attributes
-    policyDefinitions, // optional - can accept a privacy policy to filter participant attributes
-    participantFilters, // optional - filters
-    usePublishState, // optional - BOOLEAN - don't add seeding information when not published
-  });
-```
-
-### Implemented participantFilters
-
-- enableOrFiltering: boolean - use OR logic instead of default AND
-- accessorValues: array of accessors and targeted value `[{ accessor, value }]`
-- drawEntryStatuses: array of `entryStatus` values for participantIds found in draw.entries
-- eventEntryStatuses: array of `entryStatus` values for participantIds found in event.entries
-- eventIds: array of targeted eventIds
-- participantIds: array of targeted participantIds
-- participantRoles: array of targeted participantRoles
-- participantTypes: array of targeted participantTypes
-- positionedParticipants: participantIds positioned in structures `[true, false, undefined]`
-- signInStatus: SIGNED_IN or SIGNED_OUT
 
 ---
 

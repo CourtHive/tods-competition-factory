@@ -9,6 +9,7 @@ import { matchUpAllocatedCourts } from './courtAllocations';
 import { matchUpAssignedCourtId } from './courtAssignment';
 import { matchUpAssignedVenueId } from './venueAssignment';
 import { matchUpTimeModifiers } from './timeModifiers';
+import { attributeFilter } from '../../../utilities';
 import { matchUpDuration } from './matchUpDuration';
 import { matchUpCourtOrder } from './courtOrder';
 import { matchUpStartTime } from './startTime';
@@ -36,19 +37,23 @@ import {
 type GetMatchUpScheduleDetailsArgs = {
   scheduleVisibilityFilters?: ScheduleVisibilityFilters;
   scheduleTiming?: ScheduleTiming;
-  afterRecoveryTimes?: boolean;
   tournamentRecord?: Tournament;
+  afterRecoveryTimes?: boolean;
+  usePublishState?: boolean;
+  matchUp: HydratedMatchUp;
   matchUpFormat?: string;
   matchUpType?: TypeEnum;
-  matchUp: HydratedMatchUp;
+  publishStatus?: any;
   event?: Event;
 };
 export function getMatchUpScheduleDetails({
   scheduleVisibilityFilters,
   afterRecoveryTimes,
   tournamentRecord,
+  usePublishState,
   scheduleTiming,
   matchUpFormat,
+  publishStatus,
   matchUpType,
   matchUp,
   event,
@@ -213,11 +218,32 @@ export function getMatchUpScheduleDetails({
     });
   } else {
     schedule = definedAttributes({
-      time,
+      milliseconds,
       startTime,
       endTime,
-      milliseconds,
+      time,
     });
+  }
+
+  if (usePublishState && publishStatus?.displaySettings?.draws) {
+    const drawSettings = publishStatus.displaySettings.draws;
+    const scheduleDetails = (
+      drawSettings?.[matchUp.drawId] ?? drawSettings?.default
+    )?.scheduleDetails;
+    if (scheduleDetails) {
+      const scheduleAttributes = (
+        scheduleDetails.find(
+          (details) => scheduledDate && details.dates?.includes(scheduledDate)
+        ) ?? scheduleDetails.find((details) => !details.dates?.length)
+      )?.attributes;
+
+      if (scheduleAttributes) {
+        schedule = attributeFilter({
+          template: scheduleAttributes,
+          source: schedule,
+        });
+      }
+    }
   }
 
   const hasCompletedStatus =

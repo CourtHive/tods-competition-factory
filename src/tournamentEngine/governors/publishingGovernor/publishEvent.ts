@@ -1,41 +1,54 @@
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
-import { addEventTimeItem } from '../tournamentGovernor/addTimeItem';
-import { getEventTimeItem } from '../queryGovernor/timeItems';
+import { decorateResult } from '../../../global/functions/decorateResult';
+import { modifyEventPublishStatus } from './modifyEventPublishStatus';
+import { getEventPublishStatus } from './getEventPublishStatus';
 import { addNotice } from '../../../global/state/globalState';
 import { getEventData } from './getEventData';
-import { unique } from '../../../utilities';
 
-import { PUBLISH, PUBLIC, STATUS } from '../../../constants/timeItemConstants';
 import { Event, Tournament } from '../../../types/tournamentFromSchema';
 import { PUBLISH_EVENT } from '../../../constants/topicConstants';
 import { PolicyDefinitions } from '../../../types/factoryTypes';
+import { PUBLIC } from '../../../constants/timeItemConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
+  DRAW_DEFINITION_NOT_FOUND,
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
+  STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
+
+export type PublishingDetail = {
+  roundLimit?: number; // only applicable to structureDetails
+  published?: boolean;
+  embargo?: string;
+};
+
+export type DrawPublishingDetails = {
+  structureDetails?: { [key: string]: PublishingDetail }; // if no keys, all published
+  stageDetails?: { [key: string]: PublishingDetail }; // if no keys, all published; stage embargo supercedes structure embargo
+  publishingDetail: PublishingDetail; // draw embargo supercedes structure/stage embargo
+  structureIdsToRemove?: string[];
+  structureIdsToAdd?: string[];
+  stagesToRemove?: string[];
+  stagesToAdd?: string[];
+};
 
 type PublishEventType = {
   includePositionAssignments?: boolean;
   policyDefinitions?: PolicyDefinitions;
   removePriorValues?: boolean;
   tournamentRecord: Tournament;
-  structureIds?: string[];
   drawIds?: string[];
-  stages?: string[];
   status?: string;
   event?: Event;
 
-  structureIdsToRemove?: string[];
-  structureIdsToAdd?: string[];
+  drawDetails?: { [key: string]: DrawPublishingDetails }; // if no keys, all published
+
   drawIdsToRemove?: string[];
-  stagesToRemove?: string[];
   drawIdsToAdd?: string[];
-  stagesToAdd?: string[];
 };
 
 export function publishEvent(params: PublishEventType) {
-  let { policyDefinitions, drawIds, structureIds, stages } = params;
   const {
     includePositionAssignments,
     removePriorValues,
@@ -45,87 +58,160 @@ export function publishEvent(params: PublishEventType) {
 
     drawIdsToRemove,
     drawIdsToAdd,
-
-    stagesToRemove,
-    stagesToAdd,
-
-    structureIdsToRemove,
-    structureIdsToAdd,
   } = params;
 
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
 
-  if (!policyDefinitions) {
-    const { appliedPolicies } = getAppliedPolicies({ tournamentRecord, event });
-    policyDefinitions = appliedPolicies;
-  }
+  // publishing will draw on scoring policy, round naming policy and participant (privacy) policy
+  const { appliedPolicies } = getAppliedPolicies({ tournamentRecord, event });
+  const policyDefinitions = {
+    ...appliedPolicies,
+    ...params.policyDefinitions,
+  };
 
-  const itemType = `${PUBLISH}.${STATUS}`;
   const eventDrawIds = event.drawDefinitions?.map(({ drawId }) => drawId) ?? [];
 
-  const { timeItem } = getEventTimeItem({
-    itemType,
+  const keyedDrawIds = params.drawDetails
+    ? Object.keys(params.drawDetails)
+    : [];
+  const specifiedDrawIds = keyedDrawIds.length ? [] : params.drawIds;
+
+  const drawIdsToValidate = (drawIdsToAdd ?? []).concat(
+    ...(drawIdsToRemove ?? []),
+    ...(specifiedDrawIds ?? []),
+    ...keyedDrawIds
+  );
+  const invalidDrawIds = drawIdsToValidate.filter(
+    (drawId) => !eventDrawIds.includes(drawId)
+  );
+  if (invalidDrawIds.length) {
+    return decorateResult({
+      result: { error: DRAW_DEFINITION_NOT_FOUND },
+      context: { invalidDrawIds },
+    });
+  }
+
+  const pubStatus = getEventPublishStatus({ event, status });
+
+  const drawDetails = pubStatus?.drawDetails || {};
+  for (const drawId of eventDrawIds) {
+    if (!drawIdsToValidate.length || drawIdsToValidate.includes(drawId)) {
+      if (
+        drawIdsToRemove?.includes(drawId) ||
+        (specifiedDrawIds?.length && !specifiedDrawIds.includes(drawId))
+      ) {
+        drawDetails[drawId] = {
+          ...drawDetails[drawId],
+          publishingDetail: { published: false },
+        };
+      } else if (
+        drawIdsToAdd?.includes(drawId) ||
+        specifiedDrawIds?.includes(drawId) ||
+        !specifiedDrawIds?.length
+      ) {
+        drawDetails[drawId] = {
+          ...drawDetails[drawId],
+          publishingDetail: { published: true },
+        };
+      }
+    }
+
+    if (params.drawDetails?.[drawId]) {
+      const newDetail = params.drawDetails[drawId];
+      let structureDetails =
+        newDetail.structureDetails ?? drawDetails[drawId].structureDetails;
+      const stageDetails =
+        newDetail.stageDetails ?? drawDetails[drawId].stageDetails ?? {};
+
+      const {
+        structureIdsToRemove = [],
+        structureIdsToAdd = [],
+        publishingDetail = {},
+        stagesToRemove = [],
+        stagesToAdd = [],
+      } = newDetail;
+
+      if (structureIdsToAdd || stagesToAdd) publishingDetail.published = true;
+
+      drawDetails[drawId] = {
+        publishingDetail,
+        structureDetails,
+        stageDetails,
+      };
+
+      if (structureIdsToAdd.length || structureIdsToRemove.length) {
+        const drawStructureIds = (
+          event.drawDefinitions?.find(
+            (drawDefinition) => drawDefinition.drawId === drawId
+          )?.structures ?? []
+        ).map(({ structureId }) => structureId);
+        const structureIdsToValidate = (structureIdsToAdd ?? []).concat(
+          structureIdsToRemove ?? []
+        );
+        const invalidStructureIds = structureIdsToValidate.filter(
+          (structureId) => !drawStructureIds.includes(structureId)
+        );
+        if (invalidStructureIds.length) {
+          return decorateResult({
+            result: { error: STRUCTURE_NOT_FOUND },
+            context: { invalidStructureIds },
+          });
+        }
+
+        structureDetails = structureDetails ?? {};
+        for (const structureId of drawStructureIds) {
+          if (structureIdsToRemove.includes(structureId)) {
+            structureDetails[structureId] = { published: false };
+          } else {
+            structureDetails[structureId] = { published: true };
+          }
+        }
+
+        drawDetails[drawId].structureDetails = structureDetails;
+      }
+
+      const drawStages = (
+        event.drawDefinitions?.find(
+          (drawDefinition) => drawDefinition.drawId === drawId
+        )?.structures ?? []
+      ).map(({ stage }) => stage as string);
+
+      if (stagesToAdd.length) {
+        for (const stage of stagesToAdd) {
+          stageDetails[stage] = { published: true };
+        }
+
+        for (const stage of drawStages) {
+          if (!stageDetails[stage]) {
+            stageDetails[stage] = { published: false };
+          }
+        }
+      }
+      if (stagesToAdd.length || stagesToRemove.length) {
+        for (const stage of stagesToRemove) {
+          stageDetails[stage] = { published: false };
+        }
+
+        for (const stage of drawStages) {
+          if (!stageDetails[stage]) {
+            stageDetails[stage] = { published: true };
+          }
+        }
+      }
+
+      if (stagesToAdd.length || stagesToRemove.length) {
+        drawDetails[drawId].stageDetails = stageDetails;
+      }
+    }
+  }
+
+  modifyEventPublishStatus({
+    statusObject: { drawDetails },
+    removePriorValues,
+    status,
     event,
   });
-
-  if (!drawIds && !drawIdsToAdd && !drawIdsToRemove) {
-    // by default publish all drawIds in an event
-    drawIds = eventDrawIds;
-  } else if (!drawIds && (drawIdsToAdd?.length || drawIdsToRemove?.length)) {
-    drawIds = timeItem?.itemValue?.PUBLIC?.drawIds || [];
-  }
-
-  drawIds = (drawIds ?? []).filter(
-    (drawId) => !drawIdsToRemove?.length || !drawIdsToRemove.includes(drawId)
-  );
-
-  if (drawIdsToAdd?.length) {
-    drawIds = unique(
-      drawIds.concat(
-        // ensure that only drawIds which are part of event are included
-        ...drawIdsToAdd.filter((drawId) => eventDrawIds.includes(drawId))
-      )
-    );
-  }
-
-  if (
-    !structureIds &&
-    (structureIdsToAdd?.length || structureIdsToRemove?.length)
-  ) {
-    structureIds = timeItem?.itemValue?.PUBLIC?.structureIds || [];
-  }
-
-  structureIds = (structureIds ?? []).filter(
-    (structureId) =>
-      !structureIdsToRemove?.length ||
-      !structureIdsToRemove.includes(structureId)
-  );
-
-  if (structureIdsToAdd?.length) {
-    structureIds = unique(structureIds.concat(...structureIdsToAdd));
-  }
-
-  if (!stages && (stagesToAdd?.length || stagesToRemove?.length)) {
-    stages = timeItem?.itemValue?.PUBLIC?.stages || [];
-  }
-
-  stages = (stages ?? []).filter(
-    (stage) => !stagesToRemove?.length || !stagesToRemove.includes(stage)
-  );
-
-  if (stagesToAdd?.length) {
-    stages = unique(stages.concat(...stagesToAdd));
-  }
-
-  const existingStatusValue = timeItem?.itemValue?.[status];
-  const updatedTimeItem = {
-    itemValue: {
-      [status]: { ...existingStatusValue, drawIds, structureIds, stages },
-    },
-    itemType,
-  };
-  addEventTimeItem({ event, timeItem: updatedTimeItem, removePriorValues });
 
   const { eventData } = getEventData({
     includePositionAssignments,
@@ -134,12 +220,6 @@ export function publishEvent(params: PublishEventType) {
     policyDefinitions,
     event,
   });
-
-  // filter out drawData for unPublished draws
-  const publishState = eventData?.eventInfo?.publish?.state;
-  eventData.drawsData = eventData.drawsData.filter(
-    ({ drawId }) => publishState?.PUBLIC?.drawIds.includes(drawId)
-  );
 
   addNotice({
     payload: { eventData, tournamentId: tournamentRecord.tournamentId },

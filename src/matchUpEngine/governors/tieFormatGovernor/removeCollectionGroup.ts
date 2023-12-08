@@ -65,7 +65,7 @@ export function removeCollectionGroup({
   const wasAggregateValue = existingTieFormat?.winCriteria.aggregateValue;
   const tieFormat = copyTieFormat(existingTieFormat);
 
-  result = validateTieFormat({ tieFormat, eventType: event?.eventType });
+  result = validateTieFormat({ tieFormat });
   if (result.error) return decorateResult({ result, stack });
 
   const modifiedCollectionIds: string[] = [];

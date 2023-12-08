@@ -6,7 +6,25 @@ export function isString(obj) {
 }
 
 export function isObject(obj) {
-  return typeof obj === 'object';
+  return obj !== null && typeof obj === 'object';
+}
+
+export function objShallowEqual(o1, o2) {
+  if (!isObject(o1) || !isObject(o2)) return false;
+  const keys1 = Object.keys(o1);
+  const keys2 = Object.keys(o2);
+
+  if (keys1.length !== keys2.length) {
+    return false;
+  }
+
+  for (const key of keys1) {
+    if (o1[key] !== o2[key]) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 export function createMap(objectArray, attribute) {

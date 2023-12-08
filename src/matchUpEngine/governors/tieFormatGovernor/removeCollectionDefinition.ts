@@ -102,8 +102,7 @@ export function removeCollectionDefinition({
   const existingTieFormat = result?.tieFormat;
   const tieFormat = copyTieFormat(existingTieFormat);
 
-  const eventType = event?.eventType;
-  result = validateTieFormat({ tieFormat, eventType });
+  result = validateTieFormat({ tieFormat });
   if (result.error) return decorateResult({ result, stack });
 
   const targetCollection = tieFormat?.collectionDefinitions?.find(
@@ -289,7 +288,7 @@ export function removeCollectionDefinition({
   }
 
   const prunedTieFormat = definedAttributes(tieFormat);
-  result = validateTieFormat({ tieFormat: prunedTieFormat, eventType });
+  result = validateTieFormat({ tieFormat: prunedTieFormat });
   if (result.error) return decorateResult({ result, stack });
 
   // TODO: implement use of tieFormats and tieFormatId

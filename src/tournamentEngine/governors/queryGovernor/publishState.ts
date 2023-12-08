@@ -1,6 +1,6 @@
-import { getEventTimeItem } from './timeItems';
+import { getEventPublishStatus } from '../publishingGovernor/getEventPublishStatus';
+import { getDrawPublishStatus } from '../publishingGovernor/getDrawPublishStatus';
 
-import { PUBLIC, PUBLISH, STATUS } from '../../../constants/timeItemConstants';
 import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
@@ -22,10 +22,8 @@ export function bulkUpdatePublishedEventIds({ tournamentRecord, outcomes }) {
     if (eventId && drawId) {
       if (!eventIdsMap[eventId]) {
         eventIdsMap[eventId] = [drawId];
-      } else {
-        if (!eventIdsMap[eventId].includes(drawId)) {
-          eventIdsMap[eventId].push(drawId);
-        }
+      } else if (!eventIdsMap[eventId].includes(drawId)) {
+        eventIdsMap[eventId].push(drawId);
       }
     }
     return eventIdsMap;
@@ -37,15 +35,17 @@ export function bulkUpdatePublishedEventIds({ tournamentRecord, outcomes }) {
   );
   const publishedEventIds = relevantEvents
     .filter((event) => {
-      const { timeItem } = getEventTimeItem({
-        itemType: `${PUBLISH}.${STATUS}`,
-        event,
-      });
-      const pubState = timeItem?.itemValue;
+      const pubStatus = getEventPublishStatus({ event });
+      const { drawDetails, drawIds } = pubStatus ?? {};
 
       const { eventId } = event;
       const publishedDrawIds = eventIdsMap[eventId].filter((drawId) => {
-        return pubState?.[PUBLIC]?.drawIds?.includes(drawId);
+        const keyedDrawIds = drawDetails
+          ? Object.keys(pubStatus.drawDetails).filter((drawId) =>
+              getDrawPublishStatus({ drawId, drawDetails })
+            )
+          : [];
+        return drawIds?.includes(drawId) || keyedDrawIds.includes(drawId);
       });
 
       return publishedDrawIds.length;
