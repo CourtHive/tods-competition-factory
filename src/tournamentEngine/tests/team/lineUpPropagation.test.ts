@@ -1,4 +1,5 @@
 import { findExtension } from '../../governors/queryGovernor/extensionQueries';
+import { extractAttributes as xa, intersection } from '../../../utilities';
 import { generateTeamTournament } from './generateTestTeamTournament';
 import { setSubscriptions } from '../../../global/state/globalState';
 import tournamentEngine from '../../sync';
@@ -8,7 +9,6 @@ import { MODIFY_DRAW_DEFINITION } from '../../../constants/topicConstants';
 import { LINEUPS } from '../../../constants/extensionConstants';
 import { TEAM } from '../../../constants/participantConstants';
 import { SINGLES } from '../../../constants/matchUpTypes';
-import { extractAttributes } from '../../../utilities';
 import {
   COMPASS,
   ROUND_ROBIN,
@@ -239,9 +239,7 @@ it('can propagate and remove lineUps', () => {
     expect(sides[1].lineUp).toBeDefined();
   });
 
-  const westRound1MatchUpIds = westRound1MatchUps.map(
-    extractAttributes('matchUpId')
-  );
+  const westRound1MatchUpIds = westRound1MatchUps.map(xa('matchUpId'));
 
   noContextTeamMatchUps = tournamentEngine
     .devContext(true)
@@ -368,9 +366,6 @@ it('will attach lineUps on score entry', () => {
   }).matchUps;
   expect(teamMatchUps.length).toEqual(2);
 
-  const getLineUpsCount = (matchUp) =>
-    matchUp.sides.flatMap((side) => side.lineUp).filter(Boolean).length;
-
   for (const dualMatchUp of teamMatchUps) {
     expect(getLineUpsCount(dualMatchUp)).toEqual(0);
     assignParticipants({ dualMatchUp });
@@ -384,6 +379,7 @@ it('will attach lineUps on score entry', () => {
 
   teamMatchUps = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [1] },
+    inContext: false,
   }).matchUps;
 
   for (const dualMatchUp of teamMatchUps) {
@@ -413,6 +409,7 @@ it('will attach lineUps on score entry', () => {
 
   teamMatchUps = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [2] },
+    inContext: false,
   }).matchUps;
 
   // when score was set lineUp was propagated to each team matchUp
@@ -421,13 +418,115 @@ it('will attach lineUps on score entry', () => {
   }
 });
 
-function assignParticipants({ dualMatchUp }) {
+it('will propagate lineUps properly in Round Robin structures', () => {
+  const scenario = {
+    drawType: ROUND_ROBIN,
+    valueGoal: 2,
+    drawSize: 4,
+  };
+  const { tournamentRecord, drawId, valueGoal } =
+    generateTeamTournament(scenario);
+  expect(valueGoal).toEqual(scenario.valueGoal);
+
+  tournamentEngine.setState(tournamentRecord);
+
+  let drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+  let lineUps = findExtension({ element: drawDefinition, name: LINEUPS })
+    ?.extension?.value;
+  expect(lineUps).toBeUndefined();
+
+  let teamMatchUps = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { matchUpTypes: [TEAM] },
+  }).matchUps;
+  expect(teamMatchUps.length).toEqual(6);
+
+  const matchUpIds: string[] = [];
+
+  const targetPairs = [
+    [1, 2],
+    [3, 4],
+    [2, 4],
+  ];
+
+  targetPairs.forEach((drawPositionPair) => {
+    const targetMatchUp = teamMatchUps.find(
+      ({ drawPositions }) =>
+        intersection(drawPositions, drawPositionPair).length === 2
+    );
+    matchUpIds.push(targetMatchUp.matchUpId);
+    expect(getLineUpsCount(targetMatchUp)).toEqual(0);
+    assignParticipants({ dualMatchUp: targetMatchUp, sidesCount: 1 });
+  });
+  expect(matchUpIds.length).toEqual(targetPairs.length);
+
+  drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+  lineUps = findExtension({ element: drawDefinition, name: LINEUPS })?.extension
+    ?.value;
+  expect(Object.keys(lineUps).length).toEqual(targetPairs.length);
+
+  teamMatchUps = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { matchUpIds },
+    inContext: false,
+  }).matchUps;
+  expect(teamMatchUps.length).toEqual(targetPairs.length);
+
+  expect(
+    teamMatchUps.map(({ sides }) => sides.map(({ lineUp }) => !!lineUp))
+  ).toEqual([
+    [true, false],
+    [true, false],
+    [true, false],
+  ]);
+
+  // now all { inContext: true } teamMatchUps should have participants for all sides
+  // but only { sideNumber: 1 } will have a lineUp
+  teamMatchUps = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { matchUpIds },
+    inContext: true,
+  }).matchUps;
+  const participantIds = teamMatchUps.map(({ sides }) =>
+    sides.map(xa('participantId'))
+  );
+  expect(participantIds.flat().filter(Boolean).length).toEqual(
+    targetPairs.length * 2
+  );
+
+  const outcome = {
+    score: { sets: [{ side1Score: 6, side2Score: 1, winningSide: 1 }] },
+    winningSide: 1,
+  };
+
+  for (const matchUpId of matchUpIds) {
+    const result = tournamentEngine.setMatchUpStatus({
+      matchUpId,
+      outcome,
+      drawId,
+    });
+    expect(result.success).toEqual(true);
+  }
+
+  // setting a score should ensure lineUps are present for both sides of a matchUp
+  teamMatchUps = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { matchUpIds },
+    inContext: false,
+  }).matchUps;
+
+  expect(
+    teamMatchUps.map(({ sides }) => sides.map(({ lineUp }) => !!lineUp))
+  ).toEqual([
+    [true, true], //  [1, 2]
+    [true, false], // [3, 4] => { drawPosition: 4 } does not have any lineUp
+    [true, false], // [2, 4] => { drawPosition: 4 } does not have any lineUp
+  ]);
+});
+
+function assignParticipants({ dualMatchUp, sidesCount = 2 }) {
   const singlesMatchUps = dualMatchUp.tieMatchUps.filter(
     ({ matchUpType }) => matchUpType === SINGLES
   );
   singlesMatchUps.forEach((singlesMatchUp, i) => {
     const tieMatchUpId = singlesMatchUp.matchUpId;
-    singlesMatchUp.sides.forEach((side) => {
+    singlesMatchUp.sides.slice(0, sidesCount).forEach((side) => {
       const { drawPosition } = side;
       const teamParticipant = dualMatchUp.sides.find(
         (side) => side.drawPosition === drawPosition
@@ -445,4 +544,10 @@ function assignParticipants({ dualMatchUp }) {
       }
     });
   });
+}
+
+function getLineUpsCount(matchUp) {
+  const lineUps =
+    matchUp.sides?.flatMap((side) => side.lineUp).filter(Boolean) ?? [];
+  return lineUps.length;
 }
