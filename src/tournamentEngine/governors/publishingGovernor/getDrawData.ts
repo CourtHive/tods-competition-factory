@@ -42,12 +42,15 @@ export function getDrawData(params): {
     policyDefinitions,
     tournamentRecord,
     inContext = true,
+    usePublishState,
     drawDefinition,
+    publishStatus,
     noDeepCopy,
     sortConfig,
     context,
     event,
   } = params;
+
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   const drawInfo: any = (({
@@ -132,6 +135,8 @@ export function getDrawData(params): {
             tournamentParticipants,
             policyDefinitions,
             tournamentRecord,
+            usePublishState,
+            publishStatus,
             drawDefinition,
             inContext,
             structure,
