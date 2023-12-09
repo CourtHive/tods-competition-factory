@@ -63,11 +63,13 @@ type GetStructureMatchUpsArgs = {
   contextProfile?: ContextProfile;
   drawDefinition?: DrawDefinition;
   afterRecoveryTimes?: boolean;
+  usePublishState?: boolean;
   exitProfiles?: ExitProfiles;
   matchUpsMap?: MatchUpsMap;
   structure?: Structure;
   structureId?: string;
   inContext?: boolean;
+  publishStatus?: any;
   event?: Event;
 };
 
@@ -79,11 +81,13 @@ export function getStructureMatchUps({
   afterRecoveryTimes,
   policyDefinitions,
   tournamentRecord,
+  usePublishState,
   matchUpFilters,
   contextFilters,
   contextContent,
   participantMap,
   scheduleTiming,
+  publishStatus,
   contextProfile,
   drawDefinition,
   exitProfiles,
@@ -105,13 +109,15 @@ export function getStructureMatchUps({
     afterRecoveryTimes,
     policyDefinitions,
     tournamentRecord,
-    drawDefinition,
+    usePublishState,
     matchUpFilters,
     contextFilters,
-    contextProfile,
     contextContent,
     participantMap,
     scheduleTiming,
+    publishStatus,
+    contextProfile,
+    drawDefinition,
     exitProfiles,
     matchUpsMap,
     structure,

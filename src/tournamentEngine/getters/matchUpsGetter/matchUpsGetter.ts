@@ -1,4 +1,5 @@
 import { getScheduleTiming } from '../../governors/scheduleGovernor/matchUpFormatTiming/getScheduleTiming';
+import { getEventPublishStatus } from '../../governors/publishingGovernor/getEventPublishStatus';
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { definedAttributes } from '../../../utilities/objects';
 import { hydrateParticipants } from './hydrateParticipants';
@@ -307,9 +308,10 @@ export function tournamentMatchUps(
     useParticipantMap,
     tournamentRecord,
     inContext = true,
+    usePublishState,
     contextFilters,
-    contextProfile,
     matchUpFilters,
+    contextProfile,
     nextMatchUps,
     context,
   } = params;
@@ -354,6 +356,7 @@ export function tournamentMatchUps(
         afterRecoveryTimes,
         policyDefinitions,
         tournamentRecord,
+        usePublishState,
         contextFilters,
         contextProfile,
         contextContent,
@@ -405,9 +408,10 @@ export function eventMatchUps(params: GetMatchUpsArgs): GroupsMatchUpsResult {
     policyDefinitions,
     useParticipantMap,
     tournamentRecord,
+    usePublishState,
     contextFilters,
-    contextProfile,
     matchUpFilters,
+    contextProfile,
     nextMatchUps,
     tournamentId,
     inContext,
@@ -455,6 +459,7 @@ export function eventMatchUps(params: GetMatchUpsArgs): GroupsMatchUpsResult {
       event,
     });
 
+  const publishStatus = getEventPublishStatus({ event });
   const drawDefinitions = event.drawDefinitions ?? [];
   const eventResult = drawDefinitions.reduce((results, drawDefinition) => {
     const drawMatchUpsResult = getDrawMatchUps({
@@ -466,12 +471,14 @@ export function eventMatchUps(params: GetMatchUpsArgs): GroupsMatchUpsResult {
       afterRecoveryTimes,
       policyDefinitions,
       tournamentRecord,
-      drawDefinition,
+      usePublishState,
       contextContent,
       contextFilters,
-      contextProfile,
       matchUpFilters,
       participantMap,
+      publishStatus,
+      contextProfile,
+      drawDefinition,
       nextMatchUps,
       inContext,
       event,
@@ -500,12 +507,14 @@ export function drawMatchUps({
   policyDefinitions,
   useParticipantMap,
   tournamentRecord,
+  usePublishState,
   contextFilters,
-  contextProfile,
   contextContent,
-  drawDefinition,
   matchUpFilters,
   participantMap,
+  publishStatus,
+  contextProfile,
+  drawDefinition,
   nextMatchUps,
   tournamentId,
   inContext,
@@ -561,12 +570,14 @@ export function drawMatchUps({
     afterRecoveryTimes,
     policyDefinitions,
     tournamentRecord,
+    usePublishState,
     participantMap,
-    drawDefinition,
-    matchUpFilters,
-    contextFilters,
-    contextProfile,
     contextContent,
+    contextFilters,
+    matchUpFilters,
+    publishStatus,
+    contextProfile,
+    drawDefinition,
     nextMatchUps,
     inContext,
     event,
