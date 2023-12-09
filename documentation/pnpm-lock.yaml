@@ -54,8 +54,8 @@ dependencies:
     specifier: 0.18.0
     version: 0.18.0(@types/react@18.2.43)(react@18.2.0)
   tods-competition-factory:
-    specifier: 1.8.46
-    version: 1.8.46
+    specifier: 1.9.0
+    version: 1.9.0
 
 packages:
 
@@ -4487,7 +4487,7 @@ packages:
       classnames: 2.3.2
       dayjs: 1.11.10
       husky: 8.0.3
-      tods-competition-factory: 1.8.46
+      tods-competition-factory: 1.9.0
     dev: false
 
   /cross-fetch@3.1.5:
@@ -10155,8 +10155,8 @@ packages:
       is-number: 7.0.0
     dev: false
 
-  /tods-competition-factory@1.8.46:
-    resolution: {integrity: sha512-/csVpG9C9obTXXBJc/k4j9cHBhzDqFHAdGi2SGEWzMwZYsimExjWw9uX9rVehmFnGlSyCNJXyq9c+Y+lWgi9jA==}
+  /tods-competition-factory@1.9.0:
+    resolution: {integrity: sha512-FdEJtT6ZmJn2+js63BDMZg1RWGTcgvd8X0fAukFBArtJeTlUhZmTlZ5l/eERw8GDbTjH7VPIY7O7tarr/Hs6ow==}
     engines: {node: '>=18.17.1 < 21'}
     dev: false
 
