@@ -225,6 +225,9 @@ export function getMatchUpScheduleDetails({
     });
   }
 
+  const { scheduledDate } = scheduledMatchUpDate({ matchUp });
+  const { scheduledTime } = scheduledMatchUpTime({ matchUp });
+
   if (usePublishState && publishStatus?.displaySettings?.draws) {
     const drawSettings = publishStatus.displaySettings.draws;
     const scheduleDetails = (
@@ -238,9 +241,16 @@ export function getMatchUpScheduleDetails({
       )?.attributes;
 
       if (scheduleAttributes) {
+        // set all attributes to true
+        const template = Object.assign(
+          {},
+          ...Object.keys(schedule).map((key) => ({ [key]: true })),
+          // overwrite with publishStatus attributes
+          scheduleAttributes
+        );
         schedule = attributeFilter({
-          template: scheduleAttributes,
           source: schedule,
+          template,
         });
       }
     }
@@ -250,8 +260,6 @@ export function getMatchUpScheduleDetails({
     matchUp.matchUpStatus &&
     completedMatchUpStatuses.includes(matchUp.matchUpStatus);
 
-  const { scheduledDate } = scheduledMatchUpDate({ matchUp });
-  const { scheduledTime } = scheduledMatchUpTime({ matchUp });
   const endDate =
     (hasCompletedStatus &&
       (extractDate(endTime) ||
