@@ -25,6 +25,7 @@ type CompetitionMatchUpsArgs = TournamentRecordsArgs & {
   matchUpFilters?: MatchUpFilters;
   contextFilters?: MatchUpFilters;
   afterRecoveryTimes?: boolean;
+  usePublishState?: boolean;
   nextMatchUps?: boolean;
   inContext?: boolean;
 };
@@ -88,6 +89,7 @@ export function competitionMatchUps({
   participantsProfile,
   tournamentRecords,
   policyDefinitions,
+  usePublishState,
   matchUpFilters,
   contextFilters,
   nextMatchUps,
@@ -114,6 +116,7 @@ export function competitionMatchUps({
       participantsProfile,
       policyDefinitions,
       tournamentRecord,
+      usePublishState,
       matchUpFilters,
       contextFilters,
       nextMatchUps,

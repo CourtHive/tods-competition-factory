@@ -1,3 +1,4 @@
+import { isObject, objShallowEqual } from '../../../utilities/objects';
 import { modifyEventPublishStatus } from './modifyEventPublishStatus';
 import {
   ResultType,
@@ -7,7 +8,6 @@ import {
 import { Event, Tournament } from '../../../types/tournamentFromSchema';
 import { PUBLIC } from '../../../constants/timeItemConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { isObject, objShallowEqual } from '../../../utilities/objects';
 import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,

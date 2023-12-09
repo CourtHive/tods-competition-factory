@@ -294,8 +294,10 @@ export type GetMatchUpsArgs = {
   drawDefinition?: DrawDefinition;
   afterRecoveryTimes?: boolean;
   useParticipantMap?: boolean;
+  usePublishState?: boolean;
   nextMatchUps?: boolean;
   tournamentId?: string;
+  publishStatus?: any;
   inContext?: boolean;
   event?: Event;
 };

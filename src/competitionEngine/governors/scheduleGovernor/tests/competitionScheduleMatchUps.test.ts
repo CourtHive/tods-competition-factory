@@ -1,14 +1,24 @@
 import { visualizeScheduledMatchUps } from '../../../../global/testHarness/testUtilities/visualizeScheduledMatchUps';
 import { getMatchUpIds } from '../../../../global/functions/extractors';
+import tournamentEngine from '../../../../tournamentEngine/sync';
 import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
-import { instanceCount } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngineSync from '../../../sync';
 import { expect, test } from 'vitest';
+import {
+  extractAttributes as xa,
+  instanceCount,
+  unique,
+} from '../../../../utilities';
 
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
 import { DOUBLES, SINGLES } from '../../../../constants/eventConstants';
+import {
+  MISSING_EVENT,
+  MISSING_VALUE,
+} from '../../../../constants/errorConditionConstants';
 
+const sst = 'schedule.scheduledTime';
 const d210505 = '2021-05-05';
 
 test.each([competitionEngineSync])(
@@ -50,18 +60,34 @@ test.each([competitionEngineSync])(
   'auto schedules venue if only one venue provided',
   async (competitionEngine) => {
     const drawProfiles = [
-      { idPrefix: 'dbl', drawId: 'dubs', drawSize: 16, eventType: DOUBLES },
-      { idPrefix: 'sgl', drawId: 'sing', drawSize: 64, eventType: SINGLES },
+      {
+        eventType: DOUBLES,
+        idPrefix: 'dbl',
+        eventId: 'e1',
+        drawSize: 16,
+        drawId: 'd1',
+      },
+      {
+        eventType: SINGLES,
+        idPrefix: 'sgl',
+        eventId: 'e2',
+        drawSize: 64,
+        drawId: 'd2',
+      },
     ];
     const venueProfiles = [{ courtsCount: 3 }];
 
-    const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-      policyDefinitions: POLICY_SCHEDULING_NO_DAILY_LIMITS,
-      endDate: '2021-05-07',
-      startDate: d210505,
-      venueProfiles,
-      drawProfiles,
-    });
+    const { tournamentRecord, eventIds } = mocksEngine.generateTournamentRecord(
+      {
+        policyDefinitions: POLICY_SCHEDULING_NO_DAILY_LIMITS,
+        endDate: '2021-05-07',
+        startDate: d210505,
+        venueProfiles,
+        drawProfiles,
+      }
+    );
+
+    expect(eventIds).toEqual(['e1', 'e2']);
 
     competitionEngine.setState([tournamentRecord]);
     const { upcomingMatchUps } = competitionEngine.competitionMatchUps();
@@ -136,8 +162,61 @@ test.each([competitionEngineSync])(
     expect(result.success).toEqual(true);
 
     result = competitionEngine.competitionScheduleMatchUps({
+      usePublishState: true,
       matchUpFilters,
     });
+    expect(result.dateMatchUps.map(xa(sst)).filter(Boolean).length).toEqual(23);
+
+    // there are two events which have matchUps with scheduleTime
+    let eventIdWithTime = result.dateMatchUps
+      .filter(xa(sst))
+      .map(xa('eventId'));
+    expect(unique(eventIdWithTime)).toEqual(['e1', 'e2']);
+
+    visualizeScheduledMatchUps({
+      scheduledMatchUps: result.dateMatchUps,
+      showGlobalLog: false,
+    });
+
+    const displaySettings = {
+      draws: {
+        default: {
+          scheduleDetails: [
+            {
+              attributes: {
+                scheduledTime: false,
+              },
+            },
+          ],
+        },
+      },
+    };
+
+    result = tournamentEngine.devContext(true).setEventDisplay();
+    expect(result.error).toEqual(MISSING_EVENT);
+
+    result = tournamentEngine.setEventDisplay({ eventId: 'e1' });
+    expect(result.error).toEqual(MISSING_VALUE);
+
+    result = tournamentEngine.setEventDisplay({
+      displaySettings,
+      eventId: 'e1',
+    });
+
+    result = competitionEngine.competitionScheduleMatchUps({
+      usePublishState: true,
+      matchUpFilters,
+    });
+    expect(result.dateMatchUps.map(xa(sst)).filter(Boolean).length).toEqual(15);
+    // schedule.scheduledTime has been filtered but not schedule.venueId
+    expect(
+      result.dateMatchUps.map(xa('schedule.venueId')).filter(Boolean).length
+    ).toEqual(23);
+
+    // now there is only one event which have matchUps with scheduleTime
+    eventIdWithTime = result.dateMatchUps.filter(xa(sst)).map(xa('eventId'));
+    expect(unique(eventIdWithTime)).toEqual(['e2']);
+
     visualizeScheduledMatchUps({
       scheduledMatchUps: result.dateMatchUps,
       showGlobalLog: false,
