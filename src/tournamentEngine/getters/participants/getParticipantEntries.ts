@@ -402,6 +402,16 @@ export function getParticipantEntries(params) {
           }
         }
 
+        const stages = (drawDefinition?.structures ?? []).reduce(
+          (stages, structure) => {
+            if (!stages.includes(structure.stage)) stages.push(structure.stage);
+            return stages;
+          },
+          []
+        );
+
+        const linksCount = (drawDefinition?.links ?? []).length;
+
         derivedDrawInfo[drawId] = {
           qualifyingPositionAssignments,
           qualifyingSeedAssignments,
@@ -411,11 +421,13 @@ export function getParticipantEntries(params) {
           orderedStructureIds,
           mainSeedingMap,
           flightNumber,
+          linksCount,
           drawOrder,
           drawName,
           drawType,
           drawSize,
           drawId,
+          stages,
           // qualifyingDrawSize,
         };
       }

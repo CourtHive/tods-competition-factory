@@ -1,8 +1,11 @@
+import { findExtension } from '../../tournamentEngine/governors/queryGovernor/extensionQueries';
+import { extractAttributes as xa } from '../../utilities';
 import { tournamentEngine } from '../..';
 import { expect, it } from 'vitest';
 import fs from 'fs';
 
 import { DOUBLES, TEAM } from '../../constants/matchUpTypes';
+import { LINEUPS } from '../../constants/extensionConstants';
 
 const tournamentRecordJSON = fs.readFileSync(
   './src/global/testHarness/assignTieMatchUpParticipant.tods.json',
@@ -104,17 +107,28 @@ it('can add a participant to a partial pair with a Substitute', () => {
   let result = tournamentEngine.setState(tournament);
   expect(result.success).toEqual(true);
 
+  const participantId = '32b181af-0f31-4b97-881b-4e9caa4180de';
+  const drawId = '21d8e860-41d8-4b2d-8f79-94c5758e2ad2';
+
+  const drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+  const lineUps = findExtension({ element: drawDefinition, name: LINEUPS })
+    ?.extension?.value;
+  const placedParticipantIds = Object.values(lineUps)
+    .flat()
+    .map(xa('participantId'));
+  expect(placedParticipantIds.includes(participantId)).toEqual(false);
+
   const params = {
-    participantId: '32b181af-0f31-4b97-881b-4e9caa4180de',
     tieMatchUpId: '69b0156b-3cb1-4e0a-b148-8d796e2929c4',
-    drawId: '21d8e860-41d8-4b2d-8f79-94c5758e2ad2',
+    participantId,
+    drawId,
   };
 
   result = tournamentEngine.assignTieMatchUpParticipantId(params);
   expect(result.success).toEqual(true);
 
-  // there should be 3 participants which have assignments
-  expect(
-    result.modifiedLineUp.filter((l) => l.collectionAssignments.length).length
-  ).toEqual(3);
+  const teamPlacedParticipantIds = result.modifiedLineUp.map(
+    xa('participantId')
+  );
+  expect(teamPlacedParticipantIds.includes(participantId)).toEqual(true);
 });
