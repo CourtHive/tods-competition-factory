@@ -72,10 +72,6 @@ import {
   Tournament,
 } from '../../../../types/tournamentFromSchema';
 
-/**
- * return an array of all possible validActions for a given drawPosition within a structure
- */
-
 type PositionActionsArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];
   restrictAdHocRoundParticipants?: boolean;
@@ -92,6 +88,12 @@ type PositionActionsArgs = {
   event?: Event;
 };
 
+/**
+ * Calculates the valid actions for a draw position based on the provided parameters.
+ *
+ * @param params - The parameters for calculating the position actions.
+ * @returns An object containing the valid actions for the draw position.
+ */
 export function positionActions(params: PositionActionsArgs): ResultType & {
   isActiveDrawPosition?: boolean;
   hasPositionAssigned?: boolean;
@@ -258,12 +260,12 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
 
   if (actionsDisabled)
     return {
+      hasPositionAssigned: !!positionAssignment,
       info: 'Actions Disabled for structure',
-      isByePosition,
       isActiveDrawPosition,
       isDrawPosition: true,
-      hasPositionAssigned: !!positionAssignment,
       validActions: [],
+      isByePosition,
     };
 
   if (
