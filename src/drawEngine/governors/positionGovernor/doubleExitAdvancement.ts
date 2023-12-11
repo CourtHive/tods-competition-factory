@@ -208,19 +208,15 @@ function conditionallyAdvanceDrawPosition(params) {
       } else {
         sourceSideNumber = 2;
       }
-    } else {
-      if (targetMatchUp.feedRound) {
-        // if different structureIds then structureId that is not equivalent to noContextTargetMatchUp.structureId is fed
-        // ... and fed positions are always sideNumber 1
-        if (sourceMatchUp.structureId === targetMatchUp.structureId) {
-          sourceSideNumber = 2;
-        } else {
-          sourceSideNumber = 1;
-        }
+    } else if (targetMatchUp.feedRound) {
+      // if different structureIds then structureId that is not equivalent to noContextTargetMatchUp.structureId is fed
+      // ... and fed positions are always sideNumber 1
+      if (sourceMatchUp.structureId === targetMatchUp.structureId) {
+        sourceSideNumber = 2;
       } else {
-        if (walkoverWinningSide) sourceSideNumber = 3 - walkoverWinningSide;
+        sourceSideNumber = 1;
       }
-    }
+    } else if (walkoverWinningSide) sourceSideNumber = 3 - walkoverWinningSide;
   }
 
   const sourceMatchUpStatus = params.matchUpStatus;
