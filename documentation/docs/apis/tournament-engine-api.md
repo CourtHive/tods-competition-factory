@@ -3696,6 +3696,35 @@ tournamentEngine.setEventDates({ eventId, startDate, endDate });
 
 ---
 
+## setEventDisplay
+
+Defines publish status for attributes of `participants` and `matchUp` schedules which are returned by [getEventData](#geteventdata) and [competitionScheduleMatchUps](competition-engine-api.md#competitionschedulematchups).
+
+```js
+const displaySettings = {
+  draws: {
+    default: {
+      participantAttributes: { [key]: boolean },
+      // an array of attribute settings to be applied to specified dates
+      scheduleDetails: [
+        {
+          attributes: { scheduledTime: false },
+          dates: [], // empty array or undefined specifies that attribute setting apply to all scheduledDates
+        },
+      ],
+    },
+    [drawId]: {},
+  },
+};
+
+tournamentEngine.setEventDisplay({
+  displaySettings,
+  eventId,
+});
+```
+
+---
+
 ## setEventEndDate
 
 Where endDate is a string 'YYYY-MM-DD'.

@@ -120,6 +120,7 @@ export function generateDrawStructuresAndLinks(
       return matchUps.length;
     }
   };
+
   const existingQualifyingDrawPositionsCount = existingQualifyingStructures
     ?.map((structure) => {
       const relevantLink = existingQualifyingLinks?.find(

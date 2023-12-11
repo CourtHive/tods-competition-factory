@@ -61,12 +61,11 @@ export function generateQualifyingStructures({
     for (const structureProfile of (structureProfiles || []).sort(
       sequenceSort
     )) {
-      let drawSize =
-        structureProfile.drawSize ||
-        coerceEven(structureProfile.participantsCount);
+      let drawSize = coerceEven(
+        structureProfile.drawSize || structureProfile.participantsCount
+      );
       const {
         qualifyingRoundNumber,
-        qualifyingPositions,
         structureOptions,
         matchUpFormat,
         structureName,
@@ -74,6 +73,10 @@ export function generateQualifyingStructures({
         drawType,
       } = structureProfile;
       const matchUpType = structureProfile.matchUpType;
+
+      const qualifyingPositions =
+        structureProfile.qualifyingPositions ||
+        deriveQualifyingPositions({ drawSize, qualifyingRoundNumber });
 
       let roundLimit, structure, matchUps;
 
@@ -83,7 +86,6 @@ export function generateQualifyingStructures({
           stack,
         });
       }
-
       const roundTargetName =
         qualifyingProfiles.length > 1 ? `${roundTarget}-` : '';
       const stageSequenceName =
@@ -204,4 +206,15 @@ export function generateQualifyingStructures({
     ...SUCCESS,
     links,
   };
+}
+
+function deriveQualifyingPositions({ drawSize, qualifyingRoundNumber }) {
+  let qualifyingPositions = drawSize;
+  let divisionsCount = 0;
+
+  while (divisionsCount < qualifyingRoundNumber) {
+    qualifyingPositions = Math.floor(qualifyingPositions / 2);
+    divisionsCount += 1;
+  }
+  return qualifyingPositions;
 }
