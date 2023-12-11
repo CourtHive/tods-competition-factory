@@ -14,11 +14,6 @@ export type Notice = {
   key?: string;
 };
 
-type IteratorsType = {
-  makeDeepCopy: number;
-  [key: string]: any;
-};
-
 type TimerType = {
   elapsedTime: number;
   startTime?: number;
@@ -37,19 +32,21 @@ type DeepCopyType = {
   toJSON: string[];
 };
 
-type DevContextType = {
-  iterationThreshold: number;
-  firstIteration: boolean;
-  notInternalUse: boolean;
-  log: boolean;
-};
+export type DevContextType =
+  | {
+      errors?: boolean | string[]; // log errors for all methods or specified methods
+      params?: boolean | string[]; // log params for all methods or specified methods
+      result?: boolean | string[]; // log result for all methods or specified methods
+      exclude?: string[]; // exclude logging for specified methods
+      [key: string]: any;
+    }
+  | boolean;
 
 type GlobalStateTypes = {
-  devContext?: DevContextType | boolean;
-  tournamentFactoryVersion: string;
+  tournamentFactoryVersion: string; // version of tournamentFactory
   deepCopyAttributes: DeepCopyType;
-  iterators: IteratorsType;
-  timers: timersType;
+  devContext?: DevContextType; // devContext is used to control logging
+  timers: timersType; // timers are used to track elapsed time for methods
   deepCopy: boolean;
   globalLog?: any;
 };
@@ -65,7 +62,6 @@ export type ImplemtationGlobalStateTypes = TournamentRecordsArgs & {
 const globalState: GlobalStateTypes = {
   tournamentFactoryVersion: '0.0.0',
   timers: { default: { elapsedTime: 0 } },
-  iterators: { makeDeepCopy: 0 },
   deepCopyAttributes: {
     stringify: [],
     ignore: [],
@@ -130,7 +126,9 @@ export function createInstanceState() {
 /**
  * if contextCriteria, check whether all contextCriteria keys values are equivalent with globalState.devContext object
  */
-export function getDevContext(contextCriteria?: any): any {
+export function getDevContext(contextCriteria?: {
+  [key: string]: any;
+}): DevContextType {
   if (!contextCriteria || typeof contextCriteria !== 'object') {
     return globalState.devContext ?? false;
   } else {
@@ -222,16 +220,8 @@ export function setGlobalLog(loggingFx?: any) {
   }
 }
 
-export function setDevContext(value?: any) {
+export function setDevContext(value?: DevContextType) {
   globalState.devContext = value;
-}
-
-export function setDeepCopyIterations(value: number) {
-  globalState.iterators.makeDeepCopy = value;
-}
-
-export function getDeepCopyIterations() {
-  return globalState.iterators.makeDeepCopy;
 }
 
 export function disableNotifications() {
@@ -383,7 +373,13 @@ export function handleCaughtError({
 
 export function globalLog(engine, log) {
   if (globalState.globalLog) {
-    return globalState.globalLog(engine, log);
+    try {
+      globalState.globalLog(engine, log);
+    } catch (error) {
+      console.log('globalLog error', error);
+      console.log(engine, log);
+      setGlobalLog(); // delete failing custom globalLog
+    }
   } else {
     console.log(engine, log);
   }

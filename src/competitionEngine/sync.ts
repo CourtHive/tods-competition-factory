@@ -1,4 +1,5 @@
 import { updateFactoryExtension } from '../tournamentEngine/governors/tournamentGovernor/updateFactoryExtension';
+import { engineLogging } from '../global/functions/producers/engineLogging';
 import { notifySubscribers } from '../global/state/notifySubscribers';
 import { factoryVersion } from '../global/functions/factoryVersion';
 import competitionGovernor from './governors/competitionsGovernor';
@@ -33,7 +34,6 @@ import {
   INVALID_VALUES,
   METHOD_NOT_FOUND,
 } from '../constants/errorConditionConstants';
-import { engineLogging } from '../global/functions/producers/engineLogging';
 
 export const competitionEngine = (function () {
   const engine: FactoryEngine = {
@@ -189,6 +189,7 @@ export const competitionEngine = (function () {
     if (!Array.isArray(directives)) return { error: INVALID_VALUES };
     const tournamentRecords = getTournamentRecords();
     const activeTournamentId = getTournamentId();
+    const start = Date.now();
 
     const snapshot =
       rollbackOnError && makeDeepCopy(tournamentRecords, false, true);
@@ -202,14 +203,8 @@ export const competitionEngine = (function () {
       const { method: methodName, params } = directive;
       if (!engine[methodName]) {
         const result = { error: METHOD_NOT_FOUND, methodName };
-        const devContext = getDevContext();
-        if (
-          (devContext.result && !Array.isArray(devContext.result)) ||
-          (Array.isArray(devContext.result) &&
-            devContext.result?.includes(methodName))
-        ) {
-          console.log('ce:', result);
-        }
+        const elapsed = Date.now() - start;
+        engineLogging({ result, methodName, elapsed, params, engine: 'ce:' });
         return result;
       }
 

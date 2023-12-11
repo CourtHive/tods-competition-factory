@@ -187,6 +187,7 @@ export const tournamentEngine = ((): FactoryEngine => {
   function executionQueue(directives, rollbackOnError) {
     if (!Array.isArray(directives)) return { error: INVALID_VALUES };
 
+    const start = Date.now();
     const tournamentId = getTournamentId();
     const tournamentRecord = getTournamentRecord(tournamentId);
 
@@ -201,14 +202,8 @@ export const tournamentEngine = ((): FactoryEngine => {
       const { method: methodName, params } = directive;
       if (!engine[methodName]) {
         const result = { error: METHOD_NOT_FOUND, methodName };
-        const devContext = getDevContext();
-        if (
-          (devContext.result && !Array.isArray(devContext.result)) ||
-          (Array.isArray(devContext.result) &&
-            devContext.result?.includes(methodName))
-        ) {
-          console.log('te:', result);
-        }
+        const elapsed = Date.now() - start;
+        engineLogging({ result, methodName, elapsed, params, engine: 'te:' });
         return result;
       }
 
