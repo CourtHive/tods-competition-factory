@@ -27,18 +27,14 @@ it('withOpponents adds appropriate opponents', () => {
   const matchUps = result.matchUps;
   expect(matchUps.length).toEqual(240);
 
-  result = tournamentEngine
-    .devContext({ makeDeepCopy: true, iterationThreshold: 15 })
-    .getParticipants({
-      convertExtensions: true,
-      withStatistics: true,
-      withGroupings: true,
-      withOpponents: true,
-      withMatchUps: true,
-      inContext: true,
-    });
-
-  expect(result.deepCopyIterations).toEqual(1);
+  result = tournamentEngine.devContext({ makeDeepCopy: true }).getParticipants({
+    convertExtensions: true,
+    withStatistics: true,
+    withGroupings: true,
+    withOpponents: true,
+    withMatchUps: true,
+    inContext: true,
+  });
 
   const tournamentParticipants = result.participants;
   expect(tournamentParticipants.length).toEqual(314);

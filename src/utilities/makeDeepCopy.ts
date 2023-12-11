@@ -1,10 +1,5 @@
+import { deepCopyEnabled, getProvider } from '../global/state/globalState';
 import { isDateObject } from './dateTime';
-import {
-  deepCopyEnabled,
-  getDevContext,
-  setDeepCopyIterations,
-  getProvider,
-} from '../global/state/globalState';
 
 export function makeDeepCopy(
   sourceObject, // arbitrary JSON object; functions will be stripped.
@@ -33,21 +28,6 @@ export function makeDeepCopy(
     (typeof deepCopy?.threshold === 'number' && iteration >= deepCopy.threshold)
   ) {
     return sourceObject;
-  }
-
-  const devContext = getDevContext({ makeDeepCopy: true });
-  if (devContext) {
-    setDeepCopyIterations(iteration);
-    if (
-      typeof devContext === 'object' &&
-      (iteration > (devContext.iterationThreshold || 15) ||
-        (devContext.firstIteration && iteration === 0)) &&
-      devContext.log &&
-      (!devContext.notInternalUse ||
-        (devContext.notInternalUse && !internalUse))
-    ) {
-      console.log({ devContext, iteration, internalUse }, sourceObject);
-    }
   }
 
   const targetObject = Array.isArray(sourceObject) ? [] : {};
