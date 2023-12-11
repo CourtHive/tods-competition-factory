@@ -66,6 +66,14 @@ export const extractAttributes = (accessor) => (element) =>
       (typeof accessor === 'string' && getAccessorValue({ element, accessor }))
         ?.value;
 
+function getDefinedKeys(obj, ignoreValues, ignoreEmptyArrays) {
+  return Object.keys(obj).filter(
+    (key) =>
+      !ignoreValues.includes(obj[key]) &&
+      (!ignoreEmptyArrays || (Array.isArray(obj[key]) ? obj[key].length : true))
+  );
+}
+
 export function definedAttributes(
   obj: object,
   ignoreFalse?: boolean,
@@ -79,11 +87,7 @@ export function definedAttributes(
   const ignoreValues: any[] = ['', undefined, null];
   if (ignoreFalse) ignoreValues.push(false);
 
-  const definedKeys = Object.keys(obj).filter(
-    (key) =>
-      !ignoreValues.includes(obj[key]) &&
-      (!ignoreEmptyArrays || (Array.isArray(obj[key]) ? obj[key].length : true))
-  );
+  const definedKeys = getDefinedKeys(obj, ignoreValues, ignoreEmptyArrays);
 
   return Object.assign(
     {},

@@ -30,7 +30,6 @@ export function getNextUnfilledDrawPositions({
   const { positionAssignments = [] } = structureAssignedDrawPositions({
     structure: result.structure,
   });
-  // console.log('gnudp', { provisionalPositioning });
   const { unfilledPositions } = getNextSeedBlock({
     provisionalPositioning,
     randomize: true,

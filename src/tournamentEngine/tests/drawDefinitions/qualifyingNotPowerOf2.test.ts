@@ -33,8 +33,6 @@ const scenarios = [
     qualifyingPositions: 6,
     participantsCount: 11,
   },
-  /*
-    // TODO: qualifyingRoundNumber is failing
   {
     expectation: { matchUpsCount: 9 },
     qualifyingRoundNumber: 2,
@@ -45,7 +43,6 @@ const scenarios = [
     qualifyingRoundNumber: 1,
     participantsCount: 12,
   },
-  */
 ];
 
 it.each(scenarios)(
@@ -57,8 +54,8 @@ it.each(scenarios)(
           ignoreDefaults: true,
           qualifyingProfiles: [
             {
-              roundTarget: 1,
               structureProfiles: [scenario],
+              roundTarget: 1,
             },
           ],
         },
