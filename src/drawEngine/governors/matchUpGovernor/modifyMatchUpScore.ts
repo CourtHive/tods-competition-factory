@@ -254,11 +254,10 @@ export function modifyMatchUpScore({
     !inContextMatchUp.sides?.every(({ participantId }) => participantId)
   ) {
     if (matchUpStatus === DEFAULTED) {
-      if (matchUp.processCodes) {
-        matchUp.processCodes.push(...defaultedProcessCodes);
-      } else {
-        matchUp.processCodes = defaultedProcessCodes;
-      }
+      matchUp.processCodes = unique([
+        ...(matchUp.processCodes ?? []),
+        ...defaultedProcessCodes,
+      ]);
     } else {
       for (const processCode of defaultedProcessCodes || []) {
         const codeIndex =
