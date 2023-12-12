@@ -8,7 +8,7 @@ import { addParticipant } from '../participantGovernor/addParticipants';
 import { ensureSideLineUps } from './drawDefinitions/ensureSideLineUps';
 import { updateTeamLineUp } from './drawDefinitions/updateTeamLineUp';
 import { getTieMatchUpContext } from './getTieMatchUpContext';
-import { makeDeepCopy } from '../../../utilities';
+import { makeDeepCopy, unique } from '../../../utilities';
 import {
   ResultType,
   decorateResult,
@@ -340,11 +340,12 @@ export function replaceTieMatchUpParticipantId(
 
   if (substitution || side.substitutions?.length === 1) {
     if (substitution) {
-      const processCodes = tieMatchUp?.processCodes ?? [];
-      if (substitutionProcessCodes)
-        processCodes.push(...substitutionProcessCodes);
-
-      if (tieMatchUp) tieMatchUp.processCodes = processCodes;
+      if (substitutionProcessCodes && tieMatchUp) {
+        tieMatchUp.processCodes = unique([
+          ...(tieMatchUp?.processCodes ?? []),
+          ...substitutionProcessCodes,
+        ]);
+      }
     } else {
       // if there was only one substitution, remove processCode(s)
       for (const substitutionProcessCode of substitutionProcessCodes || []) {
