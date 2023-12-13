@@ -26,8 +26,11 @@ export type FactoryEngine = {
   [key: string]: any;
 };
 
+export type TournamentRecords = {
+  [key: string]: Tournament;
+};
 export type TournamentRecordsArgs = {
-  tournamentRecords: { [key: string]: Tournament } | Tournament[];
+  tournamentRecords: TournamentRecords;
 };
 
 export type ScheduleTimesResult = { scheduleTime: string };
@@ -320,10 +323,6 @@ export type GroupsMatchUpsResult = {
   groupInfo?: GroupInfo;
   success?: boolean;
   error?: ErrorType;
-};
-
-export type TournamentRecords = {
-  [key: string]: Tournament;
 };
 
 export type ExitProfiles = { [key: string]: string[] };

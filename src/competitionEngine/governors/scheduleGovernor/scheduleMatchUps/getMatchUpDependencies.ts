@@ -19,6 +19,7 @@ import {
   MISSING_MATCHUP_IDS,
 } from '../../../../constants/errorConditionConstants';
 
+import { TournamentRecords } from '../../../../types/factoryTypes';
 import { HydratedMatchUp } from '../../../../types/hydrated';
 import {
   DrawDefinition,
@@ -27,7 +28,7 @@ import {
 } from '../../../../types/tournamentFromSchema';
 
 type GetMatchUpDependenciesArgs = {
-  tournamentRecords?: { [key: string]: Tournament } | Tournament[];
+  tournamentRecords?: TournamentRecords;
   includeParticipantDependencies?: boolean;
   matchUps?: HydratedMatchUp[]; // requires matchUps { inContext: true }
   tournamentRecord?: Tournament;

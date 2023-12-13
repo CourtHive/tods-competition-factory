@@ -1,3 +1,4 @@
+import { Tournament } from '../../types/tournamentFromSchema';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
   CallListenerArgs,
@@ -44,19 +45,19 @@ export default {
   handleCaughtError,
 };
 
-export function disableNotifications() {
+export function disableNotifications(): void {
   syncGlobalState.disableNotifications = true;
 }
 
-export function enableNotifications() {
+export function enableNotifications(): void {
   syncGlobalState.disableNotifications = false;
 }
 
-export function getTournamentId() {
+export function getTournamentId(): string | undefined {
   return syncGlobalState.tournamentId;
 }
 
-export function getTournamentRecord(tournamentId) {
+export function getTournamentRecord(tournamentId): Tournament {
   return syncGlobalState.tournamentRecords[tournamentId];
 }
 
@@ -83,7 +84,9 @@ export function setTournamentId(tournamentId) {
   }
 }
 
-export function setTournamentRecords(tournamentRecords) {
+export function setTournamentRecords(tournamentRecords: {
+  [key: string]: Tournament;
+}): void {
   syncGlobalState.tournamentRecords = tournamentRecords;
   const tournamentIds = Object.keys(tournamentRecords);
   if (tournamentIds.length === 1) {
