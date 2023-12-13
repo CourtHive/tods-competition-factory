@@ -2,9 +2,9 @@ import { refreshEntryPositions } from '../../../global/functions/producers/refre
 import { addExtension } from '../../../global/functions/producers/addExtension';
 import { isValidExtension } from '../../../global/validation/isValidExtension';
 import { decorateResult } from '../../../global/functions/decorateResult';
+import { definedAttributes } from '../../../utilities/definedAttributes';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { participantInEntries } from '../../getters/entryGetter';
-import { definedAttributes } from '../../../utilities/objects';
 import { getValidStage } from '../../getters/getValidStage';
 import { getStageSpace } from '../../getters/getStageSpace';
 

@@ -1,5 +1,6 @@
 import { findMatchUpFormatTiming } from '../matchUpFormatTiming/findMatchUpFormatTiming';
-import { definedAttributes, instanceCount } from '../../../../utilities';
+import { definedAttributes } from '../../../../utilities/definedAttributes';
+import { instanceCount } from '../../../../utilities';
 
 import {
   BYE,

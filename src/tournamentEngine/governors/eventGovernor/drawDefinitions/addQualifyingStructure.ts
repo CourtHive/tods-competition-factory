@@ -1,6 +1,6 @@
 import { addQualifyingStructure as addQualifying } from '../../../../drawEngine/governors/structureGovernor/addQualifyingStructure';
 import { addTournamentTimeItem } from '../../tournamentGovernor/addTimeItem';
-import { definedAttributes } from '../../../../utilities/objects';
+import { definedAttributes } from '../../../../utilities/definedAttributes';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../../constants/errorConditionConstants';
 

@@ -13,6 +13,7 @@ import { getStructureSeedAssignments } from '../getStructureSeedAssignments';
 import { getExitProfiles } from '../../governors/queryGovernor/getExitProfile';
 import { getSourceDrawPositionRanges } from './getSourceDrawPositionRanges';
 import { attributeFilter, makeDeepCopy, unique } from '../../../utilities';
+import { definedAttributes } from '../../../utilities/definedAttributes';
 import { structureAssignedDrawPositions } from '../positionsGetter';
 import { getOrderedDrawPositions } from './getOrderedDrawPositions';
 import { getDrawPositionsRanges } from './getDrawPositionsRanges';
@@ -20,7 +21,6 @@ import { getCheckedInParticipantIds } from '../matchUpTimeItems';
 import { MatchUpFilters, filterMatchUps } from './filterMatchUps';
 import { getRoundContextProfile } from './getRoundContextProfile';
 import { isConvertableInteger } from '../../../utilities/math';
-import { definedAttributes } from '../../../utilities/objects';
 import { getSide } from './getSide';
 import {
   getMatchUpsMap,

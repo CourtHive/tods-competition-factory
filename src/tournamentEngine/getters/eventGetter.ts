@@ -1,12 +1,9 @@
 import { getAssignedParticipantIds } from '../../drawEngine/getters/getAssignedParticipantIds';
+import { extractAttributes as xa, makeDeepCopy } from '../../utilities';
+import { definedAttributes } from '../../utilities/definedAttributes';
 import { getParticipants } from './participants/getParticipants';
 import { getFlightProfile } from './getFlightProfile';
 import { median } from '../../utilities/math';
-import {
-  definedAttributes,
-  extractAttributes as xa,
-  makeDeepCopy,
-} from '../../utilities';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
 import ratingsParameters from '../../fixtures/ratings/ratingsParameters';

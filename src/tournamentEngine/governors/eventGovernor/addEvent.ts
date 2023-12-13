@@ -1,7 +1,9 @@
 import { validateTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
 import { allEventMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
+import { definedAttributes } from '../../../utilities/definedAttributes';
 import tieFormatDefaults from '../../generators/tieFormatDefaults';
 import { getTopics } from '../../../global/state/globalState';
+import { UUID } from '../../../utilities';
 import {
   addDrawNotice,
   addMatchUpsNotice,
@@ -10,7 +12,6 @@ import {
 import { ADD_MATCHUPS } from '../../../constants/topicConstants';
 import { tieFormats } from '../../../fixtures/scoring/tieFormats';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { UUID, definedAttributes } from '../../../utilities';
 import {
   EVENT_EXISTS,
   ErrorType,

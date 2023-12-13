@@ -169,8 +169,8 @@ export function deleteNotice({ topic, key }: DeleteNoticeArgs) {
   );
 }
 
-export function getTopics() {
-  const topics = Object.keys(syncGlobalState.subscriptions);
+export function getTopics(): { topics: string[] } {
+  const topics: string[] = Object.keys(syncGlobalState.subscriptions);
   return { topics };
 }
 

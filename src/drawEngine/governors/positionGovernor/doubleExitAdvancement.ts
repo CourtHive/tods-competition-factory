@@ -4,7 +4,7 @@ import { getExitWinningSide } from '../matchUpGovernor/getExitWinningSide';
 import { modifyMatchUpScore } from '../matchUpGovernor/modifyMatchUpScore';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { getPositionAssignments } from '../../getters/positionsGetter';
-import { definedAttributes } from '../../../utilities/objects';
+import { definedAttributes } from '../../../utilities/definedAttributes';
 import { findStructure } from '../../getters/findStructure';
 import { positionTargets } from './positionTargets';
 import { overlap } from '../../../utilities';

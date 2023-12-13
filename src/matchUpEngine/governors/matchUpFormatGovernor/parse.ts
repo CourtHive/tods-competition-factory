@@ -1,4 +1,4 @@
-import { definedAttributes } from '../../../utilities';
+import { definedAttributes } from '../../../utilities/definedAttributes';
 import { isConvertableInteger } from '../../../utilities/math';
 
 import { SET, NOAD, TIMED, setTypes } from './constants';

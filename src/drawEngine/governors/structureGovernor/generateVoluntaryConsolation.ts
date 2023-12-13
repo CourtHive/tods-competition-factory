@@ -4,11 +4,11 @@ import { getParticipants } from '../../../tournamentEngine/getters/participants/
 import { copyTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { automatedPositioning } from '../positionGovernor/automatedPositioning';
+import { definedAttributes } from '../../../utilities/definedAttributes';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { generateTieMatchUps } from '../../generators/tieMatchUps';
 import { makeDeepCopy, nextPowerOf2 } from '../../../utilities';
 import { getDrawStructures } from '../../getters/findStructure';
-import { definedAttributes } from '../../../utilities/objects';
 import { constantToString } from '../../../utilities/strings';
 import { getStageEntries } from '../../getters/stageGetter';
 import { getGenerators } from './getGenerators';

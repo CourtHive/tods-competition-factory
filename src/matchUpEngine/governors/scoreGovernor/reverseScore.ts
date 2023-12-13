@@ -1,5 +1,5 @@
 import { generateScoreString } from '../../generators/generateScoreString';
-import { definedAttributes } from '../../../utilities';
+import { definedAttributes } from '../../../utilities/definedAttributes';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {

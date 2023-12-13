@@ -1,5 +1,5 @@
 import { validateSchedulingProfile } from '../../../../global/validation/validateSchedulingProfile';
-import { definedAttributes } from '../../../../utilities/objects';
+import { definedAttributes } from '../../../../utilities/definedAttributes';
 import { getSchedulingProfile } from './schedulingProfile';
 import { getRoundId } from './schedulingUtils';
 

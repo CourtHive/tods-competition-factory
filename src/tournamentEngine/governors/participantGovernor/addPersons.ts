@@ -1,7 +1,7 @@
 import { findParticipant } from '../../../global/functions/deducers/findParticipant';
 import { getParticipants } from '../../getters/participants/getParticipants';
 import { getParticipantId } from '../../../global/functions/extractors';
-import { definedAttributes } from '../../../utilities/objects';
+import { definedAttributes } from '../../../utilities/definedAttributes';
 import { addParticipants } from './addParticipants';
 import { UUID } from '../../../utilities';
 

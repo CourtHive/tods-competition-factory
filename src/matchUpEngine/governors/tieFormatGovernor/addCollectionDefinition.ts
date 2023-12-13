@@ -1,7 +1,7 @@
 import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { generateCollectionMatchUps } from '../../../drawEngine/generators/tieMatchUps';
-import { definedAttributes } from '../../../utilities/objects';
+import { definedAttributes } from '../../../utilities/definedAttributes';
 import { calculateWinCriteria } from './calculateWinCriteria';
 import { getTieFormat } from './getTieFormat/getTieFormat';
 import { tieFormatTelemetry } from './tieFormatTelemetry';
