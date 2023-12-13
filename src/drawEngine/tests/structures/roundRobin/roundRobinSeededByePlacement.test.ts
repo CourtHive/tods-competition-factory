@@ -172,8 +172,8 @@ it.each([1, 2, 3, 4, 5])(
       const { participants } = tournamentEngine.getParticipants();
       const participantIds = participants.map((p) => p.participantId);
       let result = tournamentEngine.addEventEntries({
-        eventId,
         participantIds,
+        eventId,
       });
       expect(result.success).toEqual(true);
 
