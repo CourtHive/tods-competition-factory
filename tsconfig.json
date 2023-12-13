@@ -1,28 +1,4 @@
 {
-  "include": ["src/**/*.ts", "src/**/*.js"],
-  "exclude": ["src/**/scratch/**"],
-  "compilerOptions": {
-    "allowJs": true,
-    "allowSyntheticDefaultImports": true,
-    // "baseUrl": "src",
-    "declaration": false,
-    "downlevelIteration": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "importHelpers": true,
-    "lib": ["dom", "esnext"],
-    "module": "esnext",
-    "moduleResolution": "node",
-    "noEmit": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": false,
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "resolveJsonModule": true,
-    "outDir": "./scratch",
-    "rootDir": "./src",
-    "sourceMap": false,
-    "strict": true
-  }
+  "extends": "./tsconfig.base.json",
+  "exclude": ["src/**/*.test.ts", "src/**/scratch/**"]
 }
