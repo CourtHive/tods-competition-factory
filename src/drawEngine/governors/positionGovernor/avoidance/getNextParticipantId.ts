@@ -1,16 +1,12 @@
 import { randomMember } from '../../../../utilities';
 
-/**
- *
- * @param {string[]} targetParticipantIds - participantIds to be processed
- * @param {string} groupKey - OPTIONAL - specify default grouping
- *
- * @param {boolean=} useSpecifiedGroupKey - defaults to false; use specified group key, if present
- * @param {boolean=} largestFirst - defaults to true; return participantId from groupings with largest number of participantIds
- *
- * Creates groupings of participantIds based on policyAttributes
- * Returns a participantId at random from either the specified group, the largest group, or a randomly selected group
- */
+type GetNextParticipantId = {
+  allGroups: { [key: string]: string[] };
+  targetParticipantIds: string[];
+  useSpecifiedGroupKey?: boolean;
+  largestFirst?: boolean;
+  groupKey: string;
+};
 
 export function getNextParticipantId({
   useSpecifiedGroupKey = false,
@@ -18,7 +14,7 @@ export function getNextParticipantId({
   largestFirst = true,
   allGroups,
   groupKey,
-}) {
+}: GetNextParticipantId): { participantId: string; groupKey: string } {
   const groupings = Object.assign(
     {},
     ...Object.keys(allGroups)
@@ -27,7 +23,7 @@ export function getNextParticipantId({
         allGroups[group].filter((id) => targetParticipantIds.includes(id)),
       ])
       .filter((item) => item[1].length)
-      .map(([group, ids]) => ({ [group]: ids }))
+      .map(([group, ids]) => ({ [group as string]: ids }))
   );
 
   const largestGroupSize = Object.keys(groupings).reduce(
