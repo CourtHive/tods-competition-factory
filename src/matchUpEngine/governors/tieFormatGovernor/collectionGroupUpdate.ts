@@ -1,7 +1,7 @@
 import { modifyDrawNotice } from '../../../drawEngine/notifications/drawNotifications';
+import { definedAttributes } from '../../../utilities/definedAttributes';
 import { updateTargetTeamMatchUps } from './updateTargetTeamMatchUps';
 import { getTargetTeamMatchUps } from './getTargetTeamMatchUps';
-import { definedAttributes } from '../../../utilities/objects';
 import { calculateWinCriteria } from './calculateWinCriteria';
 import { validateTieFormat } from './tieFormatUtilities';
 

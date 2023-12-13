@@ -37,7 +37,6 @@ const { outcome } = mocksEngine.generateOutcomeFromScoreString({
   scoreString: '6-1 6-1',
   winningSide: 1,
 });
-
 const scenarios = [
   { drawType: SINGLE_ELIMINATION, matchUpsCount: 7 },
   { drawType: FIRST_MATCH_LOSER_CONSOLATION, matchUpsCount: 12 },

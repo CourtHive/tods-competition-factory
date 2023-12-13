@@ -1,8 +1,9 @@
 import { isValid } from '../../../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
+import { definedAttributes } from '../../../../utilities/definedAttributes';
 import { findEventExtension } from '../../queryGovernor/extensionQueries';
 import { getMatchUpFormatTiming } from './getMatchUpFormatTiming';
 import { findPolicy } from '../../policyGovernor/findPolicy';
-import { definedAttributes, unique } from '../../../../utilities';
+import { unique } from '../../../../utilities';
 
 import POLICY_SCHEDULING_DEFAULT from '../../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
 import { SCHEDULE_TIMING } from '../../../../constants/extensionConstants';

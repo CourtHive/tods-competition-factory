@@ -2,6 +2,7 @@ import { intersection } from '../../utilities/arrays';
 import syncGlobalState from './syncGlobalState';
 
 import { TournamentRecordsArgs } from '../../types/factoryTypes';
+import { ResultType } from '../functions/decorateResult';
 import {
   ErrorType,
   MISSING_ASYNC_STATE_PROVIDER,
@@ -322,7 +323,7 @@ export function getTournamentRecords() {
   return _globalStateProvider.getTournamentRecords();
 }
 
-export function setTournamentRecord(tournamentRecord: any) {
+export function setTournamentRecord(tournamentRecord: ResultType) {
   return _globalStateProvider.setTournamentRecord(tournamentRecord);
 }
 
@@ -371,7 +372,7 @@ export function handleCaughtError({
   });
 }
 
-export function globalLog(engine, log) {
+export function globalLog(engine: string, log: any) {
   if (globalState.globalLog) {
     try {
       globalState.globalLog(engine, log);

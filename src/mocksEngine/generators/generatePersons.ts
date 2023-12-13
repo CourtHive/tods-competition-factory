@@ -1,5 +1,5 @@
 import { getCategoryAgeDetails } from '../../global/functions/getCategoryAgeDetails';
-import { definedAttributes } from '../../utilities/objects';
+import { definedAttributes } from '../../utilities/definedAttributes';
 import { generatePersonData } from './generatePersonData';
 import { dateFromDay } from '../../utilities/dateTime';
 import { countries } from '../../fixtures/countryData';

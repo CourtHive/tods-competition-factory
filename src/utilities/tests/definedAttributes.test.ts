@@ -1,4 +1,4 @@
-import { definedAttributes } from '../objects';
+import { definedAttributes } from '../definedAttributes';
 import { expect, test } from 'vitest';
 
 test('null empty or undefined attributes can be stripped out of JSON', () => {

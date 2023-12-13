@@ -1,4 +1,4 @@
-import { definedAttributes } from '../../../../utilities';
+import { definedAttributes } from '../../../../utilities/definedAttributes';
 
 import {
   MODIFY_PAIR_ASSIGNMENT,

@@ -1,8 +1,8 @@
 import { isNumeric, randomInt, skewedDistribution } from '../../utilities/math';
 import { cityMocks, stateMocks, postalCodeMocks } from '../utilities/address';
+import { definedAttributes } from '../../utilities/definedAttributes';
 import { generateRange, shuffleArray, UUID } from '../../utilities';
 import { isValidDateString } from '../../utilities/dateTime';
-import { definedAttributes } from '../../utilities/objects';
 import { countries } from '../../fixtures/countryData';
 import { generateAddress } from './generateAddress';
 import { generatePersons } from './generatePersons';
@@ -241,10 +241,10 @@ export function generateParticipants(params): {
   const isoList = isoMin
     ? shuffleArray(countryCodes).slice(0, nationalityCodesCount)
     : nationalityCodes
-    ? countryCodes.filter((isoCountry) =>
-        nationalityCodes.includes(isoCountry.iso)
-      )
-    : countryCodes;
+      ? countryCodes.filter((isoCountry) =>
+          nationalityCodes.includes(isoCountry.iso)
+        )
+      : countryCodes;
 
   const countriesList = shuffleArray(
     generateRange(0, Math.ceil(individualParticipantsCount / (isoMin || 1)))
@@ -433,11 +433,11 @@ function genParticipantId({ idPrefix, participantType, index, uuids }) {
     participantType === INDIVIDUAL
       ? 'I'
       : PAIR
-      ? 'P'
-      : TEAM
-      ? 'T'
-      : GROUP
-      ? 'G'
-      : 'X';
+        ? 'P'
+        : TEAM
+          ? 'T'
+          : GROUP
+            ? 'G'
+            : 'X';
   return idPrefix ? `${idPrefix}-${type}-${index}` : uuids?.pop() || UUID();
 }

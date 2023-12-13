@@ -1,7 +1,7 @@
 import { getDerivedPositionAssignments } from './getDerivedPositionAssignments';
 import { getParticipantIds } from '../../../global/functions/extractors';
 import { getDerivedSeedAssignments } from './getDerivedSeedAssignments';
-import { definedAttributes } from '../../../utilities';
+import { definedAttributes } from '../../../utilities/definedAttributes';
 
 import { TEAM_EVENT } from '../../../constants/eventConstants';
 import {

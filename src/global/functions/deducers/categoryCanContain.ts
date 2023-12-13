@@ -1,5 +1,5 @@
+import { definedAttributes } from '../../../utilities/definedAttributes';
 import { validateCategory } from '../../validation/validateCategory';
-import { definedAttributes } from '../../../utilities';
 
 import { Category } from '../../../types/tournamentFromSchema';
 

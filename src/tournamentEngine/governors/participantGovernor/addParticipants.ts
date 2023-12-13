@@ -1,5 +1,5 @@
 import { decorateResult } from '../../../global/functions/decorateResult';
-import { definedAttributes } from '../../../utilities/objects';
+import { definedAttributes } from '../../../utilities/definedAttributes';
 import { addNotice } from '../../../global/state/globalState';
 import { intersection } from '../../../utilities/arrays';
 import { makeDeepCopy, UUID } from '../../../utilities';

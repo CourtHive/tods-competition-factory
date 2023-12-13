@@ -1,7 +1,7 @@
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { decorateResult } from '../../../global/functions/decorateResult';
+import { definedAttributes } from '../../../utilities/definedAttributes';
 import { collectionGroupUpdate } from './collectionGroupUpdate';
-import { definedAttributes } from '../../../utilities/objects';
 import { getTieFormat } from './getTieFormat/getTieFormat';
 import { tieFormatTelemetry } from './tieFormatTelemetry';
 import { validateTieFormat } from './tieFormatUtilities';

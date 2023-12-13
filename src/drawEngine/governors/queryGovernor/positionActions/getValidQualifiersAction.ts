@@ -2,7 +2,7 @@ import { getSourceStructureIdsAndRelevantLinks } from '../../../getters/getSourc
 import { findExtension } from '../../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
 import { getPositionAssignments } from '../../../getters/positionsGetter';
-import { definedAttributes } from '../../../../utilities/objects';
+import { definedAttributes } from '../../../../utilities/definedAttributes';
 import { isCompletedStructure } from '../structureActions';
 
 import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConstants';
