@@ -413,7 +413,6 @@ export function generateDrawDefinition(
 
   const policiesToAttach = {
     [POLICY_TYPE_AVOIDANCE]: appliedPolicies[POLICY_TYPE_AVOIDANCE],
-    ...POLICY_SEEDING_DEFAULT,
   };
 
   if (policyDefinitions) {
@@ -447,6 +446,10 @@ export function generateDrawDefinition(
     !appliedPolicies[POLICY_TYPE_SEEDING] &&
     !policyDefinitions[POLICY_TYPE_SEEDING]
   ) {
+    attachPolicies({
+      drawDefinition,
+      policyDefinitions: POLICY_SEEDING_DEFAULT,
+    });
     Object.assign(appliedPolicies, POLICY_SEEDING_DEFAULT);
   }
   // ---------------------------------------------------------------------------

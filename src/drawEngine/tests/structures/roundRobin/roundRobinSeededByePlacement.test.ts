@@ -147,7 +147,7 @@ it.each([1, 2, 3, 4, 5])(
   (iteration) => {
     if (iteration === 5) {
       const uniqueByePositioning = unique(iterativeByePositions);
-      expect(uniqueByePositioning.length).toBeGreaterThanOrEqual(1);
+      expect(uniqueByePositioning.length).toBeGreaterThan(1);
     } else {
       const policyDefinitions = POLICY_SEEDING_BYES;
       const ageCategoryCode = 'U18';
@@ -246,6 +246,5 @@ it.each([1, 2, 3, 4, 5])(
         iterativeByePositions.push(byePositions);
       }
     }
-    console.log({ iterativeByePositions });
   }
 );
