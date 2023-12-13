@@ -23,8 +23,8 @@ type AttachPoliciesArgs = {
 };
 
 export function attachPolicies({
-  drawDefinition,
   policyDefinitions,
+  drawDefinition,
 }: AttachPoliciesArgs): ResultType {
   if (!drawDefinition) {
     return { error: MISSING_DRAW_DEFINITION };
