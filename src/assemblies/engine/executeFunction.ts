@@ -1,6 +1,7 @@
 import { engineLogging } from '../../global/functions/producers/engineLogging';
 import { handleCaughtError } from '../../global/state/syncGlobalState';
 import { getDevContext } from '../../global/state/globalState';
+import { paramsMiddleware } from './paramsMiddleware';
 
 export function executeFunction(
   engine,
@@ -13,11 +14,12 @@ export function executeFunction(
   delete engine.error;
 
   const start = Date.now();
+  const augmentedParams = paramsMiddleware(tournamentRecords, params);
   const result = invoke({
+    params: augmentedParams,
     tournamentRecords,
     methodName,
     method,
-    ...params,
   });
   const elapsed = Date.now() - start;
   engineLogging({ result, methodName, elapsed, params, engine: 'ce:' });

@@ -1,6 +1,7 @@
 import { factoryVersion } from '../../global/functions/factoryVersion';
 import { executionQueue } from './executionQueue';
 import { processResult } from './processResult';
+import { engineInvoke } from './engineInvoke';
 import {
   setDeepCopy,
   setDevContext,
@@ -17,7 +18,6 @@ import {
 } from './stateMethods';
 
 import { FactoryEngine } from '../../types/factoryTypes';
-import { engineInvoke } from './engineInvoke';
 
 export const engine = (() => {
   const engine: FactoryEngine = {
@@ -46,7 +46,7 @@ export const engine = (() => {
   engine.setState = (records, deepCopyOption, deepCopyAttributes) => {
     setDeepCopy(deepCopyOption, deepCopyAttributes);
     const result = setState(records, deepCopyOption);
-    return processResult(result);
+    return processResult(engine, result);
   };
   engine.setTournamentRecord = (
     tournamentRecord,
