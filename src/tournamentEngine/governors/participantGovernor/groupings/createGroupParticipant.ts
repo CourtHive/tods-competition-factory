@@ -1,6 +1,6 @@
 import { getParticipants } from '../../../getters/participants/getParticipants';
 import { addNotice, getTopics } from '../../../../global/state/globalState';
-import { definedAttributes } from '../../../../utilities/objects';
+import { definedAttributes } from '../../../../utilities/definedAttributes';
 import { makeDeepCopy, UUID } from '../../../../utilities';
 import { addParticipant } from '../addParticipants';
 

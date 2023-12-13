@@ -1,4 +1,4 @@
-import { definedAttributes } from '../../utilities/objects';
+import { definedAttributes } from '../../utilities/definedAttributes';
 
 import { MISSING_STRUCTURE_ID } from '../../constants/errorConditionConstants';
 import { DRAW } from '../../constants/drawDefinitionConstants';

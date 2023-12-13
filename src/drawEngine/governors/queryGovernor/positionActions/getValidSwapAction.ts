@@ -1,5 +1,5 @@
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
-import { definedAttributes } from '../../../../utilities/objects';
+import { definedAttributes } from '../../../../utilities/definedAttributes';
 import { overlap, makeDeepCopy } from '../../../../utilities';
 
 import {

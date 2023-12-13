@@ -1,8 +1,8 @@
 import { matchUpFormatTimes } from '../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/getMatchUpFormatTiming';
 import { getVenueData } from '../../../tournamentEngine/governors/publishingGovernor/getVenueData';
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
+import { definedAttributes } from '../../../utilities/definedAttributes';
 import { findEvent } from '../../../tournamentEngine/getters/findEvent';
-import { definedAttributes } from '../../../utilities/objects';
 import { scheduledMatchUpTime } from './scheduledMatchUpTime';
 import { scheduledMatchUpDate } from './scheduledMatchUpDate';
 import { matchUpAllocatedCourts } from './courtAllocations';

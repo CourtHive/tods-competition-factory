@@ -1,6 +1,6 @@
 import { getFlightProfile } from '../../../../tournamentEngine/getters/getFlightProfile';
 import { getAllPositionedParticipantIds } from '../../../getters/positionsGetter';
-import { definedAttributes } from '../../../../utilities/objects';
+import { definedAttributes } from '../../../../utilities/definedAttributes';
 import { unique } from '../../../../utilities';
 
 import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConstants';

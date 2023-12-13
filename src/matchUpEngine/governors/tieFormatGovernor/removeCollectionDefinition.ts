@@ -5,7 +5,7 @@ import { updateTieMatchUpScore } from '../../../drawEngine/governors/matchUpGove
 import { setMatchUpStatus } from '../../../drawEngine/governors/matchUpGovernor/setMatchUpStatus';
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { findDrawMatchUp } from '../../../drawEngine/getters/getMatchUps/findDrawMatchUp';
-import { definedAttributes } from '../../../utilities/objects';
+import { definedAttributes } from '../../../utilities/definedAttributes';
 import { scoreHasValue } from '../queryGovernor/scoreHasValue';
 import { calculateWinCriteria } from './calculateWinCriteria';
 import { getTieFormat } from './getTieFormat/getTieFormat';

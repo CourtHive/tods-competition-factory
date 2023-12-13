@@ -1,10 +1,10 @@
 import { allTournamentMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
 import { validMatchUps } from '../../matchUpEngine/governors/queryGovernor/validMatchUp';
+import { definedAttributes } from '../../utilities/definedAttributes';
 import { getMatchUpId } from '../../global/functions/extractors';
 import { generateRange, overlap, UUID } from '../../utilities';
 import { mustBeAnArray } from '../../utilities/mustBeAnArray';
 import { isConvertableInteger } from '../../utilities/math';
-import { definedAttributes } from '../../utilities/objects';
 import {
   addMatchUpsNotice,
   modifyDrawNotice,

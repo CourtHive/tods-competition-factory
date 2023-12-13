@@ -1,9 +1,10 @@
 import { getMatchUpDependencies } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/getMatchUpDependencies';
-import { attributeFilter, definedAttributes } from '../../../utilities';
+import { definedAttributes } from '../../../utilities/definedAttributes';
 import { getParticipantEntries } from './getParticipantEntries';
 import { filterParticipants } from './filterParticipants';
 import { getParticipantMap } from './getParticipantMap';
 import { isObject } from '../../../utilities/objects';
+import { attributeFilter } from '../../../utilities';
 
 import { POLICY_TYPE_PARTICIPANT } from '../../../constants/policyConstants';
 import { MatchUp, Tournament } from '../../../types/tournamentFromSchema';

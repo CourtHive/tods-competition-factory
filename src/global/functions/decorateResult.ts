@@ -1,4 +1,4 @@
-import { definedAttributes } from '../../utilities';
+import { definedAttributes } from '../../utilities/definedAttributes';
 
 import { ErrorType } from '../../constants/errorConditionConstants';
 import { SUCCESS } from '../../constants/resultConstants';

@@ -2,7 +2,7 @@ import { generateQualifyingLink } from '../../generators/generateQualifyingLink'
 import { generateQualifyingStructures } from './generateQualifyingStructures';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { getPositionAssignments } from '../../getters/positionsGetter';
-import { definedAttributes } from '../../../utilities/objects';
+import { definedAttributes } from '../../../utilities/definedAttributes';
 import { structureSort } from '../../getters/structureSort';
 import { ensureInt } from '../../../utilities/ensureInt';
 import { isPowerOf2 } from '../../../utilities';

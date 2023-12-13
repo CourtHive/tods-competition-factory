@@ -4,6 +4,12 @@ import { copyTieFormat } from '../../../matchUpEngine/governors/tieFormatGoverno
 import { generateDrawStructuresAndLinks } from './generateDrawStructuresAndLinks';
 import { getStageDrawPositionsCount } from '../../getters/getStageDrawPositions';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
+import { modifyDrawNotice } from '../../notifications/drawNotifications';
+import { definedAttributes } from '../../../utilities/definedAttributes';
+import { getMatchUpId } from '../../../global/functions/extractors';
+import { generateTieMatchUps } from '../../generators/tieMatchUps';
+import { addGoesTo } from '../matchUpGovernor/addGoesTo';
+import { makeDeepCopy } from '../../../utilities';
 import {
   ResultType,
   decorateResult,
@@ -12,12 +18,6 @@ import {
   MatchUpsMap,
   getMatchUpsMap,
 } from '../../getters/getMatchUps/getMatchUpsMap';
-import { modifyDrawNotice } from '../../notifications/drawNotifications';
-import { getMatchUpId } from '../../../global/functions/extractors';
-import { generateTieMatchUps } from '../../generators/tieMatchUps';
-import { definedAttributes } from '../../../utilities/objects';
-import { addGoesTo } from '../matchUpGovernor/addGoesTo';
-import { makeDeepCopy } from '../../../utilities';
 import {
   setStageDrawSize,
   setStageQualifiersCount,

@@ -1,7 +1,7 @@
 import { addDrawDefinitionTimeItem } from '../eventGovernor/drawDefinitions/addDrawDefinitionTimeItem';
 import { participantScaleItem } from '../../accessors/participantScaleItem';
 import { addNotice, getTopics } from '../../../global/state/globalState';
-import { definedAttributes } from '../../../utilities/objects';
+import { definedAttributes } from '../../../utilities/definedAttributes';
 import { findEvent } from '../../getters/findEvent';
 import {
   addEventTimeItem,

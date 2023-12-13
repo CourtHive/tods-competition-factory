@@ -1,7 +1,7 @@
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
+import { definedAttributes } from '../../../utilities/definedAttributes';
 import { genderConstants } from '../../../constants/genderConstants';
 import { isConvertableInteger } from '../../../utilities/math';
-import { definedAttributes } from '../../../utilities/objects';
 import { calculateWinCriteria } from './calculateWinCriteria';
 import { getTieFormat } from './getTieFormat/getTieFormat';
 import { isValid } from '../matchUpFormatGovernor/isValid';

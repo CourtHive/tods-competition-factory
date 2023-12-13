@@ -13,8 +13,8 @@ import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaul
 import { addExtension } from '../../global/functions/producers/addExtension';
 import { isValidExtension } from '../../global/validation/isValidExtension';
 import { getParticipantId } from '../../global/functions/extractors';
+import { definedAttributes } from '../../utilities/definedAttributes';
 import { generateParticipants } from './generateParticipants';
-import { definedAttributes } from '../../utilities/objects';
 import { processTieFormat } from './processTieFormat';
 import { coerceEven } from '../../utilities/math';
 import {

@@ -10,9 +10,9 @@ import { addEventExtension } from '../../tournamentGovernor/addRemoveExtensions'
 import { checkSchedulingProfile } from '../../scheduleGovernor/schedulingProfile';
 import { getDrawStructures } from '../../../../drawEngine/getters/findStructure';
 import { decorateResult } from '../../../../global/functions/decorateResult';
+import { definedAttributes } from '../../../../utilities/definedAttributes';
 import { publishEvent } from '../../publishingGovernor/publishEvent';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
-import { definedAttributes } from '../../../../utilities/objects';
 import { addNotice } from '../../../../global/state/globalState';
 import { makeDeepCopy } from '../../../../utilities';
 import { findEvent } from '../../../getters/findEvent';

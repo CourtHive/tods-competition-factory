@@ -1,6 +1,6 @@
 import { validMatchUps } from '../../../matchUpEngine/governors/queryGovernor/validMatchUp';
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
-import { definedAttributes } from '../../../utilities/objects';
+import { definedAttributes } from '../../../utilities/definedAttributes';
 import { ensureInt } from '../../../utilities/ensureInt';
 import {
   chunkArray,

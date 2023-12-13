@@ -5,12 +5,12 @@ import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEven
 import { isValidExtension } from '../../global/validation/isValidExtension';
 import { formatDate, isValidDateString } from '../../utilities/dateTime';
 import { addTournamentParticipants } from './addTournamentParticipants';
-import { generateScheduledRounds } from './generateScheduledRounds';
 import { generateEventWithFlights } from './generateEventWithFlights';
 import { cycleMutationStatus } from '../../global/state/globalState';
+import { generateScheduledRounds } from './generateScheduledRounds';
+import { definedAttributes } from '../../utilities/definedAttributes';
 import { generateEventWithDraw } from './generateEventWithDraw';
 import { Extension } from '../../types/tournamentFromSchema';
-import { definedAttributes } from '../../utilities/objects';
 import { generateVenues } from './generateVenues';
 import { randomPop } from '../../utilities';
 

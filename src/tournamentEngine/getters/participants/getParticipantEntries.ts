@@ -1,7 +1,9 @@
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
 import { timeSort, timeStringMinutes } from '../../../utilities/dateTime';
-import { extensionsToAttributes } from '../../../utilities/makeDeepCopy';
 import { structureSort } from '../../../drawEngine/getters/structureSort';
+import { extensionsToAttributes } from '../../../utilities/makeDeepCopy';
+import { definedAttributes } from '../../../utilities/definedAttributes';
+import { extractAttributes as xa, unique } from '../../../utilities';
 import { getEventPublishStatuses } from './getEventPublishStatuses';
 import { getEventSeedAssignments } from './getEventSeedAssignments';
 import { allEventMatchUps } from '../matchUpsGetter/matchUpsGetter';
@@ -11,11 +13,6 @@ import { isObject } from '../../../utilities/objects';
 import { getFlightProfile } from '../getFlightProfile';
 import { addScheduleItem } from './addScheduleItem';
 import { processSides } from './processSides';
-import {
-  definedAttributes,
-  extractAttributes as xa,
-  unique,
-} from '../../../utilities';
 
 import { DEFAULTED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 import { UNGROUPED, UNPAIRED } from '../../../constants/entryStatusConstants';

@@ -2,9 +2,9 @@ import { findTournamentParticipant } from '../../getters/participants/participan
 import { addIndividualParticipantIds } from './groupings/addIndividualParticipantIds';
 import { getParticipants } from '../../getters/participants/getParticipants';
 import { getParticipantId } from '../../../global/functions/extractors';
+import { definedAttributes } from '../../../utilities/definedAttributes';
 import { participantRoles } from '../../../constants/participantRoles';
 import { genderConstants } from '../../../constants/genderConstants';
-import { definedAttributes } from '../../../utilities/objects';
 import { addNotice } from '../../../global/state/globalState';
 import { countries } from '../../../fixtures/countryData';
 import { addParticipant } from './addParticipants';

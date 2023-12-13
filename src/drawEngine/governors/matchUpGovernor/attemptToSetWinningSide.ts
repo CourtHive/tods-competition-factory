@@ -1,7 +1,7 @@
 import { removeDirectedParticipants } from './removeDirectedParticipants';
 import { decorateResult } from '../../../global/functions/decorateResult';
+import { definedAttributes } from '../../../utilities/definedAttributes';
 import { checkConnectedStructures } from './checkConnectedStructures';
-import { definedAttributes } from '../../../utilities/objects';
 import { attemptToModifyScore } from './attemptToModifyScore';
 import { directParticipants } from './directParticipants';
 import { replaceQualifier } from './replaceQualifier';
