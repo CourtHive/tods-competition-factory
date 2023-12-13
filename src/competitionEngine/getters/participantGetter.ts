@@ -2,8 +2,9 @@ import { getParticipants as participantGetter } from '../../tournamentEngine/get
 import { findParticipant } from '../../global/functions/deducers/findParticipant';
 import { deepMerge } from '../../utilities/deepMerge';
 
+import { HydratedMatchUp, HydratedParticipant } from '../../types/hydrated';
+import { ResultType } from '../../global/functions/decorateResult';
 import { MatchUp } from '../../types/tournamentFromSchema';
-import { HydratedParticipant } from '../../types/hydrated';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
   ErrorType,
@@ -70,7 +71,11 @@ export function getParticipants(params) {
   };
 }
 
-export function getCompetitionParticipants(params) {
+export function getCompetitionParticipants(params): ResultType & {
+  mappedMatchUps?: { [key: string]: HydratedMatchUp };
+  competitionParticipants?: HydratedParticipant[];
+  participantIdsWithConflicts?: any;
+} {
   const { tournamentRecords } = params || {};
   if (
     typeof tournamentRecords !== 'object' ||
