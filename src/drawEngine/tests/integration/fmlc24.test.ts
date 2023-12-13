@@ -7,7 +7,7 @@ import { completeMatchUp, verifyMatchUps } from '../primitives/verifyMatchUps';
 import { MAIN, CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 
-import SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_USTA';
+import SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
 import SEEDING_ITF from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 
 it('can direct winners and losers with ITF SEEDING POLICY; all participants with BYEs win first matchUp', () => {

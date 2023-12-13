@@ -6,7 +6,7 @@ import {
   WATERFALL,
 } from '../../constants/drawDefinitionConstants';
 
-export const POLICY_SEEDING_USTA = {
+export const POLICY_SEEDING_DEFAULT = {
   [POLICY_TYPE_SEEDING]: {
     validSeedPositions: { ignore: true },
     duplicateSeedNumbers: true,
@@ -31,4 +31,4 @@ export const POLICY_SEEDING_USTA = {
   },
 };
 
-export default POLICY_SEEDING_USTA;
+export default POLICY_SEEDING_DEFAULT;

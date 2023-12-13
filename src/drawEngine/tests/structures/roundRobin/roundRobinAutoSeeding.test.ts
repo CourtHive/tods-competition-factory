@@ -4,7 +4,7 @@ import { extractAttributes } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
 import { expect, it } from 'vitest';
 
-import SEEDING_USTA from '../../../../fixtures/policies/POLICY_SEEDING_USTA';
+import SEEDING_USTA from '../../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
 import { RANKING, RATING } from '../../../../constants/scaleConstants';
 import { SINGLES_EVENT } from '../../../../constants/eventConstants';
 import { WTN } from '../../../../constants/ratingConstants';
