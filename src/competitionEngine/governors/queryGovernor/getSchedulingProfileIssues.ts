@@ -5,7 +5,7 @@ import { allCompetitionMatchUps } from '../../getters/matchUpsGetter';
 import { isValidDateString } from '../../../utilities/dateTime';
 import { intersection, unique } from '../../../utilities';
 
-import { Tournament } from '../../../types/tournamentFromSchema';
+import { TournamentRecords } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_DATE,
@@ -14,7 +14,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 type GetSchedulingProfileIssuesArgs = {
-  tournamentRecords: { [key: string]: Tournament };
+  tournamentRecords: TournamentRecords;
   scheduleDates?: string[];
   periodLength?: number;
 };
