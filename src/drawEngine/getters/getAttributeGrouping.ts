@@ -1,3 +1,4 @@
+import { ResultType } from '../../global/functions/decorateResult';
 import { processAccessors } from './processAccessors';
 import { unique } from '../../utilities';
 
@@ -31,7 +32,7 @@ export function getAttributeGroupings({
   policyAttributes,
   idCollections,
   participants,
-}: GetAttributeGroupingsArgs) {
+}: GetAttributeGroupingsArgs): ResultType | { [key: string]: string[] } {
   if (!Array.isArray(policyAttributes)) {
     return { error: MISSING_POLICY_ATTRIBUTES };
   }

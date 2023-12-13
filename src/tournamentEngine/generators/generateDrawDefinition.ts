@@ -39,7 +39,7 @@ import {
   nextPowerOf2,
 } from '../../utilities';
 
-import POLICY_SEEDING_USTA from '../../fixtures/policies/POLICY_SEEDING_USTA';
+import POLICY_SEEDING_DEFAULT from '../../fixtures/policies/POLICY_SEEDING_DEFAULT';
 import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats';
 import { SUCCESS } from '../../constants/resultConstants';
 import { TEAM } from '../../constants/matchUpTypes';
@@ -70,6 +70,7 @@ import {
   STRUCTURE_SELECTED_STATUSES,
 } from '../../constants/entryStatusConstants';
 import {
+  POLICY_TYPE_AVOIDANCE,
   POLICY_TYPE_DRAWS,
   POLICY_TYPE_MATCHUP_ACTIONS,
   POLICY_TYPE_SEEDING,
@@ -199,7 +200,7 @@ export function generateDrawDefinition(
   if (params.seedingProfile) {
     if (!policyDefinitions[POLICY_TYPE_SEEDING]) {
       policyDefinitions[POLICY_TYPE_SEEDING] = {
-        ...POLICY_SEEDING_USTA[POLICY_TYPE_SEEDING],
+        ...POLICY_SEEDING_DEFAULT[POLICY_TYPE_SEEDING],
       };
     }
     policyDefinitions[POLICY_TYPE_SEEDING].seedingProfile = seedingProfile;
@@ -209,6 +210,8 @@ export function generateDrawDefinition(
   // automated placement requires them to be "inContext" for avoidance policies to work
   const { participants, participantMap } = getParticipants({
     withIndividualParticipants: true,
+    convertExtensions: true,
+    internalUse: true,
     tournamentRecord,
   });
 
@@ -402,6 +405,17 @@ export function generateDrawDefinition(
     }
   }
 
+  // ---------------------------------------------------------------------------
+  // Attach policies to the drawDefinition
+  // if there is an avoidance policy on the event, it must be preserved in the drawDefinition
+  // if there is an avoidance policy in policyDefinitions, it will override
+  // avoidance policies on the event can be changed (if location used for UI)
+
+  const policiesToAttach = {
+    [POLICY_TYPE_AVOIDANCE]: appliedPolicies[POLICY_TYPE_AVOIDANCE],
+    ...POLICY_SEEDING_DEFAULT,
+  };
+
   if (policyDefinitions) {
     if (typeof policyDefinitions !== 'object') {
       return decorateResult({
@@ -410,7 +424,6 @@ export function generateDrawDefinition(
         stack,
       });
     } else {
-      const policiesToAttach = {};
       for (const key of Object.keys(policyDefinitions)) {
         if (
           JSON.stringify(appliedPolicies?.[key]) !==
@@ -426,15 +439,17 @@ export function generateDrawDefinition(
         Object.assign(appliedPolicies, policiesToAttach);
       }
     }
+  } else if (policiesToAttach.avoidance) {
+    attachPolicies({ drawDefinition, policyDefinitions: policiesToAttach });
   }
 
   if (
     !appliedPolicies[POLICY_TYPE_SEEDING] &&
     !policyDefinitions[POLICY_TYPE_SEEDING]
   ) {
-    attachPolicies({ drawDefinition, policyDefinitions: POLICY_SEEDING_USTA });
-    Object.assign(appliedPolicies, POLICY_SEEDING_USTA);
+    Object.assign(appliedPolicies, POLICY_SEEDING_DEFAULT);
   }
+  // ---------------------------------------------------------------------------
 
   // find existing MAIN structureId if existingDrawDefinition
   let structureId = existingDrawDefinition?.structures?.find(

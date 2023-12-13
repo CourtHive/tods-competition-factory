@@ -6,7 +6,7 @@ import mocksEngine from '../../../mocksEngine';
 import { drawEngine } from '../../sync';
 import { expect, it } from 'vitest';
 
-import SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_USTA';
+import SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
 import SEEDING_ITF from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 import {
   CONSOLATION,

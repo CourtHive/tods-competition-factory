@@ -5,7 +5,7 @@ import tournamentEngine from '../../sync';
 import { expect, it } from 'vitest';
 
 import POLICY_AVOIDANCE_COUNTRY from '../../../fixtures/policies/POLICY_AVOIDANCE_COUNTRY';
-import SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_USTA';
+import SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { SPLIT_WATERFALL } from '../../../constants/flightConstants';
 import { INDIVIDUAL } from '../../../constants/participantConstants';

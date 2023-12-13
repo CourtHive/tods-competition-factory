@@ -4,7 +4,7 @@ import { chunkArray, unique } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
 import { it, expect } from 'vitest';
 
-import POLICY_SEEDING_USTA from '../../../../fixtures/policies/POLICY_SEEDING_USTA';
+import POLICY_SEEDING_DEFAULT from '../../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
 import { ROUND_ROBIN } from '../../../../constants/drawDefinitionConstants';
 
 const scenarios = [
@@ -43,7 +43,7 @@ const scenarios = [
 
 it.each(scenarios)('can seed drawType: ROUND_ROBIN', (scenario) => {
   let result = mocksEngine.generateTournamentRecord({
-    policyDefinitions: POLICY_SEEDING_USTA,
+    policyDefinitions: POLICY_SEEDING_DEFAULT,
     ...scenario,
   });
 

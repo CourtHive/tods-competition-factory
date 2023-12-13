@@ -9,7 +9,7 @@ import { expect, it } from 'vitest';
 
 import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
 import POLICY_SEEDING_NATIONAL from '../../../../fixtures/policies/POLICY_SEEDING_NATIONAL';
-import POLICY_SEEDING_USTA from '../../../../fixtures/policies/POLICY_SEEDING_USTA';
+import POLICY_SEEDING_DEFAULT from '../../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
 import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
 import { toBePlayed } from '../../../../fixtures/scoring/outcomes/toBePlayed';
 import { LUCKY_LOSER } from '../../../../constants/entryStatusConstants';
@@ -270,11 +270,11 @@ it('Playoff drawPosition assignment includes group winners who lost no matchUps'
   });
   expect(result.success).toEqual(true);
 
-  // first test with POLICY_SEEDING_USTA included in policyDefinitions
+  // first test with POLICY_SEEDING_DEFAULT included in policyDefinitions
   let drawPosition = 1;
   let policyDefinitions: any = {
     ...POLICY_POSITION_ACTIONS_UNRESTRICTED,
-    ...POLICY_SEEDING_USTA,
+    ...POLICY_SEEDING_DEFAULT,
   };
   result = tournamentEngine.positionActions({
     structureId: playoffStructureIds[0],
