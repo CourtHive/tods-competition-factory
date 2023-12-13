@@ -146,11 +146,15 @@ export function randomUnseededSeparation({
     participants,
   });
 
+  if (allGroups.error) {
+    return decorateResult({ result: allGroups, stack });
+  }
+
   const participantIdGroups = Object.assign(
     {},
     ...unseededParticipantIds.map((participantId) => {
       const groups = Object.keys(allGroups).filter((key) =>
-        allGroups[key].includes(participantId)
+        (allGroups[key] ?? []).includes(participantId)
       );
       return { [participantId]: groups };
     })
