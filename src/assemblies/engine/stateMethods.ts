@@ -14,8 +14,16 @@ import {
   INVALID_RECORDS,
   INVALID_VALUES,
 } from '../../constants/errorConditionConstants';
+import { ResultType } from '../../global/functions/decorateResult';
 
-export function getState({ convertExtensions, removeExtensions }) {
+type GetStateArgs = {
+  convertExtensions?: boolean;
+  removeExtensions?: boolean;
+};
+export function getState({
+  convertExtensions,
+  removeExtensions,
+}: GetStateArgs) {
   const tournamentRecords = getTournamentRecords();
   const tournamentId = getTournamentId();
   return {
@@ -53,7 +61,7 @@ export function getTournament({
   };
 }
 
-export function removeUnlinkedTournamentRecords() {
+export function removeUnlinkedTournamentRecords(): void {
   const tournamentRecords = getTournamentRecords();
 
   const { extension } = findExtension({
@@ -70,7 +78,7 @@ export function removeUnlinkedTournamentRecords() {
   return setTournamentRecords(tournamentRecords);
 }
 
-export function setTournamentRecord(record, deepCopyOption = true) {
+export function setTournamentRecord(record, deepCopyOption = true): ResultType {
   if (typeof record !== 'object' || Array.isArray(record))
     return { error: INVALID_OBJECT };
 

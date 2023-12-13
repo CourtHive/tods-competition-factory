@@ -1,5 +1,6 @@
 import { factoryVersion } from '../../global/functions/factoryVersion';
 import { executionQueue } from './executionQueue';
+import { processResult } from './processResult';
 import {
   setDeepCopy,
   setDevContext,
@@ -16,8 +17,9 @@ import {
 } from './stateMethods';
 
 import { FactoryEngine } from '../../types/factoryTypes';
+import { engineInvoke } from './engineInvoke';
 
-export const competitionEngine = (function () {
+export const engine = (() => {
   const engine: FactoryEngine = {
     getState: (params?) =>
       getState({
@@ -25,16 +27,20 @@ export const competitionEngine = (function () {
         removeExtensions: params?.removeExtensions,
       }),
     getTournament: getTournament,
-    version: () => factoryVersion(),
-    reset: () => {
-      setTournamentRecords({});
-      return processResult();
-    },
+    version: factoryVersion,
+
+    execute: (args: any) => engineInvoke(engine, args),
+    executionQueue: executionQueue,
+  };
+
+  engine.reset = () => {
+    setTournamentRecords({});
+    return processResult(engine);
   };
 
   engine.devContext = (contextCriteria) => {
     setDevContext(contextCriteria);
-    return processResult();
+    return processResult(engine);
   };
   engine.getDevContext = (contextCriteria) => getDevContext(contextCriteria);
   engine.setState = (records, deepCopyOption, deepCopyAttributes) => {
@@ -49,32 +55,18 @@ export const competitionEngine = (function () {
   ) => {
     setDeepCopy(deepCopyOption, deepCopyAttributes);
     const result = setTournamentRecord(tournamentRecord, deepCopyOption);
-    return processResult(result);
+    return processResult(engine, result);
   };
   engine.removeTournamentRecord = (tournamentId) => {
     const result = removeTournamentRecord(tournamentId);
-    return processResult(result);
+    return processResult(engine, result);
   };
   engine.removeUnlinkedTournamentRecords = () => {
     const result = removeUnlinkedTournamentRecords();
-    return processResult(result);
+    return processResult(engine, result);
   };
 
-  engine.executionQueue = (directives, rollbackOnError) =>
-    executionQueue(engine, directives, rollbackOnError);
-
   return engine;
-
-  function processResult(result?) {
-    if (result?.error) {
-      engine.error = result.error;
-      engine.success = false;
-    } else {
-      engine.error = undefined;
-      engine.success = true;
-    }
-    return engine;
-  }
 })();
 
-export default competitionEngine;
+export default engine;
