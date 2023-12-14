@@ -12,7 +12,7 @@ import { INDIVIDUAL } from '../../../constants/participantConstants';
 import { SEEDING } from '../../../constants/scaleConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 import {
-  MISSING_DRAW_SIZE,
+  MISSING_PARTICIPANT_COUNT,
   UNRECOGNIZED_DRAW_TYPE,
 } from '../../../constants/errorConditionConstants';
 
@@ -140,7 +140,7 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
       stage: QUALIFYING,
       eventId,
     });
-    expect(result.error).toEqual(MISSING_DRAW_SIZE);
+    expect(result.error).toEqual(MISSING_PARTICIPANT_COUNT);
   });
 
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({

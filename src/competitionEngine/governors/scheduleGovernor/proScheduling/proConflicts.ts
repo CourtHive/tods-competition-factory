@@ -103,7 +103,7 @@ export function proConflicts({
               side.participantId,
             ])
             .flat()
-            .filter(Boolean) ?? [];
+            .filter(Boolean) || [];
         const potentialMatchUpParticipantIds =
           potentialParticipants
             ?.flat()

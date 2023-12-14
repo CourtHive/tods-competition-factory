@@ -106,7 +106,7 @@ export function generatePlayoffStructures(
   const structures: Structure[] = [];
   const links: DrawLink[] = [];
 
-  const matchUpType = params.matchUpType ?? drawDefinition?.matchUpType;
+  const matchUpType = params.matchUpType || drawDefinition?.matchUpType;
 
   const finishingPositionsFrom = finishingPositionOffset + 1;
   const finishingPositionsTo = finishingPositionOffset + drawSize;
@@ -128,7 +128,7 @@ export function generatePlayoffStructures(
     `${base}${finishingPositionRange}`;
 
   const structureAbbreviation =
-    customNaming?.abbreviation ?? attributeProfile?.abbreviation;
+    customNaming?.abbreviation || attributeProfile?.abbreviation;
 
   const mainParams = {
     idPrefix: idPrefix && `${idPrefix}-${structureName}-RP`,
@@ -143,7 +143,7 @@ export function generatePlayoffStructures(
     : treeMatchUps(mainParams);
 
   const structure = structureTemplate({
-    structureId: structureId ?? uuids?.pop(),
+    structureId: structureId || uuids?.pop(),
     structureAbbreviation,
     stageSequence,
     structureName,

@@ -77,7 +77,7 @@ export function generateTieMatchUpScore(
   if (result.error) return result;
 
   const collectionDefinitions = tieFormat?.collectionDefinitions || [];
-  const tieMatchUps = matchUp?.tieMatchUps ?? [];
+  const tieMatchUps = matchUp?.tieMatchUps || [];
   const sideTieValues = [0, 0];
 
   const { groupValueGroups, groupValueNumbers } =

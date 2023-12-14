@@ -38,14 +38,14 @@ export function getTargetMatchUps({
     inContextDrawMatchUps?.filter(
       (matchUp) =>
         targetStructureIds.includes(matchUp.structureId) &&
-        intersection(matchUp.drawPositions ?? [], drawPositions).length
-    ) ?? [];
+        intersection(matchUp.drawPositions || [], drawPositions).length
+    ) || [];
 
   const targetMatchUpIds = targetMatchUps.map(({ matchUpId }) => matchUpId);
   const matchUps =
     matchUpsMap?.drawMatchUps?.filter((matchUp) =>
       targetMatchUpIds.includes(matchUp.matchUpId)
-    ) ?? [];
+    ) || [];
 
   return { drawPositions, matchUps, targetMatchUps };
 }

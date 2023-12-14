@@ -31,8 +31,8 @@ export function getContextContent({
 
   if (contextProfile.withCompetitiveness) {
     const policy =
-      policyDefinitions?.[POLICY_TYPE_COMPETITIVE_BANDS] ??
-      policies?.[POLICY_TYPE_COMPETITIVE_BANDS] ??
+      policyDefinitions?.[POLICY_TYPE_COMPETITIVE_BANDS] ||
+      policies?.[POLICY_TYPE_COMPETITIVE_BANDS] ||
       POLICY_COMPETITIVE_BANDS_DEFAULT[POLICY_TYPE_COMPETITIVE_BANDS];
 
     contextContent.policies[POLICY_TYPE_COMPETITIVE_BANDS] = policy;

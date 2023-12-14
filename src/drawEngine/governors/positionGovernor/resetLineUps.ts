@@ -48,7 +48,7 @@ export function resetLineUps({
   for (const inContextMatchUp of targetMatchUps) {
     if (inContextMatchUp.matchUpType !== TEAM_MATCHUP) continue;
 
-    (inContextMatchUp.sides ?? []).forEach((side: any, sideIndex) => {
+    (inContextMatchUp.sides || []).forEach((side: any, sideIndex) => {
       if (side?.drawPosition && drawPositions?.includes(side.drawPosition)) {
         const matchUp = matchUps.find(
           ({ matchUpId }) => matchUpId === inContextMatchUp.matchUpId

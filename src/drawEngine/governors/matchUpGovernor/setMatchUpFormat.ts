@@ -101,7 +101,7 @@ export function setMatchUpFormat(params: SetMatchUpFormatArgs): {
     drawDefinition.matchUpFormat = matchUpFormat;
   }
 
-  structureIds = structureIds ?? (structureId ? [structureId] : undefined);
+  structureIds = structureIds || (structureId ? [structureId] : undefined);
   modifyDrawNotice({ drawDefinition, structureIds });
 
   return { ...SUCCESS };

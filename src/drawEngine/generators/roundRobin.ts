@@ -108,7 +108,7 @@ export function generateRoundRobin(params: GenerateRoundRobinArgs) {
   });
 
   const structure = structureTemplate({
-    structureId: structureId ?? uuids?.pop(),
+    structureId: structureId || uuids?.pop(),
     structureType: CONTAINER,
     finishingPosition,
     seedingProfile,

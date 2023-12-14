@@ -87,9 +87,9 @@ export function generateDrawTypeAndModifyDrawDefinition(
   }
 
   tieFormat = copyTieFormat(
-    tieFormat ?? resolveTieFormat({ drawDefinition })?.tieFormat
+    tieFormat || resolveTieFormat({ drawDefinition })?.tieFormat
   );
-  matchUpType = matchUpType ?? drawDefinition.matchUpType ?? SINGLES;
+  matchUpType = matchUpType || drawDefinition.matchUpType || SINGLES;
   params.tieFormat = tieFormat;
   params.matchUpType = matchUpType;
 
@@ -122,7 +122,7 @@ export function generateDrawTypeAndModifyDrawDefinition(
   drawDefinition.links = links;
 
   const qualifiersCount = Math.max(
-    params.qualifiersCount ?? 0,
+    params.qualifiersCount || 0,
     qualifyingResult?.qualifiersCount || 0
   );
 

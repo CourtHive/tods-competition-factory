@@ -114,7 +114,7 @@ export function assignSeed({
     if (assignment.seedNumber === seedNumber) {
       assignment.participantId = participantId;
       if (!seedingProfile?.groupSeedingThreshold && !flighted)
-        assignment.seedValue = seedValue ?? seedNumber;
+        assignment.seedValue = seedValue || seedNumber;
       success = true;
     }
   });

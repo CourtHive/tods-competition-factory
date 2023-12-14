@@ -50,12 +50,12 @@ export function calculateWinCriteria({
       typeof matchUpValue === 'number' &&
       isConvertableInteger(matchUpValue)
     ) {
-      valueTotal += (matchUpCount ?? 0) * matchUpValue;
+      valueTotal += (matchUpCount || 0) * matchUpValue;
     }
   }
 
   for (const collectionGroup of collectionGroups) {
-    valueTotal += collectionGroup.groupValue ?? 0;
+    valueTotal += collectionGroup.groupValue || 0;
   }
 
   if (aggregateValueImperative || !valueTotal) return { aggregateValue: true };

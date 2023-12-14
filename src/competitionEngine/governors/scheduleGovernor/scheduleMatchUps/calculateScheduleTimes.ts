@@ -58,7 +58,7 @@ export function calculateScheduleTimes({
     return { error: MISSING_TOURNAMENT_RECORDS };
 
   periodLength =
-    periodLength ??
+    periodLength ||
     calculatePeriodLength({
       recoveryMinutes: defaultRecoveryMinutes,
       averageMatchUpMinutes,
@@ -82,7 +82,7 @@ export function calculateScheduleTimes({
           !availability.date || sameDay(scheduleDate, availability.date)
       );
       const comparisonStartTime =
-        dateAvailability?.startTime ?? court.startTime;
+        dateAvailability?.startTime || court.startTime;
 
       return comparisonStartTime &&
         (!minStartTime ||
@@ -100,7 +100,7 @@ export function calculateScheduleTimes({
         (availability) =>
           !availability.date || sameDay(scheduleDate, availability.date)
       );
-      const comparisonEndTime = dateAvailability?.endTime ?? court.endTime;
+      const comparisonEndTime = dateAvailability?.endTime || court.endTime;
 
       return comparisonEndTime &&
         (!maxEndTime ||
@@ -116,7 +116,7 @@ export function calculateScheduleTimes({
     {},
     ...tournaments
       .map((tournamentRecord) =>
-        (tournamentRecord.events ?? []).map((event) => {
+        (tournamentRecord.events || []).map((event) => {
           const { scheduleTiming } = getScheduleTiming({
             tournamentRecord,
             event,
@@ -139,8 +139,8 @@ export function calculateScheduleTimes({
     tournamentRecords,
     matchUpFilters,
   });
-  const dateMatchUps = matchUpsWithSchedule?.dateMatchUps ?? [];
-  const completedMatchUps = matchUpsWithSchedule?.completedMatchUps ?? [];
+  const dateMatchUps = matchUpsWithSchedule?.dateMatchUps || [];
+  const completedMatchUps = matchUpsWithSchedule?.completedMatchUps || [];
 
   const relevantMatchUps: any[] = [];
   relevantMatchUps.push(...dateMatchUps);
