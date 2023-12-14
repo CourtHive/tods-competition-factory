@@ -59,6 +59,7 @@ import {
   QUALIFYING,
   ROUND_ROBIN,
   ROUND_ROBIN_WITH_PLAYOFF,
+  SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
 import {
   ResultType,
@@ -77,7 +78,7 @@ import {
 } from '../../constants/policyConstants';
 import {
   DrawDefinition,
-  DrawTypeEnum,
+  DrawTypeUnion,
   Entry,
   Event,
   LinkTypeEnum,
@@ -112,7 +113,7 @@ type GenerateDrawDefinitionArgs = {
   qualifyingProfiles?: any[];
   drawMatic?: DrawMaticArgs;
   qualifyingOnly?: boolean;
-  drawType?: DrawTypeEnum;
+  drawType?: DrawTypeUnion;
   enforceGender?: boolean;
   processCodes?: string[];
   matchUpFormat?: string;
@@ -181,11 +182,9 @@ export function generateDrawDefinition(
     true;
 
   const drawType =
-    (drawTypeCoercion &&
-      params.drawSize === 2 &&
-      DrawTypeEnum.SingleElimination) ||
+    (drawTypeCoercion && params.drawSize === 2 && SINGLE_ELIMINATION) ||
     params.drawType ||
-    DrawTypeEnum.SingleElimination;
+    SINGLE_ELIMINATION;
 
   const seedingPolicy =
     policyDefinitions?.[POLICY_TYPE_SEEDING] ??

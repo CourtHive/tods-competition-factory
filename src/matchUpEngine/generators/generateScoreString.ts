@@ -16,17 +16,18 @@ import {
   WALKOVER,
 } from '../../constants/matchUpStatusConstants';
 
-/**
- *
- * @param {object[]} - sets - TODS sets object
- * @param {string} - matchUpStatus - TODS matchUpStatus ENUM
- * @param {number || string} - winningSide - TODS side declaration: 1 or 2
- * @param {boolean} - winnerFirst - generate string with winner on left side
- * @param {boolean} - autoComplete - whether to convert undefined values to 0
- *
- */
+type GenerateScoreString = {
+  addOutcomeString?: boolean;
+  autoComplete?: boolean;
+  matchUpStatus?: string;
+  matchUpFormat?: string;
+  winnerFirst?: boolean;
+  winningSide?: number;
+  reversed?: boolean;
+  sets: any;
+};
 export function generateScoreString(
-  params
+  params: GenerateScoreString
 ): string | { error?: ErrorType; info?: ErrorType | string } {
   const {
     winnerFirst = true,
@@ -41,8 +42,8 @@ export function generateScoreString(
 
   if (!sets) return { error: MISSING_VALUE, info: 'missing sets' };
 
-  const parsedFormat = matchUpFormat && parse(matchUpFormat);
-  const { bestOf, finalSetFormat, setFormat } = parsedFormat || {};
+  const parsedFormat: any = matchUpFormat && parse(matchUpFormat);
+  const { bestOf, finalSetFormat, setFormat } = parsedFormat ?? {};
 
   const scoresInSideOrder = !winnerFirst || !winningSide || winningSide === 1;
   const reverseScores = reversed || !scoresInSideOrder;

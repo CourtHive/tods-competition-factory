@@ -31,7 +31,6 @@ import {
 } from '../../../constants/drawDefinitionConstants';
 import {
   DrawDefinition,
-  DrawTypeEnum,
   Structure,
   TieFormat,
 } from '../../../types/tournamentFromSchema';
@@ -80,11 +79,9 @@ export function generateDrawStructuresAndLinks(
 
   const stack = 'generateDrawStructuresAndLinks';
   let drawType =
-    (drawTypeCoercion &&
-      params.drawSize === 2 &&
-      DrawTypeEnum.SingleElimination) ||
+    (drawTypeCoercion && params.drawSize === 2 && SINGLE_ELIMINATION) ||
     params.drawType ||
-    DrawTypeEnum.SingleElimination;
+    SINGLE_ELIMINATION;
 
   const structures: Structure[] = [],
     links: any[] = [];

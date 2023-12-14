@@ -198,7 +198,7 @@ function getScaleValue({
   eventType,
 }: GetScaleValueArgs) {
   const scaleAttributes = {
-    eventType: eventType || TypeEnum.Singles,
+    eventType: eventType ?? TypeEnum.Singles,
     scaleType,
     scaleName,
   };

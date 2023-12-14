@@ -27,7 +27,7 @@ import {
 import {
   DrawDefinition,
   DrawLink,
-  DrawTypeEnum,
+  DrawTypeUnion,
   Event,
   LinkTypeEnum,
   Structure,
@@ -40,7 +40,7 @@ type GenerateQualifyingStructureArgs = {
   qualifyingPositions?: number;
   participantsCount?: number;
   targetStructureId: string;
-  drawType?: DrawTypeEnum;
+  drawType?: DrawTypeUnion;
   structureOptions?: any;
   matchUpFormat?: string;
   structureName?: string;
