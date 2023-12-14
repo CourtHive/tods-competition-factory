@@ -136,15 +136,16 @@ export interface Category {
 }
 
 export enum BallTypeEnum {
-  HighAltitude = 'HIGH_ALTITUDE',
+  HIGH_ALTITUDE = 'HIGH_ALTITUDE',
   Stage1Green = 'STAGE1GREEN',
   Stage2Orange = 'STAGE2ORANGE',
   Stage3Red = 'STAGE3RED',
-  T2StandardPressureless = 'T2STANDARD_PRESSURELESS',
-  T2StandardPressurised = 'T2STANDARD_PRESSURISED',
-  Type1Fast = 'TYPE1FAST',
-  Type3Slow = 'TYPE3SLOW',
+  T2STANDARD_PRESSURELESS = 'T2STANDARD_PRESSURELESS',
+  T2STANDARD_PRESSURISED = 'T2STANDARD_PRESSURISED',
+  TYPE1FAST = 'TYPE1FAST',
+  TYPE3SLOW = 'TYPE3SLOW',
 }
+export type BallTypeUnion = keyof typeof BallTypeEnum;
 
 export interface Extension {
   description?: string;
@@ -161,16 +162,18 @@ export interface TimeItem {
 }
 
 export enum CategoryEnum {
-  Age = 'AGE',
-  Both = 'BOTH',
-  Level = 'LEVEL',
+  AGE = 'AGE',
+  BOTH = 'BOTH',
+  LEVEL = 'LEVEL',
 }
+export type CategoryUnion = keyof typeof CategoryEnum;
 
 export enum DisciplineEnum {
-  BeachTennis = 'BEACH_TENNIS',
-  Tennis = 'TENNIS',
-  WheelchairTennis = 'WHEELCHAIR_TENNIS',
+  BEACH_TENNIS = 'BEACH_TENNIS',
+  TENNIS = 'TENNIS',
+  WHEELCHAIR_TENNIS = 'WHEELCHAIR_TENNIS',
 }
+export type DisciplineUnion = keyof typeof DisciplineEnum;
 
 export interface DrawDefinition {
   automated?: boolean;
@@ -206,10 +209,11 @@ export interface DrawDefinition {
 }
 
 export enum DrawStatusEnum {
-  Complete = 'COMPLETE',
-  InProgress = 'IN_PROGRESS',
-  ToBePlayed = 'TO_BE_PLAYED',
+  COMPLETE = 'COMPLETE',
+  IN_PROGRESS = 'IN_PROGRESS',
+  TO_BE_PLAYED = 'TO_BE_PLAYED',
 }
+export type DrawStatusUnion = keyof typeof DrawStatusEnum;
 
 export interface Entry {
   createdAt?: Date | string;
@@ -234,6 +238,7 @@ export enum StageTypeEnum {
   Qualifying = 'QUALIFYING',
   VoluntaryConsolation = 'VOLUNTARY_CONSOLATION',
 }
+export type StageTypeUnion = keyof typeof StageTypeEnum;
 
 export enum EntryStatusEnum {
   Alternate = 'ALTERNATE',
@@ -251,6 +256,7 @@ export enum EntryStatusEnum {
   Wildcard = 'WILDCARD',
   Withdrawn = 'WITHDRAWN',
 }
+export type EntryStatusUnion = keyof typeof EntryStatusEnum;
 
 export interface DrawLink {
   createdAt?: Date | string;
@@ -270,6 +276,7 @@ export enum LinkTypeEnum {
   Position = 'POSITION',
   Winner = 'WINNER',
 }
+export type LinkTypeUnion = keyof typeof LinkTypeEnum;
 
 export interface DrawLinkSource {
   createdAt?: Date | string;
@@ -307,11 +314,14 @@ export enum PositioningProfileEnum {
   TopDown = 'TOP_DOWN',
   Waterfall = 'WATERFALL',
 }
+export type PositioningProfileUnion = keyof typeof PositioningProfileEnum;
+
 export enum SeedingProfileEnum {
   Cluster = 'CLUSTER',
   Separate = 'SEPARATE',
   Waterfall = 'WATERFALL',
 }
+export type SeedingProfileUnion = keyof typeof SeedingProfileEnum;
 
 export interface Interleave {
   interleave: number;
@@ -373,6 +383,7 @@ export enum IndoorOutdoorEnum {
   Mixed = 'MIXED',
   Outdoor = 'OUTDOOR',
 }
+export type IndoorOutdoorUnion = keyof typeof IndoorOutdoorEnum;
 
 export enum MatchUpStatusEnum {
   Abandoned = 'ABANDONED',
@@ -392,6 +403,7 @@ export enum MatchUpStatusEnum {
   ToBePlayed = 'TO_BE_PLAYED',
   Walkover = 'WALKOVER',
 }
+export type MatchUpStatusUnion = keyof typeof MatchUpStatusEnum;
 
 export interface Score {
   createdAt?: Date | string;
@@ -495,6 +507,7 @@ export enum CourtPositionEnum {
   RightServiceCourt = 'RIGHT_SERVICE_COURT',
   Serviceline = 'SERVICELINE',
 }
+export type CourtPositionUnion = keyof typeof CourtPositionEnum;
 
 export enum ShotDetailEnum {
   Drive = 'DRIVE',
@@ -508,6 +521,7 @@ export enum ShotDetailEnum {
   Trick = 'TRICK',
   Volley = 'VOLLEY',
 }
+export type ShotDetailUnion = keyof typeof ShotDetailEnum;
 
 export enum ShotOutcomeEnum {
   In = 'IN',
@@ -515,12 +529,14 @@ export enum ShotOutcomeEnum {
   Net = 'NET',
   Out = 'OUT',
 }
+export type ShotOutcomeUnion = keyof typeof ShotOutcomeEnum;
 
 export enum ShotTypeEnum {
   Backhand = 'BACKHAND',
   Forehand = 'FOREHAND',
   Serve = 'SERVE',
 }
+export type ShotTypeUnion = keyof typeof ShotTypeEnum;
 
 export enum WinReasonEnum {
   Ace = 'ACE',
@@ -532,6 +548,7 @@ export enum WinReasonEnum {
   Unforced = 'UNFORCED',
   Winner = 'WINNER',
 }
+export type WinReasonUnion = keyof typeof WinReasonEnum;
 
 export interface Side {
   createdAt?: Date | string;
@@ -569,6 +586,7 @@ export enum SurfaceCategoryEnum {
   Grass = 'GRASS',
   Hard = 'HARD',
 }
+export type SurfaceCategoryUnion = keyof typeof SurfaceCategoryEnum;
 
 export interface TieFormat {
   collectionDefinitions: CollectionDefinition[];
@@ -626,6 +644,7 @@ export enum GenderEnum {
   Male = 'MALE',
   Mixed = 'MIXED',
 }
+export type GenderUnion = keyof typeof GenderEnum;
 
 export interface WinCriteria {
   aggregateValue?: boolean;
@@ -686,6 +705,7 @@ export enum FinishingPositionEnum {
   RoundOutcome = 'ROUND_OUTCOME',
   WinRatio = 'WIN_RATIO',
 }
+export type FinishingPositionUnion = keyof typeof FinishingPositionEnum;
 
 export interface PositionAssignment {
   bye?: boolean;
@@ -716,6 +736,7 @@ export enum StructureTypeEnum {
   Container = 'CONTAINER',
   Item = 'ITEM',
 }
+export type StructureTypeUnion = keyof typeof StructureTypeEnum;
 
 export enum TournamentLevelEnum {
   Club = 'CLUB',
@@ -727,11 +748,13 @@ export enum TournamentLevelEnum {
   Regional = 'REGIONAL',
   Zonal = 'ZONAL',
 }
+export type TournamentLevelUnion = keyof typeof TournamentLevelEnum;
 
 export enum WheelchairClassEnum {
   Quad = 'QUAD',
   Standard = 'STANDARD',
 }
+export type WheelchairClassUnion = keyof typeof WheelchairClassEnum;
 
 export enum CountryCodeEnum {
   ASM = 'ASM',
@@ -987,6 +1010,7 @@ export enum CountryCodeEnum {
   Zmb = 'ZMB',
   Zwe = 'ZWE',
 }
+export type CountryCodeUnion = keyof typeof CountryCodeEnum;
 
 export interface OnlineResource {
   createdAt?: Date | string;
@@ -997,17 +1021,18 @@ export interface OnlineResource {
   notes?: string;
   provider?: string;
   resourceSubType?: string;
-  resourceType?: OnlineResourceTypeEnum;
+  resourceType?: OnlineResourceTypeUnion;
   timeItems?: TimeItem[];
   updatedAt?: Date | string;
 }
 
 export enum OnlineResourceTypeEnum {
-  Email = 'EMAIL',
-  Other = 'OTHER',
-  SocialMedia = 'SOCIAL_MEDIA',
+  EMAIL = 'EMAIL',
+  OTHER = 'OTHER',
+  SOCIAl_MEDIA = 'SOCIAL_MEDIA',
   URL = 'URL',
 }
+export type OnlineResourceTypeUnion = keyof typeof OnlineResourceTypeEnum;
 
 export interface Participant {
   contacts?: Contact[];
@@ -1059,11 +1084,13 @@ export enum ParticipantRoleEnum {
   Other = 'OTHER',
   Security = 'SECURITY',
 }
+export type ParticipantRoleUnion = keyof typeof ParticipantRoleEnum;
 
 export enum ParticipantStatusEnum {
   Active = 'ACTIVE',
   Withdrawn = 'WITHDRAWN',
 }
+export type ParticipantStatusUnion = keyof typeof ParticipantStatusEnum;
 
 export enum ParticipantTypeEnum {
   Group = 'GROUP',
@@ -1071,6 +1098,7 @@ export enum ParticipantTypeEnum {
   Pair = 'PAIR',
   Team = 'TEAM',
 }
+export type ParticipantTypeUnion = keyof typeof ParticipantTypeEnum;
 
 export interface Penalty {
   createdAt?: Date | string;
@@ -1106,6 +1134,7 @@ export enum PenaltyTypeEnum {
   UnsportsmanlikeConduct = 'UNSPORTSMANLIKE_CONDUCT',
   VerbalAbuse = 'VERBAL_ABUSE',
 }
+export type PenaltyTypeUnion = keyof typeof PenaltyTypeEnum;
 
 export interface Person {
   addresses?: Address[];
@@ -1167,6 +1196,7 @@ export enum AddressTypeEnum {
   Venue = 'VENUE',
   Work = 'WORK',
 }
+export type AddressTypeUnion = keyof typeof AddressTypeEnum;
 
 export interface BiographicalInformation {
   ageBeganTennis?: number;
@@ -1196,23 +1226,27 @@ export enum PlayingDoubleHandCodeEnum {
   Forehand = 'FOREHAND',
   None = 'NONE',
 }
+export type PlayingDoubleHandCodeUnion = keyof typeof PlayingDoubleHandCodeEnum;
 
 export enum LengthUnitEnum {
   Centimeter = 'CENTIMETER',
   Meter = 'METER',
   Millimeter = 'MILLIMETER',
 }
+export type LengthUnitUnion = keyof typeof LengthUnitEnum;
 
 export enum PlayingHandCodeEnum {
   Ambidextrous = 'AMBIDEXTROUS',
   Left = 'LEFT',
   Right = 'RIGHT',
 }
+export type PlayingHandCodeUnion = keyof typeof PlayingHandCodeEnum;
 
 export enum WeightUnitEnum {
   Gram = 'GRAM',
   Kilogram = 'KILOGRAM',
 }
+export type WeightUnitUnion = keyof typeof WeightUnitEnum;
 
 export interface UnifiedPersonID {
   createdAt?: Date | string;
@@ -1231,6 +1265,7 @@ export enum SexEnum {
   Male = 'MALE',
   Other = 'OTHER',
 }
+export type SexUnion = keyof typeof SexEnum;
 
 export interface RegistrationProfile {
   createdAt?: Date | string;
