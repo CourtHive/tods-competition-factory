@@ -71,11 +71,6 @@ export function getSeedsCount(
       stack,
     });
 
-  console.log({
-    requireParticipantCount,
-    validParticpantCount,
-    participantsCount,
-  });
   if (requireParticipantCount && !validParticpantCount)
     return decorateResult({
       result: { error: MISSING_PARTICIPANT_COUNT },
