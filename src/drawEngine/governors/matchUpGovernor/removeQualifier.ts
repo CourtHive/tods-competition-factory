@@ -42,7 +42,10 @@ export function removeQualifier(
           ({ participantId }) => participantId === previousWinningParticipantId
         )
     );
-    if (mainDrawTargetMatchUp?.matchUpStatus === TO_BE_PLAYED) {
+    if (
+      mainDrawTargetMatchUp &&
+      mainDrawTargetMatchUp.matchUpStatus === TO_BE_PLAYED
+    ) {
       // prevoius winningSide participant was placed in MAIN
       const targetData = positionTargets({
         matchUpId: mainDrawTargetMatchUp.matchUpId,

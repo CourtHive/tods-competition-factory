@@ -1,10 +1,7 @@
 import { generateRange, UUID } from '../../utilities';
 
-import {
-  MatchUp,
-  MatchUpStatusEnum,
-  TieFormat,
-} from '../../types/tournamentTypes';
+import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
+import { MatchUp, TieFormat } from '../../types/tournamentTypes';
 
 type GenerateTieMatchUpsArgs = {
   tieFormat?: TieFormat;
@@ -52,7 +49,7 @@ export function generateCollectionMatchUps({
     return {
       sides: [{ sideNumber: 1 }, { sideNumber: 2 }],
       matchUpId: uuids?.pop() || UUID(),
-      matchUpStatus: MatchUpStatusEnum.ToBePlayed,
+      matchUpStatus: TO_BE_PLAYED,
       collectionPosition,
       collectionId,
       processCodes,

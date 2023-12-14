@@ -1,9 +1,9 @@
+import { MatchUpStatusUnion } from '../../../types/tournamentTypes';
 import {
   nonDirectingMatchUpStatuses,
   directingMatchUpStatuses,
   activeMatchUpStatuses,
 } from '../../../constants/matchUpStatusConstants';
-import { MatchUpStatusEnum } from '../../../types/tournamentTypes';
 
 export function isDirectingMatchUpStatus({ matchUpStatus }) {
   return directingMatchUpStatuses.includes(matchUpStatus);
@@ -14,7 +14,7 @@ export function isActiveMatchUpStatus({ matchUpStatus }) {
 }
 
 type IsNonDirectingArgs = {
-  matchUpStatus: MatchUpStatusEnum;
+  matchUpStatus: MatchUpStatusUnion;
 };
 export function isNonDirectingMatchUpStatus({
   matchUpStatus,

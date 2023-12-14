@@ -1,21 +1,19 @@
-import { MatchUpStatusEnum } from '../types/tournamentTypes';
-
-export const ABANDONED = 'ABANDONED';
-export const AWAITING_RESULT = 'AWAITING_RESULT';
-export const BYE = 'BYE';
-export const CANCELLED = 'CANCELLED';
-export const COMPLETED = 'COMPLETED';
-export const DEAD_RUBBER = 'DEAD_RUBBER';
-export const DEFAULTED = 'DEFAULTED';
-export const DOUBLE_DEFAULT = 'DOUBLE_DEFAULT';
-export const DOUBLE_WALKOVER = 'DOUBLE_WALKOVER';
-export const IN_PROGRESS = 'IN_PROGRESS';
-export const INCOMPLETE = 'INCOMPLETE';
-export const NOT_PLAYED = 'NOT_PLAYED';
-export const RETIRED = 'RETIRED';
-export const SUSPENDED = 'SUSPENDED';
-export const TO_BE_PLAYED = 'TO_BE_PLAYED';
-export const WALKOVER = 'WALKOVER';
+export const ABANDONED: any = 'ABANDONED';
+export const AWAITING_RESULT: any = 'AWAITING_RESULT';
+export const BYE: any = 'BYE';
+export const CANCELLED: any = 'CANCELLED';
+export const COMPLETED: any = 'COMPLETED';
+export const DEAD_RUBBER: any = 'DEAD_RUBBER';
+export const DEFAULTED: any = 'DEFAULTED';
+export const DOUBLE_DEFAULT: any = 'DOUBLE_DEFAULT';
+export const DOUBLE_WALKOVER: any = 'DOUBLE_WALKOVER';
+export const IN_PROGRESS: any = 'IN_PROGRESS';
+export const INCOMPLETE: any = 'INCOMPLETE';
+export const NOT_PLAYED: any = 'NOT_PLAYED';
+export const RETIRED: any = 'RETIRED';
+export const SUSPENDED: any = 'SUSPENDED';
+export const TO_BE_PLAYED: any = 'TO_BE_PLAYED';
+export const WALKOVER: any = 'WALKOVER';
 
 export const recoveryTimeRequiredMatchUpStatuses = [
   AWAITING_RESULT,
@@ -83,15 +81,15 @@ export const nonDirectingMatchUpStatuses = [
 ];
 
 export const completedMatchUpStatuses = [
-  MatchUpStatusEnum.Cancelled,
-  MatchUpStatusEnum.Abandoned,
-  MatchUpStatusEnum.Completed,
-  MatchUpStatusEnum.DeadRubber,
-  MatchUpStatusEnum.Defaulted,
-  MatchUpStatusEnum.DoubleWalkover,
-  MatchUpStatusEnum.DoubleDefault,
-  MatchUpStatusEnum.Retired,
-  MatchUpStatusEnum.Walkover,
+  CANCELLED,
+  ABANDONED,
+  COMPLETED,
+  DEAD_RUBBER,
+  DEFAULTED,
+  DOUBLE_WALKOVER,
+  DOUBLE_DEFAULT,
+  RETIRED,
+  WALKOVER,
 ];
 
 export const activeMatchUpStatuses = [

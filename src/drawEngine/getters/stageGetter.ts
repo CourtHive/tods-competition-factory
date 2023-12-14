@@ -21,7 +21,7 @@ import {
 import {
   DrawDefinition,
   DrawLink,
-  EntryStatusEnum,
+  EntryStatusUnion,
 } from '../../types/tournamentTypes';
 
 export function stageExists({ stage, drawDefinition }) {
@@ -78,7 +78,7 @@ export function stageSeededEntries({ stage, drawDefinition }) {
 }
 
 type GetStageEntriesArgs = {
-  entryStatuses?: EntryStatusEnum[];
+  entryStatuses?: EntryStatusUnion[];
   provisionalPositioning?: boolean;
   drawDefinition: DrawDefinition;
   placementGroup?: number;

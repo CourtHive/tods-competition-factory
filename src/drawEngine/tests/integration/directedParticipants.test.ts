@@ -15,6 +15,10 @@ import {
 } from '../primitives/verifyMatchUps';
 
 import { MAIN } from '../../../constants/drawDefinitionConstants';
+import {
+  EntryStatusUnion,
+  StageTypeUnion,
+} from '../../../types/tournamentTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   CANNOT_CHANGE_WINNING_SIDE,
@@ -29,12 +33,15 @@ import {
   DEFAULTED,
   SUSPENDED,
 } from '../../../constants/matchUpStatusConstants';
-import { EntryStatusEnum, StageTypeEnum } from '../../../types/tournamentTypes';
+import {
+  DIRECT_ACCEPTANCE,
+  WILDCARD,
+} from '../../../constants/entryStatusConstants';
 
 it('advances paired drawPositions when BYE is assigned first', () => {
   let result;
 
-  const stage: StageTypeEnum = StageTypeEnum.Main;
+  const stage: StageTypeUnion = MAIN;
   const drawSize = 8;
 
   let { drawDefinition } = mocksEngine.generateEventWithDraw({
@@ -51,10 +58,7 @@ it('advances paired drawPositions when BYE is assigned first', () => {
     structures: [structure],
   } = getDrawStructures({ drawDefinition, stage });
 
-  const entryStatuses = [
-    EntryStatusEnum.DirectAcceptance,
-    EntryStatusEnum.Wildcard,
-  ];
+  const entryStatuses: EntryStatusUnion[] = [DIRECT_ACCEPTANCE, WILDCARD];
   const mainDrawEntries = getStageEntries({
     drawDefinition,
     entryStatuses,
@@ -281,10 +285,7 @@ it('advances paired drawPosition if BYE is assigned second', () => {
     structures: [structure],
   } = getDrawStructures({ drawDefinition, stage });
 
-  const entryStatuses = [
-    EntryStatusEnum.DirectAcceptance,
-    EntryStatusEnum.Wildcard,
-  ];
+  const entryStatuses: EntryStatusUnion[] = [DIRECT_ACCEPTANCE, WILDCARD];
   const mainDrawEntries = getStageEntries({
     drawDefinition,
     entryStatuses,

@@ -3,6 +3,7 @@ import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConsta
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
 import { getMatchUpId } from '../../../global/functions/extractors';
 
+import { MatchUpStatusUnion, Tournament } from '../../../types/tournamentTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   ErrorType,
@@ -16,10 +17,9 @@ import {
   SCHEDULED_DATE,
   SCHEDULED_TIME,
 } from '../../../constants/timeItemConstants';
-import { MatchUpStatusEnum, Tournament } from '../../../types/tournamentTypes';
 
 type ClearScheduledMatchUpsArgs = {
-  ignoreMatchUpStatuses?: MatchUpStatusEnum[];
+  ignoreMatchUpStatuses?: MatchUpStatusUnion[];
   scheduleAttributes?: string[];
   tournamentRecord: Tournament;
   scheduledDates?: string[];

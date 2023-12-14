@@ -19,14 +19,14 @@ import {
   Extension,
   Participant,
   Penalty,
-  PenaltyTypeEnum,
+  PenaltyTypeUnion,
   Tournament,
 } from '../../../types/tournamentTypes';
 
 type AddPenaltyArgs = {
   refereeParticipantId?: string;
   tournamentRecord: Tournament;
-  penaltyType: PenaltyTypeEnum;
+  penaltyType: PenaltyTypeUnion;
   participantIds: string[];
   extensions?: Extension[];
   penaltyCode: string;

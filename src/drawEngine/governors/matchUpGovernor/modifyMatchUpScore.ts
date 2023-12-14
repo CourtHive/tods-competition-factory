@@ -30,12 +30,13 @@ import {
   SUSPENDED,
   DEFAULTED,
   WALKOVER,
+  IN_PROGRESS,
 } from '../../../constants/matchUpStatusConstants';
 import {
   DrawDefinition,
   Event,
   MatchUp,
-  MatchUpStatusEnum,
+  MatchUpStatusUnion,
   Tournament,
 } from '../../../types/tournamentTypes';
 
@@ -49,7 +50,7 @@ import {
  */
 
 type ModifyMatchUpScoreArgs = {
-  matchUpStatus?: MatchUpStatusEnum;
+  matchUpStatus?: MatchUpStatusUnion;
   tournamentRecord?: Tournament;
   matchUpStatusCodes?: string[];
   drawDefinition?: DrawDefinition;
@@ -136,7 +137,7 @@ export function modifyMatchUpScore({
     !completedMatchUpStatuses.includes(matchUpStatus) &&
     ![AWAITING_RESULT, SUSPENDED].includes(matchUpStatus)
   ) {
-    matchUp.matchUpStatus = MatchUpStatusEnum.InProgress;
+    matchUp.matchUpStatus = IN_PROGRESS;
   }
 
   let defaultedProcessCodes;

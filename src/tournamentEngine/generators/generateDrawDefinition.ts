@@ -56,6 +56,7 @@ import {
   FEED_IN,
   LUCKY_DRAW,
   MAIN,
+  POSITION,
   QUALIFYING,
   ROUND_ROBIN,
   ROUND_ROBIN_WITH_PLAYOFF,
@@ -67,7 +68,6 @@ import {
 } from '../../global/functions/decorateResult';
 import {
   QUALIFIER,
-  STRUCTURE_ENTERED_TYPES,
   STRUCTURE_SELECTED_STATUSES,
 } from '../../constants/entryStatusConstants';
 import {
@@ -81,8 +81,6 @@ import {
   DrawTypeUnion,
   Entry,
   Event,
-  LinkTypeEnum,
-  StageTypeEnum,
   TieFormat,
   Tournament,
   EventTypeUnion,
@@ -238,7 +236,7 @@ export function generateDrawDefinition(
     event?.entries?.filter(
       (entry: Entry) =>
         entry.entryStatus &&
-        [...STRUCTURE_ENTERED_TYPES, QUALIFIER].includes(entry.entryStatus)
+        [...STRUCTURE_SELECTED_STATUSES, QUALIFIER].includes(entry.entryStatus)
     ) ?? [];
 
   const consideredEntries = (
@@ -544,11 +542,11 @@ export function generateDrawDefinition(
     if (result.error) return result;
 
     for (const entry of (drawEntries ?? []).filter(
-      ({ entryStage }) => entryStage === StageTypeEnum.Qualifying
+      ({ entryStage }) => entryStage === QUALIFYING
     )) {
       const entryData = {
         ...entry,
-        entryStage: entry.entryStage ?? StageTypeEnum.Main,
+        entryStage: entry.entryStage ?? MAIN,
         drawDefinition,
       };
       // ignore errors (EXITING_PARTICIPANT)
@@ -603,17 +601,13 @@ export function generateDrawDefinition(
     // add all entries to the draw
     for (const entry of entries) {
       // if drawEntries and entryStage !== stage ignore
-      if (
-        drawEntries &&
-        entry.entryStage &&
-        entry.entryStage !== StageTypeEnum.Main
-      )
+      if (drawEntries && entry.entryStage && entry.entryStage !== MAIN)
         continue;
 
       const entryData = {
         ...entry,
         ignoreStageSpace: ignoreStageSpace ?? drawType === AD_HOC,
-        entryStage: entry.entryStage ?? StageTypeEnum.Main,
+        entryStage: entry.entryStage ?? MAIN,
         drawDefinition,
         drawType,
       };
@@ -792,7 +786,7 @@ export function generateDrawDefinition(
       sourceStructureId: qualifyingStructure.structureId,
       targetStructureId: structureId,
       sourceRoundNumber: 0,
-      linkType: LinkTypeEnum.Position,
+      linkType: POSITION,
     });
     if (!drawDefinition.structures) drawDefinition.structures = [];
     drawDefinition.structures.push(qualifyingStructure);

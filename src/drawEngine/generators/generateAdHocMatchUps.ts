@@ -12,6 +12,7 @@ import {
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
 import { ROUND_OUTCOME } from '../../constants/drawDefinitionConstants';
+import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
   INVALID_VALUES,
@@ -24,9 +25,8 @@ import {
 } from '../../constants/errorConditionConstants';
 import {
   DrawDefinition,
-  EntryStatusEnum,
+  EntryStatusUnion,
   MatchUp,
-  MatchUpStatusEnum,
   Tournament,
 } from '../../types/tournamentTypes';
 
@@ -89,7 +89,7 @@ export function generateAdHocMatchUps({
   if (!matchUpsCount) {
     const selectedEntries =
       drawDefinition?.entries?.filter((entry) => {
-        const entryStatus = entry.entryStatus as EntryStatusEnum;
+        const entryStatus = entry.entryStatus as EntryStatusUnion;
         return STRUCTURE_SELECTED_STATUSES.includes(entryStatus);
       }) ?? [];
     const roundMatchUpsCount = Math.floor(selectedEntries?.length / 2) || 1;
@@ -153,7 +153,7 @@ export function generateAdHocMatchUps({
     );
 
     return {
-      matchUpStatus: MatchUpStatusEnum.ToBePlayed,
+      matchUpStatus: TO_BE_PLAYED,
       matchUpId: matchUpIds.pop() ?? UUID(),
       roundNumber: nextRoundNumber,
       sides,

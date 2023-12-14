@@ -13,8 +13,8 @@ import {
 
 import { MappedMatchUps } from '../../../../drawEngine/getters/getMatchUps/getMatchUpsMap';
 import { MODIFY_PARTICIPANTS } from '../../../../constants/topicConstants';
-import { GROUP, TEAM } from '../../../../constants/participantConstants';
 import { UNGROUPED } from '../../../../constants/entryStatusConstants';
+import { COMPETITOR } from '../../../../constants/participantRoles';
 import { LINEUPS } from '../../../../constants/extensionConstants';
 import { HydratedParticipant } from '../../../../types/hydrated';
 import { SUCCESS } from '../../../../constants/resultConstants';
@@ -28,9 +28,13 @@ import {
   PARTICIPANT_NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
 import {
+  GROUP,
+  TEAM,
+  TEAM_PARTICIPANT,
+} from '../../../../constants/participantConstants';
+import {
   Participant,
-  ParticipantRoleEnum,
-  ParticipantTypeEnum,
+  ParticipantRoleUnion,
   Tournament,
 } from '../../../../types/tournamentTypes';
 
@@ -257,15 +261,15 @@ function removeParticipantIdsFromGroupingParticipant({
 }
 
 type RemoveParticipantIdsFromAllTeamsArgs = {
-  participantRole?: ParticipantRoleEnum;
+  participantRole?: ParticipantRoleUnion;
   individualParticipantIds?: string[];
   tournamentRecord: Tournament;
   groupingTypes?: string[];
 };
 export function removeParticipantIdsFromAllTeams({
-  participantRole = ParticipantRoleEnum.Competitor,
+  participantRole = COMPETITOR,
   individualParticipantIds = [],
-  groupingTypes = [ParticipantTypeEnum.Team, ParticipantTypeEnum.Group],
+  groupingTypes = [TEAM_PARTICIPANT, GROUP],
   tournamentRecord,
 }: RemoveParticipantIdsFromAllTeamsArgs) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

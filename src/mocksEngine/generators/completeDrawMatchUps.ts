@@ -12,7 +12,6 @@ import { getMatchUpId } from '../../global/functions/extractors';
 import { generateOutcome } from './generateOutcome';
 
 import { MAIN, QUALIFYING } from '../../constants/drawDefinitionConstants';
-import { ParticipantTypeEnum } from '../../types/tournamentTypes';
 import { DOUBLES, SINGLES, TEAM } from '../../constants/matchUpTypes';
 import { ASCENDING } from '../../constants/sortingConstants';
 import { SUCCESS } from '../../constants/resultConstants';
@@ -94,7 +93,7 @@ export function completeDrawMatchUps(params): {
       });
       if (positionAssignments?.length) {
         const { participants: teamParticipants } = getParticipants({
-          participantFilters: { participantTypes: [ParticipantTypeEnum.Team] },
+          participantFilters: { participantTypes: [TEAM] },
           tournamentRecord,
         });
         const assignParticipants = (dualMatchUp) => {

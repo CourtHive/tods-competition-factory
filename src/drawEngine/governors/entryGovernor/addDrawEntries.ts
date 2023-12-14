@@ -28,18 +28,22 @@ import {
 import {
   DrawDefinition,
   Entry,
-  EntryStatusEnum,
+  EntryStatusUnion,
   Extension,
   Participant,
-  StageTypeEnum,
+  StageTypeUnion,
 } from '../../../types/tournamentTypes';
+import {
+  DIRECT_ACCEPTANCE,
+  LUCKY_LOSER,
+} from '../../../constants/entryStatusConstants';
 
 type AddDrawEntryArgs = {
-  entryStatus?: EntryStatusEnum;
+  entryStatus?: EntryStatusUnion;
   drawDefinition: DrawDefinition;
   entryStageSequence?: number;
   ignoreStageSpace?: boolean;
-  entryStage?: StageTypeEnum;
+  entryStage?: StageTypeUnion;
   participant?: Participant;
   extensions?: Extension[];
   entryPosition?: number;
@@ -51,7 +55,7 @@ type AddDrawEntryArgs = {
 
 export function addDrawEntry(params: AddDrawEntryArgs) {
   const {
-    entryStatus = EntryStatusEnum.DirectAcceptance,
+    entryStatus = DIRECT_ACCEPTANCE,
     entryStageSequence,
     entryStage = MAIN,
     ignoreStageSpace,
@@ -96,7 +100,7 @@ export function addDrawEntry(params: AddDrawEntryArgs) {
     return decorateResult({ result: { error: MISSING_PARTICIPANT_ID }, stack });
 
   const invalidLuckyLoser =
-    entryStatus === EntryStatusEnum.LuckyLoser &&
+    entryStatus === LUCKY_LOSER &&
     participantInEntries({ participantId, drawDefinition, entryStatus });
   const invalidVoluntaryConsolation =
     entryStage === VOLUNTARY_CONSOLATION &&
@@ -106,7 +110,7 @@ export function addDrawEntry(params: AddDrawEntryArgs) {
       entryStage,
     });
   const invalidEntry =
-    entryStatus !== EntryStatusEnum.LuckyLoser &&
+    entryStatus !== LUCKY_LOSER &&
     entryStage !== VOLUNTARY_CONSOLATION &&
     participantInEntries({ drawDefinition, participantId });
 
@@ -146,22 +150,22 @@ export function addDrawEntry(params: AddDrawEntryArgs) {
 }
 
 type AddDrawEntriesArgs = {
-  entryStatus?: EntryStatusEnum;
+  entryStatus?: EntryStatusUnion;
   drawDefinition: DrawDefinition;
   autoEntryPositions?: boolean;
   ignoreStageSpace?: boolean;
   participantIds: string[];
   stageSequence?: number;
   extension?: Extension;
-  stage?: StageTypeEnum;
+  stage?: StageTypeUnion;
   roundTarget?: number;
 };
 
 export function addDrawEntries(params: AddDrawEntriesArgs) {
   const stack = 'addDrawEntries';
   const {
-    entryStatus = EntryStatusEnum.DirectAcceptance,
-    stage = StageTypeEnum.Main,
+    entryStatus = DIRECT_ACCEPTANCE,
+    stage = MAIN,
     autoEntryPositions = true,
     ignoreStageSpace,
     drawDefinition,
@@ -207,7 +211,7 @@ export function addDrawEntries(params: AddDrawEntriesArgs) {
   const participantIdsNotAdded = participantIds.reduce(
     (notAdded: string[], participantId) => {
       const invalidLuckyLoser =
-        entryStatus === EntryStatusEnum.LuckyLoser &&
+        entryStatus === LUCKY_LOSER &&
         participantInEntries({ participantId, drawDefinition, entryStatus });
       const invalidVoluntaryConsolation =
         stage === VOLUNTARY_CONSOLATION &&
@@ -217,7 +221,7 @@ export function addDrawEntries(params: AddDrawEntriesArgs) {
           participantId,
         });
       const invalidEntry =
-        entryStatus !== EntryStatusEnum.LuckyLoser &&
+        entryStatus !== LUCKY_LOSER &&
         stage !== VOLUNTARY_CONSOLATION &&
         participantInEntries({ drawDefinition, participantId });
 

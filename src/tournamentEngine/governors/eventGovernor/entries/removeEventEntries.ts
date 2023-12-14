@@ -14,19 +14,19 @@ import {
   INVALID_PARTICIPANT_ID,
 } from '../../../../constants/errorConditionConstants';
 import {
-  EntryStatusEnum,
+  EntryStatusUnion,
   Event,
-  StageTypeEnum,
+  StageTypeUnion,
   Tournament,
 } from '../../../../types/tournamentTypes';
 
 type RemoveEventEntriesArgs = {
   tournamentParticipants?: HydratedParticipant[];
-  entryStatuses?: EntryStatusEnum[];
+  entryStatuses?: EntryStatusUnion[];
   tournamentRecord?: Tournament;
   autoEntryPositions?: boolean;
   participantIds: string[];
-  stage?: StageTypeEnum;
+  stage?: StageTypeUnion;
   event: Event;
 };
 export function removeEventEntries({

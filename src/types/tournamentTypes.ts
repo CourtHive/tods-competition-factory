@@ -68,7 +68,7 @@ export interface Event {
   eventRank?: string;
   eventType?: EventTypeUnion;
   extensions?: Extension[];
-  gender?: GenderEnum;
+  gender?: GenderUnion;
   indoorOutdoor?: IndoorOutdoorEnum;
   isMock?: boolean;
   links?: DrawLink[];
@@ -219,9 +219,9 @@ export interface Entry {
   createdAt?: Date | string;
   entryId?: string;
   entryPosition?: number;
-  entryStage?: StageTypeEnum;
+  entryStage?: StageTypeUnion;
   entryStageSequence?: number;
-  entryStatus?: EntryStatusEnum;
+  entryStatus?: EntryStatusUnion;
   extensions?: Extension[];
   isMock?: boolean;
   notes?: string;
@@ -232,29 +232,29 @@ export interface Entry {
 }
 
 export enum StageTypeEnum {
-  Consolation = 'CONSOLATION',
-  Main = 'MAIN',
-  PlayOff = 'PLAY_OFF',
-  Qualifying = 'QUALIFYING',
-  VoluntaryConsolation = 'VOLUNTARY_CONSOLATION',
+  CONSOLATION = 'CONSOLATION',
+  MAIN = 'MAIN',
+  PLAY_OFF = 'PLAY_OFF',
+  QUALIFYING = 'QUALIFYING',
+  VOLUNTARY_CONSOLATION = 'VOLUNTARY_CONSOLATION',
 }
 export type StageTypeUnion = keyof typeof StageTypeEnum;
 
 export enum EntryStatusEnum {
-  Alternate = 'ALTERNATE',
-  Confirmed = 'CONFIRMED',
-  DirectAcceptance = 'DIRECT_ACCEPTANCE',
-  FeedIn = 'FEED_IN',
-  JuniorExempt = 'JUNIOR_EXEMPT',
-  LuckyLoser = 'LUCKY_LOSER',
-  OrganiserAcceptance = 'ORGANISER_ACCEPTANCE',
-  Qualifier = 'QUALIFIER',
-  SpecialExempt = 'SPECIAL_EXEMPT',
-  Registered = 'Registered',
-  Ungrouped = 'UNGROUPED',
-  Unpaired = 'UNPAIRED',
-  Wildcard = 'WILDCARD',
-  Withdrawn = 'WITHDRAWN',
+  ALTERNATE = 'ALTERNATE',
+  CONFIRMED = 'CONFIRMED',
+  DIRECT_ACCEPTANCE = 'DIRECT_ACCEPTANCE',
+  FEED_IN = 'FEED_IN',
+  JUNIOR_EXEMPT = 'JUNIOR_EXEMPT',
+  LUCKY_LOSER = 'LUCKY_LOSER',
+  ORGANISER_ACCEPTANCE = 'ORGANISER_ACCEPTANCE',
+  QUALIFIER = 'QUALIFIER',
+  REGISTERED = 'REGISTERED',
+  SPECIAL_EXEMPT = 'SPECIAL_EXEMPT',
+  UNGROUPED = 'UNGROUPED',
+  UNPAIRED = 'UNPAIRED',
+  WILDCARD = 'WILDCARD',
+  WITHDRAWN = 'WITHDRAWN',
 }
 export type EntryStatusUnion = keyof typeof EntryStatusEnum;
 
@@ -263,7 +263,7 @@ export interface DrawLink {
   extensions?: Extension[];
   isMock?: boolean;
   linkCondition?: string;
-  linkType: LinkTypeEnum;
+  linkType: LinkTypeUnion;
   notes?: string;
   source: DrawLinkSource;
   target: DrawLinkTarget;
@@ -272,9 +272,9 @@ export interface DrawLink {
 }
 
 export enum LinkTypeEnum {
-  Loser = 'LOSER',
-  Position = 'POSITION',
-  Winner = 'WINNER',
+  LOSER = 'LOSER',
+  POSITION = 'POSITION',
+  WINNER = 'WINNER',
 }
 export type LinkTypeUnion = keyof typeof LinkTypeEnum;
 
@@ -348,7 +348,7 @@ export interface MatchUp {
   matchUpDuration?: string;
   matchUpFormat?: string;
   matchUpId: string;
-  matchUpStatus?: MatchUpStatusEnum;
+  matchUpStatus?: MatchUpStatusUnion;
   matchUpStatusCodes?: any[];
   matchUpType?: EventTypeUnion;
   notes?: string;
@@ -612,7 +612,7 @@ export interface CollectionDefinition {
   collectionValueProfiles?: CollectionValueProfile[];
   createdAt?: Date | string;
   extensions?: Extension[];
-  gender?: GenderEnum;
+  gender?: GenderUnion;
   isMock?: boolean;
   matchUpCount?: number;
   matchUpFormat?: string;
@@ -639,10 +639,10 @@ export interface CollectionValueProfile {
 }
 
 export enum GenderEnum {
-  Any = 'ANY',
-  Female = 'FEMALE',
-  Male = 'MALE',
-  Mixed = 'MIXED',
+  ANY = 'ANY',
+  FEMALE = 'FEMALE',
+  MALE = 'MALE',
+  MIXED = 'MIXED',
 }
 export type GenderUnion = keyof typeof GenderEnum;
 
@@ -687,7 +687,7 @@ export interface Structure {
   seedAssignments?: SeedAssignment[];
   seedingProfile?: SeedingProfileEnum;
   seedLimit?: number;
-  stage?: StageTypeEnum;
+  stage?: StageTypeUnion;
   stageSequence?: number;
   structureAbbreviation?: string;
   structureId: string;
@@ -1045,10 +1045,10 @@ export interface Participant {
   participantId: string;
   participantName?: string;
   participantOtherName?: string;
-  participantRole?: ParticipantRoleEnum;
+  participantRole?: ParticipantRoleUnion;
   participantRoleResponsibilities?: string[];
   participantStatus?: ParticipantStatusEnum;
-  participantType?: ParticipantTypeEnum;
+  participantType?: ParticipantTypeUnion;
   penalties?: Penalty[];
   person?: Person;
   personId?: string;
@@ -1074,15 +1074,15 @@ export interface Contact {
 }
 
 export enum ParticipantRoleEnum {
-  Administration = 'ADMINISTRATION',
-  Captain = 'CAPTAIN',
-  Coach = 'COACH',
-  Competitor = 'COMPETITOR',
-  Media = 'MEDIA',
-  Medical = 'MEDICAL',
-  Official = 'OFFICIAL',
-  Other = 'OTHER',
-  Security = 'SECURITY',
+  ADMINISTRATION = 'ADMINISTRATION',
+  CAPTAIN = 'CAPTAIN',
+  COACH = 'COACH',
+  COMPETITOR = 'COMPETITOR',
+  MEDIA = 'MEDIA',
+  MEDICAL = 'MEDICAL',
+  OFFICIAL = 'OFFICIAL',
+  OTHER = 'OTHER',
+  SECURITY = 'SECURITY',
 }
 export type ParticipantRoleUnion = keyof typeof ParticipantRoleEnum;
 
@@ -1093,10 +1093,10 @@ export enum ParticipantStatusEnum {
 export type ParticipantStatusUnion = keyof typeof ParticipantStatusEnum;
 
 export enum ParticipantTypeEnum {
-  Group = 'GROUP',
-  Individual = 'INDIVIDUAL',
-  Pair = 'PAIR',
-  Team = 'TEAM',
+  GROUP = 'GROUP',
+  INDIVIDUAL = 'INDIVIDUAL',
+  PAIR = 'PAIR',
+  TEAM = 'TEAM',
 }
 export type ParticipantTypeUnion = keyof typeof ParticipantTypeEnum;
 
@@ -1109,30 +1109,30 @@ export interface Penalty {
   notes?: string;
   penaltyCode?: string;
   penaltyId: string;
-  penaltyType: PenaltyTypeEnum;
+  penaltyType: PenaltyTypeUnion;
   refereeParticipantId?: string;
   timeItems?: TimeItem[];
   updatedAt?: Date | string;
 }
 
 export enum PenaltyTypeEnum {
-  BallAbuse = 'BALL_ABUSE',
-  Coaching = 'COACHING',
-  DressCodeViolation = 'DRESS_CODE_VIOLATION',
-  EquimentViolation = 'EQUIMENT_VIOLATION',
-  FailuireToSignIn = 'FAILUIRE_TO_SIGN_IN',
-  FailureToComplete = 'FAILURE_TO_COMPLETE',
-  Ineligibility = 'INELIGIBILITY',
-  LeavingTheCourt = 'LEAVING_THE_COURT',
-  NoShow = 'NO_SHOW',
-  Other = 'OTHER',
-  PhysicalAbuse = 'PHYSICAL_ABUSE',
-  ProhibitedSubstance = 'PROHIBITED_SUBSTANCE',
-  Punctuality = 'PUNCTUALITY',
-  RacketAbuse = 'RACKET_ABUSE',
-  RefusalToPlay = 'REFUSAL_TO_PLAY',
-  UnsportsmanlikeConduct = 'UNSPORTSMANLIKE_CONDUCT',
-  VerbalAbuse = 'VERBAL_ABUSE',
+  BALL_ABUSE = 'BALL_ABUSE',
+  COACHING = 'COACHING',
+  DRESS_CODE_VIOLATION = 'DRESS_CODE_VIOLATION',
+  EQUIMENT_VIOLATION = 'EQUIMENT_VIOLATION',
+  FAILUIRE_TO_SIGN_IN = 'FAILUIRE_TO_SIGN_IN',
+  FAILURE_TO_COMPLETE = 'FAILURE_TO_COMPLETE',
+  INELIGIBILITY = 'INELIGIBILITY',
+  LEAVING_THE_COURT = 'LEAVING_THE_COURT',
+  NO_SHOW = 'NO_SHOW',
+  OTHER = 'OTHER',
+  PHYSICAL_ABUSE = 'PHYSICAL_ABUSE',
+  PROHIBITED_SUBSTANCE = 'PROHIBITED_SUBSTANCE',
+  PUNCTUALITY = 'PUNCTUALITY',
+  RACKET_ABUSE = 'RACKET_ABUSE',
+  REFUSAL_TO_PLAY = 'REFUSAL_TO_PLAY',
+  UNSPORTSMANLIKE_CONDUCT = 'UNSPORTSMANLIKE_CONDUCT',
+  VERBAL_ABUSE = 'VERBAL_ABUSE',
 }
 export type PenaltyTypeUnion = keyof typeof PenaltyTypeEnum;
 
@@ -1157,7 +1157,7 @@ export interface Person {
   personOtherIds?: UnifiedPersonID[];
   previousNames?: string[];
   sectionId?: string;
-  sex?: SexEnum;
+  sex?: SexUnion;
   standardFamilyName?: string;
   standardGivenName?: string;
   status?: string;
@@ -1261,9 +1261,9 @@ export interface UnifiedPersonID {
 }
 
 export enum SexEnum {
-  Female = 'FEMALE',
-  Male = 'MALE',
-  Other = 'OTHER',
+  FEMALE = 'FEMALE',
+  MALE = 'MALE',
+  OTHER = 'OTHER',
 }
 export type SexUnion = keyof typeof SexEnum;
 

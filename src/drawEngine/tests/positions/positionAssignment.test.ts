@@ -1,12 +1,11 @@
+import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getDrawStructures } from '../../getters/findStructure';
 import { getStageEntries } from '../../getters/stageGetter';
 import { drawEngine } from '../../sync';
 import { mocksEngine } from '../../..';
 import { expect, it } from 'vitest';
-import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
 
-import { EntryStatusEnum } from '../../../types/tournamentTypes';
 import { ERROR, SUCCESS } from '../../../constants/resultConstants';
 import { generateRange } from '../../../utilities';
 import {
@@ -14,6 +13,11 @@ import {
   ROUND_ROBIN,
   CONTAINER,
 } from '../../../constants/drawDefinitionConstants';
+import {
+  DIRECT_ACCEPTANCE,
+  WILDCARD,
+} from '../../../constants/entryStatusConstants';
+import { EntryStatusUnion } from '../../../types/tournamentTypes';
 
 let result;
 
@@ -33,10 +37,7 @@ it('can assign SINGLE_ELIMINATION draw drawPositions', () => {
     structures: [structure],
   } = getDrawStructures({ drawDefinition, stage });
 
-  const entryStatuses = [
-    EntryStatusEnum.DirectAcceptance,
-    EntryStatusEnum.Wildcard,
-  ];
+  const entryStatuses: EntryStatusUnion[] = [DIRECT_ACCEPTANCE, WILDCARD];
   const mainDrawEntries = getStageEntries({
     drawDefinition,
     entryStatuses,
@@ -113,10 +114,7 @@ it('can assign ROUND_ROBIN draw drawPositions', () => {
   expect(structure.structureType).toEqual(CONTAINER);
   expect(structure.structures?.length).toEqual(4);
 
-  const entryStatuses = [
-    EntryStatusEnum.DirectAcceptance,
-    EntryStatusEnum.Wildcard,
-  ];
+  const entryStatuses: EntryStatusUnion[] = [DIRECT_ACCEPTANCE, WILDCARD];
   ({ drawDefinition } = drawEngine.getState());
   const mainDrawEntries = getStageEntries({
     drawDefinition,

@@ -6,11 +6,17 @@ import {
 } from '../../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
 
 import { POLICY_TYPE_VOLUNTARY_CONSOLATION } from '../../../constants/policyConstants';
-import { VOLUNTARY_CONSOLATION } from '../../../constants/drawDefinitionConstants';
+import {
+  MAIN,
+  PLAY_OFF,
+  QUALIFYING,
+  VOLUNTARY_CONSOLATION,
+} from '../../../constants/drawDefinitionConstants';
 import { UNGROUPED, WITHDRAWN } from '../../../constants/entryStatusConstants';
 import { DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
 import { PolicyDefinitions } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { HydratedSide } from '../../../types/hydrated';
 import {
   ErrorType,
   MISSING_DRAW_DEFINITION,
@@ -18,15 +24,14 @@ import {
 import {
   DrawDefinition,
   Event,
-  MatchUpStatusEnum,
+  MatchUpStatusUnion,
   Participant,
-  StageTypeEnum,
+  StageTypeUnion,
   Tournament,
 } from '../../../types/tournamentTypes';
-import { HydratedSide } from '../../../types/hydrated';
 
 type GetEligibleVoluntaryConsolationParticipantsArgs = {
-  excludedMatchUpStatuses?: MatchUpStatusEnum[];
+  excludedMatchUpStatuses?: MatchUpStatusUnion[];
   policyDefinitions?: PolicyDefinitions;
   includeEventParticipants?: boolean;
   includeQualifyingStage?: boolean;
@@ -64,8 +69,8 @@ export function getEligibleVoluntaryConsolationParticipants({
 } {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
-  const stages = [StageTypeEnum.Main, StageTypeEnum.PlayOff];
-  if (includeQualifyingStage) stages.push(StageTypeEnum.Qualifying);
+  const stages: StageTypeUnion[] = [MAIN, PLAY_OFF];
+  if (includeQualifyingStage) stages.push(QUALIFYING);
 
   const eventMatchUpFilters = event?.eventType
     ? { matchUpTypes: [event.eventType] }
@@ -82,14 +87,14 @@ export function getEligibleVoluntaryConsolationParticipants({
           tournamentRecord,
           inContext: true,
           event,
-        })?.matchUps || []
+        })?.matchUps ?? []
       : allDrawMatchUps({
           contextFilters: { stages },
           matchUpFilters: drawMatchUpFilters,
           tournamentRecord,
           inContext: true,
           drawDefinition,
-        })?.matchUps || [];
+        })?.matchUps ?? [];
 
   const voluntaryConsolationEntries = getStageEntries({
     stage: VOLUNTARY_CONSOLATION,
@@ -121,13 +126,11 @@ export function getEligibleVoluntaryConsolationParticipants({
     [];
 
   includeEventParticipants =
-    includeEventParticipants !== undefined
-      ? includeEventParticipants
-      : policy?.includeEventParticipants;
-  allEntries = allEntries !== undefined ? allEntries : policy?.allEntries;
-  finishingRoundLimit = finishingRoundLimit || policy?.finishingRoundLimit;
-  roundNumberLimit = roundNumberLimit || policy?.roundNumberLimit;
-  matchUpsLimit = matchUpsLimit || policy?.matchUpsLimit;
+    includeEventParticipants ?? policy?.includeEventParticipants;
+  allEntries = allEntries ?? policy?.allEntries;
+  finishingRoundLimit = finishingRoundLimit ?? policy?.finishingRoundLimit;
+  roundNumberLimit = roundNumberLimit ?? policy?.roundNumberLimit;
+  matchUpsLimit = matchUpsLimit ?? policy?.matchUpsLimit;
 
   if (requirePlay === undefined) {
     requirePlay = policy?.requirePlay !== undefined ? policy.requirePlay : true;
@@ -138,7 +141,7 @@ export function getEligibleVoluntaryConsolationParticipants({
   }
   // end policy support
 
-  winsLimit = winsLimit || policy?.winsLimit;
+  winsLimit = winsLimit ?? policy?.winsLimit;
 
   for (const matchUp of matchUps) {
     if (
@@ -178,7 +181,10 @@ export function getEligibleVoluntaryConsolationParticipants({
           losingParticipants[participantId] = side.participant;
           if (!participantMatchUps[participantId])
             participantMatchUps[participantId] = 0;
-          if (!excludedMatchUpStatuses.includes(matchUp.matchUpStatus))
+          if (
+            !matchUp.matchUpStatus ||
+            !excludedMatchUpStatuses.includes(matchUp.matchUpStatus)
+          )
             participantMatchUps[participantId] += 1;
         }
       }
@@ -225,7 +231,7 @@ export function getEligibleVoluntaryConsolationParticipants({
     ? (
         (includeEventParticipants && event
           ? event.entries
-          : drawDefinition.entries) || []
+          : drawDefinition.entries) ?? []
       )
         .filter(
           (entry: any) => ![WITHDRAWN, UNGROUPED].includes(entry.entryStatus)
@@ -235,7 +241,7 @@ export function getEligibleVoluntaryConsolationParticipants({
 
   const losingParticipantIds = Object.keys(losingParticipants);
   const consideredParticipants = considerEntered
-    ? (tournamentRecord?.participants || []).filter(({ participantId }) =>
+    ? (tournamentRecord?.participants ?? []).filter(({ participantId }) =>
         enteredParticipantIds.includes(participantId)
       )
     : (requireLoss && Object.values(losingParticipants)) ||

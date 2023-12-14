@@ -34,10 +34,10 @@ import {
 } from '../../../../constants/participantConstants';
 import {
   DrawDefinition,
-  EntryStatusEnum,
+  EntryStatusUnion,
   Event,
   Extension,
-  StageTypeEnum,
+  StageTypeUnion,
   Tournament,
 } from '../../../../types/tournamentTypes';
 import {
@@ -52,12 +52,12 @@ import {
 type AddEventEntriesArgs = {
   policyDefinitions?: PolicyDefinitions;
   drawDefinition?: DrawDefinition;
-  entryStatus?: EntryStatusEnum;
+  entryStatus?: EntryStatusUnion;
   autoEntryPositions?: boolean;
   tournamentRecord: Tournament;
   entryStageSequence?: number;
   ignoreStageSpace?: boolean;
-  entryStage?: StageTypeEnum;
+  entryStage?: StageTypeUnion;
   participantIds?: string[];
   extensions?: Extension[];
   enforceGender?: boolean;

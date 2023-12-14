@@ -17,7 +17,7 @@ import {
   UNGROUPED,
 } from '../../../../constants/entryStatusConstants';
 import {
-  EntryStatusEnum,
+  EntryStatusUnion,
   Event,
   Tournament,
 } from '../../../../types/tournamentTypes';
@@ -27,7 +27,7 @@ import {
 type ModifyEventEntriesArgs = {
   unpairedParticipantIds?: string[];
   participantIdPairs?: string[][];
-  entryStatus?: EntryStatusEnum;
+  entryStatus?: EntryStatusUnion;
   tournamentRecord: Tournament;
   entryStage?: string;
   event: Event;

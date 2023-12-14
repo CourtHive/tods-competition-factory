@@ -11,7 +11,11 @@ import { getFlightProfile } from '../../../getters/getFlightProfile';
 
 import { validStages } from '../../../../constants/drawDefinitionConstants';
 import { DOUBLES, TEAM_EVENT } from '../../../../constants/eventConstants';
-import { INDIVIDUAL } from '../../../../constants/participantConstants';
+import {
+  INDIVIDUAL,
+  PAIR,
+  TEAM_PARTICIPANT,
+} from '../../../../constants/participantConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   ENTRY_STATUS_NOT_ALLOWED_FOR_EVENT,
@@ -34,11 +38,10 @@ import {
 import {
   DrawDefinition,
   Entry,
-  EntryStatusEnum,
+  EntryStatusUnion,
   Event,
   Extension,
-  ParticipantTypeEnum,
-  StageTypeEnum,
+  StageTypeUnion,
   Tournament,
 } from '../../../../types/tournamentTypes';
 
@@ -47,14 +50,14 @@ type ModifyEntriesStatusArgs = {
   drawDefinition?: DrawDefinition;
   autoEntryPositions?: boolean;
   tournamentRecord: Tournament;
-  entryStatus?: EntryStatusEnum;
+  entryStatus?: EntryStatusUnion;
   ignoreAssignment?: boolean;
-  entryStage?: StageTypeEnum;
+  entryStage?: StageTypeUnion;
   participantIds: string[];
   extension?: Extension;
   eventSync?: boolean;
   drawId: string;
-  stage?: StageTypeEnum;
+  stage?: StageTypeUnion;
   event?: Event;
 };
 export function modifyEntriesStatus({
@@ -129,9 +132,7 @@ export function modifyEntriesStatus({
       return (
         !(
           participantType &&
-          [ParticipantTypeEnum.Pair, ParticipantTypeEnum.Team].includes(
-            participantType
-          ) &&
+          [PAIR, TEAM_PARTICIPANT].includes(participantType) &&
           isUngrouped(entryStatus)
         ) &&
         !(

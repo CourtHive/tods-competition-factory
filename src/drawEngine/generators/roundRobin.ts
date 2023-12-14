@@ -8,6 +8,8 @@ import {
   groupRounds,
 } from './roundRobinGroups';
 
+import { BYE, TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
+import { MatchUp, EventTypeUnion } from '../../types/tournamentTypes';
 import { ResultType } from '../../global/functions/decorateResult';
 import { ROUND_TARGET } from '../../constants/extensionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
@@ -17,11 +19,6 @@ import {
   WIN_RATIO,
   CONTAINER,
 } from '../../constants/drawDefinitionConstants';
-import {
-  MatchUp,
-  MatchUpStatusEnum,
-  EventTypeUnion,
-} from '../../types/tournamentTypes';
 import {
   PlayoffAttributes,
   PolicyDefinitions,
@@ -244,9 +241,7 @@ function roundRobinMatchUps({
     });
 
     const matchUp: MatchUp = {
-      matchUpStatus: roundNumber
-        ? MatchUpStatusEnum.ToBePlayed
-        : MatchUpStatusEnum.Bye,
+      matchUpStatus: roundNumber ? TO_BE_PLAYED : BYE,
       matchUpType, // does not (perhaps) need to be included; but because structures[].structure unsure about derivation inContext
       // finishingPositionRange in RR is not very useful, but provided for consistency
       finishingPositionRange: { winner: range, loser: range },

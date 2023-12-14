@@ -21,15 +21,16 @@ import {
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 import {
+  POSITION,
   QUALIFYING,
   ROUND_ROBIN,
+  WINNER,
 } from '../../../constants/drawDefinitionConstants';
 import {
   DrawDefinition,
   DrawLink,
   DrawTypeUnion,
   Event,
-  LinkTypeEnum,
   Structure,
 } from '../../../types/tournamentTypes';
 
@@ -210,8 +211,7 @@ export function generateQualifyingStructure(
   }
 
   // order of operations is important here!! finalQualifier positions is not yet updated when this step occurs
-  const linkType =
-    drawType === ROUND_ROBIN ? LinkTypeEnum.Position : LinkTypeEnum.Winner;
+  const linkType = drawType === ROUND_ROBIN ? POSITION : WINNER;
 
   const link =
     structure &&

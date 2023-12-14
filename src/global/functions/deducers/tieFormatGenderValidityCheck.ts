@@ -1,14 +1,14 @@
 import { ResultType, decorateResult } from '../decorateResult';
 
 import { INVALID_GENDER } from '../../../constants/errorConditionConstants';
-import { ANY, MIXED } from '../../../constants/genderConstants';
-import { GenderEnum } from '../../../types/tournamentTypes';
+import { ANY, FEMALE, MALE, MIXED } from '../../../constants/genderConstants';
+import { GenderUnion } from '../../../types/tournamentTypes';
 import { DOUBLES } from '../../../constants/matchUpTypes';
 
 type GenderValidityCheckArgs = {
-  referenceGender?: GenderEnum;
+  referenceGender?: GenderUnion;
   matchUpType?: string;
-  gender?: GenderEnum;
+  gender?: GenderUnion;
 };
 
 export const mixedGenderError =
@@ -24,7 +24,7 @@ export function tieFormatGenderValidityCheck(
   if (
     referenceGender &&
     gender &&
-    [GenderEnum.Male, GenderEnum.Female].includes(referenceGender) &&
+    [MALE, FEMALE].includes(referenceGender) &&
     referenceGender !== gender
   )
     return decorateResult({

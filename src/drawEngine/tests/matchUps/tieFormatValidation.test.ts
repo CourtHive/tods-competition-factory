@@ -11,9 +11,8 @@ import {
 import { INVALID_TIE_FORMAT } from '../../../constants/errorConditionConstants';
 import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
-import { GenderEnum } from '../../../types/tournamentTypes';
 import { tieFormats } from '../../../fixtures/scoring/tieFormats';
-import { FEMALE } from '../../../constants/genderConstants';
+import { FEMALE, MALE } from '../../../constants/genderConstants';
 import { TEAM } from '../../../constants/eventConstants';
 import {
   COLLEGE_D3,
@@ -215,7 +214,7 @@ it('cal enforce gender in collectionDefinitions', () => {
   expect(result.valid).toEqual(true);
 
   result = validateTieFormat({
-    gender: GenderEnum.Male,
+    gender: MALE,
     enforceGender: true,
     tieFormat,
   });

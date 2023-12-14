@@ -1,20 +1,13 @@
-import { ParticipantTypeEnum } from '../types/tournamentTypes';
-
+export type SignedInStatusUnion = typeof SIGNED_IN | typeof SIGNED_OUT;
 export const SIGN_IN_STATUS = 'SIGN_IN_STATUS';
+export const SIGNED_OUT = 'SIGNED_OUT';
+export const SIGNED_IN = 'SIGNED_IN';
 
-export const INDIVIDUAL = ParticipantTypeEnum.Individual;
-export const GROUP = ParticipantTypeEnum.Group;
-export const PAIR = ParticipantTypeEnum.Pair;
-export const TEAM = ParticipantTypeEnum.Team;
-export const TEAM_PARTICIPANT = ParticipantTypeEnum.Team;
-
-export enum SignedInStatusEnum {
-  SIGNED_IN = 'SIGNED_IN',
-  SIGNED_OUT = 'SIGNED_OUT',
-}
-
-export const SIGNED_IN = SignedInStatusEnum.SIGNED_IN;
-export const SIGNED_OUT = SignedInStatusEnum.SIGNED_OUT;
+export const TEAM_PARTICIPANT = 'TEAM';
+export const INDIVIDUAL = 'INDIVIDUAL';
+export const GROUP = 'GROUP';
+export const PAIR = 'PAIR';
+export const TEAM = 'TEAM';
 
 export const participantTypes = {
   TEAM_PARTICIPANT,

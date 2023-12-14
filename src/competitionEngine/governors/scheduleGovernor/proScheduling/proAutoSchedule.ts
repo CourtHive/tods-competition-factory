@@ -5,16 +5,16 @@ import { bulkScheduleMatchUps } from '../bulkScheduleMatchUps';
 import { matchUpSort } from '../../../../forge/transform';
 import { isObject } from '../../../../utilities/objects';
 
-import { completedMatchUpStatuses } from '../../../../constants/matchUpStatusConstants';
+import { Tournament } from '../../../../types/tournamentTypes';
 import { HydratedMatchUp } from '../../../../types/hydrated';
 import {
   INVALID_VALUES,
   MISSING_CONTEXT,
 } from '../../../../constants/errorConditionConstants';
 import {
-  MatchUpStatusEnum,
-  Tournament,
-} from '../../../../types/tournamentTypes';
+  BYE,
+  completedMatchUpStatuses,
+} from '../../../../constants/matchUpStatusConstants';
 
 // NOTE: matchUps are assumed to be { inContext: true, nextMatchUps: true }
 
@@ -94,7 +94,7 @@ export function proAutoSchedule({
     .filter(
       ({ matchUpStatus }) =>
         matchUpStatus &&
-        matchUpStatus !== MatchUpStatusEnum.Bye &&
+        matchUpStatus !== BYE &&
         (scheduleCompletedMatchUps ||
           !completedMatchUpStatuses.includes(matchUpStatus))
     )

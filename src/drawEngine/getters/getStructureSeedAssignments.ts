@@ -11,7 +11,7 @@ import {
 import {
   DrawDefinition,
   SeedAssignment,
-  StageTypeEnum,
+  StageTypeUnion,
   Structure,
 } from '../../types/tournamentTypes';
 
@@ -32,7 +32,7 @@ export function getStructureSeedAssignments({
 }: GetStructureSeedAssignmentsArgs): {
   seedAssignments?: SeedAssignment[];
   stageSequence?: number;
-  stage?: StageTypeEnum;
+  stage?: StageTypeUnion;
   seedLimit?: number;
   error?: ErrorType;
 } {
@@ -104,7 +104,7 @@ export function getStructureSeedAssignments({
   }
 
   const seedLimit =
-    structure.seedLimit || structure?.positionAssignments?.length;
+    structure.seedLimit ?? structure?.positionAssignments?.length;
 
   return {
     seedAssignments,

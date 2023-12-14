@@ -8,12 +8,12 @@ import { extractDate, sameDay } from '../../../utilities/dateTime';
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import {
-  MatchUpStatusEnum,
-  StageTypeEnum,
+  MatchUpStatusUnion,
+  StageTypeUnion,
 } from '../../../types/tournamentTypes';
 
 export type MatchUpFilters = {
-  matchUpStatuses?: MatchUpStatusEnum[];
+  matchUpStatuses?: MatchUpStatusUnion[];
   excludeMatchUpStatuses?: string[];
   isCollectionMatchUp?: boolean;
   matchUpFormats?: string[];
@@ -32,7 +32,7 @@ export type MatchUpFilters = {
   stageSequences?: string[];
   scheduledDates?: string[];
   participantIds?: string[];
-  stages?: StageTypeEnum[];
+  stages?: StageTypeUnion[];
   tournamentIds?: string[];
   matchUpTypes?: string[];
   structureIds?: string[];

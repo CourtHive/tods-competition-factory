@@ -4,18 +4,15 @@ import { feedInMatchUps } from './feedInMatchUps';
 import { treeMatchUps } from './eliminationTree';
 import { feedInLinks } from './feedInLinks';
 
+import { DrawLink, Structure } from '../../types/tournamentTypes';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
   MAIN,
   CONSOLATION,
   PLAY_OFF,
+  LOSER,
+  TOP_DOWN,
 } from '../../constants/drawDefinitionConstants';
-import {
-  DrawLink,
-  LinkTypeEnum,
-  PositioningProfileEnum,
-  Structure,
-} from '../../types/tournamentTypes';
 
 export function generateCurtisConsolation(params) {
   const {
@@ -125,14 +122,14 @@ export function generateCurtisConsolation(params) {
       });
 
       const playoffLink: DrawLink = {
-        linkType: LinkTypeEnum.Loser,
+        linkType: LOSER,
         source: {
           roundNumber: mainDrawRoundsCount - 1,
           structureId: mainStructure.structureId,
         },
         target: {
           structureId: playoffStructure.structureId,
-          feedProfile: PositioningProfileEnum.TopDown,
+          feedProfile: TOP_DOWN,
           roundNumber: 1,
         },
       };

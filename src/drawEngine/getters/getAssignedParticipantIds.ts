@@ -2,16 +2,16 @@ import { extractAttributes, unique } from '../../utilities';
 import { getPositionAssignments } from './positionsGetter';
 
 import { MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
+import { DrawDefinition, StageTypeUnion } from '../../types/tournamentTypes';
 import { ResultType } from '../../global/functions/decorateResult';
 import { SUCCESS } from '../../constants/resultConstants';
-import { DrawDefinition, StageTypeEnum } from '../../types/tournamentTypes';
 
 // build up an array of participantIds which are assigned positions in structures
 // optionally filter to included only specified stages
 
 type GetAssignedParticipantIdsArgs = {
   drawDefinition: DrawDefinition;
-  stages?: StageTypeEnum[];
+  stages?: StageTypeUnion[];
 };
 
 export function getAssignedParticipantIds({
@@ -21,7 +21,7 @@ export function getAssignedParticipantIds({
   assignedParticipantIds?: string[];
 } {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-  const stageStructures = (drawDefinition?.structures || []).filter(
+  const stageStructures = (drawDefinition?.structures ?? []).filter(
     (structure) =>
       !stages?.length || (structure.stage && stages.includes(structure.stage))
   );

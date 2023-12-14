@@ -34,14 +34,14 @@ import {
 } from '../../../constants/errorConditionConstants';
 import {
   CONTAINER,
+  LOSER,
   PLAY_OFF,
+  TOP_DOWN,
 } from '../../../constants/drawDefinitionConstants';
 import {
   DrawDefinition,
   DrawLink,
   Event,
-  LinkTypeEnum,
-  PositioningProfileEnum,
   Structure,
   Tournament,
 } from '../../../types/tournamentTypes';
@@ -246,14 +246,14 @@ export function generateAndPopulatePlayoffStructures(
 
     if (result.structureId && roundNumber) {
       const link: DrawLink = {
-        linkType: LinkTypeEnum.Loser,
+        linkType: LOSER,
         source: {
           structureId: sourceStructureId,
           roundNumber,
         },
         target: {
           structureId: result.structureId,
-          feedProfile: PositioningProfileEnum.TopDown,
+          feedProfile: TOP_DOWN,
           roundNumber: 1,
         },
       };

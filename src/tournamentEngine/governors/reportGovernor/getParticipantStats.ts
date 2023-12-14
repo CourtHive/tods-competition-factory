@@ -16,7 +16,10 @@ import {
 
 import { TEAM_PARTICIPANT } from '../../../constants/participantConstants';
 import { HydratedMatchUp, HydratedSide } from '../../../types/hydrated';
-import { Tournament } from '../../../types/tournamentTypes';
+import {
+  ParticipantTypeUnion,
+  Tournament,
+} from '../../../types/tournamentTypes';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -102,7 +105,7 @@ export function getParticipantStats({
   if (teamParticipantId) teamParticipantIds.push(teamParticipantId);
 
   const participantFilters = !teamParticipantIds.length
-    ? { participantTypes: [TEAM_PARTICIPANT] }
+    ? { participantTypes: [TEAM_PARTICIPANT as ParticipantTypeUnion] }
     : { participantIds: teamParticipantIds };
 
   const teamParticipants =

@@ -1,6 +1,6 @@
 import { MatchUpFilters } from '../drawEngine/getters/getMatchUps/filterMatchUps';
 import { MatchUpsMap } from '../drawEngine/getters/getMatchUps/getMatchUpsMap';
-import { SignedInStatusEnum } from '../constants/participantConstants';
+import { SignedInStatusUnion } from '../constants/participantConstants';
 import { HydratedMatchUp, HydratedParticipant } from './hydrated';
 import { ErrorType } from '../constants/errorConditionConstants';
 import { ValidPolicyTypes } from '../constants/policyConstants';
@@ -10,16 +10,16 @@ import {
   Entry,
   Event,
   Extension,
-  GenderEnum,
   MatchUpFinishingPositionRange,
-  ParticipantRoleEnum,
-  ParticipantTypeEnum,
-  SexEnum,
-  StageTypeEnum,
+  StageTypeUnion,
   TeamCompetitor,
   TimeItem,
   Tournament,
   EventTypeUnion,
+  ParticipantTypeUnion,
+  GenderUnion,
+  SexUnion,
+  ParticipantRoleUnion,
 } from './tournamentTypes';
 import {
   DOUBLES_EVENT,
@@ -113,15 +113,15 @@ export type RoundProfile = {
 export type ParticipantFilters = {
   accessorValues?: { accessor: string; value: any }[];
   participantRoleResponsibilities?: string[];
-  participantRoles?: ParticipantRoleEnum[];
-  participantTypes?: ParticipantTypeEnum[];
-  signInStatus?: SignedInStatusEnum;
+  participantRoles?: ParticipantRoleUnion[];
+  participantTypes?: ParticipantTypeUnion[];
+  signInStatus?: SignedInStatusUnion;
   positionedParticipants?: boolean; // boolean - participantIds that are included in any structure.positionAssignments
   eventEntryStatuses?: string[]; // {string[]} participantIds that are in entry.entries with entryStatuses
   drawEntryStatuses?: string[]; // {string[]} participantIds that are in draw.entries or flightProfile.flights[].drawEnteredParticipantIds with entryStatuses
   enableOrFiltering?: boolean;
   participantIds?: string[];
-  genders?: GenderEnum;
+  genders?: GenderUnion;
   eventIds?: string[];
 };
 
@@ -159,7 +159,7 @@ export type ScheduleAnalysis =
     };
 
 export type ParticipantsProfile = {
-  participantType?: ParticipantTypeEnum;
+  participantType?: ParticipantTypeUnion;
   scaledParticipantsCount?: number;
   rankingRange?: [number, number];
   nationalityCodesCount?: number;
@@ -183,7 +183,7 @@ export type ParticipantsProfile = {
   teamKey?: TeamKey;
   idPrefix?: string;
   uuids?: string[];
-  sex?: SexEnum;
+  sex?: SexUnion;
 
   // Usage via participantsProfile unconfirmed...
   usePublishState?: boolean;
@@ -231,7 +231,7 @@ export type ScheduleConflict = {
 };
 
 export type StructureParticipation = {
-  rankingStage: StageTypeEnum;
+  rankingStage: StageTypeUnion;
   walkoverWinCount: number;
   defaultWinCount: number;
   stageSequence: number;

@@ -37,7 +37,7 @@ import {
   CollectionDefinition,
   DrawDefinition,
   Event,
-  GenderEnum,
+  GenderUnion,
   MatchUp,
   TieFormat,
   Tournament,
@@ -54,10 +54,10 @@ type AddCollectionDefinitionArgs = {
   collectionDefinition: CollectionDefinition;
   policyDefinitions?: PolicyDefinitions;
   updateInProgressMatchUps?: boolean;
+  referenceGender?: GenderUnion;
   drawDefinition: DrawDefinition;
   referenceCategory?: Category;
   tournamentRecord: Tournament;
-  referenceGender?: GenderEnum;
   enforceCategory?: boolean;
   enforceGender?: boolean;
   tieFormatName?: string;

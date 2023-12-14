@@ -22,16 +22,16 @@ import {
 import {
   // Category,
   Event,
-  GenderEnum,
   Tournament,
   EventTypeUnion,
+  GenderUnion,
 } from '../../../types/tournamentTypes';
 
 type ModifyEventArgs = {
   tournamentRecord: Tournament;
   eventUpdates: {
     eventType?: EventTypeUnion;
-    gender?: GenderEnum;
+    gender?: GenderUnion;
     /**
      TODO: logic to determine if category can be changed
      Considerations:

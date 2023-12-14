@@ -10,7 +10,7 @@ import { DYNAMIC, RATING } from '../../../constants/scaleConstants';
 import { HydratedParticipant } from '../../../types/hydrated';
 import {
   DrawDefinition,
-  EntryStatusEnum,
+  EntryStatusUnion,
   Event,
   Structure,
   Tournament,
@@ -87,7 +87,7 @@ export function drawMatic({
 
   const enteredParticipantIds = drawDefinition?.entries
     ?.filter((entry) => {
-      const entryStatus = entry.entryStatus as EntryStatusEnum;
+      const entryStatus = entry.entryStatus as EntryStatusUnion;
       return (
         !restrictEntryStatus ||
         STRUCTURE_SELECTED_STATUSES.includes(entryStatus)

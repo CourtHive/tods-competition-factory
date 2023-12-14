@@ -57,7 +57,7 @@ import {
 import {
   DrawDefinition,
   Event,
-  MatchUpStatusEnum,
+  MatchUpStatusUnion,
   Tournament,
 } from '../../../types/tournamentTypes';
 
@@ -66,7 +66,7 @@ import {
 type SetMatchUpStatusArgs = {
   tournamentRecords?: { [key: string]: Tournament };
   policyDefinitions?: PolicyDefinitions;
-  matchUpStatus?: MatchUpStatusEnum;
+  matchUpStatus?: MatchUpStatusUnion;
   allowChangePropagation?: boolean;
   disableScoreValidation?: boolean;
   projectedWinningSide?: number;

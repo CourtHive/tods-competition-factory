@@ -8,8 +8,6 @@ import { findExtension } from '../queryGovernor/extensionQueries';
 import { getStructureGroups } from './getStructureGroups';
 import { makeDeepCopy } from '../../../utilities';
 
-import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
-import { StageTypeEnum } from '../../../types/tournamentTypes';
 import { TALLY } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -29,6 +27,12 @@ import {
   RETIRED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
+import {
+  CONSOLATION,
+  MAIN,
+  PLAY_OFF,
+  QUALIFYING,
+} from '../../../constants/drawDefinitionConstants';
 
 export function getDrawData(params): {
   structures?: any[];
@@ -112,11 +116,7 @@ export function getDrawData(params): {
         // pass seedAssignments from { stageSequence: 1 } to other stages
         if (
           structure.stage &&
-          [
-            StageTypeEnum.Main,
-            StageTypeEnum.Consolation,
-            StageTypeEnum.PlayOff,
-          ].includes(structure.stage)
+          [MAIN, CONSOLATION, PLAY_OFF].includes(structure.stage)
         ) {
           seedAssignments = mainStageSeedAssignments;
         }

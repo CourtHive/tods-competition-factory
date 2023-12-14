@@ -9,6 +9,7 @@ import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';
 import { ADD_PARTICIPANTS } from '../../../../constants/topicConstants';
 import { ALTERNATE } from '../../../../constants/entryStatusConstants';
 import { COMPETITOR } from '../../../../constants/participantRoles';
+import { MAIN } from '../../../../constants/drawDefinitionConstants';
 import { DOUBLES } from '../../../../constants/matchUpTypes';
 import { UUID } from '../../../../utilities';
 import {
@@ -19,9 +20,9 @@ import {
 } from '../../../../constants/errorConditionConstants';
 import {
   DrawDefinition,
-  EntryStatusEnum,
+  EntryStatusUnion,
   Event,
-  StageTypeEnum,
+  StageTypeUnion,
   Tournament,
 } from '../../../../types/tournamentTypes';
 import {
@@ -39,16 +40,16 @@ import {
 type AddEventEntryPairsArgs = {
   allowDuplicateParticipantIdPairs?: boolean;
   participantIdPairs?: string[][];
-  entryStatus?: EntryStatusEnum;
+  entryStatus?: EntryStatusUnion;
   tournamentRecord: Tournament;
   drawDefinition: DrawDefinition;
-  entryStage?: StageTypeEnum;
+  entryStage?: StageTypeUnion;
   uuids?: string[];
   event: Event;
 };
 export function addEventEntryPairs({
   allowDuplicateParticipantIdPairs,
-  entryStage = StageTypeEnum.Main,
+  entryStage = MAIN,
   entryStatus = ALTERNATE,
   participantIdPairs = [],
   tournamentRecord,

@@ -10,11 +10,11 @@ import { courtGridRows } from '../generators/courtGridRows';
 import { competitionMatchUps } from './matchUpsGetter';
 import { isObject } from '../../utilities/objects';
 
-import { MatchUpStatusEnum, Venue } from '../../types/tournamentTypes';
 import { PUBLIC, PUBLISH, STATUS } from '../../constants/timeItemConstants';
 import { COMPLETED } from '../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import { HydratedMatchUp } from '../../types/hydrated';
+import { Venue } from '../../types/tournamentTypes';
 import {
   TournamentRecords,
   TournamentRecordsArgs,
@@ -86,7 +86,7 @@ export function competitionScheduleMatchUps(
         ...params,
         matchUpFilters: {
           ...params.matchUpFilters,
-          matchUpStatuses: [MatchUpStatusEnum.Completed],
+          matchUpStatuses: [COMPLETED],
         },
         contextFilters: params.contextFilters,
       }).completedMatchUps

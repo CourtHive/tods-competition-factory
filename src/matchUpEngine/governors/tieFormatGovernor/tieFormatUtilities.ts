@@ -21,17 +21,17 @@ import {
   Category,
   CollectionDefinition,
   Event,
-  GenderEnum,
   TieFormat,
   EventTypeUnion,
+  GenderUnion,
 } from '../../../types/tournamentTypes';
 
 type ValidateTieFormatArgs = {
   checkCollectionIds?: boolean;
   enforceCategory?: boolean;
   enforceGender?: boolean;
+  gender?: GenderUnion;
   category?: Category;
-  gender?: GenderEnum;
   tieFormat?: any; // not using TieFormat type because incoming value is potentially invalid
   event?: Event;
 };
@@ -144,9 +144,9 @@ export function validateTieFormat(params: ValidateTieFormatArgs): ResultType {
 
 type ValidateCollectionDefinitionArgs = {
   collectionDefinition: CollectionDefinition;
+  referenceGender?: GenderUnion;
   referenceCategory?: Category;
   checkCollectionIds?: boolean;
-  referenceGender?: GenderEnum;
   eventType?: EventTypeUnion;
   checkCategory?: boolean;
   checkGender?: boolean;

@@ -26,7 +26,7 @@ import {
 import {
   Entry,
   Event,
-  StageTypeEnum,
+  StageTypeUnion,
   Tournament,
 } from '../../types/tournamentTypes';
 
@@ -54,7 +54,7 @@ type GenerateFlightProfileArgs = {
   sortDescending?: boolean;
   drawNameRoot?: string;
   scaleSortMethod?: any;
-  stage?: StageTypeEnum;
+  stage?: StageTypeUnion;
   drawNames?: string[];
   scaledEntries?: any;
   flightsCount: number;

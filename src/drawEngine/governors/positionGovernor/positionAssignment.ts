@@ -53,14 +53,14 @@ import {
 import {
   DrawDefinition,
   Event,
-  MatchUpStatusEnum,
+  MatchUpStatusUnion,
   PositionAssignment,
   Tournament,
 } from '../../../types/tournamentTypes';
 
 type AssignDrawPositionArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];
-  sourceMatchUpStatus?: MatchUpStatusEnum;
+  sourceMatchUpStatus?: MatchUpStatusUnion;
   provisionalPositioning?: boolean;
   seedingProfile?: SeedingProfile;
   tournamentRecord?: Tournament;

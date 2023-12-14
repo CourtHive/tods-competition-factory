@@ -28,10 +28,15 @@ import {
 import {
   Entry,
   Event,
-  GenderEnum,
   Participant,
   Tournament,
 } from '../../../../types/tournamentTypes';
+import {
+  ANY,
+  FEMALE,
+  MALE,
+  MIXED,
+} from '../../../../constants/genderConstants';
 
 type CheckValidEntriesArgs = {
   policyDefinitions?: PolicyDefinitions;
@@ -110,10 +115,9 @@ export function checkValidEntries({
     const validPairGender =
       !eventGender ||
       !pairGender?.length ||
-      GenderEnum.Any === eventGender ||
-      ([GenderEnum.Male, GenderEnum.Female].includes(eventGender) &&
-        pairGender[0] === eventGender) ||
-      (GenderEnum.Mixed === eventGender &&
+      ANY === eventGender ||
+      ([MALE, FEMALE].includes(eventGender) && pairGender[0] === eventGender) ||
+      (MIXED === eventGender &&
         ((pairGender.length == 1 &&
           participant.individualParticipantIds?.length === 1) ||
           pairGender.length === 2));
@@ -122,9 +126,8 @@ export function checkValidEntries({
     const validPersonGender =
       !participant?.person ||
       !eventGender ||
-      [GenderEnum.Any, GenderEnum.Mixed].includes(eventGender) ||
-      ([GenderEnum.Male, GenderEnum.Female].includes(eventGender) &&
-        personGender === eventGender);
+      [ANY, MIXED].includes(eventGender) ||
+      ([MALE, FEMALE].includes(eventGender) && personGender === eventGender);
 
     const validGender =
       !genderEnforced || (validPairGender && validPersonGender);

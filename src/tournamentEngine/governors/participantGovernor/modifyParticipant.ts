@@ -20,6 +20,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 import {
   GROUP,
+  INDIVIDUAL,
   PAIR,
   participantTypes,
 } from '../../../constants/participantConstants';
@@ -78,7 +79,7 @@ export function modifyParticipant(params) {
 
   if (Array.isArray(individualParticipantIds)) {
     const { participants: individualParticipants } = getParticipants({
-      participantFilters: { participantTypes: [participantTypes.INDIVIDUAL] },
+      participantFilters: { participantTypes: [INDIVIDUAL] },
       tournamentRecord,
     });
     const allIndividualParticipantIds =

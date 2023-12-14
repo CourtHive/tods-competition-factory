@@ -12,7 +12,7 @@ import {
   MISSING_ENTRIES,
   MISSING_PARTICIPANT_IDS,
 } from '../../../../constants/errorConditionConstants';
-import { EntryStatusEnum } from '../../../../types/tournamentTypes';
+import { EntryStatusUnion } from '../../../../types/tournamentTypes';
 
 export function addDrawEntries({
   autoEntryPositions = true,
@@ -100,7 +100,7 @@ export function addDrawEntries({
 }
 
 type ParticipantInFlightEntriesArgs = {
-  entryStatus?: EntryStatusEnum;
+  entryStatus?: EntryStatusUnion;
   participantId: string;
   entryStage?: string;
   flight: any;

@@ -25,10 +25,10 @@ import {
   CollectionValueProfile,
   DrawDefinition,
   Event,
-  GenderEnum,
   TieFormat,
   Tournament,
   EventTypeUnion,
+  GenderUnion,
 } from '../../../types/tournamentTypes';
 import {
   INVALID_VALUES,
@@ -48,10 +48,10 @@ type ModifyCollectionDefinitionArgs = {
   matchUpFormat?: string;
   matchUpType?: EventTypeUnion;
   matchUpCount?: number;
+  gender?: GenderUnion;
   collectionId: string;
   structureId?: string;
   category?: Category;
-  gender?: GenderEnum;
   matchUpId?: string;
   eventId?: string;
   event?: Event;

@@ -13,7 +13,7 @@ import { extractAttributes } from '../../../utilities';
 import {
   Extension,
   Penalty,
-  PenaltyTypeEnum,
+  PenaltyTypeUnion,
 } from '../../../types/tournamentTypes';
 import {
   MISSING_TOURNAMENT_RECORDS,
@@ -23,7 +23,7 @@ import {
 
 type AddPenaltyArgs = {
   tournamentRecords: TournamentRecords;
-  penaltyType: PenaltyTypeEnum;
+  penaltyType: PenaltyTypeUnion;
   participantIds: string[];
   extensions?: Extension[];
   penaltyCode: string;

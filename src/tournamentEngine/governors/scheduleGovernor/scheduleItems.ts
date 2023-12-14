@@ -12,16 +12,13 @@ import {
   addMatchUpCourtOrder as addCourtOrder,
 } from '../../../drawEngine/governors/matchUpGovernor/scheduleItems';
 
+import { DrawDefinition, Tournament } from '../../../types/tournamentTypes';
 import { INDIVIDUAL } from '../../../constants/participantConstants';
+import { OFFICIAL } from '../../../constants/participantRoles';
 import {
   MISSING_PARTICIPANT_ID,
   PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  ParticipantRoleEnum,
-  Tournament,
-} from '../../../types/tournamentTypes';
 
 export function addMatchUpScheduleItems(params) {
   return addScheduleItems(params);
@@ -177,7 +174,7 @@ export function addMatchUpOfficial({
       tournamentRecord,
       participantFilters: {
         participantTypes: [INDIVIDUAL],
-        participantRoles: [ParticipantRoleEnum.Official],
+        participantRoles: [OFFICIAL],
       },
     }).participants ?? [];
 

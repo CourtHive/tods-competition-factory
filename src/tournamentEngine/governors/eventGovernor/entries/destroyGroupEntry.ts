@@ -30,7 +30,6 @@ import {
   DrawDefinition,
   Tournament,
   Event,
-  ParticipantTypeEnum,
 } from '../../../../types/tournamentTypes';
 
 /**
@@ -91,9 +90,7 @@ export function destroyGroupEntry({
 
   if (
     !participant.participantType ||
-    ![ParticipantTypeEnum.Pair, ParticipantTypeEnum.Team].includes(
-      participant.participantType
-    ) ||
+    ![PAIR, TEAM_PARTICIPANT].includes(participant.participantType) ||
     (participant.participantType === TEAM_PARTICIPANT &&
       event.eventType !== TEAM_EVENT) ||
     (participant.participantType === PAIR && event.eventType !== DOUBLES_EVENT)

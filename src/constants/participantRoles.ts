@@ -1,12 +1,12 @@
-export const ADMINISTRATION = 'ADMINISTRATION';
-export const CAPTAIN = 'CAPTAIN';
-export const COACH = 'COACH';
-export const COMPETITOR = 'COMPETITOR';
-export const MEDIA = 'MEDIA';
-export const MEDICAL = 'MEDICAL';
-export const OFFICIAL = 'OFFICIAL';
-export const OTHER = 'OTHER';
-export const SECURITY = 'SECURITY';
+export const ADMINISTRATION: any = 'ADMINISTRATION';
+export const CAPTAIN: any = 'CAPTAIN';
+export const COACH: any = 'COACH';
+export const COMPETITOR: any = 'COMPETITOR';
+export const MEDIA: any = 'MEDIA';
+export const MEDICAL: any = 'MEDICAL';
+export const OFFICIAL: any = 'OFFICIAL';
+export const OTHER: any = 'OTHER';
+export const SECURITY: any = 'SECURITY';
 
 export const participantRoles = {
   ADMINISTRATION,

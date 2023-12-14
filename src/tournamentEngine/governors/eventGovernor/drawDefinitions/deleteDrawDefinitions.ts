@@ -21,7 +21,7 @@ import {
   deleteMatchUpsNotice,
 } from '../../../../drawEngine/notifications/drawNotifications';
 
-import { STRUCTURE_ENTERED_TYPES } from '../../../../constants/entryStatusConstants';
+import { STRUCTURE_SELECTED_STATUSES } from '../../../../constants/entryStatusConstants';
 import { DELETE_DRAW_DEFINITIONS } from '../../../../constants/auditConstants';
 import { POLICY_TYPE_SCORING } from '../../../../constants/policyConstants';
 import { Event, Tournament } from '../../../../types/tournamentTypes';
@@ -148,7 +148,7 @@ export function deleteDrawDefinitions(params: DeleteDrawDefinitionArgs) {
 
         if (flight) {
           flight.drawEntries = flight.drawEntries?.filter((entry) =>
-            STRUCTURE_ENTERED_TYPES.includes(entry.entryStatus)
+            STRUCTURE_SELECTED_STATUSES.includes(entry.entryStatus)
           );
         }
 

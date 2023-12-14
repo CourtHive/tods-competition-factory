@@ -4,12 +4,12 @@ import { STRUCTURE_SELECTED_STATUSES } from '../../../constants/entryStatusConst
 import {
   DrawDefinition,
   Entry,
-  EntryStatusEnum,
+  EntryStatusUnion,
   Event,
 } from '../../../types/tournamentTypes';
 
 type GetStageEntriesArgs = {
-  entryStatuses?: EntryStatusEnum[];
+  entryStatuses?: EntryStatusUnion[];
   drawDefinition: DrawDefinition;
   selected?: boolean;
   drawId?: string;

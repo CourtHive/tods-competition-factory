@@ -9,7 +9,7 @@ import {
 } from '../../../drawEngine/notifications/drawNotifications';
 
 import { DOUBLES, SINGLES, TEAM } from '../../../constants/eventConstants';
-import { MatchUpStatusEnum } from '../../../types/tournamentTypes';
+import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_EVENT_TYPE,
@@ -99,14 +99,14 @@ export function setMatchUpFormat({
       const matchUps =
         (force || scheduledDates) &&
         getAllStructureMatchUps({
-          matchUpFilters: { matchUpStatuses: [MatchUpStatusEnum.ToBePlayed] },
+          matchUpFilters: { matchUpStatuses: [TO_BE_PLAYED] },
           structure,
         });
 
       const inContextMatchUps =
         scheduledDates &&
         getAllStructureMatchUps({
-          matchUpFilters: { matchUpStatuses: [MatchUpStatusEnum.ToBePlayed] },
+          matchUpFilters: { matchUpStatuses: [TO_BE_PLAYED] },
           contextFilters: { scheduledDates },
           afterRecoveryTimes: false,
           inContext: true,

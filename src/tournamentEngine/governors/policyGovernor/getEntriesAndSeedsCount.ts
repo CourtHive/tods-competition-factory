@@ -12,13 +12,13 @@ import {
   DrawDefinition,
   Event,
   Entry,
-  StageTypeEnum,
+  StageTypeUnion,
 } from '../../../types/tournamentTypes';
 
 type GetEntriesAndSeedsCountArgs = {
   policyDefinitions: PolicyDefinitions;
   drawDefinition: DrawDefinition;
-  stage: StageTypeEnum;
+  stage: StageTypeUnion;
   drawSize?: number;
   drawId?: string;
   event: Event;

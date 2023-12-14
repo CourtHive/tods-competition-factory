@@ -3,6 +3,7 @@ import {
   decorateResult,
 } from '../../../../global/functions/decorateResult';
 
+import { DrawDefinition, Tournament } from '../../../../types/tournamentTypes';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   INVALID_STRUCTURE,
@@ -12,10 +13,9 @@ import {
   STRUCTURE_NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
 import {
-  DrawDefinition,
-  StageTypeEnum,
-  Tournament,
-} from '../../../../types/tournamentTypes';
+  MAIN,
+  QUALIFYING,
+} from '../../../../constants/drawDefinitionConstants';
 
 type RemoveSeededParticipantArgs = {
   tournamentRecord: Tournament;
@@ -43,8 +43,8 @@ export function removeSeededParticipant({
 
   if (
     !structure.stage ||
-    ![StageTypeEnum.Main, StageTypeEnum.Qualifying].includes(structure.stage) ||
-    (structure.stage === StageTypeEnum.Main && structure.stageSequence !== 1)
+    ![MAIN, QUALIFYING].includes(structure.stage) ||
+    (structure.stage === MAIN && structure.stageSequence !== 1)
   ) {
     return decorateResult({ result: { error: INVALID_STRUCTURE }, stack });
   }

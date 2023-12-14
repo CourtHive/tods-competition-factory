@@ -12,7 +12,6 @@ import SEEDING_NATIONAL from '../../../fixtures/policies/POLICY_SEEDING_NATIONAL
 import { MODIFY_DRAW_DEFINITION } from '../../../constants/topicConstants';
 import SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
 import SEEDING_ITF from '../../../fixtures/policies/POLICY_SEEDING_ITF';
-import { EntryStatusEnum } from '../../../types/tournamentTypes';
 import { MAIN } from '../../../constants/drawDefinitionConstants';
 import { ERROR } from '../../../constants/resultConstants';
 import {
@@ -20,6 +19,11 @@ import {
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
+import {
+  DIRECT_ACCEPTANCE,
+  WILDCARD,
+} from '../../../constants/entryStatusConstants';
+import { EntryStatusUnion } from '../../../types/tournamentTypes';
 
 it('can define seedAssignments', () => {
   const drawSize = 8;
@@ -249,10 +253,7 @@ it('can assign seedNumbers and drawPositions to seeded participants', () => {
   });
   expect(result.success).toEqual(true);
 
-  const entryStatuses = [
-    EntryStatusEnum.DirectAcceptance,
-    EntryStatusEnum.Wildcard,
-  ];
+  const entryStatuses: EntryStatusUnion[] = [DIRECT_ACCEPTANCE, WILDCARD];
   const participants = getStageEntries({
     drawDefinition,
     entryStatuses,
