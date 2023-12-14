@@ -12,8 +12,8 @@ export function getCompetitionDateRange({
 }: {
   [key: string]: Tournament;
 }): {
-  startDate?: Date | undefined;
-  endDate?: Date | undefined;
+  startDate?: Date;
+  endDate?: Date;
   error?: ErrorType;
 } {
   const tournamentIds = Object.keys(tournamentRecords);

@@ -33,7 +33,7 @@ export function getTargetTeamMatchUps({
         matchUpFilters: { matchUpTypes: [TEAM] },
         // inContext: false,
         drawDefinition,
-      })?.matchUps || [];
+      })?.matchUps ?? [];
   }
 
   // all team matchUps in scope which are completed or which have a tieFormat should not be modified

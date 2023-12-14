@@ -32,7 +32,7 @@ export function addFinishingRounds({
     matchUps,
   });
 
-  roundsCount = roundsCount || Math.max(...roundNumbers, 0);
+  roundsCount = roundsCount ?? Math.max(...roundNumbers, 0);
 
   // for qualifying, offset the final round so that qualifyinground is finishingRound
   const finishingRoundOffset = roundLimit ? roundsCount - roundLimit : 0;
@@ -67,7 +67,7 @@ export function addFinishingRounds({
       {},
       ...roundNumbers.map((roundNumber) => {
         const finishingRound =
-          (roundsCount || 0) + 1 - roundNumber - finishingRoundOffset;
+          (roundsCount ?? 0) + 1 - roundNumber - finishingRoundOffset;
         const matchUpsCount = roundProfile[roundNumber].matchUpsCount;
         const finishingData = {
           finishingPositionRange: {},
@@ -80,7 +80,7 @@ export function addFinishingRounds({
         // in the case of FMLC the finishingPositionRange in consolation is not modified after first fed round
         const fmlcException = fmlc && roundNumber !== 1;
         const rangeOffset =
-          1 + finishingPositionOffset + (fmlcException ? positionsFed || 0 : 0);
+          1 + finishingPositionOffset + (fmlcException ? positionsFed ?? 0 : 0);
         const finalPosition = 1;
         const positionRange = generateRange(
           rangeOffset,

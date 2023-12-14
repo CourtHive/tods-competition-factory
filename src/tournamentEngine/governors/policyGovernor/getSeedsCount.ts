@@ -51,7 +51,7 @@ export function getSeedsCount(
   const stack = 'getSeedsCount';
 
   const participantsCount =
-    params?.participantsCount || params?.participantCount;
+    params?.participantsCount ?? params?.participantCount;
 
   if (!policyDefinitions) {
     const result = getPolicyDefinitions({
@@ -70,6 +70,12 @@ export function getSeedsCount(
       context: { participantsCount },
       stack,
     });
+
+  console.log({
+    requireParticipantCount,
+    validParticpantCount,
+    participantsCount,
+  });
   if (requireParticipantCount && !validParticpantCount)
     return decorateResult({
       result: { error: MISSING_PARTICIPANT_COUNT },

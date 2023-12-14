@@ -43,7 +43,7 @@ export function generateBookings({
     return { error: MISSING_MATCHUPS };
 
   periodLength =
-    periodLength ||
+    periodLength ??
     calculatePeriodLength({
       recoveryMinutes: defaultRecoveryMinutes,
       averageMatchUpMinutes,
@@ -54,7 +54,7 @@ export function generateBookings({
     {},
     ...Object.values(tournamentRecords)
       .map((tournamentRecord) =>
-        (tournamentRecord.events || []).map((event) => {
+        (tournamentRecord.events ?? []).map((event) => {
           const { scheduleTiming } = getScheduleTiming({
             tournamentRecord,
             event,
