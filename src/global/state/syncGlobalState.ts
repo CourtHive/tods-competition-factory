@@ -21,6 +21,7 @@ const syncGlobalState: ImplemtationGlobalStateTypes = {
   tournamentRecords: {},
   subscriptions: {},
   modified: false,
+  methods: {},
   notices: [],
 };
 
@@ -32,12 +33,14 @@ export default {
   deleteNotices,
   disableNotifications,
   enableNotifications,
+  getMethods,
   getNotices,
   getTopics,
   getTournamentId,
   getTournamentRecord,
   getTournamentRecords,
   removeTournamentRecord,
+  setMethods,
   setSubscriptions,
   setTournamentId,
   setTournamentRecord,
@@ -120,6 +123,13 @@ export function setSubscriptions(params) {
   });
   return { ...SUCCESS };
 }
+export function setMethods(params) {
+  Object.keys(params).forEach((methodName) => {
+    if (typeof params[methodName] !== 'function') return;
+    syncGlobalState.methods[methodName] = params[methodName];
+  });
+  return { ...SUCCESS };
+}
 
 export function cycleMutationStatus() {
   const status = syncGlobalState.modified;
@@ -150,6 +160,10 @@ export function addNotice({ topic, payload, key }: Notice) {
   syncGlobalState.notices.push({ topic, payload, key });
 
   return { ...SUCCESS };
+}
+
+export function getMethods() {
+  return syncGlobalState.methods ?? {};
 }
 
 export function getNotices({ topic }: GetNoticesArgs) {

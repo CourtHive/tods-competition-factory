@@ -3,7 +3,15 @@ import mocksEngine from '../../../mocksEngine';
 import engine from '../../engine/sync';
 import { expect, test } from 'vitest';
 
+import { deleteDrawDefinitions } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/deleteDrawDefinitions';
+import { getMethods } from '../../../global/state/syncGlobalState';
+import { setMethods } from '../../../global/state/globalState';
 import * as query from '../../../../dist/forge/query';
+
+import {
+  METHOD_NOT_FOUND,
+  SCORES_PRESENT,
+} from '../../../constants/errorConditionConstants';
 
 test('assembly engine can set state and execute a method', () => {
   const {
@@ -22,7 +30,7 @@ test('assembly engine can set state and execute a method', () => {
     state.tournamentRecords[tournamentId].tournamentId === tournamentId
   ).toEqual(true);
 
-  const executionResult = engine.execute({
+  let executionResult = engine.execute({
     completeDrawMatchUps,
     params: { drawId },
   });
@@ -39,4 +47,26 @@ test('assembly engine can set state and execute a method', () => {
 
   const allCompleted = matchUps?.every(query.scoreHasValue);
   expect(allCompleted).toEqual(true);
+
+  executionResult = engine.executionQueue([
+    {
+      method: 'deleteDrawDefinitions',
+      params: { drawIds: [drawId] },
+    },
+  ]);
+
+  expect(executionResult.error).toEqual(METHOD_NOT_FOUND);
+
+  setMethods({ deleteDrawDefinitions });
+  const methodResult = getMethods();
+  expect(typeof methodResult['deleteDrawDefinitions']).toEqual('function');
+
+  executionResult = engine.executionQueue([
+    {
+      method: 'deleteDrawDefinitions',
+      params: { drawIds: [drawId] },
+    },
+  ]);
+
+  expect(executionResult.error).toEqual(SCORES_PRESENT);
 });

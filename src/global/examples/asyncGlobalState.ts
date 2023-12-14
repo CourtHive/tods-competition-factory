@@ -41,6 +41,7 @@ function createInstanceState() {
     subscriptions: {},
     modified: false,
     notices: [],
+    methods: {},
   };
 
   asyncCtxStateMap.set(executionAsyncId(), instanceState);
@@ -65,12 +66,14 @@ export default {
   deleteNotices,
   disableNotifications,
   enableNotifications,
+  getMethods,
   getNotices,
   getTopics,
   getTournamentId,
   getTournamentRecord,
   getTournamentRecords,
   removeTournamentRecord,
+  setMethods,
   setSubscriptions,
   setTournamentId,
   setTournamentRecord,
@@ -158,6 +161,16 @@ function setSubscriptions({ subscriptions = {} } = {}) {
   return { success: true };
 }
 
+function setMethods(params) {
+  const instanceState = getInstanceState();
+
+  Object.keys(params).forEach((methodName) => {
+    if (typeof params[methodName] !== 'function') return;
+    instanceState.methods[methodName] = params[methodName];
+  });
+  return { success: true };
+}
+
 function cycleMutationStatus() {
   const instanceState = getInstanceState();
   const status = instanceState.modified;
@@ -187,6 +200,11 @@ function addNotice({ topic, payload, key }: Notice) {
   instanceState.notices.push({ topic, payload, key });
 
   return { success: true };
+}
+
+function getMethods() {
+  const instanceState = getInstanceState();
+  return instanceState.methods ?? {};
 }
 
 function getNotices({ topic }: GetNoticesArgs) {

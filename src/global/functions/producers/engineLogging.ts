@@ -6,7 +6,7 @@ import {
 } from '../../state/globalState';
 
 type EngineLoggingArgs = {
-  params: { [key: string]: any } | boolean;
+  params?: { [key: string]: any } | boolean;
   methodName: string;
   result: ResultType;
   elapsed: number;

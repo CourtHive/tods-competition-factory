@@ -5,6 +5,7 @@ import { TournamentRecordsArgs } from '../../types/factoryTypes';
 import { ResultType } from '../functions/decorateResult';
 import {
   ErrorType,
+  INVALID_VALUES,
   MISSING_ASYNC_STATE_PROVIDER,
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
@@ -54,6 +55,7 @@ type GlobalStateTypes = {
 
 export type ImplemtationGlobalStateTypes = TournamentRecordsArgs & {
   tournamentId?: string | undefined;
+  methods: { [key: string]: any };
   disableNotifications: boolean;
   subscriptions: any;
   notices: Notice[];
@@ -81,6 +83,7 @@ const requiredStateProviderMethods = [
   'deleteNotices',
   'disableNotifications',
   'enableNotifications',
+  'getMethods',
   'getNotices',
   'getTopics',
   'getTournamentId',
@@ -271,6 +274,13 @@ export function setSubscriptions(params: any) {
   });
 }
 
+export function setMethods(params?: { [key: string]: any }) {
+  if (!params)
+    return { error: MISSING_VALUE, info: 'missing method declarations' };
+  if (typeof params !== 'object') return { error: INVALID_VALUES };
+  return _globalStateProvider.setMethods(params);
+}
+
 export function cycleMutationStatus() {
   return _globalStateProvider.cycleMutationStatus();
 }
@@ -282,6 +292,10 @@ export function addNotice(notice: Notice) {
 export type GetNoticesArgs = {
   topic: string;
 };
+
+export function getMethods(): { [key: string]: any } {
+  return _globalStateProvider.getMethods();
+}
 
 export function getNotices(params: GetNoticesArgs): string[] {
   return _globalStateProvider.getNotices(params);

@@ -10,6 +10,7 @@ import {
   getTournamentRecords,
   getTournamentId,
   cycleMutationStatus,
+  getMethods,
 } from '../../global/state/globalState';
 
 import {
@@ -17,10 +18,16 @@ import {
   METHOD_NOT_FOUND,
 } from '../../constants/errorConditionConstants';
 
-export function executionQueue(engine, directives, rollbackOnError) {
+export function executionQueue(
+  engine: { [key: string]: any },
+  directives: { method: string; params?: { [key: string]: any } }[],
+  rollbackOnError?: boolean
+) {
   if (!Array.isArray(directives)) return { error: INVALID_VALUES };
+
   const tournamentRecords = getTournamentRecords();
   const activeTournamentId = getTournamentId();
+  const methods = getMethods();
   const start = Date.now();
 
   const snapshot =
@@ -33,7 +40,7 @@ export function executionQueue(engine, directives, rollbackOnError) {
     if (typeof directive !== 'object') return { error: INVALID_VALUES };
 
     const { method: methodName, params } = directive;
-    if (!engine[methodName]) {
+    if (!methods[methodName]) {
       const result = { error: METHOD_NOT_FOUND, methodName };
       const elapsed = Date.now() - start;
       engineLogging({ result, methodName, elapsed, params, engine: 'ce:' });
@@ -43,7 +50,7 @@ export function executionQueue(engine, directives, rollbackOnError) {
     const result = executeFunction(
       engine,
       tournamentRecords,
-      engine[methodName],
+      methods[methodName],
       { activeTournamentId, ...params },
       methodName
     );

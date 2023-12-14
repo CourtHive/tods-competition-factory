@@ -12,6 +12,7 @@ export function paramsMiddleware(
 
   const tournamentRecord = tournamentRecords[tournamentId];
   if (!tournamentRecord) return params;
+  params.tournamentRecord = tournamentRecord;
 
   const drawId = params.drawId || params.matchUp?.drawId;
 

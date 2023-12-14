@@ -19,6 +19,11 @@ import {
 
 import { FactoryEngine } from '../../types/factoryTypes';
 
+type MethodParams = {
+  params?: { [key: string]: any };
+  method: string;
+};
+
 export const engine = (() => {
   const engine: FactoryEngine = {
     getState: (params?) =>
@@ -30,7 +35,8 @@ export const engine = (() => {
     version: factoryVersion,
 
     execute: (args: any) => engineInvoke(engine, args),
-    executionQueue: executionQueue,
+    executionQueue: (directives: MethodParams[], rollbackOnError?: boolean) =>
+      executionQueue(engine, directives, rollbackOnError),
   };
 
   engine.reset = () => {
