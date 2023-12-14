@@ -29,10 +29,7 @@ import {
   DEFAULTED,
   SUSPENDED,
 } from '../../../constants/matchUpStatusConstants';
-import {
-  EntryStatusEnum,
-  StageTypeEnum,
-} from '../../../types/tournamentFromSchema';
+import { EntryStatusEnum, StageTypeEnum } from '../../../types/tournamentTypes';
 
 it('advances paired drawPositions when BYE is assigned first', () => {
   let result;

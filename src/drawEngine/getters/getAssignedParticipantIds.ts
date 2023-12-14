@@ -4,10 +4,7 @@ import { getPositionAssignments } from './positionsGetter';
 import { MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
 import { ResultType } from '../../global/functions/decorateResult';
 import { SUCCESS } from '../../constants/resultConstants';
-import {
-  DrawDefinition,
-  StageTypeEnum,
-} from '../../types/tournamentFromSchema';
+import { DrawDefinition, StageTypeEnum } from '../../types/tournamentTypes';
 
 // build up an array of participantIds which are assigned positions in structures
 // optionally filter to included only specified stages

@@ -27,8 +27,8 @@ import { TEAM } from '../../../constants/eventConstants';
 import {
   Event,
   Tournament,
-  TypeEnum,
-} from '../../../types/tournamentFromSchema';
+  EventTypeUnion,
+} from '../../../types/tournamentTypes';
 import {
   ScheduleTiming,
   ScheduleVisibilityFilters,
@@ -42,7 +42,7 @@ type GetMatchUpScheduleDetailsArgs = {
   usePublishState?: boolean;
   matchUp: HydratedMatchUp;
   matchUpFormat?: string;
-  matchUpType?: TypeEnum;
+  matchUpType?: EventTypeUnion;
   publishStatus?: any;
   event?: Event;
 };

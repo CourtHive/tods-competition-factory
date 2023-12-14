@@ -5,7 +5,7 @@ import { getMatchUpsToSchedule } from './getMatchUpsToSchedule';
 import { generateScheduleTimes } from './generateScheduleTimes';
 import { extractDate } from '../../../../../utilities/dateTime';
 
-import { Tournament } from '../../../../../types/tournamentFromSchema';
+import { Tournament } from '../../../../../types/tournamentTypes';
 import { HydratedMatchUp } from '../../../../../types/hydrated';
 
 type GetVenueSchedulingDetailsArgs = {

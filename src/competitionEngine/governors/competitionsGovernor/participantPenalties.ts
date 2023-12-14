@@ -14,7 +14,7 @@ import {
   Extension,
   Penalty,
   PenaltyTypeEnum,
-} from '../../../types/tournamentFromSchema';
+} from '../../../types/tournamentTypes';
 import {
   MISSING_TOURNAMENT_RECORDS,
   PARTICIPANT_NOT_FOUND,

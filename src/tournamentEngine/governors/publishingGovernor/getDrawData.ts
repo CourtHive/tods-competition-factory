@@ -9,7 +9,7 @@ import { getStructureGroups } from './getStructureGroups';
 import { makeDeepCopy } from '../../../utilities';
 
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
-import { StageTypeEnum } from '../../../types/tournamentFromSchema';
+import { StageTypeEnum } from '../../../types/tournamentTypes';
 import { TALLY } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {

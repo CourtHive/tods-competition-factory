@@ -16,7 +16,7 @@ import {
   Event,
   TieFormat,
   Tournament,
-} from '../../../types/tournamentFromSchema';
+} from '../../../types/tournamentTypes';
 
 type ModifyTieFormatArgs = {
   updateInProgressMatchUps?: boolean;

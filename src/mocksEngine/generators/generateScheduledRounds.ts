@@ -3,7 +3,7 @@ import { getContainedStructures } from '../../tournamentEngine/governors/tournam
 import { allTournamentMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
 import { intersection, unique } from '../../utilities';
 
-import { Tournament } from '../../types/tournamentFromSchema';
+import { Tournament } from '../../types/tournamentTypes';
 import {
   ErrorType,
   INVALID_VALUES,

@@ -7,7 +7,7 @@ import { deletionMessage } from './deletionMessage';
 
 import { POLICY_TYPE_SCHEDULING } from '../../../constants/policyConstants';
 import { MODIFY_VENUE } from '../../../constants/topicConstants';
-import { Tournament } from '../../../types/tournamentFromSchema';
+import { Tournament } from '../../../types/tournamentTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 type DeleteCourtArgs = {

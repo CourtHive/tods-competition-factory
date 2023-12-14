@@ -24,13 +24,13 @@ import {
   Event,
   GenderEnum,
   Tournament,
-  TypeEnum,
-} from '../../../types/tournamentFromSchema';
+  EventTypeUnion,
+} from '../../../types/tournamentTypes';
 
 type ModifyEventArgs = {
   tournamentRecord: Tournament;
   eventUpdates: {
-    eventType?: TypeEnum;
+    eventType?: EventTypeUnion;
     gender?: GenderEnum;
     /**
      TODO: logic to determine if category can be changed

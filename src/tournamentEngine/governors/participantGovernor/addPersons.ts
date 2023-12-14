@@ -6,7 +6,7 @@ import { addParticipants } from './addParticipants';
 import { UUID } from '../../../utilities';
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
-import { Participant } from '../../../types/tournamentFromSchema';
+import { Participant } from '../../../types/tournamentTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   COMPETITOR,

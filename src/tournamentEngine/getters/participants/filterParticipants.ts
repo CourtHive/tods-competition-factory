@@ -8,7 +8,7 @@ import { unique } from '../../../utilities';
 import { SIGN_IN_STATUS } from '../../../constants/participantConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 
-import type { Tournament } from '../../../types/tournamentFromSchema';
+import type { Tournament } from '../../../types/tournamentTypes';
 import { ParticipantFilters } from '../../../types/factoryTypes';
 import { HydratedParticipant } from '../../../types/hydrated';
 

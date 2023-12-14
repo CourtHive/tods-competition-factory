@@ -6,7 +6,7 @@ import {
 } from '../tournamentGovernor/addRemoveExtensions';
 
 import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
-import { Event, Tournament } from '../../../types/tournamentFromSchema';
+import { Event, Tournament } from '../../../types/tournamentTypes';
 import { PolicyDefinitions } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {

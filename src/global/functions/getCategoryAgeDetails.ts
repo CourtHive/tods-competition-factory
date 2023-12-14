@@ -7,7 +7,7 @@ import {
   zeroPad,
 } from '../../utilities/dateTime';
 
-import { Category } from '../../types/tournamentFromSchema';
+import { Category } from '../../types/tournamentTypes';
 import {
   INVALID_CATEGORY,
   INVALID_DATE,

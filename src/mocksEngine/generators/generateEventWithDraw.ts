@@ -28,7 +28,7 @@ import {
   UUID,
 } from '../../utilities';
 
-import { Participant, StageTypeEnum } from '../../types/tournamentFromSchema';
+import { Participant, StageTypeEnum } from '../../types/tournamentTypes';
 import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantConstants';
 import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats';
 import { COMPLETED } from '../../constants/matchUpStatusConstants';

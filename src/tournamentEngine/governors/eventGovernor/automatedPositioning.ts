@@ -16,7 +16,7 @@ import {
   Event,
   PositionAssignment,
   Tournament,
-} from '../../../types/tournamentFromSchema';
+} from '../../../types/tournamentTypes';
 
 type AutomatedPositioningArgs = {
   seedingProfile?: SeedingProfile;

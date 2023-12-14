@@ -11,7 +11,7 @@ import {
   MISSING_EVENT,
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
-import { Entry, Event } from '../../../types/tournamentFromSchema';
+import { Entry, Event } from '../../../types/tournamentTypes';
 
 type AddFlightArgs = {
   qualifyingPositions?: number;

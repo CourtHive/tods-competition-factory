@@ -8,7 +8,7 @@ import {
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
 
-import { Extension } from '../../../types/tournamentFromSchema';
+import { Extension } from '../../../types/tournamentTypes';
 
 type AddExtensionArgs = {
   creationTime?: boolean;

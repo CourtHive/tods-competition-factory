@@ -18,7 +18,7 @@ import {
   Event,
   StageTypeEnum,
   Tournament,
-} from '../../../../types/tournamentFromSchema';
+} from '../../../../types/tournamentTypes';
 
 type RemoveEventEntriesArgs = {
   tournamentParticipants?: HydratedParticipant[];

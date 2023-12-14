@@ -37,8 +37,8 @@ import {
   Structure,
   TieFormat,
   Tournament,
-  TypeEnum,
-} from '../../../types/tournamentFromSchema';
+  EventTypeUnion,
+} from '../../../types/tournamentTypes';
 
 type GenerateDrawTypeAndModify = {
   appliedPolicies?: PolicyDefinitions;
@@ -48,7 +48,7 @@ type GenerateDrawTypeAndModify = {
   qualifiersCount?: number;
   stageSequence?: number;
   matchUpFormat?: string;
-  matchUpType?: TypeEnum;
+  matchUpType?: EventTypeUnion;
   tieFormat?: TieFormat;
   drawSize: number;
   isMock?: boolean;

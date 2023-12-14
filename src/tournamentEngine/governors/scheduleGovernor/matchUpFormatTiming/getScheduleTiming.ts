@@ -6,7 +6,7 @@ import {
 
 import { POLICY_TYPE_SCHEDULING } from '../../../../constants/policyConstants';
 import { SCHEDULE_TIMING } from '../../../../constants/extensionConstants';
-import { Event, Tournament } from '../../../../types/tournamentFromSchema';
+import { Event, Tournament } from '../../../../types/tournamentTypes';
 
 type GetScheduleTimingArgs = {
   tournamentRecord?: Tournament;

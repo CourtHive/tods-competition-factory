@@ -5,11 +5,11 @@ import { unique } from '../../../../utilities';
 import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
 import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../../../constants/policyConstants';
 import { WITHDRAWN } from '../../../../constants/entryStatusConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   ParticipantMap,
   PolicyDefinitions,
 } from '../../../../types/factoryTypes';
-import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   INDIVIDUAL,
   PAIR,
@@ -31,8 +31,7 @@ import {
   GenderEnum,
   Participant,
   Tournament,
-  TypeEnum,
-} from '../../../../types/tournamentFromSchema';
+} from '../../../../types/tournamentTypes';
 
 type CheckValidEntriesArgs = {
   policyDefinitions?: PolicyDefinitions;
@@ -94,7 +93,7 @@ export function checkValidEntries({
     const entryStatus = entryStatusMap[participant.participantId];
     const ungroupedParticipant =
       eventType &&
-      [TypeEnum.Doubles, TypeEnum.Team].includes(eventType) &&
+      [DOUBLES_EVENT, TEAM_EVENT].includes(eventType) &&
       participant.participantType === INDIVIDUAL &&
       (isUngrouped(entryStatus) || entryStatus === WITHDRAWN);
     const mismatch =

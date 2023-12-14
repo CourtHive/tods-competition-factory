@@ -44,7 +44,8 @@ import {
   TIME_TENNIS_PRO_CIRCUIT,
 } from '../../constants/tieFormatConstants';
 
-import { Event, TypeEnum } from '../../types/tournamentFromSchema';
+import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
+import { Event } from '../../types/tournamentTypes';
 
 const STANDARD = 'STANDARD';
 
@@ -153,15 +154,15 @@ export const tieFormatDefaults = (params?: TieFormatDefaultArgs) => {
         {
           collectionId: uuids?.pop() ?? UUID(),
           matchUpFormat: FORMAT_ATP_DOUBLES,
-          matchUpType: TypeEnum.Doubles,
           collectionName: 'Doubles',
+          matchUpType: DOUBLES,
           ...template.doubles,
         },
         {
           collectionId: uuids?.pop() ?? UUID(),
-          matchUpType: TypeEnum.Singles,
           matchUpFormat: FORMAT_STANDARD,
           collectionName: 'Singles',
+          matchUpType: SINGLES,
           ...template.singles,
         },
       ],

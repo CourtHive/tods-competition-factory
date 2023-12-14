@@ -10,7 +10,7 @@ import {
   MISSING_COURT_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '../../constants/errorConditionConstants';
-import { Court, Tournament, Venue } from '../../types/tournamentFromSchema';
+import { Court, Tournament, Venue } from '../../types/tournamentTypes';
 
 type FindCourtArgs = {
   tournamentRecords?: { [key: string]: Tournament };

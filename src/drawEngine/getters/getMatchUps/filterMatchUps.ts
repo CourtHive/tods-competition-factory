@@ -10,7 +10,7 @@ import { HydratedMatchUp } from '../../../types/hydrated';
 import {
   MatchUpStatusEnum,
   StageTypeEnum,
-} from '../../../types/tournamentFromSchema';
+} from '../../../types/tournamentTypes';
 
 export type MatchUpFilters = {
   matchUpStatuses?: MatchUpStatusEnum[];

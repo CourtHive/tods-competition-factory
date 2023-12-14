@@ -3,7 +3,7 @@ import { definedAttributes } from '../../../../utilities/definedAttributes';
 import { getSchedulingProfile } from './schedulingProfile';
 import { getRoundId } from './schedulingUtils';
 
-import { Tournament } from '../../../../types/tournamentFromSchema';
+import { Tournament } from '../../../../types/tournamentTypes';
 import {
   ErrorType,
   INVALID_TOURNAMENT_RECORD,

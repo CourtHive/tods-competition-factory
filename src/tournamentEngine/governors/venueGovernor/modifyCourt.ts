@@ -6,7 +6,7 @@ import { makeDeepCopy } from '../../../utilities';
 
 import { HydratedCourt, HydratedMatchUp } from '../../../types/hydrated';
 import { ResultType } from '../../../global/functions/decorateResult';
-import { Tournament } from '../../../types/tournamentFromSchema';
+import { Tournament } from '../../../types/tournamentTypes';
 import { MODIFY_VENUE } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {

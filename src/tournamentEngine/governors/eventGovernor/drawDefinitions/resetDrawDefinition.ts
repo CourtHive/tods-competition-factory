@@ -21,7 +21,7 @@ import {
   SCHEDULED_TIME,
   ALLOCATE_COURTS,
 } from '../../../../constants/timeItemConstants';
-import { TimeItem } from '../../../../types/tournamentFromSchema';
+import { TimeItem } from '../../../../types/tournamentTypes';
 
 export function resetDrawDefinition({
   tournamentRecord,

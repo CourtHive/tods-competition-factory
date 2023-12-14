@@ -5,7 +5,7 @@ import {
   decorateResult,
 } from '../../../global/functions/decorateResult';
 
-import { Event, Tournament } from '../../../types/tournamentFromSchema';
+import { Event, Tournament } from '../../../types/tournamentTypes';
 import { PUBLIC } from '../../../constants/timeItemConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {

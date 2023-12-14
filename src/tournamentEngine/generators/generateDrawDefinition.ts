@@ -85,8 +85,8 @@ import {
   StageTypeEnum,
   TieFormat,
   Tournament,
-  TypeEnum,
-} from '../../types/tournamentFromSchema';
+  EventTypeUnion,
+} from '../../types/tournamentTypes';
 import {
   PlayoffAttributes,
   PolicyDefinitions,
@@ -117,7 +117,7 @@ type GenerateDrawDefinitionArgs = {
   enforceGender?: boolean;
   processCodes?: string[];
   matchUpFormat?: string;
-  matchUpType?: TypeEnum;
+  matchUpType?: EventTypeUnion;
   structureName?: string;
   tieFormatName?: string;
   tieFormat?: TieFormat;

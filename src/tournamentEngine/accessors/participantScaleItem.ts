@@ -1,6 +1,6 @@
 import { getAccessorValue } from '../../utilities/getAccessorValue';
 
-import type { Participant, TypeEnum } from '../../types/tournamentFromSchema';
+import type { Participant, EventTypeUnion } from '../../types/tournamentTypes';
 import { ScaleAttributes, ScaleItem } from '../../types/factoryTypes';
 import { ResultType } from '../../global/functions/decorateResult';
 import { SUCCESS } from '../../constants/resultConstants';
@@ -51,7 +51,7 @@ export function participantScaleItem({
       const scaleValue = accessorValue?.value || timeItem.itemValue;
 
       const scaleItem = {
-        eventType: eventType as TypeEnum,
+        eventType: eventType as EventTypeUnion,
         scaleDate: timeItem.itemDate,
         scaleValue,
         scaleName,

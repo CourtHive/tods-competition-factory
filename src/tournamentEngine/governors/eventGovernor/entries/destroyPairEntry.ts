@@ -6,7 +6,7 @@ import {
   DrawDefinition,
   Tournament,
   Event,
-} from '../../../../types/tournamentFromSchema';
+} from '../../../../types/tournamentTypes';
 
 /**
  *

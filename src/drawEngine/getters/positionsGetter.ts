@@ -12,7 +12,7 @@ import {
   DrawDefinition,
   PositionAssignment,
   Structure,
-} from '../../types/tournamentFromSchema';
+} from '../../types/tournamentTypes';
 
 export function getAllPositionedParticipantIds({
   drawDefinition,

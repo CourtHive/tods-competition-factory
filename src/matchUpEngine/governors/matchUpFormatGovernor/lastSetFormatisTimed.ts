@@ -1,4 +1,4 @@
-import { MatchUp } from '../../../types/tournamentFromSchema';
+import { MatchUp } from '../../../types/tournamentTypes';
 import { parse } from './parse';
 
 type MatchUpArg = {
@@ -8,8 +8,8 @@ type MatchUpArg = {
 export function lastSetFormatIsTimed(inContextMatchUp: MatchUpArg): boolean {
   const { matchUpFormat, score } = inContextMatchUp;
   const lastSetNumber = score?.sets?.length;
-  const matchUpScoringFormat = matchUpFormat && parse(matchUpFormat);
-  const { setFormat, finalSetFormat, bestOf } = matchUpScoringFormat || {};
+  const matchUpScoringFormat: any = matchUpFormat && parse(matchUpFormat);
+  const { setFormat, finalSetFormat, bestOf } = matchUpScoringFormat ?? {};
   const isLastSet = bestOf && lastSetNumber === bestOf;
   const lastSetFormat = isLastSet ? finalSetFormat || setFormat : setFormat;
   return lastSetFormat?.timed || false;

@@ -1,4 +1,4 @@
-import { DrawDefinition, Structure } from '../../types/tournamentFromSchema';
+import { DrawDefinition, Structure } from '../../types/tournamentTypes';
 import { getStructureSeedAssignments } from './getStructureSeedAssignments';
 import { structureAssignedDrawPositions } from './positionsGetter';
 

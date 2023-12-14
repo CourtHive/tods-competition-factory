@@ -15,7 +15,7 @@ import {
   DrawDefinition,
   Event,
   Tournament,
-} from '../../../types/tournamentFromSchema';
+} from '../../../types/tournamentTypes';
 
 type ModifySeedAssignmentArgs = {
   seedValue: string | number | undefined;

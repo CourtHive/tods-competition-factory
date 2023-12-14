@@ -8,7 +8,7 @@ import { getSeedGroups } from './getSeedBlocks';
 
 import { PolicyDefinitions, SeedingProfile } from '../../../types/factoryTypes';
 import { POLICY_TYPE_SEEDING } from '../../../constants/policyConstants';
-import { DrawDefinition } from '../../../types/tournamentFromSchema';
+import { DrawDefinition } from '../../../types/tournamentTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   ErrorType,

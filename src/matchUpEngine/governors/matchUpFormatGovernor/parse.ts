@@ -23,7 +23,7 @@ type SetFormat = {
   setTo?: number;
 };
 
-type ParsedFormat = {
+export type ParsedFormat = {
   finalSetFormat?: any;
   simplified?: boolean;
   exactly?: number;
@@ -83,13 +83,13 @@ function parseSetFormat(formatstring: string): SetFormat | undefined | false {
     const setType = setTypes[parts[0]];
     const setFormatString = parts[1];
     if (setType && setFormatString) {
-      const isTiebreakSet = setFormatString.indexOf('TB') === 0;
+      const isTiebreakSet = setFormatString.startsWith('TB');
       if (isTiebreakSet) {
         const tiebreakSet = parseTiebreakFormat(setFormatString);
         if (tiebreakSet === false) return false;
         return typeof tiebreakSet === 'object' ? { tiebreakSet } : undefined;
       }
-      const timedSet = setFormatString.indexOf('T') === 0;
+      const timedSet = setFormatString.startsWith('T');
       if (timedSet) return parseTimedSet(setFormatString);
 
       const parts = formatstring.match(/^[FS]:(\d+)([A-Za-z]*)/);

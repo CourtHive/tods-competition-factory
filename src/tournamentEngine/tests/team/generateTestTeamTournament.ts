@@ -2,7 +2,8 @@ import { generateRange } from '../../../utilities';
 import { mocksEngine } from '../../..';
 
 import { SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
-import { TypeEnum } from '../../../types/tournamentFromSchema';
+import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
+import { TEAM_EVENT } from '../../../constants/eventConstants';
 import {
   FORMAT_ATP_DOUBLES,
   FORMAT_STANDARD,
@@ -23,17 +24,17 @@ export function generateTeamTournament(params?) {
       {
         collectionId: 'doublesCollectionId',
         matchUpFormat: FORMAT_ATP_DOUBLES,
-        matchUpType: TypeEnum.Doubles,
         matchUpCount: doublesCount,
         collectionName: 'Doubles',
+        matchUpType: DOUBLES,
         matchUpValue: 1,
       },
       {
         collectionId: 'singlesCollectionId',
         matchUpFormat: FORMAT_STANDARD,
-        matchUpType: TypeEnum.Singles,
         matchUpCount: singlesCount,
         collectionName: 'Singles',
+        matchUpType: SINGLES,
         matchUpValue: 1,
       },
     ],
@@ -49,7 +50,7 @@ export function generateTeamTournament(params?) {
   const eventProfiles = [
     {
       eventName: 'Test Team Event',
-      eventType: TypeEnum.Team,
+      eventType: TEAM_EVENT,
       drawProfiles,
       tieFormat,
     },

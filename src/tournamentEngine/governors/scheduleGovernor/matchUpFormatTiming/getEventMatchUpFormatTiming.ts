@@ -7,7 +7,7 @@ import { unique } from '../../../../utilities';
 
 import POLICY_SCHEDULING_DEFAULT from '../../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
 import { SCHEDULE_TIMING } from '../../../../constants/extensionConstants';
-import { Event, Tournament } from '../../../../types/tournamentFromSchema';
+import { Event, Tournament } from '../../../../types/tournamentTypes';
 import {
   ErrorType,
   MISSING_EVENT,

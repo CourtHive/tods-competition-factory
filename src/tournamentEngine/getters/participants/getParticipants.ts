@@ -7,7 +7,7 @@ import { isObject } from '../../../utilities/objects';
 import { attributeFilter } from '../../../utilities';
 
 import { POLICY_TYPE_PARTICIPANT } from '../../../constants/policyConstants';
-import { MatchUp, Tournament } from '../../../types/tournamentFromSchema';
+import { MatchUp, Tournament } from '../../../types/tournamentTypes';
 import { HydratedParticipant } from '../../../types/hydrated';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {

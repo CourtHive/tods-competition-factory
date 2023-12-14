@@ -31,7 +31,7 @@ import {
   Event,
   LinkTypeEnum,
   Structure,
-} from '../../../types/tournamentFromSchema';
+} from '../../../types/tournamentTypes';
 
 type GenerateQualifyingStructureArgs = {
   appliedPolicies?: PolicyDefinitions;

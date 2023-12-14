@@ -9,7 +9,7 @@ import { mustBeAnArray } from '../../../../utilities/mustBeAnArray';
 import { isConvertableInteger } from '../../../../utilities/math';
 import { isPowerOf2 } from '../../../../utilities';
 
-import { Tournament } from '../../../../types/tournamentFromSchema';
+import { Tournament } from '../../../../types/tournamentTypes';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { HydratedMatchUp } from '../../../../types/hydrated';
 import {

@@ -14,14 +14,16 @@ import {
   Event,
   Structure,
   Tournament,
-  TypeEnum,
-} from '../../../types/tournamentFromSchema';
+  EventTypeUnion,
+} from '../../../types/tournamentTypes';
 import {
   INVALID_DRAW_DEFINITION,
   INVALID_PARTICIPANT_ID,
   INVALID_VALUES,
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
+import { SINGLES_EVENT } from '../../../constants/eventConstants';
+import { ScaleAttributes } from '../../../types/factoryTypes';
 
 export type DrawMaticArgs = {
   tournamentParticipants?: HydratedParticipant[];
@@ -39,7 +41,7 @@ export type DrawMaticArgs = {
   structure?: Structure;
   matchUpIds?: string[];
   structureId?: string;
-  eventType?: TypeEnum;
+  eventType?: EventTypeUnion;
   event?: Event;
 
   scaleAccessor?: string;
@@ -184,7 +186,7 @@ export function drawMatic({
 
 type GetScaleValueArgs = {
   scaleAccessor?: string;
-  eventType?: TypeEnum;
+  eventType?: EventTypeUnion;
   scaleType?: string;
   scaleName: string;
   participant: any;
@@ -197,8 +199,8 @@ function getScaleValue({
   scaleName,
   eventType,
 }: GetScaleValueArgs) {
-  const scaleAttributes = {
-    eventType: eventType ?? TypeEnum.Singles,
+  const scaleAttributes: ScaleAttributes = {
+    eventType: eventType ?? SINGLES_EVENT,
     scaleType,
     scaleName,
   };

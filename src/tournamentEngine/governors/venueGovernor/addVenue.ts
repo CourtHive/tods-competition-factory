@@ -5,7 +5,7 @@ import { UUID, makeDeepCopy } from '../../../utilities';
 import { CONTEXT } from '../../../constants/extensionConstants';
 import { ADD_VENUE } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { Venue } from '../../../types/tournamentFromSchema';
+import { Venue } from '../../../types/tournamentTypes';
 import {
   ErrorType,
   MISSING_TOURNAMENT_RECORD,

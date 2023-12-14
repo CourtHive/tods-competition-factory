@@ -8,8 +8,8 @@ import { RANKING, RATING, SEEDING } from '../../../../constants/scaleConstants';
 import { MISSING_EVENT } from '../../../../constants/errorConditionConstants';
 import SEEDING_USTA from '../../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
 import { ADD_SCALE_ITEMS } from '../../../../constants/topicConstants';
-import { TypeEnum } from '../../../../types/tournamentFromSchema';
-import { SINGLES } from '../../../../constants/eventConstants';
+import { SINGLES_EVENT } from '../../../../constants/eventConstants';
+import { ScaleAttributes } from '../../../../types/factoryTypes';
 
 it('can autoSeed by Rankings', () => {
   const {
@@ -32,15 +32,15 @@ it('can autoSeed by Rankings', () => {
       const scaleItems = [
         {
           scaleValue: scaleValuesRating[index],
-          eventType: SINGLES,
+          eventType: SINGLES_EVENT,
           scaleType: RATING,
           scaleName: 'WTN',
           scaleDate,
         },
         {
           scaleValue: scaleValuesRanking[index],
+          eventType: SINGLES_EVENT,
           scaleType: RANKING,
-          eventType: SINGLES,
           scaleName: 'U18',
           scaleDate,
         },
@@ -51,7 +51,7 @@ it('can autoSeed by Rankings', () => {
   );
 
   let scaleAttributes = {
-    eventType: SINGLES,
+    eventType: SINGLES_EVENT,
     scaleType: RATING,
     scaleName: 'WTN',
   };
@@ -86,16 +86,16 @@ it('can autoSeed by Rankings', () => {
     .filter(Boolean);
   expect(scaleValues).toEqual([8, 7, 6, 5, 4, 3, 1, 2]);
 
-  let seedingScaleAttributes = {
-    eventType: TypeEnum.Singles,
+  const seedingScaleAttributes: ScaleAttributes = {
+    eventType: SINGLES_EVENT,
     scaleType: SEEDING,
     scaleName: 'U18',
   };
   result = tournamentEngine.setParticipantScaleItems({
     scaleItemsWithParticipantIds: result.scaleItemsWithParticipantIds,
     context: {
-      scaleAttributes: seedingScaleAttributes,
       scaleBasis: { ...scaleAttributes, scaleDate },
+      scaleAttributes: seedingScaleAttributes,
       eventId,
     },
   });
@@ -223,8 +223,8 @@ it('can autoSeed by Rankings', () => {
 
   // now test seeding by ranking
   scaleAttributes = {
+    eventType: SINGLES_EVENT,
     scaleType: RANKING,
-    eventType: SINGLES,
     scaleName: 'U18',
   };
   result = tournamentEngine.autoSeeding({
@@ -242,14 +242,14 @@ it('can autoSeed by Rankings', () => {
   });
   expect(result.success).toEqual(true);
 
-  seedingScaleAttributes = {
-    eventType: TypeEnum.Singles,
+  const newScaleAttributes: ScaleAttributes = {
+    eventType: SINGLES_EVENT,
     scaleType: SEEDING,
     scaleName: 'U18',
   };
   ({ scaledEntries } = tournamentEngine.getScaledEntries({
+    scaleAttributes: newScaleAttributes,
     eventId,
-    scaleAttributes: seedingScaleAttributes,
   }));
   expect(scaledEntries.length).toEqual(8);
 

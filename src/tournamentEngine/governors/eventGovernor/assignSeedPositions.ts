@@ -16,7 +16,7 @@ import {
   DrawDefinition,
   SeedAssignment,
   Tournament,
-} from '../../../types/tournamentFromSchema';
+} from '../../../types/tournamentTypes';
 
 /*
  * Provides the ability to assign seedPositions *after* a structure has been generated

@@ -3,7 +3,7 @@ import { isLucky } from '../../governors/queryGovernor/isLucky';
 import { isAdHoc } from '../../governors/queryGovernor/isAdHoc';
 
 import { POLICY_ROUND_NAMING_DEFAULT } from '../../../fixtures/policies/POLICY_ROUND_NAMING_DEFAULT';
-import { DrawDefinition, Structure } from '../../../types/tournamentFromSchema';
+import { DrawDefinition, Structure } from '../../../types/tournamentTypes';
 import { POLICY_TYPE_ROUND_NAMING } from '../../../constants/policyConstants';
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { ResultType } from '../../../global/functions/decorateResult';

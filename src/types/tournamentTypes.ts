@@ -50,7 +50,7 @@ export interface Organisation {
 }
 
 export interface Event {
-  allowedDrawTypes?: DrawTypeEnum[];
+  allowedDrawTypes?: DrawTypeUnion[];
   category?: Category;
   createdAt?: Date | string;
   discipline?: DisciplineEnum;
@@ -66,7 +66,7 @@ export interface Event {
   eventName?: string;
   eventOrder?: number;
   eventRank?: string;
-  eventType?: TypeEnum;
+  eventType?: EventTypeUnion;
   extensions?: Extension[];
   gender?: GenderEnum;
   indoorOutdoor?: IndoorOutdoorEnum;
@@ -191,7 +191,7 @@ export interface DrawDefinition {
   links?: DrawLink[];
   matchUpFormat?: string;
   matchUps?: MatchUp[];
-  matchUpType?: TypeEnum;
+  matchUpType?: EventTypeUnion;
   notes?: string;
   processCodes?: string[];
   /**
@@ -318,11 +318,7 @@ export interface Interleave {
   offset: number;
 }
 
-export enum TypeEnum {
-  Doubles = 'DOUBLES',
-  Singles = 'SINGLES',
-  Team = 'TEAM',
-}
+export type EventTypeUnion = 'SINGLES' | 'DOUBLES' | 'TEAM';
 
 export interface MatchUp {
   collectionId?: string;
@@ -344,7 +340,7 @@ export interface MatchUp {
   matchUpId: string;
   matchUpStatus?: MatchUpStatusEnum;
   matchUpStatusCodes?: any[];
-  matchUpType?: TypeEnum;
+  matchUpType?: EventTypeUnion;
   notes?: string;
   orderOfFinish?: number;
   processCodes?: string[];
@@ -602,7 +598,7 @@ export interface CollectionDefinition {
   isMock?: boolean;
   matchUpCount?: number;
   matchUpFormat?: string;
-  matchUpType?: TypeEnum;
+  matchUpType?: EventTypeUnion;
   matchUpValue?: number;
   notes?: string;
   processCodes?: string[];
@@ -662,7 +658,7 @@ export interface Structure {
   isMock?: boolean;
   matchUpFormat?: string;
   matchUps?: MatchUp[];
-  matchUpType?: TypeEnum;
+  matchUpType?: EventTypeUnion;
   notes?: string;
   positionAssignments?: PositionAssignment[];
   processCodes?: string[];

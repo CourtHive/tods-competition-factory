@@ -18,8 +18,8 @@ import {
   DrawDefinition,
   Event,
   Tournament,
-  TypeEnum,
-} from '../../types/tournamentFromSchema';
+  EventTypeUnion,
+} from '../../types/tournamentTypes';
 
 type GetEventArgs = {
   context: { [key: string]: any };
@@ -77,7 +77,7 @@ export type EventScaleValues = {
 type GetEventsArgs = {
   tournamentRecord: Tournament;
   withScaleValues?: boolean;
-  scaleEventType?: TypeEnum;
+  scaleEventType?: EventTypeUnion;
   inContext?: boolean;
   eventIds?: string[];
   drawIds?: string[];

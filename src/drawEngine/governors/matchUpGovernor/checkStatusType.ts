@@ -3,7 +3,7 @@ import {
   directingMatchUpStatuses,
   activeMatchUpStatuses,
 } from '../../../constants/matchUpStatusConstants';
-import { MatchUpStatusEnum } from '../../../types/tournamentFromSchema';
+import { MatchUpStatusEnum } from '../../../types/tournamentTypes';
 
 export function isDirectingMatchUpStatus({ matchUpStatus }) {
   return directingMatchUpStatuses.includes(matchUpStatus);

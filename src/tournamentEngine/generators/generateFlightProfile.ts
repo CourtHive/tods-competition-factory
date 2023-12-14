@@ -28,7 +28,7 @@ import {
   Event,
   StageTypeEnum,
   Tournament,
-} from '../../types/tournamentFromSchema';
+} from '../../types/tournamentTypes';
 
 /**
  * @param {object} event - automatically retrieved by tournamentEngine given eventId

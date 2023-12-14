@@ -1,7 +1,7 @@
 import { setSubscriptions, tournamentEngine, utilities } from '../src/index';
 import { expect, it } from 'vitest';
 
-import { MatchUp, Participant } from '../src/types/tournamentFromSchema';
+import { MatchUp, Participant } from '../src/types/tournamentTypes';
 
 it('can set subscriptions in global state outside of engines', () => {
   const allParticipants: Participant[] = [];

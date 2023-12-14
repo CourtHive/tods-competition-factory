@@ -7,9 +7,10 @@ import {
 
 import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '../../constants/matchUpTypes';
 import { INVALID_GENDER } from '../../constants/errorConditionConstants';
-import { GenderEnum, TypeEnum } from '../../types/tournamentFromSchema';
+import { TEAM_EVENT } from '../../constants/eventConstants';
+import { GenderEnum } from '../../types/tournamentTypes';
 
-const referenceEvent = { eventType: TypeEnum.Team, eventId: 'eventId' };
+const referenceEvent = { eventType: TEAM_EVENT, eventId: 'eventId' };
 
 const scenarios = [
   {

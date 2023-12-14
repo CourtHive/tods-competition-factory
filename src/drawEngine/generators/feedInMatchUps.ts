@@ -3,7 +3,7 @@ import { addFinishingRounds } from './addFinishingRounds';
 import { buildFeedRound } from './buildFeedRound';
 import { buildRound } from './buildRound';
 
-import { MatchUp } from '../../types/tournamentFromSchema';
+import { MatchUp } from '../../types/tournamentTypes';
 
 type FeedInMatchUpsArgs = {
   linkFedFinishingRoundNumbers?: number[];

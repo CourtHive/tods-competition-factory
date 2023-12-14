@@ -1,6 +1,5 @@
 import { unique } from '../../../utilities';
 
-import { TypeEnum } from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   RANKING,
@@ -8,6 +7,11 @@ import {
   SCALE,
   SEEDING,
 } from '../../../constants/scaleConstants';
+import {
+  DOUBLES_EVENT,
+  SINGLES_EVENT,
+  TEAM_EVENT,
+} from '../../../constants/eventConstants';
 
 type ScaleType = {
   scaleName: string;
@@ -15,9 +19,9 @@ type ScaleType = {
   scaleValue: any;
 };
 type ScalesType = {
-  [TypeEnum.Singles]?: ScaleType;
-  [TypeEnum.Doubles]?: ScaleType;
-  [TypeEnum.Team]?: ScaleType;
+  [SINGLES_EVENT]?: ScaleType;
+  [DOUBLES_EVENT]?: ScaleType;
+  [TEAM_EVENT]?: ScaleType;
 };
 
 type ScaleTypes = {

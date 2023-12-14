@@ -21,7 +21,7 @@ import {
   DrawDefinition,
   ParticipantRoleEnum,
   Tournament,
-} from '../../../types/tournamentFromSchema';
+} from '../../../types/tournamentTypes';
 
 export function addMatchUpScheduleItems(params) {
   return addScheduleItems(params);

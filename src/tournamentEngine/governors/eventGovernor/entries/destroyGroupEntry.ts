@@ -7,9 +7,11 @@ import { removeEventEntries } from './removeEventEntries';
 import { addEventEntries } from './addEventEntries';
 
 import { UNGROUPED } from '../../../../constants/entryStatusConstants';
-import { TEAM, DOUBLES } from '../../../../constants/eventConstants';
-import { PAIR } from '../../../../constants/participantConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
+import {
+  PAIR,
+  TEAM_PARTICIPANT,
+} from '../../../../constants/participantConstants';
 import {
   ErrorType,
   INVALID_EVENT_TYPE,
@@ -21,12 +23,15 @@ import {
   PARTICIPANT_NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
 import {
+  DOUBLES_EVENT,
+  TEAM_EVENT,
+} from '../../../../constants/eventConstants';
+import {
   DrawDefinition,
   Tournament,
   Event,
-  TypeEnum,
   ParticipantTypeEnum,
-} from '../../../../types/tournamentFromSchema';
+} from '../../../../types/tournamentTypes';
 
 /**
  * When grouped participant entries are destroyed, individualParticipantIds will be added as { individualEntryStatus } participant entries
@@ -70,7 +75,7 @@ export function destroyGroupEntry({
 
   if (
     !event.eventType ||
-    ![TypeEnum.Doubles, TypeEnum.Team].includes(event.eventType)
+    ![DOUBLES_EVENT, TEAM_EVENT].includes(event.eventType)
   ) {
     return decorateResult({ result: { error: INVALID_EVENT_TYPE }, stack });
   }
@@ -89,8 +94,9 @@ export function destroyGroupEntry({
     ![ParticipantTypeEnum.Pair, ParticipantTypeEnum.Team].includes(
       participant.participantType
     ) ||
-    (participant.participantType === TEAM && event.eventType !== TEAM) ||
-    (participant.participantType === PAIR && event.eventType !== DOUBLES)
+    (participant.participantType === TEAM_PARTICIPANT &&
+      event.eventType !== TEAM_EVENT) ||
+    (participant.participantType === PAIR && event.eventType !== DOUBLES_EVENT)
   ) {
     return { error: INVALID_PARTICIPANT_TYPE };
   }

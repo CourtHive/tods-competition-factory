@@ -39,8 +39,11 @@ import {
   Extension,
   StageTypeEnum,
   Tournament,
-  TypeEnum,
-} from '../../../../types/tournamentFromSchema';
+} from '../../../../types/tournamentTypes';
+import {
+  DOUBLES_EVENT,
+  TEAM_EVENT,
+} from '../../../../constants/eventConstants';
 
 /**
  * Add entries into an event; optionally add to specified drawDefinition/flightProfile, if possible.
@@ -184,7 +187,7 @@ export function addEventEntries(params: AddEventEntriesArgs): ResultType {
               participant.participantType === INDIVIDUAL))
         );
       })
-      .map((participant) => participant.participantId) || [];
+      .map((participant) => participant.participantId) ?? [];
 
   const validParticipantIds = participantIds.filter(
     (participantId) =>
@@ -217,7 +220,7 @@ export function addEventEntries(params: AddEventEntriesArgs): ResultType {
       }
       if (entryStageSequence) entry.entryStageSequence = entryStageSequence;
       addedParticipantIdEntries.push(entry.participantId);
-      event.entries && event.entries.push(entry);
+      event.entries?.push(entry);
     }
   });
 
@@ -246,7 +249,7 @@ export function addEventEntries(params: AddEventEntriesArgs): ResultType {
   // now remove any ungrouped participantIds which exist as part of added grouped participants
   if (
     event.eventType &&
-    [TypeEnum.Doubles, TypeEnum.Team].includes(event.eventType)
+    [DOUBLES_EVENT, TEAM_EVENT].includes(event.eventType)
   ) {
     const enteredParticipantIds = (event.entries || []).map(
       (entry) => entry.participantId
@@ -254,7 +257,7 @@ export function addEventEntries(params: AddEventEntriesArgs): ResultType {
     const ungroupedIndividualParticipantIds = (event.entries || [])
       .filter((entry) => isUngrouped(entry.entryStatus))
       .map((entry) => entry.participantId);
-    const tournamentParticipants = tournamentRecord?.participants || [];
+    const tournamentParticipants = tournamentRecord?.participants ?? [];
     const groupedIndividualParticipantIds = tournamentParticipants
       .filter(
         (participant) =>

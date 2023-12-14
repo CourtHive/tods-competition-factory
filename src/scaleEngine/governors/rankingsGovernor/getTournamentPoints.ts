@@ -9,7 +9,7 @@ import { unique } from '../../../utilities';
 import { POLICY_TYPE_RANKING_POINTS } from '../../../constants/policyConstants';
 import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { RANKING_POINTS } from '../../../constants/extensionConstants';
-import { Tournament } from '../../../types/tournamentFromSchema';
+import { Tournament } from '../../../types/tournamentTypes';
 import { TEAM_EVENT } from '../../../constants/eventConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {

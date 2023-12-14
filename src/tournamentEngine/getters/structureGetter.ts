@@ -3,7 +3,7 @@ import {
   getDrawStructures,
 } from '../../drawEngine/getters/findStructure';
 
-import { DrawDefinition, Structure } from '../../types/tournamentFromSchema';
+import { DrawDefinition, Structure } from '../../types/tournamentTypes';
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_EVENT,

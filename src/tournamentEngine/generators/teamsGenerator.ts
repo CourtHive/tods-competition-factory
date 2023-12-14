@@ -13,7 +13,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
   NO_PARTICIPANTS_GENERATED,
 } from '../../constants/errorConditionConstants';
-import { Tournament } from '../../types/tournamentFromSchema';
+import { Tournament } from '../../types/tournamentTypes';
 
 /**
  *

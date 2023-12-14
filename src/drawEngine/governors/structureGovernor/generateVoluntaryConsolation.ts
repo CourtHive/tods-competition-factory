@@ -15,6 +15,7 @@ import { getGenerators } from './getGenerators';
 
 import { PlayoffAttributes, SeedingProfile } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { SINGLES } from '../../../constants/matchUpTypes';
 import {
   EXISTING_STRUCTURE,
   ErrorType,
@@ -38,19 +39,19 @@ import {
   Structure,
   TieFormat,
   Tournament,
-  TypeEnum,
-} from '../../../types/tournamentFromSchema';
+  EventTypeUnion,
+} from '../../../types/tournamentTypes';
 
 type GenerateVoluntaryConsolationArgs = {
   playoffAttributes?: PlayoffAttributes;
   tournamentRecord?: Tournament;
   seedingProfile?: SeedingProfile;
   drawDefinition: DrawDefinition;
+  matchUpType?: EventTypeUnion;
   attachConsolation?: boolean;
   applyPositioning?: boolean;
   staggeredEntry?: boolean;
   structureName?: string;
-  matchUpType?: TypeEnum;
   tieFormat?: TieFormat;
   automated?: boolean;
   placeByes?: boolean;
@@ -120,7 +121,7 @@ export function generateVoluntaryConsolation(
   tieFormat = copyTieFormat(
     tieFormat ?? resolveTieFormat({ drawDefinition })?.tieFormat
   );
-  matchUpType = matchUpType ?? drawDefinition.matchUpType ?? TypeEnum.Singles;
+  matchUpType = matchUpType ?? drawDefinition.matchUpType ?? SINGLES;
 
   const { structures: stageStructures } = getDrawStructures({
     stageSequence: 1,

@@ -19,8 +19,13 @@ import {
   TeamCompetitor,
   TimeItem,
   Tournament,
-  TypeEnum,
-} from './tournamentFromSchema';
+  EventTypeUnion,
+} from './tournamentTypes';
+import {
+  DOUBLES_EVENT,
+  SINGLES_EVENT,
+  TEAM_EVENT,
+} from '../constants/eventConstants';
 
 export type FactoryEngine = {
   [key: string]: any;
@@ -47,7 +52,7 @@ export type SeedingProfile = {
 };
 
 export type ScaleAttributes = {
-  eventType: TypeEnum;
+  eventType?: EventTypeUnion;
   scaleType: string;
   scaleName: string;
   accessor?: string; // optional - string determining how to access attribute if scaleValue is an object
@@ -55,7 +60,7 @@ export type ScaleAttributes = {
 
 export type ScaleItem = {
   scaleDate?: string | Date;
-  eventType: TypeEnum;
+  eventType?: EventTypeUnion;
   scaleName: string;
   scaleType: string;
   scaleValue: any;
@@ -273,9 +278,9 @@ export type MappedParticipant = {
   events: { [key: string]: any } | any[];
   draws: { [key: string]: any } | any[];
   counters: Counters & {
-    [TypeEnum.Doubles]: Counters;
-    [TypeEnum.Singles]: Counters;
-    [TypeEnum.Team]: Counters;
+    [DOUBLES_EVENT]: Counters;
+    [SINGLES_EVENT]: Counters;
+    [TEAM_EVENT]: Counters;
   };
 };
 

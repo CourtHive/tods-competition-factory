@@ -6,7 +6,7 @@ import competitionEngine from '../../../sync';
 import { expect, it } from 'vitest';
 
 import { DO_NOT_SCHEDULE } from '../../../../constants/requestConstants';
-import { Tournament } from '../../../../types/tournamentFromSchema';
+import { Tournament } from '../../../../types/tournamentTypes';
 
 it('can add, query, amd remove personRequests across multiple tournaments', () => {
   const { tournamentRecord: tournament1 } =

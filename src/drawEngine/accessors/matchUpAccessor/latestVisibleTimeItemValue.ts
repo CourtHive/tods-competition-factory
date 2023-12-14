@@ -1,5 +1,5 @@
 import { SCHEDULE } from '../../../constants/timeItemConstants';
-import { TimeItem } from '../../../types/tournamentFromSchema';
+import { TimeItem } from '../../../types/tournamentTypes';
 
 function getTimeStamp(item) {
   return !item.createdAt ? 0 : new Date(item.createdAt).getTime();

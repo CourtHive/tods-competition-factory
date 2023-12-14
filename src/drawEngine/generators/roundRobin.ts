@@ -20,8 +20,8 @@ import {
 import {
   MatchUp,
   MatchUpStatusEnum,
-  TypeEnum,
-} from '../../types/tournamentFromSchema';
+  EventTypeUnion,
+} from '../../types/tournamentTypes';
 import {
   PlayoffAttributes,
   PolicyDefinitions,
@@ -36,7 +36,7 @@ type GenerateRoundRobinArgs = {
   structureName?: string;
   stageSequence?: number;
   structureOptions?: any;
-  matchUpType?: TypeEnum;
+  matchUpType?: EventTypeUnion;
   groupNames?: string[];
   roundTarget?: number;
   structureId?: string;
@@ -189,7 +189,7 @@ export function getValidGroupSizes({
 
 type RoundRobinMatchUpsArgs = {
   structureOrder: number;
-  matchUpType?: TypeEnum;
+  matchUpType?: EventTypeUnion;
   groupSize: number;
   drawSize: number;
   idPrefix?: string;

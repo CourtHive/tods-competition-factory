@@ -2,7 +2,7 @@ import { getPairedPreviousMatchUp } from '../positionGovernor/getPairedPreviousM
 import { isString } from '../../../utilities/objects';
 
 import { MatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
-import { MatchUp } from '../../../types/tournamentFromSchema';
+import { MatchUp } from '../../../types/tournamentTypes';
 
 type UpdateMatchUpStatusCodesArgs = {
   inContextDrawMatchUps: any[];

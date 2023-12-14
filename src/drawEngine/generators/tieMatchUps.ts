@@ -4,7 +4,7 @@ import {
   MatchUp,
   MatchUpStatusEnum,
   TieFormat,
-} from '../../types/tournamentFromSchema';
+} from '../../types/tournamentTypes';
 
 type GenerateTieMatchUpsArgs = {
   tieFormat?: TieFormat;

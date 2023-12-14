@@ -25,7 +25,7 @@ import {
   DrawLink,
   Event,
   Tournament,
-} from '../../../types/tournamentFromSchema';
+} from '../../../types/tournamentTypes';
 
 export function removeDirectedParticipants(params): {
   error?: ErrorType;

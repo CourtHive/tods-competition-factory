@@ -9,7 +9,7 @@ import { aggregateSets } from './aggregators';
 
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 import { DYNAMIC, RATING } from '../../../constants/scaleConstants';
-import { TypeEnum } from '../../../types/tournamentFromSchema';
+import { EventTypeUnion } from '../../../types/tournamentTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { ELO } from '../../../constants/ratingConstants';
 import { HydratedSide } from '../../../types/hydrated';
@@ -48,7 +48,7 @@ export function generateDynamicRatings({
   for (const matchUp of matchUps) {
     const { endDate, matchUpFormat, score, sides, winningSide } = matchUp;
 
-    const matchUpType = matchUp.matchUpType as TypeEnum;
+    const matchUpType = matchUp.matchUpType as EventTypeUnion;
 
     const scaleAttributes = {
       eventType: matchUpType,

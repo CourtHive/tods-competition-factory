@@ -16,7 +16,7 @@ import {
   Tournament,
   Event,
   Structure,
-} from '../../../types/tournamentFromSchema';
+} from '../../../types/tournamentTypes';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   ErrorType,

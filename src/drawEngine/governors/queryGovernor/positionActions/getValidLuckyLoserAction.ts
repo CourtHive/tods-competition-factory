@@ -4,20 +4,20 @@ import { getInitialRoundNumber } from '../../../getters/getInitialRoundNumber';
 import { findStructure } from '../../../getters/findStructure';
 
 import { ROUND_OUTCOME } from '../../../../constants/drawDefinitionConstants';
+import { HydratedParticipant } from '../../../../types/hydrated';
+import { TEAM } from '../../../../constants/eventConstants';
+import { extractAttributes } from '../../../../utilities';
 import {
   DrawDefinition,
   Event,
   Participant,
   PositionAssignment,
   Structure,
-} from '../../../../types/tournamentFromSchema';
-import { TEAM } from '../../../../constants/eventConstants';
+} from '../../../../types/tournamentTypes';
 import {
   LUCKY_PARTICIPANT,
   LUCKY_PARTICIPANT_METHOD,
 } from '../../../../constants/positionActionConstants';
-import { HydratedParticipant } from '../../../../types/hydrated';
-import { extractAttributes } from '../../../../utilities';
 
 type GetValidLuckLoserActionArgs = {
   tournamentParticipants?: HydratedParticipant[];
@@ -84,7 +84,7 @@ export function getValidLuckyLosersAction({
   const relevantLinks =
     drawDefinition.links?.filter(
       (link) => link.target?.structureId === structure.structureId
-    ) || [];
+    ) ?? [];
 
   for (const relevantLink of relevantLinks) {
     const sourceStructureId = relevantLink?.source?.structureId;
@@ -157,7 +157,7 @@ export function getValidLuckyLosersAction({
   );
 
   availableLuckyLosers?.forEach((luckyLoser: any) => {
-    const entry = (drawDefinition.entries || []).find(
+    const entry = (drawDefinition.entries ?? []).find(
       (entry) => entry.participantId === luckyLoser.participantId
     );
     luckyLoser.entryPosition = entry?.entryPosition;

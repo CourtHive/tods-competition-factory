@@ -8,7 +8,7 @@ import {
   DrawDefinition,
   Participant,
   PositionAssignment,
-} from '../../../types/tournamentFromSchema';
+} from '../../../types/tournamentTypes';
 
 type GetDrawPositionCollectionAssignmentArgs = {
   positionAssignments: PositionAssignment[];

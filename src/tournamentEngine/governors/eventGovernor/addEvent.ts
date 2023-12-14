@@ -9,6 +9,8 @@ import {
   addMatchUpsNotice,
 } from '../../../drawEngine/notifications/drawNotifications';
 
+import { SINGLES_EVENT, TEAM_EVENT } from '../../../constants/eventConstants';
+import { Event, Tournament } from '../../../types/tournamentTypes';
 import { ADD_MATCHUPS } from '../../../constants/topicConstants';
 import { tieFormats } from '../../../fixtures/scoring/tieFormats';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -19,11 +21,6 @@ import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
-import {
-  Event,
-  Tournament,
-  TypeEnum,
-} from '../../../types/tournamentFromSchema';
 
 type AddEventArgs = {
   suppressNotifications?: boolean;
@@ -66,15 +63,15 @@ export function addEvent({
   }
 
   const eventRecord = {
+    eventType: SINGLES_EVENT,
     drawDefinitions: [],
-    eventType: TypeEnum.Singles,
     entries: [],
     startDate,
     endDate,
     ...event,
   };
 
-  if (event.eventType === TypeEnum.Team) {
+  if (event.eventType === TEAM_EVENT) {
     if (event.tieFormat) {
       const result = validateTieFormat({ tieFormat: event.tieFormat });
       if (result.error) return result;

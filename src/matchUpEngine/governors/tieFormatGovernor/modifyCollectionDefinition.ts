@@ -28,8 +28,8 @@ import {
   GenderEnum,
   TieFormat,
   Tournament,
-  TypeEnum,
-} from '../../../types/tournamentFromSchema';
+  EventTypeUnion,
+} from '../../../types/tournamentTypes';
 import {
   INVALID_VALUES,
   MISSING_VALUE,
@@ -46,7 +46,7 @@ type ModifyCollectionDefinitionArgs = {
   collectionName?: string;
   tieFormatName?: string;
   matchUpFormat?: string;
-  matchUpType?: TypeEnum;
+  matchUpType?: EventTypeUnion;
   matchUpCount?: number;
   collectionId: string;
   structureId?: string;

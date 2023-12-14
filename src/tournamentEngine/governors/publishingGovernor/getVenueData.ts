@@ -2,7 +2,7 @@ import { findVenue } from '../../getters/venueGetter';
 import { makeDeepCopy } from '../../../utilities';
 import { getCourtInfo } from './getCourtInfo';
 
-import { Tournament } from '../../../types/tournamentFromSchema';
+import { Tournament } from '../../../types/tournamentTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   ErrorType,

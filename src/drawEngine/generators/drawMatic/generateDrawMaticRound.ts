@@ -21,8 +21,8 @@ import {
   MatchUp,
   Structure,
   Tournament,
-  TypeEnum,
-} from '../../../types/tournamentFromSchema';
+  EventTypeUnion,
+} from '../../../types/tournamentTypes';
 
 // this should be in policyDefinitions
 const ENCOUNTER_VALUE = 100;
@@ -46,7 +46,7 @@ type GenerateDrawMaticRoundArgs = {
   matchUpIds?: string[];
   structure?: Structure;
   structureId?: string;
-  eventType?: TypeEnum;
+  eventType?: EventTypeUnion;
   scaleName?: string;
   drawId?: string;
 };

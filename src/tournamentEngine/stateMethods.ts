@@ -8,7 +8,7 @@ import {
   setTournamentRecords,
 } from '../global/state/globalState';
 
-import { Tournament } from '../types/tournamentFromSchema';
+import { Tournament } from '../types/tournamentTypes';
 import {
   ErrorType,
   INVALID_OBJECT,

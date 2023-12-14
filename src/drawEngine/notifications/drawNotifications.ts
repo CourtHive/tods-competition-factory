@@ -1,7 +1,7 @@
 import { addNotice, deleteNotice } from '../../global/state/globalState';
 import { getPositionAssignments } from '../getters/positionsGetter';
 
-import { DrawDefinition, MatchUp } from '../../types/tournamentFromSchema';
+import { DrawDefinition, MatchUp } from '../../types/tournamentTypes';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
   ADD_DRAW_DEFINITION,

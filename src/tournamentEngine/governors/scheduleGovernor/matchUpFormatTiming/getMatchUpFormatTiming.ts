@@ -4,7 +4,7 @@ import { getScheduleTiming } from './getScheduleTiming';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../../constants/errorConditionConstants';
 import { ResultType } from '../../../../global/functions/decorateResult';
-import { SINGLES } from '../../../../constants/matchUpTypes';
+import { SINGLES_EVENT } from '../../../../constants/eventConstants';
 import {
   DOUBLES_SINGLES,
   SINGLES_DOUBLES,
@@ -12,8 +12,8 @@ import {
 import {
   Event,
   Tournament,
-  TypeEnum,
-} from '../../../../types/tournamentFromSchema';
+  EventTypeUnion,
+} from '../../../../types/tournamentTypes';
 
 type GetMatchUpFormatTimingArgs = {
   defaultRecoveryMinutes?: number;
@@ -22,7 +22,7 @@ type GetMatchUpFormatTimingArgs = {
   matchUpFormat: string;
   categoryName?: string;
   categoryType?: string;
-  eventType?: TypeEnum;
+  eventType?: EventTypeUnion;
   event?: Event;
 };
 
@@ -39,7 +39,7 @@ export function getMatchUpFormatTiming({
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
   // event is optional, so eventType can also be passed in directly
-  eventType = eventType ?? event?.eventType ?? TypeEnum.Singles;
+  eventType = eventType ?? event?.eventType ?? SINGLES_EVENT;
   const defaultTiming = {
     averageTimes: [{ minutes: { default: defaultAverageMinutes } }],
     recoveryTimes: [{ minutes: { default: defaultRecoveryMinutes } }],
@@ -63,7 +63,7 @@ export function getMatchUpFormatTiming({
 }
 
 type MatchUpFormatTimesArgs = {
-  eventType: TypeEnum;
+  eventType: EventTypeUnion;
   timingDetails: any;
 };
 export function matchUpFormatTimes({
@@ -94,7 +94,7 @@ export function matchUpFormatTimes({
       recoveryTimes.minutes.default);
 
   const formatChangeKey =
-    eventType === SINGLES ? SINGLES_DOUBLES : DOUBLES_SINGLES;
+    eventType === SINGLES_EVENT ? SINGLES_DOUBLES : DOUBLES_SINGLES;
 
   const typeChangeRecoveryMinutes =
     recoveryTimes?.minutes &&

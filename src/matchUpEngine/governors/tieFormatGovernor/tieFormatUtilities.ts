@@ -9,6 +9,7 @@ import {
   ResultType,
 } from '../../../global/functions/decorateResult';
 
+import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_CATEGORY,
@@ -22,8 +23,8 @@ import {
   Event,
   GenderEnum,
   TieFormat,
-  TypeEnum,
-} from '../../../types/tournamentFromSchema';
+  EventTypeUnion,
+} from '../../../types/tournamentTypes';
 
 type ValidateTieFormatArgs = {
   checkCollectionIds?: boolean;
@@ -146,9 +147,9 @@ type ValidateCollectionDefinitionArgs = {
   referenceCategory?: Category;
   checkCollectionIds?: boolean;
   referenceGender?: GenderEnum;
+  eventType?: EventTypeUnion;
   checkCategory?: boolean;
   checkGender?: boolean;
-  eventType?: TypeEnum;
   event?: Event;
 };
 export function validateCollectionDefinition({
@@ -192,10 +193,7 @@ export function validateCollectionDefinition({
   if (typeof matchUpCount !== 'number') {
     errors.push(`matchUpCount is not type number: ${matchUpCount}`);
   }
-  if (
-    matchUpType &&
-    ![TypeEnum.Singles, TypeEnum.Doubles].includes(matchUpType)
-  ) {
+  if (matchUpType && ![SINGLES, DOUBLES].includes(matchUpType)) {
     errors.push(`matchUpType must be SINGLES or DOUBLES: ${matchUpType}`);
   }
 

@@ -1,6 +1,6 @@
 import { capitalizeFirst } from '../../../utilities/strings';
 
-import { Person } from '../../../types/tournamentFromSchema';
+import { Person } from '../../../types/tournamentTypes';
 
 type FormatPersonNameArgs = {
   personFormat: string;

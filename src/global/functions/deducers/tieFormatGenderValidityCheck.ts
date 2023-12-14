@@ -1,8 +1,9 @@
 import { ResultType, decorateResult } from '../decorateResult';
 
 import { INVALID_GENDER } from '../../../constants/errorConditionConstants';
-import { GenderEnum, TypeEnum } from '../../../types/tournamentFromSchema';
 import { ANY, MIXED } from '../../../constants/genderConstants';
+import { GenderEnum } from '../../../types/tournamentTypes';
+import { DOUBLES } from '../../../constants/matchUpTypes';
 
 type GenderValidityCheckArgs = {
   referenceGender?: GenderEnum;
@@ -34,7 +35,7 @@ export function tieFormatGenderValidityCheck(
 
   if (
     referenceGender === MIXED &&
-    (gender === ANY || (gender === MIXED && matchUpType !== TypeEnum.Doubles))
+    (gender === ANY || (gender === MIXED && matchUpType !== DOUBLES))
   ) {
     return decorateResult({
       result: { error: INVALID_GENDER, valid: false },
@@ -43,11 +44,7 @@ export function tieFormatGenderValidityCheck(
     });
   }
 
-  if (
-    referenceGender === ANY &&
-    gender === MIXED &&
-    matchUpType !== TypeEnum.Doubles
-  )
+  if (referenceGender === ANY && gender === MIXED && matchUpType !== DOUBLES)
     return decorateResult({
       result: { error: INVALID_GENDER, valid: false },
       info: anyMixedError,

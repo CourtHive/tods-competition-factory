@@ -16,8 +16,8 @@ import {
   DrawDefinition,
   Event,
   Tournament,
-  TypeEnum,
-} from '../../types/tournamentFromSchema';
+  EventTypeUnion,
+} from '../../types/tournamentTypes';
 import {
   ABANDONED,
   DEAD_RUBBER,
@@ -40,7 +40,7 @@ type getPredictiveAccuracyArgs = {
   valueAccessor?: string;
   excludeMargin?: number;
   zoneDoubling?: boolean;
-  matchUpType: TypeEnum;
+  matchUpType: EventTypeUnion;
   zoneMargin?: number;
   ascending?: boolean;
   scaleName: string;
@@ -224,7 +224,7 @@ function getGroupingBands({ zoneData }) {
 type GetSideValuesArgs = {
   singlesForDoubles?: boolean;
   valueAccessor: string;
-  matchUpType?: TypeEnum;
+  matchUpType?: EventTypeUnion;
   exclusionRule?: any;
   scaleName: string;
   sides: any;

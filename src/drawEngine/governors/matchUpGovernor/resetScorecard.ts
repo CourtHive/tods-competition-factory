@@ -13,7 +13,7 @@ import {
   decorateResult,
 } from '../../../global/functions/decorateResult';
 
-import { TypeEnum } from '../../../types/tournamentFromSchema';
+import { TEAM_EVENT } from '../../../constants/eventConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MATCHUP_NOT_FOUND,
@@ -75,7 +75,7 @@ export function resetScorecard(params): ResultType {
   if (!matchUp || !inContextDrawMatchUps) return { error: MATCHUP_NOT_FOUND };
 
   // only accept matchUpType: TEAM
-  if (matchUp.matchUpType !== TypeEnum.Team) return { error: INVALID_MATCHUP };
+  if (matchUp.matchUpType !== TEAM_EVENT) return { error: INVALID_MATCHUP };
 
   // Get winner/loser position targets ----------------------------------------
   const targetData = positionTargets({

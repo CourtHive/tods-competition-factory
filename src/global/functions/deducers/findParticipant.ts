@@ -3,7 +3,7 @@ import { attributeFilter, makeDeepCopy } from '../../../utilities';
 
 import { ContextProfile, PolicyDefinitions } from '../../../types/factoryTypes';
 import { POLICY_TYPE_PARTICIPANT } from '../../../constants/policyConstants';
-import { Participant } from '../../../types/tournamentFromSchema';
+import { Participant } from '../../../types/tournamentTypes';
 
 type HydratedParticipant = {
   [key: string | number | symbol]: unknown;

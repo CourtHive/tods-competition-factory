@@ -1,5 +1,5 @@
 import { organizeDrawPositionOptions } from './organizeDrawPositionOptions';
-import { PositionAssignment } from '../../../../types/tournamentFromSchema';
+import { PositionAssignment } from '../../../../types/tournamentTypes';
 import { getUnplacedParticipantIds } from './getUnplacedParticipantIds';
 import { getParticipantGroups } from './analyzeDrawPositions';
 import { getNextParticipantId } from './getNextParticipantId';

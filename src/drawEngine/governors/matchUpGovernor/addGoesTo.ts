@@ -7,7 +7,7 @@ import {
 } from '../../getters/getMatchUps/getMatchUpsMap';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
-import { DrawDefinition } from '../../../types/tournamentFromSchema';
+import { DrawDefinition } from '../../../types/tournamentTypes';
 import { HydratedMatchUp } from '../../../types/hydrated';
 
 type AddGoesToArgs = {
