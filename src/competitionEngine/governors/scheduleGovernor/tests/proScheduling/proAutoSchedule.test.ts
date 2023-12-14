@@ -1,7 +1,7 @@
-import competitionEngine from '../../../../sync';
 import tournamentEngine from '../../../../../tournamentEngine/sync';
 import { mocksEngine } from '../../../../../mocksEngine';
 import { unique } from '../../../../../utilities';
+import competitionEngine from '../../../../sync';
 import { it, expect } from 'vitest';
 
 import { INVALID_VALUES } from '../../../../../constants/errorConditionConstants';
@@ -40,7 +40,6 @@ it('will not scheduled earlier rounds after later rounds', () => {
   const scheduleOneSecondRoundMatchUp = {
     method: 'addMatchUpScheduleItems',
     params: {
-      activeTournamentId: tournamentId,
       matchUpId,
       drawId,
 

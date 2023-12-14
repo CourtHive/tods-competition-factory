@@ -21,12 +21,8 @@ export function paramsMiddleware(
       tournamentRecord,
       drawId,
     });
-
-    params = {
-      ...params,
-      event,
-      drawDefinition,
-    };
+    params.drawDefinition = drawDefinition;
+    params.event = event;
   }
 
   if (params.eventId && !params.event) {
@@ -35,7 +31,7 @@ export function paramsMiddleware(
       tournamentRecord,
     });
     if (event) {
-      params = { ...params, event };
+      params.event = event;
     }
   }
 

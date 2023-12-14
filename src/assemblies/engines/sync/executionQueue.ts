@@ -1,22 +1,19 @@
-import { updateFactoryExtension } from '../../tournamentEngine/governors/tournamentGovernor/updateFactoryExtension';
-import { engineLogging } from '../../global/functions/producers/engineLogging';
-import { notifySubscribers } from '../../global/state/notifySubscribers';
-import { factoryVersion } from '../../global/functions/factoryVersion';
-import { executeFunction } from './executeFunction';
-import { makeDeepCopy } from '../../utilities';
-import { setState } from './stateMethods';
+import { engineLogging } from '../../../global/functions/producers/engineLogging';
+import { notifySubscribers } from '../../../global/state/notifySubscribers';
+import { getMutationStatus } from '../getMutationStatus';
+import { executeFunction } from '../executeMethod';
+import { makeDeepCopy } from '../../../utilities';
+import { setState } from '../stateMethods';
 import {
   deleteNotices,
   getTournamentRecords,
-  getTournamentId,
-  cycleMutationStatus,
   getMethods,
-} from '../../global/state/globalState';
+} from '../../../global/state/globalState';
 
 import {
   INVALID_VALUES,
   METHOD_NOT_FOUND,
-} from '../../constants/errorConditionConstants';
+} from '../../../constants/errorConditionConstants';
 
 export function executionQueue(
   engine: { [key: string]: any },
@@ -25,15 +22,12 @@ export function executionQueue(
 ) {
   if (!Array.isArray(directives)) return { error: INVALID_VALUES };
 
-  const tournamentRecords = getTournamentRecords();
-  const activeTournamentId = getTournamentId();
   const methods = getMethods();
   const start = Date.now();
 
   const snapshot =
-    rollbackOnError && makeDeepCopy(tournamentRecords, false, true);
+    rollbackOnError && makeDeepCopy(getTournamentRecords(), false, true);
 
-  let timeStamp;
   const result: any = {};
   const results: any[] = [];
   for (const directive of directives) {
@@ -49,9 +43,8 @@ export function executionQueue(
 
     const result = executeFunction(
       engine,
-      tournamentRecords,
       methods[methodName],
-      { activeTournamentId, ...params },
+      params,
       methodName
     );
 
@@ -60,22 +53,11 @@ export function executionQueue(
       return { ...result, rolledBack: !!snapshot };
     }
     results.push({ ...result, methodName });
-    timeStamp = Date.now();
   }
+  const timeStamp = Date.now();
 
-  const mutationStatus = cycleMutationStatus();
-  if (mutationStatus) {
-    Object.values(tournamentRecords).forEach((tournamentRecord) => {
-      updateFactoryExtension({
-        tournamentRecord,
-        value: {
-          version: factoryVersion(),
-          timeStamp,
-        },
-      });
-    });
-    result.modificationsApplied = true;
-  }
+  const mutationStatus = getMutationStatus({ timeStamp });
+  result.modificationsApplied = mutationStatus;
   notifySubscribers({ directives, mutationStatus, timeStamp });
   deleteNotices();
 

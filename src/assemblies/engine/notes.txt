@@ -1,5 +1,0 @@
-1. no methods may take a function as a parameter (e.g. custom sorting)
-2. Ways to invoke methods:
-	a. engine.execute({ method: fx, params: {}}) // fx is a function, if it returns { stack } then it can log
-	b. engine.execute({ getParticipants, params: {}}) // getParticipants is a method
-	c. engine.execute({ getParticipants, participantFilters }) // participantFilters is an object

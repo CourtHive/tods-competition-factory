@@ -9,12 +9,12 @@ import {
 } from '../../global/state/globalState';
 
 import { LINKED_TOURNAMENTS } from '../../constants/extensionConstants';
+import { ResultType } from '../../global/functions/decorateResult';
 import {
   INVALID_OBJECT,
   INVALID_RECORDS,
   INVALID_VALUES,
 } from '../../constants/errorConditionConstants';
-import { ResultType } from '../../global/functions/decorateResult';
 
 type GetStateArgs = {
   convertExtensions?: boolean;

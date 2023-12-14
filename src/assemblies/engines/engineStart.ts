@@ -1,7 +1,6 @@
 import { factoryVersion } from '../../global/functions/factoryVersion';
-import { executionQueue } from './executionQueue';
+import { importMethods } from './importMethods';
 import { processResult } from './processResult';
-import { engineInvoke } from './engineInvoke';
 import {
   setDeepCopy,
   setDevContext,
@@ -17,33 +16,19 @@ import {
   setTournamentRecord,
 } from './stateMethods';
 
-import { FactoryEngine } from '../../types/factoryTypes';
-
-type MethodParams = {
-  params?: { [key: string]: any };
-  method: string;
-};
-
-export const engine = (() => {
-  const engine: FactoryEngine = {
-    getState: (params?) =>
-      getState({
-        convertExtensions: params?.convertExtensions,
-        removeExtensions: params?.removeExtensions,
-      }),
-    getTournament: getTournament,
-    version: factoryVersion,
-
-    execute: (args: any) => engineInvoke(engine, args),
-    executionQueue: (directives: MethodParams[], rollbackOnError?: boolean) =>
-      executionQueue(engine, directives, rollbackOnError),
-  };
-
+export function engineStart(engine) {
+  engine.importMethods = (methods) => importMethods(engine, methods);
+  engine.getTournament = (params?) => getTournament(params);
+  engine.getState = (params?) =>
+    getState({
+      convertExtensions: params?.convertExtensions,
+      removeExtensions: params?.removeExtensions,
+    });
+  engine.version = () => factoryVersion();
   engine.reset = () => {
     setTournamentRecords({});
     return processResult(engine);
   };
-
   engine.devContext = (contextCriteria) => {
     setDevContext(contextCriteria);
     return processResult(engine);
@@ -71,8 +56,4 @@ export const engine = (() => {
     const result = removeUnlinkedTournamentRecords();
     return processResult(engine, result);
   };
-
-  return engine;
-})();
-
-export default engine;
+}
