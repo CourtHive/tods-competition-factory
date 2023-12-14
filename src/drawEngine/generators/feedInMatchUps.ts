@@ -24,12 +24,12 @@ type FeedInMatchUpsArgs = {
 };
 
 export function feedInMatchUps(params: FeedInMatchUpsArgs) {
-  const drawSize = params.drawSize;
   let {
     feedRoundsProfile,
     feedRounds = 0,
     skipRounds = 0,
     baseDrawSize,
+    drawSize,
   } = params;
 
   const {
@@ -85,6 +85,7 @@ export function feedInMatchUps(params: FeedInMatchUpsArgs) {
       return feedSize;
     });
     positionsFed = feedRoundsProfile.reduce((a, b) => a + b, 0);
+    drawSize = baseDrawSize + positionsFed;
     feedRounds = feedRoundsProfile.length;
   }
 
