@@ -22,7 +22,7 @@ import {
   Availability,
   Court,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 
 type AddCourtArgs = {
   tournamentRecord: Tournament;

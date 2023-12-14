@@ -1,7 +1,7 @@
 import { createMap, isObject } from '../../../utilities/objects';
 import { formatParticipantName } from './formatParticipantName';
 
-import { Tournament } from '../../../types/tournamentTypes';
+import { Tournament } from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_TOURNAMENT_RECORD,

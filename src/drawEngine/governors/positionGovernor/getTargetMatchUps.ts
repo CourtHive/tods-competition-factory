@@ -1,6 +1,6 @@
 import { getContainedStructures } from '../../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
 import { HydratedMatchUp } from '../../../types/hydrated';
-import { DrawDefinition, Structure } from '../../../types/tournamentTypes';
+import { DrawDefinition, Structure } from '../../../types/tournamentFromSchema';
 import { intersection } from '../../../utilities';
 import { MatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 

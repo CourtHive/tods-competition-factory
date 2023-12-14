@@ -56,7 +56,7 @@ import {
   Event,
   TimeItem,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 
 type AddScheduleAttributeArgs = {
   tournamentRecord?: Tournament;

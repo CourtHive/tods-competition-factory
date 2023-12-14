@@ -1,7 +1,7 @@
 import { attachPolicies as attachTournamentPolicies } from '../../../tournamentEngine/governors/policyGovernor/policyManagement';
 
 import { MISSING_TOURNAMENT_RECORDS } from '../../../constants/errorConditionConstants';
-import { Tournament } from '../../../types/tournamentTypes';
+import { Tournament } from '../../../types/tournamentFromSchema';
 import { PolicyDefinitions } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 

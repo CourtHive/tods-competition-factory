@@ -25,7 +25,7 @@ import {
   Event,
   MatchUp,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 
 /**
  * remove the tieFormat from a TEAM matchUp if there is a tieFormat further up the hierarchy

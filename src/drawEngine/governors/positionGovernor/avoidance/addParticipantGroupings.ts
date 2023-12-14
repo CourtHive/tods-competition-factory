@@ -1,6 +1,6 @@
 import { makeDeepCopy } from '../../../../utilities';
 
-import { Participant } from '../../../../types/tournamentTypes';
+import { Participant } from '../../../../types/tournamentFromSchema';
 import { ParticipantsProfile } from '../../../../types/factoryTypes';
 import {
   GROUP,

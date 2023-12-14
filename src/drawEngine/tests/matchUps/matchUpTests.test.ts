@@ -21,7 +21,7 @@ import {
   MISSING_MATCHUP_FORMAT,
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { DrawDefinition } from '../../../types/tournamentTypes';
+import { DrawDefinition } from '../../../types/tournamentFromSchema';
 
 it('can return matchUps from an SINGLE_ELIMINATION structure', () => {
   reset();

@@ -12,7 +12,7 @@ import {
   MISSING_DRAW_DEFINITION,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../../constants/errorConditionConstants';
-import { MatchUp } from '../../../../types/tournamentTypes';
+import { MatchUp } from '../../../../types/tournamentFromSchema';
 
 export function pruneDrawDefinition({
   matchPlayDrawPositions = true, // when simply extracting matchUps for aggregation, drawPositions are unnecessary

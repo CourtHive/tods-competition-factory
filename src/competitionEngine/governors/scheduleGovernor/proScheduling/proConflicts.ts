@@ -4,7 +4,7 @@ import { generateRange, instanceCount, unique } from '../../../../utilities';
 import { matchUpSort } from '../../../../drawEngine/getters/matchUpSort';
 import { ensureInt } from '../../../../utilities/ensureInt';
 
-import { Tournament } from '../../../../types/tournamentTypes';
+import { Tournament } from '../../../../types/tournamentFromSchema';
 import { HydratedMatchUp } from '../../../../types/hydrated';
 import {
   ErrorType,

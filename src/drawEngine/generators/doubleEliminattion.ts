@@ -4,7 +4,7 @@ import { structureTemplate } from './structureTemplate';
 import { feedInMatchUps } from './feedInMatchUps';
 import { treeMatchUps } from './eliminationTree';
 
-import { Structure } from '../../types/tournamentTypes';
+import { Structure } from '../../types/tournamentFromSchema';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
   MAIN,

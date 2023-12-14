@@ -6,7 +6,7 @@ import { mocksEngine } from '../../..';
 import { expect, it } from 'vitest';
 import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
 
-import { EntryStatusEnum } from '../../../types/tournamentTypes';
+import { EntryStatusEnum } from '../../../types/tournamentFromSchema';
 import { ERROR, SUCCESS } from '../../../constants/resultConstants';
 import { generateRange } from '../../../utilities';
 import {

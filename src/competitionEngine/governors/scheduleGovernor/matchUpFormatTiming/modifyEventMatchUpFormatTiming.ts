@@ -6,7 +6,7 @@ import {
   INVALID_VALUES,
   MISSING_EVENT,
 } from '../../../../constants/errorConditionConstants';
-import { Tournament } from '../../../../types/tournamentTypes';
+import { Tournament } from '../../../../types/tournamentFromSchema';
 import { ResultType } from '../../../../global/functions/decorateResult';
 
 type ModifyEventMatchUpFormatTimingArgs = {

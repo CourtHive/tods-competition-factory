@@ -4,7 +4,7 @@ import { isObject } from '../../../utilities/objects';
 
 import { PUBLIC, PUBLISH, STATUS } from '../../../constants/timeItemConstants';
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
-import { Event } from '../../../types/tournamentTypes';
+import { Event } from '../../../types/tournamentFromSchema';
 
 type ModifyEventPublishStatus = {
   statusObject: { [key: string]: any };

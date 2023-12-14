@@ -5,7 +5,10 @@ import {
   POLICY_TYPE_POSITION_ACTIONS,
   POLICY_TYPE_MATCHUP_ACTIONS,
 } from '../../../../constants/policyConstants';
-import { DrawDefinition, Structure } from '../../../../types/tournamentTypes';
+import {
+  DrawDefinition,
+  Structure,
+} from '../../../../types/tournamentFromSchema';
 
 export const POSITION_ACTION = 'positionAction';
 export const MATCHUP_ACTION = 'matchUpAction';

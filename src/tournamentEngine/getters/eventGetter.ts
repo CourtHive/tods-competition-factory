@@ -19,7 +19,7 @@ import {
   Event,
   Tournament,
   TypeEnum,
-} from '../../types/tournamentTypes';
+} from '../../types/tournamentFromSchema';
 
 type GetEventArgs = {
   context: { [key: string]: any };

@@ -5,7 +5,7 @@ import {
   unique,
 } from '../../../utilities';
 
-import { DrawDefinition } from '../../../types/tournamentTypes';
+import { DrawDefinition } from '../../../types/tournamentFromSchema';
 import { StructureProfile } from '../../../types/factoryTypes';
 import {
   BOTTOM_UP,

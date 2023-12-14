@@ -26,7 +26,7 @@ import {
   Event,
   TypeEnum,
   ParticipantTypeEnum,
-} from '../../../../types/tournamentTypes';
+} from '../../../../types/tournamentFromSchema';
 
 /**
  * When grouped participant entries are destroyed, individualParticipantIds will be added as { individualEntryStatus } participant entries

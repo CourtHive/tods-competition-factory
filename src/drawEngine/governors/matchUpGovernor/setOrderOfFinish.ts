@@ -12,7 +12,7 @@ import {
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
 } from '../../../constants/errorConditionConstants';
-import { DrawDefinition } from '../../../types/tournamentTypes';
+import { DrawDefinition } from '../../../types/tournamentFromSchema';
 
 /**
  *

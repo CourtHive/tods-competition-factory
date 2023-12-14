@@ -10,7 +10,7 @@ import {
 
 import { TournamentRecordsArgs } from '../../../types/factoryTypes';
 import { MISSING_NAME } from '../../../constants/infoConstants';
-import { Extension } from '../../../types/tournamentTypes';
+import { Extension } from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   EVENT_NOT_FOUND,

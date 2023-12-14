@@ -10,7 +10,10 @@ import {
   MISSING_MATCHUP_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
-import { DrawDefinition, Tournament } from '../../../types/tournamentTypes';
+import {
+  DrawDefinition,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
 // allocate courts for a TEAM matchUp
 type AllocateTeamMatchUpCourtsArgs = {

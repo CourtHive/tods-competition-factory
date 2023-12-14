@@ -7,7 +7,7 @@ import { generateTimeCode } from '../../../../utilities';
 
 import { PERSON_REQUESTS } from '../../../../constants/extensionConstants';
 import { DO_NOT_SCHEDULE } from '../../../../constants/requestConstants';
-import { Tournament } from '../../../../types/tournamentTypes';
+import { Tournament } from '../../../../types/tournamentFromSchema';
 import { PersonRequests } from '../../../../types/factoryTypes';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {

@@ -26,7 +26,7 @@ import {
   DrawDefinition,
   MatchUp,
   Tournament,
-} from '../../../../types/tournamentTypes';
+} from '../../../../types/tournamentFromSchema';
 
 type AddScheduleAttributeArgs = {
   tournamentRecord?: Tournament;

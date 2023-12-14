@@ -1,4 +1,4 @@
-import { Tournament } from '../../types/tournamentTypes';
+import { Tournament } from '../../types/tournamentFromSchema';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
   CallListenerArgs,

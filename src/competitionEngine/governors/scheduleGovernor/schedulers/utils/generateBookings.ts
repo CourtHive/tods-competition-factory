@@ -8,7 +8,7 @@ import {
   extractTime,
 } from '../../../../../utilities/dateTime';
 
-import { Tournament } from '../../../../../types/tournamentTypes';
+import { Tournament } from '../../../../../types/tournamentFromSchema';
 import { BYE } from '../../../../../constants/matchUpStatusConstants';
 import { HydratedMatchUp } from '../../../../../types/hydrated';
 import {

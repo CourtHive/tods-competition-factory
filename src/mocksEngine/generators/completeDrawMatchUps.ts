@@ -12,7 +12,7 @@ import { getMatchUpId } from '../../global/functions/extractors';
 import { generateOutcome } from './generateOutcome';
 
 import { MAIN, QUALIFYING } from '../../constants/drawDefinitionConstants';
-import { ParticipantTypeEnum } from '../../types/tournamentTypes';
+import { ParticipantTypeEnum } from '../../types/tournamentFromSchema';
 import { DOUBLES, SINGLES, TEAM } from '../../constants/matchUpTypes';
 import { ASCENDING } from '../../constants/sortingConstants';
 import { SUCCESS } from '../../constants/resultConstants';

@@ -6,7 +6,7 @@ import {
   MatchUp,
   SeedAssignment,
   Structure,
-} from '../../types/tournamentTypes';
+} from '../../types/tournamentFromSchema';
 
 type StructureTemplateArgs = {
   seedAssignments?: SeedAssignment[];

@@ -6,7 +6,7 @@ import { MAIN, QUALIFYING } from '../../constants/drawDefinitionConstants';
 import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';
 import { DOUBLES, SINGLES } from '../../constants/eventConstants';
 import { FEMALE, MALE } from '../../constants/genderConstants';
-import { Participant } from '../../types/tournamentTypes';
+import { Participant } from '../../types/tournamentFromSchema';
 
 export function generateEventParticipants(params) {
   const {

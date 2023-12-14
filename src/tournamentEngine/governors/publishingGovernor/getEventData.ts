@@ -6,7 +6,7 @@ import { getTournamentInfo } from './getTournamentInfo';
 import { getVenueData } from './getVenueData';
 import { getDrawData } from './getDrawData';
 
-import { Event, Tournament } from '../../../types/tournamentTypes';
+import { Event, Tournament } from '../../../types/tournamentFromSchema';
 import { PUBLIC } from '../../../constants/timeItemConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {

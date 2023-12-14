@@ -9,7 +9,11 @@ import {
   EVENT_NOT_FOUND,
   MISSING_TOURNAMENT_RECORD,
 } from '../../constants/errorConditionConstants';
-import { DrawDefinition, Tournament, Event } from '../../types/tournamentTypes';
+import {
+  DrawDefinition,
+  Tournament,
+  Event,
+} from '../../types/tournamentFromSchema';
 
 // INTERNAL_USE: to resovle events by eventId or drawId
 type FindEventArgs = {

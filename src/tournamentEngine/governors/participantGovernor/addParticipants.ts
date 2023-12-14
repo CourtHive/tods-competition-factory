@@ -4,7 +4,7 @@ import { addNotice } from '../../../global/state/globalState';
 import { intersection } from '../../../utilities/arrays';
 import { makeDeepCopy, UUID } from '../../../utilities';
 
-import { Participant, Tournament } from '../../../types/tournamentTypes';
+import { Participant, Tournament } from '../../../types/tournamentFromSchema';
 import { ADD_PARTICIPANTS } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {

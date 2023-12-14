@@ -9,7 +9,7 @@ import {
   PositionAssignment,
   Structure,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 
 type ModifyRoundRobinMatchUpStatusArgs = {
   positionAssignments: PositionAssignment[];

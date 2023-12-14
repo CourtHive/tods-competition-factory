@@ -23,7 +23,7 @@ import {
   Event,
   StageTypeEnum,
   Tournament,
-} from '../../../../types/tournamentTypes';
+} from '../../../../types/tournamentFromSchema';
 import {
   ANY,
   FEMALE,

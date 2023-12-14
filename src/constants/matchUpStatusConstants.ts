@@ -1,4 +1,4 @@
-import { MatchUpStatusEnum } from '../types/tournamentTypes';
+import { MatchUpStatusEnum } from '../types/tournamentFromSchema';
 
 export const ABANDONED = 'ABANDONED';
 export const AWAITING_RESULT = 'AWAITING_RESULT';

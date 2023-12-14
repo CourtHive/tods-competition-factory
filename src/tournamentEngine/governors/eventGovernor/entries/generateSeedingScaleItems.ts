@@ -1,6 +1,6 @@
 import { ScaleAttributes } from '../../../../types/factoryTypes';
 import { SEEDING } from '../../../../constants/scaleConstants';
-import { Entry } from '../../../../types/tournamentTypes';
+import { Entry } from '../../../../types/tournamentFromSchema';
 import {
   ErrorType,
   MISSING_VALUE,

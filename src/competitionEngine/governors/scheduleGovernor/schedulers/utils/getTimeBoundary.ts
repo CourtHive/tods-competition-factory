@@ -1,6 +1,6 @@
 import { getCourtDateAvailability } from '../../garman/getCourtDateAvailability';
 import { timeStringMinutes } from '../../../../../utilities/dateTime';
-import { Court } from '../../../../../types/tournamentTypes';
+import { Court } from '../../../../../types/tournamentFromSchema';
 
 type GetTimeBoundaryArgs = {
   scheduleDate: string;

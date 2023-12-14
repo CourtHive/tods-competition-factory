@@ -2,7 +2,7 @@ import { addCourts } from '../../tournamentEngine/governors/venueGovernor/addCou
 import { addVenue } from '../../tournamentEngine/governors/venueGovernor/addVenue';
 import { dateRange, formatDate } from '../../utilities/dateTime';
 import { UUID } from '../../utilities';
-import { Tournament } from '../../types/tournamentTypes';
+import { Tournament } from '../../types/tournamentFromSchema';
 
 type GenerateVenuesArgs = {
   tournamentRecord: Tournament;

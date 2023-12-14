@@ -5,7 +5,7 @@ import { dateValidation } from '../../../fixtures/validations/regex';
 import { addNotice } from '../../../global/state/globalState';
 
 import { MODIFY_TOURNAMENT_DETAIL } from '../../../constants/topicConstants';
-import { Tournament } from '../../../types/tournamentTypes';
+import { Tournament } from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_DATE,

@@ -2,7 +2,7 @@ import { getParticipantIdMatchUps } from './participantIdMatchUps';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { BYE, COMPLETED } from '../../../constants/matchUpStatusConstants';
-import { DrawDefinition } from '../../../types/tournamentTypes';
+import { DrawDefinition } from '../../../types/tournamentFromSchema';
 import { HydratedParticipant } from '../../../types/hydrated';
 
 type GetParticipantIdFinishingPositionsArgs = {

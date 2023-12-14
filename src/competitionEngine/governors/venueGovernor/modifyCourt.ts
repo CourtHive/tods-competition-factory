@@ -1,6 +1,6 @@
 import { modifyCourt as courtModification } from '../../../tournamentEngine/governors/venueGovernor/modifyCourt';
 
-import { Tournament } from '../../../types/tournamentTypes';
+import { Tournament } from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_TOURNAMENT_RECORDS,

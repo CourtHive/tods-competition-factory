@@ -59,7 +59,7 @@ import {
   Event,
   MatchUpStatusEnum,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 
 // WOULDBENICE: return object containing all modified { matchUpIds, structureIds, drawIds }
 

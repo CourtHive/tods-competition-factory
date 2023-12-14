@@ -1,7 +1,7 @@
 import { ResultType, decorateResult } from '../decorateResult';
 
 import { INVALID_GENDER } from '../../../constants/errorConditionConstants';
-import { GenderEnum, TypeEnum } from '../../../types/tournamentTypes';
+import { GenderEnum, TypeEnum } from '../../../types/tournamentFromSchema';
 import { ANY, MIXED } from '../../../constants/genderConstants';
 
 type GenderValidityCheckArgs = {

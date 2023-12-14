@@ -32,7 +32,7 @@ import {
   Extension,
   Participant,
   StageTypeEnum,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 
 type AddDrawEntryArgs = {
   entryStatus?: EntryStatusEnum;

@@ -1,5 +1,5 @@
 import { validDateAvailability } from '../../governors/venueGovernor/dateAvailability';
-import { Availability } from '../../../types/tournamentTypes';
+import { Availability } from '../../../types/tournamentFromSchema';
 import competitionEngine from '../../../competitionEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';

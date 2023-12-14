@@ -17,7 +17,7 @@ import {
   Event,
   Tournament,
   TypeEnum,
-} from '../../types/tournamentTypes';
+} from '../../types/tournamentFromSchema';
 import {
   ABANDONED,
   DEAD_RUBBER,

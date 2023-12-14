@@ -16,7 +16,10 @@ import {
   ASSIGN_COURT,
 } from '../../../constants/timeItemConstants';
 
-import { DrawDefinition, Tournament } from '../../../types/tournamentTypes';
+import {
+  DrawDefinition,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
 type RemoveCourtAssignmentArgs = {
   drawDefinition?: DrawDefinition;

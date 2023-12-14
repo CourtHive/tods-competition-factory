@@ -24,7 +24,11 @@ import {
 import { MISSING_MATCHUP } from '../../../constants/errorConditionConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import { TEAM } from '../../../constants/eventConstants';
-import { Event, Tournament, TypeEnum } from '../../../types/tournamentTypes';
+import {
+  Event,
+  Tournament,
+  TypeEnum,
+} from '../../../types/tournamentFromSchema';
 import {
   ScheduleTiming,
   ScheduleVisibilityFilters,

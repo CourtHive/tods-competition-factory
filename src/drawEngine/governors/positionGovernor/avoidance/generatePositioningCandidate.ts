@@ -10,7 +10,7 @@ import {
 } from '../../../../utilities';
 
 import { INVALID_ASSIGNMENT } from '../../../../constants/errorConditionConstants';
-import { PositionAssignment } from '../../../../types/tournamentTypes';
+import { PositionAssignment } from '../../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { IdCollections } from '../../../../types/factoryTypes';
 

@@ -1,7 +1,7 @@
 import { findCourt } from '../../getters/courtGetter';
 import { makeDeepCopy } from '../../../utilities';
 
-import { Tournament } from '../../../types/tournamentTypes';
+import { Tournament } from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   ErrorType,

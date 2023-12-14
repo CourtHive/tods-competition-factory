@@ -16,7 +16,10 @@ import {
   MISSING_VALUE,
 } from '../../../../constants/errorConditionConstants';
 
-import { Participant, Tournament } from '../../../../types/tournamentTypes';
+import {
+  Participant,
+  Tournament,
+} from '../../../../types/tournamentFromSchema';
 
 type CreateGroupParticipantType = {
   participantRoleResponsibilities?: string[];

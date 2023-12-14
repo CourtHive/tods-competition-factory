@@ -5,7 +5,10 @@ import { makeDeepCopy } from '../../../../utilities';
 
 import { LINEUPS } from '../../../../constants/extensionConstants';
 import { HydratedMatchUp } from '../../../../types/hydrated';
-import { DrawDefinition, MatchUp } from '../../../../types/tournamentTypes';
+import {
+  DrawDefinition,
+  MatchUp,
+} from '../../../../types/tournamentFromSchema';
 
 type EnsureSideLineUpsArgs = {
   inContextDualMatchUp?: HydratedMatchUp;

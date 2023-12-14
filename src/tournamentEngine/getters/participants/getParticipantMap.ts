@@ -6,7 +6,7 @@ import { makeDeepCopy } from '../../../utilities';
 import { getScaleValues } from './getScaleValues';
 
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
-import { Tournament } from '../../../types/tournamentTypes';
+import { Tournament } from '../../../types/tournamentFromSchema';
 import { ParticipantMap } from '../../../types/factoryTypes';
 import {
   GROUP,

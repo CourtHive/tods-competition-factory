@@ -4,7 +4,7 @@ import {
   checkOutParticipant as drawEngineCheckOutParticipant,
 } from '../../../drawEngine/governors/matchUpGovernor/checkInStatus';
 
-import { Tournament } from '../../../types/tournamentTypes';
+import { Tournament } from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import {

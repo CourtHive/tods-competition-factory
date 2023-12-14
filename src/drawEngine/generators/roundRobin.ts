@@ -21,7 +21,7 @@ import {
   MatchUp,
   MatchUpStatusEnum,
   TypeEnum,
-} from '../../types/tournamentTypes';
+} from '../../types/tournamentFromSchema';
 import {
   PlayoffAttributes,
   PolicyDefinitions,

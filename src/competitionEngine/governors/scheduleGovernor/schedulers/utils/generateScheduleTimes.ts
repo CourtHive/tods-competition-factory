@@ -10,7 +10,7 @@ import {
 } from '../../../../../constants/errorConditionConstants';
 
 import { ScheduleTimesResult } from '../../../../../types/factoryTypes';
-import { Tournament } from '../../../../../types/tournamentTypes';
+import { Tournament } from '../../../../../types/tournamentFromSchema';
 import { HydratedMatchUp } from '../../../../../types/hydrated';
 import { extractAttributes } from '../../../../../utilities';
 

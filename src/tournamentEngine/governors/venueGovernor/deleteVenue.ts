@@ -5,7 +5,7 @@ import { addNotice } from '../../../global/state/globalState';
 import { deletionMessage } from './deletionMessage';
 
 import { POLICY_TYPE_SCHEDULING } from '../../../constants/policyConstants';
-import { Tournament, Venue } from '../../../types/tournamentTypes';
+import { Tournament, Venue } from '../../../types/tournamentFromSchema';
 import { DELETE_VENUE } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {

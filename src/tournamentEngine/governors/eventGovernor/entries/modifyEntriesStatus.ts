@@ -40,7 +40,7 @@ import {
   ParticipantTypeEnum,
   StageTypeEnum,
   Tournament,
-} from '../../../../types/tournamentTypes';
+} from '../../../../types/tournamentFromSchema';
 
 // disallow changing entryStatus to WITHDRAWN or UNGROUPED for assignedParticipants
 type ModifyEntriesStatusArgs = {

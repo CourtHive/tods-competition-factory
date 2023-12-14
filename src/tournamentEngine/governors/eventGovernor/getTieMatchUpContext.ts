@@ -25,7 +25,7 @@ import {
   Structure,
   TieFormat,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 
 // for a given tieMatchUpId (SINGLES or DOUBLES) return:
 // the tieMatchUp, the dualMatchUp within which it occurs, an inContext copy of the dualMatchUp

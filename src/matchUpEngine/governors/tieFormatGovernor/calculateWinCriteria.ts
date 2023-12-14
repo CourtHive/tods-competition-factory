@@ -1,5 +1,5 @@
 import { getGroupValueGroups } from '../../../drawEngine/generators/getGroupValueGroups';
-import { CollectionDefinition } from '../../../types/tournamentTypes';
+import { CollectionDefinition } from '../../../types/tournamentFromSchema';
 import { isConvertableInteger } from '../../../utilities/math';
 
 type CalculateWinCriteriaArgs = {

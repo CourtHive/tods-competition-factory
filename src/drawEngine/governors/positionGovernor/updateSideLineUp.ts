@@ -9,7 +9,7 @@ import {
   Event,
   MatchUp,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 
 type UpdateSideLineUpArgs = {
   inContextTargetMatchUp?: HydratedMatchUp;

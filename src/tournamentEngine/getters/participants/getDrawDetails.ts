@@ -3,7 +3,7 @@ import { getDrawStructures } from '../../../drawEngine/getters/findStructure';
 import { structureSort } from '../../../drawEngine/getters/structureSort';
 
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
-import { Entry, Event } from '../../../types/tournamentTypes';
+import { Entry, Event } from '../../../types/tournamentFromSchema';
 import { StructureSortConfig } from '../../../types/factoryTypes';
 
 // ADD: orderedStructures with stage, stageSequence info

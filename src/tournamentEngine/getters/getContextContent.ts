@@ -3,7 +3,11 @@ import { getPolicyDefinitions } from '../../global/functions/deducers/getApplied
 import POLICY_COMPETITIVE_BANDS_DEFAULT from '../../fixtures/policies/POLICY_COMPETITIVE_BANDS_DEFAULT';
 import { POLICY_TYPE_COMPETITIVE_BANDS } from '../../constants/policyConstants';
 import { ContextProfile, PolicyDefinitions } from '../../types/factoryTypes';
-import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
+import {
+  DrawDefinition,
+  Event,
+  Tournament,
+} from '../../types/tournamentFromSchema';
 
 type GetContextContentArgs = {
   policyDefinitions?: PolicyDefinitions;

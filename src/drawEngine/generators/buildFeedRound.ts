@@ -2,7 +2,7 @@ import { generateMatchUpId } from './generateMatchUpId';
 import { generateRange } from '../../utilities';
 
 import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
-import { MatchUp } from '../../types/tournamentTypes';
+import { MatchUp } from '../../types/tournamentFromSchema';
 
 type BuildFeedRoundArgs = {
   includeMatchUpType?: boolean;

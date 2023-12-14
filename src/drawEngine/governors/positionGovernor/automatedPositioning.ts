@@ -38,7 +38,7 @@ import {
   Event,
   PositionAssignment,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 
 // TODO: Throw an error if an attempt is made to automate positioning for a structure that already has completed matchUps
 type AutomatedPositioningArgs = {

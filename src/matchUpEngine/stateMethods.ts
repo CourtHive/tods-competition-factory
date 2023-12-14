@@ -5,7 +5,7 @@ import {
   MISSING_VALUE,
 } from '../constants/errorConditionConstants';
 
-import { MatchUp } from '../types/tournamentTypes';
+import { MatchUp } from '../types/tournamentFromSchema';
 
 type MatchUpArg = {
   [key: string | number | symbol]: unknown;

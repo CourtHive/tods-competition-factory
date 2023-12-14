@@ -14,7 +14,7 @@ import {
 } from '../queryGovernor/getScheduledCourtMatchUps';
 
 import { POLICY_TYPE_SCHEDULING } from '../../../constants/policyConstants';
-import { Tournament, Venue } from '../../../types/tournamentTypes';
+import { Tournament, Venue } from '../../../types/tournamentFromSchema';
 import { MODIFY_VENUE } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {

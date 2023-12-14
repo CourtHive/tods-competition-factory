@@ -1,7 +1,7 @@
 import { getMatchUpDailyLimits as getDailyLimit } from '../../../tournamentEngine/governors/scheduleGovernor/getMatchUpDailyLimits';
 
 import { MISSING_TOURNAMENT_RECORDS } from '../../../constants/errorConditionConstants';
-import { Tournament } from '../../../types/tournamentTypes';
+import { Tournament } from '../../../types/tournamentFromSchema';
 import { ResultType } from '../../../global/functions/decorateResult';
 
 type GetMatchUpDailyLimitsArgs = {

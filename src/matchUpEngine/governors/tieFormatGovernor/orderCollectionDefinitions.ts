@@ -22,7 +22,7 @@ import {
   Event,
   MatchUp,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 
 function getOrderedTieFormat({ tieFormat, orderMap }) {
   const orderedTieFormat = copyTieFormat(tieFormat);

@@ -20,7 +20,7 @@ import {
   TimeItem,
   Tournament,
   TypeEnum,
-} from './tournamentTypes';
+} from './tournamentFromSchema';
 
 export type FactoryEngine = {
   [key: string]: any;

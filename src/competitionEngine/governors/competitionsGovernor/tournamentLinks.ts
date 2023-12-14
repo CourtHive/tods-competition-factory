@@ -10,7 +10,7 @@ import {
 } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 
 import { LINKED_TOURNAMENTS } from '../../../constants/extensionConstants';
-import { Tournament } from '../../../types/tournamentTypes';
+import { Tournament } from '../../../types/tournamentFromSchema';
 import { TournamentRecords } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {

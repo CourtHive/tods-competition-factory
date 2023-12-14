@@ -2,7 +2,7 @@ import { nextRoundMatchUp } from '../../getters/getMatchUps/nextRoundMatchUp';
 import { getTargetMatchUp } from '../../getters/getMatchUps/getTargetMatchUp';
 import { getRoundLinks, getTargetLink } from '../../getters/linkGetter';
 import { definedAttributes } from '../../../utilities/definedAttributes';
-import { DrawDefinition } from '../../../types/tournamentTypes';
+import { DrawDefinition } from '../../../types/tournamentFromSchema';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import { findStructure } from '../../getters/findStructure';
 

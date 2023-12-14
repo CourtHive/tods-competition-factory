@@ -13,7 +13,7 @@ import {
   SeedAssignment,
   StageTypeEnum,
   Structure,
-} from '../../types/tournamentTypes';
+} from '../../types/tournamentFromSchema';
 
 type GetStructureSeedAssignmentsArgs = {
   provisionalPositioning?: boolean;

@@ -10,7 +10,7 @@ import {
   DrawDefinition,
   Structure,
   Tournament,
-} from '../../types/tournamentTypes';
+} from '../../types/tournamentFromSchema';
 
 type GetPositionAssignmentsArgs = {
   tournamentRecord: Tournament;

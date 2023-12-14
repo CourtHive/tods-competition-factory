@@ -3,7 +3,7 @@ import { findEvent } from '../../../tournamentEngine/getters/findEvent';
 import { findTournamentId } from './findTournamentId';
 
 import { TournamentRecordsArgs } from '../../../types/factoryTypes';
-import { DrawDefinition } from '../../../types/tournamentTypes';
+import { DrawDefinition } from '../../../types/tournamentFromSchema';
 import {
   EVENT_NOT_FOUND,
   MISSING_EVENT,

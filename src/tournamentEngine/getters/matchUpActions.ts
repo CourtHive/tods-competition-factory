@@ -8,7 +8,11 @@ import {
   DRAW_DEFINITION_NOT_FOUND,
   MISSING_TOURNAMENT_RECORD,
 } from '../../constants/errorConditionConstants';
-import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
+import {
+  DrawDefinition,
+  Event,
+  Tournament,
+} from '../../types/tournamentFromSchema';
 
 type MatchUpActionsArgs = {
   policyDefinitions?: PolicyDefinitions;

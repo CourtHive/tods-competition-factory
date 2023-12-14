@@ -4,7 +4,7 @@ import { deepMerge } from '../../utilities/deepMerge';
 
 import { HydratedMatchUp, HydratedParticipant } from '../../types/hydrated';
 import { ResultType } from '../../global/functions/decorateResult';
-import { MatchUp } from '../../types/tournamentTypes';
+import { MatchUp } from '../../types/tournamentFromSchema';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
   ErrorType,

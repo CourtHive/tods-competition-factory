@@ -12,7 +12,7 @@ import {
   MISSING_ENTRIES,
   MISSING_PARTICIPANT_IDS,
 } from '../../../../constants/errorConditionConstants';
-import { EntryStatusEnum } from '../../../../types/tournamentTypes';
+import { EntryStatusEnum } from '../../../../types/tournamentFromSchema';
 
 export function addDrawEntries({
   autoEntryPositions = true,

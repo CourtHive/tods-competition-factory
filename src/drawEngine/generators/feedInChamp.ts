@@ -7,7 +7,7 @@ import { feedInLinks } from './feedInLinks';
 import { MAIN, CONSOLATION } from '../../constants/drawDefinitionConstants';
 import { POLICY_TYPE_FEED_IN } from '../../constants/policyConstants';
 import { SUCCESS } from '../../constants/resultConstants';
-import { DrawLink } from '../../types/tournamentTypes';
+import { DrawLink } from '../../types/tournamentFromSchema';
 
 export function feedInChampionship(params) {
   const {

@@ -3,7 +3,11 @@ import { findTournamentParticipant } from '../../getters/participants/participan
 import { ResultType } from '../../../global/functions/decorateResult';
 import { ELEMENT_REQUIRED } from '../../../constants/infoConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { Event, TimeItem, Tournament } from '../../../types/tournamentTypes';
+import {
+  Event,
+  TimeItem,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 import {
   INVALID_VALUES,
   MISSING_DRAW_ID,

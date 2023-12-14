@@ -1,4 +1,4 @@
-import { DrawDefinition } from '../../../types/tournamentTypes';
+import { DrawDefinition } from '../../../types/tournamentFromSchema';
 import {
   AD_HOC,
   VOLUNTARY_CONSOLATION,

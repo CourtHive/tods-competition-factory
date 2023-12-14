@@ -13,7 +13,7 @@ import {
   decorateResult,
 } from '../../../global/functions/decorateResult';
 
-import { TypeEnum } from '../../../types/tournamentTypes';
+import { TypeEnum } from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MATCHUP_NOT_FOUND,

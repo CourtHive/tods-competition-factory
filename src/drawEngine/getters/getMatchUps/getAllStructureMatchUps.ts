@@ -46,7 +46,7 @@ import {
   Structure,
   DrawDefinition,
   SeedAssignment,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 import {
   ContextContent,
   ContextProfile,

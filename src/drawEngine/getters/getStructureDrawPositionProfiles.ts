@@ -8,7 +8,11 @@ import { isActiveMatchUp } from './activeMatchUp';
 import { findStructure } from './findStructure';
 
 import { INVALID_DRAW_POSITION } from '../../constants/errorConditionConstants';
-import { DrawDefinition, Event, Structure } from '../../types/tournamentTypes';
+import {
+  DrawDefinition,
+  Event,
+  Structure,
+} from '../../types/tournamentFromSchema';
 
 // active drawPositions occur in activeMatchUps...
 // ...which have a winningSide, a scoreString, or a completed matchUpStatus

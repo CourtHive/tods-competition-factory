@@ -29,7 +29,7 @@ import {
   Participant,
   PositionAssignment,
   Structure,
-} from '../../../../types/tournamentTypes';
+} from '../../../../types/tournamentFromSchema';
 
 type GetValidAlternatesActionArgs = {
   positionAssignments: PositionAssignment[];

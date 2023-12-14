@@ -1,7 +1,7 @@
 import { getTournamentInfo } from '../../../tournamentEngine/governors/publishingGovernor/getTournamentInfo';
 import { extractDate } from '../../../utilities/dateTime';
 
-import { Tournament } from '../../../types/tournamentTypes';
+import { Tournament } from '../../../types/tournamentFromSchema';
 import {
   ErrorType,
   MISSING_DATE,

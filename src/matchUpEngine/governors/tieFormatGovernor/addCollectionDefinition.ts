@@ -41,7 +41,7 @@ import {
   MatchUp,
   TieFormat,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 
 /*
  * collectionDefinition will be added to an event tieFormat (if present)

@@ -39,7 +39,7 @@ import {
   TieFormat,
   Tournament,
   TypeEnum,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 
 type GenerateVoluntaryConsolationArgs = {
   playoffAttributes?: PlayoffAttributes;

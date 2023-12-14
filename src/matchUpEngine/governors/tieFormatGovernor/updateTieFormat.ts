@@ -40,7 +40,7 @@ import {
   Structure,
   TieFormat,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 
 // used to determine that all collections have the same collectionIds
 function checkStructureMatchUpCounts({ from, to }) {

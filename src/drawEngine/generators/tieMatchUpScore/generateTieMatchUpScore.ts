@@ -20,7 +20,7 @@ import {
   Event,
   Structure,
   TieFormat,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 
 /**
  * Calculates the number of wins per side and winningSide. When provided with `sideAdjustments`

@@ -19,7 +19,7 @@ import {
   Event,
   Participant,
   Structure,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 
 /*
   public version of findMatchUp

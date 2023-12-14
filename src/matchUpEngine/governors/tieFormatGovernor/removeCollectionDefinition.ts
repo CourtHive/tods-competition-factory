@@ -42,7 +42,7 @@ import {
   MatchUp,
   TieFormat,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import { decorateResult } from '../../../global/functions/decorateResult';
 

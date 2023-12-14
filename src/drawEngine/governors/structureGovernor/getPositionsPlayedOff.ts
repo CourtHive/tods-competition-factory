@@ -4,7 +4,7 @@ import { roundValueRanges } from './structureUtils';
 
 import { MatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
-import { DrawDefinition } from '../../../types/tournamentTypes';
+import { DrawDefinition } from '../../../types/tournamentFromSchema';
 import {
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,

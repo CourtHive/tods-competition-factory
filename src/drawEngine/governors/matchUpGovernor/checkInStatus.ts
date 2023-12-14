@@ -25,7 +25,7 @@ import {
   Event,
   Participant,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 
 /*
   function is only able to check whether participant is alredy checked in 

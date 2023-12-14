@@ -14,7 +14,7 @@ import {
   Structure,
   TieFormat,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 
 type CollectionGroupUpdateArgs = {
   updateInProgressMatchUps?: boolean;

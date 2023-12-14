@@ -21,7 +21,7 @@ import {
   DrawDefinition,
   Event,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 
 type RemoveSubsequentDrawPositionArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];

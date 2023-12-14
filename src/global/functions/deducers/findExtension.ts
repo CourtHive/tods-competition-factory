@@ -1,6 +1,6 @@
 import { ResultType, decorateResult } from '../decorateResult';
 
-import { Extension } from '../../../types/tournamentTypes';
+import { Extension } from '../../../types/tournamentFromSchema';
 import {
   MISSING_VALUE,
   NOT_FOUND,

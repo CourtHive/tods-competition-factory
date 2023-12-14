@@ -5,7 +5,7 @@ import { getEventPublishStatus } from './getEventPublishStatus';
 import { addNotice } from '../../../global/state/globalState';
 import { getEventData } from './getEventData';
 
-import { Event, Tournament } from '../../../types/tournamentTypes';
+import { Event, Tournament } from '../../../types/tournamentFromSchema';
 import { PUBLISH_EVENT } from '../../../constants/topicConstants';
 import { PolicyDefinitions } from '../../../types/factoryTypes';
 import { PUBLIC } from '../../../constants/timeItemConstants';

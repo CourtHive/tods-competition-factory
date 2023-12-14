@@ -16,7 +16,7 @@ import {
   Event,
   TieFormat,
   Tournament,
-} from '../../types/tournamentTypes';
+} from '../../types/tournamentFromSchema';
 import { FEMALE, MALE, MIXED } from '../../constants/genderConstants';
 import { COMPETITOR } from '../../constants/participantRoles';
 import { DESCENDING } from '../../constants/sortingConstants';

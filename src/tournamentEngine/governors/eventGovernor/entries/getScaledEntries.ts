@@ -6,7 +6,11 @@ import {
 } from '../../../../constants/errorConditionConstants';
 import { STRUCTURE_SELECTED_STATUSES } from '../../../../constants/entryStatusConstants';
 import { ScaleAttributes } from '../../../../types/factoryTypes';
-import { Entry, Event, Tournament } from '../../../../types/tournamentTypes';
+import {
+  Entry,
+  Event,
+  Tournament,
+} from '../../../../types/tournamentFromSchema';
 
 /**
  *

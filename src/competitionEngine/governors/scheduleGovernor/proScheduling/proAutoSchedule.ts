@@ -14,7 +14,7 @@ import {
 import {
   MatchUpStatusEnum,
   Tournament,
-} from '../../../../types/tournamentTypes';
+} from '../../../../types/tournamentFromSchema';
 
 // NOTE: matchUps are assumed to be { inContext: true, nextMatchUps: true }
 

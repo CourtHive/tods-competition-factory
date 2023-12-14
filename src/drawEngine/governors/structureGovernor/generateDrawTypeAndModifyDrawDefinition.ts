@@ -38,7 +38,7 @@ import {
   TieFormat,
   Tournament,
   TypeEnum,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 
 type GenerateDrawTypeAndModify = {
   appliedPolicies?: PolicyDefinitions;

@@ -13,7 +13,7 @@ import {
   Event,
   Entry,
   StageTypeEnum,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 
 type GetEntriesAndSeedsCountArgs = {
   policyDefinitions: PolicyDefinitions;

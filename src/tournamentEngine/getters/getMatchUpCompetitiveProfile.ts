@@ -3,7 +3,7 @@ import { findPolicy } from '../governors/policyGovernor/findPolicy';
 
 import POLICY_COMPETITIVE_BANDS_DEFAULT from '../../fixtures/policies/POLICY_COMPETITIVE_BANDS_DEFAULT';
 import { POLICY_TYPE_COMPETITIVE_BANDS } from '../../constants/policyConstants';
-import { MatchUp, Tournament } from '../../types/tournamentTypes';
+import { MatchUp, Tournament } from '../../types/tournamentFromSchema';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
   ErrorType,

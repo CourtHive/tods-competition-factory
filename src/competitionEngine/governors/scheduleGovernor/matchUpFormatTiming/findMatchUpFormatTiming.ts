@@ -3,7 +3,7 @@ import { isValid } from '../../../../matchUpEngine/governors/matchUpFormatGovern
 import { findEvent } from '../../../../tournamentEngine/getters/findEvent';
 
 import { UNRECOGNIZED_MATCHUP_FORMAT } from '../../../../constants/errorConditionConstants';
-import { Tournament, TypeEnum } from '../../../../types/tournamentTypes';
+import { Tournament, TypeEnum } from '../../../../types/tournamentFromSchema';
 
 type FindMatchUpFormatTiming = {
   tournamentRecords: { [key: string]: Tournament };

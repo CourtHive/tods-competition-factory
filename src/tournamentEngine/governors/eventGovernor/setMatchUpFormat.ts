@@ -9,7 +9,7 @@ import {
 } from '../../../drawEngine/notifications/drawNotifications';
 
 import { DOUBLES, SINGLES, TEAM } from '../../../constants/eventConstants';
-import { MatchUpStatusEnum } from '../../../types/tournamentTypes';
+import { MatchUpStatusEnum } from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_EVENT_TYPE,

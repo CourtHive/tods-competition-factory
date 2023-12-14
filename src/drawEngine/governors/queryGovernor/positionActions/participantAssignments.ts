@@ -18,7 +18,7 @@ import {
   DrawDefinition,
   Event,
   PositionAssignment,
-} from '../../../../types/tournamentTypes';
+} from '../../../../types/tournamentFromSchema';
 import {
   PolicyDefinitions,
   SeedingProfile,

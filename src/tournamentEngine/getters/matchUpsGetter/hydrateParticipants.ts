@@ -3,7 +3,7 @@ import { addNationalityCode } from '../../governors/participantGovernor/addNatio
 import { getScaleValues } from '../participants/getScaleValues';
 
 import { getParticipantMap } from '../participants/getParticipantMap';
-import { Tournament } from '../../../types/tournamentTypes';
+import { Tournament } from '../../../types/tournamentFromSchema';
 import { HydratedParticipant } from '../../../types/hydrated';
 import { makeDeepCopy } from '../../../utilities';
 import {

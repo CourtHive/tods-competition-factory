@@ -9,7 +9,7 @@ import {
   DrawDefinition,
   MatchUp,
   Structure,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 
 /**
  * Finds all structureIds which are affected by an outcome change in a completed structure

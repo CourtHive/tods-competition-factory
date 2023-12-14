@@ -1,5 +1,5 @@
 import { parse } from '../governors/matchUpFormatGovernor/parse';
-import { Score } from '../../types/tournamentTypes';
+import { Score } from '../../types/tournamentFromSchema';
 import { instanceCount } from '../../utilities';
 
 import {

@@ -1,7 +1,7 @@
 import { findTournamentParticipant } from '../../getters/participants/participantGetter';
 import { getTimeItem } from '../queryGovernor/timeItems';
 
-import { TimeItem, Tournament } from '../../../types/tournamentTypes';
+import { TimeItem, Tournament } from '../../../types/tournamentFromSchema';
 import { ELEMENT_REQUIRED } from '../../../constants/infoConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {

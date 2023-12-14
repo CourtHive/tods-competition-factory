@@ -15,7 +15,7 @@ import {
   INVALID_VALUES,
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
-import { TypeEnum } from '../../../types/tournamentTypes';
+import { TypeEnum } from '../../../types/tournamentFromSchema';
 
 const EVENT_NAME = 'Team Event';
 

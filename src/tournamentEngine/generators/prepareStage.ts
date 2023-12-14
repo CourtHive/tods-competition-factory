@@ -12,7 +12,7 @@ import {
 } from '../../global/functions/decorateResult';
 
 import { STRUCTURE_NOT_FOUND } from '../../constants/errorConditionConstants';
-import { Entry, PositionAssignment } from '../../types/tournamentTypes';
+import { Entry, PositionAssignment } from '../../types/tournamentFromSchema';
 import { DIRECT_ENTRY_STATUSES } from '../../constants/entryStatusConstants';
 import { AD_HOC, QUALIFYING } from '../../constants/drawDefinitionConstants';
 import { RANKING, SEEDING } from '../../constants/scaleConstants';

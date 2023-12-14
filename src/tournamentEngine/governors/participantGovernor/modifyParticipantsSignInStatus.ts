@@ -15,7 +15,7 @@ import {
   SIGNED_OUT,
   SIGN_IN_STATUS,
 } from '../../../constants/participantConstants';
-import { Participant } from '../../../types/tournamentTypes';
+import { Participant } from '../../../types/tournamentFromSchema';
 
 export function modifyParticipantsSignInStatus({
   tournamentRecord,

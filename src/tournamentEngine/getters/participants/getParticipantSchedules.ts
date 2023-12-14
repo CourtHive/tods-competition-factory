@@ -1,7 +1,7 @@
 import { getMatchUpDependencies } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/getMatchUpDependencies';
 import { allTournamentMatchUps } from '../matchUpsGetter/matchUpsGetter';
 
-import { Tournament } from '../../../types/tournamentTypes';
+import { Tournament } from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_OBJECT,

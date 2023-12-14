@@ -2,7 +2,7 @@ import tieFormatDefaults from '../../../../tournamentEngine/generators/tieFormat
 import { compareTieFormats } from '../compareTieFormats';
 import { it, expect } from 'vitest';
 
-import { TieFormat } from '../../../../types/tournamentTypes';
+import { TieFormat } from '../../../../types/tournamentFromSchema';
 import {
   COLLEGE_D3,
   COLLEGE_DEFAULT,

@@ -9,7 +9,7 @@ import {
   Event,
   TimeItem,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 
 /*
   generic function to addMatchUpTimeItem

@@ -33,7 +33,7 @@ import { validateCategory } from './global/validation/validateCategory';
 import { isAdHoc } from './drawEngine/governors/queryGovernor/isAdHoc';
 import { structureSort } from './drawEngine/getters/structureSort';
 import { tidyScore } from './utilities/scoreParser/scoreParser';
-export { EntryStatusEnum } from './types/tournamentTypes';
+export { EntryStatusEnum } from './types/tournamentFromSchema';
 import { matchUpSort } from './drawEngine/getters/matchUpSort';
 import { dateTime, dateRange } from './utilities/dateTime';
 import { JSON2CSV, flattenJSON } from './utilities/json';

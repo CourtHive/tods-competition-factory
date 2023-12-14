@@ -1,4 +1,10 @@
-import { Court, MatchUp, Participant, Side, Venue } from './tournamentTypes';
+import {
+  Court,
+  MatchUp,
+  Participant,
+  Side,
+  Venue,
+} from './tournamentFromSchema';
 
 export type HydratedCourt = {
   [key: string]: any;

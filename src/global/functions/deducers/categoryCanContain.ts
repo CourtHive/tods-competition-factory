@@ -1,7 +1,7 @@
 import { definedAttributes } from '../../../utilities/definedAttributes';
 import { validateCategory } from '../../validation/validateCategory';
 
-import { Category } from '../../../types/tournamentTypes';
+import { Category } from '../../../types/tournamentFromSchema';
 
 type CategoryCanContainArgs = {
   childCategory: Category;

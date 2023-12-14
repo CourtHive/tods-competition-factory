@@ -11,7 +11,7 @@ import {
   MatchUp,
   Structure,
   TieFormat,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 
 type GetProjectedDualWinningSideArgs = {
   drawDefinition?: DrawDefinition;

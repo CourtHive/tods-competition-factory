@@ -1,4 +1,4 @@
-import { Extension } from '../../types/tournamentTypes';
+import { Extension } from '../../types/tournamentFromSchema';
 
 type IsValidExtensionArgs = {
   requiredAttributes?: string[];

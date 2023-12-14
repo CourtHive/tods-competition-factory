@@ -23,7 +23,7 @@ import {
   Event,
   Structure,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 
 export function attachPlayoffStructures(params) {
   return attachStructures(params);

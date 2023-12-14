@@ -23,7 +23,7 @@ import {
   GenderEnum,
   TieFormat,
   TypeEnum,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 
 type ValidateTieFormatArgs = {
   checkCollectionIds?: boolean;

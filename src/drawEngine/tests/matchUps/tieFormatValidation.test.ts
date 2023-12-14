@@ -11,7 +11,7 @@ import {
 import { INVALID_TIE_FORMAT } from '../../../constants/errorConditionConstants';
 import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
-import { GenderEnum } from '../../../types/tournamentTypes';
+import { GenderEnum } from '../../../types/tournamentFromSchema';
 import { tieFormats } from '../../../fixtures/scoring/tieFormats';
 import { FEMALE } from '../../../constants/genderConstants';
 import { TEAM } from '../../../constants/eventConstants';

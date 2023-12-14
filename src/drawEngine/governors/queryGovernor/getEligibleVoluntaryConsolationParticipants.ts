@@ -22,7 +22,7 @@ import {
   Participant,
   StageTypeEnum,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 import { HydratedSide } from '../../../types/hydrated';
 
 type GetEligibleVoluntaryConsolationParticipantsArgs = {

@@ -12,7 +12,7 @@ import {
 } from './schedulingUtils';
 
 import { MatchUpFilters } from '../../../../drawEngine/getters/getMatchUps/filterMatchUps';
-import { Tournament } from '../../../../types/tournamentTypes';
+import { Tournament } from '../../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { HydratedMatchUp } from '../../../../types/hydrated';
 import {

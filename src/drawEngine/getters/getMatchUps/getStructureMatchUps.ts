@@ -18,7 +18,7 @@ import {
   Participant,
   Structure,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 import {
   ContextContent,
   ContextProfile,

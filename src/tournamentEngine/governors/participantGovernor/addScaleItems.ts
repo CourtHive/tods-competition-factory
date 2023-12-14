@@ -8,7 +8,7 @@ import {
   addTournamentTimeItem,
 } from '../tournamentGovernor/addTimeItem';
 
-import { Participant, Tournament } from '../../../types/tournamentTypes';
+import { Participant, Tournament } from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SCALE } from '../../../constants/scaleConstants';
 import { ScaleItem } from '../../../types/factoryTypes';

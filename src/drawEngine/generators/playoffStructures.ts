@@ -13,7 +13,7 @@ import {
   MatchUp,
   PositioningProfileEnum,
   Structure,
-} from '../../types/tournamentTypes';
+} from '../../types/tournamentFromSchema';
 
 /**
  *
@@ -160,8 +160,8 @@ export function generatePlayoffStructures(
   const roundsToPlayOff = roundOffsetLimit
     ? Math.min(roundOffsetLimit - roundOffset, rounds)
     : !finishingPositionLimit || finishingPositionsFrom < finishingPositionLimit
-      ? rounds
-      : 0;
+    ? rounds
+    : 0;
 
   if (drawSize > 2) {
     generateRange(1, roundsToPlayOff + 1).forEach((roundNumber) =>

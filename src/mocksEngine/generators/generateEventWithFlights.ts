@@ -14,7 +14,7 @@ import { UUID, extractAttributes } from '../../utilities';
 
 import { SINGLES, DOUBLES, TEAM } from '../../constants/eventConstants';
 import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';
-import { StageTypeEnum } from '../../types/tournamentTypes';
+import { StageTypeEnum } from '../../types/tournamentFromSchema';
 
 export function generateEventWithFlights(params) {
   const {

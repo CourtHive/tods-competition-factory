@@ -12,7 +12,7 @@ import SEEDING_NATIONAL from '../../../fixtures/policies/POLICY_SEEDING_NATIONAL
 import { MODIFY_DRAW_DEFINITION } from '../../../constants/topicConstants';
 import SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
 import SEEDING_ITF from '../../../fixtures/policies/POLICY_SEEDING_ITF';
-import { EntryStatusEnum } from '../../../types/tournamentTypes';
+import { EntryStatusEnum } from '../../../types/tournamentFromSchema';
 import { MAIN } from '../../../constants/drawDefinitionConstants';
 import { ERROR } from '../../../constants/resultConstants';
 import {

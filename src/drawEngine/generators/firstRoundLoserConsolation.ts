@@ -10,7 +10,7 @@ import {
   LinkTypeEnum,
   PositioningProfileEnum,
   Structure,
-} from '../../types/tournamentTypes';
+} from '../../types/tournamentFromSchema';
 
 export function firstRoundLoserConsolation(params) {
   const {

@@ -20,7 +20,7 @@ import {
   EntryStatusEnum,
   Event,
   Tournament,
-} from '../../../../types/tournamentTypes';
+} from '../../../../types/tournamentFromSchema';
 
 // should NOT remove entries that are present in drawDefinition.entries
 // if those entries are assigned positions in any structures...

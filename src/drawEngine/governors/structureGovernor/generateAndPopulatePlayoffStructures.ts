@@ -44,7 +44,7 @@ import {
   PositioningProfileEnum,
   Structure,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 
 type GenerateAndPopulateArgs = {
   addNameBaseToAttributeName?: boolean;

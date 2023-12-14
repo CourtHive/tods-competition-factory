@@ -13,7 +13,7 @@ import {
   DrawDefinition,
   Event,
   Tournament,
-} from '../../../../types/tournamentTypes';
+} from '../../../../types/tournamentFromSchema';
 import {
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,

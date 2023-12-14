@@ -4,7 +4,7 @@ import { groupConsecutiveNumbers, unique } from '../../../utilities/arrays';
 import { MatchUpsMap, getMappedStructureMatchUps } from './getMatchUpsMap';
 import { getRangeString } from './getRangeString';
 
-import { DrawDefinition } from '../../../types/tournamentTypes';
+import { DrawDefinition } from '../../../types/tournamentFromSchema';
 import { RoundProfile } from '../../../types/factoryTypes';
 import {
   MISSING_DRAW_DEFINITION,

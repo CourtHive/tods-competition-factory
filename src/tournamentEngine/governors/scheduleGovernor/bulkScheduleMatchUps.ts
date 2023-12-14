@@ -6,7 +6,7 @@ import {
   allTournamentMatchUps,
 } from '../../getters/matchUpsGetter/matchUpsGetter';
 
-import { Tournament } from '../../../types/tournamentTypes';
+import { Tournament } from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_SCHEDULE,

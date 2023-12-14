@@ -5,7 +5,7 @@ import { findExtension } from '../../global/functions/deducers/findExtension';
 import { addVenue } from '../governors/venueGovernor/addVenue';
 import { makeDeepCopy } from '../../utilities';
 
-import { Tournament, Venue } from '../../types/tournamentTypes';
+import { Tournament, Venue } from '../../types/tournamentFromSchema';
 import { HydratedCourt, HydratedVenue } from '../../types/hydrated';
 import { ResultType } from '../../global/functions/decorateResult';
 import { DISABLED } from '../../constants/extensionConstants';

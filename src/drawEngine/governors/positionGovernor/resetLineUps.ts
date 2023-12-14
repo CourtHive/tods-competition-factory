@@ -12,7 +12,7 @@ import {
   Event,
   Structure,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 
 type ResetLineUpsArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];

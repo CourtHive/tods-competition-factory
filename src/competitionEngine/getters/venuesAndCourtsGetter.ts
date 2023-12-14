@@ -4,7 +4,7 @@ import { getInContextCourt } from '../../global/functions/deducers/getInContextC
 import { findExtension } from '../../global/functions/deducers/findExtension';
 import { makeDeepCopy } from '../../utilities';
 
-import { Tournament, Venue } from '../../types/tournamentTypes';
+import { Tournament, Venue } from '../../types/tournamentFromSchema';
 import { HydratedCourt, HydratedVenue } from '../../types/hydrated';
 import { ResultType } from '../../global/functions/decorateResult';
 import { TournamentRecordsArgs } from '../../types/factoryTypes';

@@ -8,7 +8,7 @@ import mocksEngine from '../../../../mocksEngine';
 import { expect } from 'vitest';
 
 import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
-import { TypeEnum } from '../../../../types/tournamentTypes';
+import { TypeEnum } from '../../../../types/tournamentFromSchema';
 import {
   MAIN,
   PLAY_OFF,

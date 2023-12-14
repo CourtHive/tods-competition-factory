@@ -17,7 +17,7 @@ import {
   DrawDefinition,
   DrawLink,
   Structure,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 
 type AttachQualifyingArgs = {
   drawDefinition: DrawDefinition;

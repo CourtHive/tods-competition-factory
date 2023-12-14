@@ -17,7 +17,7 @@ import {
   Event,
   MatchUp,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 
 type RemoveCollectionGroupArgs = {
   updateInProgressMatchUps?: boolean;

@@ -2,7 +2,7 @@ import { findExtension } from '../../tournamentEngine/governors/queryGovernor/ex
 import { ResultType } from '../../global/functions/decorateResult';
 import { structureSort } from './structureSort';
 
-import { DrawDefinition, Structure } from '../../types/tournamentTypes';
+import { DrawDefinition, Structure } from '../../types/tournamentFromSchema';
 import { ITEM, validStages } from '../../constants/drawDefinitionConstants';
 import { ROUND_TARGET } from '../../constants/extensionConstants';
 import { StructureSortConfig } from '../../types/factoryTypes';

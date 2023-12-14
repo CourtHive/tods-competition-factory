@@ -5,7 +5,7 @@ import {
   DrawDefinition,
   Event,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {

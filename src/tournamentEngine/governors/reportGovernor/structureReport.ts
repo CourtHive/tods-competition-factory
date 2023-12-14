@@ -10,7 +10,11 @@ import { MISSING_TOURNAMENT_ID } from '../../../constants/errorConditionConstant
 import { ADD_SCALE_ITEMS } from '../../../constants/topicConstants';
 import { HydratedParticipant } from '../../../types/hydrated';
 import { SEEDING } from '../../../constants/scaleConstants';
-import { Participant, Side, Tournament } from '../../../types/tournamentTypes';
+import {
+  Participant,
+  Side,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 import {
   CONSOLATION,
   MAIN,

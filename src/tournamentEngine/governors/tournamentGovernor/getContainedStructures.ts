@@ -2,7 +2,7 @@ import {
   DrawDefinition,
   Event,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 
 /**
  * Finds all container structures within a tournament object and returns a mapping of container structureIds to arrays of contained structureIds

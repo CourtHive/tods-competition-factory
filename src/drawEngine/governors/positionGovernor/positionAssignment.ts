@@ -56,7 +56,7 @@ import {
   MatchUpStatusEnum,
   PositionAssignment,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 
 type AssignDrawPositionArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];

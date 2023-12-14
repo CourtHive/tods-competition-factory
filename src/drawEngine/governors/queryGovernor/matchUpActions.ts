@@ -84,7 +84,7 @@ import {
   Event,
   Participant,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 import {
   DOUBLES_MATCHUP,
   SINGLES_MATCHUP,

@@ -8,7 +8,10 @@ import {
   MISSING_MATCHUP_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
-import { DrawDefinition, Tournament } from '../../../types/tournamentTypes';
+import {
+  DrawDefinition,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
 type AssignMatchUpCourtArgs = {
   tournamentRecords?: { [key: string]: Tournament };

@@ -1,6 +1,6 @@
 import { unique } from '../../../utilities';
 
-import { TypeEnum } from '../../../types/tournamentTypes';
+import { TypeEnum } from '../../../types/tournamentFromSchema';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   RANKING,

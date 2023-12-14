@@ -6,7 +6,7 @@ import {
   DrawDefinition,
   Event,
   Participant,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 
 type GetParticipantIdMatchUps = {
   tournamentParticipants?: Participant[];

@@ -25,7 +25,7 @@ import {
   DrawDefinition,
   DrawLink,
   Tournament,
-} from '../../../../types/tournamentTypes';
+} from '../../../../types/tournamentFromSchema';
 
 type GetMatchUpDependenciesArgs = {
   tournamentRecords?: TournamentRecords;

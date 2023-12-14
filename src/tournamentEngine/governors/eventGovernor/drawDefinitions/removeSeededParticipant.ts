@@ -15,7 +15,7 @@ import {
   DrawDefinition,
   StageTypeEnum,
   Tournament,
-} from '../../../../types/tournamentTypes';
+} from '../../../../types/tournamentFromSchema';
 
 type RemoveSeededParticipantArgs = {
   tournamentRecord: Tournament;

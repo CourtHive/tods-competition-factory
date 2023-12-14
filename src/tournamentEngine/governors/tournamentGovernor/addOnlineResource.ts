@@ -21,7 +21,7 @@ import {
   Event,
   OnlineResource,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 
 type AddOnlineResourceArgs = {
   onlineResource: OnlineResource;

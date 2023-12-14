@@ -37,7 +37,7 @@ import {
   MatchUp,
   MatchUpStatusEnum,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 
 /**
  *

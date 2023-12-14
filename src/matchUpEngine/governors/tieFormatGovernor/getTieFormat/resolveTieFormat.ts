@@ -4,7 +4,7 @@ import {
   DrawDefinition,
   Structure,
   Event,
-} from '../../../../types/tournamentTypes';
+} from '../../../../types/tournamentFromSchema';
 
 // use with resolved objects, not uuid references to objects
 

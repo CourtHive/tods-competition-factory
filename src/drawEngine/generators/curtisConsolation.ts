@@ -15,7 +15,7 @@ import {
   LinkTypeEnum,
   PositioningProfileEnum,
   Structure,
-} from '../../types/tournamentTypes';
+} from '../../types/tournamentFromSchema';
 
 export function generateCurtisConsolation(params) {
   const {

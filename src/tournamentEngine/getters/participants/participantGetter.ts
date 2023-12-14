@@ -1,7 +1,7 @@
 import { findParticipant } from '../../../global/functions/deducers/findParticipant';
 import { makeDeepCopy } from '../../../utilities';
 
-import { Participant } from '../../../types/tournamentTypes';
+import { Participant } from '../../../types/tournamentFromSchema';
 import {
   ErrorType,
   MISSING_TOURNAMENT_RECORD,

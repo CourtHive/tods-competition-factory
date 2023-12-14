@@ -25,7 +25,7 @@ import {
   GenderEnum,
   Tournament,
   TypeEnum,
-} from '../../../types/tournamentTypes';
+} from '../../../types/tournamentFromSchema';
 
 type ModifyEventArgs = {
   tournamentRecord: Tournament;

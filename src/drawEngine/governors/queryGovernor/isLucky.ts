@@ -1,6 +1,6 @@
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 
-import { DrawDefinition, Structure } from '../../../types/tournamentTypes';
+import { DrawDefinition, Structure } from '../../../types/tournamentFromSchema';
 import { LUCKY_DRAW } from '../../../constants/drawDefinitionConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
 

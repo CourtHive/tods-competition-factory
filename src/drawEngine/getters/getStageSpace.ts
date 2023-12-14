@@ -6,7 +6,7 @@ import {
 } from './stageGetter';
 
 import { VOLUNTARY_CONSOLATION } from '../../constants/drawDefinitionConstants';
-import { DrawDefinition } from '../../types/tournamentTypes';
+import { DrawDefinition } from '../../types/tournamentFromSchema';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
   ENTRY_STATUS_NOT_ALLOWED_IN_STAGE,
