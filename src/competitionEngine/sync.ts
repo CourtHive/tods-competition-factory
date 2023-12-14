@@ -112,7 +112,7 @@ export const competitionEngine = (function () {
       ...params,
     });
     const elapsed = Date.now() - start;
-    engineLogging({ result, methodName, elapsed, params, engine: 'ce:' });
+    engineLogging({ result, methodName, elapsed, params, engineType: 'ce:' });
 
     return result;
   }
@@ -204,7 +204,13 @@ export const competitionEngine = (function () {
       if (!engine[methodName]) {
         const result = { error: METHOD_NOT_FOUND, methodName };
         const elapsed = Date.now() - start;
-        engineLogging({ result, methodName, elapsed, params, engine: 'ce:' });
+        engineLogging({
+          engineType: 'ce:',
+          methodName,
+          elapsed,
+          params,
+          result,
+        });
         return result;
       }
 

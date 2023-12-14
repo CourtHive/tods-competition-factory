@@ -16,7 +16,7 @@ export const engine = (() => {
     execute: (args: any) => engineInvoke(engine, args),
   };
 
-  engineStart(engine);
+  engineStart(engine, engineInvoke);
 
   return engine;
 })();

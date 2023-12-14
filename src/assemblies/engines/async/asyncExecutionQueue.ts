@@ -1,6 +1,6 @@
-import { engineLogging } from '../../../global/functions/producers/engineLogging';
 import { notifySubscribersAsync } from '../../../global/state/notifySubscribers';
 import { getMutationStatus } from '../getMutationStatus';
+import { logMethodNotFound } from '../logMethodNotFound';
 import { executeFunction } from '../executeMethod';
 import { makeDeepCopy } from '../../../utilities';
 import { setState } from '../stateMethods';
@@ -10,10 +10,7 @@ import {
   getMethods,
 } from '../../../global/state/globalState';
 
-import {
-  INVALID_VALUES,
-  METHOD_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 
 export async function asyncExecutionQueue(
   engine: { [key: string]: any },
@@ -34,18 +31,15 @@ export async function asyncExecutionQueue(
     if (typeof directive !== 'object') return { error: INVALID_VALUES };
 
     const { method: methodName, params } = directive;
-    if (!methods[methodName]) {
-      const result = { error: METHOD_NOT_FOUND, methodName };
-      const elapsed = Date.now() - start;
-      engineLogging({ result, methodName, elapsed, params, engine: 'ce:' });
-      return result;
-    }
+    if (!methods[methodName])
+      return logMethodNotFound({ methodName, start, params });
 
     const result = executeFunction(
       engine,
       methods[methodName],
       params,
-      methodName
+      methodName,
+      'async'
     );
 
     if (result?.error) {

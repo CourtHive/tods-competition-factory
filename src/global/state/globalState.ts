@@ -389,7 +389,7 @@ export function handleCaughtError({
 export function globalLog(engine: string, log: any) {
   if (globalState.globalLog) {
     try {
-      globalState.globalLog(engine, log);
+      globalState.globalLog({ engine, log });
     } catch (error) {
       console.log('globalLog error', error);
       console.log(engine, log);

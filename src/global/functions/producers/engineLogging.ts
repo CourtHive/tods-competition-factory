@@ -7,16 +7,16 @@ import {
 
 type EngineLoggingArgs = {
   params?: { [key: string]: any } | boolean;
-  methodName: string;
   result: ResultType;
+  engineType: string;
+  methodName: string;
   elapsed: number;
-  engine: string;
 };
 
 export function engineLogging({
+  engineType,
   methodName,
   elapsed,
-  engine,
   params,
   result,
 }: EngineLoggingArgs) {
@@ -44,7 +44,8 @@ export function engineLogging({
   if (
     !exclude &&
     ![undefined, false].includes(devContext.perf) &&
-    (isNaN(devContext.perf) || elapsed > devContext.perf)
+    !isNaN(devContext.perf) &&
+    elapsed >= devContext.perf
   ) {
     log.elapsed = elapsed;
   }
@@ -65,5 +66,5 @@ export function engineLogging({
     log.result = result;
   }
 
-  if (Object.keys(log).length > 1) globalLog(engine, log);
+  if (Object.keys(log).length > 1) globalLog(engineType, log);
 }

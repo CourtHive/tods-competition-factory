@@ -8,7 +8,7 @@ export const engine = (() => {
     execute: (args: any) => askInvoke(engine, args),
   };
 
-  engineStart(engine);
+  engineStart(engine, askInvoke);
 
   return engine;
 })();

@@ -16,8 +16,11 @@ import {
   setTournamentRecord,
 } from './stateMethods';
 
-export function engineStart(engine) {
-  engine.importMethods = (methods) => importMethods(engine, methods);
+import { FactoryEngine } from '../../types/factoryTypes';
+
+export function engineStart(engine: FactoryEngine, engineInvoke: any): void {
+  engine.importMethods = (methods) =>
+    importMethods(engine, engineInvoke, methods);
   engine.getTournament = (params?) => getTournament(params);
   engine.getState = (params?) =>
     getState({

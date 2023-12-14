@@ -6,13 +6,23 @@ import {
   getTournamentRecords,
 } from '../../global/state/globalState';
 
-export function executeFunction(engine, method, params, methodName) {
+import { FactoryEngine } from '../../types/factoryTypes';
+
+export function executeFunction(
+  engine: FactoryEngine,
+  method: any,
+  params: { [key: string]: any } | undefined,
+  methodName: string,
+  engineType: string
+) {
   delete engine.success;
   delete engine.error;
 
   const start = Date.now();
   const tournamentRecords = getTournamentRecords();
-  const augmentedParams = paramsMiddleware(tournamentRecords, params);
+  const augmentedParams = params
+    ? paramsMiddleware(tournamentRecords, params)
+    : undefined;
   const result = invoke({
     params: augmentedParams,
     tournamentRecords,
@@ -20,7 +30,7 @@ export function executeFunction(engine, method, params, methodName) {
     method,
   });
   const elapsed = Date.now() - start;
-  engineLogging({ result, methodName, elapsed, params, engine: 'ce:' });
+  engineLogging({ result, methodName, elapsed, params, engineType });
 
   return result;
 }

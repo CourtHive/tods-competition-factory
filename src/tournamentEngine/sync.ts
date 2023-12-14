@@ -107,7 +107,7 @@ export const tournamentEngine = ((): FactoryEngine => {
       tournamentRecord,
     });
     const elapsed = Date.now() - start;
-    engineLogging({ result, methodName, elapsed, params, engine: 'te:' });
+    engineLogging({ result, methodName, elapsed, params, engineType: 'te:' });
 
     return result;
   }
@@ -203,7 +203,13 @@ export const tournamentEngine = ((): FactoryEngine => {
       if (!engine[methodName]) {
         const result = { error: METHOD_NOT_FOUND, methodName };
         const elapsed = Date.now() - start;
-        engineLogging({ result, methodName, elapsed, params, engine: 'te:' });
+        engineLogging({
+          engineType: 'te:',
+          methodName,
+          elapsed,
+          params,
+          result,
+        });
         return result;
       }
 
