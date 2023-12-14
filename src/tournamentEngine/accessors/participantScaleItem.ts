@@ -1,6 +1,6 @@
 import { getAccessorValue } from '../../utilities/getAccessorValue';
 
-import type { Participant, TypeEnum } from '../../types/tournamentFromSchema';
+import type { Participant, TypeEnum } from '../../types/tournamentTypes';
 import { ScaleAttributes, ScaleItem } from '../../types/factoryTypes';
 import { ResultType } from '../../global/functions/decorateResult';
 import { SUCCESS } from '../../constants/resultConstants';

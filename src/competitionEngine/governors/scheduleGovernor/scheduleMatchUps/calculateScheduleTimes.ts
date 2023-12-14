@@ -12,7 +12,7 @@ import {
   timeStringMinutes,
 } from '../../../../utilities/dateTime';
 
-import { Tournament } from '../../../../types/tournamentFromSchema';
+import { Tournament } from '../../../../types/tournamentTypes';
 import {
   ErrorType,
   MISSING_TOURNAMENT_RECORDS,

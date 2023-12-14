@@ -3,7 +3,7 @@ import {
   DrawDefinition,
   Tournament,
   Event,
-} from '../../../../types/tournamentFromSchema';
+} from '../../../../types/tournamentTypes';
 
 type AssignDrawPositionByeArgs = {
   tournamentRecord: Tournament;

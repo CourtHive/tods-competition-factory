@@ -32,7 +32,7 @@ import {
   Participant,
   Tournament,
   TypeEnum,
-} from '../../../../types/tournamentFromSchema';
+} from '../../../../types/tournamentTypes';
 
 type CheckValidEntriesArgs = {
   policyDefinitions?: PolicyDefinitions;

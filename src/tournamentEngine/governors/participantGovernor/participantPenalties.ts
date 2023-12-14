@@ -21,7 +21,7 @@ import {
   Penalty,
   PenaltyTypeEnum,
   Tournament,
-} from '../../../types/tournamentFromSchema';
+} from '../../../types/tournamentTypes';
 
 type AddPenaltyArgs = {
   refereeParticipantId?: string;

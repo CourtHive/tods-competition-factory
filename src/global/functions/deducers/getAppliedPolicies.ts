@@ -13,7 +13,7 @@ import {
   Event,
   Structure,
   Tournament,
-} from '../../../types/tournamentFromSchema';
+} from '../../../types/tournamentTypes';
 
 type GetAppliedPoliciesArgs = {
   onlySpecifiedPolicyTypes?: boolean;

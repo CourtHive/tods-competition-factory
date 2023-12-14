@@ -7,7 +7,7 @@ import {
   LOSER,
   FIRST_MATCHUP,
 } from '../../constants/drawDefinitionConstants';
-import { Structure } from '../../types/tournamentFromSchema';
+import { Structure } from '../../types/tournamentTypes';
 
 type FeedInLinksArgs = {
   mainStructure: Structure;
@@ -43,8 +43,8 @@ export function feedInLinks({
         roundFeedProfiles && roundFeedProfiles[roundNumber - 1]
           ? roundFeedProfiles[roundNumber - 1]
           : roundNumber % 2
-          ? TOP_DOWN
-          : BOTTOM_UP;
+            ? TOP_DOWN
+            : BOTTOM_UP;
 
       // after first two rounds of target feed, matchUps are every other round
       const targetRound =

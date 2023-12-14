@@ -44,7 +44,7 @@ import {
   TIME_TENNIS_PRO_CIRCUIT,
 } from '../../constants/tieFormatConstants';
 
-import { Event, TypeEnum } from '../../types/tournamentFromSchema';
+import { Event, TypeEnum } from '../../types/tournamentTypes';
 
 const STANDARD = 'STANDARD';
 

@@ -18,7 +18,7 @@ import {
   Event,
   Structure,
   Tournament,
-} from '../../../../types/tournamentFromSchema';
+} from '../../../../types/tournamentTypes';
 import {
   PolicyDefinitions,
   SeedingProfile,

@@ -10,7 +10,7 @@ import {
   Participant,
   PositionAssignment,
   Structure,
-} from '../../../../types/tournamentFromSchema';
+} from '../../../../types/tournamentTypes';
 import { TEAM } from '../../../../constants/eventConstants';
 import {
   LUCKY_PARTICIPANT,

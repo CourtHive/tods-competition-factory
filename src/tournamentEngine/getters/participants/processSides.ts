@@ -2,7 +2,7 @@ import { addStructureParticipation } from './addStructureParticipation';
 import { addScheduleItem } from './addScheduleItem';
 
 import { DEFAULTED, WALKOVER } from '../../../constants/matchUpStatusConstants';
-import { TypeEnum } from '../../../types/tournamentFromSchema';
+import { TypeEnum } from '../../../types/tournamentTypes';
 import {
   PAIR,
   TEAM_PARTICIPANT,

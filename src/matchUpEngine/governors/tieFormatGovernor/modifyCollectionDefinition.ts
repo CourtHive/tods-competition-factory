@@ -29,7 +29,7 @@ import {
   TieFormat,
   Tournament,
   TypeEnum,
-} from '../../../types/tournamentFromSchema';
+} from '../../../types/tournamentTypes';
 import {
   INVALID_VALUES,
   MISSING_VALUE,

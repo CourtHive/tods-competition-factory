@@ -8,7 +8,7 @@ import { RANKING, RATING, SEEDING } from '../../../../constants/scaleConstants';
 import { MISSING_EVENT } from '../../../../constants/errorConditionConstants';
 import SEEDING_USTA from '../../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
 import { ADD_SCALE_ITEMS } from '../../../../constants/topicConstants';
-import { TypeEnum } from '../../../../types/tournamentFromSchema';
+import { TypeEnum } from '../../../../types/tournamentTypes';
 import { SINGLES } from '../../../../constants/eventConstants';
 
 it('can autoSeed by Rankings', () => {

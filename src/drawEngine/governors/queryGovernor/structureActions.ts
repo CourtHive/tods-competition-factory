@@ -4,7 +4,7 @@ import { getPositionAssignments } from '../../getters/positionsGetter';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../../constants/entryStatusConstants';
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
-import { DrawDefinition, Structure } from '../../../types/tournamentFromSchema';
+import { DrawDefinition, Structure } from '../../../types/tournamentTypes';
 import { TEAM } from '../../../constants/matchUpTypes';
 
 type StructureActionsArgs = {

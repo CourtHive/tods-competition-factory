@@ -2,7 +2,7 @@ import { bulkRescheduleMatchUps as bulkReschedule } from '../../../tournamentEng
 import { getMatchUpIds } from '../../../global/functions/extractors';
 
 import { ResultType } from '../../../global/functions/decorateResult';
-import { Tournament } from '../../../types/tournamentFromSchema';
+import { Tournament } from '../../../types/tournamentTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_VALUES,

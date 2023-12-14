@@ -18,7 +18,7 @@ import {
   Structure,
   TieFormat,
   Tournament,
-} from '../../types/tournamentFromSchema';
+} from '../../types/tournamentTypes';
 
 // NOTE: method exclusively for external use
 

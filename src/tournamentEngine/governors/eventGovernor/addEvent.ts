@@ -19,11 +19,7 @@ import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
-import {
-  Event,
-  Tournament,
-  TypeEnum,
-} from '../../../types/tournamentFromSchema';
+import { Event, Tournament, TypeEnum } from '../../../types/tournamentTypes';
 
 type AddEventArgs = {
   suppressNotifications?: boolean;

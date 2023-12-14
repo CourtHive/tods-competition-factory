@@ -2,7 +2,7 @@ import { addDrawDefinitionExtension } from '../../../tournamentEngine/governors/
 import { findDrawDefinitionExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 
 import { ENTRY_PROFILE } from '../../../constants/extensionConstants';
-import { DrawDefinition } from '../../../types/tournamentFromSchema';
+import { DrawDefinition } from '../../../types/tournamentTypes';
 
 type ModifyEntryProfileArgs = {
   drawDefinition: DrawDefinition;

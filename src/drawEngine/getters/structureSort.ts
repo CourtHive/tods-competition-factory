@@ -2,7 +2,7 @@ import { findExtension } from '../../tournamentEngine/governors/queryGovernor/ex
 
 import { completedMatchUpStatuses } from '../../constants/matchUpStatusConstants';
 import { ROUND_TARGET } from '../../constants/extensionConstants';
-import { Structure } from '../../types/tournamentFromSchema';
+import { Structure } from '../../types/tournamentTypes';
 import {
   aggregateOrder,
   finishOrder,

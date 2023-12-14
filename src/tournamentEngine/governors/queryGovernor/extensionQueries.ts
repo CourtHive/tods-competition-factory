@@ -16,7 +16,7 @@ import {
   Extension,
   Tournament,
   Event,
-} from '../../../types/tournamentFromSchema';
+} from '../../../types/tournamentTypes';
 
 const stack = 'extensionQueries';
 

@@ -4,7 +4,7 @@ import { modifyDrawNotice } from '../../notifications/drawNotifications';
 
 import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
 import { ResultType } from '../../../global/functions/decorateResult';
-import { DrawDefinition } from '../../../types/tournamentFromSchema';
+import { DrawDefinition } from '../../../types/tournamentTypes';
 import { PolicyDefinitions } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {

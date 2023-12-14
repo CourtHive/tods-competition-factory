@@ -70,7 +70,7 @@ import {
   Event,
   Participant,
   Tournament,
-} from '../../../../types/tournamentFromSchema';
+} from '../../../../types/tournamentTypes';
 
 type PositionActionsArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];

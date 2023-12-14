@@ -11,7 +11,7 @@ import {
 } from '../../../global/functions/decorateResult';
 
 import { MISSING_DRAW_SIZE } from '../../../constants/errorConditionConstants';
-import { DrawLink, Structure } from '../../../types/tournamentFromSchema';
+import { DrawLink, Structure } from '../../../types/tournamentTypes';
 import { ROUND_TARGET } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {

@@ -3,7 +3,7 @@ import competitionEngineAsync from '../../../async';
 import competitionEngineSync from '../../../sync';
 import mocksEngine from '../../../../mocksEngine';
 import { expect, test } from 'vitest';
-import { Tournament } from '../../../../types/tournamentFromSchema';
+import { Tournament } from '../../../../types/tournamentTypes';
 
 const asyncCompetitionEngine = competitionEngineAsync(true);
 

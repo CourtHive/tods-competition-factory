@@ -16,7 +16,7 @@ import {
   DrawDefinition,
   Event,
   Tournament,
-} from '../../../types/tournamentFromSchema';
+} from '../../../types/tournamentTypes';
 
 /**
  * Sets either matchUpStatus or score and winningSide; values to be set are passed in outcome object.

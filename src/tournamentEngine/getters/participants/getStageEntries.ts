@@ -6,7 +6,7 @@ import {
   Entry,
   EntryStatusEnum,
   Event,
-} from '../../../types/tournamentFromSchema';
+} from '../../../types/tournamentTypes';
 
 type GetStageEntriesArgs = {
   entryStatuses?: EntryStatusEnum[];

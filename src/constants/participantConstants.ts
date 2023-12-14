@@ -1,4 +1,4 @@
-import { ParticipantTypeEnum } from '../types/tournamentFromSchema';
+import { ParticipantTypeEnum } from '../types/tournamentTypes';
 
 export const SIGN_IN_STATUS = 'SIGN_IN_STATUS';
 

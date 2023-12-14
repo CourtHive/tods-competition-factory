@@ -38,7 +38,7 @@ import {
   DrawDefinition,
   Event,
   Tournament,
-} from '../../../types/tournamentFromSchema';
+} from '../../../types/tournamentTypes';
 
 type AssignMatchUpSideParticipantIdArgs = {
   policyDefinitions?: PolicyDefinitions;

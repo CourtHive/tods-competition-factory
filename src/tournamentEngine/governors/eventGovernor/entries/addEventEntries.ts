@@ -40,7 +40,7 @@ import {
   StageTypeEnum,
   Tournament,
   TypeEnum,
-} from '../../../../types/tournamentFromSchema';
+} from '../../../../types/tournamentTypes';
 
 /**
  * Add entries into an event; optionally add to specified drawDefinition/flightProfile, if possible.

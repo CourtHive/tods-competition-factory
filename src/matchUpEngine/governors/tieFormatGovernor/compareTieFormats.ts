@@ -3,7 +3,7 @@ import { isConvertableInteger } from '../../../utilities/math';
 import { difference, unique } from '../../../utilities/arrays';
 import { getTieFormatDesc } from './getTieFormatDescription';
 
-import { TieFormat } from '../../../types/tournamentFromSchema';
+import { TieFormat } from '../../../types/tournamentTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 type CompareTieFormatsArgs = {

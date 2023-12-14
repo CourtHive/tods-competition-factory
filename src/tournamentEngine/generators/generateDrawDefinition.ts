@@ -85,7 +85,7 @@ import {
   TieFormat,
   Tournament,
   TypeEnum,
-} from '../../types/tournamentFromSchema';
+} from '../../types/tournamentTypes';
 import {
   PlayoffAttributes,
   PolicyDefinitions,

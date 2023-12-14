@@ -10,7 +10,7 @@ import { courtGridRows } from '../generators/courtGridRows';
 import { competitionMatchUps } from './matchUpsGetter';
 import { isObject } from '../../utilities/objects';
 
-import { MatchUpStatusEnum, Venue } from '../../types/tournamentFromSchema';
+import { MatchUpStatusEnum, Venue } from '../../types/tournamentTypes';
 import { PUBLIC, PUBLISH, STATUS } from '../../constants/timeItemConstants';
 import { COMPLETED } from '../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../constants/resultConstants';

@@ -22,10 +22,7 @@ import {
   TEAM,
 } from '../../../../constants/participantConstants';
 
-import {
-  Participant,
-  Tournament,
-} from '../../../../types/tournamentFromSchema';
+import { Participant, Tournament } from '../../../../types/tournamentTypes';
 
 type AddIndividualParticipantIdsType = {
   individualParticipantIds: string[]; // individual participantIds to be added to grouping participant

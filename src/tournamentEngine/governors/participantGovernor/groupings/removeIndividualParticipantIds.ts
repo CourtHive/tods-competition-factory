@@ -32,7 +32,7 @@ import {
   ParticipantRoleEnum,
   ParticipantTypeEnum,
   Tournament,
-} from '../../../../types/tournamentFromSchema';
+} from '../../../../types/tournamentTypes';
 
 type RemoveIndividualParticipantIdsArgs = {
   addIndividualParticipantsToEvents?: boolean;

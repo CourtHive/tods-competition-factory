@@ -10,7 +10,7 @@ import {
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
-import { Tournament } from '../../../types/tournamentFromSchema';
+import { Tournament } from '../../../types/tournamentTypes';
 
 export function setSchedulingProfile({ tournamentRecord, schedulingProfile }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

@@ -2,7 +2,7 @@ import { dateRange, timeStringMinutes } from '../../../utilities/dateTime';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { Court } from '../../../types/tournamentFromSchema';
+import { Court } from '../../../types/tournamentTypes';
 
 // bulk update when tournament dates change
 export function updateCourtAvailability({ tournamentRecord }) {

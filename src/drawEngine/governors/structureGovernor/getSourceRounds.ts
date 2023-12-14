@@ -4,7 +4,7 @@ import { generateRange, numericSort } from '../../../utilities';
 import { getPositionsPlayedOff } from './getPositionsPlayedOff';
 import { ensureInt } from '../../../utilities/ensureInt';
 
-import { DrawDefinition } from '../../../types/tournamentFromSchema';
+import { DrawDefinition } from '../../../types/tournamentTypes';
 import { RoundProfile } from '../../../types/factoryTypes';
 import {
   ErrorType,

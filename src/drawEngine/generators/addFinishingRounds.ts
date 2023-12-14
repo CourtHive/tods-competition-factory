@@ -2,7 +2,7 @@ import { validMatchUps } from '../../matchUpEngine/governors/queryGovernor/valid
 import { getRoundMatchUps } from '../accessors/matchUpAccessor/getRoundMatchUps';
 import { extractAttributes, generateRange } from '../../utilities';
 import { getDevContext } from '../../global/state/globalState';
-import { MatchUp } from '../../types/tournamentFromSchema';
+import { MatchUp } from '../../types/tournamentTypes';
 
 type AddFinishingRoundsArgs = {
   finishingPositionOffset?: number;

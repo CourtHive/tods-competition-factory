@@ -1,5 +1,5 @@
 import { generateRange, isPowerOf2 } from '../../utilities';
-import { MatchUp } from '../../types/tournamentFromSchema';
+import { MatchUp } from '../../types/tournamentTypes';
 import { addFinishingRounds } from './addFinishingRounds';
 import { buildRound } from './buildRound';
 

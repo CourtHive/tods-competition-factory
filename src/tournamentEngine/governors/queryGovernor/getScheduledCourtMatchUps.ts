@@ -5,7 +5,7 @@ import { getSchedulingProfile } from '../scheduleGovernor/schedulingProfile';
 import { MatchUpFilters } from '../../../drawEngine/getters/getMatchUps/filterMatchUps';
 import { ScheduleVisibilityFilters } from '../../../types/factoryTypes';
 import { ResultType } from '../../../global/functions/decorateResult';
-import { Tournament } from '../../../types/tournamentFromSchema';
+import { Tournament } from '../../../types/tournamentTypes';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import {
   MISSING_COURT_ID,

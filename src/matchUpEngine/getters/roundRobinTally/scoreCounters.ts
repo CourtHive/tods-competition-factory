@@ -2,7 +2,7 @@ import { parse } from '../../governors/matchUpFormatGovernor/parse';
 import { ensureInt } from '../../../utilities/ensureInt';
 
 import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
-import { Score } from '../../../types/tournamentFromSchema';
+import { Score } from '../../../types/tournamentTypes';
 import {
   DEFAULTED,
   RETIRED,

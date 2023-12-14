@@ -2,7 +2,7 @@ import { definedAttributes } from '../../utilities/definedAttributes';
 
 import { MISSING_STRUCTURE_ID } from '../../constants/errorConditionConstants';
 import { DRAW } from '../../constants/drawDefinitionConstants';
-import { LinkTypeEnum } from '../../types/tournamentFromSchema';
+import { LinkTypeEnum } from '../../types/tournamentTypes';
 
 type GenerateQualifyingLinkArgs = {
   targetEntryRound?: number;

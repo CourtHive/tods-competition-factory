@@ -4,7 +4,7 @@ import mocksEngine from '../../../mocksEngine';
 import { it, test, expect } from 'vitest';
 
 import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
-import { Score } from '../../../types/tournamentFromSchema';
+import { Score } from '../../../types/tournamentTypes';
 
 // prettier-ignore
 const scenarios = [

@@ -1,6 +1,6 @@
 import { getStructureLinks } from './linkGetter';
 import { findStructure } from './findStructure';
-import { DrawDefinition } from '../../types/tournamentFromSchema';
+import { DrawDefinition } from '../../types/tournamentTypes';
 
 type GetSourceStructureDetailArgs = {
   drawDefinition: DrawDefinition;

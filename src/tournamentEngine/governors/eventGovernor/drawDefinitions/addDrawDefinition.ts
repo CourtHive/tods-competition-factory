@@ -29,7 +29,7 @@ import {
   DrawDefinition,
   Event,
   Tournament,
-} from '../../../../types/tournamentFromSchema';
+} from '../../../../types/tournamentTypes';
 
 type AddDrawDefinitionArgs = {
   flight?: { flightNumber: number };

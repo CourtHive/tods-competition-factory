@@ -11,7 +11,7 @@ import {
   Event,
   PositionAssignment,
   Structure,
-} from '../../../../types/tournamentFromSchema';
+} from '../../../../types/tournamentTypes';
 import { HydratedParticipant } from '../../../../types/hydrated';
 
 type GetValidSwapActionArgs = {

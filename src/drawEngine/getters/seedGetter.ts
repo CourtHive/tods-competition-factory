@@ -14,7 +14,7 @@ import {
   structureAssignedDrawPositions,
 } from './positionsGetter';
 
-import { DrawDefinition, Structure } from '../../types/tournamentFromSchema';
+import { DrawDefinition, Structure } from '../../types/tournamentTypes';
 import {
   CLUSTER,
   CONTAINER,

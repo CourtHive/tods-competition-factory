@@ -8,7 +8,7 @@ import {
   DrawDefinition,
   Event,
   Tournament,
-} from '../../../types/tournamentFromSchema';
+} from '../../../types/tournamentTypes';
 
 type PositionActionsArgs = {
   restrictAdHocRoundParticipants?: boolean;

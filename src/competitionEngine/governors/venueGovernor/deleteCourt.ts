@@ -6,7 +6,7 @@ import {
   MISSING_COURT_ID,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../../constants/errorConditionConstants';
-import { Tournament } from '../../../types/tournamentFromSchema';
+import { Tournament } from '../../../types/tournamentTypes';
 
 type DeleteCourtArgs = {
   tournamentRecords: { [key: string]: Tournament };

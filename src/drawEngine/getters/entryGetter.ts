@@ -1,5 +1,5 @@
 import { MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
-import { DrawDefinition } from '../../types/tournamentFromSchema';
+import { DrawDefinition } from '../../types/tournamentTypes';
 
 type ParticipantInEntriesArgs = {
   drawDefinition: DrawDefinition;

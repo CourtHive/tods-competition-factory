@@ -5,7 +5,7 @@ import { generateParticipants } from './generateParticipants';
 import { getParticipantsCount } from './getParticipantsCount';
 import { generateRange, UUID } from '../../utilities';
 
-import { Participant, Tournament } from '../../types/tournamentFromSchema';
+import { Participant, Tournament } from '../../types/tournamentTypes';
 import { INDIVIDUAL, TEAM } from '../../constants/participantConstants';
 import { ParticipantsProfile } from '../../types/factoryTypes';
 import { COMPETITOR } from '../../constants/participantRoles';

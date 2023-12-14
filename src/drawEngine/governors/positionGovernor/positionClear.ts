@@ -47,7 +47,7 @@ import {
   PositionAssignment,
   Structure,
   Tournament,
-} from '../../../types/tournamentFromSchema';
+} from '../../../types/tournamentTypes';
 
 type ClearDrawPositionArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];

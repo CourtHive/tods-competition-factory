@@ -23,11 +23,7 @@ import {
   INDIVIDUAL,
   TEAM_PARTICIPANT,
 } from '../../constants/participantConstants';
-import {
-  Event,
-  Participant,
-  Tournament,
-} from '../../types/tournamentFromSchema';
+import { Event, Participant, Tournament } from '../../types/tournamentTypes';
 
 /*
 scaledParticipants are equivalent to scaledEntries

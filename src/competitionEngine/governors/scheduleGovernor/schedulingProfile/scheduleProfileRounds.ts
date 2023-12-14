@@ -12,7 +12,7 @@ import { getMatchUpDailyLimits } from '../getMatchUpDailyLimits';
 
 import { DO_NOT_SCHEDULE } from '../../../../constants/requestConstants';
 import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
-import { Tournament } from '../../../../types/tournamentFromSchema';
+import { Tournament } from '../../../../types/tournamentTypes';
 import {
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORDS,

@@ -22,7 +22,7 @@ import {
   Structure,
   Tournament,
   TypeEnum,
-} from '../../../types/tournamentFromSchema';
+} from '../../../types/tournamentTypes';
 
 // this should be in policyDefinitions
 const ENCOUNTER_VALUE = 100;

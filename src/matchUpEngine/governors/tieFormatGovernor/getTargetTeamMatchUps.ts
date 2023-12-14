@@ -2,7 +2,7 @@ import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps
 import { allDrawMatchUps } from '../../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
 import { scoreHasValue } from '../queryGovernor/scoreHasValue';
 
-import { MatchUp } from '../../../types/tournamentFromSchema';
+import { MatchUp } from '../../../types/tournamentTypes';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
   COMPLETED,

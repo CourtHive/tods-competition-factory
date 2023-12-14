@@ -9,7 +9,7 @@ import { aggregateSets } from './aggregators';
 
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 import { DYNAMIC, RATING } from '../../../constants/scaleConstants';
-import { TypeEnum } from '../../../types/tournamentFromSchema';
+import { TypeEnum } from '../../../types/tournamentTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { ELO } from '../../../constants/ratingConstants';
 import { HydratedSide } from '../../../types/hydrated';

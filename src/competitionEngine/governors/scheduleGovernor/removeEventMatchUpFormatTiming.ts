@@ -6,7 +6,7 @@ import {
   MISSING_TOURNAMENT_RECORDS,
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
-import { Tournament } from '../../../types/tournamentFromSchema';
+import { Tournament } from '../../../types/tournamentTypes';
 
 type RemoveEventMatchUpFormatTimingArgs = {
   tournamentRecords: { [key: string]: Tournament };

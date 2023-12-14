@@ -4,7 +4,7 @@ import { hasParticipantId } from '../../../global/functions/filters';
 import { deepMerge } from '../../../utilities/deepMerge';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
-import { Participant } from '../../../types/tournamentFromSchema';
+import { Participant } from '../../../types/tournamentTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   ADD_PARTICIPANTS,

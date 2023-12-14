@@ -2,7 +2,7 @@ import { generateRange } from '../../../utilities';
 import { mocksEngine } from '../../..';
 
 import { SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
-import { TypeEnum } from '../../../types/tournamentFromSchema';
+import { TypeEnum } from '../../../types/tournamentTypes';
 import {
   FORMAT_ATP_DOUBLES,
   FORMAT_STANDARD,

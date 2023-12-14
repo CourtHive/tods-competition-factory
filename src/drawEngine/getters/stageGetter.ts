@@ -22,7 +22,7 @@ import {
   DrawDefinition,
   DrawLink,
   EntryStatusEnum,
-} from '../../types/tournamentFromSchema';
+} from '../../types/tournamentTypes';
 
 export function stageExists({ stage, drawDefinition }) {
   const { entryProfile } = getEntryProfile({ drawDefinition });

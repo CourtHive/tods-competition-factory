@@ -13,7 +13,7 @@ import {
   assignDrawPositionBye,
 } from './byePositioning/assignDrawPositionBye';
 
-import { MatchUpStatusEnum } from '../../../types/tournamentFromSchema';
+import { MatchUpStatusEnum } from '../../../types/tournamentTypes';
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {

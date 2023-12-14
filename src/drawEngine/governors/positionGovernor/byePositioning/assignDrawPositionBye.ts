@@ -39,7 +39,7 @@ import {
   MatchUp,
   Structure,
   Tournament,
-} from '../../../../types/tournamentFromSchema';
+} from '../../../../types/tournamentTypes';
 
 /*
   assignDrawPositionBye

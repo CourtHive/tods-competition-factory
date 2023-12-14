@@ -3,7 +3,7 @@ import { mustBeAnArray } from '../../../../utilities/mustBeAnArray';
 import { unique } from '../../../../utilities/arrays';
 
 import { INVALID_VALUES } from '../../../../constants/errorConditionConstants';
-import { TieFormat } from '../../../../types/tournamentFromSchema';
+import { TieFormat } from '../../../../types/tournamentTypes';
 import { LineUp } from '../../../../types/factoryTypes';
 
 type ValidateLineUpArgs = {

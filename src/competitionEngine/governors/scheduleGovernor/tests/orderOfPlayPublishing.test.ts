@@ -3,7 +3,7 @@ import competitionEngine from '../../../sync';
 import { expect, it } from 'vitest';
 
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
-import { Tournament } from '../../../../types/tournamentFromSchema';
+import { Tournament } from '../../../../types/tournamentTypes';
 import { PUBLIC } from '../../../../constants/timeItemConstants';
 
 it('can publish order of play for specified days', () => {

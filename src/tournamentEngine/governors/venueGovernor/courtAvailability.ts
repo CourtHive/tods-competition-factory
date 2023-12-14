@@ -6,7 +6,7 @@ import { addNotice } from '../../../global/state/globalState';
 import { validDateAvailability } from './dateAvailability';
 import { findCourt } from '../../getters/courtGetter';
 
-import { Availability, Tournament } from '../../../types/tournamentFromSchema';
+import { Availability, Tournament } from '../../../types/tournamentTypes';
 import { POLICY_TYPE_SCHEDULING } from '../../../constants/policyConstants';
 import { MODIFY_VENUE } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';

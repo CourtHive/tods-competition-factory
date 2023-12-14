@@ -1,4 +1,4 @@
-import { EntryStatusEnum } from '../types/tournamentFromSchema';
+import { EntryStatusEnum } from '../types/tournamentTypes';
 
 export const ALTERNATE = EntryStatusEnum.Alternate;
 export const CONFIRMED = EntryStatusEnum.Confirmed;

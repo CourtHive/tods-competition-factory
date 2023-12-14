@@ -34,7 +34,7 @@ import {
   DrawTypeEnum,
   Structure,
   TieFormat,
-} from '../../../types/tournamentFromSchema';
+} from '../../../types/tournamentTypes';
 import {
   PlayoffAttributes,
   PolicyDefinitions,

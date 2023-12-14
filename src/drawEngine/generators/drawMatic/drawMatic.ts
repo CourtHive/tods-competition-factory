@@ -15,7 +15,7 @@ import {
   Structure,
   Tournament,
   TypeEnum,
-} from '../../../types/tournamentFromSchema';
+} from '../../../types/tournamentTypes';
 import {
   INVALID_DRAW_DEFINITION,
   INVALID_PARTICIPANT_ID,

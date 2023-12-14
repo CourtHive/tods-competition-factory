@@ -9,7 +9,7 @@ import {
   MISSING_VENUE_ID,
   VENUE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { Tournament } from '../../../types/tournamentFromSchema';
+import { Tournament } from '../../../types/tournamentTypes';
 
 type ACArgs = AddCourtsArgs & {
   tournamentRecords: { [key: string]: Tournament };

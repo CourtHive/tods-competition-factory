@@ -10,7 +10,7 @@ import { cycleMutationStatus } from '../../global/state/globalState';
 import { generateScheduledRounds } from './generateScheduledRounds';
 import { definedAttributes } from '../../utilities/definedAttributes';
 import { generateEventWithDraw } from './generateEventWithDraw';
-import { Extension } from '../../types/tournamentFromSchema';
+import { Extension } from '../../types/tournamentTypes';
 import { generateVenues } from './generateVenues';
 import { randomPop } from '../../utilities';
 

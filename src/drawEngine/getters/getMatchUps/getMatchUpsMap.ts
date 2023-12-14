@@ -5,7 +5,7 @@ import {
   DrawDefinition,
   MatchUp,
   Structure,
-} from '../../../types/tournamentFromSchema';
+} from '../../../types/tournamentTypes';
 
 export type MappedMatchUps = {
   [key: string]: {

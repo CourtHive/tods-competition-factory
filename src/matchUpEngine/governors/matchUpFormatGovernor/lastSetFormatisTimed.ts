@@ -1,4 +1,4 @@
-import { MatchUp } from '../../../types/tournamentFromSchema';
+import { MatchUp } from '../../../types/tournamentTypes';
 import { parse } from './parse';
 
 type MatchUpArg = {

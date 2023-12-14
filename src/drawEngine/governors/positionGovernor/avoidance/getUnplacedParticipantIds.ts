@@ -1,4 +1,4 @@
-import { PositionAssignment } from '../../../../types/tournamentFromSchema';
+import { PositionAssignment } from '../../../../types/tournamentTypes';
 
 type GetUnplaced = {
   positionAssignments: PositionAssignment[];

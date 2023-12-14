@@ -14,7 +14,7 @@ import {
 } from '../../global/functions/decorateResult';
 
 import { INVALID_VALUES } from '../../constants/errorConditionConstants';
-import { DrawLink, Structure } from '../../types/tournamentFromSchema';
+import { DrawLink, Structure } from '../../types/tournamentTypes';
 import { POLICY_TYPE_FEED_IN } from '../../constants/policyConstants';
 import { WIN_RATIO } from '../../constants/statsConstants';
 import {

@@ -23,7 +23,7 @@ import {
   Event,
   Extension,
   Tournament,
-} from '../../../types/tournamentFromSchema';
+} from '../../../types/tournamentTypes';
 
 type RemoveExtensionResult = {
   success?: boolean;

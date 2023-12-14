@@ -9,11 +9,7 @@ import {
   DOUBLES_SINGLES,
   SINGLES_DOUBLES,
 } from '../../../../constants/scheduleConstants';
-import {
-  Event,
-  Tournament,
-  TypeEnum,
-} from '../../../../types/tournamentFromSchema';
+import { Event, Tournament, TypeEnum } from '../../../../types/tournamentTypes';
 
 type GetMatchUpFormatTimingArgs = {
   defaultRecoveryMinutes?: number;

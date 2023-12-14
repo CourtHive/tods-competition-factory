@@ -11,10 +11,7 @@ import {
   MISSING_DRAW_DEFINITION,
   MISSING_PARTICIPANT_ID,
 } from '../../../../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  TieFormat,
-} from '../../../../types/tournamentFromSchema';
+import { DrawDefinition, TieFormat } from '../../../../types/tournamentTypes';
 import { LineUp } from '../../../../types/factoryTypes';
 
 // update an extension on the drawDefinition that keeps track of the latest lineUp for all team participantIds

@@ -1,6 +1,6 @@
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { getAllStructureMatchUps } from './getAllStructureMatchUps';
-import { DrawDefinition, MatchUp } from '../../../types/tournamentFromSchema';
+import { DrawDefinition, MatchUp } from '../../../types/tournamentTypes';
 import { findStructure } from '../findStructure';
 
 import { MatchUpsMap } from './getMatchUpsMap';

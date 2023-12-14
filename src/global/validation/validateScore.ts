@@ -3,7 +3,7 @@ import { mustBeAnArray } from '../../utilities/mustBeAnArray';
 import { isConvertableInteger } from '../../utilities/math';
 import { unique } from '../../utilities';
 
-import type { Score } from '../../types/tournamentFromSchema';
+import type { Score } from '../../types/tournamentTypes';
 import { ResultType } from '../functions/decorateResult';
 import {
   INVALID_SCORE,
