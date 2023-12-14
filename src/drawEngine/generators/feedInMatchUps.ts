@@ -46,7 +46,7 @@ export function feedInMatchUps(params: FeedInMatchUpsArgs) {
   } = params;
   // calculate the number of rounds and the number of matchUps in each round
   // for normal elimination structure
-  baseDrawSize = baseDrawSize || getBaseDrawSize(drawSize);
+  baseDrawSize = baseDrawSize ?? getBaseDrawSize(drawSize);
   const baseDrawRounds = roundMatchCounts({ drawSize: baseDrawSize });
   const baseRoundsCount = baseDrawRounds.length;
 
@@ -144,7 +144,7 @@ export function feedInMatchUps(params: FeedInMatchUpsArgs) {
       const iterationRange = generateRange(0, roundIterations);
       const finishingRoundNumber = roundsCount + 1 - roundNumber;
       const isLinkFedRound =
-        linkFedFinishingRoundNumbers?.includes(finishingRoundNumber) ||
+        linkFedFinishingRoundNumbers?.includes(finishingRoundNumber) ??
         linkFedRoundNumbers?.includes(roundNumber);
 
       iterationRange.forEach(() => {
