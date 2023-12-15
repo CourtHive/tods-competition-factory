@@ -1,4 +1,4 @@
-import { addMatchUpTimeItem } from '../../../assemblies/mutations/matchUps/matchUpTimeItems';
+import { addMatchUpTimeItem } from '../../../mutations/matchUps/matchUpTimeItems';
 import { findVenue } from '../../getters/venueGetter';
 
 import { ASSIGN_VENUE } from '../../../constants/timeItemConstants';

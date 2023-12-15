@@ -1,5 +1,5 @@
-import { getMatchUpParticipantIds } from '../../../assemblies/queries/matchUp/getMatchUpParticipantIds';
-import { getCheckedInParticipantIds } from '../../../assemblies/queries/matchUp/getCheckedInParticipantIds';
+import { getMatchUpParticipantIds } from '../../../queries/matchUp/getMatchUpParticipantIds';
+import { getCheckedInParticipantIds } from '../../../queries/matchUp/getCheckedInParticipantIds';
 
 import { mocksEngine, tournamentEngine } from '../../..';
 import { expect, it } from 'vitest';

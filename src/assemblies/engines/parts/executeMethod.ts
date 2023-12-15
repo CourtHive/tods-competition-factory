@@ -1,12 +1,23 @@
-import { engineLogging } from '../../global/functions/producers/engineLogging';
-import { handleCaughtError } from '../../global/state/syncGlobalState';
+import { engineLogging } from '../../../global/functions/producers/engineLogging';
+import { handleCaughtError } from '../../../global/state/syncGlobalState';
 import { paramsMiddleware } from './paramsMiddleware';
 import {
   getDevContext,
   getTournamentRecords,
-} from '../../global/state/globalState';
+} from '../../../global/state/globalState';
 
-import { FactoryEngine } from '../../types/factoryTypes';
+import { FactoryEngine } from '../../../types/factoryTypes';
+
+/**
+ * Executes a function within a FactoryEngine.
+ *
+ * @param engine - The FactoryEngine object.
+ * @param method - The function to be executed.
+ * @param params - The parameters to be passed to the function.
+ * @param methodName - The name of the method being executed.
+ * @param engineType - The type of the engine.
+ * @returns The result of the function execution.
+ */
 
 export function executeFunction(
   engine: FactoryEngine,

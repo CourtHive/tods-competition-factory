@@ -1,14 +1,14 @@
-import { unique } from '../../../utilities';
+import { unique } from '../../utilities';
 
-import { HydratedMatchUp, HydratedSide } from '../../../types/hydrated';
-import { ResultType } from '../../../global/functions/decorateResult';
-import { INDIVIDUAL } from '../../../constants/participantConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { HydratedMatchUp, HydratedSide } from '../../types/hydrated';
+import { ResultType } from '../../global/functions/decorateResult';
+import { INDIVIDUAL } from '../../constants/participantConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   MISSING_CONTEXT,
   MISSING_MATCHUP,
   INVALID_MATCHUP,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 // Does NOT include potential participandIds
 

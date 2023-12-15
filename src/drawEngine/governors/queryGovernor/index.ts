@@ -4,7 +4,7 @@ import { getNextUnfilledDrawPositions } from './positionActions/getNextUnfilledD
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 import { getStructureMatchUps } from '../../getters/getMatchUps/getStructureMatchUps';
-import { getMatchUpParticipantIds } from '../../../assemblies/queries/matchUp/getMatchUpParticipantIds';
+import { getMatchUpParticipantIds } from '../../../queries/matchUp/getMatchUpParticipantIds';
 import { getEliminationDrawSize } from '../../getters/getEliminationDrawSize';
 import { getParticipantIdFinishingPositions } from './finishingPositions';
 import { positionActions } from './positionActions/positionActions';

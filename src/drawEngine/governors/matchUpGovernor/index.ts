@@ -1,17 +1,13 @@
 import { isValid } from '../../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 import { publicFindDrawMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
-import { getCheckedInParticipantIds } from '../../../assemblies/queries/matchUp/getCheckedInParticipantIds';
-import {
-  checkInParticipant,
-  checkOutParticipant,
-} from '../../../assemblies/mutations/matchUps/modifyMatchUpCheckInStatus';
+import { getCheckedInParticipantIds } from '../../../queries/matchUp/getCheckedInParticipantIds';
 import { addFinishingRounds } from '../../generators/addFinishingRounds';
 import { validateScore } from '../../../global/validation/validateScore';
 import {
   addMatchUpTimeItem,
   resetMatchUpTimeItems,
-} from '../../../assemblies/mutations/matchUps/matchUpTimeItems';
+} from '../../../mutations/matchUps/matchUpTimeItems';
 import { removeDelegatedOutcome } from './removeDelegatedOutcome';
 import { drawMatic } from '../../../assemblies/generators/drawDefinitions/drawMatic/drawMatic';
 import { setDelegatedOutcome } from './setDelegatedOutcome';
@@ -52,8 +48,6 @@ const matchUpGovernor = {
   addFinishingRounds,
   addMatchUpTimeItem,
   resetMatchUpTimeItems,
-  checkInParticipant,
-  checkOutParticipant,
   getCheckedInParticipantIds,
 
   addMatchUpScheduleItems,

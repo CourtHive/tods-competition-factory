@@ -1,7 +1,7 @@
 import { FactoryEngine } from '../../../types/factoryTypes';
 import { asyncExecutionQueue } from './asyncExecutionQueue';
 import { asyncEngineInvoke } from './asyncEngineInvoke';
-import { engineStart } from '../engineStart';
+import { engineStart } from '../parts/engineStart';
 
 type MethodParams = {
   params?: { [key: string]: any };

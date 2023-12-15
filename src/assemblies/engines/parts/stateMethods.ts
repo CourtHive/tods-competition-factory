@@ -1,20 +1,20 @@
-import { makeDeepCopy } from '../../utilities';
-import { findExtension } from '../../forge/query';
+import { makeDeepCopy } from '../../../utilities';
+import { findExtension } from '../../../forge/query';
 import {
   getTournamentId,
   getTournamentRecords,
   setTournamentRecords,
   setTournamentRecord as globalSetTournamentRecord,
   getTournamentRecord,
-} from '../../global/state/globalState';
+} from '../../../global/state/globalState';
 
-import { LINKED_TOURNAMENTS } from '../../constants/extensionConstants';
-import { ResultType } from '../../global/functions/decorateResult';
+import { LINKED_TOURNAMENTS } from '../../../constants/extensionConstants';
+import { ResultType } from '../../../global/functions/decorateResult';
 import {
   INVALID_OBJECT,
   INVALID_RECORDS,
   INVALID_VALUES,
-} from '../../constants/errorConditionConstants';
+} from '../../../constants/errorConditionConstants';
 
 type GetStateArgs = {
   convertExtensions?: boolean;

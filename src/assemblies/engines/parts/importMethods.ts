@@ -1,12 +1,12 @@
-import { isFunction, isObject } from '../../utilities/objects';
+import { isFunction, isObject } from '../../../utilities/objects';
 import {
   getDevContext,
   handleCaughtError,
-} from '../../global/state/globalState';
+} from '../../../global/state/globalState';
 
-import { INVALID_VALUES } from '../../constants/errorConditionConstants';
-import { ResultType } from '../../global/functions/decorateResult';
-import { SUCCESS } from '../../constants/resultConstants';
+import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
+import { ResultType } from '../../../global/functions/decorateResult';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 export function importMethods(engine, engineInvoke, methods): ResultType {
   if (!isObject(methods)) return { error: INVALID_VALUES };

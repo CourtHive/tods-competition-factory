@@ -1,9 +1,9 @@
-import { updateFactoryExtension } from '../../tournamentEngine/governors/tournamentGovernor/updateFactoryExtension';
-import { factoryVersion } from '../../global/functions/factoryVersion';
+import { updateFactoryExtension } from '../../../tournamentEngine/governors/tournamentGovernor/updateFactoryExtension';
+import { factoryVersion } from '../../../global/functions/factoryVersion';
 import {
   cycleMutationStatus,
   getTournamentRecords,
-} from '../../global/state/globalState';
+} from '../../../global/state/globalState';
 
 export function getMutationStatus({ timeStamp }): boolean {
   const tournamentRecords = getTournamentRecords();

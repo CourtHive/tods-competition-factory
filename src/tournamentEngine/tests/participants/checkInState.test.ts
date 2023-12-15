@@ -1,5 +1,5 @@
-import { getMatchUpParticipantIds } from '../../../assemblies/queries/matchUp/getMatchUpParticipantIds';
-import { getCheckedInParticipantIds } from '../../../assemblies/queries/matchUp/getCheckedInParticipantIds';
+import { getMatchUpParticipantIds } from '../../../queries/matchUp/getMatchUpParticipantIds';
+import { getCheckedInParticipantIds } from '../../../queries/matchUp/getCheckedInParticipantIds';
 
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
@@ -68,13 +68,15 @@ it('can check participants in and out', () => {
 
   result = tournamentEngine.checkInParticipant({
     participantId: individualParticipantIds?.[0],
-    matchUp,
+    matchUpId: matchUp.matchUpId,
+    drawId,
   });
   expect(result).toMatchObject(SUCCESS);
 
   result = tournamentEngine.checkInParticipant({
     participantId: 'bogusId',
-    matchUp,
+    matchUpId: matchUp.matchUpId,
+    drawId,
   });
   expect(result.error).toEqual(INVALID_PARTICIPANT_ID);
 
@@ -184,15 +186,15 @@ it('can check participants in and out', () => {
 
   // now checkout one individual participant
   result = tournamentEngine.checkOutParticipant({
-    drawId,
-    matchUpId: matchUp.matchUpId,
     participantId: checkedInParticipantIds?.[0],
+    matchUpId: matchUp.matchUpId,
+    drawId,
   });
   expect(result).toMatchObject(SUCCESS);
 
   result = tournamentEngine.checkOutParticipant({
-    drawId,
     participantId: checkedInParticipantIds?.[0],
+    drawId,
   });
   expect(result.error).toEqual(MISSING_MATCHUP_ID);
   result = tournamentEngine.checkOutParticipant({
@@ -200,8 +202,9 @@ it('can check participants in and out', () => {
   });
   expect(result.error).toEqual(MISSING_PARTICIPANT_ID);
   result = tournamentEngine.checkOutParticipant({
-    matchUp,
     participantId: checkedInParticipantIds?.[0],
+    matchUpId: matchUp.matchUpId,
+    drawId,
   });
   expect(result.error).toEqual(PARTICIPANT_NOT_CHECKED_IN);
 

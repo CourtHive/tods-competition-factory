@@ -1,7 +1,7 @@
 import { isFunction, isObject, isString } from '../../../utilities/objects';
 import { getMethods } from '../../../global/state/syncGlobalState';
-import { logMethodNotFound } from '../logMethodNotFound';
-import { executeFunction } from '../executeMethod';
+import { logMethodNotFound } from '../parts/logMethodNotFound';
+import { executeFunction } from '../parts/executeMethod';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 

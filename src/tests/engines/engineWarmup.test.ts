@@ -1,22 +1,22 @@
-import { getParticipants } from '../../../tournamentEngine/getters/participants/getParticipants';
-import { completeDrawMatchUps } from '../../../mocksEngine/generators/completeDrawMatchUps';
-import eventGovernor from '../../../tournamentEngine/governors/eventGovernor';
-import mocksEngine from '../../../mocksEngine';
-import syncEngine from '../../engines/sync';
-import askEngine from '../../engines/ask';
+import { getParticipants } from '../../tournamentEngine/getters/participants/getParticipants';
+import { completeDrawMatchUps } from '../../mocksEngine/generators/completeDrawMatchUps';
+import eventGovernor from '../../tournamentEngine/governors/eventGovernor';
+import mocksEngine from '../../mocksEngine';
+import syncEngine from '../../assemblies/engines/sync';
+import askEngine from '../../assemblies/engines/ask';
 import { expect, test } from 'vitest';
 
-import { setGlobalLog, setMethods } from '../../../global/state/globalState';
-import { getMethods } from '../../../global/state/syncGlobalState';
-import * as query from '../../../../dist/forge/query';
+import { setGlobalLog, setMethods } from '../../global/state/globalState';
+import { getMethods } from '../../global/state/syncGlobalState';
+import * as query from '../../../dist/forge/query';
 
-import { deleteDrawDefinitions } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/deleteDrawDefinitions';
-import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
+import { deleteDrawDefinitions } from '../../tournamentEngine/governors/eventGovernor/drawDefinitions/deleteDrawDefinitions';
+import { scoreHasValue } from '../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 
 import {
   METHOD_NOT_FOUND,
   SCORES_PRESENT,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 test('sync syncEngine can set state and execute methods', () => {
   const {

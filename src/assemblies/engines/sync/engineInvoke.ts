@@ -1,10 +1,10 @@
 import { isFunction, isObject, isString } from '../../../utilities/objects';
 import { notifySubscribers } from '../../../global/state/notifySubscribers';
 import { getMethods } from '../../../global/state/syncGlobalState';
-import { getMutationStatus } from '../getMutationStatus';
-import { executeFunction } from '../executeMethod';
+import { getMutationStatus } from '../parts/getMutationStatus';
+import { executeFunction } from '../parts/executeMethod';
 import { makeDeepCopy } from '../../../utilities';
-import { setState } from '../stateMethods';
+import { setState } from '../parts/stateMethods';
 import {
   deleteNotices,
   getTournamentRecords,

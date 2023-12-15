@@ -1,15 +1,15 @@
-import { addTimeItem } from '../../../tournamentEngine/governors/tournamentGovernor/addTimeItem';
-import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotifications';
-import { findDrawMatchUp } from '../../../drawEngine/getters/getMatchUps/findDrawMatchUp';
+import { addTimeItem } from '../../tournamentEngine/governors/tournamentGovernor/addTimeItem';
+import { modifyMatchUpNotice } from '../../drawEngine/notifications/drawNotifications';
+import { findDrawMatchUp } from '../../drawEngine/getters/getMatchUps/findDrawMatchUp';
 
-import { MATCHUP_NOT_FOUND } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { MATCHUP_NOT_FOUND } from '../../constants/errorConditionConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   DrawDefinition,
   Event,
   TimeItem,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../types/tournamentTypes';
 
 /*
   generic function to addMatchUpTimeItem

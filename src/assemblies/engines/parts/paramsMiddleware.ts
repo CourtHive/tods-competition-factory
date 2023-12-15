@@ -1,7 +1,7 @@
-import { findEvent } from '../../tournamentEngine/getters/findEvent';
-import { getTournamentId } from '../../global/state/globalState';
+import { findEvent } from '../../../tournamentEngine/getters/findEvent';
+import { getTournamentId } from '../../../global/state/globalState';
 
-import { TournamentRecords } from '../../types/factoryTypes';
+import { TournamentRecords } from '../../../types/factoryTypes';
 
 export function paramsMiddleware(
   tournamentRecords: TournamentRecords,

@@ -1,4 +1,4 @@
-import { addMatchUpTimeItem } from '../../../assemblies/mutations/matchUps/matchUpTimeItems';
+import { addMatchUpTimeItem } from '../../../mutations/matchUps/matchUpTimeItems';
 import { assignMatchUpVenue } from './assignMatchUpVenue';
 import { findCourt } from '../../getters/courtGetter';
 

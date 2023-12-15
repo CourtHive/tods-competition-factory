@@ -1,22 +1,28 @@
-import { factoryVersion } from '../../global/functions/factoryVersion';
-import { importMethods } from './importMethods';
-import { processResult } from './processResult';
+/**
+ * Starts the engine by initializing its methods and properties.
+ * @param engine - The FactoryEngine object.
+ * @param engineInvoke - The engineInvoke object.
+ */
+
+import { factoryVersion } from '../../../global/functions/factoryVersion';
+import { importMethods } from '../parts/importMethods';
+import { processResult } from '../parts/processResult';
 import {
   setDeepCopy,
   setDevContext,
   getDevContext,
   removeTournamentRecord,
   setTournamentRecords,
-} from '../../global/state/globalState';
+} from '../../../global/state/globalState';
 import {
   getState,
   getTournament,
   removeUnlinkedTournamentRecords,
   setState,
   setTournamentRecord,
-} from './stateMethods';
+} from '../parts/stateMethods';
 
-import { FactoryEngine } from '../../types/factoryTypes';
+import { FactoryEngine } from '../../../types/factoryTypes';
 
 export function engineStart(engine: FactoryEngine, engineInvoke: any): void {
   engine.importMethods = (methods) =>

@@ -1,20 +1,17 @@
 import { getCheckedInParticipantIds } from '../../queries/matchUp/getCheckedInParticipantIds';
-import { findMatchUp } from '../../../tournamentEngine/getters/matchUpsGetter/findMatchUp';
-import {
-  checkInParticipant,
-  checkOutParticipant,
-} from './modifyMatchUpCheckInStatus';
+import { findMatchUp } from '../../tournamentEngine/getters/matchUpsGetter/findMatchUp';
+import { checkOutParticipant } from './checkOutParticipant';
+import { checkInParticipant } from './checkInParticipant';
 
 import {
   MATCHUP_NOT_FOUND,
   MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 export function toggleParticipantCheckInState(params) {
   if (!params?.tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   const { tournamentRecord, participantId, matchUpId, drawDefinition, event } =
     params;
-  const tournamentParticipants = tournamentRecord.participants || [];
 
   const result = findMatchUp({
     tournamentRecord,
@@ -33,7 +30,6 @@ export function toggleParticipantCheckInState(params) {
 
   if (checkedInParticipantIds.includes(participantId)) {
     return checkOutParticipant({
-      tournamentParticipants,
       tournamentRecord,
       drawDefinition,
       participantId,
@@ -42,7 +38,6 @@ export function toggleParticipantCheckInState(params) {
     });
   } else {
     return checkInParticipant({
-      tournamentParticipants,
       tournamentRecord,
       drawDefinition,
       participantId,

@@ -1,21 +1,21 @@
-import { addParticipantTimeItem } from '../tournamentGovernor/addTimeItem';
-import { addNotice, getTopics } from '../../../global/state/globalState';
-import { getParticipantId } from '../../../global/functions/extractors';
+import { addParticipantTimeItem } from '../../tournamentEngine/governors/tournamentGovernor/addTimeItem';
+import { addNotice, getTopics } from '../../global/state/globalState';
+import { getParticipantId } from '../../global/functions/extractors';
 
-import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { MODIFY_PARTICIPANTS } from '../../constants/topicConstants';
+import { Participant } from '../../types/tournamentTypes';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   INVALID_VALUES,
   MISSING_PARTICIPANTS,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 import {
   SIGNED_IN,
   SIGNED_OUT,
   SIGN_IN_STATUS,
-} from '../../../constants/participantConstants';
-import { Participant } from '../../../types/tournamentTypes';
+} from '../../constants/participantConstants';
 
 export function modifyParticipantsSignInStatus({
   tournamentRecord,

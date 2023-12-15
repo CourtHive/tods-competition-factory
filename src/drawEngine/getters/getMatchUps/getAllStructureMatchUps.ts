@@ -17,7 +17,7 @@ import { definedAttributes } from '../../../utilities/definedAttributes';
 import { structureAssignedDrawPositions } from '../positionsGetter';
 import { getOrderedDrawPositions } from './getOrderedDrawPositions';
 import { getDrawPositionsRanges } from './getDrawPositionsRanges';
-import { getCheckedInParticipantIds } from '../../../assemblies/queries/matchUp/getCheckedInParticipantIds';
+import { getCheckedInParticipantIds } from '../../../queries/matchUp/getCheckedInParticipantIds';
 import { MatchUpFilters, filterMatchUps } from './filterMatchUps';
 import { getRoundContextProfile } from './getRoundContextProfile';
 import { isConvertableInteger } from '../../../utilities/math';
