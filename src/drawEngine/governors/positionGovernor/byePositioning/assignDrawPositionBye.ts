@@ -148,7 +148,7 @@ export function assignDrawPositionBye({
       inContext: true,
       drawDefinition,
       matchUpsMap,
-    }).matchUps || [];
+    }).matchUps ?? [];
 
   const matchUpFilters = { isCollectionMatchUp: false };
   const { matchUps } = getAllStructureMatchUps({

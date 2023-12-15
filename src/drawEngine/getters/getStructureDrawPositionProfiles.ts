@@ -71,15 +71,15 @@ export function getStructureDrawPositionProfiles(
   const drawPositionInitialRounds = {};
   const activeMatchUps: any[] = [];
 
-  for (const matchUp of inContextDrawMatchUps || []) {
+  for (const matchUp of inContextDrawMatchUps ?? []) {
     if (
       matchUp.structureId === structureId ||
       containedStructureIds.includes(matchUp.structureId)
     ) {
-      drawPositionsCollection.push(...(matchUp.drawPositions || []));
+      drawPositionsCollection.push(...(matchUp.drawPositions ?? []));
 
       const roundNumber = matchUp.roundNumber;
-      for (const drawPosition of (matchUp.drawPositions || []).filter(
+      for (const drawPosition of (matchUp.drawPositions ?? []).filter(
         Boolean
       )) {
         if (

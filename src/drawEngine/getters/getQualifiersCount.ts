@@ -60,9 +60,9 @@ export function getQualifiersCount(params: GetQualifiersCountArgs) {
         if (sourceStructure.structureType === CONTAINER) {
           // for Round Robin qualifying the number of qualifiers needs to be derived from:
           // the number of groups (substructures) * the length of source.finishingPositions[]
-          const groupCount = sourceStructure.structures?.length || 0;
+          const groupCount = sourceStructure.structures?.length ?? 0;
           const finishingPositionsCount =
-            relevantLink.source.finishingPositions?.length || 0;
+            relevantLink.source.finishingPositions?.length ?? 0;
 
           count = groupCount * finishingPositionsCount;
         } else {

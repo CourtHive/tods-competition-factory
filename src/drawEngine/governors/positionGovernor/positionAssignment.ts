@@ -96,7 +96,7 @@ export function assignDrawPosition({
   if (!participantId && !isQualifierPosition)
     return decorateResult({ result: { error: MISSING_PARTICIPANT_ID }, stack });
 
-  matchUpsMap = matchUpsMap || getMatchUpsMap({ drawDefinition });
+  matchUpsMap = matchUpsMap ?? getMatchUpsMap({ drawDefinition });
 
   if (!inContextDrawMatchUps) {
     ({ matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({

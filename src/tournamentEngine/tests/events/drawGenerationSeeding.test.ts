@@ -12,7 +12,7 @@ import { INDIVIDUAL } from '../../../constants/participantConstants';
 import { SEEDING } from '../../../constants/scaleConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 import {
-  MISSING_PARTICIPANT_COUNT,
+  MISSING_DRAW_SIZE,
   UNRECOGNIZED_DRAW_TYPE,
 } from '../../../constants/errorConditionConstants';
 
@@ -140,7 +140,7 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
       stage: QUALIFYING,
       eventId,
     });
-    expect(result.error).toEqual(MISSING_PARTICIPANT_COUNT);
+    expect(result.error).toEqual(MISSING_DRAW_SIZE);
   });
 
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
@@ -157,9 +157,7 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
   }));
 
   const seedAssignments = tournamentParticipants
-    .map(
-      (participant) => participant.draws && participant.draws[0].seedAssignments
-    )
+    .map((participant) => participant.draws?.[0].seedAssignments)
     .filter(Boolean)
     .sort();
 

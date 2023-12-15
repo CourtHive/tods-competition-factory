@@ -226,7 +226,7 @@ export function removeDirectedWinner({
     });
 
     // remove participant from seedAssignments
-    structure.seedAssignments = (structure.seedAssignments || []).filter(
+    structure.seedAssignments = (structure.seedAssignments ?? []).filter(
       (assignment) => assignment.participantId !== winnerParticipantId
     );
 

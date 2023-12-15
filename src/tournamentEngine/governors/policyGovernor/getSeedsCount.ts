@@ -51,7 +51,7 @@ export function getSeedsCount(
   const stack = 'getSeedsCount';
 
   const participantsCount =
-    params?.participantsCount || params?.participantCount;
+    params?.participantsCount ?? params?.participantCount;
 
   if (!policyDefinitions) {
     const result = getPolicyDefinitions({

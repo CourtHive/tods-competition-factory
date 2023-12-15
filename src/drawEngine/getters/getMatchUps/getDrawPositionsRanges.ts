@@ -40,7 +40,7 @@ export function getDrawPositionsRanges({
   }
 
   const firstRoundFirstDrawPosition = Math.min(
-    ...(roundProfile?.[1]?.drawPositions || [])
+    ...(roundProfile?.[1]?.drawPositions ?? [])
   );
   const firstRoundFirstDrawPositionOffset =
     (firstRoundFirstDrawPosition || 1) - 1;

@@ -73,7 +73,7 @@ export function removeSubsequentRoundsParticipant({
     structureId,
   });
 
-  for (const matchUp of relevantMatchUps || []) {
+  for (const matchUp of relevantMatchUps ?? []) {
     removeDrawPosition({
       inContextDrawMatchUps,
       sourceMatchUpStatus,

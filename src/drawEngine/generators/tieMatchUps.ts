@@ -48,7 +48,7 @@ export function generateCollectionMatchUps({
     const collectionPosition = collectionPositionOffset + index + 1;
     return {
       sides: [{ sideNumber: 1 }, { sideNumber: 2 }],
-      matchUpId: uuids?.pop() || UUID(),
+      matchUpId: uuids?.pop() ?? UUID(),
       matchUpStatus: TO_BE_PLAYED,
       collectionPosition,
       collectionId,

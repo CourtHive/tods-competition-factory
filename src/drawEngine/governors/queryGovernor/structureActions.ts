@@ -69,7 +69,7 @@ export function allPlayoffPositionsFilled(params: StructureActionsArgs) {
       (entry) =>
         entry?.entryStatus &&
         STRUCTURE_SELECTED_STATUSES.includes(entry.entryStatus)
-    )?.length || 0;
+    )?.length ?? 0;
 
   let participantIdsCount = 0;
   const allPositionsFilled = (playoffStructures || []).reduce(
@@ -79,7 +79,7 @@ export function allPlayoffPositionsFilled(params: StructureActionsArgs) {
       const structurePositionsFilled = positionAssignments?.filter(
         (assignment) => {
           if (assignment.participantId) participantIdsCount++;
-          return assignment?.bye || assignment?.participantId;
+          return assignment?.bye ?? assignment?.participantId;
         }
       ).length;
       return !!(structurePositionsFilled && allFilled);

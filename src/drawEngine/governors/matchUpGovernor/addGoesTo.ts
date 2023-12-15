@@ -44,7 +44,7 @@ export function addGoesTo({
     drawDefinition?.structures?.length === 1 &&
     !drawDefinition?.structures[0].structures
   ) {
-    const matchUps = matchUpsMap?.drawMatchUps || [];
+    const matchUps = matchUpsMap?.drawMatchUps ?? [];
     addFinishingRounds({ matchUps });
   }
 
