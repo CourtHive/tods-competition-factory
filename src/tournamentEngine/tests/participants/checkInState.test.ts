@@ -87,7 +87,7 @@ it('can check participants in and out', () => {
   let { allParticipantsCheckedIn, checkedInParticipantIds } =
     getCheckedInParticipantIds({ matchUp });
   expect(allParticipantsCheckedIn).toEqual(false);
-  expect(checkedInParticipantIds.length).toEqual(1);
+  expect(checkedInParticipantIds?.length).toEqual(1);
 
   result = tournamentEngine.checkInParticipant({
     participantId: individualParticipantIds?.[0],
@@ -106,7 +106,7 @@ it('can check participants in and out', () => {
   ({ allParticipantsCheckedIn, checkedInParticipantIds } =
     getCheckedInParticipantIds({ matchUp }));
   expect(allParticipantsCheckedIn).toEqual(false);
-  expect(checkedInParticipantIds.length).toEqual(1);
+  expect(checkedInParticipantIds?.length).toEqual(1);
 
   result = tournamentEngine.checkInParticipant({
     participantId: individualParticipantIds?.[1],
@@ -125,7 +125,7 @@ it('can check participants in and out', () => {
     getCheckedInParticipantIds({ matchUp }));
   expect(allParticipantsCheckedIn).toEqual(false);
   // checkedInParticipantIds.length is 3 becuase of 2 individualParticipantIds and their pair participantId
-  expect(checkedInParticipantIds.length).toEqual(3);
+  expect(checkedInParticipantIds?.length).toEqual(3);
 
   result = tournamentEngine.checkInParticipant({
     participantId: individualParticipantIds?.[2],
@@ -143,7 +143,7 @@ it('can check participants in and out', () => {
   ({ allParticipantsCheckedIn, checkedInParticipantIds } =
     getCheckedInParticipantIds({ matchUp }));
   expect(allParticipantsCheckedIn).toEqual(false);
-  expect(checkedInParticipantIds.length).toEqual(4);
+  expect(checkedInParticipantIds?.length).toEqual(4);
 
   result = tournamentEngine.checkInParticipant({
     participantId: individualParticipantIds?.[3],
@@ -161,7 +161,7 @@ it('can check participants in and out', () => {
   ({ allParticipantsCheckedIn, checkedInParticipantIds } =
     getCheckedInParticipantIds({ matchUp }));
   expect(allParticipantsCheckedIn).toEqual(true);
-  expect(checkedInParticipantIds.length).toEqual(6);
+  expect(checkedInParticipantIds?.length).toEqual(6);
 
   // now check out one pair participant
   result = tournamentEngine.checkOutParticipant({
@@ -180,19 +180,19 @@ it('can check participants in and out', () => {
   ({ allParticipantsCheckedIn, checkedInParticipantIds } =
     getCheckedInParticipantIds({ matchUp }));
   expect(allParticipantsCheckedIn).toEqual(false);
-  expect(checkedInParticipantIds.length).toEqual(3);
+  expect(checkedInParticipantIds?.length).toEqual(3);
 
   // now checkout one individual participant
   result = tournamentEngine.checkOutParticipant({
     drawId,
     matchUpId: matchUp.matchUpId,
-    participantId: checkedInParticipantIds[0],
+    participantId: checkedInParticipantIds?.[0],
   });
   expect(result).toMatchObject(SUCCESS);
 
   result = tournamentEngine.checkOutParticipant({
     drawId,
-    participantId: checkedInParticipantIds[0],
+    participantId: checkedInParticipantIds?.[0],
   });
   expect(result.error).toEqual(MISSING_MATCHUP_ID);
   result = tournamentEngine.checkOutParticipant({
@@ -201,7 +201,7 @@ it('can check participants in and out', () => {
   expect(result.error).toEqual(MISSING_PARTICIPANT_ID);
   result = tournamentEngine.checkOutParticipant({
     matchUp,
-    participantId: checkedInParticipantIds[0],
+    participantId: checkedInParticipantIds?.[0],
   });
   expect(result.error).toEqual(PARTICIPANT_NOT_CHECKED_IN);
 
@@ -215,5 +215,5 @@ it('can check participants in and out', () => {
     getCheckedInParticipantIds({ matchUp }));
   expect(allParticipantsCheckedIn).toEqual(false);
   // count has changed from 3 to 1 because removing an individual participantId also removed pair participantId
-  expect(checkedInParticipantIds.length).toEqual(1);
+  expect(checkedInParticipantIds?.length).toEqual(1);
 });

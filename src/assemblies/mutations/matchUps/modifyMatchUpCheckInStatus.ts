@@ -13,7 +13,6 @@ import {
   MISSING_MATCHUP,
   MISSING_MATCHUP_ID,
   MISSING_PARTICIPANT_ID,
-  PARTICIPANT_ALREADY_CHECKED_IN,
   PARTICIPANT_NOT_CHECKED_IN,
 } from '../../../constants/errorConditionConstants';
 import {
@@ -26,6 +25,7 @@ import {
   Participant,
   Tournament,
 } from '../../../types/tournamentTypes';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 /*
   function is only able to check whether participant is alredy checked in 
@@ -76,11 +76,10 @@ export function checkInParticipant({
 
     const { checkedInParticipantIds, allRelevantParticipantIds } = result;
 
+    if (checkedInParticipantIds?.includes(participantId)) return { ...SUCCESS };
+
     if (!allRelevantParticipantIds?.includes(participantId))
       return { error: INVALID_PARTICIPANT_ID };
-    if (checkedInParticipantIds?.includes(participantId)) {
-      return { error: PARTICIPANT_ALREADY_CHECKED_IN };
-    }
   }
 
   const timeItem = {

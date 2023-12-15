@@ -1,16 +1,13 @@
-import { findEvent } from '../../getters/findEvent';
+import { findEvent } from '../../../tournamentEngine/getters/findEvent';
 import {
   checkInParticipant as drawEngineCheckInParticipant,
   checkOutParticipant as drawEngineCheckOutParticipant,
-} from '../../../assemblies/mutations/matchUps/modifyMatchUpCheckInStatus';
+} from './modifyMatchUpCheckInStatus';
 
-import { Tournament } from '../../../types/tournamentTypes';
+import { EVENT_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { Tournament } from '../../../types/tournamentTypes';
 import { HydratedMatchUp } from '../../../types/hydrated';
-import {
-  EVENT_NOT_FOUND,
-  PARTICIPANT_ALREADY_CHECKED_IN,
-} from '../../../constants/errorConditionConstants';
 
 type CheckInOutParticipantArgs = {
   tournamentRecord: Tournament;
@@ -45,8 +42,7 @@ export function checkInParticipant({
       matchUpId,
     });
     // Don't consider it an error if participant is already checked in
-    if (result.error && result.error !== PARTICIPANT_ALREADY_CHECKED_IN)
-      return result;
+    if (result.error) return result;
   } else {
     return { error: EVENT_NOT_FOUND };
   }

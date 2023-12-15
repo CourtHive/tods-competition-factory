@@ -1,14 +1,14 @@
-import { getCheckedInParticipantIds } from '../../../../assemblies/queries/matchUp/getCheckedInParticipantIds';
-import { findMatchUp } from '../../../getters/matchUpsGetter/findMatchUp';
+import { getCheckedInParticipantIds } from '../../queries/matchUp/getCheckedInParticipantIds';
+import { findMatchUp } from '../../../tournamentEngine/getters/matchUpsGetter/findMatchUp';
 import {
   checkInParticipant,
   checkOutParticipant,
-} from '../../../../assemblies/mutations/matchUps/modifyMatchUpCheckInStatus';
+} from './modifyMatchUpCheckInStatus';
 
 import {
   MATCHUP_NOT_FOUND,
   MISSING_TOURNAMENT_RECORD,
-} from '../../../../constants/errorConditionConstants';
+} from '../../../constants/errorConditionConstants';
 
 export function toggleParticipantCheckInState(params) {
   if (!params?.tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
