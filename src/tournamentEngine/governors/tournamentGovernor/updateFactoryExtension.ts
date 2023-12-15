@@ -1,6 +1,6 @@
 import { addExtension } from '../../../global/functions/producers/addExtension';
-import { findExtension } from '../../../global/functions/deducers/findExtension';
 import { extensionConstants } from '../../../constants/extensionConstants';
+import { findExtension } from '../../../acquire/findExtension';
 
 const { FACTORY } = extensionConstants;
 

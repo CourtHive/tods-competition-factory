@@ -1,5 +1,5 @@
-import { findExtension } from '../../../global/functions/deducers/findExtension';
 import { setSubscriptions } from '../../../global/state/globalState';
+import { findExtension } from '../../../acquire/findExtension';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 import { expect, it } from 'vitest';

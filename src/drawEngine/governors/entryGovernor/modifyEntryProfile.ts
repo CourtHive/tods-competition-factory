@@ -1,5 +1,5 @@
 import { addDrawDefinitionExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
-import { findExtension } from '../../../acquire/findExtensionQueries';
+import { findExtension } from '../../../acquire/findExtension';
 
 import { ENTRY_PROFILE } from '../../../constants/extensionConstants';
 import { DrawDefinition } from '../../../types/tournamentTypes';

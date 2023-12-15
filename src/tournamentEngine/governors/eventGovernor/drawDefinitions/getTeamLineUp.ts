@@ -1,4 +1,4 @@
-import { findExtension } from '../../../../acquire/findExtensionQueries';
+import { findExtension } from '../../../../acquire/findExtension';
 
 import { LINEUPS } from '../../../../constants/extensionConstants';
 import {

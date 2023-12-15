@@ -1,4 +1,4 @@
-import { findExtension } from '../../acquire/findExtensionQueries';
+import { findExtension } from '../../acquire/findExtension';
 import { ResultType } from '../../global/functions/decorateResult';
 import { structureSort } from './structureSort';
 

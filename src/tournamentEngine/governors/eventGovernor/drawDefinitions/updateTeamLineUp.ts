@@ -1,7 +1,7 @@
 import { addDrawNotice } from '../../../../drawEngine/notifications/drawNotifications';
-import { findExtension } from '../../../../global/functions/deducers/findExtension';
 import { addExtension } from '../../../../global/functions/producers/addExtension';
 import { removeLineUpSubstitutions } from './removeLineUpSubstitutions';
+import { findExtension } from '../../../../acquire/findExtension';
 import { validateLineUp } from './validateTeamLineUp';
 
 import { LINEUPS } from '../../../../constants/extensionConstants';

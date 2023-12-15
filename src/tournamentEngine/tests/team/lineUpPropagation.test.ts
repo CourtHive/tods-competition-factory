@@ -1,4 +1,4 @@
-import { findExtension } from '../../../acquire/findExtensionQueries';
+import { findExtension } from '../../../acquire/findExtension';
 import { extractAttributes as xa, intersection } from '../../../utilities';
 import { generateTeamTournament } from './generateTestTeamTournament';
 import { setSubscriptions } from '../../../global/state/globalState';

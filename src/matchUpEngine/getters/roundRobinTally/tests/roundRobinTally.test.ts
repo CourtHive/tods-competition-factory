@@ -1,4 +1,4 @@
-import { findExtension } from '../../../../acquire/findExtensionQueries';
+import { findExtension } from '../../../../acquire/findExtension';
 import { getPositionAssignments } from '../../../../drawEngine/getters/positionsGetter';
 import { toBePlayed } from '../../../../fixtures/scoring/outcomes/toBePlayed';
 import tournamentEngine from '../../../../tournamentEngine/sync';

@@ -2,7 +2,7 @@ import { getUpdatedSchedulingProfile } from '../../../competitionEngine/governor
 import { tournamentRelevantSchedulingIds } from '../../../validators/validateSchedulingProfile';
 import { getEventIdsAndDrawIds } from '../../../competitionEngine/getters/getEventIdsAndDrawIds';
 import { addTournamentExtension } from '../tournamentGovernor/addRemoveExtensions';
-import { findExtension } from '../../../acquire/findExtensionQueries';
+import { findExtension } from '../../../acquire/findExtension';
 
 import { SCHEDULING_PROFILE } from '../../../constants/extensionConstants';
 import { Tournament } from '../../../types/tournamentTypes';

@@ -15,7 +15,7 @@ export { getValidGroupSizes } from '../../assemblies/generators/drawDefinitions/
 
 // functions
 export { getPolicyDefinitions } from '../../query/extensions/getAppliedPolicies';
-export { findExtension } from '../../global/functions/deducers/findExtension';
+export { findExtension } from '../../acquire/findExtension';
 export { validateScore } from '../../validators/validateScore';
 
 // tournamentEngine

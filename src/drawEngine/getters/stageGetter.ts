@@ -1,4 +1,4 @@
-import { findExtension } from '../../acquire/findExtensionQueries';
+import { findExtension } from '../../acquire/findExtension';
 import { modifyEntryProfile } from '../governors/entryGovernor/modifyEntryProfile';
 import { getEntryProfile } from './getEntryProfile';
 import { findStructure } from './findStructure';

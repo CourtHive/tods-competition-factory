@@ -3,7 +3,7 @@ import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGove
 import { removeExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { generateTieMatchUpScore } from '../../../assemblies/generators/tieMatchUpScore/generateTieMatchUpScore';
 import { copyTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';
-import { findExtension } from '../../../global/functions/deducers/findExtension';
+import { findExtension } from '../../../acquire/findExtension';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { isActiveMatchUp } from '../../getters/activeMatchUp';
 import { modifyMatchUpScore } from './modifyMatchUpScore';

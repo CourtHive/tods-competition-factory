@@ -1,4 +1,4 @@
-import { findExtension as extensionFind } from '../../../acquire/findExtensionQueries';
+import { findExtension as extensionFind } from '../../../acquire/findExtension';
 import { isValidExtension } from '../../../validators/isValidExtension';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { findEvent } from '../../../acquire/findEvent';

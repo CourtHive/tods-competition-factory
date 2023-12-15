@@ -1,4 +1,4 @@
-import { findExtension } from '../../../acquire/findExtensionQueries';
+import { findExtension } from '../../../acquire/findExtension';
 import { hasParticipantId } from '../../../global/functions/filters';
 import { ensureInt } from '../../../utilities/ensureInt';
 import { instanceCount } from '../../../utilities';

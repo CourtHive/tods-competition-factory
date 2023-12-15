@@ -1,5 +1,5 @@
 import { checkRequiredParameters } from '../../../parameters/checkRequiredParameters';
-import { findExtension } from '../../../acquire/findExtensionQueries';
+import { findExtension } from '../../../acquire/findExtension';
 
 import { SCHEDULE_LIMITS } from '../../../constants/extensionConstants';
 

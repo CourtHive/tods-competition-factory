@@ -1,7 +1,7 @@
-import { findExtension } from '../../global/functions/deducers/findExtension';
 import { addExtension } from '../../global/functions/producers/addExtension';
 import { getAccessorValue } from '../../utilities/getAccessorValue';
 import { addNotice } from '../../global/state/globalState';
+import { findExtension } from '../../acquire/findExtension';
 import { UUID } from '../../utilities';
 
 import { GROUPING_ATTRIBUTE } from '../../constants/extensionConstants';

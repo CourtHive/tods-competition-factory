@@ -1,7 +1,7 @@
 import { getTieFormatDesc } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormatDescription';
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
 import { getAccessorValue } from '../../../utilities/getAccessorValue';
-import { findExtension } from '../../../acquire/findExtensionQueries';
+import { findExtension } from '../../../acquire/findExtension';
 import { getDetailsWTN } from '../queryGovernor/getDetailsWTN';
 import { getTimeItem } from '../queryGovernor/timeItems';
 import { getAvgWTN } from './getAvgWTN';

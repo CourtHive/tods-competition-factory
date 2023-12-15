@@ -1,4 +1,4 @@
-import { findExtension } from '../../../../acquire/findExtensionQueries';
+import { findExtension } from '../../../../acquire/findExtension';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../../constants/errorConditionConstants';
 import { SCHEDULE_TIMING } from '../../../../constants/extensionConstants';

@@ -1,5 +1,5 @@
 import { extractDate, formatDate } from '../../../utilities/dateTime';
-import { findExtension } from '../../../acquire/findExtensionQueries';
+import { findExtension } from '../../../acquire/findExtension';
 import { generatePersons } from '../../generators/generatePersons';
 import { generateAddress } from '../../generators/generateAddress';
 import { nameMocks } from '../../utilities/nameMocks';

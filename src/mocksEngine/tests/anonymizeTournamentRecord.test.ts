@@ -1,4 +1,4 @@
-import { findExtension } from '../../acquire/findExtensionQueries';
+import { findExtension } from '../../acquire/findExtension';
 import { intersection } from '../../utilities';
 import { expect, it, test } from 'vitest';
 import mocksEngine from '..';

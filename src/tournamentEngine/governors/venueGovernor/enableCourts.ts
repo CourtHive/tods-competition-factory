@@ -1,7 +1,7 @@
-import { findExtension } from '../../../global/functions/deducers/findExtension';
 import { addExtension } from '../../../global/functions/producers/addExtension';
 import { removeExtension } from '../tournamentGovernor/addRemoveExtensions';
 import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
+import { findExtension } from '../../../acquire/findExtension';
 
 import { DISABLED } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';

@@ -1,4 +1,4 @@
-import { findExtension } from '../../../acquire/findExtensionQueries';
+import { findExtension } from '../../../acquire/findExtension';
 import { findStructure } from '../../../drawEngine/getters/findStructure';
 import { getDevContext } from '../../../global/state/globalState';
 import { chunkArray, generateRange } from '../../../utilities';

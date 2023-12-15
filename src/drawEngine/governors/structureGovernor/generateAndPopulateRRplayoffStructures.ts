@@ -1,12 +1,12 @@
 import { automatedPlayoffPositioning } from '../../../tournamentEngine/governors/eventGovernor/automatedPositioning';
 import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
-import { findExtension } from '../../../global/functions/deducers/findExtension';
 import { processPlayoffGroups } from '../../generators/processPlayoffGroups';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import { getMatchUpId } from '../../../global/functions/extractors';
 import { generateTieMatchUps } from '../../generators/tieMatchUps';
+import { findExtension } from '../../../acquire/findExtension';
 
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
 import { TALLY } from '../../../constants/extensionConstants';

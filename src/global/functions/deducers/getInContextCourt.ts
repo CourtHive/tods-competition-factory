@@ -1,5 +1,5 @@
 import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
-import { findExtension } from './findExtension';
+import { findExtension } from '../../../acquire/findExtension';
 
 import { DISABLED } from '../../../constants/extensionConstants';
 

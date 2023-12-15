@@ -1,6 +1,6 @@
 import { modifyMatchUpNotice } from '../../../../drawEngine/notifications/drawNotifications';
 import { findDrawMatchUp } from '../../../../acquire/findDrawMatchUp';
-import { findExtension } from '../../../../acquire/findExtensionQueries';
+import { findExtension } from '../../../../acquire/findExtension';
 import { makeDeepCopy } from '../../../../utilities';
 
 import { LINEUPS } from '../../../../constants/extensionConstants';

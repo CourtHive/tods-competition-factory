@@ -1,4 +1,4 @@
-import { findExtension } from '../../acquire/findExtensionQueries';
+import { findExtension } from '../../acquire/findExtension';
 import { makeDeepCopy } from '../../utilities';
 
 import { MISSING_EVENT } from '../../constants/errorConditionConstants';

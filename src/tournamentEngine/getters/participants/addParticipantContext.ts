@@ -2,7 +2,7 @@ import { getMatchUpDependencies } from '../../../competitionEngine/governors/sch
 import { getEventPublishStatus } from '../../governors/publishingGovernor/getEventPublishStatus';
 import { getDrawPublishStatus } from '../../governors/publishingGovernor/getDrawPublishStatus';
 import { getDerivedPositionAssignments } from './getDerivedPositionAssignments';
-import { findExtension } from '../../../acquire/findExtensionQueries';
+import { findExtension } from '../../../acquire/findExtension';
 import { getRelevantParticipantIdsMap } from './getRelevantParticipantIdsMap';
 import { getDerivedSeedAssignments } from './getDerivedSeedAssignments';
 import { definedAttributes } from '../../../utilities/definedAttributes';

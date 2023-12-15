@@ -1,5 +1,5 @@
 import { isValid } from '../../../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
-import { findExtension } from '../../../../acquire/findExtensionQueries';
+import { findExtension } from '../../../../acquire/findExtension';
 import {
   findMatchupFormatAverageTimes,
   findMatchupFormatRecoveryTimes,

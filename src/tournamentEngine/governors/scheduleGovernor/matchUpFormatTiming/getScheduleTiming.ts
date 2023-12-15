@@ -1,4 +1,4 @@
-import { findExtension } from '../../../../acquire/findExtensionQueries';
+import { findExtension } from '../../../../acquire/findExtension';
 import { findPolicy } from '../../policyGovernor/findPolicy';
 
 import { POLICY_TYPE_SCHEDULING } from '../../../../constants/policyConstants';
