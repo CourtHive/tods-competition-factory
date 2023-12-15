@@ -2,7 +2,7 @@ import { initializeStructureSeedAssignments } from '../../drawEngine/governors/p
 import { automatedPositioning } from '../../drawEngine/governors/positionGovernor/automatedPositioning';
 import { getScaledEntries } from '../governors/eventGovernor/entries/getScaledEntries';
 import { assignSeed } from '../../drawEngine/governors/entryGovernor/seedAssignment';
-import { findExtension } from '../governors/queryGovernor/extensionQueries';
+import { findExtension } from '../../acquire/findExtension';
 import { getDrawStructures } from '../../drawEngine/getters/findStructure';
 import { getValidSeedBlocks } from '../../drawEngine/getters/seedGetter';
 import { getParticipantId } from '../../global/functions/extractors';

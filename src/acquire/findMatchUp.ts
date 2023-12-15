@@ -1,29 +1,32 @@
-import { findDrawMatchUp as drawEngineFindMatchUp } from '../../../acquire/findDrawMatchUp';
-import { allDrawMatchUps, allTournamentMatchUps } from './matchUpsGetter';
-import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
-import { hydrateParticipants } from './hydrateParticipants';
-import { getContextContent } from '../getContextContent';
-import { findEvent } from '../../../acquire/findEvent';
+import { hydrateParticipants } from '../tournamentEngine/getters/matchUpsGetter/hydrateParticipants';
+import { getContextContent } from '../tournamentEngine/getters/getContextContent';
+import { findEvent } from './findEvent';
+import { makeDeepCopy } from '../utilities/makeDeepCopy';
+import { findDrawMatchUp } from './findDrawMatchUp';
+import {
+  allDrawMatchUps,
+  allTournamentMatchUps,
+} from '../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
 
-import { HydratedMatchUp } from '../../../types/hydrated';
+import { HydratedMatchUp } from '../types/hydrated';
 import {
   ContextContent,
   ContextProfile,
   ParticipantsProfile,
-} from '../../../types/factoryTypes';
+} from '../types/factoryTypes';
 import {
   DrawDefinition,
   Tournament,
   Event,
   Structure,
-} from '../../../types/tournamentTypes';
+} from '../types/tournamentTypes';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   ErrorType,
   MATCHUP_NOT_FOUND,
   MISSING_MATCHUP_ID,
   MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
+} from '../constants/errorConditionConstants';
 
 type FindMatchUpType = {
   participantsProfile?: ParticipantsProfile;
@@ -132,7 +135,7 @@ export function findMatchUp({
     );
     return { drawDefinition, structure, matchUp: inContextMatchUp };
   } else {
-    const { matchUp, structure } = drawEngineFindMatchUp({
+    const { matchUp, structure } = findDrawMatchUp({
       context: inContext ? additionalContext : undefined,
       tournamentParticipants,
       afterRecoveryTimes,

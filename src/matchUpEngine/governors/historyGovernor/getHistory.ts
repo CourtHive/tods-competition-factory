@@ -1,4 +1,4 @@
-import { findExtension } from '../../../global/functions/deducers/findExtension';
+import { findExtension } from '../../../acquire/findExtension';
 
 import { MATCHUP_HISTORY } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';

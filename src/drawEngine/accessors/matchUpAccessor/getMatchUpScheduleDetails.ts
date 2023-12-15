@@ -2,7 +2,7 @@ import { matchUpFormatTimes } from '../../../tournamentEngine/governors/schedule
 import { getVenueData } from '../../../tournamentEngine/governors/publishingGovernor/getVenueData';
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 import { definedAttributes } from '../../../utilities/definedAttributes';
-import { findEvent } from '../../../tournamentEngine/getters/findEvent';
+import { findEvent } from '../../../acquire/findEvent';
 import { scheduledMatchUpTime } from './scheduledMatchUpTime';
 import { scheduledMatchUpDate } from './scheduledMatchUpDate';
 import { matchUpAllocatedCourts } from './courtAllocations';

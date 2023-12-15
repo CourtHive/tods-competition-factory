@@ -2,7 +2,7 @@ import { removeParticipantsScaleItems } from '../../participantGovernor/removeSc
 import { decorateResult } from '../../../../global/functions/decorateResult';
 import { getParticipantId } from '../../../../global/functions/extractors';
 import { mustBeAnArray } from '../../../../utilities/mustBeAnArray';
-import { getFlightProfile } from '../../../getters/getFlightProfile';
+import { getFlightProfile } from '../../../../query/event/getFlightProfile';
 
 import {
   INVALID_VALUES,

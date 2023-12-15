@@ -1,6 +1,6 @@
 import { addEventExtension } from '../tournamentGovernor/addRemoveExtensions';
 import { decorateResult } from '../../../global/functions/decorateResult';
-import { getFlightProfile } from '../../getters/getFlightProfile';
+import { getFlightProfile } from '../../../query/event/getFlightProfile';
 import { makeDeepCopy } from '../../../utilities';
 
 import { FLIGHT_PROFILE } from '../../../constants/extensionConstants';

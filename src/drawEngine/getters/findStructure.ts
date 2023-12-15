@@ -1,4 +1,4 @@
-import { findExtension } from '../../tournamentEngine/governors/queryGovernor/extensionQueries';
+import { findExtension } from '../../acquire/findExtension';
 import { ResultType } from '../../global/functions/decorateResult';
 import { structureSort } from './structureSort';
 

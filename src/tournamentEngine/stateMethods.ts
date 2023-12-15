@@ -1,6 +1,6 @@
 import { getAllDrawMatchUps } from '../drawEngine/getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../drawEngine/getters/getMatchUps/getMatchUpsMap';
-import { findEvent } from './getters/findEvent';
+import { findEvent } from '../acquire/findEvent';
 import { makeDeepCopy } from '../utilities';
 import {
   getTournamentRecord,

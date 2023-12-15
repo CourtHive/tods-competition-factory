@@ -1,7 +1,4 @@
-import {
-  findEventExtension,
-  findTournamentExtension,
-} from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
+import { findExtension } from '../../../acquire/findExtension';
 
 import {
   ErrorType,
@@ -37,9 +34,9 @@ export function getExtensionUpdate({
   const methods: any[] = [];
   let tournamentExtensionAdded;
   for (const tournamentRecord of Object.values(tournamentRecords)) {
-    const { extension } = findTournamentExtension({
+    const { extension } = findExtension({
+      element: tournamentRecord,
       name: extensionName,
-      tournamentRecord,
     });
 
     // only necessary to push this method once to cover both tournaments
@@ -54,9 +51,9 @@ export function getExtensionUpdate({
 
     for (const event of tournamentEvents) {
       const { eventId } = event;
-      const { extension } = findEventExtension({
+      const { extension } = findExtension({
         name: extensionName,
-        event,
+        element: event,
       });
       if (extension) {
         methods.push({

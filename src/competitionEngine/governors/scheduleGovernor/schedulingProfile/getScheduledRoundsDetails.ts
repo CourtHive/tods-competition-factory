@@ -1,7 +1,7 @@
 import { getContainedStructures } from '../../../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
 import { filterMatchUps } from '../../../../drawEngine/getters/getMatchUps/filterMatchUps';
 import { findMatchUpFormatTiming } from '../matchUpFormatTiming/findMatchUpFormatTiming';
-import { findEvent } from '../../../../tournamentEngine/getters/findEvent';
+import { findEvent } from '../../../../acquire/findEvent';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
 import { matchUpSort } from '../../../../drawEngine/getters/matchUpSort';
 import { getMatchUpId } from '../../../../global/functions/extractors';

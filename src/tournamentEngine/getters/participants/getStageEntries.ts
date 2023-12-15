@@ -1,4 +1,4 @@
-import { getFlightProfile } from '../getFlightProfile';
+import { getFlightProfile } from '../../../query/event/getFlightProfile';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../../constants/entryStatusConstants';
 import {

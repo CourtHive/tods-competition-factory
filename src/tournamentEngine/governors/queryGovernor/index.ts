@@ -3,15 +3,15 @@ import { getPolicyDefinitions } from '../../../query/extensions/getAppliedPolici
 import { getMaxEntryPosition } from '../../../global/functions/deducers/getMaxEntryPosition';
 import { isValid } from '../../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
 import { getMatchUpCompetitiveProfile } from '../../getters/getMatchUpCompetitiveProfile';
-import { findExtension } from '../../../global/functions/deducers/findExtension';
 import { participantScheduledMatchUps } from './participantScheduledMatchUps';
 import { getPositionAssignments } from '../../getters/getPositionAssignments';
 import { getPredictiveAccuracy } from '../../getters/getPredictiveAccuracy';
 import { participantScaleItem } from '../../accessors/participantScaleItem';
-import { publicFindMatchUp } from '../../getters/matchUpsGetter/findMatchUp';
+import { publicFindMatchUp } from '../../../acquire/findMatchUp';
 import { getVenuesAndCourts, findVenue } from '../../getters/venueGetter';
 import { getCourts, publicFindCourt } from '../../getters/courtGetter';
 import { getParticipantScaleItem } from './getParticipantScaleItem';
+import { findExtension } from '../../../acquire/findExtension';
 import { getMatchUpFormat } from '../../getters/getMatchUpFormat';
 import { getMatchUpsStats } from '../../getters/getMatchUpsStats';
 import { getEvent, getEvents } from '../../getters/eventGetter';
@@ -36,12 +36,6 @@ import {
   eventMatchUps,
   drawMatchUps,
 } from '../../getters/matchUpsGetter/matchUpsGetter';
-import {
-  findEventExtension,
-  findTournamentExtension,
-  findParticipantExtension,
-  findDrawDefinitionExtension,
-} from './extensionQueries';
 import {
   getEventTimeItem,
   getTournamentTimeItem,
@@ -75,10 +69,6 @@ const queryGovernor = {
   getEvents,
   getEvent,
 
-  findDrawDefinitionExtension,
-  findParticipantExtension,
-  findTournamentExtension,
-  findEventExtension,
   findExtension,
 
   getTieFormat,

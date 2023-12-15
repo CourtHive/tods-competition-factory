@@ -1,20 +1,28 @@
-import { findTournamentExtension } from '../queryGovernor/extensionQueries';
+import { findExtension } from '../../../acquire/findExtension';
 import { findPolicy } from '../policyGovernor/findPolicy';
 
-import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
+import { checkRequiredParameters } from '../../../parameters/checkRequiredParameters';
 import { POLICY_TYPE_SCHEDULING } from '../../../constants/policyConstants';
 import { SCHEDULE_LIMITS } from '../../../constants/extensionConstants';
+import { ResultType } from '../../../global/functions/decorateResult';
 
-export function getMatchUpDailyLimits({ tournamentRecord }) {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+export function getMatchUpDailyLimits(params): ResultType & {
+  matchUpDailyLimits?: number;
+} {
+  const paramCheck = checkRequiredParameters(params, [
+    { param: 'tournamentRecord' },
+  ]);
+  if (paramCheck.error) return paramCheck;
+
+  const { tournamentRecord } = params;
   const { policy } = findPolicy({
     policyType: POLICY_TYPE_SCHEDULING,
     tournamentRecord,
   });
 
-  const { extension } = findTournamentExtension({
+  const { extension } = findExtension({
+    element: tournamentRecord,
     name: SCHEDULE_LIMITS,
-    tournamentRecord,
   });
 
   const tournamentDailyLimits = extension?.value?.dailyLimits;

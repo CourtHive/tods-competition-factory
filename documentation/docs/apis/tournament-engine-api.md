@@ -1344,26 +1344,6 @@ const { court, venue } = tournamentEngine.findCourt({ courtId });
 
 ---
 
-## findDrawDefinitionExtension
-
-```js
-const { extension } = tournamentEngine.findDrawDefinitionExtension({
-  drawId,
-  eventId,
-  name,
-});
-```
-
----
-
-## findEventExtension
-
-```js
-const { extension } = tournamentEngine.findEventExtension({ eventId, name });
-```
-
----
-
 ## findMatchUp
 
 ```js
@@ -1390,17 +1370,6 @@ const { participant } = tournamentEngine.findParticipant({
 
 ---
 
-## findParticipantExtension
-
-```js
-const { extension } = tournamentEngine.findParticipantExtension({
-  participantId,
-  name,
-});
-```
-
----
-
 ## findPolicy
 
 Find `policyType` either on an event object or the tournamentRecord.
@@ -1410,14 +1379,6 @@ const { policy } = tournamentEngine.findPolicy({
   policyType: POLICY_TYPE_SCORING,
   eventId, // optional
 });
-```
-
----
-
-## findTournamentExtension
-
-```js
-const { extension } = tournamentEngine.findTournamentExtension({ name });
 ```
 
 ---

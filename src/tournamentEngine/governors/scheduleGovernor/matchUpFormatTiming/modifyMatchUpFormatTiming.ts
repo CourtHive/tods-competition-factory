@@ -1,11 +1,8 @@
+import { findExtension } from '../../../../acquire/findExtension';
 import {
   addEventExtension,
   addTournamentExtension,
 } from '../../tournamentGovernor/addRemoveExtensions';
-import {
-  findEventExtension,
-  findTournamentExtension,
-} from '../../queryGovernor/extensionQueries';
 
 import { SCHEDULE_TIMING } from '../../../../constants/extensionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
@@ -30,7 +27,7 @@ export function modifyMatchUpFormatTiming({
   const name = SCHEDULE_TIMING;
 
   if (event) {
-    const { extension } = findEventExtension({ event, name });
+    const { extension } = findExtension({ element: event, name });
     const eventScheduling = extension?.value || {};
     const value = modifyScheduling({
       ...eventScheduling,
@@ -40,8 +37,8 @@ export function modifyMatchUpFormatTiming({
     });
     addEventExtension({ event, extension: { name, value } });
   } else {
-    const { extension } = findTournamentExtension({
-      tournamentRecord,
+    const { extension } = findExtension({
+      element: tournamentRecord,
       name,
     });
     const tournamentScheduling = extension?.value || {};

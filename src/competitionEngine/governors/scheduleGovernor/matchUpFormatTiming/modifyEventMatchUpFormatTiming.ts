@@ -1,5 +1,5 @@
 import { modifyEventMatchUpFormatTiming as modifyEventTiming } from '../../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/modifyEventMatchUpFormatTiming';
-import { findEvent } from '../../../../tournamentEngine/getters/findEvent';
+import { findEvent } from '../../../../acquire/findEvent';
 
 import {
   EVENT_NOT_FOUND,

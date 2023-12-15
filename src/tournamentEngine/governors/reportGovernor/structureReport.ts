@@ -1,7 +1,7 @@
 import { getTieFormatDesc } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormatDescription';
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
-import { findTournamentExtension } from '../queryGovernor/extensionQueries';
 import { getAccessorValue } from '../../../utilities/getAccessorValue';
+import { findExtension } from '../../../acquire/findExtension';
 import { getDetailsWTN } from '../queryGovernor/getDetailsWTN';
 import { getTimeItem } from '../queryGovernor/timeItems';
 import { getAvgWTN } from './getAvgWTN';
@@ -45,8 +45,8 @@ export function getStructureReports({
   const extensionValues = Object.assign(
     {},
     ...(extensionProfiles ?? []).map(({ name, label, accessor }) => {
-      const element = findTournamentExtension({
-        tournamentRecord,
+      const element = findExtension({
+        element: tournamentRecord,
         name,
       })?.extension?.value;
 

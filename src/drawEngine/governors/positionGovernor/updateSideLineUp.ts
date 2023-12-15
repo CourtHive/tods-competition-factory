@@ -1,4 +1,4 @@
-import { findExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
+import { findExtension } from '../../../acquire/findExtension';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { makeDeepCopy } from '../../../utilities';
 

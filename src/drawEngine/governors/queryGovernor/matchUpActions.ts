@@ -1,6 +1,6 @@
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import { getFlightProfile } from '../../../tournamentEngine/getters/getFlightProfile';
+import { getFlightProfile } from '../../../query/event/getFlightProfile';
 import { eligibleEntryStage } from './positionActions/getValidAlternatesAction';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { isDirectingMatchUpStatus } from '../matchUpGovernor/checkStatusType';

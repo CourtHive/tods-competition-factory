@@ -1,4 +1,4 @@
-import { getFlightProfile } from '../../../../tournamentEngine/getters/getFlightProfile';
+import { getFlightProfile } from '../../../../query/event/getFlightProfile';
 import { getAllPositionedParticipantIds } from '../../../getters/positionsGetter';
 import { definedAttributes } from '../../../../utilities/definedAttributes';
 import { unique } from '../../../../utilities';

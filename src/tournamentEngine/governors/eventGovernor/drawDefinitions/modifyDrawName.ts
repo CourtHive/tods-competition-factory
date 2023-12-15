@@ -1,6 +1,6 @@
 import { modifyDrawNotice } from '../../../../drawEngine/notifications/drawNotifications';
 import { addEventExtension } from '../../tournamentGovernor/addRemoveExtensions';
-import { getFlightProfile } from '../../../getters/getFlightProfile';
+import { getFlightProfile } from '../../../../query/event/getFlightProfile';
 import {
   ResultType,
   decorateResult,

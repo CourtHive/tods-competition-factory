@@ -1,7 +1,7 @@
 import { addEventExtension } from '../tournamentGovernor/addRemoveExtensions';
 import { extractAttributes, intersection, UUID } from '../../../utilities';
 import { decorateResult } from '../../../global/functions/decorateResult';
-import { getFlightProfile } from '../../getters/getFlightProfile';
+import { getFlightProfile } from '../../../query/event/getFlightProfile';
 import { ensureInt } from '../../../utilities/ensureInt';
 
 import { FLIGHT_PROFILE } from '../../../constants/extensionConstants';

@@ -1,4 +1,4 @@
-import { getFlightProfile } from '../../../getters/getFlightProfile';
+import { getFlightProfile } from '../../../../query/event/getFlightProfile';
 import { intersection, unique } from '../../../../utilities';
 
 import { SUCCESS } from '../../../../constants/resultConstants';

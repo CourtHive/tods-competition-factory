@@ -13,7 +13,7 @@ import { getStructureSeedAssignments } from './drawEngine/getters/getStructureSe
 import { dehydrateMatchUps } from './tournamentEngine/governors/tournamentGovernor/dehydrate';
 import { getSeedingThresholds } from './drawEngine/governors/positionGovernor/getSeedBlocks';
 import { getAssignedParticipantIds } from './drawEngine/getters/getAssignedParticipantIds';
-import { findExtension } from './tournamentEngine/governors/queryGovernor/extensionQueries';
+import { findExtension } from './acquire/findExtension';
 import { participantScaleItem } from './tournamentEngine/accessors/participantScaleItem';
 import { getScaleValues } from './tournamentEngine/getters/participants/getScaleValues';
 import { tieFormatGenderValidityCheck } from './global/functions/deducers/tieFormatGenderValidityCheck';

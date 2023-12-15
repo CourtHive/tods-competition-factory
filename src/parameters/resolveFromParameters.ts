@@ -1,4 +1,4 @@
-import { findMatchUp } from '../tournamentEngine/getters/matchUpsGetter/findMatchUp';
+import { findMatchUp } from '../acquire/findMatchUp';
 import { isObject, isString } from '../utilities/objects';
 
 import {

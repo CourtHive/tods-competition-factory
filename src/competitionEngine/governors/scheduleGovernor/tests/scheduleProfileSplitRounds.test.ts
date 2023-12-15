@@ -95,8 +95,9 @@ it('Can split rounds across multiple venues', () => {
 
   tournamentEngine.setState(result.tournamentRecord);
 
-  const { extension } = tournamentEngine.findTournamentExtension({
+  const { extension } = tournamentEngine.findExtension({
     name: APPLIED_POLICIES,
+    discover: true, // discover extension on tournamentRecord or any passed parameters
   });
   expect(extension.name).toEqual(APPLIED_POLICIES);
 
@@ -281,8 +282,9 @@ it('Can split rounds with multiple BYEs', () => {
 
   tournamentEngine.setState(result.tournamentRecord);
 
-  const { extension } = tournamentEngine.findTournamentExtension({
+  const { extension } = tournamentEngine.findExtension({
     name: APPLIED_POLICIES,
+    discover: true, // discover extension on tournamentRecord or any passed parameters
   });
   expect(extension.name).toEqual(APPLIED_POLICIES);
 

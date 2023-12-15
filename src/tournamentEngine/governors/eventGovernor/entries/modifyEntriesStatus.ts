@@ -7,7 +7,7 @@ import { isValidExtension } from '../../../../validators/isValidExtension';
 import { removeExtension } from '../../tournamentGovernor/addRemoveExtensions';
 import { decorateResult } from '../../../../global/functions/decorateResult';
 import { isUngrouped } from '../../../../global/functions/isUngrouped';
-import { getFlightProfile } from '../../../getters/getFlightProfile';
+import { getFlightProfile } from '../../../../query/event/getFlightProfile';
 
 import { validStages } from '../../../../constants/drawDefinitionConstants';
 import { DOUBLES, TEAM_EVENT } from '../../../../constants/eventConstants';

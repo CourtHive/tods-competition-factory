@@ -1,4 +1,4 @@
-import { findEventExtension } from '../governors/queryGovernor/extensionQueries';
+import { findExtension } from '../../acquire/findExtension';
 import { makeDeepCopy } from '../../utilities';
 
 import { MISSING_EVENT } from '../../constants/errorConditionConstants';
@@ -12,9 +12,9 @@ type GetFlightProfileArgs = {
 export function getFlightProfile({ event, eventId }: GetFlightProfileArgs) {
   if (!event) return { error: MISSING_EVENT };
 
-  const result = findEventExtension({
+  const result = findExtension({
     name: FLIGHT_PROFILE,
-    event,
+    element: event,
   });
 
   const extension = result?.extension;

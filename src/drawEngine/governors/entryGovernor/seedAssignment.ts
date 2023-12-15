@@ -1,5 +1,5 @@
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
-import { getFlightProfile } from '../../../tournamentEngine/getters/getFlightProfile';
+import { getFlightProfile } from '../../../query/event/getFlightProfile';
 import { modifySeedAssignmentsNotice } from '../../notifications/drawNotifications';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { decorateResult } from '../../../global/functions/decorateResult';

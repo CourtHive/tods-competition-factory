@@ -1,4 +1,4 @@
-import { findExtension } from '../../../../tournamentEngine/governors/queryGovernor/extensionQueries';
+import { findExtension } from '../../../../acquire/findExtension';
 import competitionEngineAsync from '../../../async';
 import competitionEngineSync from '../../../sync';
 import mocksEngine from '../../../../mocksEngine';

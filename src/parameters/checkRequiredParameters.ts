@@ -59,7 +59,7 @@ export function checkRequiredParameters(
   requiredParams: RequiredParams
 ) {
   if (params && !isObject(params)) return { error: INVALID_VALUES };
-  if (!requiredParams || params?._bypass) return { valid: true };
+  if (!requiredParams || params?._bypassParamCheck) return { valid: true };
 
   if (!Array.isArray(requiredParams)) return { error: INVALID_VALUES };
 

@@ -2,7 +2,7 @@ import { getAllPositionedParticipantIds } from '../../../drawEngine/getters/posi
 import { getParticipantId } from '../../../global/functions/extractors';
 import { getAccessorValue } from '../../../utilities/getAccessorValue';
 import { getTimeItem } from '../../governors/queryGovernor/timeItems';
-import { getFlightProfile } from '../getFlightProfile';
+import { getFlightProfile } from '../../../query/event/getFlightProfile';
 import { unique } from '../../../utilities';
 
 import { SIGN_IN_STATUS } from '../../../constants/participantConstants';

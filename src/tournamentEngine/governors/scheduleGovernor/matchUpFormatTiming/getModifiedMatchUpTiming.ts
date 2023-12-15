@@ -1,8 +1,5 @@
 import { isValid } from '../../../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
-import {
-  findEventExtension,
-  findTournamentExtension,
-} from '../../queryGovernor/extensionQueries';
+import { findExtension } from '../../../../acquire/findExtension';
 import {
   findMatchupFormatAverageTimes,
   findMatchupFormatRecoveryTimes,
@@ -22,14 +19,14 @@ export function getModifiedMatchUpFormatTiming({
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!isValid(matchUpFormat)) return { error: UNRECOGNIZED_MATCHUP_FORMAT };
 
-  const { extension: eventExtension } = findEventExtension({
-    event,
+  const { extension: eventExtension } = findExtension({
     name: SCHEDULE_TIMING,
+    element: event,
   });
   const eventScheduling = eventExtension?.value;
 
-  const { extension: tournamentExtension } = findTournamentExtension({
-    tournamentRecord,
+  const { extension: tournamentExtension } = findExtension({
+    element: tournamentRecord,
     name: SCHEDULE_TIMING,
   });
   const tournamentScheduling = tournamentExtension?.value;

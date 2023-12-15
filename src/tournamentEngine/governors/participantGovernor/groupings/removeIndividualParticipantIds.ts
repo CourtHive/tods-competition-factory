@@ -3,7 +3,7 @@ import { addExtension } from '../../../../global/functions/producers/addExtensio
 import { getParticipants } from '../../../getters/participants/getParticipants';
 import { addEventEntries } from '../../eventGovernor/entries/addEventEntries';
 import { decorateResult } from '../../../../global/functions/decorateResult';
-import { findExtension } from '../../queryGovernor/extensionQueries';
+import { findExtension } from '../../../../acquire/findExtension';
 import { allDrawMatchUps } from '../../../getters/matchUpsGetter/matchUpsGetter';
 import { addNotice } from '../../../../global/state/globalState';
 import {

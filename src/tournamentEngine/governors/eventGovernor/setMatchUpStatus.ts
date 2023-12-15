@@ -2,7 +2,7 @@ import { setMatchUpStatus as drawEngineSetMatchUpStatus } from '../../../drawEng
 import { setMatchUpFormat } from '../../../drawEngine/governors/matchUpGovernor/setMatchUpFormat';
 import { matchUpScore } from '../../../matchUpEngine/generators/matchUpScore';
 import { findPolicy } from '../policyGovernor/findPolicy';
-import { findEvent } from '../../getters/findEvent';
+import { findEvent } from '../../../acquire/findEvent';
 
 import { POLICY_TYPE_SCORING } from '../../../constants/policyConstants';
 import { PolicyDefinitions } from '../../../types/factoryTypes';

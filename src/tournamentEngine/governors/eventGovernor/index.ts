@@ -82,7 +82,7 @@ import { updateDrawIdsOrder } from './drawDefinitions/updateDrawIdsOrder';
 import { setOrderOfFinish } from './drawDefinitions/setOrderOfFinish';
 import { generateLineUps } from '../../generators/generateLineUps';
 import { modifyEventEntries } from './entries/modifyEventEntries';
-import { getFlightProfile } from '../../getters/getFlightProfile';
+import { getFlightProfile } from '../../../query/event/getFlightProfile';
 import { modifyDrawName } from './drawDefinitions/modifyDrawName';
 import { attachFlightProfile } from './attachFlightProfile';
 import { drawMatic } from './drawDefinitions/drawMatic';

@@ -1,5 +1,5 @@
 import { getContainedStructures } from '../../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
-import { findExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
+import { findExtension } from '../../../acquire/findExtension';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import { getStructureLinks } from '../../getters/linkGetter';
 import { overlap } from '../../../utilities';

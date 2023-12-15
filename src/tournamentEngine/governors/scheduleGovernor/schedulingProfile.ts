@@ -2,15 +2,15 @@ import { getUpdatedSchedulingProfile } from '../../../competitionEngine/governor
 import { tournamentRelevantSchedulingIds } from '../../../validators/validateSchedulingProfile';
 import { getEventIdsAndDrawIds } from '../../../competitionEngine/getters/getEventIdsAndDrawIds';
 import { addTournamentExtension } from '../tournamentGovernor/addRemoveExtensions';
-import { findTournamentExtension } from '../queryGovernor/extensionQueries';
+import { findExtension } from '../../../acquire/findExtension';
 
 import { SCHEDULING_PROFILE } from '../../../constants/extensionConstants';
+import { Tournament } from '../../../types/tournamentTypes';
 import {
   ErrorType,
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
-import { Tournament } from '../../../types/tournamentTypes';
 
 export function setSchedulingProfile({ tournamentRecord, schedulingProfile }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -35,9 +35,9 @@ export function getSchedulingProfile({ tournamentRecord }): {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   const tournamentId = tournamentRecord.tournamentId;
 
-  const { extension } = findTournamentExtension({
+  const { extension } = findExtension({
+    element: tournamentRecord,
     name: SCHEDULING_PROFILE,
-    tournamentRecord,
   });
 
   let schedulingProfile = extension?.value || [];

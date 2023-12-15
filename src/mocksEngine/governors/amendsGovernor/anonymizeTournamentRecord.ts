@@ -1,12 +1,9 @@
 import { extractDate, formatDate } from '../../../utilities/dateTime';
+import { findExtension } from '../../../acquire/findExtension';
 import { generatePersons } from '../../generators/generatePersons';
 import { generateAddress } from '../../generators/generateAddress';
 import { nameMocks } from '../../utilities/nameMocks';
 import { UUID } from '../../../utilities';
-import {
-  findEventExtension,
-  findTournamentExtension,
-} from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 import {
   postalCodeMocks,
   stateMocks,
@@ -187,9 +184,9 @@ export function anonymizeTournamentRecord({
       }
     }
 
-    const { extension: flightProfile } = findEventExtension({
+    const { extension: flightProfile } = findExtension({
       name: FLIGHT_PROFILE,
-      event,
+      element: event,
     });
 
     // use idMap to update all IDs in flightProfiles
@@ -353,9 +350,9 @@ export function anonymizeTournamentRecord({
     teamParticipant.participantName = groupNames[i];
   });
 
-  const { extension: schedulingProfile } = findTournamentExtension({
+  const { extension: schedulingProfile } = findExtension({
+    element: tournamentRecord,
     name: SCHEDULING_PROFILE,
-    tournamentRecord,
   });
 
   // use idMap to update all IDs in schedulingProfile
@@ -368,9 +365,9 @@ export function anonymizeTournamentRecord({
     });
   }
 
-  const { extension: personRequests } = findTournamentExtension({
+  const { extension: personRequests } = findExtension({
+    element: tournamentRecord,
     name: PERSON_REQUESTS,
-    tournamentRecord,
   });
 
   // use idMap to update all IDs in personRequests

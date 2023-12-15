@@ -1,4 +1,4 @@
-import { findExtension } from '../../tournamentEngine/governors/queryGovernor/extensionQueries';
+import { findExtension } from '../../acquire/findExtension';
 import { extractAttributes as xa } from '../../utilities';
 import { tournamentEngine } from '../..';
 import { expect, it } from 'vitest';

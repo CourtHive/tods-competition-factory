@@ -111,7 +111,7 @@ it('can check required parameter types', () => {
   expect(result.error).toEqual(INVALID_VALUES);
 
   // checking can be bypassed
-  result = checkRequiredParameters({ matchUps: {}, _bypass: true }, [
+  result = checkRequiredParameters({ matchUps: {}, _bypassParamCheck: true }, [
     { param: 'matchUps' },
   ]);
   expect(result.valid).toEqual(true);

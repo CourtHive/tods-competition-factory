@@ -3,7 +3,6 @@ import { getAppliedPolicies } from '../../../../query/extensions/getAppliedPolic
 import { modifyEventPublishStatus } from '../../publishingGovernor/modifyEventPublishStatus';
 import { getEventPublishStatus } from '../../publishingGovernor/getEventPublishStatus';
 import { addExtension } from '../../../../global/functions/producers/addExtension';
-import { findExtension } from '../../../../global/functions/deducers/findExtension';
 import { allDrawMatchUps } from '../../../getters/matchUpsGetter/matchUpsGetter';
 import { getPositionAssignments } from '../../../getters/getPositionAssignments';
 import { addEventExtension } from '../../tournamentGovernor/addRemoveExtensions';
@@ -11,11 +10,12 @@ import { checkSchedulingProfile } from '../../scheduleGovernor/schedulingProfile
 import { getDrawStructures } from '../../../../drawEngine/getters/findStructure';
 import { decorateResult } from '../../../../global/functions/decorateResult';
 import { definedAttributes } from '../../../../utilities/definedAttributes';
+import { getFlightProfile } from '../../../../query/event/getFlightProfile';
+import { findExtension } from '../../../../acquire/findExtension';
 import { publishEvent } from '../../publishingGovernor/publishEvent';
-import { getFlightProfile } from '../../../getters/getFlightProfile';
 import { addNotice } from '../../../../global/state/globalState';
 import { makeDeepCopy } from '../../../../utilities';
-import { findEvent } from '../../../getters/findEvent';
+import { findEvent } from '../../../../acquire/findEvent';
 import {
   deleteDrawNotice,
   deleteMatchUpsNotice,

@@ -1,7 +1,4 @@
-import {
-  findEventExtension,
-  findTournamentExtension,
-} from '../../queryGovernor/extensionQueries';
+import { findExtension } from '../../../../acquire/findExtension';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../../constants/errorConditionConstants';
 import { SCHEDULE_TIMING } from '../../../../constants/extensionConstants';
@@ -11,8 +8,8 @@ export function getMatchUpFormatTimingUpdate({ tournamentRecord }) {
 
   const methods: any[] = [];
 
-  const { extension } = findTournamentExtension({
-    tournamentRecord,
+  const { extension } = findExtension({
+    element: tournamentRecord,
     name: SCHEDULE_TIMING,
   });
 
@@ -27,9 +24,9 @@ export function getMatchUpFormatTimingUpdate({ tournamentRecord }) {
 
   for (const event of tournamentEvents) {
     const { eventId } = event;
-    const { extension } = findEventExtension({
-      event,
+    const { extension } = findExtension({
       name: SCHEDULE_TIMING,
+      element: event,
     });
     if (extension) {
       methods.push({

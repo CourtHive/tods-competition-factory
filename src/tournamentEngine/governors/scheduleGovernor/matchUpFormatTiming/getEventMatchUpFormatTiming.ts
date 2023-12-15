@@ -1,6 +1,6 @@
 import { isValid } from '../../../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
 import { definedAttributes } from '../../../../utilities/definedAttributes';
-import { findEventExtension } from '../../queryGovernor/extensionQueries';
+import { findExtension } from '../../../../acquire/findExtension';
 import { getMatchUpFormatTiming } from './getMatchUpFormatTiming';
 import { findPolicy } from '../../policyGovernor/findPolicy';
 import { unique } from '../../../../utilities';
@@ -50,9 +50,9 @@ export function getEventMatchUpFormatTiming({
     if (policy?.matchUpFormats) {
       matchUpFormatDefinitions = policy?.matchUpFormats;
     } else {
-      const { extension } = findEventExtension({
+      const { extension } = findExtension({
         name: SCHEDULE_TIMING,
-        event,
+        element: event,
       });
       let matchUpAverageTimes, matchUpRecoveryTimes;
       if (extension?.value) {

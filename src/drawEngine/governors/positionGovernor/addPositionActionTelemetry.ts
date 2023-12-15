@@ -1,6 +1,6 @@
 import { addExtension } from '../../../global/functions/producers/addExtension';
-import { findExtension } from '../../../global/functions/deducers/findExtension';
 import { getPositionAssignments } from '../../getters/positionsGetter';
+import { findExtension } from '../../../acquire/findExtension';
 
 import { AUDIT_POSITION_ACTIONS } from '../../../constants/extensionConstants';
 import { MAIN } from '../../../constants/drawDefinitionConstants';

@@ -2,7 +2,7 @@ import { resolveTieFormat } from '../../matchUpEngine/governors/tieFormatGoverno
 import { copyTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';
 import { decorateResult } from '../../global/functions/decorateResult';
 import { findStructure } from '../../drawEngine/getters/findStructure';
-import { publicFindMatchUp } from './matchUpsGetter/findMatchUp';
+import { publicFindMatchUp } from '../../acquire/findMatchUp';
 
 import { SUCCESS } from '../../constants/resultConstants';
 import {

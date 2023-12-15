@@ -1,5 +1,5 @@
 import { getSourceStructureIdsAndRelevantLinks } from '../../../getters/getSourceStructureIdsAndRelevantLinks';
-import { findExtension } from '../../../../tournamentEngine/governors/queryGovernor/extensionQueries';
+import { findExtension } from '../../../../acquire/findExtension';
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
 import { getPositionAssignments } from '../../../getters/positionsGetter';
 import { definedAttributes } from '../../../../utilities/definedAttributes';

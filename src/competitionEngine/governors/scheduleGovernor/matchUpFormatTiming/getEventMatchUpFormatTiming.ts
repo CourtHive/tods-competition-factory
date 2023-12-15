@@ -1,5 +1,5 @@
 import { getEventMatchUpFormatTiming as getTiming } from '../../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/getEventMatchUpFormatTiming';
-import { findEvent } from '../../../../tournamentEngine/getters/findEvent';
+import { findEvent } from '../../../../acquire/findEvent';
 
 import { Tournament } from '../../../../types/tournamentTypes';
 import {

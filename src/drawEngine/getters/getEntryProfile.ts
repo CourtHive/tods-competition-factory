@@ -1,4 +1,4 @@
-import { findDrawDefinitionExtension } from '../../tournamentEngine/governors/queryGovernor/extensionQueries';
+import { findExtension } from '../../acquire/findExtension';
 
 import { ENTRY_PROFILE } from '../../constants/extensionConstants';
 import { DrawDefinition } from '../../types/tournamentTypes';
@@ -7,9 +7,9 @@ type GetEntryProfileArgs = {
   drawDefinition: DrawDefinition;
 };
 export function getEntryProfile({ drawDefinition }: GetEntryProfileArgs) {
-  const { extension } = findDrawDefinitionExtension({
+  const { extension } = findExtension({
+    element: drawDefinition,
     name: ENTRY_PROFILE,
-    drawDefinition,
   });
   const entryProfile = extension?.value || {};
   return { entryProfile };

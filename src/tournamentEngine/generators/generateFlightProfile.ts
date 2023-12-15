@@ -2,7 +2,7 @@ import { attachFlightProfile as attachProfile } from '../governors/eventGovernor
 import { getScaledEntries } from '../governors/eventGovernor/entries/getScaledEntries';
 import { getParticipantId } from '../../global/functions/extractors';
 import { getDevContext } from '../../global/state/globalState';
-import { getFlightProfile } from '../getters/getFlightProfile';
+import { getFlightProfile } from '../../query/event/getFlightProfile';
 import {
   chunkArray,
   generateRange,
