@@ -1,6 +1,6 @@
 import { latestVisibleTimeItemValue } from '../../../drawEngine/accessors/matchUpAccessor/latestVisibleTimeItemValue';
 import { assignMatchUpCourt } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpCourt';
-import { addMatchUpTimeItem } from '../../../drawEngine/governors/matchUpGovernor/timeItems';
+import { addMatchUpTimeItem } from '../../../assemblies/mutations/matchUps/matchUpTimeItems';
 import { findDrawMatchUp } from '../../../drawEngine/getters/getMatchUps/findDrawMatchUp';
 import { getDrawDefinition } from '../../../global/functions/deducers/getDrawDefinition';
 

@@ -8,7 +8,7 @@ import { findDrawMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
 import { scheduledMatchUpDate } from '../../accessors/matchUpAccessor';
 import { isConvertableInteger } from '../../../utilities/math';
 import { ensureInt } from '../../../utilities/ensureInt';
-import { addMatchUpTimeItem } from './timeItems';
+import { addMatchUpTimeItem } from '../../../assemblies/mutations/matchUps/matchUpTimeItems';
 import {
   addMatchUpScheduledTime,
   addMatchUpTimeModifiers,

@@ -1,8 +1,8 @@
 import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
-import { getMatchUpParticipantIds } from '../../../assemblies/queries/matchUp/getMatchUpParticipantIds';
-import { getCheckedInParticipantIds } from '../../../assemblies/queries/matchUp/getCheckedInParticipantIds';
-import { findDrawMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
-import { addMatchUpTimeItem } from './timeItems';
+import { getMatchUpParticipantIds } from '../../queries/matchUp/getMatchUpParticipantIds';
+import { getCheckedInParticipantIds } from '../../queries/matchUp/getCheckedInParticipantIds';
+import { findDrawMatchUp } from '../../../drawEngine/getters/getMatchUps/findDrawMatchUp';
+import { addMatchUpTimeItem } from './matchUpTimeItems';
 
 import { CHECK_IN, CHECK_OUT } from '../../../constants/timeItemConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
@@ -65,25 +65,27 @@ export function checkInParticipant({
         matchUpId,
         event,
       });
-      if (!result.matchUp) return { error: MATCHUP_NOT_FOUND };
-      matchUp = result.matchUp;
+      matchUp = result?.matchUp;
     }
+    if (!matchUp) return { error: MATCHUP_NOT_FOUND };
+
     const result = getCheckedInParticipantIds({
       matchUp,
     });
-    if (result.error) return result;
+    if (result?.error) return result;
+
     const { checkedInParticipantIds, allRelevantParticipantIds } = result;
 
     if (!allRelevantParticipantIds?.includes(participantId))
       return { error: INVALID_PARTICIPANT_ID };
-    if (checkedInParticipantIds.includes(participantId)) {
+    if (checkedInParticipantIds?.includes(participantId)) {
       return { error: PARTICIPANT_ALREADY_CHECKED_IN };
     }
   }
 
   const timeItem = {
-    itemType: CHECK_IN,
     itemValue: participantId,
+    itemType: CHECK_IN,
   };
 
   return addMatchUpTimeItem({
@@ -137,7 +139,7 @@ export function checkOutParticipant({
       getCheckedInParticipantIds({ matchUp });
     if (!allRelevantParticipantIds?.includes(participantId))
       return { error: INVALID_PARTICIPANT_ID };
-    if (!checkedInParticipantIds.includes(participantId)) {
+    if (!checkedInParticipantIds?.includes(participantId)) {
       return { error: PARTICIPANT_NOT_CHECKED_IN };
     }
 

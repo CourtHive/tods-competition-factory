@@ -1,5 +1,5 @@
 import { getVenuesAndCourts } from '../../../competitionEngine/getters/venuesAndCourtsGetter';
-import { addMatchUpTimeItem } from '../../../drawEngine/governors/matchUpGovernor/timeItems';
+import { addMatchUpTimeItem } from '../../../assemblies/mutations/matchUps/matchUpTimeItems';
 import { findDrawMatchUp } from '../../../drawEngine/getters/getMatchUps/findDrawMatchUp';
 
 import { ALLOCATE_COURTS } from '../../../constants/timeItemConstants';

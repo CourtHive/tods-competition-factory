@@ -2,10 +2,16 @@ import { isValid } from '../../../matchUpEngine/governors/matchUpFormatGovernor/
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 import { publicFindDrawMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
 import { getCheckedInParticipantIds } from '../../../assemblies/queries/matchUp/getCheckedInParticipantIds';
-import { checkInParticipant, checkOutParticipant } from './checkInStatus';
+import {
+  checkInParticipant,
+  checkOutParticipant,
+} from '../../../assemblies/mutations/matchUps/modifyMatchUpCheckInStatus';
 import { addFinishingRounds } from '../../generators/addFinishingRounds';
 import { validateScore } from '../../../global/validation/validateScore';
-import { addMatchUpTimeItem, resetMatchUpTimeItems } from './timeItems';
+import {
+  addMatchUpTimeItem,
+  resetMatchUpTimeItems,
+} from '../../../assemblies/mutations/matchUps/matchUpTimeItems';
 import { removeDelegatedOutcome } from './removeDelegatedOutcome';
 import { drawMatic } from '../../../assemblies/generators/drawDefinitions/drawMatic/drawMatic';
 import { setDelegatedOutcome } from './setDelegatedOutcome';

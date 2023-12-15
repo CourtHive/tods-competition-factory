@@ -3,7 +3,7 @@ import { findMatchUp } from '../../../getters/matchUpsGetter/findMatchUp';
 import {
   checkInParticipant,
   checkOutParticipant,
-} from '../../../../drawEngine/governors/matchUpGovernor/checkInStatus';
+} from '../../../../assemblies/mutations/matchUps/modifyMatchUpCheckInStatus';
 
 import {
   MATCHUP_NOT_FOUND,

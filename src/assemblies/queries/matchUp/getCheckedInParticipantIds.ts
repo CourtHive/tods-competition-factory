@@ -1,11 +1,15 @@
 import { getMatchUpParticipantIds } from './getMatchUpParticipantIds';
 
 import { CHECK_IN, CHECK_OUT } from '../../../constants/timeItemConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
+import { HydratedMatchUp } from '../../../types/hydrated';
+import { TimeItem } from '../../../types/tournamentTypes';
 import {
   INVALID_MATCHUP,
   MISSING_CONTEXT,
   MISSING_MATCHUP,
 } from '../../../constants/errorConditionConstants';
+import { ResultType } from '../../../global/functions/decorateResult';
 
 /*
   takes a matchUpWithContext
@@ -15,7 +19,15 @@ import {
     - if sideParticipant is participantType TEAM or PAIR and is checkedIn then
       all individualParticipants are considered checkedIn
 */
-export function getCheckedInParticipantIds({ matchUp }) {
+export function getCheckedInParticipantIds({
+  matchUp,
+}: {
+  matchUp: HydratedMatchUp;
+}): ResultType & {
+  allRelevantParticipantIds?: string[];
+  allParticipantsCheckedIn?: boolean;
+  checkedInParticipantIds?: string[];
+} {
   if (!matchUp) return { error: MISSING_MATCHUP };
   if (!matchUp.hasContext) {
     return { error: MISSING_CONTEXT };
@@ -31,12 +43,16 @@ export function getCheckedInParticipantIds({ matchUp }) {
     sideParticipantIds,
   } = getMatchUpParticipantIds({ matchUp });
 
-  const timeItems = matchUp.timeItems || [];
-  const checkInItems = timeItems
-    .filter((timeItem) => [CHECK_IN, CHECK_OUT].includes(timeItem?.itemType))
+  const timeItems = matchUp.timeItems ?? [];
+  const checkInItems: TimeItem[] = timeItems
+    .filter(
+      (timeItem) =>
+        timeItem?.itemType && [CHECK_IN, CHECK_OUT].includes(timeItem.itemType)
+    )
     .sort(
       (a, b) =>
-        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        (a.createdAt ? new Date(a.createdAt).getTime() : 0) -
+        (b.createdAt ? new Date(b.createdAt).getTime() : 0)
     );
   const timeItemParticipantIds = checkInItems.map(
     (timeItem) => timeItem.itemValue
@@ -97,8 +113,9 @@ export function getCheckedInParticipantIds({ matchUp }) {
   );
 
   return {
+    allRelevantParticipantIds,
     allParticipantsCheckedIn,
     checkedInParticipantIds,
-    allRelevantParticipantIds,
+    ...SUCCESS,
   };
 }

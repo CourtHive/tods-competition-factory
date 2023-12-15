@@ -2,7 +2,7 @@ import { findEvent } from '../../getters/findEvent';
 import {
   checkInParticipant as drawEngineCheckInParticipant,
   checkOutParticipant as drawEngineCheckOutParticipant,
-} from '../../../drawEngine/governors/matchUpGovernor/checkInStatus';
+} from '../../../assemblies/mutations/matchUps/modifyMatchUpCheckInStatus';
 
 import { Tournament } from '../../../types/tournamentTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
