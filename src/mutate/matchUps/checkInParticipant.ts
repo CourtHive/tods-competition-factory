@@ -26,8 +26,8 @@ export function checkInParticipant({
 
   const matchUpResult = findMatchUp({
     tournamentRecord,
-    drawDefinition,
     inContext: true,
+    drawDefinition,
     matchUpId,
   });
   if (matchUpResult.error) return matchUpResult;
