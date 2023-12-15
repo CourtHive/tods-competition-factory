@@ -24,14 +24,12 @@ export function getTargetTeamMatchUps({
     matchUps =
       getAllStructureMatchUps({
         matchUpFilters: { matchUpTypes: [TEAM] },
-        // inContext: false,
         structure,
       })?.matchUps ?? [];
   } else if (drawDefinition) {
     matchUps =
       allDrawMatchUps({
         matchUpFilters: { matchUpTypes: [TEAM] },
-        // inContext: false,
         drawDefinition,
       })?.matchUps ?? [];
   }

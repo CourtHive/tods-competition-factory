@@ -22,7 +22,7 @@ export function analyzeScore({
   winningSide,
   score,
 }: AnalyzeScoreArgs) {
-  const sets = score?.sets || [];
+  const sets = score?.sets ?? [];
   const completedSets = sets?.filter((set) => set?.winningSide) || [];
   const setsWinCounts = completedSets.reduce(
     (counts, set) => {
@@ -53,7 +53,7 @@ export function analyzeScore({
   const bestOf = matchUpScoringFormat?.bestOf;
   const setsToWin = (bestOf && Math.ceil(bestOf / 2)) || 1;
 
-  const relevantMatchUpStatus = matchUpStatus || existingMatchUpStatus;
+  const relevantMatchUpStatus = matchUpStatus ?? existingMatchUpStatus;
   const irregularEnding =
     relevantMatchUpStatus &&
     [DEFAULTED, RETIRED, WALKOVER].includes(relevantMatchUpStatus);
@@ -73,8 +73,8 @@ export function analyzeScore({
         side2TiebreakScore,
         winningSide: setWinningSide,
       } = set;
-      const maxSetScore = Math.max(side1Score || 0, side2Score || 0);
-      const hasTiebreak = side1TiebreakScore || side2TiebreakScore;
+      const maxSetScore = Math.max(side1Score ?? 0, side2Score ?? 0);
+      const hasTiebreak = side1TiebreakScore ?? side2TiebreakScore;
 
       const { finalSetFormat, setFormat } = matchUpScoringFormat;
       const setValues = isFinalSet ? finalSetFormat || setFormat : setFormat;
@@ -82,8 +82,8 @@ export function analyzeScore({
       if (hasTiebreak) {
         const { tiebreakTo, NoAD } = setValues?.tiebreakFormat || {};
         const maxTiebreakScore = Math.max(
-          side1TiebreakScore || 0,
-          side2TiebreakScore || 0
+          side1TiebreakScore ?? 0,
+          side2TiebreakScore ?? 0
         );
         if (NoAD && maxTiebreakScore > tiebreakTo) return false;
         if (maxTiebreakScore < tiebreakTo && setWinningSide) {
@@ -96,7 +96,7 @@ export function analyzeScore({
 
       const excessiveSetScore =
         !setValues.noTiebreak && maxSetScore > setValues.setTo + 1;
-      return excessiveSetScore ? false : true;
+      return !excessiveSetScore;
     });
 
   const calculatedWinningSide =

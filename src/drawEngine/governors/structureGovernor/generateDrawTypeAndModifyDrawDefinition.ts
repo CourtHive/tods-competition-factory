@@ -122,7 +122,7 @@ export function generateDrawTypeAndModifyDrawDefinition(
   drawDefinition.links = links;
 
   const qualifiersCount = Math.max(
-    params.qualifiersCount || 0,
+    params.qualifiersCount ?? 0,
     qualifyingResult?.qualifiersCount || 0
   );
 
