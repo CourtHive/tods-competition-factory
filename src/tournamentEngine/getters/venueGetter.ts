@@ -1,5 +1,5 @@
 import { getLinkedTournamentIds } from '../../competitionEngine/governors/competitionsGovernor/tournamentLinks';
-import { getDisabledStatus } from '../../global/functions/deducers/getDisabledStatus';
+import { getDisabledStatus } from '../../query/extensions/getDisabledStatus';
 import { getInContextCourt } from '../../global/functions/deducers/getInContextCourt';
 import { findExtension } from '../../global/functions/deducers/findExtension';
 import { addVenue } from '../governors/venueGovernor/addVenue';

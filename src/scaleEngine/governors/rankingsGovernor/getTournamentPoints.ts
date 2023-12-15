@@ -1,5 +1,5 @@
 import { getParticipants } from '../../../tournamentEngine/getters/participants/getParticipants';
-import { getPolicyDefinitions } from '../../../global/functions/deducers/getAppliedPolicies';
+import { getPolicyDefinitions } from '../../../query/extensions/getAppliedPolicies';
 import { addExtension } from '../../../global/functions/producers/addExtension';
 import { getTargetElement } from './getTargetElement';
 import { getAwardProfile } from './getAwardProfile';

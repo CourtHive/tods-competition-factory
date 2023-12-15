@@ -1,4 +1,4 @@
-import { scoreHasValue } from '../../../query/matchUp/scoreHasValue';
+import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 
 import {
   completedMatchUpStatuses,
@@ -10,6 +10,6 @@ export function validUpdate({ matchUp, updateInProgressMatchUps }) {
     !matchUp.winningSide &&
     ![completedMatchUpStatuses].includes(matchUp.matchUpStatus) &&
     (updateInProgressMatchUps ||
-      (matchUp.matchUpStatus !== IN_PROGRESS && !scoreHasValue(matchUp)))
+      (matchUp.matchUpStatus !== IN_PROGRESS && !checkScoreHasValue(matchUp)))
   );
 }

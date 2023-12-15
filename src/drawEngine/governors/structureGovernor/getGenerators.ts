@@ -1,5 +1,5 @@
 import { generateRoundRobinWithPlayOff } from '../../../assemblies/generators/drawDefinitions/drawTypes/roundRobin/generateRoundRobinWithPlayoff';
-import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
+import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { firstRoundLoserConsolation } from '../../../assemblies/generators/drawDefinitions/drawTypes/firstRoundLoserConsolation';
 import { generateDoubleElimination } from '../../generators/doubleEliminattion';
 import { generateCurtisConsolation } from '../../../assemblies/generators/drawDefinitions/drawTypes/curtisConsolation';

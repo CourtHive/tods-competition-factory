@@ -2,15 +2,15 @@ import { tallyParticipantResults } from '../../getters/roundRobinTally/roundRobi
 import { getMatchUpType } from '../../../drawEngine/accessors/matchUpAccessor';
 import { analyzeMatchUp } from '../../getters/analyzeMatchUp';
 import { validMatchUp, validMatchUps } from '../../../validators/validMatchUp';
-import { matchUpIsComplete } from '../../../query/matchUp/matchUpIsComplete';
-import { scoreHasValue } from '../../../query/matchUp/scoreHasValue';
+import { checkMatchUpIsComplete } from '../../../query/matchUp/checkMatchUpIsComplete';
+import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 
 const queryGovernor = {
   tallyParticipantResults,
-  matchUpIsComplete,
+  checkMatchUpIsComplete,
   analyzeMatchUp,
   getMatchUpType,
-  scoreHasValue,
+  checkScoreHasValue,
 
   validMatchUps,
   validMatchUp,

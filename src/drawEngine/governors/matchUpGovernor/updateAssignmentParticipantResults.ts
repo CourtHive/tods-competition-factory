@@ -1,6 +1,6 @@
 import { removeExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { tallyParticipantResults } from '../../../matchUpEngine/getters/roundRobinTally/roundRobinTally';
-import { getPolicyDefinitions } from '../../../global/functions/deducers/getAppliedPolicies';
+import { getPolicyDefinitions } from '../../../query/extensions/getAppliedPolicies';
 import { validMatchUps } from '../../../validators/validMatchUp';
 import { addExtension } from '../../../global/functions/producers/addExtension';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';

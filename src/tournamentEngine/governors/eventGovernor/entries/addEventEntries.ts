@@ -1,5 +1,5 @@
 import { refreshEntryPositions } from '../../../../global/functions/producers/refreshEntryPositions';
-import { getAppliedPolicies } from '../../../../global/functions/deducers/getAppliedPolicies';
+import { getAppliedPolicies } from '../../../../query/extensions/getAppliedPolicies';
 import { addExtension } from '../../../../global/functions/producers/addExtension';
 import { isValidExtension } from '../../../../global/validation/isValidExtension';
 import { definedAttributes } from '../../../../utilities/definedAttributes';

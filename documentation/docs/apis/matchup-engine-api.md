@@ -150,14 +150,14 @@ const { reversedScore } = machUpEngine.reverseScore({ score });
 
 ---
 
-## scoreHasValue
+## checkScoreHasValue
 
 Returns boolean whether or not a `matchUp.score` contains a point, game or set value.
 
 ```js
-const result = matchUpEngine.scoreHasValue(); // use matchUp that is in state
-const result = matchUpEngine.scoreHasValue({ matchUp }); // pass matchUp
-const result = matchUpEngine.scoreHasValue({ score }); // pass score
+const result = matchUpEngine.checkScoreHasValue(); // use matchUp that is in state
+const result = matchUpEngine.checkScoreHasValue({ matchUp }); // pass matchUp
+const result = matchUpEngine.checkScoreHasValue({ score }); // pass score
 ```
 
 ---

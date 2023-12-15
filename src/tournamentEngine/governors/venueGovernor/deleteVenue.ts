@@ -1,4 +1,4 @@
-import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
+import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
 import { removeCourtAssignment } from './removeCourtAssignment';
 import { addNotice } from '../../../global/state/globalState';

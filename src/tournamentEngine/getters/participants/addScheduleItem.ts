@@ -1,4 +1,4 @@
-import { scoreHasValue } from '../../../query/matchUp/scoreHasValue';
+import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { extractDate, extractTime } from '../../../utilities/dateTime';
 
 import { BYE } from '../../../constants/matchUpStatusConstants';
@@ -26,7 +26,7 @@ export function addScheduleItem(params) {
       ...schedule,
       scheduledDate: extractDate(schedule?.scheduledDate),
       scheduledTime: extractTime(schedule?.scheduledTime),
-      scoreHasValue: scoreHasValue({ score }),
+      checkScoreHasValue: checkScoreHasValue({ score }),
       matchUpStatus,
       roundPosition,
       structureId,

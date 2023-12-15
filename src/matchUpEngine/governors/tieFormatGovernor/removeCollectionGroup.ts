@@ -1,4 +1,4 @@
-import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
+import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { definedAttributes } from '../../../utilities/definedAttributes';
 import { collectionGroupUpdate } from './collectionGroupUpdate';

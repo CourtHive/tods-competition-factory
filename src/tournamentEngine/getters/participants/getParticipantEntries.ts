@@ -692,7 +692,7 @@ export function getParticipantEntries(params) {
             const ignoreItem =
               consideredItem.matchUpId === scheduleItem.matchUpId ||
               ([WALKOVER, DEFAULTED].includes(consideredItem.matchUpStatus) &&
-                !consideredItem.scoreHasValue);
+                !consideredItem.checkScoreHasValue);
             if (ignoreItem) continue;
 
             // if there is a matchType change (SINGLES => DOUBLES or vice versa) then there is potentially a different timeAfterRecovery

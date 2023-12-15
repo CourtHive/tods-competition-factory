@@ -2,7 +2,7 @@ import { modifyRoundRobinMatchUpsStatus } from '../matchUpGovernor/modifyRoundRo
 import { getStructureDrawPositionProfiles } from '../../getters/getStructureDrawPositionProfiles';
 // import { conditionallyDisableLinkPositioning } from './conditionallyDisableLinkPositioning';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
-import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
+import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { assignMatchUpDrawPosition } from '../matchUpGovernor/assignMatchUpDrawPosition';
 import { modifyPositionAssignmentsNotice } from '../../notifications/drawNotifications';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';

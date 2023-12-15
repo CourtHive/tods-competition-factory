@@ -1,19 +1,19 @@
-import { makeDeepCopy } from '../../../utilities';
+import { makeDeepCopy } from '../../utilities';
 
-import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
-import { PolicyDefinitions } from '../../../types/factoryTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { APPLIED_POLICIES } from '../../constants/extensionConstants';
+import { PolicyDefinitions } from '../../types/factoryTypes';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   ErrorType,
   MISSING_POLICY_TYPE,
   POLICY_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 import {
   DrawDefinition,
   Event,
   Structure,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../types/tournamentTypes';
 
 type GetAppliedPoliciesArgs = {
   onlySpecifiedPolicyTypes?: boolean;

@@ -1,4 +1,4 @@
-import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
+import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { getAllowedDrawTypes, getAllowedMatchUpFormats } from './allowedTypes';
 import { getEntriesAndSeedsCount } from './getEntriesAndSeedsCount';
 import { getSeedsCount } from './getSeedsCount';

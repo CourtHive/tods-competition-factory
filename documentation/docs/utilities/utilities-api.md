@@ -205,7 +205,7 @@ const {
 
 ---
 
-## scoreHasValue
+## checkScoreHasValue
 
 ---
 

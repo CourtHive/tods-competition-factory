@@ -3,10 +3,10 @@
 import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
 import { updateTieMatchUpScore } from '../../../drawEngine/governors/matchUpGovernor/tieMatchUpScore';
 import { setMatchUpStatus } from '../../../drawEngine/governors/matchUpGovernor/setMatchUpStatus';
-import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
+import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { definedAttributes } from '../../../utilities/definedAttributes';
-import { scoreHasValue } from '../../../query/matchUp/scoreHasValue';
+import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { calculateWinCriteria } from './calculateWinCriteria';
 import { getTieFormat } from './getTieFormat/getTieFormat';
 import { tieFormatTelemetry } from './tieFormatTelemetry';
@@ -183,7 +183,7 @@ export function removeCollectionDefinition({
     const collectionMatchUps = matchUp.tieMatchUps?.filter(
       (tieMatchUp) => tieMatchUp.collectionId === collectionId
     );
-    const collectionScore = collectionMatchUps?.some(scoreHasValue);
+    const collectionScore = collectionMatchUps?.some(checkScoreHasValue);
 
     const tieFormatDifference =
       tieFormatComparison && matchUp.tieFormat
@@ -199,7 +199,7 @@ export function removeCollectionDefinition({
         matchUp.matchUpStatus !== COMPLETED &&
         (updateInProgressMatchUps ||
           (matchUp.matchUpStatus !== IN_PROGRESS &&
-            !scoreHasValue(matchUp) &&
+            !checkScoreHasValue(matchUp) &&
             !tieFormatDifference)))
     );
   });

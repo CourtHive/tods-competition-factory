@@ -14,7 +14,7 @@ export { getPositionAssignments } from '../../drawEngine/getters/positionsGetter
 export { getValidGroupSizes } from '../../assemblies/generators/drawDefinitions/drawTypes/roundRobin/roundRobin';
 
 // functions
-export { getPolicyDefinitions } from '../../global/functions/deducers/getAppliedPolicies';
+export { getPolicyDefinitions } from '../../query/extensions/getAppliedPolicies';
 export { findExtension } from '../../global/functions/deducers/findExtension';
 export { validateScore } from '../../global/validation/validateScore';
 

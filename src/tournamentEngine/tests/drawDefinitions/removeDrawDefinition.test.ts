@@ -1,4 +1,4 @@
-import { scoreHasValue } from '../../../query/matchUp/scoreHasValue';
+import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 import { expect, it } from 'vitest';
@@ -22,7 +22,7 @@ it('will not delete draws when scores are present', () => {
   tournamentEngine.setState(tournamentRecord);
 
   const matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
-  const allCompleted = matchUps.every(scoreHasValue);
+  const allCompleted = matchUps.every(checkScoreHasValue);
   expect(allCompleted).toEqual(true);
 
   let result = tournamentEngine.deleteDrawDefinitions({ drawIds: ['Draw1'] });

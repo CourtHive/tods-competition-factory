@@ -1,6 +1,6 @@
 import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
 import { allDrawMatchUps } from '../../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
-import { scoreHasValue } from '../../../query/matchUp/scoreHasValue';
+import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 
 import { MatchUp } from '../../../types/tournamentTypes';
 import { TEAM } from '../../../constants/matchUpTypes';
@@ -40,7 +40,7 @@ export function getTargetTeamMatchUps({
       !matchUp.winningSide &&
       matchUp.matchUpStatus !== COMPLETED &&
       (updateInProgressMatchUps ||
-        (matchUp.matchUpStatus !== IN_PROGRESS && !scoreHasValue(matchUp)))
+        (matchUp.matchUpStatus !== IN_PROGRESS && !checkScoreHasValue(matchUp)))
   );
 
   return { targetMatchUps };

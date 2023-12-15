@@ -1,7 +1,7 @@
 import { getCheckedInParticipantIds } from '../../query/matchUp/getCheckedInParticipantIds';
 import { getMatchUpParticipantIds } from '../../query/matchUp/getMatchUpParticipantIds';
 import { findMatchUp } from '../../tournamentEngine/getters/matchUpsGetter/findMatchUp';
-import { scoreHasValue } from '../../query/matchUp/scoreHasValue';
+import { checkScoreHasValue } from '../../query/matchUp/checkScoreHasValue';
 import { addMatchUpTimeItem } from './matchUpTimeItems';
 
 import { CheckInOutParticipantArgs } from '../../types/factoryTypes';
@@ -44,7 +44,7 @@ export function checkOutParticipant({
   if (
     (matchUpStatus && activeMatchUpStatuses.includes(matchUpStatus)) ||
     (matchUpStatus && completedMatchUpStatuses.includes(matchUpStatus)) ||
-    scoreHasValue({ score })
+    checkScoreHasValue({ score })
   ) {
     return { error: INVALID_ACTION };
   }

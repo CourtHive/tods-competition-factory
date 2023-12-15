@@ -1,4 +1,4 @@
-import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
+import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { bulkScheduleMatchUps } from '../scheduleGovernor/bulkScheduleMatchUps';
 import { checkSchedulingProfile } from '../scheduleGovernor/schedulingProfile';
 import { addNotice } from '../../../global/state/globalState';

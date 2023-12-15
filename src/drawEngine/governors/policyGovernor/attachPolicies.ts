@@ -1,4 +1,4 @@
-import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
+import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { addExtension } from '../../../global/functions/producers/addExtension';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 

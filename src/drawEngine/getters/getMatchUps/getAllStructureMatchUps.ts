@@ -4,7 +4,7 @@ import { getCollectionPositionMatchUps } from '../../../query/matchUps/getCollec
 import { getMatchUpScheduleDetails } from '../../accessors/matchUpAccessor/getMatchUpScheduleDetails';
 import { getCheckedInParticipantIds } from '../../../query/matchUp/getCheckedInParticipantIds';
 import { getDrawPositionCollectionAssignment } from './getDrawPositionCollectionAssignment';
-import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
+import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { getContextContent } from '../../../tournamentEngine/getters/getContextContent';
 import { parse } from '../../../matchUpEngine/governors/matchUpFormatGovernor/parse';
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';

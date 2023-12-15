@@ -17,7 +17,7 @@ import { findExtension } from './tournamentEngine/governors/queryGovernor/extens
 import { participantScaleItem } from './tournamentEngine/accessors/participantScaleItem';
 import { getScaleValues } from './tournamentEngine/getters/participants/getScaleValues';
 import { tieFormatGenderValidityCheck } from './global/functions/deducers/tieFormatGenderValidityCheck';
-import { scoreHasValue } from './query/matchUp/scoreHasValue';
+import { checkScoreHasValue } from './query/matchUp/checkScoreHasValue';
 import { garman } from './competitionEngine/governors/scheduleGovernor/garman/garman';
 import { generateScoreString } from './matchUpEngine/generators/generateScoreString';
 import { categoryCanContain } from './global/functions/deducers/categoryCanContain';
@@ -128,7 +128,7 @@ export const utilities = {
   randomMember,
   randomPop,
   roundRobinGroups,
-  scoreHasValue,
+  checkScoreHasValue,
   shuffleArray,
   structureSort,
   tidyScore,

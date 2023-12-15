@@ -1,5 +1,5 @@
 import { lastSetFormatIsTimed } from '../../../matchUpEngine/governors/matchUpFormatGovernor/lastSetFormatisTimed';
-import { scoreHasValue } from '../../../query/matchUp/scoreHasValue';
+import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { removeDirectedParticipants } from './removeDirectedParticipants';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { attemptToSetMatchUpStatus } from './attemptToSetMatchUpStatus';
@@ -36,7 +36,7 @@ export function noDownstreamDependencies(params) {
 
   const doubleWalkover = matchUpStatus === DOUBLE_WALKOVER;
   const scoreWithNoWinningSide =
-    scoreHasValue({ score }) &&
+    checkScoreHasValue({ score }) &&
     !doubleWalkover &&
     ((params.isCollectionMatchUp && !params.projectedWinningSide) ||
       !winningSide);
@@ -54,7 +54,7 @@ export function noDownstreamDependencies(params) {
     (params.isCollectionMatchUp &&
       params.dualMatchUp.winningSide &&
       !params.projectedWinningSide) ||
-    (matchUp.winningSide && !winningSide && !scoreHasValue({ score }));
+    (matchUp.winningSide && !winningSide && !checkScoreHasValue({ score }));
 
   const statusNotTBP = matchUpStatus && matchUpStatus !== TO_BE_PLAYED;
 

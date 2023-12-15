@@ -11,7 +11,7 @@ import { getMethods } from '../../global/state/syncGlobalState';
 import * as query from '../../../dist/forge/query';
 
 import { deleteDrawDefinitions } from '../../tournamentEngine/governors/eventGovernor/drawDefinitions/deleteDrawDefinitions';
-import { scoreHasValue } from '../../query/matchUp/scoreHasValue';
+import { checkScoreHasValue } from '../../query/matchUp/checkScoreHasValue';
 
 import {
   METHOD_NOT_FOUND,
@@ -55,7 +55,7 @@ test('sync syncEngine can set state and execute methods', () => {
   const matchUps = query.allCompetitionMatchUps(state).matchUps;
   expect(matchUps?.length).toEqual(7);
 
-  const allCompleted = matchUps?.every(scoreHasValue);
+  const allCompleted = matchUps?.every(checkScoreHasValue);
   expect(allCompleted).toEqual(true);
 
   // syncEngine will throw error if method is not found

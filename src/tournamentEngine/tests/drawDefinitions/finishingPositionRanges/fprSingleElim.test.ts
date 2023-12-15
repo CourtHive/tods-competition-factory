@@ -1,4 +1,4 @@
-import { getAppliedPolicies } from '../../../../global/functions/deducers/getAppliedPolicies';
+import { getAppliedPolicies } from '../../../../query/extensions/getAppliedPolicies';
 import { eventConstants } from '../../../../constants/eventConstants';
 import { drawEngine } from '../../../../drawEngine/sync';
 import mocksEngine from '../../../../mocksEngine';

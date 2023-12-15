@@ -1,4 +1,4 @@
-import { scoreHasValue } from '../../../../query/matchUp/scoreHasValue';
+import { checkScoreHasValue } from '../../../../query/matchUp/checkScoreHasValue';
 import { addExtension } from '../../../../global/functions/producers/addExtension';
 import { getParticipants } from '../../../getters/participants/getParticipants';
 import { addEventEntries } from '../../eventGovernor/entries/addEventEntries';
@@ -180,7 +180,8 @@ function removeParticipantIdsFromGroupingParticipant({
         )
         .map(({ matchUpId }) => mappedMatchUps?.[matchUpId])
         .filter(
-          ({ winningSide, score }) => winningSide || scoreHasValue({ score })
+          ({ winningSide, score }) =>
+            winningSide || checkScoreHasValue({ score })
         );
 
     const removeParticipant =

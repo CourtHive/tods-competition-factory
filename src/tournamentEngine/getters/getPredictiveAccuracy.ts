@@ -1,4 +1,4 @@
-import { scoreHasValue } from '../../query/matchUp/scoreHasValue';
+import { checkScoreHasValue } from '../../query/matchUp/checkScoreHasValue';
 import { validMatchUps } from '../../validators/validMatchUp';
 import ratingsParameters from '../../fixtures/ratings/ratingsParameters';
 import { isConvertableInteger } from '../../utilities/math';
@@ -141,7 +141,7 @@ export function getPredictiveAccuracy(params: getPredictiveAccuracyArgs) {
       ![RETIRED, DEFAULTED, WALKOVER, DEAD_RUBBER, ABANDONED].includes(
         matchUpStatus ?? ''
       ) &&
-      scoreHasValue({ score }) &&
+      checkScoreHasValue({ score }) &&
       sides?.length === 2 &&
       winningSide
   );

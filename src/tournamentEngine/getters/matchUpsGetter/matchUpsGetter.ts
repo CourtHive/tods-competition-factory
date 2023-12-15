@@ -1,6 +1,6 @@
 import { getScheduleTiming } from '../../governors/scheduleGovernor/matchUpFormatTiming/getScheduleTiming';
 import { getEventPublishStatus } from '../../governors/publishingGovernor/getEventPublishStatus';
-import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
+import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { definedAttributes } from '../../../utilities/definedAttributes';
 import { hydrateParticipants } from './hydrateParticipants';
 import { getContextContent } from '../getContextContent';

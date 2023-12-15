@@ -1,4 +1,4 @@
-import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
+import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotifications';
 import { getCollectionPositionAssignments } from './getCollectionPositionAssignments';
 import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';

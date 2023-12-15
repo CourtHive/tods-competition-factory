@@ -1,4 +1,4 @@
-import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
+import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { modifyEventPublishStatus } from './modifyEventPublishStatus';
 import { getEventPublishStatus } from './getEventPublishStatus';

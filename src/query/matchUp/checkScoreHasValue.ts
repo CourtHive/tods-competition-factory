@@ -1,4 +1,4 @@
-export function scoreHasValue(params) {
+export function checkScoreHasValue(params) {
   const matchUp = params?.matchUp;
   const score = params?.score || matchUp?.score;
 

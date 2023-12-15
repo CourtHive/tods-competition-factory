@@ -1,8 +1,8 @@
 import { addNotes } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveNotes';
-import { scoreHasValue } from '../../../query/matchUp/scoreHasValue';
+import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { updateAssignmentParticipantResults } from './updateAssignmentParticipantResults';
-import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
+import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { decorateResult } from '../../../global/functions/decorateResult';
@@ -133,7 +133,7 @@ export function modifyMatchUpScore({
   if (
     matchUpStatus &&
     !matchUp.winningSide &&
-    scoreHasValue(matchUp) &&
+    checkScoreHasValue(matchUp) &&
     !completedMatchUpStatuses.includes(matchUpStatus) &&
     ![AWAITING_RESULT, SUSPENDED].includes(matchUpStatus)
   ) {
