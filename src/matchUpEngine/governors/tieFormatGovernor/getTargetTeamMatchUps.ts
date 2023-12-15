@@ -1,6 +1,6 @@
 import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
 import { allDrawMatchUps } from '../../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
-import { scoreHasValue } from '../queryGovernor/scoreHasValue';
+import { scoreHasValue } from '../../../query/matchUp/scoreHasValue';
 
 import { MatchUp } from '../../../types/tournamentTypes';
 import { TEAM } from '../../../constants/matchUpTypes';

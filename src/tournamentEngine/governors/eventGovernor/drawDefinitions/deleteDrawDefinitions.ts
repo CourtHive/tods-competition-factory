@@ -1,4 +1,4 @@
-import { scoreHasValue } from '../../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
+import { scoreHasValue } from '../../../../query/matchUp/scoreHasValue';
 import { getAppliedPolicies } from '../../../../global/functions/deducers/getAppliedPolicies';
 import { modifyEventPublishStatus } from '../../publishingGovernor/modifyEventPublishStatus';
 import { getEventPublishStatus } from '../../publishingGovernor/getEventPublishStatus';

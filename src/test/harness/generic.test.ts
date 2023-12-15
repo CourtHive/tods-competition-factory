@@ -1,4 +1,4 @@
-import tournamentEngine from '../../../tournamentEngine/sync';
+import tournamentEngine from '../../tournamentEngine/sync';
 import { expect, test } from 'vitest';
 import fs from 'fs';
 

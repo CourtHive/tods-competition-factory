@@ -1,4 +1,4 @@
-import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
+import { completedMatchUpStatuses } from '../../constants/matchUpStatusConstants';
 
 export function matchUpIsComplete({ matchUp }) {
   return (

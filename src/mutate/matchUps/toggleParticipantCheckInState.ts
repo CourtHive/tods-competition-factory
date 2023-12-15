@@ -1,4 +1,4 @@
-import { getCheckedInParticipantIds } from '../../queries/matchUp/getCheckedInParticipantIds';
+import { getCheckedInParticipantIds } from '../../query/matchUp/getCheckedInParticipantIds';
 import { findMatchUp } from '../../tournamentEngine/getters/matchUpsGetter/findMatchUp';
 import { checkOutParticipant } from './checkOutParticipant';
 import { checkInParticipant } from './checkInParticipant';

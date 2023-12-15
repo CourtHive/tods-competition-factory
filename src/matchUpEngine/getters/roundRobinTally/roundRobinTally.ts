@@ -1,5 +1,5 @@
-import { matchUpIsComplete } from '../../governors/queryGovernor/matchUpIsComplete';
-import { validMatchUps } from '../../governors/queryGovernor/validMatchUp';
+import { matchUpIsComplete } from '../../../query/matchUp/matchUpIsComplete';
+import { validMatchUps } from '../../../validators/validMatchUp';
 import { getDevContext } from '../../../global/state/globalState';
 import { getParticipantResults } from './getParticipantResults';
 import { unique } from '../../../utilities/arrays';

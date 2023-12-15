@@ -11,7 +11,7 @@ import { getMethods } from '../../global/state/syncGlobalState';
 import * as query from '../../../dist/forge/query';
 
 import { deleteDrawDefinitions } from '../../tournamentEngine/governors/eventGovernor/drawDefinitions/deleteDrawDefinitions';
-import { scoreHasValue } from '../../matchUpEngine/governors/queryGovernor/scoreHasValue';
+import { scoreHasValue } from '../../query/matchUp/scoreHasValue';
 
 import {
   METHOD_NOT_FOUND,

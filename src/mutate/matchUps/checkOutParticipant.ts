@@ -1,7 +1,7 @@
-import { scoreHasValue } from '../../matchUpEngine/governors/queryGovernor/scoreHasValue';
-import { getMatchUpParticipantIds } from '../../queries/matchUp/getMatchUpParticipantIds';
-import { getCheckedInParticipantIds } from '../../queries/matchUp/getCheckedInParticipantIds';
-import { findDrawMatchUp } from '../../drawEngine/getters/getMatchUps/findDrawMatchUp';
+import { scoreHasValue } from '../../query/matchUp/scoreHasValue';
+import { getMatchUpParticipantIds } from '../../query/matchUp/getMatchUpParticipantIds';
+import { getCheckedInParticipantIds } from '../../query/matchUp/getCheckedInParticipantIds';
+import { findDrawMatchUp } from '../../acquire/findDrawMatchUp';
 import { addMatchUpTimeItem } from './matchUpTimeItems';
 
 import { CheckInOutParticipantArgs } from '../../types/factoryTypes';

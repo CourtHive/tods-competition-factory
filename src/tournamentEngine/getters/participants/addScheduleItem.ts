@@ -1,4 +1,4 @@
-import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
+import { scoreHasValue } from '../../../query/matchUp/scoreHasValue';
 import { extractDate, extractTime } from '../../../utilities/dateTime';
 
 import { BYE } from '../../../constants/matchUpStatusConstants';

@@ -1,4 +1,4 @@
-import { scoreHasValue } from '../queryGovernor/scoreHasValue';
+import { scoreHasValue } from '../../../query/matchUp/scoreHasValue';
 
 import {
   completedMatchUpStatuses,

@@ -1,4 +1,4 @@
-import { validMatchUps } from '../../matchUpEngine/governors/queryGovernor/validMatchUp';
+import { validMatchUps } from '../../validators/validMatchUp';
 import { getRoundMatchUps } from '../accessors/matchUpAccessor/getRoundMatchUps';
 import { generateRange, makeDeepCopy, unique, UUID } from '../../utilities';
 import { ensureInt } from '../../utilities/ensureInt';

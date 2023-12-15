@@ -1,11 +1,3 @@
-export function getMatchUp({ matchUps, matchUpId }) {
-  const matchUp = (matchUps || []).find(
-    (matchUp) => matchUp.matchUpId === matchUpId
-  );
-
-  return { matchUp };
-}
-
 export function getCollectionPositionMatchUps({ matchUps }) {
   const collectionPositionMatchUpsArray = matchUps
     .reduce((collectionPositions, matchUp) => {

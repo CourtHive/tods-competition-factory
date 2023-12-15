@@ -1,6 +1,6 @@
 import { resolveTieFormat } from '../../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
 import { modifyMatchUpNotice } from '../../../../drawEngine/notifications/drawNotifications';
-import { findDrawMatchUp } from '../../../../drawEngine/getters/getMatchUps/findDrawMatchUp';
+import { findDrawMatchUp } from '../../../../acquire/findDrawMatchUp';
 import { getPairedParticipant } from '../../participantGovernor/getPairedParticipant';
 import { addParticipant } from '../../participantGovernor/addParticipants';
 import { instanceCount } from '../../../../utilities';

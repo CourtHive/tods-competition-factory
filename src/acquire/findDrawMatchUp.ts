@@ -1,25 +1,25 @@
-import { getContextContent } from '../../../tournamentEngine/getters/getContextContent';
-import { getMatchUp } from '../../accessors/matchUpAccessor/matchUps';
-import { getAllStructureMatchUps } from './getAllStructureMatchUps';
-import { getDrawStructures } from '../findStructure';
-import { makeDeepCopy } from '../../../utilities';
+import { getAllStructureMatchUps } from '../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { getContextContent } from '../tournamentEngine/getters/getContextContent';
+import { MatchUpsMap } from '../drawEngine/getters/getMatchUps/getMatchUpsMap';
+import { getMatchUp } from '../query/matchUps/getMatchUpFromMatchUps';
+import { getDrawStructures } from '../drawEngine/getters/findStructure';
+import { makeDeepCopy } from '../utilities';
 
-import { ContextContent, ContextProfile } from '../../../types/factoryTypes';
-import { HydratedMatchUp } from '../../../types/hydrated';
-import { MatchUpsMap } from './getMatchUpsMap';
+import { ContextContent, ContextProfile } from '../types/factoryTypes';
+import { HydratedMatchUp } from '../types/hydrated';
 import {
   ErrorType,
   INVALID_VALUES,
   MATCHUP_NOT_FOUND,
   MISSING_DRAW_DEFINITION,
   MISSING_MATCHUP_ID,
-} from '../../../constants/errorConditionConstants';
+} from '../constants/errorConditionConstants';
 import {
   DrawDefinition,
   Event,
   Participant,
   Structure,
-} from '../../../types/tournamentTypes';
+} from '../types/tournamentTypes';
 
 /*
   public version of findMatchUp

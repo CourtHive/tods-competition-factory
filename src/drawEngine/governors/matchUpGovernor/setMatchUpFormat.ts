@@ -1,5 +1,5 @@
 import { isValid } from '../../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
-import { findDrawMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
+import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { findStructure } from '../../getters/findStructure';
 import {
   modifyDrawNotice,

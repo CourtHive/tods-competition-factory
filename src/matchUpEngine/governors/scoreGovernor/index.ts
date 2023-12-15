@@ -4,7 +4,7 @@ import { validateTieFormat } from '../tieFormatGovernor/tieFormatUtilities';
 import { generateScoreString } from '../../generators/generateScoreString';
 import { validateScore } from '../../../global/validation/validateScore';
 import { checkSetIsComplete, keyValueScore } from './keyValueScore';
-import { scoreHasValue } from '../queryGovernor/scoreHasValue';
+import { scoreHasValue } from '../../../query/matchUp/scoreHasValue';
 import { analyzeSet } from '../../getters/analyzeSet';
 import { reverseScore } from './reverseScore';
 import {

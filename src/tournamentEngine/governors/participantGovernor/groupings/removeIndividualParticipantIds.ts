@@ -1,4 +1,4 @@
-import { scoreHasValue } from '../../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
+import { scoreHasValue } from '../../../../query/matchUp/scoreHasValue';
 import { addExtension } from '../../../../global/functions/producers/addExtension';
 import { getParticipants } from '../../../getters/participants/getParticipants';
 import { addEventEntries } from '../../eventGovernor/entries/addEventEntries';

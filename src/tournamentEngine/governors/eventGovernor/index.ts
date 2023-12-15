@@ -67,7 +67,7 @@ import { addVoluntaryConsolationStructure } from '../../../drawEngine/generators
 import { resetVoluntaryConsolationStructure } from './drawDefinitions/resetVoluntaryConsolationStructure';
 import { deleteFlightProfileAndFlightDraws } from './drawDefinitions/deleteFlightProfileAndFlightDraws';
 import { removeStructure } from '../../../drawEngine/governors/structureGovernor/removeStructure';
-import { toggleParticipantCheckInState } from '../../../mutations/matchUps/toggleParticipantCheckInState';
+import { toggleParticipantCheckInState } from '../../../mutate/matchUps/toggleParticipantCheckInState';
 import { deleteFlightAndFlightDraw } from './drawDefinitions/deleteFlightAndFlightDraw';
 import { refreshEventDrawOrder } from './drawDefinitions/refreshEventDrawOrder';
 import { generateFlightProfile } from '../../generators/generateFlightProfile';
@@ -138,8 +138,8 @@ import { disableTieAutoCalc } from './disableTieAutoCalc';
 import { enableTieAutoCalc } from './enableTieAutoCalc';
 import { modifyEvent } from './modifyEvent';
 
-import { checkOutParticipant } from '../../../mutations/matchUps/checkOutParticipant';
-import { checkInParticipant } from '../../../mutations/matchUps/checkInParticipant';
+import { checkOutParticipant } from '../../../mutate/matchUps/checkOutParticipant';
+import { checkInParticipant } from '../../../mutate/matchUps/checkInParticipant';
 
 const eventGovernor = {
   generateQualifyingStructure,

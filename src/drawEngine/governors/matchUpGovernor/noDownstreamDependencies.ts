@@ -1,5 +1,5 @@
 import { lastSetFormatIsTimed } from '../../../matchUpEngine/governors/matchUpFormatGovernor/lastSetFormatisTimed';
-import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
+import { scoreHasValue } from '../../../query/matchUp/scoreHasValue';
 import { removeDirectedParticipants } from './removeDirectedParticipants';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { attemptToSetMatchUpStatus } from './attemptToSetMatchUpStatus';

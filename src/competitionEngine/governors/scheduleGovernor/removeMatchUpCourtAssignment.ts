@@ -1,7 +1,7 @@
 import { latestVisibleTimeItemValue } from '../../../drawEngine/accessors/matchUpAccessor/latestVisibleTimeItemValue';
 import { assignMatchUpCourt } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpCourt';
-import { addMatchUpTimeItem } from '../../../mutations/matchUps/matchUpTimeItems';
-import { findDrawMatchUp } from '../../../drawEngine/getters/getMatchUps/findDrawMatchUp';
+import { addMatchUpTimeItem } from '../../../mutate/matchUps/matchUpTimeItems';
+import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { getDrawDefinition } from '../../../global/functions/deducers/getDrawDefinition';
 
 import { ALLOCATE_COURTS } from '../../../constants/timeItemConstants';

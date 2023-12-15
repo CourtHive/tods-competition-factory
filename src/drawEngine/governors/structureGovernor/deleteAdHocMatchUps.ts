@@ -1,5 +1,5 @@
 import { updateAssignmentParticipantResults } from '../matchUpGovernor/updateAssignmentParticipantResults';
-import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
+import { scoreHasValue } from '../../../query/matchUp/scoreHasValue';
 import { getMissingSequenceNumbers } from '../../../utilities/arrays';
 import { extractAttributes, unique } from '../../../utilities';
 import {

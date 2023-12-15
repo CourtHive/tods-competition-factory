@@ -16,10 +16,7 @@ import {
   MISSING_STRUCTURE_ID,
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
-import {
-  validMatchUp,
-  validMatchUps,
-} from '../../../matchUpEngine/governors/queryGovernor/validMatchUp';
+import { validMatchUp, validMatchUps } from '../../../validators/validMatchUp';
 
 test('generateDrawDefinition can generate specified number of rounds', () => {
   const participantsCount = 28;

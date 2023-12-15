@@ -1,6 +1,7 @@
 import { getMatchUpParticipantIds } from './getMatchUpParticipantIds';
 
 import { CHECK_IN, CHECK_OUT } from '../../constants/timeItemConstants';
+import { ResultType } from '../../global/functions/decorateResult';
 import { SUCCESS } from '../../constants/resultConstants';
 import { HydratedMatchUp } from '../../types/hydrated';
 import { TimeItem } from '../../types/tournamentTypes';
@@ -9,7 +10,6 @@ import {
   MISSING_CONTEXT,
   MISSING_MATCHUP,
 } from '../../constants/errorConditionConstants';
-import { ResultType } from '../../global/functions/decorateResult';
 
 /*
   takes a matchUpWithContext

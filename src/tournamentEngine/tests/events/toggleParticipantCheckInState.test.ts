@@ -1,4 +1,4 @@
-import { getCheckedInParticipantIds } from '../../../queries/matchUp/getCheckedInParticipantIds';
+import { getCheckedInParticipantIds } from '../../../query/matchUp/getCheckedInParticipantIds';
 
 import competitionEngine from '../../../competitionEngine/sync';
 import mocksEngine from '../../../mocksEngine';

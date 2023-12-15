@@ -1,5 +1,5 @@
-import { scoreHasValue } from '../../matchUpEngine/governors/queryGovernor/scoreHasValue';
-import { validMatchUps } from '../../matchUpEngine/governors/queryGovernor/validMatchUp';
+import { scoreHasValue } from '../../query/matchUp/scoreHasValue';
+import { validMatchUps } from '../../validators/validMatchUp';
 import ratingsParameters from '../../fixtures/ratings/ratingsParameters';
 import { isConvertableInteger } from '../../utilities/math';
 import {
