@@ -226,7 +226,7 @@ export function assignDrawPosition({
       (structure) =>
         structure?.stage === targetStage && structure?.stageSequence === 1
     );
-    const seedAssignments = targetStructure?.seedAssignments || [];
+    const seedAssignments = targetStructure?.seedAssignments ?? [];
     const assignment = seedAssignments.find(
       (assignment) => assignment.participantId === participantId
     );
@@ -285,7 +285,7 @@ export function assignDrawPosition({
       matchUps?.length === 1 &&
       matchUps[0].matchUpType === TEAM
     ) {
-      const sides: any = targetMatchUps?.[0].sides || [];
+      const sides: any = targetMatchUps?.[0].sides ?? [];
       const drawPositionSideIndex = sides.reduce(
         (sideIndex, side, i: number) =>
           drawPositions?.includes(side.drawPosition) ? i : sideIndex,

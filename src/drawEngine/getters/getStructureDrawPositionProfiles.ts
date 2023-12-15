@@ -37,7 +37,7 @@ export function getStructureDrawPositionProfiles(
     if (result.error) return result;
 
     structure = findContainer
-      ? result.containingStructure || result.structure
+      ? result.containingStructure ?? result.structure
       : result.structure;
   }
 

@@ -54,7 +54,7 @@ export function generateBookings({
     {},
     ...Object.values(tournamentRecords)
       .map((tournamentRecord) =>
-        (tournamentRecord.events || []).map((event) => {
+        (tournamentRecord.events ?? []).map((event) => {
           const { scheduleTiming } = getScheduleTiming({
             tournamentRecord,
             event,

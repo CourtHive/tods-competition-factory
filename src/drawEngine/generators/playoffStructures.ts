@@ -110,7 +110,7 @@ export function generatePlayoffStructures(
     `${base}${finishingPositionRange}`;
 
   const structureAbbreviation =
-    customNaming?.abbreviation || attributeProfile?.abbreviation;
+    customNaming?.abbreviation ?? attributeProfile?.abbreviation;
 
   const mainParams = {
     idPrefix: idPrefix && `${idPrefix}-${structureName}-RP`,
@@ -125,7 +125,7 @@ export function generatePlayoffStructures(
     : treeMatchUps(mainParams);
 
   const structure = structureTemplate({
-    structureId: structureId || uuids?.pop(),
+    structureId: structureId ?? uuids?.pop(),
     structureAbbreviation,
     stageSequence,
     structureName,

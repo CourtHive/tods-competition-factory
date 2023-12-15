@@ -48,7 +48,7 @@ export function addGoesTo({
     addFinishingRounds({ matchUps });
   }
 
-  (inContextDrawMatchUps || [])
+  (inContextDrawMatchUps ?? [])
     .filter(({ collectionId }) => !collectionId)
     .forEach((inContextMatchUp) => {
       const { matchUpId, structureId } = inContextMatchUp;
