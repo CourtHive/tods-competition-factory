@@ -88,7 +88,7 @@ export function generatePlayoffStructures(
   const structures: Structure[] = [];
   const links: DrawLink[] = [];
 
-  const matchUpType = params.matchUpType || drawDefinition?.matchUpType;
+  const matchUpType = params.matchUpType ?? drawDefinition?.matchUpType;
 
   const finishingPositionsFrom = finishingPositionOffset + 1;
   const finishingPositionsTo = finishingPositionOffset + drawSize;

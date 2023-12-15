@@ -58,7 +58,7 @@ export function calculateScheduleTimes({
     return { error: MISSING_TOURNAMENT_RECORDS };
 
   periodLength =
-    periodLength ||
+    periodLength ??
     calculatePeriodLength({
       recoveryMinutes: defaultRecoveryMinutes,
       averageMatchUpMinutes,

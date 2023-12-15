@@ -43,7 +43,7 @@ export function generateBookings({
     return { error: MISSING_MATCHUPS };
 
   periodLength =
-    periodLength ||
+    periodLength ??
     calculatePeriodLength({
       recoveryMinutes: defaultRecoveryMinutes,
       averageMatchUpMinutes,
