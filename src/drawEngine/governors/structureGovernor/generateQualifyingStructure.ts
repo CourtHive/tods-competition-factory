@@ -4,8 +4,8 @@ import { addExtension } from '../../../global/functions/producers/addExtension';
 import { coerceEven, isConvertableInteger } from '../../../utilities/math';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import structureTemplate from '../../generators/structureTemplate';
-import { generateRoundRobin } from '../../generators/roundRobin';
-import { treeMatchUps } from '../../generators/eliminationTree';
+import { generateRoundRobin } from '../../../assemblies/generators/drawDefinitions/drawTypes/roundRobin/roundRobin';
+import { treeMatchUps } from '../../../assemblies/generators/drawDefinitions/drawTypes/eliminationTree';
 import { constantToString } from '../../../utilities/strings';
 
 import POLICY_ROUND_NAMING_DEFAULT from '../../../fixtures/policies/POLICY_ROUND_NAMING_DEFAULT';

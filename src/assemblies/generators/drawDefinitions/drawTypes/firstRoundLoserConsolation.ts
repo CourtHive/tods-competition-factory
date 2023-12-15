@@ -1,16 +1,16 @@
-import { constantToString } from '../../utilities/strings';
-import structureTemplate from './structureTemplate';
-import { feedInMatchUps } from './feedInMatchUps';
+import { constantToString } from '../../../../utilities/strings';
+import structureTemplate from '../../../../drawEngine/generators/structureTemplate';
+import { feedInMatchUps } from '../../../../drawEngine/generators/feedInMatchUps';
 import { treeMatchUps } from './eliminationTree';
 
-import { DrawLink, Structure } from '../../types/tournamentTypes';
-import { SUCCESS } from '../../constants/resultConstants';
+import { DrawLink, Structure } from '../../../../types/tournamentTypes';
+import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   MAIN,
   CONSOLATION,
   LOSER,
   TOP_DOWN,
-} from '../../constants/drawDefinitionConstants';
+} from '../../../../constants/drawDefinitionConstants';
 
 export function firstRoundLoserConsolation(params) {
   const {

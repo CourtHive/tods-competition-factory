@@ -11,7 +11,7 @@ export { getRoundContextProfile } from '../../drawEngine/getters/getMatchUps/get
 export { getAssignedParticipantIds } from '../../drawEngine/getters/getAssignedParticipantIds';
 export { getRoundMatchUps } from '../../drawEngine/accessors/matchUpAccessor/getRoundMatchUps';
 export { getPositionAssignments } from '../../drawEngine/getters/positionsGetter';
-export { getValidGroupSizes } from '../../drawEngine/generators/roundRobin';
+export { getValidGroupSizes } from '../../assemblies/generators/drawDefinitions/drawTypes/roundRobin/roundRobin';
 
 // functions
 export { getPolicyDefinitions } from '../../global/functions/deducers/getAppliedPolicies';

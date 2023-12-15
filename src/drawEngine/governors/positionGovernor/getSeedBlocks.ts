@@ -1,4 +1,4 @@
-import { getValidGroupSizes } from '../../generators/roundRobin';
+import { getValidGroupSizes } from '../../../assemblies/generators/drawDefinitions/drawTypes/roundRobin/roundRobin';
 import { isConvertableInteger } from '../../../utilities/math';
 import {
   ResultType,

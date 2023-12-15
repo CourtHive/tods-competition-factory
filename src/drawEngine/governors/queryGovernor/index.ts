@@ -9,7 +9,7 @@ import { getEliminationDrawSize } from '../../getters/getEliminationDrawSize';
 import { getParticipantIdFinishingPositions } from './finishingPositions';
 import { positionActions } from './positionActions/positionActions';
 import { getParticipantIdMatchUps } from './participantIdMatchUps';
-import { getValidGroupSizes } from '../../generators/roundRobin';
+import { getValidGroupSizes } from '../../../assemblies/generators/drawDefinitions/drawTypes/roundRobin/roundRobin';
 import { findStructure } from '../../getters/findStructure';
 import { credits } from '../../../fixtures/credits';
 import { getExitProfiles } from './getExitProfile';

@@ -1,10 +1,10 @@
-import { isConvertableInteger } from '../../utilities/math';
-import { generateRange, isPowerOf2 } from '../../utilities';
-import { addFinishingRounds } from './addFinishingRounds';
-import { generateMatchUpId } from './generateMatchUpId';
-import { ensureInt } from '../../utilities/ensureInt';
+import { isConvertableInteger } from '../../../../utilities/math';
+import { generateRange, isPowerOf2 } from '../../../../utilities';
+import { addFinishingRounds } from '../../../../drawEngine/generators/addFinishingRounds';
+import { generateMatchUpId } from '../../../../drawEngine/generators/generateMatchUpId';
+import { ensureInt } from '../../../../utilities/ensureInt';
 import { treeMatchUps } from './eliminationTree';
-import { buildRound } from './buildRound';
+import { buildRound } from '../../../../drawEngine/generators/buildRound';
 
 export function luckyDraw(params) {
   const {

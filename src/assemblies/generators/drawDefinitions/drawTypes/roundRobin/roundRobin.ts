@@ -1,29 +1,32 @@
-import { addExtension } from '../../global/functions/producers/addExtension';
-import { constantToString } from '../../utilities/strings';
-import { structureTemplate } from './structureTemplate';
-import { generateRange, UUID } from '../../utilities';
+import { structureTemplate } from '../../../../../drawEngine/generators/structureTemplate';
+import { addExtension } from '../../../../../global/functions/producers/addExtension';
+import { constantToString } from '../../../../../utilities/strings';
+import { generateRange, UUID } from '../../../../../utilities';
 import {
   getRoundRobinGroupMatchUps,
   drawPositionsHash,
   groupRounds,
 } from './roundRobinGroups';
 
-import { BYE, TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
-import { MatchUp, EventTypeUnion } from '../../types/tournamentTypes';
-import { ResultType } from '../../global/functions/decorateResult';
-import { ROUND_TARGET } from '../../constants/extensionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
+import { MatchUp, EventTypeUnion } from '../../../../../types/tournamentTypes';
+import { ResultType } from '../../../../../global/functions/decorateResult';
+import { ROUND_TARGET } from '../../../../../constants/extensionConstants';
+import { SUCCESS } from '../../../../../constants/resultConstants';
+import {
+  BYE,
+  TO_BE_PLAYED,
+} from '../../../../../constants/matchUpStatusConstants';
 import {
   MAIN,
   ITEM,
   WIN_RATIO,
   CONTAINER,
-} from '../../constants/drawDefinitionConstants';
+} from '../../../../../constants/drawDefinitionConstants';
 import {
   PlayoffAttributes,
   PolicyDefinitions,
   SeedingProfile,
-} from '../../types/factoryTypes';
+} from '../../../../../types/factoryTypes';
 
 type GenerateRoundRobinArgs = {
   playoffAttributes?: PlayoffAttributes;

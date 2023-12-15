@@ -26,7 +26,7 @@ import { getCategoryAgeDetails } from './global/functions/getCategoryAgeDetails'
 import { checkSetIsComplete } from './matchUpEngine/getters/getSetWinningSide';
 import { getMatchUpContextIds } from './drawEngine/accessors/matchUpAccessor';
 import { parseScoreString } from './mocksEngine/utilities/parseScoreString';
-import { roundRobinGroups } from './drawEngine/generators/roundRobinGroups';
+import { roundRobinGroups } from './assemblies/generators/drawDefinitions/drawTypes/roundRobin/roundRobinGroups';
 import { addExtension } from './global/functions/producers/addExtension';
 import { getSetComplement } from './matchUpEngine/getters/getComplement';
 import { validateCategory } from './global/validation/validateCategory';
