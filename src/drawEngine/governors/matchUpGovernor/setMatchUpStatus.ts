@@ -1,7 +1,7 @@
 import { ensureSideLineUps } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/ensureSideLineUps';
 import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
 import { removeExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
-import { generateTieMatchUpScore } from '../../generators/tieMatchUpScore/generateTieMatchUpScore';
+import { generateTieMatchUpScore } from '../../../assemblies/generators/tieMatchUpScore/generateTieMatchUpScore';
 import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { addExtension } from '../../../global/functions/producers/addExtension';

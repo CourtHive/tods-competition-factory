@@ -1,11 +1,9 @@
 // matchUpEngine
 export { isValid as isValidMatchUpFormat } from '../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
 export { parse as parseMatchUpFormat } from '../../matchUpEngine/governors/matchUpFormatGovernor/parse';
-export { scoreHasValue } from '../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 
 // mocksEngine
 export { parseScoreString } from '../../mocksEngine/utilities/parseScoreString';
-
 // drawEngine
 export { getEligibleVoluntaryConsolationParticipants } from '../../drawEngine/governors/queryGovernor/getEligibleVoluntaryConsolationParticipants';
 export { getOrderedDrawPositions } from '../../drawEngine/getters/getMatchUps/getOrderedDrawPositions';

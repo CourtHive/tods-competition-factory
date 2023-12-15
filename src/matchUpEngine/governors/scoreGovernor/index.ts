@@ -1,4 +1,4 @@
-import { generateTieMatchUpScore } from '../../../drawEngine/generators/tieMatchUpScore/generateTieMatchUpScore';
+import { generateTieMatchUpScore } from '../../../assemblies/generators/tieMatchUpScore/generateTieMatchUpScore';
 import { updateTieMatchUpScore } from '../../../drawEngine/governors/matchUpGovernor/tieMatchUpScore';
 import { validateTieFormat } from '../tieFormatGovernor/tieFormatUtilities';
 import { generateScoreString } from '../../generators/generateScoreString';

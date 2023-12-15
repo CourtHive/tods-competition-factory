@@ -1,5 +1,5 @@
 import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
-import { generateTieMatchUpScore } from '../../generators/tieMatchUpScore/generateTieMatchUpScore';
+import { generateTieMatchUpScore } from '../../../assemblies/generators/tieMatchUpScore/generateTieMatchUpScore';
 import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { MatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
@@ -51,7 +51,7 @@ export function getProjectedDualWinningSide({
   }
 
   tieFormat =
-    tieFormat ||
+    tieFormat ??
     resolveTieFormat({ matchUp, structure, drawDefinition, event })?.tieFormat;
 
   const { winningSide: projectedWinningSide } = generateTieMatchUpScore({

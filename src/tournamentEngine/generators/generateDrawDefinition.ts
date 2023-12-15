@@ -31,7 +31,7 @@ import {
 import {
   DrawMaticArgs,
   drawMatic,
-} from '../../drawEngine/generators/drawMatic/drawMatic';
+} from '../../assemblies/generators/drawDefinitions/drawMatic/drawMatic';
 import {
   extractAttributes,
   generateRange,

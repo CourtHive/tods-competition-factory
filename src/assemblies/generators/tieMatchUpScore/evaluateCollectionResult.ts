@@ -141,15 +141,13 @@ export function evaluateCollectionResult({
         sideCollectionValues[collectionWinningSide - 1] += collectionValue;
       }
     }
+  } else if (belongsToValueGroup) {
+    groupValueGroups[collectionGroupNumber].values[0] +=
+      sideMatchUpValues[0] || 0;
+    groupValueGroups[collectionGroupNumber].values[1] +=
+      sideMatchUpValues[1] || 0;
   } else {
-    if (belongsToValueGroup) {
-      groupValueGroups[collectionGroupNumber].values[0] +=
-        sideMatchUpValues[0] || 0;
-      groupValueGroups[collectionGroupNumber].values[1] +=
-        sideMatchUpValues[1] || 0;
-    } else {
-      sideCollectionValues = sideMatchUpValues;
-    }
+    sideCollectionValues = sideMatchUpValues;
   }
 
   if (!belongsToValueGroup) {

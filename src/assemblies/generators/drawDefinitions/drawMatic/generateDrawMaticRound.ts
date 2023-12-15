@@ -1,28 +1,28 @@
-import { generateAdHocMatchUps } from '../generateAdHocMatchUps';
-import { findStructure } from '../../getters/findStructure';
-import { isObject } from '../../../utilities/objects';
+import { generateAdHocMatchUps } from '../../../../drawEngine/generators/generateAdHocMatchUps';
+import { findStructure } from '../../../../drawEngine/getters/findStructure';
+import { isObject } from '../../../../utilities/objects';
 import { getPairingsData } from './getPairingsData';
 import { getEncounters } from './getEncounters';
 import { getPairings } from './getPairings';
 
-import { ResultType } from '../../../global/functions/decorateResult';
-import { TEAM } from '../../../constants/participantConstants';
-import { HydratedParticipant } from '../../../types/hydrated';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { ResultType } from '../../../../global/functions/decorateResult';
+import { TEAM } from '../../../../constants/participantConstants';
+import { HydratedParticipant } from '../../../../types/hydrated';
+import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_PARTICIPANT_IDS,
   MISSING_STRUCTURE,
   NO_CANDIDATES,
   STRUCTURE_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+} from '../../../../constants/errorConditionConstants';
 import {
   DrawDefinition,
   MatchUp,
   Structure,
   Tournament,
   EventTypeUnion,
-} from '../../../types/tournamentTypes';
+} from '../../../../types/tournamentTypes';
 
 // this should be in policyDefinitions
 const ENCOUNTER_VALUE = 100;

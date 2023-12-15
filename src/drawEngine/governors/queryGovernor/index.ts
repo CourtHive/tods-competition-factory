@@ -1,5 +1,5 @@
 import { getEligibleVoluntaryConsolationParticipants } from './getEligibleVoluntaryConsolationParticipants';
-import { generateTieMatchUpScore } from '../../generators/tieMatchUpScore/generateTieMatchUpScore';
+import { generateTieMatchUpScore } from '../../../assemblies/generators/tieMatchUpScore/generateTieMatchUpScore';
 import { getNextUnfilledDrawPositions } from './positionActions/getNextUnfilledDrawPositions';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';

@@ -1,4 +1,4 @@
-import { extractAttributes } from '../../../utilities';
+import { extractAttributes } from '../../../../utilities';
 import { pairingHash } from './generateCandidate';
 
 export function getEncounters({ matchUps }) {

@@ -7,7 +7,7 @@ import { addFinishingRounds } from '../../generators/addFinishingRounds';
 import { validateScore } from '../../../global/validation/validateScore';
 import { addMatchUpTimeItem, resetMatchUpTimeItems } from './timeItems';
 import { removeDelegatedOutcome } from './removeDelegatedOutcome';
-import { drawMatic } from '../../generators/drawMatic/drawMatic';
+import { drawMatic } from '../../../assemblies/generators/drawDefinitions/drawMatic/drawMatic';
 import { setDelegatedOutcome } from './setDelegatedOutcome';
 import { updateTieMatchUpScore } from './tieMatchUpScore';
 import { validDrawPositions } from './validDrawPositions';

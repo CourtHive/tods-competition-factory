@@ -2,9 +2,9 @@ import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGove
 import { validateTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
 import { tallyParticipantResults } from '../../../matchUpEngine/getters/roundRobinTally/roundRobinTally';
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
-import { findDrawMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
+import { findDrawMatchUp } from '../../../drawEngine/getters/getMatchUps/findDrawMatchUp';
 import { evaluateCollectionResult } from './evaluateCollectionResult';
-import { getGroupValueGroups } from '../getGroupValueGroups';
+import { getGroupValueGroups } from '../../../drawEngine/generators/getGroupValueGroups';
 
 import {
   INVALID_VALUES,
@@ -12,7 +12,7 @@ import {
   MISSING_TIE_FORMAT,
 } from '../../../constants/errorConditionConstants';
 
-import { MatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
+import { MatchUpsMap } from '../../../drawEngine/getters/getMatchUps/getMatchUpsMap';
 import { ResultType } from '../../../global/functions/decorateResult';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import {
