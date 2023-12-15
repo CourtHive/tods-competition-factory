@@ -1,6 +1,7 @@
 import { getCheckedInParticipantIds } from '../../query/matchUp/getCheckedInParticipantIds';
 import { getMatchUpParticipantIds } from '../../query/matchUp/getMatchUpParticipantIds';
-import { findMatchUp } from '../../tournamentEngine/getters/matchUpsGetter/findMatchUp';
+import { checkRequiredParameters } from '../../parameters/checkRequiredParameters';
+import { resolveFromParameters } from '../../parameters/resolveFromParameters';
 import { checkScoreHasValue } from '../../query/matchUp/checkScoreHasValue';
 import { addMatchUpTimeItem } from './matchUpTimeItems';
 
@@ -9,10 +10,6 @@ import { CHECK_OUT } from '../../constants/timeItemConstants';
 import {
   INVALID_ACTION,
   INVALID_PARTICIPANT_ID,
-  MISSING_DRAW_DEFINITION,
-  MISSING_MATCHUP_ID,
-  MISSING_PARTICIPANT_ID,
-  MISSING_TOURNAMENT_RECORD,
   PARTICIPANT_NOT_CHECKED_IN,
 } from '../../constants/errorConditionConstants';
 import {
@@ -20,26 +17,25 @@ import {
   completedMatchUpStatuses,
 } from '../../constants/matchUpStatusConstants';
 
-export function checkOutParticipant({
-  tournamentRecord,
-  drawDefinition,
-  participantId,
-  matchUpId,
-}: CheckInOutParticipantArgs) {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-  if (!participantId) return { error: MISSING_PARTICIPANT_ID };
-  if (!matchUpId) return { error: MISSING_MATCHUP_ID };
+export function checkOutParticipant(params: CheckInOutParticipantArgs) {
+  const requiredParams = [
+    { param: 'tournamentRecord', type: 'object' },
+    { param: 'drawDefinition', type: 'object' },
+    { param: 'participantId' },
+    { param: 'matchUpId' },
+  ];
+  const paramCheck = checkRequiredParameters(params, requiredParams);
+  if (paramCheck.error) return paramCheck;
 
-  const matchUpResult = findMatchUp({
-    tournamentRecord,
-    inContext: true,
-    drawDefinition,
-    matchUpId,
-  });
-  if (matchUpResult.error) return matchUpResult;
+  const resolutions = resolveFromParameters(params, [
+    { param: 'matchUp', attr: { inContext: true } },
+  ]);
+  if (resolutions.error) return resolutions;
 
-  const { matchUpStatus, score } = matchUpResult?.matchUp ?? {};
+  const { tournamentRecord, drawDefinition, participantId, matchUpId } = params;
+  const { matchUp } = resolutions;
+
+  const { matchUpStatus, score } = matchUp ?? {};
 
   if (
     (matchUpStatus && activeMatchUpStatuses.includes(matchUpStatus)) ||
@@ -49,24 +45,21 @@ export function checkOutParticipant({
     return { error: INVALID_ACTION };
   }
 
-  const getCheckedResult =
-    matchUpResult.matchUp &&
-    getCheckedInParticipantIds({
-      matchUp: matchUpResult.matchUp,
-    });
+  const getCheckedResult = getCheckedInParticipantIds({
+    matchUp,
+  });
   if (getCheckedResult?.error) return getCheckedResult;
   const { checkedInParticipantIds, allRelevantParticipantIds } =
     getCheckedResult ?? {};
 
-  if (!allRelevantParticipantIds?.includes(participantId))
+  if (!allRelevantParticipantIds?.includes(participantId)) {
     return { error: INVALID_PARTICIPANT_ID };
+  }
   if (!checkedInParticipantIds?.includes(participantId)) {
     return { error: PARTICIPANT_NOT_CHECKED_IN };
   }
 
-  const getIdsResult =
-    matchUpResult.matchUp &&
-    getMatchUpParticipantIds({ matchUp: matchUpResult.matchUp });
+  const getIdsResult = getMatchUpParticipantIds({ matchUp });
   if (getIdsResult?.error) return getIdsResult;
 
   const { sideParticipantIds, nestedIndividualParticipantIds } =

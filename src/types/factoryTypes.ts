@@ -39,7 +39,7 @@ export type TournamentRecordsArgs = {
 };
 
 export type CheckInOutParticipantArgs = {
-  tournamentRecord?: Tournament;
+  tournamentRecord: Tournament;
   drawDefinition: DrawDefinition;
   matchUp?: HydratedMatchUp;
   participantId: string;

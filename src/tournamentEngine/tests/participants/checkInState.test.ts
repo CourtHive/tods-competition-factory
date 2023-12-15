@@ -198,7 +198,8 @@ it('can check participants in and out', () => {
   });
   expect(result.error).toEqual(MISSING_MATCHUP_ID);
   result = tournamentEngine.checkOutParticipant({
-    matchUp,
+    matchUpId: matchUp.matchUpId,
+    drawId,
   });
   expect(result.error).toEqual(MISSING_PARTICIPANT_ID);
   result = tournamentEngine.checkOutParticipant({
