@@ -1,4 +1,4 @@
-import { isValidExtension } from '../../global/validation/isValidExtension';
+import { isValidExtension } from '../../validators/isValidExtension';
 import { validDateString } from '../../fixtures/validations/regex';
 import { isISODateString } from '../../utilities/dateTime';
 

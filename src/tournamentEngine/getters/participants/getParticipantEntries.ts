@@ -7,7 +7,7 @@ import { extractAttributes as xa, unique } from '../../../utilities';
 import { getEventPublishStatuses } from './getEventPublishStatuses';
 import { getEventSeedAssignments } from './getEventSeedAssignments';
 import { allEventMatchUps } from '../matchUpsGetter/matchUpsGetter';
-import { stringSort } from '../../../global/sorting/stringSort';
+import { stringSort } from '../../../functions/sorters/stringSort';
 import { processEventEntry } from './processEventEntry';
 import { isObject } from '../../../utilities/objects';
 import { getFlightProfile } from '../getFlightProfile';

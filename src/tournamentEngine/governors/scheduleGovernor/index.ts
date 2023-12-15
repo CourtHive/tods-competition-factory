@@ -3,7 +3,7 @@ import { modifyEventMatchUpFormatTiming } from './matchUpFormatTiming/modifyEven
 import { removeEventMatchUpFormatTiming } from './matchUpFormatTiming/removeEventMatchUpFormatTiming';
 import { addMatchUpCourtOrder } from '../../../drawEngine/governors/matchUpGovernor/scheduleItems';
 import { getMatchUpFormatTimingUpdate } from './matchUpFormatTiming/getMatchUpFormatTimingUpdate';
-import { validateSchedulingProfile } from '../../../global/validation/validateSchedulingProfile';
+import { validateSchedulingProfile } from '../../../validators/validateSchedulingProfile';
 import { getModifiedMatchUpFormatTiming } from './matchUpFormatTiming/getModifiedMatchUpTiming';
 import { getEventMatchUpFormatTiming } from './matchUpFormatTiming/getEventMatchUpFormatTiming';
 import { modifyMatchUpFormatTiming } from './matchUpFormatTiming/modifyMatchUpFormatTiming';

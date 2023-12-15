@@ -1,7 +1,7 @@
 import { modifyEventMatchUpFormatTiming } from './matchUpFormatTiming/modifyEventMatchUpFormatTiming';
 import { getMatchUpFormatTimingUpdate } from './matchUpFormatTiming/getMatchUpFormatTimingUpdate';
 import { getEventMatchUpFormatTiming } from './matchUpFormatTiming/getEventMatchUpFormatTiming';
-import { validateSchedulingProfile } from '../../../global/validation/validateSchedulingProfile';
+import { validateSchedulingProfile } from '../../../validators/validateSchedulingProfile';
 import { modifyMatchUpFormatTiming } from './matchUpFormatTiming/modifyMatchUpFormatTiming';
 import { getScheduledRoundsDetails } from './schedulingProfile/getScheduledRoundsDetails';
 import { findMatchUpFormatTiming } from './matchUpFormatTiming/findMatchUpFormatTiming';

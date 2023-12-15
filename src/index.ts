@@ -29,7 +29,7 @@ import { parseScoreString } from './mocksEngine/utilities/parseScoreString';
 import { roundRobinGroups } from './assemblies/generators/drawDefinitions/drawTypes/roundRobin/roundRobinGroups';
 import { addExtension } from './global/functions/producers/addExtension';
 import { getSetComplement } from './matchUpEngine/getters/getComplement';
-import { validateCategory } from './global/validation/validateCategory';
+import { validateCategory } from './validators/validateCategory';
 import { isAdHoc } from './drawEngine/governors/queryGovernor/isAdHoc';
 import { structureSort } from './drawEngine/getters/structureSort';
 import { tidyScore } from './utilities/scoreParser/scoreParser';

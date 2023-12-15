@@ -1,13 +1,13 @@
-import { getAllStructureMatchUps } from '../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
-import { getRoundMatchUps } from '../../drawEngine/accessors/matchUpAccessor/getRoundMatchUps';
-import { getDrawStructures } from '../../drawEngine/getters/findStructure';
-import { isConvertableInteger, isPowerOf2 } from '../../utilities/math';
-import { isValidDateString } from '../../utilities/dateTime';
+import { getAllStructureMatchUps } from '../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { getRoundMatchUps } from '../drawEngine/accessors/matchUpAccessor/getRoundMatchUps';
+import { getDrawStructures } from '../drawEngine/getters/findStructure';
+import { isConvertableInteger, isPowerOf2 } from '../utilities/math';
+import { isValidDateString } from '../utilities/dateTime';
 
 import {
   INVALID_VALUES,
   VENUE_NOT_FOUND,
-} from '../../constants/errorConditionConstants';
+} from '../constants/errorConditionConstants';
 
 export function validateSchedulingProfile({
   tournamentRecords,

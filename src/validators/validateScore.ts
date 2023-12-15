@@ -1,14 +1,14 @@
-import { analyzeScore } from '../../matchUpEngine/getters/analyzeScore';
-import { mustBeAnArray } from '../../utilities/mustBeAnArray';
-import { isConvertableInteger } from '../../utilities/math';
-import { unique } from '../../utilities';
+import { analyzeScore } from '../matchUpEngine/getters/analyzeScore';
+import { mustBeAnArray } from '../utilities/mustBeAnArray';
+import { isConvertableInteger } from '../utilities/math';
+import { unique } from '../utilities';
 
-import type { Score } from '../../types/tournamentTypes';
-import { ResultType } from '../functions/decorateResult';
+import type { Score } from '../types/tournamentTypes';
+import { ResultType } from '../global/functions/decorateResult';
 import {
   INVALID_SCORE,
   INVALID_VALUES,
-} from '../../constants/errorConditionConstants';
+} from '../constants/errorConditionConstants';
 
 type validateScoreTypes = {
   existingMatchUpStatus?: string;

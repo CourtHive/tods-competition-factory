@@ -1,6 +1,6 @@
 import { definedAttributes } from '../../../../utilities/definedAttributes';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
-import { roundSort } from '../../../../global/sorting/roundSort';
+import { roundSort } from '../../../../functions/sorters/roundSort';
 import { extractDate } from '../../../../utilities/dateTime';
 import { getProfileRounds } from './getProfileRounds';
 import { chunkArray } from '../../../../utilities';

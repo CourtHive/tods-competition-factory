@@ -2,7 +2,7 @@ import { generateTieMatchUpScore } from '../../../assemblies/generators/tieMatch
 import { updateTieMatchUpScore } from '../../../drawEngine/governors/matchUpGovernor/tieMatchUpScore';
 import { validateTieFormat } from '../tieFormatGovernor/tieFormatUtilities';
 import { generateScoreString } from '../../generators/generateScoreString';
-import { validateScore } from '../../../global/validation/validateScore';
+import { validateScore } from '../../../validators/validateScore';
 import { checkSetIsComplete, keyValueScore } from './keyValueScore';
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { analyzeSet } from '../../getters/analyzeSet';

@@ -3,7 +3,7 @@ import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchU
 import { publicFindDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { getCheckedInParticipantIds } from '../../../query/matchUp/getCheckedInParticipantIds';
 import { addFinishingRounds } from '../../generators/addFinishingRounds';
-import { validateScore } from '../../../global/validation/validateScore';
+import { validateScore } from '../../../validators/validateScore';
 import {
   addMatchUpTimeItem,
   resetMatchUpTimeItems,

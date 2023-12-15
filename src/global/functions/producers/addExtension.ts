@@ -1,4 +1,4 @@
-import { isValidExtension } from '../../validation/isValidExtension';
+import { isValidExtension } from '../../../validators/isValidExtension';
 import { decorateResult } from '../decorateResult';
 
 import { SUCCESS } from '../../../constants/resultConstants';

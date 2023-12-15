@@ -1,6 +1,6 @@
 import { refreshEntryPositions } from '../../../global/functions/producers/refreshEntryPositions';
 import { addExtension } from '../../../global/functions/producers/addExtension';
-import { isValidExtension } from '../../../global/validation/isValidExtension';
+import { isValidExtension } from '../../../validators/isValidExtension';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { definedAttributes } from '../../../utilities/definedAttributes';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';

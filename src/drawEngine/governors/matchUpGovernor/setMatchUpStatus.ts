@@ -10,7 +10,7 @@ import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { decorateResult } from '../../../global/functions/decorateResult';
-import { validateScore } from '../../../global/validation/validateScore';
+import { validateScore } from '../../../validators/validateScore';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { noDownstreamDependencies } from './noDownstreamDependencies';

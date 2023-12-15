@@ -1,7 +1,7 @@
 import { refreshEntryPositions } from '../../../../global/functions/producers/refreshEntryPositions';
 import { getAppliedPolicies } from '../../../../query/extensions/getAppliedPolicies';
 import { addExtension } from '../../../../global/functions/producers/addExtension';
-import { isValidExtension } from '../../../../global/validation/isValidExtension';
+import { isValidExtension } from '../../../../validators/isValidExtension';
 import { definedAttributes } from '../../../../utilities/definedAttributes';
 import { isUngrouped } from '../../../../global/functions/isUngrouped';
 import { addDrawEntries } from '../drawDefinitions/addDrawEntries';

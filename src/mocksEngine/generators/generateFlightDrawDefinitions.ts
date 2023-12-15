@@ -5,7 +5,7 @@ import { setParticipantScaleItem } from '../../tournamentEngine/governors/partic
 import { generateDrawDefinition } from '../../tournamentEngine/generators/generateDrawDefinition';
 import { getFlightProfile } from '../../tournamentEngine/getters/getFlightProfile';
 import { addExtension } from '../../global/functions/producers/addExtension';
-import { isValidExtension } from '../../global/validation/isValidExtension';
+import { isValidExtension } from '../../validators/isValidExtension';
 import { getParticipantId } from '../../global/functions/extractors';
 import { hasParticipantId } from '../../global/functions/filters';
 import { completeDrawMatchUps } from './completeDrawMatchUps';
