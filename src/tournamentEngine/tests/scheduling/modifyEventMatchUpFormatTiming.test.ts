@@ -67,9 +67,10 @@ it('can modify event timing for matchUpFormat codes', () => {
     60, 60,
   ]);
 
-  const { extension } = tournamentEngine.findEventExtension({
-    eventId,
+  const { extension } = tournamentEngine.findExtension({
     name: SCHEDULE_TIMING,
+    discover: ['event'],
+    eventId,
   });
   expect(extension.value.matchUpRecoveryTimes).toEqual([]);
 

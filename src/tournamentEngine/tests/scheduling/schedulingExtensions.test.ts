@@ -123,8 +123,9 @@ it('can modify timing for multiple matchUpFormat codes', () => {
     averageTimes: [{ categoryTypes: [ADULT], minutes: { default: 137 } }],
     matchUpFormat: shortTB10,
   });
-  let { extension } = tournamentEngine.findTournamentExtension({
+  let { extension } = tournamentEngine.findExtension({
     name: SCHEDULE_TIMING,
+    discover: true,
   });
 
   expect(extension.value.matchUpAverageTimes.length).toEqual(2);
@@ -134,8 +135,9 @@ it('can modify timing for multiple matchUpFormat codes', () => {
     matchUpFormat: shortTB10,
   });
 
-  ({ extension } = tournamentEngine.findTournamentExtension({
+  ({ extension } = tournamentEngine.findExtension({
     name: SCHEDULE_TIMING,
+    discover: true,
   }));
   expect(extension.value.matchUpAverageTimes.length).toEqual(2);
 
@@ -144,8 +146,9 @@ it('can modify timing for multiple matchUpFormat codes', () => {
     matchUpFormat: short3TB7,
   });
 
-  ({ extension } = tournamentEngine.findTournamentExtension({
+  ({ extension } = tournamentEngine.findExtension({
     name: SCHEDULE_TIMING,
+    discover: true,
   }));
   expect(extension.value.matchUpAverageTimes.length).toEqual(3);
 
@@ -159,9 +162,10 @@ it('can modify timing for multiple matchUpFormat codes', () => {
     eventId,
   });
 
-  ({ extension } = tournamentEngine.findEventExtension({
-    eventId,
+  ({ extension } = tournamentEngine.findExtension({
     name: SCHEDULE_TIMING,
+    discover: ['event'],
+    eventId,
   }));
   expect(extension.value.matchUpAverageTimes.length).toEqual(1);
 

@@ -150,7 +150,8 @@ it('can generate QUALIFYING structures when no MAIN structure is specified', () 
   expect(drawDefinition.structures[1].matchUps.length).toEqual(0);
   expect(result.drawDefinition.structures[1].matchUps.length).toEqual(31);
 
-  const existingEntryProfile = tournamentEngine.findDrawDefinitionExtension({
+  const existingEntryProfile = tournamentEngine.findExtension({
+    discover: ['drawDefinition'],
     name: ENTRY_PROFILE,
     drawId,
   }).extension.value;

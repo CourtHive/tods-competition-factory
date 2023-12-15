@@ -1,4 +1,4 @@
-import { findEventExtension } from '../../acquire/findExtensionQueries';
+import { findExtension } from '../../acquire/findExtensionQueries';
 import { intersection } from '../../utilities';
 import { expect, it, test } from 'vitest';
 import mocksEngine from '..';
@@ -54,8 +54,8 @@ test.each(mockProfiles)('it can anonymize tournamentRecords', (mockProfile) => {
       ({ participantId }) => participantId
     );
 
-  let { extension: flightProfile } = findEventExtension({
-    event: tournamentRecord.events[0],
+  let { extension: flightProfile } = findExtension({
+    element: tournamentRecord.events[0],
     name: FLIGHT_PROFILE,
   });
 
@@ -87,8 +87,8 @@ test.each(mockProfiles)('it can anonymize tournamentRecords', (mockProfile) => {
   );
   expect(intersection(originalDrawEntries, drawEntries).length).toEqual(0);
 
-  ({ extension: flightProfile } = findEventExtension({
-    event: tournamentRecord.events[0],
+  ({ extension: flightProfile } = findExtension({
+    element: tournamentRecord.events[0],
     name: FLIGHT_PROFILE,
   }));
   const flightEntries = flightProfile?.value.flights[0].drawEntries.map(

@@ -20,6 +20,7 @@ export const MATCHUP_HISTORY = 'matchUpHistory';
 export const PARTICIPANT_REPRESENTATIVES = 'participantRepresentatives';
 export const PERSON_REQUESTS = 'personRequests';
 export const RANKING_POINTS = 'rankingPoints';
+export const REGISTRATION = 'registration';
 export const ROUND_TARGET = 'roundTarget';
 export const SCHEDULE_LIMITS = 'scheduleLimits';
 export const SCHEDULE_TIMING = 'scheduleTiming';

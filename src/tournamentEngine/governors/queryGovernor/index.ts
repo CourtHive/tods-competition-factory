@@ -37,10 +37,7 @@ import {
 } from '../../getters/matchUpsGetter/matchUpsGetter';
 import {
   findExtension,
-  findEventExtension,
-  findTournamentExtension,
   findParticipantExtension,
-  findDrawDefinitionExtension,
 } from '../../../acquire/findExtensionQueries';
 import {
   getEventTimeItem,
@@ -75,10 +72,7 @@ const queryGovernor = {
   getEvents,
   getEvent,
 
-  findDrawDefinitionExtension,
   findParticipantExtension,
-  findTournamentExtension,
-  findEventExtension,
   findExtension,
 
   getTieFormat,

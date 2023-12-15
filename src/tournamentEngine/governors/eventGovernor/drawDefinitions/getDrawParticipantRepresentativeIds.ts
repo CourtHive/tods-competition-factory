@@ -1,9 +1,9 @@
-import { findDrawDefinitionExtension } from '../../../../acquire/findExtensionQueries';
+import { findExtension } from '../../../../acquire/findExtensionQueries';
 
 export function getDrawParticipantRepresentativeIds({ drawDefinition }) {
-  const result = findDrawDefinitionExtension({
+  const result = findExtension({
     name: 'participantRepresentatives',
-    drawDefinition,
+    element: drawDefinition,
   });
   if (result.error) return result;
 

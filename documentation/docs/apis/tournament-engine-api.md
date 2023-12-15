@@ -1344,26 +1344,6 @@ const { court, venue } = tournamentEngine.findCourt({ courtId });
 
 ---
 
-## findDrawDefinitionExtension
-
-```js
-const { extension } = tournamentEngine.findDrawDefinitionExtension({
-  drawId,
-  eventId,
-  name,
-});
-```
-
----
-
-## findEventExtension
-
-```js
-const { extension } = tournamentEngine.findEventExtension({ eventId, name });
-```
-
----
-
 ## findMatchUp
 
 ```js

@@ -122,11 +122,11 @@ test.each([
       if (!result.success) {
         const { tournamentRecord } = tournamentEngine.getState();
         const { drawId } = tournamentRecord.events[0].drawDefinitions[0];
-        const { extension: positionActions } =
-          tournamentEngine.findDrawDefinitionExtension({
-            name: AUDIT_POSITION_ACTIONS,
-            drawId,
-          });
+        const { extension: positionActions } = tournamentEngine.findExtension({
+          name: AUDIT_POSITION_ACTIONS,
+          discover: ['drawDefinition'],
+          drawId,
+        });
         positionActionErrorScenarios.push({
           positionActions,
           drawType,
