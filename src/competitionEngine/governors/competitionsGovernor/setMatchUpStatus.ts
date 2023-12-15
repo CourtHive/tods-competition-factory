@@ -1,4 +1,4 @@
-import { findEvent } from '../../../tournamentEngine/getters/findEvent';
+import { findEvent } from '../../../acquire/findEvent';
 import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
 import { findTournamentId } from './findTournamentId';
 import {

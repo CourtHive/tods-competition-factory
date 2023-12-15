@@ -4,7 +4,7 @@ import { getPositionAssignments } from '../../../drawEngine/getters/positionsGet
 import { findStructure } from '../../../drawEngine/getters/findStructure';
 import { structureSort } from '../../../drawEngine/getters/structureSort';
 import { hasParticipantId } from '../../../global/functions/filters';
-import { findExtension } from '../queryGovernor/extensionQueries';
+import { findExtension } from '../../../acquire/findExtensionQueries';
 import { getStructureGroups } from './getStructureGroups';
 import { makeDeepCopy } from '../../../utilities';
 

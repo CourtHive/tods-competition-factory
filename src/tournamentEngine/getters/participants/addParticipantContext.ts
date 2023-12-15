@@ -2,7 +2,7 @@ import { getMatchUpDependencies } from '../../../competitionEngine/governors/sch
 import { getEventPublishStatus } from '../../governors/publishingGovernor/getEventPublishStatus';
 import { getDrawPublishStatus } from '../../governors/publishingGovernor/getDrawPublishStatus';
 import { getDerivedPositionAssignments } from './getDerivedPositionAssignments';
-import { findExtension } from '../../governors/queryGovernor/extensionQueries';
+import { findExtension } from '../../../acquire/findExtensionQueries';
 import { getRelevantParticipantIdsMap } from './getRelevantParticipantIdsMap';
 import { getDerivedSeedAssignments } from './getDerivedSeedAssignments';
 import { definedAttributes } from '../../../utilities/definedAttributes';
@@ -10,7 +10,7 @@ import { getTimeItem } from '../../governors/queryGovernor/timeItems';
 import { allEventMatchUps } from '../matchUpsGetter/matchUpsGetter';
 import { annotateParticipant } from './annotateParticipant';
 import { isObject } from '../../../utilities/objects';
-import { getFlightProfile } from '../getFlightProfile';
+import { getFlightProfile } from '../../../query/event/getFlightProfile';
 import { makeDeepCopy } from '../../../utilities';
 import { getDrawDetails } from './getDrawDetails';
 import { processMatchUp } from './processMatchUp';

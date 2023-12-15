@@ -1,4 +1,4 @@
-import { findEventExtension } from '../governors/queryGovernor/extensionQueries';
+import { findEventExtension } from '../../acquire/findExtensionQueries';
 import { makeDeepCopy } from '../../utilities';
 
 import { MISSING_EVENT } from '../../constants/errorConditionConstants';

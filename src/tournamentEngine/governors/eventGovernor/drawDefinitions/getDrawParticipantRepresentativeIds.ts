@@ -1,4 +1,4 @@
-import { findDrawDefinitionExtension } from '../../queryGovernor/extensionQueries';
+import { findDrawDefinitionExtension } from '../../../../acquire/findExtensionQueries';
 
 export function getDrawParticipantRepresentativeIds({ drawDefinition }) {
   const result = findDrawDefinitionExtension({

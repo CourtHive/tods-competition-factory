@@ -30,8 +30,8 @@ export { getEventData } from '../../tournamentEngine/governors/publishingGoverno
 export { getSeedsCount } from '../../tournamentEngine/governors/policyGovernor/getSeedsCount';
 export { participantScaleItem } from '../../tournamentEngine/accessors/participantScaleItem';
 export { getTimeItem } from '../../tournamentEngine/governors/queryGovernor/timeItems';
-export { findMatchUp } from '../../tournamentEngine/getters/matchUpsGetter/findMatchUp';
-export { getFlightProfile } from '../../tournamentEngine/getters/getFlightProfile';
+export { findMatchUp } from '../../acquire/findMatchUp';
+export { getFlightProfile } from '../../query/event/getFlightProfile';
 export {
   allTournamentMatchUps,
   allDrawMatchUps,

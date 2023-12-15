@@ -1,7 +1,7 @@
 import { addParticipants } from '../governors/participantGovernor/addParticipants';
 import { participantScaleItem } from '../accessors/participantScaleItem';
 import { getParticipantId } from '../../global/functions/extractors';
-import { getFlightProfile } from '../getters/getFlightProfile';
+import { getFlightProfile } from '../../query/event/getFlightProfile';
 import { isConvertableInteger } from '../../utilities/math';
 import { generateRange } from '../../utilities';
 

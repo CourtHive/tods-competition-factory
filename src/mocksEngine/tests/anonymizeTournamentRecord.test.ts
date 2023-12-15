@@ -1,4 +1,4 @@
-import { findEventExtension } from '../../tournamentEngine/governors/queryGovernor/extensionQueries';
+import { findEventExtension } from '../../acquire/findExtensionQueries';
 import { intersection } from '../../utilities';
 import { expect, it, test } from 'vitest';
 import mocksEngine from '..';

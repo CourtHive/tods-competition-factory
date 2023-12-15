@@ -1,5 +1,5 @@
 import { findTournamentId } from '../../../competitionEngine/governors/competitionsGovernor/findTournamentId';
-import { findEvent } from '../../../tournamentEngine/getters/findEvent';
+import { findEvent } from '../../../acquire/findEvent';
 import { decorateResult } from '../decorateResult';
 import {
   DrawDefinition,

@@ -1,4 +1,4 @@
-import { getFlightProfile } from '../../tournamentEngine/getters/getFlightProfile';
+import { getFlightProfile } from '../../query/event/getFlightProfile';
 import { mocksEngine, tournamentEngine, competitionEngine } from '../..';
 import { expect, test } from 'vitest';
 

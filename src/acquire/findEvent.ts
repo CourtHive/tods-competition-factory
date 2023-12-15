@@ -1,15 +1,12 @@
-import { getFlightProfile } from './getFlightProfile';
-import {
-  ResultType,
-  decorateResult,
-} from '../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../global/functions/decorateResult';
+import { getFlightProfile } from '../query/event/getFlightProfile';
 
+import { DrawDefinition, Tournament, Event } from '../types/tournamentTypes';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   EVENT_NOT_FOUND,
   MISSING_TOURNAMENT_RECORD,
-} from '../../constants/errorConditionConstants';
-import { DrawDefinition, Tournament, Event } from '../../types/tournamentTypes';
+} from '../constants/errorConditionConstants';
 
 // INTERNAL_USE: to resovle events by eventId or drawId
 type FindEventArgs = {

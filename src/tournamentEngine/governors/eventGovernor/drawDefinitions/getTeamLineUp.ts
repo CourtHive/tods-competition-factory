@@ -1,4 +1,4 @@
-import { findExtension } from '../../queryGovernor/extensionQueries';
+import { findExtension } from '../../../../acquire/findExtensionQueries';
 
 import { LINEUPS } from '../../../../constants/extensionConstants';
 import {

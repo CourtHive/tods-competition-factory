@@ -12,10 +12,10 @@ import { getDrawStructures } from '../../../../drawEngine/getters/findStructure'
 import { decorateResult } from '../../../../global/functions/decorateResult';
 import { definedAttributes } from '../../../../utilities/definedAttributes';
 import { publishEvent } from '../../publishingGovernor/publishEvent';
-import { getFlightProfile } from '../../../getters/getFlightProfile';
+import { getFlightProfile } from '../../../../query/event/getFlightProfile';
 import { addNotice } from '../../../../global/state/globalState';
 import { makeDeepCopy } from '../../../../utilities';
-import { findEvent } from '../../../getters/findEvent';
+import { findEvent } from '../../../../acquire/findEvent';
 import {
   deleteDrawNotice,
   deleteMatchUpsNotice,

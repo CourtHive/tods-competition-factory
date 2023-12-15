@@ -4,7 +4,7 @@ import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies
 import { definedAttributes } from '../../../utilities/definedAttributes';
 import { hydrateParticipants } from './hydrateParticipants';
 import { getContextContent } from '../getContextContent';
-import { getFlightProfile } from '../getFlightProfile';
+import { getFlightProfile } from '../../../query/event/getFlightProfile';
 import {
   getAllDrawMatchUps,
   getDrawMatchUps,

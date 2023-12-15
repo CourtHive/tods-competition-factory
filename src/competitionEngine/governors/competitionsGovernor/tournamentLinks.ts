@@ -1,5 +1,5 @@
-import { findTournamentExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 import { addExtension, removeExtension } from './competitionExtentions';
+import { findExtension } from '../../../acquire/findExtensionQueries';
 import {
   ResultType,
   decorateResult,
@@ -36,8 +36,8 @@ export function getLinkedTournamentIds({
       const tournamentRecord = tournamentRecords[tournamentId];
       const touranmentId = tournamentRecord?.tournamentId;
 
-      const { extension } = findTournamentExtension({
-        tournamentRecord,
+      const { extension } = findExtension({
+        element: tournamentRecord,
         name: LINKED_TOURNAMENTS,
       });
 
@@ -126,9 +126,9 @@ export function unlinkTournament({
   tournamentIds.every((currentTournamentId) => {
     const tournamentRecord = tournamentRecords[currentTournamentId];
 
-    const { extension } = findTournamentExtension({
+    const { extension } = findExtension({
+      element: tournamentRecord,
       name: LINKED_TOURNAMENTS,
-      tournamentRecord,
     });
 
     // if there is no extension return { ...SUCCESS } because no links exist

@@ -1,5 +1,5 @@
 import { removeEventExtension } from '../../tournamentGovernor/addRemoveExtensions';
-import { getFlightProfile } from '../../../getters/getFlightProfile';
+import { getFlightProfile } from '../../../../query/event/getFlightProfile';
 import { deleteDrawDefinitions } from './deleteDrawDefinitions';
 
 import { FLIGHT_PROFILE } from '../../../../constants/extensionConstants';

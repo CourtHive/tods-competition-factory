@@ -1414,14 +1414,6 @@ const { policy } = tournamentEngine.findPolicy({
 
 ---
 
-## findTournamentExtension
-
-```js
-const { extension } = tournamentEngine.findTournamentExtension({ name });
-```
-
----
-
 ## findVenue
 
 Returns a complete venue object. Primarily used internally.

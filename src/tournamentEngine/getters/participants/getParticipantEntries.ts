@@ -10,7 +10,7 @@ import { allEventMatchUps } from '../matchUpsGetter/matchUpsGetter';
 import { stringSort } from '../../../functions/sorters/stringSort';
 import { processEventEntry } from './processEventEntry';
 import { isObject } from '../../../utilities/objects';
-import { getFlightProfile } from '../getFlightProfile';
+import { getFlightProfile } from '../../../query/event/getFlightProfile';
 import { addScheduleItem } from './addScheduleItem';
 import { processSides } from './processSides';
 

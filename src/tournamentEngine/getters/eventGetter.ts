@@ -2,7 +2,7 @@ import { getAssignedParticipantIds } from '../../drawEngine/getters/getAssignedP
 import { extractAttributes as xa, makeDeepCopy } from '../../utilities';
 import { definedAttributes } from '../../utilities/definedAttributes';
 import { getParticipants } from './participants/getParticipants';
-import { getFlightProfile } from './getFlightProfile';
+import { getFlightProfile } from '../../query/event/getFlightProfile';
 import { median } from '../../utilities/math';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';

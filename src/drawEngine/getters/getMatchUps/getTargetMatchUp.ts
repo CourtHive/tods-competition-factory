@@ -1,4 +1,4 @@
-import { findExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
+import { findExtension } from '../../../acquire/findExtensionQueries';
 import { findStructure } from '../../../drawEngine/getters/findStructure';
 import { getDevContext } from '../../../global/state/globalState';
 import { chunkArray, generateRange } from '../../../utilities';

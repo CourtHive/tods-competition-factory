@@ -1,4 +1,4 @@
-import { findExtension } from '../../governors/queryGovernor/extensionQueries';
+import { findExtension } from '../../../acquire/findExtensionQueries';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { generateTeamTournament } from './generateTestTeamTournament';
 import { intersection } from '../../../utilities';

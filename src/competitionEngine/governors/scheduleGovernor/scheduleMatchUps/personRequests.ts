@@ -1,8 +1,8 @@
 import { addTournamentExtension } from '../../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
-import { findTournamentExtension } from '../../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 import { findParticipant } from '../../../../global/functions/deducers/findParticipant';
 import { removeExtension } from '../../competitionsGovernor/competitionExtentions';
 import { extractDate, extractTime } from '../../../../utilities/dateTime';
+import { findExtension } from '../../../../acquire/findExtensionQueries';
 import { generateTimeCode } from '../../../../utilities';
 
 import { PERSON_REQUESTS } from '../../../../constants/extensionConstants';
@@ -38,9 +38,9 @@ export function getPersonRequests({
   // create merged view of person requests across tournamentRecords
   // ... possible for a person to be in multiple linked tournamentRecords
   for (const tournamentRecord of Object.values(tournamentRecords)) {
-    const { extension } = findTournamentExtension({
+    const { extension } = findExtension({
+      element: tournamentRecord,
       name: PERSON_REQUESTS,
-      tournamentRecord,
     });
 
     const requestObjects = extension?.value || [];

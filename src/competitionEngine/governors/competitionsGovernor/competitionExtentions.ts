@@ -1,7 +1,7 @@
-import { findTournamentExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
+import { findExtension as extensionFind } from '../../../acquire/findExtensionQueries';
 import { isValidExtension } from '../../../validators/isValidExtension';
 import { decorateResult } from '../../../global/functions/decorateResult';
-import { findEvent } from '../../../tournamentEngine/getters/findEvent';
+import { findEvent } from '../../../acquire/findEvent';
 import {
   addEventExtension as addExtensionToEvent,
   addTournamentExtension,
@@ -51,8 +51,8 @@ export function findExtension({
   let foundExtension;
   const tournamentId = Object.keys(tournamentRecords).find((tournamentId) => {
     const tournamentRecord = tournamentRecords[tournamentId];
-    const { extension } = findTournamentExtension({
-      tournamentRecord,
+    const { extension } = extensionFind({
+      element: tournamentRecord,
       name,
     });
     foundExtension = extension;

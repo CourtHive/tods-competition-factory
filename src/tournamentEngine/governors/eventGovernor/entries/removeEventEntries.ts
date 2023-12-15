@@ -2,7 +2,7 @@ import { getAssignedParticipantIds } from '../../../../drawEngine/getters/getAss
 import { refreshEntryPositions } from '../../../../global/functions/producers/refreshEntryPositions';
 import { intersection, extractAttributes as xa } from '../../../../utilities';
 import { decorateResult } from '../../../../global/functions/decorateResult';
-import { getFlightProfile } from '../../../getters/getFlightProfile';
+import { getFlightProfile } from '../../../../query/event/getFlightProfile';
 import { isString } from '../../../../utilities/objects';
 
 import { HydratedParticipant } from '../../../../types/hydrated';

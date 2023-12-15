@@ -1,8 +1,5 @@
+import { findExtension } from '../../../../acquire/findExtensionQueries';
 import { findPolicy } from '../../policyGovernor/findPolicy';
-import {
-  findEventExtension,
-  findTournamentExtension,
-} from '../../queryGovernor/extensionQueries';
 
 import { POLICY_TYPE_SCHEDULING } from '../../../../constants/policyConstants';
 import { SCHEDULE_TIMING } from '../../../../constants/extensionConstants';
@@ -35,18 +32,18 @@ export function getScheduleTiming({
   });
 
   const tournamentExtension = tournamentRecord
-    ? findTournamentExtension({
+    ? findExtension({
+        element: tournamentRecord,
         name: SCHEDULE_TIMING,
-        tournamentRecord,
       }).extension
     : undefined;
   const tournamentScheduling = tournamentExtension?.value;
 
   const eventExtension =
     event &&
-    findEventExtension({
+    findExtension({
       name: SCHEDULE_TIMING,
-      event,
+      element: event,
     }).extension;
   const eventScheduling = eventExtension?.value;
 

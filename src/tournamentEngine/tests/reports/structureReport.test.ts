@@ -1,4 +1,4 @@
-import { findTournamentExtension } from '../../governors/queryGovernor/extensionQueries';
+import { findExtension } from '../../../acquire/findExtensionQueries';
 import { instanceCount } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
@@ -25,13 +25,13 @@ it.skip.each(filenames)(
       if (
         (tournamentRecord?.extensions || []).find((e) => e?.name === 'level')
       ) {
-        const districtCode = findTournamentExtension({
+        const districtCode = findExtension({
+          element: tournamentRecord,
           name: 'districtCode',
-          tournamentRecord,
         })?.extension?.value;
-        const sectionCode = findTournamentExtension({
+        const sectionCode = findExtension({
+          element: tournamentRecord,
           name: 'sectionCode',
-          tournamentRecord,
         })?.extension?.value;
 
         if (sectionCode && districtCode) {

@@ -1,5 +1,5 @@
 import { addDrawDefinition as addDefinition } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/addDrawDefinition';
-import { findEvent } from '../../../tournamentEngine/getters/findEvent';
+import { findEvent } from '../../../acquire/findEvent';
 import { findTournamentId } from './findTournamentId';
 
 import { TournamentRecordsArgs } from '../../../types/factoryTypes';

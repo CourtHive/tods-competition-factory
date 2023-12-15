@@ -1,6 +1,6 @@
 import { isValid } from '../../../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
 import { definedAttributes } from '../../../../utilities/definedAttributes';
-import { findEventExtension } from '../../queryGovernor/extensionQueries';
+import { findEventExtension } from '../../../../acquire/findExtensionQueries';
 import { getMatchUpFormatTiming } from './getMatchUpFormatTiming';
 import { findPolicy } from '../../policyGovernor/findPolicy';
 import { unique } from '../../../../utilities';

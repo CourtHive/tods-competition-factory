@@ -1,4 +1,4 @@
-import { findDrawDefinitionExtension } from '../../tournamentEngine/governors/queryGovernor/extensionQueries';
+import { findDrawDefinitionExtension } from '../../acquire/findExtensionQueries';
 
 import { ENTRY_PROFILE } from '../../constants/extensionConstants';
 import { DrawDefinition } from '../../types/tournamentTypes';

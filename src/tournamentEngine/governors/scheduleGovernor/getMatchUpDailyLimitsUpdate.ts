@@ -1,21 +1,22 @@
-import {
-  findEventExtension,
-  findTournamentExtension,
-} from '../queryGovernor/extensionQueries';
+import { checkRequiredParameters } from '../../../parameters/checkRequiredParameters';
+import { findExtension } from '../../../acquire/findExtensionQueries';
 
-import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 import { SCHEDULE_LIMITS } from '../../../constants/extensionConstants';
 
-export function getMatchUpDailyLimitsUpdate({ tournamentRecord }) {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+export function getMatchUpDailyLimitsUpdate(params) {
+  const paramCheck = checkRequiredParameters(params, [
+    { param: 'tournamentRecord' },
+  ]);
+  if (paramCheck.error) return paramCheck;
 
-  const methods: any[] = [];
+  const { tournamentRecord } = params;
 
-  const { extension } = findTournamentExtension({
+  const { extension } = findExtension({
+    element: tournamentRecord,
     name: SCHEDULE_LIMITS,
-    tournamentRecord,
   });
 
+  const methods: any[] = [];
   if (extension) {
     methods.push({
       method: 'addTournamentExtension',
@@ -27,9 +28,9 @@ export function getMatchUpDailyLimitsUpdate({ tournamentRecord }) {
 
   for (const event of tournamentEvents) {
     const { eventId } = event;
-    const { extension } = findEventExtension({
+    const { extension } = findExtension({
       name: SCHEDULE_LIMITS,
-      event,
+      element: event,
     });
     if (extension) {
       methods.push({

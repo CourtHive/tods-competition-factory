@@ -1,7 +1,7 @@
 import { completeDrawMatchUps } from '../../../mocksEngine/generators/completeDrawMatchUps';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import { getDrawPosition } from '../../../global/functions/extractors';
-import { findEvent } from '../../../tournamentEngine/getters/findEvent';
+import { findEvent } from '../../../acquire/findEvent';
 import { extractAttributes, shuffleArray } from '../../../utilities';
 import { hasParticipantId } from '../../../global/functions/filters';
 import tournamentEngine from '../../../tournamentEngine/sync';
