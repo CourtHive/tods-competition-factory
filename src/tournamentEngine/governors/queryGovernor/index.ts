@@ -11,6 +11,7 @@ import { publicFindMatchUp } from '../../../acquire/findMatchUp';
 import { getVenuesAndCourts, findVenue } from '../../getters/venueGetter';
 import { getCourts, publicFindCourt } from '../../getters/courtGetter';
 import { getParticipantScaleItem } from './getParticipantScaleItem';
+import { findExtension } from '../../../acquire/findExtensionQueries';
 import { getMatchUpFormat } from '../../getters/getMatchUpFormat';
 import { getMatchUpsStats } from '../../getters/getMatchUpsStats';
 import { getEvent, getEvents } from '../../getters/eventGetter';
@@ -35,10 +36,6 @@ import {
   eventMatchUps,
   drawMatchUps,
 } from '../../getters/matchUpsGetter/matchUpsGetter';
-import {
-  findExtension,
-  findParticipantExtension,
-} from '../../../acquire/findExtensionQueries';
 import {
   getEventTimeItem,
   getTournamentTimeItem,
@@ -72,7 +69,6 @@ const queryGovernor = {
   getEvents,
   getEvent,
 
-  findParticipantExtension,
   findExtension,
 
   getTieFormat,

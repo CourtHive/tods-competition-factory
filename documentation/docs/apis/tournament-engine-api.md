@@ -1370,17 +1370,6 @@ const { participant } = tournamentEngine.findParticipant({
 
 ---
 
-## findParticipantExtension
-
-```js
-const { extension } = tournamentEngine.findParticipantExtension({
-  participantId,
-  name,
-});
-```
-
----
-
 ## findPolicy
 
 Find `policyType` either on an event object or the tournamentRecord.

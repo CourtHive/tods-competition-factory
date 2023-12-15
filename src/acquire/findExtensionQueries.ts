@@ -1,12 +1,6 @@
-import { findTournamentParticipant } from '../tournamentEngine/getters/participants/participantGetter';
 import { ResultType, decorateResult } from '../global/functions/decorateResult';
-import { Extension, Tournament } from '../types/tournamentTypes';
-import {
-  MISSING_PARTICIPANT_ID,
-  MISSING_TOURNAMENT_RECORD,
-  MISSING_VALUE,
-  NOT_FOUND,
-} from '../constants/errorConditionConstants';
+import { MISSING_VALUE, NOT_FOUND } from '../constants/errorConditionConstants';
+import { Extension } from '../types/tournamentTypes';
 
 const stack = 'extensionQueries';
 
@@ -60,30 +54,4 @@ export function findExtension({
   const info = !extension ? NOT_FOUND : undefined;
 
   return { extension, info };
-}
-
-type FindParticipantExtensionType = {
-  tournamentRecord: Tournament;
-  participantId: string;
-  name: string;
-};
-
-export function findParticipantExtension({
-  tournamentRecord,
-  participantId,
-  name,
-}: FindParticipantExtensionType) {
-  if (!tournamentRecord)
-    return decorateResult({
-      result: { error: MISSING_TOURNAMENT_RECORD },
-      stack,
-    });
-  if (!participantId)
-    return decorateResult({ result: { error: MISSING_PARTICIPANT_ID }, stack });
-
-  const { participant } = findTournamentParticipant({
-    tournamentRecord,
-    participantId,
-  });
-  return findExtension({ element: participant, name });
 }
