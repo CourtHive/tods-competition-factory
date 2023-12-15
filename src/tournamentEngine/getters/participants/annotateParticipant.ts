@@ -1,5 +1,5 @@
 import { participantScheduledMatchUps } from '../../governors/queryGovernor/participantScheduledMatchUps';
-import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
+import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { addNationalityCode } from '../../governors/participantGovernor/addNationalityCode';
 import { extractTime, timeStringMinutes } from '../../../utilities/dateTime';
 import { participantScaleItem } from '../../accessors/participantScaleItem';
@@ -307,7 +307,7 @@ export function annotateParticipant(params) {
       const ignoreMatchUp =
         matchUpStatus === BYE ||
         ([WALKOVER, DEFAULTED].includes(matchUpStatus) &&
-          !scoreHasValue({ score }));
+          !checkScoreHasValue({ score }));
 
       if (scheduledTime && !ignoreMatchUp) {
         const scheduledMinutes = timeStringMinutes(scheduledTime);
@@ -319,7 +319,7 @@ export function annotateParticipant(params) {
           const ignoreMatchUp =
             consideredMatchUp.matchUpStatus === BYE ||
             ([WALKOVER, DEFAULTED].includes(consideredMatchUp.matchUpStatus) &&
-              !scoreHasValue(consideredMatchUp));
+              !checkScoreHasValue(consideredMatchUp));
 
           if (!ignoreMatchUp && consideredMatchUp.schedule?.scheduledTime) {
             // if there is a matchType change (SINGLES => DOUBLES or vice versa) then there is potentially a different timeAfterRecovery

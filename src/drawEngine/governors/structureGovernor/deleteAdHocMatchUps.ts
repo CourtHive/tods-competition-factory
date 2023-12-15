@@ -1,5 +1,5 @@
 import { updateAssignmentParticipantResults } from '../matchUpGovernor/updateAssignmentParticipantResults';
-import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
+import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { getMissingSequenceNumbers } from '../../../utilities/arrays';
 import { extractAttributes, unique } from '../../../utilities';
 import {
@@ -64,7 +64,8 @@ export function deleteAdHocMatchUps({
   const matchUpIdsWithScoreValue: string[] = [];
   const matchUpsToDelete =
     existingMatchUps?.filter(({ matchUpId, score }) => {
-      if (scoreHasValue({ score })) matchUpIdsWithScoreValue.push(matchUpId);
+      if (checkScoreHasValue({ score }))
+        matchUpIdsWithScoreValue.push(matchUpId);
       return matchUpIds.includes(matchUpId);
     }) ?? [];
   const matchUpIdsToDelete = matchUpsToDelete.map(

@@ -1,4 +1,4 @@
-import { validateSchedulingProfile } from '../../../../global/validation/validateSchedulingProfile';
+import { validateSchedulingProfile } from '../../../../validators/validateSchedulingProfile';
 import { getCompetitionDateRange } from '../../queryGovernor/getCompetitionDateRange';
 import { getEventIdsAndDrawIds } from '../../../getters/getEventIdsAndDrawIds';
 import { getCompetitionVenues } from '../../../getters/venuesAndCourtsGetter';

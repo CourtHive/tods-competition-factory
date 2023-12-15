@@ -1,4 +1,4 @@
-import { validMatchUps } from '../../../matchUpEngine/governors/queryGovernor/validMatchUp';
+import { validMatchUps } from '../../../validators/validMatchUp';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 

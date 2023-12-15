@@ -1,4 +1,4 @@
-import { getPolicyDefinitions } from '../../../global/functions/deducers/getAppliedPolicies';
+import { getPolicyDefinitions } from '../../../query/extensions/getAppliedPolicies';
 import { getEliminationDrawSize } from '../../../drawEngine/getters/getEliminationDrawSize';
 import { isConvertableInteger } from '../../../utilities/math';
 import {

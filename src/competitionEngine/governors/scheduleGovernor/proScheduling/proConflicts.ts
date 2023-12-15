@@ -1,4 +1,4 @@
-import { validMatchUps } from '../../../../matchUpEngine/governors/queryGovernor/validMatchUp';
+import { validMatchUps } from '../../../../validators/validMatchUp';
 import { getMatchUpDependencies } from '../scheduleMatchUps/getMatchUpDependencies';
 import { generateRange, instanceCount, unique } from '../../../../utilities';
 import { matchUpSort } from '../../../../drawEngine/getters/matchUpSort';

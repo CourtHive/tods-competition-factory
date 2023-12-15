@@ -1,4 +1,4 @@
-import { validateScore } from '../../../global/validation/validateScore';
+import { validateScore } from '../../../validators/validateScore';
 import { analyzeScore } from '../../../matchUpEngine/getters/analyzeScore';
 import mocksEngine from '../../../mocksEngine';
 import { it, test, expect } from 'vitest';

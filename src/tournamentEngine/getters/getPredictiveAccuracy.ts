@@ -1,5 +1,5 @@
-import { scoreHasValue } from '../../matchUpEngine/governors/queryGovernor/scoreHasValue';
-import { validMatchUps } from '../../matchUpEngine/governors/queryGovernor/validMatchUp';
+import { checkScoreHasValue } from '../../query/matchUp/checkScoreHasValue';
+import { validMatchUps } from '../../validators/validMatchUp';
 import ratingsParameters from '../../fixtures/ratings/ratingsParameters';
 import { isConvertableInteger } from '../../utilities/math';
 import {
@@ -141,7 +141,7 @@ export function getPredictiveAccuracy(params: getPredictiveAccuracyArgs) {
       ![RETIRED, DEFAULTED, WALKOVER, DEAD_RUBBER, ABANDONED].includes(
         matchUpStatus ?? ''
       ) &&
-      scoreHasValue({ score }) &&
+      checkScoreHasValue({ score }) &&
       sides?.length === 2 &&
       winningSide
   );

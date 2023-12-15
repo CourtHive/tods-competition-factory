@@ -1,4 +1,4 @@
-import { validMatchUps } from '../../../../matchUpEngine/governors/queryGovernor/validMatchUp';
+import { validMatchUps } from '../../../../validators/validMatchUp';
 import { competitionScheduleMatchUps } from '../../../getters/competitionScheduleMatchUps';
 import { getMatchUpDependencies } from '../scheduleMatchUps/getMatchUpDependencies';
 import { bulkScheduleMatchUps } from '../bulkScheduleMatchUps';

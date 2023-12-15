@@ -2,7 +2,7 @@ import { executionQueue } from './executionQueue';
 import { engineInvoke } from './engineInvoke';
 
 import { FactoryEngine } from '../../../types/factoryTypes';
-import { engineStart } from '../engineStart';
+import { engineStart } from '../parts/engineStart';
 
 type MethodParams = {
   params?: { [key: string]: any };

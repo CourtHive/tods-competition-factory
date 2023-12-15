@@ -1,12 +1,12 @@
-import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
-import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
+import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
+import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { getFlightProfile } from '../../../tournamentEngine/getters/getFlightProfile';
 import { eligibleEntryStage } from './positionActions/getValidAlternatesAction';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { isDirectingMatchUpStatus } from '../matchUpGovernor/checkStatusType';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { isActiveDownstream } from '../matchUpGovernor/isActiveDownstream';
-import { findDrawMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
+import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { isCompletedStructure } from './structureActions';
@@ -322,7 +322,7 @@ export function matchUpActions({
       });
     }
 
-    if (!scoreHasValue(matchUp) && sideNumber) {
+    if (!checkScoreHasValue(matchUp) && sideNumber) {
       const side = matchUp.sides?.find(
         (side) => side.sideNumber === sideNumber
       );
@@ -572,7 +572,7 @@ export function matchUpActions({
 
     if (
       existingParticipantIds?.length &&
-      (!scoreHasValue(matchUp) || side?.substitutions?.length)
+      (!checkScoreHasValue(matchUp) || side?.substitutions?.length)
     ) {
       validActions.push({
         method: REMOVE_TEAM_POSITION_METHOD,
@@ -648,7 +648,7 @@ export function matchUpActions({
       matchUpParticipantIds.length === 2 &&
       ((!sideNumber && existingParticipantIds?.length) ||
         (sideNumber && side?.participant)) &&
-      (substituteWithoutScore || scoreHasValue(matchUp)) &&
+      (substituteWithoutScore || checkScoreHasValue(matchUp)) &&
       (substituteAfterCompleted ||
         (matchUp.matchUpStatus &&
           !completedMatchUpStatuses.includes(matchUp.matchUpStatus))) &&

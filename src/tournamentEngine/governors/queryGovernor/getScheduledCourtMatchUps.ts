@@ -1,4 +1,4 @@
-import { scheduledSortedMatchUps } from '../../../global/sorting/scheduledSortedMatchUps';
+import { scheduledSortedMatchUps } from '../../../functions/sorters/scheduledSortedMatchUps';
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
 import { getSchedulingProfile } from '../scheduleGovernor/schedulingProfile';
 

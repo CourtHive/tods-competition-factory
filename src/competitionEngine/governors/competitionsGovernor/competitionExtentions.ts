@@ -1,5 +1,5 @@
 import { findTournamentExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
-import { isValidExtension } from '../../../global/validation/isValidExtension';
+import { isValidExtension } from '../../../validators/isValidExtension';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { findEvent } from '../../../tournamentEngine/getters/findEvent';
 import {

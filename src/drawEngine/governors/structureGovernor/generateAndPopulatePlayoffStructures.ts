@@ -1,5 +1,5 @@
 import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
-import { matchUpIsComplete } from '../../../matchUpEngine/governors/queryGovernor/matchUpIsComplete';
+import { checkMatchUpIsComplete } from '../../../query/matchUp/checkMatchUpIsComplete';
 import { generateAndPopulateRRplayoffStructures } from './generateAndPopulateRRplayoffStructures';
 import { assignDrawPositionBye } from '../positionGovernor/byePositioning/assignDrawPositionBye';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
@@ -300,7 +300,7 @@ export function generateAndPopulatePlayoffStructures(
   // now advance any players from completed matchUps into the newly added structures
   const completedMatchUps = inContextDrawMatchUps?.filter(
     (matchUp) =>
-      matchUpIsComplete({ matchUp }) &&
+      checkMatchUpIsComplete({ matchUp }) &&
       matchUp.structureId === sourceStructureId
   );
 

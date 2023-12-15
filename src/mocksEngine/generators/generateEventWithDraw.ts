@@ -11,7 +11,7 @@ import { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/m
 import { addFlight } from '../../tournamentEngine/governors/eventGovernor/addFlight';
 import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaults';
 import { addExtension } from '../../global/functions/producers/addExtension';
-import { isValidExtension } from '../../global/validation/isValidExtension';
+import { isValidExtension } from '../../validators/isValidExtension';
 import { getParticipantId } from '../../global/functions/extractors';
 import { definedAttributes } from '../../utilities/definedAttributes';
 import { generateParticipants } from './generateParticipants';

@@ -1,7 +1,7 @@
-export { matchUpDuration } from './matchUpDuration';
-export { getMatchUpContextIds } from './getMatchUpContextIds';
 export { getMatchUpScheduleDetails } from './getMatchUpScheduleDetails';
-export { getMatchUp, getCollectionPositionMatchUps } from './matchUps';
+export { getMatchUpContextIds } from './getMatchUpContextIds';
 export { scheduledMatchUpTime } from './scheduledMatchUpTime';
 export { scheduledMatchUpDate } from './scheduledMatchUpDate';
+export { matchUpDuration } from './matchUpDuration';
 export { getMatchUpType } from './getMatchUpType';
+export { getMatchUp } from '../../../query/matchUps/getMatchUpFromMatchUps';

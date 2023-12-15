@@ -1,4 +1,4 @@
-import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
+import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { getScheduledCourtMatchUps } from '../queryGovernor/getScheduledCourtMatchUps';
 import { minutesDifference, timeToDate } from '../../../utilities/dateTime';
 import { startTimeSort } from '../../../fixtures/validations/time';

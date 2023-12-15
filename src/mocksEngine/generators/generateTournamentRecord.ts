@@ -2,7 +2,7 @@ import { scheduleProfileRounds } from '../../competitionEngine/governors/schedul
 import { attachPolicies } from '../../tournamentEngine/governors/policyGovernor/policyManagement';
 import { newTournamentRecord } from '../../tournamentEngine/generators/newTournamentRecord';
 import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEvent';
-import { isValidExtension } from '../../global/validation/isValidExtension';
+import { isValidExtension } from '../../validators/isValidExtension';
 import { formatDate, isValidDateString } from '../../utilities/dateTime';
 import { addTournamentParticipants } from './addTournamentParticipants';
 import { generateEventWithFlights } from './generateEventWithFlights';

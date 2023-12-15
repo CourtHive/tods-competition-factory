@@ -1,7 +1,7 @@
 import { removeLineUpSubstitutions } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/removeLineUpSubstitutions';
 import { validateLineUp } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/validateTeamLineUp';
 import { generateTeamTournament } from '../../../tournamentEngine/tests/team/generateTestTeamTournament';
-import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
+import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import tournamentEngine from '../../../tournamentEngine/sync';
 import { intersection } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
@@ -253,7 +253,7 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     matchUpFilters: { matchUpIds: [singlesMatchUpId] },
   });
   expect(matchUp.matchUpStatus).toEqual(IN_PROGRESS);
-  expect(scoreHasValue(matchUp)).toEqual(true);
+  expect(checkScoreHasValue(matchUp)).toEqual(true);
 
   result = tournamentEngine.matchUpActions({
     matchUpId: singlesMatchUpId,

@@ -1,5 +1,5 @@
 import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
-import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
+import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { generateCollectionMatchUps } from '../../../drawEngine/generators/tieMatchUps';
 import { definedAttributes } from '../../../utilities/definedAttributes';
 import { calculateWinCriteria } from './calculateWinCriteria';

@@ -1,5 +1,5 @@
-import { scoreHasValue } from '../../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
-import { getAppliedPolicies } from '../../../../global/functions/deducers/getAppliedPolicies';
+import { checkScoreHasValue } from '../../../../query/matchUp/checkScoreHasValue';
+import { getAppliedPolicies } from '../../../../query/extensions/getAppliedPolicies';
 import { modifyEventPublishStatus } from '../../publishingGovernor/modifyEventPublishStatus';
 import { getEventPublishStatus } from '../../publishingGovernor/getEventPublishStatus';
 import { addExtension } from '../../../../global/functions/producers/addExtension';
@@ -134,7 +134,7 @@ export function deleteDrawDefinitions(params: DeleteDrawDefinitionArgs) {
           allDrawMatchUps({ event, drawDefinition })?.matchUps ?? [];
 
         const scoresPresent = matchUps.some(({ score }) =>
-          scoreHasValue({ score })
+          checkScoreHasValue({ score })
         );
         if (scoresPresent && !allowDeletionWithScoresPresent) {
           drawIdsWithScoresPresent.push(drawDefinition.drawId);

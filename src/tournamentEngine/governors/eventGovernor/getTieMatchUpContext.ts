@@ -1,5 +1,5 @@
 import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
-import { findDrawMatchUp } from '../../../drawEngine/getters/getMatchUps/findDrawMatchUp';
+import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { getMatchUpsMap } from '../../../drawEngine/getters/getMatchUps/getMatchUpsMap';
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
 import { getParticipants } from '../../getters/participants/getParticipants';

@@ -1,13 +1,13 @@
 import { getPositionRangeMap } from '../governors/structureGovernor/getPositionRangeMap';
-import { firstRoundLoserConsolation } from './firstRoundLoserConsolation';
-import { generateCurtisConsolation } from './curtisConsolation';
+import { firstRoundLoserConsolation } from '../../assemblies/generators/drawDefinitions/drawTypes/firstRoundLoserConsolation';
+import { generateCurtisConsolation } from '../../assemblies/generators/drawDefinitions/drawTypes/curtisConsolation';
 import { generatePlayoffStructures } from './playoffStructures';
 import { nextPowerOf2, numericSort } from '../../utilities';
 import { structureSort } from '../getters/structureSort';
 import structureTemplate from './structureTemplate';
-import { feedInChampionship } from './feedInChamp';
-import { generateRoundRobin } from './roundRobin';
-import { treeMatchUps } from './eliminationTree';
+import { feedInChampionship } from '../../assemblies/generators/drawDefinitions/drawTypes/feedInChamp';
+import { generateRoundRobin } from '../../assemblies/generators/drawDefinitions/drawTypes/roundRobin/roundRobin';
+import { treeMatchUps } from '../../assemblies/generators/drawDefinitions/drawTypes/eliminationTree';
 import {
   ResultType,
   decorateResult,

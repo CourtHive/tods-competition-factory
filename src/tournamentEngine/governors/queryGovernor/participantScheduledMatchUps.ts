@@ -1,5 +1,5 @@
 import { hasSchedule } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/hasSchedule';
-import { validMatchUps } from '../../../matchUpEngine/governors/queryGovernor/validMatchUp';
+import { validMatchUps } from '../../../validators/validMatchUp';
 import {
   extractDate,
   extractTime,

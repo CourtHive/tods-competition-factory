@@ -1,4 +1,4 @@
-import { getAppliedPolicies } from '../../global/functions/deducers/getAppliedPolicies';
+import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
 import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
 import { getStructureSeedAssignments } from './getStructureSeedAssignments';
 import { chunkArray, generateRange, shuffleArray } from '../../utilities';

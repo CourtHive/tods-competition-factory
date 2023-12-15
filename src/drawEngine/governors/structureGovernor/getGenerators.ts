@@ -1,16 +1,16 @@
-import { generateRoundRobinWithPlayOff } from '../../generators/generateRoundRobinWithPlayoff';
-import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
-import { firstRoundLoserConsolation } from '../../generators/firstRoundLoserConsolation';
+import { generateRoundRobinWithPlayOff } from '../../../assemblies/generators/drawDefinitions/drawTypes/roundRobin/generateRoundRobinWithPlayoff';
+import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
+import { firstRoundLoserConsolation } from '../../../assemblies/generators/drawDefinitions/drawTypes/firstRoundLoserConsolation';
 import { generateDoubleElimination } from '../../generators/doubleEliminattion';
-import { generateCurtisConsolation } from '../../generators/curtisConsolation';
+import { generateCurtisConsolation } from '../../../assemblies/generators/drawDefinitions/drawTypes/curtisConsolation';
 import { generatePlayoffStructures } from '../../generators/playoffStructures';
 import structureTemplate from '../../generators/structureTemplate';
-import { feedInChampionship } from '../../generators/feedInChamp';
-import { generateRoundRobin } from '../../generators/roundRobin';
+import { feedInChampionship } from '../../../assemblies/generators/drawDefinitions/drawTypes/feedInChamp';
+import { generateRoundRobin } from '../../../assemblies/generators/drawDefinitions/drawTypes/roundRobin/roundRobin';
 import { feedInMatchUps } from '../../generators/feedInMatchUps';
-import { treeMatchUps } from '../../generators/eliminationTree';
+import { treeMatchUps } from '../../../assemblies/generators/drawDefinitions/drawTypes/eliminationTree';
 import { constantToString } from '../../../utilities/strings';
-import { luckyDraw } from '../../generators/luckyDraw';
+import { luckyDraw } from '../../../assemblies/generators/drawDefinitions/drawTypes/luckyDraw';
 
 import { POLICY_TYPE_FEED_IN } from '../../../constants/policyConstants';
 import { ErrorType } from '../../../constants/errorConditionConstants';

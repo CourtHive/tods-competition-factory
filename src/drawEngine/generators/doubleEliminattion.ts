@@ -2,7 +2,7 @@ import { doubleEliminationLinks } from './doubleEliminationLinks';
 import { constantToString } from '../../utilities/strings';
 import { structureTemplate } from './structureTemplate';
 import { feedInMatchUps } from './feedInMatchUps';
-import { treeMatchUps } from './eliminationTree';
+import { treeMatchUps } from '../../assemblies/generators/drawDefinitions/drawTypes/eliminationTree';
 
 import { Structure } from '../../types/tournamentTypes';
 import { SUCCESS } from '../../constants/resultConstants';

@@ -1,4 +1,4 @@
-import { stringSort } from '../../../global/sorting/stringSort';
+import { stringSort } from '../../../functions/sorters/stringSort';
 import { isConvertableInteger } from '../../../utilities/math';
 import { difference, unique } from '../../../utilities/arrays';
 import { getTieFormatDesc } from './getTieFormatDescription';

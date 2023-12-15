@@ -1,13 +1,13 @@
 import { addNotes } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveNotes';
-import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
+import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { updateAssignmentParticipantResults } from './updateAssignmentParticipantResults';
-import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
+import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
-import { findDrawMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
+import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { getTopics } from '../../../global/state/globalState';
 import { isAdHoc } from '../queryGovernor/isAdHoc';
 import { isLucky } from '../queryGovernor/isLucky';
@@ -133,7 +133,7 @@ export function modifyMatchUpScore({
   if (
     matchUpStatus &&
     !matchUp.winningSide &&
-    scoreHasValue(matchUp) &&
+    checkScoreHasValue(matchUp) &&
     !completedMatchUpStatuses.includes(matchUpStatus) &&
     ![AWAITING_RESULT, SUSPENDED].includes(matchUpStatus)
   ) {

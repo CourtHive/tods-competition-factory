@@ -6,7 +6,7 @@ import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaul
 import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEvent';
 import { getStageParticipantsCount } from '../getters/getStageParticipantsCount';
 import { generateFlightDrawDefinitions } from './generateFlightDrawDefinitions';
-import { isValidExtension } from '../../global/validation/isValidExtension';
+import { isValidExtension } from '../../validators/isValidExtension';
 import { generateEventParticipants } from './generateEventParticipants';
 import { getStageParticipants } from '../getters/getStageParticipants';
 import { generateFlights } from './generateFlights';

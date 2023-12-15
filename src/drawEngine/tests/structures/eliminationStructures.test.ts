@@ -1,6 +1,6 @@
 import { validDrawPositions } from '../../governors/matchUpGovernor/validDrawPositions';
 import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
-import { treeMatchUps } from '../../generators/eliminationTree';
+import { treeMatchUps } from '../../../assemblies/generators/drawDefinitions/drawTypes/eliminationTree';
 import { structureSort } from '../../getters/structureSort';
 import { drawEngine } from '../../sync';
 import { expect, it } from 'vitest';

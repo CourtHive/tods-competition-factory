@@ -111,7 +111,7 @@ it.each([asyncDrawEngine, drawEngineSync])(
           ![
             'stringifyMatchUpFormat',
             'parseMatchUpFormat',
-            'scoreHasValue',
+            'checkScoreHasValue',
           ].includes(method)
         ) {
           expect([0, false].includes(result)).toEqual(true);

@@ -1,4 +1,4 @@
-import { scoreHasValue } from '../../matchUpEngine/governors/queryGovernor/scoreHasValue';
+import { checkScoreHasValue } from '../../query/matchUp/checkScoreHasValue';
 import { isActiveMatchUpStatus } from '../governors/matchUpGovernor/checkStatusType';
 
 import {
@@ -29,7 +29,7 @@ export function isActiveMatchUp({
 }: IsActiveMatchUpArgs) {
   const participantAssigned = sides?.find(({ participantId }) => participantId);
   const activeTieMatchUps = tieMatchUps?.filter(isActiveMatchUp)?.length;
-  const scoreExists = scoreHasValue({ score });
+  const scoreExists = checkScoreHasValue({ score });
 
   return (
     scoreExists ||

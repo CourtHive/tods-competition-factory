@@ -1,7 +1,7 @@
 import { replaceTieMatchUpParticipantId } from '../../../tournamentEngine/governors/eventGovernor/replaceTieMatchUpParticipant';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { decorateResult } from '../../../global/functions/decorateResult';
-import { findDrawMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
+import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { getParticipantId } from '../../../global/functions/extractors';
 
@@ -74,7 +74,7 @@ export function substituteParticipant({
       ?.map(getParticipantId)
       .filter((participantId) => participantId !== existingParticipantId);
 
-  if (!availableParticipantIds.includes(substituteParticipantId))
+  if (!availableParticipantIds?.includes(substituteParticipantId))
     return decorateResult({ result: { error: INVALID_PARTICIPANT_ID }, stack });
 
   return replaceTieMatchUpParticipantId({

@@ -1,5 +1,5 @@
 import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotifications';
-import { findDrawMatchUp } from '../../../drawEngine/getters/getMatchUps/findDrawMatchUp';
+import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
 import { getMatchUp } from '../../../drawEngine/accessors/matchUpAccessor';
 import { findEvent } from '../../getters/findEvent';

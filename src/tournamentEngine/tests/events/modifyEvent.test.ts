@@ -1,4 +1,4 @@
-import { stringSort } from '../../../global/sorting/stringSort';
+import { stringSort } from '../../../functions/sorters/stringSort';
 import mocksEngine from '../../../mocksEngine';
 import { unique } from '../../../utilities';
 import tournamentEngine from '../../sync';

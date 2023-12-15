@@ -1,4 +1,4 @@
-import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
+import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 import { findStructure, getDrawStructures } from '../../getters/findStructure';
 import { getValidSeedBlocks } from '../../getters/seedGetter';

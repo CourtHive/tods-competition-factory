@@ -17,7 +17,7 @@ import { findExtension } from './tournamentEngine/governors/queryGovernor/extens
 import { participantScaleItem } from './tournamentEngine/accessors/participantScaleItem';
 import { getScaleValues } from './tournamentEngine/getters/participants/getScaleValues';
 import { tieFormatGenderValidityCheck } from './global/functions/deducers/tieFormatGenderValidityCheck';
-import { scoreHasValue } from './matchUpEngine/governors/queryGovernor/scoreHasValue';
+import { checkScoreHasValue } from './query/matchUp/checkScoreHasValue';
 import { garman } from './competitionEngine/governors/scheduleGovernor/garman/garman';
 import { generateScoreString } from './matchUpEngine/generators/generateScoreString';
 import { categoryCanContain } from './global/functions/deducers/categoryCanContain';
@@ -26,10 +26,10 @@ import { getCategoryAgeDetails } from './global/functions/getCategoryAgeDetails'
 import { checkSetIsComplete } from './matchUpEngine/getters/getSetWinningSide';
 import { getMatchUpContextIds } from './drawEngine/accessors/matchUpAccessor';
 import { parseScoreString } from './mocksEngine/utilities/parseScoreString';
-import { roundRobinGroups } from './drawEngine/generators/roundRobinGroups';
+import { roundRobinGroups } from './assemblies/generators/drawDefinitions/drawTypes/roundRobin/roundRobinGroups';
 import { addExtension } from './global/functions/producers/addExtension';
 import { getSetComplement } from './matchUpEngine/getters/getComplement';
-import { validateCategory } from './global/validation/validateCategory';
+import { validateCategory } from './validators/validateCategory';
 import { isAdHoc } from './drawEngine/governors/queryGovernor/isAdHoc';
 import { structureSort } from './drawEngine/getters/structureSort';
 import { tidyScore } from './utilities/scoreParser/scoreParser';
@@ -128,7 +128,7 @@ export const utilities = {
   randomMember,
   randomPop,
   roundRobinGroups,
-  scoreHasValue,
+  checkScoreHasValue,
   shuffleArray,
   structureSort,
   tidyScore,

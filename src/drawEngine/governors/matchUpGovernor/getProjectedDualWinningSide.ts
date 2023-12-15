@@ -1,6 +1,6 @@
 import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
-import { generateTieMatchUpScore } from '../../generators/tieMatchUpScore/generateTieMatchUpScore';
-import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
+import { generateTieMatchUpScore } from '../../../assemblies/generators/tieMatchUpScore/generateTieMatchUpScore';
+import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { MatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { HydratedMatchUp } from '../../../types/hydrated';
@@ -42,7 +42,7 @@ export function getProjectedDualWinningSide({
     if (tieMatchUp.matchUpId === matchUp.matchUpId) {
       tieMatchUp.winningSide = winningSide;
       tieMatchUp.score = score;
-      if (!scoreHasValue({ score }) && !matchUpStatus) {
+      if (!checkScoreHasValue({ score }) && !matchUpStatus) {
         Object.assign(tieMatchUp, { ...toBePlayed });
       } else if (matchUpStatus) {
         tieMatchUp.matchUpStatus = matchUpStatus;
@@ -51,7 +51,7 @@ export function getProjectedDualWinningSide({
   }
 
   tieFormat =
-    tieFormat ||
+    tieFormat ??
     resolveTieFormat({ matchUp, structure, drawDefinition, event })?.tieFormat;
 
   const { winningSide: projectedWinningSide } = generateTieMatchUpScore({

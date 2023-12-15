@@ -1,5 +1,5 @@
 import { allTournamentMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
-import { validMatchUps } from '../../matchUpEngine/governors/queryGovernor/validMatchUp';
+import { validMatchUps } from '../../validators/validMatchUp';
 import { definedAttributes } from '../../utilities/definedAttributes';
 import { getMatchUpId } from '../../global/functions/extractors';
 import { generateRange, overlap, UUID } from '../../utilities';

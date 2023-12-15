@@ -1,9 +1,9 @@
 import { UUID } from '../../utilities';
 
 export function generateMatchUpId({
-  idPrefix,
-  roundNumber,
   roundPosition,
+  roundNumber,
+  idPrefix,
   uuids,
 }) {
   return idPrefix

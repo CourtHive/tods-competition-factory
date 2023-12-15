@@ -1,5 +1,5 @@
 import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
-import { findDrawMatchUp } from '../../../drawEngine/getters/getMatchUps/findDrawMatchUp';
+import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { findStructure } from '../../../drawEngine/getters/findStructure';
 import { isConvertableInteger } from '../../../utilities/math';

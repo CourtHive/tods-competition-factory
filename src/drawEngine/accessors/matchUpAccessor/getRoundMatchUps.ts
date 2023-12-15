@@ -1,4 +1,4 @@
-import { validMatchUps } from '../../../matchUpEngine/governors/queryGovernor/validMatchUp';
+import { validMatchUps } from '../../../validators/validMatchUp';
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 import { definedAttributes } from '../../../utilities/definedAttributes';
 import { ensureInt } from '../../../utilities/ensureInt';

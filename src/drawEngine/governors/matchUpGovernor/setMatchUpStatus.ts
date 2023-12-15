@@ -1,16 +1,16 @@
 import { ensureSideLineUps } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/ensureSideLineUps';
 import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
 import { removeExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
-import { generateTieMatchUpScore } from '../../generators/tieMatchUpScore/generateTieMatchUpScore';
-import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
-import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
+import { generateTieMatchUpScore } from '../../../assemblies/generators/tieMatchUpScore/generateTieMatchUpScore';
+import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
+import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { addExtension } from '../../../global/functions/producers/addExtension';
 import { getProjectedDualWinningSide } from './getProjectedDualWinningSide';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
-import { findDrawMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
+import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { decorateResult } from '../../../global/functions/decorateResult';
-import { validateScore } from '../../../global/validation/validateScore';
+import { validateScore } from '../../../validators/validateScore';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { noDownstreamDependencies } from './noDownstreamDependencies';
@@ -319,7 +319,7 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
         isNonDirectingMatchUpStatus({
           matchUpStatus: params.matchUpStatus,
         }))) &&
-    (!params.outcome || !scoreHasValue({ outcome: params.outcome }));
+    (!params.outcome || !checkScoreHasValue({ outcome: params.outcome }));
   const qualifierChanging =
     qualifierAdvancing && // oop
     winningSide !== matchUp.winningSide &&
@@ -489,7 +489,7 @@ function applyMatchUpValues(params) {
     params.isCollectionMatchUp &&
     matchUp.winningSide &&
     !params.winningSide &&
-    !scoreHasValue({ score: params.score });
+    !checkScoreHasValue({ score: params.score });
   const newMatchUpStatus = params.isCollectionMatchUp
     ? params.matchUpStatus || (removeWinningSide && TO_BE_PLAYED) || COMPLETED
     : params.matchUpStatus || COMPLETED;

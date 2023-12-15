@@ -1,6 +1,6 @@
-import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
+import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
-import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
+import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpIds } from '../../../global/functions/extractors';
 import { resequenceStructures } from './resequenceStructures';
@@ -58,7 +58,7 @@ export function removeStructure({
   // TODO: if structure being rmoved is qualifying structure, ensure no source structures have scored matchUps
   const structureMatchUps = getAllStructureMatchUps({ structure }).matchUps;
   const scoresPresent = structureMatchUps.some(({ score }) =>
-    scoreHasValue({ score })
+    checkScoreHasValue({ score })
   );
 
   if (scoresPresent) {

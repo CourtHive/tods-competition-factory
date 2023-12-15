@@ -1,6 +1,6 @@
 import structureTemplate from './structureTemplate';
 import { feedInMatchUps } from './feedInMatchUps';
-import { treeMatchUps } from './eliminationTree';
+import { treeMatchUps } from '../../assemblies/generators/drawDefinitions/drawTypes/eliminationTree';
 import { generateRange } from '../../utilities';
 
 import { LOSER, MAIN, TOP_DOWN } from '../../constants/drawDefinitionConstants';

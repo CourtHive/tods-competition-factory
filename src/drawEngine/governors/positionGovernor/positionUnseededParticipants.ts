@@ -1,5 +1,5 @@
 import { findExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
-import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
+import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 import { randomUnseededSeparation } from './avoidance/randomUnseededSeparation';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';

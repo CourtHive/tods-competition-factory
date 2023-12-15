@@ -1,4 +1,4 @@
-import { validMatchUps } from '../../matchUpEngine/governors/queryGovernor/validMatchUp';
+import { validMatchUps } from '../../validators/validMatchUp';
 import { getBand, getScoreComponents, pctSpread } from './scoreComponents';
 import { findPolicy } from '../governors/policyGovernor/findPolicy';
 

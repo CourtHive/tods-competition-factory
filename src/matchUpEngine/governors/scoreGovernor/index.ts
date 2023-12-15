@@ -1,10 +1,10 @@
-import { generateTieMatchUpScore } from '../../../drawEngine/generators/tieMatchUpScore/generateTieMatchUpScore';
+import { generateTieMatchUpScore } from '../../../assemblies/generators/tieMatchUpScore/generateTieMatchUpScore';
 import { updateTieMatchUpScore } from '../../../drawEngine/governors/matchUpGovernor/tieMatchUpScore';
 import { validateTieFormat } from '../tieFormatGovernor/tieFormatUtilities';
 import { generateScoreString } from '../../generators/generateScoreString';
-import { validateScore } from '../../../global/validation/validateScore';
+import { validateScore } from '../../../validators/validateScore';
 import { checkSetIsComplete, keyValueScore } from './keyValueScore';
-import { scoreHasValue } from '../queryGovernor/scoreHasValue';
+import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { analyzeSet } from '../../getters/analyzeSet';
 import { reverseScore } from './reverseScore';
 import {
@@ -28,7 +28,7 @@ export const scoreGovernor = {
   checkSetIsComplete,
   validateTieFormat,
   getSetComplement,
-  scoreHasValue,
+  checkScoreHasValue,
   keyValueScore,
   validateScore,
   reverseScore,

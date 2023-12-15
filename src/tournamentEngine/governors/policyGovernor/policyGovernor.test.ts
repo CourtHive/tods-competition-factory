@@ -1,4 +1,4 @@
-import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
+import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import mocksEngine from '../../../mocksEngine';
 import { tournamentEngine } from '../../sync';
 import { expect, test, it } from 'vitest';

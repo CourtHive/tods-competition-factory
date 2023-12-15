@@ -1,6 +1,6 @@
 import { removeLineUpSubstitutions } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/removeLineUpSubstitutions';
 import { assignDrawPositionBye } from '../positionGovernor/byePositioning/assignDrawPositionBye';
-import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
+import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { assignDrawPosition } from '../positionGovernor/positionAssignment';
@@ -77,7 +77,7 @@ export function directLoser(params) {
     );
     const unscoredOutcome =
       matchUp.matchUpStatus === WALKOVER ||
-      (matchUp.matchUpStatus === DEFAULTED && !scoreHasValue(matchUp));
+      (matchUp.matchUpStatus === DEFAULTED && !checkScoreHasValue(matchUp));
     return (
       drawPositionSide?.sideNumber === matchUp.winningSide && !unscoredOutcome
     );

@@ -38,6 +38,15 @@ export type TournamentRecordsArgs = {
   tournamentRecords: TournamentRecords;
 };
 
+export type CheckInOutParticipantArgs = {
+  tournamentRecord: Tournament;
+  drawDefinition: DrawDefinition;
+  matchUp?: HydratedMatchUp;
+  participantId: string;
+  matchUpId: string;
+  event?: Event;
+};
+
 export type ScheduleTimesResult = { scheduleTime: string };
 
 export type SeedBlock = {

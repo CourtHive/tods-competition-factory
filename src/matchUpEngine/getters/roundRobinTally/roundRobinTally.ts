@@ -1,5 +1,5 @@
-import { matchUpIsComplete } from '../../governors/queryGovernor/matchUpIsComplete';
-import { validMatchUps } from '../../governors/queryGovernor/validMatchUp';
+import { checkMatchUpIsComplete } from '../../../query/matchUp/checkMatchUpIsComplete';
+import { validMatchUps } from '../../../validators/validMatchUp';
 import { getDevContext } from '../../../global/state/globalState';
 import { getParticipantResults } from './getParticipantResults';
 import { unique } from '../../../utilities/arrays';
@@ -64,7 +64,7 @@ export function tallyParticipantResults({
       .length;
 
   const bracketComplete =
-    relevantMatchUps.filter((matchUp) => matchUpIsComplete({ matchUp }))
+    relevantMatchUps.filter((matchUp) => checkMatchUpIsComplete({ matchUp }))
       .length === relevantMatchUps.length;
   // if bracket is incomplete don't use expected matchUps perPlayer for calculating
   if (!bracketComplete) perPlayer = 0;
@@ -72,13 +72,14 @@ export function tallyParticipantResults({
   const completedTieMatchUps = matchUps.every(
     ({ matchUpType, tieMatchUps }) =>
       matchUpType === TEAM &&
-      tieMatchUps.every((matchUp) => matchUpIsComplete({ matchUp }))
+      tieMatchUps.every((matchUp) => checkMatchUpIsComplete({ matchUp }))
   );
 
   const tallyPolicy = policyDefinitions?.[POLICY_TYPE_ROUND_ROBIN_TALLY];
 
   const consideredMatchUps = matchUps.filter(
-    (matchUp) => matchUpIsComplete({ matchUp }) || matchUp.matchUpType === TEAM
+    (matchUp) =>
+      checkMatchUpIsComplete({ matchUp }) || matchUp.matchUpType === TEAM
   );
   const { participantResults } = getParticipantResults({
     matchUps: consideredMatchUps,

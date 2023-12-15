@@ -1,4 +1,4 @@
-import { drawMatic as drawEngineDrawMatic } from '../../../../drawEngine/generators/drawMatic/drawMatic';
+import { drawMatic as drawEngineDrawMatic } from '../../../../assemblies/generators/drawDefinitions/drawMatic/drawMatic';
 
 export function drawMatic(params): any {
   const tournamentParticipants = params.tournamentRecord?.participants;

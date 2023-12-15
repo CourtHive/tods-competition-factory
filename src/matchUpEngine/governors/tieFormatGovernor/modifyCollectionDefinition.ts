@@ -1,4 +1,4 @@
-import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
+import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { definedAttributes } from '../../../utilities/definedAttributes';
 import { genderConstants } from '../../../constants/genderConstants';
 import { isConvertableInteger } from '../../../utilities/math';

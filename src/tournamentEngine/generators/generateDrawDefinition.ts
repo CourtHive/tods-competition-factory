@@ -7,7 +7,7 @@ import { generateQualifyingLink } from '../../drawEngine/generators/generateQual
 import { generateAdHocMatchUps } from '../../drawEngine/generators/generateAdHocMatchUps';
 import { attachPolicies } from '../../drawEngine/governors/policyGovernor/attachPolicies';
 import { checkValidEntries } from '../governors/eventGovernor/entries/checkValidEntries';
-import { getAppliedPolicies } from '../../global/functions/deducers/getAppliedPolicies';
+import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
 import { addDrawEntry } from '../../drawEngine/governors/entryGovernor/addDrawEntries';
 import { getQualifiersCount } from '../../drawEngine/getters/getQualifiersCount';
 import { getAllowedDrawTypes } from '../governors/policyGovernor/allowedTypes';
@@ -31,7 +31,7 @@ import {
 import {
   DrawMaticArgs,
   drawMatic,
-} from '../../drawEngine/generators/drawMatic/drawMatic';
+} from '../../assemblies/generators/drawDefinitions/drawMatic/drawMatic';
 import {
   extractAttributes,
   generateRange,

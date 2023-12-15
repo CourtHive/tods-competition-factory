@@ -3,7 +3,7 @@ import { refreshEntryPositions } from '../../../../global/functions/producers/re
 import { modifyDrawNotice } from '../../../../drawEngine/notifications/drawNotifications';
 import { findParticipant } from '../../../../global/functions/deducers/findParticipant';
 import { addExtension } from '../../../../global/functions/producers/addExtension';
-import { isValidExtension } from '../../../../global/validation/isValidExtension';
+import { isValidExtension } from '../../../../validators/isValidExtension';
 import { removeExtension } from '../../tournamentGovernor/addRemoveExtensions';
 import { decorateResult } from '../../../../global/functions/decorateResult';
 import { isUngrouped } from '../../../../global/functions/isUngrouped';

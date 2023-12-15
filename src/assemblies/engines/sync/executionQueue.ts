@@ -1,9 +1,9 @@
 import { notifySubscribers } from '../../../global/state/notifySubscribers';
-import { getMutationStatus } from '../getMutationStatus';
-import { logMethodNotFound } from '../logMethodNotFound';
-import { executeFunction } from '../executeMethod';
+import { getMutationStatus } from '../parts/getMutationStatus';
+import { logMethodNotFound } from '../parts/logMethodNotFound';
+import { executeFunction } from '../parts/executeMethod';
 import { makeDeepCopy } from '../../../utilities';
-import { setState } from '../stateMethods';
+import { setState } from '../parts/stateMethods';
 import {
   deleteNotices,
   getTournamentRecords,

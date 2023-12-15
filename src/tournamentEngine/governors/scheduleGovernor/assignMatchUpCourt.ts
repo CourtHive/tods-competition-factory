@@ -1,4 +1,4 @@
-import { addMatchUpTimeItem } from '../../../drawEngine/governors/matchUpGovernor/timeItems';
+import { addMatchUpTimeItem } from '../../../mutate/matchUps/matchUpTimeItems';
 import { assignMatchUpVenue } from './assignMatchUpVenue';
 import { findCourt } from '../../getters/courtGetter';
 

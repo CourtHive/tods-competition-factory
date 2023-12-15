@@ -1,5 +1,5 @@
-import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
-import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
+import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
+import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotifications';
 import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
 import { deleteParticipants } from '../participantGovernor/deleteParticipants';
@@ -97,7 +97,7 @@ export function removeTieMatchUpParticipantId(
 
   if (
     !side.substitutions?.length &&
-    (scoreHasValue({ score: inContextTieMatchUp?.score }) ||
+    (checkScoreHasValue({ score: inContextTieMatchUp?.score }) ||
       inContextTieMatchUp?.winningSide)
   )
     return decorateResult({ result: { error: EXISTING_OUTCOME }, stack });
