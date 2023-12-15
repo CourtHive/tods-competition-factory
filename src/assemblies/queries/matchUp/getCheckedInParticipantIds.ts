@@ -1,11 +1,11 @@
-import { getMatchUpParticipantIds } from '../accessors/participantAccessor';
+import { getMatchUpParticipantIds } from './getMatchUpParticipantIds';
 
-import { CHECK_IN, CHECK_OUT } from '../../constants/timeItemConstants';
+import { CHECK_IN, CHECK_OUT } from '../../../constants/timeItemConstants';
 import {
   INVALID_MATCHUP,
   MISSING_CONTEXT,
   MISSING_MATCHUP,
-} from '../../constants/errorConditionConstants';
+} from '../../../constants/errorConditionConstants';
 
 /*
   takes a matchUpWithContext
@@ -56,7 +56,7 @@ export function getCheckedInParticipantIds({ matchUp }) {
   // if all individuals on one side are checked in then side is checked in
   nestedIndividualParticipantIds?.forEach(
     (sideIndividualParticipantIds, sideIndex) => {
-      const sideParticipantId = sideParticipantIds[sideIndex];
+      const sideParticipantId = sideParticipantIds?.[sideIndex];
       const allIndividualsCheckedIn =
         sideIndividualParticipantIds?.length &&
         sideIndividualParticipantIds.every((participantId) =>
@@ -74,9 +74,9 @@ export function getCheckedInParticipantIds({ matchUp }) {
   );
 
   // if side is checked in then all individuals on that side are checked in
-  sideParticipantIds.forEach((sideParticipantId: string, sideIndex) => {
+  sideParticipantIds?.forEach((sideParticipantId: string, sideIndex) => {
     if (checkedInParticipantIds.includes(sideParticipantId)) {
-      (nestedIndividualParticipantIds?.[sideIndex] || []).forEach(
+      (nestedIndividualParticipantIds?.[sideIndex] ?? []).forEach(
         (participantId) => {
           if (
             participantId &&
@@ -89,7 +89,7 @@ export function getCheckedInParticipantIds({ matchUp }) {
     }
   });
 
-  const allParticipantsCheckedIn = sideParticipantIds.reduce(
+  const allParticipantsCheckedIn = sideParticipantIds?.reduce(
     (checkedIn, participantId) => {
       return checkedInParticipantIds.includes(participantId) && checkedIn;
     },

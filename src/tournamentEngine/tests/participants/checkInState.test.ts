@@ -1,4 +1,6 @@
-import drawEngine from '../../../drawEngine/sync';
+import { getMatchUpParticipantIds } from '../../../assemblies/queries/matchUp/getMatchUpParticipantIds';
+import { getCheckedInParticipantIds } from '../../../assemblies/queries/matchUp/getCheckedInParticipantIds';
+
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 import { expect, it } from 'vitest';
@@ -41,8 +43,8 @@ it('can check participants in and out', () => {
     tournamentRecord,
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles,
     participantsProfile,
+    drawProfiles,
   });
 
   let result = tournamentEngine.setState(tournamentRecord);
@@ -51,46 +53,46 @@ it('can check participants in and out', () => {
   let {
     upcomingMatchUps: [matchUp],
   } = tournamentEngine.drawMatchUps({
-    drawId,
     inContext: true,
+    drawId,
   });
   const { sideParticipantIds, individualParticipantIds } =
-    drawEngine.getMatchUpParticipantIds({ matchUp });
+    getMatchUpParticipantIds({ matchUp });
 
   result = tournamentEngine.checkInParticipant({
-    drawId,
+    participantId: individualParticipantIds?.[0],
     matchUpId: matchUp.matchUpId,
-    participantId: individualParticipantIds[0],
+    drawId,
   });
   expect(result).toMatchObject(SUCCESS);
 
   result = tournamentEngine.checkInParticipant({
+    participantId: individualParticipantIds?.[0],
     matchUp,
-    participantId: individualParticipantIds[0],
   });
   expect(result).toMatchObject(SUCCESS);
 
   result = tournamentEngine.checkInParticipant({
-    matchUp,
     participantId: 'bogusId',
+    matchUp,
   });
   expect(result.error).toEqual(INVALID_PARTICIPANT_ID);
 
   ({
     upcomingMatchUps: [matchUp],
   } = tournamentEngine.drawMatchUps({
-    drawId,
     inContext: true,
+    drawId,
   }));
   let { allParticipantsCheckedIn, checkedInParticipantIds } =
-    drawEngine.getCheckedInParticipantIds({ matchUp });
+    getCheckedInParticipantIds({ matchUp });
   expect(allParticipantsCheckedIn).toEqual(false);
   expect(checkedInParticipantIds.length).toEqual(1);
 
   result = tournamentEngine.checkInParticipant({
-    drawId,
+    participantId: individualParticipantIds?.[0],
     matchUpId: matchUp.matchUpId,
-    participantId: individualParticipantIds[0],
+    drawId,
   });
   expect(result.error).toBeUndefined();
   expect(result).toMatchObject(SUCCESS);
@@ -98,85 +100,85 @@ it('can check participants in and out', () => {
   ({
     upcomingMatchUps: [matchUp],
   } = tournamentEngine.drawMatchUps({
-    drawId,
     inContext: true,
+    drawId,
   }));
   ({ allParticipantsCheckedIn, checkedInParticipantIds } =
-    drawEngine.getCheckedInParticipantIds({ matchUp }));
+    getCheckedInParticipantIds({ matchUp }));
   expect(allParticipantsCheckedIn).toEqual(false);
   expect(checkedInParticipantIds.length).toEqual(1);
 
   result = tournamentEngine.checkInParticipant({
-    drawId,
+    participantId: individualParticipantIds?.[1],
     matchUpId: matchUp.matchUpId,
-    participantId: individualParticipantIds[1],
+    drawId,
   });
   expect(result).toMatchObject(SUCCESS);
 
   ({
     upcomingMatchUps: [matchUp],
   } = tournamentEngine.drawMatchUps({
-    drawId,
     inContext: true,
+    drawId,
   }));
   ({ allParticipantsCheckedIn, checkedInParticipantIds } =
-    drawEngine.getCheckedInParticipantIds({ matchUp }));
+    getCheckedInParticipantIds({ matchUp }));
   expect(allParticipantsCheckedIn).toEqual(false);
   // checkedInParticipantIds.length is 3 becuase of 2 individualParticipantIds and their pair participantId
   expect(checkedInParticipantIds.length).toEqual(3);
 
   result = tournamentEngine.checkInParticipant({
-    drawId,
+    participantId: individualParticipantIds?.[2],
     matchUpId: matchUp.matchUpId,
-    participantId: individualParticipantIds[2],
+    drawId,
   });
   expect(result).toMatchObject(SUCCESS);
 
   ({
     upcomingMatchUps: [matchUp],
   } = tournamentEngine.drawMatchUps({
-    drawId,
     inContext: true,
+    drawId,
   }));
   ({ allParticipantsCheckedIn, checkedInParticipantIds } =
-    drawEngine.getCheckedInParticipantIds({ matchUp }));
+    getCheckedInParticipantIds({ matchUp }));
   expect(allParticipantsCheckedIn).toEqual(false);
   expect(checkedInParticipantIds.length).toEqual(4);
 
   result = tournamentEngine.checkInParticipant({
-    drawId,
+    participantId: individualParticipantIds?.[3],
     matchUpId: matchUp.matchUpId,
-    participantId: individualParticipantIds[3],
+    drawId,
   });
   expect(result).toMatchObject(SUCCESS);
 
   ({
     upcomingMatchUps: [matchUp],
   } = tournamentEngine.drawMatchUps({
-    drawId,
     inContext: true,
+    drawId,
   }));
   ({ allParticipantsCheckedIn, checkedInParticipantIds } =
-    drawEngine.getCheckedInParticipantIds({ matchUp }));
+    getCheckedInParticipantIds({ matchUp }));
   expect(allParticipantsCheckedIn).toEqual(true);
   expect(checkedInParticipantIds.length).toEqual(6);
 
   // now check out one pair participant
   result = tournamentEngine.checkOutParticipant({
-    drawId,
+    participantId: sideParticipantIds?.[0],
     matchUpId: matchUp.matchUpId,
-    participantId: sideParticipantIds[0],
+    drawId,
   });
   expect(result).toMatchObject(SUCCESS);
 
   ({
     upcomingMatchUps: [matchUp],
   } = tournamentEngine.drawMatchUps({
-    drawId,
     inContext: true,
+    drawId,
   }));
   ({ allParticipantsCheckedIn, checkedInParticipantIds } =
-    drawEngine.getCheckedInParticipantIds({ matchUp }));
+    getCheckedInParticipantIds({ matchUp }));
   expect(allParticipantsCheckedIn).toEqual(false);
   expect(checkedInParticipantIds.length).toEqual(3);
 
@@ -210,7 +212,7 @@ it('can check participants in and out', () => {
     inContext: true,
   }));
   ({ allParticipantsCheckedIn, checkedInParticipantIds } =
-    drawEngine.getCheckedInParticipantIds({ matchUp }));
+    getCheckedInParticipantIds({ matchUp }));
   expect(allParticipantsCheckedIn).toEqual(false);
   // count has changed from 3 to 1 because removing an individual participantId also removed pair participantId
   expect(checkedInParticipantIds.length).toEqual(1);

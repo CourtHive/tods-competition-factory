@@ -137,10 +137,10 @@ export function generateLineUps(params: GenerateLineUpsArgs) {
   const collectionDefinitions = tieFormat?.collectionDefinitions ?? [];
   for (const teamParticipant of teamParticipants) {
     const singlesSort =
-      teamParticipant.individualParticipants.sort(singlesScaleSort);
+      teamParticipant.individualParticipants?.sort(singlesScaleSort) ?? [];
     const doublesSort = singlesOnly
       ? singlesSort
-      : teamParticipant.individualParticipants.sort(doublesScaleSort);
+      : teamParticipant.individualParticipants?.sort(doublesScaleSort) ?? [];
 
     const participantAssignments: { [key: string]: CollectionAssignment[] } =
       {};
@@ -151,21 +151,21 @@ export function generateLineUps(params: GenerateLineUpsArgs) {
       const singlesMatchUp = matchUpType === SINGLES_MATCHUP;
 
       generateRange(0, matchUpCount).forEach((i) => {
-        const typeSort = singlesMatchUp ? singlesSort : doublesSort;
+        const typeSort = singlesMatchUp ? singlesSort : doublesSort ?? [];
         const collectionPosition = i + 1;
 
         const participantIds: string[] = [];
         generateRange(0, singlesMatchUp ? 1 : 2).forEach((i) => {
-          const nextParticipantId = typeSort.find((participant) => {
+          const nextParticipantId = typeSort?.find((participant) => {
             const targetGender =
               gender &&
               (([MALE, FEMALE].includes(gender) && gender) ||
                 (gender === MIXED && [MALE, FEMALE][i]));
             return (
-              (!targetGender || targetGender === participant.person.sex) &&
+              (!targetGender || targetGender === participant.person?.sex) &&
               !collectionParticipantIds.includes(participant.participantId)
             );
-          }).participantId;
+          })?.participantId;
 
           // keep track of participantIds which have already been assigned
           if (nextParticipantId) {

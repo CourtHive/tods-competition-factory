@@ -1,5 +1,6 @@
+import { getCheckedInParticipantIds } from '../../../assemblies/queries/matchUp/getCheckedInParticipantIds';
+
 import competitionEngine from '../../../competitionEngine/sync';
-import drawEngine from '../../../drawEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 import { expect, it } from 'vitest';
@@ -37,7 +38,7 @@ it('can toggle participant check-in state', () => {
   );
 
   let { allParticipantsCheckedIn, checkedInParticipantIds } =
-    drawEngine.getCheckedInParticipantIds({ matchUp });
+    getCheckedInParticipantIds({ matchUp });
   expect(allParticipantsCheckedIn).toEqual(false);
   expect(checkedInParticipantIds.length).toEqual(0);
 
@@ -56,7 +57,7 @@ it('can toggle participant check-in state', () => {
   }));
 
   ({ allParticipantsCheckedIn, checkedInParticipantIds } =
-    drawEngine.getCheckedInParticipantIds({ matchUp }));
+    getCheckedInParticipantIds({ matchUp }));
   expect(allParticipantsCheckedIn).toEqual(false);
   expect(checkedInParticipantIds.length).toEqual(1);
 
@@ -75,7 +76,7 @@ it('can toggle participant check-in state', () => {
   }));
 
   ({ allParticipantsCheckedIn, checkedInParticipantIds } =
-    drawEngine.getCheckedInParticipantIds({ matchUp }));
+    getCheckedInParticipantIds({ matchUp }));
   expect(allParticipantsCheckedIn).toEqual(true);
   expect(checkedInParticipantIds.length).toEqual(2);
 

@@ -1,3 +1,6 @@
+import { getMatchUpParticipantIds } from '../../../assemblies/queries/matchUp/getMatchUpParticipantIds';
+import { getCheckedInParticipantIds } from '../../../assemblies/queries/matchUp/getCheckedInParticipantIds';
+
 import { drawEngine } from '../../sync';
 import { mocksEngine } from '../../..';
 import { expect, it } from 'vitest';
@@ -21,7 +24,7 @@ it('can check-in and check-out matchUp participants', () => {
   const { matchUpId } = matchUp;
 
   const { sideParticipantIds, individualParticipantIds } =
-    drawEngine.getMatchUpParticipantIds({ matchUp });
+    getMatchUpParticipantIds({ matchUp });
   expect(sideParticipantIds.length).toEqual(2);
   expect(individualParticipantIds.length).toEqual(4);
 
@@ -41,7 +44,7 @@ it('can check-in and check-out matchUp participants', () => {
   );
 
   let { allParticipantsCheckedIn, checkedInParticipantIds } =
-    drawEngine.getCheckedInParticipantIds({ matchUp: updatedMatchUp });
+    getCheckedInParticipantIds({ matchUp: updatedMatchUp });
   expect(allParticipantsCheckedIn).toEqual(false);
   expect(checkedInParticipantIds.length).toEqual(1);
 
@@ -59,7 +62,7 @@ it('can check-in and check-out matchUp participants', () => {
   }));
 
   ({ allParticipantsCheckedIn, checkedInParticipantIds } =
-    drawEngine.getCheckedInParticipantIds({ matchUp: updatedMatchUp }));
+    getCheckedInParticipantIds({ matchUp: updatedMatchUp }));
   expect(allParticipantsCheckedIn).toEqual(false);
   expect(checkedInParticipantIds.length).toEqual(3);
 
@@ -76,7 +79,7 @@ it('can check-in and check-out matchUp participants', () => {
     inContext: true,
   }));
   ({ allParticipantsCheckedIn, checkedInParticipantIds } =
-    drawEngine.getCheckedInParticipantIds({ matchUp: updatedMatchUp }));
+    getCheckedInParticipantIds({ matchUp: updatedMatchUp }));
   expect(allParticipantsCheckedIn).toEqual(true);
   expect(checkedInParticipantIds.length).toEqual(6);
 
@@ -104,7 +107,7 @@ it('can check-in and check-out matchUp participants', () => {
     inContext: true,
   }));
   ({ allParticipantsCheckedIn, checkedInParticipantIds } =
-    drawEngine.getCheckedInParticipantIds({ matchUp: updatedMatchUp }));
+    getCheckedInParticipantIds({ matchUp: updatedMatchUp }));
   expect(allParticipantsCheckedIn).toEqual(false);
   expect(checkedInParticipantIds.length).toEqual(3);
 

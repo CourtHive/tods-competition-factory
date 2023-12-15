@@ -1,7 +1,7 @@
 import { isValid } from '../../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 import { publicFindDrawMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
-import { getCheckedInParticipantIds } from '../../getters/matchUpTimeItems';
+import { getCheckedInParticipantIds } from '../../../assemblies/queries/matchUp/getCheckedInParticipantIds';
 import { checkInParticipant, checkOutParticipant } from './checkInStatus';
 import { addFinishingRounds } from '../../generators/addFinishingRounds';
 import { validateScore } from '../../../global/validation/validateScore';

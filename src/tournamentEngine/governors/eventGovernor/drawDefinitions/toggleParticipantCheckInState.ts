@@ -1,4 +1,4 @@
-import { getCheckedInParticipantIds } from '../../../../drawEngine/getters/matchUpTimeItems';
+import { getCheckedInParticipantIds } from '../../../../assemblies/queries/matchUp/getCheckedInParticipantIds';
 import { findMatchUp } from '../../../getters/matchUpsGetter/findMatchUp';
 import {
   checkInParticipant,

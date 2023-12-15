@@ -1,6 +1,6 @@
 import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
-import { getMatchUpParticipantIds } from '../../accessors/participantAccessor';
-import { getCheckedInParticipantIds } from '../../getters/matchUpTimeItems';
+import { getMatchUpParticipantIds } from '../../../assemblies/queries/matchUp/getMatchUpParticipantIds';
+import { getCheckedInParticipantIds } from '../../../assemblies/queries/matchUp/getCheckedInParticipantIds';
 import { findDrawMatchUp } from '../../getters/getMatchUps/findDrawMatchUp';
 import { addMatchUpTimeItem } from './timeItems';
 
@@ -74,7 +74,7 @@ export function checkInParticipant({
     if (result.error) return result;
     const { checkedInParticipantIds, allRelevantParticipantIds } = result;
 
-    if (!allRelevantParticipantIds.includes(participantId))
+    if (!allRelevantParticipantIds?.includes(participantId))
       return { error: INVALID_PARTICIPANT_ID };
     if (checkedInParticipantIds.includes(participantId)) {
       return { error: PARTICIPANT_ALREADY_CHECKED_IN };
@@ -143,9 +143,9 @@ export function checkOutParticipant({
 
     const { sideParticipantIds, nestedIndividualParticipantIds } =
       getMatchUpParticipantIds({ matchUp });
-    const sideIndex = sideParticipantIds.indexOf(participantId);
-    if ([0, 1].includes(sideIndex)) {
-      (nestedIndividualParticipantIds[sideIndex] || []).forEach(
+    const sideIndex = sideParticipantIds?.indexOf(participantId);
+    if (sideIndex !== undefined && [0, 1].includes(sideIndex)) {
+      (nestedIndividualParticipantIds?.[sideIndex] ?? []).forEach(
         (participantId) => {
           const timeItem = {
             itemType: CHECK_OUT,

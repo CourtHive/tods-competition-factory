@@ -74,7 +74,7 @@ export function substituteParticipant({
       ?.map(getParticipantId)
       .filter((participantId) => participantId !== existingParticipantId);
 
-  if (!availableParticipantIds.includes(substituteParticipantId))
+  if (!availableParticipantIds?.includes(substituteParticipantId))
     return decorateResult({ result: { error: INVALID_PARTICIPANT_ID }, stack });
 
   return replaceTieMatchUpParticipantId({
