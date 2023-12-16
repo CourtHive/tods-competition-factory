@@ -1,4 +1,4 @@
-import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotifications';
+import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 
 import { AD_HOC } from '../../../constants/drawDefinitionConstants';

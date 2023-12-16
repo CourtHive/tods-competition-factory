@@ -9,7 +9,7 @@ import { addNotice } from '../../global/state/globalState';
 import {
   addDrawNotice,
   modifyMatchUpNotice,
-} from '../../drawEngine/notifications/drawNotifications';
+} from '../notifications/drawNotifications';
 
 import { MappedMatchUps } from '../../drawEngine/getters/getMatchUps/getMatchUpsMap';
 import { MODIFY_PARTICIPANTS } from '../../constants/topicConstants';

@@ -1,7 +1,7 @@
-import { SUCCESS } from '../../constants/resultConstants';
-import { updateTieMatchUpScore } from '../matchUps/score/tieMatchUpScore';
-import { modifyMatchUpNotice } from '../notifications/drawNotifications';
-import { copyTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';
+import { SUCCESS } from '../../../constants/resultConstants';
+import { updateTieMatchUpScore } from '../score/tieMatchUpScore';
+import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
+import { copyTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';
 
 export function updateTargetTeamMatchUps({
   updateInProgressMatchUps,

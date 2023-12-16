@@ -1,31 +1,31 @@
-import { resolveTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
-import { generateCollectionMatchUps } from '../../drawEngine/generators/tieMatchUps';
-import { findMatchUp } from '../../acquire/findMatchUp';
-import { getMatchUpId } from '../../global/functions/extractors';
+import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
+import { generateCollectionMatchUps } from '../../../drawEngine/generators/tieMatchUps';
+import { findMatchUp } from '../../../acquire/findMatchUp';
+import { getMatchUpId } from '../../../global/functions/extractors';
 import {
   addMatchUpsNotice,
   deleteMatchUpsNotice,
   modifyMatchUpNotice,
-} from '../notifications/drawNotifications';
+} from '../../notifications/drawNotifications';
 
-import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
-import { SUCCESS } from '../../constants/resultConstants';
+import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   ResultType,
   decorateResult,
-} from '../../global/functions/decorateResult';
+} from '../../../global/functions/decorateResult';
 import {
   INVALID_MATCHUP,
   MISSING_MATCHUP_ID,
   MISSING_TOURNAMENT_RECORD,
   NOT_FOUND,
-} from '../../constants/errorConditionConstants';
+} from '../../../constants/errorConditionConstants';
 import {
   DrawDefinition,
   Event,
   MatchUp,
   Tournament,
-} from '../../types/tournamentTypes';
+} from '../../../types/tournamentTypes';
 
 /**
  * remove the tieFormat from a TEAM matchUp if there is a tieFormat further up the hierarchy

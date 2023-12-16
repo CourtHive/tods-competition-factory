@@ -1,4 +1,4 @@
-import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotifications';
+import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { getInitialRoundNumber } from '../../../drawEngine/getters/getInitialRoundNumber';
 import {
   MatchUpsMap,

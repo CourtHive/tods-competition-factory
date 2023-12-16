@@ -1,7 +1,7 @@
 import {
   deleteMatchUpsNotice,
   modifyDrawNotice,
-} from '../../../../drawEngine/notifications/drawNotifications';
+} from '../../../../mutate/notifications/drawNotifications';
 
 import { VOLUNTARY_CONSOLATION } from '../../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';

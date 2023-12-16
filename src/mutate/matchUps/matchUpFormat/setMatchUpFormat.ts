@@ -4,7 +4,7 @@ import { findStructure } from '../../../drawEngine/getters/findStructure';
 import {
   modifyDrawNotice,
   modifyMatchUpNotice,
-} from '../../../drawEngine/notifications/drawNotifications';
+} from '../../notifications/drawNotifications';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/eventConstants';

@@ -17,7 +17,7 @@ import { numericSort } from '../../../utilities';
 import {
   modifyMatchUpNotice,
   modifyPositionAssignmentsNotice,
-} from '../../../drawEngine/notifications/drawNotifications';
+} from '../../notifications/drawNotifications';
 
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';

@@ -7,7 +7,7 @@ import { UUID } from '../../../utilities';
 import {
   addDrawNotice,
   addMatchUpsNotice,
-} from '../../../drawEngine/notifications/drawNotifications';
+} from '../../../mutate/notifications/drawNotifications';
 
 import { SINGLES_EVENT, TEAM_EVENT } from '../../../constants/eventConstants';
 import { Event, Tournament } from '../../../types/tournamentTypes';

@@ -1,5 +1,5 @@
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotifications';
+import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { getCollectionPositionAssignments } from '../../../tournamentEngine/governors/eventGovernor/getCollectionPositionAssignments';
 import { getPairedParticipant } from '../../../tournamentEngine/governors/participantGovernor/getPairedParticipant';
 import { deleteParticipants } from '../../../tournamentEngine/governors/participantGovernor/deleteParticipants';

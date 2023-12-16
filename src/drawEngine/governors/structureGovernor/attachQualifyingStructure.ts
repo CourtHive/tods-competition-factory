@@ -5,7 +5,7 @@ import { findStructure } from '../../getters/findStructure';
 import {
   addMatchUpsNotice,
   modifyDrawNotice,
-} from '../../notifications/drawNotifications';
+} from '../../../mutate/notifications/drawNotifications';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {

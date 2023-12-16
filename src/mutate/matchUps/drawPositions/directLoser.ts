@@ -5,7 +5,7 @@ import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps
 import { structureAssignedDrawPositions } from '../../../drawEngine/getters/positionsGetter';
 import { assignDrawPosition } from './positionAssignment';
 import { decorateResult } from '../../../global/functions/decorateResult';
-import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotifications';
+import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { assignSeed } from '../../../drawEngine/governors/entryGovernor/seedAssignment';
 import { findStructure } from '../../../drawEngine/getters/findStructure';
 import { numericSort } from '../../../utilities';

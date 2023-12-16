@@ -1,4 +1,4 @@
-import { modifyPositionAssignmentsNotice } from '../../notifications/drawNotifications';
+import { modifyPositionAssignmentsNotice } from '../../../mutate/notifications/drawNotifications';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import { positionTargets } from '../../../mutate/matchUps/drawPositions/positionTargets';
 import { findStructure } from '../../getters/findStructure';

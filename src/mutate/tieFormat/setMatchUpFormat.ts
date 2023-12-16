@@ -6,7 +6,7 @@ import { getMatchUpId } from '../../global/functions/extractors';
 import {
   modifyDrawNotice,
   modifyMatchUpNotice,
-} from '../../drawEngine/notifications/drawNotifications';
+} from '../notifications/drawNotifications';
 
 import { DOUBLES, SINGLES, TEAM } from '../../constants/eventConstants';
 import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';

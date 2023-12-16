@@ -4,7 +4,7 @@ import { numericSort } from '../../utilities';
 import {
   deleteMatchUpsNotice,
   modifyMatchUpNotice,
-} from '../../drawEngine/notifications/drawNotifications';
+} from '../notifications/drawNotifications';
 
 import { completedMatchUpStatuses } from '../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../constants/resultConstants';

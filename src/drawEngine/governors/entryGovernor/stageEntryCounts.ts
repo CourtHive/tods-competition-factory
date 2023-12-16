@@ -1,5 +1,5 @@
 import { getStageDrawPositionsCount } from '../../getters/getStageDrawPositions';
-import { modifyDrawNotice } from '../../notifications/drawNotifications';
+import { modifyDrawNotice } from '../../../mutate/notifications/drawNotifications';
 import { getQualifiersCount } from '../../getters/getQualifiersCount';
 import { modifyEntryProfile } from './modifyEntryProfile';
 import {

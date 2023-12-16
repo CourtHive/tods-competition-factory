@@ -1,5 +1,5 @@
 import { findExtension } from '../../../acquire/findExtension';
-import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotifications';
+import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { makeDeepCopy } from '../../../utilities';
 
 import { LINEUPS } from '../../../constants/extensionConstants';

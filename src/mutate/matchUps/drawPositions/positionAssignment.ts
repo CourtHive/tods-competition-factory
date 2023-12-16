@@ -4,7 +4,7 @@ import { getStructureDrawPositionProfiles } from '../../../drawEngine/getters/ge
 import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { assignMatchUpDrawPosition } from './assignMatchUpDrawPosition';
-import { modifyPositionAssignmentsNotice } from '../../../drawEngine/notifications/drawNotifications';
+import { modifyPositionAssignmentsNotice } from '../../notifications/drawNotifications';
 import { getStructureSeedAssignments } from '../../../drawEngine/getters/getStructureSeedAssignments';
 import { getRoundMatchUps } from '../../../drawEngine/accessors/matchUpAccessor/getRoundMatchUps';
 import { structureAssignedDrawPositions } from '../../../drawEngine/getters/positionsGetter';

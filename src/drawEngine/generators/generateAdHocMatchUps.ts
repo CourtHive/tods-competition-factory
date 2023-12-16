@@ -8,7 +8,7 @@ import { isConvertableInteger } from '../../utilities/math';
 import {
   addMatchUpsNotice,
   modifyDrawNotice,
-} from '../notifications/drawNotifications';
+} from '../../mutate/notifications/drawNotifications';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
 import { ROUND_OUTCOME } from '../../constants/drawDefinitionConstants';

@@ -12,7 +12,7 @@ import {
   addMatchUpsNotice,
   modifyDrawNotice,
   modifyMatchUpNotice,
-} from '../../drawEngine/notifications/drawNotifications';
+} from '../notifications/drawNotifications';
 import {
   ResultType,
   decorateResult,

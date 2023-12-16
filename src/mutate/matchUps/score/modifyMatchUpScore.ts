@@ -15,7 +15,7 @@ import { unique } from '../../../utilities';
 import {
   modifyMatchUpNotice,
   updateInContextMatchUp,
-} from '../../../drawEngine/notifications/drawNotifications';
+} from '../../notifications/drawNotifications';
 
 import { MATCHUP_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { UPDATE_INCONTEXT_MATCHUP } from '../../../constants/topicConstants';

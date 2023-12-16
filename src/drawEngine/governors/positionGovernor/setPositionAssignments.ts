@@ -9,7 +9,7 @@ import { intersection } from '../../../utilities';
 import {
   modifyDrawNotice,
   modifyPositionAssignmentsNotice,
-} from '../../notifications/drawNotifications';
+} from '../../../mutate/notifications/drawNotifications';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {

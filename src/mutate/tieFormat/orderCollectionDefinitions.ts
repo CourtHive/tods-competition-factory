@@ -8,7 +8,7 @@ import { copyTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/c
 import {
   modifyDrawNotice,
   modifyMatchUpNotice,
-} from '../../drawEngine/notifications/drawNotifications';
+} from '../notifications/drawNotifications';
 
 import { SUCCESS } from '../../constants/resultConstants';
 import { TEAM } from '../../constants/matchUpTypes';

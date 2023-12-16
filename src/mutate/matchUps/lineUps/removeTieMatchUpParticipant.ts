@@ -1,6 +1,6 @@
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotifications';
+import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { getPairedParticipant } from '../../../tournamentEngine/governors/participantGovernor/getPairedParticipant';
 import { deleteParticipants } from '../../../tournamentEngine/governors/participantGovernor/deleteParticipants';
 import { modifyParticipant } from '../../../tournamentEngine/governors/participantGovernor/modifyParticipant';

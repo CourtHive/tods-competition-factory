@@ -6,7 +6,7 @@ import {
   deleteMatchUpsNotice,
   modifyDrawNotice,
   modifyMatchUpNotice,
-} from '../../drawEngine/notifications/drawNotifications';
+} from '../notifications/drawNotifications';
 
 import { ROUND_OUTCOME } from '../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../constants/resultConstants';

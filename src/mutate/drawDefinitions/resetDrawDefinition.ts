@@ -3,7 +3,7 @@ import { getMatchUpsMap } from '../../drawEngine/getters/getMatchUps/getMatchUps
 import {
   modifyDrawNotice,
   modifyMatchUpNotice,
-} from '../../drawEngine/notifications/drawNotifications';
+} from '../notifications/drawNotifications';
 
 import { MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
 import { toBePlayed } from '../../fixtures/scoring/outcomes/toBePlayed';

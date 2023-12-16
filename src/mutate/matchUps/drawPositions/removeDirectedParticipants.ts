@@ -1,7 +1,7 @@
 import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
 import { removeSubsequentRoundsParticipant } from './removeSubsequentRoundsParticipant';
 import { structureAssignedDrawPositions } from '../../../drawEngine/getters/positionsGetter';
-import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotifications';
+import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { clearDrawPosition } from './positionClear';
 import { includesMatchUpStatuses } from '../../../drawEngine/governors/matchUpGovernor/includesMatchUpStatuses';
 import { findStructure } from '../../../drawEngine/getters/findStructure';

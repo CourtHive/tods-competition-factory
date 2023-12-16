@@ -4,7 +4,7 @@ import { getMatchUpId } from '../../../../global/functions/extractors';
 import {
   deleteMatchUpsNotice,
   modifyDrawNotice,
-} from '../../../../drawEngine/notifications/drawNotifications';
+} from '../../../../mutate/notifications/drawNotifications';
 
 import { MAIN } from '../../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';

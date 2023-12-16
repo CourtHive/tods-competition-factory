@@ -1,6 +1,6 @@
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { getScheduledCourtMatchUps } from '../queryGovernor/getScheduledCourtMatchUps';
-import { removeCourtAssignment } from './removeCourtAssignment';
+import { removeCourtAssignment } from '../../../mutate/matchUps/schedule/removeCourtAssignment';
 import { addNotice } from '../../../global/state/globalState';
 import { findCourt } from '../../getters/courtGetter';
 import { deletionMessage } from './deletionMessage';

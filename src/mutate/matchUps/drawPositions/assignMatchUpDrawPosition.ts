@@ -1,7 +1,7 @@
 import { getPairedPreviousMatchUpIsDoubleExit } from '../../../drawEngine/governors/positionGovernor/getPairedPreviousMatchUpIsDoubleExit';
 import { assignDrawPositionBye } from './assignDrawPositionBye';
 import { getAllDrawMatchUps } from '../../../drawEngine/getters/getMatchUps/drawMatchUps';
-import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotifications';
+import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { updateSideLineUp } from '../lineUps/updateSideLineUp';
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';

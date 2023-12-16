@@ -13,7 +13,7 @@ import { resetLineUps } from '../lineUps/resetLineUps';
 import {
   modifyDrawNotice,
   modifyPositionAssignmentsNotice,
-} from '../../../drawEngine/notifications/drawNotifications';
+} from '../../notifications/drawNotifications';
 
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';

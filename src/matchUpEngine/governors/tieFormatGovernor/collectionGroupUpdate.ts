@@ -1,4 +1,4 @@
-import { modifyDrawNotice } from '../../../drawEngine/notifications/drawNotifications';
+import { modifyDrawNotice } from '../../../mutate/notifications/drawNotifications';
 import { definedAttributes } from '../../../utilities/definedAttributes';
 import { updateTargetTeamMatchUps } from '../../../mutate/tieFormat/updateTargetTeamMatchUps';
 import { getTargetTeamMatchUps } from './getTargetTeamMatchUps';

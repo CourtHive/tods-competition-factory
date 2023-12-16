@@ -1,4 +1,4 @@
-import { addDrawNotice } from '../../../../drawEngine/notifications/drawNotifications';
+import { addDrawNotice } from '../../../../mutate/notifications/drawNotifications';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {

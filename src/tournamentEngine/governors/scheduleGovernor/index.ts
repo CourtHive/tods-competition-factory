@@ -8,14 +8,14 @@ import { getModifiedMatchUpFormatTiming } from './matchUpFormatTiming/getModifie
 import { getEventMatchUpFormatTiming } from './matchUpFormatTiming/getEventMatchUpFormatTiming';
 import { modifyMatchUpFormatTiming } from './matchUpFormatTiming/modifyMatchUpFormatTiming';
 import { getMatchUpFormatTiming } from './matchUpFormatTiming/getMatchUpFormatTiming';
-import { removeMatchUpCourtAssignment } from './removeMatchUpCourtAssignment';
+import { removeMatchUpCourtAssignment } from '../../../mutate/matchUps/removeMatchUpCourtAssignment';
 import { getMatchUpDailyLimitsUpdate } from './getMatchUpDailyLimitsUpdate';
 import { allocateTeamMatchUpCourts } from './allocateTeamMatchUpCourts';
 import { bulkRescheduleMatchUps } from './bulkRescheduleMatchUps';
 import { clearScheduledMatchUps } from './clearScheduledMatchUps';
 import { setMatchUpDailyLimits } from './setMatchUpDailyLimits';
 import { getMatchUpDailyLimits } from './getMatchUpDailyLimits';
-import { clearMatchUpSchedule } from './clearMatchUpSchedule';
+import { clearMatchUpSchedule } from '../../../mutate/matchUps/schedule/clearMatchUpSchedule';
 import { bulkScheduleMatchUps } from './bulkScheduleMatchUps';
 import { assignMatchUpCourt } from './assignMatchUpCourt';
 import { assignMatchUpVenue } from './assignMatchUpVenue';

@@ -1,5 +1,5 @@
 import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
-import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotifications';
+import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
 import { getDevContext } from '../../../global/state/globalState';
 import { modifyMatchUpScore } from '../score/modifyMatchUpScore';

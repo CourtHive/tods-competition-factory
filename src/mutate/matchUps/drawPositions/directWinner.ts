@@ -1,7 +1,7 @@
 import { removeLineUpSubstitutions } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/removeLineUpSubstitutions';
 import { structureAssignedDrawPositions } from '../../../drawEngine/getters/positionsGetter';
 import { assignDrawPosition } from './positionAssignment';
-import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotifications';
+import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { assignMatchUpDrawPosition } from './assignMatchUpDrawPosition';
 import { assignSeed } from '../../../drawEngine/governors/entryGovernor/seedAssignment';

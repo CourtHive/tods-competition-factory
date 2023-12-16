@@ -3,7 +3,7 @@ import { addExtension } from '../../../global/functions/producers/addExtension';
 import { isValidExtension } from '../../../validators/isValidExtension';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { definedAttributes } from '../../../utilities/definedAttributes';
-import { modifyDrawNotice } from '../../notifications/drawNotifications';
+import { modifyDrawNotice } from '../../../mutate/notifications/drawNotifications';
 import { participantInEntries } from '../../getters/entryGetter';
 import { getValidStage } from '../../getters/getValidStage';
 import { getStageSpace } from '../../getters/getStageSpace';

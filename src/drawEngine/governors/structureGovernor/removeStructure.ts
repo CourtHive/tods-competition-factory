@@ -9,7 +9,7 @@ import { findStructure } from '../../getters/findStructure';
 import {
   deleteMatchUpsNotice,
   modifyDrawNotice,
-} from '../../notifications/drawNotifications';
+} from '../../../mutate/notifications/drawNotifications';
 
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { POLICY_TYPE_SCORING } from '../../../constants/policyConstants';

@@ -1,5 +1,5 @@
 import { structureAssignedDrawPositions } from '../../../drawEngine/getters/positionsGetter';
-import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotifications';
+import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { decorateResult } from '../../../global/functions/decorateResult';
 
 import { BYE } from '../../../constants/matchUpStatusConstants';

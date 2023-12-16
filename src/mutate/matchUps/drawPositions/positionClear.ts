@@ -21,7 +21,7 @@ import {
 import {
   modifyPositionAssignmentsNotice,
   modifyMatchUpNotice,
-} from '../../../drawEngine/notifications/drawNotifications';
+} from '../../notifications/drawNotifications';
 
 import { CONTAINER, DRAW } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';

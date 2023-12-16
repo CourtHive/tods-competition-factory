@@ -17,7 +17,7 @@ import {
   deleteMatchUpsNotice,
   modifyDrawNotice,
   modifyMatchUpNotice,
-} from '../../drawEngine/notifications/drawNotifications';
+} from '../notifications/drawNotifications';
 import {
   allDrawMatchUps,
   allEventMatchUps,
