@@ -1,5 +1,5 @@
 import { getStructureMatchUps } from '../../getters/getMatchUps/getStructureMatchUps';
-import { positionTargets } from '../../governors/positionGovernor/positionTargets';
+import { positionTargets } from '../../../mutate/matchUps/drawPositions/positionTargets';
 import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getDrawStructures } from '../../getters/findStructure';

@@ -1,5 +1,5 @@
 // import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
-import { positionTargets } from '../positionGovernor/positionTargets';
+import { positionTargets } from '../../../mutate/matchUps/drawPositions/positionTargets';
 
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 import {

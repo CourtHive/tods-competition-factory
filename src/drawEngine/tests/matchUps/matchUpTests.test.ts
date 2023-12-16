@@ -1,6 +1,6 @@
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { getStructureMatchUps } from '../../getters/getMatchUps/getStructureMatchUps';
-import { setMatchUpFormat } from '../../governors/matchUpGovernor/setMatchUpFormat';
+import { setMatchUpFormat } from '../../../mutate/matchUps/matchUpFormat/setMatchUpFormat';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { getMatchUpType } from '../../accessors/matchUpAccessor';
 import { getDrawStructures } from '../../getters/findStructure';

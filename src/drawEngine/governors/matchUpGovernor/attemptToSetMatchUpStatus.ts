@@ -1,9 +1,9 @@
 import { doubleExitAdvancement } from '../positionGovernor/doubleExitAdvancement';
-import { attemptToSetMatchUpStatusBYE } from './attemptToSetMatchUpStatusBYE';
-import { removeDirectedParticipants } from './removeDirectedParticipants';
+import { attemptToSetMatchUpStatusBYE } from '../../../mutate/matchUps/matchUpStatus/attemptToSetMatchUpStatusBYE';
+import { removeDirectedParticipants } from '../../../mutate/matchUps/drawPositions/removeDirectedParticipants';
 import { decorateResult } from '../../../global/functions/decorateResult';
-import { updateTieMatchUpScore } from './tieMatchUpScore';
-import { modifyMatchUpScore } from './modifyMatchUpScore';
+import { updateTieMatchUpScore } from '../../../mutate/matchUps/score/tieMatchUpScore';
+import { modifyMatchUpScore } from '../../../mutate/matchUps/score/modifyMatchUpScore';
 import {
   isDirectingMatchUpStatus,
   isNonDirectingMatchUpStatus,

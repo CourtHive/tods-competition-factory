@@ -1,13 +1,13 @@
 import { lastSetFormatIsTimed } from '../../../matchUpEngine/governors/matchUpFormatGovernor/lastSetFormatisTimed';
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
-import { removeDirectedParticipants } from './removeDirectedParticipants';
+import { removeDirectedParticipants } from '../../../mutate/matchUps/drawPositions/removeDirectedParticipants';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { attemptToSetMatchUpStatus } from './attemptToSetMatchUpStatus';
 import { checkConnectedStructures } from './checkConnectedStructures';
 import { attemptToSetWinningSide } from './attemptToSetWinningSide';
 import { attemptToModifyScore } from './attemptToModifyScore';
-import { updateTieMatchUpScore } from './tieMatchUpScore';
-import { modifyMatchUpScore } from './modifyMatchUpScore';
+import { updateTieMatchUpScore } from '../../../mutate/matchUps/score/tieMatchUpScore';
+import { modifyMatchUpScore } from '../../../mutate/matchUps/score/modifyMatchUpScore';
 import { removeDoubleExit } from './removeDoubleExit';
 import { removeQualifier } from './removeQualifier';
 

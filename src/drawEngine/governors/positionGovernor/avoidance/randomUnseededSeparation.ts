@@ -7,7 +7,7 @@ import { getUnplacedParticipantIds } from './getUnplacedParticipantIds';
 import { addParticipantGroupings } from './addParticipantGroupings';
 import { findStructure } from '../../../getters/findStructure';
 import { deriveExponent } from '../../../../utilities/math';
-import { assignDrawPosition } from '../positionAssignment';
+import { assignDrawPosition } from '../../../../mutate/matchUps/drawPositions/positionAssignment';
 import {
   getPositionAssignments,
   structureAssignedDrawPositions,

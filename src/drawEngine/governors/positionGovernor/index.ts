@@ -1,14 +1,14 @@
 import { initializeStructureSeedAssignments } from './initializeSeedAssignments';
 import { assignDrawPositionBye } from './byePositioning/assignDrawPositionBye';
 import { resolveDrawPositions } from '../../generators/drawPositionsResolver';
-import { alternateDrawPositionAssignment } from './positionAlternate';
+import { alternateDrawPositionAssignment } from '../../../mutate/matchUps/drawPositions/positionAlternate';
 import { setPositionAssignments } from './setPositionAssignments';
 import { automatedPositioning } from './automatedPositioning';
-import { swapDrawPositionAssignments } from './positionSwap';
+import { swapDrawPositionAssignments } from '../../../mutate/matchUps/drawPositions/positionSwap';
 import { getNextSeedBlock } from '../../getters/seedGetter';
 import { resetMatchUpLineUps } from './resetMatchUpLineUps';
-import { assignDrawPosition } from './positionAssignment';
-import { clearDrawPosition } from './positionClear';
+import { assignDrawPosition } from '../../../mutate/matchUps/drawPositions/positionAssignment';
+import { clearDrawPosition } from '../../../mutate/matchUps/drawPositions/positionClear';
 import { setSubOrder } from './setSubOrder';
 
 const positionGovernor = {

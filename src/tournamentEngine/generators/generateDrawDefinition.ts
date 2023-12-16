@@ -1,7 +1,7 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '../../drawEngine/governors/structureGovernor/generateDrawTypeAndModifyDrawDefinition';
 import { generateQualifyingStructures } from '../../drawEngine/governors/structureGovernor/generateQualifyingStructures';
 import { addVoluntaryConsolationStructure } from '../governors/eventGovernor/addVoluntaryConsolationStructure';
-import { setMatchUpFormat } from '../../drawEngine/governors/matchUpGovernor/setMatchUpFormat';
+import { setMatchUpFormat } from '../../mutate/matchUps/matchUpFormat/setMatchUpFormat';
 import { addDrawDefinition } from '../governors/eventGovernor/drawDefinitions/addDrawDefinition';
 import { generateQualifyingLink } from '../../drawEngine/generators/generateQualifyingLink';
 import { generateAdHocMatchUps } from '../../drawEngine/generators/generateAdHocMatchUps';

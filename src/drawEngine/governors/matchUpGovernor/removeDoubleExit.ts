@@ -1,13 +1,13 @@
 import { getPairedPreviousMatchUp } from '../positionGovernor/getPairedPreviousMatchup';
 import { decorateResult } from '../../../global/functions/decorateResult';
-import { positionTargets } from '../positionGovernor/positionTargets';
+import { positionTargets } from '../../../mutate/matchUps/drawPositions/positionTargets';
 import { findStructure } from '../../getters/findStructure';
-import { modifyMatchUpScore } from './modifyMatchUpScore';
+import { modifyMatchUpScore } from '../../../mutate/matchUps/score/modifyMatchUpScore';
 import { intersection, overlap } from '../../../utilities';
 import {
   removeDirectedBye,
   removeDirectedWinner,
-} from './removeDirectedParticipants';
+} from '../../../mutate/matchUps/drawPositions/removeDirectedParticipants';
 
 import { pushGlobalLog } from '../../../global/functions/globalLog';
 

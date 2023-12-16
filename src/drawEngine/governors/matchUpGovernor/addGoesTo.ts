@@ -1,6 +1,6 @@
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { addFinishingRounds } from '../../generators/addFinishingRounds';
-import { positionTargets } from '../positionGovernor/positionTargets';
+import { positionTargets } from '../../../mutate/matchUps/drawPositions/positionTargets';
 import {
   MatchUpsMap,
   getMappedStructureMatchUps,

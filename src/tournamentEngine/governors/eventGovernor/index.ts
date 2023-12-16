@@ -55,7 +55,7 @@ import {
 } from './entries/setEntryPositions';
 
 import { setSubOrder } from '../../../drawEngine/governors/positionGovernor/setSubOrder';
-import { removeDelegatedOutcome } from './drawDefinitions/removeDelegatedOutcome';
+import { removeDelegatedOutcome } from '../../../mutate/matchUps/removeDelegatedOutcome';
 import { generateSeedingScaleItems } from './entries/generateSeedingScaleItems';
 import { setDelegatedOutcome } from './drawDefinitions/setDelegatedOutcome';
 import { removeScaleValues } from './entries/removeScaleValues';
@@ -67,7 +67,7 @@ import { addVoluntaryConsolationStructure } from '../../../drawEngine/generators
 import { resetVoluntaryConsolationStructure } from './drawDefinitions/resetVoluntaryConsolationStructure';
 import { deleteFlightProfileAndFlightDraws } from './drawDefinitions/deleteFlightProfileAndFlightDraws';
 import { removeStructure } from '../../../drawEngine/governors/structureGovernor/removeStructure';
-import { toggleParticipantCheckInState } from '../../../mutate/matchUps/toggleParticipantCheckInState';
+import { toggleParticipantCheckInState } from '../../../mutate/matchUps/timeItems/toggleParticipantCheckInState';
 import { deleteFlightAndFlightDraw } from './drawDefinitions/deleteFlightAndFlightDraw';
 import { refreshEventDrawOrder } from './drawDefinitions/refreshEventDrawOrder';
 import { generateFlightProfile } from '../../generators/generateFlightProfile';
@@ -138,8 +138,8 @@ import { disableTieAutoCalc } from './disableTieAutoCalc';
 import { enableTieAutoCalc } from './enableTieAutoCalc';
 import { modifyEvent } from './modifyEvent';
 
-import { checkOutParticipant } from '../../../mutate/matchUps/checkOutParticipant';
-import { checkInParticipant } from '../../../mutate/matchUps/checkInParticipant';
+import { checkOutParticipant } from '../../../mutate/matchUps/timeItems/checkOutParticipant';
+import { checkInParticipant } from '../../../mutate/matchUps/timeItems/checkInParticipant';
 
 const eventGovernor = {
   generateQualifyingStructure,

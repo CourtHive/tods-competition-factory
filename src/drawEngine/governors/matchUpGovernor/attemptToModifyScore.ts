@@ -1,7 +1,7 @@
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { isDirectingMatchUpStatus } from './checkStatusType';
-import { modifyMatchUpScore } from './modifyMatchUpScore';
+import { modifyMatchUpScore } from '../../../mutate/matchUps/score/modifyMatchUpScore';
 import { isAdHoc } from '../queryGovernor/isAdHoc';
 
 import { MISSING_ASSIGNMENTS } from '../../../constants/errorConditionConstants';

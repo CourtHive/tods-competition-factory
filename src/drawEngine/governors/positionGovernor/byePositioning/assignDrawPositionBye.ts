@@ -12,7 +12,7 @@ import { addPositionActionTelemetry } from '../addPositionActionTelemetry';
 import { getPositionAssignments } from '../../../getters/positionsGetter';
 import { pushGlobalLog } from '../../../../global/functions/globalLog';
 import { findStructure } from '../../../getters/findStructure';
-import { positionTargets } from '../positionTargets';
+import { positionTargets } from '../../../../mutate/matchUps/drawPositions/positionTargets';
 import { numericSort } from '../../../../utilities';
 import {
   modifyMatchUpNotice,

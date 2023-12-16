@@ -1,5 +1,5 @@
 import { SUCCESS } from '../../../constants/resultConstants';
-import { updateTieMatchUpScore } from '../../../drawEngine/governors/matchUpGovernor/tieMatchUpScore';
+import { updateTieMatchUpScore } from '../../../mutate/matchUps/score/tieMatchUpScore';
 import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotifications';
 import { copyTieFormat } from './copyTieFormat';
 

@@ -1,8 +1,8 @@
 // all child matchUps need to be checked for collectionAssignments which need to be removed when collectionDefinition.collectionIds are removed
 
 import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
-import { updateTieMatchUpScore } from '../../../drawEngine/governors/matchUpGovernor/tieMatchUpScore';
-import { setMatchUpStatus } from '../../../drawEngine/governors/matchUpGovernor/setMatchUpStatus';
+import { updateTieMatchUpScore } from '../../../mutate/matchUps/score/tieMatchUpScore';
+import { setMatchUpStatus } from '../../../mutate/matchUps/matchUpStatus/setMatchUpStatus';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { definedAttributes } from '../../../utilities/definedAttributes';

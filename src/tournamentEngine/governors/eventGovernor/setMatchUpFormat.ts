@@ -1,4 +1,4 @@
-import { setMatchUpFormat as drawEngineSetMatchUpFormat } from '../../../drawEngine/governors/matchUpGovernor/setMatchUpFormat';
+import { setMatchUpFormat as drawEngineSetMatchUpFormat } from '../../../mutate/matchUps/matchUpFormat/setMatchUpFormat';
 import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
 import { isValid } from '../../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
 import { decorateResult } from '../../../global/functions/decorateResult';

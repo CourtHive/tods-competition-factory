@@ -3,11 +3,11 @@ import { compareTieFormats } from '../../../matchUpEngine/governors/tieFormatGov
 import { resetTieFormat } from '../../../tournamentEngine/governors/eventGovernor/resetTieFormat';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
-import { positionTargets } from '../positionGovernor/positionTargets';
+import { positionTargets } from '../../../mutate/matchUps/drawPositions/positionTargets';
 import { findStructure } from '../../getters/findStructure';
 import { isActiveDownstream } from './isActiveDownstream';
-import { updateTieMatchUpScore } from './tieMatchUpScore';
-import { setMatchUpStatus } from './setMatchUpStatus';
+import { updateTieMatchUpScore } from '../../../mutate/matchUps/score/tieMatchUpScore';
+import { setMatchUpStatus } from '../../../mutate/matchUps/matchUpStatus/setMatchUpStatus';
 import {
   ResultType,
   decorateResult,

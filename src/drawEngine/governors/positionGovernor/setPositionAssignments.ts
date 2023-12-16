@@ -4,7 +4,7 @@ import { decorateResult } from '../../../global/functions/decorateResult';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import { findStructure } from '../../getters/findStructure';
-import { assignDrawPosition } from './positionAssignment';
+import { assignDrawPosition } from '../../../mutate/matchUps/drawPositions/positionAssignment';
 import { intersection } from '../../../utilities';
 import {
   modifyDrawNotice,

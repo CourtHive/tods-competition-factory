@@ -1,4 +1,4 @@
-import { qualifierDrawPositionAssignment as positionQualifier } from '../../../../drawEngine/governors/positionGovernor/positionQualifier';
+import { qualifierDrawPositionAssignment as positionQualifier } from '../../../../mutate/matchUps/drawPositions/positionQualifier';
 
 /**
  *

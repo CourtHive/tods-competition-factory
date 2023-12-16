@@ -1,4 +1,4 @@
-import { alternateDrawPositionAssignment as positionAlternate } from '../../../../drawEngine/governors/positionGovernor/positionAlternate';
+import { alternateDrawPositionAssignment as positionAlternate } from '../../../../mutate/matchUps/drawPositions/positionAlternate';
 
 /**
  *

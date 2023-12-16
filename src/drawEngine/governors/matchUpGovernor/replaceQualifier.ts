@@ -1,6 +1,6 @@
 import { modifyPositionAssignmentsNotice } from '../../notifications/drawNotifications';
 import { getPositionAssignments } from '../../getters/positionsGetter';
-import { positionTargets } from '../positionGovernor/positionTargets';
+import { positionTargets } from '../../../mutate/matchUps/drawPositions/positionTargets';
 import { findStructure } from '../../getters/findStructure';
 import { isActiveDownstream } from './isActiveDownstream';
 

@@ -1,12 +1,12 @@
 import { getPairedPreviousMatchUpIsDoubleExit } from './getPairedPreviousMatchUpIsDoubleExit';
-import { assignMatchUpDrawPosition } from '../matchUpGovernor/assignMatchUpDrawPosition';
+import { assignMatchUpDrawPosition } from '../../../mutate/matchUps/drawPositions/assignMatchUpDrawPosition';
 import { getExitWinningSide } from '../matchUpGovernor/getExitWinningSide';
-import { modifyMatchUpScore } from '../matchUpGovernor/modifyMatchUpScore';
+import { modifyMatchUpScore } from '../../../mutate/matchUps/score/modifyMatchUpScore';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import { definedAttributes } from '../../../utilities/definedAttributes';
 import { findStructure } from '../../getters/findStructure';
-import { positionTargets } from './positionTargets';
+import { positionTargets } from '../../../mutate/matchUps/drawPositions/positionTargets';
 import { overlap } from '../../../utilities';
 import {
   advanceDrawPosition,

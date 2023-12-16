@@ -3,7 +3,7 @@ import { decorateResult } from '../../../../global/functions/decorateResult';
 import { findDrawMatchUp } from '../../../../acquire/findDrawMatchUp';
 import { scheduledMatchUpDate } from '../../../accessors/matchUpAccessor';
 import { mustBeAnArray } from '../../../../utilities/mustBeAnArray';
-import { addMatchUpTimeItem } from '../../../../mutate/matchUps/matchUpTimeItems';
+import { addMatchUpTimeItem } from '../../../../mutate/matchUps/timeItems/matchUpTimeItems';
 import {
   convertTime,
   extractDate,
