@@ -5,12 +5,9 @@ import { expect, it } from 'vitest';
 
 import POLICY_SCHEDULING_DEFAULT from '../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
 import POLICY_SCORING_USTA from '../../../fixtures/policies/POLICY_SCORING_USTA';
+import { EVENT_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
 import { SCHEDULE_TIMING } from '../../../constants/extensionConstants';
-import {
-  EVENT_NOT_FOUND,
-  MISSING_EVENT,
-} from '../../../constants/errorConditionConstants';
 
 const SHORT4TB10 = 'SET1-S:4/TB10';
 
@@ -93,7 +90,7 @@ it('can modify event timing for matchUpFormat codes', () => {
   result = tournamentEngine.removeEventMatchUpFormatTiming({
     eventId: 'unknownEventId',
   });
-  expect(result.error).toEqual(MISSING_EVENT);
+  expect(result.error).toEqual(EVENT_NOT_FOUND);
 
   result = competitionEngine.removeEventMatchUpFormatTiming({
     eventId: 'unknownEventId',
