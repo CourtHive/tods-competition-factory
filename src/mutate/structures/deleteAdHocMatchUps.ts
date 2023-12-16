@@ -8,6 +8,7 @@ import {
   modifyMatchUpNotice,
 } from '../notifications/drawNotifications';
 
+import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
 import { ROUND_OUTCOME } from '../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
@@ -17,7 +18,6 @@ import {
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
 } from '../../constants/errorConditionConstants';
-import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
 
 type DeleteAdHocMatchUpsArgs = {
   tournamentRecord?: Tournament;

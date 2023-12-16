@@ -55,7 +55,7 @@ import {
 } from './entries/setEntryPositions';
 
 import { setSubOrder } from '../../../drawEngine/governors/positionGovernor/setSubOrder';
-import { removeDelegatedOutcome } from '../../../mutate/matchUps/removeDelegatedOutcome';
+import { removeDelegatedOutcome } from '../../../mutate/matchUps/extensions/removeDelegatedOutcome';
 import { generateSeedingScaleItems } from './entries/generateSeedingScaleItems';
 import { setDelegatedOutcome } from './drawDefinitions/setDelegatedOutcome';
 import { removeScaleValues } from './entries/removeScaleValues';
@@ -74,7 +74,7 @@ import { generateFlightProfile } from '../../generators/generateFlightProfile';
 import { generateVoluntaryConsolation } from './generateVoluntaryConsolation';
 import { addVoluntaryConsolationStage } from './addVoluntaryConsolationStage';
 import { substituteParticipant } from './drawDefinitions/substituteParticipant';
-import { deleteAdHocMatchUps } from '../../../mutate/deleteAdHocMatchUps';
+import { deleteAdHocMatchUps } from '../../../mutate/structures/deleteAdHocMatchUps';
 import { modifyDrawDefinition } from './drawDefinitions/modifyDrawDefinition';
 import { resetDrawDefinition } from '../../../mutate/drawDefinitions/resetDrawDefinition';
 import { pruneDrawDefinition } from './drawDefinitions/pruneDrawDefinition';
@@ -131,7 +131,7 @@ import { isValidForQualifying } from './drawDefinitions/isValidForQualifying';
 import { renameStructures } from './drawDefinitions/renameStructures';
 import { generateDrawMaticRound } from '../../../forge/generate';
 
-import { resetMatchUpLineUps } from '../../../mutate/matchUps/resetMatchUpLineUps';
+import { resetMatchUpLineUps } from '../../../mutate/matchUps/lineUps/resetMatchUpLineUps';
 import { aggregateTieFormats } from '../../../mutate/tieFormat/aggregateTieFormats';
 import { updateTieMatchUpScore } from './updateTieMatchUpScore';
 import { disableTieAutoCalc } from './disableTieAutoCalc';
