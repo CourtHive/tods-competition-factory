@@ -1,5 +1,5 @@
 import { getMatchUpFormatTiming } from '../../../../query/extensions/matchUpFormatTiming/getMatchUpFormatTiming';
-import { isValid } from '../../../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
+import { isValidMatchUpFormat } from '../../../../validators/isValidMatchUpFormat';
 import { findEvent } from '../../../../acquire/findEvent';
 
 import { UNRECOGNIZED_MATCHUP_FORMAT } from '../../../../constants/errorConditionConstants';
@@ -27,7 +27,8 @@ export function findMatchUpFormatTiming({
   eventType,
   eventId,
 }: FindMatchUpFormatTiming) {
-  if (!isValid(matchUpFormat)) return { error: UNRECOGNIZED_MATCHUP_FORMAT };
+  if (!isValidMatchUpFormat(matchUpFormat))
+    return { error: UNRECOGNIZED_MATCHUP_FORMAT };
 
   const tournamentIds = Object.keys(tournamentRecords).filter(
     (currentTournamentId) =>

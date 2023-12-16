@@ -1,4 +1,4 @@
-import { validateTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
+import { validateTieFormat } from '../../../validators/tieFormatUtilities';
 import { allEventMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
 import { definedAttributes } from '../../../utilities/definedAttributes';
 import tieFormatDefaults from '../../generators/tieFormatDefaults';

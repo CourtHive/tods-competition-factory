@@ -1,4 +1,4 @@
-import { isValid } from '../../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
+import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
 import { definedAttributes } from '../../../utilities/definedAttributes';
 import { findExtension } from '../../../acquire/findExtension';
 import { getMatchUpFormatTiming } from './getMatchUpFormatTiming';
@@ -80,7 +80,7 @@ export function getEventMatchUpFormatTiming({
 
         if (uniqueMatchUpFormats.includes(definitionObject?.matchUpFormat))
           return;
-        if (!isValid(definitionObject?.matchUpFormat)) return;
+        if (!isValidMatchUpFormat(definitionObject?.matchUpFormat)) return;
         uniqueMatchUpFormats.push(definitionObject.matchUpFormat);
         return definitionObject;
       })

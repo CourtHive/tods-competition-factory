@@ -1,5 +1,5 @@
 // matchUpEngine
-export { isValid as isValidMatchUpFormat } from '../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
+export { isValidMatchUpFormat } from '../../validators/isValidMatchUpFormat';
 export { parse as parseMatchUpFormat } from '../../matchUpEngine/governors/matchUpFormatGovernor/parse';
 
 // mocksEngine

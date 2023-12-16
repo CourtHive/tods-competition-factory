@@ -1,4 +1,4 @@
-import { isValid } from '../../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
+import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
 import { getModifiedMatchUpFormatTiming } from '../../../query/extensions/matchUpFormatTiming/getModifiedMatchUpTiming';
 import { modifyMatchUpFormatTiming } from '../../matchUps/extensions/modifyMatchUpFormatTiming';
 import { ensureInt } from '../../../utilities/ensureInt';
@@ -19,7 +19,7 @@ export function modifyEventMatchUpFormatTiming({
   event,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!isValid(matchUpFormat)) return { error: INVALID_VALUES };
+  if (!isValidMatchUpFormat(matchUpFormat)) return { error: INVALID_VALUES };
   if (!event) return { error: MISSING_EVENT };
 
   const { averageTimes = [], recoveryTimes = [] } =

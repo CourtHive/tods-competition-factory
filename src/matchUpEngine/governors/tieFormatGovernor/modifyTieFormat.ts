@@ -5,7 +5,7 @@ import { addCollectionDefinition } from '../../../mutate/tieFormat/addCollection
 import { extractAttributes as xa } from '../../../utilities';
 import { numericSortValue } from '../../../utilities/arrays';
 import { getTieFormat } from './getTieFormat/getTieFormat';
-import { validateTieFormat } from './tieFormatUtilities';
+import { validateTieFormat } from '../../../validators/tieFormatUtilities';
 import { compareTieFormats } from './compareTieFormats';
 import { copyTieFormat } from './copyTieFormat';
 

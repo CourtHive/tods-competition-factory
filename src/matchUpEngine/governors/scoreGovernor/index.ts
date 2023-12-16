@@ -1,6 +1,7 @@
 import { generateTieMatchUpScore } from '../../../assemblies/generators/tieMatchUpScore/generateTieMatchUpScore';
+import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
 import { updateTieMatchUpScore } from '../../../mutate/matchUps/score/tieMatchUpScore';
-import { validateTieFormat } from '../tieFormatGovernor/tieFormatUtilities';
+import { validateTieFormat } from '../../../validators/tieFormatUtilities';
 import { generateScoreString } from '../../generators/generateScoreString';
 import { validateScore } from '../../../validators/validateScore';
 import { checkSetIsComplete, keyValueScore } from './keyValueScore';
@@ -14,12 +15,11 @@ import {
 
 // renamed
 import { stringify } from '../matchUpFormatGovernor/stringify';
-import { isValid } from '../matchUpFormatGovernor/isValid';
 import { parse } from '../matchUpFormatGovernor/parse';
 
 export const scoreGovernor = {
   stringifyMatchUpFormat: stringify,
-  isValidMatchUpFormat: isValid,
+  isValidMatchUpFormat,
   parseMatchUpFormat: parse,
   generateTieMatchUpScore,
   getTiebreakComplement,

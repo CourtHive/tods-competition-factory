@@ -1,4 +1,4 @@
-import { isValid } from '../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
+import { isValidMatchUpFormat } from '../../validators/isValidMatchUpFormat';
 import { parse } from '../../matchUpEngine/governors/matchUpFormatGovernor/parse';
 import { analyzeMatchUp } from '../../matchUpEngine/getters/analyzeMatchUp';
 import { matchUpScore } from '../../matchUpEngine/generators/matchUpScore';
@@ -59,7 +59,8 @@ export function generateOutcome(params) {
     sideWeight = 4,
   } = params;
 
-  if (!isValid(matchUpFormat)) return { error: INVALID_MATCHUP_FORMAT };
+  if (!isValidMatchUpFormat(matchUpFormat))
+    return { error: INVALID_MATCHUP_FORMAT };
   if (typeof matchUpStatusProfile !== 'object')
     return { error: INVALID_VALUES };
   if (defaultWithScorePercent > 100) defaultWithScorePercent = 100;

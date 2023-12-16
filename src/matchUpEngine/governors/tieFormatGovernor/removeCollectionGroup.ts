@@ -4,7 +4,7 @@ import { definedAttributes } from '../../../utilities/definedAttributes';
 import { collectionGroupUpdate } from './collectionGroupUpdate';
 import { getTieFormat } from './getTieFormat/getTieFormat';
 import { tieFormatTelemetry } from './tieFormatTelemetry';
-import { validateTieFormat } from './tieFormatUtilities';
+import { validateTieFormat } from '../../../validators/tieFormatUtilities';
 import { copyTieFormat } from './copyTieFormat';
 
 import { TIE_FORMAT_MODIFICATIONS } from '../../../constants/extensionConstants';

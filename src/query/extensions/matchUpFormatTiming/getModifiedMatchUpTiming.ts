@@ -1,4 +1,4 @@
-import { isValid } from '../../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
+import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
 import { checkRequiredParameters } from '../../../parameters/checkRequiredParameters';
 import { findExtension } from '../../../acquire/findExtension';
 import {
@@ -28,8 +28,8 @@ export function getModifiedMatchUpFormatTiming(
     { tournamentRecord: true },
     {
       invalid: UNRECOGNIZED_MATCHUP_FORMAT,
+      validate: isValidMatchUpFormat,
       matchUpFormat: true,
-      validate: isValid,
     },
   ]);
   if (paramCheck.error) return paramCheck;
