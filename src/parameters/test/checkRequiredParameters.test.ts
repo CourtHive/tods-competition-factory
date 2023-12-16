@@ -111,6 +111,36 @@ it('can check required parameters', () => {
   expect(result.error).toEqual(EVENT_NOT_FOUND);
 });
 
+it('can check for one of multiple possible parameters', () => {
+  let result = checkRequiredParameters({ eventId: 'eventId' }, [
+    { _oneOf: { eventId: true, event: true } },
+  ]);
+  expect(result.valid).toEqual(true);
+  result = checkRequiredParameters({ drawId: 'drawId' }, [
+    { _oneOf: { eventId: true, event: true } },
+  ]);
+  expect(result.error).toEqual(INVALID_VALUES);
+  result = checkRequiredParameters({ eventId: 'eventId', drawId: 'drawId' }, [
+    { _oneOf: { eventId: true, drawId: true } },
+  ]);
+  expect(result.error).toEqual(INVALID_VALUES);
+});
+
+it('can check for one or more of multiple possible parameters', () => {
+  let result = checkRequiredParameters({ eventId: 'eventId' }, [
+    { _anyOf: { eventId: true, event: true } },
+  ]);
+  expect(result.valid).toEqual(true);
+  result = checkRequiredParameters({ drawId: 'drawId' }, [
+    { _anyOf: { eventId: true, event: true } },
+  ]);
+  expect(result.error).toEqual(INVALID_VALUES);
+  result = checkRequiredParameters({ eventId: 'eventId', drawId: 'drawId' }, [
+    { _anyOf: { eventId: true, drawId: true } },
+  ]);
+  expect(result.valid).toEqual(true);
+});
+
 it('can check required parameter types', () => {
   let result = checkRequiredParameters({ drawDefinition: 'string' }, [
     { drawDefinition: true },
