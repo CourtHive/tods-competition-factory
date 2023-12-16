@@ -1,15 +1,15 @@
-import { addNotice, getTopics } from '../../../global/state/globalState';
-import { getParticipantId } from '../../../global/functions/extractors';
-import { hasParticipantId } from '../../../global/functions/filters';
-import { deepMerge } from '../../../utilities/deepMerge';
+import { addNotice, getTopics } from '../../global/state/globalState';
+import { getParticipantId } from '../../global/functions/extractors';
+import { hasParticipantId } from '../../global/functions/filters';
+import { deepMerge } from '../../utilities/deepMerge';
 
-import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
-import { Participant } from '../../../types/tournamentTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
+import { Participant } from '../../types/tournamentTypes';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   ADD_PARTICIPANTS,
   MODIFY_PARTICIPANTS,
-} from '../../../constants/topicConstants';
+} from '../../constants/topicConstants';
 
 export function mergeParticipants({
   participants: incomingParticipants = [],

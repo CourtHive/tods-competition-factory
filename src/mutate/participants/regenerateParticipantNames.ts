@@ -1,12 +1,12 @@
-import { createMap, isObject } from '../../../utilities/objects';
-import { formatParticipantName } from './formatParticipantName';
+import { createMap, isObject } from '../../utilities/objects';
+import { formatParticipantName } from '../../tournamentEngine/governors/participantGovernor/formatParticipantName';
 
-import { Tournament } from '../../../types/tournamentTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { Tournament } from '../../types/tournamentTypes';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 /**
  * "First Last"

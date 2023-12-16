@@ -1,6 +1,6 @@
 import { removeEventExtension } from '../../../../mutate/extensions/addRemoveExtensions';
 import { getFlightProfile } from '../../../../query/event/getFlightProfile';
-import { deleteDrawDefinitions } from './deleteDrawDefinitions';
+import { deleteDrawDefinitions } from '../../../../mutate/events/deleteDrawDefinitions';
 
 import { FLIGHT_PROFILE } from '../../../../constants/extensionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';

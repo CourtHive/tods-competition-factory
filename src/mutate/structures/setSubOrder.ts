@@ -1,27 +1,27 @@
-import { updateAssignmentParticipantResults } from '../matchUpGovernor/updateAssignmentParticipantResults';
-import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
-import { addExtension } from '../../../mutate/extensions/addExtension';
-import { modifyDrawNotice } from '../../../mutate/notifications/drawNotifications';
-import { findStructure } from '../../getters/findStructure';
+import { updateAssignmentParticipantResults } from '../../drawEngine/governors/matchUpGovernor/updateAssignmentParticipantResults';
+import { getAllStructureMatchUps } from '../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { addExtension } from '../extensions/addExtension';
+import { modifyDrawNotice } from '../notifications/drawNotifications';
+import { findStructure } from '../../drawEngine/getters/findStructure';
 
-import { CONTAINER } from '../../../constants/drawDefinitionConstants';
-import { SUB_ORDER } from '../../../constants/extensionConstants';
+import { CONTAINER } from '../../constants/drawDefinitionConstants';
+import { SUB_ORDER } from '../../constants/extensionConstants';
 
-import { ResultType } from '../../../global/functions/decorateResult';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { TEAM } from '../../../constants/matchUpTypes';
+import { ResultType } from '../../global/functions/decorateResult';
+import { SUCCESS } from '../../constants/resultConstants';
+import { TEAM } from '../../constants/matchUpTypes';
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_DRAW_POSITION,
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 import {
   DrawDefinition,
   Event,
   Structure,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../types/tournamentTypes';
 
 /**
  *
@@ -78,9 +78,7 @@ export function setSubOrder({
   const isDualMatchUp =
     event?.eventType === TEAM ||
     drawDefinition.matchUpType === TEAM ||
-    event?.tieFormat ||
-    drawDefinition?.tieFormat ||
-    structure?.tieFormat;
+    (event?.tieFormat ?? drawDefinition?.tieFormat ?? structure?.tieFormat);
   const matchUpFilters = isDualMatchUp && { matchUpTypes: [TEAM] };
   const { matchUps } = getAllStructureMatchUps({
     structure: targetStructure,
@@ -90,7 +88,7 @@ export function setSubOrder({
     event,
   });
   const matchUpFormat =
-    structure?.matchUpFormat || drawDefinition.matchUpFormat;
+    structure?.matchUpFormat ?? drawDefinition.matchUpFormat;
 
   updateAssignmentParticipantResults({
     positionAssignments,

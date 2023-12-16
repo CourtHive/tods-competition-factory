@@ -1,21 +1,25 @@
-import { findTournamentParticipant } from '../../getters/participants/participantGetter';
-import { addNotice, getTopics } from '../../../global/state/globalState';
+import { findTournamentParticipant } from '../../tournamentEngine/getters/participants/participantGetter';
+import { addNotice, getTopics } from '../../global/state/globalState';
 
+import { MODIFY_PARTICIPANTS } from '../../constants/topicConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   MISSING_PARTICIPANT_ID,
   MISSING_TOURNAMENT_RECORD,
+  MISSING_VALUE,
   PARTICIPANT_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
+} from '../../constants/errorConditionConstants';
 
-export function modifyParticipantOtherName({
+export function modifyParticipantName({
   tournamentRecord,
+  participantName,
   participantId,
-  participantOtherName,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
+
+  if (!participantName)
+    return { error: MISSING_VALUE, info: 'Missing participantName' };
 
   const { participant } = findTournamentParticipant({
     tournamentRecord,
@@ -23,7 +27,7 @@ export function modifyParticipantOtherName({
   });
   if (!participant) return { error: PARTICIPANT_NOT_FOUND };
 
-  participant.participantOtherName = participantOtherName;
+  participant.participantName = participantName;
 
   const { topics } = getTopics();
   if (topics.includes(MODIFY_PARTICIPANTS)) {

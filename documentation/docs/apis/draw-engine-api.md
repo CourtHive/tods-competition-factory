@@ -321,18 +321,6 @@ drawEngine.attachPlayoffStructures({ structures, links });
 
 ---
 
-## attachPolicies
-
-Attaches a policy to a drawDefinition.
-
-See [Policies](../concepts/policies).
-
-```js
-drawEngine.attachPolicies({ policyDefinitions: SEEDING_POLICY });
-```
-
----
-
 ## automatedPositioning
 
 Positions participants in a draw structure. `drawEngine` is agnostic about the type of participants that are placed in a draw structure, but requires tournament participants for avoidance policies to work.

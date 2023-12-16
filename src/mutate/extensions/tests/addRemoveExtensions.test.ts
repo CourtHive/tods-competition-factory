@@ -1,17 +1,17 @@
 import { generateTournamentRecord } from '../../../mocksEngine/generators/generateTournamentRecord';
-import { addExtension } from '../../../mutate/extensions/addExtension';
+import { removeExtension } from '../removeExtension';
+import { addExtension } from '../addExtension';
 import { competitionEngine } from '../../..';
-import tournamentEngine from '../../sync';
+import tournamentEngine from '../../../tournamentEngine/sync';
 import { expect, it, test } from 'vitest';
 import {
   addParticipantExtension,
-  removeExtension,
   removeParticipantExtension,
-} from '../../../mutate/extensions/addRemoveExtensions';
+} from '../addRemoveExtensions';
 import {
   addNotes,
   removeNotes,
-} from '../../governors/tournamentGovernor/addRemoveNotes';
+} from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveNotes';
 
 import {
   EVENT_NOT_FOUND,

@@ -10,7 +10,7 @@ import { setGlobalLog, setMethods } from '../../global/state/globalState';
 import { getMethods } from '../../global/state/syncGlobalState';
 import * as query from '../../../dist/forge/query';
 
-import { deleteDrawDefinitions } from '../../tournamentEngine/governors/eventGovernor/drawDefinitions/deleteDrawDefinitions';
+import { deleteDrawDefinitions } from '../../mutate/events/deleteDrawDefinitions';
 import { checkScoreHasValue } from '../../query/matchUp/checkScoreHasValue';
 
 import {

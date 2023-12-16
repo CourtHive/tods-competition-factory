@@ -7,7 +7,7 @@ import { replaceTieMatchUpParticipantId } from '../../../mutate/matchUps/lineUps
 import { setMatchUpStatus, bulkMatchUpStatusUpdate } from './setMatchUpStatus';
 import { assignTieMatchUpParticipantId } from '../../../mutate/matchUps/lineUps/assignTieMatchUpParticipant';
 import { removeTieMatchUpParticipantId } from '../../../mutate/matchUps/lineUps/removeTieMatchUpParticipant';
-import { deleteDrawDefinitions } from './drawDefinitions/deleteDrawDefinitions';
+import { deleteDrawDefinitions } from '../../../mutate/events/deleteDrawDefinitions';
 import { removeRoundMatchUps } from '../../../mutate/structures/removeRoundMatchUps';
 import { assignDrawPosition } from './drawDefinitions/assignDrawPosition';
 import { addDrawDefinition } from './drawDefinitions/addDrawDefinition';
@@ -54,7 +54,7 @@ import {
   setEntryPositions,
 } from './entries/setEntryPositions';
 
-import { setSubOrder } from '../../../drawEngine/governors/positionGovernor/setSubOrder';
+import { setSubOrder } from '../../../mutate/structures/setSubOrder';
 import { removeDelegatedOutcome } from '../../../mutate/matchUps/extensions/removeDelegatedOutcome';
 import { generateSeedingScaleItems } from './entries/generateSeedingScaleItems';
 import { setDelegatedOutcome } from './drawDefinitions/setDelegatedOutcome';
