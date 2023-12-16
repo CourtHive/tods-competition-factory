@@ -20,9 +20,11 @@ import {
 type AttachPoliciesArgs = {
   policyDefinitions: PolicyDefinitions;
   drawDefinition: DrawDefinition;
+  allowReplacement?: boolean;
 };
 
 export function attachPolicies({
+  allowReplacement,
   policyDefinitions,
   drawDefinition,
 }: AttachPoliciesArgs): ResultType {
@@ -41,6 +43,7 @@ export function attachPolicies({
 
   const applied = Object.keys(policyDefinitions).every((policyType) => {
     if (
+      allowReplacement ||
       !appliedPolicies[policyType] ||
       validReplacements.includes(policyType)
     ) {
