@@ -1,4 +1,4 @@
-import { getScheduleTiming } from '../scheduleGovernor/matchUpFormatTiming/getScheduleTiming';
+import { getScheduleTiming } from '../../../query/extensions/matchUpFormatTiming/getScheduleTiming';
 import { getDrawMatchUps } from '../../../drawEngine/getters/getMatchUps/drawMatchUps';
 import { getVenuesAndCourts } from '../../getters/venueGetter';
 import { getTournamentInfo } from './getTournamentInfo';

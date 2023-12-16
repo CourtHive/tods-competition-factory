@@ -19,10 +19,10 @@ import {
 
 export function checkOutParticipant(params: CheckInOutParticipantArgs) {
   const requiredParams = [
-    { param: 'tournamentRecord', type: 'object' },
-    { param: 'drawDefinition', type: 'object' },
-    { param: 'participantId' },
-    { param: 'matchUpId' },
+    { tournamentRecord: true, type: 'object' },
+    { drawDefinition: true, type: 'object' },
+    { participantId: true },
+    { matchUpId: true },
   ];
   const paramCheck = checkRequiredParameters(params, requiredParams);
   if (paramCheck.error) return paramCheck;

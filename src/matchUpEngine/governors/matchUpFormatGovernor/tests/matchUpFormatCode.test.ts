@@ -1,5 +1,5 @@
 import { matchUpFormatCode } from '..';
-import { isValid } from '../isValid';
+import { isValidMatchUpFormat } from '../../../../validators/isValidMatchUpFormat';
 import { expect, it } from 'vitest';
 
 import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
@@ -229,14 +229,14 @@ const invalidFormats = [
 
 it('recognizes valid formats', () => {
   validFormats.forEach((validFormat) => {
-    const valid = matchUpFormatCode.isValid(validFormat.format);
+    const valid = matchUpFormatCode.isValidMatchUpFormat(validFormat.format);
     expect(valid).toEqual(true);
   });
 });
 
 it('recognizes invalid formats', () => {
   invalidFormats.forEach((matchUpFormat) => {
-    const valid = matchUpFormatCode.isValid(matchUpFormat);
+    const valid = matchUpFormatCode.isValidMatchUpFormat(matchUpFormat);
     expect(valid).toEqual(false);
   });
 });
@@ -245,7 +245,7 @@ it('recognizes valid timed formats', () => {
   singleSetTimed.forEach(({ format }) => {
     const parsed = matchUpFormatCode.parse(format);
     const stringified = matchUpFormatCode.stringify(format);
-    const valid = matchUpFormatCode.isValid(format);
+    const valid = matchUpFormatCode.isValidMatchUpFormat(format);
     if (!valid) console.log({ format, parsed, stringified });
     expect(valid).toEqual(true);
   });
@@ -327,8 +327,8 @@ it('will not include final set code when equivalent to other sets', () => {
 });
 
 it('can preserve redundant tiebreakAt detail', () => {
-  expect(isValid('SET3-S:6/TB7@6')).toEqual(true);
-  expect(isValid(standard)).toEqual(true);
+  expect(isValidMatchUpFormat('SET3-S:6/TB7@6')).toEqual(true);
+  expect(isValidMatchUpFormat(standard)).toEqual(true);
 });
 
 it('supports matchUpFormatCode timed annotations', () => {
@@ -336,7 +336,7 @@ it('supports matchUpFormatCode timed annotations', () => {
   const parsed = matchUpFormatCode.parse(format);
   const stringified = matchUpFormatCode.stringify(parsed);
   expect(stringified).toEqual(format);
-  const valid = matchUpFormatCode.isValid(format);
+  const valid = matchUpFormatCode.isValidMatchUpFormat(format);
   expect(valid).toEqual(true);
 });
 
@@ -346,7 +346,7 @@ it('supports simplified matchUpFormatCode timed sets', () => {
   const stringified = matchUpFormatCode.stringify(parsed);
   expect(stringified).toEqual(format);
 
-  const valid = matchUpFormatCode.isValid(format);
+  const valid = matchUpFormatCode.isValidMatchUpFormat(format);
   expect(valid).toEqual(true);
 });
 
@@ -355,7 +355,7 @@ it('supports modifiers for timed sets', () => {
   const parsed = matchUpFormatCode.parse(format);
   const stringified = matchUpFormatCode.stringify(parsed);
   expect(stringified).toEqual(format);
-  const valid = matchUpFormatCode.isValid(format);
+  const valid = matchUpFormatCode.isValidMatchUpFormat(format);
   expect(valid).toEqual(true);
 });
 

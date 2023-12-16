@@ -6,7 +6,7 @@ import { calculateWinCriteria } from '../../matchUpEngine/governors/tieFormatGov
 import { getTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/getTieFormat';
 import { tieFormatTelemetry } from '../../matchUpEngine/governors/tieFormatGovernor/tieFormatTelemetry';
 import { copyTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';
-import { validUpdate } from '../../matchUpEngine/governors/tieFormatGovernor/validUpdate';
+import { validUpdate } from '../../validators/validUpdate';
 import { UUID } from '../../utilities';
 import {
   addMatchUpsNotice,
@@ -20,7 +20,7 @@ import {
 import {
   validateCollectionDefinition,
   validateTieFormat,
-} from '../../matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
+} from '../../validators/tieFormatUtilities';
 
 import { TIE_FORMAT_MODIFICATIONS } from '../../constants/extensionConstants';
 import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../constants/policyConstants';

@@ -10,7 +10,7 @@ export function getMatchUpDailyLimits(params): ResultType & {
   matchUpDailyLimits?: number;
 } {
   const paramCheck = checkRequiredParameters(params, [
-    { param: 'tournamentRecord' },
+    { tournamentRecord: true },
   ]);
   if (paramCheck.error) return paramCheck;
 

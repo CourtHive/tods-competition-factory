@@ -5,7 +5,7 @@ import { SCHEDULE_LIMITS } from '../../../constants/extensionConstants';
 
 export function getMatchUpDailyLimitsUpdate(params) {
   const paramCheck = checkRequiredParameters(params, [
-    { param: 'tournamentRecord' },
+    { tournamentRecord: true },
   ]);
   if (paramCheck.error) return paramCheck;
 

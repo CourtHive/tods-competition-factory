@@ -8,7 +8,7 @@ import { findMatchUpFormatTiming } from './matchUpFormatTiming/findMatchUpFormat
 import { getMatchUpDependencies } from './scheduleMatchUps/getMatchUpDependencies';
 import { calculateScheduleTimes } from './scheduleMatchUps/calculateScheduleTimes';
 import { scheduleProfileRounds } from './schedulingProfile/scheduleProfileRounds';
-import { removeEventMatchUpFormatTiming } from './removeEventMatchUpFormatTiming';
+import { removeEventMatchUpFormatTiming } from '../../../mutate/events/extensions/removeEventMatchUpFormatTiming';
 import { toggleParticipantCheckInState } from './toggleParticipantCheckInState';
 import { generateVirtualCourts } from './schedulers/utils/generateVirtualCourts';
 import { removeMatchUpCourtAssignment } from '../../../mutate/matchUps/schedule/removeMatchUpCourtAssignment';

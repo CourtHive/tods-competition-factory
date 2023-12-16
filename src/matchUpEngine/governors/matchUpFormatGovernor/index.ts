@@ -1,10 +1,10 @@
+import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
 import { stringify } from './stringify';
-import { isValid } from './isValid';
 import { parse } from './parse';
 
 export const matchUpFormatCode = {
-  isValidMatchUpFormat: isValid,
+  isValid: isValidMatchUpFormat,
+  isValidMatchUpFormat,
   stringify,
-  isValid,
   parse,
 };

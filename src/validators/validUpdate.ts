@@ -1,9 +1,9 @@
-import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
+import { checkScoreHasValue } from '../query/matchUp/checkScoreHasValue';
 
 import {
   completedMatchUpStatuses,
   IN_PROGRESS,
-} from '../../../constants/matchUpStatusConstants';
+} from '../constants/matchUpStatusConstants';
 
 export function validUpdate({ matchUp, updateInProgressMatchUps }) {
   return (

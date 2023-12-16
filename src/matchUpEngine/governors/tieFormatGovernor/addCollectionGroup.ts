@@ -1,7 +1,7 @@
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { collectionGroupUpdate } from './collectionGroupUpdate';
 import { getTieFormat } from './getTieFormat/getTieFormat';
-import { validateTieFormat } from './tieFormatUtilities';
+import { validateTieFormat } from '../../../validators/tieFormatUtilities';
 import { copyTieFormat } from './copyTieFormat';
 
 import {

@@ -10,7 +10,7 @@ import { checkScoreHasValue } from '../../query/matchUp/checkScoreHasValue';
 import { calculateWinCriteria } from '../../matchUpEngine/governors/tieFormatGovernor/calculateWinCriteria';
 import { getTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/getTieFormat';
 import { tieFormatTelemetry } from '../../matchUpEngine/governors/tieFormatGovernor/tieFormatTelemetry';
-import { validateTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
+import { validateTieFormat } from '../../validators/tieFormatUtilities';
 import { compareTieFormats } from '../../matchUpEngine/governors/tieFormatGovernor/compareTieFormats';
 import { copyTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';
 import {

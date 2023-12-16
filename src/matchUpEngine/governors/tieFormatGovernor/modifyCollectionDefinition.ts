@@ -4,7 +4,7 @@ import { genderConstants } from '../../../constants/genderConstants';
 import { isConvertableInteger } from '../../../utilities/math';
 import { calculateWinCriteria } from './calculateWinCriteria';
 import { getTieFormat } from './getTieFormat/getTieFormat';
-import { isValid } from '../matchUpFormatGovernor/isValid';
+import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
 import { tieFormatTelemetry } from './tieFormatTelemetry';
 import { updateTieFormat } from '../../../mutate/tieFormat/updateTieFormat';
 import { intersection } from '../../../utilities';
@@ -16,7 +16,7 @@ import {
 import {
   validateCollectionValueProfiles,
   validateTieFormat,
-} from './tieFormatUtilities';
+} from '../../../validators/tieFormatUtilities';
 
 import { TIE_FORMAT_MODIFICATIONS } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -94,7 +94,7 @@ export function modifyCollectionDefinition({
 } {
   const stack = 'modifyCollectionDefinition';
 
-  if (matchUpFormat && !isValid(matchUpFormat)) {
+  if (matchUpFormat && !isValidMatchUpFormat(matchUpFormat)) {
     return decorateResult({
       result: { error: INVALID_VALUES },
       context: { matchUpFormat },

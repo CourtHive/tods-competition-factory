@@ -3,7 +3,7 @@ import { generateCollectionMatchUps } from '../../drawEngine/generators/tieMatch
 import { getTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/getTieFormat';
 import { compareTieFormats } from '../../matchUpEngine/governors/tieFormatGovernor/compareTieFormats';
 import { copyTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';
-import { validUpdate } from '../../matchUpEngine/governors/tieFormatGovernor/validUpdate';
+import { validUpdate } from '../../validators/validUpdate';
 import {
   addMatchUpsNotice,
   deleteMatchUpsNotice,

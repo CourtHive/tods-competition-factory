@@ -1,5 +1,5 @@
-import { findMatchupFormatAverageTimes } from './findMatchUpFormatTimes';
-import { findCategoryTiming } from './findCategoryTiming';
+import { findMatchupFormatAverageTimes } from '../../../acquire/findMatchUpFormatTimes';
+import { findCategoryTiming } from '../../../acquire/findCategoryTiming';
 
 export function getMatchUpFormatAverageTimes({
   matchUpFormat,

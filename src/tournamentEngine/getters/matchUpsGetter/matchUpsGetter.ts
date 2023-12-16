@@ -1,4 +1,4 @@
-import { getScheduleTiming } from '../../governors/scheduleGovernor/matchUpFormatTiming/getScheduleTiming';
+import { getScheduleTiming } from '../../../query/extensions/matchUpFormatTiming/getScheduleTiming';
 import { getEventPublishStatus } from '../../governors/publishingGovernor/getEventPublishStatus';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { definedAttributes } from '../../../utilities/definedAttributes';

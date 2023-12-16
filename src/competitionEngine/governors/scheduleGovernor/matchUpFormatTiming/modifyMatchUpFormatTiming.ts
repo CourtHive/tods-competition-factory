@@ -1,4 +1,4 @@
-import { modifyMatchUpFormatTiming as modifyTiming } from '../../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/modifyMatchUpFormatTiming';
+import { modifyMatchUpFormatTiming as modifyTiming } from '../../../../mutate/matchUps/extensions/modifyMatchUpFormatTiming';
 import { findEvent } from '../../../../acquire/findEvent';
 
 import { SUCCESS } from '../../../../constants/resultConstants';

@@ -1,4 +1,4 @@
-import { validateTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
+import { validateTieFormat } from '../../../validators/tieFormatUtilities';
 import tieFormatConstants from '../../../constants/tieFormatConstants';
 import mocksEngine from '../../../mocksEngine';
 import { tournamentEngine } from '../../..';

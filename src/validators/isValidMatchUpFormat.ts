@@ -1,7 +1,7 @@
-import { stringify } from './stringify';
-import { parse } from './parse';
+import { stringify } from '../matchUpEngine/governors/matchUpFormatGovernor/stringify';
+import { parse } from '../matchUpEngine/governors/matchUpFormatGovernor/parse';
 
-export function isValid(matchUpFormat: string): boolean {
+export function isValidMatchUpFormat(matchUpFormat: string): boolean {
   if (typeof matchUpFormat !== 'string') return false;
   const parsedFormat = parse(matchUpFormat);
 

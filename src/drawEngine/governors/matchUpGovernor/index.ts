@@ -1,5 +1,5 @@
-import { isValid } from '../../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
+import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
 import { publicFindDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { getCheckedInParticipantIds } from '../../../query/matchUp/getCheckedInParticipantIds';
 import { addFinishingRounds } from '../../generators/addFinishingRounds';
@@ -40,7 +40,7 @@ const matchUpGovernor = {
   setMatchUpStatus,
   setMatchUpFormat,
   updateTieMatchUpScore,
-  isValidMatchUpFormat: isValid,
+  isValidMatchUpFormat,
 
   disableTieAutoCalc,
   enableTieAutoCalc,

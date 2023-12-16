@@ -7,7 +7,7 @@ import { getAvailablePlayoffProfiles } from './drawEngine/governors/structureGov
 import { visualizeScheduledMatchUps } from './global/testHarness/testUtilities/visualizeScheduledMatchUps';
 import { calculateWinCriteria } from './matchUpEngine/governors/tieFormatGovernor/calculateWinCriteria';
 import { proConflicts } from './competitionEngine/governors/scheduleGovernor/proScheduling/proConflicts';
-import { validateTieFormat } from './matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
+import { validateTieFormat } from './validators/tieFormatUtilities';
 import { compareTieFormats } from './matchUpEngine/governors/tieFormatGovernor/compareTieFormats';
 import { getStructureSeedAssignments } from './drawEngine/getters/getStructureSeedAssignments';
 import { dehydrateMatchUps } from './tournamentEngine/governors/tournamentGovernor/dehydrate';
