@@ -1,4 +1,4 @@
-import { addExtension } from '../../../global/functions/producers/addExtension';
+import { addExtension } from '../../../mutate/extensions/addExtension';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';

@@ -2,10 +2,10 @@ import { checkScoreHasValue } from '../../../../query/matchUp/checkScoreHasValue
 import { getAppliedPolicies } from '../../../../query/extensions/getAppliedPolicies';
 import { modifyEventPublishStatus } from '../../publishingGovernor/modifyEventPublishStatus';
 import { getEventPublishStatus } from '../../publishingGovernor/getEventPublishStatus';
-import { addExtension } from '../../../../global/functions/producers/addExtension';
+import { addExtension } from '../../../../mutate/extensions/addExtension';
 import { allDrawMatchUps } from '../../../getters/matchUpsGetter/matchUpsGetter';
 import { getPositionAssignments } from '../../../getters/getPositionAssignments';
-import { addEventExtension } from '../../tournamentGovernor/addRemoveExtensions';
+import { addEventExtension } from '../../../../mutate/extensions/addRemoveExtensions';
 import { checkSchedulingProfile } from '../../scheduleGovernor/schedulingProfile';
 import { getDrawStructures } from '../../../../drawEngine/getters/findStructure';
 import { decorateResult } from '../../../../global/functions/decorateResult';

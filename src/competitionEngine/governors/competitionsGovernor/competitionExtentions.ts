@@ -6,7 +6,7 @@ import {
   addEventExtension as addExtensionToEvent,
   addTournamentExtension,
   removeTournamentExtension,
-} from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
+} from '../../../mutate/extensions/addRemoveExtensions';
 
 import { TournamentRecordsArgs } from '../../../types/factoryTypes';
 import { MISSING_NAME } from '../../../constants/infoConstants';

@@ -1,6 +1,6 @@
 import { refreshEntryPositions } from '../../../../global/functions/producers/refreshEntryPositions';
 import { getAppliedPolicies } from '../../../../query/extensions/getAppliedPolicies';
-import { addExtension } from '../../../../global/functions/producers/addExtension';
+import { addExtension } from '../../../../mutate/extensions/addExtension';
 import { isValidExtension } from '../../../../validators/isValidExtension';
 import { definedAttributes } from '../../../../utilities/definedAttributes';
 import { isUngrouped } from '../../../../global/functions/isUngrouped';

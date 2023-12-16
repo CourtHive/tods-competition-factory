@@ -1,4 +1,4 @@
-import { addTournamentExtension } from '../../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
+import { addTournamentExtension } from '../../../../mutate/extensions/addRemoveExtensions';
 import { findParticipant } from '../../../../global/functions/deducers/findParticipant';
 import { removeExtension } from '../../competitionsGovernor/competitionExtentions';
 import { extractDate, extractTime } from '../../../../utilities/dateTime';

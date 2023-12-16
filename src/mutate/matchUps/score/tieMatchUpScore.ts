@@ -1,11 +1,11 @@
-import { ensureSideLineUps } from '../lineUps/ensureSideLineUps';
 import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
-import { removeExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { generateTieMatchUpScore } from '../../../assemblies/generators/tieMatchUpScore/generateTieMatchUpScore';
 import { copyTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';
-import { findExtension } from '../../../acquire/findExtension';
-import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { isActiveMatchUp } from '../../../drawEngine/getters/activeMatchUp';
+import { removeExtension } from '../../extensions/removeExtension';
+import { ensureSideLineUps } from '../lineUps/ensureSideLineUps';
+import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
+import { findExtension } from '../../../acquire/findExtension';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 
 import { DISABLE_AUTO_CALC } from '../../../constants/extensionConstants';

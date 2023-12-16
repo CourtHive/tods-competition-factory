@@ -1,4 +1,4 @@
-import { removeExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
+import { removeExtension } from '../../extensions/removeExtension';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 
 import { DELEGATED_OUTCOME } from '../../../constants/extensionConstants';

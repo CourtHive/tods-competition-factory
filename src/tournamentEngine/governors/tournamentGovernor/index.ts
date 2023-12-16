@@ -1,7 +1,7 @@
 // undocumented access to mocksEngine method
 import { completeDrawMatchUps } from '../../../mocksEngine/generators/completeDrawMatchUps';
 
-import { addExtension } from '../../../global/functions/producers/addExtension';
+import { addExtension } from '../../../mutate/extensions/addExtension';
 import { convertPointEight } from './conversion/convertPointEight';
 import { setTournamentStatus } from './setTournamentStatus';
 import { addNotes, removeNotes } from './addRemoveNotes';
@@ -40,7 +40,7 @@ import {
   removeEventExtension,
   removeParticipantExtension,
   removeTournamentExtension,
-} from './addRemoveExtensions';
+} from '../../../mutate/extensions/addRemoveExtensions';
 
 const tournamentGovernor = {
   analyzeTournament,

@@ -1,4 +1,4 @@
-import { removeEventExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
+import { removeEventExtension } from '../../extensions/addRemoveExtensions';
 import { checkRequiredParameters } from '../../../parameters/checkRequiredParameters';
 import { findEvent } from '../../../acquire/findEvent';
 

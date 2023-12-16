@@ -1,4 +1,4 @@
-import { addExtension } from '../../../global/functions/producers/addExtension';
+import { addExtension } from '../../../mutate/extensions/addExtension';
 import { addNotice } from '../../../global/state/globalState';
 import { UUID, makeDeepCopy } from '../../../utilities';
 

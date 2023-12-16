@@ -27,7 +27,7 @@ import { checkSetIsComplete } from './matchUpEngine/getters/getSetWinningSide';
 import { getMatchUpContextIds } from './drawEngine/accessors/matchUpAccessor';
 import { parseScoreString } from './mocksEngine/utilities/parseScoreString';
 import { roundRobinGroups } from './assemblies/generators/drawDefinitions/drawTypes/roundRobin/roundRobinGroups';
-import { addExtension } from './global/functions/producers/addExtension';
+import { addExtension } from './mutate/extensions/addExtension';
 import { getSetComplement } from './matchUpEngine/getters/getComplement';
 import { validateCategory } from './validators/validateCategory';
 import { isAdHoc } from './drawEngine/governors/queryGovernor/isAdHoc';

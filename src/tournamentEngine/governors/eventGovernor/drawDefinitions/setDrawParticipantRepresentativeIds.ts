@@ -1,4 +1,4 @@
-import { addDrawDefinitionExtension } from '../../tournamentGovernor/addRemoveExtensions';
+import { addDrawDefinitionExtension } from '../../../../mutate/extensions/addRemoveExtensions';
 import { getParticipantIds } from '../../../../global/functions/extractors';
 import { intersection } from '../../../../utilities';
 

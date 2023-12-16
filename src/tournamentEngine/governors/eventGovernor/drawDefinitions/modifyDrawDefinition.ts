@@ -1,6 +1,6 @@
 import { attachPolicies } from '../../../../drawEngine/governors/policyGovernor/attachPolicies';
 import { modifyDrawNotice } from '../../../../mutate/notifications/drawNotifications';
-import { addEventExtension } from '../../tournamentGovernor/addRemoveExtensions';
+import { addEventExtension } from '../../../../mutate/extensions/addRemoveExtensions';
 import { getFlightProfile } from '../../../../query/event/getFlightProfile';
 import { isObject } from '../../../../utilities/objects';
 import { modifyDrawName } from './modifyDrawName';

@@ -1,4 +1,4 @@
-import { removeExtension } from '../tournamentGovernor/addRemoveExtensions';
+import { removeExtension } from '../../../mutate/extensions/removeExtension';
 import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
 
 import { DISABLED } from '../../../constants/extensionConstants';

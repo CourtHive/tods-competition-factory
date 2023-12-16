@@ -4,7 +4,7 @@ import { addPlayoffStructures } from '../../drawEngine/governors/structureGovern
 import { setParticipantScaleItem } from '../../tournamentEngine/governors/participantGovernor/addScaleItems';
 import { generateDrawDefinition } from '../../tournamentEngine/generators/generateDrawDefinition';
 import { getFlightProfile } from '../../query/event/getFlightProfile';
-import { addExtension } from '../../global/functions/producers/addExtension';
+import { addExtension } from '../../mutate/extensions/addExtension';
 import { isValidExtension } from '../../validators/isValidExtension';
 import { getParticipantId } from '../../global/functions/extractors';
 import { hasParticipantId } from '../../global/functions/filters';

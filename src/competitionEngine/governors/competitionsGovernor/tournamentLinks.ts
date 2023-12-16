@@ -7,7 +7,7 @@ import {
 import {
   addTournamentExtension,
   removeTournamentExtension,
-} from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
+} from '../../../mutate/extensions/addRemoveExtensions';
 
 import { LINKED_TOURNAMENTS } from '../../../constants/extensionConstants';
 import { Tournament } from '../../../types/tournamentTypes';

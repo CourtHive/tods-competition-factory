@@ -1,4 +1,4 @@
-import { removeEventExtension } from '../../tournamentGovernor/addRemoveExtensions';
+import { removeEventExtension } from '../../../../mutate/extensions/addRemoveExtensions';
 import { getFlightProfile } from '../../../../query/event/getFlightProfile';
 import { deleteDrawDefinitions } from './deleteDrawDefinitions';
 

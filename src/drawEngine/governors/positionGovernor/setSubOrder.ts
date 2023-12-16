@@ -1,6 +1,6 @@
 import { updateAssignmentParticipantResults } from '../matchUpGovernor/updateAssignmentParticipantResults';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
-import { addExtension } from '../../../global/functions/producers/addExtension';
+import { addExtension } from '../../../mutate/extensions/addExtension';
 import { modifyDrawNotice } from '../../../mutate/notifications/drawNotifications';
 import { findStructure } from '../../getters/findStructure';
 

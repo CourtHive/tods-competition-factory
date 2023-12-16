@@ -1,5 +1,5 @@
 import { generateTournamentRecord } from '../../../mocksEngine/generators/generateTournamentRecord';
-import { addExtension } from '../../../global/functions/producers/addExtension';
+import { addExtension } from '../../../mutate/extensions/addExtension';
 import { competitionEngine } from '../../..';
 import tournamentEngine from '../../sync';
 import { expect, it, test } from 'vitest';
@@ -7,7 +7,7 @@ import {
   addParticipantExtension,
   removeExtension,
   removeParticipantExtension,
-} from '../../governors/tournamentGovernor/addRemoveExtensions';
+} from '../../../mutate/extensions/addRemoveExtensions';
 import {
   addNotes,
   removeNotes,

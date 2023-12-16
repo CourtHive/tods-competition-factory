@@ -3,7 +3,7 @@ import {
   addEventExtension,
   addTournamentExtension,
   removeEventExtension,
-} from '../tournamentGovernor/addRemoveExtensions';
+} from '../addRemoveExtensions';
 
 import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
 import { Event, Tournament } from '../../../types/tournamentTypes';

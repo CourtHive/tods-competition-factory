@@ -1,10 +1,10 @@
 import { ensureSideLineUps } from '../lineUps/ensureSideLineUps';
 import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
-import { removeExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
+import { removeExtension } from '../../extensions/removeExtension';
 import { generateTieMatchUpScore } from '../../../assemblies/generators/tieMatchUpScore/generateTieMatchUpScore';
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import { addExtension } from '../../../global/functions/producers/addExtension';
+import { addExtension } from '../../extensions/addExtension';
 import { getProjectedDualWinningSide } from '../../../drawEngine/governors/matchUpGovernor/getProjectedDualWinningSide';
 import { getAllDrawMatchUps } from '../../../drawEngine/getters/getMatchUps/drawMatchUps';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';

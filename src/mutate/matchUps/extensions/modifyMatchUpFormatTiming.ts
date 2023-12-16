@@ -2,7 +2,7 @@ import { findExtension } from '../../../acquire/findExtension';
 import {
   addEventExtension,
   addTournamentExtension,
-} from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
+} from '../../extensions/addRemoveExtensions';
 
 import { SCHEDULE_TIMING } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';

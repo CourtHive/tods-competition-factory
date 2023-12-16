@@ -1,5 +1,5 @@
 import { addDrawNotice } from '../../../../mutate/notifications/drawNotifications';
-import { addExtension } from '../../../../global/functions/producers/addExtension';
+import { addExtension } from '../../../../mutate/extensions/addExtension';
 import { removeLineUpSubstitutions } from './removeLineUpSubstitutions';
 import { findExtension } from '../../../../acquire/findExtension';
 import { validateLineUp } from './validateTeamLineUp';

@@ -1,4 +1,4 @@
-import { addEventExtension } from '../../tournamentGovernor/addRemoveExtensions';
+import { addEventExtension } from '../../../../mutate/extensions/addRemoveExtensions';
 import { allDrawMatchUps } from '../../../getters/matchUpsGetter/matchUpsGetter';
 import { getMatchUpId } from '../../../../global/functions/extractors';
 import { getFlightProfile } from '../../../../query/event/getFlightProfile';

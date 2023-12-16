@@ -1,5 +1,5 @@
 import { structureTemplate } from '../../../../../drawEngine/generators/structureTemplate';
-import { addExtension } from '../../../../../global/functions/producers/addExtension';
+import { addExtension } from '../../../../../mutate/extensions/addExtension';
 import { constantToString } from '../../../../../utilities/strings';
 import { generateRange, UUID } from '../../../../../utilities';
 import {

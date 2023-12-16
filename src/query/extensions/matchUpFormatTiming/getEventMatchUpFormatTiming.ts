@@ -2,7 +2,7 @@ import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
 import { definedAttributes } from '../../../utilities/definedAttributes';
 import { findExtension } from '../../../acquire/findExtension';
 import { getMatchUpFormatTiming } from './getMatchUpFormatTiming';
-import { findPolicy } from '../../../tournamentEngine/governors/policyGovernor/findPolicy';
+import { findPolicy } from '../../../acquire/findPolicy';
 import { unique } from '../../../utilities';
 
 import POLICY_SCHEDULING_DEFAULT from '../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';

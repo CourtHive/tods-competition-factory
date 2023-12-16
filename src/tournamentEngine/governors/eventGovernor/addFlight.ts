@@ -1,4 +1,4 @@
-import { addEventExtension } from '../tournamentGovernor/addRemoveExtensions';
+import { addEventExtension } from '../../../mutate/extensions/addRemoveExtensions';
 import { extractAttributes, intersection, UUID } from '../../../utilities';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { getFlightProfile } from '../../../query/event/getFlightProfile';

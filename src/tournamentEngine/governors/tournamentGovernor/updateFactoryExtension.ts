@@ -1,4 +1,4 @@
-import { addExtension } from '../../../global/functions/producers/addExtension';
+import { addExtension } from '../../../mutate/extensions/addExtension';
 import { extensionConstants } from '../../../constants/extensionConstants';
 import { findExtension } from '../../../acquire/findExtension';
 

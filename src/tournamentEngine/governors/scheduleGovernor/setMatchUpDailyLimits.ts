@@ -1,4 +1,4 @@
-import { addTournamentExtension } from '../tournamentGovernor/addRemoveExtensions';
+import { addTournamentExtension } from '../../../mutate/extensions/addRemoveExtensions';
 
 import { SCHEDULE_LIMITS } from '../../../constants/extensionConstants';
 import {

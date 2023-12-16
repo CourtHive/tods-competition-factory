@@ -2,7 +2,7 @@ import { getUpdatedSchedulingProfile } from '../../../competitionEngine/governor
 import { getEventIdsAndDrawIds } from '../../../competitionEngine/getters/getEventIdsAndDrawIds';
 import { tournamentRelevantSchedulingIds } from '../../../validators/validateSchedulingProfile';
 import { checkRequiredParameters } from '../../../parameters/checkRequiredParameters';
-import { addTournamentExtension } from '../tournamentGovernor/addRemoveExtensions';
+import { addTournamentExtension } from '../../../mutate/extensions/addRemoveExtensions';
 import { findExtension } from '../../../acquire/findExtension';
 
 import { SCHEDULING_PROFILE } from '../../../constants/extensionConstants';
@@ -12,7 +12,7 @@ import { Tournament } from '../../../types/tournamentTypes';
 export function setSchedulingProfile(params) {
   const paramCheck = checkRequiredParameters(params, [
     { tournamentRecord: true },
-    { schedulingProfile: true, type: 'array' },
+    { schedulingProfile: true, _oftype: 'array' },
   ]);
   if (paramCheck.error) return paramCheck;
 
