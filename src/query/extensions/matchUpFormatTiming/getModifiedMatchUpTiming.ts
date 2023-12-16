@@ -1,23 +1,40 @@
-import { isValid } from '../../../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
-import { findExtension } from '../../../../acquire/findExtension';
+import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
+import { checkRequiredParameters } from '../../../parameters/checkRequiredParameters';
+import { findExtension } from '../../../acquire/findExtension';
 import {
   findMatchupFormatAverageTimes,
   findMatchupFormatRecoveryTimes,
-} from './findMatchUpFormatTimes';
+} from '../../../acquire/findMatchUpFormatTimes';
 
-import { SCHEDULE_TIMING } from '../../../../constants/extensionConstants';
-import {
-  MISSING_TOURNAMENT_RECORD,
-  UNRECOGNIZED_MATCHUP_FORMAT,
-} from '../../../../constants/errorConditionConstants';
+import { UNRECOGNIZED_MATCHUP_FORMAT } from '../../../constants/errorConditionConstants';
+import { SCHEDULE_TIMING } from '../../../constants/extensionConstants';
+import { Event, Tournament } from '../../../types/tournamentTypes';
+import { ResultType } from '../../../global/functions/decorateResult';
 
-export function getModifiedMatchUpFormatTiming({
-  tournamentRecord,
-  matchUpFormat,
-  event,
-}) {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!isValid(matchUpFormat)) return { error: UNRECOGNIZED_MATCHUP_FORMAT };
+type GetModifiedMatchUpFormatTimingArgs = {
+  tournamentRecord: Tournament;
+  matchUpFormat: string;
+  event: Event;
+};
+
+export function getModifiedMatchUpFormatTiming(
+  params: GetModifiedMatchUpFormatTimingArgs
+): ResultType & {
+  matchUpFormat?: string;
+  recoveryTimes?: any[];
+  averageTimes?: any[];
+} {
+  const paramCheck = checkRequiredParameters(params, [
+    { tournamentRecord: true },
+    {
+      invalid: UNRECOGNIZED_MATCHUP_FORMAT,
+      validate: isValidMatchUpFormat,
+      matchUpFormat: true,
+    },
+  ]);
+  if (paramCheck.error) return paramCheck;
+
+  const { tournamentRecord, matchUpFormat, event } = params;
 
   const { extension: eventExtension } = findExtension({
     name: SCHEDULE_TIMING,
@@ -69,7 +86,7 @@ export function getModifiedMatchUpFormatTiming({
 
   return {
     matchUpFormat,
-    averageTimes,
     recoveryTimes,
+    averageTimes,
   };
 }

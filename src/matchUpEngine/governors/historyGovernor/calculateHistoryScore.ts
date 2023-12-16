@@ -1,6 +1,6 @@
 import { generateScoreString } from '../../generators/generateScoreString';
 import { isConvertableInteger } from '../../../utilities/math';
-import { isValid } from '../matchUpFormatGovernor/isValid';
+import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
 import { parse } from '../matchUpFormatGovernor/parse';
 import { getHistory } from './getHistory';
 
@@ -19,7 +19,8 @@ export function calculateHistoryScore({ matchUp, updateScore }) {
 
   const { matchUpFormat } = matchUp;
   if (!matchUpFormat) return { error: MISSING_MATCHUP_FORMAT };
-  if (!isValid(matchUpFormat)) return { error: INVALID_MATCHUP_FORMAT };
+  if (!isValidMatchUpFormat(matchUpFormat))
+    return { error: INVALID_MATCHUP_FORMAT };
 
   const parsedFormat: any = parse(matchUpFormat);
   const { bestOf, finalSetFormat, setFormat } = parsedFormat;

@@ -1,22 +1,22 @@
-import { isValid } from '../../../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
-import { definedAttributes } from '../../../../utilities/definedAttributes';
-import { findExtension } from '../../../../acquire/findExtension';
+import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
+import { definedAttributes } from '../../../utilities/definedAttributes';
+import { findExtension } from '../../../acquire/findExtension';
 import { getMatchUpFormatTiming } from './getMatchUpFormatTiming';
-import { findPolicy } from '../../policyGovernor/findPolicy';
-import { unique } from '../../../../utilities';
+import { findPolicy } from '../../../tournamentEngine/governors/policyGovernor/findPolicy';
+import { unique } from '../../../utilities';
 
-import POLICY_SCHEDULING_DEFAULT from '../../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
-import { SCHEDULE_TIMING } from '../../../../constants/extensionConstants';
-import { Event, Tournament } from '../../../../types/tournamentTypes';
+import POLICY_SCHEDULING_DEFAULT from '../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
+import { SCHEDULE_TIMING } from '../../../constants/extensionConstants';
+import { Event, Tournament } from '../../../types/tournamentTypes';
 import {
   ErrorType,
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
-} from '../../../../constants/errorConditionConstants';
+} from '../../../constants/errorConditionConstants';
 import {
   POLICY_TYPE_SCHEDULING,
   POLICY_TYPE_SCORING,
-} from '../../../../constants/policyConstants';
+} from '../../../constants/policyConstants';
 
 type GetEventMatchUpFormatTimingArgs = {
   tournamentRecord: Tournament;
@@ -80,7 +80,7 @@ export function getEventMatchUpFormatTiming({
 
         if (uniqueMatchUpFormats.includes(definitionObject?.matchUpFormat))
           return;
-        if (!isValid(definitionObject?.matchUpFormat)) return;
+        if (!isValidMatchUpFormat(definitionObject?.matchUpFormat)) return;
         uniqueMatchUpFormats.push(definitionObject.matchUpFormat);
         return definitionObject;
       })

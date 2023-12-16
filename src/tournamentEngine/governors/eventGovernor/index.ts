@@ -119,7 +119,7 @@ import { modifyTieFormat } from '../../../matchUpEngine/governors/tieFormatGover
 import { resetScorecard } from './resetScorecard';
 import { resetTieFormat } from '../../../mutate/tieFormat/resetTieFormat';
 
-import { validateCollectionDefinition } from '../../../matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
+import { validateCollectionDefinition } from '../../../validators/tieFormatUtilities';
 import { generateDrawTypeAndModifyDrawDefinition } from '../../generators/generateDrawTypeAndModifyDrawDefinition';
 import { getAssignedParticipantIds } from '../../../drawEngine/getters/getAssignedParticipantIds';
 import { generateDrawStructuresAndLinks } from '../../generators/generateDrawStructuresAndLinks';

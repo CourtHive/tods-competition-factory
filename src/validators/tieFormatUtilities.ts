@@ -1,22 +1,19 @@
-import { tieFormatGenderValidityCheck } from '../../../global/functions/deducers/tieFormatGenderValidityCheck';
-import { categoryCanContain } from '../../../global/functions/deducers/categoryCanContain';
-import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
-import { isConvertableInteger } from '../../../utilities/math';
-import { matchUpFormatCode } from '../matchUpFormatGovernor';
-import { unique, UUID } from '../../../utilities';
-import {
-  decorateResult,
-  ResultType,
-} from '../../../global/functions/decorateResult';
+import { tieFormatGenderValidityCheck } from '../global/functions/deducers/tieFormatGenderValidityCheck';
+import { categoryCanContain } from '../global/functions/deducers/categoryCanContain';
+import { mustBeAnArray } from '../utilities/mustBeAnArray';
+import { isConvertableInteger } from '../utilities/math';
+import { matchUpFormatCode } from '../matchUpEngine/governors/matchUpFormatGovernor';
+import { unique, UUID } from '../utilities';
+import { decorateResult, ResultType } from '../global/functions/decorateResult';
 
-import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { DOUBLES, SINGLES } from '../constants/matchUpTypes';
+import { SUCCESS } from '../constants/resultConstants';
 import {
   INVALID_CATEGORY,
   INVALID_COLLECTION_DEFINITION,
   INVALID_OBJECT,
   INVALID_TIE_FORMAT,
-} from '../../../constants/errorConditionConstants';
+} from '../constants/errorConditionConstants';
 import {
   Category,
   CollectionDefinition,
@@ -24,7 +21,7 @@ import {
   TieFormat,
   EventTypeUnion,
   GenderUnion,
-} from '../../../types/tournamentTypes';
+} from '../types/tournamentTypes';
 
 type ValidateTieFormatArgs = {
   checkCollectionIds?: boolean;
@@ -231,7 +228,7 @@ export function validateCollectionDefinition({
     errors.push(`collectionGroupNumber is not type number: ${collectionValue}`);
   }
 
-  if (matchUpFormat && !matchUpFormatCode.isValid(matchUpFormat)) {
+  if (matchUpFormat && !matchUpFormatCode.isValidMatchUpFormat(matchUpFormat)) {
     errors.push(`Invalid matchUpFormat: ${matchUpFormat}`);
   }
 

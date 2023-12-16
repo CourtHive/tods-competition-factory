@@ -1,7 +1,7 @@
-import { findExtension } from '../../../../acquire/findExtension';
+import { findExtension } from '../../../acquire/findExtension';
 
-import { MISSING_TOURNAMENT_RECORD } from '../../../../constants/errorConditionConstants';
-import { SCHEDULE_TIMING } from '../../../../constants/extensionConstants';
+import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
+import { SCHEDULE_TIMING } from '../../../constants/extensionConstants';
 
 export function getMatchUpFormatTimingUpdate({ tournamentRecord }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

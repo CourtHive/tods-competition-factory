@@ -23,7 +23,7 @@ import { prepareStage } from './prepareStage';
 import {
   checkTieFormat,
   validateTieFormat,
-} from '../../matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
+} from '../../validators/tieFormatUtilities';
 import {
   setStageDrawSize,
   setStageQualifiersCount,

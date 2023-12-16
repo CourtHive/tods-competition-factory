@@ -1,4 +1,4 @@
-import { isValid } from '../../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
+import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { findStructure } from '../../../drawEngine/getters/findStructure';
 import {
@@ -51,7 +51,8 @@ export function setMatchUpFormat(params: SetMatchUpFormatArgs): {
 
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpFormat) return { error: MISSING_MATCHUP_FORMAT };
-  if (!isValid(matchUpFormat)) return { error: UNRECOGNIZED_MATCHUP_FORMAT };
+  if (!isValidMatchUpFormat(matchUpFormat))
+    return { error: UNRECOGNIZED_MATCHUP_FORMAT };
   const stack = 'setMatchUpFormat';
 
   if (matchUpId) {

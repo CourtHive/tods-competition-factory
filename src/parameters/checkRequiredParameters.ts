@@ -16,17 +16,19 @@ import {
   MISSING_STRUCTURE_ID,
   MISSING_TOURNAMENT_ID,
   MISSING_TOURNAMENT_RECORD,
+  MISSING_TOURNAMENT_RECORDS,
 } from '../constants/errorConditionConstants';
 
 type Params = { [key: string]: any };
 type RequiredParams = {
+  [key: string]: any;
   validate?: any;
   resolve?: any;
-  param: string;
   type?: string;
 }[];
 
 const errors = {
+  tournamentRecords: MISSING_TOURNAMENT_RECORDS,
   tournamentRecord: MISSING_TOURNAMENT_RECORD,
   drawDefinition: MISSING_DRAW_DEFINITION,
   participantId: MISSING_PARTICIPANT_ID,
@@ -44,6 +46,7 @@ const errors = {
 };
 
 const paramTypes = {
+  tournamentRecords: 'object',
   tournamentRecord: 'object',
   drawDefinition: 'object',
   matchUpIds: 'array',
@@ -58,8 +61,9 @@ export function checkRequiredParameters(
   params: Params,
   requiredParams: RequiredParams
 ) {
-  if (params && !isObject(params)) return { error: INVALID_VALUES };
-  if (!requiredParams || params?._bypassParamCheck) return { valid: true };
+  if (!params && !isObject(params)) return { error: INVALID_VALUES };
+  if (!requiredParams?.length || params?._bypassParamCheck)
+    return { valid: true };
 
   if (!Array.isArray(requiredParams)) return { error: INVALID_VALUES };
 
@@ -70,19 +74,29 @@ export function checkRequiredParameters(
     return paramType(param) !== type;
   };
 
-  const paramError = requiredParams.find(({ param, type, validate }) => {
-    const invalid = !params[param] || invalidType(param, type);
-    return invalid || (validate && !checkValidation(params[param], validate));
+  let errorParam;
+  const paramError = requiredParams.find(({ type, validate, ...attrs }) => {
+    const booleanParams = Object.keys(attrs).filter(
+      (key) => typeof attrs[key] === 'boolean'
+    );
+    const invalidParam = booleanParams.find((param) => {
+      const invalid = params[param] === undefined || invalidType(param, type);
+      const hasError =
+        invalid || (validate && !checkValidation(params[param], validate));
+      if (hasError) errorParam = param;
+      return hasError;
+    });
+    return !booleanParams.length || invalidParam;
   });
 
   if (!paramError) return { valid: true };
 
-  const param = paramError.param;
-  const error = !params[param]
-    ? errors[param] || INVALID_VALUES
-    : INVALID_VALUES;
+  const error =
+    params[errorParam] === undefined
+      ? errors[errorParam] || INVALID_VALUES
+      : (paramError.validate && paramError.invalid) || INVALID_VALUES;
 
-  return { error, info: { param } };
+  return { error, info: { param: errorParam } };
 }
 
 function checkValidation(value, validate) {

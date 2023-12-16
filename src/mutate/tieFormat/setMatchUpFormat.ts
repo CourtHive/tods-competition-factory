@@ -1,6 +1,6 @@
 import { setMatchUpFormat as drawEngineSetMatchUpFormat } from '../matchUps/matchUpFormat/setMatchUpFormat';
 import { getAllStructureMatchUps } from '../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
-import { isValid } from '../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
+import { isValidMatchUpFormat } from '../../validators/isValidMatchUpFormat';
 import { decorateResult } from '../../global/functions/decorateResult';
 import { getMatchUpId } from '../../global/functions/extractors';
 import {
@@ -43,7 +43,7 @@ export function setMatchUpFormat({
 
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!matchUpFormat) return { error: MISSING_MATCHUP_FORMAT };
-  if (matchUpFormat && !isValid(matchUpFormat))
+  if (matchUpFormat && !isValidMatchUpFormat(matchUpFormat))
     return decorateResult({
       result: { error: UNRECOGNIZED_MATCHUP_FORMAT, matchUpFormat },
       stack,

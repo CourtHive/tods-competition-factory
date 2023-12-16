@@ -1,5 +1,5 @@
 import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
-import { validateTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
+import { validateTieFormat } from '../../../validators/tieFormatUtilities';
 import { tallyParticipantResults } from '../../../matchUpEngine/getters/roundRobinTally/roundRobinTally';
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
