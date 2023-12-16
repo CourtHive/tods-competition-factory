@@ -55,7 +55,7 @@ type ClearDrawPositionArgs = {
   drawDefinition: DrawDefinition;
   matchUpsMap?: MatchUpsMap;
   participantId?: string;
-  drawPosition: number;
+  drawPosition?: number;
   structureId: string;
   event?: Event;
 };
