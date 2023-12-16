@@ -1,12 +1,12 @@
-import { modifyMatchUpNotice } from '../../../../drawEngine/notifications/drawNotifications';
-import { findDrawMatchUp } from '../../../../acquire/findDrawMatchUp';
+import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotifications';
+import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import {
   ResultType,
   decorateResult,
-} from '../../../../global/functions/decorateResult';
+} from '../../../global/functions/decorateResult';
 
-import { AD_HOC } from '../../../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
+import { AD_HOC } from '../../../constants/drawDefinitionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   CANNOT_REMOVE_PARTICIPANTS,
   INVALID_DRAW_TYPE,
@@ -15,17 +15,17 @@ import {
   MATCHUP_NOT_FOUND,
   MISSING_DRAW_DEFINITION,
   MISSING_MATCHUP_ID,
-} from '../../../../constants/errorConditionConstants';
+} from '../../../constants/errorConditionConstants';
 import {
   completedMatchUpStatuses,
   DOUBLE_DEFAULT,
   DOUBLE_WALKOVER,
-} from '../../../../constants/matchUpStatusConstants';
+} from '../../../constants/matchUpStatusConstants';
 import {
   DrawDefinition,
   Event,
   Tournament,
-} from '../../../../types/tournamentTypes';
+} from '../../../types/tournamentTypes';
 
 type AssignMatchUpSideParticipantArgs = {
   tournamentRecord: Tournament;

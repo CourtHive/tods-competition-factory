@@ -1,29 +1,29 @@
-import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
-import { addGoesTo } from '../matchUpGovernor/addGoesTo';
-import { extractAttributes } from '../../../utilities';
+import { getAllStructureMatchUps } from '../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { addGoesTo } from '../../drawEngine/governors/matchUpGovernor/addGoesTo';
+import { extractAttributes } from '../../utilities';
 import {
   addMatchUpsNotice,
   modifyDrawNotice,
   modifyMatchUpNotice,
-} from '../../notifications/drawNotifications';
+} from '../../drawEngine/notifications/drawNotifications';
 import {
   ResultType,
   decorateResult,
-} from '../../../global/functions/decorateResult';
+} from '../../global/functions/decorateResult';
 
-import { SUCCESS } from '../../../constants/resultConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   EXISTING_STRUCTURE,
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 import {
   DrawDefinition,
   DrawLink,
   Event,
   Structure,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../types/tournamentTypes';
 
 export function attachPlayoffStructures(params) {
   return attachStructures(params);

@@ -1,16 +1,16 @@
-import { setMatchUpFormat as drawEngineSetMatchUpFormat } from '../../../mutate/matchUps/matchUpFormat/setMatchUpFormat';
-import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
-import { isValid } from '../../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
-import { decorateResult } from '../../../global/functions/decorateResult';
-import { getMatchUpId } from '../../../global/functions/extractors';
+import { setMatchUpFormat as drawEngineSetMatchUpFormat } from '../matchUps/matchUpFormat/setMatchUpFormat';
+import { getAllStructureMatchUps } from '../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { isValid } from '../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
+import { decorateResult } from '../../global/functions/decorateResult';
+import { getMatchUpId } from '../../global/functions/extractors';
 import {
   modifyDrawNotice,
   modifyMatchUpNotice,
-} from '../../../drawEngine/notifications/drawNotifications';
+} from '../../drawEngine/notifications/drawNotifications';
 
-import { DOUBLES, SINGLES, TEAM } from '../../../constants/eventConstants';
-import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { DOUBLES, SINGLES, TEAM } from '../../constants/eventConstants';
+import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   INVALID_EVENT_TYPE,
   INVALID_VALUES,
@@ -19,7 +19,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
   NO_MODIFICATIONS_APPLIED,
   UNRECOGNIZED_MATCHUP_FORMAT,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 export function setMatchUpFormat({
   tournamentRecord,

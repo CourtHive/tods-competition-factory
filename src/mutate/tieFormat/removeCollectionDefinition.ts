@@ -1,50 +1,47 @@
 // all child matchUps need to be checked for collectionAssignments which need to be removed when collectionDefinition.collectionIds are removed
 
-import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
-import { updateTieMatchUpScore } from '../../../mutate/matchUps/score/tieMatchUpScore';
-import { setMatchUpStatus } from '../../../mutate/matchUps/matchUpStatus/setMatchUpStatus';
-import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
-import { definedAttributes } from '../../../utilities/definedAttributes';
-import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
-import { calculateWinCriteria } from './calculateWinCriteria';
-import { getTieFormat } from './getTieFormat/getTieFormat';
-import { tieFormatTelemetry } from './tieFormatTelemetry';
-import { validateTieFormat } from './tieFormatUtilities';
-import { compareTieFormats } from './compareTieFormats';
-import { copyTieFormat } from './copyTieFormat';
+import { getAllStructureMatchUps } from '../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { updateTieMatchUpScore } from '../matchUps/score/tieMatchUpScore';
+import { setMatchUpStatus } from '../matchUps/matchUpStatus/setMatchUpStatus';
+import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
+import { findDrawMatchUp } from '../../acquire/findDrawMatchUp';
+import { definedAttributes } from '../../utilities/definedAttributes';
+import { checkScoreHasValue } from '../../query/matchUp/checkScoreHasValue';
+import { calculateWinCriteria } from '../../matchUpEngine/governors/tieFormatGovernor/calculateWinCriteria';
+import { getTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/getTieFormat';
+import { tieFormatTelemetry } from '../../matchUpEngine/governors/tieFormatGovernor/tieFormatTelemetry';
+import { validateTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
+import { compareTieFormats } from '../../matchUpEngine/governors/tieFormatGovernor/compareTieFormats';
+import { copyTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';
 import {
   deleteMatchUpsNotice,
   modifyDrawNotice,
   modifyMatchUpNotice,
-} from '../../../drawEngine/notifications/drawNotifications';
+} from '../../drawEngine/notifications/drawNotifications';
 import {
   allDrawMatchUps,
   allEventMatchUps,
-} from '../../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
+} from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
 
-import { TIE_FORMAT_MODIFICATIONS } from '../../../constants/extensionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { TEAM } from '../../../constants/matchUpTypes';
-import {
-  COMPLETED,
-  IN_PROGRESS,
-} from '../../../constants/matchUpStatusConstants';
+import { TIE_FORMAT_MODIFICATIONS } from '../../constants/extensionConstants';
+import { SUCCESS } from '../../constants/resultConstants';
+import { TEAM } from '../../constants/matchUpTypes';
+import { COMPLETED, IN_PROGRESS } from '../../constants/matchUpStatusConstants';
 import {
   ErrorType,
   MISSING_DRAW_DEFINITION,
   NOT_FOUND,
   NO_MODIFICATIONS_APPLIED,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 import {
   DrawDefinition,
   Event,
   MatchUp,
   TieFormat,
   Tournament,
-} from '../../../types/tournamentTypes';
-import { HydratedMatchUp } from '../../../types/hydrated';
-import { decorateResult } from '../../../global/functions/decorateResult';
+} from '../../types/tournamentTypes';
+import { HydratedMatchUp } from '../../types/hydrated';
+import { decorateResult } from '../../global/functions/decorateResult';
 
 /*
  * if an eventId is provided, will be removed from an event tieFormat

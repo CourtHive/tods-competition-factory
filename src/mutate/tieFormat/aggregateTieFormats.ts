@@ -1,13 +1,13 @@
-import { compareTieFormats } from '../../../matchUpEngine/governors/tieFormatGovernor/compareTieFormats';
-import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotifications';
-import { allEventMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
+import { compareTieFormats } from '../../matchUpEngine/governors/tieFormatGovernor/compareTieFormats';
+import { modifyMatchUpNotice } from '../../drawEngine/notifications/drawNotifications';
+import { allEventMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
 
-import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
-import { ResultType } from '../../../global/functions/decorateResult';
-import { Tournament } from '../../../types/tournamentTypes';
-import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { UUID, makeDeepCopy } from '../../../utilities';
+import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
+import { ResultType } from '../../global/functions/decorateResult';
+import { Tournament } from '../../types/tournamentTypes';
+import { TEAM_MATCHUP } from '../../constants/matchUpTypes';
+import { SUCCESS } from '../../constants/resultConstants';
+import { UUID, makeDeepCopy } from '../../utilities';
 
 type AggreateTieFormatsArgs = {
   tournamentRecord: Tournament;

@@ -1,28 +1,24 @@
-import { removeParticipantIdsFromAllTeams } from './removeIndividualParticipantIds';
 import {
   ResultType,
   decorateResult,
-} from '../../../../global/functions/decorateResult';
-import { addNotice, getTopics } from '../../../../global/state/globalState';
-import { updateTeamEventEntries } from './updateTeamEventEntries';
-import { makeDeepCopy } from '../../../../utilities';
+} from '../../global/functions/decorateResult';
+import { addNotice, getTopics } from '../../global/state/globalState';
+import { updateTeamEventEntries } from '../../tournamentEngine/governors/participantGovernor/groupings/updateTeamEventEntries';
+import { makeDeepCopy } from '../../utilities';
 
-import { MODIFY_PARTICIPANTS } from '../../../../constants/topicConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
+import { MODIFY_PARTICIPANTS } from '../../constants/topicConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   INVALID_PARTICIPANT_IDS,
   INVALID_PARTICIPANT_TYPE,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
   PARTICIPANT_NOT_FOUND,
-} from '../../../../constants/errorConditionConstants';
-import {
-  GROUP,
-  INDIVIDUAL,
-  TEAM,
-} from '../../../../constants/participantConstants';
+} from '../../constants/errorConditionConstants';
+import { GROUP, INDIVIDUAL, TEAM } from '../../constants/participantConstants';
 
-import { Participant, Tournament } from '../../../../types/tournamentTypes';
+import { Participant, Tournament } from '../../types/tournamentTypes';
+import { removeParticipantIdsFromAllTeams } from './removeIndividualParticipantIds';
 
 type AddIndividualParticipantIdsType = {
   individualParticipantIds: string[]; // individual participantIds to be added to grouping participant

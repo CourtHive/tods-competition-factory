@@ -1,5 +1,5 @@
 import { getPairedPreviousMatchUpIsDoubleExit } from '../../../drawEngine/governors/positionGovernor/getPairedPreviousMatchUpIsDoubleExit';
-import { assignDrawPositionBye } from '../../../drawEngine/governors/positionGovernor/byePositioning/assignDrawPositionBye';
+import { assignDrawPositionBye } from './assignDrawPositionBye';
 import { getAllDrawMatchUps } from '../../../drawEngine/getters/getMatchUps/drawMatchUps';
 import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotifications';
 import { decorateResult } from '../../../global/functions/decorateResult';

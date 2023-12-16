@@ -1,28 +1,24 @@
-import { isAdHoc } from '../../../../drawEngine/governors/queryGovernor/isAdHoc';
-import { findStructure } from '../../../../drawEngine/getters/findStructure';
-import { numericSort } from '../../../../utilities';
+import { isAdHoc } from '../../drawEngine/governors/queryGovernor/isAdHoc';
+import { findStructure } from '../../drawEngine/getters/findStructure';
+import { numericSort } from '../../utilities';
 import {
   deleteMatchUpsNotice,
   modifyMatchUpNotice,
-} from '../../../../drawEngine/notifications/drawNotifications';
+} from '../../drawEngine/notifications/drawNotifications';
 
-import { completedMatchUpStatuses } from '../../../../constants/matchUpStatusConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
+import { completedMatchUpStatuses } from '../../constants/matchUpStatusConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   INVALID_STRUCTURE,
   MISSING_DRAW_DEFINITION,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
-} from '../../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 import {
   ResultType,
   decorateResult,
-} from '../../../../global/functions/decorateResult';
-import {
-  DrawDefinition,
-  Event,
-  Tournament,
-} from '../../../../types/tournamentTypes';
+} from '../../global/functions/decorateResult';
+import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
 
 type RemoveRoundMatchUpsArgs = {
   removeCompletedMatchUps?: boolean;

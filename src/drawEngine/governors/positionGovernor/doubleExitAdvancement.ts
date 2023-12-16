@@ -11,7 +11,7 @@ import { overlap } from '../../../utilities';
 import {
   advanceDrawPosition,
   assignDrawPositionBye,
-} from './byePositioning/assignDrawPositionBye';
+} from '../../../mutate/matchUps/drawPositions/assignDrawPositionBye';
 
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';

@@ -1,21 +1,17 @@
 import { removeIndividualParticipantIds } from './removeIndividualParticipantIds';
-import { decorateResult } from '../../../../global/functions/decorateResult';
+import { decorateResult } from '../../global/functions/decorateResult';
 import { addIndividualParticipantIds } from './addIndividualParticipantIds';
-import { addNotice, getTopics } from '../../../../global/state/globalState';
+import { addNotice, getTopics } from '../../global/state/globalState';
 
-import { MODIFY_PARTICIPANTS } from '../../../../constants/topicConstants';
+import { MODIFY_PARTICIPANTS } from '../../constants/topicConstants';
 import {
   INVALID_PARTICIPANT_IDS,
   INVALID_PARTICIPANT_TYPE,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
   PARTICIPANT_NOT_FOUND,
-} from '../../../../constants/errorConditionConstants';
-import {
-  GROUP,
-  INDIVIDUAL,
-  TEAM,
-} from '../../../../constants/participantConstants';
+} from '../../constants/errorConditionConstants';
+import { GROUP, INDIVIDUAL, TEAM } from '../../constants/participantConstants';
 
 /**
  *

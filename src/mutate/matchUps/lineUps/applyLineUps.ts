@@ -1,14 +1,14 @@
-import { resolveTieFormat } from '../../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
-import { modifyMatchUpNotice } from '../../../../drawEngine/notifications/drawNotifications';
-import { findDrawMatchUp } from '../../../../acquire/findDrawMatchUp';
-import { getPairedParticipant } from '../../participantGovernor/getPairedParticipant';
-import { addParticipant } from '../../participantGovernor/addParticipants';
-import { instanceCount } from '../../../../utilities';
+import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
+import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotifications';
+import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
+import { getPairedParticipant } from '../../../tournamentEngine/governors/participantGovernor/getPairedParticipant';
+import { addParticipant } from '../../../tournamentEngine/governors/participantGovernor/addParticipants';
+import { instanceCount } from '../../../utilities';
 
-import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';
-import { DOUBLES, SINGLES, TEAM } from '../../../../constants/matchUpTypes';
-import { COMPETITOR } from '../../../../constants/participantRoles';
-import { SUCCESS } from '../../../../constants/resultConstants';
+import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
+import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
+import { COMPETITOR } from '../../../constants/participantRoles';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   INVALID_MATCHUP,
@@ -19,7 +19,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
   PARTICIPANT_NOT_FOUND,
   VALUE_UNCHANGED,
-} from '../../../../constants/errorConditionConstants';
+} from '../../../constants/errorConditionConstants';
 
 export function applyLineUps({
   tournamentRecord,

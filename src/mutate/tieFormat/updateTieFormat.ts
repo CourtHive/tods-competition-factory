@@ -1,29 +1,29 @@
-import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
-import { generateCollectionMatchUps } from '../../../drawEngine/generators/tieMatchUps';
-import { getTieFormat } from './getTieFormat/getTieFormat';
-import { compareTieFormats } from './compareTieFormats';
-import { copyTieFormat } from './copyTieFormat';
-import { validUpdate } from './validUpdate';
+import { getAllStructureMatchUps } from '../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { generateCollectionMatchUps } from '../../drawEngine/generators/tieMatchUps';
+import { getTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/getTieFormat';
+import { compareTieFormats } from '../../matchUpEngine/governors/tieFormatGovernor/compareTieFormats';
+import { copyTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';
+import { validUpdate } from '../../matchUpEngine/governors/tieFormatGovernor/validUpdate';
 import {
   addMatchUpsNotice,
   deleteMatchUpsNotice,
   modifyDrawNotice,
   modifyMatchUpNotice,
-} from '../../../drawEngine/notifications/drawNotifications';
+} from '../../drawEngine/notifications/drawNotifications';
 import {
   ResultType,
   decorateResult,
-} from '../../../global/functions/decorateResult';
+} from '../../global/functions/decorateResult';
 import {
   extractAttributes as xa,
   instanceCount,
   intersection,
   makeDeepCopy,
-} from '../../../utilities';
+} from '../../utilities';
 
-import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { TEAM } from '../../../constants/matchUpTypes';
+import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
+import { SUCCESS } from '../../constants/resultConstants';
+import { TEAM } from '../../constants/matchUpTypes';
 import {
   CANNOT_MODIFY_TIEFORMAT,
   ErrorType,
@@ -31,7 +31,7 @@ import {
   INVALID_TIE_FORMAT,
   MISSING_DRAW_DEFINITION,
   MISSING_TIE_FORMAT,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 import {
   DrawDefinition,
@@ -40,7 +40,7 @@ import {
   Structure,
   TieFormat,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../types/tournamentTypes';
 
 // used to determine that all collections have the same collectionIds
 function checkStructureMatchUpCounts({ from, to }) {

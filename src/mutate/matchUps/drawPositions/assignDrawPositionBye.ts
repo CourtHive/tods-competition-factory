@@ -1,45 +1,42 @@
-import { getStructureDrawPositionProfiles } from '../../../getters/getStructureDrawPositionProfiles';
-import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
-import { getRoundMatchUps } from '../../../accessors/matchUpAccessor/getRoundMatchUps';
-import { getInitialRoundNumber } from '../../../getters/getInitialRoundNumber';
-import { getAllDrawMatchUps } from '../../../getters/getMatchUps/drawMatchUps';
+import { getStructureDrawPositionProfiles } from '../../../drawEngine/getters/getStructureDrawPositionProfiles';
+import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { getRoundMatchUps } from '../../../drawEngine/accessors/matchUpAccessor/getRoundMatchUps';
+import { getInitialRoundNumber } from '../../../drawEngine/getters/getInitialRoundNumber';
+import { getAllDrawMatchUps } from '../../../drawEngine/getters/getMatchUps/drawMatchUps';
 import {
   MatchUpsMap,
   getMatchUpsMap,
-} from '../../../getters/getMatchUps/getMatchUpsMap';
-import { decorateResult } from '../../../../global/functions/decorateResult';
-import { addPositionActionTelemetry } from '../addPositionActionTelemetry';
-import { getPositionAssignments } from '../../../getters/positionsGetter';
-import { pushGlobalLog } from '../../../../global/functions/globalLog';
-import { findStructure } from '../../../getters/findStructure';
-import { positionTargets } from '../../../../mutate/matchUps/drawPositions/positionTargets';
-import { numericSort } from '../../../../utilities';
+} from '../../../drawEngine/getters/getMatchUps/getMatchUpsMap';
+import { decorateResult } from '../../../global/functions/decorateResult';
+import { addPositionActionTelemetry } from '../../../drawEngine/governors/positionGovernor/addPositionActionTelemetry';
+import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
+import { pushGlobalLog } from '../../../global/functions/globalLog';
+import { findStructure } from '../../../drawEngine/getters/findStructure';
+import { positionTargets } from './positionTargets';
+import { numericSort } from '../../../utilities';
 import {
   modifyMatchUpNotice,
   modifyPositionAssignmentsNotice,
-} from '../../../notifications/drawNotifications';
+} from '../../../drawEngine/notifications/drawNotifications';
 
-import { CONTAINER } from '../../../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
-import { HydratedMatchUp } from '../../../../types/hydrated';
+import { CONTAINER } from '../../../constants/drawDefinitionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
+import { HydratedMatchUp } from '../../../types/hydrated';
 import {
   DRAW_POSITION_ACTIVE,
   INVALID_DRAW_POSITION,
   DRAW_POSITION_ASSIGNED,
   MISSING_DRAW_DEFINITION,
   STRUCTURE_NOT_FOUND,
-} from '../../../../constants/errorConditionConstants';
-import {
-  BYE,
-  TO_BE_PLAYED,
-} from '../../../../constants/matchUpStatusConstants';
+} from '../../../constants/errorConditionConstants';
+import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import {
   DrawDefinition,
   Event,
   MatchUp,
   Structure,
   Tournament,
-} from '../../../../types/tournamentTypes';
+} from '../../../types/tournamentTypes';
 
 /*
   assignDrawPositionBye

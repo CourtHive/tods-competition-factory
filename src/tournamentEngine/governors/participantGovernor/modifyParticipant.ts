@@ -1,5 +1,5 @@
 import { findTournamentParticipant } from '../../getters/participants/participantGetter';
-import { addIndividualParticipantIds } from './groupings/addIndividualParticipantIds';
+import { addIndividualParticipantIds } from '../../../mutate/participants/addIndividualParticipantIds';
 import { getParticipants } from '../../getters/participants/getParticipants';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { definedAttributes } from '../../../utilities/definedAttributes';

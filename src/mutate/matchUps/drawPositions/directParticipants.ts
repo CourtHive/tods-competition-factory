@@ -1,4 +1,4 @@
-import { assignDrawPositionBye } from '../../../drawEngine/governors/positionGovernor/byePositioning/assignDrawPositionBye';
+import { assignDrawPositionBye } from './assignDrawPositionBye';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { attemptToModifyScore } from '../../../drawEngine/governors/matchUpGovernor/attemptToModifyScore';
 import { isDirectingMatchUpStatus } from '../../../drawEngine/governors/matchUpGovernor/checkStatusType';

@@ -1,27 +1,23 @@
-import { updateAssignmentParticipantResults } from '../matchUpGovernor/updateAssignmentParticipantResults';
-import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
-import { getMissingSequenceNumbers } from '../../../utilities/arrays';
-import { extractAttributes, unique } from '../../../utilities';
+import { updateAssignmentParticipantResults } from '../../drawEngine/governors/matchUpGovernor/updateAssignmentParticipantResults';
+import { checkScoreHasValue } from '../../query/matchUp/checkScoreHasValue';
+import { getMissingSequenceNumbers } from '../../utilities/arrays';
+import { extractAttributes, unique } from '../../utilities';
 import {
   deleteMatchUpsNotice,
   modifyDrawNotice,
   modifyMatchUpNotice,
-} from '../../notifications/drawNotifications';
+} from '../../drawEngine/notifications/drawNotifications';
 
-import { ROUND_OUTCOME } from '../../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { ROUND_OUTCOME } from '../../constants/drawDefinitionConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   INVALID_STRUCTURE,
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  Event,
-  Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../constants/errorConditionConstants';
+import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
 
 type DeleteAdHocMatchUpsArgs = {
   tournamentRecord?: Tournament;

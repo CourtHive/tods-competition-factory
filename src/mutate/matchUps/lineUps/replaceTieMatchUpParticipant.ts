@@ -1,13 +1,13 @@
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotifications';
-import { getCollectionPositionAssignments } from './getCollectionPositionAssignments';
-import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
-import { deleteParticipants } from '../participantGovernor/deleteParticipants';
-import { getParticipants } from '../../getters/participants/getParticipants';
-import { addParticipant } from '../participantGovernor/addParticipants';
-import { ensureSideLineUps } from './drawDefinitions/ensureSideLineUps';
-import { updateTeamLineUp } from './drawDefinitions/updateTeamLineUp';
-import { getTieMatchUpContext } from './getTieMatchUpContext';
+import { getCollectionPositionAssignments } from '../../../tournamentEngine/governors/eventGovernor/getCollectionPositionAssignments';
+import { getPairedParticipant } from '../../../tournamentEngine/governors/participantGovernor/getPairedParticipant';
+import { deleteParticipants } from '../../../tournamentEngine/governors/participantGovernor/deleteParticipants';
+import { getParticipants } from '../../../tournamentEngine/getters/participants/getParticipants';
+import { addParticipant } from '../../../tournamentEngine/governors/participantGovernor/addParticipants';
+import { ensureSideLineUps } from './ensureSideLineUps';
+import { updateTeamLineUp } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/updateTeamLineUp';
+import { getTieMatchUpContext } from '../../../tournamentEngine/governors/eventGovernor/getTieMatchUpContext';
 import { makeDeepCopy, unique } from '../../../utilities';
 import {
   ResultType,

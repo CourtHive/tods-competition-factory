@@ -1,7 +1,7 @@
 import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
 import { checkMatchUpIsComplete } from '../../../query/matchUp/checkMatchUpIsComplete';
 import { generateAndPopulateRRplayoffStructures } from './generateAndPopulateRRplayoffStructures';
-import { assignDrawPositionBye } from '../positionGovernor/byePositioning/assignDrawPositionBye';
+import { assignDrawPositionBye } from '../../../mutate/matchUps/drawPositions/assignDrawPositionBye';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { directParticipants } from '../../../mutate/matchUps/drawPositions/directParticipants';

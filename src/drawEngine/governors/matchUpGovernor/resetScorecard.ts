@@ -1,6 +1,6 @@
 import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
 import { compareTieFormats } from '../../../matchUpEngine/governors/tieFormatGovernor/compareTieFormats';
-import { resetTieFormat } from '../../../tournamentEngine/governors/eventGovernor/resetTieFormat';
+import { resetTieFormat } from '../../../mutate/tieFormat/resetTieFormat';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { positionTargets } from '../../../mutate/matchUps/drawPositions/positionTargets';

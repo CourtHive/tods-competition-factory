@@ -1,23 +1,23 @@
-import { checkScoreHasValue } from '../../../../query/matchUp/checkScoreHasValue';
-import { addExtension } from '../../../../global/functions/producers/addExtension';
-import { getParticipants } from '../../../getters/participants/getParticipants';
-import { addEventEntries } from '../../eventGovernor/entries/addEventEntries';
-import { decorateResult } from '../../../../global/functions/decorateResult';
-import { findExtension } from '../../../../acquire/findExtension';
-import { allDrawMatchUps } from '../../../getters/matchUpsGetter/matchUpsGetter';
-import { addNotice } from '../../../../global/state/globalState';
+import { checkScoreHasValue } from '../../query/matchUp/checkScoreHasValue';
+import { addExtension } from '../../global/functions/producers/addExtension';
+import { getParticipants } from '../../tournamentEngine/getters/participants/getParticipants';
+import { addEventEntries } from '../../tournamentEngine/governors/eventGovernor/entries/addEventEntries';
+import { decorateResult } from '../../global/functions/decorateResult';
+import { findExtension } from '../../acquire/findExtension';
+import { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
+import { addNotice } from '../../global/state/globalState';
 import {
   addDrawNotice,
   modifyMatchUpNotice,
-} from '../../../../drawEngine/notifications/drawNotifications';
+} from '../../drawEngine/notifications/drawNotifications';
 
-import { MappedMatchUps } from '../../../../drawEngine/getters/getMatchUps/getMatchUpsMap';
-import { MODIFY_PARTICIPANTS } from '../../../../constants/topicConstants';
-import { UNGROUPED } from '../../../../constants/entryStatusConstants';
-import { COMPETITOR } from '../../../../constants/participantRoles';
-import { LINEUPS } from '../../../../constants/extensionConstants';
-import { HydratedParticipant } from '../../../../types/hydrated';
-import { SUCCESS } from '../../../../constants/resultConstants';
+import { MappedMatchUps } from '../../drawEngine/getters/getMatchUps/getMatchUpsMap';
+import { MODIFY_PARTICIPANTS } from '../../constants/topicConstants';
+import { UNGROUPED } from '../../constants/entryStatusConstants';
+import { COMPETITOR } from '../../constants/participantRoles';
+import { LINEUPS } from '../../constants/extensionConstants';
+import { HydratedParticipant } from '../../types/hydrated';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   CANNOT_REMOVE_PARTICIPANTS,
   ErrorType,
@@ -26,17 +26,17 @@ import {
   MISSING_VALUE,
   NO_PARTICIPANT_REMOVED,
   PARTICIPANT_NOT_FOUND,
-} from '../../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 import {
   GROUP,
   TEAM,
   TEAM_PARTICIPANT,
-} from '../../../../constants/participantConstants';
+} from '../../constants/participantConstants';
 import {
   Participant,
   ParticipantRoleUnion,
   Tournament,
-} from '../../../../types/tournamentTypes';
+} from '../../types/tournamentTypes';
 
 type RemoveIndividualParticipantIdsArgs = {
   addIndividualParticipantsToEvents?: boolean;

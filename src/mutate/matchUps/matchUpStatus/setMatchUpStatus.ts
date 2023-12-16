@@ -1,4 +1,4 @@
-import { ensureSideLineUps } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/ensureSideLineUps';
+import { ensureSideLineUps } from '../lineUps/ensureSideLineUps';
 import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
 import { removeExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { generateTieMatchUpScore } from '../../../assemblies/generators/tieMatchUpScore/generateTieMatchUpScore';

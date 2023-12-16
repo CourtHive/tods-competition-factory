@@ -1,4 +1,4 @@
-import { replaceTieMatchUpParticipantId } from '../../../tournamentEngine/governors/eventGovernor/replaceTieMatchUpParticipant';
+import { replaceTieMatchUpParticipantId } from '../../../mutate/matchUps/lineUps/replaceTieMatchUpParticipant';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';

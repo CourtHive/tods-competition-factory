@@ -1,5 +1,5 @@
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
-import { assignDrawPositionBye } from '../byePositioning/assignDrawPositionBye';
+import { assignDrawPositionBye } from '../../../../mutate/matchUps/drawPositions/assignDrawPositionBye';
 import { generatePositioningCandidate } from './generatePositioningCandidate';
 import { getAttributeGroupings } from '../../../getters/getAttributeGrouping';
 import { decorateResult } from '../../../../global/functions/decorateResult';

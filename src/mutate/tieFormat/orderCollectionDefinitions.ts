@@ -1,28 +1,28 @@
-import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
-import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
-import { decorateResult } from '../../../global/functions/decorateResult';
-import { findStructure } from '../../../drawEngine/getters/findStructure';
-import { isConvertableInteger } from '../../../utilities/math';
-import { numericSortValue } from '../../../utilities/arrays';
-import { copyTieFormat } from './copyTieFormat';
+import { getAllStructureMatchUps } from '../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { findDrawMatchUp } from '../../acquire/findDrawMatchUp';
+import { decorateResult } from '../../global/functions/decorateResult';
+import { findStructure } from '../../drawEngine/getters/findStructure';
+import { isConvertableInteger } from '../../utilities/math';
+import { numericSortValue } from '../../utilities/arrays';
+import { copyTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';
 import {
   modifyDrawNotice,
   modifyMatchUpNotice,
-} from '../../../drawEngine/notifications/drawNotifications';
+} from '../../drawEngine/notifications/drawNotifications';
 
-import { SUCCESS } from '../../../constants/resultConstants';
-import { TEAM } from '../../../constants/matchUpTypes';
+import { SUCCESS } from '../../constants/resultConstants';
+import { TEAM } from '../../constants/matchUpTypes';
 import {
   INVALID_VALUES,
   MISSING_MATCHUP,
   NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 import {
   DrawDefinition,
   Event,
   MatchUp,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../types/tournamentTypes';
 
 function getOrderedTieFormat({ tieFormat, orderMap }) {
   const orderedTieFormat = copyTieFormat(tieFormat);

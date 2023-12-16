@@ -1,5 +1,5 @@
 import { removeLineUpSubstitutions } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/removeLineUpSubstitutions';
-import { assignDrawPositionBye } from '../../../drawEngine/governors/positionGovernor/byePositioning/assignDrawPositionBye';
+import { assignDrawPositionBye } from './assignDrawPositionBye';
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
 import { structureAssignedDrawPositions } from '../../../drawEngine/getters/positionsGetter';

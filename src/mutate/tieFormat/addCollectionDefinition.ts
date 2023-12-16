@@ -1,37 +1,37 @@
-import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
-import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import { generateCollectionMatchUps } from '../../../drawEngine/generators/tieMatchUps';
-import { definedAttributes } from '../../../utilities/definedAttributes';
-import { calculateWinCriteria } from './calculateWinCriteria';
-import { getTieFormat } from './getTieFormat/getTieFormat';
-import { tieFormatTelemetry } from './tieFormatTelemetry';
-import { copyTieFormat } from './copyTieFormat';
-import { validUpdate } from './validUpdate';
-import { UUID } from '../../../utilities';
+import { getAllStructureMatchUps } from '../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
+import { generateCollectionMatchUps } from '../../drawEngine/generators/tieMatchUps';
+import { definedAttributes } from '../../utilities/definedAttributes';
+import { calculateWinCriteria } from '../../matchUpEngine/governors/tieFormatGovernor/calculateWinCriteria';
+import { getTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/getTieFormat';
+import { tieFormatTelemetry } from '../../matchUpEngine/governors/tieFormatGovernor/tieFormatTelemetry';
+import { copyTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';
+import { validUpdate } from '../../matchUpEngine/governors/tieFormatGovernor/validUpdate';
+import { UUID } from '../../utilities';
 import {
   addMatchUpsNotice,
   modifyDrawNotice,
   modifyMatchUpNotice,
-} from '../../../drawEngine/notifications/drawNotifications';
+} from '../../drawEngine/notifications/drawNotifications';
 import {
   ResultType,
   decorateResult,
-} from '../../../global/functions/decorateResult';
+} from '../../global/functions/decorateResult';
 import {
   validateCollectionDefinition,
   validateTieFormat,
-} from './tieFormatUtilities';
+} from '../../matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
 
-import { TIE_FORMAT_MODIFICATIONS } from '../../../constants/extensionConstants';
-import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../../constants/policyConstants';
-import { PolicyDefinitions } from '../../../types/factoryTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { TEAM } from '../../../constants/matchUpTypes';
+import { TIE_FORMAT_MODIFICATIONS } from '../../constants/extensionConstants';
+import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../constants/policyConstants';
+import { PolicyDefinitions } from '../../types/factoryTypes';
+import { SUCCESS } from '../../constants/resultConstants';
+import { TEAM } from '../../constants/matchUpTypes';
 import {
   CANNOT_MODIFY_TIEFORMAT,
   DUPLICATE_VALUE,
   MISSING_DRAW_DEFINITION,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 import {
   Category,
   CollectionDefinition,
@@ -41,7 +41,7 @@ import {
   MatchUp,
   TieFormat,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../types/tournamentTypes';
 
 /*
  * collectionDefinition will be added to an event tieFormat (if present)
