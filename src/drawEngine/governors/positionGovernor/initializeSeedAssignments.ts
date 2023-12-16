@@ -21,7 +21,7 @@ type InitializeStructureSeedAssignmentsArgs = {
   requireParticipantCount?: boolean;
   enforcePolicyLimits?: boolean;
   drawSizeProgression?: boolean;
-  seedingProfile: SeedingProfile;
+  seedingProfile?: SeedingProfile;
   drawDefinition: DrawDefinition;
   participantsCount?: number; // TODO: migrate to participantsCount
   participantCount?: number; // TODO: migrate to participantsCount
@@ -59,7 +59,7 @@ export function initializeStructureSeedAssignments({
   const roundRobinGroupsCount = structure.structures?.length;
   const groupSeedingThreshold =
     isConvertableInteger(seedingProfile?.groupSeedingThreshold) &&
-    seedingProfile.groupSeedingThreshold;
+    seedingProfile?.groupSeedingThreshold;
 
   const seedGroups = getSeedGroups({
     roundRobinGroupsCount,
