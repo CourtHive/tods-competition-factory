@@ -1,15 +1,15 @@
-import { assignDrawPositionBye } from './byePositioning/assignDrawPositionBye';
+import { assignDrawPositionBye } from '../../../mutate/matchUps/drawPositions/assignDrawPositionBye';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import { findStructure } from '../../getters/findStructure';
-import { assignDrawPosition } from './positionAssignment';
+import { assignDrawPosition } from '../../../mutate/matchUps/drawPositions/positionAssignment';
 import { intersection } from '../../../utilities';
 import {
   modifyDrawNotice,
   modifyPositionAssignmentsNotice,
-} from '../../notifications/drawNotifications';
+} from '../../../mutate/notifications/drawNotifications';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {

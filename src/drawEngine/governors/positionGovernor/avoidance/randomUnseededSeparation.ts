@@ -1,5 +1,5 @@
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
-import { assignDrawPositionBye } from '../byePositioning/assignDrawPositionBye';
+import { assignDrawPositionBye } from '../../../../mutate/matchUps/drawPositions/assignDrawPositionBye';
 import { generatePositioningCandidate } from './generatePositioningCandidate';
 import { getAttributeGroupings } from '../../../getters/getAttributeGrouping';
 import { decorateResult } from '../../../../global/functions/decorateResult';
@@ -7,7 +7,7 @@ import { getUnplacedParticipantIds } from './getUnplacedParticipantIds';
 import { addParticipantGroupings } from './addParticipantGroupings';
 import { findStructure } from '../../../getters/findStructure';
 import { deriveExponent } from '../../../../utilities/math';
-import { assignDrawPosition } from '../positionAssignment';
+import { assignDrawPosition } from '../../../../mutate/matchUps/drawPositions/positionAssignment';
 import {
   getPositionAssignments,
   structureAssignedDrawPositions,

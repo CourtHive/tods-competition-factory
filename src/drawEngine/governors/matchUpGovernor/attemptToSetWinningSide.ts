@@ -1,9 +1,9 @@
-import { removeDirectedParticipants } from './removeDirectedParticipants';
+import { removeDirectedParticipants } from '../../../mutate/matchUps/drawPositions/removeDirectedParticipants';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { definedAttributes } from '../../../utilities/definedAttributes';
 import { checkConnectedStructures } from './checkConnectedStructures';
 import { attemptToModifyScore } from './attemptToModifyScore';
-import { directParticipants } from './directParticipants';
+import { directParticipants } from '../../../mutate/matchUps/drawPositions/directParticipants';
 import { replaceQualifier } from './replaceQualifier';
 import { placeQualifier } from './placeQualifier';
 

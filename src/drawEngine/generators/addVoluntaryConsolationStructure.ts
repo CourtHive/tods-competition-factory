@@ -1,4 +1,4 @@
-import { modifyDrawNotice } from '../notifications/drawNotifications';
+import { modifyDrawNotice } from '../../mutate/notifications/drawNotifications';
 import { constantToString } from '../../utilities/strings';
 import structureTemplate from './structureTemplate';
 

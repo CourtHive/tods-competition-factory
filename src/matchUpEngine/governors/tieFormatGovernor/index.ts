@@ -1,7 +1,7 @@
-import { orderCollectionDefinitions } from './orderCollectionDefinitions';
-import { removeCollectionDefinition } from './removeCollectionDefinition';
+import { orderCollectionDefinitions } from '../../../mutate/tieFormat/orderCollectionDefinitions';
+import { removeCollectionDefinition } from '../../../mutate/tieFormat/removeCollectionDefinition';
 import { modifyCollectionDefinition } from './modifyCollectionDefinition';
-import { addCollectionDefinition } from './addCollectionDefinition';
+import { addCollectionDefinition } from '../../../mutate/tieFormat/addCollectionDefinition';
 import { removeCollectionGroup } from './removeCollectionGroup';
 import { calculateWinCriteria } from './calculateWinCriteria';
 import { addCollectionGroup } from './addCollectionGroup';

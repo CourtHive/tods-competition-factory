@@ -3,7 +3,7 @@ import { tallyParticipantResults } from '../../../matchUpEngine/getters/roundRob
 import { getPolicyDefinitions } from '../../../query/extensions/getAppliedPolicies';
 import { validMatchUps } from '../../../validators/validMatchUp';
 import { addExtension } from '../../../global/functions/producers/addExtension';
-import { modifyDrawNotice } from '../../notifications/drawNotifications';
+import { modifyDrawNotice } from '../../../mutate/notifications/drawNotifications';
 import { createSubOrderMap } from './createSubOrderMap';
 
 import { POLICY_TYPE_ROUND_ROBIN_TALLY } from '../../../constants/policyConstants';

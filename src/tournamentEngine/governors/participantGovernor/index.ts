@@ -9,9 +9,9 @@ import { getParticipantIdFinishingPositions } from './finishingPositions';
 import { getPairedParticipant } from './getPairedParticipant';
 import { addPersons } from './addPersons';
 
-import { modifyIndividualParticipantIds } from './groupings/modifyIndividualParticipantIds';
+import { modifyIndividualParticipantIds } from '../../../mutate/participants/modifyIndividualParticipantIds';
 import { generateTeamsFromParticipantAttribute } from '../../generators/teamsGenerator';
-import { addIndividualParticipantIds } from './groupings/addIndividualParticipantIds';
+import { addIndividualParticipantIds } from '../../../mutate/participants/addIndividualParticipantIds';
 import { filterParticipants } from '../../getters/participants/filterParticipants';
 import { modifyParticipantsSignInStatus } from '../../../mutate/participants/modifyParticipantsSignInStatus';
 import { scaledTeamAssignment } from '../../generators/scaledTeamAssignment';
@@ -27,7 +27,7 @@ import { modifyParticipant } from './modifyParticipant';
 import {
   removeIndividualParticipantIds,
   removeParticipantIdsFromAllTeams,
-} from './groupings/removeIndividualParticipantIds';
+} from '../../../mutate/participants/removeIndividualParticipantIds';
 import {
   addPenalty,
   modifyPenalty,

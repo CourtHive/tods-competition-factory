@@ -1,4 +1,4 @@
-import { toggleParticipantCheckInState as toggle } from '../../../mutate/matchUps/toggleParticipantCheckInState';
+import { toggleParticipantCheckInState as toggle } from '../../../mutate/matchUps/timeItems/toggleParticipantCheckInState';
 import { getDrawDefinition } from '../../../global/functions/deducers/getDrawDefinition';
 
 import { MISSING_VALUE } from '../../../constants/errorConditionConstants';

@@ -1,4 +1,4 @@
-import { luckyLoserDrawPositionAssignment as positionLuckyLoser } from '../../../../drawEngine/governors/positionGovernor/positionLuckyLoser';
+import { luckyLoserDrawPositionAssignment as positionLuckyLoser } from '../../../../mutate/matchUps/drawPositions/positionLuckyLoser';
 
 /**
  *

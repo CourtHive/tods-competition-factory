@@ -1,6 +1,6 @@
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { addExtension } from '../../../global/functions/producers/addExtension';
-import { modifyDrawNotice } from '../../notifications/drawNotifications';
+import { modifyDrawNotice } from '../../../mutate/notifications/drawNotifications';
 
 import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
 import { ResultType } from '../../../global/functions/decorateResult';

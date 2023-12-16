@@ -6,7 +6,7 @@ import { calculateWinCriteria } from './calculateWinCriteria';
 import { getTieFormat } from './getTieFormat/getTieFormat';
 import { isValid } from '../matchUpFormatGovernor/isValid';
 import { tieFormatTelemetry } from './tieFormatTelemetry';
-import { updateTieFormat } from './updateTieFormat';
+import { updateTieFormat } from '../../../mutate/tieFormat/updateTieFormat';
 import { intersection } from '../../../utilities';
 import { copyTieFormat } from './copyTieFormat';
 import {

@@ -10,7 +10,7 @@ import {
   addMatchUpOfficial as addOfficial,
   addMatchUpEndTime as addEndTime,
   addMatchUpCourtOrder as addCourtOrder,
-} from '../../../drawEngine/governors/matchUpGovernor/scheduleItems';
+} from '../../../mutate/matchUps/schedule/scheduleItems';
 
 import { DrawDefinition, Tournament } from '../../../types/tournamentTypes';
 import { INDIVIDUAL } from '../../../constants/participantConstants';

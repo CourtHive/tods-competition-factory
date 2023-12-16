@@ -1,7 +1,7 @@
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { modifyCollectionDefinition } from './modifyCollectionDefinition';
-import { removeCollectionDefinition } from './removeCollectionDefinition';
-import { addCollectionDefinition } from './addCollectionDefinition';
+import { removeCollectionDefinition } from '../../../mutate/tieFormat/removeCollectionDefinition';
+import { addCollectionDefinition } from '../../../mutate/tieFormat/addCollectionDefinition';
 import { extractAttributes as xa } from '../../../utilities';
 import { numericSortValue } from '../../../utilities/arrays';
 import { getTieFormat } from './getTieFormat/getTieFormat';

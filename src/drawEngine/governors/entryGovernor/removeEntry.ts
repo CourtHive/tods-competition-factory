@@ -1,6 +1,6 @@
 import { refreshEntryPositions } from '../../../global/functions/producers/refreshEntryPositions';
 import { getAssignedParticipantIds } from '../../getters/getAssignedParticipantIds';
-import { modifyDrawNotice } from '../../notifications/drawNotifications';
+import { modifyDrawNotice } from '../../../mutate/notifications/drawNotifications';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {

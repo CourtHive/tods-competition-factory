@@ -11,7 +11,7 @@ import { scheduleProfileRounds } from './schedulingProfile/scheduleProfileRounds
 import { removeEventMatchUpFormatTiming } from './removeEventMatchUpFormatTiming';
 import { toggleParticipantCheckInState } from './toggleParticipantCheckInState';
 import { generateVirtualCourts } from './schedulers/utils/generateVirtualCourts';
-import { removeMatchUpCourtAssignment } from './removeMatchUpCourtAssignment';
+import { removeMatchUpCourtAssignment } from '../../../mutate/matchUps/schedule/removeMatchUpCourtAssignment';
 import { getMatchUpDailyLimitsUpdate } from './getMatchUpDailyLimitsUpdate';
 import { bulkUpdateCourtAssignments } from './bulkUpdateCourtAssignments';
 import { scheduleMatchUps } from './scheduleMatchUps/scheduleMatchUps';

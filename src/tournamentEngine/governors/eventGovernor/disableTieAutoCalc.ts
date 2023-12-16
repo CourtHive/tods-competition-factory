@@ -1,4 +1,4 @@
-import { disableTieAutoCalc as drawEngineDisableTieAutoCalc } from '../../../drawEngine/governors/matchUpGovernor/disableTieAutoCalc';
+import { disableTieAutoCalc as drawEngineDisableTieAutoCalc } from '../../../mutate/matchUps/extensions/disableTieAutoCalc';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 

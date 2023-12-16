@@ -1,4 +1,4 @@
-import { modifyDrawNotice } from '../../notifications/drawNotifications';
+import { modifyDrawNotice } from '../../../mutate/notifications/drawNotifications';
 import { setStageDrawSize } from '../entryGovernor/stageEntryCounts';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';

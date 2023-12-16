@@ -1,12 +1,12 @@
 import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
 import { checkMatchUpIsComplete } from '../../../query/matchUp/checkMatchUpIsComplete';
 import { generateAndPopulateRRplayoffStructures } from './generateAndPopulateRRplayoffStructures';
-import { assignDrawPositionBye } from '../positionGovernor/byePositioning/assignDrawPositionBye';
+import { assignDrawPositionBye } from '../../../mutate/matchUps/drawPositions/assignDrawPositionBye';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
-import { directParticipants } from '../matchUpGovernor/directParticipants';
+import { directParticipants } from '../../../mutate/matchUps/drawPositions/directParticipants';
 import { getAvailablePlayoffProfiles } from './getAvailablePlayoffProfiles';
-import { positionTargets } from '../positionGovernor/positionTargets';
+import { positionTargets } from '../../../mutate/matchUps/drawPositions/positionTargets';
 import { getMatchUpId } from '../../../global/functions/extractors';
 import { generateTieMatchUps } from '../../generators/tieMatchUps';
 import { findStructure } from '../../getters/findStructure';

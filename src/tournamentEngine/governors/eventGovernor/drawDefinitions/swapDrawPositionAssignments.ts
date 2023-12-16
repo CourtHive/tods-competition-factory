@@ -1,4 +1,4 @@
-import { swapDrawPositionAssignments as positionSwap } from '../../../../drawEngine/governors/positionGovernor/positionSwap';
+import { swapDrawPositionAssignments as positionSwap } from '../../../../mutate/matchUps/drawPositions/positionSwap';
 
 /**
  *

@@ -1,6 +1,6 @@
 import { getSeedsCount } from '../../../tournamentEngine/governors/policyGovernor/getSeedsCount';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
-import { modifyDrawNotice } from '../../notifications/drawNotifications';
+import { modifyDrawNotice } from '../../../mutate/notifications/drawNotifications';
 import { isConvertableInteger } from '../../../utilities/math';
 import { findStructure } from '../../getters/findStructure';
 import { generateRange } from '../../../utilities';

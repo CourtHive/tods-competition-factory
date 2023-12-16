@@ -4,7 +4,7 @@ import { copyTieFormat } from '../../../matchUpEngine/governors/tieFormatGoverno
 import { generateDrawStructuresAndLinks } from './generateDrawStructuresAndLinks';
 import { getStageDrawPositionsCount } from '../../getters/getStageDrawPositions';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
-import { modifyDrawNotice } from '../../notifications/drawNotifications';
+import { modifyDrawNotice } from '../../../mutate/notifications/drawNotifications';
 import { definedAttributes } from '../../../utilities/definedAttributes';
 import { getMatchUpId } from '../../../global/functions/extractors';
 import { generateTieMatchUps } from '../../generators/tieMatchUps';

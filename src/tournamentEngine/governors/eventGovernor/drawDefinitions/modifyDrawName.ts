@@ -1,4 +1,4 @@
-import { modifyDrawNotice } from '../../../../drawEngine/notifications/drawNotifications';
+import { modifyDrawNotice } from '../../../../mutate/notifications/drawNotifications';
 import { addEventExtension } from '../../tournamentGovernor/addRemoveExtensions';
 import { getFlightProfile } from '../../../../query/event/getFlightProfile';
 import {

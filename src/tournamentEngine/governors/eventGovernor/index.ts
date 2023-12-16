@@ -1,14 +1,14 @@
 import { generateAndPopulatePlayoffStructures } from '../../../drawEngine/governors/structureGovernor/generateAndPopulatePlayoffStructures';
 import { setDrawParticipantRepresentativeIds } from './drawDefinitions/setDrawParticipantRepresentativeIds';
 import { getDrawParticipantRepresentativeIds } from './drawDefinitions/getDrawParticipantRepresentativeIds';
-import { assignMatchUpSideParticipant } from './drawDefinitions/assignMatchUpSideParticipant';
-import { removeMatchUpSideParticipant } from './drawDefinitions/removeMatchUpSideParticipant';
-import { replaceTieMatchUpParticipantId } from './replaceTieMatchUpParticipant';
+import { assignMatchUpSideParticipant } from '../../../mutate/matchUps/drawPositions/assignMatchUpSideParticipant';
+import { removeMatchUpSideParticipant } from '../../../mutate/matchUps/sides/removeMatchUpSideParticipant';
+import { replaceTieMatchUpParticipantId } from '../../../mutate/matchUps/lineUps/replaceTieMatchUpParticipant';
 import { setMatchUpStatus, bulkMatchUpStatusUpdate } from './setMatchUpStatus';
-import { assignTieMatchUpParticipantId } from './assignTieMatchUpParticipant';
-import { removeTieMatchUpParticipantId } from './removeTieMatchUpParticipant';
+import { assignTieMatchUpParticipantId } from '../../../mutate/matchUps/lineUps/assignTieMatchUpParticipant';
+import { removeTieMatchUpParticipantId } from '../../../mutate/matchUps/lineUps/removeTieMatchUpParticipant';
 import { deleteDrawDefinitions } from './drawDefinitions/deleteDrawDefinitions';
-import { removeRoundMatchUps } from './drawDefinitions/removeRoundMatchUps';
+import { removeRoundMatchUps } from '../../../mutate/structures/removeRoundMatchUps';
 import { assignDrawPosition } from './drawDefinitions/assignDrawPosition';
 import { addDrawDefinition } from './drawDefinitions/addDrawDefinition';
 import { addDrawEntries } from './drawDefinitions/addDrawEntries';
@@ -47,7 +47,7 @@ import { removeDrawEntries } from './drawDefinitions/removeDrawEntries';
 import { modifyEntriesStatus } from './entries/modifyEntriesStatus';
 import { addPlayoffStructures } from './addPlayoffStructures';
 import { modifySeedAssignment } from './modifySeedAssignment';
-import { setMatchUpFormat } from './setMatchUpFormat';
+import { setMatchUpFormat } from '../../../mutate/tieFormat/setMatchUpFormat';
 
 import {
   setEntryPosition,
@@ -55,7 +55,7 @@ import {
 } from './entries/setEntryPositions';
 
 import { setSubOrder } from '../../../drawEngine/governors/positionGovernor/setSubOrder';
-import { removeDelegatedOutcome } from './drawDefinitions/removeDelegatedOutcome';
+import { removeDelegatedOutcome } from '../../../mutate/matchUps/extensions/removeDelegatedOutcome';
 import { generateSeedingScaleItems } from './entries/generateSeedingScaleItems';
 import { setDelegatedOutcome } from './drawDefinitions/setDelegatedOutcome';
 import { removeScaleValues } from './entries/removeScaleValues';
@@ -67,16 +67,16 @@ import { addVoluntaryConsolationStructure } from '../../../drawEngine/generators
 import { resetVoluntaryConsolationStructure } from './drawDefinitions/resetVoluntaryConsolationStructure';
 import { deleteFlightProfileAndFlightDraws } from './drawDefinitions/deleteFlightProfileAndFlightDraws';
 import { removeStructure } from '../../../drawEngine/governors/structureGovernor/removeStructure';
-import { toggleParticipantCheckInState } from '../../../mutate/matchUps/toggleParticipantCheckInState';
+import { toggleParticipantCheckInState } from '../../../mutate/matchUps/timeItems/toggleParticipantCheckInState';
 import { deleteFlightAndFlightDraw } from './drawDefinitions/deleteFlightAndFlightDraw';
 import { refreshEventDrawOrder } from './drawDefinitions/refreshEventDrawOrder';
 import { generateFlightProfile } from '../../generators/generateFlightProfile';
 import { generateVoluntaryConsolation } from './generateVoluntaryConsolation';
 import { addVoluntaryConsolationStage } from './addVoluntaryConsolationStage';
 import { substituteParticipant } from './drawDefinitions/substituteParticipant';
-import { deleteAdHocMatchUps } from './drawDefinitions/deleteAdHocMatchUps';
+import { deleteAdHocMatchUps } from '../../../mutate/structures/deleteAdHocMatchUps';
 import { modifyDrawDefinition } from './drawDefinitions/modifyDrawDefinition';
-import { resetDrawDefinition } from './drawDefinitions/resetDrawDefinition';
+import { resetDrawDefinition } from '../../../mutate/drawDefinitions/resetDrawDefinition';
 import { pruneDrawDefinition } from './drawDefinitions/pruneDrawDefinition';
 import { updateDrawIdsOrder } from './drawDefinitions/updateDrawIdsOrder';
 import { setOrderOfFinish } from './drawDefinitions/setOrderOfFinish';
@@ -106,18 +106,18 @@ import { removeSeededParticipant } from './drawDefinitions/removeSeededParticipa
 import { validateLineUp } from './drawDefinitions/validateTeamLineUp';
 import { updateTeamLineUp } from './drawDefinitions/updateTeamLineUp';
 import { getTeamLineUp } from './drawDefinitions/getTeamLineUp';
-import { applyLineUps } from './drawDefinitions/applyLineUps';
+import { applyLineUps } from '../../../mutate/matchUps/lineUps/applyLineUps';
 
-import { orderCollectionDefinitions } from '../../../matchUpEngine/governors/tieFormatGovernor/orderCollectionDefinitions';
-import { removeCollectionDefinition } from '../../../matchUpEngine/governors/tieFormatGovernor/removeCollectionDefinition';
+import { orderCollectionDefinitions } from '../../../mutate/tieFormat/orderCollectionDefinitions';
+import { removeCollectionDefinition } from '../../../mutate/tieFormat/removeCollectionDefinition';
 import { modifyCollectionDefinition } from '../../../matchUpEngine/governors/tieFormatGovernor/modifyCollectionDefinition';
-import { addCollectionDefinition } from '../../../matchUpEngine/governors/tieFormatGovernor/addCollectionDefinition';
+import { addCollectionDefinition } from '../../../mutate/tieFormat/addCollectionDefinition';
 import { removeCollectionGroup } from '../../../matchUpEngine/governors/tieFormatGovernor/removeCollectionGroup';
 import { addCollectionGroup } from '../../../matchUpEngine/governors/tieFormatGovernor/addCollectionGroup';
 import { setStructureOrder } from '../../../drawEngine/governors/structureGovernor/setStructureOrder';
 import { modifyTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/modifyTieFormat';
 import { resetScorecard } from './resetScorecard';
-import { resetTieFormat } from './resetTieFormat';
+import { resetTieFormat } from '../../../mutate/tieFormat/resetTieFormat';
 
 import { validateCollectionDefinition } from '../../../matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
 import { generateDrawTypeAndModifyDrawDefinition } from '../../generators/generateDrawTypeAndModifyDrawDefinition';
@@ -131,15 +131,15 @@ import { isValidForQualifying } from './drawDefinitions/isValidForQualifying';
 import { renameStructures } from './drawDefinitions/renameStructures';
 import { generateDrawMaticRound } from '../../../forge/generate';
 
-import { resetMatchUpLineUps } from './drawDefinitions/resetMatchUpLineUps';
-import { aggregateTieFormats } from './aggregateTieFormats';
+import { resetMatchUpLineUps } from '../../../mutate/matchUps/lineUps/resetMatchUpLineUps';
+import { aggregateTieFormats } from '../../../mutate/tieFormat/aggregateTieFormats';
 import { updateTieMatchUpScore } from './updateTieMatchUpScore';
 import { disableTieAutoCalc } from './disableTieAutoCalc';
 import { enableTieAutoCalc } from './enableTieAutoCalc';
 import { modifyEvent } from './modifyEvent';
 
-import { checkOutParticipant } from '../../../mutate/matchUps/checkOutParticipant';
-import { checkInParticipant } from '../../../mutate/matchUps/checkInParticipant';
+import { checkOutParticipant } from '../../../mutate/matchUps/timeItems/checkOutParticipant';
+import { checkInParticipant } from '../../../mutate/matchUps/timeItems/checkInParticipant';
 
 const eventGovernor = {
   generateQualifyingStructure,

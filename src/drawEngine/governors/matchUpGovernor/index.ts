@@ -7,17 +7,17 @@ import { validateScore } from '../../../validators/validateScore';
 import {
   addMatchUpTimeItem,
   resetMatchUpTimeItems,
-} from '../../../mutate/matchUps/matchUpTimeItems';
-import { removeDelegatedOutcome } from './removeDelegatedOutcome';
+} from '../../../mutate/matchUps/timeItems/matchUpTimeItems';
+import { removeDelegatedOutcome } from '../../../mutate/matchUps/extensions/removeDelegatedOutcome';
 import { drawMatic } from '../../../assemblies/generators/drawDefinitions/drawMatic/drawMatic';
 import { setDelegatedOutcome } from './setDelegatedOutcome';
-import { updateTieMatchUpScore } from './tieMatchUpScore';
+import { updateTieMatchUpScore } from '../../../mutate/matchUps/score/tieMatchUpScore';
 import { validDrawPositions } from './validDrawPositions';
-import { disableTieAutoCalc } from './disableTieAutoCalc';
+import { disableTieAutoCalc } from '../../../mutate/matchUps/extensions/disableTieAutoCalc';
 import { enableTieAutoCalc } from './enableTieAutoCalc';
-import { setMatchUpStatus } from './setMatchUpStatus';
+import { setMatchUpStatus } from '../../../mutate/matchUps/matchUpStatus/setMatchUpStatus';
 import { setOrderOfFinish } from './setOrderOfFinish';
-import { setMatchUpFormat } from './setMatchUpFormat';
+import { setMatchUpFormat } from '../../../mutate/matchUps/matchUpFormat/setMatchUpFormat';
 import { resetScorecard } from './resetScorecard';
 import { addGoesTo } from './addGoesTo';
 
@@ -33,7 +33,7 @@ import {
   addMatchUpResumeTime,
   addMatchUpOfficial,
   addMatchUpScheduleItems,
-} from './scheduleItems';
+} from '../../../mutate/matchUps/schedule/scheduleItems';
 
 const matchUpGovernor = {
   resetScorecard,

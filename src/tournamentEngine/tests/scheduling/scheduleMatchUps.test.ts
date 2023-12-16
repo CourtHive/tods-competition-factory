@@ -1,5 +1,5 @@
 import { getScheduleTimes } from '../../../competitionEngine/governors/scheduleGovernor/garman/getScheduleTimes';
-import { removeCourtAssignment } from '../../governors/venueGovernor/removeCourtAssignment';
+import { removeCourtAssignment } from '../../../mutate/matchUps/schedule/removeCourtAssignment';
 import { getMatchUpIds } from '../../../global/functions/extractors';
 import { competitionEngine } from '../../../competitionEngine/sync';
 import { setSubscriptions } from '../../../global/state/globalState';

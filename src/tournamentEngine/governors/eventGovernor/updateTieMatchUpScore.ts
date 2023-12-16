@@ -1,4 +1,4 @@
-import { updateTieMatchUpScore as autoScoreTieMatchUp } from '../../../drawEngine/governors/matchUpGovernor/tieMatchUpScore';
+import { updateTieMatchUpScore as autoScoreTieMatchUp } from '../../../mutate/matchUps/score/tieMatchUpScore';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 

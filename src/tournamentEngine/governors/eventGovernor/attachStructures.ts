@@ -1,4 +1,4 @@
-import { attachStructures as structuresAttachment } from '../../../drawEngine/governors/structureGovernor/attachStructures';
+import { attachStructures as structuresAttachment } from '../../../mutate/drawDefinitions/attachStructures';
 import { addTournamentTimeItem } from '../tournamentGovernor/addTimeItem';
 
 import {

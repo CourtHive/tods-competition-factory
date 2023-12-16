@@ -1,4 +1,4 @@
-import { assignDrawPositionBye as assignBye } from '../../../../drawEngine/governors/positionGovernor/byePositioning/assignDrawPositionBye';
+import { assignDrawPositionBye as assignBye } from '../../../../mutate/matchUps/drawPositions/assignDrawPositionBye';
 import {
   DrawDefinition,
   Tournament,

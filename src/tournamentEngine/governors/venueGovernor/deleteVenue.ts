@@ -1,6 +1,6 @@
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
-import { removeCourtAssignment } from './removeCourtAssignment';
+import { removeCourtAssignment } from '../../../mutate/matchUps/schedule/removeCourtAssignment';
 import { addNotice } from '../../../global/state/globalState';
 import { deletionMessage } from './deletionMessage';
 

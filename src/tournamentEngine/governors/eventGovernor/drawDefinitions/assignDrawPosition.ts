@@ -1,5 +1,5 @@
-import { assignDrawPositionBye as assignPositionBye } from '../../../../drawEngine/governors/positionGovernor/byePositioning/assignDrawPositionBye';
-import { assignDrawPosition as assignPosition } from '../../../../drawEngine/governors/positionGovernor/positionAssignment';
+import { assignDrawPositionBye as assignPositionBye } from '../../../../mutate/matchUps/drawPositions/assignDrawPositionBye';
+import { assignDrawPosition as assignPosition } from '../../../../mutate/matchUps/drawPositions/positionAssignment';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {

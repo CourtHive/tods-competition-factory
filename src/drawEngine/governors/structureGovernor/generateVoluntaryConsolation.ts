@@ -5,7 +5,7 @@ import { copyTieFormat } from '../../../matchUpEngine/governors/tieFormatGoverno
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { automatedPositioning } from '../positionGovernor/automatedPositioning';
 import { definedAttributes } from '../../../utilities/definedAttributes';
-import { modifyDrawNotice } from '../../notifications/drawNotifications';
+import { modifyDrawNotice } from '../../../mutate/notifications/drawNotifications';
 import { generateTieMatchUps } from '../../generators/tieMatchUps';
 import { makeDeepCopy, nextPowerOf2 } from '../../../utilities';
 import { getDrawStructures } from '../../getters/findStructure';

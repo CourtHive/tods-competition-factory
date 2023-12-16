@@ -1,7 +1,7 @@
 import { getSeedOrderByePositions } from './getSeedOrderedByePositions';
 import { getDevContext } from '../../../../global/state/globalState';
 import { getUnseededByePositions } from './getUnseededByePositions';
-import { assignDrawPositionBye } from './assignDrawPositionBye';
+import { assignDrawPositionBye } from '../../../../mutate/matchUps/drawPositions/assignDrawPositionBye';
 import { findStructure } from '../../../getters/findStructure';
 import { getByesData } from '../../../getters/getByesData';
 import { shuffleArray } from '../../../../utilities';

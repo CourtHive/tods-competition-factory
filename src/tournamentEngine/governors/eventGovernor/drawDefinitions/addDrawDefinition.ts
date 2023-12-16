@@ -8,7 +8,7 @@ import {
   addMatchUpsNotice,
   deleteMatchUpsNotice,
   modifyDrawNotice,
-} from '../../../../drawEngine/notifications/drawNotifications';
+} from '../../../../mutate/notifications/drawNotifications';
 import {
   ResultType,
   decorateResult,

@@ -19,7 +19,7 @@ import { findEvent } from '../../../../acquire/findEvent';
 import {
   deleteDrawNotice,
   deleteMatchUpsNotice,
-} from '../../../../drawEngine/notifications/drawNotifications';
+} from '../../../../mutate/notifications/drawNotifications';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../../../constants/entryStatusConstants';
 import { DELETE_DRAW_DEFINITIONS } from '../../../../constants/auditConstants';
