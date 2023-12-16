@@ -2,6 +2,7 @@ import { refreshEntryPositions } from '../../../global/functions/producers/refre
 import { getAssignedParticipantIds } from '../../getters/getAssignedParticipantIds';
 import { modifyDrawNotice } from '../../../mutate/notifications/drawNotifications';
 
+import { DrawDefinition, StageTypeUnion } from '../../../types/tournamentTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
@@ -9,12 +10,19 @@ import {
   MISSING_PARTICIPANT_ID,
 } from '../../../constants/errorConditionConstants';
 
+type RemoveEntryArgs = {
+  autoEntryPositions?: boolean;
+  drawDefinition: DrawDefinition;
+  stages?: StageTypeUnion[];
+  participantId: string;
+};
+
 export function removeEntry({
   autoEntryPositions = true,
   drawDefinition,
   participantId,
   stages,
-}) {
+}: RemoveEntryArgs) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
 
