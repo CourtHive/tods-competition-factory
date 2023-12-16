@@ -36,7 +36,6 @@ import {
   competitionEngine,
 } from 'tods-competition-factory';
 
-drawEngine.setState(drawDefinition, false, deepCopyOptions);
 tournamentEngine.setState(tournamentRecord, false, deepCopyOptions);
 competitionEngine.setState(tournamentRecords, false, deepCopyOptions);
 

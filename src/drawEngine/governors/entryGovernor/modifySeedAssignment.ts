@@ -18,9 +18,9 @@ import {
 } from '../../../types/tournamentTypes';
 
 type ModifySeedAssignmentArgs = {
-  seedValue: string | number | undefined;
   tournamentRecord?: Tournament;
   drawDefinition: DrawDefinition;
+  seedValue?: string | number;
   participantId: string;
   validation?: boolean;
   structureId: string;
