@@ -1,4 +1,4 @@
-import { matchUpFormatTimes } from '../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/getMatchUpFormatTiming';
+import { matchUpFormatTimes } from '../../../query/extensions/matchUpFormatTiming/getMatchUpFormatTiming';
 import { getVenueData } from '../../../tournamentEngine/governors/publishingGovernor/getVenueData';
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 import { definedAttributes } from '../../../utilities/definedAttributes';

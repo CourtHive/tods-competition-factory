@@ -1,5 +1,5 @@
-import { findMatchupFormatRecoveryTimes } from './findMatchUpFormatTimes';
-import { findCategoryTiming } from './findCategoryTiming';
+import { findMatchupFormatRecoveryTimes } from '../../../acquire/findMatchUpFormatTimes';
+import { findCategoryTiming } from '../../../acquire/findCategoryTiming';
 
 export function getMatchUpFormatRecoveryTimes({
   tournamentScheduling,

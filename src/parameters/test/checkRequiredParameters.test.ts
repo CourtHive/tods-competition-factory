@@ -26,7 +26,7 @@ import {
 it('can check required parameters', () => {
   // @ts-expect-error missing param
   let result = checkRequiredParameters();
-  expect(result.valid).toEqual(true);
+  expect(result.error).toEqual(INVALID_VALUES);
 
   // @ts-expect-error missing param
   result = checkRequiredParameters({});

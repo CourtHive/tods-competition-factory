@@ -1,14 +1,14 @@
-import { isValid } from '../../../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
-import { getModifiedMatchUpFormatTiming } from './getModifiedMatchUpTiming';
-import { modifyMatchUpFormatTiming } from './modifyMatchUpFormatTiming';
-import { ensureInt } from '../../../../utilities/ensureInt';
+import { isValid } from '../../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
+import { getModifiedMatchUpFormatTiming } from '../../../query/extensions/matchUpFormatTiming/getModifiedMatchUpTiming';
+import { modifyMatchUpFormatTiming } from '../../matchUps/extensions/modifyMatchUpFormatTiming';
+import { ensureInt } from '../../../utilities/ensureInt';
 
-import { SINGLES } from '../../../../constants/matchUpTypes';
+import { SINGLES } from '../../../constants/matchUpTypes';
 import {
   INVALID_VALUES,
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
-} from '../../../../constants/errorConditionConstants';
+} from '../../../constants/errorConditionConstants';
 
 export function modifyEventMatchUpFormatTiming({
   tournamentRecord,

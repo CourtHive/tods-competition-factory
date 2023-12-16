@@ -1,20 +1,22 @@
 import { getUpdatedSchedulingProfile } from '../../../competitionEngine/governors/scheduleGovernor/schedulingProfile/schedulingProfile';
-import { tournamentRelevantSchedulingIds } from '../../../validators/validateSchedulingProfile';
 import { getEventIdsAndDrawIds } from '../../../competitionEngine/getters/getEventIdsAndDrawIds';
+import { tournamentRelevantSchedulingIds } from '../../../validators/validateSchedulingProfile';
+import { checkRequiredParameters } from '../../../parameters/checkRequiredParameters';
 import { addTournamentExtension } from '../tournamentGovernor/addRemoveExtensions';
 import { findExtension } from '../../../acquire/findExtension';
 
 import { SCHEDULING_PROFILE } from '../../../constants/extensionConstants';
+import { ErrorType } from '../../../constants/errorConditionConstants';
 import { Tournament } from '../../../types/tournamentTypes';
-import {
-  ErrorType,
-  INVALID_VALUES,
-  MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
 
-export function setSchedulingProfile({ tournamentRecord, schedulingProfile }) {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!Array.isArray(schedulingProfile)) return { error: INVALID_VALUES };
+export function setSchedulingProfile(params) {
+  const paramCheck = checkRequiredParameters(params, [
+    { tournamentRecord: true },
+    { schedulingProfile: true, type: 'array' },
+  ]);
+  if (paramCheck.error) return paramCheck;
+
+  const { tournamentRecord, schedulingProfile } = params;
   return checkSchedulingProfile({ tournamentRecord, schedulingProfile });
 }
 
@@ -26,13 +28,18 @@ function saveSchedulingProfile({ tournamentRecord, schedulingProfile }) {
   return addTournamentExtension({ tournamentRecord, extension });
 }
 
-export function getSchedulingProfile({ tournamentRecord }): {
+export function getSchedulingProfile(params): {
   schedulingProfile?: any;
   modifications?: number;
   issues?: string[];
   error?: ErrorType;
 } {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  const paramCheck = checkRequiredParameters(params, [
+    { tournamentRecord: true },
+  ]);
+  if (paramCheck.error) return paramCheck;
+
+  const { tournamentRecord } = params;
   const tournamentId = tournamentRecord.tournamentId;
 
   const { extension } = findExtension({

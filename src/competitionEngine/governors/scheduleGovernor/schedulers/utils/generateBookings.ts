@@ -1,5 +1,5 @@
-import { matchUpFormatTimes } from '../../../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/getMatchUpFormatTiming';
-import { getScheduleTiming } from '../../../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/getScheduleTiming';
+import { matchUpFormatTimes } from '../../../../../query/extensions/matchUpFormatTiming/getMatchUpFormatTiming';
+import { getScheduleTiming } from '../../../../../query/extensions/matchUpFormatTiming/getScheduleTiming';
 import { validMatchUps } from '../../../../../validators/validMatchUp';
 import { calculatePeriodLength } from './calculatePeriodLength';
 import { hasSchedule } from '../../scheduleMatchUps/hasSchedule';
