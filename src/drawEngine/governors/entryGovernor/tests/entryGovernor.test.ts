@@ -1,13 +1,11 @@
-import drawEngine from '../../../sync';
+import { addDrawEntries, addDrawEntry } from '../addDrawEntries';
+import { newDrawDefinition } from '../../../stateMethods';
+import { setStageDrawSize } from '../stageEntryCounts';
+import { removeEntry } from '../removeEntry';
 import { expect, it } from 'vitest';
-import {
-  reset,
-  initialize,
-  qualifyingDrawPositions,
-  mainDrawPositions,
-} from '../../../tests/primitives/primitives';
 
 import { ERROR, SUCCESS } from '../../../../constants/resultConstants';
+import { DrawDefinition } from '../../../../types/tournamentTypes';
 import {
   MAIN,
   QUALIFYING,
@@ -15,113 +13,144 @@ import {
 import {
   INVALID_STAGE,
   EXISTING_PARTICIPANT,
+  PARTICIPANT_COUNT_EXCEEDS_DRAW_SIZE,
 } from '../../../../constants/errorConditionConstants';
 
 let result;
 
 it('rejects adding participants when stage drawSize undefined', () => {
-  initialize();
-  result = drawEngine.addDrawEntry({
-    participant: { participantId: '123' },
+  const drawDefinition: DrawDefinition = newDrawDefinition({
+    drawId: 'uuid-abc',
+  });
+  result = addDrawEntry({
     entryStage: QUALIFYING,
+    participantId: '123',
+    drawDefinition,
   });
   expect(result).toMatchObject({ error: INVALID_STAGE });
 });
 
 it('will not allow duplicate entries', () => {
-  reset();
-  initialize();
-  qualifyingDrawPositions();
-  result = drawEngine.addDrawEntry({
-    participant: { participantId: 'uuid1' },
+  const drawDefinition: DrawDefinition = newDrawDefinition({
+    drawId: 'uuid-abc',
+  });
+  result = setStageDrawSize({ drawDefinition, stage: QUALIFYING, drawSize: 4 });
+  result = addDrawEntry({
+    participantId: 'uuid1',
     entryStage: QUALIFYING,
+    drawDefinition,
   });
   expect(result).toMatchObject(SUCCESS);
-  result = drawEngine.addDrawEntry({
-    participant: { participantId: 'uuid1' },
+  result = addDrawEntry({
+    participantId: 'uuid1',
     entryStage: QUALIFYING,
+    drawDefinition,
   });
   expect(result).toMatchObject({ error: EXISTING_PARTICIPANT });
+});
 
-  reset();
-  initialize();
-  mainDrawPositions();
-  result = drawEngine.addDrawEntry({
-    participant: { participantId: 'uuid1' },
+it('will not allow duplicate entries', () => {
+  const drawDefinition: DrawDefinition = newDrawDefinition({
+    drawId: 'uuid-abc',
+  });
+  result = setStageDrawSize({ drawDefinition, stage: MAIN, drawSize: 2 });
+  result = addDrawEntry({
+    participantId: 'uuid1',
     entryStage: MAIN,
+    drawDefinition,
   });
   expect(result).toMatchObject(SUCCESS);
-  result = drawEngine.addDrawEntry({
-    participant: { participantId: 'uuid1' },
+  result = addDrawEntry({
+    participantId: 'uuid1',
     entryStage: MAIN,
+    drawDefinition,
   });
   expect(result).toMatchObject({ error: EXISTING_PARTICIPANT });
 
   // now test to ensure participant cannot be added to two stages
-  qualifyingDrawPositions();
-  result = drawEngine.addDrawEntry({
-    participant: { participantId: 'uuid1' },
+  result = setStageDrawSize({ drawDefinition, stage: QUALIFYING, drawSize: 4 });
+  result = addDrawEntry({
+    participantId: 'uuid1',
     entryStage: QUALIFYING,
+    drawDefinition,
   });
   expect(result).toMatchObject({ error: EXISTING_PARTICIPANT });
 });
 
 it('adds partitipants to stage until stage drawPositions filled', () => {
-  reset();
-  initialize({ drawId: 'uuid-abc' });
+  const drawDefinition: DrawDefinition = newDrawDefinition({
+    drawId: 'uuid-abc',
+  });
+  let result: any = setStageDrawSize({
+    drawDefinition,
+    drawSize: 8,
+    stage: MAIN,
+  });
+  result = setStageDrawSize({ drawDefinition, stage: QUALIFYING, drawSize: 4 });
 
-  qualifyingDrawPositions();
-  result = drawEngine.addDrawEntry({
-    participant: { participantId: 'uuid0' },
+  result = addDrawEntry({
+    participantId: 'uuid0',
     entryStage: QUALIFYING,
+    drawDefinition,
   });
   expect(result).toMatchObject(SUCCESS);
-  result = drawEngine.addDrawEntry({
-    participant: { participantId: 'uuid2' },
+
+  result = addDrawEntry({
+    participantId: 'uuid2',
     entryStage: QUALIFYING,
+    drawDefinition,
   });
   expect(result).toMatchObject(SUCCESS);
-  result = drawEngine.addDrawEntry({
-    participant: { participantId: 'uuid3' },
+  result = addDrawEntry({
+    participantId: 'uuid3',
     entryStage: QUALIFYING,
+    drawDefinition,
   });
   expect(result).toMatchObject(SUCCESS);
-  result = drawEngine.addDrawEntry({
-    participant: { participantId: 'uuid4' },
+  result = addDrawEntry({
+    participantId: 'uuid4',
     entryStage: QUALIFYING,
+    drawDefinition,
   });
   expect(result).toMatchObject(SUCCESS);
-  result = drawEngine.addDrawEntry({
-    participant: { participantId: 'uuid5' },
+  result = addDrawEntry({
+    participantId: 'uuid5',
     entryStage: QUALIFYING,
+    drawDefinition,
   });
   expect(result).toHaveProperty(ERROR);
 
-  mainDrawPositions();
-  result = drawEngine.addDrawEntry({
-    participant: { participantId: 'uuid6' },
+  result = setStageDrawSize({ drawDefinition, stage: MAIN, drawSize: 2 });
+  result = addDrawEntry({
+    participantId: 'uuid6',
     entryStage: MAIN,
+    drawDefinition,
   });
   expect(result).toMatchObject(SUCCESS);
-  result = drawEngine.addDrawEntry({
-    participant: { participantId: 'uuid7' },
+  result = addDrawEntry({
+    participantId: 'uuid7',
     entryStage: MAIN,
+    drawDefinition,
   });
   expect(result).toMatchObject(SUCCESS);
-  result = drawEngine.addDrawEntry({
-    participant: { participantId: 'uuid8' },
+  result = addDrawEntry({
+    participantId: 'uuid8',
     entryStage: MAIN,
+    drawDefinition,
   });
   expect(result).toHaveProperty(ERROR);
 
-  result = drawEngine.removeEntry({ participantId: 'uuuid8' });
+  result = removeEntry({ drawDefinition, participantId: 'uuuid8' });
   expect(result.success).toEqual(true);
 });
 
 it('can add bulk entries', () => {
-  reset();
-  initialize({ drawId: 'uuid-abc' });
-  mainDrawPositions({ drawSize: 8 });
+  const drawDefinition = newDrawDefinition({ drawId: 'uuid-abc' });
+  let result: any = setStageDrawSize({
+    drawDefinition,
+    drawSize: 8,
+    stage: MAIN,
+  });
   const participants = [
     { participantId: 'uuid1' },
     { participantId: 'uuid2' },
@@ -133,14 +162,17 @@ it('can add bulk entries', () => {
     { participantId: 'uuid8' },
   ];
   const participantIds = participants.map((p) => p.participantId);
-  result = drawEngine.addDrawEntries({ participantIds, stage: MAIN });
+  result = addDrawEntries({ drawDefinition, participantIds, stage: MAIN });
   expect(result).toMatchObject(SUCCESS);
 });
 
 it('rejects bulk entries if there is insufficient space', () => {
-  reset();
-  initialize({ drawId: 'uuid-abc' });
-  mainDrawPositions({ drawSize: 4 });
+  const drawDefinition = newDrawDefinition({ drawId: 'uuid-abc' });
+  let result: any = setStageDrawSize({
+    drawDefinition,
+    drawSize: 4,
+    stage: MAIN,
+  });
   const participants = [
     { participantId: 'uuid1' },
     { participantId: 'uuid2' },
@@ -152,13 +184,14 @@ it('rejects bulk entries if there is insufficient space', () => {
     { participantId: 'uuid8' },
   ];
   const participantIds = participants.map((p) => p.participantId);
-  result = drawEngine.addDrawEntries({ participantIds, stage: MAIN });
-  expect(result).toHaveProperty(ERROR);
+  result = addDrawEntries({ drawDefinition, participantIds, stage: MAIN });
+  expect(result.error).toEqual(PARTICIPANT_COUNT_EXCEEDS_DRAW_SIZE);
 
   // attribute ignoreStageSpace allows addition when insufficient space
-  result = drawEngine.addDrawEntries({
+  result = addDrawEntries({
     ignoreStageSpace: true,
     participantIds,
+    drawDefinition,
     stage: MAIN,
   });
   expect(result.success).toEqual(true);
