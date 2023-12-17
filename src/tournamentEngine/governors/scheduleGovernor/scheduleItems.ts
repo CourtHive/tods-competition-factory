@@ -1,4 +1,4 @@
-import { addMatchUpScheduledTime as addScheduledTime } from '../../../drawEngine/governors/matchUpGovernor/scheduleTimeItems/scheduledTime';
+import { addMatchUpScheduledTime as addScheduledTime } from '../../../mutate/matchUps/schedule/scheduledTime';
 import { findParticipant } from '../../../global/functions/deducers/findParticipant';
 import { getParticipants } from '../../getters/participants/getParticipants';
 import {

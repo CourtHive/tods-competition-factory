@@ -24,7 +24,7 @@ import { addGoesTo } from './addGoesTo';
 import {
   addMatchUpScheduledTime,
   addMatchUpTimeModifiers,
-} from './scheduleTimeItems/scheduledTime';
+} from '../../../mutate/matchUps/schedule/scheduledTime';
 import {
   addMatchUpScheduledDate,
   addMatchUpStartTime,

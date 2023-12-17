@@ -3,7 +3,10 @@ import { allocateTeamMatchUpCourts } from '../../../tournamentEngine/governors/s
 import { assignMatchUpCourt } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpCourt';
 import { assignMatchUpVenue } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpVenue';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
-import { decorateResult } from '../../../global/functions/decorateResult';
+import {
+  ResultType,
+  decorateResult,
+} from '../../../global/functions/decorateResult';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { scheduledMatchUpDate } from '../../../drawEngine/accessors/matchUpAccessor';
 import { isConvertableInteger } from '../../../utilities/math';
@@ -12,7 +15,7 @@ import { addMatchUpTimeItem } from '../timeItems/matchUpTimeItems';
 import {
   addMatchUpScheduledTime,
   addMatchUpTimeModifiers,
-} from '../../../drawEngine/governors/matchUpGovernor/scheduleTimeItems/scheduledTime';
+} from './scheduledTime';
 import {
   convertTime,
   extractDate,
@@ -343,7 +346,7 @@ export function addMatchUpScheduledDate({
   drawDefinition,
   disableNotice,
   matchUpId,
-}: AddScheduleAttributeArgs & { scheduledDate?: string }) {
+}: AddScheduleAttributeArgs & { scheduledDate?: string }): ResultType {
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
   // TODO: if there is existing scheduledDate and no other relevant timeItems, delete prior

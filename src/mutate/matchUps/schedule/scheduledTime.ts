@@ -1,32 +1,32 @@
-import { matchUpTimeModifiers } from '../../../accessors/matchUpAccessor/timeModifiers';
-import { decorateResult } from '../../../../global/functions/decorateResult';
-import { findDrawMatchUp } from '../../../../acquire/findDrawMatchUp';
-import { scheduledMatchUpDate } from '../../../accessors/matchUpAccessor';
-import { mustBeAnArray } from '../../../../utilities/mustBeAnArray';
-import { addMatchUpTimeItem } from '../../../../mutate/matchUps/timeItems/matchUpTimeItems';
+import { matchUpTimeModifiers } from '../../../drawEngine/accessors/matchUpAccessor/timeModifiers';
+import { decorateResult } from '../../../global/functions/decorateResult';
+import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
+import { scheduledMatchUpDate } from '../../../drawEngine/accessors/matchUpAccessor';
+import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
+import { addMatchUpTimeItem } from '../timeItems/matchUpTimeItems';
 import {
   convertTime,
   extractDate,
   validTimeValue,
-} from '../../../../utilities/dateTime';
+} from '../../../utilities/dateTime';
 
-import { SUCCESS } from '../../../../constants/resultConstants';
-import { HydratedMatchUp } from '../../../../types/hydrated';
+import { SUCCESS } from '../../../constants/resultConstants';
+import { HydratedMatchUp } from '../../../types/hydrated';
 import {
   MUTUALLY_EXCLUSIVE_TIME_MODIFIERS,
   SCHEDULED_TIME,
   TIME_MODIFIERS,
-} from '../../../../constants/timeItemConstants';
+} from '../../../constants/timeItemConstants';
 import {
   INVALID_TIME,
   INVALID_VALUES,
   MISSING_MATCHUP_ID,
-} from '../../../../constants/errorConditionConstants';
+} from '../../../constants/errorConditionConstants';
 import {
   DrawDefinition,
   MatchUp,
   Tournament,
-} from '../../../../types/tournamentTypes';
+} from '../../../types/tournamentTypes';
 
 type AddScheduleAttributeArgs = {
   tournamentRecord?: Tournament;
