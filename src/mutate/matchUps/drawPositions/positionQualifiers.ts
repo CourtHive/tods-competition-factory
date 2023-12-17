@@ -1,5 +1,5 @@
 import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
-import { getRoundMatchUps } from '../../../drawEngine/accessors/matchUpAccessor/getRoundMatchUps';
+import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { structureAssignedDrawPositions } from '../../../drawEngine/getters/positionsGetter';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { getQualifiersCount } from '../../../drawEngine/getters/getQualifiersCount';

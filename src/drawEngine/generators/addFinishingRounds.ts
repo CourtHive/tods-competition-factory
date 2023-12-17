@@ -1,5 +1,5 @@
 import { validMatchUps } from '../../validators/validMatchUp';
-import { getRoundMatchUps } from '../accessors/matchUpAccessor/getRoundMatchUps';
+import { getRoundMatchUps } from '../../query/matchUps/getRoundMatchUps';
 import { extractAttributes, generateRange } from '../../utilities';
 import { getDevContext } from '../../global/state/globalState';
 import { MatchUp } from '../../types/tournamentTypes';

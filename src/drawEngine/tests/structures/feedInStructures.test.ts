@@ -1,5 +1,5 @@
 import { getDrawData } from '../../../tournamentEngine/governors/publishingGovernor/getDrawData';
-import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
+import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { feedInChampionship } from '../primitives/feedIn';
 import { feedInMatchUps } from '../../generators/feedInMatchUps';
 import { generateRange } from '../../../utilities';

@@ -1,4 +1,4 @@
-import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
+import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { chunkArray, generateRange, numericSort } from '../../../utilities';
 import { groupConsecutiveNumbers, unique } from '../../../utilities/arrays';
 import { MatchUpsMap, getMappedStructureMatchUps } from './getMatchUpsMap';

@@ -1,5 +1,5 @@
 import { HydratedMatchUp } from '../../types/hydrated';
-import { getRoundMatchUps } from '../accessors/matchUpAccessor/getRoundMatchUps';
+import { getRoundMatchUps } from '../../query/matchUps/getRoundMatchUps';
 import { getInitialRoundNumber } from './getInitialRoundNumber';
 
 // defaults to finding the paired drawPosition in the initial roundNumber in which the drawPosition occurs

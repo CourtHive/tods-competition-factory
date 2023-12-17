@@ -15,7 +15,7 @@ import { generateDrawTypeAndModifyDrawDefinition } from '../../../tournamentEngi
 import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { getStructureMatchUps } from '../../../query/structure/getStructureMatchUps';
-import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
+import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { DrawDefinition } from '../../../types/tournamentTypes';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 

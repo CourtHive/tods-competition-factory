@@ -1,4 +1,4 @@
-import { getRoundMatchUps } from '../../governors/queryGovernor/getRoundMatchUps';
+import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { eventConstants } from '../../../constants/eventConstants';
 import competitionEngine from '../../../competitionEngine/sync';
 import mocksEngine from '../../../mocksEngine';

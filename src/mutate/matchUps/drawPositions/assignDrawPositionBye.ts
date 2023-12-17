@@ -1,6 +1,6 @@
 import { getStructureDrawPositionProfiles } from '../../../drawEngine/getters/getStructureDrawPositionProfiles';
 import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
-import { getRoundMatchUps } from '../../../drawEngine/accessors/matchUpAccessor/getRoundMatchUps';
+import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { getInitialRoundNumber } from '../../../drawEngine/getters/getInitialRoundNumber';
 import { getAllDrawMatchUps } from '../../../drawEngine/getters/getMatchUps/drawMatchUps';
 import {

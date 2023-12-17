@@ -1,4 +1,4 @@
-import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
+import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { completeMatchUp, verifyMatchUps } from '../primitives/verifyMatchUps';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { generateFMLC } from '../primitives/firstMatchLoserConsolation';

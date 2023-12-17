@@ -1,4 +1,4 @@
-import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
+import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
 import { publicFindDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { getCheckedInParticipantIds } from '../../../query/matchUp/getCheckedInParticipantIds';

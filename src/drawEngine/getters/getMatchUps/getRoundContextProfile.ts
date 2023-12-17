@@ -1,4 +1,4 @@
-import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
+import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { isLucky } from '../../governors/queryGovernor/isLucky';
 import { isAdHoc } from '../../governors/queryGovernor/isAdHoc';
 

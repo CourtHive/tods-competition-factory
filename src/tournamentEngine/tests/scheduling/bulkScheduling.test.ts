@@ -1,5 +1,6 @@
 import { visualizeScheduledMatchUps } from '../../../global/testHarness/testUtilities/visualizeScheduledMatchUps';
 import { getStructureRoundProfile } from '../../../query/structure/getStructureRoundProfile';
+import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { getMatchUpIds } from '../../../global/functions/extractors';
 import competitionEngine from '../../../competitionEngine/sync';
 import mocksEngine from '../../../mocksEngine';
@@ -16,7 +17,6 @@ import {
   MISSING_SCHEDULE,
   VENUE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { getRoundMatchUps } from '../../governors/queryGovernor/getRoundMatchUps';
 
 it('can bulk schedule matchUps', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();

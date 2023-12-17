@@ -1,5 +1,5 @@
 import { validMatchUps } from '../../validators/validMatchUp';
-import { getRoundMatchUps } from '../accessors/matchUpAccessor/getRoundMatchUps';
+import { getRoundMatchUps } from '../../query/matchUps/getRoundMatchUps';
 import { generateRange, makeDeepCopy, unique, UUID } from '../../utilities';
 import { ensureInt } from '../../utilities/ensureInt';
 

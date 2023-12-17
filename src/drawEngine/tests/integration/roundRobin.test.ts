@@ -1,5 +1,5 @@
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
-import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
+import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import tournamentEngine from '../../../tournamentEngine/sync';
 import { intersection } from '../../../utilities';

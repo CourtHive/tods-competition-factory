@@ -7,7 +7,7 @@ import { MatchUpsMap } from '../../drawEngine/getters/getMatchUps/getMatchUpsMap
 import {
   RoundMatchUpsResult,
   getRoundMatchUps,
-} from '../../drawEngine/accessors/matchUpAccessor/getRoundMatchUps';
+} from '../matchUps/getRoundMatchUps';
 
 type GetStructureRoundProfileArgs = {
   drawDefinition: DrawDefinition;
