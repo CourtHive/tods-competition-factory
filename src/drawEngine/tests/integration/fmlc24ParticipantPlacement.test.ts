@@ -1,11 +1,11 @@
 import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
 import { completeMatchUp } from '../primitives/verifyMatchUps';
-import { drawEngine } from '../../sync';
 import { expect, it } from 'vitest';
 
 import { CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
 import SEEDING_ITF from '../../../fixtures/policies/POLICY_SEEDING_ITF';
+import { getDrawStructures } from '../../getters/findStructure';
 
 it('can support ITF Consolation participant placement', () => {
   const drawSize = 32;
@@ -19,8 +19,6 @@ it('can support ITF Consolation participant placement', () => {
     drawSize,
   });
 
-  drawEngine.setState(drawDefinition);
-
   const completionValues = [
     [1, 2, 2, true],
     [1, 3, 1, true],
@@ -32,23 +30,28 @@ it('can support ITF Consolation participant placement', () => {
     const [roundNumber, roundPosition, winningSide, success] = values;
     const result = completeMatchUp({
       structureId: mainStructureId,
-      roundNumber,
+      drawDefinition,
       roundPosition,
       winningSide,
+      roundNumber,
     });
     expect(result.success).toEqual(success);
   });
 
   const {
     structures: [consolationStructure],
-  } = drawEngine.getDrawStructures({ stage: CONSOLATION, stageSequence: 1 });
+  } = getDrawStructures({
+    drawDefinition,
+    stage: CONSOLATION,
+    stageSequence: 1,
+  });
 
   const positionAssignmentByesCount =
-    consolationStructure.positionAssignments.filter(
+    consolationStructure.positionAssignments?.filter(
       (assignment) => !!assignment.bye
     ).length;
   const positionAssignmentParticipantidsCount =
-    consolationStructure.positionAssignments.filter(
+    consolationStructure.positionAssignments?.filter(
       (assignment) => !!assignment.participantId
     ).length;
   expect(positionAssignmentByesCount).toEqual(8);
@@ -67,8 +70,6 @@ it('can support USTA Consolation participant placement', () => {
     drawSize,
   });
 
-  drawEngine.setState(drawDefinition);
-
   const completionValues = [
     [1, 2, 2, true],
     [1, 4, 1, true],
@@ -80,23 +81,28 @@ it('can support USTA Consolation participant placement', () => {
     const [roundNumber, roundPosition, winningSide, success] = values;
     const result = completeMatchUp({
       structureId: mainStructureId,
-      roundNumber,
+      drawDefinition,
       roundPosition,
       winningSide,
+      roundNumber,
     });
     expect(result.success).toEqual(success);
   });
 
   const {
     structures: [consolationStructure],
-  } = drawEngine.getDrawStructures({ stage: CONSOLATION, stageSequence: 1 });
+  } = getDrawStructures({
+    drawDefinition,
+    stage: CONSOLATION,
+    stageSequence: 1,
+  });
 
   const positionAssignmentByesCount =
-    consolationStructure.positionAssignments.filter(
+    consolationStructure.positionAssignments?.filter(
       (assignment) => !!assignment.bye
     ).length;
   const positionAssignmentParticipantidsCount =
-    consolationStructure.positionAssignments.filter(
+    consolationStructure.positionAssignments?.filter(
       (assignment) => !!assignment.participantId
     ).length;
   expect(positionAssignmentByesCount).toEqual(8);

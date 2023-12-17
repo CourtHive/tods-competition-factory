@@ -1,8 +1,11 @@
-import { verifyStructure } from '../primitives/verifyStructure';
-import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
-import { drawEngine } from '../../sync';
-import { expect, it } from 'vitest';
+import { setMatchUpStatus } from '../../../mutate/matchUps/matchUpStatus/setMatchUpStatus';
 import { completeMatchUp, verifyMatchUps } from '../primitives/verifyMatchUps';
+import { getDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
+import { publicFindDrawMatchUp } from '../../../acquire/findDrawMatchUp';
+import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
+import { verifyStructure } from '../primitives/verifyStructure';
+import { getDrawStructures } from '../../getters/findStructure';
+import { expect, it } from 'vitest';
 
 import { MAIN, CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import { POLICY_TYPE_FEED_IN } from '../../../constants/policyConstants';
@@ -13,66 +16,70 @@ import {
 } from '../../../constants/matchUpStatusConstants';
 
 it('can generate FIRST_MATCH_LOSER_CONSOLATION', () => {
-  const drawSize = 32;
-  const seedsCount = 8;
   const participantsCount = 30;
+  const seedsCount = 8;
+  const drawSize = 32;
 
   const genResult = generateFMLC({
     participantsCount,
     seedsCount,
     drawSize,
   });
-  const { mainStructureId, consolationStructureId } = genResult;
-  drawEngine.setState(genResult.drawDefinition);
+  const { drawDefinition, mainStructureId, consolationStructureId } = genResult;
 
   verifyStructure({
-    structureId: mainStructureId,
-    expectedSeeds: 8,
-    expectedSeedsWithByes: 2,
-    expectedByeAssignments: 2,
     expectedPositionsAssignedCount: 32,
     expectedSeedValuesWithBye: [1, 2],
+    structureId: mainStructureId,
+    expectedByeAssignments: 2,
+    expectedSeedsWithByes: 2,
+    expectedSeeds: 8,
+    drawDefinition,
   });
 
   verifyMatchUps({
-    structureId: mainStructureId,
-    expectedRoundPending: [0, 8],
     expectedRoundUpcoming: [14, 0],
     expectedRoundCompleted: [0, 0],
+    structureId: mainStructureId,
+    expectedRoundPending: [0, 8],
+    drawDefinition,
   });
 
   // no BYEs have yet been assigned because participants with first round BYEs may lose in second round
   // and progress to consolation structure due to first matchUp loss
   verifyStructure({
     structureId: consolationStructureId,
-    expectedSeeds: 0,
-    expectedSeedsWithByes: 0,
-    expectedByeAssignments: 2,
     expectedPositionsAssignedCount: 2,
     expectedSeedValuesWithBye: [],
+    expectedByeAssignments: 2,
+    expectedSeedsWithByes: 0,
+    expectedSeeds: 0,
+    drawDefinition,
   });
 
   verifyMatchUps({
     structureId: consolationStructureId,
     expectedRoundPending: [0, 6, 4, 2, 1],
-    expectedRoundUpcoming: [6, 2],
     expectedRoundCompleted: [0, 0],
+    expectedRoundUpcoming: [6, 2],
     requireParticipants: false,
+    drawDefinition,
   });
 
   verifyMatchUps({
     structureId: consolationStructureId,
     expectedRoundPending: [6, 8, 4, 2, 1],
-    expectedRoundUpcoming: [0, 0],
     expectedRoundCompleted: [0, 0],
+    expectedRoundUpcoming: [0, 0],
     requireParticipants: true, // requires that drawPositions be assigned to participantIds
+    drawDefinition,
   });
 });
 
 it('can direct winners and losers', () => {
-  const drawSize = 32;
-  const seedsCount = 8;
   const participantsCount = 30;
+  const seedsCount = 8;
+  const drawSize = 32;
 
   let result;
 
@@ -81,46 +88,50 @@ it('can direct winners and losers', () => {
     seedsCount,
     drawSize,
   });
-  const { mainStructureId, consolationStructureId } = genResult;
-  drawEngine.setState(genResult.drawDefinition);
+  const { drawDefinition, mainStructureId, consolationStructureId } = genResult;
 
   result = completeMatchUp({
     structureId: mainStructureId,
-    roundNumber: 1,
     roundPosition: 2,
     winningSide: 2,
+    roundNumber: 1,
+    drawDefinition,
   });
   expect(result.success).toEqual(true);
 
   result = completeMatchUp({
     structureId: mainStructureId,
-    roundNumber: 1,
     roundPosition: 3,
+    roundNumber: 1,
     winningSide: 1,
+    drawDefinition,
   });
   expect(result.success).toEqual(true);
 
   result = completeMatchUp({
     structureId: mainStructureId,
-    roundNumber: 1,
     roundPosition: 4,
+    roundNumber: 1,
     winningSide: 1,
+    drawDefinition,
   });
   expect(result.success).toEqual(true);
 
   verifyMatchUps({
     structureId: mainStructureId,
-    expectedRoundPending: [0, 6],
     expectedRoundUpcoming: [11, 2],
     expectedRoundCompleted: [3, 0],
+    expectedRoundPending: [0, 6],
+    drawDefinition,
   });
 
   verifyMatchUps({
-    structureId: consolationStructureId,
     expectedRoundPending: [5, 7, 4, 2, 1],
-    expectedRoundUpcoming: [1, 0],
+    structureId: consolationStructureId,
     expectedRoundCompleted: [0, 0],
+    expectedRoundUpcoming: [1, 0],
     requireParticipants: true, // requires that drawPositions be assigned to participantIds
+    drawDefinition,
   });
 
   // now the participant in drawPosition: 1 will lose to the winner of 3-4 and be fed into consolation
@@ -128,166 +139,189 @@ it('can direct winners and losers', () => {
   // the participant in drawPosition: 1 should go into the consolation structure
   completeMatchUp({
     structureId: mainStructureId,
-    roundNumber: 2,
     roundPosition: 1,
+    roundNumber: 2,
     winningSide: 2,
+    drawDefinition,
   });
 
   let {
     structures: [mainStructure],
-  } = drawEngine.getDrawStructures({ stage: MAIN, stageSequence: 1 });
+  } = getDrawStructures({ drawDefinition, stage: MAIN, stageSequence: 1 });
   const { structureId: verifyMainStructureId } = mainStructure;
 
   let {
     structures: [consolationStructure],
-  } = drawEngine.getDrawStructures({ stage: CONSOLATION, stageSequence: 1 });
+  } = getDrawStructures({
+    drawDefinition,
+    stage: CONSOLATION,
+    stageSequence: 1,
+  });
   const { structureId: verifyConsolationStructureId } = consolationStructure;
 
   expect(mainStructureId).toEqual(verifyMainStructureId);
   expect(consolationStructureId).toEqual(verifyConsolationStructureId);
 
   // find second round matchUp for first seeded player with BYE
-  let sourceMatchUp = mainStructure.matchUps.find(
+  let sourceMatchUp = mainStructure?.matchUps?.find(
     (matchUp) => matchUp.roundNumber === 2 && matchUp.roundPosition === 1
   );
 
-  let sourceDrawPositionParticipantId = mainStructure.positionAssignments.find(
+  let sourceDrawPositionParticipantId = mainStructure.positionAssignments?.find(
     (assignment) => assignment.drawPosition === 1
   )?.participantId;
-  expect(sourceMatchUp.drawPositions.includes(1)).toEqual(true);
+  expect(sourceMatchUp?.drawPositions?.includes(1)).toEqual(true);
 
   let targetDrawPositionParticipantId =
-    consolationStructure.positionAssignments.find(
+    consolationStructure?.positionAssignments?.find(
       (assignment) => assignment.drawPosition === 1
     )?.participantId;
 
-  let targetMatchUp = consolationStructure.matchUps.find(
+  let targetMatchUp = consolationStructure?.matchUps?.find(
     (matchUp) => matchUp.roundNumber === 1 && matchUp.roundPosition === 1
   );
-  expect(targetMatchUp.drawPositions).toEqual([9, 10]);
-  expect(targetMatchUp.matchUpStatus).toEqual(BYE);
+  expect(targetMatchUp?.drawPositions).toEqual([9, 10]);
+  expect(targetMatchUp?.matchUpStatus).toEqual(BYE);
 
   expect(sourceDrawPositionParticipantId).toEqual(
     targetDrawPositionParticipantId
   );
-  expect(consolationStructure.positionAssignments[0].bye).toEqual(undefined);
+  expect(consolationStructure?.positionAssignments?.[0].bye).toEqual(undefined);
 
   completeMatchUp({
     structureId: mainStructureId,
     roundPosition: 13,
     roundNumber: 1,
     winningSide: 2,
+    drawDefinition,
   });
   completeMatchUp({
     structureId: mainStructureId,
     roundPosition: 14,
     roundNumber: 1,
     winningSide: 1,
+    drawDefinition,
   });
   completeMatchUp({
     structureId: mainStructureId,
-    roundNumber: 1,
     roundPosition: 15,
+    roundNumber: 1,
     winningSide: 1,
+    drawDefinition,
   });
 
   verifyMatchUps({
+    expectedRoundCompleted: [6, 1],
+    expectedRoundUpcoming: [8, 3],
     structureId: mainStructureId,
     expectedRoundPending: [0, 4],
-    expectedRoundUpcoming: [8, 3],
-    expectedRoundCompleted: [6, 1],
+    drawDefinition,
   });
 
   verifyMatchUps({
-    structureId: consolationStructureId,
     expectedRoundPending: [4, 5, 4, 2, 1],
-    expectedRoundUpcoming: [2, 1],
+    structureId: consolationStructureId,
     expectedRoundCompleted: [0, 0],
+    expectedRoundUpcoming: [2, 1],
+    drawDefinition,
   });
 
   // now advance drawPosition 32 in main structure which had a BYE in first round
   // the loser from drawPositions 29-30 should NOT go into the consolation structure
   const { success } = completeMatchUp({
     structureId: mainStructureId,
-    roundNumber: 2,
     roundPosition: 8,
+    roundNumber: 2,
     winningSide: 2,
+    drawDefinition,
   });
   expect(success).toEqual(true);
 
   ({
     structures: [mainStructure],
-  } = drawEngine.getDrawStructures({ stage: MAIN, stageSequence: 1 }));
+  } = getDrawStructures({ drawDefinition, stage: MAIN, stageSequence: 1 }));
 
   ({
     structures: [consolationStructure],
-  } = drawEngine.getDrawStructures({ stage: CONSOLATION, stageSequence: 1 }));
+  } = getDrawStructures({
+    drawDefinition,
+    stage: CONSOLATION,
+    stageSequence: 1,
+  }));
 
-  sourceMatchUp = mainStructure.matchUps.find(
+  sourceMatchUp = mainStructure?.matchUps?.find(
     (matchUp) => matchUp.roundNumber === 2 && matchUp.roundPosition === 8
   );
 
-  sourceDrawPositionParticipantId = mainStructure.positionAssignments.find(
+  sourceDrawPositionParticipantId = mainStructure?.positionAssignments?.find(
     (assignment) => assignment.drawPosition === 32
   )?.participantId;
-  expect(sourceMatchUp.drawPositions.includes(32)).toEqual(true);
+  expect(sourceMatchUp?.drawPositions?.includes(32)).toEqual(true);
 
-  targetMatchUp = consolationStructure.matchUps.find(
+  targetMatchUp = consolationStructure.matchUps?.find(
     (matchUp) => matchUp.roundNumber === 1 && matchUp.roundPosition === 8
   );
 
   targetDrawPositionParticipantId =
-    consolationStructure.positionAssignments.find(
+    consolationStructure.positionAssignments?.find(
       (assignment) => assignment.drawPosition === 16
     )?.participantId;
 
-  expect(targetMatchUp.drawPositions).toEqual([23, 24]);
-  expect(targetMatchUp.matchUpStatus).toEqual(BYE);
+  expect(targetMatchUp?.drawPositions).toEqual([23, 24]);
+  expect(targetMatchUp?.matchUpStatus).toEqual(BYE);
 
   expect(sourceDrawPositionParticipantId).not.toEqual(
     targetDrawPositionParticipantId
   );
   // fed position should be a bye
-  expect(consolationStructure.positionAssignments[8].bye).toEqual(true);
+  expect(consolationStructure.positionAssignments?.[8].bye).toEqual(true);
 
-  const { completedMatchUps } = drawEngine.drawMatchUps({
+  const { completedMatchUps } = getDrawMatchUps({
     requireParticipants: false,
+    drawDefinition,
   });
-  const completedMatchUpsCount = completedMatchUps.length;
+  const completedMatchUpsCount = completedMatchUps?.length;
   expect(completedMatchUpsCount).toEqual(8);
 
-  const [matchUp] = completedMatchUps;
+  const [matchUp] = completedMatchUps ?? [];
   const { matchUpId } = matchUp;
-  result = drawEngine.setMatchUpStatus({
-    matchUpId,
+  result = setMatchUpStatus({
+    // @ts-expect-error invalid matchUpStatus
     matchUpStatus: 'BOGUS',
+    drawDefinition,
+    matchUpId,
   });
   let hasErrors = Boolean(result?.error);
   expect(hasErrors).toEqual(true);
 
-  result = drawEngine.setMatchUpStatus({
-    matchUpId,
+  result = setMatchUpStatus({
     matchUpStatus: BYE,
+    drawDefinition,
+    matchUpId,
   });
   hasErrors = Boolean(result?.error);
   expect(hasErrors).toEqual(true);
 
-  result = drawEngine.setMatchUpStatus({
-    matchUpId,
+  result = setMatchUpStatus({
     matchUpStatus: RETIRED,
+    drawDefinition,
+    matchUpId,
   });
   hasErrors = Boolean(result?.error);
   expect(hasErrors).toEqual(false);
 
-  const { matchUp: fetchedMatchUp } = drawEngine.findMatchUp({ matchUpId });
+  const { matchUp: fetchedMatchUp } = publicFindDrawMatchUp({
+    drawDefinition,
+    matchUpId,
+  });
   const { matchUpStatus } = fetchedMatchUp;
   expect(matchUpStatus).toEqual(RETIRED);
 });
 
 it('can direct winners and losers drawSize: 4 with NO BYEs', () => {
-  const drawSize = 4;
-  const seedsCount = 0;
   const participantsCount = 4;
+  const seedsCount = 0;
+  const drawSize = 4;
 
   let result;
 
@@ -299,30 +333,32 @@ it('can direct winners and losers drawSize: 4 with NO BYEs', () => {
     drawSize,
   });
 
-  const { mainStructureId, consolationStructureId } = genResult;
-  drawEngine.setState(genResult.drawDefinition);
+  const { drawDefinition, mainStructureId, consolationStructureId } = genResult;
 
   result = completeMatchUp({
     structureId: mainStructureId,
-    roundNumber: 1,
     roundPosition: 1,
+    roundNumber: 1,
     winningSide: 1,
+    drawDefinition,
   });
   expect(result.success).toEqual(true);
 
   result = completeMatchUp({
     structureId: mainStructureId,
-    roundNumber: 1,
     roundPosition: 2,
+    roundNumber: 1,
     winningSide: 1,
+    drawDefinition,
   });
   expect(result.success).toEqual(true);
 
   verifyMatchUps({
+    expectedRoundCompleted: [2, 0],
+    expectedRoundUpcoming: [0, 1],
     structureId: mainStructureId,
     expectedRoundPending: [0, 0],
-    expectedRoundUpcoming: [0, 1],
-    expectedRoundCompleted: [2, 0],
+    drawDefinition,
   });
 
   // now the participant in drawPosition: 1 will lose to the winner of 3-4 and be fed into consolation
@@ -330,48 +366,53 @@ it('can direct winners and losers drawSize: 4 with NO BYEs', () => {
   // the participant in drawPosition: 1 should go into the consolation structure
   completeMatchUp({
     structureId: mainStructureId,
-    roundNumber: 2,
     roundPosition: 1,
+    roundNumber: 2,
     winningSide: 2,
+    drawDefinition,
   });
 
   const {
     structures: [mainStructure],
-  } = drawEngine.getDrawStructures({ stage: MAIN, stageSequence: 1 });
+  } = getDrawStructures({ drawDefinition, stage: MAIN, stageSequence: 1 });
   const { structureId: verifyMainStructureId } = mainStructure;
 
   const {
     structures: [consolationStructure],
-  } = drawEngine.getDrawStructures({ stage: CONSOLATION, stageSequence: 1 });
+  } = getDrawStructures({
+    drawDefinition,
+    stage: CONSOLATION,
+    stageSequence: 1,
+  });
   const { structureId: verifyConsolationStructureId } = consolationStructure;
 
-  expect(mainStructureId).toEqual(verifyMainStructureId);
   expect(consolationStructureId).toEqual(verifyConsolationStructureId);
+  expect(mainStructureId).toEqual(verifyMainStructureId);
 
   // find second round matchUp for first seeded player with BYE
-  const sourceMatchUp = mainStructure.matchUps.find(
+  const sourceMatchUp = mainStructure.matchUps?.find(
     (matchUp) => matchUp.roundNumber === 2 && matchUp.roundPosition === 1
   );
 
   const sourceDrawPositionParticipantId =
-    mainStructure.positionAssignments.find(
+    mainStructure.positionAssignments?.find(
       (assignment) => assignment.drawPosition === 1
     )?.participantId;
-  expect(sourceMatchUp.drawPositions.includes(1)).toEqual(true);
+  expect(sourceMatchUp?.drawPositions?.includes(1)).toEqual(true);
 
   const targetDrawPositionParticipantId =
-    consolationStructure.positionAssignments.find(
+    consolationStructure.positionAssignments?.find(
       (assignment) => assignment.drawPosition === 2
     )?.participantId;
 
-  const targetMatchUp = consolationStructure.matchUps.find(
+  const targetMatchUp = consolationStructure.matchUps?.find(
     (matchUp) => matchUp.roundNumber === 1 && matchUp.roundPosition === 1
   );
-  expect(targetMatchUp.drawPositions).toEqual([2, 3]);
-  expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
+  expect(targetMatchUp?.drawPositions).toEqual([2, 3]);
+  expect(targetMatchUp?.matchUpStatus).toEqual(TO_BE_PLAYED);
 
   expect(sourceDrawPositionParticipantId).not.toEqual(
     targetDrawPositionParticipantId
   );
-  expect(consolationStructure.positionAssignments[0].bye).toEqual(true);
+  expect(consolationStructure.positionAssignments?.[0].bye).toEqual(true);
 });
