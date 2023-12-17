@@ -88,7 +88,7 @@ type SetMatchUpStatusArgs = {
   score?: any;
 };
 
-export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
+export function setMatchUpStatus(params: SetMatchUpStatusArgs): any {
   const stack = 'setMatchUpStatus';
 
   // always clear score if DOUBLE_WALKOVER or WALKOVER

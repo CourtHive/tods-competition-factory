@@ -12,12 +12,14 @@ it('can support ITF Consolation participant placement', () => {
   const seedsCount = 8;
   const participantsCount = 24;
 
-  const { mainStructureId } = generateFMLC({
-    drawSize,
-    seedsCount,
-    participantsCount,
+  const { drawDefinition, mainStructureId } = generateFMLC({
     policyDefinitions: SEEDING_ITF,
+    participantsCount,
+    seedsCount,
+    drawSize,
   });
+
+  drawEngine.setState(drawDefinition);
 
   const completionValues = [
     [1, 2, 2, true],
@@ -58,12 +60,14 @@ it('can support USTA Consolation participant placement', () => {
   const seedsCount = 8;
   const participantsCount = 24;
 
-  const { mainStructureId } = generateFMLC({
-    drawSize,
-    seedsCount,
-    participantsCount,
+  const { drawDefinition, mainStructureId } = generateFMLC({
     policyDefinitions: SEEDING_USTA,
+    participantsCount,
+    seedsCount,
+    drawSize,
   });
+
+  drawEngine.setState(drawDefinition);
 
   const completionValues = [
     [1, 2, 2, true],

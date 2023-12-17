@@ -24,11 +24,14 @@ it('can direct winners and losers', () => {
 
   let result;
 
-  const { mainStructureId, consolationStructureId } = generateFMLC({
-    drawSize,
-    seedsCount,
-    participantsCount,
-  });
+  const { drawDefinition, mainStructureId, consolationStructureId } =
+    generateFMLC({
+      drawSize,
+      seedsCount,
+      participantsCount,
+    });
+
+  drawEngine.setState(drawDefinition);
 
   verifyMatchUps({
     structureId: mainStructureId,
@@ -111,11 +114,14 @@ it('can direct winners and losers', () => {
 
   let result;
 
-  const { mainStructureId, consolationStructureId } = generateFMLC({
-    drawSize,
-    seedsCount,
-    participantsCount,
-  });
+  const { drawDefinition, mainStructureId, consolationStructureId } =
+    generateFMLC({
+      drawSize,
+      seedsCount,
+      participantsCount,
+    });
+
+  drawEngine.setState(drawDefinition);
 
   verifyMatchUps({
     structureId: mainStructureId,

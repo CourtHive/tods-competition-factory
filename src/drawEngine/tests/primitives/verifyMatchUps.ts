@@ -7,6 +7,7 @@ import { findStructure } from '../../getters/findStructure';
 import { drawEngine } from '../../sync';
 import { expect } from 'vitest';
 import { MATCHUP_NOT_FOUND } from '../../../constants/errorConditionConstants';
+import { setMatchUpStatus } from '../../../mutate/matchUps/matchUpStatus/setMatchUpStatus';
 
 export function completeMatchUp(params) {
   const {
@@ -20,20 +21,33 @@ export function completeMatchUp(params) {
   const sets = scoreString && parseScoreString({ scoreString });
   const score = { sets };
   const { matchUp: targetMatchUp } = findMatchUpByRoundNumberAndPosition({
+    drawDefinition: params.drawDefinition,
     roundPosition,
     roundNumber,
     structureId,
   });
   const { matchUpId } = targetMatchUp;
-  const { matchUp, error, success } = drawEngine
-    .devContext(true)
-    .setMatchUpStatus({
+
+  if (params.drawDefinition) {
+    const { matchUp, error, success } = setMatchUpStatus({
+      drawDefinition: params.drawDefinition,
       matchUpStatus,
       winningSide,
       matchUpId,
       score,
     });
-  return { success, error, matchUp, matchUpId };
+    return { success, error, matchUp, matchUpId };
+  } else {
+    const { matchUp, error, success } = drawEngine
+      .devContext(true)
+      .setMatchUpStatus({
+        matchUpStatus,
+        winningSide,
+        matchUpId,
+        score,
+      });
+    return { success, error, matchUp, matchUpId };
+  }
 }
 
 export function findMatchUpByRoundNumberAndPosition(params) {

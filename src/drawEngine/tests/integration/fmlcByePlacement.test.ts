@@ -19,12 +19,14 @@ it('can support ITF Consolation BYE placement', () => {
   const seedsCount = 8;
   const participantsCount = 24;
 
-  const { mainStructureId } = generateFMLC({
+  const { drawDefinition, mainStructureId } = generateFMLC({
     drawSize,
     seedsCount,
     participantsCount,
     policyDefinitions: SEEDING_ITF,
   });
+
+  drawEngine.setState(drawDefinition);
 
   const completionValues = [
     [1, 2, 2, true],
@@ -64,12 +66,14 @@ it('can support USTA Consolation BYE placement', () => {
   const seedsCount = 8;
   const participantsCount = 24;
 
-  const { mainStructureId } = generateFMLC({
+  const { drawDefinition, mainStructureId } = generateFMLC({
     drawSize,
     seedsCount,
     participantsCount,
     policyDefinitions: SEEDING_USTA,
   });
+
+  drawEngine.setState(drawDefinition);
 
   const completionValues = [
     [1, 2, 2, true],
@@ -110,12 +114,14 @@ it('can remove BYEs when matchUps are cleared', () => {
   const seedsCount = 8;
   const participantsCount = 24;
 
-  const { mainStructureId } = generateFMLC({
+  const { drawDefinition, mainStructureId } = generateFMLC({
     drawSize,
     seedsCount,
     participantsCount,
     policyDefinitions: SEEDING_USTA,
   });
+
+  drawEngine.setState(drawDefinition);
 
   let completionValues: any[] = [
     [1, 2, 2, true],

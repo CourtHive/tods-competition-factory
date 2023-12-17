@@ -17,6 +17,7 @@ import {
   FIRST_MATCH_LOSER_CONSOLATION,
   MAIN,
 } from '../../../constants/drawDefinitionConstants';
+import drawEngine from '../../sync';
 
 tournamentEngine.devContext(true);
 
@@ -27,12 +28,15 @@ it('can generate FIRST_MATCH_LOSER_CONSOLATION with double-byes in consolation 1
   const seedsCount = 8;
   const participantsCount = 17;
 
-  const { mainStructureId, consolationStructureId } = generateFMLC({
-    policyDefinitions,
-    participantsCount,
-    seedsCount,
-    drawSize,
-  });
+  const { drawDefinition, mainStructureId, consolationStructureId } =
+    generateFMLC({
+      policyDefinitions,
+      participantsCount,
+      seedsCount,
+      drawSize,
+    });
+
+  drawEngine.setState(drawDefinition);
 
   verifyStructure({
     structureId: mainStructureId,
@@ -81,12 +85,15 @@ it('can generate FIRST_MATCH_LOSER_CONSOLATION with double-byes in consolation 1
   const seedsCount = 8;
   const participantsCount = 18;
 
-  const { mainStructureId, consolationStructureId } = generateFMLC({
-    participantsCount,
-    policyDefinitions,
-    seedsCount,
-    drawSize,
-  });
+  const { drawDefinition, mainStructureId, consolationStructureId } =
+    generateFMLC({
+      participantsCount,
+      policyDefinitions,
+      seedsCount,
+      drawSize,
+    });
+
+  drawEngine.setState(drawDefinition);
 
   verifyStructure({
     structureId: mainStructureId,

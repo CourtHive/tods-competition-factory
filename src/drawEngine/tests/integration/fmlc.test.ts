@@ -17,11 +17,13 @@ it('can generate FIRST_MATCH_LOSER_CONSOLATION', () => {
   const seedsCount = 8;
   const participantsCount = 30;
 
-  const { mainStructureId, consolationStructureId } = generateFMLC({
-    drawSize,
-    seedsCount,
+  const genResult = generateFMLC({
     participantsCount,
+    seedsCount,
+    drawSize,
   });
+  const { mainStructureId, consolationStructureId } = genResult;
+  drawEngine.setState(genResult.drawDefinition);
 
   verifyStructure({
     structureId: mainStructureId,
@@ -74,11 +76,13 @@ it('can direct winners and losers', () => {
 
   let result;
 
-  const { mainStructureId, consolationStructureId } = generateFMLC({
-    drawSize,
-    seedsCount,
+  const genResult = generateFMLC({
     participantsCount,
+    seedsCount,
+    drawSize,
   });
+  const { mainStructureId, consolationStructureId } = genResult;
+  drawEngine.setState(genResult.drawDefinition);
 
   result = completeMatchUp({
     structureId: mainStructureId,
@@ -288,12 +292,15 @@ it('can direct winners and losers drawSize: 4 with NO BYEs', () => {
   let result;
 
   const policyDefinitions = { [POLICY_TYPE_FEED_IN]: { feedMainFinal: true } };
-  const { mainStructureId, consolationStructureId } = generateFMLC({
+  const genResult = generateFMLC({
     participantsCount,
     policyDefinitions,
     seedsCount,
     drawSize,
   });
+
+  const { mainStructureId, consolationStructureId } = genResult;
+  drawEngine.setState(genResult.drawDefinition);
 
   result = completeMatchUp({
     structureId: mainStructureId,

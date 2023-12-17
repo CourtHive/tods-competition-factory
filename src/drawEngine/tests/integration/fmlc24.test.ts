@@ -15,12 +15,15 @@ it('can direct winners and losers with ITF SEEDING POLICY; all participants with
   const seedsCount = 8;
   const participantsCount = 24;
 
-  const { mainStructureId, consolationStructureId } = generateFMLC({
-    drawSize,
-    seedsCount,
-    participantsCount,
-    policyDefinitions: SEEDING_ITF,
-  });
+  const { drawDefinition, mainStructureId, consolationStructureId } =
+    generateFMLC({
+      policyDefinitions: SEEDING_ITF,
+      participantsCount,
+      seedsCount,
+      drawSize,
+    });
+
+  drawEngine.setState(drawDefinition);
 
   const {
     structures: [mainStructure],
@@ -149,12 +152,15 @@ it('can direct winners and losers with ITF SEEDING POLICY; all participants with
   const seedsCount = 8;
   const participantsCount = 24;
 
-  const { mainStructureId, consolationStructureId } = generateFMLC({
-    drawSize,
-    seedsCount,
-    participantsCount,
-    policyDefinitions: SEEDING_ITF,
-  });
+  const { drawDefinition, mainStructureId, consolationStructureId } =
+    generateFMLC({
+      policyDefinitions: SEEDING_ITF,
+      participantsCount,
+      seedsCount,
+      drawSize,
+    });
+
+  drawEngine.setState(drawDefinition);
 
   const {
     structures: [mainStructure],
@@ -282,12 +288,15 @@ it('can direct winners and losers with USTA SEEDING POLICY; all participants wit
   const seedsCount = 8;
   const participantsCount = 24;
 
-  const { mainStructureId, consolationStructureId } = generateFMLC({
-    drawSize,
-    seedsCount,
-    participantsCount,
-    policyDefinitions: SEEDING_USTA,
-  });
+  const { drawDefinition, mainStructureId, consolationStructureId } =
+    generateFMLC({
+      policyDefinitions: SEEDING_USTA,
+      participantsCount,
+      seedsCount,
+      drawSize,
+    });
+
+  drawEngine.setState(drawDefinition);
 
   const {
     structures: [mainStructure],
@@ -405,12 +414,15 @@ it('can direct winners and losers with USTA SEEDING POLICY; all participants wit
   const seedsCount = 8;
   const participantsCount = 24;
 
-  const { mainStructureId, consolationStructureId } = generateFMLC({
-    drawSize,
-    seedsCount,
-    participantsCount,
-    policyDefinitions: SEEDING_USTA,
-  });
+  const { drawDefinition, mainStructureId, consolationStructureId } =
+    generateFMLC({
+      policyDefinitions: SEEDING_USTA,
+      participantsCount,
+      seedsCount,
+      drawSize,
+    });
+
+  drawEngine.setState(drawDefinition);
 
   const {
     structures: [mainStructure],

@@ -10,6 +10,7 @@ import { findStructure } from '../../getters/findStructure';
 import { expect } from 'vitest';
 
 import { drawEngine } from '../../sync';
+
 import { STRUCTURE_NOT_FOUND } from '../../../constants/errorConditionConstants';
 
 export function verifyStructure(params) {
