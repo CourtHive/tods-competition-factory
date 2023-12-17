@@ -1,6 +1,15 @@
+import { generateDrawTypeAndModifyDrawDefinition } from '../../../tournamentEngine/generators/generateDrawTypeAndModifyDrawDefinition';
+import { initializeStructureSeedAssignments } from '../../governors/positionGovernor/initializeSeedAssignments';
+import { automatedPositioning } from '../../governors/positionGovernor/automatedPositioning';
+import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
+import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
+import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';
+import { addDrawEntries } from '../../governors/entryGovernor/addDrawEntries';
+import { assignSeed } from '../../governors/entryGovernor/seedAssignment';
 import { verifyStructure } from '../primitives/verifyStructure';
+import { getDrawStructures } from '../../getters/findStructure';
+import { newDrawDefinition } from '../../stateMethods';
 import { generateRange } from '../../../utilities';
-import { drawEngine } from '../../sync';
 import { expect, it } from 'vitest';
 
 import SEEDING_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
@@ -30,10 +39,11 @@ it('can generate and verify curtis structures', () => {
     drawSize: 32,
   }));
 
-  const { seedAssignments } = drawEngine.getStructureSeedAssignments({
+  const { seedAssignments } = getStructureSeedAssignments({
     structureId: mainStructureId,
+    drawDefinition,
   });
-  expect(seedAssignments.length).toEqual(8);
+  expect(seedAssignments?.length).toEqual(8);
 
   verifyStructure({
     expectedRoundMatchUpsCounts: [16, 8, 4, 2, 1],
@@ -149,46 +159,55 @@ function generateCurtis({
   const stage = MAIN;
   const drawType = CURTIS;
 
-  drawEngine.reset();
-  drawEngine.newDrawDefinition();
-  drawEngine.setStageDrawSize({ stage, drawSize });
-  drawEngine.generateDrawTypeAndModifyDrawDefinition({ drawType });
+  const drawDefinition = newDrawDefinition();
+  setStageDrawSize({ drawDefinition, stage, drawSize });
+  generateDrawTypeAndModifyDrawDefinition({ drawDefinition, drawType });
 
-  const { stageStructures } = drawEngine.getDrawStructures({
+  const { stageStructures } = getDrawStructures({
     withStageGrouping: true,
+    drawDefinition,
   });
   expect(Object.keys(stageStructures).length).toEqual(drawSize === 64 ? 3 : 2);
 
   const {
     structures: [mainStructure],
-  } = drawEngine.getDrawStructures({ stage, stageSequence: 1 });
+  } = getDrawStructures({ drawDefinition, stage, stageSequence: 1 });
   const { structureId: mainStructureId } = mainStructure;
 
   const {
     structures: [playoffStructure],
-  } = drawEngine.getDrawStructures({ stage: PLAY_OFF, stageSequence: 2 });
+  } = getDrawStructures({ drawDefinition, stage: PLAY_OFF, stageSequence: 2 });
   const playoffStructureId = playoffStructure?.structureId;
 
   const {
     structures: [consolation1stStructure],
-  } = drawEngine.getDrawStructures({ stage: CONSOLATION, stageSequence: 1 });
+  } = getDrawStructures({
+    drawDefinition,
+    stage: CONSOLATION,
+    stageSequence: 1,
+  });
   const { structureId: consolation1stStructureId } = consolation1stStructure;
 
   const {
     structures: [consolation2ndStructure],
-  } = drawEngine.getDrawStructures({ stage: CONSOLATION, stageSequence: 2 });
+  } = getDrawStructures({
+    drawDefinition,
+    stage: CONSOLATION,
+    stageSequence: 2,
+  });
   const { structureId: consolation2ndStructureId } = consolation2ndStructure;
 
-  drawEngine.attachPolicies({ policyDefinitions: SEEDING_POLICY });
+  attachPolicies({ drawDefinition, policyDefinitions: SEEDING_POLICY });
 
   const participants = generateRange(0, participantsCount).map((i) => ({
     participantId: `ko-uuid${i + 1}`,
   }));
   const participantIds = participants.map((p) => p.participantId);
 
-  drawEngine.addDrawEntries({ stage, participantIds });
-  drawEngine.initializeStructureSeedAssignments({
+  addDrawEntries({ drawDefinition, stage, participantIds });
+  initializeStructureSeedAssignments({
     structureId: mainStructureId,
+    drawDefinition,
     seedsCount,
   });
 
@@ -197,17 +216,16 @@ function generateCurtis({
   generateRange(1, assignSeeds + 1).forEach((seedNumber) => {
     const participantId = participants[seedNumber - 1].participantId;
     const seedValue = seedAssignmentProfile[seedNumber] || seedNumber;
-    drawEngine.assignSeed({
+    assignSeed({
       structureId: mainStructureId,
+      drawDefinition,
       participantId,
       seedNumber,
       seedValue,
     });
   });
 
-  drawEngine.automatedPositioning({ structureId: mainStructureId });
-
-  const { drawDefinition } = drawEngine.getState();
+  automatedPositioning({ drawDefinition, structureId: mainStructureId });
 
   return {
     consolation1stStructureId,

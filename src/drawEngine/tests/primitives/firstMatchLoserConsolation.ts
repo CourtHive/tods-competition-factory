@@ -8,6 +8,9 @@ import {
   CONSOLATION,
 } from '../../../constants/drawDefinitionConstants';
 
+// NOTE: replace all other occurrences of this function with this one
+// import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
+
 export function generateFMLC(params) {
   const { policyDefinitions, participantsCount, seedsCount, drawSize } = params;
   const drawType = FIRST_MATCH_LOSER_CONSOLATION;

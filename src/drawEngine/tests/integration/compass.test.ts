@@ -1,5 +1,16 @@
+import { generateDrawTypeAndModifyDrawDefinition } from '../../../tournamentEngine/generators/generateDrawTypeAndModifyDrawDefinition';
+import { initializeStructureSeedAssignments } from '../../governors/positionGovernor/initializeSeedAssignments';
+import { automatedPositioning } from '../../governors/positionGovernor/automatedPositioning';
+import { clearDrawPosition } from '../../../mutate/matchUps/drawPositions/positionClear';
+import { getStructureMatchUps } from '../../getters/getMatchUps/getStructureMatchUps';
+import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
+import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';
+import { addDrawEntries } from '../../governors/entryGovernor/addDrawEntries';
+import { assignSeed } from '../../governors/entryGovernor/seedAssignment';
+import { getDrawStructures } from '../../getters/findStructure';
+import { newDrawDefinition } from '../../stateMethods';
+import { drawMatchUps } from '../../../forge/query';
 import { generateRange } from '../../../utilities';
-import { drawEngine } from '../../sync';
 import { expect, it } from 'vitest';
 
 import { MAIN, COMPASS } from '../../../constants/drawDefinitionConstants';
@@ -82,30 +93,33 @@ it('can generate COMPASS and fill all drawPositions', () => {
   });
 });
 
-function testByeRemoval({ stage, expectedByeRemoval }) {
-  const { structures } = drawEngine.getDrawStructures({ stage });
+function testByeRemoval({ drawDefinition, stage, expectedByeRemoval }) {
+  const { structures } = getDrawStructures({ drawDefinition, stage });
 
   const directionEast = findStructureByName(structures, 'East');
   const { structureId } = directionEast;
   const byeDrawPositions = assignedByes(directionEast.positionAssignments);
 
-  const { byeMatchUps } = drawEngine.drawMatchUps();
-  expect(byeMatchUps.length).toEqual(expectedByeRemoval.initialByeMatchUpCount);
+  const { byeMatchUps } = drawMatchUps({ drawDefinition });
+  expect(byeMatchUps?.length).toEqual(
+    expectedByeRemoval.initialByeMatchUpCount
+  );
 
   if (expectedByeRemoval.clearExpect) {
     expectedByeRemoval.clearExpect.forEach(([index, length]) => {
-      drawEngine.clearDrawPosition({
-        structureId,
+      clearDrawPosition({
         drawPosition: byeDrawPositions[index],
+        drawDefinition,
+        structureId,
       });
-      const { byeMatchUps } = drawEngine.drawMatchUps();
-      expect(byeMatchUps.length).toEqual(length);
+      const { byeMatchUps } = drawMatchUps({ drawDefinition });
+      expect(byeMatchUps?.length).toEqual(length);
     });
   }
 }
 
-function checkCompassByes({ stage, expectedCompassByes }) {
-  const { structures } = drawEngine.getDrawStructures({ stage });
+function checkCompassByes({ drawDefinition, stage, expectedCompassByes }) {
+  const { structures } = getDrawStructures({ drawDefinition, stage });
 
   Object.keys(expectedCompassByes).forEach((direction) => {
     const structure = findStructureByName(structures, direction);
@@ -121,25 +135,27 @@ function checkCompassByes({ stage, expectedCompassByes }) {
 }
 
 function checkByeAdvancedDrawPositions({
-  stage,
-  advanced,
   expectedByeDrawPositions,
+  drawDefinition,
+  advanced,
+  stage,
 }) {
-  const { structures } = drawEngine.getDrawStructures({ stage });
+  const { structures } = getDrawStructures({ drawDefinition, stage });
 
   Object.keys(expectedByeDrawPositions).forEach((direction) => {
     const structure = findStructureByName(structures, direction);
-    const { pendingMatchUps } = drawEngine.getStructureMatchUps({
+    const { pendingMatchUps } = getStructureMatchUps({
+      drawDefinition,
       structure,
     });
-    const filteredMatchUps = pendingMatchUps.filter(pendingWithOneParticipant);
+    const filteredMatchUps = pendingMatchUps?.filter(pendingWithOneParticipant);
 
     if (advanced) {
       const expectedFiltered =
         expectedByeDrawPositions[direction].advancedFiltered;
       if (expectedFiltered) {
-        expect(filteredMatchUps.length).toEqual(expectedFiltered[0]);
-        if (filteredMatchUps.length) {
+        expect(filteredMatchUps?.length).toEqual(expectedFiltered[0]);
+        if (filteredMatchUps?.length) {
           if (expectedFiltered[1])
             expect(filteredMatchUps[0].roundPosition).toEqual(
               expectedFiltered[1]
@@ -152,8 +168,8 @@ function checkByeAdvancedDrawPositions({
       }
       const pendingLength =
         expectedByeDrawPositions[direction].pendingAdvancedLength;
-      if (pendingLength) expect(pendingMatchUps.length).toEqual(pendingLength);
-      if (pendingMatchUps.length) {
+      if (pendingLength) expect(pendingMatchUps?.length).toEqual(pendingLength);
+      if (pendingMatchUps?.length) {
         const pendingRoundPosition =
           expectedByeDrawPositions[direction].pendingAdvancedRoundPosition;
         if (pendingRoundPosition)
@@ -172,24 +188,24 @@ function checkByeAdvancedDrawPositions({
       const unadvancedFiltered =
         expectedByeDrawPositions[direction].unadvancedFiltered;
       if (unadvancedFiltered)
-        expect(filteredMatchUps.length).toEqual(unadvancedFiltered);
+        expect(filteredMatchUps?.length).toEqual(unadvancedFiltered);
       const unadvancedPending =
         expectedByeDrawPositions[direction].unadvancedPending;
       if (unadvancedPending)
-        expect(pendingMatchUps.length).toEqual(unadvancedPending);
+        expect(pendingMatchUps?.length).toEqual(unadvancedPending);
       const pendingDrawPositions =
         expectedByeDrawPositions[direction].pendingUnadvancedDrawPositions;
       if (pendingDrawPositions) {
-        console.log(pendingMatchUps[0].drawPositions);
-        expect(pendingMatchUps[0].drawPositions).toMatchObject(
+        console.log(pendingMatchUps?.[0].drawPositions);
+        expect(pendingMatchUps?.[0].drawPositions).toMatchObject(
           pendingDrawPositions[0]
         );
-        console.log(pendingMatchUps[1].drawPositions);
-        expect(pendingMatchUps[1].drawPositions).toMatchObject(
+        console.log(pendingMatchUps?.[1].drawPositions);
+        expect(pendingMatchUps?.[1].drawPositions).toMatchObject(
           pendingDrawPositions[1]
         );
-        console.log(pendingMatchUps[2].drawPositions);
-        expect(pendingMatchUps[2].drawPositions).toMatchObject(
+        console.log(pendingMatchUps?.[2].drawPositions);
+        expect(pendingMatchUps?.[2].drawPositions).toMatchObject(
           pendingDrawPositions[2]
         );
       }
@@ -205,55 +221,60 @@ function checkByeAdvancedDrawPositions({
 }
 
 function generateCompass({
-  drawSize,
-  seedsCount,
-  participantsCount,
-  expectedByeRemoval,
-  expectedCompassByes,
   expectedByeDrawPositions,
+  expectedCompassByes,
+  expectedByeRemoval,
+  participantsCount,
+  seedsCount,
+  drawSize,
 }) {
   const stage = MAIN;
   const drawType = COMPASS;
 
-  drawEngine.reset();
-  drawEngine.newDrawDefinition();
-  drawEngine.setStageDrawSize({ stage, drawSize });
-  drawEngine.generateDrawTypeAndModifyDrawDefinition({ drawType });
+  const drawDefinition = newDrawDefinition();
+  setStageDrawSize({ drawDefinition, stage, drawSize });
+  generateDrawTypeAndModifyDrawDefinition({ drawDefinition, drawType });
   const {
     structures: [structure],
-  } = drawEngine.getDrawStructures({ stage, stageSequence: 1 });
+  } = getDrawStructures({ drawDefinition, stage, stageSequence: 1 });
   const { structureId } = structure;
 
-  drawEngine.attachPolicies({ policyDefinitions: SEEDING_POLICY });
+  attachPolicies({ drawDefinition, policyDefinitions: SEEDING_POLICY });
 
   const participants = generateRange(0, participantsCount).map((i) => ({
     participantId: `ko-uuid${i + 1}`,
   }));
   const participantIds = participants.map((p) => p.participantId);
 
-  drawEngine.addDrawEntries({ stage, participantIds });
-  drawEngine.initializeStructureSeedAssignments({ structureId, seedsCount });
+  addDrawEntries({ drawDefinition, stage, participantIds });
+  initializeStructureSeedAssignments({
+    drawDefinition,
+    structureId,
+    seedsCount,
+  });
 
   generateRange(0, seedsCount).forEach((i) => {
     const seedNumber = i + 1;
     const participantId = participants[i].participantId;
-    drawEngine.assignSeed({ structureId, seedNumber, participantId });
+    assignSeed({ drawDefinition, structureId, seedNumber, participantId });
   });
 
-  drawEngine.automatedPositioning({ structureId });
+  automatedPositioning({ drawDefinition, structureId });
 
-  checkCompassByes({ stage, expectedCompassByes });
+  checkCompassByes({ drawDefinition, stage, expectedCompassByes });
   checkByeAdvancedDrawPositions({
-    stage,
+    expectedByeDrawPositions,
     advanced: true,
-    expectedByeDrawPositions,
+    drawDefinition,
+    stage,
   });
 
-  testByeRemoval({ stage, expectedByeRemoval });
+  testByeRemoval({ drawDefinition, stage, expectedByeRemoval });
   checkByeAdvancedDrawPositions({
-    stage,
-    advanced: false,
     expectedByeDrawPositions,
+    advanced: false,
+    drawDefinition,
+    stage,
   });
 }
 

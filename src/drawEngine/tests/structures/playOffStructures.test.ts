@@ -449,7 +449,6 @@ function playoffDraw(params) {
     drawType,
     finishingPositionLimit,
   });
-  // drawEngine.attachPolicies({ policyDefinitions: ROUND_NAMING_POLICY });
   const { drawDefinition } = drawEngine.getState();
   return { result, drawDefinition };
 }
