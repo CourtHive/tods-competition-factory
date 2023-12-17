@@ -9,7 +9,7 @@ import { calculateWinCriteria } from './matchUpEngine/governors/tieFormatGoverno
 import { proConflicts } from './competitionEngine/governors/scheduleGovernor/proScheduling/proConflicts';
 import { validateTieFormat } from './validators/tieFormatUtilities';
 import { compareTieFormats } from './matchUpEngine/governors/tieFormatGovernor/compareTieFormats';
-import { getStructureSeedAssignments } from './drawEngine/getters/getStructureSeedAssignments';
+import { getStructureSeedAssignments } from './query/structure/getStructureSeedAssignments';
 import { dehydrateMatchUps } from './tournamentEngine/governors/tournamentGovernor/dehydrate';
 import { getSeedingThresholds } from './drawEngine/governors/positionGovernor/getSeedBlocks';
 import { getAssignedParticipantIds } from './drawEngine/getters/getAssignedParticipantIds';

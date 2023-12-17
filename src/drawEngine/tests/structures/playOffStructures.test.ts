@@ -1,14 +1,17 @@
+import { generateDrawTypeAndModifyDrawDefinition } from '../../governors/structureGovernor/generateDrawTypeAndModifyDrawDefinition';
+import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';
 import { instanceCount, numericSort } from '../../../utilities';
-import { drawEngine } from '../../sync';
+import { newDrawDefinition } from '../../stateMethods';
 import { expect, it } from 'vitest';
-import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
 
 import { ERROR } from '../../../constants/resultConstants';
+import { DrawDefinition } from '../../../types/tournamentTypes';
 import {
   TOP_DOWN,
   LOSER,
   COMPASS,
   PLAY_OFF,
+  MAIN,
 } from '../../../constants/drawDefinitionConstants';
 
 it('can generate compass draws', () => {
@@ -18,44 +21,46 @@ it('can generate compass draws', () => {
   });
   expect(result).toHaveProperty(ERROR);
 
-  ({ result, drawDefinition } = playoffDraw({
-    drawType: COMPASS,
-    drawSize: 4,
-  }));
-  expect(drawDefinition.links.length).toEqual(1);
-  expect(drawDefinition.structures.length).toEqual(2);
-  let structureNames = drawDefinition.structures.map(
+  drawDefinition =
+    playoffDraw({
+      drawType: COMPASS,
+      drawSize: 4,
+    }).drawDefinition ?? {};
+  expect(drawDefinition.links?.length).toEqual(1);
+  expect(drawDefinition.structures?.length).toEqual(2);
+  let structureNames = drawDefinition.structures?.map(
     (structure) => structure.structureName
   );
   ['East', 'West'].forEach((direction) =>
-    expect(structureNames.includes(direction)).toEqual(true)
+    expect(structureNames?.includes(direction)).toEqual(true)
   );
 
-  ({ result, drawDefinition } = playoffDraw({
-    drawType: COMPASS,
-    drawSize: 8,
-  }));
-  expect(drawDefinition.links.length).toEqual(3);
-  expect(drawDefinition.structures.length).toEqual(4);
-  structureNames = drawDefinition.structures.map(
+  drawDefinition =
+    playoffDraw({
+      drawType: COMPASS,
+      drawSize: 8,
+    }).drawDefinition ?? {};
+  expect(drawDefinition.links?.length).toEqual(3);
+  expect(drawDefinition.structures?.length).toEqual(4);
+  structureNames = drawDefinition.structures?.map(
     (structure) => structure.structureName
   );
   ['East', 'West', 'North', 'South'].forEach((direction) =>
-    expect(structureNames.includes(direction)).toEqual(true)
+    expect(structureNames?.includes(direction)).toEqual(true)
   );
 
-  ({ result, drawDefinition } = playoffDraw({
-    drawSize: 32,
-    drawType: COMPASS,
-  }));
-  expect(result).not.toHaveProperty(ERROR);
-  expect(drawDefinition.links.length).toEqual(7);
-  expect(drawDefinition.structures.length).toEqual(8);
-  drawDefinition.links.forEach((link) => {
+  drawDefinition =
+    playoffDraw({
+      drawSize: 32,
+      drawType: COMPASS,
+    }).drawDefinition ?? {};
+  expect(drawDefinition.links?.length).toEqual(7);
+  expect(drawDefinition.structures?.length).toEqual(8);
+  drawDefinition.links?.forEach((link) => {
     expect(link.linkType).toEqual(LOSER);
     expect(link.target.feedProfile).toEqual(TOP_DOWN);
   });
-  structureNames = drawDefinition.structures.map(
+  structureNames = drawDefinition.structures?.map(
     (structure) => structure.structureName
   );
   [
@@ -68,7 +73,7 @@ it('can generate compass draws', () => {
     'Northwest',
     'Southeast',
   ].forEach((direction) => {
-    expect(structureNames.includes(direction)).toEqual(true);
+    expect(structureNames?.includes(direction)).toEqual(true);
   });
 
   ({ result, drawDefinition } = playoffDraw({
@@ -76,8 +81,8 @@ it('can generate compass draws', () => {
     drawType: COMPASS,
   }));
   expect(result).not.toHaveProperty(ERROR);
-  expect(drawDefinition.links.length).toEqual(7);
-  expect(drawDefinition.structures.length).toEqual(8);
+  expect(drawDefinition.links?.length).toEqual(7);
+  expect(drawDefinition.structures?.length).toEqual(8);
 });
 
 it('generates compass draws with correct links', () => {
@@ -88,13 +93,15 @@ it('generates compass draws with correct links', () => {
   expect(result).not.toHaveProperty(ERROR);
 
   const links = drawDefinition.links;
-  expect(links.length).toEqual(7);
+  expect(links?.length).toEqual(7);
 
   const structureNameMap = Object.assign(
     {},
-    ...drawDefinition.structures.map(({ structureId, structureName }) => ({
-      [structureName]: structureId,
-    }))
+    ...(drawDefinition.structures ?? []).map(
+      ({ structureId, structureName = '' }) => ({
+        [structureName]: structureId,
+      })
+    )
   );
 
   expect(
@@ -183,19 +190,19 @@ it('generates compass draws with correct links', () => {
 });
 
 it('generates compass draws with correct finishing drawPositions', () => {
-  let { result, drawDefinition } = playoffDraw({
-    drawSize: 32,
-    drawType: COMPASS,
-  });
-  expect(result).not.toHaveProperty(ERROR);
-  expect(drawDefinition.links.length).toEqual(7);
-  expect(drawDefinition.structures.length).toEqual(8);
+  let drawDefinition =
+    playoffDraw({
+      drawSize: 32,
+      drawType: COMPASS,
+    }).drawDefinition ?? {};
+  expect(drawDefinition.links?.length).toEqual(7);
+  expect(drawDefinition.structures?.length).toEqual(8);
 
   let structures = drawDefinition.structures;
 
   let structureNameMap = Object.assign(
     {},
-    ...structures.map(({ structureId, structureName }) => ({
+    ...(structures ?? []).map(({ structureId, structureName = '' }) => ({
       [structureName]: structureId,
     }))
   );
@@ -264,27 +271,27 @@ it('generates compass draws with correct finishing drawPositions', () => {
   });
   expect(matchUp.finishingPositionRange.loser).toMatchObject([23, 24]);
 
-  ({ result, drawDefinition } = playoffDraw({
-    drawType: COMPASS,
-    drawSize: 64,
-  }));
-  expect(result).not.toHaveProperty(ERROR);
-  expect(drawDefinition.links.length).toEqual(7);
-  expect(drawDefinition.structures.length).toEqual(8);
+  drawDefinition =
+    playoffDraw({
+      drawType: COMPASS,
+      drawSize: 64,
+    }).drawDefinition ?? {};
+  expect(drawDefinition.links?.length).toEqual(7);
+  expect(drawDefinition.structures?.length).toEqual(8);
 
   structures = drawDefinition.structures;
   structureNameMap = Object.assign(
     {},
-    ...structures.map(({ structureId, structureName }) => ({
+    ...(structures ?? []).map(({ structureId, structureName = '' }) => ({
       [structureName]: structureId,
     }))
   );
 
   matchUp = findMatchInStructures({
-    structures,
     structureId: structureNameMap['East'],
-    roundNumber: 1,
     roundPosition: 1,
+    roundNumber: 1,
+    structures,
   });
   expect(matchUp.finishingPositionRange.loser).toMatchObject([33, 64]);
 
@@ -347,20 +354,20 @@ it('generates compass draws with correct finishing drawPositions', () => {
 
 it('can generate draw which plays off all drawPositions', () => {
   const { result, drawDefinition } = playoffDraw({
-    drawSize: 64,
     drawType: PLAY_OFF,
+    drawSize: 64,
   });
   expect(result).not.toHaveProperty(ERROR);
-  expect(drawDefinition.links.length).toEqual(31);
-  expect(drawDefinition.structures.length).toEqual(32);
-  drawDefinition.links.forEach((link) =>
+  expect(drawDefinition?.links?.length).toEqual(31);
+  expect(drawDefinition?.structures?.length).toEqual(32);
+  drawDefinition?.links?.forEach((link) =>
     expect(link.target.feedProfile).toEqual(TOP_DOWN)
   );
-  const structureNames = drawDefinition.structures.map(
+  const structureNames = drawDefinition?.structures?.map(
     (structure) => structure.structureName
   );
-  const stageSequences = drawDefinition.structures
-    .map(({ stageSequence }) => stageSequence)
+  const stageSequences = drawDefinition?.structures
+    ?.map(({ stageSequence }) => stageSequence)
     .sort(numericSort);
 
   const stageSequenceCount = instanceCount(stageSequences);
@@ -400,56 +407,59 @@ it('can generate draw which plays off all drawPositions', () => {
     '7-8',
     '3-4',
   ].forEach((playoff) => {
-    expect(structureNames.includes(playoff)).toEqual(true);
+    expect(structureNames?.includes(playoff)).toEqual(true);
   });
 });
 
 it('can generate elimination which specifies drawPositions to playoff', () => {
-  let { drawDefinition } = playoffDraw({
-    drawSize: 16,
-    drawType: PLAY_OFF,
-    finishingPositionLimit: 4,
-  });
-  expect(drawDefinition.links.length).toEqual(1);
-  expect(drawDefinition.structures.length).toEqual(2);
-  expect(drawDefinition.structures[0].matchUps.length).toEqual(15);
-  expect(drawDefinition.structures[1].matchUps.length).toEqual(1);
+  let drawDefinition =
+    playoffDraw({
+      finishingPositionLimit: 4,
+      drawType: PLAY_OFF,
+      drawSize: 16,
+    }).drawDefinition ?? {};
+  expect(drawDefinition.links?.length).toEqual(1);
+  expect(drawDefinition.structures?.length).toEqual(2);
+  expect(drawDefinition.structures?.[0].matchUps?.length).toEqual(15);
+  expect(drawDefinition.structures?.[1].matchUps?.length).toEqual(1);
 
-  ({ drawDefinition } = playoffDraw({
-    drawSize: 16,
-    drawType: PLAY_OFF,
-    finishingPositionLimit: 8,
-  }));
-  expect(drawDefinition.links.length).toEqual(3);
-  expect(drawDefinition.structures.length).toEqual(4);
-  expect(drawDefinition.structures[0].matchUps.length).toEqual(15);
-  expect(drawDefinition.structures[1].matchUps.length).toEqual(3);
-  expect(drawDefinition.structures[2].matchUps.length).toEqual(1);
-  expect(drawDefinition.structures[3].matchUps.length).toEqual(1);
+  drawDefinition =
+    playoffDraw({
+      finishingPositionLimit: 8,
+      drawType: PLAY_OFF,
+      drawSize: 16,
+    }).drawDefinition ?? {};
+  expect(drawDefinition.links?.length).toEqual(3);
+  expect(drawDefinition.structures?.length).toEqual(4);
+  expect(drawDefinition.structures?.[0].matchUps?.length).toEqual(15);
+  expect(drawDefinition.structures?.[1].matchUps?.length).toEqual(3);
+  expect(drawDefinition.structures?.[2].matchUps?.length).toEqual(1);
+  expect(drawDefinition.structures?.[3].matchUps?.length).toEqual(1);
 
-  ({ drawDefinition } = playoffDraw({
-    drawSize: 32,
-    drawType: PLAY_OFF,
-    finishingPositionLimit: 8,
-  }));
-  expect(drawDefinition.links.length).toEqual(3);
-  expect(drawDefinition.structures.length).toEqual(4);
-  expect(drawDefinition.structures[0].matchUps.length).toEqual(31);
-  expect(drawDefinition.structures[1].matchUps.length).toEqual(3);
-  expect(drawDefinition.structures[2].matchUps.length).toEqual(1);
-  expect(drawDefinition.structures[3].matchUps.length).toEqual(1);
+  drawDefinition =
+    playoffDraw({
+      finishingPositionLimit: 8,
+      drawType: PLAY_OFF,
+      drawSize: 32,
+    }).drawDefinition ?? {};
+  expect(drawDefinition.links?.length).toEqual(3);
+  expect(drawDefinition.structures?.length).toEqual(4);
+  expect(drawDefinition.structures?.[0].matchUps?.length).toEqual(31);
+  expect(drawDefinition.structures?.[1].matchUps?.length).toEqual(3);
+  expect(drawDefinition.structures?.[2].matchUps?.length).toEqual(1);
+  expect(drawDefinition.structures?.[3].matchUps?.length).toEqual(1);
 });
 
 function playoffDraw(params) {
   const { drawSize, drawType, finishingPositionLimit } = params;
-  reset();
-  initialize();
-  mainDrawPositions({ drawSize });
-  const result = drawEngine.generateDrawTypeAndModifyDrawDefinition({
-    drawType,
+  const drawDefinition: DrawDefinition = newDrawDefinition();
+  setStageDrawSize({ drawDefinition, stage: MAIN, drawSize });
+
+  const result = generateDrawTypeAndModifyDrawDefinition({
     finishingPositionLimit,
+    drawDefinition,
+    drawType,
   });
-  const { drawDefinition } = drawEngine.getState();
   return { result, drawDefinition };
 }
 

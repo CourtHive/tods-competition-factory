@@ -1,6 +1,6 @@
 import { findExtension } from '../../../acquire/findExtension';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import { getStructureSeedAssignments } from '../../../drawEngine/getters/getStructureSeedAssignments';
+import { getStructureSeedAssignments } from '../../../query/structure/getStructureSeedAssignments';
 import { randomUnseededSeparation } from '../../../drawEngine/governors/positionGovernor/avoidance/randomUnseededSeparation';
 import { structureAssignedDrawPositions } from '../../../drawEngine/getters/positionsGetter';
 import { decorateResult } from '../../../global/functions/decorateResult';

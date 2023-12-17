@@ -119,7 +119,7 @@ export function addMatchUpScheduleItems({
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
-  const stack = 'drawEngine.addMatchUpScheduleItems';
+  const stack = 'addMatchUpScheduleItems';
   let matchUp, warning;
 
   if (!drawMatchUps) {

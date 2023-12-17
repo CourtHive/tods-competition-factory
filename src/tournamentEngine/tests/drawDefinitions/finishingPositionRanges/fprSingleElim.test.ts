@@ -1,6 +1,6 @@
+import { getStructureSeedAssignments } from '../../../../query/structure/getStructureSeedAssignments';
 import { getAppliedPolicies } from '../../../../query/extensions/getAppliedPolicies';
 import { eventConstants } from '../../../../constants/eventConstants';
-import { drawEngine } from '../../../../drawEngine/sync';
 import mocksEngine from '../../../../mocksEngine';
 import { tournamentEngine } from '../../../sync';
 import { expect, it } from 'vitest';
@@ -46,8 +46,6 @@ it('generates correct finishingPositionRanges for SINGLE_ELIMINATION draws', () 
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
   expect(result.success).toEqual(true);
 
-  drawEngine.setState(drawDefinition);
-
   const { extensions } = drawDefinition;
   expect(extensions.length).toEqual(2);
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
@@ -56,10 +54,11 @@ it('generates correct finishingPositionRanges for SINGLE_ELIMINATION draws', () 
   // find main structureId more intelligently
   const mainStructureId = drawDefinition.structures[0].structureId;
 
-  const { seedAssignments } = drawEngine.getStructureSeedAssignments({
+  const { seedAssignments } = getStructureSeedAssignments({
     structureId: mainStructureId,
+    drawDefinition,
   });
-  expect(seedAssignments.length).toEqual(4);
+  expect(seedAssignments?.length).toEqual(4);
 
   result = tournamentEngine.assignSeedPositions({
     structureId: mainStructureId,

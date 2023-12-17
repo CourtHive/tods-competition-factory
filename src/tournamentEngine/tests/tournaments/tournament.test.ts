@@ -1,4 +1,4 @@
-import { getStructureSeedAssignments } from '../../../drawEngine/getters/getStructureSeedAssignments';
+import { getStructureSeedAssignments } from '../../../query/structure/getStructureSeedAssignments';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { parseScoreString } from '../../../mocksEngine/utilities/parseScoreString';
 import mocksEngine from '../../../mocksEngine';

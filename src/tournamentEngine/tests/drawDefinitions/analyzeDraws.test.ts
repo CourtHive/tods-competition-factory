@@ -1,5 +1,6 @@
 import { getDrawStructures } from '../../../drawEngine/getters/findStructure';
-import { drawEngine, mocksEngine, setSubscriptions } from '../../..';
+import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
+import { mocksEngine, setSubscriptions } from '../../..';
 import { generateRange } from '../../../utilities';
 import tournamentEngine from '../../sync';
 import { expect, test } from 'vitest';
@@ -85,7 +86,7 @@ test.each(range)(
     expect(result.drawsAnalysis.matchPlay).toEqual([]);
 
     const { matchUps } = tournamentEngine.allTournamentMatchUps();
-    const { roundMatchUps } = drawEngine.getRoundMatchUps({ matchUps });
+    const roundMatchUps = getRoundMatchUps({ matchUps }).roundMatchUps ?? {};
 
     let { outcome } = mocksEngine.generateOutcome();
     result = tournamentEngine.setMatchUpStatus({

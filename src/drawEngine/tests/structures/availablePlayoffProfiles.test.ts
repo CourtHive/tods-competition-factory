@@ -1,14 +1,17 @@
+import { generateDrawTypeAndModifyDrawDefinition } from '../../governors/structureGovernor/generateDrawTypeAndModifyDrawDefinition';
 import { getAvailablePlayoffProfiles } from '../../governors/structureGovernor/getAvailablePlayoffProfiles';
-import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
+import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';
+import { getDrawStructures } from '../../getters/findStructure';
 import { constantToString } from '../../../utilities/strings';
 import tournamentEngine from '../../../tournamentEngine/sync';
+import { newDrawDefinition } from '../../stateMethods';
 import mocksEngine from '../../../mocksEngine';
 import { setSubscriptions } from '../../..';
-import { drawEngine } from '../../sync';
 import { expect, it } from 'vitest';
 
 import { COMPLETED } from '../../../constants/matchUpStatusConstants';
 import { ADD_MATCHUPS } from '../../../constants/topicConstants';
+import { DrawDefinition } from '../../../types/tournamentTypes';
 import {
   CONSOLATION,
   FEED_IN,
@@ -23,17 +26,12 @@ import {
 tournamentEngine.devContext(true);
 
 it('can correctly determine positions playedOff for STANDARD_ELIMINATION', () => {
-  reset();
-  initialize();
-  mainDrawPositions({ drawSize: 16 });
-  const result = drawEngine.generateDrawTypeAndModifyDrawDefinition();
+  const drawDefinition: DrawDefinition = newDrawDefinition();
+  setStageDrawSize({ drawDefinition, stage: MAIN, drawSize: 16 });
+  const result = generateDrawTypeAndModifyDrawDefinition({ drawDefinition });
   expect(result.success).toEqual(true);
 
-  const { drawDefinition } = drawEngine.getState();
-
-  const {
-    structures: [{ structureId }],
-  } = result;
+  const structureId = drawDefinition.structures?.[0].structureId;
 
   const { playoffRounds, playoffRoundsRanges } = getAvailablePlayoffProfiles({
     drawDefinition,
@@ -100,19 +98,15 @@ it('can correctly determine positions played off for FMLC', () => {
 });
 
 it('can correctly determine positions playedOff for FIRST_MATCH_LOSER_CONSOLATION', () => {
-  reset();
-  initialize();
-  mainDrawPositions({ drawSize: 16 });
-  const result = drawEngine.generateDrawTypeAndModifyDrawDefinition({
+  const drawDefinition: DrawDefinition = newDrawDefinition();
+  setStageDrawSize({ drawDefinition, stage: MAIN, drawSize: 16 });
+  const result = generateDrawTypeAndModifyDrawDefinition({
     drawType: FIRST_MATCH_LOSER_CONSOLATION,
+    drawDefinition,
   });
   expect(result.success).toEqual(true);
 
-  const {
-    structures: [{ structureId }],
-  } = result;
-
-  const { drawDefinition } = drawEngine.getState();
+  const structureId = drawDefinition.structures?.[0].structureId;
 
   const { playoffRounds, playoffRoundsRanges, positionsPlayedOff } =
     getAvailablePlayoffProfiles({
@@ -239,9 +233,7 @@ it('can accurately determine no playoff rounds available for MAIN draw of FIC', 
 
   const {
     structures: [mainStructure],
-  } = drawEngine
-    .setState(drawDefinition)
-    .getDrawStructures({ stage: MAIN, stageSequence: 1 });
+  } = getDrawStructures({ drawDefinition, stage: MAIN, stageSequence: 1 });
 
   const { structureId } = mainStructure;
   const result = tournamentEngine.getAvailablePlayoffProfiles({
@@ -269,9 +261,11 @@ it('can accurately determine available playoff rounds for CONSOLATION draw of FI
 
   const {
     structures: [consolationStructure],
-  } = drawEngine
-    .setState(drawDefinition)
-    .getDrawStructures({ stage: CONSOLATION, stageSequence: 1 });
+  } = getDrawStructures({
+    drawDefinition,
+    stage: CONSOLATION,
+    stageSequence: 1,
+  });
 
   const { structureId } = consolationStructure;
   const result = tournamentEngine.getAvailablePlayoffProfiles({
@@ -313,9 +307,11 @@ it('can generate only specified playoff rounds and give them custom names', () =
 
   const {
     structures: [consolationStructure],
-  } = drawEngine
-    .setState(drawDefinition)
-    .getDrawStructures({ stage: CONSOLATION, stageSequence: 1 });
+  } = getDrawStructures({
+    drawDefinition,
+    stage: CONSOLATION,
+    stageSequence: 1,
+  });
 
   const { structureId } = consolationStructure;
 
@@ -374,9 +370,11 @@ it('can use roundProfiles to specify depth of playoff structures', () => {
 
   const {
     structures: [consolationStructure],
-  } = drawEngine
-    .setState(drawDefinition)
-    .getDrawStructures({ stage: CONSOLATION, stageSequence: 1 });
+  } = getDrawStructures({
+    drawDefinition,
+    stage: CONSOLATION,
+    stageSequence: 1,
+  });
 
   const { structureId } = consolationStructure;
 
@@ -477,9 +475,7 @@ it('can determine available playoff rounds for CONSOLATION draw of FEED_IN', () 
 
   const {
     structures: [mainStructure],
-  } = drawEngine
-    .setState(drawDefinition)
-    .getDrawStructures({ stage: MAIN, stageSequence: 1 });
+  } = getDrawStructures({ drawDefinition, stage: MAIN, stageSequence: 1 });
 
   const { structureId } = mainStructure;
   const { playoffRounds } = tournamentEngine.getAvailablePlayoffProfiles({

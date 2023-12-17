@@ -1,7 +1,7 @@
 import { getSourceStructureIdsAndRelevantLinks } from '../../../getters/getSourceStructureIdsAndRelevantLinks';
 import { getStructureDrawPositionProfiles } from '../../../getters/getStructureDrawPositionProfiles';
 import { getAppliedPolicies } from '../../../../query/extensions/getAppliedPolicies';
-import { getStructureSeedAssignments } from '../../../getters/getStructureSeedAssignments';
+import { getStructureSeedAssignments } from '../../../../query/structure/getStructureSeedAssignments';
 import { getAssignedParticipantIds } from '../../../getters/getAssignedParticipantIds';
 import { getValidModifyAssignedPairAction } from './getValidModifyAssignedPairAction';
 import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';

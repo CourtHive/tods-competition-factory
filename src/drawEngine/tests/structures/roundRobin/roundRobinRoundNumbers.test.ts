@@ -1,8 +1,8 @@
+import { getRoundMatchUps } from '../../../../query/matchUps/getRoundMatchUps';
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import { generateRange } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
 import { expect, it, test } from 'vitest';
-import drawEngine from '../../../sync';
 
 import { ROUND_ROBIN } from '../../../../constants/drawDefinitionConstants';
 
@@ -55,6 +55,6 @@ function getRoundRobinRoundNumber({ groupSize }) {
   const { matchUps } = tournamentEngine
     .setState(tournamentRecord)
     .allTournamentMatchUps();
-  const { roundMatchUps } = drawEngine.getRoundMatchUps({ matchUps });
+  const roundMatchUps = getRoundMatchUps({ matchUps }).roundMatchUps ?? {};
   return Object.keys(roundMatchUps).map((n) => parseInt(n));
 }

@@ -1,13 +1,10 @@
 import competitionEngine from '../../competitionEngine/sync';
 import tournamentEngine from '../../tournamentEngine/sync';
-import drawEngine from '../../drawEngine/sync';
 import mocksEngine from '../../mocksEngine';
 import { expect, it } from 'vitest';
 
 it('can return version from all engines', () => {
-  let result = drawEngine.version();
-  expect(result).not.toBeUndefined();
-  result = tournamentEngine.version();
+  let result = tournamentEngine.version();
   expect(result).not.toBeUndefined();
   result = competitionEngine.version();
   expect(result).not.toBeUndefined();
@@ -16,9 +13,7 @@ it('can return version from all engines', () => {
 });
 
 it('can return credits from all engines', () => {
-  let result = drawEngine.credits();
-  expect(result).not.toBeUndefined();
-  result = tournamentEngine.credits();
+  let result = tournamentEngine.credits();
   expect(result).not.toBeUndefined();
   result = competitionEngine.credits();
   expect(result).not.toBeUndefined();

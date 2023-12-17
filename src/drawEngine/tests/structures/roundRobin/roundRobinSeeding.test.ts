@@ -1,4 +1,4 @@
-import { getStructureSeedAssignments } from '../../../getters/getStructureSeedAssignments';
+import { getStructureSeedAssignments } from '../../../../query/structure/getStructureSeedAssignments';
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import { chunkArray, unique } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';

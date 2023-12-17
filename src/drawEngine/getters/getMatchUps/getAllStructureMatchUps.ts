@@ -10,7 +10,7 @@ import { parse } from '../../../matchUpEngine/governors/matchUpFormatGovernor/pa
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { findParticipant } from '../../../global/functions/deducers/findParticipant';
 import { getMatchUpType } from '../../accessors/matchUpAccessor/getMatchUpType';
-import { getStructureSeedAssignments } from '../getStructureSeedAssignments';
+import { getStructureSeedAssignments } from '../../../query/structure/getStructureSeedAssignments';
 import { getExitProfiles } from '../../governors/queryGovernor/getExitProfile';
 import { getSourceDrawPositionRanges } from './getSourceDrawPositionRanges';
 import { attributeFilter, makeDeepCopy, unique } from '../../../utilities';

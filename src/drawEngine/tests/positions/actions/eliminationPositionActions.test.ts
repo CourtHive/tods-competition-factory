@@ -1,7 +1,6 @@
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import mocksEngine from '../../../../mocksEngine';
 import { expect, it, test } from 'vitest';
-import drawEngine from '../../../sync';
 
 import { SINGLES_EVENT } from '../../../../constants/eventConstants';
 import { MAIN } from '../../../../constants/drawDefinitionConstants';
@@ -63,9 +62,6 @@ it('can return accurate position details when requesting positionActions', () =>
   expect(result.isActiveDrawPosition).toEqual(false);
   expect(result.isDrawPosition).toEqual(true);
   expect(result.isByePosition).toEqual(false);
-
-  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
-  drawEngine.setState(drawDefinition);
 
   drawPosition = 2;
   result = tournamentEngine.positionActions({

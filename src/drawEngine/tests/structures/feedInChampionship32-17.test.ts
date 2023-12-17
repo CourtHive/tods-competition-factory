@@ -1,7 +1,7 @@
+import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { getDrawStructures } from '../../getters/findStructure';
 import tournamentEngine from '../../../tournamentEngine/sync';
 import mocksEngine from '../../../mocksEngine';
-import drawEngine from '../../sync';
 import { expect, it } from 'vitest';
 
 import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
@@ -42,18 +42,16 @@ it('correctly assigns BYE positions in consolation structure', () => {
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
   expect(result.success).toEqual(true);
 
-  drawEngine.setState(drawDefinition);
-
   const {
     structures: [consolationStructure],
   } = getDrawStructures({ drawDefinition, stage: CONSOLATION });
 
-  const { roundMatchUps } = drawEngine.getRoundMatchUps(consolationStructure);
-  const round1ByeCount = roundMatchUps[1].map(
+  const { roundMatchUps } = getRoundMatchUps(consolationStructure);
+  const round1ByeCount = roundMatchUps?.[1].map(
     (matchUp) => matchUp.matchUpStatus === BYE
   ).length;
   expect(round1ByeCount).toEqual(8);
-  const round2ByeCount = roundMatchUps[2].map(
+  const round2ByeCount = roundMatchUps?.[2].map(
     (matchUp) => matchUp.matchUpStatus === BYE
   ).length;
   expect(round2ByeCount).toEqual(8);

@@ -5,7 +5,7 @@ import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { assignMatchUpDrawPosition } from './assignMatchUpDrawPosition';
 import { modifyPositionAssignmentsNotice } from '../../notifications/drawNotifications';
-import { getStructureSeedAssignments } from '../../../drawEngine/getters/getStructureSeedAssignments';
+import { getStructureSeedAssignments } from '../../../query/structure/getStructureSeedAssignments';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { structureAssignedDrawPositions } from '../../../drawEngine/getters/positionsGetter';
 import { getInitialRoundNumber } from '../../../drawEngine/getters/getInitialRoundNumber';

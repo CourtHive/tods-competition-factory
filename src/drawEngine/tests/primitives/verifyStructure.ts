@@ -1,20 +1,17 @@
+import { getStructureSeedAssignments } from '../../../query/structure/getStructureSeedAssignments';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { getStructurePositionedSeeds } from '../../getters/getStructurePositionedSeeds';
-import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
-import { verifyDrawHierarchy } from './verifyDrawHierarchy';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getPairedDrawPosition } from '../../getters/getPairedDrawPosition';
 import { getNumericSeedValue } from '../../getters/getNumericSeedValue';
 import { chunkArray, generateRange } from '../../../utilities';
+import { verifyDrawHierarchy } from './verifyDrawHierarchy';
 import { findStructure } from '../../getters/findStructure';
 import { expect } from 'vitest';
-
-import { drawEngine } from '../../sync';
 
 import { STRUCTURE_NOT_FOUND } from '../../../constants/errorConditionConstants';
 
 export function verifyStructure(params) {
-  let { drawDefinition } = params;
   const {
     expectedPositionsAssignedCount,
     expectedQualifierAssignments,
@@ -23,12 +20,10 @@ export function verifyStructure(params) {
     expectedByeAssignments,
     expectedSeedsWithByes,
     hierarchyVerification,
+    drawDefinition,
     expectedSeeds,
     structureId,
   } = params;
-  if (!drawDefinition) {
-    ({ drawDefinition } = drawEngine.getState());
-  }
   const { structure } = findStructure({ drawDefinition, structureId });
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
   const { positionAssignments } = structureAssignedDrawPositions({ structure });

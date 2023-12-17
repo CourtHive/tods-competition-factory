@@ -1,4 +1,4 @@
-import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
+import { getStructureSeedAssignments } from '../../../query/structure/getStructureSeedAssignments';
 import { getFlightProfile } from '../../../query/event/getFlightProfile';
 import { modifySeedAssignmentsNotice } from '../../../mutate/notifications/drawNotifications';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';

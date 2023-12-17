@@ -43,6 +43,7 @@ import {
 type GenerateDrawTypeAndModify = {
   policyDefinitions?: PolicyDefinitions;
   appliedPolicies?: PolicyDefinitions;
+  finishingPositionLimit?: number;
   tournamentRecord?: Tournament;
   matchUpType?: EventTypeUnion;
   drawDefinition: DrawDefinition;

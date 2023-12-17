@@ -1,25 +1,24 @@
+import { generateDrawTypeAndModifyDrawDefinition } from '../../../governors/structureGovernor/generateDrawTypeAndModifyDrawDefinition';
 import { tallyParticipantResults } from '../../../../matchUpEngine/getters/roundRobinTally/roundRobinTally';
+import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
+import { setStageDrawSize } from '../../../governors/entryGovernor/stageEntryCounts';
 import { generateMatchUpOutcome } from '../../primitives/generateMatchUpOutcome';
 import { chunkArray, intersection } from '../../../../utilities/arrays';
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import { findStructure } from '../../../getters/findStructure';
 import matchUpEngine from '../../../../matchUpEngine/sync';
+import { newDrawDefinition } from '../../../stateMethods';
 import { setsValues } from './roundRobinSetsValues';
 import mocksEngine from '../../../../mocksEngine';
-import drawEngine from '../../../sync';
 import { expect, it } from 'vitest';
 import {
   allPlayoffPositionsFilled,
   isCompletedStructure,
 } from '../../../governors/queryGovernor/structureActions';
-import {
-  reset,
-  initialize,
-  mainDrawPositions,
-} from '../../primitives/primitives';
 
 import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
 import { SINGLES } from '../../../../constants/eventConstants';
+import { DrawDefinition } from '../../../../types/tournamentTypes';
 import {
   DRAW,
   MAIN,
@@ -37,94 +36,90 @@ const greenFlight = 'Green Flight';
 const goldFlight = 'Gold Flight';
 
 it('can generate Round Robins 32 with playoffs', () => {
-  reset();
-  initialize();
+  const drawDefinition: DrawDefinition = newDrawDefinition();
   const drawSize = 32;
+  setStageDrawSize({ drawDefinition, stage: MAIN, drawSize });
   const drawType = ROUND_ROBIN_WITH_PLAYOFF;
-  mainDrawPositions({ drawSize });
   const structureOptions = {
     playoffGroups: [
       { finishingPositions: [1], structureName: goldFlight },
       { finishingPositions: [2], structureName: silverFlight },
     ],
   };
-  const result = drawEngine
-    .devContext(true)
-    .generateDrawTypeAndModifyDrawDefinition({
-      structureOptions,
-      drawType,
-    });
+  const result = generateDrawTypeAndModifyDrawDefinition({
+    structureOptions,
+    drawDefinition,
+    drawType,
+  });
   const { structures: playoffStructures, links } = result;
-  const mainStructure = playoffStructures.shift();
-  expect(mainStructure.stage).toEqual(MAIN);
-  expect(mainStructure.structures.length).toEqual(8);
+  const mainStructure = playoffStructures?.shift();
+  expect(mainStructure?.stage).toEqual(MAIN);
+  expect(mainStructure?.structures?.length).toEqual(8);
 
-  expect(playoffStructures.length).toEqual(2);
-  expect(playoffStructures[0].structureName).toEqual(goldFlight);
-  expect(playoffStructures[1].structureName).toEqual(silverFlight);
+  expect(playoffStructures?.length).toEqual(2);
+  expect(playoffStructures?.[0].structureName).toEqual(goldFlight);
+  expect(playoffStructures?.[1].structureName).toEqual(silverFlight);
 
-  expect(playoffStructures[0].stage).toEqual(PLAY_OFF);
-  expect(playoffStructures[0].finishingPosition).toEqual(ROUND_OUTCOME);
-  expect(playoffStructures[0].matchUps.length).toEqual(7);
-  expect(playoffStructures[0].matchUps[0].finishingRound).toEqual(3);
+  expect(playoffStructures?.[0].stage).toEqual(PLAY_OFF);
+  expect(playoffStructures?.[0].finishingPosition).toEqual(ROUND_OUTCOME);
+  expect(playoffStructures?.[0].matchUps?.length).toEqual(7);
+  expect(playoffStructures?.[0].matchUps?.[0].finishingRound).toEqual(3);
 
-  expect(links.length).toEqual(2);
-  expect(links[0].linkType).toEqual(POSITION);
-  expect(links[0].source.finishingPositions).toMatchObject([1]);
-  expect(links[0].target.roundNumber).toEqual(1);
-  expect(links[0].target.feedProfile).toEqual(DRAW);
+  expect(links?.length).toEqual(2);
+  expect(links?.[0].linkType).toEqual(POSITION);
+  expect(links?.[0].source.finishingPositions).toMatchObject([1]);
+  expect(links?.[0].target.roundNumber).toEqual(1);
+  expect(links?.[0].target.feedProfile).toEqual(DRAW);
 
-  expect(links[1].linkType).toEqual(POSITION);
-  expect(links[1].source.finishingPositions).toMatchObject([2]);
-  expect(links[1].target.roundNumber).toEqual(1);
-  expect(links[1].target.feedProfile).toEqual(DRAW);
+  expect(links?.[1].linkType).toEqual(POSITION);
+  expect(links?.[1].source.finishingPositions).toMatchObject([2]);
+  expect(links?.[1].target.roundNumber).toEqual(1);
+  expect(links?.[1].target.feedProfile).toEqual(DRAW);
 });
 
 it('can generate Round Robins 16 with playoffs', () => {
-  reset();
-  initialize();
+  const drawDefinition: DrawDefinition = newDrawDefinition();
+  setStageDrawSize({ drawDefinition, stage: MAIN, drawSize: 16 });
   const drawType = ROUND_ROBIN_WITH_PLAYOFF;
-  mainDrawPositions({ drawSize: 16 });
   const structureOptions = {
     playoffGroups: [
       { finishingPositions: [1], structureName: goldFlight },
       { finishingPositions: [2], structureName: silverFlight },
     ],
   };
-  const result = drawEngine.generateDrawTypeAndModifyDrawDefinition({
+  const result = generateDrawTypeAndModifyDrawDefinition({
     structureOptions,
+    drawDefinition,
     drawType,
   });
 
   const { structures: playoffStructures, links } = result;
-  const mainStructure = playoffStructures.shift();
-  expect(mainStructure.stage).toEqual(MAIN);
-  expect(mainStructure.structures.length).toEqual(4);
+  const mainStructure = playoffStructures?.shift();
+  expect(mainStructure?.stage).toEqual(MAIN);
+  expect(mainStructure?.structures?.length).toEqual(4);
 
-  expect(playoffStructures.length).toEqual(2);
-  expect(playoffStructures[0].structureName).toEqual(goldFlight);
-  expect(playoffStructures[1].structureName).toEqual(silverFlight);
+  expect(playoffStructures?.length).toEqual(2);
+  expect(playoffStructures?.[0].structureName).toEqual(goldFlight);
+  expect(playoffStructures?.[1].structureName).toEqual(silverFlight);
 
-  expect(playoffStructures[0].stage).toEqual(PLAY_OFF);
-  expect(playoffStructures[0].finishingPosition).toEqual(ROUND_OUTCOME);
-  expect(playoffStructures[0].matchUps.length).toEqual(3);
-  expect(playoffStructures[0].matchUps[0].finishingRound).toEqual(2);
+  expect(playoffStructures?.[0].stage).toEqual(PLAY_OFF);
+  expect(playoffStructures?.[0].finishingPosition).toEqual(ROUND_OUTCOME);
+  expect(playoffStructures?.[0].matchUps?.length).toEqual(3);
+  expect(playoffStructures?.[0].matchUps?.[0].finishingRound).toEqual(2);
 
-  expect(links.length).toEqual(2);
-  expect(links[0].linkType).toEqual(POSITION);
-  expect(links[0].source.finishingPositions).toMatchObject([1]);
-  expect(links[0].target.roundNumber).toEqual(1);
-  expect(links[0].target.feedProfile).toEqual(DRAW);
+  expect(links?.length).toEqual(2);
+  expect(links?.[0].linkType).toEqual(POSITION);
+  expect(links?.[0].source.finishingPositions).toMatchObject([1]);
+  expect(links?.[0].target.roundNumber).toEqual(1);
+  expect(links?.[0].target.feedProfile).toEqual(DRAW);
 
-  expect(links[1].linkType).toEqual(POSITION);
-  expect(links[1].source.finishingPositions).toMatchObject([2]);
-  expect(links[1].target.roundNumber).toEqual(1);
-  expect(links[1].target.feedProfile).toEqual(DRAW);
+  expect(links?.[1].linkType).toEqual(POSITION);
+  expect(links?.[1].source.finishingPositions).toMatchObject([2]);
+  expect(links?.[1].target.roundNumber).toEqual(1);
+  expect(links?.[1].target.feedProfile).toEqual(DRAW);
 });
 
 it('can generate Round Robin with Playoffs', () => {
-  reset();
-  initialize();
   const drawSize = 20;
   const groupSize = 5;
   const drawType = ROUND_ROBIN_WITH_PLAYOFF;
@@ -162,8 +157,6 @@ it('can generate Round Robin with Playoffs', () => {
 });
 
 it('can advance players in Round Robin with Playoffs', () => {
-  reset();
-  initialize();
   const drawSize = 16;
   const groupSize = 4;
   const groupsCount = drawSize / groupSize;
@@ -369,8 +362,6 @@ it('can advance players in Round Robin with Playoffs', () => {
 });
 
 it('can advance players in Round Robin with Playoffs with 5 per playoff structure', () => {
-  reset();
-  initialize();
   const drawSize = 20;
   const groupSize = 4;
   const groupsCount = drawSize / groupSize;
@@ -472,29 +463,15 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
     expect(targetIsPlayoffStructure).toEqual(true);
   });
 
-  /*
-  // if FIRST_MATCH_LOSER_CONSOLATION
-  const consolationStructures = drawDefinition.structures.reduce(
-    (structures, structure) => {
-      return structure.stage === CONSOLATION
-        ? structures.concat(structure)
-        : structures;
-    },
-    []
-  );
-
-  expect(consolationStructures.length).toEqual(1);
-  expect(consolationStructures[0].structureId).toEqual(
-    loserLinks[0].target.structureId
-  );
-  */
-
   const { drawId } = drawDefinition;
-  const { matchUps: allStructureMatchUps } = drawEngine
-    .setState(drawDefinition)
-    .allStructureMatchUps({
-      structureId: mainStructure.structureId,
-    });
+
+  const structure = drawDefinition.structures.find(
+    ({ structureId }) => structureId === mainStructure.structureId
+  );
+  const allStructureMatchUps = getAllStructureMatchUps({
+    structure,
+  }).matchUps;
+
   const allStructureMatchUpsCount = allStructureMatchUps.length;
   const matchUpsPerStructure =
     allStructureMatchUpsCount / (drawSize / groupSize);

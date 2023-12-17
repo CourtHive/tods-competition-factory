@@ -1,15 +1,14 @@
-import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
-import { setSubscriptions } from '../../..';
-import { drawEngine } from '../../sync';
 import { expect, it } from 'vitest';
 
-drawEngine.devContext(true);
-
-import { ADD_MATCHUPS } from '../../../constants/topicConstants';
+import { DrawDefinition } from '../../../types/tournamentTypes';
 import {
   FIRST_MATCH_LOSER_CONSOLATION,
   MAIN,
 } from '../../../constants/drawDefinitionConstants';
+import { generateDrawTypeAndModifyDrawDefinition } from '../../governors/structureGovernor/generateDrawTypeAndModifyDrawDefinition';
+import { addPlayoffStructures } from '../../governors/structureGovernor/addPlayoffStructures';
+import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';
+import { newDrawDefinition } from '../../stateMethods';
 
 it('can add 3-4 playoff structure to a SINGLE ELIMINATION structure', () => {
   const { success, drawDefinition } = drawEngineAddStructuresTest({
@@ -18,24 +17,21 @@ it('can add 3-4 playoff structure to a SINGLE ELIMINATION structure', () => {
   });
   expect(success).toEqual(true);
   const { links, structures } = drawDefinition;
-  expect(links.length).toEqual(1);
-  expect(structures.length).toEqual(2);
+  expect(links?.length).toEqual(1);
+  expect(structures?.length).toEqual(2);
 });
 
 it('can add 5-8 playoff structure to a SINGLE ELIMINATION structure by playoffPositions', () => {
-  const { success, drawDefinition, matchUpAddNotices, allMatchUps } =
-    drawEngineAddStructuresTest({
-      playoffPositions: [5, 6, 7, 8],
-      drawSize: 16,
-    });
+  const { success, drawDefinition } = drawEngineAddStructuresTest({
+    playoffPositions: [5, 6, 7, 8],
+    drawSize: 16,
+  });
   expect(success).toEqual(true);
   const { links, structures } = drawDefinition;
-  expect(links.length).toEqual(2);
-  expect(structures.length).toEqual(3);
-  expect(matchUpAddNotices).toEqual([4]);
+  expect(links?.length).toEqual(2);
+  expect(structures?.length).toEqual(3);
 
   // because this is drawEngine there is no attachment of drawDefinition to a tournamentRecord
-  expect(allMatchUps.length).toEqual(4);
 });
 
 it('can add 5-8 playoff structure to a SINGLE ELIMINATION structure by a single playoff position', () => {
@@ -45,8 +41,8 @@ it('can add 5-8 playoff structure to a SINGLE ELIMINATION structure by a single 
   });
   expect(success).toEqual(true);
   const { links, structures } = drawDefinition;
-  expect(links.length).toEqual(2);
-  expect(structures.length).toEqual(3);
+  expect(links?.length).toEqual(2);
+  expect(structures?.length).toEqual(3);
 });
 
 it('can add 3-8 playoff structures to a SINGLE ELIMINATION by a single playoff position from each structure', () => {
@@ -56,8 +52,8 @@ it('can add 3-8 playoff structures to a SINGLE ELIMINATION by a single playoff p
   });
   expect(success).toEqual(true);
   const { links, structures } = drawDefinition;
-  expect(links.length).toEqual(3);
-  expect(structures.length).toEqual(4);
+  expect(links?.length).toEqual(3);
+  expect(structures?.length).toEqual(4);
 });
 
 it('can add 3-8 playoff structures to a SINGLE ELIMINATION by roundNumbers', () => {
@@ -67,19 +63,19 @@ it('can add 3-8 playoff structures to a SINGLE ELIMINATION by roundNumbers', () 
   });
   expect(success).toEqual(true);
   const { links, structures } = drawDefinition;
-  expect(links.length).toEqual(3);
-  expect(structures.length).toEqual(4);
+  expect(links?.length).toEqual(3);
+  expect(structures?.length).toEqual(4);
 });
 
 it('can add 5-8 playoff structure to a SINGLE ELIMINATION structure by roundNumbers', () => {
-  const { success, drawDefinition } = drawEngineAddStructuresTest({
+  const result = drawEngineAddStructuresTest({
     roundNumbers: [2],
     drawSize: 16,
   });
-  expect(success).toEqual(true);
-  const { links, structures } = drawDefinition;
-  expect(links.length).toEqual(2);
-  expect(structures.length).toEqual(3);
+  expect(result.success).toEqual(true);
+  const { links, structures } = result.drawDefinition;
+  expect(links?.length).toEqual(2);
+  expect(structures?.length).toEqual(3);
 });
 
 it('can add 3-4 playoff structure to a FIRST_MATCH_LOSER_CONSOLATION structure', () => {
@@ -90,44 +86,30 @@ it('can add 3-4 playoff structure to a FIRST_MATCH_LOSER_CONSOLATION structure',
   });
   expect(success).toEqual(true);
   const { links, structures } = drawDefinition;
-  expect(links.length).toEqual(3);
-  expect(structures.length).toEqual(3);
+  expect(links?.length).toEqual(3);
+  expect(structures?.length).toEqual(3);
 });
 
 function drawEngineAddStructuresTest(params) {
   const { playoffPositions, roundNumbers, drawSize, drawType } = params;
-  const matchUpAddNotices: any[] = [];
-  const allMatchUps: any[] = [];
 
-  const subscriptions = {
-    [ADD_MATCHUPS]: (payload) => {
-      if (Array.isArray(payload)) {
-        payload.forEach(({ matchUps }) => {
-          matchUpAddNotices.push(matchUps.length);
-          allMatchUps.push(...matchUps);
-        });
-      }
-    },
-  };
-
-  setSubscriptions({ subscriptions });
-
-  reset();
-  initialize();
-  mainDrawPositions({ drawSize });
-  let result = drawEngine.generateDrawTypeAndModifyDrawDefinition({ drawType });
+  const drawDefinition: DrawDefinition = newDrawDefinition();
+  setStageDrawSize({ drawDefinition, stage: MAIN, drawSize });
+  let result = generateDrawTypeAndModifyDrawDefinition({
+    drawDefinition,
+    drawType,
+  });
   expect(result.success).toEqual(true);
 
-  let { drawDefinition } = drawEngine.getState();
-  const mainStructure = drawDefinition.structures.find(
+  const mainStructure = drawDefinition.structures?.find(
     (structure) => structure.stage === MAIN
   );
-  result = drawEngine.addPlayoffStructures({
-    structureId: mainStructure.structureId,
+  result = addPlayoffStructures({
+    structureId: mainStructure?.structureId,
     playoffPositions,
+    drawDefinition,
     roundNumbers,
   });
-  ({ drawDefinition } = drawEngine.getState());
 
-  return { ...result, drawDefinition, allMatchUps, matchUpAddNotices };
+  return { ...result, drawDefinition };
 }

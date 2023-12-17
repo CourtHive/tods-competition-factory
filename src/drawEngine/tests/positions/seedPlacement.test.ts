@@ -2,7 +2,7 @@ import { initializeStructureSeedAssignments } from '../../governors/positionGove
 import { assignDrawPosition } from '../../../mutate/matchUps/drawPositions/positionAssignment';
 import { modifySeedAssignment } from '../../governors/entryGovernor/modifySeedAssignment';
 import { clearDrawPosition } from '../../../mutate/matchUps/drawPositions/positionClear';
-import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
+import { getStructureSeedAssignments } from '../../../query/structure/getStructureSeedAssignments';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { getNextSeedBlock, getValidSeedBlocks } from '../../getters/seedGetter';
 import { attachPolicies } from '../../governors/policyGovernor/attachPolicies';

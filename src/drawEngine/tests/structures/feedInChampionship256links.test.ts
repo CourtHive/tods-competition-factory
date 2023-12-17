@@ -1,6 +1,6 @@
+import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import tournamentEngine from '../../../tournamentEngine/sync';
 import mocksEngine from '../../../mocksEngine';
-import drawEngine from '../../sync';
 import { expect, it } from 'vitest';
 
 import {
@@ -155,9 +155,10 @@ it('can properly generate feed in championship links', () => {
     contextFilters: { stages: [MAIN] },
   });
 
-  const { roundMatchUps: mainDrawRoundMatchUps } = drawEngine.getRoundMatchUps({
-    matchUps: mainDrawMatchUps,
-  });
+  const mainDrawRoundMatchUps =
+    getRoundMatchUps({
+      matchUps: mainDrawMatchUps,
+    }).roundMatchUps ?? {};
 
   const { matchUps: consolationMatchUps } = tournamentEngine.allDrawMatchUps({
     drawId,
@@ -165,10 +166,10 @@ it('can properly generate feed in championship links', () => {
     contextFilters: { stages: [CONSOLATION] },
   });
 
-  const { roundMatchUps: consolationRoundMatchUps } =
-    drawEngine.getRoundMatchUps({
+  const consolationRoundMatchUps =
+    getRoundMatchUps({
       matchUps: consolationMatchUps,
-    });
+    }).roundMatchUps ?? {};
 
   const sourceRangeExpectations = [
     [1, 1, '1-2', '3-4'],
@@ -202,15 +203,16 @@ it('can properly generate feed in championship links', () => {
       targetRoundNumber,
       targetRoundPosition,
     ]) => {
-      const sourceMatchUp = mainDrawRoundMatchUps[sourceRoundNumber].find(
-        (matchUp) => matchUp.roundPosition === sourceRoundPosition
-      );
-      const sourceLosingParticipantId = sourceMatchUp.sides.find(
-        ({ sideNumber }) => sideNumber !== sourceMatchUp.winningSide
+      const sourceMatchUp: any =
+        mainDrawRoundMatchUps[sourceRoundNumber].find(
+          (matchUp) => matchUp.roundPosition === sourceRoundPosition
+        ) ?? {};
+      const sourceLosingParticipantId = sourceMatchUp?.sides?.find(
+        ({ sideNumber }) => sideNumber !== sourceMatchUp?.winningSide
       ).participantId;
-      const targetMatchUp = consolationRoundMatchUps[targetRoundNumber].find(
-        (matchUp) => matchUp.roundPosition === targetRoundPosition
-      );
+      const targetMatchUp: any = consolationRoundMatchUps[
+        targetRoundNumber
+      ].find((matchUp) => matchUp.roundPosition === targetRoundPosition);
       const targetFedParticipantId = targetMatchUp.sides.find(
         ({ sideNumber }) => sideNumber === 1
       ).participantId;

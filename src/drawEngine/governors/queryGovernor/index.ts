@@ -2,7 +2,7 @@ import { getEligibleVoluntaryConsolationParticipants } from './getEligibleVolunt
 import { generateTieMatchUpScore } from '../../../assemblies/generators/tieMatchUpScore/generateTieMatchUpScore';
 import { getNextUnfilledDrawPositions } from './positionActions/getNextUnfilledDrawPositions';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
-import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
+import { getStructureSeedAssignments } from '../../../query/structure/getStructureSeedAssignments';
 import { getStructureMatchUps } from '../../../query/structure/getStructureMatchUps';
 import { getMatchUpParticipantIds } from '../../../query/matchUp/getMatchUpParticipantIds';
 import { getEliminationDrawSize } from '../../getters/getEliminationDrawSize';
