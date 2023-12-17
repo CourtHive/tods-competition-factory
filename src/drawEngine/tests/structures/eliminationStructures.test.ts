@@ -1,4 +1,4 @@
-import { generateDrawTypeAndModifyDrawDefinition } from '../../../tournamentEngine/generators/generateDrawTypeAndModifyDrawDefinition';
+import { generateDrawTypeAndModifyDrawDefinition } from '../../governors/structureGovernor/generateDrawTypeAndModifyDrawDefinition';
 import { treeMatchUps } from '../../../assemblies/generators/drawDefinitions/drawTypes/eliminationTree';
 import { validDrawPositions } from '../../../validators/validDrawPositions';
 import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';

@@ -1,4 +1,4 @@
-import { generateDrawTypeAndModifyDrawDefinition } from '../../../tournamentEngine/generators/generateDrawTypeAndModifyDrawDefinition';
+import { generateDrawTypeAndModifyDrawDefinition } from '../../governors/structureGovernor/generateDrawTypeAndModifyDrawDefinition';
 import { initializeStructureSeedAssignments } from '../../governors/positionGovernor/initializeSeedAssignments';
 import { automatedPositioning } from '../../governors/positionGovernor/automatedPositioning';
 import { clearDrawPosition } from '../../../mutate/matchUps/drawPositions/positionClear';

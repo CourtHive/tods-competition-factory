@@ -63,6 +63,7 @@ import { getScaledEntries } from './entries/getScaledEntries';
 import { removeSeeding } from './entries/removeSeeding';
 import { autoSeeding } from './entries/autoSeeding';
 
+import { generateDrawTypeAndModifyDrawDefinition } from '../../../drawEngine/governors/structureGovernor/generateDrawTypeAndModifyDrawDefinition';
 import { addVoluntaryConsolationStructure } from '../../../drawEngine/generators/addVoluntaryConsolationStructure';
 import { resetVoluntaryConsolationStructure } from './drawDefinitions/resetVoluntaryConsolationStructure';
 import { deleteFlightProfileAndFlightDraws } from './drawDefinitions/deleteFlightProfileAndFlightDraws';
@@ -120,7 +121,6 @@ import { resetScorecard } from './resetScorecard';
 import { resetTieFormat } from '../../../mutate/tieFormat/resetTieFormat';
 
 import { validateCollectionDefinition } from '../../../validators/tieFormatUtilities';
-import { generateDrawTypeAndModifyDrawDefinition } from '../../generators/generateDrawTypeAndModifyDrawDefinition';
 import { getAssignedParticipantIds } from '../../../drawEngine/getters/getAssignedParticipantIds';
 import { generateDrawStructuresAndLinks } from '../../generators/generateDrawStructuresAndLinks';
 import { generateQualifyingStructure } from './drawDefinitions/generateQualifyingStructure';

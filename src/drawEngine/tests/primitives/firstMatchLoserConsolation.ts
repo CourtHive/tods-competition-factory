@@ -1,5 +1,10 @@
-import { generateDrawTypeAndModifyDrawDefinition } from '../../../tournamentEngine/generators/generateDrawTypeAndModifyDrawDefinition';
+import { generateDrawTypeAndModifyDrawDefinition } from '../../governors/structureGovernor/generateDrawTypeAndModifyDrawDefinition';
+import { initializeStructureSeedAssignments } from '../../governors/positionGovernor/initializeSeedAssignments';
+import { automatedPositioning } from '../../governors/positionGovernor/automatedPositioning';
+import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
 import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';
+import { addDrawEntries } from '../../governors/entryGovernor/addDrawEntries';
+import { assignSeed } from '../../governors/entryGovernor/seedAssignment';
 import { getDrawStructures } from '../../getters/findStructure';
 import { newDrawDefinition } from '../../stateMethods';
 import { generateRange } from '../../../utilities';
@@ -12,11 +17,6 @@ import {
 } from '../../../constants/drawDefinitionConstants';
 
 // NOTE: replace all other occurrences of this function with this one
-import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
-import { addDrawEntries } from '../../governors/entryGovernor/addDrawEntries';
-import { initializeStructureSeedAssignments } from '../../governors/positionGovernor/initializeSeedAssignments';
-import { assignSeed } from '../../governors/entryGovernor/seedAssignment';
-import { automatedPositioning } from '../../governors/positionGovernor/automatedPositioning';
 
 export function generateFMLC(params) {
   const { policyDefinitions, participantsCount, seedsCount, drawSize } = params;

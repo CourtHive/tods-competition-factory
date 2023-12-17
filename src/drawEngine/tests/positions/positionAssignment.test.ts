@@ -1,4 +1,4 @@
-import { generateDrawTypeAndModifyDrawDefinition } from '../../../tournamentEngine/generators/generateDrawTypeAndModifyDrawDefinition';
+import { generateDrawTypeAndModifyDrawDefinition } from '../../governors/structureGovernor/generateDrawTypeAndModifyDrawDefinition';
 import { assignDrawPosition } from '../../../mutate/matchUps/drawPositions/positionAssignment';
 import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';

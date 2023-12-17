@@ -1,7 +1,16 @@
+import { generateDrawTypeAndModifyDrawDefinition } from '../../governors/structureGovernor/generateDrawTypeAndModifyDrawDefinition';
+import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
+import { getStructureMatchUps } from '../../../query/structure/getStructureMatchUps';
+import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
+import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';
+import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
+import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { constantToString } from '../../../utilities/strings';
+import { newDrawDefinition } from '../../stateMethods';
 import { expect, it } from 'vitest';
 
 import { POLICY_ROUND_NAMING_DEFAULT } from '../../../fixtures/policies/POLICY_ROUND_NAMING_DEFAULT';
+import { DrawDefinition } from '../../../types/tournamentTypes';
 import {
   SINGLE_ELIMINATION,
   FEED_IN,
@@ -9,15 +18,6 @@ import {
   MAIN,
   OLYMPIC,
 } from '../../../constants/drawDefinitionConstants';
-import { newDrawDefinition } from '../../stateMethods';
-import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';
-import { generateDrawTypeAndModifyDrawDefinition } from '../../../tournamentEngine/generators/generateDrawTypeAndModifyDrawDefinition';
-import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
-import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
-import { getStructureMatchUps } from '../../../query/structure/getStructureMatchUps';
-import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
-import { DrawDefinition } from '../../../types/tournamentTypes';
-import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 
 it('can return matchUps with roundNames from an SINGLE_ELIMINATION structure', () => {
   const drawDefinition = newDrawDefinition();
