@@ -1,12 +1,14 @@
+import { generateDrawTypeAndModifyDrawDefinition } from '../../governors/structureGovernor/generateDrawTypeAndModifyDrawDefinition';
 import { getDrawData } from '../../../tournamentEngine/governors/publishingGovernor/getDrawData';
+import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
-import { feedInChampionship } from '../primitives/feedIn';
 import { feedInMatchUps } from '../../generators/feedInMatchUps';
+import { feedInChampionship } from '../primitives/feedIn';
+import { newDrawDefinition } from '../../stateMethods';
 import { generateRange } from '../../../utilities';
-import { drawEngine } from '../../sync';
 import { expect, it } from 'vitest';
-import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
 
+import { DrawDefinition } from '../../../types/tournamentTypes';
 import {
   TOP_DOWN,
   BOTTOM_UP,
@@ -19,13 +21,13 @@ import {
 } from '../../../constants/drawDefinitionConstants';
 
 it('can generate structured entry draw', () => {
-  reset();
-  initialize();
-  mainDrawPositions({ drawSize: 31 });
-  const {
-    structures: [structure],
-  } = drawEngine.generateDrawTypeAndModifyDrawDefinition({ drawType: FEED_IN });
-  const { matchUps } = structure;
+  const drawDefinition: DrawDefinition = newDrawDefinition();
+  setStageDrawSize({ drawDefinition, stage: 'MAIN', drawSize: 31 });
+  const structure = generateDrawTypeAndModifyDrawDefinition({
+    drawDefinition,
+    drawType: FEED_IN,
+  })?.structures?.[0];
+  const matchUps = structure?.matchUps ?? [];
   const matchUpsCount = matchUps.length;
   expect(matchUpsCount).toEqual(30);
 
@@ -63,20 +65,20 @@ it('can generate structured entry draw', () => {
   ];
 
   matchUps.forEach((matchUp, i) => {
-    expect(matchUp.drawPositions.filter(Boolean)).toMatchObject(
+    expect(matchUp.drawPositions?.filter(Boolean)).toMatchObject(
       drawPositions[i]
     );
   });
 });
 
 it('generates structured entry draw with expected finishing drawPositions', () => {
-  reset();
-  initialize();
-  mainDrawPositions({ drawSize: 31 });
-  const {
-    structures: [structure],
-  } = drawEngine.generateDrawTypeAndModifyDrawDefinition({ drawType: FEED_IN });
-  const { matchUps } = structure;
+  const drawDefinition: DrawDefinition = newDrawDefinition();
+  setStageDrawSize({ drawDefinition, stage: 'MAIN', drawSize: 31 });
+  const structure = generateDrawTypeAndModifyDrawDefinition({
+    drawDefinition,
+    drawType: FEED_IN,
+  })?.structures?.[0];
+  const matchUps = structure?.matchUps ?? [];
   const matchUpsCount = matchUps.length;
   expect(matchUpsCount).toEqual(30);
 
@@ -92,24 +94,27 @@ it('generates structured entry draw with expected finishing drawPositions', () =
   ];
 
   matchUps.forEach((matchUp) => {
-    const roundIndex = matchUp.roundNumber - 1;
-    const expectedLoserRange = finishingPositionRanges[roundIndex].loser;
-    const expectedWinnerRange = finishingPositionRanges[roundIndex].winner;
-    expect(matchUp.finishingPositionRange.loser).toMatchObject(
-      expectedLoserRange
-    );
-    expect(matchUp.finishingPositionRange.winner).toMatchObject(
-      expectedWinnerRange
-    );
+    const roundIndex = matchUp.roundNumber && matchUp.roundNumber - 1;
+    if (roundIndex !== undefined) {
+      const expectedLoserRange = finishingPositionRanges[roundIndex].loser;
+      const expectedWinnerRange = finishingPositionRanges[roundIndex].winner;
+      expect(matchUp.finishingPositionRange?.loser).toMatchObject(
+        expectedLoserRange
+      );
+      expect(matchUp.finishingPositionRange?.winner).toMatchObject(
+        expectedWinnerRange
+      );
+    }
   });
 });
 
 it('can generate FEED_IN_CHAMPIONSHIP with drawSize: 16', () => {
   const drawSize = 16;
-  const { links, mainDrawMatchUps, consolationMatchUps } = feedInChampionship({
-    drawType: FEED_IN_CHAMPIONSHIP,
-    drawSize,
-  });
+  const { links, mainDrawMatchUps, consolationMatchUps } =
+    feedInChampionship({
+      drawType: FEED_IN_CHAMPIONSHIP,
+      drawSize,
+    }) ?? {};
 
   expect(mainDrawMatchUps.length).toEqual(drawSize - 1);
   expect(consolationMatchUps.length).toEqual(drawSize - 2);

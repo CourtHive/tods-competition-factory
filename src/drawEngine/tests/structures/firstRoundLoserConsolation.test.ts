@@ -3,7 +3,6 @@ import { getDrawStructures } from '../../getters/findStructure';
 import tournamentEngine from '../../../tournamentEngine/sync';
 import { instanceCount } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
-import drawEngine from '../../sync';
 import { expect, it } from 'vitest';
 
 import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
@@ -42,8 +41,6 @@ it('correctly assigns positions for Elimination structure', () => {
   });
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
   expect(result.success).toEqual(true);
-
-  drawEngine.setState(drawDefinition);
 
   const {
     structures: [structure],
@@ -84,8 +81,6 @@ it('correctly assigns BYE positions in consolation structure', () => {
   });
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
   expect(result.success).toEqual(true);
-
-  drawEngine.setState(drawDefinition);
 
   const {
     structures: [mainStructure, consolationStructure],
@@ -149,8 +144,6 @@ it('correctly assigns BYE positions in consolation structure', () => {
   });
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
   expect(result.success).toEqual(true);
-
-  drawEngine.setState(drawDefinition);
 
   const {
     structures: [mainStructure, consolationStructure],

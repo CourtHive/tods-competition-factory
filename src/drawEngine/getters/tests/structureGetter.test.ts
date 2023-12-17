@@ -1,15 +1,13 @@
+import { generateDrawTypeAndModifyDrawDefinition } from '../../governors/structureGovernor/generateDrawTypeAndModifyDrawDefinition';
+import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';
 import { feedInChampionship } from '../../tests/primitives/feedIn';
 import { findStructure, getDrawStructures } from '../findStructure';
 import { constantToString } from '../../../utilities/strings';
-import { drawEngine } from '../../sync';
+import { newDrawDefinition } from '../../stateMethods';
 import { expect, it } from 'vitest';
-import {
-  reset,
-  initialize,
-  mainDrawPositions,
-} from '../../tests/primitives/primitives';
 
 import { ERROR } from '../../../constants/resultConstants';
+import { DrawDefinition } from '../../../types/tournamentTypes';
 import {
   COMPASS,
   FEED_IN_CHAMPIONSHIP,
@@ -18,11 +16,12 @@ import {
 } from '../../../constants/drawDefinitionConstants';
 
 it('can find structures by structureId', () => {
-  reset();
-  initialize();
-  mainDrawPositions({ drawSize: 32 });
-  drawEngine.generateDrawTypeAndModifyDrawDefinition({ drawType: COMPASS });
-  const { drawDefinition } = drawEngine.getState();
+  const drawDefinition: DrawDefinition = newDrawDefinition();
+  setStageDrawSize({ drawDefinition, stage: MAIN, drawSize: 32 });
+  generateDrawTypeAndModifyDrawDefinition({
+    drawDefinition,
+    drawType: COMPASS,
+  });
   const { structures } = getDrawStructures({ drawDefinition, stage: MAIN });
   const structureIdMap = Object.assign(
     {},
@@ -37,11 +36,12 @@ it('can find structures by structureId', () => {
 });
 
 it('can find structures by stage and stageSequence', () => {
-  reset();
-  initialize();
-  mainDrawPositions({ drawSize: 32 });
-  drawEngine.generateDrawTypeAndModifyDrawDefinition({ drawType: COMPASS });
-  const { drawDefinition } = drawEngine.getState();
+  const drawDefinition: DrawDefinition = newDrawDefinition();
+  setStageDrawSize({ drawDefinition, stage: MAIN, drawSize: 32 });
+  generateDrawTypeAndModifyDrawDefinition({
+    drawDefinition,
+    drawType: COMPASS,
+  });
 
   const { structures: stage2Structures } = getDrawStructures({
     drawDefinition,
@@ -81,8 +81,10 @@ it('can find structures by stage and stageSequence', () => {
 });
 
 it('can find structures by stage', () => {
-  feedInChampionship({ drawSize: 16, drawType: FEED_IN_CHAMPIONSHIP });
-  const { drawDefinition } = drawEngine.getState();
+  const { drawDefinition } = feedInChampionship({
+    drawSize: 16,
+    drawType: FEED_IN_CHAMPIONSHIP,
+  });
   const {
     structures: [structure],
   } = getDrawStructures({ drawDefinition, stage: MAIN });

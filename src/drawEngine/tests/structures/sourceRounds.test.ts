@@ -1,28 +1,26 @@
+import { generateDrawTypeAndModifyDrawDefinition } from '../../governors/structureGovernor/generateDrawTypeAndModifyDrawDefinition';
 import { getSourceRounds } from '../../governors/structureGovernor/getSourceRounds';
-import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
-import { drawEngine } from '../../sync';
+import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';
+import { newDrawDefinition } from '../../stateMethods';
 import { it, expect } from 'vitest';
 
 import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../constants/drawDefinitionConstants';
+import { DrawDefinition } from '../../../types/tournamentTypes';
 
 it('can correctly derive source rounds for final positions in SINGLE_ELIMINATION', () => {
-  reset();
-  initialize();
-  mainDrawPositions({ drawSize: 16 });
-  const result = drawEngine.generateDrawTypeAndModifyDrawDefinition();
+  const drawDefinition: DrawDefinition = newDrawDefinition();
+  setStageDrawSize({ drawDefinition, stage: 'MAIN', drawSize: 16 });
+  const result = generateDrawTypeAndModifyDrawDefinition({ drawDefinition });
   expect(result.success).toEqual(true);
 
-  const { drawDefinition } = drawEngine.getState();
-
-  const {
-    structures: [{ structureId }],
-  } = result;
+  const structureId = result.structures?.[0].structureId ?? '';
 
   const srResult = getSourceRounds({
     playoffPositions: [1],
-    structureId,
     drawDefinition,
+    structureId,
   });
+
   let {
     sourceRounds,
     playoffRoundsRanges,
@@ -76,17 +74,15 @@ it('can correctly derive source rounds for final positions in SINGLE_ELIMINATION
 });
 
 it('can correctly derive source rounds for final positions in FIRST_MATCH_LOSER_CONSOLATION', () => {
-  reset();
-  initialize();
-  mainDrawPositions({ drawSize: 16 });
-  const result = drawEngine.generateDrawTypeAndModifyDrawDefinition({
+  const drawDefinition: DrawDefinition = newDrawDefinition();
+  setStageDrawSize({ drawDefinition, stage: 'MAIN', drawSize: 16 });
+  const result = generateDrawTypeAndModifyDrawDefinition({
+    drawDefinition,
     drawType: FIRST_MATCH_LOSER_CONSOLATION,
   });
   expect(result.success).toEqual(true);
 
-  const { drawDefinition } = drawEngine.getState();
-
-  const { structures } = result;
+  const structures = result?.structures ?? [];
   const [
     { structureId: mainStructureId },
     { structureId: consolationStructureId },
