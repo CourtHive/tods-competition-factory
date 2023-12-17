@@ -14,7 +14,7 @@ import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts
 import { generateDrawTypeAndModifyDrawDefinition } from '../../../tournamentEngine/generators/generateDrawTypeAndModifyDrawDefinition';
 import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
-import { getStructureMatchUps } from '../../getters/getMatchUps/getStructureMatchUps';
+import { getStructureMatchUps } from '../../../query/structure/getStructureMatchUps';
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 import { DrawDefinition } from '../../../types/tournamentTypes';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';

@@ -1,5 +1,5 @@
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
-import { getStructureMatchUps } from '../../../getters/getMatchUps/getStructureMatchUps';
+import { getStructureMatchUps } from '../../../../query/structure/getStructureMatchUps';
 import { getInitialRoundNumber } from '../../../getters/getInitialRoundNumber';
 import { findStructure } from '../../../getters/findStructure';
 

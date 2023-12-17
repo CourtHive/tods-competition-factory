@@ -1,4 +1,4 @@
-import { getStructureMatchUps } from '../../getters/getMatchUps/getStructureMatchUps';
+import { getStructureMatchUps } from '../../../query/structure/getStructureMatchUps';
 import { positionTargets } from '../../../mutate/matchUps/drawPositions/positionTargets';
 import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';

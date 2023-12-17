@@ -3,7 +3,7 @@ import { generateTieMatchUpScore } from '../../../assemblies/generators/tieMatch
 import { getNextUnfilledDrawPositions } from './positionActions/getNextUnfilledDrawPositions';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
-import { getStructureMatchUps } from '../../getters/getMatchUps/getStructureMatchUps';
+import { getStructureMatchUps } from '../../../query/structure/getStructureMatchUps';
 import { getMatchUpParticipantIds } from '../../../query/matchUp/getMatchUpParticipantIds';
 import { getEliminationDrawSize } from '../../getters/getEliminationDrawSize';
 import { getParticipantIdFinishingPositions } from './finishingPositions';

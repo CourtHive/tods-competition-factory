@@ -1,137 +1,115 @@
-import definitionTemplate from '../generators/drawDefinitionTemplate';
-import { reset, initialize } from './primitives/primitives';
-import drawEngineAsync from '../async';
-import drawEngine from '../sync';
 import { it, expect } from 'vitest';
 
+import { ERROR, SUCCESS } from '../../constants/resultConstants';
 import {
   MAIN,
   QUALIFYING,
   CONSOLATION,
 } from '../../constants/drawDefinitionConstants';
-import { ERROR, SUCCESS } from '../../constants/resultConstants';
+import { newDrawDefinition } from '../stateMethods';
+import {
+  setStageAlternatesCount,
+  setStageDrawSize,
+  setStageQualifiersCount,
+  setStageWildcardsCount,
+} from '../governors/entryGovernor/stageEntryCounts';
+import { DrawDefinition } from '../../types/tournamentTypes';
 
-const asyncDrawEngine = drawEngineAsync(true);
 let result;
 
-it('can initialize', () => {
-  initialize();
-});
-
-it.each([drawEngine, asyncDrawEngine])(
-  'can load definition',
-  async (drawEngine) => {
-    result = await drawEngine.setState(definitionTemplate());
-    expect(result).toHaveProperty(ERROR);
-    const template = { ...definitionTemplate(), drawId: 'foo' };
-    drawEngine.setState(template);
-    ({ drawDefinition: result } = await drawEngine.getState());
-    expect(result).toHaveProperty('drawId');
-    expect(result.drawId).toEqual('foo');
-  }
-);
-
-it('can reset state', () => {
-  reset();
-});
-
 it('can configure drawSize for all stages', () => {
-  reset();
-  initialize({ drawId: 'uuid-abc' });
-  result = drawEngine.setStageDrawSize({ stage: QUALIFYING, drawSize: 8 });
+  const drawDefinition: DrawDefinition = newDrawDefinition();
+  result = setStageDrawSize({ drawDefinition, stage: QUALIFYING, drawSize: 8 });
   expect(result).toMatchObject(SUCCESS);
-  result = drawEngine.setStageDrawSize({ stage: MAIN, drawSize: 8 });
+  result = setStageDrawSize({ drawDefinition, stage: MAIN, drawSize: 8 });
   expect(result).toMatchObject(SUCCESS);
-  result = drawEngine.setStageDrawSize({ stage: CONSOLATION, drawSize: 8 });
+  result = setStageDrawSize({
+    drawDefinition,
+    stage: CONSOLATION,
+    drawSize: 8,
+  });
   expect(result).toMatchObject(SUCCESS);
-  result = drawEngine.setStageDrawSize({ stage: 'INVALID', drawSize: 8 });
+  result = setStageDrawSize({ drawDefinition, stage: 'INVALID', drawSize: 8 });
   expect(result).toHaveProperty(ERROR);
 
-  result = drawEngine.setStageAlternatesCount({
+  result = setStageAlternatesCount({
+    alternatesCount: 8,
     stage: QUALIFYING,
-    alternatesCount: 8,
+    drawDefinition,
   });
   expect(result).toMatchObject(SUCCESS);
-  result = drawEngine.setStageAlternatesCount({
+  result = setStageAlternatesCount({
+    alternatesCount: 8,
+    drawDefinition,
     stage: MAIN,
-    alternatesCount: 8,
   });
   expect(result).toMatchObject(SUCCESS);
-  result = drawEngine.setStageAlternatesCount({
+  result = setStageAlternatesCount({
     stage: CONSOLATION,
     alternatesCount: 8,
+    drawDefinition,
   });
   expect(result).toMatchObject(SUCCESS);
-  result = drawEngine.setStageAlternatesCount({
-    stage: 'INVALID',
+  result = setStageAlternatesCount({
     alternatesCount: 8,
-  });
-  expect(result).toHaveProperty(ERROR);
-
-  result = drawEngine.setStageWildcardsCount({
-    stage: QUALIFYING,
-    wildcardsCount: 8,
-  });
-  expect(result).toMatchObject(SUCCESS);
-  result = drawEngine.setStageWildcardsCount({
-    stage: MAIN,
-    wildcardsCount: 8,
-  });
-  expect(result).toMatchObject(SUCCESS);
-  result = drawEngine.setStageWildcardsCount({
-    stage: CONSOLATION,
-    wildcardsCount: 8,
-  });
-  expect(result).toMatchObject(SUCCESS);
-  result = drawEngine.setStageWildcardsCount({
     stage: 'INVALID',
-    wildcardsCount: 8,
+    drawDefinition,
   });
   expect(result).toHaveProperty(ERROR);
 
-  result = drawEngine.setStageQualifiersCount({
+  result = setStageWildcardsCount({
     stage: QUALIFYING,
-    qualifiersCount: 8,
-  });
-  expect(result).toHaveProperty(ERROR);
-  result = drawEngine.setStageQualifiersCount({
-    stage: MAIN,
-    qualifiersCount: 8,
+    wildcardsCount: 8,
+    drawDefinition,
   });
   expect(result).toMatchObject(SUCCESS);
-  result = drawEngine.setStageQualifiersCount({
+  result = setStageWildcardsCount({
+    wildcardsCount: 8,
+    drawDefinition,
+    stage: MAIN,
+  });
+  expect(result).toMatchObject(SUCCESS);
+  result = setStageWildcardsCount({
     stage: CONSOLATION,
-    qualifiersCount: 8,
+    wildcardsCount: 8,
+    drawDefinition,
+  });
+  expect(result).toMatchObject(SUCCESS);
+  result = setStageWildcardsCount({
+    stage: 'INVALID',
+    wildcardsCount: 8,
+    drawDefinition,
   });
   expect(result).toHaveProperty(ERROR);
-  result = drawEngine.setStageQualifiersCount({
-    stage: 'INVALID',
+
+  result = setStageQualifiersCount({
+    stage: QUALIFYING,
     qualifiersCount: 8,
+    drawDefinition,
+  });
+  expect(result).toHaveProperty(ERROR);
+  result = setStageQualifiersCount({
+    qualifiersCount: 8,
+    drawDefinition,
+    stage: MAIN,
+  });
+  expect(result).toMatchObject(SUCCESS);
+  result = setStageQualifiersCount({
+    stage: CONSOLATION,
+    qualifiersCount: 8,
+    drawDefinition,
+  });
+  expect(result).toHaveProperty(ERROR);
+  result = setStageQualifiersCount({
+    qualifiersCount: 8,
+    stage: 'INVALID',
+    drawDefinition,
   });
   expect(result).toHaveProperty(ERROR);
 });
 
 it('can initialize, setState, and query', () => {
-  result = drawEngine.reset();
-  expect(result).toMatchObject(SUCCESS);
-  initialize({ drawId: 'uuid-xyz' });
-  const { drawDefinition } = drawEngine.getState();
-  drawEngine.reset();
-  const { drawDefinition: drawDefinitionCopy } = drawEngine
-    .setState(drawDefinition)
-    .getState();
-  const { drawId } = drawDefinitionCopy;
+  const drawDefinition = newDrawDefinition({ drawId: 'uuid-xyz' });
+  const { drawId } = drawDefinition;
   expect(drawId).toEqual('uuid-xyz');
 });
-
-it.each([drawEngine, asyncDrawEngine])(
-  'can set draw description',
-  async (drawEngine) => {
-    const drawDescription = 'Draw Description';
-    await drawEngine
-      .devContext(true) // true to test coverage
-      .setDrawDescription({ description: drawDescription });
-    const { drawDefinition: state } = await drawEngine.getState();
-    expect(state.description).toEqual(drawDescription);
-  }
-);

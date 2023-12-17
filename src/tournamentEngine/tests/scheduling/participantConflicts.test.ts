@@ -1,7 +1,6 @@
-import { getMatchUpIds } from '../../../global/functions/extractors';
+import { getRoundMatchUps } from '../../governors/queryGovernor/getRoundMatchUps';
 import { eventConstants } from '../../../constants/eventConstants';
 import competitionEngine from '../../../competitionEngine/sync';
-import drawEngine from '../../../drawEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import { tournamentEngine } from '../../sync';
 import { expect, test } from 'vitest';
@@ -42,14 +41,14 @@ test('recognizes scheduling conflicts', () => {
   let { matchUps } = competitionEngine.allCompetitionMatchUps({
     contextFilters: { eventIds: [eventIds[0]] },
   });
-  let { roundMatchUps } = drawEngine.getRoundMatchUps({ matchUps });
+  let roundMatchUps: any = getRoundMatchUps({ matchUps }).roundMatchUps;
 
   const scheduledDate = '2021-01-01';
   let schedule = {
     scheduledTime: '08:00',
     scheduledDate,
   };
-  let matchUpIds = getMatchUpIds(roundMatchUps[1]);
+  let matchUpIds = roundMatchUps[1].map(({ matchUpId }) => matchUpId);
   let result = tournamentEngine.bulkScheduleMatchUps({ matchUpIds, schedule });
   expect(result.success).toEqual(true);
 
@@ -57,7 +56,7 @@ test('recognizes scheduling conflicts', () => {
     scheduledTime: '09:00',
     scheduledDate,
   };
-  matchUpIds = getMatchUpIds(roundMatchUps[2]);
+  matchUpIds = roundMatchUps[2].map(({ matchUpId }) => matchUpId);
   result = tournamentEngine.bulkScheduleMatchUps({ matchUpIds, schedule });
   expect(result.success).toEqual(true);
 
@@ -70,7 +69,7 @@ test('recognizes scheduling conflicts', () => {
     true
   );
 
-  ({ roundMatchUps } = drawEngine.getRoundMatchUps({ matchUps }));
+  ({ roundMatchUps } = getRoundMatchUps({ matchUps }));
   roundMatchUps[1].forEach((firstRoundMatchUp) => {
     expect(typeof firstRoundMatchUp.winnerTo.schedule.scheduleConflict).toEqual(
       'string'

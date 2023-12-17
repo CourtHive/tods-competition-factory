@@ -1,5 +1,5 @@
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
-import { getStructureMatchUps } from '../../getters/getMatchUps/getStructureMatchUps';
+import { getStructureMatchUps } from '../../../query/structure/getStructureMatchUps';
 import { setMatchUpFormat } from '../../../mutate/matchUps/matchUpFormat/setMatchUpFormat';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { getMatchUpType } from '../../accessors/matchUpAccessor';

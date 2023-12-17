@@ -1,6 +1,6 @@
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
-import { getStructureMatchUps } from '../../getters/getMatchUps/getStructureMatchUps';
+import { getStructureMatchUps } from '../../../query/structure/getStructureMatchUps';
 import { parseScoreString } from '../../../mocksEngine/utilities/parseScoreString';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { findStructure } from '../../getters/findStructure';

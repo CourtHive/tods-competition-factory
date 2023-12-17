@@ -3,7 +3,7 @@ import { addUpcomingMatchUps } from '../../governors/matchUpGovernor/addUpcoming
 import { getContextContent } from '../../../tournamentEngine/getters/getContextContent';
 import { getExitProfiles } from '../../governors/queryGovernor/getExitProfile';
 import { MatchUpsMap, getMatchUpsMap } from './getMatchUpsMap';
-import { getStructureMatchUps } from './getStructureMatchUps';
+import { getStructureMatchUps } from '../../../query/structure/getStructureMatchUps';
 import { getDrawStructures } from '../findStructure';
 import { filterMatchUps } from './filterMatchUps';
 import {

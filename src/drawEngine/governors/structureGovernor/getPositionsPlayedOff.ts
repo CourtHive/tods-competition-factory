@@ -1,4 +1,4 @@
-import { getStructureRoundProfile } from '../../getters/getMatchUps/getStructureRoundProfile';
+import { getStructureRoundProfile } from '../../../query/structure/getStructureRoundProfile';
 import { numericSort, unique } from '../../../utilities';
 import { roundValueRanges } from './structureUtils';
 
