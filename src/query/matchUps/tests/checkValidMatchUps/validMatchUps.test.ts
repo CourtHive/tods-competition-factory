@@ -1,4 +1,4 @@
-import { validDrawPositions } from '../../../../drawEngine/governors/matchUpGovernor/validDrawPositions';
+import { validDrawPositions } from '../../../../validators/validDrawPositions';
 import { getAllDrawMatchUps } from '../../../../drawEngine/getters/getMatchUps/drawMatchUps';
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import { expect, it } from 'vitest';

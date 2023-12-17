@@ -12,7 +12,7 @@ import { removeDelegatedOutcome } from '../../../mutate/matchUps/extensions/remo
 import { drawMatic } from '../../../assemblies/generators/drawDefinitions/drawMatic/drawMatic';
 import { setDelegatedOutcome } from './setDelegatedOutcome';
 import { updateTieMatchUpScore } from '../../../mutate/matchUps/score/tieMatchUpScore';
-import { validDrawPositions } from './validDrawPositions';
+import { validDrawPositions } from '../../../validators/validDrawPositions';
 import { disableTieAutoCalc } from '../../../mutate/matchUps/extensions/disableTieAutoCalc';
 import { enableTieAutoCalc } from './enableTieAutoCalc';
 import { setMatchUpStatus } from '../../../mutate/matchUps/matchUpStatus/setMatchUpStatus';

@@ -52,4 +52,3 @@ Each of these methods can accept `policyDefinitions` as a parameter.
 - [tournamentEngine.positionActions](../apis/tournament-engine-api) - can modify the avialable actions
 - [tournamentEngine.tournamentParticipants](../apis/tournament-engine-api) - used to filter participant attributes
 - [tournamentEngine.publishEvent](../apis/tournament-engine-api) - used to filter particpant attributes and/or provide round naming values
-- [drawEngine.positionActions](../apis/draw-engine-api) - can modify the avialable actions
