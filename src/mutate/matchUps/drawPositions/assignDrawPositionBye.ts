@@ -209,11 +209,12 @@ export function assignDrawPositionBye({
       ({ drawPositions }) => drawPositions?.includes(drawPosition)
     );
 
-  setMatchUpStatusBYE({ tournamentRecord, drawDefinition, matchUp, event });
+  matchUp &&
+    setMatchUpStatusBYE({ tournamentRecord, drawDefinition, matchUp, event });
 
-  const drawPositionToAdvance = matchUp.drawPositions?.find(
-    (position) => position !== drawPosition
-  );
+  const drawPositionToAdvance =
+    matchUp &&
+    matchUp.drawPositions?.find((position) => position !== drawPosition);
 
   if (drawPositionToAdvance) {
     const result = advanceDrawPosition({

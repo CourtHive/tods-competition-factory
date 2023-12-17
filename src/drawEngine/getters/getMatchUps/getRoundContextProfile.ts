@@ -25,7 +25,7 @@ export function getRoundContextProfile({
   roundNamingProfile?: {
     [key: string]: { roundName: string; abbreviatedRoundName: string };
   };
-  roundMatchUps?: HydratedMatchUp[];
+  roundMatchUps?: { [roundNumber: string]: HydratedMatchUp[] };
   roundProfile?: RoundProfile;
 } {
   const { roundProfile, roundMatchUps } = getRoundMatchUps({ matchUps });

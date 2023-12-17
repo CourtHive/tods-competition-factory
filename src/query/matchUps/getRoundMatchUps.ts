@@ -24,7 +24,7 @@ type GetRoundMatchUpsArgs = {
 };
 
 export type RoundMatchUpsResult = {
-  roundMatchUps?: HydratedMatchUp[];
+  roundMatchUps?: { [roundNumber: number]: HydratedMatchUp[] };
   hasNoRoundPositions?: boolean;
   roundsNotPowerOf2?: boolean;
   maxMatchUpsCount?: number;

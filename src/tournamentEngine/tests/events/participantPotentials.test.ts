@@ -1,5 +1,5 @@
 import { generateTournamentRecord } from '../../../mocksEngine/generators/generateTournamentRecord';
-import drawEngine from '../../../drawEngine/sync';
+import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 import { expect, it } from 'vitest';
@@ -31,7 +31,7 @@ it('can return event matchUps with potential participants', () => {
     drawId,
   });
 
-  const { roundMatchUps } = drawEngine.getRoundMatchUps({ matchUps });
+  const roundMatchUps: any = getRoundMatchUps({ matchUps }).roundMatchUps;
 
   const winnerMatchUpId = roundMatchUps[2][0].winnerMatchUpId;
   const winnerToMatchUpId = roundMatchUps[2][0].winnerTo.matchUpId;
@@ -90,9 +90,9 @@ it('handles potential BYES for FMLC consolation structures', () => {
   const consolationMatchUps = matchUps.filter(
     ({ stage }) => stage === CONSOLATION
   );
-  const { roundMatchUps } = drawEngine.getRoundMatchUps({
+  const roundMatchUps: any = getRoundMatchUps({
     matchUps: consolationMatchUps,
-  });
+  }).roundMatchUps;
   expect(roundMatchUps[2][0].potentialParticipants[0][1].bye).toEqual(true);
 });
 
@@ -125,14 +125,15 @@ it('removes potential participants when side participant is known', () => {
     drawId,
   });
 
-  const { roundMatchUps } = drawEngine.getRoundMatchUps({ matchUps });
+  const { roundMatchUps } = getRoundMatchUps({ matchUps });
   expect(
-    roundMatchUps[2][0].sides.filter(({ sideNumber }) => sideNumber).length
+    roundMatchUps?.[2]?.[0]?.sides?.filter(({ sideNumber }) => sideNumber)
+      .length
   ).toEqual(1);
-  expect(roundMatchUps[2][0].potentialParticipants.length).toEqual(1);
+  expect(roundMatchUps?.[2][0].potentialParticipants.length).toEqual(1);
 
   expect(
-    roundMatchUps[2][1].sides.filter(({ sideNumber }) => sideNumber).length
+    roundMatchUps?.[2]?.[1].sides?.filter(({ sideNumber }) => sideNumber).length
   ).toEqual(0);
-  expect(roundMatchUps[2][1].potentialParticipants.length).toEqual(2);
+  expect(roundMatchUps?.[2][1].potentialParticipants.length).toEqual(2);
 });

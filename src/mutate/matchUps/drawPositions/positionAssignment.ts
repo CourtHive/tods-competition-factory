@@ -368,7 +368,7 @@ function addDrawPositionToMatchUps({
     matchUps,
   });
 
-  const matchUp: HydratedMatchUp =
+  const matchUp =
     initialRoundNumber &&
     roundMatchUps?.[initialRoundNumber].find(
       (matchUp) => matchUp.drawPositions?.includes(drawPosition)

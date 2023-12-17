@@ -258,7 +258,7 @@ export function drawPositionRemovals({
   tasks?.forEach(({ roundNumber, targetDrawPosition, relevantPair }) => {
     const targetMatchUp = roundMatchUps?.[roundNumber].find((matchUp) =>
       overlap(
-        matchUp.drawPositions.filter(Boolean),
+        matchUp.drawPositions?.filter(Boolean),
         relevantPair.filter(Boolean)
       )
     );
