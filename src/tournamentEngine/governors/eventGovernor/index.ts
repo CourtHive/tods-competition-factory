@@ -34,14 +34,14 @@ import {
 
 import { withdrawParticipantAtDrawPosition } from './drawDefinitions/withdrawParticipantAtDrawPosition';
 import { luckyLoserDrawPositionAssignment } from './drawDefinitions/luckyLoserDrawPositionAssignment';
-import { qualifierDrawPositionAssignment } from './drawDefinitions/qualifierDrawPositionAssignment';
+import { assignDrawPositionBye } from '../../../mutate/matchUps/drawPositions/assignDrawPositionBye';
 import { alternateDrawPositionAssignment } from './drawDefinitions/alternateDrawPositionAssignment';
+import { qualifierDrawPositionAssignment } from './drawDefinitions/qualifierDrawPositionAssignment';
 import { removeDrawPositionAssignment } from './drawDefinitions/removeDrawPositionAssignment';
 import { swapDrawPositionAssignments } from './drawDefinitions/swapDrawPositionAssignments';
 import { getAvailablePlayoffProfiles } from './drawDefinitions/getAvailablePlayoffProfiles';
 import { addDrawDefinitionTimeItem } from './drawDefinitions/addDrawDefinitionTimeItem';
 import { setPositionAssignments } from './drawDefinitions/setPositionAssignments';
-import { assignDrawPositionBye } from './drawDefinitions/assignDrawPositionBye';
 import { modifyPairAssignment } from './drawDefinitions/modifyPairAssignment';
 import { removeDrawEntries } from './drawDefinitions/removeDrawEntries';
 import { modifyEntriesStatus } from './entries/modifyEntriesStatus';
