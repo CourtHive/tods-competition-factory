@@ -7,10 +7,10 @@ import { getDrawPositionCollectionAssignment } from './getDrawPositionCollection
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { getContextContent } from '../../../tournamentEngine/getters/getContextContent';
 import { parse } from '../../../matchUpEngine/governors/matchUpFormatGovernor/parse';
-import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
+import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { findParticipant } from '../../../global/functions/deducers/findParticipant';
 import { getMatchUpType } from '../../accessors/matchUpAccessor/getMatchUpType';
-import { getStructureSeedAssignments } from '../getStructureSeedAssignments';
+import { getStructureSeedAssignments } from '../../../query/structure/getStructureSeedAssignments';
 import { getExitProfiles } from '../../governors/queryGovernor/getExitProfile';
 import { getSourceDrawPositionRanges } from './getSourceDrawPositionRanges';
 import { attributeFilter, makeDeepCopy, unique } from '../../../utilities';

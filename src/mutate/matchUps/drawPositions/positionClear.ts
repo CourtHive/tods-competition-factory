@@ -1,7 +1,7 @@
 import { modifyRoundRobinMatchUpsStatus } from '../matchUpStatus/modifyRoundRobinMatchUpsStatus';
 import { getStructureDrawPositionProfiles } from '../../../drawEngine/getters/getStructureDrawPositionProfiles';
 import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
-import { getRoundMatchUps } from '../../../drawEngine/accessors/matchUpAccessor/getRoundMatchUps';
+import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { getAllDrawMatchUps } from '../../../drawEngine/getters/getMatchUps/drawMatchUps';
 import { getInitialRoundNumber } from '../../../drawEngine/getters/getInitialRoundNumber';
 import { decorateResult } from '../../../global/functions/decorateResult';
@@ -258,7 +258,7 @@ export function drawPositionRemovals({
   tasks?.forEach(({ roundNumber, targetDrawPosition, relevantPair }) => {
     const targetMatchUp = roundMatchUps?.[roundNumber].find((matchUp) =>
       overlap(
-        matchUp.drawPositions.filter(Boolean),
+        matchUp.drawPositions?.filter(Boolean),
         relevantPair.filter(Boolean)
       )
     );

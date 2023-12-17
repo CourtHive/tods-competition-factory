@@ -1,7 +1,6 @@
 import { allPlayoffPositionsFilled } from '../../../governors/queryGovernor/structureActions';
 import { generateMatchUpOutcome } from '../../primitives/generateMatchUpOutcome';
 import tournamentEngine from '../../../../tournamentEngine/sync';
-import { reset, initialize } from '../../primitives/primitives';
 import matchUpEngine from '../../../../matchUpEngine/sync';
 import { generateRange } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
@@ -26,8 +25,6 @@ export function roundRobinWithPlayoffsTest(params) {
     groupSize,
     drawSize,
   } = params;
-  reset();
-  initialize();
   groupsCount = groupsCount || drawSize / groupSize;
   const drawType = ROUND_ROBIN_WITH_PLAYOFF;
   const structureOptions = {

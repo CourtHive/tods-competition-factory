@@ -4,7 +4,6 @@ import mocksEngine from '../../../../mocksEngine';
 import { expect, it } from 'vitest';
 
 import {
-  EVENT_NOT_FOUND,
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
   UNRECOGNIZED_MATCHUP_FORMAT,

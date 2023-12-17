@@ -7,7 +7,7 @@ import { replaceTieMatchUpParticipantId } from '../../../mutate/matchUps/lineUps
 import { setMatchUpStatus, bulkMatchUpStatusUpdate } from './setMatchUpStatus';
 import { assignTieMatchUpParticipantId } from '../../../mutate/matchUps/lineUps/assignTieMatchUpParticipant';
 import { removeTieMatchUpParticipantId } from '../../../mutate/matchUps/lineUps/removeTieMatchUpParticipant';
-import { deleteDrawDefinitions } from './drawDefinitions/deleteDrawDefinitions';
+import { deleteDrawDefinitions } from '../../../mutate/events/deleteDrawDefinitions';
 import { removeRoundMatchUps } from '../../../mutate/structures/removeRoundMatchUps';
 import { assignDrawPosition } from './drawDefinitions/assignDrawPosition';
 import { addDrawDefinition } from './drawDefinitions/addDrawDefinition';
@@ -34,14 +34,14 @@ import {
 
 import { withdrawParticipantAtDrawPosition } from './drawDefinitions/withdrawParticipantAtDrawPosition';
 import { luckyLoserDrawPositionAssignment } from './drawDefinitions/luckyLoserDrawPositionAssignment';
-import { qualifierDrawPositionAssignment } from './drawDefinitions/qualifierDrawPositionAssignment';
+import { assignDrawPositionBye } from '../../../mutate/matchUps/drawPositions/assignDrawPositionBye';
 import { alternateDrawPositionAssignment } from './drawDefinitions/alternateDrawPositionAssignment';
+import { qualifierDrawPositionAssignment } from './drawDefinitions/qualifierDrawPositionAssignment';
 import { removeDrawPositionAssignment } from './drawDefinitions/removeDrawPositionAssignment';
 import { swapDrawPositionAssignments } from './drawDefinitions/swapDrawPositionAssignments';
 import { getAvailablePlayoffProfiles } from './drawDefinitions/getAvailablePlayoffProfiles';
 import { addDrawDefinitionTimeItem } from './drawDefinitions/addDrawDefinitionTimeItem';
 import { setPositionAssignments } from './drawDefinitions/setPositionAssignments';
-import { assignDrawPositionBye } from './drawDefinitions/assignDrawPositionBye';
 import { modifyPairAssignment } from './drawDefinitions/modifyPairAssignment';
 import { removeDrawEntries } from './drawDefinitions/removeDrawEntries';
 import { modifyEntriesStatus } from './entries/modifyEntriesStatus';
@@ -54,7 +54,7 @@ import {
   setEntryPositions,
 } from './entries/setEntryPositions';
 
-import { setSubOrder } from '../../../drawEngine/governors/positionGovernor/setSubOrder';
+import { setSubOrder } from '../../../mutate/structures/setSubOrder';
 import { removeDelegatedOutcome } from '../../../mutate/matchUps/extensions/removeDelegatedOutcome';
 import { generateSeedingScaleItems } from './entries/generateSeedingScaleItems';
 import { setDelegatedOutcome } from './drawDefinitions/setDelegatedOutcome';
@@ -63,6 +63,7 @@ import { getScaledEntries } from './entries/getScaledEntries';
 import { removeSeeding } from './entries/removeSeeding';
 import { autoSeeding } from './entries/autoSeeding';
 
+import { generateDrawTypeAndModifyDrawDefinition } from '../../../drawEngine/governors/structureGovernor/generateDrawTypeAndModifyDrawDefinition';
 import { addVoluntaryConsolationStructure } from '../../../drawEngine/generators/addVoluntaryConsolationStructure';
 import { resetVoluntaryConsolationStructure } from './drawDefinitions/resetVoluntaryConsolationStructure';
 import { deleteFlightProfileAndFlightDraws } from './drawDefinitions/deleteFlightProfileAndFlightDraws';
@@ -120,7 +121,6 @@ import { resetScorecard } from './resetScorecard';
 import { resetTieFormat } from '../../../mutate/tieFormat/resetTieFormat';
 
 import { validateCollectionDefinition } from '../../../validators/tieFormatUtilities';
-import { generateDrawTypeAndModifyDrawDefinition } from '../../generators/generateDrawTypeAndModifyDrawDefinition';
 import { getAssignedParticipantIds } from '../../../drawEngine/getters/getAssignedParticipantIds';
 import { generateDrawStructuresAndLinks } from '../../generators/generateDrawStructuresAndLinks';
 import { generateQualifyingStructure } from './drawDefinitions/generateQualifyingStructure';

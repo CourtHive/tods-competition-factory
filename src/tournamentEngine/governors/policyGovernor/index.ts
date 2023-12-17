@@ -2,13 +2,13 @@ import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies
 import { getAllowedDrawTypes, getAllowedMatchUpFormats } from './allowedTypes';
 import { getEntriesAndSeedsCount } from './getEntriesAndSeedsCount';
 import { getSeedsCount } from './getSeedsCount';
-import { findPolicy } from './findPolicy';
+import { findPolicy } from '../../../acquire/findPolicy';
 
 import {
   attachPolicies,
   attachEventPolicies,
   removeEventPolicy,
-} from './policyManagement';
+} from '../../../mutate/extensions/policies/policyManagement';
 
 const policyGovernor = {
   attachPolicies,

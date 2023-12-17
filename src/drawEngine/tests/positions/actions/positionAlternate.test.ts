@@ -1,7 +1,7 @@
+import { getRoundMatchUps } from '../../../../query/matchUps/getRoundMatchUps';
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import mocksEngine from '../../../../mocksEngine';
 import { unique } from '../../../../utilities';
-import drawEngine from '../../../sync';
 import { expect, it } from 'vitest';
 
 import {
@@ -81,17 +81,17 @@ it('can generate drawSize: 8 with only 4 participants', () => {
   tournamentEngine.setState(tournamentRecord);
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
-  const { roundMatchUps } = drawEngine.getRoundMatchUps({ matchUps });
+  const { roundMatchUps } = getRoundMatchUps({ matchUps });
   const firstRoundMatchUpStatuses = unique(
-    roundMatchUps[1].map((m) => m.matchUpStatus)
+    roundMatchUps?.[1].map((m) => m.matchUpStatus)
   );
   expect(firstRoundMatchUpStatuses).toEqual([BYE]);
   const secondRoundMatchUpStatuses = unique(
-    roundMatchUps[2].map((m) => m.matchUpStatus)
+    roundMatchUps?.[2].map((m) => m.matchUpStatus)
   );
   expect(secondRoundMatchUpStatuses).toEqual([TO_BE_PLAYED]);
   const thirdRoundMatchUpStatuses = unique(
-    roundMatchUps[3].map((m) => m.matchUpStatus)
+    roundMatchUps?.[3].map((m) => m.matchUpStatus)
   );
   expect(thirdRoundMatchUpStatuses).toEqual([TO_BE_PLAYED]);
 
@@ -120,9 +120,9 @@ it('can generate drawSize: 8 with only 2 participants', () => {
   tournamentEngine.setState(tournamentRecord);
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
-  const { roundMatchUps } = drawEngine.getRoundMatchUps({ matchUps });
+  const { roundMatchUps } = getRoundMatchUps({ matchUps });
   const firstRoundMatchUpStatuses = unique(
-    roundMatchUps[1].map((m) => m.matchUpStatus)
+    roundMatchUps?.[1].map((m) => m.matchUpStatus)
   );
   expect(firstRoundMatchUpStatuses).toEqual([BYE]);
 
@@ -133,12 +133,12 @@ it('can generate drawSize: 8 with only 2 participants', () => {
   expect(directAcceptanceEntries.length).toEqual(2);
 
   const secondRoundMatchUpStatuses = unique(
-    roundMatchUps[2].map((m) => m.matchUpStatus)
+    roundMatchUps?.[2].map((m) => m.matchUpStatus)
   );
   expect(secondRoundMatchUpStatuses).toEqual([BYE]);
 
   const thirdRoundMatchUpStatuses = unique(
-    roundMatchUps[3].map((m) => m.matchUpStatus)
+    roundMatchUps?.[3].map((m) => m.matchUpStatus)
   );
   expect(thirdRoundMatchUpStatuses).toEqual([TO_BE_PLAYED]);
 });

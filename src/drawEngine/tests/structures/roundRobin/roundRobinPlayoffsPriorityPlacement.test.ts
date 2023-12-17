@@ -1,7 +1,6 @@
 import { generateMatchUpOutcome } from '../../primitives/generateMatchUpOutcome';
 import { chunkArray, intersection } from '../../../../utilities/arrays';
 import tournamentEngine from '../../../../tournamentEngine/sync';
-import { reset, initialize } from '../../primitives/primitives';
 import { findStructure } from '../../../getters/findStructure';
 import matchUpEngine from '../../../../matchUpEngine/sync';
 import { setsValues } from './roundRobinSetsValues';
@@ -26,8 +25,6 @@ import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
 import { SINGLES } from '../../../../constants/eventConstants';
 
 it('can advance players in Round Robin with Playoffs => 2 x 4 x 4', () => {
-  reset();
-  initialize();
   const drawSize = 16;
   const groupSize = 4;
   const groupsCount = drawSize / groupSize;
@@ -262,8 +259,6 @@ it('can advance players in Round Robin with Playoffs => 2 x 4 x 4', () => {
 });
 
 it('can advance players in Round Robin with Playoffs', () => {
-  reset();
-  initialize();
   const drawSize = 20;
   const groupSize = 4;
   const groupsCount = drawSize / groupSize;

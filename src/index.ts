@@ -9,7 +9,7 @@ import { calculateWinCriteria } from './matchUpEngine/governors/tieFormatGoverno
 import { proConflicts } from './competitionEngine/governors/scheduleGovernor/proScheduling/proConflicts';
 import { validateTieFormat } from './validators/tieFormatUtilities';
 import { compareTieFormats } from './matchUpEngine/governors/tieFormatGovernor/compareTieFormats';
-import { getStructureSeedAssignments } from './drawEngine/getters/getStructureSeedAssignments';
+import { getStructureSeedAssignments } from './query/structure/getStructureSeedAssignments';
 import { dehydrateMatchUps } from './tournamentEngine/governors/tournamentGovernor/dehydrate';
 import { getSeedingThresholds } from './drawEngine/governors/positionGovernor/getSeedBlocks';
 import { getAssignedParticipantIds } from './drawEngine/getters/getAssignedParticipantIds';
@@ -27,7 +27,7 @@ import { checkSetIsComplete } from './matchUpEngine/getters/getSetWinningSide';
 import { getMatchUpContextIds } from './drawEngine/accessors/matchUpAccessor';
 import { parseScoreString } from './mocksEngine/utilities/parseScoreString';
 import { roundRobinGroups } from './assemblies/generators/drawDefinitions/drawTypes/roundRobin/roundRobinGroups';
-import { addExtension } from './global/functions/producers/addExtension';
+import { addExtension } from './mutate/extensions/addExtension';
 import { getSetComplement } from './matchUpEngine/getters/getComplement';
 import { validateCategory } from './validators/validateCategory';
 import { isAdHoc } from './drawEngine/governors/queryGovernor/isAdHoc';

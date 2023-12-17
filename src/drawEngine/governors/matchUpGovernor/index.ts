@@ -1,4 +1,4 @@
-import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
+import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
 import { publicFindDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { getCheckedInParticipantIds } from '../../../query/matchUp/getCheckedInParticipantIds';
@@ -12,7 +12,7 @@ import { removeDelegatedOutcome } from '../../../mutate/matchUps/extensions/remo
 import { drawMatic } from '../../../assemblies/generators/drawDefinitions/drawMatic/drawMatic';
 import { setDelegatedOutcome } from './setDelegatedOutcome';
 import { updateTieMatchUpScore } from '../../../mutate/matchUps/score/tieMatchUpScore';
-import { validDrawPositions } from './validDrawPositions';
+import { validDrawPositions } from '../../../validators/validDrawPositions';
 import { disableTieAutoCalc } from '../../../mutate/matchUps/extensions/disableTieAutoCalc';
 import { enableTieAutoCalc } from './enableTieAutoCalc';
 import { setMatchUpStatus } from '../../../mutate/matchUps/matchUpStatus/setMatchUpStatus';
@@ -24,7 +24,7 @@ import { addGoesTo } from './addGoesTo';
 import {
   addMatchUpScheduledTime,
   addMatchUpTimeModifiers,
-} from './scheduleTimeItems/scheduledTime';
+} from '../../../mutate/matchUps/schedule/scheduledTime';
 import {
   addMatchUpScheduledDate,
   addMatchUpStartTime,

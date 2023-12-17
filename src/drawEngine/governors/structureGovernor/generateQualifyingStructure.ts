@@ -1,6 +1,6 @@
 import { getStructureGroups } from '../../../tournamentEngine/governors/publishingGovernor/getStructureGroups';
 import { generateQualifyingLink } from '../../generators/generateQualifyingLink';
-import { addExtension } from '../../../global/functions/producers/addExtension';
+import { addExtension } from '../../../mutate/extensions/addExtension';
 import { coerceEven, isConvertableInteger } from '../../../utilities/math';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import structureTemplate from '../../generators/structureTemplate';

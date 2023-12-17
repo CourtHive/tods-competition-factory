@@ -1,7 +1,7 @@
+import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import { mocksEngine, tournamentEngine } from '../../..';
 import { expect, test } from 'vitest';
-import drawEngine from '../../sync';
 
 import { LUCKY_DRAW } from '../../../constants/drawDefinitionConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
@@ -66,9 +66,10 @@ test.each(scenarios)(
     );
     expect(firstRoundByeMatchUps.length).toBeLessThanOrEqual(1);
 
-    const { roundProfile } = drawEngine.getRoundMatchUps({
-      matchUps,
-    });
+    const roundProfile =
+      getRoundMatchUps({
+        matchUps,
+      }).roundProfile ?? {};
 
     if (expectation.matchUpCounts) {
       const matchUpCounts = Object.values(roundProfile).map(

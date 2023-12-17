@@ -1,4 +1,4 @@
-import { addExtension } from '../../../global/functions/producers/addExtension';
+import { addExtension } from '../../../mutate/extensions/addExtension';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import { findExtension } from '../../../acquire/findExtension';
 
@@ -14,7 +14,7 @@ export function addPositionActionTelemetry({ drawDefinition, positionAction }) {
   });
 
   const existingValue = Array.isArray(extension?.value)
-    ? extension?.value || []
+    ? extension?.value ?? []
     : [];
 
   if (!existingValue?.length) {

@@ -1,22 +1,22 @@
-import { validMatchUps } from '../../../validators/validMatchUp';
-import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
-import { definedAttributes } from '../../../utilities/definedAttributes';
-import { ensureInt } from '../../../utilities/ensureInt';
+import { validMatchUps } from '../../validators/validMatchUp';
+import { completedMatchUpStatuses } from '../../constants/matchUpStatusConstants';
+import { definedAttributes } from '../../utilities/definedAttributes';
+import { ensureInt } from '../../utilities/ensureInt';
 import {
   chunkArray,
   generateRange,
   intersection,
   isPowerOf2,
   numericSort,
-} from '../../../utilities';
+} from '../../utilities';
 
-import { HydratedMatchUp } from '../../../types/hydrated';
-import { RoundProfile } from '../../../types/factoryTypes';
-import { TEAM } from '../../../constants/matchUpTypes';
+import { HydratedMatchUp } from '../../types/hydrated';
+import { RoundProfile } from '../../types/factoryTypes';
+import { TEAM } from '../../constants/matchUpTypes';
 import {
   ErrorType,
   INVALID_VALUES,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 type GetRoundMatchUpsArgs = {
   matchUps?: HydratedMatchUp[];
@@ -24,7 +24,7 @@ type GetRoundMatchUpsArgs = {
 };
 
 export type RoundMatchUpsResult = {
-  roundMatchUps?: HydratedMatchUp[];
+  roundMatchUps?: { [roundNumber: number]: HydratedMatchUp[] };
   hasNoRoundPositions?: boolean;
   roundsNotPowerOf2?: boolean;
   maxMatchUpsCount?: number;

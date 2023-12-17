@@ -1,9 +1,16 @@
-import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
+import { generateDrawTypeAndModifyDrawDefinition } from '../../governors/structureGovernor/generateDrawTypeAndModifyDrawDefinition';
+import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
+import { getStructureMatchUps } from '../../../query/structure/getStructureMatchUps';
+import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
+import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';
+import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
+import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { constantToString } from '../../../utilities/strings';
-import { drawEngine } from '../../sync';
+import { newDrawDefinition } from '../../stateMethods';
 import { expect, it } from 'vitest';
 
 import { POLICY_ROUND_NAMING_DEFAULT } from '../../../fixtures/policies/POLICY_ROUND_NAMING_DEFAULT';
+import { DrawDefinition } from '../../../types/tournamentTypes';
 import {
   SINGLE_ELIMINATION,
   FEED_IN,
@@ -13,35 +20,41 @@ import {
 } from '../../../constants/drawDefinitionConstants';
 
 it('can return matchUps with roundNames from an SINGLE_ELIMINATION structure', () => {
-  reset();
-  initialize();
-  mainDrawPositions({ drawSize: 16 });
-  const {
-    structures: [structure],
-  } = drawEngine.generateDrawTypeAndModifyDrawDefinition({
+  const drawDefinition = newDrawDefinition();
+  setStageDrawSize({ drawDefinition, stage: MAIN, drawSize: 16 });
+
+  const structure = generateDrawTypeAndModifyDrawDefinition({
     drawType: SINGLE_ELIMINATION,
-  });
-  expect(structure.structureName).toEqual(constantToString(MAIN));
-  const result = drawEngine.attachPolicies({
+    drawDefinition,
+  })?.structures?.[0];
+  expect(structure?.structureName).toEqual(constantToString(MAIN));
+  const result = attachPolicies({
     policyDefinitions: POLICY_ROUND_NAMING_DEFAULT,
+    drawDefinition,
   });
   expect(result.success).toEqual(true);
 
-  const { structureId } = structure;
-  const { matchUps } = drawEngine.allStructureMatchUps({ structureId });
+  const structureId = structure?.structureId;
+  const { matchUps } = getAllStructureMatchUps({
+    inContext: true,
+    drawDefinition,
+    structure,
+  });
   expect(matchUps.length).toEqual(15);
 
-  let { upcomingMatchUps } = drawEngine.getStructureMatchUps({
+  let { upcomingMatchUps } = getStructureMatchUps({
     requireParticipants: false,
+    drawDefinition,
     structureId,
   });
-  expect(upcomingMatchUps.length).toEqual(8);
+  expect(upcomingMatchUps?.length).toEqual(8);
 
   // requireParticipants defaults to true and no matches can be considered upcoming if no participants assigned
-  ({ upcomingMatchUps } = drawEngine.getStructureMatchUps({
+  ({ upcomingMatchUps } = getStructureMatchUps({
+    drawDefinition,
     structureId,
   }));
-  expect(upcomingMatchUps.length).toEqual(0);
+  expect(upcomingMatchUps?.length).toEqual(0);
 
   matchUps.forEach((matchUp) => {
     const { abbreviatedRoundName, finishingRound, roundNumber, roundName } =
@@ -63,36 +76,43 @@ it('can return matchUps with roundNames from an SINGLE_ELIMINATION structure', (
 });
 
 it('can return matchUps with roundNames from a FIRST_MATCH_LOSER_CONSOLATION structure', () => {
-  reset();
-  initialize();
-  mainDrawPositions({ drawSize: 16 });
-  let result = drawEngine.generateDrawTypeAndModifyDrawDefinition({
+  const drawDefinition = newDrawDefinition();
+  setStageDrawSize({ drawDefinition, stage: MAIN, drawSize: 16 });
+
+  let result = generateDrawTypeAndModifyDrawDefinition({
     drawType: FIRST_MATCH_LOSER_CONSOLATION,
+    drawDefinition,
   });
-  const {
-    structures: [mainStructure, consolationStructure],
-  } = result;
-  expect(mainStructure.structureName).toEqual(constantToString(MAIN));
-  result = drawEngine.attachPolicies({
+  const consolationStructure = result?.structures?.[1];
+  const mainStructure = result?.structures?.[0];
+  expect(mainStructure?.structureName).toEqual(constantToString(MAIN));
+  result = attachPolicies({
     policyDefinitions: POLICY_ROUND_NAMING_DEFAULT,
+    drawDefinition,
   });
   expect(result.success).toEqual(true);
 
-  let { structureId } = mainStructure;
-  let { matchUps } = drawEngine.allStructureMatchUps({ structureId });
+  const structureId = mainStructure?.structureId;
+  let { matchUps } = getAllStructureMatchUps({
+    structure: mainStructure,
+    inContext: true,
+    drawDefinition,
+  });
   expect(matchUps.length).toEqual(15);
 
-  let { upcomingMatchUps } = drawEngine.getStructureMatchUps({
-    structureId,
+  let { upcomingMatchUps } = getStructureMatchUps({
     requireParticipants: false,
+    drawDefinition,
+    structureId,
   });
-  expect(upcomingMatchUps.length).toEqual(8);
+  expect(upcomingMatchUps?.length).toEqual(8);
 
   // requireParticipants defaults to true and no matches can be considered upcoming if no participants assigned
-  ({ upcomingMatchUps } = drawEngine.getStructureMatchUps({
+  ({ upcomingMatchUps } = getStructureMatchUps({
+    drawDefinition,
     structureId,
   }));
-  expect(upcomingMatchUps.length).toEqual(0);
+  expect(upcomingMatchUps?.length).toEqual(0);
 
   matchUps.forEach((matchUp) => {
     const { finishingRound, roundNumber, roundName } = matchUp;
@@ -107,8 +127,11 @@ it('can return matchUps with roundNames from a FIRST_MATCH_LOSER_CONSOLATION str
     if (roundNumber === 4) expect(roundName).toEqual('Final');
   });
 
-  ({ structureId } = consolationStructure);
-  ({ matchUps } = drawEngine.allStructureMatchUps({ structureId }));
+  ({ matchUps } = getAllStructureMatchUps({
+    structure: consolationStructure,
+    inContext: true,
+    drawDefinition,
+  }));
 
   matchUps.forEach((matchUp) => {
     const { abbreviatedRoundName, finishingRound, roundNumber, roundName } =
@@ -126,30 +149,36 @@ it('can return matchUps with roundNames from a FIRST_MATCH_LOSER_CONSOLATION str
 });
 
 it('can return matchUps with roundNames from a FEED_IN structure and identify feedRounds', () => {
-  reset();
-  initialize();
-  mainDrawPositions({ drawSize: 12 });
-  const {
-    structures: [structure],
-  } = drawEngine.generateDrawTypeAndModifyDrawDefinition({ drawType: FEED_IN });
-  expect(structure.structureName).toEqual(constantToString(MAIN));
-  const result = drawEngine.attachPolicies({
+  const drawDefinition = newDrawDefinition();
+  setStageDrawSize({ drawDefinition, stage: MAIN, drawSize: 12 });
+  const structure = generateDrawTypeAndModifyDrawDefinition({
+    drawType: FEED_IN,
+    drawDefinition,
+  })?.structures?.[0];
+  expect(structure?.structureName).toEqual(constantToString(MAIN));
+  const result = attachPolicies({
     policyDefinitions: POLICY_ROUND_NAMING_DEFAULT,
+    drawDefinition,
   });
   expect(result.success).toEqual(true);
 
-  const { structureId } = structure;
-  const { matchUps } = drawEngine.allStructureMatchUps({ structureId });
+  const structureId = structure?.structureId;
+  const { matchUps } = getAllStructureMatchUps({
+    inContext: true,
+    drawDefinition,
+    structure,
+  });
   expect(matchUps.length).toEqual(11);
 
-  const { upcomingMatchUps } = drawEngine.getStructureMatchUps({
+  const { upcomingMatchUps } = getStructureMatchUps({
+    drawDefinition,
     structureId,
     requireParticipants: false,
   });
-  expect(upcomingMatchUps.length).toEqual(4);
+  expect(upcomingMatchUps?.length).toEqual(4);
 
-  const { roundProfile } = drawEngine.getRoundMatchUps({ matchUps });
-  expect(roundProfile[2].feedRound).toEqual(true);
+  const { roundProfile } = getRoundMatchUps({ matchUps });
+  expect(roundProfile?.[2].feedRound).toEqual(true);
 
   matchUps.forEach((matchUp) => {
     const {
@@ -176,28 +205,30 @@ it('can return matchUps with roundNames from a FEED_IN structure and identify fe
 });
 
 it('can return matchUps with roundNames from a OLYMPIC structure', () => {
-  reset();
-  initialize();
-  mainDrawPositions({ drawSize: 16 });
-  let result = drawEngine.generateDrawTypeAndModifyDrawDefinition({
+  const drawDefinition: DrawDefinition = newDrawDefinition();
+  setStageDrawSize({ drawDefinition, stage: MAIN, drawSize: 16 });
+
+  let result = generateDrawTypeAndModifyDrawDefinition({
     drawType: OLYMPIC,
+    drawDefinition,
   });
   expect(result.success).toEqual(true);
-  expect(result.structures.length).toEqual(4);
+  expect(result.structures?.length).toEqual(4);
 
-  const { drawDefinition } = drawEngine.getState();
-  const { structures } = drawDefinition;
+  const structures = drawDefinition?.structures ?? [];
   expect(structures.length).toEqual(4);
 
-  result = drawEngine.attachPolicies({
+  result = attachPolicies({
     policyDefinitions: POLICY_ROUND_NAMING_DEFAULT,
+    drawDefinition,
   });
   expect(result.success).toEqual(true);
 
-  const { matchUps } = drawEngine.allDrawMatchUps({
+  const { matchUps } = getAllDrawMatchUps({
     requireParticipants: false,
+    drawDefinition,
   });
-  matchUps.forEach((matchUp) => {
+  matchUps?.forEach((matchUp) => {
     const {
       abbreviatedRoundName,
       finishingRound,

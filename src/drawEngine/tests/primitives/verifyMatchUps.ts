@@ -1,15 +1,17 @@
+import { setMatchUpStatus } from '../../../mutate/matchUps/matchUpStatus/setMatchUpStatus';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
-import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
-import { getStructureMatchUps } from '../../getters/getMatchUps/getStructureMatchUps';
+import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
+import { getStructureMatchUps } from '../../../query/structure/getStructureMatchUps';
 import { parseScoreString } from '../../../mocksEngine/utilities/parseScoreString';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { findStructure } from '../../getters/findStructure';
-import { drawEngine } from '../../sync';
 import { expect } from 'vitest';
+
 import { MATCHUP_NOT_FOUND } from '../../../constants/errorConditionConstants';
 
 export function completeMatchUp(params) {
   const {
+    drawDefinition,
     roundPosition,
     matchUpStatus,
     roundNumber,
@@ -20,28 +22,26 @@ export function completeMatchUp(params) {
   const sets = scoreString && parseScoreString({ scoreString });
   const score = { sets };
   const { matchUp: targetMatchUp } = findMatchUpByRoundNumberAndPosition({
+    drawDefinition: params.drawDefinition,
     roundPosition,
     roundNumber,
     structureId,
   });
   const { matchUpId } = targetMatchUp;
-  const { matchUp, error, success } = drawEngine
-    .devContext(true)
-    .setMatchUpStatus({
-      matchUpStatus,
-      winningSide,
-      matchUpId,
-      score,
-    });
+
+  const { matchUp, error, success } = setMatchUpStatus({
+    drawDefinition,
+    matchUpStatus,
+    winningSide,
+    matchUpId,
+    score,
+  });
   return { success, error, matchUp, matchUpId };
 }
 
 export function findMatchUpByRoundNumberAndPosition(params) {
-  let drawDefinition = params.drawDefinition;
+  const drawDefinition = params.drawDefinition;
   const { roundPosition, roundNumber, structureId, inContext, event } = params;
-  if (!drawDefinition) {
-    ({ drawDefinition } = drawEngine.getState());
-  }
   const { structure } = findStructure({ drawDefinition, structureId });
   const { matchUps } = getAllStructureMatchUps({
     drawDefinition,
@@ -59,7 +59,7 @@ export function findMatchUpByRoundNumberAndPosition(params) {
 }
 
 export function verifyMatchUps(params) {
-  let drawDefinition = params.drawDefinition;
+  const drawDefinition = params.drawDefinition;
   const {
     structureId,
     requireParticipants,
@@ -67,9 +67,6 @@ export function verifyMatchUps(params) {
     expectedRoundUpcoming,
     expectedRoundCompleted,
   } = params;
-  if (!drawDefinition) {
-    ({ drawDefinition } = drawEngine.getState());
-  }
   const { structure } = findStructure({ drawDefinition, structureId });
   const { completedMatchUps, pendingMatchUps, upcomingMatchUps } =
     getStructureMatchUps({

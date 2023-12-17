@@ -1,25 +1,22 @@
+import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import { drawEngine } from '../../sync';
 import { expect, it } from 'vitest';
 
-import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
+import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 import SEEDING_ITF from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { newDrawDefinition } from '../../stateMethods';
 
 it('can set and reset policy governor', () => {
-  expect(drawEngine).toHaveProperty('attachPolicies');
-
-  drawEngine.reset();
   // cannot attach a policy if no drawDefinition
-  let result = drawEngine.attachPolicies({ policyDefinitions: SEEDING_ITF });
-  expect(result).toMatchObject({ error: MISSING_DRAW_DEFINITION });
+  let result = attachPolicies({ policyDefinitions: SEEDING_ITF });
+  expect(result).toMatchObject({ error: INVALID_VALUES });
 
-  drawEngine.newDrawDefinition();
+  const drawDefinition = newDrawDefinition();
 
-  result = drawEngine.attachPolicies({ policyDefinitions: SEEDING_ITF });
+  result = attachPolicies({ drawDefinition, policyDefinitions: SEEDING_ITF });
   expect(result).toMatchObject(SUCCESS);
 
-  const { drawDefinition } = drawEngine.getState();
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
   const { seedingProfile, policyName } = appliedPolicies?.seeding || {};
 

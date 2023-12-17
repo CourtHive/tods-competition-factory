@@ -1,11 +1,9 @@
-import drawEngine from '../../../sync';
+import { generateDrawTypeAndModifyDrawDefinition } from '../../../governors/structureGovernor/generateDrawTypeAndModifyDrawDefinition';
+import { setStageDrawSize } from '../../../governors/entryGovernor/stageEntryCounts';
+import { newDrawDefinition } from '../../../stateMethods';
 import { expect, it } from 'vitest';
-import {
-  reset,
-  initialize,
-  mainDrawPositions,
-} from '../../primitives/primitives';
 
+import { DrawDefinition } from '../../../../types/tournamentTypes';
 import {
   ITEM,
   CONTAINER,
@@ -14,63 +12,59 @@ import {
 } from '../../../../constants/drawDefinitionConstants';
 
 it('can generate Round Robin Main Draws', () => {
-  reset();
-  initialize();
+  let drawDefinition: DrawDefinition = newDrawDefinition();
+  setStageDrawSize({ drawDefinition, stage: 'MAIN', drawSize: 16 });
   const drawType = ROUND_ROBIN;
-  mainDrawPositions({ drawSize: 16 });
-  let {
-    structures: [structure],
-  } = drawEngine.generateDrawTypeAndModifyDrawDefinition({ drawType });
-  expect(structure.structureType).toEqual(CONTAINER);
-  expect(structure.finishingPosition).toEqual(WIN_RATIO);
-  expect(structure.structures.length).toEqual(4);
-  expect(structure.structures[0].structureType).toEqual(ITEM);
-  expect(structure.structures[0].matchUps.length).toEqual(6);
+  let structure = generateDrawTypeAndModifyDrawDefinition({
+    drawDefinition,
+    drawType,
+  }).structures?.[0];
+  expect(structure?.structureType).toEqual(CONTAINER);
+  expect(structure?.finishingPosition).toEqual(WIN_RATIO);
+  expect(structure?.structures?.length).toEqual(4);
+  expect(structure?.structures?.[0].structureType).toEqual(ITEM);
+  expect(structure?.structures?.[0].matchUps?.length).toEqual(6);
 
-  reset();
-  initialize();
-  mainDrawPositions({ drawSize: 32 });
-  ({
-    structures: [structure],
-  } = drawEngine.generateDrawTypeAndModifyDrawDefinition({ drawType }));
-  expect(structure.structures.length).toEqual(8);
+  drawDefinition = newDrawDefinition();
+  setStageDrawSize({ drawDefinition, stage: 'MAIN', drawSize: 32 });
+  structure = generateDrawTypeAndModifyDrawDefinition({
+    drawDefinition,
+    drawType,
+  }).structures?.[0];
+  expect(structure?.structures?.length).toEqual(8);
 });
 
 it('can generate Round Robins with varying group sizes', () => {
-  reset();
-  initialize();
-  mainDrawPositions({ drawSize: 30 });
+  let drawDefinition: DrawDefinition = newDrawDefinition();
+  setStageDrawSize({ drawDefinition, stage: 'MAIN', drawSize: 30 });
   let structureOptions = { groupSize: 5 };
-  let {
-    structures: [structure],
-  } = drawEngine.generateDrawTypeAndModifyDrawDefinition({
+  let structure = generateDrawTypeAndModifyDrawDefinition({
     drawType: ROUND_ROBIN,
     structureOptions,
-  });
-  expect(structure.structures.length).toEqual(6);
-  expect(structure.structures[0].matchUps.length).toEqual(10);
+    drawDefinition,
+  }).structures?.[0];
+  expect(structure?.structures?.length).toEqual(6);
+  expect(structure?.structures?.[0].matchUps?.length).toEqual(10);
 
-  reset();
-  initialize();
-  mainDrawPositions({ drawSize: 30 });
+  drawDefinition = newDrawDefinition();
+  setStageDrawSize({ drawDefinition, stage: 'MAIN', drawSize: 30 });
   structureOptions = { groupSize: 3 };
-  ({
-    structures: [structure],
-  } = drawEngine.generateDrawTypeAndModifyDrawDefinition({
+  structure = generateDrawTypeAndModifyDrawDefinition({
     drawType: ROUND_ROBIN,
     structureOptions,
-  }));
-  expect(structure.structures.length).toEqual(10);
-  expect(structure.structures[0].matchUps.length).toEqual(3);
-  expect(structure.structures[0].matchUps[0].roundNumber).toEqual(1);
-  expect(structure.structures[0].matchUps[1].roundNumber).toEqual(2);
-  expect(structure.structures[0].matchUps[0].drawPositions).toMatchObject([
+    drawDefinition,
+  }).structures?.[0];
+  expect(structure?.structures?.length).toEqual(10);
+  expect(structure?.structures?.[0].matchUps?.length).toEqual(3);
+  expect(structure?.structures?.[0].matchUps?.[0].roundNumber).toEqual(1);
+  expect(structure?.structures?.[0].matchUps?.[1].roundNumber).toEqual(2);
+  expect(structure?.structures?.[0].matchUps?.[0].drawPositions).toMatchObject([
     1, 2,
   ]);
-  expect(structure.structures[0].matchUps[1].drawPositions).toMatchObject([
+  expect(structure?.structures?.[0].matchUps?.[1].drawPositions).toMatchObject([
     1, 3,
   ]);
-  expect(structure.structures[0].matchUps[2].drawPositions).toMatchObject([
+  expect(structure?.structures?.[0].matchUps?.[2].drawPositions).toMatchObject([
     2, 3,
   ]);
 });

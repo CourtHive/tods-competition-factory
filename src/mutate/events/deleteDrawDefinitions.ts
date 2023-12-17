@@ -1,45 +1,42 @@
-import { checkScoreHasValue } from '../../../../query/matchUp/checkScoreHasValue';
-import { getAppliedPolicies } from '../../../../query/extensions/getAppliedPolicies';
-import { modifyEventPublishStatus } from '../../publishingGovernor/modifyEventPublishStatus';
-import { getEventPublishStatus } from '../../publishingGovernor/getEventPublishStatus';
-import { addExtension } from '../../../../global/functions/producers/addExtension';
-import { allDrawMatchUps } from '../../../getters/matchUpsGetter/matchUpsGetter';
-import { getPositionAssignments } from '../../../getters/getPositionAssignments';
-import { addEventExtension } from '../../tournamentGovernor/addRemoveExtensions';
-import { checkSchedulingProfile } from '../../scheduleGovernor/schedulingProfile';
-import { getDrawStructures } from '../../../../drawEngine/getters/findStructure';
-import { decorateResult } from '../../../../global/functions/decorateResult';
-import { definedAttributes } from '../../../../utilities/definedAttributes';
-import { getFlightProfile } from '../../../../query/event/getFlightProfile';
-import { findExtension } from '../../../../acquire/findExtension';
-import { publishEvent } from '../../publishingGovernor/publishEvent';
-import { addNotice } from '../../../../global/state/globalState';
-import { makeDeepCopy } from '../../../../utilities';
-import { findEvent } from '../../../../acquire/findEvent';
+import { checkScoreHasValue } from '../../query/matchUp/checkScoreHasValue';
+import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
+import { modifyEventPublishStatus } from '../../tournamentEngine/governors/publishingGovernor/modifyEventPublishStatus';
+import { getEventPublishStatus } from '../../tournamentEngine/governors/publishingGovernor/getEventPublishStatus';
+import { addExtension } from '../extensions/addExtension';
+import { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
+import { getPositionAssignments } from '../../tournamentEngine/getters/getPositionAssignments';
+import { addEventExtension } from '../extensions/addRemoveExtensions';
+import { checkSchedulingProfile } from '../../tournamentEngine/governors/scheduleGovernor/schedulingProfile';
+import { getDrawStructures } from '../../drawEngine/getters/findStructure';
+import { decorateResult } from '../../global/functions/decorateResult';
+import { definedAttributes } from '../../utilities/definedAttributes';
+import { getFlightProfile } from '../../query/event/getFlightProfile';
+import { findExtension } from '../../acquire/findExtension';
+import { publishEvent } from '../../tournamentEngine/governors/publishingGovernor/publishEvent';
+import { addNotice } from '../../global/state/globalState';
+import { makeDeepCopy } from '../../utilities';
+import { findEvent } from '../../acquire/findEvent';
 import {
   deleteDrawNotice,
   deleteMatchUpsNotice,
-} from '../../../../mutate/notifications/drawNotifications';
+} from '../notifications/drawNotifications';
 
-import { STRUCTURE_SELECTED_STATUSES } from '../../../../constants/entryStatusConstants';
-import { DELETE_DRAW_DEFINITIONS } from '../../../../constants/auditConstants';
-import { POLICY_TYPE_SCORING } from '../../../../constants/policyConstants';
-import { Event, Tournament } from '../../../../types/tournamentTypes';
-import { PolicyDefinitions } from '../../../../types/factoryTypes';
-import { SUCCESS } from '../../../../constants/resultConstants';
-import { AUDIT } from '../../../../constants/topicConstants';
+import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
+import { DELETE_DRAW_DEFINITIONS } from '../../constants/auditConstants';
+import { POLICY_TYPE_SCORING } from '../../constants/policyConstants';
+import { Event, Tournament } from '../../types/tournamentTypes';
+import { PolicyDefinitions } from '../../types/factoryTypes';
+import { SUCCESS } from '../../constants/resultConstants';
+import { AUDIT } from '../../constants/topicConstants';
 import {
   MISSING_TOURNAMENT_RECORD,
   SCORES_PRESENT,
-} from '../../../../constants/errorConditionConstants';
-import {
-  MAIN,
-  QUALIFYING,
-} from '../../../../constants/drawDefinitionConstants';
+} from '../../constants/errorConditionConstants';
+import { MAIN, QUALIFYING } from '../../constants/drawDefinitionConstants';
 import {
   DRAW_DELETIONS,
   FLIGHT_PROFILE,
-} from '../../../../constants/extensionConstants';
+} from '../../constants/extensionConstants';
 
 type DeleteDrawDefinitionArgs = {
   policyDefinitions?: PolicyDefinitions;
@@ -114,7 +111,7 @@ export function deleteDrawDefinitions(params: DeleteDrawDefinitionArgs) {
   }) => ({ bye, qualifier, drawPosition, participantId });
 
   const allowDeletionWithScoresPresent =
-    force ||
+    force ??
     appliedPolicies?.[POLICY_TYPE_SCORING]?.allowDeletionWithScoresPresent
       ?.drawDefinitions;
 

@@ -1,14 +1,16 @@
+import { generateDrawTypeAndModifyDrawDefinition } from '../../governors/structureGovernor/generateDrawTypeAndModifyDrawDefinition';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
-import { getStructureMatchUps } from '../../getters/getMatchUps/getStructureMatchUps';
 import { setMatchUpFormat } from '../../../mutate/matchUps/matchUpFormat/setMatchUpFormat';
+import { getStructureMatchUps } from '../../../query/structure/getStructureMatchUps';
+import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';
+import { getDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { getMatchUpType } from '../../accessors/matchUpAccessor';
 import { getDrawStructures } from '../../getters/findStructure';
-import { drawEngine } from '../../sync';
+import { newDrawDefinition } from '../../stateMethods';
 import { expect, it } from 'vitest';
 
-import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
-
+import { DrawDefinition } from '../../../types/tournamentTypes';
 import { SINGLES } from '../../../constants/matchUpTypes';
 import {
   MAIN,
@@ -21,17 +23,14 @@ import {
   MISSING_MATCHUP_FORMAT,
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { DrawDefinition } from '../../../types/tournamentTypes';
 
 it('can return matchUps from an SINGLE_ELIMINATION structure', () => {
-  reset();
-  initialize();
-  mainDrawPositions({ drawSize: 16 });
-  const {
-    structures: [structure],
-  } = drawEngine.generateDrawTypeAndModifyDrawDefinition({
+  const drawDefinition: DrawDefinition = newDrawDefinition();
+  setStageDrawSize({ drawDefinition, stage: MAIN, drawSize: 16 });
+  const structure = generateDrawTypeAndModifyDrawDefinition({
     drawType: SINGLE_ELIMINATION,
-  });
+    drawDefinition,
+  })?.structures?.[0];
   const { matchUps } = getAllStructureMatchUps({ structure, inContext: true });
   expect(matchUps.length).toEqual(15);
   const { upcomingMatchUps } = getStructureMatchUps({
@@ -47,13 +46,12 @@ it('can return matchUps from an SINGLE_ELIMINATION structure', () => {
 });
 
 it('matchUps returned with context cannot modify original', () => {
-  reset();
-  initialize();
-  mainDrawPositions({ drawSize: 16 });
-  drawEngine.generateDrawTypeAndModifyDrawDefinition({
+  const drawDefinition: DrawDefinition = newDrawDefinition();
+  setStageDrawSize({ drawDefinition, stage: MAIN, drawSize: 16 });
+  generateDrawTypeAndModifyDrawDefinition({
     drawType: SINGLE_ELIMINATION,
+    drawDefinition,
   });
-  let { drawDefinition } = drawEngine.getState();
   const { drawId } = drawDefinition;
   const {
     structures: [structure],
@@ -68,7 +66,6 @@ it('matchUps returned with context cannot modify original', () => {
   const { matchUpId } = matchUp;
 
   // refetch the drawDefintion after the modification has been made
-  ({ drawDefinition } = drawEngine.getState());
   let { matchUp: retrievedMatchUp } = findDrawMatchUp({
     drawDefinition,
     matchUpId,
@@ -88,9 +85,6 @@ it('matchUps returned with context cannot modify original', () => {
   expect(contextMatchUp?.drawId).toEqual(drawId);
   expect(contextMatchUp?.structureId).toEqual(structureId);
 
-  // refetch the drawDefintion after the modification has been made
-  ({ drawDefinition } = drawEngine.getState());
-
   // retrieve matchUp from drawDefinition
   // newAttribute should not be present with no context added
   ({ matchUp: retrievedMatchUp } = findDrawMatchUp({
@@ -103,18 +97,18 @@ it('matchUps returned with context cannot modify original', () => {
 });
 
 it('can return matchUps from a ROUND_ROBIN structure', () => {
-  reset();
-  initialize();
   const drawType = ROUND_ROBIN;
-  mainDrawPositions({ drawSize: 16 });
-  const {
-    structures: [structure],
-  } = drawEngine.generateDrawTypeAndModifyDrawDefinition({ drawType });
+  const drawDefinition: DrawDefinition = newDrawDefinition();
+  setStageDrawSize({ drawDefinition, stage: MAIN, drawSize: 16 });
+  const structure = generateDrawTypeAndModifyDrawDefinition({
+    drawDefinition,
+    drawType,
+  }).structures?.[0];
   const { matchUps } = getAllStructureMatchUps({ structure });
   expect(matchUps.length).toEqual(24);
   const { upcomingMatchUps } = getStructureMatchUps({
-    structure,
     requireParticipants: false,
+    structure,
   });
   expect(upcomingMatchUps?.length).toEqual(24);
   const { upcomingMatchUps: filteredActiveMatchUps } = getStructureMatchUps({
@@ -124,28 +118,29 @@ it('can return matchUps from a ROUND_ROBIN structure', () => {
   });
   expect(filteredActiveMatchUps?.length).toEqual(8);
 
-  const allDrawMatchUps = drawEngine.drawMatchUps({
+  const allDrawMatchUps = getDrawMatchUps({
     requireParticipants: false,
+    inContext: true,
+    drawDefinition,
   });
-  expect(allDrawMatchUps.upcomingMatchUps.length).toEqual(24);
-  expect(allDrawMatchUps.pendingMatchUps.length).toEqual(0);
-  expect(allDrawMatchUps.completedMatchUps.length).toEqual(0);
+
+  expect(allDrawMatchUps?.upcomingMatchUps?.length).toEqual(24);
+  expect(allDrawMatchUps?.pendingMatchUps?.length).toEqual(0);
+  expect(allDrawMatchUps?.completedMatchUps?.length).toEqual(0);
 });
 
 it('can set matchUpFormat', () => {
-  reset();
-  initialize();
-  mainDrawPositions({ drawSize: 16 });
-  const {
-    structures: [structure],
-  } = drawEngine.generateDrawTypeAndModifyDrawDefinition({
+  const drawDefinition: DrawDefinition = newDrawDefinition();
+  setStageDrawSize({ drawDefinition, stage: MAIN, drawSize: 16 });
+  const structure = generateDrawTypeAndModifyDrawDefinition({
     drawType: SINGLE_ELIMINATION,
-  });
+    drawDefinition,
+  })?.structures?.[0];
   const { matchUps } = getAllStructureMatchUps({ structure });
   expect(matchUps.length).toEqual(15);
   const { upcomingMatchUps } = getStructureMatchUps({
-    structure,
     requireParticipants: false,
+    structure,
   });
 
   const matchUpFormat = 'SET1-S:T10';
@@ -153,7 +148,6 @@ it('can set matchUpFormat', () => {
   expect(matchUp?.matchUpFormat).toEqual(undefined);
 
   const matchUpId = matchUp?.matchUpId as string;
-  const drawDefinition = drawEngine.getState().drawDefinition as DrawDefinition;
   let result = setMatchUpFormat({ drawDefinition, matchUpId, matchUpFormat });
   expect(result.success).toEqual(true);
 
@@ -185,7 +179,7 @@ it('can set matchUpFormat', () => {
   });
   expect(result.error).toEqual(STRUCTURE_NOT_FOUND);
   result = setMatchUpFormat({
-    structureId: structure.structureId,
+    structureId: structure?.structureId,
     drawDefinition,
     matchUpFormat,
   });

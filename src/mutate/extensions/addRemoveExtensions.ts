@@ -1,48 +1,23 @@
-import { findParticipant } from '../../../global/functions/deducers/findParticipant';
-import { addExtension } from '../../../global/functions/producers/addExtension';
+import { findParticipant } from '../../global/functions/deducers/findParticipant';
+import { removeExtension } from './removeExtension';
+import { addExtension } from './addExtension';
 
-import { SUCCESS } from '../../../constants/resultConstants';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   EVENT_NOT_FOUND,
   ErrorType,
-  INVALID_VALUES,
   MISSING_EVENT,
   MISSING_PARTICIPANT_ID,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
-  NOT_FOUND,
   PARTICIPANT_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
-import {
-  ELEMENT_REQUIRED,
-  MISSING_NAME,
-} from '../../../constants/infoConstants';
+} from '../../constants/errorConditionConstants';
 import {
   DrawDefinition,
   Event,
   Extension,
   Tournament,
-} from '../../../types/tournamentTypes';
-
-type RemoveExtensionResult = {
-  success?: boolean;
-  error?: ErrorType;
-  info?: any;
-};
-export function removeExtension(params?): RemoveExtensionResult {
-  if (!params || typeof params !== 'object') return { error: MISSING_VALUE };
-  if (!params?.element) return { error: MISSING_VALUE, info: ELEMENT_REQUIRED };
-  if (typeof params?.element !== 'object') return { error: INVALID_VALUES };
-  if (!params?.name) return { error: MISSING_VALUE, info: MISSING_NAME };
-  if (!params?.element.extensions) return { ...SUCCESS, info: NOT_FOUND };
-
-  params.element.extensions = params.element.extensions.filter(
-    (extension) => extension?.name !== params.name
-  );
-
-  return { ...SUCCESS };
-}
+} from '../../types/tournamentTypes';
 
 type AddExtensionArgs = {
   tournamentRecord?: Tournament;

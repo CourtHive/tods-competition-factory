@@ -1,0 +1,27 @@
+import { ELEMENT_REQUIRED, MISSING_NAME } from '../../constants/infoConstants';
+import { SUCCESS } from '../../constants/resultConstants';
+import {
+  ErrorType,
+  INVALID_VALUES,
+  MISSING_VALUE,
+  NOT_FOUND,
+} from '../../constants/errorConditionConstants';
+
+type RemoveExtensionResult = {
+  success?: boolean;
+  error?: ErrorType;
+  info?: any;
+};
+export function removeExtension(params?): RemoveExtensionResult {
+  if (!params || typeof params !== 'object') return { error: MISSING_VALUE };
+  if (!params?.element) return { error: MISSING_VALUE, info: ELEMENT_REQUIRED };
+  if (typeof params?.element !== 'object') return { error: INVALID_VALUES };
+  if (!params?.name) return { error: MISSING_VALUE, info: MISSING_NAME };
+  if (!params?.element.extensions) return { ...SUCCESS, info: NOT_FOUND };
+
+  params.element.extensions = params.element.extensions.filter(
+    (extension) => extension?.name !== params.name
+  );
+
+  return { ...SUCCESS };
+}

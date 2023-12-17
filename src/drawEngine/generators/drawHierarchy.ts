@@ -1,5 +1,5 @@
 import { validMatchUps } from '../../validators/validMatchUp';
-import { getRoundMatchUps } from '../accessors/matchUpAccessor/getRoundMatchUps';
+import { getRoundMatchUps } from '../../query/matchUps/getRoundMatchUps';
 import { generateRange, makeDeepCopy, unique, UUID } from '../../utilities';
 import { ensureInt } from '../../utilities/ensureInt';
 
@@ -22,7 +22,7 @@ export function buildDrawHierarchy({
 }: BuildDrawHierarchyArgs): any {
   if (!matchUps) return { error: MISSING_MATCHUPS };
   let previousRound: any[] = [];
-  let missingMatchUps = [];
+  let missingMatchUps: any[] = [];
   let feedRoundNumber = 0;
 
   if (matchUpType)
@@ -63,9 +63,9 @@ export function buildDrawHierarchy({
   const firstRoundMatchUps = roundMatchUps?.[1];
   const secondRoundMatchUps = roundMatchUps?.[2] || [];
 
-  const firstRoundMatchUp = firstRoundMatchUps?.[0] || {};
-  const drawId = firstRoundMatchUp.drawId;
-  const structureId = firstRoundMatchUp.structureId;
+  const firstRoundMatchUp = firstRoundMatchUps?.[0];
+  const drawId = firstRoundMatchUp?.drawId;
+  const structureId = firstRoundMatchUp?.structureId;
 
   const roundNumbers: number[] = roundMatchUps
     ? Object.keys(roundMatchUps).map((r) => ensureInt(r))
@@ -103,30 +103,29 @@ export function buildDrawHierarchy({
   const firstRoundPairedDrawPositions = firstRoundMatchUps?.map(
     (matchUp) => matchUp.drawPositions
   );
-  const firstRoundDrawPositions = firstRoundPairedDrawPositions.flat(Infinity);
+  const firstRoundDrawPositions = firstRoundPairedDrawPositions?.flat(Infinity);
 
   const secondRoundDrawPositions = secondRoundMatchUps
     .map((matchUp) => matchUp.drawPositions)
     .flat(Infinity);
   const secondRoundEntries = secondRoundDrawPositions
-    .filter((drawPosition) => !firstRoundDrawPositions.includes(drawPosition))
+    .filter((drawPosition) => !firstRoundDrawPositions?.includes(drawPosition))
     .sort(drawPositionSort);
   const secondRoundEntrySides = secondRoundMatchUps
     .filter(
       (matchUp) =>
-        matchUp.drawPositions?.reduce(
-          (p, c) => secondRoundEntries.includes(c) || p,
-          undefined
-        )
+        matchUp.drawPositions?.find((dp) => secondRoundEntries.includes(dp))
     )
     .map((matchUp) => {
-      const targetDrawPosition = matchUp.drawPositions?.reduce(
-        (p, c) => (secondRoundEntries.includes(c) ? c : p),
-        undefined
+      const targetDrawPosition = matchUp.drawPositions?.find((dp) =>
+        secondRoundEntries.includes(dp)
       );
-      const targetIndex = matchUp.drawPositions?.indexOf(targetDrawPosition);
-      const targetSide = matchUp.sides[targetIndex];
-      return { [targetDrawPosition]: targetSide };
+      const targetIndex =
+        targetDrawPosition &&
+        matchUp.drawPositions?.indexOf(targetDrawPosition);
+      const targetSide =
+        targetIndex !== undefined && matchUp.sides?.[targetIndex];
+      return targetDrawPosition && { [targetDrawPosition]: targetSide };
     });
 
   if (
@@ -155,17 +154,17 @@ export function buildDrawHierarchy({
         return entrySides[drawPosition] || { bye: true, drawPosition };
       });
       return {
-        sides,
-        drawId,
-        structureId,
-        roundPosition,
-        drawPositions,
-        roundNumber: 1,
-        finishingRound,
-        matchUpId: UUID(),
-        matchUpStatus: 'BYE',
-        sideNumber: index + 1,
         finishingPositionRange,
+        sideNumber: index + 1,
+        matchUpStatus: 'BYE',
+        matchUpId: UUID(),
+        finishingRound,
+        roundNumber: 1,
+        drawPositions,
+        roundPosition,
+        structureId,
+        drawId,
+        sides,
       };
     });
 
@@ -219,7 +218,7 @@ export function buildDrawHierarchy({
           .filter(Boolean) // first filter out undefined if no advanced participant
           .reduce((fed, position) => {
             // fed position is not included in first round
-            return firstRoundDrawPositions.includes(position) ? fed : position;
+            return firstRoundDrawPositions?.includes(position) ? fed : position;
           }, undefined);
 
         const fedSide = matchUp.sides

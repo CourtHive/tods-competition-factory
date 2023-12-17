@@ -1,4 +1,4 @@
-import { getStructureSeedAssignments } from '../../../drawEngine/getters/getStructureSeedAssignments';
+import { getStructureSeedAssignments } from '../../../query/structure/getStructureSeedAssignments';
 import { assignSeed } from '../../../drawEngine/governors/entryGovernor/seedAssignment';
 import { uniqueValues } from '../../../utilities/arrays';
 

@@ -4,7 +4,7 @@ import {
   addPenalty as penaltyAdd,
   modifyPenalty as penaltyModify,
   removePenalty as penaltyRemove,
-} from '../../../tournamentEngine/governors/participantGovernor/participantPenalties';
+} from '../../../mutate/participants/participantPenalties';
 
 import { ResultType } from '../../../global/functions/decorateResult';
 import { TournamentRecords } from '../../../types/factoryTypes';

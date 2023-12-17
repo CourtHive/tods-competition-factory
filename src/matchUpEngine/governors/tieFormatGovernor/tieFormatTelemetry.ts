@@ -1,4 +1,4 @@
-import { addExtension } from '../../../global/functions/producers/addExtension';
+import { addExtension } from '../../../mutate/extensions/addExtension';
 import { findExtension } from '../../../acquire/findExtension';
 
 import { TIE_FORMAT_MODIFICATIONS } from '../../../constants/extensionConstants';

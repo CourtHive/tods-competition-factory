@@ -1,4 +1,4 @@
-import { addExtension } from '../../../global/functions/producers/addExtension';
+import { addExtension } from '../../extensions/addExtension';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';

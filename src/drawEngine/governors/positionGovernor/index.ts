@@ -9,7 +9,7 @@ import { getNextSeedBlock } from '../../getters/seedGetter';
 import { resetMatchUpLineUps } from '../../../mutate/matchUps/lineUps/resetMatchUpLineUps';
 import { assignDrawPosition } from '../../../mutate/matchUps/drawPositions/positionAssignment';
 import { clearDrawPosition } from '../../../mutate/matchUps/drawPositions/positionClear';
-import { setSubOrder } from './setSubOrder';
+import { setSubOrder } from '../../../mutate/structures/setSubOrder';
 
 const positionGovernor = {
   setSubOrder,

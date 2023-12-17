@@ -1,5 +1,5 @@
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import { addExtension } from '../../../global/functions/producers/addExtension';
+import { addExtension } from '../../../mutate/extensions/addExtension';
 import { modifyDrawNotice } from '../../../mutate/notifications/drawNotifications';
 
 import { APPLIED_POLICIES } from '../../../constants/extensionConstants';

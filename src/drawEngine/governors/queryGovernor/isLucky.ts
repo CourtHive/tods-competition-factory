@@ -1,4 +1,4 @@
-import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
+import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 
 import { DrawDefinition, Structure } from '../../../types/tournamentTypes';
 import { LUCKY_DRAW } from '../../../constants/drawDefinitionConstants';

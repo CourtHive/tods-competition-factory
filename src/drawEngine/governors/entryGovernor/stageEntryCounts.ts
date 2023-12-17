@@ -16,6 +16,7 @@ import {
   INVALID_STAGE,
   MISSING_DRAW_DEFINITION,
 } from '../../../constants/errorConditionConstants';
+import { DrawDefinition } from '../../../types/tournamentTypes';
 
 export function setStageDrawSize({
   stageSequence = 1,
@@ -81,12 +82,18 @@ export function setStageAlternatesCount({
   return { ...SUCCESS };
 }
 
+type SetWildcardsCount = {
+  drawDefinition: DrawDefinition;
+  wildcardsCount: number;
+  stageSequence?: number;
+  stage: string;
+};
 export function setStageWildcardsCount({
   wildcardsCount = 0,
   drawDefinition,
   stageSequence,
   stage,
-}) {
+}: SetWildcardsCount) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!stageExists({ drawDefinition, stage })) {
     return { error: INVALID_STAGE };

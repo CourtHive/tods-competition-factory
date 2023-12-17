@@ -9,7 +9,7 @@ export { getEligibleVoluntaryConsolationParticipants } from '../../drawEngine/go
 export { getOrderedDrawPositions } from '../../drawEngine/getters/getMatchUps/getOrderedDrawPositions';
 export { getRoundContextProfile } from '../../drawEngine/getters/getMatchUps/getRoundContextProfile';
 export { getAssignedParticipantIds } from '../../drawEngine/getters/getAssignedParticipantIds';
-export { getRoundMatchUps } from '../../drawEngine/accessors/matchUpAccessor/getRoundMatchUps';
+export { getRoundMatchUps } from '../../query/matchUps/getRoundMatchUps';
 export { getPositionAssignments } from '../../drawEngine/getters/positionsGetter';
 export { getValidGroupSizes } from '../../assemblies/generators/drawDefinitions/drawTypes/roundRobin/roundRobin';
 

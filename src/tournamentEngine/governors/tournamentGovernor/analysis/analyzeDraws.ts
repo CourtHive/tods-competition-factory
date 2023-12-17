@@ -1,5 +1,5 @@
 import { getStructureDrawPositionProfiles } from '../../../../drawEngine/getters/getStructureDrawPositionProfiles';
-import { getRoundMatchUps } from '../../../../drawEngine/accessors/matchUpAccessor/getRoundMatchUps';
+import { getRoundMatchUps } from '../../../../query/matchUps/getRoundMatchUps';
 import { getPositionAssignments } from '../../../../drawEngine/getters/positionsGetter';
 import { getStructureGroups } from '../../publishingGovernor/getStructureGroups';
 import { getStructureLinks } from '../../../../drawEngine/getters/linkGetter';

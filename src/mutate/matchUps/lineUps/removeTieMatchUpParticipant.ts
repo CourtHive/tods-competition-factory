@@ -3,7 +3,7 @@ import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { getPairedParticipant } from '../../../tournamentEngine/governors/participantGovernor/getPairedParticipant';
 import { deleteParticipants } from '../../../tournamentEngine/governors/participantGovernor/deleteParticipants';
-import { modifyParticipant } from '../../../tournamentEngine/governors/participantGovernor/modifyParticipant';
+import { modifyParticipant } from '../../participants/modifyParticipant';
 import { getParticipants } from '../../../tournamentEngine/getters/participants/getParticipants';
 import { removeCollectionAssignments } from '../../../tournamentEngine/governors/eventGovernor/removeCollectionAssignments';
 import { addParticipant } from '../../../tournamentEngine/governors/participantGovernor/addParticipants';

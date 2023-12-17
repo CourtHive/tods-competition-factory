@@ -1,5 +1,5 @@
 import { findExtension } from '../../../acquire/findExtension';
-import { findPolicy } from '../policyGovernor/findPolicy';
+import { findPolicy } from '../../../acquire/findPolicy';
 
 import { checkRequiredParameters } from '../../../parameters/checkRequiredParameters';
 import { POLICY_TYPE_SCHEDULING } from '../../../constants/policyConstants';

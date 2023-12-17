@@ -1,5 +1,5 @@
 import { checkScoreHasValue } from '../../query/matchUp/checkScoreHasValue';
-import { addExtension } from '../../global/functions/producers/addExtension';
+import { addExtension } from '../extensions/addExtension';
 import { getParticipants } from '../../tournamentEngine/getters/participants/getParticipants';
 import { addEventEntries } from '../../tournamentEngine/governors/eventGovernor/entries/addEventEntries';
 import { decorateResult } from '../../global/functions/decorateResult';

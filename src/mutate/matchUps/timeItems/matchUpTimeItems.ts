@@ -57,12 +57,18 @@ export function addMatchUpTimeItem({
   return result;
 }
 
+type ResetMatchUpTimeItemsArgs = {
+  tournamentRecord?: Tournament;
+  drawDefinition: DrawDefinition;
+  matchUpId: string;
+  event?: Event;
+};
 export function resetMatchUpTimeItems({
   tournamentRecord,
   drawDefinition,
   matchUpId,
   event,
-}) {
+}: ResetMatchUpTimeItemsArgs) {
   const { matchUp } = findDrawMatchUp({ drawDefinition, event, matchUpId });
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };
   matchUp.timeItems = [];

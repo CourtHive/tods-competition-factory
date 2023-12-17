@@ -1,5 +1,5 @@
-import { addExtension } from '../../../global/functions/producers/addExtension';
-import { removeExtension } from '../tournamentGovernor/addRemoveExtensions';
+import { removeExtension } from '../../../mutate/extensions/removeExtension';
+import { addExtension } from '../../../mutate/extensions/addExtension';
 import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
 import { findExtension } from '../../../acquire/findExtension';
 

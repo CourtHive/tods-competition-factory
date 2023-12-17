@@ -1,23 +1,31 @@
-import { reset, initialize, mainDrawPositions } from './primitives';
 import { getDrawStructures } from '../../getters/findStructure';
-import { drawEngine } from '../../sync';
 
 import { MAIN, CONSOLATION } from '../../../constants/drawDefinitionConstants';
+import { generateDrawTypeAndModifyDrawDefinition } from '../../governors/structureGovernor/generateDrawTypeAndModifyDrawDefinition';
+import { DrawDefinition } from '../../../types/tournamentTypes';
+import { newDrawDefinition } from '../../stateMethods';
+import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';
+import { ResultType } from '../../../global/functions/decorateResult';
 
-export function feedInChampionship(params) {
+export function feedInChampionship(params): ResultType & {
+  consolationStructure?: any;
+  consolationMatchUps?: any;
+  mainDrawMatchUps?: any;
+  drawDefinition?: DrawDefinition;
+  links?: any;
+} {
   const { drawSize, drawType, feedPolicy, drawTypeCoercion } = params;
-  reset();
-  initialize();
-  mainDrawPositions({ drawSize });
-  const result = drawEngine.generateDrawTypeAndModifyDrawDefinition({
+  const drawDefinition: DrawDefinition = newDrawDefinition();
+  setStageDrawSize({ drawDefinition, stage: MAIN, drawSize });
+  const result = generateDrawTypeAndModifyDrawDefinition({
     drawTypeCoercion,
+    drawDefinition,
     feedPolicy,
     drawType,
   });
   if (result.error) return result;
 
   const { links } = result;
-  const { drawDefinition } = drawEngine.getState();
   const {
     structures: [mainStructure],
   } = getDrawStructures({ drawDefinition, stage: MAIN });

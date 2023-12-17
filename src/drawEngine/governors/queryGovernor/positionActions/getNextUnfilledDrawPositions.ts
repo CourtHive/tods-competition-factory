@@ -2,11 +2,22 @@ import { structureAssignedDrawPositions } from '../../../getters/positionsGetter
 import { getNextSeedBlock } from '../../../getters/seedGetter';
 import { findStructure } from '../../../getters/findStructure';
 
+import { ResultType } from '../../../../global/functions/decorateResult';
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_STRUCTURE_ID,
 } from '../../../../constants/errorConditionConstants';
+import { DrawDefinition, Event } from '../../../../types/tournamentTypes';
+import { SeedingProfile } from '../../../../types/factoryTypes';
 
+type GetNextUfilledDrawPositionsArgs = {
+  provisionalPositioning?: boolean;
+  drawDefinition: DrawDefinition;
+  seedingProfile?: SeedingProfile;
+  seedBlockInfo?: any;
+  structureId: string;
+  event?: Event;
+};
 export function getNextUnfilledDrawPositions({
   provisionalPositioning,
   drawDefinition,
@@ -14,7 +25,9 @@ export function getNextUnfilledDrawPositions({
   seedingProfile,
   structureId,
   event,
-}) {
+}: GetNextUfilledDrawPositionsArgs): ResultType & {
+  nextUnfilledDrawPositions?: number[];
+} {
   if (!drawDefinition) {
     const error = MISSING_DRAW_DEFINITION;
     return { error, nextUnfilledDrawPositions: [] };

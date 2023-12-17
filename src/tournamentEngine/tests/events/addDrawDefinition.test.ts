@@ -1,5 +1,7 @@
-import { getMatchUpType } from '../../../drawEngine/accessors/matchUpAccessor';
-import drawEngine from '../../../drawEngine/sync';
+import {
+  getMatchUpContextIds,
+  getMatchUpType,
+} from '../../../drawEngine/accessors/matchUpAccessor';
 import tournamentEngineAsync from '../../async';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngineSync from '../../sync';
@@ -63,7 +65,7 @@ test.each([tournamentEngineSync, asyncTournamentEngine])(
     }));
     expect(matchUpType).toEqual(SINGLES);
 
-    result = drawEngine.getMatchUpContextIds({
+    result = getMatchUpContextIds({
       matchUps: result.upcomingMatchUps,
       matchUpId: matchUp.matchUpId,
     });

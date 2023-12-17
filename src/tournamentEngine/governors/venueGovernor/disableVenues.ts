@@ -1,4 +1,4 @@
-import { addExtension } from '../../../global/functions/producers/addExtension';
+import { addExtension } from '../../../mutate/extensions/addExtension';
 import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
 
 import { DISABLED } from '../../../constants/extensionConstants';

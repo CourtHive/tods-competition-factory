@@ -1,4 +1,4 @@
-import { addExtension } from '../../../global/functions/producers/addExtension';
+import { addExtension } from '../../../mutate/extensions/addExtension';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 
 import { DELEGATED_OUTCOME } from '../../../constants/extensionConstants';

@@ -1,13 +1,13 @@
 import { getAssignedParticipantIds } from '../../../../drawEngine/getters/getAssignedParticipantIds';
 import { refreshEntryPositions } from '../../../../global/functions/producers/refreshEntryPositions';
-import { modifyDrawNotice } from '../../../../mutate/notifications/drawNotifications';
 import { findParticipant } from '../../../../global/functions/deducers/findParticipant';
-import { addExtension } from '../../../../global/functions/producers/addExtension';
-import { isValidExtension } from '../../../../validators/isValidExtension';
-import { removeExtension } from '../../tournamentGovernor/addRemoveExtensions';
+import { modifyDrawNotice } from '../../../../mutate/notifications/drawNotifications';
+import { removeExtension } from '../../../../mutate/extensions/removeExtension';
 import { decorateResult } from '../../../../global/functions/decorateResult';
-import { isUngrouped } from '../../../../global/functions/isUngrouped';
+import { isValidExtension } from '../../../../validators/isValidExtension';
+import { addExtension } from '../../../../mutate/extensions/addExtension';
 import { getFlightProfile } from '../../../../query/event/getFlightProfile';
+import { isUngrouped } from '../../../../global/functions/isUngrouped';
 
 import { validStages } from '../../../../constants/drawDefinitionConstants';
 import { DOUBLES, TEAM_EVENT } from '../../../../constants/eventConstants';

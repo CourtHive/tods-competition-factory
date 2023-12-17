@@ -1,12 +1,15 @@
-import { getStructureMatchUps } from '../../getters/getMatchUps/getStructureMatchUps';
+import { generateDrawTypeAndModifyDrawDefinition } from '../../governors/structureGovernor/generateDrawTypeAndModifyDrawDefinition';
 import { positionTargets } from '../../../mutate/matchUps/drawPositions/positionTargets';
-import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
+import { getStructureMatchUps } from '../../../query/structure/getStructureMatchUps';
+import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getDrawStructures } from '../../getters/findStructure';
 import { feedInChampionship } from '../primitives/feedIn';
-import { drawEngine } from '../../sync';
+import { newDrawDefinition } from '../../stateMethods';
 import { expect, it } from 'vitest';
 
+import { DrawDefinition } from '../../../types/tournamentTypes';
+import { ERROR } from '../../../constants/resultConstants';
 import {
   MAIN,
   FEED_IN_CHAMPIONSHIP,
@@ -14,19 +17,16 @@ import {
   COMPASS,
 } from '../../../constants/drawDefinitionConstants';
 
-import { ERROR } from '../../../constants/resultConstants';
-
 it('can direct participants in First Match Consolation (FIRST_MATCH_LOSER_CONSOLATION)', () => {
-  reset();
-  initialize();
   const drawSize = 32;
-  mainDrawPositions({ drawSize });
-  const result = drawEngine.generateDrawTypeAndModifyDrawDefinition({
+  const drawDefinition: DrawDefinition = newDrawDefinition();
+  setStageDrawSize({ drawDefinition, stage: MAIN, drawSize });
+  const result = generateDrawTypeAndModifyDrawDefinition({
     drawType: FIRST_MATCH_LOSER_CONSOLATION,
+    drawDefinition,
   });
   expect(result).not.toHaveProperty(ERROR);
-  const { drawDefinition } = drawEngine.getState();
-  expect(drawDefinition.links.length).toEqual(2);
+  expect(drawDefinition.links?.length).toEqual(2);
   const {
     structures: [structure],
   } = getDrawStructures({ drawDefinition, stage: MAIN });
@@ -119,13 +119,13 @@ it('can direct participants in First Match Consolation (FIRST_MATCH_LOSER_CONSOL
 
 it('can direct participants in FEED_IN_CHAMPIONSHIP structure', () => {
   const drawSize = 16;
-  feedInChampionship({
-    drawSize,
-    drawType: FEED_IN_CHAMPIONSHIP,
-    feedPolicy: { roundGroupedOrder: [] },
-  });
-  const { drawDefinition } = drawEngine.getState();
-  expect(drawDefinition.links.length).toEqual(4);
+  const drawDefinition: any =
+    feedInChampionship({
+      drawType: FEED_IN_CHAMPIONSHIP,
+      feedPolicy: { roundGroupedOrder: [] },
+      drawSize,
+    }).drawDefinition ?? {};
+  expect(drawDefinition?.links?.length).toEqual(4);
   const {
     structures: [structure],
   } = getDrawStructures({ drawDefinition, stage: MAIN });
@@ -153,8 +153,8 @@ it('can direct participants in FEED_IN_CHAMPIONSHIP structure', () => {
     matchUp,
     targetMatchUps: { winnerMatchUp, loserMatchUp },
   } = positionTargets({
-    drawDefinition,
     inContextDrawMatchUps,
+    drawDefinition,
     matchUpId,
   });
 
@@ -232,15 +232,14 @@ it('can direct participants in FEED_IN_CHAMPIONSHIP structure', () => {
 });
 
 it('can direct participants in COMPASS', () => {
-  reset();
-  initialize();
-  mainDrawPositions({ drawSize: 32 });
-  const result = drawEngine.generateDrawTypeAndModifyDrawDefinition({
+  const drawDefinition: DrawDefinition = newDrawDefinition() ?? {};
+  setStageDrawSize({ drawDefinition, stage: MAIN, drawSize: 32 });
+  const result = generateDrawTypeAndModifyDrawDefinition({
     drawType: COMPASS,
+    drawDefinition,
   });
   expect(result).not.toHaveProperty(ERROR);
-  const { drawDefinition } = drawEngine.getState();
-  expect(drawDefinition.links.length).toEqual(7);
+  expect(drawDefinition.links?.length).toEqual(7);
   const {
     structures: [structure],
   } = getDrawStructures({ drawDefinition, stage: MAIN });
@@ -269,9 +268,11 @@ it('can direct participants in COMPASS', () => {
 
   const structureNameMap = Object.assign(
     {},
-    ...drawDefinition.structures.map(({ structureId, structureName }) => ({
-      [structureName]: structureId,
-    }))
+    ...(drawDefinition.structures ?? []).map(
+      ({ structureId, structureName = '' }) => ({
+        [structureName]: structureId,
+      })
+    )
   );
 
   expect(matchUp.roundNumber).toEqual(1);

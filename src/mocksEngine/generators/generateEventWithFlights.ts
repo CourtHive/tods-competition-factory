@@ -1,5 +1,5 @@
 import { addEventEntries } from '../../tournamentEngine/governors/eventGovernor/entries/addEventEntries';
-import { attachEventPolicies } from '../../tournamentEngine/governors/policyGovernor/policyManagement';
+import { attachEventPolicies } from '../../mutate/extensions/policies/policyManagement';
 import { addEventTimeItem } from '../../tournamentEngine/governors/tournamentGovernor/addTimeItem';
 import { publishEvent } from '../../tournamentEngine/governors/publishingGovernor/publishEvent';
 import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaults';

@@ -38,12 +38,8 @@ type NewDrawDefinitionArgs = {
   drawType?: string;
   drawId?: string;
 };
-export function newDrawDefinition({
-  drawId = UUID(),
-  processCodes,
-  matchUpType,
-  drawType,
-}: NewDrawDefinitionArgs) {
+export function newDrawDefinition(params?: NewDrawDefinitionArgs) {
+  const { drawId = UUID(), processCodes, matchUpType, drawType } = params ?? {};
   const drawDefinition = definitionTemplate();
   return Object.assign(drawDefinition, {
     processCodes,

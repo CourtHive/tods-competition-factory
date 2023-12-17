@@ -16,14 +16,14 @@ import { filterParticipants } from '../../getters/participants/filterParticipant
 import { modifyParticipantsSignInStatus } from '../../../mutate/participants/modifyParticipantsSignInStatus';
 import { scaledTeamAssignment } from '../../generators/scaledTeamAssignment';
 import { createGroupParticipant } from './groupings/createGroupParticipant';
-import { modifyParticipantOtherName } from './modifyParticipantOtherName';
-import { regenerateParticipantNames } from './regenerateParticipantNames';
+import { modifyParticipantOtherName } from '../../../mutate/participants/modifyParticipantOtherName';
+import { regenerateParticipantNames } from '../../../mutate/participants/regenerateParticipantNames';
 import { getTournamentPersons } from '../../getters/getTournamentPersons';
 import { addParticipant, addParticipants } from './addParticipants';
-import { modifyParticipantName } from './modifyParticipantName';
+import { modifyParticipantName } from '../../../mutate/participants/modifyParticipantName';
 import { deleteParticipants } from './deleteParticipants';
-import { mergeParticipants } from './mergeParticipants';
-import { modifyParticipant } from './modifyParticipant';
+import { mergeParticipants } from '../../../mutate/participants/mergeParticipants';
+import { modifyParticipant } from '../../../mutate/participants/modifyParticipant';
 import {
   removeIndividualParticipantIds,
   removeParticipantIdsFromAllTeams,
@@ -33,7 +33,7 @@ import {
   modifyPenalty,
   removePenalty,
   getTournamentPenalties,
-} from './participantPenalties';
+} from '../../../mutate/participants/participantPenalties';
 import {
   setParticipantScaleItems,
   setParticipantScaleItem,

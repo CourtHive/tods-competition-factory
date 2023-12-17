@@ -1,5 +1,5 @@
 import { findExtension } from '../../../acquire/findExtension';
-import { findPolicy } from '../../../tournamentEngine/governors/policyGovernor/findPolicy';
+import { findPolicy } from '../../../acquire/findPolicy';
 
 import { POLICY_TYPE_SCHEDULING } from '../../../constants/policyConstants';
 import { SCHEDULE_TIMING } from '../../../constants/extensionConstants';

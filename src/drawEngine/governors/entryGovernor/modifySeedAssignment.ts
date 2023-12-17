@@ -1,4 +1,4 @@
-import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
+import { getStructureSeedAssignments } from '../../../query/structure/getStructureSeedAssignments';
 import { modifySeedAssignmentsNotice } from '../../../mutate/notifications/drawNotifications';
 import { findStructure } from '../../getters/findStructure';
 import { ensureInt } from '../../../utilities/ensureInt';

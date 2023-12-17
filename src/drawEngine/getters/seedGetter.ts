@@ -1,6 +1,6 @@
 import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
 import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
-import { getStructureSeedAssignments } from './getStructureSeedAssignments';
+import { getStructureSeedAssignments } from '../../query/structure/getStructureSeedAssignments';
 import { chunkArray, generateRange, shuffleArray } from '../../utilities';
 import { isLucky } from '../governors/queryGovernor/isLucky';
 import { getNumericSeedValue } from './getNumericSeedValue';

@@ -1,4 +1,4 @@
-import drawEngine from '../../../drawEngine/sync';
+import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 import { expect, it } from 'vitest';
@@ -72,9 +72,10 @@ it('can generate and seed a qualifying structure', () => {
 
   let safety = incompleteMatchUps.length;
   while (incompleteMatchUps.length && safety) {
-    const { roundProfile } = drawEngine.getRoundMatchUps({
-      matchUps: incompleteMatchUps,
-    });
+    const roundProfile =
+      getRoundMatchUps({
+        matchUps: incompleteMatchUps,
+      }).roundProfile ?? {};
     const roundNumbers: number[] = Object.keys(roundProfile).map((k) =>
       parseInt(k)
     );

@@ -41,16 +41,22 @@ import {
 } from '../../../types/tournamentTypes';
 
 type GenerateDrawTypeAndModify = {
+  policyDefinitions?: PolicyDefinitions;
   appliedPolicies?: PolicyDefinitions;
-  tournamentRecord: Tournament;
+  finishingPositionLimit?: number;
+  tournamentRecord?: Tournament;
+  matchUpType?: EventTypeUnion;
   drawDefinition: DrawDefinition;
+  drawTypeCoercion?: boolean;
   modifyOriginal?: boolean;
   qualifiersCount?: number;
   stageSequence?: number;
   matchUpFormat?: string;
-  matchUpType?: EventTypeUnion;
+  structureOptions?: any;
   tieFormat?: TieFormat;
-  drawSize: number;
+  drawType?: string;
+  drawSize?: number;
+  feedPolicy?: any;
   isMock?: boolean;
   event?: Event;
 };

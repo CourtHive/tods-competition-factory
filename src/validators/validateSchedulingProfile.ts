@@ -1,5 +1,5 @@
 import { getAllStructureMatchUps } from '../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
-import { getRoundMatchUps } from '../drawEngine/accessors/matchUpAccessor/getRoundMatchUps';
+import { getRoundMatchUps } from '../query/matchUps/getRoundMatchUps';
 import { getDrawStructures } from '../drawEngine/getters/findStructure';
 import { isConvertableInteger, isPowerOf2 } from '../utilities/math';
 import { isValidDateString } from '../utilities/dateTime';

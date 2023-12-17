@@ -1,24 +1,24 @@
-import { checkMatchUpIsComplete } from '../../../query/matchUp/checkMatchUpIsComplete';
-import { structureAssignedDrawPositions } from '../positionsGetter';
-import { getAllStructureMatchUps } from './getAllStructureMatchUps';
-import { findStructure } from '../findStructure';
+import { checkMatchUpIsComplete } from '../matchUp/checkMatchUpIsComplete';
+import { structureAssignedDrawPositions } from '../../drawEngine/getters/positionsGetter';
+import { getAllStructureMatchUps } from '../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { findStructure } from '../../drawEngine/getters/findStructure';
 
-import { ResultType } from '../../../global/functions/decorateResult';
-import { HydratedMatchUp } from '../../../types/hydrated';
-import { TEAM } from '../../../constants/matchUpTypes';
-import { MatchUpFilters } from './filterMatchUps';
-import { MatchUpsMap } from './getMatchUpsMap';
+import { ResultType } from '../../global/functions/decorateResult';
+import { HydratedMatchUp } from '../../types/hydrated';
+import { TEAM } from '../../constants/matchUpTypes';
+import { MatchUpFilters } from '../../drawEngine/getters/getMatchUps/filterMatchUps';
+import { MatchUpsMap } from '../../drawEngine/getters/getMatchUps/getMatchUpsMap';
 import {
   ABANDONED,
   upcomingMatchUpStatuses,
-} from '../../../constants/matchUpStatusConstants';
+} from '../../constants/matchUpStatusConstants';
 import {
   DrawDefinition,
   Event,
   Participant,
   Structure,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../types/tournamentTypes';
 import {
   ContextContent,
   ContextProfile,
@@ -27,7 +27,7 @@ import {
   PolicyDefinitions,
   ScheduleTiming,
   ScheduleVisibilityFilters,
-} from '../../../types/factoryTypes';
+} from '../../types/factoryTypes';
 
 /*
   completedMatchUps are those matchUps where a winningSide is defined

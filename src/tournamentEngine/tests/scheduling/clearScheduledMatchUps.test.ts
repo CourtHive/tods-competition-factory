@@ -1,4 +1,4 @@
-import { getStructureRoundProfile } from '../../../drawEngine/getters/getMatchUps/getStructureRoundProfile';
+import { getStructureRoundProfile } from '../../../query/structure/getStructureRoundProfile';
 import mocksEngine from '../../../mocksEngine';
 import { tournamentEngine } from '../../sync';
 import { expect, it } from 'vitest';

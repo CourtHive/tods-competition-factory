@@ -1,4 +1,4 @@
-import { getRoundMatchUps } from '../../../drawEngine/accessors/matchUpAccessor/getRoundMatchUps';
+import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { extractTime } from '../../../utilities/dateTime';
 import {
   printGlobalLog,

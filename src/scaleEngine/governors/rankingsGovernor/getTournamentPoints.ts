@@ -1,6 +1,6 @@
 import { getParticipants } from '../../../tournamentEngine/getters/participants/getParticipants';
 import { getPolicyDefinitions } from '../../../query/extensions/getAppliedPolicies';
-import { addExtension } from '../../../global/functions/producers/addExtension';
+import { addExtension } from '../../../mutate/extensions/addExtension';
 import { getTargetElement } from './getTargetElement';
 import { getAwardProfile } from './getAwardProfile';
 import { getAwardPoints } from './getAwardPoints';

@@ -1,5 +1,5 @@
 import { refreshEntryPositions } from '../../../global/functions/producers/refreshEntryPositions';
-import { addExtension } from '../../../global/functions/producers/addExtension';
+import { addExtension } from '../../../mutate/extensions/addExtension';
 import { isValidExtension } from '../../../validators/isValidExtension';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { definedAttributes } from '../../../utilities/definedAttributes';

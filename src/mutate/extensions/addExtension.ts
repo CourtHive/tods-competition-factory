@@ -1,14 +1,14 @@
-import { isValidExtension } from '../../../validators/isValidExtension';
-import { decorateResult } from '../decorateResult';
+import { isValidExtension } from '../../validators/isValidExtension';
+import { decorateResult } from '../../global/functions/decorateResult';
 
-import { SUCCESS } from '../../../constants/resultConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   ErrorType,
   INVALID_VALUES,
   MISSING_VALUE,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
-import { Extension } from '../../../types/tournamentTypes';
+import { Extension } from '../../types/tournamentTypes';
 
 type AddExtensionArgs = {
   creationTime?: boolean;

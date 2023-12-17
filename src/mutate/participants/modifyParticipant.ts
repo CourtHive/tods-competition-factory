@@ -1,29 +1,29 @@
-import { findTournamentParticipant } from '../../getters/participants/participantGetter';
-import { addIndividualParticipantIds } from '../../../mutate/participants/addIndividualParticipantIds';
-import { getParticipants } from '../../getters/participants/getParticipants';
-import { getParticipantId } from '../../../global/functions/extractors';
-import { definedAttributes } from '../../../utilities/definedAttributes';
-import { participantRoles } from '../../../constants/participantRoles';
-import { genderConstants } from '../../../constants/genderConstants';
-import { addNotice } from '../../../global/state/globalState';
-import { countries } from '../../../fixtures/countryData';
-import { addParticipant } from './addParticipants';
-import { makeDeepCopy } from '../../../utilities';
+import { findTournamentParticipant } from '../../tournamentEngine/getters/participants/participantGetter';
+import { addIndividualParticipantIds } from './addIndividualParticipantIds';
+import { getParticipants } from '../../tournamentEngine/getters/participants/getParticipants';
+import { getParticipantId } from '../../global/functions/extractors';
+import { definedAttributes } from '../../utilities/definedAttributes';
+import { participantRoles } from '../../constants/participantRoles';
+import { genderConstants } from '../../constants/genderConstants';
+import { addNotice } from '../../global/state/globalState';
+import { countries } from '../../fixtures/countryData';
+import { addParticipant } from '../../tournamentEngine/governors/participantGovernor/addParticipants';
+import { makeDeepCopy } from '../../utilities';
 
-import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { TEAM } from '../../../constants/matchUpTypes';
+import { MODIFY_PARTICIPANTS } from '../../constants/topicConstants';
+import { SUCCESS } from '../../constants/resultConstants';
+import { TEAM } from '../../constants/matchUpTypes';
 import {
   CANNOT_MODIFY_PARTICIPANT_TYPE,
   MISSING_PARTICIPANT,
   MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 import {
   GROUP,
   INDIVIDUAL,
   PAIR,
   participantTypes,
-} from '../../../constants/participantConstants';
+} from '../../constants/participantConstants';
 
 export function modifyParticipant(params) {
   const {

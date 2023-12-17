@@ -1,9 +1,9 @@
 import { getOrderedDrawPositionPairs } from '../../../drawEngine/tests/testingUtilities';
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
+import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { getDrawPosition } from '../../../global/functions/extractors';
 import { setSubscriptions } from '../../../global/state/globalState';
-import drawEngine from '../../../drawEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 import { expect, it, test } from 'vitest';
@@ -573,7 +573,7 @@ it('advanceds a DOUBLE_DEFAULT when encountering DOUBLE DOUBLE_DEFAULT', () => {
 
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
 
-  const { roundMatchUps } = drawEngine.getRoundMatchUps({ matchUps });
+  const roundMatchUps: any = getRoundMatchUps({ matchUps })?.roundMatchUps;
   expect(roundMatchUps[1].map(({ matchUpStatus }) => matchUpStatus)).toEqual([
     'COMPLETED',
     'COMPLETED',

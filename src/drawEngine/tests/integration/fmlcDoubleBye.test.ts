@@ -27,52 +27,58 @@ it('can generate FIRST_MATCH_LOSER_CONSOLATION with double-byes in consolation 1
   const seedsCount = 8;
   const participantsCount = 17;
 
-  const { mainStructureId, consolationStructureId } = generateFMLC({
-    policyDefinitions,
-    participantsCount,
-    seedsCount,
-    drawSize,
-  });
+  const { drawDefinition, mainStructureId, consolationStructureId } =
+    generateFMLC({
+      policyDefinitions,
+      participantsCount,
+      seedsCount,
+      drawSize,
+    });
 
   verifyStructure({
-    structureId: mainStructureId,
-    expectedSeeds: 8,
-    expectedSeedsWithByes: 8,
-    expectedByeAssignments: 15,
-    expectedPositionsAssignedCount: 32,
     expectedSeedValuesWithBye: [1, 2, 3, 4, 5, 6, 7, 8],
+    expectedPositionsAssignedCount: 32,
+    structureId: mainStructureId,
+    expectedByeAssignments: 15,
+    expectedSeedsWithByes: 8,
+    expectedSeeds: 8,
+    drawDefinition,
   });
 
   verifyMatchUps({
-    structureId: mainStructureId,
-    expectedRoundPending: [0, 1],
-    expectedRoundUpcoming: [1, 7],
     expectedRoundCompleted: [0, 0],
+    expectedRoundUpcoming: [1, 7],
+    expectedRoundPending: [0, 1],
+    structureId: mainStructureId,
+    drawDefinition,
   });
 
   verifyStructure({
     structureId: consolationStructureId,
-    expectedSeeds: 0,
-    expectedSeedsWithByes: 0,
-    expectedByeAssignments: 15,
     expectedPositionsAssignedCount: 15,
     expectedSeedValuesWithBye: [],
+    expectedByeAssignments: 15,
+    expectedSeedsWithByes: 0,
+    expectedSeeds: 0,
+    drawDefinition,
   });
 
   verifyMatchUps({
-    structureId: consolationStructureId,
     expectedRoundPending: [0, 0, 1, 2, 1],
-    expectedRoundUpcoming: [0, 1],
+    structureId: consolationStructureId,
     expectedRoundCompleted: [0, 0],
+    expectedRoundUpcoming: [0, 1],
     requireParticipants: false,
+    drawDefinition,
   });
 
   verifyMatchUps({
-    structureId: consolationStructureId,
     expectedRoundPending: [0, 1, 4, 2, 1],
-    expectedRoundUpcoming: [0, 0],
+    structureId: consolationStructureId,
     expectedRoundCompleted: [0, 0],
+    expectedRoundUpcoming: [0, 0],
     requireParticipants: true, // requires that drawPositions be assigned to participantIds
+    drawDefinition,
   });
 });
 
@@ -81,52 +87,58 @@ it('can generate FIRST_MATCH_LOSER_CONSOLATION with double-byes in consolation 1
   const seedsCount = 8;
   const participantsCount = 18;
 
-  const { mainStructureId, consolationStructureId } = generateFMLC({
-    participantsCount,
-    policyDefinitions,
-    seedsCount,
-    drawSize,
-  });
+  const { drawDefinition, mainStructureId, consolationStructureId } =
+    generateFMLC({
+      participantsCount,
+      policyDefinitions,
+      seedsCount,
+      drawSize,
+    });
 
   verifyStructure({
-    structureId: mainStructureId,
-    expectedSeeds: 8,
-    expectedSeedsWithByes: 8,
-    expectedByeAssignments: 14,
-    expectedPositionsAssignedCount: 32,
     expectedSeedValuesWithBye: [1, 2, 3, 4, 5, 6, 7, 8],
+    expectedPositionsAssignedCount: 32,
+    structureId: mainStructureId,
+    expectedByeAssignments: 14,
+    expectedSeedsWithByes: 8,
+    expectedSeeds: 8,
+    drawDefinition,
   });
 
   verifyMatchUps({
-    structureId: mainStructureId,
-    expectedRoundPending: [0, 2],
-    expectedRoundUpcoming: [2, 6],
     expectedRoundCompleted: [0, 0],
+    expectedRoundUpcoming: [2, 6],
+    expectedRoundPending: [0, 2],
+    structureId: mainStructureId,
+    drawDefinition,
   });
 
   verifyStructure({
     structureId: consolationStructureId,
-    expectedSeeds: 0,
-    expectedSeedsWithByes: 0,
-    expectedByeAssignments: 14,
     expectedPositionsAssignedCount: 14,
     expectedSeedValuesWithBye: [],
+    expectedByeAssignments: 14,
+    expectedSeedsWithByes: 0,
+    expectedSeeds: 0,
+    drawDefinition,
   });
 
   verifyMatchUps({
     structureId: consolationStructureId,
     expectedRoundPending: [0, 0, 2, 2, 1],
-    expectedRoundUpcoming: [0, 2],
     expectedRoundCompleted: [0, 0],
+    expectedRoundUpcoming: [0, 2],
     requireParticipants: false,
+    drawDefinition,
   });
 
   verifyMatchUps({
     structureId: consolationStructureId,
     expectedRoundPending: [0, 2, 4, 2, 1],
-    expectedRoundUpcoming: [0, 0],
     expectedRoundCompleted: [0, 0],
+    expectedRoundUpcoming: [0, 0],
     requireParticipants: true, // requires that drawPositions be assigned to participantIds
+    drawDefinition,
   });
 });
 
@@ -136,10 +148,10 @@ it('can remove 2nd round MAIN draw result when no participant went to consolatio
   };
   const drawProfiles = [
     {
-      drawSize: 16,
-      eventType: SINGLES,
-      participantsCount: 14,
       drawType: FIRST_MATCH_LOSER_CONSOLATION,
+      participantsCount: 14,
+      eventType: SINGLES,
+      drawSize: 16,
       outcomes: [
         {
           roundNumber: 1,
@@ -234,8 +246,8 @@ it('can remove 2nd round MAIN draw result when no participant went to consolatio
     tournamentRecord,
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles,
     participantsProfile,
+    drawProfiles,
   });
   tournamentEngine.setState(tournamentRecord);
 
@@ -296,9 +308,9 @@ it('can remove 2nd round MAIN draw result when no participant went to consolatio
 it('can propagate BYE to 2nd round feed arm when 1st round Double-BYE creates 2nd round Bye paired with completed matchUp', () => {
   const drawProfiles = [
     {
-      drawSize: 4,
-      eventType: SINGLES,
       drawType: FIRST_MATCH_LOSER_CONSOLATION,
+      eventType: SINGLES,
+      drawSize: 4,
     },
   ];
 
@@ -361,9 +373,9 @@ it('can propagate BYE to 2nd round feed arm when 1st round Double-BYE creates 2n
 it('can propagate BYE to 2nd round feed arm when 1st round Double-BYE creates 2nd round Bye paired with incomplete matchUp', () => {
   const drawProfiles = [
     {
-      drawSize: 4,
-      eventType: SINGLES,
       drawType: FIRST_MATCH_LOSER_CONSOLATION,
+      eventType: SINGLES,
+      drawSize: 4,
     },
   ];
 

@@ -1,5 +1,5 @@
+import { getEliminationDrawSize } from '../../../drawEngine/getters/getEliminationDrawSize';
 import competitionEngine from '../../../competitionEngine/sync';
-import drawEngine from '../../../drawEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 import { expect, it } from 'vitest';
@@ -87,7 +87,7 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
   const drawDefinitions: any[] = [];
   flightProfile.flights?.forEach((flight) => {
     const participantsCount = flight.drawEntries.length;
-    const { drawSize } = drawEngine.getEliminationDrawSize({
+    const { drawSize } = getEliminationDrawSize({
       participantsCount,
     });
     const { seedsCount } = tournamentEngine.getSeedsCount({

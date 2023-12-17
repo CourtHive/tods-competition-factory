@@ -1,7 +1,6 @@
 import { generateMatchUpOutcome } from '../../primitives/generateMatchUpOutcome';
 import { getPositionAssignments } from '../../../getters/positionsGetter';
 import tournamentEngine from '../../../../tournamentEngine/sync';
-import { reset, initialize } from '../../primitives/primitives';
 import { intersection } from '../../../../utilities';
 import { setsValues } from './roundRobinSetsValues';
 import mocksEngine from '../../../../mocksEngine';
@@ -30,8 +29,6 @@ import {
 const goldFlight = 'Gold Flight';
 
 it('disables placement actions for Round Robin Playoffs until all groups are complete', () => {
-  reset();
-  initialize();
   const drawSize = 16;
   const groupSize = 4;
   const groupsCount = drawSize / groupSize;
@@ -179,8 +176,6 @@ it('disables placement actions for Round Robin Playoffs until all groups are com
 });
 
 it('Playoff drawPosition assignment includes group winners who lost no matchUps', () => {
-  reset();
-  initialize();
   const drawSize = 8;
   const groupSize = 4;
   const groupsCount = drawSize / groupSize;
@@ -357,8 +352,6 @@ it('Playoff drawPosition assignment includes group winners who lost no matchUps'
 });
 
 it('Playoff drawPosition assignment includes group winners who lost no matchUps', () => {
-  reset();
-  initialize();
   const drawSize = 16;
   const groupSize = 4;
   const groupsCount = drawSize / groupSize;

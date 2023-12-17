@@ -1,9 +1,9 @@
-import { addExtension } from '../../../global/functions/producers/addExtension';
-import penaltyTemplate from '../../generators/penaltyTemplate';
-import { addNotice } from '../../../global/state/globalState';
+import { addExtension } from '../extensions/addExtension';
+import penaltyTemplate from '../../tournamentEngine/generators/penaltyTemplate';
+import { addNotice } from '../../global/state/globalState';
 
-import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { MODIFY_PARTICIPANTS } from '../../constants/topicConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   PENALTY_NOT_FOUND,
   MISSING_PENALTY_ID,
@@ -14,14 +14,14 @@ import {
   NO_VALID_ATTRIBUTES,
   INVALID_VALUES,
   ErrorType,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 import {
   Extension,
   Participant,
   Penalty,
   PenaltyTypeUnion,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../types/tournamentTypes';
 
 type AddPenaltyArgs = {
   refereeParticipantId?: string;

@@ -1,8 +1,8 @@
 import { visualizeScheduledMatchUps } from '../../../global/testHarness/testUtilities/visualizeScheduledMatchUps';
-import { getStructureRoundProfile } from '../../../drawEngine/getters/getMatchUps/getStructureRoundProfile';
+import { getStructureRoundProfile } from '../../../query/structure/getStructureRoundProfile';
+import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { getMatchUpIds } from '../../../global/functions/extractors';
 import competitionEngine from '../../../competitionEngine/sync';
-import drawEngine from '../../../drawEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import { tournamentEngine } from '../../sync';
 import { expect, it, test } from 'vitest';
@@ -148,7 +148,7 @@ test('recognizes scheduling conflicts', () => {
   });
 
   let { matchUps } = competitionEngine.allCompetitionMatchUps();
-  let { roundMatchUps } = drawEngine.getRoundMatchUps({ matchUps });
+  let roundMatchUps: any = getRoundMatchUps({ matchUps })?.roundMatchUps;
 
   const scheduledDate = '2021-01-01';
   let schedule = {
@@ -180,7 +180,7 @@ test('recognizes scheduling conflicts', () => {
     showGlobalLog: false,
   });
 
-  ({ roundMatchUps } = drawEngine.getRoundMatchUps({ matchUps }));
+  ({ roundMatchUps } = getRoundMatchUps({ matchUps }));
   roundMatchUps[1].forEach((firstRoundMatchUp) => {
     expect(typeof firstRoundMatchUp.winnerTo.schedule.scheduleConflict).toEqual(
       'string'

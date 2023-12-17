@@ -1,6 +1,8 @@
+import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
+import { getStructureMatchUps } from '../../../query/structure/getStructureMatchUps';
+import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import tournamentEngine from '../../../tournamentEngine/sync';
 import mocksEngine from '../../../mocksEngine';
-import drawEngine from '../../sync';
 import { expect, it } from 'vitest';
 
 import { FEED_IN_CHAMPIONSHIP } from '../../../constants/drawDefinitionConstants';
@@ -40,11 +42,11 @@ it('returns properly ordered drawPositions for consolation structure feed rounds
     drawId,
     matchUpFilters: { structureIds: [structureId] },
   });
-  const { roundProfile } = drawEngine.getRoundMatchUps({ matchUps });
-  expect(roundProfile[1].drawPositions).toEqual([
+  const roundProfile = getRoundMatchUps({ matchUps }).roundProfile;
+  expect(roundProfile?.[1].drawPositions).toEqual([
     16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
   ]);
-  expect(roundProfile[2].drawPositions).toEqual([
+  expect(roundProfile?.[2].drawPositions).toEqual([
     8, 17, 9, 19, 10, 21, 11, 23, 12, 24, 13, 26, 14, 28, 15, 30,
   ]);
   // order of subsequent rounds has randomized undefined due to bye placements
@@ -79,22 +81,20 @@ it('can properly place participants in backdraw when rounds advance unevenly', (
   let { drawDefinition } = tournamentEngine.getEvent({ drawId });
   let [mainStructure, consolationStructure] = drawDefinition.structures;
 
-  const { upcomingMatchUps } = drawEngine
-    .setState(drawDefinition)
-    .getStructureMatchUps({
-      drawDefinition,
-      structureId: mainStructure.structureId,
-    });
+  const { upcomingMatchUps } = getStructureMatchUps({
+    drawDefinition,
+    structureId: mainStructure.structureId,
+  });
 
-  const firstRoundMatchUps = upcomingMatchUps.filter(
+  const firstRoundMatchUps = upcomingMatchUps?.filter(
     (matchUp) => matchUp.roundNumber === 1
   );
-  const secondRoundMatchUps = upcomingMatchUps.filter(
+  const secondRoundMatchUps = upcomingMatchUps?.filter(
     (matchUp) => matchUp.roundNumber === 2
   );
-  expect(secondRoundMatchUps.length).toEqual(1);
-  const targetSecondRoundMatchUp = secondRoundMatchUps[0];
-  const { matchUpId } = targetSecondRoundMatchUp;
+  expect(secondRoundMatchUps?.length).toEqual(1);
+  const targetSecondRoundMatchUp = secondRoundMatchUps?.[0];
+  const matchUpId = targetSecondRoundMatchUp?.matchUpId;
 
   let result = tournamentEngine.setMatchUpStatus({
     matchUpId,
@@ -102,7 +102,7 @@ it('can properly place participants in backdraw when rounds advance unevenly', (
     drawId,
   });
   expect(result.success).toEqual(true);
-  const losingDrawPosition = targetSecondRoundMatchUp.drawPositions[1];
+  const losingDrawPosition = targetSecondRoundMatchUp?.drawPositions?.[1];
 
   ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
   [mainStructure, consolationStructure] = drawDefinition.structures;
@@ -111,18 +111,18 @@ it('can properly place participants in backdraw when rounds advance unevenly', (
       (assignment) => assignment.drawPosition === losingDrawPosition
     );
 
-  const { matchUps } = drawEngine
-    .setState(drawDefinition)
-    .allStructureMatchUps({
-      drawDefinition,
-      structureId: consolationStructure.structureId,
-    });
+  const structure = drawDefinition.structures.find(
+    ({ structureId }) => structureId === consolationStructure.structureId
+  );
+  const matchUps = getAllStructureMatchUps({ structure }).matchUps;
 
-  const { roundMatchUps } = drawEngine.getRoundMatchUps({ matchUps });
-  const consolationTargetMatchUp = roundMatchUps[2].find(
+  const roundMatchUps = getRoundMatchUps({ matchUps }).roundMatchUps;
+  const consolationTargetMatchUp = roundMatchUps?.[2].find(
     (matchUp) => matchUp.matchUpStatus !== BYE
   );
-  const fedDrawPosition = Math.min(...consolationTargetMatchUp.drawPositions);
+  const fedDrawPosition = Math.min(
+    ...(consolationTargetMatchUp?.drawPositions ?? [])
+  );
   const targetConsolationAssignment =
     consolationStructure.positionAssignments.find(
       (assignment) => assignment.drawPosition === fedDrawPosition
@@ -131,14 +131,15 @@ it('can properly place participants in backdraw when rounds advance unevenly', (
     targetConsolationAssignment.participantId
   );
 
-  const consolationFirstRoundDrawPositions = roundMatchUps[1]
+  const consolationFirstRoundDrawPositions = roundMatchUps?.[1]
     .map((matchUp) => matchUp.drawPositions)
     .flat();
 
   let consolationFirstRoundAssignments =
     consolationStructure.positionAssignments
-      .filter((assignment) =>
-        consolationFirstRoundDrawPositions.includes(assignment.drawPosition)
+      .filter(
+        (assignment) =>
+          consolationFirstRoundDrawPositions?.includes(assignment.drawPosition)
       )
       .map((assignment) => assignment.participantId)
       .filter(Boolean);
@@ -147,7 +148,7 @@ it('can properly place participants in backdraw when rounds advance unevenly', (
   expect(consolationFirstRoundAssignments.length).toEqual(0);
 
   // expect that completing first round main structure matchUps will be successful
-  firstRoundMatchUps.forEach((matchUp) => {
+  firstRoundMatchUps?.forEach((matchUp) => {
     const { matchUpId } = matchUp;
     result = tournamentEngine.setMatchUpStatus({
       matchUpId,
@@ -162,8 +163,9 @@ it('can properly place participants in backdraw when rounds advance unevenly', (
   [mainStructure, consolationStructure] = drawDefinition.structures;
 
   consolationFirstRoundAssignments = consolationStructure.positionAssignments
-    .filter((assignment) =>
-      consolationFirstRoundDrawPositions.includes(assignment.drawPosition)
+    .filter(
+      (assignment) =>
+        consolationFirstRoundDrawPositions?.includes(assignment.drawPosition)
     )
     .map((assignment) => assignment.participantId)
     .filter(Boolean);

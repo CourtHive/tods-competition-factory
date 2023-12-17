@@ -1,5 +1,5 @@
 import { DrawDefinition, Structure } from '../../types/tournamentTypes';
-import { getStructureSeedAssignments } from './getStructureSeedAssignments';
+import { getStructureSeedAssignments } from '../../query/structure/getStructureSeedAssignments';
 import { structureAssignedDrawPositions } from './positionsGetter';
 
 type GetStructurePositionedSeeds = {

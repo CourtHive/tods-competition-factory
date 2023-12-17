@@ -1,4 +1,4 @@
-import { getStructureRoundProfile } from '../../getters/getMatchUps/getStructureRoundProfile';
+import { getStructureRoundProfile } from '../../../query/structure/getStructureRoundProfile';
 import { getFinishingPositionSourceRoundsMap } from './structureUtils';
 import { generateRange, numericSort } from '../../../utilities';
 import { getPositionsPlayedOff } from './getPositionsPlayedOff';

@@ -1,4 +1,4 @@
-import { addExtension } from '../../../global/functions/producers/addExtension';
+import { addExtension } from '../../../mutate/extensions/addExtension';
 
 import { MATCHUP_HISTORY } from '../../../constants/extensionConstants';
 import { MatchUp } from '../../../types/tournamentTypes';

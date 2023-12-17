@@ -1,4 +1,4 @@
-import { attachPolicies as attachTournamentPolicies } from '../../../tournamentEngine/governors/policyGovernor/policyManagement';
+import { attachPolicies as attachTournamentPolicies } from '../../../mutate/extensions/policies/policyManagement';
 
 import { MISSING_TOURNAMENT_RECORDS } from '../../../constants/errorConditionConstants';
 import { Tournament } from '../../../types/tournamentTypes';
