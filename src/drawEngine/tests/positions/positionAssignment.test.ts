@@ -1,12 +1,15 @@
-import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
+import { generateDrawTypeAndModifyDrawDefinition } from '../../../tournamentEngine/generators/generateDrawTypeAndModifyDrawDefinition';
+import { assignDrawPosition } from '../../../mutate/matchUps/drawPositions/positionAssignment';
+import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getDrawStructures } from '../../getters/findStructure';
 import { getStageEntries } from '../../getters/stageGetter';
-import { drawEngine } from '../../sync';
+import { newDrawDefinition } from '../../stateMethods';
 import { mocksEngine } from '../../..';
 import { expect, it } from 'vitest';
 
 import { ERROR, SUCCESS } from '../../../constants/resultConstants';
+import { EntryStatusUnion } from '../../../types/tournamentTypes';
 import { generateRange } from '../../../utilities';
 import {
   MAIN,
@@ -17,7 +20,6 @@ import {
   DIRECT_ACCEPTANCE,
   WILDCARD,
 } from '../../../constants/entryStatusConstants';
-import { EntryStatusUnion } from '../../../types/tournamentTypes';
 
 let result;
 
@@ -25,13 +27,12 @@ it('can assign SINGLE_ELIMINATION draw drawPositions', () => {
   const stage = MAIN;
   const drawSize = 4;
 
-  let { drawDefinition } = mocksEngine.generateEventWithDraw({
+  const { drawDefinition } = mocksEngine.generateEventWithDraw({
     drawProfile: {
       automated: false,
       drawSize,
     },
   });
-  drawEngine.setState(drawDefinition);
 
   const {
     structures: [structure],
@@ -46,7 +47,6 @@ it('can assign SINGLE_ELIMINATION draw drawPositions', () => {
   const participantIds = mainDrawEntries.map((e) => e.participantId);
 
   const { structureId } = structure;
-  ({ drawDefinition } = drawEngine.getState());
   const { unassignedPositions } = structureAssignedDrawPositions({
     drawDefinition,
     structureId,
@@ -55,28 +55,28 @@ it('can assign SINGLE_ELIMINATION draw drawPositions', () => {
 
   // expect it to fail if an invalid drawPosition is attempted
   const participantId = participantIds[0];
-  result = drawEngine.assignDrawPosition({
-    structureId,
+  result = assignDrawPosition({
     drawPosition: 0,
+    drawDefinition,
     participantId,
+    structureId,
   });
   expect(result).toHaveProperty(ERROR);
 
   participantIds.forEach((participantId, i) => {
     const drawPosition = unassignedPositions?.[i].drawPosition;
-    result = drawEngine.assignDrawPosition({
-      structureId,
-      drawPosition,
+    result = assignDrawPosition({
       participantId,
+      drawDefinition,
+      drawPosition,
+      structureId,
     });
     expect(result).toMatchObject(SUCCESS);
-    ({ drawDefinition } = drawEngine.getState());
     const { unassignedPositions: stillUnassigned } =
       structureAssignedDrawPositions({ drawDefinition, structureId });
     expect(stillUnassigned?.length).toEqual(participantIds.length - 1 - i);
   });
 
-  ({ drawDefinition } = drawEngine.getState());
   const { assignedPositions } = structureAssignedDrawPositions({
     drawDefinition,
     structureId,
@@ -85,16 +85,17 @@ it('can assign SINGLE_ELIMINATION draw drawPositions', () => {
 
   // can't assign a player a second time
   const drawPosition = unassignedPositions?.[0].drawPosition;
-  result = drawEngine.assignDrawPosition({
-    structureId,
-    drawPosition,
+  result = assignDrawPosition({
+    drawDefinition,
     participantId,
+    drawPosition,
+    structureId,
   });
   expect(result).toHaveProperty(ERROR);
 });
 
 it('can assign ROUND_ROBIN draw drawPositions', () => {
-  let { drawDefinition } = mocksEngine.generateEventWithDraw({
+  const { drawDefinition } = mocksEngine.generateEventWithDraw({
     uuids: generateRange(0, 100)
       .reverse()
       .map((i) => `uuid${i}`),
@@ -104,7 +105,6 @@ it('can assign ROUND_ROBIN draw drawPositions', () => {
       drawSize: 16,
     },
   });
-  drawEngine.setState(drawDefinition);
 
   const stage = MAIN;
   const {
@@ -115,7 +115,6 @@ it('can assign ROUND_ROBIN draw drawPositions', () => {
   expect(structure.structures?.length).toEqual(4);
 
   const entryStatuses: EntryStatusUnion[] = [DIRECT_ACCEPTANCE, WILDCARD];
-  ({ drawDefinition } = drawEngine.getState());
   const mainDrawEntries = getStageEntries({
     drawDefinition,
     entryStatuses,
@@ -131,27 +130,25 @@ it('can assign ROUND_ROBIN draw drawPositions', () => {
 
   participantIds.forEach((participantId, i) => {
     const drawPosition = unassignedPositions?.[i].drawPosition;
-    result = drawEngine.assignDrawPosition({
-      structureId,
-      drawPosition,
+    result = assignDrawPosition({
+      drawDefinition,
       participantId,
+      drawPosition,
+      structureId,
     });
     expect(result).toMatchObject(SUCCESS);
-    ({ drawDefinition } = drawEngine.getState());
     const { unassignedPositions: stillUnassigned } =
       structureAssignedDrawPositions({ drawDefinition, structureId });
     expect(stillUnassigned?.length).toEqual(participantIds.length - 1 - i);
   });
 
-  ({ drawDefinition } = drawEngine.getState());
   const { assignedPositions } = structureAssignedDrawPositions({
     drawDefinition,
     structureId,
   });
   expect(assignedPositions?.length).toEqual(16);
 
-  const { drawDefinition: state } = drawEngine.getState();
-  const groups = state.structures[0].structures;
+  const groups = drawDefinition.structures[0].structures;
   groups.forEach((group, i) => {
     const positionAssignments = group.positionAssignments;
     positionAssignments.forEach((assignment, j) => {
@@ -165,32 +162,32 @@ it('can assign ROUND_ROBIN draw drawPositions', () => {
   // can't assign a player a second time
   const participantId = participantIds[0];
   const drawPosition = unassignedPositions?.[0].drawPosition;
-  result = drawEngine.assignDrawPosition({
-    structureId,
-    drawPosition,
+  result = assignDrawPosition({
+    drawDefinition,
     participantId,
+    drawPosition,
+    structureId,
   });
   expect(result).toHaveProperty(ERROR);
 });
 
 it('returns positionAssignments for SINGLE_ELIMINATION and ROUND_ROBIN strucures', () => {
-  reset();
-  initialize();
-  mainDrawPositions({ drawSize: 16 });
-  const {
-    structures: [elimination],
-  } = drawEngine.generateDrawTypeAndModifyDrawDefinition();
+  let drawDefinition = newDrawDefinition();
+  setStageDrawSize({ drawDefinition, stage: MAIN, drawSize: 16 });
+  const elimination = generateDrawTypeAndModifyDrawDefinition({
+    drawDefinition,
+  }).structures?.[0];
   const { positionAssignments: eliminationAssignments } =
     structureAssignedDrawPositions({ structure: elimination });
   expect(eliminationAssignments?.length).toEqual(16);
 
-  reset();
-  initialize();
+  drawDefinition = newDrawDefinition();
+  setStageDrawSize({ drawDefinition, stage: MAIN, drawSize: 16 });
   const drawType = ROUND_ROBIN;
-  mainDrawPositions({ drawSize: 16 });
-  const {
-    structures: [roundRobin],
-  } = drawEngine.generateDrawTypeAndModifyDrawDefinition({ drawType });
+  const roundRobin = generateDrawTypeAndModifyDrawDefinition({
+    drawDefinition,
+    drawType,
+  }).structures?.[0];
   const { positionAssignments: roundRobinAssignments } =
     structureAssignedDrawPositions({ structure: roundRobin });
   expect(roundRobinAssignments?.length).toEqual(16);

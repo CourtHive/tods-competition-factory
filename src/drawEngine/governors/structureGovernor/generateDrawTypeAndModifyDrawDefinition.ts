@@ -42,15 +42,16 @@ import {
 
 type GenerateDrawTypeAndModify = {
   appliedPolicies?: PolicyDefinitions;
-  tournamentRecord: Tournament;
+  tournamentRecord?: Tournament;
   drawDefinition: DrawDefinition;
   modifyOriginal?: boolean;
   qualifiersCount?: number;
   stageSequence?: number;
   matchUpFormat?: string;
   matchUpType?: EventTypeUnion;
+  drawType?: string;
   tieFormat?: TieFormat;
-  drawSize: number;
+  drawSize?: number;
   isMock?: boolean;
   event?: Event;
 };

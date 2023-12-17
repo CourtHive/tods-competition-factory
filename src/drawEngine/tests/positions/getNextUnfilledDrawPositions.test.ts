@@ -1,5 +1,4 @@
 import { mocksEngine, tournamentEngine } from '../../..';
-import drawEngine from '../../sync';
 import { expect, it } from 'vitest';
 
 import { INDIVIDUAL } from '../../../constants/participantConstants';
@@ -7,6 +6,8 @@ import {
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
+import { getNextUnfilledDrawPositions } from '../../governors/queryGovernor/positionActions/getNextUnfilledDrawPositions';
+import { assignDrawPosition } from '../../../mutate/matchUps/drawPositions/positionAssignment';
 
 it('can report on drawPositions available for placement', () => {
   const {
@@ -24,50 +25,65 @@ it('can report on drawPositions available for placement', () => {
     });
 
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
-  drawEngine.setState(drawDefinition);
 
   const {
     structures: [{ structureId }],
   } = drawDefinition;
 
-  let result = drawEngine.getNextUnfilledDrawPositions();
+  // @ts-expect-error missing structureId
+  let result: any = getNextUnfilledDrawPositions({ drawDefinition });
   expect(result.error).toEqual(MISSING_STRUCTURE_ID);
 
-  result = drawEngine.getNextUnfilledDrawPositions({ structureId: 'bogusId' });
+  result = getNextUnfilledDrawPositions({
+    structureId: 'bogusId',
+    drawDefinition,
+  });
   expect(result.error).toEqual(STRUCTURE_NOT_FOUND);
 
-  let { nextUnfilledDrawPositions } = drawEngine.getNextUnfilledDrawPositions({
+  let { nextUnfilledDrawPositions } = getNextUnfilledDrawPositions({
+    drawDefinition,
     structureId,
   });
   expect(nextUnfilledDrawPositions).toEqual([1]);
 
-  let drawPosition = nextUnfilledDrawPositions.pop();
-  let participantId = tournamentParticipants[drawPosition - 1].participantId;
-  result = drawEngine.assignDrawPosition({
-    participantId,
-    drawPosition,
-    structureId,
-  });
-  expect(result.success).toEqual(true);
+  let drawPosition = nextUnfilledDrawPositions?.pop();
+  let participantId =
+    drawPosition && tournamentParticipants[drawPosition - 1].participantId;
 
-  ({ nextUnfilledDrawPositions } = drawEngine.getNextUnfilledDrawPositions({
+  result =
+    drawPosition &&
+    assignDrawPosition({
+      drawDefinition,
+      participantId,
+      drawPosition,
+      structureId,
+    });
+  expect(result?.success).toEqual(true);
+
+  ({ nextUnfilledDrawPositions } = getNextUnfilledDrawPositions({
+    drawDefinition,
     structureId,
   }));
   expect(nextUnfilledDrawPositions).toEqual([32]);
 
-  drawPosition = nextUnfilledDrawPositions.pop();
-  participantId = tournamentParticipants[drawPosition - 1].participantId;
-  result = drawEngine.assignDrawPosition({
-    participantId,
-    drawPosition,
-    structureId,
-  });
-  expect(result.success).toEqual(true);
+  drawPosition = nextUnfilledDrawPositions?.pop();
+  participantId =
+    drawPosition && tournamentParticipants[drawPosition - 1].participantId;
+  result =
+    drawPosition &&
+    assignDrawPosition({
+      drawDefinition,
+      participantId,
+      drawPosition,
+      structureId,
+    });
+  expect(result?.success).toEqual(true);
 
-  ({ nextUnfilledDrawPositions } = drawEngine.getNextUnfilledDrawPositions({
+  ({ nextUnfilledDrawPositions } = getNextUnfilledDrawPositions({
+    drawDefinition,
     structureId,
   }));
-  expect(nextUnfilledDrawPositions.sort()).toEqual([24, 9]);
+  expect(nextUnfilledDrawPositions?.sort()).toEqual([24, 9]);
 });
 
 it('will report [] when no drawPositions available for placement', () => {
@@ -80,16 +96,14 @@ it('will report [] when no drawPositions available for placement', () => {
   tournamentEngine.setState(tournamentRecord);
 
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
-  drawEngine.setState(drawDefinition);
 
   const {
     structures: [{ structureId }],
   } = drawDefinition;
 
-  const { nextUnfilledDrawPositions } = drawEngine.getNextUnfilledDrawPositions(
-    {
-      structureId,
-    }
-  );
+  const { nextUnfilledDrawPositions } = getNextUnfilledDrawPositions({
+    drawDefinition,
+    structureId,
+  });
   expect(nextUnfilledDrawPositions).toEqual([]);
 });

@@ -52,7 +52,7 @@ type GenerateDrawStructuresAndLinksArgs = {
   tieFormat?: TieFormat;
   matchUpType?: string;
   drawType?: string;
-  drawSize: number;
+  drawSize?: number;
   idPrefix?: string;
   isMock?: boolean;
   uuids?: string[];
@@ -196,7 +196,8 @@ export function generateDrawStructuresAndLinks(
   // check that drawSize is a valid value
   const invalidDrawSize =
     drawType !== AD_HOC &&
-    (isNaN(drawSize) ||
+    (!drawSize ||
+      isNaN(drawSize) ||
       drawSize < 2 ||
       (!staggeredEntry &&
         ![FEED_IN, LUCKY_DRAW].includes(drawType) &&
@@ -214,7 +215,7 @@ export function generateDrawStructuresAndLinks(
   }
 
   const multiStructure = MULTI_STRUCTURE_DRAWS.includes(drawType);
-  if (ensureInt(drawSize) < 4 && multiStructure) {
+  if (drawSize && ensureInt(drawSize) < 4 && multiStructure) {
     if (drawTypeCoercion) {
       drawType = SINGLE_ELIMINATION;
     } else if (enforceMinimumDrawSize) {
