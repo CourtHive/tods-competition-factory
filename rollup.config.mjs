@@ -13,7 +13,7 @@ const srcIndex = 'src/index.ts';
 
 const esmBundle = (config) => ({
   external: (id) => !/^[./]/.test(id),
-  plugins: [esbuild(), json()],
+  plugins: [esbuild(), json(), terser()],
   input: config.input,
   output: [
     {
