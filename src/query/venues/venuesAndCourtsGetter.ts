@@ -1,5 +1,5 @@
 import { getVenuesAndCourts as teVenuesAndCourts } from '../../tournamentEngine/getters/venueGetter';
-import { getDisabledStatus } from '../../query/extensions/getDisabledStatus';
+import { getDisabledStatus } from '../extensions/getDisabledStatus';
 import { getInContextCourt } from '../../global/functions/deducers/getInContextCourt';
 import { findExtension } from '../../acquire/findExtension';
 import { makeDeepCopy } from '../../utilities';

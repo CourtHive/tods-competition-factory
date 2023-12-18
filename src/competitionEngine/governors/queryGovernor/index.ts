@@ -8,7 +8,7 @@ import { getVenuesReport } from './venuesReport';
 import {
   getCompetitionVenues,
   getVenuesAndCourts,
-} from '../../getters/venuesAndCourtsGetter';
+} from '../../../query/venues/venuesAndCourtsGetter';
 import {
   allCompetitionMatchUps,
   competitionMatchUps,

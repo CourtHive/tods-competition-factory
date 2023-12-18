@@ -1,4 +1,4 @@
-import { getVenuesAndCourts } from '../../../../getters/venuesAndCourtsGetter';
+import { getVenuesAndCourts } from '../../../../../query/venues/venuesAndCourtsGetter';
 import { getScheduleTimes } from '../../garman/getScheduleTimes';
 import { calculatePeriodLength } from './calculatePeriodLength';
 import { getDateTimeBoundary } from './getTimeBoundary';

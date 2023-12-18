@@ -9,7 +9,7 @@ import { modifyMatchUpFormatTiming } from '../../../mutate/matchUps/extensions/m
 import { getMatchUpFormatTiming } from '../../../query/extensions/matchUpFormatTiming/getMatchUpFormatTiming';
 import { removeMatchUpCourtAssignment } from '../../../mutate/matchUps/schedule/removeMatchUpCourtAssignment';
 import { getMatchUpDailyLimitsUpdate } from './getMatchUpDailyLimitsUpdate';
-import { allocateTeamMatchUpCourts } from './allocateTeamMatchUpCourts';
+import { allocateTeamMatchUpCourts } from '../../../mutate/matchUps/schedule/allocateTeamMatchUpCourts';
 import { bulkRescheduleMatchUps } from './bulkRescheduleMatchUps';
 import { clearScheduledMatchUps } from './clearScheduledMatchUps';
 import { setMatchUpDailyLimits } from './setMatchUpDailyLimits';

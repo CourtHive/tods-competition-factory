@@ -1,31 +1,31 @@
-import { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDependencies';
-import { getEventPublishStatus } from '../../governors/publishingGovernor/getEventPublishStatus';
-import { getDrawPublishStatus } from '../../governors/publishingGovernor/getDrawPublishStatus';
-import { getDerivedPositionAssignments } from './getDerivedPositionAssignments';
-import { findExtension } from '../../../acquire/findExtension';
-import { getRelevantParticipantIdsMap } from './getRelevantParticipantIdsMap';
-import { getDerivedSeedAssignments } from './getDerivedSeedAssignments';
-import { definedAttributes } from '../../../utilities/definedAttributes';
-import { getTimeItem } from '../../governors/queryGovernor/timeItems';
-import { allEventMatchUps } from '../matchUpsGetter/matchUpsGetter';
-import { annotateParticipant } from './annotateParticipant';
-import { isObject } from '../../../utilities/objects';
-import { getFlightProfile } from '../../../query/event/getFlightProfile';
-import { makeDeepCopy } from '../../../utilities';
-import { getDrawDetails } from './getDrawDetails';
-import { processMatchUp } from './processMatchUp';
+import { getMatchUpDependencies } from '../../query/matchUps/getMatchUpDependencies';
+import { getEventPublishStatus } from '../../tournamentEngine/governors/publishingGovernor/getEventPublishStatus';
+import { getDrawPublishStatus } from '../../tournamentEngine/governors/publishingGovernor/getDrawPublishStatus';
+import { getDerivedPositionAssignments } from '../../tournamentEngine/getters/participants/getDerivedPositionAssignments';
+import { findExtension } from '../../acquire/findExtension';
+import { getRelevantParticipantIdsMap } from '../../tournamentEngine/getters/participants/getRelevantParticipantIdsMap';
+import { getDerivedSeedAssignments } from '../../tournamentEngine/getters/participants/getDerivedSeedAssignments';
+import { definedAttributes } from '../../utilities/definedAttributes';
+import { getTimeItem } from '../../tournamentEngine/governors/queryGovernor/timeItems';
+import { allEventMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
+import { annotateParticipant } from '../../tournamentEngine/getters/participants/annotateParticipant';
+import { isObject } from '../../utilities/objects';
+import { getFlightProfile } from '../../query/event/getFlightProfile';
+import { makeDeepCopy } from '../../utilities';
+import { getDrawDetails } from '../../tournamentEngine/getters/participants/getDrawDetails';
+import { processMatchUp } from '../../tournamentEngine/getters/participants/processMatchUp';
 
-import { TEAM } from '../../../constants/matchUpTypes';
+import { TEAM } from '../../constants/matchUpTypes';
 import {
   GROUP,
   PAIR,
   SIGNED_IN,
   SIGN_IN_STATUS,
-} from '../../../constants/participantConstants';
+} from '../../constants/participantConstants';
 import {
   extensionConstants,
   LINEUPS,
-} from '../../../constants/extensionConstants';
+} from '../../constants/extensionConstants';
 
 export function addParticipantContext(params) {
   const participantIdsWithConflicts: string[] = [];

@@ -1,7 +1,7 @@
 import { validateSchedulingProfile } from '../../../../validators/validateSchedulingProfile';
 import { getCompetitionDateRange } from '../../queryGovernor/getCompetitionDateRange';
 import { getEventIdsAndDrawIds } from '../../../getters/getEventIdsAndDrawIds';
-import { getCompetitionVenues } from '../../../getters/venuesAndCourtsGetter';
+import { getCompetitionVenues } from '../../../../query/venues/venuesAndCourtsGetter';
 import { decorateResult } from '../../../../global/functions/decorateResult';
 import { isObject } from '../../../../utilities/objects';
 import {

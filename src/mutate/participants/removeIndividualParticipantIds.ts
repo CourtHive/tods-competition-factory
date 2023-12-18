@@ -1,6 +1,6 @@
 import { checkScoreHasValue } from '../../query/matchUp/checkScoreHasValue';
 import { addExtension } from '../extensions/addExtension';
-import { getParticipants } from '../../tournamentEngine/getters/participants/getParticipants';
+import { getParticipants } from '../../query/participants/getParticipants';
 import { addEventEntries } from '../../tournamentEngine/governors/eventGovernor/entries/addEventEntries';
 import { decorateResult } from '../../global/functions/decorateResult';
 import { findExtension } from '../../acquire/findExtension';

@@ -2,7 +2,7 @@ import { getContainedStructures } from '../../../../tournamentEngine/governors/t
 import { getMatchUpDependencies } from '../../../../query/matchUps/getMatchUpDependencies';
 import { extractDate, isValidDateString } from '../../../../utilities/dateTime';
 import { getSchedulingProfile } from './schedulingProfile';
-import { getVenuesAndCourts } from '../../../getters/venuesAndCourtsGetter';
+import { getVenuesAndCourts } from '../../../../query/venues/venuesAndCourtsGetter';
 import { jinnScheduler } from '../schedulers/jinnScheduler/jinnScheduler';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
 import { getPersonRequests } from '../scheduleMatchUps/personRequests';

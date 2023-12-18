@@ -1,4 +1,4 @@
-import { getParticipants } from '../../../getters/participants/getParticipants';
+import { getParticipants } from '../../../../query/participants/getParticipants';
 import { addNotice, getTopics } from '../../../../global/state/globalState';
 import { definedAttributes } from '../../../../utilities/definedAttributes';
 import { makeDeepCopy, UUID } from '../../../../utilities';

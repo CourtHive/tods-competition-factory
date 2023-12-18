@@ -1,4 +1,4 @@
-import { getParticipants } from '../../getters/participants/getParticipants';
+import { getParticipants } from '../../../query/participants/getParticipants';
 import { isObject, isString } from '../../../utilities/objects';
 import { unique } from '../../../utilities';
 import {

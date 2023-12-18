@@ -1,4 +1,4 @@
-import { DEFAULTED, WALKOVER } from '../../../constants/matchUpStatusConstants';
+import { DEFAULTED, WALKOVER } from '../../constants/matchUpStatusConstants';
 
 export function addStructureParticipation({
   finishingPositionRange: matchUpFinishingPositionRanges = {},

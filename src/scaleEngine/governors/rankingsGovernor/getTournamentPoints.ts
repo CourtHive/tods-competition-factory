@@ -1,4 +1,4 @@
-import { getParticipants } from '../../../tournamentEngine/getters/participants/getParticipants';
+import { getParticipants } from '../../../query/participants/getParticipants';
 import { getPolicyDefinitions } from '../../../query/extensions/getAppliedPolicies';
 import { addExtension } from '../../../mutate/extensions/addExtension';
 import { getTargetElement } from './getTargetElement';

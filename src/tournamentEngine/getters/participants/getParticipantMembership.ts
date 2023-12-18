@@ -1,4 +1,4 @@
-import { getParticipants } from './getParticipants';
+import { getParticipants } from '../../../query/participants/getParticipants';
 
 import { GROUP, PAIR, TEAM } from '../../../constants/participantConstants';
 import { ResultType } from '../../../global/functions/decorateResult';

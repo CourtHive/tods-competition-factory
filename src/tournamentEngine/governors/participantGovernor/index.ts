@@ -4,7 +4,7 @@ import { getTournamentParticipants } from '../../getters/participants/getTournam
 import { getParticipantMembership } from '../../getters/participants/getParticipantMembership';
 import { getParticipantSchedules } from '../../getters/participants/getParticipantSchedules';
 import { publicFindParticipant } from '../../getters/participants/participantGetter';
-import { getParticipants } from '../../getters/participants/getParticipants';
+import { getParticipants } from '../../../query/participants/getParticipants';
 import { getParticipantIdFinishingPositions } from './finishingPositions';
 import { getPairedParticipant } from './getPairedParticipant';
 import { addPersons } from './addPersons';

@@ -1,4 +1,4 @@
-import { getParticipants } from '../../../tournamentEngine/getters/participants/getParticipants';
+import { getParticipants } from '../../../query/participants/getParticipants';
 import {
   getTournamentPenalties,
   addPenalty as penaltyAdd,

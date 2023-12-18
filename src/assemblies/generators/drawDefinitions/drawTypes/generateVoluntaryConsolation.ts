@@ -1,6 +1,6 @@
 import { resolveTieFormat } from '../../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
 import { validateTieFormat } from '../../../../validators/tieFormatUtilities';
-import { getParticipants } from '../../../../tournamentEngine/getters/participants/getParticipants';
+import { getParticipants } from '../../../../query/participants/getParticipants';
 import { copyTieFormat } from '../../../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';
 import { getAllStructureMatchUps } from '../../../../query/matchUps/getAllStructureMatchUps';
 import { automatedPositioning } from '../../../../drawEngine/governors/positionGovernor/automatedPositioning';

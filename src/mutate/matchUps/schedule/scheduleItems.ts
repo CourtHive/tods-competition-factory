@@ -1,17 +1,19 @@
+import { allocateTeamMatchUpCourts } from './allocateTeamMatchUpCourts';
 import { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDependencies';
-import { allocateTeamMatchUpCourts } from '../../../tournamentEngine/governors/scheduleGovernor/allocateTeamMatchUpCourts';
+import { scheduledMatchUpDate } from '../../../query/matchUp/scheduledMatchUpDate';
+import { getParticipants } from '../../../query/participants/getParticipants';
+import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
+import { addMatchUpTimeItem } from '../timeItems/matchUpTimeItems';
+import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
+import { findParticipant } from '../../../acquire/findParticipant';
+import { isConvertableInteger } from '../../../utilities/math';
+import { ensureInt } from '../../../utilities/ensureInt';
 import { assignMatchUpCourt } from './assignMatchUpCourt';
 import { assignMatchUpVenue } from './assignMatchUpVenue';
-import { scheduledMatchUpDate } from '../../../query/matchUp/scheduledMatchUpDate';
-import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import {
   ResultType,
   decorateResult,
 } from '../../../global/functions/decorateResult';
-import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
-import { isConvertableInteger } from '../../../utilities/math';
-import { ensureInt } from '../../../utilities/ensureInt';
-import { addMatchUpTimeItem } from '../timeItems/matchUpTimeItems';
 import {
   addMatchUpScheduledTime,
   addMatchUpTimeModifiers,
@@ -29,7 +31,9 @@ import {
   validTimeString,
 } from '../../../fixtures/validations/regex';
 
+import { INDIVIDUAL } from '../../../constants/participantConstants';
 import { AddScheduleAttributeArgs } from '../../../types/factoryTypes';
+import { OFFICIAL } from '../../../constants/participantRoles';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import {
@@ -46,6 +50,8 @@ import {
   ANACHRONISM,
   INVALID_VALUES,
   ErrorType,
+  MISSING_PARTICIPANT_ID,
+  PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 import {
   START_TIME,
@@ -412,6 +418,26 @@ export function addMatchUpOfficial({
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
   // TODO: check that 1) participantId has the appropriate participantRole
+
+  if (!participantId) return { error: MISSING_PARTICIPANT_ID };
+
+  if (tournamentRecord) {
+    const tournamentParticipants =
+      getParticipants({
+        tournamentRecord,
+        participantFilters: {
+          participantTypes: [INDIVIDUAL],
+          participantRoles: [OFFICIAL],
+        },
+      }).participants ?? [];
+
+    const participant = findParticipant({
+      tournamentParticipants,
+      participantId,
+    });
+
+    if (!participant) return { error: PARTICIPANT_NOT_FOUND };
+  }
 
   const timeItem: TimeItem = {
     itemType: 'SCHEDULE.ASSIGNMENT.OFFICIAL',

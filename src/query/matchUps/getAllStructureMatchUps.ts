@@ -8,7 +8,7 @@ import { getAppliedPolicies } from '../extensions/getAppliedPolicies';
 import { getContextContent } from '../../tournamentEngine/getters/getContextContent';
 import { parse } from '../../matchUpEngine/governors/matchUpFormatGovernor/parse';
 import { getRoundMatchUps } from './getRoundMatchUps';
-import { findParticipant } from '../../global/functions/deducers/findParticipant';
+import { findParticipant } from '../../acquire/findParticipant';
 import { getMatchUpType } from '../matchUp/getMatchUpType';
 import { getStructureSeedAssignments } from '../structure/getStructureSeedAssignments';
 import { getExitProfiles } from '../../drawEngine/governors/queryGovernor/getExitProfile';

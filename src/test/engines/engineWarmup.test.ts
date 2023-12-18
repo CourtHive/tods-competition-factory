@@ -1,4 +1,4 @@
-import { getParticipants } from '../../tournamentEngine/getters/participants/getParticipants';
+import { getParticipants } from '../../query/participants/getParticipants';
 import { completeDrawMatchUps } from '../../mocksEngine/generators/completeDrawMatchUps';
 import eventGovernor from '../../tournamentEngine/governors/eventGovernor';
 import mocksEngine from '../../mocksEngine';

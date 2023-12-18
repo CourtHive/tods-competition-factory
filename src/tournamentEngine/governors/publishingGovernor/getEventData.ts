@@ -1,4 +1,4 @@
-import { getParticipants } from '../../getters/participants/getParticipants';
+import { getParticipants } from '../../../query/participants/getParticipants';
 import { generateRange, makeDeepCopy } from '../../../utilities';
 import { getEventPublishStatus } from './getEventPublishStatus';
 import { isConvertableInteger } from '../../../utilities/math';

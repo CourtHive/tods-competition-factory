@@ -1,5 +1,5 @@
 import { addNationalityCode } from '../../governors/participantGovernor/addNationalityCode';
-import { addIndividualParticipants } from './addIndividualParticipants';
+import { addIndividualParticipants } from '../../../mutate/participants/addIndividualParticipants';
 import { getTimeItem } from '../../governors/queryGovernor/timeItems';
 import { isObject } from '../../../utilities/objects';
 import { makeDeepCopy } from '../../../utilities';

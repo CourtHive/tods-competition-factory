@@ -4,7 +4,7 @@ import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { getPairedParticipant } from '../../../tournamentEngine/governors/participantGovernor/getPairedParticipant';
 import { deleteParticipants } from '../../../tournamentEngine/governors/participantGovernor/deleteParticipants';
 import { modifyParticipant } from '../../participants/modifyParticipant';
-import { getParticipants } from '../../../tournamentEngine/getters/participants/getParticipants';
+import { getParticipants } from '../../../query/participants/getParticipants';
 import { removeCollectionAssignments } from '../../../tournamentEngine/governors/eventGovernor/removeCollectionAssignments';
 import { addParticipant } from '../../../tournamentEngine/governors/participantGovernor/addParticipants';
 import { ensureSideLineUps } from './ensureSideLineUps';

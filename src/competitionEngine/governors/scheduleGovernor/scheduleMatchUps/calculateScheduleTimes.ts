@@ -2,7 +2,7 @@ import { matchUpFormatTimes } from '../../../../query/extensions/matchUpFormatTi
 import { getScheduleTiming } from '../../../../query/extensions/matchUpFormatTiming/getScheduleTiming';
 import { competitionScheduleMatchUps } from '../../../getters/competitionScheduleMatchUps';
 import { calculatePeriodLength } from '../schedulers/utils/calculatePeriodLength';
-import { getVenuesAndCourts } from '../../../getters/venuesAndCourtsGetter';
+import { getVenuesAndCourts } from '../../../../query/venues/venuesAndCourtsGetter';
 import { getMatchUpId } from '../../../../global/functions/extractors';
 import { getScheduleTimes } from '../garman/getScheduleTimes';
 import {

@@ -1,5 +1,5 @@
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
-import { getParticipants } from '../../getters/participants/getParticipants';
+import { getParticipants } from '../../../query/participants/getParticipants';
 import { getDetailsWTN } from '../queryGovernor/getDetailsWTN';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';

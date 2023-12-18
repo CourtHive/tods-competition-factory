@@ -12,7 +12,7 @@ import { addDrawEntry } from '../../drawEngine/governors/entryGovernor/addDrawEn
 import { getQualifiersCount } from '../../drawEngine/getters/getQualifiersCount';
 import { getAllowedDrawTypes } from '../governors/policyGovernor/allowedTypes';
 import structureTemplate from '../../assemblies/generators/drawDefinitions/templates/structureTemplate';
-import { getParticipants } from '../getters/participants/getParticipants';
+import { getParticipants } from '../../query/participants/getParticipants';
 import { newDrawDefinition } from '../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { mustBeAnArray } from '../../utilities/mustBeAnArray';
 import { isConvertableInteger } from '../../utilities/math';

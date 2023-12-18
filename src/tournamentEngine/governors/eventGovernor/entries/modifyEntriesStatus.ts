@@ -1,6 +1,6 @@
 import { getAssignedParticipantIds } from '../../../../drawEngine/getters/getAssignedParticipantIds';
 import { refreshEntryPositions } from '../../../../global/functions/producers/refreshEntryPositions';
-import { findParticipant } from '../../../../global/functions/deducers/findParticipant';
+import { findParticipant } from '../../../../acquire/findParticipant';
 import { modifyDrawNotice } from '../../../../mutate/notifications/drawNotifications';
 import { removeExtension } from '../../../../mutate/extensions/removeExtension';
 import { decorateResult } from '../../../../global/functions/decorateResult';

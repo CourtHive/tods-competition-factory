@@ -1,10 +1,10 @@
-import { allocateTeamMatchUpCourts as allocateCourts } from '../../../../tournamentEngine/governors/scheduleGovernor/allocateTeamMatchUpCourts';
+import { allocateTeamMatchUpCourts as allocateCourts } from '../../../../mutate/matchUps/schedule/allocateTeamMatchUpCourts';
 import { assignMatchUpVenue as assignVenue } from '../../../../mutate/matchUps/schedule/assignMatchUpVenue';
 import { assignMatchUpCourt as assignCourt } from '../../../../mutate/matchUps/schedule/assignMatchUpCourt';
-import { addMatchUpOfficial as addOfficial } from '../../../../tournamentEngine/governors/scheduleGovernor/scheduleItems';
 import { addMatchUpScheduledTime as addScheduledTime } from '../../../../mutate/matchUps/schedule/scheduledTime';
 import { findDrawDefinition } from '../../../../acquire/findDrawDefinition';
 import {
+  addMatchUpOfficial as addOfficial,
   addMatchUpScheduledDate as addScheduledDate,
   addMatchUpStartTime as addStartTime,
   addMatchUpEndTime as addEndTime,
@@ -141,14 +141,17 @@ export function addMatchUpOfficial(params) {
   const { tournamentRecord, drawDefinition } = result;
 
   const { disableNotice, participantId, officialType, matchUpId } = params;
-  return addOfficial({
-    tournamentRecord,
-    drawDefinition,
-    disableNotice,
-    participantId,
-    officialType,
-    matchUpId,
-  });
+  return (
+    drawDefinition &&
+    addOfficial({
+      tournamentRecord,
+      drawDefinition,
+      disableNotice,
+      participantId,
+      officialType,
+      matchUpId,
+    })
+  );
 }
 
 export function assignMatchUpVenue(params) {

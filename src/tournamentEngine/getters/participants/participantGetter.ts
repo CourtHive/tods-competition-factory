@@ -1,4 +1,4 @@
-import { findParticipant } from '../../../global/functions/deducers/findParticipant';
+import { findParticipant } from '../../../acquire/findParticipant';
 import { makeDeepCopy } from '../../../utilities';
 
 import { Participant } from '../../../types/tournamentTypes';

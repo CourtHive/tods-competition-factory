@@ -1,6 +1,6 @@
 import { findTournamentParticipant } from '../../tournamentEngine/getters/participants/participantGetter';
 import { addIndividualParticipantIds } from './addIndividualParticipantIds';
-import { getParticipants } from '../../tournamentEngine/getters/participants/getParticipants';
+import { getParticipants } from '../../query/participants/getParticipants';
 import { getParticipantId } from '../../global/functions/extractors';
 import { definedAttributes } from '../../utilities/definedAttributes';
 import { participantRoles } from '../../constants/participantRoles';

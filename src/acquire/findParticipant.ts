@@ -1,9 +1,9 @@
-import { getScaleValues } from '../../../tournamentEngine/getters/participants/getScaleValues';
-import { attributeFilter, makeDeepCopy } from '../../../utilities';
+import { getScaleValues } from '../tournamentEngine/getters/participants/getScaleValues';
+import { attributeFilter, makeDeepCopy } from '../utilities';
 
-import { ContextProfile, PolicyDefinitions } from '../../../types/factoryTypes';
-import { POLICY_TYPE_PARTICIPANT } from '../../../constants/policyConstants';
-import { Participant } from '../../../types/tournamentTypes';
+import { ContextProfile, PolicyDefinitions } from '../types/factoryTypes';
+import { POLICY_TYPE_PARTICIPANT } from '../constants/policyConstants';
+import { Participant } from '../types/tournamentTypes';
 
 type HydratedParticipant = {
   [key: string | number | symbol]: unknown;

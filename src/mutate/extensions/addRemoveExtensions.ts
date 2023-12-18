@@ -1,4 +1,4 @@
-import { findParticipant } from '../../global/functions/deducers/findParticipant';
+import { findParticipant } from '../../acquire/findParticipant';
 import { removeExtension } from './removeExtension';
 import { addExtension } from './addExtension';
 

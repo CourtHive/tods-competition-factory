@@ -1,4 +1,4 @@
-import { getParticipants } from '../../../getters/participants/getParticipants';
+import { getParticipants } from '../../../../query/participants/getParticipants';
 import { isUngrouped } from '../../../../global/functions/isUngrouped';
 import { unique } from '../../../../utilities';
 

@@ -2,7 +2,7 @@ import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGove
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
-import { getParticipants } from '../../getters/participants/getParticipants';
+import { getParticipants } from '../../../query/participants/getParticipants';
 import { extractAttributes } from '../../../utilities';
 
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';

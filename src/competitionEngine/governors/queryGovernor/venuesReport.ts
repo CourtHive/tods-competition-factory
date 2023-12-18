@@ -1,5 +1,5 @@
 import { generateTimeSlots } from '../scheduleGovernor/garman/generateTimeSlots';
-import { getVenuesAndCourts } from '../../getters/venuesAndCourtsGetter';
+import { getVenuesAndCourts } from '../../../query/venues/venuesAndCourtsGetter';
 import { allCompetitionMatchUps } from '../../getters/matchUpsGetter';
 import {
   addMinutesToTimeString,

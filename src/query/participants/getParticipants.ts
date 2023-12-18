@@ -1,26 +1,26 @@
-import { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDependencies';
-import { definedAttributes } from '../../../utilities/definedAttributes';
-import { getParticipantEntries } from './getParticipantEntries';
-import { filterParticipants } from './filterParticipants';
-import { getParticipantMap } from './getParticipantMap';
-import { isObject } from '../../../utilities/objects';
-import { attributeFilter } from '../../../utilities';
+import { getMatchUpDependencies } from '../matchUps/getMatchUpDependencies';
+import { definedAttributes } from '../../utilities/definedAttributes';
+import { getParticipantEntries } from '../../tournamentEngine/getters/participants/getParticipantEntries';
+import { filterParticipants } from '../../tournamentEngine/getters/participants/filterParticipants';
+import { getParticipantMap } from '../../tournamentEngine/getters/participants/getParticipantMap';
+import { isObject } from '../../utilities/objects';
+import { attributeFilter } from '../../utilities';
 
-import { POLICY_TYPE_PARTICIPANT } from '../../../constants/policyConstants';
-import { MatchUp, Tournament } from '../../../types/tournamentTypes';
-import { HydratedParticipant } from '../../../types/hydrated';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { POLICY_TYPE_PARTICIPANT } from '../../constants/policyConstants';
+import { MatchUp, Tournament } from '../../types/tournamentTypes';
+import { HydratedParticipant } from '../../types/hydrated';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   ContextProfile,
   ParticipantFilters,
   PolicyDefinitions,
   ScheduleAnalysis,
   ParticipantMap,
-} from '../../../types/factoryTypes';
+} from '../../types/factoryTypes';
 import {
   MISSING_TOURNAMENT_RECORD,
   ErrorType,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 type GetParticipantsArgs = {
   withIndividualParticipants?: boolean | { [key: string]: any };

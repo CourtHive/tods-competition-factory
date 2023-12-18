@@ -1,5 +1,5 @@
-import { getParticipants as participantGetter } from '../../tournamentEngine/getters/participants/getParticipants';
-import { findParticipant } from '../../global/functions/deducers/findParticipant';
+import { getParticipants as participantGetter } from '../../query/participants/getParticipants';
+import { findParticipant } from '../../acquire/findParticipant';
 import { deepMerge } from '../../utilities/deepMerge';
 
 import { HydratedMatchUp, HydratedParticipant } from '../../types/hydrated';

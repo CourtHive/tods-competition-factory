@@ -3,7 +3,7 @@ import { validateTieFormat } from '../../validators/tieFormatUtilities';
 import { getPairedParticipant } from '../governors/participantGovernor/getPairedParticipant';
 import { addParticipant } from '../governors/participantGovernor/addParticipants';
 import { addExtension } from '../../mutate/extensions/addExtension';
-import { getParticipants } from '../getters/participants/getParticipants';
+import { getParticipants } from '../../query/participants/getParticipants';
 import { getParticipantId } from '../../global/functions/extractors';
 import { isNumeric } from '../../utilities/math';
 import { generateRange } from '../../utilities';

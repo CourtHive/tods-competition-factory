@@ -1,5 +1,5 @@
-import { addStructureParticipation } from './addStructureParticipation';
-import { addScheduleItem } from './addScheduleItem';
+import { addStructureParticipation } from '../../../mutate/participants/addStructureParticipation';
+import { addScheduleItem } from '../../../mutate/participants/addScheduleItem';
 
 import { DEFAULTED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 import { TEAM } from '../../../constants/matchUpTypes';

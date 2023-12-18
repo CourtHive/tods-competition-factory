@@ -1,7 +1,8 @@
-import { getVenuesAndCourts } from '../../../competitionEngine/getters/venuesAndCourtsGetter';
-import { addMatchUpTimeItem } from '../../../mutate/matchUps/timeItems/matchUpTimeItems';
+import { getVenuesAndCourts } from '../../../query/venues/venuesAndCourtsGetter';
+import { addMatchUpTimeItem } from '../timeItems/matchUpTimeItems';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 
+import { DrawDefinition, Tournament } from '../../../types/tournamentTypes';
 import { ALLOCATE_COURTS } from '../../../constants/timeItemConstants';
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
 import {
@@ -10,7 +11,6 @@ import {
   MISSING_MATCHUP_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
-import { DrawDefinition, Tournament } from '../../../types/tournamentTypes';
 
 // allocate courts for a TEAM matchUp
 type AllocateTeamMatchUpCourtsArgs = {

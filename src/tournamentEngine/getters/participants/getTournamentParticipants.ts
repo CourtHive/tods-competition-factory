@@ -1,6 +1,6 @@
 import { addNationalityCode } from '../../governors/participantGovernor/addNationalityCode';
 import { attributeFilter, makeDeepCopy } from '../../../utilities';
-import { addParticipantContext } from './addParticipantContext';
+import { addParticipantContext } from '../../../mutate/participants/addParticipantContext';
 import { filterParticipants } from './filterParticipants';
 import { getScaleValues } from './getScaleValues';
 

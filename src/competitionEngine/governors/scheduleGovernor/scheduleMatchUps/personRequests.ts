@@ -1,5 +1,5 @@
 import { addTournamentExtension } from '../../../../mutate/extensions/addRemoveExtensions';
-import { findParticipant } from '../../../../global/functions/deducers/findParticipant';
+import { findParticipant } from '../../../../acquire/findParticipant';
 import { removeExtension } from '../../competitionsGovernor/competitionExtentions';
 import { extractDate, extractTime } from '../../../../utilities/dateTime';
 import { findExtension } from '../../../../acquire/findExtension';

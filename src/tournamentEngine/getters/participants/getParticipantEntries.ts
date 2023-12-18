@@ -11,7 +11,7 @@ import { stringSort } from '../../../functions/sorters/stringSort';
 import { processEventEntry } from './processEventEntry';
 import { isObject } from '../../../utilities/objects';
 import { getFlightProfile } from '../../../query/event/getFlightProfile';
-import { addScheduleItem } from './addScheduleItem';
+import { addScheduleItem } from '../../../mutate/participants/addScheduleItem';
 import { processSides } from './processSides';
 
 import { DEFAULTED, WALKOVER } from '../../../constants/matchUpStatusConstants';
