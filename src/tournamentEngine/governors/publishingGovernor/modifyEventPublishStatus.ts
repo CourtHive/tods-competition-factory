@@ -1,5 +1,5 @@
 import { addEventTimeItem } from '../tournamentGovernor/addTimeItem';
-import { getEventPublishStatus } from './getEventPublishStatus';
+import { getEventPublishStatus } from '../../../query/event/getEventPublishStatus';
 import { isObject } from '../../../utilities/objects';
 
 import { PUBLIC, PUBLISH, STATUS } from '../../../constants/timeItemConstants';

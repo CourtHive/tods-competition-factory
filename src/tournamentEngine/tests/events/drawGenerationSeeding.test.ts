@@ -1,4 +1,4 @@
-import { getEliminationDrawSize } from '../../../drawEngine/getters/getEliminationDrawSize';
+import { getEliminationDrawSize } from '../../../query/participants/getEliminationDrawSize';
 import competitionEngine from '../../../competitionEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
@@ -6,7 +6,7 @@ import { expect, it } from 'vitest';
 
 import POLICY_AVOIDANCE_COUNTRY from '../../../fixtures/policies/POLICY_AVOIDANCE_COUNTRY';
 import SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
-import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
+import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { SPLIT_WATERFALL } from '../../../constants/flightConstants';
 import { INDIVIDUAL } from '../../../constants/participantConstants';
 import { SEEDING } from '../../../constants/scaleConstants';
@@ -28,9 +28,9 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
   const { eventId } = eventResult;
   expect(result.success).toEqual(true);
 
-  let { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+  let tournamentParticipants = tournamentEngine.getParticipants({
     participantFilters: { participantTypes: [INDIVIDUAL] },
-  });
+  }).participants;
   const participantIds = tournamentParticipants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result.success).toEqual(true);
@@ -143,27 +143,26 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
     expect(result.error).toEqual(MISSING_DRAW_SIZE);
   });
 
-  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+  tournamentParticipants = tournamentEngine.getParticipants({
     withDraws: true,
-  }));
+  }).participants;
 
   for (const drawDefinition of drawDefinitions) {
     result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
     expect(result.success).toEqual(true);
   }
 
-  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+  tournamentParticipants = tournamentEngine.getParticipants({
+    withSeeding: true,
     withDraws: true,
-  }));
+  }).participants;
 
   const seedAssignments = tournamentParticipants
-    .map((participant) => participant.draws?.[0].seedAssignments)
+    .map((participant) => participant.draws?.[0].seedAssignments.MAIN)
     .filter(Boolean)
     .sort();
 
-  const seedValues = seedAssignments.map(
-    (assignment) => assignment[MAIN].seedValue
-  );
+  const seedValues = seedAssignments.map((assignment) => assignment.seedValue);
   // we have 2 flights...
   expect(seedValues).toEqual([1, 1, 2, 2, 3, 3, 4, 4]);
 });
@@ -178,11 +177,9 @@ it('can constrain seedsCount by policyDefinitions', () => {
   const { eventId } = eventResult;
   expect(result.success).toEqual(true);
 
-  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
-    {
-      participantFilters: { participantTypes: [INDIVIDUAL] },
-    }
-  );
+  const tournamentParticipants = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [INDIVIDUAL] },
+  }).participants;
   const participantIds = tournamentParticipants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result.success).toEqual(true);
@@ -252,11 +249,9 @@ it('can constrain seedsCount by policyDefinitions', () => {
   const { eventId } = eventResult;
   expect(result.success).toEqual(true);
 
-  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
-    {
-      participantFilters: { participantTypes: [INDIVIDUAL] },
-    }
-  );
+  const tournamentParticipants = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [INDIVIDUAL] },
+  }).participants;
   const participantIds = tournamentParticipants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result.success).toEqual(true);
@@ -315,11 +310,9 @@ it('can define seeds using seededParticipants', () => {
   result = tournamentEngine.attachEventPolicies({ policyDefinitions, eventId });
   expect(result.success).toEqual(true);
 
-  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
-    {
-      participantFilters: { participantTypes: [INDIVIDUAL] },
-    }
-  );
+  const tournamentParticipants = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [INDIVIDUAL] },
+  }).participants;
   const participantIds = tournamentParticipants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result.success).toEqual(true);

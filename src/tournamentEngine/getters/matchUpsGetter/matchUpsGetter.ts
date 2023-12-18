@@ -1,5 +1,5 @@
 import { getScheduleTiming } from '../../../query/extensions/matchUpFormatTiming/getScheduleTiming';
-import { getEventPublishStatus } from '../../governors/publishingGovernor/getEventPublishStatus';
+import { getEventPublishStatus } from '../../../query/event/getEventPublishStatus';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { definedAttributes } from '../../../utilities/definedAttributes';
 import { hydrateParticipants } from './hydrateParticipants';

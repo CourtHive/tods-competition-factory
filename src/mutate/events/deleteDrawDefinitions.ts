@@ -1,7 +1,7 @@
 import { checkScoreHasValue } from '../../query/matchUp/checkScoreHasValue';
 import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
 import { modifyEventPublishStatus } from '../../tournamentEngine/governors/publishingGovernor/modifyEventPublishStatus';
-import { getEventPublishStatus } from '../../tournamentEngine/governors/publishingGovernor/getEventPublishStatus';
+import { getEventPublishStatus } from '../../query/event/getEventPublishStatus';
 import { addExtension } from '../extensions/addExtension';
 import { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
 import { getPositionAssignments } from '../../tournamentEngine/getters/getPositionAssignments';

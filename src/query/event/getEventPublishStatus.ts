@@ -1,6 +1,6 @@
-import { getEventTimeItem } from '../queryGovernor/timeItems';
+import { getEventTimeItem } from '../../tournamentEngine/governors/queryGovernor/timeItems';
 
-import { PUBLIC, PUBLISH, STATUS } from '../../../constants/timeItemConstants';
+import { PUBLIC, PUBLISH, STATUS } from '../../constants/timeItemConstants';
 
 export function getEventPublishStatus({ event, status = PUBLIC }) {
   const itemType = `${PUBLISH}.${STATUS}`;

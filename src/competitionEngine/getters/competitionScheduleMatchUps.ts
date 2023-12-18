@@ -1,5 +1,5 @@
-import { getEventPublishStatus } from '../../tournamentEngine/governors/publishingGovernor/getEventPublishStatus';
-import { getDrawPublishStatus } from '../../tournamentEngine/governors/publishingGovernor/getDrawPublishStatus';
+import { getEventPublishStatus } from '../../query/event/getEventPublishStatus';
+import { getDrawPublishStatus } from '../../query/event/getDrawPublishStatus';
 import { getSchedulingProfile } from '../governors/scheduleGovernor/schedulingProfile/schedulingProfile';
 import { getTournamentTimeItem } from '../../tournamentEngine/governors/queryGovernor/timeItems';
 import { scheduledSortedMatchUps } from '../../functions/sorters/scheduledSortedMatchUps';

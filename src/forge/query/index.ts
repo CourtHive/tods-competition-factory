@@ -26,7 +26,7 @@ export { getVenuesAndCourts as getTournamentVenuesAndCourts } from '../../tourna
 export { matchUpActions as tournamentMatchUpActions } from '../../tournamentEngine/getters/matchUpActions';
 export { filterParticipants } from '../../tournamentEngine/getters/participants/filterParticipants';
 export { positionActions } from '../../tournamentEngine/governors/queryGovernor/positionQueries';
-export { getEventData } from '../../tournamentEngine/governors/publishingGovernor/getEventData';
+export { getEventData } from '../../query/event/getEventData';
 export { getSeedsCount } from '../../tournamentEngine/governors/policyGovernor/getSeedsCount';
 export { participantScaleItem } from '../../tournamentEngine/accessors/participantScaleItem';
 export { getTimeItem } from '../../tournamentEngine/governors/queryGovernor/timeItems';

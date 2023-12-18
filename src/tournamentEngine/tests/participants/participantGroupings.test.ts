@@ -28,11 +28,9 @@ it('can add a GROUP participant and add individualParticipantIds', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
   tournamentEngine.setState(tournamentRecord);
 
-  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
-    {
-      participantFilters: { participantTypes: [INDIVIDUAL] },
-    }
-  );
+  const tournamentParticipants = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [INDIVIDUAL] },
+  }).participants;
 
   // test adding invalid individualParticipantIds, in this case entire participants
   let participantIds = tournamentParticipants.slice(0, 3);
@@ -126,11 +124,9 @@ it('can add a GROUP participant and remove individualParticipantIds', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
   tournamentEngine.setState(tournamentRecord);
 
-  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
-    {
-      participantFilters: { participantTypes: [INDIVIDUAL] },
-    }
-  );
+  const tournamentParticipants = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [INDIVIDUAL] },
+  }).participants;
 
   // first four individual participants belong to groupParticipant
   const individualParticipantIds = tournamentParticipants
@@ -197,11 +193,9 @@ it('can modify individualParticipantIds of a grouping participant', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
 
   tournamentEngine.setState(tournamentRecord);
-  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
-    {
-      participantFilters: { participantTypes: [INDIVIDUAL] },
-    }
-  );
+  const tournamentParticipants = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [INDIVIDUAL] },
+  }).participants;
 
   // first four individual participants belong to groupParticipant
   const individualParticipantIds = tournamentParticipants
@@ -265,11 +259,9 @@ it('can remove individualParticipantIds from a grouping participant', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
   tournamentEngine.setState(tournamentRecord);
 
-  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
-    {
-      participantFilters: { participantTypes: [INDIVIDUAL] },
-    }
-  );
+  const tournamentParticipants = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [INDIVIDUAL] },
+  }).participants;
 
   // first four individual participants belong to groupParticipant
   const individualParticipantIds = tournamentParticipants.map(

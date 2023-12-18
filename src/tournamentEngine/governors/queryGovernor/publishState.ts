@@ -1,5 +1,5 @@
-import { getEventPublishStatus } from '../publishingGovernor/getEventPublishStatus';
-import { getDrawPublishStatus } from '../publishingGovernor/getDrawPublishStatus';
+import { getEventPublishStatus } from '../../../query/event/getEventPublishStatus';
+import { getDrawPublishStatus } from '../../../query/event/getDrawPublishStatus';
 
 import {
   MISSING_TOURNAMENT_RECORD,

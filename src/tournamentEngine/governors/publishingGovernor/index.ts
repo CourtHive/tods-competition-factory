@@ -1,10 +1,10 @@
 import { publishEventSeeding, unPublishEventSeeding } from './eventSeeding';
 import { publishOrderOfPlay, unPublishOrderOfPlay } from './orderOfPlay';
 import { getTournamentInfo } from '../../../query/tournament/getTournamentInfo';
-import { getAllEventData } from './getAllEventData';
+import { getAllEventData } from '../../../query/event/getAllEventData';
 import { setEventDisplay } from './setEventDisplay';
 import { unPublishEvent } from './unPublishEvent';
-import { getEventData } from './getEventData';
+import { getEventData } from '../../../query/event/getEventData';
 import { getVenueData } from './getVenueData';
 import { getCourtInfo } from './getCourtInfo';
 import { publishEvent } from './publishEvent';

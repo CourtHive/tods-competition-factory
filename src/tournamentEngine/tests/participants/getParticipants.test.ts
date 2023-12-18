@@ -10,8 +10,6 @@ import { FEMALE, MALE } from '../../../constants/genderConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 import { countries } from '../../../fixtures/countryData';
 
-// this test was originally for getTournamentParticipants() and now ensures getParticipants() is functionally equivalent
-
 const privacyPolicy = {
   [POLICY_TYPE_PARTICIPANT]: {
     policyName: 'Participant Privacy Policy',

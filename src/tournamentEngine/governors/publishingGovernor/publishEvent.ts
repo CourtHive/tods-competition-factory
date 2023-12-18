@@ -1,9 +1,9 @@
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { modifyEventPublishStatus } from './modifyEventPublishStatus';
-import { getEventPublishStatus } from './getEventPublishStatus';
+import { getEventPublishStatus } from '../../../query/event/getEventPublishStatus';
 import { addNotice } from '../../../global/state/globalState';
-import { getEventData } from './getEventData';
+import { getEventData } from '../../../query/event/getEventData';
 
 import { Event, Tournament } from '../../../types/tournamentTypes';
 import { PUBLISH_EVENT } from '../../../constants/topicConstants';

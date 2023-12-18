@@ -1,9 +1,9 @@
-import { getScheduleTiming } from '../../../query/extensions/matchUpFormatTiming/getScheduleTiming';
-import { getDrawMatchUps } from '../../../drawEngine/getters/getMatchUps/drawMatchUps';
-import { getVenuesAndCourts } from '../../getters/venueGetter';
-import { getTournamentInfo } from '../../../query/tournament/getTournamentInfo';
+import { getScheduleTiming } from '../extensions/matchUpFormatTiming/getScheduleTiming';
+import { getDrawMatchUps } from '../../drawEngine/getters/getMatchUps/drawMatchUps';
+import { getVenuesAndCourts } from '../../tournamentEngine/getters/venueGetter';
+import { getTournamentInfo } from '../tournament/getTournamentInfo';
 
-import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
+import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
 import { getEventPublishStatus } from './getEventPublishStatus';
 
 export function getAllEventData({ tournamentRecord, policyDefinitions }) {

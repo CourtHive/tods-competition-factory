@@ -1,5 +1,5 @@
 import { getPolicyDefinitions } from '../../../query/extensions/getAppliedPolicies';
-import { getEliminationDrawSize } from '../../../drawEngine/getters/getEliminationDrawSize';
+import { getEliminationDrawSize } from '../../../query/participants/getEliminationDrawSize';
 import { isConvertableInteger } from '../../../utilities/math';
 import {
   ResultType,

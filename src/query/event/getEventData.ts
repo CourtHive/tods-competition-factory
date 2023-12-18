@@ -1,24 +1,24 @@
-import { getParticipants } from '../../../query/participants/getParticipants';
-import { generateRange, makeDeepCopy } from '../../../utilities';
+import { getParticipants } from '../participants/getParticipants';
+import { generateRange, makeDeepCopy } from '../../utilities';
 import { getEventPublishStatus } from './getEventPublishStatus';
-import { isConvertableInteger } from '../../../utilities/math';
-import { getTournamentInfo } from '../../../query/tournament/getTournamentInfo';
-import { getVenueData } from './getVenueData';
-import { getDrawData } from './getDrawData';
+import { isConvertableInteger } from '../../utilities/math';
+import { getTournamentInfo } from '../tournament/getTournamentInfo';
+import { getVenueData } from '../../tournamentEngine/governors/publishingGovernor/getVenueData';
+import { getDrawData } from '../../tournamentEngine/governors/publishingGovernor/getDrawData';
 
-import { Event, Tournament } from '../../../types/tournamentTypes';
-import { PUBLIC } from '../../../constants/timeItemConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { Event, Tournament } from '../../types/tournamentTypes';
+import { PUBLIC } from '../../constants/timeItemConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   ParticipantsProfile,
   PolicyDefinitions,
   StructureSortConfig,
-} from '../../../types/factoryTypes';
+} from '../../types/factoryTypes';
 import {
   ErrorType,
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 type GetEventDataArgs = {
   participantsProfile?: ParticipantsProfile;

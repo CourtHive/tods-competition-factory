@@ -1,6 +1,6 @@
 import { definedAttributes } from '../../../utilities/definedAttributes';
 import { modifyEventPublishStatus } from './modifyEventPublishStatus';
-import { getEventPublishStatus } from './getEventPublishStatus';
+import { getEventPublishStatus } from '../../../query/event/getEventPublishStatus';
 import { addNotice } from '../../../global/state/globalState';
 
 import { PUBLIC } from '../../../constants/timeItemConstants';

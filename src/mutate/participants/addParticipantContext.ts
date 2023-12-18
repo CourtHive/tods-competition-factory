@@ -1,6 +1,6 @@
 import { getMatchUpDependencies } from '../../query/matchUps/getMatchUpDependencies';
-import { getEventPublishStatus } from '../../tournamentEngine/governors/publishingGovernor/getEventPublishStatus';
-import { getDrawPublishStatus } from '../../tournamentEngine/governors/publishingGovernor/getDrawPublishStatus';
+import { getEventPublishStatus } from '../../query/event/getEventPublishStatus';
+import { getDrawPublishStatus } from '../../query/event/getDrawPublishStatus';
 import { getDerivedPositionAssignments } from '../../tournamentEngine/getters/participants/getDerivedPositionAssignments';
 import { findExtension } from '../../acquire/findExtension';
 import { getRelevantParticipantIdsMap } from '../../tournamentEngine/getters/participants/getRelevantParticipantIdsMap';

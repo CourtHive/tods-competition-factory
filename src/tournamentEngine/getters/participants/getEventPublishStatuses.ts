@@ -1,5 +1,5 @@
-import { getEventPublishStatus } from '../../governors/publishingGovernor/getEventPublishStatus';
-import { getDrawPublishStatus } from '../../governors/publishingGovernor/getDrawPublishStatus';
+import { getEventPublishStatus } from '../../../query/event/getEventPublishStatus';
+import { getDrawPublishStatus } from '../../../query/event/getDrawPublishStatus';
 
 export function getEventPublishStatuses({ event }) {
   const eventPubStatus = getEventPublishStatus({ event });

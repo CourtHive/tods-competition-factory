@@ -5,7 +5,7 @@ import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructure
 import { getStructureSeedAssignments } from '../../../query/structure/getStructureSeedAssignments';
 import { getStructureMatchUps } from '../../../query/structure/getStructureMatchUps';
 import { getMatchUpParticipantIds } from '../../../query/matchUp/getMatchUpParticipantIds';
-import { getEliminationDrawSize } from '../../getters/getEliminationDrawSize';
+import { getEliminationDrawSize } from '../../../query/participants/getEliminationDrawSize';
 import { getParticipantIdFinishingPositions } from './finishingPositions';
 import { positionActions } from './positionActions/positionActions';
 import { getParticipantIdMatchUps } from './participantIdMatchUps';
