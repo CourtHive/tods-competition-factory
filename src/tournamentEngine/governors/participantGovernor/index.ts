@@ -1,4 +1,4 @@
-import { getEligibleVoluntaryConsolationParticipants } from '../../getters/participants/getEligibleVoluntaryConsolationParticipants';
+import { getEligibleVoluntaryConsolationParticipants } from '../../../query/drawDefinition/getEligibleVoluntaryConsolationParticipants';
 import { getParticipantEventDetails } from '../../getters/participants/getParticipantEventDetails';
 import { getParticipantMembership } from '../../getters/participants/getParticipantMembership';
 import { getParticipantSchedules } from '../../getters/participants/getParticipantSchedules';

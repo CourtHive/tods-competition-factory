@@ -1,26 +1,26 @@
-import { getPolicyDefinitions } from '../../../query/extensions/getAppliedPolicies';
-import { getStageEntries } from '../../getters/stageGetter';
+import { getPolicyDefinitions } from '../extensions/getAppliedPolicies';
+import { getStageEntries } from '../../drawEngine/getters/stageGetter';
 import {
   allDrawMatchUps,
   allEventMatchUps,
-} from '../../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
+} from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
 
-import { POLICY_TYPE_VOLUNTARY_CONSOLATION } from '../../../constants/policyConstants';
+import { POLICY_TYPE_VOLUNTARY_CONSOLATION } from '../../constants/policyConstants';
 import {
   MAIN,
   PLAY_OFF,
   QUALIFYING,
   VOLUNTARY_CONSOLATION,
-} from '../../../constants/drawDefinitionConstants';
-import { UNGROUPED, WITHDRAWN } from '../../../constants/entryStatusConstants';
-import { DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
-import { PolicyDefinitions } from '../../../types/factoryTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { HydratedSide } from '../../../types/hydrated';
+} from '../../constants/drawDefinitionConstants';
+import { UNGROUPED, WITHDRAWN } from '../../constants/entryStatusConstants';
+import { DOUBLE_WALKOVER } from '../../constants/matchUpStatusConstants';
+import { PolicyDefinitions } from '../../types/factoryTypes';
+import { SUCCESS } from '../../constants/resultConstants';
+import { HydratedSide } from '../../types/hydrated';
 import {
   ErrorType,
   MISSING_DRAW_DEFINITION,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 import {
   DrawDefinition,
   Event,
@@ -28,7 +28,7 @@ import {
   Participant,
   StageTypeUnion,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../types/tournamentTypes';
 
 type GetEligibleVoluntaryConsolationParticipantsArgs = {
   excludedMatchUpStatuses?: MatchUpStatusUnion[];
