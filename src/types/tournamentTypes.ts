@@ -7,8 +7,8 @@ export interface Tournament {
   events?: Event[];
   extensions?: Extension[];
   formalName?: string;
-  hostCountryCode?: CountryCodeEnum;
-  indoorOutdoor?: IndoorOutdoorEnum;
+  hostCountryCode?: CountryCodeUnion;
+  indoorOutdoor?: IndoorOutdoorUnion;
   isMock?: boolean;
   localTimeZone?: string;
   matchUps?: MatchUp[];
@@ -25,13 +25,13 @@ export interface Tournament {
    * Date on which the tournament starts
    */
   startDate?: string;
-  surfaceCategory?: SurfaceCategoryEnum;
+  surfaceCategory?: SurfaceCategoryUnion;
   timeItems?: TimeItem[];
   totalPrizeMoney?: PrizeMoney[];
   tournamentCategories?: Category[];
   tournamentGroups?: string[];
   tournamentId: string;
-  tournamentLevel?: TournamentLevelEnum;
+  tournamentLevel?: TournamentLevelUnion;
   tournamentName?: string;
   tournamentOtherIds?: UnifiedTournamentID[];
   tournamentRank?: string;
@@ -53,7 +53,7 @@ export interface Event {
   allowedDrawTypes?: DrawTypeUnion[];
   category?: Category;
   createdAt?: Date | string;
-  discipline?: DisciplineEnum;
+  discipline?: DisciplineUnion;
   drawDefinitions?: DrawDefinition[];
   /**
    * Date on which the event ends
@@ -62,14 +62,14 @@ export interface Event {
   entries?: Entry[];
   eventAbbreviation?: string;
   eventId: string;
-  eventLevel?: TournamentLevelEnum;
+  eventLevel?: TournamentLevelUnion;
   eventName?: string;
   eventOrder?: number;
   eventRank?: string;
   eventType?: EventTypeUnion;
   extensions?: Extension[];
   gender?: GenderUnion;
-  indoorOutdoor?: IndoorOutdoorEnum;
+  indoorOutdoor?: IndoorOutdoorUnion;
   isMock?: boolean;
   links?: DrawLink[];
   matchUpFormat?: string;
@@ -79,17 +79,17 @@ export interface Event {
    * Date on which the event starts
    */
   startDate?: string;
-  surfaceCategory?: SurfaceCategoryEnum;
+  surfaceCategory?: SurfaceCategoryUnion;
   tennisOfficialIds?: string[];
   tieFormat?: TieFormat;
   tieFormatId?: string;
   tieFormats?: TieFormat[];
   timeItems?: TimeItem[];
   updatedAt?: Date | string;
-  wheelchairClass?: WheelchairClassEnum;
+  wheelchairClass?: WheelchairClassUnion;
 }
 
-export enum DrawTypeEnum {
+enum DrawTypeEnum {
   AD_HOC = 'AD_HOC',
   COMPASS = 'COMPASS',
   CURTIS_cONSOLATION = 'CURTIS_CONSOLATION',
@@ -119,7 +119,7 @@ export interface Category {
   ageMaxDate?: string;
   ageMin?: number;
   ageMinDate?: string;
-  ballType?: BallTypeEnum;
+  ballType?: BallTypeUnion;
   categoryName?: string;
   categoryType?: string;
   createdAt?: Date | string;
@@ -131,11 +131,11 @@ export interface Category {
   ratingType?: string;
   subType?: string;
   timeItems?: TimeItem[];
-  type?: CategoryEnum;
+  type?: CategoryUnion;
   updatedAt?: Date | string;
 }
 
-export enum BallTypeEnum {
+enum BallTypeEnum {
   HIGH_ALTITUDE = 'HIGH_ALTITUDE',
   Stage1Green = 'STAGE1GREEN',
   Stage2Orange = 'STAGE2ORANGE',
@@ -161,14 +161,14 @@ export interface TimeItem {
   itemValue?: any;
 }
 
-export enum CategoryEnum {
+enum CategoryEnum {
   AGE = 'AGE',
   BOTH = 'BOTH',
   LEVEL = 'LEVEL',
 }
 export type CategoryUnion = keyof typeof CategoryEnum;
 
-export enum DisciplineEnum {
+enum DisciplineEnum {
   BEACH_TENNIS = 'BEACH_TENNIS',
   TENNIS = 'TENNIS',
   WHEELCHAIR_TENNIS = 'WHEELCHAIR_TENNIS',
@@ -182,7 +182,7 @@ export interface DrawDefinition {
   drawName?: string;
   drawOrder?: number;
   drawRepresentativeIds?: string[];
-  drawStatus?: DrawStatusEnum;
+  drawStatus?: DrawStatusUnion;
   drawType?: DrawTypeUnion;
   /**
    * Date on which the draw ends
@@ -208,7 +208,7 @@ export interface DrawDefinition {
   updatedAt?: Date | string;
 }
 
-export enum DrawStatusEnum {
+enum DrawStatusEnum {
   COMPLETE = 'COMPLETE',
   IN_PROGRESS = 'IN_PROGRESS',
   TO_BE_PLAYED = 'TO_BE_PLAYED',
@@ -231,7 +231,7 @@ export interface Entry {
   scaleValue?: number;
 }
 
-export enum StageTypeEnum {
+enum StageTypeEnum {
   CONSOLATION = 'CONSOLATION',
   MAIN = 'MAIN',
   PLAY_OFF = 'PLAY_OFF',
@@ -240,7 +240,7 @@ export enum StageTypeEnum {
 }
 export type StageTypeUnion = keyof typeof StageTypeEnum;
 
-export enum EntryStatusEnum {
+enum EntryStatusEnum {
   ALTERNATE = 'ALTERNATE',
   CONFIRMED = 'CONFIRMED',
   DIRECT_ACCEPTANCE = 'DIRECT_ACCEPTANCE',
@@ -271,7 +271,7 @@ export interface DrawLink {
   updatedAt?: Date | string;
 }
 
-export enum LinkTypeEnum {
+enum LinkTypeEnum {
   LOSER = 'LOSER',
   POSITION = 'POSITION',
   WINNER = 'WINNER',
@@ -295,7 +295,7 @@ export interface DrawLinkTarget {
   createdAt?: Date | string;
   drawId?: string;
   extensions?: Extension[];
-  feedProfile: PositioningProfileEnum;
+  feedProfile: PositioningProfileUnion;
   groupedOrder?: number[];
   isMock?: boolean;
   notes?: string;
@@ -306,20 +306,20 @@ export interface DrawLinkTarget {
   updatedAt?: Date | string;
 }
 
-export enum PositioningProfileEnum {
-  BottomUp = 'BOTTOM_UP',
-  Draw = 'DRAW',
-  LossPosition = 'LOSS_POSITION',
-  Random = 'RANDOM',
-  TopDown = 'TOP_DOWN',
-  Waterfall = 'WATERFALL',
+enum PositioningProfileEnum {
+  BOTTOM_UP = 'BOTTOM_UP',
+  DRAW = 'DRAW',
+  LOSS_POSITION = 'LOSS_POSITION',
+  RANDOM = 'RANDOM',
+  TOP_DOWN = 'TOP_DOWN',
+  WATERFALL = 'WATERFALL',
 }
 export type PositioningProfileUnion = keyof typeof PositioningProfileEnum;
 
-export enum SeedingProfileEnum {
-  Cluster = 'CLUSTER',
-  Separate = 'SEPARATE',
-  Waterfall = 'WATERFALL',
+enum SeedingProfileEnum {
+  CLUSTER = 'CLUSTER',
+  SEPARATE = 'SEPARATE',
+  WATERFALL = 'WATERFALL',
 }
 export type SeedingProfileUnion = keyof typeof SeedingProfileEnum;
 
@@ -342,7 +342,7 @@ export interface MatchUp {
   extensions?: Extension[];
   finishingPositionRange?: MatchUpFinishingPositionRange;
   finishingRound?: number;
-  indoorOutdoor?: IndoorOutdoorEnum;
+  indoorOutdoor?: IndoorOutdoorUnion;
   isMock?: boolean;
   loserMatchUpId?: string;
   matchUpDuration?: string;
@@ -363,7 +363,7 @@ export interface MatchUp {
    * Date on which matchUp begins
    */
   startDate?: string;
-  surfaceCategory?: SurfaceCategoryEnum;
+  surfaceCategory?: SurfaceCategoryUnion;
   tieFormat?: TieFormat;
   tieFormatId?: string;
   tieMatchUps?: MatchUp[];
@@ -378,30 +378,30 @@ export interface MatchUpFinishingPositionRange {
   winner: number[];
 }
 
-export enum IndoorOutdoorEnum {
-  Indoor = 'INDOOR',
-  Mixed = 'MIXED',
-  Outdoor = 'OUTDOOR',
+enum IndoorOutdoorEnum {
+  INDOOR = 'INDOOR',
+  MIXED = 'MIXED',
+  OUTDOOR = 'OUTDOOR',
 }
 export type IndoorOutdoorUnion = keyof typeof IndoorOutdoorEnum;
 
-export enum MatchUpStatusEnum {
-  Abandoned = 'ABANDONED',
-  AwaitingResult = 'AWAITING_RESULT',
-  Bye = 'BYE',
-  Cancelled = 'CANCELLED',
-  Completed = 'COMPLETED',
-  DeadRubber = 'DEAD_RUBBER',
-  Defaulted = 'DEFAULTED',
-  DoubleDefault = 'DOUBLE_DEFAULT',
-  DoubleWalkover = 'DOUBLE_WALKOVER',
-  InProgress = 'IN_PROGRESS',
-  Incomplete = 'INCOMPLETE',
-  NotPlayed = 'NOT_PLAYED',
-  Retired = 'RETIRED',
-  Suspended = 'SUSPENDED',
-  ToBePlayed = 'TO_BE_PLAYED',
-  Walkover = 'WALKOVER',
+enum MatchUpStatusEnum {
+  ABANDONED = 'ABANDONED',
+  AWAITING_RESULT = 'AWAITING_RESULT',
+  BYE = 'BYE',
+  CANCELLED = 'CANCELLED',
+  COMPLETED = 'COMPLETED',
+  DEAD_RUBBER = 'DEAD_RUBBER',
+  DEFAULTED = 'DEFAULTED',
+  DOUBLE_DEFAULT = 'DOUBLE_DEFAULT',
+  DOUBLE_WALKOVER = 'DOUBLE_WALKOVER',
+  IN_PROGRESS = 'IN_PROGRESS',
+  INCOMPLETE = 'INCOMPLETE',
+  NOT_PLAYED = 'NOT_PLAYED',
+  RETIRED = 'RETIRED',
+  SUSPENDED = 'SUSPENDED',
+  TO_BE_PLAYED = 'TO_BE_PLAYED',
+  WALKOVER = 'WALKOVER',
 }
 export type MatchUpStatusUnion = keyof typeof MatchUpStatusEnum;
 
@@ -449,7 +449,7 @@ export interface Game {
   timeItems?: TimeItem[];
   updatedAt?: Date | string;
   winningSide?: number;
-  winReason?: WinReasonEnum;
+  winReason?: WinReasonUnion;
 }
 
 export interface Point {
@@ -465,7 +465,7 @@ export interface Point {
   timeItems?: TimeItem[];
   updatedAt?: Date | string;
   winningSide?: number;
-  winReason?: WinReasonEnum;
+  winReason?: WinReasonUnion;
 }
 
 export interface Shot {
@@ -475,11 +475,11 @@ export interface Shot {
   isMock?: boolean;
   notes?: string;
   participantId: string;
-  shotDetail?: ShotDetailEnum;
+  shotDetail?: ShotDetailUnion;
   shotMadeFrom?: CourtPosition;
   shotNumber?: number;
-  shotOutcome?: ShotOutcomeEnum;
-  shotType?: ShotTypeEnum;
+  shotOutcome?: ShotOutcomeUnion;
+  shotType?: ShotTypeUnion;
   sideNumber?: number;
   speed?: number;
   spin?: string;
@@ -492,7 +492,7 @@ export interface CourtPosition {
   extensions?: Extension[];
   isMock?: boolean;
   notes?: string;
-  positionName?: CourtPositionEnum;
+  positionName?: CourtPositionUnion;
   timeAtPosition?: Date | string;
   timeItems?: TimeItem[];
   updatedAt?: Date | string;
@@ -500,53 +500,53 @@ export interface CourtPosition {
   y?: number;
 }
 
-export enum CourtPositionEnum {
-  Baseline = 'BASELINE',
-  LeftServiceCourt = 'LEFT_SERVICE_COURT',
-  Net = 'NET',
-  RightServiceCourt = 'RIGHT_SERVICE_COURT',
-  Serviceline = 'SERVICELINE',
+enum CourtPositionEnum {
+  BaSELINE = 'BASELINE',
+  LEFT_SERVICE_COURT = 'LEFT_SERVICE_COURT',
+  NET = 'NET',
+  RIGHT_SERVICE_COURT = 'RIGHT_SERVICE_COURT',
+  SERVICELINE = 'SERVICELINE',
 }
 export type CourtPositionUnion = keyof typeof CourtPositionEnum;
 
-export enum ShotDetailEnum {
-  Drive = 'DRIVE',
-  DriveVolley = 'DRIVE_VOLLEY',
-  DropShot = 'DROP_SHOT',
-  GroundStroke = 'GROUND_STROKE',
-  HalfVolley = 'HALF_VOLLEY',
-  Lob = 'LOB',
-  PassingShot = 'PASSING_SHOT',
-  Smash = 'SMASH',
-  Trick = 'TRICK',
-  Volley = 'VOLLEY',
+enum ShotDetailEnum {
+  DRIVE = 'DRIVE',
+  DRIVE_VOLLEY = 'DRIVE_VOLLEY',
+  DROP_SHOT = 'DROP_SHOT',
+  GROUND_STROKE = 'GROUND_STROKE',
+  HALF_VOLLEY = 'HALF_VOLLEY',
+  LOB = 'LOB',
+  PASSING_SHOT = 'PASSING_SHOT',
+  SMASH = 'SMASH',
+  TRICK = 'TRICK',
+  VOLLEY = 'VOLLEY',
 }
 export type ShotDetailUnion = keyof typeof ShotDetailEnum;
 
-export enum ShotOutcomeEnum {
-  In = 'IN',
-  Let = 'LET',
-  Net = 'NET',
-  Out = 'OUT',
+enum ShotOutcomeEnum {
+  IN = 'IN',
+  LET = 'LET',
+  NET = 'NET',
+  OUT = 'OUT',
 }
 export type ShotOutcomeUnion = keyof typeof ShotOutcomeEnum;
 
-export enum ShotTypeEnum {
-  Backhand = 'BACKHAND',
-  Forehand = 'FOREHAND',
-  Serve = 'SERVE',
+enum ShotTypeEnum {
+  BACKHAND = 'BACKHAND',
+  FOREHAND = 'FOREHAND',
+  SERVE = 'SERVE',
 }
 export type ShotTypeUnion = keyof typeof ShotTypeEnum;
 
-export enum WinReasonEnum {
-  Ace = 'ACE',
-  DoubleFault = 'DOUBLE_FAULT',
-  Error = 'ERROR',
-  Forced = 'FORCED',
-  NetCord = 'NET_CORD',
-  Penalty = 'PENALTY',
-  Unforced = 'UNFORCED',
-  Winner = 'WINNER',
+enum WinReasonEnum {
+  ACE = 'ACE',
+  DOUBLE_FAULT = 'DOUBLE_FAULT',
+  ERROR = 'ERROR',
+  FORCED = 'FORCED',
+  NETcORD = 'NET_CORD',
+  PENALTY = 'PENALTY',
+  UNFORCED = 'UNFORCED',
+  WINNER = 'WINNER',
 }
 export type WinReasonUnion = keyof typeof WinReasonEnum;
 
@@ -579,12 +579,12 @@ export interface CollectionAssignment {
   collectionPosition: number;
 }
 
-export enum SurfaceCategoryEnum {
-  Artificial = 'ARTIFICIAL',
-  Carpet = 'CARPET',
-  Clay = 'CLAY',
-  Grass = 'GRASS',
-  Hard = 'HARD',
+enum SurfaceCategoryEnum {
+  ARTIFICIAL = 'ARTIFICIAL',
+  CARPET = 'CARPET',
+  CLAY = 'CLAY',
+  GRASS = 'GRASS',
+  HARD = 'HARD',
 }
 export type SurfaceCategoryUnion = keyof typeof SurfaceCategoryEnum;
 
@@ -638,7 +638,7 @@ export interface CollectionValueProfile {
   updatedAt?: Date | string;
 }
 
-export enum GenderEnum {
+enum GenderEnum {
   ANY = 'ANY',
   FEMALE = 'FEMALE',
   MALE = 'MALE',
@@ -673,7 +673,7 @@ export interface CollectionGroup {
 export interface Structure {
   createdAt?: Date | string;
   extensions?: Extension[];
-  finishingPosition?: FinishingPositionEnum;
+  finishingPosition?: FinishingPositionUnion;
   isMock?: boolean;
   matchUpFormat?: string;
   matchUps?: MatchUp[];
@@ -685,7 +685,7 @@ export interface Structure {
   roundLimit?: number;
   roundOffset?: number;
   seedAssignments?: SeedAssignment[];
-  seedingProfile?: SeedingProfileEnum;
+  seedingProfile?: SeedingProfileUnion;
   seedLimit?: number;
   stage?: StageTypeUnion;
   stageSequence?: number;
@@ -694,16 +694,16 @@ export interface Structure {
   structureName?: string;
   structures?: Structure[];
   structureOrder?: number;
-  structureType?: StructureTypeEnum;
+  structureType?: StructureTypeUnion;
   tieFormat?: TieFormat;
   tieFormatId?: string;
   timeItems?: TimeItem[];
   updatedAt?: Date | string;
 }
 
-export enum FinishingPositionEnum {
-  RoundOutcome = 'ROUND_OUTCOME',
-  WinRatio = 'WIN_RATIO',
+enum FinishingPositionEnum {
+  ROUND_OUTCOME = 'ROUND_OUTCOME',
+  WIN_RATIO = 'WIN_RATIO',
 }
 export type FinishingPositionUnion = keyof typeof FinishingPositionEnum;
 
@@ -732,31 +732,31 @@ export interface SeedAssignment {
   updatedAt?: Date | string;
 }
 
-export enum StructureTypeEnum {
-  Container = 'CONTAINER',
-  Item = 'ITEM',
+enum StructureTypeEnum {
+  CONTAINER = 'CONTAINER',
+  ITEM = 'ITEM',
 }
 export type StructureTypeUnion = keyof typeof StructureTypeEnum;
 
-export enum TournamentLevelEnum {
-  Club = 'CLUB',
-  District = 'DISTRICT',
-  International = 'INTERNATIONAL',
-  Local = 'LOCAL',
-  National = 'NATIONAL',
+enum TournamentLevelEnum {
+  CLUB = 'CLUB',
+  DISTRICT = 'DISTRICT',
+  INTERNATIONAL = 'INTERNATIONAL',
+  LOCAL = 'LOCAL',
+  NATIONAL = 'NATIONAL',
   Recreational = 'RECREATIONAL',
-  Regional = 'REGIONAL',
-  Zonal = 'ZONAL',
+  REGIONAL = 'REGIONAL',
+  ZONAL = 'ZONAL',
 }
 export type TournamentLevelUnion = keyof typeof TournamentLevelEnum;
 
-export enum WheelchairClassEnum {
-  Quad = 'QUAD',
-  Standard = 'STANDARD',
+enum WheelchairClassEnum {
+  QUAD = 'QUAD',
+  STANDARD = 'STANDARD',
 }
 export type WheelchairClassUnion = keyof typeof WheelchairClassEnum;
 
-export enum CountryCodeEnum {
+enum CountryCodeEnum {
   ASM = 'ASM',
   ATA = 'ATA',
   Abw = 'ABW',
@@ -1026,7 +1026,7 @@ export interface OnlineResource {
   updatedAt?: Date | string;
 }
 
-export enum OnlineResourceTypeEnum {
+enum OnlineResourceTypeEnum {
   EMAIL = 'EMAIL',
   OTHER = 'OTHER',
   SOCIAl_MEDIA = 'SOCIAL_MEDIA',
@@ -1047,12 +1047,12 @@ export interface Participant {
   participantOtherName?: string;
   participantRole?: ParticipantRoleUnion;
   participantRoleResponsibilities?: string[];
-  participantStatus?: ParticipantStatusEnum;
+  participantStatus?: ParticipantStatusUnion;
   participantType?: ParticipantTypeUnion;
   penalties?: Penalty[];
   person?: Person;
   personId?: string;
-  representing?: CountryCodeEnum;
+  representing?: CountryCodeUnion;
   teamId?: string;
   timeItems?: TimeItem[];
   updatedAt?: Date | string;
@@ -1073,7 +1073,7 @@ export interface Contact {
   updatedAt?: Date | string;
 }
 
-export enum ParticipantRoleEnum {
+enum ParticipantRoleEnum {
   ADMINISTRATION = 'ADMINISTRATION',
   CAPTAIN = 'CAPTAIN',
   COACH = 'COACH',
@@ -1086,13 +1086,13 @@ export enum ParticipantRoleEnum {
 }
 export type ParticipantRoleUnion = keyof typeof ParticipantRoleEnum;
 
-export enum ParticipantStatusEnum {
-  Active = 'ACTIVE',
-  Withdrawn = 'WITHDRAWN',
+enum ParticipantStatusEnum {
+  ACTIVE = 'ACTIVE',
+  WITHDRAWN = 'WITHDRAWN',
 }
 export type ParticipantStatusUnion = keyof typeof ParticipantStatusEnum;
 
-export enum ParticipantTypeEnum {
+enum ParticipantTypeEnum {
   GROUP = 'GROUP',
   INDIVIDUAL = 'INDIVIDUAL',
   PAIR = 'PAIR',
@@ -1115,7 +1115,7 @@ export interface Penalty {
   updatedAt?: Date | string;
 }
 
-export enum PenaltyTypeEnum {
+enum PenaltyTypeEnum {
   BALL_ABUSE = 'BALL_ABUSE',
   COACHING = 'COACHING',
   DRESS_CODE_VIOLATION = 'DRESS_CODE_VIOLATION',
@@ -1172,9 +1172,9 @@ export interface Address {
   addressLine2?: string;
   addressLine3?: string;
   addressName?: string;
-  addressType?: AddressTypeEnum;
+  addressType?: AddressTypeUnion;
   city?: string;
-  countryCode?: CountryCodeEnum;
+  countryCode?: CountryCodeUnion;
   createdAt?: Date | string;
   extensions?: Extension[];
   isMock?: boolean;
@@ -1188,63 +1188,63 @@ export interface Address {
   updatedAt?: Date | string;
 }
 
-export enum AddressTypeEnum {
-  Home = 'HOME',
-  Mail = 'MAIL',
-  Primary = 'PRIMARY',
-  Residential = 'RESIDENTIAL',
-  Venue = 'VENUE',
-  Work = 'WORK',
+enum AddressTypeEnum {
+  HOME = 'HOME',
+  MAIL = 'MAIL',
+  PRIMARY = 'PRIMARY',
+  RESIDENTIAL = 'RESIDENTIAL',
+  VENUE = 'VENUE',
+  WORK = 'WORK',
 }
 export type AddressTypeUnion = keyof typeof AddressTypeEnum;
 
 export interface BiographicalInformation {
   ageBeganTennis?: number;
   ageTurnedPro?: number;
-  birthCountryCode?: CountryCodeEnum;
+  birthCountryCode?: CountryCodeUnion;
   coachId?: string;
   createdAt?: Date | string;
-  doublePlayingHand?: PlayingDoubleHandCodeEnum;
+  doublePlayingHand?: PlayingDoubleHandCodeUnion;
   extensions?: Extension[];
   height?: number;
-  heightUnit?: LengthUnitEnum;
+  heightUnit?: LengthUnitUnion;
   isMock?: boolean;
   notes?: string;
   organisationIds?: string[];
   placeOfResidence?: string;
-  playingHand?: PlayingHandCodeEnum;
-  residenceCountryCode?: CountryCodeEnum;
+  playingHand?: PlayingHandCodeUnion;
+  residenceCountryCode?: CountryCodeUnion;
   timeItems?: TimeItem[];
   updatedAt?: Date | string;
   weight?: number;
   weightUnit?: WeightUnitEnum;
 }
 
-export enum PlayingDoubleHandCodeEnum {
-  Backhand = 'BACKHAND',
-  Both = 'BOTH',
-  Forehand = 'FOREHAND',
-  None = 'NONE',
+enum PlayingDoubleHandCodeEnum {
+  BACKHAND = 'BACKHAND',
+  BOTH = 'BOTH',
+  FOREHAND = 'FOREHAND',
+  NONE = 'NONE',
 }
 export type PlayingDoubleHandCodeUnion = keyof typeof PlayingDoubleHandCodeEnum;
 
-export enum LengthUnitEnum {
-  Centimeter = 'CENTIMETER',
-  Meter = 'METER',
-  Millimeter = 'MILLIMETER',
+enum LengthUnitEnum {
+  CENTIMETER = 'CENTIMETER',
+  METER = 'METER',
+  MILLIMETER = 'MILLIMETER',
 }
 export type LengthUnitUnion = keyof typeof LengthUnitEnum;
 
-export enum PlayingHandCodeEnum {
-  Ambidextrous = 'AMBIDEXTROUS',
-  Left = 'LEFT',
-  Right = 'RIGHT',
+enum PlayingHandCodeEnum {
+  AMBIDEXTROUS = 'AMBIDEXTROUS',
+  LEFT = 'LEFT',
+  RIGHT = 'RIGHT',
 }
 export type PlayingHandCodeUnion = keyof typeof PlayingHandCodeEnum;
 
-export enum WeightUnitEnum {
-  Gram = 'GRAM',
-  Kilogram = 'KILOGRAM',
+enum WeightUnitEnum {
+  GRAM = 'GRAM',
+  KILOGRAM = 'KILOGRAM',
 }
 export type WeightUnitUnion = keyof typeof WeightUnitEnum;
 
@@ -1260,7 +1260,7 @@ export interface UnifiedPersonID {
   updatedAt?: Date | string;
 }
 
-export enum SexEnum {
+enum SexEnum {
   FEMALE = 'FEMALE',
   MALE = 'MALE',
   OTHER = 'OTHER',
@@ -1332,14 +1332,14 @@ export interface Court {
   dateAvailability?: Availability[];
   extensions?: Extension[];
   floodlit?: boolean;
-  indoorOutdoor?: IndoorOutdoorEnum;
+  indoorOutdoor?: IndoorOutdoorUnion;
   isMock?: boolean;
   latitude?: string;
   longitude?: string;
   notes?: string;
   onlineResources?: OnlineResource[];
   pace?: string;
-  surfaceCategory?: SurfaceCategoryEnum;
+  surfaceCategory?: SurfaceCategoryUnion;
   surfacedDate?: Date | string;
   surfaceType?: string;
   timeItems?: TimeItem[];
