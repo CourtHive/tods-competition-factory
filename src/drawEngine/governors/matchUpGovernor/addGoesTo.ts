@@ -1,4 +1,4 @@
-import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
+import { getAllDrawMatchUps } from '../../../query/drawMatchUps';
 import { addFinishingRounds } from '../../../assemblies/generators/drawDefinitions/addFinishingRounds';
 import { positionTargets } from '../../../mutate/matchUps/drawPositions/positionTargets';
 import {

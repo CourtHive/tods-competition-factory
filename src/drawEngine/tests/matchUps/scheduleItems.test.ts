@@ -1,7 +1,7 @@
 import { getMatchUpScheduleDetails } from '../../../query/matchUp/getMatchUpScheduleDetails';
 import { resetMatchUpTimeItems } from '../../../mutate/matchUps/timeItems/matchUpTimeItems';
 import { addMatchUpScheduledTime } from '../../../mutate/matchUps/schedule/scheduledTime';
-import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
+import { getAllDrawMatchUps } from '../../../query/drawMatchUps';
 import { matchUpDuration } from '../../../query/matchUp/matchUpDuration';
 import { publicFindDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { mocksEngine } from '../../..';

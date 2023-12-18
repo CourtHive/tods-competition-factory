@@ -3,13 +3,13 @@ import { getDrawPublishStatus } from '../../query/event/getDrawPublishStatus';
 import { getSchedulingProfile } from '../governors/scheduleGovernor/schedulingProfile/schedulingProfile';
 import { getTournamentTimeItem } from '../../tournamentEngine/governors/queryGovernor/timeItems';
 import { scheduledSortedMatchUps } from '../../functions/sorters/scheduledSortedMatchUps';
-import { MatchUpFilters } from '../../drawEngine/getters/getMatchUps/filterMatchUps';
 import { getTournamentId } from '../../global/state/globalState';
 import { getVenuesAndCourts } from '../../query/venues/venuesAndCourtsGetter';
 import { courtGridRows } from '../generators/courtGridRows';
 import { competitionMatchUps } from './matchUpsGetter';
 import { isObject } from '../../utilities/objects';
 
+import { MatchUpFilters } from '../../query/filterMatchUps';
 import { PUBLIC, PUBLISH, STATUS } from '../../constants/timeItemConstants';
 import { COMPLETED } from '../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../constants/resultConstants';

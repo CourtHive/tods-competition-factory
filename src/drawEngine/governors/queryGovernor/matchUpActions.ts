@@ -4,7 +4,7 @@ import { getFlightProfile } from '../../../query/event/getFlightProfile';
 import { eligibleEntryStage } from './positionActions/getValidAlternatesAction';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { isDirectingMatchUpStatus } from '../matchUpGovernor/checkStatusType';
-import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
+import { getAllDrawMatchUps } from '../../../query/drawMatchUps';
 import { isActiveDownstream } from '../matchUpGovernor/isActiveDownstream';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { getParticipantId } from '../../../global/functions/extractors';

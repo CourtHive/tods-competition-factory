@@ -18,10 +18,7 @@ import { definedAttributes } from '../../utilities/definedAttributes';
 import { structureAssignedDrawPositions } from '../../drawEngine/getters/positionsGetter';
 import { getOrderedDrawPositions } from './getOrderedDrawPositions';
 import { getDrawPositionsRanges } from './getDrawPositionsRanges';
-import {
-  MatchUpFilters,
-  filterMatchUps,
-} from '../../drawEngine/getters/getMatchUps/filterMatchUps';
+import { MatchUpFilters, filterMatchUps } from '../filterMatchUps';
 import { getRoundContextProfile } from './getRoundContextProfile';
 import { isConvertableInteger } from '../../utilities/math';
 import { getSide } from './getSide';

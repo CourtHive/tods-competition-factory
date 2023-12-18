@@ -3,7 +3,7 @@ import {
   tournamentMatchUps,
 } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
 
-import { MatchUpFilters } from '../../drawEngine/getters/getMatchUps/filterMatchUps';
+import { MatchUpFilters } from '../../query/filterMatchUps';
 import { ResultType } from '../../global/functions/decorateResult';
 import { HydratedMatchUp } from '../../types/hydrated';
 import {

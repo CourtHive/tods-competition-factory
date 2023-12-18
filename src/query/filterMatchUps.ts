@@ -1,16 +1,13 @@
-import { scheduledMatchUpTime } from '../../../query/matchUp/scheduledMatchUpTime';
-import { scheduledMatchUpDate } from '../../../query/matchUp/scheduledMatchUpDate';
-import { matchUpAllocatedCourts } from '../../../query/matchUp/courtAllocations';
-import { matchUpAssignedCourtId } from '../../../query/matchUp/courtAssignment';
-import { matchUpAssignedVenueId } from '../../../query/matchUp/venueAssignment';
-import { extractDate, sameDay } from '../../../utilities/dateTime';
+import { scheduledMatchUpTime } from './matchUp/scheduledMatchUpTime';
+import { scheduledMatchUpDate } from './matchUp/scheduledMatchUpDate';
+import { matchUpAllocatedCourts } from './matchUp/courtAllocations';
+import { matchUpAssignedCourtId } from './matchUp/courtAssignment';
+import { matchUpAssignedVenueId } from './matchUp/venueAssignment';
+import { extractDate, sameDay } from '../utilities/dateTime';
 
-import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
-import { HydratedMatchUp } from '../../../types/hydrated';
-import {
-  MatchUpStatusUnion,
-  StageTypeUnion,
-} from '../../../types/tournamentTypes';
+import { TEAM_MATCHUP } from '../constants/matchUpTypes';
+import { HydratedMatchUp } from '../types/hydrated';
+import { MatchUpStatusUnion, StageTypeUnion } from '../types/tournamentTypes';
 
 export type MatchUpFilters = {
   matchUpStatuses?: MatchUpStatusUnion[];

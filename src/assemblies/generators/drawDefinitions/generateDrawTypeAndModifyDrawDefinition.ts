@@ -3,7 +3,7 @@ import { validateTieFormat } from '../../../validators/tieFormatUtilities';
 import { copyTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';
 import { generateDrawStructuresAndLinks } from './generateDrawStructuresAndLinks';
 import { getStageDrawPositionsCount } from '../../../drawEngine/getters/getStageDrawPositions';
-import { getAllDrawMatchUps } from '../../../drawEngine/getters/getMatchUps/drawMatchUps';
+import { getAllDrawMatchUps } from '../../../query/drawMatchUps';
 import { modifyDrawNotice } from '../../../mutate/notifications/drawNotifications';
 import { definedAttributes } from '../../../utilities/definedAttributes';
 import { getMatchUpId } from '../../../global/functions/extractors';

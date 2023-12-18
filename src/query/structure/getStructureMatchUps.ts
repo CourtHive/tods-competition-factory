@@ -6,7 +6,7 @@ import { findStructure } from '../../drawEngine/getters/findStructure';
 import { ResultType } from '../../global/functions/decorateResult';
 import { HydratedMatchUp } from '../../types/hydrated';
 import { TEAM } from '../../constants/matchUpTypes';
-import { MatchUpFilters } from '../../drawEngine/getters/getMatchUps/filterMatchUps';
+import { MatchUpFilters } from '../filterMatchUps';
 import { MatchUpsMap } from '../matchUps/getMatchUpsMap';
 import {
   ABANDONED,

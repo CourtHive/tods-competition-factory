@@ -2,7 +2,7 @@ import { scheduledSortedMatchUps } from '../../../functions/sorters/scheduledSor
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
 import { getSchedulingProfile } from '../scheduleGovernor/schedulingProfile';
 
-import { MatchUpFilters } from '../../../drawEngine/getters/getMatchUps/filterMatchUps';
+import { MatchUpFilters } from '../../../query/filterMatchUps';
 import { ScheduleVisibilityFilters } from '../../../types/factoryTypes';
 import { ResultType } from '../../../global/functions/decorateResult';
 import { Tournament } from '../../../types/tournamentTypes';

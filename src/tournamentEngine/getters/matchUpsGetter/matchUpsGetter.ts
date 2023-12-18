@@ -8,7 +8,7 @@ import { getFlightProfile } from '../../../query/event/getFlightProfile';
 import {
   getAllDrawMatchUps,
   getDrawMatchUps,
-} from '../../../drawEngine/getters/getMatchUps/drawMatchUps';
+} from '../../../query/drawMatchUps';
 
 import { ResultType } from '../../../global/functions/decorateResult';
 import { SUCCESS } from '../../../constants/resultConstants';

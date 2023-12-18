@@ -1,5 +1,5 @@
 import { validDrawPositions } from '../../../../validators/validDrawPositions';
-import { getAllDrawMatchUps } from '../../../../drawEngine/getters/getMatchUps/drawMatchUps';
+import { getAllDrawMatchUps } from '../../../drawMatchUps';
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import { expect, it } from 'vitest';
 

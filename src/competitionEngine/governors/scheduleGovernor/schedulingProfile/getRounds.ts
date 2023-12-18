@@ -11,7 +11,7 @@ import {
   getRoundTiming,
 } from './schedulingUtils';
 
-import { MatchUpFilters } from '../../../../drawEngine/getters/getMatchUps/filterMatchUps';
+import { MatchUpFilters } from '../../../../query/filterMatchUps';
 import { Tournament } from '../../../../types/tournamentTypes';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { HydratedMatchUp } from '../../../../types/hydrated';

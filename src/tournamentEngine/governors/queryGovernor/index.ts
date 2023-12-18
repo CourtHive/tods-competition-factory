@@ -16,7 +16,7 @@ import { getMatchUpsStats } from '../../getters/getMatchUpsStats';
 import { getEvent, getEvents } from '../../getters/eventGetter';
 import { publicFindMatchUp } from '../../../acquire/findMatchUp';
 import { matchUpActions } from '../../getters/matchUpActions';
-import { bulkUpdatePublishedEventIds } from './publishState';
+import { bulkUpdatePublishedEventIds } from '../../../query/event/publishState';
 import { findExtension } from '../../../acquire/findExtension';
 import { getParticipantSignInStatus } from './signInStatus';
 import { getTieFormat } from '../../getters/getTieFormat';

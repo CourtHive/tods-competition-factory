@@ -4,7 +4,7 @@ import { getStructureMatchUps } from '../../../query/structure/getStructureMatch
 import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
 import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
-import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
+import { getAllDrawMatchUps } from '../../../query/drawMatchUps';
 import { constantToString } from '../../../utilities/strings';
 import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { expect, it } from 'vitest';

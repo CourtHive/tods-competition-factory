@@ -17,7 +17,7 @@ import { matchUpActions } from './matchUpActions';
 import {
   getAllDrawMatchUps,
   getDrawMatchUps,
-} from '../../getters/getMatchUps/drawMatchUps';
+} from '../../../query/drawMatchUps';
 import {
   getSeedBlocks,
   getSeedGroups,

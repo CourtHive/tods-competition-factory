@@ -9,7 +9,7 @@ import { getStructureSeedAssignments } from '../../../query/structure/getStructu
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { structureAssignedDrawPositions } from '../../../drawEngine/getters/positionsGetter';
 import { getInitialRoundNumber } from '../../../drawEngine/getters/getInitialRoundNumber';
-import { getAllDrawMatchUps } from '../../../drawEngine/getters/getMatchUps/drawMatchUps';
+import { getAllDrawMatchUps } from '../../../query/drawMatchUps';
 // import { addPositionActionTelemetry } from './addPositionActionTelemetry';
 import {
   ResultType,

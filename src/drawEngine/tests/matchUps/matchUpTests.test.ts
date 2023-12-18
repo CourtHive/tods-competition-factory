@@ -4,7 +4,7 @@ import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructure
 import { setMatchUpFormat } from '../../../mutate/matchUps/matchUpFormat/setMatchUpFormat';
 import { getStructureMatchUps } from '../../../query/structure/getStructureMatchUps';
 import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';
-import { getDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
+import { getDrawMatchUps } from '../../../query/drawMatchUps';
 import { getMatchUpType } from '../../../query/matchUp/getMatchUpType';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { getDrawStructures } from '../../getters/findStructure';

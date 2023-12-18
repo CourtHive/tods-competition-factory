@@ -2,7 +2,7 @@ import { modifyRoundRobinMatchUpsStatus } from '../matchUpStatus/modifyRoundRobi
 import { getStructureDrawPositionProfiles } from '../../../drawEngine/getters/getStructureDrawPositionProfiles';
 import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
-import { getAllDrawMatchUps } from '../../../drawEngine/getters/getMatchUps/drawMatchUps';
+import { getAllDrawMatchUps } from '../../../query/drawMatchUps';
 import { getInitialRoundNumber } from '../../../drawEngine/getters/getInitialRoundNumber';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import {

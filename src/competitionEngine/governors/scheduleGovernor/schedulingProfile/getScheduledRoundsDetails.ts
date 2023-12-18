@@ -1,5 +1,5 @@
 import { getContainedStructures } from '../../../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
-import { filterMatchUps } from '../../../../drawEngine/getters/getMatchUps/filterMatchUps';
+import { filterMatchUps } from '../../../../query/filterMatchUps';
 import { findMatchUpFormatTiming } from '../matchUpFormatTiming/findMatchUpFormatTiming';
 import { findEvent } from '../../../../acquire/findEvent';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';

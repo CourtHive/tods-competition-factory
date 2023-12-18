@@ -1,7 +1,7 @@
 import { automatedPlayoffPositioning } from '../../../tournamentEngine/governors/eventGovernor/automatedPositioning';
 import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
 import { processPlayoffGroups } from './drawTypes/processPlayoffGroups';
-import { getAllDrawMatchUps } from '../../../drawEngine/getters/getMatchUps/drawMatchUps';
+import { getAllDrawMatchUps } from '../../../query/drawMatchUps';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
 import { getMatchUpId } from '../../../global/functions/extractors';

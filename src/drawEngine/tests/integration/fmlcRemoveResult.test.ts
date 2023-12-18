@@ -1,6 +1,6 @@
 import { setMatchUpStatus } from '../../../mutate/matchUps/matchUpStatus/setMatchUpStatus';
 import { completeMatchUp, verifyMatchUps } from '../primitives/verifyMatchUps';
-import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
+import { getAllDrawMatchUps } from '../../../query/drawMatchUps';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
 import { getDrawStructures } from '../../getters/findStructure';

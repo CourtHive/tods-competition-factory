@@ -1,7 +1,7 @@
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
+import { getAllDrawMatchUps } from '../../../query/drawMatchUps';
 import { getMatchUpIds } from '../../../global/functions/extractors';
 import { resequenceStructures } from './resequenceStructures';
 import { extractAttributes as xa } from '../../../utilities';

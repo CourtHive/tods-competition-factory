@@ -1,5 +1,5 @@
 import { getScheduleTiming } from '../extensions/matchUpFormatTiming/getScheduleTiming';
-import { getDrawMatchUps } from '../../drawEngine/getters/getMatchUps/drawMatchUps';
+import { getDrawMatchUps } from '../drawMatchUps';
 import { getVenuesAndCourts } from '../../tournamentEngine/getters/venueGetter';
 import { getTournamentInfo } from '../tournament/getTournamentInfo';
 

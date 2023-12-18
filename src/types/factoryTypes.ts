@@ -1,4 +1,4 @@
-import { MatchUpFilters } from '../drawEngine/getters/getMatchUps/filterMatchUps';
+import { MatchUpFilters } from '../query/filterMatchUps';
 import { MatchUpsMap } from '../query/matchUps/getMatchUpsMap';
 import { SignedInStatusUnion } from '../constants/participantConstants';
 import { HydratedMatchUp, HydratedParticipant } from './hydrated';

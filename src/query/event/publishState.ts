@@ -1,10 +1,10 @@
-import { getEventPublishStatus } from '../../../query/event/getEventPublishStatus';
-import { getDrawPublishStatus } from '../../../query/event/getDrawPublishStatus';
+import { getEventPublishStatus } from './getEventPublishStatus';
+import { getDrawPublishStatus } from './getDrawPublishStatus';
 
 import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 /**
  *
