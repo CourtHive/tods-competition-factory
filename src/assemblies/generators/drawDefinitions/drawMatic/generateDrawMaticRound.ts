@@ -1,4 +1,4 @@
-import { generateAdHocMatchUps } from '../../../../drawEngine/generators/generateAdHocMatchUps';
+import { generateAdHocMatchUps } from '../generateAdHocMatchUps';
 import { findStructure } from '../../../../drawEngine/getters/findStructure';
 import { isObject } from '../../../../utilities/objects';
 import { getPairingsData } from './getPairingsData';

@@ -1,5 +1,5 @@
 import { getScheduledRoundsDetails } from '../scheduleGovernor/schedulingProfile/getScheduledRoundsDetails';
-import { getMatchUpDependencies } from '../scheduleGovernor/scheduleMatchUps/getMatchUpDependencies';
+import { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDependencies';
 import { getSchedulingProfile } from '../scheduleGovernor/schedulingProfile/schedulingProfile';
 import { allCompetitionMatchUps } from '../../getters/matchUpsGetter';
 import { isValidDateString } from '../../../utilities/dateTime';

@@ -7,7 +7,7 @@ import { getAllDrawMatchUps } from '../../../drawEngine/getters/getMatchUps/draw
 import { modifyDrawNotice } from '../../../mutate/notifications/drawNotifications';
 import { definedAttributes } from '../../../utilities/definedAttributes';
 import { getMatchUpId } from '../../../global/functions/extractors';
-import { generateTieMatchUps } from '../../../drawEngine/generators/tieMatchUps';
+import { generateTieMatchUps } from './tieMatchUps';
 import { addGoesTo } from '../../../drawEngine/governors/matchUpGovernor/addGoesTo';
 import { makeDeepCopy } from '../../../utilities';
 import {
@@ -17,7 +17,7 @@ import {
 import {
   MatchUpsMap,
   getMatchUpsMap,
-} from '../../../drawEngine/getters/getMatchUps/getMatchUpsMap';
+} from '../../../query/matchUps/getMatchUpsMap';
 import {
   setStageDrawSize,
   setStageQualifiersCount,

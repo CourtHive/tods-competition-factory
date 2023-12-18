@@ -22,7 +22,7 @@ import {
 
 import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
 import { SINGLES } from '../../../../constants/eventConstants';
-import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '../../../../query/matchUps/getAllStructureMatchUps';
 
 it('can advance players in Round Robin with Playoffs => 2 x 4 x 4', () => {
   const drawSize = 16;

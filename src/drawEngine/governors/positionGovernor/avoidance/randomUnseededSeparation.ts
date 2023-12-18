@@ -1,4 +1,4 @@
-import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '../../../../query/matchUps/getAllStructureMatchUps';
 import { assignDrawPositionBye } from '../../../../mutate/matchUps/drawPositions/assignDrawPositionBye';
 import { generatePositioningCandidate } from './generatePositioningCandidate';
 import { getAttributeGroupings } from '../../../getters/getAttributeGrouping';
@@ -21,7 +21,7 @@ import {
 } from '../../../../utilities';
 
 import { GROUP, PAIR, TEAM } from '../../../../constants/participantConstants';
-import { MatchUpsMap } from '../../../getters/getMatchUps/getMatchUpsMap';
+import { MatchUpsMap } from '../../../../query/matchUps/getMatchUpsMap';
 import { CONTAINER } from '../../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { IdCollections } from '../../../../types/factoryTypes';

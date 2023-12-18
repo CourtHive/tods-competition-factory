@@ -3,12 +3,12 @@ import { generateDrawTypeAndModifyDrawDefinition } from '../../../assemblies/gen
 import { generateAndPopulatePlayoffStructures } from '../../../assemblies/generators/drawDefinitions/generateAndPopulatePlayoffStructures';
 import { generateDrawStructuresAndLinks } from '../../../assemblies/generators/drawDefinitions/generateDrawStructuresAndLinks';
 import { addVoluntaryConsolationStage } from '../../../mutate/drawDefinitions/addVoluntaryConsolationStage';
-import { generateVoluntaryConsolation } from '../../../assemblies/generators/drawDefinitions/generateVoluntaryConsolation';
-import { generateQualifyingStructure } from '../../../assemblies/generators/drawDefinitions/generateQualifyingStructure';
+import { generateVoluntaryConsolation } from '../../../assemblies/generators/drawDefinitions/drawTypes/generateVoluntaryConsolation';
+import { generateQualifyingStructure } from '../../../assemblies/generators/drawDefinitions/drawTypes/generateQualifyingStructure';
 import { getAvailablePlayoffProfiles } from './getAvailablePlayoffProfiles';
 import { attachQualifyingStructure } from '../../../mutate/drawDefinitions/attachQualifyingStructure';
 import { getQualifiersCount } from '../../getters/getQualifiersCount';
-import { buildDrawHierarchy } from '../../generators/drawHierarchy';
+import { buildDrawHierarchy } from '../../../assemblies/generators/drawDefinitions/drawHierarchy';
 import { addQualifyingStructure } from '../../../mutate/drawDefinitions/addQualifyingStructure';
 import { getPositionsPlayedOff } from './getPositionsPlayedOff';
 import { getDrawStructures } from '../../getters/findStructure';
@@ -22,7 +22,7 @@ import { getSourceRounds } from './getSourceRounds';
 import {
   addAdHocMatchUps,
   generateAdHocMatchUps,
-} from '../../generators/generateAdHocMatchUps';
+} from '../../../assemblies/generators/drawDefinitions/generateAdHocMatchUps';
 
 const structureGovernor = {
   generateAndPopulatePlayoffStructures,

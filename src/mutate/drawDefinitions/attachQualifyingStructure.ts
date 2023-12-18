@@ -1,4 +1,4 @@
-import { getAllStructureMatchUps } from '../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
 import { decorateResult } from '../../global/functions/decorateResult';
 import { resequenceStructures } from '../../drawEngine/governors/structureGovernor/resequenceStructures';
 import { findStructure } from '../../drawEngine/getters/findStructure';

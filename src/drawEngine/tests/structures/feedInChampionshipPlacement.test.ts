@@ -1,4 +1,4 @@
-import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { getStructureMatchUps } from '../../../query/structure/getStructureMatchUps';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import tournamentEngine from '../../../tournamentEngine/sync';

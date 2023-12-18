@@ -1,4 +1,4 @@
-import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { allDrawMatchUps } from '../../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 

@@ -1,5 +1,5 @@
 import { setMatchUpFormat as drawEngineSetMatchUpFormat } from '../matchUps/matchUpFormat/setMatchUpFormat';
-import { getAllStructureMatchUps } from '../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
 import { isValidMatchUpFormat } from '../../validators/isValidMatchUpFormat';
 import { decorateResult } from '../../global/functions/decorateResult';
 import { getMatchUpId } from '../../global/functions/extractors';

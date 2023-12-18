@@ -1,4 +1,4 @@
-import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { getStructureSeedAssignments } from '../../../query/structure/getStructureSeedAssignments';
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
 import { findStructure } from '../../../drawEngine/getters/findStructure';

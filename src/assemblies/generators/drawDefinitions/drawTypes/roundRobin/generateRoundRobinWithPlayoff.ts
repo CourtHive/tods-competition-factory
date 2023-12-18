@@ -2,7 +2,7 @@
 // future iteration should allow structureOptions to specify
 // groups of finishing drawPositions which playoff
 
-import { processPlayoffGroups } from '../../../../../drawEngine/generators/processPlayoffGroups';
+import { processPlayoffGroups } from '../processPlayoffGroups';
 import { constantToString } from '../../../../../utilities/strings';
 import { generateRoundRobin } from './roundRobin';
 

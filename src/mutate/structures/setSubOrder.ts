@@ -1,5 +1,5 @@
 import { updateAssignmentParticipantResults } from '../../drawEngine/governors/matchUpGovernor/updateAssignmentParticipantResults';
-import { getAllStructureMatchUps } from '../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
 import { addExtension } from '../extensions/addExtension';
 import { modifyDrawNotice } from '../notifications/drawNotifications';
 import { findStructure } from '../../drawEngine/getters/findStructure';

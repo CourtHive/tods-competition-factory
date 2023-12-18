@@ -1,5 +1,5 @@
-import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
-import { generateCollectionMatchUps } from '../../../drawEngine/generators/tieMatchUps';
+import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
+import { generateCollectionMatchUps } from '../../../assemblies/generators/drawDefinitions/tieMatchUps';
 import { getTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/getTieFormat';
 import { compareTieFormats } from '../../../matchUpEngine/governors/tieFormatGovernor/compareTieFormats';
 import { copyTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';

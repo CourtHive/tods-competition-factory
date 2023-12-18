@@ -1,4 +1,4 @@
-import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import tournamentEngine from '../../../tournamentEngine/sync';
@@ -144,7 +144,7 @@ it.each(scenarios)('can generate and verify', (scenario) => {
   const seedAssignments = structure.seedAssignments;
   const { positionAssignments } = getPositionAssignments({ structure });
   const assignedPositions = positionAssignments?.filter(
-    (assignment) => assignment.bye || assignment.participantId
+    (assignment) => assignment.bye ?? assignment.participantId
   );
   expect(assignedPositions?.length).toEqual(expectation.assignedPositionsCount);
   const byePositions = positionAssignments

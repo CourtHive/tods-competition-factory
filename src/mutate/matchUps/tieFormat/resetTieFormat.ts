@@ -1,5 +1,5 @@
 import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
-import { generateCollectionMatchUps } from '../../../drawEngine/generators/tieMatchUps';
+import { generateCollectionMatchUps } from '../../../assemblies/generators/drawDefinitions/tieMatchUps';
 import { findMatchUp } from '../../../acquire/findMatchUp';
 import { getMatchUpId } from '../../../global/functions/extractors';
 import {

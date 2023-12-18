@@ -2,7 +2,10 @@ import { addParticipantGroupings } from '../../governors/positionGovernor/avoida
 import { addUpcomingMatchUps } from '../../governors/matchUpGovernor/addUpcomingMatchUps';
 import { getContextContent } from '../../../tournamentEngine/getters/getContextContent';
 import { getExitProfiles } from '../../governors/queryGovernor/getExitProfile';
-import { MatchUpsMap, getMatchUpsMap } from './getMatchUpsMap';
+import {
+  MatchUpsMap,
+  getMatchUpsMap,
+} from '../../../query/matchUps/getMatchUpsMap';
 import { getStructureMatchUps } from '../../../query/structure/getStructureMatchUps';
 import { getDrawStructures } from '../findStructure';
 import { filterMatchUps } from './filterMatchUps';

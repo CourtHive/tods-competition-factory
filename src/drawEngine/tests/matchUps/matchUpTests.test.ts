@@ -1,13 +1,13 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
-import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
+import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
+import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { setMatchUpFormat } from '../../../mutate/matchUps/matchUpFormat/setMatchUpFormat';
 import { getStructureMatchUps } from '../../../query/structure/getStructureMatchUps';
 import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';
 import { getDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
+import { getMatchUpType } from '../../../query/matchUp/getMatchUpType';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
-import { getMatchUpType } from '../../accessors/matchUpAccessor';
 import { getDrawStructures } from '../../getters/findStructure';
-import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { expect, it } from 'vitest';
 
 import { DrawDefinition } from '../../../types/tournamentTypes';

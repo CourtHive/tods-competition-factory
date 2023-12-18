@@ -1,6 +1,6 @@
 import { validMatchUps } from '../../../../validators/validMatchUp';
 import { competitionScheduleMatchUps } from '../../../getters/competitionScheduleMatchUps';
-import { getMatchUpDependencies } from '../scheduleMatchUps/getMatchUpDependencies';
+import { getMatchUpDependencies } from '../../../../query/matchUps/getMatchUpDependencies';
 import { bulkScheduleMatchUps } from '../bulkScheduleMatchUps';
 import { matchUpSort } from '../../../../forge/transform';
 import { isObject } from '../../../../utilities/objects';

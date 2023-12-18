@@ -2,7 +2,7 @@ import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
 import { publicFindDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { getCheckedInParticipantIds } from '../../../query/matchUp/getCheckedInParticipantIds';
-import { addFinishingRounds } from '../../generators/addFinishingRounds';
+import { addFinishingRounds } from '../../../assemblies/generators/drawDefinitions/addFinishingRounds';
 import { validateScore } from '../../../validators/validateScore';
 import {
   addMatchUpTimeItem,

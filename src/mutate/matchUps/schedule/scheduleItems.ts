@@ -1,14 +1,14 @@
-import { getMatchUpDependencies } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/getMatchUpDependencies';
+import { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDependencies';
 import { allocateTeamMatchUpCourts } from '../../../tournamentEngine/governors/scheduleGovernor/allocateTeamMatchUpCourts';
-import { assignMatchUpCourt } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpCourt';
-import { assignMatchUpVenue } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpVenue';
+import { assignMatchUpCourt } from './assignMatchUpCourt';
+import { assignMatchUpVenue } from './assignMatchUpVenue';
+import { scheduledMatchUpDate } from '../../../query/matchUp/scheduledMatchUpDate';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import {
   ResultType,
   decorateResult,
 } from '../../../global/functions/decorateResult';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
-import { scheduledMatchUpDate } from '../../../drawEngine/accessors/matchUpAccessor';
 import { isConvertableInteger } from '../../../utilities/math';
 import { ensureInt } from '../../../utilities/ensureInt';
 import { addMatchUpTimeItem } from '../timeItems/matchUpTimeItems';

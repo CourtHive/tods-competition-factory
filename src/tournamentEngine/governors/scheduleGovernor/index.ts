@@ -1,4 +1,4 @@
-import { getMatchUpDependencies } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/getMatchUpDependencies';
+import { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDependencies';
 import { modifyEventMatchUpFormatTiming } from '../../../mutate/events/extensions/modifyEventMatchUpFormatTiming';
 import { removeEventMatchUpFormatTiming } from '../../../mutate/events/extensions/removeEventMatchUpFormatTiming';
 import { addMatchUpCourtOrder } from '../../../mutate/matchUps/schedule/scheduleItems';
@@ -17,8 +17,8 @@ import { setMatchUpDailyLimits } from './setMatchUpDailyLimits';
 import { getMatchUpDailyLimits } from './getMatchUpDailyLimits';
 import { clearMatchUpSchedule } from '../../../mutate/matchUps/schedule/clearMatchUpSchedule';
 import { bulkScheduleMatchUps } from './bulkScheduleMatchUps';
-import { assignMatchUpCourt } from './assignMatchUpCourt';
-import { assignMatchUpVenue } from './assignMatchUpVenue';
+import { assignMatchUpCourt } from '../../../mutate/matchUps/schedule/assignMatchUpCourt';
+import { assignMatchUpVenue } from '../../../mutate/matchUps/schedule/assignMatchUpVenue';
 import {
   addMatchUpScheduledDate,
   addMatchUpScheduledTime,

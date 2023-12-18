@@ -1,6 +1,6 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
 import { tallyParticipantResults } from '../../../../matchUpEngine/getters/roundRobinTally/roundRobinTally';
-import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '../../../../query/matchUps/getAllStructureMatchUps';
 import { setStageDrawSize } from '../../../governors/entryGovernor/stageEntryCounts';
 import { generateMatchUpOutcome } from '../../primitives/generateMatchUpOutcome';
 import { chunkArray, intersection } from '../../../../utilities/arrays';

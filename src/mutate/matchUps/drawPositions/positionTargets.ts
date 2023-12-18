@@ -1,5 +1,5 @@
-import { nextRoundMatchUp } from '../../../drawEngine/getters/getMatchUps/nextRoundMatchUp';
-import { getTargetMatchUp } from '../../../drawEngine/getters/getMatchUps/getTargetMatchUp';
+import { nextRoundMatchUp } from '../../../query/matchUps/nextRoundMatchUp';
+import { getTargetMatchUp } from '../../../query/matchUps/getTargetMatchUp';
 import {
   getRoundLinks,
   getTargetLink,

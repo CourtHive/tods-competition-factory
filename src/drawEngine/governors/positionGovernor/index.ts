@@ -1,6 +1,6 @@
 import { initializeStructureSeedAssignments } from './initializeSeedAssignments';
 import { assignDrawPositionBye } from '../../../mutate/matchUps/drawPositions/assignDrawPositionBye';
-import { resolveDrawPositions } from '../../generators/drawPositionsResolver';
+import { resolveDrawPositions } from '../../../assemblies/generators/drawDefinitions/drawPositionsResolver';
 import { alternateDrawPositionAssignment } from '../../../mutate/matchUps/drawPositions/positionAlternate';
 import { setPositionAssignments } from './setPositionAssignments';
 import { automatedPositioning } from './automatedPositioning';

@@ -1,5 +1,5 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
-import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { getStructureMatchUps } from '../../../query/structure/getStructureMatchUps';
 import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
 import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';

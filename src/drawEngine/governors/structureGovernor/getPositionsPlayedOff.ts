@@ -2,7 +2,7 @@ import { getStructureRoundProfile } from '../../../query/structure/getStructureR
 import { numericSort, unique } from '../../../utilities';
 import { roundValueRanges } from './structureUtils';
 
-import { MatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
+import { MatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
 import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { DrawDefinition } from '../../../types/tournamentTypes';
 import {

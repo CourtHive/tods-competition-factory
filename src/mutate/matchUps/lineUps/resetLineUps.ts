@@ -3,7 +3,7 @@ import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { getTargetMatchUps } from '../../../drawEngine/governors/positionGovernor/getTargetMatchUps';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
-import { MatchUpsMap } from '../../../drawEngine/getters/getMatchUps/getMatchUpsMap';
+import { MatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';

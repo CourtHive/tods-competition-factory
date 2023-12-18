@@ -1,4 +1,4 @@
-import { getMatchUpScheduleDetails as drawEngineGetMatchUpScheduleDetails } from '../../../drawEngine/accessors/matchUpAccessor/getMatchUpScheduleDetails';
+import { getMatchUpScheduleDetails as drawEngineGetMatchUpScheduleDetails } from '../../../query/matchUp/getMatchUpScheduleDetails';
 import { getPolicyDefinitions } from '../../../query/extensions/getAppliedPolicies';
 import { getMaxEntryPosition } from '../../../global/functions/deducers/getMaxEntryPosition';
 import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';

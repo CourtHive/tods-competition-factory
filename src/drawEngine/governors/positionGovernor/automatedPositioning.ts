@@ -18,7 +18,7 @@ import {
 import {
   MatchUpsMap,
   getMatchUpsMap,
-} from '../../getters/getMatchUps/getMatchUpsMap';
+} from '../../../query/matchUps/getMatchUpsMap';
 import {
   disableNotifications,
   enableNotifications,

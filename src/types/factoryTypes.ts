@@ -1,5 +1,5 @@
 import { MatchUpFilters } from '../drawEngine/getters/getMatchUps/filterMatchUps';
-import { MatchUpsMap } from '../drawEngine/getters/getMatchUps/getMatchUpsMap';
+import { MatchUpsMap } from '../query/matchUps/getMatchUpsMap';
 import { SignedInStatusUnion } from '../constants/participantConstants';
 import { HydratedMatchUp, HydratedParticipant } from './hydrated';
 import { ErrorType } from '../constants/errorConditionConstants';

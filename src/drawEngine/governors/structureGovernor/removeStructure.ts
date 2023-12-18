@@ -1,5 +1,5 @@
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
-import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpIds } from '../../../global/functions/extractors';
@@ -47,7 +47,7 @@ export function removeStructure({
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
 
-  const structures = drawDefinition.structures || [];
+  const structures = drawDefinition.structures ?? [];
   const removedStructureIds: string[] = [];
 
   const structure = structures.find(

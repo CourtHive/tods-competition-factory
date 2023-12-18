@@ -1,7 +1,5 @@
-import {
-  getMatchUpContextIds,
-  getMatchUpType,
-} from '../../../drawEngine/accessors/matchUpAccessor';
+import { getMatchUpContextIds } from '../../../query/matchUp/getMatchUpContextIds';
+import { getMatchUpType } from '../../../query/matchUp/getMatchUpType';
 import tournamentEngineAsync from '../../async';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngineSync from '../../sync';

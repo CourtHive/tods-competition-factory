@@ -1,4 +1,4 @@
-import { getAllStructureMatchUps } from '../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '../query/matchUps/getAllStructureMatchUps';
 import { getRoundMatchUps } from '../query/matchUps/getRoundMatchUps';
 import { getDrawStructures } from '../drawEngine/getters/findStructure';
 import { isConvertableInteger, isPowerOf2 } from '../utilities/math';

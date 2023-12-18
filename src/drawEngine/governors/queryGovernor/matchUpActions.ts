@@ -15,7 +15,7 @@ import { isAdHoc } from './isAdHoc';
 import {
   getMatchUpsMap,
   MatchUpsMap,
-} from '../../getters/getMatchUps/getMatchUpsMap';
+} from '../../../query/matchUps/getMatchUpsMap';
 import {
   getEnabledStructures,
   getPolicyActions,

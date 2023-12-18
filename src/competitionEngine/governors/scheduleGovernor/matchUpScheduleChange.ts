@@ -1,4 +1,4 @@
-import { assignMatchUpCourt as assignCourt } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpCourt';
+import { assignMatchUpCourt as assignCourt } from '../../../mutate/matchUps/schedule/assignMatchUpCourt';
 import { allocateTeamMatchUpCourts } from '../../../tournamentEngine/governors/scheduleGovernor/allocateTeamMatchUpCourts';
 import { getDrawDefinition } from '../../../global/functions/deducers/getDrawDefinition';
 import { decorateResult } from '../../../global/functions/decorateResult';

@@ -1,5 +1,5 @@
 import { getAllDrawMatchUps } from '../drawEngine/getters/getMatchUps/drawMatchUps';
-import { getMatchUpsMap } from '../drawEngine/getters/getMatchUps/getMatchUpsMap';
+import { getMatchUpsMap } from '../query/matchUps/getMatchUpsMap';
 import { findEvent } from '../acquire/findEvent';
 import { makeDeepCopy } from '../utilities';
 import {

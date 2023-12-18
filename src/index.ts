@@ -24,8 +24,8 @@ import { categoryCanContain } from './global/functions/deducers/categoryCanConta
 import { getTimeItem } from './tournamentEngine/governors/queryGovernor/timeItems';
 import { getCategoryAgeDetails } from './global/functions/getCategoryAgeDetails';
 import { checkSetIsComplete } from './matchUpEngine/getters/getSetWinningSide';
-import { getMatchUpContextIds } from './drawEngine/accessors/matchUpAccessor';
 import { parseScoreString } from './mocksEngine/utilities/parseScoreString';
+import { getMatchUpContextIds } from './query/matchUp/getMatchUpContextIds';
 import { roundRobinGroups } from './assemblies/generators/drawDefinitions/drawTypes/roundRobin/roundRobinGroups';
 import { addExtension } from './mutate/extensions/addExtension';
 import { getSetComplement } from './matchUpEngine/getters/getComplement';

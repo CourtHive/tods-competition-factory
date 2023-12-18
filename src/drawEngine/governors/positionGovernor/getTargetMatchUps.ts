@@ -2,7 +2,7 @@ import { getContainedStructures } from '../../../tournamentEngine/governors/tour
 import { HydratedMatchUp } from '../../../types/hydrated';
 import { DrawDefinition, Structure } from '../../../types/tournamentTypes';
 import { intersection } from '../../../utilities';
-import { MatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
+import { MatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
 
 type GetTargetMatchUpsArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];

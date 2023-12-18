@@ -1,4 +1,4 @@
-import { getMatchUpDependencies } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/getMatchUpDependencies';
+import { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDependencies';
 import { addMatchUpScheduleItems } from '../../../mutate/matchUps/schedule/scheduleItems';
 import { getDrawDefinition } from '../../../global/functions/deducers/getDrawDefinition';
 import {

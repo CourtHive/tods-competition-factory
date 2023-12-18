@@ -11,7 +11,7 @@ import {
   modifyMatchUpNotice,
 } from '../notifications/drawNotifications';
 
-import { MappedMatchUps } from '../../drawEngine/getters/getMatchUps/getMatchUpsMap';
+import { MappedMatchUps } from '../../query/matchUps/getMatchUpsMap';
 import { MODIFY_PARTICIPANTS } from '../../constants/topicConstants';
 import { UNGROUPED } from '../../constants/entryStatusConstants';
 import { COMPETITOR } from '../../constants/participantRoles';

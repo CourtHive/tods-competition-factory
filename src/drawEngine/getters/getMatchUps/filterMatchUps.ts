@@ -1,8 +1,8 @@
-import { scheduledMatchUpTime } from '../../accessors/matchUpAccessor/scheduledMatchUpTime';
-import { scheduledMatchUpDate } from '../../accessors/matchUpAccessor/scheduledMatchUpDate';
-import { matchUpAllocatedCourts } from '../../accessors/matchUpAccessor/courtAllocations';
-import { matchUpAssignedCourtId } from '../../accessors/matchUpAccessor/courtAssignment';
-import { matchUpAssignedVenueId } from '../../accessors/matchUpAccessor/venueAssignment';
+import { scheduledMatchUpTime } from '../../../query/matchUp/scheduledMatchUpTime';
+import { scheduledMatchUpDate } from '../../../query/matchUp/scheduledMatchUpDate';
+import { matchUpAllocatedCourts } from '../../../query/matchUp/courtAllocations';
+import { matchUpAssignedCourtId } from '../../../query/matchUp/courtAssignment';
+import { matchUpAssignedVenueId } from '../../../query/matchUp/venueAssignment';
 import { extractDate, sameDay } from '../../../utilities/dateTime';
 
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';

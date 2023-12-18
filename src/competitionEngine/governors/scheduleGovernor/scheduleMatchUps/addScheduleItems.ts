@@ -1,6 +1,6 @@
 import { allocateTeamMatchUpCourts as allocateCourts } from '../../../../tournamentEngine/governors/scheduleGovernor/allocateTeamMatchUpCourts';
-import { assignMatchUpVenue as assignVenue } from '../../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpVenue';
-import { assignMatchUpCourt as assignCourt } from '../../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpCourt';
+import { assignMatchUpVenue as assignVenue } from '../../../../mutate/matchUps/schedule/assignMatchUpVenue';
+import { assignMatchUpCourt as assignCourt } from '../../../../mutate/matchUps/schedule/assignMatchUpCourt';
 import { getDrawDefinition } from '../../../../global/functions/deducers/getDrawDefinition';
 import {
   addMatchUpScheduledDate as addScheduledDate,

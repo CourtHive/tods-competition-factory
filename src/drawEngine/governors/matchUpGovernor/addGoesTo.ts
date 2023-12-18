@@ -1,10 +1,10 @@
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
-import { addFinishingRounds } from '../../generators/addFinishingRounds';
+import { addFinishingRounds } from '../../../assemblies/generators/drawDefinitions/addFinishingRounds';
 import { positionTargets } from '../../../mutate/matchUps/drawPositions/positionTargets';
 import {
   MatchUpsMap,
   getMappedStructureMatchUps,
-} from '../../getters/getMatchUps/getMatchUpsMap';
+} from '../../../query/matchUps/getMatchUpsMap';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { DrawDefinition } from '../../../types/tournamentTypes';

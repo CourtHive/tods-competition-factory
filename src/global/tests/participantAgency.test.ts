@@ -1,4 +1,4 @@
-import { resolveDrawPositions } from '../../drawEngine/generators/drawPositionsResolver';
+import { resolveDrawPositions } from '../../assemblies/generators/drawDefinitions/drawPositionsResolver';
 import { getDrawPosition, getParticipantId } from '../functions/extractors';
 import tournamentEngine from '../../tournamentEngine/sync';
 import mocksEngine from '../../mocksEngine';
@@ -56,8 +56,8 @@ it.each([
       seedsOnly
         ? Math.min(expectedByes, seedsCount)
         : automated
-        ? expectedByes
-        : 0
+          ? expectedByes
+          : 0
     );
 
     expect(assignedParticipantIds.length).toEqual(

@@ -1,4 +1,4 @@
-import { getAllStructureMatchUps } from '../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
 import { addGoesTo } from '../../drawEngine/governors/matchUpGovernor/addGoesTo';
 import { extractAttributes } from '../../utilities';
 import {
@@ -84,7 +84,7 @@ export function attachStructures({
 
   // replace any existing structures with newly generated structures
   // this is done because it is possible that a structure exists without matchUps
-  drawDefinition.structures = (drawDefinition.structures || []).map(
+  drawDefinition.structures = (drawDefinition.structures ?? []).map(
     (structure) => {
       return generatedStructureIds.includes(structure.structureId)
         ? structures.find(

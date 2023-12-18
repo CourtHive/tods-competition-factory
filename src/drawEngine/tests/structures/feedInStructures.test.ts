@@ -2,7 +2,7 @@ import { generateDrawTypeAndModifyDrawDefinition } from '../../../assemblies/gen
 import { getDrawData } from '../../../tournamentEngine/governors/publishingGovernor/getDrawData';
 import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
-import { feedInMatchUps } from '../../generators/feedInMatchUps';
+import { feedInMatchUps } from '../../../assemblies/generators/drawDefinitions/feedInMatchUps';
 import { feedInChampionship } from '../primitives/feedIn';
 import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { generateRange } from '../../../utilities';

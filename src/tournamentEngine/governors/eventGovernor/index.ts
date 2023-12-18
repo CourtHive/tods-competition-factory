@@ -140,7 +140,7 @@ import { disableTieAutoCalc } from '../../../mutate/matchUps/extensions/disableT
 import {
   addAdHocMatchUps,
   generateAdHocMatchUps,
-} from '../../../drawEngine/generators/generateAdHocMatchUps';
+} from '../../../assemblies/generators/drawDefinitions/generateAdHocMatchUps';
 import { addPlayoffStructures } from '../../../mutate/drawDefinitions/addPlayoffStructures';
 
 const eventGovernor = {

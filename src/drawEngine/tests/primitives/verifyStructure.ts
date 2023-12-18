@@ -1,5 +1,5 @@
 import { getStructureSeedAssignments } from '../../../query/structure/getStructureSeedAssignments';
-import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { getStructurePositionedSeeds } from '../../getters/getStructurePositionedSeeds';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getPairedDrawPosition } from '../../getters/getPairedDrawPosition';

@@ -1,6 +1,6 @@
 import { modifyRoundRobinMatchUpsStatus } from '../matchUpStatus/modifyRoundRobinMatchUpsStatus';
 import { getStructureDrawPositionProfiles } from '../../../drawEngine/getters/getStructureDrawPositionProfiles';
-import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { getAllDrawMatchUps } from '../../../drawEngine/getters/getMatchUps/drawMatchUps';
 import { getInitialRoundNumber } from '../../../drawEngine/getters/getInitialRoundNumber';
@@ -8,7 +8,7 @@ import { decorateResult } from '../../../global/functions/decorateResult';
 import {
   MatchUpsMap,
   getMatchUpsMap,
-} from '../../../drawEngine/getters/getMatchUps/getMatchUpsMap';
+} from '../../../query/matchUps/getMatchUpsMap';
 import { pushGlobalLog } from '../../../global/functions/globalLog';
 import { findStructure } from '../../../drawEngine/getters/findStructure';
 import { ensureInt } from '../../../utilities/ensureInt';

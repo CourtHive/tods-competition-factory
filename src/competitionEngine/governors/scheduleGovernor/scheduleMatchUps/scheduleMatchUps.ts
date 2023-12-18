@@ -1,5 +1,5 @@
 import { addMatchUpScheduledTime } from '../../../../mutate/matchUps/schedule/scheduledTime';
-import { assignMatchUpVenue } from '../../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpVenue';
+import { assignMatchUpVenue } from '../../../../mutate/matchUps/schedule/assignMatchUpVenue';
 import { checkParticipantProfileInitialization } from './checkParticipantProfileInitialization';
 import { getDrawDefinition } from '../../../../global/functions/deducers/getDrawDefinition';
 import { modifyParticipantMatchUpsCount } from './modifyParticipantMatchUpsCount';
@@ -8,7 +8,7 @@ import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
 import { getMatchUpIds } from '../../../../global/functions/extractors';
 import { updateTimeAfterRecovery } from './updateTimeAfterRecovery';
 import { calculateScheduleTimes } from './calculateScheduleTimes';
-import { getMatchUpDependencies } from './getMatchUpDependencies';
+import { getMatchUpDependencies } from '../../../../query/matchUps/getMatchUpDependencies';
 import { checkRequestConflicts } from './checkRequestConflicts';
 import { processNextMatchUps } from './processNextMatchUps';
 import { checkRecoveryTime } from './checkRecoveryTime';

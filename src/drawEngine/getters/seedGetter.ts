@@ -1,5 +1,5 @@
 import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
-import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
 import { getStructureSeedAssignments } from '../../query/structure/getStructureSeedAssignments';
 import { chunkArray, generateRange, shuffleArray } from '../../utilities';
 import { isLucky } from '../governors/queryGovernor/isLucky';
@@ -28,7 +28,7 @@ import {
 import {
   generateBlockPattern,
   getSubBlock,
-} from '../generators/generateBlockPattern';
+} from '../../assemblies/generators/drawDefinitions/generateBlockPattern';
 import {
   PolicyDefinitions,
   SeedBlock,

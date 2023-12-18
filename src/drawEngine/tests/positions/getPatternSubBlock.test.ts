@@ -1,4 +1,4 @@
-import { getSubBlock } from '../../generators/generateBlockPattern';
+import { getSubBlock } from '../../../assemblies/generators/drawDefinitions/generateBlockPattern';
 import { generateRange } from '../../../utilities';
 import { expect, test } from 'vitest';
 

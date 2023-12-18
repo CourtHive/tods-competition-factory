@@ -1,5 +1,5 @@
 import { bulkScheduleMatchUps as bulkSchedule } from '../../../tournamentEngine/governors/scheduleGovernor/bulkScheduleMatchUps';
-import { getMatchUpDependencies } from './scheduleMatchUps/getMatchUpDependencies';
+import { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDependencies';
 import { getMatchUpId } from '../../../global/functions/extractors';
 
 import { Tournament } from '../../../types/tournamentTypes';

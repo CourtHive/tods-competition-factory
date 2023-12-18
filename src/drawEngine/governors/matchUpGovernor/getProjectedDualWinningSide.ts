@@ -2,7 +2,7 @@ import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGove
 import { generateTieMatchUpScore } from '../../../assemblies/generators/tieMatchUpScore/generateTieMatchUpScore';
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
-import { MatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
+import { MatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import { makeDeepCopy } from '../../../utilities';
 import {

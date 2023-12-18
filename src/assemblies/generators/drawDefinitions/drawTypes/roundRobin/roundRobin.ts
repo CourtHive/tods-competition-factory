@@ -1,4 +1,4 @@
-import { structureTemplate } from '../../../../../drawEngine/generators/structureTemplate';
+import { structureTemplate } from '../../templates/structureTemplate';
 import { addExtension } from '../../../../../mutate/extensions/addExtension';
 import { constantToString } from '../../../../../utilities/strings';
 import { generateRange, UUID } from '../../../../../utilities';

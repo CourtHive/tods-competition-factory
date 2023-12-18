@@ -1,4 +1,4 @@
-import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { isCompletedStructure } from '../../../drawEngine/governors/queryGovernor/structureActions';
 import { allDrawMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
 import { structureSort } from '../../../drawEngine/getters/structureSort';

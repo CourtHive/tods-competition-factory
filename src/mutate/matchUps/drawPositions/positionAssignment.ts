@@ -1,7 +1,7 @@
 import { modifyRoundRobinMatchUpsStatus } from '../matchUpStatus/modifyRoundRobinMatchUpsStatus';
 import { getStructureDrawPositionProfiles } from '../../../drawEngine/getters/getStructureDrawPositionProfiles';
 // import { conditionallyDisableLinkPositioning } from './conditionallyDisableLinkPositioning';
-import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { assignMatchUpDrawPosition } from './assignMatchUpDrawPosition';
 import { modifyPositionAssignmentsNotice } from '../../notifications/drawNotifications';
@@ -18,7 +18,7 @@ import {
 import {
   MatchUpsMap,
   getMatchUpsMap,
-} from '../../../drawEngine/getters/getMatchUps/getMatchUpsMap';
+} from '../../../query/matchUps/getMatchUpsMap';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { isValidSeedPosition } from '../../../drawEngine/getters/seedGetter';
 import { assignSeed } from '../../../drawEngine/governors/entryGovernor/seedAssignment';

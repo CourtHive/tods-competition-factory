@@ -2,7 +2,7 @@ import { replaceTieMatchUpParticipantId } from '../../../mutate/matchUps/lineUps
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
-import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
+import { getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
 import { getParticipantId } from '../../../global/functions/extractors';
 
 import {

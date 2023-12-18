@@ -1,6 +1,6 @@
 import { getSourceStructureIdsAndRelevantLinks } from '../../../getters/getSourceStructureIdsAndRelevantLinks';
 import { findExtension } from '../../../../acquire/findExtension';
-import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '../../../../query/matchUps/getAllStructureMatchUps';
 import { getPositionAssignments } from '../../../getters/positionsGetter';
 import { definedAttributes } from '../../../../utilities/definedAttributes';
 import { isCompletedStructure } from '../structureActions';

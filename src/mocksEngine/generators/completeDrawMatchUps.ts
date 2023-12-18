@@ -1,5 +1,5 @@
 import { assignTieMatchUpParticipantId } from '../../mutate/matchUps/lineUps/assignTieMatchUpParticipant';
-import { getAllStructureMatchUps } from '../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
 import { setMatchUpStatus } from '../../tournamentEngine/governors/eventGovernor/setMatchUpStatus';
 import { getParticipants } from '../../tournamentEngine/getters/participants/getParticipants';
 import { getAllDrawMatchUps } from '../../drawEngine/getters/getMatchUps/drawMatchUps';

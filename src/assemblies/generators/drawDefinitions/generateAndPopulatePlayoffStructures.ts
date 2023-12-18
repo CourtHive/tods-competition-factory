@@ -2,13 +2,13 @@ import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGove
 import { checkMatchUpIsComplete } from '../../../query/matchUp/checkMatchUpIsComplete';
 import { generateAndPopulateRRplayoffStructures } from './generateAndPopulateRRplayoffStructures';
 import { assignDrawPositionBye } from '../../../mutate/matchUps/drawPositions/assignDrawPositionBye';
-import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { getAllDrawMatchUps } from '../../../drawEngine/getters/getMatchUps/drawMatchUps';
 import { directParticipants } from '../../../mutate/matchUps/drawPositions/directParticipants';
 import { getAvailablePlayoffProfiles } from '../../../drawEngine/governors/structureGovernor/getAvailablePlayoffProfiles';
 import { positionTargets } from '../../../mutate/matchUps/drawPositions/positionTargets';
 import { getMatchUpId } from '../../../global/functions/extractors';
-import { generateTieMatchUps } from '../../../drawEngine/generators/tieMatchUps';
+import { generateTieMatchUps } from './tieMatchUps';
 import { findStructure } from '../../../drawEngine/getters/findStructure';
 import { ensureInt } from '../../../utilities/ensureInt';
 import { addGoesTo } from '../../../drawEngine/governors/matchUpGovernor/addGoesTo';
@@ -21,7 +21,7 @@ import {
 import {
   NamingEntry,
   generatePlayoffStructures,
-} from '../../../drawEngine/generators/playoffStructures';
+} from './drawTypes/playoffStructures';
 
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';

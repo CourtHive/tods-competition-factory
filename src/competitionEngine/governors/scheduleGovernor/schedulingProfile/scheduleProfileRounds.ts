@@ -1,5 +1,5 @@
 import { getContainedStructures } from '../../../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
-import { getMatchUpDependencies } from '../scheduleMatchUps/getMatchUpDependencies';
+import { getMatchUpDependencies } from '../../../../query/matchUps/getMatchUpDependencies';
 import { extractDate, isValidDateString } from '../../../../utilities/dateTime';
 import { getSchedulingProfile } from './schedulingProfile';
 import { getVenuesAndCourts } from '../../../getters/venuesAndCourtsGetter';

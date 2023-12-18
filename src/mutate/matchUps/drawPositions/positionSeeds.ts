@@ -8,7 +8,7 @@ import { assignDrawPosition } from './positionAssignment';
 import { generateRange } from '../../../utilities';
 
 import { HydratedMatchUp, HydratedParticipant } from '../../../types/hydrated';
-import { MatchUpsMap } from '../../../drawEngine/getters/getMatchUps/getMatchUpsMap';
+import { MatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   PolicyDefinitions,

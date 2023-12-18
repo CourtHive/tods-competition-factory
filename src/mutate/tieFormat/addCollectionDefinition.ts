@@ -1,6 +1,6 @@
-import { getAllStructureMatchUps } from '../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
 import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
-import { generateCollectionMatchUps } from '../../drawEngine/generators/tieMatchUps';
+import { generateCollectionMatchUps } from '../../assemblies/generators/drawDefinitions/tieMatchUps';
 import { definedAttributes } from '../../utilities/definedAttributes';
 import { calculateWinCriteria } from '../../matchUpEngine/governors/tieFormatGovernor/calculateWinCriteria';
 import { getTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/getTieFormat';

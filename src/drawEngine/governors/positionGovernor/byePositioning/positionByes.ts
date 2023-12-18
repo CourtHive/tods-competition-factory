@@ -6,7 +6,7 @@ import { findStructure } from '../../../getters/findStructure';
 import { getByesData } from '../../../getters/getByesData';
 import { shuffleArray } from '../../../../utilities';
 
-import { MatchUpsMap } from '../../../getters/getMatchUps/getMatchUpsMap';
+import { MatchUpsMap } from '../../../../query/matchUps/getMatchUpsMap';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   CONTAINER,

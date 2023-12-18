@@ -1,6 +1,6 @@
 import { modifyDrawNotice } from '../notifications/drawNotifications';
 import { constantToString } from '../../utilities/strings';
-import structureTemplate from '../../drawEngine/generators/structureTemplate';
+import structureTemplate from '../../assemblies/generators/drawDefinitions/templates/structureTemplate';
 
 import { MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
 import { VOLUNTARY_CONSOLATION } from '../../constants/drawDefinitionConstants';

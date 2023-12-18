@@ -1,12 +1,12 @@
 import { addNotes } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveNotes';
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
-import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { updateAssignmentParticipantResults } from '../../../drawEngine/governors/matchUpGovernor/updateAssignmentParticipantResults';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { getAllDrawMatchUps } from '../../../drawEngine/getters/getMatchUps/drawMatchUps';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { decorateResult } from '../../../global/functions/decorateResult';
-import { getMatchUpsMap } from '../../../drawEngine/getters/getMatchUps/getMatchUpsMap';
+import { getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { getTopics } from '../../../global/state/globalState';
 import { isAdHoc } from '../../../drawEngine/governors/queryGovernor/isAdHoc';

@@ -1,4 +1,4 @@
-import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '../../../../query/matchUps/getAllStructureMatchUps';
 import { definedAttributes } from '../../../../utilities/definedAttributes';
 import { overlap, makeDeepCopy } from '../../../../utilities';
 
@@ -71,7 +71,7 @@ export function getValidSwapAction({
       (assignment) =>
         assignmentCheck(assignment) &&
         availableDrawPositions?.includes(assignment.drawPosition)
-    ) || [];
+    ) ?? [];
 
   // get relevant drawPositions => relevantMatchUps => sides => sourceDrawPositionRanges
   const filteredDrawPositions = filteredAssignments.map(

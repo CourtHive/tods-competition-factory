@@ -1,4 +1,4 @@
-import { generateQualifyingStructure } from '../../assemblies/generators/drawDefinitions/generateQualifyingStructure';
+import { generateQualifyingStructure } from '../../assemblies/generators/drawDefinitions/drawTypes/generateQualifyingStructure';
 import { attachQualifyingStructure } from './attachQualifyingStructure';
 
 import {

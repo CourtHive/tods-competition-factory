@@ -1,4 +1,4 @@
-import { getMatchUpDependencies } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/getMatchUpDependencies';
+import { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDependencies';
 import { getEventPublishStatus } from '../../governors/publishingGovernor/getEventPublishStatus';
 import { getDrawPublishStatus } from '../../governors/publishingGovernor/getDrawPublishStatus';
 import { getDerivedPositionAssignments } from './getDerivedPositionAssignments';

@@ -5,7 +5,7 @@ import { getStructureSeedAssignments } from '../../../../query/structure/getStru
 import { getAssignedParticipantIds } from '../../../getters/getAssignedParticipantIds';
 import { getValidModifyAssignedPairAction } from './getValidModifyAssignedPairAction';
 import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
-import { MatchUpsMap } from '../../../getters/getMatchUps/getMatchUpsMap';
+import { MatchUpsMap } from '../../../../query/matchUps/getMatchUpsMap';
 import { getValidLuckyLosersAction } from './getValidLuckyLoserAction';
 import { getValidAlternatesAction } from './getValidAlternatesAction';
 import { getValidAssignmentActions } from './participantAssignments';

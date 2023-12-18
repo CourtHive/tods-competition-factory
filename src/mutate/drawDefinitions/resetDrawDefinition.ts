@@ -1,5 +1,5 @@
-import { getAllStructureMatchUps } from '../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
-import { getMatchUpsMap } from '../../drawEngine/getters/getMatchUps/getMatchUpsMap';
+import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
+import { getMatchUpsMap } from '../../query/matchUps/getMatchUpsMap';
 import {
   modifyDrawNotice,
   modifyMatchUpNotice,

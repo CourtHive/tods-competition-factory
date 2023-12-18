@@ -1,5 +1,5 @@
 import { addMatchUpScheduledTime } from '../../../../../mutate/matchUps/schedule/scheduledTime';
-import { assignMatchUpCourt } from '../../../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpCourt';
+import { assignMatchUpCourt } from '../../../../../mutate/matchUps/schedule/assignMatchUpCourt';
 import { checkDependenciesScheduled } from '../../scheduleMatchUps/checkDependenciesScheduled';
 import { getDrawDefinition } from '../../../../../global/functions/deducers/getDrawDefinition';
 import { updateTimeAfterRecovery } from '../../scheduleMatchUps/updateTimeAfterRecovery';

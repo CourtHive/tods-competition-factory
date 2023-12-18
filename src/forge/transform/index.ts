@@ -6,7 +6,7 @@ export { modifyEventMatchUpFormatTiming } from '../../competitionEngine/governor
 export { bulkRescheduleMatchUps } from '../../competitionEngine/governors/scheduleGovernor/bulkRescheduleMatchUps';
 export { setMatchUpDailyLimits } from '../../competitionEngine/governors/scheduleGovernor/setMatchUpDailyLimits';
 export { proConflicts } from '../../competitionEngine/governors/scheduleGovernor/proScheduling/proConflicts';
-export { addFinishingRounds } from '../../drawEngine/generators/addFinishingRounds';
+export { addFinishingRounds } from '../../assemblies/generators/drawDefinitions/addFinishingRounds';
 export { structureSort } from '../../drawEngine/getters/structureSort';
 export { matchUpSort } from '../../functions/sorters/matchUpSort';
 export { attributeFilter } from '../../utilities';

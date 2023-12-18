@@ -1,4 +1,4 @@
-import { assignMatchUpCourt } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpCourt';
+import { assignMatchUpCourt } from '../../../mutate/matchUps/schedule/assignMatchUpCourt';
 import { findEvent } from '../../../acquire/findEvent';
 import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
 

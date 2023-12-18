@@ -1,10 +1,10 @@
 import { removeDrawPositionAssignment } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/removeDrawPositionAssignment';
 import { conditionallyDisableLinkPositioning } from '../../../drawEngine/governors/positionGovernor/conditionallyDisableLinkPositioning';
-import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { assignDrawPositionBye } from './assignDrawPositionBye';
 import { getAllDrawMatchUps } from '../../../drawEngine/getters/getMatchUps/drawMatchUps';
 import { addPositionActionTelemetry } from '../../../drawEngine/governors/positionGovernor/addPositionActionTelemetry';
-import { getMatchUpsMap } from '../../../drawEngine/getters/getMatchUps/getMatchUpsMap';
+import { getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
 import { assignDrawPosition } from './positionAssignment';
 import { findStructure } from '../../../drawEngine/getters/findStructure';
 import { updateSideLineUp } from '../lineUps/updateSideLineUp';

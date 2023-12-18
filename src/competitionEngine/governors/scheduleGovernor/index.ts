@@ -5,7 +5,7 @@ import { validateSchedulingProfile } from '../../../validators/validateSchedulin
 import { modifyMatchUpFormatTiming } from './matchUpFormatTiming/modifyMatchUpFormatTiming';
 import { getScheduledRoundsDetails } from './schedulingProfile/getScheduledRoundsDetails';
 import { findMatchUpFormatTiming } from './matchUpFormatTiming/findMatchUpFormatTiming';
-import { getMatchUpDependencies } from './scheduleMatchUps/getMatchUpDependencies';
+import { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDependencies';
 import { calculateScheduleTimes } from './scheduleMatchUps/calculateScheduleTimes';
 import { scheduleProfileRounds } from './schedulingProfile/scheduleProfileRounds';
 import { removeEventMatchUpFormatTiming } from '../../../mutate/events/extensions/removeEventMatchUpFormatTiming';

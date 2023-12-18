@@ -1,4 +1,4 @@
-import { getMappedStructureMatchUps } from '../../getters/getMatchUps/getMatchUpsMap';
+import { getMappedStructureMatchUps } from '../../../query/matchUps/getMatchUpsMap';
 
 export function getPairedPreviousMatchUp({
   structureId,

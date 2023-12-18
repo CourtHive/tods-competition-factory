@@ -1,4 +1,4 @@
-import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { feedInChampionship } from '../primitives/feedIn';
 import tournamentEngine from '../../../tournamentEngine/sync';
 import { intersection } from '../../../utilities';

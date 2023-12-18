@@ -1,5 +1,5 @@
 import { addMatchUpScheduledTime } from '../../../../../mutate/matchUps/schedule/scheduledTime';
-import { assignMatchUpVenue } from '../../../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpVenue';
+import { assignMatchUpVenue } from '../../../../../mutate/matchUps/schedule/assignMatchUpVenue';
 import { checkDependenciesScheduled } from '../../scheduleMatchUps/checkDependenciesScheduled';
 import { getDrawDefinition } from '../../../../../global/functions/deducers/getDrawDefinition';
 import { updateTimeAfterRecovery } from '../../scheduleMatchUps/updateTimeAfterRecovery';

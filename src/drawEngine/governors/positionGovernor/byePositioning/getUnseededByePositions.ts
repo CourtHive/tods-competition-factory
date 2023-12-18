@@ -1,4 +1,4 @@
-import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '../../../../query/matchUps/getAllStructureMatchUps';
 import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
 import { getSeedBlocks } from '../getSeedBlocks';
 import {

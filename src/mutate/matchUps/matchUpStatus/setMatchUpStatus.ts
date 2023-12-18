@@ -8,7 +8,7 @@ import { addExtension } from '../../extensions/addExtension';
 import { getProjectedDualWinningSide } from '../../../drawEngine/governors/matchUpGovernor/getProjectedDualWinningSide';
 import { getAllDrawMatchUps } from '../../../drawEngine/getters/getMatchUps/drawMatchUps';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
-import { getMatchUpsMap } from '../../../drawEngine/getters/getMatchUps/getMatchUpsMap';
+import { getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { validateScore } from '../../../validators/validateScore';
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';

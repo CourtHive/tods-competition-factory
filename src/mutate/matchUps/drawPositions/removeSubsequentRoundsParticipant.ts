@@ -3,7 +3,7 @@ import { getInitialRoundNumber } from '../../../drawEngine/getters/getInitialRou
 import {
   MatchUpsMap,
   getMatchUpsMap,
-} from '../../../drawEngine/getters/getMatchUps/getMatchUpsMap';
+} from '../../../query/matchUps/getMatchUpsMap';
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
 import { updateMatchUpStatusCodes } from '../../../drawEngine/governors/matchUpGovernor/matchUpStatusCodes';
 import { findStructure } from '../../../drawEngine/getters/findStructure';

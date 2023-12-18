@@ -1,4 +1,4 @@
-import { generateQualifyingLink } from '../../generators/generateQualifyingLink';
+import { generateQualifyingLink } from '../../../assemblies/generators/drawDefinitions/links/generateQualifyingLink';
 import { getStructureLinks } from '../../getters/linkGetter';
 
 const linkGovernor = {

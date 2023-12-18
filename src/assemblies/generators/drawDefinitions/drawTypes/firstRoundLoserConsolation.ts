@@ -1,6 +1,6 @@
 import { constantToString } from '../../../../utilities/strings';
-import structureTemplate from '../../../../drawEngine/generators/structureTemplate';
-import { feedInMatchUps } from '../../../../drawEngine/generators/feedInMatchUps';
+import structureTemplate from '../templates/structureTemplate';
+import { feedInMatchUps } from '../feedInMatchUps';
 import { treeMatchUps } from './eliminationTree';
 
 import { DrawLink, Structure } from '../../../../types/tournamentTypes';

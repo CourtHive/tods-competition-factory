@@ -1,5 +1,5 @@
 import { setMatchUpStatus } from '../../../mutate/matchUps/matchUpStatus/setMatchUpStatus';
-import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { getStructureMatchUps } from '../../../query/structure/getStructureMatchUps';
 import { parseScoreString } from '../../../mocksEngine/utilities/parseScoreString';
@@ -86,21 +86,18 @@ export function verifyMatchUps(params) {
   });
 
   if (expectedRoundPending) {
-    // console.log({ pendingRoundMatchUps, expectedRoundPending });
     verifyRoundCounts({
       roundMatchUps: pendingRoundMatchUps,
       expectedRounds: expectedRoundPending,
     });
   }
   if (expectedRoundUpcoming) {
-    // console.log(upcomingRoundMatchUps, { expectedRoundUpcoming });
     verifyRoundCounts({
       roundMatchUps: upcomingRoundMatchUps,
       expectedRounds: expectedRoundUpcoming,
     });
   }
   if (expectedRoundCompleted) {
-    // console.log({ completedRoundMatchUps, expectedRoundCompleted });
     verifyRoundCounts({
       roundMatchUps: completedRoundMatchUps,
       expectedRounds: expectedRoundCompleted,

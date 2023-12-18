@@ -1,7 +1,7 @@
 import { getEligibleVoluntaryConsolationParticipants } from './getEligibleVoluntaryConsolationParticipants';
 import { generateTieMatchUpScore } from '../../../assemblies/generators/tieMatchUpScore/generateTieMatchUpScore';
 import { getNextUnfilledDrawPositions } from './positionActions/getNextUnfilledDrawPositions';
-import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { getStructureSeedAssignments } from '../../../query/structure/getStructureSeedAssignments';
 import { getStructureMatchUps } from '../../../query/structure/getStructureMatchUps';
 import { getMatchUpParticipantIds } from '../../../query/matchUp/getMatchUpParticipantIds';
@@ -23,16 +23,15 @@ import {
   getSeedGroups,
   getSeedingThresholds,
 } from '../positionGovernor/getSeedBlocks';
-import {
-  matchUpDuration,
-  getMatchUpScheduleDetails,
-  getMatchUpContextIds,
-} from '../../accessors/matchUpAccessor';
+
 import {
   structureActions,
   isCompletedStructure,
   allPlayoffPositionsFilled,
 } from './structureActions';
+import { getMatchUpContextIds } from '../../../query/matchUp/getMatchUpContextIds';
+import { getMatchUpScheduleDetails } from '../../../query/matchUp/getMatchUpScheduleDetails';
+import { matchUpDuration } from '../../../query/matchUp/matchUpDuration';
 
 /*
   return an array of all matchUps within a drawDefinition

@@ -9,7 +9,7 @@ import { findExtension } from '../../../acquire/findExtension';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 
 import { DISABLE_AUTO_CALC } from '../../../constants/extensionConstants';
-import { MatchUpsMap } from '../../../drawEngine/getters/getMatchUps/getMatchUpsMap';
+import { MatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   ErrorType,

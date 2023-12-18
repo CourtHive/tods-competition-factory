@@ -1,4 +1,4 @@
-import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { removeSubsequentRoundsParticipant } from './removeSubsequentRoundsParticipant';
 import { structureAssignedDrawPositions } from '../../../drawEngine/getters/positionsGetter';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
@@ -12,7 +12,7 @@ import { isAdHoc } from '../../../drawEngine/governors/queryGovernor/isAdHoc';
 
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
-import { MatchUpsMap } from '../../../drawEngine/getters/getMatchUps/getMatchUpsMap';
+import { MatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import {

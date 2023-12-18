@@ -6,8 +6,8 @@ export { parse as parseMatchUpFormat } from '../../matchUpEngine/governors/match
 export { parseScoreString } from '../../mocksEngine/utilities/parseScoreString';
 // drawEngine
 export { getEligibleVoluntaryConsolationParticipants } from '../../drawEngine/governors/queryGovernor/getEligibleVoluntaryConsolationParticipants';
-export { getOrderedDrawPositions } from '../../drawEngine/getters/getMatchUps/getOrderedDrawPositions';
-export { getRoundContextProfile } from '../../drawEngine/getters/getMatchUps/getRoundContextProfile';
+export { getOrderedDrawPositions } from '../../query/matchUps/getOrderedDrawPositions';
+export { getRoundContextProfile } from '../../query/matchUps/getRoundContextProfile';
 export { getAssignedParticipantIds } from '../../drawEngine/getters/getAssignedParticipantIds';
 export { getRoundMatchUps } from '../../query/matchUps/getRoundMatchUps';
 export { getPositionAssignments } from '../../drawEngine/getters/positionsGetter';

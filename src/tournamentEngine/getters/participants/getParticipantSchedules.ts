@@ -1,4 +1,4 @@
-import { getMatchUpDependencies } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/getMatchUpDependencies';
+import { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDependencies';
 import { allTournamentMatchUps } from '../matchUpsGetter/matchUpsGetter';
 
 import { Tournament } from '../../../types/tournamentTypes';

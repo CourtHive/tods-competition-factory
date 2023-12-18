@@ -1,12 +1,12 @@
 import { getStructureDrawPositionProfiles } from '../../../drawEngine/getters/getStructureDrawPositionProfiles';
-import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { getInitialRoundNumber } from '../../../drawEngine/getters/getInitialRoundNumber';
 import { getAllDrawMatchUps } from '../../../drawEngine/getters/getMatchUps/drawMatchUps';
 import {
   MatchUpsMap,
   getMatchUpsMap,
-} from '../../../drawEngine/getters/getMatchUps/getMatchUpsMap';
+} from '../../../query/matchUps/getMatchUpsMap';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { addPositionActionTelemetry } from '../../../drawEngine/governors/positionGovernor/addPositionActionTelemetry';
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';

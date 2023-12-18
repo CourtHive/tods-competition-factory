@@ -4,7 +4,7 @@ import { tallyParticipantResults } from '../../../matchUpEngine/getters/roundRob
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { evaluateCollectionResult } from './evaluateCollectionResult';
-import { getGroupValueGroups } from '../../../drawEngine/generators/getGroupValueGroups';
+import { getGroupValueGroups } from '../drawDefinitions/getGroupValueGroups';
 
 import {
   INVALID_VALUES,
@@ -12,7 +12,7 @@ import {
   MISSING_TIE_FORMAT,
 } from '../../../constants/errorConditionConstants';
 
-import { MatchUpsMap } from '../../../drawEngine/getters/getMatchUps/getMatchUpsMap';
+import { MatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
 import { ResultType } from '../../../global/functions/decorateResult';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import {

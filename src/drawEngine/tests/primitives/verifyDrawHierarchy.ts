@@ -1,4 +1,4 @@
-import { buildDrawHierarchy } from '../../generators/drawHierarchy';
+import { buildDrawHierarchy } from '../../../assemblies/generators/drawDefinitions/drawHierarchy';
 import { expect } from 'vitest';
 
 export function verifyDrawHierarchy({ matchUps, hierarchyVerification = [] }) {

@@ -1,6 +1,6 @@
-import { getAllStructureMatchUps } from '../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '../query/matchUps/getAllStructureMatchUps';
 import { getContextContent } from '../tournamentEngine/getters/getContextContent';
-import { MatchUpsMap } from '../drawEngine/getters/getMatchUps/getMatchUpsMap';
+import { MatchUpsMap } from '../query/matchUps/getMatchUpsMap';
 import { getMatchUp } from '../query/matchUps/getMatchUpFromMatchUps';
 import { getDrawStructures } from '../drawEngine/getters/findStructure';
 import { makeDeepCopy } from '../utilities';

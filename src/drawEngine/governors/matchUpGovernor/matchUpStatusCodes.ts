@@ -1,7 +1,7 @@
 import { getPairedPreviousMatchUp } from '../positionGovernor/getPairedPreviousMatchup';
 import { isString } from '../../../utilities/objects';
 
-import { MatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
+import { MatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
 import { MatchUp } from '../../../types/tournamentTypes';
 
 type UpdateMatchUpStatusCodesArgs = {

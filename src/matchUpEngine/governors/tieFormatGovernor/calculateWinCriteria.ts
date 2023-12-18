@@ -1,4 +1,4 @@
-import { getGroupValueGroups } from '../../../drawEngine/generators/getGroupValueGroups';
+import { getGroupValueGroups } from '../../../assemblies/generators/drawDefinitions/getGroupValueGroups';
 import { CollectionDefinition } from '../../../types/tournamentTypes';
 import { isConvertableInteger } from '../../../utilities/math';
 

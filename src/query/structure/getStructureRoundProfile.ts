@@ -1,9 +1,9 @@
 import { decorateResult } from '../../global/functions/decorateResult';
-import { getAllStructureMatchUps } from '../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '../matchUps/getAllStructureMatchUps';
 import { DrawDefinition, MatchUp } from '../../types/tournamentTypes';
 import { findStructure } from '../../drawEngine/getters/findStructure';
 
-import { MatchUpsMap } from '../../drawEngine/getters/getMatchUps/getMatchUpsMap';
+import { MatchUpsMap } from '../matchUps/getMatchUpsMap';
 import {
   RoundMatchUpsResult,
   getRoundMatchUps,

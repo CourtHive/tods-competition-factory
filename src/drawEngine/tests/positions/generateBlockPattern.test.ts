@@ -1,4 +1,4 @@
-import { generateBlockPattern } from '../../generators/generateBlockPattern';
+import { generateBlockPattern } from '../../../assemblies/generators/drawDefinitions/generateBlockPattern';
 import { generateRange } from '../../../utilities';
 import { expect, test } from 'vitest';
 

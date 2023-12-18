@@ -1,8 +1,8 @@
 import { constantToString } from '../../../../utilities/strings';
-import { structureTemplate } from '../../../../drawEngine/generators/structureTemplate';
-import { feedInMatchUps } from '../../../../drawEngine/generators/feedInMatchUps';
+import { structureTemplate } from '../templates/structureTemplate';
+import { feedInMatchUps } from '../feedInMatchUps';
 import { treeMatchUps } from './eliminationTree';
-import { feedInLinks } from '../../../../drawEngine/generators/feedInLinks';
+import { feedInLinks } from '../links/feedInLinks';
 
 import { DrawLink, Structure } from '../../../../types/tournamentTypes';
 import { SUCCESS } from '../../../../constants/resultConstants';

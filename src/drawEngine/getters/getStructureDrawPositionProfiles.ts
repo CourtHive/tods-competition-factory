@@ -1,4 +1,4 @@
-import { getMatchUpDependencies } from '../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/getMatchUpDependencies';
+import { getMatchUpDependencies } from '../../query/matchUps/getMatchUpDependencies';
 import { getContainedStructures } from '../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
 import { getAllDrawMatchUps } from './getMatchUps/drawMatchUps';
 import { isAdHoc } from '../governors/queryGovernor/isAdHoc';

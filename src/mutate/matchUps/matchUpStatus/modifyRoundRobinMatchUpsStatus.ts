@@ -1,8 +1,8 @@
-import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 
 import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
-import { MatchUpsMap } from '../../../drawEngine/getters/getMatchUps/getMatchUpsMap';
+import { MatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
 import {
   DrawDefinition,
   Event,
