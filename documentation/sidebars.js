@@ -83,18 +83,6 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'Draw Engine',
-      items: [
-        {
-          type: 'doc',
-          label: 'Overview',
-          id: 'engines/draw-engine-overview',
-        },
-        { type: 'doc', label: 'API', id: 'apis/draw-engine-api' },
-      ],
-    },
-    {
-      type: 'category',
       label: 'MatchUp Engine',
       items: [
         {
