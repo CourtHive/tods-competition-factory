@@ -1,6 +1,6 @@
 import { addDrawDefinition } from '../../tournamentEngine/governors/eventGovernor/drawDefinitions/addDrawDefinition';
 import { automatedPlayoffPositioning } from '../../tournamentEngine/governors/eventGovernor/automatedPositioning';
-import { addPlayoffStructures } from '../../drawEngine/governors/structureGovernor/addPlayoffStructures';
+import { addPlayoffStructures } from '../../mutate/drawDefinitions/addPlayoffStructures';
 import { setParticipantScaleItem } from '../../tournamentEngine/governors/participantGovernor/addScaleItems';
 import { generateDrawDefinition } from '../../tournamentEngine/generators/generateDrawDefinition';
 import { getFlightProfile } from '../../query/event/getFlightProfile';

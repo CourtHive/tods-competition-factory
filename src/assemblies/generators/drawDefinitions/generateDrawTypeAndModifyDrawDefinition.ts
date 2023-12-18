@@ -2,13 +2,13 @@ import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGove
 import { validateTieFormat } from '../../../validators/tieFormatUtilities';
 import { copyTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';
 import { generateDrawStructuresAndLinks } from './generateDrawStructuresAndLinks';
-import { getStageDrawPositionsCount } from '../../getters/getStageDrawPositions';
-import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
+import { getStageDrawPositionsCount } from '../../../drawEngine/getters/getStageDrawPositions';
+import { getAllDrawMatchUps } from '../../../drawEngine/getters/getMatchUps/drawMatchUps';
 import { modifyDrawNotice } from '../../../mutate/notifications/drawNotifications';
 import { definedAttributes } from '../../../utilities/definedAttributes';
 import { getMatchUpId } from '../../../global/functions/extractors';
-import { generateTieMatchUps } from '../../generators/tieMatchUps';
-import { addGoesTo } from '../matchUpGovernor/addGoesTo';
+import { generateTieMatchUps } from '../../../drawEngine/generators/tieMatchUps';
+import { addGoesTo } from '../../../drawEngine/governors/matchUpGovernor/addGoesTo';
 import { makeDeepCopy } from '../../../utilities';
 import {
   ResultType,
@@ -17,11 +17,11 @@ import {
 import {
   MatchUpsMap,
   getMatchUpsMap,
-} from '../../getters/getMatchUps/getMatchUpsMap';
+} from '../../../drawEngine/getters/getMatchUps/getMatchUpsMap';
 import {
   setStageDrawSize,
   setStageQualifiersCount,
-} from '../entryGovernor/stageEntryCounts';
+} from '../../../drawEngine/governors/entryGovernor/stageEntryCounts';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
@@ -103,7 +103,7 @@ export function generateDrawTypeAndModifyDrawDefinition(
     drawDefinition,
     stage: MAIN,
   });
-  params.drawSize = params.drawSize || mainStageDrawPositionsCount;
+  params.drawSize = params.drawSize ?? mainStageDrawPositionsCount;
 
   if (!mainStageDrawPositionsCount && params.drawSize) {
     setStageDrawSize({
@@ -157,7 +157,7 @@ export function generateDrawTypeAndModifyDrawDefinition(
     if (result.error) return result;
   }
 
-  const drawSize = params.drawSize || mainStageDrawPositionsCount;
+  const drawSize = params.drawSize ?? mainStageDrawPositionsCount;
 
   Object.assign(
     params,

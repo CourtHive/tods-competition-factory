@@ -2,16 +2,16 @@ import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGove
 import { validateTieFormat } from '../../../validators/tieFormatUtilities';
 import { getParticipants } from '../../../tournamentEngine/getters/participants/getParticipants';
 import { copyTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';
-import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
-import { automatedPositioning } from '../positionGovernor/automatedPositioning';
+import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { automatedPositioning } from '../../../drawEngine/governors/positionGovernor/automatedPositioning';
 import { definedAttributes } from '../../../utilities/definedAttributes';
 import { modifyDrawNotice } from '../../../mutate/notifications/drawNotifications';
-import { generateTieMatchUps } from '../../generators/tieMatchUps';
+import { generateTieMatchUps } from '../../../drawEngine/generators/tieMatchUps';
 import { makeDeepCopy, nextPowerOf2 } from '../../../utilities';
-import { getDrawStructures } from '../../getters/findStructure';
+import { getDrawStructures } from '../../../drawEngine/getters/findStructure';
 import { constantToString } from '../../../utilities/strings';
-import { getStageEntries } from '../../getters/stageGetter';
-import { getGenerators } from './getGenerators';
+import { getStageEntries } from '../../../drawEngine/getters/stageGetter';
+import { getGenerators } from '../../../drawEngine/governors/structureGovernor/getGenerators';
 
 import { PlayoffAttributes, SeedingProfile } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';

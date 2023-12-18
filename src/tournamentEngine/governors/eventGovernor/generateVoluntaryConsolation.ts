@@ -1,4 +1,4 @@
-import { generateVoluntaryConsolation as generateVoluntary } from '../../../drawEngine/governors/structureGovernor/generateVoluntaryConsolation';
+import { generateVoluntaryConsolation as generateVoluntary } from '../../../assemblies/generators/drawDefinitions/generateVoluntaryConsolation';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 

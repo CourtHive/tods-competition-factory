@@ -8,7 +8,7 @@ export { setMatchUpDailyLimits } from '../../competitionEngine/governors/schedul
 export { proConflicts } from '../../competitionEngine/governors/scheduleGovernor/proScheduling/proConflicts';
 export { addFinishingRounds } from '../../drawEngine/generators/addFinishingRounds';
 export { structureSort } from '../../drawEngine/getters/structureSort';
-export { matchUpSort } from '../../drawEngine/getters/matchUpSort';
+export { matchUpSort } from '../../functions/sorters/matchUpSort';
 export { attributeFilter } from '../../utilities';
 export {
   linkTournaments,

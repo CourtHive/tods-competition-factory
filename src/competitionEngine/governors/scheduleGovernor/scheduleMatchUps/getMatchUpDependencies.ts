@@ -8,7 +8,7 @@ import { addGoesTo } from '../../../../drawEngine/governors/matchUpGovernor/addG
 import { getIndividualParticipantIds } from './getIndividualParticipantIds';
 import { findEvent } from '../../../../acquire/findEvent';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
-import { matchUpSort } from '../../../../drawEngine/getters/matchUpSort';
+import { matchUpSort } from '../../../../functions/sorters/matchUpSort';
 
 import { POSITION } from '../../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';

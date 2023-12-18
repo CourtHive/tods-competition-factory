@@ -1,4 +1,4 @@
-import { generateDrawTypeAndModifyDrawDefinition } from '../../governors/structureGovernor/generateDrawTypeAndModifyDrawDefinition';
+import { generateDrawTypeAndModifyDrawDefinition } from '../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
 import { positionTargets } from '../../../mutate/matchUps/drawPositions/positionTargets';
 import { getStructureMatchUps } from '../../../query/structure/getStructureMatchUps';
 import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';

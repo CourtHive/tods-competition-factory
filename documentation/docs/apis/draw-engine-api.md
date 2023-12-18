@@ -467,23 +467,6 @@ const {
 
 ---
 
-## generateAdHocMatchUps
-
-Draws with `{ drawType: AD_HOC }` allow `matchUps` to be dynamically added. In this type of draw there is no automatic participant progression between rounds. Participant assignment to `matchUps` is done manually, or via **DrawMatic**. The only restriction is that a participant may appear once per round.
-
-```js
-const result = drawEngine.generateAdHocMatchUps({
-  participantIdPairings, // optional - array of array of pairings [['id1', 'id2'], ['id3', 'id4']]
-  drawDefinition, // required - drawDefinition in which target structure is found
-  structureId, // required when more than one structure is present - structureId of structure for which matchUps are being generated
-  matchUpIds, // optional - if matchUpIds are not specified UUIDs are generated
-  roundNumber, // optional - specify round for which matchUps will be generated
-  newRound, // optional - boolean defaults to false - whether to auto-increment to next roundNumber
-});
-```
-
----
-
 ## generateAndPopulatePlayoffStructures
 
 Generates `structures` and `links` but does not attach them to the `drawDefinition`. Used in conjunction with `attachPlayoffStructures`.

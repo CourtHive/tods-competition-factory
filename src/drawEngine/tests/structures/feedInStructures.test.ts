@@ -1,4 +1,4 @@
-import { generateDrawTypeAndModifyDrawDefinition } from '../../governors/structureGovernor/generateDrawTypeAndModifyDrawDefinition';
+import { generateDrawTypeAndModifyDrawDefinition } from '../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
 import { getDrawData } from '../../../tournamentEngine/governors/publishingGovernor/getDrawData';
 import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';

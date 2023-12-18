@@ -1,6 +1,6 @@
 import { getParticipantIds } from '../../../../global/functions/extractors';
 import tournamentEngine from '../../../../tournamentEngine/sync';
-import { matchUpSort } from '../../../getters/matchUpSort';
+import { matchUpSort } from '../../../../functions/sorters/matchUpSort';
 import mocksEngine from '../../../../mocksEngine';
 import { expect, it } from 'vitest';
 

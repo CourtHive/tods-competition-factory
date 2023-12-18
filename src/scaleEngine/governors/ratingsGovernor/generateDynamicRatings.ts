@@ -3,7 +3,7 @@ import { setParticipantScaleItem } from '../../../tournamentEngine/governors/par
 import { allTournamentMatchUps } from '../../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
 import { parse } from '../../../matchUpEngine/governors/matchUpFormatGovernor/parse';
 import ratingsParameters from '../../../fixtures/ratings/ratingsParameters';
-import { matchUpSort } from '../../../drawEngine/getters/matchUpSort';
+import { matchUpSort } from '../../../functions/sorters/matchUpSort';
 import { calculateNewRatings } from './calculateNewRatings';
 import { aggregateSets } from './aggregators';
 

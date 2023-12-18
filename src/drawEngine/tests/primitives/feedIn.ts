@@ -1,7 +1,7 @@
 import { getDrawStructures } from '../../getters/findStructure';
 
 import { MAIN, CONSOLATION } from '../../../constants/drawDefinitionConstants';
-import { generateDrawTypeAndModifyDrawDefinition } from '../../governors/structureGovernor/generateDrawTypeAndModifyDrawDefinition';
+import { generateDrawTypeAndModifyDrawDefinition } from '../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
 import { DrawDefinition } from '../../../types/tournamentTypes';
 import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';

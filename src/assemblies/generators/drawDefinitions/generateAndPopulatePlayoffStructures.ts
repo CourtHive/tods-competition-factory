@@ -2,17 +2,17 @@ import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGove
 import { checkMatchUpIsComplete } from '../../../query/matchUp/checkMatchUpIsComplete';
 import { generateAndPopulateRRplayoffStructures } from './generateAndPopulateRRplayoffStructures';
 import { assignDrawPositionBye } from '../../../mutate/matchUps/drawPositions/assignDrawPositionBye';
-import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
-import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
+import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { getAllDrawMatchUps } from '../../../drawEngine/getters/getMatchUps/drawMatchUps';
 import { directParticipants } from '../../../mutate/matchUps/drawPositions/directParticipants';
-import { getAvailablePlayoffProfiles } from './getAvailablePlayoffProfiles';
+import { getAvailablePlayoffProfiles } from '../../../drawEngine/governors/structureGovernor/getAvailablePlayoffProfiles';
 import { positionTargets } from '../../../mutate/matchUps/drawPositions/positionTargets';
 import { getMatchUpId } from '../../../global/functions/extractors';
-import { generateTieMatchUps } from '../../generators/tieMatchUps';
-import { findStructure } from '../../getters/findStructure';
+import { generateTieMatchUps } from '../../../drawEngine/generators/tieMatchUps';
+import { findStructure } from '../../../drawEngine/getters/findStructure';
 import { ensureInt } from '../../../utilities/ensureInt';
-import { addGoesTo } from '../matchUpGovernor/addGoesTo';
-import { getSourceRounds } from './getSourceRounds';
+import { addGoesTo } from '../../../drawEngine/governors/matchUpGovernor/addGoesTo';
+import { getSourceRounds } from '../../../drawEngine/governors/structureGovernor/getSourceRounds';
 import { makeDeepCopy } from '../../../utilities';
 import {
   ResultType,
@@ -21,7 +21,7 @@ import {
 import {
   NamingEntry,
   generatePlayoffStructures,
-} from '../../generators/playoffStructures';
+} from '../../../drawEngine/generators/playoffStructures';
 
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';

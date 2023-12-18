@@ -1,4 +1,4 @@
-import { generateAndPopulatePlayoffStructures } from '../../../drawEngine/governors/structureGovernor/generateAndPopulatePlayoffStructures';
+import { generateAndPopulatePlayoffStructures } from '../../../assemblies/generators/drawDefinitions/generateAndPopulatePlayoffStructures';
 import { setDrawParticipantRepresentativeIds } from './drawDefinitions/setDrawParticipantRepresentativeIds';
 import { getDrawParticipantRepresentativeIds } from './drawDefinitions/getDrawParticipantRepresentativeIds';
 import { assignMatchUpSideParticipant } from '../../../mutate/matchUps/drawPositions/assignMatchUpSideParticipant';
@@ -45,7 +45,6 @@ import { setPositionAssignments } from './drawDefinitions/setPositionAssignments
 import { modifyPairAssignment } from './drawDefinitions/modifyPairAssignment';
 import { removeDrawEntries } from './drawDefinitions/removeDrawEntries';
 import { modifyEntriesStatus } from './entries/modifyEntriesStatus';
-import { addPlayoffStructures } from './addPlayoffStructures';
 import { modifySeedAssignment } from './modifySeedAssignment';
 import { setMatchUpFormat } from '../../../mutate/tieFormat/setMatchUpFormat';
 
@@ -63,7 +62,7 @@ import { getScaledEntries } from './entries/getScaledEntries';
 import { removeSeeding } from './entries/removeSeeding';
 import { autoSeeding } from './entries/autoSeeding';
 
-import { generateDrawTypeAndModifyDrawDefinition } from '../../../drawEngine/governors/structureGovernor/generateDrawTypeAndModifyDrawDefinition';
+import { generateDrawTypeAndModifyDrawDefinition } from '../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
 import { addVoluntaryConsolationStructure } from '../../../mutate/drawDefinitions/addVoluntaryConsolationStructure';
 import { resetVoluntaryConsolationStructure } from './drawDefinitions/resetVoluntaryConsolationStructure';
 import { deleteFlightProfileAndFlightDraws } from './drawDefinitions/deleteFlightProfileAndFlightDraws';
@@ -88,10 +87,7 @@ import { modifyDrawName } from './drawDefinitions/modifyDrawName';
 import { attachFlightProfile } from './attachFlightProfile';
 import { drawMatic } from './drawDefinitions/drawMatic';
 import { addFlight } from './addFlight';
-import {
-  addAdHocMatchUps,
-  generateAdHocMatchUps,
-} from './drawDefinitions/generateAdHocMatchUps';
+
 import {
   attachConsolationStructures,
   attachPlayoffStructures,
@@ -141,6 +137,11 @@ import { checkInParticipant } from '../../../mutate/matchUps/timeItems/checkInPa
 
 import { enableTieAutoCalc } from '../../../drawEngine/governors/matchUpGovernor/enableTieAutoCalc';
 import { disableTieAutoCalc } from '../../../mutate/matchUps/extensions/disableTieAutoCalc';
+import {
+  addAdHocMatchUps,
+  generateAdHocMatchUps,
+} from '../../../drawEngine/generators/generateAdHocMatchUps';
+import { addPlayoffStructures } from '../../../mutate/drawDefinitions/addPlayoffStructures';
 
 const eventGovernor = {
   generateQualifyingStructure,

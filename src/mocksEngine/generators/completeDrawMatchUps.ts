@@ -7,7 +7,7 @@ import { generateLineUps } from '../../tournamentEngine/generators/generateLineU
 import { generateOutcomeFromScoreString } from './generateOutcomeFromScoreString';
 import { getPositionAssignments } from '../../drawEngine/getters/positionsGetter';
 import { structureSort } from '../../drawEngine/getters/structureSort';
-import { matchUpSort } from '../../drawEngine/getters/matchUpSort';
+import { matchUpSort } from '../../functions/sorters/matchUpSort';
 import { getMatchUpId } from '../../global/functions/extractors';
 import { generateOutcome } from './generateOutcome';
 

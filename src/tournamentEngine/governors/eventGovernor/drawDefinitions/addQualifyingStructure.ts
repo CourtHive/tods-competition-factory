@@ -1,4 +1,4 @@
-import { addQualifyingStructure as addQualifying } from '../../../../drawEngine/governors/structureGovernor/addQualifyingStructure';
+import { addQualifyingStructure as addQualifying } from '../../../../mutate/drawDefinitions/addQualifyingStructure';
 import { addTournamentTimeItem } from '../../tournamentGovernor/addTimeItem';
 import { definedAttributes } from '../../../../utilities/definedAttributes';
 

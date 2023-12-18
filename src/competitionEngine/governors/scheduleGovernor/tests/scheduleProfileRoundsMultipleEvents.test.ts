@@ -1,5 +1,5 @@
 import { visualizeScheduledMatchUps } from '../../../../global/testHarness/testUtilities/visualizeScheduledMatchUps';
-import { matchUpSort } from '../../../../drawEngine/getters/matchUpSort';
+import { matchUpSort } from '../../../../functions/sorters/matchUpSort';
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
 import { extractTime } from '../../../../utilities/dateTime';

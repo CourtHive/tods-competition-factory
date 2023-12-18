@@ -1,4 +1,4 @@
-import { generateDrawTypeAndModifyDrawDefinition } from '../../governors/structureGovernor/generateDrawTypeAndModifyDrawDefinition';
+import { generateDrawTypeAndModifyDrawDefinition } from '../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
 import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';
 import { feedInChampionship } from '../../tests/primitives/feedIn';
 import { findStructure, getDrawStructures } from '../findStructure';

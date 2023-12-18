@@ -1,9 +1,9 @@
-import { generateQualifyingLink } from '../../generators/generateQualifyingLink';
+import { generateQualifyingLink } from '../../../drawEngine/generators/generateQualifyingLink';
 import { addExtension } from '../../../mutate/extensions/addExtension';
 import { coerceEven, isConvertableInteger } from '../../../utilities/math';
-import structureTemplate from '../../generators/structureTemplate';
-import { generateRoundRobin } from '../../../assemblies/generators/drawDefinitions/drawTypes/roundRobin/roundRobin';
-import { treeMatchUps } from '../../../assemblies/generators/drawDefinitions/drawTypes/eliminationTree';
+import structureTemplate from '../../../drawEngine/generators/structureTemplate';
+import { generateRoundRobin } from './drawTypes/roundRobin/roundRobin';
+import { treeMatchUps } from './drawTypes/eliminationTree';
 import { constantToString } from '../../../utilities/strings';
 import {
   ResultType,

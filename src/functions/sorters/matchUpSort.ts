@@ -15,7 +15,7 @@ export function matchUpSort(a: HydratedMatchUp, b: HydratedMatchUp): number {
     stageDifference(a, b) ||
     (a?.stageSequence || 0) - (b?.stageSequence || 0) ||
     (a?.roundNumber && b.roundNumber && a?.roundNumber - b?.roundNumber) ||
-    (a?.roundPosition || 0) - (b?.roundPosition || 0)
+    (a?.roundPosition ?? 0) - (b?.roundPosition ?? 0)
   );
 }
 

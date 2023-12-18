@@ -1,4 +1,4 @@
-import { generateDrawTypeAndModifyDrawDefinition } from '../../../governors/structureGovernor/generateDrawTypeAndModifyDrawDefinition';
+import { generateDrawTypeAndModifyDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
 import { tallyParticipantResults } from '../../../../matchUpEngine/getters/roundRobinTally/roundRobinTally';
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
 import { setStageDrawSize } from '../../../governors/entryGovernor/stageEntryCounts';
@@ -582,7 +582,7 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
     );
     expect(expectedParticipantIds.length).toEqual(groupsCount);
 
-    const positionAssignments = updatedStructure?.positionAssignments || [];
+    const positionAssignments = updatedStructure?.positionAssignments ?? [];
     const pairedPositions = chunkArray(positionAssignments, 2);
     const pairedParticipantIds = pairedPositions
       .map((positions) => positions.map((position) => position.participantId))

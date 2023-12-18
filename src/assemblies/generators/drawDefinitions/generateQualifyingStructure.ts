@@ -1,11 +1,11 @@
 import { getStructureGroups } from '../../../tournamentEngine/governors/publishingGovernor/getStructureGroups';
-import { generateQualifyingLink } from '../../generators/generateQualifyingLink';
+import { generateQualifyingLink } from '../../../drawEngine/generators/generateQualifyingLink';
 import { addExtension } from '../../../mutate/extensions/addExtension';
 import { coerceEven, isConvertableInteger } from '../../../utilities/math';
 import { decorateResult } from '../../../global/functions/decorateResult';
-import structureTemplate from '../../generators/structureTemplate';
-import { generateRoundRobin } from '../../../assemblies/generators/drawDefinitions/drawTypes/roundRobin/roundRobin';
-import { treeMatchUps } from '../../../assemblies/generators/drawDefinitions/drawTypes/eliminationTree';
+import structureTemplate from '../../../drawEngine/generators/structureTemplate';
+import { generateRoundRobin } from './drawTypes/roundRobin/roundRobin';
+import { treeMatchUps } from './drawTypes/eliminationTree';
 import { constantToString } from '../../../utilities/strings';
 
 import POLICY_ROUND_NAMING_DEFAULT from '../../../fixtures/policies/POLICY_ROUND_NAMING_DEFAULT';

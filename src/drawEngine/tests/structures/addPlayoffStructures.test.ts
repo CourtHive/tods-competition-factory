@@ -5,8 +5,8 @@ import {
   FIRST_MATCH_LOSER_CONSOLATION,
   MAIN,
 } from '../../../constants/drawDefinitionConstants';
-import { generateDrawTypeAndModifyDrawDefinition } from '../../governors/structureGovernor/generateDrawTypeAndModifyDrawDefinition';
-import { addPlayoffStructures } from '../../governors/structureGovernor/addPlayoffStructures';
+import { generateDrawTypeAndModifyDrawDefinition } from '../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
+import { addPlayoffStructures } from '../../../mutate/drawDefinitions/addPlayoffStructures';
 import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';
 import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 

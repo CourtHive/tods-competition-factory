@@ -1,23 +1,23 @@
-import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
-import { decorateResult } from '../../../global/functions/decorateResult';
-import { resequenceStructures } from './resequenceStructures';
-import { findStructure } from '../../getters/findStructure';
+import { getAllStructureMatchUps } from '../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { decorateResult } from '../../global/functions/decorateResult';
+import { resequenceStructures } from '../../drawEngine/governors/structureGovernor/resequenceStructures';
+import { findStructure } from '../../drawEngine/getters/findStructure';
 import {
   addMatchUpsNotice,
   modifyDrawNotice,
-} from '../../../mutate/notifications/drawNotifications';
+} from '../notifications/drawNotifications';
 
-import { SUCCESS } from '../../../constants/resultConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_STRUCTURE,
   MISSING_TARGET_LINK,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 import {
   DrawDefinition,
   DrawLink,
   Structure,
-} from '../../../types/tournamentTypes';
+} from '../../types/tournamentTypes';
 
 type AttachQualifyingArgs = {
   drawDefinition: DrawDefinition;

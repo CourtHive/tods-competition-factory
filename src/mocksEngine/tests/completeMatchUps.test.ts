@@ -1,4 +1,4 @@
-import { matchUpSort } from '../../drawEngine/getters/matchUpSort';
+import { matchUpSort } from '../../functions/sorters/matchUpSort';
 import tournamentEngine from '../../tournamentEngine/sync';
 import { instanceCount } from '../../utilities';
 import { fmlc32profile } from './fmlc32';

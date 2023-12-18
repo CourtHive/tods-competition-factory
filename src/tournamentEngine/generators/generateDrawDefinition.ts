@@ -1,5 +1,5 @@
-import { generateDrawTypeAndModifyDrawDefinition } from '../../drawEngine/governors/structureGovernor/generateDrawTypeAndModifyDrawDefinition';
-import { generateQualifyingStructures } from '../../drawEngine/governors/structureGovernor/generateQualifyingStructures';
+import { generateDrawTypeAndModifyDrawDefinition } from '../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
+import { generateQualifyingStructures } from '../../assemblies/generators/drawDefinitions/generateQualifyingStructures';
 import { addVoluntaryConsolationStructure } from '../../mutate/drawDefinitions/addVoluntaryConsolationStructure';
 import { setMatchUpFormat } from '../../mutate/matchUps/matchUpFormat/setMatchUpFormat';
 import { addDrawDefinition } from '../governors/eventGovernor/drawDefinitions/addDrawDefinition';

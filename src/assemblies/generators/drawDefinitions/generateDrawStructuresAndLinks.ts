@@ -1,12 +1,12 @@
-import { generateQualifyingLink } from '../../generators/generateQualifyingLink';
+import { generateQualifyingLink } from '../../../drawEngine/generators/generateQualifyingLink';
 import { generateQualifyingStructures } from './generateQualifyingStructures';
 import { decorateResult } from '../../../global/functions/decorateResult';
-import { getPositionAssignments } from '../../getters/positionsGetter';
+import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
 import { definedAttributes } from '../../../utilities/definedAttributes';
-import { structureSort } from '../../getters/structureSort';
+import { structureSort } from '../../../drawEngine/getters/structureSort';
 import { ensureInt } from '../../../utilities/ensureInt';
 import { isPowerOf2 } from '../../../utilities';
-import { getGenerators } from './getGenerators';
+import { getGenerators } from '../../../drawEngine/governors/structureGovernor/getGenerators';
 
 import { POLICY_TYPE_DRAWS } from '../../../constants/policyConstants';
 import { SUCCESS } from '../../../constants/resultConstants';

@@ -1,6 +1,6 @@
 import { mocksEngine, tournamentEngine } from '../../..';
 import { shuffleArray } from '../../../utilities';
-import { matchUpSort } from '../matchUpSort';
+import { matchUpSort } from '../../../functions/sorters/matchUpSort';
 import { it, expect } from 'vitest';
 
 import {

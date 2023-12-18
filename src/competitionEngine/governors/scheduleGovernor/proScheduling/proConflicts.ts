@@ -1,7 +1,7 @@
 import { validMatchUps } from '../../../../validators/validMatchUp';
 import { getMatchUpDependencies } from '../scheduleMatchUps/getMatchUpDependencies';
 import { generateRange, instanceCount, unique } from '../../../../utilities';
-import { matchUpSort } from '../../../../drawEngine/getters/matchUpSort';
+import { matchUpSort } from '../../../../functions/sorters/matchUpSort';
 import { ensureInt } from '../../../../utilities/ensureInt';
 
 import { Tournament } from '../../../../types/tournamentTypes';

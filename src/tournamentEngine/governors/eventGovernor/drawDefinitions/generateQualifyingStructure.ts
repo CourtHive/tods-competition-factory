@@ -1,4 +1,4 @@
-import { generateQualifyingStructure as generateQualifying } from '../../../../drawEngine/governors/structureGovernor/generateQualifyingStructure';
+import { generateQualifyingStructure as generateQualifying } from '../../../../assemblies/generators/drawDefinitions/generateQualifyingStructure';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../../constants/errorConditionConstants';
 
