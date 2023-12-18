@@ -1217,7 +1217,7 @@ tournamentEngine.disableCourts({
 
 ---
 
-## disableTiaAutoCalc
+## disableTieAutoCalc
 
 Disable default behavior of auto calculating TEAM matchUp scores.
 

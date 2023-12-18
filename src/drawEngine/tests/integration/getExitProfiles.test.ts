@@ -1,7 +1,7 @@
+import { getExitProfiles } from '../../governors/queryGovernor/getExitProfile';
 import tournamentEngine from '../../../tournamentEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import { expect, test } from 'vitest';
-import drawEngine from '../../sync';
 
 import {
   COMPASS,
@@ -18,9 +18,7 @@ test('can recreate an exitProfile for a COMPASS draw', () => {
 
   tournamentEngine.setState(tournamentRecord);
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
-  const { exitProfiles } = drawEngine
-    .setState(drawDefinition)
-    .getExitProfiles({ drawDefinition });
+  const exitProfiles = getExitProfiles({ drawDefinition }).exitProfiles ?? {};
   expect(Object.values(exitProfiles)).toEqual([
     ['0'],
     ['0-1'],
@@ -43,9 +41,7 @@ test('can recreate an exitProfile for a CURTIS_CONSOLATION draw', () => {
 
   tournamentEngine.setState(tournamentRecord);
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
-  const { exitProfiles } = drawEngine
-    .setState(drawDefinition)
-    .getExitProfiles({ drawDefinition });
+  const exitProfiles = getExitProfiles({ drawDefinition }).exitProfiles ?? {};
   expect(Object.values(exitProfiles)).toEqual([
     ['0'],
     ['0-1', '0-2'],

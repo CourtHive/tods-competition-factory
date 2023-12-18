@@ -3,7 +3,7 @@ import { getMatchUpsMap } from './getters/getMatchUps/getMatchUpsMap';
 import { makeDeepCopy, UUID } from '../utilities';
 import definitionTemplate, {
   keyValidation,
-} from './generators/drawDefinitionTemplate';
+} from '../assemblies/generators/templates/drawDefinitionTemplate';
 
 import {
   INVALID_OBJECT,

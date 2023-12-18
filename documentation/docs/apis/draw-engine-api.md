@@ -432,7 +432,7 @@ const { matchUps } = drawEngine.drawMatic({
 
 ---
 
-## disableTiaAutoCalc
+## disableTieAutoCalc
 
 Disable default behavior of auto calculating TEAM matchUp scores.
 

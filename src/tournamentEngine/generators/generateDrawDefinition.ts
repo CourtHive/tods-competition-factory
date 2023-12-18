@@ -1,6 +1,6 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '../../drawEngine/governors/structureGovernor/generateDrawTypeAndModifyDrawDefinition';
 import { generateQualifyingStructures } from '../../drawEngine/governors/structureGovernor/generateQualifyingStructures';
-import { addVoluntaryConsolationStructure } from '../governors/eventGovernor/addVoluntaryConsolationStructure';
+import { addVoluntaryConsolationStructure } from '../../mutate/drawDefinitions/addVoluntaryConsolationStructure';
 import { setMatchUpFormat } from '../../mutate/matchUps/matchUpFormat/setMatchUpFormat';
 import { addDrawDefinition } from '../governors/eventGovernor/drawDefinitions/addDrawDefinition';
 import { generateQualifyingLink } from '../../drawEngine/generators/generateQualifyingLink';
@@ -800,8 +800,6 @@ export function generateDrawDefinition(
   if (typeof voluntaryConsolation === 'object' && drawSize >= 4) {
     addVoluntaryConsolationStructure({
       ...voluntaryConsolation,
-      tournamentRecord,
-      appliedPolicies,
       drawDefinition,
       matchUpType,
     });

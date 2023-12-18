@@ -64,7 +64,7 @@ import { removeSeeding } from './entries/removeSeeding';
 import { autoSeeding } from './entries/autoSeeding';
 
 import { generateDrawTypeAndModifyDrawDefinition } from '../../../drawEngine/governors/structureGovernor/generateDrawTypeAndModifyDrawDefinition';
-import { addVoluntaryConsolationStructure } from '../../../drawEngine/generators/addVoluntaryConsolationStructure';
+import { addVoluntaryConsolationStructure } from '../../../mutate/drawDefinitions/addVoluntaryConsolationStructure';
 import { resetVoluntaryConsolationStructure } from './drawDefinitions/resetVoluntaryConsolationStructure';
 import { deleteFlightProfileAndFlightDraws } from './drawDefinitions/deleteFlightProfileAndFlightDraws';
 import { removeStructure } from '../../../drawEngine/governors/structureGovernor/removeStructure';
@@ -134,12 +134,13 @@ import { generateDrawMaticRound } from '../../../forge/generate';
 import { resetMatchUpLineUps } from '../../../mutate/matchUps/lineUps/resetMatchUpLineUps';
 import { aggregateTieFormats } from '../../../mutate/tieFormat/aggregateTieFormats';
 import { updateTieMatchUpScore } from './updateTieMatchUpScore';
-import { disableTieAutoCalc } from './disableTieAutoCalc';
-import { enableTieAutoCalc } from './enableTieAutoCalc';
 import { modifyEvent } from './modifyEvent';
 
 import { checkOutParticipant } from '../../../mutate/matchUps/timeItems/checkOutParticipant';
 import { checkInParticipant } from '../../../mutate/matchUps/timeItems/checkInParticipant';
+
+import { enableTieAutoCalc } from '../../../drawEngine/governors/matchUpGovernor/enableTieAutoCalc';
+import { disableTieAutoCalc } from '../../../mutate/matchUps/extensions/disableTieAutoCalc';
 
 const eventGovernor = {
   generateQualifyingStructure,

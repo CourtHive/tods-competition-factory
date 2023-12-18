@@ -1,10 +1,19 @@
-import { modifyDrawNotice } from '../../mutate/notifications/drawNotifications';
+import { modifyDrawNotice } from '../notifications/drawNotifications';
 import { constantToString } from '../../utilities/strings';
-import structureTemplate from './structureTemplate';
+import structureTemplate from '../../drawEngine/generators/structureTemplate';
 
 import { MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
 import { VOLUNTARY_CONSOLATION } from '../../constants/drawDefinitionConstants';
+import { DrawDefinition } from '../../types/tournamentTypes';
 import { SUCCESS } from '../../constants/resultConstants';
+
+type AddVoluntaryConsolationStructureArgs = {
+  structureAbbreviation?: string;
+  drawDefinition: DrawDefinition;
+  structureName?: string;
+  matchUpType?: string;
+  structureId?: string;
+};
 
 export function addVoluntaryConsolationStructure({
   structureName = constantToString(VOLUNTARY_CONSOLATION),
@@ -12,7 +21,7 @@ export function addVoluntaryConsolationStructure({
   drawDefinition,
   matchUpType,
   structureId,
-}) {
+}: AddVoluntaryConsolationStructureArgs) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   const structure = structureTemplate({
@@ -24,9 +33,10 @@ export function addVoluntaryConsolationStructure({
     matchUpType,
   });
 
+  if (!drawDefinition.structures) drawDefinition.structures = [];
   drawDefinition.structures.push(structure);
 
-  modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
+  modifyDrawNotice({ drawDefinition, structureIds: [structure.structureId] });
 
   return { ...SUCCESS };
 }

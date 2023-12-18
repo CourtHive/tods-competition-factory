@@ -1,4 +1,4 @@
-import { addVoluntaryConsolationStructure } from '../../generators/addVoluntaryConsolationStructure';
+import { addVoluntaryConsolationStructure } from '../../../mutate/drawDefinitions/addVoluntaryConsolationStructure';
 import { generateDrawTypeAndModifyDrawDefinition } from './generateDrawTypeAndModifyDrawDefinition';
 import { generateAndPopulatePlayoffStructures } from './generateAndPopulatePlayoffStructures';
 import { generateDrawStructuresAndLinks } from './generateDrawStructuresAndLinks';
