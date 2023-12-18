@@ -989,21 +989,6 @@ drawEngine.resetMatchUpTimeItems({ matchUpId });
 
 ---
 
-## resolveDrawPositions
-
-Provides an algorithmic approach to assigning drawPositions based on participant nomination of an arbitrary number of preferred positions.
-
-Simple use case would be to pre-position all seeded participants, then resolve all remaining participants.
-
-Variations could include grouping participants into quarters based on rankings/ratings and resolving drawPositions for each group in a sequence which gives preference to higher ranked/rated participants
-
-```js
-const { drawPositionResolutions, report } = drawEngine.resolveDrawPositions({
-  participantFactors, // { [participantId]: { preferences: [1, 2, 3] }} - the length of the preference array is arbitrary
-  positionAssignments, // object from target structure containing any already assigned positions
-});
-```
-
 ## setDrawDescription
 
 ```js
