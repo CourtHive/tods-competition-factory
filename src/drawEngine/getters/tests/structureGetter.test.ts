@@ -3,7 +3,7 @@ import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts
 import { feedInChampionship } from '../../tests/primitives/feedIn';
 import { findStructure, getDrawStructures } from '../findStructure';
 import { constantToString } from '../../../utilities/strings';
-import { newDrawDefinition } from '../../stateMethods';
+import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { expect, it } from 'vitest';
 
 import { ERROR } from '../../../constants/resultConstants';

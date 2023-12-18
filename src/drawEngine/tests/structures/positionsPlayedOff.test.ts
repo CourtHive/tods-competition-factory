@@ -1,7 +1,7 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '../../governors/structureGovernor/generateDrawTypeAndModifyDrawDefinition';
 import { getPositionsPlayedOff } from '../../governors/structureGovernor/getPositionsPlayedOff';
 import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';
-import { newDrawDefinition } from '../../stateMethods';
+import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { expect, it } from 'vitest';
 
 import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../constants/drawDefinitionConstants';

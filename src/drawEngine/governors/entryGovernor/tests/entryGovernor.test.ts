@@ -1,5 +1,5 @@
 import { addDrawEntries, addDrawEntry } from '../addDrawEntries';
-import { newDrawDefinition } from '../../../stateMethods';
+import { newDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { setStageDrawSize } from '../stageEntryCounts';
 import { removeEntry } from '../removeEntry';
 import { expect, it } from 'vitest';
@@ -86,7 +86,9 @@ it('adds partitipants to stage until stage drawPositions filled', () => {
     drawSize: 8,
     stage: MAIN,
   });
+  expect(result).toMatchObject(SUCCESS);
   result = setStageDrawSize({ drawDefinition, stage: QUALIFYING, drawSize: 4 });
+  expect(result).toMatchObject(SUCCESS);
 
   result = addDrawEntry({
     participantId: 'uuid0',
@@ -121,6 +123,7 @@ it('adds partitipants to stage until stage drawPositions filled', () => {
   expect(result).toHaveProperty(ERROR);
 
   result = setStageDrawSize({ drawDefinition, stage: MAIN, drawSize: 2 });
+  expect(result).toMatchObject(SUCCESS);
   result = addDrawEntry({
     participantId: 'uuid6',
     entryStage: MAIN,
@@ -151,6 +154,7 @@ it('can add bulk entries', () => {
     drawSize: 8,
     stage: MAIN,
   });
+  expect(result).toMatchObject(SUCCESS);
   const participants = [
     { participantId: 'uuid1' },
     { participantId: 'uuid2' },
@@ -173,6 +177,7 @@ it('rejects bulk entries if there is insufficient space', () => {
     drawSize: 4,
     stage: MAIN,
   });
+  expect(result.success).toEqual(true);
   const participants = [
     { participantId: 'uuid1' },
     { participantId: 'uuid2' },

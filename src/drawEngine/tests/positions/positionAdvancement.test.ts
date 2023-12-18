@@ -5,7 +5,7 @@ import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getDrawStructures } from '../../getters/findStructure';
 import { feedInChampionship } from '../primitives/feedIn';
-import { newDrawDefinition } from '../../stateMethods';
+import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { expect, it } from 'vitest';
 
 import { DrawDefinition } from '../../../types/tournamentTypes';
@@ -255,7 +255,7 @@ it('can direct participants in COMPASS', () => {
     drawDefinition,
   });
 
-  let matchUpId = upcomingMatchUps?.[0].matchUpId || ''; // keep TypeScript happy!
+  let matchUpId = upcomingMatchUps?.[0].matchUpId ?? ''; // keep TypeScript happy!
   const {
     matchUp,
     targetLinks: { loserTargetLink },
@@ -289,7 +289,7 @@ it('can direct participants in COMPASS', () => {
   expect(matchUp.structureId).toEqual(winnerMatchUp.structureId);
   expect(matchUp.structureId).not.toEqual(loserMatchUp.structureId);
 
-  matchUpId = pendingMatchUps?.[0].matchUpId || ''; // keep TypeScript happy
+  matchUpId = pendingMatchUps?.[0].matchUpId ?? ''; // keep TypeScript happy
   const {
     matchUp: matchUp2ndRound,
     targetLinks: { loserTargetLink: round2loserTargetLink },

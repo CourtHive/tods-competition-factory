@@ -8,7 +8,7 @@ import {
 import { generateDrawTypeAndModifyDrawDefinition } from '../../governors/structureGovernor/generateDrawTypeAndModifyDrawDefinition';
 import { addPlayoffStructures } from '../../governors/structureGovernor/addPlayoffStructures';
 import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';
-import { newDrawDefinition } from '../../stateMethods';
+import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 
 it('can add 3-4 playoff structure to a SINGLE ELIMINATION structure', () => {
   const { success, drawDefinition } = drawEngineAddStructuresTest({

@@ -8,7 +8,7 @@ import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts
 import { addDrawEntries } from '../../governors/entryGovernor/addDrawEntries';
 import { assignSeed } from '../../governors/entryGovernor/seedAssignment';
 import { getDrawStructures } from '../../getters/findStructure';
-import { newDrawDefinition } from '../../stateMethods';
+import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { drawMatchUps } from '../../../forge/query';
 import { generateRange } from '../../../utilities';
 import { expect, it } from 'vitest';

@@ -4,7 +4,7 @@ import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { feedInMatchUps } from '../../generators/feedInMatchUps';
 import { feedInChampionship } from '../primitives/feedIn';
-import { newDrawDefinition } from '../../stateMethods';
+import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { generateRange } from '../../../utilities';
 import { expect, it } from 'vitest';
 

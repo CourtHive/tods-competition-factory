@@ -6,7 +6,7 @@ import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts
 import { addDrawEntries } from '../../governors/entryGovernor/addDrawEntries';
 import { assignSeed } from '../../governors/entryGovernor/seedAssignment';
 import { getDrawStructures } from '../../getters/findStructure';
-import { newDrawDefinition } from '../../stateMethods';
+import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { generateRange } from '../../../utilities';
 
 import SEEDING_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';

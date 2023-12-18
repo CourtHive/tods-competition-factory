@@ -6,7 +6,7 @@ import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { constantToString } from '../../../utilities/strings';
-import { newDrawDefinition } from '../../stateMethods';
+import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { expect, it } from 'vitest';
 
 import { POLICY_ROUND_NAMING_DEFAULT } from '../../../fixtures/policies/POLICY_ROUND_NAMING_DEFAULT';

@@ -1,7 +1,7 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '../../governors/structureGovernor/generateDrawTypeAndModifyDrawDefinition';
 import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';
 import { instanceCount, numericSort } from '../../../utilities';
-import { newDrawDefinition } from '../../stateMethods';
+import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { expect, it } from 'vitest';
 
 import { ERROR } from '../../../constants/resultConstants';

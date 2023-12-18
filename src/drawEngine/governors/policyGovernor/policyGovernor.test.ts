@@ -5,7 +5,7 @@ import { expect, it } from 'vitest';
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 import SEEDING_ITF from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { newDrawDefinition } from '../../stateMethods';
+import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 
 it('can set and reset policy governor', () => {
   // cannot attach a policy if no drawDefinition
@@ -18,7 +18,7 @@ it('can set and reset policy governor', () => {
   expect(result).toMatchObject(SUCCESS);
 
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
-  const { seedingProfile, policyName } = appliedPolicies?.seeding || {};
+  const { seedingProfile, policyName } = appliedPolicies?.seeding ?? {};
 
   expect(policyName).toEqual('ITF SEEDING');
   expect(seedingProfile).not.toBeUndefined();

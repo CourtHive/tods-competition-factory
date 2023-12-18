@@ -13,7 +13,7 @@ import { getQualifiersCount } from '../../drawEngine/getters/getQualifiersCount'
 import { getAllowedDrawTypes } from '../governors/policyGovernor/allowedTypes';
 import structureTemplate from '../../drawEngine/generators/structureTemplate';
 import { getParticipants } from '../getters/participants/getParticipants';
-import { newDrawDefinition } from '../../drawEngine/stateMethods';
+import { newDrawDefinition } from '../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { mustBeAnArray } from '../../utilities/mustBeAnArray';
 import { isConvertableInteger } from '../../utilities/math';
 import { constantToString } from '../../utilities/strings';

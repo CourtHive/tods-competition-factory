@@ -1,7 +1,7 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '../../governors/structureGovernor/generateDrawTypeAndModifyDrawDefinition';
 import { getSourceRounds } from '../../governors/structureGovernor/getSourceRounds';
 import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';
-import { newDrawDefinition } from '../../stateMethods';
+import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { it, expect } from 'vitest';
 
 import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../constants/drawDefinitionConstants';
@@ -15,34 +15,26 @@ it('can correctly derive source rounds for final positions in SINGLE_ELIMINATION
 
   const structureId = result.structures?.[0].structureId ?? '';
 
-  const srResult = getSourceRounds({
+  let srResult = getSourceRounds({
     playoffPositions: [1],
     drawDefinition,
     structureId,
   });
 
-  let {
-    sourceRounds,
-    playoffRoundsRanges,
-    playoffSourceRounds,
-    playoffPositionsReturned,
-  } = srResult;
-  expect(sourceRounds).toEqual([4]);
+  let { playoffSourceRounds, playoffPositionsReturned } = srResult;
+  expect(srResult.sourceRounds).toEqual([4]);
   expect(playoffSourceRounds).toEqual([]);
   expect(srResult.playedOffSourceRounds).toEqual([4]);
   expect(playoffPositionsReturned).toEqual([]);
 
-  ({
-    sourceRounds,
-    playoffRoundsRanges,
-    playoffSourceRounds,
-    playoffPositionsReturned,
-  } = getSourceRounds({
+  srResult = getSourceRounds({
     playoffPositions: [3, 4],
     drawDefinition,
     structureId,
-  }));
-  expect(playoffRoundsRanges[0]).toEqual({
+  });
+  ({ playoffSourceRounds, playoffPositionsReturned } = srResult);
+
+  expect(srResult.playoffRoundsRanges[0]).toEqual({
     roundNumber: 3,
     finishingPositionRange: '3-4',
     finishingPositions: [3, 4],
@@ -50,12 +42,7 @@ it('can correctly derive source rounds for final positions in SINGLE_ELIMINATION
   expect(playoffSourceRounds).toEqual([3]);
   expect(playoffPositionsReturned).toEqual([3, 4]);
 
-  ({
-    sourceRounds,
-    playoffRoundsRanges,
-    playoffSourceRounds,
-    playoffPositionsReturned,
-  } = getSourceRounds({
+  ({ playoffSourceRounds, playoffPositionsReturned } = getSourceRounds({
     drawDefinition,
     structureId,
     playoffPositions: [5, 6],
@@ -63,12 +50,11 @@ it('can correctly derive source rounds for final positions in SINGLE_ELIMINATION
   expect(playoffSourceRounds).toEqual([2]);
   expect(playoffPositionsReturned).toEqual([5, 6, 7, 8]);
 
-  ({ sourceRounds, playoffSourceRounds, playoffPositionsReturned } =
-    getSourceRounds({
-      drawDefinition,
-      structureId,
-      playoffPositions: [9],
-    }));
+  ({ playoffSourceRounds, playoffPositionsReturned } = getSourceRounds({
+    drawDefinition,
+    structureId,
+    playoffPositions: [9],
+  }));
   expect(playoffSourceRounds).toEqual([1]);
   expect(playoffPositionsReturned).toEqual([9, 10, 11, 12, 13, 14, 15, 16]);
 });

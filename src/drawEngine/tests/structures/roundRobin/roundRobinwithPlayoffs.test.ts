@@ -7,7 +7,7 @@ import { chunkArray, intersection } from '../../../../utilities/arrays';
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import { findStructure } from '../../../getters/findStructure';
 import matchUpEngine from '../../../../matchUpEngine/sync';
-import { newDrawDefinition } from '../../../stateMethods';
+import { newDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { setsValues } from './roundRobinSetsValues';
 import mocksEngine from '../../../../mocksEngine';
 import { expect, it } from 'vitest';

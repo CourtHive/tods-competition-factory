@@ -3,7 +3,7 @@ import { getDrawStructures } from '../../getters/findStructure';
 import { MAIN, CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import { generateDrawTypeAndModifyDrawDefinition } from '../../governors/structureGovernor/generateDrawTypeAndModifyDrawDefinition';
 import { DrawDefinition } from '../../../types/tournamentTypes';
-import { newDrawDefinition } from '../../stateMethods';
+import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';
 import { ResultType } from '../../../global/functions/decorateResult';
 

@@ -4,7 +4,7 @@ import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts
 import { getDrawStructures } from '../../getters/findStructure';
 import { constantToString } from '../../../utilities/strings';
 import tournamentEngine from '../../../tournamentEngine/sync';
-import { newDrawDefinition } from '../../stateMethods';
+import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import mocksEngine from '../../../mocksEngine';
 import { setSubscriptions } from '../../..';
 import { expect, it } from 'vitest';

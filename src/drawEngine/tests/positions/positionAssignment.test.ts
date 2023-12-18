@@ -4,7 +4,7 @@ import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getDrawStructures } from '../../getters/findStructure';
 import { getStageEntries } from '../../getters/stageGetter';
-import { newDrawDefinition } from '../../stateMethods';
+import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { mocksEngine } from '../../..';
 import { expect, it } from 'vitest';
 

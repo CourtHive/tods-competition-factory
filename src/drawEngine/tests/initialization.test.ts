@@ -6,7 +6,7 @@ import {
   QUALIFYING,
   CONSOLATION,
 } from '../../constants/drawDefinitionConstants';
-import { newDrawDefinition } from '../stateMethods';
+import { newDrawDefinition } from '../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import {
   setStageAlternatesCount,
   setStageDrawSize,

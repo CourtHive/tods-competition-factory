@@ -4,7 +4,7 @@ import { validDrawPositions } from '../../../validators/validDrawPositions';
 import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';
 import { DrawDefinition } from '../../../types/tournamentTypes';
 import { structureSort } from '../../getters/structureSort';
-import { newDrawDefinition } from '../../stateMethods';
+import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { expect, it } from 'vitest';
 
 import { ERROR } from '../../../constants/resultConstants';

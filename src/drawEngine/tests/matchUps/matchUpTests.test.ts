@@ -7,7 +7,7 @@ import { getDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { getMatchUpType } from '../../accessors/matchUpAccessor';
 import { getDrawStructures } from '../../getters/findStructure';
-import { newDrawDefinition } from '../../stateMethods';
+import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { expect, it } from 'vitest';
 
 import { DrawDefinition } from '../../../types/tournamentTypes';

@@ -8,7 +8,7 @@ import { addDrawEntries } from '../../governors/entryGovernor/addDrawEntries';
 import { assignSeed } from '../../governors/entryGovernor/seedAssignment';
 import { verifyStructure } from '../primitives/verifyStructure';
 import { getDrawStructures } from '../../getters/findStructure';
-import { newDrawDefinition } from '../../stateMethods';
+import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { generateRange } from '../../../utilities';
 import { expect, it } from 'vitest';
 
@@ -24,7 +24,6 @@ it('can generate and verify curtis structures', () => {
   let mainStructureId,
     consolation1stStructureId,
     consolation2ndStructureId,
-    playoffStructureId,
     drawDefinition;
 
   ({
@@ -78,17 +77,11 @@ it('can generate and verify curtis structures', () => {
     expectedRoundMatchUpsCounts: [2, 2, 1],
   });
 
-  ({
-    drawDefinition,
-    mainStructureId,
-    consolation1stStructureId,
-    consolation2ndStructureId,
-    playoffStructureId,
-  } = generateCurtis({
-    drawSize: 64,
-    seedsCount: 16,
-    assignSeeds: 14,
+  ({ drawDefinition, mainStructureId } = generateCurtis({
     participantsCount: 60,
+    assignSeeds: 14,
+    seedsCount: 16,
+    drawSize: 64,
   }));
 
   verifyStructure({
@@ -102,28 +95,25 @@ it('can generate and verify curtis structures', () => {
     expectedRoundMatchUpsCounts: [32, 16, 8, 4, 2, 1],
   });
 
-  ({
-    drawDefinition,
-    mainStructureId,
-    consolation1stStructureId,
-    consolation2ndStructureId,
-    playoffStructureId,
-  } = generateCurtis({
-    drawSize: 64,
-    seedsCount: 16,
-    assignSeeds: 14,
+  const result = generateCurtis({
     participantsCount: 60,
-  }));
+    assignSeeds: 14,
+    seedsCount: 16,
+    drawSize: 64,
+  });
+
+  ({ drawDefinition, consolation1stStructureId, consolation2ndStructureId } =
+    result);
 
   verifyStructure({
-    drawDefinition,
-    structureId: playoffStructureId,
-    expectedSeeds: 0,
-    expectedSeedsWithByes: 0,
-    expectedByeAssignments: 0,
-    expectedSeedValuesWithBye: [],
+    structureId: result.playoffStructureId,
     expectedPositionsAssignedCount: 0,
     expectedRoundMatchUpsCounts: [1],
+    expectedSeedValuesWithBye: [],
+    expectedByeAssignments: 0,
+    expectedSeedsWithByes: 0,
+    expectedSeeds: 0,
+    drawDefinition,
   });
 
   verifyStructure({
