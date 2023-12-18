@@ -2,7 +2,7 @@ import { addParticipantGroupings } from '../../../drawEngine/governors/positionG
 import { addNationalityCode } from '../../governors/participantGovernor/addNationalityCode';
 import { getScaleValues } from '../participants/getScaleValues';
 
-import { getParticipantMap } from '../participants/getParticipantMap';
+import { getParticipantMap } from '../../../query/participants/getParticipantMap';
 import { Tournament } from '../../../types/tournamentTypes';
 import { HydratedParticipant } from '../../../types/hydrated';
 import { makeDeepCopy } from '../../../utilities';

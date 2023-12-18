@@ -1,20 +1,20 @@
-import { addNationalityCode } from '../../governors/participantGovernor/addNationalityCode';
-import { addIndividualParticipants } from '../../../mutate/participants/addIndividualParticipants';
-import { getTimeItem } from '../../governors/queryGovernor/timeItems';
-import { isObject } from '../../../utilities/objects';
-import { makeDeepCopy } from '../../../utilities';
-import { getScaleValues } from './getScaleValues';
+import { addNationalityCode } from '../../tournamentEngine/governors/participantGovernor/addNationalityCode';
+import { addIndividualParticipants } from '../../mutate/participants/addIndividualParticipants';
+import { getTimeItem } from '../../tournamentEngine/governors/queryGovernor/timeItems';
+import { isObject } from '../../utilities/objects';
+import { makeDeepCopy } from '../../utilities';
+import { getScaleValues } from '../../tournamentEngine/getters/participants/getScaleValues';
 
-import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
-import { Tournament } from '../../../types/tournamentTypes';
-import { ParticipantMap } from '../../../types/factoryTypes';
+import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
+import { Tournament } from '../../types/tournamentTypes';
+import { ParticipantMap } from '../../types/factoryTypes';
 import {
   GROUP,
   PAIR,
   SIGNED_IN,
   SIGN_IN_STATUS,
   TEAM,
-} from '../../../constants/participantConstants';
+} from '../../constants/participantConstants';
 
 const typeMap = {
   [GROUP]: 'groupParticipantIds',

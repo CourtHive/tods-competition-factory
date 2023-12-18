@@ -1,16 +1,16 @@
-import { getAllPositionedParticipantIds } from '../../../drawEngine/getters/positionsGetter';
-import { getParticipantId } from '../../../global/functions/extractors';
-import { getAccessorValue } from '../../../utilities/getAccessorValue';
-import { getTimeItem } from '../../governors/queryGovernor/timeItems';
-import { getFlightProfile } from '../../../query/event/getFlightProfile';
-import { unique } from '../../../utilities';
+import { getAllPositionedParticipantIds } from '../../drawEngine/getters/positionsGetter';
+import { getParticipantId } from '../../global/functions/extractors';
+import { getAccessorValue } from '../../utilities/getAccessorValue';
+import { getTimeItem } from '../../tournamentEngine/governors/queryGovernor/timeItems';
+import { getFlightProfile } from '../event/getFlightProfile';
+import { unique } from '../../utilities';
 
-import { SIGN_IN_STATUS } from '../../../constants/participantConstants';
-import { SINGLES } from '../../../constants/eventConstants';
+import { SIGN_IN_STATUS } from '../../constants/participantConstants';
+import { SINGLES } from '../../constants/eventConstants';
 
-import type { Tournament } from '../../../types/tournamentTypes';
-import { ParticipantFilters } from '../../../types/factoryTypes';
-import { HydratedParticipant } from '../../../types/hydrated';
+import type { Tournament } from '../../types/tournamentTypes';
+import { ParticipantFilters } from '../../types/factoryTypes';
+import { HydratedParticipant } from '../../types/hydrated';
 
 type FilterParticipantsArgs = {
   participantFilters: ParticipantFilters;

@@ -1,8 +1,8 @@
 import { getMatchUpDependencies } from '../matchUps/getMatchUpDependencies';
 import { definedAttributes } from '../../utilities/definedAttributes';
-import { getParticipantEntries } from '../../tournamentEngine/getters/participants/getParticipantEntries';
-import { filterParticipants } from '../../tournamentEngine/getters/participants/filterParticipants';
-import { getParticipantMap } from '../../tournamentEngine/getters/participants/getParticipantMap';
+import { getParticipantEntries } from './getParticipantEntries';
+import { filterParticipants } from './filterParticipants';
+import { getParticipantMap } from './getParticipantMap';
 import { isObject } from '../../utilities/objects';
 import { attributeFilter } from '../../utilities';
 

@@ -1,4 +1,4 @@
-import { filterParticipants } from './participants/filterParticipants';
+import { filterParticipants } from '../../query/participants/filterParticipants';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
 

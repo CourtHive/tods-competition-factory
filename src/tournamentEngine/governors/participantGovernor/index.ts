@@ -11,7 +11,7 @@ import { addPersons } from './addPersons';
 import { modifyIndividualParticipantIds } from '../../../mutate/participants/modifyIndividualParticipantIds';
 import { generateTeamsFromParticipantAttribute } from '../../generators/teamsGenerator';
 import { addIndividualParticipantIds } from '../../../mutate/participants/addIndividualParticipantIds';
-import { filterParticipants } from '../../getters/participants/filterParticipants';
+import { filterParticipants } from '../../../query/participants/filterParticipants';
 import { modifyParticipantsSignInStatus } from '../../../mutate/participants/modifyParticipantsSignInStatus';
 import { scaledTeamAssignment } from '../../generators/scaledTeamAssignment';
 import { createGroupParticipant } from './groupings/createGroupParticipant';

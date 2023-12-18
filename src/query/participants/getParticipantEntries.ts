@@ -1,25 +1,25 @@
-import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
-import { timeSort, timeStringMinutes } from '../../../utilities/dateTime';
-import { structureSort } from '../../../drawEngine/getters/structureSort';
-import { extensionsToAttributes } from '../../../utilities/makeDeepCopy';
-import { definedAttributes } from '../../../utilities/definedAttributes';
-import { extractAttributes as xa, unique } from '../../../utilities';
-import { getEventPublishStatuses } from './getEventPublishStatuses';
-import { getEventSeedAssignments } from './getEventSeedAssignments';
-import { allEventMatchUps } from '../matchUpsGetter/matchUpsGetter';
-import { stringSort } from '../../../functions/sorters/stringSort';
-import { processEventEntry } from './processEventEntry';
-import { isObject } from '../../../utilities/objects';
-import { getFlightProfile } from '../../../query/event/getFlightProfile';
-import { addScheduleItem } from '../../../mutate/participants/addScheduleItem';
-import { processSides } from './processSides';
+import { getPositionAssignments } from '../../drawEngine/getters/positionsGetter';
+import { timeSort, timeStringMinutes } from '../../utilities/dateTime';
+import { structureSort } from '../../drawEngine/getters/structureSort';
+import { extensionsToAttributes } from '../../utilities/makeDeepCopy';
+import { definedAttributes } from '../../utilities/definedAttributes';
+import { extractAttributes as xa, unique } from '../../utilities';
+import { getEventPublishStatuses } from '../../tournamentEngine/getters/participants/getEventPublishStatuses';
+import { getEventSeedAssignments } from '../../tournamentEngine/getters/participants/getEventSeedAssignments';
+import { allEventMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
+import { stringSort } from '../../functions/sorters/stringSort';
+import { processEventEntry } from '../../tournamentEngine/getters/participants/processEventEntry';
+import { isObject } from '../../utilities/objects';
+import { getFlightProfile } from '../event/getFlightProfile';
+import { addScheduleItem } from '../../mutate/participants/addScheduleItem';
+import { processSides } from '../../tournamentEngine/getters/participants/processSides';
 
-import { DEFAULTED, WALKOVER } from '../../../constants/matchUpStatusConstants';
-import { UNGROUPED, UNPAIRED } from '../../../constants/entryStatusConstants';
-import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
-import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
-import { WIN_RATIO } from '../../../constants/statsConstants';
-import { HydratedMatchUp } from '../../../types/hydrated';
+import { DEFAULTED, WALKOVER } from '../../constants/matchUpStatusConstants';
+import { UNGROUPED, UNPAIRED } from '../../constants/entryStatusConstants';
+import { MAIN, QUALIFYING } from '../../constants/drawDefinitionConstants';
+import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
+import { WIN_RATIO } from '../../constants/statsConstants';
+import { HydratedMatchUp } from '../../types/hydrated';
 
 export function getParticipantEntries(params) {
   const {
