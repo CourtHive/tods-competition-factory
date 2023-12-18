@@ -3058,18 +3058,6 @@ const {
 
 ---
 
-## participantScheduledMatchUps
-
-Returns `matchUps` which have been scheduled, organized by `scheduledDate` and sorted by `scheduledTime`.
-
-```js
-const { scheduledMatchUps } = tournamentEngine.participantScheduledMatchUps({
-  matchUps,
-});
-```
-
----
-
 ## positionActions
 
 Returns valid actions for a given `drawPosition`. If params includes `matchUpId` will pass through to [matchUpActions](#matchupactions) when called for **AD_HOC** structures.

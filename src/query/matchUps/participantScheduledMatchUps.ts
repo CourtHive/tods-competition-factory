@@ -1,21 +1,30 @@
-import { hasSchedule } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/hasSchedule';
-import { validMatchUps } from '../../../validators/validMatchUp';
-import {
-  extractDate,
-  extractTime,
-  timeSort,
-} from '../../../utilities/dateTime';
+import { hasSchedule } from '../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/hasSchedule';
+import { validMatchUps } from '../../validators/validMatchUp';
+import { extractDate, extractTime, timeSort } from '../../utilities/dateTime';
 
-import { HydratedMatchUp } from '../../../types/hydrated';
+import { HydratedMatchUp } from '../../types/hydrated';
 import {
   INVALID_VALUES,
   MISSING_MATCHUPS,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
+
+/**
+ * Retrieves the scheduled matchUps for participants.
+ *
+ * @param {Object} options - The options for retrieving scheduled match-ups.
+ * @param {string[]} options.scheduleAttributes - The attributes to include in the schedule.
+ * @param {HydratedMatchUp[]} options.matchUps - The match-ups to filter and sort.
+ *
+ * @returns {Object} - The scheduled match-ups organized by scheduled date and sorted by scheduled time.
+ * @property {Object} scheduledMatchUps - The scheduled match-ups organized by scheduled date and sorted by scheduled time.
+ * @property {string[]} scheduledMatchUps[date] - The match-ups scheduled for the specified date.
+ */
 
 type ParticiapntScheduledMatchUps = {
   scheduleAttributes?: string[];
   matchUps?: HydratedMatchUp[];
 };
+
 export function participantScheduledMatchUps({
   scheduleAttributes = ['scheduledDate', 'scheduledTime'],
   matchUps = [],

@@ -12,6 +12,9 @@ import {
 import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
 
 /**
+ *
+ * Provides an algorithmic approach to assigning drawPositions based on participant nomination of an arbitrary number of preferred positions.
+ *
  * Resolves drawPositions for each structure participant based on arrays of preferred drawPositions
  * Can be used iteratively by including different collections of participantIds in each invocation
  *

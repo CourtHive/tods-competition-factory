@@ -3,7 +3,7 @@ import { getPolicyDefinitions } from '../../../query/extensions/getAppliedPolici
 import { getMaxEntryPosition } from '../../../global/functions/deducers/getMaxEntryPosition';
 import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
 import { getMatchUpCompetitiveProfile } from '../../getters/getMatchUpCompetitiveProfile';
-import { participantScheduledMatchUps } from './participantScheduledMatchUps';
+import { participantScheduledMatchUps } from '../../../query/matchUps/participantScheduledMatchUps';
 import { getPositionAssignments } from '../../getters/getPositionAssignments';
 import { getPredictiveAccuracy } from '../../getters/getPredictiveAccuracy';
 import { participantScaleItem } from '../../accessors/participantScaleItem';
