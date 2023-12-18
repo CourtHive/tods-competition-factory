@@ -2,7 +2,7 @@ import { latestVisibleTimeItemValue } from '../../../query/matchUp/latestVisible
 import { assignMatchUpCourt } from './assignMatchUpCourt';
 import { addMatchUpTimeItem } from '../timeItems/matchUpTimeItems';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
-import { getDrawDefinition } from '../../../global/functions/deducers/getDrawDefinition';
+import { findDrawDefinition } from '../../../acquire/findDrawDefinition';
 
 import { ALLOCATE_COURTS } from '../../../constants/timeItemConstants';
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
@@ -27,7 +27,7 @@ export function removeMatchUpCourtAssignment(params) {
   const tournamentRecord = tournamentRecords[tournamentId];
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
-  const { drawDefinition, event } = getDrawDefinition({
+  const { drawDefinition, event } = findDrawDefinition({
     tournamentRecord,
     drawId,
   });

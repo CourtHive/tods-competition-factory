@@ -1,5 +1,5 @@
 import { toggleParticipantCheckInState as toggle } from '../../../mutate/matchUps/timeItems/toggleParticipantCheckInState';
-import { getDrawDefinition } from '../../../global/functions/deducers/getDrawDefinition';
+import { findDrawDefinition } from '../../../acquire/findDrawDefinition';
 
 import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
 
@@ -10,7 +10,7 @@ export function toggleParticipantCheckInState(params) {
     return { error: MISSING_VALUE, stack: 'toggleParticipantCheckInState' };
 
   const tournamentRecord = tournamentRecords[tournamentId];
-  const { drawDefinition, event } = getDrawDefinition({
+  const { drawDefinition, event } = findDrawDefinition({
     tournamentRecord,
     drawId,
   });

@@ -1,6 +1,6 @@
 import { publishEventSeeding, unPublishEventSeeding } from './eventSeeding';
 import { publishOrderOfPlay, unPublishOrderOfPlay } from './orderOfPlay';
-import { getTournamentInfo } from './getTournamentInfo';
+import { getTournamentInfo } from '../../../query/tournament/getTournamentInfo';
 import { getAllEventData } from './getAllEventData';
 import { setEventDisplay } from './setEventDisplay';
 import { unPublishEvent } from './unPublishEvent';

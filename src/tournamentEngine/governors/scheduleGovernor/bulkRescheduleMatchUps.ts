@@ -1,10 +1,10 @@
 import { hasSchedule } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/hasSchedule';
 import { addMatchUpScheduledDate } from '../../../mutate/matchUps/schedule/scheduleItems';
 import { addMatchUpScheduledTime } from '../../../mutate/matchUps/schedule/scheduledTime';
-import { getDrawDefinition } from '../../../global/functions/deducers/getDrawDefinition';
+import { findDrawDefinition } from '../../../acquire/findDrawDefinition';
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
-import { getTournamentInfo } from '../publishingGovernor/getTournamentInfo';
+import { getTournamentInfo } from '../../../query/tournament/getTournamentInfo';
 import {
   addMinutesToTimeString,
   dateStringDaysChange,
@@ -81,7 +81,7 @@ export function bulkRescheduleMatchUps({
 
   const dayTotalMinutes = 1440;
   for (const drawId of Object.keys(drawIdMap)) {
-    const result = getDrawDefinition({
+    const result = findDrawDefinition({
       tournamentRecord,
       drawId,
     });

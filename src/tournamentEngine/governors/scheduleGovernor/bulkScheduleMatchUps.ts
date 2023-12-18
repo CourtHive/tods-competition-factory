@@ -1,6 +1,6 @@
 import { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDependencies';
 import { addMatchUpScheduleItems } from '../../../mutate/matchUps/schedule/scheduleItems';
-import { getDrawDefinition } from '../../../global/functions/deducers/getDrawDefinition';
+import { findDrawDefinition } from '../../../acquire/findDrawDefinition';
 import {
   allDrawMatchUps,
   allTournamentMatchUps,
@@ -101,7 +101,7 @@ export function bulkScheduleMatchUps({
   const detailMatchUpIds = matchUpDetails?.map((detail) => detail.matchUpId);
 
   for (const drawId of Object.keys(drawIdMap)) {
-    const { drawDefinition } = getDrawDefinition({
+    const { drawDefinition } = findDrawDefinition({
       tournamentRecord,
       drawId,
     });

@@ -3,7 +3,7 @@ import { assignMatchUpVenue as assignVenue } from '../../../../mutate/matchUps/s
 import { assignMatchUpCourt as assignCourt } from '../../../../mutate/matchUps/schedule/assignMatchUpCourt';
 import { addMatchUpOfficial as addOfficial } from '../../../../tournamentEngine/governors/scheduleGovernor/scheduleItems';
 import { addMatchUpScheduledTime as addScheduledTime } from '../../../../mutate/matchUps/schedule/scheduledTime';
-import { getDrawDefinition } from '../../../../global/functions/deducers/getDrawDefinition';
+import { findDrawDefinition } from '../../../../acquire/findDrawDefinition';
 import {
   addMatchUpScheduledDate as addScheduledDate,
   addMatchUpStartTime as addStartTime,
@@ -20,7 +20,7 @@ import {
 } from '../../../../constants/errorConditionConstants';
 
 export function addMatchUpScheduleItems(params) {
-  const result = getDrawDefinition(params);
+  const result = findDrawDefinition(params);
   if (result.error) return result;
   const { tournamentRecord, drawDefinition } = result;
 
@@ -28,7 +28,7 @@ export function addMatchUpScheduleItems(params) {
 }
 
 export function addMatchUpScheduledDate(params) {
-  const result = getDrawDefinition(params);
+  const result = findDrawDefinition(params);
   if (result.error) return result;
   const { tournamentRecord, drawDefinition } = result;
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
@@ -46,7 +46,7 @@ export function addMatchUpScheduledDate(params) {
 }
 
 export function addMatchUpScheduledTime(params) {
-  const result = getDrawDefinition(params);
+  const result = findDrawDefinition(params);
   if (result.error) return result;
   const { tournamentRecord, drawDefinition } = result;
 
@@ -64,7 +64,7 @@ export function addMatchUpScheduledTime(params) {
 }
 
 export function addMatchUpStartTime(params) {
-  const result = getDrawDefinition(params);
+  const result = findDrawDefinition(params);
   if (result.error) return result;
   const { tournamentRecord, drawDefinition } = result;
 
@@ -82,7 +82,7 @@ export function addMatchUpStartTime(params) {
 }
 
 export function addMatchUpEndTime(params) {
-  const result = getDrawDefinition(params);
+  const result = findDrawDefinition(params);
   if (result.error) return result;
   const { tournamentRecord, drawDefinition } = result;
 
@@ -100,7 +100,7 @@ export function addMatchUpEndTime(params) {
 }
 
 export function addMatchUpStopTime(params) {
-  const result = getDrawDefinition(params);
+  const result = findDrawDefinition(params);
   if (result.error) return result;
   const { tournamentRecord, drawDefinition } = result;
 
@@ -118,7 +118,7 @@ export function addMatchUpStopTime(params) {
 }
 
 export function addMatchUpResumeTime(params) {
-  const result = getDrawDefinition(params);
+  const result = findDrawDefinition(params);
   if (result.error) return result;
   const { tournamentRecord, drawDefinition } = result;
 
@@ -136,7 +136,7 @@ export function addMatchUpResumeTime(params) {
 }
 
 export function addMatchUpOfficial(params) {
-  const result = getDrawDefinition(params);
+  const result = findDrawDefinition(params);
   if (result.error) return result;
   const { tournamentRecord, drawDefinition } = result;
 
@@ -152,7 +152,7 @@ export function addMatchUpOfficial(params) {
 }
 
 export function assignMatchUpVenue(params) {
-  const result = getDrawDefinition(params);
+  const result = findDrawDefinition(params);
   if (result.error) return result;
   const { tournamentRecord, drawDefinition } = result;
   const { matchUpId, venueId, disableNotice, removePriorValues } = params;
@@ -170,7 +170,7 @@ export function assignMatchUpVenue(params) {
 }
 
 export function assignMatchUpCourt(params) {
-  const result = getDrawDefinition(params);
+  const result = findDrawDefinition(params);
   if (result.error) return result;
   const { tournamentRecord, drawDefinition } = result;
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -198,7 +198,7 @@ export function assignMatchUpCourt(params) {
 }
 
 export function allocateTeamMatchUpCourts(params) {
-  const result = getDrawDefinition(params);
+  const result = findDrawDefinition(params);
   if (result.error) return result;
   const { tournamentRecord, drawDefinition } = result;
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
@@ -225,7 +225,7 @@ export function allocateTeamMatchUpCourts(params) {
 }
 
 export function addMatchUpCourtOrder(params) {
-  const result = getDrawDefinition(params);
+  const result = findDrawDefinition(params);
   if (result.error) return result;
   const { tournamentRecord, drawDefinition } = result;
 

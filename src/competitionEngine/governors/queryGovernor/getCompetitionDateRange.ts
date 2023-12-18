@@ -1,4 +1,4 @@
-import { getTournamentInfo } from '../../../tournamentEngine/governors/publishingGovernor/getTournamentInfo';
+import { getTournamentInfo } from '../../../query/tournament/getTournamentInfo';
 import { extractDate } from '../../../utilities/dateTime';
 
 import { Tournament } from '../../../types/tournamentTypes';

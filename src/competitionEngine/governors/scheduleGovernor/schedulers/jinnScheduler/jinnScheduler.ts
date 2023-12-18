@@ -1,7 +1,7 @@
 import { addMatchUpScheduledTime } from '../../../../../mutate/matchUps/schedule/scheduledTime';
 import { assignMatchUpVenue } from '../../../../../mutate/matchUps/schedule/assignMatchUpVenue';
 import { checkDependenciesScheduled } from '../../scheduleMatchUps/checkDependenciesScheduled';
-import { getDrawDefinition } from '../../../../../global/functions/deducers/getDrawDefinition';
+import { findDrawDefinition } from '../../../../../acquire/findDrawDefinition';
 import { updateTimeAfterRecovery } from '../../scheduleMatchUps/updateTimeAfterRecovery';
 import { checkDependendantTiming } from '../../scheduleMatchUps/checkDependentTiming';
 import { checkRequestConflicts } from '../../scheduleMatchUps/checkRequestConflicts';
@@ -289,7 +289,7 @@ export function jinnScheduler({
         const tournamentRecord = tournamentRecords[tournamentId];
         if (tournamentRecord) {
           Object.keys(matchUpMap[tournamentId]).forEach((drawId) => {
-            const { drawDefinition } = getDrawDefinition({
+            const { drawDefinition } = findDrawDefinition({
               tournamentRecord,
               drawId,
             });

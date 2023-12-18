@@ -1,6 +1,6 @@
 import { assignMatchUpCourt as assignCourt } from '../../../mutate/matchUps/schedule/assignMatchUpCourt';
 import { allocateTeamMatchUpCourts } from '../../../tournamentEngine/governors/scheduleGovernor/allocateTeamMatchUpCourts';
-import { getDrawDefinition } from '../../../global/functions/deducers/getDrawDefinition';
+import { findDrawDefinition } from '../../../acquire/findDrawDefinition';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { allCompetitionMatchUps } from '../../getters/matchUpsGetter';
 
@@ -120,7 +120,7 @@ export function matchUpScheduleChange(params) {
     const { tournamentRecords, tournamentId, matchUp, drawId } = params;
 
     const tournamentRecord = tournamentRecords[tournamentId];
-    const { drawDefinition } = getDrawDefinition({
+    const { drawDefinition } = findDrawDefinition({
       tournamentRecord,
       drawId,
     });

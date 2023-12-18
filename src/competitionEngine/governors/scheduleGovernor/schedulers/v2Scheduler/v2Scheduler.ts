@@ -1,7 +1,7 @@
 import { addMatchUpScheduledTime } from '../../../../../mutate/matchUps/schedule/scheduledTime';
 import { assignMatchUpCourt } from '../../../../../mutate/matchUps/schedule/assignMatchUpCourt';
 import { checkDependenciesScheduled } from '../../scheduleMatchUps/checkDependenciesScheduled';
-import { getDrawDefinition } from '../../../../../global/functions/deducers/getDrawDefinition';
+import { findDrawDefinition } from '../../../../../acquire/findDrawDefinition';
 import { updateTimeAfterRecovery } from '../../scheduleMatchUps/updateTimeAfterRecovery';
 import { checkDependendantTiming } from '../../scheduleMatchUps/checkDependentTiming';
 import { checkRequestConflicts } from '../../scheduleMatchUps/checkRequestConflicts';
@@ -447,7 +447,7 @@ export function v2Scheduler({
         const tournamentRecord = tournamentRecords[tournamentId];
         if (tournamentRecord) {
           Object.keys(matchUpMap[tournamentId]).forEach((drawId) => {
-            const { drawDefinition } = getDrawDefinition({
+            const { drawDefinition } = findDrawDefinition({
               tournamentRecord,
               drawId,
             });

@@ -1,5 +1,5 @@
 import { addMatchUpScheduledTime } from '../../../mutate/matchUps/schedule/scheduledTime';
-import { getDrawDefinition } from '../../../global/functions/deducers/getDrawDefinition';
+import { findDrawDefinition } from '../../../acquire/findDrawDefinition';
 import { decorateResult } from '../../../global/functions/decorateResult';
 
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -67,7 +67,7 @@ export function reorderUpcomingMatchUps(params) {
     drawId,
   }) {
     const tournamentRecord = tournamentRecords[tournamentId];
-    const { drawDefinition } = getDrawDefinition({
+    const { drawDefinition } = findDrawDefinition({
       tournamentRecord,
       drawId,
     });

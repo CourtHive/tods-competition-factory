@@ -1,7 +1,7 @@
 import { addMatchUpScheduledTime } from '../../../../mutate/matchUps/schedule/scheduledTime';
 import { assignMatchUpVenue } from '../../../../mutate/matchUps/schedule/assignMatchUpVenue';
 import { checkParticipantProfileInitialization } from './checkParticipantProfileInitialization';
-import { getDrawDefinition } from '../../../../global/functions/deducers/getDrawDefinition';
+import { findDrawDefinition } from '../../../../acquire/findDrawDefinition';
 import { modifyParticipantMatchUpsCount } from './modifyParticipantMatchUpsCount';
 import { checkDependenciesScheduled } from './checkDependenciesScheduled';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
@@ -361,7 +361,7 @@ export function scheduleMatchUps({
     const tournamentRecord = tournamentRecords[tournamentId];
     if (tournamentRecord) {
       Object.keys(matchUpMap[tournamentId]).forEach((drawId) => {
-        const { drawDefinition } = getDrawDefinition({
+        const { drawDefinition } = findDrawDefinition({
           tournamentRecord,
           drawId,
         });

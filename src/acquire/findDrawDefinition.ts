@@ -1,20 +1,16 @@
-import { findTournamentId } from '../../../competitionEngine/governors/competitionsGovernor/findTournamentId';
-import { findEvent } from '../../../acquire/findEvent';
-import { decorateResult } from '../decorateResult';
-import {
-  DrawDefinition,
-  Event,
-  Tournament,
-} from '../../../types/tournamentTypes';
+import { findTournamentId } from '../competitionEngine/governors/competitionsGovernor/findTournamentId';
+import { findEvent } from './findEvent';
+import { decorateResult } from '../global/functions/decorateResult';
+import { DrawDefinition, Event, Tournament } from '../types/tournamentTypes';
 
-import { SUCCESS } from '../../../constants/resultConstants';
+import { SUCCESS } from '../constants/resultConstants';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   ErrorType,
   MISSING_DRAW_ID,
   MISSING_TOURNAMENT_ID,
   MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
+} from '../constants/errorConditionConstants';
 
 type GetDrawDefinitionArgs = {
   tournamentRecords?: { [key: string]: Tournament };
@@ -23,7 +19,7 @@ type GetDrawDefinitionArgs = {
   drawId: string;
 };
 
-export function getDrawDefinition({
+export function findDrawDefinition({
   tournamentRecords,
   tournamentRecord,
   tournamentId,
@@ -53,7 +49,7 @@ export function getDrawDefinition({
   if (!result?.drawDefinition) {
     return decorateResult({
       result: { error: DRAW_DEFINITION_NOT_FOUND },
-      stack: 'getDrawDefinition',
+      stack: 'findDrawDefinition',
     });
   }
 
