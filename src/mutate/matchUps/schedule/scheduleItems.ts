@@ -29,6 +29,7 @@ import {
   validTimeString,
 } from '../../../fixtures/validations/regex';
 
+import { AddScheduleAttributeArgs } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import {
@@ -58,17 +59,7 @@ import {
   DrawDefinition,
   Event,
   TimeItem,
-  Tournament,
 } from '../../../types/tournamentTypes';
-
-type AddScheduleAttributeArgs = {
-  tournamentRecord?: Tournament;
-  removePriorValues?: boolean;
-  drawDefinition: DrawDefinition;
-  disableNotice?: boolean;
-  matchUpId: string;
-  event?: Event;
-};
 
 function timeDate(value, scheduledDate) {
   const time = validTimeString.test(value) ? value : extractTime(value);
@@ -351,6 +342,7 @@ export function addMatchUpScheduledDate({
 
   // TODO: if there is existing scheduledDate and no other relevant timeItems, delete prior
 
+  // TODO: check that scheduledDate is within range of event dates / tournament dates
   // TODO: check that 1) scheduledDate is valid date and 2) is in range for tournament
   // this must be done in tournamentEngine wrapper
 

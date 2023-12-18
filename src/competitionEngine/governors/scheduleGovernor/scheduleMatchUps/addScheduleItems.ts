@@ -1,18 +1,18 @@
 import { allocateTeamMatchUpCourts as allocateCourts } from '../../../../tournamentEngine/governors/scheduleGovernor/allocateTeamMatchUpCourts';
 import { assignMatchUpVenue as assignVenue } from '../../../../mutate/matchUps/schedule/assignMatchUpVenue';
 import { assignMatchUpCourt as assignCourt } from '../../../../mutate/matchUps/schedule/assignMatchUpCourt';
+import { addMatchUpOfficial as addOfficial } from '../../../../tournamentEngine/governors/scheduleGovernor/scheduleItems';
+import { addMatchUpScheduledTime as addScheduledTime } from '../../../../mutate/matchUps/schedule/scheduledTime';
 import { getDrawDefinition } from '../../../../global/functions/deducers/getDrawDefinition';
 import {
   addMatchUpScheduledDate as addScheduledDate,
-  addMatchUpScheduledTime as addScheduledTime,
   addMatchUpStartTime as addStartTime,
   addMatchUpEndTime as addEndTime,
   addMatchUpResumeTime as addResumeTime,
   addMatchUpStopTime as addStopTime,
-  addMatchUpOfficial as addOfficial,
   addMatchUpScheduleItems as addScheduleItems,
   addMatchUpCourtOrder as addCourtOrder,
-} from '../../../../tournamentEngine/governors/scheduleGovernor/scheduleItems';
+} from '../../../../mutate/matchUps/schedule/scheduleItems';
 
 import {
   MISSING_DRAW_DEFINITION,
@@ -69,13 +69,16 @@ export function addMatchUpStartTime(params) {
   const { tournamentRecord, drawDefinition } = result;
 
   const { disableNotice, startTime, matchUpId } = params;
-  return addStartTime({
-    tournamentRecord,
-    drawDefinition,
-    disableNotice,
-    startTime,
-    matchUpId,
-  });
+  return (
+    drawDefinition &&
+    addStartTime({
+      tournamentRecord,
+      drawDefinition,
+      disableNotice,
+      startTime,
+      matchUpId,
+    })
+  );
 }
 
 export function addMatchUpEndTime(params) {
@@ -84,13 +87,16 @@ export function addMatchUpEndTime(params) {
   const { tournamentRecord, drawDefinition } = result;
 
   const { disableNotice, endTime, matchUpId } = params;
-  return addEndTime({
-    tournamentRecord,
-    drawDefinition,
-    disableNotice,
-    endTime,
-    matchUpId,
-  });
+  return (
+    drawDefinition &&
+    addEndTime({
+      tournamentRecord,
+      drawDefinition,
+      disableNotice,
+      endTime,
+      matchUpId,
+    })
+  );
 }
 
 export function addMatchUpStopTime(params) {
@@ -99,13 +105,16 @@ export function addMatchUpStopTime(params) {
   const { tournamentRecord, drawDefinition } = result;
 
   const { disableNotice, stopTime, matchUpId } = params;
-  return addStopTime({
-    tournamentRecord,
-    drawDefinition,
-    disableNotice,
-    stopTime,
-    matchUpId,
-  });
+  return (
+    drawDefinition &&
+    addStopTime({
+      tournamentRecord,
+      drawDefinition,
+      disableNotice,
+      stopTime,
+      matchUpId,
+    })
+  );
 }
 
 export function addMatchUpResumeTime(params) {
@@ -114,13 +123,16 @@ export function addMatchUpResumeTime(params) {
   const { tournamentRecord, drawDefinition } = result;
 
   const { disableNotice, resumeTime, matchUpId } = params;
-  return addResumeTime({
-    tournamentRecord,
-    drawDefinition,
-    disableNotice,
-    resumeTime,
-    matchUpId,
-  });
+  return (
+    drawDefinition &&
+    addResumeTime({
+      tournamentRecord,
+      drawDefinition,
+      disableNotice,
+      resumeTime,
+      matchUpId,
+    })
+  );
 }
 
 export function addMatchUpOfficial(params) {
@@ -219,12 +231,15 @@ export function addMatchUpCourtOrder(params) {
 
   const { removePriorValues, disableNotice, courtOrder, matchUpId } = params;
 
-  return addCourtOrder({
-    removePriorValues,
-    tournamentRecord,
-    drawDefinition,
-    disableNotice,
-    courtOrder,
-    matchUpId,
-  });
+  return (
+    drawDefinition &&
+    addCourtOrder({
+      removePriorValues,
+      tournamentRecord,
+      drawDefinition,
+      disableNotice,
+      courtOrder,
+      matchUpId,
+    })
+  );
 }

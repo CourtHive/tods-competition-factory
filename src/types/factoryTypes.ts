@@ -402,3 +402,12 @@ type Request = {
 export type PersonRequests = {
   [key: string]: Request[];
 };
+
+export type AddScheduleAttributeArgs = {
+  tournamentRecord?: Tournament;
+  drawDefinition: DrawDefinition;
+  removePriorValues?: boolean;
+  disableNotice?: boolean;
+  matchUpId: string;
+  event?: Event;
+};

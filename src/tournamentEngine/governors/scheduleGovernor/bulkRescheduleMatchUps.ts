@@ -1,4 +1,6 @@
 import { hasSchedule } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/hasSchedule';
+import { addMatchUpScheduledDate } from '../../../mutate/matchUps/schedule/scheduleItems';
+import { addMatchUpScheduledTime } from '../../../mutate/matchUps/schedule/scheduledTime';
 import { getDrawDefinition } from '../../../global/functions/deducers/getDrawDefinition';
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
@@ -10,10 +12,6 @@ import {
   extractTime,
   timeStringMinutes,
 } from '../../../utilities/dateTime';
-import {
-  addMatchUpScheduledDate,
-  addMatchUpScheduledTime,
-} from './scheduleItems';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {

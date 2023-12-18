@@ -1,7 +1,6 @@
 import { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDependencies';
 import { modifyEventMatchUpFormatTiming } from '../../../mutate/events/extensions/modifyEventMatchUpFormatTiming';
 import { removeEventMatchUpFormatTiming } from '../../../mutate/events/extensions/removeEventMatchUpFormatTiming';
-import { addMatchUpCourtOrder } from '../../../mutate/matchUps/schedule/scheduleItems';
 import { getMatchUpFormatTimingUpdate } from '../../../query/extensions/matchUpFormatTiming/getMatchUpFormatTimingUpdate';
 import { validateSchedulingProfile } from '../../../validators/validateSchedulingProfile';
 import { getModifiedMatchUpFormatTiming } from '../../../query/extensions/matchUpFormatTiming/getModifiedMatchUpTiming';
@@ -19,16 +18,17 @@ import { clearMatchUpSchedule } from '../../../mutate/matchUps/schedule/clearMat
 import { bulkScheduleMatchUps } from './bulkScheduleMatchUps';
 import { assignMatchUpCourt } from '../../../mutate/matchUps/schedule/assignMatchUpCourt';
 import { assignMatchUpVenue } from '../../../mutate/matchUps/schedule/assignMatchUpVenue';
+import { addMatchUpScheduledTime } from '../../../mutate/matchUps/schedule/scheduledTime';
 import {
+  addMatchUpCourtOrder,
   addMatchUpScheduledDate,
-  addMatchUpScheduledTime,
   addMatchUpStartTime,
   addMatchUpEndTime,
   addMatchUpStopTime,
   addMatchUpResumeTime,
   addMatchUpOfficial,
   addMatchUpScheduleItems,
-} from './scheduleItems';
+} from '../../../mutate/matchUps/schedule/scheduleItems';
 import {
   getSchedulingProfile,
   setSchedulingProfile,
