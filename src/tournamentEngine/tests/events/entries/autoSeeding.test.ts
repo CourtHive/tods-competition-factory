@@ -12,12 +12,13 @@ import { SINGLES_EVENT } from '../../../../constants/eventConstants';
 import { ScaleAttributes } from '../../../../types/factoryTypes';
 
 it('can autoSeed by Rankings', () => {
-  const {
-    drawIds: [drawId],
-    eventIds: [eventId],
-    tournamentRecord,
-  } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [{ drawSize: 32, category: { categoryName: 'U18' } }],
+  const eventId = 'seededEventId';
+  const drawId = 'seededDrawId';
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [
+      { drawId, eventId, drawSize: 32, category: { categoryName: 'U18' } },
+    ],
+    participantsProfile: { idPrefix: 'p' },
   });
 
   tournamentEngine.setState(tournamentRecord);
@@ -160,28 +161,35 @@ it('can autoSeed by Rankings', () => {
   result = tournamentEngine.publishEventSeeding({ eventId });
   expect(result.success).toEqual(true);
 
-  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+  tournamentParticipants = tournamentEngine.getParticipants({
     usePublishState: true,
     withSeeding: true,
     withEvents: true,
-  }));
+  }).participants;
 
   seedingScaleValues = tournamentParticipants
     .map((participant) => participant.events[0].seedValue)
     .filter(Boolean);
 
   // when { usePublishState: true } seedValues are added when eventSeeding is published
+  // BUT just because someone was seeded for the event doesn't mean they were seeded for the draw
   expect(unique(seedingScaleValues).length).toEqual(8);
 
   const { participants } = tournamentEngine.getParticipants({
     withSeeding: true,
     withEvents: true,
+    withDraws: true,
   });
   seedingScaleValues = participants
     .map((participant) => participant.events[0].seedValue)
     .filter(Boolean);
-  // this is because the event seeding was added AFTER the draw was created!!!
-  expect(unique(seedingScaleValues).length).toEqual(0);
+  expect(unique(seedingScaleValues).length).toEqual(8);
+
+  // event was seeded AFTER the draw was made, so there is no seeding for the draw
+  const drawSeedingScaleValues = participants
+    .map((participant) => participant.draws[0].seedValue)
+    .filter(Boolean);
+  expect(unique(drawSeedingScaleValues).length).toEqual(0);
 
   // now unPublish and test again
   result = tournamentEngine.unPublishEventSeeding({ eventId });

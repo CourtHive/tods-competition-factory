@@ -5,6 +5,7 @@ import { ScaleAttributes, ScaleItem } from '../../types/factoryTypes';
 import { ResultType } from '../../global/functions/decorateResult';
 import { SUCCESS } from '../../constants/resultConstants';
 import { SCALE } from '../../constants/scaleConstants';
+import { isObject } from '../../utilities/objects';
 import {
   INVALID_SCALE_ITEM,
   INVALID_VALUES,
@@ -23,7 +24,7 @@ export function participantScaleItem({
   participant,
 }: ParticipantScaleItemArgs): ResultType & { scaleItem?: ScaleItem } {
   if (!participant) return { error: MISSING_PARTICIPANT };
-  if (typeof scaleAttributes !== 'object') return { error: INVALID_VALUES };
+  if (!isObject(scaleAttributes)) return { error: INVALID_VALUES };
 
   if (!participant.timeItems) participant.timeItems = [];
   if (Array.isArray(participant.timeItems)) {

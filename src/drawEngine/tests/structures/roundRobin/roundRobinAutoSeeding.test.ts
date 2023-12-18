@@ -165,8 +165,15 @@ it('can autoSeed by Rankings and then generate Round Robin', () => {
     )
   ).toEqual(true);
 
+  // the event was seeded
   seededParticipants = p.participants.filter(
     ({ events }) => events?.[0]?.seedValue
+  );
+  expect(seededParticipants.length).toEqual(8);
+
+  // but the draw generation specified seedsCount=0 so no seedAssignments were created
+  seededParticipants = p.participants.filter(
+    ({ draws }) => draws?.[0]?.seedValue
   );
   expect(seededParticipants.length).toEqual(seedsCount);
 

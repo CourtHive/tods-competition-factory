@@ -150,7 +150,6 @@ export function getParticipantEntries(params) {
             event,
           }));
         }
-
         // IMPORTANT NOTE!
         // id is the pair, team or individual participant currently being processed
         // whereas participantId is the id of the entry into the event
@@ -352,6 +351,7 @@ export function getParticipantEntries(params) {
               }
             }
 
+            /*
             if (
               (withEvents || withRankingProfile) &&
               participantMap[id] &&
@@ -361,13 +361,12 @@ export function getParticipantEntries(params) {
                 participantMap[id].events[eventId] = {};
 
               if (includeSeeding) {
-                // overwrite any event seeding with actual draw seeding (which may differ)
                 participantMap[id].events[eventId].seedValue = seedValue;
               } else if (participantMap[id].events[eventId].seedValue) {
-                // if seeding for specific drawIds is NOT published, remove from event
                 participantMap[id].events[eventId].seedValue = undefined;
               }
             }
+            */
 
             if (withDraws || withRankingProfile) {
               participantMap[id].draws[drawId] = definedAttributes(
@@ -376,6 +375,7 @@ export function getParticipantEntries(params) {
                   entryPosition,
                   entryStatus,
                   entryStage,
+                  seedValue,
                   eventId,
                   ranking,
                   drawId,
@@ -573,6 +573,16 @@ export function getParticipantEntries(params) {
       matchUps.push(...eventMatchUps);
     }
   }
+  const pids = [
+    'D-0-p-I-0',
+    'D-0-p-I-1',
+    'D-0-p-I-2',
+    'D-0-p-I-5',
+    'D-0-p-I-6',
+    'D-0-p-I-7',
+    'D-0-p-I-8',
+    'D-0-p-I-9',
+  ];
 
   if (withStatistics || withRankingProfile || !!scheduleAnalysis) {
     const aggregators: any[] = Object.values(participantMap);

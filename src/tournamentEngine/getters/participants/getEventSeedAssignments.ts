@@ -80,8 +80,12 @@ export function getEventSeedAssignments({
   } else {
     const { categoryName, ageCategoryCode } = event.category || {};
 
+    const scaleNames = [ageCategoryCode, event.eventId, categoryName].filter(
+      Boolean
+    );
+
     let scaleItem;
-    for (const scaleName of [ageCategoryCode, event.eventId, categoryName]) {
+    for (const scaleName of scaleNames) {
       const scaleAttributes = {
         eventType: event.eventType,
         scaleType: SEEDING,
@@ -91,6 +95,7 @@ export function getEventSeedAssignments({
         scaleAttributes,
         participant,
       });
+
       if (result.scaleItem) {
         scaleItem = result.scaleItem;
         break;
