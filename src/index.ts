@@ -14,7 +14,7 @@ import { dehydrateMatchUps } from './tournamentEngine/governors/tournamentGovern
 import { getSeedingThresholds } from './drawEngine/governors/positionGovernor/getSeedBlocks';
 import { getAssignedParticipantIds } from './drawEngine/getters/getAssignedParticipantIds';
 import { findExtension } from './acquire/findExtension';
-import { participantScaleItem } from './tournamentEngine/accessors/participantScaleItem';
+import { participantScaleItem } from './query/participant/participantScaleItem';
 import { getScaleValues } from './tournamentEngine/getters/participants/getScaleValues';
 import { tieFormatGenderValidityCheck } from './global/functions/deducers/tieFormatGenderValidityCheck';
 import { checkScoreHasValue } from './query/matchUp/checkScoreHasValue';

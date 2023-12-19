@@ -1,6 +1,6 @@
 import { findTournamentParticipant } from '../../getters/participants/participantGetter';
 
-import { participantScaleItem } from '../../accessors/participantScaleItem';
+import { participantScaleItem } from '../../../query/participant/participantScaleItem';
 import { Tournament } from '../../../types/tournamentTypes';
 import { ScaleAttributes, ScaleItem } from '../../../types/factoryTypes';
 import {

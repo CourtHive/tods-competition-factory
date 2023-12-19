@@ -1,5 +1,5 @@
 import { addParticipants } from '../governors/participantGovernor/addParticipants';
-import { participantScaleItem } from '../accessors/participantScaleItem';
+import { participantScaleItem } from '../../query/participant/participantScaleItem';
 import { getParticipantId } from '../../global/functions/extractors';
 import { getFlightProfile } from '../../query/event/getFlightProfile';
 import { isConvertableInteger } from '../../utilities/math';

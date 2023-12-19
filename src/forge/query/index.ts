@@ -28,7 +28,7 @@ export { filterParticipants } from '../../query/participants/filterParticipants'
 export { positionActions } from '../../tournamentEngine/governors/queryGovernor/positionQueries';
 export { getEventData } from '../../query/event/getEventData';
 export { getSeedsCount } from '../../tournamentEngine/governors/policyGovernor/getSeedsCount';
-export { participantScaleItem } from '../../tournamentEngine/accessors/participantScaleItem';
+export { participantScaleItem } from '../../query/participant/participantScaleItem';
 export { getTimeItem } from '../../tournamentEngine/governors/queryGovernor/timeItems';
 export { findMatchUp } from '../../acquire/findMatchUp';
 export { getFlightProfile } from '../../query/event/getFlightProfile';

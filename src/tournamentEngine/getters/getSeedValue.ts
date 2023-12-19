@@ -1,4 +1,4 @@
-import { participantScaleItem } from '../accessors/participantScaleItem';
+import { participantScaleItem } from '../../query/participant/participantScaleItem';
 
 import { SEEDING } from '../../constants/scaleConstants';
 

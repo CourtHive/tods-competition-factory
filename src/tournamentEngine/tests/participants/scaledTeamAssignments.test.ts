@@ -1,4 +1,4 @@
-import { participantScaleItem } from '../../accessors/participantScaleItem';
+import { participantScaleItem } from '../../../query/participant/participantScaleItem';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { generateRange } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';

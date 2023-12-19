@@ -1,4 +1,4 @@
-import { participantScaleItem } from '../../../../tournamentEngine/accessors/participantScaleItem';
+import { participantScaleItem } from '../../../../query/participant/participantScaleItem';
 import { getParticipantId } from '../../../../global/functions/extractors';
 import { generateDrawMaticRound } from './generateDrawMaticRound';
 import { isAdHoc } from '../../../../drawEngine/governors/queryGovernor/isAdHoc';

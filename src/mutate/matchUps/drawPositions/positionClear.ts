@@ -3,7 +3,7 @@ import { getStructureDrawPositionProfiles } from '../../../drawEngine/getters/ge
 import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { getAllDrawMatchUps } from '../../../query/drawMatchUps';
-import { getInitialRoundNumber } from '../../../drawEngine/getters/getInitialRoundNumber';
+import { getInitialRoundNumber } from '../../../query/matchUps/getInitialRoundNumber';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import {
   MatchUpsMap,

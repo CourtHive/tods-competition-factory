@@ -1,4 +1,4 @@
-import { participantScaleItem } from '../../tournamentEngine/accessors/participantScaleItem';
+import { participantScaleItem } from '../../query/participant/participantScaleItem';
 import { publicFindParticipant } from './participantGetter';
 
 import { ResultType } from '../../global/functions/decorateResult';

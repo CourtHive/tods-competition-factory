@@ -1,6 +1,6 @@
 import { getAllStructureMatchUps } from '../../../../query/matchUps/getAllStructureMatchUps';
 import { getStructureMatchUps } from '../../../../query/structure/getStructureMatchUps';
-import { getInitialRoundNumber } from '../../../getters/getInitialRoundNumber';
+import { getInitialRoundNumber } from '../../../../query/matchUps/getInitialRoundNumber';
 import { findStructure } from '../../../getters/findStructure';
 
 import { ROUND_OUTCOME } from '../../../../constants/drawDefinitionConstants';
