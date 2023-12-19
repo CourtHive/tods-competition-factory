@@ -1,5 +1,5 @@
 import { constantToString } from '../../../../utilities/strings';
-import tournamentEngine from '../../../../examples/syncEngine';
+import tournamentEngine from '../../../../test/engines/tournamentEngine';
 import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
 import { extractTime } from '../../../../utilities/dateTime';
 import mocksEngine from '../../../../mocksEngine';

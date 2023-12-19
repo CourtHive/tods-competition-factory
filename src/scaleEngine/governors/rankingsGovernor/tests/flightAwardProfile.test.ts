@@ -1,5 +1,5 @@
 import { finishingPositionSort, getFpMap } from './awardTestUtils';
-import tournamentEngine from '../../../../examples/syncEngine';
+import tournamentEngine from '../../../../test/engines/tournamentEngine';
 import { mocksEngine, scaleEngine } from '../../../..';
 import { expect, it } from 'vitest';
 import {

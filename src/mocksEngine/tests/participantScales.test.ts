@@ -1,5 +1,5 @@
 import { getParticipantId } from '../../global/functions/extractors';
-import tournamentEngine from '../../examples/syncEngine';
+import tournamentEngine from '../../test/engines/tournamentEngine';
 import { mockProfile } from './mockScaleProfile';
 import { unique } from '../../utilities';
 import { expect, it, test } from 'vitest';

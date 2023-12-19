@@ -1,7 +1,7 @@
 import { findExtension } from '../../../acquire/findExtension';
 import { instanceCount } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../../examples/syncEngine';
+import tournamentEngine from '../../../test/engines/tournamentEngine';
 import { utilities } from '../../..';
 import { expect, it } from 'vitest';
 import fs from 'fs';

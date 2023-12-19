@@ -1,7 +1,7 @@
 import { getParticipantId } from '../../../global/functions/extractors';
 import { hasParticipantId } from '../../../global/functions/filters';
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../../examples/syncEngine';
+import tournamentEngine from '../../../test/engines/tournamentEngine';
 import { expect, it } from 'vitest';
 
 import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';

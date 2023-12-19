@@ -1,5 +1,5 @@
 import { afterAll, describe, it, expect, vi } from 'vitest';
-import tournamentEngine from '../../examples/syncEngine';
+import tournamentEngine from '../../test/engines/tournamentEngine';
 import mocksEngine from '../../mocksEngine';
 
 import { SINGLES_EVENT } from '../../constants/eventConstants';

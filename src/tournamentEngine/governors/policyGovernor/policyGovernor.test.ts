@@ -1,5 +1,5 @@
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import tournamentEngine from '../../../examples/syncEngine';
+import tournamentEngine from '../../../test/engines/tournamentEngine';
 import mocksEngine from '../../../mocksEngine';
 import { expect, test, it } from 'vitest';
 

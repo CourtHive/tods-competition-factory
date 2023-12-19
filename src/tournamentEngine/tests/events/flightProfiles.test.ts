@@ -1,5 +1,5 @@
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../../examples/syncEngine';
+import tournamentEngine from '../../../test/engines/tournamentEngine';
 import { expect, it } from 'vitest';
 
 import { INDIVIDUAL } from '../../../constants/participantConstants';

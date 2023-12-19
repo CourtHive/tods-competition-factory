@@ -1,6 +1,6 @@
 import { getStructureRoundProfile } from '../../../query/structure/getStructureRoundProfile';
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../../examples/syncEngine';
+import tournamentEngine from '../../../test/engines/tournamentEngine';
 import { expect, it } from 'vitest';
 
 import { eventConstants } from '../../../constants/eventConstants';

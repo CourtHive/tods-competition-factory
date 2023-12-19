@@ -1,6 +1,6 @@
 import { visualizeScheduledMatchUps } from '../../../../global/testHarness/testUtilities/visualizeScheduledMatchUps';
 import { matchUpSort } from '../../../../functions/sorters/matchUpSort';
-import tournamentEngine from '../../../../examples/syncEngine';
+import tournamentEngine from '../../../../test/engines/tournamentEngine';
 import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
 import { extractTime } from '../../../../utilities/dateTime';
 import mocksEngine from '../../../../mocksEngine';

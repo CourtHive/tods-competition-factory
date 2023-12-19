@@ -1,7 +1,7 @@
 import { completeDrawMatchUps } from '../../../mocksEngine/generators/completeDrawMatchUps';
 import { extractAttributes, intersection, unique } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../../examples/syncEngine';
+import tournamentEngine from '../../../test/engines/tournamentEngine';
 import { expect, it, test } from 'vitest';
 
 import { REMOVE_PARTICIPANT } from '../../../constants/matchUpActionConstants';

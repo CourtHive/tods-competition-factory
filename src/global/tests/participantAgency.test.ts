@@ -1,6 +1,6 @@
 import { resolveDrawPositions } from '../../assemblies/generators/drawDefinitions/drawPositionsResolver';
 import { getDrawPosition, getParticipantId } from '../functions/extractors';
-import tournamentEngine from '../../examples/syncEngine';
+import tournamentEngine from '../../test/engines/tournamentEngine';
 import mocksEngine from '../../mocksEngine';
 import { expect, it } from 'vitest';
 import {

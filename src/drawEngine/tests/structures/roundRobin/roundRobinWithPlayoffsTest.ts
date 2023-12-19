@@ -1,6 +1,6 @@
 import { allPlayoffPositionsFilled } from '../../../governors/queryGovernor/structureActions';
 import { generateMatchUpOutcome } from '../../primitives/generateMatchUpOutcome';
-import tournamentEngine from '../../../../examples/syncEngine';
+import tournamentEngine from '../../../../test/engines/tournamentEngine';
 import matchUpEngine from '../../../../matchUpEngine/sync';
 import { generateRange } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';

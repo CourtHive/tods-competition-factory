@@ -1,6 +1,6 @@
 import competitionEngineAsync from '../../competitionEngine/async';
 import competitionEngineSync from '../../competitionEngine/sync';
-import tournamentEngineSync from '../../examples/syncEngine';
+import tournamentEngineSync from '../../test/engines/tournamentEngine';
 import tournamentEngineAsync from '../async';
 import mocksEngine from '../../mocksEngine';
 import { it, expect } from 'vitest';

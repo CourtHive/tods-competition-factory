@@ -1,4 +1,4 @@
-import tournamentEngine from '../../../../examples/syncEngine';
+import tournamentEngine from '../../../../test/engines/tournamentEngine';
 import { extractTime } from '../../../../utilities/dateTime';
 import { intersection } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';

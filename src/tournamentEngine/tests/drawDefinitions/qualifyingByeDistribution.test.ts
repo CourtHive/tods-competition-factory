@@ -1,6 +1,6 @@
 import { chunkArray } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../../examples/syncEngine';
+import tournamentEngine from '../../../test/engines/tournamentEngine';
 import { expect, it } from 'vitest';
 
 import { QUALIFYING } from '../../../constants/drawDefinitionConstants';

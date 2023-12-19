@@ -1,6 +1,6 @@
 import { visualizeScheduledMatchUps } from '../../global/testHarness/testUtilities/visualizeScheduledMatchUps';
 import { hasSchedule } from '../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/hasSchedule';
-import tournamentEngine from '../../examples/syncEngine';
+import tournamentEngine from '../../test/engines/tournamentEngine';
 import { extractDate } from '../../utilities/dateTime';
 import { competitionEngine } from '../..';
 import { expect, it } from 'vitest';

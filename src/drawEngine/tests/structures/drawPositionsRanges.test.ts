@@ -1,6 +1,6 @@
 import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { feedInChampionship } from '../primitives/feedIn';
-import tournamentEngine from '../../../examples/syncEngine';
+import tournamentEngine from '../../../test/engines/tournamentEngine';
 import { intersection } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import { expect, it } from 'vitest';

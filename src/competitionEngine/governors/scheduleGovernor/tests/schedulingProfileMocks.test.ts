@@ -1,6 +1,6 @@
 import { getContainedStructures } from '../../../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
 import { extractAttributes, intersection, unique } from '../../../../utilities';
-import tournamentEngine from '../../../../examples/syncEngine';
+import tournamentEngine from '../../../../test/engines/tournamentEngine';
 import { mocksEngine, competitionEngine } from '../../../..';
 import { expect, it } from 'vitest';
 

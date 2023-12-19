@@ -1,7 +1,7 @@
 import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { getStructureMatchUps } from '../../../query/structure/getStructureMatchUps';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
-import tournamentEngine from '../../../examples/syncEngine';
+import tournamentEngine from '../../../test/engines/tournamentEngine';
 import mocksEngine from '../../../mocksEngine';
 import { expect, it } from 'vitest';
 
