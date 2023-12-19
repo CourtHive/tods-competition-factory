@@ -69,15 +69,24 @@ it('can bulk schedule matchUps', () => {
   const matchUpIds = roundMatchUps?.[1].map((matchUp) => matchUp.matchUpId);
 
   let schedule: any = { scheduledTime: '08:00 x y z' };
-  result = tournamentEngine.bulkScheduleMatchUps({ matchUpIds, schedule });
+  result = tournamentEngine.bulkScheduleTournamentMatchUps({
+    matchUpIds,
+    schedule,
+  });
   expect(result.error).toEqual(INVALID_TIME);
 
   schedule = { venueId: 'bogus venue' };
-  result = tournamentEngine.bulkScheduleMatchUps({ matchUpIds, schedule });
+  result = tournamentEngine.bulkScheduleTournamentMatchUps({
+    matchUpIds,
+    schedule,
+  });
   expect(result.error).toEqual(VENUE_NOT_FOUND);
 
   schedule = { scheduledDate: 'December 3rd 2100' };
-  result = tournamentEngine.bulkScheduleMatchUps({ matchUpIds, schedule });
+  result = tournamentEngine.bulkScheduleTournamentMatchUps({
+    matchUpIds,
+    schedule,
+  });
   expect(result.error).toEqual(INVALID_DATE);
 
   const scheduledDate = '2021-01-01';
@@ -88,13 +97,16 @@ it('can bulk schedule matchUps', () => {
     venueId,
   };
 
-  result = tournamentEngine.bulkScheduleMatchUps({ schedule });
+  result = tournamentEngine.bulkScheduleTournamentMatchUps({ schedule });
   expect(result.error).toEqual(MISSING_MATCHUP_IDS);
 
-  result = tournamentEngine.bulkScheduleMatchUps({ matchUpIds });
+  result = tournamentEngine.bulkScheduleTournamentMatchUps({ matchUpIds });
   expect(result.error).toEqual(MISSING_SCHEDULE);
 
-  result = tournamentEngine.bulkScheduleMatchUps({ matchUpIds, schedule });
+  result = tournamentEngine.bulkScheduleTournamentMatchUps({
+    matchUpIds,
+    schedule,
+  });
   expect(result.success).toEqual(true);
 
   let { matchUps } = tournamentEngine.allTournamentMatchUps();
@@ -109,7 +121,10 @@ it('can bulk schedule matchUps', () => {
     scheduledDate: '',
     venueId,
   };
-  result = tournamentEngine.bulkScheduleMatchUps({ matchUpIds, schedule });
+  result = tournamentEngine.bulkScheduleTournamentMatchUps({
+    matchUpIds,
+    schedule,
+  });
   expect(result.success).toEqual(true);
 
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
@@ -156,7 +171,10 @@ test('recognizes scheduling conflicts', () => {
     scheduledDate,
   };
   let matchUpIds = getMatchUpIds(roundMatchUps[1]);
-  let result = tournamentEngine.bulkScheduleMatchUps({ matchUpIds, schedule });
+  let result = tournamentEngine.bulkScheduleTournamentMatchUps({
+    matchUpIds,
+    schedule,
+  });
   expect(result.success).toEqual(true);
 
   schedule = {
@@ -164,7 +182,10 @@ test('recognizes scheduling conflicts', () => {
     scheduledDate,
   };
   matchUpIds = getMatchUpIds(roundMatchUps[2]);
-  result = tournamentEngine.bulkScheduleMatchUps({ matchUpIds, schedule });
+  result = tournamentEngine.bulkScheduleTournamentMatchUps({
+    matchUpIds,
+    schedule,
+  });
   expect(result.success).toEqual(true);
 
   ({ matchUps } = competitionEngine.allCompetitionMatchUps({

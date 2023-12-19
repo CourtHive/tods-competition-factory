@@ -68,7 +68,10 @@ it('can clear matchUp schedules', () => {
     scheduledDate: '2021-01-01',
     venueId,
   };
-  result = tournamentEngine.bulkScheduleMatchUps({ matchUpIds, schedule });
+  result = tournamentEngine.bulkScheduleTournamentMatchUps({
+    matchUpIds,
+    schedule,
+  });
   expect(result.success).toEqual(true);
 
   let { matchUps } = tournamentEngine.allTournamentMatchUps();

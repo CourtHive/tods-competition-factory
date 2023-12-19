@@ -45,7 +45,7 @@ it('can set and honor matchUpDailyLimits', () => {
 
   result = tournamentEngine.getMatchUpDailyLimitsUpdate();
   expect(result.methods.length).toEqual(1);
-  expect(result.methods[0].method).toEqual('addTournamentExtension');
+  expect(result.methods[0].method).toEqual('addExtension');
 
   result = competitionEngine.getMatchUpDailyLimitsUpdate();
   expect(result.methods.length).toEqual(1);

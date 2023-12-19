@@ -24,25 +24,35 @@ it.each([competitionEngineSync, asyncCompetitionEngine])(
         expect(result).not.toBeUndefined();
       } else if (method === 'getState') {
         expect(result.tournamentRecord).toBeUndefined();
+      } else if (method === 'getTournament') {
+        expect(result.tournamentRecord).toBeUndefined();
       } else if (result.success || result.valid) {
         const successExpected = [
           'removeUnlinkedTournamentRecords',
+          'participantScheduledMatchUps',
           'getScheduledRoundsDetails',
           'getSchedulingProfileIssues',
           'validateSchedulingProfile',
           'getMatchUpDependencies',
-          'setSchedulingProfile',
           'unPublishOrderOfPlay',
+          'newTournamentRecord',
+          'setSchedulingProfile',
+          'getAppliedPolicies',
           'publishOrderOfPlay',
+          'getRoundMatchUps',
           'getTournamentIds',
           'devContext',
           'reset',
         ].includes(method);
-        if (!successExpected) console.log({ method });
+        if (!successExpected) console.log({ method, result });
         expect(successExpected).toEqual(true);
+      } else if (Array.isArray(result)) {
+        expect(result.length).toEqual(0); // filtering with no values returns no results
       } else if (['devContext'].includes(method)) {
         expect(result.version).not.toBeUndefined();
       } else {
+        if (result.info) continue;
+        if (!result.error) console.log({ result, method });
         expect(result.error).not.toBeUndefined();
       }
     }
@@ -77,12 +87,14 @@ it.each([asyncTournamentEngine, tournamentEngineSync])(
       } else if (result.success || result.valid) {
         const onList = [
           'removeUnlinkedTournamentRecords',
+          'getSchedulingProfileIssues',
           'validateSchedulingProfile',
           'generateDrawDefinition',
           'getMatchUpDependencies',
           'newTournamentRecord',
           'getAppliedPolicies',
           'filterParticipants',
+          'getTournamentIds',
           'setTournamentId',
           'devContext',
           'reset',

@@ -49,7 +49,10 @@ test('recognizes scheduling conflicts', () => {
     scheduledDate,
   };
   let matchUpIds = roundMatchUps[1].map(({ matchUpId }) => matchUpId);
-  let result = tournamentEngine.bulkScheduleMatchUps({ matchUpIds, schedule });
+  let result = tournamentEngine.bulkScheduleTournamentMatchUps({
+    matchUpIds,
+    schedule,
+  });
   expect(result.success).toEqual(true);
 
   schedule = {
@@ -57,7 +60,10 @@ test('recognizes scheduling conflicts', () => {
     scheduledDate,
   };
   matchUpIds = roundMatchUps[2].map(({ matchUpId }) => matchUpId);
-  result = tournamentEngine.bulkScheduleMatchUps({ matchUpIds, schedule });
+  result = tournamentEngine.bulkScheduleTournamentMatchUps({
+    matchUpIds,
+    schedule,
+  });
   expect(result.success).toEqual(true);
 
   ({ matchUps } = competitionEngine.allCompetitionMatchUps({

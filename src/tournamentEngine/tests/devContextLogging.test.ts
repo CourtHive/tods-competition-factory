@@ -31,7 +31,10 @@ describe('should mock console.log', () => {
     expect(consoleMock).toHaveBeenCalledTimes(2);
     expect(consoleMock).toHaveBeenLastCalledWith('sync', {
       method: 'getEvent',
-      params: { tournamentRecord },
+      params: {
+        activeTournamentId: tournamentRecord.tournamentId,
+        tournamentRecord,
+      },
       result: {
         modificationsApplied: false,
         error: {

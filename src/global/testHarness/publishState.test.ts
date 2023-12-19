@@ -1,5 +1,5 @@
 import tournamentEngine from '../../test/engines/tournamentEngine';
-import { competitionEngine } from '../..';
+import competitionEngine from '../../competitionEngine/sync';
 import { expect, it } from 'vitest';
 import fs from 'fs';
 

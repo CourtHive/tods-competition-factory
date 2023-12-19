@@ -6,6 +6,7 @@ import { makeDeepCopy, UUID } from '../../../utilities';
 
 import { Participant, Tournament } from '../../../types/tournamentTypes';
 import { ADD_PARTICIPANTS } from '../../../constants/topicConstants';
+import { TournamentRecords } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   GROUP,
@@ -30,22 +31,32 @@ import {
 
 type AddParticipantType = {
   allowDuplicateParticipantIdPairs?: boolean;
-  returnParticipant?: boolean;
+  tournamentRecords?: TournamentRecords;
   tournamentRecord: Tournament;
+  activeTournamentId?: string;
+  returnParticipant?: boolean;
   disableNotice?: boolean;
   pairOverride?: boolean;
+  tournamentId?: string;
   participant: any; // participantId may be missing and is added by the method
 };
 
-export function addParticipant({
-  allowDuplicateParticipantIdPairs,
-  returnParticipant,
-  tournamentRecord,
-  disableNotice,
-  pairOverride,
-  participant,
-}: AddParticipantType) {
+export function addParticipant(params: AddParticipantType) {
   const stack = 'addParticipant';
+
+  const {
+    allowDuplicateParticipantIdPairs,
+    returnParticipant,
+    disableNotice,
+    pairOverride,
+    participant,
+  } = params;
+
+  const tournamentId = params.tournamentId || params.activeTournamentId;
+
+  const tournamentRecord =
+    params.tournamentRecord ??
+    (tournamentId && params.tournamentRecords?.[tournamentId]);
 
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!participant)

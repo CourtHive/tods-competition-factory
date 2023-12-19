@@ -1,7 +1,9 @@
 import { getContainedStructures } from '../../../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
 import { extractAttributes, intersection, unique } from '../../../../utilities';
 import tournamentEngine from '../../../../test/engines/tournamentEngine';
-import { mocksEngine, competitionEngine } from '../../../..';
+import competitionEngine from '../../../../competitionEngine/sync';
+import { constantToString } from '../../../../utilities/strings';
+import { mocksEngine } from '../../../..';
 import { expect, it } from 'vitest';
 
 import { EXISTING_ROUND } from '../../../../constants/errorConditionConstants';
@@ -15,7 +17,6 @@ import {
   MAIN,
   ROUND_ROBIN,
 } from '../../../../constants/drawDefinitionConstants';
-import { constantToString } from '../../../../utilities/strings';
 
 it('can schedule potential rounds properly in scenarios with recovery times greater than average matchUp times', () => {
   const firstVenueId = 'firstVenueId';

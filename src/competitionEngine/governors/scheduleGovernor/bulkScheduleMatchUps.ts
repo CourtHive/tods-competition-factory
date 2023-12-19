@@ -1,4 +1,4 @@
-import { bulkScheduleMatchUps as bulkSchedule } from '../../../tournamentEngine/governors/scheduleGovernor/bulkScheduleMatchUps';
+import { bulkScheduleTournamentMatchUps } from '../../../tournamentEngine/governors/scheduleGovernor/bulkScheduleTournamentMatchUps';
 import { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDependencies';
 import { getMatchUpId } from '../../../global/functions/extractors';
 
@@ -13,25 +13,32 @@ import {
 type BulkScheduleMatchUpsArgs = {
   tournamentRecords: { [key: string]: Tournament };
   scheduleCompletedMatchUps?: boolean;
+  tournamentRecord?: Tournament;
   scheduleByeMatchUps?: boolean;
   errorOnAnachronism?: boolean;
   removePriorValues?: boolean;
   checkChronology?: boolean;
   matchUpContextIds?: any;
+  matchUpIds?: string[];
   matchUpDetails: any;
   schedule?: any;
 };
-export function bulkScheduleMatchUps({
-  scheduleCompletedMatchUps = false,
-  scheduleByeMatchUps = false,
-  errorOnAnachronism,
-  matchUpContextIds,
-  removePriorValues,
-  tournamentRecords,
-  checkChronology,
-  matchUpDetails,
-  schedule,
-}: BulkScheduleMatchUpsArgs) {
+export function bulkScheduleMatchUps(params: BulkScheduleMatchUpsArgs) {
+  const {
+    scheduleCompletedMatchUps = false,
+    scheduleByeMatchUps = false,
+    errorOnAnachronism,
+    matchUpContextIds,
+    removePriorValues,
+    tournamentRecords,
+    checkChronology,
+    matchUpDetails,
+    schedule,
+  } = params;
+
+  if (params.matchUpIds && !matchUpContextIds)
+    return bulkScheduleTournamentMatchUps(params);
+
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!Array.isArray(matchUpContextIds) && !Array.isArray(matchUpDetails))
     return { error: INVALID_VALUES };
@@ -57,7 +64,7 @@ export function bulkScheduleMatchUps({
     );
 
     if (matchUpIds?.length || tournamentMatchUpDetails?.length) {
-      const result = bulkSchedule({
+      const result = bulkScheduleTournamentMatchUps({
         matchUpDetails: tournamentMatchUpDetails,
         scheduleCompletedMatchUps,
         scheduleByeMatchUps,

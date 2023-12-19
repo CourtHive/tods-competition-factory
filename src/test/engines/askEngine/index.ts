@@ -1,10 +1,11 @@
 import queryGovernor from '../../../tournamentEngine/governors/queryGovernor';
-import askEngine from '../../../assemblies/engines/ask';
+import ask from '../../../assemblies/engines/ask';
 
 const methods = {
   ...queryGovernor,
 };
 
-askEngine.importMethods(methods);
+ask.importMethods(methods);
 
-export default askEngine;
+export const askEngine = ask;
+export default ask;

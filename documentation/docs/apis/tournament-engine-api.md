@@ -965,7 +965,7 @@ const {
 
 ---
 
-## bulkScheduleMatchUps
+## bulkScheduleTournamentMatchUps
 
 ```js
 const schedule = {
@@ -974,7 +974,7 @@ const schedule = {
   venueId,
 };
 const matchUpDetails = [{ matchUpId, schedule }];
-tournamentEngine.bulkScheduleMatchUps({
+tournamentEngine.bulkScheduleTournamentMatchUps({
   checkChronology, // optional boolean - returns warnings for scheduling errors; throws errors when combined with errorOnAnachronism
   errorOnAnachronism, // optional boolean - throw error if chronological scheduduling error
   removePriorValues, // optional boolean - remove all pre-existing scheduling timeItems from matchUps

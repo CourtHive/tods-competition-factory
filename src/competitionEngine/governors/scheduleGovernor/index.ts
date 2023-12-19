@@ -9,7 +9,6 @@ import { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDepend
 import { calculateScheduleTimes } from './scheduleMatchUps/calculateScheduleTimes';
 import { scheduleProfileRounds } from './schedulingProfile/scheduleProfileRounds';
 import { removeEventMatchUpFormatTiming } from '../../../mutate/events/extensions/removeEventMatchUpFormatTiming';
-import { toggleParticipantCheckInState } from './toggleParticipantCheckInState';
 import { generateVirtualCourts } from './schedulers/utils/generateVirtualCourts';
 import { removeMatchUpCourtAssignment } from '../../../mutate/matchUps/schedule/removeMatchUpCourtAssignment';
 import { getMatchUpDailyLimitsUpdate } from './getMatchUpDailyLimitsUpdate';
@@ -51,6 +50,7 @@ import {
   modifyPersonRequests,
   removePersonRequests,
 } from './scheduleMatchUps/personRequests';
+import { toggleParticipantCheckInState } from '../../../mutate/matchUps/timeItems/toggleParticipantCheckInState';
 
 const scheduleGovernor = {
   scheduleMatchUps,

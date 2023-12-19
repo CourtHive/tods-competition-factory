@@ -1,5 +1,6 @@
-import { competitionEngine, mocksEngine, utilities } from '../../..';
 import tournamentEngine from '../../../test/engines/tournamentEngine';
+import competitionEngine from '../../../competitionEngine/sync';
+import { mocksEngine, utilities } from '../../..';
 import { expect, it } from 'vitest';
 
 import { DOUBLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';

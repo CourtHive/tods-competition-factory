@@ -2,6 +2,7 @@ import { hasSchedule } from '../../competitionEngine/governors/scheduleGovernor/
 import { validMatchUps } from '../../validators/validMatchUp';
 import { extractDate, extractTime, timeSort } from '../../utilities/dateTime';
 
+import { SUCCESS } from '../../constants/resultConstants';
 import { HydratedMatchUp } from '../../types/hydrated';
 import {
   INVALID_VALUES,
@@ -60,5 +61,5 @@ export function participantScheduledMatchUps({
     );
   });
 
-  return { scheduledMatchUps };
+  return { ...SUCCESS, scheduledMatchUps };
 }

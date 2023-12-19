@@ -15,7 +15,7 @@ import { clearScheduledMatchUps } from './clearScheduledMatchUps';
 import { setMatchUpDailyLimits } from './setMatchUpDailyLimits';
 import { getMatchUpDailyLimits } from './getMatchUpDailyLimits';
 import { clearMatchUpSchedule } from '../../../mutate/matchUps/schedule/clearMatchUpSchedule';
-import { bulkScheduleMatchUps } from './bulkScheduleMatchUps';
+import { bulkScheduleTournamentMatchUps } from './bulkScheduleTournamentMatchUps';
 import { assignMatchUpCourt } from '../../../mutate/matchUps/schedule/assignMatchUpCourt';
 import { assignMatchUpVenue } from '../../../mutate/matchUps/schedule/assignMatchUpVenue';
 import { addMatchUpScheduledTime } from '../../../mutate/matchUps/schedule/scheduledTime';
@@ -70,7 +70,7 @@ const scheduleGovernor = {
   removeMatchUpCourtAssignment,
 
   clearScheduledMatchUps,
-  bulkScheduleMatchUps,
+  bulkScheduleTournamentMatchUps,
   bulkRescheduleMatchUps,
 };
 

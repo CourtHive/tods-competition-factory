@@ -1,12 +1,13 @@
 import tournamentEngine from '../../../test/engines/tournamentEngine';
-import { competitionEngine, mocksEngine } from '../../..';
+import competitionEngine from '../../../competitionEngine/sync';
+import askEngine from '../../../test/engines/askEngine';
 import { unique } from '../../../utilities';
+import { mocksEngine } from '../../..';
 import { expect, test } from 'vitest';
 
 import { FACTORY } from '../../../constants/extensionConstants';
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
 import { TEAM_EVENT } from '../../../constants/eventConstants';
-import askEngine from '../../../test/engines/askEngine';
 
 test('it can allocate courts to a TEAM matchUp', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({

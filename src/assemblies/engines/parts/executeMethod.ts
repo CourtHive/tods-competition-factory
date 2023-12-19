@@ -36,6 +36,7 @@ export function executeFunction(
   const tournamentId = getTournamentId();
   const tournamentRecord =
     params?.sandboxTournament ?? getTournamentRecord(tournamentId);
+  if (params) params.activeTournamentId = tournamentId;
 
   const augmentedParams = params
     ? paramsMiddleware(tournamentRecords, params)
