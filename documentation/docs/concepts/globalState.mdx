@@ -20,7 +20,7 @@ If multiple tournamentRecords are added to `competitionEngine` state,
 ```js
 competitionEngine.setState(tournamentRecords);
 tournamentEngine.setTournamentId(tournamentId);
-const { tournamentRecord } = tournamentEngine.getState();
+const { tournamentRecord } = tournamentEngine.getTournament();
 ```
 
 When a single tournamentRecord is added via `competitionEngine`, `tournamentId` is set automatically.

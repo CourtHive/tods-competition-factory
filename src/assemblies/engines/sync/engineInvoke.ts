@@ -37,7 +37,7 @@ export function engineInvoke(engine: { [key: string]: any }, args: any) {
 
   const timeStamp = Date.now();
   const mutationStatus = getMutationStatus({ timeStamp });
-  result.modificationsApplied = mutationStatus;
+  if (isObject(result)) result.modificationsApplied = mutationStatus;
 
   const notify =
     result?.success &&

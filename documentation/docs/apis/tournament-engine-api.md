@@ -3014,7 +3014,7 @@ tournamentEngine.newTournamentRecord({
   tournamentId, // optional - will be generated if not provided
 });
 
-const { tournamentRecord } = tournamentEngine.getState();
+const { tournamentRecord } = tournamentEngine.getTournament();
 ```
 
 ---
