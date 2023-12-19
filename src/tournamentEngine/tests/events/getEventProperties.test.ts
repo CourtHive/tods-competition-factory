@@ -1,4 +1,4 @@
-import { tournamentEngine } from '../../sync';
+import tournamentEngine from '../../../examples/syncEngine';
 import mocksEngine from '../../../mocksEngine';
 import { expect, it } from 'vitest';
 
@@ -51,7 +51,7 @@ it('can get event properties to determine if there are seeded, ranked, or rated 
 
   const {
     tournamentRecord: { participants: modifiedParticipants },
-  } = tournamentEngine.getState();
+  } = tournamentEngine.getTournament();
 
   modifiedParticipants.forEach((participant) => {
     expect(participant.timeItems.length).toEqual(1);

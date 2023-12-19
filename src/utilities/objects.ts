@@ -9,7 +9,7 @@ export function isString(obj) {
 }
 
 export function isObject(obj) {
-  return obj !== null && typeof obj === 'object';
+  return obj !== null && typeof obj === 'object' && !Array.isArray(obj);
 }
 
 export function objShallowEqual(o1, o2) {

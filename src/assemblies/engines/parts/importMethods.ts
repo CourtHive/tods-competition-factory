@@ -2,6 +2,7 @@ import { isFunction, isObject } from '../../../utilities/objects';
 import {
   getDevContext,
   handleCaughtError,
+  setMethods,
 } from '../../../global/state/globalState';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
@@ -10,6 +11,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 
 export function importMethods(engine, engineInvoke, methods): ResultType {
   if (!isObject(methods)) return { error: INVALID_VALUES };
+  setMethods(methods);
   const methodNames = Object.keys(methods).filter((key) =>
     isFunction(methods[key])
   );

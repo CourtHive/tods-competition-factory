@@ -1,6 +1,6 @@
 import { extractAttributes } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../sync';
+import tournamentEngine from '../../../examples/syncEngine';
 import { expect, it } from 'vitest';
 
 import { MISSING_MATCHUPS } from '../../../constants/errorConditionConstants';

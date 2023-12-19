@@ -1,5 +1,5 @@
+import tournamentEngine from '../../../test/engines/tournamentEngine';
 import { getInitialRoundNumber } from '../getInitialRoundNumber';
-import tournamentEngine from '../../../tournamentEngine/sync';
 import { generateRange } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import { expect, it } from 'vitest';
@@ -22,8 +22,8 @@ it('can accurately determine initialRoundNumber', () => {
 
   generateRange(1, 9).forEach((drawPosition) => {
     const { initialRoundNumber } = getInitialRoundNumber({
-      matchUps,
       drawPosition,
+      matchUps,
     });
     expect(initialRoundNumber).toEqual(1);
   });

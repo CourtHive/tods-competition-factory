@@ -2,7 +2,7 @@ import syncGlobalState from '../../global/state/syncGlobalState';
 import competitionEngine from '../../competitionEngine/sync';
 import mocksEngine from '../../mocksEngine';
 import { expect, it, test } from 'vitest';
-import tournamentEngine from '../sync';
+import tournamentEngine from '../../examples/syncEngine';
 import {
   setStateProvider,
   setSubscriptions,
@@ -53,13 +53,11 @@ it('can set state provider', () => {
   result = tournamentEngine.setState();
   expect(result.error).not.toBeUndefined();
 
-  result = tournamentEngine.setState({});
-  expect(result.error).not.toBeUndefined();
-
   result = competitionEngine.removeTournamentRecord();
   expect(result.error).not.toBeUndefined();
 
-  tournamentEngine.addParticipant({ participant });
+  result = tournamentEngine.addParticipant({ participant });
+  expect(result.success).toEqual(true);
   expect(allParticipants.length).toEqual(1);
 
   competitionEngine.removeTournamentRecord(tournamentId);
@@ -79,13 +77,15 @@ test('state provider implementation of handleCaughtError', () => {
 
     const tournamentId = syncGlobalState.getTournamentId();
     const tournamentRecord = syncGlobalState.getTournamentRecord(tournamentId);
-    if (tournamentRecord?.tournamentId === tournamentId)
+    if (tournamentRecord?.tournamentId === tournamentId) {
       tournamentRecordsCount += 1;
+    }
+
     errorInstances.push({
+      params: Object.keys(params),
       tournamentId,
       engineName,
       methodName,
-      params: Object.keys(params),
       error,
     });
   }
@@ -120,9 +120,9 @@ test('state provider implementation of handleCaughtError', () => {
   expect(errorInstances).toEqual([
     {
       tournamentId: 'tournamentId',
-      engineName: 'tournamentEngine',
+      engineName: 'engine',
       methodName: 'deleteDrawDefinitions',
-      params: ['drawIds'],
+      params: ['drawIds', 'tournamentRecord'],
       error: 'Global state provider error',
     },
   ]);

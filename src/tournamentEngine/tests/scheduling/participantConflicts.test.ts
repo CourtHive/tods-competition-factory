@@ -2,7 +2,7 @@ import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { eventConstants } from '../../../constants/eventConstants';
 import competitionEngine from '../../../competitionEngine/sync';
 import mocksEngine from '../../../mocksEngine';
-import { tournamentEngine } from '../../sync';
+import tournamentEngine from '../../../examples/syncEngine';
 import { expect, test } from 'vitest';
 
 import POLICY_SCHEDULING_DEFAULT from '../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';

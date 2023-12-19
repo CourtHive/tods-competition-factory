@@ -2,7 +2,7 @@ import { getMatchUpContextIds } from '../../../query/matchUp/getMatchUpContextId
 import { getMatchUpType } from '../../../query/matchUp/getMatchUpType';
 import tournamentEngineAsync from '../../async';
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngineSync from '../../sync';
+import tournamentEngineSync from '../../../examples/syncEngine';
 import { expect, test } from 'vitest';
 
 import { MISSING_VALUE } from '../../../constants/errorConditionConstants';

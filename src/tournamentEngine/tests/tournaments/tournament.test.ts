@@ -2,7 +2,7 @@ import { getStructureSeedAssignments } from '../../../query/structure/getStructu
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { parseScoreString } from '../../../mocksEngine/utilities/parseScoreString';
 import mocksEngine from '../../../mocksEngine';
-import { tournamentEngine } from '../../sync';
+import tournamentEngine from '../../../examples/syncEngine';
 import { expect, it } from 'vitest';
 
 import POLICY_SEEDING_NATIONAL from '../../../fixtures/policies/POLICY_SEEDING_NATIONAL';
@@ -159,19 +159,19 @@ it('can set tournament names', () => {
   });
   expect(result?.success).toEqual(true);
 
-  let { tournamentRecord } = tournamentEngine.getState();
+  let { tournamentRecord } = tournamentEngine.getTournament();
   expect(tournamentRecord.tournamentName).toEqual(tournamentName);
 
   result = tournamentEngine.setTournamentName({ formalName: tournamentName });
   expect(result?.success).toEqual(true);
 
-  ({ tournamentRecord } = tournamentEngine.getState());
+  ({ tournamentRecord } = tournamentEngine.getTournament());
   expect(tournamentRecord.formalName).toBeUndefined();
 
   result = tournamentEngine.setTournamentName({ formalName: 'Formal Name' });
   expect(result?.success).toEqual(true);
 
-  ({ tournamentRecord } = tournamentEngine.getState());
+  ({ tournamentRecord } = tournamentEngine.getTournament());
   expect(tournamentRecord.formalName).toEqual('Formal Name');
 
   result = tournamentEngine.setTournamentName({
@@ -179,7 +179,7 @@ it('can set tournament names', () => {
   });
   expect(result?.success).toEqual(true);
 
-  ({ tournamentRecord } = tournamentEngine.getState());
+  ({ tournamentRecord } = tournamentEngine.getTournament());
   expect(tournamentRecord.promotionalName).toBeUndefined();
 
   result = tournamentEngine.setTournamentName({
@@ -187,7 +187,7 @@ it('can set tournament names', () => {
   });
   expect(result?.success).toEqual(true);
 
-  ({ tournamentRecord } = tournamentEngine.getState());
+  ({ tournamentRecord } = tournamentEngine.getTournament());
   expect(tournamentRecord.formalName).toEqual('Promotional Name');
 });
 
@@ -215,7 +215,7 @@ it('can set tournament categories', () => {
   result = tournamentEngine.setTournamentCategories({ categories });
   expect(result.success).toEqual(true);
 
-  const { tournamentRecord } = tournamentEngine.getState();
+  const { tournamentRecord } = tournamentEngine.getTournament();
   expect(tournamentRecord.tournamentCategories.length).toEqual(3);
 
   result = tournamentEngine.setTournamentCategories();

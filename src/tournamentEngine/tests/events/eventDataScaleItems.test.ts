@@ -1,6 +1,6 @@
 import competitionEngine from '../../../competitionEngine/sync';
+import tournamentEngine from '../../../examples/syncEngine';
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../sync';
 import { expect, test } from 'vitest';
 
 import POLICY_PRIVACY_DEFAULT from '../../../fixtures/policies/POLICY_PRIVACY_DEFAULT';
@@ -65,12 +65,12 @@ test('ratings values should be present on tournamentParticipants in getEventData
     startDate,
   });
 
-  let {
-    matchUps: [mockedMatchUp],
-  } = tournamentEngine.allTournamentMatchUps({
+  tournamentEngine.setState(tournamentRecord);
+
+  let mockedMatchUp = tournamentEngine.allTournamentMatchUps({
     sandboxTournament: tournamentRecord,
     participantsProfile,
-  });
+  }).matchUps?.[0];
 
   expect(
     mockedMatchUp.sides[0].participant.ratings[SINGLES][0].scaleName

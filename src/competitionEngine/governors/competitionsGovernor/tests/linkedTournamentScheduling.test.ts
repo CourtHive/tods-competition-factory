@@ -1,4 +1,4 @@
-import tournamentEngine from '../../../../tournamentEngine/sync';
+import tournamentEngine from '../../../../examples/syncEngine';
 import { formatDate } from '../../../../utilities/dateTime';
 import competitionEngineAsync from '../../../async';
 import competitionEngineSync from '../../../sync';

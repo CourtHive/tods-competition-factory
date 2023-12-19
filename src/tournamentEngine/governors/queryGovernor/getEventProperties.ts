@@ -1,4 +1,4 @@
-import { participantScaleItem } from '../../accessors/participantScaleItem';
+import { participantScaleItem } from '../../../query/participant/participantScaleItem';
 
 import { RANKING, RATING, SEEDING } from '../../../constants/timeItemConstants';
 import {

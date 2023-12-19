@@ -2,7 +2,7 @@ import { deleteVenue as competitionEngineDeleteVenue } from '../../../competitio
 import { modifyVenue as competitionEngineModifyVenue } from '../../../competitionEngine/governors/venueGovernor/modifyVenue';
 import { deleteVenue as tournamentEngineDeleteVenue } from '../../governors/venueGovernor/deleteVenue';
 import { modifyVenue as tournamentEngineModifyVenue } from '../../governors/venueGovernor/modifyVenue';
-import { tournamentEngine } from '../../sync';
+import tournamentEngine from '../../../examples/syncEngine';
 import { expect, it, test } from 'vitest';
 
 import {

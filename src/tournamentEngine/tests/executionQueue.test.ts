@@ -1,8 +1,8 @@
 import competitionEngineAsync from '../../competitionEngine/async';
 import competitionEngineSync from '../../competitionEngine/sync';
+import tournamentEngineSync from '../../examples/syncEngine';
 import tournamentEngineAsync from '../async';
 import mocksEngine from '../../mocksEngine';
-import tournamentEngineSync from '../sync';
 import { it, expect } from 'vitest';
 
 import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';

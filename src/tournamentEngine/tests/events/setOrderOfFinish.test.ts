@@ -1,5 +1,5 @@
 import { generateTeamTournament } from '../team/generateTestTeamTournament';
-import tournamentEngine from '../../sync';
+import tournamentEngine from '../../../examples/syncEngine';
 import { mocksEngine } from '../../..';
 import { expect, it } from 'vitest';
 

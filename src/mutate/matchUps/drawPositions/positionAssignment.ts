@@ -1,6 +1,5 @@
 import { modifyRoundRobinMatchUpsStatus } from '../matchUpStatus/modifyRoundRobinMatchUpsStatus';
 import { getStructureDrawPositionProfiles } from '../../../drawEngine/getters/getStructureDrawPositionProfiles';
-// import { conditionallyDisableLinkPositioning } from './conditionallyDisableLinkPositioning';
 import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { assignMatchUpDrawPosition } from './assignMatchUpDrawPosition';
@@ -8,9 +7,8 @@ import { modifyPositionAssignmentsNotice } from '../../notifications/drawNotific
 import { getStructureSeedAssignments } from '../../../query/structure/getStructureSeedAssignments';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { structureAssignedDrawPositions } from '../../../drawEngine/getters/positionsGetter';
-import { getInitialRoundNumber } from '../../../drawEngine/getters/getInitialRoundNumber';
+import { getInitialRoundNumber } from '../../../query/matchUps/getInitialRoundNumber';
 import { getAllDrawMatchUps } from '../../../query/drawMatchUps';
-// import { addPositionActionTelemetry } from './addPositionActionTelemetry';
 import {
   ResultType,
   decorateResult,
@@ -302,25 +300,6 @@ export function assignDrawPosition({
       });
     }
   }
-
-  /*
-  if (!automaticPlacement) {
-    conditionallyDisableLinkPositioning({
-      drawPositions: [drawPosition],
-      structure,
-    });
-
-    // TODO: This is probably unnecessary and creates double entry in positionAction telemetry
-    const positionAction = {
-      name: 'positionAssignment',
-      participantId,
-      drawPosition,
-      structureId,
-    };
-    addPositionActionTelemetry({ drawDefinition, positionAction });
-    // END TODO.
-  }
-  */
 
   modifyPositionAssignmentsNotice({
     tournamentId: tournamentRecord?.tournamentId,

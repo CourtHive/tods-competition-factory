@@ -1,5 +1,6 @@
-import { mocksEngine, tournamentEngine } from '../../..';
+import tournamentEngine from '../../../examples/syncEngine';
 import matchUpEngine from '../../../matchUpEngine/sync';
+import mocksEngine from '../../../mocksEngine';
 import { expect, test } from 'vitest';
 
 test('roundRobinTally policy can specify tally by games only', () => {

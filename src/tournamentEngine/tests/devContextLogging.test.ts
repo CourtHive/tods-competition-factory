@@ -1,9 +1,10 @@
 import { afterAll, describe, it, expect, vi } from 'vitest';
+import tournamentEngine from '../../examples/syncEngine';
 import mocksEngine from '../../mocksEngine';
-import tournamentEngine from '../sync';
-import { ELO } from '../../constants/ratingConstants';
+
 import { SINGLES_EVENT } from '../../constants/eventConstants';
 import { RATING } from '../../constants/scaleConstants';
+import { ELO } from '../../constants/ratingConstants';
 
 describe('should mock console.log', () => {
   const consoleMock = vi
@@ -28,10 +29,11 @@ describe('should mock console.log', () => {
     tournamentEngine.devContext({ errors: true });
     tournamentEngine.getEvent();
     expect(consoleMock).toHaveBeenCalledTimes(2);
-    expect(consoleMock).toHaveBeenLastCalledWith('te:', {
+    expect(consoleMock).toHaveBeenLastCalledWith('sync', {
       method: 'getEvent',
-      params: undefined,
+      params: { tournamentRecord },
       result: {
+        modificationsApplied: false,
         error: {
           message: 'Missing event / eventId',
           code: 'ERR_MISSING_EVENT_ID',

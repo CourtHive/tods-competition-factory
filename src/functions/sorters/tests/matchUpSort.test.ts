@@ -1,6 +1,7 @@
-import { mocksEngine, tournamentEngine } from '../../..';
+import askEngine from '../../../test/engines/askEngine';
 import { shuffleArray } from '../../../utilities';
-import { matchUpSort } from '../../../functions/sorters/matchUpSort';
+import mocksEngine from '../../../mocksEngine';
+import { matchUpSort } from '../matchUpSort';
 import { it, expect } from 'vitest';
 
 import {
@@ -12,15 +13,14 @@ import {
 it.each([COMPASS, CURTIS_CONSOLATION])(
   'can accurately sort matchUps by stage and then stageSequence',
   (drawType) => {
-    tournamentEngine.devContext(true);
     const drawSize = 32;
     const drawProfiles = [{ drawType, drawSize }];
     const { tournamentRecord } = mocksEngine.generateTournamentRecord({
       drawProfiles,
     });
-    tournamentEngine.setState(tournamentRecord);
+    askEngine.setState(tournamentRecord);
 
-    const { matchUps } = tournamentEngine.allTournamentMatchUps();
+    const { matchUps } = askEngine.allTournamentMatchUps();
     const shuffledMatchUps = shuffleArray(matchUps);
     const sortedMatchUps = shuffledMatchUps.sort(matchUpSort);
     const sortedState = sortedMatchUps.map(

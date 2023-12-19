@@ -1,4 +1,5 @@
-import { competitionEngine, tournamentEngine } from '../..';
+import tournamentEngine from '../../examples/syncEngine';
+import { competitionEngine } from '../..';
 import { expect, it } from 'vitest';
 import fs from 'fs';
 

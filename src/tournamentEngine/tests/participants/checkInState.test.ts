@@ -2,7 +2,7 @@ import { getMatchUpParticipantIds } from '../../../query/matchUp/getMatchUpParti
 import { getCheckedInParticipantIds } from '../../../query/matchUp/getCheckedInParticipantIds';
 
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../sync';
+import tournamentEngine from '../../../examples/syncEngine';
 import { expect, it } from 'vitest';
 
 import { ELIMINATION } from '../../../constants/drawDefinitionConstants';

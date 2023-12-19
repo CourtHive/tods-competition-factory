@@ -54,7 +54,7 @@ export function allocateTeamMatchUpCourts({
   let itemValue;
   if (courtIds) {
     const tournaments: any = tournamentRecords
-      ? tournamentRecord
+      ? tournamentRecords
       : tournamentRecord && {
           [tournamentRecord.tournamentId]: tournamentRecord,
         };

@@ -1,7 +1,7 @@
 import { setSubscriptions } from '../../../global/state/globalState';
 import { generateRange } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../sync';
+import tournamentEngine from '../../../examples/syncEngine';
 import { expect, test } from 'vitest';
 
 import { CONSOLATION } from '../../../constants/drawDefinitionConstants';

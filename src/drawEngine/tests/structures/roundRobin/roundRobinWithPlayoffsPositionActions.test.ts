@@ -1,6 +1,6 @@
 import { generateMatchUpOutcome } from '../../primitives/generateMatchUpOutcome';
 import { getPositionAssignments } from '../../../getters/positionsGetter';
-import tournamentEngine from '../../../../tournamentEngine/sync';
+import tournamentEngine from '../../../../examples/syncEngine';
 import { intersection } from '../../../../utilities';
 import { setsValues } from './roundRobinSetsValues';
 import mocksEngine from '../../../../mocksEngine';

@@ -1,7 +1,9 @@
-import { setSubscriptions, tournamentEngine, utilities } from '../src/index';
+import tournamentEngine from '../../examples/syncEngine';
+import { setSubscriptions } from '../state/globalState';
 import { expect, it } from 'vitest';
+import { utilities } from '../..';
 
-import { MatchUp, Participant } from '../src/types/tournamentTypes';
+import { MatchUp, Participant } from '../../types/tournamentTypes';
 
 it('can set subscriptions in global state outside of engines', () => {
   const allParticipants: Participant[] = [];

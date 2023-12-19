@@ -4,7 +4,7 @@ import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { getMatchUpIds } from '../../../global/functions/extractors';
 import competitionEngine from '../../../competitionEngine/sync';
 import mocksEngine from '../../../mocksEngine';
-import { tournamentEngine } from '../../sync';
+import tournamentEngine from '../../../examples/syncEngine';
 import { expect, it, test } from 'vitest';
 
 import POLICY_SCHEDULING_DEFAULT from '../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
@@ -102,7 +102,7 @@ it('can bulk schedule matchUps', () => {
     (matchUp) => matchUp.schedule?.scheduledTime
   );
 
-  expect(matchUpsWithScheduledTime.length).toEqual(matchUpIds.length);
+  expect(matchUpsWithScheduledTime.length).toEqual(matchUpIds?.length);
 
   schedule = {
     scheduledTime: '',

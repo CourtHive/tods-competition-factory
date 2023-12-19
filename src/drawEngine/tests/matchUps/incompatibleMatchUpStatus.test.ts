@@ -1,4 +1,5 @@
-import { tournamentEngine, mocksEngine } from '../../..';
+import tournamentEngine from '../../../examples/syncEngine';
+import { mocksEngine } from '../../..';
 import { it, expect } from 'vitest';
 
 import { INCOMPATIBLE_MATCHUP_STATUS } from '../../../constants/errorConditionConstants';

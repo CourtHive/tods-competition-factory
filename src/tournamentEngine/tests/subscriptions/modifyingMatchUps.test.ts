@@ -1,7 +1,7 @@
 import { rgbColors } from '../../../global/functions/logColors';
 import { makeDeepCopy } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../sync';
+import tournamentEngine from '../../../examples/syncEngine';
 import { expect, it } from 'vitest';
 import diff from 'variable-diff';
 import chalk from 'chalk';

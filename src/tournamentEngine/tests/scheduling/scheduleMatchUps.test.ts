@@ -3,8 +3,8 @@ import { removeCourtAssignment } from '../../../mutate/matchUps/schedule/removeC
 import { getMatchUpIds } from '../../../global/functions/extractors';
 import { competitionEngine } from '../../../competitionEngine/sync';
 import { setSubscriptions } from '../../../global/state/globalState';
+import tournamentEngine from '../../../examples/syncEngine';
 import mocksEngine from '../../../mocksEngine';
-import { tournamentEngine } from '../../sync';
 import { expect, it } from 'vitest';
 
 import { DELETE_VENUE, MODIFY_VENUE } from '../../../constants/topicConstants';
@@ -127,7 +127,7 @@ it('can add events, venues, and schedule matchUps and modify drawDefinition.upda
   ({ courts } = tournamentEngine.getCourts());
   expect(courts.length).toEqual(3);
 
-  let { tournamentRecord } = tournamentEngine.getState();
+  let { tournamentRecord } = tournamentEngine.getTournament();
   expect(tournamentRecord.venues.length).toEqual(1);
 
   const { upcomingMatchUps: upcoming, pendingMatchUps } =
@@ -146,7 +146,7 @@ it('can add events, venues, and schedule matchUps and modify drawDefinition.upda
   const { scheduleTimes } = getScheduleTimes(timingParameters);
   expect(scheduleTimes.length).toEqual(18);
 
-  ({ tournamentRecord } = tournamentEngine.getState());
+  ({ tournamentRecord } = tournamentEngine.getTournament());
   const tournamentId =
     tournamentRecord.unifiedTournamentId?.tournamentId ||
     tournamentRecord.tournamentId;
@@ -544,7 +544,7 @@ it('adds venueId to matchUp.schedule when court is assigned', () => {
   ({ courts } = tournamentEngine.getCourts());
   expect(courts.length).toEqual(3);
 
-  let { tournamentRecord } = tournamentEngine.getState();
+  let { tournamentRecord } = tournamentEngine.getTournament();
   expect(tournamentRecord.venues.length).toEqual(1);
 
   const { upcomingMatchUps: upcoming, pendingMatchUps } =
@@ -563,7 +563,7 @@ it('adds venueId to matchUp.schedule when court is assigned', () => {
   const { scheduleTimes } = getScheduleTimes(timingParameters);
   expect(scheduleTimes.length).toEqual(18);
 
-  ({ tournamentRecord } = tournamentEngine.getState());
+  ({ tournamentRecord } = tournamentEngine.getTournament());
   const tournamentId =
     tournamentRecord.unifiedTournamentId?.tournamentId ||
     tournamentRecord.tournamentId;

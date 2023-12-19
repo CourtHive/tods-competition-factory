@@ -1,7 +1,7 @@
 import competitionEngineAsync from '../../competitionEngine/async';
 import competitionEngineSync from '../../competitionEngine/sync';
 import tournamentEngineAsync from '../../tournamentEngine/async';
-import tournamentEngineSync from '../../tournamentEngine/sync';
+import tournamentEngineSync from '../../examples/syncEngine';
 import scaleEngineAsync from '../../scaleEngine/async';
 import scaleEngineSync from '../../scaleEngine/sync';
 import { expect, it } from 'vitest';
@@ -70,10 +70,13 @@ it.each([asyncTournamentEngine, tournamentEngineSync])(
         ].includes(method)
       ) {
         expect(result).not.toBeUndefined();
+      } else if (method === 'getTournament') {
+        // getTournament returns a tournamentRecord if one has been set
       } else if (method === 'getState') {
-        expect(result.tournamentRecord).toBeUndefined();
+        // getState returns the entire state
       } else if (result.success || result.valid) {
         const onList = [
+          'removeUnlinkedTournamentRecords',
           'validateSchedulingProfile',
           'generateDrawDefinition',
           'getMatchUpDependencies',

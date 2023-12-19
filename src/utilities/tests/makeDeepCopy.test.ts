@@ -1,4 +1,4 @@
-import tournamentEngine from '../../tournamentEngine/sync';
+import tournamentEngine from '../../examples/syncEngine';
 import { makeDeepCopy } from '../makeDeepCopy';
 import mocksEngine from '../../mocksEngine';
 import { expect, it, test } from 'vitest';
@@ -23,11 +23,11 @@ it('can convert extensions during deepCopy', () => {
   });
   expect(result.success).toEqual(true);
 
-  ({ tournamentRecord } = tournamentEngine.getState());
+  ({ tournamentRecord } = tournamentEngine.getTournament());
   const extensionNames = tournamentRecord.extensions.map(({ name }) => name);
   expect(extensionNames.includes(APPLIED_POLICIES)).toEqual(true);
 
-  ({ tournamentRecord } = tournamentEngine.getState({
+  ({ tournamentRecord } = tournamentEngine.getTournament({
     convertExtensions: true,
   }));
   expect(tournamentRecord.extensions).toBeUndefined();
@@ -53,7 +53,7 @@ it('can convert extensions during deepCopy', () => {
   expect(participantCopy._anotherExtension).toEqual('anotherExtensionValue');
   expect(participantCopy.person._someExtension).toEqual('extensionValue');
 
-  ({ tournamentRecord } = tournamentEngine.getState({
+  ({ tournamentRecord } = tournamentEngine.getTournament({
     convertExtensions: true,
   }));
 
@@ -79,11 +79,11 @@ it('can remove extensions', () => {
   });
   expect(result.success).toEqual(true);
 
-  ({ tournamentRecord } = tournamentEngine.getState());
+  ({ tournamentRecord } = tournamentEngine.getTournament());
   const extensionNames = tournamentRecord.extensions.map(({ name }) => name);
   expect(extensionNames.includes(APPLIED_POLICIES)).toEqual(true);
 
-  ({ tournamentRecord } = tournamentEngine.getState({
+  ({ tournamentRecord } = tournamentEngine.getTournament({
     removeExtensions: true,
   }));
   expect(tournamentRecord.extensions).toEqual([]);
@@ -106,7 +106,7 @@ it('can disable deepCopy without compromising source document', () => {
   let { matchUps } = tournamentEngine.allTournamentMatchUps();
   expect(matchUps[0].sides).not.toBeUndefined();
 
-  ({ tournamentRecord } = tournamentEngine.getState());
+  ({ tournamentRecord } = tournamentEngine.getTournament());
   expect(
     tournamentRecord.events[0].drawDefinitions[0].structures[0].matchUps[0]
       .sides
@@ -117,7 +117,7 @@ it('can disable deepCopy without compromising source document', () => {
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   expect(matchUps[0].sides).not.toBeUndefined();
 
-  ({ tournamentRecord } = tournamentEngine.getState());
+  ({ tournamentRecord } = tournamentEngine.getTournament());
 
   expect(
     tournamentRecord.events[0].drawDefinitions[0].structures[0].matchUps[0]

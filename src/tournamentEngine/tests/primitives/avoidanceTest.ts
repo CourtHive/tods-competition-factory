@@ -1,4 +1,5 @@
-import { tournamentEngine, mocksEngine } from '../../..';
+import tournamentEngine from '../../../examples/syncEngine';
+import { mocksEngine } from '../../..';
 import { expect } from 'vitest';
 
 import { SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';

@@ -1,4 +1,4 @@
-import tournamentEngine from '../../../../tournamentEngine/sync';
+import tournamentEngine from '../../../../examples/syncEngine';
 import { intersection, unique } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
@@ -43,7 +43,7 @@ it('can update matchUp court assignments accross multiple events/draws', () => {
   expect(courts.length).toEqual(3);
   const courtIds = courts.map(({ courtId }) => courtId);
 
-  ({ tournamentRecord } = tournamentEngine.getState());
+  ({ tournamentRecord } = tournamentEngine.getTournament());
   const { tournamentId } = tournamentRecord;
 
   let { matchUps } = tournamentEngine.allTournamentMatchUps();

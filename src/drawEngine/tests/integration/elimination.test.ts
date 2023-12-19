@@ -1,7 +1,8 @@
 import { getParticipantIdMatchUps } from '../../governors/queryGovernor/participantIdMatchUps';
 import { generateRange, instanceCount, unique } from '../../../utilities';
 import { verifyStructure } from '../primitives/verifyStructure';
-import { mocksEngine, tournamentEngine } from '../../..';
+import tournamentEngine from '../../../examples/syncEngine';
+import mocksEngine from '../../../mocksEngine';
 import { expect, it } from 'vitest';
 import {
   verifyMatchUps,

@@ -1,5 +1,5 @@
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../sync';
+import tournamentEngine from '../../../examples/syncEngine';
 import { expect, it } from 'vitest';
 
 import { POLICY_TYPE_AVOIDANCE } from '../../../constants/policyConstants';
@@ -50,7 +50,7 @@ it('properly handles qualifiers with avoidances', () => {
   ).structureId;
 
   const { conflicts } = getConflicts({
-    tournamentRecord: tournamentEngine.getState().tournamentRecord,
+    tournamentRecord: tournamentEngine.getTournament().tournamentRecord,
     structureId: mainStructureId,
     keysToTest,
     drawId,

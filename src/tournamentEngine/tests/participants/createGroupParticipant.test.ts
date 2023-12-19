@@ -1,7 +1,7 @@
 import { getParticipants } from '../../../query/participants/getParticipants';
 import { setSubscriptions } from '../../../global/state/globalState';
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../sync';
+import tournamentEngine from '../../../examples/syncEngine';
 import { expect, it } from 'vitest';
 
 import { GROUP, INDIVIDUAL } from '../../../constants/participantConstants';
@@ -59,7 +59,7 @@ it('can create group participants', () => {
   expect(participantAddCounter).toBeGreaterThan(0);
 
   const { tournamentRecord: updatedTournamentRecord } =
-    tournamentEngine.getState();
+    tournamentEngine.getTournament();
   const { participants: groupParticipants } = getParticipants({
     tournamentRecord: updatedTournamentRecord,
     participantFilters: { participantTypes: [GROUP] },

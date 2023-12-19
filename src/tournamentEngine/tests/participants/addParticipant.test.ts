@@ -1,4 +1,4 @@
-import { tournamentEngine } from '../../sync';
+import tournamentEngine from '../../../examples/syncEngine';
 import mocksEngine from '../../../mocksEngine';
 import { UUID } from '../../../utilities';
 import { expect, it } from 'vitest';
@@ -149,7 +149,7 @@ it('can add individual and pair participants', () => {
   result = tournamentEngine.addParticipant({ participant: pairParticipant });
   expect(result.success).toEqual(true);
 
-  const { tournamentRecord } = tournamentEngine.getState();
+  const { tournamentRecord } = tournamentEngine.getTournament();
   expect(tournamentRecord.participants.length).toEqual(3);
 });
 

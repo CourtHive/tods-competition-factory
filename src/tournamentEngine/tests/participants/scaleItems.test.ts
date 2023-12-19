@@ -1,6 +1,6 @@
 import competitionEngine from '../../../competitionEngine/sync';
 import mocksEngine from '../../../mocksEngine';
-import { tournamentEngine } from '../../sync';
+import tournamentEngine from '../../../examples/syncEngine';
 import { expect, it } from 'vitest';
 
 import { VALUE_UNCHANGED } from '../../../constants/errorConditionConstants';
@@ -171,7 +171,7 @@ it('can set participant scaleItems in bulk', () => {
 
   let {
     tournamentRecord: { participants: modifiedParticipants },
-  } = tournamentEngine.getState();
+  } = tournamentEngine.getTournament();
 
   modifiedParticipants.forEach((participant) => {
     expect(participant.timeItems.length).toEqual(2);
@@ -183,7 +183,7 @@ it('can set participant scaleItems in bulk', () => {
 
   ({
     tournamentRecord: { participants: modifiedParticipants },
-  } = tournamentEngine.getState());
+  } = tournamentEngine.getTournament());
 
   modifiedParticipants.forEach((participant) => {
     expect(participant.timeItems.length).toEqual(2);

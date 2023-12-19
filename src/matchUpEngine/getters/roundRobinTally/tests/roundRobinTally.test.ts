@@ -1,7 +1,7 @@
 import { findExtension } from '../../../../acquire/findExtension';
 import { getPositionAssignments } from '../../../../drawEngine/getters/positionsGetter';
 import { toBePlayed } from '../../../../fixtures/scoring/outcomes/toBePlayed';
-import tournamentEngine from '../../../../tournamentEngine/sync';
+import tournamentEngine from '../../../../examples/syncEngine';
 import { tallyParticipantResults } from '../roundRobinTally';
 import { intersection } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';

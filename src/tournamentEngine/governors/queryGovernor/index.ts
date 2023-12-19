@@ -6,7 +6,7 @@ import { getMatchUpCompetitiveProfile } from '../../getters/getMatchUpCompetitiv
 import { participantScheduledMatchUps } from '../../../query/matchUps/participantScheduledMatchUps';
 import { getPositionAssignments } from '../../getters/getPositionAssignments';
 import { getPredictiveAccuracy } from '../../getters/getPredictiveAccuracy';
-import { participantScaleItem } from '../../accessors/participantScaleItem';
+import { participantScaleItem } from '../../../query/participant/participantScaleItem';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { getVenuesAndCourts, findVenue } from '../../getters/venueGetter';
 import { getCourts, publicFindCourt } from '../../getters/courtGetter';
@@ -47,6 +47,7 @@ import {
   MISSING_DRAW_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
+import { getAllDrawMatchUps } from '../../../query/drawMatchUps';
 
 function findDrawDefinition({ tournamentRecord, drawDefinition }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -57,6 +58,7 @@ function findDrawDefinition({ tournamentRecord, drawDefinition }) {
 const queryGovernor = {
   allTournamentMatchUps,
   tournamentMatchUps,
+  getAllDrawMatchUps,
   allEventMatchUps,
   getRoundMatchUps,
   allDrawMatchUps,

@@ -1,4 +1,5 @@
-import { mocksEngine, tournamentEngine } from '../..';
+import tournamentEngine from '../../examples/syncEngine';
+import mocksEngine from '..';
 import { expect, it } from 'vitest';
 
 import { DOUBLES, SINGLES } from '../../constants/eventConstants';

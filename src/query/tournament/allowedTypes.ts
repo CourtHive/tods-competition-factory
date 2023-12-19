@@ -1,10 +1,10 @@
-import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
+import { getAppliedPolicies } from '../extensions/getAppliedPolicies';
 
-import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
+import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
 import {
   POLICY_TYPE_SCORING,
   POLICY_TYPE_DRAWS,
-} from '../../../constants/policyConstants';
+} from '../../constants/policyConstants';
 
 export function getAllowedMatchUpFormats({
   tournamentRecord,

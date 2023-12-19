@@ -1,4 +1,5 @@
 import { getStructureGroups } from '../../governors/publishingGovernor/getStructureGroups';
+import tournamentEngine from '../../../examples/syncEngine';
 import { extractAttributes } from '../../../utilities';
 import * as factory from '../../../index';
 import { expect, it } from 'vitest';
@@ -28,17 +29,17 @@ it('can modify stageSequence when adding pre-qualifying structures', () => {
     completeAllMatchUps: true,
   });
 
-  let result = factory.tournamentEngine.setState(tournamentRecord);
+  let result = tournamentEngine.setState(tournamentRecord);
   expect(result.success).toEqual(true);
 
-  let drawDefinition = factory.tournamentEngine.getEvent({
+  let drawDefinition = tournamentEngine.getEvent({
     drawId,
   }).drawDefinition;
   const qualifyingStructureId = drawDefinition.structures.find(
     ({ stage }) => stage === QUALIFYING
   ).structureId;
 
-  result = factory.tournamentEngine.addQualifyingStructure({
+  result = tournamentEngine.addQualifyingStructure({
     targetStructureId: qualifyingStructureId,
     qualifyingRoundNumber: 2,
     drawSize: 32,
@@ -46,7 +47,7 @@ it('can modify stageSequence when adding pre-qualifying structures', () => {
   });
   expect(result.success).toEqual(true);
 
-  drawDefinition = factory.tournamentEngine.getEvent({ drawId }).drawDefinition;
+  drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
   result = getStructureGroups({ drawDefinition });
   expect(result.structureProfiles).not.toBeUndefined();
 

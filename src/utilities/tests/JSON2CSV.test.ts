@@ -1,4 +1,5 @@
-import { mocksEngine, tournamentEngine } from '../..';
+import tournamentEngine from '../../examples/syncEngine';
+import mocksEngine from '../../mocksEngine';
 import { expect, it } from 'vitest';
 
 import { INVALID_VALUES } from '../../constants/errorConditionConstants';

@@ -1,5 +1,5 @@
 import { getMatchUpIds } from '../../global/functions/extractors';
-import tournamentEngine from '../../tournamentEngine/sync';
+import tournamentEngine from '../../examples/syncEngine';
 import { unique } from '../../utilities';
 import { expect, test } from 'vitest';
 import mocksEngine from '..';

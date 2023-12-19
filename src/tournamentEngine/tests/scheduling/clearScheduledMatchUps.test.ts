@@ -1,6 +1,6 @@
 import { getStructureRoundProfile } from '../../../query/structure/getStructureRoundProfile';
 import mocksEngine from '../../../mocksEngine';
-import { tournamentEngine } from '../../sync';
+import tournamentEngine from '../../../examples/syncEngine';
 import { expect, it } from 'vitest';
 
 import { eventConstants } from '../../../constants/eventConstants';
@@ -76,7 +76,7 @@ it('can clear matchUp schedules', () => {
     (matchUp) => matchUp.schedule?.scheduledTime
   );
 
-  expect(matchUpsWithScheduledTime.length).toEqual(matchUpIds.length);
+  expect(matchUpsWithScheduledTime.length).toEqual(matchUpIds?.length);
 
   result = tournamentEngine.clearScheduledMatchUps({
     ignoreMatchUpStatuses: 'invalid value',

@@ -1,5 +1,6 @@
-import { tournamentEngine, mocksEngine } from '../..';
+import tournamentEngine from '../../examples/syncEngine';
 import { numericSort, unique } from '../../utilities';
+import { mocksEngine } from '../..';
 import { expect, it } from 'vitest';
 import fs from 'fs';
 

@@ -1,4 +1,5 @@
-import { competitionEngine, mocksEngine, tournamentEngine } from '../../../..';
+import tournamentEngine from '../../../../examples/syncEngine';
+import { competitionEngine, mocksEngine } from '../../../..';
 import { extractDate } from '../../../../utilities/dateTime';
 import { expect, test } from 'vitest';
 

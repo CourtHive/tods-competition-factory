@@ -124,7 +124,6 @@ import { attachQualifyingStructure } from './drawDefinitions/attachQualifyingStr
 import { addQualifyingStructure } from './drawDefinitions/addQualifyingStructure';
 import { generateDrawDefinition } from '../../generators/generateDrawDefinition';
 import { isValidForQualifying } from './drawDefinitions/isValidForQualifying';
-import { renameStructures } from './drawDefinitions/renameStructures';
 import { generateDrawMaticRound } from '../../../forge/generate';
 
 import { resetMatchUpLineUps } from '../../../mutate/matchUps/lineUps/resetMatchUpLineUps';
@@ -141,6 +140,8 @@ import {
   addAdHocMatchUps,
   generateAdHocMatchUps,
 } from '../../../assemblies/generators/drawDefinitions/generateAdHocMatchUps';
+
+import { renameStructures } from '../../../drawEngine/governors/structureGovernor/renameStructures';
 import { addPlayoffStructures } from '../../../mutate/drawDefinitions/addPlayoffStructures';
 
 const eventGovernor = {

@@ -1,5 +1,5 @@
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../sync';
+import tournamentEngine from '../../../examples/syncEngine';
 import { expect, it } from 'vitest';
 
 import { SINGLES_EVENT, TEAM_EVENT } from '../../../constants/eventConstants';
@@ -71,7 +71,7 @@ it('can separate team members in an elimination structure', () => {
   const structureId = drawDefinition.structures[0].structureId;
   const keysToTest = [{ key: 'teams.participantName' }];
   const { conflicts, sideParticipants } = getConflicts({
-    tournamentRecord: tournamentEngine.getState().tournamentRecord,
+    tournamentRecord: tournamentEngine.getTournament().tournamentRecord,
     drawId: drawDefinition.drawId,
     structureId,
     keysToTest,

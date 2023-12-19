@@ -1,5 +1,5 @@
 import { replaceWithAlternate, replaceWithBye } from '../../testingUtilities';
-import tournamentEngine from '../../../../tournamentEngine/sync';
+import tournamentEngine from '../../../../examples/syncEngine';
 import { instanceCount } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
 import { expect, it } from 'vitest';

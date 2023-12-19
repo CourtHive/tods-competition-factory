@@ -1,4 +1,4 @@
-import tournamentEngine from '../../../../tournamentEngine/sync';
+import tournamentEngine from '../../../../examples/syncEngine';
 import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
@@ -99,7 +99,7 @@ it('can auto schedule Round Robin draws respecting daily limits', () => {
   );
   expect(roundNumbers).toEqual([1, 2]);
 
-  const { tournamentRecord: tournament } = tournamentEngine.getState();
+  const { tournamentRecord: tournament } = tournamentEngine.getTournament();
   const schedulingTimeItem = tournament.timeItems.filter(
     ({ itemType }) => itemType === AUTO_SCHEDULING_AUDIT
   );

@@ -215,4 +215,6 @@ export function handleCaughtError({
     methodName,
     error,
   });
+
+  return { error };
 }

@@ -43,12 +43,9 @@ type GetTournamentArgs = {
   tournamentId: string | undefined;
 };
 
-export function getTournament({
-  convertExtensions = false,
-  removeExtensions = false,
-  tournamentId,
-}: GetTournamentArgs) {
-  tournamentId = tournamentId || getTournamentId();
+export function getTournament(params?: GetTournamentArgs) {
+  const { convertExtensions = false, removeExtensions = false } = params ?? {};
+  const tournamentId = params?.tournamentId || getTournamentId();
   if (typeof tournamentId !== 'string') return {};
   const tournamentRecord = getTournamentRecord(tournamentId);
   return {

@@ -1,6 +1,6 @@
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getDrawStructures } from '../../getters/findStructure';
-import tournamentEngine from '../../../tournamentEngine/sync';
+import tournamentEngine from '../../../examples/syncEngine';
 import { instanceCount } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import { expect, it } from 'vitest';

@@ -9,7 +9,7 @@ import competitionEngine from '../../../sync';
 import { expect, it } from 'vitest';
 
 import { BYE } from '../../../../constants/matchUpStatusConstants';
-import tournamentEngine from '../../../../tournamentEngine/sync';
+import tournamentEngine from '../../../../examples/syncEngine';
 
 it('supports pro-scheduling', () => {
   const startDate = '2023-11-28';

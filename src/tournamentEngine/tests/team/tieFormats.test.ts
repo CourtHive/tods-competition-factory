@@ -1,7 +1,7 @@
 import { validateTieFormat } from '../../../validators/tieFormatUtilities';
 import tieFormatConstants from '../../../constants/tieFormatConstants';
+import tournamentEngine from '../../../examples/syncEngine';
 import mocksEngine from '../../../mocksEngine';
-import { tournamentEngine } from '../../..';
 import { expect, it, test } from 'vitest';
 
 import { TEAM } from '../../../constants/eventConstants';

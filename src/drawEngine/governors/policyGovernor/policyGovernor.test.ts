@@ -1,3 +1,4 @@
+import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { expect, it } from 'vitest';
@@ -5,7 +6,6 @@ import { expect, it } from 'vitest';
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 import SEEDING_ITF from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 
 it('can set and reset policy governor', () => {
   // cannot attach a policy if no drawDefinition

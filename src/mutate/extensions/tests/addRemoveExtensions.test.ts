@@ -2,7 +2,7 @@ import { generateTournamentRecord } from '../../../mocksEngine/generators/genera
 import { removeExtension } from '../removeExtension';
 import { addExtension } from '../addExtension';
 import { competitionEngine } from '../../..';
-import tournamentEngine from '../../../tournamentEngine/sync';
+import tournamentEngine from '../../../examples/syncEngine';
 import { expect, it, test } from 'vitest';
 import {
   addParticipantExtension,
@@ -71,7 +71,7 @@ it('can add and remove extensions from tournamentRecords', () => {
 
   // Check length of extensions for each element
   let { tournamentRecord: updatedTournamentRecord } =
-    tournamentEngine.getState();
+    tournamentEngine.getTournament();
   expect(updatedTournamentRecord.extensions.length).toEqual(1);
 
   let { event, drawDefinition } = tournamentEngine.getEvent({ drawId });
@@ -109,7 +109,8 @@ it('can add and remove extensions from tournamentRecords', () => {
   result = tournamentEngine.addTournamentExtension({ extension: newExtension });
   expect(result.success).toEqual(true);
 
-  ({ tournamentRecord: updatedTournamentRecord } = tournamentEngine.getState());
+  ({ tournamentRecord: updatedTournamentRecord } =
+    tournamentEngine.getTournament());
   expect(updatedTournamentRecord.extensions.length).toEqual(1);
 
   result = tournamentEngine.addEventExtension({

@@ -1,5 +1,6 @@
-import { mocksEngine, scaleEngine, tournamentEngine } from '../../../..';
+import tournamentEngine from '../../../../examples/syncEngine';
 import { awardProfileLevelLines } from './awardProfileExamples';
+import { mocksEngine, scaleEngine } from '../../../..';
 import { finishingPositionSort } from './awardTestUtils';
 import { getAwardProfile } from '../getAwardProfile';
 import { expect, it } from 'vitest';

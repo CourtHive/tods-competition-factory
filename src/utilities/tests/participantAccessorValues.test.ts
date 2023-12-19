@@ -1,4 +1,4 @@
-import tournamentEngine from '../../tournamentEngine/sync';
+import tournamentEngine from '../../examples/syncEngine';
 import { getAccessorValue } from '../getAccessorValue';
 import mocksEngine from '../../mocksEngine';
 import { expect, test } from 'vitest';
@@ -65,7 +65,7 @@ test('accessorValues can target person.sex when participantType: PAIR', () => {
   expect(value).toEqual(MALE);
   expect(values).toEqual([MALE]);
 
-  const state = tournamentEngine.getState();
+  const state = tournamentEngine.getTournament();
   targetParticipant = state.tournamentRecord.participants.find(
     (participant) =>
       participant.participantId === participantWithTimeItems.participantId

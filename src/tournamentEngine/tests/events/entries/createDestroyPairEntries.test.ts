@@ -1,7 +1,7 @@
 import { isUngrouped } from '../../../../global/functions/isUngrouped';
+import tournamentEngine from '../../../../examples/syncEngine';
 import { chunkArray, unique } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
-import { tournamentEngine } from '../../../sync';
 import { expect, it } from 'vitest';
 
 import { DOUBLES, SINGLES, TEAM } from '../../../../constants/eventConstants';
@@ -73,7 +73,7 @@ it('can add doubles events to a tournament record', () => {
   expect(result.success).toEqual(true);
 
   const { tournamentRecord: updatedTournamentRecord } =
-    tournamentEngine.getState();
+    tournamentEngine.getTournament();
   expect(
     updatedTournamentRecord.events[0].drawDefinitions[0].matchUpFormat
   ).toEqual(defaultMatchUpFormat);

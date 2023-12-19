@@ -1,7 +1,7 @@
 import { getParticipantId } from '../../../global/functions/extractors';
+import tournamentEngine from '../../../examples/syncEngine';
 import { generateRange } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../sync';
 import { expect, it } from 'vitest';
 
 import { DOUBLES } from '../../../constants/eventConstants';
@@ -33,7 +33,7 @@ it('can generate TEAMs from attributes', () => {
   expect(result.success).toEqual(true);
   expect(result.newParticipants.length).toBeGreaterThan(0);
   expect(result.participantsAdded).toBeUndefined();
-  expect(result.modificationsApplied).toBeUndefined();
+  expect(result.modificationsApplied).toEqual(false);
 
   result = tournamentEngine.generateTeamsFromParticipantAttribute({
     accessor: 'person.addresses.city',

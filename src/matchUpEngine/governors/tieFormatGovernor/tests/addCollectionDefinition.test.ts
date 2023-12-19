@@ -1,5 +1,6 @@
 import { setSubscriptions } from '../../../../global/state/globalState';
-import { mocksEngine, tournamentEngine } from '../../../..';
+import tournamentEngine from '../../../../examples/syncEngine';
+import mocksEngine from '../../../../mocksEngine';
 import { expect, it } from 'vitest';
 
 import { INVALID_CATEGORY } from '../../../../constants/errorConditionConstants';
