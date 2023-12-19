@@ -1,6 +1,6 @@
 import { dateStringDaysChange } from '../../../utilities/dateTime';
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../sync';
+import tournamentEngine from '../../../examples/syncEngine';
 import { expect, test } from 'vitest';
 
 import { IN_PROGRESS } from '../../../constants/tournamentConstants';

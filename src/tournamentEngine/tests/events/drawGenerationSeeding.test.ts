@@ -1,7 +1,7 @@
 import { getEliminationDrawSize } from '../../../query/participants/getEliminationDrawSize';
 import competitionEngine from '../../../competitionEngine/sync';
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../sync';
+import tournamentEngine from '../../../examples/syncEngine';
 import { expect, it } from 'vitest';
 
 import POLICY_AVOIDANCE_COUNTRY from '../../../fixtures/policies/POLICY_AVOIDANCE_COUNTRY';

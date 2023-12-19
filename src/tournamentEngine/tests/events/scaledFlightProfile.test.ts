@@ -1,6 +1,6 @@
 import { ensureInt } from '../../../utilities/ensureInt';
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../sync';
+import tournamentEngine from '../../../examples/syncEngine';
 import { expect, it } from 'vitest';
 
 import { MISSING_EVENT } from '../../../constants/errorConditionConstants';

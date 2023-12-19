@@ -4,7 +4,7 @@ import { getDrawPosition } from '../../../global/functions/extractors';
 import { findEvent } from '../../../acquire/findEvent';
 import { extractAttributes, shuffleArray } from '../../../utilities';
 import { hasParticipantId } from '../../../global/functions/filters';
-import tournamentEngine from '../../../tournamentEngine/sync';
+import tournamentEngine from '../../../examples/syncEngine';
 import { randomInt } from '../../../utilities/math';
 import mocksEngine from '../../../mocksEngine';
 import { expect } from 'vitest';

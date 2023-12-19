@@ -1,9 +1,9 @@
 import { engineLogging } from '../../../global/functions/producers/engineLogging';
-import { handleCaughtError } from '../../../global/state/syncGlobalState';
 import { paramsMiddleware } from './paramsMiddleware';
 import {
   getDevContext,
   getTournamentRecords,
+  handleCaughtError,
 } from '../../../global/state/globalState';
 
 import { FactoryEngine } from '../../../types/factoryTypes';
@@ -53,7 +53,7 @@ function invoke({ tournamentRecords, params, methodName, method }) {
     try {
       return method({ tournamentRecords, ...params });
     } catch (err) {
-      handleCaughtError({
+      return handleCaughtError({
         engineName: 'engine',
         methodName,
         params,

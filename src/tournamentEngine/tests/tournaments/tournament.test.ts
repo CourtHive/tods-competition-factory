@@ -2,7 +2,7 @@ import { getStructureSeedAssignments } from '../../../query/structure/getStructu
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { parseScoreString } from '../../../mocksEngine/utilities/parseScoreString';
 import mocksEngine from '../../../mocksEngine';
-import { tournamentEngine } from '../../sync';
+import { tournamentEngine } from '../../../examples/syncEngine';
 import { expect, it } from 'vitest';
 
 import POLICY_SEEDING_NATIONAL from '../../../fixtures/policies/POLICY_SEEDING_NATIONAL';

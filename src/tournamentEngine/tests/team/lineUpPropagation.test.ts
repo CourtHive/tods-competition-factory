@@ -2,7 +2,7 @@ import { findExtension } from '../../../acquire/findExtension';
 import { extractAttributes as xa, intersection } from '../../../utilities';
 import { generateTeamTournament } from './generateTestTeamTournament';
 import { setSubscriptions } from '../../../global/state/globalState';
-import tournamentEngine from '../../sync';
+import tournamentEngine from '../../../examples/syncEngine';
 import { expect, it } from 'vitest';
 
 import { MODIFY_DRAW_DEFINITION } from '../../../constants/topicConstants';

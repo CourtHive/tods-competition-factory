@@ -145,7 +145,7 @@ export { competitionEngine } from './competitionEngine/sync';
 export { competitionEngineAsync } from './competitionEngine/async';
 export { matchUpEngine } from './matchUpEngine/sync';
 export { matchUpEngineAsync } from './matchUpEngine/async';
-export { tournamentEngine } from './tournamentEngine/sync';
+export { tournamentEngine } from './examples/syncEngine';
 export { tournamentEngineAsync } from './tournamentEngine/async';
 export { scaleEngine } from './scaleEngine/sync';
 export { scaleEngineAsync } from './scaleEngine/async';

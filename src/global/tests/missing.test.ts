@@ -1,7 +1,7 @@
 import competitionEngineAsync from '../../competitionEngine/async';
 import competitionEngineSync from '../../competitionEngine/sync';
 import tournamentEngineAsync from '../../tournamentEngine/async';
-import tournamentEngineSync from '../../tournamentEngine/sync';
+import tournamentEngineSync from '../../examples/syncEngine';
 import scaleEngineAsync from '../../scaleEngine/async';
 import scaleEngineSync from '../../scaleEngine/sync';
 import { expect, it } from 'vitest';

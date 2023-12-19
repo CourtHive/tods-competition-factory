@@ -1,6 +1,6 @@
 import { setSubscriptions } from '../../../global/state/globalState';
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../sync';
+import tournamentEngine from '../../../examples/syncEngine';
 import { expect, it } from 'vitest';
 
 import { DRAW_DEFINITION_NOT_FOUND } from '../../../constants/errorConditionConstants';

@@ -1,19 +1,23 @@
-import { updateFactoryExtension } from './governors/tournamentGovernor/updateFactoryExtension';
-import { engineLogging } from '../global/functions/producers/engineLogging';
-import { newTournamentRecord } from './generators/newTournamentRecord';
-import { getState, paramsMiddleware, setState } from './stateMethods';
-import { notifySubscribers } from '../global/state/notifySubscribers';
-import { factoryVersion } from '../global/functions/factoryVersion';
-import participantGovernor from './governors/participantGovernor';
-import publishingGovernor from './governors/publishingGovernor';
-import tournamentGovernor from './governors/tournamentGovernor';
-import scheduleGovernor from './governors/scheduleGovernor';
-import policyGovernor from './governors/policyGovernor';
-import reportGovernor from './governors/reportGovernor';
-import eventGovernor from './governors/eventGovernor';
-import queryGovernor from './governors/queryGovernor';
-import venueGovernor from './governors/venueGovernor';
-import { makeDeepCopy } from '../utilities';
+import { updateFactoryExtension } from '../../tournamentEngine/governors/tournamentGovernor/updateFactoryExtension';
+import { engineLogging } from '../../global/functions/producers/engineLogging';
+import { newTournamentRecord } from '../../tournamentEngine/generators/newTournamentRecord';
+import {
+  getState,
+  paramsMiddleware,
+  setState,
+} from '../../tournamentEngine/stateMethods';
+import { notifySubscribers } from '../../global/state/notifySubscribers';
+import { factoryVersion } from '../../global/functions/factoryVersion';
+import participantGovernor from '../../tournamentEngine/governors/participantGovernor';
+import publishingGovernor from '../../tournamentEngine/governors/publishingGovernor';
+import tournamentGovernor from '../../tournamentEngine/governors/tournamentGovernor';
+import scheduleGovernor from '../../tournamentEngine/governors/scheduleGovernor';
+import policyGovernor from '../../tournamentEngine/governors/policyGovernor';
+import reportGovernor from '../../tournamentEngine/governors/reportGovernor';
+import eventGovernor from '../../tournamentEngine/governors/eventGovernor';
+import queryGovernor from '../../tournamentEngine/governors/queryGovernor';
+import venueGovernor from '../../tournamentEngine/governors/venueGovernor';
+import { makeDeepCopy } from '../../utilities';
 import {
   setDeepCopy,
   setDevContext,
@@ -26,14 +30,14 @@ import {
   setTournamentRecord,
   cycleMutationStatus,
   handleCaughtError,
-} from '../global/state/globalState';
+} from '../../global/state/globalState';
 
-import { FactoryEngine } from '../types/factoryTypes';
-import { SUCCESS } from '../constants/resultConstants';
+import { FactoryEngine } from '../../types/factoryTypes';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   INVALID_VALUES,
   METHOD_NOT_FOUND,
-} from '../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 export const tournamentEngine = ((): FactoryEngine => {
   const engine: FactoryEngine = {

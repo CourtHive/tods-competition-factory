@@ -2,7 +2,7 @@ import { hasSchedule } from '../../../competitionEngine/governors/scheduleGovern
 import { getMatchUpIds } from '../../../global/functions/extractors';
 import competitionEngine from '../../../competitionEngine/sync';
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../sync';
+import tournamentEngine from '../../../examples/syncEngine';
 import { expect, it } from 'vitest';
 import {
   dateStringDaysChange,

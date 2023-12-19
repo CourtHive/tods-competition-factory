@@ -2,7 +2,7 @@ import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { setSubscriptions } from '../../../global/state/globalState';
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../sync';
+import tournamentEngine from '../../../examples/syncEngine';
 import { expect, it } from 'vitest';
 
 import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';

@@ -1,5 +1,5 @@
 import competitionEngine from '../../competitionEngine/sync';
-import tournamentEngine from '../../tournamentEngine/sync';
+import tournamentEngine from '../../examples/syncEngine';
 import { expect, it } from 'vitest';
 
 it('handles devContext objects', () => {

@@ -1,6 +1,6 @@
 import { afterAll, describe, it, expect, vi } from 'vitest';
 import mocksEngine from '../../mocksEngine';
-import tournamentEngine from '../sync';
+import tournamentEngine from '../../examples/syncEngine';
 import { ELO } from '../../constants/ratingConstants';
 import { SINGLES_EVENT } from '../../constants/eventConstants';
 import { RATING } from '../../constants/scaleConstants';

@@ -1,6 +1,6 @@
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import mocksEngine from '../../../mocksEngine';
-import { tournamentEngine } from '../../sync';
+import { tournamentEngine } from '../../../examples/syncEngine';
 import { expect, test, it } from 'vitest';
 
 import POLICY_SCORING_DEFAULT from '../../../fixtures/policies/POLICY_SCORING_DEFAULT';

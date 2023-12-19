@@ -1,4 +1,4 @@
-import tournamentEngine from '../../tournamentEngine/sync';
+import tournamentEngine from '../../examples/syncEngine';
 import { getAccessorValue } from '../getAccessorValue';
 import mocksEngine from '../../mocksEngine';
 import { expect, test } from 'vitest';

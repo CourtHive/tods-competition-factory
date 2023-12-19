@@ -1,6 +1,6 @@
 import { competitionEngine, mocksEngine } from '../../..';
 import { unique } from '../../../utilities';
-import tournamentEngine from '../../sync';
+import tournamentEngine from '../../../examples/syncEngine';
 import { expect, test } from 'vitest';
 
 import { FACTORY } from '../../../constants/extensionConstants';

@@ -1,7 +1,7 @@
 import { getStructureGroups } from '../../governors/publishingGovernor/getStructureGroups';
 import { instanceCount } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../sync';
+import tournamentEngine from '../../../examples/syncEngine';
 import { expect, it } from 'vitest';
 
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';

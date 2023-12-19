@@ -2,7 +2,7 @@ import { structureSort } from '../../../drawEngine/getters/structureSort';
 import { instanceCount } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import { utilities } from '../../../index';
-import tournamentEngine from '../../sync';
+import tournamentEngine from '../../../examples/syncEngine';
 import { expect, test } from 'vitest';
 
 import {

@@ -2,7 +2,7 @@ import syncGlobalState from '../../global/state/syncGlobalState';
 import competitionEngine from '../../competitionEngine/sync';
 import mocksEngine from '../../mocksEngine';
 import { expect, it, test } from 'vitest';
-import tournamentEngine from '../sync';
+import tournamentEngine from '../../examples/syncEngine';
 import {
   setStateProvider,
   setSubscriptions,

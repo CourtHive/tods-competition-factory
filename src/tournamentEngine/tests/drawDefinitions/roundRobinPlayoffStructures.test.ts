@@ -2,7 +2,7 @@ import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructure
 import { isCompletedStructure } from '../../../drawEngine/governors/queryGovernor/structureActions';
 import { allDrawMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
 import { structureSort } from '../../../drawEngine/getters/structureSort';
-import tournamentEngine from '../../sync';
+import tournamentEngine from '../../../examples/syncEngine';
 import { mocksEngine } from '../../..';
 import { expect, it } from 'vitest';
 import {

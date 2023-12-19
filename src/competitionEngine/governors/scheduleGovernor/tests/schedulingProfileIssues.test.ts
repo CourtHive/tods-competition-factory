@@ -1,5 +1,5 @@
 import { getSchedulingProfileIssues } from '../../queryGovernor/getSchedulingProfileIssues';
-import tournamentEngine from '../../../../tournamentEngine/sync';
+import tournamentEngine from '../../../../examples/syncEngine';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
 import { expect, test } from 'vitest';

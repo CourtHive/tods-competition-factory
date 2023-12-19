@@ -2,7 +2,7 @@ import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { generateTeamTournament } from './generateTestTeamTournament';
 import { setDevContext } from '../../../global/state/globalState';
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../sync';
+import tournamentEngine from '../../../examples/syncEngine';
 import { expect, it } from 'vitest';
 
 import { SINGLES, TEAM } from '../../../constants/matchUpTypes';

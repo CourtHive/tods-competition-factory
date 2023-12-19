@@ -2,7 +2,7 @@ import competitionEngineAsync from '../../competitionEngine/async';
 import competitionEngineSync from '../../competitionEngine/sync';
 import tournamentEngineAsync from '../async';
 import mocksEngine from '../../mocksEngine';
-import tournamentEngineSync from '../sync';
+import tournamentEngineSync from '../../examples/syncEngine';
 import { it, expect } from 'vitest';
 
 import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';

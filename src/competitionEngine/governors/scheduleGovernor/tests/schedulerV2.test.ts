@@ -1,5 +1,5 @@
 import { addDays, dateRange } from '../../../../utilities/dateTime';
-import tournamentEngine from '../../../../tournamentEngine/sync';
+import tournamentEngine from '../../../../examples/syncEngine';
 import { chunkArray } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';

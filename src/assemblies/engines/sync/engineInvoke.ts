@@ -30,7 +30,8 @@ export function engineInvoke(engine: { [key: string]: any }, args: any) {
 
   const method = passedMethod || engine[methodName] || getMethods()[methodName];
 
-  const result = executeFunction(engine, method, params, methodName, 'sync');
+  const result =
+    executeFunction(engine, method, params, methodName, 'sync') ?? {};
 
   if (result?.error && snapshot) setState(snapshot);
 
