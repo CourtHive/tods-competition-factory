@@ -1,5 +1,6 @@
-import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../../examples/syncEngine';
+import askEngine from '../../../test/engines/askEngine';
+import mocksEngine from '../../../mocksEngine';
 import { expect, it } from 'vitest';
 
 import {
@@ -23,7 +24,7 @@ it('can sign participants in and out', () => {
 
   const { participantId } = participants[0];
 
-  let result = tournamentEngine.getParticipantSignInStatus({
+  let result = askEngine.getParticipantSignInStatus({
     participantId,
   });
   expect(result).toBeUndefined();

@@ -1,6 +1,6 @@
+import tournamentEngine from '../../../examples/syncEngine';
 import { intersection } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../../examples/syncEngine';
 import { expect, it } from 'vitest';
 
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
@@ -126,7 +126,7 @@ it('can add statistics to tournament participants', () => {
   };
   tournamentEngine.addTournamentExtension({ extension });
 
-  ({ tournamentRecord } = tournamentEngine.getState({
+  ({ tournamentRecord } = tournamentEngine.getTournament({
     convertExtensions: true,
   }));
   expect(tournamentRecord._ustaSection.code).toEqual(65);

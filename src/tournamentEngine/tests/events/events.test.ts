@@ -54,7 +54,7 @@ it('can add events to a tournament record', () => {
   expect(result.success).toEqual(true);
   expect(result.modificationsCount).toEqual(1);
   const { tournamentRecord: updatedTournamentRecord } =
-    tournamentEngine.getState();
+    tournamentEngine.getTournament();
   expect(
     updatedTournamentRecord.events[0].drawDefinitions[0].matchUpFormat
   ).toEqual(defaultMatchUpFormat);

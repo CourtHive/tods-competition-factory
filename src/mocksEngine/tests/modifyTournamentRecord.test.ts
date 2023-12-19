@@ -1,5 +1,6 @@
 import { getFlightProfile } from '../../query/event/getFlightProfile';
-import { mocksEngine, tournamentEngine, competitionEngine } from '../..';
+import tournamentEngine from '../../examples/syncEngine';
+import { mocksEngine, competitionEngine } from '../..';
 import { expect, test } from 'vitest';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';

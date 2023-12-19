@@ -1,6 +1,6 @@
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
-import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../../examples/syncEngine';
+import mocksEngine from '../../../mocksEngine';
 import { expect, it } from 'vitest';
 
 import POLICY_SCORING_DEFAULT from '../../../fixtures/policies/POLICY_SCORING_DEFAULT';

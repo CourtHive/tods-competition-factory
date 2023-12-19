@@ -1,5 +1,7 @@
-import { setSubscriptions, tournamentEngine, utilities } from '../../index';
+import tournamentEngine from '../../examples/syncEngine';
+import { setSubscriptions } from '../state/globalState';
 import { expect, it } from 'vitest';
+import { utilities } from '../..';
 
 import { MatchUp, Participant } from '../../types/tournamentTypes';
 

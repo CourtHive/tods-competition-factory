@@ -104,7 +104,7 @@ it('can aggregate tieFormats found in drawDefinitions to event.tieFormats', () =
   expect(noContextTeamMatchUps.every((m) => m.tieFormatId)).toBeTruthy();
   expect(noContextTeamMatchUps.every((m) => !m.tieFormat)).toBeTruthy();
 
-  const tournament = tournamentEngine.getState();
+  const tournament = tournamentEngine.getTournament();
 
   for (const event of tournament.events ?? []) {
     expect(event.tieFormatId).toBeDefined(); // because events were initially generated with tieFormat

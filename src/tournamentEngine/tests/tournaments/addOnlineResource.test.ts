@@ -43,7 +43,7 @@ it('supports adding onlineResources', () => {
   result = tournamentEngine.addOnlineResource({ onlineResource });
   expect(result.success).toEqual(true);
 
-  const tournament = tournamentEngine.getState().tournamentRecord;
+  const tournament = tournamentEngine.getTournament().tournamentRecord;
   expect(tournament.onlineResources.length).toEqual(1);
 
   result = tournamentEngine.addOnlineResource();

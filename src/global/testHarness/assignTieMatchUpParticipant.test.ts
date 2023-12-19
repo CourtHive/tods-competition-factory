@@ -1,6 +1,6 @@
 import { findExtension } from '../../acquire/findExtension';
 import { extractAttributes as xa } from '../../utilities';
-import tournamentEngine from '../..';
+import tournamentEngine from '../../examples/syncEngine';
 import { expect, it } from 'vitest';
 import fs from 'fs';
 

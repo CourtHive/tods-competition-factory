@@ -1,11 +1,12 @@
+import tournamentEngine from '../../../examples/syncEngine';
 import { competitionEngine, mocksEngine } from '../../..';
 import { unique } from '../../../utilities';
-import tournamentEngine from '../../../examples/syncEngine';
 import { expect, test } from 'vitest';
 
 import { FACTORY } from '../../../constants/extensionConstants';
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
 import { TEAM_EVENT } from '../../../constants/eventConstants';
+import askEngine from '../../../test/engines/askEngine';
 
 test('it can allocate courts to a TEAM matchUp', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
@@ -15,13 +16,13 @@ test('it can allocate courts to a TEAM matchUp', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  const teamMatchUps = tournamentEngine.allTournamentMatchUps({
+  const teamMatchUps = askEngine.allTournamentMatchUps({
     matchUpFilters: { matchUpTypes: [TEAM_MATCHUP] },
   }).matchUps;
   const teamMatchUp = teamMatchUps[0];
   const { matchUpId, tournamentId, drawId } = teamMatchUp;
 
-  const { courts } = tournamentEngine.getVenuesAndCourts();
+  const { courts } = askEngine.getVenuesAndCourts();
   const courtIds = courts.map(({ courtId }) => courtId);
 
   let result = tournamentEngine.allocateTeamMatchUpCourts({
@@ -122,7 +123,7 @@ test('it can allocate courts to a TEAM matchUp', () => {
   result = competitionEngine.competitionScheduleMatchUps({ matchUpFilters });
   expect(result.dateMatchUps[0].schedule.allocatedCourts).toBeUndefined();
 
-  result = tournamentEngine.getState();
+  result = tournamentEngine.getTournament();
   expect(
     result.tournamentRecord.extensions.filter(({ name }) => name === FACTORY)
       .length

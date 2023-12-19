@@ -14,6 +14,7 @@ it('can return version from all engines', () => {
 
 it('can return credits from all engines', () => {
   let result = tournamentEngine.credits();
+  console.log(result);
   expect(result).not.toBeUndefined();
   result = competitionEngine.credits();
   expect(result).not.toBeUndefined();

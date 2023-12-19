@@ -50,7 +50,7 @@ it('properly handles qualifiers with avoidances', () => {
   ).structureId;
 
   const { conflicts } = getConflicts({
-    tournamentRecord: tournamentEngine.getState().tournamentRecord,
+    tournamentRecord: tournamentEngine.getTournament().tournamentRecord,
     structureId: mainStructureId,
     keysToTest,
     drawId,

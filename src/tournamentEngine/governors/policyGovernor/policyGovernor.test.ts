@@ -1,6 +1,6 @@
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../../examples/syncEngine';
+import mocksEngine from '../../../mocksEngine';
 import { expect, test, it } from 'vitest';
 
 import POLICY_SCORING_DEFAULT from '../../../fixtures/policies/POLICY_SCORING_DEFAULT';
@@ -53,7 +53,7 @@ it('can set and remove policies from tournamentRecords and events', () => {
   });
   expect(result.error).toEqual(EXISTING_POLICY_TYPE);
 
-  const { tournamentRecord } = tournamentEngine.getState();
+  const { tournamentRecord } = tournamentEngine.getTournament();
   const { appliedPolicies } = getAppliedPolicies({ tournamentRecord });
   expect(appliedPolicies?.scoring?.policyName).toEqual('TEST');
 
@@ -85,7 +85,7 @@ it('can set and remove policies from tournamentRecords and events', () => {
   });
   expect(result.success).toEqual(true);
 
-  const { tournamentRecord: updatedRecord } = tournamentEngine.getState();
+  const { tournamentRecord: updatedRecord } = tournamentEngine.getTournament();
   expect(updatedRecord.events.length).toEqual(1);
   expect(updatedRecord.events[0].extensions.length).toEqual(1);
 
@@ -110,7 +110,7 @@ it('can set and remove policies from tournamentRecords and events', () => {
   });
   expect(result.success).toEqual(true);
 
-  const { tournamentRecord: updatedRecord2 } = tournamentEngine.getState();
+  const { tournamentRecord: updatedRecord2 } = tournamentEngine.getTournament();
   expect(updatedRecord2.events.length).toEqual(1);
   expect(updatedRecord2.events[0].extensions.length).toEqual(1);
 
@@ -133,7 +133,7 @@ it('can set and remove policies from tournamentRecords and events', () => {
   });
   expect(result.success).toEqual(true);
 
-  const { tournamentRecord: updatedRecord3 } = tournamentEngine.getState();
+  const { tournamentRecord: updatedRecord3 } = tournamentEngine.getTournament();
   expect(updatedRecord3.events.length).toEqual(1);
   expect(updatedRecord3.events[0].extensions.length).toEqual(0);
 
@@ -149,7 +149,7 @@ it('can set and remove policies from tournamentRecords and events', () => {
   });
   expect(result.success).toEqual(true);
 
-  const { tournamentRecord: updatedRecord4 } = tournamentEngine.getState();
+  const { tournamentRecord: updatedRecord4 } = tournamentEngine.getTournament();
   expect(updatedRecord4.events.length).toEqual(1);
   expect(updatedRecord4.events[0].extensions.length).toEqual(1);
 });
@@ -202,7 +202,7 @@ it('can find policies whether on event or tournamentRecord', () => {
   });
   expect(result.success).toEqual(true);
 
-  const { tournamentRecord: updatedRecord } = tournamentEngine.getState();
+  const { tournamentRecord: updatedRecord } = tournamentEngine.getTournament();
   expect(updatedRecord.events.length).toEqual(1);
   expect(updatedRecord.events[0].extensions.length).toEqual(1);
 

@@ -73,7 +73,7 @@ it('can add events, venues, and schedule matchUps', () => {
   ({ courts } = tournamentEngine.getCourts());
   expect(courts.length).toEqual(3);
 
-  const { tournamentRecord } = tournamentEngine.getState();
+  const { tournamentRecord } = tournamentEngine.getTournament();
   expect(tournamentRecord.venues.length).toEqual(1);
 
   const { upcomingMatchUps: upcoming, pendingMatchUps } =

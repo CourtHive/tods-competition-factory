@@ -2,6 +2,8 @@ import { engineLogging } from '../../../global/functions/producers/engineLogging
 import { paramsMiddleware } from './paramsMiddleware';
 import {
   getDevContext,
+  getTournamentId,
+  getTournamentRecord,
   getTournamentRecords,
   handleCaughtError,
 } from '../../../global/state/globalState';
@@ -31,12 +33,17 @@ export function executeFunction(
 
   const start = Date.now();
   const tournamentRecords = getTournamentRecords();
+  const tournamentId = getTournamentId();
+  const tournamentRecord =
+    params?.sandboxTournament ?? getTournamentRecord(tournamentId);
+
   const augmentedParams = params
     ? paramsMiddleware(tournamentRecords, params)
     : undefined;
   const result = invoke({
     params: augmentedParams,
     tournamentRecords,
+    tournamentRecord,
     methodName,
     method,
   });
@@ -46,12 +53,18 @@ export function executeFunction(
   return result;
 }
 
-function invoke({ tournamentRecords, params, methodName, method }) {
+function invoke({
+  tournamentRecords,
+  tournamentRecord,
+  params,
+  methodName,
+  method,
+}) {
   if (getDevContext()) {
-    return method({ tournamentRecords, ...params });
+    return method({ tournamentRecords, tournamentRecord, ...params });
   } else {
     try {
-      return method({ tournamentRecords, ...params });
+      return method({ tournamentRecords, tournamentRecord, ...params });
     } catch (err) {
       return handleCaughtError({
         engineName: 'engine',

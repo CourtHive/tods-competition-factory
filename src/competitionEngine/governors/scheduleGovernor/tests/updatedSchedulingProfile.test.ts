@@ -1,6 +1,7 @@
 import { checkSchedulingProfile } from '../../../../tournamentEngine/governors/scheduleGovernor/schedulingProfile';
 import { getUpdatedSchedulingProfile } from '../schedulingProfile/schedulingProfile';
-import { mocksEngine, tournamentEngine } from '../../../..';
+import tournamentEngine from '../../../../examples/syncEngine';
+import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
 import { expect, it } from 'vitest';
 
@@ -148,7 +149,7 @@ it('can update a schedulingProfile when venues change', () => {
   });
   expect(result.modifications).toEqual(1);
 
-  const { tournamentRecord: snapshot } = tournamentEngine.getState();
+  const { tournamentRecord: snapshot } = tournamentEngine.getTournament();
   result = checkSchedulingProfile({ tournamentRecord: snapshot });
   expect(result.modifications).toEqual(0);
 });

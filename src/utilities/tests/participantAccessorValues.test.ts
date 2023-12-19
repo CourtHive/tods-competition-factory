@@ -65,7 +65,7 @@ test('accessorValues can target person.sex when participantType: PAIR', () => {
   expect(value).toEqual(MALE);
   expect(values).toEqual([MALE]);
 
-  const state = tournamentEngine.getState();
+  const state = tournamentEngine.getTournament();
   targetParticipant = state.tournamentRecord.participants.find(
     (participant) =>
       participant.participantId === participantWithTimeItems.participantId

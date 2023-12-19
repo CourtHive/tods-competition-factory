@@ -9,6 +9,7 @@ import queryGovernor from '../../tournamentEngine/governors/queryGovernor';
 import venueGovernor from '../../tournamentEngine/governors/venueGovernor';
 import syncEngine from '../../assemblies/engines/sync';
 
+/*
 import { newTournamentRecord as newTournament } from '../../tournamentEngine/generators/newTournamentRecord';
 import {
   setTournamentRecord,
@@ -24,9 +25,10 @@ function newTournamentRecord(params) {
   setTournamentId(tournamentId);
   return { ...SUCCESS, tournamentId };
 }
+*/
 
 const methods = {
-  newTournamentRecord,
+  // newTournamentRecord,
   ...participantGovernor,
   ...publishingGovernor,
   ...tournamentGovernor,

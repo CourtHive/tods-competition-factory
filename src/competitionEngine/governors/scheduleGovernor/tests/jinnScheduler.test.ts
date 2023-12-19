@@ -1,7 +1,8 @@
 import { constantToString } from '../../../../utilities/strings';
+import tournamentEngine from '../../../../examples/syncEngine';
 import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
 import { extractTime } from '../../../../utilities/dateTime';
-import { mocksEngine, tournamentEngine } from '../../../..';
+import mocksEngine from '../../../../mocksEngine';
 import { unique } from '../../../../utilities';
 import { expect, it } from 'vitest';
 

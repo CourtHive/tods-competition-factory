@@ -120,7 +120,7 @@ test.each([
         byeLimit,
       });
       if (!result.success) {
-        const { tournamentRecord } = tournamentEngine.getState();
+        const { tournamentRecord } = tournamentEngine.getTournament();
         const { drawId } = tournamentRecord.events[0].drawDefinitions[0];
         const { extension: positionActions } = tournamentEngine.findExtension({
           name: AUDIT_POSITION_ACTIONS,

@@ -70,10 +70,13 @@ it.each([asyncTournamentEngine, tournamentEngineSync])(
         ].includes(method)
       ) {
         expect(result).not.toBeUndefined();
+      } else if (method === 'getTournament') {
+        // getTournament returns a tournamentRecord if one has been set
       } else if (method === 'getState') {
-        expect(result.tournamentRecord).toBeUndefined();
+        // getState returns the entire state
       } else if (result.success || result.valid) {
         const onList = [
+          'removeUnlinkedTournamentRecords',
           'validateSchedulingProfile',
           'generateDrawDefinition',
           'getMatchUpDependencies',

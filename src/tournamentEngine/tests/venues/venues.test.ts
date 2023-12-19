@@ -73,7 +73,7 @@ it('can define a new venue', () => {
     dateAvailability[0].date.split('T')[0]
   );
 
-  const { tournamentRecord } = tournamentEngine.getState();
+  const { tournamentRecord } = tournamentEngine.getTournament();
   expect(tournamentRecord.venues.length).toEqual(1);
 
   const venueName = 'Grassy Greens';

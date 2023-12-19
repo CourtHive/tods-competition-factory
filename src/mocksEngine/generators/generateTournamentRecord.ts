@@ -1,11 +1,11 @@
 import { scheduleProfileRounds } from '../../competitionEngine/governors/scheduleGovernor/schedulingProfile/scheduleProfileRounds';
-import { attachPolicies } from '../../mutate/extensions/policies/policyManagement';
 import { newTournamentRecord } from '../../tournamentEngine/generators/newTournamentRecord';
+import { attachPolicies } from '../../mutate/extensions/policies/policyManagement';
 import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEvent';
-import { isValidExtension } from '../../validators/isValidExtension';
 import { formatDate, isValidDateString } from '../../utilities/dateTime';
 import { addTournamentParticipants } from './addTournamentParticipants';
 import { generateEventWithFlights } from './generateEventWithFlights';
+import { isValidExtension } from '../../validators/isValidExtension';
 import { cycleMutationStatus } from '../../global/state/globalState';
 import { generateScheduledRounds } from './generateScheduledRounds';
 import { definedAttributes } from '../../utilities/definedAttributes';

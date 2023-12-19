@@ -61,14 +61,14 @@ it('can disable and enable courts and venues', () => {
 
   result = competitionEngine.disableVenues({ venueIds: ['venueId1'] });
   expect(result.success).toEqual(true);
-  tournamentRecord = tournamentEngine.getState().tournamentRecord;
+  tournamentRecord = tournamentEngine.getTournament().tournamentRecord;
   expect(tournamentRecord.venues[0].extensions[0].name).toEqual(DISABLED);
   result = competitionEngine.getVenuesAndCourts({ ignoreDisabled: true });
   expect([result.courts.length, result.venues.length]).toEqual([8, 1]);
 
   result = competitionEngine.enableVenues({ venueIds: ['venueId1'] });
   expect(result.success).toEqual(true);
-  tournamentRecord = tournamentEngine.getState().tournamentRecord;
+  tournamentRecord = tournamentEngine.getTournament().tournamentRecord;
   expect(tournamentRecord.venues[0].extensions).toEqual([]);
 
   result = competitionEngine.disableVenues({ venueIds: ['venueId1'] });
@@ -82,7 +82,7 @@ it('can disable and enable courts and venues', () => {
 
   result = competitionEngine.enableVenues({ enableAll: true });
   expect(result.success).toEqual(true);
-  tournamentRecord = tournamentEngine.getState().tournamentRecord;
+  tournamentRecord = tournamentEngine.getTournament().tournamentRecord;
   expect(tournamentRecord.venues[0].extensions.length).toEqual(0);
 
   result = competitionEngine.clearScheduledMatchUps();

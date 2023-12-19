@@ -19,7 +19,7 @@ test('setting deepCopy option to false will allow source objects to be modified'
   });
   expect(result.success).toEqual(true);
 
-  let tournament = tournamentEngine.getState().tournamentRecord;
+  let tournament = tournamentEngine.getTournament().tournamentRecord;
   expect(tournament.extensions).not.toBeUndefined();
   const factoryTimeStamp = tournament.extensions.find(
     (extension) => extension.name === FACTORY
@@ -44,7 +44,7 @@ test('setting deepCopy option to false will allow source objects to be modified'
   expect(extensionNames.includes('test')).toEqual(true);
   expect(extensionNames.includes(FACTORY)).toEqual(true);
 
-  tournament = tournamentEngine.getState().tournamentRecord;
+  tournament = tournamentEngine.getTournament().tournamentRecord;
   let latestFactoryTimeStamp = tournament.extensions.find(
     (extension) => extension.name === FACTORY
   ).value.timeStamp;
@@ -57,7 +57,7 @@ test('setting deepCopy option to false will allow source objects to be modified'
     });
     expect(result.success).toEqual(true);
 
-    tournament = tournamentEngine.getState().tournamentRecord;
+    tournament = tournamentEngine.getTournament().tournamentRecord;
     latestFactoryTimeStamp = tournament.extensions.find(
       (extension) => extension.name === FACTORY
     ).value.timeStamp;

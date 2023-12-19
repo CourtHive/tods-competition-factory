@@ -59,7 +59,7 @@ it('can create group participants', () => {
   expect(participantAddCounter).toBeGreaterThan(0);
 
   const { tournamentRecord: updatedTournamentRecord } =
-    tournamentEngine.getState();
+    tournamentEngine.getTournament();
   const { participants: groupParticipants } = getParticipants({
     tournamentRecord: updatedTournamentRecord,
     participantFilters: { participantTypes: [GROUP] },
