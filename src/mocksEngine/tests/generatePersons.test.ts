@@ -2,7 +2,7 @@ import { generatePersonData } from '../generators/generatePersonData';
 import { generatePersons } from '../generators/generatePersons';
 import { UUID, instanceCount } from '../../utilities';
 import namesData from '../data/names.json';
-import { tournamentEngine } from '../..';
+import tournamentEngine from '../..';
 import { expect, test } from 'vitest';
 import mocksEngine from '..';
 

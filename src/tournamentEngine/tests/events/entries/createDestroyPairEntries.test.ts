@@ -1,7 +1,7 @@
 import { isUngrouped } from '../../../../global/functions/isUngrouped';
 import { chunkArray, unique } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
-import { tournamentEngine } from '../../../../examples/syncEngine';
+import tournamentEngine from '../../../../examples/syncEngine';
 import { expect, it } from 'vitest';
 
 import { DOUBLES, SINGLES, TEAM } from '../../../../constants/eventConstants';

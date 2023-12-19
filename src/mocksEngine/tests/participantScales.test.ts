@@ -1,6 +1,6 @@
 import { getParticipantId } from '../../global/functions/extractors';
 import { mockProfile } from './mockScaleProfile';
-import { tournamentEngine } from '../..';
+import tournamentEngine from '../..';
 import { unique } from '../../utilities';
 import { expect, it, test } from 'vitest';
 import mocksEngine from '..';
