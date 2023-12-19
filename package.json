@@ -150,7 +150,7 @@
     "lint-staged": "^15.0.0",
     "pinst": "^3.0.0",
     "prettier": "3.1.1",
-    "prettier-eslint": "16.1.2",
+    "prettier-eslint": "16.2.0",
     "quicktype": "23.0.80",
     "rimraf": "5.0.5",
     "rollup": "4.9.1",
