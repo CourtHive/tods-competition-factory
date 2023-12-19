@@ -1,4 +1,4 @@
-import tournamentEngine from '../../../examples/syncEngine';
+import tournamentEngine from '../../../test/engines/tournamentEngine';
 import { competitionEngine, mocksEngine } from '../../..';
 import { unique } from '../../../utilities';
 import { expect, test } from 'vitest';

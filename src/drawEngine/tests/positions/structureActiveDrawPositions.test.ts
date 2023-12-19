@@ -1,5 +1,5 @@
 import { getStructureDrawPositionProfiles } from '../../getters/getStructureDrawPositionProfiles';
-import tournamentEngine from '../../../examples/syncEngine';
+import tournamentEngine from '../../../test/engines/tournamentEngine';
 import { numericSort } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import { expect, it } from 'vitest';

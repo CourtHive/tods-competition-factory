@@ -1,4 +1,4 @@
-import tournamentEngine from '../../../../examples/syncEngine';
+import tournamentEngine from '../../../../test/engines/tournamentEngine';
 import { extractAttributes as xa } from '../../../../utilities';
 import matchUpEngine from '../../../sync';
 import { expect, it } from 'vitest';

@@ -2,7 +2,7 @@ import { generateTournamentRecord } from '../../../mocksEngine/generators/genera
 import { removeExtension } from '../removeExtension';
 import { addExtension } from '../addExtension';
 import { competitionEngine } from '../../..';
-import tournamentEngine from '../../../examples/syncEngine';
+import tournamentEngine from '../../../test/engines/tournamentEngine';
 import { expect, it, test } from 'vitest';
 import {
   addParticipantExtension,

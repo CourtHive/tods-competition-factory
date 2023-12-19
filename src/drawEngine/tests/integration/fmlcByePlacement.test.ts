@@ -1,7 +1,7 @@
 import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
 import { completeMatchUp } from '../primitives/verifyMatchUps';
 import { getDrawStructures } from '../../getters/findStructure';
-import tournamentEngine from '../../../examples/syncEngine';
+import tournamentEngine from '../../../test/engines/tournamentEngine';
 import { instanceCount } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import { expect, it } from 'vitest';

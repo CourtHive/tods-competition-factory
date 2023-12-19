@@ -1,5 +1,5 @@
 import { generatePersonData } from '../../../mocksEngine/generators/generatePersonData';
-import tournamentEngine from '../../../examples/syncEngine';
+import tournamentEngine from '../../../test/engines/tournamentEngine';
 import { UUID } from '../../../utilities';
 import { expect, test } from 'vitest';
 

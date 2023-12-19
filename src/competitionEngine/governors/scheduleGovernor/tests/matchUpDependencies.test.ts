@@ -1,5 +1,5 @@
 import { getMatchUpDependencies } from '../../../../query/matchUps/getMatchUpDependencies';
-import tournamentEngine from '../../../../examples/syncEngine';
+import tournamentEngine from '../../../../test/engines/tournamentEngine';
 import mocksEngine from '../../../../mocksEngine';
 import { expect, it } from 'vitest';
 

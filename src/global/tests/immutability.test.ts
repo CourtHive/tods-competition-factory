@@ -1,6 +1,6 @@
 import { dateStringDaysChange } from '../../utilities/dateTime';
 import competitionEngine from '../../competitionEngine/sync';
-import tournamentEngine from '../../examples/syncEngine';
+import tournamentEngine from '../../test/engines/tournamentEngine';
 import mocksEngine from '../../mocksEngine';
 import { expect, test } from 'vitest';
 

@@ -1,5 +1,5 @@
 import { analyzeMatchUp } from '../getters/analyzeMatchUp';
-import tournamentEngine from '../../examples/syncEngine';
+import tournamentEngine from '../../test/engines/tournamentEngine';
 import mocksEngine from '../../mocksEngine';
 import { expect, test } from 'vitest';
 import matchUpEngine from '../sync';

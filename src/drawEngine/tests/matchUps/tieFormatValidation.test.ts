@@ -1,7 +1,7 @@
 import tieFormatDefaults from '../../../tournamentEngine/generators/tieFormatDefaults';
 import { validateTieFormat } from '../../../validators/tieFormatUtilities';
 import { fixtures, mocksEngine, scoreGovernor } from '../../..';
-import tournamentEngine from '../../../examples/syncEngine';
+import tournamentEngine from '../../../test/engines/tournamentEngine';
 import { expect, it, test } from 'vitest';
 
 import { INVALID_TIE_FORMAT } from '../../../constants/errorConditionConstants';

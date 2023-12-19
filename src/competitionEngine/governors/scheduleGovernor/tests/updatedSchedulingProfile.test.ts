@@ -1,6 +1,6 @@
 import { checkSchedulingProfile } from '../../../../tournamentEngine/governors/scheduleGovernor/schedulingProfile';
 import { getUpdatedSchedulingProfile } from '../schedulingProfile/schedulingProfile';
-import tournamentEngine from '../../../../examples/syncEngine';
+import tournamentEngine from '../../../../test/engines/tournamentEngine';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
 import { expect, it } from 'vitest';

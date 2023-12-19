@@ -2,7 +2,7 @@ import { removeLineUpSubstitutions } from '../../../tournamentEngine/governors/e
 import { validateLineUp } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/validateTeamLineUp';
 import { generateTeamTournament } from '../../../tournamentEngine/tests/team/generateTestTeamTournament';
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
-import tournamentEngine from '../../../examples/syncEngine';
+import tournamentEngine from '../../../test/engines/tournamentEngine';
 import { intersection } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import { expect, it } from 'vitest';

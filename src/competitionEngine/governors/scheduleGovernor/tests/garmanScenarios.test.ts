@@ -1,5 +1,5 @@
 import { getParticipantId } from '../../../../global/functions/extractors';
-import tournamentEngine from '../../../../examples/syncEngine';
+import tournamentEngine from '../../../../test/engines/tournamentEngine';
 import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
 import { extractTime } from '../../../../utilities/dateTime';
 import { intersection, unique } from '../../../../utilities';

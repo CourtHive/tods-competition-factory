@@ -1,7 +1,7 @@
 import { participantScaleItem } from '../../../../query/participant/participantScaleItem';
 import mocksEngine from '../../../../mocksEngine';
 import { unique } from '../../../../utilities';
-import tournamentEngine from '../../../../examples/syncEngine';
+import tournamentEngine from '../../../../test/engines/tournamentEngine';
 import { expect, it } from 'vitest';
 
 import { RANKING, RATING, SEEDING } from '../../../../constants/scaleConstants';

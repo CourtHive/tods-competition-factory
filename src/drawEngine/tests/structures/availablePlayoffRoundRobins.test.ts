@@ -1,7 +1,7 @@
 import { isCompletedStructure } from '../../governors/queryGovernor/structureActions';
 import { generateMatchUpOutcome } from '../primitives/generateMatchUpOutcome';
 import { getPositionAssignments } from '../../getters/positionsGetter';
-import tournamentEngine from '../../../examples/syncEngine';
+import tournamentEngine from '../../../test/engines/tournamentEngine';
 import { mocksEngine } from '../../..';
 import { expect, it } from 'vitest';
 import {
