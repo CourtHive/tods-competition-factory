@@ -6,13 +6,13 @@ import {
   tournamentEngineAsync,
   competitionEngineAsync,
   mocksEngine,
-} from '../src/index';
+} from '../../index';
 
 /**
  * Example of how to use asyncGlobalState
  */
 
-import asyncGlobalState from '../src/global/examples/asyncGlobalState';
+import asyncGlobalState from '../asyncEngine/asyncGlobalState';
 
 const ssp = setStateProvider(asyncGlobalState);
 const asyncCompetitionEngine = competitionEngineAsync();

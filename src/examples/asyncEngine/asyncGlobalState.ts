@@ -4,7 +4,7 @@ import {
   HandleCaughtErrorArgs,
   ImplemtationGlobalStateTypes,
   Notice,
-} from '../state/globalState';
+} from '../../global/state/globalState';
 
 const NOT_FOUND = 'Not found';
 const INVALID_VALUES = 'Invalid values';
