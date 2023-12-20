@@ -1,7 +1,7 @@
 import { getScheduleTimes } from '../../../competitionEngine/governors/scheduleGovernor/garman/getScheduleTimes';
 import { removeCourtAssignment } from '../../../mutate/matchUps/schedule/removeCourtAssignment';
 import { getMatchUpIds } from '../../../global/functions/extractors';
-import competitionEngine from '../../../competitionEngine/sync';
+import competitionEngine from '../../../test/engines/competitionEngine';
 import { setSubscriptions } from '../../../global/state/globalState';
 import tournamentEngine from '../../../test/engines/tournamentEngine';
 import mocksEngine from '../../../mocksEngine';

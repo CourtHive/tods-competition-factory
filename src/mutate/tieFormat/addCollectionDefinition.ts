@@ -17,10 +17,7 @@ import {
   ResultType,
   decorateResult,
 } from '../../global/functions/decorateResult';
-import {
-  validateCollectionDefinition,
-  validateTieFormat,
-} from '../../validators/tieFormatUtilities';
+import { validateTieFormat } from '../../validators/validateTieFormat';
 
 import { TIE_FORMAT_MODIFICATIONS } from '../../constants/extensionConstants';
 import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../constants/policyConstants';
@@ -42,6 +39,7 @@ import {
   TieFormat,
   Tournament,
 } from '../../types/tournamentTypes';
+import { validateCollectionDefinition } from '../../validators/validateCollectionDefinition';
 
 /*
  * collectionDefinition will be added to an event tieFormat (if present)

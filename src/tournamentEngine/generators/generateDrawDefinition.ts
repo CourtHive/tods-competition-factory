@@ -20,10 +20,7 @@ import { constantToString } from '../../utilities/strings';
 import { tieFormatDefaults } from './tieFormatDefaults';
 import { ensureInt } from '../../utilities/ensureInt';
 import { prepareStage } from './prepareStage';
-import {
-  checkTieFormat,
-  validateTieFormat,
-} from '../../validators/tieFormatUtilities';
+import { validateTieFormat } from '../../validators/validateTieFormat';
 import {
   setStageDrawSize,
   setStageQualifiersCount,
@@ -90,6 +87,7 @@ import {
   PolicyDefinitions,
   SeedingProfile,
 } from '../../types/factoryTypes';
+import { checkTieFormat } from '../../mutate/tieFormat/checkTieFormat';
 
 type GenerateDrawDefinitionArgs = {
   automated?: boolean | { seedsOnly: boolean };

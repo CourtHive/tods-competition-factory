@@ -2,7 +2,7 @@ import { addDays, dateRange } from '../../../../utilities/dateTime';
 import tournamentEngine from '../../../../test/engines/tournamentEngine';
 import { chunkArray } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
-import competitionEngine from '../../../sync';
+import competitionEngine from '../../../../test/engines/competitionEngine';
 import { expect, test } from 'vitest';
 
 import { TO_BE_PLAYED } from '../../../../constants/matchUpStatusConstants';

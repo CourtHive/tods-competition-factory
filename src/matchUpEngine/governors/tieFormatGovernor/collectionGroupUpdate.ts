@@ -3,7 +3,7 @@ import { definedAttributes } from '../../../utilities/definedAttributes';
 import { updateTargetTeamMatchUps } from '../../../mutate/tieFormat/updateTargetTeamMatchUps';
 import { getTargetTeamMatchUps } from './getTargetTeamMatchUps';
 import { calculateWinCriteria } from './calculateWinCriteria';
-import { validateTieFormat } from '../../../validators/tieFormatUtilities';
+import { validateTieFormat } from '../../../validators/validateTieFormat';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';

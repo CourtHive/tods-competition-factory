@@ -1,5 +1,5 @@
 import tieFormatDefaults from '../../../tournamentEngine/generators/tieFormatDefaults';
-import { validateTieFormat } from '../../../validators/tieFormatUtilities';
+import { validateTieFormat } from '../../../validators/validateTieFormat';
 import { fixtures, mocksEngine, scoreGovernor } from '../../..';
 import tournamentEngine from '../../../test/engines/tournamentEngine';
 import { expect, it, test } from 'vitest';
@@ -37,13 +37,13 @@ const errorConditions = [
   { tieFormat: { winCriteria: { valueGoal: 1 }, collectionDefinitions: [{ collectionId: 'id', matchUpCount: 1, matchUpType: SINGLES, collectionValueProfiles: 'a' }] }},
   { tieFormat: { winCriteria: { valueGoal: 1 }, collectionDefinitions: [{ collectionId: 'id', matchUpCount: 1, matchUpType: SINGLES, collectionValueProfiles: [''] }] }},
   { tieFormat: { winCriteria: { valueGoal: 1 }, collectionDefinitions: [{ collectionId: 'id', matchUpCount: 1, matchUpType: SINGLES, collectionValueProfiles: [{}] }] }},
-  { tieFormat: { winCriteria: { valueGoal: 1 }, collectionDefinitions: [{ collectionId: 'id', matchUpCount: 1, matchUpType: SINGLES, collectionValueProfiles: [{ value: 1 }] }] }},
+  { tieFormat: { winCriteria: { valueGoal: 1 }, collectionDefinitions: [{ collectionId: 'id', matchUpCount: 1, matchUpType: SINGLES, collectionValueProfiles: [{ matchUpValue: 1 }] }] }},
   { tieFormat: { winCriteria: { valueGoal: 1 }, collectionDefinitions: [{ collectionId: 'id', matchUpCount: 1, matchUpType: SINGLES, collectionValueProfiles: [{ collectionPosition: 1 }] }] }},
-  { tieFormat: { winCriteria: { valueGoal: 1 }, collectionDefinitions: [{ collectionId: 'id', matchUpCount: 1, matchUpType: SINGLES, collectionValueProfiles: [{ value: 1, collectionPosition: '' }] }] }},
-  { tieFormat: { winCriteria: { valueGoal: 1 }, collectionDefinitions: [{ collectionId: 'id', matchUpCount: 1, matchUpType: SINGLES, collectionValueProfiles: [{ value: 1, collectionPosition: 2 }] }] }},
-  { tieFormat: { winCriteria: { valueGoal: 1 }, collectionDefinitions: [{ collectionId: 'id', matchUpCount: 2, matchUpType: SINGLES, collectionValueProfiles: [{ value: 1, collectionPosition: 2 }] }] }},
+  { tieFormat: { winCriteria: { valueGoal: 1 }, collectionDefinitions: [{ collectionId: 'id', matchUpCount: 1, matchUpType: SINGLES, collectionValueProfiles: [{ matchUpValue: 1, collectionPosition: '' }] }] }},
+  { tieFormat: { winCriteria: { valueGoal: 1 }, collectionDefinitions: [{ collectionId: 'id', matchUpCount: 1, matchUpType: SINGLES, collectionValueProfiles: [{ matchUpValue: 1, collectionPosition: 2 }] }] }},
+  { tieFormat: { winCriteria: { valueGoal: 1 }, collectionDefinitions: [{ collectionId: 'id', matchUpCount: 2, matchUpType: SINGLES, collectionValueProfiles: [{ matchUpValue: 1, collectionPosition: 2 }] }] }},
   { tieFormat: { winCriteria: { valueGoal: 1 }, collectionDefinitions: [
-    { collectionId: 'id', matchUpCount: 2, matchUpType: SINGLES, collectionValueProfiles: [{ value: 1, collectionPosition: 2 }, { value: 1, collectionPosition: 2 }] }
+    { collectionId: 'id', matchUpCount: 2, matchUpType: SINGLES, collectionValueProfiles: [{ matchUpValue: 1, collectionPosition: 2 }, { matchUpValue: 1, collectionPosition: 2 }] }
   ]}},
   { tieFormat: { winCriteria: { valueGoal: 1 }, collectionDefinitions: [{ collectionId: 'id', matchUpCount: 1, matchUpType: SINGLES, matchUpValue: 1, collectionGroupNumber: 'a' }] }},
   { tieFormat: { winCriteria: { valueGoal: 1 }, collectionDefinitions: [{ collectionId: 'id', matchUpCount: 1, matchUpFormat: 'invalidFormat', matchUpType: SINGLES, matchUpValue: 1 }] }},
@@ -60,7 +60,7 @@ const successConditions = [
   { tieFormat: { winCriteria: { valueGoal: 1 }, collectionDefinitions: [] } },
   { tieFormat: { winCriteria: { valueGoal: 1 }, collectionDefinitions: [{ collectionId: 'id', matchUpCount: 1, matchUpType: SINGLES, matchUpValue: 1 }] }},
   { tieFormat: { winCriteria: { valueGoal: 1 }, collectionDefinitions: [{ collectionId: 'id', matchUpCount: 1, matchUpType: SINGLES, collectionValue: 1 }] }},
-  { tieFormat: { winCriteria: { valueGoal: 1 }, collectionDefinitions: [{ collectionId: 'id', matchUpCount: 1, matchUpType: SINGLES, collectionValueProfiles: [{ value: 1, collectionPosition: 1 }] }] }},
+  { tieFormat: { winCriteria: { valueGoal: 1 }, collectionDefinitions: [{ collectionId: 'id', matchUpCount: 1, matchUpType: SINGLES, collectionValueProfiles: [{ matchUpValue: 1, collectionPosition: 1 }] }] }},
   { tieFormat: { winCriteria: { valueGoal: 1 }, collectionDefinitions: [{ collectionId: 'id', matchUpCount: 1, matchUpType: SINGLES, matchUpValue: 1, collectionGroupNumber: 1 }] }},
   { tieFormat: { winCriteria: { valueGoal: 1 }, collectionDefinitions: [{ collectionId: 'id', matchUpCount: 1, matchUpFormat, matchUpType: SINGLES, matchUpValue: 1 }] }},
 ];
@@ -76,6 +76,8 @@ it('validates fixture tieFormats', () => {
 
 it.each(successConditions)('can validate tieFormats', (errorCondition: any) => {
   const result = validateTieFormat(errorCondition);
+  if (!result.valid)
+    console.log(errorCondition.tieFormat.collectionDefinitions[0], result);
   expect(result.valid).toEqual(true);
   expect(result?.errors?.length).toEqual(0);
 });

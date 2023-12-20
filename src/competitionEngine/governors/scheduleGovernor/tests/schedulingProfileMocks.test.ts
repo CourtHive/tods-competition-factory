@@ -1,7 +1,7 @@
 import { getContainedStructures } from '../../../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
 import { extractAttributes, intersection, unique } from '../../../../utilities';
 import tournamentEngine from '../../../../test/engines/tournamentEngine';
-import competitionEngine from '../../../../competitionEngine/sync';
+import competitionEngine from '../../../../test/engines/competitionEngine';
 import { constantToString } from '../../../../utilities/strings';
 import { mocksEngine } from '../../../..';
 import { expect, it } from 'vitest';

@@ -1,7 +1,7 @@
 import { unlinkTournament } from '../tournamentLinks';
 import { intersection } from '../../../../utilities';
 import competitionEngineAsync from '../../../async';
-import competitionEngineSync from '../../../sync';
+import competitionEngineSync from '../../../../test/engines/competitionEngine';
 import mocksEngine from '../../../../mocksEngine';
 import { expect, test } from 'vitest';
 

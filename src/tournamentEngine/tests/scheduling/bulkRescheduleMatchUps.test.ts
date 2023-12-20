@@ -1,6 +1,6 @@
 import { hasSchedule } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/hasSchedule';
 import { getMatchUpIds } from '../../../global/functions/extractors';
-import competitionEngine from '../../../competitionEngine/sync';
+import competitionEngine from '../../../test/engines/competitionEngine';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../../test/engines/tournamentEngine';
 import { expect, it } from 'vitest';

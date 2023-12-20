@@ -18,7 +18,7 @@ import { enableTieAutoCalc } from './enableTieAutoCalc';
 import { setMatchUpStatus } from '../../../mutate/matchUps/matchUpStatus/setMatchUpStatus';
 import { setOrderOfFinish } from './setOrderOfFinish';
 import { setMatchUpFormat } from '../../../mutate/matchUps/matchUpFormat/setMatchUpFormat';
-import { resetScorecard } from './resetScorecard';
+import { resetScorecard } from '../../../mutate/matchUps/resetScorecard';
 import { addGoesTo } from './addGoesTo';
 
 import {

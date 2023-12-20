@@ -1,5 +1,5 @@
 import tournamentEngine from '../../../test/engines/tournamentEngine';
-import competitionEngine from '../../../competitionEngine/sync';
+import competitionEngine from '../../../test/engines/competitionEngine';
 import askEngine from '../../../test/engines/askEngine';
 import { unique } from '../../../utilities';
 import { mocksEngine } from '../../..';

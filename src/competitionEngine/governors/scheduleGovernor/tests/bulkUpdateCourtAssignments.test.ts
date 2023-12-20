@@ -1,7 +1,7 @@
 import tournamentEngine from '../../../../test/engines/tournamentEngine';
 import { intersection, unique } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
-import competitionEngine from '../../../sync';
+import competitionEngine from '../../../../test/engines/competitionEngine';
 import { expect, it } from 'vitest';
 
 it('can update matchUp court assignments accross multiple events/draws', () => {

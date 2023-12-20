@@ -2,7 +2,7 @@ import { extractTime, timeStringMinutes } from '../../../../utilities/dateTime';
 import { getMatchUpId } from '../../../../global/functions/extractors';
 import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
 import mocksEngine from '../../../../mocksEngine';
-import competitionEngine from '../../../sync';
+import competitionEngine from '../../../../test/engines/competitionEngine';
 import { expect, it } from 'vitest';
 
 import { DO_NOT_SCHEDULE } from '../../../../constants/requestConstants';

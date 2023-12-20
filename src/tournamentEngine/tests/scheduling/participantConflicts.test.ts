@@ -1,7 +1,7 @@
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import tournamentEngine from '../../../test/engines/tournamentEngine';
 import { eventConstants } from '../../../constants/eventConstants';
-import competitionEngine from '../../../competitionEngine/sync';
+import competitionEngine from '../../../test/engines/competitionEngine';
 import mocksEngine from '../../../mocksEngine';
 import { expect, test } from 'vitest';
 

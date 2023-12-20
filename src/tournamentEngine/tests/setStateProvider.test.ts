@@ -1,5 +1,5 @@
 import syncGlobalState from '../../global/state/syncGlobalState';
-import competitionEngine from '../../competitionEngine/sync';
+import competitionEngine from '../../test/engines/competitionEngine';
 import mocksEngine from '../../mocksEngine';
 import { expect, it, test } from 'vitest';
 import tournamentEngine from '../../test/engines/tournamentEngine';

@@ -1,7 +1,7 @@
 import { setSubscriptions } from '../../../../global/state/globalState';
 import tournamentEngine from '../../../../test/engines/tournamentEngine';
 import mocksEngine from '../../../../mocksEngine';
-import competitionEngine from '../../../sync';
+import competitionEngine from '../../../../test/engines/competitionEngine';
 import { expect, it } from 'vitest';
 
 import { INDIVIDUAL } from '../../../../constants/participantConstants';

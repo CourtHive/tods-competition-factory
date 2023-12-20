@@ -121,9 +121,9 @@ it('can modify collectionDefinitions for a tieFormat on a drawDefinition', () =>
 
   result = tournamentEngine.modifyCollectionDefinition({
     collectionValueProfiles: [
-      { collectionPosition: 1, value: 3 },
-      { collectionPosition: 2, value: 1 },
-      { collectionPosition: 3, value: 1 },
+      { collectionPosition: 1, matchUpValue: 3 },
+      { collectionPosition: 2, matchUpValue: 1 },
+      { collectionPosition: 3, matchUpValue: 1 },
     ],
     collectionId,
     drawId,
@@ -139,9 +139,9 @@ it('can modify collectionDefinitions for a tieFormat on a drawDefinition', () =>
 
   result = tournamentEngine.modifyCollectionDefinition({
     collectionValueProfiles: [
-      { collectionPosition: 1, value: 3 },
-      { collectionPosition: 1, value: 1 },
-      { collectionPosition: 1, value: 1 },
+      { collectionPosition: 1, matchUpValue: 3 },
+      { collectionPosition: 1, matchUpValue: 1 },
+      { collectionPosition: 1, matchUpValue: 1 },
     ],
     collectionId,
     drawId,
@@ -150,8 +150,8 @@ it('can modify collectionDefinitions for a tieFormat on a drawDefinition', () =>
 
   result = tournamentEngine.modifyCollectionDefinition({
     collectionValueProfiles: [
-      { collectionPosition: 1, value: 3 },
-      { collectionPosition: 2, value: 2 },
+      { collectionPosition: 1, matchUpValue: 3 },
+      { collectionPosition: 2, matchUpValue: 2 },
     ],
     collectionId,
     drawId,

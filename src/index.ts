@@ -7,7 +7,7 @@ import { getAvailablePlayoffProfiles } from './drawEngine/governors/structureGov
 import { visualizeScheduledMatchUps } from './global/testHarness/testUtilities/visualizeScheduledMatchUps';
 import { calculateWinCriteria } from './matchUpEngine/governors/tieFormatGovernor/calculateWinCriteria';
 import { proConflicts } from './competitionEngine/governors/scheduleGovernor/proScheduling/proConflicts';
-import { validateTieFormat } from './validators/tieFormatUtilities';
+import { validateTieFormat } from './validators/validateTieFormat';
 import { compareTieFormats } from './matchUpEngine/governors/tieFormatGovernor/compareTieFormats';
 import { getStructureSeedAssignments } from './query/structure/getStructureSeedAssignments';
 import { dehydrateMatchUps } from './tournamentEngine/governors/tournamentGovernor/dehydrate';
@@ -141,7 +141,7 @@ export const utilities = {
 };
 
 // START- Asynchronous and Synchronous engine exports
-export { competitionEngine } from './competitionEngine/sync';
+export { competitionEngine } from './test/engines/competitionEngine';
 export { competitionEngineAsync } from './competitionEngine/async';
 export { matchUpEngine } from './matchUpEngine/sync';
 export { matchUpEngineAsync } from './matchUpEngine/async';
