@@ -1,4 +1,4 @@
-import competitionEngine from '../../../competitionEngine/sync';
+import competitionEngine from '../../../test/engines/competitionEngine';
 import { constantToString } from '../../../utilities/strings';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../../test/engines/tournamentEngine';

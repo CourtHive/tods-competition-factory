@@ -179,7 +179,6 @@ export function competitionEngineAsync(
       rollbackOnError && makeDeepCopy(tournamentRecords, false, true);
 
     let timeStamp;
-    const result: any = {};
     const results: any[] = [];
     for (const directive of directives) {
       if (typeof directive !== 'object') return { error: INVALID_VALUES };

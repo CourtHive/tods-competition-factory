@@ -19,10 +19,8 @@ import {
 } from '../../../mutate/participants/participantPenalties';
 import { addPenalty, getCompetitionPenalties } from './participantPenalties';
 
-import { modifyCollectionDefinition } from './modifyCollectionDefinition';
 import { orderCollectionDefinitions } from './orderCollectionDefinitions';
 import { removeCollectionDefinition } from './removeCollectionDefinition';
-import { addCollectionDefinition } from './addCollectionDefinition';
 import { removeCollectionGroup } from './removeCollectionGroup';
 import { addCollectionGroup } from './addCollectionGroup';
 import { modifyTieFormat } from './modifyTieFormat';
@@ -32,6 +30,8 @@ import { addExtension } from '../../../mutate/extensions/addExtension';
 import { removeExtension } from '../../../mutate/extensions/removeExtension';
 import { findExtension } from '../../../acquire/findExtension';
 import { addEventExtension } from '../../../mutate/extensions/addRemoveExtensions';
+import { modifyCollectionDefinition } from '../../../matchUpEngine/governors/tieFormatGovernor/modifyCollectionDefinition';
+import { addCollectionDefinition } from '../../../mutate/tieFormat/addCollectionDefinition';
 
 const competitionGovernor = {
   modifyCollectionDefinition,

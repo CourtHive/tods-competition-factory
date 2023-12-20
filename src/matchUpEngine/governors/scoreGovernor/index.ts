@@ -1,7 +1,7 @@
 import { generateTieMatchUpScore } from '../../../assemblies/generators/tieMatchUpScore/generateTieMatchUpScore';
 import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
 import { updateTieMatchUpScore } from '../../../mutate/matchUps/score/tieMatchUpScore';
-import { validateTieFormat } from '../../../validators/tieFormatUtilities';
+import { validateTieFormat } from '../../../validators/validateTieFormat';
 import { generateScoreString } from '../../generators/generateScoreString';
 import { validateScore } from '../../../validators/validateScore';
 import { checkSetIsComplete, keyValueScore } from './keyValueScore';

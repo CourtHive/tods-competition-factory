@@ -116,7 +116,6 @@ import { modifyTieFormat } from '../../../matchUpEngine/governors/tieFormatGover
 import { resetScorecard } from './resetScorecard';
 import { resetTieFormat } from '../../../mutate/tieFormat/resetTieFormat';
 
-import { validateCollectionDefinition } from '../../../validators/tieFormatUtilities';
 import { getAssignedParticipantIds } from '../../../drawEngine/getters/getAssignedParticipantIds';
 import { generateDrawStructuresAndLinks } from '../../generators/generateDrawStructuresAndLinks';
 import { generateQualifyingStructure } from './drawDefinitions/generateQualifyingStructure';
@@ -143,6 +142,7 @@ import {
 
 import { renameStructures } from '../../../drawEngine/governors/structureGovernor/renameStructures';
 import { addPlayoffStructures } from '../../../mutate/drawDefinitions/addPlayoffStructures';
+import { validateCollectionDefinition } from '../../../validators/validateCollectionDefinition';
 
 const eventGovernor = {
   generateQualifyingStructure,

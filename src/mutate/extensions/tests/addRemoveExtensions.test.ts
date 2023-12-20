@@ -1,6 +1,6 @@
 import { generateTournamentRecord } from '../../../mocksEngine/generators/generateTournamentRecord';
 import tournamentEngine from '../../../test/engines/tournamentEngine';
-import competitionEngine from '../../../competitionEngine/sync';
+import competitionEngine from '../../../test/engines/competitionEngine';
 import { removeExtension } from '../removeExtension';
 import { addExtension } from '../addExtension';
 import { expect, it, test } from 'vitest';

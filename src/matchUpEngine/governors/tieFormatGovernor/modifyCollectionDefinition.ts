@@ -13,10 +13,7 @@ import {
   ResultType,
   decorateResult,
 } from '../../../global/functions/decorateResult';
-import {
-  validateCollectionValueProfiles,
-  validateTieFormat,
-} from '../../../validators/tieFormatUtilities';
+import { validateTieFormat } from '../../../validators/validateTieFormat';
 
 import { TIE_FORMAT_MODIFICATIONS } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -36,6 +33,7 @@ import {
   NOT_FOUND,
   NOT_IMPLEMENTED,
 } from '../../../constants/errorConditionConstants';
+import { validateCollectionValueProfiles } from '../../../validators/validateCollectionValueProfiles';
 
 // all child matchUps need to be checked for collectionAssignments / collectionPositions which need to be removed when collectionDefinition.collectionIds are removed
 type ModifyCollectionDefinitionArgs = {
@@ -182,7 +180,8 @@ export function modifyCollectionDefinition({
   const value = collectionValue ?? matchUpValue ?? scoreValue ?? setValue;
   if (collectionValueProfiles) {
     const result = validateCollectionValueProfiles({
-      matchUpCount: matchUpCount ?? sourceCollectionDefinition?.matchUpCount,
+      matchUpCount:
+        matchUpCount ?? sourceCollectionDefinition?.matchUpCount ?? 0,
       collectionValueProfiles,
     });
     if (result.errors) {

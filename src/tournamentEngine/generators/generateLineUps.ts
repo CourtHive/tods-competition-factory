@@ -1,5 +1,5 @@
 import { resolveTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
-import { validateTieFormat } from '../../validators/tieFormatUtilities';
+import { validateTieFormat } from '../../validators/validateTieFormat';
 import { getPairedParticipant } from '../governors/participantGovernor/getPairedParticipant';
 import { addParticipant } from '../governors/participantGovernor/addParticipants';
 import { addExtension } from '../../mutate/extensions/addExtension';

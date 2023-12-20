@@ -1,4 +1,4 @@
-import competitionEngine from '../../competitionEngine/sync';
+import competitionEngine from '../../test/engines/competitionEngine';
 import tournamentEngine from '../../test/engines/tournamentEngine';
 import { expect, it } from 'vitest';
 

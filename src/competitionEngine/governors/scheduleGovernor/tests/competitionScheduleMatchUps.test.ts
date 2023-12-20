@@ -3,7 +3,7 @@ import { getMatchUpIds } from '../../../../global/functions/extractors';
 import tournamentEngine from '../../../../test/engines/tournamentEngine';
 import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
 import mocksEngine from '../../../../mocksEngine';
-import competitionEngineSync from '../../../sync';
+import competitionEngineSync from '../../../../test/engines/competitionEngine';
 import { expect, test } from 'vitest';
 import {
   extractAttributes as xa,

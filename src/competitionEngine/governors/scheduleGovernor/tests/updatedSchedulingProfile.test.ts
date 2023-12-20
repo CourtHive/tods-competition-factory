@@ -2,7 +2,7 @@ import { checkSchedulingProfile } from '../../../../tournamentEngine/governors/s
 import { getUpdatedSchedulingProfile } from '../schedulingProfile/schedulingProfile';
 import tournamentEngine from '../../../../test/engines/tournamentEngine';
 import mocksEngine from '../../../../mocksEngine';
-import competitionEngine from '../../../sync';
+import competitionEngine from '../../../../test/engines/competitionEngine';
 import { expect, it } from 'vitest';
 
 import { SCHEDULING_PROFILE } from '../../../../constants/extensionConstants';

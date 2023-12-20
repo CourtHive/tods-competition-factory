@@ -25,7 +25,6 @@ export async function asyncExecutionQueue(
   const snapshot =
     rollbackOnError && makeDeepCopy(getTournamentRecords(), false, true);
 
-  const result: any = {};
   const results: any[] = [];
   for (const directive of directives) {
     if (typeof directive !== 'object') return { error: INVALID_VALUES };

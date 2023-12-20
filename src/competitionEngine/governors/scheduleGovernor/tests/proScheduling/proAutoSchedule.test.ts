@@ -1,7 +1,7 @@
 import tournamentEngine from '../../../../../test/engines/tournamentEngine';
 import { mocksEngine } from '../../../../../mocksEngine';
 import { unique } from '../../../../../utilities';
-import competitionEngine from '../../../../sync';
+import competitionEngine from '../../../../../test/engines/competitionEngine';
 import { it, expect } from 'vitest';
 
 import { INVALID_VALUES } from '../../../../../constants/errorConditionConstants';

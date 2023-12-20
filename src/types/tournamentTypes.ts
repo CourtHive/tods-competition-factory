@@ -603,13 +603,13 @@ export interface TieFormat {
 }
 
 export interface CollectionDefinition {
-  category?: Category;
+  collectionValueProfiles?: CollectionValueProfile[];
   collectionGroupNumber?: number;
+  category?: Category;
   collectionId: string;
   collectionName?: string;
   collectionOrder?: number;
   collectionValue?: number;
-  collectionValueProfiles?: CollectionValueProfile[];
   createdAt?: Date | string;
   extensions?: Extension[];
   gender?: GenderUnion;
@@ -630,12 +630,12 @@ export interface CollectionDefinition {
 export interface CollectionValueProfile {
   collectionPosition: number;
   createdAt?: Date | string;
-  extensions?: Extension[];
-  isMock?: boolean;
-  matchUpValue: number;
-  notes?: string;
-  timeItems?: TimeItem[];
   updatedAt?: Date | string;
+  extensions?: Extension[];
+  timeItems?: TimeItem[];
+  matchUpValue: number;
+  isMock?: boolean;
+  notes?: string;
 }
 
 enum GenderEnum {
