@@ -271,7 +271,7 @@ test('can modify event timing for matchUpFormat codes', () => {
     matchUpFormat: FORMAT_STANDARD,
     averageMinutes: 127,
   });
-  expect(result.error).toEqual(MISSING_EVENT);
+  expect(result.error).toEqual(MISSING_TOURNAMENT_RECORD); // because tournamentRecord is resovled from eventId
 
   result = competitionEngine.modifyEventMatchUpFormatTiming({
     matchUpFormat: FORMAT_STANDARD,

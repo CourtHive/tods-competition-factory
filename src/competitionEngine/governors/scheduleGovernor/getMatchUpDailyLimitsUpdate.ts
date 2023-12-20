@@ -1,4 +1,4 @@
-import { getExtensionUpdate } from '../competitionsGovernor/getExtensionUpdate';
+import { getExtensionUpdate } from '../../../query/extensions/getExtensionUpdate';
 
 import { SCHEDULE_LIMITS } from '../../../constants/extensionConstants';
 
