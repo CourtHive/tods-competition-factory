@@ -1,10 +1,9 @@
 import { modifyEventMatchUpFormatTiming } from './matchUpFormatTiming/modifyEventMatchUpFormatTiming';
 import { getMatchUpFormatTimingUpdate } from './matchUpFormatTiming/getMatchUpFormatTimingUpdate';
-import { getEventMatchUpFormatTiming } from './matchUpFormatTiming/getEventMatchUpFormatTiming';
 import { validateSchedulingProfile } from '../../../validators/validateSchedulingProfile';
 import { modifyMatchUpFormatTiming } from './matchUpFormatTiming/modifyMatchUpFormatTiming';
 import { getScheduledRoundsDetails } from './schedulingProfile/getScheduledRoundsDetails';
-import { findMatchUpFormatTiming } from './matchUpFormatTiming/findMatchUpFormatTiming';
+import { findMatchUpFormatTiming } from '../../../acquire/findMatchUpFormatTiming';
 import { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDependencies';
 import { calculateScheduleTimes } from './scheduleMatchUps/calculateScheduleTimes';
 import { scheduleProfileRounds } from './schedulingProfile/scheduleProfileRounds';
@@ -51,6 +50,7 @@ import {
   removePersonRequests,
 } from './scheduleMatchUps/personRequests';
 import { toggleParticipantCheckInState } from '../../../mutate/matchUps/timeItems/toggleParticipantCheckInState';
+import { getEventMatchUpFormatTiming } from '../../../query/extensions/matchUpFormatTiming/getEventMatchUpFormatTiming';
 
 const scheduleGovernor = {
   scheduleMatchUps,

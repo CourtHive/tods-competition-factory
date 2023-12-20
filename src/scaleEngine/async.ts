@@ -1,6 +1,6 @@
 import { notifySubscribersAsync } from '../global/state/notifySubscribers';
-import { setState, getState, paramsMiddleware } from './stateMethods';
 import { factoryVersion } from '../global/functions/factoryVersion';
+import { setState, getState } from './stateMethods';
 import { makeDeepCopy } from '../utilities';
 import {
   createInstanceState,
@@ -64,10 +64,8 @@ export function scaleEngineAsync(test?): FactoryEngine & { error?: any } {
     delete engine.success;
     delete engine.error;
 
-    const augmentedParams = paramsMiddleware(tournamentRecord, params);
-
     return await method({
-      ...augmentedParams,
+      ...params,
       tournamentRecord,
     });
   }

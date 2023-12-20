@@ -1,6 +1,6 @@
 import { addEventEntries } from '../../tournamentEngine/governors/eventGovernor/entries/addEventEntries';
 import { attachEventPolicies } from '../../mutate/extensions/policies/policyManagement';
-import { addEventTimeItem } from '../../tournamentEngine/governors/tournamentGovernor/addTimeItem';
+import { addEventTimeItem } from '../../mutate/timeItems/addTimeItem';
 import { publishEvent } from '../../tournamentEngine/governors/publishingGovernor/publishEvent';
 import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaults';
 import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEvent';

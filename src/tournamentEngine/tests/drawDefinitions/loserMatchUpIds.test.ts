@@ -92,8 +92,8 @@ test.each([tournamentEngineSync, asyncTournamentEngine])(
 
     const roundProfiles = [{ 3: 1 }, { 4: 1 }];
     const playoffAttributes = {
-      '0-3': { name: 'Silver', abbreviation: 'S' },
-      '0-4': { name: 'Gold', abbreviation: 'G' },
+      '0-3': { name: 'Silver', abbreviation: 'S', structureId: 'sid1' },
+      '0-4': { name: 'Gold', abbreviation: 'G', structureId: 'sid2' },
     };
     const {
       drawDefinition: {
@@ -190,7 +190,6 @@ test.each([tournamentEngineSync, asyncTournamentEngine])(
     });
 
     expect(addMatchUpNotices.length).toEqual(124);
-    // console.log(addMatchUpNotices.map(({ matchUpType }) => matchUpType));
     addMatchUpNotices = [];
 
     await tournamentEngine.setState(tournamentRecord);
@@ -199,15 +198,6 @@ test.each([tournamentEngineSync, asyncTournamentEngine])(
       inContext: false,
     });
     let matchUps = result.matchUps;
-    /*
-    const semiFinals = matchUps.find(
-      (matchUp) =>
-        matchUp.matchUpType === 'TEAM' &&
-        matchUp.roundNumber === 4 &&
-        matchUp.roundPosition === 1
-    );
-    console.log('SF', semiFinals);
-    */
     expect(getLoserMatchUpIdRounds(matchUps)).toEqual([]);
 
     const roundProfiles = [{ 4: 1 }];

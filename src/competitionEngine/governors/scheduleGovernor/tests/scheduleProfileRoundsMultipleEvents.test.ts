@@ -16,7 +16,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
 } from '../../../../constants/errorConditionConstants';
 
-it.only('auto schedules multiple events at multiple venues and tracks participants across venues', () => {
+it('auto schedules multiple events at multiple venues and tracks participants across venues', () => {
   const venueProfiles = [
     {
       venueName: 'venue 1',
@@ -85,7 +85,7 @@ it.only('auto schedules multiple events at multiple venues and tracks participan
     eventId: eventIds[0],
     drawDefinition,
   });
-  expect(result.error).toEqual(MISSING_DRAW_DEFINITION);
+  expect(result.error).toEqual(MISSING_TOURNAMENT_RECORD);
 
   result = competitionEngine.addDrawDefinition({
     tournamentId,

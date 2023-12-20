@@ -1,4 +1,4 @@
-import { addEventTimeItem } from '../tournamentGovernor/addTimeItem';
+import { addEventTimeItem } from '../../../mutate/timeItems/addTimeItem';
 import { getEventPublishStatus } from '../../../query/event/getEventPublishStatus';
 import { isObject } from '../../../utilities/objects';
 

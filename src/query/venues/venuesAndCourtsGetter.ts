@@ -1,21 +1,24 @@
-import { getVenuesAndCourts as teVenuesAndCourts } from '../../tournamentEngine/getters/venueGetter';
 import { getDisabledStatus } from '../extensions/getDisabledStatus';
 import { getInContextCourt } from '../../global/functions/deducers/getInContextCourt';
 import { findExtension } from '../../acquire/findExtension';
 import { makeDeepCopy } from '../../utilities';
 
-import { Tournament, Venue } from '../../types/tournamentTypes';
 import { HydratedCourt, HydratedVenue } from '../../types/hydrated';
 import { ResultType } from '../../global/functions/decorateResult';
-import { TournamentRecordsArgs } from '../../types/factoryTypes';
+import { Tournament, Venue } from '../../types/tournamentTypes';
 import { DISABLED } from '../../constants/extensionConstants';
+import {
+  TournamentRecords,
+  TournamentRecordsArgs,
+} from '../../types/factoryTypes';
 import {
   ErrorType,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../constants/errorConditionConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 
 type GetVenuesAndCourtsArgs = {
-  tournamentRecords: Tournament[] | { [key: string]: Tournament };
+  tournamentRecords?: TournamentRecords;
   tournamentRecord?: Tournament;
   convertExtensions?: boolean;
   ignoreDisabled?: boolean;
@@ -30,17 +33,18 @@ export function getVenuesAndCourts(
   courts?: HydratedCourt[];
 } {
   const {
-    tournamentRecords,
     convertExtensions,
     ignoreDisabled,
     venueIds = [],
     dates, // used in conjunction with ignoreDisabled
   } = params;
-  if (
-    typeof tournamentRecords !== 'object' ||
-    !Object.keys(tournamentRecords).length
-  )
-    return { error: MISSING_TOURNAMENT_RECORDS };
+
+  const tournamentRecords =
+    params.tournamentRecords ||
+    (params.tournamentRecord && {
+      [params.tournamentRecord.tournamentId]: params.tournamentRecord,
+    }) ||
+    {};
 
   const uniqueVenueIds: string[] = [];
   const uniqueCourtIds: string[] = [];
@@ -90,7 +94,57 @@ export function getVenuesAndCourts(
     }
   });
 
-  return { courts, venues };
+  return { courts, venues, ...SUCCESS };
+}
+
+export function getTournamentVenuesAndCourts({
+  convertExtensions,
+  tournamentRecord,
+  ignoreDisabled,
+  dates, // used in conjunction with ignoreDisabled
+}: GetVenuesAndCourtsArgs): ResultType & {
+  venues?: HydratedVenue[];
+  courts?: HydratedCourt[];
+} {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORDS };
+
+  const venues = makeDeepCopy(tournamentRecord.venues ?? [], convertExtensions)
+    .filter((venue) => {
+      if (!ignoreDisabled) return venue;
+      const { extension } = findExtension({
+        name: DISABLED,
+        element: venue,
+      });
+      return !extension?.value && venue;
+    })
+    .filter(Boolean);
+
+  const courts = venues.reduce((courts, venue) => {
+    const additionalCourts = (venue?.courts || [])
+      .filter((court) => {
+        if (!ignoreDisabled && !dates?.length) return court;
+        const { extension } = findExtension({
+          name: DISABLED,
+          element: court,
+        });
+        return getDisabledStatus({ extension, dates });
+      })
+      .filter(Boolean)
+      .map((court) => {
+        const { inContextCourt } = getInContextCourt({
+          convertExtensions,
+          ignoreDisabled,
+          venue,
+          court,
+        });
+
+        return inContextCourt;
+      });
+
+    return additionalCourts.length ? courts.concat(additionalCourts) : courts;
+  }, []);
+
+  return { venues, courts };
 }
 
 type Accumulator = {
@@ -122,7 +176,10 @@ export function getCompetitionVenues({
   return tournamentIds.reduce(
     (accumulator: Accumulator, tournamentId) => {
       const tournamentRecord = tournamentRecords[tournamentId];
-      const { venues } = teVenuesAndCourts({ tournamentRecord, dates });
+      const { venues } = getTournamentVenuesAndCourts({
+        tournamentRecord,
+        dates,
+      });
       venues?.forEach((venue) => {
         const { venueId, courts } = venue;
         const includeVenue = !requireCourts || courts?.length;

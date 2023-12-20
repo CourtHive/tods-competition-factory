@@ -6,7 +6,7 @@ import { findEvent } from '../../../acquire/findEvent';
 import {
   addEventTimeItem,
   addTournamentTimeItem,
-} from '../tournamentGovernor/addTimeItem';
+} from '../../../mutate/timeItems/addTimeItem';
 
 import { Participant, Tournament } from '../../../types/tournamentTypes';
 import { SUCCESS } from '../../../constants/resultConstants';

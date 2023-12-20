@@ -11,7 +11,6 @@ import { ADD_MATCHUPS } from '../../../../constants/topicConstants';
 import {
   ANACHRONISM,
   EVENT_NOT_FOUND,
-  INVALID_VALUES,
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../../constants/errorConditionConstants';
@@ -280,7 +279,7 @@ test('can modify event timing for matchUpFormat codes', () => {
     averageMinutes: 127,
     eventId,
   });
-  expect(result.error).toEqual(INVALID_VALUES);
+  expect(result.error).toEqual(MISSING_TOURNAMENT_RECORD);
 
   result = competitionEngine.modifyEventMatchUpFormatTiming({
     matchUpFormat: FORMAT_STANDARD,
@@ -311,18 +310,16 @@ test('can modify event timing for matchUpFormat codes', () => {
   });
   expect(result.success).toEqual(true);
 
-  ({ eventMatchUpFormatTiming } = competitionEngine.getEventMatchUpFormatTiming(
-    {
-      eventId,
-    }
-  ));
+  result = competitionEngine.getEventMatchUpFormatTiming({
+    eventId,
+  });
 
-  expect(eventMatchUpFormatTiming.map((t) => t.averageMinutes)).toEqual([
+  expect(result.eventMatchUpFormatTiming.map((t) => t.averageMinutes)).toEqual([
     127, 117,
   ]);
-  expect(eventMatchUpFormatTiming.map((t) => t.recoveryMinutes)).toEqual([
-    60, 60,
-  ]);
+  expect(result.eventMatchUpFormatTiming.map((t) => t.recoveryMinutes)).toEqual(
+    [60, 60]
+  );
 
   ({ eventMatchUpFormatTiming } = competitionEngine.getEventMatchUpFormatTiming(
     {
@@ -380,5 +377,5 @@ test('can modify event timing for matchUpFormat codes', () => {
     tournamentId: 'bogusId',
     eventId,
   });
-  expect(result.error).toEqual(INVALID_VALUES);
+  expect(result.error).toEqual(MISSING_TOURNAMENT_RECORD);
 });

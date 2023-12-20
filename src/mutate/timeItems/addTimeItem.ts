@@ -1,9 +1,9 @@
-import { findTournamentParticipant } from '../../getters/participants/participantGetter';
-import { getTimeItem } from '../queryGovernor/timeItems';
+import { findTournamentParticipant } from '../../tournamentEngine/getters/participants/participantGetter';
+import { getTimeItem } from '../../tournamentEngine/governors/queryGovernor/timeItems';
 
-import { TimeItem, Tournament } from '../../../types/tournamentTypes';
-import { ELEMENT_REQUIRED } from '../../../constants/infoConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { TimeItem, Tournament } from '../../types/tournamentTypes';
+import { ELEMENT_REQUIRED } from '../../constants/infoConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   EVENT_NOT_FOUND,
   INVALID_TIME_ITEM,
@@ -11,15 +11,23 @@ import {
   MISSING_TIME_ITEM,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
-export function addTimeItem({
-  duplicateValues = true,
-  creationTime = true,
-  removePriorValues,
-  timeItem,
-  element,
-}) {
+type AddTimeItemArgs = {
+  removePriorValues?: boolean;
+  duplicateValues?: boolean;
+  creationTime?: boolean;
+  timeItem: TimeItem;
+  element: any;
+};
+export function addTimeItem(params: AddTimeItemArgs) {
+  const {
+    duplicateValues = true,
+    creationTime = true,
+    removePriorValues,
+    timeItem,
+    element,
+  } = params;
   if (!timeItem) return { error: MISSING_TIME_ITEM };
   if (!element) return { error: MISSING_VALUE, info: ELEMENT_REQUIRED };
 
@@ -37,12 +45,15 @@ export function addTimeItem({
   } else {
     // check if timeItem with equivalent value already exists
     const { itemType, itemSubTypes, itemValue } = timeItem;
-    const { timeItem: existingTimeItem } = getTimeItem({
-      itemSubTypes,
-      itemType,
-      element,
-    });
+    const existingTimeItem =
+      itemType &&
+      getTimeItem({
+        itemSubTypes,
+        itemType,
+        element,
+      })?.timeItem;
     if (
+      existingTimeItem &&
       JSON.stringify(existingTimeItem?.itemValue) ===
         JSON.stringify(itemValue) &&
       !duplicateValues

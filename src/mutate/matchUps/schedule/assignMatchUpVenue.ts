@@ -1,5 +1,5 @@
 import { addMatchUpTimeItem } from '../timeItems/matchUpTimeItems';
-import { findVenue } from '../../../tournamentEngine/getters/venueGetter';
+import { findVenue } from '../../../acquire/findVenue';
 
 import { DrawDefinition, Tournament } from '../../../types/tournamentTypes';
 import { ASSIGN_VENUE } from '../../../constants/timeItemConstants';

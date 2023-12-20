@@ -29,7 +29,6 @@ it('can return participant scheduled matchUps', () => {
   expect(result.success).toEqual(true);
 
   result = competitionEngine.scheduleProfileRounds();
-  console.log({ result });
   expect(
     result.dateSchedulingProfiles[0].venues[0].rounds.map(
       ({ roundTiming }) => roundTiming?.roundMinutes

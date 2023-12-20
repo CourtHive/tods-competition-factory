@@ -41,8 +41,8 @@ export function addExtension(params?: AddExtensionArgs): {
     if (params.discover && !params.tournamentId && params.tournamentRecords) {
       for (const tournamentRecord of Object.values(params.tournamentRecords)) {
         const result = addExtension({
-          element: tournamentRecord,
           extension: params.extension,
+          element: tournamentRecord,
         });
         if (result.error) return decorateResult({ result, stack });
       }

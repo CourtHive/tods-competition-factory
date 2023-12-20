@@ -1,5 +1,5 @@
 import { addQualifyingStructure as addQualifying } from '../../../../mutate/drawDefinitions/addQualifyingStructure';
-import { addTournamentTimeItem } from '../../tournamentGovernor/addTimeItem';
+import { addTournamentTimeItem } from '../../../../mutate/timeItems/addTimeItem';
 import { definedAttributes } from '../../../../utilities/definedAttributes';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../../constants/errorConditionConstants';

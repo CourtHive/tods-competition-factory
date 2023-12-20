@@ -63,14 +63,14 @@ it('can add events, venues, and schedule matchUps', () => {
       endTime: '19:00',
     },
   ];
-  let { courts } = tournamentEngine.addCourts({
-    venueId,
-    courtsCount: 3,
+  const { courtIds } = tournamentEngine.addCourts({
     dateAvailability,
+    courtsCount: 3,
+    venueId,
   });
-  expect(courts.length).toEqual(3);
+  expect(courtIds.length).toEqual(3);
 
-  ({ courts } = tournamentEngine.getCourts());
+  const { courts } = tournamentEngine.getCourts();
   expect(courts.length).toEqual(3);
 
   const { tournamentRecord } = tournamentEngine.getTournament();
@@ -100,7 +100,6 @@ it('can add events, venues, and schedule matchUps', () => {
   }));
   expect(upcomingMatchUps.length).toEqual(0);
 
-  const courtIds = courts.map((court) => court.courtId);
   const courtId = courtIds[0];
 
   let { matchUps } = tournamentEngine.allTournamentMatchUps();

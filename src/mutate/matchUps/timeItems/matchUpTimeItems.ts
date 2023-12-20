@@ -1,4 +1,4 @@
-import { addTimeItem } from '../../../tournamentEngine/governors/tournamentGovernor/addTimeItem';
+import { addTimeItem } from '../../timeItems/addTimeItem';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 

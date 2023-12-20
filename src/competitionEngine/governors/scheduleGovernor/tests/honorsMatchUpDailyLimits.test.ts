@@ -52,8 +52,8 @@ it('can set and honor matchUpDailyLimits', () => {
   expect(result.methods[0].method).toEqual('addExtension');
 
   result.methods.forEach((method) => {
-    const { success } = competitionEngine[method.method](method.params);
-    expect(success).toEqual(true);
+    const executionResult = competitionEngine[method.method](method.params);
+    expect(executionResult.success).toEqual(true);
   });
 
   const {
@@ -62,6 +62,7 @@ it('can set and honor matchUpDailyLimits', () => {
     },
   } = competitionEngine.findExtension({
     name: SCHEDULE_LIMITS,
+    discover: true,
   });
   expect(dailyLimits).toEqual(matchUpDailyLimits);
 

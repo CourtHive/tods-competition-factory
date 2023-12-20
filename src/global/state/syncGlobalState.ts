@@ -79,6 +79,10 @@ export function setTournamentRecord(tournamentRecord) {
 }
 
 export function setTournamentId(tournamentId) {
+  if (!tournamentId) {
+    syncGlobalState.tournamentId = undefined;
+    return { success: true };
+  }
   if (syncGlobalState.tournamentRecords[tournamentId]) {
     syncGlobalState.tournamentId = tournamentId;
     return { success: true };

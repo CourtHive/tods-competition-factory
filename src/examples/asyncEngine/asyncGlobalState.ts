@@ -115,6 +115,10 @@ export function setTournamentRecord(tournamentRecord) {
 
 export function setTournamentId(tournamentId) {
   const instanceState = getInstanceState();
+  if (!tournamentId) {
+    instanceState.tournamentId = undefined;
+    return { success: true };
+  }
   if (instanceState.tournamentRecords[tournamentId]) {
     instanceState.tournamentId = tournamentId;
     return { success: true };

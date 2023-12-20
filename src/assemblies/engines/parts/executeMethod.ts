@@ -41,6 +41,8 @@ export function executeFunction(
   const augmentedParams = params
     ? paramsMiddleware(tournamentRecords, params)
     : undefined;
+  if (augmentedParams?.error) return augmentedParams;
+
   const result = invoke({
     params: augmentedParams,
     tournamentRecords,

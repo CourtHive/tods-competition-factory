@@ -203,9 +203,10 @@ export function modifyPenalty(params) {
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     const result = penaltyModify({ ...params, tournamentRecord });
     if (result.error && result.error !== PENALTY_NOT_FOUND) return result;
+    if (result.success) return result;
   }
 
-  return { ...SUCCESS };
+  return { error: PENALTY_NOT_FOUND };
 }
 
 type ModifyPenaltyArgs = {

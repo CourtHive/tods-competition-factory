@@ -173,6 +173,7 @@ it('can disable and enable courts and venues', () => {
     dates: [startDate],
     enableAll: true,
   });
+  expect(result.success).toEqual(true);
 
   console.log('-------------');
   result = tournamentEngine.getVenuesAndCourts({
@@ -187,6 +188,7 @@ it('can disable and enable courts and venues', () => {
     dates: [endDate],
     enableAll: true,
   });
+  expect(result.success).toEqual(true);
 
   result = tournamentEngine.getVenuesAndCourts({
     ignoreDisabled: true,

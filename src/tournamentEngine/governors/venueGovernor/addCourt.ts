@@ -6,7 +6,6 @@ import {
 import { courtTemplate } from '../../generators/courtTemplate';
 import { addNotice } from '../../../global/state/globalState';
 import { validDateAvailability } from './dateAvailability';
-import { findVenue } from '../../getters/venueGetter';
 import { isNumeric } from '../../../utilities/math';
 import {
   extractDate,
@@ -28,6 +27,7 @@ import {
   Court,
   Tournament,
 } from '../../../types/tournamentTypes';
+import { findVenue } from '../../../acquire/findVenue';
 
 type AddCourtArgs = {
   tournamentRecord: Tournament;

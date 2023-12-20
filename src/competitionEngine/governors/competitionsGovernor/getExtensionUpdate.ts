@@ -42,12 +42,12 @@ export function getExtensionUpdate({
     // only necessary to push this method once to cover both tournaments
     if (extension && !tournamentExtensionAdded) {
       methods.push({
+        params: { extension, discover: true },
         method: 'addExtension',
-        params: { extension },
       });
       tournamentExtensionAdded = true;
     }
-    const tournamentEvents = tournamentRecord.events || [];
+    const tournamentEvents = tournamentRecord.events ?? [];
 
     for (const event of tournamentEvents) {
       const { eventId } = event;

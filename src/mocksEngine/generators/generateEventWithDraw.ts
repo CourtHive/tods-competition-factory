@@ -4,7 +4,7 @@ import { setParticipantScaleItem } from '../../tournamentEngine/governors/partic
 import { addPlayoffStructures } from '../../mutate/drawDefinitions/addPlayoffStructures';
 import { addEventEntries } from '../../tournamentEngine/governors/eventGovernor/entries/addEventEntries';
 import { addParticipants } from '../../tournamentEngine/governors/participantGovernor/addParticipants';
-import { addEventTimeItem } from '../../tournamentEngine/governors/tournamentGovernor/addTimeItem';
+import { addEventTimeItem } from '../../mutate/timeItems/addTimeItem';
 import { generateDrawDefinition } from '../../tournamentEngine/generators/generateDrawDefinition';
 import { publishEvent } from '../../tournamentEngine/governors/publishingGovernor/publishEvent';
 import { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';

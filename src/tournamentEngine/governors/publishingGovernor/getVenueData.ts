@@ -1,4 +1,4 @@
-import { findVenue } from '../../getters/venueGetter';
+import { findVenue } from '../../../acquire/findVenue';
 import { makeDeepCopy } from '../../../utilities';
 import { getCourtInfo } from './getCourtInfo';
 

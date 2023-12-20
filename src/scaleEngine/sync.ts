@@ -1,6 +1,6 @@
-import { getState, paramsMiddleware, setState } from './stateMethods';
 import { notifySubscribers } from '../global/state/notifySubscribers';
 import { factoryVersion } from '../global/functions/factoryVersion';
+import { getState, setState } from './stateMethods';
 import { makeDeepCopy } from '../utilities';
 import {
   removeTournamentRecord,
@@ -58,9 +58,8 @@ export const scaleEngine = (() => {
     delete engine.success;
     delete engine.error;
 
-    const augmentedParams = paramsMiddleware(tournamentRecord, params);
     return method({
-      ...augmentedParams,
+      ...params,
       tournamentRecord,
     });
   }

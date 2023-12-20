@@ -1,4 +1,4 @@
-import { addTournamentTimeItem } from '../tournamentGovernor/addTimeItem';
+import { addTournamentTimeItem } from '../../../mutate/timeItems/addTimeItem';
 import { getTournamentTimeItem } from '../queryGovernor/timeItems';
 import { addNotice } from '../../../global/state/globalState';
 

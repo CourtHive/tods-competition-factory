@@ -117,15 +117,15 @@ it('can add events, venues, and schedule matchUps and modify drawDefinition.upda
       ],
     },
   ];
-  let { courts } = tournamentEngine.addCourts({
+  const courtIds = tournamentEngine.addCourts({
     dateAvailability,
     courtsCount: 3,
     venueId,
-  });
-  expect(courts.length).toEqual(3);
+  }).courtIds;
+  expect(courtIds.length).toEqual(3);
 
-  ({ courts } = tournamentEngine.getCourts());
-  expect(courts.length).toEqual(3);
+  result = tournamentEngine.getCourts();
+  expect(result.courts.length).toEqual(3);
 
   let { tournamentRecord } = tournamentEngine.getTournament();
   expect(tournamentRecord.venues.length).toEqual(1);
@@ -137,11 +137,11 @@ it('can add events, venues, and schedule matchUps and modify drawDefinition.upda
 
   const timingParameters = {
     averageMatchUpMinutes: 90,
+    courts: result.courts,
     startTime: '08:00',
     endTime: ' 19:00',
     periodLength: 30,
     date: d200101,
-    courts,
   };
   const { scheduleTimes } = getScheduleTimes(timingParameters);
   expect(scheduleTimes.length).toEqual(18);
@@ -189,7 +189,6 @@ it('can add events, venues, and schedule matchUps and modify drawDefinition.upda
   }));
   expect(upcomingMatchUps.length).toEqual(0);
 
-  const courtIds = courts.map((court) => court.courtId);
   const courtId = courtIds[0];
 
   let { matchUps } = tournamentEngine.allTournamentMatchUps();
@@ -387,6 +386,7 @@ it('can add events, venues, and schedule matchUps and modify drawDefinition.upda
   result = tournamentEngine.deleteCourt();
   expect(result.error).toEqual(MISSING_COURT_ID);
   result = tournamentEngine.getVenuesAndCourts();
+  expect(result.success).toEqual(true);
   result = tournamentEngine.deleteCourt({ courtId });
   expect(result.error).not.toBeUndefined();
   expect(result.info).not.toBeUndefined();
@@ -538,10 +538,9 @@ it('adds venueId to matchUp.schedule when court is assigned', () => {
     venueId,
   });
   expect(result.success).toEqual(true);
-  let courts = result.courts;
-  expect(courts.length).toEqual(3);
+  expect(result.courtIds.length).toEqual(3);
 
-  ({ courts } = tournamentEngine.getCourts());
+  const { courts } = tournamentEngine.getCourts();
   expect(courts.length).toEqual(3);
 
   let { tournamentRecord } = tournamentEngine.getTournament();

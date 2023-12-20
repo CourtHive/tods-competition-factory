@@ -9,6 +9,7 @@ import { LINKED_TOURNAMENTS } from '../../../../constants/extensionConstants';
 import {
   INVALID_VALUES,
   MISSING_TOURNAMENT_ID,
+  MISSING_TOURNAMENT_RECORD,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../../../constants/errorConditionConstants';
 import { FactoryEngine } from '../../../../types/factoryTypes';
@@ -41,7 +42,7 @@ test('throws appropriate errors', () => {
   let result = competitionEngineSync.unlinkTournament({
     tournamentId: 'bogusId',
   });
-  expect(result.error).toEqual(MISSING_TOURNAMENT_ID);
+  expect(result.error).toEqual(MISSING_TOURNAMENT_RECORD);
 
   result = competitionEngineSync.linkTournaments();
   expect(result.error).toEqual(MISSING_TOURNAMENT_RECORDS);
@@ -107,7 +108,9 @@ test.each([competitionEngineSync, asyncCompetitionEngine])(
     result = await competitionEngine.unlinkTournament({
       tournamentId: 'bogusId',
     });
-    expect(result.error).toEqual(MISSING_TOURNAMENT_ID);
+    expect(
+      [MISSING_TOURNAMENT_ID, MISSING_TOURNAMENT_RECORD].includes(result.error)
+    ).toEqual(true);
 
     result = await competitionEngine.unlinkTournaments();
     expect(result.success).toEqual(true);

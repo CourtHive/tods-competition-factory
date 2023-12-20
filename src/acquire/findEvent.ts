@@ -8,30 +8,40 @@ import {
   EVENT_NOT_FOUND,
 } from '../constants/errorConditionConstants';
 
-// INTERNAL_USE: to resovle events by eventId or drawId
 type FindEventArgs = {
   tournamentRecords?: TournamentRecords;
   tournamentRecord?: Tournament;
   eventId?: string;
   drawId?: string;
 };
-export function findEvent({
-  tournamentRecords,
-  tournamentRecord,
-  eventId,
-  drawId,
-}: FindEventArgs): ResultType & {
-  event?: Event;
+export function findEvent(params: FindEventArgs): ResultType & {
   drawDefinition?: DrawDefinition;
+  tournamentId?: string;
+  event?: Event;
 } {
+  const { tournamentRecord, eventId, drawId } = params;
+
   const stack = 'findEvent';
-  const events =
-    (tournamentRecords &&
-      Object.values(tournamentRecords)
-        .map(({ events }) => events ?? [])
-        .flat()) ??
-    tournamentRecord?.events ??
-    [];
+  const eventIdsMap = {};
+  const tournamentRecords =
+    params.tournamentRecords ??
+    (tournamentRecord && {
+      [tournamentRecord.tournamentId]: tournamentRecord,
+    }) ??
+    {};
+
+  const events = Object.values(tournamentRecords)
+    .map(({ events, tournamentId }) => {
+      if (events) {
+        events.forEach((event) => {
+          eventIdsMap[event.eventId] = { tournamentId };
+        });
+      }
+      return events ?? [];
+    })
+    .flat();
+
+  let tournamentId;
 
   if (drawId) {
     let drawDefinition;
@@ -42,34 +52,43 @@ export function findEvent({
       );
       if (targetDrawDefinition) {
         drawDefinition = targetDrawDefinition;
+        tournamentId = eventIdsMap[event.eventId].tournamentId;
       } else {
         const flightProfile =
           event && getFlightProfile({ event })?.flightProfile;
+
         const flight = flightProfile?.flights?.find(
           (flight) => flight.drawId === drawId
         );
-        if (flight)
+
+        if (flight) {
+          tournamentId = eventIdsMap[event.eventId].tournamentId;
           return {
-            drawId,
             entries: flight.drawEntries,
             drawName: flight.drawName,
+            tournamentId,
+            drawId,
           };
+        }
       }
       return targetDrawDefinition;
     });
 
-    if (event) return { event, drawDefinition };
+    if (event) return { event, drawDefinition, tournamentId };
   }
 
   if (eventId) {
     const event = events.find((event) => event?.eventId === eventId);
-    if (!event)
+    if (!event) {
       return {
         event: undefined,
         drawDefinition: undefined,
         ...decorateResult({ result: { error: EVENT_NOT_FOUND }, stack }),
       };
-    return { event, drawDefinition: undefined };
+    } else {
+      tournamentId = eventIdsMap[event.eventId].tournamentId;
+    }
+    return { event, drawDefinition: undefined, tournamentId };
   }
 
   return {

@@ -1,5 +1,4 @@
 import { modifyCourtAvailability } from './courtAvailability';
-import { publicFindVenue } from '../../getters/venueGetter';
 import { deleteVenue, deleteVenues } from './deleteVenue';
 import { addCourt, addCourts } from './addCourt';
 import { disableVenues } from './disableVenues';
@@ -10,6 +9,7 @@ import { modifyVenue } from './modifyVenue';
 import { modifyCourt } from './modifyCourt';
 import { addVenue } from './addVenue';
 import { disableCourts } from '../../../competitionEngine/governors/venueGovernor/disableCourts';
+import { publicFindVenue } from '../../../acquire/findVenue';
 
 const locationGovernor = {
   addVenue,

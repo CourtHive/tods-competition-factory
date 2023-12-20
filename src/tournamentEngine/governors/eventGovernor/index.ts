@@ -92,7 +92,7 @@ import {
   attachConsolationStructures,
   attachPlayoffStructures,
   attachStructures,
-} from './attachStructures';
+} from '../../../mutate/drawDefinitions/attachStructures';
 import {
   setEventDates,
   setEventEndDate,

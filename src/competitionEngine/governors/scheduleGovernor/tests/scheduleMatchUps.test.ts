@@ -325,6 +325,7 @@ it('can add events, venues, and schedule matchUps', () => {
     matchUpId,
     drawId,
   });
+  expect(result.success).toEqual(true);
 
   ({ upcomingMatchUps } = competitionEngine.competitionMatchUps());
   expect(upcomingMatchUps[0].timeItems.length).toEqual(16);

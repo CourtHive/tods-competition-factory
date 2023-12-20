@@ -1,5 +1,5 @@
 import { checkSchedulingProfile } from '../scheduleGovernor/schedulingProfile';
-import { addTournamentTimeItem } from '../tournamentGovernor/addTimeItem';
+import { addTournamentTimeItem } from '../../../mutate/timeItems/addTimeItem';
 import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
 import { addNotice } from '../../../global/state/globalState';
 

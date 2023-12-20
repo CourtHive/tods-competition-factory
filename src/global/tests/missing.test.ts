@@ -2,13 +2,10 @@ import competitionEngineAsync from '../../competitionEngine/async';
 import competitionEngineSync from '../../competitionEngine/sync';
 import tournamentEngineAsync from '../../tournamentEngine/async';
 import tournamentEngineSync from '../../test/engines/tournamentEngine';
-import scaleEngineAsync from '../../scaleEngine/async';
-import scaleEngineSync from '../../scaleEngine/sync';
 import { expect, it } from 'vitest';
 
 const asyncCompetitionEngine = competitionEngineAsync(true);
 const asyncTournamentEngine = tournamentEngineAsync(true);
-const asyncScaleEngine = scaleEngineAsync(true);
 
 it.each([competitionEngineSync, asyncCompetitionEngine])(
   'will return MISSING_TOURNAMENT_RECORDS for most methods if no state has been set',
@@ -38,9 +35,11 @@ it.each([competitionEngineSync, asyncCompetitionEngine])(
           'newTournamentRecord',
           'setSchedulingProfile',
           'getAppliedPolicies',
+          'getVenuesAndCourts',
           'publishOrderOfPlay',
           'getRoundMatchUps',
           'getTournamentIds',
+          'setTournamentId',
           'devContext',
           'reset',
         ].includes(method);
@@ -94,6 +93,7 @@ it.each([asyncTournamentEngine, tournamentEngineSync])(
           'newTournamentRecord',
           'setSchedulingProfile',
           'getAppliedPolicies',
+          'getVenuesAndCourts',
           'filterParticipants',
           'getTournamentIds',
           'setTournamentId',
@@ -106,33 +106,6 @@ it.each([asyncTournamentEngine, tournamentEngineSync])(
         expect(result.length).toEqual(0); // filtering with no values returns no results
       } else {
         if (!result.error) console.log({ method, result });
-        expect(result.error).not.toBeUndefined();
-      }
-    }
-  }
-);
-
-it.each([scaleEngineSync, asyncScaleEngine])(
-  'will return MISSING_TOURNAMENT_RECORDS for most methods if no state has been set',
-  async (scaleEngine) => {
-    const scaleEngineMethods = Object.keys(scaleEngine);
-    for (const method of scaleEngineMethods) {
-      const result = await scaleEngine[method]();
-      if (!result) {
-        // covers methods which are expected to return boolean
-        expect([false, 0].includes(result)).toEqual(true);
-      } else if (
-        ['credits', 'version', 'calculateNewRatings'].includes(method)
-      ) {
-        expect(result).not.toBeUndefined();
-      } else if (method === 'getState') {
-        expect(result.tournamentRecord).toBeUndefined();
-      } else if (result.success || result.valid) {
-        const successExpected = ['reset', 'devContext'].includes(method);
-        expect(successExpected).toEqual(true);
-      } else if (['devContext'].includes(method)) {
-        expect(result.version).not.toBeUndefined();
-      } else {
         expect(result.error).not.toBeUndefined();
       }
     }

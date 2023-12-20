@@ -8,7 +8,6 @@ import { getEventMatchUpFormatTiming } from '../../../query/extensions/matchUpFo
 import { modifyMatchUpFormatTiming } from '../../../mutate/matchUps/extensions/modifyMatchUpFormatTiming';
 import { getMatchUpFormatTiming } from '../../../query/extensions/matchUpFormatTiming/getMatchUpFormatTiming';
 import { removeMatchUpCourtAssignment } from '../../../mutate/matchUps/schedule/removeMatchUpCourtAssignment';
-import { getMatchUpDailyLimitsUpdate } from './getMatchUpDailyLimitsUpdate';
 import { allocateTeamMatchUpCourts } from '../../../mutate/matchUps/schedule/allocateTeamMatchUpCourts';
 import { bulkRescheduleMatchUps } from './bulkRescheduleMatchUps';
 import { clearScheduledMatchUps } from './clearScheduledMatchUps';
@@ -33,6 +32,8 @@ import {
   getSchedulingProfile,
   setSchedulingProfile,
 } from '../../../competitionEngine/governors/scheduleGovernor/schedulingProfile/schedulingProfile';
+
+import { getMatchUpDailyLimitsUpdate } from '../../../competitionEngine/governors/scheduleGovernor/getMatchUpDailyLimitsUpdate';
 
 const scheduleGovernor = {
   allocateTeamMatchUpCourts,

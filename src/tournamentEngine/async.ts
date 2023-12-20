@@ -109,6 +109,7 @@ export function tournamentEngineAsync(
     delete engine.error;
 
     const augmentedParams = paramsMiddleware(tournamentRecord, params);
+    if (augmentedParams?.error) return augmentedParams;
 
     return await method({
       ...augmentedParams,
