@@ -29,7 +29,7 @@ import {
   addEventTimeItem,
   addParticipantTimeItem,
   addTournamentTimeItem,
-} from './addTimeItem';
+} from '../../../mutate/timeItems/addTimeItem';
 
 import {
   addDrawDefinitionExtension,

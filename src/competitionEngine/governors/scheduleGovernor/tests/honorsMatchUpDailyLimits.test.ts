@@ -5,9 +5,9 @@ import { unique } from '../../../../utilities';
 import competitionEngine from '../../../sync';
 import { expect, it } from 'vitest';
 
-import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
-import { SCHEDULE_LIMITS } from '../../../../constants/extensionConstants';
 import { INVALID_OBJECT } from '../../../../constants/errorConditionConstants';
+import { SCHEDULE_LIMITS } from '../../../../constants/extensionConstants';
+import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
 
 it('can set and honor matchUpDailyLimits', () => {
   // ensure that tournament has exactly 16 participants
@@ -45,15 +45,15 @@ it('can set and honor matchUpDailyLimits', () => {
 
   result = tournamentEngine.getMatchUpDailyLimitsUpdate();
   expect(result.methods.length).toEqual(1);
-  expect(result.methods[0].method).toEqual('addTournamentExtension');
+  expect(result.methods[0].method).toEqual('addExtension');
 
   result = competitionEngine.getMatchUpDailyLimitsUpdate();
   expect(result.methods.length).toEqual(1);
   expect(result.methods[0].method).toEqual('addExtension');
 
   result.methods.forEach((method) => {
-    const { success } = competitionEngine[method.method](method.params);
-    expect(success).toEqual(true);
+    const executionResult = competitionEngine[method.method](method.params);
+    expect(executionResult.success).toEqual(true);
   });
 
   const {
@@ -62,6 +62,7 @@ it('can set and honor matchUpDailyLimits', () => {
     },
   } = competitionEngine.findExtension({
     name: SCHEDULE_LIMITS,
+    discover: true,
   });
   expect(dailyLimits).toEqual(matchUpDailyLimits);
 

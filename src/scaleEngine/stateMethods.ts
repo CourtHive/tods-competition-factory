@@ -43,14 +43,3 @@ export function getState(params: GetStateArgs) {
     ),
   };
 }
-
-export function paramsMiddleware(tournamentRecord, params) {
-  if (!tournamentRecord) return params;
-  if (params?.someParam) {
-    params = {
-      ...params,
-    };
-  }
-
-  return params;
-}

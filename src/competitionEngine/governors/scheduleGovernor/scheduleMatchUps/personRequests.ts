@@ -1,7 +1,7 @@
 import { addTournamentExtension } from '../../../../mutate/extensions/addRemoveExtensions';
-import { findParticipant } from '../../../../acquire/findParticipant';
-import { removeExtension } from '../../competitionsGovernor/competitionExtentions';
+import { removeExtension } from '../../../../mutate/extensions/removeExtension';
 import { extractDate, extractTime } from '../../../../utilities/dateTime';
+import { findParticipant } from '../../../../acquire/findParticipant';
 import { findExtension } from '../../../../acquire/findExtension';
 import { generateTimeCode } from '../../../../utilities';
 
@@ -202,7 +202,11 @@ export function removePersonRequests({
   }
 
   if (removeAll || !personRequests || !Object.keys(personRequests).length) {
-    return removeExtension({ tournamentRecords, name: PERSON_REQUESTS });
+    return removeExtension({
+      name: PERSON_REQUESTS,
+      tournamentRecords,
+      discover: true,
+    });
   } else {
     return savePersonRequests({ tournamentRecords, personRequests });
   }

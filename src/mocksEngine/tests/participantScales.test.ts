@@ -5,7 +5,10 @@ import { unique } from '../../utilities';
 import { expect, it, test } from 'vitest';
 import mocksEngine from '..';
 
-import { INVALID_VALUES } from '../../constants/errorConditionConstants';
+import {
+  EVENT_NOT_FOUND,
+  INVALID_VALUES,
+} from '../../constants/errorConditionConstants';
 import ratingsParameters from '../../fixtures/ratings/ratingsParameters';
 import { ELO, NTRP, UTR, WTN } from '../../constants/ratingConstants';
 import { COMPLETED } from '../../constants/matchUpStatusConstants';
@@ -325,17 +328,12 @@ it('can get predictiveAccuracy for DOUBLES events', () => {
       accuracy.excluded.length
   ).toEqual(0);
 
-  ({ accuracy } = tournamentEngine.getPredictiveAccuracy({
+  const result = tournamentEngine.getPredictiveAccuracy({
     valueAccessor: 'wtnRating',
     scaleName: WTN,
     eventId: 'none',
-  }));
-
-  expect(
-    accuracy.affirmative.length +
-      accuracy.negative.length +
-      accuracy.excluded.length
-  ).toEqual(0);
+  });
+  expect(result.error).toEqual(EVENT_NOT_FOUND);
 });
 
 it('can pass matchUps array into predictiveAccuracy', () => {

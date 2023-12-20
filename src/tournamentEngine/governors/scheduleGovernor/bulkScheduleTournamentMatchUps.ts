@@ -22,9 +22,9 @@ import {
 type BulkScheduleMachUpsArgs = {
   tournamentRecords?: { [key: string]: Tournament };
   scheduleCompletedMatchUps?: boolean;
+  tournamentRecord?: Tournament;
   scheduleByeMatchUps?: boolean;
   errorOnAnachronism?: boolean;
-  tournamentRecord: Tournament;
   removePriorValues?: boolean;
   checkChronology?: boolean;
   matchUpDependencies?: any;
@@ -33,7 +33,7 @@ type BulkScheduleMachUpsArgs = {
   schedule?: any;
 };
 
-export function bulkScheduleMatchUps({
+export function bulkScheduleTournamentMatchUps({
   scheduleCompletedMatchUps = false,
   scheduleByeMatchUps = false,
   errorOnAnachronism = false,

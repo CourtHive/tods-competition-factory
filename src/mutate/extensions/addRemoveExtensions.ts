@@ -6,7 +6,6 @@ import {
   DRAW_DEFINITION_NOT_FOUND,
   EVENT_NOT_FOUND,
   ErrorType,
-  MISSING_EVENT,
   MISSING_PARTICIPANT_ID,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
@@ -53,7 +52,7 @@ export function addDrawDefinitionExtension(params: AddExtensionArgs) {
 
 export function addEventExtension(params: AddExtensionArgs) {
   if (!params || typeof params !== 'object') return { error: MISSING_VALUE };
-  if (!params.event) return { error: MISSING_EVENT };
+  if (!params.event) return { error: EVENT_NOT_FOUND };
   return addExtension({
     creationTime: params.creationTime,
     extension: params.extension,

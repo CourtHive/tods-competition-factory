@@ -1,8 +1,8 @@
 import { validDateAvailability } from '../../governors/venueGovernor/dateAvailability';
+import tournamentEngine from '../../../test/engines/tournamentEngine';
 import { Availability } from '../../../types/tournamentTypes';
 import competitionEngine from '../../../competitionEngine/sync';
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../../test/engines/tournamentEngine';
 import { expect, it, test } from 'vitest';
 
 import {

@@ -4,6 +4,8 @@ import { expect, it } from 'vitest';
 import { utilities } from '../..';
 
 import { MatchUp, Participant } from '../../types/tournamentTypes';
+import { INDIVIDUAL } from '../../constants/participantConstants';
+import { COMPETITOR } from '../../constants/participantRoles';
 
 it('can set subscriptions in global state outside of engines', () => {
   const allParticipants: Participant[] = [];
@@ -82,12 +84,13 @@ it('can delay notifications to subscribers', () => {
     },
   };
 
-  setSubscriptions({ subscriptions });
+  let result = setSubscriptions({ subscriptions });
+  expect(result.success).toEqual(true);
 
   tournamentEngine.newTournamentRecord();
   const participant = {
-    participantRole: 'COMPETITOR',
-    participantType: 'INDIVIDUAL',
+    participantRole: COMPETITOR,
+    participantType: INDIVIDUAL,
     person: {
       standardFamilyName: 'Family',
       standardGivenName: 'Given',
@@ -103,16 +106,17 @@ it('can delay notifications to subscribers', () => {
   const matchUpFormat = 'SET5-S:4/TB7';
 
   const values = {
+    matchUpFormat,
     automated: true,
     drawSize: 32,
     eventId,
-    matchUpFormat,
   };
   const { drawDefinition } = tournamentEngine.generateDrawDefinition(values);
-  tournamentEngine.addDrawDefinition({
-    eventId,
+  result = tournamentEngine.addDrawDefinition({
     drawDefinition,
+    eventId,
   });
+  expect(result.success).toEqual(true);
 
   // all notifications sent
   expect(allMatchUps.length).toEqual(31);

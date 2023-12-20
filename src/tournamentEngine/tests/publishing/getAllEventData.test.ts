@@ -45,10 +45,11 @@ it('can return all event data', () => {
   });
 
   expect(result.success).toEqual(true);
+  expect(result.courtIds.length).toEqual(3);
 
-  const {
-    allEventData: { tournamentInfo, eventsData, venuesData },
-  } = tournamentEngine.getAllEventData();
+  result = tournamentEngine.getAllEventData();
+  const { tournamentInfo, eventsData, venuesData } = result.allEventData;
+
   expect(tournamentInfo).not.toBeUndefined();
   expect(eventsData).not.toBeUndefined();
   expect(venuesData).not.toBeUndefined();

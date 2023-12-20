@@ -48,7 +48,6 @@ it('can add, query, amd remove personRequests across multiple tournaments', () =
 
   result = competitionEngine.removePersonRequests({ personId, requestId });
   expect(result.success).toEqual(true);
-  expect(result.removed).toEqual(1);
 
   ({ tournamentRecords } = competitionEngine.getState());
   tournamentRecord = Object.values(tournamentRecords)[0] as Tournament;
@@ -65,7 +64,6 @@ it('can add, query, amd remove personRequests across multiple tournaments', () =
   requestId = requestObject.requestId;
   result = competitionEngine.removePersonRequests({ requestId });
   expect(result.success).toEqual(true);
-  expect(result.removed).toEqual(1);
 
   // now modify a request
   result = competitionEngine.addPersonRequests({

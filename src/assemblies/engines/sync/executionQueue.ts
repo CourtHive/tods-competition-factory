@@ -51,7 +51,6 @@ export function executionQueue(
   const timeStamp = Date.now();
 
   const mutationStatus = getMutationStatus({ timeStamp });
-  result.modificationsApplied = mutationStatus;
   notifySubscribers({ directives, mutationStatus, timeStamp });
   deleteNotices();
 

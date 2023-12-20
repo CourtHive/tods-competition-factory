@@ -151,5 +151,5 @@ it('can update a schedulingProfile when venues change', () => {
 
   const { tournamentRecord: snapshot } = tournamentEngine.getTournament();
   result = checkSchedulingProfile({ tournamentRecord: snapshot });
-  expect(result.modifications).toEqual(0);
+  expect(!!result.modifications).toEqual(false);
 });

@@ -1,4 +1,3 @@
-import { findExtension } from './governors/competitionsGovernor/competitionExtentions';
 import { makeDeepCopy } from '../utilities';
 import {
   getTournamentId,
@@ -7,7 +6,6 @@ import {
   setTournamentRecord as globalSetTournamentRecord,
 } from '../global/state/globalState';
 
-import { LINKED_TOURNAMENTS } from '../constants/extensionConstants';
 import {
   INVALID_OBJECT,
   INVALID_RECORDS,
@@ -26,23 +24,6 @@ export function getState({ convertExtensions, removeExtensions }) {
       removeExtensions
     ),
   };
-}
-
-export function removeUnlinkedTournamentRecords() {
-  const tournamentRecords = getTournamentRecords();
-
-  const { extension } = findExtension({
-    name: LINKED_TOURNAMENTS,
-    tournamentRecords,
-  });
-
-  const tournamentIds = extension?.value?.tournamentIds || [];
-  Object.keys(tournamentRecords).forEach((tournamentId) => {
-    if (!tournamentIds.includes(tournamentId))
-      delete tournamentRecords[tournamentId];
-  });
-
-  return setTournamentRecords(tournamentRecords);
 }
 
 export function setTournamentRecord(record, deepCopyOption = true) {

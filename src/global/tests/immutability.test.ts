@@ -35,8 +35,9 @@ test('setting deepCopy option to false will allow source objects to be modified'
 
   expect(tournamentRecord.extensions).not.toBeUndefined();
 
-  result = competitionEngine.addExtension({
+  result = competitionEngine.devContext(true).addExtension({
     extension: { name: 'test', value: 'test' },
+    discover: true,
   });
   expect(result.success).toEqual(true);
 

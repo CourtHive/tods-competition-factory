@@ -10,6 +10,7 @@ import {
   numericSort,
 } from '../../utilities';
 
+import { SUCCESS } from '../../constants/resultConstants';
 import { HydratedMatchUp } from '../../types/hydrated';
 import { RoundProfile } from '../../types/factoryTypes';
 import { TEAM } from '../../constants/matchUpTypes';
@@ -267,5 +268,6 @@ export function getRoundMatchUps({
     roundMatchUps,
     roundNumbers,
     roundProfile,
+    ...SUCCESS,
   };
 }

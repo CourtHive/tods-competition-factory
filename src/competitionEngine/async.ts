@@ -22,12 +22,8 @@ import {
   cycleMutationStatus,
   handleCaughtError,
 } from '../global/state/globalState';
-import {
-  getState,
-  removeUnlinkedTournamentRecords,
-  setState,
-  setTournamentRecord,
-} from './stateMethods';
+import { getState, setState, setTournamentRecord } from './stateMethods';
+import { removeUnlinkedTournamentRecords } from '../assemblies/engines/parts/stateMethods';
 
 import {
   INVALID_VALUES,
@@ -138,7 +134,6 @@ export function competitionEngineAsync(
           },
         });
       });
-      result.modificationsApplied = true;
     }
     if (notify)
       await notifySubscribersAsync({
@@ -217,7 +212,6 @@ export function competitionEngineAsync(
           },
         });
       });
-      result.modificationsApplied = true;
     }
     await notifySubscribersAsync({ directives, mutationStatus, timeStamp });
     deleteNotices();

@@ -1,6 +1,6 @@
 import { getStructureRoundProfile } from '../../../query/structure/getStructureRoundProfile';
-import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../../test/engines/tournamentEngine';
+import mocksEngine from '../../../mocksEngine';
 import { expect, it } from 'vitest';
 
 import { eventConstants } from '../../../constants/eventConstants';
@@ -20,9 +20,7 @@ it('can clear matchUp schedules', () => {
   tournamentEngine.setState(tournamentRecord);
 
   const myCourts = { venueName: 'My Courts' };
-  let result = tournamentEngine
-    .devContext({ addVenue: true })
-    .addVenue({ venue: myCourts });
+  let result = tournamentEngine.addVenue({ venue: myCourts });
   const {
     venue: { venueId },
   } = result;
@@ -68,7 +66,10 @@ it('can clear matchUp schedules', () => {
     scheduledDate: '2021-01-01',
     venueId,
   };
-  result = tournamentEngine.bulkScheduleMatchUps({ matchUpIds, schedule });
+  result = tournamentEngine.bulkScheduleTournamentMatchUps({
+    matchUpIds,
+    schedule,
+  });
   expect(result.success).toEqual(true);
 
   let { matchUps } = tournamentEngine.allTournamentMatchUps();

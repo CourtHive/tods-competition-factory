@@ -6,6 +6,7 @@ import {
   setTournamentRecords,
   setTournamentRecord as globalSetTournamentRecord,
   getTournamentRecord,
+  setTournamentId,
 } from '../../../global/state/globalState';
 
 import { LINKED_TOURNAMENTS } from '../../../constants/extensionConstants';
@@ -62,8 +63,9 @@ export function removeUnlinkedTournamentRecords(): void {
   const tournamentRecords = getTournamentRecords();
 
   const { extension } = findExtension({
-    element: tournamentRecords,
     name: LINKED_TOURNAMENTS,
+    tournamentRecords,
+    discover: true,
   });
 
   const tournamentIds = extension?.value?.tournamentIds || [];
@@ -89,6 +91,7 @@ export function setTournamentRecord(record, deepCopyOption = true): ResultType {
 export function setState(records, deepCopyOption = true) {
   if (typeof records !== 'object') return { error: INVALID_OBJECT };
 
+  setTournamentId();
   if (Array.isArray(records)) {
     const validRecordsArray =
       records.filter((record) => record?.tournamentId).length ===
@@ -102,6 +105,7 @@ export function setState(records, deepCopyOption = true) {
     );
   } else if (records?.tournamentId) {
     records = { [records.tournamentId]: records };
+    setTournamentId(records.tournamentId);
   } else {
     const validRecordsObject = Object.keys(records).every(
       (tournamentId) => records[tournamentId].tournamentId === tournamentId

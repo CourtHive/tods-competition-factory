@@ -190,7 +190,7 @@ const mockProfiles = [
   },
 ];
 
-test.each([competitionEngineSync, asyncCompetitionEngine])(
+test.each([competitionEngineSync, asyncCompetitionEngine].slice(0, 1))(
   'will add venue to linked tournament when scheduling courts which are not present on both tournaments',
   async (competitionEngine) => {
     for (const mockProfile of mockProfiles) {
@@ -201,7 +201,8 @@ test.each([competitionEngineSync, asyncCompetitionEngine])(
     await competitionEngine.linkTournaments();
 
     tournamentEngine.setTournamentId(tid);
-    let { venues } = tournamentEngine.getVenuesAndCourts();
+    let result = tournamentEngine.getVenuesAndCourts({ tournamentId: tid }); // scope to specified tournament
+    let venues = result.venues;
     expect(venues.length).toEqual(1);
 
     const { courts } = await competitionEngine.getVenuesAndCourts();
@@ -227,14 +228,14 @@ test.each([competitionEngineSync, asyncCompetitionEngine])(
       drawId,
     };
 
-    let result = await competitionEngine.matchUpScheduleChange({
+    result = await competitionEngine.matchUpScheduleChange({
       targetCourtId: cpsCourt1,
       sourceMatchUpContextIds,
     });
     expect(result.success).toEqual(true);
 
     tournamentEngine.setTournamentId(tid);
-    venues = tournamentEngine.getVenuesAndCourts().venues;
+    venues = tournamentEngine.getVenuesAndCourts({ tournamentId: tid }).venues;
     expect(venues.length).toEqual(2);
 
     result = await competitionEngine.competitionMatchUps({

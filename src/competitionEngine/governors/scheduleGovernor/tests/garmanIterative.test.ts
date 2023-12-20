@@ -166,12 +166,14 @@ it.each([
     expect(roundMap.length).toEqual(scheduledMatchUps.length);
     // console.log(roundMap); // useful for eye-balling
 
-    const { competitionParticipants, participantIdsWithConflicts } =
-      competitionEngine.getCompetitionParticipants({
-        withScheduleItems: true,
-        withMatchUps: true,
-        inContext: true,
-      });
+    const {
+      participants: competitionParticipants,
+      participantIdsWithConflicts,
+    } = competitionEngine.getCompetitionParticipants({
+      withScheduleItems: true,
+      withMatchUps: true,
+      inContext: true,
+    });
     expect(participantIdsWithConflicts.length).toEqual(0);
     expect(competitionParticipants.length).toEqual(8);
   }

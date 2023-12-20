@@ -1,15 +1,13 @@
 import { modifyEventMatchUpFormatTiming } from './matchUpFormatTiming/modifyEventMatchUpFormatTiming';
 import { getMatchUpFormatTimingUpdate } from './matchUpFormatTiming/getMatchUpFormatTimingUpdate';
-import { getEventMatchUpFormatTiming } from './matchUpFormatTiming/getEventMatchUpFormatTiming';
 import { validateSchedulingProfile } from '../../../validators/validateSchedulingProfile';
 import { modifyMatchUpFormatTiming } from './matchUpFormatTiming/modifyMatchUpFormatTiming';
 import { getScheduledRoundsDetails } from './schedulingProfile/getScheduledRoundsDetails';
-import { findMatchUpFormatTiming } from './matchUpFormatTiming/findMatchUpFormatTiming';
+import { findMatchUpFormatTiming } from '../../../acquire/findMatchUpFormatTiming';
 import { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDependencies';
 import { calculateScheduleTimes } from './scheduleMatchUps/calculateScheduleTimes';
 import { scheduleProfileRounds } from './schedulingProfile/scheduleProfileRounds';
 import { removeEventMatchUpFormatTiming } from '../../../mutate/events/extensions/removeEventMatchUpFormatTiming';
-import { toggleParticipantCheckInState } from './toggleParticipantCheckInState';
 import { generateVirtualCourts } from './schedulers/utils/generateVirtualCourts';
 import { removeMatchUpCourtAssignment } from '../../../mutate/matchUps/schedule/removeMatchUpCourtAssignment';
 import { getMatchUpDailyLimitsUpdate } from './getMatchUpDailyLimitsUpdate';
@@ -51,6 +49,8 @@ import {
   modifyPersonRequests,
   removePersonRequests,
 } from './scheduleMatchUps/personRequests';
+import { toggleParticipantCheckInState } from '../../../mutate/matchUps/timeItems/toggleParticipantCheckInState';
+import { getEventMatchUpFormatTiming } from '../../../query/extensions/matchUpFormatTiming/getEventMatchUpFormatTiming';
 
 const scheduleGovernor = {
   scheduleMatchUps,

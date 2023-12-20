@@ -9,9 +9,13 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function toggleParticipantCheckInState(params) {
-  if (!params?.tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  const { tournamentRecord, participantId, matchUpId, drawDefinition, event } =
-    params;
+  const tournamentId = params.tournamentId ?? params.activeTournamentId;
+  const tournamentRecord =
+    params.tournamentRecord ??
+    (tournamentId && params.tournamentRecords?.[tournamentId]);
+
+  const { participantId, matchUpId, drawDefinition, event } = params;
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
   const result = findMatchUp({
     tournamentRecord,

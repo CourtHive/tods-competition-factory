@@ -1,6 +1,6 @@
 import { addDays } from '../../../../utilities/dateTime';
 import { mocksEngine } from '../../../../mocksEngine';
-import { competitionEngine } from '../../../sync';
+import competitionEngine from '../../../sync';
 import { expect, it } from 'vitest';
 
 import { MISSING_TOURNAMENT_RECORDS } from '../../../../constants/errorConditionConstants';

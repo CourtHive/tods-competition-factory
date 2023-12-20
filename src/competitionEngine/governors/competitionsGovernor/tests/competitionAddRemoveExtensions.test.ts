@@ -3,6 +3,7 @@ import competitionEngineAsync from '../../../async';
 import competitionEngineSync from '../../../sync';
 import mocksEngine from '../../../../mocksEngine';
 import { expect, test } from 'vitest';
+
 import { Tournament } from '../../../../types/tournamentTypes';
 
 const asyncCompetitionEngine = competitionEngineAsync(true);
@@ -20,19 +21,25 @@ test.each([competitionEngineSync, asyncCompetitionEngine])(
     const extensionValue = 'extensionValue';
     const extension = { name: extensionName, value: extensionValue };
 
-    let result = await competitionEngine.addExtension({ extension });
+    let result = await competitionEngine.addExtension({
+      discover: true,
+      extension,
+    });
     expect(result.success).toEqual(true);
 
-    const { extension: foundExtension } = await competitionEngine.findExtension(
-      {
+    const { extension: foundExtension } = await competitionEngine
+      .devContext(true)
+      .findExtension({
         name: extensionName,
-      }
-    );
+        discover: true,
+      });
     expect(foundExtension.name).toEqual(extensionName);
 
-    result = await competitionEngine.removeExtension({ name: extensionName });
+    result = await competitionEngine.removeExtension({
+      name: extensionName,
+      discover: true,
+    });
     expect(result.success).toEqual(true);
-    expect(result.removed).toEqual(2);
 
     const { tournamentRecords } = await competitionEngine.getState();
     Object.keys(tournamentRecords).forEach((tournamentId) => {

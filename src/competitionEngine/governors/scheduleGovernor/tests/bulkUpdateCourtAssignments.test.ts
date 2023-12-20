@@ -7,16 +7,16 @@ import { expect, it } from 'vitest';
 it('can update matchUp court assignments accross multiple events/draws', () => {
   const drawProfiles = [
     {
-      drawSize: 8,
       participantsCount: 6,
+      drawSize: 8,
     },
     {
-      drawSize: 8,
       participantsCount: 6,
+      drawSize: 8,
     },
     {
-      drawSize: 8,
       participantsCount: 6,
+      drawSize: 8,
     },
   ];
 
@@ -26,22 +26,19 @@ it('can update matchUp court assignments accross multiple events/draws', () => {
 
   tournamentEngine.setState(tournamentRecord);
   const myCourts = { venueName: 'My Courts' };
-  let result = tournamentEngine
-    .devContext({ addVenue: true })
-    .addVenue({ venue: myCourts });
+  let result = tournamentEngine.addVenue({ venue: myCourts });
   const {
     venue: { venueId },
   } = result;
   expect(result.success).toEqual(true);
 
   const courtDayDate = '2020-01-01T00:00';
-  const { courts, success } = tournamentEngine.devContext(true).addCourts({
-    venueId,
+  result = tournamentEngine.devContext(true).addCourts({
     courtsCount: 3,
+    venueId,
   });
+  const { courtIds, success } = result;
   expect(success).toEqual(true);
-  expect(courts.length).toEqual(3);
-  const courtIds = courts.map(({ courtId }) => courtId);
 
   ({ tournamentRecord } = tournamentEngine.getTournament());
   const { tournamentId } = tournamentRecord;
@@ -49,11 +46,11 @@ it('can update matchUp court assignments accross multiple events/draws', () => {
   let { matchUps } = tournamentEngine.allTournamentMatchUps();
   const courtAssignments = matchUps.map(
     ({ matchUpId, eventId, drawId }, index) => ({
+      courtId: courtIds[index % 3],
       tournamentId,
       matchUpId,
       eventId,
       drawId,
-      courtId: courtIds[index % 3],
     })
   );
   result = competitionEngine.setState([tournamentRecord]);

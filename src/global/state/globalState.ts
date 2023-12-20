@@ -345,7 +345,7 @@ export function setTournamentRecords(tournamentRecords: any) {
   return _globalStateProvider.setTournamentRecords(tournamentRecords);
 }
 
-export function setTournamentId(tournamentId: string): {
+export function setTournamentId(tournamentId?: string): {
   success?: boolean;
   error?: ErrorType;
 } {

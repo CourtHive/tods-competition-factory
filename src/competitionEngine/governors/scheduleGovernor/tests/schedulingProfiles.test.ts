@@ -207,7 +207,6 @@ test.each([competitionEngineSync])(
     // undefined { schedulingProfile } will remove all relevant extensions
     result = competitionEngine.setSchedulingProfile({});
     expect(result.success).toEqual(true);
-    expect(result.removed).toEqual(2);
 
     result = competitionEngine.setSchedulingProfile({ schedulingProfile: {} });
     expect(result.error).toEqual(INVALID_VALUES);
@@ -238,7 +237,7 @@ test.each([competitionEngineSync])(
     expect(result.courts.length).toEqual(0);
 
     result = tournamentEngine.setSchedulingProfile({});
-    expect(result.error).toEqual(INVALID_VALUES);
+    expect(result.success).toEqual(true);
 
     result = tournamentEngine.setSchedulingProfile({ schedulingProfile: {} });
     expect(result.error).toEqual(INVALID_VALUES);

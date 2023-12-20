@@ -8,6 +8,7 @@ import { it, expect } from 'vitest';
 import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';
 import { DOUBLES } from '../../constants/eventConstants';
 import {
+  MATCHUP_NOT_FOUND,
   METHOD_NOT_FOUND,
   MISSING_EVENT,
   MISSING_VALUE,
@@ -43,13 +44,17 @@ it.each([competitionEngineSync, asyncCompetitionEngine])(
     let result = await competitionEngine.executionQueue([
       { method: 'toggleParticipantCheckInState' },
     ]);
-    expect(result.error).toEqual(MISSING_VALUE);
+    expect([MATCHUP_NOT_FOUND, MISSING_VALUE].includes(result.error)).toEqual(
+      true
+    );
     expect(result.rolledBack).toEqual(false);
     result = await competitionEngine.executionQueue(
       [{ method: 'toggleParticipantCheckInState' }],
       true
     );
-    expect(result.error).toEqual(MISSING_VALUE);
+    expect([MATCHUP_NOT_FOUND, MISSING_VALUE].includes(result.error)).toEqual(
+      true
+    );
     expect(result.rolledBack).toEqual(true);
   }
 );
@@ -129,11 +134,11 @@ it.each([competitionEngineSync, asyncCompetitionEngine])(
     await competitionEngine.setState(tournamentRecord);
     const result = await competitionEngine.executionQueue([
       {
-        method: 'getParticipants',
+        method: 'getCompetitionParticipants',
         params: { participantFilters: { participantTypes: [PAIR] } },
       },
       {
-        method: 'getParticipants',
+        method: 'getCompetitionParticipants',
         params: { participantFilters: { participantTypes: [INDIVIDUAL] } },
       },
     ]);

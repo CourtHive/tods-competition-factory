@@ -2,8 +2,6 @@ import { getParticipants } from '../../../query/participants/getParticipants';
 import {
   getTournamentPenalties,
   addPenalty as penaltyAdd,
-  modifyPenalty as penaltyModify,
-  removePenalty as penaltyRemove,
 } from '../../../mutate/participants/participantPenalties';
 
 import { ResultType } from '../../../global/functions/decorateResult';
@@ -18,7 +16,6 @@ import {
 import {
   MISSING_TOURNAMENT_RECORDS,
   PARTICIPANT_NOT_FOUND,
-  PENALTY_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
 type AddPenaltyArgs = {
@@ -63,38 +60,6 @@ export function addPenalty(
   return penaltyId
     ? { ...SUCCESS, penaltyId }
     : { error: PARTICIPANT_NOT_FOUND };
-}
-
-export function modifyPenalty(params) {
-  const { tournamentRecords } = params;
-  if (
-    typeof tournamentRecords !== 'object' ||
-    !Object.keys(tournamentRecords).length
-  )
-    return { error: MISSING_TOURNAMENT_RECORDS };
-
-  for (const tournamentRecord of Object.values(tournamentRecords)) {
-    const result = penaltyModify({ tournamentRecord, ...params });
-    if (result.error && result.error !== PENALTY_NOT_FOUND) return result;
-  }
-
-  return { ...SUCCESS };
-}
-
-export function removePenalty(params) {
-  const { tournamentRecords } = params;
-  if (
-    typeof tournamentRecords !== 'object' ||
-    !Object.keys(tournamentRecords).length
-  )
-    return { error: MISSING_TOURNAMENT_RECORDS };
-
-  for (const tournamentRecord of Object.values(tournamentRecords)) {
-    const result = penaltyRemove({ tournamentRecord, ...params });
-    if (result.error && result.error !== PENALTY_NOT_FOUND) return result;
-  }
-
-  return { ...SUCCESS };
 }
 
 type GetCompetitionPenaltiesArgs = {

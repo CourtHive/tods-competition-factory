@@ -1,9 +1,10 @@
 import { getParticipants as participantGetter } from '../../query/participants/getParticipants';
 import { findParticipant } from '../../acquire/findParticipant';
-import { deepMerge } from '../../utilities/deepMerge';
+// import { deepMerge } from '../../utilities/deepMerge';
 
-import { HydratedMatchUp, HydratedParticipant } from '../../types/hydrated';
-import { ResultType } from '../../global/functions/decorateResult';
+// import { HydratedMatchUp } from '../../types/hydrated';
+import { HydratedParticipant } from '../../types/hydrated';
+// import { ResultType } from '../../global/functions/decorateResult';
 import { MatchUp } from '../../types/tournamentTypes';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
@@ -18,7 +19,7 @@ import {
   TournamentRecordsArgs,
 } from '../../types/factoryTypes';
 
-export function getParticipants(params) {
+export function getCompetitionParticipants(params) {
   const { tournamentRecords } = params || {};
   if (
     typeof tournamentRecords !== 'object' ||
@@ -44,7 +45,7 @@ export function getParticipants(params) {
       matchUps: tournamentMatchUps,
       derivedEventInfo: eventInfo,
       derivedDrawInfo: drawInfo,
-    } = participantGetter({ tournamentRecord, ...params });
+    } = participantGetter({ ...params, tournamentRecord });
 
     Object.assign(mappedMatchUps, tournamentMappedMatchUps);
     Object.assign(participantMap, tournamentParticipantMap);
@@ -71,6 +72,7 @@ export function getParticipants(params) {
   };
 }
 
+/*
 export function getCompetitionParticipants(params): ResultType & {
   mappedMatchUps?: { [key: string]: HydratedMatchUp };
   competitionParticipants?: HydratedParticipant[];
@@ -89,14 +91,16 @@ export function getCompetitionParticipants(params): ResultType & {
   const mappedMatchUps: { [key: string]: MatchUp } = {};
 
   for (const tournamentRecord of Object.values(tournamentRecords)) {
+    const result = participantGetter({
+      ...params,
+      tournamentRecord,
+    });
     const {
       participants,
       participantIdsWithConflicts: idsWithConflicts,
       mappedMatchUps: matchUpsMap,
-    } = participantGetter({
-      tournamentRecord,
-      ...params,
-    });
+    } = result;
+
     if (matchUpsMap) Object.assign(mappedMatchUps, matchUpsMap);
 
     for (const tournamentParticipant of participants ?? []) {
@@ -127,6 +131,7 @@ export function getCompetitionParticipants(params): ResultType & {
     ...SUCCESS,
   };
 }
+*/
 
 type PublicFindParticipantArgs = TournamentRecordsArgs & {
   policyDefinitions?: PolicyDefinitions;

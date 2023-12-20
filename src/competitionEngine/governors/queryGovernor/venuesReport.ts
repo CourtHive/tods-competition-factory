@@ -9,25 +9,37 @@ import {
   timeStringMinutes,
 } from '../../../utilities/dateTime';
 
-import { TournamentRecordsArgs } from '../../../types/factoryTypes';
+import { TournamentRecords } from '../../../types/factoryTypes';
 import {
   INVALID_DATE,
   INVALID_VALUES,
+  MISSING_TOURNAMENT_RECORDS,
 } from '../../../constants/errorConditionConstants';
 
-type GetVenueReportArgs = TournamentRecordsArgs & {
+type GetVenueReportArgs = {
+  tournamentRecords: TournamentRecords;
   ignoreDisabled?: boolean;
+  tournamentId?: string;
   venueIds?: string[];
   dates?: string[];
 };
 export function getVenuesReport({
   ignoreDisabled = true,
   tournamentRecords,
+  tournamentId,
   venueIds = [],
   dates = [],
 }: GetVenueReportArgs) {
   if (!Array.isArray(dates)) return { error: INVALID_VALUES, dates };
   if (!Array.isArray(venueIds)) return { error: INVALID_VALUES, venueIds };
+
+  const tournamentIds =
+    (tournamentRecords &&
+      Object.keys(tournamentRecords).filter(
+        (id) => !tournamentId || id === tournamentId
+      )) ||
+    [];
+  if (!tournamentIds.length) return { error: MISSING_TOURNAMENT_RECORDS };
 
   const validDates = dates.every(isValidDateString);
   if (!validDates) return { error: INVALID_DATE };

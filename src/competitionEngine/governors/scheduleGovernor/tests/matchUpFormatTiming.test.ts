@@ -6,7 +6,7 @@ import { expect, test } from 'vitest';
 import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
 import {
   EVENT_NOT_FOUND,
-  INVALID_VALUES,
+  MISSING_TOURNAMENT_RECORD,
 } from '../../../../constants/errorConditionConstants';
 
 // categoryTypes
@@ -52,7 +52,7 @@ test.each([competitionEngineSync])(
       matchUpFormat: FORMAT_STANDARD,
       tournamentId: 'bogusId',
     });
-    expect(result.error).toEqual(INVALID_VALUES);
+    expect(result.error).toEqual(MISSING_TOURNAMENT_RECORD);
 
     result = competitionEngine.modifyMatchUpFormatTiming({
       averageTimes: [{ categoryTypes: [JUNIOR], minutes: { default: 127 } }],

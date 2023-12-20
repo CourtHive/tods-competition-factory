@@ -1,3 +1,4 @@
+import { addTimeItem } from '../timeItems/addTimeItem';
 import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
 import { addGoesTo } from '../../drawEngine/governors/matchUpGovernor/addGoesTo';
 import { extractAttributes } from '../../utilities';
@@ -25,8 +26,15 @@ import {
   Tournament,
 } from '../../types/tournamentTypes';
 
+export function attachConsolationStructures(params) {
+  return attachStructures({
+    ...params,
+    itemType: 'attachConsolationStructures',
+  });
+}
+
 export function attachPlayoffStructures(params) {
-  return attachStructures(params);
+  return attachStructures({ ...params, itemType: 'attachPlayoffStructures' });
 }
 
 type AttachStructuresArgs = {
@@ -35,9 +43,11 @@ type AttachStructuresArgs = {
   matchUpModifications?: any[];
   structures: Structure[];
   links?: DrawLink[];
+  itemType?: string;
   event?: Event;
 };
 export function attachStructures({
+  itemType = 'attachStructures',
   matchUpModifications,
   tournamentRecord,
   drawDefinition,
@@ -166,6 +176,15 @@ export function attachStructures({
   }
 
   const addedStructureIds = newStructures.map(extractAttributes('structureId'));
+
+  if (tournamentRecord) {
+    const itemValue = { structureIds, drawId: drawDefinition.drawId };
+    const timeItem = {
+      itemValue,
+      itemType,
+    };
+    addTimeItem({ element: tournamentRecord, timeItem });
+  }
 
   return { ...SUCCESS, addedStructureIds };
 }

@@ -54,7 +54,7 @@ it('can define a new venue', () => {
     courtsCount: 3,
     venueId,
   });
-  expect(result.courts.length).toEqual(3);
+  expect(result.courtIds.length).toEqual(3);
 
   const { courts } = tournamentEngine.getCourts();
   expect(courts.length).toEqual(4);

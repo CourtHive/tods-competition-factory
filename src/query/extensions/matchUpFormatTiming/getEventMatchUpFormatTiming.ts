@@ -11,7 +11,6 @@ import { Event, Tournament } from '../../../types/tournamentTypes';
 import {
   ErrorType,
   MISSING_EVENT,
-  MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 import {
   POLICY_TYPE_SCHEDULING,
@@ -35,7 +34,6 @@ export function getEventMatchUpFormatTiming({
   error?: ErrorType;
   info?: string;
 } {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
 
   let matchUpFormatDefinitions: any[] = [];

@@ -11,6 +11,7 @@ import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../../fixtures/policies/POL
 import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';
 import { DOUBLES, SINGLES } from '../../../../constants/eventConstants';
 import {
+  MISSING_DRAW_DEFINITION,
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../../constants/errorConditionConstants';
@@ -60,10 +61,9 @@ it('auto schedules multiple events at multiple venues and tracks participants ac
 
   const { tournamentId } = tournamentRecord;
 
-  let { competitionParticipants } =
-    competitionEngine.getCompetitionParticipants({
-      participantFilters: { participantTypes: [INDIVIDUAL] },
-    });
+  let competitionParticipants = competitionEngine.getCompetitionParticipants({
+    participantFilters: { participantTypes: [INDIVIDUAL] },
+  }).participants;
   const firstEventParticipantIds = competitionParticipants
     .slice(0, 32)
     .map((p) => p.participantId);
@@ -134,9 +134,10 @@ it('auto schedules multiple events at multiple venues and tracks participants ac
 
   // --------------------------------------------------
   // generate draw for second event
-  ({ competitionParticipants } = competitionEngine.getCompetitionParticipants({
-    participantFilters: { participantTypes: [PAIR] },
-  }));
+  ({ participants: competitionParticipants } =
+    competitionEngine.getCompetitionParticipants({
+      participantFilters: { participantTypes: [PAIR] },
+    }));
   const secondEventParticipantIds = competitionParticipants
     .slice(0, 32)
     .map((p) => p.participantId);
@@ -289,17 +290,19 @@ it('multiple events at multiple venues with different participants will start at
     } = drawDefinition;
 
     for (const roundNumber of [1, 2]) {
-      const result = competitionEngine.addSchedulingProfileRound({
-        scheduleDate: startDate,
-        venueId: venueIds[index],
-        round: {
-          tournamentId,
-          eventId,
-          drawId,
-          structureId,
-          roundNumber,
-        },
-      });
+      const result = competitionEngine
+        .devContext(true)
+        .addSchedulingProfileRound({
+          scheduleDate: startDate,
+          venueId: venueIds[index],
+          round: {
+            tournamentId,
+            eventId,
+            drawId,
+            structureId,
+            roundNumber,
+          },
+        });
       expect(result.success).toEqual(true);
     }
   }

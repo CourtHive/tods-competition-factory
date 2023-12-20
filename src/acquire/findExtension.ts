@@ -1,13 +1,15 @@
 import { ResultType, decorateResult } from '../global/functions/decorateResult';
 import { MISSING_VALUE, NOT_FOUND } from '../constants/errorConditionConstants';
 import { Extension } from '../types/tournamentTypes';
+import { TournamentRecords } from '../types/factoryTypes';
 
 const stack = 'extensionQueries';
 
 type FindExtensionType = {
+  tournamentRecords?: TournamentRecords;
   params?: { [key: string]: any };
   discover?: boolean | string[];
-  element: any;
+  element?: any;
   name: string;
 };
 
@@ -30,14 +32,23 @@ export function findExtension({
             (Array.isArray(discover) && discover.includes(key))
         )
         .find((key) => {
-          if (!Array.isArray(params[key].extensions)) return false;
+          if (!Array.isArray(params[key]?.extensions)) return false;
           return params[key].extensions.find(
             (extension) => extension?.name === name
           );
         });
-      const extension =
-        attr &&
-        params[attr].extensions.find((extension) => extension?.name === name);
+
+      let element = attr && params[attr];
+
+      if (!element && params.tournamentRecords) {
+        element = Object.values(params.tournamentRecords).find(
+          (tournamentRecord) => tournamentRecord.extensions?.length
+        );
+      }
+
+      const extension = element?.extensions?.find(
+        (extension) => extension?.name === name
+      );
       const info = !extension ? NOT_FOUND : undefined;
 
       return { extension, info };

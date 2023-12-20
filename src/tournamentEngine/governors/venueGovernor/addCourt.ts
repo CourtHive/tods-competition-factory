@@ -1,8 +1,11 @@
 import { UUID, generateRange, makeDeepCopy } from '../../../utilities';
+import {
+  ResultType,
+  decorateResult,
+} from '../../../global/functions/decorateResult';
 import { courtTemplate } from '../../generators/courtTemplate';
 import { addNotice } from '../../../global/state/globalState';
 import { validDateAvailability } from './dateAvailability';
-import { findVenue } from '../../getters/venueGetter';
 import { isNumeric } from '../../../utilities/math';
 import {
   extractDate,
@@ -17,12 +20,14 @@ import {
   MISSING_COURTS_INFO,
   VENUE_NOT_FOUND,
   COURT_EXISTS,
+  INVALID_VALUES,
 } from '../../../constants/errorConditionConstants';
 import {
   Availability,
   Court,
   Tournament,
 } from '../../../types/tournamentTypes';
+import { findVenue } from '../../../acquire/findVenue';
 
 type AddCourtArgs = {
   tournamentRecord: Tournament;
@@ -100,6 +105,44 @@ export function addCourt({
   }
 }
 
+type ACArgs = AddCourtsArgs & {
+  tournamentRecords?: { [key: string]: Tournament };
+  tournamentRecord?: Tournament;
+  venueId: string;
+};
+export function addCourts(params: ACArgs) {
+  // if tournamentRecord is not linked to other tournamentRecods, only add to tournamentRecord
+  const { tournamentRecord, venueId } = params;
+
+  if (typeof venueId !== 'string' || !venueId)
+    return { error: MISSING_VENUE_ID };
+
+  const tournamentRecords =
+    params.tournamentRecords ??
+    (tournamentRecord && {
+      [tournamentRecord.tournamentId]: tournamentRecord,
+    }) ??
+    {};
+
+  const courtIds: string[] = [];
+
+  let success;
+  for (const tournamentRecord of Object.values(tournamentRecords)) {
+    const { venue } = findVenue({ tournamentRecord, venueId });
+    if (venue) {
+      // TODO: create courts before adding to each tournamentRecord
+      const result = courtsAdd({ ...params, tournamentRecord });
+      for (const court of result?.courts ?? []) {
+        courtIds.push(court?.courtId);
+      }
+      if (result.error) return result;
+      success = true;
+    }
+  }
+
+  return success ? { ...SUCCESS, courtIds } : { error: VENUE_NOT_FOUND };
+}
+
 export type AddCourtsArgs = {
   dateAvailability?: Availability[];
   venueAbbreviationRoot?: string;
@@ -116,7 +159,7 @@ export type AddCourtsArgs = {
   dates: string[];
 };
 
-export function addCourts({
+export function courtsAdd({
   courtNameRoot = 'Court',
   dateAvailability = [],
   venueAbbreviationRoot,
@@ -130,7 +173,7 @@ export function addCourts({
   idPrefix,
   venueId,
   dates,
-}: AddCourtsArgs) {
+}: AddCourtsArgs): ResultType & { courts?: Court[] } {
   if (!venueId) return { error: MISSING_VENUE_ID };
   const result = findVenue({ tournamentRecord, venueId });
   if (result.error) return result;
@@ -182,7 +225,10 @@ export function addCourts({
     .map((outcome) => outcome.court)
     .filter(Boolean);
   if (courtRecords.length !== courtsCount) {
-    return { error: 'Not all courts could be generated', result };
+    return decorateResult({
+      info: 'not all courts could be generated',
+      result: { error: INVALID_VALUES },
+    });
   }
 
   if (venue)

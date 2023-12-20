@@ -1,4 +1,5 @@
-import { addExtension, removeExtension } from './competitionExtentions';
+import { removeExtension } from '../../../mutate/extensions/removeExtension';
+import { addExtension } from '../../../mutate/extensions/addExtension';
 import { findExtension } from '../../../acquire/findExtension';
 import {
   ResultType,
@@ -74,7 +75,11 @@ export function linkTournaments({
       value: { tournamentIds },
     };
 
-    return addExtension({ tournamentRecords, extension });
+    return addExtension({
+      tournamentRecords,
+      discover: true,
+      extension,
+    });
   }
 
   return { ...SUCCESS };
@@ -95,6 +100,7 @@ export function unlinkTournaments({
   const result = removeExtension({
     name: LINKED_TOURNAMENTS,
     tournamentRecords,
+    discover: true,
   });
 
   // TODO: check the integrity of the venues attached to each tournment...

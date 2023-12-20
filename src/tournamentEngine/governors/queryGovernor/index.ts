@@ -8,7 +8,6 @@ import { getPositionAssignments } from '../../getters/getPositionAssignments';
 import { getPredictiveAccuracy } from '../../getters/getPredictiveAccuracy';
 import { participantScaleItem } from '../../../query/participant/participantScaleItem';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
-import { getVenuesAndCourts, findVenue } from '../../getters/venueGetter';
 import { getCourts, publicFindCourt } from '../../getters/courtGetter';
 import { getParticipantScaleItem } from './getParticipantScaleItem';
 import { getMatchUpFormat } from '../../getters/getMatchUpFormat';
@@ -48,6 +47,8 @@ import {
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 import { getAllDrawMatchUps } from '../../../query/drawMatchUps';
+import { findVenue } from '../../../acquire/findVenue';
+import { getVenuesAndCourts } from '../../../query/venues/venuesAndCourtsGetter';
 
 function findDrawDefinition({ tournamentRecord, drawDefinition }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

@@ -1,4 +1,4 @@
-import { addParticipantTimeItem } from '../../tournamentEngine/governors/tournamentGovernor/addTimeItem';
+import { addParticipantTimeItem } from '../timeItems/addTimeItem';
 import { addNotice, getTopics } from '../../global/state/globalState';
 import { getParticipantId } from '../../global/functions/extractors';
 

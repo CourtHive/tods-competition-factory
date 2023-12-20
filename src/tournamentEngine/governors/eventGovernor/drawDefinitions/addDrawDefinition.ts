@@ -22,7 +22,6 @@ import {
   INVALID_DRAW_DEFINITION,
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
-  MISSING_DRAW_ID,
   MISSING_EVENT,
 } from '../../../../constants/errorConditionConstants';
 import {
@@ -40,6 +39,7 @@ type AddDrawDefinitionArgs = {
   existingDrawCount?: number;
   allowReplacement?: boolean;
   checkEntryStatus?: boolean;
+  tournamentId?: string;
   event: Event;
 };
 
@@ -57,7 +57,7 @@ export function addDrawDefinition(
     drawDefinition,
     event,
   } = params;
-  if (!drawDefinition) return { error: MISSING_DRAW_ID };
+  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!event) return { error: MISSING_EVENT };
 
   if (!event.drawDefinitions) event.drawDefinitions = [];

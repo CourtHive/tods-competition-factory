@@ -18,7 +18,7 @@ import {
 } from '../../../../types/tournamentTypes';
 
 export type NamingEntry = {
-  [key: string]: { name: string; abbreviation: string };
+  [key: string]: { name: string; abbreviation: string; structureId?: string };
 };
 
 type GeneratePlayoffStructuresArgs = {
@@ -72,7 +72,6 @@ export function generatePlayoffStructures(
     staggeredEntry, // not propagated to child structurs
     sequenceLimit,
     stage = MAIN,
-    structureId,
     drawSize,
     idPrefix,
     isMock,
@@ -115,6 +114,8 @@ export function generatePlayoffStructures(
 
   const structureAbbreviation =
     customNaming?.abbreviation ?? attributeProfile?.abbreviation;
+  const structureId =
+    params.structureId ?? attributeProfile?.structureId ?? uuids?.pop();
 
   const mainParams = {
     idPrefix: idPrefix && `${idPrefix}-${structureName}-RP`,
@@ -129,12 +130,12 @@ export function generatePlayoffStructures(
     : treeMatchUps(mainParams);
 
   const structure = structureTemplate({
-    structureId: structureId ?? uuids?.pop(),
     structureAbbreviation,
     stageSequence,
     structureName,
     matchUpType,
     roundOffset,
+    structureId,
     matchUps,
     stage,
   });

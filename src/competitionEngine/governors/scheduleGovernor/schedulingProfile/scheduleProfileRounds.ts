@@ -12,6 +12,7 @@ import { getMatchUpDailyLimits } from '../getMatchUpDailyLimits';
 
 import { DO_NOT_SCHEDULE } from '../../../../constants/requestConstants';
 import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
+import { SUCCESS } from '../../../../constants/resultConstants';
 import { Tournament } from '../../../../types/tournamentTypes';
 import {
   INVALID_VALUES,
@@ -47,6 +48,8 @@ export function scheduleProfileRounds({
 
   const result = getSchedulingProfile({ tournamentRecords });
   if (result.error) return result;
+
+  if (!result.schedulingProfile.length) return { ...SUCCESS };
 
   const {
     modifications: schedulingProfileModifications,

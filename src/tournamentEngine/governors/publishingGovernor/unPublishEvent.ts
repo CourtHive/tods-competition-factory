@@ -1,5 +1,5 @@
 import { modifyEventPublishStatus } from './modifyEventPublishStatus';
-import { addEventTimeItem } from '../tournamentGovernor/addTimeItem';
+import { addEventTimeItem } from '../../../mutate/timeItems/addTimeItem';
 import { addNotice } from '../../../global/state/globalState';
 import { getEventTimeItem } from '../queryGovernor/timeItems';
 

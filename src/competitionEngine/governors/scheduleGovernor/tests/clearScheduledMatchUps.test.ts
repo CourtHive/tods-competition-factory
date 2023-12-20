@@ -179,7 +179,7 @@ it.each([
       inContext: true,
     });
     const {
-      competitionParticipants,
+      participants: competitionParticipants,
       participantIdsWithConflicts,
       mappedMatchUps,
     } = participantsResult;
@@ -396,7 +396,7 @@ it('can clear scheduled matchUps', () => {
   ]);
 
   const {
-    competitionParticipants,
+    participants: competitionParticipants,
     participantIdsWithConflicts,
     mappedMatchUps,
   } = competitionEngine.getCompetitionParticipants({

@@ -51,7 +51,6 @@ export async function asyncExecutionQueue(
   const timeStamp = Date.now();
 
   const mutationStatus = getMutationStatus({ timeStamp });
-  result.modificationsApplied = mutationStatus;
   notifySubscribersAsync({ directives, mutationStatus, timeStamp });
   deleteNotices();
 

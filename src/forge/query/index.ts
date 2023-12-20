@@ -22,7 +22,6 @@ export { validateScore } from '../../validators/validateScore';
 export { generateSeedingScaleItems } from '../../tournamentEngine/governors/eventGovernor/entries/generateSeedingScaleItems';
 export { getParticipantEventDetails } from '../../tournamentEngine/getters/participants/getParticipantEventDetails';
 export { getEntriesAndSeedsCount } from '../../tournamentEngine/governors/policyGovernor/getEntriesAndSeedsCount';
-export { getVenuesAndCourts as getTournamentVenuesAndCourts } from '../../tournamentEngine/getters/venueGetter';
 export { matchUpActions as tournamentMatchUpActions } from '../../tournamentEngine/getters/matchUpActions';
 export { filterParticipants } from '../../query/participants/filterParticipants';
 export { positionActions } from '../../tournamentEngine/governors/queryGovernor/positionQueries';
@@ -42,8 +41,8 @@ export {
 } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
 
 // competitionEngine
+export { getEventMatchUpFormatTiming } from '../../query/extensions/matchUpFormatTiming/getEventMatchUpFormatTiming';
 export { getMatchUpFormatTimingUpdate } from '../../competitionEngine/governors/scheduleGovernor/matchUpFormatTiming/getMatchUpFormatTimingUpdate';
-export { getEventMatchUpFormatTiming } from '../../competitionEngine/governors/scheduleGovernor/matchUpFormatTiming/getEventMatchUpFormatTiming';
 export { getMatchUpDailyLimitsUpdate } from '../../competitionEngine/governors/scheduleGovernor/getMatchUpDailyLimitsUpdate';
 export { matchUpActions as competitionMatchUpActions } from '../../competitionEngine/governors/queryGovernor/matchUpActions';
 export { getVenuesAndCourts as getCompetitionVenuesAndCourts } from '../../query/venues/venuesAndCourtsGetter';
@@ -62,3 +61,6 @@ export {
   allCompetitionMatchUps,
   competitionMatchUps,
 } from '../../competitionEngine/getters/matchUpsGetter';
+
+// universal
+export { getVenuesAndCourts } from '../../query/venues/venuesAndCourtsGetter';

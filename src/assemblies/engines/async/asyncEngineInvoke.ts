@@ -33,13 +33,13 @@ export async function asyncEngineInvoke(
 
   const method = passedMethod || engine[methodName] || getMethods()[methodName];
 
-  const result = executeFunction(engine, method, params, methodName, 'async');
+  const result =
+    executeFunction(engine, method, params, methodName, 'async') ?? {};
 
   if (result?.error && snapshot) setState(snapshot);
 
   const timeStamp = Date.now();
   const mutationStatus = getMutationStatus({ timeStamp });
-  result.modificationsApplied = mutationStatus;
 
   const notify =
     result?.success &&

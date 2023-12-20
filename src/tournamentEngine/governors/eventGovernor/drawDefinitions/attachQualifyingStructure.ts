@@ -1,5 +1,5 @@
 import { attachQualifyingStructure as attachQualifying } from '../../../../mutate/drawDefinitions/attachQualifyingStructure';
-import { addTournamentTimeItem } from '../../tournamentGovernor/addTimeItem';
+import { addTournamentTimeItem } from '../../../../mutate/timeItems/addTimeItem';
 
 import {
   MISSING_DRAW_DEFINITION,

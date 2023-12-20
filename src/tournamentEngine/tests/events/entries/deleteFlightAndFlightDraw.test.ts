@@ -4,6 +4,7 @@ import { expect, it, test } from 'vitest';
 
 import { INDIVIDUAL } from '../../../../constants/participantConstants';
 import {
+  EVENT_NOT_FOUND,
   MISSING_DRAW_ID,
   MISSING_EVENT,
 } from '../../../../constants/errorConditionConstants';
@@ -91,6 +92,7 @@ it('can delete drawDefinition when there is no flight', () => {
   result = tournamentEngine.deleteFlightAndFlightDraw({ drawId: 'bogusId' });
   expect(result.error).toEqual(MISSING_EVENT);
   result = tournamentEngine.deleteFlightAndFlightDraw({ eventId, drawId });
+  expect(result.success).toEqual(true);
 
   ({ event: eventResult } = tournamentEngine.getEvent({ eventId }));
   expect(eventResult.drawDefinitions.length).toEqual(0);
