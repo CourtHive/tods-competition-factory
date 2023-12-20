@@ -16,21 +16,26 @@ import {
 
 type GetVenuesAndCourtsArgs = {
   tournamentRecords: Tournament[] | { [key: string]: Tournament };
+  tournamentRecord?: Tournament;
   convertExtensions?: boolean;
   ignoreDisabled?: boolean;
+  tournamentId?: string;
   venueIds?: string[];
   dates?: string[];
 };
-export function getVenuesAndCourts({
-  tournamentRecords,
-  convertExtensions,
-  ignoreDisabled,
-  venueIds = [],
-  dates, // used in conjunction with ignoreDisabled
-}: GetVenuesAndCourtsArgs): ResultType & {
+export function getVenuesAndCourts(
+  params: GetVenuesAndCourtsArgs
+): ResultType & {
   venues?: HydratedVenue[];
   courts?: HydratedCourt[];
 } {
+  const {
+    tournamentRecords,
+    convertExtensions,
+    ignoreDisabled,
+    venueIds = [],
+    dates, // used in conjunction with ignoreDisabled
+  } = params;
   if (
     typeof tournamentRecords !== 'object' ||
     !Object.keys(tournamentRecords).length
@@ -42,7 +47,9 @@ export function getVenuesAndCourts({
   const courts: HydratedCourt[] = [];
   const venues: HydratedVenue[] = [];
 
-  const tournamentIds = Object.keys(tournamentRecords);
+  const tournamentIds = Object.keys(tournamentRecords).filter(
+    (id) => !params.tournamentId || id === params.tournamentId
+  );
   tournamentIds.forEach((tournamentId) => {
     const tournamentRecord = tournamentRecords[tournamentId];
     for (const venue of tournamentRecord.venues || []) {

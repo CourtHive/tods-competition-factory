@@ -7,10 +7,12 @@ export function paramsMiddleware(
   tournamentRecords: TournamentRecords,
   params: { [key: string]: any }
 ) {
-  const tournamentId = getTournamentId();
+  const tournamentId = params.tournamentId ?? getTournamentId();
   if (!tournamentId && params) return params;
 
   const tournamentRecord = tournamentRecords[tournamentId];
+  if (tournamentId && !tournamentRecord) return;
+
   if (!tournamentRecord) return params;
   params.tournamentRecord = tournamentRecord;
 
@@ -18,7 +20,7 @@ export function paramsMiddleware(
 
   if (drawId) {
     const { event, drawDefinition } = findEvent({
-      tournamentRecord,
+      tournamentRecords,
       drawId,
     });
     params.drawDefinition = drawDefinition;
@@ -28,7 +30,7 @@ export function paramsMiddleware(
   if (params.eventId && !params.event) {
     const { event } = findEvent({
       eventId: params.eventId,
-      tournamentRecord,
+      tournamentRecords,
     });
     if (event) {
       params.event = event;

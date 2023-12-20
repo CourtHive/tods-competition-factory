@@ -1,23 +1,22 @@
 import { validateSchedulingProfile } from '../../../../validators/validateSchedulingProfile';
 import { getCompetitionDateRange } from '../../queryGovernor/getCompetitionDateRange';
-import { getEventIdsAndDrawIds } from '../../../getters/getEventIdsAndDrawIds';
 import { getCompetitionVenues } from '../../../../query/venues/venuesAndCourtsGetter';
+import { removeExtension } from '../../../../mutate/extensions/removeExtension';
+import { getEventIdsAndDrawIds } from '../../../getters/getEventIdsAndDrawIds';
 import { decorateResult } from '../../../../global/functions/decorateResult';
+import { addExtension } from '../../../../mutate/extensions/addExtension';
+import { findExtension } from '../../../../acquire/findExtension';
 import { isObject } from '../../../../utilities/objects';
 import {
   extractDate,
   isValidDateString,
   sameDay,
 } from '../../../../utilities/dateTime';
-import {
-  addExtension,
-  findExtension,
-  removeExtension,
-} from '../../competitionsGovernor/competitionExtentions';
 
 import { SCHEDULING_PROFILE } from '../../../../constants/extensionConstants';
-import { TournamentRecordsArgs } from '../../../../types/factoryTypes';
+import { TournamentRecords } from '../../../../types/factoryTypes';
 import { SUCCESS } from '../../../../constants/resultConstants';
+import { Tournament } from '../../../../types/tournamentTypes';
 import {
   EXISTING_ROUND,
   ErrorType,
@@ -25,9 +24,15 @@ import {
   MISSING_TOURNAMENT_RECORDS,
 } from '../../../../constants/errorConditionConstants';
 
+type GetSchedulingProfileArgs = {
+  tournamentRecords?: TournamentRecords;
+  tournamentRecord?: Tournament;
+};
+
 export function getSchedulingProfile({
   tournamentRecords,
-}: TournamentRecordsArgs): {
+  tournamentRecord,
+}: GetSchedulingProfileArgs): {
   schedulingProfile?: any;
   modifications?: number;
   error?: ErrorType;
@@ -40,8 +45,10 @@ export function getSchedulingProfile({
     return { error: MISSING_TOURNAMENT_RECORDS };
 
   const { extension } = findExtension({
+    element: tournamentRecord, // if tournamentRecord is provided, use it
     name: SCHEDULING_PROFILE,
     tournamentRecords,
+    discover: true,
   });
 
   let schedulingProfile = extension?.value || [];
@@ -65,6 +72,7 @@ export function getSchedulingProfile({
       schedulingProfile = updatedSchedulingProfile;
       const result = setSchedulingProfile({
         tournamentRecords,
+        tournamentRecord,
         schedulingProfile,
       });
       if (result.error) return result;
@@ -76,7 +84,16 @@ export function getSchedulingProfile({
   return { schedulingProfile, modifications: 0 };
 }
 
-export function setSchedulingProfile({ tournamentRecords, schedulingProfile }) {
+type SetSchedulingProfileArgs = {
+  tournamentRecords: TournamentRecords;
+  tournamentRecord?: Tournament;
+  schedulingProfile?: any[];
+};
+export function setSchedulingProfile({
+  tournamentRecords,
+  tournamentRecord,
+  schedulingProfile,
+}: SetSchedulingProfileArgs) {
   const profileValidity = validateSchedulingProfile({
     tournamentRecords,
     schedulingProfile,
@@ -85,14 +102,19 @@ export function setSchedulingProfile({ tournamentRecords, schedulingProfile }) {
   if (profileValidity.error) return profileValidity;
 
   if (!schedulingProfile)
-    return removeExtension({ tournamentRecords, name: SCHEDULING_PROFILE });
+    return removeExtension({
+      element: tournamentRecord,
+      name: SCHEDULING_PROFILE,
+      tournamentRecords,
+      discover: true,
+    });
 
   const extension = {
     name: SCHEDULING_PROFILE,
     value: schedulingProfile,
   };
 
-  return addExtension({ tournamentRecords, extension });
+  return addExtension({ tournamentRecords, discover: true, extension });
 }
 
 export function addSchedulingProfileRound({
@@ -107,8 +129,9 @@ export function addSchedulingProfileRound({
   const stack = 'addSchedulingProfileRound';
 
   const { extension } = findExtension({
-    tournamentRecords,
     name: SCHEDULING_PROFILE,
+    tournamentRecords,
+    discover: true,
   });
 
   const schedulingProfile = extension?.value || [];

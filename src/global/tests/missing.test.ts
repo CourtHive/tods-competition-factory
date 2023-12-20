@@ -92,6 +92,7 @@ it.each([asyncTournamentEngine, tournamentEngineSync])(
           'generateDrawDefinition',
           'getMatchUpDependencies',
           'newTournamentRecord',
+          'setSchedulingProfile',
           'getAppliedPolicies',
           'filterParticipants',
           'getTournamentIds',

@@ -134,11 +134,11 @@ it.each([competitionEngineSync, asyncCompetitionEngine])(
     await competitionEngine.setState(tournamentRecord);
     const result = await competitionEngine.executionQueue([
       {
-        method: 'getParticipants',
+        method: 'getCompetitionParticipants',
         params: { participantFilters: { participantTypes: [PAIR] } },
       },
       {
-        method: 'getParticipants',
+        method: 'getCompetitionParticipants',
         params: { participantFilters: { participantTypes: [INDIVIDUAL] } },
       },
     ]);

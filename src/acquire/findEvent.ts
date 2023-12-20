@@ -2,19 +2,21 @@ import { ResultType, decorateResult } from '../global/functions/decorateResult';
 import { getFlightProfile } from '../query/event/getFlightProfile';
 
 import { DrawDefinition, Tournament, Event } from '../types/tournamentTypes';
+import { TournamentRecords } from '../types/factoryTypes';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   EVENT_NOT_FOUND,
-  MISSING_TOURNAMENT_RECORD,
 } from '../constants/errorConditionConstants';
 
 // INTERNAL_USE: to resovle events by eventId or drawId
 type FindEventArgs = {
-  tournamentRecord: Tournament;
+  tournamentRecords?: TournamentRecords;
+  tournamentRecord?: Tournament;
   eventId?: string;
   drawId?: string;
 };
 export function findEvent({
+  tournamentRecords,
   tournamentRecord,
   eventId,
   drawId,
@@ -23,12 +25,13 @@ export function findEvent({
   drawDefinition?: DrawDefinition;
 } {
   const stack = 'findEvent';
-  if (!tournamentRecord)
-    return decorateResult({
-      result: { error: MISSING_TOURNAMENT_RECORD },
-      stack,
-    });
-  const events = tournamentRecord?.events ?? [];
+  const events =
+    (tournamentRecords &&
+      Object.values(tournamentRecords)
+        .map(({ events }) => events ?? [])
+        .flat()) ??
+    tournamentRecord?.events ??
+    [];
 
   if (drawId) {
     let drawDefinition;
@@ -40,7 +43,8 @@ export function findEvent({
       if (targetDrawDefinition) {
         drawDefinition = targetDrawDefinition;
       } else {
-        const { flightProfile } = getFlightProfile({ event });
+        const flightProfile =
+          event && getFlightProfile({ event })?.flightProfile;
         const flight = flightProfile?.flights?.find(
           (flight) => flight.drawId === drawId
         );
@@ -58,7 +62,7 @@ export function findEvent({
   }
 
   if (eventId) {
-    const event = events.find((event) => event.eventId === eventId);
+    const event = events.find((event) => event?.eventId === eventId);
     if (!event)
       return {
         event: undefined,

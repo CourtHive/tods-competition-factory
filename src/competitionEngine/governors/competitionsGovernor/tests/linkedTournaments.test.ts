@@ -37,7 +37,7 @@ test('unlinkTournament coverage', () => {
   expect(result.success).toEqual(true);
 });
 
-test('', () => {
+test('throws appropriate errors', () => {
   let result = competitionEngineSync.unlinkTournament({
     tournamentId: 'bogusId',
   });
@@ -180,6 +180,7 @@ test.each([competitionEngineSync])(
 async function getLinkedIds(competitionEngine) {
   const { extension } = await competitionEngine.findExtension({
     name: LINKED_TOURNAMENTS,
+    discover: true,
   });
 
   const { tournamentIds } = extension.value;

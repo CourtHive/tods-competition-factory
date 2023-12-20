@@ -1,3 +1,5 @@
+import { decorateResult } from '../../global/functions/decorateResult';
+
 import { ELEMENT_REQUIRED, MISSING_NAME } from '../../constants/infoConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
@@ -14,9 +16,24 @@ type RemoveExtensionResult = {
 };
 export function removeExtension(params?): RemoveExtensionResult {
   if (!params || typeof params !== 'object') return { error: MISSING_VALUE };
-  if (!params?.element) return { error: MISSING_VALUE, info: ELEMENT_REQUIRED };
-  if (typeof params?.element !== 'object') return { error: INVALID_VALUES };
+  if (params.element && typeof params?.element !== 'object')
+    return { error: INVALID_VALUES };
   if (!params?.name) return { error: MISSING_VALUE, info: MISSING_NAME };
+  if (!params?.element) {
+    if (params.discover && params.tournamentRecords) {
+      for (const tournamentId of Object.keys(params.tournamentRecords)) {
+        const tournamentRecord = params.tournamentRecords[tournamentId];
+        const result = removeExtension({
+          element: tournamentRecord,
+          name: params.name,
+        });
+        if (result.error)
+          return decorateResult({ result, stack: 'removeExtension' });
+      }
+      return { ...SUCCESS };
+    }
+    return { error: MISSING_VALUE, info: ELEMENT_REQUIRED };
+  }
   if (!params?.element.extensions) return { ...SUCCESS, info: NOT_FOUND };
 
   params.element.extensions = params.element.extensions.filter(

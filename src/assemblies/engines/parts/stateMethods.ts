@@ -62,8 +62,9 @@ export function removeUnlinkedTournamentRecords(): void {
   const tournamentRecords = getTournamentRecords();
 
   const { extension } = findExtension({
-    element: tournamentRecords,
     name: LINKED_TOURNAMENTS,
+    tournamentRecords,
+    discover: true,
   });
 
   const tournamentIds = extension?.value?.tournamentIds || [];

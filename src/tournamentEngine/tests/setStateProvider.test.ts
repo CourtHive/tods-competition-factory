@@ -122,7 +122,7 @@ test('state provider implementation of handleCaughtError', () => {
       tournamentId: 'tournamentId',
       engineName: 'engine',
       methodName: 'deleteDrawDefinitions',
-      params: ['drawIds', 'tournamentRecord'],
+      params: ['drawIds', 'activeTournamentId', 'tournamentRecord'],
       error: 'Global state provider error',
     },
   ]);

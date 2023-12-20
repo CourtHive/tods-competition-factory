@@ -14,6 +14,7 @@ import {
   NO_VALID_ATTRIBUTES,
   INVALID_VALUES,
   ErrorType,
+  MISSING_TOURNAMENT_RECORDS,
 } from '../../constants/errorConditionConstants';
 import {
   Extension,
@@ -98,11 +99,27 @@ export function addPenalty({
   return { ...SUCCESS, penaltyId: penaltyItem.penaltyId };
 }
 
+export function removePenalty(params) {
+  const { tournamentRecords } = params;
+  if (
+    typeof tournamentRecords !== 'object' ||
+    !Object.keys(tournamentRecords).length
+  )
+    return { error: MISSING_TOURNAMENT_RECORDS };
+
+  for (const tournamentRecord of Object.values(tournamentRecords)) {
+    const result = penaltyRemove({ ...params, tournamentRecord });
+    if (result.error && result.error !== PENALTY_NOT_FOUND) return result;
+  }
+
+  return { ...SUCCESS };
+}
+
 type RemovePenaltyArgs = {
   tournamentRecord: Tournament;
   penaltyId: string;
 };
-export function removePenalty({
+export function penaltyRemove({
   tournamentRecord,
   penaltyId,
 }: RemovePenaltyArgs): {
@@ -175,13 +192,29 @@ export function getTournamentPenalties({
   return { penalties: Object.values(allPenalties) };
 }
 
+export function modifyPenalty(params) {
+  const { tournamentRecords } = params;
+  if (
+    typeof tournamentRecords !== 'object' ||
+    !Object.keys(tournamentRecords).length
+  )
+    return { error: MISSING_TOURNAMENT_RECORDS };
+
+  for (const tournamentRecord of Object.values(tournamentRecords)) {
+    const result = penaltyModify({ ...params, tournamentRecord });
+    if (result.error && result.error !== PENALTY_NOT_FOUND) return result;
+  }
+
+  return { ...SUCCESS };
+}
+
 type ModifyPenaltyArgs = {
   tournamentRecord: Tournament;
   modifications: { [key: string]: any };
   penaltyId;
   string;
 };
-export function modifyPenalty({
+export function penaltyModify({
   tournamentRecord,
   modifications,
   penaltyId,

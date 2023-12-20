@@ -52,11 +52,11 @@ export function addParticipant(params: AddParticipantType) {
     participant,
   } = params;
 
-  const tournamentId = params.tournamentId || params.activeTournamentId;
-
-  const tournamentRecord =
-    params.tournamentRecord ??
-    (tournamentId && params.tournamentRecords?.[tournamentId]);
+  const tournamentRecord = params.tournamentId // if a tournamentId is specified, use it!
+    ? params.tournamentRecords?.[params.tournamentId]
+    : params.tournamentRecord ??
+      (params.activeTournamentId &&
+        params.tournamentRecords?.[params.activeTournamentId]);
 
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!participant)

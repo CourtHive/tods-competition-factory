@@ -2,30 +2,22 @@ import { addParticipant } from '../../../tournamentEngine/governors/participantG
 import { bulkScheduleMatchUps } from '../scheduleGovernor/bulkScheduleMatchUps';
 import { bulkMatchUpStatusUpdate, setMatchUpStatus } from './setMatchUpStatus';
 import { courtGridRows } from '../../generators/courtGridRows';
-import { addDrawDefinition } from './addDrawDefinition';
 import {
   getCompetitionParticipants,
   publicFindParticipant,
-  getParticipants,
 } from '../../getters/participantGetter';
-import {
-  addEventExtension,
-  addExtension,
-  findExtension,
-  removeExtension,
-} from './competitionExtentions';
 import {
   getLinkedTournamentIds,
   linkTournaments,
   unlinkTournament,
   unlinkTournaments,
 } from './tournamentLinks';
+
 import {
-  addPenalty,
-  removePenalty,
   modifyPenalty,
-  getCompetitionPenalties,
-} from './participantPenalties';
+  removePenalty,
+} from '../../../mutate/participants/participantPenalties';
+import { addPenalty, getCompetitionPenalties } from './participantPenalties';
 
 import { modifyCollectionDefinition } from './modifyCollectionDefinition';
 import { orderCollectionDefinitions } from './orderCollectionDefinitions';
@@ -36,6 +28,10 @@ import { addCollectionGroup } from './addCollectionGroup';
 import { modifyTieFormat } from './modifyTieFormat';
 import { resetScorecard } from './resetScorecard';
 import { resetTieFormat } from './resetTieFormat';
+import { addExtension } from '../../../mutate/extensions/addExtension';
+import { removeExtension } from '../../../mutate/extensions/removeExtension';
+import { findExtension } from '../../../acquire/findExtension';
+import { addEventExtension } from '../../../mutate/extensions/addRemoveExtensions';
 
 const competitionGovernor = {
   modifyCollectionDefinition,
@@ -58,9 +54,7 @@ const competitionGovernor = {
   unlinkTournaments,
   getLinkedTournamentIds,
 
-  addDrawDefinition, // test
   getCompetitionParticipants,
-  getParticipants,
   addParticipant,
   courtGridRows,
 

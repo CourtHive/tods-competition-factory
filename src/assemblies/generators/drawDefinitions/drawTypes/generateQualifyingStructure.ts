@@ -200,8 +200,8 @@ export function generateQualifyingStructure(
 
     if (roundTarget) {
       addExtension({
-        element: structure,
         extension: { name: ROUND_TARGET, value: roundTarget },
+        element: structure,
       });
     }
 

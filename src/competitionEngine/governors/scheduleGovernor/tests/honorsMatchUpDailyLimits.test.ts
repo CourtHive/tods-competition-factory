@@ -5,9 +5,9 @@ import { unique } from '../../../../utilities';
 import competitionEngine from '../../../sync';
 import { expect, it } from 'vitest';
 
-import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
-import { SCHEDULE_LIMITS } from '../../../../constants/extensionConstants';
 import { INVALID_OBJECT } from '../../../../constants/errorConditionConstants';
+import { SCHEDULE_LIMITS } from '../../../../constants/extensionConstants';
+import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
 
 it('can set and honor matchUpDailyLimits', () => {
   // ensure that tournament has exactly 16 participants

@@ -16,7 +16,6 @@ import {
 import {
   EVENT_NOT_FOUND,
   INVALID_VALUES,
-  MISSING_EVENT,
   MISSING_PARTICIPANT_ID,
   MISSING_VALUE,
   NOT_FOUND,
@@ -44,13 +43,13 @@ it('can add and remove extensions from tournamentRecords', () => {
   expect(result.success).toEqual(true);
 
   result = tournamentEngine.addEventExtension({ extension });
-  expect(result.error).toEqual(MISSING_EVENT);
+  expect(result.error).toEqual(EVENT_NOT_FOUND);
 
   result = tournamentEngine.addEventExtension({
     eventId: 'bogusId',
     extension,
   });
-  expect(result.error).toEqual(MISSING_EVENT);
+  expect(result.error).toEqual(EVENT_NOT_FOUND);
 
   result = competitionEngine.addEventExtension({
     eventId,

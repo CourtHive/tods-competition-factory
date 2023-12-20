@@ -22,12 +22,8 @@ import {
   cycleMutationStatus,
   handleCaughtError,
 } from '../global/state/globalState';
-import {
-  getState,
-  removeUnlinkedTournamentRecords,
-  setState,
-  setTournamentRecord,
-} from './stateMethods';
+import { getState, setState, setTournamentRecord } from './stateMethods';
+import { removeUnlinkedTournamentRecords } from '../assemblies/engines/parts/stateMethods';
 
 import {
   INVALID_VALUES,

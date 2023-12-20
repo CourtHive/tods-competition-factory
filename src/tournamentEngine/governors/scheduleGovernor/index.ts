@@ -32,7 +32,7 @@ import {
 import {
   getSchedulingProfile,
   setSchedulingProfile,
-} from './schedulingProfile';
+} from '../../../competitionEngine/governors/scheduleGovernor/schedulingProfile/schedulingProfile';
 
 const scheduleGovernor = {
   allocateTeamMatchUpCourts,

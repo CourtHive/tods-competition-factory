@@ -1,8 +1,8 @@
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
+import tournamentEngine from '../../../test/engines/tournamentEngine';
 import { eventConstants } from '../../../constants/eventConstants';
 import competitionEngine from '../../../competitionEngine/sync';
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../../test/engines/tournamentEngine';
 import { expect, test } from 'vitest';
 
 import POLICY_SCHEDULING_DEFAULT from '../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
@@ -24,14 +24,14 @@ test('recognizes scheduling conflicts', () => {
   ];
   const startDate = '2022-01-01';
   const endDate = '2022-01-07';
-  const { eventIds, tournamentRecord } = mocksEngine.generateTournamentRecord({
+  let result = mocksEngine.generateTournamentRecord({
     participantsProfile: { idPrefix: 'xyz' },
     venueProfiles,
     eventProfiles,
     startDate,
     endDate,
   });
-
+  const { eventIds, tournamentRecord } = result;
   competitionEngine.setState(tournamentRecord);
 
   competitionEngine.attachPolicies({
@@ -49,7 +49,7 @@ test('recognizes scheduling conflicts', () => {
     scheduledDate,
   };
   let matchUpIds = roundMatchUps[1].map(({ matchUpId }) => matchUpId);
-  let result = tournamentEngine.bulkScheduleTournamentMatchUps({
+  result = tournamentEngine.bulkScheduleTournamentMatchUps({
     matchUpIds,
     schedule,
   });
@@ -105,7 +105,7 @@ test('recognizes scheduling conflicts', () => {
     true
   );
 
-  const { competitionParticipants, participantIdsWithConflicts } =
+  const { participants: competitionParticipants, participantIdsWithConflicts } =
     competitionEngine.getCompetitionParticipants({
       scheduleAnalysis: { scheduledMinutesDifference: 60 },
       withStatistics: true,
@@ -121,7 +121,7 @@ test('recognizes scheduling conflicts', () => {
     typeof competitionParticipants[0].scheduleConflicts[0].matchUpIdWithConflict
   ).toEqual('string');
 
-  result = competitionEngine.getParticipants({
+  result = competitionEngine.getCompetitionParticipants({
     scheduleAnalysis: { scheduledMinutesDifference: 60 },
     withPotentialMatchUps: true,
     withStatistics: true,

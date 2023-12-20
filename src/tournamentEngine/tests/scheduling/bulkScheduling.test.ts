@@ -240,7 +240,7 @@ test('recognizes scheduling conflicts', () => {
   expect(teConflicts.length).toEqual(16);
   expect(ceConflicts.length).toEqual(16);
 
-  const participantResult = competitionEngine.getParticipants({
+  const participantResult = competitionEngine.getCompetitionParticipants({
     scheduleAnalysis: { scheduledMinutesDifference: Infinity },
   });
   let {
@@ -305,13 +305,13 @@ test('recognizes scheduling conflicts', () => {
   expect(gpConflicts.length).toEqual(0);
 
   ({ participantIdsWithConflicts: gpConflicts } =
-    competitionEngine.getParticipants({
+    competitionEngine.getCompetitionParticipants({
       scheduleAnalysis: { scheduledMinutesDifference: 60 },
     }));
   expect(gpConflicts.length).toEqual(16);
 
   ({ participantIdsWithConflicts: gpConflicts } =
-    competitionEngine.getParticipants({
+    competitionEngine.getCompetitionParticipants({
       scheduleAnalysis: { scheduledMinutesDifference: 50 },
     }));
   expect(gpConflicts.length).toEqual(0);
