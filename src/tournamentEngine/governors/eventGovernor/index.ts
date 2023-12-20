@@ -113,7 +113,6 @@ import { removeCollectionGroup } from '../../../matchUpEngine/governors/tieForma
 import { addCollectionGroup } from '../../../matchUpEngine/governors/tieFormatGovernor/addCollectionGroup';
 import { setStructureOrder } from '../../../drawEngine/governors/structureGovernor/setStructureOrder';
 import { modifyTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/modifyTieFormat';
-import { resetScorecard } from './resetScorecard';
 import { resetTieFormat } from '../../../mutate/tieFormat/resetTieFormat';
 
 import { getAssignedParticipantIds } from '../../../drawEngine/getters/getAssignedParticipantIds';
@@ -143,6 +142,7 @@ import {
 import { renameStructures } from '../../../drawEngine/governors/structureGovernor/renameStructures';
 import { addPlayoffStructures } from '../../../mutate/drawDefinitions/addPlayoffStructures';
 import { validateCollectionDefinition } from '../../../validators/validateCollectionDefinition';
+import { resetScorecard } from '../../../mutate/matchUps/resetScorecard';
 
 const eventGovernor = {
   generateQualifyingStructure,

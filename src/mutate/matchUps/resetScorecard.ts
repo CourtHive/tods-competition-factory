@@ -1,20 +1,20 @@
-import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
-import { compareTieFormats } from '../../../matchUpEngine/governors/tieFormatGovernor/compareTieFormats';
-import { resetTieFormat } from '../../../mutate/tieFormat/resetTieFormat';
-import { getAllDrawMatchUps } from '../../../query/drawMatchUps';
-import { getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
-import { positionTargets } from '../../../mutate/matchUps/drawPositions/positionTargets';
-import { findStructure } from '../../getters/findStructure';
-import { isActiveDownstream } from './isActiveDownstream';
-import { updateTieMatchUpScore } from '../../../mutate/matchUps/score/tieMatchUpScore';
-import { setMatchUpStatus } from '../../../mutate/matchUps/matchUpStatus/setMatchUpStatus';
+import { resolveTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
+import { compareTieFormats } from '../../matchUpEngine/governors/tieFormatGovernor/compareTieFormats';
+import { resetTieFormat } from '../tieFormat/resetTieFormat';
+import { getAllDrawMatchUps } from '../../query/drawMatchUps';
+import { getMatchUpsMap } from '../../query/matchUps/getMatchUpsMap';
+import { positionTargets } from './drawPositions/positionTargets';
+import { findStructure } from '../../drawEngine/getters/findStructure';
+import { isActiveDownstream } from '../../drawEngine/governors/matchUpGovernor/isActiveDownstream';
+import { updateTieMatchUpScore } from './score/tieMatchUpScore';
+import { setMatchUpStatus } from './matchUpStatus/setMatchUpStatus';
 import {
   ResultType,
   decorateResult,
-} from '../../../global/functions/decorateResult';
+} from '../../global/functions/decorateResult';
 
-import { TEAM_EVENT } from '../../../constants/eventConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { TEAM_EVENT } from '../../constants/eventConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   MATCHUP_NOT_FOUND,
   MISSING_DRAW_DEFINITION,
@@ -22,7 +22,7 @@ import {
   CANNOT_CHANGE_WINNING_SIDE,
   MISSING_MATCHUP_ID,
   INVALID_MATCHUP,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 /**
  *
