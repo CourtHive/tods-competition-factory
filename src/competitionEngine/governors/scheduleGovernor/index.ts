@@ -1,15 +1,10 @@
 import { modifyEventMatchUpFormatTiming } from './matchUpFormatTiming/modifyEventMatchUpFormatTiming';
 import { getMatchUpFormatTimingUpdate } from './matchUpFormatTiming/getMatchUpFormatTimingUpdate';
-import { validateSchedulingProfile } from '../../../validators/validateSchedulingProfile';
 import { modifyMatchUpFormatTiming } from './matchUpFormatTiming/modifyMatchUpFormatTiming';
 import { getScheduledRoundsDetails } from './schedulingProfile/getScheduledRoundsDetails';
-import { findMatchUpFormatTiming } from '../../../acquire/findMatchUpFormatTiming';
-import { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDependencies';
 import { calculateScheduleTimes } from './scheduleMatchUps/calculateScheduleTimes';
 import { scheduleProfileRounds } from './schedulingProfile/scheduleProfileRounds';
-import { removeEventMatchUpFormatTiming } from '../../../mutate/events/extensions/removeEventMatchUpFormatTiming';
 import { generateVirtualCourts } from './schedulers/utils/generateVirtualCourts';
-import { removeMatchUpCourtAssignment } from '../../../mutate/matchUps/schedule/removeMatchUpCourtAssignment';
 import { getMatchUpDailyLimitsUpdate } from './getMatchUpDailyLimitsUpdate';
 import { bulkUpdateCourtAssignments } from './bulkUpdateCourtAssignments';
 import { scheduleMatchUps } from './scheduleMatchUps/scheduleMatchUps';
@@ -30,8 +25,19 @@ import {
   setSchedulingProfile,
 } from './schedulingProfile/schedulingProfile';
 import {
+  addPersonRequests,
+  getPersonRequests,
+  modifyPersonRequests,
+  removePersonRequests,
+} from './scheduleMatchUps/personRequests';
+
+// relocated
+import { validateSchedulingProfile } from '../../../validators/validateSchedulingProfile';
+import { findMatchUpFormatTiming } from '../../../acquire/findMatchUpFormatTiming';
+import { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDependencies';
+
+import {
   addMatchUpScheduledDate,
-  addMatchUpScheduledTime,
   addMatchUpStartTime,
   addMatchUpEndTime,
   addMatchUpStopTime,
@@ -39,18 +45,15 @@ import {
   addMatchUpOfficial,
   addMatchUpScheduleItems,
   addMatchUpCourtOrder,
-  allocateTeamMatchUpCourts,
-  assignMatchUpVenue,
-  assignMatchUpCourt,
-} from './scheduleMatchUps/addScheduleItems';
-import {
-  addPersonRequests,
-  getPersonRequests,
-  modifyPersonRequests,
-  removePersonRequests,
-} from './scheduleMatchUps/personRequests';
+} from '../../../mutate/matchUps/schedule/scheduleItems';
+import { removeEventMatchUpFormatTiming } from '../../../mutate/events/extensions/removeEventMatchUpFormatTiming';
+import { removeMatchUpCourtAssignment } from '../../../mutate/matchUps/schedule/removeMatchUpCourtAssignment';
 import { toggleParticipantCheckInState } from '../../../mutate/matchUps/timeItems/toggleParticipantCheckInState';
 import { getEventMatchUpFormatTiming } from '../../../query/extensions/matchUpFormatTiming/getEventMatchUpFormatTiming';
+import { addMatchUpScheduledTime } from '../../../mutate/matchUps/schedule/scheduledTime';
+import { allocateTeamMatchUpCourts } from '../../../mutate/matchUps/schedule/allocateTeamMatchUpCourts';
+import { assignMatchUpCourt } from '../../../mutate/matchUps/schedule/assignMatchUpCourt';
+import { assignMatchUpVenue } from '../../../mutate/matchUps/schedule/assignMatchUpVenue';
 
 const scheduleGovernor = {
   scheduleMatchUps,
