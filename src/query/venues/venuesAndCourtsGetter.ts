@@ -7,6 +7,7 @@ import { HydratedCourt, HydratedVenue } from '../../types/hydrated';
 import { ResultType } from '../../global/functions/decorateResult';
 import { Tournament, Venue } from '../../types/tournamentTypes';
 import { DISABLED } from '../../constants/extensionConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   TournamentRecords,
   TournamentRecordsArgs,
@@ -15,7 +16,6 @@ import {
   ErrorType,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../constants/errorConditionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
 
 type GetVenuesAndCourtsArgs = {
   tournamentRecords?: TournamentRecords;
@@ -72,7 +72,7 @@ export function getVenuesAndCourts(
       for (const court of venue.courts || []) {
         if (!uniqueCourtIds.includes(court.courtId)) {
           // if dates are provided, only ignore the court if it is disabled for all given dates
-          if (ignoreDisabled && dates) {
+          if (ignoreDisabled) {
             const { extension } = findExtension({
               name: DISABLED,
               element: court,

@@ -17,7 +17,7 @@ type RenameStructuresArgs = {
 export function renameStructures({
   drawDefinition,
   structureDetails,
-}: RenameStructuresArgs): ResultType & { modificationsApplied?: number } {
+}: RenameStructuresArgs): ResultType {
   if (!Array.isArray(structureDetails)) return { error: INVALID_VALUES };
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
@@ -37,14 +37,12 @@ export function renameStructures({
     return { error: MISSING_VALUE };
   }
 
-  let modificationsApplied = 0;
   for (const structure of drawDefinition.structures || []) {
     const structureName = detailMap[structure.structureId];
     if (structureName) {
       structure.structureName = structureName;
-      modificationsApplied += 1;
     }
   }
 
-  return { ...SUCCESS, modificationsApplied };
+  return { ...SUCCESS };
 }

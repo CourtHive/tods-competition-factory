@@ -167,7 +167,6 @@ export const competitionEngine = (function () {
           },
         });
       });
-      result.modificationsApplied = true;
     }
     if (notify)
       notifySubscribers({
@@ -258,7 +257,6 @@ export const competitionEngine = (function () {
           },
         });
       });
-      result.modificationsApplied = true;
     }
     notifySubscribers({ directives, mutationStatus, timeStamp });
     deleteNotices();

@@ -44,9 +44,6 @@ it('supports manual seeding with alphanumeric values', () => {
 
   const result = tournamentEngine.executionQueue([method]);
   expect(result.success).toEqual(true);
-  expect(result.results[0].modificationsApplied).toEqual(
-    scaleItemsWithParticipantIds.length
-  );
 
   const { drawDefinition } = tournamentEngine.generateDrawDefinition({
     seedingScaleName: eventId,

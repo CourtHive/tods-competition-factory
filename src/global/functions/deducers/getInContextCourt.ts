@@ -1,5 +1,6 @@
 import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
 import { findExtension } from '../../../acquire/findExtension';
+import { isObject } from '../../../utilities/objects';
 
 import { DISABLED } from '../../../constants/extensionConstants';
 
@@ -19,11 +20,12 @@ export function getInContextCourt({
   });
 
   if (ignoreDisabled && extension) {
-    const disabledDates =
-      (typeof extension.value === 'object' && extension.value.dates) || [];
+    const disabledDates = isObject(extension.value)
+      ? extension.value?.dates
+      : undefined;
 
     const dateAvailability =
-      extension.value === true
+      extension?.value === true
         ? []
         : inContextCourt.dateAvailability
             .map((availability) => {
@@ -32,6 +34,7 @@ export function getInContextCourt({
               return availability;
             })
             .filter(Boolean);
+
     inContextCourt.dateAvailability = dateAvailability;
   }
 

@@ -33,7 +33,6 @@ it('can generate TEAMs from attributes', () => {
   expect(result.success).toEqual(true);
   expect(result.newParticipants.length).toBeGreaterThan(0);
   expect(result.participantsAdded).toBeUndefined();
-  expect(result.modificationsApplied).toEqual(false);
 
   result = tournamentEngine.generateTeamsFromParticipantAttribute({
     accessor: 'person.addresses.city',
@@ -44,7 +43,6 @@ it('can generate TEAMs from attributes', () => {
 
   expect(result.participantsAdded).toBeGreaterThan(0);
   expect(result.newParticipants).toBeUndefined();
-  expect(result.modificationsApplied).toEqual(true);
 });
 
 it('can generate TEAM events', () => {

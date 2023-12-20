@@ -134,7 +134,6 @@ export function competitionEngineAsync(
           },
         });
       });
-      result.modificationsApplied = true;
     }
     if (notify)
       await notifySubscribersAsync({
@@ -213,7 +212,6 @@ export function competitionEngineAsync(
           },
         });
       });
-      result.modificationsApplied = true;
     }
     await notifySubscribersAsync({ directives, mutationStatus, timeStamp });
     deleteNotices();

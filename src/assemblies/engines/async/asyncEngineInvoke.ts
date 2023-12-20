@@ -40,7 +40,6 @@ export async function asyncEngineInvoke(
 
   const timeStamp = Date.now();
   const mutationStatus = getMutationStatus({ timeStamp });
-  result.modificationsApplied = mutationStatus;
 
   const notify =
     result?.success &&

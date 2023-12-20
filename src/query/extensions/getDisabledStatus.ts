@@ -1,27 +1,35 @@
+import { isObject } from '../../utilities/objects';
+
 type GetDisabledStatusArgs = {
   dates?: string[];
   extension?: any;
 };
 
 export function getDisabledStatus({
-  extension,
   dates = [],
+  extension,
 }: GetDisabledStatusArgs) {
   if (!extension) return false;
-  if (typeof extension.value === 'boolean' && extension.value) return true;
-  if (
-    typeof extension.value === 'object' &&
-    Array.isArray(extension.value.dates)
-  ) {
-    // if there is an extension that is an object with a dates array
-    // and no dates have been provided then consider the court disabled
-    if (!dates.length) return true;
 
-    const disabledDates = dates.filter((date) =>
-      extension.value.dates.includes(date)
+  // boolean value false means court is entirely disabled
+  if (typeof extension.value === 'boolean' && extension.value) return true;
+  // even if a court is disabled for specific dates, if no dates are provided then it is not considered disabled
+  // REFINEMENT: if disabledDates include all dates from tournament.startDate to tournament.endDate then court is disabled
+
+  if (!dates.length) return false;
+
+  const disabledDates = isObject(extension.value)
+    ? extension.value?.dates
+    : undefined;
+
+  if (Array.isArray(disabledDates)) {
+    if (!disabledDates?.length) return false;
+    const datesToConsider = disabledDates.filter(
+      (date) => !dates.length || dates.includes(date)
     );
+
     // only if all provided dates appear in disabled dates is the court considered disabled
-    return !!disabledDates.length;
+    return !!datesToConsider.length;
   }
 
   return undefined;

@@ -388,7 +388,6 @@ it.each(scenarios)(
         expectation.totalStructuresCount -
           (expectation.initialStructuresCount ?? 1)
       );
-      expect(result.modificationsApplied).toEqual(true);
       expect(result.success).toEqual(true);
     }
 

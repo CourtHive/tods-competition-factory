@@ -36,7 +36,6 @@ describe('should mock console.log', () => {
         tournamentRecord,
       },
       result: {
-        modificationsApplied: false,
         error: {
           message: 'Missing event / eventId',
           code: 'ERR_MISSING_EVENT_ID',

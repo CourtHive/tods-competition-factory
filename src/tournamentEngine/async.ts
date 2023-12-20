@@ -147,7 +147,6 @@ export function tournamentEngineAsync(
           timeStamp,
         },
       });
-      result.modificationsApplied = true;
     }
 
     if (notify)
