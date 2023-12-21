@@ -1,4 +1,4 @@
-import { addExtension } from '../../mutate/extensions/addExtension';
+import { addExtension } from '../extensions/addExtension';
 import { getAccessorValue } from '../../utilities/getAccessorValue';
 import { addNotice } from '../../global/state/globalState';
 import { findExtension } from '../../acquire/findExtension';

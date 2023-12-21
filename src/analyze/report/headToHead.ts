@@ -1,13 +1,13 @@
-import { HydratedMatchUp, HydratedParticipant } from '../types/hydrated';
-import { INVALID_VALUES } from '../constants/errorConditionConstants';
-import { ResultType } from '../global/functions/decorateResult';
-import { intersection } from '../utilities';
+import { HydratedMatchUp, HydratedParticipant } from '../../types/hydrated';
+import { INVALID_VALUES } from '../../constants/errorConditionConstants';
+import { ResultType } from '../../global/functions/decorateResult';
+import { intersection } from '../../utilities';
 
-import { SUCCESS } from '../constants/resultConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   countGames,
   countSets,
-} from '../matchUpEngine/getters/roundRobinTally/scoreCounters';
+} from '../../matchUpEngine/getters/roundRobinTally/scoreCounters';
 
 type ParticipantHeadToHead = {
   participants: [HydratedParticipant, HydratedParticipant];

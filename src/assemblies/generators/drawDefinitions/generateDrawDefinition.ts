@@ -1,52 +1,49 @@
-import { generateDrawTypeAndModifyDrawDefinition } from '../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
-import { generateQualifyingStructures } from '../../assemblies/generators/drawDefinitions/drawTypes/generateQualifyingStructures';
-import { addVoluntaryConsolationStructure } from '../../mutate/drawDefinitions/addVoluntaryConsolationStructure';
-import { setMatchUpFormat } from '../../mutate/matchUps/matchUpFormat/setMatchUpFormat';
-import { addDrawDefinition } from '../governors/eventGovernor/drawDefinitions/addDrawDefinition';
-import { generateQualifyingLink } from '../../assemblies/generators/drawDefinitions/links/generateQualifyingLink';
-import { generateAdHocMatchUps } from '../../assemblies/generators/drawDefinitions/generateAdHocMatchUps';
-import { attachPolicies } from '../../drawEngine/governors/policyGovernor/attachPolicies';
-import { checkValidEntries } from '../governors/eventGovernor/entries/checkValidEntries';
-import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
-import { addDrawEntry } from '../../drawEngine/governors/entryGovernor/addDrawEntries';
-import { getQualifiersCount } from '../../drawEngine/getters/getQualifiersCount';
-import { getAllowedDrawTypes } from '../../query/tournament/allowedTypes';
-import structureTemplate from '../../assemblies/generators/drawDefinitions/templates/structureTemplate';
-import { getParticipants } from '../../query/participants/getParticipants';
-import { newDrawDefinition } from '../../assemblies/generators/drawDefinitions/newDrawDefinition';
-import { mustBeAnArray } from '../../utilities/mustBeAnArray';
-import { isConvertableInteger } from '../../utilities/math';
-import { constantToString } from '../../utilities/strings';
-import { tieFormatDefaults } from './tieFormatDefaults';
-import { ensureInt } from '../../utilities/ensureInt';
+import { generateDrawTypeAndModifyDrawDefinition } from './generateDrawTypeAndModifyDrawDefinition';
+import { generateQualifyingStructures } from './drawTypes/generateQualifyingStructures';
+import { addVoluntaryConsolationStructure } from '../../../mutate/drawDefinitions/addVoluntaryConsolationStructure';
+import { setMatchUpFormat } from '../../../mutate/matchUps/matchUpFormat/setMatchUpFormat';
+import { addDrawDefinition } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/addDrawDefinition';
+import { generateQualifyingLink } from './links/generateQualifyingLink';
+import { generateAdHocMatchUps } from './generateAdHocMatchUps';
+import { attachPolicies } from '../../../drawEngine/governors/policyGovernor/attachPolicies';
+import { checkValidEntries } from '../../../tournamentEngine/governors/eventGovernor/entries/checkValidEntries';
+import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
+import { addDrawEntry } from '../../../drawEngine/governors/entryGovernor/addDrawEntries';
+import { getQualifiersCount } from '../../../drawEngine/getters/getQualifiersCount';
+import { getAllowedDrawTypes } from '../../../query/tournament/allowedTypes';
+import structureTemplate from './templates/structureTemplate';
+import { getParticipants } from '../../../query/participants/getParticipants';
+import { newDrawDefinition } from './newDrawDefinition';
+import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
+import { isConvertableInteger } from '../../../utilities/math';
+import { constantToString } from '../../../utilities/strings';
+import { tieFormatDefaults } from '../../../tournamentEngine/generators/tieFormatDefaults';
+import { ensureInt } from '../../../utilities/ensureInt';
 import { prepareStage } from './prepareStage';
-import { validateTieFormat } from '../../validators/validateTieFormat';
+import { validateTieFormat } from '../../../validators/validateTieFormat';
 import {
   setStageDrawSize,
   setStageQualifiersCount,
-} from '../../drawEngine/governors/entryGovernor/stageEntryCounts';
-import {
-  DrawMaticArgs,
-  drawMatic,
-} from '../../assemblies/generators/drawDefinitions/drawMatic/drawMatic';
+} from '../../../drawEngine/governors/entryGovernor/stageEntryCounts';
+import { DrawMaticArgs, drawMatic } from './drawMatic/drawMatic';
 import {
   extractAttributes,
   generateRange,
   makeDeepCopy,
   nextPowerOf2,
-} from '../../utilities';
+} from '../../../utilities';
 
-import POLICY_SEEDING_DEFAULT from '../../fixtures/policies/POLICY_SEEDING_DEFAULT';
-import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats';
-import { SUCCESS } from '../../constants/resultConstants';
-import { TEAM } from '../../constants/matchUpTypes';
+import POLICY_SEEDING_DEFAULT from '../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
+import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
+import { SUCCESS } from '../../../constants/resultConstants';
+import { TEAM } from '../../../constants/matchUpTypes';
 import {
   ErrorType,
   INVALID_DRAW_TYPE,
   INVALID_VALUES,
   MISSING_DRAW_SIZE,
   MISSING_VALUE,
-} from '../../constants/errorConditionConstants';
+} from '../../../constants/errorConditionConstants';
 import {
   AD_HOC,
   DOUBLE_ELIMINATION,
@@ -58,21 +55,21 @@ import {
   ROUND_ROBIN,
   ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
-} from '../../constants/drawDefinitionConstants';
+} from '../../../constants/drawDefinitionConstants';
 import {
   ResultType,
   decorateResult,
-} from '../../global/functions/decorateResult';
+} from '../../../global/functions/decorateResult';
 import {
   QUALIFIER,
   STRUCTURE_SELECTED_STATUSES,
-} from '../../constants/entryStatusConstants';
+} from '../../../constants/entryStatusConstants';
 import {
   POLICY_TYPE_AVOIDANCE,
   POLICY_TYPE_DRAWS,
   POLICY_TYPE_MATCHUP_ACTIONS,
   POLICY_TYPE_SEEDING,
-} from '../../constants/policyConstants';
+} from '../../../constants/policyConstants';
 import {
   DrawDefinition,
   DrawTypeUnion,
@@ -81,13 +78,13 @@ import {
   TieFormat,
   Tournament,
   EventTypeUnion,
-} from '../../types/tournamentTypes';
+} from '../../../types/tournamentTypes';
 import {
   PlayoffAttributes,
   PolicyDefinitions,
   SeedingProfile,
-} from '../../types/factoryTypes';
-import { checkTieFormat } from '../../mutate/tieFormat/checkTieFormat';
+} from '../../../types/factoryTypes';
+import { checkTieFormat } from '../../../mutate/tieFormat/checkTieFormat';
 
 type GenerateDrawDefinitionArgs = {
   automated?: boolean | { seedsOnly: boolean };

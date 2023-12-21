@@ -2,7 +2,7 @@ import { addDrawDefinition } from '../../tournamentEngine/governors/eventGoverno
 import { automatedPlayoffPositioning } from '../../tournamentEngine/governors/eventGovernor/automatedPositioning';
 import { addPlayoffStructures } from '../../mutate/drawDefinitions/addPlayoffStructures';
 import { setParticipantScaleItem } from '../../tournamentEngine/governors/participantGovernor/addScaleItems';
-import { generateDrawDefinition } from '../../tournamentEngine/generators/generateDrawDefinition';
+import { generateDrawDefinition } from '../../assemblies/generators/drawDefinitions/generateDrawDefinition';
 import { getFlightProfile } from '../../query/event/getFlightProfile';
 import { addExtension } from '../../mutate/extensions/addExtension';
 import { isValidExtension } from '../../validators/isValidExtension';

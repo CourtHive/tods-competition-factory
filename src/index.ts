@@ -32,7 +32,7 @@ import { getSetComplement } from './matchUpEngine/getters/getComplement';
 import { validateCategory } from './validators/validateCategory';
 import { isAdHoc } from './drawEngine/governors/queryGovernor/isAdHoc';
 import { structureSort } from './drawEngine/getters/structureSort';
-import { tidyScore } from './utilities/scoreParser/scoreParser';
+import { tidyScore } from './analyze/scoreParser/scoreParser';
 import { matchUpSort } from './functions/sorters/matchUpSort';
 import { dateTime, dateRange } from './utilities/dateTime';
 import { JSON2CSV, flattenJSON } from './utilities/json';

@@ -1,12 +1,12 @@
-import { completeDrawMatchUps } from '../../mocksEngine/generators/completeDrawMatchUps';
-import { timeKeeper } from '../../global/state/globalState';
-import tournamentEngine from '../../test/engines/tournamentEngine';
+import { completeDrawMatchUps } from '../../../mocksEngine/generators/completeDrawMatchUps';
+import { timeKeeper } from '../../../global/state/globalState';
+import tournamentEngine from '../../../test/engines/tournamentEngine';
 import { participantHeadToHead } from '../headToHead';
-import { generateRange } from '../../utilities';
-import mocksEngine from '../../mocksEngine';
+import { generateRange } from '../../../utilities';
+import mocksEngine from '../../../mocksEngine';
 import { expect, it } from 'vitest';
 
-import { COMPASS } from '../../constants/drawDefinitionConstants';
+import { COMPASS } from '../../../constants/drawDefinitionConstants';
 
 const drawDefinitionsCount = 10;
 const drawSize = 32;

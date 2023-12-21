@@ -1,9 +1,9 @@
-import { isValidExtension } from '../../validators/isValidExtension';
-import { validDateString } from '../../fixtures/validations/regex';
-import { isISODateString } from '../../utilities/dateTime';
+import { isValidExtension } from '../../../validators/isValidExtension';
+import { validDateString } from '../../../fixtures/validations/regex';
+import { isISODateString } from '../../../utilities/dateTime';
 
-import { INVALID_DATE } from '../../constants/errorConditionConstants';
-import { UUID } from '../../utilities';
+import { INVALID_DATE } from '../../../constants/errorConditionConstants';
+import { UUID } from '../../../utilities';
 
 export function newTournamentRecord(params): any {
   const attributes = params || {};

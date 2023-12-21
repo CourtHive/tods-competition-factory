@@ -1,5 +1,5 @@
 import { getWinningSide } from './getWinningSide';
-import { isNumeric } from '../math';
+import { isNumeric } from '../../utilities/math';
 
 export function superSquare({ score }) {
   const { setsTied, winningSide } = getWinningSide(score);

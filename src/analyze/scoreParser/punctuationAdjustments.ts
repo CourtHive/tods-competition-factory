@@ -1,5 +1,5 @@
 import { correctContainerMismatch } from './correctContainerMismatch';
-import { instanceCount } from '../arrays';
+import { instanceCount } from '../../utilities/arrays';
 import { isContained } from './utilities';
 
 export function punctuationAdjustments({ score, applied }) {

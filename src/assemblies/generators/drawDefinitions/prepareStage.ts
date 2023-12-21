@@ -1,22 +1,22 @@
-import { initializeStructureSeedAssignments } from '../../drawEngine/governors/positionGovernor/initializeSeedAssignments';
-import { automatedPositioning } from '../../drawEngine/governors/positionGovernor/automatedPositioning';
-import { getScaledEntries } from '../governors/eventGovernor/entries/getScaledEntries';
-import { assignSeed } from '../../drawEngine/governors/entryGovernor/seedAssignment';
-import { findExtension } from '../../acquire/findExtension';
-import { getDrawStructures } from '../../drawEngine/getters/findStructure';
-import { getValidSeedBlocks } from '../../drawEngine/getters/seedGetter';
-import { getParticipantId } from '../../global/functions/extractors';
+import { initializeStructureSeedAssignments } from '../../../drawEngine/governors/positionGovernor/initializeSeedAssignments';
+import { automatedPositioning } from '../../../drawEngine/governors/positionGovernor/automatedPositioning';
+import { getScaledEntries } from '../../../tournamentEngine/governors/eventGovernor/entries/getScaledEntries';
+import { assignSeed } from '../../../drawEngine/governors/entryGovernor/seedAssignment';
+import { findExtension } from '../../../acquire/findExtension';
+import { getDrawStructures } from '../../../drawEngine/getters/findStructure';
+import { getValidSeedBlocks } from '../../../drawEngine/getters/seedGetter';
+import { getParticipantId } from '../../../global/functions/extractors';
 import {
   ResultType,
   decorateResult,
-} from '../../global/functions/decorateResult';
+} from '../../../global/functions/decorateResult';
 
-import { STRUCTURE_NOT_FOUND } from '../../constants/errorConditionConstants';
-import { Entry, PositionAssignment } from '../../types/tournamentTypes';
-import { DIRECT_ENTRY_STATUSES } from '../../constants/entryStatusConstants';
-import { AD_HOC, QUALIFYING } from '../../constants/drawDefinitionConstants';
-import { RANKING, SEEDING } from '../../constants/scaleConstants';
-import { ROUND_TARGET } from '../../constants/extensionConstants';
+import { STRUCTURE_NOT_FOUND } from '../../../constants/errorConditionConstants';
+import { Entry, PositionAssignment } from '../../../types/tournamentTypes';
+import { DIRECT_ENTRY_STATUSES } from '../../../constants/entryStatusConstants';
+import { AD_HOC, QUALIFYING } from '../../../constants/drawDefinitionConstants';
+import { RANKING, SEEDING } from '../../../constants/scaleConstants';
+import { ROUND_TARGET } from '../../../constants/extensionConstants';
 
 export function prepareStage(params): ResultType & {
   positionAssignments?: PositionAssignment[];

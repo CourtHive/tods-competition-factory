@@ -9,7 +9,7 @@ import { getPairedParticipant } from './getPairedParticipant';
 import { addPersons } from './addPersons';
 
 import { modifyIndividualParticipantIds } from '../../../mutate/participants/modifyIndividualParticipantIds';
-import { createTeamsFromParticipantAttributes } from '../../generators/createTeamsFromAttributes';
+import { createTeamsFromParticipantAttributes } from '../../../mutate/participants/createTeamsFromAttributes';
 import { addIndividualParticipantIds } from '../../../mutate/participants/addIndividualParticipantIds';
 import { filterParticipants } from '../../../query/participants/filterParticipants';
 import { modifyParticipantsSignInStatus } from '../../../mutate/participants/modifyParticipantsSignInStatus';

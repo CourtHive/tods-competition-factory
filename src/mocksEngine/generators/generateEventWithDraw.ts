@@ -5,7 +5,7 @@ import { addPlayoffStructures } from '../../mutate/drawDefinitions/addPlayoffStr
 import { addEventEntries } from '../../tournamentEngine/governors/eventGovernor/entries/addEventEntries';
 import { addParticipants } from '../../tournamentEngine/governors/participantGovernor/addParticipants';
 import { addEventTimeItem } from '../../mutate/timeItems/addTimeItem';
-import { generateDrawDefinition } from '../../tournamentEngine/generators/generateDrawDefinition';
+import { generateDrawDefinition } from '../../assemblies/generators/drawDefinitions/generateDrawDefinition';
 import { publishEvent } from '../../tournamentEngine/governors/publishingGovernor/publishEvent';
 import { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
 import { addFlight } from '../../tournamentEngine/governors/eventGovernor/addFlight';

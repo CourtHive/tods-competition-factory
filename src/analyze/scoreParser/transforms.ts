@@ -10,7 +10,7 @@ import { superSquare } from './superSquare';
 import { setBuilder } from './setBuilder';
 import { parseSuper } from './parseSuper';
 import { getSuper } from './utilities';
-import { isNumeric } from '../math';
+import { isNumeric } from '../../utilities/math';
 
 export function stringScore({ score }) {
   score = score?.toString().toLowerCase() || '';
@@ -112,8 +112,8 @@ export function handleRetired({ score, profile, applied }) {
     : [providerRetired].filter(Boolean);
 
   // accommodate other variations
-  const retired = ['rtd', ...additionalRetired].find((ret) =>
-    score?.endsWith(ret)
+  const retired = ['rtd', ...additionalRetired].find(
+    (ret) => score?.endsWith(ret)
   );
 
   if (retired) {

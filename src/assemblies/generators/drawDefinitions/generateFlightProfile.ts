@@ -1,34 +1,34 @@
-import { attachFlightProfile as attachProfile } from '../governors/eventGovernor/attachFlightProfile';
-import { getScaledEntries } from '../governors/eventGovernor/entries/getScaledEntries';
-import { getParticipantId } from '../../global/functions/extractors';
-import { getDevContext } from '../../global/state/globalState';
-import { getFlightProfile } from '../../query/event/getFlightProfile';
+import { attachFlightProfile as attachProfile } from '../../../tournamentEngine/governors/eventGovernor/attachFlightProfile';
+import { getScaledEntries } from '../../../tournamentEngine/governors/eventGovernor/entries/getScaledEntries';
+import { getParticipantId } from '../../../global/functions/extractors';
+import { getDevContext } from '../../../global/state/globalState';
+import { getFlightProfile } from '../../../query/event/getFlightProfile';
 import {
   chunkArray,
   generateRange,
   chunkByNth,
   UUID,
   shuffleArray,
-} from '../../utilities';
+} from '../../../utilities';
 
-import { DIRECT_ENTRY_STATUSES } from '../../constants/entryStatusConstants';
-import { FlightProfile, ScaleAttributes } from '../../types/factoryTypes';
-import { SUCCESS } from '../../constants/resultConstants';
+import { DIRECT_ENTRY_STATUSES } from '../../../constants/entryStatusConstants';
+import { FlightProfile, ScaleAttributes } from '../../../types/factoryTypes';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   EXISTING_PROFILE,
   ErrorType,
   MISSING_EVENT,
-} from '../../constants/errorConditionConstants';
+} from '../../../constants/errorConditionConstants';
 import {
   SPLIT_SHUTTLE,
   SPLIT_WATERFALL,
-} from '../../constants/flightConstants';
+} from '../../../constants/flightConstants';
 import {
   Entry,
   Event,
   StageTypeUnion,
   Tournament,
-} from '../../types/tournamentTypes';
+} from '../../../types/tournamentTypes';
 
 /**
  * @param {object} event - automatically retrieved by tournamentEngine given eventId

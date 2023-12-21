@@ -63,14 +63,15 @@ import { removeSeeding } from './entries/removeSeeding';
 import { autoSeeding } from './entries/autoSeeding';
 
 import { generateDrawTypeAndModifyDrawDefinition } from '../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
+import { generateDrawStructuresAndLinks } from '../../../assemblies/generators/drawDefinitions/generateDrawStructuresAndLinks';
 import { addVoluntaryConsolationStructure } from '../../../mutate/drawDefinitions/addVoluntaryConsolationStructure';
+import { toggleParticipantCheckInState } from '../../../mutate/matchUps/timeItems/toggleParticipantCheckInState';
 import { resetVoluntaryConsolationStructure } from './drawDefinitions/resetVoluntaryConsolationStructure';
 import { deleteFlightProfileAndFlightDraws } from './drawDefinitions/deleteFlightProfileAndFlightDraws';
 import { removeStructure } from '../../../drawEngine/governors/structureGovernor/removeStructure';
-import { toggleParticipantCheckInState } from '../../../mutate/matchUps/timeItems/toggleParticipantCheckInState';
 import { deleteFlightAndFlightDraw } from './drawDefinitions/deleteFlightAndFlightDraw';
 import { refreshEventDrawOrder } from './drawDefinitions/refreshEventDrawOrder';
-import { generateFlightProfile } from '../../generators/generateFlightProfile';
+import { generateFlightProfile } from '../../../assemblies/generators/drawDefinitions/generateFlightProfile';
 import { generateVoluntaryConsolation } from './generateVoluntaryConsolation';
 import { addVoluntaryConsolationStage } from './addVoluntaryConsolationStage';
 import { substituteParticipant } from './drawDefinitions/substituteParticipant';
@@ -116,11 +117,10 @@ import { modifyTieFormat } from '../../../matchUpEngine/governors/tieFormatGover
 import { resetTieFormat } from '../../../mutate/tieFormat/resetTieFormat';
 
 import { getAssignedParticipantIds } from '../../../drawEngine/getters/getAssignedParticipantIds';
-import { generateDrawStructuresAndLinks } from '../../generators/generateDrawStructuresAndLinks';
 import { generateQualifyingStructure } from './drawDefinitions/generateQualifyingStructure';
 import { attachQualifyingStructure } from './drawDefinitions/attachQualifyingStructure';
 import { addQualifyingStructure } from './drawDefinitions/addQualifyingStructure';
-import { generateDrawDefinition } from '../../generators/generateDrawDefinition';
+import { generateDrawDefinition } from '../../../assemblies/generators/drawDefinitions/generateDrawDefinition';
 import { isValidForQualifying } from './drawDefinitions/isValidForQualifying';
 import { generateDrawMaticRound } from '../../../forge/generate';
 
