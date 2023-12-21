@@ -2,7 +2,7 @@ import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies
 import {
   getAllowedDrawTypes,
   getAllowedMatchUpFormats,
-} from '../../../query/tournament/allowedTypes';
+} from '../../../query/tournaments/allowedTypes';
 import { getEntriesAndSeedsCount } from './getEntriesAndSeedsCount';
 import { getSeedsCount } from './getSeedsCount';
 import { findPolicy } from '../../../acquire/findPolicy';

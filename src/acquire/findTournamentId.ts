@@ -1,4 +1,4 @@
-import { getEventIdsAndDrawIds } from '../query/tournament/getEventIdsAndDrawIds';
+import { getEventIdsAndDrawIds } from '../query/tournaments/getEventIdsAndDrawIds';
 
 import { TournamentRecords } from '../types/factoryTypes';
 

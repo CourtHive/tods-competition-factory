@@ -12,7 +12,7 @@ import {
 import { allCompetitionMatchUps } from '../../../query/matchUps/getAllCompetitionMatchUps';
 
 import { getCompetitionMatchUps } from '../../../query/matchUps/getCompetitionMatchUps';
-import { getTournamentIds } from '../competitionsGovernor/tournamentLinks';
+import { getTournamentIds } from '../../../query/tournaments/getTournamentIds';
 
 const queryGovernor = {
   getParticipantScaleItem,

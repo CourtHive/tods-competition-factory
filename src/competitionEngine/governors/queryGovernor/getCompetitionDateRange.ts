@@ -1,4 +1,4 @@
-import { getTournamentInfo } from '../../../query/tournament/getTournamentInfo';
+import { getTournamentInfo } from '../../../query/tournaments/getTournamentInfo';
 import { extractDate } from '../../../utilities/dateTime';
 
 import { Tournament } from '../../../types/tournamentTypes';

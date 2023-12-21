@@ -10,7 +10,7 @@ import { checkValidEntries } from '../../../tournamentEngine/governors/eventGove
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { addDrawEntry } from '../../../drawEngine/governors/entryGovernor/addDrawEntries';
 import { getQualifiersCount } from '../../../drawEngine/getters/getQualifiersCount';
-import { getAllowedDrawTypes } from '../../../query/tournament/allowedTypes';
+import { getAllowedDrawTypes } from '../../../query/tournaments/allowedTypes';
 import structureTemplate from './templates/structureTemplate';
 import { getParticipants } from '../../../query/participants/getParticipants';
 import { newDrawDefinition } from './newDrawDefinition';

@@ -5,11 +5,10 @@ import { courtGridRows } from '../../../assemblies/generators/scheduling/courtGr
 import { publicFindParticipant } from '../../../acquire/publicFindParticipant';
 import { getCompetitionParticipants } from '../../../query/participants/getCompetitionParticipants';
 import {
-  getLinkedTournamentIds,
   linkTournaments,
   unlinkTournament,
   unlinkTournaments,
-} from './tournamentLinks';
+} from '../../../mutate/tournaments/tournamentLinks';
 
 import {
   addPenalty,
@@ -31,6 +30,7 @@ import { addCollectionGroup } from '../../../matchUpEngine/governors/tieFormatGo
 import { modifyTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/modifyTieFormat';
 import { resetTieFormat } from '../../../mutate/tieFormat/resetTieFormat';
 import { resetScorecard } from '../../../mutate/matchUps/resetScorecard';
+import { getLinkedTournamentIds } from '../../../query/tournaments/getLinkedTournamentIds';
 
 const competitionGovernor = {
   modifyCollectionDefinition,

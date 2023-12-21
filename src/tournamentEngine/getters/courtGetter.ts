@@ -1,4 +1,4 @@
-import { getLinkedTournamentIds } from '../../competitionEngine/governors/competitionsGovernor/tournamentLinks';
+import { getLinkedTournamentIds } from '../../query/tournaments/getLinkedTournamentIds';
 import { decorateResult } from '../../global/functions/decorateResult';
 import { addVenue } from '../governors/venueGovernor/addVenue';
 import { makeDeepCopy } from '../../utilities';

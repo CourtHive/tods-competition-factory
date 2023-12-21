@@ -1,4 +1,4 @@
-import { unlinkTournament } from '../tournamentLinks';
+import { unlinkTournament } from '../../../../mutate/tournaments/tournamentLinks';
 import { intersection } from '../../../../utilities';
 import competitionEngineAsync from '../../../async';
 import competitionEngineSync from '../../../../test/engines/competitionEngine';
