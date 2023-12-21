@@ -1,22 +1,22 @@
-import { automatedPositioning as drawEngineAutomatedPositioning } from '../../../drawEngine/governors/positionGovernor/automatedPositioning';
-import { isCompletedStructure } from '../../../drawEngine/governors/queryGovernor/structureActions';
-import { getMinFinishingPositionRange } from '../../../drawEngine/getters/structureSort';
-import { getPlayoffStructures } from '../../getters/structureGetter';
+import { automatedPositioning as drawEngineAutomatedPositioning } from '../../drawEngine/governors/positionGovernor/automatedPositioning';
+import { isCompletedStructure } from '../../drawEngine/governors/queryGovernor/structureActions';
+import { getMinFinishingPositionRange } from '../../drawEngine/getters/structureSort';
+import { getPlayoffStructures } from '../../tournamentEngine/getters/structureGetter';
 
-import { SUCCESS } from '../../../constants/resultConstants';
-import { SeedingProfile } from '../../../types/factoryTypes';
+import { SUCCESS } from '../../constants/resultConstants';
+import { SeedingProfile } from '../../types/factoryTypes';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   EVENT_NOT_FOUND,
   ErrorType,
   INCOMPLETE_SOURCE_STRUCTURE,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 import {
   DrawDefinition,
   Event,
   PositionAssignment,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../types/tournamentTypes';
 
 type AutomatedPositioningArgs = {
   seedingProfile?: SeedingProfile;

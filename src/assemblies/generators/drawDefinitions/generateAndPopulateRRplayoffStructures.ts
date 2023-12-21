@@ -1,4 +1,4 @@
-import { automatedPlayoffPositioning } from '../../../tournamentEngine/governors/eventGovernor/automatedPositioning';
+import { automatedPlayoffPositioning } from '../../../mutate/drawDefinitions/automatedPlayoffPositioning';
 import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
 import { processPlayoffGroups } from './drawTypes/processPlayoffGroups';
 import { getAllDrawMatchUps } from '../../../query/drawMatchUps';

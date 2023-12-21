@@ -1,5 +1,5 @@
 import { addDrawDefinition } from '../../tournamentEngine/governors/eventGovernor/drawDefinitions/addDrawDefinition';
-import { automatedPlayoffPositioning } from '../../tournamentEngine/governors/eventGovernor/automatedPositioning';
+import { automatedPlayoffPositioning } from '../../mutate/drawDefinitions/automatedPlayoffPositioning';
 import { setParticipantScaleItem } from '../../mutate/participants/addScaleItems';
 import { addPlayoffStructures } from '../../mutate/drawDefinitions/addPlayoffStructures';
 import { addEventEntries } from '../../tournamentEngine/governors/eventGovernor/entries/addEventEntries';

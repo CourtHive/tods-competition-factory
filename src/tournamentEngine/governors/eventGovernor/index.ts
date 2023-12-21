@@ -26,7 +26,7 @@ import {
 import {
   automatedPositioning,
   automatedPlayoffPositioning,
-} from './automatedPositioning';
+} from '../../../mutate/drawDefinitions/automatedPlayoffPositioning';
 import {
   promoteAlternate,
   promoteAlternates,

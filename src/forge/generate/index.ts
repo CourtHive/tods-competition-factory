@@ -7,4 +7,4 @@ export { createGroupParticipant } from '../../mutate/participants/createGroupPar
 export {
   automatedPlayoffPositioning,
   automatedPositioning,
-} from '../../tournamentEngine/governors/eventGovernor/automatedPositioning';
+} from '../../mutate/drawDefinitions/automatedPlayoffPositioning';
