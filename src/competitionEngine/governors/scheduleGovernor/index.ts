@@ -1,10 +1,10 @@
-import { getMatchUpFormatTimingUpdate } from './matchUpFormatTiming/getMatchUpFormatTimingUpdate';
+import { getMatchUpFormatTimingUpdate } from '../../../query/extensions/matchUpFormatTiming/getMatchUpFormatTimingUpdate';
 import { modifyMatchUpFormatTiming } from './matchUpFormatTiming/modifyMatchUpFormatTiming';
 import { getScheduledRoundsDetails } from './schedulingProfile/getScheduledRoundsDetails';
 import { calculateScheduleTimes } from './scheduleMatchUps/calculateScheduleTimes';
 import { scheduleProfileRounds } from './schedulingProfile/scheduleProfileRounds';
 import { generateVirtualCourts } from './schedulers/utils/generateVirtualCourts';
-import { getMatchUpDailyLimitsUpdate } from './getMatchUpDailyLimitsUpdate';
+import { getMatchUpDailyLimitsUpdate } from '../../../query/extensions/getMatchUpDailyLimitsUpdate';
 import { bulkUpdateCourtAssignments } from './bulkUpdateCourtAssignments';
 import { scheduleMatchUps } from './scheduleMatchUps/scheduleMatchUps';
 import { generateBookings } from './schedulers/utils/generateBookings';
@@ -15,7 +15,7 @@ import { bulkRescheduleMatchUps } from './bulkRescheduleMatchUps';
 import { proAutoSchedule } from './proScheduling/proAutoSchedule';
 import { setMatchUpDailyLimits } from './setMatchUpDailyLimits';
 import { matchUpScheduleChange } from './matchUpScheduleChange';
-import { getMatchUpDailyLimits } from './getMatchUpDailyLimits';
+import { getMatchUpDailyLimits } from '../../../query/extensions/getMatchUpDailyLimits';
 import { proConflicts } from './proScheduling/proConflicts';
 import { getRounds } from './schedulingProfile/getRounds';
 import {
