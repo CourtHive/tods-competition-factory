@@ -2,11 +2,10 @@ import { getParticipants as participantGetter } from '../../query/participants/g
 import { findParticipant } from '../../acquire/findParticipant';
 // import { deepMerge } from '../../utilities/deepMerge';
 
-// import { HydratedMatchUp } from '../../types/hydrated';
-import { HydratedParticipant } from '../../types/hydrated';
-// import { ResultType } from '../../global/functions/decorateResult';
-import { MatchUp } from '../../types/tournamentTypes';
+import { HydratedMatchUp, HydratedParticipant } from '../../types/hydrated';
+import { ResultType } from '../../global/functions/decorateResult';
 import { SUCCESS } from '../../constants/resultConstants';
+import { MatchUp } from '../../types/tournamentTypes';
 import {
   ErrorType,
   MISSING_TOURNAMENT_RECORDS,
@@ -19,7 +18,16 @@ import {
   TournamentRecordsArgs,
 } from '../../types/factoryTypes';
 
-export function getCompetitionParticipants(params) {
+export function getCompetitionParticipants(params): ResultType & {
+  mappedMatchUps?: { [key: string]: HydratedMatchUp };
+  participantIdsWithConflicts?: string[];
+  participants?: HydratedParticipant[];
+  participantMap?: ParticipantMap;
+  matchUps?: MatchUp[];
+  derivedEventInfo?: any;
+  derivedDrawInfo?: any;
+  success?: boolean;
+} {
   const { tournamentRecords } = params || {};
   if (
     typeof tournamentRecords !== 'object' ||

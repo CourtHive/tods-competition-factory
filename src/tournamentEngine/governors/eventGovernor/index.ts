@@ -72,7 +72,7 @@ import { removeStructure } from '../../../drawEngine/governors/structureGovernor
 import { deleteFlightAndFlightDraw } from './drawDefinitions/deleteFlightAndFlightDraw';
 import { refreshEventDrawOrder } from './drawDefinitions/refreshEventDrawOrder';
 import { generateFlightProfile } from '../../../assemblies/generators/drawDefinitions/generateFlightProfile';
-import { generateVoluntaryConsolation } from './generateVoluntaryConsolation';
+import { generateVoluntaryConsolation } from '../../../assemblies/generators/drawDefinitions/drawTypes/generateVoluntaryConsolation';
 import { addVoluntaryConsolationStage } from './addVoluntaryConsolationStage';
 import { substituteParticipant } from './drawDefinitions/substituteParticipant';
 import { deleteAdHocMatchUps } from '../../../mutate/structures/deleteAdHocMatchUps';
@@ -116,13 +116,13 @@ import { setStructureOrder } from '../../../drawEngine/governors/structureGovern
 import { modifyTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/modifyTieFormat';
 import { resetTieFormat } from '../../../mutate/tieFormat/resetTieFormat';
 
+import { generateDrawMaticRound } from '../../../assemblies/generators/drawDefinitions/drawMatic/generateDrawMaticRound';
+import { generateDrawDefinition } from '../../../assemblies/generators/drawDefinitions/generateDrawDefinition';
 import { getAssignedParticipantIds } from '../../../drawEngine/getters/getAssignedParticipantIds';
 import { generateQualifyingStructure } from './drawDefinitions/generateQualifyingStructure';
 import { attachQualifyingStructure } from './drawDefinitions/attachQualifyingStructure';
 import { addQualifyingStructure } from './drawDefinitions/addQualifyingStructure';
-import { generateDrawDefinition } from '../../../assemblies/generators/drawDefinitions/generateDrawDefinition';
 import { isValidForQualifying } from './drawDefinitions/isValidForQualifying';
-import { generateDrawMaticRound } from '../../../forge/generate';
 
 import { resetMatchUpLineUps } from '../../../mutate/matchUps/lineUps/resetMatchUpLineUps';
 import { aggregateTieFormats } from '../../../mutate/tieFormat/aggregateTieFormats';

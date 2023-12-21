@@ -2,23 +2,22 @@ import { getParticipantIdMatchUps } from './participantIdMatchUps';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { BYE, COMPLETED } from '../../../constants/matchUpStatusConstants';
-import { DrawDefinition } from '../../../types/tournamentTypes';
-import { HydratedParticipant } from '../../../types/hydrated';
+import { DrawDefinition, Tournament } from '../../../types/tournamentTypes';
 
 type GetParticipantIdFinishingPositionsArgs = {
-  tournamentParticipants: HydratedParticipant[];
+  tournamentRecord: Tournament;
   drawDefinition: DrawDefinition;
   byeAdvancements?: boolean;
 };
 export function getParticipantIdFinishingPositions({
   byeAdvancements = false,
-  tournamentParticipants,
+  tournamentRecord,
   drawDefinition,
 }: GetParticipantIdFinishingPositionsArgs) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   const { participantIds, participantIdMatchUps } = getParticipantIdMatchUps({
-    tournamentParticipants,
+    tournamentParticipants: tournamentRecord?.participants,
     drawDefinition,
   });
 

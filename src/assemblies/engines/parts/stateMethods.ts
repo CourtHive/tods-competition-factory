@@ -1,5 +1,5 @@
+import { findExtension } from '../../../acquire/findExtension';
 import { makeDeepCopy } from '../../../utilities';
-import { findExtension } from '../../../forge/query';
 import {
   getTournamentId,
   getTournamentRecords,

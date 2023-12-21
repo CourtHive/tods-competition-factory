@@ -2,15 +2,16 @@ import { nodeResolve } from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript';
 import commonjs from '@rollup/plugin-commonjs';
 import { babel } from '@rollup/plugin-babel';
-import esbuild from 'rollup-plugin-esbuild';
+// import esbuild from 'rollup-plugin-esbuild';
 import terser from '@rollup/plugin-terser';
 import json from '@rollup/plugin-json';
-import dts from 'rollup-plugin-dts';
+// import dts from 'rollup-plugin-dts';
 import fs from 'fs-extra';
 import path from 'path';
 
 const srcIndex = 'src/index.ts';
 
+/*
 const esmBundle = (config) => ({
   external: (id) => !/^[./]/.test(id),
   plugins: [esbuild(), json(), terser()],
@@ -24,6 +25,7 @@ const esmBundle = (config) => ({
     },
   ],
 });
+*/
 
 /*
 const esmProfile = [

@@ -1,17 +1,17 @@
-import { addDrawDefinitionTimeItem } from '../eventGovernor/drawDefinitions/addDrawDefinitionTimeItem';
-import { participantScaleItem } from '../../../query/participant/participantScaleItem';
-import { addNotice, getTopics } from '../../../global/state/globalState';
-import { definedAttributes } from '../../../utilities/definedAttributes';
-import { findEvent } from '../../../acquire/findEvent';
+import { addDrawDefinitionTimeItem } from '../../tournamentEngine/governors/eventGovernor/drawDefinitions/addDrawDefinitionTimeItem';
+import { participantScaleItem } from '../../query/participant/participantScaleItem';
+import { addNotice, getTopics } from '../../global/state/globalState';
+import { definedAttributes } from '../../utilities/definedAttributes';
+import { findEvent } from '../../acquire/findEvent';
 import {
   addEventTimeItem,
   addTournamentTimeItem,
-} from '../../../mutate/timeItems/addTimeItem';
+} from '../timeItems/addTimeItem';
 
-import { Participant, Tournament } from '../../../types/tournamentTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { SCALE } from '../../../constants/scaleConstants';
-import { ScaleItem } from '../../../types/factoryTypes';
+import { Participant, Tournament } from '../../types/tournamentTypes';
+import { SUCCESS } from '../../constants/resultConstants';
+import { SCALE } from '../../constants/scaleConstants';
+import { ScaleItem } from '../../types/factoryTypes';
 import {
   INVALID_SCALE_ITEM,
   MISSING_PARTICIPANT,
@@ -20,12 +20,12 @@ import {
   NO_MODIFICATIONS_APPLIED,
   PARTICIPANT_NOT_FOUND,
   VALUE_UNCHANGED,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 import {
   ADD_SCALE_ITEMS,
   AUDIT,
   MODIFY_PARTICIPANTS,
-} from '../../../constants/topicConstants';
+} from '../../constants/topicConstants';
 
 type SetParticipantScaleItemArgs = {
   tournamentRecord: Tournament;

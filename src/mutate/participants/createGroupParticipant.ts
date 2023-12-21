@@ -1,22 +1,22 @@
-import { getParticipants } from '../../../../query/participants/getParticipants';
-import { addNotice, getTopics } from '../../../../global/state/globalState';
-import { definedAttributes } from '../../../../utilities/definedAttributes';
-import { makeDeepCopy, UUID } from '../../../../utilities';
-import { addParticipant } from '../addParticipants';
+import { getParticipants } from '../../query/participants/getParticipants';
+import { addNotice, getTopics } from '../../global/state/globalState';
+import { definedAttributes } from '../../utilities/definedAttributes';
+import { makeDeepCopy, UUID } from '../../utilities';
+import { addParticipant } from './addParticipants';
 
-import { GROUP, INDIVIDUAL } from '../../../../constants/participantConstants';
-import { ADD_PARTICIPANTS } from '../../../../constants/topicConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
-import { OTHER } from '../../../../constants/participantRoles';
+import { GROUP, INDIVIDUAL } from '../../constants/participantConstants';
+import { ADD_PARTICIPANTS } from '../../constants/topicConstants';
+import { SUCCESS } from '../../constants/resultConstants';
+import { OTHER } from '../../constants/participantRoles';
 import {
   ErrorType,
   INVALID_PARTICIPANT_TYPE,
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
-} from '../../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
-import { Participant, Tournament } from '../../../../types/tournamentTypes';
+import { Participant, Tournament } from '../../types/tournamentTypes';
 
 type CreateGroupParticipantType = {
   participantRoleResponsibilities?: string[];

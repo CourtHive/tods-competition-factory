@@ -1,4 +1,4 @@
-import { addNationalityCode } from '../../tournamentEngine/governors/participantGovernor/addNationalityCode';
+import { addNationalityCode } from '../../mutate/participants/addNationalityCode';
 import { addIndividualParticipants } from '../../mutate/participants/addIndividualParticipants';
 import { getTimeItem } from '../../tournamentEngine/governors/queryGovernor/timeItems';
 import { isObject } from '../../utilities/objects';

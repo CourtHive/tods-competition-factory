@@ -2,7 +2,7 @@ import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGove
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { getPairedParticipant } from '../../../tournamentEngine/governors/participantGovernor/getPairedParticipant';
-import { addParticipant } from '../../../tournamentEngine/governors/participantGovernor/addParticipants';
+import { addParticipant } from '../../participants/addParticipants';
 import { instanceCount } from '../../../utilities';
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';

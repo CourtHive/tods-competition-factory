@@ -1,4 +1,4 @@
-import { deleteParticipants } from '../../participantGovernor/deleteParticipants';
+import { deleteParticipants } from '../../../../mutate/participants/deleteParticipants';
 import { getStageEntries } from '../../../getters/participants/getStageEntries';
 import { decorateResult } from '../../../../global/functions/decorateResult';
 import { getParticipantId } from '../../../../global/functions/extractors';

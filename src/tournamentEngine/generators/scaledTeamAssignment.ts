@@ -1,4 +1,4 @@
-import { addParticipants } from '../governors/participantGovernor/addParticipants';
+import { addParticipants } from '../../mutate/participants/addParticipants';
 import { participantScaleItem } from '../../query/participant/participantScaleItem';
 import { getParticipantId } from '../../global/functions/extractors';
 import { getFlightProfile } from '../../query/event/getFlightProfile';

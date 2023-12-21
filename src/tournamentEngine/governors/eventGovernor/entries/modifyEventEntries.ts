@@ -1,5 +1,5 @@
 import { getPairedParticipant } from '../../participantGovernor/getPairedParticipant';
-import { addParticipants } from '../../participantGovernor/addParticipants';
+import { addParticipants } from '../../../../mutate/participants/addParticipants';
 import { intersection } from '../../../../utilities/arrays';
 
 import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';

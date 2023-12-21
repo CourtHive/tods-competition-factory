@@ -8,7 +8,7 @@ import { expect, test } from 'vitest';
 
 import { setGlobalLog, setMethods } from '../../../global/state/globalState';
 import { getMethods } from '../../../global/state/syncGlobalState';
-import * as query from '../../../../dist/forge/query';
+import * as query from '../../../forge/query';
 
 import { deleteDrawDefinitions } from '../../../mutate/events/deleteDrawDefinitions';
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
@@ -49,7 +49,7 @@ test('sync syncEngine can set state and execute methods', () => {
   // syncEngine can get state, confirming method execution was successful
   state = syncEngine.getState();
   const competitionParticipants =
-    query.getCompetitionParticipants(state).competitionParticipants;
+    query.getCompetitionParticipants(state).participants;
   expect(competitionParticipants?.length).toEqual(8);
 
   const matchUps = query.allCompetitionMatchUps(state).matchUps;

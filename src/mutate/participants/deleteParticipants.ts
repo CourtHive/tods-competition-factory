@@ -1,27 +1,27 @@
-import { removeParticipantIdsFromAllTeams } from '../../../mutate/participants/removeIndividualParticipantIds';
-import { allTournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
-import { removeEventEntries } from '../eventGovernor/entries/removeEventEntries';
-import { getParticipants } from '../../../query/participants/getParticipants';
-import { addEventEntries } from '../eventGovernor/entries/addEventEntries';
-import { addNotice } from '../../../global/state/globalState';
-import { intersection } from '../../../utilities';
+import { removeParticipantIdsFromAllTeams } from './removeIndividualParticipantIds';
+import { allTournamentMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
+import { removeEventEntries } from '../../tournamentEngine/governors/eventGovernor/entries/removeEventEntries';
+import { getParticipants } from '../../query/participants/getParticipants';
+import { addEventEntries } from '../../tournamentEngine/governors/eventGovernor/entries/addEventEntries';
+import { addNotice } from '../../global/state/globalState';
+import { intersection } from '../../utilities';
 
-import { DELETE_PARTICIPANTS } from '../../../constants/topicConstants';
-import { UNGROUPED } from '../../../constants/entryStatusConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { DOUBLES } from '../../../constants/matchUpTypes';
-import { TEAM } from '../../../constants/eventConstants';
+import { DELETE_PARTICIPANTS } from '../../constants/topicConstants';
+import { UNGROUPED } from '../../constants/entryStatusConstants';
+import { SUCCESS } from '../../constants/resultConstants';
+import { DOUBLES } from '../../constants/matchUpTypes';
+import { TEAM } from '../../constants/eventConstants';
 import {
   CANNOT_REMOVE_PARTICIPANTS,
   MISSING_PARTICIPANT_IDS,
   MISSING_TOURNAMENT_RECORD,
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
   ErrorType,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 import {
   PAIR,
   TEAM as participantTeam,
-} from '../../../constants/participantConstants';
+} from '../../constants/participantConstants';
 
 /**
  *

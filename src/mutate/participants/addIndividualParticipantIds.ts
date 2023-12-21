@@ -3,7 +3,7 @@ import {
   decorateResult,
 } from '../../global/functions/decorateResult';
 import { addNotice, getTopics } from '../../global/state/globalState';
-import { updateTeamEventEntries } from '../../tournamentEngine/governors/participantGovernor/groupings/updateTeamEventEntries';
+import { updateTeamEventEntries } from './updateTeamEventEntries';
 import { makeDeepCopy } from '../../utilities';
 
 import { MODIFY_PARTICIPANTS } from '../../constants/topicConstants';

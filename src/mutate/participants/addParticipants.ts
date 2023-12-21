@@ -1,20 +1,20 @@
-import { decorateResult } from '../../../global/functions/decorateResult';
-import { definedAttributes } from '../../../utilities/definedAttributes';
-import { addNotice } from '../../../global/state/globalState';
-import { intersection } from '../../../utilities/arrays';
-import { makeDeepCopy, UUID } from '../../../utilities';
+import { decorateResult } from '../../global/functions/decorateResult';
+import { definedAttributes } from '../../utilities/definedAttributes';
+import { addNotice } from '../../global/state/globalState';
+import { intersection } from '../../utilities/arrays';
+import { makeDeepCopy, UUID } from '../../utilities';
 
-import { Participant, Tournament } from '../../../types/tournamentTypes';
-import { ADD_PARTICIPANTS } from '../../../constants/topicConstants';
-import { TournamentRecords } from '../../../types/factoryTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { Participant, Tournament } from '../../types/tournamentTypes';
+import { ADD_PARTICIPANTS } from '../../constants/topicConstants';
+import { TournamentRecords } from '../../types/factoryTypes';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   GROUP,
   INDIVIDUAL,
   PAIR,
   participantTypes,
   TEAM,
-} from '../../../constants/participantConstants';
+} from '../../constants/participantConstants';
 import {
   INVALID_PARTICIPANT_IDS,
   INVALID_PARTICIPANT_TYPE,
@@ -27,7 +27,7 @@ import {
   INVALID_VALUES,
   PARTICIPANT_NOT_FOUND,
   EXISTING_PARTICIPANT,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 type AddParticipantType = {
   allowDuplicateParticipantIdPairs?: boolean;

@@ -713,21 +713,6 @@ const { nextUnfilledDrawPositions } = drawEngine.getNextUnfilledDrawPositions({
 
 ---
 
-## getParticipantIdFinishingPositions
-
-Returns the Range of finishing positions possible for all participantIds within a draw
-
-```js
-const idMap = drawEngine.getParticipantIdFinishingPositions({
-  byeAdvancements, // optional boolean - whether or not to consider byeAdvancements
-});
-
-const { relevantMatchUps, finishingPositionRanges, finishingPositionRange } =
-  idMap[participantId];
-```
-
----
-
 ## getPositionsPlayedOff
 
 Determines which finishing positions will be returned by a draw. For example, a First Match Loser Consolation with a draw size of 16 will playoff possitions 1, 2, 9 and 10.

@@ -2,9 +2,9 @@ import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { getCollectionPositionAssignments } from '../../../tournamentEngine/governors/eventGovernor/getCollectionPositionAssignments';
 import { getPairedParticipant } from '../../../tournamentEngine/governors/participantGovernor/getPairedParticipant';
-import { deleteParticipants } from '../../../tournamentEngine/governors/participantGovernor/deleteParticipants';
+import { deleteParticipants } from '../../participants/deleteParticipants';
 import { getParticipants } from '../../../query/participants/getParticipants';
-import { addParticipant } from '../../../tournamentEngine/governors/participantGovernor/addParticipants';
+import { addParticipant } from '../../participants/addParticipants';
 import { ensureSideLineUps } from './ensureSideLineUps';
 import { updateTeamLineUp } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/updateTeamLineUp';
 import { getTieMatchUpContext } from '../../../tournamentEngine/governors/eventGovernor/getTieMatchUpContext';

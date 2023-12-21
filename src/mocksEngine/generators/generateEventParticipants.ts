@@ -1,4 +1,4 @@
-import { addParticipants } from '../../tournamentEngine/governors/participantGovernor/addParticipants';
+import { addParticipants } from '../../mutate/participants/addParticipants';
 import { getParticipantId } from '../../global/functions/extractors';
 import { generateParticipants } from './generateParticipants';
 
