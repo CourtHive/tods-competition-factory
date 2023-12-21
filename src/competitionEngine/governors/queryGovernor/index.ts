@@ -11,13 +11,8 @@ import {
 } from '../../../query/venues/venuesAndCourtsGetter';
 import { allCompetitionMatchUps } from '../../../query/matchUps/getAllCompetitionMatchUps';
 
-import { SUCCESS } from '../../../constants/resultConstants';
 import { getCompetitionMatchUps } from '../../../query/matchUps/getCompetitionMatchUps';
-
-function getTournamentIds({ tournamentRecords }) {
-  const tournamentIds = Object.keys(tournamentRecords);
-  return { ...SUCCESS, tournamentIds };
-}
+import { getTournamentIds } from '../competitionsGovernor/tournamentLinks';
 
 const queryGovernor = {
   getParticipantScaleItem,
