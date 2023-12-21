@@ -3,7 +3,7 @@ import { getParticipantIdFinishingPositions } from '../../../drawEngine/governor
 import { getParticipantEventDetails } from '../../getters/participants/getParticipantEventDetails';
 import { getParticipantMembership } from '../../getters/participants/getParticipantMembership';
 import { getParticipantSchedules } from '../../getters/participants/getParticipantSchedules';
-import { publicFindParticipant } from '../../getters/participants/participantGetter';
+import { publicFindParticipant } from '../../../acquire/publicFindParticipant';
 import { getParticipants } from '../../../query/participants/getParticipants';
 import { getPairedParticipant } from './getPairedParticipant';
 import { addPersons } from '../../../mutate/participants/addPersons';

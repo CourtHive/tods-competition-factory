@@ -8,10 +8,7 @@ import { ResultType } from '../../global/functions/decorateResult';
 import { Tournament, Venue } from '../../types/tournamentTypes';
 import { DISABLED } from '../../constants/extensionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
-import {
-  TournamentRecords,
-  TournamentRecordsArgs,
-} from '../../types/factoryTypes';
+import { TournamentRecords } from '../../types/factoryTypes';
 import {
   ErrorType,
   MISSING_TOURNAMENT_RECORDS,
@@ -152,7 +149,8 @@ type Accumulator = {
   venues: Venue[];
 };
 
-type GetCompeitionVenuesArgs = TournamentRecordsArgs & {
+type GetCompeitionVenuesArgs = {
+  tournamentRecords: TournamentRecords;
   requireCourts?: boolean;
   dates?: string[];
 };

@@ -34,9 +34,6 @@ export type FactoryEngine = {
 export type TournamentRecords = {
   [key: string]: Tournament;
 };
-export type TournamentRecordsArgs = {
-  tournamentRecords: TournamentRecords;
-};
 
 export type CheckInOutParticipantArgs = {
   tournamentRecord: Tournament;

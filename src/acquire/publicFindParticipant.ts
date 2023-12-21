@@ -1,4 +1,3 @@
-import { getParticipants } from '../query/participants/getParticipants';
 import { findParticipant } from './findParticipant';
 
 import { ErrorType, MISSING_VALUE } from '../constants/errorConditionConstants';
@@ -25,7 +24,6 @@ export function publicFindParticipant(params: PublicFindParticipantArgs): {
   error?: ErrorType;
   stack?: any;
 } {
-  console.log('boo');
   const {
     tournamentRecord,
     policyDefinitions,
@@ -48,14 +46,9 @@ export function publicFindParticipant(params: PublicFindParticipantArgs): {
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     tournamentId = tournamentRecord.tournamentId;
 
-    const participants =
-      getParticipants({
-        policyDefinitions,
-        tournamentRecord,
-      }).participants ?? [];
-
+    const tournamentParticipants = tournamentRecord.participants || [];
     participant = findParticipant({
-      tournamentParticipants: participants,
+      tournamentParticipants,
       internalUse: true,
       policyDefinitions,
       contextProfile,

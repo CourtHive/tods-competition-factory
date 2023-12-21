@@ -15,10 +15,7 @@ import { COMPLETED } from '../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import { HydratedMatchUp } from '../../types/hydrated';
 import { Venue } from '../../types/tournamentTypes';
-import {
-  TournamentRecords,
-  TournamentRecordsArgs,
-} from '../../types/factoryTypes';
+import { TournamentRecords } from '../../types/factoryTypes';
 import {
   ErrorType,
   MISSING_TOURNAMENT_RECORDS,
@@ -293,7 +290,9 @@ export function competitionScheduleMatchUps(
 
 function getCompetitionPublishedDrawDetails({
   tournamentRecords,
-}: TournamentRecordsArgs) {
+}: {
+  tournamentRecords: TournamentRecords;
+}) {
   const drawIds: string[] = [];
   const detailsMap: { [key: string]: any } = {};
 

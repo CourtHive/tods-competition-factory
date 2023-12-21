@@ -1,7 +1,7 @@
 import { deleteVenue as venueDelete } from '../../../tournamentEngine/governors/venueGovernor/deleteVenue';
 import { checkSchedulingProfile } from '../scheduleGovernor/schedulingProfile/schedulingProfile';
 
-import { TournamentRecordsArgs } from '../../../types/factoryTypes';
+import { TournamentRecords } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_TOURNAMENT_RECORDS,
@@ -9,7 +9,8 @@ import {
   VENUE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
-type DeleteVenueArgs = TournamentRecordsArgs & {
+type DeleteVenueArgs = {
+  tournamentRecords: TournamentRecords;
   venueId: string;
   force?: boolean;
 };

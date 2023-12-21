@@ -7,10 +7,11 @@ import {
 } from '../../../constants/errorConditionConstants';
 import {
   PolicyDefinitions,
-  TournamentRecordsArgs,
+  TournamentRecords,
 } from '../../../types/factoryTypes';
 
-type MatchUpActionsArgs = TournamentRecordsArgs & {
+type MatchUpActionsArgs = {
+  tournamentRecords: TournamentRecords;
   policyDefinitions?: PolicyDefinitions;
   enforceGender?: boolean;
   participantId: string;

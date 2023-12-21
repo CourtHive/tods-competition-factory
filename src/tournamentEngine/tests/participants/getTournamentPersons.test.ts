@@ -60,6 +60,7 @@ it('can retrieve and modify tournament persons', () => {
     policyDefinitions,
     personId,
   });
+  // privacy policy has removed personId
   expect(result.participant.person.personId).toBeUndefined();
 
   result = tournamentEngine.findParticipant({
