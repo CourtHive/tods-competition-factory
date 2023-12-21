@@ -9,11 +9,11 @@ import { INDIVIDUAL, TEAM } from '../../constants/participantConstants';
 import { ADD_PARTICIPANTS } from '../../constants/topicConstants';
 import { COMPETITOR } from '../../constants/participantRoles';
 import { SUCCESS } from '../../constants/resultConstants';
+import { Tournament } from '../../types/tournamentTypes';
 import {
   MISSING_TOURNAMENT_RECORD,
   NO_PARTICIPANTS_GENERATED,
 } from '../../constants/errorConditionConstants';
-import { Tournament } from '../../types/tournamentTypes';
 
 /**
  *
@@ -34,7 +34,7 @@ type GenerateTeamsArgs = {
   accessor?: string;
   uuids?: string[];
 };
-export function generateTeamsFromParticipantAttribute({
+export function createTeamsFromParticipantAttributes({
   addParticipants = true, // optional boolean to disable add
   participantAttribute,
   tournamentRecord,

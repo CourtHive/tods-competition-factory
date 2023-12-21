@@ -1,5 +1,5 @@
 import { getVenuesAndCourts } from '../../../../../query/venues/venuesAndCourtsGetter';
-import { getScheduleTimes } from '../../garman/getScheduleTimes';
+import { getScheduleTimes } from '../../../../../query/venues/getScheduleTimes';
 import { calculatePeriodLength } from './calculatePeriodLength';
 import { getDateTimeBoundary } from './getTimeBoundary';
 import { generateBookings } from './generateBookings';

@@ -4,7 +4,7 @@ import { competitionScheduleMatchUps } from '../../../getters/competitionSchedul
 import { calculatePeriodLength } from '../schedulers/utils/calculatePeriodLength';
 import { getVenuesAndCourts } from '../../../../query/venues/venuesAndCourtsGetter';
 import { getMatchUpId } from '../../../../global/functions/extractors';
-import { getScheduleTimes } from '../garman/getScheduleTimes';
+import { getScheduleTimes } from '../../../../query/venues/getScheduleTimes';
 import {
   addMinutesToTimeString,
   extractTime,

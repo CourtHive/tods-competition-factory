@@ -22,7 +22,7 @@ it('can generate TEAMs from attributes', () => {
     tournamentEngine.getParticipants().participants.length;
   expect(participantsCount).toEqual(64);
 
-  result = tournamentEngine.generateTeamsFromParticipantAttribute({
+  result = tournamentEngine.createTeamsFromParticipantAttributes({
     accessor: 'person.addresses.city',
     addParticipants: false,
   });
@@ -34,7 +34,7 @@ it('can generate TEAMs from attributes', () => {
   expect(result.newParticipants.length).toBeGreaterThan(0);
   expect(result.participantsAdded).toBeUndefined();
 
-  result = tournamentEngine.generateTeamsFromParticipantAttribute({
+  result = tournamentEngine.createTeamsFromParticipantAttributes({
     accessor: 'person.addresses.city',
   });
 
@@ -67,7 +67,7 @@ it('can generate TEAM events', () => {
   const participantsPerGroup = 10;
   const schoolResponsibility = 'school';
 
-  result = tournamentEngine.generateTeamsFromParticipantAttribute({
+  result = tournamentEngine.createTeamsFromParticipantAttributes({
     personAttribute: 'nationalityCode',
   });
   expect(result.success).toEqual(true);

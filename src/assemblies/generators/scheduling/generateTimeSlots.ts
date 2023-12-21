@@ -1,8 +1,4 @@
-import {
-  timeToDate,
-  extractTime,
-  tidyTime,
-} from '../../../../utilities/dateTime';
+import { timeToDate, extractTime, tidyTime } from '../../../utilities/dateTime';
 
 type GenerateTimeSlotsArgs = {
   includeBookingTypes?: string[];

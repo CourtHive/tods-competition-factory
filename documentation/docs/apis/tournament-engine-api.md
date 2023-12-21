@@ -1630,7 +1630,7 @@ const { scaleItemsWithParticipantIds } =
 
 ---
 
-## generateTeamsFromParticipantAttribute
+## createTeamsFromParticipantAttributes
 
 Uses attributes of individual participnts or persons to generate `{ participantType: TEAM }` participants.
 
@@ -1638,7 +1638,7 @@ Returns count of # of TEAM participants added;
 
 ```js
 const { participantsAdded } =
-  tournamentEngine.generateTeamsFromParticipantAttribute({
+  tournamentEngine.createTeamsFromParticipantAttributes({
     participantAttribute, // optional -- attribute of participant object
     addParticipants, // optional boolean; defaults to true; when false return new participants
     personAttribute, // optional - attribute of person object

@@ -5,7 +5,7 @@ import { extractTime } from '../../../../utilities/dateTime';
 import { intersection, unique } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../../test/engines/competitionEngine';
-import garman from '../garman/garman';
+import garman from '../../../../forge/garman/garman';
 import { expect, it } from 'vitest';
 
 import POLICY_SCHEDULING_DEFAULT from '../../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';

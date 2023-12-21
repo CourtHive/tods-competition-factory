@@ -5,7 +5,7 @@ import { getTournamentTimeItem } from '../../tournamentEngine/governors/queryGov
 import { scheduledSortedMatchUps } from '../../functions/sorters/scheduledSortedMatchUps';
 import { getTournamentId } from '../../global/state/globalState';
 import { getVenuesAndCourts } from '../../query/venues/venuesAndCourtsGetter';
-import { courtGridRows } from '../generators/courtGridRows';
+import { courtGridRows } from '../../assemblies/generators/scheduling/courtGridRows';
 import { competitionMatchUps } from './matchUpsGetter';
 import { isObject } from '../../utilities/objects';
 

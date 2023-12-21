@@ -38,7 +38,7 @@ it('can export CSV files with player demographic data', () => {
 
   tournamentEngine.setState(result.tournamentRecord);
 
-  result = tournamentEngine.generateTeamsFromParticipantAttribute({
+  result = tournamentEngine.createTeamsFromParticipantAttributes({
     personAttribute: 'nationalityCode',
   });
   expect(result.success).toEqual(true);

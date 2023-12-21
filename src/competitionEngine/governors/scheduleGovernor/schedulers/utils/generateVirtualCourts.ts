@@ -1,5 +1,5 @@
-import { getCourtDateAvailability } from '../../garman/getCourtDateAvailability';
-import { generateTimeSlots } from '../../garman/generateTimeSlots';
+import { getCourtDateAvailability } from '../../../../../query/venues/getCourtDateAvailability';
+import { generateTimeSlots } from '../../../../../assemblies/generators/scheduling/generateTimeSlots';
 import { makeDeepCopy } from '../../../../../utilities';
 import {
   isValidDateString,
