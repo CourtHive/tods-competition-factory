@@ -1,6 +1,8 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
 import { initializeStructureSeedAssignments } from '../../governors/positionGovernor/initializeSeedAssignments';
-import { automatedPositioning } from '../../governors/positionGovernor/automatedPositioning';
+import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
+import { drawMatchUps } from '../../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
+import { automatedPositioning } from '../../../mutate/drawDefinitions/automatedPositioning';
 import { clearDrawPosition } from '../../../mutate/matchUps/drawPositions/positionClear';
 import { getStructureMatchUps } from '../../../query/structure/getStructureMatchUps';
 import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
@@ -8,8 +10,6 @@ import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts
 import { addDrawEntries } from '../../governors/entryGovernor/addDrawEntries';
 import { assignSeed } from '../../governors/entryGovernor/seedAssignment';
 import { getDrawStructures } from '../../getters/findStructure';
-import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
-import { drawMatchUps } from '../../../forge/query';
 import { generateRange } from '../../../utilities';
 import { expect, it } from 'vitest';
 

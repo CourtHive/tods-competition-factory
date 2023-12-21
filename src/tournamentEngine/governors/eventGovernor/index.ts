@@ -23,10 +23,7 @@ import {
   destroyPairEntries,
   destroyPairEntry,
 } from './entries/destroyPairEntry';
-import {
-  automatedPositioning,
-  automatedPlayoffPositioning,
-} from './automatedPositioning';
+import { automatedPlayoffPositioning } from '../../../mutate/drawDefinitions/automatedPlayoffPositioning';
 import {
   promoteAlternate,
   promoteAlternates,
@@ -63,15 +60,16 @@ import { removeSeeding } from './entries/removeSeeding';
 import { autoSeeding } from './entries/autoSeeding';
 
 import { generateDrawTypeAndModifyDrawDefinition } from '../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
+import { generateDrawStructuresAndLinks } from '../../../assemblies/generators/drawDefinitions/generateDrawStructuresAndLinks';
 import { addVoluntaryConsolationStructure } from '../../../mutate/drawDefinitions/addVoluntaryConsolationStructure';
+import { toggleParticipantCheckInState } from '../../../mutate/matchUps/timeItems/toggleParticipantCheckInState';
 import { resetVoluntaryConsolationStructure } from './drawDefinitions/resetVoluntaryConsolationStructure';
 import { deleteFlightProfileAndFlightDraws } from './drawDefinitions/deleteFlightProfileAndFlightDraws';
 import { removeStructure } from '../../../drawEngine/governors/structureGovernor/removeStructure';
-import { toggleParticipantCheckInState } from '../../../mutate/matchUps/timeItems/toggleParticipantCheckInState';
 import { deleteFlightAndFlightDraw } from './drawDefinitions/deleteFlightAndFlightDraw';
 import { refreshEventDrawOrder } from './drawDefinitions/refreshEventDrawOrder';
-import { generateFlightProfile } from '../../generators/generateFlightProfile';
-import { generateVoluntaryConsolation } from './generateVoluntaryConsolation';
+import { generateFlightProfile } from '../../../assemblies/generators/drawDefinitions/generateFlightProfile';
+import { generateVoluntaryConsolation } from '../../../assemblies/generators/drawDefinitions/drawTypes/generateVoluntaryConsolation';
 import { addVoluntaryConsolationStage } from './addVoluntaryConsolationStage';
 import { substituteParticipant } from './drawDefinitions/substituteParticipant';
 import { deleteAdHocMatchUps } from '../../../mutate/structures/deleteAdHocMatchUps';
@@ -115,14 +113,13 @@ import { setStructureOrder } from '../../../drawEngine/governors/structureGovern
 import { modifyTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/modifyTieFormat';
 import { resetTieFormat } from '../../../mutate/tieFormat/resetTieFormat';
 
+import { generateDrawMaticRound } from '../../../assemblies/generators/drawDefinitions/drawMatic/generateDrawMaticRound';
+import { generateDrawDefinition } from '../../../assemblies/generators/drawDefinitions/generateDrawDefinition';
 import { getAssignedParticipantIds } from '../../../drawEngine/getters/getAssignedParticipantIds';
-import { generateDrawStructuresAndLinks } from '../../generators/generateDrawStructuresAndLinks';
 import { generateQualifyingStructure } from './drawDefinitions/generateQualifyingStructure';
 import { attachQualifyingStructure } from './drawDefinitions/attachQualifyingStructure';
 import { addQualifyingStructure } from './drawDefinitions/addQualifyingStructure';
-import { generateDrawDefinition } from '../../generators/generateDrawDefinition';
 import { isValidForQualifying } from './drawDefinitions/isValidForQualifying';
-import { generateDrawMaticRound } from '../../../forge/generate';
 
 import { resetMatchUpLineUps } from '../../../mutate/matchUps/lineUps/resetMatchUpLineUps';
 import { aggregateTieFormats } from '../../../mutate/tieFormat/aggregateTieFormats';
@@ -143,6 +140,7 @@ import { renameStructures } from '../../../drawEngine/governors/structureGoverno
 import { addPlayoffStructures } from '../../../mutate/drawDefinitions/addPlayoffStructures';
 import { validateCollectionDefinition } from '../../../validators/validateCollectionDefinition';
 import { resetScorecard } from '../../../mutate/matchUps/resetScorecard';
+import { automatedPositioning } from '../../../mutate/drawDefinitions/automatedPositioning';
 
 const eventGovernor = {
   generateQualifyingStructure,

@@ -1,5 +1,5 @@
+import { getLinkedTournamentIds } from '../competitionEngine/governors/competitionsGovernor/tournamentLinks';
 import { addVenue } from '../tournamentEngine/governors/venueGovernor/addVenue';
-import { getLinkedTournamentIds } from '../forge/transform';
 import { makeDeepCopy } from '../utilities';
 
 import { Tournament, Venue } from '../types/tournamentTypes';

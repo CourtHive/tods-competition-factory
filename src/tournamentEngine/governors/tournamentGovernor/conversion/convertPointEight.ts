@@ -1,4 +1,4 @@
-import { newTournamentRecord } from '../../../generators/newTournamentRecord';
+import { newTournamentRecord } from '../../../../assemblies/generators/tournamentRecords/newTournamentRecord';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../../constants/errorConditionConstants';
 import { DOUBLES, SINGLES, TEAM } from '../../../../constants/eventConstants';

@@ -1,4 +1,4 @@
-import { addParticipant } from '../../../tournamentEngine/governors/participantGovernor/addParticipants';
+import { addParticipant } from '../../../mutate/participants/addParticipants';
 import { bulkScheduleMatchUps } from '../scheduleGovernor/bulkScheduleMatchUps';
 import { bulkMatchUpStatusUpdate, setMatchUpStatus } from './setMatchUpStatus';
 import { courtGridRows } from '../../../assemblies/generators/scheduling/courtGridRows';

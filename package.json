@@ -98,6 +98,7 @@
     "postpublish": "pinst --enable",
     "doc:publish": "cd documentation && GIT_USER=CourtHive USE_SSH=true yarn deploy",
     "generate-types": "quicktype -s schema src/global/schema/tournament.schema.json -o src/types/tournamentFromSchema.ts --just-types -t Tournament",
+    "shakeable": "npx agadoo dist/tods-competition-factory.cjs.min.js",
     "check-types": "tsc --noEmit"
   },
   "husky": {

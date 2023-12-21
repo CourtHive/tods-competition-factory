@@ -1,6 +1,6 @@
 import { updateFactoryExtension } from './governors/tournamentGovernor/updateFactoryExtension';
 import { notifySubscribersAsync } from '../global/state/notifySubscribers';
-import { newTournamentRecord } from './generators/newTournamentRecord';
+import { newTournamentRecord } from '../assemblies/generators/tournamentRecords/newTournamentRecord';
 import { setState, getState, paramsMiddleware } from './stateMethods';
 import { factoryVersion } from '../global/functions/factoryVersion';
 import participantGovernor from './governors/participantGovernor';

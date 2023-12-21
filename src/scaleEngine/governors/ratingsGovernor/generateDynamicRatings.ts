@@ -1,5 +1,5 @@
 import { getParticipantScaleItem } from '../../../tournamentEngine/governors/queryGovernor/getParticipantScaleItem';
-import { setParticipantScaleItem } from '../../../tournamentEngine/governors/participantGovernor/addScaleItems';
+import { setParticipantScaleItem } from '../../../mutate/participants/addScaleItems';
 import { allTournamentMatchUps } from '../../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
 import { parse } from '../../../matchUpEngine/governors/matchUpFormatGovernor/parse';
 import ratingsParameters from '../../../fixtures/ratings/ratingsParameters';

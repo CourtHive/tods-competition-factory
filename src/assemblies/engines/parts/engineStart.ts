@@ -4,7 +4,7 @@
  * @param engineInvoke - The engineInvoke object.
  */
 
-import { newTournamentRecord } from '../../../tournamentEngine/generators/newTournamentRecord';
+import { newTournamentRecord } from '../../generators/tournamentRecords/newTournamentRecord';
 import { factoryVersion } from '../../../global/functions/factoryVersion';
 import { importMethods } from '../parts/importMethods';
 import { processResult } from '../parts/processResult';

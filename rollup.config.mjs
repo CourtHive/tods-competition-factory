@@ -2,15 +2,16 @@ import { nodeResolve } from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript';
 import commonjs from '@rollup/plugin-commonjs';
 import { babel } from '@rollup/plugin-babel';
-import esbuild from 'rollup-plugin-esbuild';
+// import esbuild from 'rollup-plugin-esbuild';
 import terser from '@rollup/plugin-terser';
 import json from '@rollup/plugin-json';
-import dts from 'rollup-plugin-dts';
+// import dts from 'rollup-plugin-dts';
 import fs from 'fs-extra';
 import path from 'path';
 
 const srcIndex = 'src/index.ts';
 
+/*
 const esmBundle = (config) => ({
   external: (id) => !/^[./]/.test(id),
   plugins: [esbuild(), json(), terser()],
@@ -24,7 +25,9 @@ const esmBundle = (config) => ({
     },
   ],
 });
+*/
 
+/*
 const esmProfile = [
   { input: srcIndex, outputFile: 'dist/index.mjs' },
   {
@@ -50,6 +53,7 @@ const esmProfile = [
 ];
 
 const esmExports = [...esmProfile.map(esmBundle)];
+*/
 
 const basePath = fs.realpathSync(process.cwd());
 const distPath = path.resolve(basePath, 'dist');
@@ -131,6 +135,7 @@ function createExport({ input, folder, packageName, cjs, esm }) {
 
 const cjsExports = [{ input: srcIndex, cjs: true }].map(createExport);
 
+/*
 const forgeTypes = [
   {
     input: 'src/forge/query/index.ts',
@@ -153,6 +158,7 @@ const forgeTypes = [
     plugins: [dts()],
   },
 ];
+*/
 
 const governorTypes = [
   /*
@@ -186,8 +192,8 @@ const engineTypes = [
 
 export default [
   ...cjsExports,
-  ...esmExports,
-  ...forgeTypes,
+  // ...esmExports,
+  // ...forgeTypes,
   ...governorTypes,
   ...engineTypes,
 ];

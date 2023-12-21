@@ -1,10 +1,8 @@
+export { generateVoluntaryConsolation } from '../../assemblies/generators/drawDefinitions/drawTypes/generateVoluntaryConsolation';
 export { generateAndPopulatePlayoffStructures } from '../../assemblies/generators/drawDefinitions/generateAndPopulatePlayoffStructures';
-export { createGroupParticipant } from '../../tournamentEngine/governors/participantGovernor/groupings/createGroupParticipant';
-export { generateVoluntaryConsolation } from '../../tournamentEngine/governors/eventGovernor/generateVoluntaryConsolation';
 export { generateDrawMaticRound } from '../../assemblies/generators/drawDefinitions/drawMatic/generateDrawMaticRound';
-export { generateDrawDefinition } from '../../tournamentEngine/generators/generateDrawDefinition';
-export { generateFlightProfile } from '../../tournamentEngine/generators/generateFlightProfile';
-export {
-  automatedPlayoffPositioning,
-  automatedPositioning,
-} from '../../tournamentEngine/governors/eventGovernor/automatedPositioning';
+export { generateDrawDefinition } from '../../assemblies/generators/drawDefinitions/generateDrawDefinition';
+export { automatedPositioning } from '../../mutate/drawDefinitions/automatedPositioning';
+export { generateFlightProfile } from '../../assemblies/generators/drawDefinitions/generateFlightProfile';
+export { createGroupParticipant } from '../../mutate/participants/createGroupParticipant';
+export { automatedPlayoffPositioning } from '../../mutate/drawDefinitions/automatedPlayoffPositioning';

@@ -1,6 +1,6 @@
 import { getPairedParticipant } from '../../participantGovernor/getPairedParticipant';
-import { deleteParticipants } from '../../participantGovernor/deleteParticipants';
-import { addParticipant } from '../../participantGovernor/addParticipants';
+import { deleteParticipants } from '../../../../mutate/participants/deleteParticipants';
+import { addParticipant } from '../../../../mutate/participants/addParticipants';
 import { getFlightProfile } from '../../../../query/event/getFlightProfile';
 
 import { COMPETITOR } from '../../../../constants/participantRoles';

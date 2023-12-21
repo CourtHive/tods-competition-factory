@@ -52,7 +52,7 @@ type GenerateAndPopulateArgs = {
   playoffStructureNameBase?: string;
   playoffAttributes?: NamingEntry;
   finishingPositionLimit?: number;
-  tournamentRecord?: Tournament;
+  tournamentRecord: Tournament;
   drawDefinition: DrawDefinition;
   roundProfiles?: RoundProfile[];
   playoffPositions?: number[];

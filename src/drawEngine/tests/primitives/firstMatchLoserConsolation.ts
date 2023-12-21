@@ -1,6 +1,6 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
 import { initializeStructureSeedAssignments } from '../../governors/positionGovernor/initializeSeedAssignments';
-import { automatedPositioning } from '../../governors/positionGovernor/automatedPositioning';
+import { automatedPositioning } from '../../../mutate/drawDefinitions/automatedPositioning';
 import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
 import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';
 import { addDrawEntries } from '../../governors/entryGovernor/addDrawEntries';
@@ -19,7 +19,13 @@ import {
 // NOTE: replace all other occurrences of this function with this one
 
 export function generateFMLC(params) {
-  const { policyDefinitions, participantsCount, seedsCount, drawSize } = params;
+  const {
+    tournamentRecord,
+    policyDefinitions,
+    participantsCount,
+    seedsCount,
+    drawSize,
+  } = params;
   const drawType = FIRST_MATCH_LOSER_CONSOLATION;
 
   const drawDefinition = newDrawDefinition();
@@ -72,7 +78,11 @@ export function generateFMLC(params) {
     });
   });
 
-  automatedPositioning({ drawDefinition, structureId: mainStructureId });
+  automatedPositioning({
+    tournamentRecord,
+    drawDefinition,
+    structureId: mainStructureId,
+  });
 
   return { mainStructureId, consolationStructureId, drawDefinition };
 }

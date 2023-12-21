@@ -1,8 +1,8 @@
-import { validMatchUps } from '../../../../validators/validMatchUp';
 import { competitionScheduleMatchUps } from '../../../getters/competitionScheduleMatchUps';
 import { getMatchUpDependencies } from '../../../../query/matchUps/getMatchUpDependencies';
+import { matchUpSort } from '../../../../functions/sorters/matchUpSort';
+import { validMatchUps } from '../../../../validators/validMatchUp';
 import { bulkScheduleMatchUps } from '../bulkScheduleMatchUps';
-import { matchUpSort } from '../../../../forge/transform';
 import { isObject } from '../../../../utilities/objects';
 
 import { Tournament } from '../../../../types/tournamentTypes';
