@@ -1,11 +1,11 @@
-import { getDateTimeBoundary } from '../schedulers/utils/getTimeBoundary';
+import { getDateTimeBoundary } from '../../competitionEngine/governors/scheduleGovernor/schedulers/utils/getTimeBoundary';
 import { getCourtDateAvailability } from './getCourtDateAvailability';
-import { generateTimeSlots } from './generateTimeSlots';
+import { generateTimeSlots } from '../../assemblies/generators/scheduling/generateTimeSlots';
 import {
   extractTime,
   minutesDifference,
   timeToDate,
-} from '../../../../utilities/dateTime';
+} from '../../utilities/dateTime';
 
 export function getFirstTimeSlotStartTime({
   averageMinutes,

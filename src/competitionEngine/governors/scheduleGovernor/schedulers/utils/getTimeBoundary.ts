@@ -1,4 +1,4 @@
-import { getCourtDateAvailability } from '../../garman/getCourtDateAvailability';
+import { getCourtDateAvailability } from '../../../../../query/venues/getCourtDateAvailability';
 import { timeStringMinutes } from '../../../../../utilities/dateTime';
 import { Court } from '../../../../../types/tournamentTypes';
 

@@ -1,5 +1,5 @@
-import { minutesDifference, timeToDate } from '../../../../utilities/dateTime';
-import { generateTimeSlots } from './generateTimeSlots';
+import { minutesDifference, timeToDate } from '../../utilities/dateTime';
+import { generateTimeSlots } from '../../assemblies/generators/scheduling/generateTimeSlots';
 
 export function getEnoughTime({
   averageMatchUpMinutes,

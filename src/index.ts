@@ -18,7 +18,7 @@ import { participantScaleItem } from './query/participant/participantScaleItem';
 import { getScaleValues } from './tournamentEngine/getters/participants/getScaleValues';
 import { tieFormatGenderValidityCheck } from './global/functions/deducers/tieFormatGenderValidityCheck';
 import { checkScoreHasValue } from './query/matchUp/checkScoreHasValue';
-import { garman } from './competitionEngine/governors/scheduleGovernor/garman/garman';
+import { garman } from './forge/garman/garman';
 import { generateScoreString } from './matchUpEngine/generators/generateScoreString';
 import { categoryCanContain } from './global/functions/deducers/categoryCanContain';
 import { getTimeItem } from './tournamentEngine/governors/queryGovernor/timeItems';

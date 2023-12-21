@@ -1,7 +1,7 @@
 import { addParticipant } from '../../../tournamentEngine/governors/participantGovernor/addParticipants';
 import { bulkScheduleMatchUps } from '../scheduleGovernor/bulkScheduleMatchUps';
 import { bulkMatchUpStatusUpdate, setMatchUpStatus } from './setMatchUpStatus';
-import { courtGridRows } from '../../generators/courtGridRows';
+import { courtGridRows } from '../../../assemblies/generators/scheduling/courtGridRows';
 import {
   getCompetitionParticipants,
   publicFindParticipant,

@@ -1,4 +1,4 @@
-import { generateTeamsFromParticipantAttribute } from '../../tournamentEngine/generators/teamsGenerator';
+import { createTeamsFromParticipantAttributes } from '../../tournamentEngine/generators/createTeamsFromAttributes';
 import { addParticipants } from '../../tournamentEngine/governors/participantGovernor/addParticipants';
 import { getParticipantId } from '../../global/functions/extractors';
 import { generateParticipants } from './generateParticipants';
@@ -56,7 +56,7 @@ export function addTournamentParticipants({
   addedCount += result.addedCount;
 
   if (teamKey) {
-    const result = generateTeamsFromParticipantAttribute({
+    const result = createTeamsFromParticipantAttributes({
       tournamentRecord,
       ...teamKey,
     });

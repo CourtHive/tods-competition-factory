@@ -1,4 +1,4 @@
-import { generateTimeSlots } from '../scheduleGovernor/garman/generateTimeSlots';
+import { generateTimeSlots } from '../../../assemblies/generators/scheduling/generateTimeSlots';
 import { getVenuesAndCourts } from '../../../query/venues/venuesAndCourtsGetter';
 import { allCompetitionMatchUps } from '../../getters/matchUpsGetter';
 import {

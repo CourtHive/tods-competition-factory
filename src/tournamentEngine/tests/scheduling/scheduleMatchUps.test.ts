@@ -1,4 +1,4 @@
-import { getScheduleTimes } from '../../../competitionEngine/governors/scheduleGovernor/garman/getScheduleTimes';
+import { getScheduleTimes } from '../../../query/venues/getScheduleTimes';
 import { removeCourtAssignment } from '../../../mutate/matchUps/schedule/removeCourtAssignment';
 import { getMatchUpIds } from '../../../global/functions/extractors';
 import competitionEngine from '../../../test/engines/competitionEngine';

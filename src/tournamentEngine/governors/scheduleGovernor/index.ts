@@ -12,12 +12,12 @@ import { allocateTeamMatchUpCourts } from '../../../mutate/matchUps/schedule/all
 import { bulkRescheduleMatchUps } from './bulkRescheduleMatchUps';
 import { clearScheduledMatchUps } from './clearScheduledMatchUps';
 import { setMatchUpDailyLimits } from './setMatchUpDailyLimits';
-import { getMatchUpDailyLimits } from './getMatchUpDailyLimits';
 import { clearMatchUpSchedule } from '../../../mutate/matchUps/schedule/clearMatchUpSchedule';
 import { bulkScheduleTournamentMatchUps } from './bulkScheduleTournamentMatchUps';
 import { assignMatchUpCourt } from '../../../mutate/matchUps/schedule/assignMatchUpCourt';
 import { assignMatchUpVenue } from '../../../mutate/matchUps/schedule/assignMatchUpVenue';
 import { addMatchUpScheduledTime } from '../../../mutate/matchUps/schedule/scheduledTime';
+import { getMatchUpDailyLimits } from '../../../query/extensions/getMatchUpDailyLimits';
 import {
   addMatchUpCourtOrder,
   addMatchUpScheduledDate,
@@ -33,7 +33,7 @@ import {
   setSchedulingProfile,
 } from '../../../competitionEngine/governors/scheduleGovernor/schedulingProfile/schedulingProfile';
 
-import { getMatchUpDailyLimitsUpdate } from '../../../competitionEngine/governors/scheduleGovernor/getMatchUpDailyLimitsUpdate';
+import { getMatchUpDailyLimitsUpdate } from '../../../query/extensions/getMatchUpDailyLimitsUpdate';
 
 const scheduleGovernor = {
   allocateTeamMatchUpCourts,

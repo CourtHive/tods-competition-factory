@@ -1,5 +1,5 @@
-import { Court } from '../../../../types/tournamentTypes';
-import { addMinutes, timeToDate } from '../../../../utilities/dateTime';
+import { Court } from '../../types/tournamentTypes';
+import { addMinutes, timeToDate } from '../../utilities/dateTime';
 import { getCourtDateAvailability } from './getCourtDateAvailability';
 import { getEnoughTime } from './getEnoughTime';
 

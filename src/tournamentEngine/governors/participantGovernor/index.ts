@@ -9,7 +9,7 @@ import { getPairedParticipant } from './getPairedParticipant';
 import { addPersons } from './addPersons';
 
 import { modifyIndividualParticipantIds } from '../../../mutate/participants/modifyIndividualParticipantIds';
-import { generateTeamsFromParticipantAttribute } from '../../generators/teamsGenerator';
+import { createTeamsFromParticipantAttributes } from '../../generators/createTeamsFromAttributes';
 import { addIndividualParticipantIds } from '../../../mutate/participants/addIndividualParticipantIds';
 import { filterParticipants } from '../../../query/participants/filterParticipants';
 import { modifyParticipantsSignInStatus } from '../../../mutate/participants/modifyParticipantsSignInStatus';
@@ -57,7 +57,7 @@ const participantGovernor = {
   removeParticipantIdsFromAllTeams,
   getParticipantMembership,
 
-  generateTeamsFromParticipantAttribute,
+  createTeamsFromParticipantAttributes,
   regenerateParticipantNames,
 
   getParticipantIdFinishingPositions,

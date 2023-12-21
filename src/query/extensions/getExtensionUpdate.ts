@@ -1,13 +1,10 @@
-import { findExtension } from '../../../acquire/findExtension';
+import { findExtension } from '../../acquire/findExtension';
 
 import {
   ErrorType,
   MISSING_TOURNAMENT_RECORDS,
-} from '../../../constants/errorConditionConstants';
-import {
-  QueueMethod,
-  TournamentRecordsArgs,
-} from '../../../types/factoryTypes';
+} from '../../constants/errorConditionConstants';
+import { QueueMethod, TournamentRecordsArgs } from '../../types/factoryTypes';
 
 /**
  * Specific to deployments where both client and server are running competitionEngine.

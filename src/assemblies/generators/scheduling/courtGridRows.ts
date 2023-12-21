@@ -1,6 +1,6 @@
-import { generateRange } from '../../utilities';
+import { generateRange } from '../../../utilities';
 
-import { INVALID_VALUES } from '../../constants/errorConditionConstants';
+import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 
 export function courtGridRows({
   courtPrefix = 'C|',

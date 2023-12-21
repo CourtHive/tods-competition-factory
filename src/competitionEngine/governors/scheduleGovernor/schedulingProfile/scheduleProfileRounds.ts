@@ -8,7 +8,7 @@ import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
 import { getPersonRequests } from '../scheduleMatchUps/personRequests';
 import { v2Scheduler } from '../schedulers/v2Scheduler/v2Scheduler';
 import { clearScheduledMatchUps } from '../clearScheduledMatchUps';
-import { getMatchUpDailyLimits } from '../getMatchUpDailyLimits';
+import { getMatchUpDailyLimits } from '../../../../query/extensions/getMatchUpDailyLimits';
 
 import { DO_NOT_SCHEDULE } from '../../../../constants/requestConstants';
 import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';

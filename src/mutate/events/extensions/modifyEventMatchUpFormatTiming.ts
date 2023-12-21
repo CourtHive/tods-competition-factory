@@ -9,15 +9,31 @@ import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
+import { Event, Tournament } from '../../../types/tournamentTypes';
 
-export function modifyEventMatchUpFormatTiming({
-  tournamentRecord,
-  recoveryMinutes,
-  averageMinutes,
-  matchUpFormat,
-  categoryType,
-  event,
-}) {
+type ModifyEventMatchUpFormatTimingArgs = {
+  tournamentRecord: Tournament;
+  recoveryMinutes?: number;
+  averageMinutes?: number;
+  matchUpFormat: string;
+  categoryType?: string;
+  tournamentId?: string;
+  eventId: string;
+  event?: Event;
+};
+
+export function modifyEventMatchUpFormatTiming(
+  params: ModifyEventMatchUpFormatTimingArgs
+) {
+  const {
+    tournamentRecord,
+    recoveryMinutes,
+    averageMinutes,
+    matchUpFormat,
+    categoryType,
+    event,
+  } = params;
+
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!isValidMatchUpFormat(matchUpFormat)) return { error: INVALID_VALUES };
   if (!event) return { error: MISSING_EVENT };
@@ -54,8 +70,10 @@ export function modifyEventMatchUpFormatTiming({
     return timing;
   };
 
-  const validAverageMinutes = !isNaN(ensureInt(averageMinutes));
-  const validRecoveryMinutes = !isNaN(ensureInt(recoveryMinutes));
+  const validAverageMinutes =
+    averageMinutes && !isNaN(ensureInt(averageMinutes));
+  const validRecoveryMinutes =
+    recoveryMinutes && !isNaN(ensureInt(recoveryMinutes));
 
   const newAverageTimes = averageTimes
     .map(newTiming)

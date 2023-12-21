@@ -1,19 +1,19 @@
+import { generateVirtualCourts } from '../../competitionEngine/governors/scheduleGovernor/schedulers/utils/generateVirtualCourts';
+import { calculatePeriodLength } from '../../competitionEngine/governors/scheduleGovernor/schedulers/utils/calculatePeriodLength';
+import { courtGenerator } from '../../assemblies/generators/scheduling/courtGenerator';
 import { getCourtsAvailableAtPeriodStart } from './getCourtsAvailableAtPeriodStart';
-import { generateVirtualCourts } from '../schedulers/utils/generateVirtualCourts';
-import { calculatePeriodLength } from '../schedulers/utils/calculatePeriodLength';
 import { getFirstTimeSlotStartTime } from './getFirstTimeSlotStartTime';
-import { generateRange } from '../../../../utilities/arrays';
-import { courtGenerator } from './courtGenerator';
+import { generateRange } from '../../utilities/arrays';
 import {
   getUTCdateString,
   extractTime,
   extractDate,
   timeStringMinutes,
   dayMinutesToTimeString,
-} from '../../../../utilities/dateTime';
+} from '../../utilities/dateTime';
 
-import { ScheduleTimesResult } from '../../../../types/factoryTypes';
-import { ensureInt } from '../../../../utilities/ensureInt';
+import { ScheduleTimesResult } from '../../types/factoryTypes';
+import { ensureInt } from '../../utilities/ensureInt';
 
 export function getScheduleTimes(params): {
   scheduleTimes: ScheduleTimesResult[];
