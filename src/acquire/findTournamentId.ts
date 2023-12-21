@@ -1,6 +1,6 @@
-import { getEventIdsAndDrawIds } from '../../../query/tournament/getEventIdsAndDrawIds';
+import { getEventIdsAndDrawIds } from '../query/tournament/getEventIdsAndDrawIds';
 
-import { TournamentRecords } from '../../../types/factoryTypes';
+import { TournamentRecords } from '../types/factoryTypes';
 
 type FindTournamentIdArgs = {
   tournamentRecords: TournamentRecords;

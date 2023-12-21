@@ -1,5 +1,5 @@
 import { updateTieMatchUpScore as autoScore } from '../../../tournamentEngine/governors/eventGovernor/updateTieMatchUpScore';
-import { findTournamentId } from './findTournamentId';
+import { findTournamentId } from '../../../acquire/findTournamentId';
 
 import {
   MISSING_TOURNAMENT_ID,

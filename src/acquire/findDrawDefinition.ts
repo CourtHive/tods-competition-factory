@@ -1,4 +1,4 @@
-import { findTournamentId } from '../competitionEngine/governors/competitionsGovernor/findTournamentId';
+import { findTournamentId } from './findTournamentId';
 import { findEvent } from './findEvent';
 import { decorateResult } from '../global/functions/decorateResult';
 import { DrawDefinition, Event, Tournament } from '../types/tournamentTypes';

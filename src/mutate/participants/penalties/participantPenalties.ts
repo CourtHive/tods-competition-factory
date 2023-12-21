@@ -1,9 +1,13 @@
-import { addExtension } from '../extensions/addExtension';
-import penaltyTemplate from '../../tournamentEngine/generators/penaltyTemplate';
-import { addNotice } from '../../global/state/globalState';
+import { getParticipants } from '../../../query/participants/getParticipants';
+import { addNotice } from '../../../global/state/globalState';
+import { addExtension } from '../../extensions/addExtension';
+import { extractAttributes as xa } from '../../../utilities';
 
-import { MODIFY_PARTICIPANTS } from '../../constants/topicConstants';
-import { SUCCESS } from '../../constants/resultConstants';
+import penaltyTemplate from '../../../tournamentEngine/generators/penaltyTemplate';
+import { ResultType } from '../../../global/functions/decorateResult';
+import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
+import { TournamentRecords } from '../../../types/factoryTypes';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   PENALTY_NOT_FOUND,
   MISSING_PENALTY_ID,
@@ -15,18 +19,19 @@ import {
   INVALID_VALUES,
   ErrorType,
   MISSING_TOURNAMENT_RECORDS,
-} from '../../constants/errorConditionConstants';
+} from '../../../constants/errorConditionConstants';
 import {
   Extension,
   Participant,
   Penalty,
   PenaltyTypeUnion,
   Tournament,
-} from '../../types/tournamentTypes';
+} from '../../../types/tournamentTypes';
 
 type AddPenaltyArgs = {
   refereeParticipantId?: string;
-  tournamentRecord: Tournament;
+  tournamentRecords?: TournamentRecords;
+  tournamentRecord?: Tournament;
   penaltyType: PenaltyTypeUnion;
   participantIds: string[];
   extensions?: Extension[];
@@ -37,7 +42,45 @@ type AddPenaltyArgs = {
   notes?: string;
 };
 
-export function addPenalty({
+export function addPenalty(
+  params: AddPenaltyArgs
+): ResultType & { penaltyId?: string } {
+  const { tournamentRecord, participantIds } = params;
+  const tournamentRecords =
+    params.tournamentRecords ??
+    (tournamentRecord && {
+      [tournamentRecord.tournamentId]: tournamentRecord,
+    }) ??
+    {};
+
+  let penaltyId;
+  for (const tournamentRecord of Object.values(tournamentRecords)) {
+    const participants =
+      getParticipants({
+        tournamentRecord,
+      }).participants ?? [];
+
+    const tournamentParticipantIds = participants
+      ?.map(xa('participantId'))
+      .filter((participantId) => participantIds.includes(participantId));
+
+    if (tournamentParticipantIds.length) {
+      const result = penaltyAdd({
+        ...params,
+        penaltyId: params.penaltyId ?? penaltyId,
+        tournamentRecord,
+        participantIds: tournamentParticipantIds,
+      });
+      penaltyId = result.penaltyId;
+    }
+  }
+
+  return penaltyId
+    ? { ...SUCCESS, penaltyId }
+    : { error: PARTICIPANT_NOT_FOUND };
+}
+
+export function penaltyAdd({
   refereeParticipantId,
   tournamentRecord,
   participantIds,
@@ -215,6 +258,7 @@ type ModifyPenaltyArgs = {
   penaltyId;
   string;
 };
+
 export function penaltyModify({
   tournamentRecord,
   modifications,
@@ -274,4 +318,25 @@ export function penaltyModify({
   return updatedPenalty
     ? { ...SUCCESS, penalty: updatedPenalty }
     : { error: PENALTY_NOT_FOUND };
+}
+
+type GetCompetitionPenaltiesArgs = {
+  tournamentRecords: TournamentRecords;
+};
+export function getCompetitionPenalties({
+  tournamentRecords,
+}: GetCompetitionPenaltiesArgs) {
+  if (
+    typeof tournamentRecords !== 'object' ||
+    !Object.keys(tournamentRecords).length
+  )
+    return { error: MISSING_TOURNAMENT_RECORDS };
+
+  const allPenalties: Penalty[] = [];
+  for (const tournamentRecord of Object.values(tournamentRecords)) {
+    const { penalties } = getTournamentPenalties({ tournamentRecord });
+    allPenalties.push(...(penalties ?? []));
+  }
+
+  return { penalties: allPenalties };
 }

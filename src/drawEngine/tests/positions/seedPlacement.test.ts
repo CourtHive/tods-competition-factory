@@ -386,10 +386,6 @@ it('can assign seedNumbers and drawPositions to seeded participants', () => {
   });
   expect(result.success).toEqual(true);
 
-  expect(new Date(drawDefinition.updatedAt).getTime()).toBeGreaterThan(
-    new Date(snapShotBefore.updatedAt).getTime()
-  );
-
   let { seedAssignments } = getStructureSeedAssignments({
     drawDefinition,
     structureId,

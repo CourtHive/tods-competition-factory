@@ -12,10 +12,11 @@ import {
 } from './tournamentLinks';
 
 import {
+  addPenalty,
+  getCompetitionPenalties,
   modifyPenalty,
   removePenalty,
-} from '../../../mutate/participants/participantPenalties';
-import { addPenalty, getCompetitionPenalties } from './participantPenalties';
+} from '../../../mutate/participants/penalties/participantPenalties';
 
 import { addExtension } from '../../../mutate/extensions/addExtension';
 import { removeExtension } from '../../../mutate/extensions/removeExtension';

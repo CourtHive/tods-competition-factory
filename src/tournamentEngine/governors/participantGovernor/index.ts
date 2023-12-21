@@ -35,7 +35,7 @@ import {
   modifyPenalty,
   removePenalty,
   getTournamentPenalties,
-} from '../../../mutate/participants/participantPenalties';
+} from '../../../mutate/participants/penalties/participantPenalties';
 import {
   setParticipantScaleItems,
   setParticipantScaleItem,
