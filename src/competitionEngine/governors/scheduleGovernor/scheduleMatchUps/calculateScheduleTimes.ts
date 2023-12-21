@@ -1,6 +1,6 @@
 import { matchUpFormatTimes } from '../../../../query/extensions/matchUpFormatTiming/getMatchUpFormatTiming';
 import { getScheduleTiming } from '../../../../query/extensions/matchUpFormatTiming/getScheduleTiming';
-import { competitionScheduleMatchUps } from '../../../getters/competitionScheduleMatchUps';
+import { competitionScheduleMatchUps } from '../../../../query/matchUps/competitionScheduleMatchUps';
 import { calculatePeriodLength } from '../schedulers/utils/calculatePeriodLength';
 import { getVenuesAndCourts } from '../../../../query/venues/venuesAndCourtsGetter';
 import { getMatchUpId } from '../../../../global/functions/extractors';

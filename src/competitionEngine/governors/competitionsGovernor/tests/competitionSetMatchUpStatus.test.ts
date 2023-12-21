@@ -20,7 +20,8 @@ test.each([competitionEngineSync, asyncCompetitionEngine])(
       mocksEngine.generateTournamentRecord({ drawProfiles });
     await competitionEngine.setState([firstRecord, secondRecord]);
 
-    const { upcomingMatchUps } = await competitionEngine.competitionMatchUps();
+    const { upcomingMatchUps } =
+      await competitionEngine.getCompetitionMatchUps();
 
     const { outcome } = mocksEngine.generateOutcomeFromScoreString({
       scoreString: '7-5 7-5',
@@ -37,7 +38,8 @@ test.each([competitionEngineSync, asyncCompetitionEngine])(
     });
     expect(result.success).toEqual(true);
 
-    let { completedMatchUps } = await competitionEngine.competitionMatchUps();
+    let { completedMatchUps } =
+      await competitionEngine.getCompetitionMatchUps();
     expect(completedMatchUps.length).toEqual(1);
 
     const score = outcome.score;
@@ -65,7 +67,7 @@ test.each([competitionEngineSync, asyncCompetitionEngine])(
     result = await competitionEngine.bulkMatchUpStatusUpdate({ outcomes });
     expect(result.success).toEqual(true);
 
-    ({ completedMatchUps } = await competitionEngine.competitionMatchUps());
+    ({ completedMatchUps } = await competitionEngine.getCompetitionMatchUps());
     // expect that 8 + 8 first round matchUps will be completed
     expect(completedMatchUps.length).toEqual(16);
   }

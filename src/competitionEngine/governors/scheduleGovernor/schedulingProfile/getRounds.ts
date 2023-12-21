@@ -1,5 +1,5 @@
 import { definedAttributes } from '../../../../utilities/definedAttributes';
-import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
+import { allCompetitionMatchUps } from '../../../../query/matchUps/getAllCompetitionMatchUps';
 import { roundSort } from '../../../../functions/sorters/roundSort';
 import { extractDate } from '../../../../utilities/dateTime';
 import { getProfileRounds } from './getProfileRounds';

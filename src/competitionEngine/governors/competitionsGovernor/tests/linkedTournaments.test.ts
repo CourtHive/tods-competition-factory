@@ -158,7 +158,8 @@ test.each([competitionEngineSync, asyncCompetitionEngine])(
     await competitionEngine.setState([firstRecord, secondRecord]);
     await competitionEngine.linkTournaments();
 
-    const { upcomingMatchUps } = await competitionEngine.competitionMatchUps();
+    const { upcomingMatchUps } =
+      await competitionEngine.getCompetitionMatchUps();
 
     upcomingMatchUps.forEach(({ sides }) =>
       sides.forEach((side) => {

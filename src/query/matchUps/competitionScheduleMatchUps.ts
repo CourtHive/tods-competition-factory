@@ -1,15 +1,15 @@
-import { getEventPublishStatus } from '../../query/event/getEventPublishStatus';
-import { getDrawPublishStatus } from '../../query/event/getDrawPublishStatus';
-import { getSchedulingProfile } from '../governors/scheduleGovernor/schedulingProfile/schedulingProfile';
-import { getTournamentTimeItem } from '../../query/participant/timeItems';
+import { getEventPublishStatus } from '../event/getEventPublishStatus';
+import { getDrawPublishStatus } from '../event/getDrawPublishStatus';
+import { getSchedulingProfile } from '../../competitionEngine/governors/scheduleGovernor/schedulingProfile/schedulingProfile';
+import { getTournamentTimeItem } from '../participant/timeItems';
 import { scheduledSortedMatchUps } from '../../functions/sorters/scheduledSortedMatchUps';
 import { getTournamentId } from '../../global/state/globalState';
-import { getVenuesAndCourts } from '../../query/venues/venuesAndCourtsGetter';
+import { getVenuesAndCourts } from '../venues/venuesAndCourtsGetter';
 import { courtGridRows } from '../../assemblies/generators/scheduling/courtGridRows';
-import { competitionMatchUps } from './matchUpsGetter';
+import { getCompetitionMatchUps } from './getCompetitionMatchUps';
 import { isObject } from '../../utilities/objects';
 
-import { MatchUpFilters } from '../../query/filterMatchUps';
+import { MatchUpFilters } from '../filterMatchUps';
 import { PUBLIC, PUBLISH, STATUS } from '../../constants/timeItemConstants';
 import { COMPLETED } from '../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../constants/resultConstants';
@@ -79,7 +79,7 @@ export function competitionScheduleMatchUps(
     : undefined;
 
   const allCompletedMatchUps = alwaysReturnCompleted
-    ? competitionMatchUps({
+    ? getCompetitionMatchUps({
         ...params,
         matchUpFilters: {
           ...params.matchUpFilters,
@@ -167,7 +167,7 @@ export function competitionScheduleMatchUps(
   }
 
   const { completedMatchUps, upcomingMatchUps, pendingMatchUps, groupInfo } =
-    competitionMatchUps({
+    getCompetitionMatchUps({
       ...params,
       matchUpFilters: params.matchUpFilters,
       contextFilters: params.contextFilters,

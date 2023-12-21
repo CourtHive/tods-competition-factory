@@ -1,5 +1,5 @@
 import { getParticipantScaleItem } from '../../../query/participant/getParticipantScaleItem';
-import { competitionScheduleMatchUps } from '../../getters/competitionScheduleMatchUps';
+import { competitionScheduleMatchUps } from '../../../query/matchUps/competitionScheduleMatchUps';
 import { getSchedulingProfileIssues } from './getSchedulingProfileIssues';
 import { getCompetitionDateRange } from './getCompetitionDateRange';
 import { credits } from '../../../fixtures/credits';
@@ -9,12 +9,10 @@ import {
   getCompetitionVenues,
   getVenuesAndCourts,
 } from '../../../query/venues/venuesAndCourtsGetter';
-import {
-  allCompetitionMatchUps,
-  competitionMatchUps,
-} from '../../getters/matchUpsGetter';
+import { allCompetitionMatchUps } from '../../../query/matchUps/getAllCompetitionMatchUps';
 
 import { SUCCESS } from '../../../constants/resultConstants';
+import { getCompetitionMatchUps } from '../../../query/matchUps/getCompetitionMatchUps';
 
 function getTournamentIds({ tournamentRecords }) {
   const tournamentIds = Object.keys(tournamentRecords);
@@ -29,7 +27,7 @@ const queryGovernor = {
   competitionScheduleMatchUps,
   getSchedulingProfileIssues,
   allCompetitionMatchUps,
-  competitionMatchUps,
+  getCompetitionMatchUps,
   matchUpActions,
 
   getCompetitionVenues,

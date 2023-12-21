@@ -1,6 +1,6 @@
 import { generateTimeSlots } from '../../../assemblies/generators/scheduling/generateTimeSlots';
 import { getVenuesAndCourts } from '../../../query/venues/venuesAndCourtsGetter';
-import { allCompetitionMatchUps } from '../../getters/matchUpsGetter';
+import { allCompetitionMatchUps } from '../../../query/matchUps/getAllCompetitionMatchUps';
 import {
   addMinutesToTimeString,
   extractTime,

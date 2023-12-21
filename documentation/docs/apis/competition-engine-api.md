@@ -470,7 +470,7 @@ const {
   completedMatchUps,
   pendingMatchUps,
   upcomingMatchUps,
-} = competitionEngine.competitionMatchUps({
+} = competitionEngine.getCompetitionMatchUps({
   scheduleVisibilityFilters, // { visibilityThreshold: Date, eventIds, drawIds }
   matchUpFilters, // optional; [ scheduledDate, scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
 });
