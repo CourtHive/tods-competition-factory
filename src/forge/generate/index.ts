@@ -2,9 +2,7 @@ export { generateVoluntaryConsolation } from '../../assemblies/generators/drawDe
 export { generateAndPopulatePlayoffStructures } from '../../assemblies/generators/drawDefinitions/generateAndPopulatePlayoffStructures';
 export { generateDrawMaticRound } from '../../assemblies/generators/drawDefinitions/drawMatic/generateDrawMaticRound';
 export { generateDrawDefinition } from '../../assemblies/generators/drawDefinitions/generateDrawDefinition';
+export { automatedPositioning } from '../../mutate/drawDefinitions/automatedPositioning';
 export { generateFlightProfile } from '../../assemblies/generators/drawDefinitions/generateFlightProfile';
 export { createGroupParticipant } from '../../mutate/participants/createGroupParticipant';
-export {
-  automatedPlayoffPositioning,
-  automatedPositioning,
-} from '../../mutate/drawDefinitions/automatedPlayoffPositioning';
+export { automatedPlayoffPositioning } from '../../mutate/drawDefinitions/automatedPlayoffPositioning';

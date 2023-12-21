@@ -1,9 +1,8 @@
 import { resolveTieFormat } from '../../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
 import { validateTieFormat } from '../../../../validators/validateTieFormat';
-import { getParticipants } from '../../../../query/participants/getParticipants';
 import { copyTieFormat } from '../../../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';
 import { getAllStructureMatchUps } from '../../../../query/matchUps/getAllStructureMatchUps';
-import { automatedPositioning } from '../../../../drawEngine/governors/positionGovernor/automatedPositioning';
+import { automatedPositioning } from '../../../../mutate/drawDefinitions/automatedPositioning';
 import { definedAttributes } from '../../../../utilities/definedAttributes';
 import { modifyDrawNotice } from '../../../../mutate/notifications/drawNotifications';
 import { generateTieMatchUps } from '../tieMatchUps';
@@ -47,7 +46,7 @@ import {
 
 type GenerateVoluntaryConsolationArgs = {
   playoffAttributes?: PlayoffAttributes;
-  tournamentRecord?: Tournament;
+  tournamentRecord: Tournament;
   seedingProfile?: SeedingProfile;
   drawDefinition: DrawDefinition;
   matchUpType?: EventTypeUnion;
@@ -85,15 +84,6 @@ export function generateVoluntaryConsolation(
   let drawDefinition = params?.drawDefinition;
 
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-
-  // get participants both for entry validation and for automated placement
-  // automated placement requires them to be "inContext" for avoidance policies to work
-  const participants = tournamentRecord
-    ? getParticipants({
-        withIndividualParticipants: true,
-        tournamentRecord,
-      })?.participants
-    : [];
 
   const stage = VOLUNTARY_CONSOLATION;
   const entries = getStageEntries({
@@ -211,7 +201,6 @@ export function generateVoluntaryConsolation(
       applyPositioning,
       tournamentRecord,
       drawDefinition,
-      participants,
       structureId,
       placeByes,
       drawSize,

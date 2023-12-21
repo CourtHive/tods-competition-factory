@@ -28,6 +28,7 @@ export function generateAndPopulateRRplayoffStructures(params) {
   const {
     sourceStructureId,
     requireSequential,
+    tournamentRecord,
     drawDefinition,
     playoffGroups,
     groupCount,
@@ -139,6 +140,7 @@ export function generateAndPopulateRRplayoffStructures(params) {
     structureId: sourceStructureId,
     applyPositioning: true,
     event: params.event,
+    tournamentRecord,
     drawDefinition,
   });
 

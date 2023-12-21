@@ -2,7 +2,7 @@ import { generateDrawTypeAndModifyDrawDefinition } from '../../../assemblies/gen
 import { initializeStructureSeedAssignments } from '../../governors/positionGovernor/initializeSeedAssignments';
 import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { drawMatchUps } from '../../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
-import { automatedPositioning } from '../../governors/positionGovernor/automatedPositioning';
+import { automatedPositioning } from '../../../mutate/drawDefinitions/automatedPositioning';
 import { clearDrawPosition } from '../../../mutate/matchUps/drawPositions/positionClear';
 import { getStructureMatchUps } from '../../../query/structure/getStructureMatchUps';
 import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';

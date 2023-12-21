@@ -1,5 +1,5 @@
 import { initializeStructureSeedAssignments } from '../../../drawEngine/governors/positionGovernor/initializeSeedAssignments';
-import { automatedPositioning } from '../../../drawEngine/governors/positionGovernor/automatedPositioning';
+import { automatedPositioning } from '../../../mutate/drawDefinitions/automatedPositioning';
 import { getScaledEntries } from '../../../tournamentEngine/governors/eventGovernor/entries/getScaledEntries';
 import { assignSeed } from '../../../drawEngine/governors/entryGovernor/seedAssignment';
 import { findExtension } from '../../../acquire/findExtension';
@@ -38,7 +38,6 @@ export function prepareStage(params): ResultType & {
     qualifyingOnly,
     drawDefinition,
     seedingProfile,
-    participants,
     matchUpsMap,
     automated,
     placeByes,
@@ -229,7 +228,6 @@ export function prepareStage(params): ResultType & {
       appliedPolicies,
       drawDefinition,
       seedingProfile,
-      participants,
       structureId,
       matchUpsMap,
       placeByes,

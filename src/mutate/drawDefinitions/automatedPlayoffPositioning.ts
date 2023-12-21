@@ -1,7 +1,7 @@
-import { automatedPositioning as drawEngineAutomatedPositioning } from '../../drawEngine/governors/positionGovernor/automatedPositioning';
 import { isCompletedStructure } from '../../drawEngine/governors/queryGovernor/structureActions';
 import { getMinFinishingPositionRange } from '../../drawEngine/getters/structureSort';
 import { getPlayoffStructures } from '../../tournamentEngine/getters/structureGetter';
+import { automatedPositioning } from './automatedPositioning';
 
 import { SUCCESS } from '../../constants/resultConstants';
 import { SeedingProfile } from '../../types/factoryTypes';
@@ -18,46 +18,6 @@ import {
   Tournament,
 } from '../../types/tournamentTypes';
 
-type AutomatedPositioningArgs = {
-  seedingProfile?: SeedingProfile;
-  tournamentRecord: Tournament;
-  drawDefinition: DrawDefinition;
-  applyPositioning?: boolean;
-  structureId: string;
-  placeByes?: boolean;
-  seedsOnly?: boolean;
-  drawSize: number;
-  event: Event;
-};
-export function automatedPositioning({
-  applyPositioning = true,
-  tournamentRecord,
-  drawDefinition,
-  seedingProfile,
-  structureId,
-  placeByes,
-  seedsOnly,
-  drawSize,
-  event,
-}: AutomatedPositioningArgs) {
-  if (!event) return { error: EVENT_NOT_FOUND };
-  if (!drawDefinition) return { error: DRAW_DEFINITION_NOT_FOUND };
-
-  const participants = tournamentRecord?.participants;
-
-  return drawEngineAutomatedPositioning({
-    tournamentRecord,
-    applyPositioning,
-    drawDefinition,
-    seedingProfile,
-    participants,
-    structureId,
-    placeByes,
-    seedsOnly,
-    drawSize,
-  });
-}
-
 type StructurePositionAssignmentType = {
   positionAssignments: PositionAssignment[];
   structureId: string;
@@ -66,7 +26,7 @@ type StructurePositionAssignmentType = {
 type AutomatedPlayoffPositioningArgs = {
   provisionalPositioning?: boolean;
   seedingProfile?: SeedingProfile;
-  tournamentRecord?: Tournament;
+  tournamentRecord: Tournament;
   drawDefinition: DrawDefinition;
   applyPositioning?: boolean;
   structureId: string;
@@ -113,20 +73,18 @@ export function automatedPlayoffPositioning(
   );
   const structurePositionAssignments: StructurePositionAssignmentType[] = [];
 
-  const participants = tournamentRecord?.participants;
-
   const positioningReports: { [key: string]: any }[] = [];
 
   if (playoffStructures) {
     for (const structure of playoffStructures) {
       const { structureId: playoffStructureId } = structure;
-      const result = drawEngineAutomatedPositioning({
+      const result = automatedPositioning({
         structureId: playoffStructureId,
         provisionalPositioning,
         applyPositioning,
+        tournamentRecord,
         drawDefinition,
         seedingProfile,
-        participants,
         placeByes,
         seedsOnly,
       });

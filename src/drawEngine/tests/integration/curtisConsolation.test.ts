@@ -1,6 +1,6 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
 import { initializeStructureSeedAssignments } from '../../governors/positionGovernor/initializeSeedAssignments';
-import { automatedPositioning } from '../../governors/positionGovernor/automatedPositioning';
+import { automatedPositioning } from '../../../mutate/drawDefinitions/automatedPositioning';
 import { getStructureSeedAssignments } from '../../../query/structure/getStructureSeedAssignments';
 import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
 import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';

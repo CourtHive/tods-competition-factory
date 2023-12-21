@@ -1,53 +1,53 @@
-import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import { getSeedPattern, getValidSeedBlocks } from '../../getters/seedGetter';
-import { positionUnseededParticipants } from '../../../mutate/matchUps/drawPositions/positionUnseededParticipants';
-import { getAllDrawMatchUps } from '../../../query/drawMatchUps';
-import { modifyDrawNotice } from '../../../mutate/notifications/drawNotifications';
-import { getPositionAssignments } from '../../getters/positionsGetter';
-import { getQualifiersCount } from '../../getters/getQualifiersCount';
-import { positionByes } from './byePositioning/positionByes';
-import { getStageEntries } from '../../getters/stageGetter';
-import { findStructure } from '../../getters/findStructure';
-import { positionQualifiers } from '../../../mutate/matchUps/drawPositions/positionQualifiers';
-import { positionSeedBlocks } from '../../../mutate/matchUps/drawPositions/positionSeeds';
-import { makeDeepCopy } from '../../../utilities';
+import { positionUnseededParticipants } from '../matchUps/drawPositions/positionUnseededParticipants';
+import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
+import { getParticipants } from '../../query/participants/getParticipants';
+import {
+  getSeedPattern,
+  getValidSeedBlocks,
+} from '../../drawEngine/getters/seedGetter';
+import { getAllDrawMatchUps } from '../../query/drawMatchUps';
+import { modifyDrawNotice } from '../notifications/drawNotifications';
+import { getPositionAssignments } from '../../drawEngine/getters/positionsGetter';
+import { getQualifiersCount } from '../../drawEngine/getters/getQualifiersCount';
+import { positionByes } from '../../drawEngine/governors/positionGovernor/byePositioning/positionByes';
+import { getStageEntries } from '../../drawEngine/getters/stageGetter';
+import { findStructure } from '../../drawEngine/getters/findStructure';
+import { positionQualifiers } from '../matchUps/drawPositions/positionQualifiers';
+import { positionSeedBlocks } from '../matchUps/drawPositions/positionSeeds';
+import { makeDeepCopy } from '../../utilities';
 import {
   ResultType,
   decorateResult,
-} from '../../../global/functions/decorateResult';
+} from '../../global/functions/decorateResult';
 import {
   MatchUpsMap,
   getMatchUpsMap,
-} from '../../../query/matchUps/getMatchUpsMap';
+} from '../../query/matchUps/getMatchUpsMap';
 import {
   disableNotifications,
   enableNotifications,
-} from '../../../global/state/globalState';
+} from '../../global/state/globalState';
 
-import { STRUCTURE_NOT_FOUND } from '../../../constants/errorConditionConstants';
-import { DIRECT_ENTRY_STATUSES } from '../../../constants/entryStatusConstants';
-import { HydratedMatchUp, HydratedParticipant } from '../../../types/hydrated';
-import { PolicyDefinitions, SeedingProfile } from '../../../types/factoryTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
-import {
-  LUCKY_DRAW,
-  WATERFALL,
-} from '../../../constants/drawDefinitionConstants';
+import { STRUCTURE_NOT_FOUND } from '../../constants/errorConditionConstants';
+import { DIRECT_ENTRY_STATUSES } from '../../constants/entryStatusConstants';
+import { PolicyDefinitions, SeedingProfile } from '../../types/factoryTypes';
+import { SUCCESS } from '../../constants/resultConstants';
+import { HydratedMatchUp } from '../../types/hydrated';
+import { LUCKY_DRAW, WATERFALL } from '../../constants/drawDefinitionConstants';
 import {
   DrawDefinition,
   Event,
   PositionAssignment,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../types/tournamentTypes';
 
 // TODO: Throw an error if an attempt is made to automate positioning for a structure that already has completed matchUps
 type AutomatedPositioningArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];
-  participants?: HydratedParticipant[];
   appliedPolicies?: PolicyDefinitions;
   provisionalPositioning?: boolean;
   seedingProfile?: SeedingProfile;
-  tournamentRecord?: Tournament;
+  tournamentRecord: Tournament;
   drawDefinition: DrawDefinition;
   multipleStructures?: boolean;
   applyPositioning?: boolean;
@@ -72,7 +72,6 @@ export function automatedPositioning({
   placementGroup,
   drawDefinition,
   seedingProfile,
-  participants,
   structureId,
   matchUpsMap,
   seedLimit,
@@ -168,6 +167,13 @@ export function automatedPositioning({
   const { validSeedBlocks } = seedBlockInfo;
 
   positioningReport.push({ validSeedBlocks });
+
+  const participants = tournamentRecord
+    ? getParticipants({
+        withIndividualParticipants: true,
+        tournamentRecord,
+      })?.participants
+    : [];
 
   if (
     getSeedPattern(structure.seedingProfile || seedingProfile) === WATERFALL

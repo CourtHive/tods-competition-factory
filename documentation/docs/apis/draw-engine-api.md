@@ -321,21 +321,6 @@ drawEngine.attachPlayoffStructures({ structures, links });
 
 ---
 
-## automatedPositioning
-
-Positions participants in a draw structure. `drawEngine` is agnostic about the type of participants that are placed in a draw structure, but requires tournament participants for avoidance policies to work.
-
-See [Policies](../concepts/policies).
-
-```js
-drawEngine.automatedPositioning({
-  structureId,
-  participants, // optional - participants must be passed in for Avoidance Policies to be effective
-});
-```
-
----
-
 ## checkInParticipant
 
 Set the check-in state for a participant. Used to determine when both participants in a matchUp are available to be assigned to a court.

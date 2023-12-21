@@ -23,10 +23,7 @@ import {
   destroyPairEntries,
   destroyPairEntry,
 } from './entries/destroyPairEntry';
-import {
-  automatedPositioning,
-  automatedPlayoffPositioning,
-} from '../../../mutate/drawDefinitions/automatedPlayoffPositioning';
+import { automatedPlayoffPositioning } from '../../../mutate/drawDefinitions/automatedPlayoffPositioning';
 import {
   promoteAlternate,
   promoteAlternates,
@@ -143,6 +140,7 @@ import { renameStructures } from '../../../drawEngine/governors/structureGoverno
 import { addPlayoffStructures } from '../../../mutate/drawDefinitions/addPlayoffStructures';
 import { validateCollectionDefinition } from '../../../validators/validateCollectionDefinition';
 import { resetScorecard } from '../../../mutate/matchUps/resetScorecard';
+import { automatedPositioning } from '../../../mutate/drawDefinitions/automatedPositioning';
 
 const eventGovernor = {
   generateQualifyingStructure,
