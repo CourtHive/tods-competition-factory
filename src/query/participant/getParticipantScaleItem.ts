@@ -1,33 +1,49 @@
 import { findTournamentParticipant } from '../../acquire/findTournamentParticipant';
 import { participantScaleItem } from './participantScaleItem';
 
-import { ScaleAttributes, ScaleItem } from '../../types/factoryTypes';
 import { Tournament } from '../../types/tournamentTypes';
+import {
+  ScaleAttributes,
+  ScaleItem,
+  TournamentRecords,
+} from '../../types/factoryTypes';
 import {
   ErrorType,
   MISSING_PARTICIPANT_ID,
-  MISSING_TOURNAMENT_RECORD,
   PARTICIPANT_NOT_FOUND,
 } from '../../constants/errorConditionConstants';
 
 type GetParticipantScaleItemArgs = {
+  tournamentRecords?: TournamentRecords;
   scaleAttributes: ScaleAttributes;
-  tournamentRecord: Tournament;
+  tournamentRecord?: Tournament;
   participantId: string;
 };
-export function getParticipantScaleItem({
-  tournamentRecord,
-  scaleAttributes,
-  participantId,
-}: GetParticipantScaleItemArgs): { error?: ErrorType; scaleItem?: ScaleItem } {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+export function getParticipantScaleItem(params: GetParticipantScaleItemArgs): {
+  tournamentId?: string;
+  scaleItem?: ScaleItem;
+  error?: ErrorType;
+} {
+  const { tournamentRecord, scaleAttributes, participantId } = params;
+
+  const tournamentRecords =
+    params.tournamentRecords ||
+    (tournamentRecord && {
+      [tournamentRecord.tournamentId]: tournamentRecord,
+    }) ||
+    {};
+
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
 
-  const { participant } = findTournamentParticipant({
+  const { participant, tournamentId } = findTournamentParticipant({
+    tournamentRecords,
     tournamentRecord,
     participantId,
   });
 
   if (!participant) return { error: PARTICIPANT_NOT_FOUND };
-  return participantScaleItem({ participant, scaleAttributes });
+  return {
+    ...participantScaleItem({ participant, scaleAttributes }),
+    tournamentId,
+  };
 }

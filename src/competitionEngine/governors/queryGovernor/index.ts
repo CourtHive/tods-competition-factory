@@ -1,5 +1,5 @@
+import { getParticipantScaleItem } from '../../../query/participant/getParticipantScaleItem';
 import { competitionScheduleMatchUps } from '../../getters/competitionScheduleMatchUps';
-import { getParticipantScaleItem } from '../../getters/getParticipantScaleItem';
 import { getSchedulingProfileIssues } from './getSchedulingProfileIssues';
 import { getCompetitionDateRange } from './getCompetitionDateRange';
 import { credits } from '../../../fixtures/credits';
