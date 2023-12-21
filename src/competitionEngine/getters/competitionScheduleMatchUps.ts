@@ -1,7 +1,7 @@
 import { getEventPublishStatus } from '../../query/event/getEventPublishStatus';
 import { getDrawPublishStatus } from '../../query/event/getDrawPublishStatus';
 import { getSchedulingProfile } from '../governors/scheduleGovernor/schedulingProfile/schedulingProfile';
-import { getTournamentTimeItem } from '../../tournamentEngine/governors/queryGovernor/timeItems';
+import { getTournamentTimeItem } from '../../query/participant/timeItems';
 import { scheduledSortedMatchUps } from '../../functions/sorters/scheduledSortedMatchUps';
 import { getTournamentId } from '../../global/state/globalState';
 import { getVenuesAndCourts } from '../../query/venues/venuesAndCourtsGetter';
@@ -15,10 +15,7 @@ import { COMPLETED } from '../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import { HydratedMatchUp } from '../../types/hydrated';
 import { Venue } from '../../types/tournamentTypes';
-import {
-  TournamentRecords,
-  TournamentRecordsArgs,
-} from '../../types/factoryTypes';
+import { TournamentRecords } from '../../types/factoryTypes';
 import {
   ErrorType,
   MISSING_TOURNAMENT_RECORDS,
@@ -293,7 +290,9 @@ export function competitionScheduleMatchUps(
 
 function getCompetitionPublishedDrawDetails({
   tournamentRecords,
-}: TournamentRecordsArgs) {
+}: {
+  tournamentRecords: TournamentRecords;
+}) {
   const drawIds: string[] = [];
   const detailsMap: { [key: string]: any } = {};
 

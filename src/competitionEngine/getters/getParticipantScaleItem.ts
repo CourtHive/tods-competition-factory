@@ -1,5 +1,5 @@
 import { participantScaleItem } from '../../query/participant/participantScaleItem';
-import { publicFindParticipant } from './participantGetter';
+import { publicFindParticipant } from '../../acquire/publicFindParticipant';
 
 import { ResultType } from '../../global/functions/decorateResult';
 import { SUCCESS } from '../../constants/resultConstants';

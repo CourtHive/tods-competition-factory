@@ -1,9 +1,9 @@
-import { findTournamentParticipant } from '../../../acquire/findTournamentParticipant';
+import { findTournamentParticipant } from '../../acquire/findTournamentParticipant';
 
-import { ResultType } from '../../../global/functions/decorateResult';
-import { ELEMENT_REQUIRED } from '../../../constants/infoConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { Event, TimeItem, Tournament } from '../../../types/tournamentTypes';
+import { ResultType } from '../../global/functions/decorateResult';
+import { ELEMENT_REQUIRED } from '../../constants/infoConstants';
+import { SUCCESS } from '../../constants/resultConstants';
+import { Event, TimeItem, Tournament } from '../../types/tournamentTypes';
 import {
   INVALID_VALUES,
   MISSING_DRAW_ID,
@@ -13,7 +13,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
   NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 type TimeItemResult = {
   timeItem?: TimeItem;

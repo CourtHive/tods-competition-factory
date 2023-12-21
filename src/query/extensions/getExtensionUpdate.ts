@@ -1,10 +1,10 @@
 import { findExtension } from '../../acquire/findExtension';
 
+import { QueueMethod, TournamentRecords } from '../../types/factoryTypes';
 import {
   ErrorType,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../constants/errorConditionConstants';
-import { QueueMethod, TournamentRecordsArgs } from '../../types/factoryTypes';
 
 /**
  * Specific to deployments where both client and server are running competitionEngine.
@@ -14,7 +14,8 @@ import { QueueMethod, TournamentRecordsArgs } from '../../types/factoryTypes';
  * This method is "wrapped" by other methods which pass in `extensionName`
  */
 
-type GetExtensionUpdateArgs = TournamentRecordsArgs & {
+type GetExtensionUpdateArgs = {
+  tournamentRecords: TournamentRecords;
   extensionName: string;
 };
 

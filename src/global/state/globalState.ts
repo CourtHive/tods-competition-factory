@@ -1,7 +1,6 @@
 import { intersection } from '../../utilities/arrays';
 import syncGlobalState from './syncGlobalState';
 
-import { TournamentRecordsArgs } from '../../types/factoryTypes';
 import { ResultType } from '../functions/decorateResult';
 import {
   ErrorType,
@@ -9,6 +8,7 @@ import {
   MISSING_ASYNC_STATE_PROVIDER,
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
+import { TournamentRecords } from '../../types/factoryTypes';
 
 export type Notice = {
   topic: string;
@@ -53,7 +53,8 @@ type GlobalStateTypes = {
   globalLog?: any;
 };
 
-export type ImplemtationGlobalStateTypes = TournamentRecordsArgs & {
+export type ImplemtationGlobalStateTypes = {
+  tournamentRecords: TournamentRecords;
   tournamentId?: string | undefined;
   methods: { [key: string]: any };
   disableNotifications: boolean;

@@ -2,10 +2,8 @@ import { addParticipant } from '../../../mutate/participants/addParticipants';
 import { bulkScheduleMatchUps } from '../scheduleGovernor/bulkScheduleMatchUps';
 import { bulkMatchUpStatusUpdate, setMatchUpStatus } from './setMatchUpStatus';
 import { courtGridRows } from '../../../assemblies/generators/scheduling/courtGridRows';
-import {
-  getCompetitionParticipants,
-  publicFindParticipant,
-} from '../../getters/participantGetter';
+import { publicFindParticipant } from '../../../acquire/publicFindParticipant';
+import { getCompetitionParticipants } from '../../../query/participants/getCompetitionParticipants';
 import {
   getLinkedTournamentIds,
   linkTournaments,

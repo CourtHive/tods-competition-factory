@@ -11,16 +11,17 @@ import {
   ParticipantsProfile,
   PolicyDefinitions,
   ScheduleVisibilityFilters,
-  TournamentRecordsArgs,
+  TournamentRecords,
 } from '../../types/factoryTypes';
 import {
   ErrorType,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../constants/errorConditionConstants';
 
-type CompetitionMatchUpsArgs = TournamentRecordsArgs & {
+type CompetitionMatchUpsArgs = {
   scheduleVisibilityFilters?: ScheduleVisibilityFilters;
   participantsProfile?: ParticipantsProfile;
+  tournamentRecords: TournamentRecords;
   policyDefinitions?: PolicyDefinitions;
   matchUpFilters?: MatchUpFilters;
   contextFilters?: MatchUpFilters;

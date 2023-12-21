@@ -1,7 +1,9 @@
-import { TournamentRecordsArgs } from '../../../types/factoryTypes';
 import { getEventIdsAndDrawIds } from '../../getters/getEventIdsAndDrawIds';
 
-type FindTournamentIdArgs = TournamentRecordsArgs & {
+import { TournamentRecords } from '../../../types/factoryTypes';
+
+type FindTournamentIdArgs = {
+  tournamentRecords: TournamentRecords;
   eventId?: string;
   drawId?: string;
 };

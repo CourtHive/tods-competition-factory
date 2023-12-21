@@ -1,7 +1,7 @@
 import { modifyEventPublishStatus } from './modifyEventPublishStatus';
 import { addEventTimeItem } from '../../../mutate/timeItems/addTimeItem';
 import { addNotice } from '../../../global/state/globalState';
-import { getEventTimeItem } from '../queryGovernor/timeItems';
+import { getEventTimeItem } from '../../../query/participant/timeItems';
 
 import { PUBLIC, PUBLISH, STATUS } from '../../../constants/timeItemConstants';
 import { UNPUBLISH_EVENT } from '../../../constants/topicConstants';
