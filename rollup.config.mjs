@@ -25,6 +25,7 @@ const esmBundle = (config) => ({
   ],
 });
 
+/*
 const esmProfile = [
   { input: srcIndex, outputFile: 'dist/index.mjs' },
   {
@@ -50,6 +51,7 @@ const esmProfile = [
 ];
 
 const esmExports = [...esmProfile.map(esmBundle)];
+*/
 
 const basePath = fs.realpathSync(process.cwd());
 const distPath = path.resolve(basePath, 'dist');
@@ -131,6 +133,7 @@ function createExport({ input, folder, packageName, cjs, esm }) {
 
 const cjsExports = [{ input: srcIndex, cjs: true }].map(createExport);
 
+/*
 const forgeTypes = [
   {
     input: 'src/forge/query/index.ts',
@@ -153,6 +156,7 @@ const forgeTypes = [
     plugins: [dts()],
   },
 ];
+*/
 
 const governorTypes = [
   /*
@@ -186,8 +190,8 @@ const engineTypes = [
 
 export default [
   ...cjsExports,
-  ...esmExports,
-  ...forgeTypes,
+  // ...esmExports,
+  // ...forgeTypes,
   ...governorTypes,
   ...engineTypes,
 ];
