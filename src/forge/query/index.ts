@@ -28,7 +28,7 @@ export { positionActions } from '../../tournamentEngine/governors/queryGovernor/
 export { getEventData } from '../../query/event/getEventData';
 export { getSeedsCount } from '../../tournamentEngine/governors/policyGovernor/getSeedsCount';
 export { participantScaleItem } from '../../query/participant/participantScaleItem';
-export { getTimeItem } from '../../tournamentEngine/governors/queryGovernor/timeItems';
+export { getTimeItem } from '../../query/participant/timeItems';
 export { findMatchUp } from '../../acquire/findMatchUp';
 export { getFlightProfile } from '../../query/event/getFlightProfile';
 export {
@@ -53,14 +53,11 @@ export { competitionScheduleMatchUps } from '../../competitionEngine/getters/com
 export { getRounds } from '../../competitionEngine/governors/scheduleGovernor/schedulingProfile/getRounds';
 export { getParticipantScaleItem } from '../../competitionEngine/getters/getParticipantScaleItem';
 export { getCompetitionVenues } from '../../query/venues/venuesAndCourtsGetter';
-export {
-  getCompetitionParticipants,
-  publicFindParticipant as findParticipant,
-} from '../../competitionEngine/getters/participantGetter';
+export { publicFindParticipant as findParticipant } from '../../acquire/publicFindParticipant';
+export { getCompetitionParticipants } from '../../query/participants/getCompetitionParticipants';
 export {
   allCompetitionMatchUps,
   competitionMatchUps,
 } from '../../competitionEngine/getters/matchUpsGetter';
 
-// universal
 export { getVenuesAndCourts } from '../../query/venues/venuesAndCourtsGetter';

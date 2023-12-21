@@ -1,4 +1,4 @@
-import { getParticipantScaleItem } from '../../queryGovernor/getParticipantScaleItem';
+import { getParticipantScaleItem } from '../../../../query/participant/getParticipantScaleItem';
 
 import {
   ErrorType,

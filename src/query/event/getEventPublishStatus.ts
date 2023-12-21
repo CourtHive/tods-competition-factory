@@ -1,4 +1,4 @@
-import { getEventTimeItem } from '../../tournamentEngine/governors/queryGovernor/timeItems';
+import { getEventTimeItem } from '../participant/timeItems';
 
 import { PUBLIC, PUBLISH, STATUS } from '../../constants/timeItemConstants';
 

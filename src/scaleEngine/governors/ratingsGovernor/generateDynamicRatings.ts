@@ -1,4 +1,4 @@
-import { getParticipantScaleItem } from '../../../tournamentEngine/governors/queryGovernor/getParticipantScaleItem';
+import { getParticipantScaleItem } from '../../../query/participant/getParticipantScaleItem';
 import { setParticipantScaleItem } from '../../../mutate/participants/addScaleItems';
 import { allTournamentMatchUps } from '../../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
 import { parse } from '../../../matchUpEngine/governors/matchUpFormatGovernor/parse';

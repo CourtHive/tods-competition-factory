@@ -1,4 +1,4 @@
-import { findTournamentParticipant } from '../../tournamentEngine/getters/participants/participantGetter';
+import { findTournamentParticipant } from '../../acquire/findTournamentParticipant';
 import { addNotice, getTopics } from '../../global/state/globalState';
 
 import {

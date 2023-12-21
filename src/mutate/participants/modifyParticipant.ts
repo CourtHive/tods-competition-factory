@@ -1,4 +1,4 @@
-import { findTournamentParticipant } from '../../tournamentEngine/getters/participants/participantGetter';
+import { findTournamentParticipant } from '../../acquire/findTournamentParticipant';
 import { addIndividualParticipantIds } from './addIndividualParticipantIds';
 import { getParticipants } from '../../query/participants/getParticipants';
 import { getParticipantId } from '../../global/functions/extractors';

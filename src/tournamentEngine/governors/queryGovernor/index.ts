@@ -9,7 +9,7 @@ import { getPredictiveAccuracy } from '../../getters/getPredictiveAccuracy';
 import { participantScaleItem } from '../../../query/participant/participantScaleItem';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { getCourts, publicFindCourt } from '../../getters/courtGetter';
-import { getParticipantScaleItem } from './getParticipantScaleItem';
+import { getParticipantScaleItem } from '../../../query/participant/getParticipantScaleItem';
 import { getMatchUpFormat } from '../../getters/getMatchUpFormat';
 import { getMatchUpsStats } from '../../getters/getMatchUpsStats';
 import { getEvent, getEvents } from '../../getters/eventGetter';
@@ -17,7 +17,7 @@ import { publicFindMatchUp } from '../../../acquire/findMatchUp';
 import { matchUpActions } from '../../getters/matchUpActions';
 import { bulkUpdatePublishedEventIds } from '../../../query/event/publishState';
 import { findExtension } from '../../../acquire/findExtension';
-import { getParticipantSignInStatus } from './signInStatus';
+import { getParticipantSignInStatus } from '../../../query/participant/signInStatus';
 import { getTieFormat } from '../../getters/getTieFormat';
 import { getEventProperties } from './getEventProperties';
 import { credits } from '../../../fixtures/credits';
@@ -40,7 +40,7 @@ import {
   getTournamentTimeItem,
   getParticipantTimeItem,
   getDrawDefinitionTimeItem,
-} from './timeItems';
+} from '../../../query/participant/timeItems';
 
 import {
   MISSING_DRAW_ID,

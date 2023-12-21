@@ -1,23 +1,10 @@
 import { findParticipant } from '../../../acquire/findParticipant';
 import { makeDeepCopy } from '../../../utilities';
 
-import { Participant } from '../../../types/tournamentTypes';
 import {
-  ErrorType,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
-
-export function findTournamentParticipant({
-  tournamentRecord,
-  participantId,
-}): { error?: ErrorType; participant?: Participant } {
-  const participants = tournamentRecord.participants || [];
-  const participant = participants.reduce((participant, candidate) => {
-    return candidate.participantId === participantId ? candidate : participant;
-  }, undefined);
-  return { participant };
-}
 
 export function publicFindParticipant({
   tournamentRecord,

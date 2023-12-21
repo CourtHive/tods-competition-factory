@@ -1,15 +1,15 @@
-import { findTournamentParticipant } from '../../../acquire/findTournamentParticipant';
+import { findTournamentParticipant } from '../../acquire/findTournamentParticipant';
 import { getTimeItem } from './timeItems';
 
 import {
   MISSING_PARTICIPANT_ID,
   MISSING_TOURNAMENT_RECORD,
   PARTICIPANT_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 import {
   SIGNED_IN,
   SIGN_IN_STATUS,
-} from '../../../constants/participantConstants';
+} from '../../constants/participantConstants';
 
 export function getParticipantSignInStatus({
   tournamentRecord,

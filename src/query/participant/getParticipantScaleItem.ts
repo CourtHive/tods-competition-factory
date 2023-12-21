@@ -1,14 +1,14 @@
-import { findTournamentParticipant } from '../../../acquire/findTournamentParticipant';
+import { findTournamentParticipant } from '../../acquire/findTournamentParticipant';
+import { participantScaleItem } from './participantScaleItem';
 
-import { participantScaleItem } from '../../../query/participant/participantScaleItem';
-import { Tournament } from '../../../types/tournamentTypes';
-import { ScaleAttributes, ScaleItem } from '../../../types/factoryTypes';
+import { ScaleAttributes, ScaleItem } from '../../types/factoryTypes';
+import { Tournament } from '../../types/tournamentTypes';
 import {
   ErrorType,
   MISSING_PARTICIPANT_ID,
   MISSING_TOURNAMENT_RECORD,
   PARTICIPANT_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 type GetParticipantScaleItemArgs = {
   scaleAttributes: ScaleAttributes;

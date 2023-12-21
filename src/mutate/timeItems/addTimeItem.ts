@@ -1,4 +1,4 @@
-import { findTournamentParticipant } from '../../tournamentEngine/getters/participants/participantGetter';
+import { findTournamentParticipant } from '../../acquire/findTournamentParticipant';
 import { getTimeItem } from '../../tournamentEngine/governors/queryGovernor/timeItems';
 
 import { TimeItem, Tournament } from '../../types/tournamentTypes';
