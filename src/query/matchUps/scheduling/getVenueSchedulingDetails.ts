@@ -1,12 +1,12 @@
-import { getScheduledRoundsDetails } from '../../../../../query/matchUps/scheduling/getScheduledRoundsDetails';
-import { getGroupedRounds } from '../../../../../query/matchUps/scheduling/getGroupedRounds';
-import { processAlreadyScheduledMatchUps } from './processAlreadyScheduledMatchUps';
-import { getMatchUpsToSchedule } from './getMatchUpsToSchedule';
-import { generateScheduleTimes } from './generateScheduleTimes';
-import { extractDate } from '../../../../../utilities/dateTime';
+import { getScheduledRoundsDetails } from './getScheduledRoundsDetails';
+import { getGroupedRounds } from './getGroupedRounds';
+import { processAlreadyScheduledMatchUps } from '../../../competitionEngine/governors/scheduleGovernor/schedulers/utils/processAlreadyScheduledMatchUps';
+import { getMatchUpsToSchedule } from '../../../competitionEngine/governors/scheduleGovernor/schedulers/utils/getMatchUpsToSchedule';
+import { generateScheduleTimes } from '../../../competitionEngine/governors/scheduleGovernor/schedulers/utils/generateScheduleTimes';
+import { extractDate } from '../../../utilities/dateTime';
 
-import { Tournament } from '../../../../../types/tournamentTypes';
-import { HydratedMatchUp } from '../../../../../types/hydrated';
+import { Tournament } from '../../../types/tournamentTypes';
+import { HydratedMatchUp } from '../../../types/hydrated';
 
 type GetVenueSchedulingDetailsArgs = {
   matchUpPotentialParticipantIds: { [key: string]: string[] };
