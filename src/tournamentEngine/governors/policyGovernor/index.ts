@@ -12,6 +12,7 @@ import {
   attachEventPolicies,
   removeEventPolicy,
 } from '../../../mutate/extensions/policies/policyManagement';
+// import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
 
 const policyGovernor = {
   attachPolicies,

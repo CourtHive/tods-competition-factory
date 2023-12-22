@@ -13,11 +13,7 @@ it('can convert extensions during deepCopy', () => {
   let { tournamentRecord } = mocksEngine.generateTournamentRecord();
   tournamentEngine.setState(tournamentRecord);
 
-  const scoringPolicy = {
-    scoring: {
-      policyName: 'TEST',
-    },
-  };
+  const scoringPolicy = { scoring: { policyName: 'TEST' } };
   let result = tournamentEngine.attachPolicies({
     policyDefinitions: scoringPolicy,
   });

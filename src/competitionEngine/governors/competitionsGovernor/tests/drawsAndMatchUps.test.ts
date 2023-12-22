@@ -254,11 +254,12 @@ test('can modify event timing for matchUpFormat codes', () => {
 
   competitionEngine.setState([firstTournament, secondTournament]);
 
-  competitionEngine.attachPolicies({
+  let result = competitionEngine.attachPolicies({
     policyDefinitions: POLICY_SCHEDULING_DEFAULT,
   });
+  expect(result.success).toEqual(true);
 
-  let result = competitionEngine.getEventMatchUpFormatTiming({
+  result = competitionEngine.getEventMatchUpFormatTiming({
     eventId,
   });
   // even with no policy, timing is defined / falls back to defaults

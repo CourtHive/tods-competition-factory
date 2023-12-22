@@ -1,7 +1,9 @@
 import { checkRequiredParameters } from '../../../parameters/checkRequiredParameters';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
+import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { addExtension } from '../addExtension';
 
+import { EXISTING_POLICY_TYPE } from '../../../constants/errorConditionConstants';
 import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
 import { ResultType } from '../../../global/functions/decorateResult';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -21,13 +23,14 @@ type AttachPoliciesArgs = {
   drawDefinition?: DrawDefinition;
   tournamentRecord?: Tournament;
   allowReplacement?: boolean;
+  tournamentId?: string;
   event?: Event;
 };
 
 export function attachPolicies(params: AttachPoliciesArgs): ResultType {
   const checkParams = checkRequiredParameters(params, [
     {
-      _oneOf: {
+      _anyOf: {
         tournamentRecords: true,
         tournamentRecord: true,
         drawDefinition: true,
@@ -38,14 +41,24 @@ export function attachPolicies(params: AttachPoliciesArgs): ResultType {
   ]);
   if (checkParams.error) return checkParams;
 
-  if (params.tournamentRecords) {
+  const element =
+    params.drawDefinition ??
+    params.event ??
+    (params.tournamentId && params.tournamentRecord);
+
+  if (element) {
+    const result = policyAttachement(params, element);
+    if (result.error) return result;
+    if (params.drawDefinition) {
+      modifyDrawNotice({
+        drawDefinition: params.drawDefinition,
+        tournamentId: params.tournamentId,
+      });
+    }
+  } else if (params.tournamentRecords) {
     for (const tournamentRecord of Object.values(params.tournamentRecords)) {
       policyAttachement(params, tournamentRecord);
     }
-  } else {
-    const element =
-      params.tournamentRecord ?? params.drawDefinition ?? params.event;
-    policyAttachement(params, element);
   }
 
   return { ...SUCCESS };
@@ -65,6 +78,8 @@ function policyAttachement(params, element) {
 
   if (policiesApplied) {
     const extension = { name: APPLIED_POLICIES, value: appliedPolicies };
-    addExtension({ element, extension });
+    return addExtension({ element, extension });
   }
+
+  return { error: EXISTING_POLICY_TYPE };
 }
