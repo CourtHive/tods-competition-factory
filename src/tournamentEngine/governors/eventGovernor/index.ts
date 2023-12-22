@@ -141,7 +141,7 @@ import { validateCollectionDefinition } from '../../../validators/validateCollec
 import { resetScorecard } from '../../../mutate/matchUps/resetScorecard';
 import { automatedPositioning } from '../../../mutate/drawDefinitions/automatedPositioning';
 import { updateTieMatchUpScore } from '../../../mutate/matchUps/score/tieMatchUpScore';
-import { bulkMatchUpStatusUpdate } from './bulkMAtchUpStatusUpdate';
+import { bulkMatchUpStatusUpdate } from './bulkMatchUpStatusUpdate';
 
 const eventGovernor = {
   generateQualifyingStructure,

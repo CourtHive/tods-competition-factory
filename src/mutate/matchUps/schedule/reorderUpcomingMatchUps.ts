@@ -1,4 +1,4 @@
-import { addMatchUpScheduledTime } from '../../../mutate/matchUps/schedule/scheduledTime';
+import { addMatchUpScheduledTime } from './scheduledTime';
 import { findDrawDefinition } from '../../../acquire/findDrawDefinition';
 import { decorateResult } from '../../../global/functions/decorateResult';
 

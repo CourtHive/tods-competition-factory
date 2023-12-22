@@ -1,4 +1,4 @@
-import { assignMatchUpCourt } from '../../../mutate/matchUps/schedule/assignMatchUpCourt';
+import { assignMatchUpCourt } from './assignMatchUpCourt';
 import { findEvent } from '../../../acquire/findEvent';
 import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
 

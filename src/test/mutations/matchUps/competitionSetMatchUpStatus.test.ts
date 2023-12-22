@@ -1,12 +1,12 @@
-import competitionEngineAsync from '../../../async';
-import competitionEngineSync from '../../../../test/engines/competitionEngine';
-import mocksEngine from '../../../../mocksEngine';
+import competitionEngineAsync from '../../../competitionEngine/async';
+import competitionEngineSync from '../../engines/competitionEngine';
+import mocksEngine from '../../../mocksEngine';
 import { expect, test } from 'vitest';
 
 import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
-} from '../../../../constants/errorConditionConstants';
+} from '../../../constants/errorConditionConstants';
 
 const asyncCompetitionEngine = competitionEngineAsync(true);
 

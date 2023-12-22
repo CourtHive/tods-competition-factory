@@ -1,17 +1,17 @@
-import { getScheduledRoundsDetails } from '../scheduleGovernor/schedulingProfile/getScheduledRoundsDetails';
-import { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDependencies';
-import { getSchedulingProfile } from '../scheduleGovernor/schedulingProfile/schedulingProfile';
-import { allCompetitionMatchUps } from '../../../query/matchUps/getAllCompetitionMatchUps';
-import { isValidDateString } from '../../../utilities/dateTime';
-import { intersection, unique } from '../../../utilities';
+import { getScheduledRoundsDetails } from '../../competitionEngine/governors/scheduleGovernor/schedulingProfile/getScheduledRoundsDetails';
+import { getMatchUpDependencies } from '../matchUps/getMatchUpDependencies';
+import { getSchedulingProfile } from '../../competitionEngine/governors/scheduleGovernor/schedulingProfile/schedulingProfile';
+import { allCompetitionMatchUps } from '../matchUps/getAllCompetitionMatchUps';
+import { isValidDateString } from '../../utilities/dateTime';
+import { intersection, unique } from '../../utilities';
 
-import { TournamentRecords } from '../../../types/factoryTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { TournamentRecords } from '../../types/factoryTypes';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   INVALID_DATE,
   INVALID_TOURNAMENT_RECORD,
   INVALID_VALUES,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 type GetSchedulingProfileIssuesArgs = {
   tournamentRecords: TournamentRecords;

@@ -5,10 +5,10 @@ import { calculateScheduleTimes } from './scheduleMatchUps/calculateScheduleTime
 import { scheduleProfileRounds } from './schedulingProfile/scheduleProfileRounds';
 import { generateVirtualCourts } from './schedulers/utils/generateVirtualCourts';
 import { getMatchUpDailyLimitsUpdate } from '../../../query/extensions/getMatchUpDailyLimitsUpdate';
-import { bulkUpdateCourtAssignments } from './bulkUpdateCourtAssignments';
+import { bulkUpdateCourtAssignments } from '../../../mutate/matchUps/schedule/bulkUpdateCourtAssignments';
 import { scheduleMatchUps } from './scheduleMatchUps/scheduleMatchUps';
 import { generateBookings } from './schedulers/utils/generateBookings';
-import { reorderUpcomingMatchUps } from './reorderUpcomingMatchUps';
+import { reorderUpcomingMatchUps } from '../../../mutate/matchUps/schedule/reorderUpcomingMatchUps';
 import { getProfileRounds } from './schedulingProfile/getProfileRounds';
 import { clearScheduledMatchUps } from './clearScheduledMatchUps';
 import { bulkRescheduleMatchUps } from './bulkRescheduleMatchUps';

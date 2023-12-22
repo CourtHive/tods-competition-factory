@@ -1,11 +1,11 @@
-import { getTournamentInfo } from '../../../query/tournaments/getTournamentInfo';
-import { extractDate } from '../../../utilities/dateTime';
+import { getTournamentInfo } from './getTournamentInfo';
+import { extractDate } from '../../utilities/dateTime';
 
-import { Tournament } from '../../../types/tournamentTypes';
+import { Tournament } from '../../types/tournamentTypes';
 import {
   ErrorType,
   MISSING_DATE,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 export function getCompetitionDateRange({
   tournamentRecords,

@@ -1,19 +1,19 @@
-import { setSubscriptions } from '../../../../global/state/globalState';
-import tournamentEngine from '../../../../test/engines/tournamentEngine';
-import mocksEngine from '../../../../mocksEngine';
-import competitionEngine from '../../../../test/engines/competitionEngine';
+import { setSubscriptions } from '../../../global/state/globalState';
+import tournamentEngine from '../../engines/tournamentEngine';
+import mocksEngine from '../../../mocksEngine';
+import competitionEngine from '../../engines/competitionEngine';
 import { expect, test } from 'vitest';
 
-import POLICY_SCHEDULING_DEFAULT from '../../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
-import POLICY_SCORING_USTA from '../../../../fixtures/policies/POLICY_SCORING_USTA';
-import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
-import { ADD_MATCHUPS } from '../../../../constants/topicConstants';
+import POLICY_SCHEDULING_DEFAULT from '../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
+import POLICY_SCORING_USTA from '../../../fixtures/policies/POLICY_SCORING_USTA';
+import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
+import { ADD_MATCHUPS } from '../../../constants/topicConstants';
 import {
   ANACHRONISM,
   EVENT_NOT_FOUND,
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
-} from '../../../../constants/errorConditionConstants';
+} from '../../../constants/errorConditionConstants';
 
 const SHORT4TB10 = 'SET1-S:4/TB10';
 const matchUpAddNotices: number[] = [];

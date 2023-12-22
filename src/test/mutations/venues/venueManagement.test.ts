@@ -1,12 +1,12 @@
-import mocksEngine from '../../../../mocksEngine';
-import competitionEngine from '../../../../test/engines/competitionEngine';
+import mocksEngine from '../../../mocksEngine';
+import competitionEngine from '../../engines/competitionEngine';
 import { expect, test } from 'vitest';
 
 import {
   INVALID_OBJECT,
   VENUE_EXISTS,
   VENUE_NOT_FOUND,
-} from '../../../../constants/errorConditionConstants';
+} from '../../../constants/errorConditionConstants';
 
 test('competitionEngine can modify venues', () => {
   const startDate = '2020-01-01';

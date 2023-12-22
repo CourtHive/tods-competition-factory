@@ -1,4 +1,4 @@
-import { getSchedulingProfileIssues } from '../../queryGovernor/getSchedulingProfileIssues';
+import { getSchedulingProfileIssues } from '../../../../query/scheduling/getSchedulingProfileIssues';
 import tournamentEngine from '../../../../test/engines/tournamentEngine';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../../test/engines/competitionEngine';

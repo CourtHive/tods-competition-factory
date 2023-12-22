@@ -1,5 +1,5 @@
 import { validateSchedulingProfile } from '../../../../validators/validateSchedulingProfile';
-import { getCompetitionDateRange } from '../../queryGovernor/getCompetitionDateRange';
+import { getCompetitionDateRange } from '../../../../query/tournaments/getCompetitionDateRange';
 import { getCompetitionVenues } from '../../../../query/venues/venuesAndCourtsGetter';
 import { removeExtension } from '../../../../mutate/extensions/removeExtension';
 import { getEventIdsAndDrawIds } from '../../../../query/tournaments/getEventIdsAndDrawIds';

@@ -1,18 +1,18 @@
-import tournamentEngine from '../../../../test/engines/tournamentEngine';
-import { formatDate } from '../../../../utilities/dateTime';
-import competitionEngineAsync from '../../../async';
-import competitionEngineSync from '../../../../test/engines/competitionEngine';
-import mocksEngine from '../../../../mocksEngine';
+import tournamentEngine from '../../engines/tournamentEngine';
+import { formatDate } from '../../../utilities/dateTime';
+import competitionEngineAsync from '../../../competitionEngine/async';
+import competitionEngineSync from '../../engines/competitionEngine';
+import mocksEngine from '../../../mocksEngine';
 import { expect, test } from 'vitest';
 
-import { DOUBLES, TEAM } from '../../../../constants/eventConstants';
-import { FEMALE, MALE } from '../../../../constants/genderConstants';
+import { DOUBLES, TEAM } from '../../../constants/eventConstants';
+import { FEMALE, MALE } from '../../../constants/genderConstants';
 import {
   COMPASS,
   CURTIS_CONSOLATION,
   FEED_IN_CHAMPIONSHIP,
   FIRST_MATCH_LOSER_CONSOLATION,
-} from '../../../../constants/drawDefinitionConstants';
+} from '../../../constants/drawDefinitionConstants';
 
 const asyncCompetitionEngine = competitionEngineAsync(true);
 

@@ -1,20 +1,20 @@
-import { generateTimeSlots } from '../../../assemblies/generators/scheduling/generateTimeSlots';
-import { getVenuesAndCourts } from '../../../query/venues/venuesAndCourtsGetter';
-import { allCompetitionMatchUps } from '../../../query/matchUps/getAllCompetitionMatchUps';
+import { generateTimeSlots } from '../../assemblies/generators/scheduling/generateTimeSlots';
+import { getVenuesAndCourts } from './venuesAndCourtsGetter';
+import { allCompetitionMatchUps } from '../matchUps/getAllCompetitionMatchUps';
 import {
   addMinutesToTimeString,
   extractTime,
   isValidDateString,
   sameDay,
   timeStringMinutes,
-} from '../../../utilities/dateTime';
+} from '../../utilities/dateTime';
 
-import { TournamentRecords } from '../../../types/factoryTypes';
+import { TournamentRecords } from '../../types/factoryTypes';
 import {
   INVALID_DATE,
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORDS,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 type GetVenueReportArgs = {
   tournamentRecords: TournamentRecords;

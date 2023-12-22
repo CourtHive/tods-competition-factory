@@ -1,10 +1,10 @@
 import { getParticipantScaleItem } from '../../../query/participant/getParticipantScaleItem';
 import { competitionScheduleMatchUps } from '../../../query/matchUps/competitionScheduleMatchUps';
-import { getSchedulingProfileIssues } from './getSchedulingProfileIssues';
-import { getCompetitionDateRange } from './getCompetitionDateRange';
+import { getSchedulingProfileIssues } from '../../../query/scheduling/getSchedulingProfileIssues';
+import { getCompetitionDateRange } from '../../../query/tournaments/getCompetitionDateRange';
 import { credits } from '../../../fixtures/credits';
 import { matchUpActions } from './matchUpActions';
-import { getVenuesReport } from './venuesReport';
+import { getVenuesReport } from '../../../query/venues/venuesReport';
 import {
   getCompetitionVenues,
   getVenuesAndCourts,

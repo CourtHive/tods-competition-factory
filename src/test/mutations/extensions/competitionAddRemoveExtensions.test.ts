@@ -1,10 +1,10 @@
-import { findExtension } from '../../../../acquire/findExtension';
-import competitionEngineAsync from '../../../async';
-import competitionEngineSync from '../../../../test/engines/competitionEngine';
-import mocksEngine from '../../../../mocksEngine';
+import { findExtension } from '../../../acquire/findExtension';
+import competitionEngineAsync from '../../../competitionEngine/async';
+import competitionEngineSync from '../../engines/competitionEngine';
+import mocksEngine from '../../../mocksEngine';
 import { expect, test } from 'vitest';
 
-import { Tournament } from '../../../../types/tournamentTypes';
+import { Tournament } from '../../../types/tournamentTypes';
 
 const asyncCompetitionEngine = competitionEngineAsync(true);
 
