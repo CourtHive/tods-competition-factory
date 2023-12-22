@@ -123,7 +123,6 @@ import { isValidForQualifying } from './drawDefinitions/isValidForQualifying';
 
 import { resetMatchUpLineUps } from '../../../mutate/matchUps/lineUps/resetMatchUpLineUps';
 import { aggregateTieFormats } from '../../../mutate/tieFormat/aggregateTieFormats';
-import { updateTieMatchUpScore } from './updateTieMatchUpScore';
 import { modifyEvent } from './modifyEvent';
 
 import { checkOutParticipant } from '../../../mutate/matchUps/timeItems/checkOutParticipant';
@@ -141,6 +140,7 @@ import { addPlayoffStructures } from '../../../mutate/drawDefinitions/addPlayoff
 import { validateCollectionDefinition } from '../../../validators/validateCollectionDefinition';
 import { resetScorecard } from '../../../mutate/matchUps/resetScorecard';
 import { automatedPositioning } from '../../../mutate/drawDefinitions/automatedPositioning';
+import { updateTieMatchUpScore } from '../../../mutate/matchUps/score/tieMatchUpScore';
 
 const eventGovernor = {
   generateQualifyingStructure,

@@ -99,7 +99,9 @@ function getOneOf(params, _oneOf) {
 
 function getAnyOf(params, _anyOf) {
   if (!_anyOf) return;
-  const overlap = getIntersection(params, _anyOf);
+  const overlap = getIntersection(params, _anyOf).filter(
+    (param) => params[param]
+  );
   if (overlap.length < 1) return { error: INVALID_VALUES };
   return overlap.reduce((attr, param) => ({ ...attr, [param]: true }), {});
 }
@@ -111,6 +113,7 @@ function findParamError(params, requiredParams) {
       const oneOf = _oneOf && getOneOf(params, _oneOf);
       if (oneOf?.error) return oneOf.error;
       oneOf && Object.assign(attrs, oneOf);
+
       const anyOf = _anyOf && getAnyOf(params, _anyOf);
       if (anyOf?.error) return anyOf.error;
       anyOf && Object.assign(attrs, anyOf);
@@ -118,6 +121,7 @@ function findParamError(params, requiredParams) {
       const booleanParams = Object.keys(attrs).filter(
         (key) => typeof attrs[key] === 'boolean'
       );
+
       const invalidParam = booleanParams.find((param) => {
         const invalid =
           params[param] === undefined || invalidType(params, param, _oftype);
@@ -126,6 +130,7 @@ function findParamError(params, requiredParams) {
         if (hasError) errorParam = param;
         return hasError;
       });
+
       return !booleanParams.length || invalidParam;
     }
   );

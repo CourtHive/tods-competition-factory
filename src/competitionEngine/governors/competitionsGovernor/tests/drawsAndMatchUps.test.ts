@@ -91,7 +91,7 @@ test('competitionEngine can setMatchUpStatus', () => {
   competitionEngine.setState(tournamentRecord);
   const { startDate } = competitionEngine.getCompetitionDateRange();
 
-  let { upcomingMatchUps } = competitionEngine.competitionMatchUps();
+  let { upcomingMatchUps } = competitionEngine.getCompetitionMatchUps();
 
   const { matchUpId, drawId, tournamentId } = upcomingMatchUps[0];
   const { outcome } = mocksEngine.generateOutcomeFromScoreString({
@@ -108,14 +108,14 @@ test('competitionEngine can setMatchUpStatus', () => {
   });
   expect(result.success).toEqual(true);
 
-  let { completedMatchUps } = competitionEngine.competitionMatchUps();
+  let { completedMatchUps } = competitionEngine.getCompetitionMatchUps();
   expect(completedMatchUps.length).toEqual(1);
 
   expect(completedMatchUps[0].score.scoreStringSide1).toEqual(
     outcome.score.scoreStringSide1
   );
 
-  ({ upcomingMatchUps } = competitionEngine.competitionMatchUps());
+  ({ upcomingMatchUps } = competitionEngine.getCompetitionMatchUps());
 
   const outcomes = upcomingMatchUps.map((matchUp) => {
     const { matchUpId, drawId, eventId, tournamentId } = matchUp;
@@ -135,7 +135,7 @@ test('competitionEngine can setMatchUpStatus', () => {
   result = competitionEngine.bulkMatchUpStatusUpdate({ outcomes });
   expect(result.success).toEqual(true);
 
-  ({ completedMatchUps } = competitionEngine.competitionMatchUps());
+  ({ completedMatchUps } = competitionEngine.getCompetitionMatchUps());
   expect(completedMatchUps.length).toEqual(16);
   completedMatchUps.forEach(({ score, schedule }) => {
     expect(score.scoreStringSide1).toEqual(outcome.score.scoreStringSide1);
@@ -158,7 +158,7 @@ test('competitionEngine can bulkScheduleMatchUps', () => {
   competitionEngine.setState(tournamentRecord);
   const { startDate } = competitionEngine.getCompetitionDateRange();
 
-  let { upcomingMatchUps } = competitionEngine.competitionMatchUps();
+  let { upcomingMatchUps } = competitionEngine.getCompetitionMatchUps();
 
   let matchUpContextIds = upcomingMatchUps.map(
     ({ tournamentId, drawId, matchUpId }) => ({
@@ -184,7 +184,7 @@ test('competitionEngine can bulkScheduleMatchUps', () => {
     expect(validActions.length).toBeGreaterThan(0);
   });
 
-  ({ upcomingMatchUps } = competitionEngine.competitionMatchUps());
+  ({ upcomingMatchUps } = competitionEngine.getCompetitionMatchUps());
 
   upcomingMatchUps.forEach(({ schedule, roundNumber }) => {
     expect(schedule.scheduledDate).toEqual(startDate);
@@ -254,11 +254,12 @@ test('can modify event timing for matchUpFormat codes', () => {
 
   competitionEngine.setState([firstTournament, secondTournament]);
 
-  competitionEngine.attachPolicies({
+  let result = competitionEngine.attachPolicies({
     policyDefinitions: POLICY_SCHEDULING_DEFAULT,
   });
+  expect(result.success).toEqual(true);
 
-  let result = competitionEngine.getEventMatchUpFormatTiming({
+  result = competitionEngine.getEventMatchUpFormatTiming({
     eventId,
   });
   // even with no policy, timing is defined / falls back to defaults

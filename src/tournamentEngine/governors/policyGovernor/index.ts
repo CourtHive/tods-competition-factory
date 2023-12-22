@@ -2,21 +2,17 @@ import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies
 import {
   getAllowedDrawTypes,
   getAllowedMatchUpFormats,
-} from '../../../query/tournament/allowedTypes';
+} from '../../../query/tournaments/allowedTypes';
 import { getEntriesAndSeedsCount } from './getEntriesAndSeedsCount';
 import { getSeedsCount } from './getSeedsCount';
 import { findPolicy } from '../../../acquire/findPolicy';
 
-import {
-  attachPolicies,
-  attachEventPolicies,
-  removeEventPolicy,
-} from '../../../mutate/extensions/policies/policyManagement';
+import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
+import { removePolicy } from '../../../mutate/extensions/policies/removePolicy';
 
 const policyGovernor = {
   attachPolicies,
-  attachEventPolicies,
-  removeEventPolicy,
+  removePolicy,
   findPolicy,
 
   getSeedsCount,

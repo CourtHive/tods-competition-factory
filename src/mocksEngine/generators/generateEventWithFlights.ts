@@ -1,16 +1,16 @@
 import { addEventEntries } from '../../tournamentEngine/governors/eventGovernor/entries/addEventEntries';
-import { attachEventPolicies } from '../../mutate/extensions/policies/policyManagement';
-import { addEventTimeItem } from '../../mutate/timeItems/addTimeItem';
 import { publishEvent } from '../../tournamentEngine/governors/publishingGovernor/publishEvent';
 import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaults';
 import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEvent';
+import { attachPolicies } from '../../mutate/extensions/policies/attachPolicies';
 import { getStageParticipantsCount } from '../getters/getStageParticipantsCount';
 import { generateFlightDrawDefinitions } from './generateFlightDrawDefinitions';
-import { isValidExtension } from '../../validators/isValidExtension';
 import { generateEventParticipants } from './generateEventParticipants';
 import { getStageParticipants } from '../getters/getStageParticipants';
-import { generateFlights } from './generateFlights';
+import { addEventTimeItem } from '../../mutate/timeItems/addTimeItem';
+import { isValidExtension } from '../../validators/isValidExtension';
 import { UUID, extractAttributes } from '../../utilities';
+import { generateFlights } from './generateFlights';
 
 import { SINGLES, DOUBLES, TEAM } from '../../constants/eventConstants';
 import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';
@@ -132,7 +132,7 @@ export function generateEventWithFlights(params) {
 
   if (typeof policyDefinitions === 'object') {
     for (const policyType of Object.keys(policyDefinitions)) {
-      attachEventPolicies({
+      attachPolicies({
         policyDefinitions: { [policyType]: policyDefinitions[policyType] },
         event: newEvent,
       });

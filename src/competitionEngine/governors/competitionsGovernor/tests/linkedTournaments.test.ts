@@ -1,4 +1,4 @@
-import { unlinkTournament } from '../tournamentLinks';
+import { unlinkTournament } from '../../../../mutate/tournaments/tournamentLinks';
 import { intersection } from '../../../../utilities';
 import competitionEngineAsync from '../../../async';
 import competitionEngineSync from '../../../../test/engines/competitionEngine';
@@ -158,7 +158,8 @@ test.each([competitionEngineSync, asyncCompetitionEngine])(
     await competitionEngine.setState([firstRecord, secondRecord]);
     await competitionEngine.linkTournaments();
 
-    const { upcomingMatchUps } = await competitionEngine.competitionMatchUps();
+    const { upcomingMatchUps } =
+      await competitionEngine.getCompetitionMatchUps();
 
     upcomingMatchUps.forEach(({ sides }) =>
       sides.forEach((side) => {

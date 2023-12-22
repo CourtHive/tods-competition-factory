@@ -46,8 +46,8 @@ it('generateDrawDefinition will find seeding policy attached to tournamentRecord
   expect(drawDefinition.structures[0].finishingPosition).toEqual(WIN_RATIO);
 
   // There is no POLICY_TYPE_SEEDING on the drawDefinition because it is attached to the tournamentRecord
-  expect(drawDefinition.extensions.length).toEqual(2);
-  expect(drawDefinition.extensions[1].name).toEqual(ENTRY_PROFILE);
+  expect(drawDefinition.extensions.length).toEqual(1);
+  expect(drawDefinition.extensions[0].name).toEqual(ENTRY_PROFILE);
 });
 
 it('generateDrawDefinition will find seeding policy attached to event', () => {
@@ -88,8 +88,8 @@ it('generateDrawDefinition will find seeding policy attached to event', () => {
   expect(Object.keys(appliedPolicies.value).length).toEqual(2);
 
   // There is no POLICY_TYPE_SEEDING on the drawDefinition appliedPolicies because it is attached to the tournamentRecord
-  expect(drawDefinition.extensions.length).toEqual(2);
-  expect(drawDefinition.extensions[1].name).toEqual(ENTRY_PROFILE);
+  expect(drawDefinition.extensions.length).toEqual(1);
+  expect(drawDefinition.extensions[0].name).toEqual(ENTRY_PROFILE);
 });
 
 it('policyDefinitions can be passed directly into generateDrawDefintion from drawProfiles', () => {
@@ -133,7 +133,11 @@ test('seeding policies attached to tournamentRecords will be used when generatin
 
   tournamentEngine.setState(tournamentRecord);
 
-  tournamentEngine.attachPolicies({ policyDefinitions: POLICY_SEEDING_BYES });
+  const result = tournamentEngine.attachPolicies({
+    policyDefinitions: POLICY_SEEDING_BYES,
+  });
+  expect(result.success).toEqual(true);
+  expect(result.applied).toEqual([POLICY_TYPE_SEEDING]);
 
   const {
     flightProfile: {
@@ -148,7 +152,6 @@ test('seeding policies attached to tournamentRecords will be used when generatin
 
   // there are no 'appliedPolicies' because seeding was found on the policies attached to the tournament
   expect(drawDefinition.extensions.map(({ name }) => name)).toEqual([
-    'appliedPolicies',
     'entryProfile',
   ]);
 });

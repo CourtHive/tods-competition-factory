@@ -4,7 +4,7 @@ import { checkParticipantProfileInitialization } from './checkParticipantProfile
 import { findDrawDefinition } from '../../../../acquire/findDrawDefinition';
 import { modifyParticipantMatchUpsCount } from './modifyParticipantMatchUpsCount';
 import { checkDependenciesScheduled } from './checkDependenciesScheduled';
-import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
+import { allCompetitionMatchUps } from '../../../../query/matchUps/getAllCompetitionMatchUps';
 import { getMatchUpIds } from '../../../../global/functions/extractors';
 import { updateTimeAfterRecovery } from './updateTimeAfterRecovery';
 import { calculateScheduleTimes } from './calculateScheduleTimes';

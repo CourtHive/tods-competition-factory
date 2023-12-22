@@ -1,57 +1,24 @@
-import { removeExtension } from '../../../mutate/extensions/removeExtension';
-import { addExtension } from '../../../mutate/extensions/addExtension';
-import { findExtension } from '../../../acquire/findExtension';
+import { removeExtension } from '../extensions/removeExtension';
+import { addExtension } from '../extensions/addExtension';
+import { findExtension } from '../../acquire/findExtension';
 import {
   ResultType,
   decorateResult,
-} from '../../../global/functions/decorateResult';
+} from '../../global/functions/decorateResult';
 import {
   addTournamentExtension,
   removeTournamentExtension,
-} from '../../../mutate/extensions/addRemoveExtensions';
+} from '../extensions/addRemoveExtensions';
 
-import { LINKED_TOURNAMENTS } from '../../../constants/extensionConstants';
-import { Tournament } from '../../../types/tournamentTypes';
-import { TournamentRecords } from '../../../types/factoryTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { LINKED_TOURNAMENTS } from '../../constants/extensionConstants';
+import { TournamentRecords } from '../../types/factoryTypes';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   INVALID_VALUES,
   MISSING_TOURNAMENT_ID,
   MISSING_TOURNAMENT_RECORDS,
-} from '../../../constants/errorConditionConstants';
-
-type LinkTournamentsArgs = { tournamentRecords: { [key: string]: Tournament } };
-
-export function getLinkedTournamentIds({
-  tournamentRecords,
-}: LinkTournamentsArgs): ResultType & { linkedTournamentIds?: string[] } {
-  if (
-    typeof tournamentRecords !== 'object' ||
-    !Object.keys(tournamentRecords).length
-  )
-    return { error: MISSING_TOURNAMENT_RECORDS };
-
-  const linkedTournamentIds = Object.assign(
-    {},
-    ...Object.keys(tournamentRecords).map((tournamentId) => {
-      const tournamentRecord = tournamentRecords[tournamentId];
-      const touranmentId = tournamentRecord?.tournamentId;
-
-      const { extension } = findExtension({
-        element: tournamentRecord,
-        name: LINKED_TOURNAMENTS,
-      });
-
-      const tournamentIds = (extension?.value?.tournamentIds || []).filter(
-        (currentTournamentId) => currentTournamentId !== touranmentId
-      );
-
-      return { [tournamentId]: tournamentIds };
-    })
-  );
-
-  return { linkedTournamentIds };
-}
+} from '../../constants/errorConditionConstants';
+import { getTournamentIds } from '../../query/tournaments/getTournamentIds';
 
 /**
  * Links all tournaments which are currently loaded into competitionEngine state
@@ -59,14 +26,16 @@ export function getLinkedTournamentIds({
 
 export function linkTournaments({
   tournamentRecords,
-}: LinkTournamentsArgs): ResultType {
+}: {
+  tournamentRecords: TournamentRecords;
+}): ResultType {
   if (
     typeof tournamentRecords !== 'object' ||
     !Object.keys(tournamentRecords).length
   )
     return { error: MISSING_TOURNAMENT_RECORDS };
 
-  const result = getTournamentIds(tournamentRecords);
+  const result = getTournamentIds({ tournamentRecords });
   const { tournamentIds } = result;
 
   if (tournamentIds?.length > 1) {
@@ -120,7 +89,7 @@ export function unlinkTournament({
   if (typeof tournamentRecords !== 'object') return { error: INVALID_VALUES };
   if (!tournamentId) return { error: MISSING_TOURNAMENT_ID };
 
-  const result = getTournamentIds(tournamentRecords);
+  const result = getTournamentIds({ tournamentRecords });
   const { tournamentIds } = result;
 
   if (!tournamentIds.includes(tournamentId))
@@ -168,9 +137,4 @@ export function unlinkTournament({
   });
 
   return unlinkError ? { error: unlinkError } : { ...SUCCESS };
-}
-
-function getTournamentIds(tournamentRecords) {
-  const tournamentIds = Object.keys(tournamentRecords).filter(Boolean);
-  return { tournamentIds };
 }

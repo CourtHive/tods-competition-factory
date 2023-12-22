@@ -1,10 +1,18 @@
 import { checkRequiredParameters } from '../../../parameters/checkRequiredParameters';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
+import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { addExtension } from '../addExtension';
 
 import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
 import { ResultType } from '../../../global/functions/decorateResult';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { isObject, isString } from '../../../utilities/objects';
+import {
+  EXISTING_POLICY_TYPE,
+  INVALID_VALUES,
+  MISSING_POLICY_DEFINITION,
+  MISSING_TOURNAMENT_RECORD,
+} from '../../../constants/errorConditionConstants';
 import {
   DrawDefinition,
   Event,
@@ -21,13 +29,16 @@ type AttachPoliciesArgs = {
   drawDefinition?: DrawDefinition;
   tournamentRecord?: Tournament;
   allowReplacement?: boolean;
+  tournamentId?: string;
   event?: Event;
 };
 
-export function attachPolicies(params: AttachPoliciesArgs): ResultType {
+export function attachPolicies(
+  params: AttachPoliciesArgs
+): ResultType & { applied?: string[] } {
   const checkParams = checkRequiredParameters(params, [
     {
-      _oneOf: {
+      _anyOf: {
         tournamentRecords: true,
         tournamentRecord: true,
         drawDefinition: true,
@@ -38,33 +49,75 @@ export function attachPolicies(params: AttachPoliciesArgs): ResultType {
   ]);
   if (checkParams.error) return checkParams;
 
-  if (params.tournamentRecords) {
-    for (const tournamentRecord of Object.values(params.tournamentRecords)) {
-      policyAttachement(params, tournamentRecord);
+  const applied: string[] = [];
+
+  const element =
+    params.drawDefinition ??
+    params.event ??
+    ((params.tournamentId || !params.tournamentRecords) &&
+      params.tournamentRecord);
+
+  if (element) {
+    const result = policyAttachement(params, element);
+    if (result.error) return result;
+    applied.push(...(result?.applied ?? []));
+
+    if (params.drawDefinition) {
+      modifyDrawNotice({
+        drawDefinition: params.drawDefinition,
+        tournamentId: params.tournamentId,
+      });
+    }
+  } else if (params.tournamentRecords) {
+    const tournamentIds = Object.keys(params.tournamentRecords);
+    if (!tournamentIds.length) return { error: MISSING_TOURNAMENT_RECORD };
+    for (const tournamentId of tournamentIds) {
+      const tournamentRecord = params.tournamentRecords[tournamentId];
+      const result = policyAttachement(params, tournamentRecord);
+      if (result.error) return result;
+      applied.push(...(result?.applied ?? []));
     }
   } else {
-    const element =
-      params.tournamentRecord ?? params.drawDefinition ?? params.event;
-    policyAttachement(params, element);
+    return { error: MISSING_TOURNAMENT_RECORD };
   }
 
-  return { ...SUCCESS };
+  return !applied.length
+    ? { error: EXISTING_POLICY_TYPE }
+    : { ...SUCCESS, applied };
 }
 
-function policyAttachement(params, element) {
+function policyAttachement(
+  params: any,
+  element: any
+): ResultType & { applied?: string[] } {
   const appliedPolicies = getAppliedPolicies(params).appliedPolicies ?? {};
   if (!element.extensions) element.extensions = [];
-  let policiesApplied = 0;
+  const applied: string[] = [];
 
-  Object.keys(params.policyDefinitions).forEach((policyType) => {
+  const policyTypes = Object.keys(params.policyDefinitions);
+  if (!policyTypes.length) return { error: MISSING_POLICY_DEFINITION };
+
+  for (const policyType of policyTypes) {
     if (!appliedPolicies[policyType] || params.allowReplacement) {
+      const policy = params.policyDefinitions[policyType];
+      if (!policy) continue;
+      if (!isObject(policy)) return { error: INVALID_VALUES };
+      const { policyName, ...values } = policy;
+      if (
+        !values ||
+        !Object.keys(values).length ||
+        (policyName && !isString(policyName))
+      )
+        return { error: INVALID_VALUES };
       appliedPolicies[policyType] = params.policyDefinitions[policyType];
-      policiesApplied++;
+      applied.push(policyType);
     }
-  });
-
-  if (policiesApplied) {
-    const extension = { name: APPLIED_POLICIES, value: appliedPolicies };
-    addExtension({ element, extension });
   }
+
+  if (applied?.length) {
+    const extension = { name: APPLIED_POLICIES, value: appliedPolicies };
+    return { ...addExtension({ element, extension }), applied };
+  }
+
+  return { applied, error: EXISTING_POLICY_TYPE };
 }

@@ -2,7 +2,7 @@ import { validateSchedulingProfile } from '../../../../validators/validateSchedu
 import { getCompetitionDateRange } from '../../queryGovernor/getCompetitionDateRange';
 import { getCompetitionVenues } from '../../../../query/venues/venuesAndCourtsGetter';
 import { removeExtension } from '../../../../mutate/extensions/removeExtension';
-import { getEventIdsAndDrawIds } from '../../../getters/getEventIdsAndDrawIds';
+import { getEventIdsAndDrawIds } from '../../../../query/tournaments/getEventIdsAndDrawIds';
 import { decorateResult } from '../../../../global/functions/decorateResult';
 import { addExtension } from '../../../../mutate/extensions/addExtension';
 import { findExtension } from '../../../../acquire/findExtension';

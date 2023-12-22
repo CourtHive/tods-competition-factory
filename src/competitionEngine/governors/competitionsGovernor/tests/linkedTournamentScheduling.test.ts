@@ -209,9 +209,11 @@ test.each([competitionEngineSync, asyncCompetitionEngine].slice(0, 1))(
     const court = courts.find(({ courtId }) => courtId === cpsCourt1);
     expect(court).not.toBeUndefined();
 
-    const { upcomingMatchUps } = await competitionEngine.competitionMatchUps({
-      contextFilters: { tournamentIds: [tid] },
-    });
+    const { upcomingMatchUps } = await competitionEngine.getCompetitionMatchUps(
+      {
+        contextFilters: { tournamentIds: [tid] },
+      }
+    );
     let courtMatchUps = upcomingMatchUps.filter(
       (matchUp) => matchUp.schedule?.courtId === cpsCourt1
     );
@@ -238,7 +240,7 @@ test.each([competitionEngineSync, asyncCompetitionEngine].slice(0, 1))(
     venues = tournamentEngine.getVenuesAndCourts({ tournamentId: tid }).venues;
     expect(venues.length).toEqual(2);
 
-    result = await competitionEngine.competitionMatchUps({
+    result = await competitionEngine.getCompetitionMatchUps({
       contextFilters: { tournamentIds: [tid] },
     });
     courtMatchUps = result.upcomingMatchUps.filter(

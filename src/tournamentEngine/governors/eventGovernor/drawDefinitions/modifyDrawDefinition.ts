@@ -1,4 +1,4 @@
-import { attachPolicies } from '../../../../drawEngine/governors/policyGovernor/attachPolicies';
+import { attachPolicies } from '../../../../mutate/extensions/policies/attachPolicies';
 import { modifyDrawNotice } from '../../../../mutate/notifications/drawNotifications';
 import { addEventExtension } from '../../../../mutate/extensions/addRemoveExtensions';
 import { getFlightProfile } from '../../../../query/event/getFlightProfile';

@@ -1,4 +1,4 @@
-import { competitionScheduleMatchUps } from '../../../getters/competitionScheduleMatchUps';
+import { competitionScheduleMatchUps } from '../../../../query/matchUps/competitionScheduleMatchUps';
 import { getMatchUpDependencies } from '../../../../query/matchUps/getMatchUpDependencies';
 import { matchUpSort } from '../../../../functions/sorters/matchUpSort';
 import { validMatchUps } from '../../../../validators/validMatchUp';

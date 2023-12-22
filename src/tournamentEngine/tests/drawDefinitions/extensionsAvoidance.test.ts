@@ -35,12 +35,7 @@ test.each([2, 4, 8, 16])(
       },
     };
 
-    let attachResult = tournamentEngine.attachEventPolicies({
-      policyDefinitions,
-    });
-    expect(attachResult.error).toEqual(MISSING_EVENT);
-
-    attachResult = tournamentEngine.attachEventPolicies({
+    const attachResult = tournamentEngine.attachPolicies({
       policyDefinitions,
       eventId,
     });

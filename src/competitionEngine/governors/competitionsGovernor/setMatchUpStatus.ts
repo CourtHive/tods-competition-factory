@@ -1,6 +1,6 @@
 import { findEvent } from '../../../acquire/findEvent';
 import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
-import { findTournamentId } from './findTournamentId';
+import { findTournamentId } from '../../../acquire/findTournamentId';
 import {
   bulkMatchUpStatusUpdate as bulkUpdate,
   setMatchUpStatus as setStatus,

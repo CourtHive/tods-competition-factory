@@ -35,7 +35,7 @@ test.each([competitionEngineSync])(
     });
 
     competitionEngine.setState([tournamentRecord]);
-    const { upcomingMatchUps } = competitionEngine.competitionMatchUps();
+    const { upcomingMatchUps } = competitionEngine.getCompetitionMatchUps();
     const { startDate } = competitionEngine.getCompetitionDateRange();
 
     const matchUpIds = getMatchUpIds(upcomingMatchUps);
@@ -90,7 +90,7 @@ test.each([competitionEngineSync])(
     expect(eventIds).toEqual(['e1', 'e2']);
 
     competitionEngine.setState([tournamentRecord]);
-    const { upcomingMatchUps } = competitionEngine.competitionMatchUps();
+    const { upcomingMatchUps } = competitionEngine.getCompetitionMatchUps();
     const { startDate } = competitionEngine.getCompetitionDateRange();
 
     const matchUpIds = getMatchUpIds(upcomingMatchUps);

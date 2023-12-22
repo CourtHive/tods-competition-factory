@@ -1,4 +1,4 @@
-import { attachPolicies } from './policyManagement';
+import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
 
 const policyGovernor = {
   attachPolicies,

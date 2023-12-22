@@ -4,7 +4,7 @@ import { extractDate, isValidDateString } from '../../../../utilities/dateTime';
 import { getSchedulingProfile } from './schedulingProfile';
 import { getVenuesAndCourts } from '../../../../query/venues/venuesAndCourtsGetter';
 import { jinnScheduler } from '../schedulers/jinnScheduler/jinnScheduler';
-import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
+import { allCompetitionMatchUps } from '../../../../query/matchUps/getAllCompetitionMatchUps';
 import { getPersonRequests } from '../scheduleMatchUps/personRequests';
 import { v2Scheduler } from '../schedulers/v2Scheduler/v2Scheduler';
 import { clearScheduledMatchUps } from '../clearScheduledMatchUps';

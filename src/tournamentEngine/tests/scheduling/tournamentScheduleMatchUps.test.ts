@@ -17,7 +17,7 @@ it('auto schedules venue if only one venue provided', () => {
 
   tournamentEngine.setState(tournamentRecord);
   competitionEngine.setState([tournamentRecord]);
-  let { upcomingMatchUps } = competitionEngine.competitionMatchUps();
+  let { upcomingMatchUps } = competitionEngine.getCompetitionMatchUps();
 
   const matchUpIds = getMatchUpIds(upcomingMatchUps);
   expect(matchUpIds.length).toBeGreaterThan(0);
@@ -35,7 +35,7 @@ it('auto schedules venue if only one venue provided', () => {
   });
   expect(result.dateMatchUps.length).toEqual(scheduledMatchUpsCount);
 
-  ({ upcomingMatchUps } = competitionEngine.competitionMatchUps());
+  ({ upcomingMatchUps } = competitionEngine.getCompetitionMatchUps());
   const { matchUpId } = upcomingMatchUps[0];
 
   expect(upcomingMatchUps[0].schedule.venueId).toEqual(venueIds[0]);

@@ -14,9 +14,7 @@ it('can convert extensions during deepCopy', () => {
   tournamentEngine.setState(tournamentRecord);
 
   const scoringPolicy = {
-    scoring: {
-      policyName: 'TEST',
-    },
+    scoring: { policyName: 'TEST', someAttribute: 'somevalue' },
   };
   let result = tournamentEngine.attachPolicies({
     policyDefinitions: scoringPolicy,
@@ -70,9 +68,7 @@ it('can remove extensions', () => {
   tournamentEngine.setState(tournamentRecord);
 
   const scoringPolicy = {
-    scoring: {
-      policyName: 'TEST',
-    },
+    scoring: { policyName: 'TEST', someAttribute: 'someValue' },
   };
   const result = tournamentEngine.attachPolicies({
     policyDefinitions: scoringPolicy,

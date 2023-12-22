@@ -4,7 +4,7 @@ import { addMatchUpScheduledTime } from '../../../mutate/matchUps/schedule/sched
 import { findDrawDefinition } from '../../../acquire/findDrawDefinition';
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
-import { getTournamentInfo } from '../../../query/tournament/getTournamentInfo';
+import { getTournamentInfo } from '../../../query/tournaments/getTournamentInfo';
 import {
   addMinutesToTimeString,
   dateStringDaysChange,

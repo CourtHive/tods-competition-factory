@@ -99,7 +99,7 @@ it('can add events, venues, and schedule matchUps', () => {
   expect(venues.length).toEqual(1);
 
   const { upcomingMatchUps: upcoming, pendingMatchUps } =
-    competitionEngine.competitionMatchUps();
+    competitionEngine.getCompetitionMatchUps();
   expect(upcoming.length).toEqual(16);
   expect(pendingMatchUps.length).toEqual(15);
 
@@ -227,7 +227,7 @@ it('can add events, venues, and schedule matchUps', () => {
   });
   expect(result.success).toEqual(true);
 
-  let { upcomingMatchUps } = competitionEngine.competitionMatchUps();
+  let { upcomingMatchUps } = competitionEngine.getCompetitionMatchUps();
   expect(upcomingMatchUps[0].timeItems.length).toEqual(12);
 
   result = competitionEngine.addMatchUpCourtOrder({
@@ -246,7 +246,7 @@ it('can add events, venues, and schedule matchUps', () => {
   });
   expect(result.success).toEqual(true);
 
-  ({ upcomingMatchUps } = competitionEngine.competitionMatchUps());
+  ({ upcomingMatchUps } = competitionEngine.getCompetitionMatchUps());
   expect(upcomingMatchUps[0].timeItems.length).toEqual(13);
   expect(upcomingMatchUps[0].schedule.courtOrder).toEqual(1);
 
@@ -279,7 +279,7 @@ it('can add events, venues, and schedule matchUps', () => {
 
   expect(matchUpModifyNotices.length).toEqual(1);
 
-  ({ upcomingMatchUps } = competitionEngine.competitionMatchUps());
+  ({ upcomingMatchUps } = competitionEngine.getCompetitionMatchUps());
   expect(upcomingMatchUps[0].timeItems.length).toEqual(14);
 
   // duplicating the modification does NOT add a new timeItem
@@ -290,7 +290,7 @@ it('can add events, venues, and schedule matchUps', () => {
   expect(result.success).toEqual(true);
   expect(matchUpModifyNotices.length).toEqual(2);
 
-  ({ upcomingMatchUps } = competitionEngine.competitionMatchUps());
+  ({ upcomingMatchUps } = competitionEngine.getCompetitionMatchUps());
   expect(upcomingMatchUps[0].timeItems.length).toEqual(14);
 
   result = competitionEngine.assignMatchUpCourt({
@@ -317,7 +317,7 @@ it('can add events, venues, and schedule matchUps', () => {
   // in this case two notices have been genrated
   expect(matchUpModifyNotices.length).toEqual(5);
 
-  ({ upcomingMatchUps } = competitionEngine.competitionMatchUps());
+  ({ upcomingMatchUps } = competitionEngine.getCompetitionMatchUps());
   expect(upcomingMatchUps[0].timeItems.length).toEqual(15);
 
   result = competitionEngine.removeMatchUpCourtAssignment({
@@ -327,7 +327,7 @@ it('can add events, venues, and schedule matchUps', () => {
   });
   expect(result.success).toEqual(true);
 
-  ({ upcomingMatchUps } = competitionEngine.competitionMatchUps());
+  ({ upcomingMatchUps } = competitionEngine.getCompetitionMatchUps());
   expect(upcomingMatchUps[0].timeItems.length).toEqual(16);
 
   result = competitionEngine.addMatchUpScheduleItems({

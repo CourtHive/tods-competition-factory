@@ -2,7 +2,7 @@
   returns the next round matchUp for winner of given matchUp
   must exclude tieMatchUps as next round matchUp count may not be consistent
 */
-export function nextRoundMatchUp({ structureMatchUps, matchUp }) {
+export function getNextRoundMatchUp({ structureMatchUps, matchUp }) {
   const { roundNumber, roundPosition } = matchUp;
   const currentRoundMatchUps = structureMatchUps.filter(
     (matchUp) => matchUp.roundNumber === roundNumber && !matchUp.matchUpTieId

@@ -1,6 +1,6 @@
 import { scheduleProfileRounds } from '../../competitionEngine/governors/scheduleGovernor/schedulingProfile/scheduleProfileRounds';
 import { newTournamentRecord } from '../../assemblies/generators/tournamentRecords/newTournamentRecord';
-import { attachPolicies } from '../../mutate/extensions/policies/policyManagement';
+import { attachPolicies } from '../../mutate/extensions/policies/attachPolicies';
 import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEvent';
 import { formatDate, isValidDateString } from '../../utilities/dateTime';
 import { addTournamentParticipants } from './addTournamentParticipants';

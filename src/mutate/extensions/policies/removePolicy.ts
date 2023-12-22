@@ -4,8 +4,12 @@ import { addExtension } from '../addExtension';
 import { removeExtension } from '../removeExtension';
 
 import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 import { TournamentRecords } from '../../../types/factoryTypes';
+import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  MISSING_TOURNAMENT_RECORD,
+  POLICY_NOT_FOUND,
+} from '../../../constants/errorConditionConstants';
 import {
   DrawDefinition,
   Event,
@@ -16,14 +20,15 @@ type RemovePolicyArgs = {
   tournamentRecords?: TournamentRecords;
   tournamentRecord?: Tournament;
   drawDefinition?: DrawDefinition;
-  event?: Event;
+  tournamentId?: string;
   policyType: string;
+  event?: Event;
 };
 export function removePolicy(params: RemovePolicyArgs) {
   const checkParams = checkRequiredParameters(params, [
     {
       policyType: true,
-      _oneOf: {
+      _anyOf: {
         tournamentRecords: true,
         tournamentRecord: true,
         drawDefinition: true,
@@ -32,18 +37,29 @@ export function removePolicy(params: RemovePolicyArgs) {
     },
   ]);
   if (checkParams.error) return checkParams;
+  let policyRemoved;
 
-  if (params.tournamentRecords) {
-    for (const tournamentRecord of Object.values(params.tournamentRecords)) {
-      policyDeletion(params, tournamentRecord);
+  const element =
+    params.drawDefinition ??
+    params.event ??
+    ((params.tournamentId || !params.tournamentRecords) &&
+      params.tournamentRecord);
+  if (element) {
+    return policyDeletion(params, element);
+  } else if (params.tournamentRecords) {
+    const tournamentIds = Object.keys(params.tournamentRecords);
+    if (!tournamentIds.length) return { error: MISSING_TOURNAMENT_RECORD };
+    for (const tournamentId of tournamentIds) {
+      const tournamentRecord = params.tournamentRecords[tournamentId];
+      const result = policyDeletion(params, tournamentRecord);
+      if (result.error) return result;
+      policyRemoved = true;
     }
   } else {
-    const element =
-      params.tournamentRecord ?? params.drawDefinition ?? params.event;
-    policyDeletion(params, element);
+    return { error: MISSING_TOURNAMENT_RECORD };
   }
 
-  return { ...SUCCESS };
+  return policyRemoved ? { ...SUCCESS } : { error: POLICY_NOT_FOUND };
 }
 
 function policyDeletion(params, element) {
@@ -57,5 +73,8 @@ function policyDeletion(params, element) {
     } else {
       removeExtension({ element, name: APPLIED_POLICIES });
     }
+    return { ...SUCCESS };
   }
+
+  return { error: POLICY_NOT_FOUND };
 }

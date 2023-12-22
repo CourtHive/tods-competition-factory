@@ -1,4 +1,4 @@
-import { nextRoundMatchUp } from '../../../query/matchUps/nextRoundMatchUp';
+import { getNextRoundMatchUp } from '../../../query/matchUps/getNextRoundMatchUp';
 import { getTargetMatchUp } from '../../../query/matchUps/getTargetMatchUp';
 import {
   getRoundLinks,
@@ -192,7 +192,7 @@ function targetByRoundOutcome({
       inContextDrawMatchUps.filter(
         (matchUp) => matchUp.structureId === structure.structureId
       );
-    ({ matchUp: winnerMatchUp } = nextRoundMatchUp({
+    ({ matchUp: winnerMatchUp } = getNextRoundMatchUp({
       structureMatchUps,
       matchUp,
     }));

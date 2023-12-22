@@ -3,6 +3,7 @@ import { generateTieMatchUpScore } from '../../../assemblies/generators/tieMatch
 import { copyTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';
 import { isActiveMatchUp } from '../../../drawEngine/getters/activeMatchUp';
 import { removeExtension } from '../../extensions/removeExtension';
+import { findTournamentId } from '../../../acquire/findTournamentId';
 import { ensureSideLineUps } from '../lineUps/ensureSideLineUps';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { findExtension } from '../../../acquire/findExtension';
@@ -10,11 +11,13 @@ import { modifyMatchUpScore } from './modifyMatchUpScore';
 
 import { DISABLE_AUTO_CALC } from '../../../constants/extensionConstants';
 import { MatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
+import { TournamentRecords } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   ErrorType,
   INVALID_MATCHUP,
   MATCHUP_NOT_FOUND,
+  MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 import {
   COMPLETED,
@@ -29,25 +32,18 @@ import {
 } from '../../../types/tournamentTypes';
 
 type UpdateTieMatchUpScoreArgs = {
+  tournamentRecords?: TournamentRecords;
   tournamentRecord?: Tournament;
   drawDefinition: DrawDefinition;
   exitWhenNoValues?: boolean;
   matchUpsMap?: MatchUpsMap;
   matchUpStatus?: string;
+  tournamentId?: string;
   removeScore?: boolean;
   matchUpId: string;
   event?: Event;
 };
-export function updateTieMatchUpScore({
-  tournamentRecord,
-  exitWhenNoValues,
-  drawDefinition,
-  matchUpStatus,
-  removeScore,
-  matchUpsMap,
-  matchUpId,
-  event,
-}: UpdateTieMatchUpScoreArgs): {
+export function updateTieMatchUpScore(params: UpdateTieMatchUpScoreArgs): {
   removeWinningSide?: boolean;
   tieFormatRemoved?: boolean;
   winningSide?: number;
@@ -55,6 +51,29 @@ export function updateTieMatchUpScore({
   success?: boolean;
   score?: any;
 } {
+  const {
+    exitWhenNoValues,
+    drawDefinition,
+    matchUpStatus,
+    removeScore,
+    matchUpsMap,
+    matchUpId,
+    event,
+  } = params;
+
+  const tournamentRecords =
+    params.tournamentRecords ||
+    (params.tournamentRecord && {
+      [params.tournamentRecord?.tournamentId]: params.tournamentRecord,
+    }) ||
+    {};
+
+  const tournamentId =
+    params.tournamentId || params.tournamentRecord?.tournamentId;
+  tournamentRecords && findTournamentId({ tournamentRecords, ...params });
+  const tournamentRecord = tournamentId && tournamentRecords[tournamentId];
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+
   const result = findDrawMatchUp({ drawDefinition, event, matchUpId });
   if (result.error) return result;
   if (!result.matchUp) return { error: MATCHUP_NOT_FOUND };

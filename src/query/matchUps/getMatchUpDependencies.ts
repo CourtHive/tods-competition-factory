@@ -7,7 +7,7 @@ import { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/m
 import { addGoesTo } from '../../drawEngine/governors/matchUpGovernor/addGoesTo';
 import { getIndividualParticipantIds } from '../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/getIndividualParticipantIds';
 import { findEvent } from '../../acquire/findEvent';
-import { allCompetitionMatchUps } from '../../competitionEngine/getters/matchUpsGetter';
+import { allCompetitionMatchUps } from './getAllCompetitionMatchUps';
 import { matchUpSort } from '../../functions/sorters/matchUpSort';
 
 import { POSITION } from '../../constants/drawDefinitionConstants';

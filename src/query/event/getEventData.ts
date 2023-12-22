@@ -2,7 +2,7 @@ import { getParticipants } from '../participants/getParticipants';
 import { generateRange, makeDeepCopy } from '../../utilities';
 import { getEventPublishStatus } from './getEventPublishStatus';
 import { isConvertableInteger } from '../../utilities/math';
-import { getTournamentInfo } from '../tournament/getTournamentInfo';
+import { getTournamentInfo } from '../tournaments/getTournamentInfo';
 import { getVenueData } from '../../tournamentEngine/governors/publishingGovernor/getVenueData';
 import { getDrawData } from '../../tournamentEngine/governors/publishingGovernor/getDrawData';
 

@@ -2,7 +2,7 @@ import { assignMatchUpCourt as assignCourt } from '../../../mutate/matchUps/sche
 import { allocateTeamMatchUpCourts } from '../../../mutate/matchUps/schedule/allocateTeamMatchUpCourts';
 import { findDrawDefinition } from '../../../acquire/findDrawDefinition';
 import { decorateResult } from '../../../global/functions/decorateResult';
-import { allCompetitionMatchUps } from '../../getters/matchUpsGetter';
+import { allCompetitionMatchUps } from '../../../query/matchUps/getAllCompetitionMatchUps';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
