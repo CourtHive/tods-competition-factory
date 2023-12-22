@@ -1,11 +1,11 @@
-import { matchUpActions } from '../governors/queryGovernor/matchUpActions';
+import { matchUpActions } from '../../../competitionEngine/governors/queryGovernor/matchUpActions';
 import { expect, test } from 'vitest';
 
 import {
   EVENT_NOT_FOUND,
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
-} from '../../constants/errorConditionConstants';
+} from '../../../constants/errorConditionConstants';
 
 test('matchUpActions returns expected error messages', () => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment

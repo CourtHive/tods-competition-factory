@@ -89,7 +89,9 @@ test('competitionEngine can setMatchUpStatus', () => {
   });
 
   competitionEngine.setState(tournamentRecord);
-  const { startDate } = competitionEngine.getCompetitionDateRange();
+  const { startDate } = competitionEngine
+    .devContext(true)
+    .getCompetitionDateRange();
 
   let { upcomingMatchUps } = competitionEngine.getCompetitionMatchUps();
 
