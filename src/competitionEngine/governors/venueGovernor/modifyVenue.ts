@@ -1,5 +1,5 @@
 import { modifyVenue as venueModify } from '../../../tournamentEngine/governors/venueGovernor/modifyVenue';
-import { checkSchedulingProfile } from '../scheduleGovernor/schedulingProfile/schedulingProfile';
+import { checkAndUpdateSchedulingProfile } from '../scheduleGovernor/schedulingProfile/schedulingProfile';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -39,7 +39,7 @@ export function modifyVenue({
     if (result.error && result.error !== VENUE_NOT_FOUND) return result;
   }
 
-  checkSchedulingProfile({ tournamentRecords });
+  checkAndUpdateSchedulingProfile({ tournamentRecords });
 
   return success ? { ...SUCCESS } : { error };
 }

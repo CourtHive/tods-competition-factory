@@ -3,11 +3,12 @@ import { addCourts } from '../../../tournamentEngine/governors/venueGovernor/add
 import { disableCourts } from './disableCourts';
 import { enableCourts } from './enableCourts';
 import { enableVenues } from './enableVenues';
-import { deleteVenue } from './deleteVenue';
 import { deleteCourt } from './deleteCourt';
 import { modifyCourt } from './modifyCourt';
 import { modifyVenue } from './modifyVenue';
 import { addVenue } from './addVenue';
+
+import { deleteVenue } from '../../../tournamentEngine/governors/venueGovernor/deleteVenue';
 
 const venueGovernor = {
   disableCourts,

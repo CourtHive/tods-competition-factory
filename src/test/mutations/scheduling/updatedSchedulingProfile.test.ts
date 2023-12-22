@@ -1,8 +1,8 @@
-import { checkSchedulingProfile } from '../../../tournamentEngine/governors/scheduleGovernor/schedulingProfile';
-import { getUpdatedSchedulingProfile } from '../../../competitionEngine/governors/scheduleGovernor/schedulingProfile/schedulingProfile';
+import { checkAndUpdateSchedulingProfile } from '../../../tournamentEngine/governors/scheduleGovernor/schedulingProfile';
+import { getUpdatedSchedulingProfile } from '../../../query/matchUps/scheduling/getUpdatedSchedulingProfile';
+import competitionEngine from '../../engines/competitionEngine';
 import tournamentEngine from '../../engines/tournamentEngine';
 import mocksEngine from '../../../mocksEngine';
-import competitionEngine from '../../engines/competitionEngine';
 import { expect, it } from 'vitest';
 
 import { SCHEDULING_PROFILE } from '../../../constants/extensionConstants';
@@ -140,16 +140,16 @@ it('can update a schedulingProfile when venues change', () => {
   result = tournamentEngine.addTournamentExtension({ extension });
   expect(result.success).toEqual(true);
 
-  result = checkSchedulingProfile({ schedulingProfile });
+  result = checkAndUpdateSchedulingProfile({ schedulingProfile });
   expect(result.modifications).toEqual(2);
 
   result = tournamentEngine.getSchedulingProfile();
-  result = checkSchedulingProfile({
+  result = checkAndUpdateSchedulingProfile({
     schedulingProfile: result.schedulingProfile,
   });
   expect(result.modifications).toEqual(1);
 
   const { tournamentRecord: snapshot } = tournamentEngine.getTournament();
-  result = checkSchedulingProfile({ tournamentRecord: snapshot });
+  result = checkAndUpdateSchedulingProfile({ tournamentRecord: snapshot });
   expect(!!result.modifications).toEqual(false);
 });
