@@ -7,16 +7,11 @@ import { getEntriesAndSeedsCount } from './getEntriesAndSeedsCount';
 import { getSeedsCount } from './getSeedsCount';
 import { findPolicy } from '../../../acquire/findPolicy';
 
-import {
-  attachPolicies,
-  attachEventPolicies,
-  removeEventPolicy,
-} from '../../../mutate/extensions/policies/policyManagement';
-// import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
+import { removeEventPolicy } from '../../../mutate/extensions/policies/policyManagement';
+import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
 
 const policyGovernor = {
   attachPolicies,
-  attachEventPolicies,
   removeEventPolicy,
   findPolicy,
 

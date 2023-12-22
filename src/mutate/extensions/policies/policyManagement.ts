@@ -1,71 +1,20 @@
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import {
   addEventExtension,
-  addTournamentExtension,
   removeEventExtension,
 } from '../addRemoveExtensions';
 
 import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
-import { Event, Tournament } from '../../../types/tournamentTypes';
+import { Event } from '../../../types/tournamentTypes';
 import { PolicyDefinitions } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_EVENT,
   MISSING_POLICY_DEFINITION,
-  MISSING_TOURNAMENT_RECORD,
-  EXISTING_POLICY_TYPE,
   POLICY_NOT_ATTACHED,
   POLICY_NOT_FOUND,
   MISSING_VALUE,
-  ErrorType,
 } from '../../../constants/errorConditionConstants';
-
-type AttachPoliciesArgs = {
-  policyDefinitions: PolicyDefinitions;
-  tournamentRecord: Tournament;
-  allowReplacement?: boolean;
-};
-export function attachPolicies({
-  tournamentRecord,
-  policyDefinitions,
-  allowReplacement,
-}: AttachPoliciesArgs): {
-  success?: boolean;
-  error?: ErrorType;
-  applied?: any;
-} {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!policyDefinitions || typeof policyDefinitions !== 'object') {
-    return { error: MISSING_POLICY_DEFINITION };
-  }
-
-  if (!tournamentRecord.extensions) tournamentRecord.extensions = [];
-  const appliedPolicies =
-    getAppliedPolicies({ tournamentRecord }).appliedPolicies ?? {};
-
-  const applied = Object.keys(policyDefinitions)
-    .map((policyType) => {
-      if (!appliedPolicies[policyType] || allowReplacement) {
-        appliedPolicies[policyType] = policyDefinitions[policyType];
-        return policyType;
-      }
-      return undefined;
-    })
-    .filter(Boolean);
-
-  if (applied?.length) {
-    const extension = {
-      name: APPLIED_POLICIES,
-      value: appliedPolicies,
-    };
-    const result = addTournamentExtension({ tournamentRecord, extension });
-    if (result.error) return result;
-  }
-
-  return !applied?.length
-    ? { error: EXISTING_POLICY_TYPE }
-    : { ...SUCCESS, applied };
-}
 
 type AttachEventPoliciesArgs = {
   policyDefinitions: PolicyDefinitions;

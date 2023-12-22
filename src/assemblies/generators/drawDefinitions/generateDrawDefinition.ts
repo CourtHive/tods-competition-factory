@@ -5,7 +5,7 @@ import { setMatchUpFormat } from '../../../mutate/matchUps/matchUpFormat/setMatc
 import { addDrawDefinition } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/addDrawDefinition';
 import { generateQualifyingLink } from './links/generateQualifyingLink';
 import { generateAdHocMatchUps } from './generateAdHocMatchUps';
-import { attachPolicies } from '../../../drawEngine/governors/policyGovernor/attachPolicies';
+import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
 import { checkValidEntries } from '../../../tournamentEngine/governors/eventGovernor/entries/checkValidEntries';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { addDrawEntry } from '../../../drawEngine/governors/entryGovernor/addDrawEntries';
@@ -19,8 +19,9 @@ import { isConvertableInteger } from '../../../utilities/math';
 import { constantToString } from '../../../utilities/strings';
 import { tieFormatDefaults } from '../../../tournamentEngine/generators/tieFormatDefaults';
 import { ensureInt } from '../../../utilities/ensureInt';
-import { prepareStage } from './prepareStage';
 import { validateTieFormat } from '../../../validators/validateTieFormat';
+import { checkTieFormat } from '../../../mutate/tieFormat/checkTieFormat';
+import { prepareStage } from './prepareStage';
 import {
   setStageDrawSize,
   setStageQualifiersCount,
@@ -84,7 +85,6 @@ import {
   PolicyDefinitions,
   SeedingProfile,
 } from '../../../types/factoryTypes';
-import { checkTieFormat } from '../../../mutate/tieFormat/checkTieFormat';
 
 type GenerateDrawDefinitionArgs = {
   automated?: boolean | { seedsOnly: boolean };
@@ -426,7 +426,10 @@ export function generateDrawDefinition(
 
       if (Object.keys(policiesToAttach).length) {
         // attach any policyDefinitions which have been provided and are not already present
-        attachPolicies({ drawDefinition, policyDefinitions: policiesToAttach });
+        attachPolicies({
+          policyDefinitions: policiesToAttach,
+          drawDefinition,
+        });
         Object.assign(appliedPolicies, policiesToAttach);
       }
     }
@@ -439,8 +442,8 @@ export function generateDrawDefinition(
     !policyDefinitions[POLICY_TYPE_SEEDING]
   ) {
     attachPolicies({
-      drawDefinition,
       policyDefinitions: POLICY_SEEDING_DEFAULT,
+      drawDefinition,
     });
     Object.assign(appliedPolicies, POLICY_SEEDING_DEFAULT);
   }

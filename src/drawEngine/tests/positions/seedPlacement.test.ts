@@ -5,7 +5,7 @@ import { clearDrawPosition } from '../../../mutate/matchUps/drawPositions/positi
 import { getStructureSeedAssignments } from '../../../query/structure/getStructureSeedAssignments';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { getNextSeedBlock, getValidSeedBlocks } from '../../getters/seedGetter';
-import { attachPolicies } from '../../governors/policyGovernor/attachPolicies';
+import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
 import { findStructure, getDrawStructures } from '../../getters/findStructure';
 import { assignSeed } from '../../governors/entryGovernor/seedAssignment';
 import { makeDeepCopy, numericSort } from '../../../utilities';

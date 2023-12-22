@@ -1,3 +1,5 @@
+import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
+import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import tournamentEngine from '../../../test/engines/tournamentEngine';
 import mocksEngine from '../../../mocksEngine';
@@ -6,14 +8,16 @@ import { expect, test, it } from 'vitest';
 import POLICY_SCORING_DEFAULT from '../../../fixtures/policies/POLICY_SCORING_DEFAULT';
 import AVOIDANCE_COUNTRY from '../../../fixtures/policies/POLICY_AVOIDANCE_COUNTRY';
 import { SINGLES, TEAM_EVENT } from '../../../constants/eventConstants';
+import SEEDING_ITF from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 import { DEFAULTED } from '../../../constants/matchUpStatusConstants';
 import { SINGLES_MATCHUP } from '../../../constants/matchUpTypes';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   EXISTING_POLICY_TYPE,
+  INVALID_VALUES,
   MISSING_EVENT,
   MISSING_POLICY_DEFINITION,
   MISSING_TOURNAMENT_RECORD,
-  POLICY_NOT_ATTACHED,
   POLICY_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 import {
@@ -26,7 +30,7 @@ it('can set and remove policies from tournamentRecords and events', () => {
 
   // cannot attach a policy if no tournamentRecord
   tournamentEngine.reset();
-  const scoringPolicy = {
+  let scoringPolicy: any = {
     [POLICY_TYPE_SCORING]: {
       policyName: 'TEST',
     },
@@ -34,7 +38,7 @@ it('can set and remove policies from tournamentRecords and events', () => {
   let result = tournamentEngine.attachPolicies({
     policyDefinitions: scoringPolicy,
   });
-  expect(result).toMatchObject({ error: MISSING_TOURNAMENT_RECORD });
+  expect(result.error).toEqual(MISSING_TOURNAMENT_RECORD);
 
   const newTournamentRecord = tournamentEngine.newTournamentRecord();
 
@@ -42,6 +46,18 @@ it('can set and remove policies from tournamentRecords and events', () => {
   result = tournamentEngine.attachPolicies();
 
   expect(result.error).toEqual(MISSING_POLICY_DEFINITION);
+  result = tournamentEngine.attachPolicies({
+    policyDefinitions: scoringPolicy,
+    allowReplacement: true,
+  });
+  expect(result.error).toEqual(INVALID_VALUES);
+
+  scoringPolicy = {
+    [POLICY_TYPE_SCORING]: {
+      policyName: 'TEST',
+      someAttribute: 'someValue',
+    },
+  };
   result = tournamentEngine.attachPolicies({
     policyDefinitions: scoringPolicy,
     allowReplacement: true,
@@ -68,18 +84,18 @@ it('can set and remove policies from tournamentRecords and events', () => {
   const { eventId } = eventResult;
   expect(success).toEqual(true);
 
-  result = tournamentEngine.attachEventPolicies({
+  result = tournamentEngine.attachPolicies({
     eventId,
   });
   expect(result.error).toEqual(MISSING_POLICY_DEFINITION);
 
-  result = tournamentEngine.attachEventPolicies({
+  result = tournamentEngine.attachPolicies({
     policyDefinitions: {},
     eventId,
   });
-  expect(result.error).toEqual(POLICY_NOT_ATTACHED);
+  expect(result.error).toEqual(MISSING_POLICY_DEFINITION);
 
-  result = tournamentEngine.attachEventPolicies({
+  result = tournamentEngine.attachPolicies({
     policyDefinitions: AVOIDANCE_COUNTRY,
     eventId,
   });
@@ -97,13 +113,13 @@ it('can set and remove policies from tournamentRecords and events', () => {
     'Nationality Code'
   );
 
-  result = tournamentEngine.attachEventPolicies({
+  result = tournamentEngine.attachPolicies({
     policyDefinitions: AVOIDANCE_COUNTRY,
     eventId,
   });
-  expect(result.error).toEqual(POLICY_NOT_ATTACHED);
+  expect(result.error).toEqual(EXISTING_POLICY_TYPE);
 
-  result = tournamentEngine.attachEventPolicies({
+  result = tournamentEngine.attachPolicies({
     policyDefinitions: AVOIDANCE_COUNTRY,
     allowReplacement: true,
     eventId,
@@ -135,9 +151,9 @@ it('can set and remove policies from tournamentRecords and events', () => {
 
   const { tournamentRecord: updatedRecord3 } = tournamentEngine.getTournament();
   expect(updatedRecord3.events.length).toEqual(1);
-  expect(updatedRecord3.events[0].extensions.length).toEqual(0);
+  expect(updatedRecord3.events[0].extensions.length).toEqual(1);
 
-  result = tournamentEngine.attachEventPolicies({
+  result = tournamentEngine.attachPolicies({
     policyDefinitions: { ...AVOIDANCE_COUNTRY, ...POLICY_SCORING_DEFAULT },
     eventId,
   });
@@ -167,6 +183,7 @@ it('can find policies whether on event or tournamentRecord', () => {
   const scoringPolicy = {
     [POLICY_TYPE_SCORING]: {
       policyName: testPolicyName,
+      someAttribute: 'someValue',
     },
   };
   result = tournamentEngine.attachPolicies({
@@ -196,7 +213,7 @@ it('can find policies whether on event or tournamentRecord', () => {
   }));
   expect(policy.policyName).toEqual(testPolicyName);
 
-  result = tournamentEngine.attachEventPolicies({
+  result = tournamentEngine.attachPolicies({
     policyDefinitions: AVOIDANCE_COUNTRY,
     eventId,
   });
@@ -227,8 +244,16 @@ it('can find policies whether on event or tournamentRecord', () => {
   }));
   expect(policy.policyName).toEqual('Nationality Code');
 
-  result = tournamentEngine.attachEventPolicies({
+  result = tournamentEngine.attachPolicies({
     policyDefinitions: scoringPolicy,
+    eventId,
+  });
+
+  expect(result.error).toEqual(EXISTING_POLICY_TYPE);
+
+  result = tournamentEngine.attachPolicies({
+    policyDefinitions: scoringPolicy,
+    allowReplacement: true,
     eventId,
   });
   expect(result.success).toEqual(true);
@@ -275,4 +300,21 @@ test('Scoring policy can control attachment of process codes to matchUps', () =>
     matchUpFilters: { matchUpIds: [matchUp.matchUpId] },
   });
   expect(result.matchUps[0].processCodes).toBeUndefined();
+});
+
+it('can set and reset policy governor', () => {
+  // cannot attach a policy if no drawDefinition
+  let result = attachPolicies({ policyDefinitions: SEEDING_ITF });
+  expect(result).toMatchObject({ error: INVALID_VALUES });
+
+  const drawDefinition = newDrawDefinition();
+
+  result = attachPolicies({ drawDefinition, policyDefinitions: SEEDING_ITF });
+  expect(result).toMatchObject(SUCCESS);
+
+  const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
+  const { seedingProfile, policyName } = appliedPolicies?.seeding ?? {};
+
+  expect(policyName).toEqual('ITF SEEDING');
+  expect(seedingProfile).not.toBeUndefined();
 });

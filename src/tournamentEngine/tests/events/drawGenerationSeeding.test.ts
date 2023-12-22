@@ -307,7 +307,7 @@ it('can define seeds using seededParticipants', () => {
   expect(result.success).toEqual(true);
 
   const policyDefinitions = POLICY_AVOIDANCE_COUNTRY;
-  result = tournamentEngine.attachEventPolicies({ policyDefinitions, eventId });
+  result = tournamentEngine.attachPolicies({ policyDefinitions, eventId });
   expect(result.success).toEqual(true);
 
   const tournamentParticipants = tournamentEngine.getParticipants({

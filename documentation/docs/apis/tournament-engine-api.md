@@ -784,21 +784,6 @@ tournamentEngine.assignTieMatchUpParticipantId({
 
 ---
 
-## attachEventPolicies
-
-Attaches a policy to an event within a tournamentRecord.
-
-See [Policies](../concepts/policies).
-
-```js
-tournamentEngine.attachEventPolicies({
-  policyDefinitions: SEEDING_POLICY,
-  eventId,
-});
-```
-
----
-
 ## attachFlightProfile
 
 Attaches a `flightProfile` to the `event` specified by `eventId`. A `flightProfile` is first generated with `generateFlightProfile()`.

@@ -35,7 +35,7 @@ test.each([2, 4, 8, 16])(
       },
     };
 
-    const attachResult = tournamentEngine.attachEventPolicies({
+    const attachResult = tournamentEngine.attachPolicies({
       policyDefinitions,
       eventId,
     });
