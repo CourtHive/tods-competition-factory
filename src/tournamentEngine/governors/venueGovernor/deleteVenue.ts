@@ -1,42 +1,51 @@
-import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import { allTournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
+import { checkAndUpdateSchedulingProfile } from '../../../competitionEngine/governors/scheduleGovernor/schedulingProfile/schedulingProfile';
 import { removeCourtAssignment } from '../../../mutate/matchUps/schedule/removeCourtAssignment';
+import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
+import { allCompetitionMatchUps } from '../../../forge/query';
 import { addNotice } from '../../../global/state/globalState';
 import { deletionMessage } from './deletionMessage';
 
 import { POLICY_TYPE_SCHEDULING } from '../../../constants/policyConstants';
 import { Tournament, Venue } from '../../../types/tournamentTypes';
 import { DELETE_VENUE } from '../../../constants/topicConstants';
+import { TournamentRecords } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   ErrorType,
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VENUE_ID,
-  VENUE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
 type DeleteVenueArgs = {
-  tournamentRecord: Tournament;
+  tournamentRecords?: TournamentRecords;
+  tournamentRecord?: Tournament;
   venueId: string;
   force?: boolean;
 };
 
-export function deleteVenue({
-  tournamentRecord,
-  venueId,
-  force,
-}: DeleteVenueArgs): {
+export function deleteVenue(params: DeleteVenueArgs): {
   success?: boolean;
   error?: ErrorType;
 } {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (typeof venueId !== 'string') return { error: MISSING_VENUE_ID };
+  if (typeof params?.venueId !== 'string') return { error: MISSING_VENUE_ID };
+
+  const { tournamentRecord, venueId, force } = params;
+
+  const tournamentRecords =
+    params.tournamentRecords ||
+    (tournamentRecord && {
+      [tournamentRecord.tournamentId]: tournamentRecord,
+    }) ||
+    {};
+
+  if (!Object.keys(tournamentRecords).length)
+    return { error: MISSING_TOURNAMENT_RECORD };
 
   const contextFilters = { venueIds: [venueId] };
   const matchUpsToUnschedule =
-    allTournamentMatchUps({
-      tournamentRecord,
+    allCompetitionMatchUps({
+      tournamentRecords,
       contextFilters,
     }).matchUps ?? [];
 
@@ -50,35 +59,37 @@ export function deleteVenue({
       ?.venues;
 
   if (!matchUpsToUnschedule.length || allowModificationWhenMatchUpsScheduled) {
-    // if no matchUpsToUnschedule this does nothing but avoid the deletionMessage
-    for (const matchUp of matchUpsToUnschedule) {
-      const result = removeCourtAssignment({
-        matchUpId: matchUp.matchUpId,
-        drawId: matchUp.drawId,
-        tournamentRecord,
-      });
-      if (result.error) return result;
+    for (const tournamentRecord of Object.values(tournamentRecords)) {
+      // if no matchUpsToUnschedule this does nothing but avoid the deletionMessage
+      for (const matchUp of matchUpsToUnschedule) {
+        const result = removeCourtAssignment({
+          matchUpId: matchUp.matchUpId,
+          drawId: matchUp.drawId,
+          tournamentRecord,
+        });
+        if (result.error) return result;
+      }
+      let deleted;
+      tournamentRecord.venues = (tournamentRecord.venues ?? []).filter(
+        (venue: Venue | undefined) => {
+          if (venue?.venueId !== venueId) return true;
+          deleted = true;
+          return false;
+        }
+      );
+      if (deleted) {
+        addNotice({
+          payload: { venueId, tournamentId: tournamentRecord.tournamentId },
+          topic: DELETE_VENUE,
+          key: venueId,
+        });
+      }
     }
   } else {
     return deletionMessage({ matchUpsCount: matchUpsToUnschedule.length });
   }
 
-  let deleted;
-  tournamentRecord.venues = (tournamentRecord.venues ?? []).filter(
-    (venue: Venue | undefined) => {
-      if (venue?.venueId !== venueId) return true;
-      deleted = true;
-      return false;
-    }
-  );
-
-  if (!deleted) return { error: VENUE_NOT_FOUND };
-
-  addNotice({
-    payload: { venueId, tournamentId: tournamentRecord.tournamentId },
-    topic: DELETE_VENUE,
-    key: venueId,
-  });
+  checkAndUpdateSchedulingProfile({ tournamentRecords });
 
   return { ...SUCCESS };
 }

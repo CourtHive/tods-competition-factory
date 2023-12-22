@@ -1,4 +1,5 @@
-import { scheduleProfileRounds } from '../../../competitionEngine/governors/scheduleGovernor/schedulingProfile/scheduleProfileRounds';
+// import { scheduleProfileRounds } from '../../../competitionEngine/governors/scheduleGovernor/schedulingProfile/scheduleProfileRounds';
+import { scheduleProfileRounds } from '../../../mutate/matchUps/schedule/scheduleProfileRounds';
 import { setSchedulingProfile } from '../../../competitionEngine/governors/scheduleGovernor/schedulingProfile/schedulingProfile';
 import { publishEvent } from '../../../tournamentEngine/governors/publishingGovernor/publishEvent';
 import { generateFlightDrawDefinitions } from '../../generators/generateFlightDrawDefinitions';

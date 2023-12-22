@@ -399,9 +399,9 @@ it('can add events, venues, and schedule matchUps and modify drawDefinition.upda
   result = competitionEngine.deleteVenue();
   expect(result.error).toEqual(MISSING_VENUE_ID);
   result = tournamentEngine.deleteVenue({ venueId: '12345' });
-  expect(result.error).not.toBeUndefined();
+  expect(result.success).toEqual(true); // venue doesn't exist, so no error
   result = competitionEngine.deleteVenue({ venueId: '12345' });
-  expect(result.error).not.toBeUndefined();
+  expect(result.success).toEqual(true); // venue doesn't exist, so no error
 
   result = tournamentEngine.deleteVenue({ venueId });
   expect(result.success).toBeUndefined();

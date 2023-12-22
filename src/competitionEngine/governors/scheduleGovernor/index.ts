@@ -1,25 +1,20 @@
 import { getMatchUpFormatTimingUpdate } from '../../../query/extensions/matchUpFormatTiming/getMatchUpFormatTimingUpdate';
 import { modifyMatchUpFormatTiming } from './matchUpFormatTiming/modifyMatchUpFormatTiming';
-import { getScheduledRoundsDetails } from './schedulingProfile/getScheduledRoundsDetails';
 import { calculateScheduleTimes } from './scheduleMatchUps/calculateScheduleTimes';
-import { scheduleProfileRounds } from './schedulingProfile/scheduleProfileRounds';
 import { generateVirtualCourts } from './schedulers/utils/generateVirtualCourts';
 import { getMatchUpDailyLimitsUpdate } from '../../../query/extensions/getMatchUpDailyLimitsUpdate';
-import { bulkUpdateCourtAssignments } from './bulkUpdateCourtAssignments';
+import { bulkUpdateCourtAssignments } from '../../../mutate/matchUps/schedule/bulkUpdateCourtAssignments';
 import { scheduleMatchUps } from './scheduleMatchUps/scheduleMatchUps';
 import { generateBookings } from './schedulers/utils/generateBookings';
-import { reorderUpcomingMatchUps } from './reorderUpcomingMatchUps';
-import { getProfileRounds } from './schedulingProfile/getProfileRounds';
+import { reorderUpcomingMatchUps } from '../../../mutate/matchUps/schedule/reorderUpcomingMatchUps';
 import { clearScheduledMatchUps } from './clearScheduledMatchUps';
 import { bulkRescheduleMatchUps } from './bulkRescheduleMatchUps';
-import { proAutoSchedule } from './proScheduling/proAutoSchedule';
+import { proAutoSchedule } from './schedulers/proScheduler/proAutoSchedule';
 import { setMatchUpDailyLimits } from './setMatchUpDailyLimits';
 import { matchUpScheduleChange } from './matchUpScheduleChange';
 import { getMatchUpDailyLimits } from '../../../query/extensions/getMatchUpDailyLimits';
-import { proConflicts } from './proScheduling/proConflicts';
-import { getRounds } from './schedulingProfile/getRounds';
+import { proConflicts } from './schedulers/proScheduler/proConflicts';
 import {
-  addSchedulingProfileRound,
   getSchedulingProfile,
   setSchedulingProfile,
 } from './schedulingProfile/schedulingProfile';
@@ -54,6 +49,11 @@ import { allocateTeamMatchUpCourts } from '../../../mutate/matchUps/schedule/all
 import { assignMatchUpCourt } from '../../../mutate/matchUps/schedule/assignMatchUpCourt';
 import { assignMatchUpVenue } from '../../../mutate/matchUps/schedule/assignMatchUpVenue';
 import { modifyEventMatchUpFormatTiming } from '../../../mutate/events/extensions/modifyEventMatchUpFormatTiming';
+import { addSchedulingProfileRound } from '../../../mutate/matchUps/schedule/addSchedulingProfileRound';
+import { getProfileRounds } from '../../../query/matchUps/scheduling/getProfileRounds';
+import { getRounds } from '../../../query/matchUps/scheduling/getRounds';
+import { getScheduledRoundsDetails } from '../../../query/matchUps/scheduling/getScheduledRoundsDetails';
+import { scheduleProfileRounds } from '../../../mutate/matchUps/schedule/scheduleProfileRounds';
 
 const scheduleGovernor = {
   scheduleMatchUps,

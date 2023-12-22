@@ -1,6 +1,6 @@
 import { bulkScheduleTournamentMatchUps } from '../scheduleGovernor/bulkScheduleTournamentMatchUps';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import { checkSchedulingProfile } from '../scheduleGovernor/schedulingProfile';
+import { checkAndUpdateSchedulingProfile } from '../scheduleGovernor/schedulingProfile';
 import { addNotice } from '../../../global/state/globalState';
 import venueTemplate from '../../generators/venueTemplate';
 import { deletionMessage } from './deletionMessage';
@@ -158,7 +158,7 @@ export function modifyVenue({
     }
   }
 
-  checkSchedulingProfile({ tournamentRecord });
+  checkAndUpdateSchedulingProfile({ tournamentRecord });
 
   if (venue) {
     addNotice({

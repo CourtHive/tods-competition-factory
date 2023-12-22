@@ -6,7 +6,7 @@ import { updateTimeAfterRecovery } from '../../scheduleMatchUps/updateTimeAfterR
 import { checkDependendantTiming } from '../../scheduleMatchUps/checkDependentTiming';
 import { checkRequestConflicts } from '../../scheduleMatchUps/checkRequestConflicts';
 import { processNextMatchUps } from '../../scheduleMatchUps/processNextMatchUps';
-import { getVenueSchedulingDetails } from '../utils/getVenueSchedulingDetails';
+import { getVenueSchedulingDetails } from '../../../../../query/matchUps/scheduling/getVenueSchedulingDetails';
 import { checkRecoveryTime } from '../../scheduleMatchUps/checkRecoveryTime';
 import { checkDailyLimits } from '../../scheduleMatchUps/checkDailyLimits';
 import { getMatchUpId } from '../../../../../global/functions/extractors';

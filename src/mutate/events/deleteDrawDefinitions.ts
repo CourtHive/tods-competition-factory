@@ -6,7 +6,7 @@ import { addExtension } from '../extensions/addExtension';
 import { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
 import { getPositionAssignments } from '../../tournamentEngine/getters/getPositionAssignments';
 import { addEventExtension } from '../extensions/addRemoveExtensions';
-import { checkSchedulingProfile } from '../../tournamentEngine/governors/scheduleGovernor/schedulingProfile';
+import { checkAndUpdateSchedulingProfile } from '../../tournamentEngine/governors/scheduleGovernor/schedulingProfile';
 import { getDrawStructures } from '../../drawEngine/getters/findStructure';
 import { decorateResult } from '../../global/functions/decorateResult';
 import { definedAttributes } from '../../utilities/definedAttributes';
@@ -241,7 +241,7 @@ export function deleteDrawDefinitions(params: DeleteDrawDefinitionArgs) {
   }
 
   // cleanup references to drawId in schedulingProfile extension
-  checkSchedulingProfile({ tournamentRecord });
+  checkAndUpdateSchedulingProfile({ tournamentRecord });
 
   if (publishedDrawsDeleted) {
     const drawDetails = {};

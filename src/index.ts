@@ -9,7 +9,7 @@ import { getValidGroupSizes } from './assemblies/generators/drawDefinitions/draw
 import { visualizeScheduledMatchUps } from './global/testHarness/testUtilities/visualizeScheduledMatchUps';
 import { calculateWinCriteria } from './matchUpEngine/governors/tieFormatGovernor/calculateWinCriteria';
 import { tieFormatGenderValidityCheck } from './global/functions/deducers/tieFormatGenderValidityCheck';
-import { proConflicts } from './competitionEngine/governors/scheduleGovernor/proScheduling/proConflicts';
+import { proConflicts } from './competitionEngine/governors/scheduleGovernor/schedulers/proScheduler/proConflicts';
 import { compareTieFormats } from './matchUpEngine/governors/tieFormatGovernor/compareTieFormats';
 import { dehydrateMatchUps } from './tournamentEngine/governors/tournamentGovernor/dehydrate';
 import { getSeedingThresholds } from './drawEngine/governors/positionGovernor/getSeedBlocks';

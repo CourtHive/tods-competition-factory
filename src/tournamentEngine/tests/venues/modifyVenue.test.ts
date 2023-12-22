@@ -1,7 +1,6 @@
-import { deleteVenue as competitionEngineDeleteVenue } from '../../../competitionEngine/governors/venueGovernor/deleteVenue';
 import { modifyVenue as competitionEngineModifyVenue } from '../../../competitionEngine/governors/venueGovernor/modifyVenue';
-import { deleteVenue as tournamentEngineDeleteVenue } from '../../governors/venueGovernor/deleteVenue';
 import { modifyVenue as tournamentEngineModifyVenue } from '../../governors/venueGovernor/modifyVenue';
+import { deleteVenue } from '../../governors/venueGovernor/deleteVenue';
 import tournamentEngine from '../../../test/engines/tournamentEngine';
 import { expect, it, test } from 'vitest';
 
@@ -12,7 +11,7 @@ import {
   MISSING_DATE_AVAILABILITY,
   MISSING_TOURNAMENT_RECORD,
   MISSING_TOURNAMENT_RECORDS,
-  VENUE_NOT_FOUND,
+  MISSING_VENUE_ID,
 } from '../../../constants/errorConditionConstants';
 
 const court1 = {
@@ -308,18 +307,18 @@ it('can define and modify a venue', () => {
 test('miscellaneous items for coverage', () => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  let result: any = tournamentEngineDeleteVenue({});
-  expect(result.error).toEqual(MISSING_TOURNAMENT_RECORD);
+  let result: any = deleteVenue({});
+  expect(result.error).toEqual(MISSING_VENUE_ID);
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  result = competitionEngineDeleteVenue({});
-  expect(result.error).toEqual(MISSING_TOURNAMENT_RECORDS);
-  result = competitionEngineDeleteVenue({
+  result = deleteVenue({});
+  expect(result.error).toEqual(MISSING_VENUE_ID);
+  result = deleteVenue({
     tournamentRecords: {},
     venueId: '12345',
   });
-  expect(result.error).toEqual(VENUE_NOT_FOUND);
+  expect(result.error).toEqual(MISSING_TOURNAMENT_RECORD);
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore

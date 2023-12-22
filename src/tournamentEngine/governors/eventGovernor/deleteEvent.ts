@@ -1,4 +1,4 @@
-import { checkSchedulingProfile } from '../scheduleGovernor/schedulingProfile';
+import { checkAndUpdateSchedulingProfile } from '../scheduleGovernor/schedulingProfile';
 import { addTournamentTimeItem } from '../../../mutate/timeItems/addTimeItem';
 import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
 import { addNotice } from '../../../global/state/globalState';
@@ -78,7 +78,7 @@ export function deleteEvents({
   }
 
   // cleanup references to eventId in schedulingProfile extension
-  checkSchedulingProfile({ tournamentRecord });
+  checkAndUpdateSchedulingProfile({ tournamentRecord });
 
   if (auditTrail.length) {
     addNotice({ topic: AUDIT, payload: auditTrail });

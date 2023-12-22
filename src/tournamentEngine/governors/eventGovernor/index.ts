@@ -4,7 +4,7 @@ import { getDrawParticipantRepresentativeIds } from './drawDefinitions/getDrawPa
 import { assignMatchUpSideParticipant } from '../../../mutate/matchUps/drawPositions/assignMatchUpSideParticipant';
 import { removeMatchUpSideParticipant } from '../../../mutate/matchUps/sides/removeMatchUpSideParticipant';
 import { replaceTieMatchUpParticipantId } from '../../../mutate/matchUps/lineUps/replaceTieMatchUpParticipant';
-import { setMatchUpStatus, bulkMatchUpStatusUpdate } from './setMatchUpStatus';
+import { setMatchUpStatus } from './setMatchUpStatus';
 import { assignTieMatchUpParticipantId } from '../../../mutate/matchUps/lineUps/assignTieMatchUpParticipant';
 import { removeTieMatchUpParticipantId } from '../../../mutate/matchUps/lineUps/removeTieMatchUpParticipant';
 import { deleteDrawDefinitions } from '../../../mutate/events/deleteDrawDefinitions';
@@ -141,6 +141,7 @@ import { validateCollectionDefinition } from '../../../validators/validateCollec
 import { resetScorecard } from '../../../mutate/matchUps/resetScorecard';
 import { automatedPositioning } from '../../../mutate/drawDefinitions/automatedPositioning';
 import { updateTieMatchUpScore } from '../../../mutate/matchUps/score/tieMatchUpScore';
+import { bulkMatchUpStatusUpdate } from './bulkMatchUpStatusUpdate';
 
 const eventGovernor = {
   generateQualifyingStructure,

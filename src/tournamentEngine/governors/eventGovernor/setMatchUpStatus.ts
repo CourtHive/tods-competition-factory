@@ -2,15 +2,12 @@ import { setMatchUpStatus as drawEngineSetMatchUpStatus } from '../../../mutate/
 import { setMatchUpFormat } from '../../../mutate/matchUps/matchUpFormat/setMatchUpFormat';
 import { matchUpScore } from '../../../matchUpEngine/generators/matchUpScore';
 import { findPolicy } from '../../../acquire/findPolicy';
-import { findEvent } from '../../../acquire/findEvent';
 
 import { POLICY_TYPE_SCORING } from '../../../constants/policyConstants';
 import { PolicyDefinitions } from '../../../types/factoryTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_DRAW_ID,
   MISSING_MATCHUP_ID,
-  MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 import {
   DrawDefinition,
@@ -113,49 +110,4 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
     event,
     notes,
   });
-}
-
-export function bulkMatchUpStatusUpdate(params) {
-  if (!params.tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  const { tournamentRecords, tournamentRecord, outcomes, policyDefinitions } =
-    params;
-  const events = {};
-
-  // group outcomes by events to optimize
-  outcomes.forEach((outcome) => {
-    const { eventId } = outcome;
-    if (!events[eventId]) events[eventId] = [];
-    events[eventId].push(outcome);
-  });
-
-  for (const eventId of Object.keys(events)) {
-    const { event } = findEvent({ tournamentRecord, eventId });
-
-    for (const outcome of events[eventId]) {
-      const { drawId } = outcome;
-      const drawDefinition = event?.drawDefinitions?.find(
-        (drawDefinition) => drawDefinition.drawId === drawId
-      );
-      if (drawDefinition && drawId) {
-        const { matchUpFormat, matchUpId } = outcome;
-        const result = setMatchUpStatus({
-          schedule: outcome?.schedule,
-          tournamentRecords,
-          policyDefinitions,
-          tournamentRecord,
-          drawDefinition,
-          matchUpFormat,
-          matchUpId,
-          outcome,
-          drawId,
-          event,
-        });
-        if (result.error) {
-          return result;
-        }
-      }
-    }
-  }
-
-  return { ...SUCCESS };
 }

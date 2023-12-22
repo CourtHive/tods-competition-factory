@@ -1,16 +1,14 @@
-import {
-  getSchedulingProfile,
-  getUpdatedSchedulingProfile,
-} from '../../../competitionEngine/governors/scheduleGovernor/schedulingProfile/schedulingProfile';
+import { getSchedulingProfile } from '../../../competitionEngine/governors/scheduleGovernor/schedulingProfile/schedulingProfile';
 import { tournamentRelevantSchedulingIds } from '../../../validators/validateSchedulingProfile';
 import { Tournament } from '../../../types/tournamentTypes';
+import { getUpdatedSchedulingProfile } from '../../../query/matchUps/scheduling/getUpdatedSchedulingProfile';
 
 type CheckSchedulingProfile = {
   tournamentRecord?: Tournament;
   schedulingProfile?: any[];
   requireCourts?: boolean;
 };
-export function checkSchedulingProfile({
+export function checkAndUpdateSchedulingProfile({
   requireCourts = true,
   tournamentRecord,
   schedulingProfile,

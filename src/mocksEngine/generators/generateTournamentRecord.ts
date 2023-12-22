@@ -1,4 +1,5 @@
-import { scheduleProfileRounds } from '../../competitionEngine/governors/scheduleGovernor/schedulingProfile/scheduleProfileRounds';
+// import { scheduleProfileRounds } from '../../competitionEngine/governors/scheduleGovernor/schedulingProfile/scheduleProfileRounds';
+import { scheduleProfileRounds } from '../../mutate/matchUps/schedule/scheduleProfileRounds';
 import { newTournamentRecord } from '../../assemblies/generators/tournamentRecords/newTournamentRecord';
 import { attachPolicies } from '../../mutate/extensions/policies/attachPolicies';
 import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEvent';

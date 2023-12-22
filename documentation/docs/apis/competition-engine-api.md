@@ -365,28 +365,6 @@ competitionEngine.attachPolicies({ policyDefinitions });
 
 ---
 
-## bulkMatchUpStatusUpdate
-
-Provides the ability to update the outcomes of multiple matchUps at once.
-
-```js
-const outcomes = [
-  {
-    tournamentId,
-    eventId,
-    drawId,
-    matchUpId,
-    matchUpFormat,
-    matchUpStatus,
-    winningSide,
-    score,
-  },
-];
-competitionEngine.bulkMatchUpStatusUpdate({ outcomes });
-```
-
----
-
 ## bulkRescheduleMatchUps
 
 ```js
