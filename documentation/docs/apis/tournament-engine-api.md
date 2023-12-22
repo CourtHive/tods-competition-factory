@@ -3282,10 +3282,11 @@ tournamentEngine.removeEventMatchUpFormatTiming({ eventId });
 
 ---
 
-## removeEventPolicy
+## removePolicy
 
 ```js
-tournamentEngine.removeEventPolicy({ policyType });
+tournamentEngine.removePolicy({ policyType }); // remove from tournamentRecord
+tournamentEngine.removePolicy({ policyType, eventId }); // remove from event
 ```
 
 ---

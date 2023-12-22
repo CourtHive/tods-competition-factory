@@ -167,7 +167,7 @@ it('can extend Alternates to DIRECT_ACCEPTANCE participants in other flights', (
     expect(alternate.entryPosition).toBeUndefined()
   );
 
-  result = tournamentEngine.removeEventPolicy({
+  result = tournamentEngine.removePolicy({
     policyType: POLICY_TYPE_POSITION_ACTIONS,
     eventId,
   });

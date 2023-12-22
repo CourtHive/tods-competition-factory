@@ -132,18 +132,18 @@ it('can set and remove policies from tournamentRecords and events', () => {
 
   const eventState = updatedRecord2.events[0];
 
-  result = tournamentEngine.removeEventPolicy({
+  result = tournamentEngine.removePolicy({
     policyType: POLICY_TYPE_AVOIDANCE,
   });
-  expect(result.error).toEqual(MISSING_EVENT);
+  expect(result.error).toEqual(POLICY_NOT_FOUND);
 
-  result = tournamentEngine.removeEventPolicy({
+  result = tournamentEngine.removePolicy({
     eventId: eventState.eventId,
     policyType: 'Foobar',
   });
   expect(result.error).toEqual(POLICY_NOT_FOUND);
 
-  result = tournamentEngine.removeEventPolicy({
+  result = tournamentEngine.removePolicy({
     policyType: POLICY_TYPE_AVOIDANCE,
     eventId: eventState.eventId,
   });
@@ -159,7 +159,7 @@ it('can set and remove policies from tournamentRecords and events', () => {
   });
   expect(result.success).toEqual(true);
 
-  result = tournamentEngine.removeEventPolicy({
+  result = tournamentEngine.removePolicy({
     policyType: POLICY_TYPE_AVOIDANCE,
     eventId: eventState.eventId,
   });
