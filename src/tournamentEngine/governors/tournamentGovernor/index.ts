@@ -9,9 +9,6 @@ import { addOnlineResource } from './addOnlineResource';
 import { analyzeTournament } from './analyzeTournament';
 import { analyzeDraws } from './analysis/analyzeDraws';
 
-import { getProfileRounds } from '../../../competitionEngine/governors/scheduleGovernor/schedulingProfile/getProfileRounds';
-import { getRounds } from '../../../competitionEngine/governors/scheduleGovernor/schedulingProfile/getRounds';
-
 import {
   setTournamentName,
   setTournamentNotes,
@@ -41,6 +38,9 @@ import {
   removeParticipantExtension,
   removeTournamentExtension,
 } from '../../../mutate/extensions/addRemoveExtensions';
+
+import { getProfileRounds } from '../../../query/matchUps/scheduling/getProfileRounds';
+import { getRounds } from '../../../query/matchUps/scheduling/getRounds';
 
 const tournamentGovernor = {
   analyzeTournament,

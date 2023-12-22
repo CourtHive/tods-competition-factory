@@ -1,6 +1,6 @@
-import { addSchedulingProfileRound } from '../../competitionEngine/governors/scheduleGovernor/schedulingProfile/schedulingProfile';
 import { getContainedStructures } from '../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
 import { allTournamentMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
+import { addSchedulingProfileRound } from '../../mutate/matchUps/schedule/addSchedulingProfileRound';
 import { intersection, unique } from '../../utilities';
 
 import { Tournament } from '../../types/tournamentTypes';

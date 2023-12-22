@@ -1,6 +1,6 @@
 import { getScheduledRoundsDetails } from '../../schedulingProfile/getScheduledRoundsDetails';
+import { getGroupedRounds } from '../../../../../query/matchUps/scheduling/getGroupedRounds';
 import { processAlreadyScheduledMatchUps } from './processAlreadyScheduledMatchUps';
-import { getGroupedRounds } from '../../schedulingProfile/getGroupedRounds';
 import { getMatchUpsToSchedule } from './getMatchUpsToSchedule';
 import { generateScheduleTimes } from './generateScheduleTimes';
 import { extractDate } from '../../../../../utilities/dateTime';

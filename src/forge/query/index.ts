@@ -46,11 +46,9 @@ export { getMatchUpFormatTimingUpdate } from '../../query/extensions/matchUpForm
 export { getMatchUpDailyLimitsUpdate } from '../../query/extensions/getMatchUpDailyLimitsUpdate';
 export { matchUpActions as competitionMatchUpActions } from '../../competitionEngine/governors/queryGovernor/matchUpActions';
 export { getVenuesAndCourts as getCompetitionVenuesAndCourts } from '../../query/venues/venuesAndCourtsGetter';
-export { getProfileRounds } from '../../competitionEngine/governors/scheduleGovernor/schedulingProfile/getProfileRounds';
 export { getCompetitionDateRange } from '../../query/tournaments/getCompetitionDateRange';
 export { getMatchUpDailyLimits } from '../../query/extensions/getMatchUpDailyLimits';
 export { competitionScheduleMatchUps } from '../../query/matchUps/competitionScheduleMatchUps';
-export { getRounds } from '../../competitionEngine/governors/scheduleGovernor/schedulingProfile/getRounds';
 export { getParticipantScaleItem } from '../../query/participant/getParticipantScaleItem';
 export { getCompetitionVenues } from '../../query/venues/venuesAndCourtsGetter';
 export { publicFindParticipant as findParticipant } from '../../acquire/publicFindParticipant';
@@ -59,3 +57,6 @@ export { allCompetitionMatchUps } from '../../query/matchUps/getAllCompetitionMa
 export { getCompetitionMatchUps } from '../../query/matchUps/getCompetitionMatchUps';
 
 export { getVenuesAndCourts } from '../../query/venues/venuesAndCourtsGetter';
+
+export { getProfileRounds } from '../../query/matchUps/scheduling/getProfileRounds';
+export { getRounds } from '../../query/matchUps/scheduling/getRounds';
