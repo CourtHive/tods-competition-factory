@@ -1,7 +1,7 @@
-import { getSchedulingProfileIssues } from '../../../query/scheduling/getSchedulingProfileIssues';
+import { getSchedulingProfileIssues } from '../../../query/matchUps/scheduling/getSchedulingProfileIssues';
+import competitionEngine from '../../engines/competitionEngine';
 import tournamentEngine from '../../engines/tournamentEngine';
 import mocksEngine from '../../../mocksEngine';
-import competitionEngine from '../../engines/competitionEngine';
 import { expect, test } from 'vitest';
 
 import POLICY_SCHEDULING_DEFAULT from '../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
