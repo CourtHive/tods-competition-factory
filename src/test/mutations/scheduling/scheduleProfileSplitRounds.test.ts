@@ -1,9 +1,9 @@
 import { visualizeScheduledMatchUps } from '../../../global/testHarness/testUtilities/visualizeScheduledMatchUps';
-import { getScheduledRoundsDetails } from '../../../competitionEngine/governors/scheduleGovernor/schedulingProfile/getScheduledRoundsDetails';
-import tournamentEngine from '../../engines/tournamentEngine';
 import { hasSchedule } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/hasSchedule';
-import mocksEngine from '../../../mocksEngine';
+import { getScheduledRoundsDetails } from '../../../query/matchUps/scheduling/getScheduledRoundsDetails';
 import competitionEngine from '../../engines/competitionEngine';
+import tournamentEngine from '../../engines/tournamentEngine';
+import mocksEngine from '../../../mocksEngine';
 import { expect, it } from 'vitest';
 
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';

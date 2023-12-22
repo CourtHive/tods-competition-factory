@@ -1,4 +1,4 @@
-import { getScheduledRoundsDetails } from '../../schedulingProfile/getScheduledRoundsDetails';
+import { getScheduledRoundsDetails } from '../../../../../query/matchUps/scheduling/getScheduledRoundsDetails';
 import { getGroupedRounds } from '../../../../../query/matchUps/scheduling/getGroupedRounds';
 import { processAlreadyScheduledMatchUps } from './processAlreadyScheduledMatchUps';
 import { getMatchUpsToSchedule } from './getMatchUpsToSchedule';

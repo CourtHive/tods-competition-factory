@@ -1,6 +1,5 @@
 import { getMatchUpFormatTimingUpdate } from '../../../query/extensions/matchUpFormatTiming/getMatchUpFormatTimingUpdate';
 import { modifyMatchUpFormatTiming } from './matchUpFormatTiming/modifyMatchUpFormatTiming';
-import { getScheduledRoundsDetails } from './schedulingProfile/getScheduledRoundsDetails';
 import { calculateScheduleTimes } from './scheduleMatchUps/calculateScheduleTimes';
 import { scheduleProfileRounds } from './schedulingProfile/scheduleProfileRounds';
 import { generateVirtualCourts } from './schedulers/utils/generateVirtualCourts';
@@ -54,6 +53,7 @@ import { modifyEventMatchUpFormatTiming } from '../../../mutate/events/extension
 import { addSchedulingProfileRound } from '../../../mutate/matchUps/schedule/addSchedulingProfileRound';
 import { getProfileRounds } from '../../../query/matchUps/scheduling/getProfileRounds';
 import { getRounds } from '../../../query/matchUps/scheduling/getRounds';
+import { getScheduledRoundsDetails } from '../../../query/matchUps/scheduling/getScheduledRoundsDetails';
 
 const scheduleGovernor = {
   scheduleMatchUps,

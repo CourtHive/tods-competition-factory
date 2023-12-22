@@ -1,4 +1,4 @@
-import { getScheduledRoundsDetails } from '../../competitionEngine/governors/scheduleGovernor/schedulingProfile/getScheduledRoundsDetails';
+import { getScheduledRoundsDetails } from '../../query/matchUps/scheduling/getScheduledRoundsDetails';
 import { getMatchUpDependencies } from '../matchUps/getMatchUpDependencies';
 import { getSchedulingProfile } from '../../competitionEngine/governors/scheduleGovernor/schedulingProfile/schedulingProfile';
 import { allCompetitionMatchUps } from '../matchUps/getAllCompetitionMatchUps';
