@@ -1,13 +1,14 @@
-import tournamentEngine from '../../../../tests/engines/tournamentEngine';
+import { getAwardProfile } from '../../../query/scales/getAwardProfile';
 import { awardProfileLevelLines } from './awardProfileExamples';
-import { mocksEngine, scaleEngine } from '../../../..';
+import tournamentEngine from '../../engines/tournamentEngine';
 import { finishingPositionSort } from './awardTestUtils';
-import { getAwardProfile } from '../getAwardProfile';
+import scaleEngine from '../../engines/scaleEngine';
+import { mocksEngine } from '../../..';
 import { expect, it } from 'vitest';
 
-import { POLICY_TYPE_RANKING_POINTS } from '../../../../constants/policyConstants';
-import { TEAM_PARTICIPANT } from '../../../../constants/participantConstants';
-import { TEAM_EVENT } from '../../../../constants/eventConstants';
+import { POLICY_TYPE_RANKING_POINTS } from '../../../constants/policyConstants';
+import { TEAM_PARTICIPANT } from '../../../constants/participantConstants';
+import { TEAM_EVENT } from '../../../constants/eventConstants';
 
 it('generates points for lines in team matchUps', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({

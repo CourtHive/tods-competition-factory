@@ -1,14 +1,15 @@
 import { finishingPositionSort, getFpMap } from './awardTestUtils';
-import tournamentEngine from '../../../../tests/engines/tournamentEngine';
-import { mocksEngine, scaleEngine } from '../../../..';
+import tournamentEngine from '../../engines/tournamentEngine';
+import scaleEngine from '../../engines/scaleEngine';
+import { mocksEngine } from '../../..';
 import { expect, it } from 'vitest';
 import {
   awardProfileFlights,
   awardProfilePercentageFlights,
 } from './awardProfileExamples';
 
-import { POLICY_TYPE_RANKING_POINTS } from '../../../../constants/policyConstants';
-import { getAwardProfile } from '../getAwardProfile';
+import { POLICY_TYPE_RANKING_POINTS } from '../../../constants/policyConstants';
+import { getAwardProfile } from '../../../query/scales/getAwardProfile';
 
 it('can award points for flights', () => {
   const eventProfiles = [

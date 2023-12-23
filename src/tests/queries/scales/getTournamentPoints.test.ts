@@ -1,16 +1,17 @@
-import tournamentEngine from '../../../../tests/engines/tournamentEngine';
-import { mocksEngine, scaleEngine } from '../../../..';
-import { getAwardProfile } from '../getAwardProfile';
+import tournamentEngine from '../../engines/tournamentEngine';
+import scaleEngine from '../../engines/scaleEngine';
+import { mocksEngine } from '../../..';
+import { getAwardProfile } from '../../../query/scales/getAwardProfile';
 import { expect, it } from 'vitest';
 
-import { MISSING_POLICY_DEFINITION } from '../../../../constants/errorConditionConstants';
-import { POLICY_TYPE_RANKING_POINTS } from '../../../../constants/policyConstants';
-import { SINGLES } from '../../../../constants/eventConstants';
+import { MISSING_POLICY_DEFINITION } from '../../../constants/errorConditionConstants';
+import { POLICY_TYPE_RANKING_POINTS } from '../../../constants/policyConstants';
+import { SINGLES } from '../../../constants/eventConstants';
 import {
   CURTIS_CONSOLATION,
   MAIN,
   SINGLE_ELIMINATION,
-} from '../../../../constants/drawDefinitionConstants';
+} from '../../../constants/drawDefinitionConstants';
 
 const awardProfiles = [
   // TODO: requireWinDefault - to get points for a default there must be at least one win

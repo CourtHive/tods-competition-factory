@@ -1,4 +1,4 @@
-import { TEAM_EVENT } from '../../../../constants/eventConstants';
+import { TEAM_EVENT } from '../../../constants/eventConstants';
 
 // prettier-ignore
 export const awardProfileFlights = {

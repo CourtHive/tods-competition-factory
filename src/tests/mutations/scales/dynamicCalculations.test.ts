@@ -1,10 +1,11 @@
-import tournamentEngine from '../../../../tests/engines/tournamentEngine';
-import { mocksEngine, scaleEngine } from '../../../..';
+import tournamentEngine from '../../engines/tournamentEngine';
+import scaleEngine from '../../engines/scaleEngine';
+import { mocksEngine } from '../../..';
 import { expect, test } from 'vitest';
 
-import ratingsParameters from '../../../../fixtures/ratings/ratingsParameters';
-import { NTRP, UTR, WTN } from '../../../../constants/ratingConstants';
-import { DYNAMIC } from '../../../../constants/scaleConstants';
+import ratingsParameters from '../../../fixtures/ratings/ratingsParameters';
+import { NTRP, UTR, WTN } from '../../../constants/ratingConstants';
+import { DYNAMIC } from '../../../constants/scaleConstants';
 
 const scenarios = [
   {},

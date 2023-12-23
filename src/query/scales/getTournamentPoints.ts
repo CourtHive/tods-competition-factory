@@ -1,29 +1,26 @@
-import { getParticipants } from '../../../query/participants/getParticipants';
-import { getPolicyDefinitions } from '../../../query/extensions/getAppliedPolicies';
-import { addExtension } from '../../../mutate/extensions/addExtension';
+import { getParticipants } from '../participants/getParticipants';
+import { getPolicyDefinitions } from '../extensions/getAppliedPolicies';
+import { addExtension } from '../../mutate/extensions/addExtension';
 import { getTargetElement } from './getTargetElement';
 import { getAwardProfile } from './getAwardProfile';
 import { getAwardPoints } from './getAwardPoints';
-import { unique } from '../../../utilities';
+import { unique } from '../../utilities';
 
-import { POLICY_TYPE_RANKING_POINTS } from '../../../constants/policyConstants';
-import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
-import { RANKING_POINTS } from '../../../constants/extensionConstants';
-import { Tournament } from '../../../types/tournamentTypes';
-import { TEAM_EVENT } from '../../../constants/eventConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { POLICY_TYPE_RANKING_POINTS } from '../../constants/policyConstants';
+import { QUALIFYING } from '../../constants/drawDefinitionConstants';
+import { RANKING_POINTS } from '../../constants/extensionConstants';
+import { Tournament } from '../../types/tournamentTypes';
+import { TEAM_EVENT } from '../../constants/eventConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   MISSING_POLICY_DEFINITION,
   MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
-import {
-  PAIR,
-  TEAM_PARTICIPANT,
-} from '../../../constants/participantConstants';
+} from '../../constants/errorConditionConstants';
+import { PAIR, TEAM_PARTICIPANT } from '../../constants/participantConstants';
 import {
   ParticipantFilters,
   PolicyDefinitions,
-} from '../../../types/factoryTypes';
+} from '../../types/factoryTypes';
 
 type GetTournamentPointsArgs = {
   participantFilters?: ParticipantFilters;

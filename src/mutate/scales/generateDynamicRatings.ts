@@ -1,23 +1,23 @@
-import { getParticipantScaleItem } from '../../../query/participant/getParticipantScaleItem';
-import { setParticipantScaleItem } from '../../../mutate/participants/addScaleItems';
-import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
-import { parse } from '../../../matchUpEngine/governors/matchUpFormatGovernor/parse';
-import ratingsParameters from '../../../fixtures/ratings/ratingsParameters';
-import { matchUpSort } from '../../../functions/sorters/matchUpSort';
+import { getParticipantScaleItem } from '../../query/participant/getParticipantScaleItem';
+import { setParticipantScaleItem } from '../participants/addScaleItems';
+import { allTournamentMatchUps } from '../../query/matchUps/getAllTournamentMatchUps';
+import { parse } from '../../matchUpEngine/governors/matchUpFormatGovernor/parse';
+import ratingsParameters from '../../fixtures/ratings/ratingsParameters';
+import { matchUpSort } from '../../functions/sorters/matchUpSort';
 import { calculateNewRatings } from './calculateNewRatings';
 import { aggregateSets } from './aggregators';
 
-import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
-import { DYNAMIC, RATING } from '../../../constants/scaleConstants';
-import { EventTypeUnion } from '../../../types/tournamentTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { ELO } from '../../../constants/ratingConstants';
-import { HydratedSide } from '../../../types/hydrated';
+import { completedMatchUpStatuses } from '../../constants/matchUpStatusConstants';
+import { DYNAMIC, RATING } from '../../constants/scaleConstants';
+import { EventTypeUnion } from '../../types/tournamentTypes';
+import { SUCCESS } from '../../constants/resultConstants';
+import { ELO } from '../../constants/ratingConstants';
+import { HydratedSide } from '../../types/hydrated';
 import {
   INVALID_VALUES,
   MISSING_MATCHUPS,
   MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 export function generateDynamicRatings({
   removePriorValues = true,

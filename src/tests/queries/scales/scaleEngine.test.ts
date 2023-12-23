@@ -1,9 +1,9 @@
-import competitionEngine from '../../tests/engines/competitionEngine';
-import { mocksEngine } from '../../mocksEngine/index';
+import competitionEngine from '../../engines/competitionEngine';
+import { mocksEngine } from '../../../mocksEngine/index';
+import scaleEngine from '../../engines/scaleEngine';
 import { expect, test } from 'vitest';
-import { scaleEngine } from '../sync';
 
-import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
+import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 
 test('basic engine methods', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
@@ -12,7 +12,7 @@ test('basic engine methods', () => {
   const version = scaleEngine.version();
   expect(version).not.toBeUndefined();
 
-  let result: any = scaleEngine.getState();
+  let result: any = scaleEngine.getTournament();
   expect(result.tournamentRecord).not.toBeUndefined();
 
   result = scaleEngine.reset();
@@ -24,9 +24,9 @@ test('basic engine methods', () => {
   result = scaleEngine.setState(tournamentRecord);
   expect(result.success).toEqual(true);
 
-  result = scaleEngine.getState({ convertExtensions: true });
+  result = scaleEngine.getTournament({ convertExtensions: true });
   expect(result.tournamentRecord).not.toBeUndefined();
-  result = scaleEngine.getState({ removeExtensions: true });
+  result = scaleEngine.getTournament({ removeExtensions: true });
   expect(result.tournamentRecord).not.toBeUndefined();
 });
 

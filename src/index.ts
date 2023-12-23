@@ -147,8 +147,7 @@ export { matchUpEngine } from './matchUpEngine/sync';
 export { matchUpEngineAsync } from './matchUpEngine/async';
 export { tournamentEngine } from './tests/engines/tournamentEngine';
 export { tournamentEngineAsync } from './tournamentEngine/async';
-export { scaleEngine } from './scaleEngine/sync';
-export { scaleEngineAsync } from './scaleEngine/async';
+export { scaleEngine } from './tests/engines/scaleEngine';
 export { mocksEngine } from './mocksEngine';
 // END- Asynchronous and Synchronous engine exports
 
