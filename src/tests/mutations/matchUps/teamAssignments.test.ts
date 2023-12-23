@@ -1,5 +1,5 @@
 import { validateLineUp } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/validateTeamLineUp';
-import { generateTeamTournament } from '../../../tournamentEngine/tests/team/generateTestTeamTournament';
+import { generateTeamTournament } from '../../quarantine/tests/team/generateTestTeamTournament';
 import tournamentEngine from '../../engines/tournamentEngine';
 import { expect, it } from 'vitest';
 

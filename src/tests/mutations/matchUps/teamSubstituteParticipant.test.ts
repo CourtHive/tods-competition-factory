@@ -1,6 +1,6 @@
 import { removeLineUpSubstitutions } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/removeLineUpSubstitutions';
 import { validateLineUp } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/validateTeamLineUp';
-import { generateTeamTournament } from '../../../tournamentEngine/tests/team/generateTestTeamTournament';
+import { generateTeamTournament } from '../../quarantine/tests/team/generateTestTeamTournament';
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import tournamentEngine from '../../engines/tournamentEngine';
 import { intersection } from '../../../utilities';
