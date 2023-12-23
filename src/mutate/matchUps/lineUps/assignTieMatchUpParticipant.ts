@@ -7,8 +7,8 @@ import { getParticipants } from '../../../query/participants/getParticipants';
 import { removeCollectionAssignments } from '../../../tournamentEngine/governors/eventGovernor/removeCollectionAssignments';
 import { addParticipant } from '../../participants/addParticipants';
 import { ensureSideLineUps } from './ensureSideLineUps';
-import { updateTeamLineUp } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/updateTeamLineUp';
-import { getTeamLineUp } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/getTeamLineUp';
+import { updateTeamLineUp } from '../../drawDefinitions/updateTeamLineUp';
+import { getTeamLineUp } from '../../drawDefinitions/getTeamLineUp';
 import { getTieMatchUpContext } from '../../../tournamentEngine/governors/eventGovernor/getTieMatchUpContext';
 import { overlap } from '../../../utilities';
 import {

@@ -1,4 +1,4 @@
-import { updateTeamLineUp } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/updateTeamLineUp';
+import { updateTeamLineUp } from '../../drawDefinitions/updateTeamLineUp';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { getTargetMatchUps } from '../../drawDefinitions/positionGovernor/getTargetMatchUps';
 

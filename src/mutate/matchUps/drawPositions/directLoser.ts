@@ -1,4 +1,4 @@
-import { removeLineUpSubstitutions } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/removeLineUpSubstitutions';
+import { removeLineUpSubstitutions } from '../../drawDefinitions/removeLineUpSubstitutions';
 import { assignDrawPositionBye } from './assignDrawPositionBye';
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';

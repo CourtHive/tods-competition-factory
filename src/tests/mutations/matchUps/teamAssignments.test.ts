@@ -1,4 +1,4 @@
-import { validateLineUp } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/validateTeamLineUp';
+import { validateLineUp } from '../../../mutate/drawDefinitions/validateTeamLineUp';
 import { generateTeamTournament } from '../../quarantine/tests/team/generateTestTeamTournament';
 import tournamentEngine from '../../engines/tournamentEngine';
 import { expect, it } from 'vitest';

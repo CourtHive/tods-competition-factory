@@ -1,4 +1,4 @@
-import { removeDrawPositionAssignment } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/removeDrawPositionAssignment';
+import { removeDrawPositionAssignment } from '../../drawDefinitions/removeDrawPositionAssignment';
 import { conditionallyDisableLinkPositioning } from '../../drawDefinitions/positionGovernor/conditionallyDisableLinkPositioning';
 import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { assignDrawPositionBye } from './assignDrawPositionBye';

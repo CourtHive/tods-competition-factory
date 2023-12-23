@@ -1,5 +1,5 @@
 import { attachFlightProfile as attachProfile } from '../../../tournamentEngine/governors/eventGovernor/attachFlightProfile';
-import { getScaledEntries } from '../../../tournamentEngine/governors/eventGovernor/entries/getScaledEntries';
+import { getScaledEntries } from '../../../query/event/getScaledEntries';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { getDevContext } from '../../../global/state/globalState';
 import { getFlightProfile } from '../../../query/event/getFlightProfile';

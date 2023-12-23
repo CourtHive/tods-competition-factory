@@ -1,6 +1,6 @@
 import { initializeStructureSeedAssignments } from '../../../mutate/drawDefinitions/positionGovernor/initializeSeedAssignments';
 import { automatedPositioning } from '../../../mutate/drawDefinitions/automatedPositioning';
-import { getScaledEntries } from '../../../tournamentEngine/governors/eventGovernor/entries/getScaledEntries';
+import { getScaledEntries } from '../../../query/event/getScaledEntries';
 import { assignSeed } from '../../../mutate/drawDefinitions/entryGovernor/seedAssignment';
 import { findExtension } from '../../../acquire/findExtension';
 import { getDrawStructures } from '../../../acquire/findStructure';

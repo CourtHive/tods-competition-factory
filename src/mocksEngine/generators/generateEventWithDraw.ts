@@ -1,8 +1,8 @@
-import { addDrawDefinition } from '../../tournamentEngine/governors/eventGovernor/drawDefinitions/addDrawDefinition';
+import { addDrawDefinition } from '../../mutate/drawDefinitions/addDrawDefinition';
 import { automatedPlayoffPositioning } from '../../mutate/drawDefinitions/automatedPlayoffPositioning';
 import { setParticipantScaleItem } from '../../mutate/participants/addScaleItems';
 import { addPlayoffStructures } from '../../mutate/drawDefinitions/addPlayoffStructures';
-import { addEventEntries } from '../../tournamentEngine/governors/eventGovernor/entries/addEventEntries';
+import { addEventEntries } from '../../mutate/entries/addEventEntries';
 import { addParticipants } from '../../mutate/participants/addParticipants';
 import { addEventTimeItem } from '../../mutate/timeItems/addTimeItem';
 import { generateDrawDefinition } from '../../assemblies/generators/drawDefinitions/generateDrawDefinition';

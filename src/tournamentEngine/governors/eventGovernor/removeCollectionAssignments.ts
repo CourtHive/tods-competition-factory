@@ -1,4 +1,4 @@
-import { getTeamLineUp } from './drawDefinitions/getTeamLineUp';
+import { getTeamLineUp } from '../../../mutate/drawDefinitions/getTeamLineUp';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 

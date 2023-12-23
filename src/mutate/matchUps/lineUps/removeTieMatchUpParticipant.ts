@@ -8,7 +8,7 @@ import { getParticipants } from '../../../query/participants/getParticipants';
 import { removeCollectionAssignments } from '../../../tournamentEngine/governors/eventGovernor/removeCollectionAssignments';
 import { addParticipant } from '../../participants/addParticipants';
 import { ensureSideLineUps } from './ensureSideLineUps';
-import { updateTeamLineUp } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/updateTeamLineUp';
+import { updateTeamLineUp } from '../../drawDefinitions/updateTeamLineUp';
 import { getTieMatchUpContext } from '../../../tournamentEngine/governors/eventGovernor/getTieMatchUpContext';
 import {
   ResultType,

@@ -1,4 +1,4 @@
-import { validateLineUp } from '../../../../tournamentEngine/governors/eventGovernor/drawDefinitions/validateTeamLineUp';
+import { validateLineUp } from '../../../../mutate/drawDefinitions/validateTeamLineUp';
 import tieFormatDefaults from '../../../../assemblies/generators/templates/tieFormatDefaults';
 import { expect, it } from 'vitest';
 

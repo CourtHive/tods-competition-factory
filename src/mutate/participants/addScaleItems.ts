@@ -1,4 +1,4 @@
-import { addDrawDefinitionTimeItem } from '../../tournamentEngine/governors/eventGovernor/drawDefinitions/addDrawDefinitionTimeItem';
+import { addDrawDefinitionTimeItem } from '../drawDefinitions/addDrawDefinitionTimeItem';
 import { participantScaleItem } from '../../query/participant/participantScaleItem';
 import { addNotice, getTopics } from '../../global/state/globalState';
 import { definedAttributes } from '../../utilities/definedAttributes';

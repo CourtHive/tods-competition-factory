@@ -1,6 +1,6 @@
 import { getCollectionPositionAssignments } from '../../tournamentEngine/governors/eventGovernor/getCollectionPositionAssignments';
 import { getPairedParticipant } from '../../tournamentEngine/governors/participantGovernor/getPairedParticipant';
-import { getTeamLineUp } from '../../tournamentEngine/governors/eventGovernor/drawDefinitions/getTeamLineUp';
+import { getTeamLineUp } from '../../mutate/drawDefinitions/getTeamLineUp';
 
 import { ParticipantMap, Substitution } from '../../types/factoryTypes';
 import { DOUBLES } from '../../constants/matchUpTypes';

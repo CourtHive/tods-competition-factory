@@ -1,4 +1,4 @@
-import { addEventEntries } from '../../tournamentEngine/governors/eventGovernor/entries/addEventEntries';
+import { addEventEntries } from '../../mutate/entries/addEventEntries';
 import { addFlight } from '../../tournamentEngine/governors/eventGovernor/addFlight';
 import { getParticipantId } from '../../global/functions/extractors';
 

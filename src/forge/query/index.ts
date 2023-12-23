@@ -19,7 +19,7 @@ export { findExtension } from '../../acquire/findExtension';
 export { validateScore } from '../../validators/validateScore';
 
 // tournamentEngine
-export { generateSeedingScaleItems } from '../../tournamentEngine/governors/eventGovernor/entries/generateSeedingScaleItems';
+export { generateSeedingScaleItems } from '../../assemblies/generators/drawDefinitions/generateSeedingScaleItems';
 export { getParticipantEventDetails } from '../../query/participants/getParticipantEventDetails';
 export { getEntriesAndSeedsCount } from '../../tournamentEngine/governors/policyGovernor/getEntriesAndSeedsCount';
 export { matchUpActions as tournamentMatchUpActions } from '../../tournamentEngine/getters/matchUpActions';
