@@ -1,6 +1,6 @@
 import { setMatchUpStatus } from '../../../../mutate/matchUps/matchUpStatus/setMatchUpStatus';
 import { completeMatchUp, verifyMatchUps } from '../primitives/verifyMatchUps';
-import { getDrawMatchUps } from '../../../../query/drawMatchUps';
+import { getDrawMatchUps } from '../../../../query/matchUps/drawMatchUps';
 import { publicFindDrawMatchUp } from '../../../../acquire/findDrawMatchUp';
 import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
 import { verifyStructure } from '../primitives/verifyStructure';

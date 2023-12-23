@@ -1,9 +1,9 @@
 import { findDrawMatchUp as drawEngineFindMatchUp } from '../../../acquire/findDrawMatchUp';
-import { allTournamentMatchUps } from './getAllTournamentMatchUps';
-import { allDrawMatchUps } from './getAllDrawMatchUps';
+import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
+import { allDrawMatchUps } from '../../../query/matchUps/getAllDrawMatchUps';
 import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
 import { hydrateParticipants } from '../../../query/participants/hydrateParticipants';
-import { getContextContent } from '../getContextContent';
+import { getContextContent } from '../../../query/hierarchical/getContextContent';
 import { findEvent } from '../../../acquire/findEvent';
 
 import { HydratedMatchUp } from '../../../types/hydrated';

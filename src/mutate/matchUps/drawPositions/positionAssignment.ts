@@ -8,7 +8,7 @@ import { getStructureSeedAssignments } from '../../../query/structure/getStructu
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { structureAssignedDrawPositions } from '../../../query/drawDefinition/positionsGetter';
 import { getInitialRoundNumber } from '../../../query/matchUps/getInitialRoundNumber';
-import { getAllDrawMatchUps } from '../../../query/drawMatchUps';
+import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import {
   ResultType,
   decorateResult,

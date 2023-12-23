@@ -1,5 +1,5 @@
-import { getMatchUpCompetitiveProfile } from '../../getters/getMatchUpCompetitiveProfile';
-import { allTournamentMatchUps } from '../../getters/matchUpsGetter/getAllTournamentMatchUps';
+import { getMatchUpCompetitiveProfile } from '../../../query/matchUp/getMatchUpCompetitiveProfile';
+import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
 import { extractAttributes as xa, isObject } from '../../../utilities/objects';
 import { getParticipants } from '../../../query/participants/getParticipants';
 import { intersection } from '../../../utilities';

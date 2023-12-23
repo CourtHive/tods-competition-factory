@@ -1,6 +1,6 @@
 import { getMatchUpDependencies } from '../matchUps/getMatchUpDependencies';
 import { getContainedStructures } from '../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
-import { getAllDrawMatchUps } from '../drawMatchUps';
+import { getAllDrawMatchUps } from '../matchUps/drawMatchUps';
 import { isAdHoc } from '../../drawEngine/governors/queryGovernor/isAdHoc';
 import { getPositionAssignments } from '../drawDefinition/positionsGetter';
 import { numericSort, unique } from '../../utilities';

@@ -1,4 +1,4 @@
-import { allTournamentMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/getAllTournamentMatchUps';
+import { allTournamentMatchUps } from './getAllTournamentMatchUps';
 
 import { MatchUpFilters } from '../filterMatchUps';
 import { HydratedMatchUp } from '../../types/hydrated';

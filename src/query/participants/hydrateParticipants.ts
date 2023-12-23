@@ -1,6 +1,6 @@
 import { addParticipantGroupings } from '../../drawEngine/governors/positionGovernor/avoidance/addParticipantGroupings';
 import { addNationalityCode } from '../../mutate/participants/addNationalityCode';
-import { getScaleValues } from '../../tournamentEngine/getters/participants/getScaleValues';
+import { getScaleValues } from '../participant/getScaleValues';
 
 import { getParticipantMap } from './getParticipantMap';
 import { Tournament } from '../../types/tournamentTypes';

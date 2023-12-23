@@ -2,23 +2,23 @@ import { getMatchUpScheduleDetails as drawEngineGetMatchUpScheduleDetails } from
 import { getPolicyDefinitions } from '../../../query/extensions/getAppliedPolicies';
 import { getMaxEntryPosition } from '../../../global/functions/deducers/getMaxEntryPosition';
 import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
-import { getMatchUpCompetitiveProfile } from '../../getters/getMatchUpCompetitiveProfile';
+import { getMatchUpCompetitiveProfile } from '../../../query/matchUp/getMatchUpCompetitiveProfile';
 import { participantScheduledMatchUps } from '../../../query/matchUps/participantScheduledMatchUps';
-import { getPositionAssignments } from '../../getters/getPositionAssignments';
-import { getPredictiveAccuracy } from '../../getters/getPredictiveAccuracy';
+import { getPositionAssignments } from '../../../query/structure/getPositionAssignments';
+import { getPredictiveAccuracy } from '../../../query/matchUps/getPredictiveAccuracy';
 import { participantScaleItem } from '../../../query/participant/participantScaleItem';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { getCourts, publicFindCourt } from '../../getters/courtGetter';
 import { getParticipantScaleItem } from '../../../query/participant/getParticipantScaleItem';
-import { getMatchUpFormat } from '../../getters/getMatchUpFormat';
-import { getMatchUpsStats } from '../../getters/getMatchUpsStats';
+import { getMatchUpFormat } from '../../../query/hierarchical/getMatchUpFormat';
+import { getMatchUpsStats } from '../../../query/matchUps/getMatchUpsStats';
 import { getEvent, getEvents } from '../../getters/eventGetter';
 import { publicFindMatchUp } from '../../../acquire/findMatchUp';
 import { matchUpActions } from '../../getters/matchUpActions';
 import { bulkUpdatePublishedEventIds } from '../../../query/event/publishState';
 import { findExtension } from '../../../acquire/findExtension';
 import { getParticipantSignInStatus } from '../../../query/participant/signInStatus';
-import { getTieFormat } from '../../getters/getTieFormat';
+import { getTieFormat } from '../../../query/hierarchical/getTieFormat';
 import { getEventProperties } from './getEventProperties';
 import { credits } from '../../../fixtures/credits';
 import { positionActions } from './positionQueries';
@@ -27,11 +27,11 @@ import {
   getEventStructures,
   getTournamentStructures,
 } from '../../getters/structureGetter';
-import { allTournamentMatchUps } from '../../getters/matchUpsGetter/getAllTournamentMatchUps';
-import { allDrawMatchUps } from '../../getters/matchUpsGetter/getAllDrawMatchUps';
-import { tournamentMatchUps } from '../../getters/matchUpsGetter/getTournamentMatchUps';
-import { allEventMatchUps } from '../../getters/matchUpsGetter/getAllEventMatchUps';
-import { eventMatchUps } from '../../getters/matchUpsGetter/getEventMatchUps';
+import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
+import { allDrawMatchUps } from '../../../query/matchUps/getAllDrawMatchUps';
+import { tournamentMatchUps } from '../../../query/matchUps/getTournamentMatchUps';
+import { allEventMatchUps } from '../../../query/matchUps/getAllEventMatchUps';
+import { eventMatchUps } from '../../../query/matchUps/getEventMatchUps';
 import {
   getEventTimeItem,
   getTournamentTimeItem,
@@ -43,10 +43,10 @@ import {
   MISSING_DRAW_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
-import { getAllDrawMatchUps } from '../../../query/drawMatchUps';
+import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import { findVenue } from '../../../acquire/findVenue';
 import { getVenuesAndCourts } from '../../../query/venues/venuesAndCourtsGetter';
-import { drawMatchUps } from '../../getters/matchUpsGetter/getDrawMatchUps';
+import { drawMatchUps } from '../../../query/matchUps/getDrawMatchUps';
 
 function findDrawDefinition({ tournamentRecord, drawDefinition }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

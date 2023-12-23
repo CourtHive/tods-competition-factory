@@ -1,9 +1,9 @@
-import { definedAttributes } from '../../../utilities/definedAttributes';
-import { hydrateParticipants } from '../../../query/participants/hydrateParticipants';
-import { getContextContent } from '../getContextContent';
-import { getDrawMatchUps } from '../../../query/drawMatchUps';
+import { definedAttributes } from '../../utilities/definedAttributes';
+import { hydrateParticipants } from '../participants/hydrateParticipants';
+import { getContextContent } from '../hierarchical/getContextContent';
+import { getDrawMatchUps } from './drawMatchUps';
 
-import { GetMatchUpsArgs } from '../../../types/factoryTypes';
+import { GetMatchUpsArgs } from '../../types/factoryTypes';
 
 export function drawMatchUps({
   participants: tournamentParticipants,

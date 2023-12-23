@@ -1,7 +1,7 @@
-import { participantScaleItem } from '../../../query/participant/participantScaleItem';
-import { intersection } from '../../../utilities';
+import { participantScaleItem } from '../participant/participantScaleItem';
+import { intersection } from '../../utilities';
 
-import { SCALE, SEEDING } from '../../../constants/scaleConstants';
+import { SCALE, SEEDING } from '../../constants/scaleConstants';
 
 export function getEventSeedAssignments({
   publishedSeeding,

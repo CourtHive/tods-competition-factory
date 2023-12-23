@@ -1,7 +1,7 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
 import { initializeStructureSeedAssignments } from '../../../../drawEngine/governors/positionGovernor/initializeSeedAssignments';
 import { newDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/newDrawDefinition';
-import { drawMatchUps } from '../../../../tournamentEngine/getters/matchUpsGetter/getDrawMatchUps';
+import { drawMatchUps } from '../../../../query/matchUps/getDrawMatchUps';
 import { automatedPositioning } from '../../../../mutate/drawDefinitions/automatedPositioning';
 import { clearDrawPosition } from '../../../../mutate/matchUps/drawPositions/positionClear';
 import { getStructureMatchUps } from '../../../../query/structure/getStructureMatchUps';

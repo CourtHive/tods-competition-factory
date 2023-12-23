@@ -3,7 +3,7 @@ import { addIndividualParticipants } from '../../mutate/participants/addIndividu
 import { getTimeItem } from '../../tournamentEngine/governors/queryGovernor/timeItems';
 import { isObject } from '../../utilities/objects';
 import { makeDeepCopy } from '../../utilities';
-import { getScaleValues } from '../../tournamentEngine/getters/participants/getScaleValues';
+import { getScaleValues } from '../participant/getScaleValues';
 
 import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
 import { Tournament } from '../../types/tournamentTypes';

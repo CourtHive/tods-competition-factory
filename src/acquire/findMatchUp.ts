@@ -1,10 +1,10 @@
 import { hydrateParticipants } from '../query/participants/hydrateParticipants';
-import { getContextContent } from '../tournamentEngine/getters/getContextContent';
+import { getContextContent } from '../query/hierarchical/getContextContent';
 import { findEvent } from './findEvent';
 import { makeDeepCopy } from '../utilities/makeDeepCopy';
 import { findDrawMatchUp } from './findDrawMatchUp';
-import { allTournamentMatchUps } from '../tournamentEngine/getters/matchUpsGetter/getAllTournamentMatchUps';
-import { allDrawMatchUps } from '../tournamentEngine/getters/matchUpsGetter/getAllDrawMatchUps';
+import { allTournamentMatchUps } from '../query/matchUps/getAllTournamentMatchUps';
+import { allDrawMatchUps } from '../query/matchUps/getAllDrawMatchUps';
 
 import { HydratedMatchUp } from '../types/hydrated';
 import {

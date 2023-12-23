@@ -1,4 +1,4 @@
-import { getDrawMatchUps } from '../../../../query/drawMatchUps';
+import { getDrawMatchUps } from '../../../../query/matchUps/drawMatchUps';
 import { getNumericSeedValue } from '../../../../query/drawDefinition/getNumericSeedValue';
 import { definedAttributes } from '../../../../utilities/definedAttributes';
 import { extractAttributes } from '../../../../utilities/objects';

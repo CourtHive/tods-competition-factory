@@ -6,7 +6,7 @@ import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { addExtension } from '../../extensions/addExtension';
 import { getProjectedDualWinningSide } from '../../../drawEngine/governors/matchUpGovernor/getProjectedDualWinningSide';
-import { getAllDrawMatchUps } from '../../../query/drawMatchUps';
+import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
 import { decorateResult } from '../../../global/functions/decorateResult';

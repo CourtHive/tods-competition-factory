@@ -1,13 +1,13 @@
-import { overlap } from '../../../utilities/arrays';
+import { overlap } from '../../utilities/arrays';
 
-import { PAIR, TEAM } from '../../../constants/participantConstants';
+import { PAIR, TEAM } from '../../constants/participantConstants';
 import {
   MISSING_PARTICIPANT_ID,
   MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
-import { Tournament } from '../../../types/tournamentTypes';
-import { ResultType } from '../../../global/functions/decorateResult';
+import { Tournament } from '../../types/tournamentTypes';
+import { ResultType } from '../../global/functions/decorateResult';
 
 /**
  * Returns { eventDetails: { eventName, eventId }} for events in which participantId or TEAM/PAIR including participantId appears

@@ -1,8 +1,8 @@
-import { hydrateParticipants } from '../../../query/participants/hydrateParticipants';
-import { getAllDrawMatchUps } from '../../../query/drawMatchUps';
-import { getContextContent } from '../getContextContent';
+import { hydrateParticipants } from '../participants/hydrateParticipants';
+import { getAllDrawMatchUps } from './drawMatchUps';
+import { getContextContent } from '../hierarchical/getContextContent';
 
-import { GetMatchUpsArgs } from '../../../types/factoryTypes';
+import { GetMatchUpsArgs } from '../../types/factoryTypes';
 
 export function allDrawMatchUps(params: GetMatchUpsArgs) {
   let {

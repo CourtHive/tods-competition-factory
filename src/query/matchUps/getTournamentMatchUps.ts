@@ -1,13 +1,13 @@
-import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import { hydrateParticipants } from '../../../query/participants/hydrateParticipants';
-import { getContextContent } from '../getContextContent';
-import { getFlightProfile } from '../../../query/event/getFlightProfile';
+import { getAppliedPolicies } from '../extensions/getAppliedPolicies';
+import { hydrateParticipants } from '../participants/hydrateParticipants';
+import { getContextContent } from '../hierarchical/getContextContent';
+import { getFlightProfile } from '../event/getFlightProfile';
 
 import {
   GetMatchUpsArgs,
   GroupsMatchUpsResult,
-} from '../../../types/factoryTypes';
-import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
+} from '../../types/factoryTypes';
+import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
 import { eventMatchUps } from './getEventMatchUps';
 
 export function tournamentMatchUps(

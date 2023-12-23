@@ -1,4 +1,4 @@
-import { allTournamentMatchUps } from '../../../tournamentEngine/getters/matchUpsGetter/getAllTournamentMatchUps';
+import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
 import { validMatchUps } from '../../../validators/validMatchUp';
 import { definedAttributes } from '../../../utilities/definedAttributes';
 import { getMatchUpId } from '../../../global/functions/extractors';

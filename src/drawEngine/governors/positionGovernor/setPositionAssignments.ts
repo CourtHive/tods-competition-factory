@@ -1,5 +1,5 @@
 import { assignDrawPositionBye } from '../../../mutate/matchUps/drawPositions/assignDrawPositionBye';
-import { getAllDrawMatchUps } from '../../../query/drawMatchUps';
+import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
 import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';

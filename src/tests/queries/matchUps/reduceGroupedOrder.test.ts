@@ -1,4 +1,4 @@
-import { reduceGroupedOrder } from '../reduceGroupedOrder';
+import { reduceGroupedOrder } from '../../../query/matchUps/reduceGroupedOrder';
 import { it, expect } from 'vitest';
 
 it.each([

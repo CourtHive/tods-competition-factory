@@ -1,6 +1,6 @@
 import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { isCompletedStructure } from '../../../drawEngine/governors/queryGovernor/structureActions';
-import { allDrawMatchUps } from '../../getters/matchUpsGetter/getAllDrawMatchUps';
+import { allDrawMatchUps } from '../../../query/matchUps/getAllDrawMatchUps';
 import { structureSort } from '../../../functions/sorters/structureSort';
 import tournamentEngine from '../../../tests/engines/tournamentEngine';
 import { mocksEngine } from '../../..';

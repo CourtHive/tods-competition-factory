@@ -1,6 +1,6 @@
 import { getRoundMatchUps } from '../../../../query/matchUps/getRoundMatchUps';
 import { completeMatchUp, verifyMatchUps } from '../primitives/verifyMatchUps';
-import { getAllDrawMatchUps } from '../../../../query/drawMatchUps';
+import { getAllDrawMatchUps } from '../../../../query/matchUps/drawMatchUps';
 import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
 import { getDrawStructures } from '../../../../acquire/findStructure';
 import { instanceCount } from '../../../../utilities';

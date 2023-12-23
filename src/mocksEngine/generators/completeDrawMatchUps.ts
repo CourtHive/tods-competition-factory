@@ -2,7 +2,7 @@ import { assignTieMatchUpParticipantId } from '../../mutate/matchUps/lineUps/ass
 import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
 import { setMatchUpStatus } from '../../tournamentEngine/governors/eventGovernor/setMatchUpStatus';
 import { getParticipants } from '../../query/participants/getParticipants';
-import { getAllDrawMatchUps } from '../../query/drawMatchUps';
+import { getAllDrawMatchUps } from '../../query/matchUps/drawMatchUps';
 import { generateLineUps } from '../../mutate/participants/generateLineUps';
 import { generateOutcomeFromScoreString } from './generateOutcomeFromScoreString';
 import { getPositionAssignments } from '../../query/drawDefinition/positionsGetter';

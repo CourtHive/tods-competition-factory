@@ -1,12 +1,12 @@
-import { getParticipants } from '../../../query/participants/getParticipants';
+import { getParticipants } from './getParticipants';
 
-import { GROUP, PAIR, TEAM } from '../../../constants/participantConstants';
-import { ResultType } from '../../../global/functions/decorateResult';
-import { Tournament } from '../../../types/tournamentTypes';
+import { GROUP, PAIR, TEAM } from '../../constants/participantConstants';
+import { ResultType } from '../../global/functions/decorateResult';
+import { Tournament } from '../../types/tournamentTypes';
 import {
   MISSING_PARTICIPANT_ID,
   MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 // Returns all grouping participants which include individual participantId
 

@@ -1,4 +1,4 @@
-import { getPositionAssignments as positionAssignments } from '../../query/drawDefinition/positionsGetter';
+import { getPositionAssignments as positionAssignments } from '../drawDefinition/positionsGetter';
 
 import { MAIN } from '../../constants/drawDefinitionConstants';
 import {

@@ -1,6 +1,6 @@
 import { getSchedulingProfile } from '../../../competitionEngine/governors/scheduleGovernor/schedulingProfile/schedulingProfile';
 import { scheduledSortedMatchUps } from '../../../functions/sorters/scheduledSortedMatchUps';
-import { allTournamentMatchUps } from '../../getters/matchUpsGetter/getAllTournamentMatchUps';
+import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
 
 import { MatchUpFilters } from '../../../query/filterMatchUps';
 import { ScheduleVisibilityFilters } from '../../../types/factoryTypes';

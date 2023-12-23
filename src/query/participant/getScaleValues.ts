@@ -1,17 +1,17 @@
-import { unique } from '../../../utilities';
+import { unique } from '../../utilities';
 
-import { SUCCESS } from '../../../constants/resultConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   RANKING,
   RATING,
   SCALE,
   SEEDING,
-} from '../../../constants/scaleConstants';
+} from '../../constants/scaleConstants';
 import {
   DOUBLES_EVENT,
   SINGLES_EVENT,
   TEAM_EVENT,
-} from '../../../constants/eventConstants';
+} from '../../constants/eventConstants';
 
 type ScaleType = {
   scaleName: string;

@@ -1,10 +1,10 @@
-import { checkScoreHasValue } from '../../query/matchUp/checkScoreHasValue';
+import { checkScoreHasValue } from '../matchUp/checkScoreHasValue';
 import { validMatchUps } from '../../validators/validMatchUp';
 import ratingsParameters from '../../fixtures/ratings/ratingsParameters';
 import { isConvertableInteger } from '../../utilities/math';
-import { allEventMatchUps } from './matchUpsGetter/getAllEventMatchUps';
-import { allTournamentMatchUps } from './matchUpsGetter/getAllTournamentMatchUps';
-import { allDrawMatchUps } from './matchUpsGetter/getAllDrawMatchUps';
+import { allEventMatchUps } from './getAllEventMatchUps';
+import { allTournamentMatchUps } from './getAllTournamentMatchUps';
+import { allDrawMatchUps } from './getAllDrawMatchUps';
 
 import { COMPETITIVE, DECISIVE, ROUTINE } from '../../constants/statsConstants';
 import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';

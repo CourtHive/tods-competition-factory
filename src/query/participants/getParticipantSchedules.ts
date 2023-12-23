@@ -1,12 +1,12 @@
-import { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDependencies';
-import { allTournamentMatchUps } from '../matchUpsGetter/getAllTournamentMatchUps';
+import { getMatchUpDependencies } from '../matchUps/getMatchUpDependencies';
+import { allTournamentMatchUps } from '../matchUps/getAllTournamentMatchUps';
 
-import { Tournament } from '../../../types/tournamentTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { Tournament } from '../../types/tournamentTypes';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   INVALID_OBJECT,
   MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 type GetParticipantSchedulesArgs = {
   tournamentRecord: Tournament;

@@ -1,5 +1,5 @@
 import { getAllStructureMatchUps } from '../query/matchUps/getAllStructureMatchUps';
-import { getContextContent } from '../tournamentEngine/getters/getContextContent';
+import { getContextContent } from '../query/hierarchical/getContextContent';
 import { MatchUpsMap } from '../query/matchUps/getMatchUpsMap';
 import { getMatchUp } from '../query/matchUps/getMatchUpFromMatchUps';
 import { getDrawStructures } from './findStructure';

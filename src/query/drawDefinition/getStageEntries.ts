@@ -1,12 +1,12 @@
-import { getFlightProfile } from '../../../query/event/getFlightProfile';
+import { getFlightProfile } from '../event/getFlightProfile';
 
-import { STRUCTURE_SELECTED_STATUSES } from '../../../constants/entryStatusConstants';
+import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
 import {
   DrawDefinition,
   Entry,
   EntryStatusUnion,
   Event,
-} from '../../../types/tournamentTypes';
+} from '../../types/tournamentTypes';
 
 type GetStageEntriesArgs = {
   entryStatuses?: EntryStatusUnion[];

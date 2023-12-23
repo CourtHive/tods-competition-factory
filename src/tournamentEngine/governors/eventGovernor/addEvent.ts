@@ -1,5 +1,5 @@
 import tieFormatDefaults from '../../../assemblies/generators/templates/tieFormatDefaults';
-import { allEventMatchUps } from '../../getters/matchUpsGetter/getAllEventMatchUps';
+import { allEventMatchUps } from '../../../query/matchUps/getAllEventMatchUps';
 import { validateTieFormat } from '../../../validators/validateTieFormat';
 import { definedAttributes } from '../../../utilities/definedAttributes';
 import { getTopics } from '../../../global/state/globalState';

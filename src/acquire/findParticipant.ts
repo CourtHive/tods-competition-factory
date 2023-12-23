@@ -1,4 +1,4 @@
-import { getScaleValues } from '../tournamentEngine/getters/participants/getScaleValues';
+import { getScaleValues } from '../query/participant/getScaleValues';
 import { attributeFilter, makeDeepCopy } from '../utilities';
 
 import { ContextProfile, PolicyDefinitions } from '../types/factoryTypes';

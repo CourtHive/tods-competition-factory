@@ -20,7 +20,7 @@ export { validateScore } from '../../validators/validateScore';
 
 // tournamentEngine
 export { generateSeedingScaleItems } from '../../tournamentEngine/governors/eventGovernor/entries/generateSeedingScaleItems';
-export { getParticipantEventDetails } from '../../tournamentEngine/getters/participants/getParticipantEventDetails';
+export { getParticipantEventDetails } from '../../query/participants/getParticipantEventDetails';
 export { getEntriesAndSeedsCount } from '../../tournamentEngine/governors/policyGovernor/getEntriesAndSeedsCount';
 export { matchUpActions as tournamentMatchUpActions } from '../../tournamentEngine/getters/matchUpActions';
 export { filterParticipants } from '../../query/participants/filterParticipants';
@@ -31,12 +31,12 @@ export { participantScaleItem } from '../../query/participant/participantScaleIt
 export { getTimeItem } from '../../query/participant/timeItems';
 export { findMatchUp } from '../../acquire/findMatchUp';
 export { getFlightProfile } from '../../query/event/getFlightProfile';
-export { allTournamentMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/getAllTournamentMatchUps';
-export { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/getAllDrawMatchUps';
-export { tournamentMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/getTournamentMatchUps';
-export { eventMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/getEventMatchUps';
-export { allEventMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/getAllEventMatchUps';
-export { drawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/getDrawMatchUps';
+export { allTournamentMatchUps } from '../../query/matchUps/getAllTournamentMatchUps';
+export { allDrawMatchUps } from '../../query/matchUps/getAllDrawMatchUps';
+export { tournamentMatchUps } from '../../query/matchUps/getTournamentMatchUps';
+export { eventMatchUps } from '../../query/matchUps/getEventMatchUps';
+export { allEventMatchUps } from '../../query/matchUps/getAllEventMatchUps';
+export { drawMatchUps } from '../../query/matchUps/getDrawMatchUps';
 
 // competitionEngine
 export { getEventMatchUpFormatTiming } from '../../query/extensions/matchUpFormatTiming/getEventMatchUpFormatTiming';

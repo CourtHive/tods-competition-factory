@@ -5,7 +5,7 @@ import {
   getSeedPattern,
   getValidSeedBlocks,
 } from '../../query/drawDefinition/seedGetter';
-import { getAllDrawMatchUps } from '../../query/drawMatchUps';
+import { getAllDrawMatchUps } from '../../query/matchUps/drawMatchUps';
 import { modifyDrawNotice } from '../notifications/drawNotifications';
 import { getPositionAssignments } from '../../query/drawDefinition/positionsGetter';
 import { getQualifiersCount } from '../../query/drawDefinition/getQualifiersCount';

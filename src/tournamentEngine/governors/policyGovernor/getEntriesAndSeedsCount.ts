@@ -1,5 +1,5 @@
 import { getEliminationDrawSize } from '../../../query/participants/getEliminationDrawSize';
-import { getStageEntries } from '../../getters/participants/getStageEntries';
+import { getStageEntries } from '../../../query/drawDefinition/getStageEntries';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { getSeedsCount } from './getSeedsCount';
 

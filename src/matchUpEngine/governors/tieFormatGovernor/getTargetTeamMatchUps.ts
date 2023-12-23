@@ -1,5 +1,5 @@
 import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
-import { allDrawMatchUps } from '../../../tournamentEngine/getters/matchUpsGetter/getAllDrawMatchUps';
+import { allDrawMatchUps } from '../../../query/matchUps/getAllDrawMatchUps';
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 
 import { MatchUp } from '../../../types/tournamentTypes';

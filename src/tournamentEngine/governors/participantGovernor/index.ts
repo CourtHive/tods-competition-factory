@@ -1,8 +1,8 @@
 import { getEligibleVoluntaryConsolationParticipants } from '../../../query/drawDefinition/getEligibleVoluntaryConsolationParticipants';
 import { getParticipantIdFinishingPositions } from '../../../drawEngine/governors/queryGovernor/finishingPositions';
-import { getParticipantEventDetails } from '../../getters/participants/getParticipantEventDetails';
-import { getParticipantMembership } from '../../getters/participants/getParticipantMembership';
-import { getParticipantSchedules } from '../../getters/participants/getParticipantSchedules';
+import { getParticipantEventDetails } from '../../../query/participants/getParticipantEventDetails';
+import { getParticipantMembership } from '../../../query/participants/getParticipantMembership';
+import { getParticipantSchedules } from '../../../query/participants/getParticipantSchedules';
 import { publicFindParticipant } from '../../../acquire/publicFindParticipant';
 import { getParticipants } from '../../../query/participants/getParticipants';
 import { getPairedParticipant } from './getPairedParticipant';

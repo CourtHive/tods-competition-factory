@@ -1,12 +1,12 @@
-import { getScheduleTiming } from '../../../query/extensions/matchUpFormatTiming/getScheduleTiming';
-import { definedAttributes } from '../../../utilities/definedAttributes';
-import { hydrateParticipants } from '../../../query/participants/hydrateParticipants';
-import { getContextContent } from '../getContextContent';
-import { getAllDrawMatchUps } from '../../../query/drawMatchUps';
+import { getScheduleTiming } from '../extensions/matchUpFormatTiming/getScheduleTiming';
+import { definedAttributes } from '../../utilities/definedAttributes';
+import { hydrateParticipants } from '../participants/hydrateParticipants';
+import { getContextContent } from '../hierarchical/getContextContent';
+import { getAllDrawMatchUps } from './drawMatchUps';
 
-import { HydratedMatchUp } from '../../../types/hydrated';
-import { GetMatchUpsArgs } from '../../../types/factoryTypes';
-import { MISSING_EVENT } from '../../../constants/errorConditionConstants';
+import { HydratedMatchUp } from '../../types/hydrated';
+import { GetMatchUpsArgs } from '../../types/factoryTypes';
+import { MISSING_EVENT } from '../../constants/errorConditionConstants';
 
 export function allEventMatchUps(params: GetMatchUpsArgs) {
   let { participants = [], contextContent, participantMap } = params;

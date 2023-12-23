@@ -2,7 +2,7 @@ import { removeDrawPositionAssignment } from '../../../tournamentEngine/governor
 import { conditionallyDisableLinkPositioning } from '../../../drawEngine/governors/positionGovernor/conditionallyDisableLinkPositioning';
 import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { assignDrawPositionBye } from './assignDrawPositionBye';
-import { getAllDrawMatchUps } from '../../../query/drawMatchUps';
+import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import { addPositionActionTelemetry } from '../../../drawEngine/governors/positionGovernor/addPositionActionTelemetry';
 import { getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
 import { assignDrawPosition } from './positionAssignment';

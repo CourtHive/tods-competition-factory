@@ -1,4 +1,4 @@
-import { allDrawMatchUps } from '../../../tournamentEngine/getters/matchUpsGetter/getAllDrawMatchUps';
+import { allDrawMatchUps } from '../../../query/matchUps/getAllDrawMatchUps';
 import { chunkArray, generateRange, numericSort } from '../../../utilities';
 import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
 import { getPositionsPlayedOff } from './getPositionsPlayedOff';

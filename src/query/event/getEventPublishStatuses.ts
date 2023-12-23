@@ -1,5 +1,5 @@
-import { getEventPublishStatus } from '../../../query/event/getEventPublishStatus';
-import { getDrawPublishStatus } from '../../../query/event/getDrawPublishStatus';
+import { getEventPublishStatus } from './getEventPublishStatus';
+import { getDrawPublishStatus } from './getDrawPublishStatus';
 
 export function getEventPublishStatuses({ event }) {
   const eventPubStatus = getEventPublishStatus({ event });

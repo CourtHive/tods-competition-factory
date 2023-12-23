@@ -1,5 +1,9 @@
 import { validMatchUps } from '../../validators/validMatchUp';
-import { getBand, getScoreComponents, pctSpread } from './scoreComponents';
+import {
+  getBand,
+  getScoreComponents,
+  pctSpread,
+} from '../../tournamentEngine/getters/scoreComponents';
 import { findPolicy } from '../../acquire/findPolicy';
 
 import POLICY_COMPETITIVE_BANDS_DEFAULT from '../../fixtures/policies/POLICY_COMPETITIVE_BANDS_DEFAULT';

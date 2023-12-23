@@ -1,20 +1,23 @@
-import { addParticipantGroupings } from '../drawEngine/governors/positionGovernor/avoidance/addParticipantGroupings';
-import { addUpcomingMatchUps } from '../drawEngine/governors/matchUpGovernor/addUpcomingMatchUps';
-import { getContextContent } from '../tournamentEngine/getters/getContextContent';
-import { getExitProfiles } from '../drawEngine/governors/queryGovernor/getExitProfile';
-import { MatchUpsMap, getMatchUpsMap } from './matchUps/getMatchUpsMap';
-import { getStructureMatchUps } from './structure/getStructureMatchUps';
-import { getDrawStructures } from '../acquire/findStructure';
-import { filterMatchUps } from './filterMatchUps';
-import { ResultType, decorateResult } from '../global/functions/decorateResult';
+import { addParticipantGroupings } from '../../drawEngine/governors/positionGovernor/avoidance/addParticipantGroupings';
+import { addUpcomingMatchUps } from '../../drawEngine/governors/matchUpGovernor/addUpcomingMatchUps';
+import { getContextContent } from '../hierarchical/getContextContent';
+import { getExitProfiles } from '../../drawEngine/governors/queryGovernor/getExitProfile';
+import { MatchUpsMap, getMatchUpsMap } from './getMatchUpsMap';
+import { getStructureMatchUps } from '../structure/getStructureMatchUps';
+import { getDrawStructures } from '../../acquire/findStructure';
+import { filterMatchUps } from '../filterMatchUps';
+import {
+  ResultType,
+  decorateResult,
+} from '../../global/functions/decorateResult';
 
-import { GroupsMatchUpsResult } from '../types/factoryTypes';
-import { SUCCESS } from '../constants/resultConstants';
-import { HydratedMatchUp } from '../types/hydrated';
+import { GroupsMatchUpsResult } from '../../types/factoryTypes';
+import { SUCCESS } from '../../constants/resultConstants';
+import { HydratedMatchUp } from '../../types/hydrated';
 import {
   MISSING_DRAW_DEFINITION,
   STRUCTURE_NOT_FOUND,
-} from '../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 /*
   return ALL matchUps within a drawDefinition, regardless of state

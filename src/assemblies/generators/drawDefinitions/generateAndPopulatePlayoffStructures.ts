@@ -3,7 +3,7 @@ import { checkMatchUpIsComplete } from '../../../query/matchUp/checkMatchUpIsCom
 import { generateAndPopulateRRplayoffStructures } from './generateAndPopulateRRplayoffStructures';
 import { assignDrawPositionBye } from '../../../mutate/matchUps/drawPositions/assignDrawPositionBye';
 import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
-import { getAllDrawMatchUps } from '../../../query/drawMatchUps';
+import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import { directParticipants } from '../../../mutate/matchUps/drawPositions/directParticipants';
 import { getAvailablePlayoffProfiles } from '../../../drawEngine/governors/structureGovernor/getAvailablePlayoffProfiles';
 import { positionTargets } from '../../../mutate/matchUps/drawPositions/positionTargets';

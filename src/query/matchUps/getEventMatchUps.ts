@@ -1,15 +1,15 @@
-import { getEventPublishStatus } from '../../../query/event/getEventPublishStatus';
-import { definedAttributes } from '../../../utilities/definedAttributes';
-import { hydrateParticipants } from '../../../query/participants/hydrateParticipants';
-import { MISSING_EVENT } from '../../../constants/errorConditionConstants';
-import { getContextContent } from '../getContextContent';
-import { getDrawMatchUps } from '../../../query/drawMatchUps';
+import { getEventPublishStatus } from '../event/getEventPublishStatus';
+import { definedAttributes } from '../../utilities/definedAttributes';
+import { hydrateParticipants } from '../participants/hydrateParticipants';
+import { MISSING_EVENT } from '../../constants/errorConditionConstants';
+import { getContextContent } from '../hierarchical/getContextContent';
+import { getDrawMatchUps } from './drawMatchUps';
 
-import { SUCCESS } from '../../../constants/resultConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   GetMatchUpsArgs,
   GroupsMatchUpsResult,
-} from '../../../types/factoryTypes';
+} from '../../types/factoryTypes';
 
 export function eventMatchUps(params: GetMatchUpsArgs): GroupsMatchUpsResult {
   let {

@@ -1,5 +1,5 @@
-import { extensionsToAttributes } from '../../../utilities/makeDeepCopy';
-import { definedAttributes } from '../../../utilities/definedAttributes';
+import { extensionsToAttributes } from '../../utilities/makeDeepCopy';
+import { definedAttributes } from '../../utilities/definedAttributes';
 
 export function processEventEntry({
   convertExtensions,

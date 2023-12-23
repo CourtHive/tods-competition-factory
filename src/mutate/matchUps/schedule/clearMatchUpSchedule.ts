@@ -1,6 +1,6 @@
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
-import { allTournamentMatchUps } from '../../../tournamentEngine/getters/matchUpsGetter/getAllTournamentMatchUps';
-import { allDrawMatchUps } from '../../../tournamentEngine/getters/matchUpsGetter/getAllDrawMatchUps';
+import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
+import { allDrawMatchUps } from '../../../query/matchUps/getAllDrawMatchUps';
 
 import { MATCHUP_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';

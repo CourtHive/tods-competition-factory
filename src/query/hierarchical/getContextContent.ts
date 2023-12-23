@@ -1,4 +1,4 @@
-import { getPolicyDefinitions } from '../../query/extensions/getAppliedPolicies';
+import { getPolicyDefinitions } from '../extensions/getAppliedPolicies';
 
 import POLICY_COMPETITIVE_BANDS_DEFAULT from '../../fixtures/policies/POLICY_COMPETITIVE_BANDS_DEFAULT';
 import { POLICY_TYPE_COMPETITIVE_BANDS } from '../../constants/policyConstants';
