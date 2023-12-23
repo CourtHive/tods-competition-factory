@@ -5,7 +5,7 @@ import { getParticipantMembership } from '../../../query/participants/getPartici
 import { getParticipantSchedules } from '../../../query/participants/getParticipantSchedules';
 import { publicFindParticipant } from '../../../acquire/publicFindParticipant';
 import { getParticipants } from '../../../query/participants/getParticipants';
-import { getPairedParticipant } from './getPairedParticipant';
+import { getPairedParticipant } from '../../../query/participant/getPairedParticipant';
 import { addPersons } from '../../../mutate/participants/addPersons';
 
 import { modifyIndividualParticipantIds } from '../../../mutate/participants/modifyIndividualParticipantIds';

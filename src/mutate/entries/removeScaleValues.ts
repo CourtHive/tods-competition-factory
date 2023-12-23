@@ -1,4 +1,4 @@
-import { removeParticipantsScaleItems } from '../../tournamentEngine/governors/participantGovernor/removeScaleItems';
+import { removeParticipantsScaleItems } from '../participants/removeScaleItems';
 import { decorateResult } from '../../global/functions/decorateResult';
 import { getParticipantId } from '../../global/functions/extractors';
 import { mustBeAnArray } from '../../utilities/mustBeAnArray';

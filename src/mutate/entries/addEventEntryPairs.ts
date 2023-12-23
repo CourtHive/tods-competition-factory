@@ -1,4 +1,4 @@
-import { getPairedParticipant } from '../../tournamentEngine/governors/participantGovernor/getPairedParticipant';
+import { getPairedParticipant } from '../../query/participant/getPairedParticipant';
 import { addParticipants } from '../participants/addParticipants';
 import { getParticipantId } from '../../global/functions/extractors';
 import { addNotice } from '../../global/state/globalState';

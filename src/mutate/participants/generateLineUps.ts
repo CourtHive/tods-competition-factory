@@ -1,6 +1,6 @@
 import { resolveTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
 import { validateTieFormat } from '../../validators/validateTieFormat';
-import { getPairedParticipant } from '../../tournamentEngine/governors/participantGovernor/getPairedParticipant';
+import { getPairedParticipant } from '../../query/participant/getPairedParticipant';
 import { addParticipant } from './addParticipants';
 import { addExtension } from '../extensions/addExtension';
 import { getParticipants } from '../../query/participants/getParticipants';

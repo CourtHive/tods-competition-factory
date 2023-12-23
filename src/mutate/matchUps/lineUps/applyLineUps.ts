@@ -1,7 +1,7 @@
 import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
-import { getPairedParticipant } from '../../../tournamentEngine/governors/participantGovernor/getPairedParticipant';
+import { getPairedParticipant } from '../../../query/participant/getPairedParticipant';
 import { addParticipant } from '../../participants/addParticipants';
 import { instanceCount } from '../../../utilities';
 

@@ -1,7 +1,7 @@
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { getCollectionPositionAssignments } from '../../events/getCollectionPositionAssignments';
-import { getPairedParticipant } from '../../../tournamentEngine/governors/participantGovernor/getPairedParticipant';
+import { getPairedParticipant } from '../../../query/participant/getPairedParticipant';
 import { deleteParticipants } from '../../participants/deleteParticipants';
 import { getParticipants } from '../../../query/participants/getParticipants';
 import { addParticipant } from '../../participants/addParticipants';

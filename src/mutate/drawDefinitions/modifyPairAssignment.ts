@@ -1,4 +1,4 @@
-import { getPairedParticipant } from '../../tournamentEngine/governors/participantGovernor/getPairedParticipant';
+import { getPairedParticipant } from '../../query/participant/getPairedParticipant';
 import { deleteParticipants } from '../participants/deleteParticipants';
 import { addParticipant } from '../participants/addParticipants';
 import { getFlightProfile } from '../../query/event/getFlightProfile';

@@ -1,6 +1,6 @@
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
-import { getPairedParticipant } from '../../../tournamentEngine/governors/participantGovernor/getPairedParticipant';
+import { getPairedParticipant } from '../../../query/participant/getPairedParticipant';
 import { deleteParticipants } from '../../participants/deleteParticipants';
 import { modifyParticipant } from '../../participants/modifyParticipant';
 import { getParticipants } from '../../../query/participants/getParticipants';

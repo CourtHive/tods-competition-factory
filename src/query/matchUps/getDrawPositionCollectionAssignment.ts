@@ -1,5 +1,5 @@
 import { getCollectionPositionAssignments } from '../../mutate/events/getCollectionPositionAssignments';
-import { getPairedParticipant } from '../../tournamentEngine/governors/participantGovernor/getPairedParticipant';
+import { getPairedParticipant } from '../participant/getPairedParticipant';
 import { getTeamLineUp } from '../../mutate/drawDefinitions/getTeamLineUp';
 
 import { ParticipantMap, Substitution } from '../../types/factoryTypes';

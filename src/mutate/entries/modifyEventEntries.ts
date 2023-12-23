@@ -1,4 +1,4 @@
-import { getPairedParticipant } from '../../tournamentEngine/governors/participantGovernor/getPairedParticipant';
+import { getPairedParticipant } from '../../query/participant/getPairedParticipant';
 import { addParticipants } from '../participants/addParticipants';
 import { intersection } from '../../utilities/arrays';
 

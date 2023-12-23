@@ -1,10 +1,10 @@
-import { SUCCESS } from '../../../constants/resultConstants';
-import { SCALE } from '../../../constants/timeItemConstants';
+import { SUCCESS } from '../../constants/resultConstants';
+import { SCALE } from '../../constants/timeItemConstants';
 import {
   MISSING_PARTICIPANT_IDS,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 /**
  *
@@ -26,11 +26,14 @@ export function removeParticipantsScaleItems({
   const { scaleType, eventType, scaleName } = scaleAttributes;
   const itemType = [SCALE, scaleType, eventType, scaleName].join('.');
   tournamentRecord.participants?.forEach((participant) => {
-    if (participantIds.includes(participant.participantId) && participant.timeItems) {
-        participant.timeItems = participant.timeItems.filter((timeItem) => {
-          return timeItem && timeItem?.itemType !== itemType;
-        });
-      }
+    if (
+      participantIds.includes(participant.participantId) &&
+      participant.timeItems
+    ) {
+      participant.timeItems = participant.timeItems.filter((timeItem) => {
+        return timeItem && timeItem?.itemType !== itemType;
+      });
+    }
   });
 
   return { ...SUCCESS };
