@@ -1,6 +1,6 @@
-import { getTeamLineUp } from '../../../mutate/drawDefinitions/getTeamLineUp';
+import { getTeamLineUp } from '../drawDefinitions/getTeamLineUp';
 
-import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
+import { INVALID_VALUES } from '../../constants/errorConditionConstants';
 
 export function removeCollectionAssignments({
   collectionPosition,

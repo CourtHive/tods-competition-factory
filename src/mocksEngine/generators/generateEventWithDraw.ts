@@ -8,7 +8,7 @@ import { addEventTimeItem } from '../../mutate/timeItems/addTimeItem';
 import { generateDrawDefinition } from '../../assemblies/generators/drawDefinitions/generateDrawDefinition';
 import { publishEvent } from '../../tournamentEngine/governors/publishingGovernor/publishEvent';
 import { allDrawMatchUps } from '../../query/matchUps/getAllDrawMatchUps';
-import { addFlight } from '../../tournamentEngine/governors/eventGovernor/addFlight';
+import { addFlight } from '../../mutate/events/addFlight';
 import tieFormatDefaults from '../../assemblies/generators/templates/tieFormatDefaults';
 import { addExtension } from '../../mutate/extensions/addExtension';
 import { isValidExtension } from '../../validators/isValidExtension';

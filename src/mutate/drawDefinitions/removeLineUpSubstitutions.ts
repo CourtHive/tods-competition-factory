@@ -1,4 +1,4 @@
-import { getCollectionPositionAssignments } from '../../tournamentEngine/governors/eventGovernor/getCollectionPositionAssignments';
+import { getCollectionPositionAssignments } from '../events/getCollectionPositionAssignments';
 import { unique } from '../../utilities';
 
 import { LineUp } from '../../types/factoryTypes';

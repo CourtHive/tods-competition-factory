@@ -1,4 +1,4 @@
-import { attachFlightProfile as attachProfile } from '../../../tournamentEngine/governors/eventGovernor/attachFlightProfile';
+import { attachFlightProfile as attachProfile } from '../../../mutate/events/attachFlightProfile';
 import { getScaledEntries } from '../../../query/event/getScaledEntries';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { getDevContext } from '../../../global/state/globalState';

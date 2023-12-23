@@ -1,26 +1,26 @@
-import tieFormatDefaults from '../../../assemblies/generators/templates/tieFormatDefaults';
-import { allEventMatchUps } from '../../../query/matchUps/getAllEventMatchUps';
-import { validateTieFormat } from '../../../validators/validateTieFormat';
-import { definedAttributes } from '../../../utilities/definedAttributes';
-import { getTopics } from '../../../global/state/globalState';
-import { UUID } from '../../../utilities';
+import tieFormatDefaults from '../../assemblies/generators/templates/tieFormatDefaults';
+import { allEventMatchUps } from '../../query/matchUps/getAllEventMatchUps';
+import { validateTieFormat } from '../../validators/validateTieFormat';
+import { definedAttributes } from '../../utilities/definedAttributes';
+import { getTopics } from '../../global/state/globalState';
+import { UUID } from '../../utilities';
 import {
   addDrawNotice,
   addMatchUpsNotice,
-} from '../../../mutate/notifications/drawNotifications';
+} from '../notifications/drawNotifications';
 
-import { SINGLES_EVENT, TEAM_EVENT } from '../../../constants/eventConstants';
-import { Event, Tournament } from '../../../types/tournamentTypes';
-import { ADD_MATCHUPS } from '../../../constants/topicConstants';
-import { tieFormats } from '../../../fixtures/scoring/tieFormats';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { SINGLES_EVENT, TEAM_EVENT } from '../../constants/eventConstants';
+import { Event, Tournament } from '../../types/tournamentTypes';
+import { ADD_MATCHUPS } from '../../constants/topicConstants';
+import { tieFormats } from '../../fixtures/scoring/tieFormats';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   EVENT_EXISTS,
   ErrorType,
   INVALID_VALUES,
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 type AddEventArgs = {
   suppressNotifications?: boolean;

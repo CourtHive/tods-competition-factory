@@ -1,11 +1,11 @@
 import { setMatchUpStatus } from './setMatchUpStatus';
-import { findEvent } from '../../../acquire/findEvent';
+import { findEvent } from '../../acquire/findEvent';
 
 import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
-} from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+} from '../../constants/errorConditionConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 
 export function bulkMatchUpStatusUpdate(params) {
   if (!params?.outcomes) return { error: MISSING_VALUE };

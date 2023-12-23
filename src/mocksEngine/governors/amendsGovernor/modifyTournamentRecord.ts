@@ -5,7 +5,7 @@ import { publishEvent } from '../../../tournamentEngine/governors/publishingGove
 import { generateFlightDrawDefinitions } from '../../generators/generateFlightDrawDefinitions';
 import { addTournamentParticipants } from '../../generators/addTournamentParticipants';
 import { generateEventParticipants } from '../../generators/generateEventParticipants';
-import { addEvent } from '../../../tournamentEngine/governors/eventGovernor/addEvent';
+import { addEvent } from '../../../mutate/events/addEvent';
 import { generateEventWithFlights } from '../../generators/generateEventWithFlights';
 import { getStageParticipantsCount } from '../../getters/getStageParticipantsCount';
 import { generateEventWithDraw } from '../../generators/generateEventWithDraw';

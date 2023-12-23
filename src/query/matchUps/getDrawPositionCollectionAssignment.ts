@@ -1,4 +1,4 @@
-import { getCollectionPositionAssignments } from '../../tournamentEngine/governors/eventGovernor/getCollectionPositionAssignments';
+import { getCollectionPositionAssignments } from '../../mutate/events/getCollectionPositionAssignments';
 import { getPairedParticipant } from '../../tournamentEngine/governors/participantGovernor/getPairedParticipant';
 import { getTeamLineUp } from '../../mutate/drawDefinitions/getTeamLineUp';
 

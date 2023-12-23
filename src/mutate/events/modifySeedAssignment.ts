@@ -1,9 +1,9 @@
-import { modifySeedAssignment as drawEngineModifySeedAssignment } from '../../../mutate/drawDefinitions/entryGovernor/modifySeedAssignment';
+import { modifySeedAssignment as drawEngineModifySeedAssignment } from '../drawDefinitions/entryGovernor/modifySeedAssignment';
 
 import {
   INVALID_PARTICIPANT_ID,
   MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 /**
  *

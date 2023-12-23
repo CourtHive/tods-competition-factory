@@ -2,7 +2,7 @@
 import { scheduleProfileRounds } from '../../mutate/matchUps/schedule/scheduleProfileRounds';
 import { newTournamentRecord } from '../../assemblies/generators/tournamentRecords/newTournamentRecord';
 import { attachPolicies } from '../../mutate/extensions/policies/attachPolicies';
-import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEvent';
+import { addEvent } from '../../mutate/events/addEvent';
 import { formatDate, isValidDateString } from '../../utilities/dateTime';
 import { addTournamentParticipants } from './addTournamentParticipants';
 import { generateEventWithFlights } from './generateEventWithFlights';

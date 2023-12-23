@@ -1,19 +1,15 @@
-import { setMatchUpStatus as drawEngineSetMatchUpStatus } from '../../../mutate/matchUps/matchUpStatus/setMatchUpStatus';
-import { setMatchUpFormat } from '../../../mutate/matchUps/matchUpFormat/setMatchUpFormat';
-import { matchUpScore } from '../../../matchUpEngine/generators/matchUpScore';
-import { findPolicy } from '../../../acquire/findPolicy';
+import { setMatchUpStatus as drawEngineSetMatchUpStatus } from '../matchUps/matchUpStatus/setMatchUpStatus';
+import { setMatchUpFormat } from '../matchUps/matchUpFormat/setMatchUpFormat';
+import { matchUpScore } from '../../matchUpEngine/generators/matchUpScore';
+import { findPolicy } from '../../acquire/findPolicy';
 
-import { POLICY_TYPE_SCORING } from '../../../constants/policyConstants';
-import { PolicyDefinitions } from '../../../types/factoryTypes';
+import { POLICY_TYPE_SCORING } from '../../constants/policyConstants';
+import { PolicyDefinitions } from '../../types/factoryTypes';
 import {
   MISSING_DRAW_ID,
   MISSING_MATCHUP_ID,
-} from '../../../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  Event,
-  Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../constants/errorConditionConstants';
+import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
 
 /**
  * Sets either matchUpStatus or score and winningSide; values to be set are passed in outcome object.

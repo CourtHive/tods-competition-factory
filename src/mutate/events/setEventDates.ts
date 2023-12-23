@@ -1,11 +1,11 @@
 import {
   ResultType,
   decorateResult,
-} from '../../../global/functions/decorateResult';
-import { dateValidation } from '../../../fixtures/validations/regex';
-import { extractDate } from '../../../utilities/dateTime';
+} from '../../global/functions/decorateResult';
+import { dateValidation } from '../../fixtures/validations/regex';
+import { extractDate } from '../../utilities/dateTime';
 
-import { SUCCESS } from '../../../constants/resultConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   INVALID_DATE,
   INVALID_TOURNAMENT_DATES,
@@ -13,7 +13,7 @@ import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 export function setEventStartDate({ tournamentRecord, event, startDate }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

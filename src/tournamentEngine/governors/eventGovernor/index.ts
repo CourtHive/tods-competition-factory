@@ -4,7 +4,7 @@ import { getDrawParticipantRepresentativeIds } from '../../../mutate/drawDefinit
 import { assignMatchUpSideParticipant } from '../../../mutate/matchUps/drawPositions/assignMatchUpSideParticipant';
 import { removeMatchUpSideParticipant } from '../../../mutate/matchUps/sides/removeMatchUpSideParticipant';
 import { replaceTieMatchUpParticipantId } from '../../../mutate/matchUps/lineUps/replaceTieMatchUpParticipant';
-import { setMatchUpStatus } from './setMatchUpStatus';
+import { setMatchUpStatus } from '../../../mutate/events/setMatchUpStatus';
 import { assignTieMatchUpParticipantId } from '../../../mutate/matchUps/lineUps/assignTieMatchUpParticipant';
 import { removeTieMatchUpParticipantId } from '../../../mutate/matchUps/lineUps/removeTieMatchUpParticipant';
 import { deleteDrawDefinitions } from '../../../mutate/events/deleteDrawDefinitions';
@@ -15,10 +15,10 @@ import { addDrawEntries } from '../../../mutate/drawDefinitions/addDrawEntries';
 import { addEventEntryPairs } from '../../../mutate/entries/addEventEntryPairs';
 import { removeEventEntries } from '../../../mutate/entries/removeEventEntries';
 import { checkValidEntries } from '../../../validators/checkValidEntries';
-import { assignSeedPositions } from './assignSeedPositions';
+import { assignSeedPositions } from '../../../mutate/events/assignSeedPositions';
 import { addEventEntries } from '../../../mutate/entries/addEventEntries';
-import { deleteEvents } from './deleteEvent';
-import { addEvent } from './addEvent';
+import { deleteEvents } from '../../../mutate/events/deleteEvent';
+import { addEvent } from '../../../mutate/events/addEvent';
 import {
   destroyPairEntries,
   destroyPairEntry,
@@ -42,7 +42,7 @@ import { setPositionAssignments } from '../../../mutate/drawDefinitions/setPosit
 import { modifyPairAssignment } from '../../../mutate/drawDefinitions/modifyPairAssignment';
 import { removeDrawEntries } from '../../../mutate/drawDefinitions/removeDrawEntries';
 import { modifyEntriesStatus } from '../../../mutate/entries/modifyEntriesStatus';
-import { modifySeedAssignment } from './modifySeedAssignment';
+import { modifySeedAssignment } from '../../../mutate/events/modifySeedAssignment';
 import { setMatchUpFormat } from '../../../mutate/tieFormat/setMatchUpFormat';
 
 import {
@@ -70,7 +70,7 @@ import { deleteFlightAndFlightDraw } from '../../../mutate/drawDefinitions/delet
 import { refreshEventDrawOrder } from '../../../mutate/drawDefinitions/refreshEventDrawOrder';
 import { generateFlightProfile } from '../../../assemblies/generators/drawDefinitions/generateFlightProfile';
 import { generateVoluntaryConsolation } from '../../../assemblies/generators/drawDefinitions/drawTypes/generateVoluntaryConsolation';
-import { addVoluntaryConsolationStage } from './addVoluntaryConsolationStage';
+import { addVoluntaryConsolationStage } from '../../../mutate/events/addVoluntaryConsolationStage';
 import { substituteParticipant } from '../../../mutate/drawDefinitions/substituteParticipant';
 import { deleteAdHocMatchUps } from '../../../mutate/structures/deleteAdHocMatchUps';
 import { modifyDrawDefinition } from '../../../mutate/drawDefinitions/modifyDrawDefinition';
@@ -82,9 +82,9 @@ import { generateLineUps } from '../../../mutate/participants/generateLineUps';
 import { modifyEventEntries } from '../../../mutate/entries/modifyEventEntries';
 import { getFlightProfile } from '../../../query/event/getFlightProfile';
 import { modifyDrawName } from '../../../mutate/drawDefinitions/modifyDrawName';
-import { attachFlightProfile } from './attachFlightProfile';
+import { attachFlightProfile } from '../../../mutate/events/attachFlightProfile';
 import { drawMatic } from '../../../mutate/drawDefinitions/drawMatic';
-import { addFlight } from './addFlight';
+import { addFlight } from '../../../mutate/events/addFlight';
 
 import {
   attachConsolationStructures,
@@ -95,7 +95,7 @@ import {
   setEventDates,
   setEventEndDate,
   setEventStartDate,
-} from './setEventDates';
+} from '../../../mutate/events/setEventDates';
 
 import { removeSeededParticipant } from '../../../mutate/drawDefinitions/removeSeededParticipant';
 import { validateLineUp } from '../../../mutate/drawDefinitions/validateTeamLineUp';
@@ -123,7 +123,7 @@ import { isValidForQualifying } from '../../../mutate/drawDefinitions/isValidFor
 
 import { resetMatchUpLineUps } from '../../../mutate/matchUps/lineUps/resetMatchUpLineUps';
 import { aggregateTieFormats } from '../../../mutate/tieFormat/aggregateTieFormats';
-import { modifyEvent } from './modifyEvent';
+import { modifyEvent } from '../../../mutate/events/modifyEvent';
 
 import { checkOutParticipant } from '../../../mutate/matchUps/timeItems/checkOutParticipant';
 import { checkInParticipant } from '../../../mutate/matchUps/timeItems/checkInParticipant';
@@ -141,7 +141,7 @@ import { validateCollectionDefinition } from '../../../validators/validateCollec
 import { resetScorecard } from '../../../mutate/matchUps/resetScorecard';
 import { automatedPositioning } from '../../../mutate/drawDefinitions/automatedPositioning';
 import { updateTieMatchUpScore } from '../../../mutate/matchUps/score/tieMatchUpScore';
-import { bulkMatchUpStatusUpdate } from './bulkMatchUpStatusUpdate';
+import { bulkMatchUpStatusUpdate } from '../../../mutate/events/bulkMatchUpStatusUpdate';
 
 const eventGovernor = {
   generateQualifyingStructure,

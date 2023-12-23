@@ -1,4 +1,4 @@
-import { Substitution } from '../../../types/factoryTypes';
+import { Substitution } from '../../types/factoryTypes';
 
 export function getCollectionPositionAssignments({
   collectionPosition,

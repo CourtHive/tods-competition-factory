@@ -1,22 +1,22 @@
-import { getStructureSeedAssignments } from '../../../query/structure/getStructureSeedAssignments';
-import { assignSeed } from '../../../mutate/drawDefinitions/entryGovernor/seedAssignment';
-import { uniqueValues } from '../../../utilities/arrays';
+import { getStructureSeedAssignments } from '../../query/structure/getStructureSeedAssignments';
+import { assignSeed } from '../drawDefinitions/entryGovernor/seedAssignment';
+import { uniqueValues } from '../../utilities/arrays';
 
-import { ResultType } from '../../../global/functions/decorateResult';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { SeedingProfile } from '../../../types/factoryTypes';
+import { ResultType } from '../../global/functions/decorateResult';
+import { SUCCESS } from '../../constants/resultConstants';
+import { SeedingProfile } from '../../types/factoryTypes';
 import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_DRAW_ID,
   MISSING_ASSIGNMENTS,
   NO_MODIFICATIONS_APPLIED,
   INVALID_PARTICIPANT_SEEDING,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 import {
   DrawDefinition,
   SeedAssignment,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../types/tournamentTypes';
 
 /*
  * Provides the ability to assign seedPositions *after* a structure has been generated

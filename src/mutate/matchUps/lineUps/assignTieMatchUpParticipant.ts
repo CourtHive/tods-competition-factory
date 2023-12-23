@@ -4,12 +4,12 @@ import { getPairedParticipant } from '../../../tournamentEngine/governors/partic
 import { deleteParticipants } from '../../participants/deleteParticipants';
 import { modifyParticipant } from '../../participants/modifyParticipant';
 import { getParticipants } from '../../../query/participants/getParticipants';
-import { removeCollectionAssignments } from '../../../tournamentEngine/governors/eventGovernor/removeCollectionAssignments';
+import { removeCollectionAssignments } from '../../events/removeCollectionAssignments';
 import { addParticipant } from '../../participants/addParticipants';
 import { ensureSideLineUps } from './ensureSideLineUps';
 import { updateTeamLineUp } from '../../drawDefinitions/updateTeamLineUp';
 import { getTeamLineUp } from '../../drawDefinitions/getTeamLineUp';
-import { getTieMatchUpContext } from '../../../tournamentEngine/governors/eventGovernor/getTieMatchUpContext';
+import { getTieMatchUpContext } from '../../events/getTieMatchUpContext';
 import { overlap } from '../../../utilities';
 import {
   ResultType,

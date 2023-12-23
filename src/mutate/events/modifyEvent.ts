@@ -1,31 +1,31 @@
-import { getParticipants } from '../../../query/participants/getParticipants';
-import { isObject, isString } from '../../../utilities/objects';
-import { unique } from '../../../utilities';
+import { getParticipants } from '../../query/participants/getParticipants';
+import { isObject, isString } from '../../utilities/objects';
+import { unique } from '../../utilities';
 import {
   ResultType,
   decorateResult,
-} from '../../../global/functions/decorateResult';
+} from '../../global/functions/decorateResult';
 
-import { DOUBLES, SINGLES, TEAM } from '../../../constants/eventConstants';
-import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
-import { ANY, MIXED } from '../../../constants/genderConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { DOUBLES, SINGLES, TEAM } from '../../constants/eventConstants';
+import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';
+import { ANY, MIXED } from '../../constants/genderConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   INVALID_VALUES,
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 import {
   ALTERNATE,
   STRUCTURE_SELECTED_STATUSES,
-} from '../../../constants/entryStatusConstants';
+} from '../../constants/entryStatusConstants';
 import {
   // Category,
   Event,
   Tournament,
   EventTypeUnion,
   GenderUnion,
-} from '../../../types/tournamentTypes';
+} from '../../types/tournamentTypes';
 
 type ModifyEventArgs = {
   tournamentRecord: Tournament;

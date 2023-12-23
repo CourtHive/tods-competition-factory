@@ -1,14 +1,14 @@
-import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
-import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
-import { getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
-import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
-import { getParticipants } from '../../../query/participants/getParticipants';
-import { extractAttributes } from '../../../utilities';
+import { resolveTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
+import { findDrawMatchUp } from '../../acquire/findDrawMatchUp';
+import { getMatchUpsMap } from '../../query/matchUps/getMatchUpsMap';
+import { getPositionAssignments } from '../../query/drawDefinition/positionsGetter';
+import { getParticipants } from '../../query/participants/getParticipants';
+import { extractAttributes } from '../../utilities';
 
-import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
-import { TEAM } from '../../../constants/participantConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { HydratedMatchUp } from '../../../types/hydrated';
+import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
+import { TEAM } from '../../constants/participantConstants';
+import { SUCCESS } from '../../constants/resultConstants';
+import { HydratedMatchUp } from '../../types/hydrated';
 import {
   EVENT_NOT_FOUND,
   ErrorType,
@@ -16,7 +16,7 @@ import {
   MATCHUP_NOT_FOUND,
   MISSING_DRAW_ID,
   MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 import {
   DrawDefinition,
   Event,
@@ -25,7 +25,7 @@ import {
   Structure,
   TieFormat,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../types/tournamentTypes';
 
 // for a given tieMatchUpId (SINGLES or DOUBLES) return:
 // the tieMatchUp, the dualMatchUp within which it occurs, an inContext copy of the dualMatchUp

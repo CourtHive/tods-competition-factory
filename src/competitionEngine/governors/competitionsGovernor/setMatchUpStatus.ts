@@ -1,6 +1,6 @@
 import { findEvent } from '../../../acquire/findEvent';
 import { findTournamentId } from '../../../acquire/findTournamentId';
-import { setMatchUpStatus as setStatus } from '../../../tournamentEngine/governors/eventGovernor/setMatchUpStatus';
+import { setMatchUpStatus as setStatus } from '../../../mutate/events/setMatchUpStatus';
 
 import {
   MISSING_TOURNAMENT_ID,

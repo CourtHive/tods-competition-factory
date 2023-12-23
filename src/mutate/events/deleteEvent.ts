@@ -1,18 +1,18 @@
-import { checkAndUpdateSchedulingProfile } from '../scheduleGovernor/schedulingProfile';
-import { addTournamentTimeItem } from '../../../mutate/timeItems/addTimeItem';
-import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
-import { addNotice } from '../../../global/state/globalState';
+import { checkAndUpdateSchedulingProfile } from '../../tournamentEngine/governors/scheduleGovernor/schedulingProfile';
+import { addTournamentTimeItem } from '../timeItems/addTimeItem';
+import { mustBeAnArray } from '../../utilities/mustBeAnArray';
+import { addNotice } from '../../global/state/globalState';
 
-import { UNGROUPED } from '../../../constants/entryStatusConstants';
-import { DELETE_EVENTS } from '../../../constants/auditConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { DOUBLES } from '../../../constants/eventConstants';
-import { AUDIT } from '../../../constants/topicConstants';
+import { UNGROUPED } from '../../constants/entryStatusConstants';
+import { DELETE_EVENTS } from '../../constants/auditConstants';
+import { SUCCESS } from '../../constants/resultConstants';
+import { DOUBLES } from '../../constants/eventConstants';
+import { AUDIT } from '../../constants/topicConstants';
 import {
   EVENT_NOT_FOUND,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 export function deleteEvents({
   removePairParticipants,
