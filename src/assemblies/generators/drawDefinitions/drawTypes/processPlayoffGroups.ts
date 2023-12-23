@@ -4,7 +4,7 @@ import { generateCurtisConsolation } from './curtisConsolation';
 import { generatePlayoffStructures } from '../drawTypes/playoffStructures';
 import { nextPowerOf2, numericSort } from '../../../../utilities';
 import { structureSort } from '../../../../functions/sorters/structureSort';
-import structureTemplate from '../templates/structureTemplate';
+import structureTemplate from '../../templates/structureTemplate';
 import { feedInChampionship } from './feedInChamp';
 import { generateRoundRobin } from './roundRobin/roundRobin';
 import { treeMatchUps } from './eliminationTree';

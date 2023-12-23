@@ -9,7 +9,7 @@ import { generateDrawDefinition } from '../../assemblies/generators/drawDefiniti
 import { publishEvent } from '../../tournamentEngine/governors/publishingGovernor/publishEvent';
 import { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
 import { addFlight } from '../../tournamentEngine/governors/eventGovernor/addFlight';
-import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaults';
+import tieFormatDefaults from '../../assemblies/generators/templates/tieFormatDefaults';
 import { addExtension } from '../../mutate/extensions/addExtension';
 import { isValidExtension } from '../../validators/isValidExtension';
 import { getParticipantId } from '../../global/functions/extractors';

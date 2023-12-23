@@ -1,4 +1,4 @@
-import tieFormatDefaults from '../../../../tournamentEngine/generators/tieFormatDefaults';
+import tieFormatDefaults from '../../../../assemblies/generators/templates/tieFormatDefaults';
 import { compareTieFormats } from '../compareTieFormats';
 import { it, expect } from 'vitest';
 

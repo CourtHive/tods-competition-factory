@@ -1,7 +1,7 @@
 import { generateQualifyingLink } from '../links/generateQualifyingLink';
 import { addExtension } from '../../../../mutate/extensions/addExtension';
 import { coerceEven, isConvertableInteger } from '../../../../utilities/math';
-import structureTemplate from '../templates/structureTemplate';
+import structureTemplate from '../../templates/structureTemplate';
 import { generateRoundRobin } from './roundRobin/roundRobin';
 import { treeMatchUps } from './eliminationTree';
 import { constantToString } from '../../../../utilities/strings';

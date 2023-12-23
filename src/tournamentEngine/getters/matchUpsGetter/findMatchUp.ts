@@ -1,7 +1,7 @@
 import { findDrawMatchUp as drawEngineFindMatchUp } from '../../../acquire/findDrawMatchUp';
 import { allDrawMatchUps, allTournamentMatchUps } from './matchUpsGetter';
 import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
-import { hydrateParticipants } from './hydrateParticipants';
+import { hydrateParticipants } from '../../../query/participants/hydrateParticipants';
 import { getContextContent } from '../getContextContent';
 import { findEvent } from '../../../acquire/findEvent';
 

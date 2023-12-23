@@ -1,12 +1,12 @@
-import { unique, UUID } from '../../../../utilities';
+import { unique, UUID } from '../../../utilities';
 
-import { ROUND_OUTCOME } from '../../../../constants/drawDefinitionConstants';
-import { SeedingProfile } from '../../../../types/factoryTypes';
+import { ROUND_OUTCOME } from '../../../constants/drawDefinitionConstants';
+import { SeedingProfile } from '../../../types/factoryTypes';
 import {
   MatchUp,
   SeedAssignment,
   Structure,
-} from '../../../../types/tournamentTypes';
+} from '../../../types/tournamentTypes';
 
 type StructureTemplateArgs = {
   seedAssignments?: SeedAssignment[];

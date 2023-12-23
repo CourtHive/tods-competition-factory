@@ -78,7 +78,7 @@ import { resetDrawDefinition } from '../../../mutate/drawDefinitions/resetDrawDe
 import { pruneDrawDefinition } from './drawDefinitions/pruneDrawDefinition';
 import { updateDrawIdsOrder } from './drawDefinitions/updateDrawIdsOrder';
 import { setOrderOfFinish } from './drawDefinitions/setOrderOfFinish';
-import { generateLineUps } from '../../generators/generateLineUps';
+import { generateLineUps } from '../../../mutate/participants/generateLineUps';
 import { modifyEventEntries } from './entries/modifyEventEntries';
 import { getFlightProfile } from '../../../query/event/getFlightProfile';
 import { modifyDrawName } from './drawDefinitions/modifyDrawName';

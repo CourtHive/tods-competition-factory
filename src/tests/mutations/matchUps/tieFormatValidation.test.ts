@@ -1,4 +1,4 @@
-import tieFormatDefaults from '../../../tournamentEngine/generators/tieFormatDefaults';
+import tieFormatDefaults from '../../../assemblies/generators/templates/tieFormatDefaults';
 import { validateTieFormat } from '../../../validators/validateTieFormat';
 import { fixtures, mocksEngine, scoreGovernor } from '../../..';
 import tournamentEngine from '../../engines/tournamentEngine';

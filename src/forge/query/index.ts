@@ -34,11 +34,11 @@ export { getFlightProfile } from '../../query/event/getFlightProfile';
 export {
   allTournamentMatchUps,
   allDrawMatchUps,
-  allEventMatchUps,
-  drawMatchUps,
-  eventMatchUps,
-  tournamentMatchUps,
 } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
+export { tournamentMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/getTournamentMatchUps';
+export { eventMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/getEventMatchUps';
+export { allEventMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/getAllEventMatchUps';
+export { drawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/getDrawMatchUps';
 
 // competitionEngine
 export { getEventMatchUpFormatTiming } from '../../query/extensions/matchUpFormatTiming/getEventMatchUpFormatTiming';

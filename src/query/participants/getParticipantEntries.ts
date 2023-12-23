@@ -6,7 +6,7 @@ import { definedAttributes } from '../../utilities/definedAttributes';
 import { extractAttributes as xa, unique } from '../../utilities';
 import { getEventPublishStatuses } from '../../tournamentEngine/getters/participants/getEventPublishStatuses';
 import { getEventSeedAssignments } from '../../tournamentEngine/getters/participants/getEventSeedAssignments';
-import { allEventMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
+import { allEventMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/getAllEventMatchUps';
 import { stringSort } from '../../functions/sorters/stringSort';
 import { processEventEntry } from '../../tournamentEngine/getters/participants/processEventEntry';
 import { isObject } from '../../utilities/objects';

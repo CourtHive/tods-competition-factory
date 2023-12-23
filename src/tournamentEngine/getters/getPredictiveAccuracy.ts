@@ -2,9 +2,9 @@ import { checkScoreHasValue } from '../../query/matchUp/checkScoreHasValue';
 import { validMatchUps } from '../../validators/validMatchUp';
 import ratingsParameters from '../../fixtures/ratings/ratingsParameters';
 import { isConvertableInteger } from '../../utilities/math';
+import { allEventMatchUps } from './matchUpsGetter/getAllEventMatchUps';
 import {
   allDrawMatchUps,
-  allEventMatchUps,
   allTournamentMatchUps,
 } from './matchUpsGetter/matchUpsGetter';
 

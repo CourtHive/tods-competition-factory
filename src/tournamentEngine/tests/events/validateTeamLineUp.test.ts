@@ -1,5 +1,5 @@
 import { validateLineUp } from '../../governors/eventGovernor/drawDefinitions/validateTeamLineUp';
-import tieFormatDefaults from '../../generators/tieFormatDefaults';
+import tieFormatDefaults from '../../../assemblies/generators/templates/tieFormatDefaults';
 import { expect, it } from 'vitest';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';

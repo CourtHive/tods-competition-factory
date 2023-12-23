@@ -1,4 +1,4 @@
-import { hydrateParticipants } from '../tournamentEngine/getters/matchUpsGetter/hydrateParticipants';
+import { hydrateParticipants } from '../query/participants/hydrateParticipants';
 import { getContextContent } from '../tournamentEngine/getters/getContextContent';
 import { findEvent } from './findEvent';
 import { makeDeepCopy } from '../utilities/makeDeepCopy';

@@ -47,7 +47,7 @@ type AutomatedPositioningArgs = {
   appliedPolicies?: PolicyDefinitions;
   provisionalPositioning?: boolean;
   seedingProfile?: SeedingProfile;
-  tournamentRecord: Tournament;
+  tournamentRecord?: Tournament;
   drawDefinition: DrawDefinition;
   multipleStructures?: boolean;
   applyPositioning?: boolean;

@@ -3,7 +3,7 @@ import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMat
 import { setMatchUpStatus } from '../../tournamentEngine/governors/eventGovernor/setMatchUpStatus';
 import { getParticipants } from '../../query/participants/getParticipants';
 import { getAllDrawMatchUps } from '../../query/drawMatchUps';
-import { generateLineUps } from '../../tournamentEngine/generators/generateLineUps';
+import { generateLineUps } from '../../mutate/participants/generateLineUps';
 import { generateOutcomeFromScoreString } from './generateOutcomeFromScoreString';
 import { getPositionAssignments } from '../../query/drawDefinition/positionsGetter';
 import { structureSort } from '../../functions/sorters/structureSort';

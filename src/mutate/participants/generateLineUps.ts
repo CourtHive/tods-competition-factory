@@ -1,8 +1,8 @@
 import { resolveTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
 import { validateTieFormat } from '../../validators/validateTieFormat';
-import { getPairedParticipant } from '../governors/participantGovernor/getPairedParticipant';
-import { addParticipant } from '../../mutate/participants/addParticipants';
-import { addExtension } from '../../mutate/extensions/addExtension';
+import { getPairedParticipant } from '../../tournamentEngine/governors/participantGovernor/getPairedParticipant';
+import { addParticipant } from './addParticipants';
+import { addExtension } from '../extensions/addExtension';
 import { getParticipants } from '../../query/participants/getParticipants';
 import { getParticipantId } from '../../global/functions/extractors';
 import { isNumeric } from '../../utilities/math';

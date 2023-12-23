@@ -13,7 +13,7 @@ import { createTeamsFromParticipantAttributes } from '../../../mutate/participan
 import { addIndividualParticipantIds } from '../../../mutate/participants/addIndividualParticipantIds';
 import { filterParticipants } from '../../../query/participants/filterParticipants';
 import { modifyParticipantsSignInStatus } from '../../../mutate/participants/modifyParticipantsSignInStatus';
-import { scaledTeamAssignment } from '../../generators/scaledTeamAssignment';
+import { scaledTeamAssignment } from '../../../mutate/participants/scaledTeamAssignment';
 import { createGroupParticipant } from '../../../mutate/participants/createGroupParticipant';
 import { modifyParticipantOtherName } from '../../../mutate/participants/modifyParticipantOtherName';
 import { regenerateParticipantNames } from '../../../mutate/participants/regenerateParticipantNames';

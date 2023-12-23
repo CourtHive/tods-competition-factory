@@ -1,4 +1,4 @@
-import structureTemplate from '../templates/structureTemplate';
+import structureTemplate from '../../templates/structureTemplate';
 import { feedInMatchUps } from '../feedInMatchUps';
 import { treeMatchUps } from './eliminationTree';
 import { generateRange } from '../../../../utilities';

@@ -1,7 +1,7 @@
+import tieFormatDefaults from '../../../assemblies/generators/templates/tieFormatDefaults';
+import { allEventMatchUps } from '../../getters/matchUpsGetter/getAllEventMatchUps';
 import { validateTieFormat } from '../../../validators/validateTieFormat';
-import { allEventMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
 import { definedAttributes } from '../../../utilities/definedAttributes';
-import tieFormatDefaults from '../../generators/tieFormatDefaults';
 import { getTopics } from '../../../global/state/globalState';
 import { UUID } from '../../../utilities';
 import {

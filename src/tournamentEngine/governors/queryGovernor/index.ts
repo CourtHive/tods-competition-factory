@@ -29,12 +29,11 @@ import {
 } from '../../getters/structureGetter';
 import {
   allTournamentMatchUps,
-  tournamentMatchUps,
-  allEventMatchUps,
   allDrawMatchUps,
-  eventMatchUps,
-  drawMatchUps,
 } from '../../getters/matchUpsGetter/matchUpsGetter';
+import { tournamentMatchUps } from '../../getters/matchUpsGetter/getTournamentMatchUps';
+import { allEventMatchUps } from '../../getters/matchUpsGetter/getAllEventMatchUps';
+import { eventMatchUps } from '../../getters/matchUpsGetter/getEventMatchUps';
 import {
   getEventTimeItem,
   getTournamentTimeItem,
@@ -49,6 +48,7 @@ import {
 import { getAllDrawMatchUps } from '../../../query/drawMatchUps';
 import { findVenue } from '../../../acquire/findVenue';
 import { getVenuesAndCourts } from '../../../query/venues/venuesAndCourtsGetter';
+import { drawMatchUps } from '../../getters/matchUpsGetter/getDrawMatchUps';
 
 function findDrawDefinition({ tournamentRecord, drawDefinition }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

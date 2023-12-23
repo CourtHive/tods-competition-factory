@@ -3,7 +3,7 @@ import { addNotice } from '../../../global/state/globalState';
 import { addExtension } from '../../extensions/addExtension';
 import { extractAttributes as xa } from '../../../utilities';
 
-import penaltyTemplate from '../../../tournamentEngine/generators/penaltyTemplate';
+import penaltyTemplate from '../../../assemblies/generators/templates/penaltyTemplate';
 import { ResultType } from '../../../global/functions/decorateResult';
 import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
 import { TournamentRecords } from '../../../types/factoryTypes';

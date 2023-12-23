@@ -1,4 +1,4 @@
-import { addParticipants } from '../../mutate/participants/addParticipants';
+import { addParticipants } from './addParticipants';
 import { participantScaleItem } from '../../query/participant/participantScaleItem';
 import { getParticipantId } from '../../global/functions/extractors';
 import { getFlightProfile } from '../../query/event/getFlightProfile';

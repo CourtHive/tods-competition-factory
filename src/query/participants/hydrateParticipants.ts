@@ -1,16 +1,16 @@
-import { addParticipantGroupings } from '../../../drawEngine/governors/positionGovernor/avoidance/addParticipantGroupings';
-import { addNationalityCode } from '../../../mutate/participants/addNationalityCode';
-import { getScaleValues } from '../participants/getScaleValues';
+import { addParticipantGroupings } from '../../drawEngine/governors/positionGovernor/avoidance/addParticipantGroupings';
+import { addNationalityCode } from '../../mutate/participants/addNationalityCode';
+import { getScaleValues } from '../../tournamentEngine/getters/participants/getScaleValues';
 
-import { getParticipantMap } from '../../../query/participants/getParticipantMap';
-import { Tournament } from '../../../types/tournamentTypes';
-import { HydratedParticipant } from '../../../types/hydrated';
-import { makeDeepCopy } from '../../../utilities';
+import { getParticipantMap } from './getParticipantMap';
+import { Tournament } from '../../types/tournamentTypes';
+import { HydratedParticipant } from '../../types/hydrated';
+import { makeDeepCopy } from '../../utilities';
 import {
   ContextProfile,
   ParticipantsProfile,
   PolicyDefinitions,
-} from '../../../types/factoryTypes';
+} from '../../types/factoryTypes';
 
 type HydrateParticipantsArgs = {
   participantsProfile?: ParticipantsProfile;
