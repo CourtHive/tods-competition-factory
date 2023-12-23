@@ -3,10 +3,8 @@ import { validMatchUps } from '../../validators/validMatchUp';
 import ratingsParameters from '../../fixtures/ratings/ratingsParameters';
 import { isConvertableInteger } from '../../utilities/math';
 import { allEventMatchUps } from './matchUpsGetter/getAllEventMatchUps';
-import {
-  allDrawMatchUps,
-  allTournamentMatchUps,
-} from './matchUpsGetter/matchUpsGetter';
+import { allTournamentMatchUps } from './matchUpsGetter/getAllTournamentMatchUps';
+import { allDrawMatchUps } from './matchUpsGetter/getAllDrawMatchUps';
 
 import { COMPETITIVE, DECISIVE, ROUTINE } from '../../constants/statsConstants';
 import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';

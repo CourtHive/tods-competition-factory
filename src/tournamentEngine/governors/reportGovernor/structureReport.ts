@@ -1,5 +1,5 @@
 import { getTieFormatDesc } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormatDescription';
-import { allTournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
+import { allTournamentMatchUps } from '../../getters/matchUpsGetter/getAllTournamentMatchUps';
 import { getAccessorValue } from '../../../utilities/getAccessorValue';
 import { findExtension } from '../../../acquire/findExtension';
 import { getDetailsWTN } from '../queryGovernor/getDetailsWTN';

@@ -18,7 +18,7 @@ import {
   modifyDrawNotice,
   modifyMatchUpNotice,
 } from '../notifications/drawNotifications';
-import { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
+import { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/getAllDrawMatchUps';
 import { allEventMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/getAllEventMatchUps';
 
 import { TIE_FORMAT_MODIFICATIONS } from '../../constants/extensionConstants';

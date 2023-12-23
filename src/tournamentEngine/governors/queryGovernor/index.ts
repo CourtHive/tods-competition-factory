@@ -27,10 +27,8 @@ import {
   getEventStructures,
   getTournamentStructures,
 } from '../../getters/structureGetter';
-import {
-  allTournamentMatchUps,
-  allDrawMatchUps,
-} from '../../getters/matchUpsGetter/matchUpsGetter';
+import { allTournamentMatchUps } from '../../getters/matchUpsGetter/getAllTournamentMatchUps';
+import { allDrawMatchUps } from '../../getters/matchUpsGetter/getAllDrawMatchUps';
 import { tournamentMatchUps } from '../../getters/matchUpsGetter/getTournamentMatchUps';
 import { allEventMatchUps } from '../../getters/matchUpsGetter/getAllEventMatchUps';
 import { eventMatchUps } from '../../getters/matchUpsGetter/getEventMatchUps';

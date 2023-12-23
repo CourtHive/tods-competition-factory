@@ -3,7 +3,7 @@ import { addMatchUpScheduledDate } from '../../../mutate/matchUps/schedule/sched
 import { addMatchUpScheduledTime } from '../../../mutate/matchUps/schedule/scheduledTime';
 import { findDrawDefinition } from '../../../acquire/findDrawDefinition';
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
-import { allTournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
+import { allTournamentMatchUps } from '../../getters/matchUpsGetter/getAllTournamentMatchUps';
 import { getTournamentInfo } from '../../../query/tournaments/getTournamentInfo';
 import {
   addMinutesToTimeString,

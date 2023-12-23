@@ -1,5 +1,5 @@
 import { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDependencies';
-import { allTournamentMatchUps } from '../matchUpsGetter/matchUpsGetter';
+import { allTournamentMatchUps } from '../matchUpsGetter/getAllTournamentMatchUps';
 
 import { Tournament } from '../../../types/tournamentTypes';
 import { SUCCESS } from '../../../constants/resultConstants';

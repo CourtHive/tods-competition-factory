@@ -3,7 +3,7 @@ import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
 import { modifyEventPublishStatus } from '../../tournamentEngine/governors/publishingGovernor/modifyEventPublishStatus';
 import { getEventPublishStatus } from '../../query/event/getEventPublishStatus';
 import { addExtension } from '../extensions/addExtension';
-import { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
+import { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/getAllDrawMatchUps';
 import { getPositionAssignments } from '../../tournamentEngine/getters/getPositionAssignments';
 import { addEventExtension } from '../extensions/addRemoveExtensions';
 import { checkAndUpdateSchedulingProfile } from '../../tournamentEngine/governors/scheduleGovernor/schedulingProfile';

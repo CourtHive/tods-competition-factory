@@ -1,4 +1,4 @@
-import { allTournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
+import { allTournamentMatchUps } from '../../getters/matchUpsGetter/getAllTournamentMatchUps';
 import { processAccessors } from '../../../query/drawDefinition/processAccessors';
 import { intersection } from '../../../utilities';
 

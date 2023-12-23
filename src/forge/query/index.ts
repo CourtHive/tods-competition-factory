@@ -31,10 +31,8 @@ export { participantScaleItem } from '../../query/participant/participantScaleIt
 export { getTimeItem } from '../../query/participant/timeItems';
 export { findMatchUp } from '../../acquire/findMatchUp';
 export { getFlightProfile } from '../../query/event/getFlightProfile';
-export {
-  allTournamentMatchUps,
-  allDrawMatchUps,
-} from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
+export { allTournamentMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/getAllTournamentMatchUps';
+export { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/getAllDrawMatchUps';
 export { tournamentMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/getTournamentMatchUps';
 export { eventMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/getEventMatchUps';
 export { allEventMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/getAllEventMatchUps';

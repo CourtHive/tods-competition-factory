@@ -7,7 +7,7 @@ import { addParticipants } from '../../mutate/participants/addParticipants';
 import { addEventTimeItem } from '../../mutate/timeItems/addTimeItem';
 import { generateDrawDefinition } from '../../assemblies/generators/drawDefinitions/generateDrawDefinition';
 import { publishEvent } from '../../tournamentEngine/governors/publishingGovernor/publishEvent';
-import { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
+import { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/getAllDrawMatchUps';
 import { addFlight } from '../../tournamentEngine/governors/eventGovernor/addFlight';
 import tieFormatDefaults from '../../assemblies/generators/templates/tieFormatDefaults';
 import { addExtension } from '../../mutate/extensions/addExtension';
