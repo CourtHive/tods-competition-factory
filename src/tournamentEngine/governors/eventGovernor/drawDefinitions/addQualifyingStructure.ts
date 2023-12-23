@@ -1,10 +1,36 @@
-import { addQualifyingStructure as addQualifying } from '../../../../mutate/drawDefinitions/addQualifyingStructure';
+import { generateQualifyingStructure } from '../../../../assemblies/generators/drawDefinitions/drawTypes/generateQualifyingStructure';
 import { addTournamentTimeItem } from '../../../../mutate/timeItems/addTimeItem';
 import { definedAttributes } from '../../../../utilities/definedAttributes';
+import { attachQualifyingStructure } from './attachQualifyingStructure';
 
-import { MISSING_TOURNAMENT_RECORD } from '../../../../constants/errorConditionConstants';
+import {
+  DrawDefinition,
+  Event,
+  Tournament,
+} from '../../../../types/tournamentTypes';
+import {
+  MISSING_TOURNAMENT_RECORD,
+  INVALID_VALUES,
+  MISSING_DRAW_DEFINITION,
+  MISSING_STRUCTURE_ID,
+} from '../../../../constants/errorConditionConstants';
 
-export function addQualifyingStructure(params) {
+type AddQualifyingstructureArgs = {
+  qualifyingRoundNumber: number;
+  tournamentRecord: Tournament;
+  drawDefinition: DrawDefinition;
+  qualifyingPositions: number;
+  targetStructureId: string;
+  roundTarget: number;
+  structureName: string;
+  matchUpType: string;
+  drawSize: number;
+  drawType: string;
+  eventId: string;
+  event: Event;
+};
+
+export function addQualifyingStructure(params: AddQualifyingstructureArgs) {
   const tournamentRecord = params.tournamentRecord;
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
@@ -24,10 +50,10 @@ export function addQualifyingStructure(params) {
 
   const qualifyingDetails = definedAttributes({
     drawId: drawDefinition.drawId,
-    structureName,
-    targetStructureId,
-    qualifyingPositions,
     qualifyingRoundNumber,
+    qualifyingPositions,
+    targetStructureId,
+    structureName,
     matchUpType,
     drawSize,
     drawType,
@@ -40,4 +66,30 @@ export function addQualifyingStructure(params) {
   addTournamentTimeItem({ tournamentRecord, timeItem });
 
   return result;
+}
+
+type AddQualifyingArgs = {
+  tournamentRecord: Tournament;
+  drawDefinition: DrawDefinition;
+  targetStructureId: string;
+  qualifyingRoundNumber: number;
+  roundTarget: number;
+  eventId: string;
+  event: Event;
+};
+
+export function addQualifying(params: AddQualifyingArgs) {
+  if (!params.drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+  if (!params.targetStructureId) return { error: MISSING_STRUCTURE_ID };
+  const result = generateQualifyingStructure(params);
+  if (result.error) return result;
+  const { structure, link } = result;
+  if (!structure || !link) return { error: INVALID_VALUES };
+
+  return attachQualifyingStructure({
+    tournamentRecord: params.tournamentRecord,
+    drawDefinition: params.drawDefinition,
+    structure,
+    link,
+  });
 }
