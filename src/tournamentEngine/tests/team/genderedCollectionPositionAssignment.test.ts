@@ -1,6 +1,6 @@
 import { extractAttributes as xa, unique } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../../test/engines/tournamentEngine';
+import tournamentEngine from '../../../tests/engines/tournamentEngine';
 import { expect, it } from 'vitest';
 
 import { INVALID_PARTICIPANT } from '../../../constants/errorConditionConstants';

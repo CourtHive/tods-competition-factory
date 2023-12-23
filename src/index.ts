@@ -141,11 +141,11 @@ export const utilities = {
 };
 
 // START- Asynchronous and Synchronous engine exports
-export { competitionEngine } from './test/engines/competitionEngine';
+export { competitionEngine } from './tests/engines/competitionEngine';
 export { competitionEngineAsync } from './competitionEngine/async';
 export { matchUpEngine } from './matchUpEngine/sync';
 export { matchUpEngineAsync } from './matchUpEngine/async';
-export { tournamentEngine } from './test/engines/tournamentEngine';
+export { tournamentEngine } from './tests/engines/tournamentEngine';
 export { tournamentEngineAsync } from './tournamentEngine/async';
 export { scaleEngine } from './scaleEngine/sync';
 export { scaleEngineAsync } from './scaleEngine/async';

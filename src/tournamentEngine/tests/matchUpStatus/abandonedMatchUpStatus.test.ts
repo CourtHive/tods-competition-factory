@@ -1,6 +1,6 @@
-import { getOrderedDrawPositionPairs } from '../../../drawEngine/tests/testingUtilities';
+import { getOrderedDrawPositionPairs } from '../../../tests/mutations/drawDefinitions/testingUtilities';
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../../test/engines/tournamentEngine';
+import tournamentEngine from '../../../tests/engines/tournamentEngine';
 import { expect, it } from 'vitest';
 
 import {

@@ -1,7 +1,7 @@
 import { getMatchUpIds } from '../../../global/functions/extractors';
 import { generateRange, randomPop } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../../test/engines/tournamentEngine';
+import tournamentEngine from '../../../tests/engines/tournamentEngine';
 import { expect, it } from 'vitest';
 
 import { ASSIGN_PARTICIPANT } from '../../../constants/positionActionConstants';

@@ -4,7 +4,7 @@ import { expect, it } from 'vitest';
 
 import { DOUBLES_EVENT, TEAM_EVENT } from '../../../constants/eventConstants';
 import names from '../../../mocksEngine/data/names.json';
-import tournamentEngine from '../../../test/engines/tournamentEngine';
+import tournamentEngine from '../../../tests/engines/tournamentEngine';
 import {
   INDIVIDUAL,
   PAIR,

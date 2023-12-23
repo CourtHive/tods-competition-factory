@@ -1,4 +1,4 @@
-import tournamentEngine from '../../../test/engines/tournamentEngine';
+import tournamentEngine from '../../../tests/engines/tournamentEngine';
 import { getInitialRoundNumber } from '../getInitialRoundNumber';
 import { generateRange } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';

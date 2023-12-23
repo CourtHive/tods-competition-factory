@@ -1,7 +1,7 @@
 import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import tournamentEngine from '../../../test/engines/tournamentEngine';
+import tournamentEngine from '../../../tests/engines/tournamentEngine';
 import mocksEngine from '../../../mocksEngine';
 import { expect, test, it } from 'vitest';
 

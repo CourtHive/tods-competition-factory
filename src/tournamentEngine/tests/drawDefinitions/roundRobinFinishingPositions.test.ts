@@ -1,5 +1,5 @@
 import { mocksEngine, setSubscriptions } from '../../..';
-import tournamentEngine from '../../../test/engines/tournamentEngine';
+import tournamentEngine from '../../../tests/engines/tournamentEngine';
 import { expect, test } from 'vitest';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';

@@ -1,4 +1,4 @@
-import tournamentEngine from '../../test/engines/tournamentEngine';
+import tournamentEngine from '../../tests/engines/tournamentEngine';
 import { timeKeeper } from '../state/globalState';
 import { test } from 'vitest';
 import fs from 'fs';

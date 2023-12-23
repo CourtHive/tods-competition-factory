@@ -1,9 +1,9 @@
 import { getScheduleTimes } from '../../../query/venues/getScheduleTimes';
 import { removeCourtAssignment } from '../../../mutate/matchUps/schedule/removeCourtAssignment';
 import { getMatchUpIds } from '../../../global/functions/extractors';
-import competitionEngine from '../../../test/engines/competitionEngine';
+import competitionEngine from '../../../tests/engines/competitionEngine';
 import { setSubscriptions } from '../../../global/state/globalState';
-import tournamentEngine from '../../../test/engines/tournamentEngine';
+import tournamentEngine from '../../../tests/engines/tournamentEngine';
 import mocksEngine from '../../../mocksEngine';
 import { expect, it } from 'vitest';
 

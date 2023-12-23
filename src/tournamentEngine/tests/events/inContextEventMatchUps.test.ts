@@ -1,5 +1,5 @@
 import { generateTournamentRecord } from '../../../mocksEngine/generators/generateTournamentRecord';
-import tournamentEngine from '../../../test/engines/tournamentEngine';
+import tournamentEngine from '../../../tests/engines/tournamentEngine';
 import { expect, it } from 'vitest';
 
 import { FEED_IN_CHAMPIONSHIP } from '../../../constants/drawDefinitionConstants';

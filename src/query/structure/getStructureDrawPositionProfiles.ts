@@ -4,7 +4,7 @@ import { getAllDrawMatchUps } from '../drawMatchUps';
 import { isAdHoc } from '../../drawEngine/governors/queryGovernor/isAdHoc';
 import { getPositionAssignments } from '../drawDefinition/positionsGetter';
 import { numericSort, unique } from '../../utilities';
-import { isActiveMatchUp } from '../../test/queries/matchUps/activeMatchUp';
+import { isActiveMatchUp } from '../../tests/queries/matchUps/activeMatchUp';
 import { findStructure } from '../../acquire/findStructure';
 
 import { INVALID_DRAW_POSITION } from '../../constants/errorConditionConstants';

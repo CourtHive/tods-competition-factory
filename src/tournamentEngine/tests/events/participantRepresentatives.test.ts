@@ -1,6 +1,6 @@
 import mocksEngine from '../../../mocksEngine';
 import { intersection } from '../../../utilities';
-import tournamentEngine from '../../../test/engines/tournamentEngine';
+import tournamentEngine from '../../../tests/engines/tournamentEngine';
 import { expect, it } from 'vitest';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
