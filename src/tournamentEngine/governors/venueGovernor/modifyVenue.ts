@@ -2,7 +2,7 @@ import { bulkScheduleTournamentMatchUps } from '../scheduleGovernor/bulkSchedule
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { checkAndUpdateSchedulingProfile } from '../scheduleGovernor/schedulingProfile';
 import { addNotice } from '../../../global/state/globalState';
-import venueTemplate from '../../generators/venueTemplate';
+import venueTemplate from '../../../assemblies/generators/templates/venueTemplate';
 import { deletionMessage } from './deletionMessage';
 import { makeDeepCopy } from '../../../utilities';
 import { modifyCourt } from './modifyCourt';

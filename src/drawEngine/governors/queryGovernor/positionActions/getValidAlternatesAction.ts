@@ -1,5 +1,5 @@
 import { getFlightProfile } from '../../../../query/event/getFlightProfile';
-import { getAllPositionedParticipantIds } from '../../../getters/positionsGetter';
+import { getAllPositionedParticipantIds } from '../../../../query/drawDefinition/positionsGetter';
 import { definedAttributes } from '../../../../utilities/definedAttributes';
 import { unique } from '../../../../utilities';
 

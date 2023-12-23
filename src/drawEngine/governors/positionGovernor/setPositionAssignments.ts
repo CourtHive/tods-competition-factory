@@ -1,9 +1,9 @@
 import { assignDrawPositionBye } from '../../../mutate/matchUps/drawPositions/assignDrawPositionBye';
-import { getAllDrawMatchUps } from '../../../query/drawMatchUps';
+import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
-import { getPositionAssignments } from '../../getters/positionsGetter';
-import { findStructure } from '../../getters/findStructure';
+import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
+import { findStructure } from '../../../acquire/findStructure';
 import { assignDrawPosition } from '../../../mutate/matchUps/drawPositions/positionAssignment';
 import { intersection } from '../../../utilities';
 import {

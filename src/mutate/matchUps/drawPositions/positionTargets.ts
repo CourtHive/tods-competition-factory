@@ -3,11 +3,11 @@ import { getTargetMatchUp } from '../../../query/matchUps/getTargetMatchUp';
 import {
   getRoundLinks,
   getTargetLink,
-} from '../../../drawEngine/getters/linkGetter';
+} from '../../../query/drawDefinition/linkGetter';
 import { definedAttributes } from '../../../utilities/definedAttributes';
 import { DrawDefinition } from '../../../types/tournamentTypes';
 import { HydratedMatchUp } from '../../../types/hydrated';
-import { findStructure } from '../../../drawEngine/getters/findStructure';
+import { findStructure } from '../../../acquire/findStructure';
 
 import {
   LOSER,

@@ -9,15 +9,15 @@ import { attachPolicies } from '../../../mutate/extensions/policies/attachPolici
 import { checkValidEntries } from '../../../tournamentEngine/governors/eventGovernor/entries/checkValidEntries';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { addDrawEntry } from '../../../drawEngine/governors/entryGovernor/addDrawEntries';
-import { getQualifiersCount } from '../../../drawEngine/getters/getQualifiersCount';
+import { getQualifiersCount } from '../../../query/drawDefinition/getQualifiersCount';
 import { getAllowedDrawTypes } from '../../../query/tournaments/allowedTypes';
-import structureTemplate from './templates/structureTemplate';
+import structureTemplate from '../templates/structureTemplate';
 import { getParticipants } from '../../../query/participants/getParticipants';
 import { newDrawDefinition } from './newDrawDefinition';
 import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
 import { isConvertableInteger } from '../../../utilities/math';
 import { constantToString } from '../../../utilities/strings';
-import { tieFormatDefaults } from '../../../tournamentEngine/generators/tieFormatDefaults';
+import { tieFormatDefaults } from '../templates/tieFormatDefaults';
 import { ensureInt } from '../../../utilities/ensureInt';
 import { validateTieFormat } from '../../../validators/validateTieFormat';
 import { checkTieFormat } from '../../../mutate/tieFormat/checkTieFormat';

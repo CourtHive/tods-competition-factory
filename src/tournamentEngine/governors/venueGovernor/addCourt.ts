@@ -3,7 +3,7 @@ import {
   ResultType,
   decorateResult,
 } from '../../../global/functions/decorateResult';
-import { courtTemplate } from '../../generators/courtTemplate';
+import { courtTemplate } from '../../../assemblies/generators/templates/courtTemplate';
 import { addNotice } from '../../../global/state/globalState';
 import { validDateAvailability } from './dateAvailability';
 import { isNumeric } from '../../../utilities/math';

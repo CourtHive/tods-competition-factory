@@ -1,6 +1,6 @@
-import tournamentEngine from '../../../test/engines/tournamentEngine';
-import competitionEngine from '../../../test/engines/competitionEngine';
-import askEngine from '../../../test/engines/askEngine';
+import tournamentEngine from '../../../tests/engines/tournamentEngine';
+import competitionEngine from '../../../tests/engines/competitionEngine';
+import askEngine from '../../../tests/engines/askEngine';
 import { unique } from '../../../utilities';
 import { mocksEngine } from '../../..';
 import { expect, test } from 'vitest';

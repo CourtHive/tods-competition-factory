@@ -14,8 +14,8 @@ import { compareTieFormats } from './matchUpEngine/governors/tieFormatGovernor/c
 import { dehydrateMatchUps } from './tournamentEngine/governors/tournamentGovernor/dehydrate';
 import { getSeedingThresholds } from './drawEngine/governors/positionGovernor/getSeedBlocks';
 import { getStructureSeedAssignments } from './query/structure/getStructureSeedAssignments';
-import { getAssignedParticipantIds } from './drawEngine/getters/getAssignedParticipantIds';
-import { getScaleValues } from './tournamentEngine/getters/participants/getScaleValues';
+import { getAssignedParticipantIds } from './query/drawDefinition/getAssignedParticipantIds';
+import { getScaleValues } from './query/participant/getScaleValues';
 import { generateScoreString } from './matchUpEngine/generators/generateScoreString';
 import { categoryCanContain } from './global/functions/deducers/categoryCanContain';
 import { getTimeItem } from './tournamentEngine/governors/queryGovernor/timeItems';
@@ -27,7 +27,7 @@ import { getMatchUpContextIds } from './query/matchUp/getMatchUpContextIds';
 import { getSetComplement } from './matchUpEngine/getters/getComplement';
 import { checkScoreHasValue } from './query/matchUp/checkScoreHasValue';
 import { isAdHoc } from './drawEngine/governors/queryGovernor/isAdHoc';
-import { structureSort } from './drawEngine/getters/structureSort';
+import { structureSort } from './functions/sorters/structureSort';
 import { validateTieFormat } from './validators/validateTieFormat';
 import { validateCategory } from './validators/validateCategory';
 import { addExtension } from './mutate/extensions/addExtension';
@@ -141,11 +141,11 @@ export const utilities = {
 };
 
 // START- Asynchronous and Synchronous engine exports
-export { competitionEngine } from './test/engines/competitionEngine';
+export { competitionEngine } from './tests/engines/competitionEngine';
 export { competitionEngineAsync } from './competitionEngine/async';
 export { matchUpEngine } from './matchUpEngine/sync';
 export { matchUpEngineAsync } from './matchUpEngine/async';
-export { tournamentEngine } from './test/engines/tournamentEngine';
+export { tournamentEngine } from './tests/engines/tournamentEngine';
 export { tournamentEngineAsync } from './tournamentEngine/async';
 export { scaleEngine } from './scaleEngine/sync';
 export { scaleEngineAsync } from './scaleEngine/async';

@@ -2,7 +2,7 @@ import { updateAssignmentParticipantResults } from '../../drawEngine/governors/m
 import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
 import { addExtension } from '../extensions/addExtension';
 import { modifyDrawNotice } from '../notifications/drawNotifications';
-import { findStructure } from '../../drawEngine/getters/findStructure';
+import { findStructure } from '../../acquire/findStructure';
 
 import { CONTAINER } from '../../constants/drawDefinitionConstants';
 import { SUB_ORDER } from '../../constants/extensionConstants';

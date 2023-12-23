@@ -1,5 +1,5 @@
 import { generateRange, shuffleArray } from '../../../utilities';
-import tournamentEngine from '../../../test/engines/tournamentEngine';
+import tournamentEngine from '../../../tests/engines/tournamentEngine';
 import { mocksEngine } from '../../..';
 import { expect, test } from 'vitest';
 

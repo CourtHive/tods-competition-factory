@@ -1,12 +1,12 @@
-import { getStageDrawPositionsCount } from '../../getters/getStageDrawPositions';
+import { getStageDrawPositionsCount } from '../../../query/drawDefinition/getStageDrawPositions';
 import { modifyDrawNotice } from '../../../mutate/notifications/drawNotifications';
-import { getQualifiersCount } from '../../getters/getQualifiersCount';
+import { getQualifiersCount } from '../../../query/drawDefinition/getQualifiersCount';
 import { modifyEntryProfile } from './modifyEntryProfile';
 import {
   stageExists,
   getStageDirectEntriesCount,
   getStageWildcardEntriesCount,
-} from '../../getters/stageGetter';
+} from '../../../query/drawDefinition/stageGetter';
 
 import { ALTERNATE } from '../../../constants/entryStatusConstants';
 import { MAIN } from '../../../constants/drawDefinitionConstants';

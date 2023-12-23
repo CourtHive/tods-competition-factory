@@ -1,7 +1,7 @@
 import { checkMatchUpIsComplete } from '../matchUp/checkMatchUpIsComplete';
-import { structureAssignedDrawPositions } from '../../drawEngine/getters/positionsGetter';
+import { structureAssignedDrawPositions } from '../drawDefinition/positionsGetter';
 import { getAllStructureMatchUps } from '../matchUps/getAllStructureMatchUps';
-import { findStructure } from '../../drawEngine/getters/findStructure';
+import { findStructure } from '../../acquire/findStructure';
 
 import { ResultType } from '../../global/functions/decorateResult';
 import { HydratedMatchUp } from '../../types/hydrated';

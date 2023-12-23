@@ -1,5 +1,5 @@
 import { getStructureGroups } from '../../governors/publishingGovernor/getStructureGroups';
-import tournamentEngine from '../../../test/engines/tournamentEngine';
+import tournamentEngine from '../../../tests/engines/tournamentEngine';
 import { extractAttributes } from '../../../utilities';
 import * as factory from '../../../index';
 import { expect, it } from 'vitest';

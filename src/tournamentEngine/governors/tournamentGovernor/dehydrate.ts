@@ -1,4 +1,4 @@
-import { allTournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
+import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {

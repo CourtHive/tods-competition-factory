@@ -1,7 +1,7 @@
-import { getSourceStructureIdsAndRelevantLinks } from '../../../getters/getSourceStructureIdsAndRelevantLinks';
+import { getSourceStructureIdsAndRelevantLinks } from '../../../../query/structure/getSourceStructureIdsAndRelevantLinks';
 import { findExtension } from '../../../../acquire/findExtension';
 import { getAllStructureMatchUps } from '../../../../query/matchUps/getAllStructureMatchUps';
-import { getPositionAssignments } from '../../../getters/positionsGetter';
+import { getPositionAssignments } from '../../../../query/drawDefinition/positionsGetter';
 import { definedAttributes } from '../../../../utilities/definedAttributes';
 import { isCompletedStructure } from '../structureActions';
 

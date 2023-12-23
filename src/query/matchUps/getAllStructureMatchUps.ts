@@ -1,11 +1,11 @@
 import { resolveTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
-import { getMatchUpCompetitiveProfile } from '../../tournamentEngine/getters/getMatchUpCompetitiveProfile';
+import { getMatchUpCompetitiveProfile } from '../matchUp/getMatchUpCompetitiveProfile';
 import { getCollectionPositionMatchUps } from './getCollectionPositionMatchUps';
 import { getMatchUpScheduleDetails } from '../matchUp/getMatchUpScheduleDetails';
 import { getCheckedInParticipantIds } from '../matchUp/getCheckedInParticipantIds';
 import { getDrawPositionCollectionAssignment } from './getDrawPositionCollectionAssignment';
 import { getAppliedPolicies } from '../extensions/getAppliedPolicies';
-import { getContextContent } from '../../tournamentEngine/getters/getContextContent';
+import { getContextContent } from '../hierarchical/getContextContent';
 import { parse } from '../../matchUpEngine/governors/matchUpFormatGovernor/parse';
 import { getRoundMatchUps } from './getRoundMatchUps';
 import { findParticipant } from '../../acquire/findParticipant';
@@ -15,7 +15,7 @@ import { getExitProfiles } from '../../drawEngine/governors/queryGovernor/getExi
 import { getSourceDrawPositionRanges } from './getSourceDrawPositionRanges';
 import { attributeFilter, makeDeepCopy, unique } from '../../utilities';
 import { definedAttributes } from '../../utilities/definedAttributes';
-import { structureAssignedDrawPositions } from '../../drawEngine/getters/positionsGetter';
+import { structureAssignedDrawPositions } from '../drawDefinition/positionsGetter';
 import { getOrderedDrawPositions } from './getOrderedDrawPositions';
 import { getDrawPositionsRanges } from './getDrawPositionsRanges';
 import { MatchUpFilters, filterMatchUps } from '../filterMatchUps';

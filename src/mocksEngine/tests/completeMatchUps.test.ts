@@ -1,5 +1,5 @@
 import { matchUpSort } from '../../functions/sorters/matchUpSort';
-import tournamentEngine from '../../test/engines/tournamentEngine';
+import tournamentEngine from '../../tests/engines/tournamentEngine';
 import { instanceCount } from '../../utilities';
 import { fmlc32profile } from './fmlc32';
 import { expect, it } from 'vitest';

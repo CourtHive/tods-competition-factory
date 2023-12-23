@@ -1,8 +1,8 @@
 import { getCheckedInParticipantIds } from '../../../query/matchUp/getCheckedInParticipantIds';
 
-import competitionEngine from '../../../test/engines/competitionEngine';
+import competitionEngine from '../../../tests/engines/competitionEngine';
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../../test/engines/tournamentEngine';
+import tournamentEngine from '../../../tests/engines/tournamentEngine';
 import { expect, it } from 'vitest';
 
 import { MATCHUP_NOT_FOUND } from '../../../constants/errorConditionConstants';

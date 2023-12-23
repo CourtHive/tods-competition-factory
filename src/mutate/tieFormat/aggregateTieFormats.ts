@@ -1,6 +1,6 @@
 import { compareTieFormats } from '../../matchUpEngine/governors/tieFormatGovernor/compareTieFormats';
+import { allEventMatchUps } from '../../query/matchUps/getAllEventMatchUps';
 import { modifyMatchUpNotice } from '../notifications/drawNotifications';
-import { allEventMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
 import { ResultType } from '../../global/functions/decorateResult';

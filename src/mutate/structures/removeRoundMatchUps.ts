@@ -1,5 +1,5 @@
 import { isAdHoc } from '../../drawEngine/governors/queryGovernor/isAdHoc';
-import { findStructure } from '../../drawEngine/getters/findStructure';
+import { findStructure } from '../../acquire/findStructure';
 import { numericSort } from '../../utilities';
 import {
   deleteMatchUpsNotice,

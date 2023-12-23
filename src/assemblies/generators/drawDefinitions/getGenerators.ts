@@ -4,7 +4,7 @@ import { firstRoundLoserConsolation } from './drawTypes/firstRoundLoserConsolati
 import { generateDoubleElimination } from './drawTypes/doubleEliminattion';
 import { generateCurtisConsolation } from './drawTypes/curtisConsolation';
 import { generatePlayoffStructures } from './drawTypes/playoffStructures';
-import structureTemplate from './templates/structureTemplate';
+import structureTemplate from '../templates/structureTemplate';
 import { feedInChampionship } from './drawTypes/feedInChamp';
 import { generateRoundRobin } from './drawTypes/roundRobin/roundRobin';
 import { feedInMatchUps } from './feedInMatchUps';

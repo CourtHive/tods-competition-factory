@@ -1,9 +1,9 @@
 import { generateQualifyingLink } from './links/generateQualifyingLink';
 import { generateQualifyingStructures } from './drawTypes/generateQualifyingStructures';
 import { decorateResult } from '../../../global/functions/decorateResult';
-import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
+import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
 import { definedAttributes } from '../../../utilities/definedAttributes';
-import { structureSort } from '../../../drawEngine/getters/structureSort';
+import { structureSort } from '../../../functions/sorters/structureSort';
 import { ensureInt } from '../../../utilities/ensureInt';
 import { isPowerOf2 } from '../../../utilities';
 import { getGenerators } from './getGenerators';

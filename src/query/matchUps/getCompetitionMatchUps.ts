@@ -1,4 +1,4 @@
-import { tournamentMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
+import { tournamentMatchUps } from './getTournamentMatchUps';
 import { MatchUpFilters } from '../filterMatchUps';
 
 import { MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';

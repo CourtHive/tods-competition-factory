@@ -1,6 +1,6 @@
 import { getParticipantScaleItem } from '../../../query/participant/getParticipantScaleItem';
 import { setParticipantScaleItem } from '../../../mutate/participants/addScaleItems';
-import { allTournamentMatchUps } from '../../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
+import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
 import { parse } from '../../../matchUpEngine/governors/matchUpFormatGovernor/parse';
 import ratingsParameters from '../../../fixtures/ratings/ratingsParameters';
 import { matchUpSort } from '../../../functions/sorters/matchUpSort';

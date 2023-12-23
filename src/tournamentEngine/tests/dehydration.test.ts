@@ -1,6 +1,6 @@
-import { allTournamentMatchUps } from '../getters/matchUpsGetter/matchUpsGetter';
+import { allTournamentMatchUps } from '../../query/matchUps/getAllTournamentMatchUps';
 import mocksEngine from '../../mocksEngine';
-import tournamentEngine from '../../test/engines/tournamentEngine';
+import tournamentEngine from '../../tests/engines/tournamentEngine';
 import { expect, it } from 'vitest';
 import { utilities } from '../..';
 

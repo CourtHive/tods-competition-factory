@@ -1,6 +1,6 @@
 import { addEventEntries } from '../../tournamentEngine/governors/eventGovernor/entries/addEventEntries';
 import { publishEvent } from '../../tournamentEngine/governors/publishingGovernor/publishEvent';
-import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaults';
+import tieFormatDefaults from '../../assemblies/generators/templates/tieFormatDefaults';
 import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEvent';
 import { attachPolicies } from '../../mutate/extensions/policies/attachPolicies';
 import { getStageParticipantsCount } from '../getters/getStageParticipantsCount';

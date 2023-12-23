@@ -1,10 +1,8 @@
 import { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDependencies';
 import { addMatchUpScheduleItems } from '../../../mutate/matchUps/schedule/scheduleItems';
 import { findDrawDefinition } from '../../../acquire/findDrawDefinition';
-import {
-  allDrawMatchUps,
-  allTournamentMatchUps,
-} from '../../getters/matchUpsGetter/matchUpsGetter';
+import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
+import { allDrawMatchUps } from '../../../query/matchUps/getAllDrawMatchUps';
 
 import { Tournament } from '../../../types/tournamentTypes';
 import { SUCCESS } from '../../../constants/resultConstants';

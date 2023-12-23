@@ -1,10 +1,10 @@
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../../test/engines/tournamentEngine';
+import tournamentEngine from '../../../tests/engines/tournamentEngine';
 import { expect, it } from 'vitest';
 import {
   getContextMatchUp,
   getOrderedDrawPositionPairs,
-} from '../../../drawEngine/tests/testingUtilities';
+} from '../../../tests/mutations/drawDefinitions/testingUtilities';
 
 import { INCOMPATIBLE_MATCHUP_STATUS } from '../../../constants/errorConditionConstants';
 import { INCOMPLETE } from '../../../constants/matchUpStatusConstants';

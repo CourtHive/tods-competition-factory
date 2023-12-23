@@ -1,10 +1,10 @@
 import { resolveTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
 import { compareTieFormats } from '../../matchUpEngine/governors/tieFormatGovernor/compareTieFormats';
 import { resetTieFormat } from '../tieFormat/resetTieFormat';
-import { getAllDrawMatchUps } from '../../query/drawMatchUps';
+import { getAllDrawMatchUps } from '../../query/matchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../query/matchUps/getMatchUpsMap';
 import { positionTargets } from './drawPositions/positionTargets';
-import { findStructure } from '../../drawEngine/getters/findStructure';
+import { findStructure } from '../../acquire/findStructure';
 import { isActiveDownstream } from '../../drawEngine/governors/matchUpGovernor/isActiveDownstream';
 import { updateTieMatchUpScore } from './score/tieMatchUpScore';
 import { setMatchUpStatus } from './matchUpStatus/setMatchUpStatus';

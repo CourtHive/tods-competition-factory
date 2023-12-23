@@ -1,6 +1,6 @@
-import { getPositionAssignments } from '../../drawEngine/getters/positionsGetter';
-import { getStageEntries } from '../../drawEngine/getters/stageGetter';
-import { findStructure } from '../../drawEngine/getters/findStructure';
+import { getPositionAssignments } from '../drawDefinition/positionsGetter';
+import { getStageEntries } from '../drawDefinition/stageGetter';
+import { findStructure } from '../../acquire/findStructure';
 
 import { PLAY_OFF } from '../../constants/drawDefinitionConstants';
 import {

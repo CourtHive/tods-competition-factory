@@ -1,5 +1,5 @@
 import { removeParticipantIdsFromAllTeams } from './removeIndividualParticipantIds';
-import { allTournamentMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
+import { allTournamentMatchUps } from '../../query/matchUps/getAllTournamentMatchUps';
 import { removeEventEntries } from '../../tournamentEngine/governors/eventGovernor/entries/removeEventEntries';
 import { getParticipants } from '../../query/participants/getParticipants';
 import { addEventEntries } from '../../tournamentEngine/governors/eventGovernor/entries/addEventEntries';

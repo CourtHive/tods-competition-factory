@@ -1,6 +1,6 @@
-import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
-import { getNextSeedBlock } from '../../../getters/seedGetter';
-import { findStructure } from '../../../getters/findStructure';
+import { structureAssignedDrawPositions } from '../../../../query/drawDefinition/positionsGetter';
+import { getNextSeedBlock } from '../../../../query/drawDefinition/seedGetter';
+import { findStructure } from '../../../../acquire/findStructure';
 
 import { ResultType } from '../../../../global/functions/decorateResult';
 import {

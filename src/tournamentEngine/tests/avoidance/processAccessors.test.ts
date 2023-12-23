@@ -1,4 +1,4 @@
-import { processAccessors } from '../../../drawEngine/getters/processAccessors';
+import { processAccessors } from '../../../query/drawDefinition/processAccessors';
 import { expect, it } from 'vitest';
 
 it('can procsess nested keys', () => {

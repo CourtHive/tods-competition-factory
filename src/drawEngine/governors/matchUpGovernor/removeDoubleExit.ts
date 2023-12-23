@@ -1,7 +1,7 @@
 import { getPairedPreviousMatchUp } from '../positionGovernor/getPairedPreviousMatchup';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { positionTargets } from '../../../mutate/matchUps/drawPositions/positionTargets';
-import { findStructure } from '../../getters/findStructure';
+import { findStructure } from '../../../acquire/findStructure';
 import { modifyMatchUpScore } from '../../../mutate/matchUps/score/modifyMatchUpScore';
 import { intersection, overlap } from '../../../utilities';
 import {

@@ -1,9 +1,7 @@
 import { getPolicyDefinitions } from '../extensions/getAppliedPolicies';
-import { getStageEntries } from '../../drawEngine/getters/stageGetter';
-import {
-  allDrawMatchUps,
-  allEventMatchUps,
-} from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
+import { getStageEntries } from './stageGetter';
+import { allDrawMatchUps } from '../matchUps/getAllDrawMatchUps';
+import { allEventMatchUps } from '../matchUps/getAllEventMatchUps';
 
 import { POLICY_TYPE_VOLUNTARY_CONSOLATION } from '../../constants/policyConstants';
 import {

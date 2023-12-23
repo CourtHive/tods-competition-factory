@@ -1,6 +1,6 @@
 import { getStructureSeedAssignments } from '../../../query/structure/getStructureSeedAssignments';
 import { modifySeedAssignmentsNotice } from '../../../mutate/notifications/drawNotifications';
-import { findStructure } from '../../getters/findStructure';
+import { findStructure } from '../../../acquire/findStructure';
 import { ensureInt } from '../../../utilities/ensureInt';
 import { isNumeric } from '../../../utilities/math';
 

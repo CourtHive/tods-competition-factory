@@ -1,6 +1,6 @@
 import { getStructureMatchUps } from '../../../query/structure/getStructureMatchUps';
 import { decorateResult } from '../../../global/functions/decorateResult';
-import { getDrawMatchUps } from '../../../query/drawMatchUps';
+import { getDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import { getMatchUpId } from '../../../global/functions/extractors';
 import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
 import { isConvertableInteger } from '../../../utilities/math';

@@ -1,10 +1,10 @@
 import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { removeSubsequentRoundsParticipant } from './removeSubsequentRoundsParticipant';
-import { structureAssignedDrawPositions } from '../../../drawEngine/getters/positionsGetter';
+import { structureAssignedDrawPositions } from '../../../query/drawDefinition/positionsGetter';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { clearDrawPosition } from './positionClear';
 import { includesMatchUpStatuses } from '../../../drawEngine/governors/matchUpGovernor/includesMatchUpStatuses';
-import { findStructure } from '../../../drawEngine/getters/findStructure';
+import { findStructure } from '../../../acquire/findStructure';
 import { updateTieMatchUpScore } from '../score/tieMatchUpScore';
 import { modifyMatchUpScore } from '../score/modifyMatchUpScore';
 import { instanceCount } from '../../../utilities';

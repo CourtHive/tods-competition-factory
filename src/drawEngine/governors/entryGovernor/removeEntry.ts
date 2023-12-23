@@ -1,5 +1,5 @@
 import { refreshEntryPositions } from '../../../global/functions/producers/refreshEntryPositions';
-import { getAssignedParticipantIds } from '../../getters/getAssignedParticipantIds';
+import { getAssignedParticipantIds } from '../../../query/drawDefinition/getAssignedParticipantIds';
 import { modifyDrawNotice } from '../../../mutate/notifications/drawNotifications';
 
 import { DrawDefinition, StageTypeUnion } from '../../../types/tournamentTypes';

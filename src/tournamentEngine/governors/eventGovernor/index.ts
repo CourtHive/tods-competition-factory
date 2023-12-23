@@ -78,7 +78,7 @@ import { resetDrawDefinition } from '../../../mutate/drawDefinitions/resetDrawDe
 import { pruneDrawDefinition } from './drawDefinitions/pruneDrawDefinition';
 import { updateDrawIdsOrder } from './drawDefinitions/updateDrawIdsOrder';
 import { setOrderOfFinish } from './drawDefinitions/setOrderOfFinish';
-import { generateLineUps } from '../../generators/generateLineUps';
+import { generateLineUps } from '../../../mutate/participants/generateLineUps';
 import { modifyEventEntries } from './entries/modifyEventEntries';
 import { getFlightProfile } from '../../../query/event/getFlightProfile';
 import { modifyDrawName } from './drawDefinitions/modifyDrawName';
@@ -115,7 +115,7 @@ import { resetTieFormat } from '../../../mutate/tieFormat/resetTieFormat';
 
 import { generateDrawMaticRound } from '../../../assemblies/generators/drawDefinitions/drawMatic/generateDrawMaticRound';
 import { generateDrawDefinition } from '../../../assemblies/generators/drawDefinitions/generateDrawDefinition';
-import { getAssignedParticipantIds } from '../../../drawEngine/getters/getAssignedParticipantIds';
+import { getAssignedParticipantIds } from '../../../query/drawDefinition/getAssignedParticipantIds';
 import { generateQualifyingStructure } from './drawDefinitions/generateQualifyingStructure';
 import { attachQualifyingStructure } from './drawDefinitions/attachQualifyingStructure';
 import { addQualifyingStructure } from './drawDefinitions/addQualifyingStructure';

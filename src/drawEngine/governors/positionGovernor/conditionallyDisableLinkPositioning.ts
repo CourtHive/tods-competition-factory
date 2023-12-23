@@ -1,5 +1,5 @@
 import { addExtension } from '../../../mutate/extensions/addExtension';
-import { getPositionAssignments } from '../../getters/positionsGetter';
+import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
 
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { DISABLE_LINKS } from '../../../constants/extensionConstants';

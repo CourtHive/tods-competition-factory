@@ -1,8 +1,8 @@
 import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { getStructureSeedAssignments } from '../../../query/structure/getStructureSeedAssignments';
-import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
-import { findStructure } from '../../../drawEngine/getters/findStructure';
-import { structureSort } from '../../../drawEngine/getters/structureSort';
+import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
+import { findStructure } from '../../../acquire/findStructure';
+import { structureSort } from '../../../functions/sorters/structureSort';
 import { hasParticipantId } from '../../../global/functions/filters';
 import { findExtension } from '../../../acquire/findExtension';
 import { getStructureGroups } from './getStructureGroups';

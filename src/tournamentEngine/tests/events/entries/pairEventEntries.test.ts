@@ -1,6 +1,6 @@
 import { isUngrouped } from '../../../../global/functions/isUngrouped';
 import mocksEngine from '../../../../mocksEngine';
-import tournamentEngine from '../../../../test/engines/tournamentEngine';
+import tournamentEngine from '../../../../tests/engines/tournamentEngine';
 import { expect, it } from 'vitest';
 
 import { WITHDRAWN } from '../../../../constants/entryStatusConstants';

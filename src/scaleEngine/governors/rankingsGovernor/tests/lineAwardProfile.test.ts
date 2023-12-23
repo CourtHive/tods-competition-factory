@@ -1,4 +1,4 @@
-import tournamentEngine from '../../../../test/engines/tournamentEngine';
+import tournamentEngine from '../../../../tests/engines/tournamentEngine';
 import { awardProfileLevelLines } from './awardProfileExamples';
 import { mocksEngine, scaleEngine } from '../../../..';
 import { finishingPositionSort } from './awardTestUtils';

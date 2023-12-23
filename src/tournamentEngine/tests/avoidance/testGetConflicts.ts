@@ -1,5 +1,5 @@
-import { allTournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
-import { processAccessors } from '../../../drawEngine/getters/processAccessors';
+import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
+import { processAccessors } from '../../../query/drawDefinition/processAccessors';
 import { intersection } from '../../../utilities';
 
 export function getConflicts({

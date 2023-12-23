@@ -1,5 +1,5 @@
-import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
-import { allDrawMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
+import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
+import { allDrawMatchUps } from '../../../query/matchUps/getAllDrawMatchUps';
 import { avoidanceTest } from '../primitives/avoidanceTest';
 import { eventConstants } from '../../..';
 import { expect, it } from 'vitest';

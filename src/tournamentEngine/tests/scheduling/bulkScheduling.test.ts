@@ -2,9 +2,9 @@ import { visualizeScheduledMatchUps } from '../../../global/testHarness/testUtil
 import { getStructureRoundProfile } from '../../../query/structure/getStructureRoundProfile';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { getMatchUpIds } from '../../../global/functions/extractors';
-import competitionEngine from '../../../test/engines/competitionEngine';
+import competitionEngine from '../../../tests/engines/competitionEngine';
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../../test/engines/tournamentEngine';
+import tournamentEngine from '../../../tests/engines/tournamentEngine';
 import { expect, it, test } from 'vitest';
 
 import POLICY_SCHEDULING_DEFAULT from '../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';

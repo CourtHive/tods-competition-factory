@@ -1,6 +1,6 @@
 import { hasSchedule } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/hasSchedule';
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
-import { allTournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
+import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
 import { getMatchUpId } from '../../../global/functions/extractors';
 
 import { MatchUpStatusUnion, Tournament } from '../../../types/tournamentTypes';

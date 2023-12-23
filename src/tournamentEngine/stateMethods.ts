@@ -1,4 +1,4 @@
-import { getAllDrawMatchUps } from '../query/drawMatchUps';
+import { getAllDrawMatchUps } from '../query/matchUps/drawMatchUps';
 import { getMatchUpsMap } from '../query/matchUps/getMatchUpsMap';
 import { findEvent } from '../acquire/findEvent';
 import { makeDeepCopy } from '../utilities';

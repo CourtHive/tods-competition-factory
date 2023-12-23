@@ -3,8 +3,8 @@ import { automatedPositioning } from '../../../mutate/drawDefinitions/automatedP
 import { getScaledEntries } from '../../../tournamentEngine/governors/eventGovernor/entries/getScaledEntries';
 import { assignSeed } from '../../../drawEngine/governors/entryGovernor/seedAssignment';
 import { findExtension } from '../../../acquire/findExtension';
-import { getDrawStructures } from '../../../drawEngine/getters/findStructure';
-import { getValidSeedBlocks } from '../../../drawEngine/getters/seedGetter';
+import { getDrawStructures } from '../../../acquire/findStructure';
+import { getValidSeedBlocks } from '../../../query/drawDefinition/seedGetter';
 import { getParticipantId } from '../../../global/functions/extractors';
 import {
   ResultType,

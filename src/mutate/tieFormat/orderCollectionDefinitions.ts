@@ -1,7 +1,7 @@
 import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
 import { findDrawMatchUp } from '../../acquire/findDrawMatchUp';
 import { decorateResult } from '../../global/functions/decorateResult';
-import { findStructure } from '../../drawEngine/getters/findStructure';
+import { findStructure } from '../../acquire/findStructure';
 import { isConvertableInteger } from '../../utilities/math';
 import { numericSortValue } from '../../utilities/arrays';
 import { copyTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';

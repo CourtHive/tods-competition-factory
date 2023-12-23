@@ -3,7 +3,7 @@
  * Optionally builds up an exhaustive map of all potential participantIds for each matchUpId
  */
 
-import { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
+import { allDrawMatchUps } from './getAllDrawMatchUps';
 import { addGoesTo } from '../../drawEngine/governors/matchUpGovernor/addGoesTo';
 import { getIndividualParticipantIds } from '../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/getIndividualParticipantIds';
 import { findEvent } from '../../acquire/findEvent';

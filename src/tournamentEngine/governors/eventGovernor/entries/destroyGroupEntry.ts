@@ -1,5 +1,5 @@
 import { deleteParticipants } from '../../../../mutate/participants/deleteParticipants';
-import { getStageEntries } from '../../../getters/participants/getStageEntries';
+import { getStageEntries } from '../../../../query/drawDefinition/getStageEntries';
 import { decorateResult } from '../../../../global/functions/decorateResult';
 import { getParticipantId } from '../../../../global/functions/extractors';
 import { arrayIndices } from '../../../../utilities/arrays';

@@ -18,10 +18,8 @@ import {
   modifyDrawNotice,
   modifyMatchUpNotice,
 } from '../notifications/drawNotifications';
-import {
-  allDrawMatchUps,
-  allEventMatchUps,
-} from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
+import { allDrawMatchUps } from '../../query/matchUps/getAllDrawMatchUps';
+import { allEventMatchUps } from '../../query/matchUps/getAllEventMatchUps';
 
 import { TIE_FORMAT_MODIFICATIONS } from '../../constants/extensionConstants';
 import { SUCCESS } from '../../constants/resultConstants';

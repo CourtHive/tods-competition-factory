@@ -1,4 +1,4 @@
-import definitionTemplate from './templates/drawDefinitionTemplate';
+import definitionTemplate from '../templates/drawDefinitionTemplate';
 import { UUID } from '../../../utilities';
 
 type NewDrawDefinitionArgs = {

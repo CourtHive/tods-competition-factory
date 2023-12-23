@@ -1,7 +1,7 @@
 import { getScheduleTiming } from '../extensions/matchUpFormatTiming/getScheduleTiming';
 import { getVenuesAndCourts } from '../venues/venuesAndCourtsGetter';
 import { getTournamentInfo } from '../tournaments/getTournamentInfo';
-import { getDrawMatchUps } from '../drawMatchUps';
+import { getDrawMatchUps } from '../matchUps/drawMatchUps';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
 import { getEventPublishStatus } from './getEventPublishStatus';

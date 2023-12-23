@@ -1,4 +1,4 @@
-import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaults';
+import tieFormatDefaults from '../../assemblies/generators/templates/tieFormatDefaults';
 import { processTieFormat } from './processTieFormat';
 
 import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';

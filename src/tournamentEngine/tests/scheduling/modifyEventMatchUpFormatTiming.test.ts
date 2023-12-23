@@ -1,6 +1,6 @@
-import competitionEngine from '../../../test/engines/competitionEngine';
+import competitionEngine from '../../../tests/engines/competitionEngine';
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../../test/engines/tournamentEngine';
+import tournamentEngine from '../../../tests/engines/tournamentEngine';
 import { expect, it } from 'vitest';
 
 import POLICY_SCHEDULING_DEFAULT from '../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';

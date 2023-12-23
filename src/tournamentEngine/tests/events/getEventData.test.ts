@@ -1,6 +1,6 @@
 import { countries } from '../../../fixtures/countryData';
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../../test/engines/tournamentEngine';
+import tournamentEngine from '../../../tests/engines/tournamentEngine';
 import { expect, it } from 'vitest';
 
 import { MISSING_EVENT } from '../../../constants/errorConditionConstants';

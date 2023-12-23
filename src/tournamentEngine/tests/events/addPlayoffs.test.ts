@@ -3,7 +3,7 @@ import { deriveExponent } from '../../../utilities/math';
 import { generateRange } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import { setSubscriptions } from '../../..';
-import tournamentEngine from '../../../test/engines/tournamentEngine';
+import tournamentEngine from '../../../tests/engines/tournamentEngine';
 import { expect, it } from 'vitest';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';

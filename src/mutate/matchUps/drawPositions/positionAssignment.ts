@@ -1,14 +1,14 @@
 import { modifyRoundRobinMatchUpsStatus } from '../matchUpStatus/modifyRoundRobinMatchUpsStatus';
-import { getStructureDrawPositionProfiles } from '../../../drawEngine/getters/getStructureDrawPositionProfiles';
+import { getStructureDrawPositionProfiles } from '../../../query/structure/getStructureDrawPositionProfiles';
 import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { assignMatchUpDrawPosition } from './assignMatchUpDrawPosition';
 import { modifyPositionAssignmentsNotice } from '../../notifications/drawNotifications';
 import { getStructureSeedAssignments } from '../../../query/structure/getStructureSeedAssignments';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
-import { structureAssignedDrawPositions } from '../../../drawEngine/getters/positionsGetter';
+import { structureAssignedDrawPositions } from '../../../query/drawDefinition/positionsGetter';
 import { getInitialRoundNumber } from '../../../query/matchUps/getInitialRoundNumber';
-import { getAllDrawMatchUps } from '../../../query/drawMatchUps';
+import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import {
   ResultType,
   decorateResult,
@@ -18,9 +18,9 @@ import {
   getMatchUpsMap,
 } from '../../../query/matchUps/getMatchUpsMap';
 import { getParticipantId } from '../../../global/functions/extractors';
-import { isValidSeedPosition } from '../../../drawEngine/getters/seedGetter';
+import { isValidSeedPosition } from '../../../query/drawDefinition/seedGetter';
 import { assignSeed } from '../../../drawEngine/governors/entryGovernor/seedAssignment';
-import { findStructure } from '../../../drawEngine/getters/findStructure';
+import { findStructure } from '../../../acquire/findStructure';
 import { getTargetMatchUps } from '../../../drawEngine/governors/positionGovernor/getTargetMatchUps';
 import { updateSideLineUp } from '../lineUps/updateSideLineUp';
 import { clearDrawPosition } from './positionClear';

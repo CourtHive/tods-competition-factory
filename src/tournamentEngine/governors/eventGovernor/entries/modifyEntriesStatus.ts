@@ -1,4 +1,4 @@
-import { getAssignedParticipantIds } from '../../../../drawEngine/getters/getAssignedParticipantIds';
+import { getAssignedParticipantIds } from '../../../../query/drawDefinition/getAssignedParticipantIds';
 import { refreshEntryPositions } from '../../../../global/functions/producers/refreshEntryPositions';
 import { findParticipant } from '../../../../acquire/findParticipant';
 import { modifyDrawNotice } from '../../../../mutate/notifications/drawNotifications';

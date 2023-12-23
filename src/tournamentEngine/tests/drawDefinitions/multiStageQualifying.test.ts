@@ -1,9 +1,9 @@
 import { isCompletedStructure } from '../../../drawEngine/governors/queryGovernor/structureActions';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
-import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
-import { getDrawStructures } from '../../../drawEngine/getters/findStructure';
+import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
+import { getDrawStructures } from '../../../acquire/findStructure';
 import { unique } from '../../../utilities';
-import tournamentEngine from '../../../test/engines/tournamentEngine';
+import tournamentEngine from '../../../tests/engines/tournamentEngine';
 import { mocksEngine } from '../../..';
 import { expect, it } from 'vitest';
 

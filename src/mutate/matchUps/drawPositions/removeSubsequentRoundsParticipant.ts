@@ -4,9 +4,9 @@ import {
   MatchUpsMap,
   getMatchUpsMap,
 } from '../../../query/matchUps/getMatchUpsMap';
-import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
+import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
 import { updateMatchUpStatusCodes } from '../../../drawEngine/governors/matchUpGovernor/matchUpStatusCodes';
-import { findStructure } from '../../../drawEngine/getters/findStructure';
+import { findStructure } from '../../../acquire/findStructure';
 
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';

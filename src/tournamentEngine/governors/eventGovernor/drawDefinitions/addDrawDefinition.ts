@@ -1,5 +1,5 @@
 import { addEventExtension } from '../../../../mutate/extensions/addRemoveExtensions';
-import { allDrawMatchUps } from '../../../getters/matchUpsGetter/matchUpsGetter';
+import { allDrawMatchUps } from '../../../../query/matchUps/getAllDrawMatchUps';
 import { getMatchUpId } from '../../../../global/functions/extractors';
 import { getFlightProfile } from '../../../../query/event/getFlightProfile';
 import { ensureInt } from '../../../../utilities/ensureInt';

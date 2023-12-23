@@ -1,4 +1,4 @@
-import { getAllDrawMatchUps } from '../../../query/drawMatchUps';
+import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import { makeDeepCopy, unique } from '../../../utilities';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';

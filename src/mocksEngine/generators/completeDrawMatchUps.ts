@@ -2,11 +2,11 @@ import { assignTieMatchUpParticipantId } from '../../mutate/matchUps/lineUps/ass
 import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
 import { setMatchUpStatus } from '../../tournamentEngine/governors/eventGovernor/setMatchUpStatus';
 import { getParticipants } from '../../query/participants/getParticipants';
-import { getAllDrawMatchUps } from '../../query/drawMatchUps';
-import { generateLineUps } from '../../tournamentEngine/generators/generateLineUps';
+import { getAllDrawMatchUps } from '../../query/matchUps/drawMatchUps';
+import { generateLineUps } from '../../mutate/participants/generateLineUps';
 import { generateOutcomeFromScoreString } from './generateOutcomeFromScoreString';
-import { getPositionAssignments } from '../../drawEngine/getters/positionsGetter';
-import { structureSort } from '../../drawEngine/getters/structureSort';
+import { getPositionAssignments } from '../../query/drawDefinition/positionsGetter';
+import { structureSort } from '../../functions/sorters/structureSort';
 import { matchUpSort } from '../../functions/sorters/matchUpSort';
 import { getMatchUpId } from '../../global/functions/extractors';
 import { generateOutcome } from './generateOutcome';
