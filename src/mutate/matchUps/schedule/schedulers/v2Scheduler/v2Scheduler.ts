@@ -1,5 +1,5 @@
-import { addMatchUpScheduledTime } from '../../../../../mutate/matchUps/schedule/scheduledTime';
-import { assignMatchUpCourt } from '../../../../../mutate/matchUps/schedule/assignMatchUpCourt';
+import { addMatchUpScheduledTime } from '../../scheduledTime';
+import { assignMatchUpCourt } from '../../assignMatchUpCourt';
 import { checkDependenciesScheduled } from '../../scheduleMatchUps/checkDependenciesScheduled';
 import { findDrawDefinition } from '../../../../../acquire/findDrawDefinition';
 import { updateTimeAfterRecovery } from '../../scheduleMatchUps/updateTimeAfterRecovery';
@@ -12,7 +12,7 @@ import { checkDailyLimits } from '../../scheduleMatchUps/checkDailyLimits';
 import { getMatchUpId } from '../../../../../global/functions/extractors';
 import { generateVirtualCourts } from '../utils/generateVirtualCourts';
 import { getEarliestCourtTime } from '../utils/getEarliestCourtTime';
-import { bulkScheduleMatchUps } from '../../bulkScheduleMatchUps';
+import { bulkScheduleMatchUps } from '../../../../../competitionEngine/governors/scheduleGovernor/bulkScheduleMatchUps';
 import { auditAutoScheduling } from '../auditAutoScheduling';
 import { generateBookings } from '../utils/generateBookings';
 import {

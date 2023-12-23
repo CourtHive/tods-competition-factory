@@ -1,5 +1,5 @@
-import { addMatchUpScheduledTime } from '../../../../mutate/matchUps/schedule/scheduledTime';
-import { assignMatchUpVenue } from '../../../../mutate/matchUps/schedule/assignMatchUpVenue';
+import { addMatchUpScheduledTime } from '../scheduledTime';
+import { assignMatchUpVenue } from '../assignMatchUpVenue';
 import { checkParticipantProfileInitialization } from './checkParticipantProfileInitialization';
 import { findDrawDefinition } from '../../../../acquire/findDrawDefinition';
 import { modifyParticipantMatchUpsCount } from './modifyParticipantMatchUpsCount';

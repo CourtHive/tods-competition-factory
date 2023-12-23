@@ -5,7 +5,7 @@
 
 import { allDrawMatchUps } from './getAllDrawMatchUps';
 import { addGoesTo } from '../../drawEngine/governors/matchUpGovernor/addGoesTo';
-import { getIndividualParticipantIds } from '../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/getIndividualParticipantIds';
+import { getIndividualParticipantIds } from '../../mutate/matchUps/schedule/scheduleMatchUps/getIndividualParticipantIds';
 import { findEvent } from '../../acquire/findEvent';
 import { allCompetitionMatchUps } from './getAllCompetitionMatchUps';
 import { matchUpSort } from '../../functions/sorters/matchUpSort';

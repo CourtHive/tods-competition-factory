@@ -1,6 +1,6 @@
 import { constantToString } from '../../../utilities/strings';
 import tournamentEngine from '../../engines/tournamentEngine';
-import { hasSchedule } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/hasSchedule';
+import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
 import { extractTime } from '../../../utilities/dateTime';
 import mocksEngine from '../../../mocksEngine';
 import { unique } from '../../../utilities';

@@ -1,6 +1,6 @@
 import { getIndividualParticipantIds } from './getIndividualParticipantIds';
-import { unique } from '../../../../utilities';
 import { HydratedMatchUp } from '../../../../types/hydrated';
+import { unique } from '../../../../utilities';
 
 type ProcessNextMatchUpsArgs = {
   matchUpPotentialParticipantIds: { [key: string]: string[] };

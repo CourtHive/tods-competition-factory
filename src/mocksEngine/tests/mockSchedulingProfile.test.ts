@@ -1,5 +1,5 @@
 import { visualizeScheduledMatchUps } from '../../global/testHarness/testUtilities/visualizeScheduledMatchUps';
-import { hasSchedule } from '../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/hasSchedule';
+import { hasSchedule } from '../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
 import tournamentEngine from '../../tests/engines/tournamentEngine';
 import competitionEngine from '../../tests/engines/competitionEngine';
 import { extractDate } from '../../utilities/dateTime';

@@ -1,6 +1,6 @@
 import { extractTime, timeStringMinutes } from '../../../utilities/dateTime';
 import { getMatchUpId } from '../../../global/functions/extractors';
-import { hasSchedule } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/hasSchedule';
+import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
 import mocksEngine from '../../../mocksEngine';
 import competitionEngine from '../../engines/competitionEngine';
 import { expect, it } from 'vitest';

@@ -1,5 +1,5 @@
-import { addMatchUpScheduledTime } from '../../../../../mutate/matchUps/schedule/scheduledTime';
-import { assignMatchUpVenue } from '../../../../../mutate/matchUps/schedule/assignMatchUpVenue';
+import { addMatchUpScheduledTime } from '../../scheduledTime';
+import { assignMatchUpVenue } from '../../assignMatchUpVenue';
 import { checkDependenciesScheduled } from '../../scheduleMatchUps/checkDependenciesScheduled';
 import { findDrawDefinition } from '../../../../../acquire/findDrawDefinition';
 import { updateTimeAfterRecovery } from '../../scheduleMatchUps/updateTimeAfterRecovery';
@@ -10,7 +10,7 @@ import { getVenueSchedulingDetails } from '../../../../../query/matchUps/schedul
 import { checkRecoveryTime } from '../../scheduleMatchUps/checkRecoveryTime';
 import { checkDailyLimits } from '../../scheduleMatchUps/checkDailyLimits';
 import { getMatchUpId } from '../../../../../global/functions/extractors';
-import { bulkScheduleMatchUps } from '../../bulkScheduleMatchUps';
+import { bulkScheduleMatchUps } from '../../../../../competitionEngine/governors/scheduleGovernor/bulkScheduleMatchUps';
 import { auditAutoScheduling } from '../auditAutoScheduling';
 import {
   extractDate,

@@ -1,19 +1,19 @@
 import { getMatchUpFormatTimingUpdate } from '../../../query/extensions/matchUpFormatTiming/getMatchUpFormatTimingUpdate';
 import { modifyMatchUpFormatTiming } from './matchUpFormatTiming/modifyMatchUpFormatTiming';
-import { calculateScheduleTimes } from './scheduleMatchUps/calculateScheduleTimes';
-import { generateVirtualCourts } from './schedulers/utils/generateVirtualCourts';
+import { calculateScheduleTimes } from '../../../mutate/matchUps/schedule/scheduleMatchUps/calculateScheduleTimes';
+import { generateVirtualCourts } from '../../../mutate/matchUps/schedule/schedulers/utils/generateVirtualCourts';
 import { getMatchUpDailyLimitsUpdate } from '../../../query/extensions/getMatchUpDailyLimitsUpdate';
 import { bulkUpdateCourtAssignments } from '../../../mutate/matchUps/schedule/bulkUpdateCourtAssignments';
-import { scheduleMatchUps } from './scheduleMatchUps/scheduleMatchUps';
-import { generateBookings } from './schedulers/utils/generateBookings';
+import { scheduleMatchUps } from '../../../mutate/matchUps/schedule/scheduleMatchUps/scheduleMatchUps';
+import { generateBookings } from '../../../mutate/matchUps/schedule/schedulers/utils/generateBookings';
 import { reorderUpcomingMatchUps } from '../../../mutate/matchUps/schedule/reorderUpcomingMatchUps';
 import { clearScheduledMatchUps } from './clearScheduledMatchUps';
 import { bulkRescheduleMatchUps } from './bulkRescheduleMatchUps';
-import { proAutoSchedule } from './schedulers/proScheduler/proAutoSchedule';
+import { proAutoSchedule } from '../../../mutate/matchUps/schedule/schedulers/proScheduler/proAutoSchedule';
 import { setMatchUpDailyLimits } from './setMatchUpDailyLimits';
 import { matchUpScheduleChange } from './matchUpScheduleChange';
 import { getMatchUpDailyLimits } from '../../../query/extensions/getMatchUpDailyLimits';
-import { proConflicts } from './schedulers/proScheduler/proConflicts';
+import { proConflicts } from '../../../mutate/matchUps/schedule/schedulers/proScheduler/proConflicts';
 import {
   getSchedulingProfile,
   setSchedulingProfile,
@@ -23,7 +23,7 @@ import {
   getPersonRequests,
   modifyPersonRequests,
   removePersonRequests,
-} from './scheduleMatchUps/personRequests';
+} from '../../../mutate/matchUps/schedule/scheduleMatchUps/personRequests';
 
 // relocated
 import { validateSchedulingProfile } from '../../../validators/validateSchedulingProfile';

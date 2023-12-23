@@ -1,4 +1,4 @@
-import { hasSchedule } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/hasSchedule';
+import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
 import { addMatchUpScheduledDate } from '../../../mutate/matchUps/schedule/scheduleItems';
 import { addMatchUpScheduledTime } from '../../../mutate/matchUps/schedule/scheduledTime';
 import { findDrawDefinition } from '../../../acquire/findDrawDefinition';

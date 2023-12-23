@@ -1,4 +1,4 @@
-import { getDateTimeBoundary } from '../../competitionEngine/governors/scheduleGovernor/schedulers/utils/getTimeBoundary';
+import { getDateTimeBoundary } from '../../mutate/matchUps/schedule/schedulers/utils/getTimeBoundary';
 import { getCourtDateAvailability } from './getCourtDateAvailability';
 import { generateTimeSlots } from '../../assemblies/generators/scheduling/generateTimeSlots';
 import {

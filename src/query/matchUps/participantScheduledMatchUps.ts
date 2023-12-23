@@ -1,4 +1,4 @@
-import { hasSchedule } from '../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/hasSchedule';
+import { hasSchedule } from '../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
 import { validMatchUps } from '../../validators/validMatchUp';
 import { extractDate, extractTime, timeSort } from '../../utilities/dateTime';
 

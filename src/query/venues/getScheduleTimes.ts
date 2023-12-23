@@ -1,5 +1,5 @@
-import { generateVirtualCourts } from '../../competitionEngine/governors/scheduleGovernor/schedulers/utils/generateVirtualCourts';
-import { calculatePeriodLength } from '../../competitionEngine/governors/scheduleGovernor/schedulers/utils/calculatePeriodLength';
+import { generateVirtualCourts } from '../../mutate/matchUps/schedule/schedulers/utils/generateVirtualCourts';
+import { calculatePeriodLength } from '../../mutate/matchUps/schedule/schedulers/utils/calculatePeriodLength';
 import { courtGenerator } from '../../assemblies/generators/scheduling/courtGenerator';
 import { getCourtsAvailableAtPeriodStart } from './getCourtsAvailableAtPeriodStart';
 import { getFirstTimeSlotStartTime } from './getFirstTimeSlotStartTime';

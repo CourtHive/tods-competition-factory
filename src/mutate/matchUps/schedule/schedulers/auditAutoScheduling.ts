@@ -1,4 +1,4 @@
-import { addTournamentTimeItem } from '../../../../mutate/timeItems/addTimeItem';
+import { addTournamentTimeItem } from '../../../timeItems/addTimeItem';
 import { addNotice } from '../../../../global/state/globalState';
 
 import { AUTO_SCHEDULING_AUDIT } from '../../../../constants/auditConstants';
