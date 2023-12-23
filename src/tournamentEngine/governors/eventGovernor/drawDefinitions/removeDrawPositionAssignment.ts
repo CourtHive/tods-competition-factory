@@ -1,5 +1,5 @@
-import { conditionallyDisableLinkPositioning } from '../../../../drawEngine/governors/positionGovernor/conditionallyDisableLinkPositioning';
-import { addPositionActionTelemetry } from '../../../../drawEngine/governors/positionGovernor/addPositionActionTelemetry';
+import { conditionallyDisableLinkPositioning } from '../../../../mutate/drawDefinitions/positionGovernor/conditionallyDisableLinkPositioning';
+import { addPositionActionTelemetry } from '../../../../mutate/drawDefinitions/positionGovernor/addPositionActionTelemetry';
 import { assignDrawPositionBye } from '../../../../mutate/matchUps/drawPositions/assignDrawPositionBye';
 import { clearDrawPosition } from '../../../../mutate/matchUps/drawPositions/positionClear';
 import { findTournamentParticipant } from '../../../../acquire/findTournamentParticipant';

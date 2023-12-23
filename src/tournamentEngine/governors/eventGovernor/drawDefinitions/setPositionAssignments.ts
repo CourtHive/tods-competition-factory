@@ -1,4 +1,4 @@
-import { setPositionAssignments as drawEngineSetPositionAssignments } from '../../../../drawEngine/governors/positionGovernor/setPositionAssignments';
+import { setPositionAssignments as drawEngineSetPositionAssignments } from '../../../../mutate/drawDefinitions/positionGovernor/setPositionAssignments';
 
 export function setPositionAssignments(params) {
   return drawEngineSetPositionAssignments(params);

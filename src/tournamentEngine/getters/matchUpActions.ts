@@ -1,4 +1,4 @@
-import { matchUpActions as drawEngineMatchupActions } from '../../drawEngine/governors/queryGovernor/matchUpActions';
+import { matchUpActions as drawEngineMatchupActions } from '../../query/drawDefinition/matchUpActions';
 import { getPolicyDefinitions } from '../../query/extensions/getAppliedPolicies';
 import { allTournamentMatchUps } from '../../query/matchUps/getAllTournamentMatchUps';
 

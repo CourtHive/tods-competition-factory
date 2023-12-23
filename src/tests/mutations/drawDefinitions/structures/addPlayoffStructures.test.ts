@@ -7,7 +7,7 @@ import {
 } from '../../../../constants/drawDefinitionConstants';
 import { generateDrawTypeAndModifyDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
 import { addPlayoffStructures } from '../../../../mutate/drawDefinitions/addPlayoffStructures';
-import { setStageDrawSize } from '../../../../drawEngine/governors/entryGovernor/stageEntryCounts';
+import { setStageDrawSize } from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 import { newDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 
 it('can add 3-4 playoff structure to a SINGLE ELIMINATION structure', () => {

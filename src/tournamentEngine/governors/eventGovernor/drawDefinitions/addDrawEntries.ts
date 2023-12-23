@@ -1,4 +1,4 @@
-import { addDrawEntries as addEntries } from '../../../../drawEngine/governors/entryGovernor/addDrawEntries';
+import { addDrawEntries as addEntries } from '../../../../mutate/drawDefinitions/entryGovernor/addDrawEntries';
 import { refreshEntryPositions } from '../../../../global/functions/producers/refreshEntryPositions';
 import { getParticipantId } from '../../../../global/functions/extractors';
 import { getFlightProfile } from '../../../../query/event/getFlightProfile';

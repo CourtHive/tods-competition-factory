@@ -2,13 +2,13 @@ import { getAppliedPolicies } from '../extensions/getAppliedPolicies';
 import { getAllStructureMatchUps } from '../matchUps/getAllStructureMatchUps';
 import { getStructureSeedAssignments } from '../structure/getStructureSeedAssignments';
 import { chunkArray, generateRange, shuffleArray } from '../../utilities';
-import { isLucky } from '../../drawEngine/governors/queryGovernor/isLucky';
+import { isLucky } from './isLucky';
 import { getNumericSeedValue } from './getNumericSeedValue';
 import { findStructure } from '../../acquire/findStructure';
 import {
   getSeedBlocks,
   getSeedGroups,
-} from '../../drawEngine/governors/positionGovernor/getSeedBlocks';
+} from '../../mutate/drawDefinitions/positionGovernor/getSeedBlocks';
 import {
   getPositionAssignments,
   structureAssignedDrawPositions,

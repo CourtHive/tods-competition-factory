@@ -1,6 +1,6 @@
-import { initializeStructureSeedAssignments } from '../../../../drawEngine/governors/positionGovernor/initializeSeedAssignments';
+import { initializeStructureSeedAssignments } from '../../../../mutate/drawDefinitions/positionGovernor/initializeSeedAssignments';
 import { assignDrawPosition } from '../../../../mutate/matchUps/drawPositions/positionAssignment';
-import { modifySeedAssignment } from '../../../../drawEngine/governors/entryGovernor/modifySeedAssignment';
+import { modifySeedAssignment } from '../../../../mutate/drawDefinitions/entryGovernor/modifySeedAssignment';
 import { clearDrawPosition } from '../../../../mutate/matchUps/drawPositions/positionClear';
 import { getStructureSeedAssignments } from '../../../../query/structure/getStructureSeedAssignments';
 import { getAppliedPolicies } from '../../../../query/extensions/getAppliedPolicies';
@@ -13,7 +13,7 @@ import {
   findStructure,
   getDrawStructures,
 } from '../../../../acquire/findStructure';
-import { assignSeed } from '../../../../drawEngine/governors/entryGovernor/seedAssignment';
+import { assignSeed } from '../../../../mutate/drawDefinitions/entryGovernor/seedAssignment';
 import { makeDeepCopy, numericSort } from '../../../../utilities';
 import { getStageEntries } from '../../../../query/drawDefinition/stageGetter';
 import { mocksEngine } from '../../../..';

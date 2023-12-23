@@ -1,4 +1,4 @@
-import { substituteParticipant as participantSubstitution } from '../../../../drawEngine/governors/positionGovernor/substituteParticipant';
+import { substituteParticipant as participantSubstitution } from '../../../../mutate/drawDefinitions/positionGovernor/substituteParticipant';
 
 export function substituteParticipant(params) {
   return participantSubstitution(params);

@@ -8,7 +8,7 @@ import { generateAdHocMatchUps } from './generateAdHocMatchUps';
 import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
 import { checkValidEntries } from '../../../tournamentEngine/governors/eventGovernor/entries/checkValidEntries';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import { addDrawEntry } from '../../../drawEngine/governors/entryGovernor/addDrawEntries';
+import { addDrawEntry } from '../../../mutate/drawDefinitions/entryGovernor/addDrawEntries';
 import { getQualifiersCount } from '../../../query/drawDefinition/getQualifiersCount';
 import { getAllowedDrawTypes } from '../../../query/tournaments/allowedTypes';
 import structureTemplate from '../templates/structureTemplate';
@@ -25,7 +25,7 @@ import { prepareStage } from './prepareStage';
 import {
   setStageDrawSize,
   setStageQualifiersCount,
-} from '../../../drawEngine/governors/entryGovernor/stageEntryCounts';
+} from '../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 import { DrawMaticArgs, drawMatic } from './drawMatic/drawMatic';
 import {
   extractAttributes,

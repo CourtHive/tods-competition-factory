@@ -5,7 +5,7 @@ import {
   getMatchUpsMap,
 } from '../../../query/matchUps/getMatchUpsMap';
 import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
-import { updateMatchUpStatusCodes } from '../../../drawEngine/governors/matchUpGovernor/matchUpStatusCodes';
+import { updateMatchUpStatusCodes } from '../../drawDefinitions/matchUpGovernor/matchUpStatusCodes';
 import { findStructure } from '../../../acquire/findStructure';
 
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';

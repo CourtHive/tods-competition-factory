@@ -1,4 +1,4 @@
-import { modifySeedAssignment as drawEngineModifySeedAssignment } from '../../../drawEngine/governors/entryGovernor/modifySeedAssignment';
+import { modifySeedAssignment as drawEngineModifySeedAssignment } from '../../../mutate/drawDefinitions/entryGovernor/modifySeedAssignment';
 
 import {
   INVALID_PARTICIPANT_ID,

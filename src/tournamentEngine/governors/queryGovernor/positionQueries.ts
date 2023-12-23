@@ -1,4 +1,4 @@
-import { positionActions as drawEnginePositionActions } from '../../../drawEngine/governors/queryGovernor/positionActions/positionActions';
+import { positionActions as drawEnginePositionActions } from '../../../query/drawDefinition/positionActions/positionActions';
 import { getParticipants } from '../../../query/participants/getParticipants';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';

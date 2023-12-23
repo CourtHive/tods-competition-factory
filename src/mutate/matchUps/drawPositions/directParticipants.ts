@@ -1,9 +1,9 @@
 import { assignDrawPositionBye } from './assignDrawPositionBye';
 import { decorateResult } from '../../../global/functions/decorateResult';
-import { attemptToModifyScore } from '../../../drawEngine/governors/matchUpGovernor/attemptToModifyScore';
-import { isDirectingMatchUpStatus } from '../../../drawEngine/governors/matchUpGovernor/checkStatusType';
+import { attemptToModifyScore } from '../../drawDefinitions/matchUpGovernor/attemptToModifyScore';
+import { isDirectingMatchUpStatus } from '../../drawDefinitions/matchUpGovernor/checkStatusType';
 import { updateTieMatchUpScore } from '../score/tieMatchUpScore';
-import { isAdHoc } from '../../../drawEngine/governors/queryGovernor/isAdHoc';
+import { isAdHoc } from '../../../query/drawDefinition/isAdHoc';
 import { directWinner } from './directWinner';
 import { directLoser } from './directLoser';
 

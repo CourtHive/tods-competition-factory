@@ -1,5 +1,5 @@
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
-import { isActiveMatchUpStatus } from '../../../drawEngine/governors/matchUpGovernor/checkStatusType';
+import { isActiveMatchUpStatus } from '../../../mutate/drawDefinitions/matchUpGovernor/checkStatusType';
 
 import {
   DEFAULTED,

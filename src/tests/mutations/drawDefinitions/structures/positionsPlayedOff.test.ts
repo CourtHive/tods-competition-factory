@@ -1,6 +1,6 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
-import { getPositionsPlayedOff } from '../../../../drawEngine/governors/structureGovernor/getPositionsPlayedOff';
-import { setStageDrawSize } from '../../../../drawEngine/governors/entryGovernor/stageEntryCounts';
+import { getPositionsPlayedOff } from '../../../../mutate/drawDefinitions/structureGovernor/getPositionsPlayedOff';
+import { setStageDrawSize } from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 import { newDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { expect, it } from 'vitest';
 

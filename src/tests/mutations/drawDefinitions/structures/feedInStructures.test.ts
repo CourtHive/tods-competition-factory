@@ -1,6 +1,6 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
 import { getDrawData } from '../../../../tournamentEngine/governors/publishingGovernor/getDrawData';
-import { setStageDrawSize } from '../../../../drawEngine/governors/entryGovernor/stageEntryCounts';
+import { setStageDrawSize } from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 import { getRoundMatchUps } from '../../../../query/matchUps/getRoundMatchUps';
 import { feedInMatchUps } from '../../../../assemblies/generators/drawDefinitions/feedInMatchUps';
 import { feedInChampionship } from '../primitives/feedIn';

@@ -19,12 +19,12 @@ import {
 } from '../../../query/matchUps/getMatchUpsMap';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { isValidSeedPosition } from '../../../query/drawDefinition/seedGetter';
-import { assignSeed } from '../../../drawEngine/governors/entryGovernor/seedAssignment';
+import { assignSeed } from '../../drawDefinitions/entryGovernor/seedAssignment';
 import { findStructure } from '../../../acquire/findStructure';
-import { getTargetMatchUps } from '../../../drawEngine/governors/positionGovernor/getTargetMatchUps';
+import { getTargetMatchUps } from '../../drawDefinitions/positionGovernor/getTargetMatchUps';
 import { updateSideLineUp } from '../lineUps/updateSideLineUp';
 import { clearDrawPosition } from './positionClear';
-import { isAdHoc } from '../../../drawEngine/governors/queryGovernor/isAdHoc';
+import { isAdHoc } from '../../../query/drawDefinition/isAdHoc';
 import { resetLineUps } from '../lineUps/resetLineUps';
 
 import { SUCCESS } from '../../../constants/resultConstants';

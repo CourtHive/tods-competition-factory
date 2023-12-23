@@ -1,4 +1,4 @@
-import { getExitProfiles } from '../../../../drawEngine/governors/queryGovernor/getExitProfile';
+import { getExitProfiles } from '../../../../query/drawDefinition/getExitProfile';
 import tournamentEngine from '../../../engines/tournamentEngine';
 import mocksEngine from '../../../../mocksEngine';
 import { expect, test } from 'vitest';

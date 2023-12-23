@@ -1,6 +1,6 @@
 import { getRoundMatchUps } from './getRoundMatchUps';
-import { isLucky } from '../../drawEngine/governors/queryGovernor/isLucky';
-import { isAdHoc } from '../../drawEngine/governors/queryGovernor/isAdHoc';
+import { isLucky } from '../drawDefinition/isLucky';
+import { isAdHoc } from '../drawDefinition/isAdHoc';
 
 import { POLICY_ROUND_NAMING_DEFAULT } from '../../fixtures/policies/POLICY_ROUND_NAMING_DEFAULT';
 import { DrawDefinition, Structure } from '../../types/tournamentTypes';

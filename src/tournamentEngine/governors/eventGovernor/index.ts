@@ -65,7 +65,7 @@ import { addVoluntaryConsolationStructure } from '../../../mutate/drawDefinition
 import { toggleParticipantCheckInState } from '../../../mutate/matchUps/timeItems/toggleParticipantCheckInState';
 import { resetVoluntaryConsolationStructure } from './drawDefinitions/resetVoluntaryConsolationStructure';
 import { deleteFlightProfileAndFlightDraws } from './drawDefinitions/deleteFlightProfileAndFlightDraws';
-import { removeStructure } from '../../../drawEngine/governors/structureGovernor/removeStructure';
+import { removeStructure } from '../../../mutate/drawDefinitions/structureGovernor/removeStructure';
 import { deleteFlightAndFlightDraw } from './drawDefinitions/deleteFlightAndFlightDraw';
 import { refreshEventDrawOrder } from './drawDefinitions/refreshEventDrawOrder';
 import { generateFlightProfile } from '../../../assemblies/generators/drawDefinitions/generateFlightProfile';
@@ -109,7 +109,7 @@ import { modifyCollectionDefinition } from '../../../matchUpEngine/governors/tie
 import { addCollectionDefinition } from '../../../mutate/tieFormat/addCollectionDefinition';
 import { removeCollectionGroup } from '../../../matchUpEngine/governors/tieFormatGovernor/removeCollectionGroup';
 import { addCollectionGroup } from '../../../matchUpEngine/governors/tieFormatGovernor/addCollectionGroup';
-import { setStructureOrder } from '../../../drawEngine/governors/structureGovernor/setStructureOrder';
+import { setStructureOrder } from '../../../mutate/drawDefinitions/structureGovernor/setStructureOrder';
 import { modifyTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/modifyTieFormat';
 import { resetTieFormat } from '../../../mutate/tieFormat/resetTieFormat';
 
@@ -128,14 +128,14 @@ import { modifyEvent } from './modifyEvent';
 import { checkOutParticipant } from '../../../mutate/matchUps/timeItems/checkOutParticipant';
 import { checkInParticipant } from '../../../mutate/matchUps/timeItems/checkInParticipant';
 
-import { enableTieAutoCalc } from '../../../drawEngine/governors/matchUpGovernor/enableTieAutoCalc';
+import { enableTieAutoCalc } from '../../../mutate/drawDefinitions/matchUpGovernor/enableTieAutoCalc';
 import { disableTieAutoCalc } from '../../../mutate/matchUps/extensions/disableTieAutoCalc';
 import {
   addAdHocMatchUps,
   generateAdHocMatchUps,
 } from '../../../assemblies/generators/drawDefinitions/generateAdHocMatchUps';
 
-import { renameStructures } from '../../../drawEngine/governors/structureGovernor/renameStructures';
+import { renameStructures } from '../../../mutate/drawDefinitions/structureGovernor/renameStructures';
 import { addPlayoffStructures } from '../../../mutate/drawDefinitions/addPlayoffStructures';
 import { validateCollectionDefinition } from '../../../validators/validateCollectionDefinition';
 import { resetScorecard } from '../../../mutate/matchUps/resetScorecard';

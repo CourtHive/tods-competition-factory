@@ -1,6 +1,6 @@
 import { addTimeItem } from '../timeItems/addTimeItem';
 import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
-import { addGoesTo } from '../../drawEngine/governors/matchUpGovernor/addGoesTo';
+import { addGoesTo } from './matchUpGovernor/addGoesTo';
 import { extractAttributes } from '../../utilities';
 import {
   addMatchUpsNotice,

@@ -3,12 +3,12 @@ import { removeSubsequentRoundsParticipant } from './removeSubsequentRoundsParti
 import { structureAssignedDrawPositions } from '../../../query/drawDefinition/positionsGetter';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { clearDrawPosition } from './positionClear';
-import { includesMatchUpStatuses } from '../../../drawEngine/governors/matchUpGovernor/includesMatchUpStatuses';
+import { includesMatchUpStatuses } from '../../drawDefinitions/matchUpGovernor/includesMatchUpStatuses';
 import { findStructure } from '../../../acquire/findStructure';
 import { updateTieMatchUpScore } from '../score/tieMatchUpScore';
 import { modifyMatchUpScore } from '../score/modifyMatchUpScore';
 import { instanceCount } from '../../../utilities';
-import { isAdHoc } from '../../../drawEngine/governors/queryGovernor/isAdHoc';
+import { isAdHoc } from '../../../query/drawDefinition/isAdHoc';
 
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';

@@ -1,4 +1,4 @@
-import { getAvailablePlayoffProfiles as drawEngineGetAvailablePlayoffRounds } from '../../../../drawEngine/governors/structureGovernor/getAvailablePlayoffProfiles';
+import { getAvailablePlayoffProfiles as drawEngineGetAvailablePlayoffRounds } from '../../../../mutate/drawDefinitions/structureGovernor/getAvailablePlayoffProfiles';
 
 export function getAvailablePlayoffProfiles(params) {
   return drawEngineGetAvailablePlayoffRounds(params);

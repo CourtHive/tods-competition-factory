@@ -1,4 +1,4 @@
-import { isCompletedStructure } from '../../../drawEngine/governors/queryGovernor/structureActions';
+import { isCompletedStructure } from '../../../query/drawDefinition/structureActions';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
 import { getDrawStructures } from '../../../acquire/findStructure';

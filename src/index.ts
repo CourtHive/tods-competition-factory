@@ -3,7 +3,7 @@ export { factoryVersion as version } from './global/functions/factoryVersion';
 export { scoreGovernor } from './matchUpEngine/governors/scoreGovernor';
 export { fixtures } from './fixtures';
 
-import { getAvailablePlayoffProfiles } from './drawEngine/governors/structureGovernor/getAvailablePlayoffProfiles';
+import { getAvailablePlayoffProfiles } from './mutate/drawDefinitions/structureGovernor/getAvailablePlayoffProfiles';
 import { roundRobinGroups } from './assemblies/generators/drawDefinitions/drawTypes/roundRobin/roundRobinGroups';
 import { getValidGroupSizes } from './assemblies/generators/drawDefinitions/drawTypes/roundRobin/roundRobin';
 import { visualizeScheduledMatchUps } from './global/testHarness/testUtilities/visualizeScheduledMatchUps';
@@ -12,7 +12,7 @@ import { tieFormatGenderValidityCheck } from './global/functions/deducers/tieFor
 import { proConflicts } from './mutate/matchUps/schedule/schedulers/proScheduler/proConflicts';
 import { compareTieFormats } from './matchUpEngine/governors/tieFormatGovernor/compareTieFormats';
 import { dehydrateMatchUps } from './tournamentEngine/governors/tournamentGovernor/dehydrate';
-import { getSeedingThresholds } from './drawEngine/governors/positionGovernor/getSeedBlocks';
+import { getSeedingThresholds } from './mutate/drawDefinitions/positionGovernor/getSeedBlocks';
 import { getStructureSeedAssignments } from './query/structure/getStructureSeedAssignments';
 import { getAssignedParticipantIds } from './query/drawDefinition/getAssignedParticipantIds';
 import { getScaleValues } from './query/participant/getScaleValues';
@@ -26,7 +26,7 @@ import { parseScoreString } from './mocksEngine/utilities/parseScoreString';
 import { getMatchUpContextIds } from './query/matchUp/getMatchUpContextIds';
 import { getSetComplement } from './matchUpEngine/getters/getComplement';
 import { checkScoreHasValue } from './query/matchUp/checkScoreHasValue';
-import { isAdHoc } from './drawEngine/governors/queryGovernor/isAdHoc';
+import { isAdHoc } from './query/drawDefinition/isAdHoc';
 import { structureSort } from './functions/sorters/structureSort';
 import { validateTieFormat } from './validators/validateTieFormat';
 import { validateCategory } from './validators/validateCategory';
@@ -44,7 +44,7 @@ import { garman } from './forge/garman/garman';
 import {
   allPlayoffPositionsFilled,
   isCompletedStructure,
-} from './drawEngine/governors/queryGovernor/structureActions';
+} from './query/drawDefinition/structureActions';
 import {
   countValues,
   chunkArray,

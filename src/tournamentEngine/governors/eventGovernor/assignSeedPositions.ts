@@ -1,5 +1,5 @@
 import { getStructureSeedAssignments } from '../../../query/structure/getStructureSeedAssignments';
-import { assignSeed } from '../../../drawEngine/governors/entryGovernor/seedAssignment';
+import { assignSeed } from '../../../mutate/drawDefinitions/entryGovernor/seedAssignment';
 import { uniqueValues } from '../../../utilities/arrays';
 
 import { ResultType } from '../../../global/functions/decorateResult';

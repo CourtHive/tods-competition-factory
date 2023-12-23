@@ -4,7 +4,7 @@ import { assignDrawPosition } from './positionAssignment';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { assignMatchUpDrawPosition } from './assignMatchUpDrawPosition';
-import { assignSeed } from '../../../drawEngine/governors/entryGovernor/seedAssignment';
+import { assignSeed } from '../../drawDefinitions/entryGovernor/seedAssignment';
 import { findStructure } from '../../../acquire/findStructure';
 
 import { QUALIFYING } from '../../../constants/drawDefinitionConstants';

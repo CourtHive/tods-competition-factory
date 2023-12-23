@@ -1,5 +1,5 @@
 import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
-import { isCompletedStructure } from '../../../drawEngine/governors/queryGovernor/structureActions';
+import { isCompletedStructure } from '../../../query/drawDefinition/structureActions';
 import { allDrawMatchUps } from '../../../query/matchUps/getAllDrawMatchUps';
 import { structureSort } from '../../../functions/sorters/structureSort';
 import tournamentEngine from '../../../tests/engines/tournamentEngine';

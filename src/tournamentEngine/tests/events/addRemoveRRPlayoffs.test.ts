@@ -1,4 +1,4 @@
-import { getPositionsPlayedOff } from '../../../drawEngine/governors/structureGovernor/getPositionsPlayedOff';
+import { getPositionsPlayedOff } from '../../../mutate/drawDefinitions/structureGovernor/getPositionsPlayedOff';
 import { chunkByNth } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../../tests/engines/tournamentEngine';

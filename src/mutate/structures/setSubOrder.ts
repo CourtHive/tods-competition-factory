@@ -1,4 +1,4 @@
-import { updateAssignmentParticipantResults } from '../../drawEngine/governors/matchUpGovernor/updateAssignmentParticipantResults';
+import { updateAssignmentParticipantResults } from '../drawDefinitions/matchUpGovernor/updateAssignmentParticipantResults';
 import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
 import { addExtension } from '../extensions/addExtension';
 import { modifyDrawNotice } from '../notifications/drawNotifications';

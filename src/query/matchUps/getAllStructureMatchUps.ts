@@ -11,7 +11,7 @@ import { getRoundMatchUps } from './getRoundMatchUps';
 import { findParticipant } from '../../acquire/findParticipant';
 import { getMatchUpType } from '../matchUp/getMatchUpType';
 import { getStructureSeedAssignments } from '../structure/getStructureSeedAssignments';
-import { getExitProfiles } from '../../drawEngine/governors/queryGovernor/getExitProfile';
+import { getExitProfiles } from '../drawDefinition/getExitProfile';
 import { getSourceDrawPositionRanges } from './getSourceDrawPositionRanges';
 import { attributeFilter, makeDeepCopy, unique } from '../../utilities';
 import { definedAttributes } from '../../utilities/definedAttributes';
