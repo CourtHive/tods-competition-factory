@@ -1,5 +1,5 @@
 import { modifyRoundRobinMatchUpsStatus } from '../matchUpStatus/modifyRoundRobinMatchUpsStatus';
-import { getStructureDrawPositionProfiles } from '../../../drawEngine/getters/getStructureDrawPositionProfiles';
+import { getStructureDrawPositionProfiles } from '../../../query/structure/getStructureDrawPositionProfiles';
 import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { getAllDrawMatchUps } from '../../../query/drawMatchUps';
@@ -10,14 +10,14 @@ import {
   getMatchUpsMap,
 } from '../../../query/matchUps/getMatchUpsMap';
 import { pushGlobalLog } from '../../../global/functions/globalLog';
-import { findStructure } from '../../../drawEngine/getters/findStructure';
+import { findStructure } from '../../../acquire/findStructure';
 import { ensureInt } from '../../../utilities/ensureInt';
 import { positionTargets } from './positionTargets';
 import { overlap } from '../../../utilities';
 import {
   getPositionAssignments,
   structureAssignedDrawPositions,
-} from '../../../drawEngine/getters/positionsGetter';
+} from '../../../query/drawDefinition/positionsGetter';
 import {
   modifyPositionAssignmentsNotice,
   modifyMatchUpNotice,

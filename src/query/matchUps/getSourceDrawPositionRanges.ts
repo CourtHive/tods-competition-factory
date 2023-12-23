@@ -3,7 +3,7 @@ import { chunkArray, generateRange } from '../../utilities';
 import { getMappedStructureMatchUps } from './getMatchUpsMap';
 import { reduceGroupedOrder } from './reduceGroupedOrder';
 import { getRangeString } from './getRangeString';
-import { findStructure } from '../../drawEngine/getters/findStructure';
+import { findStructure } from '../../acquire/findStructure';
 
 import {
   BOTTOM_UP,

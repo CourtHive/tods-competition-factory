@@ -8,9 +8,9 @@ export { parseScoreString } from '../../mocksEngine/utilities/parseScoreString';
 export { getEligibleVoluntaryConsolationParticipants } from '../../query/drawDefinition/getEligibleVoluntaryConsolationParticipants';
 export { getOrderedDrawPositions } from '../../query/matchUps/getOrderedDrawPositions';
 export { getRoundContextProfile } from '../../query/matchUps/getRoundContextProfile';
-export { getAssignedParticipantIds } from '../../drawEngine/getters/getAssignedParticipantIds';
+export { getAssignedParticipantIds } from '../../query/drawDefinition/getAssignedParticipantIds';
 export { getRoundMatchUps } from '../../query/matchUps/getRoundMatchUps';
-export { getPositionAssignments } from '../../drawEngine/getters/positionsGetter';
+export { getPositionAssignments } from '../../query/drawDefinition/positionsGetter';
 export { getValidGroupSizes } from '../../assemblies/generators/drawDefinitions/drawTypes/roundRobin/roundRobin';
 
 // functions

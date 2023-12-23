@@ -1,5 +1,5 @@
 import { generateAdHocMatchUps } from '../generateAdHocMatchUps';
-import { findStructure } from '../../../../drawEngine/getters/findStructure';
+import { findStructure } from '../../../../acquire/findStructure';
 import { isObject } from '../../../../utilities/objects';
 import { getPairingsData } from './getPairingsData';
 import { getEncounters } from './getEncounters';

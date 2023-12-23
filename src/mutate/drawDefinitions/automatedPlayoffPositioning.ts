@@ -1,5 +1,5 @@
 import { isCompletedStructure } from '../../drawEngine/governors/queryGovernor/structureActions';
-import { getMinFinishingPositionRange } from '../../drawEngine/getters/structureSort';
+import { getMinFinishingPositionRange } from '../../functions/sorters/structureSort';
 import { getPlayoffStructures } from '../../tournamentEngine/getters/structureGetter';
 import { automatedPositioning } from './automatedPositioning';
 

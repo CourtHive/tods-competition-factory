@@ -1,6 +1,6 @@
-import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '../matchUps/getAllStructureMatchUps';
 import { getEntryProfile } from './getEntryProfile';
-import { findStructure } from './findStructure';
+import { findStructure } from '../../acquire/findStructure';
 
 import { MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
 import { CONTAINER, QUALIFYING } from '../../constants/drawDefinitionConstants';

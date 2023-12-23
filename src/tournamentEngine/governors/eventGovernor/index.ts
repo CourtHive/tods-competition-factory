@@ -115,7 +115,7 @@ import { resetTieFormat } from '../../../mutate/tieFormat/resetTieFormat';
 
 import { generateDrawMaticRound } from '../../../assemblies/generators/drawDefinitions/drawMatic/generateDrawMaticRound';
 import { generateDrawDefinition } from '../../../assemblies/generators/drawDefinitions/generateDrawDefinition';
-import { getAssignedParticipantIds } from '../../../drawEngine/getters/getAssignedParticipantIds';
+import { getAssignedParticipantIds } from '../../../query/drawDefinition/getAssignedParticipantIds';
 import { generateQualifyingStructure } from './drawDefinitions/generateQualifyingStructure';
 import { attachQualifyingStructure } from './drawDefinitions/attachQualifyingStructure';
 import { addQualifyingStructure } from './drawDefinitions/addQualifyingStructure';

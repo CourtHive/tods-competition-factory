@@ -1,4 +1,4 @@
-import { getDrawStructures } from '../../getters/findStructure';
+import { getDrawStructures } from '../../../acquire/findStructure';
 
 import { MAIN, CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import { generateDrawTypeAndModifyDrawDefinition } from '../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';

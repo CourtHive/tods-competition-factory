@@ -4,9 +4,9 @@ import { isValidExtension } from '../../../validators/isValidExtension';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { definedAttributes } from '../../../utilities/definedAttributes';
 import { modifyDrawNotice } from '../../../mutate/notifications/drawNotifications';
-import { participantInEntries } from '../../getters/entryGetter';
-import { getValidStage } from '../../getters/getValidStage';
-import { getStageSpace } from '../../getters/getStageSpace';
+import { participantInEntries } from '../../../query/drawDefinition/entryGetter';
+import { getValidStage } from '../../../query/drawDefinition/getValidStage';
+import { getStageSpace } from '../../../query/drawDefinition/getStageSpace';
 
 import { ROUND_TARGET } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';

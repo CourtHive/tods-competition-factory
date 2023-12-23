@@ -1,9 +1,9 @@
 import { parseScoreString } from '../../../mocksEngine/utilities/parseScoreString';
-import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
+import { structureAssignedDrawPositions } from '../../../query/drawDefinition/positionsGetter';
 import { verifyStructure } from '../primitives/verifyStructure';
 import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
-import { getDrawStructures } from '../../getters/findStructure';
-import { getStageEntries } from '../../getters/stageGetter';
+import { getDrawStructures } from '../../../acquire/findStructure';
+import { getStageEntries } from '../../../query/drawDefinition/stageGetter';
 import { mocksEngine } from '../../..';
 import { expect, it } from 'vitest';
 import {

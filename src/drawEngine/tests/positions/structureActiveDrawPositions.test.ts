@@ -1,4 +1,4 @@
-import { getStructureDrawPositionProfiles } from '../../getters/getStructureDrawPositionProfiles';
+import { getStructureDrawPositionProfiles } from '../../../query/structure/getStructureDrawPositionProfiles';
 import tournamentEngine from '../../../test/engines/tournamentEngine';
 import { numericSort } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';

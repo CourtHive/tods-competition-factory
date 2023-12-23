@@ -1,4 +1,4 @@
-import { getAssignedParticipantIds } from '../../drawEngine/getters/getAssignedParticipantIds';
+import { getAssignedParticipantIds } from '../../query/drawDefinition/getAssignedParticipantIds';
 import { extractAttributes as xa, makeDeepCopy } from '../../utilities';
 import { definedAttributes } from '../../utilities/definedAttributes';
 import { getParticipants } from '../../query/participants/getParticipants';

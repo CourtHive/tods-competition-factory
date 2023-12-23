@@ -1,4 +1,4 @@
-import { getDrawStructures } from '../../../../drawEngine/getters/findStructure';
+import { getDrawStructures } from '../../../../acquire/findStructure';
 import { analyzeDraws } from '../../tournamentGovernor/analysis/analyzeDraws';
 import { getMatchUpId } from '../../../../global/functions/extractors';
 import {

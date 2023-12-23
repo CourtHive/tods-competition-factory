@@ -1,10 +1,10 @@
 import { getAllStructureMatchUps } from '../../../../query/matchUps/getAllStructureMatchUps';
-import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
+import { structureAssignedDrawPositions } from '../../../../query/drawDefinition/positionsGetter';
 import { getSeedBlocks } from '../getSeedBlocks';
 import {
   getSeedPattern,
   getValidSeedBlocks,
-} from '../../../getters/seedGetter';
+} from '../../../../query/drawDefinition/seedGetter';
 import {
   chunkArray,
   numericSort,

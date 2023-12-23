@@ -3,9 +3,9 @@ import { assignMatchUpDrawPosition } from '../../../mutate/matchUps/drawPosition
 import { getExitWinningSide } from '../matchUpGovernor/getExitWinningSide';
 import { modifyMatchUpScore } from '../../../mutate/matchUps/score/modifyMatchUpScore';
 import { decorateResult } from '../../../global/functions/decorateResult';
-import { getPositionAssignments } from '../../getters/positionsGetter';
+import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
 import { definedAttributes } from '../../../utilities/definedAttributes';
-import { findStructure } from '../../getters/findStructure';
+import { findStructure } from '../../../acquire/findStructure';
 import { positionTargets } from '../../../mutate/matchUps/drawPositions/positionTargets';
 import { overlap } from '../../../utilities';
 import {

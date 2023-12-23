@@ -1,5 +1,5 @@
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
-import { getPositionAssignments } from '../../getters/positionsGetter';
+import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
 import tournamentEngine from '../../../test/engines/tournamentEngine';
 import mocksEngine from '../../../mocksEngine';
 import { expect, test } from 'vitest';

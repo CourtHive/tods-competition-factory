@@ -3,7 +3,7 @@ import { positionTargets } from '../../../mutate/matchUps/drawPositions/position
 import { getStructureMatchUps } from '../../../query/structure/getStructureMatchUps';
 import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';
 import { getAllDrawMatchUps } from '../../../query/drawMatchUps';
-import { getDrawStructures } from '../../getters/findStructure';
+import { getDrawStructures } from '../../../acquire/findStructure';
 import { feedInChampionship } from '../primitives/feedIn';
 import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { expect, it } from 'vitest';

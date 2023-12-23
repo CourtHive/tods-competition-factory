@@ -1,7 +1,7 @@
 import { findExtension } from '../../acquire/findExtension';
-import { modifyEntryProfile } from '../governors/entryGovernor/modifyEntryProfile';
+import { modifyEntryProfile } from '../../drawEngine/governors/entryGovernor/modifyEntryProfile';
 import { getEntryProfile } from './getEntryProfile';
-import { findStructure } from './findStructure';
+import { findStructure } from '../../acquire/findStructure';
 import { numericSort } from '../../utilities';
 
 import { ROUND_TARGET, TALLY } from '../../constants/extensionConstants';

@@ -1,4 +1,4 @@
-import { structureSort } from '../../../drawEngine/getters/structureSort';
+import { structureSort } from '../../../functions/sorters/structureSort';
 import { instanceCount } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import { utilities } from '../../../index';

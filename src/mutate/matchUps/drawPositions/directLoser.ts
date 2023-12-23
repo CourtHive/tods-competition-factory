@@ -2,12 +2,12 @@ import { removeLineUpSubstitutions } from '../../../tournamentEngine/governors/e
 import { assignDrawPositionBye } from './assignDrawPositionBye';
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
-import { structureAssignedDrawPositions } from '../../../drawEngine/getters/positionsGetter';
+import { structureAssignedDrawPositions } from '../../../query/drawDefinition/positionsGetter';
 import { assignDrawPosition } from './positionAssignment';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { assignSeed } from '../../../drawEngine/governors/entryGovernor/seedAssignment';
-import { findStructure } from '../../../drawEngine/getters/findStructure';
+import { findStructure } from '../../../acquire/findStructure';
 import { numericSort } from '../../../utilities';
 
 import { DEFAULTED, WALKOVER } from '../../../constants/matchUpStatusConstants';

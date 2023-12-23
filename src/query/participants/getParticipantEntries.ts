@@ -1,6 +1,6 @@
-import { getPositionAssignments } from '../../drawEngine/getters/positionsGetter';
+import { getPositionAssignments } from '../drawDefinition/positionsGetter';
 import { timeSort, timeStringMinutes } from '../../utilities/dateTime';
-import { structureSort } from '../../drawEngine/getters/structureSort';
+import { structureSort } from '../../functions/sorters/structureSort';
 import { extensionsToAttributes } from '../../utilities/makeDeepCopy';
 import { definedAttributes } from '../../utilities/definedAttributes';
 import { extractAttributes as xa, unique } from '../../utilities';

@@ -1,7 +1,7 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
 import { getAvailablePlayoffProfiles } from '../../governors/structureGovernor/getAvailablePlayoffProfiles';
 import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';
-import { getDrawStructures } from '../../getters/findStructure';
+import { getDrawStructures } from '../../../acquire/findStructure';
 import { constantToString } from '../../../utilities/strings';
 import tournamentEngine from '../../../test/engines/tournamentEngine';
 import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';

@@ -1,17 +1,17 @@
 import { getAllStructureMatchUps } from '../../../../query/matchUps/getAllStructureMatchUps';
 import { assignDrawPositionBye } from '../../../../mutate/matchUps/drawPositions/assignDrawPositionBye';
 import { generatePositioningCandidate } from './generatePositioningCandidate';
-import { getAttributeGroupings } from '../../../getters/getAttributeGrouping';
+import { getAttributeGroupings } from '../../../../query/participants/getAttributeGrouping';
 import { decorateResult } from '../../../../global/functions/decorateResult';
 import { getUnplacedParticipantIds } from './getUnplacedParticipantIds';
 import { addParticipantGroupings } from './addParticipantGroupings';
-import { findStructure } from '../../../getters/findStructure';
+import { findStructure } from '../../../../acquire/findStructure';
 import { deriveExponent } from '../../../../utilities/math';
 import { assignDrawPosition } from '../../../../mutate/matchUps/drawPositions/positionAssignment';
 import {
   getPositionAssignments,
   structureAssignedDrawPositions,
-} from '../../../getters/positionsGetter';
+} from '../../../../query/drawDefinition/positionsGetter';
 import {
   chunkArray,
   generateRange,

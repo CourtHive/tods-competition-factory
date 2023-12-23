@@ -4,7 +4,7 @@ import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { getStructureMatchUps } from '../../../query/structure/getStructureMatchUps';
 import { parseScoreString } from '../../../mocksEngine/utilities/parseScoreString';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
-import { findStructure } from '../../getters/findStructure';
+import { findStructure } from '../../../acquire/findStructure';
 import { expect } from 'vitest';
 
 import { MATCHUP_NOT_FOUND } from '../../../constants/errorConditionConstants';

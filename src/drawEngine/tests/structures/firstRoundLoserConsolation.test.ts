@@ -1,5 +1,5 @@
-import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
-import { getDrawStructures } from '../../getters/findStructure';
+import { structureAssignedDrawPositions } from '../../../query/drawDefinition/positionsGetter';
+import { getDrawStructures } from '../../../acquire/findStructure';
 import tournamentEngine from '../../../test/engines/tournamentEngine';
 import { instanceCount } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';

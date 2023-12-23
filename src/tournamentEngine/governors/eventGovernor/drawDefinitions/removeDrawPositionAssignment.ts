@@ -4,7 +4,7 @@ import { assignDrawPositionBye } from '../../../../mutate/matchUps/drawPositions
 import { clearDrawPosition } from '../../../../mutate/matchUps/drawPositions/positionClear';
 import { findTournamentParticipant } from '../../../../acquire/findTournamentParticipant';
 import { decorateResult } from '../../../../global/functions/decorateResult';
-import { findStructure } from '../../../../drawEngine/getters/findStructure';
+import { findStructure } from '../../../../acquire/findStructure';
 import { modifyEntriesStatus } from '../entries/modifyEntriesStatus';
 import { destroyPairEntry } from '../entries/destroyPairEntry';
 

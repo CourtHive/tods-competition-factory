@@ -14,7 +14,7 @@ import { compareTieFormats } from './matchUpEngine/governors/tieFormatGovernor/c
 import { dehydrateMatchUps } from './tournamentEngine/governors/tournamentGovernor/dehydrate';
 import { getSeedingThresholds } from './drawEngine/governors/positionGovernor/getSeedBlocks';
 import { getStructureSeedAssignments } from './query/structure/getStructureSeedAssignments';
-import { getAssignedParticipantIds } from './drawEngine/getters/getAssignedParticipantIds';
+import { getAssignedParticipantIds } from './query/drawDefinition/getAssignedParticipantIds';
 import { getScaleValues } from './tournamentEngine/getters/participants/getScaleValues';
 import { generateScoreString } from './matchUpEngine/generators/generateScoreString';
 import { categoryCanContain } from './global/functions/deducers/categoryCanContain';
@@ -27,7 +27,7 @@ import { getMatchUpContextIds } from './query/matchUp/getMatchUpContextIds';
 import { getSetComplement } from './matchUpEngine/getters/getComplement';
 import { checkScoreHasValue } from './query/matchUp/checkScoreHasValue';
 import { isAdHoc } from './drawEngine/governors/queryGovernor/isAdHoc';
-import { structureSort } from './drawEngine/getters/structureSort';
+import { structureSort } from './functions/sorters/structureSort';
 import { validateTieFormat } from './validators/validateTieFormat';
 import { validateCategory } from './validators/validateCategory';
 import { addExtension } from './mutate/extensions/addExtension';

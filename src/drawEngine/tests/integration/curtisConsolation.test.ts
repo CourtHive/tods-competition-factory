@@ -7,7 +7,7 @@ import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts
 import { addDrawEntries } from '../../governors/entryGovernor/addDrawEntries';
 import { assignSeed } from '../../governors/entryGovernor/seedAssignment';
 import { verifyStructure } from '../primitives/verifyStructure';
-import { getDrawStructures } from '../../getters/findStructure';
+import { getDrawStructures } from '../../../acquire/findStructure';
 import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { generateRange } from '../../../utilities';
 import { expect, it } from 'vitest';

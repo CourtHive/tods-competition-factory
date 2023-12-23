@@ -1,4 +1,4 @@
-import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
+import { structureAssignedDrawPositions } from '../../../query/drawDefinition/positionsGetter';
 import tournamentEngine from '../../../test/engines/tournamentEngine';
 import mocksEngine from '../../../mocksEngine';
 import { expect, it } from 'vitest';

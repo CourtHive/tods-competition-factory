@@ -1,6 +1,6 @@
 import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
-import { findStructure } from '../../../drawEngine/getters/findStructure';
+import { findStructure } from '../../../acquire/findStructure';
 import {
   modifyDrawNotice,
   modifyMatchUpNotice,

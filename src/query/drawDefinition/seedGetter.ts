@@ -1,14 +1,14 @@
-import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
-import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
-import { getStructureSeedAssignments } from '../../query/structure/getStructureSeedAssignments';
+import { getAppliedPolicies } from '../extensions/getAppliedPolicies';
+import { getAllStructureMatchUps } from '../matchUps/getAllStructureMatchUps';
+import { getStructureSeedAssignments } from '../structure/getStructureSeedAssignments';
 import { chunkArray, generateRange, shuffleArray } from '../../utilities';
-import { isLucky } from '../governors/queryGovernor/isLucky';
+import { isLucky } from '../../drawEngine/governors/queryGovernor/isLucky';
 import { getNumericSeedValue } from './getNumericSeedValue';
-import { findStructure } from './findStructure';
+import { findStructure } from '../../acquire/findStructure';
 import {
   getSeedBlocks,
   getSeedGroups,
-} from '../governors/positionGovernor/getSeedBlocks';
+} from '../../drawEngine/governors/positionGovernor/getSeedBlocks';
 import {
   getPositionAssignments,
   structureAssignedDrawPositions,

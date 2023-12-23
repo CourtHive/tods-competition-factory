@@ -1,5 +1,5 @@
 import { decorateResult } from '../../global/functions/decorateResult';
-import { findStructure } from '../../drawEngine/getters/findStructure';
+import { findStructure } from '../../acquire/findStructure';
 import { findMatchUp } from '../../acquire/findMatchUp';
 
 import {

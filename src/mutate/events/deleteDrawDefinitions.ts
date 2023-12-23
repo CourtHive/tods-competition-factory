@@ -7,7 +7,7 @@ import { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/m
 import { getPositionAssignments } from '../../tournamentEngine/getters/getPositionAssignments';
 import { addEventExtension } from '../extensions/addRemoveExtensions';
 import { checkAndUpdateSchedulingProfile } from '../../tournamentEngine/governors/scheduleGovernor/schedulingProfile';
-import { getDrawStructures } from '../../drawEngine/getters/findStructure';
+import { getDrawStructures } from '../../acquire/findStructure';
 import { decorateResult } from '../../global/functions/decorateResult';
 import { definedAttributes } from '../../utilities/definedAttributes';
 import { getFlightProfile } from '../../query/event/getFlightProfile';

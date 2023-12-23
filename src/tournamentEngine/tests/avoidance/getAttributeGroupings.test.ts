@@ -1,4 +1,4 @@
-import { getAttributeGroupings } from '../../../drawEngine/getters/getAttributeGrouping';
+import { getAttributeGroupings } from '../../../query/participants/getAttributeGrouping';
 import { fixtures, participantTypes } from '../../..';
 import mocksEngine from '../../../mocksEngine';
 import { expect, it } from 'vitest';

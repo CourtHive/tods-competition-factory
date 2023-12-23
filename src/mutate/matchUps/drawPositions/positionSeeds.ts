@@ -2,8 +2,8 @@ import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies
 import {
   getValidSeedBlocks,
   getNextSeedBlock,
-} from '../../../drawEngine/getters/seedGetter';
-import { findStructure } from '../../../drawEngine/getters/findStructure';
+} from '../../../query/drawDefinition/seedGetter';
+import { findStructure } from '../../../acquire/findStructure';
 import { assignDrawPosition } from './positionAssignment';
 import { generateRange } from '../../../utilities';
 

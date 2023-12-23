@@ -1,6 +1,6 @@
 import { DrawDefinition, Structure } from '../../types/tournamentTypes';
-import { getStructureSeedAssignments } from '../../query/structure/getStructureSeedAssignments';
-import { structureAssignedDrawPositions } from './positionsGetter';
+import { getStructureSeedAssignments } from './getStructureSeedAssignments';
+import { structureAssignedDrawPositions } from '../drawDefinition/positionsGetter';
 
 type GetStructurePositionedSeeds = {
   provisionalPositioning?: boolean;

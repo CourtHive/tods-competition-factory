@@ -1,7 +1,7 @@
-import { getStructurePositionedSeeds } from '../../../getters/getStructurePositionedSeeds';
+import { getStructurePositionedSeeds } from '../../../../query/structure/getStructurePositionedSeeds';
 import { getBlockSortedRandomDrawPositions } from './getBlockSortedRandomDrawPositions';
-import { getNumericSeedValue } from '../../../getters/getNumericSeedValue';
-import { getValidSeedBlocks } from '../../../getters/seedGetter';
+import { getNumericSeedValue } from '../../../../query/drawDefinition/getNumericSeedValue';
+import { getValidSeedBlocks } from '../../../../query/drawDefinition/seedGetter';
 import { unique } from '../../../../utilities';
 
 export function getSeedOrderByePositions({

@@ -1,5 +1,5 @@
 import { extractAttributes } from '../../utilities';
-import { findStructure } from './findStructure';
+import { findStructure } from '../../acquire/findStructure';
 
 import {
   ErrorType,

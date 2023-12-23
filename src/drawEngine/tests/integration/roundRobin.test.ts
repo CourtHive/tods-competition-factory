@@ -1,6 +1,6 @@
 import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
-import { getPositionAssignments } from '../../getters/positionsGetter';
+import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
 import tournamentEngine from '../../../test/engines/tournamentEngine';
 import { intersection } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';

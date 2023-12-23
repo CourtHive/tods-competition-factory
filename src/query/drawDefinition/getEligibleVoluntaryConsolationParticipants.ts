@@ -1,5 +1,5 @@
 import { getPolicyDefinitions } from '../extensions/getAppliedPolicies';
-import { getStageEntries } from '../../drawEngine/getters/stageGetter';
+import { getStageEntries } from './stageGetter';
 import {
   allDrawMatchUps,
   allEventMatchUps,

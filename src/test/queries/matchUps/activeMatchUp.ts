@@ -1,13 +1,13 @@
-import { checkScoreHasValue } from '../../query/matchUp/checkScoreHasValue';
-import { isActiveMatchUpStatus } from '../governors/matchUpGovernor/checkStatusType';
+import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
+import { isActiveMatchUpStatus } from '../../../drawEngine/governors/matchUpGovernor/checkStatusType';
 
 import {
   DEFAULTED,
   IN_PROGRESS,
   WALKOVER,
-} from '../../constants/matchUpStatusConstants';
+} from '../../../constants/matchUpStatusConstants';
 
-import { Score } from '../../types/tournamentTypes';
+import { Score } from '../../../types/tournamentTypes';
 
 // an active matchUp is one that has a winningSide, more than one set, or a single set with any score value greater than zero
 // when { matchUpType: TEAM } the child tieMatchUps must be checked as well

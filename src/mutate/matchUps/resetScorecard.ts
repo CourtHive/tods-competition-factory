@@ -4,7 +4,7 @@ import { resetTieFormat } from '../tieFormat/resetTieFormat';
 import { getAllDrawMatchUps } from '../../query/drawMatchUps';
 import { getMatchUpsMap } from '../../query/matchUps/getMatchUpsMap';
 import { positionTargets } from './drawPositions/positionTargets';
-import { findStructure } from '../../drawEngine/getters/findStructure';
+import { findStructure } from '../../acquire/findStructure';
 import { isActiveDownstream } from '../../drawEngine/governors/matchUpGovernor/isActiveDownstream';
 import { updateTieMatchUpScore } from './score/tieMatchUpScore';
 import { setMatchUpStatus } from './matchUpStatus/setMatchUpStatus';

@@ -7,11 +7,11 @@ import { generateVoluntaryConsolation } from '../../../assemblies/generators/dra
 import { generateQualifyingStructure } from '../../../assemblies/generators/drawDefinitions/drawTypes/generateQualifyingStructure';
 import { getAvailablePlayoffProfiles } from './getAvailablePlayoffProfiles';
 import { attachQualifyingStructure } from '../../../mutate/drawDefinitions/attachQualifyingStructure';
-import { getQualifiersCount } from '../../getters/getQualifiersCount';
+import { getQualifiersCount } from '../../../query/drawDefinition/getQualifiersCount';
 import { buildDrawHierarchy } from '../../../assemblies/generators/drawDefinitions/drawHierarchy';
 import { addQualifyingStructure } from '../../../mutate/drawDefinitions/addQualifyingStructure';
 import { getPositionsPlayedOff } from './getPositionsPlayedOff';
-import { getDrawStructures } from '../../getters/findStructure';
+import { getDrawStructures } from '../../../acquire/findStructure';
 import { addPlayoffStructures } from '../../../mutate/drawDefinitions/addPlayoffStructures';
 import { attachPlayoffStructures } from '../../../mutate/drawDefinitions/attachStructures';
 import { deleteAdHocMatchUps } from '../../../mutate/structures/deleteAdHocMatchUps';

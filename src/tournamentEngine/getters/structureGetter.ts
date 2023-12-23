@@ -1,7 +1,4 @@
-import {
-  findStructure,
-  getDrawStructures,
-} from '../../drawEngine/getters/findStructure';
+import { findStructure, getDrawStructures } from '../../acquire/findStructure';
 
 import { DrawDefinition, Structure } from '../../types/tournamentTypes';
 import {

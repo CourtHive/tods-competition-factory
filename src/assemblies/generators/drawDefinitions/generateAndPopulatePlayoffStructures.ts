@@ -9,7 +9,7 @@ import { getAvailablePlayoffProfiles } from '../../../drawEngine/governors/struc
 import { positionTargets } from '../../../mutate/matchUps/drawPositions/positionTargets';
 import { getMatchUpId } from '../../../global/functions/extractors';
 import { generateTieMatchUps } from './tieMatchUps';
-import { findStructure } from '../../../drawEngine/getters/findStructure';
+import { findStructure } from '../../../acquire/findStructure';
 import { ensureInt } from '../../../utilities/ensureInt';
 import { addGoesTo } from '../../../drawEngine/governors/matchUpGovernor/addGoesTo';
 import { getSourceRounds } from '../../../drawEngine/governors/structureGovernor/getSourceRounds';

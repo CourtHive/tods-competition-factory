@@ -2,10 +2,10 @@ import { findExtension } from '../../../acquire/findExtension';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { getStructureSeedAssignments } from '../../../query/structure/getStructureSeedAssignments';
 import { randomUnseededSeparation } from '../../../drawEngine/governors/positionGovernor/avoidance/randomUnseededSeparation';
-import { structureAssignedDrawPositions } from '../../../drawEngine/getters/positionsGetter';
+import { structureAssignedDrawPositions } from '../../../query/drawDefinition/positionsGetter';
 import { decorateResult } from '../../../global/functions/decorateResult';
-import { getStageEntries } from '../../../drawEngine/getters/stageGetter';
-import { findStructure } from '../../../drawEngine/getters/findStructure';
+import { getStageEntries } from '../../../query/drawDefinition/stageGetter';
+import { findStructure } from '../../../acquire/findStructure';
 import { assignDrawPosition } from './positionAssignment';
 import { shuffleArray } from '../../../utilities';
 

@@ -1,15 +1,15 @@
-import tournamentEngine from '../../../../../test/engines/tournamentEngine';
-import { mocksEngine } from '../../../../../mocksEngine';
-import { unique } from '../../../../../utilities';
-import competitionEngine from '../../../../../test/engines/competitionEngine';
+import tournamentEngine from '../../engines/tournamentEngine';
+import { mocksEngine } from '../../../mocksEngine';
+import { unique } from '../../../utilities';
+import competitionEngine from '../../engines/competitionEngine';
 import { it, expect } from 'vitest';
 
-import { INVALID_VALUES } from '../../../../../constants/errorConditionConstants';
-import { SCHEDULE_WARNING } from '../../../../../constants/scheduleConstants';
+import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
+import { SCHEDULE_WARNING } from '../../../constants/scheduleConstants';
 import {
   FOLLOWED_BY,
   NEXT_AVAILABLE,
-} from '../../../../../constants/timeItemConstants';
+} from '../../../constants/timeItemConstants';
 
 const startDate = '2023-06-16';
 const venueId = 'cc-venue-id';

@@ -1,8 +1,8 @@
 import { getDrawMatchUps } from '../../../../query/drawMatchUps';
-import { getNumericSeedValue } from '../../../getters/getNumericSeedValue';
+import { getNumericSeedValue } from '../../../../query/drawDefinition/getNumericSeedValue';
 import { definedAttributes } from '../../../../utilities/definedAttributes';
 import { extractAttributes } from '../../../../utilities/objects';
-import { getNextSeedBlock } from '../../../getters/seedGetter';
+import { getNextSeedBlock } from '../../../../query/drawDefinition/seedGetter';
 import { makeDeepCopy, unique } from '../../../../utilities';
 
 import { POLICY_TYPE_SEEDING } from '../../../../constants/policyConstants';

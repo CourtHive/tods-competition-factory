@@ -1,4 +1,4 @@
-import { getDrawStructures } from '../../../drawEngine/getters/findStructure';
+import { getDrawStructures } from '../../../acquire/findStructure';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { mocksEngine, setSubscriptions } from '../../..';
 import { generateRange } from '../../../utilities';

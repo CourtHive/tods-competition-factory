@@ -1,4 +1,4 @@
-import { getStructureDrawPositionProfiles } from '../../../drawEngine/getters/getStructureDrawPositionProfiles';
+import { getStructureDrawPositionProfiles } from '../../../query/structure/getStructureDrawPositionProfiles';
 import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { getInitialRoundNumber } from '../../../query/matchUps/getInitialRoundNumber';
@@ -9,9 +9,9 @@ import {
 } from '../../../query/matchUps/getMatchUpsMap';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { addPositionActionTelemetry } from '../../../drawEngine/governors/positionGovernor/addPositionActionTelemetry';
-import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
+import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
 import { pushGlobalLog } from '../../../global/functions/globalLog';
-import { findStructure } from '../../../drawEngine/getters/findStructure';
+import { findStructure } from '../../../acquire/findStructure';
 import { positionTargets } from './positionTargets';
 import { numericSort } from '../../../utilities';
 import {

@@ -3,7 +3,7 @@ import { completeMatchUp, verifyMatchUps } from '../primitives/verifyMatchUps';
 import { getAllDrawMatchUps } from '../../../query/drawMatchUps';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
-import { getDrawStructures } from '../../getters/findStructure';
+import { getDrawStructures } from '../../../acquire/findStructure';
 import tournamentEngine from '../../../test/engines/tournamentEngine';
 import mocksEngine from '../../../mocksEngine';
 import { expect, it } from 'vitest';

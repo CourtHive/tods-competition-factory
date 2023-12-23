@@ -1,5 +1,5 @@
 import { ResultType } from '../../global/functions/decorateResult';
-import { processAccessors } from './processAccessors';
+import { processAccessors } from '../drawDefinition/processAccessors';
 import { unique } from '../../utilities';
 
 import { HydratedParticipant } from '../../types/hydrated';

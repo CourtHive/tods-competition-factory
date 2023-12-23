@@ -1,11 +1,11 @@
 import { getStructureSeedAssignments } from '../../../query/structure/getStructureSeedAssignments';
 import { getFlightProfile } from '../../../query/event/getFlightProfile';
 import { modifySeedAssignmentsNotice } from '../../../mutate/notifications/drawNotifications';
-import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
+import { structureAssignedDrawPositions } from '../../../query/drawDefinition/positionsGetter';
 import { decorateResult } from '../../../global/functions/decorateResult';
-import { participantInEntries } from '../../getters/entryGetter';
-import { isValidSeedPosition } from '../../getters/seedGetter';
-import { findStructure } from '../../getters/findStructure';
+import { participantInEntries } from '../../../query/drawDefinition/entryGetter';
+import { isValidSeedPosition } from '../../../query/drawDefinition/seedGetter';
+import { findStructure } from '../../../acquire/findStructure';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SeedingProfile } from '../../../types/factoryTypes';

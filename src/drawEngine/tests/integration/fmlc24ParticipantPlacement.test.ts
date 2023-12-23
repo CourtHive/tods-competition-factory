@@ -5,7 +5,7 @@ import { expect, it } from 'vitest';
 import { CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
 import SEEDING_ITF from '../../../fixtures/policies/POLICY_SEEDING_ITF';
-import { getDrawStructures } from '../../getters/findStructure';
+import { getDrawStructures } from '../../../acquire/findStructure';
 
 it('can support ITF Consolation participant placement', () => {
   const drawSize = 32;

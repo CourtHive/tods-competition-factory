@@ -4,7 +4,7 @@ import { getAllDrawMatchUps } from '../../../query/drawMatchUps';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { updateSideLineUp } from '../lineUps/updateSideLineUp';
-import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
+import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
 import { positionTargets } from './positionTargets';
 import { getUpdatedDrawPositions } from '../../../drawEngine/governors/matchUpGovernor/getUpdatedDrawPositions';
 import { updateMatchUpStatusCodes } from '../../../drawEngine/governors/matchUpGovernor/matchUpStatusCodes';

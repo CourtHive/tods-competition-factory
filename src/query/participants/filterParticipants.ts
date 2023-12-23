@@ -1,4 +1,4 @@
-import { getAllPositionedParticipantIds } from '../../drawEngine/getters/positionsGetter';
+import { getAllPositionedParticipantIds } from '../drawDefinition/positionsGetter';
 import { getParticipantId } from '../../global/functions/extractors';
 import { getAccessorValue } from '../../utilities/getAccessorValue';
 import { getTimeItem } from '../participant/timeItems';

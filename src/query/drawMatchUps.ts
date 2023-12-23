@@ -4,7 +4,7 @@ import { getContextContent } from '../tournamentEngine/getters/getContextContent
 import { getExitProfiles } from '../drawEngine/governors/queryGovernor/getExitProfile';
 import { MatchUpsMap, getMatchUpsMap } from './matchUps/getMatchUpsMap';
 import { getStructureMatchUps } from './structure/getStructureMatchUps';
-import { getDrawStructures } from '../drawEngine/getters/findStructure';
+import { getDrawStructures } from '../acquire/findStructure';
 import { filterMatchUps } from './filterMatchUps';
 import { ResultType, decorateResult } from '../global/functions/decorateResult';
 

@@ -1,6 +1,6 @@
 import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
 import { completeMatchUp } from '../primitives/verifyMatchUps';
-import { getDrawStructures } from '../../getters/findStructure';
+import { getDrawStructures } from '../../../acquire/findStructure';
 import tournamentEngine from '../../../test/engines/tournamentEngine';
 import { instanceCount } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';

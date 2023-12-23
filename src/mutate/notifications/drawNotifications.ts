@@ -1,5 +1,5 @@
 import { addNotice, deleteNotice } from '../../global/state/globalState';
-import { getPositionAssignments } from '../../drawEngine/getters/positionsGetter';
+import { getPositionAssignments } from '../../query/drawDefinition/positionsGetter';
 
 import { DrawDefinition, MatchUp } from '../../types/tournamentTypes';
 import { SUCCESS } from '../../constants/resultConstants';

@@ -1,5 +1,5 @@
 import { generateMatchUpOutcome } from '../../primitives/generateMatchUpOutcome';
-import { getPositionAssignments } from '../../../getters/positionsGetter';
+import { getPositionAssignments } from '../../../../query/drawDefinition/positionsGetter';
 import tournamentEngine from '../../../../test/engines/tournamentEngine';
 import { intersection } from '../../../../utilities';
 import { setsValues } from './roundRobinSetsValues';

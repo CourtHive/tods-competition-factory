@@ -5,7 +5,7 @@ import { getAllDrawMatchUps } from '../../../query/drawMatchUps';
 import { getMatchUpIds } from '../../../global/functions/extractors';
 import { resequenceStructures } from './resequenceStructures';
 import { extractAttributes as xa } from '../../../utilities';
-import { findStructure } from '../../getters/findStructure';
+import { findStructure } from '../../../acquire/findStructure';
 import {
   deleteMatchUpsNotice,
   modifyDrawNotice,

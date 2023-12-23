@@ -1,4 +1,4 @@
-import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
+import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
 import { allDrawMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
 import { avoidanceTest } from '../primitives/avoidanceTest';
 import { eventConstants } from '../../..';

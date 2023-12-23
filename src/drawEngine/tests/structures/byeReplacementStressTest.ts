@@ -1,5 +1,5 @@
 import { completeDrawMatchUps } from '../../../mocksEngine/generators/completeDrawMatchUps';
-import { getPositionAssignments } from '../../getters/positionsGetter';
+import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
 import { getDrawPosition } from '../../../global/functions/extractors';
 import { extractAttributes, shuffleArray } from '../../../utilities';
 import { hasParticipantId } from '../../../global/functions/filters';

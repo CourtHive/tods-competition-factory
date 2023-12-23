@@ -5,7 +5,7 @@ import { attachPolicies } from '../../../mutate/extensions/policies/attachPolici
 import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';
 import { addDrawEntries } from '../../governors/entryGovernor/addDrawEntries';
 import { assignSeed } from '../../governors/entryGovernor/seedAssignment';
-import { getDrawStructures } from '../../getters/findStructure';
+import { getDrawStructures } from '../../../acquire/findStructure';
 import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { generateRange } from '../../../utilities';
 

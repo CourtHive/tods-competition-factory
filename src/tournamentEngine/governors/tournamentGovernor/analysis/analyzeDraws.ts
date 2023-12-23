@@ -1,8 +1,8 @@
-import { getStructureDrawPositionProfiles } from '../../../../drawEngine/getters/getStructureDrawPositionProfiles';
+import { getStructureDrawPositionProfiles } from '../../../../query/structure/getStructureDrawPositionProfiles';
 import { getRoundMatchUps } from '../../../../query/matchUps/getRoundMatchUps';
-import { getPositionAssignments } from '../../../../drawEngine/getters/positionsGetter';
+import { getPositionAssignments } from '../../../../query/drawDefinition/positionsGetter';
 import { getStructureGroups } from '../../publishingGovernor/getStructureGroups';
-import { getStructureLinks } from '../../../../drawEngine/getters/linkGetter';
+import { getStructureLinks } from '../../../../query/drawDefinition/linkGetter';
 import { stageOrder } from '../../../../constants/drawDefinitionConstants';
 import { ensureInt } from '../../../../utilities/ensureInt';
 

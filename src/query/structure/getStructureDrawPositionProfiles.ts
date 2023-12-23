@@ -1,11 +1,11 @@
-import { getMatchUpDependencies } from '../../query/matchUps/getMatchUpDependencies';
+import { getMatchUpDependencies } from '../matchUps/getMatchUpDependencies';
 import { getContainedStructures } from '../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
-import { getAllDrawMatchUps } from '../../query/drawMatchUps';
-import { isAdHoc } from '../governors/queryGovernor/isAdHoc';
-import { getPositionAssignments } from './positionsGetter';
+import { getAllDrawMatchUps } from '../drawMatchUps';
+import { isAdHoc } from '../../drawEngine/governors/queryGovernor/isAdHoc';
+import { getPositionAssignments } from '../drawDefinition/positionsGetter';
 import { numericSort, unique } from '../../utilities';
-import { isActiveMatchUp } from './activeMatchUp';
-import { findStructure } from './findStructure';
+import { isActiveMatchUp } from '../../test/queries/matchUps/activeMatchUp';
+import { findStructure } from '../../acquire/findStructure';
 
 import { INVALID_DRAW_POSITION } from '../../constants/errorConditionConstants';
 import { DrawDefinition, Event, Structure } from '../../types/tournamentTypes';

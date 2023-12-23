@@ -3,7 +3,7 @@ import { treeMatchUps } from '../../../assemblies/generators/drawDefinitions/dra
 import { validDrawPositions } from '../../../validators/validDrawPositions';
 import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';
 import { DrawDefinition } from '../../../types/tournamentTypes';
-import { structureSort } from '../../getters/structureSort';
+import { structureSort } from '../../../functions/sorters/structureSort';
 import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { expect, it } from 'vitest';
 

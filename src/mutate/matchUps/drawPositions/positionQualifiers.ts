@@ -1,10 +1,10 @@
 import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
-import { structureAssignedDrawPositions } from '../../../drawEngine/getters/positionsGetter';
+import { structureAssignedDrawPositions } from '../../../query/drawDefinition/positionsGetter';
 import { decorateResult } from '../../../global/functions/decorateResult';
-import { getQualifiersCount } from '../../../drawEngine/getters/getQualifiersCount';
+import { getQualifiersCount } from '../../../query/drawDefinition/getQualifiersCount';
 import { generateRange, randomPop } from '../../../utilities';
-import { findStructure } from '../../../drawEngine/getters/findStructure';
+import { findStructure } from '../../../acquire/findStructure';
 import { ensureInt } from '../../../utilities/ensureInt';
 
 import { CONSOLATION } from '../../../constants/drawDefinitionConstants';

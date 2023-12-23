@@ -1,7 +1,7 @@
 import { getContainedStructures } from '../../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
 import { findExtension } from '../../../acquire/findExtension';
-import { getPositionAssignments } from '../../getters/positionsGetter';
-import { getStructureLinks } from '../../getters/linkGetter';
+import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
+import { getStructureLinks } from '../../../query/drawDefinition/linkGetter';
 import { overlap } from '../../../utilities';
 
 import { TALLY } from '../../../constants/extensionConstants';

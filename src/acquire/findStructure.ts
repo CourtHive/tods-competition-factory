@@ -1,17 +1,17 @@
-import { findExtension } from '../../acquire/findExtension';
-import { ResultType } from '../../global/functions/decorateResult';
-import { structureSort } from './structureSort';
+import { findExtension } from './findExtension';
+import { ResultType } from '../global/functions/decorateResult';
+import { structureSort } from '../functions/sorters/structureSort';
 
-import { DrawDefinition, Structure } from '../../types/tournamentTypes';
-import { ITEM, validStages } from '../../constants/drawDefinitionConstants';
-import { ROUND_TARGET } from '../../constants/extensionConstants';
-import { StructureSortConfig } from '../../types/factoryTypes';
+import { DrawDefinition, Structure } from '../types/tournamentTypes';
+import { ITEM, validStages } from '../constants/drawDefinitionConstants';
+import { ROUND_TARGET } from '../constants/extensionConstants';
+import { StructureSortConfig } from '../types/factoryTypes';
 import {
   MISSING_STRUCTURES,
   STRUCTURE_NOT_FOUND,
   MISSING_STRUCTURE_ID,
   MISSING_DRAW_DEFINITION,
-} from '../../constants/errorConditionConstants';
+} from '../constants/errorConditionConstants';
 
 type FindStructureArgs = {
   drawDefinition?: DrawDefinition;

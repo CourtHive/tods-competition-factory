@@ -1,4 +1,4 @@
-import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '../matchUps/getAllStructureMatchUps';
 import { structureAssignedDrawPositions } from './positionsGetter';
 import { getQualifiersCount } from './getQualifiersCount';
 import { getStageEntries } from './stageGetter';

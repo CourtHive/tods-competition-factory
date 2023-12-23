@@ -2,7 +2,7 @@ import { getAllStructureMatchUps } from '../query/matchUps/getAllStructureMatchU
 import { getContextContent } from '../tournamentEngine/getters/getContextContent';
 import { MatchUpsMap } from '../query/matchUps/getMatchUpsMap';
 import { getMatchUp } from '../query/matchUps/getMatchUpFromMatchUps';
-import { getDrawStructures } from '../drawEngine/getters/findStructure';
+import { getDrawStructures } from './findStructure';
 import { makeDeepCopy } from '../utilities';
 
 import { ContextContent, ContextProfile } from '../types/factoryTypes';

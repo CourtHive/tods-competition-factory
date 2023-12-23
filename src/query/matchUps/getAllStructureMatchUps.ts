@@ -15,7 +15,7 @@ import { getExitProfiles } from '../../drawEngine/governors/queryGovernor/getExi
 import { getSourceDrawPositionRanges } from './getSourceDrawPositionRanges';
 import { attributeFilter, makeDeepCopy, unique } from '../../utilities';
 import { definedAttributes } from '../../utilities/definedAttributes';
-import { structureAssignedDrawPositions } from '../../drawEngine/getters/positionsGetter';
+import { structureAssignedDrawPositions } from '../drawDefinition/positionsGetter';
 import { getOrderedDrawPositions } from './getOrderedDrawPositions';
 import { getDrawPositionsRanges } from './getDrawPositionsRanges';
 import { MatchUpFilters, filterMatchUps } from '../filterMatchUps';

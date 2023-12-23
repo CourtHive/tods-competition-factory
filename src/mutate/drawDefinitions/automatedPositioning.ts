@@ -4,14 +4,14 @@ import { getParticipants } from '../../query/participants/getParticipants';
 import {
   getSeedPattern,
   getValidSeedBlocks,
-} from '../../drawEngine/getters/seedGetter';
+} from '../../query/drawDefinition/seedGetter';
 import { getAllDrawMatchUps } from '../../query/drawMatchUps';
 import { modifyDrawNotice } from '../notifications/drawNotifications';
-import { getPositionAssignments } from '../../drawEngine/getters/positionsGetter';
-import { getQualifiersCount } from '../../drawEngine/getters/getQualifiersCount';
+import { getPositionAssignments } from '../../query/drawDefinition/positionsGetter';
+import { getQualifiersCount } from '../../query/drawDefinition/getQualifiersCount';
 import { positionByes } from '../../drawEngine/governors/positionGovernor/byePositioning/positionByes';
-import { getStageEntries } from '../../drawEngine/getters/stageGetter';
-import { findStructure } from '../../drawEngine/getters/findStructure';
+import { getStageEntries } from '../../query/drawDefinition/stageGetter';
+import { findStructure } from '../../acquire/findStructure';
 import { positionQualifiers } from '../matchUps/drawPositions/positionQualifiers';
 import { positionSeedBlocks } from '../matchUps/drawPositions/positionSeeds';
 import { makeDeepCopy } from '../../utilities';

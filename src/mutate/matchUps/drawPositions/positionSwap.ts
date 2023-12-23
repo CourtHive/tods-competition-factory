@@ -6,7 +6,7 @@ import { getAllDrawMatchUps } from '../../../query/drawMatchUps';
 import { addPositionActionTelemetry } from '../../../drawEngine/governors/positionGovernor/addPositionActionTelemetry';
 import { getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
 import { assignDrawPosition } from './positionAssignment';
-import { findStructure } from '../../../drawEngine/getters/findStructure';
+import { findStructure } from '../../../acquire/findStructure';
 import { updateSideLineUp } from '../lineUps/updateSideLineUp';
 import { makeDeepCopy } from '../../../utilities';
 import { resetLineUps } from '../lineUps/resetLineUps';

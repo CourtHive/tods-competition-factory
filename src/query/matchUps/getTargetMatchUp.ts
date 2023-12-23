@@ -1,8 +1,8 @@
 import { findExtension } from '../../acquire/findExtension';
-import { findStructure } from '../../drawEngine/getters/findStructure';
+import { findStructure } from '../../acquire/findStructure';
 import { getDevContext } from '../../global/state/globalState';
 import { chunkArray, generateRange } from '../../utilities';
-import { getPositionAssignments } from '../../drawEngine/getters/positionsGetter';
+import { getPositionAssignments } from '../drawDefinition/positionsGetter';
 import { reduceGroupedOrder } from './reduceGroupedOrder';
 
 import { DISABLE_LINKS } from '../../constants/extensionConstants';

@@ -1,5 +1,5 @@
 import { addExtension } from '../../../mutate/extensions/addExtension';
-import { getPositionAssignments } from '../../getters/positionsGetter';
+import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
 import { findExtension } from '../../../acquire/findExtension';
 
 import { AUDIT_POSITION_ACTIONS } from '../../../constants/extensionConstants';

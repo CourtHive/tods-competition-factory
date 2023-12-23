@@ -4,7 +4,7 @@ import { getDrawMatchUps } from '../../../query/drawMatchUps';
 import { publicFindDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
 import { verifyStructure } from '../primitives/verifyStructure';
-import { getDrawStructures } from '../../getters/findStructure';
+import { getDrawStructures } from '../../../acquire/findStructure';
 import { expect, it } from 'vitest';
 
 import { MAIN, CONSOLATION } from '../../../constants/drawDefinitionConstants';

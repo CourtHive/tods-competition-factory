@@ -1,5 +1,5 @@
 import { getOrderedDrawPositionPairs } from '../../../drawEngine/tests/testingUtilities';
-import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
+import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { getDrawPosition } from '../../../global/functions/extractors';

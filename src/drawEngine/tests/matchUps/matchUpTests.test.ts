@@ -7,7 +7,7 @@ import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts
 import { getDrawMatchUps } from '../../../query/drawMatchUps';
 import { getMatchUpType } from '../../../query/matchUp/getMatchUpType';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
-import { getDrawStructures } from '../../getters/findStructure';
+import { getDrawStructures } from '../../../acquire/findStructure';
 import { expect, it } from 'vitest';
 
 import { DrawDefinition } from '../../../types/tournamentTypes';

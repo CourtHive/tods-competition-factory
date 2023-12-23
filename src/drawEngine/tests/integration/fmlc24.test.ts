@@ -2,7 +2,7 @@ import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { completeMatchUp, verifyMatchUps } from '../primitives/verifyMatchUps';
 import { getAllDrawMatchUps } from '../../../query/drawMatchUps';
 import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
-import { getDrawStructures } from '../../getters/findStructure';
+import { getDrawStructures } from '../../../acquire/findStructure';
 import { instanceCount } from '../../../utilities';
 import { expect, it } from 'vitest';
 

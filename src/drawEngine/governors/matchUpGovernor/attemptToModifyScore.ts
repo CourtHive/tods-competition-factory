@@ -1,4 +1,4 @@
-import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
+import { structureAssignedDrawPositions } from '../../../query/drawDefinition/positionsGetter';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { isDirectingMatchUpStatus } from './checkStatusType';
 import { modifyMatchUpScore } from '../../../mutate/matchUps/score/modifyMatchUpScore';

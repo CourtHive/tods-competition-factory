@@ -1,7 +1,7 @@
 import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
 import { decorateResult } from '../../global/functions/decorateResult';
 import { resequenceStructures } from '../../drawEngine/governors/structureGovernor/resequenceStructures';
-import { findStructure } from '../../drawEngine/getters/findStructure';
+import { findStructure } from '../../acquire/findStructure';
 import {
   addMatchUpsNotice,
   modifyDrawNotice,

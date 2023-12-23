@@ -7,9 +7,9 @@ import { definedAttributes } from '../../../../utilities/definedAttributes';
 import { modifyDrawNotice } from '../../../../mutate/notifications/drawNotifications';
 import { generateTieMatchUps } from '../tieMatchUps';
 import { makeDeepCopy, nextPowerOf2 } from '../../../../utilities';
-import { getDrawStructures } from '../../../../drawEngine/getters/findStructure';
+import { getDrawStructures } from '../../../../acquire/findStructure';
 import { constantToString } from '../../../../utilities/strings';
-import { getStageEntries } from '../../../../drawEngine/getters/stageGetter';
+import { getStageEntries } from '../../../../query/drawDefinition/stageGetter';
 import { getGenerators } from '../getGenerators';
 
 import {

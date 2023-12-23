@@ -1,7 +1,10 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
 import { setStageDrawSize } from '../../governors/entryGovernor/stageEntryCounts';
 import { feedInChampionship } from '../../tests/primitives/feedIn';
-import { findStructure, getDrawStructures } from '../findStructure';
+import {
+  findStructure,
+  getDrawStructures,
+} from '../../../acquire/findStructure';
 import { constantToString } from '../../../utilities/strings';
 import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { expect, it } from 'vitest';

@@ -1,4 +1,4 @@
-import { getStructureLinks } from '../../../../drawEngine/getters/linkGetter';
+import { getStructureLinks } from '../../../../query/drawDefinition/linkGetter';
 import { isString } from '../../../../utilities/objects';
 import { intersection } from '../../../../utilities';
 

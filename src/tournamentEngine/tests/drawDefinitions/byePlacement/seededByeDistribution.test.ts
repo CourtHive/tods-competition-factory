@@ -1,4 +1,4 @@
-import { getSeededDrawPositions } from '../../../../drawEngine/getters/getSeededDrawPositions';
+import { getSeededDrawPositions } from '../../../../query/drawDefinition/getSeededDrawPositions';
 import { generateRange } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../../test/engines/tournamentEngine';
