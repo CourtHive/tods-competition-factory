@@ -31,7 +31,7 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     generateTeamTournament(scenario);
   expect(valueGoal).toEqual(scenario.valueGoal);
 
-  tournamentEngine.setState(tournamentRecord);
+  tournamentEngine.devContext(true).setState(tournamentRecord);
 
   // get positionAssignments to determine drawPositions
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
@@ -65,7 +65,6 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     drawId,
   });
   let validActions = result.validActions.map(({ type }) => type);
-
   expect(validActions).toEqual([REFEREE, SCHEDULE, ASSIGN_PARTICIPANT]);
 
   let assignPositionAction = result.validActions.find(

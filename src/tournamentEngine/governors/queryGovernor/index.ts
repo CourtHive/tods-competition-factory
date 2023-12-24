@@ -14,7 +14,6 @@ import { getMatchUpFormat } from '../../../query/hierarchical/getMatchUpFormat';
 import { getMatchUpsStats } from '../../../query/matchUps/getMatchUpsStats';
 import { getEvent, getEvents } from '../../../query/events/eventGetter';
 import { publicFindMatchUp } from '../../../acquire/findMatchUp';
-import { matchUpActions } from '../../getters/matchUpActions';
 import { bulkUpdatePublishedEventIds } from '../../../query/event/publishState';
 import { findExtension } from '../../../acquire/findExtension';
 import { getParticipantSignInStatus } from '../../../query/participant/signInStatus';
@@ -48,6 +47,7 @@ import { getVenuesAndCourts } from '../../../query/venues/venuesAndCourtsGetter'
 import { drawMatchUps } from '../../../query/matchUps/getDrawMatchUps';
 import { positionActions } from '../../../query/drawDefinition/positionActions/positionActions';
 import { getCourts } from '../../../query/venues/getCourts';
+import { matchUpActions } from '../../../query/drawDefinition/matchUpActions';
 
 function findDrawDefinition({ tournamentRecord, drawDefinition }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

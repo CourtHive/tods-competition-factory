@@ -1,18 +1,21 @@
-import { checkScoreHasValue } from '../matchUp/checkScoreHasValue';
-import { getAppliedPolicies } from '../extensions/getAppliedPolicies';
-import { getFlightProfile } from '../event/getFlightProfile';
-import { eligibleEntryStage } from './positionActions/getValidAlternatesAction';
-import { structureAssignedDrawPositions } from './positionsGetter';
 import { isDirectingMatchUpStatus } from '../../mutate/drawDefinitions/matchUpGovernor/checkStatusType';
-import { getAllDrawMatchUps } from '../matchUps/drawMatchUps';
 import { isActiveDownstream } from '../../mutate/drawDefinitions/matchUpGovernor/isActiveDownstream';
-import { findDrawMatchUp } from '../../acquire/findDrawMatchUp';
-import { getParticipantId } from '../../global/functions/extractors';
 import { positionTargets } from '../../mutate/matchUps/drawPositions/positionTargets';
+import { eligibleEntryStage } from './positionActions/getValidAlternatesAction';
+import { allTournamentMatchUps } from '../matchUps/getAllTournamentMatchUps';
+import { getMatchUpsMap, MatchUpsMap } from '../matchUps/getMatchUpsMap';
+import { getAppliedPolicies } from '../extensions/getAppliedPolicies';
+import { getParticipantId } from '../../global/functions/extractors';
+import { checkScoreHasValue } from '../matchUp/checkScoreHasValue';
+import { structureAssignedDrawPositions } from './positionsGetter';
+import { getParticipants } from '../participants/getParticipants';
+import { getAllDrawMatchUps } from '../matchUps/drawMatchUps';
+import { findDrawMatchUp } from '../../acquire/findDrawMatchUp';
+import { getFlightProfile } from '../event/getFlightProfile';
 import { isCompletedStructure } from './structureActions';
 import { makeDeepCopy, unique } from '../../utilities';
+import { isString } from '../../utilities/objects';
 import { isAdHoc } from './isAdHoc';
-import { getMatchUpsMap, MatchUpsMap } from '../matchUps/getMatchUpsMap';
 import {
   getEnabledStructures,
   getPolicyActions,
@@ -25,7 +28,7 @@ import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '../../constants/matchUpTypes';
 import { HydratedMatchUp, HydratedParticipant } from '../../types/hydrated';
 import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';
 import { ANY, MIXED } from '../../constants/genderConstants';
-import { PolicyDefinitions } from '../../types/factoryTypes';
+import { PolicyDefinitions, TournamentRecords } from '../../types/factoryTypes';
 import {
   ADD_PENALTY,
   ADD_PENALTY_METHOD,
@@ -36,6 +39,7 @@ import {
   MATCHUP_NOT_FOUND,
   MISSING_DRAW_DEFINITION,
   MISSING_MATCHUP_ID,
+  MISSING_TOURNAMENT_RECORD,
 } from '../../constants/errorConditionConstants';
 import {
   BYE,
@@ -88,37 +92,45 @@ type MatchUpActionsArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];
   restrictAdHocRoundParticipants?: boolean;
   tournamentParticipants?: Participant[];
+  tournamentRecords?: TournamentRecords;
   policyDefinitions?: PolicyDefinitions;
   tournamentRecord?: Tournament;
   drawDefinition: DrawDefinition;
   matchUpsMap?: MatchUpsMap;
   enforceGender?: boolean;
   participantId?: string;
+  tournamentId?: string;
   sideNumber?: number;
   matchUpId?: string;
+  eventId?: string;
+  drawId?: string;
   event?: Event;
 };
-export function matchUpActions({
-  restrictAdHocRoundParticipants = true, // disallow the same participant being in the same round multiple times
-  policyDefinitions: specifiedPolicyDefinitions,
-  tournamentParticipants = [],
-  inContextDrawMatchUps,
-  tournamentRecord,
-  drawDefinition,
-  enforceGender,
-  participantId,
-  matchUpsMap,
-  sideNumber,
-  matchUpId,
-  event,
-}: MatchUpActionsArgs): ResultType & {
+export function matchUpActions(params?: MatchUpActionsArgs): ResultType & {
   structureIsComplete?: boolean;
   isDoubleExit?: boolean;
   isByeMatchUp?: boolean;
   validActions?: any[];
 } {
-  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-  if (!matchUpId) return { error: MISSING_MATCHUP_ID };
+  if (!params) return { error: INVALID_VALUES };
+  let drawDefinition, event;
+  const {
+    restrictAdHocRoundParticipants = true, // disallow the same participant being in the same round multiple times
+    policyDefinitions: specifiedPolicyDefinitions,
+    enforceGender,
+    participantId,
+    sideNumber,
+    matchUpId,
+  } = params;
+
+  const tournamentRecord =
+    params.tournamentRecord ??
+    (params.tournamentId &&
+      isString(params.tournamentId) &&
+      params.tournamentRecords?.[params.tournamentId]);
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+
+  if (!matchUpId || !isString(matchUpId)) return { error: MISSING_MATCHUP_ID };
 
   if (sideNumber && ![1, 2].includes(sideNumber))
     return decorateResult({
@@ -126,9 +138,24 @@ export function matchUpActions({
       context: { sideNumber },
     });
 
-  const otherFlightEntries =
-    specifiedPolicyDefinitions?.[POLICY_TYPE_POSITION_ACTIONS]
-      ?.otherFlightEntries;
+  if (!drawDefinition) {
+    // if matchUp did not have context, find drawId by brute force
+    const matchUps = allTournamentMatchUps({ tournamentRecord }).matchUps ?? [];
+    const matchUp = matchUps.find((matchUp) => matchUp.matchUpId === matchUpId);
+    event = (tournamentRecord?.events ?? []).find(
+      (event) => event.eventId === matchUp?.eventId
+    );
+    drawDefinition = (event?.drawDefinitions ?? []).find(
+      (drawDefinition) => drawDefinition.drawId === matchUp?.drawId
+    );
+  }
+
+  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+
+  const tournamentParticipants = getParticipants({
+    tournamentRecord,
+    withIndividualParticipants: true,
+  }).participants;
 
   const { drawId } = drawDefinition;
   const { matchUp, structure } = findDrawMatchUp({
@@ -149,6 +176,9 @@ export function matchUpActions({
 
   Object.assign(appliedPolicies, specifiedPolicyDefinitions ?? {});
 
+  const otherFlightEntries =
+    appliedPolicies?.[POLICY_TYPE_POSITION_ACTIONS]?.otherFlightEntries;
+
   const matchUpActionsPolicy =
     appliedPolicies?.[POLICY_TYPE_MATCHUP_ACTIONS] ??
     POLICY_MATCHUP_ACTIONS_DEFAULT[POLICY_TYPE_MATCHUP_ACTIONS];
@@ -167,17 +197,17 @@ export function matchUpActions({
     structure,
   });
 
-  matchUpsMap = matchUpsMap ?? getMatchUpsMap({ drawDefinition });
+  const matchUpsMap = params.matchUpsMap ?? getMatchUpsMap({ drawDefinition });
 
-  if (!inContextDrawMatchUps) {
-    ({ matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
+  const inContextDrawMatchUps =
+    params.inContextDrawMatchUps ??
+    getAllDrawMatchUps({
       tournamentParticipants,
       inContext: true,
       drawDefinition,
       matchUpsMap,
       event,
-    }));
-  }
+    }).matchUps;
 
   const inContextMatchUp = inContextDrawMatchUps?.find(
     (drawMatchUp) => drawMatchUp.matchUpId === matchUpId
@@ -296,13 +326,13 @@ export function matchUpActions({
         availableAlternatesParticipantIds.includes(participant.participantId)
       )
       .map((participant) => makeDeepCopy(participant, undefined, true));
-    availableAlternates.forEach((alternate: HydratedParticipant) => {
+    availableAlternates?.forEach((alternate: HydratedParticipant) => {
       const entry = (drawDefinition.entries ?? []).find(
         (entry) => entry.participantId === alternate.participantId
       );
       alternate.entryPosition = entry?.entryPosition;
     });
-    availableAlternates.sort(
+    availableAlternates?.sort(
       (a, b) => (a.entryPosition || Infinity) - (b.entryPosition || Infinity)
     );
 
@@ -504,7 +534,7 @@ export function matchUpActions({
     );
     const availableIndividualParticipants = inContextDualMatchUp?.sides?.map(
       (side: any) =>
-        side.participant.individualParticipants.filter(
+        side.participant?.individualParticipants.filter(
           ({ participantId, person }) =>
             !existingParticipantIds?.includes(participantId) &&
             (!gender ||

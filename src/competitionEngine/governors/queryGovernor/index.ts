@@ -3,7 +3,7 @@ import { competitionScheduleMatchUps } from '../../../query/matchUps/competition
 import { getParticipantScaleItem } from '../../../query/participant/getParticipantScaleItem';
 import { getCompetitionDateRange } from '../../../query/tournaments/getCompetitionDateRange';
 import { credits } from '../../../fixtures/credits';
-import { matchUpActions } from './matchUpActions';
+import { matchUpActions } from '../../../query/drawDefinition/matchUpActions';
 import { getVenuesReport } from '../../../query/venues/venuesReport';
 import {
   getCompetitionVenues,
