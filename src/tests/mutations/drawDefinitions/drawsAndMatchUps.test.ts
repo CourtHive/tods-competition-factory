@@ -266,6 +266,7 @@ test('can modify event timing for matchUpFormat codes', () => {
   });
   // even with no policy, timing is defined / falls back to defaults
   expect(result.eventMatchUpFormatTiming).toBeDefined();
+  expect(result.eventMatchUpFormatTiming.length).toEqual(19);
 
   let { eventMatchUpFormatTiming } = result;
   expect(eventMatchUpFormatTiming).toBeDefined();
@@ -291,6 +292,15 @@ test('can modify event timing for matchUpFormat codes', () => {
   });
   expect(result.error).toEqual(EVENT_NOT_FOUND);
 
+  result = competitionEngine.getEventMatchUpFormatTiming({
+    eventId,
+  });
+  expect(
+    result.eventMatchUpFormatTiming.find(
+      (t) => t.matchUpFormat === FORMAT_STANDARD
+    ).averageMinutes
+  ).toEqual(90);
+
   result = competitionEngine.modifyEventMatchUpFormatTiming({
     matchUpFormat: FORMAT_STANDARD,
     averageMinutes: 127,
@@ -298,12 +308,31 @@ test('can modify event timing for matchUpFormat codes', () => {
   });
   expect(result.success).toEqual(true);
 
+  result = competitionEngine.getEventMatchUpFormatTiming({
+    matchUpFormats: [FORMAT_STANDARD],
+    eventId,
+  });
+  expect(
+    result.eventMatchUpFormatTiming.find(
+      (t) => t.matchUpFormat === FORMAT_STANDARD
+    ).averageMinutes
+  ).toEqual(127);
+
   result = competitionEngine.modifyEventMatchUpFormatTiming({
     matchUpFormat: SHORT4TB10,
     averageMinutes: 137,
     eventId,
   });
   expect(result.success).toEqual(true);
+
+  result = competitionEngine.getEventMatchUpFormatTiming({
+    eventId,
+  });
+  expect(result.eventMatchUpFormatTiming.length).toEqual(2);
+  expect(
+    result.eventMatchUpFormatTiming.find((t) => t.matchUpFormat === SHORT4TB10)
+      .averageMinutes
+  ).toEqual(137);
 
   // overwriting value of 137 with 117
   result = competitionEngine.modifyEventMatchUpFormatTiming({
@@ -316,6 +345,11 @@ test('can modify event timing for matchUpFormat codes', () => {
   result = competitionEngine.getEventMatchUpFormatTiming({
     eventId,
   });
+
+  expect(
+    result.eventMatchUpFormatTiming.find((t) => t.matchUpFormat === SHORT4TB10)
+      .averageMinutes
+  ).toEqual(117);
 
   expect(result.eventMatchUpFormatTiming.map((t) => t.averageMinutes)).toEqual([
     127, 117,

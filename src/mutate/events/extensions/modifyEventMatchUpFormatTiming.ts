@@ -1,6 +1,7 @@
 import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
 import { getModifiedMatchUpFormatTiming } from '../../../query/extensions/matchUpFormatTiming/getModifiedMatchUpTiming';
 import { modifyMatchUpFormatTiming } from '../../matchUps/extensions/modifyMatchUpFormatTiming';
+import { Event, Tournament } from '../../../types/tournamentTypes';
 import { ensureInt } from '../../../utilities/ensureInt';
 
 import { SINGLES } from '../../../constants/matchUpTypes';
@@ -9,7 +10,6 @@ import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
-import { Event, Tournament } from '../../../types/tournamentTypes';
 
 type ModifyEventMatchUpFormatTimingArgs = {
   tournamentRecord: Tournament;
@@ -31,6 +31,7 @@ export function modifyEventMatchUpFormatTiming(
     averageMinutes,
     matchUpFormat,
     categoryType,
+    eventId,
     event,
   } = params;
 
@@ -104,6 +105,7 @@ export function modifyEventMatchUpFormatTiming(
     recoveryTimes: validRecoveryMinutes && newRecoveryTimes,
     tournamentRecord,
     matchUpFormat,
+    eventId,
     event,
   });
 }

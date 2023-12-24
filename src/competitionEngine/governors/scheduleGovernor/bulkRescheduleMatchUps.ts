@@ -15,16 +15,14 @@ type BulkRescheduleMatchUpsArgs = {
   scheduleChange: any;
   dryRun?: boolean;
 };
-export function bulkRescheduleMatchUps({
-  tournamentRecords,
-  scheduleChange,
-  matchUpIds,
-  dryRun,
-}: BulkRescheduleMatchUpsArgs): ResultType & {
+export function bulkRescheduleMatchUps(
+  params: BulkRescheduleMatchUpsArgs
+): ResultType & {
   allRescheduled?: boolean;
   notRescheduled?: any[];
   rescheduled?: any[];
 } {
+  const { tournamentRecords, scheduleChange, matchUpIds, dryRun } = params;
   if (!matchUpIds || !Array.isArray(matchUpIds))
     return { error: MISSING_MATCHUP_IDS };
   if (typeof scheduleChange !== 'object') return { error: INVALID_VALUES };

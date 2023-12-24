@@ -1,5 +1,5 @@
 import { getMatchUpFormatTimingUpdate } from '../../../query/extensions/matchUpFormatTiming/getMatchUpFormatTimingUpdate';
-import { modifyMatchUpFormatTiming } from './matchUpFormatTiming/modifyMatchUpFormatTiming';
+import { modifyMatchUpFormatTiming } from '../../../mutate/matchUps/extensions/modifyMatchUpFormatTiming';
 import { calculateScheduleTimes } from '../../../mutate/matchUps/schedule/scheduleMatchUps/calculateScheduleTimes';
 import { generateVirtualCourts } from '../../../mutate/matchUps/schedule/schedulers/utils/generateVirtualCourts';
 import { getMatchUpDailyLimitsUpdate } from '../../../query/extensions/getMatchUpDailyLimitsUpdate';
