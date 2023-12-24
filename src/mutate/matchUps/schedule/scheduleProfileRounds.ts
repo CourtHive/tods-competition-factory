@@ -1,9 +1,9 @@
-import { getSchedulingProfile } from '../../../competitionEngine/governors/scheduleGovernor/schedulingProfile/schedulingProfile';
-import { jinnScheduler } from '../../../competitionEngine/governors/scheduleGovernor/schedulers/jinnScheduler/jinnScheduler';
-import { getPersonRequests } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/personRequests';
-import { v2Scheduler } from '../../../competitionEngine/governors/scheduleGovernor/schedulers/v2Scheduler/v2Scheduler';
-import { getContainedStructures } from '../../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
-import { clearScheduledMatchUps } from '../../../competitionEngine/governors/scheduleGovernor/clearScheduledMatchUps';
+import { getSchedulingProfile } from '../../tournaments/schedulingProfile';
+import { jinnScheduler } from './schedulers/jinnScheduler/jinnScheduler';
+import { getPersonRequests } from './scheduleMatchUps/personRequests';
+import { v2Scheduler } from './schedulers/v2Scheduler/v2Scheduler';
+import { getContainedStructures } from '../../../query/drawDefinition/getContainedStructures';
+import { clearScheduledMatchUps } from './clearScheduledMatchUps';
 import { allCompetitionMatchUps } from '../../../query/matchUps/getAllCompetitionMatchUps';
 import { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDependencies';
 import { getMatchUpDailyLimits } from '../../../query/extensions/getMatchUpDailyLimits';

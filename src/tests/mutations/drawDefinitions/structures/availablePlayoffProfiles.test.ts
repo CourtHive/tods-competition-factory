@@ -1,6 +1,6 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
-import { getAvailablePlayoffProfiles } from '../../../../drawEngine/governors/structureGovernor/getAvailablePlayoffProfiles';
-import { setStageDrawSize } from '../../../../drawEngine/governors/entryGovernor/stageEntryCounts';
+import { getAvailablePlayoffProfiles } from '../../../../mutate/drawDefinitions/structureGovernor/getAvailablePlayoffProfiles';
+import { setStageDrawSize } from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 import { getDrawStructures } from '../../../../acquire/findStructure';
 import { constantToString } from '../../../../utilities/strings';
 import tournamentEngine from '../../../engines/tournamentEngine';

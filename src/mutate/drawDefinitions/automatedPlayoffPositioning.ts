@@ -1,6 +1,6 @@
-import { isCompletedStructure } from '../../drawEngine/governors/queryGovernor/structureActions';
+import { isCompletedStructure } from '../../query/drawDefinition/structureActions';
 import { getMinFinishingPositionRange } from '../../functions/sorters/structureSort';
-import { getPlayoffStructures } from '../../tournamentEngine/getters/structureGetter';
+import { getPlayoffStructures } from '../../query/structure/structureGetter';
 import { automatedPositioning } from './automatedPositioning';
 
 import { SUCCESS } from '../../constants/resultConstants';

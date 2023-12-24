@@ -8,7 +8,7 @@ import { modifyDrawNotice } from '../../../mutate/notifications/drawNotification
 import { definedAttributes } from '../../../utilities/definedAttributes';
 import { getMatchUpId } from '../../../global/functions/extractors';
 import { generateTieMatchUps } from './tieMatchUps';
-import { addGoesTo } from '../../../drawEngine/governors/matchUpGovernor/addGoesTo';
+import { addGoesTo } from '../../../mutate/drawDefinitions/matchUpGovernor/addGoesTo';
 import { makeDeepCopy } from '../../../utilities';
 import {
   ResultType,
@@ -21,7 +21,7 @@ import {
 import {
   setStageDrawSize,
   setStageQualifiersCount,
-} from '../../../drawEngine/governors/entryGovernor/stageEntryCounts';
+} from '../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';

@@ -1,4 +1,4 @@
-import { isAdHoc } from '../../drawEngine/governors/queryGovernor/isAdHoc';
+import { isAdHoc } from '../../query/drawDefinition/isAdHoc';
 import { findStructure } from '../../acquire/findStructure';
 import { numericSort } from '../../utilities';
 import {

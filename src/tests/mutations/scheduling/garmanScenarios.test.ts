@@ -1,6 +1,6 @@
 import { getParticipantId } from '../../../global/functions/extractors';
 import tournamentEngine from '../../engines/tournamentEngine';
-import { hasSchedule } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/hasSchedule';
+import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
 import { extractTime } from '../../../utilities/dateTime';
 import { intersection, unique } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';

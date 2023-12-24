@@ -1,4 +1,4 @@
-import { checkAndUpdateSchedulingProfile } from '../../../tournamentEngine/governors/scheduleGovernor/schedulingProfile';
+import { checkAndUpdateSchedulingProfile } from '../../../mutate/tournaments/schedulingProfile';
 import { getUpdatedSchedulingProfile } from '../../../query/matchUps/scheduling/getUpdatedSchedulingProfile';
 import competitionEngine from '../../engines/competitionEngine';
 import tournamentEngine from '../../engines/tournamentEngine';
@@ -20,10 +20,10 @@ it('can update a schedulingProfile when venues change', () => {
   ];
   const { tournamentRecord, venueIds, eventIds, drawIds } =
     mocksEngine.generateTournamentRecord({
-      drawProfiles,
-      venueProfiles,
       startDate: '2022-01-01',
       endDate: '2022-01-07',
+      venueProfiles,
+      drawProfiles,
     });
 
   competitionEngine.setState(tournamentRecord);
@@ -66,11 +66,11 @@ it('can update a schedulingProfile when venues change', () => {
     venueId: venueIds[0],
     scheduleDate,
     round: {
-      tournamentId,
-      eventId,
       drawId: 'bogusId',
-      structureId,
+      tournamentId,
       roundNumber: 3,
+      structureId,
+      eventId,
     },
   });
   expect(result.error).toEqual(INVALID_VALUES);
@@ -141,13 +141,13 @@ it('can update a schedulingProfile when venues change', () => {
   expect(result.success).toEqual(true);
 
   result = checkAndUpdateSchedulingProfile({ schedulingProfile });
-  expect(result.modifications).toEqual(2);
+  expect(result.issues.length).toEqual(2);
 
   result = tournamentEngine.getSchedulingProfile();
   result = checkAndUpdateSchedulingProfile({
     schedulingProfile: result.schedulingProfile,
   });
-  expect(result.modifications).toEqual(1);
+  expect(result.issues.length).toEqual(1);
 
   const { tournamentRecord: snapshot } = tournamentEngine.getTournament();
   result = checkAndUpdateSchedulingProfile({ tournamentRecord: snapshot });

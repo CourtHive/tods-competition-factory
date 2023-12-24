@@ -1,14 +1,14 @@
-import { addDrawDefinition } from '../../tournamentEngine/governors/eventGovernor/drawDefinitions/addDrawDefinition';
+import { addDrawDefinition } from '../../mutate/drawDefinitions/addDrawDefinition';
 import { automatedPlayoffPositioning } from '../../mutate/drawDefinitions/automatedPlayoffPositioning';
 import { setParticipantScaleItem } from '../../mutate/participants/addScaleItems';
 import { addPlayoffStructures } from '../../mutate/drawDefinitions/addPlayoffStructures';
-import { addEventEntries } from '../../tournamentEngine/governors/eventGovernor/entries/addEventEntries';
+import { addEventEntries } from '../../mutate/entries/addEventEntries';
 import { addParticipants } from '../../mutate/participants/addParticipants';
 import { addEventTimeItem } from '../../mutate/timeItems/addTimeItem';
 import { generateDrawDefinition } from '../../assemblies/generators/drawDefinitions/generateDrawDefinition';
-import { publishEvent } from '../../tournamentEngine/governors/publishingGovernor/publishEvent';
+import { publishEvent } from '../../mutate/events/publishEvent';
 import { allDrawMatchUps } from '../../query/matchUps/getAllDrawMatchUps';
-import { addFlight } from '../../tournamentEngine/governors/eventGovernor/addFlight';
+import { addFlight } from '../../mutate/events/addFlight';
 import tieFormatDefaults from '../../assemblies/generators/templates/tieFormatDefaults';
 import { addExtension } from '../../mutate/extensions/addExtension';
 import { isValidExtension } from '../../validators/isValidExtension';

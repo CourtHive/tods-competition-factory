@@ -1,5 +1,5 @@
-import { addEventEntries } from '../../tournamentEngine/governors/eventGovernor/entries/addEventEntries';
-import { addFlight } from '../../tournamentEngine/governors/eventGovernor/addFlight';
+import { addEventEntries } from '../../mutate/entries/addEventEntries';
+import { addFlight } from '../../mutate/events/addFlight';
 import { getParticipantId } from '../../global/functions/extractors';
 
 import { DIRECT_ACCEPTANCE } from '../../constants/entryStatusConstants';

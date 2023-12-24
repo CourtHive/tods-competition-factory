@@ -1,7 +1,7 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '../../../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
-import { tallyParticipantResults } from '../../../../../matchUpEngine/getters/roundRobinTally/roundRobinTally';
+import { tallyParticipantResults } from '../../../../../query/matchUps/roundRobinTally/roundRobinTally';
 import { getAllStructureMatchUps } from '../../../../../query/matchUps/getAllStructureMatchUps';
-import { setStageDrawSize } from '../../../../../drawEngine/governors/entryGovernor/stageEntryCounts';
+import { setStageDrawSize } from '../../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 import { generateMatchUpOutcome } from '../../primitives/generateMatchUpOutcome';
 import { chunkArray, intersection } from '../../../../../utilities/arrays';
 import tournamentEngine from '../../../../engines/tournamentEngine';
@@ -14,7 +14,7 @@ import { expect, it } from 'vitest';
 import {
   allPlayoffPositionsFilled,
   isCompletedStructure,
-} from '../../../../../drawEngine/governors/queryGovernor/structureActions';
+} from '../../../../../query/drawDefinition/structureActions';
 
 import { FORMAT_STANDARD } from '../../../../../fixtures/scoring/matchUpFormats';
 import { SINGLES } from '../../../../../constants/eventConstants';

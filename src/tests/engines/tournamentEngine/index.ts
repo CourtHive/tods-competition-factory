@@ -1,12 +1,14 @@
-import participantGovernor from '../../../tournamentEngine/governors/participantGovernor';
-import publishingGovernor from '../../../tournamentEngine/governors/publishingGovernor';
-import tournamentGovernor from '../../../tournamentEngine/governors/tournamentGovernor';
-import scheduleGovernor from '../../../tournamentEngine/governors/scheduleGovernor';
-import policyGovernor from '../../../tournamentEngine/governors/policyGovernor';
-import reportGovernor from '../../../tournamentEngine/governors/reportGovernor';
-import eventGovernor from '../../../tournamentEngine/governors/eventGovernor';
-import queryGovernor from '../../../tournamentEngine/governors/queryGovernor';
-import venueGovernor from '../../../tournamentEngine/governors/venueGovernor';
+import participantGovernor from '../../../assemblies/governors/participantGovernor';
+import publishingGovernor from '../../../assemblies/governors/publishingGovernor';
+import scheduleGovernor from '../../../assemblies/governors/scheduleGovernor';
+import reportGovernor from '../../../assemblies/governors/reportGovernor';
+import venueGovernor from '../../../assemblies/governors/venueGovernor';
+
+import tournamentGovernor from '../../../assemblies/governors/tournamentGovernor';
+import policyGovernor from '../../../assemblies/governors/policyGovernor';
+import queryGovernor from '../../../assemblies/governors/queryGovernor';
+import eventGovernor from '../../../assemblies/governors/eventGovernor';
+
 import syncEngine from '../../../assemblies/engines/sync';
 
 const methods = {

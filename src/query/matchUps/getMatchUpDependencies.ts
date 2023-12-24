@@ -3,24 +3,24 @@
  * Optionally builds up an exhaustive map of all potential participantIds for each matchUpId
  */
 
-import { allDrawMatchUps } from './getAllDrawMatchUps';
-import { addGoesTo } from '../../drawEngine/governors/matchUpGovernor/addGoesTo';
-import { getIndividualParticipantIds } from '../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/getIndividualParticipantIds';
-import { findEvent } from '../../acquire/findEvent';
+import { getIndividualParticipantIds } from '../../mutate/matchUps/schedule/scheduleMatchUps/getIndividualParticipantIds';
+import { resolveTournamentRecords } from '../../parameters/resolveTournamentRecords';
+import { addGoesTo } from '../../mutate/drawDefinitions/matchUpGovernor/addGoesTo';
 import { allCompetitionMatchUps } from './getAllCompetitionMatchUps';
 import { matchUpSort } from '../../functions/sorters/matchUpSort';
+import { allDrawMatchUps } from './getAllDrawMatchUps';
+import { findEvent } from '../../acquire/findEvent';
 
 import { POSITION } from '../../constants/drawDefinitionConstants';
+import { TournamentRecords } from '../../types/factoryTypes';
 import { SUCCESS } from '../../constants/resultConstants';
+import { HydratedMatchUp } from '../../types/hydrated';
 import {
   ErrorType,
   MISSING_DRAW_ID,
   MISSING_MATCHUPS,
   MISSING_MATCHUP_IDS,
 } from '../../constants/errorConditionConstants';
-
-import { TournamentRecords } from '../../types/factoryTypes';
-import { HydratedMatchUp } from '../../types/hydrated';
 import {
   DrawDefinition,
   DrawLink,
@@ -28,11 +28,11 @@ import {
 } from '../../types/tournamentTypes';
 
 type GetMatchUpDependenciesArgs = {
-  tournamentRecords?: TournamentRecords;
   includeParticipantDependencies?: boolean;
-  matchUps?: HydratedMatchUp[]; // requires matchUps { inContext: true }
+  tournamentRecords?: TournamentRecords;
   tournamentRecord?: Tournament;
   drawDefinition?: DrawDefinition;
+  matchUps?: HydratedMatchUp[]; // requires matchUps { inContext: true }
   matchUpIds?: string[]; // will restrict dependency checking if prior matchUpIds are not included
   drawIds?: string[];
 };
@@ -45,7 +45,7 @@ export function getMatchUpDependencies(params: GetMatchUpDependenciesArgs): {
   error?: ErrorType;
   success?: boolean;
 } {
-  let tournamentRecords = params.tournamentRecords ?? {};
+  let tournamentRecords = resolveTournamentRecords(params);
   const targetMatchUps = params.matchUps ?? []; // requires matchUps { inContext: true }
   let drawIds = params.drawIds ?? [];
 

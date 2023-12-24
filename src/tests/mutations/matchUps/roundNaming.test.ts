@@ -2,7 +2,7 @@ import { generateDrawTypeAndModifyDrawDefinition } from '../../../assemblies/gen
 import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { getStructureMatchUps } from '../../../query/structure/getStructureMatchUps';
 import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
-import { setStageDrawSize } from '../../../drawEngine/governors/entryGovernor/stageEntryCounts';
+import { setStageDrawSize } from '../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import { constantToString } from '../../../utilities/strings';

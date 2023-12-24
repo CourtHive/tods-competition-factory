@@ -7,7 +7,7 @@ import { SUCCESS } from '../../constants/resultConstants';
 import {
   countGames,
   countSets,
-} from '../../matchUpEngine/getters/roundRobinTally/scoreCounters';
+} from '../../query/matchUps/roundRobinTally/scoreCounters';
 
 type ParticipantHeadToHead = {
   participants: [HydratedParticipant, HydratedParticipant];

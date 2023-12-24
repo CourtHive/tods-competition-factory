@@ -1,3 +1,5 @@
+export { matchUpActions } from '../../query/drawDefinition/matchUpActions';
+
 // matchUpEngine
 export { isValidMatchUpFormat } from '../../validators/isValidMatchUpFormat';
 export { parse as parseMatchUpFormat } from '../../matchUpEngine/governors/matchUpFormatGovernor/parse';
@@ -19,16 +21,15 @@ export { findExtension } from '../../acquire/findExtension';
 export { validateScore } from '../../validators/validateScore';
 
 // tournamentEngine
-export { generateSeedingScaleItems } from '../../tournamentEngine/governors/eventGovernor/entries/generateSeedingScaleItems';
+export { positionActions } from '../../query/drawDefinition/positionActions/positionActions';
+export { generateSeedingScaleItems } from '../../assemblies/generators/drawDefinitions/generateSeedingScaleItems';
 export { getParticipantEventDetails } from '../../query/participants/getParticipantEventDetails';
-export { getEntriesAndSeedsCount } from '../../tournamentEngine/governors/policyGovernor/getEntriesAndSeedsCount';
-export { matchUpActions as tournamentMatchUpActions } from '../../tournamentEngine/getters/matchUpActions';
+export { getEntriesAndSeedsCount } from '../../mutate/entries/getEntriesAndSeedsCount';
 export { filterParticipants } from '../../query/participants/filterParticipants';
-export { positionActions } from '../../tournamentEngine/governors/queryGovernor/positionQueries';
 export { getEventData } from '../../query/event/getEventData';
-export { getSeedsCount } from '../../tournamentEngine/governors/policyGovernor/getSeedsCount';
+export { getSeedsCount } from '../../query/drawDefinition/getSeedsCount';
 export { participantScaleItem } from '../../query/participant/participantScaleItem';
-export { getTimeItem } from '../../query/participant/timeItems';
+export { getTimeItem } from '../../query/base/timeItems';
 export { findMatchUp } from '../../acquire/findMatchUp';
 export { getFlightProfile } from '../../query/event/getFlightProfile';
 export { allTournamentMatchUps } from '../../query/matchUps/getAllTournamentMatchUps';
@@ -42,7 +43,6 @@ export { drawMatchUps } from '../../query/matchUps/getDrawMatchUps';
 export { getEventMatchUpFormatTiming } from '../../query/extensions/matchUpFormatTiming/getEventMatchUpFormatTiming';
 export { getMatchUpFormatTimingUpdate } from '../../query/extensions/matchUpFormatTiming/getMatchUpFormatTimingUpdate';
 export { getMatchUpDailyLimitsUpdate } from '../../query/extensions/getMatchUpDailyLimitsUpdate';
-export { matchUpActions as competitionMatchUpActions } from '../../competitionEngine/governors/queryGovernor/matchUpActions';
 export { getVenuesAndCourts as getCompetitionVenuesAndCourts } from '../../query/venues/venuesAndCourtsGetter';
 export { getCompetitionDateRange } from '../../query/tournaments/getCompetitionDateRange';
 export { getMatchUpDailyLimits } from '../../query/extensions/getMatchUpDailyLimits';

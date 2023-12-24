@@ -1,8 +1,8 @@
 import { removeParticipantIdsFromAllTeams } from './removeIndividualParticipantIds';
 import { allTournamentMatchUps } from '../../query/matchUps/getAllTournamentMatchUps';
-import { removeEventEntries } from '../../tournamentEngine/governors/eventGovernor/entries/removeEventEntries';
+import { removeEventEntries } from '../entries/removeEventEntries';
 import { getParticipants } from '../../query/participants/getParticipants';
-import { addEventEntries } from '../../tournamentEngine/governors/eventGovernor/entries/addEventEntries';
+import { addEventEntries } from '../entries/addEventEntries';
 import { addNotice } from '../../global/state/globalState';
 import { intersection } from '../../utilities';
 

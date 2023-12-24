@@ -8,10 +8,7 @@ import {
   addParticipantExtension,
   removeParticipantExtension,
 } from '../../../mutate/extensions/addRemoveExtensions';
-import {
-  addNotes,
-  removeNotes,
-} from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveNotes';
+import { addNotes, removeNotes } from '../../../mutate/base/addRemoveNotes';
 
 import {
   EVENT_NOT_FOUND,

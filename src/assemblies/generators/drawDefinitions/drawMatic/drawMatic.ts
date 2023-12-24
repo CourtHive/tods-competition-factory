@@ -1,7 +1,7 @@
 import { participantScaleItem } from '../../../../query/participant/participantScaleItem';
 import { getParticipantId } from '../../../../global/functions/extractors';
 import { generateDrawMaticRound } from './generateDrawMaticRound';
-import { isAdHoc } from '../../../../drawEngine/governors/queryGovernor/isAdHoc';
+import { isAdHoc } from '../../../../query/drawDefinition/isAdHoc';
 import { isObject } from '../../../../utilities/objects';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../../../constants/entryStatusConstants';

@@ -1,5 +1,5 @@
 import { matchUpFormatTimes } from '../extensions/matchUpFormatTiming/getMatchUpFormatTiming';
-import { getVenueData } from '../../tournamentEngine/governors/publishingGovernor/getVenueData';
+import { getVenueData } from '../venues/getVenueData';
 import { completedMatchUpStatuses } from '../../constants/matchUpStatusConstants';
 import { definedAttributes } from '../../utilities/definedAttributes';
 import { findEvent } from '../../acquire/findEvent';

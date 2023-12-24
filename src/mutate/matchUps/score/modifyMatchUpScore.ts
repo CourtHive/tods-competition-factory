@@ -1,7 +1,7 @@
-import { addNotes } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveNotes';
+import { addNotes } from '../../base/addRemoveNotes';
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
-import { updateAssignmentParticipantResults } from '../../../drawEngine/governors/matchUpGovernor/updateAssignmentParticipantResults';
+import { updateAssignmentParticipantResults } from '../../drawDefinitions/matchUpGovernor/updateAssignmentParticipantResults';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
@@ -9,8 +9,8 @@ import { decorateResult } from '../../../global/functions/decorateResult';
 import { getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { getTopics } from '../../../global/state/globalState';
-import { isAdHoc } from '../../../drawEngine/governors/queryGovernor/isAdHoc';
-import { isLucky } from '../../../drawEngine/governors/queryGovernor/isLucky';
+import { isAdHoc } from '../../../query/drawDefinition/isAdHoc';
+import { isLucky } from '../../../query/drawDefinition/isLucky';
 import { unique } from '../../../utilities';
 import {
   modifyMatchUpNotice,

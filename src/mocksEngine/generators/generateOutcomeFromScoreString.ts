@@ -1,4 +1,4 @@
-import { generateScoreString } from '../../matchUpEngine/generators/generateScoreString';
+import { generateScoreString } from '../../assemblies/generators/matchUps/generateScoreString';
 import { toBePlayed } from '../../fixtures/scoring/outcomes/toBePlayed';
 import { definedAttributes } from '../../utilities/definedAttributes';
 import { parseScoreString } from '../utilities/parseScoreString';

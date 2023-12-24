@@ -1,9 +1,11 @@
-import competitionGovernor from '../../../competitionEngine/governors/competitionsGovernor';
-import publishingGovernor from '../../../competitionEngine/governors/publishingGovernor';
-import scheduleGovernor from '../../../competitionEngine/governors/scheduleGovernor';
-import policyGovernor from '../../../competitionEngine/governors/policyGovernor';
-import queryGovernor from '../../../competitionEngine/governors/queryGovernor';
-import venueGovernor from '../../../competitionEngine/governors/venueGovernor';
+import competitionGovernor from '../../../assemblies/governors/competitionsGovernor';
+
+import publishingGovernor from '../../../assemblies/governors/publishingGovernor';
+import scheduleGovernor from '../../../assemblies/governors/scheduleGovernor';
+import policyGovernor from '../../../assemblies/governors/policyGovernor';
+import queryGovernor from '../../../assemblies/governors/queryGovernor';
+import venueGovernor from '../../../assemblies/governors/venueGovernor';
+
 import syncEngine from '../../../assemblies/engines/sync';
 
 const methods = {

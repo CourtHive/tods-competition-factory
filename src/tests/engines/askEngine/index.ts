@@ -1,4 +1,4 @@
-import queryGovernor from '../../../tournamentEngine/governors/queryGovernor';
+import queryGovernor from '../../../assemblies/governors/queryGovernor';
 import ask from '../../../assemblies/engines/ask';
 
 const methods = {

@@ -1,15 +1,15 @@
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
-import { getPairedParticipant } from '../../../tournamentEngine/governors/participantGovernor/getPairedParticipant';
+import { getPairedParticipant } from '../../../query/participant/getPairedParticipant';
 import { deleteParticipants } from '../../participants/deleteParticipants';
 import { modifyParticipant } from '../../participants/modifyParticipant';
 import { getParticipants } from '../../../query/participants/getParticipants';
-import { removeCollectionAssignments } from '../../../tournamentEngine/governors/eventGovernor/removeCollectionAssignments';
+import { removeCollectionAssignments } from '../../events/removeCollectionAssignments';
 import { addParticipant } from '../../participants/addParticipants';
 import { ensureSideLineUps } from './ensureSideLineUps';
-import { updateTeamLineUp } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/updateTeamLineUp';
-import { getTieMatchUpContext } from '../../../tournamentEngine/governors/eventGovernor/getTieMatchUpContext';
+import { updateTeamLineUp } from '../../drawDefinitions/updateTeamLineUp';
+import { getTieMatchUpContext } from '../../events/getTieMatchUpContext';
 import {
   ResultType,
   decorateResult,

@@ -1,4 +1,4 @@
-import { getContainedStructures } from '../../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
+import { getContainedStructures } from '../../../query/drawDefinition/getContainedStructures';
 import { extractAttributes, intersection, unique } from '../../../utilities';
 import tournamentEngine from '../../engines/tournamentEngine';
 import competitionEngine from '../../engines/competitionEngine';

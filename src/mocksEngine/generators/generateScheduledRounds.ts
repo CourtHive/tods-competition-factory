@@ -1,4 +1,4 @@
-import { getContainedStructures } from '../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
+import { getContainedStructures } from '../../query/drawDefinition/getContainedStructures';
 import { allTournamentMatchUps } from '../../query/matchUps/getAllTournamentMatchUps';
 import { addSchedulingProfileRound } from '../../mutate/matchUps/schedule/addSchedulingProfileRound';
 import { intersection, unique } from '../../utilities';

@@ -1,4 +1,4 @@
-import { allPlayoffPositionsFilled } from '../../../../../drawEngine/governors/queryGovernor/structureActions';
+import { allPlayoffPositionsFilled } from '../../../../../query/drawDefinition/structureActions';
 import { generateMatchUpOutcome } from '../../primitives/generateMatchUpOutcome';
 import tournamentEngine from '../../../../engines/tournamentEngine';
 import matchUpEngine from '../../../../../matchUpEngine/sync';

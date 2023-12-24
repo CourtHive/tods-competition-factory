@@ -1,4 +1,4 @@
-import { getParticipantIdMatchUps } from '../../../../drawEngine/governors/queryGovernor/participantIdMatchUps';
+import { getParticipantIdMatchUps } from '../../../../query/drawDefinition/participantIdMatchUps';
 import { generateRange, instanceCount, unique } from '../../../../utilities';
 import { verifyStructure } from '../primitives/verifyStructure';
 import tournamentEngine from '../../../engines/tournamentEngine';

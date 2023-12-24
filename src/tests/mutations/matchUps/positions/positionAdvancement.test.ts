@@ -1,7 +1,7 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
 import { positionTargets } from '../../../../mutate/matchUps/drawPositions/positionTargets';
 import { getStructureMatchUps } from '../../../../query/structure/getStructureMatchUps';
-import { setStageDrawSize } from '../../../../drawEngine/governors/entryGovernor/stageEntryCounts';
+import { setStageDrawSize } from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 import { getAllDrawMatchUps } from '../../../../query/matchUps/drawMatchUps';
 import { getDrawStructures } from '../../../../acquire/findStructure';
 import { feedInChampionship } from '../../drawDefinitions/primitives/feedIn';

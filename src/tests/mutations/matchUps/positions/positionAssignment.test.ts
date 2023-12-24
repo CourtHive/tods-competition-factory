@@ -1,6 +1,6 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
 import { assignDrawPosition } from '../../../../mutate/matchUps/drawPositions/positionAssignment';
-import { setStageDrawSize } from '../../../../drawEngine/governors/entryGovernor/stageEntryCounts';
+import { setStageDrawSize } from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 import { structureAssignedDrawPositions } from '../../../../query/drawDefinition/positionsGetter';
 import { getDrawStructures } from '../../../../acquire/findStructure';
 import { getStageEntries } from '../../../../query/drawDefinition/stageGetter';

@@ -1,17 +1,17 @@
 // import { scheduleProfileRounds } from '../../../competitionEngine/governors/scheduleGovernor/schedulingProfile/scheduleProfileRounds';
 import { scheduleProfileRounds } from '../../../mutate/matchUps/schedule/scheduleProfileRounds';
-import { setSchedulingProfile } from '../../../competitionEngine/governors/scheduleGovernor/schedulingProfile/schedulingProfile';
-import { publishEvent } from '../../../tournamentEngine/governors/publishingGovernor/publishEvent';
+import { setSchedulingProfile } from '../../../mutate/tournaments/schedulingProfile';
+import { publishEvent } from '../../../mutate/events/publishEvent';
 import { generateFlightDrawDefinitions } from '../../generators/generateFlightDrawDefinitions';
 import { addTournamentParticipants } from '../../generators/addTournamentParticipants';
 import { generateEventParticipants } from '../../generators/generateEventParticipants';
-import { addEvent } from '../../../tournamentEngine/governors/eventGovernor/addEvent';
+import { addEvent } from '../../../mutate/events/addEvent';
 import { generateEventWithFlights } from '../../generators/generateEventWithFlights';
 import { getStageParticipantsCount } from '../../getters/getStageParticipantsCount';
 import { generateEventWithDraw } from '../../generators/generateEventWithDraw';
 import { getStageParticipants } from '../../getters/getStageParticipants';
 import { generateFlights } from '../../generators/generateFlights';
-import { generateVenues } from '../../generators/generateVenues';
+import { generateVenues } from '../../../mutate/venues/generateVenues';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 import defaultRatingsParameters from '../../../fixtures/ratings/ratingsParameters';

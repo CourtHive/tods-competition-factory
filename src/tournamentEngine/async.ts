@@ -1,17 +1,18 @@
-import { updateFactoryExtension } from './governors/tournamentGovernor/updateFactoryExtension';
+import { updateFactoryExtension } from '../mutate/tournaments/updateFactoryExtension';
 import { notifySubscribersAsync } from '../global/state/notifySubscribers';
 import { newTournamentRecord } from '../assemblies/generators/tournamentRecords/newTournamentRecord';
 import { setState, getState, paramsMiddleware } from './stateMethods';
 import { factoryVersion } from '../global/functions/factoryVersion';
-import participantGovernor from './governors/participantGovernor';
-import publishingGovernor from './governors/publishingGovernor';
-import tournamentGovernor from './governors/tournamentGovernor';
-import scheduleGovernor from './governors/scheduleGovernor';
-import policyGovernor from './governors/policyGovernor';
-import reportGovernor from './governors/reportGovernor';
-import eventGovernor from './governors/eventGovernor';
-import queryGovernor from './governors/queryGovernor';
-import venueGovernor from './governors/venueGovernor';
+
+import participantGovernor from '../assemblies/governors/participantGovernor';
+import publishingGovernor from '../assemblies/governors/publishingGovernor';
+import scheduleGovernor from '../assemblies/governors/scheduleGovernor';
+
+import tournamentGovernor from '../assemblies/governors/tournamentGovernor';
+import reportGovernor from '../assemblies/governors/reportGovernor';
+import eventGovernor from '../assemblies/governors/eventGovernor';
+import venueGovernor from '../assemblies/governors/venueGovernor';
+
 import { makeDeepCopy } from '../utilities';
 import {
   createInstanceState,
@@ -27,6 +28,9 @@ import {
   getDevContext,
   handleCaughtError,
 } from '../global/state/globalState';
+
+import policyGovernor from '../assemblies/governors/policyGovernor';
+import queryGovernor from '../assemblies/governors/queryGovernor';
 
 import { SUCCESS } from '../constants/resultConstants';
 import { FactoryEngine } from '../types/factoryTypes';

@@ -5,7 +5,7 @@ import { generateTieMatchUpScore } from '../../../assemblies/generators/tieMatch
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { addExtension } from '../../extensions/addExtension';
-import { getProjectedDualWinningSide } from '../../../drawEngine/governors/matchUpGovernor/getProjectedDualWinningSide';
+import { getProjectedDualWinningSide } from '../../drawDefinitions/matchUpGovernor/getProjectedDualWinningSide';
 import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
@@ -13,18 +13,18 @@ import { decorateResult } from '../../../global/functions/decorateResult';
 import { validateScore } from '../../../validators/validateScore';
 import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
 import { positionTargets } from '../drawPositions/positionTargets';
-import { noDownstreamDependencies } from '../../../drawEngine/governors/matchUpGovernor/noDownstreamDependencies';
+import { noDownstreamDependencies } from '../../drawDefinitions/matchUpGovernor/noDownstreamDependencies';
 import { pushGlobalLog } from '../../../global/functions/globalLog';
 import { findStructure } from '../../../acquire/findStructure';
 import { updateTieMatchUpScore } from '../score/tieMatchUpScore';
-import { isActiveDownstream } from '../../../drawEngine/governors/matchUpGovernor/isActiveDownstream';
+import { isActiveDownstream } from '../../drawDefinitions/matchUpGovernor/isActiveDownstream';
 import { modifyMatchUpScore } from '../score/modifyMatchUpScore';
 import { addMatchUpScheduleItems } from '../schedule/scheduleItems';
 import { swapWinnerLoser } from '../drawPositions/swapWinnerLoser';
 import {
   isDirectingMatchUpStatus,
   isNonDirectingMatchUpStatus,
-} from '../../../drawEngine/governors/matchUpGovernor/checkStatusType';
+} from '../../drawDefinitions/matchUpGovernor/checkStatusType';
 
 import { POLICY_TYPE_PROGRESSION } from '../../../constants/policyConstants';
 import { DISABLE_AUTO_CALC } from '../../../constants/extensionConstants';

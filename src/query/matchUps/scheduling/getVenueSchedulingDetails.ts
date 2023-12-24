@@ -1,8 +1,8 @@
 import { getScheduledRoundsDetails } from './getScheduledRoundsDetails';
 import { getGroupedRounds } from './getGroupedRounds';
-import { processAlreadyScheduledMatchUps } from '../../../competitionEngine/governors/scheduleGovernor/schedulers/utils/processAlreadyScheduledMatchUps';
-import { getMatchUpsToSchedule } from '../../../competitionEngine/governors/scheduleGovernor/schedulers/utils/getMatchUpsToSchedule';
-import { generateScheduleTimes } from '../../../competitionEngine/governors/scheduleGovernor/schedulers/utils/generateScheduleTimes';
+import { processAlreadyScheduledMatchUps } from '../../../mutate/matchUps/schedule/schedulers/utils/processAlreadyScheduledMatchUps';
+import { getMatchUpsToSchedule } from '../../../mutate/matchUps/schedule/schedulers/utils/getMatchUpsToSchedule';
+import { generateScheduleTimes } from '../../../mutate/matchUps/schedule/schedulers/utils/generateScheduleTimes';
 import { extractDate } from '../../../utilities/dateTime';
 
 import { Tournament } from '../../../types/tournamentTypes';

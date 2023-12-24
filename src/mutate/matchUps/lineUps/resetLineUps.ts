@@ -1,6 +1,6 @@
-import { updateTeamLineUp } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/updateTeamLineUp';
+import { updateTeamLineUp } from '../../drawDefinitions/updateTeamLineUp';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
-import { getTargetMatchUps } from '../../../drawEngine/governors/positionGovernor/getTargetMatchUps';
+import { getTargetMatchUps } from '../../drawDefinitions/positionGovernor/getTargetMatchUps';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { MatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';

@@ -8,7 +8,7 @@ import {
   getMatchUpsMap,
 } from '../../../query/matchUps/getMatchUpsMap';
 import { decorateResult } from '../../../global/functions/decorateResult';
-import { addPositionActionTelemetry } from '../../../drawEngine/governors/positionGovernor/addPositionActionTelemetry';
+import { addPositionActionTelemetry } from '../../drawDefinitions/positionGovernor/addPositionActionTelemetry';
 import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
 import { pushGlobalLog } from '../../../global/functions/globalLog';
 import { findStructure } from '../../../acquire/findStructure';

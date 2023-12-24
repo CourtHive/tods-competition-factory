@@ -1,5 +1,5 @@
 import { findTournamentParticipant } from '../../acquire/findTournamentParticipant';
-import { getTimeItem } from './timeItems';
+import { getTimeItem } from '../base/timeItems';
 
 import {
   MISSING_PARTICIPANT_ID,

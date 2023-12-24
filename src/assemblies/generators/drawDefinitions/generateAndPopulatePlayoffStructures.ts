@@ -5,14 +5,14 @@ import { assignDrawPositionBye } from '../../../mutate/matchUps/drawPositions/as
 import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import { directParticipants } from '../../../mutate/matchUps/drawPositions/directParticipants';
-import { getAvailablePlayoffProfiles } from '../../../drawEngine/governors/structureGovernor/getAvailablePlayoffProfiles';
+import { getAvailablePlayoffProfiles } from '../../../mutate/drawDefinitions/structureGovernor/getAvailablePlayoffProfiles';
 import { positionTargets } from '../../../mutate/matchUps/drawPositions/positionTargets';
 import { getMatchUpId } from '../../../global/functions/extractors';
 import { generateTieMatchUps } from './tieMatchUps';
 import { findStructure } from '../../../acquire/findStructure';
 import { ensureInt } from '../../../utilities/ensureInt';
-import { addGoesTo } from '../../../drawEngine/governors/matchUpGovernor/addGoesTo';
-import { getSourceRounds } from '../../../drawEngine/governors/structureGovernor/getSourceRounds';
+import { addGoesTo } from '../../../mutate/drawDefinitions/matchUpGovernor/addGoesTo';
+import { getSourceRounds } from '../../../mutate/drawDefinitions/structureGovernor/getSourceRounds';
 import { makeDeepCopy } from '../../../utilities';
 import {
   ResultType,

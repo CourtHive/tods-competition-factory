@@ -1,17 +1,61 @@
+import { addExtension } from '../../extensions/addExtension';
 import { findExtension } from '../../../acquire/findExtension';
-import {
-  addEventExtension,
-  addTournamentExtension,
-} from '../../extensions/addRemoveExtensions';
+import { findEvent } from '../../../acquire/findEvent';
 
 import { SCHEDULE_TIMING } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
+  EVENT_NOT_FOUND,
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
+  MISSING_TOURNAMENT_RECORDS,
 } from '../../../constants/errorConditionConstants';
 
-export function modifyMatchUpFormatTiming({
+export function modifyMatchUpFormatTiming(params) {
+  const { matchUpFormat, recoveryTimes, averageTimes, tournamentId, eventId } =
+    params;
+
+  const tournamentRecords =
+    params?.tournamentRecords ??
+    (params?.tournamentRecord && {
+      [params.tournamentRecord.tournamentId]: params.tournamentRecord,
+    }) ??
+    {};
+
+  if (!Object.keys(tournamentRecords).length)
+    return { error: MISSING_TOURNAMENT_RECORDS };
+
+  const tournamentIds = Object.keys(tournamentRecords).filter(
+    (currentTournamentId) =>
+      !tournamentId || tournamentId === currentTournamentId
+  );
+
+  if (tournamentId && !tournamentIds.includes(tournamentId))
+    return { error: INVALID_VALUES };
+
+  let eventModified;
+  for (const currentTournamentId of tournamentIds) {
+    const tournamentRecord = tournamentRecords[currentTournamentId];
+    const { event } = findEvent({ tournamentRecord, eventId });
+    if (eventId && event) eventModified = true;
+
+    const result = modifyTiming({
+      tournamentRecord,
+      event,
+
+      matchUpFormat,
+      averageTimes,
+      recoveryTimes,
+    });
+    if (result.error) return result;
+  }
+
+  return !eventId || eventModified
+    ? { ...SUCCESS }
+    : { error: EVENT_NOT_FOUND };
+}
+
+function modifyTiming({
   tournamentRecord,
   recoveryTimes,
   matchUpFormat,
@@ -35,7 +79,7 @@ export function modifyMatchUpFormatTiming({
       averageTimes,
       recoveryTimes,
     });
-    addEventExtension({ event, extension: { name, value } });
+    addExtension({ element: event, extension: { name, value } });
   } else {
     const { extension } = findExtension({
       element: tournamentRecord,
@@ -48,9 +92,9 @@ export function modifyMatchUpFormatTiming({
       averageTimes,
       recoveryTimes,
     });
-    addTournamentExtension({
+    addExtension({
       extension: { name, value },
-      tournamentRecord,
+      element: tournamentRecord,
     });
   }
 

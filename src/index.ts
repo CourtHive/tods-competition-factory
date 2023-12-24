@@ -3,30 +3,30 @@ export { factoryVersion as version } from './global/functions/factoryVersion';
 export { scoreGovernor } from './matchUpEngine/governors/scoreGovernor';
 export { fixtures } from './fixtures';
 
-import { getAvailablePlayoffProfiles } from './drawEngine/governors/structureGovernor/getAvailablePlayoffProfiles';
+import { getAvailablePlayoffProfiles } from './mutate/drawDefinitions/structureGovernor/getAvailablePlayoffProfiles';
 import { roundRobinGroups } from './assemblies/generators/drawDefinitions/drawTypes/roundRobin/roundRobinGroups';
 import { getValidGroupSizes } from './assemblies/generators/drawDefinitions/drawTypes/roundRobin/roundRobin';
 import { visualizeScheduledMatchUps } from './global/testHarness/testUtilities/visualizeScheduledMatchUps';
 import { calculateWinCriteria } from './matchUpEngine/governors/tieFormatGovernor/calculateWinCriteria';
 import { tieFormatGenderValidityCheck } from './global/functions/deducers/tieFormatGenderValidityCheck';
-import { proConflicts } from './competitionEngine/governors/scheduleGovernor/schedulers/proScheduler/proConflicts';
+import { proConflicts } from './mutate/matchUps/schedule/schedulers/proScheduler/proConflicts';
 import { compareTieFormats } from './matchUpEngine/governors/tieFormatGovernor/compareTieFormats';
-import { dehydrateMatchUps } from './tournamentEngine/governors/tournamentGovernor/dehydrate';
-import { getSeedingThresholds } from './drawEngine/governors/positionGovernor/getSeedBlocks';
+import { dehydrateMatchUps } from './mutate/tournaments/dehydrate';
+import { getSeedingThresholds } from './mutate/drawDefinitions/positionGovernor/getSeedBlocks';
 import { getStructureSeedAssignments } from './query/structure/getStructureSeedAssignments';
 import { getAssignedParticipantIds } from './query/drawDefinition/getAssignedParticipantIds';
 import { getScaleValues } from './query/participant/getScaleValues';
-import { generateScoreString } from './matchUpEngine/generators/generateScoreString';
+import { generateScoreString } from './assemblies/generators/matchUps/generateScoreString';
 import { categoryCanContain } from './global/functions/deducers/categoryCanContain';
-import { getTimeItem } from './tournamentEngine/governors/queryGovernor/timeItems';
+import { getTimeItem } from './query/base/timeItems';
 import { getCategoryAgeDetails } from './global/functions/getCategoryAgeDetails';
 import { participantScaleItem } from './query/participant/participantScaleItem';
-import { checkSetIsComplete } from './matchUpEngine/getters/getSetWinningSide';
+import { checkSetIsComplete } from './query/matchUp/getSetWinningSide';
 import { parseScoreString } from './mocksEngine/utilities/parseScoreString';
 import { getMatchUpContextIds } from './query/matchUp/getMatchUpContextIds';
-import { getSetComplement } from './matchUpEngine/getters/getComplement';
+import { getSetComplement } from './query/matchUp/getComplement';
 import { checkScoreHasValue } from './query/matchUp/checkScoreHasValue';
-import { isAdHoc } from './drawEngine/governors/queryGovernor/isAdHoc';
+import { isAdHoc } from './query/drawDefinition/isAdHoc';
 import { structureSort } from './functions/sorters/structureSort';
 import { validateTieFormat } from './validators/validateTieFormat';
 import { validateCategory } from './validators/validateCategory';
@@ -44,7 +44,7 @@ import { garman } from './forge/garman/garman';
 import {
   allPlayoffPositionsFilled,
   isCompletedStructure,
-} from './drawEngine/governors/queryGovernor/structureActions';
+} from './query/drawDefinition/structureActions';
 import {
   countValues,
   chunkArray,
@@ -147,8 +147,7 @@ export { matchUpEngine } from './matchUpEngine/sync';
 export { matchUpEngineAsync } from './matchUpEngine/async';
 export { tournamentEngine } from './tests/engines/tournamentEngine';
 export { tournamentEngineAsync } from './tournamentEngine/async';
-export { scaleEngine } from './scaleEngine/sync';
-export { scaleEngineAsync } from './scaleEngine/async';
+export { scaleEngine } from './tests/engines/scaleEngine';
 export { mocksEngine } from './mocksEngine';
 // END- Asynchronous and Synchronous engine exports
 

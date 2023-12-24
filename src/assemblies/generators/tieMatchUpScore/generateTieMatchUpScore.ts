@@ -1,6 +1,6 @@
 import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
 import { validateTieFormat } from '../../../validators/validateTieFormat';
-import { tallyParticipantResults } from '../../../matchUpEngine/getters/roundRobinTally/roundRobinTally';
+import { tallyParticipantResults } from '../../../query/matchUps/roundRobinTally/roundRobinTally';
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { evaluateCollectionResult } from './evaluateCollectionResult';

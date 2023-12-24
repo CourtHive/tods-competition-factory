@@ -1,4 +1,4 @@
-import { isCompletedStructure } from '../../../../drawEngine/governors/queryGovernor/structureActions';
+import { isCompletedStructure } from '../../../../query/drawDefinition/structureActions';
 import { generateMatchUpOutcome } from '../primitives/generateMatchUpOutcome';
 import { getPositionAssignments } from '../../../../query/drawDefinition/positionsGetter';
 import tournamentEngine from '../../../engines/tournamentEngine';

@@ -2,7 +2,6 @@ import { expect, it } from 'vitest';
 import {
   setStateProvider,
   setSubscriptions,
-  scaleEngineAsync,
   tournamentEngineAsync,
   competitionEngineAsync,
   mocksEngine,
@@ -17,7 +16,6 @@ import asyncGlobalState from '../asyncEngine/asyncGlobalState';
 const ssp = setStateProvider(asyncGlobalState);
 const asyncCompetitionEngine = competitionEngineAsync();
 const asyncTournamentEngine = tournamentEngineAsync();
-const asyncScaleEngine = scaleEngineAsync();
 
 // NOTE: won't run on vitest > 0.27.3
 it.skip('can setStateProvier', async () => {
@@ -36,9 +34,6 @@ it.skip('can setStateProvier', async () => {
   result = await asyncTournamentEngine.setTournamentId();
   expect(result.error).not.toBeUndefined();
 
-  result = await asyncScaleEngine.setTournamentId();
-  expect(result.error).not.toBeUndefined();
-
   result = await asyncCompetitionEngine.setTournamentRecord();
   expect(result.error).not.toBeUndefined();
 
@@ -51,16 +46,10 @@ it.skip('can setStateProvier', async () => {
   result = await asyncTournamentEngine.reset();
   expect(result.success).toEqual(true);
 
-  result = await asyncScaleEngine.reset();
-  expect(result.success).toEqual(true);
-
   result = await asyncCompetitionEngine.version();
   expect(result).not.toBeUndefined();
 
   result = await asyncTournamentEngine.version();
-  expect(result).not.toBeUndefined();
-
-  result = await asyncScaleEngine.version();
   expect(result).not.toBeUndefined();
 
   result = await asyncCompetitionEngine.removeTournamentRecord();
@@ -96,15 +85,10 @@ it.skip('can setStateProvier', async () => {
   expect(result.success).toEqual(true);
   expect(result.tournamentId).not.toBeUndefined();
 
-  let { tournamentRecord } = await asyncScaleEngine.getState();
-  expect(tournamentRecord).not.toBeUndefined();
-  ({ tournamentRecord } = await asyncTournamentEngine.getState());
+  let { tournamentRecord } = await asyncTournamentEngine.getState();
   expect(tournamentRecord).not.toBeUndefined();
 
   result = await asyncTournamentEngine.setState(tournamentRecord);
-  expect(result.success).toEqual(true);
-
-  result = await asyncScaleEngine.setState(tournamentRecord);
   expect(result.success).toEqual(true);
 
   result = await asyncCompetitionEngine.setState(tournamentRecord);

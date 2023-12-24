@@ -1,5 +1,5 @@
 import { createMap, isObject } from '../../utilities/objects';
-import { formatParticipantName } from '../../tournamentEngine/governors/participantGovernor/formatParticipantName';
+import { formatParticipantName } from '../../assemblies/generators/participants/formatParticipantName';
 
 import { Tournament } from '../../types/tournamentTypes';
 import { SUCCESS } from '../../constants/resultConstants';

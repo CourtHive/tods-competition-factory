@@ -1,4 +1,4 @@
-import { addDrawDefinition } from '../../tournamentEngine/governors/eventGovernor/drawDefinitions/addDrawDefinition';
+import { addDrawDefinition } from '../../mutate/drawDefinitions/addDrawDefinition';
 import { automatedPlayoffPositioning } from '../../mutate/drawDefinitions/automatedPlayoffPositioning';
 import { addPlayoffStructures } from '../../mutate/drawDefinitions/addPlayoffStructures';
 import { setParticipantScaleItem } from '../../mutate/participants/addScaleItems';

@@ -1,4 +1,4 @@
-import { addParticipantGroupings } from '../../drawEngine/governors/positionGovernor/avoidance/addParticipantGroupings';
+import { addParticipantGroupings } from '../../mutate/drawDefinitions/positionGovernor/avoidance/addParticipantGroupings';
 import { addNationalityCode } from '../../mutate/participants/addNationalityCode';
 import { getScaleValues } from '../participant/getScaleValues';
 

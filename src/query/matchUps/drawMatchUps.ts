@@ -1,7 +1,7 @@
-import { addParticipantGroupings } from '../../drawEngine/governors/positionGovernor/avoidance/addParticipantGroupings';
-import { addUpcomingMatchUps } from '../../drawEngine/governors/matchUpGovernor/addUpcomingMatchUps';
+import { addParticipantGroupings } from '../../mutate/drawDefinitions/positionGovernor/avoidance/addParticipantGroupings';
+import { addUpcomingMatchUps } from '../../mutate/drawDefinitions/matchUpGovernor/addUpcomingMatchUps';
 import { getContextContent } from '../hierarchical/getContextContent';
-import { getExitProfiles } from '../../drawEngine/governors/queryGovernor/getExitProfile';
+import { getExitProfiles } from '../drawDefinition/getExitProfile';
 import { MatchUpsMap, getMatchUpsMap } from './getMatchUpsMap';
 import { getStructureMatchUps } from '../structure/getStructureMatchUps';
 import { getDrawStructures } from '../../acquire/findStructure';

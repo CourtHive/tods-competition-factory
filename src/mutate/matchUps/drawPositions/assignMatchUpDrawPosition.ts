@@ -1,4 +1,4 @@
-import { getPairedPreviousMatchUpIsDoubleExit } from '../../../drawEngine/governors/positionGovernor/getPairedPreviousMatchUpIsDoubleExit';
+import { getPairedPreviousMatchUpIsDoubleExit } from '../../drawDefinitions/positionGovernor/getPairedPreviousMatchUpIsDoubleExit';
 import { assignDrawPositionBye } from './assignDrawPositionBye';
 import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
@@ -6,9 +6,9 @@ import { decorateResult } from '../../../global/functions/decorateResult';
 import { updateSideLineUp } from '../lineUps/updateSideLineUp';
 import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
 import { positionTargets } from './positionTargets';
-import { getUpdatedDrawPositions } from '../../../drawEngine/governors/matchUpGovernor/getUpdatedDrawPositions';
-import { updateMatchUpStatusCodes } from '../../../drawEngine/governors/matchUpGovernor/matchUpStatusCodes';
-import { getExitWinningSide } from '../../../drawEngine/governors/matchUpGovernor/getExitWinningSide';
+import { getUpdatedDrawPositions } from '../../drawDefinitions/matchUpGovernor/getUpdatedDrawPositions';
+import { updateMatchUpStatusCodes } from '../../drawDefinitions/matchUpGovernor/matchUpStatusCodes';
+import { getExitWinningSide } from '../../drawDefinitions/matchUpGovernor/getExitWinningSide';
 import { overlap } from '../../../utilities';
 import {
   MatchUpsMap,

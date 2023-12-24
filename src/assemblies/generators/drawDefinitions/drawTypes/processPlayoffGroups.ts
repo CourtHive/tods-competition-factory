@@ -1,4 +1,4 @@
-import { getPositionRangeMap } from '../../../../drawEngine/governors/structureGovernor/getPositionRangeMap';
+import { getPositionRangeMap } from '../../../../mutate/drawDefinitions/structureGovernor/getPositionRangeMap';
 import { firstRoundLoserConsolation } from './firstRoundLoserConsolation';
 import { generateCurtisConsolation } from './curtisConsolation';
 import { generatePlayoffStructures } from '../drawTypes/playoffStructures';

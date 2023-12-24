@@ -1,4 +1,4 @@
-import { getEventTimeItem } from '../participant/timeItems';
+import { getEventTimeItem } from '../base/timeItems';
 
 import { PUBLIC, PUBLISH, STATUS } from '../../constants/timeItemConstants';
 

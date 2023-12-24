@@ -2,13 +2,13 @@ import { generateDrawTypeAndModifyDrawDefinition } from './generateDrawTypeAndMo
 import { generateQualifyingStructures } from './drawTypes/generateQualifyingStructures';
 import { addVoluntaryConsolationStructure } from '../../../mutate/drawDefinitions/addVoluntaryConsolationStructure';
 import { setMatchUpFormat } from '../../../mutate/matchUps/matchUpFormat/setMatchUpFormat';
-import { addDrawDefinition } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/addDrawDefinition';
+import { addDrawDefinition } from '../../../mutate/drawDefinitions/addDrawDefinition';
 import { generateQualifyingLink } from './links/generateQualifyingLink';
 import { generateAdHocMatchUps } from './generateAdHocMatchUps';
 import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
-import { checkValidEntries } from '../../../tournamentEngine/governors/eventGovernor/entries/checkValidEntries';
+import { checkValidEntries } from '../../../validators/checkValidEntries';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import { addDrawEntry } from '../../../drawEngine/governors/entryGovernor/addDrawEntries';
+import { addDrawEntry } from '../../../mutate/drawDefinitions/entryGovernor/addDrawEntries';
 import { getQualifiersCount } from '../../../query/drawDefinition/getQualifiersCount';
 import { getAllowedDrawTypes } from '../../../query/tournaments/allowedTypes';
 import structureTemplate from '../templates/structureTemplate';
@@ -25,7 +25,7 @@ import { prepareStage } from './prepareStage';
 import {
   setStageDrawSize,
   setStageQualifiersCount,
-} from '../../../drawEngine/governors/entryGovernor/stageEntryCounts';
+} from '../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 import { DrawMaticArgs, drawMatic } from './drawMatic/drawMatic';
 import {
   extractAttributes,

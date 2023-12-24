@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { getDateTimeBoundary } from '../../../competitionEngine/governors/scheduleGovernor/schedulers/utils/getTimeBoundary';
+import { getDateTimeBoundary } from '../../../mutate/matchUps/schedule/schedulers/utils/getTimeBoundary';
 
 test('time boundaries for startTime / endTime correctly deduced', () => {
   const date = '2023-09-18';

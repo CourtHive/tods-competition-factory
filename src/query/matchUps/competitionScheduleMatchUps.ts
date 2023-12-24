@@ -1,7 +1,7 @@
 import { getEventPublishStatus } from '../event/getEventPublishStatus';
 import { getDrawPublishStatus } from '../event/getDrawPublishStatus';
-import { getSchedulingProfile } from '../../competitionEngine/governors/scheduleGovernor/schedulingProfile/schedulingProfile';
-import { getTournamentTimeItem } from '../participant/timeItems';
+import { getSchedulingProfile } from '../../mutate/tournaments/schedulingProfile';
+import { getTournamentTimeItem } from '../base/timeItems';
 import { scheduledSortedMatchUps } from '../../functions/sorters/scheduledSortedMatchUps';
 import { getTournamentId } from '../../global/state/globalState';
 import { getVenuesAndCourts } from '../venues/venuesAndCourtsGetter';

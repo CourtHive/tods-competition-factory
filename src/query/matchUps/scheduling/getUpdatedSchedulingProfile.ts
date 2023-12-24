@@ -18,7 +18,7 @@ export function getUpdatedSchedulingProfile({
       const venues = (dateSchedulingProfile?.venues || [])
         .map((venue) => {
           const { rounds, venueId } = venue;
-          const venueExists = venueIds.includes(venueId);
+          const venueExists = venueIds?.includes(venueId);
           if (!venueExists) {
             issues.push(`Missing venueId: ${venueId}`);
             return;

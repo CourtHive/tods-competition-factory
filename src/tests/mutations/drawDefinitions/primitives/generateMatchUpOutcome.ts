@@ -1,5 +1,5 @@
-import { generateScoreString } from '../../../../matchUpEngine/generators/generateScoreString';
-import { analyzeMatchUp } from '../../../../matchUpEngine/getters/analyzeMatchUp';
+import { generateScoreString } from '../../../../assemblies/generators/matchUps/generateScoreString';
+import { analyzeMatchUp } from '../../../../query/matchUp/analyzeMatchUp';
 
 import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
 

@@ -1,4 +1,4 @@
-import { updateAssignmentParticipantResults } from '../../drawEngine/governors/matchUpGovernor/updateAssignmentParticipantResults';
+import { updateAssignmentParticipantResults } from '../drawDefinitions/matchUpGovernor/updateAssignmentParticipantResults';
 import { checkScoreHasValue } from '../../query/matchUp/checkScoreHasValue';
 import { getMissingSequenceNumbers } from '../../utilities/arrays';
 import { extractAttributes, unique } from '../../utilities';

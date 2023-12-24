@@ -1,5 +1,5 @@
 import { findExtension } from '../../acquire/findExtension';
-import { modifyEntryProfile } from '../../drawEngine/governors/entryGovernor/modifyEntryProfile';
+import { modifyEntryProfile } from '../../mutate/drawDefinitions/entryGovernor/modifyEntryProfile';
 import { getEntryProfile } from './getEntryProfile';
 import { findStructure } from '../../acquire/findStructure';
 import { numericSort } from '../../utilities';

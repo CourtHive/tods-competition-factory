@@ -1,5 +1,5 @@
 import { modifyDrawNotice } from '../notifications/drawNotifications';
-import { setStageDrawSize } from '../../drawEngine/governors/entryGovernor/stageEntryCounts';
+import { setStageDrawSize } from './entryGovernor/stageEntryCounts';
 
 import { MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
 import { VOLUNTARY_CONSOLATION } from '../../constants/drawDefinitionConstants';

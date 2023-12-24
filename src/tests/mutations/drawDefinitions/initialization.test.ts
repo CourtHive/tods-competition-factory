@@ -12,7 +12,7 @@ import {
   setStageDrawSize,
   setStageQualifiersCount,
   setStageWildcardsCount,
-} from '../../../drawEngine/governors/entryGovernor/stageEntryCounts';
+} from '../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 import { DrawDefinition } from '../../../types/tournamentTypes';
 
 let result;

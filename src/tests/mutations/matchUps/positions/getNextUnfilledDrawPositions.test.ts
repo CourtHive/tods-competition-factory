@@ -7,7 +7,7 @@ import {
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
-import { getNextUnfilledDrawPositions } from '../../../../drawEngine/governors/queryGovernor/positionActions/getNextUnfilledDrawPositions';
+import { getNextUnfilledDrawPositions } from '../../../../query/drawDefinition/positionActions/getNextUnfilledDrawPositions';
 import { assignDrawPosition } from '../../../../mutate/matchUps/drawPositions/positionAssignment';
 
 it('can report on drawPositions available for placement', () => {

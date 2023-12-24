@@ -9,7 +9,7 @@ import { expect, it } from 'vitest';
 import {
   allPlayoffPositionsFilled,
   isCompletedStructure,
-} from '../../../../../drawEngine/governors/queryGovernor/structureActions';
+} from '../../../../../query/drawDefinition/structureActions';
 
 import {
   MAIN,
