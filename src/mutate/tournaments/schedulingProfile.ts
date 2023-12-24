@@ -1,19 +1,19 @@
-import { getUpdatedSchedulingProfile } from '../../../../query/matchUps/scheduling/getUpdatedSchedulingProfile';
-import { validateSchedulingProfile } from '../../../../validators/validateSchedulingProfile';
-import { getCompetitionVenues } from '../../../../query/venues/venuesAndCourtsGetter';
-import { removeExtension } from '../../../../mutate/extensions/removeExtension';
-import { getEventIdsAndDrawIds } from '../../../../query/tournaments/getEventIdsAndDrawIds';
-import { addExtension } from '../../../../mutate/extensions/addExtension';
-import { findExtension } from '../../../../acquire/findExtension';
+import { getUpdatedSchedulingProfile } from '../../query/matchUps/scheduling/getUpdatedSchedulingProfile';
+import { validateSchedulingProfile } from '../../validators/validateSchedulingProfile';
+import { getCompetitionVenues } from '../../query/venues/venuesAndCourtsGetter';
+import { removeExtension } from '../extensions/removeExtension';
+import { getEventIdsAndDrawIds } from '../../query/tournaments/getEventIdsAndDrawIds';
+import { addExtension } from '../extensions/addExtension';
+import { findExtension } from '../../acquire/findExtension';
 
-import { SCHEDULING_PROFILE } from '../../../../constants/extensionConstants';
-import { TournamentRecords } from '../../../../types/factoryTypes';
-import { SUCCESS } from '../../../../constants/resultConstants';
-import { Tournament } from '../../../../types/tournamentTypes';
+import { SCHEDULING_PROFILE } from '../../constants/extensionConstants';
+import { TournamentRecords } from '../../types/factoryTypes';
+import { SUCCESS } from '../../constants/resultConstants';
+import { Tournament } from '../../types/tournamentTypes';
 import {
   ErrorType,
   MISSING_TOURNAMENT_RECORDS,
-} from '../../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 type GetSchedulingProfileArgs = {
   tournamentRecords?: TournamentRecords;
@@ -108,28 +108,45 @@ export function setSchedulingProfile({
   return addExtension({ tournamentRecords, discover: true, extension });
 }
 
-export function checkAndUpdateSchedulingProfile({ tournamentRecords }) {
-  const { schedulingProfile } = getSchedulingProfile({
-    tournamentRecords,
-  });
-  if (schedulingProfile) {
-    const { venueIds } = getCompetitionVenues({ tournamentRecords });
-    const { eventIds, drawIds } = getEventIdsAndDrawIds({ tournamentRecords });
-    const { updatedSchedulingProfile, modifications } =
-      getUpdatedSchedulingProfile({
-        schedulingProfile,
-        venueIds,
-        eventIds,
-        drawIds,
-      });
+export function checkAndUpdateSchedulingProfile(params) {
+  const { tournamentRecord } = params;
 
-    if (modifications) {
-      return setSchedulingProfile({
-        tournamentRecords,
-        schedulingProfile: updatedSchedulingProfile,
-      });
-    }
+  const tournamentRecords =
+    params.tournamentRecords ||
+    (tournamentRecord && {
+      [tournamentRecord.tournamentId]: tournamentRecord,
+    }) ||
+    {};
+
+  if (!params.schedulingProfile) {
+    const { modifications, issues } = getSchedulingProfile({
+      tournamentRecords,
+      tournamentRecord,
+    });
+    return { success: !modifications, modifications, issues };
   }
 
-  return { ...SUCCESS };
+  const { venueIds } = getCompetitionVenues({ tournamentRecords });
+  const { eventIds, drawIds } = getEventIdsAndDrawIds({ tournamentRecords });
+
+  const { updatedSchedulingProfile, modifications, issues } =
+    getUpdatedSchedulingProfile({
+      schedulingProfile: params.schedulingProfile,
+      venueIds,
+      eventIds,
+      drawIds,
+    });
+
+  if (modifications) {
+    return {
+      ...setSchedulingProfile({
+        schedulingProfile: updatedSchedulingProfile,
+        tournamentRecords,
+      }),
+      modifications,
+      issues,
+    };
+  }
+
+  return { ...SUCCESS, modifications, issues };
 }

@@ -1,8 +1,9 @@
+import { checkAndUpdateSchedulingProfile } from '../../../mutate/tournaments/schedulingProfile';
 import { bulkScheduleTournamentMatchUps } from '../scheduleGovernor/bulkScheduleTournamentMatchUps';
-import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import { checkAndUpdateSchedulingProfile } from '../scheduleGovernor/schedulingProfile';
-import { addNotice } from '../../../global/state/globalState';
 import venueTemplate from '../../../assemblies/generators/templates/venueTemplate';
+import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
+import { addNotice } from '../../../global/state/globalState';
+import { findVenue } from '../../../acquire/findVenue';
 import { deletionMessage } from './deletionMessage';
 import { makeDeepCopy } from '../../../utilities';
 import { modifyCourt } from './modifyCourt';
@@ -24,7 +25,6 @@ import {
   MISSING_VENUE_ID,
   NO_VALID_ATTRIBUTES,
 } from '../../../constants/errorConditionConstants';
-import { findVenue } from '../../../acquire/findVenue';
 
 type ModifyVenueArgs = {
   tournamentRecord: Tournament;

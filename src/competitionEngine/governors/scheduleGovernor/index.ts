@@ -17,7 +17,7 @@ import { proConflicts } from '../../../mutate/matchUps/schedule/schedulers/proSc
 import {
   getSchedulingProfile,
   setSchedulingProfile,
-} from './schedulingProfile/schedulingProfile';
+} from '../../../mutate/tournaments/schedulingProfile';
 import {
   addPersonRequests,
   getPersonRequests,

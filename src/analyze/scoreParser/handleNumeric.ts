@@ -94,7 +94,6 @@ export function handleNumeric(params) {
         const [s1, s2, s3, s4, tb, s5, s6] = numbers;
         /**
         if (tb === 1) {
-          console.log('BOO');
           score = `${s1}-${s2} ${s3}-${s4} [${tb}${s5}-${s6}]`;
           applied.push('numericTiebreakPattern8');
         } else {

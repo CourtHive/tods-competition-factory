@@ -1,4 +1,4 @@
-import { getSchedulingProfile } from '../../competitionEngine/governors/scheduleGovernor/schedulingProfile/schedulingProfile';
+import { getSchedulingProfile } from '../../mutate/tournaments/schedulingProfile';
 import { scheduledSortedMatchUps } from '../../functions/sorters/scheduledSortedMatchUps';
 import { allTournamentMatchUps } from '../matchUps/getAllTournamentMatchUps';
 

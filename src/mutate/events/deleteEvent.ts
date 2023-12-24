@@ -1,4 +1,4 @@
-import { checkAndUpdateSchedulingProfile } from '../../tournamentEngine/governors/scheduleGovernor/schedulingProfile';
+import { checkAndUpdateSchedulingProfile } from '../tournaments/schedulingProfile';
 import { addTournamentTimeItem } from '../timeItems/addTimeItem';
 import { mustBeAnArray } from '../../utilities/mustBeAnArray';
 import { addNotice } from '../../global/state/globalState';

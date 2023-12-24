@@ -1,4 +1,4 @@
-import { checkAndUpdateSchedulingProfile } from '../../../competitionEngine/governors/scheduleGovernor/schedulingProfile/schedulingProfile';
+import { checkAndUpdateSchedulingProfile } from '../../../mutate/tournaments/schedulingProfile';
 import { removeCourtAssignment } from '../../../mutate/matchUps/schedule/removeCourtAssignment';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { allCompetitionMatchUps } from '../../../forge/query';

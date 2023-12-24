@@ -2,7 +2,7 @@ import { getCompetitionDateRange } from '../../../query/tournaments/getCompetiti
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { isValidDateString, sameDay } from '../../../utilities/dateTime';
 import { findExtension } from '../../../acquire/findExtension';
-import { setSchedulingProfile } from '../../../competitionEngine/governors/scheduleGovernor/schedulingProfile/schedulingProfile';
+import { setSchedulingProfile } from '../../tournaments/schedulingProfile';
 import { isObject } from '../../../utilities/objects';
 
 import { SCHEDULING_PROFILE } from '../../../constants/extensionConstants';

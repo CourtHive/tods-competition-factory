@@ -30,7 +30,7 @@ import {
 import {
   getSchedulingProfile,
   setSchedulingProfile,
-} from '../../../competitionEngine/governors/scheduleGovernor/schedulingProfile/schedulingProfile';
+} from '../../../mutate/tournaments/schedulingProfile';
 
 import { getMatchUpDailyLimitsUpdate } from '../../../query/extensions/getMatchUpDailyLimitsUpdate';
 import { setMatchUpDailyLimits } from '../../../mutate/tournaments/setMatchUpDailyLimits';

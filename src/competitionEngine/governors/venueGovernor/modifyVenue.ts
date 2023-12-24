@@ -1,5 +1,5 @@
 import { modifyVenue as venueModify } from '../../../tournamentEngine/governors/venueGovernor/modifyVenue';
-import { checkAndUpdateSchedulingProfile } from '../scheduleGovernor/schedulingProfile/schedulingProfile';
+import { checkAndUpdateSchedulingProfile } from '../../../mutate/tournaments/schedulingProfile';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {

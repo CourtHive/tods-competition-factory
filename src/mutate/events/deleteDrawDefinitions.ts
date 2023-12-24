@@ -1,3 +1,4 @@
+import { checkAndUpdateSchedulingProfile } from '../tournaments/schedulingProfile';
 import { checkScoreHasValue } from '../../query/matchUp/checkScoreHasValue';
 import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
 import { modifyEventPublishStatus } from './modifyEventPublishStatus';
@@ -6,7 +7,6 @@ import { addExtension } from '../extensions/addExtension';
 import { allDrawMatchUps } from '../../query/matchUps/getAllDrawMatchUps';
 import { getPositionAssignments } from '../../query/structure/getPositionAssignments';
 import { addEventExtension } from '../extensions/addRemoveExtensions';
-import { checkAndUpdateSchedulingProfile } from '../../tournamentEngine/governors/scheduleGovernor/schedulingProfile';
 import { getDrawStructures } from '../../acquire/findStructure';
 import { decorateResult } from '../../global/functions/decorateResult';
 import { definedAttributes } from '../../utilities/definedAttributes';
