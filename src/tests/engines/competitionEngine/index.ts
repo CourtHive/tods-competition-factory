@@ -2,7 +2,7 @@ import competitionGovernor from '../../../competitionEngine/governors/competitio
 import publishingGovernor from '../../../competitionEngine/governors/publishingGovernor';
 import scheduleGovernor from '../../../competitionEngine/governors/scheduleGovernor';
 import policyGovernor from '../../../assemblies/governors/policyGovernor';
-import queryGovernor from '../../../competitionEngine/governors/queryGovernor';
+import queryGovernor from '../../../assemblies/governors/queryGovernor';
 import venueGovernor from '../../../competitionEngine/governors/venueGovernor';
 import syncEngine from '../../../assemblies/engines/sync';
 

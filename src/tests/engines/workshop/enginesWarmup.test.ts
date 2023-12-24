@@ -1,6 +1,6 @@
 import { getParticipants } from '../../../query/participants/getParticipants';
 import { completeDrawMatchUps } from '../../../mocksEngine/generators/completeDrawMatchUps';
-import eventGovernor from '../../../tournamentEngine/governors/eventGovernor';
+import eventGovernor from '../../../assemblies/governors/eventGovernor';
 import mocksEngine from '../../../mocksEngine';
 import syncEngine from '../../../assemblies/engines/sync';
 import askEngine from '../../../assemblies/engines/ask';

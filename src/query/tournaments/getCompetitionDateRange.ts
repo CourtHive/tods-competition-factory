@@ -1,22 +1,26 @@
 import { getTournamentInfo } from './getTournamentInfo';
 import { extractDate } from '../../utilities/dateTime';
 
-import { Tournament } from '../../types/tournamentTypes';
+import { TournamentRecords } from '../../types/factoryTypes';
 import {
   ErrorType,
   MISSING_DATE,
+  MISSING_TOURNAMENT_RECORDS,
 } from '../../constants/errorConditionConstants';
+import { isObject } from '../../utilities/objects';
 
 export function getCompetitionDateRange({
   tournamentRecords,
 }: {
-  [key: string]: Tournament;
+  tournamentRecords: TournamentRecords;
 }): {
   startDate?: Date;
   endDate?: Date;
   error?: ErrorType;
 } {
-  const tournamentIds = Object.keys(tournamentRecords);
+  if (!isObject(tournamentRecords))
+    return { error: MISSING_TOURNAMENT_RECORDS };
+  const tournamentIds = Object.keys(tournamentRecords ?? {});
   const dateRange: {
     startDate: Date | undefined;
     endDate: Date | undefined;
