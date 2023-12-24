@@ -1,6 +1,7 @@
-import { addTimeItem } from './addTimeItem';
+import { resolveTournamentRecords } from '../../parameters/resolveTournamentRecords';
 import { addNotice } from '../../global/state/globalState';
 import { getTimeItem } from '../../forge/query';
+import { addTimeItem } from './addTimeItem';
 
 import { PUBLIC, PUBLISH, STATUS } from '../../constants/timeItemConstants';
 import { PUBLISH_ORDER_OF_PLAY } from '../../constants/topicConstants';
@@ -11,12 +12,7 @@ import {
 } from '../../constants/errorConditionConstants';
 
 export function publishOrderOfPlay(params) {
-  const tournamentRecords =
-    params?.tournamentRecords ??
-    (params?.tournamentRecord && {
-      [params.tournamentRecord.tournamentId]: params.tournamentRecord,
-    }) ??
-    {};
+  const tournamentRecords = resolveTournamentRecords(params);
 
   if (!Object.keys(tournamentRecords).length)
     return { error: MISSING_TOURNAMENT_RECORDS };

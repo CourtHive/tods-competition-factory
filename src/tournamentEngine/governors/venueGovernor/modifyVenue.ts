@@ -1,5 +1,5 @@
 import { checkAndUpdateSchedulingProfile } from '../../../mutate/tournaments/schedulingProfile';
-import { bulkScheduleTournamentMatchUps } from '../scheduleGovernor/bulkScheduleTournamentMatchUps';
+import { bulkScheduleTournamentMatchUps } from '../../../mutate/matchUps/schedule/bulkScheduleTournamentMatchUps';
 import venueTemplate from '../../../assemblies/generators/templates/venueTemplate';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { addNotice } from '../../../global/state/globalState';

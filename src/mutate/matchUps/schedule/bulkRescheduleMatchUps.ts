@@ -1,10 +1,12 @@
-import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
-import { addMatchUpScheduledDate } from '../../../mutate/matchUps/schedule/scheduleItems';
-import { addMatchUpScheduledTime } from '../../../mutate/matchUps/schedule/scheduledTime';
-import { findDrawDefinition } from '../../../acquire/findDrawDefinition';
-import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
+import { hasSchedule } from './scheduleMatchUps/hasSchedule';
+import { addMatchUpScheduledDate } from './scheduleItems';
+import { addMatchUpScheduledTime } from './scheduledTime';
 import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
+import { resolveTournamentRecords } from '../../../parameters/resolveTournamentRecords';
+import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 import { getTournamentInfo } from '../../../query/tournaments/getTournamentInfo';
+import { findDrawDefinition } from '../../../acquire/findDrawDefinition';
+import { getMatchUpIds } from '../../../global/functions/extractors';
 import {
   addMinutesToTimeString,
   dateStringDaysChange,
@@ -13,6 +15,9 @@ import {
   timeStringMinutes,
 } from '../../../utilities/dateTime';
 
+import { ResultType } from '../../../global/functions/decorateResult';
+import { TournamentRecords } from '../../../types/factoryTypes';
+import { Tournament } from '../../../types/tournamentTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_VALUES,
@@ -20,6 +25,65 @@ import {
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 
+type BulkRescheduleMatchUpsArgs = {
+  tournamentRecords: TournamentRecords;
+  tournamentRecord: Tournament;
+  matchUpIds: string[];
+  scheduleChange: any;
+  dryRun?: boolean;
+};
+export function bulkRescheduleMatchUps(
+  params: BulkRescheduleMatchUpsArgs
+): ResultType & {
+  allRescheduled?: boolean;
+  notRescheduled?: any[];
+  rescheduled?: any[];
+} {
+  const { scheduleChange, matchUpIds, dryRun } = params;
+  if (!matchUpIds || !Array.isArray(matchUpIds))
+    return { error: MISSING_MATCHUP_IDS };
+  if (typeof scheduleChange !== 'object') return { error: INVALID_VALUES };
+
+  const tournamentRecords = resolveTournamentRecords(params);
+
+  const rescheduled: any[] = [];
+  let notRescheduled: any[] = [];
+
+  for (const tournamentRecord of Object.values(tournamentRecords)) {
+    const result = bulkReschedule({
+      tournamentRecord,
+      scheduleChange,
+      matchUpIds,
+      dryRun,
+    });
+    if (result.error) return result;
+
+    if (Array.isArray(result.notRescheduled))
+      notRescheduled.push(...result.notRescheduled);
+
+    // this is a check in case something has been rescheduled multiple times in the same call
+    const notRescheduledIds = getMatchUpIds(result.notRescheduled);
+    const removeFromNotScheduledIds: string[] = [];
+    result.rescheduled?.forEach((matchUp) => {
+      const { matchUpId } = matchUp;
+      if (notRescheduledIds.includes(matchUpId)) {
+        removeFromNotScheduledIds.push(matchUpId);
+      }
+      rescheduled.push(matchUp);
+    });
+
+    if (removeFromNotScheduledIds.length) {
+      notRescheduled =
+        result?.notRescheduled?.filter(
+          ({ matchUpId }) => !removeFromNotScheduledIds.includes(matchUpId)
+        ) || [];
+    }
+  }
+
+  const allRescheduled = !!(rescheduled.length && !notRescheduled.length);
+
+  return { ...SUCCESS, rescheduled, notRescheduled, allRescheduled };
+}
 /**
  *
  * @param {object} tournamentRecord - passed in automatically by tournamentEngine
@@ -27,7 +91,8 @@ import {
  * @param {object} scheduleChange - { minutesChange, daysChange }
  *
  */
-export function bulkRescheduleMatchUps({
+
+export function bulkReschedule({
   tournamentRecord,
   scheduleChange,
   matchUpIds,

@@ -1,5 +1,5 @@
 import { addParticipant } from '../../../mutate/participants/addParticipants';
-import { bulkScheduleMatchUps } from '../scheduleGovernor/bulkScheduleMatchUps';
+import { bulkScheduleMatchUps } from '../../../mutate/matchUps/schedule/bulkScheduleMatchUps';
 import { setMatchUpStatus } from './setMatchUpStatus';
 import { courtGridRows } from '../../../assemblies/generators/scheduling/courtGridRows';
 import { publicFindParticipant } from '../../../acquire/publicFindParticipant';

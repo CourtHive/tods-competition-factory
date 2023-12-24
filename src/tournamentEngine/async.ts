@@ -6,7 +6,7 @@ import { factoryVersion } from '../global/functions/factoryVersion';
 
 import participantGovernor from '../assemblies/governors/participantGovernor';
 import publishingGovernor from '../assemblies/governors/publishingGovernor';
-import scheduleGovernor from './governors/scheduleGovernor';
+import scheduleGovernor from '../assemblies/governors/scheduleGovernor';
 
 import tournamentGovernor from '../assemblies/governors/tournamentGovernor';
 import reportGovernor from '../assemblies/governors/reportGovernor';

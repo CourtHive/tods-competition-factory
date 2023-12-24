@@ -3,7 +3,7 @@ import { jinnScheduler } from './schedulers/jinnScheduler/jinnScheduler';
 import { getPersonRequests } from './scheduleMatchUps/personRequests';
 import { v2Scheduler } from './schedulers/v2Scheduler/v2Scheduler';
 import { getContainedStructures } from '../../../query/drawDefinition/getContainedStructures';
-import { clearScheduledMatchUps } from '../../../competitionEngine/governors/scheduleGovernor/clearScheduledMatchUps';
+import { clearScheduledMatchUps } from './clearScheduledMatchUps';
 import { allCompetitionMatchUps } from '../../../query/matchUps/getAllCompetitionMatchUps';
 import { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDependencies';
 import { getMatchUpDailyLimits } from '../../../query/extensions/getMatchUpDailyLimits';

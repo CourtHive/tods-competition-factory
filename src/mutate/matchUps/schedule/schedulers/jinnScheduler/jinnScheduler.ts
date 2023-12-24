@@ -10,7 +10,7 @@ import { getVenueSchedulingDetails } from '../../../../../query/matchUps/schedul
 import { checkRecoveryTime } from '../../scheduleMatchUps/checkRecoveryTime';
 import { checkDailyLimits } from '../../scheduleMatchUps/checkDailyLimits';
 import { getMatchUpId } from '../../../../../global/functions/extractors';
-import { bulkScheduleMatchUps } from '../../../../../competitionEngine/governors/scheduleGovernor/bulkScheduleMatchUps';
+import { bulkScheduleMatchUps } from '../../bulkScheduleMatchUps';
 import { auditAutoScheduling } from '../auditAutoScheduling';
 import {
   extractDate,

@@ -1,6 +1,7 @@
-import { findEvent } from '../../../acquire/findEvent';
-import { findTournamentId } from '../../../acquire/findTournamentId';
+import { resolveTournamentRecords } from '../../../parameters/resolveTournamentRecords';
 import { setMatchUpStatus as setStatus } from '../../../mutate/events/setMatchUpStatus';
+import { findTournamentId } from '../../../acquire/findTournamentId';
+import { findEvent } from '../../../acquire/findEvent';
 
 import {
   MISSING_TOURNAMENT_ID,
@@ -8,7 +9,8 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function setMatchUpStatus(params) {
-  const tournamentRecords = params.tournamentRecords;
+  const tournamentRecords = resolveTournamentRecords(params);
+
   // find tournamentId by brute force if not provided
   const tournamentId = params.tournamentId || findTournamentId(params);
   if (typeof tournamentId !== 'string') return { error: MISSING_TOURNAMENT_ID };

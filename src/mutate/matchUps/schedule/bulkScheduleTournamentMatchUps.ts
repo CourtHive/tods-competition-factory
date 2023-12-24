@@ -1,5 +1,5 @@
 import { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDependencies';
-import { addMatchUpScheduleItems } from '../../../mutate/matchUps/schedule/scheduleItems';
+import { addMatchUpScheduleItems } from './scheduleItems';
 import { findDrawDefinition } from '../../../acquire/findDrawDefinition';
 import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
 import { allDrawMatchUps } from '../../../query/matchUps/getAllDrawMatchUps';

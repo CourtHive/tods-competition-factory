@@ -1,4 +1,4 @@
-import { clearScheduledMatchUps } from '../../tournamentEngine/governors/scheduleGovernor/clearScheduledMatchUps';
+import { clearScheduledMatchUps } from '../matchUps/schedule/clearScheduledMatchUps';
 import { allTournamentMatchUps } from '../../query/matchUps/getAllTournamentMatchUps';
 import { updateCourtAvailability } from '../venues/updateCourtAvailability';
 import { dateValidation } from '../../fixtures/validations/regex';

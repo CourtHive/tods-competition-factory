@@ -1,4 +1,4 @@
-import { bulkScheduleTournamentMatchUps } from '../../../tournamentEngine/governors/scheduleGovernor/bulkScheduleTournamentMatchUps';
+import { bulkScheduleTournamentMatchUps } from './bulkScheduleTournamentMatchUps';
 import { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDependencies';
 import { getMatchUpId } from '../../../global/functions/extractors';
 

@@ -1,5 +1,5 @@
-import { assignMatchUpCourt as assignCourt } from '../../../mutate/matchUps/schedule/assignMatchUpCourt';
-import { allocateTeamMatchUpCourts } from '../../../mutate/matchUps/schedule/allocateTeamMatchUpCourts';
+import { assignMatchUpCourt } from './assignMatchUpCourt';
+import { allocateTeamMatchUpCourts } from './allocateTeamMatchUpCourts';
 import { findDrawDefinition } from '../../../acquire/findDrawDefinition';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { allCompetitionMatchUps } from '../../../query/matchUps/getAllCompetitionMatchUps';
@@ -160,24 +160,6 @@ export function matchUpScheduleChange(params) {
       courtDayDate,
       matchUpId,
       courtIds,
-    });
-  }
-
-  function assignMatchUpCourt({
-    tournamentRecords,
-    tournamentRecord,
-    drawDefinition,
-    courtDayDate,
-    matchUpId,
-    courtId,
-  }) {
-    return assignCourt({
-      tournamentRecords,
-      tournamentRecord,
-      drawDefinition,
-      courtDayDate,
-      matchUpId,
-      courtId,
     });
   }
 }
