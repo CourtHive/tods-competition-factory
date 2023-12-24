@@ -11,7 +11,7 @@ import scheduleGovernor from '../assemblies/governors/scheduleGovernor';
 import tournamentGovernor from '../assemblies/governors/tournamentGovernor';
 import reportGovernor from '../assemblies/governors/reportGovernor';
 import eventGovernor from '../assemblies/governors/eventGovernor';
-import venueGovernor from './governors/venueGovernor';
+import venueGovernor from '../assemblies/governors/venueGovernor';
 
 import { makeDeepCopy } from '../utilities';
 import {

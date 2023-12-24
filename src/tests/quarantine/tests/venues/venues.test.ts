@@ -64,7 +64,7 @@ it('can define a new venue', () => {
   let modifications: any = { courtName };
   tournamentEngine.modifyCourt({ courtId, modifications });
 
-  const { venue } = tournamentEngine.findVenue({ venueId });
+  let venue = tournamentEngine.findVenue({ venueId }).venue;
   expect(venue.extensions[0].value.addedBy).not.toBeUndefined();
   expect(venue.courts.length).toEqual(4);
   expect(venue.courts[0].courtName).toEqual(courtName);
@@ -79,5 +79,8 @@ it('can define a new venue', () => {
   const venueName = 'Grassy Greens';
   modifications = { venueName };
   result = tournamentEngine.modifyVenue({ venueId, modifications });
-  expect(result.venue.venueName).toEqual(venueName);
+  expect(result.success).toEqual(true);
+
+  venue = tournamentEngine.findVenue({ venueId }).venue;
+  expect(venue.venueName).toEqual(venueName);
 });

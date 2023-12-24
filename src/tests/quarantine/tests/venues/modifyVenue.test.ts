@@ -1,5 +1,4 @@
-import { modifyVenue as competitionEngineModifyVenue } from '../../../../competitionEngine/governors/venueGovernor/modifyVenue';
-import { modifyVenue as tournamentEngineModifyVenue } from '../../../../tournamentEngine/governors/venueGovernor/modifyVenue';
+import { modifyVenue } from '../../../../mutate/venues/modifyVenue';
 import { deleteVenue } from '../../../../mutate/venues/deleteVenue';
 import tournamentEngine from '../../../engines/tournamentEngine';
 import { expect, it, test } from 'vitest';
@@ -138,12 +137,12 @@ it('can define and modify a venue', () => {
   };
 
   result = tournamentEngine.modifyVenue({
-    venueId,
     modifications,
+    venueId,
   });
   ({ venue } = tournamentEngine.findVenue({ venueId }));
-  expect(result.venue.courts.length).toEqual(1);
-  expect(result.venue.courts[0].dateAvailability.length).toEqual(2);
+  expect(venue.courts.length).toEqual(1);
+  expect(venue.courts[0].dateAvailability.length).toEqual(2);
 
   modifications = {
     courts: [
@@ -175,8 +174,8 @@ it('can define and modify a venue', () => {
     modifications,
   });
   ({ venue } = tournamentEngine.findVenue({ venueId }));
-  expect(result.venue.courts.length).toEqual(1);
-  expect(result.venue.courts[0].dateAvailability.length).toEqual(3);
+  expect(venue.courts.length).toEqual(1);
+  expect(venue.courts[0].dateAvailability.length).toEqual(3);
 
   modifications = {
     courts: [
@@ -208,8 +207,8 @@ it('can define and modify a venue', () => {
     venueId,
   });
   ({ venue } = tournamentEngine.findVenue({ venueId }));
-  expect(result.venue.courts.length).toEqual(1);
-  expect(result.venue.courts[0].dateAvailability.length).toEqual(3);
+  expect(venue.courts.length).toEqual(1);
+  expect(venue.courts[0].dateAvailability.length).toEqual(3);
 
   result = tournamentEngine.modifyVenue({
     modifications,
@@ -323,11 +322,6 @@ test('miscellaneous items for coverage', () => {
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  result = tournamentEngineModifyVenue({});
-  expect(result.error).toEqual(MISSING_TOURNAMENT_RECORD);
-
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  result = competitionEngineModifyVenue({});
+  result = modifyVenue({});
   expect(result.error).toEqual(MISSING_TOURNAMENT_RECORDS);
 });

@@ -1,38 +1,72 @@
-import { bulkScheduleTournamentMatchUps } from '../../../mutate/matchUps/schedule/bulkScheduleTournamentMatchUps';
-import { checkAndUpdateSchedulingProfile } from '../../../mutate/tournaments/schedulingProfile';
-import { deletionMessage } from '../../../assemblies/generators/matchUps/deletionMessage';
-import venueTemplate from '../../../assemblies/generators/templates/venueTemplate';
-import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import { addNotice } from '../../../global/state/globalState';
-import { addCourt } from '../../../mutate/venues/addCourt';
-import { findVenue } from '../../../mutate/venues/findVenue';
-import { makeDeepCopy } from '../../../utilities';
+import { checkAndUpdateSchedulingProfile } from '../tournaments/schedulingProfile';
+import { bulkScheduleTournamentMatchUps } from '../matchUps/schedule/bulkScheduleTournamentMatchUps';
+import { deletionMessage } from '../../assemblies/generators/matchUps/deletionMessage';
+import { resolveTournamentRecords } from '../../parameters/resolveTournamentRecords';
+import venueTemplate from '../../assemblies/generators/templates/venueTemplate';
+import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
+import { modifyCourt } from './modifyCourt';
+import { addNotice } from '../../global/state/globalState';
+import { addCourt } from './addCourt';
+import { findVenue } from './findVenue';
+import { makeDeepCopy } from '../../utilities';
 import {
   getScheduledCourtMatchUps,
   getScheduledVenueMatchUps,
-} from '../../../query/venues/getScheduledCourtMatchUps';
+} from '../../query/venues/getScheduledCourtMatchUps';
 
-import { POLICY_TYPE_SCHEDULING } from '../../../constants/policyConstants';
-import { Tournament, Venue } from '../../../types/tournamentTypes';
-import { MODIFY_VENUE } from '../../../constants/topicConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { POLICY_TYPE_SCHEDULING } from '../../constants/policyConstants';
+import { Venue, Tournament } from '../../types/tournamentTypes';
+import { MODIFY_VENUE } from '../../constants/topicConstants';
+import { TournamentRecords } from '../../types/factoryTypes';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   COURT_NOT_FOUND,
   ErrorType,
   INVALID_OBJECT,
   MISSING_TOURNAMENT_RECORD,
+  MISSING_TOURNAMENT_RECORDS,
+  VENUE_NOT_FOUND,
   MISSING_VENUE_ID,
   NO_VALID_ATTRIBUTES,
-} from '../../../constants/errorConditionConstants';
-import { modifyCourt } from '../../../mutate/venues/modifyCourt';
+} from '../../constants/errorConditionConstants';
 
 type ModifyVenueArgs = {
-  tournamentRecord: Tournament;
+  tournamentRecords?: TournamentRecords;
+  tournamentRecord?: Tournament;
   modifications: any;
   venueId: string;
   force?: boolean;
 };
-export function modifyVenue({
+export function modifyVenue(params: ModifyVenueArgs) {
+  const { modifications, venueId, force } = params;
+
+  const tournamentRecords = resolveTournamentRecords(params);
+
+  if (!Object.keys(tournamentRecords).length)
+    return { error: MISSING_TOURNAMENT_RECORDS };
+  if (typeof venueId !== 'string') return { error: MISSING_VENUE_ID };
+
+  let error;
+  let success;
+  // in this case suppress NOT FOUND errors if there is at least one success
+  for (const tournamentRecord of Object.values(tournamentRecords)) {
+    const result = venueModify({
+      tournamentRecord,
+      modifications,
+      venueId,
+      force,
+    });
+    if (result.success) success = true;
+    if (result.error) error = result.error;
+    if (result.error && result.error !== VENUE_NOT_FOUND) return result;
+  }
+
+  checkAndUpdateSchedulingProfile({ tournamentRecords });
+
+  return success ? { ...SUCCESS } : { error };
+}
+
+export function venueModify({
   tournamentRecord,
   modifications,
   venueId,

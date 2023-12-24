@@ -3,12 +3,12 @@ import { notifySubscribersAsync } from '../global/state/notifySubscribers';
 import { factoryVersion } from '../global/functions/factoryVersion';
 
 import competitionGovernor from './governors/competitionsGovernor';
-import venueGovernor from './governors/venueGovernor';
 
 import publishingGovernor from '../assemblies/governors/publishingGovernor';
 import scheduleGovernor from '../assemblies/governors/scheduleGovernor';
 import policyGovernor from '../assemblies/governors/policyGovernor';
 import queryGovernor from '../assemblies/governors/queryGovernor';
+import venueGovernor from '../assemblies/governors/venueGovernor';
 import { FactoryEngine } from '../types/factoryTypes';
 import { makeDeepCopy } from '../utilities';
 import {

@@ -2,7 +2,7 @@ import participantGovernor from '../../../assemblies/governors/participantGovern
 import publishingGovernor from '../../../assemblies/governors/publishingGovernor';
 import scheduleGovernor from '../../../assemblies/governors/scheduleGovernor';
 import reportGovernor from '../../../assemblies/governors/reportGovernor';
-import venueGovernor from '../../../tournamentEngine/governors/venueGovernor';
+import venueGovernor from '../../../assemblies/governors/venueGovernor';
 
 import tournamentGovernor from '../../../assemblies/governors/tournamentGovernor';
 import policyGovernor from '../../../assemblies/governors/policyGovernor';
