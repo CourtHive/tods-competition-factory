@@ -1,4 +1,4 @@
-import { addCourts } from '../../tournamentEngine/governors/venueGovernor/addCourt';
+import { addCourts } from './addCourt';
 import { addVenue } from '../../competitionEngine/governors/venueGovernor/addVenue';
 import { dateRange, formatDate } from '../../utilities/dateTime';
 import { Tournament } from '../../types/tournamentTypes';

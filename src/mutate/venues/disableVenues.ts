@@ -1,12 +1,12 @@
-import { addExtension } from '../../../mutate/extensions/addExtension';
-import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
+import { addExtension } from '../extensions/addExtension';
+import { mustBeAnArray } from '../../utilities/mustBeAnArray';
 
-import { DISABLED } from '../../../constants/extensionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { DISABLED } from '../../constants/extensionConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   MISSING_TOURNAMENT_RECORDS,
   MISSING_VALUE,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 export function disableVenues({ tournamentRecords, tournamentId, venueIds }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };

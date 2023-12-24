@@ -3,7 +3,7 @@ import { getScheduledCourtMatchUps } from '../../../query/venues/getScheduledCou
 import { removeCourtAssignment } from '../../../mutate/matchUps/schedule/removeCourtAssignment';
 import { addNotice } from '../../../global/state/globalState';
 import { findCourt } from '../../../mutate/venues/findCourt';
-import { deletionMessage } from './deletionMessage';
+import { deletionMessage } from '../../../assemblies/generators/matchUps/deletionMessage';
 
 import { POLICY_TYPE_SCHEDULING } from '../../../constants/policyConstants';
 import { MODIFY_VENUE } from '../../../constants/topicConstants';

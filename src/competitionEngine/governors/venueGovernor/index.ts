@@ -1,5 +1,5 @@
-import { disableVenues } from '../../../tournamentEngine/governors/venueGovernor/disableVenues';
-import { addCourts } from '../../../tournamentEngine/governors/venueGovernor/addCourt';
+import { disableVenues } from '../../../mutate/venues/disableVenues';
+import { addCourts } from '../../../mutate/venues/addCourt';
 import { disableCourts } from './disableCourts';
 import { enableCourts } from './enableCourts';
 import { enableVenues } from './enableVenues';
@@ -8,7 +8,7 @@ import { modifyCourt } from './modifyCourt';
 import { modifyVenue } from './modifyVenue';
 import { addVenue } from './addVenue';
 
-import { deleteVenue } from '../../../tournamentEngine/governors/venueGovernor/deleteVenue';
+import { deleteVenue } from '../../../mutate/venues/deleteVenue';
 
 const venueGovernor = {
   disableCourts,

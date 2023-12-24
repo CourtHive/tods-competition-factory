@@ -1,33 +1,25 @@
-import { UUID, generateRange, makeDeepCopy } from '../../../utilities';
+import { UUID, generateRange, makeDeepCopy } from '../../utilities';
 import {
   ResultType,
   decorateResult,
-} from '../../../global/functions/decorateResult';
-import { courtTemplate } from '../../../assemblies/generators/templates/courtTemplate';
-import { addNotice } from '../../../global/state/globalState';
-import { validDateAvailability } from '../../../validators/validateDateAvailability';
-import { isNumeric } from '../../../utilities/math';
-import {
-  extractDate,
-  extractTime,
-  formatDate,
-} from '../../../utilities/dateTime';
+} from '../../global/functions/decorateResult';
+import { courtTemplate } from '../../assemblies/generators/templates/courtTemplate';
+import { addNotice } from '../../global/state/globalState';
+import { validDateAvailability } from '../../validators/validateDateAvailability';
+import { isNumeric } from '../../utilities/math';
+import { extractDate, extractTime, formatDate } from '../../utilities/dateTime';
 
-import { MODIFY_VENUE } from '../../../constants/topicConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { MODIFY_VENUE } from '../../constants/topicConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   MISSING_VENUE_ID,
   MISSING_COURTS_INFO,
   VENUE_NOT_FOUND,
   COURT_EXISTS,
   INVALID_VALUES,
-} from '../../../constants/errorConditionConstants';
-import {
-  Availability,
-  Court,
-  Tournament,
-} from '../../../types/tournamentTypes';
-import { findVenue } from '../../../mutate/venues/findVenue';
+} from '../../constants/errorConditionConstants';
+import { Availability, Court, Tournament } from '../../types/tournamentTypes';
+import { findVenue } from './findVenue';
 
 type AddCourtArgs = {
   tournamentRecord: Tournament;
