@@ -59,6 +59,7 @@ test('Consolation WO/WO advancing fed BYE', () => {
     outcome: { matchUpStatus: DOUBLE_WALKOVER },
     matchUpId,
     drawId,
+    boo: true,
   });
   expect(result.success).toEqual(true);
 

@@ -1,4 +1,4 @@
-import competitionGovernor from '../../../competitionEngine/governors/competitionsGovernor';
+import competitionGovernor from '../../../assemblies/governors/competitionsGovernor';
 
 import publishingGovernor from '../../../assemblies/governors/publishingGovernor';
 import scheduleGovernor from '../../../assemblies/governors/scheduleGovernor';

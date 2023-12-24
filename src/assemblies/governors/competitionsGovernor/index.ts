@@ -1,7 +1,6 @@
 import { addParticipant } from '../../../mutate/participants/addParticipants';
 import { bulkScheduleMatchUps } from '../../../mutate/matchUps/schedule/bulkScheduleMatchUps';
-import { setMatchUpStatus } from './setMatchUpStatus';
-import { courtGridRows } from '../../../assemblies/generators/scheduling/courtGridRows';
+import { courtGridRows } from '../../generators/scheduling/courtGridRows';
 import { publicFindParticipant } from '../../../acquire/publicFindParticipant';
 import { getCompetitionParticipants } from '../../../query/participants/getCompetitionParticipants';
 import {
@@ -32,6 +31,7 @@ import { resetTieFormat } from '../../../mutate/tieFormat/resetTieFormat';
 import { resetScorecard } from '../../../mutate/matchUps/resetScorecard';
 import { getLinkedTournamentIds } from '../../../query/tournaments/getLinkedTournamentIds';
 import { bulkMatchUpStatusUpdate } from '../../../mutate/events/bulkMatchUpStatusUpdate';
+import { setMatchUpStatus } from '../../../mutate/events/setMatchUpStatus';
 
 const competitionGovernor = {
   modifyCollectionDefinition,

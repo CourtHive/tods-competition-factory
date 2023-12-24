@@ -1,15 +1,17 @@
 import { setMatchUpStatus as drawEngineSetMatchUpStatus } from '../matchUps/matchUpStatus/setMatchUpStatus';
-import { setMatchUpFormat } from '../matchUps/matchUpFormat/setMatchUpFormat';
+import { resolveTournamentRecords } from '../../parameters/resolveTournamentRecords';
 import { matchUpScore } from '../../assemblies/generators/matchUps/matchUpScore';
+import { setMatchUpFormat } from '../matchUps/matchUpFormat/setMatchUpFormat';
 import { findPolicy } from '../../acquire/findPolicy';
 
+import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
 import { POLICY_TYPE_SCORING } from '../../constants/policyConstants';
 import { PolicyDefinitions } from '../../types/factoryTypes';
 import {
   MISSING_DRAW_ID,
   MISSING_MATCHUP_ID,
 } from '../../constants/errorConditionConstants';
-import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
+import { findEvent } from '../../acquire/findEvent';
 
 /**
  * Sets either matchUpStatus or score and winningSide; values to be set are passed in outcome object.
@@ -24,7 +26,9 @@ type SetMatchUpStatusArgs = {
   disableAutoCalc?: boolean;
   enableAutoCalc?: boolean;
   matchUpFormat?: string;
+  tournamentId?: string;
   matchUpId: string;
+  eventId?: string;
   drawId?: string;
   schedule?: any;
   notes?: string;
@@ -32,8 +36,24 @@ type SetMatchUpStatusArgs = {
   outcome?: any;
 };
 export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
+  const tournamentRecords = resolveTournamentRecords(params);
+  if (!params.drawDefinition) {
+    const tournamentRecord =
+      params.tournamentRecord ??
+      (params.tournamentId && tournamentRecords[params.tournamentId]);
+    if (!params.tournamentRecord) params.tournamentRecord = tournamentRecord;
+
+    const result = findEvent({
+      eventId: params.eventId,
+      drawId: params.drawId,
+      tournamentRecord,
+    });
+    if (result.error) return result;
+    if (result.drawDefinition) params.drawDefinition = result.drawDefinition;
+    params.event = result.event;
+  }
+
   const {
-    tournamentRecords,
     policyDefinitions,
     tournamentRecord,
     disableAutoCalc,
