@@ -11,7 +11,7 @@ import { getStageParticipantsCount } from '../../getters/getStageParticipantsCou
 import { generateEventWithDraw } from '../../generators/generateEventWithDraw';
 import { getStageParticipants } from '../../getters/getStageParticipants';
 import { generateFlights } from '../../generators/generateFlights';
-import { generateVenues } from '../../generators/generateVenues';
+import { generateVenues } from '../../../mutate/venues/generateVenues';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 import defaultRatingsParameters from '../../../fixtures/ratings/ratingsParameters';

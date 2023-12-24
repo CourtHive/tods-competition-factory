@@ -4,7 +4,7 @@ import { minutesDifference, timeToDate } from '../../../utilities/dateTime';
 import { startTimeSort } from '../../../fixtures/validations/time';
 import { addNotice } from '../../../global/state/globalState';
 import { validDateAvailability } from '../../../validators/validateDateAvailability';
-import { findCourt } from '../../../acquire/findCourt';
+import { findCourt } from '../../../mutate/venues/findCourt';
 
 import { Availability, Tournament } from '../../../types/tournamentTypes';
 import { POLICY_TYPE_SCHEDULING } from '../../../constants/policyConstants';

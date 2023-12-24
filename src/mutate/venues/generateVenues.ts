@@ -1,14 +1,15 @@
 import { addCourts } from '../../tournamentEngine/governors/venueGovernor/addCourt';
-import { addVenue } from '../../tournamentEngine/governors/venueGovernor/addVenue';
+import { addVenue } from '../../competitionEngine/governors/venueGovernor/addVenue';
 import { dateRange, formatDate } from '../../utilities/dateTime';
-import { UUID } from '../../utilities';
 import { Tournament } from '../../types/tournamentTypes';
+import { UUID } from '../../utilities';
 
 type GenerateVenuesArgs = {
   tournamentRecord: Tournament;
   venueProfiles: any[];
   uuids?: string[];
 };
+
 export function generateVenues({
   tournamentRecord,
   venueProfiles,

@@ -27,7 +27,7 @@ import {
   Court,
   Tournament,
 } from '../../../types/tournamentTypes';
-import { findVenue } from '../../../acquire/findVenue';
+import { findVenue } from '../../../mutate/venues/findVenue';
 
 type AddCourtArgs = {
   tournamentRecord: Tournament;

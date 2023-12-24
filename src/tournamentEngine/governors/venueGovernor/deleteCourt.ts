@@ -2,7 +2,7 @@ import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies
 import { getScheduledCourtMatchUps } from '../../../query/venues/getScheduledCourtMatchUps';
 import { removeCourtAssignment } from '../../../mutate/matchUps/schedule/removeCourtAssignment';
 import { addNotice } from '../../../global/state/globalState';
-import { findCourt } from '../../../acquire/findCourt';
+import { findCourt } from '../../../mutate/venues/findCourt';
 import { deletionMessage } from './deletionMessage';
 
 import { POLICY_TYPE_SCHEDULING } from '../../../constants/policyConstants';

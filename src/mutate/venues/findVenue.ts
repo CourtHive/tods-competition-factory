@@ -1,16 +1,16 @@
-import { getLinkedTournamentIds } from '../query/tournaments/getLinkedTournamentIds';
-import { addVenue } from '../tournamentEngine/governors/venueGovernor/addVenue';
-import { makeDeepCopy } from '../utilities';
+import { getLinkedTournamentIds } from '../../query/tournaments/getLinkedTournamentIds';
+import { addVenue } from '../../competitionEngine/governors/venueGovernor/addVenue';
+import { makeDeepCopy } from '../../utilities';
 
-import { Tournament, Venue } from '../types/tournamentTypes';
-import { SUCCESS } from '../constants/resultConstants';
-import { TournamentRecords } from '../types/factoryTypes';
+import { Tournament, Venue } from '../../types/tournamentTypes';
+import { SUCCESS } from '../../constants/resultConstants';
+import { TournamentRecords } from '../../types/factoryTypes';
 import {
   ErrorType,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VENUE_ID,
   VENUE_NOT_FOUND,
-} from '../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 type FindVenueArgs = {
   tournamentRecords?: TournamentRecords;

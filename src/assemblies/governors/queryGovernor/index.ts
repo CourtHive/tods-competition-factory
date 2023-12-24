@@ -34,9 +34,9 @@ import { drawMatchUps } from '../../../query/matchUps/getDrawMatchUps';
 import { getVenuesReport } from '../../../query/venues/venuesReport';
 import { publicFindMatchUp } from '../../../acquire/findMatchUp';
 import { findExtension } from '../../../acquire/findExtension';
-import { publicFindCourt } from '../../../acquire/findCourt';
+import { publicFindCourt } from '../../../mutate/venues/findCourt';
 import { getCourts } from '../../../query/venues/getCourts';
-import { findVenue } from '../../../acquire/findVenue';
+import { findVenue } from '../../../mutate/venues/findVenue';
 import { credits } from '../../../fixtures/credits';
 import { makeDeepCopy } from '../../../utilities';
 import {
