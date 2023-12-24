@@ -71,6 +71,7 @@ import {
   Participant,
   Tournament,
 } from '../../../types/tournamentTypes';
+import { getParticipants } from '../../participants/getParticipants';
 
 type PositionActionsArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];
@@ -103,7 +104,6 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
 } {
   const {
     policyDefinitions: specifiedPolicyDefinitions,
-    tournamentParticipants = [],
     returnParticipants = true,
     provisionalPositioning,
     tournamentRecord,
@@ -115,6 +115,15 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
   if (!event) return { error: MISSING_EVENT };
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!params.structureId) return { error: MISSING_STRUCTURE_ID };
+
+  const tournamentParticipants =
+    params.tournamentParticipants ??
+    (tournamentRecord &&
+      getParticipants({
+        withIndividualParticipants: true,
+        tournamentRecord,
+      }).participants) ??
+    [];
 
   let result: any = findStructure({
     structureId: params.structureId,

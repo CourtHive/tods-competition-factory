@@ -1,10 +1,10 @@
-import { addEventTimeItem } from '../../../mutate/timeItems/addTimeItem';
-import { getEventPublishStatus } from '../../../query/event/getEventPublishStatus';
-import { isObject } from '../../../utilities/objects';
+import { addEventTimeItem } from '../timeItems/addTimeItem';
+import { getEventPublishStatus } from '../../query/event/getEventPublishStatus';
+import { isObject } from '../../utilities/objects';
 
-import { PUBLIC, PUBLISH, STATUS } from '../../../constants/timeItemConstants';
-import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
-import { Event } from '../../../types/tournamentTypes';
+import { PUBLIC, PUBLISH, STATUS } from '../../constants/timeItemConstants';
+import { INVALID_VALUES } from '../../constants/errorConditionConstants';
+import { Event } from '../../types/tournamentTypes';
 
 type ModifyEventPublishStatus = {
   statusObject: { [key: string]: any };

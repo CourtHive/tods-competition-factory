@@ -1,6 +1,6 @@
 import { checkScoreHasValue } from '../../query/matchUp/checkScoreHasValue';
 import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
-import { modifyEventPublishStatus } from '../../tournamentEngine/governors/publishingGovernor/modifyEventPublishStatus';
+import { modifyEventPublishStatus } from './modifyEventPublishStatus';
 import { getEventPublishStatus } from '../../query/event/getEventPublishStatus';
 import { addExtension } from '../extensions/addExtension';
 import { allDrawMatchUps } from '../../query/matchUps/getAllDrawMatchUps';
@@ -12,7 +12,7 @@ import { decorateResult } from '../../global/functions/decorateResult';
 import { definedAttributes } from '../../utilities/definedAttributes';
 import { getFlightProfile } from '../../query/event/getFlightProfile';
 import { findExtension } from '../../acquire/findExtension';
-import { publishEvent } from '../../tournamentEngine/governors/publishingGovernor/publishEvent';
+import { publishEvent } from './publishEvent';
 import { addNotice } from '../../global/state/globalState';
 import { makeDeepCopy } from '../../utilities';
 import { findEvent } from '../../acquire/findEvent';

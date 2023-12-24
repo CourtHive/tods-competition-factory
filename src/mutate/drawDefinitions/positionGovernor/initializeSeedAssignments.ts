@@ -1,4 +1,4 @@
-import { getSeedsCount } from '../../../tournamentEngine/governors/policyGovernor/getSeedsCount';
+import { getSeedsCount } from '../../../query/drawDefinition/getSeedsCount';
 import { structureAssignedDrawPositions } from '../../../query/drawDefinition/positionsGetter';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { isConvertableInteger } from '../../../utilities/math';

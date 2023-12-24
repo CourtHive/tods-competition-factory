@@ -1,18 +1,18 @@
-import { isObject, objShallowEqual } from '../../../utilities/objects';
+import { isObject, objShallowEqual } from '../../utilities/objects';
 import { modifyEventPublishStatus } from './modifyEventPublishStatus';
 import {
   ResultType,
   decorateResult,
-} from '../../../global/functions/decorateResult';
+} from '../../global/functions/decorateResult';
 
-import { Event, Tournament } from '../../../types/tournamentTypes';
-import { PUBLIC } from '../../../constants/timeItemConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { Event, Tournament } from '../../types/tournamentTypes';
+import { PUBLIC } from '../../constants/timeItemConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 type ScheduleDetails = {
   attributes: { [key: string]: boolean }; // true indicates display; false indicates excise from data

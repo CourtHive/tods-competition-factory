@@ -1,4 +1,4 @@
-import { getStructureGroups } from '../../../../tournamentEngine/governors/publishingGovernor/getStructureGroups';
+import { getStructureGroups } from '../../../../query/structure/getStructureGroups';
 import { generateQualifyingLink } from '../links/generateQualifyingLink';
 import { addExtension } from '../../../../mutate/extensions/addExtension';
 import { coerceEven, isConvertableInteger } from '../../../../utilities/math';

@@ -19,9 +19,8 @@ import { bulkUpdatePublishedEventIds } from '../../../query/event/publishState';
 import { findExtension } from '../../../acquire/findExtension';
 import { getParticipantSignInStatus } from '../../../query/participant/signInStatus';
 import { getTieFormat } from '../../../query/hierarchical/getTieFormat';
-import { getEventProperties } from './getEventProperties';
+import { getEventProperties } from '../../../query/event/getEventProperties';
 import { credits } from '../../../fixtures/credits';
-import { positionActions } from './positionQueries';
 import { makeDeepCopy } from '../../../utilities';
 import {
   getEventStructures,
@@ -47,6 +46,7 @@ import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import { findVenue } from '../../../acquire/findVenue';
 import { getVenuesAndCourts } from '../../../query/venues/venuesAndCourtsGetter';
 import { drawMatchUps } from '../../../query/matchUps/getDrawMatchUps';
+import { positionActions } from '../../../query/drawDefinition/positionActions/positionActions';
 
 function findDrawDefinition({ tournamentRecord, drawDefinition }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

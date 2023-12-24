@@ -1,20 +1,20 @@
-import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
-import { getStructureSeedAssignments } from '../../../query/structure/getStructureSeedAssignments';
-import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
-import { findStructure } from '../../../acquire/findStructure';
-import { structureSort } from '../../../functions/sorters/structureSort';
-import { hasParticipantId } from '../../../global/functions/filters';
-import { findExtension } from '../../../acquire/findExtension';
-import { getStructureGroups } from './getStructureGroups';
-import { makeDeepCopy } from '../../../utilities';
+import { getAllStructureMatchUps } from '../matchUps/getAllStructureMatchUps';
+import { getStructureSeedAssignments } from '../structure/getStructureSeedAssignments';
+import { getPositionAssignments } from './positionsGetter';
+import { findStructure } from '../../acquire/findStructure';
+import { structureSort } from '../../functions/sorters/structureSort';
+import { hasParticipantId } from '../../global/functions/filters';
+import { findExtension } from '../../acquire/findExtension';
+import { getStructureGroups } from '../structure/getStructureGroups';
+import { makeDeepCopy } from '../../utilities';
 
-import { TALLY } from '../../../constants/extensionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { TALLY } from '../../constants/extensionConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   ErrorType,
   MISSING_DRAW_DEFINITION,
   UNLINKED_STRUCTURES,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 import {
   ABANDONED,
   BYE,
@@ -26,13 +26,13 @@ import {
   IN_PROGRESS,
   RETIRED,
   WALKOVER,
-} from '../../../constants/matchUpStatusConstants';
+} from '../../constants/matchUpStatusConstants';
 import {
   CONSOLATION,
   MAIN,
   PLAY_OFF,
   QUALIFYING,
-} from '../../../constants/drawDefinitionConstants';
+} from '../../constants/drawDefinitionConstants';
 
 export function getDrawData(params): {
   structures?: any[];

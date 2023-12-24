@@ -1,4 +1,4 @@
-import { getEntriesAndSeedsCount } from '../../tournamentEngine/governors/policyGovernor/getEntriesAndSeedsCount';
+import { getEntriesAndSeedsCount } from './getEntriesAndSeedsCount';
 import { generateSeedingScaleItems } from '../../assemblies/generators/drawDefinitions/generateSeedingScaleItems';
 import { getScaledEntries } from '../../query/event/getScaledEntries';
 

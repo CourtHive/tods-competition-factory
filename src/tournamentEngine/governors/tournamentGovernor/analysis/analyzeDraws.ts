@@ -1,7 +1,7 @@
 import { getStructureDrawPositionProfiles } from '../../../../query/structure/getStructureDrawPositionProfiles';
 import { getRoundMatchUps } from '../../../../query/matchUps/getRoundMatchUps';
 import { getPositionAssignments } from '../../../../query/drawDefinition/positionsGetter';
-import { getStructureGroups } from '../../publishingGovernor/getStructureGroups';
+import { getStructureGroups } from '../../../../query/structure/getStructureGroups';
 import { getStructureLinks } from '../../../../query/drawDefinition/linkGetter';
 import { stageOrder } from '../../../../constants/drawDefinitionConstants';
 import { ensureInt } from '../../../../utilities/ensureInt';

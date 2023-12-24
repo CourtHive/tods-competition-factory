@@ -3,8 +3,8 @@ import { generateRange, makeDeepCopy } from '../../utilities';
 import { getEventPublishStatus } from './getEventPublishStatus';
 import { isConvertableInteger } from '../../utilities/math';
 import { getTournamentInfo } from '../tournaments/getTournamentInfo';
-import { getVenueData } from '../../tournamentEngine/governors/publishingGovernor/getVenueData';
-import { getDrawData } from '../../tournamentEngine/governors/publishingGovernor/getDrawData';
+import { getVenueData } from '../venues/getVenueData';
+import { getDrawData } from '../drawDefinition/getDrawData';
 
 import { Event, Tournament } from '../../types/tournamentTypes';
 import { PUBLIC } from '../../constants/timeItemConstants';

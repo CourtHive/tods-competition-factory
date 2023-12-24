@@ -3,8 +3,8 @@ import {
   getAllowedDrawTypes,
   getAllowedMatchUpFormats,
 } from '../../../query/tournaments/allowedTypes';
-import { getEntriesAndSeedsCount } from './getEntriesAndSeedsCount';
-import { getSeedsCount } from './getSeedsCount';
+import { getEntriesAndSeedsCount } from '../../../mutate/entries/getEntriesAndSeedsCount';
+import { getSeedsCount } from '../../../query/drawDefinition/getSeedsCount';
 import { findPolicy } from '../../../acquire/findPolicy';
 
 import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';

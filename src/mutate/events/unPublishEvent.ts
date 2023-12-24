@@ -1,15 +1,15 @@
 import { modifyEventPublishStatus } from './modifyEventPublishStatus';
-import { addEventTimeItem } from '../../../mutate/timeItems/addTimeItem';
-import { addNotice } from '../../../global/state/globalState';
-import { getEventTimeItem } from '../../../query/participant/timeItems';
+import { addEventTimeItem } from '../timeItems/addTimeItem';
+import { addNotice } from '../../global/state/globalState';
+import { getEventTimeItem } from '../../query/participant/timeItems';
 
-import { PUBLIC, PUBLISH, STATUS } from '../../../constants/timeItemConstants';
-import { UNPUBLISH_EVENT } from '../../../constants/topicConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { PUBLIC, PUBLISH, STATUS } from '../../constants/timeItemConstants';
+import { UNPUBLISH_EVENT } from '../../constants/topicConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 export function unPublishEvent({
   removePriorValues = true,

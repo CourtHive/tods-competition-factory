@@ -1,4 +1,4 @@
-import { getStructureGroups } from '../../../tournamentEngine/governors/publishingGovernor/getStructureGroups';
+import { getStructureGroups } from '../../../query/structure/getStructureGroups';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 

@@ -1,14 +1,17 @@
-import { publishEventSeeding, unPublishEventSeeding } from './eventSeeding';
+import {
+  publishEventSeeding,
+  unPublishEventSeeding,
+} from '../../../mutate/events/eventSeeding';
 import { publishOrderOfPlay, unPublishOrderOfPlay } from './orderOfPlay';
 import { getTournamentInfo } from '../../../query/tournaments/getTournamentInfo';
 import { getAllEventData } from '../../../query/event/getAllEventData';
-import { setEventDisplay } from './setEventDisplay';
-import { unPublishEvent } from './unPublishEvent';
+import { setEventDisplay } from '../../../mutate/events/setEventDisplay';
+import { unPublishEvent } from '../../../mutate/events/unPublishEvent';
 import { getEventData } from '../../../query/event/getEventData';
-import { getVenueData } from './getVenueData';
-import { getCourtInfo } from './getCourtInfo';
-import { publishEvent } from './publishEvent';
-import { getDrawData } from './getDrawData';
+import { getVenueData } from '../../../query/venues/getVenueData';
+import { getCourtInfo } from '../../../query/venues/getCourtInfo';
+import { publishEvent } from '../../../mutate/events/publishEvent';
+import { getDrawData } from '../../../query/drawDefinition/getDrawData';
 
 const publishingGovernor = {
   getTournamentInfo,

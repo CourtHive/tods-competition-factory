@@ -1,5 +1,5 @@
 import { addEventEntries } from '../../mutate/entries/addEventEntries';
-import { publishEvent } from '../../tournamentEngine/governors/publishingGovernor/publishEvent';
+import { publishEvent } from '../../mutate/events/publishEvent';
 import tieFormatDefaults from '../../assemblies/generators/templates/tieFormatDefaults';
 import { addEvent } from '../../mutate/events/addEvent';
 import { attachPolicies } from '../../mutate/extensions/policies/attachPolicies';

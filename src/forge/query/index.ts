@@ -19,14 +19,14 @@ export { findExtension } from '../../acquire/findExtension';
 export { validateScore } from '../../validators/validateScore';
 
 // tournamentEngine
+export { positionActions } from '../../query/drawDefinition/positionActions/positionActions';
 export { generateSeedingScaleItems } from '../../assemblies/generators/drawDefinitions/generateSeedingScaleItems';
 export { getParticipantEventDetails } from '../../query/participants/getParticipantEventDetails';
-export { getEntriesAndSeedsCount } from '../../tournamentEngine/governors/policyGovernor/getEntriesAndSeedsCount';
+export { getEntriesAndSeedsCount } from '../../mutate/entries/getEntriesAndSeedsCount';
 export { matchUpActions as tournamentMatchUpActions } from '../../tournamentEngine/getters/matchUpActions';
 export { filterParticipants } from '../../query/participants/filterParticipants';
-export { positionActions } from '../../tournamentEngine/governors/queryGovernor/positionQueries';
 export { getEventData } from '../../query/event/getEventData';
-export { getSeedsCount } from '../../tournamentEngine/governors/policyGovernor/getSeedsCount';
+export { getSeedsCount } from '../../query/drawDefinition/getSeedsCount';
 export { participantScaleItem } from '../../query/participant/participantScaleItem';
 export { getTimeItem } from '../../query/participant/timeItems';
 export { findMatchUp } from '../../acquire/findMatchUp';

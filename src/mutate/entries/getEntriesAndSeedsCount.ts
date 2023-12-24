@@ -1,19 +1,19 @@
-import { getEliminationDrawSize } from '../../../query/participants/getEliminationDrawSize';
-import { getStageEntries } from '../../../query/drawDefinition/getStageEntries';
-import { decorateResult } from '../../../global/functions/decorateResult';
-import { getSeedsCount } from './getSeedsCount';
+import { getEliminationDrawSize } from '../../query/participants/getEliminationDrawSize';
+import { getStageEntries } from '../../query/drawDefinition/getStageEntries';
+import { decorateResult } from '../../global/functions/decorateResult';
+import { getSeedsCount } from '../../query/drawDefinition/getSeedsCount';
 
-import { PolicyDefinitions } from '../../../types/factoryTypes';
+import { PolicyDefinitions } from '../../types/factoryTypes';
 import {
   ErrorType,
   MISSING_EVENT,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 import {
   DrawDefinition,
   Event,
   Entry,
   StageTypeUnion,
-} from '../../../types/tournamentTypes';
+} from '../../types/tournamentTypes';
 
 type GetEntriesAndSeedsCountArgs = {
   policyDefinitions: PolicyDefinitions;

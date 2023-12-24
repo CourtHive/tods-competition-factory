@@ -10,7 +10,7 @@ import { addCourt } from './addCourt';
 import {
   getScheduledCourtMatchUps,
   getScheduledVenueMatchUps,
-} from '../queryGovernor/getScheduledCourtMatchUps';
+} from '../../../query/venues/getScheduledCourtMatchUps';
 
 import { POLICY_TYPE_SCHEDULING } from '../../../constants/policyConstants';
 import { Tournament, Venue } from '../../../types/tournamentTypes';

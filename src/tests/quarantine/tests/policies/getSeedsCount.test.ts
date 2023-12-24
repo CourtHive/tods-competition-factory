@@ -1,4 +1,4 @@
-import { getSeedsCount } from '../../../../tournamentEngine/governors/policyGovernor/getSeedsCount';
+import { getSeedsCount } from '../../../../query/drawDefinition/getSeedsCount';
 import { expect, it } from 'vitest';
 
 import SEEDING_USTA from '../../../../fixtures/policies/POLICY_SEEDING_DEFAULT';

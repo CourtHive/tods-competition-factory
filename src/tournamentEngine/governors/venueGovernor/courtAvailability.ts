@@ -1,5 +1,5 @@
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import { getScheduledCourtMatchUps } from '../queryGovernor/getScheduledCourtMatchUps';
+import { getScheduledCourtMatchUps } from '../../../query/venues/getScheduledCourtMatchUps';
 import { minutesDifference, timeToDate } from '../../../utilities/dateTime';
 import { startTimeSort } from '../../../fixtures/validations/time';
 import { addNotice } from '../../../global/state/globalState';

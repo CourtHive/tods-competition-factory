@@ -1,13 +1,13 @@
-import { getPolicyDefinitions } from '../../../query/extensions/getAppliedPolicies';
-import { getEliminationDrawSize } from '../../../query/participants/getEliminationDrawSize';
-import { isConvertableInteger } from '../../../utilities/math';
+import { getEliminationDrawSize } from '../participants/getEliminationDrawSize';
+import { getPolicyDefinitions } from '../extensions/getAppliedPolicies';
+import { isConvertableInteger } from '../../utilities/math';
 import {
   ResultType,
   decorateResult,
-} from '../../../global/functions/decorateResult';
+} from '../../global/functions/decorateResult';
 
-import { POLICY_TYPE_SEEDING } from '../../../constants/policyConstants';
-import { PolicyDefinitions } from '../../../types/factoryTypes';
+import { POLICY_TYPE_SEEDING } from '../../constants/policyConstants';
+import { PolicyDefinitions } from '../../types/factoryTypes';
 import {
   MISSING_DRAW_SIZE,
   MISSING_PARTICIPANT_COUNT,
@@ -15,12 +15,8 @@ import {
   MISSING_SEEDCOUNT_THRESHOLDS,
   PARTICIPANT_COUNT_EXCEEDS_DRAW_SIZE,
   INVALID_VALUES,
-} from '../../../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  Event,
-  Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../constants/errorConditionConstants';
+import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
 
 type GetSeedsCountArgs = {
   policyDefinitions?: PolicyDefinitions;

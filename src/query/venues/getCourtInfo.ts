@@ -1,13 +1,13 @@
-import { findCourt } from '../../getters/courtGetter';
-import { makeDeepCopy } from '../../../utilities';
+import { findCourt } from '../../tournamentEngine/getters/courtGetter';
+import { makeDeepCopy } from '../../utilities';
 
-import { Tournament } from '../../../types/tournamentTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { Tournament } from '../../types/tournamentTypes';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   ErrorType,
   MISSING_COURT_ID,
   MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 type GetCourtInfoArgs = {
   tournamentRecord: Tournament;

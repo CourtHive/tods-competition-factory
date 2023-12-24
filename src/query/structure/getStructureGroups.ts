@@ -1,12 +1,7 @@
-import {
-  generateRange,
-  intersection,
-  overlap,
-  unique,
-} from '../../../utilities';
+import { generateRange, intersection, overlap, unique } from '../../utilities';
 
-import { DrawDefinition } from '../../../types/tournamentTypes';
-import { StructureProfile } from '../../../types/factoryTypes';
+import { DrawDefinition } from '../../types/tournamentTypes';
+import { StructureProfile } from '../../types/factoryTypes';
 import {
   BOTTOM_UP,
   DRAW,
@@ -15,7 +10,7 @@ import {
   TOP_DOWN,
   VOLUNTARY_CONSOLATION,
   WATERFALL,
-} from '../../../constants/drawDefinitionConstants';
+} from '../../constants/drawDefinitionConstants';
 
 /**
  * return an array of arrays of grouped structureIds => structureGroups

@@ -2,7 +2,7 @@ import { getTieFormatDesc } from '../../../matchUpEngine/governors/tieFormatGove
 import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
 import { getAccessorValue } from '../../../utilities/getAccessorValue';
 import { findExtension } from '../../../acquire/findExtension';
-import { getDetailsWTN } from '../queryGovernor/getDetailsWTN';
+import { getDetailsWTN } from '../../../query/scales/getDetailsWTN';
 import { getTimeItem } from '../../../query/participant/timeItems';
 import { getAvgWTN } from './getAvgWTN';
 

@@ -1,17 +1,17 @@
-import { getSchedulingProfile } from '../../../competitionEngine/governors/scheduleGovernor/schedulingProfile/schedulingProfile';
-import { scheduledSortedMatchUps } from '../../../functions/sorters/scheduledSortedMatchUps';
-import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
+import { getSchedulingProfile } from '../../competitionEngine/governors/scheduleGovernor/schedulingProfile/schedulingProfile';
+import { scheduledSortedMatchUps } from '../../functions/sorters/scheduledSortedMatchUps';
+import { allTournamentMatchUps } from '../matchUps/getAllTournamentMatchUps';
 
-import { MatchUpFilters } from '../../../query/filterMatchUps';
-import { ScheduleVisibilityFilters } from '../../../types/factoryTypes';
-import { ResultType } from '../../../global/functions/decorateResult';
-import { Tournament } from '../../../types/tournamentTypes';
-import { HydratedMatchUp } from '../../../types/hydrated';
+import { MatchUpFilters } from '../filterMatchUps';
+import { ScheduleVisibilityFilters } from '../../types/factoryTypes';
+import { ResultType } from '../../global/functions/decorateResult';
+import { Tournament } from '../../types/tournamentTypes';
+import { HydratedMatchUp } from '../../types/hydrated';
 import {
   MISSING_COURT_ID,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VENUE_ID,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 type GetScheduledCourtMatchUpsArgs = {
   scheduleVisibilityFilters?: ScheduleVisibilityFilters;

@@ -1,5 +1,5 @@
-import { getStructureGroups } from '../../../../tournamentEngine/governors/publishingGovernor/getStructureGroups';
-import { getDrawData } from '../../../../tournamentEngine/governors/publishingGovernor/getDrawData';
+import { getStructureGroups } from '../../../../query/structure/getStructureGroups';
+import { getDrawData } from '../../../../query/drawDefinition/getDrawData';
 import { expect, it } from 'vitest';
 import fs from 'fs';
 

@@ -1,4 +1,4 @@
-import { getStructureGroups } from '../../../../tournamentEngine/governors/publishingGovernor/getStructureGroups';
+import { getStructureGroups } from '../../../../query/structure/getStructureGroups';
 import { instanceCount } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../engines/tournamentEngine';

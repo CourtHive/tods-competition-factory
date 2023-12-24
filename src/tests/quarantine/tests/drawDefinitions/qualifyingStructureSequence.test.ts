@@ -1,4 +1,4 @@
-import { getStructureGroups } from '../../../../tournamentEngine/governors/publishingGovernor/getStructureGroups';
+import { getStructureGroups } from '../../../../query/structure/getStructureGroups';
 import tournamentEngine from '../../../engines/tournamentEngine';
 import { extractAttributes } from '../../../../utilities';
 import * as factory from '../../../../index';

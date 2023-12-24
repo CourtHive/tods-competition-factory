@@ -1,5 +1,5 @@
 import { HydratedMatchUp } from '../../../types/hydrated';
-import { getDetailsWTN } from '../queryGovernor/getDetailsWTN';
+import { getDetailsWTN } from '../../../query/scales/getDetailsWTN';
 
 type GetAvgWTNArgs = {
   matchUps: HydratedMatchUp[];
