@@ -1,4 +1,4 @@
-import { addNotes } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveNotes';
+import { addNotes } from '../../base/addRemoveNotes';
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { updateAssignmentParticipantResults } from '../../drawDefinitions/matchUpGovernor/updateAssignmentParticipantResults';

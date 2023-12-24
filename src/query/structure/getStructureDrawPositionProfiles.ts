@@ -1,5 +1,5 @@
 import { getMatchUpDependencies } from '../matchUps/getMatchUpDependencies';
-import { getContainedStructures } from '../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
+import { getContainedStructures } from '../drawDefinition/getContainedStructures';
 import { getAllDrawMatchUps } from '../matchUps/drawMatchUps';
 import { isAdHoc } from '../drawDefinition/isAdHoc';
 import { getPositionAssignments } from '../drawDefinition/positionsGetter';

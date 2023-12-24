@@ -1,11 +1,11 @@
-import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
+import { allTournamentMatchUps } from '../../query/matchUps/getAllTournamentMatchUps';
 
-import { SUCCESS } from '../../../constants/resultConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   ErrorType,
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 export function dehydrateMatchUps({ tournamentRecord }): {
   success?: boolean;

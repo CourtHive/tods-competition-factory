@@ -1,19 +1,19 @@
-import { clearScheduledMatchUps } from '../scheduleGovernor/clearScheduledMatchUps';
-import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
-import { updateCourtAvailability } from '../venueGovernor/updateCourtAvailability';
-import { dateValidation } from '../../../fixtures/validations/regex';
-import { addNotice } from '../../../global/state/globalState';
+import { clearScheduledMatchUps } from '../../tournamentEngine/governors/scheduleGovernor/clearScheduledMatchUps';
+import { allTournamentMatchUps } from '../../query/matchUps/getAllTournamentMatchUps';
+import { updateCourtAvailability } from '../../tournamentEngine/governors/venueGovernor/updateCourtAvailability';
+import { dateValidation } from '../../fixtures/validations/regex';
+import { addNotice } from '../../global/state/globalState';
 
-import { MODIFY_TOURNAMENT_DETAIL } from '../../../constants/topicConstants';
-import { Tournament } from '../../../types/tournamentTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { MODIFY_TOURNAMENT_DETAIL } from '../../constants/topicConstants';
+import { Tournament } from '../../types/tournamentTypes';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   INVALID_DATE,
   INVALID_VALUES,
   MISSING_DATE,
   MISSING_TOURNAMENT_RECORD,
   SCHEDULE_NOT_CLEARED,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 type SetTournamentDatesArgs = {
   tournamentRecord: Tournament;

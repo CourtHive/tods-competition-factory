@@ -1,4 +1,4 @@
-import { getContainedStructures } from '../../../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
+import { getContainedStructures } from '../../../../query/drawDefinition/getContainedStructures';
 import tournamentEngine from '../../../engines/tournamentEngine';
 import { mocksEngine } from '../../../..';
 import { expect, it } from 'vitest';

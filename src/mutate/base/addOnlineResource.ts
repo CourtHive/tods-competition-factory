@@ -1,7 +1,7 @@
-import { isObject } from '../../../utilities/objects';
-import { intersection } from '../../../utilities';
+import { isObject } from '../../utilities/objects';
+import { intersection } from '../../utilities';
 
-import { SUCCESS } from '../../../constants/resultConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   COURT_NOT_FOUND,
   INVALID_OBJECT,
@@ -11,17 +11,17 @@ import {
   NOT_FOUND,
   PARTICIPANT_NOT_FOUND,
   VENUE_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 import {
   ResultType,
   decorateResult,
-} from '../../../global/functions/decorateResult';
+} from '../../global/functions/decorateResult';
 import {
   DrawDefinition,
   Event,
   OnlineResource,
   Tournament,
-} from '../../../types/tournamentTypes';
+} from '../../types/tournamentTypes';
 
 type AddOnlineResourceArgs = {
   onlineResource: OnlineResource;

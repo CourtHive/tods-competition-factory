@@ -1,4 +1,4 @@
-import { getContainedStructures } from '../../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
+import { getContainedStructures } from '../../../query/drawDefinition/getContainedStructures';
 import { findExtension } from '../../../acquire/findExtension';
 import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
 import { getStructureLinks } from '../../../query/drawDefinition/linkGetter';

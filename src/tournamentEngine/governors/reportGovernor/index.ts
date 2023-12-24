@@ -1,6 +1,6 @@
-import { getEntryStatusReports } from './entryStatusReport';
-import { getParticipantStats } from './getParticipantStats';
-import { getStructureReports } from './structureReport';
+import { getEntryStatusReports } from '../../../query/entries/entryStatusReport';
+import { getParticipantStats } from '../../../query/participant/getParticipantStats';
+import { getStructureReports } from '../../../query/structure/structureReport';
 
 const reportGovernor = {
   getStructureReports,

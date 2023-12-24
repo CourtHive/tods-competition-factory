@@ -1,8 +1,8 @@
-import { analyzeDraws } from './analysis/analyzeDraws';
-import { checkIsDual } from './analysis/checkIsDual';
+import { analyzeDraws } from './analyzeDraws';
+import { checkIsDual } from './checkIsDual';
 
-import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 
 export function analyzeTournament({ tournamentRecord }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

@@ -2,7 +2,7 @@ import { getSchedulingProfile } from '../../../competitionEngine/governors/sched
 import { jinnScheduler } from './schedulers/jinnScheduler/jinnScheduler';
 import { getPersonRequests } from './scheduleMatchUps/personRequests';
 import { v2Scheduler } from './schedulers/v2Scheduler/v2Scheduler';
-import { getContainedStructures } from '../../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
+import { getContainedStructures } from '../../../query/drawDefinition/getContainedStructures';
 import { clearScheduledMatchUps } from '../../../competitionEngine/governors/scheduleGovernor/clearScheduledMatchUps';
 import { allCompetitionMatchUps } from '../../../query/matchUps/getAllCompetitionMatchUps';
 import { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDependencies';

@@ -11,7 +11,7 @@ import { calculateWinCriteria } from './matchUpEngine/governors/tieFormatGoverno
 import { tieFormatGenderValidityCheck } from './global/functions/deducers/tieFormatGenderValidityCheck';
 import { proConflicts } from './mutate/matchUps/schedule/schedulers/proScheduler/proConflicts';
 import { compareTieFormats } from './matchUpEngine/governors/tieFormatGovernor/compareTieFormats';
-import { dehydrateMatchUps } from './tournamentEngine/governors/tournamentGovernor/dehydrate';
+import { dehydrateMatchUps } from './mutate/tournaments/dehydrate';
 import { getSeedingThresholds } from './mutate/drawDefinitions/positionGovernor/getSeedBlocks';
 import { getStructureSeedAssignments } from './query/structure/getStructureSeedAssignments';
 import { getAssignedParticipantIds } from './query/drawDefinition/getAssignedParticipantIds';

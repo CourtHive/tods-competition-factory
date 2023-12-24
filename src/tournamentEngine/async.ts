@@ -1,4 +1,4 @@
-import { updateFactoryExtension } from './governors/tournamentGovernor/updateFactoryExtension';
+import { updateFactoryExtension } from '../mutate/tournaments/updateFactoryExtension';
 import { notifySubscribersAsync } from '../global/state/notifySubscribers';
 import { newTournamentRecord } from '../assemblies/generators/tournamentRecords/newTournamentRecord';
 import { setState, getState, paramsMiddleware } from './stateMethods';

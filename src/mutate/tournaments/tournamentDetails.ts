@@ -1,7 +1,7 @@
-import { addNotes } from './addRemoveNotes';
+import { addNotes } from '../base/addRemoveNotes';
 
-import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 
 export function setTournamentName({
   tournamentRecord,

@@ -1,16 +1,16 @@
-import { getStructureDrawPositionProfiles } from '../../../../query/structure/getStructureDrawPositionProfiles';
-import { getRoundMatchUps } from '../../../../query/matchUps/getRoundMatchUps';
-import { getPositionAssignments } from '../../../../query/drawDefinition/positionsGetter';
-import { getStructureGroups } from '../../../../query/structure/getStructureGroups';
-import { getStructureLinks } from '../../../../query/drawDefinition/linkGetter';
-import { stageOrder } from '../../../../constants/drawDefinitionConstants';
-import { ensureInt } from '../../../../utilities/ensureInt';
+import { getStructureDrawPositionProfiles } from '../structure/getStructureDrawPositionProfiles';
+import { getRoundMatchUps } from '../matchUps/getRoundMatchUps';
+import { getPositionAssignments } from '../drawDefinition/positionsGetter';
+import { getStructureGroups } from '../structure/getStructureGroups';
+import { getStructureLinks } from '../drawDefinition/linkGetter';
+import { stageOrder } from '../../constants/drawDefinitionConstants';
+import { ensureInt } from '../../utilities/ensureInt';
 
-import { SUCCESS } from '../../../../constants/resultConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   ErrorType,
   MISSING_TOURNAMENT_RECORD,
-} from '../../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 type DrawsAnalysis = {
   positionsNoOutcomes: string[];

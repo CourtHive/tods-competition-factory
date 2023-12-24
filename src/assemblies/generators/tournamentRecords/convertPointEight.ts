@@ -1,15 +1,15 @@
-import { newTournamentRecord } from '../../../../assemblies/generators/tournamentRecords/newTournamentRecord';
+import { newTournamentRecord } from './newTournamentRecord';
 
-import { MISSING_TOURNAMENT_RECORD } from '../../../../constants/errorConditionConstants';
-import { DOUBLES, SINGLES, TEAM } from '../../../../constants/eventConstants';
-import { FEMALE, MALE } from '../../../../constants/genderConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
+import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
+import { DOUBLES, SINGLES, TEAM } from '../../../constants/eventConstants';
+import { FEMALE, MALE } from '../../../constants/genderConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   CONSOLATION,
   MAIN,
   PLAY_OFF,
   QUALIFYING,
-} from '../../../../constants/drawDefinitionConstants';
+} from '../../../constants/drawDefinitionConstants';
 
 export function convertPointEight({ tournament }) {
   if (!tournament) return { error: MISSING_TOURNAMENT_RECORD };

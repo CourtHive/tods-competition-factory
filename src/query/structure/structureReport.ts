@@ -1,31 +1,28 @@
-import { getTieFormatDesc } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormatDescription';
-import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
-import { getAccessorValue } from '../../../utilities/getAccessorValue';
-import { findExtension } from '../../../acquire/findExtension';
-import { getDetailsWTN } from '../../../query/scales/getDetailsWTN';
-import { getTimeItem } from '../../../query/participant/timeItems';
-import { getAvgWTN } from './getAvgWTN';
+import { getTieFormatDesc } from '../../matchUpEngine/governors/tieFormatGovernor/getTieFormatDescription';
+import { allTournamentMatchUps } from '../matchUps/getAllTournamentMatchUps';
+import { getAccessorValue } from '../../utilities/getAccessorValue';
+import { findExtension } from '../../acquire/findExtension';
+import { getDetailsWTN } from '../scales/getDetailsWTN';
+import { getTimeItem } from '../participant/timeItems';
+import { getAvgWTN } from '../scales/getAvgWTN';
 
-import { MISSING_TOURNAMENT_ID } from '../../../constants/errorConditionConstants';
-import { ADD_SCALE_ITEMS } from '../../../constants/topicConstants';
-import { HydratedParticipant } from '../../../types/hydrated';
-import { SEEDING } from '../../../constants/scaleConstants';
-import { Participant, Side, Tournament } from '../../../types/tournamentTypes';
+import { MISSING_TOURNAMENT_ID } from '../../constants/errorConditionConstants';
+import { ADD_SCALE_ITEMS } from '../../constants/topicConstants';
+import { HydratedParticipant } from '../../types/hydrated';
+import { SEEDING } from '../../constants/scaleConstants';
+import { Participant, Side, Tournament } from '../../types/tournamentTypes';
 import {
   CONSOLATION,
   MAIN,
   PLAY_OFF,
   QUALIFYING,
-} from '../../../constants/drawDefinitionConstants';
-import {
-  PAIR,
-  TEAM_PARTICIPANT,
-} from '../../../constants/participantConstants';
+} from '../../constants/drawDefinitionConstants';
+import { PAIR, TEAM_PARTICIPANT } from '../../constants/participantConstants';
 import {
   AUDIT_POSITION_ACTIONS,
   DRAW_DELETIONS,
   FLIGHT_PROFILE,
-} from '../../../constants/extensionConstants';
+} from '../../constants/extensionConstants';
 
 type GetStructureReportsArgs = {
   tournamentRecord: Tournament;

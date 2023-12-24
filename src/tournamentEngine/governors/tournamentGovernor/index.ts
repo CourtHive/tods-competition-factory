@@ -2,24 +2,24 @@
 import { completeDrawMatchUps } from '../../../mocksEngine/generators/completeDrawMatchUps';
 
 import { addExtension } from '../../../mutate/extensions/addExtension';
-import { convertPointEight } from './conversion/convertPointEight';
-import { setTournamentStatus } from './setTournamentStatus';
-import { addNotes, removeNotes } from './addRemoveNotes';
-import { addOnlineResource } from './addOnlineResource';
-import { analyzeTournament } from './analyzeTournament';
-import { analyzeDraws } from './analysis/analyzeDraws';
+import { convertPointEight } from '../../../assemblies/generators/tournamentRecords/convertPointEight';
+import { setTournamentStatus } from '../../../mutate/tournaments/setTournamentStatus';
+import { addNotes, removeNotes } from '../../../mutate/base/addRemoveNotes';
+import { addOnlineResource } from '../../../mutate/base/addOnlineResource';
+import { analyzeTournament } from '../../../query/tournaments/analyzeTournament';
+import { analyzeDraws } from '../../../query/tournaments/analyzeDraws';
 
 import {
   setTournamentName,
   setTournamentNotes,
   setTournamentCategories,
-} from './tournamentDetails';
+} from '../../../mutate/tournaments/tournamentDetails';
 
 import {
   setTournamentDates,
   setTournamentEndDate,
   setTournamentStartDate,
-} from './tournamentDates';
+} from '../../../mutate/tournaments/tournamentDates';
 
 import {
   addTimeItem,

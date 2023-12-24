@@ -10,7 +10,7 @@ import { reorderUpcomingMatchUps } from '../../../mutate/matchUps/schedule/reord
 import { clearScheduledMatchUps } from './clearScheduledMatchUps';
 import { bulkRescheduleMatchUps } from './bulkRescheduleMatchUps';
 import { proAutoSchedule } from '../../../mutate/matchUps/schedule/schedulers/proScheduler/proAutoSchedule';
-import { setMatchUpDailyLimits } from './setMatchUpDailyLimits';
+import { setMatchUpDailyLimits } from '../../../mutate/tournaments/setMatchUpDailyLimits';
 import { matchUpScheduleChange } from './matchUpScheduleChange';
 import { getMatchUpDailyLimits } from '../../../query/extensions/getMatchUpDailyLimits';
 import { proConflicts } from '../../../mutate/matchUps/schedule/schedulers/proScheduler/proConflicts';

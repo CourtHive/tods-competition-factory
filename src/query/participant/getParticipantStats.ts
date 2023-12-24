@@ -1,35 +1,32 @@
-import { getMatchUpCompetitiveProfile } from '../../../query/matchUp/getMatchUpCompetitiveProfile';
-import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
-import { extractAttributes as xa, isObject } from '../../../utilities/objects';
-import { getParticipants } from '../../../query/participants/getParticipants';
-import { intersection } from '../../../utilities';
+import { getMatchUpCompetitiveProfile } from '../matchUp/getMatchUpCompetitiveProfile';
+import { allTournamentMatchUps } from '../matchUps/getAllTournamentMatchUps';
+import { extractAttributes as xa, isObject } from '../../utilities/objects';
+import { getParticipants } from '../participants/getParticipants';
+import { intersection } from '../../utilities';
 import {
   ResultType,
   decorateResult,
-} from '../../../global/functions/decorateResult';
+} from '../../global/functions/decorateResult';
 import {
   Tally,
   countGames,
   countPoints,
   countSets,
-} from '../../../matchUpEngine/getters/roundRobinTally/scoreCounters';
+} from '../../matchUpEngine/getters/roundRobinTally/scoreCounters';
 
-import { TEAM_PARTICIPANT } from '../../../constants/participantConstants';
-import { HydratedMatchUp, HydratedSide } from '../../../types/hydrated';
-import {
-  ParticipantTypeUnion,
-  Tournament,
-} from '../../../types/tournamentTypes';
-import { BYE } from '../../../constants/matchUpStatusConstants';
-import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { TEAM_PARTICIPANT } from '../../constants/participantConstants';
+import { HydratedMatchUp, HydratedSide } from '../../types/hydrated';
+import { ParticipantTypeUnion, Tournament } from '../../types/tournamentTypes';
+import { BYE } from '../../constants/matchUpStatusConstants';
+import { TEAM_MATCHUP } from '../../constants/matchUpTypes';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   INVALID_MATCHUP,
   INVALID_PARTICIPANT_IDS,
   MISSING_MATCHUPS,
   MISSING_TOURNAMENT_RECORD,
   PARTICIPANT_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 export type StatCounters = {
   participantName: string;

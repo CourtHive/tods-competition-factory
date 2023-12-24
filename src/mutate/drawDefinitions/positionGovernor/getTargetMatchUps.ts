@@ -1,4 +1,4 @@
-import { getContainedStructures } from '../../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
+import { getContainedStructures } from '../../../query/drawDefinition/getContainedStructures';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import { DrawDefinition, Structure } from '../../../types/tournamentTypes';
 import { intersection } from '../../../utilities';

@@ -1,5 +1,5 @@
 import { getDrawStructures } from '../../acquire/findStructure';
-import { analyzeDraws } from '../../tournamentEngine/governors/tournamentGovernor/analysis/analyzeDraws';
+import { analyzeDraws } from '../../query/tournaments/analyzeDraws';
 import { getMatchUpId } from '../../global/functions/extractors';
 import {
   deleteMatchUpsNotice,

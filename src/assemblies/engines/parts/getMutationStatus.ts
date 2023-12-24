@@ -1,4 +1,4 @@
-import { updateFactoryExtension } from '../../../tournamentEngine/governors/tournamentGovernor/updateFactoryExtension';
+import { updateFactoryExtension } from '../../../mutate/tournaments/updateFactoryExtension';
 import { factoryVersion } from '../../../global/functions/factoryVersion';
 import {
   cycleMutationStatus,
