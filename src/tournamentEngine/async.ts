@@ -5,7 +5,7 @@ import { setState, getState, paramsMiddleware } from './stateMethods';
 import { factoryVersion } from '../global/functions/factoryVersion';
 
 import participantGovernor from '../assemblies/governors/participantGovernor';
-import publishingGovernor from './governors/publishingGovernor';
+import publishingGovernor from '../assemblies/governors/publishingGovernor';
 import scheduleGovernor from './governors/scheduleGovernor';
 
 import tournamentGovernor from '../assemblies/governors/tournamentGovernor';

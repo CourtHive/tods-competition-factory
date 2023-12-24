@@ -1,5 +1,5 @@
 import participantGovernor from '../../../assemblies/governors/participantGovernor';
-import publishingGovernor from '../../../tournamentEngine/governors/publishingGovernor';
+import publishingGovernor from '../../../assemblies/governors/publishingGovernor';
 import scheduleGovernor from '../../../tournamentEngine/governors/scheduleGovernor';
 import reportGovernor from '../../../assemblies/governors/reportGovernor';
 import venueGovernor from '../../../tournamentEngine/governors/venueGovernor';

@@ -2,7 +2,7 @@ import { updateFactoryExtension } from '../mutate/tournaments/updateFactoryExten
 import { notifySubscribersAsync } from '../global/state/notifySubscribers';
 import { factoryVersion } from '../global/functions/factoryVersion';
 import competitionGovernor from './governors/competitionsGovernor';
-import publishingGovernor from './governors/publishingGovernor';
+import publishingGovernor from '../assemblies/governors/publishingGovernor';
 import scheduleGovernor from './governors/scheduleGovernor';
 import policyGovernor from '../assemblies/governors/policyGovernor';
 import queryGovernor from '../assemblies/governors/queryGovernor';
