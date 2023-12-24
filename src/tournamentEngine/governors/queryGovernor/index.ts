@@ -25,7 +25,7 @@ import { makeDeepCopy } from '../../../utilities';
 import {
   getEventStructures,
   getTournamentStructures,
-} from '../../getters/structureGetter';
+} from '../../../query/structure/structureGetter';
 import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
 import { allDrawMatchUps } from '../../../query/matchUps/getAllDrawMatchUps';
 import { tournamentMatchUps } from '../../../query/matchUps/getTournamentMatchUps';

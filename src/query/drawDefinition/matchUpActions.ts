@@ -21,6 +21,7 @@ import {
 } from './positionActions/actionPolicyUtils';
 
 import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
+import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '../../constants/matchUpTypes';
 import { HydratedMatchUp, HydratedParticipant } from '../../types/hydrated';
 import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';
 import { ANY, MIXED } from '../../constants/genderConstants';
@@ -82,7 +83,6 @@ import {
   Participant,
   Tournament,
 } from '../../types/tournamentTypes';
-import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '../../constants/matchUpTypes';
 
 type MatchUpActionsArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];

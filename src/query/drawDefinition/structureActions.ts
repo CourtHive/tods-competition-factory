@@ -1,4 +1,4 @@
-import { getPlayoffStructures } from '../../tournamentEngine/getters/structureGetter';
+import { getPlayoffStructures } from '../structure/structureGetter';
 import { getStructureMatchUps } from '../structure/getStructureMatchUps';
 import { getPositionAssignments } from './positionsGetter';
 
