@@ -1,7 +1,7 @@
 import { addNotice } from '../../../global/state/globalState';
 import { modifyCourtAvailability } from './courtAvailability';
 import courtTemplate from '../../../assemblies/generators/templates/courtTemplate';
-import { findCourt } from '../../getters/courtGetter';
+import { findCourt } from '../../../acquire/findCourt';
 import { makeDeepCopy } from '../../../utilities';
 
 import { HydratedCourt, HydratedMatchUp } from '../../../types/hydrated';

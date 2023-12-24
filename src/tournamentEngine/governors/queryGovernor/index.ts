@@ -8,11 +8,11 @@ import { getPositionAssignments } from '../../../query/structure/getPositionAssi
 import { getPredictiveAccuracy } from '../../../query/matchUps/getPredictiveAccuracy';
 import { participantScaleItem } from '../../../query/participant/participantScaleItem';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
-import { getCourts, publicFindCourt } from '../../getters/courtGetter';
+import { publicFindCourt } from '../../../acquire/findCourt';
 import { getParticipantScaleItem } from '../../../query/participant/getParticipantScaleItem';
 import { getMatchUpFormat } from '../../../query/hierarchical/getMatchUpFormat';
 import { getMatchUpsStats } from '../../../query/matchUps/getMatchUpsStats';
-import { getEvent, getEvents } from '../../getters/eventGetter';
+import { getEvent, getEvents } from '../../../query/events/eventGetter';
 import { publicFindMatchUp } from '../../../acquire/findMatchUp';
 import { matchUpActions } from '../../getters/matchUpActions';
 import { bulkUpdatePublishedEventIds } from '../../../query/event/publishState';
@@ -47,6 +47,7 @@ import { findVenue } from '../../../acquire/findVenue';
 import { getVenuesAndCourts } from '../../../query/venues/venuesAndCourtsGetter';
 import { drawMatchUps } from '../../../query/matchUps/getDrawMatchUps';
 import { positionActions } from '../../../query/drawDefinition/positionActions/positionActions';
+import { getCourts } from '../../../query/venues/getCourts';
 
 function findDrawDefinition({ tournamentRecord, drawDefinition }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

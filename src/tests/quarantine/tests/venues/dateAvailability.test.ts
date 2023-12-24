@@ -1,4 +1,4 @@
-import { validDateAvailability } from '../../../../tournamentEngine/governors/venueGovernor/dateAvailability';
+import { validDateAvailability } from '../../../../validators/validateDateAvailability';
 import tournamentEngine from '../../../engines/tournamentEngine';
 import { Availability } from '../../../../types/tournamentTypes';
 import competitionEngine from '../../../engines/competitionEngine';

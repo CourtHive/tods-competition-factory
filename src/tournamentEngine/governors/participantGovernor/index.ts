@@ -17,7 +17,7 @@ import { scaledTeamAssignment } from '../../../mutate/participants/scaledTeamAss
 import { createGroupParticipant } from '../../../mutate/participants/createGroupParticipant';
 import { modifyParticipantOtherName } from '../../../mutate/participants/modifyParticipantOtherName';
 import { regenerateParticipantNames } from '../../../mutate/participants/regenerateParticipantNames';
-import { getTournamentPersons } from '../../getters/getTournamentPersons';
+import { getTournamentPersons } from '../../../query/tournaments/getTournamentPersons';
 import {
   addParticipant,
   addParticipants,

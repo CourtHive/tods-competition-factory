@@ -1,4 +1,4 @@
-import { findCourt } from '../../../tournamentEngine/getters/courtGetter';
+import { findCourt } from '../../../acquire/findCourt';
 import { addMatchUpTimeItem } from '../timeItems/matchUpTimeItems';
 import { assignMatchUpVenue } from './assignMatchUpVenue';
 

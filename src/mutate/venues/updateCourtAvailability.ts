@@ -1,10 +1,11 @@
-import { dateRange, timeStringMinutes } from '../../../utilities/dateTime';
+import { dateRange, timeStringMinutes } from '../../utilities/dateTime';
 
-import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { Court } from '../../../types/tournamentTypes';
+import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
+import { SUCCESS } from '../../constants/resultConstants';
+import { Court } from '../../types/tournamentTypes';
 
 // bulk update when tournament dates change
+// TODO: check to see if court is present in other linked tournaments
 export function updateCourtAvailability({ tournamentRecord }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 

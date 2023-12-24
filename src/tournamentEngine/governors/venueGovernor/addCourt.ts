@@ -5,7 +5,7 @@ import {
 } from '../../../global/functions/decorateResult';
 import { courtTemplate } from '../../../assemblies/generators/templates/courtTemplate';
 import { addNotice } from '../../../global/state/globalState';
-import { validDateAvailability } from './dateAvailability';
+import { validDateAvailability } from '../../../validators/validateDateAvailability';
 import { isNumeric } from '../../../utilities/math';
 import {
   extractDate,

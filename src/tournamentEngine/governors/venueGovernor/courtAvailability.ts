@@ -3,8 +3,8 @@ import { getScheduledCourtMatchUps } from '../../../query/venues/getScheduledCou
 import { minutesDifference, timeToDate } from '../../../utilities/dateTime';
 import { startTimeSort } from '../../../fixtures/validations/time';
 import { addNotice } from '../../../global/state/globalState';
-import { validDateAvailability } from './dateAvailability';
-import { findCourt } from '../../getters/courtGetter';
+import { validDateAvailability } from '../../../validators/validateDateAvailability';
+import { findCourt } from '../../../acquire/findCourt';
 
 import { Availability, Tournament } from '../../../types/tournamentTypes';
 import { POLICY_TYPE_SCHEDULING } from '../../../constants/policyConstants';

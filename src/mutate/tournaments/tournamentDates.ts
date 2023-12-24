@@ -1,6 +1,6 @@
 import { clearScheduledMatchUps } from '../../tournamentEngine/governors/scheduleGovernor/clearScheduledMatchUps';
 import { allTournamentMatchUps } from '../../query/matchUps/getAllTournamentMatchUps';
-import { updateCourtAvailability } from '../../tournamentEngine/governors/venueGovernor/updateCourtAvailability';
+import { updateCourtAvailability } from '../venues/updateCourtAvailability';
 import { dateValidation } from '../../fixtures/validations/regex';
 import { addNotice } from '../../global/state/globalState';
 

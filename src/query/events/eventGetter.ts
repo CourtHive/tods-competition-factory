@@ -1,8 +1,8 @@
-import { getAssignedParticipantIds } from '../../query/drawDefinition/getAssignedParticipantIds';
+import { getAssignedParticipantIds } from '../drawDefinition/getAssignedParticipantIds';
 import { extractAttributes as xa, makeDeepCopy } from '../../utilities';
 import { definedAttributes } from '../../utilities/definedAttributes';
-import { getParticipants } from '../../query/participants/getParticipants';
-import { getFlightProfile } from '../../query/event/getFlightProfile';
+import { getParticipants } from '../participants/getParticipants';
+import { getFlightProfile } from '../event/getFlightProfile';
 import { median } from '../../utilities/math';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';

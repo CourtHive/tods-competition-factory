@@ -1,4 +1,4 @@
-import { findCourt } from '../../tournamentEngine/getters/courtGetter';
+import { findCourt } from '../../acquire/findCourt';
 import { makeDeepCopy } from '../../utilities';
 
 import { Tournament } from '../../types/tournamentTypes';

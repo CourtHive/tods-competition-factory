@@ -1,16 +1,16 @@
-import { getLinkedTournamentIds } from '../../query/tournaments/getLinkedTournamentIds';
-import { decorateResult } from '../../global/functions/decorateResult';
-import { addVenue } from '../governors/venueGovernor/addVenue';
-import { makeDeepCopy } from '../../utilities';
+import { getLinkedTournamentIds } from '../query/tournaments/getLinkedTournamentIds';
+import { decorateResult } from '../global/functions/decorateResult';
+import { addVenue } from '../tournamentEngine/governors/venueGovernor/addVenue';
+import { makeDeepCopy } from '../utilities';
 
-import { SUCCESS } from '../../constants/resultConstants';
+import { SUCCESS } from '../constants/resultConstants';
 import {
   COURT_NOT_FOUND,
   ErrorType,
   MISSING_COURT_ID,
   MISSING_TOURNAMENT_RECORD,
-} from '../../constants/errorConditionConstants';
-import { Court, Tournament, Venue } from '../../types/tournamentTypes';
+} from '../constants/errorConditionConstants';
+import { Court, Tournament, Venue } from '../types/tournamentTypes';
 
 type FindCourtArgs = {
   tournamentRecords?: { [key: string]: Tournament };
@@ -72,29 +72,4 @@ export function findCourt({
 
 export function publicFindCourt(params) {
   return makeDeepCopy(findCourt(params), false, true);
-}
-
-/**
- *
- * @param {string} venueId - optional -
- * @param {string[]} venueIds - optional -
- */
-export function getCourts({ tournamentRecord, venueId, venueIds }) {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-
-  const courts = (tournamentRecord.venues || [])
-    .filter((venue) => {
-      if (venueId) return venue.venueId === venueId;
-      if (venueIds) return venueIds.includes(venue.venueId);
-      return true;
-    })
-    .map((venue) => {
-      const { venueId } = venue;
-      const venueCourts = makeDeepCopy(venue.courts || []);
-      venueCourts.forEach((court) => Object.assign(court, { venueId }));
-      return venueCourts;
-    })
-    .flat();
-
-  return { courts };
 }

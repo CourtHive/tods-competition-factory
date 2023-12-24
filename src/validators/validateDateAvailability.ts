@@ -1,8 +1,5 @@
-import { validTimePeriod } from '../../../fixtures/validations/time';
-import {
-  dateValidation,
-  timeValidation,
-} from '../../../fixtures/validations/regex';
+import { validTimePeriod } from '../fixtures/validations/time';
+import { dateValidation, timeValidation } from '../fixtures/validations/regex';
 
 import {
   INVALID_DATE,
@@ -10,7 +7,7 @@ import {
   INVALID_BOOKINGS,
   INVALID_DATE_AVAILABILITY,
   MISSING_DATE_AVAILABILITY,
-} from '../../../constants/errorConditionConstants';
+} from '../constants/errorConditionConstants';
 
 export function validDateAvailability({ dateAvailability }) {
   if (!dateAvailability) return { error: MISSING_DATE_AVAILABILITY };
