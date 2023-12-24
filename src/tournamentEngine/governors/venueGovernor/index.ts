@@ -1,16 +1,16 @@
 import { modifyCourtAvailability } from '../../../mutate/venues/courtAvailability';
 import { deleteVenue, deleteVenues } from '../../../mutate/venues/deleteVenue';
 import { disableVenues } from '../../../mutate/venues/disableVenues';
-import { enableVenues } from './enableVenues';
-import { deleteCourt } from './deleteCourt';
 import { modifyVenue } from './modifyVenue';
-import { modifyCourt } from './modifyCourt';
 
-import { disableCourts } from '../../../competitionEngine/governors/venueGovernor/disableCourts';
-import { enableCourts } from '../../../competitionEngine/governors/venueGovernor/enableCourts';
-import { addVenue } from '../../../competitionEngine/governors/venueGovernor/addVenue';
+import { disableCourts } from '../../../mutate/venues/disableCourts';
+import { enableCourts } from '../../../mutate/venues/enableCourts';
+import { addVenue } from '../../../mutate/venues/addVenue';
 import { publicFindVenue } from '../../../mutate/venues/findVenue';
 import { addCourt, addCourts } from '../../../mutate/venues/addCourt';
+import { deleteCourt } from '../../../mutate/venues/deleteCourt';
+import { enableVenues } from '../../../mutate/venues/enableVenues';
+import { modifyCourt } from '../../../mutate/venues/modifyCourt';
 
 const locationGovernor = {
   addVenue,

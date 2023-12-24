@@ -1,5 +1,5 @@
 import { addCourts } from './addCourt';
-import { addVenue } from '../../competitionEngine/governors/venueGovernor/addVenue';
+import { addVenue } from './addVenue';
 import { dateRange, formatDate } from '../../utilities/dateTime';
 import { Tournament } from '../../types/tournamentTypes';
 import { UUID } from '../../utilities';

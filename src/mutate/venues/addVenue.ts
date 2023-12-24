@@ -1,19 +1,19 @@
-import { resolveTournamentRecords } from '../../../parameters/resolveTournamentRecords';
-import { UUID, definedAttributes, makeDeepCopy } from '../../../utilities';
-import { addExtension } from '../../../mutate/extensions/addExtension';
-import { addNotice } from '../../../global/state/globalState';
+import { resolveTournamentRecords } from '../../parameters/resolveTournamentRecords';
+import { UUID, definedAttributes, makeDeepCopy } from '../../utilities';
+import { addExtension } from '../extensions/addExtension';
+import { addNotice } from '../../global/state/globalState';
 
-import { CONTEXT } from '../../../constants/extensionConstants';
-import { ADD_VENUE } from '../../../constants/topicConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { Venue } from '../../../types/tournamentTypes';
+import { CONTEXT } from '../../constants/extensionConstants';
+import { ADD_VENUE } from '../../constants/topicConstants';
+import { SUCCESS } from '../../constants/resultConstants';
+import { Venue } from '../../types/tournamentTypes';
 import {
   ErrorType,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
   VENUE_EXISTS,
   INVALID_VALUES,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 export function addVenue(params) {
   const { disableNotice, venue, context } = params;

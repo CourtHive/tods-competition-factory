@@ -7,6 +7,7 @@ import { expect, it, test } from 'vitest';
 import {
   COURT_NOT_FOUND,
   INVALID_DATE_AVAILABILITY,
+  INVALID_TIME,
   MISSING_COURT_ID,
   MISSING_DATE_AVAILABILITY,
   MISSING_TOURNAMENT_RECORD,
@@ -72,7 +73,7 @@ it('can define and modify a venue', () => {
   };
 
   result = tournamentEngine.modifyVenue({ venueId, modifications });
-  expect(result.error).not.toBeUndefined();
+  expect(result.error).toEqual(INVALID_TIME);
 
   modifications = {
     venueName,

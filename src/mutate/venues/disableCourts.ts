@@ -1,15 +1,18 @@
-import { addExtension } from '../../../mutate/extensions/addExtension';
-import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
+import { resolveTournamentRecords } from '../../parameters/resolveTournamentRecords';
+import { addExtension } from '../extensions/addExtension';
+import { mustBeAnArray } from '../../utilities/mustBeAnArray';
 
-import { DISABLED } from '../../../constants/extensionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { DISABLED } from '../../constants/extensionConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_TOURNAMENT_RECORDS,
   MISSING_VALUE,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
-export function disableCourts({ tournamentRecords, courtIds, dates }) {
+export function disableCourts(params) {
+  const { courtIds, dates } = params;
+  const tournamentRecords = resolveTournamentRecords(params);
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!Array.isArray(courtIds))
     return { error: MISSING_VALUE, info: mustBeAnArray('courtIds') };

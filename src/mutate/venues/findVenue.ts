@@ -1,5 +1,5 @@
 import { getLinkedTournamentIds } from '../../query/tournaments/getLinkedTournamentIds';
-import { addVenue } from '../../competitionEngine/governors/venueGovernor/addVenue';
+import { addVenue } from './addVenue';
 import { makeDeepCopy } from '../../utilities';
 
 import { Tournament, Venue } from '../../types/tournamentTypes';

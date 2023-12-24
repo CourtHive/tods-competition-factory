@@ -1,31 +1,61 @@
-import { addNotice } from '../../../global/state/globalState';
-import { modifyCourtAvailability } from '../../../mutate/venues/courtAvailability';
-import courtTemplate from '../../../assemblies/generators/templates/courtTemplate';
-import { findCourt } from '../../../mutate/venues/findCourt';
-import { makeDeepCopy } from '../../../utilities';
+import { resolveTournamentRecords } from '../../parameters/resolveTournamentRecords';
+import { modifyCourtAvailability } from './courtAvailability';
+import courtTemplate from '../../assemblies/generators/templates/courtTemplate';
+import { addNotice } from '../../global/state/globalState';
+import { findCourt } from './findCourt';
+import { makeDeepCopy } from '../../utilities';
 
-import { HydratedCourt, HydratedMatchUp } from '../../../types/hydrated';
-import { ResultType } from '../../../global/functions/decorateResult';
-import { Tournament } from '../../../types/tournamentTypes';
-import { MODIFY_VENUE } from '../../../constants/topicConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { HydratedMatchUp, HydratedCourt } from '../../types/hydrated';
+import { ResultType } from '../../global/functions/decorateResult';
+import { MODIFY_VENUE } from '../../constants/topicConstants';
+import { TournamentRecords } from '../../types/factoryTypes';
+import { SUCCESS } from '../../constants/resultConstants';
+import { Tournament } from '../../types/tournamentTypes';
 import {
   INVALID_OBJECT,
   MISSING_COURT_ID,
   MISSING_TOURNAMENT_RECORD,
+  MISSING_TOURNAMENT_RECORDS,
   NO_VALID_ATTRIBUTES,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 type ModifyCourtArgs = {
+  tournamentRecords?: TournamentRecords;
   venueMatchUps?: HydratedMatchUp[];
-  tournamentRecord: Tournament;
+  tournamentRecord?: Tournament;
   disableNotice?: boolean;
   modifications: any;
   courtId: string;
   force?: boolean;
 };
 
-export function modifyCourt({
+export function modifyCourt(params: ModifyCourtArgs) {
+  const { disableNotice, modifications, courtId, force, venueMatchUps } =
+    params;
+  const tournamentRecords = resolveTournamentRecords(params);
+  if (!Object.keys(tournamentRecords).length)
+    return { error: MISSING_TOURNAMENT_RECORDS };
+
+  let courtModified;
+  let error;
+
+  for (const tournamentRecord of Object.values(tournamentRecords)) {
+    const result = courtModification({
+      tournamentRecord,
+      disableNotice,
+      venueMatchUps,
+      modifications,
+      courtId,
+      force,
+    });
+    if (result?.error) return result;
+    courtModified = true;
+  }
+
+  return courtModified ? { ...SUCCESS } : error;
+}
+
+export function courtModification({
   tournamentRecord,
   disableNotice,
   venueMatchUps,

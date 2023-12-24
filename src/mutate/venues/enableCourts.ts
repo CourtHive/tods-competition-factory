@@ -1,21 +1,20 @@
-import { removeExtension } from '../../../mutate/extensions/removeExtension';
-import { addExtension } from '../../../mutate/extensions/addExtension';
-import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
-import { findExtension } from '../../../acquire/findExtension';
+import { resolveTournamentRecords } from '../../parameters/resolveTournamentRecords';
+import { removeExtension } from '../extensions/removeExtension';
+import { addExtension } from '../extensions/addExtension';
+import { mustBeAnArray } from '../../utilities/mustBeAnArray';
+import { findExtension } from '../../acquire/findExtension';
 
-import { DISABLED } from '../../../constants/extensionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { DISABLED } from '../../constants/extensionConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   MISSING_TOURNAMENT_RECORDS,
   MISSING_VALUE,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
-export function enableCourts({
-  tournamentRecords,
-  enableAll,
-  courtIds,
-  dates,
-}) {
+export function enableCourts(params) {
+  const { enableAll, courtIds, dates } = params;
+
+  const tournamentRecords = resolveTournamentRecords(params);
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!enableAll && !Array.isArray(courtIds))
     return { error: MISSING_VALUE, info: mustBeAnArray('courtIds') };

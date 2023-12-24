@@ -1,13 +1,12 @@
 import { bulkScheduleTournamentMatchUps } from '../../../mutate/matchUps/schedule/bulkScheduleTournamentMatchUps';
 import { checkAndUpdateSchedulingProfile } from '../../../mutate/tournaments/schedulingProfile';
+import { deletionMessage } from '../../../assemblies/generators/matchUps/deletionMessage';
 import venueTemplate from '../../../assemblies/generators/templates/venueTemplate';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { addNotice } from '../../../global/state/globalState';
 import { addCourt } from '../../../mutate/venues/addCourt';
 import { findVenue } from '../../../mutate/venues/findVenue';
-import { deletionMessage } from '../../../assemblies/generators/matchUps/deletionMessage';
 import { makeDeepCopy } from '../../../utilities';
-import { modifyCourt } from './modifyCourt';
 import {
   getScheduledCourtMatchUps,
   getScheduledVenueMatchUps,
@@ -25,6 +24,7 @@ import {
   MISSING_VENUE_ID,
   NO_VALID_ATTRIBUTES,
 } from '../../../constants/errorConditionConstants';
+import { modifyCourt } from '../../../mutate/venues/modifyCourt';
 
 type ModifyVenueArgs = {
   tournamentRecord: Tournament;
