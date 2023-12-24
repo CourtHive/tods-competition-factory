@@ -1,7 +1,7 @@
 import { getEventPublishStatus } from '../event/getEventPublishStatus';
 import { getDrawPublishStatus } from '../event/getDrawPublishStatus';
 import { getSchedulingProfile } from '../../mutate/tournaments/schedulingProfile';
-import { getTournamentTimeItem } from '../participant/timeItems';
+import { getTournamentTimeItem } from '../base/timeItems';
 import { scheduledSortedMatchUps } from '../../functions/sorters/scheduledSortedMatchUps';
 import { getTournamentId } from '../../global/state/globalState';
 import { getVenuesAndCourts } from '../venues/venuesAndCourtsGetter';

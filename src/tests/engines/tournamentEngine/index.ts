@@ -2,11 +2,13 @@ import participantGovernor from '../../../tournamentEngine/governors/participant
 import publishingGovernor from '../../../tournamentEngine/governors/publishingGovernor';
 import tournamentGovernor from '../../../tournamentEngine/governors/tournamentGovernor';
 import scheduleGovernor from '../../../tournamentEngine/governors/scheduleGovernor';
-import policyGovernor from '../../../tournamentEngine/governors/policyGovernor';
 import reportGovernor from '../../../tournamentEngine/governors/reportGovernor';
 import eventGovernor from '../../../tournamentEngine/governors/eventGovernor';
 import queryGovernor from '../../../tournamentEngine/governors/queryGovernor';
 import venueGovernor from '../../../tournamentEngine/governors/venueGovernor';
+
+import policyGovernor from '../../../assemblies/governors/policyGovernor';
+
 import syncEngine from '../../../assemblies/engines/sync';
 
 const methods = {

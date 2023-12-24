@@ -1,5 +1,5 @@
 import { addTournamentTimeItem } from '../../../mutate/timeItems/addTimeItem';
-import { getTournamentTimeItem } from '../../../query/participant/timeItems';
+import { getTournamentTimeItem } from '../../../query/base/timeItems';
 import { addNotice } from '../../../global/state/globalState';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';

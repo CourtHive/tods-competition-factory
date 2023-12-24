@@ -35,7 +35,7 @@ import {
   getTournamentTimeItem,
   getParticipantTimeItem,
   getDrawDefinitionTimeItem,
-} from '../../../query/participant/timeItems';
+} from '../../../query/base/timeItems';
 
 import {
   MISSING_DRAW_ID,

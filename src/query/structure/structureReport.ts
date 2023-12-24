@@ -3,7 +3,7 @@ import { allTournamentMatchUps } from '../matchUps/getAllTournamentMatchUps';
 import { getAccessorValue } from '../../utilities/getAccessorValue';
 import { findExtension } from '../../acquire/findExtension';
 import { getDetailsWTN } from '../scales/getDetailsWTN';
-import { getTimeItem } from '../participant/timeItems';
+import { getTimeItem } from '../base/timeItems';
 import { getAvgWTN } from '../scales/getAvgWTN';
 
 import { MISSING_TOURNAMENT_ID } from '../../constants/errorConditionConstants';

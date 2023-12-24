@@ -1,5 +1,5 @@
 import { findTournamentParticipant } from '../../acquire/findTournamentParticipant';
-import { getTimeItem } from '../../tournamentEngine/governors/queryGovernor/timeItems';
+import { getTimeItem } from '../../query/base/timeItems';
 
 import { TimeItem, Tournament } from '../../types/tournamentTypes';
 import { ELEMENT_REQUIRED } from '../../constants/infoConstants';

@@ -18,7 +18,7 @@ import { getAssignedParticipantIds } from './query/drawDefinition/getAssignedPar
 import { getScaleValues } from './query/participant/getScaleValues';
 import { generateScoreString } from './assemblies/generators/matchUps/generateScoreString';
 import { categoryCanContain } from './global/functions/deducers/categoryCanContain';
-import { getTimeItem } from './tournamentEngine/governors/queryGovernor/timeItems';
+import { getTimeItem } from './query/base/timeItems';
 import { getCategoryAgeDetails } from './global/functions/getCategoryAgeDetails';
 import { participantScaleItem } from './query/participant/participantScaleItem';
 import { checkSetIsComplete } from './query/matchUp/getSetWinningSide';

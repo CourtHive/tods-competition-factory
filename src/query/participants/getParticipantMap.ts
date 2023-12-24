@@ -1,6 +1,6 @@
 import { addNationalityCode } from '../../mutate/participants/addNationalityCode';
 import { addIndividualParticipants } from '../../mutate/participants/addIndividualParticipants';
-import { getTimeItem } from '../../tournamentEngine/governors/queryGovernor/timeItems';
+import { getTimeItem } from '../base/timeItems';
 import { isObject } from '../../utilities/objects';
 import { makeDeepCopy } from '../../utilities';
 import { getScaleValues } from '../participant/getScaleValues';

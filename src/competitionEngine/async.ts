@@ -4,7 +4,7 @@ import { factoryVersion } from '../global/functions/factoryVersion';
 import competitionGovernor from './governors/competitionsGovernor';
 import publishingGovernor from './governors/publishingGovernor';
 import scheduleGovernor from './governors/scheduleGovernor';
-import policyGovernor from './governors/policyGovernor';
+import policyGovernor from '../assemblies/governors/policyGovernor';
 import queryGovernor from './governors/queryGovernor';
 import venueGovernor from './governors/venueGovernor';
 import { FactoryEngine } from '../types/factoryTypes';

@@ -1,7 +1,7 @@
 import { getAllPositionedParticipantIds } from '../drawDefinition/positionsGetter';
 import { getParticipantId } from '../../global/functions/extractors';
 import { getAccessorValue } from '../../utilities/getAccessorValue';
-import { getTimeItem } from '../participant/timeItems';
+import { getTimeItem } from '../base/timeItems';
 import { getFlightProfile } from '../event/getFlightProfile';
 import { unique } from '../../utilities';
 

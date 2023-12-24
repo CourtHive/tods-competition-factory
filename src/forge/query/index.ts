@@ -29,7 +29,7 @@ export { filterParticipants } from '../../query/participants/filterParticipants'
 export { getEventData } from '../../query/event/getEventData';
 export { getSeedsCount } from '../../query/drawDefinition/getSeedsCount';
 export { participantScaleItem } from '../../query/participant/participantScaleItem';
-export { getTimeItem } from '../../query/participant/timeItems';
+export { getTimeItem } from '../../query/base/timeItems';
 export { findMatchUp } from '../../acquire/findMatchUp';
 export { getFlightProfile } from '../../query/event/getFlightProfile';
 export { allTournamentMatchUps } from '../../query/matchUps/getAllTournamentMatchUps';
