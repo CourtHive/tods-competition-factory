@@ -12,7 +12,7 @@ import {
   countGames,
   countPoints,
   countSets,
-} from '../../matchUpEngine/getters/roundRobinTally/scoreCounters';
+} from '../matchUps/roundRobinTally/scoreCounters';
 
 import { TEAM_PARTICIPANT } from '../../constants/participantConstants';
 import { HydratedMatchUp, HydratedSide } from '../../types/hydrated';

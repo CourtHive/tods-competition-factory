@@ -1,5 +1,5 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '../../../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
-import { tallyParticipantResults } from '../../../../../matchUpEngine/getters/roundRobinTally/roundRobinTally';
+import { tallyParticipantResults } from '../../../../../query/matchUps/roundRobinTally/roundRobinTally';
 import { getAllStructureMatchUps } from '../../../../../query/matchUps/getAllStructureMatchUps';
 import { setStageDrawSize } from '../../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 import { generateMatchUpOutcome } from '../../primitives/generateMatchUpOutcome';

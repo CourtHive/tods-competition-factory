@@ -1,4 +1,4 @@
-import { generateScoreString } from '../generators/generateScoreString';
+import { generateScoreString } from '../../assemblies/generators/matchUps/generateScoreString';
 import { expect, it, test } from 'vitest';
 
 import { RETIRED } from '../../constants/matchUpStatusConstants';

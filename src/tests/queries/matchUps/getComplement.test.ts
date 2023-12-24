@@ -2,7 +2,7 @@ import { expect, it } from 'vitest';
 import {
   getSetComplement,
   getTiebreakComplement,
-} from '../getters/getComplement';
+} from '../../../query/matchUp/getComplement';
 
 it('can generate appropriate highValue for standard sets', () => {
   setScoreTest({

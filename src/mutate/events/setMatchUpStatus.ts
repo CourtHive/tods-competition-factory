@@ -1,6 +1,6 @@
 import { setMatchUpStatus as drawEngineSetMatchUpStatus } from '../matchUps/matchUpStatus/setMatchUpStatus';
 import { setMatchUpFormat } from '../matchUps/matchUpFormat/setMatchUpFormat';
-import { matchUpScore } from '../../matchUpEngine/generators/matchUpScore';
+import { matchUpScore } from '../../assemblies/generators/matchUps/matchUpScore';
 import { findPolicy } from '../../acquire/findPolicy';
 
 import { POLICY_TYPE_SCORING } from '../../constants/policyConstants';

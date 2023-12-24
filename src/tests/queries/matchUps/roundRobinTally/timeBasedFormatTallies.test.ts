@@ -1,7 +1,7 @@
 import { getParticipantId } from '../../../../global/functions/extractors';
-import tournamentEngine from '../../../../tests/engines/tournamentEngine';
+import tournamentEngine from '../../../engines/tournamentEngine';
 import mocksEngine from '../../../../mocksEngine';
-import matchUpEngine from '../../../sync';
+import matchUpEngine from '../../../../matchUpEngine/sync';
 import { expect, it } from 'vitest';
 
 import { ROUND_ROBIN } from '../../../../constants/drawDefinitionConstants';

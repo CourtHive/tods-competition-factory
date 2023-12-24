@@ -1,14 +1,14 @@
-import { analyzeMatchUp } from '../getters/analyzeMatchUp';
-import tournamentEngine from '../../tests/engines/tournamentEngine';
-import mocksEngine from '../../mocksEngine';
+import { analyzeMatchUp } from '../../../query/matchUp/analyzeMatchUp';
+import tournamentEngine from '../../engines/tournamentEngine';
+import mocksEngine from '../../../mocksEngine';
 import { expect, test } from 'vitest';
-import matchUpEngine from '../sync';
+import matchUpEngine from '../../../matchUpEngine/sync';
 
-import { MISSING_MATCHUP } from '../../constants/errorConditionConstants';
+import { MISSING_MATCHUP } from '../../../constants/errorConditionConstants';
 import {
   FORMAT_ATP_DOUBLES,
   FORMAT_STANDARD,
-} from '../../fixtures/scoring/matchUpFormats';
+} from '../../../fixtures/scoring/matchUpFormats';
 
 test('can handle empty matchUp', () => {
   let analysis = analyzeMatchUp();

@@ -1,4 +1,4 @@
-import { countGames } from '../scoreCounters';
+import { countGames } from '../../../../query/matchUps/roundRobinTally/scoreCounters';
 import { expect, it } from 'vitest';
 
 import { COMPLETED } from '../../../../constants/matchUpStatusConstants';

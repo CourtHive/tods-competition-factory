@@ -1,4 +1,4 @@
-import { generateScoreString } from '../../generators/generateScoreString';
+import { generateScoreString } from '../../../assemblies/generators/matchUps/generateScoreString';
 import { definedAttributes } from '../../../utilities/definedAttributes';
 
 import { SUCCESS } from '../../../constants/resultConstants';

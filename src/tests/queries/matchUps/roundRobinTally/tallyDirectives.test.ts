@@ -1,21 +1,16 @@
-import tournamentEngine from '../../../../tests/engines/tournamentEngine';
+import tournamentEngine from '../../../engines/tournamentEngine';
 import { extractAttributes as xa } from '../../../../utilities';
-import matchUpEngine from '../../../sync';
+import matchUpEngine from '../../../../matchUpEngine/sync';
+import tournamentRecord from './dominantDuo.tods.json';
 import { expect, it } from 'vitest';
-import fs from 'fs';
 
 import { POLICY_TYPE_ROUND_ROBIN_TALLY } from '../../../../constants/policyConstants';
 
 it('supports multiple policy configurations', () => {
-  const tournamentJSON = fs.readFileSync(
-    './src/matchUpEngine/getters/roundRobinTally/tests/dominantDuo.tods.json',
-    'utf-8'
-  );
-  const tournament = JSON.parse(tournamentJSON);
-  const result = tournamentEngine.setState(tournament);
+  const result = tournamentEngine.setState(tournamentRecord);
   expect(result.success).toEqual(true);
 
-  const RR = tournament.events[0].drawDefinitions[0].structures[0];
+  const RR = tournamentRecord.events[0].drawDefinitions[0].structures[0];
   const structureIds = RR.structures.map(xa('structureId'));
 
   const matchUps = tournamentEngine.allTournamentMatchUps().matchUps;

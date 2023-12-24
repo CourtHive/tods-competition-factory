@@ -1,4 +1,4 @@
-import { parse } from '../../governors/matchUpFormatGovernor/parse';
+import { parse } from '../../../matchUpEngine/governors/matchUpFormatGovernor/parse';
 
 export function calculatePercentages({
   participantResults,
@@ -63,8 +63,7 @@ export function calculatePercentages({
     participantResults[participantId].gamesLost = gamesLost;
     participantResults[participantId].gamesPct = gamesPct;
     participantResults[participantId].pointsPct = pointsPct;
-    participantResults[
-      participantId
-    ].result = `${participantResults[participantId].matchUpsWon}/${participantResults[participantId].matchUpsLost}`;
+    participantResults[participantId].result =
+      `${participantResults[participantId].matchUpsWon}/${participantResults[participantId].matchUpsLost}`;
   });
 }

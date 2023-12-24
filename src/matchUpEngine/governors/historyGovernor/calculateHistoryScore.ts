@@ -1,4 +1,4 @@
-import { generateScoreString } from '../../generators/generateScoreString';
+import { generateScoreString } from '../../../assemblies/generators/matchUps/generateScoreString';
 import { isConvertableInteger } from '../../../utilities/math';
 import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
 import { parse } from '../matchUpFormatGovernor/parse';

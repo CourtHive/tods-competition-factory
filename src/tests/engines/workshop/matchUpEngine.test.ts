@@ -1,11 +1,11 @@
-import matchUpEngineAsync from '../async';
-import matchUpEngineSync from '../sync';
+import matchUpEngineAsync from '../../../matchUpEngine/async';
+import matchUpEngineSync from '../../../matchUpEngine/sync';
 import { expect, it } from 'vitest';
 
 import {
   INVALID_OBJECT,
   MISSING_VALUE,
-} from '../../constants/errorConditionConstants';
+} from '../../../constants/errorConditionConstants';
 
 const asyncMatchUpEngine = matchUpEngineAsync(true);
 

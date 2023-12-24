@@ -1,4 +1,4 @@
-import { analyzeScore } from '../matchUpEngine/getters/analyzeScore';
+import { analyzeScore } from '../query/matchUp/analyzeScore';
 import { mustBeAnArray } from '../utilities/mustBeAnArray';
 import { isConvertableInteger } from '../utilities/math';
 import { unique } from '../utilities';

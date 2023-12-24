@@ -1,7 +1,7 @@
-import { reverseScore } from '../governors/scoreGovernor/reverseScore';
+import { reverseScore } from '../../../matchUpEngine/governors/scoreGovernor/reverseScore';
 import { expect, it } from 'vitest';
 
-import { MISSING_VALUE } from '../../constants/errorConditionConstants';
+import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
 
 it('can reverse score objects and regenerate scoreStrings', () => {
   const { error } = reverseScore();

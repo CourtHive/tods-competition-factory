@@ -1,14 +1,14 @@
 import { isValidMatchUpFormat } from '../../validators/isValidMatchUpFormat';
 import { parse } from '../../matchUpEngine/governors/matchUpFormatGovernor/parse';
-import { analyzeMatchUp } from '../../matchUpEngine/getters/analyzeMatchUp';
-import { matchUpScore } from '../../matchUpEngine/generators/matchUpScore';
-import { analyzeSet } from '../../matchUpEngine/getters/analyzeSet';
+import { analyzeMatchUp } from '../../query/matchUp/analyzeMatchUp';
+import { matchUpScore } from '../../assemblies/generators/matchUps/matchUpScore';
+import { analyzeSet } from '../../query/matchUp/analyzeSet';
 import { randomInt, weightedRandom } from '../../utilities/math';
 import { generateRange, randomPop } from '../../utilities';
 import {
   getSetComplement,
   getTiebreakComplement,
-} from '../../matchUpEngine/getters/getComplement';
+} from '../../query/matchUp/getComplement';
 
 import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats';
 import {

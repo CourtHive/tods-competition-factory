@@ -2,16 +2,16 @@ import { generateTieMatchUpScore } from '../../../assemblies/generators/tieMatch
 import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
 import { updateTieMatchUpScore } from '../../../mutate/matchUps/score/tieMatchUpScore';
 import { validateTieFormat } from '../../../validators/validateTieFormat';
-import { generateScoreString } from '../../generators/generateScoreString';
+import { generateScoreString } from '../../../assemblies/generators/matchUps/generateScoreString';
 import { validateScore } from '../../../validators/validateScore';
 import { checkSetIsComplete, keyValueScore } from './keyValueScore';
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
-import { analyzeSet } from '../../getters/analyzeSet';
+import { analyzeSet } from '../../../query/matchUp/analyzeSet';
 import { reverseScore } from './reverseScore';
 import {
   getSetComplement,
   getTiebreakComplement,
-} from '../../getters/getComplement';
+} from '../../../query/matchUp/getComplement';
 
 // renamed
 import { stringify } from '../matchUpFormatGovernor/stringify';

@@ -1,4 +1,4 @@
-import { checkMatchUpIsComplete } from '../../../query/matchUp/checkMatchUpIsComplete';
+import { checkMatchUpIsComplete } from '../../matchUp/checkMatchUpIsComplete';
 import { validMatchUps } from '../../../validators/validMatchUp';
 import { getDevContext } from '../../../global/state/globalState';
 import { getParticipantResults } from './getParticipantResults';

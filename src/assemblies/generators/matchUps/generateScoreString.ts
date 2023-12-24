@@ -1,10 +1,10 @@
-import { parse } from '../governors/matchUpFormatGovernor/parse';
-import { isNumeric } from '../../utilities/math';
+import { parse } from '../../../matchUpEngine/governors/matchUpFormatGovernor/parse';
+import { isNumeric } from '../../../utilities/math';
 
 import {
   ErrorType,
   MISSING_VALUE,
-} from '../../constants/errorConditionConstants';
+} from '../../../constants/errorConditionConstants';
 import {
   ABANDONED,
   DEAD_RUBBER,
@@ -14,7 +14,7 @@ import {
   RETIRED,
   SUSPENDED,
   WALKOVER,
-} from '../../constants/matchUpStatusConstants';
+} from '../../../constants/matchUpStatusConstants';
 
 type GenerateScoreString = {
   addOutcomeString?: boolean;

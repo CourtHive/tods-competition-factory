@@ -1,5 +1,5 @@
 import { validateScore } from '../validateScore';
-import { analyzeScore } from '../../matchUpEngine/getters/analyzeScore';
+import { analyzeScore } from '../../query/matchUp/analyzeScore';
 import mocksEngine from '../../mocksEngine';
 import { it, test, expect } from 'vitest';
 

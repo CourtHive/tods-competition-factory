@@ -1,4 +1,4 @@
-import { tallyParticipantResults } from '../../../matchUpEngine/getters/roundRobinTally/roundRobinTally';
+import { tallyParticipantResults } from '../../../query/matchUps/roundRobinTally/roundRobinTally';
 import { getPolicyDefinitions } from '../../../query/extensions/getAppliedPolicies';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { removeExtension } from '../../extensions/removeExtension';

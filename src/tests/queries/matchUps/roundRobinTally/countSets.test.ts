@@ -1,4 +1,4 @@
-import { countSets } from '../scoreCounters';
+import { countSets } from '../../../../query/matchUps/roundRobinTally/scoreCounters';
 import { expect, it } from 'vitest';
 
 import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';

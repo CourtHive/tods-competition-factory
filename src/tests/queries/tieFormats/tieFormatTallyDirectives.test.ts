@@ -1,16 +1,9 @@
-import tournamentEngine from '../../tests/engines/tournamentEngine';
+import tournamentEngine from '../../engines/tournamentEngine';
+import tournamentRecord from './tieFormatTallyDirectives.tods.json';
 import { expect, it } from 'vitest';
-import fs from 'fs';
 
 it('can can determine scorecard winner using tallyDirectives', () => {
-  const tournamentRecordJSON = fs.readFileSync(
-    './src/matchUpEngine/tests/tieFormatTallyDirectives.tods.json',
-    'utf-8'
-  );
-  const tournamentRecord = JSON.parse(tournamentRecordJSON);
-  let result = tournamentEngine
-    // .devContext({ tally: true })
-    .setState(tournamentRecord);
+  let result = tournamentEngine.setState(tournamentRecord);
   expect(result.success).toEqual(true);
 
   const {

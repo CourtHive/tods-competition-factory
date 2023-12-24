@@ -1,4 +1,4 @@
-import { parse } from '../governors/matchUpFormatGovernor/parse';
+import { parse } from '../../matchUpEngine/governors/matchUpFormatGovernor/parse';
 import { Score } from '../../types/tournamentTypes';
 import { instanceCount } from '../../utilities';
 

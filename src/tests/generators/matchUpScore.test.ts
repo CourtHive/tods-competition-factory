@@ -1,4 +1,4 @@
-import { matchUpScore } from '../generators/matchUpScore';
+import { matchUpScore } from '../../assemblies/generators/matchUps/matchUpScore';
 import { expect, it } from 'vitest';
 
 import { COMPLETED } from '../../constants/matchUpStatusConstants';
