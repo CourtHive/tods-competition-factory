@@ -1,4 +1,4 @@
-import { setMatchUpFormat as drawEngineSetMatchUpFormat } from '../matchUps/matchUpFormat/setMatchUpFormat';
+import { setMatchUpFormat as drawEngineSetMatchUpFormat } from './matchUpFormat/setMatchUpFormat';
 import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
 import { isValidMatchUpFormat } from '../../validators/isValidMatchUpFormat';
 import { decorateResult } from '../../global/functions/decorateResult';

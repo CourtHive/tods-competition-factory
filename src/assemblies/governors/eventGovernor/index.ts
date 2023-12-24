@@ -43,7 +43,7 @@ import { modifyPairAssignment } from '../../../mutate/drawDefinitions/modifyPair
 import { removeDrawEntries } from '../../../mutate/drawDefinitions/removeDrawEntries';
 import { modifyEntriesStatus } from '../../../mutate/entries/modifyEntriesStatus';
 import { modifySeedAssignment } from '../../../mutate/events/modifySeedAssignment';
-import { setMatchUpFormat } from '../../../mutate/tieFormat/setMatchUpFormat';
+import { setMatchUpFormat } from '../../../mutate/matchUps/setMatchUpFormat';
 
 import {
   setEntryPosition,
