@@ -7,7 +7,7 @@ import { positionTargets } from './drawPositions/positionTargets';
 import { findStructure } from '../../acquire/findStructure';
 import { isActiveDownstream } from '../drawDefinitions/matchUpGovernor/isActiveDownstream';
 import { updateTieMatchUpScore } from './score/tieMatchUpScore';
-import { setMatchUpStatus } from './matchUpStatus/setMatchUpState';
+import { setMatchUpState } from './matchUpStatus/setMatchUpState';
 import {
   ResultType,
   decorateResult,
@@ -101,7 +101,7 @@ export function resetScorecard(params): ResultType {
   if (activeDownstream) return { error: CANNOT_CHANGE_WINNING_SIDE };
 
   for (const tieMatchUp of matchUp.tieMatchUps ?? []) {
-    const result = setMatchUpStatus({
+    const result = setMatchUpState({
       matchUpId: tieMatchUp.matchUpId,
       matchUpTieId: matchUpId,
       winningSide: undefined,

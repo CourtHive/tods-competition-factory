@@ -38,7 +38,7 @@ import {
 } from '../../../../constants/entryStatusConstants';
 import { assignDrawPositionBye } from '../../../../mutate/matchUps/drawPositions/assignDrawPositionBye';
 import { assignDrawPosition } from '../../../../mutate/matchUps/drawPositions/positionAssignment';
-import { setMatchUpStatus } from '../../../../mutate/matchUps/matchUpStatus/setMatchUpState';
+import { setMatchUpState } from '../../../../mutate/matchUps/matchUpStatus/setMatchUpState';
 
 it('advances paired drawPositions when BYE is assigned first', () => {
   let result;
@@ -148,7 +148,7 @@ it('advances paired drawPositions when BYE is assigned first', () => {
     structureId,
   }));
   let { matchUpId } = matchUp;
-  let { error } = setMatchUpStatus({
+  let { error } = setMatchUpState({
     matchUpStatus: RETIRED,
     drawDefinition,
     matchUpId,
@@ -164,7 +164,7 @@ it('advances paired drawPositions when BYE is assigned first', () => {
   let { matchUpStatus } = matchUp;
   expect(matchUpStatus).toEqual(BYE);
 
-  ({ error } = setMatchUpStatus({
+  ({ error } = setMatchUpState({
     // @ts-expect-error invalid matchUpStatus
     matchUpStatus: 'BOGUS',
     drawDefinition,
@@ -179,7 +179,7 @@ it('advances paired drawPositions when BYE is assigned first', () => {
     structureId,
   }));
   ({ matchUpId } = matchUp);
-  ({ error } = setMatchUpStatus({
+  ({ error } = setMatchUpState({
     matchUpStatus: BYE,
     drawDefinition,
     matchUpId,
@@ -243,7 +243,7 @@ it('advances paired drawPositions when BYE is assigned first', () => {
   const { drawPositions } = matchUp;
   expect(drawPositions).toMatchObject([1, 3]);
 
-  setMatchUpStatus({
+  setMatchUpState({
     matchUpStatus: RETIRED,
     drawDefinition,
     matchUpId,
@@ -259,7 +259,7 @@ it('advances paired drawPositions when BYE is assigned first', () => {
   expect(score?.sets).toEqual(sets);
 
   // change winning side; score must be included when changing winning side
-  result = setMatchUpStatus({
+  result = setMatchUpState({
     matchUpStatus: DEFAULTED,
     winningSide: 2,
     drawDefinition,
@@ -277,7 +277,7 @@ it('advances paired drawPositions when BYE is assigned first', () => {
   expect(matchUpStatus).toEqual(DEFAULTED);
   expect(winningSide).toEqual(2);
 
-  result = setMatchUpStatus({
+  result = setMatchUpState({
     matchUpStatus: TO_BE_PLAYED,
     drawDefinition,
     matchUpId,
@@ -586,7 +586,7 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
     roundNumber: 1,
     drawDefinition,
   }));
-  ({ error } = setMatchUpStatus({
+  ({ error } = setMatchUpState({
     matchUpStatus: BYE,
     drawDefinition,
     score: '6-1',
@@ -605,7 +605,7 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
     drawDefinition,
   }));
 
-  ({ error } = setMatchUpStatus({
+  ({ error } = setMatchUpState({
     matchUpStatus: TO_BE_PLAYED,
     drawDefinition,
     matchUpId,
@@ -613,14 +613,14 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
   expect(error).not.toBeUndefined();
 
   // Now attempt to change a 1st round matchUpStatus, but not winner...
-  result = setMatchUpStatus({
+  result = setMatchUpState({
     matchUpStatus: RETIRED,
     drawDefinition,
     score: '6-1',
     matchUpId,
   });
   expect(result.error).toEqual(INVALID_VALUES);
-  result = setMatchUpStatus({
+  result = setMatchUpState({
     matchUpStatus: RETIRED,
     drawDefinition,
     matchUpId,
@@ -628,7 +628,7 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
   expect(result.success).toEqual(true);
 
   // Now attempt to change a 1st round matchUpStatus to nonDirecting outcome, same winningSide...
-  result = setMatchUpStatus({
+  result = setMatchUpState({
     matchUpStatus: SUSPENDED,
     winningSide: 1,
     drawDefinition,
@@ -638,7 +638,7 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
 
   // Now attempt to change a 1st round matchUp outcome, including winner...
   // when { allowChangePropagation: false }
-  ({ error } = setMatchUpStatus({
+  ({ error } = setMatchUpState({
     allowChangePropagation: false,
     matchUpStatus: COMPLETED,
     winningSide: 2,

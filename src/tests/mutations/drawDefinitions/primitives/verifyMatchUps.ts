@@ -1,4 +1,4 @@
-import { setMatchUpStatus } from '../../../../mutate/matchUps/matchUpStatus/setMatchUpState';
+import { setMatchUpState } from '../../../../mutate/matchUps/matchUpStatus/setMatchUpState';
 import { getAllStructureMatchUps } from '../../../../query/matchUps/getAllStructureMatchUps';
 import { getRoundMatchUps } from '../../../../query/matchUps/getRoundMatchUps';
 import { getStructureMatchUps } from '../../../../query/structure/getStructureMatchUps';
@@ -29,7 +29,7 @@ export function completeMatchUp(params) {
   });
   const { matchUpId } = targetMatchUp;
 
-  const { matchUp, error, success } = setMatchUpStatus({
+  const { matchUp, error, success } = setMatchUpState({
     drawDefinition,
     matchUpStatus,
     winningSide,

@@ -63,7 +63,7 @@ import {
 
 // WOULDBENICE: return object containing all modified { matchUpIds, structureIds, drawIds }
 
-type SetMatchUpStatusArgs = {
+type SetMatchUpStateArgs = {
   tournamentRecords?: { [key: string]: Tournament };
   policyDefinitions?: PolicyDefinitions;
   matchUpStatus?: MatchUpStatusUnion;
@@ -88,7 +88,7 @@ type SetMatchUpStatusArgs = {
   score?: any;
 };
 
-export function setMatchUpStatus(params: SetMatchUpStatusArgs): any {
+export function setMatchUpState(params: SetMatchUpStateArgs): any {
   const stack = 'setMatchUpStatus';
 
   // always clear score if DOUBLE_WALKOVER or WALKOVER

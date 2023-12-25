@@ -1,4 +1,4 @@
-import { setMatchUpStatus as drawEngineSetMatchUpStatus } from './setMatchUpState';
+import { setMatchUpState } from './setMatchUpState';
 import { resolveTournamentRecords } from '../../../parameters/resolveTournamentRecords';
 import { matchUpScore } from '../../../assemblies/generators/matchUps/matchUpScore';
 import { setMatchUpFormat } from '../matchUpFormat/setMatchUpFormat';
@@ -112,7 +112,7 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
     );
   }
 
-  return drawEngineSetMatchUpStatus({
+  return setMatchUpState({
     matchUpStatusCodes: outcome?.matchUpStatusCodes,
     matchUpStatus: outcome?.matchUpStatus,
     winningSide: outcome?.winningSide,
