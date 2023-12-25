@@ -2,14 +2,12 @@ import { dateStringDaysChange } from '../../../../utilities/dateTime';
 import mocksEngine from '../../../../mocksEngine';
 import { expect, test } from 'vitest';
 
-import tournamentEngineAsync from '../../../../tournamentEngine/async';
+import asyncTournamentEngine from '../../../engines/asyncEngine';
 import tournamentEngineSync from '../../../engines/syncEngine';
 import {
   INVALID_DATE,
   MISSING_EVENT,
 } from '../../../../constants/errorConditionConstants';
-
-const asyncTournamentEngine = tournamentEngineAsync(true);
 
 test.each([tournamentEngineSync, asyncTournamentEngine])(
   'can modify event.startDate and event.endDate',

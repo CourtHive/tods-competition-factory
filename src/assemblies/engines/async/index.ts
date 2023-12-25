@@ -10,9 +10,9 @@ type MethodParams = {
   method: string;
 };
 
-export const engine = ((): FactoryEngine & { error?: any } => {
+export function asyncEngine(test?: boolean): FactoryEngine & { error?: any } {
   const result = createInstanceState();
-  if (result.error) return result;
+  if (result.error && !test) return result;
 
   const engine: FactoryEngine = {
     executionQueue: (directives: MethodParams[], rollbackOnError?: boolean) =>
@@ -23,6 +23,6 @@ export const engine = ((): FactoryEngine & { error?: any } => {
   engineStart(engine, asyncEngineInvoke);
 
   return engine;
-})();
+}
 
-export default engine;
+export default asyncEngine;

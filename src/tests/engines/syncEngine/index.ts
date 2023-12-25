@@ -1,3 +1,4 @@
+import competitionsGovernor from '../../../assemblies/governors/competitionsGovernor';
 import participantGovernor from '../../../assemblies/governors/participantGovernor';
 import publishingGovernor from '../../../assemblies/governors/publishingGovernor';
 import scheduleGovernor from '../../../assemblies/governors/scheduleGovernor';
@@ -12,6 +13,7 @@ import eventGovernor from '../../../assemblies/governors/eventGovernor';
 import syncEngine from '../../../assemblies/engines/sync';
 
 const methods = {
+  ...competitionsGovernor,
   ...participantGovernor,
   ...publishingGovernor,
   ...tournamentGovernor,

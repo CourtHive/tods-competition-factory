@@ -1,6 +1,6 @@
 import tournamentEngine from '../../engines/syncEngine';
 import { formatDate } from '../../../utilities/dateTime';
-import competitionEngineAsync from '../../../competitionEngine/async';
+import asyncCompetitionEngine from '../../engines/asyncEngine';
 import competitionEngineSync from '../../engines/competitionEngine';
 import mocksEngine from '../../../mocksEngine';
 import { expect, test } from 'vitest';
@@ -13,8 +13,6 @@ import {
   FEED_IN_CHAMPIONSHIP,
   FIRST_MATCH_LOSER_CONSOLATION,
 } from '../../../constants/drawDefinitionConstants';
-
-const asyncCompetitionEngine = competitionEngineAsync(true);
 
 const U18rankingsRetrieval = 'RETRIEVAL.RANKING.SINGLES.U18';
 const cpsCourt1 = 'cps-court-1';

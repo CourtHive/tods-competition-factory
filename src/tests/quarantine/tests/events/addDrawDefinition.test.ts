@@ -1,6 +1,6 @@
 import { getMatchUpContextIds } from '../../../../query/matchUp/getMatchUpContextIds';
 import { getMatchUpType } from '../../../../query/matchUp/getMatchUpType';
-import tournamentEngineAsync from '../../../../tournamentEngine/async';
+import asyncTournamentEngine from '../../../engines/asyncEngine';
 import mocksEngine from '../../../../mocksEngine';
 import tournamentEngineSync from '../../../engines/syncEngine';
 import { expect, test } from 'vitest';
@@ -8,8 +8,6 @@ import { expect, test } from 'vitest';
 import { MISSING_VALUE } from '../../../../constants/errorConditionConstants';
 import { INDIVIDUAL } from '../../../../constants/participantConstants';
 import { SINGLES } from '../../../../constants/matchUpTypes';
-
-const asyncTournamentEngine = tournamentEngineAsync(true);
 
 test.each([tournamentEngineSync, asyncTournamentEngine])(
   'can create flightProfile on addDrawDefinition',

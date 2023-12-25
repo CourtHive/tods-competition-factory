@@ -1,20 +1,18 @@
 import { unlinkTournament } from '../../../mutate/tournaments/tournamentLinks';
 import { intersection } from '../../../utilities';
-import competitionEngineAsync from '../../../competitionEngine/async';
+import asyncCompetitionEngine from '../../engines/asyncEngine';
 import competitionEngineSync from '../../engines/competitionEngine';
 import mocksEngine from '../../../mocksEngine';
 import { expect, test } from 'vitest';
 
 import { LINKED_TOURNAMENTS } from '../../../constants/extensionConstants';
+import { FactoryEngine } from '../../../types/factoryTypes';
 import {
   INVALID_VALUES,
   MISSING_TOURNAMENT_ID,
   MISSING_TOURNAMENT_RECORD,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../../constants/errorConditionConstants';
-import { FactoryEngine } from '../../../types/factoryTypes';
-
-const asyncCompetitionEngine = competitionEngineAsync(true);
 
 test('unlinkTournament coverage', () => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
