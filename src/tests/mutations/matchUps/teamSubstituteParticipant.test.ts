@@ -2,7 +2,7 @@ import { removeLineUpSubstitutions } from '../../../mutate/drawDefinitions/remov
 import { validateLineUp } from '../../../mutate/drawDefinitions/validateTeamLineUp';
 import { generateTeamTournament } from '../../quarantine/tests/team/generateTestTeamTournament';
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
-import tournamentEngine from '../../engines/tournamentEngine';
+import tournamentEngine from '../../engines/syncEngine';
 import { intersection } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import { expect, it } from 'vitest';

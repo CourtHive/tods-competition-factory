@@ -1,5 +1,5 @@
 import { getParticipantId } from '../functions/extractors';
-import tournamentEngine from '../../tests/engines/tournamentEngine';
+import tournamentEngine from '../../tests/engines/syncEngine';
 import { expect, it } from 'vitest';
 import fs from 'fs';
 

@@ -1,4 +1,4 @@
-import tournamentEngine from '../../tests/engines/tournamentEngine';
+import tournamentEngine from '../../tests/engines/syncEngine';
 import { extractAttributes as xa } from '../objects';
 import mocksEngine from '../../mocksEngine';
 import { numericSort } from '../sorting';

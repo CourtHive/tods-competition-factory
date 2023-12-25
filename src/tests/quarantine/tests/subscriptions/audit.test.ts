@@ -1,7 +1,7 @@
 import { setSubscriptions } from '../../../../global/state/globalState';
 import { findExtension } from '../../../../acquire/findExtension';
 import mocksEngine from '../../../../mocksEngine';
-import tournamentEngine from '../../../engines/tournamentEngine';
+import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { DELETE_DRAW_DEFINITIONS } from '../../../../constants/auditConstants';

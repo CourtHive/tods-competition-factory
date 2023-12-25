@@ -3,7 +3,7 @@ import { removeCourtAssignment } from '../../../../mutate/matchUps/schedule/remo
 import { getMatchUpIds } from '../../../../global/functions/extractors';
 import competitionEngine from '../../../engines/competitionEngine';
 import { setSubscriptions } from '../../../../global/state/globalState';
-import tournamentEngine from '../../../engines/tournamentEngine';
+import tournamentEngine from '../../../engines/syncEngine';
 import mocksEngine from '../../../../mocksEngine';
 import { expect, it } from 'vitest';
 

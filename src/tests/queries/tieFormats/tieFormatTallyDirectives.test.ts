@@ -1,4 +1,4 @@
-import tournamentEngine from '../../engines/tournamentEngine';
+import tournamentEngine from '../../engines/syncEngine';
 import tournamentRecord from './tieFormatTallyDirectives.tods.json';
 import { expect, it } from 'vitest';
 

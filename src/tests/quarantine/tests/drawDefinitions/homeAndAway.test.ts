@@ -1,7 +1,7 @@
 import { TEAM_EVENT } from '../../../../constants/eventConstants';
 import { extractAttributes } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
-import tournamentEngine from '../../../engines/tournamentEngine';
+import tournamentEngine from '../../../engines/syncEngine';
 import { expect, test } from 'vitest';
 
 test('drawPosition placement is not randomized when drawSize: 2', () => {

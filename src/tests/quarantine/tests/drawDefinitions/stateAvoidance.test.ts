@@ -1,6 +1,6 @@
 import { instanceCount } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
-import tournamentEngine from '../../../engines/tournamentEngine';
+import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { POLICY_TYPE_AVOIDANCE } from '../../../../constants/policyConstants';

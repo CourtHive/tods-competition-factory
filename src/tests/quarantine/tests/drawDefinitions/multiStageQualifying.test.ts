@@ -3,7 +3,7 @@ import { getRoundMatchUps } from '../../../../query/matchUps/getRoundMatchUps';
 import { getPositionAssignments } from '../../../../query/drawDefinition/positionsGetter';
 import { getDrawStructures } from '../../../../acquire/findStructure';
 import { unique } from '../../../../utilities';
-import tournamentEngine from '../../../engines/tournamentEngine';
+import tournamentEngine from '../../../engines/syncEngine';
 import { mocksEngine } from '../../../..';
 import { expect, it } from 'vitest';
 

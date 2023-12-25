@@ -1,4 +1,4 @@
-import tournamentEngine from '../../tests/engines/tournamentEngine';
+import tournamentEngine from '../../tests/engines/syncEngine';
 import { setSubscriptions } from '../state/globalState';
 import { expect, it } from 'vitest';
 import { utilities } from '../..';

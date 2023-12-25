@@ -3,7 +3,7 @@ import { getAvailablePlayoffProfiles } from '../../../../mutate/drawDefinitions/
 import { setStageDrawSize } from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 import { getDrawStructures } from '../../../../acquire/findStructure';
 import { constantToString } from '../../../../utilities/strings';
-import tournamentEngine from '../../../engines/tournamentEngine';
+import tournamentEngine from '../../../engines/syncEngine';
 import { newDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import mocksEngine from '../../../../mocksEngine';
 import { setSubscriptions } from '../../../..';

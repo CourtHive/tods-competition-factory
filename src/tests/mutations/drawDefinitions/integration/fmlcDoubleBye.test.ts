@@ -2,7 +2,7 @@ import { toBePlayed } from '../../../../fixtures/scoring/outcomes/toBePlayed';
 import { verifyStructure } from '../primitives/verifyStructure';
 import { verifyMatchUps } from '../primitives/verifyMatchUps';
 import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
-import tournamentEngine from '../../../engines/tournamentEngine';
+import tournamentEngine from '../../../engines/syncEngine';
 import mocksEngine from '../../../../mocksEngine';
 import { expect, it } from 'vitest';
 import {

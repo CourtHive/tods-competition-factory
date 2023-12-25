@@ -1,6 +1,6 @@
 import { allPlayoffPositionsFilled } from '../../../../../query/drawDefinition/structureActions';
 import { generateMatchUpOutcome } from '../../primitives/generateMatchUpOutcome';
-import tournamentEngine from '../../../../engines/tournamentEngine';
+import tournamentEngine from '../../../../engines/syncEngine';
 import matchUpEngine from '../../../../../matchUpEngine/sync';
 import { generateRange } from '../../../../../utilities';
 import mocksEngine from '../../../../../mocksEngine';

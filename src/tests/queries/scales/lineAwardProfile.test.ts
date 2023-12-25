@@ -1,6 +1,6 @@
 import { getAwardProfile } from '../../../query/scales/getAwardProfile';
 import { awardProfileLevelLines } from './awardProfileExamples';
-import tournamentEngine from '../../engines/tournamentEngine';
+import tournamentEngine from '../../engines/syncEngine';
 import { finishingPositionSort } from './awardTestUtils';
 import scaleEngine from '../../engines/scaleEngine';
 import { mocksEngine } from '../../..';

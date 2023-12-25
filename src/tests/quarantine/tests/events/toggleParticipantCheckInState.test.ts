@@ -2,7 +2,7 @@ import { getCheckedInParticipantIds } from '../../../../query/matchUp/getChecked
 
 import competitionEngine from '../../../engines/competitionEngine';
 import mocksEngine from '../../../../mocksEngine';
-import tournamentEngine from '../../../engines/tournamentEngine';
+import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { MATCHUP_NOT_FOUND } from '../../../../constants/errorConditionConstants';

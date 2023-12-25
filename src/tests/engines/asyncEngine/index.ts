@@ -1,3 +1,4 @@
+import competitionsGovernor from '../../../assemblies/governors/competitionsGovernor';
 import participantGovernor from '../../../assemblies/governors/participantGovernor';
 import publishingGovernor from '../../../assemblies/governors/publishingGovernor';
 import scheduleGovernor from '../../../assemblies/governors/scheduleGovernor';
@@ -9,9 +10,11 @@ import policyGovernor from '../../../assemblies/governors/policyGovernor';
 import queryGovernor from '../../../assemblies/governors/queryGovernor';
 import eventGovernor from '../../../assemblies/governors/eventGovernor';
 
-import syncEngine from '../../../assemblies/engines/sync';
+import async from '../../../assemblies/engines/async';
+const asyncEngine = async(true);
 
 const methods = {
+  ...competitionsGovernor,
   ...participantGovernor,
   ...publishingGovernor,
   ...tournamentGovernor,
@@ -23,7 +26,8 @@ const methods = {
   ...venueGovernor,
 };
 
-syncEngine.importMethods(methods);
+asyncEngine.importMethods(methods);
 
-export const tournamentEngine = syncEngine;
-export default syncEngine;
+export const competitionEngineAsync = asyncEngine;
+export const tournamentEngineAsync = asyncEngine;
+export default asyncEngine;

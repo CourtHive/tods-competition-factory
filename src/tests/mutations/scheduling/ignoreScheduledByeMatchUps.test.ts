@@ -1,4 +1,4 @@
-import tournamentEngine from '../../engines/tournamentEngine';
+import tournamentEngine from '../../engines/syncEngine';
 import { addDays, dateRange } from '../../../utilities/dateTime';
 import mocksEngine from '../../../mocksEngine';
 import competitionEngine from '../../engines/competitionEngine';

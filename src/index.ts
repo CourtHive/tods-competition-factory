@@ -141,12 +141,12 @@ export const utilities = {
 };
 
 // START- Asynchronous and Synchronous engine exports
-export { competitionEngine } from './tests/engines/competitionEngine';
-export { competitionEngineAsync } from './competitionEngine/async';
+export { competitionEngine } from './tests/engines/syncEngine';
+export { competitionEngineAsync } from './tests/engines/asyncEngine';
 export { matchUpEngine } from './matchUpEngine/sync';
 export { matchUpEngineAsync } from './matchUpEngine/async';
-export { tournamentEngine } from './tests/engines/tournamentEngine';
-export { tournamentEngineAsync } from './tournamentEngine/async';
+export { tournamentEngine } from './tests/engines/syncEngine';
+export { tournamentEngineAsync } from './tests/engines/asyncEngine';
 export { scaleEngine } from './tests/engines/scaleEngine';
 export { mocksEngine } from './mocksEngine';
 // END- Asynchronous and Synchronous engine exports

@@ -1,6 +1,6 @@
 import { validateLineUp } from '../../../mutate/drawDefinitions/validateTeamLineUp';
 import { generateTeamTournament } from '../../quarantine/tests/team/generateTestTeamTournament';
-import tournamentEngine from '../../engines/tournamentEngine';
+import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { ASSIGN_PARTICIPANT } from '../../../constants/positionActionConstants';

@@ -14,8 +14,8 @@ import {
 import asyncGlobalState from '../asyncEngine/asyncGlobalState';
 
 const ssp = setStateProvider(asyncGlobalState);
-const asyncCompetitionEngine = competitionEngineAsync();
-const asyncTournamentEngine = tournamentEngineAsync();
+// const competitionEngineAsync = competitionEngineAsync();
+// const tournamentEngineAsync = tournamentEngineAsync();
 
 // NOTE: won't run on vitest > 0.27.3
 it.skip('can setStateProvier', async () => {
@@ -28,34 +28,34 @@ it.skip('can setStateProvier', async () => {
   const modifiedMatchUps = [];
   const allDeletedMatchUpIds = [];
 
-  let result = await asyncTournamentEngine.setTournamentId();
+  let result = await tournamentEngineAsync.setTournamentId();
   expect(result.error).not.toBeUndefined();
 
-  result = await asyncTournamentEngine.setTournamentId();
+  result = await tournamentEngineAsync.setTournamentId();
   expect(result.error).not.toBeUndefined();
 
-  result = await asyncCompetitionEngine.setTournamentRecord();
+  result = await competitionEngineAsync.setTournamentRecord();
   expect(result.error).not.toBeUndefined();
 
-  result = await asyncCompetitionEngine.setTournamentRecord({});
+  result = await competitionEngineAsync.setTournamentRecord({});
   expect(result.error).not.toBeUndefined();
 
-  result = await asyncCompetitionEngine.reset();
+  result = await competitionEngineAsync.reset();
   expect(result.success).toEqual(true);
 
-  result = await asyncTournamentEngine.reset();
+  result = await tournamentEngineAsync.reset();
   expect(result.success).toEqual(true);
 
-  result = await asyncCompetitionEngine.version();
+  result = await competitionEngineAsync.version();
   expect(result).not.toBeUndefined();
 
-  result = await asyncTournamentEngine.version();
+  result = await tournamentEngineAsync.version();
   expect(result).not.toBeUndefined();
 
-  result = await asyncCompetitionEngine.removeTournamentRecord();
+  result = await competitionEngineAsync.removeTournamentRecord();
   expect(result.error).not.toBeUndefined();
 
-  result = await asyncCompetitionEngine.removeTournamentRecord('bogusId');
+  result = await competitionEngineAsync.removeTournamentRecord('bogusId');
   expect(result.error).not.toBeUndefined();
 
   const subscriptions = {
@@ -81,17 +81,17 @@ it.skip('can setStateProvier', async () => {
   };
   setSubscriptions({ subscriptions });
 
-  result = await asyncTournamentEngine.newTournamentRecord();
+  result = await tournamentEngineAsync.newTournamentRecord();
   expect(result.success).toEqual(true);
   expect(result.tournamentId).not.toBeUndefined();
 
-  let { tournamentRecord } = await asyncTournamentEngine.getState();
+  let { tournamentRecord } = await tournamentEngineAsync.getState();
   expect(tournamentRecord).not.toBeUndefined();
 
-  result = await asyncTournamentEngine.setState(tournamentRecord);
+  result = await tournamentEngineAsync.setState(tournamentRecord);
   expect(result.success).toEqual(true);
 
-  result = await asyncCompetitionEngine.setState(tournamentRecord);
+  result = await competitionEngineAsync.setState(tournamentRecord);
   expect(result.success).toEqual(true);
 
   let drawId, eventId;
@@ -109,10 +109,10 @@ it.skip('can setStateProvier', async () => {
   expect(allMatchUps.length).toEqual(drawSize - 1);
   expect(allParticipants.length).toEqual(participantsCount);
 
-  result = await asyncCompetitionEngine.setTournamentRecord(tournamentRecord);
+  result = await competitionEngineAsync.setTournamentRecord(tournamentRecord);
   expect(result.success).toEqual(true);
 
-  result = await asyncTournamentEngine.setTournamentId(
+  result = await tournamentEngineAsync.setTournamentId(
     tournamentRecord.tournamentId
   );
   expect(result.success).toEqual(true);
@@ -122,7 +122,7 @@ it.skip('can setStateProvier', async () => {
     winningSide: 1,
   });
 
-  result = await asyncTournamentEngine.setMatchUpStatus({
+  result = await tournamentEngineAsync.setMatchUpStatus({
     drawId,
     matchUpId: allMatchUps[0].matchUpId,
     outcome,
@@ -130,7 +130,7 @@ it.skip('can setStateProvier', async () => {
   expect(result.success).toEqual(true);
   expect(modifiedMatchUps.length).toEqual(2);
 
-  result = await asyncTournamentEngine.deleteDrawDefinitions({
+  result = await tournamentEngineAsync.deleteDrawDefinitions({
     eventId,
     drawIds: [drawId],
   });
@@ -140,23 +140,23 @@ it.skip('can setStateProvier', async () => {
   // expect 7 matchUps to have been deleted
   expect(allDeletedMatchUpIds.length).toEqual(drawSize - 1);
 
-  const { drawDefinition } = await asyncTournamentEngine.generateDrawDefinition(
+  const { drawDefinition } = await tournamentEngineAsync.generateDrawDefinition(
     {
       drawSize,
       eventId,
     }
   );
-  result = await asyncTournamentEngine.addDrawDefinition({
+  result = await tournamentEngineAsync.addDrawDefinition({
     eventId,
     drawDefinition,
   });
   expect(result.success).toEqual(true);
 
-  let { tournamentRecords } = await asyncCompetitionEngine.getState();
+  let { tournamentRecords } = await competitionEngineAsync.getState();
   const tournamentIds = Object.keys(tournamentRecords);
   expect(tournamentIds.length).toEqual(2);
 
-  result = await asyncCompetitionEngine.removeTournamentRecord(
+  result = await competitionEngineAsync.removeTournamentRecord(
     tournamentIds[0]
   );
   expect(result.success).toEqual(true);
@@ -164,13 +164,13 @@ it.skip('can setStateProvier', async () => {
   // removing the tournamentRecord matching globalState.tournamentId
   // caused there to be only one tournamentRecord in globalState
   // and globalState.tournamentId was updated to point to this remaining tournament
-  ({ tournamentRecord } = await asyncTournamentEngine.getState());
+  ({ tournamentRecord } = await tournamentEngineAsync.getState());
   expect(tournamentRecord.tournamentId).toEqual(tournamentIds[1]);
 
-  ({ tournamentRecords } = await asyncCompetitionEngine.getState());
+  ({ tournamentRecords } = await competitionEngineAsync.getState());
   expect(Object.keys(tournamentRecords).length).toEqual(1);
 
-  result = await asyncCompetitionEngine.removeTournamentRecord(
+  result = await competitionEngineAsync.removeTournamentRecord(
     tournamentIds[1]
   );
   expect(result.success).toEqual(true);

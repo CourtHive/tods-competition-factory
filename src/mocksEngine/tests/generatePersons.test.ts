@@ -1,6 +1,6 @@
 import { generatePersonData } from '../generators/generatePersonData';
 import { generatePersons } from '../generators/generatePersons';
-import tournamentEngine from '../../tests/engines/tournamentEngine';
+import tournamentEngine from '../../tests/engines/syncEngine';
 import { UUID, instanceCount } from '../../utilities';
 import namesData from '../data/names.json';
 import { expect, test } from 'vitest';

@@ -1,12 +1,10 @@
 import { findExtension } from '../../../acquire/findExtension';
-import competitionEngineAsync from '../../../competitionEngine/async';
-import competitionEngineSync from '../../engines/competitionEngine';
+import asyncCompetitionEngine from '../../engines/asyncEngine';
+import competitionEngineSync from '../../engines/syncEngine';
 import mocksEngine from '../../../mocksEngine';
 import { expect, test } from 'vitest';
 
 import { Tournament } from '../../../types/tournamentTypes';
-
-const asyncCompetitionEngine = competitionEngineAsync(true);
 
 test.each([competitionEngineSync, asyncCompetitionEngine])(
   'can add and remove extensions from tournamentRecords loaded into competitionEngine',
@@ -49,9 +47,11 @@ test.each([competitionEngineSync, asyncCompetitionEngine])(
   }
 );
 
-test.each([competitionEngineSync])(
+test.each([competitionEngineSync, asyncCompetitionEngine])(
   'competitionEngine can add event extensions',
   async (competitionEngine) => {
+    let result = await competitionEngine.importMethods({});
+    expect(result.success).toEqual(true);
     const drawProfiles = [{ drawSize: 16 }];
     const {
       tournamentRecord: firstRecord,
@@ -67,7 +67,7 @@ test.each([competitionEngineSync])(
     const extensionValue = 'extensionValue';
     const extension = { name: extensionName, value: extensionValue };
 
-    let result = await competitionEngine.addEventExtension({
+    result = await competitionEngine.addEventExtension({
       eventId: firstEventId,
       extension,
     });

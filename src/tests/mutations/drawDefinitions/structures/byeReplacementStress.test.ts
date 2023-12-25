@@ -1,4 +1,4 @@
-import tournamentEngine from '../../../engines/tournamentEngine';
+import tournamentEngine from '../../../engines/syncEngine';
 import { replacementTest } from './byeReplacementStressTest';
 import { generateRange } from '../../../../utilities';
 import { expect, it, test } from 'vitest';

@@ -1,6 +1,6 @@
 import { setSubscriptions } from '../../../../global/state/globalState';
 import mocksEngine from '../../../../mocksEngine';
-import tournamentEngine from '../../../engines/tournamentEngine';
+import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 it('can re-schedule matchUp date backwards and forwards in time', () => {

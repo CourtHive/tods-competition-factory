@@ -1,6 +1,6 @@
 import { validateTieFormat } from '../../../../validators/validateTieFormat';
 import tieFormatConstants from '../../../../constants/tieFormatConstants';
-import tournamentEngine from '../../../engines/tournamentEngine';
+import tournamentEngine from '../../../engines/syncEngine';
 import mocksEngine from '../../../../mocksEngine';
 import { expect, it, test } from 'vitest';
 

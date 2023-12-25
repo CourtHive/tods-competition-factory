@@ -4,7 +4,7 @@ import { getRoundMatchUps } from '../../../../query/matchUps/getRoundMatchUps';
 import { getMatchUpIds } from '../../../../global/functions/extractors';
 import competitionEngine from '../../../engines/competitionEngine';
 import mocksEngine from '../../../../mocksEngine';
-import tournamentEngine from '../../../engines/tournamentEngine';
+import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it, test } from 'vitest';
 
 import POLICY_SCHEDULING_DEFAULT from '../../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';

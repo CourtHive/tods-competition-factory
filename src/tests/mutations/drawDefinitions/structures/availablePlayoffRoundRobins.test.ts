@@ -1,7 +1,7 @@
 import { isCompletedStructure } from '../../../../query/drawDefinition/structureActions';
 import { generateMatchUpOutcome } from '../primitives/generateMatchUpOutcome';
 import { getPositionAssignments } from '../../../../query/drawDefinition/positionsGetter';
-import tournamentEngine from '../../../engines/tournamentEngine';
+import tournamentEngine from '../../../engines/syncEngine';
 import { mocksEngine } from '../../../..';
 import { expect, it } from 'vitest';
 import {

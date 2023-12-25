@@ -1,4 +1,4 @@
-import tournamentEngine from '../../tests/engines/tournamentEngine';
+import tournamentEngine from '../../tests/engines/syncEngine';
 import { instanceCount } from '../../utilities';
 import { expect, it } from 'vitest';
 import mocksEngine from '..';

@@ -1,4 +1,4 @@
-import tournamentEngine from '../../engines/tournamentEngine';
+import tournamentEngine from '../../engines/syncEngine';
 import { matchUpSort } from '../../../functions/sorters/matchUpSort';
 import { expect } from 'vitest';
 

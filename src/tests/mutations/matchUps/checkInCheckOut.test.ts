@@ -1,7 +1,7 @@
 import { getMatchUpParticipantIds } from '../../../query/matchUp/getMatchUpParticipantIds';
 import { getCheckedInParticipantIds } from '../../../query/matchUp/getCheckedInParticipantIds';
 
-import tournamentEngine from '../../engines/tournamentEngine';
+import tournamentEngine from '../../engines/syncEngine';
 import mocksEngine from '../../../mocksEngine';
 import { expect, it } from 'vitest';
 

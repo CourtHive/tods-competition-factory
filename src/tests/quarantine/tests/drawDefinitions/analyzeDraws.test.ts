@@ -2,7 +2,7 @@ import { getDrawStructures } from '../../../../acquire/findStructure';
 import { getRoundMatchUps } from '../../../../query/matchUps/getRoundMatchUps';
 import { mocksEngine, setSubscriptions } from '../../../..';
 import { generateRange } from '../../../../utilities';
-import tournamentEngine from '../../../engines/tournamentEngine';
+import tournamentEngine from '../../../engines/syncEngine';
 import { expect, test } from 'vitest';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../../../constants/entryStatusConstants';

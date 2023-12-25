@@ -2,7 +2,7 @@ import { getStructureSeedAssignments } from '../../../../../query/structure/getS
 import { getAppliedPolicies } from '../../../../../query/extensions/getAppliedPolicies';
 import { eventConstants } from '../../../../../constants/eventConstants';
 import mocksEngine from '../../../../../mocksEngine';
-import tournamentEngine from '../../../../engines/tournamentEngine';
+import tournamentEngine from '../../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { MISSING_ASSIGNMENTS } from '../../../../../constants/errorConditionConstants';

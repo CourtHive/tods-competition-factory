@@ -1,4 +1,4 @@
-import tournamentEngine from '../../../engines/tournamentEngine';
+import tournamentEngine from '../../../engines/syncEngine';
 import { extractAttributes as xa } from '../../../../utilities';
 import matchUpEngine from '../../../../matchUpEngine/sync';
 import tournamentRecord from './dominantDuo.tods.json';

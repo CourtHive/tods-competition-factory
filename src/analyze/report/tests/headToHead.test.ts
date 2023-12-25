@@ -1,6 +1,6 @@
 import { completeDrawMatchUps } from '../../../mocksEngine/generators/completeDrawMatchUps';
 import { timeKeeper } from '../../../global/state/globalState';
-import tournamentEngine from '../../../tests/engines/tournamentEngine';
+import tournamentEngine from '../../../tests/engines/syncEngine';
 import { participantHeadToHead } from '../headToHead';
 import { generateRange } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';

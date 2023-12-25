@@ -1,6 +1,6 @@
 import { modifyVenue } from '../../../../mutate/venues/modifyVenue';
 import { deleteVenue } from '../../../../mutate/venues/deleteVenue';
-import tournamentEngine from '../../../engines/tournamentEngine';
+import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it, test } from 'vitest';
 
 import {

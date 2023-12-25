@@ -1,5 +1,5 @@
 import { getRoundMatchUps } from '../../../../../query/matchUps/getRoundMatchUps';
-import tournamentEngine from '../../../../engines/tournamentEngine';
+import tournamentEngine from '../../../../engines/syncEngine';
 import { generateRange } from '../../../../../utilities';
 import mocksEngine from '../../../../../mocksEngine';
 import { expect, it, test } from 'vitest';

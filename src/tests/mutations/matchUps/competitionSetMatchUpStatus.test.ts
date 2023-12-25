@@ -1,5 +1,5 @@
-import competitionEngineAsync from '../../../competitionEngine/async';
-import competitionEngineSync from '../../engines/competitionEngine';
+import asyncCompetitionEngine from '../../engines/asyncEngine';
+import competitionEngineSync from '../../engines/syncEngine';
 import mocksEngine from '../../../mocksEngine';
 import { expect, test } from 'vitest';
 
@@ -7,8 +7,6 @@ import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
-
-const asyncCompetitionEngine = competitionEngineAsync(true);
 
 test.each([competitionEngineSync, asyncCompetitionEngine])(
   'can set matchUpStatus via competitionEngine for multiple tournament records',

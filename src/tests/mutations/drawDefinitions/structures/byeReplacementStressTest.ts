@@ -3,7 +3,7 @@ import { getPositionAssignments } from '../../../../query/drawDefinition/positio
 import { getDrawPosition } from '../../../../global/functions/extractors';
 import { extractAttributes, shuffleArray } from '../../../../utilities';
 import { hasParticipantId } from '../../../../global/functions/filters';
-import tournamentEngine from '../../../engines/tournamentEngine';
+import tournamentEngine from '../../../engines/syncEngine';
 import { findEvent } from '../../../../acquire/findEvent';
 import { randomInt } from '../../../../utilities/math';
 import mocksEngine from '../../../../mocksEngine';

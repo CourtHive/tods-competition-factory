@@ -1,7 +1,6 @@
-import competitionEngineAsync from '../../../competitionEngine/async';
+import asyncEngine from '../../engines/asyncEngine';
 import competitionEngineSync from '../../engines/competitionEngine';
-import tournamentEngineSync from '../../engines/tournamentEngine';
-import tournamentEngineAsync from '../../../tournamentEngine/async';
+import tournamentEngineSync from '../../engines/syncEngine';
 import mocksEngine from '../../../mocksEngine';
 import { it, expect } from 'vitest';
 
@@ -14,10 +13,7 @@ import {
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
 
-const asyncTournamentEngine = tournamentEngineAsync(true);
-const asyncCompetitionEngine = competitionEngineAsync(true);
-
-it.each([tournamentEngineSync, asyncTournamentEngine])(
+it.each([tournamentEngineSync, asyncEngine])(
   'supports rollbackOnError',
   async (tournamentEngine) => {
     const { tournamentRecord } = mocksEngine.generateTournamentRecord();
@@ -36,7 +32,7 @@ it.each([tournamentEngineSync, asyncTournamentEngine])(
   }
 );
 
-it.each([competitionEngineSync, asyncCompetitionEngine])(
+it.each([competitionEngineSync, asyncEngine])(
   'supports rollbackOnError',
   async (competitionEngine) => {
     const { tournamentRecord } = mocksEngine.generateTournamentRecord();
@@ -59,7 +55,7 @@ it.each([competitionEngineSync, asyncCompetitionEngine])(
   }
 );
 
-it.each([tournamentEngineSync, asyncTournamentEngine])(
+it.each([tournamentEngineSync, asyncEngine])(
   'tournamentEngine can execute methods in a queue',
   async (tournamentEngine) => {
     let result = await tournamentEngine.newTournamentRecord();
@@ -79,7 +75,7 @@ it.each([tournamentEngineSync, asyncTournamentEngine])(
   }
 );
 
-it.each([competitionEngineSync, asyncCompetitionEngine])(
+it.each([competitionEngineSync, asyncEngine])(
   'competitionEngine can execute methods in a queue',
   async (competitionEngine) => {
     const { tournamentRecord } = mocksEngine.generateTournamentRecord();
@@ -101,7 +97,7 @@ it.each([competitionEngineSync, asyncCompetitionEngine])(
   }
 );
 
-it.each([tournamentEngineSync, asyncTournamentEngine])(
+it.each([tournamentEngineSync, asyncEngine])(
   'tournamentEngine processes executionQueue params',
   async (tournamentEngine) => {
     const drawProfiles = [{ drawSize: 32, eventType: DOUBLES }];
@@ -124,7 +120,7 @@ it.each([tournamentEngineSync, asyncTournamentEngine])(
   }
 );
 
-it.each([competitionEngineSync, asyncCompetitionEngine])(
+it.each([competitionEngineSync, asyncEngine])(
   'competitionEngine processes executionQueue params',
   async (competitionEngine) => {
     const drawProfiles = [{ drawSize: 32, eventType: DOUBLES }];

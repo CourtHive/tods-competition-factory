@@ -1,6 +1,6 @@
 import { getParticipantId } from '../../../../global/functions/extractors';
 import mocksEngine from '../../../../mocksEngine';
-import tournamentEngine from '../../../engines/tournamentEngine';
+import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { NO_STAGE_SPACE_AVAILABLE_FOR_ENTRY_STATUS } from '../../../../constants/errorConditionConstants';
