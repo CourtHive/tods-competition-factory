@@ -359,8 +359,6 @@ it('can assign seedNumbers and drawPositions to seeded participants', () => {
   });
   expect(result.success).toEqual(true);
 
-  const snapShotBefore = makeDeepCopy(drawDefinition, false, true);
-
   // modify the seedValue for an existing seed assignment
   // @ts-expect-error missing structureId
   result = modifySeedAssignment({

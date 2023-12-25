@@ -4,7 +4,6 @@ import { expect, it, test } from 'vitest';
 
 import { INDIVIDUAL } from '../../../../../constants/participantConstants';
 import {
-  EVENT_NOT_FOUND,
   MISSING_DRAW_ID,
   MISSING_EVENT,
 } from '../../../../../constants/errorConditionConstants';
