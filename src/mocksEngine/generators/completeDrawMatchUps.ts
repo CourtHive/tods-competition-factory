@@ -1,6 +1,6 @@
 import { assignTieMatchUpParticipantId } from '../../mutate/matchUps/lineUps/assignTieMatchUpParticipant';
 import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
-import { setMatchUpStatus } from '../../mutate/events/setMatchUpStatus';
+import { setMatchUpStatus } from '../../mutate/matchUps/matchUpStatus/setMatchUpStatus';
 import { getParticipants } from '../../query/participants/getParticipants';
 import { getAllDrawMatchUps } from '../../query/matchUps/drawMatchUps';
 import { generateLineUps } from '../../mutate/participants/generateLineUps';

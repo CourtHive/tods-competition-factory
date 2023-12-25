@@ -4,7 +4,7 @@ import { getDrawParticipantRepresentativeIds } from '../../../mutate/drawDefinit
 import { assignMatchUpSideParticipant } from '../../../mutate/matchUps/drawPositions/assignMatchUpSideParticipant';
 import { removeMatchUpSideParticipant } from '../../../mutate/matchUps/sides/removeMatchUpSideParticipant';
 import { replaceTieMatchUpParticipantId } from '../../../mutate/matchUps/lineUps/replaceTieMatchUpParticipant';
-import { setMatchUpStatus } from '../../../mutate/events/setMatchUpStatus';
+import { setMatchUpStatus } from '../../../mutate/matchUps/matchUpStatus/setMatchUpStatus';
 import { assignTieMatchUpParticipantId } from '../../../mutate/matchUps/lineUps/assignTieMatchUpParticipant';
 import { removeTieMatchUpParticipantId } from '../../../mutate/matchUps/lineUps/removeTieMatchUpParticipant';
 import { deleteDrawDefinitions } from '../../../mutate/events/deleteDrawDefinitions';
@@ -43,7 +43,6 @@ import { modifyPairAssignment } from '../../../mutate/drawDefinitions/modifyPair
 import { removeDrawEntries } from '../../../mutate/drawDefinitions/removeDrawEntries';
 import { modifyEntriesStatus } from '../../../mutate/entries/modifyEntriesStatus';
 import { modifySeedAssignment } from '../../../mutate/events/modifySeedAssignment';
-import { setMatchUpFormat } from '../../../mutate/matchUps/setMatchUpFormat';
 
 import {
   setEntryPosition,
@@ -142,6 +141,7 @@ import { resetScorecard } from '../../../mutate/matchUps/resetScorecard';
 import { automatedPositioning } from '../../../mutate/drawDefinitions/automatedPositioning';
 import { updateTieMatchUpScore } from '../../../mutate/matchUps/score/tieMatchUpScore';
 import { bulkMatchUpStatusUpdate } from '../../../mutate/events/bulkMatchUpStatusUpdate';
+import { setMatchUpFormat } from '../../../mutate/matchUps/matchUpFormat/setMatchUpFormat';
 
 const eventGovernor = {
   generateQualifyingStructure,

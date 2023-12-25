@@ -1,4 +1,4 @@
-import { setMatchUpStatus } from '../../../../mutate/matchUps/matchUpStatus/setMatchUpStatus';
+import { setMatchUpState } from '../../../../mutate/matchUps/matchUpStatus/setMatchUpState';
 import { completeMatchUp, verifyMatchUps } from '../primitives/verifyMatchUps';
 import { getDrawMatchUps } from '../../../../query/matchUps/drawMatchUps';
 import { publicFindDrawMatchUp } from '../../../../acquire/findDrawMatchUp';
@@ -288,7 +288,7 @@ it('can direct winners and losers', () => {
 
   const [matchUp] = completedMatchUps ?? [];
   const { matchUpId } = matchUp;
-  result = setMatchUpStatus({
+  result = setMatchUpState({
     // @ts-expect-error invalid matchUpStatus
     matchUpStatus: 'BOGUS',
     drawDefinition,
@@ -297,7 +297,7 @@ it('can direct winners and losers', () => {
   let hasErrors = Boolean(result?.error);
   expect(hasErrors).toEqual(true);
 
-  result = setMatchUpStatus({
+  result = setMatchUpState({
     matchUpStatus: BYE,
     drawDefinition,
     matchUpId,
@@ -305,7 +305,7 @@ it('can direct winners and losers', () => {
   hasErrors = Boolean(result?.error);
   expect(hasErrors).toEqual(true);
 
-  result = setMatchUpStatus({
+  result = setMatchUpState({
     matchUpStatus: RETIRED,
     drawDefinition,
     matchUpId,

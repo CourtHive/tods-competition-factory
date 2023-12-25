@@ -2,7 +2,7 @@
 
 import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
 import { updateTieMatchUpScore } from '../matchUps/score/tieMatchUpScore';
-import { setMatchUpStatus } from '../matchUps/matchUpStatus/setMatchUpStatus';
+import { setMatchUpState } from '../matchUps/matchUpStatus/setMatchUpState';
 import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
 import { findDrawMatchUp } from '../../acquire/findDrawMatchUp';
 import { definedAttributes } from '../../utilities/definedAttributes';
@@ -208,7 +208,7 @@ export function removeCollectionDefinition({
       (tieMatchUp) => tieMatchUp.collectionId === collectionId
     );
     for (const collectionMatchUp of collectionMatchUps ?? []) {
-      let result: any = setMatchUpStatus({
+      let result: any = setMatchUpState({
         matchUpId: collectionMatchUp.matchUpId,
         tieMatchUpId: matchUp?.matchUpId,
         winningSide: undefined,

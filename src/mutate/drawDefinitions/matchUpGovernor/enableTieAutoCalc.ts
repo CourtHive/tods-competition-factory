@@ -1,5 +1,5 @@
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
-import { setMatchUpStatus } from '../../matchUps/matchUpStatus/setMatchUpStatus';
+import { setMatchUpState } from '../../matchUps/matchUpStatus/setMatchUpState';
 
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
 import {
@@ -23,7 +23,7 @@ export function enableTieAutoCalc({
 
   if (matchUp?.matchUpType !== TEAM_MATCHUP) return { error: INVALID_MATCHUP };
 
-  return setMatchUpStatus({
+  return setMatchUpState({
     enableAutoCalc: true,
     tournamentRecord,
     drawDefinition,

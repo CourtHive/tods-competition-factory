@@ -31,7 +31,7 @@ import { resetTieFormat } from '../../../mutate/tieFormat/resetTieFormat';
 import { resetScorecard } from '../../../mutate/matchUps/resetScorecard';
 import { getLinkedTournamentIds } from '../../../query/tournaments/getLinkedTournamentIds';
 import { bulkMatchUpStatusUpdate } from '../../../mutate/events/bulkMatchUpStatusUpdate';
-import { setMatchUpStatus } from '../../../mutate/events/setMatchUpStatus';
+import { setMatchUpStatus } from '../../../mutate/matchUps/matchUpStatus/setMatchUpStatus';
 
 const competitionGovernor = {
   modifyCollectionDefinition,

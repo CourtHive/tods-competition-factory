@@ -1,4 +1,4 @@
-import { setMatchUpStatus } from '../../../../mutate/matchUps/matchUpStatus/setMatchUpStatus';
+import { setMatchUpState } from '../../../../mutate/matchUps/matchUpStatus/setMatchUpState';
 import { completeMatchUp, verifyMatchUps } from '../primitives/verifyMatchUps';
 import { getAllDrawMatchUps } from '../../../../query/matchUps/drawMatchUps';
 import { toBePlayed } from '../../../../fixtures/scoring/outcomes/toBePlayed';
@@ -85,7 +85,7 @@ it('can direct winners and losers', () => {
 
   result =
     matchUpId &&
-    setMatchUpStatus({
+    setMatchUpState({
       matchUpStatus: TO_BE_PLAYED,
       winningSide: undefined,
       score: { sets: [] },
@@ -192,7 +192,7 @@ it('can direct winners and losers', () => {
 
   result =
     matchUpId &&
-    setMatchUpStatus({
+    setMatchUpState({
       drawDefinition,
       matchUpId,
       ...toBePlayed,
