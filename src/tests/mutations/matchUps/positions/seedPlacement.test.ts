@@ -1,23 +1,23 @@
 import { initializeStructureSeedAssignments } from '../../../../mutate/drawDefinitions/positionGovernor/initializeSeedAssignments';
-import { assignDrawPosition } from '../../../../mutate/matchUps/drawPositions/positionAssignment';
 import { modifySeedAssignment } from '../../../../mutate/drawDefinitions/entryGovernor/modifySeedAssignment';
-import { clearDrawPosition } from '../../../../mutate/matchUps/drawPositions/positionClear';
 import { getStructureSeedAssignments } from '../../../../query/structure/getStructureSeedAssignments';
+import { assignDrawPosition } from '../../../../mutate/matchUps/drawPositions/positionAssignment';
+import { clearDrawPosition } from '../../../../mutate/matchUps/drawPositions/positionClear';
+import { assignSeed } from '../../../../mutate/drawDefinitions/entryGovernor/seedAssignment';
+import { attachPolicies } from '../../../../mutate/extensions/policies/attachPolicies';
 import { getAppliedPolicies } from '../../../../query/extensions/getAppliedPolicies';
+import { getStageEntries } from '../../../../query/drawDefinition/stageGetter';
+import { numericSort } from '../../../../utilities';
+import { mocksEngine } from '../../../..';
+import { expect, it } from 'vitest';
 import {
   getNextSeedBlock,
   getValidSeedBlocks,
 } from '../../../../query/drawDefinition/seedGetter';
-import { attachPolicies } from '../../../../mutate/extensions/policies/attachPolicies';
 import {
   findStructure,
   getDrawStructures,
 } from '../../../../acquire/findStructure';
-import { assignSeed } from '../../../../mutate/drawDefinitions/entryGovernor/seedAssignment';
-import { makeDeepCopy, numericSort } from '../../../../utilities';
-import { getStageEntries } from '../../../../query/drawDefinition/stageGetter';
-import { mocksEngine } from '../../../..';
-import { expect, it } from 'vitest';
 
 import SEEDING_NATIONAL from '../../../../fixtures/policies/POLICY_SEEDING_NATIONAL';
 import SEEDING_USTA from '../../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
@@ -358,8 +358,6 @@ it('can assign seedNumbers and drawPositions to seeded participants', () => {
     structureId,
   });
   expect(result.success).toEqual(true);
-
-  const snapShotBefore = makeDeepCopy(drawDefinition, false, true);
 
   // modify the seedValue for an existing seed assignment
   // @ts-expect-error missing structureId

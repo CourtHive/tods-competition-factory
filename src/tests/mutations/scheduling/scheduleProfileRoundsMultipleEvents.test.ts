@@ -11,7 +11,6 @@ import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../fixtures/policies/POLICY
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { DOUBLES, SINGLES } from '../../../constants/eventConstants';
 import {
-  MISSING_DRAW_DEFINITION,
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
