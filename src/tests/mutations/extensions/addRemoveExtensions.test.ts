@@ -1,5 +1,5 @@
 import { generateTournamentRecord } from '../../../mocksEngine/generators/generateTournamentRecord';
-import tournamentEngine from '../../engines/tournamentEngine';
+import tournamentEngine from '../../engines/syncEngine';
 import competitionEngine from '../../engines/competitionEngine';
 import { removeExtension } from '../../../mutate/extensions/removeExtension';
 import { addExtension } from '../../../mutate/extensions/addExtension';

@@ -1,6 +1,6 @@
 import { getSchedulingProfileIssues } from '../../../query/matchUps/scheduling/getSchedulingProfileIssues';
 import competitionEngine from '../../engines/competitionEngine';
-import tournamentEngine from '../../engines/tournamentEngine';
+import tournamentEngine from '../../engines/syncEngine';
 import mocksEngine from '../../../mocksEngine';
 import { expect, test } from 'vitest';
 

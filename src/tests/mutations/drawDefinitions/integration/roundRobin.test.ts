@@ -1,7 +1,7 @@
 import { getAllStructureMatchUps } from '../../../../query/matchUps/getAllStructureMatchUps';
 import { getRoundMatchUps } from '../../../../query/matchUps/getRoundMatchUps';
 import { getPositionAssignments } from '../../../../query/drawDefinition/positionsGetter';
-import tournamentEngine from '../../../engines/tournamentEngine';
+import tournamentEngine from '../../../engines/syncEngine';
 import { intersection } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
 import { it, expect } from 'vitest';

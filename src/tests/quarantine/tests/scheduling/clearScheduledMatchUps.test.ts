@@ -1,5 +1,5 @@
 import { getStructureRoundProfile } from '../../../../query/structure/getStructureRoundProfile';
-import tournamentEngine from '../../../engines/tournamentEngine';
+import tournamentEngine from '../../../engines/syncEngine';
 import mocksEngine from '../../../../mocksEngine';
 import { expect, it } from 'vitest';
 

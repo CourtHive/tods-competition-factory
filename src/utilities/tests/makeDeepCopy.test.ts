@@ -1,4 +1,4 @@
-import tournamentEngine from '../../tests/engines/tournamentEngine';
+import tournamentEngine from '../../tests/engines/syncEngine';
 import { makeDeepCopy } from '../makeDeepCopy';
 import mocksEngine from '../../mocksEngine';
 import { expect, it, test } from 'vitest';

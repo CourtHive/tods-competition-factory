@@ -1,5 +1,5 @@
 import { getStructureGroups } from '../../../../query/structure/getStructureGroups';
-import tournamentEngine from '../../../engines/tournamentEngine';
+import tournamentEngine from '../../../engines/syncEngine';
 import { extractAttributes } from '../../../../utilities';
 import * as factory from '../../../../index';
 import { expect, it } from 'vitest';

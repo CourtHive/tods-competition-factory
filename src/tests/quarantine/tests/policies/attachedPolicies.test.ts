@@ -1,5 +1,5 @@
 import mocksEngine from '../../../../mocksEngine';
-import tournamentEngine from '../../../engines/tournamentEngine';
+import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it, test } from 'vitest';
 
 import POLICY_SEEDING_BYES from '../../../../fixtures/policies/POLICY_SEEDING_BYES';

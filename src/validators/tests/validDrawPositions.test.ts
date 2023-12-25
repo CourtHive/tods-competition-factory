@@ -1,4 +1,4 @@
-import tournamentEngine from '../../tests/engines/tournamentEngine';
+import tournamentEngine from '../../tests/engines/syncEngine';
 import { getAllDrawMatchUps } from '../../query/matchUps/drawMatchUps';
 import { validDrawPositions } from '../validDrawPositions';
 import askEngine from '../../tests/engines/askEngine';

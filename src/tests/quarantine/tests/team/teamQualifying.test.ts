@@ -1,7 +1,7 @@
 import { getParticipantId } from '../../../../global/functions/extractors';
 import { instanceCount, UUID } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
-import tournamentEngine from '../../../engines/tournamentEngine';
+import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';

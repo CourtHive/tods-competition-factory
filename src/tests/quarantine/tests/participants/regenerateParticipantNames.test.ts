@@ -7,7 +7,7 @@ import {
   TEAM_EVENT,
 } from '../../../../constants/eventConstants';
 import names from '../../../../mocksEngine/data/names.json';
-import tournamentEngine from '../../../engines/tournamentEngine';
+import tournamentEngine from '../../../engines/syncEngine';
 import {
   INDIVIDUAL,
   PAIR,

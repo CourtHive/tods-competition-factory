@@ -1,6 +1,6 @@
 import { generateMatchUpOutcome } from '../../primitives/generateMatchUpOutcome';
 import { chunkArray, intersection } from '../../../../../utilities/arrays';
-import tournamentEngine from '../../../../engines/tournamentEngine';
+import tournamentEngine from '../../../../engines/syncEngine';
 import { findStructure } from '../../../../../acquire/findStructure';
 import matchUpEngine from '../../../../../matchUpEngine/sync';
 import { setsValues } from './roundRobinSetsValues';

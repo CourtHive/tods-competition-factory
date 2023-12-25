@@ -1,5 +1,5 @@
 import { validDateAvailability } from '../../../../validators/validateDateAvailability';
-import tournamentEngine from '../../../engines/tournamentEngine';
+import tournamentEngine from '../../../engines/syncEngine';
 import { Availability } from '../../../../types/tournamentTypes';
 import competitionEngine from '../../../engines/competitionEngine';
 import mocksEngine from '../../../../mocksEngine';

@@ -1,5 +1,5 @@
 import { getFlightProfile } from '../../query/event/getFlightProfile';
-import tournamentEngine from '../../tests/engines/tournamentEngine';
+import tournamentEngine from '../../tests/engines/syncEngine';
 import { mocksEngine, competitionEngine } from '../..';
 import { expect, test } from 'vitest';
 

@@ -1,5 +1,5 @@
 import { isUngrouped } from '../../../../../global/functions/isUngrouped';
-import tournamentEngine from '../../../../engines/tournamentEngine';
+import tournamentEngine from '../../../../engines/syncEngine';
 import { chunkArray, unique } from '../../../../../utilities';
 import mocksEngine from '../../../../../mocksEngine';
 import { expect, it } from 'vitest';

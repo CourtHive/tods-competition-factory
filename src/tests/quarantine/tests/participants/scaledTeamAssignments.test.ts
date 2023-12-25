@@ -2,7 +2,7 @@ import { participantScaleItem } from '../../../../query/participant/participantS
 import { getParticipantId } from '../../../../global/functions/extractors';
 import { generateRange } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
-import tournamentEngine from '../../../engines/tournamentEngine';
+import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { TEAM_PARTICIPANT } from '../../../../constants/participantConstants';

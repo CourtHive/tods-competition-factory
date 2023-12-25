@@ -1,6 +1,6 @@
 import mocksEngine from '../../../../../mocksEngine';
 import { unique } from '../../../../../utilities';
-import tournamentEngine from '../../../../engines/tournamentEngine';
+import tournamentEngine from '../../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { INVALID_PARTICIPANT_IDS } from '../../../../../constants/errorConditionConstants';

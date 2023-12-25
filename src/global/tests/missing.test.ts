@@ -1,7 +1,7 @@
 import competitionEngineAsync from '../../competitionEngine/async';
 import competitionEngineSync from '../../tests/engines/competitionEngine';
 import tournamentEngineAsync from '../../tournamentEngine/async';
-import tournamentEngineSync from '../../tests/engines/tournamentEngine';
+import tournamentEngineSync from '../../tests/engines/syncEngine';
 import { expect, it } from 'vitest';
 
 const asyncCompetitionEngine = competitionEngineAsync(true);

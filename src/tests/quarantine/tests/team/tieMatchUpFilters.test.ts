@@ -1,5 +1,5 @@
 import { generateTeamTournament } from './generateTestTeamTournament';
-import tournamentEngine from '../../../engines/tournamentEngine';
+import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';

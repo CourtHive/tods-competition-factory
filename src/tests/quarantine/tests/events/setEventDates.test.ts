@@ -3,7 +3,7 @@ import mocksEngine from '../../../../mocksEngine';
 import { expect, test } from 'vitest';
 
 import tournamentEngineAsync from '../../../../tournamentEngine/async';
-import tournamentEngineSync from '../../../engines/tournamentEngine';
+import tournamentEngineSync from '../../../engines/syncEngine';
 import {
   INVALID_DATE,
   MISSING_EVENT,
