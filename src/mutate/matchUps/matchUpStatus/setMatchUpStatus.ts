@@ -19,6 +19,7 @@ import {
 
 /**
  * Sets either matchUpStatus or score and winningSide; values to be set are passed in outcome object.
+ * Public API for setting matchUpStatus or score and winningSide.
  */
 
 type SetMatchUpStatusArgs = {

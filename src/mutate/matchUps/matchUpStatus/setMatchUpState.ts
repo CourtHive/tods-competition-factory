@@ -1,26 +1,26 @@
-import { ensureSideLineUps } from '../lineUps/ensureSideLineUps';
 import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
-import { removeExtension } from '../../extensions/removeExtension';
 import { generateTieMatchUpScore } from '../../../assemblies/generators/tieMatchUpScore/generateTieMatchUpScore';
-import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
-import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import { addExtension } from '../../extensions/addExtension';
 import { getProjectedDualWinningSide } from '../../drawDefinitions/matchUpGovernor/getProjectedDualWinningSide';
-import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
-import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
-import { getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
-import { decorateResult } from '../../../global/functions/decorateResult';
-import { validateScore } from '../../../validators/validateScore';
-import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
-import { positionTargets } from '../drawPositions/positionTargets';
 import { noDownstreamDependencies } from '../../drawDefinitions/matchUpGovernor/noDownstreamDependencies';
-import { pushGlobalLog } from '../../../global/functions/globalLog';
-import { findStructure } from '../../../acquire/findStructure';
-import { updateTieMatchUpScore } from '../score/tieMatchUpScore';
 import { isActiveDownstream } from '../../drawDefinitions/matchUpGovernor/isActiveDownstream';
-import { modifyMatchUpScore } from '../score/modifyMatchUpScore';
+import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
+import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
+import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
+import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
+import { decorateResult } from '../../../global/functions/decorateResult';
+import { getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
 import { addMatchUpScheduleItems } from '../schedule/scheduleItems';
+import { removeExtension } from '../../extensions/removeExtension';
+import { positionTargets } from '../drawPositions/positionTargets';
+import { pushGlobalLog } from '../../../global/functions/globalLog';
 import { swapWinnerLoser } from '../drawPositions/swapWinnerLoser';
+import { validateScore } from '../../../validators/validateScore';
+import { updateTieMatchUpScore } from '../score/tieMatchUpScore';
+import { modifyMatchUpScore } from '../score/modifyMatchUpScore';
+import { ensureSideLineUps } from '../lineUps/ensureSideLineUps';
+import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
+import { findStructure } from '../../../acquire/findStructure';
+import { addExtension } from '../../extensions/addExtension';
 import {
   isDirectingMatchUpStatus,
   isNonDirectingMatchUpStatus,
@@ -61,7 +61,7 @@ import {
   Tournament,
 } from '../../../types/tournamentTypes';
 
-// WOULDBENICE: return object containing all modified { matchUpIds, structureIds, drawIds }
+// NOTE: Internal method for setting matchUpStatus or score and winningSide, not to be confused with setMatchUpStatus
 
 type SetMatchUpStateArgs = {
   tournamentRecords?: { [key: string]: Tournament };
