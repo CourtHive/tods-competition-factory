@@ -7,7 +7,7 @@ import { positionTargets } from './drawPositions/positionTargets';
 import { findStructure } from '../../acquire/findStructure';
 import { isActiveDownstream } from '../drawDefinitions/matchUpGovernor/isActiveDownstream';
 import { updateTieMatchUpScore } from './score/tieMatchUpScore';
-import { setMatchUpStatus } from './matchUpStatus/setMatchUpStatus';
+import { setMatchUpStatus } from './matchUpStatus/setMatchUpState';
 import {
   ResultType,
   decorateResult,

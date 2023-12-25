@@ -1,4 +1,4 @@
-import { setMatchUpStatus } from './setMatchUpStatus';
+import { setMatchUpStatus } from '../matchUps/matchUpStatus/setMatchUpStatus';
 import { findEvent } from '../../acquire/findEvent';
 
 import {

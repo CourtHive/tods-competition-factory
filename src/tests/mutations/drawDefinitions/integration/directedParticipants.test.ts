@@ -38,7 +38,7 @@ import {
 } from '../../../../constants/entryStatusConstants';
 import { assignDrawPositionBye } from '../../../../mutate/matchUps/drawPositions/assignDrawPositionBye';
 import { assignDrawPosition } from '../../../../mutate/matchUps/drawPositions/positionAssignment';
-import { setMatchUpStatus } from '../../../../mutate/matchUps/matchUpStatus/setMatchUpStatus';
+import { setMatchUpStatus } from '../../../../mutate/matchUps/matchUpStatus/setMatchUpState';
 
 it('advances paired drawPositions when BYE is assigned first', () => {
   let result;

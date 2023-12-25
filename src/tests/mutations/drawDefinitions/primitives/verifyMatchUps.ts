@@ -1,4 +1,4 @@
-import { setMatchUpStatus } from '../../../../mutate/matchUps/matchUpStatus/setMatchUpStatus';
+import { setMatchUpStatus } from '../../../../mutate/matchUps/matchUpStatus/setMatchUpState';
 import { getAllStructureMatchUps } from '../../../../query/matchUps/getAllStructureMatchUps';
 import { getRoundMatchUps } from '../../../../query/matchUps/getRoundMatchUps';
 import { getStructureMatchUps } from '../../../../query/structure/getStructureMatchUps';

@@ -1,5 +1,5 @@
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
-import { setMatchUpStatus } from '../../matchUps/matchUpStatus/setMatchUpStatus';
+import { setMatchUpStatus } from '../../matchUps/matchUpStatus/setMatchUpState';
 
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
 import {

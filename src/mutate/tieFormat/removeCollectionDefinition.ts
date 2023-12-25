@@ -2,7 +2,7 @@
 
 import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
 import { updateTieMatchUpScore } from '../matchUps/score/tieMatchUpScore';
-import { setMatchUpStatus } from '../matchUps/matchUpStatus/setMatchUpStatus';
+import { setMatchUpStatus } from '../matchUps/matchUpStatus/setMatchUpState';
 import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
 import { findDrawMatchUp } from '../../acquire/findDrawMatchUp';
 import { definedAttributes } from '../../utilities/definedAttributes';

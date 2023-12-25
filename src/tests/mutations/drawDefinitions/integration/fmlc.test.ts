@@ -1,4 +1,4 @@
-import { setMatchUpStatus } from '../../../../mutate/matchUps/matchUpStatus/setMatchUpStatus';
+import { setMatchUpStatus } from '../../../../mutate/matchUps/matchUpStatus/setMatchUpState';
 import { completeMatchUp, verifyMatchUps } from '../primitives/verifyMatchUps';
 import { getDrawMatchUps } from '../../../../query/matchUps/drawMatchUps';
 import { publicFindDrawMatchUp } from '../../../../acquire/findDrawMatchUp';
