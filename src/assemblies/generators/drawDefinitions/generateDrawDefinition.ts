@@ -1,32 +1,32 @@
-import { generateDrawTypeAndModifyDrawDefinition } from './generateDrawTypeAndModifyDrawDefinition';
-import { generateQualifyingStructures } from './drawTypes/generateQualifyingStructures';
 import { addVoluntaryConsolationStructure } from '../../../mutate/drawDefinitions/addVoluntaryConsolationStructure';
-import { setMatchUpFormat } from '../../../mutate/matchUps/matchUpFormat/setMatchUpFormat';
-import { addDrawDefinition } from '../../../mutate/drawDefinitions/addDrawDefinition';
-import { generateQualifyingLink } from './links/generateQualifyingLink';
-import { generateAdHocMatchUps } from './generateAdHocMatchUps';
-import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
-import { checkValidEntries } from '../../../validators/checkValidEntries';
-import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
+import { setMatchUpMatchUpFormat } from '../../../mutate/matchUps/matchUpFormat/setMatchUpMatchUpFormat';
+import { generateDrawTypeAndModifyDrawDefinition } from './generateDrawTypeAndModifyDrawDefinition';
 import { addDrawEntry } from '../../../mutate/drawDefinitions/entryGovernor/addDrawEntries';
+import { generateQualifyingStructures } from './drawTypes/generateQualifyingStructures';
+import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
 import { getQualifiersCount } from '../../../query/drawDefinition/getQualifiersCount';
+import { addDrawDefinition } from '../../../mutate/drawDefinitions/addDrawDefinition';
+import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { getAllowedDrawTypes } from '../../../query/tournaments/allowedTypes';
-import structureTemplate from '../templates/structureTemplate';
 import { getParticipants } from '../../../query/participants/getParticipants';
-import { newDrawDefinition } from './newDrawDefinition';
-import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
-import { isConvertableInteger } from '../../../utilities/math';
-import { constantToString } from '../../../utilities/strings';
-import { tieFormatDefaults } from '../templates/tieFormatDefaults';
-import { ensureInt } from '../../../utilities/ensureInt';
 import { validateTieFormat } from '../../../validators/validateTieFormat';
 import { checkTieFormat } from '../../../mutate/tieFormat/checkTieFormat';
+import { checkValidEntries } from '../../../validators/checkValidEntries';
+import { generateQualifyingLink } from './links/generateQualifyingLink';
+import { tieFormatDefaults } from '../templates/tieFormatDefaults';
+import { DrawMaticArgs, drawMatic } from './drawMatic/drawMatic';
+import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
+import { generateAdHocMatchUps } from './generateAdHocMatchUps';
+import structureTemplate from '../templates/structureTemplate';
+import { isConvertableInteger } from '../../../utilities/math';
+import { constantToString } from '../../../utilities/strings';
+import { ensureInt } from '../../../utilities/ensureInt';
+import { newDrawDefinition } from './newDrawDefinition';
 import { prepareStage } from './prepareStage';
 import {
   setStageDrawSize,
   setStageQualifiersCount,
 } from '../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
-import { DrawMaticArgs, drawMatic } from './drawMatic/drawMatic';
 import {
   extractAttributes,
   generateRange,
@@ -379,7 +379,7 @@ export function generateDrawDefinition(
 
         drawDefinition.tieFormat = result.tieFormat ?? tieFormat;
       } else if (matchUpFormat) {
-        const result = setMatchUpFormat({
+        const result = setMatchUpMatchUpFormat({
           tournamentRecord,
           drawDefinition,
           matchUpFormat,

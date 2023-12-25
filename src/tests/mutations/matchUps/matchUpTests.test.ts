@@ -1,9 +1,9 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
+import { setMatchUpMatchUpFormat } from '../../../mutate/matchUps/matchUpFormat/setMatchUpMatchUpFormat';
 import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
-import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
-import { setMatchUpFormat } from '../../../mutate/matchUps/matchUpFormat/setMatchUpFormat';
-import { getStructureMatchUps } from '../../../query/structure/getStructureMatchUps';
 import { setStageDrawSize } from '../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
+import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
+import { getStructureMatchUps } from '../../../query/structure/getStructureMatchUps';
 import { getDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import { getMatchUpType } from '../../../query/matchUp/getMatchUpType';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
@@ -148,7 +148,11 @@ it('can set matchUpFormat', () => {
   expect(matchUp?.matchUpFormat).toEqual(undefined);
 
   const matchUpId = matchUp?.matchUpId as string;
-  let result = setMatchUpFormat({ drawDefinition, matchUpId, matchUpFormat });
+  let result = setMatchUpMatchUpFormat({
+    drawDefinition,
+    matchUpId,
+    matchUpFormat,
+  });
   expect(result.success).toEqual(true);
 
   const { matchUp: modifiedMatchUp } = findDrawMatchUp({
@@ -159,26 +163,29 @@ it('can set matchUpFormat', () => {
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  result = setMatchUpFormat({ drawDefinition, matchUpId });
+  result = setMatchUpMatchUpFormat({ drawDefinition, matchUpId });
   expect(result.error).toEqual(MISSING_MATCHUP_FORMAT);
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  result = setMatchUpFormat({ matchUpId: 'bogus matchUpId', matchUpFormat });
+  result = setMatchUpMatchUpFormat({
+    matchUpId: 'bogus matchUpId',
+    matchUpFormat,
+  });
   expect(result.error).toEqual(MISSING_DRAW_DEFINITION);
-  result = setMatchUpFormat({
+  result = setMatchUpMatchUpFormat({
     matchUpId: 'bogus matchUpId',
     drawDefinition,
     matchUpFormat,
   });
   expect(result.error).toEqual(MATCHUP_NOT_FOUND);
-  result = setMatchUpFormat({
+  result = setMatchUpMatchUpFormat({
     structureId: 'bogus structureId',
     drawDefinition,
     matchUpFormat,
   });
   expect(result.error).toEqual(STRUCTURE_NOT_FOUND);
-  result = setMatchUpFormat({
+  result = setMatchUpMatchUpFormat({
     structureId: structure?.structureId,
     drawDefinition,
     matchUpFormat,

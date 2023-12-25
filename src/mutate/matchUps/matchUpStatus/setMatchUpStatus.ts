@@ -1,9 +1,9 @@
-import { setMatchUpState } from './setMatchUpState';
 import { resolveTournamentRecords } from '../../../parameters/resolveTournamentRecords';
 import { matchUpScore } from '../../../assemblies/generators/matchUps/matchUpScore';
-import { setMatchUpFormat } from '../matchUpFormat/setMatchUpFormat';
+import { setMatchUpMatchUpFormat } from '../matchUpFormat/setMatchUpMatchUpFormat';
 import { findPolicy } from '../../../acquire/findPolicy';
 import { findEvent } from '../../../acquire/findEvent';
+import { setMatchUpState } from './setMatchUpState';
 
 import {
   DrawDefinition,
@@ -91,7 +91,7 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
   const { outcome } = params;
 
   if (matchUpFormat) {
-    const result = setMatchUpFormat({
+    const result = setMatchUpMatchUpFormat({
       tournamentRecord,
       drawDefinition,
       matchUpFormat,
