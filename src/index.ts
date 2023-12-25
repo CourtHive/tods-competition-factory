@@ -141,7 +141,7 @@ export const utilities = {
 };
 
 // START- Asynchronous and Synchronous engine exports
-export { competitionEngine } from './tests/engines/competitionEngine';
+export { competitionEngine } from './tests/engines/syncEngine';
 export { competitionEngineAsync } from './competitionEngine/async';
 export { matchUpEngine } from './matchUpEngine/sync';
 export { matchUpEngineAsync } from './matchUpEngine/async';

@@ -1,13 +1,12 @@
 import competitionEngineAsync from '../../competitionEngine/async';
-import competitionEngineSync from '../../tests/engines/competitionEngine';
 import tournamentEngineAsync from '../../tournamentEngine/async';
-import tournamentEngineSync from '../../tests/engines/syncEngine';
+import syncEngine from '../../tests/engines/syncEngine';
 import { expect, it } from 'vitest';
 
 const asyncCompetitionEngine = competitionEngineAsync(true);
 const asyncTournamentEngine = tournamentEngineAsync(true);
 
-it.each([competitionEngineSync, asyncCompetitionEngine])(
+it.each([syncEngine, asyncCompetitionEngine])(
   'will return MISSING_TOURNAMENT_RECORDS for most methods if no state has been set',
   async (competitionEngine) => {
     const competitionEngineMethods = Object.keys(competitionEngine);
@@ -58,7 +57,7 @@ it.each([competitionEngineSync, asyncCompetitionEngine])(
   }
 );
 
-it.each([asyncTournamentEngine, tournamentEngineSync])(
+it.each([asyncTournamentEngine, syncEngine])(
   'will return MISSING_TOURNAMENT_RECORD for most methods if no state has been set',
   async (tournamentEngine) => {
     const tournamentEngineMethods = Object.keys(tournamentEngine);

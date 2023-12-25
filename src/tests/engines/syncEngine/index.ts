@@ -25,5 +25,6 @@ const methods = {
 
 syncEngine.importMethods(methods);
 
+export const competitionEngine = syncEngine;
 export const tournamentEngine = syncEngine;
 export default syncEngine;
