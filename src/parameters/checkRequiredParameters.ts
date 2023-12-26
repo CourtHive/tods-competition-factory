@@ -37,6 +37,7 @@ import {
   OBJECT,
   PARTICIPANT_ID,
   POLICY_DEFINITIONS,
+  SCHEDULE_DATES,
   STRUCTURE,
   STRUCTURES,
   STRUCTURE_ID,
@@ -51,7 +52,7 @@ type RequiredParams = {
   _anyOf?: { [key: string]: boolean };
   _oneOf?: { [key: string]: boolean };
   [key: string]: any;
-  _oftype?: string;
+  _ofType?: string;
   validate?: any;
   resolve?: any;
 }[];
@@ -80,9 +81,10 @@ const errors = {
 
 const paramTypes = {
   [TOURNAMENT_RECORDS]: OBJECT,
-  [TOURNAMENT_RECORD]: OBJECT,
   [POLICY_DEFINITIONS]: OBJECT,
+  [TOURNAMENT_RECORD]: OBJECT,
   [DRAW_DEFINITION]: OBJECT,
+  [SCHEDULE_DATES]: ARRAY,
   [MATCHUP_IDS]: ARRAY,
   [STRUCTURES]: ARRAY,
   [STRUCTURE]: OBJECT,
@@ -139,7 +141,7 @@ function getAnyOf(params, _anyOf) {
 function findParamError(params, requiredParams) {
   let errorParam;
   const paramError = requiredParams.find(
-    ({ _oftype, _oneOf, _anyOf, validate, ...attrs }) => {
+    ({ _ofType, _oneOf, _anyOf, validate, ...attrs }) => {
       const oneOf = _oneOf && getOneOf(params, _oneOf);
       if (oneOf?.error) return oneOf.error;
       oneOf && Object.assign(attrs, oneOf);
@@ -154,7 +156,8 @@ function findParamError(params, requiredParams) {
 
       const invalidParam = booleanParams.find((param) => {
         const invalid =
-          params[param] === undefined || invalidType(params, param, _oftype);
+          !isFunction(validate) &&
+          (params[param] === undefined || invalidType(params, param, _ofType));
         const hasError =
           invalid || (validate && !checkValidation(params[param], validate));
         if (hasError) errorParam = param;
@@ -167,10 +170,12 @@ function findParamError(params, requiredParams) {
   return { paramError, errorParam };
 }
 
-function invalidType(params, param, _oftype) {
-  _oftype = _oftype || paramTypes[param] || 'string';
-  if (_oftype === 'array') return !Array.isArray(params[param]);
-  return typeof params[param] !== _oftype;
+function invalidType(params, param, _ofType) {
+  _ofType = _ofType || paramTypes[param] || 'string';
+  if (_ofType === 'array') {
+    return !Array.isArray(params[param]);
+  }
+  return typeof params[param] !== _ofType;
 }
 
 function checkValidation(value, validate) {

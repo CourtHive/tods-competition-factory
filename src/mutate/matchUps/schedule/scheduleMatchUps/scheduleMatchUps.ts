@@ -1,16 +1,17 @@
-import { addMatchUpScheduledTime } from '../scheduledTime';
-import { assignMatchUpVenue } from '../assignMatchUpVenue';
 import { checkParticipantProfileInitialization } from './checkParticipantProfileInitialization';
-import { findDrawDefinition } from '../../../../acquire/findDrawDefinition';
+import { allCompetitionMatchUps } from '../../../../query/matchUps/getAllCompetitionMatchUps';
+import { getMatchUpDependencies } from '../../../../query/matchUps/getMatchUpDependencies';
+import { checkRequiredParameters } from '../../../../parameters/checkRequiredParameters';
 import { modifyParticipantMatchUpsCount } from './modifyParticipantMatchUpsCount';
 import { checkDependenciesScheduled } from './checkDependenciesScheduled';
-import { allCompetitionMatchUps } from '../../../../query/matchUps/getAllCompetitionMatchUps';
+import { findDrawDefinition } from '../../../../acquire/findDrawDefinition';
 import { getMatchUpIds } from '../../../../global/functions/extractors';
 import { updateTimeAfterRecovery } from './updateTimeAfterRecovery';
 import { calculateScheduleTimes } from './calculateScheduleTimes';
-import { getMatchUpDependencies } from '../../../../query/matchUps/getMatchUpDependencies';
 import { checkRequestConflicts } from './checkRequestConflicts';
 import { processNextMatchUps } from './processNextMatchUps';
+import { addMatchUpScheduledTime } from '../scheduledTime';
+import { assignMatchUpVenue } from '../assignMatchUpVenue';
 import { checkRecoveryTime } from './checkRecoveryTime';
 import { checkDailyLimits } from './checkDailyLimits';
 import { getPersonRequests } from './personRequests';
@@ -26,8 +27,6 @@ import { DO_NOT_SCHEDULE } from '../../../../constants/requestConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { TOTAL } from '../../../../constants/scheduleConstants';
 import {
-  MISSING_TOURNAMENT_RECORDS,
-  MISSING_MATCHUP_IDS,
   INVALID_DATE,
   INVALID_VALUES,
 } from '../../../../constants/errorConditionConstants';
@@ -39,6 +38,16 @@ import {
   WALKOVER,
   COMPLETED,
 } from '../../../../constants/matchUpStatusConstants';
+import {
+  AVERAGE_MATCHUP_MINUTES,
+  INVALID,
+  MATCHUP_IDS,
+  PERIOD_LENGTH,
+  RECOVERY_MINUTES,
+  SCHEDULE_DATE,
+  TOURNAMENT_RECORDS,
+  VALIDATE,
+} from '../../../../constants/attributeConstants';
 
 /**
  *
@@ -57,60 +66,67 @@ import {
  *
  * @returns scheduledMatchUpIds, individualParticipantProfiles
  */
-export function scheduleMatchUps({
-  tournamentRecords,
-  competitionMatchUps, // optimization for scheduleProfileRounds to pass this is as it has already processed
-  matchUpDependencies, // optimization for scheduleProfileRounds to pass this is as it has already processed
-  allDateMatchUpIds = [],
+export function scheduleMatchUps(params) {
+  const {
+    tournamentRecords,
+    allDateMatchUpIds = [],
 
-  averageMatchUpMinutes = 90,
-  recoveryMinutes = 0,
-  recoveryMinutesMap, // for matchUpIds batched by averageMatchUpMinutes this enables varying recoveryMinutes
+    averageMatchUpMinutes = 90,
+    recoveryMinutes = 0,
+    recoveryMinutesMap, // for matchUpIds batched by averageMatchUpMinutes this enables varying recoveryMinutes
 
-  matchUpPotentialParticipantIds = {},
-  individualParticipantProfiles = {},
-  matchUpNotBeforeTimes = {},
-  matchUpDailyLimits = {},
+    matchUpPotentialParticipantIds = {},
+    individualParticipantProfiles = {},
+    matchUpNotBeforeTimes = {},
+    matchUpDailyLimits = {},
 
-  checkPotentialRequestConflicts = true,
-  remainingScheduleTimes,
-  clearScheduleDates,
+    checkPotentialRequestConflicts = true,
+    remainingScheduleTimes,
+    clearScheduleDates,
 
-  periodLength = 30,
-  scheduleDate,
-  matchUpIds,
-  venueIds,
+    periodLength = 30,
+    scheduleDate,
+    matchUpIds,
+    venueIds,
 
-  startTime,
-  endTime,
-  dryRun,
-}) {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
-  if (!matchUpIds) return { error: MISSING_MATCHUP_IDS };
-  if (!isValidDateString(scheduleDate)) return { error: INVALID_DATE };
-  if (
-    isNaN(periodLength) ||
-    isNaN(averageMatchUpMinutes) ||
-    isNaN(recoveryMinutes)
-  )
-    return { error: INVALID_VALUES };
+    startTime,
+    endTime,
+    dryRun,
+  } = params;
+  const paramCheck = checkRequiredParameters(params, [
+    { [TOURNAMENT_RECORDS]: true, [MATCHUP_IDS]: true },
+    {
+      [VALIDATE]: isValidDateString,
+      [INVALID]: INVALID_DATE,
+      [SCHEDULE_DATE]: true,
+    },
+    {
+      [VALIDATE]: (value) => !value || !isNaN(value),
+      [AVERAGE_MATCHUP_MINUTES]: true,
+      [INVALID]: INVALID_VALUES,
+      [RECOVERY_MINUTES]: true,
+      [PERIOD_LENGTH]: true,
+    },
+  ]);
+  if (paramCheck.error) return paramCheck;
 
   // if competitionMatchUps not provided as a parameter
   // scheduleMatchUpProfiles has already called processNextMatchUps for all
-  if (!competitionMatchUps) {
-    ({ matchUps: competitionMatchUps } = allCompetitionMatchUps({
-      tournamentRecords,
+  const competitionMatchUps =
+    params.competitionMatchUps ??
+    allCompetitionMatchUps({
       nextMatchUps: true,
-    }));
-  }
+      tournamentRecords,
+    }).matchUps ??
+    [];
 
-  if (!matchUpDependencies) {
-    ({ matchUpDependencies } = getMatchUpDependencies({
+  const matchUpDependencies =
+    params.matchUpDependencies ??
+    getMatchUpDependencies({
       includeParticipantDependencies: true,
       matchUps: competitionMatchUps,
       tournamentRecords,
-    }));
-  }
+    }).matchUpDependencies;
 
   competitionMatchUps.forEach((matchUp) => {
     if (

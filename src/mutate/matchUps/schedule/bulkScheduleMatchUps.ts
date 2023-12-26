@@ -1,14 +1,15 @@
-import { bulkScheduleTournamentMatchUps } from './bulkScheduleTournamentMatchUps';
 import { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDependencies';
+import { checkRequiredParameters } from '../../../parameters/checkRequiredParameters';
+import { bulkScheduleTournamentMatchUps } from './bulkScheduleTournamentMatchUps';
 import { getMatchUpId } from '../../../global/functions/extractors';
 
 import { Tournament } from '../../../types/tournamentTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_VALUES,
-  MISSING_TOURNAMENT_RECORDS,
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
+import { TOURNAMENT_RECORDS } from '../../../constants/attributeConstants';
 
 type BulkScheduleMatchUpsArgs = {
   tournamentRecords: { [key: string]: Tournament };
@@ -39,7 +40,18 @@ export function bulkScheduleMatchUps(params: BulkScheduleMatchUpsArgs) {
   if (params.matchUpIds && !matchUpContextIds)
     return bulkScheduleTournamentMatchUps(params);
 
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
+  const paramsCheck = checkRequiredParameters(params, [
+    { [TOURNAMENT_RECORDS]: true },
+    /*
+    {
+      [ONE_OF]: { matchUpContextIds: true, matchUpDetails: true },
+      [INVALID]: INVALID_VALUES,
+      [OF_TYPE]: ARRAY,
+    },
+    */
+  ]);
+  if (paramsCheck.error) return paramsCheck;
+
   if (!Array.isArray(matchUpContextIds) && !Array.isArray(matchUpDetails))
     return { error: INVALID_VALUES };
 

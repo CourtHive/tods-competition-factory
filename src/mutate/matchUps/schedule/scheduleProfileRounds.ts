@@ -1,28 +1,32 @@
+import { getContainedStructures } from '../../../query/drawDefinition/getContainedStructures';
+import { allCompetitionMatchUps } from '../../../query/matchUps/getAllCompetitionMatchUps';
+import { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDependencies';
+import { getMatchUpDailyLimits } from '../../../query/extensions/getMatchUpDailyLimits';
+import { checkRequiredParameters } from '../../../parameters/checkRequiredParameters';
+import { getVenuesAndCourts } from '../../../query/venues/venuesAndCourtsGetter';
+import { extractDate, isValidDateString } from '../../../utilities/dateTime';
 import { getSchedulingProfile } from '../../tournaments/schedulingProfile';
 import { jinnScheduler } from './schedulers/jinnScheduler/jinnScheduler';
 import { getPersonRequests } from './scheduleMatchUps/personRequests';
 import { v2Scheduler } from './schedulers/v2Scheduler/v2Scheduler';
-import { getContainedStructures } from '../../../query/drawDefinition/getContainedStructures';
 import { clearScheduledMatchUps } from './clearScheduledMatchUps';
-import { allCompetitionMatchUps } from '../../../query/matchUps/getAllCompetitionMatchUps';
-import { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDependencies';
-import { getMatchUpDailyLimits } from '../../../query/extensions/getMatchUpDailyLimits';
-import { getVenuesAndCourts } from '../../../query/venues/venuesAndCourtsGetter';
-import { extractDate, isValidDateString } from '../../../utilities/dateTime';
 
+import { NO_VALID_DATES } from '../../../constants/errorConditionConstants';
 import { DO_NOT_SCHEDULE } from '../../../constants/requestConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
+import { TournamentRecords } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { Tournament } from '../../../types/tournamentTypes';
 import {
-  INVALID_VALUES,
-  MISSING_TOURNAMENT_RECORDS,
-  NO_VALID_DATES,
-} from '../../../constants/errorConditionConstants';
+  ARRAY,
+  OF_TYPE,
+  SCHEDULE_DATES,
+  TOURNAMENT_RECORDS,
+  VALIDATE,
+} from '../../../constants/attributeConstants';
 
 type ScheduleProfileRoundsArgs = {
-  tournamentRecords: { [key: string]: Tournament };
   checkPotentialRequestConflicts?: boolean;
+  tournamentRecords: TournamentRecords;
   scheduleCompletedMatchUps?: boolean;
   clearScheduleDates?: boolean;
   scheduleDates?: string[];
@@ -32,19 +36,29 @@ type ScheduleProfileRoundsArgs = {
   pro?: boolean;
 };
 // abstraction layer to allow other schedulers to be defined at a later time
-export function scheduleProfileRounds({
-  checkPotentialRequestConflicts = true,
-  scheduleCompletedMatchUps,
-  clearScheduleDates,
-  scheduleDates = [],
-  tournamentRecords,
-  periodLength,
-  useGarman,
-  dryRun,
-  pro,
-}: ScheduleProfileRoundsArgs) {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
-  if (!Array.isArray(scheduleDates)) return { error: INVALID_VALUES };
+export function scheduleProfileRounds(params: ScheduleProfileRoundsArgs) {
+  const {
+    checkPotentialRequestConflicts = true,
+    scheduleCompletedMatchUps,
+    clearScheduleDates,
+    scheduleDates = [],
+    tournamentRecords,
+    periodLength,
+    useGarman,
+    dryRun,
+    pro,
+  } = params;
+
+  const paramsCheck = checkRequiredParameters(params, [
+    { [TOURNAMENT_RECORDS]: true },
+    {
+      [VALIDATE]: (value) =>
+        !value || (Array.isArray(value) && value.every(isValidDateString)),
+      [SCHEDULE_DATES]: true,
+      [OF_TYPE]: ARRAY,
+    },
+  ]);
+  if (paramsCheck.error) return paramsCheck;
 
   const result = getSchedulingProfile({ tournamentRecords });
   if (result.error) return result;
@@ -139,7 +153,7 @@ export function scheduleProfileRounds({
       );
     });
 
-  const params = {
+  const schedulingParams = {
     schedulingProfileModifications,
     checkPotentialRequestConflicts,
     scheduleCompletedMatchUps,
@@ -160,8 +174,8 @@ export function scheduleProfileRounds({
   };
 
   if (pro) {
-    return v2Scheduler(params);
+    return v2Scheduler(schedulingParams);
   } else {
-    return jinnScheduler(params);
+    return jinnScheduler(schedulingParams);
   }
 }

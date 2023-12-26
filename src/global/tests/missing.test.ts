@@ -26,12 +26,14 @@ it.each([syncEngine, asyncEngine])(
           'getSchedulingProfileIssues',
           'validateSchedulingProfile',
           'getMatchUpDependencies',
+          'removePersonRequests',
           'unPublishOrderOfPlay',
           'newTournamentRecord',
           'setSchedulingProfile',
           'getAppliedPolicies',
           'getVenuesAndCourts',
           'publishOrderOfPlay',
+          'getPersonRequests',
           'getRoundMatchUps',
           'getTournamentIds',
           'setTournamentId',
@@ -47,60 +49,6 @@ it.each([syncEngine, asyncEngine])(
       } else {
         if (result.info) continue;
         if (!result.error) console.log({ result, method });
-        expect(result.error).not.toBeUndefined();
-      }
-    }
-  }
-);
-
-it.each([asyncEngine, syncEngine])(
-  'will return MISSING_TOURNAMENT_RECORD for most methods if no state has been set',
-  async (tournamentEngine) => {
-    const tournamentEngineMethods = Object.keys(tournamentEngine);
-    for (const method of tournamentEngineMethods) {
-      await tournamentEngine.reset();
-      const result = await tournamentEngine[method]();
-      if (!result) {
-        // covers methods which are expected to return boolean
-        expect([false, 0].includes(result)).toEqual(true);
-      } else if (method === 'getRoundMatchUps') {
-        expect(result.roundMatchUps).toEqual({});
-      } else if (
-        [
-          'credits',
-          'version',
-          'participantScheduledMatchUps',
-          'getPolicyDefinitions',
-        ].includes(method)
-      ) {
-        expect(result).not.toBeUndefined();
-      } else if (method === 'getTournament') {
-        // getTournament returns a tournamentRecord if one has been set
-      } else if (method === 'getState') {
-        // getState returns the entire state
-      } else if (result.success || result.valid) {
-        const onList = [
-          'removeUnlinkedTournamentRecords',
-          'getSchedulingProfileIssues',
-          'validateSchedulingProfile',
-          'generateDrawDefinition',
-          'getMatchUpDependencies',
-          'newTournamentRecord',
-          'setSchedulingProfile',
-          'getAppliedPolicies',
-          'getVenuesAndCourts',
-          'filterParticipants',
-          'getTournamentIds',
-          'setTournamentId',
-          'devContext',
-          'reset',
-        ].includes(method);
-        if (!onList) console.log({ method, result });
-        expect(onList).toEqual(true);
-      } else if (Array.isArray(result)) {
-        expect(result.length).toEqual(0); // filtering with no values returns no results
-      } else {
-        if (!result.error) console.log({ method, result });
         expect(result.error).not.toBeUndefined();
       }
     }

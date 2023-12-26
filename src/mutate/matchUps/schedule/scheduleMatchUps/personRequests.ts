@@ -1,6 +1,7 @@
+import { checkRequiredParameters } from '../../../../parameters/checkRequiredParameters';
 import { addTournamentExtension } from '../../../extensions/addRemoveExtensions';
-import { removeExtension } from '../../../extensions/removeExtension';
 import { extractDate, extractTime } from '../../../../utilities/dateTime';
+import { removeExtension } from '../../../extensions/removeExtension';
 import { findParticipant } from '../../../../acquire/findParticipant';
 import { findExtension } from '../../../../acquire/findExtension';
 import { generateTimeCode } from '../../../../utilities';
@@ -8,30 +9,37 @@ import { generateTimeCode } from '../../../../utilities';
 import { PERSON_REQUESTS } from '../../../../constants/extensionConstants';
 import { DO_NOT_SCHEDULE } from '../../../../constants/requestConstants';
 import { Tournament } from '../../../../types/tournamentTypes';
-import { PersonRequests } from '../../../../types/factoryTypes';
+import {
+  PersonRequests,
+  TournamentRecords,
+} from '../../../../types/factoryTypes';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   ErrorType,
   INVALID_VALUES,
-  MISSING_TOURNAMENT_RECORDS,
 } from '../../../../constants/errorConditionConstants';
+import {
+  ARRAY,
+  INVALID,
+  OF_TYPE,
+  PERSON_ID,
+  TOURNAMENT_RECORDS,
+} from '../../../../constants/attributeConstants';
 
 type GetPersonRequestsArgs = {
   tournamentRecords: { [key: string]: Tournament };
   requestType?: string;
 };
-export function getPersonRequests({
-  tournamentRecords,
-  requestType,
-}: GetPersonRequestsArgs): {
+export function getPersonRequests(params: GetPersonRequestsArgs): {
   personRequests?: PersonRequests;
   error?: ErrorType;
 } {
-  if (
-    typeof tournamentRecords !== 'object' ||
-    !Object.keys(tournamentRecords).length
-  )
-    return { error: MISSING_TOURNAMENT_RECORDS };
+  const { tournamentRecords, requestType } = params;
+
+  const paramsCheck = checkRequiredParameters(params, [
+    { [TOURNAMENT_RECORDS]: true },
+  ]);
+  if (paramsCheck.error) return paramsCheck;
 
   const personRequests: PersonRequests = {};
 
@@ -60,18 +68,19 @@ export function getPersonRequests({
   // audit requests and filter out any that are no longer relevant
   // (tournament dates changed & etc)
 
-  return { personRequests };
+  return { personRequests, ...SUCCESS };
 }
 
 type SavePersonRequestsArgs = {
   tournamentRecords: { [key: string]: Tournament };
   personRequests?: PersonRequests;
 };
-export function savePersonRequests({
-  tournamentRecords,
-  personRequests,
-}: SavePersonRequestsArgs) {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
+export function savePersonRequests(params: SavePersonRequestsArgs) {
+  const { tournamentRecords, personRequests } = params;
+  const paramsCheck = checkRequiredParameters(params, [
+    { [TOURNAMENT_RECORDS]: true },
+  ]);
+  if (paramsCheck.error) return paramsCheck;
   if (!personRequests) return { ...SUCCESS };
 
   const tournaments = Object.values(tournamentRecords);
@@ -103,14 +112,13 @@ type AddPersonRequestsArgs = {
   requests: Request[];
   personId: string;
 };
-export function addPersonRequests({
-  tournamentRecords,
-  personId,
-  requests,
-}: AddPersonRequestsArgs) {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
-  if (typeof personId !== 'string') return { error: INVALID_VALUES };
-  if (!Array.isArray(requests)) return { error: INVALID_VALUES };
+export function addPersonRequests(params: AddPersonRequestsArgs) {
+  const { tournamentRecords, personId, requests } = params;
+  const paramsCheck = checkRequiredParameters(params, [
+    { [TOURNAMENT_RECORDS]: true, [PERSON_ID]: true },
+    { requests: true, [OF_TYPE]: ARRAY, [INVALID]: INVALID_VALUES },
+  ]);
+  if (paramsCheck.error) return paramsCheck;
 
   const { personRequests } = getPersonRequests({ tournamentRecords });
 
@@ -161,18 +169,19 @@ function mergePersonRequests({ personRequests, personId, requests }) {
 }
 
 // personRequests can be removed by date, requestId, or requestType
-export function removePersonRequests({
-  tournamentRecords,
-  requestType,
-  requestId,
-  personId,
-  date,
-}) {
-  if (
-    typeof tournamentRecords !== 'object' ||
-    !Object.keys(tournamentRecords).length
-  )
-    return { error: MISSING_TOURNAMENT_RECORDS };
+type RemovePersonRequests = {
+  tournamentRecords: TournamentRecords;
+  requestType?: string;
+  requestId?: string;
+  personId?: string;
+  date?: string;
+};
+export function removePersonRequests(params: RemovePersonRequests) {
+  const { tournamentRecords, requestType, requestId, personId, date } = params;
+  const paramsCheck = checkRequiredParameters(params, [
+    { [TOURNAMENT_RECORDS]: true },
+  ]);
+  if (paramsCheck.error) return paramsCheck;
 
   const { personRequests } = getPersonRequests({ tournamentRecords });
   const filterRequests = (personId) => {
@@ -215,13 +224,13 @@ export function removePersonRequests({
 // can be used to both add and remove requests
 // requests which don't have existing requestId will be added
 // requests which don't have requestType will be removed
-export function modifyPersonRequests({
-  tournamentRecords,
-  requests,
-  personId,
-}) {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
-  if (!Array.isArray(requests)) return { error: INVALID_VALUES };
+export function modifyPersonRequests(params) {
+  const { tournamentRecords, requests, personId } = params;
+  const paramsCheck = checkRequiredParameters(params, [
+    { [TOURNAMENT_RECORDS]: true },
+    { requests: true, [OF_TYPE]: ARRAY, [INVALID]: INVALID_VALUES },
+  ]);
+  if (paramsCheck.error) return paramsCheck;
 
   const requestIds = requests.map(({ requestId }) => requestId).filter(Boolean);
 

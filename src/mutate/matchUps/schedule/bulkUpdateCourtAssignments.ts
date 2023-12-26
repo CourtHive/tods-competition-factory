@@ -1,36 +1,52 @@
+import { checkRequiredParameters } from '../../../parameters/checkRequiredParameters';
 import { assignMatchUpCourt } from './assignMatchUpCourt';
 import { findEvent } from '../../../acquire/findEvent';
-import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
 
+import { TournamentRecords } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_TOURNAMENT_RECORD,
-  MISSING_TOURNAMENT_RECORDS,
   MISSING_VALUE,
   UNABLE_TO_ASSIGN_COURT,
 } from '../../../constants/errorConditionConstants';
+import {
+  ARRAY,
+  INVALID,
+  OF_TYPE,
+  TOURNAMENT_RECORDS,
+} from '../../../constants/attributeConstants';
 
-export function bulkUpdateCourtAssignments({
-  tournamentRecords,
-  courtAssignments,
-  courtDayDate,
-}) {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
-  if (!Array.isArray(courtAssignments))
-    return { error: MISSING_VALUE, info: mustBeAnArray('courtAssignments') };
+type BulkUpdateCourtAssignmentsParams = {
+  tournamentRecords: TournamentRecords;
+  courtAssignments: any[];
+  courtDayDate: string;
+};
 
-  const tournamentMap = courtAssignments.reduce((tournamentMap, assignment) => {
-    const { tournamentId } = assignment;
-    if (!tournamentMap[tournamentId]) tournamentMap[tournamentId] = [];
-    tournamentMap[tournamentId].push(assignment);
-    return tournamentMap;
-  }, {});
+export function bulkUpdateCourtAssignments(
+  params: BulkUpdateCourtAssignmentsParams
+) {
+  const { courtDayDate } = params;
+  const paramsCheck = checkRequiredParameters(params, [
+    { [TOURNAMENT_RECORDS]: true },
+    { courtAssignments: true, [OF_TYPE]: ARRAY, [INVALID]: MISSING_VALUE },
+  ]);
+  if (paramsCheck.error) return paramsCheck;
+
+  const tournamentMap = params.courtAssignments.reduce(
+    (tournamentMap, assignment) => {
+      const { tournamentId } = assignment;
+      if (!tournamentMap[tournamentId]) tournamentMap[tournamentId] = [];
+      tournamentMap[tournamentId].push(assignment);
+      return tournamentMap;
+    },
+    {}
+  );
 
   let error;
   const tournamentIds = Object.keys(tournamentMap);
   tournamentIds.every((tournamentId) => {
-    const tournamentRecord = tournamentRecords[tournamentId];
+    const tournamentRecord = params[TOURNAMENT_RECORDS][tournamentId];
     if (!tournamentRecord) {
       error = { error: MISSING_TOURNAMENT_RECORD };
       return false;
