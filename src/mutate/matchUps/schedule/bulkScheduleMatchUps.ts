@@ -9,7 +9,13 @@ import {
   INVALID_VALUES,
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
-import { TOURNAMENT_RECORDS } from '../../../constants/attributeConstants';
+import {
+  ARRAY,
+  INVALID,
+  OF_TYPE,
+  ONE_OF,
+  TOURNAMENT_RECORDS,
+} from '../../../constants/attributeConstants';
 
 type BulkScheduleMatchUpsArgs = {
   tournamentRecords: { [key: string]: Tournament };
@@ -42,18 +48,13 @@ export function bulkScheduleMatchUps(params: BulkScheduleMatchUpsArgs) {
 
   const paramsCheck = checkRequiredParameters(params, [
     { [TOURNAMENT_RECORDS]: true },
-    /*
     {
       [ONE_OF]: { matchUpContextIds: true, matchUpDetails: true },
       [INVALID]: INVALID_VALUES,
       [OF_TYPE]: ARRAY,
     },
-    */
   ]);
   if (paramsCheck.error) return paramsCheck;
-
-  if (!Array.isArray(matchUpContextIds) && !Array.isArray(matchUpDetails))
-    return { error: INVALID_VALUES };
 
   if ((!matchUpDetails || matchUpContextIds) && !schedule)
     return { error: MISSING_VALUE, info: 'schedule is required' };
