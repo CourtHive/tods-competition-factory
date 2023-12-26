@@ -1,6 +1,7 @@
 import { resolveTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
 import { generateCollectionMatchUps } from '../../assemblies/generators/drawDefinitions/tieMatchUps';
-import { findMatchUp } from '../../acquire/findMatchUp';
+import { checkRequiredParameters } from '../../parameters/checkRequiredParameters';
+import { resolveFromParameters } from '../../parameters/resolveFromParameters';
 import { getMatchUpId } from '../../global/functions/extractors';
 import {
   addMatchUpsNotice,
@@ -11,13 +12,18 @@ import {
 import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
+  ERROR,
+  MATCHUP,
+  MATCHUP_ID,
+  PARAM,
+  TOURNAMENT_RECORD,
+} from '../../constants/attributeConstants';
+import {
   ResultType,
   decorateResult,
 } from '../../global/functions/decorateResult';
 import {
   INVALID_MATCHUP,
-  MISSING_MATCHUP_ID,
-  MISSING_TOURNAMENT_RECORD,
   NOT_FOUND,
 } from '../../constants/errorConditionConstants';
 import {
@@ -41,34 +47,28 @@ type ResetTieFormatArgs = {
   uuids?: string[];
   event?: Event;
 };
-export function resetTieFormat({
-  tournamentRecord,
-  drawDefinition,
-  matchUpId,
-  event,
-  uuids,
-}: ResetTieFormatArgs): ResultType & {
+export function resetTieFormat(params: ResetTieFormatArgs): ResultType & {
   deletedMatchUpIds?: string[];
   newMatchUps?: MatchUp[];
   success?: boolean;
 } {
   const stack = 'resetTieFormat';
+  const { drawDefinition, event, uuids } = params;
 
-  if (!tournamentRecord)
-    return decorateResult({
-      result: { error: MISSING_TOURNAMENT_RECORD },
-      stack,
-    });
-  if (typeof matchUpId !== 'string')
-    return decorateResult({ result: { error: MISSING_MATCHUP_ID }, stack });
+  const paramCheck = checkRequiredParameters(
+    params,
+    [{ [TOURNAMENT_RECORD]: true, [MATCHUP_ID]: true }],
+    stack
+  );
+  if (paramCheck.error) return paramCheck;
 
-  const result = findMatchUp({
-    tournamentRecord,
-    matchUpId,
-  });
-  if (result.error) return result;
+  const resolutions = resolveFromParameters(params, [{ [PARAM]: MATCHUP }]);
+  if (resolutions[ERROR]) return resolutions;
 
-  const { matchUp, structure } = result;
+  const tournamentId = params.tournamentRecord?.tournamentId;
+
+  const { matchUp, structure } = resolutions?.matchUp ?? {};
+
   if (!matchUp?.tieMatchUps)
     return decorateResult({
       result: { error: INVALID_MATCHUP },
@@ -143,19 +143,19 @@ export function resetTieFormat({
   if (newMatchUps.length) {
     tieMatchUps.push(...newMatchUps);
     addMatchUpsNotice({
-      tournamentId: tournamentRecord?.tournamentId,
       eventId: event?.eventId,
       matchUps: newMatchUps,
       drawDefinition,
+      tournamentId,
     });
   }
 
   if (deletedMatchUpIds.length) {
     deleteMatchUpsNotice({
-      tournamentId: tournamentRecord?.tournamentId,
       matchUpIds: deletedMatchUpIds,
       eventId: event?.eventId,
       drawDefinition,
+      tournamentId,
     });
   }
 
@@ -165,11 +165,11 @@ export function resetTieFormat({
     matchUp.tieFormat = undefined;
 
     modifyMatchUpNotice({
-      tournamentId: tournamentRecord?.tournamentId,
       structureId: structure?.structureId,
       eventId: event?.eventId,
       context: stack,
       drawDefinition,
+      tournamentId,
       matchUp,
     });
   }

@@ -12,6 +12,7 @@ export const MATCHUP_IDS = 'matchUpIds';
 export const POLICY_TYPE = 'policyType';
 export const STRUCTURES = 'structures';
 export const MATCHUP_ID = 'matchUpId';
+export const IN_CONTEXT = 'inContext';
 export const STRUCTURE = 'structure';
 export const COURT_IDS = 'courtIds';
 export const PERSON_ID = 'personId';
@@ -21,7 +22,9 @@ export const COURT_ID = 'courtId';
 export const EVENT_ID = 'eventId';
 export const MATCHUP = 'matchUp';
 export const DRAW_ID = 'drawId';
+export const ERROR = 'error';
 export const EVENT = 'event';
+export const PARAM = 'param';
 
 export const AVERAGE_MATCHUP_MINUTES = 'averageMatchUpMinutes';
 export const RECOVERY_MINUTES = 'recoveryMinutes';

@@ -1,6 +1,6 @@
 import { removeLineUpSubstitutions } from '../../../mutate/drawDefinitions/removeLineUpSubstitutions';
 import { validateLineUp } from '../../../mutate/drawDefinitions/validateTeamLineUp';
-import { generateTeamTournament } from '../../quarantine/tests/team/generateTestTeamTournament';
+import { generateTeamTournament } from '../participants/team/generateTestTeamTournament';
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import tournamentEngine from '../../engines/syncEngine';
 import { intersection } from '../../../utilities';

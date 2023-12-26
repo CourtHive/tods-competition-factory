@@ -9,31 +9,34 @@ import { CHECK_IN } from '../../../constants/timeItemConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   DRAW_DEFINITION,
+  ERROR,
+  IN_CONTEXT,
+  MATCHUP,
   MATCHUP_ID,
+  PARAM,
   PARTICIPANT_ID,
   TOURNAMENT_RECORD,
 } from '../../../constants/attributeConstants';
 
 export function checkInParticipant(params: CheckInOutParticipantArgs) {
   const requiredParams = [
-    { [TOURNAMENT_RECORD]: true, type: 'object' },
-    { [DRAW_DEFINITION]: true, type: 'object' },
+    { [TOURNAMENT_RECORD]: true },
+    { [DRAW_DEFINITION]: true },
     { [PARTICIPANT_ID]: true },
     { [MATCHUP_ID]: true },
   ];
   const paramCheck = checkRequiredParameters(params, requiredParams);
-  if (paramCheck.error) return paramCheck;
+  if (paramCheck[ERROR]) return paramCheck;
 
   const resolutions = resolveFromParameters(params, [
-    { param: 'matchUp', attr: { inContext: true } },
+    { [PARAM]: MATCHUP, attr: { [IN_CONTEXT]: true } },
   ]);
-  if (resolutions.error) return resolutions;
+  if (resolutions[ERROR]) return resolutions;
 
   const { tournamentRecord, drawDefinition, participantId, matchUpId } = params;
-  const { matchUp } = resolutions;
 
   const result = getCheckedInParticipantIds({
-    matchUp,
+    matchUp: resolutions?.matchUp?.matchUp,
   });
   if (result?.error) return result;
 
@@ -42,7 +45,7 @@ export function checkInParticipant(params: CheckInOutParticipantArgs) {
   if (checkedInParticipantIds?.includes(participantId)) return { ...SUCCESS };
 
   if (!allRelevantParticipantIds?.includes(participantId))
-    return { error: INVALID_PARTICIPANT_ID };
+    return { [ERROR]: INVALID_PARTICIPANT_ID };
 
   const timeItem = {
     itemValue: participantId,

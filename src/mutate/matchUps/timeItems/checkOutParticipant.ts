@@ -18,7 +18,10 @@ import {
 } from '../../../constants/matchUpStatusConstants';
 import {
   DRAW_DEFINITION,
+  IN_CONTEXT,
+  MATCHUP,
   MATCHUP_ID,
+  PARAM,
   PARTICIPANT_ID,
   TOURNAMENT_RECORD,
 } from '../../../constants/attributeConstants';
@@ -34,13 +37,13 @@ export function checkOutParticipant(params: CheckInOutParticipantArgs) {
   if (paramCheck.error) return paramCheck;
 
   const resolutions = resolveFromParameters(params, [
-    { param: 'matchUp', attr: { inContext: true } },
+    { [PARAM]: MATCHUP, attr: { [IN_CONTEXT]: true } },
   ]);
   if (resolutions.error) return resolutions;
 
   const { tournamentRecord, drawDefinition, participantId, matchUpId } = params;
-  const { matchUp } = resolutions;
 
+  const matchUp = resolutions?.matchUp?.matchUp;
   const { matchUpStatus, score } = matchUp ?? {};
 
   if (
