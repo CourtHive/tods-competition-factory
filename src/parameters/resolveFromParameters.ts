@@ -1,14 +1,17 @@
 import { findMatchUp } from '../acquire/findMatchUp';
 import { isObject, isString } from '../utilities/objects';
 
+import { MATCHUP, STRUCTURE } from '../constants/attributeConstants';
 import {
+  ErrorType,
   INVALID_VALUES,
   NOT_FOUND,
 } from '../constants/errorConditionConstants';
 
 type Params = { [key: string]: any };
 type ParamsToResolve = {
-  attr: { [key: string]: any }; // passed into resolution function
+  attr?: { [key: string]: any }; // passed into resolution function
+  error?: ErrorType;
   validate?: any;
   param: string;
   type?: string;
@@ -22,8 +25,8 @@ export function resolveFromParameters(
   if (!Array.isArray(paramsToResolve)) return { error: INVALID_VALUES };
 
   const resolutions: any = {};
-  for (const { param, attr } of paramsToResolve) {
-    const resolution = findResolution({ params, param, attr });
+  for (const { param, error, attr } of paramsToResolve) {
+    const resolution = findResolution({ params, param, attr, error });
     if (resolution?.error) return resolution;
     resolutions[param] = resolution;
   }
@@ -31,27 +34,24 @@ export function resolveFromParameters(
   return resolutions;
 }
 
-function findResolution({ params, param, attr }) {
+function findResolution({ params, param, attr, error }) {
   if (
-    param === 'structure' &&
+    param === STRUCTURE &&
     isObject(params.drawDefinition) &&
     isString(params.structureId)
   ) {
-    return (params.drawDefinition.structures ?? []).find(
+    const result = (params.drawDefinition.structures ?? []).find(
       ({ structureId }) => structureId === params.structureId
     );
+    return !result.length && error ? { error } : { structure: result };
   }
 
-  if (
-    param === 'matchUp' &&
-    isObject(params.tournamentRecord) &&
-    isObject(params.drawDefinition)
-  ) {
+  if (param === MATCHUP) {
     const result = findMatchUp({
       ...params,
       ...attr,
     });
-    return result.error ? result : result.matchUp;
+    return result.error && error ? { ...result, error } : result;
   }
 
   return { error: NOT_FOUND, info: { param } };

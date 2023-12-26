@@ -3,9 +3,9 @@ import mocksEngine from '../../../mocksEngine';
 import { expect, it } from 'vitest';
 
 import {
+  INVALID_VALUES,
   MISSING_DRAW_ID,
   MISSING_MATCHUP_FORMAT,
-  MISSING_VALUE,
   NO_MODIFICATIONS_APPLIED,
   UNRECOGNIZED_MATCHUP_FORMAT,
 } from '../../../constants/errorConditionConstants';
@@ -50,7 +50,7 @@ it('can set and return matchUpFormat codes', () => {
   } = drawDefinition;
 
   let result = tournamentEngine.getMatchUpFormat();
-  expect(result.error).toEqual(MISSING_VALUE);
+  expect(result.error).toEqual(INVALID_VALUES);
 
   result = tournamentEngine.getMatchUpFormat({ eventId });
   expect(result.matchUpFormat).toBeUndefined();

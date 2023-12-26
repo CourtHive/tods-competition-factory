@@ -1,46 +1,55 @@
-import { decorateResult } from '../../global/functions/decorateResult';
+import { checkRequiredParameters } from '../../parameters/checkRequiredParameters';
+import { resolveFromParameters } from '../../parameters/resolveFromParameters';
 import { findStructure } from '../../acquire/findStructure';
-import { findMatchUp } from '../../acquire/findMatchUp';
 
+import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
 import {
   MISSING_DRAW_ID,
-  MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
+import {
+  ANY_OF,
+  DRAW_ID,
+  ERROR,
+  EVENT,
+  MATCHUP,
+  MATCHUP_ID,
+  PARAM,
+  STRUCTURE_ID,
+  TOURNAMENT_RECORD,
+} from '../../constants/attributeConstants';
 
-/**
- *
- * @param {object} tournamentRecord - passed in automatically by tournamentEngine
- * @param {string} drawId - optional - avoid brute force search for matchUp
- * @param {object} drawDefinition - passed in automatically by tournamentEngine when drawId provided
- * @param {string} eventId - optional - if only the default matchUpFormat for an event is required
- * @param {object} event - passed in automatically by tournamentEngine when drawId or eventId provided
- * @param {string} structureId - optional - if only the default matchUpFormat for a structure is required
- * @param {string} matchUpId - id of matchUp for which the scoped matchUpFormat(s) are desired
- *
- */
-export function getMatchUpFormat({
-  tournamentRecord,
-  drawDefinition,
-  structureId,
-  matchUpId,
-  drawId,
-  event,
-}) {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!drawId && !event && !structureId && !matchUpId)
-    return decorateResult({
-      result: { error: MISSING_VALUE },
-      stack: 'getMatchUpFormat',
-    });
+type GetMatchUpFormatArgs = {
+  tournamentRecord: Tournament;
+  drawDefinition?: DrawDefinition;
+  structureId?: string;
+  matchUpId?: string;
+  eventId?: string;
+  drawId?: string;
+  event?: Event;
+};
 
-  const matchUpResult = findMatchUp({
-    tournamentRecord,
-    drawDefinition,
-    matchUpId,
-    drawId,
-    event,
-  });
+export function getMatchUpFormat(params: GetMatchUpFormatArgs) {
+  const { structureId, matchUpId, event } = params;
+  let drawDefinition = params.drawDefinition;
+
+  const paramCheck = checkRequiredParameters(params, [
+    { [TOURNAMENT_RECORD]: true },
+    {
+      [ANY_OF]: {
+        [STRUCTURE_ID]: true,
+        [MATCHUP_ID]: true,
+        [DRAW_ID]: true,
+        [EVENT]: true,
+      },
+    },
+  ]);
+  if (paramCheck[ERROR]) return paramCheck;
+
+  const resolutions = resolveFromParameters(params, [
+    { [PARAM]: MATCHUP, [ERROR]: MISSING_VALUE },
+  ]);
+  const matchUpResult = resolutions?.matchUp;
 
   if (matchUpId && matchUpResult?.error) {
     return matchUpResult;

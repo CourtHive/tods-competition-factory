@@ -14,7 +14,7 @@ import { addMatchUpScheduledTime } from '../scheduledTime';
 import { assignMatchUpVenue } from '../assignMatchUpVenue';
 import { checkRecoveryTime } from './checkRecoveryTime';
 import { checkDailyLimits } from './checkDailyLimits';
-import { getPersonRequests } from './personRequests';
+import { getPersonRequests } from '../../../../query/matchUps/scheduling/getPersonRequests';
 import {
   extractDate,
   extractTime,

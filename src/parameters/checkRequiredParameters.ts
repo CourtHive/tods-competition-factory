@@ -46,6 +46,7 @@ import {
   TOURNAMENT_RECORDS,
   VENUE_IDS,
 } from '../constants/attributeConstants';
+import { decorateResult } from '../global/functions/decorateResult';
 
 type Params = { [key: string]: any };
 type RequiredParams = {
@@ -97,7 +98,8 @@ const paramTypes = {
 
 export function checkRequiredParameters(
   params: Params,
-  requiredParams: RequiredParams
+  requiredParams: RequiredParams,
+  stack?: string
 ) {
   if (!params && !isObject(params)) return { error: INVALID_VALUES };
   if (!requiredParams?.length || params?._bypassParamCheck)
@@ -113,7 +115,11 @@ export function checkRequiredParameters(
       ? errors[errorParam] || INVALID_VALUES
       : (paramError.validate && paramError.invalid) || INVALID_VALUES;
 
-  return { error, info: { param: errorParam } };
+  return decorateResult({
+    info: { param: errorParam },
+    result: { error },
+    stack,
+  });
 }
 
 function getIntersection(params, constraint) {

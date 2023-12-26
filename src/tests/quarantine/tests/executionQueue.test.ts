@@ -1,19 +1,17 @@
 import asyncEngine from '../../engines/asyncEngine';
-import competitionEngineSync from '../../engines/competitionEngine';
-import tournamentEngineSync from '../../engines/syncEngine';
+import syncEngine from '../../engines/syncEngine';
 import mocksEngine from '../../../mocksEngine';
 import { it, expect } from 'vitest';
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { DOUBLES } from '../../../constants/eventConstants';
 import {
-  MATCHUP_NOT_FOUND,
   METHOD_NOT_FOUND,
   MISSING_EVENT,
-  MISSING_VALUE,
+  MISSING_PARTICIPANT_ID,
 } from '../../../constants/errorConditionConstants';
 
-it.each([tournamentEngineSync, asyncEngine])(
+it.each([syncEngine, asyncEngine])(
   'supports rollbackOnError',
   async (tournamentEngine) => {
     const { tournamentRecord } = mocksEngine.generateTournamentRecord();
@@ -32,7 +30,7 @@ it.each([tournamentEngineSync, asyncEngine])(
   }
 );
 
-it.each([competitionEngineSync, asyncEngine])(
+it.each([syncEngine, asyncEngine])(
   'supports rollbackOnError',
   async (competitionEngine) => {
     const { tournamentRecord } = mocksEngine.generateTournamentRecord();
@@ -40,22 +38,18 @@ it.each([competitionEngineSync, asyncEngine])(
     let result = await competitionEngine.executionQueue([
       { method: 'toggleParticipantCheckInState' },
     ]);
-    expect([MATCHUP_NOT_FOUND, MISSING_VALUE].includes(result.error)).toEqual(
-      true
-    );
+    expect([MISSING_PARTICIPANT_ID].includes(result.error)).toEqual(true);
     expect(result.rolledBack).toEqual(false);
     result = await competitionEngine.executionQueue(
       [{ method: 'toggleParticipantCheckInState' }],
       true
     );
-    expect([MATCHUP_NOT_FOUND, MISSING_VALUE].includes(result.error)).toEqual(
-      true
-    );
+    expect([MISSING_PARTICIPANT_ID].includes(result.error)).toEqual(true);
     expect(result.rolledBack).toEqual(true);
   }
 );
 
-it.each([tournamentEngineSync, asyncEngine])(
+it.each([syncEngine, asyncEngine])(
   'tournamentEngine can execute methods in a queue',
   async (tournamentEngine) => {
     let result = await tournamentEngine.newTournamentRecord();
@@ -75,7 +69,7 @@ it.each([tournamentEngineSync, asyncEngine])(
   }
 );
 
-it.each([competitionEngineSync, asyncEngine])(
+it.each([syncEngine, asyncEngine])(
   'competitionEngine can execute methods in a queue',
   async (competitionEngine) => {
     const { tournamentRecord } = mocksEngine.generateTournamentRecord();
@@ -97,7 +91,7 @@ it.each([competitionEngineSync, asyncEngine])(
   }
 );
 
-it.each([tournamentEngineSync, asyncEngine])(
+it.each([syncEngine, asyncEngine])(
   'tournamentEngine processes executionQueue params',
   async (tournamentEngine) => {
     const drawProfiles = [{ drawSize: 32, eventType: DOUBLES }];
@@ -120,7 +114,7 @@ it.each([tournamentEngineSync, asyncEngine])(
   }
 );
 
-it.each([competitionEngineSync, asyncEngine])(
+it.each([syncEngine, asyncEngine])(
   'competitionEngine processes executionQueue params',
   async (competitionEngine) => {
     const drawProfiles = [{ drawSize: 32, eventType: DOUBLES }];

@@ -36,12 +36,11 @@ import { getProfileRounds } from '../../../query/matchUps/scheduling/getProfileR
 import { getRounds } from '../../../query/matchUps/scheduling/getRounds';
 import { getScheduledRoundsDetails } from '../../../query/matchUps/scheduling/getScheduledRoundsDetails';
 import { scheduleProfileRounds } from '../../../mutate/matchUps/schedule/scheduleProfileRounds';
-import {
-  addPersonRequests,
-  getPersonRequests,
-  modifyPersonRequests,
-  removePersonRequests,
-} from '../../../mutate/matchUps/schedule/scheduleMatchUps/personRequests';
+
+import { modifyPersonRequests } from '../../../mutate/matchUps/schedule/scheduleMatchUps/personRequests/modifyPersonRequests';
+import { removePersonRequests } from '../../../mutate/matchUps/schedule/scheduleMatchUps/personRequests/removePersonRequests';
+import { addPersonRequests } from '../../../mutate/matchUps/schedule/scheduleMatchUps/personRequests/addPersonRequests';
+import { getPersonRequests } from '../../../query/matchUps/scheduling/getPersonRequests';
 
 import {
   addMatchUpCourtOrder,
