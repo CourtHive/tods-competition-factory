@@ -5,6 +5,10 @@ import { findEvent } from '../../../acquire/findEvent';
 import { EVENT_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { SCHEDULE_TIMING } from '../../../constants/extensionConstants';
 import { Event, Tournament } from '../../../types/tournamentTypes';
+import {
+  EVENT_ID,
+  TOURNAMENT_RECORDS,
+} from '../../../constants/attributeConstants';
 
 type RemoveEventMatchUpFormatTimingArgs = {
   tournamentRecords?: { [key: string]: Tournament };
@@ -16,7 +20,7 @@ export function removeEventMatchUpFormatTiming(
   params: RemoveEventMatchUpFormatTimingArgs
 ) {
   if (params.event) {
-    const paramCheck = checkRequiredParameters(params, [{ eventId: true }]);
+    const paramCheck = checkRequiredParameters(params, [{ [EVENT_ID]: true }]);
     if (paramCheck.error) return paramCheck;
     return removeTiming({ event: params.event });
   } else {
@@ -26,7 +30,7 @@ export function removeEventMatchUpFormatTiming(
       };
     }
     const paramCheck = checkRequiredParameters(params, [
-      { tournamentRecords: true, eventId: true },
+      { [TOURNAMENT_RECORDS]: true, [EVENT_ID]: true },
     ]);
     if (paramCheck.error) return paramCheck;
 

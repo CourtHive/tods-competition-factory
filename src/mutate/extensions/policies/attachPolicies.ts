@@ -14,6 +14,13 @@ import {
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 import {
+  DRAW_DEFINITION,
+  EVENT,
+  POLICY_DEFINITIONS,
+  TOURNAMENT_RECORD,
+  TOURNAMENT_RECORDS,
+} from '../../../constants/attributeConstants';
+import {
   DrawDefinition,
   Event,
   Tournament,
@@ -39,12 +46,12 @@ export function attachPolicies(
   const checkParams = checkRequiredParameters(params, [
     {
       _anyOf: {
-        tournamentRecords: true,
-        tournamentRecord: true,
-        drawDefinition: true,
-        event: true,
+        [TOURNAMENT_RECORDS]: true,
+        [TOURNAMENT_RECORD]: true,
+        [DRAW_DEFINITION]: true,
+        [EVENT]: true,
       },
-      policyDefinitions: true,
+      [POLICY_DEFINITIONS]: true,
     },
   ]);
   if (checkParams.error) return checkParams;

@@ -16,13 +16,19 @@ import {
   activeMatchUpStatuses,
   completedMatchUpStatuses,
 } from '../../../constants/matchUpStatusConstants';
+import {
+  DRAW_DEFINITION,
+  MATCHUP_ID,
+  PARTICIPANT_ID,
+  TOURNAMENT_RECORD,
+} from '../../../constants/attributeConstants';
 
 export function checkOutParticipant(params: CheckInOutParticipantArgs) {
   const requiredParams = [
-    { tournamentRecord: true, type: 'object' },
-    { drawDefinition: true, type: 'object' },
-    { participantId: true },
-    { matchUpId: true },
+    { [TOURNAMENT_RECORD]: true },
+    { [DRAW_DEFINITION]: true },
+    { [PARTICIPANT_ID]: true },
+    { [MATCHUP_ID]: true },
   ];
   const paramCheck = checkRequiredParameters(params, requiredParams);
   if (paramCheck.error) return paramCheck;

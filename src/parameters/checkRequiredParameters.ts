@@ -4,6 +4,7 @@ import { intersection } from '../utilities';
 import {
   EVENT_NOT_FOUND,
   INVALID_VALUES,
+  MISSING_COURT_ID,
   MISSING_DRAW_DEFINITION,
   MISSING_DRAW_ID,
   MISSING_EVENT,
@@ -19,48 +20,79 @@ import {
   MISSING_TOURNAMENT_ID,
   MISSING_TOURNAMENT_RECORD,
   MISSING_TOURNAMENT_RECORDS,
+  MISSING_VALUE,
 } from '../constants/errorConditionConstants';
+import {
+  ARRAY,
+  COURT_ID,
+  COURT_IDS,
+  DRAW_DEFINITION,
+  DRAW_ID,
+  EVENT,
+  EVENT_ID,
+  MATCHUP,
+  MATCHUPS,
+  MATCHUP_ID,
+  MATCHUP_IDS,
+  OBJECT,
+  PARTICIPANT_ID,
+  POLICY_DEFINITIONS,
+  SCHEDULE_DATES,
+  STRUCTURE,
+  STRUCTURES,
+  STRUCTURE_ID,
+  TOURNAMENT_ID,
+  TOURNAMENT_RECORD,
+  TOURNAMENT_RECORDS,
+  VENUE_IDS,
+} from '../constants/attributeConstants';
 
 type Params = { [key: string]: any };
 type RequiredParams = {
   _anyOf?: { [key: string]: boolean };
   _oneOf?: { [key: string]: boolean };
   [key: string]: any;
-  _oftype?: string;
+  _ofType?: string;
   validate?: any;
   resolve?: any;
 }[];
 
 const errors = {
-  tournamentRecords: MISSING_TOURNAMENT_RECORDS,
-  tournamentRecord: MISSING_TOURNAMENT_RECORD,
-  policyDefinitions: MISSING_POLICY_DEFINITION,
-  drawDefinition: MISSING_DRAW_DEFINITION,
-  participantId: MISSING_PARTICIPANT_ID,
-  tournamentId: MISSING_TOURNAMENT_ID,
-  structureId: MISSING_STRUCTURE_ID,
-  matchUpIds: MISSING_MATCHUP_IDS,
-  structures: MISSING_STRUCTURES,
-  matchUpId: MISSING_MATCHUP_ID,
-  structure: MISSING_STRUCTURE,
-  matchUps: MISSING_MATCHUPS,
-  matchUp: MISSING_MATCHUP,
-  drawId: MISSING_DRAW_ID,
-  eventId: MISSING_EVENT,
-  event: EVENT_NOT_FOUND,
+  [TOURNAMENT_RECORDS]: MISSING_TOURNAMENT_RECORDS,
+  [TOURNAMENT_RECORD]: MISSING_TOURNAMENT_RECORD,
+  [POLICY_DEFINITIONS]: MISSING_POLICY_DEFINITION,
+  [DRAW_DEFINITION]: MISSING_DRAW_DEFINITION,
+  [PARTICIPANT_ID]: MISSING_PARTICIPANT_ID,
+  [TOURNAMENT_ID]: MISSING_TOURNAMENT_ID,
+  [STRUCTURE_ID]: MISSING_STRUCTURE_ID,
+  [MATCHUP_IDS]: MISSING_MATCHUP_IDS,
+  [STRUCTURES]: MISSING_STRUCTURES,
+  [MATCHUP_ID]: MISSING_MATCHUP_ID,
+  [STRUCTURE]: MISSING_STRUCTURE,
+  [COURT_ID]: MISSING_COURT_ID,
+  [MATCHUPS]: MISSING_MATCHUPS,
+  [MATCHUP]: MISSING_MATCHUP,
+  [COURT_IDS]: MISSING_VALUE,
+  [VENUE_IDS]: MISSING_VALUE,
+  [DRAW_ID]: MISSING_DRAW_ID,
+  [EVENT_ID]: MISSING_EVENT,
+  [EVENT]: EVENT_NOT_FOUND,
 };
 
 const paramTypes = {
-  tournamentRecords: 'object',
-  tournamentRecord: 'object',
-  policyDefinitions: 'object',
-  drawDefinition: 'object',
-  matchUpIds: 'array',
-  structures: 'array',
-  structure: 'object',
-  matchUps: 'array',
-  matchUp: 'object',
-  event: 'object',
+  [TOURNAMENT_RECORDS]: OBJECT,
+  [POLICY_DEFINITIONS]: OBJECT,
+  [TOURNAMENT_RECORD]: OBJECT,
+  [DRAW_DEFINITION]: OBJECT,
+  [SCHEDULE_DATES]: ARRAY,
+  [MATCHUP_IDS]: ARRAY,
+  [STRUCTURES]: ARRAY,
+  [STRUCTURE]: OBJECT,
+  [COURT_IDS]: ARRAY,
+  [VENUE_IDS]: ARRAY,
+  [MATCHUPS]: ARRAY,
+  [MATCHUP]: OBJECT,
+  [EVENT]: OBJECT,
 };
 
 export function checkRequiredParameters(
@@ -109,7 +141,7 @@ function getAnyOf(params, _anyOf) {
 function findParamError(params, requiredParams) {
   let errorParam;
   const paramError = requiredParams.find(
-    ({ _oftype, _oneOf, _anyOf, validate, ...attrs }) => {
+    ({ _ofType, _oneOf, _anyOf, validate, ...attrs }) => {
       const oneOf = _oneOf && getOneOf(params, _oneOf);
       if (oneOf?.error) return oneOf.error;
       oneOf && Object.assign(attrs, oneOf);
@@ -124,7 +156,8 @@ function findParamError(params, requiredParams) {
 
       const invalidParam = booleanParams.find((param) => {
         const invalid =
-          params[param] === undefined || invalidType(params, param, _oftype);
+          !isFunction(validate) &&
+          (params[param] === undefined || invalidType(params, param, _ofType));
         const hasError =
           invalid || (validate && !checkValidation(params[param], validate));
         if (hasError) errorParam = param;
@@ -137,10 +170,12 @@ function findParamError(params, requiredParams) {
   return { paramError, errorParam };
 }
 
-function invalidType(params, param, _oftype) {
-  _oftype = _oftype || paramTypes[param] || 'string';
-  if (_oftype === 'array') return !Array.isArray(params[param]);
-  return typeof params[param] !== _oftype;
+function invalidType(params, param, _ofType) {
+  _ofType = _ofType || paramTypes[param] || 'string';
+  if (_ofType === 'array') {
+    return !Array.isArray(params[param]);
+  }
+  return typeof params[param] !== _ofType;
 }
 
 function checkValidation(value, validate) {

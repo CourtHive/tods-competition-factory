@@ -7,13 +7,19 @@ import { INVALID_PARTICIPANT_ID } from '../../../constants/errorConditionConstan
 import { CheckInOutParticipantArgs } from '../../../types/factoryTypes';
 import { CHECK_IN } from '../../../constants/timeItemConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  DRAW_DEFINITION,
+  MATCHUP_ID,
+  PARTICIPANT_ID,
+  TOURNAMENT_RECORD,
+} from '../../../constants/attributeConstants';
 
 export function checkInParticipant(params: CheckInOutParticipantArgs) {
   const requiredParams = [
-    { tournamentRecord: true, type: 'object' },
-    { drawDefinition: true, type: 'object' },
-    { participantId: true },
-    { matchUpId: true },
+    { [TOURNAMENT_RECORD]: true, type: 'object' },
+    { [DRAW_DEFINITION]: true, type: 'object' },
+    { [PARTICIPANT_ID]: true },
+    { [MATCHUP_ID]: true },
   ];
   const paramCheck = checkRequiredParameters(params, requiredParams);
   if (paramCheck.error) return paramCheck;

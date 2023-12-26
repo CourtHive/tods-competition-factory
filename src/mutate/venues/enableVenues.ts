@@ -1,37 +1,34 @@
 import { resolveTournamentRecords } from '../../parameters/resolveTournamentRecords';
+import { checkRequiredParameters } from '../../parameters/checkRequiredParameters';
 import { removeExtension } from '../extensions/removeExtension';
-import { mustBeAnArray } from '../../utilities/mustBeAnArray';
 
 import { DISABLED } from '../../constants/extensionConstants';
+import { TournamentRecords } from '../../types/factoryTypes';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
-  MISSING_TOURNAMENT_RECORDS,
-  MISSING_TOURNAMENT_RECORD,
-  MISSING_VALUE,
-} from '../../constants/errorConditionConstants';
+  TOURNAMENT_RECORDS,
+  VENUE_IDS,
+} from '../../constants/attributeConstants';
 
-export function enableVenues(params) {
-  const { venueIds, enableAll } = params;
+type EnableVenuesArgs = {
+  tournamentRecords: TournamentRecords;
+  enableAll?: boolean;
+  venueIds: string[];
+};
+
+export function enableVenues(params: EnableVenuesArgs) {
   const tournamentRecords = resolveTournamentRecords(params);
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
-  if (!enableAll && !Array.isArray(venueIds))
-    return { error: MISSING_VALUE, info: mustBeAnArray('venueIds') };
+  const paramsToCheck: any[] = [{ [TOURNAMENT_RECORDS]: true }];
+  !params.enableAll && paramsToCheck.push({ [VENUE_IDS]: true });
+  const paramCheck = checkRequiredParameters(params, paramsToCheck);
+  if (paramCheck.error) return paramCheck;
 
+  const { venueIds, enableAll } = params;
   for (const tournamentRecord of Object.values(tournamentRecords)) {
-    venuesEnable({ tournamentRecord, venueIds, enableAll });
-  }
-
-  return { ...SUCCESS };
-}
-
-function venuesEnable({ tournamentRecord, venueIds, enableAll }) {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!Array.isArray(venueIds) && !enableAll)
-    return { error: MISSING_VALUE, info: mustBeAnArray('venueIds') };
-
-  for (const venue of tournamentRecord.venues || []) {
-    if (enableAll || venueIds?.includes(venue.venueId))
-      removeExtension({ element: venue, name: DISABLED });
+    for (const venue of tournamentRecord.venues || []) {
+      if (enableAll || venueIds?.includes(venue.venueId))
+        removeExtension({ element: venue, name: DISABLED });
+    }
   }
 
   return { ...SUCCESS };

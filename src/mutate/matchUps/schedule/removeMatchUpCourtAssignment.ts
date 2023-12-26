@@ -1,22 +1,26 @@
 import { latestVisibleTimeItemValue } from '../../../query/matchUp/latestVisibleTimeItemValue';
-import { assignMatchUpCourt } from './assignMatchUpCourt';
+import { checkRequiredParameters } from '../../../parameters/checkRequiredParameters';
+import { findDrawDefinition } from '../../../acquire/findDrawDefinition';
 import { addMatchUpTimeItem } from '../timeItems/matchUpTimeItems';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
-import { findDrawDefinition } from '../../../acquire/findDrawDefinition';
+import { assignMatchUpCourt } from './assignMatchUpCourt';
 
+import { TOURNAMENT_RECORDS } from '../../../constants/attributeConstants';
 import { ALLOCATE_COURTS } from '../../../constants/timeItemConstants';
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_TOURNAMENT_RECORD,
-  MISSING_TOURNAMENT_RECORDS,
 } from '../../../constants/errorConditionConstants';
 
 export function removeMatchUpCourtAssignment(params) {
-  const { tournamentRecords } = params;
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
+  const paramsCheck = checkRequiredParameters(params, [
+    { [TOURNAMENT_RECORDS]: true },
+  ]);
+  if (paramsCheck.error) return paramsCheck;
   const {
     removePriorValues,
+    tournamentRecords,
     tournamentId,
     courtDayDate,
     matchUpId,
@@ -45,10 +49,7 @@ export function removeMatchUpCourtAssignment(params) {
     const itemValue =
       courtId && allocatedCourts.filter((court) => court.courtId !== courtId);
 
-    const timeItem = {
-      itemType: ALLOCATE_COURTS,
-      itemValue,
-    };
+    const timeItem = { itemType: ALLOCATE_COURTS, itemValue };
     return addMatchUpTimeItem({
       duplicateValues: false,
       removePriorValues,

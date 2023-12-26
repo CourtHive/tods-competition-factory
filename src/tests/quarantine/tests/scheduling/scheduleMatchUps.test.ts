@@ -7,11 +7,11 @@ import tournamentEngine from '../../../engines/syncEngine';
 import mocksEngine from '../../../../mocksEngine';
 import { expect, it } from 'vitest';
 
+import { SINGLES } from '../../../../constants/eventConstants';
 import {
   DELETE_VENUE,
   MODIFY_VENUE,
 } from '../../../../constants/topicConstants';
-import { SINGLES } from '../../../../constants/eventConstants';
 import {
   MATCHUP_NOT_FOUND,
   MISSING_COURT_ID,

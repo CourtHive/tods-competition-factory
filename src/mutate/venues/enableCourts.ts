@@ -1,24 +1,24 @@
 import { resolveTournamentRecords } from '../../parameters/resolveTournamentRecords';
+import { checkRequiredParameters } from '../../parameters/checkRequiredParameters';
 import { removeExtension } from '../extensions/removeExtension';
 import { addExtension } from '../extensions/addExtension';
-import { mustBeAnArray } from '../../utilities/mustBeAnArray';
 import { findExtension } from '../../acquire/findExtension';
 
 import { DISABLED } from '../../constants/extensionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
-  MISSING_TOURNAMENT_RECORDS,
-  MISSING_VALUE,
-} from '../../constants/errorConditionConstants';
+  COURT_IDS,
+  TOURNAMENT_RECORDS,
+} from '../../constants/attributeConstants';
 
 export function enableCourts(params) {
-  const { enableAll, courtIds, dates } = params;
-
   const tournamentRecords = resolveTournamentRecords(params);
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
-  if (!enableAll && !Array.isArray(courtIds))
-    return { error: MISSING_VALUE, info: mustBeAnArray('courtIds') };
+  const paramsToCheck: any[] = [{ [TOURNAMENT_RECORDS]: true }];
+  !params.enableAll && paramsToCheck.push({ [COURT_IDS]: true });
+  const paramCheck = checkRequiredParameters(params, paramsToCheck);
+  if (paramCheck.error) return paramCheck;
 
+  const { enableAll, courtIds, dates } = params;
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     courtsEnable({ tournamentRecord, courtIds, enableAll, dates });
   }
@@ -26,10 +26,7 @@ export function enableCourts(params) {
   return { ...SUCCESS };
 }
 
-export function courtsEnable({ tournamentRecord, courtIds, enableAll, dates }) {
-  if (!Array.isArray(courtIds) && !enableAll)
-    return { error: MISSING_VALUE, info: mustBeAnArray('courtIds') };
-
+function courtsEnable({ tournamentRecord, courtIds, enableAll, dates }) {
   for (const venue of tournamentRecord.venues || []) {
     for (const court of venue.courts || []) {
       if (enableAll || courtIds?.includes(court.courtId))
@@ -45,12 +42,9 @@ export function courtsEnable({ tournamentRecord, courtIds, enableAll, dates }) {
               value.dates = value.dates.filter((date) => !dates.includes(date));
             }
             addExtension({
+              extension: { name: DISABLED, value },
               creationTime: false,
               element: court,
-              extension: {
-                name: DISABLED,
-                value,
-              },
             });
           }
         } else {

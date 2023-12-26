@@ -2,21 +2,21 @@ import { removeCourtAssignment } from '../matchUps/schedule/removeCourtAssignmen
 import { getScheduledCourtMatchUps } from '../../query/venues/getScheduledCourtMatchUps';
 import { deletionMessage } from '../../assemblies/generators/matchUps/deletionMessage';
 import { resolveTournamentRecords } from '../../parameters/resolveTournamentRecords';
+import { checkRequiredParameters } from '../../parameters/checkRequiredParameters';
 import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
 import { addNotice } from '../../global/state/globalState';
 import { findCourt } from './findCourt';
 
+import { COURT_NOT_FOUND } from '../../constants/errorConditionConstants';
 import { POLICY_TYPE_SCHEDULING } from '../../constants/policyConstants';
 import { MODIFY_VENUE } from '../../constants/topicConstants';
 import { TournamentRecords } from '../../types/factoryTypes';
 import { SUCCESS } from '../../constants/resultConstants';
 import { Tournament } from '../../types/tournamentTypes';
 import {
-  COURT_NOT_FOUND,
-  MISSING_COURT_ID,
-  MISSING_TOURNAMENT_RECORD,
-  MISSING_TOURNAMENT_RECORDS,
-} from '../../constants/errorConditionConstants';
+  COURT_ID,
+  TOURNAMENT_RECORDS,
+} from '../../constants/attributeConstants';
 
 type DeleteCourtArgs = {
   tournamentRecords?: TournamentRecords;
@@ -26,16 +26,18 @@ type DeleteCourtArgs = {
   force?: boolean;
 };
 export function deleteCourt(params: DeleteCourtArgs) {
-  const { courtId, force } = params;
+  const { courtId, disableNotice, force } = params;
   const tournamentRecords = resolveTournamentRecords(params);
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
-  if (typeof courtId !== 'string') return { error: MISSING_COURT_ID };
+  const paramsCheck = checkRequiredParameters(params, [
+    { [TOURNAMENT_RECORDS]: true, [COURT_ID]: true },
+  ]);
+  if (paramsCheck.error) return paramsCheck;
 
   let courtDeleted;
   let result;
 
   for (const tournamentRecord of Object.values(tournamentRecords)) {
-    result = courtDeletion({ tournamentRecord, courtId, force });
+    result = courtDeletion({ tournamentRecord, disableNotice, courtId, force });
     if (result.error && result.error !== COURT_NOT_FOUND) return result;
     if (result.success) courtDeleted = true;
   }
@@ -48,8 +50,7 @@ export function courtDeletion({
   disableNotice,
   courtId,
   force,
-}: DeleteCourtArgs) {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+}) {
   const result = findCourt({ tournamentRecord, courtId });
   if (result.error) return result;
   const venue = result.venue;
@@ -84,8 +85,8 @@ export function courtDeletion({
       });
       if (!disableNotice)
         addNotice({
-          topic: MODIFY_VENUE,
           payload: { venue, tournamentId: tournamentRecord.tournamentId },
+          topic: MODIFY_VENUE,
           key: venue.venueId,
         });
     }
