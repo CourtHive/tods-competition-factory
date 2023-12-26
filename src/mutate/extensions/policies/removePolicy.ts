@@ -11,6 +11,13 @@ import {
   POLICY_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 import {
+  DRAW_DEFINITION,
+  EVENT,
+  POLICY_TYPE,
+  TOURNAMENT_RECORD,
+  TOURNAMENT_RECORDS,
+} from '../../../constants/attributeConstants';
+import {
   DrawDefinition,
   Event,
   Tournament,
@@ -27,12 +34,12 @@ type RemovePolicyArgs = {
 export function removePolicy(params: RemovePolicyArgs) {
   const checkParams = checkRequiredParameters(params, [
     {
-      policyType: true,
+      [POLICY_TYPE]: true,
       _anyOf: {
-        tournamentRecords: true,
-        tournamentRecord: true,
-        drawDefinition: true,
-        event: true,
+        [TOURNAMENT_RECORDS]: true,
+        [TOURNAMENT_RECORD]: true,
+        [DRAW_DEFINITION]: true,
+        [EVENT]: true,
       },
     },
   ]);

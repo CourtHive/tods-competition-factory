@@ -8,8 +8,14 @@ import {
 
 import { UNRECOGNIZED_MATCHUP_FORMAT } from '../../../constants/errorConditionConstants';
 import { SCHEDULE_TIMING } from '../../../constants/extensionConstants';
-import { Event, Tournament } from '../../../types/tournamentTypes';
 import { ResultType } from '../../../global/functions/decorateResult';
+import { Event, Tournament } from '../../../types/tournamentTypes';
+import {
+  INVALID,
+  MATCHUP_FORMAT,
+  TOURNAMENT_RECORD,
+  VALIDATE,
+} from '../../../constants/attributeConstants';
 
 type GetModifiedMatchUpFormatTimingArgs = {
   tournamentRecord: Tournament;
@@ -25,11 +31,11 @@ export function getModifiedMatchUpFormatTiming(
   averageTimes?: any[];
 } {
   const paramCheck = checkRequiredParameters(params, [
-    { tournamentRecord: true },
+    { [TOURNAMENT_RECORD]: true },
     {
-      invalid: UNRECOGNIZED_MATCHUP_FORMAT,
-      validate: isValidMatchUpFormat,
-      matchUpFormat: true,
+      [INVALID]: UNRECOGNIZED_MATCHUP_FORMAT,
+      [VALIDATE]: isValidMatchUpFormat,
+      [MATCHUP_FORMAT]: true,
     },
   ]);
   if (paramCheck.error) return paramCheck;

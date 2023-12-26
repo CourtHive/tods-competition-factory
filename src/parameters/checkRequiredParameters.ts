@@ -20,6 +20,26 @@ import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_TOURNAMENT_RECORDS,
 } from '../constants/errorConditionConstants';
+import {
+  ARRAY,
+  DRAW_DEFINITION,
+  DRAW_ID,
+  EVENT,
+  EVENT_ID,
+  MATCHUP,
+  MATCHUPS,
+  MATCHUP_ID,
+  MATCHUP_IDS,
+  OBJECT,
+  PARTICIPANT_ID,
+  POLICY_DEFINITIONS,
+  STRUCTURE,
+  STRUCTURES,
+  STRUCTURE_ID,
+  TOURNAMENT_ID,
+  TOURNAMENT_RECORD,
+  TOURNAMENT_RECORDS,
+} from '../constants/attributeConstants';
 
 type Params = { [key: string]: any };
 type RequiredParams = {
@@ -32,35 +52,35 @@ type RequiredParams = {
 }[];
 
 const errors = {
-  tournamentRecords: MISSING_TOURNAMENT_RECORDS,
-  tournamentRecord: MISSING_TOURNAMENT_RECORD,
-  policyDefinitions: MISSING_POLICY_DEFINITION,
-  drawDefinition: MISSING_DRAW_DEFINITION,
-  participantId: MISSING_PARTICIPANT_ID,
-  tournamentId: MISSING_TOURNAMENT_ID,
-  structureId: MISSING_STRUCTURE_ID,
-  matchUpIds: MISSING_MATCHUP_IDS,
-  structures: MISSING_STRUCTURES,
-  matchUpId: MISSING_MATCHUP_ID,
-  structure: MISSING_STRUCTURE,
-  matchUps: MISSING_MATCHUPS,
-  matchUp: MISSING_MATCHUP,
-  drawId: MISSING_DRAW_ID,
-  eventId: MISSING_EVENT,
-  event: EVENT_NOT_FOUND,
+  [TOURNAMENT_RECORDS]: MISSING_TOURNAMENT_RECORDS,
+  [TOURNAMENT_RECORD]: MISSING_TOURNAMENT_RECORD,
+  [POLICY_DEFINITIONS]: MISSING_POLICY_DEFINITION,
+  [DRAW_DEFINITION]: MISSING_DRAW_DEFINITION,
+  [PARTICIPANT_ID]: MISSING_PARTICIPANT_ID,
+  [TOURNAMENT_ID]: MISSING_TOURNAMENT_ID,
+  [STRUCTURE_ID]: MISSING_STRUCTURE_ID,
+  [MATCHUP_IDS]: MISSING_MATCHUP_IDS,
+  [STRUCTURES]: MISSING_STRUCTURES,
+  [MATCHUP_ID]: MISSING_MATCHUP_ID,
+  [STRUCTURE]: MISSING_STRUCTURE,
+  [MATCHUPS]: MISSING_MATCHUPS,
+  [MATCHUP]: MISSING_MATCHUP,
+  [DRAW_ID]: MISSING_DRAW_ID,
+  [EVENT_ID]: MISSING_EVENT,
+  [EVENT]: EVENT_NOT_FOUND,
 };
 
 const paramTypes = {
-  tournamentRecords: 'object',
-  tournamentRecord: 'object',
-  policyDefinitions: 'object',
-  drawDefinition: 'object',
-  matchUpIds: 'array',
-  structures: 'array',
-  structure: 'object',
-  matchUps: 'array',
-  matchUp: 'object',
-  event: 'object',
+  tournamentRecords: OBJECT,
+  tournamentRecord: OBJECT,
+  policyDefinitions: OBJECT,
+  drawDefinition: OBJECT,
+  matchUpIds: ARRAY,
+  structures: ARRAY,
+  structure: OBJECT,
+  matchUps: ARRAY,
+  matchUp: OBJECT,
+  event: OBJECT,
 };
 
 export function checkRequiredParameters(

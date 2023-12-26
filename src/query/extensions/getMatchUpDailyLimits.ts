@@ -3,6 +3,7 @@ import { findExtension } from '../../acquire/findExtension';
 
 import { MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
 import { POLICY_TYPE_SCHEDULING } from '../../constants/policyConstants';
+import { TOURNAMENT_RECORD } from '../../constants/attributeConstants';
 import { SCHEDULE_LIMITS } from '../../constants/extensionConstants';
 import { ResultType } from '../../global/functions/decorateResult';
 import { Tournament } from '../../types/tournamentTypes';
@@ -46,7 +47,7 @@ export function getDailyLimit(params): ResultType & {
   matchUpDailyLimits?: number;
 } {
   const paramCheck = checkRequiredParameters(params, [
-    { tournamentRecord: true },
+    { [TOURNAMENT_RECORD]: true },
   ]);
   if (paramCheck.error) return paramCheck;
 

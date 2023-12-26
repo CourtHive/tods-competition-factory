@@ -22,6 +22,25 @@ import {
   MISSING_TOURNAMENT_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '../../constants/errorConditionConstants';
+import {
+  ANY_OF,
+  BYPASS_PARAM_CHECK,
+  DRAW_DEFINITION,
+  DRAW_ID,
+  EVENT,
+  EVENT_ID,
+  MATCHUP,
+  MATCHUPS,
+  MATCHUP_ID,
+  MATCHUP_IDS,
+  ONE_OF,
+  PARTICIPANT_ID,
+  STRUCTURE,
+  STRUCTURES,
+  STRUCTURE_ID,
+  TOURNAMENT_ID,
+  TOURNAMENT_RECORD,
+} from '../../constants/attributeConstants';
 
 it('can check required parameters', () => {
   // @ts-expect-error missing param
@@ -40,71 +59,71 @@ it('can check required parameters', () => {
   result = checkRequiredParameters(params);
   expect(result.valid).toEqual(true);
 
-  result = checkRequiredParameters(params, [{ participantId: true }]);
+  result = checkRequiredParameters(params, [{ [PARTICIPANT_ID]: true }]);
   expect(result.valid).toEqual(true);
 
-  result = checkRequiredParameters(params, [{ matchUpId: true }]);
+  result = checkRequiredParameters(params, [{ [MATCHUP_ID]: true }]);
   expect(result.valid).toEqual(true);
 
   result = checkRequiredParameters(params, [
-    { participantId: true },
-    { matchUpId: true },
+    { [PARTICIPANT_ID]: true },
+    { [MATCHUP_ID]: true },
   ]);
   expect(result.valid).toEqual(true);
 
   result = checkRequiredParameters(params, [
-    { participantId: true, matchUpId: true },
+    { [PARTICIPANT_ID]: true, [MATCHUP_ID]: true },
   ]);
   expect(result.valid).toEqual(true);
 
-  result = checkRequiredParameters(params, [{ drawId: true }]);
+  result = checkRequiredParameters(params, [{ [DRAW_ID]: true }]);
   expect(result.error).toEqual(MISSING_DRAW_ID);
 
   result = checkRequiredParameters(params, [
-    { participantId: true, matchUpId: true, drawId: true },
+    { [PARTICIPANT_ID]: true, [MATCHUP_ID]: true, [DRAW_ID]: true },
   ]);
   expect(result.error).toEqual(MISSING_DRAW_ID);
 
-  result = checkRequiredParameters({}, [{ tournamentRecord: true }]);
+  result = checkRequiredParameters({}, [{ [TOURNAMENT_RECORD]: true }]);
   expect(result.error).toEqual(MISSING_TOURNAMENT_RECORD);
 
-  result = checkRequiredParameters({}, [{ drawDefinition: true }]);
+  result = checkRequiredParameters({}, [{ [DRAW_DEFINITION]: true }]);
   expect(result.error).toEqual(MISSING_DRAW_DEFINITION);
 
-  result = checkRequiredParameters({}, [{ participantId: true }]);
+  result = checkRequiredParameters({}, [{ [PARTICIPANT_ID]: true }]);
   expect(result.error).toEqual(MISSING_PARTICIPANT_ID);
 
-  result = checkRequiredParameters({}, [{ tournamentId: true }]);
+  result = checkRequiredParameters({}, [{ [TOURNAMENT_ID]: true }]);
   expect(result.error).toEqual(MISSING_TOURNAMENT_ID);
 
-  result = checkRequiredParameters({}, [{ structureId: true }]);
+  result = checkRequiredParameters({}, [{ [STRUCTURE_ID]: true }]);
   expect(result.error).toEqual(MISSING_STRUCTURE_ID);
 
-  result = checkRequiredParameters({}, [{ matchUpIds: true }]);
+  result = checkRequiredParameters({}, [{ [MATCHUP_IDS]: true }]);
   expect(result.error).toEqual(MISSING_MATCHUP_IDS);
 
-  result = checkRequiredParameters({}, [{ matchUpId: true }]);
+  result = checkRequiredParameters({}, [{ [MATCHUP_ID]: true }]);
   expect(result.error).toEqual(MISSING_MATCHUP_ID);
 
-  result = checkRequiredParameters({}, [{ structures: true }]);
+  result = checkRequiredParameters({}, [{ [STRUCTURES]: true }]);
   expect(result.error).toEqual(MISSING_STRUCTURES);
 
-  result = checkRequiredParameters({}, [{ structure: true }]);
+  result = checkRequiredParameters({}, [{ [STRUCTURE]: true }]);
   expect(result.error).toEqual(MISSING_STRUCTURE);
 
   result = checkRequiredParameters({}, [{ unknownParam: true }]);
   expect(result.error).toEqual(INVALID_VALUES);
 
-  result = checkRequiredParameters({}, [{ structureId: true }]);
+  result = checkRequiredParameters({}, [{ [STRUCTURE_ID]: true }]);
   expect(result.error).toEqual(MISSING_STRUCTURE_ID);
 
-  result = checkRequiredParameters({}, [{ matchUp: true }]);
+  result = checkRequiredParameters({}, [{ [MATCHUP]: true }]);
   expect(result.error).toEqual(MISSING_MATCHUP);
 
-  result = checkRequiredParameters({}, [{ matchUps: true }]);
+  result = checkRequiredParameters({}, [{ [MATCHUPS]: true }]);
   expect(result.error).toEqual(MISSING_MATCHUPS);
 
-  result = checkRequiredParameters({}, [{ eventId: true }]);
+  result = checkRequiredParameters({}, [{ [EVENT_ID]: true }]);
   expect(result.error).toEqual(MISSING_EVENT);
 
   result = checkRequiredParameters({}, [{ event: true }]);
@@ -112,55 +131,58 @@ it('can check required parameters', () => {
 });
 
 it('can check for one of multiple possible parameters', () => {
-  let result = checkRequiredParameters({ eventId: 'eventId' }, [
-    { _oneOf: { eventId: true, event: true } },
+  let result = checkRequiredParameters({ [EVENT_ID]: 'eventId' }, [
+    { [ONE_OF]: { [EVENT_ID]: true, [EVENT]: true } },
   ]);
   expect(result.valid).toEqual(true);
-  result = checkRequiredParameters({ drawId: 'drawId' }, [
-    { _oneOf: { eventId: true, event: true } },
+  result = checkRequiredParameters({ [DRAW_ID]: 'drawId' }, [
+    { [ONE_OF]: { [EVENT_ID]: true, [EVENT]: true } },
   ]);
   expect(result.error).toEqual(INVALID_VALUES);
-  result = checkRequiredParameters({ eventId: 'eventId', drawId: 'drawId' }, [
-    { _oneOf: { eventId: true, drawId: true } },
-  ]);
+  result = checkRequiredParameters(
+    { [EVENT_ID]: 'eventId', [DRAW_ID]: 'drawId' },
+    [{ [ONE_OF]: { [EVENT_ID]: true, [DRAW_ID]: true } }]
+  );
   expect(result.error).toEqual(INVALID_VALUES);
 });
 
 it('can check for one or more of multiple possible parameters', () => {
-  let result = checkRequiredParameters({ eventId: 'eventId' }, [
-    { _anyOf: { eventId: true, event: true } },
+  let result = checkRequiredParameters({ [EVENT_ID]: 'eventId' }, [
+    { [ANY_OF]: { [EVENT_ID]: true, [EVENT]: true } },
   ]);
   expect(result.valid).toEqual(true);
-  result = checkRequiredParameters({ drawId: 'drawId' }, [
-    { _anyOf: { eventId: true, event: true } },
+  result = checkRequiredParameters({ [DRAW_ID]: 'drawId' }, [
+    { [ANY_OF]: { [EVENT_ID]: true, [EVENT]: true } },
   ]);
   expect(result.error).toEqual(INVALID_VALUES);
-  result = checkRequiredParameters({ eventId: 'eventId', drawId: 'drawId' }, [
-    { _anyOf: { eventId: true, drawId: true } },
-  ]);
+  result = checkRequiredParameters(
+    { [EVENT_ID]: 'eventId', [DRAW_ID]: 'drawId' },
+    [{ [ANY_OF]: { [EVENT_ID]: true, [DRAW_ID]: true } }]
+  );
   expect(result.valid).toEqual(true);
 });
 
 it('can check required parameter types', () => {
-  let result = checkRequiredParameters({ drawDefinition: 'string' }, [
-    { drawDefinition: true },
+  let result = checkRequiredParameters({ [DRAW_DEFINITION]: 'string' }, [
+    { [DRAW_DEFINITION]: true },
   ]);
   expect(result.error).toEqual(INVALID_VALUES);
 
-  result = checkRequiredParameters({ drawDefinition: {} }, [
-    { drawDefinition: true },
+  result = checkRequiredParameters({ [DRAW_DEFINITION]: {} }, [
+    { [DRAW_DEFINITION]: true },
   ]);
   expect(result.valid).toEqual(true);
 
-  result = checkRequiredParameters({ matchUps: {} }, [{ matchUps: true }]);
+  result = checkRequiredParameters({ [MATCHUPS]: {} }, [{ [MATCHUPS]: true }]);
   expect(result.error).toEqual(INVALID_VALUES);
 
   // checking can be bypassed
-  result = checkRequiredParameters({ matchUps: {}, _bypassParamCheck: true }, [
-    { matchUps: true },
-  ]);
+  result = checkRequiredParameters(
+    { [MATCHUPS]: {}, [BYPASS_PARAM_CHECK]: true },
+    [{ [MATCHUPS]: true }]
+  );
   expect(result.valid).toEqual(true);
 
-  result = checkRequiredParameters({ matchUps: [] }, [{ matchUps: true }]);
+  result = checkRequiredParameters({ [MATCHUPS]: [] }, [{ [MATCHUPS]: true }]);
   expect(result.valid).toEqual(true);
 });
