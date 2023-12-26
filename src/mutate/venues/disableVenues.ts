@@ -1,17 +1,26 @@
+import { checkRequiredParameters } from '../../parameters/checkRequiredParameters';
 import { addExtension } from '../extensions/addExtension';
-import { mustBeAnArray } from '../../utilities/mustBeAnArray';
 
 import { DISABLED } from '../../constants/extensionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
-  MISSING_TOURNAMENT_RECORDS,
-  MISSING_VALUE,
-} from '../../constants/errorConditionConstants';
+  TOURNAMENT_RECORDS,
+  VENUE_IDS,
+} from '../../constants/attributeConstants';
 
-export function disableVenues({ tournamentRecords, tournamentId, venueIds }) {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
-  if (!Array.isArray(venueIds))
-    return { error: MISSING_VALUE, info: mustBeAnArray('venueIds') };
+type DisableVenuesArgs = {
+  tournamentRecords: any;
+  tournamentId?: string;
+  venueIds: string[];
+};
+
+export function disableVenues(params: DisableVenuesArgs) {
+  const { tournamentRecords, tournamentId, venueIds } = params;
+  const paramsToCheck: any[] = [
+    { [TOURNAMENT_RECORDS]: true, [VENUE_IDS]: true },
+  ];
+  const paramCheck = checkRequiredParameters(params, paramsToCheck);
+  if (paramCheck.error) return paramCheck;
 
   const tournamentIds = Object.keys(tournamentRecords).filter(
     (id) => !tournamentId || id === tournamentId

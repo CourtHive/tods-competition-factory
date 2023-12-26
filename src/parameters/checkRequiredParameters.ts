@@ -4,6 +4,7 @@ import { intersection } from '../utilities';
 import {
   EVENT_NOT_FOUND,
   INVALID_VALUES,
+  MISSING_COURT_ID,
   MISSING_DRAW_DEFINITION,
   MISSING_DRAW_ID,
   MISSING_EVENT,
@@ -19,9 +20,12 @@ import {
   MISSING_TOURNAMENT_ID,
   MISSING_TOURNAMENT_RECORD,
   MISSING_TOURNAMENT_RECORDS,
+  MISSING_VALUE,
 } from '../constants/errorConditionConstants';
 import {
   ARRAY,
+  COURT_ID,
+  COURT_IDS,
   DRAW_DEFINITION,
   DRAW_ID,
   EVENT,
@@ -39,6 +43,7 @@ import {
   TOURNAMENT_ID,
   TOURNAMENT_RECORD,
   TOURNAMENT_RECORDS,
+  VENUE_IDS,
 } from '../constants/attributeConstants';
 
 type Params = { [key: string]: any };
@@ -63,24 +68,29 @@ const errors = {
   [STRUCTURES]: MISSING_STRUCTURES,
   [MATCHUP_ID]: MISSING_MATCHUP_ID,
   [STRUCTURE]: MISSING_STRUCTURE,
+  [COURT_ID]: MISSING_COURT_ID,
   [MATCHUPS]: MISSING_MATCHUPS,
   [MATCHUP]: MISSING_MATCHUP,
+  [COURT_IDS]: MISSING_VALUE,
+  [VENUE_IDS]: MISSING_VALUE,
   [DRAW_ID]: MISSING_DRAW_ID,
   [EVENT_ID]: MISSING_EVENT,
   [EVENT]: EVENT_NOT_FOUND,
 };
 
 const paramTypes = {
-  tournamentRecords: OBJECT,
-  tournamentRecord: OBJECT,
-  policyDefinitions: OBJECT,
-  drawDefinition: OBJECT,
-  matchUpIds: ARRAY,
-  structures: ARRAY,
-  structure: OBJECT,
-  matchUps: ARRAY,
-  matchUp: OBJECT,
-  event: OBJECT,
+  [TOURNAMENT_RECORDS]: OBJECT,
+  [TOURNAMENT_RECORD]: OBJECT,
+  [POLICY_DEFINITIONS]: OBJECT,
+  [DRAW_DEFINITION]: OBJECT,
+  [MATCHUP_IDS]: ARRAY,
+  [STRUCTURES]: ARRAY,
+  [STRUCTURE]: OBJECT,
+  [COURT_IDS]: ARRAY,
+  [VENUE_IDS]: ARRAY,
+  [MATCHUPS]: ARRAY,
+  [MATCHUP]: OBJECT,
+  [EVENT]: OBJECT,
 };
 
 export function checkRequiredParameters(

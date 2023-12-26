@@ -1,8 +1,8 @@
+import { checkRequiredParameters } from '../../parameters/checkRequiredParameters';
+
+import { TOURNAMENT_RECORDS } from '../../constants/attributeConstants';
+import { ErrorType } from '../../constants/errorConditionConstants';
 import { TournamentRecords } from '../../types/factoryTypes';
-import {
-  ErrorType,
-  MISSING_TOURNAMENT_RECORDS,
-} from '../../constants/errorConditionConstants';
 
 type Aggregator = {
   tournamentIdMap: { [key: string]: string[] };
@@ -19,20 +19,21 @@ type AggregatorResut = {
 
 // Returns arrays of all drawIds and eventIds across tournamentRecords
 // Returns an combined array of drawIds and eventIds for each tournamentId
-export function getEventIdsAndDrawIds({
-  tournamentRecords,
-}: {
+export function getEventIdsAndDrawIds(params: {
   tournamentRecords: TournamentRecords;
 }): AggregatorResut {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
+  const paramCheck = checkRequiredParameters(params, [
+    { [TOURNAMENT_RECORDS]: true },
+  ]);
+  if (paramCheck.error) return paramCheck;
 
-  const tournamentIds = Object.keys(tournamentRecords);
+  const tournamentIds = Object.keys(params.tournamentRecords);
 
   return tournamentIds.reduce(
     (aggregator: Aggregator, tournamentId) => {
       aggregator.tournamentIdMap[tournamentId] = [];
 
-      const tournamentRecord = tournamentRecords[tournamentId];
+      const tournamentRecord = params.tournamentRecords[tournamentId];
       const events = tournamentRecord.events || [];
       const eventIds = events.map(({ eventId }) => eventId);
       const drawIds = events

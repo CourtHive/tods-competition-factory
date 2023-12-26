@@ -1,21 +1,29 @@
 import { resolveTournamentRecords } from '../../parameters/resolveTournamentRecords';
+import { checkRequiredParameters } from '../../parameters/checkRequiredParameters';
 import { addExtension } from '../extensions/addExtension';
-import { mustBeAnArray } from '../../utilities/mustBeAnArray';
 
 import { DISABLED } from '../../constants/extensionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
-  MISSING_TOURNAMENT_RECORD,
-  MISSING_TOURNAMENT_RECORDS,
-  MISSING_VALUE,
-} from '../../constants/errorConditionConstants';
+  COURT_IDS,
+  TOURNAMENT_RECORDS,
+} from '../../constants/attributeConstants';
 
-export function disableCourts(params) {
+type DisableCourtsArgs = {
+  tournamentRecords: any;
+  tournamentId?: string;
+  courtIds: string[];
+  dates?: string[];
+};
+
+export function disableCourts(params: DisableCourtsArgs) {
   const { courtIds, dates } = params;
   const tournamentRecords = resolveTournamentRecords(params);
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
-  if (!Array.isArray(courtIds))
-    return { error: MISSING_VALUE, info: mustBeAnArray('courtIds') };
+  const paramsToCheck: any[] = [
+    { [TOURNAMENT_RECORDS]: true, [COURT_IDS]: true },
+  ];
+  const paramCheck = checkRequiredParameters(params, paramsToCheck);
+  if (paramCheck.error) return paramCheck;
 
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     courtsDisable({ tournamentRecord, courtIds, dates });
@@ -25,22 +33,12 @@ export function disableCourts(params) {
 }
 
 function courtsDisable({ tournamentRecord, courtIds, dates }) {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!Array.isArray(courtIds))
-    return {
-      info: mustBeAnArray('courtIds'),
-      error: MISSING_VALUE,
-    };
-
   const disabledValue = Array.isArray(dates) && dates.length ? { dates } : true;
   const disableCourt = (court) =>
     addExtension({
+      extension: { value: disabledValue, name: DISABLED },
       creationTime: false,
       element: court,
-      extension: {
-        value: disabledValue,
-        name: DISABLED,
-      },
     });
 
   for (const venue of tournamentRecord.venues || []) {
