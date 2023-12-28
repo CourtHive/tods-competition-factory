@@ -1,14 +1,14 @@
+import { includesMatchUpStatuses } from '../../drawDefinitions/matchUpGovernor/includesMatchUpStatuses';
+import { structureAssignedDrawPositions } from '../../../query/drawDefinition/positionsGetter';
 import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { removeSubsequentRoundsParticipant } from './removeSubsequentRoundsParticipant';
-import { structureAssignedDrawPositions } from '../../../query/drawDefinition/positionsGetter';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
-import { clearDrawPosition } from './positionClear';
-import { includesMatchUpStatuses } from '../../drawDefinitions/matchUpGovernor/includesMatchUpStatuses';
-import { findStructure } from '../../../acquire/findStructure';
 import { updateTieMatchUpScore } from '../score/tieMatchUpScore';
 import { modifyMatchUpScore } from '../score/modifyMatchUpScore';
-import { instanceCount } from '../../../utilities';
 import { isAdHoc } from '../../../query/drawDefinition/isAdHoc';
+import { findStructure } from '../../../acquire/findStructure';
+import { instanceCount } from '../../../utilities/arrays';
+import { clearDrawPosition } from './positionClear';
 
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';

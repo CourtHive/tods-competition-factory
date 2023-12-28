@@ -1,7 +1,7 @@
 import { getContainedStructures } from '../../../query/drawDefinition/getContainedStructures';
 import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
 import { addSchedulingProfileRound } from '../../../mutate/matchUps/schedule/addSchedulingProfileRound';
-import { intersection, unique } from '../../../utilities';
+import { intersection, unique } from '../../../utilities/arrays';
 
 import { Tournament } from '../../../types/tournamentTypes';
 import {

@@ -1,8 +1,13 @@
-import { getRoundMatchUps } from './getRoundMatchUps';
-import { chunkArray, generateRange, numericSort } from '../../utilities';
-import { groupConsecutiveNumbers, unique } from '../../utilities/arrays';
 import { MatchUpsMap, getMappedStructureMatchUps } from './getMatchUpsMap';
+import { getRoundMatchUps } from './getRoundMatchUps';
+import { numericSort } from '../../utilities/sorting';
 import { getRangeString } from './getRangeString';
+import {
+  chunkArray,
+  generateRange,
+  groupConsecutiveNumbers,
+  unique,
+} from '../../utilities/arrays';
 
 import { DrawDefinition } from '../../types/tournamentTypes';
 import { RoundProfile } from '../../types/factoryTypes';

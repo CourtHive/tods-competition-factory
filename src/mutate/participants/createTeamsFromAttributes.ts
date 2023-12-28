@@ -1,8 +1,8 @@
-import { addExtension } from '../extensions/addExtension';
 import { getAccessorValue } from '../../utilities/getAccessorValue';
 import { addNotice } from '../../global/state/globalState';
+import { addExtension } from '../extensions/addExtension';
 import { findExtension } from '../../acquire/findExtension';
-import { UUID } from '../../utilities';
+import { UUID } from '../../utilities/UUID';
 
 import { GROUPING_ATTRIBUTE } from '../../constants/extensionConstants';
 import { INDIVIDUAL, TEAM } from '../../constants/participantConstants';

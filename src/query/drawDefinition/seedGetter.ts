@@ -1,14 +1,18 @@
-import { getAppliedPolicies } from '../extensions/getAppliedPolicies';
-import { getAllStructureMatchUps } from '../matchUps/getAllStructureMatchUps';
 import { getStructureSeedAssignments } from '../structure/getStructureSeedAssignments';
-import { chunkArray, generateRange, shuffleArray } from '../../utilities';
-import { isLucky } from './isLucky';
+import { getAllStructureMatchUps } from '../matchUps/getAllStructureMatchUps';
+import { getAppliedPolicies } from '../extensions/getAppliedPolicies';
 import { getNumericSeedValue } from './getNumericSeedValue';
 import { findStructure } from '../../acquire/findStructure';
+import { isLucky } from './isLucky';
 import {
   getSeedBlocks,
   getSeedGroups,
 } from '../../mutate/drawDefinitions/positionGovernor/getSeedBlocks';
+import {
+  chunkArray,
+  generateRange,
+  shuffleArray,
+} from '../../utilities/arrays';
 import {
   getPositionAssignments,
   structureAssignedDrawPositions,

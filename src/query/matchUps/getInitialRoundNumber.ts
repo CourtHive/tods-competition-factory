@@ -1,5 +1,6 @@
+import { numericSort } from '../../utilities/sorting';
+
 import { HydratedMatchUp } from '../../types/hydrated';
-import { numericSort } from '../../utilities';
 
 type GetInitialRoundNumberArgs = {
   matchUps?: HydratedMatchUp[];

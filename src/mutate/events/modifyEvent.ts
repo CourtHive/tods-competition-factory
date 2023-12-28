@@ -1,6 +1,6 @@
 import { getParticipants } from '../../query/participants/getParticipants';
 import { isObject, isString } from '../../utilities/objects';
-import { unique } from '../../utilities';
+import { unique } from '../../utilities/arrays';
 import {
   ResultType,
   decorateResult,

@@ -1,6 +1,6 @@
 import { getStructureGroups } from '../../../../../query/structure/getStructureGroups';
-import { instanceCount } from '../../../../../utilities';
 import mocksEngine from '../../../../../assemblies/engines/mock';
+import { instanceCount } from '../../../../../utilities/arrays';
 import tournamentEngine from '../../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
@@ -57,7 +57,7 @@ it('can specify qualifiersCount when no qualifying draws are generated', () => {
   );
   expect(qualifyihgParticipantIds.length).toEqual(12);
 
-  result = tournamentEngine.addEventEntries({
+  tournamentEngine.addEventEntries({
     participantIds: qualifyihgParticipantIds,
     entryStage: QUALIFYING,
     eventId,

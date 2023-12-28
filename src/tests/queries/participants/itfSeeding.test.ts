@@ -1,6 +1,6 @@
-import tournamentEngine from '../../engines/syncEngine';
-import { generateRange, unique } from '../../../utilities';
+import { generateRange, unique } from '../../../utilities/arrays';
 import mocksEngine from '../../../assemblies/engines/mock';
+import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { CLUSTER, MAIN } from '../../../constants/drawDefinitionConstants';

@@ -1,4 +1,4 @@
-import garman from '../../../forge/garman/garman';
+import garman from '../../../assemblies/generators/scheduling/garman/garman';
 import { expect, it } from 'vitest';
 
 const date = new Date().toISOString().split('T')[0];

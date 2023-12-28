@@ -7,9 +7,9 @@ import { ensureInt } from '../../../utilities/ensureInt';
 import {
   generateRange,
   randomMember,
-  shuffleArray,
   randomPop,
-} from '../../../utilities';
+  shuffleArray,
+} from '../../../utilities/arrays';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 import { MALE, FEMALE } from '../../../constants/genderConstants';

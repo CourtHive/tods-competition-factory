@@ -1,11 +1,11 @@
 import { assignDrawPositionBye } from '../../matchUps/drawPositions/assignDrawPositionBye';
+import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
+import { assignDrawPosition } from '../../matchUps/drawPositions/positionAssignment';
 import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
-import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
 import { findStructure } from '../../../acquire/findStructure';
-import { assignDrawPosition } from '../../matchUps/drawPositions/positionAssignment';
-import { intersection } from '../../../utilities';
+import { intersection } from '../../../utilities/arrays';
 import {
   modifyDrawNotice,
   modifyPositionAssignmentsNotice,

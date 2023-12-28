@@ -1,17 +1,19 @@
 import { addEventExtension } from '../extensions/addRemoveExtensions';
-import { extractAttributes, intersection, UUID } from '../../utilities';
 import { decorateResult } from '../../global/functions/decorateResult';
 import { getFlightProfile } from '../../query/event/getFlightProfile';
+import { extractAttributes } from '../../utilities/objects';
+import { intersection } from '../../utilities/arrays';
 import { ensureInt } from '../../utilities/ensureInt';
+import { UUID } from '../../utilities/UUID';
 
 import { FLIGHT_PROFILE } from '../../constants/extensionConstants';
+import { Entry, Event } from '../../types/tournamentTypes';
 import {
   EXISTING_FLIGHT,
   INVALID_VALUES,
   MISSING_EVENT,
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
-import { Entry, Event } from '../../types/tournamentTypes';
 
 type AddFlightArgs = {
   qualifyingPositions?: number;

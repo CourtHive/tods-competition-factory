@@ -1,7 +1,7 @@
 import { findExtension } from '../../../acquire/findExtension';
-import { intersection } from '../../../utilities';
-import { expect, it, test } from 'vitest';
 import mocksEngine from '../../../assemblies/engines/mock';
+import { intersection } from '../../../utilities/arrays';
+import { expect, it, test } from 'vitest';
 import fs from 'fs';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';

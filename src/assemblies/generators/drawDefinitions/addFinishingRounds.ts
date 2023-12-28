@@ -1,7 +1,9 @@
-import { validMatchUps } from '../../../validators/validMatchUp';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
-import { extractAttributes, generateRange } from '../../../utilities';
 import { getDevContext } from '../../../global/state/globalState';
+import { validMatchUps } from '../../../validators/validMatchUp';
+import { extractAttributes } from '../../../utilities/objects';
+import { generateRange } from '../../../utilities/arrays';
+
 import { MatchUp } from '../../../types/tournamentTypes';
 
 type AddFinishingRoundsArgs = {

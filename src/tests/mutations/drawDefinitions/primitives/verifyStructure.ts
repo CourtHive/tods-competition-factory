@@ -1,12 +1,12 @@
 import { getStructureSeedAssignments } from '../../../../query/structure/getStructureSeedAssignments';
-import { getAllStructureMatchUps } from '../../../../query/matchUps/getAllStructureMatchUps';
 import { getStructurePositionedSeeds } from '../../../../query/structure/getStructurePositionedSeeds';
 import { structureAssignedDrawPositions } from '../../../../query/drawDefinition/positionsGetter';
 import { getPairedDrawPosition } from '../../../../query/drawDefinition/getPairedDrawPosition';
+import { getAllStructureMatchUps } from '../../../../query/matchUps/getAllStructureMatchUps';
 import { getNumericSeedValue } from '../../../../query/drawDefinition/getNumericSeedValue';
-import { chunkArray, generateRange } from '../../../../utilities';
-import { verifyDrawHierarchy } from './verifyDrawHierarchy';
+import { chunkArray, generateRange } from '../../../../utilities/arrays';
 import { findStructure } from '../../../../acquire/findStructure';
+import { verifyDrawHierarchy } from './verifyDrawHierarchy';
 import { expect } from 'vitest';
 
 import { STRUCTURE_NOT_FOUND } from '../../../../constants/errorConditionConstants';

@@ -1,9 +1,9 @@
-import { getScheduledRoundsDetails } from './getScheduledRoundsDetails';
-import { getMatchUpDependencies } from '../../matchUps/getMatchUpDependencies';
 import { getSchedulingProfile } from '../../../mutate/tournaments/schedulingProfile';
 import { allCompetitionMatchUps } from '../../matchUps/getAllCompetitionMatchUps';
+import { getMatchUpDependencies } from '../../matchUps/getMatchUpDependencies';
+import { getScheduledRoundsDetails } from './getScheduledRoundsDetails';
+import { intersection, unique } from '../../../utilities/arrays';
 import { isValidDateString } from '../../../utilities/dateTime';
-import { intersection, unique } from '../../../utilities';
 
 import { TournamentRecords } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -25,7 +25,7 @@ export function getSchedulingProfileIssues(
     scheduleDates = [],
     tournamentRecords,
     periodLength = 30,
-  } = params || {};
+  } = params ?? {};
 
   if (typeof tournamentRecords !== 'object')
     return { error: INVALID_TOURNAMENT_RECORD };

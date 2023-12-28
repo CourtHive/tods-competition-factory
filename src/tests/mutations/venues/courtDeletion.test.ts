@@ -1,10 +1,10 @@
+import { extractAttributes } from '../../../utilities/objects';
 import mocksEngine from '../../../assemblies/engines/mock';
+import { extractTime } from '../../../utilities/dateTime';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { SINGLES } from '../../../constants/eventConstants';
-import { extractTime } from '../../../utilities/dateTime';
-import { extractAttributes } from '../../../utilities';
 
 it('can add events, venues, and schedule matchUps', () => {
   const startDate = '2020-01-01';

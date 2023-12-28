@@ -1,7 +1,7 @@
-import { addTimeItem } from '../timeItems/addTimeItem';
 import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
+import { extractAttributes } from '../../utilities/objects';
 import { addGoesTo } from './matchUpGovernor/addGoesTo';
-import { extractAttributes } from '../../utilities';
+import { addTimeItem } from '../timeItems/addTimeItem';
 import {
   addMatchUpsNotice,
   modifyDrawNotice,

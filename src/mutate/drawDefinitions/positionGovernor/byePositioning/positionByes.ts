@@ -1,10 +1,10 @@
+import { assignDrawPositionBye } from '../../../matchUps/drawPositions/assignDrawPositionBye';
+import { getByesData } from '../../../../query/drawDefinition/getByesData';
 import { getSeedOrderByePositions } from './getSeedOrderedByePositions';
 import { getDevContext } from '../../../../global/state/globalState';
 import { getUnseededByePositions } from './getUnseededByePositions';
-import { assignDrawPositionBye } from '../../../matchUps/drawPositions/assignDrawPositionBye';
 import { findStructure } from '../../../../acquire/findStructure';
-import { getByesData } from '../../../../query/drawDefinition/getByesData';
-import { shuffleArray } from '../../../../utilities';
+import { shuffleArray } from '../../../../utilities/arrays';
 
 import { MatchUpsMap } from '../../../../query/matchUps/getMatchUpsMap';
 import { SUCCESS } from '../../../../constants/resultConstants';

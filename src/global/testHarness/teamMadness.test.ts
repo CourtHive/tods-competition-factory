@@ -1,8 +1,8 @@
 import tournamentEngine from '../../tests/engines/syncEngine';
-import { numericSort, unique } from '../../utilities';
+import { numericSort } from '../../utilities/sorting';
+import { unique } from '../../utilities/arrays';
 import { mocksEngine } from '../..';
 import { expect, it } from 'vitest';
-import fs from 'fs';
 
 import { TEAM as EVENT_TEAM } from '../../constants/eventConstants';
 import { DOUBLES, SINGLES, TEAM } from '../../constants/matchUpTypes';
@@ -12,14 +12,10 @@ import {
   PAIR,
 } from '../../constants/participantConstants';
 
+import tournamentRecord from './teamMadness.tods.json';
+
 // node --expose-gc ./node_modules/.bin/jest --runInBand --logHeapUsage --watch madness
 it('withOpponents adds appropriate opponents', () => {
-  const tournamentRecordJSON = fs.readFileSync(
-    './src/global/testHarness/teamMadness.tods.json',
-    'utf-8'
-  );
-
-  const tournamentRecord = JSON.parse(tournamentRecordJSON);
   tournamentEngine.setState(tournamentRecord);
 
   let result = tournamentEngine

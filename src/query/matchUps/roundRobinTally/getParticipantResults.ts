@@ -1,7 +1,7 @@
 import { countGames, countSets, countPoints } from './scoreCounters';
 import { calculatePercentages } from './calculatePercentages';
+import { intersection } from '../../../utilities/arrays';
 import { ensureInt } from '../../../utilities/ensureInt';
-import { intersection } from '../../../utilities';
 
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { HydratedMatchUp } from '../../../types/hydrated';
@@ -59,8 +59,8 @@ export function getParticipantResults({
             ({ matchUpStatus }) =>
               !excludeMatchUpStatuses.includes(matchUpStatus)
           )
-          .flatMap(({ score }) => score?.sets?.length || 0)
-      : score?.sets?.length || 0
+          .flatMap(({ score }) => score?.sets?.length ?? 0)
+      : score?.sets?.length ?? 0
   );
   const totalSets = allSets.reduce((a, b) => a + b, 0);
 
@@ -207,7 +207,7 @@ export function getParticipantResults({
         });
       } else {
         processMatchUp({
-          matchUpFormat: matchUp.matchUpFormat || matchUpFormat,
+          matchUpFormat: matchUp.matchUpFormat ?? matchUpFormat,
           isTieMatchUp: undefined,
           winningParticipantId,
           manualGamesOverride,

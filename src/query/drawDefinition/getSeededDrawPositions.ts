@@ -1,4 +1,5 @@
-import { chunkArray, extractAttributes as xa } from '../../utilities';
+import { extractAttributes as xa } from '../../utilities/objects';
+import { chunkArray } from '../../utilities/arrays';
 
 import { MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
 

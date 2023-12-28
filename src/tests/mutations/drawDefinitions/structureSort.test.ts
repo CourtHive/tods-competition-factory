@@ -1,8 +1,8 @@
 import { structureSort } from '../../../functions/sorters/structureSort';
-import { instanceCount } from '../../../utilities';
 import mocksEngine from '../../../assemblies/engines/mock';
-import { utilities } from '../../../index';
+import { instanceCount } from '../../../utilities/arrays';
 import tournamentEngine from '../../engines/syncEngine';
+import { utilities } from '../../../index';
 import { expect, test } from 'vitest';
 
 import {

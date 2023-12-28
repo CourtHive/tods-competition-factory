@@ -1,6 +1,6 @@
-import tournamentEngine from '../../../engines/syncEngine';
 import mocksEngine from '../../../../assemblies/engines/mock';
-import { unique } from '../../../../utilities';
+import tournamentEngine from '../../../engines/syncEngine';
+import { unique } from '../../../../utilities/arrays';
 import { it, expect } from 'vitest';
 
 import { COMPASS } from '../../../../constants/drawDefinitionConstants';

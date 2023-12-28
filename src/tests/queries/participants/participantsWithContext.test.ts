@@ -1,6 +1,6 @@
-import tournamentEngine from '../../engines/syncEngine';
-import { intersection } from '../../../utilities';
 import mocksEngine from '../../../assemblies/engines/mock';
+import { intersection } from '../../../utilities/arrays';
+import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
@@ -213,13 +213,9 @@ it('can add statistics to tournament participants', () => {
   const genResult = mocksEngine.generateTournamentRecord({
     drawProfiles,
   });
-  let tournamentRecord = genResult.tournamentRecord;
+  const tournamentRecord = genResult.tournamentRecord;
   const eventIds = genResult.eventIds;
   tournamentEngine.setState(tournamentRecord);
-
-  ({ tournamentRecord } = tournamentEngine.getState({
-    convertExtensions: true,
-  }));
 
   const eventId = eventIds[0];
   const { event } = tournamentEngine.getEvent({ eventId });

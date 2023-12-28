@@ -1,8 +1,8 @@
 import { getAllStructureMatchUps } from '../../../../query/matchUps/getAllStructureMatchUps';
-import { feedInChampionship } from '../primitives/feedIn';
-import tournamentEngine from '../../../engines/syncEngine';
-import { intersection } from '../../../../utilities';
 import mocksEngine from '../../../../assemblies/engines/mock';
+import { intersection } from '../../../../utilities/arrays';
+import tournamentEngine from '../../../engines/syncEngine';
+import { feedInChampionship } from '../primitives/feedIn';
 import { expect, it } from 'vitest';
 
 import { FEED_IN_CHAMPIONSHIP_TO_SF } from '../../../../constants/drawDefinitionConstants';

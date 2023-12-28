@@ -1,5 +1,6 @@
 import { getScaleValues } from '../query/participant/getScaleValues';
-import { attributeFilter, makeDeepCopy } from '../utilities';
+import { attributeFilter } from '../utilities/attributeFilter';
+import { makeDeepCopy } from '../utilities/makeDeepCopy';
 
 import { ContextProfile, PolicyDefinitions } from '../types/factoryTypes';
 import { POLICY_TYPE_PARTICIPANT } from '../constants/policyConstants';

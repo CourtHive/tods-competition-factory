@@ -1,9 +1,9 @@
-import { findParticipant } from '../../acquire/findParticipant';
 import { getParticipants } from '../../query/participants/getParticipants';
 import { getParticipantId } from '../../global/functions/extractors';
 import { definedAttributes } from '../../utilities/definedAttributes';
+import { findParticipant } from '../../acquire/findParticipant';
 import { addParticipants } from './addParticipants';
-import { UUID } from '../../utilities';
+import { UUID } from '../../utilities/UUID';
 
 import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';
 import { Participant } from '../../types/tournamentTypes';

@@ -1,9 +1,9 @@
 import { getAllPositionedParticipantIds } from '../drawDefinition/positionsGetter';
 import { getParticipantId } from '../../global/functions/extractors';
 import { getAccessorValue } from '../../utilities/getAccessorValue';
-import { getTimeItem } from '../base/timeItems';
 import { getFlightProfile } from '../event/getFlightProfile';
-import { unique } from '../../utilities';
+import { getTimeItem } from '../base/timeItems';
+import { unique } from '../../utilities/arrays';
 
 import { SIGN_IN_STATUS } from '../../constants/participantConstants';
 import { SINGLES } from '../../constants/eventConstants';

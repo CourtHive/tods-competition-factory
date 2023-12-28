@@ -1,9 +1,9 @@
-import { checkAndUpdateSchedulingProfile } from '../tournaments/schedulingProfile';
-import { removeCourtAssignment } from '../matchUps/schedule/removeCourtAssignment';
-import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
-import { allCompetitionMatchUps } from '../../forge/query';
-import { addNotice } from '../../global/state/globalState';
+import { allCompetitionMatchUps } from '../../query/matchUps/getAllCompetitionMatchUps';
 import { deletionMessage } from '../../assemblies/generators/matchUps/deletionMessage';
+import { removeCourtAssignment } from '../matchUps/schedule/removeCourtAssignment';
+import { checkAndUpdateSchedulingProfile } from '../tournaments/schedulingProfile';
+import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
+import { addNotice } from '../../global/state/globalState';
 
 import { POLICY_TYPE_SCHEDULING } from '../../constants/policyConstants';
 import { Tournament, Venue } from '../../types/tournamentTypes';

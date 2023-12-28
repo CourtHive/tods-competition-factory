@@ -1,13 +1,8 @@
-import {
-  isOdd,
-  nextPowerOf2,
-  isPowerOf2,
-  skewedDistribution,
-} from '../../utilities/math';
+import { makeDeepCopy } from '../../utilities/makeDeepCopy';
 import { generateHashCode } from '../../utilities/objects';
 import { safeUUID, UUIDS } from '../../utilities/UUID';
-import { expect, it, test } from 'vitest';
 import { deepMerge } from '../../utilities/deepMerge';
+import { expect, it, test } from 'vitest';
 import {
   addMinutesToTimeString,
   addWeek,
@@ -24,13 +19,6 @@ import {
   weekDays,
 } from '../../utilities/dateTime';
 import {
-  generateRange,
-  intersection,
-  makeDeepCopy,
-  noNulls,
-  randomPop,
-} from '../../utilities';
-import {
   arrayIndices,
   chunkByNth,
   chunkSizeProfile,
@@ -40,7 +28,17 @@ import {
   occurrences,
   subSort,
   overlap,
+  generateRange,
+  intersection,
+  noNulls,
+  randomPop,
 } from '../../utilities/arrays';
+import {
+  isOdd,
+  nextPowerOf2,
+  isPowerOf2,
+  skewedDistribution,
+} from '../../utilities/math';
 
 it('can count values and determine active drawPositions', () => {
   const drawPositions = [1, 1, 2, 3, 4, 5, 5, 6];

@@ -1,10 +1,12 @@
-import { getDrawMatchUps } from '../../matchUps/drawMatchUps';
-import { getNumericSeedValue } from '../getNumericSeedValue';
 import { definedAttributes } from '../../../utilities/definedAttributes';
 import { extractAttributes } from '../../../utilities/objects';
+import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
+import { getDrawMatchUps } from '../../matchUps/drawMatchUps';
+import { getNumericSeedValue } from '../getNumericSeedValue';
+import { unique } from '../../../utilities/arrays';
 import { getNextSeedBlock } from '../seedGetter';
-import { makeDeepCopy, unique } from '../../../utilities';
 
+import { PolicyDefinitions, SeedingProfile } from '../../../types/factoryTypes';
 import { POLICY_TYPE_SEEDING } from '../../../constants/policyConstants';
 import { HydratedParticipant } from '../../../types/hydrated';
 import { TEAM } from '../../../constants/eventConstants';
@@ -19,7 +21,6 @@ import {
   Event,
   PositionAssignment,
 } from '../../../types/tournamentTypes';
-import { PolicyDefinitions, SeedingProfile } from '../../../types/factoryTypes';
 
 type GetValidAssignmentActionsArgs = {
   tournamentParticipants?: HydratedParticipant[];

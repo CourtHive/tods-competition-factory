@@ -1,21 +1,21 @@
-import { checkAndUpdateSchedulingProfile } from '../tournaments/schedulingProfile';
-import { checkScoreHasValue } from '../../query/matchUp/checkScoreHasValue';
-import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
-import { modifyEventPublishStatus } from './modifyEventPublishStatus';
-import { getEventPublishStatus } from '../../query/event/getEventPublishStatus';
-import { addExtension } from '../extensions/addExtension';
-import { allDrawMatchUps } from '../../query/matchUps/getAllDrawMatchUps';
 import { getPositionAssignments } from '../../query/structure/getPositionAssignments';
-import { addEventExtension } from '../extensions/addRemoveExtensions';
-import { getDrawStructures } from '../../acquire/findStructure';
+import { checkAndUpdateSchedulingProfile } from '../tournaments/schedulingProfile';
+import { getEventPublishStatus } from '../../query/event/getEventPublishStatus';
+import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
+import { checkScoreHasValue } from '../../query/matchUp/checkScoreHasValue';
+import { allDrawMatchUps } from '../../query/matchUps/getAllDrawMatchUps';
 import { decorateResult } from '../../global/functions/decorateResult';
+import { modifyEventPublishStatus } from './modifyEventPublishStatus';
+import { addEventExtension } from '../extensions/addRemoveExtensions';
 import { definedAttributes } from '../../utilities/definedAttributes';
 import { getFlightProfile } from '../../query/event/getFlightProfile';
-import { findExtension } from '../../acquire/findExtension';
-import { publishEvent } from './publishEvent';
+import { getDrawStructures } from '../../acquire/findStructure';
+import { makeDeepCopy } from '../../utilities/makeDeepCopy';
 import { addNotice } from '../../global/state/globalState';
-import { makeDeepCopy } from '../../utilities';
+import { addExtension } from '../extensions/addExtension';
+import { findExtension } from '../../acquire/findExtension';
 import { findEvent } from '../../acquire/findEvent';
+import { publishEvent } from './publishEvent';
 import {
   deleteDrawNotice,
   deleteMatchUpsNotice,

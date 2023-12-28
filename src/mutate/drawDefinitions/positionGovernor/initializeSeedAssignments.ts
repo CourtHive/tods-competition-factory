@@ -1,9 +1,9 @@
-import { getSeedsCount } from '../../../query/drawDefinition/getSeedsCount';
 import { structureAssignedDrawPositions } from '../../../query/drawDefinition/positionsGetter';
+import { getSeedsCount } from '../../../query/drawDefinition/getSeedsCount';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { isConvertableInteger } from '../../../utilities/math';
 import { findStructure } from '../../../acquire/findStructure';
-import { generateRange } from '../../../utilities';
+import { generateRange } from '../../../utilities/arrays';
 import { getSeedGroups } from './getSeedBlocks';
 
 import { PolicyDefinitions, SeedingProfile } from '../../../types/factoryTypes';

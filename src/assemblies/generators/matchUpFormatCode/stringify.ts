@@ -1,12 +1,14 @@
 import { SET, NOAD } from '../../../constants/matchUpFormatConstants';
+import { isObject } from '../../../utilities/objects';
 
 export function stringify(matchUpFormatObject, preserveRedundant?: boolean) {
-  if (typeof matchUpFormatObject !== 'object') return;
+  if (!isObject(matchUpFormatObject)) undefined;
   if (
-    (matchUpFormatObject.bestOf || matchUpFormatObject.exactly) &&
-    matchUpFormatObject.setFormat
-  )
+    (matchUpFormatObject?.bestOf || matchUpFormatObject?.exactly) &&
+    matchUpFormatObject?.setFormat
+  ) {
     return getSetFormat(matchUpFormatObject, preserveRedundant);
+  }
   return undefined;
 }
 

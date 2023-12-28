@@ -1,6 +1,6 @@
 import { isAdHoc } from '../../query/drawDefinition/isAdHoc';
 import { findStructure } from '../../acquire/findStructure';
-import { numericSort } from '../../utilities';
+import { numericSort } from '../../utilities/sorting';
 import {
   deleteMatchUpsNotice,
   modifyMatchUpNotice,

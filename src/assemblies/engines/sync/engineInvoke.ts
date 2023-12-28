@@ -3,7 +3,7 @@ import { notifySubscribers } from '../../../global/state/notifySubscribers';
 import { getMethods } from '../../../global/state/syncGlobalState';
 import { getMutationStatus } from '../parts/getMutationStatus';
 import { executeFunction } from '../parts/executeMethod';
-import { makeDeepCopy } from '../../../utilities';
+import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
 import { setState } from '../parts/stateMethods';
 import {
   deleteNotices,

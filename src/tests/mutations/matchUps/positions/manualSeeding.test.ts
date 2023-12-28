@@ -1,6 +1,6 @@
-import tournamentEngine from '../../../engines/syncEngine';
-import { extractAttributes } from '../../../../utilities';
+import { extractAttributes } from '../../../../utilities/objects';
 import mocksEngine from '../../../../assemblies/engines/mock';
+import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { SEEDING } from '../../../../constants/scaleConstants';

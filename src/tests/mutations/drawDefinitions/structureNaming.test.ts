@@ -1,4 +1,4 @@
-import { extractAttributes as xa } from '../../../utilities';
+import { extractAttributes as xa } from '../../../utilities/objects';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';

@@ -1,8 +1,8 @@
-import { findExtension } from '../../acquire/findExtension';
 import { modifyEntryProfile } from '../../mutate/drawDefinitions/entryGovernor/modifyEntryProfile';
-import { getEntryProfile } from './getEntryProfile';
+import { findExtension } from '../../acquire/findExtension';
 import { findStructure } from '../../acquire/findStructure';
-import { numericSort } from '../../utilities';
+import { numericSort } from '../../utilities/sorting';
+import { getEntryProfile } from './getEntryProfile';
 
 import { ROUND_TARGET, TALLY } from '../../constants/extensionConstants';
 import { ErrorType } from '../../constants/errorConditionConstants';

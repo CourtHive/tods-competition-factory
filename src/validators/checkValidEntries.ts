@@ -1,14 +1,15 @@
 import { getParticipants } from '../query/participants/getParticipants';
 import { isUngrouped } from '../global/functions/isUngrouped';
-import { unique } from '../utilities';
+import { unique } from '../utilities/arrays';
 
 import POLICY_MATCHUP_ACTIONS_DEFAULT from '../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
 import { POLICY_TYPE_MATCHUP_ACTIONS } from '../constants/policyConstants';
+import { INDIVIDUAL, PAIR, TEAM } from '../constants/participantConstants';
+import { ParticipantMap, PolicyDefinitions } from '../types/factoryTypes';
+import { ANY, FEMALE, MALE, MIXED } from '../constants/genderConstants';
+import { DOUBLES_EVENT, TEAM_EVENT } from '../constants/eventConstants';
 import { WITHDRAWN } from '../constants/entryStatusConstants';
 import { SUCCESS } from '../constants/resultConstants';
-import { ParticipantMap, PolicyDefinitions } from '../types/factoryTypes';
-import { INDIVIDUAL, PAIR, TEAM } from '../constants/participantConstants';
-import { DOUBLES_EVENT, TEAM_EVENT } from '../constants/eventConstants';
 import {
   INVALID_ENTRIES,
   INVALID_VALUES,
@@ -21,7 +22,6 @@ import {
   Participant,
   Tournament,
 } from '../types/tournamentTypes';
-import { ANY, FEMALE, MALE, MIXED } from '../constants/genderConstants';
 
 type CheckValidEntriesArgs = {
   policyDefinitions?: PolicyDefinitions;

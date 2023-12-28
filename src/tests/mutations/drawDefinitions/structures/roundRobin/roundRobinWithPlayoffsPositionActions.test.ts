@@ -1,9 +1,9 @@
-import { generateMatchUpOutcome } from '../../primitives/generateMatchUpOutcome';
 import { getPositionAssignments } from '../../../../../query/drawDefinition/positionsGetter';
-import tournamentEngine from '../../../../engines/syncEngine';
-import { intersection } from '../../../../../utilities';
-import { setsValues } from './roundRobinSetsValues';
+import { generateMatchUpOutcome } from '../../primitives/generateMatchUpOutcome';
 import mocksEngine from '../../../../../assemblies/engines/mock';
+import { intersection } from '../../../../../utilities/arrays';
+import tournamentEngine from '../../../../engines/syncEngine';
+import { setsValues } from './roundRobinSetsValues';
 import { expect, it } from 'vitest';
 
 import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';

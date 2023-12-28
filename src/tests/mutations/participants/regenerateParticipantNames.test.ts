@@ -1,10 +1,10 @@
-import { generateRange } from '../../../utilities';
 import mocksEngine from '../../../assemblies/engines/mock';
+import { generateRange } from '../../../utilities/arrays';
+import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { DOUBLES_EVENT, TEAM_EVENT } from '../../../constants/eventConstants';
 import names from '../../../fixtures/data/names.json';
-import tournamentEngine from '../../engines/syncEngine';
 import {
   INDIVIDUAL,
   PAIR,

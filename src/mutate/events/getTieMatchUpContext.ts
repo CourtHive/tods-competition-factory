@@ -1,9 +1,9 @@
 import { resolveTieFormat } from '../../query/hierarchical/tieFormats/resolveTieFormat';
-import { findDrawMatchUp } from '../../acquire/findDrawMatchUp';
-import { getMatchUpsMap } from '../../query/matchUps/getMatchUpsMap';
 import { getPositionAssignments } from '../../query/drawDefinition/positionsGetter';
 import { getParticipants } from '../../query/participants/getParticipants';
-import { extractAttributes } from '../../utilities';
+import { getMatchUpsMap } from '../../query/matchUps/getMatchUpsMap';
+import { findDrawMatchUp } from '../../acquire/findDrawMatchUp';
+import { extractAttributes } from '../../utilities/objects';
 
 import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
 import { TEAM } from '../../constants/participantConstants';

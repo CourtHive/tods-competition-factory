@@ -1,5 +1,6 @@
 import { getVenuesAndCourts } from '../../../../../query/venues/venuesAndCourtsGetter';
 import { getScheduleTimes } from '../../../../../query/venues/getScheduleTimes';
+import { extractAttributes } from '../../../../../utilities/objects';
 import { calculatePeriodLength } from './calculatePeriodLength';
 import { getDateTimeBoundary } from './getTimeBoundary';
 import { generateBookings } from './generateBookings';
@@ -12,7 +13,6 @@ import {
 import { ScheduleTimesResult } from '../../../../../types/factoryTypes';
 import { Tournament } from '../../../../../types/tournamentTypes';
 import { HydratedMatchUp } from '../../../../../types/hydrated';
-import { extractAttributes } from '../../../../../utilities';
 
 type GenerateScheduleTimesArgs = {
   tournamentRecords?: { [key: string]: Tournament };

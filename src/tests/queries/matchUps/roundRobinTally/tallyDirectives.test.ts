@@ -1,5 +1,5 @@
 import { tallyParticipantResults } from '../../../../query/matchUps/roundRobinTally/roundRobinTally';
-import { extractAttributes as xa } from '../../../../utilities';
+import { extractAttributes as xa } from '../../../../utilities/objects';
 import tournamentEngine from '../../../engines/syncEngine';
 import tournamentRecord from './dominantDuo.tods.json';
 import { expect, it } from 'vitest';

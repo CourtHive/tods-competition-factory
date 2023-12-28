@@ -1,5 +1,5 @@
 import { validateTieFormat } from '../../validators/validateTieFormat';
-import { UUID } from '../../utilities';
+import { UUID } from '../../utilities/UUID';
 
 import { ResultType } from '../../global/functions/decorateResult';
 import { TieFormat } from '../../types/tournamentTypes';

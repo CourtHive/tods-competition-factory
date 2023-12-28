@@ -1,14 +1,14 @@
-import { removeDrawPositionAssignment } from '../../drawDefinitions/removeDrawPositionAssignment';
 import { conditionallyDisableLinkPositioning } from '../../drawDefinitions/positionGovernor/conditionallyDisableLinkPositioning';
-import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
-import { assignDrawPositionBye } from './assignDrawPositionBye';
-import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import { addPositionActionTelemetry } from '../../drawDefinitions/positionGovernor/addPositionActionTelemetry';
+import { removeDrawPositionAssignment } from '../../drawDefinitions/removeDrawPositionAssignment';
+import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
+import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
-import { assignDrawPosition } from './positionAssignment';
-import { findStructure } from '../../../acquire/findStructure';
+import { assignDrawPositionBye } from './assignDrawPositionBye';
+import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
 import { updateSideLineUp } from '../lineUps/updateSideLineUp';
-import { makeDeepCopy } from '../../../utilities';
+import { findStructure } from '../../../acquire/findStructure';
+import { assignDrawPosition } from './positionAssignment';
 import { resetLineUps } from '../lineUps/resetLineUps';
 import {
   modifyDrawNotice,

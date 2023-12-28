@@ -1,8 +1,8 @@
-import { findExtension } from '../../../../acquire/findExtension';
 import { getParticipantId } from '../../../../global/functions/extractors';
 import { generateTeamTournament } from './generateTestTeamTournament';
-import { intersection } from '../../../../utilities';
+import { findExtension } from '../../../../acquire/findExtension';
 import mocksEngine from '../../../../assemblies/engines/mock';
+import { intersection } from '../../../../utilities/arrays';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 

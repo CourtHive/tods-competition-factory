@@ -1,7 +1,7 @@
 import { decorateResult, ResultType } from '../global/functions/decorateResult';
 import { validateCollectionDefinition } from './validateCollectionDefinition';
 import { mustBeAnArray } from '../utilities/mustBeAnArray';
-import { unique } from '../utilities';
+import { unique } from '../utilities/arrays';
 
 import { INVALID_TIE_FORMAT } from '../constants/errorConditionConstants';
 import { Category, Event, GenderUnion } from '../types/tournamentTypes';

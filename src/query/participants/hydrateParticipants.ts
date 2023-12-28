@@ -1,11 +1,11 @@
 import { addParticipantGroupings } from '../../mutate/drawDefinitions/positionGovernor/avoidance/addParticipantGroupings';
 import { addNationalityCode } from '../../mutate/participants/addNationalityCode';
 import { getScaleValues } from '../participant/getScaleValues';
+import { makeDeepCopy } from '../../utilities/makeDeepCopy';
 
 import { getParticipantMap } from './getParticipantMap';
 import { Tournament } from '../../types/tournamentTypes';
 import { HydratedParticipant } from '../../types/hydrated';
-import { makeDeepCopy } from '../../utilities';
 import {
   ContextProfile,
   ParticipantsProfile,

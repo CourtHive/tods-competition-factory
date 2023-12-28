@@ -1,4 +1,5 @@
-import { chunkArray, generateRange, numericSort } from '../../../utilities';
+import { chunkArray, generateRange } from '../../../utilities/arrays';
+import { numericSort } from '../../../utilities/sorting';
 
 import { CLUSTER } from '../../../constants/drawDefinitionConstants';
 

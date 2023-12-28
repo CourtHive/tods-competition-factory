@@ -10,7 +10,7 @@ import { getTieMatchUpContext } from '../../events/getTieMatchUpContext';
 import { addParticipant } from '../../participants/addParticipant';
 import { getTeamLineUp } from '../../drawDefinitions/getTeamLineUp';
 import { ensureSideLineUps } from './ensureSideLineUps';
-import { overlap } from '../../../utilities';
+import { overlap } from '../../../utilities/arrays';
 import {
   ResultType,
   decorateResult,

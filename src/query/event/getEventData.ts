@@ -1,10 +1,11 @@
-import { getParticipants } from '../participants/getParticipants';
-import { generateRange, makeDeepCopy } from '../../utilities';
-import { getEventPublishStatus } from './getEventPublishStatus';
-import { isConvertableInteger } from '../../utilities/math';
 import { getTournamentInfo } from '../tournaments/getTournamentInfo';
-import { getVenueData } from '../venues/getVenueData';
+import { getParticipants } from '../participants/getParticipants';
+import { getEventPublishStatus } from './getEventPublishStatus';
+import { makeDeepCopy } from '../../utilities/makeDeepCopy';
+import { isConvertableInteger } from '../../utilities/math';
 import { getDrawData } from '../drawDefinition/getDrawData';
+import { generateRange } from '../../utilities/arrays';
+import { getVenueData } from '../venues/getVenueData';
 
 import { Event, Tournament } from '../../types/tournamentTypes';
 import { PUBLIC } from '../../constants/timeItemConstants';

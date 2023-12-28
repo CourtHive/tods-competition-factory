@@ -7,8 +7,9 @@ import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { updateTeamLineUp } from '../../drawDefinitions/updateTeamLineUp';
 import { getTieMatchUpContext } from '../../events/getTieMatchUpContext';
 import { addParticipant } from '../../participants/addParticipant';
-import { makeDeepCopy, unique } from '../../../utilities';
+import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
 import { ensureSideLineUps } from './ensureSideLineUps';
+import { unique } from '../../../utilities/arrays';
 import {
   ResultType,
   decorateResult,

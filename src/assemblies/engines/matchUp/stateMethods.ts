@@ -1,5 +1,4 @@
-import { makeDeepCopy } from '../../../utilities';
-
+import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
 import { MatchUp } from '../../../types/tournamentTypes';
 import {
   INVALID_OBJECT,

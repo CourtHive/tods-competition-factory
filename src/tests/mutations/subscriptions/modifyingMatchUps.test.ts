@@ -1,5 +1,5 @@
 import { rgbColors } from '../../../global/functions/logColors';
-import { makeDeepCopy } from '../../../utilities';
+import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
@@ -115,7 +115,7 @@ function snapshot(params) {
 
   if (log && comparison) {
     const [r, g, b] = rgbColors.tomato;
-    comparison.map(({ matchUpId, text }) => {
+    comparison.forEach(({ matchUpId, text }) => {
       if (missingNotifications?.includes(matchUpId)) {
         debugLog(chalk.blueBright('matchUpId', chalk.rgb(r, g, b)(matchUpId)));
       } else {

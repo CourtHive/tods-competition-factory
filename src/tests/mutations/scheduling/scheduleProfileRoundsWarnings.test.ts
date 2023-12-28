@@ -1,7 +1,7 @@
 import mocksEngine from '../../../assemblies/engines/mock';
 import { extractTime } from '../../../utilities/dateTime';
+import { intersection } from '../../../utilities/arrays';
 import tournamentEngine from '../../engines/syncEngine';
-import { intersection } from '../../../utilities';
 import { expect, it } from 'vitest';
 
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';

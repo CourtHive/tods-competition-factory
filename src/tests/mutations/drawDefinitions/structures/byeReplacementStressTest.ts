@@ -1,12 +1,13 @@
 import { completeDrawMatchUps } from '../../../../assemblies/generators/mocks/completeDrawMatchUps';
 import { getPositionAssignments } from '../../../../query/drawDefinition/positionsGetter';
 import { getDrawPosition } from '../../../../global/functions/extractors';
-import { extractAttributes, shuffleArray } from '../../../../utilities';
 import { hasParticipantId } from '../../../../global/functions/filters';
+import { extractAttributes } from '../../../../utilities/objects';
+import mocksEngine from '../../../../assemblies/engines/mock';
+import { shuffleArray } from '../../../../utilities/arrays';
 import tournamentEngine from '../../../engines/syncEngine';
 import { findEvent } from '../../../../acquire/findEvent';
 import { randomInt } from '../../../../utilities/math';
-import mocksEngine from '../../../../assemblies/engines/mock';
 import { expect } from 'vitest';
 import {
   replaceWithBye,

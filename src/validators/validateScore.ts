@@ -1,7 +1,7 @@
 import { analyzeScore } from '../query/matchUp/analyzeScore';
 import { mustBeAnArray } from '../utilities/mustBeAnArray';
 import { isConvertableInteger } from '../utilities/math';
-import { unique } from '../utilities';
+import { unique } from '../utilities/arrays';
 
 import type { Score } from '../types/tournamentTypes';
 import { ResultType } from '../global/functions/decorateResult';

@@ -1,6 +1,7 @@
-import { generateRange, randomMember } from '../../../../utilities';
+import { generateRange, randomMember } from '../../../../utilities/arrays';
 import { scoreMatchUp, enterValues } from './primitives';
 import { expect, it } from 'vitest';
+
 import {
   SCORE_TEST_KEYS,
   OUTCOME_ABANDONED,

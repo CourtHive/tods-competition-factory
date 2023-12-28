@@ -1,4 +1,4 @@
-import { generateRange } from '../../../utilities';
+import { generateRange } from '../../../utilities/arrays';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 

@@ -1,6 +1,6 @@
-import askEngine from '../../../tests/engines/askEngine';
-import { shuffleArray } from '../../../utilities';
 import mocksEngine from '../../../assemblies/engines/mock';
+import askEngine from '../../../tests/engines/askEngine';
+import { shuffleArray } from '../../../utilities/arrays';
 import { matchUpSort } from '../matchUpSort';
 import { it, expect } from 'vitest';
 

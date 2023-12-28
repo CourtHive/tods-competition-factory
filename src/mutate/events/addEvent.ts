@@ -3,7 +3,7 @@ import { allEventMatchUps } from '../../query/matchUps/getAllEventMatchUps';
 import { validateTieFormat } from '../../validators/validateTieFormat';
 import { definedAttributes } from '../../utilities/definedAttributes';
 import { getTopics } from '../../global/state/globalState';
-import { UUID } from '../../utilities';
+import { UUID } from '../../utilities/UUID';
 import {
   addDrawNotice,
   addMatchUpsNotice,

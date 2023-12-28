@@ -1,6 +1,7 @@
-import { chunkArray, extractAttributes } from '../../../utilities';
+import { extractAttributes } from '../../../utilities/objects';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
+import { chunkArray } from '../../../utilities/arrays';
 import { expect, test } from 'vitest';
 
 import { POLICY_TYPE_AVOIDANCE } from '../../../constants/policyConstants';

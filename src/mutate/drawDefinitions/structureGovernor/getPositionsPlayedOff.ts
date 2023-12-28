@@ -1,6 +1,7 @@
 import { getStructureRoundProfile } from '../../../query/structure/getStructureRoundProfile';
-import { numericSort, unique } from '../../../utilities';
+import { numericSort } from '../../../utilities/sorting';
 import { roundValueRanges } from './structureUtils';
+import { unique } from '../../../utilities/arrays';
 
 import { MatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
 import { QUALIFYING } from '../../../constants/drawDefinitionConstants';

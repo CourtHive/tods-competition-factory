@@ -5,10 +5,10 @@ import { getParticipantId } from '../../global/functions/extractors';
 import { definedAttributes } from '../../utilities/definedAttributes';
 import { participantRoles } from '../../constants/participantRoles';
 import { genderConstants } from '../../constants/genderConstants';
+import { makeDeepCopy } from '../../utilities/makeDeepCopy';
 import { addNotice } from '../../global/state/globalState';
 import { countries } from '../../fixtures/countryData';
 import { addParticipant } from './addParticipant';
-import { makeDeepCopy } from '../../utilities';
 
 import { MODIFY_PARTICIPANTS } from '../../constants/topicConstants';
 import { SUCCESS } from '../../constants/resultConstants';

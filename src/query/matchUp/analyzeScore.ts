@@ -1,7 +1,7 @@
 import { parse } from '../../assemblies/generators/matchUpFormatCode/parse';
-import { Score } from '../../types/tournamentTypes';
-import { instanceCount } from '../../utilities';
+import { instanceCount } from '../../utilities/arrays';
 
+import { Score } from '../../types/tournamentTypes';
 import {
   DEFAULTED,
   RETIRED,

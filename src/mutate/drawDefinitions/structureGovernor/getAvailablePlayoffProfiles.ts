@@ -1,9 +1,10 @@
-import { allDrawMatchUps } from '../../../query/matchUps/getAllDrawMatchUps';
-import { chunkArray, generateRange, numericSort } from '../../../utilities';
 import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
-import { getPositionsPlayedOff } from './getPositionsPlayedOff';
-import { getDrawStructures } from '../../../acquire/findStructure';
+import { allDrawMatchUps } from '../../../query/matchUps/getAllDrawMatchUps';
 import { getStructureLinks } from '../../../query/drawDefinition/linkGetter';
+import { chunkArray, generateRange } from '../../../utilities/arrays';
+import { getDrawStructures } from '../../../acquire/findStructure';
+import { getPositionsPlayedOff } from './getPositionsPlayedOff';
+import { numericSort } from '../../../utilities/sorting';
 import { getSourceRounds } from './getSourceRounds';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';

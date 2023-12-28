@@ -1,12 +1,12 @@
-import { getAllStructureMatchUps } from '../matchUps/getAllStructureMatchUps';
 import { getStructureSeedAssignments } from '../structure/getStructureSeedAssignments';
+import { getAllStructureMatchUps } from '../matchUps/getAllStructureMatchUps';
+import { structureSort } from '../../functions/sorters/structureSort';
+import { getStructureGroups } from '../structure/getStructureGroups';
+import { hasParticipantId } from '../../global/functions/filters';
+import { makeDeepCopy } from '../../utilities/makeDeepCopy';
 import { getPositionAssignments } from './positionsGetter';
 import { findStructure } from '../../acquire/findStructure';
-import { structureSort } from '../../functions/sorters/structureSort';
-import { hasParticipantId } from '../../global/functions/filters';
 import { findExtension } from '../../acquire/findExtension';
-import { getStructureGroups } from '../structure/getStructureGroups';
-import { makeDeepCopy } from '../../utilities';
 
 import { TALLY } from '../../constants/extensionConstants';
 import { SUCCESS } from '../../constants/resultConstants';

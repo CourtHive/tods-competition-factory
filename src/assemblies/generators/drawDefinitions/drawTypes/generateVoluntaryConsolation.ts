@@ -1,15 +1,16 @@
 import { resolveTieFormat } from '../../../../query/hierarchical/tieFormats/resolveTieFormat';
-import { validateTieFormat } from '../../../../validators/validateTieFormat';
-import { copyTieFormat } from '../../../../query/hierarchical/tieFormats/copyTieFormat';
 import { getAllStructureMatchUps } from '../../../../query/matchUps/getAllStructureMatchUps';
 import { automatedPositioning } from '../../../../mutate/drawDefinitions/automatedPositioning';
-import { definedAttributes } from '../../../../utilities/definedAttributes';
+import { copyTieFormat } from '../../../../query/hierarchical/tieFormats/copyTieFormat';
 import { modifyDrawNotice } from '../../../../mutate/notifications/drawNotifications';
-import { generateTieMatchUps } from '../tieMatchUps';
-import { makeDeepCopy, nextPowerOf2 } from '../../../../utilities';
-import { getDrawStructures } from '../../../../acquire/findStructure';
-import { constantToString } from '../../../../utilities/strings';
 import { getStageEntries } from '../../../../query/drawDefinition/stageGetter';
+import { validateTieFormat } from '../../../../validators/validateTieFormat';
+import { definedAttributes } from '../../../../utilities/definedAttributes';
+import { getDrawStructures } from '../../../../acquire/findStructure';
+import { makeDeepCopy } from '../../../../utilities/makeDeepCopy';
+import { constantToString } from '../../../../utilities/strings';
+import { nextPowerOf2 } from '../../../../utilities/math';
+import { generateTieMatchUps } from '../tieMatchUps';
 import { getGenerators } from '../getGenerators';
 
 import {

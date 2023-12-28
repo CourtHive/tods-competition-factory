@@ -1,4 +1,4 @@
-import { nextPowerOf2 } from '../../utilities';
+import { nextPowerOf2 } from '../../utilities/math';
 import {
   ResultType,
   decorateResult,
@@ -14,7 +14,7 @@ export function getEliminationDrawSize({
   participantsCount,
   participantCount, // TODO: to be deprecated
 }: GetDrawSizeArgs): ResultType & { drawSize?: number } {
-  participantsCount = participantsCount || participantCount;
+  participantsCount = participantsCount ?? participantCount;
   if (!participantsCount) return { error: INVALID_VALUES };
 
   const drawSize = nextPowerOf2(participantsCount);

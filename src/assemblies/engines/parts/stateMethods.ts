@@ -1,5 +1,5 @@
+import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
 import { findExtension } from '../../../acquire/findExtension';
-import { makeDeepCopy } from '../../../utilities';
 import {
   getTournamentId,
   getTournamentRecords,
@@ -46,7 +46,7 @@ type GetTournamentArgs = {
 
 export function getTournament(params?: GetTournamentArgs) {
   const { convertExtensions = false, removeExtensions = false } = params ?? {};
-  const tournamentId = params?.tournamentId || getTournamentId();
+  const tournamentId = params?.tournamentId ?? getTournamentId();
   if (typeof tournamentId !== 'string') return {};
   const tournamentRecord = getTournamentRecord(tournamentId);
   return {

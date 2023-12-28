@@ -1,8 +1,8 @@
+import { intersection } from '../../utilities/arrays';
+
 import { HydratedMatchUp, HydratedParticipant } from '../../types/hydrated';
 import { INVALID_VALUES } from '../../constants/errorConditionConstants';
 import { ResultType } from '../../global/functions/decorateResult';
-import { intersection } from '../../utilities';
-
 import { SUCCESS } from '../../constants/resultConstants';
 import {
   countGames,

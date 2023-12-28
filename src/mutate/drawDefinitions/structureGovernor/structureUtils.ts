@@ -1,5 +1,5 @@
 import { getStructureRoundProfile } from '../../../query/structure/getStructureRoundProfile';
-import { generateRange, unique } from '../../../utilities';
+import { generateRange, unique } from '../../../utilities/arrays';
 
 export function getFinishingPositionSourceRoundsMap({
   finishingPositions,

@@ -1,4 +1,4 @@
-import { unique } from '../../utilities';
+import { unique } from '../../utilities/arrays';
 
 import { HydratedMatchUp, HydratedSide } from '../../types/hydrated';
 import { ResultType } from '../../global/functions/decorateResult';

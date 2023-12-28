@@ -1,8 +1,9 @@
+import { dateRange, formatDate } from '../../utilities/dateTime';
+import { UUID } from '../../utilities/UUID';
 import { addCourts } from './addCourt';
 import { addVenue } from './addVenue';
-import { dateRange, formatDate } from '../../utilities/dateTime';
+
 import { Tournament } from '../../types/tournamentTypes';
-import { UUID } from '../../utilities';
 
 type GenerateVenuesArgs = {
   tournamentRecord: Tournament;

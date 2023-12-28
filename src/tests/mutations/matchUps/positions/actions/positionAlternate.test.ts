@@ -1,7 +1,7 @@
 import { getRoundMatchUps } from '../../../../../query/matchUps/getRoundMatchUps';
-import tournamentEngine from '../../../../engines/syncEngine';
 import mocksEngine from '../../../../../assemblies/engines/mock';
-import { unique } from '../../../../../utilities';
+import tournamentEngine from '../../../../engines/syncEngine';
+import { unique } from '../../../../../utilities/arrays';
 import { expect, it } from 'vitest';
 
 import {

@@ -1,22 +1,22 @@
 import { validateCollectionValueProfiles } from '../../../validators/validateCollectionValueProfiles';
-import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
-import { updateTieFormat } from '../../tieFormat/updateTieFormat';
-import { validateTieFormat } from '../../../validators/validateTieFormat';
-import { definedAttributes } from '../../../utilities/definedAttributes';
-import { genderConstants } from '../../../constants/genderConstants';
-import { isConvertableInteger } from '../../../utilities/math';
+import { copyTieFormat } from '../../../query/hierarchical/tieFormats/copyTieFormat';
 import { calculateWinCriteria } from '../../../query/matchUp/calculateWinCriteria';
 import { getTieFormat } from '../../../query/hierarchical/tieFormats/getTieFormat';
+import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
+import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
+import { validateTieFormat } from '../../../validators/validateTieFormat';
+import { definedAttributes } from '../../../utilities/definedAttributes';
+import { updateTieFormat } from '../../tieFormat/updateTieFormat';
+import { isConvertableInteger } from '../../../utilities/math';
 import { tieFormatTelemetry } from './tieFormatTelemetry';
-import { intersection } from '../../../utilities';
-import { copyTieFormat } from '../../../query/hierarchical/tieFormats/copyTieFormat';
+import { intersection } from '../../../utilities/arrays';
 import {
   ResultType,
   decorateResult,
 } from '../../../global/functions/decorateResult';
 
 import { TIE_FORMAT_MODIFICATIONS } from '../../../constants/extensionConstants';
+import { genderConstants } from '../../../constants/genderConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   Category,

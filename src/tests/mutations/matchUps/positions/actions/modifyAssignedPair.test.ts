@@ -1,6 +1,6 @@
-import tournamentEngine from '../../../../engines/syncEngine';
-import { instanceCount } from '../../../../../utilities';
 import mocksEngine from '../../../../../assemblies/engines/mock';
+import { instanceCount } from '../../../../../utilities/arrays';
+import tournamentEngine from '../../../../engines/syncEngine';
 import { expect, test } from 'vitest';
 
 import { MODIFY_PAIR_ASSIGNMENT } from '../../../../../constants/positionActionConstants';

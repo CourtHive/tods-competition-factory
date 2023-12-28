@@ -1,9 +1,9 @@
 import { getPairedPreviousMatchUp } from '../positionGovernor/getPairedPreviousMatchup';
-import { decorateResult } from '../../../global/functions/decorateResult';
 import { positionTargets } from '../../matchUps/drawPositions/positionTargets';
-import { findStructure } from '../../../acquire/findStructure';
 import { modifyMatchUpScore } from '../../matchUps/score/modifyMatchUpScore';
-import { intersection, overlap } from '../../../utilities';
+import { decorateResult } from '../../../global/functions/decorateResult';
+import { intersection, overlap } from '../../../utilities/arrays';
+import { findStructure } from '../../../acquire/findStructure';
 import {
   removeDirectedBye,
   removeDirectedWinner,

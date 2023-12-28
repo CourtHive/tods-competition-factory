@@ -1,14 +1,14 @@
-import { checkAndUpdateSchedulingProfile } from '../tournaments/schedulingProfile';
 import { bulkScheduleTournamentMatchUps } from '../matchUps/schedule/bulkScheduleTournamentMatchUps';
 import { deletionMessage } from '../../assemblies/generators/matchUps/deletionMessage';
 import { resolveTournamentRecords } from '../../parameters/resolveTournamentRecords';
+import { checkAndUpdateSchedulingProfile } from '../tournaments/schedulingProfile';
 import venueTemplate from '../../assemblies/generators/templates/venueTemplate';
 import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
-import { modifyCourt } from './modifyCourt';
+import { makeDeepCopy } from '../../utilities/makeDeepCopy';
 import { addNotice } from '../../global/state/globalState';
+import { modifyCourt } from './modifyCourt';
 import { addCourt } from './addCourt';
 import { findVenue } from './findVenue';
-import { makeDeepCopy } from '../../utilities';
 import {
   getScheduledCourtMatchUps,
   getScheduledVenueMatchUps,

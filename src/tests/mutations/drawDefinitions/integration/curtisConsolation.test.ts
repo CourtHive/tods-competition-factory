@@ -1,15 +1,15 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
 import { initializeStructureSeedAssignments } from '../../../../mutate/drawDefinitions/positionGovernor/initializeSeedAssignments';
-import { automatedPositioning } from '../../../../mutate/drawDefinitions/automatedPositioning';
 import { getStructureSeedAssignments } from '../../../../query/structure/getStructureSeedAssignments';
-import { attachPolicies } from '../../../../mutate/extensions/policies/attachPolicies';
+import { newDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { setStageDrawSize } from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 import { addDrawEntries } from '../../../../mutate/drawDefinitions/entryGovernor/addDrawEntries';
+import { automatedPositioning } from '../../../../mutate/drawDefinitions/automatedPositioning';
 import { assignSeed } from '../../../../mutate/drawDefinitions/entryGovernor/seedAssignment';
-import { verifyStructure } from '../primitives/verifyStructure';
+import { attachPolicies } from '../../../../mutate/extensions/policies/attachPolicies';
 import { getDrawStructures } from '../../../../acquire/findStructure';
-import { newDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/newDrawDefinition';
-import { generateRange } from '../../../../utilities';
+import { verifyStructure } from '../primitives/verifyStructure';
+import { generateRange } from '../../../../utilities/arrays';
 import { expect, it } from 'vitest';
 
 import SEEDING_POLICY from '../../../../fixtures/policies/POLICY_SEEDING_ITF';

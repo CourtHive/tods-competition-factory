@@ -1,8 +1,8 @@
 import scoreGovernor from '../../governors/scoreGovernor';
+import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
 
 import { notifySubscribers } from '../../../global/state/notifySubscribers';
 import { factoryVersion } from '../../../global/functions/factoryVersion';
-import { makeDeepCopy } from '../../../utilities';
 import {
   setDeepCopy,
   setDevContext,

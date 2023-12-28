@@ -1,7 +1,7 @@
-import { getDrawStructures } from '../../../acquire/findStructure';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
+import { getDrawStructures } from '../../../acquire/findStructure';
+import { generateRange } from '../../../utilities/arrays';
 import { mocksEngine, setSubscriptions } from '../../..';
-import { generateRange } from '../../../utilities';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, test } from 'vitest';
 

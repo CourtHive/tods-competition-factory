@@ -1,10 +1,12 @@
 import { getParticipants } from '../../query/participants/getParticipants';
 import { addNotice, getTopics } from '../../global/state/globalState';
 import { definedAttributes } from '../../utilities/definedAttributes';
-import { makeDeepCopy, UUID } from '../../utilities';
+import { makeDeepCopy } from '../../utilities/makeDeepCopy';
 import { addParticipant } from './addParticipant';
+import { UUID } from '../../utilities/UUID';
 
 import { GROUP, INDIVIDUAL } from '../../constants/participantConstants';
+import { Participant, Tournament } from '../../types/tournamentTypes';
 import { ADD_PARTICIPANTS } from '../../constants/topicConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import { OTHER } from '../../constants/participantRoles';
@@ -15,8 +17,6 @@ import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
-
-import { Participant, Tournament } from '../../types/tournamentTypes';
 
 type CreateGroupParticipantType = {
   participantRoleResponsibilities?: string[];

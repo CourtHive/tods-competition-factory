@@ -1,6 +1,6 @@
 import { decorateResult } from '../../global/functions/decorateResult';
+import { makeDeepCopy } from '../../utilities/makeDeepCopy';
 import { intersection } from '../../utilities/arrays';
-import { makeDeepCopy } from '../../utilities';
 
 import { Participant, Tournament } from '../../types/tournamentTypes';
 import { PAIR } from '../../constants/participantConstants';

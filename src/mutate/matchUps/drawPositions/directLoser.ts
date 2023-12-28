@@ -1,14 +1,14 @@
-import { removeLineUpSubstitutions } from '../../drawDefinitions/removeLineUpSubstitutions';
-import { assignDrawPositionBye } from './assignDrawPositionBye';
-import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
-import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { structureAssignedDrawPositions } from '../../../query/drawDefinition/positionsGetter';
-import { assignDrawPosition } from './positionAssignment';
-import { decorateResult } from '../../../global/functions/decorateResult';
-import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
+import { removeLineUpSubstitutions } from '../../drawDefinitions/removeLineUpSubstitutions';
+import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
+import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { assignSeed } from '../../drawDefinitions/entryGovernor/seedAssignment';
+import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
+import { decorateResult } from '../../../global/functions/decorateResult';
+import { assignDrawPositionBye } from './assignDrawPositionBye';
 import { findStructure } from '../../../acquire/findStructure';
-import { numericSort } from '../../../utilities';
+import { assignDrawPosition } from './positionAssignment';
+import { numericSort } from '../../../utilities/sorting';
 
 import { DEFAULTED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';

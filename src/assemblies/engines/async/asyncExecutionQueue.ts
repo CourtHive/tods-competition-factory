@@ -1,8 +1,8 @@
 import { notifySubscribersAsync } from '../../../global/state/notifySubscribers';
 import { getMutationStatus } from '../parts/getMutationStatus';
 import { logMethodNotFound } from '../parts/logMethodNotFound';
+import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
 import { executeFunction } from '../parts/executeMethod';
-import { makeDeepCopy } from '../../../utilities';
 import { setState } from '../parts/stateMethods';
 import {
   deleteNotices,

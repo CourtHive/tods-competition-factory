@@ -1,5 +1,5 @@
 import tieFormatDefaults from '../templates/tieFormatDefaults';
-import { UUID } from '../../../utilities';
+import { UUID } from '../../../utilities/UUID';
 
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import {

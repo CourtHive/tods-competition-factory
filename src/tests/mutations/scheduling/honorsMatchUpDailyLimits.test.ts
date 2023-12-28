@@ -1,7 +1,7 @@
 import { getMatchUpIds } from '../../../global/functions/extractors';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
-import { unique } from '../../../utilities';
+import { unique } from '../../../utilities/arrays';
 import { expect, it } from 'vitest';
 
 import { INVALID_OBJECT } from '../../../constants/errorConditionConstants';

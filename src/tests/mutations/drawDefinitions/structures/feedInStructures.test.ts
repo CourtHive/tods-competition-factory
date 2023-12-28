@@ -1,11 +1,11 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
-import { getDrawData } from '../../../../query/drawDefinition/getDrawData';
-import { setStageDrawSize } from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
-import { getRoundMatchUps } from '../../../../query/matchUps/getRoundMatchUps';
-import { feedInMatchUps } from '../../../../assemblies/generators/drawDefinitions/feedInMatchUps';
-import { feedInChampionship } from '../primitives/feedIn';
 import { newDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/newDrawDefinition';
-import { generateRange } from '../../../../utilities';
+import { setStageDrawSize } from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
+import { feedInMatchUps } from '../../../../assemblies/generators/drawDefinitions/feedInMatchUps';
+import { getRoundMatchUps } from '../../../../query/matchUps/getRoundMatchUps';
+import { getDrawData } from '../../../../query/drawDefinition/getDrawData';
+import { generateRange } from '../../../../utilities/arrays';
+import { feedInChampionship } from '../primitives/feedIn';
 import { expect, it } from 'vitest';
 
 import { DrawDefinition } from '../../../../types/tournamentTypes';

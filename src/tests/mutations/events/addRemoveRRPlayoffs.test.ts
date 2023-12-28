@@ -1,7 +1,8 @@
 import { getPositionsPlayedOff } from '../../../mutate/drawDefinitions/structureGovernor/getPositionsPlayedOff';
-import { chunkByNth } from '../../../utilities';
+import { setSubscriptions } from '../../../global/state/globalState';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
+import { chunkByNth } from '../../../utilities/arrays';
 import { expect, it } from 'vitest';
 
 import {
@@ -17,7 +18,6 @@ import {
   ADD_MATCHUPS,
   DELETED_MATCHUP_IDS,
 } from '../../../constants/topicConstants';
-import { setSubscriptions } from '../../../global/state/globalState';
 
 it('cann add ROUND_ROBIN playoff structures', () => {
   const {

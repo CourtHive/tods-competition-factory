@@ -1,10 +1,10 @@
 import { removeLineUpSubstitutions } from '../../../mutate/drawDefinitions/removeLineUpSubstitutions';
-import { validateLineUp } from '../../../validators/validateTeamLineUp';
 import { generateTeamTournament } from '../participants/team/generateTestTeamTournament';
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
-import tournamentEngine from '../../engines/syncEngine';
-import { intersection } from '../../../utilities';
+import { validateLineUp } from '../../../validators/validateTeamLineUp';
 import mocksEngine from '../../../assemblies/engines/mock';
+import { intersection } from '../../../utilities/arrays';
+import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';

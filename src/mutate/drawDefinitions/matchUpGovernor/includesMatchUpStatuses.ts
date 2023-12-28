@@ -1,4 +1,4 @@
-import { overlap } from '../../../utilities';
+import { overlap } from '../../../utilities/arrays';
 
 import {
   BYE,

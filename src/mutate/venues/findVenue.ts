@@ -1,6 +1,6 @@
 import { getLinkedTournamentIds } from '../../query/tournaments/getLinkedTournamentIds';
+import { makeDeepCopy } from '../../utilities/makeDeepCopy';
 import { addVenue } from './addVenue';
-import { makeDeepCopy } from '../../utilities';
 
 import { Tournament, Venue } from '../../types/tournamentTypes';
 import { SUCCESS } from '../../constants/resultConstants';

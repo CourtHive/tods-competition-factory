@@ -1,8 +1,8 @@
 import { allTournamentMatchUps } from '../../query/matchUps/getAllTournamentMatchUps';
-import { validMatchUps } from '../../validators/validMatchUp';
 import { getMatchUpId } from '../../global/functions/extractors';
-import { overlap } from '../../utilities';
 import { mustBeAnArray } from '../../utilities/mustBeAnArray';
+import { validMatchUps } from '../../validators/validMatchUp';
+import { overlap } from '../../utilities/arrays';
 import {
   addMatchUpsNotice,
   modifyDrawNotice,

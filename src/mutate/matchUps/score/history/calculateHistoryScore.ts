@@ -8,10 +8,16 @@ import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   INVALID_MATCHUP_FORMAT,
   INVALID_VALUES,
+  MISSING_MATCHUP,
   MISSING_MATCHUP_FORMAT,
+  MISSING_VALUE,
 } from '../../../../constants/errorConditionConstants';
 
-export function calculateHistoryScore({ matchUp, updateScore }) {
+export function calculateHistoryScore(params) {
+  if (!params) return { error: MISSING_VALUE };
+  const { matchUp, updateScore } = params;
+  if (!matchUp) return { error: MISSING_MATCHUP };
+
   const history = getHistory({ matchUp })?.history || [];
 
   if (!Array.isArray(history))

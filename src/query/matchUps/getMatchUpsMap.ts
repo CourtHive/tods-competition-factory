@@ -1,4 +1,4 @@
-import { makeDeepCopy } from '../../utilities';
+import { makeDeepCopy } from '../../utilities/makeDeepCopy';
 
 import { HydratedMatchUp } from '../../types/hydrated';
 import {

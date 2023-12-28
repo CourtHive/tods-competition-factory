@@ -13,7 +13,7 @@ import { getMatchUpId } from '../../../global/functions/extractors';
 import { findStructure } from '../../../acquire/findStructure';
 import { ensureInt } from '../../../utilities/ensureInt';
 import { generateTieMatchUps } from './tieMatchUps';
-import { makeDeepCopy } from '../../../utilities';
+import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
 import {
   ResultType,
   decorateResult,

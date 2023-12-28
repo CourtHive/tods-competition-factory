@@ -1,5 +1,5 @@
 import { addNotice } from '../../global/state/globalState';
-import { getTimeItem } from '../../forge/query';
+import { getTimeItem } from '../../query/base/timeItems';
 import { addTimeItem } from './addTimeItem';
 
 import { PUBLIC, PUBLISH, STATUS } from '../../constants/timeItemConstants';

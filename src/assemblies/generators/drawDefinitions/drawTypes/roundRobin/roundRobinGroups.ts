@@ -1,4 +1,5 @@
-import { numericSort, unique } from '../../../../../utilities';
+import { numericSort } from '../../../../../utilities/sorting';
+import { unique } from '../../../../../utilities/arrays';
 
 export function getRoundRobinGroupMatchUps({ drawPositions }) {
   const positionMatchUps = (position) => {

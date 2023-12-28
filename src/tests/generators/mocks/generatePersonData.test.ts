@@ -1,5 +1,6 @@
 import { generatePersonData } from '../../../assemblies/generators/mocks/generatePersonData';
-import { instanceCount, numericSort, unique } from '../../../utilities';
+import { instanceCount, unique } from '../../../utilities/arrays';
+import { numericSort } from '../../../utilities/sorting';
 import namesData from '../../../fixtures/data/names.json';
 import { it, expect } from 'vitest';
 
@@ -9,7 +10,7 @@ it('can generation personData', () => {
   let { personData } = generatePersonData();
   expect(personData?.length).toEqual(100);
 
-  for (const person of personData || []) {
+  for (const person of personData ?? []) {
     expect(person.nationalityCode).not.toBeUndefined();
     expect(person.firstName).not.toBeUndefined();
     expect(person.lastName).not.toBeUndefined();

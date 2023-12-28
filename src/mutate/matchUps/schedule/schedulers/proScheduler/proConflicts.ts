@@ -1,8 +1,12 @@
 import { validMatchUps } from '../../../../../validators/validMatchUp';
 import { getMatchUpDependencies } from '../../../../../query/matchUps/getMatchUpDependencies';
-import { generateRange, instanceCount, unique } from '../../../../../utilities';
 import { matchUpSort } from '../../../../../functions/sorters/matchUpSort';
 import { ensureInt } from '../../../../../utilities/ensureInt';
+import {
+  generateRange,
+  instanceCount,
+  unique,
+} from '../../../../../utilities/arrays';
 
 import { Tournament } from '../../../../../types/tournamentTypes';
 import { HydratedMatchUp } from '../../../../../types/hydrated';

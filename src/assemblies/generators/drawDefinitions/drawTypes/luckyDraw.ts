@@ -1,8 +1,8 @@
-import { isConvertableInteger } from '../../../../utilities/math';
-import { generateRange, isPowerOf2 } from '../../../../utilities';
+import { isConvertableInteger, isPowerOf2 } from '../../../../utilities/math';
+import { generateRange } from '../../../../utilities/arrays';
+import { ensureInt } from '../../../../utilities/ensureInt';
 import { addFinishingRounds } from '../addFinishingRounds';
 import { generateMatchUpId } from '../generateMatchUpId';
-import { ensureInt } from '../../../../utilities/ensureInt';
 import { treeMatchUps } from './eliminationTree';
 import { buildRound } from '../buildRound';
 

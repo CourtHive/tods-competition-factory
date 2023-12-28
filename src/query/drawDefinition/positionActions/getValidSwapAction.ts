@@ -1,7 +1,9 @@
 import { getAllStructureMatchUps } from '../../matchUps/getAllStructureMatchUps';
 import { definedAttributes } from '../../../utilities/definedAttributes';
-import { overlap, makeDeepCopy } from '../../../utilities';
+import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
+import { overlap } from '../../../utilities/arrays';
 
+import { HydratedParticipant } from '../../../types/hydrated';
 import {
   SWAP_PARTICIPANTS,
   SWAP_PARTICIPANT_METHOD,
@@ -12,7 +14,6 @@ import {
   PositionAssignment,
   Structure,
 } from '../../../types/tournamentTypes';
-import { HydratedParticipant } from '../../../types/hydrated';
 
 type GetValidSwapActionArgs = {
   tournamentParticipants?: HydratedParticipant[];
@@ -105,7 +106,7 @@ export function getValidSwapAction({
   const availableParticipantIds = filteredAssignments
     .map((assignment) => assignment.participantId)
     .filter(Boolean);
-  const participantsAvailable = (tournamentParticipants || []).filter(
+  const participantsAvailable = (tournamentParticipants ?? []).filter(
     (participant) => availableParticipantIds.includes(participant.participantId)
   );
   const availableParticipantsMap = Object.assign(

@@ -1,10 +1,10 @@
-import { removeParticipantIdsFromAllTeams } from './removeIndividualParticipantIds';
 import { allTournamentMatchUps } from '../../query/matchUps/getAllTournamentMatchUps';
-import { removeEventEntries } from '../entries/removeEventEntries';
+import { removeParticipantIdsFromAllTeams } from './removeIndividualParticipantIds';
 import { getParticipants } from '../../query/participants/getParticipants';
+import { removeEventEntries } from '../entries/removeEventEntries';
 import { addEventEntries } from '../entries/addEventEntries';
 import { addNotice } from '../../global/state/globalState';
-import { intersection } from '../../utilities';
+import { intersection } from '../../utilities/arrays';
 
 import { DELETE_PARTICIPANTS } from '../../constants/topicConstants';
 import { UNGROUPED } from '../../constants/entryStatusConstants';

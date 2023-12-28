@@ -1,16 +1,12 @@
 import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { isCompletedStructure } from '../../../query/drawDefinition/structureActions';
 import { allDrawMatchUps } from '../../../query/matchUps/getAllDrawMatchUps';
+import { intersection, overlap, unique } from '../../../utilities/arrays';
 import { structureSort } from '../../../functions/sorters/structureSort';
+import { extractAttributes } from '../../../utilities/objects';
 import tournamentEngine from '../../engines/syncEngine';
 import { mocksEngine } from '../../..';
 import { expect, it } from 'vitest';
-import {
-  extractAttributes,
-  intersection,
-  overlap,
-  unique,
-} from '../../../utilities';
 
 import { COMPLETED } from '../../../constants/matchUpStatusConstants';
 import {

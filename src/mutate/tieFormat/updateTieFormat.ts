@@ -1,8 +1,11 @@
-import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
 import { generateCollectionMatchUps } from '../../assemblies/generators/drawDefinitions/tieMatchUps';
-import { getTieFormat } from '../../query/hierarchical/tieFormats/getTieFormat';
 import { compareTieFormats } from '../../query/hierarchical/tieFormats/compareTieFormats';
+import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
 import { copyTieFormat } from '../../query/hierarchical/tieFormats/copyTieFormat';
+import { getTieFormat } from '../../query/hierarchical/tieFormats/getTieFormat';
+import { instanceCount, intersection } from '../../utilities/arrays';
+import { extractAttributes as xa } from '../../utilities/objects';
+import { makeDeepCopy } from '../../utilities/makeDeepCopy';
 import { validUpdate } from '../../validators/validUpdate';
 import {
   addMatchUpsNotice,
@@ -14,12 +17,6 @@ import {
   ResultType,
   decorateResult,
 } from '../../global/functions/decorateResult';
-import {
-  extractAttributes as xa,
-  instanceCount,
-  intersection,
-  makeDeepCopy,
-} from '../../utilities';
 
 import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../constants/resultConstants';

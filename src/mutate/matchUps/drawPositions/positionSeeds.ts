@@ -1,11 +1,11 @@
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
+import { findStructure } from '../../../acquire/findStructure';
+import { generateRange } from '../../../utilities/arrays';
+import { assignDrawPosition } from './positionAssignment';
 import {
   getValidSeedBlocks,
   getNextSeedBlock,
 } from '../../../query/drawDefinition/seedGetter';
-import { findStructure } from '../../../acquire/findStructure';
-import { assignDrawPosition } from './positionAssignment';
-import { generateRange } from '../../../utilities';
 
 import { HydratedMatchUp, HydratedParticipant } from '../../../types/hydrated';
 import { MatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';

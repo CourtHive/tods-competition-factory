@@ -1,5 +1,6 @@
 import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
+import { UUID } from '../../../../utilities/UUID';
 import { expect, it } from 'vitest';
 import {
   getEntryStatus,
@@ -10,8 +11,7 @@ import {
   instanceCount,
   intersection,
   unique,
-  UUID,
-} from '../../../../utilities';
+} from '../../../../utilities/arrays';
 
 import { QUALIFYING } from '../../../../constants/drawDefinitionConstants';
 import { COMPETITOR } from '../../../../constants/participantRoles';
@@ -57,7 +57,7 @@ it('can modify entryStatus within event.entries', () => {
   let result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result.success).toEqual(true);
 
-  let { event, drawDefinition } = tournamentEngine.getEvent({ drawId });
+  let { drawDefinition } = tournamentEngine.getEvent({ drawId });
   const { structureId } = drawDefinition.structures[0];
   const { positionAssignments } = tournamentEngine.getPositionAssignments({
     structureId,
@@ -91,7 +91,10 @@ it('can modify entryStatus within event.entries', () => {
   });
   expect(result.success).toEqual(true);
 
-  ({ event, drawDefinition } = tournamentEngine.getEvent({ drawId }));
+  result = tournamentEngine.getEvent({ drawId });
+  drawDefinition = result.drawDefinition;
+  const event = result.event;
+
   let eventEntries = event.entries;
   let drawEntries = drawDefinition.entries;
   let { flightProfile } = tournamentEngine.getFlightProfile({ eventId });

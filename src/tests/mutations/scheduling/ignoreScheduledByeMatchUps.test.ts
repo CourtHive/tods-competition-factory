@@ -1,12 +1,9 @@
+import { chunkArray, intersection } from '../../../utilities/arrays';
+import { extractAttributes as xa } from '../../../utilities/objects';
 import { addDays, dateRange } from '../../../utilities/dateTime';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
-import {
-  chunkArray,
-  intersection,
-  extractAttributes as xa,
-} from '../../../utilities';
 
 import { BYE } from '../../../constants/matchUpStatusConstants';
 

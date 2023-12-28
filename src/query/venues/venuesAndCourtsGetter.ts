@@ -1,7 +1,7 @@
-import { getDisabledStatus } from '../extensions/getDisabledStatus';
 import { getInContextCourt } from '../../global/functions/deducers/getInContextCourt';
+import { getDisabledStatus } from '../extensions/getDisabledStatus';
+import { makeDeepCopy } from '../../utilities/makeDeepCopy';
 import { findExtension } from '../../acquire/findExtension';
-import { makeDeepCopy } from '../../utilities';
 
 import { HydratedCourt, HydratedVenue } from '../../types/hydrated';
 import { ResultType } from '../../global/functions/decorateResult';
@@ -53,7 +53,7 @@ export function getVenuesAndCourts(
   );
   tournamentIds.forEach((tournamentId) => {
     const tournamentRecord = tournamentRecords[tournamentId];
-    for (const venue of tournamentRecord.venues || []) {
+    for (const venue of tournamentRecord.venues ?? []) {
       if (venueIds.length && !venueIds.includes(venue.venueId)) continue;
       if (ignoreDisabled) {
         const { extension } = findExtension({
@@ -66,7 +66,7 @@ export function getVenuesAndCourts(
         venues.push(makeDeepCopy(venue, convertExtensions, true));
         uniqueVenueIds.push(venue.venueId);
       }
-      for (const court of venue.courts || []) {
+      for (const court of venue.courts ?? []) {
         if (!uniqueCourtIds.includes(court.courtId)) {
           // if dates are provided, only ignore the court if it is disabled for all given dates
           if (ignoreDisabled) {

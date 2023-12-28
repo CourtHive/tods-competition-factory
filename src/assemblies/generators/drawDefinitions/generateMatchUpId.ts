@@ -1,4 +1,4 @@
-import { UUID } from '../../../utilities';
+import { UUID } from '../../../utilities/UUID';
 
 export function generateMatchUpId({
   roundPosition,

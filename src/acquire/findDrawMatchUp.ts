@@ -1,9 +1,9 @@
 import { getAllStructureMatchUps } from '../query/matchUps/getAllStructureMatchUps';
 import { getContextContent } from '../query/hierarchical/getContextContent';
-import { MatchUpsMap } from '../query/matchUps/getMatchUpsMap';
 import { getMatchUp } from '../query/matchUps/getMatchUpFromMatchUps';
+import { MatchUpsMap } from '../query/matchUps/getMatchUpsMap';
+import { makeDeepCopy } from '../utilities/makeDeepCopy';
 import { getDrawStructures } from './findStructure';
-import { makeDeepCopy } from '../utilities';
 
 import { ContextContent, ContextProfile } from '../types/factoryTypes';
 import { HydratedMatchUp } from '../types/hydrated';

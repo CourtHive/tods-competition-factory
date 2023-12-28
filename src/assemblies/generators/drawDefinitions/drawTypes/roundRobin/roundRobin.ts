@@ -1,7 +1,8 @@
-import { structureTemplate } from '../../../templates/structureTemplate';
 import { addExtension } from '../../../../../mutate/extensions/addExtension';
+import { structureTemplate } from '../../../templates/structureTemplate';
 import { constantToString } from '../../../../../utilities/strings';
-import { generateRange, UUID } from '../../../../../utilities';
+import { generateRange } from '../../../../../utilities/arrays';
+import { UUID } from '../../../../../utilities/UUID';
 import {
   getRoundRobinGroupMatchUps,
   drawPositionsHash,

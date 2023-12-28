@@ -1,10 +1,10 @@
-import { findExtension } from '../../../../acquire/findExtension';
+import { tallyParticipantResults } from '../../../../query/matchUps/roundRobinTally/roundRobinTally';
 import { getPositionAssignments } from '../../../../query/drawDefinition/positionsGetter';
 import { toBePlayed } from '../../../../fixtures/scoring/outcomes/toBePlayed';
-import tournamentEngine from '../../../engines/syncEngine';
-import { tallyParticipantResults } from '../../../../query/matchUps/roundRobinTally/roundRobinTally';
-import { intersection } from '../../../../utilities';
+import { findExtension } from '../../../../acquire/findExtension';
 import mocksEngine from '../../../../assemblies/engines/mock';
+import { intersection } from '../../../../utilities/arrays';
+import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { ROUND_ROBIN } from '../../../../constants/drawDefinitionConstants';

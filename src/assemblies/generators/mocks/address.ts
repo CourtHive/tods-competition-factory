@@ -1,7 +1,11 @@
-import { generateRange, randomMember, shuffleArray } from '../../../utilities';
 import statesData from '../../../fixtures/data/territories.json';
 import citiesData from '../../../fixtures/data/cities.json';
 import { randomInt } from '../../../utilities/math';
+import {
+  generateRange,
+  randomMember,
+  shuffleArray,
+} from '../../../utilities/arrays';
 
 export function address() {
   return {

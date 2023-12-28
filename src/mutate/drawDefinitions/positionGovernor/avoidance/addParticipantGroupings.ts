@@ -1,7 +1,7 @@
-import { makeDeepCopy } from '../../../../utilities';
+import { makeDeepCopy } from '../../../../utilities/makeDeepCopy';
 
-import { Participant } from '../../../../types/tournamentTypes';
 import { ParticipantsProfile } from '../../../../types/factoryTypes';
+import { Participant } from '../../../../types/tournamentTypes';
 import {
   GROUP,
   INDIVIDUAL,

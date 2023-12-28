@@ -1,8 +1,8 @@
 import { getContainedStructures } from '../../../query/drawDefinition/getContainedStructures';
-import { findExtension } from '../../../acquire/findExtension';
 import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
 import { getStructureLinks } from '../../../query/drawDefinition/linkGetter';
-import { overlap } from '../../../utilities';
+import { findExtension } from '../../../acquire/findExtension';
+import { overlap } from '../../../utilities/arrays';
 
 import { TALLY } from '../../../constants/extensionConstants';
 import {

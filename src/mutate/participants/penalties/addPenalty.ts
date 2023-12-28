@@ -1,7 +1,7 @@
 import { getParticipants } from '../../../query/participants/getParticipants';
+import { extractAttributes as xa } from '../../../utilities/objects';
 import { addNotice } from '../../../global/state/globalState';
 import { addExtension } from '../../extensions/addExtension';
-import { extractAttributes as xa } from '../../../utilities';
 
 import penaltyTemplate from '../../../assemblies/generators/templates/penaltyTemplate';
 import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';

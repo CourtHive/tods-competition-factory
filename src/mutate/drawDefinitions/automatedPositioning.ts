@@ -1,24 +1,24 @@
 import { positionUnseededParticipants } from '../matchUps/drawPositions/positionUnseededParticipants';
-import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
-import { getParticipants } from '../../query/participants/getParticipants';
-import {
-  getSeedPattern,
-  getValidSeedBlocks,
-} from '../../query/drawDefinition/seedGetter';
-import { getAllDrawMatchUps } from '../../query/matchUps/drawMatchUps';
-import { modifyDrawNotice } from '../notifications/drawNotifications';
 import { getPositionAssignments } from '../../query/drawDefinition/positionsGetter';
 import { getQualifiersCount } from '../../query/drawDefinition/getQualifiersCount';
-import { positionByes } from './positionGovernor/byePositioning/positionByes';
-import { getStageEntries } from '../../query/drawDefinition/stageGetter';
-import { findStructure } from '../../acquire/findStructure';
 import { positionQualifiers } from '../matchUps/drawPositions/positionQualifiers';
+import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
+import { positionByes } from './positionGovernor/byePositioning/positionByes';
 import { positionSeedBlocks } from '../matchUps/drawPositions/positionSeeds';
-import { makeDeepCopy } from '../../utilities';
+import { getParticipants } from '../../query/participants/getParticipants';
+import { getStageEntries } from '../../query/drawDefinition/stageGetter';
+import { getAllDrawMatchUps } from '../../query/matchUps/drawMatchUps';
+import { modifyDrawNotice } from '../notifications/drawNotifications';
+import { makeDeepCopy } from '../../utilities/makeDeepCopy';
+import { findStructure } from '../../acquire/findStructure';
 import {
   ResultType,
   decorateResult,
 } from '../../global/functions/decorateResult';
+import {
+  getSeedPattern,
+  getValidSeedBlocks,
+} from '../../query/drawDefinition/seedGetter';
 import {
   MatchUpsMap,
   getMatchUpsMap,

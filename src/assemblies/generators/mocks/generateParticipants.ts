@@ -1,16 +1,17 @@
-import {
-  isNumeric,
-  randomInt,
-  skewedDistribution,
-} from '../../../utilities/math';
-import { cityMocks, stateMocks, postalCodeMocks } from './address';
+import { generateRange, shuffleArray } from '../../../utilities/arrays';
 import { definedAttributes } from '../../../utilities/definedAttributes';
-import { generateRange, shuffleArray, UUID } from '../../../utilities';
+import { cityMocks, stateMocks, postalCodeMocks } from './address';
 import { isValidDateString } from '../../../utilities/dateTime';
 import { countries } from '../../../fixtures/countryData';
 import { generateAddress } from './generateAddress';
 import { generatePersons } from './generatePersons';
 import { nameMocks } from './nameMocks';
+import { UUID } from '../../../utilities/UUID';
+import {
+  isNumeric,
+  randomInt,
+  skewedDistribution,
+} from '../../../utilities/math';
 
 import defaultRatingsParameters from '../../../fixtures/ratings/ratingsParameters';
 import {

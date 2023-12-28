@@ -1,19 +1,15 @@
-import { findExtension } from '../../acquire/findExtension';
-import { extractAttributes as xa } from '../../utilities';
+import { extractAttributes as xa } from '../../utilities/objects';
 import tournamentEngine from '../../tests/engines/syncEngine';
+import { findExtension } from '../../acquire/findExtension';
 import { expect, it } from 'vitest';
-import fs from 'fs';
 
 import { DOUBLES, TEAM } from '../../constants/matchUpTypes';
 import { LINEUPS } from '../../constants/extensionConstants';
 
-const tournamentRecordJSON = fs.readFileSync(
-  './src/global/testHarness/assignTieMatchUpParticipant.tods.json',
-  'utf-8'
-);
-const tournamentRecord = JSON.parse(tournamentRecordJSON);
+import tournamentRecordSub from './assignTieMatchUpParticipantSub.tods.json';
+import tournamentRecord from './assignTieMatchUpParticipant.tods.json';
 
-it.skip('populates matchUp sides', () => {
+it('populates matchUp sides', () => {
   tournamentEngine.setState(tournamentRecord);
 
   const {
@@ -44,7 +40,7 @@ it.skip('populates matchUp sides', () => {
         assignments,
       };
     });
-  console.log(a[0].assignments);
+  expect(a.map(xa('side')).every(xa('teamParticipant'))).toEqual(true);
 });
 
 it('assignMatchUpParticipantId will remove prior assignments', () => {
@@ -99,12 +95,7 @@ it('assignMatchUpParticipantId will remove prior assignments', () => {
 });
 
 it('can add a participant to a partial pair with a Substitute', () => {
-  const tournamentJSON = fs.readFileSync(
-    './src/global/testHarness/assignTieMatchUpParticipantSub.tods.json',
-    'utf-8'
-  );
-  const tournament = JSON.parse(tournamentJSON);
-  let result = tournamentEngine.setState(tournament);
+  let result = tournamentEngine.setState(tournamentRecordSub);
   expect(result.success).toEqual(true);
 
   const participantId = '32b181af-0f31-4b97-881b-4e9caa4180de';

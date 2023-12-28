@@ -1,5 +1,5 @@
+import { intersection, unique } from '../../../utilities/arrays';
 import mocksEngine from '../../../assemblies/engines/mock';
-import { intersection, unique } from '../../../utilities';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 

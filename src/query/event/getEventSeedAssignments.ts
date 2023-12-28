@@ -1,5 +1,5 @@
 import { participantScaleItem } from '../participant/participantScaleItem';
-import { intersection } from '../../utilities';
+import { intersection } from '../../utilities/arrays';
 
 import { SCALE, SEEDING } from '../../constants/scaleConstants';
 

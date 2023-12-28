@@ -1,13 +1,13 @@
-import { findExtension } from '../../../acquire/findExtension';
-import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import { getStructureSeedAssignments } from '../../../query/structure/getStructureSeedAssignments';
 import { randomUnseededSeparation } from '../../drawDefinitions/positionGovernor/avoidance/randomUnseededSeparation';
+import { getStructureSeedAssignments } from '../../../query/structure/getStructureSeedAssignments';
 import { structureAssignedDrawPositions } from '../../../query/drawDefinition/positionsGetter';
-import { decorateResult } from '../../../global/functions/decorateResult';
+import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { getStageEntries } from '../../../query/drawDefinition/stageGetter';
+import { decorateResult } from '../../../global/functions/decorateResult';
+import { findExtension } from '../../../acquire/findExtension';
 import { findStructure } from '../../../acquire/findStructure';
 import { assignDrawPosition } from './positionAssignment';
-import { shuffleArray } from '../../../utilities';
+import { shuffleArray } from '../../../utilities/arrays';
 
 import { INSUFFICIENT_DRAW_POSITIONS } from '../../../constants/errorConditionConstants';
 import { DIRECT_ENTRY_STATUSES } from '../../../constants/entryStatusConstants';

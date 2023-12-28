@@ -1,14 +1,14 @@
-import { validMatchUps } from '../../validators/validMatchUp';
 import { completedMatchUpStatuses } from '../../constants/matchUpStatusConstants';
 import { definedAttributes } from '../../utilities/definedAttributes';
+import { validMatchUps } from '../../validators/validMatchUp';
+import { numericSort } from '../../utilities/sorting';
 import { ensureInt } from '../../utilities/ensureInt';
+import { isPowerOf2 } from '../../utilities/math';
 import {
   chunkArray,
   generateRange,
   intersection,
-  isPowerOf2,
-  numericSort,
-} from '../../utilities';
+} from '../../utilities/arrays';
 
 import { SUCCESS } from '../../constants/resultConstants';
 import { HydratedMatchUp } from '../../types/hydrated';

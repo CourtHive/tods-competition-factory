@@ -1,13 +1,13 @@
 import { getPositionedParticipants } from './getPositionedParticipants';
 import { getParticipantPlacement } from './getParticipantPlacement';
+import { makeDeepCopy } from '../../../../utilities/makeDeepCopy';
 import { getAvoidanceConflicts } from './getAvoidanceConflicts';
 import { getSwapOptions } from './getSwapOptions';
 import {
   chunkArray,
   generateRange,
-  makeDeepCopy,
   randomPop,
-} from '../../../../utilities';
+} from '../../../../utilities/arrays';
 
 import { INVALID_ASSIGNMENT } from '../../../../constants/errorConditionConstants';
 import { PositionAssignment } from '../../../../types/tournamentTypes';

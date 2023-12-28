@@ -1,8 +1,8 @@
 import { getMatchUpIds } from '../../../global/functions/extractors';
-import tournamentEngine from '../../engines/syncEngine';
-import { unique } from '../../../utilities';
-import { expect, test } from 'vitest';
 import mocksEngine from '../../../assemblies/engines/mock';
+import tournamentEngine from '../../engines/syncEngine';
+import { unique } from '../../../utilities/arrays';
+import { expect, test } from 'vitest';
 
 import { DIRECT_ACCEPTANCE } from '../../../constants/entryStatusConstants';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';

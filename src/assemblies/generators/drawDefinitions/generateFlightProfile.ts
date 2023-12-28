@@ -1,15 +1,15 @@
 import { attachFlightProfile as attachProfile } from '../../../mutate/events/attachFlightProfile';
 import { getScaledEntries } from '../../../query/event/getScaledEntries';
 import { getParticipantId } from '../../../global/functions/extractors';
-import { getDevContext } from '../../../global/state/globalState';
 import { getFlightProfile } from '../../../query/event/getFlightProfile';
+import { getDevContext } from '../../../global/state/globalState';
+import { UUID } from '../../../utilities/UUID';
 import {
   chunkArray,
-  generateRange,
   chunkByNth,
-  UUID,
+  generateRange,
   shuffleArray,
-} from '../../../utilities';
+} from '../../../utilities/arrays';
 
 import { DIRECT_ENTRY_STATUSES } from '../../../constants/entryStatusConstants';
 import { FlightProfile, ScaleAttributes } from '../../../types/factoryTypes';

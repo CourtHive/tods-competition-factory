@@ -1,9 +1,9 @@
 import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
 import { definedAttributes } from '../../../utilities/definedAttributes';
-import { findExtension } from '../../../acquire/findExtension';
 import { getMatchUpFormatTiming } from './getMatchUpFormatTiming';
+import { findExtension } from '../../../acquire/findExtension';
 import { findPolicy } from '../../../acquire/findPolicy';
-import { unique } from '../../../utilities';
+import { unique } from '../../../utilities/arrays';
 
 import POLICY_SCHEDULING_DEFAULT from '../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
 import { SCHEDULE_TIMING } from '../../../constants/extensionConstants';

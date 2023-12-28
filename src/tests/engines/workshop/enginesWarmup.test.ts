@@ -1,6 +1,7 @@
-import { getParticipants } from '../../../query/participants/getParticipants';
 import { completeDrawMatchUps } from '../../../assemblies/generators/mocks/completeDrawMatchUps';
+import { getParticipants } from '../../../query/participants/getParticipants';
 import eventGovernor from '../../../assemblies/governors/eventGovernor';
+import { query } from '../../../assemblies/governors/queryGovernor';
 import mocksEngine from '../../../assemblies/engines/mock';
 import syncEngine from '../../../assemblies/engines/sync';
 import askEngine from '../../../assemblies/engines/ask';
@@ -8,7 +9,6 @@ import { expect, test } from 'vitest';
 
 import { setGlobalLog, setMethods } from '../../../global/state/globalState';
 import { getMethods } from '../../../global/state/syncGlobalState';
-import * as query from '../../../forge/query';
 
 import { deleteDrawDefinitions } from '../../../mutate/events/deleteDrawDefinitions';
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';

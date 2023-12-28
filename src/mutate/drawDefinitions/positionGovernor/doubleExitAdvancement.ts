@@ -1,13 +1,13 @@
-import { getPairedPreviousMatchUpIsDoubleExit } from './getPairedPreviousMatchUpIsDoubleExit';
 import { assignMatchUpDrawPosition } from '../../matchUps/drawPositions/assignMatchUpDrawPosition';
-import { getExitWinningSide } from '../matchUpGovernor/getExitWinningSide';
-import { modifyMatchUpScore } from '../../matchUps/score/modifyMatchUpScore';
-import { decorateResult } from '../../../global/functions/decorateResult';
+import { getPairedPreviousMatchUpIsDoubleExit } from './getPairedPreviousMatchUpIsDoubleExit';
 import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
+import { positionTargets } from '../../matchUps/drawPositions/positionTargets';
+import { modifyMatchUpScore } from '../../matchUps/score/modifyMatchUpScore';
+import { getExitWinningSide } from '../matchUpGovernor/getExitWinningSide';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { definedAttributes } from '../../../utilities/definedAttributes';
 import { findStructure } from '../../../acquire/findStructure';
-import { positionTargets } from '../../matchUps/drawPositions/positionTargets';
-import { overlap } from '../../../utilities';
+import { overlap } from '../../../utilities/arrays';
 import {
   advanceDrawPosition,
   assignDrawPositionBye,

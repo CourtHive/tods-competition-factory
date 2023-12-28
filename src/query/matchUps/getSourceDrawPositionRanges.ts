@@ -1,9 +1,9 @@
-import { getRoundMatchUps } from './getRoundMatchUps';
-import { chunkArray, generateRange } from '../../utilities';
+import { chunkArray, generateRange } from '../../utilities/arrays';
 import { getMappedStructureMatchUps } from './getMatchUpsMap';
 import { reduceGroupedOrder } from './reduceGroupedOrder';
-import { getRangeString } from './getRangeString';
 import { findStructure } from '../../acquire/findStructure';
+import { getRoundMatchUps } from './getRoundMatchUps';
+import { getRangeString } from './getRangeString';
 
 import {
   BOTTOM_UP,

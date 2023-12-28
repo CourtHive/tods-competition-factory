@@ -12,7 +12,7 @@ import { generateScheduledRounds } from './generateScheduledRounds';
 import { generateEventWithDraw } from './generateEventWithDraw';
 import { Extension } from '../../../types/tournamentTypes';
 import { addEvent } from '../../../mutate/events/addEvent';
-import { randomPop } from '../../../utilities';
+import { randomPop } from '../../../utilities/arrays';
 
 import defaultRatingsParameters from '../../../fixtures/ratings/ratingsParameters';
 import { SUCCESS } from '../../../constants/resultConstants';

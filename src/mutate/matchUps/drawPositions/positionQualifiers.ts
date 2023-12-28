@@ -1,9 +1,9 @@
-import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
-import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { structureAssignedDrawPositions } from '../../../query/drawDefinition/positionsGetter';
-import { decorateResult } from '../../../global/functions/decorateResult';
+import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { getQualifiersCount } from '../../../query/drawDefinition/getQualifiersCount';
-import { generateRange, randomPop } from '../../../utilities';
+import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
+import { decorateResult } from '../../../global/functions/decorateResult';
+import { generateRange, randomPop } from '../../../utilities/arrays';
 import { findStructure } from '../../../acquire/findStructure';
 import { ensureInt } from '../../../utilities/ensureInt';
 

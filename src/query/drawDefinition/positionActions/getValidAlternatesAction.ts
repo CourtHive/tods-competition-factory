@@ -1,7 +1,7 @@
-import { getFlightProfile } from '../../event/getFlightProfile';
-import { getAllPositionedParticipantIds } from '../positionsGetter';
 import { definedAttributes } from '../../../utilities/definedAttributes';
-import { unique } from '../../../utilities';
+import { getAllPositionedParticipantIds } from '../positionsGetter';
+import { getFlightProfile } from '../../event/getFlightProfile';
+import { unique } from '../../../utilities/arrays';
 
 import { POLICY_TYPE_POSITION_ACTIONS } from '../../../constants/policyConstants';
 import { PolicyDefinitions } from '../../../types/factoryTypes';

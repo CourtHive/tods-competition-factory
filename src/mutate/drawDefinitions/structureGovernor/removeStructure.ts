@@ -1,10 +1,10 @@
-import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
+import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import { getMatchUpIds } from '../../../global/functions/extractors';
+import { extractAttributes as xa } from '../../../utilities/objects';
 import { resequenceStructures } from './resequenceStructures';
-import { extractAttributes as xa } from '../../../utilities';
 import { findStructure } from '../../../acquire/findStructure';
 import {
   deleteMatchUpsNotice,
@@ -70,7 +70,7 @@ export function removeStructure({
     })?.appliedPolicies;
 
     const allowDeletionWithScoresPresent =
-      force ||
+      force ??
       appliedPolicies?.[POLICY_TYPE_SCORING]?.allowDeletionWithScoresPresent
         ?.structures;
 
@@ -142,7 +142,7 @@ export function removeStructure({
         (link) =>
           link.source.structureId !== idBeingRemoved &&
           link.target.structureId !== idBeingRemoved
-      ) || [];
+      ) ?? [];
 
     if (
       !isMainStageSequence1 ||

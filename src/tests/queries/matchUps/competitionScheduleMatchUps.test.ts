@@ -1,14 +1,11 @@
 import { visualizeScheduledMatchUps } from '../../../global/testHarness/testUtilities/visualizeScheduledMatchUps';
 import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
 import { getMatchUpIds } from '../../../global/functions/extractors';
+import { extractAttributes as xa } from '../../../utilities/objects';
+import { instanceCount, unique } from '../../../utilities/arrays';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, test } from 'vitest';
-import {
-  extractAttributes as xa,
-  instanceCount,
-  unique,
-} from '../../../utilities';
 
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
 import { DOUBLES, SINGLES } from '../../../constants/eventConstants';
@@ -197,7 +194,7 @@ test.each([tournamentEngine])(
     result = tournamentEngine.setEventDisplay({ eventId: 'e1' });
     expect(result.error).toEqual(MISSING_VALUE);
 
-    result = tournamentEngine.setEventDisplay({
+    tournamentEngine.setEventDisplay({
       displaySettings,
       eventId: 'e1',
     });

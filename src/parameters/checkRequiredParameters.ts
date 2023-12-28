@@ -1,6 +1,7 @@
 import { isFunction, isObject } from '../utilities/objects';
-import { intersection } from '../utilities';
+import { intersection } from '../utilities/arrays';
 
+import { ResultType, decorateResult } from '../global/functions/decorateResult';
 import {
   EVENT_NOT_FOUND,
   INVALID_VALUES,
@@ -46,7 +47,6 @@ import {
   TOURNAMENT_RECORDS,
   VENUE_IDS,
 } from '../constants/attributeConstants';
-import { ResultType, decorateResult } from '../global/functions/decorateResult';
 
 type Params = { [key: string]: any };
 type RequiredParams = {

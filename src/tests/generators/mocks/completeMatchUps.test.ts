@@ -1,9 +1,9 @@
 import { matchUpSort } from '../../../functions/sorters/matchUpSort';
+import mocksEngine from '../../../assemblies/engines/mock';
+import { instanceCount } from '../../../utilities/arrays';
 import tournamentEngine from '../../engines/syncEngine';
-import { instanceCount } from '../../../utilities';
 import { fmlc32profile } from './fmlc32';
 import { expect, it } from 'vitest';
-import mocksEngine from '../../../assemblies/engines/mock';
 
 import { COMPLETED } from '../../../constants/matchUpStatusConstants';
 import {

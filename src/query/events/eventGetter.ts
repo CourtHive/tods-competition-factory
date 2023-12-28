@@ -1,7 +1,8 @@
 import { getAssignedParticipantIds } from '../drawDefinition/getAssignedParticipantIds';
-import { extractAttributes as xa, makeDeepCopy } from '../../utilities';
 import { definedAttributes } from '../../utilities/definedAttributes';
+import { extractAttributes as xa } from '../../utilities/objects';
 import { getParticipants } from '../participants/getParticipants';
+import { makeDeepCopy } from '../../utilities/makeDeepCopy';
 import { getFlightProfile } from '../event/getFlightProfile';
 import { median } from '../../utilities/math';
 
