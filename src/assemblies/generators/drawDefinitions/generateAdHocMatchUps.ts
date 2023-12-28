@@ -18,17 +18,13 @@ import {
   DrawDefinition,
   EntryStatusUnion,
   MatchUp,
-  Tournament,
 } from '../../../types/tournamentTypes';
-import { addAdHocMatchUps } from '../../../mutate/structures/addAdHocMatchUps';
 
 type GenerateAdHocMatchUpsArgs = {
   participantIdPairings?: {
     participantIds: [string | undefined, string | undefined];
   }[];
-  tournamentRecord?: Tournament;
   drawDefinition: DrawDefinition;
-  addToStructure?: boolean; // optional - whether to add matchUps to structure once generated
   matchUpsCount?: number; // number of matchUps to be generated
   matchUpIds?: string[];
   roundNumber?: number;
@@ -38,8 +34,6 @@ type GenerateAdHocMatchUpsArgs = {
 
 export function generateAdHocMatchUps({
   participantIdPairings,
-  addToStructure = true,
-  tournamentRecord,
   matchUpIds = [],
   drawDefinition,
   matchUpsCount,
@@ -145,22 +139,12 @@ export function generateAdHocMatchUps({
     );
 
     return {
-      matchUpStatus: TO_BE_PLAYED,
       matchUpId: matchUpIds.pop() ?? UUID(),
       roundNumber: nextRoundNumber,
+      matchUpStatus: TO_BE_PLAYED,
       sides,
     };
   });
-
-  if (addToStructure) {
-    const result = addAdHocMatchUps({
-      tournamentRecord,
-      drawDefinition,
-      structureId,
-      matchUps,
-    });
-    if (result.error) return result;
-  }
 
   return { matchUpsCount: matchUps.length, matchUps, ...SUCCESS };
 }

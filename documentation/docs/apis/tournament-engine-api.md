@@ -1227,7 +1227,6 @@ const { matchUps, participantIdPairings, iterations, candidatesCount } =
   tournamentEngine.drawMatic({
     restrictEntryStatus, // optional - only allow STRUCTURE_SELECTED_STATUSES
     generateMatchUps, // optional - defaults to true; when false only returns { participantIdPairings }
-    addToStructure, // optional - defaults to true
     maxIterations, // optional - defaults to 5000
     structureId, // optional; if no structureId is specified find the latest AD_HOC stage which has matchUps
     matchUpIds, // optional array of uuids to be used when generating matchUps
@@ -1380,14 +1379,12 @@ tournamentEngine.findVenue({ venueId });
 
 ## generateAdHocMatchUps
 
-Draws with `{ drawType: AD_HOC }` allow `matchUps` to be dynamically added. In this type of draw there is no automatic participant progression between rounds. Participant assignment to `matchUps` is done manually, or via **DrawMatic**. The only restriction is that a participant may appear once per round. To generate only, and not add to the structure/draw, use the boolean `addToStructure` and then subsequently use [addAddHocMatchUps](#addadhocmatchups).
+Draws with `{ drawType: AD_HOC }` allow `matchUps` to be dynamically added. In this type of draw there is no automatic participant progression between rounds. Participant assignment to `matchUps` is done manually, or via **DrawMatic**. The only restriction is that a participant may appear once per round.
 
 ```js
 const result = tournamentEngine.generateAdHocMatchUps({
-  addToStructure, // boolean - defaults to true
   participantIdPairings, // optional - array of array of pairings [['id1', 'id2'], ['id3', 'id4']]
   drawId, // required - drawId of drawDefinition in which target structure is found
-  structureId, // required only when more than one structure is present and { addToStructure: true }
   matchUpIds, // optional - if matchUpIds are not specified UUIDs are generated
   roundNumber, // optional - specify round for which matchUps will be generated
   newRound, // optional - boolean defaults to false - whether to auto-increment to next roundNumber
@@ -1497,7 +1494,6 @@ const {
   maxIterations,// optional - defaults to 5000
   generateMatchUps = true, // optional - defaults to true; when false only returns { participantIdPairings }
   participantIds, // required
-  addToStructure, // optional - defaults to true
   adHocRatings, // optional { ['participantId']: numericRating }
   structureId, // required
   matchUpIds, // optional array of uuids to be used when generating matchUps

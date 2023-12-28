@@ -7,7 +7,7 @@ import { participantRoles } from '../../constants/participantRoles';
 import { genderConstants } from '../../constants/genderConstants';
 import { addNotice } from '../../global/state/globalState';
 import { countries } from '../../fixtures/countryData';
-import { addParticipant } from './addParticipants';
+import { addParticipant } from './addParticipant';
 import { makeDeepCopy } from '../../utilities';
 
 import { MODIFY_PARTICIPANTS } from '../../constants/topicConstants';

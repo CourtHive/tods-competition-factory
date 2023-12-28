@@ -3,7 +3,7 @@ import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructure
 import { setMatchUpStatus } from '../../../mutate/matchUps/matchUpStatus/setMatchUpStatus';
 import { getParticipants } from '../../../query/participants/getParticipants';
 import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
-import { generateLineUps } from '../../../mutate/participants/generateLineUps';
+import { generateLineUps } from '../participants/generateLineUps';
 import { generateOutcomeFromScoreString } from './generateOutcomeFromScoreString';
 import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
 import { structureSort } from '../../../functions/sorters/structureSort';
@@ -26,6 +26,9 @@ import {
   DOUBLE_DEFAULT,
   DOUBLE_WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
+import { LINEUPS } from '../../../constants/extensionConstants';
+import { addExtension } from '../../../mutate/extensions/addExtension';
+import { addParticipants } from '../../../mutate/participants/addParticipants';
 
 export function completeDrawMatchUps(params): {
   completedCount?: number;
@@ -77,14 +80,18 @@ export function completeDrawMatchUps(params): {
         sortOrder: ASCENDING,
         scaleType: RANKING,
       };
-      generateLineUps({
+      const result = generateLineUps({
         singlesOnly: true,
         tournamentRecord,
         drawDefinition,
         scaleAccessor,
-        attach: true,
         event,
       });
+      if (result.error) return result;
+      const { lineUps, participantsToAdd } = result;
+      addParticipants({ tournamentRecord, participants: participantsToAdd });
+      const extension = { name: LINEUPS, value: lineUps };
+      addExtension({ element: drawDefinition, extension });
     } else {
       const structureId = firstRoundDualMatchUps[0]?.structureId;
       const { positionAssignments } = getPositionAssignments({

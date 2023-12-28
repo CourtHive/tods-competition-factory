@@ -9,6 +9,7 @@ import {
 } from '../notifications/drawNotifications';
 
 import { ROUND_OUTCOME } from '../../constants/drawDefinitionConstants';
+import { ResultType } from '../../global/functions/decorateResult';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
   INVALID_VALUES,
@@ -24,7 +25,7 @@ export function addAdHocMatchUps({
   drawDefinition,
   structureId,
   matchUps,
-}) {
+}): ResultType {
   if (typeof drawDefinition !== 'object')
     return { error: MISSING_DRAW_DEFINITION };
 

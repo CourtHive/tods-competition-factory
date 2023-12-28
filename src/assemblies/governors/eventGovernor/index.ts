@@ -1,6 +1,3 @@
-// undocumented access to mocksEngine method
-import { completeDrawMatchUps } from '../../generators/mocks/completeDrawMatchUps';
-
 import { setDrawParticipantRepresentativeIds } from '../../../mutate/drawDefinitions/setDrawParticipantRepresentativeIds';
 import { resetVoluntaryConsolationStructure } from '../../../mutate/drawDefinitions/resetVoluntaryConsolationStructure';
 import { withdrawParticipantAtDrawPosition } from '../../../mutate/drawDefinitions/withdrawParticipantAtDrawPosition';
@@ -148,7 +145,6 @@ const eventGovernor = {
   bulkMatchUpStatusUpdate,
   checkInParticipant,
   checkOutParticipant,
-  completeDrawMatchUps,
   deleteAdHocMatchUps,
   deleteDrawDefinitions,
   deleteEvents,

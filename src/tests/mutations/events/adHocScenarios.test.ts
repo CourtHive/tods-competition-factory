@@ -378,7 +378,6 @@ it('can add matchUps to an existing adHoc round', () => {
   // -----------------------------------------------------------------------
   // TEST when no matchUpsCount is provided; matchUps not added to structure
   generationResult = tournamentEngine.generateAdHocMatchUps({
-    addToStructure: false, // do not add generated matchUps
     roundNumber: 3,
     drawId,
   });
@@ -386,7 +385,6 @@ it('can add matchUps to an existing adHoc round', () => {
   // -----------------------------------------------------------------------
 
   generationResult = tournamentEngine.generateAdHocMatchUps({
-    addToStructure: false, // do not add generated matchUps
     matchUpsCount: 4,
     drawId,
   });
@@ -395,7 +393,7 @@ it('can add matchUps to an existing adHoc round', () => {
   expect(generationResult.matchUps[0].roundNumber).toEqual(2);
 
   matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
-  // no matchUps were added because { addToStructure: false }
+  // no matchUps were added
   expect(matchUps.length).toEqual((participantsCount / 2) * roundsCount);
 
   let addMatchUpsResult = tournamentEngine.addAdHocMatchUps({ matchUps });
@@ -408,6 +406,7 @@ it('can add matchUps to an existing adHoc round', () => {
 
   matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
   expect(matchUps.length).toEqual((participantsCount / 2) * roundsCount + 4);
+  const structureId = matchUps[0].structureId;
 
   generationResult = tournamentEngine.generateAdHocMatchUps({
     matchUpsCount: 4,
@@ -416,16 +415,30 @@ it('can add matchUps to an existing adHoc round', () => {
   });
   expect(generationResult.matchUps.length).toEqual(4);
   expect(generationResult.matchUps[0].roundNumber).toEqual(3);
+  let addResult = tournamentEngine.addAdHocMatchUps({
+    matchUps: generationResult.matchUps,
+    structureId,
+    drawId,
+  });
+  expect(addResult.success).toEqual(true);
+
   matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
   expect(matchUps.length).toEqual((participantsCount / 2) * roundsCount + 8);
 
   generationResult = tournamentEngine.generateAdHocMatchUps({
-    addToStructure: true,
     matchUpsCount: 4,
     roundNumber: 2,
     drawId,
   });
   expect(generationResult.matchUps[0].roundNumber).toEqual(2);
+
+  addResult = tournamentEngine.addAdHocMatchUps({
+    matchUps: generationResult.matchUps,
+    structureId,
+    drawId,
+  });
+  expect(addResult.success).toEqual(true);
+
   matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
   expect(matchUps.length).toEqual((participantsCount / 2) * roundsCount + 12);
 
@@ -445,7 +458,6 @@ it('can add matchUps to an existing adHoc round', () => {
     secondRoundMatchUp.matchUpId,
     thirdRoundMatchUp.matchUpId,
   ];
-  const structureId = matchUps[0].structureId;
 
   let deletionResult = tournamentEngine.deleteAdHocMatchUps({
     structureId,
@@ -498,7 +510,6 @@ it('can add matchUps to an existing adHoc round', () => {
 
   // TEST when no matchUpsCount is provided; auto-calculate number to add
   generationResult = tournamentEngine.generateAdHocMatchUps({
-    addToStructure: false, // do not add generated matchUps
     roundNumber: 1,
     drawId,
   });

@@ -1,14 +1,14 @@
-import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { getCollectionPositionAssignments } from '../../events/getCollectionPositionAssignments';
 import { getPairedParticipant } from '../../../query/participant/getPairedParticipant';
-import { deleteParticipants } from '../../participants/deleteParticipants';
+import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { getParticipants } from '../../../query/participants/getParticipants';
-import { addParticipant } from '../../participants/addParticipants';
-import { ensureSideLineUps } from './ensureSideLineUps';
+import { deleteParticipants } from '../../participants/deleteParticipants';
+import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { updateTeamLineUp } from '../../drawDefinitions/updateTeamLineUp';
 import { getTieMatchUpContext } from '../../events/getTieMatchUpContext';
+import { addParticipant } from '../../participants/addParticipant';
 import { makeDeepCopy, unique } from '../../../utilities';
+import { ensureSideLineUps } from './ensureSideLineUps';
 import {
   ResultType,
   decorateResult,

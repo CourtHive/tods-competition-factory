@@ -54,6 +54,7 @@ it.each(scenarios)(
     expect(matchUps[0].sides[0].participant.participantId.slice(0, 4)).toEqual(
       eventType === SINGLES ? 'P-I-' : 'P-P-'
     );
+    const structureId = matchUps[0].structureId;
 
     for (const roundNumber of generateRange(
       2,
@@ -65,6 +66,13 @@ it.each(scenarios)(
         drawId,
       });
       expect(result.success).toEqual(true);
+
+      const addResult = tournamentEngine.addAdHocMatchUps({
+        matchUps: result.matchUps,
+        structureId,
+        drawId,
+      });
+      expect(addResult.success).toEqual(true);
 
       const matchUpsPerRound = Math.floor(drawSize / 2);
       const { matchUps } = tournamentEngine.allTournamentMatchUps();
@@ -132,22 +140,40 @@ it('can use drawMatic to generate rounds in existing AD_HOC draws', () => {
 
   result = tournamentEngine.generateDrawDefinition({
     drawSize: participantIds.length,
-    addToEvent: true,
     drawType: AD_HOC,
     eventId,
   });
+  expect(result.success).toEqual(true);
+  const { drawId } = result.drawDefinition;
 
+  result = tournamentEngine.addDrawDefinition({
+    drawDefinition: result.drawDefinition,
+    eventId,
+  });
   expect(result.success).toEqual(true);
 
-  const { drawId } = result.drawDefinition;
   let { matchUps } = tournamentEngine.allTournamentMatchUps();
   expect(matchUps.length).toEqual(0);
 
   result = tournamentEngine.drawMatic({ drawId });
+  let addResult = tournamentEngine.addAdHocMatchUps({
+    matchUps: result.matchUps,
+    drawId,
+  });
+  expect(addResult.success).toEqual(true);
+
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   expect(matchUps.length).toEqual(10);
+  const structureId = matchUps[0].structureId;
 
   result = tournamentEngine.drawMatic({ drawId });
+  addResult = tournamentEngine.addAdHocMatchUps({
+    matchUps: result.matchUps,
+    structureId,
+    drawId,
+  });
+  expect(addResult.success).toEqual(true);
+
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   expect(matchUps.length).toEqual(20);
 
@@ -157,7 +183,7 @@ it('can use drawMatic to generate rounds in existing AD_HOC draws', () => {
   expect(matchUps.length).toEqual(10);
 
   // will not add matchUps to structure
-  result = tournamentEngine.drawMatic({ drawId, addToStructure: false });
+  result = tournamentEngine.drawMatic({ drawId });
   expect(result.matchUps.length).toEqual(10);
 
   // number of matchUps will not have changed
@@ -201,15 +227,19 @@ it('cannot use drawMatic when there are no entries present', () => {
   });
 
   let result = tournamentEngine.generateDrawDefinition({
-    addToEvent: true,
     drawType: AD_HOC,
     automated: true,
     eventId,
   });
+  expect(result.success).toEqual(true);
+  const { drawId } = result.drawDefinition;
 
+  result = tournamentEngine.addDrawDefinition({
+    drawDefinition: result.drawDefinition,
+    eventId,
+  });
   expect(result.success).toEqual(true);
 
-  const { drawId } = result.drawDefinition;
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
   expect(matchUps.length).toEqual(0);
 

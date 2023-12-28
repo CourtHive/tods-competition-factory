@@ -8,7 +8,7 @@ import { generateQualifyingStructure } from '../../generators/drawDefinitions/dr
 import { generateDrawDefinition } from '../../../assemblies/generators/drawDefinitions/generateDrawDefinition';
 import { generateAdHocMatchUps } from '../../../assemblies/generators/drawDefinitions/generateAdHocMatchUps';
 import { generateFlightProfile } from '../../../assemblies/generators/drawDefinitions/generateFlightProfile';
-import { generateLineUps } from '../../../mutate/participants/generateLineUps';
+import { generateLineUps } from '../../generators/participants/generateLineUps';
 
 const generationGovernor = {
   generateAdHocMatchUps,
