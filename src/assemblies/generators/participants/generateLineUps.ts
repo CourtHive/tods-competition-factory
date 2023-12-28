@@ -1,38 +1,41 @@
-import { resolveTieFormat } from '../../query/hierarchical/tieFormats/resolveTieFormat';
-import { validateTieFormat } from '../../validators/validateTieFormat';
-import { getPairedParticipant } from '../../query/participant/getPairedParticipant';
-import { addParticipant } from './addParticipants';
-import { addExtension } from '../extensions/addExtension';
-import { getParticipants } from '../../query/participants/getParticipants';
-import { getParticipantId } from '../../global/functions/extractors';
-import { isNumeric } from '../../utilities/math';
-import { generateRange } from '../../utilities';
+import { resolveTieFormat } from '../../../query/hierarchical/tieFormats/resolveTieFormat';
+import { getPairedParticipant } from '../../../query/participant/getPairedParticipant';
+import { getParticipants } from '../../../query/participants/getParticipants';
+import { addParticipant } from '../../../mutate/participants/addParticipant';
+import { validateTieFormat } from '../../../validators/validateTieFormat';
+import { getParticipantId } from '../../../global/functions/extractors';
+import { addExtension } from '../../../mutate/extensions/addExtension';
+import { isNumeric } from '../../../utilities/math';
+import { generateRange } from '../../../utilities';
 
-import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '../../constants/matchUpTypes';
-import { DIRECT_ACCEPTANCE } from '../../constants/entryStatusConstants';
-import { FEMALE, MALE, MIXED } from '../../constants/genderConstants';
-import { COMPETITOR } from '../../constants/participantRoles';
-import { DESCENDING } from '../../constants/sortingConstants';
-import { LINEUPS } from '../../constants/extensionConstants';
-import { TEAM_EVENT } from '../../constants/eventConstants';
-import { PAIR } from '../../constants/participantConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import { RANKING } from '../../constants/scaleConstants';
-import { LineUp } from '../../types/factoryTypes';
+import {
+  DOUBLES_MATCHUP,
+  SINGLES_MATCHUP,
+} from '../../../constants/matchUpTypes';
+import { DIRECT_ACCEPTANCE } from '../../../constants/entryStatusConstants';
+import { FEMALE, MALE, MIXED } from '../../../constants/genderConstants';
+import { COMPETITOR } from '../../../constants/participantRoles';
+import { DESCENDING } from '../../../constants/sortingConstants';
+import { LINEUPS } from '../../../constants/extensionConstants';
+import { TEAM_EVENT } from '../../../constants/eventConstants';
+import { PAIR } from '../../../constants/participantConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
+import { RANKING } from '../../../constants/scaleConstants';
+import { LineUp } from '../../../types/factoryTypes';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   INVALID_EVENT_TYPE,
   INVALID_TIE_FORMAT,
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
-} from '../../constants/errorConditionConstants';
+} from '../../../constants/errorConditionConstants';
 import {
   CollectionAssignment,
   DrawDefinition,
   Event,
   TieFormat,
   Tournament,
-} from '../../types/tournamentTypes';
+} from '../../../types/tournamentTypes';
 
 type GenerateLineUpsArgs = {
   useDefaultEventRanking?: boolean;

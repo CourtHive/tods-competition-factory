@@ -1,15 +1,15 @@
-import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
-import { getPairedParticipant } from '../../../query/participant/getPairedParticipant';
-import { deleteParticipants } from '../../participants/deleteParticipants';
-import { modifyParticipant } from '../../participants/modifyParticipant';
-import { getParticipants } from '../../../query/participants/getParticipants';
 import { removeCollectionAssignments } from '../../events/removeCollectionAssignments';
-import { addParticipant } from '../../participants/addParticipants';
-import { ensureSideLineUps } from './ensureSideLineUps';
+import { getPairedParticipant } from '../../../query/participant/getPairedParticipant';
+import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
+import { getParticipants } from '../../../query/participants/getParticipants';
+import { deleteParticipants } from '../../participants/deleteParticipants';
+import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
+import { modifyParticipant } from '../../participants/modifyParticipant';
 import { updateTeamLineUp } from '../../drawDefinitions/updateTeamLineUp';
-import { getTeamLineUp } from '../../drawDefinitions/getTeamLineUp';
 import { getTieMatchUpContext } from '../../events/getTieMatchUpContext';
+import { addParticipant } from '../../participants/addParticipant';
+import { getTeamLineUp } from '../../drawDefinitions/getTeamLineUp';
+import { ensureSideLineUps } from './ensureSideLineUps';
 import { overlap } from '../../../utilities';
 import {
   ResultType,

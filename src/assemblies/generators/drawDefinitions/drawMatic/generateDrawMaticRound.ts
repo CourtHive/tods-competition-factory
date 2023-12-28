@@ -20,7 +20,6 @@ import {
   DrawDefinition,
   MatchUp,
   Structure,
-  Tournament,
   EventTypeUnion,
 } from '../../../../types/tournamentTypes';
 
@@ -35,11 +34,9 @@ type GenerateDrawMaticRoundArgs = {
   adHocRatings?: { [key: string]: number };
   restrictEntryStatus?: boolean;
   drawDefinition: DrawDefinition;
-  tournamentRecord: Tournament;
   generateMatchUps?: boolean;
   salted?: number | boolean;
   participantIds?: string[];
-  addToStructure?: boolean;
   encounterValue?: number;
   sameTeamValue?: number;
   maxIterations?: number;
@@ -51,15 +48,23 @@ type GenerateDrawMaticRoundArgs = {
   drawId?: string;
 };
 
+export type DrawMaticRoundResult = {
+  participantIdPairings?: string[][];
+  candidatesCount?: number;
+  matchUps?: MatchUp[];
+  iterations?: number;
+  success?: boolean;
+  maxDelta?: number;
+  maxDiff?: number;
+};
+
 export function generateDrawMaticRound({
   encounterValue = ENCOUNTER_VALUE,
   sameTeamValue = SAME_TEAM_VALUE,
   maxIterations = MAX_ITERATIONS,
   generateMatchUps = true,
   tournamentParticipants,
-  tournamentRecord,
   participantIds,
-  addToStructure,
   drawDefinition,
   adHocRatings,
   structureId,
@@ -68,17 +73,7 @@ export function generateDrawMaticRound({
   eventType,
   structure,
   scaleName,
-}: GenerateDrawMaticRoundArgs):
-  | ResultType
-  | {
-      participantIdPairings: string[][];
-      candidatesCount: number;
-      matchUps: MatchUp[];
-      iterations: number;
-      success: boolean;
-      maxDelta: number;
-      maxDiff: number;
-    } {
+}: GenerateDrawMaticRoundArgs): ResultType & DrawMaticRoundResult {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structure && !structureId) return { error: STRUCTURE_NOT_FOUND };
   if (!structure) {
@@ -156,8 +151,6 @@ export function generateDrawMaticRound({
     const result = generateAdHocMatchUps({
       structureId: structure?.structureId,
       participantIdPairings,
-      tournamentRecord,
-      addToStructure,
       newRound: true,
       drawDefinition,
       matchUpIds,

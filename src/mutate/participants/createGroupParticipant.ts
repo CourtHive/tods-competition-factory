@@ -2,7 +2,7 @@ import { getParticipants } from '../../query/participants/getParticipants';
 import { addNotice, getTopics } from '../../global/state/globalState';
 import { definedAttributes } from '../../utilities/definedAttributes';
 import { makeDeepCopy, UUID } from '../../utilities';
-import { addParticipant } from './addParticipants';
+import { addParticipant } from './addParticipant';
 
 import { GROUP, INDIVIDUAL } from '../../constants/participantConstants';
 import { ADD_PARTICIPANTS } from '../../constants/topicConstants';

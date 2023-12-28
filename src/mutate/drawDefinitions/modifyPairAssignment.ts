@@ -1,7 +1,7 @@
 import { getPairedParticipant } from '../../query/participant/getPairedParticipant';
 import { deleteParticipants } from '../participants/deleteParticipants';
-import { addParticipant } from '../participants/addParticipants';
 import { getFlightProfile } from '../../query/event/getFlightProfile';
+import { addParticipant } from '../participants/addParticipant';
 
 import { COMPETITOR } from '../../constants/participantRoles';
 import { PAIR } from '../../constants/participantConstants';

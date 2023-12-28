@@ -198,11 +198,14 @@ test('scheduling v2 respects DO_NOT_SCHEDULE requests', () => {
     eventId,
   });
 
-  tournamentEngine.generateDrawDefinition({
-    addToEvent: true,
+  const { drawDefinition } = tournamentEngine.generateDrawDefinition({
     eventId: eventId,
   });
 
+  tournamentEngine.addDrawDefinition({
+    drawDefinition: drawDefinition,
+    eventId,
+  });
   const { rounds } = tournamentEngine.getRounds();
   const schedulingProfile = [
     {

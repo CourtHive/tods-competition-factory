@@ -13,16 +13,14 @@ import { deleteParticipants } from '../../../mutate/participants/deleteParticipa
 import { mergeParticipants } from '../../../mutate/participants/mergeParticipants';
 import { modifyParticipant } from '../../../mutate/participants/modifyParticipant';
 import { filterParticipants } from '../../../query/participants/filterParticipants';
+import { addParticipants } from '../../../mutate/participants/addParticipants';
 import { addPenalty } from '../../../mutate/participants/penalties/addPenalty';
+import { addParticipant } from '../../../mutate/participants/addParticipant';
 import { addPersons } from '../../../mutate/participants/addPersons';
 import {
   removeIndividualParticipantIds,
   removeParticipantIdsFromAllTeams,
 } from '../../../mutate/participants/removeIndividualParticipantIds';
-import {
-  addParticipant,
-  addParticipants,
-} from '../../../mutate/participants/addParticipants';
 import {
   setParticipantScaleItems,
   setParticipantScaleItem,

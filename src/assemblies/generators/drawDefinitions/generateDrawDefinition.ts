@@ -5,8 +5,8 @@ import { addDrawEntry } from '../../../mutate/drawDefinitions/entryGovernor/addD
 import { generateQualifyingStructures } from './drawTypes/generateQualifyingStructures';
 import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
 import { getQualifiersCount } from '../../../query/drawDefinition/getQualifiersCount';
-import { addDrawDefinition } from '../../../mutate/drawDefinitions/addDrawDefinition';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
+import { addAdHocMatchUps } from '../../../mutate/structures/addAdHocMatchUps';
 import { getAllowedDrawTypes } from '../../../query/tournaments/allowedTypes';
 import { getParticipants } from '../../../query/participants/getParticipants';
 import { validateTieFormat } from '../../../validators/validateTieFormat';
@@ -116,7 +116,6 @@ type GenerateDrawDefinitionArgs = {
   tieFormat?: TieFormat;
   drawEntries?: Entry[];
   roundsCount?: number;
-  addToEvent?: boolean;
   seedsCount?: number;
   placeByes?: boolean;
   drawName?: string;
@@ -151,7 +150,6 @@ export function generateDrawDefinition(
     qualifyingOnly,
     tieFormatName,
     drawEntries,
-    addToEvent,
     placeByes,
     event,
   } = params;
@@ -659,34 +657,39 @@ export function generateDrawDefinition(
           const {
             restrictEntryStatus,
             generateMatchUps,
-            addToStructure,
-            maxIterations,
             structureId,
             matchUpIds,
             scaleName,
           } = params.drawMatic ?? {};
 
-          drawMatic({
-            tournamentRecord,
-            participantIds,
-            drawDefinition,
-
+          const matchUps = drawMatic({
             eventType: params.drawMatic?.eventType ?? matchUpType,
             generateMatchUps: generateMatchUps ?? true,
             restrictEntryStatus,
-            addToStructure,
-            maxIterations,
+            tournamentRecord,
+            participantIds,
+            drawDefinition,
             structureId,
             matchUpIds,
             scaleName, // custom rating name to seed dynamic ratings
+          }).matchUps;
+          addAdHocMatchUps({
+            tournamentRecord,
+            drawDefinition,
+            structureId,
+            matchUps,
           });
         } else {
-          generateAdHocMatchUps({
-            addToStructure: true,
-            tournamentRecord,
+          const { matchUps } = generateAdHocMatchUps({
             newRound: true,
             drawDefinition,
             matchUpsCount,
+          });
+          addAdHocMatchUps({
+            tournamentRecord,
+            drawDefinition,
+            structureId,
+            matchUps,
           });
         }
       });
@@ -801,10 +804,6 @@ export function generateDrawDefinition(
       drawDefinition,
       matchUpType,
     });
-  }
-
-  if (addToEvent) {
-    addDrawDefinition({ tournamentRecord, drawDefinition, event });
   }
 
   return {

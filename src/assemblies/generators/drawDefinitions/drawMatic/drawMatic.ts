@@ -1,6 +1,9 @@
 import { participantScaleItem } from '../../../../query/participant/participantScaleItem';
 import { getParticipantId } from '../../../../global/functions/extractors';
-import { generateDrawMaticRound } from './generateDrawMaticRound';
+import {
+  generateDrawMaticRound,
+  DrawMaticRoundResult,
+} from './generateDrawMaticRound';
 import { isAdHoc } from '../../../../query/drawDefinition/isAdHoc';
 import { isObject } from '../../../../utilities/objects';
 
@@ -27,6 +30,10 @@ import {
 } from '../../../../constants/errorConditionConstants';
 import { SINGLES_EVENT } from '../../../../constants/eventConstants';
 import { ScaleAttributes } from '../../../../types/factoryTypes';
+import {
+  ResultType,
+  decorateResult,
+} from '../../../../global/functions/decorateResult';
 
 export type DrawMaticArgs = {
   tournamentParticipants?: HydratedParticipant[];
@@ -37,7 +44,6 @@ export type DrawMaticArgs = {
   generateMatchUps?: boolean;
   salted?: number | boolean;
   participantIds?: string[];
-  addToStructure?: boolean;
   encounterValue?: number;
   sameTeamValue?: number;
   maxIterations?: number;
@@ -57,7 +63,6 @@ export function drawMatic({
   adHocRatings = {},
   generateMatchUps,
   tournamentRecord,
-  addToStructure,
   participantIds,
   encounterValue,
   sameTeamValue,
@@ -70,7 +75,7 @@ export function drawMatic({
   eventType,
   salted,
   event,
-}: DrawMaticArgs) {
+}: DrawMaticArgs): ResultType & DrawMaticRoundResult {
   if (
     typeof drawDefinition !== 'object' ||
     (drawDefinition.drawType && drawDefinition.drawType !== AD_HOC)
@@ -105,10 +110,10 @@ export function drawMatic({
     );
 
     if (invalidParticipantIds?.length)
-      return {
-        error: INVALID_PARTICIPANT_ID,
-        invalidParticipantIds,
-      };
+      return decorateResult({
+        result: { error: INVALID_PARTICIPANT_ID },
+        info: { invalidParticipantIds },
+      });
   } else {
     participantIds = enteredParticipantIds;
   }
@@ -172,8 +177,6 @@ export function drawMatic({
   return generateDrawMaticRound({
     tournamentParticipants,
     generateMatchUps,
-    tournamentRecord,
-    addToStructure,
     participantIds,
     encounterValue,
     sameTeamValue,

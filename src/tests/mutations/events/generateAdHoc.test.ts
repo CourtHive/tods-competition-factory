@@ -59,7 +59,6 @@ it('can generate AD_HOC drawDefinitions, add and delete matchUps', () => {
 
   // will infer number of matchUps to generate based on selectedEntries
   result = tournamentEngine.generateAdHocMatchUps({
-    addToStructure: false,
     structureId,
     drawId,
   });
@@ -82,9 +81,23 @@ it('can generate AD_HOC drawDefinitions, add and delete matchUps', () => {
   });
   expect(result.success).toEqual(true);
 
+  result = tournamentEngine.addAdHocMatchUps({
+    matchUps: result.matchUps,
+    structureId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
   result = tournamentEngine.generateAdHocMatchUps({
     matchUpsCount: 4,
     roundNumber: 2,
+    structureId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.addAdHocMatchUps({
+    matchUps: result.matchUps,
     structureId,
     drawId,
   });
@@ -96,6 +109,13 @@ it('can generate AD_HOC drawDefinitions, add and delete matchUps', () => {
   result = tournamentEngine.generateAdHocMatchUps({
     matchUpsCount: 5,
     newRound: true,
+    structureId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.addAdHocMatchUps({
+    matchUps: result.matchUps,
     structureId,
     drawId,
   });
@@ -177,6 +197,13 @@ it('can generate AD_HOC with arbitrary drawSizes and assign positions', () => {
   });
   expect(result.success).toEqual(true);
 
+  result = tournamentEngine.addAdHocMatchUps({
+    matchUps: result.matchUps,
+    structureId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
   // confirm that matchUpsPerRound matchUps have been generated
   let { matchUps } = tournamentEngine.allTournamentMatchUps();
   expect(matchUps.length).toEqual(matchUpsPerRound);
@@ -250,6 +277,12 @@ it('can generate AD_HOC with arbitrary drawSizes and assign positions', () => {
   result = tournamentEngine.generateAdHocMatchUps({
     matchUpsCount: matchUpsPerRound,
     newRound: true,
+    structureId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+  result = tournamentEngine.addAdHocMatchUps({
+    matchUps: result.matchUps,
     structureId,
     drawId,
   });
@@ -353,6 +386,7 @@ it('will not allow addition of AD_HOC matchUps to other draw types', () => {
   expect(matchUps.length).toEqual(15);
 
   const drawDefinition = result.drawDefinition;
+  const structureId = drawDefinition.structures[0].structureId;
   result = tournamentEngine.addDrawDefinition({ drawDefinition, eventId });
   expect(result.success).toEqual(true);
 
@@ -364,12 +398,18 @@ it('will not allow addition of AD_HOC matchUps to other draw types', () => {
   expect(result.success).toEqual(true);
   expect(result.matchUps.length).toEqual(8);
 
+  result = tournamentEngine.addAdHocMatchUps({
+    drawId: drawDefinition.drawId,
+    matchUps: result.matchUps,
+    structureId,
+  });
+  expect(result.success).toEqual(true);
+
   matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
   expect(matchUps.length).toEqual(23);
 
   result = tournamentEngine.generateAdHocMatchUps({
     drawId: drawDefinition.drawId,
-    addToStructure: false,
     matchUpsCount: 8,
     newRound: true,
   });

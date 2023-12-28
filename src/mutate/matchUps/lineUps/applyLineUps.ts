@@ -1,8 +1,8 @@
 import { resolveTieFormat } from '../../../query/hierarchical/tieFormats/resolveTieFormat';
-import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
-import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { getPairedParticipant } from '../../../query/participant/getPairedParticipant';
-import { addParticipant } from '../../participants/addParticipants';
+import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
+import { addParticipant } from '../../participants/addParticipant';
+import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { instanceCount } from '../../../utilities';
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
