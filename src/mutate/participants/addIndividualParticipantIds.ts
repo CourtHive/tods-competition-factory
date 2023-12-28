@@ -1,11 +1,14 @@
+import { addNotice, getTopics } from '../../global/state/globalState';
+import { updateTeamEventEntries } from './updateTeamEventEntries';
+import { makeDeepCopy } from '../../utilities/makeDeepCopy';
 import {
   ResultType,
   decorateResult,
 } from '../../global/functions/decorateResult';
-import { addNotice, getTopics } from '../../global/state/globalState';
-import { updateTeamEventEntries } from './updateTeamEventEntries';
-import { makeDeepCopy } from '../../utilities';
 
+import { removeParticipantIdsFromAllTeams } from './removeIndividualParticipantIds';
+import { GROUP, INDIVIDUAL, TEAM } from '../../constants/participantConstants';
+import { Participant, Tournament } from '../../types/tournamentTypes';
 import { MODIFY_PARTICIPANTS } from '../../constants/topicConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
@@ -15,10 +18,6 @@ import {
   MISSING_VALUE,
   PARTICIPANT_NOT_FOUND,
 } from '../../constants/errorConditionConstants';
-import { GROUP, INDIVIDUAL, TEAM } from '../../constants/participantConstants';
-
-import { Participant, Tournament } from '../../types/tournamentTypes';
-import { removeParticipantIdsFromAllTeams } from './removeIndividualParticipantIds';
 
 type AddIndividualParticipantIdsType = {
   individualParticipantIds: string[]; // individual participantIds to be added to grouping participant

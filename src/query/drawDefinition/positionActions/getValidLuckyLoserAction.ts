@@ -1,12 +1,12 @@
 import { getAllStructureMatchUps } from '../../matchUps/getAllStructureMatchUps';
-import { getStructureMatchUps } from '../../structure/getStructureMatchUps';
 import { getInitialRoundNumber } from '../../matchUps/getInitialRoundNumber';
+import { getStructureMatchUps } from '../../structure/getStructureMatchUps';
+import { extractAttributes } from '../../../utilities/objects';
 import { findStructure } from '../../../acquire/findStructure';
 
 import { ROUND_OUTCOME } from '../../../constants/drawDefinitionConstants';
 import { HydratedParticipant } from '../../../types/hydrated';
 import { TEAM } from '../../../constants/eventConstants';
-import { extractAttributes } from '../../../utilities';
 import {
   DrawDefinition,
   Event,

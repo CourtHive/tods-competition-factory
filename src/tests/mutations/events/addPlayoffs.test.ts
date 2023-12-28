@@ -1,9 +1,9 @@
 import { constantToString } from '../../../utilities/strings';
-import { deriveExponent } from '../../../utilities/math';
-import { generateRange } from '../../../utilities';
 import mocksEngine from '../../../assemblies/engines/mock';
-import { setSubscriptions } from '../../..';
+import { generateRange } from '../../../utilities/arrays';
+import { deriveExponent } from '../../../utilities/math';
 import tournamentEngine from '../../engines/syncEngine';
+import { setSubscriptions } from '../../..';
 import { expect, it } from 'vitest';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';

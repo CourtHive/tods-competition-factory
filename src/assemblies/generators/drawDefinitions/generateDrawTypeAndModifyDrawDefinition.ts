@@ -9,7 +9,7 @@ import { definedAttributes } from '../../../utilities/definedAttributes';
 import { getMatchUpId } from '../../../global/functions/extractors';
 import { generateTieMatchUps } from './tieMatchUps';
 import { addGoesTo } from '../../../mutate/drawDefinitions/matchUpGovernor/addGoesTo';
-import { makeDeepCopy } from '../../../utilities';
+import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
 import {
   ResultType,
   decorateResult,

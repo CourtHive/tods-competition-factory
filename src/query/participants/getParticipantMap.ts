@@ -1,9 +1,9 @@
-import { addNationalityCode } from '../../mutate/participants/addNationalityCode';
 import { addIndividualParticipants } from '../../mutate/participants/addIndividualParticipants';
-import { getTimeItem } from '../base/timeItems';
-import { isObject } from '../../utilities/objects';
-import { makeDeepCopy } from '../../utilities';
+import { addNationalityCode } from '../../mutate/participants/addNationalityCode';
 import { getScaleValues } from '../participant/getScaleValues';
+import { makeDeepCopy } from '../../utilities/makeDeepCopy';
+import { isObject } from '../../utilities/objects';
+import { getTimeItem } from '../base/timeItems';
 
 import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
 import { Tournament } from '../../types/tournamentTypes';

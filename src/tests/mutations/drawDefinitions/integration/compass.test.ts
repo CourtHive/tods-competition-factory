@@ -1,16 +1,16 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
 import { initializeStructureSeedAssignments } from '../../../../mutate/drawDefinitions/positionGovernor/initializeSeedAssignments';
 import { newDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/newDrawDefinition';
-import { drawMatchUps } from '../../../../query/matchUps/getDrawMatchUps';
+import { setStageDrawSize } from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
+import { addDrawEntries } from '../../../../mutate/drawDefinitions/entryGovernor/addDrawEntries';
+import { assignSeed } from '../../../../mutate/drawDefinitions/entryGovernor/seedAssignment';
 import { automatedPositioning } from '../../../../mutate/drawDefinitions/automatedPositioning';
 import { clearDrawPosition } from '../../../../mutate/matchUps/drawPositions/positionClear';
 import { getStructureMatchUps } from '../../../../query/structure/getStructureMatchUps';
 import { attachPolicies } from '../../../../mutate/extensions/policies/attachPolicies';
-import { setStageDrawSize } from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
-import { addDrawEntries } from '../../../../mutate/drawDefinitions/entryGovernor/addDrawEntries';
-import { assignSeed } from '../../../../mutate/drawDefinitions/entryGovernor/seedAssignment';
+import { drawMatchUps } from '../../../../query/matchUps/getDrawMatchUps';
 import { getDrawStructures } from '../../../../acquire/findStructure';
-import { generateRange } from '../../../../utilities';
+import { generateRange } from '../../../../utilities/arrays';
 import { expect, it } from 'vitest';
 
 import { MAIN, COMPASS } from '../../../../constants/drawDefinitionConstants';

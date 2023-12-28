@@ -1,4 +1,4 @@
-import { unique } from '../utilities';
+import { unique } from '../utilities/arrays';
 
 import { CollectionValueProfile } from '../types/tournamentTypes';
 import { SUCCESS } from '../constants/resultConstants';

@@ -11,10 +11,11 @@ import { structureAssignedDrawPositions } from './positionsGetter';
 import { getParticipants } from '../participants/getParticipants';
 import { getAllDrawMatchUps } from '../matchUps/drawMatchUps';
 import { findDrawMatchUp } from '../../acquire/findDrawMatchUp';
+import { makeDeepCopy } from '../../utilities/makeDeepCopy';
 import { getFlightProfile } from '../event/getFlightProfile';
 import { isCompletedStructure } from './structureActions';
-import { makeDeepCopy, unique } from '../../utilities';
 import { isString } from '../../utilities/objects';
+import { unique } from '../../utilities/arrays';
 import { isAdHoc } from './isAdHoc';
 import {
   getEnabledStructures,
@@ -25,10 +26,10 @@ import {
 
 import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
 import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '../../constants/matchUpTypes';
+import { PolicyDefinitions, TournamentRecords } from '../../types/factoryTypes';
 import { HydratedMatchUp, HydratedParticipant } from '../../types/hydrated';
 import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';
 import { ANY, MIXED } from '../../constants/genderConstants';
-import { PolicyDefinitions, TournamentRecords } from '../../types/factoryTypes';
 import {
   ADD_PENALTY,
   ADD_PENALTY_METHOD,

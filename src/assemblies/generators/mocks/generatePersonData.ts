@@ -1,11 +1,11 @@
-import namesData from '../../../fixtures/data/names.json';
+import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
 import { countries } from '../../../fixtures/countryData';
+import namesData from '../../../fixtures/data/names.json';
 import {
   generateRange,
-  makeDeepCopy,
   randomMember,
   randomPop,
-} from '../../../utilities';
+} from '../../../utilities/arrays';
 
 import { FEMALE, MALE } from '../../../constants/genderConstants';
 import {

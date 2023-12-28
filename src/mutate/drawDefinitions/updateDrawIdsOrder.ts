@@ -1,5 +1,5 @@
 import { getFlightProfile } from '../../query/event/getFlightProfile';
-import { intersection, unique } from '../../utilities';
+import { intersection, unique } from '../../utilities/arrays';
 
 import { SUCCESS } from '../../constants/resultConstants';
 import {

@@ -1,10 +1,10 @@
-import { resolveTieFormat } from '../../../query/hierarchical/tieFormats/resolveTieFormat';
 import { generateTieMatchUpScore } from '../../../assemblies/generators/tieMatchUpScore/generateTieMatchUpScore';
+import { resolveTieFormat } from '../../../query/hierarchical/tieFormats/resolveTieFormat';
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { MatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
+import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
 import { HydratedMatchUp } from '../../../types/hydrated';
-import { makeDeepCopy } from '../../../utilities';
 import {
   DrawDefinition,
   Event,

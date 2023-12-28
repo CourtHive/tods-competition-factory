@@ -1,9 +1,6 @@
-import {
-  nearestPowerOf2,
-  generateRange,
-  instanceCount,
-} from '../../../utilities';
+import { generateRange, instanceCount } from '../../../utilities/arrays';
 import { addFinishingRounds } from './addFinishingRounds';
+import { nearestPowerOf2 } from '../../../utilities/math';
 import { buildFeedRound } from './buildFeedRound';
 import { buildRound } from './buildRound';
 

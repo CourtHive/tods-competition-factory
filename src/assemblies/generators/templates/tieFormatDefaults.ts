@@ -1,4 +1,5 @@
-import { makeDeepCopy, UUID } from '../../../utilities';
+import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
+import { UUID } from '../../../utilities/UUID';
 
 import USTA_GOLD_TEAM_CHALLENGE_FORMAT from '../../../fixtures/scoring/tieFormats/USTA_GOLD_TEAM_CHALLENGE.json';
 import TEAM_AGGREGATION_TIE_FORMAT from '../../../fixtures/scoring/tieFormats/TEAM_DOUBLES_3_AGGREGATION.json';

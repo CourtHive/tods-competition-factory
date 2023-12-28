@@ -1,9 +1,9 @@
 import { completeDrawMatchUps } from '../../../assemblies/generators/mocks/completeDrawMatchUps';
-import { timeKeeper } from '../../../global/state/globalState';
 import tournamentEngine from '../../../tests/engines/syncEngine';
-import { participantHeadToHead } from '../headToHead';
-import { generateRange } from '../../../utilities';
+import { timeKeeper } from '../../../global/state/globalState';
 import mocksEngine from '../../../assemblies/engines/mock';
+import { generateRange } from '../../../utilities/arrays';
+import { participantHeadToHead } from '../headToHead';
 import { expect, it } from 'vitest';
 
 import { COMPASS } from '../../../constants/drawDefinitionConstants';

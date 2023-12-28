@@ -1,16 +1,16 @@
 import { matchUpFormatTimes } from '../extensions/matchUpFormatTiming/getMatchUpFormatTiming';
-import { getVenueData } from '../venues/getVenueData';
 import { completedMatchUpStatuses } from '../../constants/matchUpStatusConstants';
 import { definedAttributes } from '../../utilities/definedAttributes';
-import { findEvent } from '../../acquire/findEvent';
+import { attributeFilter } from '../../utilities/attributeFilter';
 import { scheduledMatchUpTime } from './scheduledMatchUpTime';
 import { scheduledMatchUpDate } from './scheduledMatchUpDate';
 import { matchUpAllocatedCourts } from './courtAllocations';
 import { matchUpAssignedCourtId } from './courtAssignment';
 import { matchUpAssignedVenueId } from './venueAssignment';
+import { getVenueData } from '../venues/getVenueData';
 import { matchUpTimeModifiers } from './timeModifiers';
-import { attributeFilter } from '../../utilities';
 import { matchUpDuration } from './matchUpDuration';
+import { findEvent } from '../../acquire/findEvent';
 import { matchUpCourtOrder } from './courtOrder';
 import { matchUpStartTime } from './startTime';
 import { matchUpEndTime } from './endTime';
@@ -21,10 +21,10 @@ import {
   getIsoDateString,
 } from '../../utilities/dateTime';
 
+import { Event, Tournament, EventTypeUnion } from '../../types/tournamentTypes';
 import { MISSING_MATCHUP } from '../../constants/errorConditionConstants';
 import { HydratedMatchUp } from '../../types/hydrated';
 import { TEAM } from '../../constants/eventConstants';
-import { Event, Tournament, EventTypeUnion } from '../../types/tournamentTypes';
 import {
   ScheduleTiming,
   ScheduleVisibilityFilters,

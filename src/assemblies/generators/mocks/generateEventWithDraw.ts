@@ -1,32 +1,29 @@
-import { addDrawDefinition } from '../../../mutate/drawDefinitions/addDrawDefinition';
 import { automatedPlayoffPositioning } from '../../../mutate/drawDefinitions/automatedPlayoffPositioning';
-import { setParticipantScaleItem } from '../../../mutate/participants/addScaleItems';
 import { addPlayoffStructures } from '../../../mutate/drawDefinitions/addPlayoffStructures';
-import { addEventEntries } from '../../../mutate/entries/addEventEntries';
-import { addParticipants } from '../../../mutate/participants/addParticipants';
-import { addEventTimeItem } from '../../../mutate/timeItems/addTimeItem';
+import { setParticipantScaleItem } from '../../../mutate/participants/addScaleItems';
+import { addDrawDefinition } from '../../../mutate/drawDefinitions/addDrawDefinition';
 import { generateDrawDefinition } from '../drawDefinitions/generateDrawDefinition';
-import { publishEvent } from '../../../mutate/events/publishEvent';
+import { addParticipants } from '../../../mutate/participants/addParticipants';
 import { allDrawMatchUps } from '../../../query/matchUps/getAllDrawMatchUps';
-import { addFlight } from '../../../mutate/events/addFlight';
-import tieFormatDefaults from '../templates/tieFormatDefaults';
-import { addExtension } from '../../../mutate/extensions/addExtension';
+import { addEventEntries } from '../../../mutate/entries/addEventEntries';
+import { addEventTimeItem } from '../../../mutate/timeItems/addTimeItem';
+import { generateRange, intersection } from '../../../utilities/arrays';
 import { isValidExtension } from '../../../validators/isValidExtension';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { definedAttributes } from '../../../utilities/definedAttributes';
+import { addExtension } from '../../../mutate/extensions/addExtension';
+import { publishEvent } from '../../../mutate/events/publishEvent';
+import tieFormatDefaults from '../templates/tieFormatDefaults';
+import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
 import { generateParticipants } from './generateParticipants';
+import { addFlight } from '../../../mutate/events/addFlight';
 import { processTieFormat } from './processTieFormat';
 import { coerceEven } from '../../../utilities/math';
+import { UUID } from '../../../utilities/UUID';
 import {
   completeDrawMatchUps,
   completeDrawMatchUp,
 } from './completeDrawMatchUps';
-import {
-  generateRange,
-  intersection,
-  makeDeepCopy,
-  UUID,
-} from '../../../utilities';
 
 import {
   INDIVIDUAL,

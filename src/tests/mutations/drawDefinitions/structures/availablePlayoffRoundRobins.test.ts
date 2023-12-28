@@ -1,14 +1,11 @@
+import { getPositionAssignments } from '../../../../query/drawDefinition/positionsGetter';
 import { isCompletedStructure } from '../../../../query/drawDefinition/structureActions';
 import { generateMatchUpOutcome } from '../primitives/generateMatchUpOutcome';
-import { getPositionAssignments } from '../../../../query/drawDefinition/positionsGetter';
+import { generateRange, intersection } from '../../../../utilities/arrays';
+import { extractAttributes } from '../../../../utilities/objects';
 import tournamentEngine from '../../../engines/syncEngine';
 import { mocksEngine } from '../../../..';
 import { expect, it } from 'vitest';
-import {
-  extractAttributes,
-  generateRange,
-  intersection,
-} from '../../../../utilities';
 
 import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
 import {

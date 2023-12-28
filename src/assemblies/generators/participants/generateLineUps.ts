@@ -5,8 +5,8 @@ import { addParticipant } from '../../../mutate/participants/addParticipant';
 import { validateTieFormat } from '../../../validators/validateTieFormat';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { addExtension } from '../../../mutate/extensions/addExtension';
+import { generateRange } from '../../../utilities/arrays';
 import { isNumeric } from '../../../utilities/math';
-import { generateRange } from '../../../utilities';
 
 import {
   DOUBLES_MATCHUP,

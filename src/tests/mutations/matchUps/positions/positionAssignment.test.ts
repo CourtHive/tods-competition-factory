@@ -1,16 +1,16 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
-import { assignDrawPosition } from '../../../../mutate/matchUps/drawPositions/positionAssignment';
-import { setStageDrawSize } from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
-import { structureAssignedDrawPositions } from '../../../../query/drawDefinition/positionsGetter';
-import { getDrawStructures } from '../../../../acquire/findStructure';
-import { getStageEntries } from '../../../../query/drawDefinition/stageGetter';
 import { newDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/newDrawDefinition';
+import { setStageDrawSize } from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
+import { assignDrawPosition } from '../../../../mutate/matchUps/drawPositions/positionAssignment';
+import { structureAssignedDrawPositions } from '../../../../query/drawDefinition/positionsGetter';
+import { getStageEntries } from '../../../../query/drawDefinition/stageGetter';
+import { getDrawStructures } from '../../../../acquire/findStructure';
+import { generateRange } from '../../../../utilities/arrays';
 import { mocksEngine } from '../../../..';
 import { expect, it } from 'vitest';
 
 import { ERROR, SUCCESS } from '../../../../constants/resultConstants';
 import { EntryStatusUnion } from '../../../../types/tournamentTypes';
-import { generateRange } from '../../../../utilities';
 import {
   MAIN,
   ROUND_ROBIN,

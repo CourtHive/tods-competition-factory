@@ -1,6 +1,6 @@
-import { findExtension } from '../../../acquire/findExtension';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
-import { makeDeepCopy } from '../../../utilities';
+import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
+import { findExtension } from '../../../acquire/findExtension';
 
 import { LINEUPS } from '../../../constants/extensionConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
@@ -55,7 +55,7 @@ export function updateSideLineUp({
   } else {
     matchUp.sides = [1, 2].map((sideNumber) => {
       const existingSide =
-        matchUp.sides?.find((side) => side.sideNumber === sideNumber) || {};
+        matchUp.sides?.find((side) => side.sideNumber === sideNumber) ?? {};
       return { ...existingSide, sideNumber };
     });
 

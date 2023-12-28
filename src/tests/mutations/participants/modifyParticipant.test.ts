@@ -1,15 +1,16 @@
-import { intersection, makeDeepCopy } from '../../../utilities';
+import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
 import mocksEngine from '../../../assemblies/engines/mock';
+import { intersection } from '../../../utilities/arrays';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
+import { CANNOT_MODIFY_PARTICIPANT_TYPE } from '../../../constants/errorConditionConstants';
 import { MALE } from '../../../constants/genderConstants';
 import {
   INDIVIDUAL,
   PAIR,
   TEAM,
 } from '../../../constants/participantConstants';
-import { CANNOT_MODIFY_PARTICIPANT_TYPE } from '../../../constants/errorConditionConstants';
 
 tournamentEngine.devContext(true);
 
@@ -37,11 +38,7 @@ it('can modify PAIR participants', () => {
     standardGivenName: 'Pete',
     nationalityCode: 'USA',
   };
-  const updatedIndividualParticipant = Object.assign(
-    {},
-    individualParticipant,
-    { person }
-  );
+  const updatedIndividualParticipant = { ...individualParticipant, person };
   let result = tournamentEngine.modifyParticipant({
     participant: updatedIndividualParticipant,
   });
@@ -51,9 +48,10 @@ it('can modify PAIR participants', () => {
   );
 
   const secondIndividual = individualParticipants[0];
-  const updatedSecondIndividual = Object.assign({}, secondIndividual, {
+  const updatedSecondIndividual = {
+    ...secondIndividual,
     participantOtherName: 'Other',
-  });
+  };
   result = tournamentEngine.modifyParticipant({
     participant: updatedSecondIndividual,
   });

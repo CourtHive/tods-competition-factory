@@ -1,7 +1,9 @@
-import { validMatchUps } from '../../../validators/validMatchUp';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
-import { generateRange, makeDeepCopy, unique, UUID } from '../../../utilities';
+import { generateRange, unique } from '../../../utilities/arrays';
+import { validMatchUps } from '../../../validators/validMatchUp';
+import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
 import { ensureInt } from '../../../utilities/ensureInt';
+import { UUID } from '../../../utilities/UUID';
 
 import { MISSING_MATCHUPS } from '../../../constants/errorConditionConstants';
 import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
@@ -61,7 +63,7 @@ export function buildDrawHierarchy({
 
   const { roundMatchUps } = getRoundMatchUps({ matchUps });
   const firstRoundMatchUps = roundMatchUps?.[1];
-  const secondRoundMatchUps = roundMatchUps?.[2] || [];
+  const secondRoundMatchUps = roundMatchUps?.[2] ?? [];
 
   const firstRoundMatchUp = firstRoundMatchUps?.[0];
   const drawId = firstRoundMatchUp?.drawId;
@@ -72,7 +74,7 @@ export function buildDrawHierarchy({
     : [];
   const maxRound = Math.max(...roundNumbers);
 
-  const maxRoundMatchUpsCount = roundMatchUps?.[maxRound]?.length || 0;
+  const maxRoundMatchUpsCount = roundMatchUps?.[maxRound]?.length ?? 0;
   const additionalRounds = Math.ceil(
     Math.log(maxRoundMatchUpsCount) / Math.log(2)
   );

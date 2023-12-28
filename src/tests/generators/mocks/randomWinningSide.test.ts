@@ -1,7 +1,7 @@
-import tournamentEngine from '../../engines/syncEngine';
-import { instanceCount } from '../../../utilities';
-import { it, expect } from 'vitest';
 import mocksEngine from '../../../assemblies/engines/mock';
+import { instanceCount } from '../../../utilities/arrays';
+import tournamentEngine from '../../engines/syncEngine';
+import { it, expect } from 'vitest';
 
 import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
 import { SINGLES } from '../../../constants/eventConstants';

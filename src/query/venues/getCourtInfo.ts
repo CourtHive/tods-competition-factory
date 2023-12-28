@@ -1,5 +1,5 @@
+import { makeDeepCopy } from '../../utilities/makeDeepCopy';
 import { findCourt } from '../../mutate/venues/findCourt';
-import { makeDeepCopy } from '../../utilities';
 
 import { Tournament } from '../../types/tournamentTypes';
 import { SUCCESS } from '../../constants/resultConstants';

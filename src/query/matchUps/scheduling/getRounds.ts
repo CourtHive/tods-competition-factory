@@ -1,9 +1,9 @@
 import { allCompetitionMatchUps } from '../../matchUps/getAllCompetitionMatchUps';
+import { getProfileRounds } from '../../../mutate/matchUps/schedule/profileRounds';
 import { definedAttributes } from '../../../utilities/definedAttributes';
 import { roundSort } from '../../../functions/sorters/roundSort';
 import { extractDate } from '../../../utilities/dateTime';
-import { getProfileRounds } from '../../../mutate/matchUps/schedule/profileRounds';
-import { chunkArray } from '../../../utilities';
+import { chunkArray } from '../../../utilities/arrays';
 import {
   getFinishingPositionDetails,
   getRoundId,
@@ -275,8 +275,8 @@ export function getRounds({
               ? events?.find(({ eventId }) => eventId === round.eventId)
               : undefined;
 
-          const startDate = event?.startDate || tournamentRecord?.startDate;
-          const endDate = event?.endDate || tournamentRecord?.endDate;
+          const startDate = event?.startDate ?? tournamentRecord?.startDate;
+          const endDate = event?.endDate ?? tournamentRecord?.endDate;
           const validStartDate =
             !scheduleDate ||
             !startDate ||

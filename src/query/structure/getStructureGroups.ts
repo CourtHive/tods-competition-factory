@@ -1,4 +1,9 @@
-import { generateRange, intersection, overlap, unique } from '../../utilities';
+import {
+  generateRange,
+  intersection,
+  overlap,
+  unique,
+} from '../../utilities/arrays';
 
 import { DrawDefinition } from '../../types/tournamentTypes';
 import { StructureProfile } from '../../types/factoryTypes';
@@ -29,8 +34,8 @@ export function getStructureGroups({
   structureGroups: string[][];
   maxQualifyingDepth: number;
 } {
-  const structures = drawDefinition.structures || [];
-  const links = drawDefinition.links || [];
+  const structures = drawDefinition.structures ?? [];
+  const links = drawDefinition.links ?? [];
 
   const structureProfiles = new Map<string, StructureProfile>();
 

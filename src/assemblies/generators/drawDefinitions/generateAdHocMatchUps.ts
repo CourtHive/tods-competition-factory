@@ -1,6 +1,7 @@
 import { definedAttributes } from '../../../utilities/definedAttributes';
 import { isConvertableInteger } from '../../../utilities/math';
-import { generateRange, UUID } from '../../../utilities';
+import { generateRange } from '../../../utilities/arrays';
+import { UUID } from '../../../utilities/UUID';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../../constants/entryStatusConstants';
 import { ROUND_OUTCOME } from '../../../constants/drawDefinitionConstants';
@@ -83,11 +84,11 @@ export function generateAdHocMatchUps({
     if (newRound) {
       matchUpsCount = roundMatchUpsCount;
     } else {
-      const targetRoundNumber = roundNumber || lastRoundNumber || 1;
+      const targetRoundNumber = roundNumber ?? lastRoundNumber ?? 1;
       const existingRoundMatchUps =
         structure.matchUps?.filter(
           (matchUp) => matchUp.roundNumber === targetRoundNumber
-        )?.length || 0;
+        )?.length ?? 0;
       const maxRemaining = roundMatchUpsCount - existingRoundMatchUps;
       if (maxRemaining > 0) matchUpsCount = maxRemaining;
     }
@@ -146,5 +147,5 @@ export function generateAdHocMatchUps({
     };
   });
 
-  return { matchUpsCount: matchUps.length, matchUps, ...SUCCESS };
+  return { matchUpsCount: matchUps?.length ?? 0, matchUps, ...SUCCESS };
 }

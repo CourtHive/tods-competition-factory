@@ -1,23 +1,23 @@
-import { modifyRoundRobinMatchUpsStatus } from '../matchUpStatus/modifyRoundRobinMatchUpsStatus';
 import { getStructureDrawPositionProfiles } from '../../../query/structure/getStructureDrawPositionProfiles';
+import { modifyRoundRobinMatchUpsStatus } from '../matchUpStatus/modifyRoundRobinMatchUpsStatus';
 import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
+import { getInitialRoundNumber } from '../../../query/matchUps/getInitialRoundNumber';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
-import { getInitialRoundNumber } from '../../../query/matchUps/getInitialRoundNumber';
 import { decorateResult } from '../../../global/functions/decorateResult';
-import {
-  MatchUpsMap,
-  getMatchUpsMap,
-} from '../../../query/matchUps/getMatchUpsMap';
 import { pushGlobalLog } from '../../../global/functions/globalLog';
 import { findStructure } from '../../../acquire/findStructure';
 import { ensureInt } from '../../../utilities/ensureInt';
 import { positionTargets } from './positionTargets';
-import { overlap } from '../../../utilities';
+import { overlap } from '../../../utilities/arrays';
 import {
   getPositionAssignments,
   structureAssignedDrawPositions,
 } from '../../../query/drawDefinition/positionsGetter';
+import {
+  MatchUpsMap,
+  getMatchUpsMap,
+} from '../../../query/matchUps/getMatchUpsMap';
 import {
   modifyPositionAssignmentsNotice,
   modifyMatchUpNotice,
@@ -25,6 +25,7 @@ import {
 
 import { CONTAINER, DRAW } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { HydratedMatchUp } from '../../../types/hydrated';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
   BYE,
@@ -40,7 +41,6 @@ import {
   ErrorType,
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { HydratedMatchUp } from '../../../types/hydrated';
 import {
   DrawDefinition,
   Event,

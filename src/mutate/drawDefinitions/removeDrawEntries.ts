@@ -1,7 +1,7 @@
 import { getAssignedParticipantIds } from '../../query/drawDefinition/getAssignedParticipantIds';
 import { refreshEntryPositions } from '../../global/functions/producers/refreshEntryPositions';
 import { getFlightProfile } from '../../query/event/getFlightProfile';
-import { overlap } from '../../utilities';
+import { overlap } from '../../utilities/arrays';
 
 import { SUCCESS } from '../../constants/resultConstants';
 import {
@@ -38,7 +38,7 @@ export function removeDrawEntries({
 
   const filterEntry = (entry) => {
     const entryId = entry.participantId;
-    return participantIds.includes(entryId) ? false : true;
+    return !participantIds.includes(entryId);
   };
 
   const { flightProfile } = getFlightProfile({ event });

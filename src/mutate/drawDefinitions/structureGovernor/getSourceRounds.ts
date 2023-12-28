@@ -1,7 +1,8 @@
 import { getStructureRoundProfile } from '../../../query/structure/getStructureRoundProfile';
 import { getFinishingPositionSourceRoundsMap } from './structureUtils';
-import { generateRange, numericSort } from '../../../utilities';
 import { getPositionsPlayedOff } from './getPositionsPlayedOff';
+import { generateRange } from '../../../utilities/arrays';
+import { numericSort } from '../../../utilities/sorting';
 import { ensureInt } from '../../../utilities/ensureInt';
 
 import { DrawDefinition } from '../../../types/tournamentTypes';

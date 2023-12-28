@@ -1,13 +1,17 @@
 import { getParticipantIdMatchUps } from '../../../../query/drawDefinition/participantIdMatchUps';
-import { generateRange, instanceCount, unique } from '../../../../utilities';
 import { verifyStructure } from '../primitives/verifyStructure';
-import tournamentEngine from '../../../engines/syncEngine';
 import mocksEngine from '../../../../assemblies/engines/mock';
+import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 import {
   verifyMatchUps,
   verifySideNumbers,
 } from '../primitives/verifyMatchUps';
+import {
+  generateRange,
+  instanceCount,
+  unique,
+} from '../../../../utilities/arrays';
 
 import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
 

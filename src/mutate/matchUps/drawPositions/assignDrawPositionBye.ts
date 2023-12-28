@@ -3,25 +3,26 @@ import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructure
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { getInitialRoundNumber } from '../../../query/matchUps/getInitialRoundNumber';
 import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
-import {
-  MatchUpsMap,
-  getMatchUpsMap,
-} from '../../../query/matchUps/getMatchUpsMap';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { addPositionActionTelemetry } from '../../drawDefinitions/positionGovernor/addPositionActionTelemetry';
 import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
 import { pushGlobalLog } from '../../../global/functions/globalLog';
 import { findStructure } from '../../../acquire/findStructure';
+import { numericSort } from '../../../utilities/sorting';
 import { positionTargets } from './positionTargets';
-import { numericSort } from '../../../utilities';
 import {
   modifyMatchUpNotice,
   modifyPositionAssignmentsNotice,
 } from '../../notifications/drawNotifications';
 
+import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
+import {
+  MatchUpsMap,
+  getMatchUpsMap,
+} from '../../../query/matchUps/getMatchUpsMap';
 import {
   DRAW_POSITION_ACTIVE,
   INVALID_DRAW_POSITION,
@@ -29,7 +30,6 @@ import {
   MISSING_DRAW_DEFINITION,
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import {
   DrawDefinition,
   Event,

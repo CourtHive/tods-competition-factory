@@ -1,6 +1,6 @@
 import { getStructureLinks } from '../../query/drawDefinition/linkGetter';
+import { intersection } from '../../utilities/arrays';
 import { isString } from '../../utilities/objects';
-import { intersection } from '../../utilities';
 
 import { SUCCESS } from '../../constants/resultConstants';
 import {

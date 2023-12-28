@@ -1,8 +1,8 @@
 import { setSubscriptions } from '../../../global/state/globalState';
 import tournamentEngineSync from '../../engines/syncEngine';
-import asyncEngine from '../../engines/asyncEngine';
-import { instanceCount } from '../../../utilities';
 import mocksEngine from '../../../assemblies/engines/mock';
+import { instanceCount } from '../../../utilities/arrays';
+import asyncEngine from '../../engines/asyncEngine';
 import { expect, test } from 'vitest';
 
 import { TEAM_EVENT } from '../../../constants/eventConstants';
@@ -219,7 +219,6 @@ test.each([asyncEngine, tournamentEngineSync])(
       ...result,
       drawId,
     });
-    // expect(matchUpModifyNotices.length).toEqual(2);
     expect(result.success).toEqual(true);
 
     result = await tournamentEngine.allTournamentMatchUps();

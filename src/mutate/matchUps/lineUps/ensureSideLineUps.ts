@@ -1,7 +1,7 @@
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
+import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
 import { findExtension } from '../../../acquire/findExtension';
-import { makeDeepCopy } from '../../../utilities';
 
 import { LINEUPS } from '../../../constants/extensionConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';

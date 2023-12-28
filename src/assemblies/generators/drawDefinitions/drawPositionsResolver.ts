@@ -1,13 +1,13 @@
 import { getDrawPosition } from '../../../global/functions/extractors';
+import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
 import { ensureInt } from '../../../utilities/ensureInt';
 import {
-  makeDeepCopy,
+  chunkArray,
   generateRange,
   overlap,
-  chunkArray,
-  shuffleArray,
   randomPop,
-} from '../../../utilities';
+  shuffleArray,
+} from '../../../utilities/arrays';
 
 import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
 

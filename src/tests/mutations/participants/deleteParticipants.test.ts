@@ -1,7 +1,7 @@
 import { getParticipantId } from '../../../global/functions/extractors';
 import mocksEngine from '../../../assemblies/engines/mock';
-import { unique } from '../../../utilities';
 import tournamentEngine from '../../engines/syncEngine';
+import { unique } from '../../../utilities/arrays';
 import { expect, it } from 'vitest';
 
 import { EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT } from '../../../constants/errorConditionConstants';

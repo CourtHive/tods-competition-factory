@@ -2,7 +2,7 @@ import { getMatchUpCompetitiveProfile } from '../matchUp/getMatchUpCompetitivePr
 import { allTournamentMatchUps } from '../matchUps/getAllTournamentMatchUps';
 import { extractAttributes as xa, isObject } from '../../utilities/objects';
 import { getParticipants } from '../participants/getParticipants';
-import { intersection } from '../../utilities';
+import { intersection } from '../../utilities/arrays';
 import {
   ResultType,
   decorateResult,
@@ -14,9 +14,9 @@ import {
   countSets,
 } from '../matchUps/roundRobinTally/scoreCounters';
 
+import { ParticipantTypeUnion, Tournament } from '../../types/tournamentTypes';
 import { TEAM_PARTICIPANT } from '../../constants/participantConstants';
 import { HydratedMatchUp, HydratedSide } from '../../types/hydrated';
-import { ParticipantTypeUnion, Tournament } from '../../types/tournamentTypes';
 import { BYE } from '../../constants/matchUpStatusConstants';
 import { TEAM_MATCHUP } from '../../constants/matchUpTypes';
 import { SUCCESS } from '../../constants/resultConstants';

@@ -1,9 +1,10 @@
 import { generatePersonData } from '../../../assemblies/generators/mocks/generatePersonData';
 import { generatePersons } from '../../../assemblies/generators/mocks/generatePersons';
 import mocksEngine from '../../../assemblies/engines/mock';
-import { UUID, instanceCount } from '../../../utilities';
-import tournamentEngine from '../../engines/syncEngine';
+import { instanceCount } from '../../../utilities/arrays';
 import namesData from '../../../fixtures/data/names.json';
+import tournamentEngine from '../../engines/syncEngine';
+import { UUID } from '../../../utilities/UUID';
 import { expect, test } from 'vitest';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
@@ -93,8 +94,8 @@ const personData = defaultPersonData
   ?.slice(0, 8)
   .map((person) => Object.assign(person, { personId: UUID() }));
 
-const firstNames = (personData || []).map(({ firstName }) => firstName);
-const lastNames = (personData || []).map(({ lastName }) => lastName);
+const firstNames = (personData ?? []).map(({ firstName }) => firstName);
+const lastNames = (personData ?? []).map(({ lastName }) => lastName);
 
 const scenarios = [
   undefined,
@@ -133,7 +134,7 @@ test('it can attach participant extensions and timeItems from personData', () =>
     },
   ];
 
-  const augmentedPersonData = (personData || []).map((data) => ({
+  const augmentedPersonData = (personData ?? []).map((data) => ({
     ...data,
     participantExtensions,
     participantTimeItems,

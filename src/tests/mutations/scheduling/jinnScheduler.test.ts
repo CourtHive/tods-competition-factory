@@ -1,9 +1,9 @@
-import { constantToString } from '../../../utilities/strings';
-import tournamentEngine from '../../engines/syncEngine';
 import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
-import { extractTime } from '../../../utilities/dateTime';
+import { constantToString } from '../../../utilities/strings';
 import mocksEngine from '../../../assemblies/engines/mock';
-import { unique } from '../../../utilities';
+import { extractTime } from '../../../utilities/dateTime';
+import tournamentEngine from '../../engines/syncEngine';
+import { unique } from '../../../utilities/arrays';
 import { expect, it } from 'vitest';
 
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';

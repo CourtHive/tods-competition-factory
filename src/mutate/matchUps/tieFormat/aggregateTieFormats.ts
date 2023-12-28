@@ -1,13 +1,14 @@
 import { compareTieFormats } from '../../../query/hierarchical/tieFormats/compareTieFormats';
 import { allEventMatchUps } from '../../../query/matchUps/getAllEventMatchUps';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
+import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
+import { UUID } from '../../../utilities/UUID';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 import { ResultType } from '../../../global/functions/decorateResult';
-import { Tournament } from '../../../types/tournamentTypes';
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { UUID, makeDeepCopy } from '../../../utilities';
+import { Tournament } from '../../../types/tournamentTypes';
 
 type AggreateTieFormatsArgs = {
   tournamentRecord: Tournament;

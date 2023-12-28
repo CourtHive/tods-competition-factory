@@ -1,6 +1,6 @@
-import { generateRange } from '../../../utilities';
-import { it, test, expect } from 'vitest';
 import mocksEngine from '../../../assemblies/engines/mock';
+import { generateRange } from '../../../utilities/arrays';
+import { it, test, expect } from 'vitest';
 
 import {
   COMPLETED,

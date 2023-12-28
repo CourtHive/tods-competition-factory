@@ -1,5 +1,5 @@
+import { intersection } from '../../utilities/arrays';
 import { isObject } from '../../utilities/objects';
-import { intersection } from '../../utilities';
 
 import { SUCCESS } from '../../constants/resultConstants';
 import {

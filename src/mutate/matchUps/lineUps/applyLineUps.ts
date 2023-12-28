@@ -3,7 +3,7 @@ import { getPairedParticipant } from '../../../query/participant/getPairedPartic
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { addParticipant } from '../../participants/addParticipant';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
-import { instanceCount } from '../../../utilities';
+import { instanceCount } from '../../../utilities/arrays';
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';

@@ -1,6 +1,6 @@
 import { allTournamentMatchUps } from '../../../../query/matchUps/getAllTournamentMatchUps';
 import { processAccessors } from '../../../../query/drawDefinition/processAccessors';
-import { intersection } from '../../../../utilities';
+import { intersection } from '../../../../utilities/arrays';
 
 export function getConflicts({
   tournamentRecord,

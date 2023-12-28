@@ -1,7 +1,7 @@
 import structureTemplate from '../../templates/structureTemplate';
+import { generateRange } from '../../../../utilities/arrays';
 import { feedInMatchUps } from '../feedInMatchUps';
 import { treeMatchUps } from './eliminationTree';
-import { generateRange } from '../../../../utilities';
 
 import {
   LOSER,

@@ -1,9 +1,9 @@
 import { getAllStructureMatchUps } from '../../../../query/matchUps/getAllStructureMatchUps';
-import { getRoundMatchUps } from '../../../../query/matchUps/getRoundMatchUps';
 import { getPositionAssignments } from '../../../../query/drawDefinition/positionsGetter';
-import tournamentEngine from '../../../engines/syncEngine';
-import { intersection } from '../../../../utilities';
+import { getRoundMatchUps } from '../../../../query/matchUps/getRoundMatchUps';
 import mocksEngine from '../../../../assemblies/engines/mock';
+import { intersection } from '../../../../utilities/arrays';
+import tournamentEngine from '../../../engines/syncEngine';
 import { it, expect } from 'vitest';
 
 import { SINGLES_EVENT } from '../../../../constants/eventConstants';

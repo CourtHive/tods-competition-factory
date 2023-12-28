@@ -1,7 +1,7 @@
-import { findExtension } from '../../../acquire/findExtension';
 import { hasParticipantId } from '../../../global/functions/filters';
+import { findExtension } from '../../../acquire/findExtension';
+import { instanceCount } from '../../../utilities/arrays';
 import { ensureInt } from '../../../utilities/ensureInt';
-import { instanceCount } from '../../../utilities';
 
 import { SUB_ORDER } from '../../../constants/extensionConstants';
 

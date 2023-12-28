@@ -1,5 +1,5 @@
 import { decorateResult } from '../../global/functions/decorateResult';
-import { overlap } from '../../utilities';
+import { overlap } from '../../utilities/arrays';
 
 import { LOSER, WINNER } from '../../constants/drawDefinitionConstants';
 import {

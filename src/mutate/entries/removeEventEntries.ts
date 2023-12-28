@@ -1,9 +1,9 @@
 import { getAssignedParticipantIds } from '../../query/drawDefinition/getAssignedParticipantIds';
 import { refreshEntryPositions } from '../../global/functions/producers/refreshEntryPositions';
-import { intersection, extractAttributes as xa } from '../../utilities';
+import { extractAttributes as xa, isString } from '../../utilities/objects';
 import { decorateResult } from '../../global/functions/decorateResult';
 import { getFlightProfile } from '../../query/event/getFlightProfile';
-import { isString } from '../../utilities/objects';
+import { intersection } from '../../utilities/arrays';
 
 import { HydratedParticipant } from '../../types/hydrated';
 import { SUCCESS } from '../../constants/resultConstants';

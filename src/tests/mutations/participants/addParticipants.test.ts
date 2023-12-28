@@ -1,9 +1,9 @@
 import tournamentEngine from '../../engines/syncEngine';
+import { UUID } from '../../../utilities/UUID';
 import { expect, it } from 'vitest';
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { COMPETITOR } from '../../../constants/participantRoles';
-import { UUID } from '../../../utilities';
 import {
   INVALID_PARTICIPANT_TYPE,
   MISSING_PARTICIPANT_ROLE,

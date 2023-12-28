@@ -34,24 +34,26 @@ import { umo } from '../../../mutate/matchUps/score/history/umo';
 
 // renamed
 import { stringify } from '../../generators/matchUpFormatCode/stringify';
+import { tidyScore } from '../../../analyze/scoreParser/scoreParser';
 import { parse } from '../../generators/matchUpFormatCode/parse';
 
 export const scoreGovernor = {
-  stringifyMatchUpFormat: stringify,
-  isValidMatchUpFormat,
-  parseMatchUpFormat: parse,
-  generateTieMatchUpScore,
-  getTiebreakComplement,
-  updateTieMatchUpScore,
-  generateScoreString,
-  checkSetIsComplete,
-  validateTieFormat,
-  getSetComplement,
-  checkScoreHasValue,
-  keyValueScore,
-  validateScore,
-  reverseScore,
   analyzeSet,
+  checkScoreHasValue,
+  checkSetIsComplete,
+  generateScoreString,
+  generateTieMatchUpScore,
+  getSetComplement,
+  getTiebreakComplement,
+  isValidMatchUpFormat,
+  keyValueScore,
+  parseMatchUpFormat: parse,
+  reverseScore,
+  stringifyMatchUpFormat: stringify,
+  tidyScore,
+  updateTieMatchUpScore,
+  validateScore,
+  validateTieFormat,
 
   calculateHistoryScore,
   setServingSide,

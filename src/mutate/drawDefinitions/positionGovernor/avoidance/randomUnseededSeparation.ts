@@ -1,24 +1,23 @@
 import { getAllStructureMatchUps } from '../../../../query/matchUps/getAllStructureMatchUps';
 import { assignDrawPositionBye } from '../../../matchUps/drawPositions/assignDrawPositionBye';
-import { generatePositioningCandidate } from './generatePositioningCandidate';
+import { assignDrawPosition } from '../../../matchUps/drawPositions/positionAssignment';
 import { getAttributeGroupings } from '../../../../query/participants/getAttributeGrouping';
+import { generatePositioningCandidate } from './generatePositioningCandidate';
 import { decorateResult } from '../../../../global/functions/decorateResult';
+import { chunkArray, generateRange } from '../../../../utilities/arrays';
 import { getUnplacedParticipantIds } from './getUnplacedParticipantIds';
 import { addParticipantGroupings } from './addParticipantGroupings';
 import { findStructure } from '../../../../acquire/findStructure';
-import { deriveExponent } from '../../../../utilities/math';
-import { assignDrawPosition } from '../../../matchUps/drawPositions/positionAssignment';
+import { numericSort } from '../../../../utilities/sorting';
 import {
   getPositionAssignments,
   structureAssignedDrawPositions,
 } from '../../../../query/drawDefinition/positionsGetter';
 import {
-  chunkArray,
-  generateRange,
+  deriveExponent,
   isPowerOf2,
   nearestPowerOf2,
-  numericSort,
-} from '../../../../utilities';
+} from '../../../../utilities/math';
 
 import { GROUP, PAIR, TEAM } from '../../../../constants/participantConstants';
 import { MatchUpsMap } from '../../../../query/matchUps/getMatchUpsMap';

@@ -1,14 +1,10 @@
 import { resolveDrawPositions } from '../../assemblies/generators/drawDefinitions/drawPositionsResolver';
 import { getDrawPosition, getParticipantId } from '../functions/extractors';
+import { generateRange, randomPop, unique } from '../../utilities/arrays';
 import tournamentEngine from '../../tests/engines/syncEngine';
 import mocksEngine from '../../assemblies/engines/mock';
+import { nextPowerOf2 } from '../../utilities/math';
 import { expect, it } from 'vitest';
-import {
-  generateRange,
-  nextPowerOf2,
-  randomPop,
-  unique,
-} from '../../utilities';
 
 // these tests were written in preparation for enabling automated draw positioning
 // using "participant agency" protocols including drawPosition preferences for non-seeded particpants

@@ -1,15 +1,15 @@
 import { getPairedPreviousMatchUpIsDoubleExit } from '../../drawDefinitions/positionGovernor/getPairedPreviousMatchUpIsDoubleExit';
-import { assignDrawPositionBye } from './assignDrawPositionBye';
-import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
-import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
-import { decorateResult } from '../../../global/functions/decorateResult';
-import { updateSideLineUp } from '../lineUps/updateSideLineUp';
-import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
-import { positionTargets } from './positionTargets';
 import { getUpdatedDrawPositions } from '../../drawDefinitions/matchUpGovernor/getUpdatedDrawPositions';
 import { updateMatchUpStatusCodes } from '../../drawDefinitions/matchUpGovernor/matchUpStatusCodes';
 import { getExitWinningSide } from '../../drawDefinitions/matchUpGovernor/getExitWinningSide';
-import { overlap } from '../../../utilities';
+import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
+import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
+import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
+import { decorateResult } from '../../../global/functions/decorateResult';
+import { assignDrawPositionBye } from './assignDrawPositionBye';
+import { updateSideLineUp } from '../lineUps/updateSideLineUp';
+import { positionTargets } from './positionTargets';
+import { overlap } from '../../../utilities/arrays';
 import {
   MatchUpsMap,
   getMappedStructureMatchUps,
@@ -18,6 +18,7 @@ import {
 
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { HydratedMatchUp } from '../../../types/hydrated';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
   DRAW_POSITION_ASSIGNED,
@@ -33,7 +34,6 @@ import {
   TO_BE_PLAYED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
-import { HydratedMatchUp } from '../../../types/hydrated';
 import {
   DrawDefinition,
   Event,

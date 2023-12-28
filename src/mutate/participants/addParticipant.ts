@@ -1,13 +1,14 @@
 import { decorateResult } from '../../global/functions/decorateResult';
 import { definedAttributes } from '../../utilities/definedAttributes';
+import { makeDeepCopy } from '../../utilities/makeDeepCopy';
 import { addNotice } from '../../global/state/globalState';
 import { intersection } from '../../utilities/arrays';
-import { makeDeepCopy, UUID } from '../../utilities';
+import { UUID } from '../../utilities/UUID';
 
-import { Tournament } from '../../types/tournamentTypes';
 import { ADD_PARTICIPANTS } from '../../constants/topicConstants';
 import { TournamentRecords } from '../../types/factoryTypes';
 import { SUCCESS } from '../../constants/resultConstants';
+import { Tournament } from '../../types/tournamentTypes';
 import {
   GROUP,
   INDIVIDUAL,

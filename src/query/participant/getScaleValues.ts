@@ -1,4 +1,4 @@
-import { unique } from '../../utilities';
+import { unique } from '../../utilities/arrays';
 
 import { SUCCESS } from '../../constants/resultConstants';
 import {

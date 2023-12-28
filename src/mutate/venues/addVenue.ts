@@ -1,7 +1,9 @@
 import { resolveTournamentRecords } from '../../parameters/resolveTournamentRecords';
-import { UUID, definedAttributes, makeDeepCopy } from '../../utilities';
-import { addExtension } from '../extensions/addExtension';
+import { definedAttributes } from '../../utilities/definedAttributes';
+import { makeDeepCopy } from '../../utilities/makeDeepCopy';
 import { addNotice } from '../../global/state/globalState';
+import { addExtension } from '../extensions/addExtension';
+import { UUID } from '../../utilities/UUID';
 
 import { CONTEXT } from '../../constants/extensionConstants';
 import { ADD_VENUE } from '../../constants/topicConstants';

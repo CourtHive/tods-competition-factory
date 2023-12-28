@@ -1,10 +1,11 @@
-import { addParticipants } from './addParticipants';
 import { participantScaleItem } from '../../query/participant/participantScaleItem';
 import { getParticipantId } from '../../global/functions/extractors';
 import { getFlightProfile } from '../../query/event/getFlightProfile';
 import { isConvertableInteger } from '../../utilities/math';
-import { generateRange } from '../../utilities';
+import { generateRange } from '../../utilities/arrays';
+import { addParticipants } from './addParticipants';
 
+import { Event, Participant, Tournament } from '../../types/tournamentTypes';
 import { DIRECT_ACCEPTANCE } from '../../constants/entryStatusConstants';
 import { COMPETITOR } from '../../constants/participantRoles';
 import { TEAM_EVENT } from '../../constants/eventConstants';
@@ -23,7 +24,6 @@ import {
   INDIVIDUAL,
   TEAM_PARTICIPANT,
 } from '../../constants/participantConstants';
-import { Event, Participant, Tournament } from '../../types/tournamentTypes';
 
 /*
 scaledParticipants are equivalent to scaledEntries

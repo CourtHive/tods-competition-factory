@@ -1,9 +1,9 @@
 import { resolveTournamentRecords } from '../../parameters/resolveTournamentRecords';
-import { modifyCourtAvailability } from './courtAvailability';
 import courtTemplate from '../../assemblies/generators/templates/courtTemplate';
+import { modifyCourtAvailability } from './courtAvailability';
+import { makeDeepCopy } from '../../utilities/makeDeepCopy';
 import { addNotice } from '../../global/state/globalState';
 import { findCourt } from './findCourt';
-import { makeDeepCopy } from '../../utilities';
 
 import { HydratedMatchUp, HydratedCourt } from '../../types/hydrated';
 import { ResultType } from '../../global/functions/decorateResult';

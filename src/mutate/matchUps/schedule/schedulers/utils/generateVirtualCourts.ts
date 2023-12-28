@@ -1,6 +1,6 @@
-import { getCourtDateAvailability } from '../../../../../query/venues/getCourtDateAvailability';
 import { generateTimeSlots } from '../../../../../assemblies/generators/scheduling/generateTimeSlots';
-import { makeDeepCopy } from '../../../../../utilities';
+import { getCourtDateAvailability } from '../../../../../query/venues/getCourtDateAvailability';
+import { makeDeepCopy } from '../../../../../utilities/makeDeepCopy';
 import {
   isValidDateString,
   timeStringMinutes,

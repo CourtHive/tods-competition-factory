@@ -1,5 +1,6 @@
 import { getAllDrawMatchUps } from '../matchUps/drawMatchUps';
-import { makeDeepCopy, unique } from '../../utilities';
+import { makeDeepCopy } from '../../utilities/makeDeepCopy';
+import { unique } from '../../utilities/arrays';
 
 import { MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
 import {

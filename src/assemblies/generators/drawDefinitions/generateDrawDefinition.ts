@@ -9,6 +9,7 @@ import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies
 import { addAdHocMatchUps } from '../../../mutate/structures/addAdHocMatchUps';
 import { getAllowedDrawTypes } from '../../../query/tournaments/allowedTypes';
 import { getParticipants } from '../../../query/participants/getParticipants';
+import { isConvertableInteger, nextPowerOf2 } from '../../../utilities/math';
 import { validateTieFormat } from '../../../validators/validateTieFormat';
 import { checkTieFormat } from '../../../mutate/tieFormat/checkTieFormat';
 import { checkValidEntries } from '../../../validators/checkValidEntries';
@@ -18,8 +19,10 @@ import { DrawMaticArgs, drawMatic } from './drawMatic/drawMatic';
 import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
 import { generateAdHocMatchUps } from './generateAdHocMatchUps';
 import structureTemplate from '../templates/structureTemplate';
-import { isConvertableInteger } from '../../../utilities/math';
+import { extractAttributes } from '../../../utilities/objects';
+import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
 import { constantToString } from '../../../utilities/strings';
+import { generateRange } from '../../../utilities/arrays';
 import { ensureInt } from '../../../utilities/ensureInt';
 import { newDrawDefinition } from './newDrawDefinition';
 import { prepareStage } from './prepareStage';
@@ -27,12 +30,6 @@ import {
   setStageDrawSize,
   setStageQualifiersCount,
 } from '../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
-import {
-  extractAttributes,
-  generateRange,
-  makeDeepCopy,
-  nextPowerOf2,
-} from '../../../utilities';
 
 import POLICY_SEEDING_DEFAULT from '../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
 import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
@@ -351,7 +348,7 @@ export function generateDrawDefinition(
   if (existingDrawDefinition && drawType !== existingDrawDefinition.drawType)
     existingDrawDefinition.drawType = drawType;
 
-  let drawDefinition =
+  let drawDefinition: any =
     existingDrawDefinition ??
     newDrawDefinition({
       drawType,

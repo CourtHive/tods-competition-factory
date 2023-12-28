@@ -1,7 +1,7 @@
-import { ResultType } from '../../global/functions/decorateResult';
 import { processAccessors } from '../drawDefinition/processAccessors';
-import { unique } from '../../utilities';
+import { unique } from '../../utilities/arrays';
 
+import { ResultType } from '../../global/functions/decorateResult';
 import { HydratedParticipant } from '../../types/hydrated';
 import { IdCollections } from '../../types/factoryTypes';
 import {

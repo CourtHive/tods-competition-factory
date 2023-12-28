@@ -1,7 +1,7 @@
 import { participantScaleItem } from '../../../query/participant/participantScaleItem';
 import { getParticipantId } from '../../../global/functions/extractors';
-import { generateRange } from '../../../utilities';
 import mocksEngine from '../../../assemblies/engines/mock';
+import { generateRange } from '../../../utilities/arrays';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
@@ -9,13 +9,13 @@ import { TEAM_PARTICIPANT } from '../../../constants/participantConstants';
 import { SINGLES_EVENT, TEAM_EVENT } from '../../../constants/eventConstants';
 import { UNGROUPED } from '../../../constants/entryStatusConstants';
 import { COMPETITOR } from '../../../constants/participantRoles';
+import { ScaleAttributes } from '../../../types/factoryTypes';
 import { RANKING } from '../../../constants/scaleConstants';
 import {
   INVALID_PARTICIPANT_IDS,
   INVALID_VALUES,
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
-import { ScaleAttributes } from '../../../types/factoryTypes';
 
 const EVENT_NAME = 'Team Event';
 

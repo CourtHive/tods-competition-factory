@@ -1,7 +1,8 @@
-import { findExtension } from '../../../../acquire/findExtension';
-import { extractAttributes as xa, intersection } from '../../../../utilities';
-import { generateTeamTournament } from './generateTestTeamTournament';
+import { extractAttributes as xa } from '../../../../utilities/objects';
 import { setSubscriptions } from '../../../../global/state/globalState';
+import { generateTeamTournament } from './generateTestTeamTournament';
+import { findExtension } from '../../../../acquire/findExtension';
+import { intersection } from '../../../../utilities/arrays';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 

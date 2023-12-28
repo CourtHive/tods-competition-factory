@@ -1,9 +1,10 @@
 import { getParticipantId } from '../../../global/functions/extractors';
-import tournamentEngine from '../../engines/syncEngine';
-import { instanceCount, unique } from '../../../utilities';
+import { instanceCount, unique } from '../../../utilities/arrays';
 import mocksEngine from '../../../assemblies/engines/mock';
+import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
+import { LINEUPS } from '../../../constants/extensionConstants';
 import { TEAM_EVENT } from '../../../constants/eventConstants';
 import { RANKING } from '../../../constants/scaleConstants';
 import { ASC } from '../../../constants/sortingConstants';
@@ -21,7 +22,6 @@ import {
   DOMINANT_DUO_MIXED,
   USTA_GOLD_TEAM_CHALLENGE,
 } from '../../../constants/tieFormatConstants';
-import { LINEUPS } from '../../../constants/extensionConstants';
 
 it('can generate lineUps for TEAM events', () => {
   const categoryName = '18U';

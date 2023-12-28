@@ -1,5 +1,5 @@
 import { getCollectionPositionAssignments } from '../events/getCollectionPositionAssignments';
-import { unique } from '../../utilities';
+import { unique } from '../../utilities/arrays';
 
 import { LineUp } from '../../types/factoryTypes';
 

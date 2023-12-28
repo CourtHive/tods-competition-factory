@@ -1,13 +1,15 @@
-import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
-import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
 import { generateCollectionMatchUps } from '../../assemblies/generators/drawDefinitions/tieMatchUps';
-import { definedAttributes } from '../../utilities/definedAttributes';
+import { validateCollectionDefinition } from '../../validators/validateCollectionDefinition';
+import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
+import { copyTieFormat } from '../../query/hierarchical/tieFormats/copyTieFormat';
 import { calculateWinCriteria } from '../../query/matchUp/calculateWinCriteria';
 import { getTieFormat } from '../../query/hierarchical/tieFormats/getTieFormat';
+import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
 import { tieFormatTelemetry } from '../matchUps/tieFormat/tieFormatTelemetry';
-import { copyTieFormat } from '../../query/hierarchical/tieFormats/copyTieFormat';
+import { validateTieFormat } from '../../validators/validateTieFormat';
+import { definedAttributes } from '../../utilities/definedAttributes';
 import { validUpdate } from '../../validators/validUpdate';
-import { UUID } from '../../utilities';
+import { UUID } from '../../utilities/UUID';
 import {
   addMatchUpsNotice,
   modifyDrawNotice,
@@ -17,7 +19,6 @@ import {
   ResultType,
   decorateResult,
 } from '../../global/functions/decorateResult';
-import { validateTieFormat } from '../../validators/validateTieFormat';
 
 import { TIE_FORMAT_MODIFICATIONS } from '../../constants/extensionConstants';
 import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../constants/policyConstants';
@@ -39,7 +40,6 @@ import {
   TieFormat,
   Tournament,
 } from '../../types/tournamentTypes';
-import { validateCollectionDefinition } from '../../validators/validateCollectionDefinition';
 
 /*
  * collectionDefinition will be added to an event tieFormat (if present)

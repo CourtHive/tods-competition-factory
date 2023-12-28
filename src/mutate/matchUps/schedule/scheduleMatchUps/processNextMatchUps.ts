@@ -1,6 +1,6 @@
 import { getIndividualParticipantIds } from './getIndividualParticipantIds';
 import { HydratedMatchUp } from '../../../../types/hydrated';
-import { unique } from '../../../../utilities';
+import { unique } from '../../../../utilities/arrays';
 
 type ProcessNextMatchUpsArgs = {
   matchUpPotentialParticipantIds: { [key: string]: string[] };
@@ -15,7 +15,7 @@ export function processNextMatchUps({
   matchUp,
 }: ProcessNextMatchUpsArgs) {
   const { individualParticipantIds } = getIndividualParticipantIds(matchUp);
-  timeAfterRecovery = timeAfterRecovery || matchUp.schedule?.timeAfterRecovery;
+  timeAfterRecovery = timeAfterRecovery ?? matchUp.schedule?.timeAfterRecovery;
 
   const addPotentialParticipantIds = (targetMatchUpId) => {
     if (!matchUpPotentialParticipantIds[targetMatchUpId])

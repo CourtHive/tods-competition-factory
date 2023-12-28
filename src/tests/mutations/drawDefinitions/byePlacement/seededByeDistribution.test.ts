@@ -1,6 +1,6 @@
 import { getSeededDrawPositions } from '../../../../query/drawDefinition/getSeededDrawPositions';
-import { generateRange } from '../../../../utilities';
 import mocksEngine from '../../../../assemblies/engines/mock';
+import { generateRange } from '../../../../utilities/arrays';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 

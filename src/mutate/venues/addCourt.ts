@@ -1,14 +1,18 @@
-import { UUID, generateRange, makeDeepCopy } from '../../utilities';
+import { courtTemplate } from '../../assemblies/generators/templates/courtTemplate';
+import { validDateAvailability } from '../../validators/validateDateAvailability';
+import { extractDate, extractTime, formatDate } from '../../utilities/dateTime';
+import { makeDeepCopy } from '../../utilities/makeDeepCopy';
+import { addNotice } from '../../global/state/globalState';
+import { generateRange } from '../../utilities/arrays';
+import { isNumeric } from '../../utilities/math';
+import { UUID } from '../../utilities/UUID';
+import { findVenue } from './findVenue';
 import {
   ResultType,
   decorateResult,
 } from '../../global/functions/decorateResult';
-import { courtTemplate } from '../../assemblies/generators/templates/courtTemplate';
-import { addNotice } from '../../global/state/globalState';
-import { validDateAvailability } from '../../validators/validateDateAvailability';
-import { isNumeric } from '../../utilities/math';
-import { extractDate, extractTime, formatDate } from '../../utilities/dateTime';
 
+import { Availability, Court, Tournament } from '../../types/tournamentTypes';
 import { MODIFY_VENUE } from '../../constants/topicConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
@@ -18,8 +22,6 @@ import {
   COURT_EXISTS,
   INVALID_VALUES,
 } from '../../constants/errorConditionConstants';
-import { Availability, Court, Tournament } from '../../types/tournamentTypes';
-import { findVenue } from './findVenue';
 
 type AddCourtArgs = {
   tournamentRecord: Tournament;

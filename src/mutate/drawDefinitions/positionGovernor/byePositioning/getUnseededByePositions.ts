@@ -1,16 +1,12 @@
 import { getAllStructureMatchUps } from '../../../../query/matchUps/getAllStructureMatchUps';
 import { structureAssignedDrawPositions } from '../../../../query/drawDefinition/positionsGetter';
+import { chunkArray, shuffleArray, unique } from '../../../../utilities/arrays';
+import { numericSort } from '../../../../utilities/sorting';
 import { getSeedBlocks } from '../getSeedBlocks';
 import {
   getSeedPattern,
   getValidSeedBlocks,
 } from '../../../../query/drawDefinition/seedGetter';
-import {
-  chunkArray,
-  numericSort,
-  shuffleArray,
-  unique,
-} from '../../../../utilities';
 
 import {
   CLUSTER,
@@ -156,7 +152,7 @@ export function getUnseededByePositions({
     );
   } else {
     if (isLuckyStructure) {
-      // console.log({ isLuckyStructure });
+      //
     }
     unfilledSeedBlocks = validBlockDrawPositions
       ?.map(quarterSeparateBlock)

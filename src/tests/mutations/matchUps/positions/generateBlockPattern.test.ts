@@ -1,5 +1,5 @@
 import { generateBlockPattern } from '../../../../assemblies/generators/drawDefinitions/generateBlockPattern';
-import { generateRange } from '../../../../utilities';
+import { generateRange } from '../../../../utilities/arrays';
 import { expect, test } from 'vitest';
 
 import {

@@ -1,6 +1,6 @@
-import tournamentEngine from '../../../../engines/syncEngine';
 import mocksEngine from '../../../../../assemblies/engines/mock';
-import { unique } from '../../../../../utilities';
+import tournamentEngine from '../../../../engines/syncEngine';
+import { unique } from '../../../../../utilities/arrays';
 import { expect, it } from 'vitest';
 
 import POLICY_SEEDING_BYES from '../../../../../fixtures/policies/POLICY_SEEDING_BYES';
@@ -130,12 +130,10 @@ it.each(scenario)(
       expect(allByeStructuresHaveSeeds).toEqual(true);
       expect(seedNumbersWithByes).toEqual(scenario.seedNumbersWithByes);
       expect(seedNumbersWithByes.length).toEqual(expectedByesCount);
+    } else if (seedNumbersWithByes.length === expectedByesCount) {
+      console.log('seeds were randomly placed with BYEs');
     } else {
-      if (seedNumbersWithByes.length === expectedByesCount) {
-        console.log('seeds were randomly placed with BYEs');
-      } else {
-        expect(seedNumbersWithByes.length).not.toEqual(expectedByesCount);
-      }
+      expect(seedNumbersWithByes.length).not.toEqual(expectedByesCount);
     }
   }
 );

@@ -1,11 +1,12 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
-import { setStageDrawSize } from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
-import { instanceCount, numericSort } from '../../../../utilities';
 import { newDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/newDrawDefinition';
+import { setStageDrawSize } from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
+import { instanceCount } from '../../../../utilities/arrays';
+import { numericSort } from '../../../../utilities/sorting';
 import { expect, it } from 'vitest';
 
-import { ERROR } from '../../../../constants/resultConstants';
 import { DrawDefinition } from '../../../../types/tournamentTypes';
+import { ERROR } from '../../../../constants/resultConstants';
 import {
   TOP_DOWN,
   LOSER,

@@ -1,7 +1,7 @@
 import { addEventExtension } from '../extensions/addRemoveExtensions';
 import { decorateResult } from '../../global/functions/decorateResult';
 import { getFlightProfile } from '../../query/event/getFlightProfile';
-import { makeDeepCopy } from '../../utilities';
+import { makeDeepCopy } from '../../utilities/makeDeepCopy';
 
 import { FLIGHT_PROFILE } from '../../constants/extensionConstants';
 import { SUCCESS } from '../../constants/resultConstants';

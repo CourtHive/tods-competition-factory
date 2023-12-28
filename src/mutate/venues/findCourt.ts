@@ -1,7 +1,7 @@
 import { getLinkedTournamentIds } from '../../query/tournaments/getLinkedTournamentIds';
-import { addVenue } from './addVenue';
 import { decorateResult } from '../../global/functions/decorateResult';
-import { makeDeepCopy } from '../../utilities';
+import { makeDeepCopy } from '../../utilities/makeDeepCopy';
+import { addVenue } from './addVenue';
 
 import { Court, Tournament, Venue } from '../../types/tournamentTypes';
 import { SUCCESS } from '../../constants/resultConstants';

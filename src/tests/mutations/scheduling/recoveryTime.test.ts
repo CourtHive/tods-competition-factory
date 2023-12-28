@@ -1,7 +1,8 @@
 import { getMatchUpIds } from '../../../global/functions/extractors';
+import { stringSort } from '../../../functions/sorters/stringSort';
 import competitionEngineSync from '../../engines/syncEngine';
 import mocksEngine from '../../../assemblies/engines/mock';
-import { instanceCount } from '../../../utilities';
+import { instanceCount } from '../../../utilities/arrays';
 import { expect, test } from 'vitest';
 
 import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
@@ -116,7 +117,7 @@ test.each([competitionEngineSync])(
     ).map((profile: any) => profile.timeAfterRecovery);
 
     // prettier-ignore
-    expect(afterRecoveryTimes.sort()).toEqual([
+    expect(afterRecoveryTimes.sort(stringSort)).toEqual([
       '12:00', '12:00',
       '12:30', '12:30',
       '13:30', '13:30',
@@ -124,7 +125,7 @@ test.each([competitionEngineSync])(
     ]);
 
     // prettier-ignore
-    expect(Object.values(result.matchUpNotBeforeTimes).sort()).toEqual([
+    expect(Object.values(result.matchUpNotBeforeTimes).sort(stringSort)).toEqual([
       '09:00', '09:00',
       '11:00', '11:00',
       '12:30', '12:30',

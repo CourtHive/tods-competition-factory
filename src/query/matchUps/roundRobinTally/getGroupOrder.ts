@@ -1,7 +1,7 @@
 import { getParticipantResults } from './getParticipantResults';
+import { instanceCount } from '../../../utilities/arrays';
 import { getGroups, getResultsArray } from './getGroups';
 import { isNumeric } from '../../../utilities/math';
-import { instanceCount } from '../../../utilities';
 
 /*
 Round Robin group tally logic by default implements the following guidelines:
@@ -108,7 +108,7 @@ export function getGroupOrder(params) {
     .map((key) => orderedTallyGroups[key])
     .map((participantIds) => {
       const result = groupSubSort({ participantIds, ...params });
-      report.push(...(result.report || []));
+      report.push(...(result.report ?? []));
       return result.order;
     })
     .flat(Infinity);
@@ -239,7 +239,7 @@ function processAttribute({
           tallyPolicy,
           matchUps,
         });
-        report.push(...(result.report || []));
+        report.push(...(result.report ?? []));
         return result.order;
       })
       .flat(Infinity);

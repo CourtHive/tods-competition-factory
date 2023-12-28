@@ -1,10 +1,10 @@
+import { postalCodeMocks, stateMocks, cityMocks } from '../mocks/address';
 import { extractDate, formatDate } from '../../../utilities/dateTime';
-import { nameMocks } from '../mocks/nameMocks';
 import { findExtension } from '../../../acquire/findExtension';
 import { generatePersons } from '../mocks/generatePersons';
 import { generateAddress } from '../mocks/generateAddress';
-import { UUID } from '../../../utilities';
-import { postalCodeMocks, stateMocks, cityMocks } from '../mocks/address';
+import { nameMocks } from '../mocks/nameMocks';
+import { UUID } from '../../../utilities/UUID';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 import { FEMALE, MALE, OTHER } from '../../../constants/genderConstants';
@@ -111,11 +111,6 @@ export function anonymizeTournamentRecord({
         entry.participantId = idMap[entry.participantId];
       }
     }
-
-    /*
-    // no need to remove entry extensions
-    for (const entry of event.entries || []) { entry.extensions = filterExtensions(entry); }
-    */
 
     for (const drawDefinition of event.drawDefinitions || []) {
       drawDefinition.extensions = filterExtensions(drawDefinition);

@@ -3,8 +3,8 @@ import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/
 import { extractTime, timeStringMinutes } from '../../../utilities/dateTime';
 import { getParticipantId } from '../../../global/functions/extractors';
 import mocksEngine from '../../../assemblies/engines/mock';
+import { intersection } from '../../../utilities/arrays';
 import tournamentEngine from '../../engines/syncEngine';
-import { intersection } from '../../../utilities';
 import { expect, it } from 'vitest';
 
 import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';

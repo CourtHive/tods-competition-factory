@@ -1,4 +1,5 @@
-import { unique, UUID } from '../../../utilities';
+import { unique } from '../../../utilities/arrays';
+import { UUID } from '../../../utilities/UUID';
 
 import { ROUND_OUTCOME } from '../../../constants/drawDefinitionConstants';
 import { SeedingProfile } from '../../../types/factoryTypes';

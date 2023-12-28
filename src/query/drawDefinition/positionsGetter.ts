@@ -1,13 +1,12 @@
-import { extractAttributes } from '../../utilities';
 import { findStructure } from '../../acquire/findStructure';
+import { extractAttributes } from '../../utilities/objects';
 
+import { ResultType } from '../../global/functions/decorateResult';
 import {
   ErrorType,
   MISSING_DRAW_DEFINITION,
   MISSING_POSITION_ASSIGNMENTS,
 } from '../../constants/errorConditionConstants';
-
-import { ResultType } from '../../global/functions/decorateResult';
 import {
   DrawDefinition,
   PositionAssignment,

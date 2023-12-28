@@ -1,7 +1,7 @@
 import { addDays, dateRange } from '../../../utilities/dateTime';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
-import { chunkArray } from '../../../utilities';
+import { chunkArray } from '../../../utilities/arrays';
 import { expect, test } from 'vitest';
 
 import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
@@ -214,9 +214,9 @@ test('scheduling v2 respects DO_NOT_SCHEDULE requests', () => {
     },
   ];
 
-  let result = tournamentEngine.setSchedulingProfile({ schedulingProfile });
+  tournamentEngine.setSchedulingProfile({ schedulingProfile });
 
-  result = tournamentEngine.scheduleProfileRounds({
+  const result = tournamentEngine.scheduleProfileRounds({
     scheduleDates: availableDates,
     pro: true,
   });
@@ -252,7 +252,7 @@ test('scheduling v2 respects DO_NOT_SCHEDULE requests', () => {
     requests,
   });
 
-  result = tournamentEngine.scheduleProfileRounds({
+  tournamentEngine.scheduleProfileRounds({
     scheduleDates: availableDates,
     clearScheduleDates: true,
     pro: true,

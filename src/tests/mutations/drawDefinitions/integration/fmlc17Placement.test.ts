@@ -1,7 +1,7 @@
 import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
 import { getDrawStructures } from '../../../../acquire/findStructure';
 import { completeMatchUp } from '../primitives/verifyMatchUps';
-import { chunkArray } from '../../../../utilities';
+import { chunkArray } from '../../../../utilities/arrays';
 import { expect, it } from 'vitest';
 
 import {

@@ -1,6 +1,6 @@
 import { checkParticipantProfileInitialization } from './checkParticipantProfileInitialization';
 import { getIndividualParticipantIds } from './getIndividualParticipantIds';
-import { unique } from '../../../../utilities';
+import { unique } from '../../../../utilities/arrays';
 
 import { TOTAL } from '../../../../constants/scheduleConstants';
 

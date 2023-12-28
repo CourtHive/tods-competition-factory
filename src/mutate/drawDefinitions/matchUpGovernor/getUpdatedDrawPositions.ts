@@ -1,4 +1,4 @@
-import { numericSort } from '../../../utilities';
+import { numericSort } from '../../../utilities/sorting';
 
 /**
  * ensures that a matchUp has 2 and only 2 drawPositions

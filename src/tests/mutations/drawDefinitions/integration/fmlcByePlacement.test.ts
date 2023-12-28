@@ -1,9 +1,9 @@
 import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
-import { completeMatchUp } from '../primitives/verifyMatchUps';
 import { getDrawStructures } from '../../../../acquire/findStructure';
-import tournamentEngine from '../../../engines/syncEngine';
-import { instanceCount } from '../../../../utilities';
+import { completeMatchUp } from '../primitives/verifyMatchUps';
 import mocksEngine from '../../../../assemblies/engines/mock';
+import { instanceCount } from '../../../../utilities/arrays';
+import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import SEEDING_USTA from '../../../../fixtures/policies/POLICY_SEEDING_DEFAULT';

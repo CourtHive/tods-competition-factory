@@ -1,10 +1,10 @@
 import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
-import { parse } from '../matchUpFormatCode/parse';
+import { generateRange, randomPop } from '../../../utilities/arrays';
 import { analyzeMatchUp } from '../../../query/matchUp/analyzeMatchUp';
-import { matchUpScore } from '../matchUps/matchUpScore';
-import { analyzeSet } from '../../../query/matchUp/analyzeSet';
 import { randomInt, weightedRandom } from '../../../utilities/math';
-import { generateRange, randomPop } from '../../../utilities';
+import { analyzeSet } from '../../../query/matchUp/analyzeSet';
+import { matchUpScore } from '../matchUps/matchUpScore';
+import { parse } from '../matchUpFormatCode/parse';
 import {
   getSetComplement,
   getTiebreakComplement,
@@ -96,7 +96,7 @@ export function generateOutcome(params) {
   const outcomePointer = randomInt(1, 100);
   const matchUpStatus: string = (matchUpStatusMap.valueMap.find(
     (item) => outcomePointer <= item[0]
-  ) || [100, COMPLETED])[1];
+  ) ?? [100, COMPLETED])[1];
 
   const noScore = { sets: [], scoreStringSide1: '', side2ScoreString: '' };
   if ([WALKOVER, DEFAULTED].includes(matchUpStatus)) {
@@ -117,7 +117,7 @@ export function generateOutcome(params) {
 
   const parsedFormat = parse(matchUpFormat);
 
-  const { bestOf, setFormat, finalSetFormat } = parsedFormat || {};
+  const { bestOf, setFormat, finalSetFormat } = parsedFormat ?? {};
 
   const sets: any[] = [];
   const weightedSide = randomInt(0, 1);
@@ -141,7 +141,7 @@ export function generateOutcome(params) {
   // used to capture winner by RETIREMENT or DEFAULT
   let weightedWinningSide;
 
-  for (const setNumber of generateRange(1, (bestOf || 0) + 1)) {
+  for (const setNumber of generateRange(1, (bestOf ?? 0) + 1)) {
     const isFinalSet = setNumber === bestOf;
     const { set, incomplete, winningSideNumber } = generateSet({
       incomplete: incompleteAt === setNumber,

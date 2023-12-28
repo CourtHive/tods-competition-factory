@@ -7,7 +7,7 @@ import { assignSeed } from '../../../../mutate/drawDefinitions/entryGovernor/see
 import { attachPolicies } from '../../../../mutate/extensions/policies/attachPolicies';
 import { getAppliedPolicies } from '../../../../query/extensions/getAppliedPolicies';
 import { getStageEntries } from '../../../../query/drawDefinition/stageGetter';
-import { numericSort } from '../../../../utilities';
+import { numericSort } from '../../../../utilities/sorting';
 import { mocksEngine } from '../../../..';
 import { expect, it } from 'vitest';
 import {

@@ -1,8 +1,8 @@
 import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
 import { getParticipantId } from '../../../global/functions/extractors';
+import { intersection, unique } from '../../../utilities/arrays';
 import mocksEngine from '../../../assemblies/engines/mock';
 import { extractTime } from '../../../utilities/dateTime';
-import { intersection, unique } from '../../../utilities';
 import tournamentEngine from '../../engines/syncEngine';
 import garman from '../../../forge/garman/garman';
 import { expect, it } from 'vitest';

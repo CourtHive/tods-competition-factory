@@ -1,11 +1,12 @@
-import { getParticipants } from '../participants/getParticipants';
 import { getPolicyDefinitions } from '../extensions/getAppliedPolicies';
 import { addExtension } from '../../mutate/extensions/addExtension';
+import { getParticipants } from '../participants/getParticipants';
 import { getTargetElement } from './getTargetElement';
 import { getAwardProfile } from './getAwardProfile';
 import { getAwardPoints } from './getAwardPoints';
-import { unique } from '../../utilities';
+import { unique } from '../../utilities/arrays';
 
+import { PAIR, TEAM_PARTICIPANT } from '../../constants/participantConstants';
 import { POLICY_TYPE_RANKING_POINTS } from '../../constants/policyConstants';
 import { QUALIFYING } from '../../constants/drawDefinitionConstants';
 import { RANKING_POINTS } from '../../constants/extensionConstants';
@@ -16,7 +17,6 @@ import {
   MISSING_POLICY_DEFINITION,
   MISSING_TOURNAMENT_RECORD,
 } from '../../constants/errorConditionConstants';
-import { PAIR, TEAM_PARTICIPANT } from '../../constants/participantConstants';
 import {
   ParticipantFilters,
   PolicyDefinitions,

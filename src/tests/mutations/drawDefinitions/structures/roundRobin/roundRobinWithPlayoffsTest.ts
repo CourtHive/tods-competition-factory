@@ -2,8 +2,8 @@ import { tallyParticipantResults } from '../../../../../query/matchUps/roundRobi
 import { allPlayoffPositionsFilled } from '../../../../../query/drawDefinition/structureActions';
 import { generateMatchUpOutcome } from '../../primitives/generateMatchUpOutcome';
 import mocksEngine from '../../../../../assemblies/engines/mock';
+import { generateRange } from '../../../../../utilities/arrays';
 import tournamentEngine from '../../../../engines/syncEngine';
-import { generateRange } from '../../../../../utilities';
 import { expect } from 'vitest';
 
 import { FORMAT_STANDARD } from '../../../../../fixtures/scoring/matchUpFormats';

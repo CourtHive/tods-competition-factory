@@ -1,8 +1,7 @@
-import { addNotes } from '../../base/addRemoveNotes';
-import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
-import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { updateAssignmentParticipantResults } from '../../drawDefinitions/matchUpGovernor/updateAssignmentParticipantResults';
+import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
+import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { decorateResult } from '../../../global/functions/decorateResult';
@@ -11,7 +10,8 @@ import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { getTopics } from '../../../global/state/globalState';
 import { isAdHoc } from '../../../query/drawDefinition/isAdHoc';
 import { isLucky } from '../../../query/drawDefinition/isLucky';
-import { unique } from '../../../utilities';
+import { addNotes } from '../../base/addRemoveNotes';
+import { unique } from '../../../utilities/arrays';
 import {
   modifyMatchUpNotice,
   updateInContextMatchUp,

@@ -1,7 +1,7 @@
 import { getParticipantId } from '../../../../../global/functions/extractors';
-import tournamentEngine from '../../../../engines/syncEngine';
-import { extractAttributes } from '../../../../../utilities';
+import { extractAttributes as xa } from '../../../../../utilities/objects';
 import mocksEngine from '../../../../../assemblies/engines/mock';
+import tournamentEngine from '../../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import SEEDING_USTA from '../../../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
@@ -32,7 +32,7 @@ it('can autoSeed by Rankings and then generate Round Robin', () => {
 
   const participantIds = participants.map(getParticipantId);
 
-  let result = tournamentEngine.addEventEntries({
+  tournamentEngine.addEventEntries({
     participantIds,
     eventId,
   });
@@ -62,7 +62,7 @@ it('can autoSeed by Rankings and then generate Round Robin', () => {
     }
   );
 
-  result = tournamentEngine.setParticipantScaleItems({
+  let result = tournamentEngine.setParticipantScaleItems({
     scaleItemsWithParticipantIds,
   });
   expect(result.success).toEqual(true);
@@ -121,9 +121,7 @@ it('can autoSeed by Rankings and then generate Round Robin', () => {
   // there are no seedAssignments because no draws have been generated from the event with seeding
   expect(seededParticipants[0].events[0].seedAssignments).toBeUndefined();
 
-  const seededParticipantIds = seededParticipants.map(
-    extractAttributes('participantId')
-  );
+  const seededParticipantIds = seededParticipants.map(xa('participantId'));
 
   let seedsCount = 0; // without seedsCount seedValue will disappear
   result = tournamentEngine.generateDrawDefinition({

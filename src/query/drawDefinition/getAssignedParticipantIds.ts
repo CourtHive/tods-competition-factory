@@ -1,5 +1,6 @@
-import { extractAttributes, unique } from '../../utilities';
+import { extractAttributes } from '../../utilities/objects';
 import { getPositionAssignments } from './positionsGetter';
+import { unique } from '../../utilities/arrays';
 
 import { MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
 import { DrawDefinition, StageTypeUnion } from '../../types/tournamentTypes';

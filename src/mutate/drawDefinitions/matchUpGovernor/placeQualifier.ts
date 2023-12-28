@@ -3,13 +3,13 @@ import { getPositionAssignments } from '../../../query/drawDefinition/positionsG
 import { positionTargets } from '../../matchUps/drawPositions/positionTargets';
 import { findStructure } from '../../../acquire/findStructure';
 import { isActiveDownstream } from './isActiveDownstream';
-import { randomMember } from '../../../utilities';
+import { randomMember } from '../../../utilities/arrays';
 
+import { STRUCTURE_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
+import { ResultType } from '../../../global/functions/decorateResult';
 import { DRAW } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { STRUCTURE_NOT_FOUND } from '../../../constants/errorConditionConstants';
-import { ResultType } from '../../../global/functions/decorateResult';
 
 export function placeQualifier(
   params

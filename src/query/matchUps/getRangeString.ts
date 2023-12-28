@@ -1,5 +1,5 @@
 import { isNumeric } from '../../utilities/math';
-import { unique } from '../../utilities';
+import { unique } from '../../utilities/arrays';
 
 export function getRangeString(arr) {
   if (!Array.isArray(arr)) return '';

@@ -1,11 +1,11 @@
+import mocksEngine from '../../../../../assemblies/engines/mock';
+import { instanceCount } from '../../../../../utilities/arrays';
+import tournamentEngine from '../../../../engines/syncEngine';
+import { expect, it } from 'vitest';
 import {
   replaceWithAlternate,
   replaceWithBye,
 } from '../../../drawDefinitions/testingUtilities';
-import tournamentEngine from '../../../../engines/syncEngine';
-import { instanceCount } from '../../../../../utilities';
-import mocksEngine from '../../../../../assemblies/engines/mock';
-import { expect, it } from 'vitest';
 
 import { ROUND_ROBIN } from '../../../../../constants/drawDefinitionConstants';
 import {

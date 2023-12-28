@@ -1,6 +1,6 @@
-import tournamentEngine from '../../engines/syncEngine';
 import mocksEngine from '../../../assemblies/engines/mock';
-import { UUID } from '../../../utilities';
+import tournamentEngine from '../../engines/syncEngine';
+import { UUID } from '../../../utilities/UUID';
 import { expect, it } from 'vitest';
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';

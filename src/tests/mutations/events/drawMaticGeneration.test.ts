@@ -1,5 +1,6 @@
 import { getParticipantId } from '../../../global/functions/extractors';
-import { generateRange, makeDeepCopy, unique } from '../../../utilities';
+import { generateRange, unique } from '../../../utilities/arrays';
+import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';

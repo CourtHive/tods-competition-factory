@@ -1,5 +1,5 @@
-import { generateRange } from '../../../../utilities';
-import { mocksEngine } from '../../../..';
+import mocksEngine from '../../../../assemblies/engines/mock';
+import { generateRange } from '../../../../utilities/arrays';
 
 import { SINGLE_ELIMINATION } from '../../../../constants/drawDefinitionConstants';
 import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';

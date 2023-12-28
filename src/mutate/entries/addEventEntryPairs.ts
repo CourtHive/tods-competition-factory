@@ -1,9 +1,11 @@
 import { getPairedParticipant } from '../../query/participant/getPairedParticipant';
-import { addParticipants } from '../participants/addParticipants';
 import { getParticipantId } from '../../global/functions/extractors';
+import { addParticipants } from '../participants/addParticipants';
+import { stringSort } from '../../functions/sorters/stringSort';
 import { addNotice } from '../../global/state/globalState';
 import { intersection } from '../../utilities/arrays';
 import { addEventEntries } from './addEventEntries';
+import { UUID } from '../../utilities/UUID';
 
 import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';
 import { ADD_PARTICIPANTS } from '../../constants/topicConstants';
@@ -11,7 +13,6 @@ import { ALTERNATE } from '../../constants/entryStatusConstants';
 import { COMPETITOR } from '../../constants/participantRoles';
 import { MAIN } from '../../constants/drawDefinitionConstants';
 import { DOUBLES } from '../../constants/matchUpTypes';
-import { UUID } from '../../utilities';
 import {
   INVALID_EVENT_TYPE,
   INVALID_PARTICIPANT_IDS,
@@ -88,7 +89,7 @@ export function addEventEntryPairs({
 
     // invalid if event.gender is MIXED and participant genders are not different
     if (event.gender === MIXED) {
-      participantGenders.sort();
+      participantGenders.sort(stringSort);
       if (participantGenders[0] !== FEMALE || participantGenders[1] !== MALE)
         invalidParticiapntGenders = true;
     }

@@ -13,6 +13,7 @@ import { getCompetitionParticipants } from '../../../query/participants/getCompe
 import { getParticipantIdFinishingPositions } from '../../../query/drawDefinition/finishingPositions';
 import { participantScheduledMatchUps } from '../../../query/matchUps/participantScheduledMatchUps';
 import { getParticipantEventDetails } from '../../../query/participants/getParticipantEventDetails';
+import { getStructureSeedAssignments } from '../../../query/structure/getStructureSeedAssignments';
 import { getAssignedParticipantIds } from '../../../query/drawDefinition/getAssignedParticipantIds';
 import { tallyParticipantResults } from '../../../query/matchUps/roundRobinTally/roundRobinTally';
 import { competitionScheduleMatchUps } from '../../../query/matchUps/competitionScheduleMatchUps';
@@ -49,7 +50,6 @@ import { bulkUpdatePublishedEventIds } from '../../../query/event/publishState';
 import { publicFindParticipant } from '../../../acquire/publicFindParticipant';
 import { getTournamentIds } from '../../../query/tournaments/getTournamentIds';
 import { validMatchUp, validMatchUps } from '../../../validators/validMatchUp';
-import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { allEventMatchUps } from '../../../query/matchUps/getAllEventMatchUps';
 import { getParticipants } from '../../../query/participants/getParticipants';
 import { allDrawMatchUps } from '../../../query/matchUps/getAllDrawMatchUps';
@@ -74,11 +74,11 @@ import { analyzeDraws } from '../../../query/tournaments/analyzeDraws';
 import { drawMatchUps } from '../../../query/matchUps/getDrawMatchUps';
 import { getVenuesReport } from '../../../query/venues/venuesReport';
 import { publicFindMatchUp } from '../../../acquire/findMatchUp';
+import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
 import { findExtension } from '../../../acquire/findExtension';
 import { getCourts } from '../../../query/venues/getCourts';
 import { findPolicy } from '../../../acquire/findPolicy';
 import { credits } from '../../../fixtures/credits';
-import { makeDeepCopy } from '../../../utilities';
 import {
   getPolicyDefinitions,
   getAppliedPolicies,
@@ -123,7 +123,6 @@ const queryGovernor = {
   analyzeTournament,
   bulkUpdatePublishedEventIds,
   checkMatchUpIsComplete,
-  checkScoreHasValue,
   checkValidEntries,
   competitionScheduleMatchUps,
   credits,
@@ -188,6 +187,7 @@ const queryGovernor = {
   getScheduledRoundsDetails,
   getSchedulingProfileIssues,
   getSeedsCount,
+  getStructureSeedAssignments,
   getTeamLineUp,
   getTieFormat,
   getTournamentIds,

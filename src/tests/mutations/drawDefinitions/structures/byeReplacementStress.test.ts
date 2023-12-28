@@ -1,6 +1,6 @@
-import tournamentEngine from '../../../engines/syncEngine';
+import { generateRange } from '../../../../utilities/arrays';
 import { replacementTest } from './byeReplacementStressTest';
-import { generateRange } from '../../../../utilities';
+import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it, test } from 'vitest';
 import fs from 'fs';
 import {

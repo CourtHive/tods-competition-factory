@@ -1,5 +1,6 @@
 import { isValidPattern } from './validPatterns';
 import { transforms } from './transforms';
+import { INVALID_VALUES } from '../../constants/errorConditionConstants';
 
 let transformations: { [key: string]: number } = {};
 let invalid: any[] = [];
@@ -52,6 +53,7 @@ export function resetTransformations() {
 }
 
 export function tidyScore(params) {
+  if (!params.score) return { error: INVALID_VALUES };
   const {
     score: incomingScore,
     sheetName,

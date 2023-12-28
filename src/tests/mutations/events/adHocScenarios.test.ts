@@ -1,5 +1,7 @@
 import { completeDrawMatchUps } from '../../../assemblies/generators/mocks/completeDrawMatchUps';
-import { extractAttributes, intersection, unique } from '../../../utilities';
+import { validMatchUp, validMatchUps } from '../../../validators/validMatchUp';
+import { intersection, unique } from '../../../utilities/arrays';
+import { extractAttributes } from '../../../utilities/objects';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it, test } from 'vitest';
@@ -16,7 +18,6 @@ import {
   MISSING_STRUCTURE_ID,
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
-import { validMatchUp, validMatchUps } from '../../../validators/validMatchUp';
 
 test('generateDrawDefinition can generate specified number of rounds', () => {
   const participantsCount = 28;

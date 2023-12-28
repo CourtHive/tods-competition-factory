@@ -1,13 +1,13 @@
-import { generateRange } from '../../../../utilities';
 import { getDevContext } from '../../../../global/state/globalState';
+import { generateRange } from '../../../../utilities/arrays';
 
+import { Structure } from '../../../../types/tournamentTypes';
 import {
   BOTTOM_UP,
   TOP_DOWN,
   LOSER,
   FIRST_MATCHUP,
 } from '../../../../constants/drawDefinitionConstants';
-import { Structure } from '../../../../types/tournamentTypes';
 
 type FeedInLinksArgs = {
   mainStructure: Structure;

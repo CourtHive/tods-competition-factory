@@ -1,8 +1,8 @@
 import { structureAssignedDrawPositions } from '../../../../query/drawDefinition/positionsGetter';
 import { getDrawStructures } from '../../../../acquire/findStructure';
-import tournamentEngine from '../../../engines/syncEngine';
-import { instanceCount } from '../../../../utilities';
 import mocksEngine from '../../../../assemblies/engines/mock';
+import { instanceCount } from '../../../../utilities/arrays';
+import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
@@ -31,7 +31,7 @@ it('correctly assigns positions for Elimination structure', () => {
   const { eventId } = createdEvent;
 
   const participantIds = participants.map((p) => p.participantId);
-  result = tournamentEngine.addEventEntries({ eventId, participantIds });
+  tournamentEngine.addEventEntries({ eventId, participantIds });
 
   const { drawDefinition } = tournamentEngine.generateDrawDefinition({
     matchUpFormat: FORMAT_STANDARD,
@@ -71,7 +71,7 @@ it('correctly assigns BYE positions in consolation structure', () => {
   const { eventId } = createdEvent;
 
   const participantIds = participants.map((p) => p.participantId);
-  result = tournamentEngine.addEventEntries({ eventId, participantIds });
+  tournamentEngine.addEventEntries({ eventId, participantIds });
 
   const { drawDefinition } = tournamentEngine.generateDrawDefinition({
     drawType: FIRST_ROUND_LOSER_CONSOLATION,
@@ -134,7 +134,7 @@ it('correctly assigns BYE positions in consolation structure', () => {
   const { eventId } = createdEvent;
 
   const participantIds = participants.map((p) => p.participantId);
-  result = tournamentEngine.addEventEntries({ eventId, participantIds });
+  tournamentEngine.addEventEntries({ eventId, participantIds });
 
   const { drawDefinition } = tournamentEngine.generateDrawDefinition({
     drawType: FIRST_ROUND_LOSER_CONSOLATION,

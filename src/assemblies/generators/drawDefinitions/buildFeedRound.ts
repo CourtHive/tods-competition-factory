@@ -1,5 +1,5 @@
+import { generateRange } from '../../../utilities/arrays';
 import { generateMatchUpId } from './generateMatchUpId';
-import { generateRange } from '../../../utilities';
 
 import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { MatchUp } from '../../../types/tournamentTypes';

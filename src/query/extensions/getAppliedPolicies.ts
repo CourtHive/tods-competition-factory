@@ -1,4 +1,4 @@
-import { makeDeepCopy } from '../../utilities';
+import { makeDeepCopy } from '../../utilities/makeDeepCopy';
 
 import { APPLIED_POLICIES } from '../../constants/extensionConstants';
 import { PolicyDefinitions } from '../../types/factoryTypes';

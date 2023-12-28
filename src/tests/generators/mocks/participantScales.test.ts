@@ -1,18 +1,18 @@
 import { getParticipantId } from '../../../global/functions/extractors';
-import tournamentEngine from '../../engines/syncEngine';
-import { mockProfile } from './mockScaleProfile';
-import { unique } from '../../../utilities';
-import { expect, it, test } from 'vitest';
 import mocksEngine from '../../../assemblies/engines/mock';
+import tournamentEngine from '../../engines/syncEngine';
+import { unique } from '../../../utilities/arrays';
+import { mockProfile } from './mockScaleProfile';
+import { expect, it, test } from 'vitest';
 
-import {
-  EVENT_NOT_FOUND,
-  INVALID_VALUES,
-} from '../../../constants/errorConditionConstants';
 import ratingsParameters from '../../../fixtures/ratings/ratingsParameters';
 import { ELO, NTRP, UTR, WTN } from '../../../constants/ratingConstants';
 import { COMPLETED } from '../../../constants/matchUpStatusConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
+import {
+  EVENT_NOT_FOUND,
+  INVALID_VALUES,
+} from '../../../constants/errorConditionConstants';
 
 const WTN_RATING = 'SCALE.RATING.SINGLES.WTN';
 

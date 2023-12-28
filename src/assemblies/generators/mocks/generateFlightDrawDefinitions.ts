@@ -1,15 +1,15 @@
-import { addDrawDefinition } from '../../../mutate/drawDefinitions/addDrawDefinition';
 import { automatedPlayoffPositioning } from '../../../mutate/drawDefinitions/automatedPlayoffPositioning';
 import { addPlayoffStructures } from '../../../mutate/drawDefinitions/addPlayoffStructures';
 import { setParticipantScaleItem } from '../../../mutate/participants/addScaleItems';
+import { addDrawDefinition } from '../../../mutate/drawDefinitions/addDrawDefinition';
 import { generateDrawDefinition } from '../drawDefinitions/generateDrawDefinition';
-import { getFlightProfile } from '../../../query/event/getFlightProfile';
-import { addExtension } from '../../../mutate/extensions/addExtension';
 import { isValidExtension } from '../../../validators/isValidExtension';
 import { getParticipantId } from '../../../global/functions/extractors';
+import { getFlightProfile } from '../../../query/event/getFlightProfile';
+import { addExtension } from '../../../mutate/extensions/addExtension';
 import { hasParticipantId } from '../../../global/functions/filters';
 import { completeDrawMatchUps } from './completeDrawMatchUps';
-import { generateRange } from '../../../utilities';
+import { generateRange } from '../../../utilities/arrays';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SEEDING } from '../../../constants/scaleConstants';

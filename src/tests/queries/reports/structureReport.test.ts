@@ -1,6 +1,6 @@
 import { findExtension } from '../../../acquire/findExtension';
-import { instanceCount } from '../../../utilities';
 import mocksEngine from '../../../assemblies/engines/mock';
+import { instanceCount } from '../../../utilities/arrays';
 import tournamentEngine from '../../engines/syncEngine';
 import { utilities } from '../../..';
 import { expect, it } from 'vitest';

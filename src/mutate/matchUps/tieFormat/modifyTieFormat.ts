@@ -1,13 +1,13 @@
+import { compareTieFormats } from '../../../query/hierarchical/tieFormats/compareTieFormats';
+import { removeCollectionDefinition } from '../../tieFormat/removeCollectionDefinition';
+import { copyTieFormat } from '../../../query/hierarchical/tieFormats/copyTieFormat';
+import { getTieFormat } from '../../../query/hierarchical/tieFormats/getTieFormat';
+import { addCollectionDefinition } from '../../tieFormat/addCollectionDefinition';
+import { validateTieFormat } from '../../../validators/validateTieFormat';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { modifyCollectionDefinition } from './modifyCollectionDefinition';
-import { removeCollectionDefinition } from '../../tieFormat/removeCollectionDefinition';
-import { addCollectionDefinition } from '../../tieFormat/addCollectionDefinition';
-import { extractAttributes as xa } from '../../../utilities';
+import { extractAttributes as xa } from '../../../utilities/objects';
 import { numericSortValue } from '../../../utilities/arrays';
-import { getTieFormat } from '../../../query/hierarchical/tieFormats/getTieFormat';
-import { validateTieFormat } from '../../../validators/validateTieFormat';
-import { compareTieFormats } from '../../../query/hierarchical/tieFormats/compareTieFormats';
-import { copyTieFormat } from '../../../query/hierarchical/tieFormats/copyTieFormat';
 
 import { INVALID_TIE_FORMAT } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
