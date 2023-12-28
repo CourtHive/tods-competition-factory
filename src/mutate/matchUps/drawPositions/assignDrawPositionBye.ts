@@ -203,20 +203,20 @@ export function assignDrawPositionBye({
   });
 
   // matchUp where BYE-advancement needs to occur
-  const matchUp =
-    roundNumber &&
-    roundMatchUps?.[roundNumber].find(
-      ({ drawPositions }) => drawPositions?.includes(drawPosition)
-    );
+  const matchUp = roundNumber
+    ? roundMatchUps?.[roundNumber].find(
+        ({ drawPositions }) => drawPositions?.includes(drawPosition)
+      )
+    : undefined;
 
   matchUp &&
     setMatchUpStatusBYE({ tournamentRecord, drawDefinition, matchUp, event });
 
-  const drawPositionToAdvance =
-    matchUp &&
-    matchUp.drawPositions?.find((position) => position !== drawPosition);
+  const drawPositionToAdvance = matchUp?.drawPositions?.find(
+    (position) => position !== drawPosition
+  );
 
-  if (drawPositionToAdvance) {
+  if (matchUp && drawPositionToAdvance) {
     const result = advanceDrawPosition({
       sourceDrawPositions: matchUp.drawPositions,
       matchUpId: matchUp.matchUpId,

@@ -283,11 +283,10 @@ function groupSubSort({
 
   const filteredDirectives = directives.filter((directive) => {
     // if maxParticipants is defined, filter out the rule if # of participants is greater than maxParticipants
-    const keepDirective =
+    const keepDirective = !(
       isNumeric(directive.maxParticipants) &&
       participantIds?.length > directive.maxParticipants
-        ? false
-        : true;
+    );
 
     if (!keepDirective) excludedDirectives.push(directive);
     return keepDirective;
