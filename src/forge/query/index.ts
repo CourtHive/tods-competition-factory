@@ -5,7 +5,7 @@ export { isValidMatchUpFormat } from '../../validators/isValidMatchUpFormat';
 export { parse as parseMatchUpFormat } from '../../matchUpEngine/governors/matchUpFormatGovernor/parse';
 
 // mocksEngine
-export { parseScoreString } from '../../mocksEngine/utilities/parseScoreString';
+export { parseScoreString } from '../../utilities/parseScoreString';
 // drawEngine
 export { getEligibleVoluntaryConsolationParticipants } from '../../query/drawDefinition/getEligibleVoluntaryConsolationParticipants';
 export { getOrderedDrawPositions } from '../../query/matchUps/getOrderedDrawPositions';

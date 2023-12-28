@@ -1,6 +1,6 @@
 import { getMatchUpIds } from '../../../global/functions/extractors';
 import { instanceCount } from '../../../utilities';
-import mocksEngine from '../../../mocksEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
 import competitionEngineSync from '../../engines/competitionEngine';
 import { expect, test } from 'vitest';
 

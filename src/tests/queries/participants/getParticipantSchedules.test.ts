@@ -1,6 +1,6 @@
 import tournamentEngine from '../../engines/syncEngine';
 import competitionEngine from '../../engines/competitionEngine';
-import mocksEngine from '../../../mocksEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
 it('can return participant scheduled matchUps', () => {

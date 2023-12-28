@@ -1,4 +1,4 @@
-import { generatePersonData } from '../../../mocksEngine/generators/generatePersonData';
+import { generatePersonData } from '../../../assemblies/generators/mocks/generatePersonData';
 import tournamentEngine from '../../engines/syncEngine';
 import { UUID } from '../../../utilities';
 import { expect, test } from 'vitest';

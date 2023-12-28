@@ -1,6 +1,6 @@
 import competitionEngine from '../../tests/engines/competitionEngine';
 import tournamentEngine from '../../tests/engines/syncEngine';
-import mocksEngine from '../../mocksEngine';
+import mocksEngine from '../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
 it('can return version from all engines', () => {

@@ -1,9 +1,9 @@
 import { generateRange } from '../../../utilities';
-import mocksEngine from '../../../mocksEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
 import { DOUBLES_EVENT, TEAM_EVENT } from '../../../constants/eventConstants';
-import names from '../../../mocksEngine/data/names.json';
+import names from '../../../fixtures/data/names.json';
 import tournamentEngine from '../../engines/syncEngine';
 import {
   INDIVIDUAL,

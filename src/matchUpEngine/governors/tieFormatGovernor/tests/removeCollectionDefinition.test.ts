@@ -1,6 +1,6 @@
 import { setSubscriptions } from '../../../../global/state/globalState';
 import tournamentEngine from '../../../../tests/engines/syncEngine';
-import mocksEngine from '../../../../mocksEngine';
+import mocksEngine from '../../../../assemblies/engines/mock';
 import { expect, it, test } from 'vitest';
 import fs from 'fs';
 

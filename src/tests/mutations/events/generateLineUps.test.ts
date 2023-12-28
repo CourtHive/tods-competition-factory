@@ -1,7 +1,7 @@
 import { getParticipantId } from '../../../global/functions/extractors';
 import tournamentEngine from '../../engines/syncEngine';
 import { instanceCount, unique } from '../../../utilities';
-import mocksEngine from '../../../mocksEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
 import { TEAM_EVENT } from '../../../constants/eventConstants';

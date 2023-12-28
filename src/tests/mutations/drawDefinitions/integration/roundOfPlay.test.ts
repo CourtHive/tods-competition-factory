@@ -1,5 +1,5 @@
 import tournamentEngine from '../../../engines/syncEngine';
-import mocksEngine from '../../../../mocksEngine';
+import mocksEngine from '../../../../assemblies/engines/mock';
 import { unique } from '../../../../utilities';
 import { it, expect } from 'vitest';
 

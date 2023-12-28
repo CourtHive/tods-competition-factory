@@ -3,7 +3,7 @@ import tournamentEngine from '../../engines/syncEngine';
 import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
 import { extractTime } from '../../../utilities/dateTime';
 import { intersection, unique } from '../../../utilities';
-import mocksEngine from '../../../mocksEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
 import competitionEngine from '../../engines/competitionEngine';
 import garman from '../../../forge/garman/garman';
 import { expect, it } from 'vitest';

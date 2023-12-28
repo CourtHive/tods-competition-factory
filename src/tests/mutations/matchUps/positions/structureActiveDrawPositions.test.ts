@@ -1,7 +1,7 @@
 import { getStructureDrawPositionProfiles } from '../../../../query/structure/getStructureDrawPositionProfiles';
 import tournamentEngine from '../../../engines/syncEngine';
 import { numericSort } from '../../../../utilities';
-import mocksEngine from '../../../../mocksEngine';
+import mocksEngine from '../../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
 import { BYE, COMPLETED } from '../../../../constants/matchUpStatusConstants';

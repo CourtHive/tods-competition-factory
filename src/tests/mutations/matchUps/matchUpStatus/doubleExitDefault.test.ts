@@ -4,7 +4,7 @@ import { getRoundMatchUps } from '../../../../query/matchUps/getRoundMatchUps';
 import { toBePlayed } from '../../../../fixtures/scoring/outcomes/toBePlayed';
 import { getDrawPosition } from '../../../../global/functions/extractors';
 import { setSubscriptions } from '../../../../global/state/globalState';
-import mocksEngine from '../../../../mocksEngine';
+import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it, test } from 'vitest';
 

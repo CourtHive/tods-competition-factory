@@ -1,7 +1,7 @@
 import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
 import { getScheduledCourtMatchUps } from '../../query/venues/getScheduledCourtMatchUps';
 import { minutesDifference, timeToDate } from '../../utilities/dateTime';
-import { startTimeSort } from '../../fixtures/validations/time';
+import { startTimeSort } from '../../validators/time';
 import { addNotice } from '../../global/state/globalState';
 import { validDateAvailability } from '../../validators/validateDateAvailability';
 import { findCourt } from './findCourt';

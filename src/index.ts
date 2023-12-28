@@ -22,7 +22,7 @@ import { getTimeItem } from './query/base/timeItems';
 import { getCategoryAgeDetails } from './global/functions/getCategoryAgeDetails';
 import { participantScaleItem } from './query/participant/participantScaleItem';
 import { checkSetIsComplete } from './query/matchUp/getSetWinningSide';
-import { parseScoreString } from './mocksEngine/utilities/parseScoreString';
+import { parseScoreString } from './utilities/parseScoreString';
 import { getMatchUpContextIds } from './query/matchUp/getMatchUpContextIds';
 import { getSetComplement } from './query/matchUp/getComplement';
 import { checkScoreHasValue } from './query/matchUp/checkScoreHasValue';
@@ -148,7 +148,7 @@ export { matchUpEngineAsync } from './matchUpEngine/async';
 export { tournamentEngine } from './tests/engines/syncEngine';
 export { tournamentEngineAsync } from './tests/engines/asyncEngine';
 export { scaleEngine } from './tests/engines/scaleEngine';
-export { mocksEngine } from './mocksEngine';
+export { mocksEngine } from './assemblies/engines/mock';
 // END- Asynchronous and Synchronous engine exports
 
 // START-: constants ---------------------------------------------------------------

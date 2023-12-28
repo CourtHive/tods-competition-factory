@@ -1,6 +1,6 @@
 import tournamentEngine from '../../../engines/syncEngine';
 import matchUpEngine from '../../../../matchUpEngine/sync';
-import mocksEngine from '../../../../mocksEngine';
+import mocksEngine from '../../../../assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
 test('roundRobinTally policy can specify tally by games only', () => {

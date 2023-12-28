@@ -2,7 +2,7 @@ import { visualizeScheduledMatchUps } from '../../../global/testHarness/testUtil
 import { getMatchUpIds } from '../../../global/functions/extractors';
 import tournamentEngine from '../../engines/syncEngine';
 import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
-import mocksEngine from '../../../mocksEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
 import competitionEngineSync from '../../engines/competitionEngine';
 import { expect, test } from 'vitest';
 import {

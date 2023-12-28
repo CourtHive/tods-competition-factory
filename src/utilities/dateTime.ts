@@ -2,7 +2,7 @@ import {
   dateValidation,
   timeValidation,
   validDateString,
-} from '../fixtures/validations/regex';
+} from '../validators/regex';
 
 export function getIsoDateString(schedule) {
   let { scheduledDate } = schedule;

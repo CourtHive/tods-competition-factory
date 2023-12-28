@@ -1,5 +1,5 @@
 import { isValidExtension } from '../../../validators/isValidExtension';
-import { validDateString } from '../../../fixtures/validations/regex';
+import { validDateString } from '../../../validators/regex';
 import { isISODateString } from '../../../utilities/dateTime';
 
 import { INVALID_DATE } from '../../../constants/errorConditionConstants';

@@ -1,6 +1,6 @@
 import tournamentEngine from '../../tests/engines/syncEngine';
 import { extractAttributes as xa } from '../objects';
-import mocksEngine from '../../mocksEngine';
+import mocksEngine from '../../assemblies/engines/mock';
 import { numericSort } from '../sorting';
 import { it, expect } from 'vitest';
 import { unique } from '../arrays';

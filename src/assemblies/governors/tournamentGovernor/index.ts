@@ -1,8 +1,7 @@
 // undocumented access to mocksEngine method
-import { completeDrawMatchUps } from '../../../mocksEngine/generators/completeDrawMatchUps';
+import { completeDrawMatchUps } from '../../generators/mocks/completeDrawMatchUps';
 
 import { addExtension } from '../../../mutate/extensions/addExtension';
-import { convertPointEight } from '../../../assemblies/generators/tournamentRecords/convertPointEight';
 import { setTournamentStatus } from '../../../mutate/tournaments/setTournamentStatus';
 import { addNotes, removeNotes } from '../../../mutate/base/addRemoveNotes';
 import { addOnlineResource } from '../../../mutate/base/addOnlineResource';
@@ -78,7 +77,6 @@ const tournamentGovernor = {
   removeDrawDefinitionExtension,
 
   setTournamentStatus,
-  convertPointEight,
 };
 
 export default tournamentGovernor;

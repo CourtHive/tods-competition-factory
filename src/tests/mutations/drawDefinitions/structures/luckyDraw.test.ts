@@ -1,7 +1,7 @@
 import { getRoundMatchUps } from '../../../../query/matchUps/getRoundMatchUps';
 import { getPositionAssignments } from '../../../../query/drawDefinition/positionsGetter';
 import tournamentEngine from '../../../engines/syncEngine';
-import mocksEngine from '../../../../mocksEngine';
+import mocksEngine from '../../../../assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
 import { LUCKY_DRAW } from '../../../../constants/drawDefinitionConstants';

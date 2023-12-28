@@ -26,10 +26,7 @@ import {
   getIsoDateString,
   validTimeValue,
 } from '../../../utilities/dateTime';
-import {
-  dateValidation,
-  validTimeString,
-} from '../../../fixtures/validations/regex';
+import { dateValidation, validTimeString } from '../../../validators/regex';
 
 import { INDIVIDUAL } from '../../../constants/participantConstants';
 import { AddScheduleAttributeArgs } from '../../../types/factoryTypes';

@@ -1,7 +1,7 @@
 import { getStructureSeedAssignments } from '../../../../query/structure/getStructureSeedAssignments';
 import { getAppliedPolicies } from '../../../../query/extensions/getAppliedPolicies';
 import { eventConstants } from '../../../../constants/eventConstants';
-import mocksEngine from '../../../../mocksEngine';
+import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 

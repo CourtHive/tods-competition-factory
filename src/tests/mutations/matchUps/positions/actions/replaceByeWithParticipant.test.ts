@@ -5,7 +5,7 @@ import {
 import { getDrawPosition } from '../../../../../global/functions/extractors';
 import tournamentEngine from '../../../../engines/syncEngine';
 import { generateRange } from '../../../../../utilities';
-import mocksEngine from '../../../../../mocksEngine';
+import mocksEngine from '../../../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
 import { ALTERNATE } from '../../../../../constants/entryStatusConstants';

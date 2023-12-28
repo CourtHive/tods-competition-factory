@@ -2,7 +2,7 @@ import { setMatchUpState } from '../../../../mutate/matchUps/matchUpStatus/setMa
 import { getAllStructureMatchUps } from '../../../../query/matchUps/getAllStructureMatchUps';
 import { getRoundMatchUps } from '../../../../query/matchUps/getRoundMatchUps';
 import { getStructureMatchUps } from '../../../../query/structure/getStructureMatchUps';
-import { parseScoreString } from '../../../../mocksEngine/utilities/parseScoreString';
+import { parseScoreString } from '../../../../utilities/parseScoreString';
 import { findDrawMatchUp } from '../../../../acquire/findDrawMatchUp';
 import { findStructure } from '../../../../acquire/findStructure';
 import { expect } from 'vitest';

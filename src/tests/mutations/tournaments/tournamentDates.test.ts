@@ -1,5 +1,5 @@
 import { expect, it } from 'vitest';
-import mocksEngine from '../../../mocksEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 
 it('will remove court.dateAvailabiilty items that fall outside of tournament dates', () => {

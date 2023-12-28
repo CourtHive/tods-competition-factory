@@ -2,7 +2,7 @@ import { findExtension } from '../../../../acquire/findExtension';
 import { getParticipantId } from '../../../../global/functions/extractors';
 import { generateTeamTournament } from './generateTestTeamTournament';
 import { intersection } from '../../../../utilities';
-import mocksEngine from '../../../../mocksEngine';
+import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 

@@ -1,6 +1,6 @@
 import tournamentEngine from '../../engines/syncEngine';
 import { extractDate } from '../../../utilities/dateTime';
-import mocksEngine from '../../../mocksEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
 import competitionEngine from '../../engines/competitionEngine';
 import { UUID } from '../../../utilities';
 import { expect, test } from 'vitest';

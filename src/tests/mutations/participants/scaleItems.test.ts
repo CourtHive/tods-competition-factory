@@ -1,6 +1,6 @@
 import tournamentEngine from '../../engines/syncEngine';
 import competitionEngine from '../../engines/competitionEngine';
-import mocksEngine from '../../../mocksEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
 import { VALUE_UNCHANGED } from '../../../constants/errorConditionConstants';

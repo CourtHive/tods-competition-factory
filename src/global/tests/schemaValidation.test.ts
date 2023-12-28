@@ -1,4 +1,4 @@
-import mocksEngine from '../../mocksEngine';
+import mocksEngine from '../../assemblies/engines/mock';
 import addFormats from 'ajv-formats';
 import { expect, it } from 'vitest';
 import Ajv from 'ajv';

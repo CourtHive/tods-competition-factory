@@ -4,7 +4,7 @@ import { getParticipantId } from '../../../global/functions/extractors';
 import tournamentEngine from '../../engines/syncEngine';
 import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
 import { intersection } from '../../../utilities';
-import mocksEngine from '../../../mocksEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
 import competitionEngine from '../../engines/competitionEngine';
 import { expect, it } from 'vitest';
 

@@ -5,7 +5,7 @@ import { getDrawStructures } from '../../../../acquire/findStructure';
 import { constantToString } from '../../../../utilities/strings';
 import tournamentEngine from '../../../engines/syncEngine';
 import { newDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/newDrawDefinition';
-import mocksEngine from '../../../../mocksEngine';
+import mocksEngine from '../../../../assemblies/engines/mock';
 import { setSubscriptions } from '../../../..';
 import { expect, it } from 'vitest';
 

@@ -2,7 +2,7 @@ import { constantToString } from '../../../utilities/strings';
 import tournamentEngine from '../../engines/syncEngine';
 import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
 import { extractTime } from '../../../utilities/dateTime';
-import mocksEngine from '../../../mocksEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
 import { unique } from '../../../utilities';
 import { expect, it } from 'vitest';
 

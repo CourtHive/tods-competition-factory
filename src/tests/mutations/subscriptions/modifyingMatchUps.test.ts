@@ -1,6 +1,6 @@
 import { rgbColors } from '../../../global/functions/logColors';
 import { makeDeepCopy } from '../../../utilities';
-import mocksEngine from '../../../mocksEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 import diff from 'variable-diff';

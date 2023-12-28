@@ -1,5 +1,5 @@
-import { validTimePeriod } from '../fixtures/validations/time';
-import { dateValidation, timeValidation } from '../fixtures/validations/regex';
+import { validTimePeriod } from './time';
+import { dateValidation, timeValidation } from './regex';
 
 import {
   INVALID_DATE,

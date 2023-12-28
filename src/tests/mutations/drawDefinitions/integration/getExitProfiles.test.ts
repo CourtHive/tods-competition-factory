@@ -1,6 +1,6 @@
 import { getExitProfiles } from '../../../../query/drawDefinition/getExitProfile';
 import tournamentEngine from '../../../engines/syncEngine';
-import mocksEngine from '../../../../mocksEngine';
+import mocksEngine from '../../../../assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
 import {

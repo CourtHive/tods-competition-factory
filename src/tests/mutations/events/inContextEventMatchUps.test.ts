@@ -1,4 +1,4 @@
-import { generateTournamentRecord } from '../../../mocksEngine/generators/generateTournamentRecord';
+import { generateTournamentRecord } from '../../../assemblies/generators/mocks/generateTournamentRecord';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 

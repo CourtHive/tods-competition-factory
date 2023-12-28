@@ -2,7 +2,7 @@ import { validDateAvailability } from '../../../validators/validateDateAvailabil
 import tournamentEngine from '../../engines/syncEngine';
 import { Availability } from '../../../types/tournamentTypes';
 import competitionEngine from '../../engines/competitionEngine';
-import mocksEngine from '../../../mocksEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
 import { expect, it, test } from 'vitest';
 
 import {

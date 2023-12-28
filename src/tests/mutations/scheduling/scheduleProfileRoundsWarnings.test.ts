@@ -1,7 +1,7 @@
 import tournamentEngine from '../../engines/syncEngine';
 import { extractTime } from '../../../utilities/dateTime';
 import { intersection } from '../../../utilities';
-import mocksEngine from '../../../mocksEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
 import competitionEngine from '../../engines/competitionEngine';
 import { expect, it } from 'vitest';
 

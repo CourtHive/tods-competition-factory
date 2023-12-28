@@ -1,7 +1,7 @@
 import { addDays, dateRange } from '../../../utilities/dateTime';
 import tournamentEngine from '../../engines/syncEngine';
 import { chunkArray } from '../../../utilities';
-import mocksEngine from '../../../mocksEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
 import competitionEngine from '../../engines/competitionEngine';
 import { expect, test } from 'vitest';
 

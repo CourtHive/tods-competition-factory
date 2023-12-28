@@ -2,7 +2,7 @@ import {
   ResultType,
   decorateResult,
 } from '../../global/functions/decorateResult';
-import { dateValidation } from '../../fixtures/validations/regex';
+import { dateValidation } from '../../validators/regex';
 import { extractDate } from '../../utilities/dateTime';
 
 import { SUCCESS } from '../../constants/resultConstants';

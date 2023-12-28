@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import penaltyConstants from '../../../constants/penaltyConstants';
-import mocksEngine from '../../../mocksEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
 import competitionEngine from '../../engines/competitionEngine';
 
 const { BALL_ABUSE } = penaltyConstants;

@@ -1,5 +1,5 @@
 import tournamentEngine from '../../tests/engines/syncEngine';
-import mocksEngine from '../../mocksEngine';
+import mocksEngine from '../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
 import { INVALID_VALUES } from '../../constants/errorConditionConstants';

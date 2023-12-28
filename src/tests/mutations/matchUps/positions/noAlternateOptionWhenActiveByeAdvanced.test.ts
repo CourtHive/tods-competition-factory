@@ -1,8 +1,8 @@
-import { generateOutcomeFromScoreString } from '../../../../mocksEngine/generators/generateOutcomeFromScoreString';
+import { generateOutcomeFromScoreString } from '../../../../assemblies/generators/mocks/generateOutcomeFromScoreString';
 import { getStructureDrawPositionProfiles } from '../../../../query/structure/getStructureDrawPositionProfiles';
 import { getDrawPosition } from '../../../../global/functions/extractors';
 import tournamentEngine from '../../../engines/syncEngine';
-import mocksEngine from '../../../../mocksEngine';
+import mocksEngine from '../../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
 import {

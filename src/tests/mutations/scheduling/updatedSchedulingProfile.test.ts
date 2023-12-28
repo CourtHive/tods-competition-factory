@@ -2,7 +2,7 @@ import { checkAndUpdateSchedulingProfile } from '../../../mutate/tournaments/sch
 import { getUpdatedSchedulingProfile } from '../../../query/matchUps/scheduling/getUpdatedSchedulingProfile';
 import competitionEngine from '../../engines/competitionEngine';
 import tournamentEngine from '../../engines/syncEngine';
-import mocksEngine from '../../../mocksEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
 import { SCHEDULING_PROFILE } from '../../../constants/extensionConstants';

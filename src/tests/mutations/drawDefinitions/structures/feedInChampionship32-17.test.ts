@@ -1,7 +1,7 @@
 import { getRoundMatchUps } from '../../../../query/matchUps/getRoundMatchUps';
 import { getDrawStructures } from '../../../../acquire/findStructure';
 import tournamentEngine from '../../../engines/syncEngine';
-import mocksEngine from '../../../../mocksEngine';
+import mocksEngine from '../../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
 import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';

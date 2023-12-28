@@ -1,6 +1,6 @@
 import tournamentEngine from '../../engines/syncEngine';
 import { intersection } from '../../../utilities';
-import mocksEngine from '../../../mocksEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';

@@ -1,6 +1,6 @@
-import { completeDrawMatchUps } from '../../../mocksEngine/generators/completeDrawMatchUps';
+import { completeDrawMatchUps } from '../../../assemblies/generators/mocks/completeDrawMatchUps';
 import { extractAttributes, intersection, unique } from '../../../utilities';
-import mocksEngine from '../../../mocksEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it, test } from 'vitest';
 

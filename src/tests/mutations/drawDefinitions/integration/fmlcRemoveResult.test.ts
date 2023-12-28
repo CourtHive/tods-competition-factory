@@ -5,7 +5,7 @@ import { toBePlayed } from '../../../../fixtures/scoring/outcomes/toBePlayed';
 import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
 import { getDrawStructures } from '../../../../acquire/findStructure';
 import tournamentEngine from '../../../engines/syncEngine';
-import mocksEngine from '../../../../mocksEngine';
+import mocksEngine from '../../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
 import { TO_BE_PLAYED } from '../../../../constants/matchUpStatusConstants';

@@ -3,7 +3,7 @@ import { generateMatchUpOutcome } from '../../primitives/generateMatchUpOutcome'
 import tournamentEngine from '../../../../engines/syncEngine';
 import matchUpEngine from '../../../../../matchUpEngine/sync';
 import { generateRange } from '../../../../../utilities';
-import mocksEngine from '../../../../../mocksEngine';
+import mocksEngine from '../../../../../assemblies/engines/mock';
 import { expect } from 'vitest';
 
 import { FORMAT_STANDARD } from '../../../../../fixtures/scoring/matchUpFormats';
