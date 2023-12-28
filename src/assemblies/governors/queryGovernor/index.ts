@@ -211,4 +211,5 @@ const queryGovernor = {
   validMatchUps,
 };
 
+export const query = queryGovernor;
 export default queryGovernor;

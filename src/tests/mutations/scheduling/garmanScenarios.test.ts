@@ -4,7 +4,7 @@ import { intersection, unique } from '../../../utilities/arrays';
 import mocksEngine from '../../../assemblies/engines/mock';
 import { extractTime } from '../../../utilities/dateTime';
 import tournamentEngine from '../../engines/syncEngine';
-import garman from '../../../forge/garman/garman';
+import garman from '../../../assemblies/generators/scheduling/garman/garman';
 import { expect, it } from 'vitest';
 
 import POLICY_SCHEDULING_DEFAULT from '../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
