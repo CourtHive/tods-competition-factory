@@ -97,7 +97,7 @@ test.each(mockProfiles)('it can anonymize tournamentRecords', (mockProfile) => {
   expect(intersection(originalFlightEntries, flightEntries).length).toEqual(0);
 });
 
-const sourcePath = './src/global/testHarness';
+const sourcePath = './src/tests/testHarness';
 const filenames = fs.readdirSync(sourcePath).filter(
   (filename) => filename.indexOf('.tods.json') > 0 && filename.indexOf('.8') > 0 // skip v0.8
 );

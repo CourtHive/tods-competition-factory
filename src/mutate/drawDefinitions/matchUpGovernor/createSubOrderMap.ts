@@ -1,13 +1,14 @@
-import { hasParticipantId } from '../../../global/functions/filters';
+import { extractAttributes } from '../../../utilities/objects';
 import { findExtension } from '../../../acquire/findExtension';
 import { instanceCount } from '../../../utilities/arrays';
 import { ensureInt } from '../../../utilities/ensureInt';
 
+import { PARTICIPANT_ID } from '../../../constants/attributeConstants';
 import { SUB_ORDER } from '../../../constants/extensionConstants';
 
 export function createSubOrderMap({ positionAssignments }) {
   const subOrderArray = (positionAssignments || [])
-    .filter(hasParticipantId)
+    .filter(extractAttributes(PARTICIPANT_ID))
     .map((assignment) => {
       const { extension } = findExtension({
         element: assignment,

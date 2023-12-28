@@ -3,7 +3,7 @@ import { askInvoke } from './askInvoke';
 import { FactoryEngine } from '../../../types/factoryTypes';
 import { engineStart } from '../parts/engineStart';
 
-export const engine = (() => {
+export const askEngine = (() => {
   const engine: FactoryEngine = {
     execute: (args: any) => askInvoke(engine, args),
   };
@@ -13,4 +13,4 @@ export const engine = (() => {
   return engine;
 })();
 
-export default engine;
+export default askEngine;

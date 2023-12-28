@@ -1,4 +1,4 @@
-import { getCategoryAgeDetails } from '../../../global/functions/getCategoryAgeDetails';
+import { getCategoryAgeDetails } from '../../../query/event/getCategoryAgeDetails';
 import { definedAttributes } from '../../../utilities/definedAttributes';
 import { generatePersonData } from './generatePersonData';
 import { dateFromDay } from '../../../utilities/dateTime';

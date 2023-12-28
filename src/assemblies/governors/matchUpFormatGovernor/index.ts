@@ -8,3 +8,5 @@ export const matchUpFormatCode = {
   stringify,
   parse,
 };
+
+export default matchUpFormatCode;

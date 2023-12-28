@@ -1,5 +1,5 @@
 import { getAssignedParticipantIds } from '../../query/drawDefinition/getAssignedParticipantIds';
-import { refreshEntryPositions } from '../../global/functions/producers/refreshEntryPositions';
+import { refreshEntryPositions } from '../entries/refreshEntryPositions';
 import { getFlightProfile } from '../../query/event/getFlightProfile';
 import { overlap } from '../../utilities/arrays';
 

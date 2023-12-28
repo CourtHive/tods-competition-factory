@@ -1,0 +1,236 @@
+import { expect, it } from 'vitest';
+import {
+  anyMixedError,
+  tieFormatGenderValidityCheck,
+  mixedGenderError,
+} from '../../validators/tieFormatGenderValidityCheck';
+
+import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '../../constants/matchUpTypes';
+import { ANY, FEMALE, MALE, MIXED } from '../../constants/genderConstants';
+import { INVALID_GENDER } from '../../constants/errorConditionConstants';
+import { TEAM_EVENT } from '../../constants/eventConstants';
+
+const referenceEvent = { eventType: TEAM_EVENT, eventId: 'eventId' };
+
+const scenarios = [
+  {
+    params: {
+      referenceGender: MALE,
+      gender: MALE,
+    },
+    expectation: { valid: true },
+  },
+  {
+    params: {
+      referenceGender: MALE,
+      gender: MIXED,
+    },
+    expectation: {
+      stack: ['tieFormatGenderValidityCheck'],
+      error: INVALID_GENDER,
+      gender: 'MIXED',
+      valid: false,
+    },
+  },
+  {
+    params: {
+      referenceGender: MALE,
+      gender: ANY,
+    },
+    expectation: {
+      stack: ['tieFormatGenderValidityCheck'],
+      error: INVALID_GENDER,
+      gender: 'ANY',
+      valid: false,
+    },
+  },
+  {
+    params: {
+      referenceGender: MALE,
+      gender: FEMALE,
+    },
+    expectation: {
+      stack: ['tieFormatGenderValidityCheck'],
+      error: INVALID_GENDER,
+      gender: 'FEMALE',
+      valid: false,
+    },
+  },
+  {
+    params: {
+      referenceGender: FEMALE,
+      gender: MALE,
+    },
+    expectation: {
+      stack: ['tieFormatGenderValidityCheck'],
+      error: INVALID_GENDER,
+      gender: 'MALE',
+      valid: false,
+    },
+  },
+  {
+    params: {
+      referenceGender: FEMALE,
+      gender: MIXED,
+    },
+    expectation: {
+      stack: ['tieFormatGenderValidityCheck'],
+      error: INVALID_GENDER,
+      gender: 'MIXED',
+      valid: false,
+    },
+  },
+  {
+    params: {
+      referenceGender: FEMALE,
+      gender: FEMALE,
+    },
+    expectation: { valid: true },
+  },
+  {
+    params: {
+      referenceGender: FEMALE,
+      gender: ANY,
+    },
+    expectation: {
+      stack: ['tieFormatGenderValidityCheck'],
+      error: INVALID_GENDER,
+      gender: 'ANY',
+      valid: false,
+    },
+  },
+  {
+    params: {
+      referenceGender: ANY,
+      matchUpType: DOUBLES_MATCHUP,
+      gender: FEMALE,
+    },
+    expectation: { valid: true },
+  },
+  {
+    params: {
+      referenceGender: ANY,
+      matchUpType: SINGLES_MATCHUP,
+      gender: FEMALE,
+    },
+    expectation: { valid: true },
+  },
+  {
+    params: {
+      referenceGender: ANY,
+      matchUpType: SINGLES_MATCHUP,
+      gender: MIXED,
+    },
+    expectation: {
+      info: anyMixedError,
+      stack: ['tieFormatGenderValidityCheck'],
+      error: INVALID_GENDER,
+      valid: false,
+    },
+  },
+  {
+    params: {
+      referenceGender: ANY,
+      matchUpType: DOUBLES_MATCHUP,
+      gender: MIXED,
+    },
+    expectation: { valid: true },
+  },
+  {
+    params: {
+      referenceGender: ANY,
+      matchUpType: DOUBLES_MATCHUP,
+      gender: MALE,
+    },
+    expectation: { valid: true },
+  },
+  {
+    params: {
+      referenceGender: MIXED,
+      matchUpType: SINGLES_MATCHUP,
+      gender: MIXED,
+    },
+    expectation: {
+      stack: ['tieFormatGenderValidityCheck'],
+      error: INVALID_GENDER,
+      info: mixedGenderError,
+      valid: false,
+    },
+  },
+  {
+    params: {
+      referenceGender: MIXED,
+      matchUpType: DOUBLES_MATCHUP,
+      gender: MIXED,
+      referenceEvent,
+    },
+    expectation: { valid: true },
+  },
+  {
+    params: {
+      referenceGender: MIXED,
+      matchUpType: DOUBLES_MATCHUP,
+      gender: FEMALE,
+      referenceEvent,
+    },
+    expectation: { valid: true },
+  },
+  {
+    params: {
+      referenceGender: MIXED,
+      matchUpType: SINGLES_MATCHUP,
+      gender: FEMALE,
+      referenceEvent,
+    },
+    expectation: { valid: true },
+  },
+  {
+    params: {
+      referenceGender: MIXED,
+      matchUpType: SINGLES_MATCHUP,
+      gender: MALE,
+      referenceEvent,
+    },
+    expectation: { valid: true },
+  },
+  {
+    params: {
+      referenceGender: MIXED,
+      matchUpType: DOUBLES_MATCHUP,
+      gender: MALE,
+      referenceEvent,
+    },
+    expectation: { valid: true },
+  },
+  {
+    params: {
+      referenceGender: MIXED,
+      matchUpType: SINGLES_MATCHUP,
+      gender: ANY,
+    },
+    expectation: {
+      stack: ['tieFormatGenderValidityCheck'],
+      info: mixedGenderError,
+      error: INVALID_GENDER,
+      valid: false,
+    },
+  },
+  {
+    params: {
+      referenceGender: MIXED,
+      matchUpType: DOUBLES_MATCHUP,
+      gender: ANY,
+    },
+    expectation: {
+      stack: ['tieFormatGenderValidityCheck'],
+      info: mixedGenderError,
+      error: INVALID_GENDER,
+      valid: false,
+    },
+  },
+];
+
+it.each(scenarios)('can test gender validity', (scenario) => {
+  const result = tieFormatGenderValidityCheck(scenario.params);
+  expect(result).toEqual(scenario.expectation);
+});

@@ -1,4 +1,4 @@
-import { refreshEntryPositions } from '../../../global/functions/producers/refreshEntryPositions';
+import { refreshEntryPositions } from '../../entries/refreshEntryPositions';
 import { addExtension } from '../../extensions/addExtension';
 import { isValidExtension } from '../../../validators/isValidExtension';
 import { decorateResult } from '../../../global/functions/decorateResult';

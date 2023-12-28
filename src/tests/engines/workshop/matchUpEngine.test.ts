@@ -1,4 +1,4 @@
-import matchUpEngineSync from '../../../assemblies/engines/matchUp/sync';
+import matchUpEngineSync from '../../../assemblies/engines/matchUp';
 import { expect, it } from 'vitest';
 
 import {

@@ -291,13 +291,9 @@ it('can advance participants through multi-stage qualifying structures', () => {
   expect(matchUps.length).toEqual(2);
 });
 
-it('will ignore winnerMatchUpId when feedProfile is DRAW', () => {
-  const tournamentRecordJSON = fs.readFileSync(
-    './src/global/testHarness/multiStageQualifying.tods.json',
-    'utf-8'
-  );
+import tournamentRecord from './multiStageQualifying.tods.json';
 
-  const tournamentRecord = JSON.parse(tournamentRecordJSON);
+it('will ignore winnerMatchUpId when feedProfile is DRAW', () => {
   tournamentEngine.setState(tournamentRecord);
 
   const matchUps = tournamentEngine.allTournamentMatchUps({

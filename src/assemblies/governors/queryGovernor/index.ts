@@ -24,7 +24,7 @@ import { getParticipantSchedules } from '../../../query/participants/getParticip
 import { validateCollectionDefinition } from '../../../validators/validateCollectionDefinition';
 import { getMatchUpScheduleDetails } from '../../../query/matchUp/getMatchUpScheduleDetails';
 import { getCompetitionDateRange } from '../../../query/tournaments/getCompetitionDateRange';
-import { getMaxEntryPosition } from '../../../global/functions/deducers/getMaxEntryPosition';
+import { getMaxEntryPosition } from '../../../query/entries/getMaxEntryPosition';
 import { getParticipantScaleItem } from '../../../query/participant/getParticipantScaleItem';
 import { isValidForQualifying } from '../../../mutate/drawDefinitions/isValidForQualifying';
 import { getLinkedTournamentIds } from '../../../query/tournaments/getLinkedTournamentIds';
@@ -53,6 +53,7 @@ import { validMatchUp, validMatchUps } from '../../../validators/validMatchUp';
 import { allEventMatchUps } from '../../../query/matchUps/getAllEventMatchUps';
 import { getParticipants } from '../../../query/participants/getParticipants';
 import { allDrawMatchUps } from '../../../query/matchUps/getAllDrawMatchUps';
+import { categoryCanContain } from '../../../query/event/categoryCanContain';
 import { matchUpActions } from '../../../query/drawDefinition/matchUpActions';
 import { getEventProperties } from '../../../query/event/getEventProperties';
 import { getTeamLineUp } from '../../../mutate/drawDefinitions/getTeamLineUp';
@@ -122,6 +123,7 @@ const queryGovernor = {
   analyzeMatchUp,
   analyzeTournament,
   bulkUpdatePublishedEventIds,
+  categoryCanContain,
   checkMatchUpIsComplete,
   checkValidEntries,
   competitionScheduleMatchUps,

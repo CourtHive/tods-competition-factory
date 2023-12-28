@@ -1,4 +1,4 @@
-import { refreshEntryPositions } from '../../global/functions/producers/refreshEntryPositions';
+import { refreshEntryPositions } from './refreshEntryPositions';
 import { decorateResult } from '../../global/functions/decorateResult';
 
 import { SUCCESS } from '../../constants/resultConstants';

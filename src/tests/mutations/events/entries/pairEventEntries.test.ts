@@ -1,4 +1,4 @@
-import { isUngrouped } from '../../../../global/functions/isUngrouped';
+import { isUngrouped } from '../../../../query/entries/isUngrouped';
 import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';

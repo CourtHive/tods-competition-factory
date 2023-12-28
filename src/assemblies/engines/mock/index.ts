@@ -1,12 +1,12 @@
 import { notifySubscribers } from '../../../global/state/notifySubscribers';
 import { factoryVersion } from '../../../global/functions/factoryVersion';
+import mocksGovernor from '../../governors/mocksGovernor';
 import {
   deleteNotices,
   setDevContext,
   setDeepCopy,
 } from '../../../global/state/globalState';
 
-import mocksGovernor from '../../governors/mocksGovernor';
 import { FactoryEngine } from '../../../types/factoryTypes';
 
 let devContextSet = false;
