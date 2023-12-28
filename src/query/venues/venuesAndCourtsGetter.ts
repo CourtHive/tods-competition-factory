@@ -1,4 +1,4 @@
-import { getInContextCourt } from '../../global/functions/deducers/getInContextCourt';
+import { getInContextCourt } from './getInContextCourt';
 import { getDisabledStatus } from '../extensions/getDisabledStatus';
 import { makeDeepCopy } from '../../utilities/makeDeepCopy';
 import { findExtension } from '../../acquire/findExtension';

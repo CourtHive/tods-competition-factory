@@ -1,9 +1,9 @@
 import { addNotice, getTopics } from '../../global/state/globalState';
-import { getParticipantId } from '../../global/functions/extractors';
-import { hasParticipantId } from '../../global/functions/filters';
+import { extractAttributes } from '../../utilities/objects';
 import { deepMerge } from '../../utilities/deepMerge';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
+import { PARTICIPANT_ID } from '../../constants/attributeConstants';
 import { Participant } from '../../types/tournamentTypes';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
@@ -20,7 +20,7 @@ export function mergeParticipants({
   if (!tournamentRecord.participants) tournamentRecord.participants = [];
 
   const mappedParticipants = incomingParticipants
-    .filter(hasParticipantId)
+    .filter(extractAttributes(PARTICIPANT_ID))
     .map((p: any) => ({ [p.participantId]: p }));
   const incomingIdMap = Object.assign({}, ...mappedParticipants);
 
@@ -42,7 +42,7 @@ export function mergeParticipants({
   );
 
   const existingParticipantIds =
-    tournamentRecord.participants.map(getParticipantId);
+    tournamentRecord.participants.map(extractAttributes(PARTICIPANT_ID)) || [];
   const newParticipants = incomingParticipants.filter(
     ({ participantId }) => !existingParticipantIds.includes(participantId)
   );

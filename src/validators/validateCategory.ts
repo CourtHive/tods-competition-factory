@@ -1,4 +1,4 @@
-import { getCategoryAgeDetails } from '../global/functions/getCategoryAgeDetails';
+import { getCategoryAgeDetails } from '../query/event/getCategoryAgeDetails';
 import { decorateResult } from '../global/functions/decorateResult';
 import { isObject } from '../utilities/objects';
 

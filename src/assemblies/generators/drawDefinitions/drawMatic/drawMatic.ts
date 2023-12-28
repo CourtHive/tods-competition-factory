@@ -1,19 +1,21 @@
 import { participantScaleItem } from '../../../../query/participant/participantScaleItem';
 import { getParticipantId } from '../../../../global/functions/extractors';
+import { isAdHoc } from '../../../../query/drawDefinition/isAdHoc';
+import { isObject } from '../../../../utilities/objects';
 import {
   generateDrawMaticRound,
   DrawMaticRoundResult,
 } from './generateDrawMaticRound';
-import { isAdHoc } from '../../../../query/drawDefinition/isAdHoc';
-import { isObject } from '../../../../utilities/objects';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../../../constants/entryStatusConstants';
+import { DYNAMIC, RATING } from '../../../../constants/scaleConstants';
+import { SINGLES_EVENT } from '../../../../constants/eventConstants';
+import { HydratedParticipant } from '../../../../types/hydrated';
+import { ScaleAttributes } from '../../../../types/factoryTypes';
 import {
   AD_HOC,
   stageOrder,
 } from '../../../../constants/drawDefinitionConstants';
-import { DYNAMIC, RATING } from '../../../../constants/scaleConstants';
-import { HydratedParticipant } from '../../../../types/hydrated';
 import {
   DrawDefinition,
   EntryStatusUnion,
@@ -28,8 +30,6 @@ import {
   INVALID_VALUES,
   STRUCTURE_NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
-import { SINGLES_EVENT } from '../../../../constants/eventConstants';
-import { ScaleAttributes } from '../../../../types/factoryTypes';
 import {
   ResultType,
   decorateResult,

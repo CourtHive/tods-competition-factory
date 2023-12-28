@@ -1,4 +1,4 @@
-import { engineLogging } from '../../../global/functions/producers/engineLogging';
+import { engineLogging } from '../../../global/functions/engineLogging';
 import { paramsMiddleware } from './paramsMiddleware';
 import {
   getDevContext,

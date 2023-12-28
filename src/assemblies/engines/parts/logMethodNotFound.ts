@@ -1,4 +1,4 @@
-import { engineLogging } from '../../../global/functions/producers/engineLogging';
+import { engineLogging } from '../../../global/functions/engineLogging';
 
 import { METHOD_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { ResultType } from '../../../global/functions/decorateResult';

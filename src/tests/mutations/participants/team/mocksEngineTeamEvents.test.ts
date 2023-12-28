@@ -1,10 +1,10 @@
-import { getParticipantId } from '../../../../global/functions/extractors';
-import { hasParticipantId } from '../../../../global/functions/filters';
+import { extractAttributes } from '../../../../utilities/objects';
 import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { DOUBLES, SINGLES, TEAM } from '../../../../constants/matchUpTypes';
+import { PARTICIPANT_ID } from '../../../../constants/attributeConstants';
 import { COMPLETED } from '../../../../constants/matchUpStatusConstants';
 
 /**
@@ -60,16 +60,16 @@ it('can generate TEAM events', () => {
   // the same number of teams as nationalityCodes
   expect(participants.length).toEqual(drawSize);
 
-  let { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
-  expect(drawDefinition.entries.length).toEqual(drawSize);
-  expect(event.entries.length).toEqual(drawSize);
+  let result = tournamentEngine.getEvent({ drawId });
+  expect(result.drawDefinition.entries.length).toEqual(drawSize);
+  expect(result.event.entries.length).toEqual(drawSize);
 
   const { flightProfile } = tournamentEngine.getFlightProfile({ eventId });
   expect(flightProfile.flights.length).toEqual(1);
   expect(flightProfile.flights[0].drawEntries.length).toEqual(drawSize);
 
-  const structureId = drawDefinition.structures[0].structureId;
-  let result = tournamentEngine.automatedPositioning({
+  const structureId = result.drawDefinition.structures[0].structureId;
+  tournamentEngine.automatedPositioning({
     structureId,
     drawId,
   });
@@ -96,13 +96,13 @@ it('can generate TEAM events', () => {
   });
   expect(doublesMatchUps.length).toEqual(21);
 
-  ({ drawDefinition, event } = tournamentEngine.getEvent({ drawId }));
-  const { positionAssignments } = drawDefinition.structures[0];
+  result = tournamentEngine.getEvent({ drawId });
+  const { positionAssignments } = result.drawDefinition.structures[0];
   expect(positionAssignments.length).toEqual(drawSize);
 
   const positionedParticipantIds = positionAssignments
-    .filter(hasParticipantId)
-    .map(getParticipantId);
+    .filter(extractAttributes(PARTICIPANT_ID))
+    .map(extractAttributes(PARTICIPANT_ID));
   expect(positionedParticipantIds.length).toEqual(drawSize);
 
   const { outcome } = mocksEngine.generateOutcomeFromScoreString({

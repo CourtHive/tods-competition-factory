@@ -1,5 +1,5 @@
 import { getParticipants } from '../query/participants/getParticipants';
-import { isUngrouped } from '../global/functions/isUngrouped';
+import { isUngrouped } from '../query/entries/isUngrouped';
 import { unique } from '../utilities/arrays';
 
 import POLICY_MATCHUP_ACTIONS_DEFAULT from '../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';

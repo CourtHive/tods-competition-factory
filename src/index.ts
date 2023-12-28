@@ -1,24 +1,37 @@
-export { utilities } from './assemblies/governors/utilitiesGovernor';
+export { factoryVersion as version } from './global/functions/factoryVersion';
+
+// GOVERNORS ------------------------------------------------------------
+export { governors } from './assemblies/governors';
 
 export { matchUpFormatCode } from './assemblies/governors/matchUpFormatGovernor';
-export { factoryVersion as version } from './global/functions/factoryVersion';
+export { utilities } from './assemblies/governors/utilitiesGovernor';
 export { scoreGovernor } from './assemblies/governors/scoreGovernor';
-export { fixtures } from './fixtures';
 
-// START- Asynchronous and Synchronous engine exports
+// ENGINES - For cusomization --------------------------------------------
+export { asyncEngine } from './assemblies/engines/async';
+export { askEngine } from './assemblies/engines/ask';
+import engine from './tests/engines/syncEngine';
+export { engine as syncEngine };
+
+export { matchUpEngine } from './assemblies/engines/matchUp';
+export { mocksEngine } from './assemblies/engines/mock';
+
+// ENGINES - For backwards compatibility ---------------------------------
 export { competitionEngine } from './tests/engines/syncEngine';
 export { competitionEngineAsync } from './tests/engines/asyncEngine';
-export { matchUpEngine } from './assemblies/engines/matchUp/sync';
 export { tournamentEngine } from './tests/engines/syncEngine';
 export { tournamentEngineAsync } from './tests/engines/asyncEngine';
 export { scaleEngine } from './tests/engines/scaleEngine';
-export { mocksEngine } from './assemblies/engines/mock';
-// END- Asynchronous and Synchronous engine exports
 
-// START-: constants ---------------------------------------------------------------
+// FIXTURES --------------------------------------------------------------
+export { fixtures } from './fixtures';
+
+// CONSTANTS -------------------------------------------------------------
+export { factoryConstants } from './constants';
+
 export { participantRoles } from './constants/participantRoles';
 export { participantTypes } from './constants/participantConstants';
-export { factoryConstants } from './constants';
+export { matchUpTypes } from './constants/matchUpTypes';
 
 export { drawDefinitionConstants } from './constants/drawDefinitionConstants';
 export { entryStatusConstants } from './constants/entryStatusConstants';
@@ -29,7 +42,6 @@ export { genderConstants } from './constants/genderConstants';
 export { keyValueConstants } from './mutate/score/keyValueScore/constants';
 export { matchUpActionConstants } from './constants/matchUpActionConstants';
 export { matchUpStatusConstants } from './constants/matchUpStatusConstants';
-export { matchUpTypes } from './constants/matchUpTypes';
 export { participantConstants } from './constants/participantConstants';
 export { penaltyConstants } from './constants/penaltyConstants';
 export { policyConstants } from './constants/policyConstants';
@@ -39,7 +51,7 @@ export { scaleConstants } from './constants/scaleConstants';
 export { surfaceConstants } from './constants/surfaceConstants';
 export { timeItemConstants } from './constants/timeItemConstants';
 export { venueConstants } from './constants/venueConstants';
-// END-: constants ---------------------------------------------------------------
+// END-: constants --------------------------------------------------------
 
 // START- Global State methods
 export {

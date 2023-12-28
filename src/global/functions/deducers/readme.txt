@@ -1,1 +1,0 @@
-"deducers" are "getters" that are shared across engines

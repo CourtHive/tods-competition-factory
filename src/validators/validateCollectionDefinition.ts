@@ -1,5 +1,5 @@
-import { tieFormatGenderValidityCheck } from '../global/functions/deducers/tieFormatGenderValidityCheck';
-import { categoryCanContain } from '../global/functions/deducers/categoryCanContain';
+import { tieFormatGenderValidityCheck } from './tieFormatGenderValidityCheck';
+import { categoryCanContain } from '../query/event/categoryCanContain';
 import { matchUpFormatCode } from '../assemblies/governors/matchUpFormatGovernor';
 import { validateCollectionValueProfiles } from './validateCollectionValueProfiles';
 import { decorateResult } from '../global/functions/decorateResult';

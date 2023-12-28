@@ -1,5 +1,5 @@
 import { getAssignedParticipantIds } from '../../query/drawDefinition/getAssignedParticipantIds';
-import { refreshEntryPositions } from '../../global/functions/producers/refreshEntryPositions';
+import { refreshEntryPositions } from './refreshEntryPositions';
 import { extractAttributes as xa, isString } from '../../utilities/objects';
 import { decorateResult } from '../../global/functions/decorateResult';
 import { getFlightProfile } from '../../query/event/getFlightProfile';

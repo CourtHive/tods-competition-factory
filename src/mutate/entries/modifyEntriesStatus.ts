@@ -1,5 +1,5 @@
 import { getAssignedParticipantIds } from '../../query/drawDefinition/getAssignedParticipantIds';
-import { refreshEntryPositions } from '../../global/functions/producers/refreshEntryPositions';
+import { refreshEntryPositions } from './refreshEntryPositions';
 import { findParticipant } from '../../acquire/findParticipant';
 import { modifyDrawNotice } from '../notifications/drawNotifications';
 import { removeExtension } from '../extensions/removeExtension';
@@ -7,7 +7,7 @@ import { decorateResult } from '../../global/functions/decorateResult';
 import { isValidExtension } from '../../validators/isValidExtension';
 import { addExtension } from '../extensions/addExtension';
 import { getFlightProfile } from '../../query/event/getFlightProfile';
-import { isUngrouped } from '../../global/functions/isUngrouped';
+import { isUngrouped } from '../../query/entries/isUngrouped';
 
 import { validStages } from '../../constants/drawDefinitionConstants';
 import { DOUBLES, TEAM_EVENT } from '../../constants/eventConstants';

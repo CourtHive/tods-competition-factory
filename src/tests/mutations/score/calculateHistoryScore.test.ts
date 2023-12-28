@@ -1,4 +1,4 @@
-import matchUpEngineSync from '../../../assemblies/engines/matchUp/sync';
+import matchUpEngineSync from '../../../assemblies/engines/matchUp';
 import { getHistory } from '../../../mutate/matchUps/score/history/getHistory';
 import { expect, it } from 'vitest';
 

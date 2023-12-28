@@ -2,7 +2,6 @@ import { getStructureSeedAssignments } from '../structure/getStructureSeedAssign
 import { getAllStructureMatchUps } from '../matchUps/getAllStructureMatchUps';
 import { structureSort } from '../../functions/sorters/structureSort';
 import { getStructureGroups } from '../structure/getStructureGroups';
-import { hasParticipantId } from '../../global/functions/filters';
 import { makeDeepCopy } from '../../utilities/makeDeepCopy';
 import { getPositionAssignments } from './positionsGetter';
 import { findStructure } from '../../acquire/findStructure';
@@ -33,6 +32,8 @@ import {
   PLAY_OFF,
   QUALIFYING,
 } from '../../constants/drawDefinitionConstants';
+import { extractAttributes } from '../../utilities/objects';
+import { PARTICIPANT_ID } from '../../constants/attributeConstants';
 
 export function getDrawData(params): {
   structures?: any[];
@@ -148,7 +149,7 @@ export function getDrawData(params): {
         });
 
         const participantResults = positionAssignments
-          ?.filter(hasParticipantId)
+          ?.filter(extractAttributes(PARTICIPANT_ID))
           .map((assignment) => {
             participantPlacements = true;
             const { drawPosition, participantId } = assignment;

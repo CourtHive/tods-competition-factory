@@ -1,9 +1,9 @@
-import { refreshEntryPositions } from '../../global/functions/producers/refreshEntryPositions';
+import { refreshEntryPositions } from './refreshEntryPositions';
 import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
 import { addExtension } from '../extensions/addExtension';
 import { isValidExtension } from '../../validators/isValidExtension';
 import { definedAttributes } from '../../utilities/definedAttributes';
-import { isUngrouped } from '../../global/functions/isUngrouped';
+import { isUngrouped } from '../../query/entries/isUngrouped';
 import { addDrawEntries } from '../drawDefinitions/addDrawEntries';
 import { removeEventEntries } from './removeEventEntries';
 import {

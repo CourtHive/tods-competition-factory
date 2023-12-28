@@ -1,4 +1,4 @@
-import { getCategoryAgeDetails } from '../../../global/functions/getCategoryAgeDetails';
+import { getCategoryAgeDetails } from '../../../query/event/getCategoryAgeDetails';
 import { test, expect } from 'vitest';
 import { mocksEngine } from '../../..';
 

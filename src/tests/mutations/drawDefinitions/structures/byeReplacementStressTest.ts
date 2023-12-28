@@ -1,7 +1,6 @@
 import { completeDrawMatchUps } from '../../../../assemblies/generators/mocks/completeDrawMatchUps';
 import { getPositionAssignments } from '../../../../query/drawDefinition/positionsGetter';
 import { getDrawPosition } from '../../../../global/functions/extractors';
-import { hasParticipantId } from '../../../../global/functions/filters';
 import { extractAttributes } from '../../../../utilities/objects';
 import mocksEngine from '../../../../assemblies/engines/mock';
 import { shuffleArray } from '../../../../utilities/arrays';
@@ -15,6 +14,7 @@ import {
   assignDrawPosition,
 } from '../testingUtilities';
 
+import { PARTICIPANT_ID } from '../../../../constants/attributeConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 
 // pseudocode...
@@ -56,7 +56,7 @@ export function replacementTest(params) {
 
   // find all drawPositions assigned to participantIds and shuffle the array
   const participantDrawPositions = positionAssignments
-    ?.filter(hasParticipantId)
+    ?.filter(extractAttributes(PARTICIPANT_ID))
     .map(getDrawPosition);
   const shuffledDrawPositions = shuffleArray(participantDrawPositions);
 

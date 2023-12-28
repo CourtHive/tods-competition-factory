@@ -1,11 +1,10 @@
 import { getValidGroupSizes } from '../../../assemblies/generators/drawDefinitions/drawTypes/roundRobin/roundRobin';
-import { visualizeScheduledMatchUps } from '../../../global/testHarness/testUtilities/visualizeScheduledMatchUps';
-import { tieFormatGenderValidityCheck } from '../../../global/functions/deducers/tieFormatGenderValidityCheck';
+import { visualizeScheduledMatchUps } from '../../../tests/testHarness/testUtilities/visualizeScheduledMatchUps';
+import { tieFormatGenderValidityCheck } from '../../../validators/tieFormatGenderValidityCheck';
 import { roundRobinGroups } from '../../generators/drawDefinitions/drawTypes/roundRobin/roundRobinGroups';
 import { getSeedingThresholds } from '../../../mutate/drawDefinitions/positionGovernor/getSeedBlocks';
 import { compareTieFormats } from '../../../query/hierarchical/tieFormats/compareTieFormats';
-import { categoryCanContain } from '../../../global/functions/deducers/categoryCanContain';
-import { getCategoryAgeDetails } from '../../../global/functions/getCategoryAgeDetails';
+import { getCategoryAgeDetails } from '../../../query/event/getCategoryAgeDetails';
 import { calculateWinCriteria } from '../../../query/matchUp/calculateWinCriteria';
 import { getMatchUpContextIds } from '../../../query/matchUp/getMatchUpContextIds';
 import { getScaleValues } from '../../../query/participant/getScaleValues';
@@ -70,7 +69,6 @@ const utilitiesGovernor = {
   allPlayoffPositionsFilled,
   attributeFilter,
   calculateWinCriteria,
-  categoryCanContain,
   chunkArray,
   chunkByNth,
   chunkSizeProfile,

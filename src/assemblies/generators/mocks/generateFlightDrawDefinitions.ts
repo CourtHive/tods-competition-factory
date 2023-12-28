@@ -4,13 +4,13 @@ import { setParticipantScaleItem } from '../../../mutate/participants/addScaleIt
 import { addDrawDefinition } from '../../../mutate/drawDefinitions/addDrawDefinition';
 import { generateDrawDefinition } from '../drawDefinitions/generateDrawDefinition';
 import { isValidExtension } from '../../../validators/isValidExtension';
-import { getParticipantId } from '../../../global/functions/extractors';
 import { getFlightProfile } from '../../../query/event/getFlightProfile';
 import { addExtension } from '../../../mutate/extensions/addExtension';
-import { hasParticipantId } from '../../../global/functions/filters';
+import { extractAttributes } from '../../../utilities/objects';
 import { completeDrawMatchUps } from './completeDrawMatchUps';
 import { generateRange } from '../../../utilities/arrays';
 
+import { PARTICIPANT_ID } from '../../../constants/attributeConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SEEDING } from '../../../constants/scaleConstants';
 import {
@@ -54,8 +54,8 @@ export function generateFlightDrawDefinitions({
 
       if (generate) {
         const drawParticipantIds = drawEntries
-          .filter(hasParticipantId)
-          .map(getParticipantId);
+          .filter(extractAttributes(PARTICIPANT_ID))
+          .map(extractAttributes(PARTICIPANT_ID));
 
         const seedingScaleName = categoryName || eventName;
 
