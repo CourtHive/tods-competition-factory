@@ -1,10 +1,9 @@
 import { visualizeScheduledMatchUps } from '../../../global/testHarness/testUtilities/visualizeScheduledMatchUps';
 import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
-import tournamentEngine from '../../engines/syncEngine';
-import competitionEngine from '../../engines/competitionEngine';
-import { extractDate } from '../../../utilities/dateTime';
-import { expect, it } from 'vitest';
 import mocksEngine from '../../../assemblies/engines/mock';
+import { extractDate } from '../../../utilities/dateTime';
+import tournamentEngine from '../../engines/syncEngine';
+import { expect, it } from 'vitest';
 
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
 
@@ -56,7 +55,7 @@ it('can schedule all matchUps in first round with only drawId', () => {
     24
   );
 
-  const { matchUps } = competitionEngine.allCompetitionMatchUps();
+  const { matchUps } = tournamentEngine.allCompetitionMatchUps();
   const scheduledMatchUps = matchUps?.filter(hasSchedule);
   expect(scheduledMatchUps.length).toEqual(24);
   const schedule = scheduledMatchUps[0].schedule;

@@ -1,6 +1,6 @@
-import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
+import { resolveTieFormat } from '../../../query/hierarchical/tieFormats/resolveTieFormat';
 import { generateTieMatchUpScore } from '../../../assemblies/generators/tieMatchUpScore/generateTieMatchUpScore';
-import { copyTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';
+import { copyTieFormat } from '../../../query/hierarchical/tieFormats/copyTieFormat';
 import { isActiveMatchUp } from '../../../tests/queries/matchUps/activeMatchUp';
 import { removeExtension } from '../../extensions/removeExtension';
 import { findTournamentId } from '../../../acquire/findTournamentId';

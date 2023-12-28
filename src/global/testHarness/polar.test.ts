@@ -1,5 +1,4 @@
 import tournamentEngine from '../../tests/engines/syncEngine';
-import competitionEngine from '../../tests/engines/competitionEngine';
 import { expect, it } from 'vitest';
 import fs from 'fs';
 
@@ -12,7 +11,7 @@ it('can get competitionScheduleMatchUps', () => {
   const tournamentRecord = JSON.parse(tournamentRecordJSON);
   tournamentEngine.setState(tournamentRecord);
 
-  let result = competitionEngine.competitionScheduleMatchUps();
+  let result = tournamentEngine.competitionScheduleMatchUps();
   expect(result.dateMatchUps.length).not.toBeUndefined();
 
   result = tournamentEngine.allTournamentMatchUps();

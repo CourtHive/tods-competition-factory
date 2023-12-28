@@ -1,5 +1,5 @@
 import mocksEngine from '../../../assemblies/engines/mock';
-import competitionEngine from '../../engines/competitionEngine';
+import competitionEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';

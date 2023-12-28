@@ -1,8 +1,7 @@
-import tournamentEngine from '../../engines/syncEngine';
-import { formatDate } from '../../../utilities/dateTime';
 import asyncCompetitionEngine from '../../engines/asyncEngine';
-import competitionEngineSync from '../../engines/competitionEngine';
 import mocksEngine from '../../../assemblies/engines/mock';
+import { formatDate } from '../../../utilities/dateTime';
+import tournamentEngine from '../../engines/syncEngine';
 import { expect, test } from 'vitest';
 
 import { DOUBLES, TEAM } from '../../../constants/eventConstants';
@@ -188,7 +187,7 @@ const mockProfiles = [
   },
 ];
 
-test.each([competitionEngineSync, asyncCompetitionEngine].slice(0, 1))(
+test.each([tournamentEngine, asyncCompetitionEngine].slice(0, 1))(
   'will add venue to linked tournament when scheduling courts which are not present on both tournaments',
   async (competitionEngine) => {
     for (const mockProfile of mockProfiles) {

@@ -1,4 +1,4 @@
-import { resolveTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
+import { resolveTieFormat } from '../hierarchical/tieFormats/resolveTieFormat';
 import { getMatchUpCompetitiveProfile } from '../matchUp/getMatchUpCompetitiveProfile';
 import { getCollectionPositionMatchUps } from './getCollectionPositionMatchUps';
 import { getMatchUpScheduleDetails } from '../matchUp/getMatchUpScheduleDetails';
@@ -6,7 +6,7 @@ import { getCheckedInParticipantIds } from '../matchUp/getCheckedInParticipantId
 import { getDrawPositionCollectionAssignment } from './getDrawPositionCollectionAssignment';
 import { getAppliedPolicies } from '../extensions/getAppliedPolicies';
 import { getContextContent } from '../hierarchical/getContextContent';
-import { parse } from '../../matchUpEngine/governors/matchUpFormatGovernor/parse';
+import { parse } from '../../assemblies/generators/matchUpFormatCode/parse';
 import { getRoundMatchUps } from './getRoundMatchUps';
 import { findParticipant } from '../../acquire/findParticipant';
 import { getMatchUpType } from '../matchUp/getMatchUpType';

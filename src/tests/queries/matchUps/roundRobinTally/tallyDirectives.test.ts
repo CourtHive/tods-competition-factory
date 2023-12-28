@@ -1,6 +1,6 @@
-import tournamentEngine from '../../../engines/syncEngine';
+import { tallyParticipantResults } from '../../../../query/matchUps/roundRobinTally/roundRobinTally';
 import { extractAttributes as xa } from '../../../../utilities';
-import matchUpEngine from '../../../../matchUpEngine/sync';
+import tournamentEngine from '../../../engines/syncEngine';
 import tournamentRecord from './dominantDuo.tods.json';
 import { expect, it } from 'vitest';
 
@@ -28,7 +28,7 @@ it('supports multiple policy configurations', () => {
 
   let participantResults;
 
-  participantResults = matchUpEngine.tallyParticipantResults({
+  participantResults = tallyParticipantResults({
     matchUps: structure1MatchUps,
   }).participantResults;
 
@@ -43,7 +43,7 @@ it('supports multiple policy configurations', () => {
     GEMscore: ['matchUpsPct', 'tieMatchUpsPct', 'gamesWon', 'gamesPct'],
   };
 
-  participantResults = matchUpEngine.tallyParticipantResults({
+  participantResults = tallyParticipantResults({
     policyDefinitions: {
       [POLICY_TYPE_ROUND_ROBIN_TALLY]: fewestGamesLostWinReversed,
     },
@@ -61,7 +61,7 @@ it('supports multiple policy configurations', () => {
     GEMscore: ['matchUpsPct', 'tieMatchUpsPct', 'gamesWon', 'gamesPct'],
   };
 
-  participantResults = matchUpEngine.tallyParticipantResults({
+  participantResults = tallyParticipantResults({
     policyDefinitions: {
       [POLICY_TYPE_ROUND_ROBIN_TALLY]: fewestGamesLost,
     },
@@ -76,7 +76,7 @@ it('supports multiple policy configurations', () => {
     tallyDirectives: [{ attribute: 'gamesPct', idsFilter: false }],
   };
 
-  participantResults = matchUpEngine.tallyParticipantResults({
+  participantResults = tallyParticipantResults({
     policyDefinitions: {
       [POLICY_TYPE_ROUND_ROBIN_TALLY]: mostDoublesWon,
     },

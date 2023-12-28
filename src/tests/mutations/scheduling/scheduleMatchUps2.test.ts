@@ -1,10 +1,9 @@
-import { getScheduleTimes } from '../../../query/venues/getScheduleTimes';
 import { removeCourtAssignment } from '../../../mutate/matchUps/schedule/removeCourtAssignment';
+import { getScheduleTimes } from '../../../query/venues/getScheduleTimes';
 import { getMatchUpIds } from '../../../global/functions/extractors';
-import competitionEngine from '../../engines/competitionEngine';
 import { setSubscriptions } from '../../../global/state/globalState';
-import tournamentEngine from '../../engines/syncEngine';
 import mocksEngine from '../../../assemblies/engines/mock';
+import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { SINGLES } from '../../../constants/eventConstants';
@@ -155,7 +154,7 @@ it('can add events, venues, and schedule matchUps and modify drawDefinition.upda
   await forceDelay();
 
   const matchUpIds = getMatchUpIds(upcoming);
-  result = competitionEngine
+  result = tournamentEngine
     .setState(tournamentRecords)
     .scheduleMatchUps({ scheduleDate: d200101, matchUpIds });
   expect(result.success).toEqual(true);
@@ -166,7 +165,7 @@ it('can add events, venues, and schedule matchUps and modify drawDefinition.upda
   );
   lastUpdatedAt = drawDefinition.updatedAt;
 
-  ({ tournamentRecords } = competitionEngine.getState());
+  ({ tournamentRecords } = tournamentEngine.getState());
   tournamentRecord = tournamentRecords[tournamentId];
   tournamentEngine.setState(tournamentRecord);
 
@@ -396,11 +395,11 @@ it('can add events, venues, and schedule matchUps and modify drawDefinition.upda
 
   result = tournamentEngine.deleteVenue();
   expect(result.error).toEqual(MISSING_VENUE_ID);
-  result = competitionEngine.deleteVenue();
+  result = tournamentEngine.deleteVenue();
   expect(result.error).toEqual(MISSING_VENUE_ID);
   result = tournamentEngine.deleteVenue({ venueId: '12345' });
   expect(result.success).toEqual(true); // venue doesn't exist, so no error
-  result = competitionEngine.deleteVenue({ venueId: '12345' });
+  result = tournamentEngine.deleteVenue({ venueId: '12345' });
   expect(result.success).toEqual(true); // venue doesn't exist, so no error
 
   result = tournamentEngine.deleteVenue({ venueId });
@@ -569,12 +568,12 @@ it('adds venueId to matchUp.schedule when court is assigned', () => {
   let tournamentRecords = { [tournamentId]: tournamentRecord };
 
   const matchUpIds = getMatchUpIds(upcoming);
-  result = competitionEngine
+  result = tournamentEngine
     .setState(tournamentRecords)
     .scheduleMatchUps({ scheduleDate: date, matchUpIds });
   expect(result.success).toEqual(true);
 
-  ({ tournamentRecords } = competitionEngine.getState());
+  ({ tournamentRecords } = tournamentEngine.getState());
   tournamentRecord = tournamentRecords[tournamentId];
   tournamentEngine.setState(tournamentRecord);
 

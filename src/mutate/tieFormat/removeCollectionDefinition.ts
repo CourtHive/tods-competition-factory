@@ -7,12 +7,12 @@ import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
 import { findDrawMatchUp } from '../../acquire/findDrawMatchUp';
 import { definedAttributes } from '../../utilities/definedAttributes';
 import { checkScoreHasValue } from '../../query/matchUp/checkScoreHasValue';
-import { calculateWinCriteria } from '../../matchUpEngine/governors/tieFormatGovernor/calculateWinCriteria';
-import { getTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/getTieFormat';
-import { tieFormatTelemetry } from '../../matchUpEngine/governors/tieFormatGovernor/tieFormatTelemetry';
+import { calculateWinCriteria } from '../../query/matchUp/calculateWinCriteria';
+import { getTieFormat } from '../../query/hierarchical/tieFormats/getTieFormat';
+import { tieFormatTelemetry } from '../matchUps/tieFormat/tieFormatTelemetry';
 import { validateTieFormat } from '../../validators/validateTieFormat';
-import { compareTieFormats } from '../../matchUpEngine/governors/tieFormatGovernor/compareTieFormats';
-import { copyTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';
+import { compareTieFormats } from '../../query/hierarchical/tieFormats/compareTieFormats';
+import { copyTieFormat } from '../../query/hierarchical/tieFormats/copyTieFormat';
 import {
   deleteMatchUpsNotice,
   modifyDrawNotice,

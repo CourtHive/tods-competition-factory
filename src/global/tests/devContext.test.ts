@@ -1,4 +1,3 @@
-import competitionEngine from '../../tests/engines/competitionEngine';
 import tournamentEngine from '../../tests/engines/syncEngine';
 import { expect, it } from 'vitest';
 
@@ -21,7 +20,6 @@ it('handles devContext objects', () => {
   devContext = tournamentEngine.getDevContext({ FOO: true });
   expect(devContext).toEqual(false);
 
-  // devContext is in shared state
-  devContext = competitionEngine.getDevContext();
+  devContext = tournamentEngine.getDevContext();
   expect(devContext).toEqual({ WOWO: true });
 });

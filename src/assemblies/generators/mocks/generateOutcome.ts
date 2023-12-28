@@ -1,5 +1,5 @@
 import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
-import { parse } from '../../../matchUpEngine/governors/matchUpFormatGovernor/parse';
+import { parse } from '../matchUpFormatCode/parse';
 import { analyzeMatchUp } from '../../../query/matchUp/analyzeMatchUp';
 import { matchUpScore } from '../matchUps/matchUpScore';
 import { analyzeSet } from '../../../query/matchUp/analyzeSet';

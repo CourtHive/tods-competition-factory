@@ -1,3 +1,3 @@
 # Governors
 
-Governors should contain only index files which aggregate mutation methods in subject areas
+Governors should contain only index files which aggregate methods in subject areas

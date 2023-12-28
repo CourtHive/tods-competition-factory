@@ -1,16 +1,16 @@
-export { matchUpFormatCode } from './matchUpEngine/governors/matchUpFormatGovernor';
+export { matchUpFormatCode } from './assemblies/governors/matchUpFormatGovernor';
 export { factoryVersion as version } from './global/functions/factoryVersion';
-export { scoreGovernor } from './matchUpEngine/governors/scoreGovernor';
+export { scoreGovernor } from './assemblies/governors/scoreGovernor';
 export { fixtures } from './fixtures';
 
 import { getAvailablePlayoffProfiles } from './mutate/drawDefinitions/structureGovernor/getAvailablePlayoffProfiles';
 import { roundRobinGroups } from './assemblies/generators/drawDefinitions/drawTypes/roundRobin/roundRobinGroups';
 import { getValidGroupSizes } from './assemblies/generators/drawDefinitions/drawTypes/roundRobin/roundRobin';
 import { visualizeScheduledMatchUps } from './global/testHarness/testUtilities/visualizeScheduledMatchUps';
-import { calculateWinCriteria } from './matchUpEngine/governors/tieFormatGovernor/calculateWinCriteria';
+import { calculateWinCriteria } from './query/matchUp/calculateWinCriteria';
 import { tieFormatGenderValidityCheck } from './global/functions/deducers/tieFormatGenderValidityCheck';
 import { proConflicts } from './mutate/matchUps/schedule/schedulers/proScheduler/proConflicts';
-import { compareTieFormats } from './matchUpEngine/governors/tieFormatGovernor/compareTieFormats';
+import { compareTieFormats } from './query/hierarchical/tieFormats/compareTieFormats';
 import { dehydrateMatchUps } from './mutate/tournaments/dehydrate';
 import { getSeedingThresholds } from './mutate/drawDefinitions/positionGovernor/getSeedBlocks';
 import { getStructureSeedAssignments } from './query/structure/getStructureSeedAssignments';
@@ -143,8 +143,7 @@ export const utilities = {
 // START- Asynchronous and Synchronous engine exports
 export { competitionEngine } from './tests/engines/syncEngine';
 export { competitionEngineAsync } from './tests/engines/asyncEngine';
-export { matchUpEngine } from './matchUpEngine/sync';
-export { matchUpEngineAsync } from './matchUpEngine/async';
+export { matchUpEngine } from './assemblies/engines/matchUp/sync';
 export { tournamentEngine } from './tests/engines/syncEngine';
 export { tournamentEngineAsync } from './tests/engines/asyncEngine';
 export { scaleEngine } from './tests/engines/scaleEngine';
@@ -162,7 +161,7 @@ export { errorConditionConstants } from './constants/errorConditionConstants';
 export { eventConstants } from './constants/eventConstants';
 export { flightConstants } from './constants/flightConstants';
 export { genderConstants } from './constants/genderConstants';
-export { keyValueConstants } from './matchUpEngine/governors/scoreGovernor/keyValueScore/constants';
+export { keyValueConstants } from './mutate/score/keyValueScore/constants';
 export { matchUpActionConstants } from './constants/matchUpActionConstants';
 export { matchUpStatusConstants } from './constants/matchUpStatusConstants';
 export { matchUpTypes } from './constants/matchUpTypes';

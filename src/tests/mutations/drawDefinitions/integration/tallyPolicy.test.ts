@@ -1,6 +1,6 @@
-import tournamentEngine from '../../../engines/syncEngine';
-import matchUpEngine from '../../../../matchUpEngine/sync';
+import { tallyParticipantResults } from '../../../../query/matchUps/roundRobinTally/roundRobinTally';
 import mocksEngine from '../../../../assemblies/engines/mock';
+import tournamentEngine from '../../../engines/syncEngine';
 import { expect, test } from 'vitest';
 
 test('roundRobinTally policy can specify tally by games only', () => {
@@ -39,7 +39,7 @@ test('roundRobinTally policy can specify tally by games only', () => {
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
 
-  const { participantResults } = matchUpEngine.tallyParticipantResults({
+  const { participantResults } = tallyParticipantResults({
     policyDefinitions: mockProfile.policyDefinitions,
     matchUpFormat: mockProfile.matchUpFormat,
     matchUps,

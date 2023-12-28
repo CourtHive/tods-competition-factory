@@ -1,5 +1,5 @@
-import competitionEngine from '../../engines/competitionEngine';
 import { mocksEngine } from '../../../assemblies/engines/mock/index';
+import competitionEngine from '../../engines/syncEngine';
 import scaleEngine from '../../engines/scaleEngine';
 import { expect, test } from 'vitest';
 

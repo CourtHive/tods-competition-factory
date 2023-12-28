@@ -1,5 +1,4 @@
 import tournamentEngine from '../../../engines/syncEngine';
-import competitionEngine from '../../../engines/competitionEngine';
 import askEngine from '../../../engines/askEngine';
 import { unique } from '../../../../utilities';
 import { mocksEngine } from '../../../..';
@@ -37,7 +36,7 @@ test('it can allocate courts to a TEAM matchUp', () => {
   const { allocatedCourts } = result.matchUp.schedule;
   expect(allocatedCourts.map(({ courtId }) => courtId)).toEqual(courtIds);
 
-  result = competitionEngine.allocateTeamMatchUpCourts({
+  result = tournamentEngine.allocateTeamMatchUpCourts({
     removePriorValues: true,
     matchUpId,
     drawId,
@@ -62,7 +61,7 @@ test('it can allocate courts to a TEAM matchUp', () => {
 
   const matchUpFilters = { scheduledDate };
   const minCourtGridRows = 5;
-  result = competitionEngine.competitionScheduleMatchUps({
+  result = tournamentEngine.competitionScheduleMatchUps({
     withCourtGridRows: true,
     minCourtGridRows,
     matchUpFilters,
@@ -85,7 +84,7 @@ test('it can allocate courts to a TEAM matchUp', () => {
     ).toEqual(true)
   );
 
-  result = competitionEngine.removeMatchUpCourtAssignment({
+  result = tournamentEngine.removeMatchUpCourtAssignment({
     courtId: courtIds[0],
     tournamentId,
     matchUpId,
@@ -93,7 +92,7 @@ test('it can allocate courts to a TEAM matchUp', () => {
   });
   expect(result.success).toEqual(true);
 
-  result = competitionEngine.competitionScheduleMatchUps({ matchUpFilters });
+  result = tournamentEngine.competitionScheduleMatchUps({ matchUpFilters });
   expect(result.dateMatchUps.length).toEqual(1);
   const updatedCourtIds = result.dateMatchUps[0].schedule.allocatedCourts.map(
     ({ courtId }) => courtId
@@ -113,7 +112,7 @@ test('it can allocate courts to a TEAM matchUp', () => {
     ).length
   ).toEqual(1);
 
-  result = competitionEngine.removeMatchUpCourtAssignment({
+  result = tournamentEngine.removeMatchUpCourtAssignment({
     // not passing courtId will remove all allocatedCourts
     tournamentId,
     matchUpId,
@@ -121,7 +120,7 @@ test('it can allocate courts to a TEAM matchUp', () => {
   });
   expect(result.success).toEqual(true);
 
-  result = competitionEngine.competitionScheduleMatchUps({ matchUpFilters });
+  result = tournamentEngine.competitionScheduleMatchUps({ matchUpFilters });
   expect(result.dateMatchUps[0].schedule.allocatedCourts).toBeUndefined();
 
   result = tournamentEngine.getTournament();

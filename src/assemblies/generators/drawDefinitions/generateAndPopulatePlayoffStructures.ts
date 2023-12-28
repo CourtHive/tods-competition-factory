@@ -1,18 +1,18 @@
-import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
-import { checkMatchUpIsComplete } from '../../../query/matchUp/checkMatchUpIsComplete';
-import { generateAndPopulateRRplayoffStructures } from './generateAndPopulateRRplayoffStructures';
-import { assignDrawPositionBye } from '../../../mutate/matchUps/drawPositions/assignDrawPositionBye';
-import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
-import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
-import { directParticipants } from '../../../mutate/matchUps/drawPositions/directParticipants';
 import { getAvailablePlayoffProfiles } from '../../../mutate/drawDefinitions/structureGovernor/getAvailablePlayoffProfiles';
+import { assignDrawPositionBye } from '../../../mutate/matchUps/drawPositions/assignDrawPositionBye';
+import { getSourceRounds } from '../../../mutate/drawDefinitions/structureGovernor/getSourceRounds';
+import { generateAndPopulateRRplayoffStructures } from './generateAndPopulateRRplayoffStructures';
+import { directParticipants } from '../../../mutate/matchUps/drawPositions/directParticipants';
+import { resolveTieFormat } from '../../../query/hierarchical/tieFormats/resolveTieFormat';
+import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { positionTargets } from '../../../mutate/matchUps/drawPositions/positionTargets';
+import { checkMatchUpIsComplete } from '../../../query/matchUp/checkMatchUpIsComplete';
+import { addGoesTo } from '../../../mutate/drawDefinitions/matchUpGovernor/addGoesTo';
+import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import { getMatchUpId } from '../../../global/functions/extractors';
-import { generateTieMatchUps } from './tieMatchUps';
 import { findStructure } from '../../../acquire/findStructure';
 import { ensureInt } from '../../../utilities/ensureInt';
-import { addGoesTo } from '../../../mutate/drawDefinitions/matchUpGovernor/addGoesTo';
-import { getSourceRounds } from '../../../mutate/drawDefinitions/structureGovernor/getSourceRounds';
+import { generateTieMatchUps } from './tieMatchUps';
 import { makeDeepCopy } from '../../../utilities';
 import {
   ResultType,

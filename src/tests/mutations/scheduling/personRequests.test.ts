@@ -1,8 +1,8 @@
+import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
 import { extractTime, timeStringMinutes } from '../../../utilities/dateTime';
 import { getMatchUpId } from '../../../global/functions/extractors';
-import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
 import mocksEngine from '../../../assemblies/engines/mock';
-import competitionEngine from '../../engines/competitionEngine';
+import competitionEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { DO_NOT_SCHEDULE } from '../../../constants/requestConstants';

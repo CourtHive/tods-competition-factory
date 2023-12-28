@@ -1,6 +1,6 @@
-import { shuffleArray, unique } from '../../../utilities';
 import mocksEngine from '../../../assemblies/engines/mock';
-import competitionEngine from '../../engines/competitionEngine';
+import competitionEngine from '../../engines/syncEngine';
+import { shuffleArray, unique } from '../../../utilities';
 import { expect, it } from 'vitest';
 
 import { SINGLES } from '../../../constants/eventConstants';

@@ -4,7 +4,7 @@ import { decorateResult } from '../../global/functions/decorateResult';
 import { findStructure } from '../../acquire/findStructure';
 import { isConvertableInteger } from '../../utilities/math';
 import { numericSortValue } from '../../utilities/arrays';
-import { copyTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';
+import { copyTieFormat } from '../../query/hierarchical/tieFormats/copyTieFormat';
 import {
   modifyDrawNotice,
   modifyMatchUpNotice,

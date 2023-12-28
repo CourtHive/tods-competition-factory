@@ -1,7 +1,6 @@
-import tournamentEngine from '../../engines/syncEngine';
 import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
 import mocksEngine from '../../../assemblies/engines/mock';
-import competitionEngine from '../../engines/competitionEngine';
+import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
@@ -31,9 +30,9 @@ it('can auto schedule Round Robin draws respecting daily limits', () => {
     endDate,
   });
 
-  competitionEngine.setState(tournamentRecord);
+  tournamentEngine.setState(tournamentRecord);
 
-  competitionEngine.attachPolicies({
+  tournamentEngine.attachPolicies({
     policyDefinitions: POLICY_SCHEDULING_NO_DAILY_LIMITS,
   });
 
@@ -48,20 +47,20 @@ it('can auto schedule Round Robin draws respecting daily limits', () => {
   } = drawDefinition;
 
   // add first round of draw to scheduling profile
-  let result = competitionEngine.addSchedulingProfileRound({
+  let result = tournamentEngine.addSchedulingProfileRound({
     round: { tournamentId, eventId, drawId, structureId, roundNumber: 1 },
     scheduleDate: startDate,
     venueId,
   });
   expect(result.success).toEqual(true);
-  result = competitionEngine.scheduleProfileRounds({
+  result = tournamentEngine.scheduleProfileRounds({
     scheduleDates: [startDate],
   });
   expect(result.success).toEqual(true);
   expect(result.scheduledDates).toEqual([startDate]);
   expect(result.scheduledMatchUpIds[startDate].length).toEqual(8);
 
-  let { matchUps } = competitionEngine.allCompetitionMatchUps();
+  let { matchUps } = tournamentEngine.allCompetitionMatchUps();
   let scheduledMatchUps = matchUps.filter(hasSchedule);
   expect(scheduledMatchUps.length).toEqual(8);
 
@@ -73,14 +72,14 @@ it('can auto schedule Round Robin draws respecting daily limits', () => {
   expect(roundNumbers).toEqual([1]);
 
   // add second round of draw to scheduling profile
-  result = competitionEngine.addSchedulingProfileRound({
+  result = tournamentEngine.addSchedulingProfileRound({
     round: { tournamentId, eventId, drawId, structureId, roundNumber: 2 },
     scheduleDate: startDate,
     venueId,
   });
   expect(result.success).toEqual(true);
 
-  result = competitionEngine.scheduleProfileRounds({
+  result = tournamentEngine.scheduleProfileRounds({
     scheduleDates: [startDate],
   });
   expect(result.success).toEqual(true);
@@ -88,7 +87,7 @@ it('can auto schedule Round Robin draws respecting daily limits', () => {
   expect(result.overLimitMatchUpIds[startDate].length).toEqual(0);
   expect(result.scheduledMatchUpIds[startDate].length).toEqual(4);
 
-  ({ matchUps } = competitionEngine.allCompetitionMatchUps());
+  ({ matchUps } = tournamentEngine.allCompetitionMatchUps());
   scheduledMatchUps = matchUps.filter(hasSchedule);
   expect(scheduledMatchUps.length).toEqual(12);
 

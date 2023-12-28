@@ -1,4 +1,4 @@
-import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
+import { resolveTieFormat } from '../../../query/hierarchical/tieFormats/resolveTieFormat';
 import { generateTieMatchUpScore } from '../../../assemblies/generators/tieMatchUpScore/generateTieMatchUpScore';
 import { getProjectedDualWinningSide } from '../../drawDefinitions/matchUpGovernor/getProjectedDualWinningSide';
 import { noDownstreamDependencies } from '../../drawDefinitions/matchUpGovernor/noDownstreamDependencies';

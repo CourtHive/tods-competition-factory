@@ -1,4 +1,4 @@
-import { parse } from '../../../matchUpEngine/governors/matchUpFormatGovernor/parse';
+import { parse } from '../matchUpFormatCode/parse';
 import { isNumeric } from '../../../utilities/math';
 
 import {

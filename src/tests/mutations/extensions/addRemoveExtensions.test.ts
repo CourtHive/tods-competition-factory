@@ -1,8 +1,7 @@
 import { generateTournamentRecord } from '../../../assemblies/generators/mocks/generateTournamentRecord';
-import tournamentEngine from '../../engines/syncEngine';
-import competitionEngine from '../../engines/competitionEngine';
 import { removeExtension } from '../../../mutate/extensions/removeExtension';
 import { addExtension } from '../../../mutate/extensions/addExtension';
+import tournamentEngine from '../../engines/syncEngine';
 import { expect, it, test } from 'vitest';
 import {
   addParticipantExtension,
@@ -48,12 +47,12 @@ it('can add and remove extensions from tournamentRecords', () => {
   });
   expect(result.error).toEqual(EVENT_NOT_FOUND);
 
-  result = competitionEngine.addEventExtension({
+  result = tournamentEngine.addEventExtension({
     eventId,
   });
   expect(result.error).toEqual(INVALID_VALUES);
 
-  result = competitionEngine.addEventExtension({
+  result = tournamentEngine.addEventExtension({
     eventId: 'bogusId',
     extension,
   });

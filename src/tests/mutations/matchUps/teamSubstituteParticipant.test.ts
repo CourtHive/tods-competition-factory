@@ -1,5 +1,5 @@
 import { removeLineUpSubstitutions } from '../../../mutate/drawDefinitions/removeLineUpSubstitutions';
-import { validateLineUp } from '../../../mutate/drawDefinitions/validateTeamLineUp';
+import { validateLineUp } from '../../../validators/validateTeamLineUp';
 import { generateTeamTournament } from '../participants/team/generateTestTeamTournament';
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import tournamentEngine from '../../engines/syncEngine';

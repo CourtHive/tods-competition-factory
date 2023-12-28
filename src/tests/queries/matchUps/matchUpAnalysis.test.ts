@@ -1,8 +1,7 @@
 import { analyzeMatchUp } from '../../../query/matchUp/analyzeMatchUp';
-import tournamentEngine from '../../engines/syncEngine';
 import mocksEngine from '../../../assemblies/engines/mock';
+import tournamentEngine from '../../engines/syncEngine';
 import { expect, test } from 'vitest';
-import matchUpEngine from '../../../matchUpEngine/sync';
 
 import { MISSING_MATCHUP } from '../../../constants/errorConditionConstants';
 import {
@@ -28,22 +27,7 @@ test('generated completed mock matchUp', () => {
     matchUps: [matchUp],
   } = tournamentEngine.allTournamentMatchUps();
 
-  const analysis = matchUpEngine.analyzeMatchUp({ matchUp });
-  expect(analysis.calculatedWinningSide).toEqual(1);
-  expect(analysis.validMatchUpWinningSide).toEqual(true);
-});
-
-test('matchUpEngine state test', () => {
-  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [{ drawSize: 4 }],
-    completeAllMatchUps: true,
-  });
-  tournamentEngine.setState(tournamentRecord);
-  const {
-    matchUps: [matchUp],
-  } = tournamentEngine.allTournamentMatchUps();
-
-  const analysis = matchUpEngine.setState(matchUp).analyzeMatchUp();
+  const analysis = analyzeMatchUp({ matchUp });
   expect(analysis.calculatedWinningSide).toEqual(1);
   expect(analysis.validMatchUpWinningSide).toEqual(true);
 });

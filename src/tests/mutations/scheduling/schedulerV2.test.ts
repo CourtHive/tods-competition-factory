@@ -1,8 +1,7 @@
 import { addDays, dateRange } from '../../../utilities/dateTime';
+import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { chunkArray } from '../../../utilities';
-import mocksEngine from '../../../assemblies/engines/mock';
-import competitionEngine from '../../engines/competitionEngine';
 import { expect, test } from 'vitest';
 
 import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
@@ -22,26 +21,26 @@ test('supports v2 scheduler', () => {
     endDate,
   });
 
-  competitionEngine.setState(tournamentRecord);
+  tournamentEngine.setState(tournamentRecord);
 
   const tournamentDateRange = dateRange(startDate, endDate);
-  const { rounds } = competitionEngine.getRounds();
+  const { rounds } = tournamentEngine.getRounds();
   const roundChunks = chunkArray(rounds, 2);
 
   const schedulingProfile = roundChunks.map((chunk, i) => ({
     scheduleDate: tournamentDateRange[i],
     venues: [{ venueId, rounds: chunk }],
   }));
-  let result = competitionEngine.setSchedulingProfile({ schedulingProfile });
+  let result = tournamentEngine.setSchedulingProfile({ schedulingProfile });
   expect(result.success).toEqual(true);
 
-  result = competitionEngine.scheduleProfileRounds({ pro: true });
+  result = tournamentEngine.scheduleProfileRounds({ pro: true });
   expect(result.success).toEqual(true);
   expect(
     Object.values(result.scheduledMatchUpIds).map((x: any) => x.length)
   ).toEqual([24, 6, 1]);
 
-  let { matchUps } = competitionEngine.allCompetitionMatchUps();
+  let { matchUps } = tournamentEngine.allCompetitionMatchUps();
   let roundSchedules = matchUps.map(
     ({ schedule: { scheduledTime, courtName }, roundNumber }) => [
       roundNumber,
@@ -104,7 +103,7 @@ test('supports v2 scheduler', () => {
 
   expect(roundSchedules).toEqual(roundScheduleExpectation);
 
-  result = competitionEngine.scheduleProfileRounds({
+  result = tournamentEngine.scheduleProfileRounds({
     clearScheduleDates: true,
     pro: true,
   });
@@ -113,7 +112,7 @@ test('supports v2 scheduler', () => {
     Object.values(result.scheduledMatchUpIds).map((x: any) => x.length)
   ).toEqual([24, 6, 1]);
 
-  matchUps = competitionEngine.allCompetitionMatchUps().matchUps;
+  matchUps = tournamentEngine.allCompetitionMatchUps().matchUps;
   roundSchedules = matchUps.map(
     ({ schedule: { scheduledTime, courtName }, roundNumber }) => [
       roundNumber,
@@ -126,7 +125,7 @@ test('supports v2 scheduler', () => {
 });
 
 test('scheduling v2 respects DO_NOT_SCHEDULE requests', () => {
-  competitionEngine.reset();
+  tournamentEngine.reset();
 
   const startDate = '2022-01-01';
   const endDate = '2022-01-01';
@@ -212,16 +211,16 @@ test('scheduling v2 respects DO_NOT_SCHEDULE requests', () => {
     },
   ];
 
-  let result = competitionEngine.setSchedulingProfile({ schedulingProfile });
+  let result = tournamentEngine.setSchedulingProfile({ schedulingProfile });
 
-  result = competitionEngine.scheduleProfileRounds({
+  result = tournamentEngine.scheduleProfileRounds({
     scheduleDates: availableDates,
     pro: true,
   });
   expect(result.success).toEqual(true);
   expect(result.noTimeMatchUpIds[availableDates[0]]).toEqual([]);
 
-  let { matchUps } = competitionEngine.allCompetitionMatchUps();
+  let { matchUps } = tournamentEngine.allCompetitionMatchUps();
   let roundSchedules = matchUps
     .filter(({ matchUpStatus }) => matchUpStatus === TO_BE_PLAYED)
     .map(({ schedule: { scheduledTime, courtName }, roundNumber }) => [
@@ -245,17 +244,17 @@ test('scheduling v2 respects DO_NOT_SCHEDULE requests', () => {
     },
   ];
 
-  competitionEngine.addPersonRequests({
+  tournamentEngine.addPersonRequests({
     personId: persons[0].personId,
     requests,
   });
 
-  result = competitionEngine.scheduleProfileRounds({
+  result = tournamentEngine.scheduleProfileRounds({
     scheduleDates: availableDates,
     clearScheduleDates: true,
     pro: true,
   });
-  matchUps = competitionEngine.allCompetitionMatchUps().matchUps;
+  matchUps = tournamentEngine.allCompetitionMatchUps().matchUps;
   roundSchedules = matchUps
     .filter(({ matchUpStatus }) => matchUpStatus === TO_BE_PLAYED)
     .map(({ schedule: { courtName }, roundNumber }) => [

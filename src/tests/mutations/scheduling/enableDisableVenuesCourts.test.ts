@@ -1,7 +1,6 @@
-import tournamentEngine from '../../engines/syncEngine';
 import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
 import mocksEngine from '../../../assemblies/engines/mock';
-import competitionEngine from '../../engines/competitionEngine';
+import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { DISABLED } from '../../../constants/extensionConstants';
@@ -26,7 +25,7 @@ it('can disable and enable courts and venues', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { rounds } = competitionEngine.getRounds();
+  const { rounds } = tournamentEngine.getRounds();
   const draw1rounds = rounds.filter(({ drawId }) => drawId === 'drawId1');
   const draw2rounds = rounds.filter(({ drawId }) => drawId === 'drawId2');
   const schedulingProfile = [
@@ -39,82 +38,82 @@ it('can disable and enable courts and venues', () => {
     },
   ];
 
-  let result = competitionEngine.setSchedulingProfile({ schedulingProfile });
+  let result = tournamentEngine.setSchedulingProfile({ schedulingProfile });
   expect(result.success).toEqual(true);
 
-  result = competitionEngine.scheduleProfileRounds();
+  result = tournamentEngine.scheduleProfileRounds();
   expect(result.success).toEqual(true);
 
-  let { matchUps } = competitionEngine.allCompetitionMatchUps();
+  let { matchUps } = tournamentEngine.allCompetitionMatchUps();
   let scheduledMatchUps = matchUps.filter(hasSchedule);
   expect(scheduledMatchUps.length).toBeGreaterThanOrEqual(50);
-  result = competitionEngine.clearScheduledMatchUps();
+  result = tournamentEngine.clearScheduledMatchUps();
   expect(result.success).toEqual(true);
 
-  ({ matchUps } = competitionEngine.allCompetitionMatchUps());
+  ({ matchUps } = tournamentEngine.allCompetitionMatchUps());
   scheduledMatchUps = matchUps.filter(hasSchedule);
   expect(scheduledMatchUps.length).toEqual(0);
 
-  result = competitionEngine.getVenuesAndCourts();
+  result = tournamentEngine.getVenuesAndCourts();
   expect([result.courts.length, result.venues.length]).toEqual([12, 2]);
   const courtIds = result.courts.map(({ courtId }) => courtId);
 
-  result = competitionEngine.disableVenues({ venueIds: ['venueId1'] });
+  result = tournamentEngine.disableVenues({ venueIds: ['venueId1'] });
   expect(result.success).toEqual(true);
   tournamentRecord = tournamentEngine.getTournament().tournamentRecord;
   expect(tournamentRecord.venues[0].extensions[0].name).toEqual(DISABLED);
-  result = competitionEngine.getVenuesAndCourts({ ignoreDisabled: true });
+  result = tournamentEngine.getVenuesAndCourts({ ignoreDisabled: true });
   expect([result.courts.length, result.venues.length]).toEqual([8, 1]);
 
-  result = competitionEngine.enableVenues({ venueIds: ['venueId1'] });
+  result = tournamentEngine.enableVenues({ venueIds: ['venueId1'] });
   expect(result.success).toEqual(true);
   tournamentRecord = tournamentEngine.getTournament().tournamentRecord;
   expect(tournamentRecord.venues[0].extensions).toEqual([]);
 
-  result = competitionEngine.disableVenues({ venueIds: ['venueId1'] });
+  result = tournamentEngine.disableVenues({ venueIds: ['venueId1'] });
   expect(result.success).toEqual(true);
   tournamentRecord = tournamentEngine.getTournament().tournamentRecord;
   expect(tournamentRecord.venues[0].extensions[0].name).toEqual(DISABLED);
 
-  result = competitionEngine.scheduleProfileRounds();
+  result = tournamentEngine.scheduleProfileRounds();
   expect(result.success).toEqual(true);
-  matchUps = competitionEngine.allCompetitionMatchUps().matchUps;
+  matchUps = tournamentEngine.allCompetitionMatchUps().matchUps;
   scheduledMatchUps = matchUps.filter(hasSchedule);
   expect(scheduledMatchUps.length).toBeLessThan(40);
 
-  result = competitionEngine.enableVenues({ enableAll: true });
+  result = tournamentEngine.enableVenues({ enableAll: true });
   expect(result.success).toEqual(true);
   tournamentRecord = tournamentEngine.getTournament().tournamentRecord;
   expect(tournamentRecord.venues[0].extensions.length).toEqual(0);
 
-  result = competitionEngine.clearScheduledMatchUps();
+  result = tournamentEngine.clearScheduledMatchUps();
   expect(result.success).toEqual(true);
-  ({ matchUps } = competitionEngine.allCompetitionMatchUps());
+  ({ matchUps } = tournamentEngine.allCompetitionMatchUps());
   scheduledMatchUps = matchUps.filter(hasSchedule);
   expect(scheduledMatchUps.length).toEqual(0);
 
   const targetCourtIds = courtIds.filter((_, i) => i % 2);
-  result = competitionEngine.disableCourts({ courtIds: targetCourtIds });
+  result = tournamentEngine.disableCourts({ courtIds: targetCourtIds });
   expect(result.success).toEqual(true);
-  result = competitionEngine.getVenuesAndCourts({
+  result = tournamentEngine.getVenuesAndCourts({
     ignoreDisabled: true,
   });
   expect([result.courts.length, result.venues.length]).toEqual([6, 2]);
 
-  result = competitionEngine.scheduleProfileRounds();
+  result = tournamentEngine.scheduleProfileRounds();
   expect(result.success).toEqual(true);
-  matchUps = competitionEngine.allCompetitionMatchUps().matchUps;
+  matchUps = tournamentEngine.allCompetitionMatchUps().matchUps;
   scheduledMatchUps = matchUps.filter(hasSchedule);
   expect(scheduledMatchUps.length).toBeLessThan(50);
 
-  result = competitionEngine.getVenuesAndCourts();
+  result = tournamentEngine.getVenuesAndCourts();
   expect([result.courts.length, result.venues.length]).toEqual([12, 2]);
   let disabledCourts = result.courts.filter(
     (court) => court.extensions?.length
   );
   expect(disabledCourts.length).toEqual(6);
 
-  result = competitionEngine.enableCourts({ enableAll: true });
+  result = tournamentEngine.enableCourts({ enableAll: true });
   expect(result.success).toEqual(true);
 
   result = tournamentEngine.getVenuesAndCourts();
@@ -126,7 +125,7 @@ it('can disable and enable courts and venues', () => {
     expect(court.dateAvailability.length).toEqual(6)
   );
 
-  result = competitionEngine.getVenuesAndCourts();
+  result = tournamentEngine.getVenuesAndCourts();
   expect([result.courts.length, result.venues.length]).toEqual([12, 2]);
   disabledCourts = result.courts.filter((court) => court.extensions?.length);
   expect(disabledCourts.length).toEqual(0);
@@ -135,13 +134,13 @@ it('can disable and enable courts and venues', () => {
     expect(court.dateAvailability.length).toEqual(6)
   );
 
-  result = competitionEngine.disableCourts({
+  result = tournamentEngine.disableCourts({
     dates: [startDate, endDate],
     courtIds: targetCourtIds,
   });
   expect(result.success).toEqual(true);
 
-  result = competitionEngine.getVenuesAndCourts({
+  result = tournamentEngine.getVenuesAndCourts({
     ignoreDisabled: true,
   });
   result.courts.forEach((court) => {
@@ -164,7 +163,7 @@ it('can disable and enable courts and venues', () => {
   });
 
   // specifying a date with ignoreDisabled will filter out courts which have no dateAvailability for given date
-  result = competitionEngine.getVenuesAndCourts({
+  result = tournamentEngine.getVenuesAndCourts({
     ignoreDisabled: true,
     dates: [startDate],
   });
@@ -205,7 +204,7 @@ it('can disable and enable courts and venues', () => {
   );
   expect(dateAvailabilityCounts).toEqual([6, 5, 6, 5, 6, 5, 6, 5, 6, 5, 6, 5]);
 
-  result = competitionEngine.disableCourts({
+  result = tournamentEngine.disableCourts({
     courtIds: targetCourtIds,
     dates: [startDate],
   });

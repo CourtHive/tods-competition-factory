@@ -2,10 +2,10 @@ import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMat
 import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
 import { generateCollectionMatchUps } from '../../assemblies/generators/drawDefinitions/tieMatchUps';
 import { definedAttributes } from '../../utilities/definedAttributes';
-import { calculateWinCriteria } from '../../matchUpEngine/governors/tieFormatGovernor/calculateWinCriteria';
-import { getTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/getTieFormat';
-import { tieFormatTelemetry } from '../../matchUpEngine/governors/tieFormatGovernor/tieFormatTelemetry';
-import { copyTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';
+import { calculateWinCriteria } from '../../query/matchUp/calculateWinCriteria';
+import { getTieFormat } from '../../query/hierarchical/tieFormats/getTieFormat';
+import { tieFormatTelemetry } from '../matchUps/tieFormat/tieFormatTelemetry';
+import { copyTieFormat } from '../../query/hierarchical/tieFormats/copyTieFormat';
 import { validUpdate } from '../../validators/validUpdate';
 import { UUID } from '../../utilities';
 import {

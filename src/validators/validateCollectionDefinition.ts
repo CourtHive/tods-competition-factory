@@ -1,6 +1,6 @@
 import { tieFormatGenderValidityCheck } from '../global/functions/deducers/tieFormatGenderValidityCheck';
 import { categoryCanContain } from '../global/functions/deducers/categoryCanContain';
-import { matchUpFormatCode } from '../matchUpEngine/governors/matchUpFormatGovernor';
+import { matchUpFormatCode } from '../assemblies/governors/matchUpFormatGovernor';
 import { validateCollectionValueProfiles } from './validateCollectionValueProfiles';
 import { decorateResult } from '../global/functions/decorateResult';
 import { isConvertableInteger } from '../utilities/math';

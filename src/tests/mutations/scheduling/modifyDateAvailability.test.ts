@@ -1,5 +1,5 @@
 import mocksEngine from '../../../assemblies/engines/mock';
-import competitionEngine from '../../engines/competitionEngine';
+import competitionEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 it('recognizes scheduled matchUps when court dateAvailability changes', () => {

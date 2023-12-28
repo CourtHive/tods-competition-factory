@@ -1,4 +1,4 @@
-import { resolveTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
+import { resolveTieFormat } from '../../query/hierarchical/tieFormats/resolveTieFormat';
 import { generateCollectionMatchUps } from '../../assemblies/generators/drawDefinitions/tieMatchUps';
 import { checkRequiredParameters } from '../../parameters/checkRequiredParameters';
 import { resolveFromParameters } from '../../parameters/resolveFromParameters';

@@ -1,4 +1,4 @@
-import { validateLineUp } from '../../../mutate/drawDefinitions/validateTeamLineUp';
+import { validateLineUp } from '../../../validators/validateTeamLineUp';
 import tieFormatDefaults from '../../../assemblies/generators/templates/tieFormatDefaults';
 import { expect, it } from 'vitest';
 

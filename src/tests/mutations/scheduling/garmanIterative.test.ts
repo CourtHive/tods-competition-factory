@@ -1,11 +1,10 @@
 import { visualizeScheduledMatchUps } from '../../../global/testHarness/testUtilities/visualizeScheduledMatchUps';
+import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
 import { extractTime, timeStringMinutes } from '../../../utilities/dateTime';
 import { getParticipantId } from '../../../global/functions/extractors';
-import tournamentEngine from '../../engines/syncEngine';
-import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
-import { intersection } from '../../../utilities';
 import mocksEngine from '../../../assemblies/engines/mock';
-import competitionEngine from '../../engines/competitionEngine';
+import tournamentEngine from '../../engines/syncEngine';
+import { intersection } from '../../../utilities';
 import { expect, it } from 'vitest';
 
 import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
@@ -100,10 +99,10 @@ it.each([
       endDate,
     });
 
-    competitionEngine.setState(tournamentRecord);
+    tournamentEngine.setState(tournamentRecord);
     const { tournamentId } = tournamentRecord;
 
-    let { matchUps } = competitionEngine.allCompetitionMatchUps();
+    let { matchUps } = tournamentEngine.allCompetitionMatchUps();
     let scheduledMatchUps = matchUps.filter(hasSchedule);
     visualizeScheduledMatchUps({ scheduledMatchUps, showGlobalLog });
 
@@ -115,7 +114,7 @@ it.each([
           structures: [{ structureId }],
         },
       } = tournamentEngine.getEvent({ drawId });
-      const result = competitionEngine.addSchedulingProfileRound({
+      const result = tournamentEngine.addSchedulingProfileRound({
         round: { tournamentId, eventId, drawId, structureId, roundNumber: 2 },
         scheduleDate: startDate,
         venueId,
@@ -123,9 +122,9 @@ it.each([
       expect(result.success).toEqual(true);
     }
 
-    competitionEngine.devContext({ virtual: true });
+    tournamentEngine.devContext({ virtual: true });
     // Scheduled Profile Rounds ##############################
-    const result = competitionEngine.scheduleProfileRounds({
+    const result = tournamentEngine.scheduleProfileRounds({
       scheduleDates: [startDate],
       garmanSinglePass: false,
     });
@@ -134,7 +133,7 @@ it.each([
     expect(result.scheduledDates).toEqual([startDate]);
     // #######################################################
 
-    ({ matchUps } = competitionEngine.allCompetitionMatchUps());
+    ({ matchUps } = tournamentEngine.allCompetitionMatchUps());
     scheduledMatchUps = matchUps.filter(hasSchedule);
     visualizeScheduledMatchUps({ scheduledMatchUps, showGlobalLog });
 
@@ -152,7 +151,7 @@ it.each([
         .length
     ).toEqual(0);
 
-    ({ matchUps } = competitionEngine.allCompetitionMatchUps());
+    ({ matchUps } = tournamentEngine.allCompetitionMatchUps());
     scheduledMatchUps = matchUps.filter(hasSchedule);
 
     const roundMap = scheduledMatchUps
@@ -169,7 +168,7 @@ it.each([
     const {
       participants: competitionParticipants,
       participantIdsWithConflicts,
-    } = competitionEngine.getCompetitionParticipants({
+    } = tournamentEngine.getCompetitionParticipants({
       withScheduleItems: true,
       withMatchUps: true,
       inContext: true,
@@ -247,10 +246,10 @@ it.each([
       endDate,
     });
 
-    competitionEngine.setState(tournamentRecord);
+    tournamentEngine.setState(tournamentRecord);
     const { tournamentId } = tournamentRecord;
 
-    let { matchUps } = competitionEngine.allCompetitionMatchUps();
+    let { matchUps } = tournamentEngine.allCompetitionMatchUps();
     let scheduledMatchUps = matchUps.filter(hasSchedule);
     visualizeScheduledMatchUps({ scheduledMatchUps, showGlobalLog });
 
@@ -261,7 +260,7 @@ it.each([
         structures: [{ structureId }],
       },
     } = tournamentEngine.getEvent({ drawId: 'secondDraw' });
-    let result = competitionEngine.addSchedulingProfileRound({
+    let result = tournamentEngine.addSchedulingProfileRound({
       scheduleDate: startDate,
       venueId: 'venue2',
       round: {
@@ -273,7 +272,7 @@ it.each([
       },
     });
     expect(result.success).toEqual(true);
-    result = competitionEngine.addSchedulingProfileRound({
+    result = tournamentEngine.addSchedulingProfileRound({
       scheduleDate: startDate,
       venueId: 'venue2',
       round: {
@@ -286,9 +285,9 @@ it.each([
     });
     expect(result.success).toEqual(true);
 
-    competitionEngine.devContext({ virtual: true });
+    tournamentEngine.devContext({ virtual: true });
     // Scheduled Profile Rounds ##############################
-    result = competitionEngine.scheduleProfileRounds({
+    result = tournamentEngine.scheduleProfileRounds({
       scheduleDates: [startDate],
       garmanSinglePass: false,
     });
@@ -297,7 +296,7 @@ it.each([
     expect(result.scheduledDates).toEqual([startDate]);
     // #######################################################
 
-    ({ matchUps } = competitionEngine.allCompetitionMatchUps());
+    ({ matchUps } = tournamentEngine.allCompetitionMatchUps());
     scheduledMatchUps = matchUps.filter(hasSchedule);
     visualizeScheduledMatchUps({ scheduledMatchUps, showGlobalLog });
 

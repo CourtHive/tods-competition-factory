@@ -1,8 +1,7 @@
-import { checkAndUpdateSchedulingProfile } from '../../../mutate/tournaments/schedulingProfile';
 import { getUpdatedSchedulingProfile } from '../../../query/matchUps/scheduling/getUpdatedSchedulingProfile';
-import competitionEngine from '../../engines/competitionEngine';
-import tournamentEngine from '../../engines/syncEngine';
+import { checkAndUpdateSchedulingProfile } from '../../../mutate/tournaments/schedulingProfile';
 import mocksEngine from '../../../assemblies/engines/mock';
+import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { SCHEDULING_PROFILE } from '../../../constants/extensionConstants';
@@ -26,21 +25,21 @@ it('can update a schedulingProfile when venues change', () => {
       drawProfiles,
     });
 
-  competitionEngine.setState(tournamentRecord);
+  tournamentEngine.setState(tournamentRecord);
 
   const {
     matchUps: [matchUp],
-  } = competitionEngine.allCompetitionMatchUps();
+  } = tournamentEngine.allCompetitionMatchUps();
   const { tournamentId, eventId, drawId, structureId } = matchUp;
 
-  let result = competitionEngine.addSchedulingProfileRound({
+  let result = tournamentEngine.addSchedulingProfileRound({
     round: { tournamentId, eventId, drawId, structureId, roundNumber: 1 },
     venueId: venueIds[0],
     scheduleDate,
   });
   expect(result.success).toEqual(true);
 
-  result = competitionEngine.addSchedulingProfileRound({
+  result = tournamentEngine.addSchedulingProfileRound({
     round: { tournamentId, eventId, drawId, structureId, roundNumber: 2 },
     venueId: venueIds[1],
     scheduleDate,
@@ -48,21 +47,21 @@ it('can update a schedulingProfile when venues change', () => {
   expect(result.success).toEqual(true);
 
   let { schedulingProfile, modifications, issues } =
-    competitionEngine.getSchedulingProfile();
+    tournamentEngine.getSchedulingProfile();
 
   expect(modifications).toEqual(0);
   expect(issues).toBeUndefined();
   expect(schedulingProfile.length).toEqual(1);
   expect(schedulingProfile[0].venues.length).toEqual(2);
 
-  result = competitionEngine.addSchedulingProfileRound({
+  result = tournamentEngine.addSchedulingProfileRound({
     scheduleDate: 'badDate',
     venueId: venueIds[1],
     round: { tournamentId, eventId, drawId, structureId, roundNumber: 3 },
   });
   expect(result.error).toEqual(INVALID_DATE);
 
-  result = competitionEngine.addSchedulingProfileRound({
+  result = tournamentEngine.addSchedulingProfileRound({
     venueId: venueIds[0],
     scheduleDate,
     round: {
@@ -75,11 +74,11 @@ it('can update a schedulingProfile when venues change', () => {
   });
   expect(result.error).toEqual(INVALID_VALUES);
 
-  result = competitionEngine.deleteVenue({ venueId: venueIds[0] });
+  result = tournamentEngine.deleteVenue({ venueId: venueIds[0] });
   expect(result.success).toEqual(true);
 
   ({ schedulingProfile, modifications, issues } =
-    competitionEngine.getSchedulingProfile());
+    tournamentEngine.getSchedulingProfile());
 
   expect(modifications).toEqual(0);
   expect(issues).toBeUndefined();

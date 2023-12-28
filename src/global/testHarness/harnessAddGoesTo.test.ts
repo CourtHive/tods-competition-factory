@@ -1,7 +1,7 @@
 import { hasSchedule } from '../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
 import { visualizeScheduledMatchUps } from './testUtilities/visualizeScheduledMatchUps';
 import { extractTime, timeStringMinutes } from '../../utilities/dateTime';
-import competitionEngine from '../../tests/engines/competitionEngine';
+import competitionEngine from '../../tests/engines/syncEngine';
 import { expect, it } from 'vitest';
 import fs from 'fs';
 

@@ -1,4 +1,4 @@
-import { parse } from '../../../matchUpEngine/governors/matchUpFormatGovernor/parse';
+import { parse } from '../../../assemblies/generators/matchUpFormatCode/parse';
 import { ensureInt } from '../../../utilities/ensureInt';
 
 import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';

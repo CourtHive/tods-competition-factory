@@ -1,10 +1,10 @@
 import { getParticipantId } from '../../../../global/functions/extractors';
 import tournamentEngine from '../../../engines/syncEngine';
 import mocksEngine from '../../../../assemblies/engines/mock';
-import matchUpEngine from '../../../../matchUpEngine/sync';
 import { expect, it } from 'vitest';
 
 import { ROUND_ROBIN } from '../../../../constants/drawDefinitionConstants';
+import { tallyParticipantResults } from '../../../../query/matchUps/roundRobinTally/roundRobinTally';
 
 it('round robins with timed formats will default to game based when no indicator', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
@@ -107,7 +107,7 @@ it('can tally points when different finalSet format', () => {
     drawId,
   }).matchUp;
 
-  const { participantResults } = matchUpEngine.tallyParticipantResults({
+  const { participantResults } = tallyParticipantResults({
     matchUps: [matchUp],
   });
   const sideIds = matchUp.sides

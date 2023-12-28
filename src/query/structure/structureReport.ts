@@ -1,4 +1,4 @@
-import { getTieFormatDesc } from '../../matchUpEngine/governors/tieFormatGovernor/getTieFormatDescription';
+import { getTieFormatDesc } from '../hierarchical/tieFormats/getTieFormatDescription';
 import { allTournamentMatchUps } from '../matchUps/getAllTournamentMatchUps';
 import { getAccessorValue } from '../../utilities/getAccessorValue';
 import { findExtension } from '../../acquire/findExtension';

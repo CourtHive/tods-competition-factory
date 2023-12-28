@@ -1,7 +1,6 @@
 import { getSchedulingProfileIssues } from '../../../query/matchUps/scheduling/getSchedulingProfileIssues';
-import competitionEngine from '../../engines/competitionEngine';
-import tournamentEngine from '../../engines/syncEngine';
 import mocksEngine from '../../../assemblies/engines/mock';
+import tournamentEngine from '../../engines/syncEngine';
 import { expect, test } from 'vitest';
 
 import POLICY_SCHEDULING_DEFAULT from '../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
@@ -115,9 +114,9 @@ test.each([
       endDate,
     });
 
-    competitionEngine.setState(tournamentRecord);
+    tournamentEngine.setState(tournamentRecord);
 
-    competitionEngine.attachPolicies({
+    tournamentEngine.attachPolicies({
       policyDefinitions: POLICY_SCHEDULING_DEFAULT,
     });
 
@@ -131,7 +130,7 @@ test.each([
           structures: [{ structureId }],
         },
       } = tournamentEngine.getEvent({ drawId });
-      const result = competitionEngine.addSchedulingProfileRound({
+      const result = tournamentEngine.addSchedulingProfileRound({
         round: { tournamentId, eventId, drawId, structureId, roundNumber },
         scheduleDate: startDate,
         venueId,
@@ -139,7 +138,7 @@ test.each([
       expect(result.success).toEqual(true);
     }
 
-    const result = competitionEngine.getSchedulingProfileIssues();
+    const result = tournamentEngine.getSchedulingProfileIssues();
     expect(result.roundIndexShouldBeAfter).toEqual(roundIndexShouldBeAfter);
     expect(
       Object.keys(result.profileIssues.matchUpIdShouldBeAfter).length
@@ -148,16 +147,16 @@ test.each([
 );
 
 test('getScheduligProfileIssues thows appropriate errors', () => {
-  let result = competitionEngine.reset().getSchedulingProfileIssues();
+  let result = tournamentEngine.reset().getSchedulingProfileIssues();
   expect(result.issues.length).toEqual(0);
   expect(result.success).toEqual(true);
 
-  result = competitionEngine.getSchedulingProfileIssues({
+  result = tournamentEngine.getSchedulingProfileIssues({
     scheduleDates: 'invalid value',
   });
   expect(result.error).toEqual(INVALID_VALUES);
 
-  result = competitionEngine.getSchedulingProfileIssues({
+  result = tournamentEngine.getSchedulingProfileIssues({
     scheduleDates: ['invalid value'],
   });
   expect(result.error).toEqual(INVALID_DATE);

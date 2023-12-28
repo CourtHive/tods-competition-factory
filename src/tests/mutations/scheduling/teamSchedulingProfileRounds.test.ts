@@ -1,6 +1,5 @@
-import tournamentEngine from '../../engines/syncEngine';
 import mocksEngine from '../../../assemblies/engines/mock';
-import competitionEngine from '../../engines/competitionEngine';
+import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { DOMINANT_DUO } from '../../../constants/tieFormatConstants';
@@ -26,18 +25,18 @@ it('can return participant scheduled matchUps', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { rounds } = competitionEngine.getRounds();
+  const { rounds } = tournamentEngine.getRounds();
   const schedulingProfile = [
     { scheduleDate: startDate, venues: [{ venueId, rounds }] },
   ];
 
-  let result = competitionEngine.setSchedulingProfile({ schedulingProfile });
+  let result = tournamentEngine.setSchedulingProfile({ schedulingProfile });
   expect(result.success).toEqual(true);
 
-  result = competitionEngine.scheduleProfileRounds();
+  result = tournamentEngine.scheduleProfileRounds();
   expect(result.success).toEqual(true);
 
-  const { matchUps } = competitionEngine.allCompetitionMatchUps({
+  const { matchUps } = tournamentEngine.allCompetitionMatchUps({
     matchUpFilters: { matchUpTypes: [SINGLES, DOUBLES] },
   });
   expect(matchUps.every(({ schedule }) => schedule.scheduledTime)).toEqual(

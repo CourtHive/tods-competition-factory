@@ -1,8 +1,7 @@
 import { validDateAvailability } from '../../../validators/validateDateAvailability';
-import tournamentEngine from '../../engines/syncEngine';
 import { Availability } from '../../../types/tournamentTypes';
-import competitionEngine from '../../engines/competitionEngine';
 import mocksEngine from '../../../assemblies/engines/mock';
+import tournamentEngine from '../../engines/syncEngine';
 import { expect, it, test } from 'vitest';
 
 import {
@@ -206,7 +205,7 @@ it('can add events, venues, and modify court availbility', () => {
     { date: d220202, startTime: '08:00', endTime: '20:00' },
   ]);
 
-  const { rounds } = competitionEngine.getRounds();
+  const { rounds } = tournamentEngine.getRounds();
   const matchUps = rounds.flatMap((round) => round.matchUps);
   expect(matchUps.length).toEqual(7);
 
@@ -214,10 +213,10 @@ it('can add events, venues, and modify court availbility', () => {
     { scheduleDate: startDate, venues: [{ venueId, rounds }] },
   ];
 
-  result = competitionEngine.setSchedulingProfile({ schedulingProfile });
+  result = tournamentEngine.setSchedulingProfile({ schedulingProfile });
   expect(result.success).toEqual(true);
 
-  result = competitionEngine.scheduleProfileRounds({
+  result = tournamentEngine.scheduleProfileRounds({
     periodLength: 30,
   });
   expect(Object.keys(result.matchUpScheduleTimes).length).toEqual(
@@ -235,7 +234,7 @@ it('can add events, venues, and modify court availbility', () => {
     '15:30', // F
   ]);
 
-  result = competitionEngine.scheduleProfileRounds({
+  result = tournamentEngine.scheduleProfileRounds({
     clearScheduleDates: true,
     periodLength: 15,
   });
@@ -249,7 +248,7 @@ it('can add events, venues, and modify court availbility', () => {
     '15:45',
   ]);
 
-  result = competitionEngine.scheduleProfileRounds({
+  result = tournamentEngine.scheduleProfileRounds({
     clearScheduleDates: true,
     periodLength: 10,
   });
@@ -263,7 +262,7 @@ it('can add events, venues, and modify court availbility', () => {
     '15:40',
   ]);
 
-  result = competitionEngine.scheduleProfileRounds({
+  result = tournamentEngine.scheduleProfileRounds({
     clearScheduleDates: true,
     periodLength: 5,
   });

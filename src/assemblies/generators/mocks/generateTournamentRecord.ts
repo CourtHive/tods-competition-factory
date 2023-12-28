@@ -1,18 +1,17 @@
-// import { scheduleProfileRounds } from '../../competitionEngine/governors/scheduleGovernor/schedulingProfile/scheduleProfileRounds';
 import { scheduleProfileRounds } from '../../../mutate/matchUps/schedule/scheduleProfileRounds';
-import { newTournamentRecord } from '../tournamentRecords/newTournamentRecord';
 import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
-import { addEvent } from '../../../mutate/events/addEvent';
+import { newTournamentRecord } from '../tournamentRecords/newTournamentRecord';
 import { formatDate, isValidDateString } from '../../../utilities/dateTime';
 import { addTournamentParticipants } from './addTournamentParticipants';
-import { generateEventWithFlights } from './generateEventWithFlights';
 import { isValidExtension } from '../../../validators/isValidExtension';
 import { cycleMutationStatus } from '../../../global/state/globalState';
-import { generateScheduledRounds } from './generateScheduledRounds';
 import { definedAttributes } from '../../../utilities/definedAttributes';
+import { generateVenues } from '../../../mutate/venues/generateVenues';
+import { generateEventWithFlights } from './generateEventWithFlights';
+import { generateScheduledRounds } from './generateScheduledRounds';
 import { generateEventWithDraw } from './generateEventWithDraw';
 import { Extension } from '../../../types/tournamentTypes';
-import { generateVenues } from '../../../mutate/venues/generateVenues';
+import { addEvent } from '../../../mutate/events/addEvent';
 import { randomPop } from '../../../utilities';
 
 import defaultRatingsParameters from '../../../fixtures/ratings/ratingsParameters';

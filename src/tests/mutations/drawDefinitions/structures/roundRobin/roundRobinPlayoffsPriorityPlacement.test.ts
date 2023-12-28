@@ -1,16 +1,19 @@
+import { tallyParticipantResults } from '../../../../../query/matchUps/roundRobinTally/roundRobinTally';
+import { getAllStructureMatchUps } from '../../../../../query/matchUps/getAllStructureMatchUps';
 import { generateMatchUpOutcome } from '../../primitives/generateMatchUpOutcome';
 import { chunkArray, intersection } from '../../../../../utilities/arrays';
-import tournamentEngine from '../../../../engines/syncEngine';
 import { findStructure } from '../../../../../acquire/findStructure';
-import matchUpEngine from '../../../../../matchUpEngine/sync';
-import { setsValues } from './roundRobinSetsValues';
+import tournamentEngine from '../../../../engines/syncEngine';
 import mocksEngine from '../../../../../assemblies/engines/mock';
+import { setsValues } from './roundRobinSetsValues';
 import { expect, it } from 'vitest';
 import {
   allPlayoffPositionsFilled,
   isCompletedStructure,
 } from '../../../../../query/drawDefinition/structureActions';
 
+import { FORMAT_STANDARD } from '../../../../../fixtures/scoring/matchUpFormats';
+import { SINGLES } from '../../../../../constants/eventConstants';
 import {
   MAIN,
   PLAY_OFF,
@@ -19,10 +22,6 @@ import {
   ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
 } from '../../../../../constants/drawDefinitionConstants';
-
-import { FORMAT_STANDARD } from '../../../../../fixtures/scoring/matchUpFormats';
-import { SINGLES } from '../../../../../constants/eventConstants';
-import { getAllStructureMatchUps } from '../../../../../query/matchUps/getAllStructureMatchUps';
 
 it('can advance players in Round Robin with Playoffs => 2 x 4 x 4', () => {
   const drawSize = 16;
@@ -180,7 +179,7 @@ it('can advance players in Round Robin with Playoffs => 2 x 4 x 4', () => {
       (matchUp) => matchUp.structureId === structureId
     );
 
-    const { participantResults } = matchUpEngine.tallyParticipantResults({
+    const { participantResults } = tallyParticipantResults({
       matchUps: structureMatchUps,
       matchUpFormat,
     });
@@ -416,7 +415,7 @@ it('can advance players in Round Robin with Playoffs', () => {
       (matchUp) => matchUp.structureId === structureId
     );
 
-    const { participantResults } = matchUpEngine.tallyParticipantResults({
+    const { participantResults } = tallyParticipantResults({
       matchUps: structureMatchUps,
       matchUpFormat,
     });

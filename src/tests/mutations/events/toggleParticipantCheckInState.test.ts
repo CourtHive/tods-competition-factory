@@ -1,6 +1,4 @@
 import { getCheckedInParticipantIds } from '../../../query/matchUp/getCheckedInParticipantIds';
-
-import competitionEngine from '../../engines/competitionEngine';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
@@ -94,7 +92,7 @@ it('can toggle participant check-in state', () => {
   });
   expect(result.success).toEqual(true);
 
-  result = competitionEngine.toggleParticipantCheckInState({
+  result = tournamentEngine.toggleParticipantCheckInState({
     participantId: participantIds[1],
     matchUpId: matchUp.matchUpId,
     tournamentId,
@@ -103,7 +101,7 @@ it('can toggle participant check-in state', () => {
   expect(result.success).toEqual(true);
 
   // do it a second time for testing code coverage
-  result = competitionEngine.toggleParticipantCheckInState({
+  result = tournamentEngine.toggleParticipantCheckInState({
     matchUpId: matchUp.matchUpId,
     participantId: participantIds[1],
     tournamentId,
@@ -112,7 +110,7 @@ it('can toggle participant check-in state', () => {
   expect(result.success).toEqual(true);
 
   // do it a second time for testing code coverage
-  result = competitionEngine.toggleParticipantCheckInState({
+  result = tournamentEngine.toggleParticipantCheckInState({
     participantId: participantIds[1],
     matchUpId: matchUp.matchUpId,
     tournamentId,
@@ -121,7 +119,7 @@ it('can toggle participant check-in state', () => {
   expect(result.success).toEqual(true);
 
   // do it a second time for testing code coverage
-  result = competitionEngine.toggleParticipantCheckInState({
+  result = tournamentEngine.toggleParticipantCheckInState({
     participantId: participantIds[1],
     matchUpId: 'bogusId',
     tournamentId,
