@@ -4,10 +4,10 @@ import { generateVoluntaryConsolation } from '../../../assemblies/generators/dra
 import { generateDrawStructuresAndLinks } from '../../../assemblies/generators/drawDefinitions/generateDrawStructuresAndLinks';
 import { generateDrawMaticRound } from '../../../assemblies/generators/drawDefinitions/drawMatic/generateDrawMaticRound';
 import { generateSeedingScaleItems } from '../../../assemblies/generators/drawDefinitions/generateSeedingScaleItems';
+import { generateQualifyingStructure } from '../../generators/drawDefinitions/drawTypes/generateQualifyingStructure';
 import { generateDrawDefinition } from '../../../assemblies/generators/drawDefinitions/generateDrawDefinition';
 import { generateAdHocMatchUps } from '../../../assemblies/generators/drawDefinitions/generateAdHocMatchUps';
 import { generateFlightProfile } from '../../../assemblies/generators/drawDefinitions/generateFlightProfile';
-import { generateQualifyingStructure } from '../../../mutate/drawDefinitions/generateQualifyingStructure';
 import { generateLineUps } from '../../../mutate/participants/generateLineUps';
 
 const generationGovernor = {
