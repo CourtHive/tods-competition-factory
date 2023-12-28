@@ -4,7 +4,7 @@ import { toBePlayed } from '../../../../fixtures/scoring/outcomes/toBePlayed';
 import tournamentEngine from '../../../engines/syncEngine';
 import { tallyParticipantResults } from '../../../../query/matchUps/roundRobinTally/roundRobinTally';
 import { intersection } from '../../../../utilities';
-import mocksEngine from '../../../../mocksEngine';
+import mocksEngine from '../../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
 import { ROUND_ROBIN } from '../../../../constants/drawDefinitionConstants';

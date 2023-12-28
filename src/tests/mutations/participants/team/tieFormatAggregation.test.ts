@@ -1,5 +1,5 @@
-import { completeDrawMatchUps } from '../../../../mocksEngine/generators/completeDrawMatchUps';
-import mocksEngine from '../../../../mocksEngine';
+import { completeDrawMatchUps } from '../../../../assemblies/generators/mocks/completeDrawMatchUps';
+import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 

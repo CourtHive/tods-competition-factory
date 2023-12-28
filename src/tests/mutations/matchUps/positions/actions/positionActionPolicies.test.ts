@@ -1,7 +1,7 @@
 import { getParticipantIds } from '../../../../../global/functions/extractors';
 import tournamentEngine from '../../../../engines/syncEngine';
 import { matchUpSort } from '../../../../../functions/sorters/matchUpSort';
-import mocksEngine from '../../../../../mocksEngine';
+import mocksEngine from '../../../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
 import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';

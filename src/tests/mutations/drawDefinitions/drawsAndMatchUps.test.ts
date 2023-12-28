@@ -1,7 +1,6 @@
 import { setSubscriptions } from '../../../global/state/globalState';
 import tournamentEngine from '../../engines/syncEngine';
-import mocksEngine from '../../../mocksEngine';
-import competitionEngine from '../../engines/competitionEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
 import POLICY_SCHEDULING_DEFAULT from '../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
@@ -30,7 +29,7 @@ const subscriptions = {
 
 setSubscriptions({ subscriptions });
 
-test('competitionEngine can addDrawDefinitions', () => {
+test('tournamentEngine can addDrawDefinitions', () => {
   const drawSize = 32;
   const secondDrawSize = 16;
   const totalExpectedMatchUps = drawSize - 1 + secondDrawSize - 1;
@@ -42,9 +41,9 @@ test('competitionEngine can addDrawDefinitions', () => {
     drawProfiles: [{ drawSize }],
   });
   const { tournamentId } = tournamentRecord;
-  competitionEngine.setState(tournamentRecord);
+  tournamentEngine.setState(tournamentRecord);
 
-  let { matchUps } = competitionEngine.allCompetitionMatchUps();
+  let { matchUps } = tournamentEngine.allCompetitionMatchUps();
   expect(matchUps.length).toEqual(31);
 
   let result = tournamentEngine.generateDrawDefinition({
@@ -54,46 +53,46 @@ test('competitionEngine can addDrawDefinitions', () => {
 
   const { drawDefinition } = result;
 
-  result = competitionEngine.addDrawDefinition({
+  result = tournamentEngine.addDrawDefinition({
     drawDefinition,
     tournamentId,
   });
   expect(result.error).toEqual(MISSING_EVENT);
-  result = competitionEngine.addDrawDefinition({
+  result = tournamentEngine.addDrawDefinition({
     tournamentId: 'bogusId',
     drawDefinition,
     eventId,
   });
   expect(result.error).toEqual(MISSING_TOURNAMENT_RECORD);
-  result = competitionEngine.addDrawDefinition({
+  result = tournamentEngine.addDrawDefinition({
     eventId: 'bogusId',
     drawDefinition,
     tournamentId,
   });
   expect(result.error).toEqual(EVENT_NOT_FOUND);
-  result = competitionEngine.addDrawDefinition({
+  result = tournamentEngine.addDrawDefinition({
     drawDefinition,
     tournamentId,
     eventId,
   });
   expect(result.success).toEqual(true);
-  ({ matchUps } = competitionEngine.allCompetitionMatchUps());
+  ({ matchUps } = tournamentEngine.allCompetitionMatchUps());
   expect(matchUps.length).toEqual(totalExpectedMatchUps);
   expect(matchUpAddNotices).toEqual([31, 15]);
 });
 
-test('competitionEngine can setMatchUpStatus', () => {
+test('tournamentEngine can setMatchUpStatus', () => {
   const drawProfiles = [{ drawSize: 32 }];
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     drawProfiles,
   });
 
-  competitionEngine.setState(tournamentRecord);
-  const { startDate } = competitionEngine
+  tournamentEngine.setState(tournamentRecord);
+  const { startDate } = tournamentEngine
     .devContext(true)
     .getCompetitionDateRange();
 
-  let { upcomingMatchUps } = competitionEngine.getCompetitionMatchUps();
+  let { upcomingMatchUps } = tournamentEngine.getCompetitionMatchUps();
 
   const { matchUpId, drawId, tournamentId } = upcomingMatchUps[0];
   const { outcome } = mocksEngine.generateOutcomeFromScoreString({
@@ -101,7 +100,7 @@ test('competitionEngine can setMatchUpStatus', () => {
     winningSide: 2,
   });
 
-  let result = competitionEngine.setMatchUpStatus({
+  let result = tournamentEngine.setMatchUpStatus({
     schedule: { scheduledDate: startDate },
     tournamentId,
     matchUpId,
@@ -110,14 +109,14 @@ test('competitionEngine can setMatchUpStatus', () => {
   });
   expect(result.success).toEqual(true);
 
-  let { completedMatchUps } = competitionEngine.getCompetitionMatchUps();
+  let { completedMatchUps } = tournamentEngine.getCompetitionMatchUps();
   expect(completedMatchUps.length).toEqual(1);
 
   expect(completedMatchUps[0].score.scoreStringSide1).toEqual(
     outcome.score.scoreStringSide1
   );
 
-  ({ upcomingMatchUps } = competitionEngine.getCompetitionMatchUps());
+  ({ upcomingMatchUps } = tournamentEngine.getCompetitionMatchUps());
 
   const outcomes = upcomingMatchUps.map((matchUp) => {
     const { matchUpId, drawId, eventId, tournamentId } = matchUp;
@@ -134,10 +133,10 @@ test('competitionEngine can setMatchUpStatus', () => {
     };
   });
 
-  result = competitionEngine.bulkMatchUpStatusUpdate({ outcomes });
+  result = tournamentEngine.bulkMatchUpStatusUpdate({ outcomes });
   expect(result.success).toEqual(true);
 
-  ({ completedMatchUps } = competitionEngine.getCompetitionMatchUps());
+  ({ completedMatchUps } = tournamentEngine.getCompetitionMatchUps());
   expect(completedMatchUps.length).toEqual(16);
   completedMatchUps.forEach(({ score, schedule }) => {
     expect(score.scoreStringSide1).toEqual(outcome.score.scoreStringSide1);
@@ -145,7 +144,7 @@ test('competitionEngine can setMatchUpStatus', () => {
   });
 });
 
-test('competitionEngine can bulkScheduleMatchUps', () => {
+test('tournamentEngine can bulkScheduleMatchUps', () => {
   const drawProfiles = [{ drawSize: 32 }];
   const venueProfiles = [{ courtsCount: 3 }];
   const {
@@ -157,10 +156,10 @@ test('competitionEngine can bulkScheduleMatchUps', () => {
     drawProfiles,
   });
 
-  competitionEngine.setState(tournamentRecord);
-  const { startDate } = competitionEngine.getCompetitionDateRange();
+  tournamentEngine.setState(tournamentRecord);
+  const { startDate } = tournamentEngine.getCompetitionDateRange();
 
-  let { upcomingMatchUps } = competitionEngine.getCompetitionMatchUps();
+  let { upcomingMatchUps } = tournamentEngine.getCompetitionMatchUps();
 
   let matchUpContextIds = upcomingMatchUps.map(
     ({ tournamentId, drawId, matchUpId }) => ({
@@ -175,25 +174,25 @@ test('competitionEngine can bulkScheduleMatchUps', () => {
     scheduledTime: '08:00',
     venueId,
   };
-  let result = competitionEngine.bulkScheduleMatchUps({
+  let result = tournamentEngine.bulkScheduleMatchUps({
     matchUpContextIds,
     schedule,
   });
   expect(result.success).toEqual(true);
 
   matchUpContextIds.forEach((contextIds) => {
-    const { validActions } = competitionEngine.matchUpActions(contextIds);
+    const { validActions } = tournamentEngine.matchUpActions(contextIds);
     expect(validActions.length).toBeGreaterThan(0);
   });
 
-  ({ upcomingMatchUps } = competitionEngine.getCompetitionMatchUps());
+  ({ upcomingMatchUps } = tournamentEngine.getCompetitionMatchUps());
 
   upcomingMatchUps.forEach(({ schedule, roundNumber }) => {
     expect(schedule.scheduledDate).toEqual(startDate);
     expect(roundNumber).toEqual(1);
   });
 
-  const matchUps = competitionEngine.allCompetitionMatchUps({
+  const matchUps = tournamentEngine.allCompetitionMatchUps({
     matchUpFilters: { drawIds: [drawId], roundNumbers: [2] },
   }).matchUps;
 
@@ -208,7 +207,7 @@ test('competitionEngine can bulkScheduleMatchUps', () => {
     scheduledTime: '08:00',
     venueId,
   };
-  result = competitionEngine.bulkScheduleMatchUps({
+  result = tournamentEngine.bulkScheduleMatchUps({
     errorOnAnachronism: true,
     matchUpContextIds,
     schedule,
@@ -220,7 +219,7 @@ test('competitionEngine can bulkScheduleMatchUps', () => {
     scheduledTime: '08:00',
     venueId,
   };
-  result = competitionEngine.bulkScheduleMatchUps({
+  result = tournamentEngine.bulkScheduleMatchUps({
     errorOnAnachronism: false,
     matchUpContextIds,
     schedule,
@@ -234,7 +233,7 @@ test('competitionEngine can bulkScheduleMatchUps', () => {
     scheduledTime: '09:00',
     venueId,
   };
-  result = competitionEngine.bulkScheduleMatchUps({
+  result = tournamentEngine.bulkScheduleMatchUps({
     errorOnAnachronism: true,
     matchUpContextIds,
     schedule,
@@ -254,14 +253,14 @@ test('can modify event timing for matchUpFormat codes', () => {
       drawProfiles: [{ drawSize: 32 }],
     });
 
-  competitionEngine.setState([firstTournament, secondTournament]);
+  tournamentEngine.setState([firstTournament, secondTournament]);
 
-  let result = competitionEngine.attachPolicies({
+  let result = tournamentEngine.attachPolicies({
     policyDefinitions: POLICY_SCHEDULING_DEFAULT,
   });
   expect(result.success).toEqual(true);
 
-  result = competitionEngine.getEventMatchUpFormatTiming({
+  result = tournamentEngine.getEventMatchUpFormatTiming({
     eventId,
   });
   // even with no policy, timing is defined / falls back to defaults
@@ -271,13 +270,13 @@ test('can modify event timing for matchUpFormat codes', () => {
   let { eventMatchUpFormatTiming } = result;
   expect(eventMatchUpFormatTiming).toBeDefined();
 
-  result = competitionEngine.modifyEventMatchUpFormatTiming({
+  result = tournamentEngine.modifyEventMatchUpFormatTiming({
     matchUpFormat: FORMAT_STANDARD,
     averageMinutes: 127,
   });
   expect(result.error).toEqual(MISSING_TOURNAMENT_RECORD); // because tournamentRecord is resovled from eventId
 
-  result = competitionEngine.modifyEventMatchUpFormatTiming({
+  result = tournamentEngine.modifyEventMatchUpFormatTiming({
     matchUpFormat: FORMAT_STANDARD,
     tournamentId: 'bogusId',
     averageMinutes: 127,
@@ -285,14 +284,14 @@ test('can modify event timing for matchUpFormat codes', () => {
   });
   expect(result.error).toEqual(MISSING_TOURNAMENT_RECORD);
 
-  result = competitionEngine.modifyEventMatchUpFormatTiming({
+  result = tournamentEngine.modifyEventMatchUpFormatTiming({
     matchUpFormat: FORMAT_STANDARD,
     averageMinutes: 127,
     eventId: 'bogusId',
   });
   expect(result.error).toEqual(EVENT_NOT_FOUND);
 
-  result = competitionEngine.getEventMatchUpFormatTiming({
+  result = tournamentEngine.getEventMatchUpFormatTiming({
     eventId,
   });
   expect(
@@ -301,14 +300,14 @@ test('can modify event timing for matchUpFormat codes', () => {
     ).averageMinutes
   ).toEqual(90);
 
-  result = competitionEngine.modifyEventMatchUpFormatTiming({
+  result = tournamentEngine.modifyEventMatchUpFormatTiming({
     matchUpFormat: FORMAT_STANDARD,
     averageMinutes: 127,
     eventId,
   });
   expect(result.success).toEqual(true);
 
-  result = competitionEngine.getEventMatchUpFormatTiming({
+  result = tournamentEngine.getEventMatchUpFormatTiming({
     matchUpFormats: [FORMAT_STANDARD],
     eventId,
   });
@@ -318,14 +317,14 @@ test('can modify event timing for matchUpFormat codes', () => {
     ).averageMinutes
   ).toEqual(127);
 
-  result = competitionEngine.modifyEventMatchUpFormatTiming({
+  result = tournamentEngine.modifyEventMatchUpFormatTiming({
     matchUpFormat: SHORT4TB10,
     averageMinutes: 137,
     eventId,
   });
   expect(result.success).toEqual(true);
 
-  result = competitionEngine.getEventMatchUpFormatTiming({
+  result = tournamentEngine.getEventMatchUpFormatTiming({
     eventId,
   });
   expect(result.eventMatchUpFormatTiming.length).toEqual(2);
@@ -335,14 +334,14 @@ test('can modify event timing for matchUpFormat codes', () => {
   ).toEqual(137);
 
   // overwriting value of 137 with 117
-  result = competitionEngine.modifyEventMatchUpFormatTiming({
+  result = tournamentEngine.modifyEventMatchUpFormatTiming({
     matchUpFormat: SHORT4TB10,
     averageMinutes: 117,
     eventId,
   });
   expect(result.success).toEqual(true);
 
-  result = competitionEngine.getEventMatchUpFormatTiming({
+  result = tournamentEngine.getEventMatchUpFormatTiming({
     eventId,
   });
 
@@ -358,59 +357,51 @@ test('can modify event timing for matchUpFormat codes', () => {
     [60, 60]
   );
 
-  ({ eventMatchUpFormatTiming } = competitionEngine.getEventMatchUpFormatTiming(
-    {
-      matchUpFormats: [FORMAT_STANDARD, SHORT4TB10, SHORT4TB10],
-      eventId,
-    }
-  ));
+  ({ eventMatchUpFormatTiming } = tournamentEngine.getEventMatchUpFormatTiming({
+    matchUpFormats: [FORMAT_STANDARD, SHORT4TB10, SHORT4TB10],
+    eventId,
+  }));
   // expect duplicated matchUpFormat to be filtered out
   expect(eventMatchUpFormatTiming.map((t) => t.averageMinutes)).toEqual([
     127, 117,
   ]);
 
-  result = competitionEngine.removeEventMatchUpFormatTiming({ eventId });
+  result = tournamentEngine.removeEventMatchUpFormatTiming({ eventId });
   expect(result.success).toEqual(true);
 
-  ({ eventMatchUpFormatTiming } = competitionEngine.getEventMatchUpFormatTiming(
-    {
-      matchUpFormats: [FORMAT_STANDARD, SHORT4TB10],
-      eventId,
-    }
-  ));
+  ({ eventMatchUpFormatTiming } = tournamentEngine.getEventMatchUpFormatTiming({
+    matchUpFormats: [FORMAT_STANDARD, SHORT4TB10],
+    eventId,
+  }));
   expect(eventMatchUpFormatTiming.map((t) => t.averageMinutes)).toEqual([
     90, 90,
   ]);
 
-  ({ eventMatchUpFormatTiming } = competitionEngine.getEventMatchUpFormatTiming(
-    {
-      eventId,
-    }
-  ));
+  ({ eventMatchUpFormatTiming } = tournamentEngine.getEventMatchUpFormatTiming({
+    eventId,
+  }));
 
   expect(eventMatchUpFormatTiming).toBeDefined();
 
   const policyDefinitions = POLICY_SCORING_USTA;
-  competitionEngine.attachPolicies({
+  tournamentEngine.attachPolicies({
     allowReplacement: true,
     policyDefinitions,
   });
 
-  ({ eventMatchUpFormatTiming } = competitionEngine.getEventMatchUpFormatTiming(
-    {
-      eventId,
-    }
-  ));
+  ({ eventMatchUpFormatTiming } = tournamentEngine.getEventMatchUpFormatTiming({
+    eventId,
+  }));
   expect(policyDefinitions.scoring.matchUpFormats.length).toEqual(
     eventMatchUpFormatTiming.length
   );
 
-  result = competitionEngine.getEventMatchUpFormatTiming({
+  result = tournamentEngine.getEventMatchUpFormatTiming({
     eventId: 'bogusId',
   });
   expect(result.error).toEqual(EVENT_NOT_FOUND);
 
-  result = competitionEngine.getEventMatchUpFormatTiming({
+  result = tournamentEngine.getEventMatchUpFormatTiming({
     tournamentId: 'bogusId',
     eventId,
   });

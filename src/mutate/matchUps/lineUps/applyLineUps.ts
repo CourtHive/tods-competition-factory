@@ -1,4 +1,4 @@
-import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
+import { resolveTieFormat } from '../../../query/hierarchical/tieFormats/resolveTieFormat';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { getPairedParticipant } from '../../../query/participant/getPairedParticipant';

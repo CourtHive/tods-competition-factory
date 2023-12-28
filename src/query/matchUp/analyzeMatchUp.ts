@@ -1,4 +1,4 @@
-import { parse } from '../../matchUpEngine/governors/matchUpFormatGovernor/parse';
+import { parse } from '../../assemblies/generators/matchUpFormatCode/parse';
 import { instanceCount } from '../../utilities/arrays';
 import { analyzeSet } from './analyzeSet';
 

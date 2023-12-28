@@ -1,6 +1,6 @@
 import { structureSort } from '../../../functions/sorters/structureSort';
 import { instanceCount } from '../../../utilities';
-import mocksEngine from '../../../mocksEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
 import { utilities } from '../../../index';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, test } from 'vitest';

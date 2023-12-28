@@ -1,4 +1,4 @@
-import { parse } from '../../../matchUpEngine/governors/matchUpFormatGovernor/parse';
+import { parse } from '../../../assemblies/generators/matchUpFormatCode/parse';
 
 export function calculatePercentages({
   participantResults,

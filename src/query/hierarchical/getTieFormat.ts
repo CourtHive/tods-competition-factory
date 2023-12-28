@@ -1,5 +1,5 @@
-import { resolveTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
-import { copyTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';
+import { resolveTieFormat } from './tieFormats/resolveTieFormat';
+import { copyTieFormat } from './tieFormats/copyTieFormat';
 import { decorateResult } from '../../global/functions/decorateResult';
 import { publicFindMatchUp } from '../../acquire/findMatchUp';
 import { findStructure } from '../../acquire/findStructure';

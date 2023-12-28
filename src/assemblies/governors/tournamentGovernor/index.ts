@@ -1,13 +1,8 @@
-// undocumented access to mocksEngine method
-import { completeDrawMatchUps } from '../../../mocksEngine/generators/completeDrawMatchUps';
-
 import { addExtension } from '../../../mutate/extensions/addExtension';
-import { convertPointEight } from '../../../assemblies/generators/tournamentRecords/convertPointEight';
+import { removeExtension } from '../../../mutate/extensions/removeExtension';
 import { setTournamentStatus } from '../../../mutate/tournaments/setTournamentStatus';
 import { addNotes, removeNotes } from '../../../mutate/base/addRemoveNotes';
 import { addOnlineResource } from '../../../mutate/base/addOnlineResource';
-import { analyzeTournament } from '../../../query/tournaments/analyzeTournament';
-import { analyzeDraws } from '../../../query/tournaments/analyzeDraws';
 
 import {
   setTournamentName,
@@ -39,46 +34,34 @@ import {
   removeTournamentExtension,
 } from '../../../mutate/extensions/addRemoveExtensions';
 
-import { getProfileRounds } from '../../../query/matchUps/scheduling/getProfileRounds';
-import { getRounds } from '../../../query/matchUps/scheduling/getRounds';
+import { getProfileRounds } from '../../../mutate/matchUps/schedule/profileRounds';
 
 const tournamentGovernor = {
-  analyzeTournament,
-  analyzeDraws,
-
-  addOnlineResource,
-  removeNotes,
+  addDrawDefinitionExtension,
+  addEventExtension,
+  addEventTimeItem,
+  addExtension,
   addNotes,
-
-  completeDrawMatchUps,
-
-  getRounds,
+  addOnlineResource,
+  addParticipantExtension,
+  addParticipantTimeItem,
+  addTimeItem,
+  addTournamentExtension,
+  addTournamentTimeItem,
   getProfileRounds,
-
-  setTournamentName,
-  setTournamentNotes,
+  removeDrawDefinitionExtension,
+  removeEventExtension,
+  removeExtension,
+  removeNotes,
+  removeParticipantExtension,
+  removeTournamentExtension,
+  setTournamentCategories,
   setTournamentDates,
   setTournamentEndDate,
+  setTournamentName,
+  setTournamentNotes,
   setTournamentStartDate,
-  setTournamentCategories,
-
-  addTimeItem,
-  addEventTimeItem,
-  addTournamentTimeItem,
-  addParticipantTimeItem,
-
-  addExtension,
-  addEventExtension,
-  removeEventExtension,
-  addTournamentExtension,
-  removeTournamentExtension,
-  addParticipantExtension,
-  removeParticipantExtension,
-  addDrawDefinitionExtension,
-  removeDrawDefinitionExtension,
-
   setTournamentStatus,
-  convertPointEight,
 };
 
 export default tournamentGovernor;

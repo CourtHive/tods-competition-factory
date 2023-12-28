@@ -1,5 +1,4 @@
-import matchUpEngineAsync from '../../../matchUpEngine/async';
-import matchUpEngineSync from '../../../matchUpEngine/sync';
+import matchUpEngineSync from '../../../assemblies/engines/matchUp/sync';
 import { expect, it } from 'vitest';
 
 import {
@@ -7,9 +6,7 @@ import {
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
 
-const asyncMatchUpEngine = matchUpEngineAsync(true);
-
-it.each([matchUpEngineSync, asyncMatchUpEngine])(
+it.each([matchUpEngineSync])(
   'throws appropriate errors',
   async (matchUpEngine) => {
     let result = await matchUpEngine.setState();

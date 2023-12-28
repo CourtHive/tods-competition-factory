@@ -2,10 +2,10 @@ export { matchUpActions } from '../../query/drawDefinition/matchUpActions';
 
 // matchUpEngine
 export { isValidMatchUpFormat } from '../../validators/isValidMatchUpFormat';
-export { parse as parseMatchUpFormat } from '../../matchUpEngine/governors/matchUpFormatGovernor/parse';
+export { parse as parseMatchUpFormat } from '../../assemblies/generators/matchUpFormatCode/parse';
 
 // mocksEngine
-export { parseScoreString } from '../../mocksEngine/utilities/parseScoreString';
+export { parseScoreString } from '../../utilities/parseScoreString';
 // drawEngine
 export { getEligibleVoluntaryConsolationParticipants } from '../../query/drawDefinition/getEligibleVoluntaryConsolationParticipants';
 export { getOrderedDrawPositions } from '../../query/matchUps/getOrderedDrawPositions';
@@ -24,7 +24,7 @@ export { validateScore } from '../../validators/validateScore';
 export { positionActions } from '../../query/drawDefinition/positionActions/positionActions';
 export { generateSeedingScaleItems } from '../../assemblies/generators/drawDefinitions/generateSeedingScaleItems';
 export { getParticipantEventDetails } from '../../query/participants/getParticipantEventDetails';
-export { getEntriesAndSeedsCount } from '../../mutate/entries/getEntriesAndSeedsCount';
+export { getEntriesAndSeedsCount } from '../../query/entries/getEntriesAndSeedsCount';
 export { filterParticipants } from '../../query/participants/filterParticipants';
 export { getEventData } from '../../query/event/getEventData';
 export { getSeedsCount } from '../../query/drawDefinition/getSeedsCount';
@@ -56,5 +56,5 @@ export { getCompetitionMatchUps } from '../../query/matchUps/getCompetitionMatch
 
 export { getVenuesAndCourts } from '../../query/venues/venuesAndCourtsGetter';
 
-export { getProfileRounds } from '../../query/matchUps/scheduling/getProfileRounds';
+export { getProfileRounds } from '../../mutate/matchUps/schedule/profileRounds';
 export { getRounds } from '../../query/matchUps/scheduling/getRounds';

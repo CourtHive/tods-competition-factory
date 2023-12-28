@@ -1,5 +1,5 @@
-import { stringify } from '../matchUpEngine/governors/matchUpFormatGovernor/stringify';
-import { parse } from '../matchUpEngine/governors/matchUpFormatGovernor/parse';
+import { stringify } from '../assemblies/generators/matchUpFormatCode/stringify';
+import { parse } from '../assemblies/generators/matchUpFormatCode/parse';
 
 export function isValidMatchUpFormat(matchUpFormat: string): boolean {
   if (typeof matchUpFormat !== 'string') return false;

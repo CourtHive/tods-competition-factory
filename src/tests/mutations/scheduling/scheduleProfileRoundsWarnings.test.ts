@@ -1,8 +1,7 @@
-import tournamentEngine from '../../engines/syncEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
 import { extractTime } from '../../../utilities/dateTime';
+import tournamentEngine from '../../engines/syncEngine';
 import { intersection } from '../../../utilities';
-import mocksEngine from '../../../mocksEngine';
-import competitionEngine from '../../engines/competitionEngine';
 import { expect, it } from 'vitest';
 
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
@@ -83,9 +82,9 @@ it.each([
       endDate,
     });
 
-    competitionEngine.setState(tournamentRecord);
+    tournamentEngine.setState(tournamentRecord);
 
-    competitionEngine.attachPolicies({
+    tournamentEngine.attachPolicies({
       policyDefinitions: POLICY_SCHEDULING_DEFAULT,
     });
 
@@ -99,7 +98,7 @@ it.each([
           structures: [{ structureId }],
         },
       } = tournamentEngine.getEvent({ drawId });
-      const result = competitionEngine.addSchedulingProfileRound({
+      const result = tournamentEngine.addSchedulingProfileRound({
         round: { tournamentId, eventId, drawId, structureId, roundNumber },
         scheduleDate: startDate,
         venueId,
@@ -107,12 +106,12 @@ it.each([
       expect(result.success).toEqual(true);
     }
 
-    const { schedulingProfile } = competitionEngine.getSchedulingProfile();
+    const { schedulingProfile } = tournamentEngine.getSchedulingProfile();
     const rounds = schedulingProfile[0].venues[0].rounds;
-    const { orderedMatchUpIds } = competitionEngine.getScheduledRoundsDetails({
+    const { orderedMatchUpIds } = tournamentEngine.getScheduledRoundsDetails({
       rounds,
     });
-    const { matchUpDependencies } = competitionEngine.getMatchUpDependencies();
+    const { matchUpDependencies } = tournamentEngine.getMatchUpDependencies();
 
     const schedulingErrors: any[] = [];
     orderedMatchUpIds.forEach((matchUpId, index) => {
@@ -141,10 +140,10 @@ it('does not schedule subsequent rounds if dependencies are unscheduled', () => 
     startDate,
     endDate,
   });
-  competitionEngine.setState(tournamentRecord);
+  tournamentEngine.setState(tournamentRecord);
   const { tournamentId } = tournamentRecord;
 
-  competitionEngine.attachPolicies({
+  tournamentEngine.attachPolicies({
     policyDefinitions: POLICY_SCHEDULING_NO_DAILY_LIMITS,
   });
 
@@ -155,19 +154,19 @@ it('does not schedule subsequent rounds if dependencies are unscheduled', () => 
         structures: [{ structureId }],
       },
     } = tournamentEngine.getEvent({ drawId });
-    const result = competitionEngine.addSchedulingProfileRound({
+    const result = tournamentEngine.addSchedulingProfileRound({
       round: { tournamentId, eventId, drawId, structureId, roundNumber },
       scheduleDate: startDate,
       venueId,
     });
     expect(result.success).toEqual(true);
   }
-  const result = competitionEngine.scheduleProfileRounds({
+  const result = tournamentEngine.scheduleProfileRounds({
     scheduleDates: [startDate],
   });
   expect(result.success).toEqual(true);
 
-  const { matchUps } = competitionEngine.allCompetitionMatchUps();
+  const { matchUps } = tournamentEngine.allCompetitionMatchUps();
   const { roundMatchUps } = tournamentEngine.getRoundMatchUps({ matchUps });
   const roundScheduledTimes = Object.keys(roundMatchUps).map((roundNumber) =>
     roundMatchUps[roundNumber].map(({ schedule }) =>

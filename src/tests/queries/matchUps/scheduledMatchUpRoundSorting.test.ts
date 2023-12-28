@@ -1,7 +1,6 @@
 import { extractTime, timeStringMinutes } from '../../../utilities/dateTime';
+import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
-import mocksEngine from '../../../mocksEngine';
-import competitionEngine from '../../engines/competitionEngine';
 import { expect, test } from 'vitest';
 
 import POLICY_SCHEDULING_DEFAULT from '../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
@@ -47,11 +46,11 @@ test.each([
       venueIds: [venueId],
     } = result;
 
-    competitionEngine.setState(tournamentRecord);
+    tournamentEngine.setState(tournamentRecord);
 
     let { matchUpDailyLimits } = tournamentEngine.getMatchUpDailyLimits();
     expect(matchUpDailyLimits).not.toBeUndefined();
-    ({ matchUpDailyLimits } = competitionEngine.getMatchUpDailyLimits());
+    ({ matchUpDailyLimits } = tournamentEngine.getMatchUpDailyLimits());
     expect(matchUpDailyLimits).not.toBeUndefined();
 
     // tournamentEngine is used to retreive the events
@@ -65,7 +64,7 @@ test.each([
           structures: [{ structureId }],
         },
       } = tournamentEngine.getEvent({ drawId });
-      result = competitionEngine.addSchedulingProfileRound({
+      result = tournamentEngine.addSchedulingProfileRound({
         round: { tournamentId, eventId, drawId, structureId, roundNumber: 1 },
         scheduleDate: startDate,
         venueId,
@@ -81,7 +80,7 @@ test.each([
           structures: [{ structureId }],
         },
       } = tournamentEngine.getEvent({ drawId });
-      result = competitionEngine.addSchedulingProfileRound({
+      result = tournamentEngine.addSchedulingProfileRound({
         round: { tournamentId, eventId, drawId, structureId, roundNumber: 2 },
         scheduleDate: startDate,
         venueId,
@@ -89,7 +88,7 @@ test.each([
       expect(result.success).toEqual(true);
     }
 
-    result = competitionEngine.scheduleProfileRounds({
+    result = tournamentEngine.scheduleProfileRounds({
       scheduleDates: [startDate],
     });
 
@@ -100,7 +99,7 @@ test.each([
     );
 
     const matchUpFilters = { scheduledDate: startDate };
-    result = competitionEngine.competitionScheduleMatchUps({
+    result = tournamentEngine.competitionScheduleMatchUps({
       matchUpFilters,
     });
 

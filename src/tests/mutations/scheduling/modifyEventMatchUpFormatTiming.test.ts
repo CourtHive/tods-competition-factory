@@ -1,5 +1,4 @@
-import competitionEngine from '../../engines/competitionEngine';
-import mocksEngine from '../../../mocksEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
@@ -92,7 +91,7 @@ it('can modify event timing for matchUpFormat codes', () => {
   });
   expect(result.error).toEqual(EVENT_NOT_FOUND);
 
-  result = competitionEngine.removeEventMatchUpFormatTiming({
+  result = tournamentEngine.removeEventMatchUpFormatTiming({
     eventId: 'unknownEventId',
   });
   expect(result.error).toEqual(EVENT_NOT_FOUND);

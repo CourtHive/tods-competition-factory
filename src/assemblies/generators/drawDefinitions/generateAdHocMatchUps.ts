@@ -1,14 +1,6 @@
-import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
-import { validMatchUps } from '../../../validators/validMatchUp';
 import { definedAttributes } from '../../../utilities/definedAttributes';
-import { getMatchUpId } from '../../../global/functions/extractors';
-import { generateRange, overlap, UUID } from '../../../utilities';
-import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
 import { isConvertableInteger } from '../../../utilities/math';
-import {
-  addMatchUpsNotice,
-  modifyDrawNotice,
-} from '../../../mutate/notifications/drawNotifications';
+import { generateRange, UUID } from '../../../utilities';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../../constants/entryStatusConstants';
 import { ROUND_OUTCOME } from '../../../constants/drawDefinitionConstants';
@@ -20,7 +12,6 @@ import {
   MISSING_DRAW_DEFINITION,
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
-  EXISTING_MATCHUP_ID,
   ErrorType,
 } from '../../../constants/errorConditionConstants';
 import {
@@ -29,6 +20,7 @@ import {
   MatchUp,
   Tournament,
 } from '../../../types/tournamentTypes';
+import { addAdHocMatchUps } from '../../../mutate/structures/addAdHocMatchUps';
 
 type GenerateAdHocMatchUpsArgs = {
   participantIdPairings?: {
@@ -171,66 +163,4 @@ export function generateAdHocMatchUps({
   }
 
   return { matchUpsCount: matchUps.length, matchUps, ...SUCCESS };
-}
-
-export function addAdHocMatchUps({
-  tournamentRecord,
-  drawDefinition,
-  structureId,
-  matchUps,
-}) {
-  if (typeof drawDefinition !== 'object')
-    return { error: MISSING_DRAW_DEFINITION };
-
-  if (!structureId && drawDefinition.structures?.length === 1)
-    structureId = drawDefinition.structures?.[0]?.structureId;
-
-  if (typeof structureId !== 'string') return { error: MISSING_STRUCTURE_ID };
-
-  if (!validMatchUps(matchUps))
-    return { error: INVALID_VALUES, info: mustBeAnArray('matchUps') };
-
-  const structure = drawDefinition.structures?.find(
-    (structure) => structure.structureId === structureId
-  );
-  if (!structure) return { error: STRUCTURE_NOT_FOUND };
-
-  const existingMatchUps = structure?.matchUps;
-  const structureHasRoundPositions = existingMatchUps.find(
-    (matchUp) => !!matchUp.roundPosition
-  );
-
-  if (
-    structure.structures ||
-    structureHasRoundPositions ||
-    structure.finishingPosition === ROUND_OUTCOME
-  ) {
-    return { error: INVALID_STRUCTURE };
-  }
-
-  const existingMatchUpIds =
-    allTournamentMatchUps({
-      tournamentRecord,
-      inContext: false,
-    })?.matchUps?.map(getMatchUpId) ?? [];
-
-  const newMatchUpIds = matchUps.map(getMatchUpId);
-
-  if (overlap(existingMatchUpIds, newMatchUpIds)) {
-    return {
-      error: EXISTING_MATCHUP_ID,
-      info: 'One or more matchUpIds already present in tournamentRecord',
-    };
-  }
-
-  structure.matchUps.push(...matchUps);
-
-  addMatchUpsNotice({
-    tournamentId: tournamentRecord?.tournamentId,
-    drawDefinition,
-    matchUps,
-  });
-  modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
-
-  return { ...SUCCESS };
 }

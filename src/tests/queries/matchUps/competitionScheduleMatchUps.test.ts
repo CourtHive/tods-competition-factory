@@ -1,9 +1,8 @@
 import { visualizeScheduledMatchUps } from '../../../global/testHarness/testUtilities/visualizeScheduledMatchUps';
-import { getMatchUpIds } from '../../../global/functions/extractors';
-import tournamentEngine from '../../engines/syncEngine';
 import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
-import mocksEngine from '../../../mocksEngine';
-import competitionEngineSync from '../../engines/competitionEngine';
+import { getMatchUpIds } from '../../../global/functions/extractors';
+import mocksEngine from '../../../assemblies/engines/mock';
+import tournamentEngine from '../../engines/syncEngine';
 import { expect, test } from 'vitest';
 import {
   extractAttributes as xa,
@@ -21,9 +20,9 @@ import {
 const sst = 'schedule.scheduledTime';
 const d210505 = '2021-05-05';
 
-test.each([competitionEngineSync])(
+test.each([tournamentEngine])(
   'correctly enumerates participantProfiles for { eventType: DOUBLES }',
-  async (competitionEngine) => {
+  async (tournamentEngine) => {
     const drawProfiles = [{ drawSize: 16, eventType: DOUBLES }];
     const venueProfiles = [{ courtsCount: 3 }];
 
@@ -34,16 +33,16 @@ test.each([competitionEngineSync])(
       drawProfiles,
     });
 
-    competitionEngine.setState([tournamentRecord]);
-    const { upcomingMatchUps } = competitionEngine.getCompetitionMatchUps();
-    const { startDate } = competitionEngine.getCompetitionDateRange();
+    tournamentEngine.setState([tournamentRecord]);
+    const { upcomingMatchUps } = tournamentEngine.getCompetitionMatchUps();
+    const { startDate } = tournamentEngine.getCompetitionDateRange();
 
     const matchUpIds = getMatchUpIds(upcomingMatchUps);
     expect(
       instanceCount(upcomingMatchUps.map(({ matchUpType }) => matchUpType))
     ).toEqual({ DOUBLES: 8 });
 
-    const result = competitionEngine.scheduleMatchUps({
+    const result = tournamentEngine.scheduleMatchUps({
       scheduleDate: startDate,
       matchUpIds,
     });
@@ -56,9 +55,9 @@ test.each([competitionEngineSync])(
   }
 );
 
-test.each([competitionEngineSync])(
+test.each([tournamentEngine])(
   'auto schedules venue if only one venue provided',
-  async (competitionEngine) => {
+  async (tournamentEngine) => {
     const drawProfiles = [
       {
         eventType: DOUBLES,
@@ -89,16 +88,16 @@ test.each([competitionEngineSync])(
 
     expect(eventIds).toEqual(['e1', 'e2']);
 
-    competitionEngine.setState([tournamentRecord]);
-    const { upcomingMatchUps } = competitionEngine.getCompetitionMatchUps();
-    const { startDate } = competitionEngine.getCompetitionDateRange();
+    tournamentEngine.setState([tournamentRecord]);
+    const { upcomingMatchUps } = tournamentEngine.getCompetitionMatchUps();
+    const { startDate } = tournamentEngine.getCompetitionDateRange();
 
     const matchUpIds = getMatchUpIds(upcomingMatchUps);
     expect(
       instanceCount(upcomingMatchUps.map(({ matchUpType }) => matchUpType))
     ).toEqual({ DOUBLES: 8, SINGLES: 32 });
 
-    let result = competitionEngine.scheduleMatchUps({
+    let result = tournamentEngine.scheduleMatchUps({
       scheduleDate: startDate,
       matchUpIds,
     });
@@ -112,16 +111,16 @@ test.each([competitionEngineSync])(
     ).toEqual(true);
 
     const matchUpFilters = { scheduledDate: d210505 };
-    result = competitionEngine.competitionScheduleMatchUps({
+    result = tournamentEngine.competitionScheduleMatchUps({
       usePublishState: true,
       matchUpFilters,
     });
     expect(result.dateMatchUps.length).toEqual(0);
 
-    result = competitionEngine.publishOrderOfPlay();
+    result = tournamentEngine.publishOrderOfPlay();
     expect(result.success).toEqual(true);
 
-    result = competitionEngine.competitionScheduleMatchUps({
+    result = tournamentEngine.competitionScheduleMatchUps({
       usePublishState: true,
       nextMatchUps: true,
       matchUpFilters,
@@ -129,19 +128,19 @@ test.each([competitionEngineSync])(
     expect(result.dateMatchUps.length).toEqual(23);
     expect(result.dateMatchUps[0].winnerTo).toBeDefined();
 
-    result = competitionEngine.unPublishOrderOfPlay();
+    result = tournamentEngine.unPublishOrderOfPlay();
     expect(result.success).toEqual(true);
 
-    result = competitionEngine.competitionScheduleMatchUps({
+    result = tournamentEngine.competitionScheduleMatchUps({
       usePublishState: true,
       matchUpFilters,
     });
     expect(result.dateMatchUps.length).toEqual(0);
 
-    result = competitionEngine.publishOrderOfPlay();
+    result = tournamentEngine.publishOrderOfPlay();
     expect(result.success).toEqual(true);
 
-    result = competitionEngine.competitionScheduleMatchUps({
+    result = tournamentEngine.competitionScheduleMatchUps({
       matchUpFilters,
     });
     expect(result.dateMatchUps.length).toEqual(23);
@@ -155,13 +154,13 @@ test.each([competitionEngineSync])(
         drawId,
       }));
 
-    result = competitionEngine.reorderUpcomingMatchUps({
+    result = tournamentEngine.reorderUpcomingMatchUps({
       matchUpsContextIds,
       firstToLast: true,
     });
     expect(result.success).toEqual(true);
 
-    result = competitionEngine.competitionScheduleMatchUps({
+    result = tournamentEngine.competitionScheduleMatchUps({
       usePublishState: true,
       matchUpFilters,
     });
@@ -203,7 +202,7 @@ test.each([competitionEngineSync])(
       eventId: 'e1',
     });
 
-    result = competitionEngine.competitionScheduleMatchUps({
+    result = tournamentEngine.competitionScheduleMatchUps({
       usePublishState: true,
       matchUpFilters,
     });
@@ -222,7 +221,7 @@ test.each([competitionEngineSync])(
       showGlobalLog: false,
     });
 
-    result = competitionEngine.competitionScheduleMatchUps({
+    result = tournamentEngine.competitionScheduleMatchUps({
       nextMatchUps: true,
     });
     expect(
@@ -230,7 +229,7 @@ test.each([competitionEngineSync])(
         ?.potentialParticipants.length
     ).toBeGreaterThan(1);
 
-    const { matchUps } = competitionEngine.allCompetitionMatchUps({
+    const { matchUps } = tournamentEngine.allCompetitionMatchUps({
       afterRecoveryTimes: true,
     });
     matchUps.filter(hasSchedule).forEach(({ schedule }) => {
@@ -255,23 +254,23 @@ test.each([competitionEngineSync])(
       reorderedMatchUpContextIds.map((m) => m.scheduledTime)
     );
 
-    result = competitionEngine.reorderUpcomingMatchUps({
+    result = tournamentEngine.reorderUpcomingMatchUps({
       matchUpsContextIds: undefined,
     });
     expect(result.error).not.toBeUndefined();
 
-    result = competitionEngine.reorderUpcomingMatchUps({
+    result = tournamentEngine.reorderUpcomingMatchUps({
       matchUpsContextIds: [],
     });
     expect(result.success).toEqual(true);
 
     matchUpFilters.scheduledDate = '2021-05-06';
-    result = competitionEngine.competitionScheduleMatchUps({
+    result = tournamentEngine.competitionScheduleMatchUps({
       matchUpFilters,
     });
     expect(result.dateMatchUps.length).toEqual(0);
 
-    result = competitionEngine.scheduleMatchUps({
+    result = tournamentEngine.scheduleMatchUps({
       scheduleDate: startDate,
       matchUpIds,
     });

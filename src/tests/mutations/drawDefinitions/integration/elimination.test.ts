@@ -2,7 +2,7 @@ import { getParticipantIdMatchUps } from '../../../../query/drawDefinition/parti
 import { generateRange, instanceCount, unique } from '../../../../utilities';
 import { verifyStructure } from '../primitives/verifyStructure';
 import tournamentEngine from '../../../engines/syncEngine';
-import mocksEngine from '../../../../mocksEngine';
+import mocksEngine from '../../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
 import {
   verifyMatchUps,

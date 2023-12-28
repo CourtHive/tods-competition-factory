@@ -1,10 +1,9 @@
-import { getParticipantId } from '../../../global/functions/extractors';
-import tournamentEngine from '../../engines/syncEngine';
 import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
+import { getParticipantId } from '../../../global/functions/extractors';
+import mocksEngine from '../../../assemblies/engines/mock';
 import { extractTime } from '../../../utilities/dateTime';
 import { intersection, unique } from '../../../utilities';
-import mocksEngine from '../../../mocksEngine';
-import competitionEngine from '../../engines/competitionEngine';
+import tournamentEngine from '../../engines/syncEngine';
 import garman from '../../../forge/garman/garman';
 import { expect, it } from 'vitest';
 
@@ -110,28 +109,28 @@ it('properly schedules 2nd round of 128 single elimination draw with 30 courts',
   });
 
   const { tournamentId } = tournamentRecord;
-  competitionEngine.setState(tournamentRecord);
+  tournamentEngine.setState(tournamentRecord);
 
   const {
     drawDefinition: {
       structures: [{ structureId }],
     },
   } = tournamentEngine.getEvent({ drawId });
-  let result = competitionEngine.addSchedulingProfileRound({
+  let result = tournamentEngine.addSchedulingProfileRound({
     round: { tournamentId, eventId, drawId, structureId, roundNumber: 1 },
     scheduleDate: startDate,
     venueId,
   });
   expect(result.success).toEqual(true);
 
-  result = competitionEngine.addSchedulingProfileRound({
+  result = tournamentEngine.addSchedulingProfileRound({
     round: { tournamentId, eventId, drawId, structureId, roundNumber: 2 },
     scheduleDate: startDate,
     venueId,
   });
   expect(result.success).toEqual(true);
 
-  result = competitionEngine.scheduleProfileRounds({
+  result = tournamentEngine.scheduleProfileRounds({
     scheduleDates: [startDate],
   });
   expect(result.success).toEqual(true);
@@ -152,7 +151,7 @@ it('properly schedules 2nd round of 128 single elimination draw with 30 courts',
     '11:00', '11:00', '11:30', '11:30', '11:30', '11:30', '11:30', '12:00', '12:00', '12:00', '12:00', '12:00'
   ]);
 
-  const { matchUps } = competitionEngine.allCompetitionMatchUps();
+  const { matchUps } = tournamentEngine.allCompetitionMatchUps();
   const byeMatchUps = matchUps.filter(
     ({ matchUpStatus }) => matchUpStatus === BYE
   );
@@ -232,7 +231,7 @@ it('properly schedules 1st rounds of two 32 single elimination draws with 10 cou
   });
 
   const { tournamentId } = tournamentRecord;
-  competitionEngine.setState(tournamentRecord);
+  tournamentEngine.setState(tournamentRecord);
 
   const eventDrawEntries: string[][] = [];
   const eventEntries: string[][] = [];
@@ -244,7 +243,7 @@ it('properly schedules 1st rounds of two 32 single elimination draws with 10 cou
       structures: [{ structureId }],
     },
   } = tournamentEngine.getEvent({ drawId: drawIds[0] });
-  let result = competitionEngine.addSchedulingProfileRound({
+  let result = tournamentEngine.addSchedulingProfileRound({
     scheduleDate: startDate,
     venueId,
     round: {
@@ -267,7 +266,7 @@ it('properly schedules 1st rounds of two 32 single elimination draws with 10 cou
       structures: [{ structureId }],
     },
   } = tournamentEngine.getEvent({ drawId: drawIds[1] }));
-  result = competitionEngine.addSchedulingProfileRound({
+  result = tournamentEngine.addSchedulingProfileRound({
     scheduleDate: startDate,
     venueId,
     round: {
@@ -288,7 +287,7 @@ it('properly schedules 1st rounds of two 32 single elimination draws with 10 cou
     0
   );
 
-  result = competitionEngine.scheduleProfileRounds({
+  result = tournamentEngine.scheduleProfileRounds({
     scheduleDates: [startDate],
   });
   expect(result.success).toEqual(true);
@@ -302,7 +301,7 @@ it('properly schedules 1st rounds of two 32 single elimination draws with 10 cou
     return !!matchUpScheduleKeys.length;
   };
 
-  const { matchUps } = competitionEngine.allCompetitionMatchUps();
+  const { matchUps } = tournamentEngine.allCompetitionMatchUps();
   const scheduledMatchUps = matchUps.filter(hasSchedule);
   expect(scheduledMatchUps.length).toEqual(32);
 

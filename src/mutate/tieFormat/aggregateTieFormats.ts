@@ -1,4 +1,4 @@
-import { compareTieFormats } from '../../matchUpEngine/governors/tieFormatGovernor/compareTieFormats';
+import { compareTieFormats } from '../../query/hierarchical/tieFormats/compareTieFormats';
 import { allEventMatchUps } from '../../query/matchUps/getAllEventMatchUps';
 import { modifyMatchUpNotice } from '../notifications/drawNotifications';
 

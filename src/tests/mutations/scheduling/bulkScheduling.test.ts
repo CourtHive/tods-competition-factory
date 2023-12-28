@@ -2,8 +2,7 @@ import { visualizeScheduledMatchUps } from '../../../global/testHarness/testUtil
 import { getStructureRoundProfile } from '../../../query/structure/getStructureRoundProfile';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { getMatchUpIds } from '../../../global/functions/extractors';
-import competitionEngine from '../../engines/competitionEngine';
-import mocksEngine from '../../../mocksEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it, test } from 'vitest';
 
@@ -156,13 +155,13 @@ test('recognizes scheduling conflicts', () => {
     endDate,
   });
 
-  competitionEngine.setState(tournamentRecord);
+  tournamentEngine.setState(tournamentRecord);
 
-  competitionEngine.attachPolicies({
+  tournamentEngine.attachPolicies({
     policyDefinitions: POLICY_SCHEDULING_DEFAULT,
   });
 
-  let { matchUps } = competitionEngine.allCompetitionMatchUps();
+  let { matchUps } = tournamentEngine.allCompetitionMatchUps();
   let roundMatchUps: any = getRoundMatchUps({ matchUps })?.roundMatchUps;
 
   const scheduledDate = '2021-01-01';
@@ -188,7 +187,7 @@ test('recognizes scheduling conflicts', () => {
   });
   expect(result.success).toEqual(true);
 
-  ({ matchUps } = competitionEngine.allCompetitionMatchUps({
+  ({ matchUps } = tournamentEngine.allCompetitionMatchUps({
     afterRecoveryTimes: true,
     nextMatchUps: true,
   }));
@@ -213,7 +212,7 @@ test('recognizes scheduling conflicts', () => {
     )
   );
 
-  ({ matchUps } = competitionEngine.allCompetitionMatchUps({
+  ({ matchUps } = tournamentEngine.allCompetitionMatchUps({
     scheduleVisibilityFilters: { visibilityThreshold },
     nextMatchUps: true,
   }));
@@ -225,7 +224,7 @@ test('recognizes scheduling conflicts', () => {
   expect(Object.keys(matchUps[0].schedule).length).toEqual(2);
 
   const { participantIdsWithConflicts: ceConflicts } =
-    competitionEngine.getCompetitionParticipants({
+    tournamentEngine.getCompetitionParticipants({
       scheduleAnalysis: true,
     });
 
@@ -240,7 +239,7 @@ test('recognizes scheduling conflicts', () => {
   expect(teConflicts.length).toEqual(16);
   expect(ceConflicts.length).toEqual(16);
 
-  const participantResult = competitionEngine.getCompetitionParticipants({
+  const participantResult = tournamentEngine.getCompetitionParticipants({
     scheduleAnalysis: { scheduledMinutesDifference: Infinity },
   });
   let {
@@ -279,14 +278,14 @@ test('recognizes scheduling conflicts', () => {
   ).toEqual('string');
 
   let { participantIdsWithConflicts } =
-    competitionEngine.getCompetitionParticipants({
+    tournamentEngine.getCompetitionParticipants({
       scheduleAnalysis: { scheduledMinutesDifference: 60 },
     });
 
   expect(participantIdsWithConflicts.length).toEqual(16);
 
   ({ participantIdsWithConflicts } =
-    competitionEngine.getCompetitionParticipants({
+    tournamentEngine.getCompetitionParticipants({
       scheduleAnalysis: { scheduledMinutesDifference: 50 },
     }));
 
@@ -305,13 +304,13 @@ test('recognizes scheduling conflicts', () => {
   expect(gpConflicts.length).toEqual(0);
 
   ({ participantIdsWithConflicts: gpConflicts } =
-    competitionEngine.getCompetitionParticipants({
+    tournamentEngine.getCompetitionParticipants({
       scheduleAnalysis: { scheduledMinutesDifference: 60 },
     }));
   expect(gpConflicts.length).toEqual(16);
 
   ({ participantIdsWithConflicts: gpConflicts } =
-    competitionEngine.getCompetitionParticipants({
+    tournamentEngine.getCompetitionParticipants({
       scheduleAnalysis: { scheduledMinutesDifference: 50 },
     }));
   expect(gpConflicts.length).toEqual(0);

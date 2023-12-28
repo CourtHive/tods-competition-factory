@@ -1,6 +1,6 @@
 import { getMatchUpIds } from '../../../global/functions/extractors';
 import { generateRange, randomPop } from '../../../utilities';
-import mocksEngine from '../../../mocksEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 

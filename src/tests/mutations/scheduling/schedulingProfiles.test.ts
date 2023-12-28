@@ -1,6 +1,5 @@
+import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
-import competitionEngineSync from '../../engines/competitionEngine';
-import mocksEngine from '../../../mocksEngine';
 import { expect, test } from 'vitest';
 
 import {
@@ -12,7 +11,7 @@ import {
 const d220101 = '2022-01-01';
 const d220203 = '2022-01-03';
 
-test.each([competitionEngineSync])(
+test.each([tournamentEngine])(
   'it can set scheulingProfile',
   async (competitionEngine) => {
     const drawProfiles = [{ drawSize: 16 }];
@@ -247,7 +246,7 @@ test.each([competitionEngineSync])(
   }
 );
 
-test.each([competitionEngineSync])(
+test.each([tournamentEngine])(
   'validateSchedulingProfile can identify invalid schedulingProfiles',
   async (competitionEngine) => {
     const venueProfiles = [

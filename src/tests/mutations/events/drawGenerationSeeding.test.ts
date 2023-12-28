@@ -1,7 +1,6 @@
 import { getEliminationDrawSize } from '../../../query/participants/getEliminationDrawSize';
+import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
-import competitionEngine from '../../engines/competitionEngine';
-import mocksEngine from '../../../mocksEngine';
 import { expect, it } from 'vitest';
 
 import POLICY_AVOIDANCE_COUNTRY from '../../../fixtures/policies/POLICY_AVOIDANCE_COUNTRY';
@@ -65,7 +64,7 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
     if (scaleValues[index])
       expect(scaleItem.scaleValue).toEqual(scaleValues[index]);
 
-    const result = competitionEngine.getParticipantScaleItem({
+    const result = tournamentEngine.getParticipantScaleItem({
       scaleAttributes,
       participantId,
     });

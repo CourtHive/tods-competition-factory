@@ -1,4 +1,4 @@
-import mocksEngine from '../../../../mocksEngine';
+import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
 import { it, expect } from 'vitest';
 

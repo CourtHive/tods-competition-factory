@@ -1,7 +1,6 @@
-import tournamentEngine from '../../engines/syncEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
 import { extractDate } from '../../../utilities/dateTime';
-import mocksEngine from '../../../mocksEngine';
-import competitionEngine from '../../engines/competitionEngine';
+import tournamentEngine from '../../engines/syncEngine';
 import { UUID } from '../../../utilities';
 import { expect, test } from 'vitest';
 
@@ -77,21 +76,21 @@ test('court availability overrides default availability', () => {
   let result = tournamentEngine.addVenue({ venue });
   expect(result.success).toEqual(true);
 
-  const { rounds } = competitionEngine.getRounds();
+  const { rounds } = tournamentEngine.getRounds();
   const schedulingProfile = [
     { scheduleDate: startDate, venues: [{ venueId, rounds }] },
   ];
 
-  result = competitionEngine.setSchedulingProfile({ schedulingProfile });
+  result = tournamentEngine.setSchedulingProfile({ schedulingProfile });
   expect(result.success).toEqual(true);
 
-  result = competitionEngine.getSchedulingProfileIssues();
+  result = tournamentEngine.getSchedulingProfileIssues();
   expect(result.issuesCount).toEqual(0);
 
-  result = competitionEngine.getMatchUpDependencies();
+  result = tournamentEngine.getMatchUpDependencies();
   expect(Object.keys(result.matchUpDependencies).length).toEqual(drawSize - 1);
 
-  result = competitionEngine.scheduleProfileRounds();
+  result = tournamentEngine.scheduleProfileRounds();
   expect(result.scheduledMatchUpIds[extractDate(startDate)].length).toEqual(1);
   expect(result.noTimeMatchUpIds[extractDate(startDate)].length).toEqual(0);
 });

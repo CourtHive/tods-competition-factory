@@ -1,6 +1,5 @@
 import syncGlobalState from '../../../global/state/syncGlobalState';
-import competitionEngine from '../../engines/competitionEngine';
-import mocksEngine from '../../../mocksEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
 import { expect, it, test } from 'vitest';
 import tournamentEngine from '../../engines/syncEngine';
 import {
@@ -53,14 +52,14 @@ it('can set state provider', () => {
   result = tournamentEngine.setState();
   expect(result.error).not.toBeUndefined();
 
-  result = competitionEngine.removeTournamentRecord();
+  result = tournamentEngine.removeTournamentRecord();
   expect(result.error).not.toBeUndefined();
 
   result = tournamentEngine.addParticipant({ participant });
   expect(result.success).toEqual(true);
   expect(allParticipants.length).toEqual(1);
 
-  competitionEngine.removeTournamentRecord(tournamentId);
+  tournamentEngine.removeTournamentRecord(tournamentId);
 });
 
 test('state provider implementation of handleCaughtError', () => {

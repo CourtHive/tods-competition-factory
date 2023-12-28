@@ -1,5 +1,5 @@
 import { MISSING_VALUE } from '../../constants/errorConditionConstants';
-import { parse } from '../../matchUpEngine/governors/matchUpFormatGovernor/parse';
+import { parse } from '../../assemblies/generators/matchUpFormatCode/parse';
 
 type GetSetWinningSideArgs = {
   matchUpScoringFormat: any;

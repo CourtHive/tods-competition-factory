@@ -1,6 +1,5 @@
-import competitionEngine from '../../engines/competitionEngine';
 import { constantToString } from '../../../utilities/strings';
-import mocksEngine from '../../../mocksEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
@@ -817,7 +816,7 @@ it('can add or remove stages from a published draw', () => {
   expect(eventData.drawsData[0].structures.length).toEqual(1);
   expect(eventData.drawsData[0].structures[0].stage).toEqual(QUALIFYING);
 
-  result = competitionEngine.competitionScheduleMatchUps({
+  result = tournamentEngine.competitionScheduleMatchUps({
     usePublishState: true,
   });
   expect(result.dateMatchUps.length).toEqual(0);
@@ -839,10 +838,10 @@ it('can add or remove stages from a published draw', () => {
   }));
   expect(publishSuccess).toEqual(true);
 
-  result = competitionEngine.publishOrderOfPlay();
+  result = tournamentEngine.publishOrderOfPlay();
   expect(result.success).toEqual(true);
 
-  result = competitionEngine.competitionScheduleMatchUps({
+  result = tournamentEngine.competitionScheduleMatchUps({
     usePublishState: true,
   });
   expect(result.groupInfo).toBeDefined();

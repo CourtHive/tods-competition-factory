@@ -1,4 +1,4 @@
-import { validTimeString } from '../../fixtures/validations/regex';
+import { validTimeString } from '../../validators/regex';
 import { getUTCdateString } from '../../utilities/dateTime';
 
 import {

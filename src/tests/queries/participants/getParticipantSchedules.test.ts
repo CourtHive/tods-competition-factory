@@ -1,6 +1,5 @@
+import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
-import competitionEngine from '../../engines/competitionEngine';
-import mocksEngine from '../../../mocksEngine';
 import { expect, it } from 'vitest';
 
 it('can return participant scheduled matchUps', () => {
@@ -20,15 +19,15 @@ it('can return participant scheduled matchUps', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { rounds } = competitionEngine.getRounds();
+  const { rounds } = tournamentEngine.getRounds();
   const schedulingProfile = [
     { scheduleDate: startDate, venues: [{ venueId, rounds }] },
   ];
 
-  let result = competitionEngine.setSchedulingProfile({ schedulingProfile });
+  let result = tournamentEngine.setSchedulingProfile({ schedulingProfile });
   expect(result.success).toEqual(true);
 
-  result = competitionEngine.scheduleProfileRounds();
+  result = tournamentEngine.scheduleProfileRounds();
   expect(
     result.dateSchedulingProfiles[0].venues[0].rounds.map(
       ({ roundTiming }) => roundTiming?.roundMinutes

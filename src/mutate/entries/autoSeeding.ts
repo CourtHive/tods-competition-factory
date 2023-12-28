@@ -1,4 +1,4 @@
-import { getEntriesAndSeedsCount } from './getEntriesAndSeedsCount';
+import { getEntriesAndSeedsCount } from '../../query/entries/getEntriesAndSeedsCount';
 import { generateSeedingScaleItems } from '../../assemblies/generators/drawDefinitions/generateSeedingScaleItems';
 import { getScaledEntries } from '../../query/event/getScaledEntries';
 

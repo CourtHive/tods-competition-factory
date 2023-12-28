@@ -1,7 +1,6 @@
-import tournamentEngine from '../../engines/syncEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
 import { intersection, unique } from '../../../utilities';
-import mocksEngine from '../../../mocksEngine';
-import competitionEngine from '../../engines/competitionEngine';
+import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 it('can update matchUp court assignments accross multiple events/draws', () => {
@@ -53,15 +52,15 @@ it('can update matchUp court assignments accross multiple events/draws', () => {
       drawId,
     })
   );
-  result = competitionEngine.setState([tournamentRecord]);
+  result = tournamentEngine.setState([tournamentRecord]);
   expect(result.success).toEqual(true);
-  result = competitionEngine.bulkUpdateCourtAssignments({
+  result = tournamentEngine.bulkUpdateCourtAssignments({
     courtAssignments,
     courtDayDate,
   });
   expect(result.success).toEqual(true);
 
-  ({ matchUps } = competitionEngine.allCompetitionMatchUps());
+  ({ matchUps } = tournamentEngine.allCompetitionMatchUps());
   const scheduledCourtIds = unique(
     matchUps.map(({ schedule }) => schedule?.courtId)
   );

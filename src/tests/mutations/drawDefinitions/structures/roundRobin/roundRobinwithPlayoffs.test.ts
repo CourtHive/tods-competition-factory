@@ -1,15 +1,14 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '../../../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
 import { tallyParticipantResults } from '../../../../../query/matchUps/roundRobinTally/roundRobinTally';
-import { getAllStructureMatchUps } from '../../../../../query/matchUps/getAllStructureMatchUps';
+import { newDrawDefinition } from '../../../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { setStageDrawSize } from '../../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
+import { getAllStructureMatchUps } from '../../../../../query/matchUps/getAllStructureMatchUps';
 import { generateMatchUpOutcome } from '../../primitives/generateMatchUpOutcome';
 import { chunkArray, intersection } from '../../../../../utilities/arrays';
-import tournamentEngine from '../../../../engines/syncEngine';
 import { findStructure } from '../../../../../acquire/findStructure';
-import matchUpEngine from '../../../../../matchUpEngine/sync';
-import { newDrawDefinition } from '../../../../../assemblies/generators/drawDefinitions/newDrawDefinition';
+import mocksEngine from '../../../../../assemblies/engines/mock';
+import tournamentEngine from '../../../../engines/syncEngine';
 import { setsValues } from './roundRobinSetsValues';
-import mocksEngine from '../../../../../mocksEngine';
 import { expect, it } from 'vitest';
 import {
   allPlayoffPositionsFilled,
@@ -528,7 +527,7 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
     const structureMatchUps = eventMatchUps.filter(
       (matchUp) => matchUp.structureId === structureId
     );
-    const { participantResults } = matchUpEngine.tallyParticipantResults({
+    const { participantResults } = tallyParticipantResults({
       matchUps: structureMatchUps,
       matchUpFormat,
     });

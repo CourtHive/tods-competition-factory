@@ -1,8 +1,7 @@
 import { getContainedStructures } from '../../../query/drawDefinition/getContainedStructures';
 import { extractAttributes, intersection, unique } from '../../../utilities';
-import tournamentEngine from '../../engines/syncEngine';
-import competitionEngine from '../../engines/competitionEngine';
 import { constantToString } from '../../../utilities/strings';
+import tournamentEngine from '../../engines/syncEngine';
 import { mocksEngine } from '../../..';
 import { expect, it } from 'vitest';
 
@@ -201,7 +200,7 @@ it('can schedule potential rounds properly in scenarios with recovery times grea
 
       if (matchUp) {
         const { eventId, structureId, roundNumber } = matchUp;
-        const result = competitionEngine.addSchedulingProfileRound({
+        const result = tournamentEngine.addSchedulingProfileRound({
           round: { tournamentId, eventId, drawId, structureId, roundNumber },
           scheduleDate: startDate,
           venueId,

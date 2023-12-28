@@ -1,5 +1,5 @@
-import mocksEngine from '../../../mocksEngine';
-import competitionEngine from '../../engines/competitionEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
+import competitionEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 it('can calculste Schedule Times', () => {

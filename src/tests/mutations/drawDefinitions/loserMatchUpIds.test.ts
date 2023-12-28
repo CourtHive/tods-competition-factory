@@ -2,7 +2,7 @@ import { setSubscriptions } from '../../../global/state/globalState';
 import tournamentEngineSync from '../../engines/syncEngine';
 import asyncEngine from '../../engines/asyncEngine';
 import { instanceCount } from '../../../utilities';
-import mocksEngine from '../../../mocksEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
 import { TEAM_EVENT } from '../../../constants/eventConstants';

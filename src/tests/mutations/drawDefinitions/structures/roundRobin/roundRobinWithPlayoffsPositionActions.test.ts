@@ -3,7 +3,7 @@ import { getPositionAssignments } from '../../../../../query/drawDefinition/posi
 import tournamentEngine from '../../../../engines/syncEngine';
 import { intersection } from '../../../../../utilities';
 import { setsValues } from './roundRobinSetsValues';
-import mocksEngine from '../../../../../mocksEngine';
+import mocksEngine from '../../../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
 import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';

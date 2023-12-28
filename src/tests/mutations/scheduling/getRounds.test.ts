@@ -1,6 +1,6 @@
+import { mocksEngine } from '../../../assemblies/engines/mock';
+import competitionEngine from '../../engines/syncEngine';
 import { addDays } from '../../../utilities/dateTime';
-import { mocksEngine } from '../../../mocksEngine';
-import competitionEngine from '../../engines/competitionEngine';
 import { expect, it } from 'vitest';
 
 import { MISSING_TOURNAMENT_RECORDS } from '../../../constants/errorConditionConstants';

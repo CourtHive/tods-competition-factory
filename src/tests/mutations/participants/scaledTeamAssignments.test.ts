@@ -1,7 +1,7 @@
 import { participantScaleItem } from '../../../query/participant/participantScaleItem';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { generateRange } from '../../../utilities';
-import mocksEngine from '../../../mocksEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 

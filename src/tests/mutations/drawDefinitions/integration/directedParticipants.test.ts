@@ -1,4 +1,4 @@
-import { parseScoreString } from '../../../../mocksEngine/utilities/parseScoreString';
+import { parseScoreString } from '../../../../utilities/parseScoreString';
 import { structureAssignedDrawPositions } from '../../../../query/drawDefinition/positionsGetter';
 import { verifyStructure } from '../primitives/verifyStructure';
 import { generateFMLC } from '../primitives/firstMatchLoserConsolation';

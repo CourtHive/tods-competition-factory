@@ -1,5 +1,5 @@
-import { resolveTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
-import { compareTieFormats } from '../../matchUpEngine/governors/tieFormatGovernor/compareTieFormats';
+import { resolveTieFormat } from '../../query/hierarchical/tieFormats/resolveTieFormat';
+import { compareTieFormats } from '../../query/hierarchical/tieFormats/compareTieFormats';
 import { resetTieFormat } from '../tieFormat/resetTieFormat';
 import { getAllDrawMatchUps } from '../../query/matchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../query/matchUps/getMatchUpsMap';

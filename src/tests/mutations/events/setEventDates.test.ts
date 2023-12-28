@@ -1,5 +1,5 @@
 import { dateStringDaysChange } from '../../../utilities/dateTime';
-import mocksEngine from '../../../mocksEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
 import asyncTournamentEngine from '../../engines/asyncEngine';

@@ -1,5 +1,4 @@
 import tournamentEngine from '../../../engines/syncEngine';
-import competitionEngine from '../../../engines/competitionEngine';
 import { mocksEngine, utilities } from '../../../..';
 import { expect, it } from 'vitest';
 
@@ -29,7 +28,7 @@ it('generates valid DOUBLE_ELIMINATION', () => {
     TO_BE_PLAYED,
   ]);
 
-  matchUps = competitionEngine.allCompetitionMatchUps({
+  matchUps = tournamentEngine.allCompetitionMatchUps({
     matchUpFilters: { matchUpStatuses: upcomingMatchUpStatuses },
     nextMatchUps: true,
   }).matchUps;

@@ -1,7 +1,6 @@
+import { mocksEngine } from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
-import { mocksEngine } from '../../../mocksEngine';
 import { unique } from '../../../utilities';
-import competitionEngine from '../../engines/competitionEngine';
 import { it, expect } from 'vitest';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
@@ -33,7 +32,7 @@ it('will not scheduled earlier rounds after later rounds', () => {
     tournamentId,
   });
 
-  let result = competitionEngine.setState(tournamentRecord);
+  let result = tournamentEngine.setState(tournamentRecord);
   expect(result.success).toEqual(true);
 
   const matchUpId = 'matchUp-2-1';
@@ -54,10 +53,10 @@ it('will not scheduled earlier rounds after later rounds', () => {
     },
   };
 
-  result = competitionEngine.executionQueue([scheduleOneSecondRoundMatchUp]);
+  result = tournamentEngine.executionQueue([scheduleOneSecondRoundMatchUp]);
   expect(result.success).toEqual(true);
 
-  const matchUps = competitionEngine
+  const matchUps = tournamentEngine
     .allCompetitionMatchUps({ inContext: true, nextMatchUps: true })
     .matchUps.filter((m) => m.matchUpId !== matchUpId);
 
@@ -66,17 +65,17 @@ it('will not scheduled earlier rounds after later rounds', () => {
     method: 'proAutoSchedule',
   };
 
-  result = competitionEngine.executionQueue([scheduleRemaining]);
+  result = tournamentEngine.executionQueue([scheduleRemaining]);
   expect(result.success).toEqual(true);
   expect(result.results[0].scheduled.length).toEqual(25);
   expect(result.results[0].notScheduled.length).toEqual(5);
 
-  const { dateMatchUps } = competitionEngine.competitionScheduleMatchUps({
+  const { dateMatchUps } = tournamentEngine.competitionScheduleMatchUps({
     matchUpFilters: { scheduledDate: startDate },
   });
   expect(dateMatchUps.length).toEqual(26); // thus only 26 of 31 matchUps have been scheduled
 
-  const { courtIssues } = competitionEngine.proConflicts({
+  const { courtIssues } = tournamentEngine.proConflicts({
     matchUps: dateMatchUps,
   });
   const issues = unique(
@@ -102,10 +101,10 @@ it('will not save overlapping timeModifiers', () => {
     tournamentId,
   });
 
-  let result = competitionEngine.reset().setState(tournamentRecord);
+  let result = tournamentEngine.reset().setState(tournamentRecord);
   expect(result.success).toEqual(true);
 
-  let matchUps = competitionEngine.allCompetitionMatchUps({
+  let matchUps = tournamentEngine.allCompetitionMatchUps({
     nextMatchUps: true,
     inContext: true,
   }).matchUps;
@@ -116,10 +115,10 @@ it('will not save overlapping timeModifiers', () => {
   };
 
   // First schedule all matchUps
-  result = competitionEngine.executionQueue([scheduleMatchUps]);
+  result = tournamentEngine.executionQueue([scheduleMatchUps]);
   expect(result.success).toEqual(true);
 
-  matchUps = competitionEngine.allCompetitionMatchUps({
+  matchUps = tournamentEngine.allCompetitionMatchUps({
     nextMatchUps: true,
     inContext: true,
   }).matchUps;
@@ -176,7 +175,7 @@ it('will not save overlapping timeModifiers', () => {
   result = tournamentEngine.executionQueue([bulkScheduleSecond]);
   expect(result.success).toEqual(true);
 
-  matchUps = competitionEngine.allCompetitionMatchUps({
+  matchUps = tournamentEngine.allCompetitionMatchUps({
     nextMatchUps: true,
     inContext: true,
   }).matchUps;
@@ -207,7 +206,7 @@ it('will not save overlapping timeModifiers', () => {
   result = tournamentEngine.executionQueue([bulkScheduleFirst]);
   expect(result.success).toEqual(true);
 
-  matchUps = competitionEngine.allCompetitionMatchUps({
+  matchUps = tournamentEngine.allCompetitionMatchUps({
     nextMatchUps: true,
     inContext: true,
   }).matchUps;
@@ -232,7 +231,7 @@ it('will not save overlapping timeModifiers', () => {
   result = tournamentEngine.executionQueue([bulkScheduleFirst]);
   expect(result.success).toEqual(true);
 
-  matchUps = competitionEngine.allCompetitionMatchUps({
+  matchUps = tournamentEngine.allCompetitionMatchUps({
     nextMatchUps: true,
     inContext: true,
   }).matchUps;

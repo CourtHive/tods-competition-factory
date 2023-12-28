@@ -2,7 +2,7 @@ import { addDrawNotice } from '../notifications/drawNotifications';
 import { addExtension } from '../extensions/addExtension';
 import { removeLineUpSubstitutions } from './removeLineUpSubstitutions';
 import { findExtension } from '../../acquire/findExtension';
-import { validateLineUp } from './validateTeamLineUp';
+import { validateLineUp } from '../../validators/validateTeamLineUp';
 
 import { LINEUPS } from '../../constants/extensionConstants';
 import { SUCCESS } from '../../constants/resultConstants';

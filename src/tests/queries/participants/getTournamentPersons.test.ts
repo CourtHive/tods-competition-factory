@@ -1,5 +1,5 @@
 import tournamentEngine from '../../engines/syncEngine';
-import mocksEngine from '../../../mocksEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
 import PARTICIPANT_PRIVACY_DEFAULT from '../../../fixtures/policies/POLICY_PRIVACY_DEFAULT';

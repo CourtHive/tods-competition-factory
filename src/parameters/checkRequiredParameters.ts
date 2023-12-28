@@ -46,7 +46,7 @@ import {
   TOURNAMENT_RECORDS,
   VENUE_IDS,
 } from '../constants/attributeConstants';
-import { decorateResult } from '../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../global/functions/decorateResult';
 
 type Params = { [key: string]: any };
 type RequiredParams = {
@@ -100,7 +100,9 @@ export function checkRequiredParameters(
   params: Params,
   requiredParams: RequiredParams,
   stack?: string
-) {
+): ResultType & {
+  valid?: boolean;
+} {
   if (!params && !isObject(params)) return { error: INVALID_VALUES };
   if (!requiredParams?.length || params?._bypassParamCheck)
     return { valid: true };

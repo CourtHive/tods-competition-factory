@@ -1,4 +1,4 @@
-import { lastSetFormatIsTimed } from '../../../matchUpEngine/governors/matchUpFormatGovernor/lastSetFormatisTimed';
+import { lastSetFormatIsTimed } from '../../../assemblies/generators/matchUpFormatCode/lastSetFormatisTimed';
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { removeDirectedParticipants } from '../../matchUps/drawPositions/removeDirectedParticipants';
 import { decorateResult } from '../../../global/functions/decorateResult';

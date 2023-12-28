@@ -1,4 +1,4 @@
-import { resolveTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
+import { resolveTieFormat } from '../../query/hierarchical/tieFormats/resolveTieFormat';
 import { validateTieFormat } from '../../validators/validateTieFormat';
 import { getPairedParticipant } from '../../query/participant/getPairedParticipant';
 import { addParticipant } from './addParticipants';
@@ -10,13 +10,6 @@ import { generateRange } from '../../utilities';
 
 import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '../../constants/matchUpTypes';
 import { DIRECT_ACCEPTANCE } from '../../constants/entryStatusConstants';
-import {
-  CollectionAssignment,
-  DrawDefinition,
-  Event,
-  TieFormat,
-  Tournament,
-} from '../../types/tournamentTypes';
 import { FEMALE, MALE, MIXED } from '../../constants/genderConstants';
 import { COMPETITOR } from '../../constants/participantRoles';
 import { DESCENDING } from '../../constants/sortingConstants';
@@ -33,6 +26,13 @@ import {
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
 } from '../../constants/errorConditionConstants';
+import {
+  CollectionAssignment,
+  DrawDefinition,
+  Event,
+  TieFormat,
+  Tournament,
+} from '../../types/tournamentTypes';
 
 type GenerateLineUpsArgs = {
   useDefaultEventRanking?: boolean;

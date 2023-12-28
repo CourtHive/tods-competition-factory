@@ -1,12 +1,12 @@
 import { getStructureGroups } from '../../../../query/structure/getStructureGroups';
-import { generateQualifyingLink } from '../links/generateQualifyingLink';
-import { addExtension } from '../../../../mutate/extensions/addExtension';
 import { coerceEven, isConvertableInteger } from '../../../../utilities/math';
 import { decorateResult } from '../../../../global/functions/decorateResult';
+import { addExtension } from '../../../../mutate/extensions/addExtension';
+import { generateQualifyingLink } from '../links/generateQualifyingLink';
 import structureTemplate from '../../templates/structureTemplate';
+import { constantToString } from '../../../../utilities/strings';
 import { generateRoundRobin } from './roundRobin/roundRobin';
 import { treeMatchUps } from './eliminationTree';
-import { constantToString } from '../../../../utilities/strings';
 
 import POLICY_ROUND_NAMING_DEFAULT from '../../../../fixtures/policies/POLICY_ROUND_NAMING_DEFAULT';
 import { POLICY_TYPE_ROUND_NAMING } from '../../../../constants/policyConstants';

@@ -1,8 +1,8 @@
 import { unlinkTournament } from '../../../mutate/tournaments/tournamentLinks';
-import { intersection } from '../../../utilities';
 import asyncCompetitionEngine from '../../engines/asyncEngine';
-import competitionEngineSync from '../../engines/competitionEngine';
-import mocksEngine from '../../../mocksEngine';
+import competitionEngineSync from '../../engines/syncEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
+import { intersection } from '../../../utilities';
 import { expect, test } from 'vitest';
 
 import { LINKED_TOURNAMENTS } from '../../../constants/extensionConstants';

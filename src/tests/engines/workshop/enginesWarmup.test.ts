@@ -1,7 +1,7 @@
 import { getParticipants } from '../../../query/participants/getParticipants';
-import { completeDrawMatchUps } from '../../../mocksEngine/generators/completeDrawMatchUps';
+import { completeDrawMatchUps } from '../../../assemblies/generators/mocks/completeDrawMatchUps';
 import eventGovernor from '../../../assemblies/governors/eventGovernor';
-import mocksEngine from '../../../mocksEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
 import syncEngine from '../../../assemblies/engines/sync';
 import askEngine from '../../../assemblies/engines/ask';
 import { expect, test } from 'vitest';

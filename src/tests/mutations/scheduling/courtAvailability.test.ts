@@ -1,7 +1,6 @@
-import tournamentEngine from '../../engines/syncEngine';
-import competitionEngine from '../../engines/competitionEngine';
-import { mocksEngine } from '../../..';
 import { extractDate } from '../../../utilities/dateTime';
+import tournamentEngine from '../../engines/syncEngine';
+import { mocksEngine } from '../../..';
 import { expect, test } from 'vitest';
 
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
@@ -109,7 +108,7 @@ test.each(scenarios)(
 
     tournamentEngine.setState(tournamentRecord);
 
-    const { courts } = competitionEngine.getVenuesAndCourts();
+    const { courts } = tournamentEngine.getVenuesAndCourts();
     scenario.expectations.forEach((expectation, index) => {
       expect(courts[index].dateAvailability[0].startTime).toEqual(
         expectation.startTime

@@ -1,9 +1,9 @@
+import { tallyParticipantResults } from '../../../../../query/matchUps/roundRobinTally/roundRobinTally';
 import { allPlayoffPositionsFilled } from '../../../../../query/drawDefinition/structureActions';
 import { generateMatchUpOutcome } from '../../primitives/generateMatchUpOutcome';
+import mocksEngine from '../../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../../engines/syncEngine';
-import matchUpEngine from '../../../../../matchUpEngine/sync';
 import { generateRange } from '../../../../../utilities';
-import mocksEngine from '../../../../../mocksEngine';
 import { expect } from 'vitest';
 
 import { FORMAT_STANDARD } from '../../../../../fixtures/scoring/matchUpFormats';
@@ -158,7 +158,7 @@ export function roundRobinWithPlayoffsTest(params) {
       (matchUp) => matchUp.structureId === structureId
     );
 
-    const { participantResults } = matchUpEngine.tallyParticipantResults({
+    const { participantResults } = tallyParticipantResults({
       matchUps: structureMatchUps,
       matchUpFormat,
     });

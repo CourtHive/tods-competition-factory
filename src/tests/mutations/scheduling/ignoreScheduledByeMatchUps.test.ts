@@ -1,7 +1,6 @@
-import tournamentEngine from '../../engines/syncEngine';
 import { addDays, dateRange } from '../../../utilities/dateTime';
-import mocksEngine from '../../../mocksEngine';
-import competitionEngine from '../../engines/competitionEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
+import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 import {
   chunkArray,
@@ -25,14 +24,14 @@ it('supports pro-scheduling', () => {
     endDate,
   });
 
-  competitionEngine.setState(tournamentRecord);
+  tournamentEngine.setState(tournamentRecord);
 
   expect(
     tournamentRecord.venues[0].courts[0].dateAvailability[0].startTime
   ).toEqual('07:00');
 
   const tournamentDateRange = dateRange(startDate, endDate);
-  const { rounds } = competitionEngine.getRounds();
+  const { rounds } = tournamentEngine.getRounds();
   const roundChunks = chunkArray(rounds, 2);
 
   expect(rounds[0].unscheduledCount).toEqual(12);
@@ -56,14 +55,14 @@ it('supports pro-scheduling', () => {
     scheduledTime: '08:00',
     venueId,
   };
-  let result = competitionEngine.bulkScheduleMatchUps({
+  let result = tournamentEngine.bulkScheduleMatchUps({
     matchUpContextIds,
     schedule,
   });
   expect(result.success).toEqual(true);
   expect(result.scheduled).toEqual(0);
 
-  result = competitionEngine.bulkScheduleMatchUps({
+  result = tournamentEngine.bulkScheduleMatchUps({
     scheduleByeMatchUps: true,
     matchUpContextIds,
     schedule,
@@ -77,10 +76,10 @@ it('supports pro-scheduling', () => {
   }));
   expect(schedulingProfile[0].venues[0].rounds.length).toEqual(2);
 
-  result = competitionEngine.setSchedulingProfile({ schedulingProfile });
+  result = tournamentEngine.setSchedulingProfile({ schedulingProfile });
   expect(result.success).toEqual(true);
 
-  result = competitionEngine.scheduleProfileRounds({ pro: true });
+  result = tournamentEngine.scheduleProfileRounds({ pro: true });
   expect(result.success).toEqual(true);
 
   const overlap = intersection(

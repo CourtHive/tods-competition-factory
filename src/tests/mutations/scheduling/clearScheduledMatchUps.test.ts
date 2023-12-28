@@ -1,11 +1,10 @@
 import { visualizeScheduledMatchUps } from '../../../global/testHarness/testUtilities/visualizeScheduledMatchUps';
+import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
 import { extractTime, timeStringMinutes } from '../../../utilities/dateTime';
 import { getParticipantId } from '../../../global/functions/extractors';
+import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
-import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
 import { intersection } from '../../../utilities';
-import mocksEngine from '../../../mocksEngine';
-import competitionEngine from '../../engines/competitionEngine';
 import { expect, it } from 'vitest';
 
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
@@ -93,9 +92,9 @@ it.each([
       endDate,
     });
 
-    competitionEngine.setState(tournamentRecord);
+    tournamentEngine.setState(tournamentRecord);
 
-    competitionEngine.attachPolicies({
+    tournamentEngine.attachPolicies({
       policyDefinitions: POLICY_SCHEDULING_NO_DAILY_LIMITS,
     });
 
@@ -109,7 +108,7 @@ it.each([
           structures: [{ structureId }],
         },
       } = tournamentEngine.getEvent({ drawId });
-      const result = competitionEngine.addSchedulingProfileRound({
+      const result = tournamentEngine.addSchedulingProfileRound({
         round: { tournamentId, eventId, drawId, structureId, roundNumber: 1 },
         scheduleDate: startDate,
         venueId,
@@ -125,7 +124,7 @@ it.each([
           structures: [{ structureId }],
         },
       } = tournamentEngine.getEvent({ drawId });
-      const result = competitionEngine.addSchedulingProfileRound({
+      const result = tournamentEngine.addSchedulingProfileRound({
         round: { tournamentId, eventId, drawId, structureId, roundNumber: 2 },
         scheduleDate: startDate,
         venueId,
@@ -134,7 +133,7 @@ it.each([
     }
 
     // Scheduled Profile Rounds ##############################
-    let result = competitionEngine.scheduleProfileRounds({
+    let result = tournamentEngine.scheduleProfileRounds({
       scheduleDates: [startDate],
     });
     expect(result.success).toEqual(true);
@@ -155,7 +154,7 @@ it.each([
         .length
     ).toEqual(0);
 
-    let { matchUps } = competitionEngine.allCompetitionMatchUps({
+    let { matchUps } = tournamentEngine.allCompetitionMatchUps({
       afterRecoveryTimes: true,
     });
     let scheduledMatchUps = matchUps.filter(hasSchedule);
@@ -172,7 +171,7 @@ it.each([
     expect(roundMap.length).toEqual(scheduledCount);
     // console.log(roundMap); // useful for eye-balling
 
-    const participantsResult = competitionEngine.getCompetitionParticipants({
+    const participantsResult = tournamentEngine.getCompetitionParticipants({
       withIndividualParticipants: true,
       withPotentialMatchUps: true,
       withMatchUps: true,
@@ -213,13 +212,13 @@ it.each([
 
     expect(participantsWithMultipleScheduledMatchUps).toEqual(twoMatchUps);
 
-    result = competitionEngine.getVenuesReport({ venueIds: 'invalid value' });
+    result = tournamentEngine.getVenuesReport({ venueIds: 'invalid value' });
     expect(result.error).toEqual(INVALID_VALUES);
-    result = competitionEngine.getVenuesReport({ dates: 'invalid value' });
+    result = tournamentEngine.getVenuesReport({ dates: 'invalid value' });
     expect(result.error).toEqual(INVALID_VALUES);
-    result = competitionEngine.getVenuesReport({ dates: ['bogus date'] });
+    result = tournamentEngine.getVenuesReport({ dates: ['bogus date'] });
     expect(result.error).toEqual(INVALID_DATE);
-    result = competitionEngine.getVenuesReport({
+    result = tournamentEngine.getVenuesReport({
       dates: [startDate],
       venueIds: [venueId],
     });
@@ -227,7 +226,7 @@ it.each([
 
     const {
       venuesReport: [{ venueReport }],
-    } = competitionEngine.getVenuesReport();
+    } = tournamentEngine.getVenuesReport();
     const dateVenueReport = venueReport[startDate];
     expect(dateVenueReport.scheduledMatchUpsCount).toEqual(scheduledCount);
     expect(dateVenueReport.availableCourts).toEqual(courtsCount);
@@ -235,10 +234,10 @@ it.each([
     expect(dateVenueReport.scheduledMinutes).toEqual(scheduledMinutes);
     expect(dateVenueReport.percentUtilization).toEqual(percentUtilization);
 
-    result = competitionEngine.clearScheduledMatchUps();
+    result = tournamentEngine.clearScheduledMatchUps();
     expect(result.success).toEqual(true);
 
-    ({ matchUps } = competitionEngine.allCompetitionMatchUps());
+    ({ matchUps } = tournamentEngine.allCompetitionMatchUps());
     scheduledMatchUps = matchUps.filter(hasSchedule);
     expect(scheduledMatchUps.length).toEqual(0);
   }
@@ -290,9 +289,9 @@ it('can clear scheduled matchUps', () => {
     endDate,
   });
 
-  competitionEngine.setState(tournamentRecord);
+  tournamentEngine.setState(tournamentRecord);
 
-  competitionEngine.attachPolicies({
+  tournamentEngine.attachPolicies({
     policyDefinitions: POLICY_SCHEDULING_NO_DAILY_LIMITS,
   });
 
@@ -306,7 +305,7 @@ it('can clear scheduled matchUps', () => {
         structures: [{ structureId }],
       },
     } = tournamentEngine.getEvent({ drawId });
-    const result = competitionEngine.addSchedulingProfileRound({
+    const result = tournamentEngine.addSchedulingProfileRound({
       round: { tournamentId, eventId, drawId, structureId, roundNumber: 1 },
       scheduleDate: startDate,
       venueId,
@@ -322,7 +321,7 @@ it('can clear scheduled matchUps', () => {
         structures: [{ structureId }],
       },
     } = tournamentEngine.getEvent({ drawId });
-    const result = competitionEngine.addSchedulingProfileRound({
+    const result = tournamentEngine.addSchedulingProfileRound({
       round: { tournamentId, eventId, drawId, structureId, roundNumber: 2 },
       scheduleDate: startDate,
       venueId,
@@ -331,7 +330,7 @@ it('can clear scheduled matchUps', () => {
   }
 
   // Scheduled Profile Rounds ##############################
-  let result = competitionEngine.scheduleProfileRounds({
+  let result = tournamentEngine.scheduleProfileRounds({
     scheduleDates: [startDate],
   });
   expect(result.success).toEqual(true);
@@ -369,7 +368,7 @@ it('can clear scheduled matchUps', () => {
     return !!matchUpScheduleKeys?.length;
   };
 
-  let { matchUps } = competitionEngine.allCompetitionMatchUps({
+  let { matchUps } = tournamentEngine.allCompetitionMatchUps({
     afterRecoveryTimes: true,
   });
   let scheduledMatchUps = matchUps.filter(hasSchedule);
@@ -399,7 +398,7 @@ it('can clear scheduled matchUps', () => {
     participants: competitionParticipants,
     participantIdsWithConflicts,
     mappedMatchUps,
-  } = competitionEngine.getCompetitionParticipants({
+  } = tournamentEngine.getCompetitionParticipants({
     withIndividualParticipants: true,
     withMatchUps: true,
   });
@@ -430,10 +429,10 @@ it('can clear scheduled matchUps', () => {
 
   expect(participantsWithMultipleScheduledMatchUps).toEqual(twoMatchUps);
 
-  result = competitionEngine.clearScheduledMatchUps();
+  result = tournamentEngine.clearScheduledMatchUps();
   expect(result.success).toEqual(true);
 
-  ({ matchUps } = competitionEngine.allCompetitionMatchUps());
+  ({ matchUps } = tournamentEngine.allCompetitionMatchUps());
   scheduledMatchUps = matchUps.filter(hasSchedule);
   expect(scheduledMatchUps.length).toEqual(0);
 });

@@ -1,6 +1,5 @@
+import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
-import competitionEngine from '../../engines/competitionEngine';
-import mocksEngine from '../../../mocksEngine';
 import { expect, it } from 'vitest';
 
 import { VALUE_UNCHANGED } from '../../../constants/errorConditionConstants';
@@ -50,7 +49,7 @@ it('can set participant scaleItems', () => {
   expect(result?.scaleValue).toEqual(scaleItem.scaleValue);
 
   ({ scaleItem: result, tournamentId } =
-    competitionEngine.getParticipantScaleItem({
+    tournamentEngine.getParticipantScaleItem({
       scaleAttributes,
       participantId,
     }));
@@ -69,7 +68,7 @@ it('can set participant scaleItems', () => {
     scaleItem: result,
     tournamentId,
     error,
-  } = competitionEngine.getParticipantScaleItem({
+  } = tournamentEngine.getParticipantScaleItem({
     scaleAttributes,
     participantId,
   }));

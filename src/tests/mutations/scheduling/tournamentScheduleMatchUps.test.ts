@@ -1,6 +1,5 @@
 import { getMatchUpIds } from '../../../global/functions/extractors';
-import competitionEngine from '../../engines/competitionEngine';
-import mocksEngine from '../../../mocksEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
@@ -16,13 +15,13 @@ it('auto schedules venue if only one venue provided', () => {
   });
 
   tournamentEngine.setState(tournamentRecord);
-  competitionEngine.setState([tournamentRecord]);
-  let { upcomingMatchUps } = competitionEngine.getCompetitionMatchUps();
+  tournamentEngine.setState([tournamentRecord]);
+  let { upcomingMatchUps } = tournamentEngine.getCompetitionMatchUps();
 
   const matchUpIds = getMatchUpIds(upcomingMatchUps);
   expect(matchUpIds.length).toBeGreaterThan(0);
 
-  let result = competitionEngine.scheduleMatchUps({
+  let result = tournamentEngine.scheduleMatchUps({
     scheduleDate: startDate,
     matchUpIds,
   });
@@ -30,12 +29,12 @@ it('auto schedules venue if only one venue provided', () => {
   const scheduledMatchUpsCount = result.scheduledMatchUpIds.length;
 
   const matchUpFilters = { scheduledDate: startDate };
-  result = competitionEngine.competitionScheduleMatchUps({
+  result = tournamentEngine.competitionScheduleMatchUps({
     matchUpFilters,
   });
   expect(result.dateMatchUps.length).toEqual(scheduledMatchUpsCount);
 
-  ({ upcomingMatchUps } = competitionEngine.getCompetitionMatchUps());
+  ({ upcomingMatchUps } = tournamentEngine.getCompetitionMatchUps());
   const { matchUpId } = upcomingMatchUps[0];
 
   expect(upcomingMatchUps[0].schedule.venueId).toEqual(venueIds[0]);
@@ -45,7 +44,7 @@ it('auto schedules venue if only one venue provided', () => {
   result = tournamentEngine.setTournamentStartDate({ startDate });
   expect(result.unscheduledMatchUpIds.length).toEqual(scheduledMatchUpsCount);
 
-  result = competitionEngine.competitionScheduleMatchUps({
+  result = tournamentEngine.competitionScheduleMatchUps({
     matchUpFilters,
   });
   expect(result.dateMatchUps.length).toEqual(0);

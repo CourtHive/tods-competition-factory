@@ -2,7 +2,7 @@ import { generateTieMatchUpScore } from '../../../../assemblies/generators/tieMa
 import { findExtension } from '../../../../acquire/findExtension';
 import { generateTeamTournament } from './generateTestTeamTournament';
 import { setSubscriptions } from '../../../../global/state/globalState';
-import mocksEngine from '../../../../mocksEngine';
+import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it, test } from 'vitest';
 

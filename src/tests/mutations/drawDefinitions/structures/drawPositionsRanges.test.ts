@@ -2,7 +2,7 @@ import { getAllStructureMatchUps } from '../../../../query/matchUps/getAllStruct
 import { feedInChampionship } from '../primitives/feedIn';
 import tournamentEngine from '../../../engines/syncEngine';
 import { intersection } from '../../../../utilities';
-import mocksEngine from '../../../../mocksEngine';
+import mocksEngine from '../../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
 import { FEED_IN_CHAMPIONSHIP_TO_SF } from '../../../../constants/drawDefinitionConstants';

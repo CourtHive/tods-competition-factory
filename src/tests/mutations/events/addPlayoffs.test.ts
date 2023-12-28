@@ -1,7 +1,7 @@
 import { constantToString } from '../../../utilities/strings';
 import { deriveExponent } from '../../../utilities/math';
 import { generateRange } from '../../../utilities';
-import mocksEngine from '../../../mocksEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
 import { setSubscriptions } from '../../..';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';

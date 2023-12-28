@@ -1,6 +1,5 @@
+import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
-import mocksEngine from '../../../mocksEngine';
-import competitionEngine from '../../engines/competitionEngine';
 import { expect, test } from 'vitest';
 
 /*
@@ -87,7 +86,7 @@ test.skip('competitionSchedule performance 30 events', () => {
   expect(scheduledRounds.length).toEqual(30);
 
   const matchUpFilters = { scheduledDate: startDate };
-  result = competitionEngine.competitionScheduleMatchUps({
+  result = tournamentEngine.competitionScheduleMatchUps({
     matchUpFilters,
   });
   expect(result.dateMatchUps.length).toEqual(240);
@@ -134,7 +133,7 @@ test.skip('competitionSchedule performance 4 events', () => {
   expect(scheduledRounds.length).toEqual(4);
 
   const matchUpFilters = { scheduledDate: startDate };
-  result = competitionEngine.competitionScheduleMatchUps({
+  result = tournamentEngine.competitionScheduleMatchUps({
     matchUpFilters,
   });
   expect(result.dateMatchUps.length).toEqual(256);

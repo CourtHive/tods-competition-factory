@@ -1,7 +1,6 @@
 import { dateStringDaysChange } from '../../utilities/dateTime';
-import competitionEngine from '../../tests/engines/competitionEngine';
 import tournamentEngine from '../../tests/engines/syncEngine';
-import mocksEngine from '../../mocksEngine';
+import mocksEngine from '../../assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
 import { FACTORY } from '../../constants/extensionConstants';
@@ -30,12 +29,12 @@ test('setting deepCopy option to false will allow source objects to be modified'
   expect(tournamentRecord.startDate).toEqual(newStartDate);
   expect(startDate).not.toEqual(newStartDate);
 
-  const dates = competitionEngine.getCompetitionDateRange();
+  const dates = tournamentEngine.getCompetitionDateRange();
   expect(dates.endDate).toEqual(endDate);
 
   expect(tournamentRecord.extensions).not.toBeUndefined();
 
-  result = competitionEngine.devContext(true).addExtension({
+  result = tournamentEngine.devContext(true).addExtension({
     extension: { name: 'test', value: 'test' },
     discover: true,
   });

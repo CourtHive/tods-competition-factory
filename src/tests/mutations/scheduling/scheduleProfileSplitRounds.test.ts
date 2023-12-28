@@ -1,9 +1,8 @@
 import { visualizeScheduledMatchUps } from '../../../global/testHarness/testUtilities/visualizeScheduledMatchUps';
-import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
 import { getScheduledRoundsDetails } from '../../../query/matchUps/scheduling/getScheduledRoundsDetails';
-import competitionEngine from '../../engines/competitionEngine';
+import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
+import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
-import mocksEngine from '../../../mocksEngine';
 import { expect, it } from 'vitest';
 
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
@@ -306,7 +305,7 @@ it('Can split rounds with multiple BYEs', () => {
 
   visualizeScheduledMatchUps({ scheduledMatchUps, showGlobalLog });
 
-  const { tournamentRecords } = competitionEngine.getState();
+  const { tournamentRecords } = tournamentEngine.getState();
 
   for (const index of [0, 1]) {
     const { scheduledRoundsDetails } = getScheduledRoundsDetails({

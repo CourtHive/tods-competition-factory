@@ -1,6 +1,5 @@
-import competitionEngine from '../../engines/competitionEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
-import mocksEngine from '../../../mocksEngine';
 import { expect, test } from 'vitest';
 
 import POLICY_PRIVACY_DEFAULT from '../../../fixtures/policies/POLICY_PRIVACY_DEFAULT';
@@ -112,8 +111,8 @@ test('ratings values should be present on tournamentParticipants in getEventData
       .participant.timeItems
   ).toBeUndefined();
 
-  competitionEngine.setState(tournamentRecord);
-  const result = competitionEngine.competitionScheduleMatchUps({
+  tournamentEngine.setState(tournamentRecord);
+  const result = tournamentEngine.competitionScheduleMatchUps({
     participantsProfile,
   });
   expect(

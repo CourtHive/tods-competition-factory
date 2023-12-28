@@ -1,7 +1,7 @@
 import { getMatchUpContextIds } from '../../../query/matchUp/getMatchUpContextIds';
 import { getMatchUpType } from '../../../query/matchUp/getMatchUpType';
 import asyncTournamentEngine from '../../engines/asyncEngine';
-import mocksEngine from '../../../mocksEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngineSync from '../../engines/syncEngine';
 import { expect, test } from 'vitest';
 

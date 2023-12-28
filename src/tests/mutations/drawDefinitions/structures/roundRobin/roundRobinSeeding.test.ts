@@ -1,7 +1,7 @@
 import { getStructureSeedAssignments } from '../../../../../query/structure/getStructureSeedAssignments';
 import tournamentEngine from '../../../../engines/syncEngine';
 import { chunkArray, unique } from '../../../../../utilities';
-import mocksEngine from '../../../../../mocksEngine';
+import mocksEngine from '../../../../../assemblies/engines/mock';
 import { it, expect } from 'vitest';
 
 import POLICY_SEEDING_DEFAULT from '../../../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
