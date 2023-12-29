@@ -9,7 +9,7 @@ import { INDIVIDUAL } from '../../../constants/participantConstants';
 
 it('can retrieve and modify tournament persons', () => {
   let tournamentPersons = tournamentEngine.getTournamentPersons({
-    sandboxTournament: {},
+    sandboxTournament: { tournamentId: 'boo' },
   }).tournamentPersons;
   expect(tournamentPersons.length).toEqual(0);
 

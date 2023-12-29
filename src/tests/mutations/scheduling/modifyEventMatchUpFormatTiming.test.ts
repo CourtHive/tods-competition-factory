@@ -1,22 +1,59 @@
+import { removeEventMatchUpFormatTiming } from '../../../mutate/events/extensions/removeEventMatchUpFormatTiming';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import POLICY_SCHEDULING_DEFAULT from '../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
 import POLICY_SCORING_USTA from '../../../fixtures/policies/POLICY_SCORING_USTA';
-import { EVENT_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
 import { SCHEDULE_TIMING } from '../../../constants/extensionConstants';
+import {
+  EVENT_NOT_FOUND,
+  MISSING_EVENT,
+} from '../../../constants/errorConditionConstants';
 
 const SHORT4TB10 = 'SET1-S:4/TB10';
 
 it('can modify event timing for matchUpFormat codes', () => {
   const {
     tournamentRecord,
-    eventIds: [eventId],
+    eventIds: [eventId, eventId2],
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [{ drawSize: 32 }],
+    drawProfiles: [{ drawSize: 32 }, { drawSize: 16 }],
   });
+
+  let result = tournamentEngine.removeEventMatchUpFormatTiming({
+    sandboxTournament: tournamentRecord,
+    eventId,
+  });
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.removeEventMatchUpFormatTiming({
+    sandboxTournament: tournamentRecord,
+  });
+  expect(result.error).toEqual(MISSING_EVENT);
+
+  result = tournamentEngine.removeEventMatchUpFormatTiming({
+    sandboxTournament: tournamentRecord,
+    eventId: 'bogusEventId',
+  });
+  expect(result.error).toEqual(EVENT_NOT_FOUND);
+
+  // @ts-expect-error missing eventId
+  result = removeEventMatchUpFormatTiming({ tournamentRecord });
+  expect(result.error).toEqual(MISSING_EVENT);
+
+  result = removeEventMatchUpFormatTiming({
+    eventId: eventId2,
+    tournamentRecord,
+  });
+  expect(result.success).toEqual(true);
+
+  result = removeEventMatchUpFormatTiming({
+    eventId: 'bogusEventId',
+    tournamentRecord,
+  });
+  expect(result.error).toEqual(EVENT_NOT_FOUND);
 
   tournamentEngine.setState(tournamentRecord);
 
@@ -31,7 +68,7 @@ it('can modify event timing for matchUpFormat codes', () => {
   let eventMatchUpFormatTiming = timingResult.eventMatchUpFormatTiming;
   expect(eventMatchUpFormatTiming).not.toBeUndefined();
 
-  let result = tournamentEngine.modifyEventMatchUpFormatTiming({
+  result = tournamentEngine.modifyEventMatchUpFormatTiming({
     matchUpFormat: FORMAT_STANDARD,
     averageMinutes: 127,
     eventId,
@@ -86,6 +123,9 @@ it('can modify event timing for matchUpFormat codes', () => {
     2
   );
 
+  result = tournamentEngine.removeEventMatchUpFormatTiming({});
+  expect(result.error).toEqual(MISSING_EVENT);
+
   result = tournamentEngine.removeEventMatchUpFormatTiming({
     eventId: 'unknownEventId',
   });
@@ -103,8 +143,8 @@ it('can modify event timing for matchUpFormat codes', () => {
   expect(methods.length).toEqual(0);
 
   ({ eventMatchUpFormatTiming } = tournamentEngine.getEventMatchUpFormatTiming({
-    eventId,
     matchUpFormats: [FORMAT_STANDARD, SHORT4TB10],
+    eventId,
   }));
   expect(eventMatchUpFormatTiming.map((t) => t.averageMinutes)).toEqual([
     90, 90,

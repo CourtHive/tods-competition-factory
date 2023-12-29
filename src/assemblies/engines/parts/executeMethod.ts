@@ -9,6 +9,7 @@ import {
 } from '../../../global/state/globalState';
 
 import { FactoryEngine } from '../../../types/factoryTypes';
+import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 
 /**
  * Executes a function within a FactoryEngine.
@@ -32,11 +33,18 @@ export function executeFunction(
   delete engine.error;
 
   const start = Date.now();
-  const tournamentRecords = getTournamentRecords();
   const tournamentId = getTournamentId();
-  const tournamentRecord =
-    params?.sandboxTournament ?? getTournamentRecord(tournamentId);
   if (params) params.activeTournamentId = tournamentId;
+
+  if (params?.sandboxTournament && !params?.sandboxTournament.tournamentId)
+    return { error: INVALID_VALUES };
+
+  const tournamentRecord =
+    params?.sandboxTournament || getTournamentRecord(tournamentId);
+
+  const tournamentRecords = params?.sandboxTournament
+    ? { [params?.sandboxTournament.tournamentId]: params.sandboxTournament }
+    : getTournamentRecords();
 
   const augmentedParams = params
     ? paramsMiddleware(tournamentRecords, params)
