@@ -215,7 +215,7 @@ test.each([tournamentEngine])(
 
     visualizeScheduledMatchUps({
       scheduledMatchUps: result.dateMatchUps,
-      showGlobalLog: false,
+      showGlobalLog: true,
     });
 
     result = tournamentEngine.competitionScheduleMatchUps({
