@@ -6,52 +6,15 @@ import { makeDeepCopy } from '../../utilities/makeDeepCopy';
 import { getFlightProfile } from '../event/getFlightProfile';
 import { median } from '../../utilities/math';
 
+import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
 import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
+import { Event, Tournament, EventTypeUnion } from '../../types/tournamentTypes';
 import ratingsParameters from '../../fixtures/ratings/ratingsParameters';
+import { PARTICIPANT_ID } from '../../constants/attributeConstants';
 import { ResultType } from '../../global/functions/decorateResult';
 import { INDIVIDUAL } from '../../constants/participantConstants';
 import { SUCCESS } from '../../constants/resultConstants';
-import {
-  MISSING_EVENT,
-  MISSING_TOURNAMENT_RECORD,
-} from '../../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  Event,
-  Tournament,
-  EventTypeUnion,
-} from '../../types/tournamentTypes';
-
-type GetEventArgs = {
-  context: { [key: string]: any };
-  tournamentRecord: Tournament;
-  drawDefinition: DrawDefinition;
-  event: Event;
-};
-
-export function getEvent({
-  tournamentRecord,
-  drawDefinition,
-  context,
-  event,
-}: GetEventArgs) {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!event) return { error: MISSING_EVENT };
-
-  const eventCopy = makeDeepCopy(event);
-  if (context) Object.assign(eventCopy, context);
-
-  const drawDefinitionCopy =
-    drawDefinition &&
-    eventCopy.drawDefinitions?.find(
-      ({ drawId }) => drawDefinition.drawId === drawId
-    );
-
-  return definedAttributes({
-    drawDefinition: drawDefinitionCopy,
-    event: eventCopy,
-  });
-}
+import { intersection } from '../../utilities/arrays';
 
 export type RankingStat = {
   median: number;
@@ -89,10 +52,10 @@ export function getEvents({
   tournamentRecord,
   withScaleValues,
   scaleEventType,
-  inContext,
-  eventIds,
-  drawIds,
-  context,
+  inContext, // hydrate with tournamentId
+  eventIds, // only return events with these eventIds
+  drawIds, // only return events with these drawIds, and only drawDefinitions with these drawIds
+  context, // additional context to add to each event
 }: GetEventsArgs): ResultType & {
   eventScaleValues?: EventScaleValues;
   events?: Event[];
@@ -106,11 +69,15 @@ export function getEvents({
         !eventIds || (Array.isArray(eventIds) && eventIds.includes(eventId))
     )
     .map((event) => {
+      const eventDrawIds = event.drawDefinitions?.map(xa('drawId'));
+      if (drawIds?.length && !intersection(drawIds, eventDrawIds).length)
+        return;
       const eventCopy = makeDeepCopy(event);
       if (inContext) Object.assign(eventCopy, { tournamentId });
       if (context) Object.assign(eventCopy, context);
       return eventCopy;
-    });
+    })
+    .filter(Boolean);
 
   const eventsMap = {};
 
@@ -138,7 +105,7 @@ export function getEvents({
       const selectedEntries = (event.entries ?? []).filter(({ entryStatus }) =>
         STRUCTURE_SELECTED_STATUSES.includes(entryStatus)
       );
-      const participantIds = selectedEntries.map(xa('participantId'));
+      const participantIds = selectedEntries.map(xa(PARTICIPANT_ID));
 
       const processParticipant = (participant) => {
         if (participant?.ratings?.[eventType]) {
@@ -151,6 +118,15 @@ export function getEvents({
               const value = parseFloat(rating.scaleValue?.[accessor]);
               if (value) eventsMap[eventId].ratings[scaleName].push(value);
             }
+          }
+        }
+        if (participant?.rankings?.[eventType]) {
+          for (const ranking of participant?.rankings?.[eventType] ?? []) {
+            const scaleName = ranking.scaleName;
+            if (!eventsMap[eventId].ranking[scaleName])
+              eventsMap[eventId].ranking[scaleName] = [];
+            if (ranking.scaleValue)
+              eventsMap[eventId].ranking[scaleName].push(ranking.scaleValue);
           }
         }
       };
@@ -204,6 +180,20 @@ export function getEvents({
               }
             }
           }
+          if (
+            eventsMap[eventId].draws?.[drawId] &&
+            participant?.rankings?.[eventType]
+          ) {
+            for (const ranking of participant?.rankings?.[eventType] ?? []) {
+              const scaleName = ranking.scaleName;
+              if (!eventsMap[eventId].draws[drawId]?.ranking[scaleName])
+                eventsMap[eventId].draws[drawId].ranking[scaleName] = [];
+              const value = ranking.scaleValue;
+              if (value) {
+                eventsMap[eventId].draws[drawId].ranking[scaleName].push(value);
+              }
+            }
+          }
         };
         for (const participantId of participantIds.filter(Boolean)) {
           const participant = participantMap?.[participantId]?.participant;
@@ -246,7 +236,7 @@ export function getEvents({
       for (const flight of flightProfile?.flights ?? []) {
         const drawId = flight.drawId;
         if (ignoreDrawId(drawId)) continue;
-        const participantIds = flight.drawEntries.map(xa('participantId'));
+        const participantIds = flight.drawEntries.map(xa(PARTICIPANT_ID));
         processFlight(drawId, participantIds);
       }
 

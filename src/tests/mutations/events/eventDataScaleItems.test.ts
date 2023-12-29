@@ -119,4 +119,15 @@ test('ratings values should be present on tournamentParticipants in getEventData
     result.completedMatchUps[0].sides[0].participant.ratings.SINGLES[0]
       .scaleName
   ).toEqual(WTN);
+
+  const eventScaleValues = tournamentEngine.getEvents({
+    withScaleValues: true,
+  }).eventScaleValues;
+  const wtnStats = eventScaleValues[eventId].ratingsStats.WTN;
+  const statKeys = Object.keys(wtnStats);
+  expect(statKeys.sort()).toEqual(['avg', 'max', 'median', 'min']);
+  const statValues = Object.values(wtnStats);
+  expect(statValues.length).toEqual(4);
+  expect(statValues.every((value) => typeof value === 'number')).toEqual(true);
+  expect(eventScaleValues[eventId].ratings.WTN.length).toEqual(4);
 });
