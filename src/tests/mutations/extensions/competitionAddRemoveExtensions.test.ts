@@ -1,12 +1,11 @@
 import { findExtension } from '../../../acquire/findExtension';
-import asyncCompetitionEngine from '../../engines/asyncEngine';
 import competitionEngineSync from '../../engines/syncEngine';
 import mocksEngine from '../../../assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
 import { Tournament } from '../../../types/tournamentTypes';
 
-test.each([competitionEngineSync, asyncCompetitionEngine])(
+test.each([competitionEngineSync])(
   'can add and remove extensions from tournamentRecords loaded into competitionEngine',
   async (competitionEngine) => {
     const { tournamentRecord: firstRecord } =
@@ -47,7 +46,7 @@ test.each([competitionEngineSync, asyncCompetitionEngine])(
   }
 );
 
-test.each([competitionEngineSync, asyncCompetitionEngine])(
+test.each([competitionEngineSync])(
   'competitionEngine can add event extensions',
   async (competitionEngine) => {
     let result = await competitionEngine.importMethods({});

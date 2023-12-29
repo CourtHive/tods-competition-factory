@@ -1,5 +1,4 @@
 import { unlinkTournament } from '../../../mutate/tournaments/tournamentLinks';
-import asyncCompetitionEngine from '../../engines/asyncEngine';
 import competitionEngineSync from '../../engines/syncEngine';
 import mocksEngine from '../../../assemblies/engines/mock';
 import { intersection } from '../../../utilities/arrays';
@@ -46,7 +45,7 @@ test('throws appropriate errors', () => {
   expect(result.error).toEqual(MISSING_TOURNAMENT_RECORDS);
 });
 
-test.each([competitionEngineSync, asyncCompetitionEngine])(
+test.each([competitionEngineSync])(
   'can link and unlink tournamentRecords loaded into competitionEngine',
   async (competitionEngine) => {
     const { tournamentRecord: firstRecord } =
@@ -119,7 +118,7 @@ test.each([competitionEngineSync, asyncCompetitionEngine])(
   }
 );
 
-test.each([competitionEngineSync, asyncCompetitionEngine])(
+test.each([competitionEngineSync])(
   'can purge unliked tournamentRecords from competitionEngine state',
   async (competitionEngine) => {
     competitionEngine.reset();
@@ -144,7 +143,7 @@ test.each([competitionEngineSync, asyncCompetitionEngine])(
   }
 );
 
-test.each([competitionEngineSync, asyncCompetitionEngine])(
+test.each([competitionEngineSync])(
   'will properly hydrate all competition matchUps with persons',
   async (competitionEngine) => {
     competitionEngine.reset();

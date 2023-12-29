@@ -1,9 +1,10 @@
 import { isFunction, isObject, isString } from '../../../utilities/objects';
 import { notifySubscribers } from '../../../global/state/notifySubscribers';
 import { getMethods } from '../../../global/state/syncGlobalState';
+import { logMethodNotFound } from '../parts/logMethodNotFound';
 import { getMutationStatus } from '../parts/getMutationStatus';
-import { executeFunction } from '../parts/executeMethod';
 import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
+import { executeFunction } from '../parts/executeMethod';
 import { setState } from '../parts/stateMethods';
 import {
   deleteNotices,
@@ -29,6 +30,7 @@ export function engineInvoke(engine: { [key: string]: any }, args: any) {
     params.rollbackOnError && makeDeepCopy(getTournamentRecords(), false, true);
 
   const method = passedMethod || engine[methodName] || getMethods()[methodName];
+  if (!method) return logMethodNotFound({ methodName, params });
 
   const result =
     executeFunction(engine, method, params, methodName, 'sync') ?? {};

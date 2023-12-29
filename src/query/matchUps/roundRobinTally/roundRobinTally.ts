@@ -1,6 +1,6 @@
 import { checkMatchUpIsComplete } from '../../matchUp/checkMatchUpIsComplete';
-import { validMatchUps } from '../../../validators/validMatchUp';
 import { getDevContext } from '../../../global/state/globalState';
+import { validMatchUps } from '../../../validators/validMatchUp';
 import { getParticipantResults } from './getParticipantResults';
 import { unique } from '../../../utilities/arrays';
 import { getTallyReport } from './getTallyReport';
