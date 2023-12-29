@@ -1,23 +1,27 @@
-import tournamentEngine from '../../engines/syncEngine';
 import mocksEngine from '../../../assemblies/engines/mock';
+import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import PARTICIPANT_PRIVACY_DEFAULT from '../../../fixtures/policies/POLICY_PRIVACY_DEFAULT';
 import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
-import { COMPETITOR } from '../../../constants/participantRoles';
+import { COMPETITOR, OFFICIAL } from '../../../constants/participantRoles';
+import { INDIVIDUAL } from '../../../constants/participantConstants';
 
 it('can retrieve and modify tournament persons', () => {
-  const participantsProfile = {
-    participantsCount: 100,
-  };
+  let tournamentPersons = tournamentEngine.getTournamentPersons({
+    sandboxTournament: {},
+  }).tournamentPersons;
+  expect(tournamentPersons.length).toEqual(0);
+
+  const participantsProfile = { participantsCount: 100 };
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     participantsProfile,
   });
   tournamentEngine.setState(tournamentRecord);
 
-  const { tournamentPersons } = tournamentEngine.getTournamentPersons({
+  tournamentPersons = tournamentEngine.getTournamentPersons({
     participantFilters: { participantRoles: [COMPETITOR] },
-  });
+  }).tournamentPersons;
   expect(tournamentPersons?.length).toBeGreaterThan(0);
   expect(tournamentPersons[0].participantIds.length).toEqual(1);
   expect(tournamentPersons.length).toEqual(100);
@@ -29,9 +33,10 @@ it('can retrieve and modify tournament persons', () => {
     }
   );
 
+  const targetPersonId = 'targetPersonId';
   const updatedParticipant = {
     ...targetedParticipant,
-    person: { ...targetedParticipant.person, personId: 'new-person-id' },
+    person: { ...targetedParticipant.person, personId: targetPersonId },
   };
 
   let result = tournamentEngine.modifyParticipant({
@@ -43,9 +48,9 @@ it('can retrieve and modify tournament persons', () => {
     participantId: targetedParticipantId,
   });
 
-  expect(participant.person.personId).toEqual(
-    updatedParticipant.person.personId
-  );
+  const person = participant.person;
+
+  expect(person.personId).toEqual(updatedParticipant.person.personId);
 
   const policyDefinitions = { ...PARTICIPANT_PRIVACY_DEFAULT };
 
@@ -67,4 +72,24 @@ it('can retrieve and modify tournament persons', () => {
     personId: undefined,
   });
   expect(result.error).toEqual(MISSING_VALUE);
+
+  const officialParticipant = {
+    participantType: INDIVIDUAL,
+    participantRole: OFFICIAL,
+    person,
+  };
+
+  result = tournamentEngine.addParticipant({
+    participant: officialParticipant,
+  });
+  expect(result.success).toEqual(true);
+
+  tournamentPersons = tournamentEngine.getTournamentPersons(
+    {}
+  ).tournamentPersons;
+  const personWithMultipleRoles = tournamentPersons.find(
+    (p) => p.participantIds.length > 1
+  );
+  expect(personWithMultipleRoles.participantIds.length).toEqual(2);
+  expect(personWithMultipleRoles.personId).toEqual(targetPersonId);
 });

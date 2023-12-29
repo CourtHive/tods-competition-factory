@@ -19,6 +19,7 @@ export function getTournamentPersons({ tournamentRecord, participantFilters }) {
     if (participant.person) {
       const { personId } = participant.person;
       if (tournamentPersons[personId]) {
+        // case where personId is used for multiple participants, e.g. COMPETITOR as well as OFFICIAL
         tournamentPersons[personId].participantIds.push(
           participant.participantId
         );
@@ -33,9 +34,6 @@ export function getTournamentPersons({ tournamentRecord, participantFilters }) {
 
   tournamentParticipants.forEach((participant) => {
     if (participant.person) extractPerson(participant);
-    if (participant.individualParticipants) {
-      participant.individualParticipants.forEach(extractPerson);
-    }
   });
 
   return { tournamentPersons: Object.values(tournamentPersons) };
