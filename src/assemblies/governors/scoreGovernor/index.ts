@@ -1,5 +1,6 @@
 import { generateTieMatchUpScore } from '../../generators/tieMatchUpScore/generateTieMatchUpScore';
 import { generateScoreString } from '../../generators/matchUps/generateScoreString';
+import { tidyScore } from '../../../analyze/scoreParser/scoreParser';
 import { reverseScore } from '../../generators/score/reverseScore';
 
 import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
@@ -34,7 +35,6 @@ import { umo } from '../../../mutate/matchUps/score/history/umo';
 
 // renamed
 import { stringify } from '../../generators/matchUpFormatCode/stringify';
-import { tidyScore } from '../../../analyze/scoreParser/scoreParser';
 import { parse } from '../../generators/matchUpFormatCode/parse';
 
 export const scoreGovernor = {

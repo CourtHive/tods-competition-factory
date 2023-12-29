@@ -1,8 +1,8 @@
-import { addExtension } from '../../../mutate/extensions/addExtension';
-import { removeExtension } from '../../../mutate/extensions/removeExtension';
 import { setTournamentStatus } from '../../../mutate/tournaments/setTournamentStatus';
+import { removeExtension } from '../../../mutate/extensions/removeExtension';
 import { addNotes, removeNotes } from '../../../mutate/base/addRemoveNotes';
 import { addOnlineResource } from '../../../mutate/base/addOnlineResource';
+import { addExtension } from '../../../mutate/extensions/addExtension';
 
 import {
   setTournamentName,

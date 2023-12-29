@@ -18,9 +18,7 @@ export { mocksEngine } from './assemblies/engines/mock';
 
 // ENGINES - For backwards compatibility ---------------------------------
 export { competitionEngine } from './tests/engines/syncEngine';
-export { competitionEngineAsync } from './tests/engines/asyncEngine';
 export { tournamentEngine } from './tests/engines/syncEngine';
-export { tournamentEngineAsync } from './tests/engines/asyncEngine';
 export { scaleEngine } from './tests/engines/scaleEngine';
 
 // FIXTURES --------------------------------------------------------------

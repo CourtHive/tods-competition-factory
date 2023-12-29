@@ -1,4 +1,3 @@
-import asyncCompetitionEngine from '../../engines/asyncEngine';
 import mocksEngine from '../../../assemblies/engines/mock';
 import { formatDate } from '../../../utilities/dateTime';
 import tournamentEngine from '../../engines/syncEngine';
@@ -187,7 +186,7 @@ const mockProfiles = [
   },
 ];
 
-test.each([tournamentEngine, asyncCompetitionEngine].slice(0, 1))(
+test.each([tournamentEngine].slice(0, 1))(
   'will add venue to linked tournament when scheduling courts which are not present on both tournaments',
   async (competitionEngine) => {
     for (const mockProfile of mockProfiles) {

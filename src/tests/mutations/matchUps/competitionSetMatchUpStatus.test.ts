@@ -1,4 +1,3 @@
-import asyncCompetitionEngine from '../../engines/asyncEngine';
 import competitionEngineSync from '../../engines/syncEngine';
 import mocksEngine from '../../../assemblies/engines/mock';
 import { expect, test } from 'vitest';
@@ -8,7 +7,7 @@ import {
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
 
-test.each([competitionEngineSync, asyncCompetitionEngine])(
+test.each([competitionEngineSync])(
   'can set matchUpStatus via competitionEngine for multiple tournament records',
   async (competitionEngine) => {
     const drawProfiles = [{ drawSize: 16 }];

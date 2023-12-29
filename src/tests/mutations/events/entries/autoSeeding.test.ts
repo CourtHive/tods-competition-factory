@@ -298,5 +298,13 @@ it('can autoSeed by Rankings', () => {
   });
   expect(result.success).toEqual(true);
 
+  const eventScaleValues = tournamentEngine.devContext(true).getEvents({
+    withScaleValues: true,
+  }).eventScaleValues;
+
+  expect(eventScaleValues.seededEventId.ranking.U18.length).toEqual(10);
+  expect(
+    eventScaleValues.seededEventId.draws.seededDrawId.ranking.U18.length
+  ).toEqual(10);
   // TODO: also need to test this with scale items that are stageEntries on a drawDefinition where the scaleAttributes include drawId-specific scaleName
 });

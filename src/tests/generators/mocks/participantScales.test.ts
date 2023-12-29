@@ -195,6 +195,12 @@ test('generates participants with rankings and ratings with additional embellish
   );
 
   expect(scaleValuesPresent).toEqual(true);
+
+  const eventScaleValues = tournamentEngine.getEvents({
+    withScaleValues: true,
+  }).eventScaleValues;
+  expect(eventScaleValues[eventIds[1]].ratings.WTN.length).toEqual(8);
+  expect(eventScaleValues[eventIds[2]].ratings.NTRP.length).toEqual(8);
 });
 
 it('can assess predictive accuracy of scaleValues', () => {

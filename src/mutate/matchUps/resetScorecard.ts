@@ -1,18 +1,20 @@
-import { resolveTieFormat } from '../../query/hierarchical/tieFormats/resolveTieFormat';
+import { isActiveDownstream } from '../drawDefinitions/matchUpGovernor/isActiveDownstream';
 import { compareTieFormats } from '../../query/hierarchical/tieFormats/compareTieFormats';
-import { resetTieFormat } from '../tieFormat/resetTieFormat';
+import { resolveTieFormat } from '../../query/hierarchical/tieFormats/resolveTieFormat';
 import { getAllDrawMatchUps } from '../../query/matchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../query/matchUps/getMatchUpsMap';
 import { positionTargets } from './drawPositions/positionTargets';
-import { findStructure } from '../../acquire/findStructure';
-import { isActiveDownstream } from '../drawDefinitions/matchUpGovernor/isActiveDownstream';
-import { updateTieMatchUpScore } from './score/tieMatchUpScore';
 import { setMatchUpState } from './matchUpStatus/setMatchUpState';
+import { updateTieMatchUpScore } from './score/tieMatchUpScore';
+import { resetTieFormat } from '../tieFormat/resetTieFormat';
+import { findStructure } from '../../acquire/findStructure';
+import { isString } from '../../utilities/objects';
 import {
   ResultType,
   decorateResult,
 } from '../../global/functions/decorateResult';
 
+import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
 import { TEAM_EVENT } from '../../constants/eventConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
@@ -36,7 +38,18 @@ import {
  * @returns
  */
 
-export function resetScorecard(params): ResultType {
+type ResetScoreCardArgs = {
+  score?: { sets: { side1Score: number; side2Score: number }[] };
+  tournamentRecord: Tournament;
+  drawDefinition: DrawDefinition;
+  tiebreakReset?: boolean;
+  matchUpStatus?: string;
+  winningSide?: number;
+  matchUpId: string;
+  event?: Event;
+};
+
+export function resetScorecard(params: ResetScoreCardArgs): ResultType {
   const { tournamentRecord, drawDefinition, matchUpId, event } = params;
   const stack = 'resetScorecard';
 
@@ -48,7 +61,7 @@ export function resetScorecard(params): ResultType {
     });
   if (!matchUpId)
     return decorateResult({ result: { error: MISSING_MATCHUP_ID }, stack });
-  if (typeof matchUpId !== 'string')
+  if (!isString(matchUpId))
     return decorateResult({
       result: { error: INVALID_VALUES, matchUpId },
       stack,
@@ -100,17 +113,19 @@ export function resetScorecard(params): ResultType {
   const activeDownstream = isActiveDownstream(params);
   if (activeDownstream) return { error: CANNOT_CHANGE_WINNING_SIDE };
 
-  for (const tieMatchUp of matchUp.tieMatchUps ?? []) {
-    const result = setMatchUpState({
-      matchUpId: tieMatchUp.matchUpId,
-      matchUpTieId: matchUpId,
-      winningSide: undefined,
-      removeScore: true,
-      tournamentRecord,
-      drawDefinition,
-      event,
-    });
-    if (result.error) return decorateResult({ result, stack });
+  if (matchUp.tieMatchUps?.length) {
+    for (const tieMatchUp of matchUp.tieMatchUps) {
+      const result = setMatchUpState({
+        matchUpId: tieMatchUp.matchUpId,
+        matchUpTieId: matchUpId,
+        winningSide: undefined,
+        removeScore: true,
+        tournamentRecord,
+        drawDefinition,
+        event,
+      });
+      if (result.error) return decorateResult({ result, stack });
+    }
   }
 
   const result = updateTieMatchUpScore({

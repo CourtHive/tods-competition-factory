@@ -10,6 +10,12 @@ import {
   MODIFY_DRAW_DEFINITION,
   MODIFY_MATCHUP,
 } from '../../../../constants/topicConstants';
+import {
+  INVALID_MATCHUP,
+  INVALID_VALUES,
+  MATCHUP_NOT_FOUND,
+  MISSING_MATCHUP_ID,
+} from '../../../../constants/errorConditionConstants';
 
 // reusable
 test('can clear TEAM matchUp "scorecards"', () => {
@@ -133,6 +139,35 @@ test('can clear TEAM matchUp "scorecards"', () => {
     },
   });
   expect(secondRoundDualMatchUp.drawPositions).toEqual([1, 3]);
+
+  result = tournamentEngine.resetScorecard({
+    tiebreakReset: true,
+    drawId,
+  });
+  expect(result.error).toEqual(MISSING_MATCHUP_ID);
+
+  result = tournamentEngine.resetScorecard({
+    tiebreakReset: true,
+    matchUpId: {},
+    drawId,
+  });
+  expect(result.error).toEqual(INVALID_VALUES);
+
+  result = tournamentEngine.resetScorecard({
+    tiebreakReset: true,
+    matchUpId: 'bogus',
+    drawId,
+  });
+  expect(result.error).toEqual(MATCHUP_NOT_FOUND);
+
+  const tieMatchUpId = firstRoundDualMatchUps[0].tieMatchUps[0].matchUpId;
+
+  result = tournamentEngine.resetScorecard({
+    tiebreakReset: true,
+    matchUpId: tieMatchUpId,
+    drawId,
+  });
+  expect(result.error).toEqual(INVALID_MATCHUP);
 
   trackMatchUpModifications = true;
   result = tournamentEngine.resetScorecard({

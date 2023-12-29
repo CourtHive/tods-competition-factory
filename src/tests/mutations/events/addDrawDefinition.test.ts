@@ -1,15 +1,14 @@
 import { getMatchUpContextIds } from '../../../query/matchUp/getMatchUpContextIds';
 import { getMatchUpType } from '../../../query/matchUp/getMatchUpType';
-import asyncTournamentEngine from '../../engines/asyncEngine';
-import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngineSync from '../../engines/syncEngine';
+import mocksEngine from '../../../assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
 import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
 import { INDIVIDUAL } from '../../../constants/participantConstants';
 import { SINGLES } from '../../../constants/matchUpTypes';
 
-test.each([tournamentEngineSync, asyncTournamentEngine])(
+test.each([tournamentEngineSync])(
   'can create flightProfile on addDrawDefinition',
   async (tournamentEngine) => {
     const { tournamentRecord } = mocksEngine.generateTournamentRecord();

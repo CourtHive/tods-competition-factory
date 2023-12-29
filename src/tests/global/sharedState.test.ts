@@ -3,6 +3,9 @@ import mocksEngine from '../../assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
 test('engines share state', () => {
+  let tournamentIds = tournamentEngine.getTournamentIds().tournamentIds;
+  expect(tournamentIds.length).toEqual(0);
+
   const { tournamentRecord: firstRecord } =
     mocksEngine.generateTournamentRecord({
       tournamentName: 'First Tournament',
@@ -15,7 +18,7 @@ test('engines share state', () => {
     });
   tournamentEngine.setState([firstRecord, secondRecord]);
 
-  const { tournamentIds } = tournamentEngine.getTournamentIds();
+  tournamentIds = tournamentEngine.getTournamentIds().tournamentIds;
   expect(tournamentIds.length).toEqual(2);
 
   let result = tournamentEngine.setTournamentId(tournamentIds[0]);

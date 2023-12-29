@@ -2,14 +2,13 @@ import { dateStringDaysChange } from '../../../utilities/dateTime';
 import mocksEngine from '../../../assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
-import asyncTournamentEngine from '../../engines/asyncEngine';
 import tournamentEngineSync from '../../engines/syncEngine';
 import {
   INVALID_DATE,
   MISSING_EVENT,
 } from '../../../constants/errorConditionConstants';
 
-test.each([tournamentEngineSync, asyncTournamentEngine])(
+test.each([tournamentEngineSync])(
   'can modify event.startDate and event.endDate',
   async (tournamentEngine) => {
     const { tournamentRecord } = mocksEngine.generateTournamentRecord();
@@ -70,7 +69,7 @@ test.each([tournamentEngineSync, asyncTournamentEngine])(
   }
 );
 
-test.each([tournamentEngineSync, asyncTournamentEngine])(
+test.each([tournamentEngineSync])(
   'will reject event.startDate and event.endDate if they fall outside of tournament dates',
   async (tournamentEngine) => {
     const { tournamentRecord } = mocksEngine.generateTournamentRecord();

@@ -19,17 +19,16 @@ export function visualizeScheduledMatchUps({
     []
   );
 
-  const structureNames = Object.assign(
-    {},
-    ...(structureIds || []).map((structureId) => {
+  const structureNames = Array.isArray(structureIds) && {
+    ...structureIds.map((structureId) => {
       const { structureName, matchUpType } = scheduledMatchUps.find(
         (matchUp) => matchUp.structureId === structureId
       );
       return {
         [structureId]: `${structureName} ${matchUpType}`,
       };
-    })
-  );
+    }),
+  };
 
   structureIds?.forEach((structureId) => {
     pushGlobalLog(

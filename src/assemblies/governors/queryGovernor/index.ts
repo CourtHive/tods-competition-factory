@@ -67,7 +67,6 @@ import { eventMatchUps } from '../../../query/matchUps/getEventMatchUps';
 import { getRounds } from '../../../query/matchUps/scheduling/getRounds';
 import { validateLineUp } from '../../../validators/validateTeamLineUp';
 import { getTieFormat } from '../../../query/hierarchical/getTieFormat';
-import { getEvent, getEvents } from '../../../query/events/eventGetter';
 import { getFlightProfile } from '../../../query/event/getFlightProfile';
 import { getMatchUpType } from '../../../query/matchUp/getMatchUpType';
 import { analyzeMatchUp } from '../../../query/matchUp/analyzeMatchUp';
@@ -78,6 +77,8 @@ import { publicFindMatchUp } from '../../../acquire/findMatchUp';
 import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
 import { findExtension } from '../../../acquire/findExtension';
 import { getCourts } from '../../../query/venues/getCourts';
+import { getEvents } from '../../../query/events/getEvents';
+import { getEvent } from '../../../query/events/getEvent';
 import { findPolicy } from '../../../acquire/findPolicy';
 import { credits } from '../../../fixtures/credits';
 import {

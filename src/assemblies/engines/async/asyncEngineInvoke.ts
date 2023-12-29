@@ -2,6 +2,7 @@ import { notifySubscribersAsync } from '../../../global/state/notifySubscribers'
 import { isFunction, isObject, isString } from '../../../utilities/objects';
 import { getMethods } from '../../../global/state/syncGlobalState';
 import { getMutationStatus } from '../parts/getMutationStatus';
+import { logMethodNotFound } from '../parts/logMethodNotFound';
 import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
 import { executeFunction } from '../parts/executeMethod';
 import { setState } from '../parts/stateMethods';
@@ -32,6 +33,7 @@ export async function asyncEngineInvoke(
     params.rollbackOnError && makeDeepCopy(getTournamentRecords(), false, true);
 
   const method = passedMethod || engine[methodName] || getMethods()[methodName];
+  if (!method) return logMethodNotFound({ methodName, params });
 
   const result =
     (await executeFunction(engine, method, params, methodName, 'async')) ?? {};

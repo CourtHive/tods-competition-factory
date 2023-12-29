@@ -34,6 +34,7 @@ const asyncHook = createHook({
 asyncHook.enable();
 
 function createInstanceState() {
+  const asyncId = executionAsyncId();
   const instanceState: ImplemtationGlobalStateTypes = {
     disableNotifications: false,
     tournamentId: undefined,
@@ -44,7 +45,7 @@ function createInstanceState() {
     methods: {},
   };
 
-  asyncCtxStateMap.set(executionAsyncId(), instanceState);
+  asyncCtxStateMap.set(asyncId, instanceState);
 }
 
 function getInstanceState() {
