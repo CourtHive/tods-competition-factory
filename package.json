@@ -153,7 +153,7 @@
     "prettier-eslint": "16.2.0",
     "quicktype": "23.0.80",
     "rimraf": "5.0.5",
-    "rollup": "4.9.1",
+    "rollup": "4.9.2",
     "rollup-plugin-dts": "6.1.0",
     "rollup-plugin-esbuild": "6.1.0",
     "semver": "^7.5.1",
