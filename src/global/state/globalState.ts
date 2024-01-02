@@ -1,6 +1,7 @@
 import { intersection } from '../../utilities/arrays';
 import syncGlobalState from './syncGlobalState';
 
+import { TournamentRecords } from '../../types/factoryTypes';
 import { ResultType } from '../functions/decorateResult';
 import {
   ErrorType,
@@ -8,7 +9,6 @@ import {
   MISSING_ASYNC_STATE_PROVIDER,
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
-import { TournamentRecords } from '../../types/factoryTypes';
 
 export type Notice = {
   topic: string;

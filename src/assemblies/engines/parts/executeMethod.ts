@@ -8,8 +8,8 @@ import {
   handleCaughtError,
 } from '../../../global/state/globalState';
 
-import { FactoryEngine } from '../../../types/factoryTypes';
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
+import { FactoryEngine } from '../../../types/factoryTypes';
 
 /**
  * Executes a function within a FactoryEngine.

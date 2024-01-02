@@ -15,6 +15,7 @@ import {
   removeTournamentRecord,
   setTournamentRecords,
   setTournamentId,
+  getTournamentId,
 } from '../../../global/state/globalState';
 import {
   getState,
@@ -60,6 +61,7 @@ export function engineStart(engine: FactoryEngine, engineInvoke: any): void {
     return processResult(engine, result);
   };
   engine.setTournamentId = (tournamentId) => setTournamentId(tournamentId);
+  engine.getTournamentId = () => getTournamentId();
   engine.setTournamentRecord = (
     tournamentRecord,
     deepCopyOption,
