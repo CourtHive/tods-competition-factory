@@ -6,6 +6,7 @@ export { governors } from './assemblies/governors';
 export { matchUpFormatCode } from './assemblies/governors/matchUpFormatGovernor';
 export { utilities } from './assemblies/governors/utilitiesGovernor';
 export { scoreGovernor } from './assemblies/governors/scoreGovernor';
+export { forge } from './forge';
 
 // ENGINES - For cusomization --------------------------------------------
 export { asyncEngine } from './assemblies/engines/async';
