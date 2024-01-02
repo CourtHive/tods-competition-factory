@@ -41,14 +41,6 @@
     ".": {
       "import": "./dist/index.mjs",
       "default": "./dist/index.js"
-    },
-    "./*": {
-      "import": {
-        "types": "./dist/forge/*.d.ts",
-        "default": "./dist/forge/*.mjs"
-      },
-      "types": "./dist/forge/*.d.ts",
-      "default": "./dist/forge/*.mjs"
     }
   },
   "typesVersions": {
