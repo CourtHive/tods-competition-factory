@@ -71,6 +71,7 @@
   "scripts": {
     "commits": "git log $(git describe --tags --abbrev=0)..HEAD --oneline --no-merges --pretty=format:'%s: %h' | sed '/factory/d'",
     "release": "npm run release:patch",
+    "prerelease": "npm run commits && npm run prerelease && npm publish --tag prerelease",
     "release:alpha": "npm run commits && npm version premajor --preid alpha && npm publish --tag alpha",
     "release:beta": "npm run commits && npm version prerelease --preid beta && npm publish --tag beta",
     "release:major": "npm run commits && npm version $(semver $npm_package_version -i major) && npm publish --tag latest",
