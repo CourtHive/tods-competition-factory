@@ -10,14 +10,19 @@ it.each([syncEngine, asyncEngine])(
       await competitionEngine.reset();
       const result = await competitionEngine[method]();
       if (!result) {
-        // covers methods which are expected to return boolean
-        expect([false, 0].includes(result)).toEqual(true);
+        if (['getTournamentId'].includes(method)) {
+          expect(result).toBeUndefined();
+        } else {
+          // covers methods which are expected to return boolean
+          expect([false, 0].includes(result)).toEqual(true);
+        }
       } else if (
         [
           'credits',
           'version',
           'parseMatchUpFormat',
           'stringifyMatchUpFormat',
+          'getDrawTypeCoercion',
         ].includes(method)
       ) {
         expect(result).not.toBeUndefined();
@@ -35,6 +40,7 @@ it.each([syncEngine, asyncEngine])(
           'getMatchUpDependencies',
           'removePersonRequests',
           'unPublishOrderOfPlay',
+          'categoryCanContain',
           'newTournamentRecord',
           'setSchedulingProfile',
           'getAppliedPolicies',
@@ -47,7 +53,8 @@ it.each([syncEngine, asyncEngine])(
           'devContext',
           'reset',
         ].includes(method);
-        if (!successExpected) console.log({ method, result });
+        if (!successExpected)
+          console.log('success expected', { method, result });
         expect(successExpected).toEqual(true);
       } else if (Array.isArray(result)) {
         expect(result.length).toEqual(0); // filtering with no values returns no results

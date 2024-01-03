@@ -5,13 +5,14 @@ import { findEvent } from '../../../acquire/findEvent';
 import { EVENT_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { SCHEDULE_TIMING } from '../../../constants/extensionConstants';
 import { Event, Tournament } from '../../../types/tournamentTypes';
+import { TournamentRecords } from '../../../types/factoryTypes';
 import {
   EVENT_ID,
   TOURNAMENT_RECORDS,
 } from '../../../constants/attributeConstants';
 
 type RemoveEventMatchUpFormatTimingArgs = {
-  tournamentRecords?: { [key: string]: Tournament };
+  tournamentRecords?: TournamentRecords;
   tournamentRecord?: Tournament;
   eventId: string;
   event?: Event;

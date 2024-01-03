@@ -46,8 +46,8 @@ export function categoryCanContain({
       new Date(categoryDetails.ageMinDate);
 
   const ratingComparison =
-    category.ratingType &&
-    childCategory.ratingType &&
+    category?.ratingType &&
+    childCategory?.ratingType &&
     category.ratingType === childCategory.ratingType;
 
   const invalidRatingRange =
@@ -66,8 +66,8 @@ export function categoryCanContain({
         childCategory.ratingMin > category.ratingMax));
 
   const invalidBallType =
-    category.ballType &&
-    childCategory.ballType &&
+    category?.ballType &&
+    childCategory?.ballType &&
     category.ballType !== childCategory.ballType;
 
   const valid =

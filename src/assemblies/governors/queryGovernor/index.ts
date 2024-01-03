@@ -24,11 +24,11 @@ import { getParticipantSchedules } from '../../../query/participants/getParticip
 import { validateCollectionDefinition } from '../../../validators/validateCollectionDefinition';
 import { getMatchUpScheduleDetails } from '../../../query/matchUp/getMatchUpScheduleDetails';
 import { getCompetitionDateRange } from '../../../query/tournaments/getCompetitionDateRange';
-import { getMaxEntryPosition } from '../../../query/entries/getMaxEntryPosition';
 import { getParticipantScaleItem } from '../../../query/participant/getParticipantScaleItem';
 import { isValidForQualifying } from '../../../mutate/drawDefinitions/isValidForQualifying';
 import { getLinkedTournamentIds } from '../../../query/tournaments/getLinkedTournamentIds';
 import { allCompetitionMatchUps } from '../../../query/matchUps/getAllCompetitionMatchUps';
+import { getDrawTypeCoercion } from '../../generators/drawDefinitions/getDrawTypeCoercion';
 import { getEntriesAndSeedsCount } from '../../../query/entries/getEntriesAndSeedsCount';
 import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
 import { getPositionAssignments } from '../../../query/structure/getPositionAssignments';
@@ -43,6 +43,7 @@ import { getTournamentPersons } from '../../../query/tournaments/getTournamentPe
 import { getPredictiveAccuracy } from '../../../query/matchUps/getPredictiveAccuracy';
 import { getParticipantSignInStatus } from '../../../query/participant/signInStatus';
 import { tournamentMatchUps } from '../../../query/matchUps/getTournamentMatchUps';
+import { getMaxEntryPosition } from '../../../query/entries/getMaxEntryPosition';
 import { analyzeTournament } from '../../../query/tournaments/analyzeTournament';
 import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
 import { getMatchUpFormat } from '../../../query/hierarchical/getMatchUpFormat';
@@ -114,7 +115,6 @@ function findDrawDefinition({ tournamentRecord, drawDefinition }) {
   if (!drawDefinition) return { error: MISSING_DRAW_ID };
   return { drawDefinition: makeDeepCopy(drawDefinition) };
 }
-
 const queryGovernor = {
   allCompetitionMatchUps,
   allDrawMatchUps,
@@ -149,6 +149,7 @@ const queryGovernor = {
   getCourts,
   getDrawDefinitionTimeItem,
   getDrawParticipantRepresentativeIds,
+  getDrawTypeCoercion,
   getEligibleVoluntaryConsolationParticipants,
   getEntriesAndSeedsCount,
   getEvent,

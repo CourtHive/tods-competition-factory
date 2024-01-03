@@ -22,6 +22,7 @@ import structureTemplate from '../templates/structureTemplate';
 import { extractAttributes } from '../../../utilities/objects';
 import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
 import { constantToString } from '../../../utilities/strings';
+import { getDrawTypeCoercion } from './getDrawTypeCoercion';
 import { generateRange } from '../../../utilities/arrays';
 import { ensureInt } from '../../../utilities/ensureInt';
 import { newDrawDefinition } from './newDrawDefinition';
@@ -64,7 +65,6 @@ import {
 } from '../../../constants/entryStatusConstants';
 import {
   POLICY_TYPE_AVOIDANCE,
-  POLICY_TYPE_DRAWS,
   POLICY_TYPE_MATCHUP_ACTIONS,
   POLICY_TYPE_SEEDING,
 } from '../../../constants/policyConstants';
@@ -165,9 +165,11 @@ export function generateDrawDefinition(
 
   const drawTypeCoercion =
     params.drawTypeCoercion ??
-    policyDefinitions?.[POLICY_TYPE_DRAWS]?.drawTypeCoercion ??
-    appliedPolicies?.[POLICY_TYPE_DRAWS]?.drawTypeCoercion ??
-    true;
+    getDrawTypeCoercion({
+      drawType: params.drawType,
+      policyDefinitions,
+      appliedPolicies,
+    });
 
   const drawType =
     (drawTypeCoercion && params.drawSize === 2 && SINGLE_ELIMINATION) ||

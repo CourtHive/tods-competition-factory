@@ -1,5 +1,5 @@
-import { findEvent } from '../../../acquire/findEvent';
 import { getTournamentId } from '../../../global/state/globalState';
+import { findEvent } from '../../../acquire/findEvent';
 
 import { TournamentRecords } from '../../../types/factoryTypes';
 import {
