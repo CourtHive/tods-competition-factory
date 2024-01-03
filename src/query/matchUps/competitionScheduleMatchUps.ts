@@ -1,21 +1,19 @@
-import { getEventPublishStatus } from '../event/getEventPublishStatus';
-import { getDrawPublishStatus } from '../event/getDrawPublishStatus';
-import { getSchedulingProfile } from '../../mutate/tournaments/schedulingProfile';
-import { getTournamentTimeItem } from '../base/timeItems';
+import { getCompetitionPublishedDrawDetails } from './getCompetitionPublishedDrawDetails';
 import { scheduledSortedMatchUps } from '../../functions/sorters/scheduledSortedMatchUps';
-import { getTournamentId } from '../../global/state/globalState';
-import { getVenuesAndCourts } from '../venues/venuesAndCourtsGetter';
 import { courtGridRows } from '../../assemblies/generators/scheduling/courtGridRows';
+import { getSchedulingProfile } from '../../mutate/tournaments/schedulingProfile';
+import { getVenuesAndCourts } from '../venues/venuesAndCourtsGetter';
 import { getCompetitionMatchUps } from './getCompetitionMatchUps';
-import { isObject } from '../../utilities/objects';
+import { getTournamentId } from '../../global/state/globalState';
+import { getTournamentTimeItem } from '../base/timeItems';
 
 import { MatchUpFilters } from '../filterMatchUps';
 import { PUBLIC, PUBLISH, STATUS } from '../../constants/timeItemConstants';
 import { COMPLETED } from '../../constants/matchUpStatusConstants';
+import { TournamentRecords } from '../../types/factoryTypes';
 import { SUCCESS } from '../../constants/resultConstants';
 import { HydratedMatchUp } from '../../types/hydrated';
 import { Venue } from '../../types/tournamentTypes';
-import { TournamentRecords } from '../../types/factoryTypes';
 import {
   ErrorType,
   MISSING_TOURNAMENT_RECORDS,
@@ -286,34 +284,4 @@ export function competitionScheduleMatchUps(
         })
       : courtMatchUps;
   }
-}
-
-function getCompetitionPublishedDrawDetails({
-  tournamentRecords,
-}: {
-  tournamentRecords: TournamentRecords;
-}) {
-  const drawIds: string[] = [];
-  const detailsMap: { [key: string]: any } = {};
-
-  for (const tournamentRecord of Object.values(tournamentRecords)) {
-    for (const event of tournamentRecord.events ?? []) {
-      const eventPubStatus = getEventPublishStatus({ event });
-      const drawDetails = eventPubStatus?.drawDetails;
-
-      if (isObject(drawDetails)) {
-        Object.assign(detailsMap, drawDetails);
-        drawIds.push(
-          ...Object.keys(drawDetails).filter((drawId) =>
-            getDrawPublishStatus({ drawId, drawDetails })
-          )
-        );
-      } else if (eventPubStatus?.drawIds?.length) {
-        // LEGACY - deprecate
-        drawIds.push(...eventPubStatus.drawIds);
-      }
-    }
-  }
-
-  return { drawIds, detailsMap };
 }
