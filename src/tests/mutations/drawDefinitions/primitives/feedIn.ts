@@ -1,14 +1,14 @@
 import { getDrawStructures } from '../../../../acquire/findStructure';
 
+import { generateDrawTypeAndModifyDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
+import { newDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/newDrawDefinition';
+import { setStageDrawSize } from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
+import { ResultType } from '../../../../global/functions/decorateResult';
+import { DrawDefinition } from '../../../../types/tournamentTypes';
 import {
   MAIN,
   CONSOLATION,
 } from '../../../../constants/drawDefinitionConstants';
-import { generateDrawTypeAndModifyDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
-import { DrawDefinition } from '../../../../types/tournamentTypes';
-import { newDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/newDrawDefinition';
-import { setStageDrawSize } from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
-import { ResultType } from '../../../../global/functions/decorateResult';
 
 export function feedInChampionship(params): ResultType & {
   consolationStructure?: any;
