@@ -827,7 +827,7 @@ it('can add or remove stages from a published draw', () => {
   });
   expect(vm.pendingMatchUps.map((m) => m.stage).length).toBeGreaterThan(0);
 
-  ({ eventData, success: publishSuccess } = tournamentEngine.publishEvent({
+  ({ success: publishSuccess } = tournamentEngine.publishEvent({
     drawDetails: {
       ['drawId']: {
         stageDetails: { VOLUNTARY_CONSOLATION: { published: true } },
