@@ -4,11 +4,11 @@ import { decorateResult } from '../../../global/functions/decorateResult';
 import { structureSort } from '../../../functions/sorters/structureSort';
 import { generateQualifyingLink } from './links/generateQualifyingLink';
 import { definedAttributes } from '../../../utilities/definedAttributes';
+import { getDrawTypeCoercion } from './getDrawTypeCoercion';
 import { ensureInt } from '../../../utilities/ensureInt';
 import { isPowerOf2 } from '../../../utilities/math';
 import { getGenerators } from './getGenerators';
 
-import { POLICY_TYPE_DRAWS } from '../../../constants/policyConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/matchUpTypes';
 import {
@@ -74,8 +74,7 @@ export function generateDrawStructuresAndLinks(
 
   const drawTypeCoercion =
     params.drawTypeCoercion ??
-    appliedPolicies?.[POLICY_TYPE_DRAWS]?.drawTypeCoercion ??
-    true;
+    getDrawTypeCoercion({ appliedPolicies, drawType: params.drawType });
 
   const stack = 'generateDrawStructuresAndLinks';
   let drawType =
