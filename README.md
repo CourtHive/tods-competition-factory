@@ -6,7 +6,7 @@
 
 ## Tournament Business Rules
 
-The **Competition Factory** is a collection of "state engines" for transforming/mutating tournament records and is intended to ensure the integrity of Tournaments by managing all state transformations. These engines embody the "business rules" required by Tournament Management Solutions, and enable an entirely new way of constructing software to manage tournaments.
+The **Competition Factory** is a collection of functions for transforming/mutating tournament records and is intended to ensure the integrity of Tournaments by managing all state transformations. Factory functions embody the "business rules" required by Tournament Management Solutions, and enable an entirely new way of constructing software to manage tournaments.
 
 The rules governing the creation of draws, seeding, and participant movement can be present on a standalone client, on a server, or both.
 An entire tournament management solution [can run in a browser](https://courthive.github.io/TMX/), or a client can communicate with a server which utilizes a database, or simply the file system.
@@ -23,26 +23,14 @@ After a tournament has been completed, a **TODS** file can be considered a "time
 
 ## State Engines
 
-Competition Factory engines manage different concerns within a tournament and may be used either synchronously or asynchronously.
-Engine methods which mutate/transform operate on documents which are held in state.
-The **competitionEngine**, **tournamentEngine** and **scaleEngine** share a state which contains one or more _tournamentRecords_;
-while the **drawEngine** and **matchUpEngine** have their own state.
+The **Competition Factory** includes synchronous and asynchronous "state engines" which provide services for managing the state of a tournament record as well as subscriptions, notifications and logging.
 
 By default a deep copy of documents are made as they are loaded into each state engine. This behavior can be overridden such that the engines operate on original documents.
-
-1. [**competitionEngine**](./engines/competition-engine-overview) - manages resources which may be shared across multiple linked tournaments, such as venues (courts & other locations); includes advanced scheduling and cross-tournament reporting.
-2. [**tournamentEngine**](./engines/tournament-engine-overview) - manages tournament metadata, participants, events (including the generation of complex draw types and "flights" within events), and reporting.
-3. [**drawEngine**](./engines/draw-engine-overview) - generates drawDefinitions and matchUp results; manages participant seeding and movement within and between draw structures.
-4. [**matchUpEngine**](./engines/matchUp-engine-overview) - methods to manipulate tieFormats, analyze arrays of matchUps, and report on matchUp scores.
-5. [**scaleEngine**](./engines/scale-engine-overview) - methods to generate ranking points and calculate ratings.
 
 ## Other Utilities
 
 1. [**mocksEngine**](./overview/mocks-engine-overview) - generates complete tournament objects, or tournamentRecords, as well as mock persons, participants and matchUp outcomes.
    It is used extensively in the ~1900 tests that are run against the factory methods before every package release.
-2. [**scoreGovernor**](./scoreGovernor) - is a collection of scoring related utilities which provide analysis/validation or generate values, but do not make any mutations.
-3. [**matchUpFormatCode**](./codes/matchup-format) - is an ITF matchUp format code parser, stringifier, and validator.
-4. [**ageCategoryCode**](./codes/age-category) - is an ITF ageCategoryCode parser.
 
 ## Installation
 
