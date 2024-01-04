@@ -52,14 +52,5 @@ export { timeItemConstants } from './constants/timeItemConstants';
 export { venueConstants } from './constants/venueConstants';
 // END-: constants --------------------------------------------------------
 
-// START- Global State methods
-export {
-  deleteNotices,
-  getNotices,
-  setDeepCopy,
-  setDevContext,
-  setGlobalLog,
-  setStateProvider,
-  setSubscriptions,
-} from './global/state/globalState';
-// END
+import * as globalState from './global/state/globalState';
+export { globalState };
