@@ -7,8 +7,6 @@ import { unique } from '../../../../../utilities/arrays';
 import { mocksEngine } from '../../../../..';
 import { expect, it } from 'vitest';
 
-import fs from 'fs';
-
 import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
 import {
   QUALIFYING_PARTICIPANT,
