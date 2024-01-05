@@ -22,7 +22,7 @@
     "seeding",
     "tennis"
   ],
-  "version": "2.0.0-beta.0",
+  "version": "2.0.0-alpha.1",
   "license": "MIT",
   "private": false,
   "homepage": "https://courthive.github.io/tods-competition-factory/",
@@ -69,7 +69,6 @@
     "registry": "https://registry.npmjs.org"
   },
   "scripts": {
-    "r:beta": "npm run commits && npm version $(semver $npm_package_version -i prerelease --preid beta)",
     "commits": "git log $(git describe --tags --abbrev=0)..HEAD --oneline --no-merges --pretty=format:'%s: %h' | sed '/factory/d'",
     "release": "npm run release:patch",
     "release:alpha": "npm run commits && npm version $(semver $npm_package_version -i premajor --preid alpha) && npm publish --tag alpha",
