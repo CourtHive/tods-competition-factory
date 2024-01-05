@@ -19,6 +19,7 @@ import { tallyParticipantResults } from '../../../query/matchUps/roundRobinTally
 import { competitionScheduleMatchUps } from '../../../query/matchUps/competitionScheduleMatchUps';
 import { getMatchUpCompetitiveProfile } from '../../../query/matchUp/getMatchUpCompetitiveProfile';
 import { getParticipantMembership } from '../../../query/participants/getParticipantMembership';
+import { bulkUpdatePublishedEventIds } from '../../../query/event/bulkUpdatePublishedEventIds';
 import { positionActions } from '../../../query/drawDefinition/positionActions/positionActions';
 import { getParticipantSchedules } from '../../../query/participants/getParticipantSchedules';
 import { validateCollectionDefinition } from '../../../validators/validateCollectionDefinition';
@@ -45,9 +46,9 @@ import { getParticipantSignInStatus } from '../../../query/participant/signInSta
 import { tournamentMatchUps } from '../../../query/matchUps/getTournamentMatchUps';
 import { getMaxEntryPosition } from '../../../query/entries/getMaxEntryPosition';
 import { analyzeTournament } from '../../../query/tournaments/analyzeTournament';
+import { getTournamentInfo } from '../../../query/tournaments/getTournamentInfo';
 import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
 import { getMatchUpFormat } from '../../../query/hierarchical/getMatchUpFormat';
-import { bulkUpdatePublishedEventIds } from '../../../query/event/bulkUpdatePublishedEventIds';
 import { publicFindParticipant } from '../../../acquire/publicFindParticipant';
 import { getTournamentIds } from '../../../query/tournaments/getTournamentIds';
 import { validMatchUp, validMatchUps } from '../../../validators/validMatchUp';
@@ -195,6 +196,7 @@ const queryGovernor = {
   getTeamLineUp,
   getTieFormat,
   getTournamentIds,
+  getTournamentInfo,
   getTournamentPenalties,
   getTournamentPersons,
   getTournamentStructures,
