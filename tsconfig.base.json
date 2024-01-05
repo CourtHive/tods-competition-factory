@@ -4,7 +4,7 @@
   "compilerOptions": {
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
-    // "baseUrl": "src",
+    // "baseUrl": "./src",
     "declaration": false,
     "downlevelIteration": true,
     "esModuleInterop": true,
@@ -12,7 +12,7 @@
     "importHelpers": true,
     "lib": ["dom", "esnext"],
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "noEmit": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": false,
