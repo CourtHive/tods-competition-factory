@@ -1,4 +1,7 @@
 import { visualizeScheduledMatchUps } from '../../../tests/testHarness/testUtilities/visualizeScheduledMatchUps';
+import { dehydrateMatchUps } from '../../../mutate/tournaments/dehydrate';
+import { structureSort } from '../../../functions/sorters/structureSort';
+
 import { definedAttributes } from '../../../utilities/definedAttributes';
 import { attributeFilter } from '../../../utilities/attributeFilter';
 import { matchUpSort } from '../../../functions/sorters/matchUpSort';
@@ -48,6 +51,8 @@ import {
 
 const utilitiesGovernor = {
   visualizeScheduledMatchUps,
+  dehydrateMatchUps,
+  structureSort,
 
   allNumeric,
   attributeFilter,

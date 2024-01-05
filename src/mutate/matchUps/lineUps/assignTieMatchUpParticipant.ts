@@ -152,9 +152,7 @@ export function assignTieMatchUpParticipantId(
       overlap(relevantParticipantIds, individualParticipantIds)
     );
 
-  if (!participantTeam) {
-    return { error: TEAM_NOT_FOUND };
-  }
+  if (!participantTeam) return { error: TEAM_NOT_FOUND };
 
   if (!teamParticipantId) teamParticipantId = participantTeam.participantId;
   if (!teamParticipantId) return { error: PARTICIPANT_NOT_FOUND };

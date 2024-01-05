@@ -1,4 +1,6 @@
 import { getGroupValueGroups } from '../../assemblies/generators/drawDefinitions/getGroupValueGroups';
+import { SUCCESS } from '../../constants/resultConstants';
+import { ResultType } from '../../global/functions/decorateResult';
 import { CollectionDefinition } from '../../types/tournamentTypes';
 import { isConvertableInteger } from '../../utilities/math';
 
@@ -9,7 +11,10 @@ type CalculateWinCriteriaArgs = {
 export function calculateWinCriteria({
   collectionDefinitions = [],
   collectionGroups = [],
-}: CalculateWinCriteriaArgs) {
+}: CalculateWinCriteriaArgs): ResultType & {
+  aggregateValue?: boolean;
+  valueGoal?: number;
+} {
   let valueTotal = 0;
 
   const { groupValueNumbers } = getGroupValueGroups({ collectionGroups });
@@ -58,9 +63,10 @@ export function calculateWinCriteria({
     valueTotal += collectionGroup.groupValue ?? 0;
   }
 
-  if (aggregateValueImperative || !valueTotal) return { aggregateValue: true };
+  if (aggregateValueImperative || !valueTotal)
+    return { aggregateValue: true, ...SUCCESS };
 
   const valueGoal = Math.floor(valueTotal / 2) + 1;
 
-  return { valueGoal };
+  return { valueGoal, ...SUCCESS };
 }

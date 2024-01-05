@@ -73,10 +73,8 @@ import { getScaleValues } from '../../../query/participant/getScaleValues';
 import { getSeedsCount } from '../../../query/drawDefinition/getSeedsCount';
 import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import { checkValidEntries } from '../../../validators/checkValidEntries';
-import { dehydrateMatchUps } from '../../../mutate/tournaments/dehydrate';
 import { getScaledEntries } from '../../../query/event/getScaledEntries';
 import { eventMatchUps } from '../../../query/matchUps/getEventMatchUps';
-import { structureSort } from '../../../functions/sorters/structureSort';
 import { getRounds } from '../../../query/matchUps/scheduling/getRounds';
 import { validateCategory } from '../../../validators/validateCategory';
 import { validateLineUp } from '../../../validators/validateTeamLineUp';
@@ -238,7 +236,6 @@ const queryGovernor = {
   getCategoryAgeDetails,
   calculateWinCriteria,
   compareTieFormats,
-  dehydrateMatchUps,
   getMatchUpContextIds,
   getScaleValues,
   getSeedingThresholds,
@@ -247,7 +244,6 @@ const queryGovernor = {
   isAdHoc,
   isCompletedStructure,
   roundRobinGroups,
-  structureSort,
   tieFormatGenderValidityCheck,
   validateCategory,
 };
