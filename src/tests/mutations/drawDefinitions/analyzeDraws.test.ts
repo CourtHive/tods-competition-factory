@@ -1,8 +1,8 @@
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { getDrawStructures } from '../../../acquire/findStructure';
 import { generateRange } from '../../../utilities/arrays';
-import { mocksEngine, setSubscriptions } from '../../..';
 import tournamentEngine from '../../engines/syncEngine';
+import { globalState, mocksEngine } from '../../..';
 import { expect, test } from 'vitest';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../../constants/entryStatusConstants';
@@ -14,7 +14,7 @@ test.each(range)(
   'draw analysis can determine when draws are able to be pruned',
   () => {
     const deletedMatchUpIds: string[] = [];
-    setSubscriptions({
+    globalState.setSubscriptions({
       subscriptions: {
         [DELETED_MATCHUP_IDS]: (notices) => {
           notices.forEach(({ matchUpIds }) =>

@@ -3,7 +3,7 @@ import mocksEngine from '../../../assemblies/engines/mock';
 import { generateRange } from '../../../utilities/arrays';
 import { deriveExponent } from '../../../utilities/math';
 import tournamentEngine from '../../engines/syncEngine';
-import { setSubscriptions } from '../../..';
+import { globalState } from '../../..';
 import { expect, it } from 'vitest';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
@@ -259,7 +259,7 @@ it('can add playoff structures to a FIRST_MATCH_LOSER_CONSOLATION structure', ()
     },
   };
 
-  setSubscriptions({ subscriptions });
+  globalState.setSubscriptions({ subscriptions });
 
   const { success, drawDefinition } = tournamentEngineAddPlayoffsTest({
     drawSize: 16,

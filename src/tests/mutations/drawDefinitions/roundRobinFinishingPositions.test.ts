@@ -1,4 +1,4 @@
-import { mocksEngine, setSubscriptions } from '../../..';
+import { mocksEngine, globalState } from '../../..';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, test } from 'vitest';
 
@@ -41,7 +41,7 @@ test('ROUND_ROBIN_WITH_PLAYOFF will have accurate playoff finishingPositionRange
     },
   };
 
-  setSubscriptions({ subscriptions });
+  globalState.setSubscriptions({ subscriptions });
 
   const drawSize = 32;
   const {
