@@ -49,7 +49,8 @@ export type DrawMaticArgs = {
   structure?: Structure;
   matchUpIds?: string[];
   structureId?: string;
-  event?: Event;
+  isMock?: boolean;
+  event: Event;
 
   scaleAccessor?: string;
   scaleName?: string;
@@ -70,6 +71,7 @@ export function drawMatic({
   matchUpIds,
   scaleName, // custom rating name to seed dynamic ratings
   eventType,
+  isMock,
   salted,
   event,
 }: DrawMaticArgs): ResultType & DrawMaticRoundResult {
@@ -182,6 +184,8 @@ export function drawMatic({
     structure,
     eventType,
     salted,
+    isMock,
+    event,
   });
 }
 
