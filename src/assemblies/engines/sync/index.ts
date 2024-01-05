@@ -2,16 +2,11 @@ import { engineStart } from '../parts/engineStart';
 import { executionQueue } from './executionQueue';
 import { engineInvoke } from './engineInvoke';
 
-import { FactoryEngine } from '../../../types/factoryTypes';
-
-type MethodParams = {
-  params?: { [key: string]: any };
-  method: string;
-};
+import { Directives, FactoryEngine } from '../../../types/factoryTypes';
 
 export const engine = ((): FactoryEngine => {
   const engine: FactoryEngine = {
-    executionQueue: (directives: MethodParams[], rollbackOnError?: boolean) =>
+    executionQueue: (directives: Directives, rollbackOnError?: boolean) =>
       executionQueue(engine, directives, rollbackOnError),
     execute: (args: any) => engineInvoke(engine, args),
   };

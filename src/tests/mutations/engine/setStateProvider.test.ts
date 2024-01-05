@@ -1,7 +1,7 @@
 import syncGlobalState from '../../../global/state/syncGlobalState';
 import mocksEngine from '../../../assemblies/engines/mock';
-import { expect, it, test } from 'vitest';
 import tournamentEngine from '../../engines/syncEngine';
+import { expect, it, test } from 'vitest';
 import {
   setStateProvider,
   setSubscriptions,

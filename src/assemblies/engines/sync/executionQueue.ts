@@ -1,8 +1,8 @@
 import { notifySubscribers } from '../../../global/state/notifySubscribers';
 import { getMutationStatus } from '../parts/getMutationStatus';
 import { logMethodNotFound } from '../parts/logMethodNotFound';
-import { executeFunction } from '../parts/executeMethod';
 import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
+import { executeFunction } from '../parts/executeMethod';
 import { setState } from '../parts/stateMethods';
 import {
   deleteNotices,
@@ -11,10 +11,11 @@ import {
 } from '../../../global/state/globalState';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
+import { Directives } from '../../../types/factoryTypes';
 
 export function executionQueue(
   engine: { [key: string]: any },
-  directives: { method: string; params?: { [key: string]: any } }[],
+  directives: Directives,
   rollbackOnError?: boolean
 ) {
   if (!Array.isArray(directives)) return { error: INVALID_VALUES };

@@ -35,6 +35,11 @@ export type TournamentRecords = {
   [key: string]: Tournament;
 };
 
+export type Directives = {
+  params?: { [key: string]: any };
+  method: string;
+}[];
+
 export type CheckInOutParticipantArgs = {
   tournamentRecord: Tournament;
   drawDefinition: DrawDefinition;
