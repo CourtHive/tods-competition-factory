@@ -168,7 +168,7 @@ test.each([askEngine, syncEngine])(
     expect(executionResult.participants.length).toEqual(8);
 
     executionResult = await engine.execute({});
-    expect(executionResult.error).toEqual(INVALID_VALUES);
+    expect(executionResult.error).toEqual(METHOD_NOT_FOUND);
 
     executionResult = await engine.execute({ f1: () => {}, f2: () => {} });
     expect(executionResult.error).toEqual(INVALID_VALUES);
@@ -198,7 +198,7 @@ test('execution path coverage', async () => {
   expect(stateResult.success).toEqual(true);
 
   let executionResult = await engineAsync.execute({});
-  expect(executionResult.error).toEqual(INVALID_VALUES);
+  expect(executionResult.error).toEqual(METHOD_NOT_FOUND);
 
   executionResult = await engineAsync.execute({ f1: () => {}, f2: () => {} });
   expect(executionResult.error).toEqual(INVALID_VALUES);

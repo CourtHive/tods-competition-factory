@@ -58,7 +58,6 @@ import { deleteAdHocMatchUps } from '../../../mutate/structures/deleteAdHocMatch
 import { removeDrawEntries } from '../../../mutate/drawDefinitions/removeDrawEntries';
 import { modifyTieFormat } from '../../../mutate/matchUps/tieFormat/modifyTieFormat';
 import { removeRoundMatchUps } from '../../../mutate/structures/removeRoundMatchUps';
-import { addAdHocMatchUps } from '../../../mutate/structures/addAdHocMatchUps';
 import { aggregateTieFormats } from '../../../mutate/tieFormat/aggregateTieFormats';
 import { updateTeamLineUp } from '../../../mutate/drawDefinitions/updateTeamLineUp';
 import { setOrderOfFinish } from '../../../mutate/drawDefinitions/setOrderOfFinish';
@@ -70,6 +69,8 @@ import { assignSeedPositions } from '../../../mutate/events/assignSeedPositions'
 import { addEventEntryPairs } from '../../../mutate/entries/addEventEntryPairs';
 import { removeEventEntries } from '../../../mutate/entries/removeEventEntries';
 import { modifyEventEntries } from '../../../mutate/entries/modifyEventEntries';
+import { drawMatic } from '../../generators/drawDefinitions/drawMatic/drawMatic';
+import { addAdHocMatchUps } from '../../../mutate/structures/addAdHocMatchUps';
 import { modifyDrawName } from '../../../mutate/drawDefinitions/modifyDrawName';
 import { attachFlightProfile } from '../../../mutate/events/attachFlightProfile';
 import { addDrawEntries } from '../../../mutate/drawDefinitions/addDrawEntries';
@@ -79,7 +80,6 @@ import { addEventEntries } from '../../../mutate/entries/addEventEntries';
 import { resetTieFormat } from '../../../mutate/tieFormat/resetTieFormat';
 import { resetScorecard } from '../../../mutate/matchUps/resetScorecard';
 import { removeSeeding } from '../../../mutate/entries/removeSeeding';
-import { drawMatic } from '../../../mutate/drawDefinitions/drawMatic';
 import { setSubOrder } from '../../../mutate/structures/setSubOrder';
 import { deleteEvents } from '../../../mutate/events/deleteEvent';
 import { autoSeeding } from '../../../mutate/entries/autoSeeding';

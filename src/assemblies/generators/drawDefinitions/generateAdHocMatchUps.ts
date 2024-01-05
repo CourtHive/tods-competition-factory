@@ -1,12 +1,15 @@
+import { resolveTieFormat } from '../../../query/hierarchical/tieFormats/resolveTieFormat';
 import { definedAttributes } from '../../../utilities/definedAttributes';
 import { isConvertableInteger } from '../../../utilities/math';
 import { generateRange } from '../../../utilities/arrays';
+import { generateTieMatchUps } from './tieMatchUps';
 import { UUID } from '../../../utilities/UUID';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../../constants/entryStatusConstants';
 import { ROUND_OUTCOME } from '../../../constants/drawDefinitionConstants';
 import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { TEAM } from '../../../constants/matchUpTypes';
 import {
   INVALID_VALUES,
   INVALID_STRUCTURE,
@@ -18,6 +21,7 @@ import {
 import {
   DrawDefinition,
   EntryStatusUnion,
+  Event,
   MatchUp,
 } from '../../../types/tournamentTypes';
 
@@ -31,6 +35,8 @@ type GenerateAdHocMatchUpsArgs = {
   roundNumber?: number;
   structureId?: string;
   newRound?: boolean; // optional - whether to auto-increment to the next roundNumber
+  isMock?: boolean;
+  event: Event;
 };
 
 export function generateAdHocMatchUps({
@@ -41,6 +47,8 @@ export function generateAdHocMatchUps({
   roundNumber,
   structureId,
   newRound,
+  isMock,
+  event,
 }: GenerateAdHocMatchUpsArgs): {
   matchUpsCount?: number;
   matchUps?: MatchUp[];
@@ -146,6 +154,17 @@ export function generateAdHocMatchUps({
       sides,
     };
   });
+
+  if (matchUps?.length) {
+    const tieFormat = resolveTieFormat({ drawDefinition, event })?.tieFormat;
+
+    if (tieFormat) {
+      matchUps.forEach((matchUp) => {
+        const { tieMatchUps } = generateTieMatchUps({ tieFormat, isMock });
+        Object.assign(matchUp, { tieMatchUps, matchUpType: TEAM });
+      });
+    }
+  }
 
   return { matchUpsCount: matchUps?.length ?? 0, matchUps, ...SUCCESS };
 }

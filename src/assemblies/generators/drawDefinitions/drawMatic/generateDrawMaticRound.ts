@@ -21,6 +21,7 @@ import {
   MatchUp,
   Structure,
   EventTypeUnion,
+  Event,
 } from '../../../../types/tournamentTypes';
 
 // this should be in policyDefinitions
@@ -35,6 +36,7 @@ type GenerateDrawMaticRoundArgs = {
   restrictEntryStatus?: boolean;
   drawDefinition: DrawDefinition;
   generateMatchUps?: boolean;
+  eventType?: EventTypeUnion;
   salted?: number | boolean;
   participantIds?: string[];
   encounterValue?: number;
@@ -43,9 +45,10 @@ type GenerateDrawMaticRoundArgs = {
   matchUpIds?: string[];
   structure?: Structure;
   structureId?: string;
-  eventType?: EventTypeUnion;
   scaleName?: string;
+  isMock?: boolean;
   drawId?: string;
+  event: Event;
 };
 
 export type DrawMaticRoundResult = {
@@ -73,6 +76,8 @@ export function generateDrawMaticRound({
   eventType,
   structure,
   scaleName,
+  isMock,
+  event,
 }: GenerateDrawMaticRoundArgs): ResultType & DrawMaticRoundResult {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structure && !structureId) return { error: STRUCTURE_NOT_FOUND };
@@ -154,6 +159,8 @@ export function generateDrawMaticRound({
       newRound: true,
       drawDefinition,
       matchUpIds,
+      isMock,
+      event,
     });
     if (result.error) return result;
     matchUps = result.matchUps;

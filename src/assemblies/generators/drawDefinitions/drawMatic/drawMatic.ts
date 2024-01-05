@@ -10,7 +10,6 @@ import {
 import { STRUCTURE_SELECTED_STATUSES } from '../../../../constants/entryStatusConstants';
 import { DYNAMIC, RATING } from '../../../../constants/scaleConstants';
 import { SINGLES_EVENT } from '../../../../constants/eventConstants';
-import { HydratedParticipant } from '../../../../types/hydrated';
 import { ScaleAttributes } from '../../../../types/factoryTypes';
 import {
   AD_HOC,
@@ -36,12 +35,12 @@ import {
 } from '../../../../global/functions/decorateResult';
 
 export type DrawMaticArgs = {
-  tournamentParticipants?: HydratedParticipant[];
   adHocRatings?: { [key: string]: number };
   restrictEntryStatus?: boolean;
   drawDefinition?: DrawDefinition;
   tournamentRecord: Tournament;
   generateMatchUps?: boolean;
+  eventType?: EventTypeUnion;
   salted?: number | boolean;
   participantIds?: string[];
   encounterValue?: number;
@@ -50,15 +49,14 @@ export type DrawMaticArgs = {
   structure?: Structure;
   matchUpIds?: string[];
   structureId?: string;
-  eventType?: EventTypeUnion;
-  event?: Event;
+  isMock?: boolean;
+  event: Event;
 
   scaleAccessor?: string;
   scaleName?: string;
 };
 
 export function drawMatic({
-  tournamentParticipants,
   restrictEntryStatus,
   adHocRatings = {},
   generateMatchUps,
@@ -73,6 +71,7 @@ export function drawMatic({
   matchUpIds,
   scaleName, // custom rating name to seed dynamic ratings
   eventType,
+  isMock,
   salted,
   event,
 }: DrawMaticArgs): ResultType & DrawMaticRoundResult {
@@ -143,9 +142,7 @@ export function drawMatic({
   const structureIsAdHoc = isAdHoc({ drawDefinition, structure });
   if (!structureIsAdHoc) return { error: INVALID_DRAW_DEFINITION };
 
-  tournamentParticipants =
-    tournamentParticipants ?? tournamentRecord.participants ?? [];
-
+  const tournamentParticipants = tournamentRecord.participants ?? [];
   for (const participantId of participantIds ?? []) {
     const participant = tournamentParticipants?.find(
       (participant) => participant.participantId === participantId
@@ -187,6 +184,8 @@ export function drawMatic({
     structure,
     eventType,
     salted,
+    isMock,
+    event,
   });
 }
 

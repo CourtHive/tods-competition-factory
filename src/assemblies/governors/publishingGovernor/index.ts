@@ -1,6 +1,5 @@
 import { unPublishOrderOfPlay } from '../../../mutate/timeItems/unPublishOrderOfPlay';
 import { publishOrderOfPlay } from '../../../mutate/timeItems/publishOrderOfPlay';
-import { getTournamentInfo } from '../../../query/tournaments/getTournamentInfo';
 import { setEventDisplay } from '../../../mutate/events/setEventDisplay';
 import { getPublishState } from '../../../query/events/getPublishState';
 import { unPublishEvent } from '../../../mutate/events/unPublishEvent';
@@ -21,7 +20,6 @@ const publishingGovernor = {
   getDrawData,
   getEventData,
   getPublishState,
-  getTournamentInfo,
   getVenueData,
   publishEvent,
   publishEventSeeding,

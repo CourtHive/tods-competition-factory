@@ -11,20 +11,28 @@ import {
   getTournamentRecords,
 } from '../../../global/state/globalState';
 
-import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
+import {
+  INVALID_VALUES,
+  METHOD_NOT_FOUND,
+} from '../../../constants/errorConditionConstants';
 
 export async function asyncEngineInvoke(
   engine: { [key: string]: any },
   args: any
 ) {
-  if (!isObject(args)) return { error: INVALID_VALUES };
+  if (!isObject(args))
+    return { error: INVALID_VALUES, message: 'args must be an object' };
   const methodsCount = Object.values(args).filter(isFunction).length;
-  if (methodsCount > 1) return { error: INVALID_VALUES };
+  if (methodsCount > 1)
+    return {
+      message: 'there must be only one arg with typeof function',
+      error: INVALID_VALUES,
+    };
 
   const methodName = methodsCount
     ? Object.keys(args).find((key) => isFunction(args[key]))
     : isString(args.method) && args.method;
-  if (!methodName) return { error: INVALID_VALUES };
+  if (!methodName) return { error: METHOD_NOT_FOUND };
 
   const { [methodName]: passedMethod, ...remainingArgs } = args;
   const params = args?.params || { ...remainingArgs };

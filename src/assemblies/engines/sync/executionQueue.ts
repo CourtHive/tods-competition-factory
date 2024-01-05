@@ -18,7 +18,8 @@ export function executionQueue(
   directives: Directives,
   rollbackOnError?: boolean
 ) {
-  if (!Array.isArray(directives)) return { error: INVALID_VALUES };
+  if (!Array.isArray(directives))
+    return { error: INVALID_VALUES, message: 'directives must be an array' };
 
   const methods = getMethods();
   const start = Date.now();
@@ -28,7 +29,8 @@ export function executionQueue(
 
   const results: any[] = [];
   for (const directive of directives) {
-    if (typeof directive !== 'object') return { error: INVALID_VALUES };
+    if (typeof directive !== 'object')
+      return { error: INVALID_VALUES, message: 'directive must be an object' };
 
     const { method: methodName, params } = directive;
     if (!methods[methodName])
