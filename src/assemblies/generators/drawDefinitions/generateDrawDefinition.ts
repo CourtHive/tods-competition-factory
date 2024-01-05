@@ -671,6 +671,7 @@ export function generateDrawDefinition(
             structureId,
             matchUpIds,
             scaleName, // custom rating name to seed dynamic ratings
+            event,
           }).matchUps;
           addAdHocMatchUps({
             tournamentRecord,
@@ -683,6 +684,7 @@ export function generateDrawDefinition(
             newRound: true,
             drawDefinition,
             matchUpsCount,
+            event,
           });
           addAdHocMatchUps({
             tournamentRecord,
