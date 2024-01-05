@@ -74,7 +74,7 @@
     "release:alpha": "npm run commits && npm version $(semver $npm_package_version -i premajor --preid alpha) && npm publish --tag alpha",
     "minor:alpha": "npm run commits && npm version $(semver $npm_package_version -i preminor --preid alpha) && npm publish --tag alpha",
     "patch:alpha": "npm run commits && npm version $(semver $npm_package_version -i prerelease --preid alpha) && npm publish --tag alpha",
-    "release:beta": "npm run commits && npm version $(semver $npm_package_version -i premajor --preid beta) && npm publish --tag beta",
+    "release:beta": "npm run commits && npm version $(semver $npm_package_version -i prerelease --preid beta) && npm publish --tag beta",
     "minor:beta": "npm run commits && npm version $(semver $npm_package_version -i preminor --preid beta) && npm publish --tag beta",
     "patch:beta": "npm run commits && npm version $(semver $npm_package_version -i prerelease --preid beta) && npm publish --tag beta",
     "release:major": "npm run commits && npm version $(semver $npm_package_version -i major) && npm publish --tag latest",
