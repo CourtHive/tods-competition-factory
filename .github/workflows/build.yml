@@ -33,7 +33,8 @@ jobs:
           # Used to specify a package manager for caching in the default directory. Supported values: npm, yarn, pnpm.
           cache: 'pnpm'
 
-      # - name: Install Dependencies
+      - name: Install Dependencies
+        run: pnpm install
       #   run: yarn --frozen-lockfile --ignore-scripts
 
       - name: Lint source files
