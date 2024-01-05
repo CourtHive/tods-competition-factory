@@ -1,7 +1,11 @@
 import { stringify } from '../assemblies/generators/matchUpFormatCode/stringify';
 import { parse } from '../assemblies/generators/matchUpFormatCode/parse';
 
-export function isValidMatchUpFormat(matchUpFormat: string): boolean {
+export function isValidMatchUpFormat({
+  matchUpFormat,
+}: {
+  matchUpFormat: string;
+}): boolean {
   if (typeof matchUpFormat !== 'string') return false;
   const parsedFormat = parse(matchUpFormat);
 

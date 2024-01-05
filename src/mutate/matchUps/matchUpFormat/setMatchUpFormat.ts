@@ -69,7 +69,7 @@ export function setMatchUpFormat(params: SetMatchUpStatusArgs) {
 
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!matchUpFormat) return { error: MISSING_MATCHUP_FORMAT };
-  if (matchUpFormat && !isValidMatchUpFormat(matchUpFormat))
+  if (matchUpFormat && !isValidMatchUpFormat({ matchUpFormat }))
     return decorateResult({
       result: { error: UNRECOGNIZED_MATCHUP_FORMAT, matchUpFormat },
       stack,

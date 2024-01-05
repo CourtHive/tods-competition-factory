@@ -59,7 +59,7 @@ export function generateOutcome(params) {
     sideWeight = 4,
   } = params;
 
-  if (!isValidMatchUpFormat(matchUpFormat))
+  if (!isValidMatchUpFormat({ matchUpFormat }))
     return { error: INVALID_MATCHUP_FORMAT };
   if (typeof matchUpStatusProfile !== 'object')
     return { error: INVALID_VALUES };

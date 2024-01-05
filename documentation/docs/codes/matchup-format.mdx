@@ -22,7 +22,7 @@ import { matchUpFormatCode } from 'tods-competition-factory';
 const matchUpFormat = 'SET3-S:6/TB7';
 
 // validate matchUpFormat codes
-const valid = matchUpFormatCode.isValidMatchUpFormat(matchUpFormat);
+const valid = matchUpFormatCode.isValidMatchUpFormat({ matchUpFormat });
 
 // parse matchUpFormat codes into an object representation
 // tiebreakFormat and tiebreakSet are mutually exclusive

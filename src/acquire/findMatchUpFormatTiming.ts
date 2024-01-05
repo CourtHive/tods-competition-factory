@@ -27,7 +27,7 @@ export function findMatchUpFormatTiming({
   eventType,
   eventId,
 }: FindMatchUpFormatTiming) {
-  if (!isValidMatchUpFormat(matchUpFormat))
+  if (!isValidMatchUpFormat({ matchUpFormat }))
     return { error: UNRECOGNIZED_MATCHUP_FORMAT };
 
   const tournamentIds = Object.keys(tournamentRecords).filter(

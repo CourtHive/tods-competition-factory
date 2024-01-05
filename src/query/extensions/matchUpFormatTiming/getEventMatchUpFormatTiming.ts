@@ -78,7 +78,12 @@ export function getEventMatchUpFormatTiming({
 
         if (uniqueMatchUpFormats.includes(definitionObject?.matchUpFormat))
           return;
-        if (!isValidMatchUpFormat(definitionObject?.matchUpFormat)) return;
+        if (
+          !isValidMatchUpFormat({
+            matchUpFormat: definitionObject?.matchUpFormat,
+          })
+        )
+          return;
         uniqueMatchUpFormats.push(definitionObject.matchUpFormat);
         return definitionObject;
       })

@@ -2629,7 +2629,7 @@ const { valid } = tournamentEngine.isValidForQualifiying({
 Returns boolean indicating whether matchUpFormat code is valid.
 
 ```js
-const valid = tournamentEngine.isValidMatchUpFormat(matchUpFormat);
+const valid = tournamentEngine.isValidMatchUpFormat({ matchUpFormat });
 ```
 
 ---
