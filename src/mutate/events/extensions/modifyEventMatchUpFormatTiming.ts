@@ -36,7 +36,8 @@ export function modifyEventMatchUpFormatTiming(
   } = params;
 
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!isValidMatchUpFormat(matchUpFormat)) return { error: INVALID_VALUES };
+  if (!isValidMatchUpFormat({ matchUpFormat }))
+    return { error: INVALID_VALUES };
   if (!event) return { error: MISSING_EVENT };
 
   const { averageTimes = [], recoveryTimes = [] } =

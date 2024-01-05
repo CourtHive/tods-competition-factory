@@ -12,6 +12,7 @@ import {
   SINGLES_EVENT,
   TEAM_EVENT,
 } from '../../constants/eventConstants';
+import { checkRequiredParameters } from '../../parameters/checkRequiredParameters';
 
 type ScaleType = {
   scaleName: string;
@@ -30,8 +31,11 @@ type ScaleTypes = {
   ratings: ScalesType;
 };
 
-export function getScaleValues({ participant }) {
-  const scaleItems = participant.timeItems?.filter(
+export function getScaleValues(params) {
+  const paramCheck = checkRequiredParameters(params, [{ participant: true }]);
+  if (paramCheck.error) return paramCheck;
+
+  const scaleItems = params.participant.timeItems?.filter(
     ({ itemType }) =>
       itemType?.startsWith(SCALE) &&
       [RANKING, RATING, SEEDING].includes(itemType.split('.')[1])

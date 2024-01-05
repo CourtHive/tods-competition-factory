@@ -25,7 +25,7 @@ export function calculateHistoryScore(params) {
 
   const { matchUpFormat } = matchUp;
   if (!matchUpFormat) return { error: MISSING_MATCHUP_FORMAT };
-  if (!isValidMatchUpFormat(matchUpFormat))
+  if (!isValidMatchUpFormat({ matchUpFormat }))
     return { error: INVALID_MATCHUP_FORMAT };
 
   const parsedFormat: any = parse(matchUpFormat);

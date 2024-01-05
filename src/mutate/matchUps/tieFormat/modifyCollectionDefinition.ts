@@ -92,7 +92,7 @@ export function modifyCollectionDefinition({
 } {
   const stack = 'modifyCollectionDefinition';
 
-  if (matchUpFormat && !isValidMatchUpFormat(matchUpFormat)) {
+  if (matchUpFormat && !isValidMatchUpFormat({ matchUpFormat })) {
     return decorateResult({
       result: { error: INVALID_VALUES },
       context: { matchUpFormat },

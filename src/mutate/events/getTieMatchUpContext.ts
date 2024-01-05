@@ -98,21 +98,26 @@ export function getTieMatchUpContext({
     (assignment) => drawPositions?.includes(assignment.drawPosition)
   );
 
-  const participantIds = relevantAssignments?.map(
-    extractAttributes('participantId')
-  );
+  const { matchUp: dualMatchUp } = findDrawMatchUp({
+    matchUpId: matchUpTieId,
+    drawDefinition,
+    matchUpsMap,
+  });
+
+  const sideParticipantIds =
+    dualMatchUp?.sides?.map(extractAttributes('participantId')) ?? [];
+
+  const assignedParticipantIds =
+    relevantAssignments?.map(extractAttributes('participantId')) ?? [];
+
+  const participantIds = [...sideParticipantIds, ...assignedParticipantIds];
+
   const { participants: teamParticipants } = getParticipants({
     tournamentRecord,
     participantFilters: {
       participantTypes: [TEAM],
       participantIds,
     },
-  });
-
-  const { matchUp: dualMatchUp } = findDrawMatchUp({
-    matchUpId: matchUpTieId,
-    drawDefinition,
-    matchUpsMap,
   });
 
   const { matchUp: inContextDualMatchUp } = findDrawMatchUp({

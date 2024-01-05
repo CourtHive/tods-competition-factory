@@ -53,7 +53,7 @@ export function setMatchUpMatchUpFormat(params: SetMatchUpMatchUpFormatArgs): {
 
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpFormat) return { error: MISSING_MATCHUP_FORMAT };
-  if (!isValidMatchUpFormat(matchUpFormat))
+  if (!isValidMatchUpFormat({ matchUpFormat }))
     return { error: UNRECOGNIZED_MATCHUP_FORMAT };
   const stack = 'setMatchUpFormat';
 

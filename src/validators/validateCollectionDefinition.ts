@@ -108,7 +108,10 @@ export function validateCollectionDefinition({
     errors.push(`collectionGroupNumber is not type number: ${collectionValue}`);
   }
 
-  if (matchUpFormat && !matchUpFormatCode.isValidMatchUpFormat(matchUpFormat)) {
+  if (
+    matchUpFormat &&
+    !matchUpFormatCode.isValidMatchUpFormat({ matchUpFormat })
+  ) {
     errors.push(`Invalid matchUpFormat: ${matchUpFormat}`);
   }
 

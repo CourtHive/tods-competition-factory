@@ -33,8 +33,8 @@ export function getModifiedMatchUpFormatTiming(
   const paramCheck = checkRequiredParameters(params, [
     { [TOURNAMENT_RECORD]: true },
     {
+      [VALIDATE]: (matchUpFormat) => isValidMatchUpFormat({ matchUpFormat }),
       [INVALID]: UNRECOGNIZED_MATCHUP_FORMAT,
-      [VALIDATE]: isValidMatchUpFormat,
       [MATCHUP_FORMAT]: true,
     },
   ]);
