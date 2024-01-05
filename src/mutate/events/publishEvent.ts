@@ -94,7 +94,14 @@ export function publishEvent(params: PublishEventType) {
 
   const pubStatus = getEventPublishStatus({ event, status });
 
-  const drawDetails = pubStatus?.drawDetails || {};
+  // filter out any drawIds that do not have corresponding drawDefinitions not in the event
+  const drawDetails = Object.keys(pubStatus?.drawDetails || {})
+    .filter((drawId) => eventDrawIds.includes(drawId))
+    .reduce((details: any, drawId) => {
+      details[drawId] = pubStatus.drawDetails[drawId];
+      return details;
+    }, {});
+
   for (const drawId of eventDrawIds) {
     if (!drawIdsToValidate.length || drawIdsToValidate.includes(drawId)) {
       if (

@@ -3,19 +3,14 @@ import { asyncExecutionQueue } from './asyncExecutionQueue';
 import { asyncEngineInvoke } from './asyncEngineInvoke';
 import { engineStart } from '../parts/engineStart';
 
-import { FactoryEngine } from '../../../types/factoryTypes';
-
-type MethodParams = {
-  params?: { [key: string]: any };
-  method: string;
-};
+import { Directives, FactoryEngine } from '../../../types/factoryTypes';
 
 export function asyncEngine(test?: boolean): FactoryEngine & { error?: any } {
   const result = createInstanceState();
   if (result.error && !test) return result;
 
   const engine: FactoryEngine = {
-    executionQueue: (directives: MethodParams[], rollbackOnError?: boolean) =>
+    executionQueue: (directives: Directives, rollbackOnError?: boolean) =>
       asyncExecutionQueue(engine, directives, rollbackOnError),
     execute: (args: any) => asyncEngineInvoke(engine, args),
   };

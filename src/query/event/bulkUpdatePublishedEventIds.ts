@@ -8,7 +8,6 @@ import {
 
 /**
  *
- * @param {object} tournamentRecord - passed in automatically by tournamentEngine
  * @param {object[]} outcomes - array of outcomes to be applied to matchUps, relevent attributes: { eventId: string; drawId: string; }
  *
  */

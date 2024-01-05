@@ -2,11 +2,13 @@ import { getStructureSeedAssignments } from '../structure/getStructureSeedAssign
 import { getAllStructureMatchUps } from '../matchUps/getAllStructureMatchUps';
 import { structureSort } from '../../functions/sorters/structureSort';
 import { getStructureGroups } from '../structure/getStructureGroups';
+import { extractAttributes } from '../../utilities/objects';
 import { makeDeepCopy } from '../../utilities/makeDeepCopy';
 import { getPositionAssignments } from './positionsGetter';
 import { findStructure } from '../../acquire/findStructure';
 import { findExtension } from '../../acquire/findExtension';
 
+import { PARTICIPANT_ID } from '../../constants/attributeConstants';
 import { TALLY } from '../../constants/extensionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
@@ -32,8 +34,6 @@ import {
   PLAY_OFF,
   QUALIFYING,
 } from '../../constants/drawDefinitionConstants';
-import { extractAttributes } from '../../utilities/objects';
-import { PARTICIPANT_ID } from '../../constants/attributeConstants';
 
 export function getDrawData(params): {
   structures?: any[];

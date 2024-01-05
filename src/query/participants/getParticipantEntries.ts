@@ -1,7 +1,7 @@
 import { extractAttributes as xa, isObject } from '../../utilities/objects';
 import { addScheduleItem } from '../../mutate/participants/addScheduleItem';
 import { getEventSeedAssignments } from '../event/getEventSeedAssignments';
-import { getEventPublishStatuses } from '../event/getEventPublishStatuses';
+import { getPublishState } from '../events/getPublishState';
 import { getPositionAssignments } from '../drawDefinition/positionsGetter';
 import { timeSort, timeStringMinutes } from '../../utilities/dateTime';
 import { structureSort } from '../../functions/sorters/structureSort';
@@ -109,9 +109,9 @@ export function getParticipantEntries(params) {
     const { flightProfile } = getFlightProfile({ event });
     const flights = flightProfile?.flights ?? [];
 
-    const publishStatuses = getEventPublishStatuses({ event });
-    const publishedSeeding = publishStatuses?.publishedSeeding;
+    const publishStatuses = getPublishState({ event }).publishState;
     if (publishStatuses) eventsPublishStatuses[eventId] = publishStatuses;
+    const publishedSeeding = publishStatuses?.publishedSeeding;
 
     if (withEvents || withSeeding || withRankingProfile) {
       const extensionConversions = convertExtensions

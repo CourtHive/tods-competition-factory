@@ -6,9 +6,9 @@ import {
   Notice,
 } from '../../global/state/globalState';
 
-const NOT_FOUND = 'Not found';
-const INVALID_VALUES = 'Invalid values';
 const MISSING_TOURNAMENT_RECORD = 'Missing Tournament Record';
+const INVALID_VALUES = 'Invalid values';
+const NOT_FOUND = 'Not found';
 
 /**
  * This code enables "global" state for each async execution context.

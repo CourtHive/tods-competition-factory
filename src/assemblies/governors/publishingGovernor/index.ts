@@ -2,6 +2,7 @@ import { unPublishOrderOfPlay } from '../../../mutate/timeItems/unPublishOrderOf
 import { publishOrderOfPlay } from '../../../mutate/timeItems/publishOrderOfPlay';
 import { getTournamentInfo } from '../../../query/tournaments/getTournamentInfo';
 import { setEventDisplay } from '../../../mutate/events/setEventDisplay';
+import { getPublishState } from '../../../query/events/getPublishState';
 import { unPublishEvent } from '../../../mutate/events/unPublishEvent';
 import { getAllEventData } from '../../../query/event/getAllEventData';
 import { getDrawData } from '../../../query/drawDefinition/getDrawData';
@@ -15,22 +16,20 @@ import {
 } from '../../../mutate/events/eventSeeding';
 
 const publishingGovernor = {
+  getAllEventData,
+  getCourtInfo,
+  getDrawData,
+  getEventData,
+  getPublishState,
   getTournamentInfo,
   getVenueData,
-  getCourtInfo,
-
-  getAllEventData,
-  getEventData,
-  getDrawData,
-
-  unPublishEventSeeding,
+  publishEvent,
   publishEventSeeding,
+  publishOrderOfPlay,
   setEventDisplay,
   unPublishEvent,
-  publishEvent,
-
+  unPublishEventSeeding,
   unPublishOrderOfPlay,
-  publishOrderOfPlay,
 };
 
 export default publishingGovernor;

@@ -47,7 +47,7 @@ import { getMaxEntryPosition } from '../../../query/entries/getMaxEntryPosition'
 import { analyzeTournament } from '../../../query/tournaments/analyzeTournament';
 import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
 import { getMatchUpFormat } from '../../../query/hierarchical/getMatchUpFormat';
-import { bulkUpdatePublishedEventIds } from '../../../query/event/publishState';
+import { bulkUpdatePublishedEventIds } from '../../../query/event/bulkUpdatePublishedEventIds';
 import { publicFindParticipant } from '../../../acquire/publicFindParticipant';
 import { getTournamentIds } from '../../../query/tournaments/getTournamentIds';
 import { validMatchUp, validMatchUps } from '../../../validators/validMatchUp';

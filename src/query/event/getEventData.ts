@@ -1,6 +1,7 @@
 import { getTournamentInfo } from '../tournaments/getTournamentInfo';
 import { getParticipants } from '../participants/getParticipants';
 import { getEventPublishStatus } from './getEventPublishStatus';
+import { getPublishState } from '../events/getPublishState';
 import { makeDeepCopy } from '../../utilities/makeDeepCopy';
 import { isConvertableInteger } from '../../utilities/math';
 import { getDrawData } from '../drawDefinition/getDrawData';
@@ -57,6 +58,7 @@ export function getEventData(params: GetEventDataArgs): {
   const { tournamentId, endDate } = tournamentRecord;
 
   const publishStatus = getEventPublishStatus({ event, status });
+  const { publishState } = getPublishState({ event });
 
   const { participants: tournamentParticipants } = getParticipants({
     withGroupings: true,
@@ -201,6 +203,7 @@ export function getEventData(params: GetEventDataArgs): {
     drawsData,
   };
 
+  eventData.eventInfo.publishState = publishState;
   eventData.eventInfo.publish = publishStatus;
 
   return { ...SUCCESS, eventData };
