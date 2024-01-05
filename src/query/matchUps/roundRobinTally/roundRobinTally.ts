@@ -72,7 +72,7 @@ export function tallyParticipantResults({
   const completedTieMatchUps = matchUps.every(
     ({ matchUpType, tieMatchUps }) =>
       matchUpType === TEAM &&
-      tieMatchUps.every((matchUp) => checkMatchUpIsComplete({ matchUp }))
+      tieMatchUps?.every((matchUp) => checkMatchUpIsComplete({ matchUp }))
   );
 
   const tallyPolicy = policyDefinitions?.[POLICY_TYPE_ROUND_ROBIN_TALLY];
