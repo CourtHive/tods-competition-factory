@@ -5,7 +5,7 @@ import {
   tournamentEngineAsync,
   competitionEngineAsync,
   mocksEngine,
-} from '../../index';
+} from '../../global/state/globalState';
 
 /**
  * Example of how to use asyncGlobalState

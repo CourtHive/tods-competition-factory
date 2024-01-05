@@ -1,6 +1,6 @@
 import tournamentEngine from '../../../../engines/syncEngine';
 import mocksEngine from '../../../../../assemblies/engines/mock';
-import { setSubscriptions } from '../../../../..';
+import { globalState } from '../../../../..';
 import { expect, it } from 'vitest';
 
 import { ROUND_ROBIN } from '../../../../../constants/drawDefinitionConstants';
@@ -93,7 +93,7 @@ it('can SWAP assignment.bye with assignment.participantId with 32 drawSize', () 
   let drawModifications = 0;
   let updatedAt = 0;
 
-  let result = setSubscriptions({
+  let result = globalState.setSubscriptions({
     subscriptions: {
       [MODIFY_DRAW_DEFINITION]: ([{ drawDefinition }]) => {
         drawModifications += 1;

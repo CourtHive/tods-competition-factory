@@ -1,6 +1,6 @@
 import { getParticipantIds } from '../../../global/functions/extractors';
 import mocksEngine from '../../../assemblies/engines/mock';
-import { setSubscriptions } from '../../..';
+import { globalState } from '../../..';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
@@ -21,7 +21,7 @@ it('can add 3-4 playoff structure to a SINGLE ELIMINATION structure', () => {
     },
   };
 
-  setSubscriptions({ subscriptions });
+  globalState.setSubscriptions({ subscriptions });
 
   const drawProfiles = [
     {

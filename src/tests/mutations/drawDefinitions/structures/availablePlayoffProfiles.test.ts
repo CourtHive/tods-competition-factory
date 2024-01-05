@@ -1,12 +1,12 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
 import { getAvailablePlayoffProfiles } from '../../../../mutate/drawDefinitions/structureGovernor/getAvailablePlayoffProfiles';
+import { newDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { setStageDrawSize } from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 import { getDrawStructures } from '../../../../acquire/findStructure';
 import { constantToString } from '../../../../utilities/strings';
 import tournamentEngine from '../../../engines/syncEngine';
-import { newDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import mocksEngine from '../../../../assemblies/engines/mock';
-import { setSubscriptions } from '../../../..';
+import { globalState } from '../../../..';
 import { expect, it } from 'vitest';
 
 import { COMPLETED } from '../../../../constants/matchUpStatusConstants';
@@ -288,7 +288,7 @@ it('can generate only specified playoff rounds and give them custom names', () =
     },
   };
 
-  setSubscriptions({ subscriptions });
+  globalState.setSubscriptions({ subscriptions });
 
   const drawProfiles = [
     {
@@ -351,7 +351,7 @@ it('can use roundProfiles to specify depth of playoff structures', () => {
     },
   };
 
-  setSubscriptions({ subscriptions });
+  globalState.setSubscriptions({ subscriptions });
 
   const drawProfiles = [
     {
@@ -406,7 +406,7 @@ it('can determine playoff structures available from playoff structures', () => {
     },
   };
 
-  setSubscriptions({ subscriptions });
+  globalState.setSubscriptions({ subscriptions });
 
   // generate a standard elimination draw
   const drawProfiles = [{ drawSize: 64 }];
