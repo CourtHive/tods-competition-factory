@@ -11,7 +11,7 @@ import { modifyCourt } from '../../../mutate/venues/modifyCourt';
 import { modifyVenue } from '../../../mutate/venues/modifyVenue';
 import { addVenue } from '../../../mutate/venues/addVenue';
 
-const venueGovernor = {
+export const venueGovernor = {
   addCourt,
   addCourts,
   addVenue,

@@ -49,7 +49,7 @@ import {
   setSchedulingProfile,
 } from '../../../mutate/tournaments/schedulingProfile';
 
-const scheduleGovernor = {
+export const scheduleGovernor = {
   addMatchUpCourtOrder,
   addMatchUpEndTime,
   addMatchUpOfficial,

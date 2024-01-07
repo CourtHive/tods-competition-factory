@@ -3,15 +3,20 @@ import { addPositionActionTelemetry } from './positionGovernor/addPositionAction
 import { assignDrawPositionBye } from '../matchUps/drawPositions/assignDrawPositionBye';
 import { clearDrawPosition } from '../matchUps/drawPositions/positionClear';
 import { findTournamentParticipant } from '../../acquire/findTournamentParticipant';
-import { decorateResult } from '../../global/functions/decorateResult';
 import { findStructure } from '../../acquire/findStructure';
 import { modifyEntriesStatus } from '../entries/modifyEntriesStatus';
 import { destroyPairEntry } from '../entries/destroyPairEntry';
+import {
+  ResultType,
+  decorateResult,
+} from '../../global/functions/decorateResult';
 
-import { PAIR } from '../../constants/participantConstants';
 import { ALTERNATE, WITHDRAWN } from '../../constants/entryStatusConstants';
+import { PAIR } from '../../constants/participantConstants';
 
-export function removeDrawPositionAssignment(params) {
+export function removeDrawPositionAssignment(
+  params
+): ResultType & { participantId?: string } {
   const {
     tournamentRecord,
     replaceWithBye,

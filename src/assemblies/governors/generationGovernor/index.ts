@@ -11,7 +11,7 @@ import { generateFlightProfile } from '../../../assemblies/generators/drawDefini
 import { generateLineUps } from '../../generators/participants/generateLineUps';
 import garman from '../../generators/scheduling/garman/garman';
 
-const generationGovernor = {
+export const generationGovernor = {
   garman,
   generateAdHocMatchUps,
   generateAndPopulatePlayoffStructures,

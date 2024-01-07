@@ -34,26 +34,30 @@ type GetMatchUpScheduleDetailsArgs = {
   scheduleVisibilityFilters?: ScheduleVisibilityFilters;
   scheduleTiming?: ScheduleTiming;
   tournamentRecord?: Tournament;
+  matchUpType?: EventTypeUnion;
   afterRecoveryTimes?: boolean;
   usePublishState?: boolean;
   matchUp: HydratedMatchUp;
   matchUpFormat?: string;
-  matchUpType?: EventTypeUnion;
   publishStatus?: any;
   event?: Event;
 };
-export function getMatchUpScheduleDetails({
-  scheduleVisibilityFilters,
-  afterRecoveryTimes,
-  tournamentRecord,
-  usePublishState,
-  scheduleTiming,
-  matchUpFormat,
-  publishStatus,
-  matchUpType,
-  matchUp,
-  event,
-}: GetMatchUpScheduleDetailsArgs) {
+export function getMatchUpScheduleDetails(
+  params: GetMatchUpScheduleDetailsArgs
+) {
+  let event = params.event;
+  let matchUpType: any = params.matchUpType;
+  const {
+    scheduleVisibilityFilters,
+    afterRecoveryTimes,
+    tournamentRecord,
+    usePublishState,
+    scheduleTiming,
+    matchUpFormat,
+    publishStatus,
+    matchUp,
+  } = params;
+
   if (!matchUp) return { error: MISSING_MATCHUP };
 
   // matchUpType is required to derive averageMatchUpMinutes and recoveryMinutes.
@@ -62,7 +66,7 @@ export function getMatchUpScheduleDetails({
   if (
     afterRecoveryTimes &&
     !matchUp.matchUpType &&
-    !matchUpType &&
+    !params.matchUpType &&
     (event || tournamentRecord) &&
     matchUp.drawId
   ) {
@@ -84,6 +88,7 @@ export function getMatchUpScheduleDetails({
       );
 
     matchUpType =
+      params.matchUpType ||
       structure?.matchUpType ||
       drawDefinition?.matchUpType ||
       (event?.eventType !== TEAM && event?.eventType);

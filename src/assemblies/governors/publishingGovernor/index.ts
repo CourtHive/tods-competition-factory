@@ -14,7 +14,7 @@ import {
   unPublishEventSeeding,
 } from '../../../mutate/events/eventSeeding';
 
-const publishingGovernor = {
+export const publishingGovernor = {
   getAllEventData,
   getCourtInfo,
   getDrawData,

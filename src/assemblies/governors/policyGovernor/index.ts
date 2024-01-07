@@ -1,7 +1,7 @@
 import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
 import { removePolicy } from '../../../mutate/extensions/policies/removePolicy';
 
-const policyGovernor = {
+export const policyGovernor = {
   attachPolicies,
   removePolicy,
 };

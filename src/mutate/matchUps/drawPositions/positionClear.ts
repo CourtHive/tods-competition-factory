@@ -4,7 +4,6 @@ import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructure
 import { getInitialRoundNumber } from '../../../query/matchUps/getInitialRoundNumber';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
-import { decorateResult } from '../../../global/functions/decorateResult';
 import { pushGlobalLog } from '../../../global/functions/globalLog';
 import { findStructure } from '../../../acquire/findStructure';
 import { ensureInt } from '../../../utilities/ensureInt';
@@ -14,6 +13,10 @@ import {
   getPositionAssignments,
   structureAssignedDrawPositions,
 } from '../../../query/drawDefinition/positionsGetter';
+import {
+  ResultType,
+  decorateResult,
+} from '../../../global/functions/decorateResult';
 import {
   MatchUpsMap,
   getMatchUpsMap,
@@ -59,7 +62,9 @@ type ClearDrawPositionArgs = {
   structureId: string;
   event?: Event;
 };
-export function clearDrawPosition(params: ClearDrawPositionArgs) {
+export function clearDrawPosition(
+  params: ClearDrawPositionArgs
+): ResultType & { participantId?: string } {
   let { inContextDrawMatchUps, participantId, drawPosition } = params;
   const { tournamentRecord, drawDefinition, structureId, matchUpsMap, event } =
     params;

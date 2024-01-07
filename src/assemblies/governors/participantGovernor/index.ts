@@ -26,7 +26,7 @@ import {
   setParticipantScaleItem,
 } from '../../../mutate/participants/addScaleItems';
 
-const participantGovernor = {
+export const participantGovernor = {
   addIndividualParticipantIds,
   addParticipant,
   addParticipants,

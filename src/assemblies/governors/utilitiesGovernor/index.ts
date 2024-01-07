@@ -49,7 +49,7 @@ import {
   unique,
 } from '../../../utilities/arrays';
 
-const utilitiesGovernor = {
+export const utilitiesGovernor = {
   visualizeScheduledMatchUps,
   dehydrateMatchUps,
   structureSort,
