@@ -8,12 +8,11 @@ import { addExtension } from '../../../mutate/extensions/addExtension';
 import { generateRange } from '../../../utilities/arrays';
 import { isNumeric } from '../../../utilities/math';
 
-import {
-  DOUBLES_MATCHUP,
-  SINGLES_MATCHUP,
-} from '../../../constants/matchUpTypes';
+import { CollectionAssignment, DrawDefinition, Event, TieFormat, Tournament } from '../../../types/tournamentTypes';
+import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '../../../constants/matchUpTypes';
 import { DIRECT_ACCEPTANCE } from '../../../constants/entryStatusConstants';
 import { FEMALE, MALE, MIXED } from '../../../constants/genderConstants';
+import { ResultType } from '../../../global/functions/decorateResult';
 import { COMPETITOR } from '../../../constants/participantRoles';
 import { DESCENDING } from '../../../constants/sortingConstants';
 import { LINEUPS } from '../../../constants/extensionConstants';
@@ -29,13 +28,6 @@ import {
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
-import {
-  CollectionAssignment,
-  DrawDefinition,
-  Event,
-  TieFormat,
-  Tournament,
-} from '../../../types/tournamentTypes';
 
 type GenerateLineUpsArgs = {
   useDefaultEventRanking?: boolean;
@@ -49,7 +41,10 @@ type GenerateLineUpsArgs = {
 };
 
 // by default if there are no scaleValues matching the scaleAccessor then participants will be assigned in the array order of [team].individidualParticipantIds
-export function generateLineUps(params: GenerateLineUpsArgs) {
+export function generateLineUps(params: GenerateLineUpsArgs): ResultType & {
+  lineUps?: { [key: string]: LineUp };
+  participantsToAdd?: any[];
+} {
   let { tieFormat } = params;
   const {
     useDefaultEventRanking,
@@ -63,25 +58,20 @@ export function generateLineUps(params: GenerateLineUpsArgs) {
 
   if (event?.eventType !== TEAM_EVENT) return { error: INVALID_EVENT_TYPE };
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!tieFormat && !drawDefinition)
-    return { error: DRAW_DEFINITION_NOT_FOUND };
+  if (!tieFormat && !drawDefinition) return { error: DRAW_DEFINITION_NOT_FOUND };
 
-  tieFormat =
-    tieFormat ?? resolveTieFormat({ drawDefinition, event })?.tieFormat;
+  tieFormat = tieFormat ?? resolveTieFormat({ drawDefinition, event })?.tieFormat;
 
-  if (validateTieFormat({ tieFormat }).error)
-    return { error: INVALID_TIE_FORMAT };
+  if (validateTieFormat({ tieFormat }).error) return { error: INVALID_TIE_FORMAT };
 
   if (typeof scaleAccessor !== 'object' && !useDefaultEventRanking)
     return { error: INVALID_VALUES, context: { scaleAccessor } };
 
   const lineUps: { [key: string]: LineUp } = {};
 
-  const targetEntries = (
-    drawDefinition?.entries ??
-    event?.entries ??
-    []
-  ).filter((entry) => entry?.entryStatus === DIRECT_ACCEPTANCE);
+  const targetEntries = (drawDefinition?.entries ?? event?.entries ?? []).filter(
+    (entry) => entry?.entryStatus === DIRECT_ACCEPTANCE,
+  );
 
   const participantIds = targetEntries.map(getParticipantId);
   const { participants = [] } = getParticipants({
@@ -90,40 +80,27 @@ export function generateLineUps(params: GenerateLineUpsArgs) {
     tournamentRecord,
   });
 
-  const teamParticipants = participants.filter(({ participantId }) =>
-    participantIds.includes(participantId)
-  );
+  const teamParticipants = participants.filter(({ participantId }) => participantIds.includes(participantId));
 
   const formatScaleType = (type) => (type === RANKING ? 'rankings' : 'ratings');
 
-  const defaultScaleName =
-    event?.category?.categoryName ?? event?.category?.ageCategoryCode;
-  const {
-    scaleName = defaultScaleName,
-    scaleType = RANKING,
-    sortOrder,
-    accessor,
-  } = scaleAccessor || {};
+  const defaultScaleName = event?.category?.categoryName ?? event?.category?.ageCategoryCode;
+  const { scaleName = defaultScaleName, scaleType = RANKING, sortOrder, accessor } = scaleAccessor || {};
 
   const formattedScaleType = formatScaleType(scaleType);
   const getScaleValue = (individualParticipant, matchUpType) => {
-    let matchUpTypeScales =
-      individualParticipant[formattedScaleType]?.[matchUpType];
+    let matchUpTypeScales = individualParticipant[formattedScaleType]?.[matchUpType];
 
     // if { userDefaultEventRanking: true } fallback to SINGLES if no values for DOUBLES
     if (!matchUpTypeScales && useDefaultEventRanking) {
-      matchUpTypeScales =
-        individualParticipant[formattedScaleType]?.[SINGLES_MATCHUP];
+      matchUpTypeScales = individualParticipant[formattedScaleType]?.[SINGLES_MATCHUP];
     }
 
     if (Array.isArray(matchUpTypeScales)) {
-      const scaleValue = matchUpTypeScales.find(
-        (scale) => scale.scaleName === scaleName
-      )?.scaleValue;
+      const scaleValue = matchUpTypeScales.find((scale) => scale.scaleName === scaleName)?.scaleValue;
       if (isNumeric(scaleValue)) {
         return scaleValue;
-      } else if (accessor && typeof scaleValue === 'object')
-        return scaleValue[accessor];
+      } else if (accessor && typeof scaleValue === 'object') return scaleValue[accessor];
     }
     return 0;
   };
@@ -139,18 +116,15 @@ export function generateLineUps(params: GenerateLineUpsArgs) {
   const participantIdPairs: string[][] = [];
   const collectionDefinitions = tieFormat?.collectionDefinitions ?? [];
   for (const teamParticipant of teamParticipants) {
-    const singlesSort =
-      teamParticipant.individualParticipants?.sort(singlesScaleSort) ?? [];
+    const singlesSort = teamParticipant.individualParticipants?.sort(singlesScaleSort) ?? [];
     const doublesSort = singlesOnly
       ? singlesSort
       : teamParticipant.individualParticipants?.sort(doublesScaleSort) ?? [];
 
-    const participantAssignments: { [key: string]: CollectionAssignment[] } =
-      {};
+    const participantAssignments: { [key: string]: CollectionAssignment[] } = {};
     for (const collectionDefinition of collectionDefinitions) {
       const collectionParticipantIds: string[] = [];
-      const { collectionId, matchUpCount, matchUpType, gender } =
-        collectionDefinition;
+      const { collectionId, matchUpCount, matchUpType, gender } = collectionDefinition;
       const singlesMatchUp = matchUpType === SINGLES_MATCHUP;
 
       generateRange(0, matchUpCount).forEach((i) => {
@@ -161,9 +135,7 @@ export function generateLineUps(params: GenerateLineUpsArgs) {
         generateRange(0, singlesMatchUp ? 1 : 2).forEach((i) => {
           const nextParticipantId = typeSort?.find((participant) => {
             const targetGender =
-              gender &&
-              (([MALE, FEMALE].includes(gender) && gender) ||
-                (gender === MIXED && [MALE, FEMALE][i]));
+              gender && (([MALE, FEMALE].includes(gender) && gender) || (gender === MIXED && [MALE, FEMALE][i]));
             return (
               (!targetGender || targetGender === participant.person?.sex) &&
               !collectionParticipantIds.includes(participant.participantId)
@@ -174,8 +146,7 @@ export function generateLineUps(params: GenerateLineUpsArgs) {
           if (nextParticipantId) {
             participantIds.push(nextParticipantId);
             collectionParticipantIds.push(nextParticipantId);
-            if (!participantAssignments[nextParticipantId])
-              participantAssignments[nextParticipantId] = [];
+            if (!participantAssignments[nextParticipantId]) participantAssignments[nextParticipantId] = [];
             participantAssignments[nextParticipantId].push({
               collectionPosition,
               collectionId,
@@ -186,12 +157,10 @@ export function generateLineUps(params: GenerateLineUpsArgs) {
       });
     }
 
-    const lineUp: LineUp = Object.keys(participantAssignments).map(
-      (participantId) => ({
-        collectionAssignments: participantAssignments[participantId],
-        participantId,
-      })
-    );
+    const lineUp: LineUp = Object.keys(participantAssignments).map((participantId) => ({
+      collectionAssignments: participantAssignments[participantId],
+      participantId,
+    }));
 
     lineUps[teamParticipant.participantId] = lineUp;
   }

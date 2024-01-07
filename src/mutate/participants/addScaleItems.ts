@@ -1,14 +1,13 @@
 import { addDrawDefinitionTimeItem } from '../drawDefinitions/addDrawDefinitionTimeItem';
 import { participantScaleItem } from '../../query/participant/participantScaleItem';
+import { addEventTimeItem, addTournamentTimeItem } from '../timeItems/addTimeItem';
 import { addNotice, getTopics } from '../../global/state/globalState';
 import { definedAttributes } from '../../utilities/definedAttributes';
 import { findEvent } from '../../acquire/findEvent';
-import {
-  addEventTimeItem,
-  addTournamentTimeItem,
-} from '../timeItems/addTimeItem';
 
+import { ADD_SCALE_ITEMS, AUDIT, MODIFY_PARTICIPANTS } from '../../constants/topicConstants';
 import { Participant, Tournament } from '../../types/tournamentTypes';
+import { ResultType } from '../../global/functions/decorateResult';
 import { SUCCESS } from '../../constants/resultConstants';
 import { SCALE } from '../../constants/scaleConstants';
 import { ScaleItem } from '../../types/factoryTypes';
@@ -21,11 +20,6 @@ import {
   PARTICIPANT_NOT_FOUND,
   VALUE_UNCHANGED,
 } from '../../constants/errorConditionConstants';
-import {
-  ADD_SCALE_ITEMS,
-  AUDIT,
-  MODIFY_PARTICIPANTS,
-} from '../../constants/topicConstants';
 
 type SetParticipantScaleItemArgs = {
   tournamentRecord: Tournament;
@@ -35,16 +29,13 @@ type SetParticipantScaleItemArgs = {
 };
 
 export function setParticipantScaleItem(params: SetParticipantScaleItemArgs) {
-  const { removePriorValues, tournamentRecord, participantId, scaleItem } =
-    params;
+  const { removePriorValues, tournamentRecord, participantId, scaleItem } = params;
   let equivalentValue, participant;
 
   if (!isValidScaleItem({ scaleItem })) return { error: INVALID_SCALE_ITEM };
 
   if (participantId && Array.isArray(tournamentRecord.participants)) {
-    participant = tournamentRecord.participants.find(
-      (participant) => participant.participantId === participantId
-    );
+    participant = tournamentRecord.participants.find((participant) => participant.participantId === participantId);
 
     if (participant) {
       const result = addParticipantScaleItem({
@@ -93,13 +84,7 @@ type SetParticipantScaleItemsArgs = {
 };
 
 export function setParticipantScaleItems(params: SetParticipantScaleItemsArgs) {
-  const {
-    scaleItemsWithParticipantIds = [],
-    removePriorValues,
-    tournamentRecord,
-    auditData,
-    context,
-  } = params;
+  const { scaleItemsWithParticipantIds = [], removePriorValues, tournamentRecord, auditData, context } = params;
 
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.participants) return { error: MISSING_PARTICIPANTS };
@@ -150,9 +135,7 @@ export function setParticipantScaleItems(params: SetParticipantScaleItemsArgs) {
 
   if (context) {
     const { eventId, drawId, ...itemValue } = context;
-    const itemSubTypes = itemValue.scaleAttributes?.scaleType && [
-      itemValue.scaleAttributes.scaleType,
-    ];
+    const itemSubTypes = itemValue.scaleAttributes?.scaleType && [itemValue.scaleAttributes.scaleType];
     if (Object.keys(itemValue).length) {
       const timeItem: any = {
         itemType: ADD_SCALE_ITEMS,
@@ -190,17 +173,15 @@ function isValidScaleItem({ scaleItem }) {
   const scaleItemAttributes = scaleItem && Object.keys(scaleItem);
   const requiredAttributes = ['scaleType', 'eventType', 'scaleName'];
   const validScaleItem =
-    requiredAttributes.filter(
-      (attribute) => scaleItemAttributes?.includes(attribute)
-    ).length === requiredAttributes.length;
+    requiredAttributes.filter((attribute) => scaleItemAttributes?.includes(attribute)).length ===
+    requiredAttributes.length;
   return !!validScaleItem;
 }
 
-export function addParticipantScaleItem({
-  removePriorValues,
-  participant,
-  scaleItem,
-}) {
+export function addParticipantScaleItem({ removePriorValues, participant, scaleItem }): ResultType & {
+  valueChanged?: boolean;
+  newValue?: any;
+} {
   if (!participant) {
     return { error: MISSING_PARTICIPANT };
   }
@@ -208,10 +189,8 @@ export function addParticipantScaleItem({
   const scaleItemAttributes = scaleItem && Object.keys(scaleItem);
   const requiredAttributes = ['scaleType', 'eventType', 'scaleName'];
   const validScaleItem =
-    requiredAttributes.filter(
-      (attribute) =>
-        scaleItemAttributes.includes(attribute) && scaleItem[attribute]
-    ).length === requiredAttributes.length;
+    requiredAttributes.filter((attribute) => scaleItemAttributes.includes(attribute) && scaleItem[attribute]).length ===
+    requiredAttributes.length;
 
   if (!validScaleItem) return { error: INVALID_SCALE_ITEM };
 
@@ -226,12 +205,8 @@ export function addParticipantScaleItem({
   const isUndefined = (value) => [undefined, null, ''].includes(value);
 
   const valueChanged =
-    !(
-      isUndefined(existingScaleItem?.scaleValue) &&
-      isUndefined(scaleItem.scaleValue)
-    ) &&
-    JSON.stringify(existingScaleItem?.scaleValue) !==
-      JSON.stringify(scaleItem.scaleValue);
+    !(isUndefined(existingScaleItem?.scaleValue) && isUndefined(scaleItem.scaleValue)) &&
+    JSON.stringify(existingScaleItem?.scaleValue) !== JSON.stringify(scaleItem.scaleValue);
 
   if (valueChanged) {
     const { scaleType, eventType, scaleName } = scaleItem;
@@ -250,9 +225,7 @@ export function addParticipantScaleItem({
     }
 
     if (removePriorValues) {
-      participant.timeItems = participant.timeItems.filter(
-        (timeItem) => timeItem.itemType !== itemType
-      );
+      participant.timeItems = participant.timeItems.filter((timeItem) => timeItem.itemType !== itemType);
     }
 
     participant.timeItems.push(timeItem);

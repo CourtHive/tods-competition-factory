@@ -1,34 +1,26 @@
 import { assignTieMatchUpParticipantId } from '../../../mutate/matchUps/lineUps/assignTieMatchUpParticipant';
-import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { setMatchUpStatus } from '../../../mutate/matchUps/matchUpStatus/setMatchUpStatus';
+import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
+import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
+import { generateOutcomeFromScoreString } from './generateOutcomeFromScoreString';
 import { getParticipants } from '../../../query/participants/getParticipants';
 import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
-import { generateLineUps } from '../participants/generateLineUps';
-import { generateOutcomeFromScoreString } from './generateOutcomeFromScoreString';
-import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
 import { structureSort } from '../../../functions/sorters/structureSort';
 import { matchUpSort } from '../../../functions/sorters/matchUpSort';
 import { getMatchUpId } from '../../../global/functions/extractors';
+import { generateLineUps } from '../participants/generateLineUps';
 import { generateOutcome } from './generateOutcome';
 
+import { BYE, COMPLETED, DOUBLE_DEFAULT, DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
+import { ErrorType, MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
+import { addParticipants } from '../../../mutate/participants/addParticipants';
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
+import { addExtension } from '../../../mutate/extensions/addExtension';
+import { LINEUPS } from '../../../constants/extensionConstants';
 import { ASCENDING } from '../../../constants/sortingConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { RANKING } from '../../../constants/scaleConstants';
-import {
-  ErrorType,
-  MISSING_DRAW_DEFINITION,
-} from '../../../constants/errorConditionConstants';
-import {
-  BYE,
-  COMPLETED,
-  DOUBLE_DEFAULT,
-  DOUBLE_WALKOVER,
-} from '../../../constants/matchUpStatusConstants';
-import { LINEUPS } from '../../../constants/extensionConstants';
-import { addExtension } from '../../../mutate/extensions/addExtension';
-import { addParticipants } from '../../../mutate/participants/addParticipants';
 
 export function completeDrawMatchUps(params): {
   completedCount?: number;
@@ -48,14 +40,9 @@ export function completeDrawMatchUps(params): {
 
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
-  const matchUpFormat =
-    params.matchUpFormat ||
-    drawDefinition.matchUpFormat ||
-    event?.matchUpFormat;
+  const matchUpFormat = params.matchUpFormat || drawDefinition.matchUpFormat || event?.matchUpFormat;
 
-  const sortedStructures = drawDefinition.structures
-    .slice()
-    .sort(structureSort);
+  const sortedStructures = drawDefinition.structures.slice().sort(structureSort);
 
   let completedCount = 0;
 
@@ -72,8 +59,7 @@ export function completeDrawMatchUps(params): {
   });
 
   if (firstRoundDualMatchUps?.length) {
-    const categoryName =
-      event?.category?.ageCategoryCode || event?.category?.categoryName;
+    const categoryName = event?.category?.ageCategoryCode || event?.category?.categoryName;
     if (categoryName) {
       const scaleAccessor = {
         scaleName: categoryName,
@@ -104,30 +90,21 @@ export function completeDrawMatchUps(params): {
           tournamentRecord,
         });
         const assignParticipants = (dualMatchUp) => {
-          const singlesMatchUps = dualMatchUp.tieMatchUps.filter(
-            ({ matchUpType }) => matchUpType === SINGLES
-          );
-          const doublesMatchUps = dualMatchUp.tieMatchUps.filter(
-            ({ matchUpType }) => matchUpType === DOUBLES
-          );
+          const singlesMatchUps = dualMatchUp.tieMatchUps.filter(({ matchUpType }) => matchUpType === SINGLES);
+          const doublesMatchUps = dualMatchUp.tieMatchUps.filter(({ matchUpType }) => matchUpType === DOUBLES);
 
           singlesMatchUps.forEach((singlesMatchUp, i) => {
             const tieMatchUpId = singlesMatchUp.matchUpId;
             singlesMatchUp.sides.forEach((side) => {
               const { drawPosition } = side;
-              const teamParticipant = teamParticipants?.find(
-                (teamParticipant) => {
-                  const { participantId } = teamParticipant;
-                  const assignment = positionAssignments.find(
-                    (assignment) => assignment.participantId === participantId
-                  );
-                  return assignment?.drawPosition === drawPosition;
-                }
-              );
+              const teamParticipant = teamParticipants?.find((teamParticipant) => {
+                const { participantId } = teamParticipant;
+                const assignment = positionAssignments.find((assignment) => assignment.participantId === participantId);
+                return assignment?.drawPosition === drawPosition;
+              });
 
               if (teamParticipant) {
-                const individualParticipantId =
-                  teamParticipant.individualParticipantIds?.[i];
+                const individualParticipantId = teamParticipant.individualParticipantIds?.[i];
 
                 individualParticipantId &&
                   assignTieMatchUpParticipantId({
@@ -146,22 +123,14 @@ export function completeDrawMatchUps(params): {
             const tieMatchUpId = doublesMatchUp.matchUpId;
             doublesMatchUp.sides.forEach((side) => {
               const { drawPosition } = side;
-              const teamParticipant = teamParticipants?.find(
-                (teamParticipant) => {
-                  const { participantId } = teamParticipant;
-                  const assignment = positionAssignments.find(
-                    (assignment) => assignment.participantId === participantId
-                  );
-                  return assignment?.drawPosition === drawPosition;
-                }
-              );
+              const teamParticipant = teamParticipants?.find((teamParticipant) => {
+                const { participantId } = teamParticipant;
+                const assignment = positionAssignments.find((assignment) => assignment.participantId === participantId);
+                return assignment?.drawPosition === drawPosition;
+              });
 
               if (teamParticipant) {
-                const individualParticipantIds =
-                  teamParticipant.individualParticipantIds?.slice(
-                    i * 2,
-                    i * 2 + 2
-                  );
+                const individualParticipantIds = teamParticipant.individualParticipantIds?.slice(i * 2, i * 2 + 2);
                 individualParticipantIds?.forEach((individualParticipantId) => {
                   assignTieMatchUpParticipantId({
                     teamParticipantId: teamParticipant.participantId,
@@ -184,8 +153,7 @@ export function completeDrawMatchUps(params): {
 
   // to support legacy tests it is possible to use completeAllMatchUps
   // to pass a score string that will be applied to all matchUps
-  const scoreString =
-    typeof completeAllMatchUps === 'string' && completeAllMatchUps;
+  const scoreString = typeof completeAllMatchUps === 'string' && completeAllMatchUps;
   const matchUpStatus = scoreString && COMPLETED;
 
   for (const structure of sortedStructures) {
@@ -221,13 +189,9 @@ export function completeDrawMatchUps(params): {
         event,
       });
 
-      const targetMatchUp = matchUps.find(
-        (matchUp) => matchUp.matchUpId === matchUpId
-      );
+      const targetMatchUp = matchUps.find((matchUp) => matchUp.matchUpId === matchUpId);
 
-      const isDoubleExit = [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(
-        targetMatchUp.matchUpStatus
-      );
+      const isDoubleExit = [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(targetMatchUp.matchUpStatus);
 
       if (targetMatchUp?.readyToScore && !isDoubleExit) {
         const result = smartComplete({
