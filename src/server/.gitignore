@@ -13,6 +13,9 @@ storage/
 !.vscode/launch.json
 !.vscode/extensions.json
 
+# tsc
+*.tsbuildinfo
+
 # CodeRush
 .cr/
 
