@@ -14,6 +14,7 @@ const methods = {
   ...governors.scheduleGovernor,
   ...governors.policyGovernor,
   ...governors.reportGovernor,
+  ...governors.mocksGovernor,
   ...governors.eventGovernor,
   ...governors.scoreGovernor,
   ...governors.venueGovernor,
