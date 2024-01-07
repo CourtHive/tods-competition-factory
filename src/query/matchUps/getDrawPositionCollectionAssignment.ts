@@ -41,7 +41,7 @@ export function getDrawPositionCollectionAssignment({
     } {
   if (!collectionId || !collectionPosition) return;
 
-  const drawPositionCollectionAssignment =
+  const drawPositionCollectionAssignment: any[] =
     drawPositions
       ?.map((drawPosition) => {
         const teamParticipantId = positionAssignments.find(

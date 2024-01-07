@@ -36,7 +36,7 @@ import {
 
 import { getProfileRounds } from '../../../mutate/matchUps/schedule/profileRounds';
 
-const tournamentGovernor = {
+export const tournamentGovernor = {
   addDrawDefinitionExtension,
   addEventExtension,
   addEventTimeItem,

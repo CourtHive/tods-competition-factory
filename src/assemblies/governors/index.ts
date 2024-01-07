@@ -1,4 +1,4 @@
-import competitionGovernor from './competitionsGovernor';
+import competitionGovernor from './competitionGovernor';
 import eventGovernor from './eventGovernor';
 import generationGovernor from './generationGovernor';
 import matchUpFormatGovernor from './matchUpFormatGovernor';
@@ -31,3 +31,5 @@ export const governors = {
   utilitiesGovernor,
   venueGovernor,
 };
+
+export default governors;
