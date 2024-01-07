@@ -19,12 +19,14 @@ export function analyzeMatchUp(params?): ResultType & {
   isValidSideNumber?: boolean;
   hasExistingValue?: boolean;
   existingValue?: number;
+  expectTimedSet?: boolean;
   isExistingSet?: boolean;
   isActiveSet?: boolean;
   isCompletedSet?: boolean;
   sideGameScores?: number[];
   sidePointScores?: number[];
   sideTiebreakScores?: number[];
+  winningSide?: number;
 } {
   const { matchUp, sideNumber, setNumber, isTiebreakValue, isPointValue } = params || {};
   let { matchUpFormat } = params || {};
@@ -104,7 +106,7 @@ export function analyzeMatchUp(params?): ResultType & {
 
   const maxSetsCount = Math.max(...setsWinCounts);
   const maxSetsInstances = instanceCount(setsWinCounts)[maxSetsCount];
-  const { bestOf } = matchUpScoringFormat || {};
+  const { bestOf } = matchUpScoringFormat ?? {};
   const setsToWin = (bestOf && Math.ceil(bestOf / 2)) || 1;
   const calculatedWinningSide =
     (maxSetsCount === setsToWin && maxSetsInstances === 1 && setsWinCounts.indexOf(maxSetsCount) + 1) || undefined;

@@ -32,8 +32,7 @@ export function submitScoreChange(params?) {
 
   const analysis = analyzeMatchUp(params);
 
-  if (!analysis.isValidSideNumber)
-    return { result: false, error: INVALID_SIDE_NUMBER };
+  if (!analysis.isValidSideNumber) return { result: false, error: INVALID_SIDE_NUMBER };
 
   const { modifiedSet, isValidSet, winnerChanged } = getModifiedSet(params);
   if (!isValidSet) return { result: false, error: INVALID_SET_NUMBER };
@@ -51,21 +50,12 @@ export function submitScoreChange(params?) {
 }
 
 function getModifiedSet(params) {
-  const {
-    matchUp,
-    sideNumber,
-    setNumber,
-    isTiebreakValue,
-    isGameValue,
-    value,
-  } = params || {};
+  const { matchUp, sideNumber, setNumber, isTiebreakValue, isGameValue, value } = params || {};
   let { matchUpFormat } = params || {};
   const analysis = analyzeMatchUp(params);
 
-  const setObject = matchUp?.score?.sets.find(
-    (set) => set.setNumber === setNumber
-  );
-  const modifiedSet = Object.assign({}, setObject || { setNumber });
+  const setObject = matchUp?.score?.sets.find((set) => set.setNumber === setNumber);
+  const modifiedSet = setObject ?? { setNumber };
 
   if (isTiebreakValue) {
     if (!analysis.expectTimedSet) {
@@ -82,12 +72,10 @@ function getModifiedSet(params) {
     } else if (sideNumber === 2) {
       modifiedSet.side2PointScore = value;
     }
-  } else {
-    if (sideNumber === 1) {
-      modifiedSet.side1Score = value;
-    } else if (sideNumber === 2) {
-      modifiedSet.side2Score = value;
-    }
+  } else if (sideNumber === 1) {
+    modifiedSet.side1Score = value;
+  } else if (sideNumber === 2) {
+    modifiedSet.side2Score = value;
   }
 
   matchUpFormat = matchUpFormat || matchUp?.matchUpFormat;
@@ -102,8 +90,7 @@ function getModifiedSet(params) {
   const { isValidSet } = modifiedSetAnalysis;
   if (!isValidSet) {
     // check modifications which might make it a valid set
-    const { hasTiebreakCondition, sideTiebreakScoresCount } =
-      modifiedSetAnalysis;
+    const { hasTiebreakCondition, sideTiebreakScoresCount } = modifiedSetAnalysis;
 
     if (hasTiebreakCondition && sideTiebreakScoresCount) {
       modifiedSet.side1TiebreakScore = undefined;
@@ -117,8 +104,7 @@ function getModifiedSet(params) {
 
       if (attemptedModificationAnalysis.isValidSet) {
         modifiedSet.winningSide = attemptedModificationAnalysis.winningSide;
-        const winnerChanged =
-          setObject?.winningSide !== modifiedSet.winningSide;
+        const winnerChanged = setObject?.winningSide !== modifiedSet.winningSide;
         modifiedSetAnalysis = attemptedModificationAnalysis;
         return {
           modifiedSet,
