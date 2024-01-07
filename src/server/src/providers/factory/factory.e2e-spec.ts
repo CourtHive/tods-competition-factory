@@ -1,7 +1,7 @@
 import { INestApplication } from '@nestjs/common';
 import { AppModule } from '../../app.module';
 import { Test } from '@nestjs/testing';
-import * as request from 'supertest';
+import request from 'supertest';
 
 import { TEST, TEST_EMAIL, TEST_PASSWORD } from '../../common/constants/test';
 
@@ -10,7 +10,7 @@ describe('AppService', () => {
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
-      imports: [AppModule]
+      imports: [AppModule],
     }).compile();
 
     app = moduleRef.createNestApplication();
@@ -56,12 +56,12 @@ describe('AppService', () => {
             params: {
               startDate: '2024-01-01',
               endDate: '2024-01-02',
-              tournamentId: TEST
+              tournamentId: TEST,
             },
-            method: 'setTournamentDates'
-          }
+            method: 'setTournamentDates',
+          },
         ],
-        tournamentId: TEST
+        tournamentId: TEST,
       })
       .expect(200);
 
@@ -71,7 +71,7 @@ describe('AppService', () => {
       .send({
         params: { tournamentId: TEST },
         method: 'getTournamentInfo',
-        tournamentId: TEST
+        tournamentId: TEST,
       })
       .expect(200);
   });

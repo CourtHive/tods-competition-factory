@@ -2,10 +2,10 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class QueryTournamentRecordsDto {
   @ApiPropertyOptional()
-  tournamentIds: string[];
+  tournamentIds?: string[];
 
   @ApiPropertyOptional()
-  tournamentId: string;
+  tournamentId?: string;
 
   @ApiProperty()
   params: any;

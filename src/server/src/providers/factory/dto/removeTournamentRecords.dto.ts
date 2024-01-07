@@ -2,8 +2,8 @@ import { ApiPropertyOptional } from '@nestjs/swagger';
 
 export class RemoveTournamentRecordsDto {
   @ApiPropertyOptional()
-  tournamentIds: string[];
+  tournamentIds?: string[];
 
   @ApiPropertyOptional()
-  tournamentId: string;
+  tournamentId?: string;
 }

@@ -1,6 +1,6 @@
 import { generateTournamentRecord } from '../../../data/fileSystem/generateTournamentRecord';
 import { removeTournamentRecords } from '../../../data/fileSystem/removeTournamentRecords';
-import { factoryConstants } from 'tods-competition-factory';
+import { factoryConstants } from '../../../../../constants/';
 import { TEST } from '../../../common/constants/test';
 import { executionQueue } from './executionQueue';
 
@@ -13,7 +13,7 @@ describe('executionQueue', () => {
     // SECOND: generate a tournamentRecord with this tournamentId and persist to storage
     result = generateTournamentRecord({
       tournamentAttributes: { tournamentId: TEST },
-      drawProfiles: [{ drawSize: 16 }]
+      drawProfiles: [{ drawSize: 16 }],
     });
     expect(result.success).toEqual(true);
 
@@ -24,19 +24,19 @@ describe('executionQueue', () => {
           params: {
             startDate: '2024-01-01',
             endDate: '2024-01-02',
-            tournamentId: TEST
+            tournamentId: TEST,
           },
-          method: 'setTournamentDates'
-        }
+          method: 'setTournamentDates',
+        },
       ],
-      tournamentIds: [TEST, 'test2']
+      tournamentIds: [TEST, 'test2'],
     });
     expect(result.success).toEqual(true);
 
     // FOURTH: attempt to execute a directive on a tournamentRecord that does not exist
     result = await executionQueue({
       executionQueue: [{ method: 'setTournamentDates', params: { tournamentId: TEST } }],
-      tournamentIds: ['doesNotExist']
+      tournamentIds: ['doesNotExist'],
     });
     expect(result.error).toEqual(factoryConstants.errorConditionConstants.MISSING_TOURNAMENT_RECORD);
   });

@@ -1,4 +1,5 @@
-import { governors, asyncEngine, globalState } from 'tods-competition-factory';
+import { governors } from '../../../../../assemblies/governors';
+import { asyncEngine, globalState } from '../../../../..';
 import asyncGlobalState from './asyncGlobalState';
 
 globalState.setStateProvider(asyncGlobalState);
@@ -15,7 +16,7 @@ const methods = {
   ...governors.reportGovernor,
   ...governors.eventGovernor,
   ...governors.scoreGovernor,
-  ...governors.venueGovernor
+  ...governors.venueGovernor,
 };
 
 engineAsync.importMethods(methods);
