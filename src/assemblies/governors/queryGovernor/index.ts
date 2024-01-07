@@ -132,7 +132,8 @@ function findDrawDefinition({ tournamentRecord, drawDefinition }) {
   if (!drawDefinition) return { error: MISSING_DRAW_ID };
   return { drawDefinition: makeDeepCopy(drawDefinition) };
 }
-const queryGovernor = {
+
+export const queryGovernor = {
   allCompetitionMatchUps,
   allDrawMatchUps,
   allEventMatchUps,

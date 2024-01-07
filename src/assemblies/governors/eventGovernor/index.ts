@@ -111,7 +111,7 @@ import {
   setEventStartDate,
 } from '../../../mutate/events/setEventDates';
 
-const eventGovernor = {
+export const eventGovernor = {
   addAdHocMatchUps,
   addCollectionDefinition,
   addCollectionGroup,

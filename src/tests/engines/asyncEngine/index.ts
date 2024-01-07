@@ -1,4 +1,4 @@
-import competitionsGovernor from '../../../assemblies/governors/competitionsGovernor';
+import competitionGovernor from '../../../assemblies/governors/competitionGovernor';
 import participantGovernor from '../../../assemblies/governors/participantGovernor';
 import generationGovernor from '../../../assemblies/governors/generationGovernor';
 import publishingGovernor from '../../../assemblies/governors/publishingGovernor';
@@ -25,7 +25,7 @@ import async from '../../../assemblies/engines/async';
 const asyncEngine = async(true);
 
 const methods = {
-  ...competitionsGovernor,
+  ...competitionGovernor,
   ...participantGovernor,
   ...generationGovernor,
   ...publishingGovernor,

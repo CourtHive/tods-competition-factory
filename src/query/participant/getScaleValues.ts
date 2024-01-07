@@ -1,5 +1,7 @@
+import { checkRequiredParameters } from '../../parameters/checkRequiredParameters';
 import { unique } from '../../utilities/arrays';
 
+import { ResultType } from '../../global/functions/decorateResult';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
   RANKING,
@@ -12,7 +14,6 @@ import {
   SINGLES_EVENT,
   TEAM_EVENT,
 } from '../../constants/eventConstants';
-import { checkRequiredParameters } from '../../parameters/checkRequiredParameters';
 
 type ScaleType = {
   scaleName: string;
@@ -29,9 +30,14 @@ type ScaleTypes = {
   seedings: ScalesType;
   rankings: ScalesType;
   ratings: ScalesType;
+  success?: boolean;
 };
 
-export function getScaleValues(params) {
+export function getScaleValues(params): ResultType & {
+  seedings?: ScalesType;
+  rankings?: ScalesType;
+  ratings?: ScalesType;
+} {
   const paramCheck = checkRequiredParameters(params, [{ participant: true }]);
   if (paramCheck.error) return paramCheck;
 

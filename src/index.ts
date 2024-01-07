@@ -7,10 +7,6 @@ export { governors } from './assemblies/governors';
 export { matchUpFormatCode } from './assemblies/governors/matchUpFormatGovernor';
 export { utilities } from './assemblies/governors/utilitiesGovernor';
 
-// FACTORY --------------------------------------------------------------
-import * as factoryTypes from './types/factoryTypes';
-export { factoryTypes };
-
 import * as globalState from './global/state/globalState';
 export { globalState };
 

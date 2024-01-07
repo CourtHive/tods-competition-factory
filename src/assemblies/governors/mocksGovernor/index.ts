@@ -8,7 +8,7 @@ import { generateOutcome } from '../../generators/mocks/generateOutcome';
 import { parseScoreString } from '../../../utilities/parseScoreString';
 import { credits } from '../../../fixtures/credits';
 
-const mocksGovernor = {
+export const mocksGovernor = {
   generateOutcomeFromScoreString,
   anonymizeTournamentRecord,
   generateTournamentRecord,
