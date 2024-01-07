@@ -5,10 +5,7 @@ export default defineConfig({
     onConsoleLog: () => {},
     environment: 'node',
     useAtomics: true,
-    include: [
-      'src/**/*.test.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
-      'tests/**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
-    ],
+    include: ['src/**/*.test.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     coverage: {
       reporter: ['html'],
       include: ['src/**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
