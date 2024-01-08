@@ -3,11 +3,12 @@ import { QueryTournamentRecordsDto } from './dto/queryTournamentRecords.dto';
 import { SaveTournamentRecordsDto } from './dto/saveTournamentRecords.dto';
 import { ExecutionQueueDto } from './dto/executionQueue.dto';
 
+import { Controller, Get, Post, HttpCode, HttpStatus, Body, UseGuards } from '@nestjs/common';
 import { Public } from '../../auth/decorators/public.decorator';
 import { Roles } from '../../auth/decorators/roles.decorator';
 import { RolesGuard } from '../../auth/guards/role.guard';
 import { FactoryService } from './factory.service';
-import { Controller, Get, Post, HttpCode, HttpStatus, Body, UseGuards } from '@nestjs/common';
+import { FetchTournamentRecordsDto } from './dto/fetchTournamentRecords.dto';
 
 @UseGuards(RolesGuard)
 @Controller('factory')
@@ -36,8 +37,8 @@ export class FactoryController {
   @Post('fetch')
   @Roles(['client'])
   @HttpCode(HttpStatus.OK)
-  fetchTournamentRecords(@Body() gtd: any) {
-    return this.factoryService.fetchTournamentRecords(gtd);
+  fetchTournamentRecords(@Body() ftd: FetchTournamentRecordsDto) {
+    return this.factoryService.fetchTournamentRecords(ftd);
   }
 
   @Post('generate')

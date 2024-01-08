@@ -10,6 +10,6 @@ import { Module } from '@nestjs/common';
 @Module({
   imports: [ConfigsModule, AuthModule, UsersModule],
   controllers: [AppController, FactoryController],
-  providers: [AppService, FactoryService]
+  providers: [AppService, FactoryService],
 })
 export class AppModule {}

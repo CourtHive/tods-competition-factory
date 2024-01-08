@@ -11,7 +11,7 @@ describe('AppService', () => {
     app = await Test.createTestingModule({
       imports: [AuthModule, UsersModule],
       controllers: [FactoryController],
-      providers: [FactoryService]
+      providers: [FactoryService],
     }).compile();
   });
 

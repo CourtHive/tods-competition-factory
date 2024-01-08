@@ -9,7 +9,7 @@ export const recordStorage = {
   removeTournamentRecords,
   fetchTournamentRecords,
   saveTournamentRecords,
-  findTournamentRecord
+  findTournamentRecord,
 };
 
 export default recordStorage;

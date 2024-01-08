@@ -27,14 +27,39 @@ describe('AppService', () => {
     token = loginReq.body.token;
   });
 
-  it('should have a token', () => {
+  it('should have a token', async () => {
     expect(token).toBeDefined();
+
+    const tournamentId = 't1';
+
+    let result = await request(app.getHttpServer())
+      .post('/factory/remove')
+      .set('Authorization', 'Bearer ' + token)
+      .send({ tournamentId })
+      .expect(200);
+    expect(result.body.success).toEqual(true);
 
     const { tournamentRecord } = mocksEngine.generateTournamentRecord({
       eventProfiles: [{ eventId: 'e1', eventType: SINGLES }],
+      tournamentAttributes: { tournamentId },
     });
 
     expect(tournamentRecord.events.length).toEqual(1);
+
+    result = await request(app.getHttpServer())
+      .post('/factory/save')
+      .set('Authorization', 'Bearer ' + token)
+      .send({ tournamentRecord })
+      .expect(200);
+    expect(result.body.success).toEqual(true);
+
+    result = await request(app.getHttpServer())
+      .post('/factory/fetch')
+      .set('Authorization', 'Bearer ' + token)
+      .send({ tournamentId })
+      .expect(200);
+    expect(result.body.success).toEqual(true);
+    expect(result.body.fetched).toEqual(1);
   });
 
   afterAll(async () => {
