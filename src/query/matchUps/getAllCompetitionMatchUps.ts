@@ -1,17 +1,14 @@
 import { allTournamentMatchUps } from './getAllTournamentMatchUps';
 
-import { MatchUpFilters } from '../filterMatchUps';
+import { ErrorType, MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
 import { HydratedMatchUp } from '../../types/hydrated';
 import {
+  MatchUpFilters,
   ParticipantsProfile,
   PolicyDefinitions,
   ScheduleVisibilityFilters,
   TournamentRecords,
 } from '../../types/factoryTypes';
-import {
-  ErrorType,
-  MISSING_TOURNAMENT_RECORDS,
-} from '../../constants/errorConditionConstants';
 
 type CompetitionMatchUpsArgs = {
   scheduleVisibilityFilters?: ScheduleVisibilityFilters;
@@ -40,10 +37,7 @@ export function allCompetitionMatchUps({
   matchUps?: HydratedMatchUp[];
   error?: ErrorType;
 } {
-  if (
-    typeof tournamentRecords !== 'object' ||
-    !Object.keys(tournamentRecords).length
-  )
+  if (typeof tournamentRecords !== 'object' || !Object.keys(tournamentRecords).length)
     return { error: MISSING_TOURNAMENT_RECORDS };
 
   const tournamentIds = Object.keys(tournamentRecords);

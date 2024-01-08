@@ -1,28 +1,19 @@
-import { checkMatchUpIsComplete } from '../matchUp/checkMatchUpIsComplete';
 import { structureAssignedDrawPositions } from '../drawDefinition/positionsGetter';
 import { getAllStructureMatchUps } from '../matchUps/getAllStructureMatchUps';
+import { checkMatchUpIsComplete } from '../matchUp/checkMatchUpIsComplete';
 import { findStructure } from '../../acquire/findStructure';
 
 import { ResultType } from '../../global/functions/decorateResult';
+import { MatchUpsMap } from '../matchUps/getMatchUpsMap';
 import { HydratedMatchUp } from '../../types/hydrated';
 import { TEAM } from '../../constants/matchUpTypes';
-import { MatchUpFilters } from '../filterMatchUps';
-import { MatchUpsMap } from '../matchUps/getMatchUpsMap';
-import {
-  ABANDONED,
-  upcomingMatchUpStatuses,
-} from '../../constants/matchUpStatusConstants';
-import {
-  DrawDefinition,
-  Event,
-  Participant,
-  Structure,
-  Tournament,
-} from '../../types/tournamentTypes';
+import { ABANDONED, upcomingMatchUpStatuses } from '../../constants/matchUpStatusConstants';
+import { DrawDefinition, Event, Participant, Structure, Tournament } from '../../types/tournamentTypes';
 import {
   ContextContent,
   ContextProfile,
   ExitProfiles,
+  MatchUpFilters,
   ParticipantMap,
   PolicyDefinitions,
   ScheduleTiming,
@@ -144,9 +135,7 @@ export function getStructureMatchUps({
 
   matchUps
     .filter((matchUp) => {
-      const teamsMatchUpsOnly =
-        matchUpFilters?.matchUpTypes?.length === 1 &&
-        matchUpFilters.matchUpTypes[0] === TEAM;
+      const teamsMatchUpsOnly = matchUpFilters?.matchUpTypes?.length === 1 && matchUpFilters.matchUpTypes[0] === TEAM;
       return !(matchUp.matchUpType !== TEAM && teamsMatchUpsOnly);
     })
     .forEach((matchUp) => {
@@ -158,19 +147,12 @@ export function getStructureMatchUps({
       if (matchUp.matchUpType === TEAM) includesTeamMatchUps = true;
 
       const isCollectionMatchUp = matchUp.collectionId;
-      const collectionSidesAssigned =
-        isCollectionMatchUp &&
-        matchUp.sides?.every((side) => side.participantId);
+      const collectionSidesAssigned = isCollectionMatchUp && matchUp.sides?.every((side) => side.participantId);
 
-      const drawPositionsFilled =
-        !isCollectionMatchUp &&
-        matchUp.drawPositions?.filter(Boolean).length === 2;
+      const drawPositionsFilled = !isCollectionMatchUp && matchUp.drawPositions?.filter(Boolean).length === 2;
       const drawPositionsAssigned =
         !isCollectionMatchUp &&
-        matchUp.drawPositions?.every(
-          (drawPosition) =>
-            participantAssignedDrawPositions?.includes(drawPosition)
-        );
+        matchUp.drawPositions?.every((drawPosition) => participantAssignedDrawPositions?.includes(drawPosition));
 
       const byeAssignedDrawPositions = assignedPositions
         ?.filter((assignment) => assignment.bye)
@@ -178,22 +160,15 @@ export function getStructureMatchUps({
 
       const isByeMatchUp =
         !isCollectionMatchUp &&
-        matchUp.drawPositions?.find(
-          (drawPosition) => byeAssignedDrawPositions?.includes(drawPosition)
-        );
+        matchUp.drawPositions?.find((drawPosition) => byeAssignedDrawPositions?.includes(drawPosition));
 
-      const validUpcomingMatchUpStatus = upcomingMatchUpStatuses.includes(
-        matchUp.matchUpStatus
-      );
+      const validUpcomingMatchUpStatus = upcomingMatchUpStatuses.includes(matchUp.matchUpStatus);
       const isUpcomingMatchUp =
         validUpcomingMatchUpStatus &&
-        (collectionSidesAssigned ||
-          (drawPositionsFilled &&
-            (!requireParticipants || drawPositionsAssigned)));
+        (collectionSidesAssigned || (drawPositionsFilled && (!requireParticipants || drawPositionsAssigned)));
 
       if (isByeMatchUp) return byeMatchUps.push(matchUp);
-      if (checkMatchUpIsComplete({ matchUp }))
-        return completedMatchUps.push(matchUp);
+      if (checkMatchUpIsComplete({ matchUp })) return completedMatchUps.push(matchUp);
       if (isUpcomingMatchUp) return upcomingMatchUps.push(matchUp);
       return pendingMatchUps.push(matchUp);
     });
