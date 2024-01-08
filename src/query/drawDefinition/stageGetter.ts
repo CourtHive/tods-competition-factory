@@ -184,6 +184,8 @@ function getPlayoffEntries({ provisionalPositioning, drawDefinition, structureId
             const participantResult = results[participantId];
             const { groupOrder, provisionalOrder, GEMscore } = participantResult;
             const finishingPosition = groupOrder || (provisionalPositioning && provisionalOrder);
+
+            // spread to avoid immutable client data
             const placementGroup = [...(finishingPositions ?? [])].sort(numericSort).indexOf(finishingPosition) + 1;
 
             playoffEntries.push({

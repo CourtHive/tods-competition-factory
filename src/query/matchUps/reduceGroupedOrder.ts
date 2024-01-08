@@ -6,13 +6,10 @@ export function reduceGroupedOrder({ groupedOrder, roundPositionsCount }) {
     return groupedOrder;
   }
 
-  const groupChunks = chunkArray(
-    groupedOrder,
-    groupedOrder.length / roundPositionsCount
-  );
+  const groupChunks = chunkArray(groupedOrder, groupedOrder.length / roundPositionsCount);
 
-  const chunkValues = groupChunks.map((chunk) => chunk.reduce((a, b) => a + b));
-  const sortedChunks = chunkValues.slice().sort(numericSort);
+  const chunkValues = groupChunks.map((chunk) => chunk.reduce((a: number, b: number) => a + b));
+  const sortedChunks = chunkValues.slice().sort(numericSort); // make a copy of the values to avoid mutating the original
 
   return chunkValues.map((chunkValue) => sortedChunks.indexOf(chunkValue) + 1);
 }

@@ -6,11 +6,8 @@ import { findStructure } from '../../../acquire/findStructure';
 import { numericSort } from '../../../utilities/sorting';
 import { ensureInt } from '../../../utilities/ensureInt';
 
+import { FIRST_MATCHUP, WIN_RATIO } from '../../../constants/drawDefinitionConstants';
 import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
-import {
-  FIRST_MATCHUP,
-  WIN_RATIO,
-} from '../../../constants/drawDefinitionConstants';
 
 export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
   const scheduleConflictMatchUpIds = {};
@@ -26,11 +23,11 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
 
       // if this is a round robin then we have sidesTo information, not winnerTo and loserTo
       if (nextRoundNumber && roundMatchUps?.[nextRoundNumber]) {
-        const sidesTo = [...drawPositions]
+        const sidesTo = [...drawPositions] // spread to avoid mutating the original
           .sort(numericSort)
           .map((drawPosition, index) => {
             const nextRoundMatchUp = roundMatchUps[nextRoundNumber].find(
-              (matchUp) => matchUp.drawPositions?.includes(drawPosition)
+              (matchUp) => matchUp.drawPositions?.includes(drawPosition),
             );
             return {
               matchUpId: nextRoundMatchUp?.matchUpId,
@@ -63,19 +60,14 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
       const winnerTo = getUpcomingInfo({ upcomingMatchUp: winnerMatchUp });
       let loserTo = getUpcomingInfo({ upcomingMatchUp: loserMatchUp });
 
-      if (
-        inContextMatchUp.matchUpStatus !== BYE &&
-        loserMatchUp?.matchUpStatus === BYE
-      ) {
+      if (inContextMatchUp.matchUpStatus !== BYE && loserMatchUp?.matchUpStatus === BYE) {
         const { matchUp: nextMatchUp } =
           getNextToBePlayedMatchUp({
             matchUp: loserMatchUp,
             drawDefinition,
             inContextDrawMatchUps,
           }) || {};
-        loserTo =
-          (nextMatchUp && getUpcomingInfo({ upcomingMatchUp: nextMatchUp })) ||
-          loserTo;
+        loserTo = (nextMatchUp && getUpcomingInfo({ upcomingMatchUp: nextMatchUp })) || loserTo;
       }
 
       // scheduleConflict in the following only applies to conflicts between subsequent matchUps WITHIN the same draw
@@ -83,21 +75,17 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
       if (timeAfterRecovery) {
         if (winnerTo?.schedule?.scheduledTime) {
           const scheduleConflict =
-            timeStringMinutes(winnerTo.schedule.scheduledTime) <
-            timeStringMinutes(timeAfterRecovery);
+            timeStringMinutes(winnerTo.schedule.scheduledTime) < timeStringMinutes(timeAfterRecovery);
           if (scheduleConflict) {
-            scheduleConflictMatchUpIds[winnerTo.matchUpId] =
-              inContextMatchUp.matchUpId;
+            scheduleConflictMatchUpIds[winnerTo.matchUpId] = inContextMatchUp.matchUpId;
             winnerTo.schedule.scheduleConflict = inContextMatchUp.matchUpId;
           }
         }
         if (loserTo?.schedule?.scheduledTime) {
           const scheduleConflict =
-            timeStringMinutes(loserTo.schedule.scheduledTime) <
-            timeStringMinutes(timeAfterRecovery);
+            timeStringMinutes(loserTo.schedule.scheduledTime) < timeStringMinutes(timeAfterRecovery);
           if (scheduleConflict) {
-            scheduleConflictMatchUpIds[loserTo.matchUpId] =
-              inContextMatchUp.matchUpId;
+            scheduleConflictMatchUpIds[loserTo.matchUpId] = inContextMatchUp.matchUpId;
             loserTo.schedule.scheduleConflict = inContextMatchUp.matchUpId;
           }
         }
@@ -113,12 +101,10 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
           const winnerParticipantIds = getParticipantIds(winnerMatchUp?.sides);
           const loserParticipantIds = getParticipantIds(loserMatchUp?.sides);
           const winnerDetermined = participants.find(({ participantId }) =>
-            winnerParticipantIds.includes(participantId)
+            winnerParticipantIds.includes(participantId),
           );
           const winnerPotentials = !winnerDetermined ? participants : [];
-          const loserDetermined = participants.find(({ participantId }) =>
-            loserParticipantIds.includes(participantId)
-          );
+          const loserDetermined = participants.find(({ participantId }) => loserParticipantIds.includes(participantId));
           const loserPotentials = !loserDetermined ? participants : [];
           if (loserMatchUp && firstMatchUp && loserPotentials.length < 2) {
             loserPotentials.push({ bye: true, tbd: true }); // tbd: true indiciates that for FMLC, WO/DEF could propagate a player
@@ -128,14 +114,11 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
             // when targetMatchUpIds are not present in source data
             // winnerMatchUp / loserMatchUp are not original objects
             if (!targetData.targetMatchUpIds && winnerMatchUp) {
-              winnerMatchUp = inContextDrawMatchUps.find(
-                ({ matchUpId }) => matchUpId === winnerMatchUp.matchUpId
-              );
+              winnerMatchUp = inContextDrawMatchUps.find(({ matchUpId }) => matchUpId === winnerMatchUp.matchUpId);
             }
             // -----------------------------------------------------
 
-            if (!winnerMatchUp.potentialParticipants)
-              winnerMatchUp.potentialParticipants = [];
+            if (!winnerMatchUp.potentialParticipants) winnerMatchUp.potentialParticipants = [];
             winnerMatchUp.potentialParticipants.push(winnerPotentials);
           }
           if (loserPotentials?.length && loserMatchUp) {
@@ -143,9 +126,7 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
             // when targetMatchUpIds are not present in source data
             // winnerMatchUp / loserMatchUp are not original objects
             if (!targetData.targetMatchUpIds) {
-              winnerMatchUp = inContextDrawMatchUps.find(
-                ({ matchUpId }) => matchUpId === loserMatchUp.matchUpId
-              );
+              winnerMatchUp = inContextDrawMatchUps.find(({ matchUpId }) => matchUpId === loserMatchUp.matchUpId);
             }
             // -----------------------------------------------------
 
@@ -162,13 +143,8 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
 
   if (Object.keys(scheduleConflictMatchUpIds).length) {
     inContextDrawMatchUps.forEach((inContextMatchUp) => {
-      if (
-        Object.keys(scheduleConflictMatchUpIds).includes(
-          inContextMatchUp.matchUpId
-        )
-      )
-        inContextMatchUp.schedule.scheduleConflict =
-          scheduleConflictMatchUpIds[inContextMatchUp.matchUpId];
+      if (Object.keys(scheduleConflictMatchUpIds).includes(inContextMatchUp.matchUpId))
+        inContextMatchUp.schedule.scheduleConflict = scheduleConflictMatchUpIds[inContextMatchUp.matchUpId];
     });
   }
 
@@ -180,29 +156,20 @@ function getMatchUpParticipants(matchUp) {
     matchUp?.sides
       ?.map(
         ({ participant, participantId, qualifier }) =>
-          participant ||
-          (participantId && { participantId }) ||
-          (qualifier && { qualifier })
+          participant || (participantId && { participantId }) || (qualifier && { qualifier }),
       )
       .filter(Boolean) || []
   );
 }
 
-function getNextToBePlayedMatchUp({
-  matchUp,
-  drawDefinition,
-  inContextDrawMatchUps,
-}) {
+function getNextToBePlayedMatchUp({ matchUp, drawDefinition, inContextDrawMatchUps }) {
   const { matchUpId, matchUpStatus, structureId } = matchUp || {};
-  if (!matchUp || !structureId || matchUp?.matchUpStatus === TO_BE_PLAYED)
-    return { matchUp };
+  if (!matchUp || !structureId || matchUp?.matchUpStatus === TO_BE_PLAYED) return { matchUp };
   if (matchUpStatus === BYE) {
     let winnerMatchUp;
 
     if (matchUp.winnerMatchUpId) {
-      winnerMatchUp = inContextDrawMatchUps.find(
-        ({ matchUpId }) => matchUpId === matchUp.winnerMatchUpId
-      );
+      winnerMatchUp = inContextDrawMatchUps.find(({ matchUpId }) => matchUpId === matchUp.winnerMatchUpId);
     } else {
       const targetData = positionTargets({
         inContextDrawMatchUps,
@@ -223,14 +190,7 @@ function getNextToBePlayedMatchUp({
 
 function getUpcomingInfo(params) {
   if (!params?.upcomingMatchUp) return;
-  return (({
-    matchUpId,
-    structureId,
-    schedule,
-    roundNumber,
-    roundPosition,
-    structureName,
-  }) => ({
+  return (({ matchUpId, structureId, schedule, roundNumber, roundPosition, structureName }) => ({
     matchUpId,
     structureId,
     schedule,
