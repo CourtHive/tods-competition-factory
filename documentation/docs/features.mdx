@@ -26,13 +26,11 @@ function DrawDefinitionDemo(props) {
 `generateFlightProfile()` generates flighted draw details which can be fed into `generateDrawDefinition()`.
 :::
 
-<!--
 ## Score Entry and matchUpStatus
 
 ## Participant Movement
 
 ## Tournament Queries
--->
 
 ## Mock Tournament Generation
 
@@ -85,13 +83,7 @@ function ScheduleTimesDemo(props) {
     scheduleDate: startDate,
   });
 
-  return (
-    <RenderJSON
-      data={scheduleTimes}
-      root={'scheduleTimes'}
-      expandRoot={false}
-    />
-  );
+  return <RenderJSON data={scheduleTimes} root={'scheduleTimes'} expandRoot={false} />;
 }
 ```
 
