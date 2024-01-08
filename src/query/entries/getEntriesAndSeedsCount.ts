@@ -1,19 +1,11 @@
 import { getEliminationDrawSize } from '../participants/getEliminationDrawSize';
-import { getStageEntries } from '../drawDefinition/getStageEntries';
 import { decorateResult } from '../../global/functions/decorateResult';
+import { getStageEntries } from '../drawDefinition/getStageEntries';
 import { getSeedsCount } from '../drawDefinition/getSeedsCount';
 
 import { PolicyDefinitions } from '../../types/factoryTypes';
-import {
-  ErrorType,
-  MISSING_EVENT,
-} from '../../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  Event,
-  Entry,
-  StageTypeUnion,
-} from '../../types/tournamentTypes';
+import { ErrorType, MISSING_EVENT } from '../../constants/errorConditionConstants';
+import { DrawDefinition, Event, Entry, StageTypeUnion } from '../../types/tournamentTypes';
 
 type GetEntriesAndSeedsCountArgs = {
   policyDefinitions: PolicyDefinitions;
@@ -54,8 +46,7 @@ export function getEntriesAndSeedsCount({
     participantsCount,
     policyDefinitions,
   });
-  if (result.error)
-    return decorateResult({ result, stack: 'getEntriesAndSeedsCount' });
+  if (result.error) return decorateResult({ result, stack: 'getEntriesAndSeedsCount' });
 
   const { seedsCount } = result;
   return { entries, seedsCount, stageEntries };
