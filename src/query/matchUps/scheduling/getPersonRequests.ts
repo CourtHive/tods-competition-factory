@@ -18,9 +18,7 @@ export function getPersonRequests(params: GetPersonRequestsArgs): {
 } {
   const { tournamentRecords, requestType } = params;
 
-  const paramsCheck = checkRequiredParameters(params, [
-    { [TOURNAMENT_RECORDS]: true },
-  ]);
+  const paramsCheck = checkRequiredParameters(params, [{ [TOURNAMENT_RECORDS]: true }]);
   if (paramsCheck.error) return paramsCheck;
 
   const personRequests: PersonRequests = {};

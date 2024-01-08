@@ -3,19 +3,10 @@ import { checkRequiredParameters } from '../../../parameters/checkRequiredParame
 import { bulkScheduleTournamentMatchUps } from './bulkScheduleTournamentMatchUps';
 import { getMatchUpId } from '../../../global/functions/extractors';
 
+import { ARRAY, INVALID, OF_TYPE, ONE_OF, TOURNAMENT_RECORDS } from '../../../constants/attributeConstants';
+import { INVALID_VALUES, MISSING_VALUE } from '../../../constants/errorConditionConstants';
 import { Tournament } from '../../../types/tournamentTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
-import {
-  INVALID_VALUES,
-  MISSING_VALUE,
-} from '../../../constants/errorConditionConstants';
-import {
-  ARRAY,
-  INVALID,
-  OF_TYPE,
-  ONE_OF,
-  TOURNAMENT_RECORDS,
-} from '../../../constants/attributeConstants';
 
 type BulkScheduleMatchUpsArgs = {
   tournamentRecords: { [key: string]: Tournament };
@@ -43,13 +34,12 @@ export function bulkScheduleMatchUps(params: BulkScheduleMatchUpsArgs) {
     schedule,
   } = params;
 
-  if (params.matchUpIds && !matchUpContextIds)
-    return bulkScheduleTournamentMatchUps(params);
+  if (params.matchUpIds && !matchUpContextIds) return bulkScheduleTournamentMatchUps(params);
 
   const paramsCheck = checkRequiredParameters(params, [
     { [TOURNAMENT_RECORDS]: true },
     {
-      [ONE_OF]: { matchUpContextIds: true, matchUpDetails: true },
+      [ONE_OF]: { matchUpContextIds: false, matchUpDetails: false },
       [INVALID]: INVALID_VALUES,
       [OF_TYPE]: ARRAY,
     },
@@ -72,9 +62,7 @@ export function bulkScheduleMatchUps(params: BulkScheduleMatchUpsArgs) {
       ?.filter((contextIds) => contextIds.tournamentId === tournamentId)
       .map(getMatchUpId);
 
-    const tournamentMatchUpDetails = matchUpDetails?.filter(
-      (details) => details?.tournamentId === tournamentId
-    );
+    const tournamentMatchUpDetails = matchUpDetails?.filter((details) => details?.tournamentId === tournamentId);
 
     if (matchUpIds?.length || tournamentMatchUpDetails?.length) {
       const result = bulkScheduleTournamentMatchUps({
@@ -96,7 +84,5 @@ export function bulkScheduleMatchUps(params: BulkScheduleMatchUpsArgs) {
     }
   }
 
-  return warnings.length
-    ? { ...SUCCESS, scheduled, warnings }
-    : { ...SUCCESS, scheduled };
+  return warnings.length ? { ...SUCCESS, scheduled, warnings } : { ...SUCCESS, scheduled };
 }

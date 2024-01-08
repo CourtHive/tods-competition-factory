@@ -15,29 +15,13 @@ import { assignMatchUpVenue } from '../assignMatchUpVenue';
 import { checkRecoveryTime } from './checkRecoveryTime';
 import { checkDailyLimits } from './checkDailyLimits';
 import { getPersonRequests } from '../../../../query/matchUps/scheduling/getPersonRequests';
-import {
-  extractDate,
-  extractTime,
-  isValidDateString,
-  sameDay,
-  zeroPad,
-} from '../../../../utilities/dateTime';
+import { extractDate, extractTime, isValidDateString, sameDay, zeroPad } from '../../../../utilities/dateTime';
 
 import { DO_NOT_SCHEDULE } from '../../../../constants/requestConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { TOTAL } from '../../../../constants/scheduleConstants';
-import {
-  INVALID_DATE,
-  INVALID_VALUES,
-} from '../../../../constants/errorConditionConstants';
-import {
-  BYE,
-  ABANDONED,
-  DEFAULTED,
-  RETIRED,
-  WALKOVER,
-  COMPLETED,
-} from '../../../../constants/matchUpStatusConstants';
+import { INVALID_DATE, INVALID_VALUES } from '../../../../constants/errorConditionConstants';
+import { BYE, ABANDONED, DEFAULTED, RETIRED, WALKOVER, COMPLETED } from '../../../../constants/matchUpStatusConstants';
 import {
   AVERAGE_MATCHUP_MINUTES,
   INVALID,
@@ -102,10 +86,10 @@ export function scheduleMatchUps(params) {
     },
     {
       [VALIDATE]: (value) => !value || !isNaN(value),
-      [AVERAGE_MATCHUP_MINUTES]: true,
+      [AVERAGE_MATCHUP_MINUTES]: false,
       [INVALID]: INVALID_VALUES,
-      [RECOVERY_MINUTES]: true,
-      [PERIOD_LENGTH]: true,
+      [RECOVERY_MINUTES]: false,
+      [PERIOD_LENGTH]: false,
     },
   ]);
   if (paramCheck.error) return paramCheck;
@@ -129,10 +113,7 @@ export function scheduleMatchUps(params) {
     }).matchUpDependencies;
 
   competitionMatchUps.forEach((matchUp) => {
-    if (
-      matchUp.schedule?.scheduledDate &&
-      sameDay(scheduleDate, extractDate(matchUp.schedule.scheduledDate))
-    ) {
+    if (matchUp.schedule?.scheduledDate && sameDay(scheduleDate, extractDate(matchUp.schedule.scheduledDate))) {
       processNextMatchUps({
         matchUpPotentialParticipantIds,
         matchUpNotBeforeTimes,
@@ -143,25 +124,22 @@ export function scheduleMatchUps(params) {
 
   // this must be done to preserve the order of matchUpIds
   const targetMatchUps = matchUpIds
-    .map((matchUpId) =>
-      competitionMatchUps.find((matchUp) => matchUp.matchUpId === matchUpId)
-    )
+    .map((matchUpId) => competitionMatchUps.find((matchUp) => matchUp.matchUpId === matchUpId))
     .filter(Boolean);
 
   // determines court availability taking into account already scheduled matchUps on the scheduleDate
   // optimization to pass already retrieved competitionMatchUps to avoid refetch (requires refactor)
-  const { venueId, scheduleTimes, dateScheduledMatchUpIds } =
-    calculateScheduleTimes({
-      tournamentRecords,
-      remainingScheduleTimes,
-      startTime: extractTime(startTime),
-      endTime: extractTime(endTime),
-      scheduleDate: extractDate(scheduleDate),
-      averageMatchUpMinutes,
-      clearScheduleDates,
-      periodLength,
-      venueIds,
-    });
+  const { venueId, scheduleTimes, dateScheduledMatchUpIds } = calculateScheduleTimes({
+    tournamentRecords,
+    remainingScheduleTimes,
+    startTime: extractTime(startTime),
+    endTime: extractTime(endTime),
+    scheduleDate: extractDate(scheduleDate),
+    averageMatchUpMinutes,
+    clearScheduleDates,
+    periodLength,
+    venueIds,
+  });
   const requestConflicts = {};
   const skippedScheduleTimes: string[] = [];
   const matchUpScheduleTimes = {};
@@ -171,7 +149,7 @@ export function scheduleMatchUps(params) {
   // first build up a map of matchUpNotBeforeTimes and matchUpPotentialParticipantIds
   // based on already scheduled matchUps
   const dateScheduledMatchUps = competitionMatchUps.filter(
-    ({ matchUpId }) => dateScheduledMatchUpIds?.includes(matchUpId)
+    ({ matchUpId }) => dateScheduledMatchUpIds?.includes(matchUpId),
   );
   dateScheduledMatchUps.forEach((matchUp) => {
     modifyParticipantMatchUpsCount({
@@ -199,78 +177,63 @@ export function scheduleMatchUps(params) {
 
   // matchUps are assumed to be in the desired order for scheduling
   let matchUpsToSchedule = targetMatchUps.filter((matchUp) => {
-    const alreadyScheduled = dateScheduledMatchUpIds?.includes(
-      matchUp.matchUpId
-    );
+    const alreadyScheduled = dateScheduledMatchUpIds?.includes(matchUp.matchUpId);
 
-    const doNotSchedule = [
-      BYE,
-      DEFAULTED,
-      COMPLETED,
-      ABANDONED,
-      RETIRED,
-      WALKOVER,
-    ].includes(matchUp?.matchUpStatus);
+    const doNotSchedule = [BYE, DEFAULTED, COMPLETED, ABANDONED, RETIRED, WALKOVER].includes(matchUp?.matchUpStatus);
     return !alreadyScheduled && !matchUp.winningSide && !doNotSchedule;
   });
 
   // for optimization, build up an object for each tournament and an array for each draw with target matchUps
   // keep track of matchUps counts per participant and don't add matchUps for participants beyond those limits
-  const { matchUpMap, overLimitMatchUpIds, participantIdsAtLimit } =
-    matchUpsToSchedule.reduce(
-      (aggregator, matchUp) => {
-        const { drawId, tournamentId, matchUpType } = matchUp;
+  const { matchUpMap, overLimitMatchUpIds, participantIdsAtLimit } = matchUpsToSchedule.reduce(
+    (aggregator, matchUp) => {
+      const { drawId, tournamentId, matchUpType } = matchUp;
 
-        const { participantIdsAtLimit, relevantParticipantIds } =
-          checkDailyLimits({
-            individualParticipantProfiles,
-            matchUpPotentialParticipantIds,
-            matchUpDailyLimits,
-            matchUp,
-          });
+      const { participantIdsAtLimit, relevantParticipantIds } = checkDailyLimits({
+        individualParticipantProfiles,
+        matchUpPotentialParticipantIds,
+        matchUpDailyLimits,
+        matchUp,
+      });
 
-        if (participantIdsAtLimit?.length) {
-          aggregator.overLimitMatchUpIds.push(matchUp.matchUpId);
-          aggregator.participantIdsAtLimit.push(...participantIdsAtLimit);
-          return aggregator;
-        }
-
-        relevantParticipantIds.forEach((participantId) => {
-          checkParticipantProfileInitialization({
-            individualParticipantProfiles,
-            participantId,
-          });
-          const counters =
-            individualParticipantProfiles[participantId].counters;
-          if (counters[matchUpType]) counters[matchUpType] += 1;
-          else counters[matchUpType] = 1;
-          if (counters[TOTAL]) counters[TOTAL] += 1;
-          else counters[TOTAL] = 1;
-        });
-
-        if (!aggregator.matchUpMap[tournamentId])
-          aggregator.matchUpMap[tournamentId] = {};
-        if (!aggregator.matchUpMap[tournamentId][drawId]) {
-          aggregator.matchUpMap[tournamentId][drawId] = [matchUp];
-        } else {
-          aggregator.matchUpMap[tournamentId][drawId].push(matchUp);
-        }
-
-        // since this matchUp is to be scheduled, update the matchUpPotentialParticipantIds
-        processNextMatchUps({
-          matchUpPotentialParticipantIds,
-          matchUpNotBeforeTimes,
-          matchUp,
-        });
-
+      if (participantIdsAtLimit?.length) {
+        aggregator.overLimitMatchUpIds.push(matchUp.matchUpId);
+        aggregator.participantIdsAtLimit.push(...participantIdsAtLimit);
         return aggregator;
-      },
-      { matchUpMap: {}, overLimitMatchUpIds: [], participantIdsAtLimit: [] }
-    );
+      }
 
-  matchUpsToSchedule = matchUpsToSchedule.filter(
-    ({ matchUpId }) => !overLimitMatchUpIds.includes(matchUpId)
+      relevantParticipantIds.forEach((participantId) => {
+        checkParticipantProfileInitialization({
+          individualParticipantProfiles,
+          participantId,
+        });
+        const counters = individualParticipantProfiles[participantId].counters;
+        if (counters[matchUpType]) counters[matchUpType] += 1;
+        else counters[matchUpType] = 1;
+        if (counters[TOTAL]) counters[TOTAL] += 1;
+        else counters[TOTAL] = 1;
+      });
+
+      if (!aggregator.matchUpMap[tournamentId]) aggregator.matchUpMap[tournamentId] = {};
+      if (!aggregator.matchUpMap[tournamentId][drawId]) {
+        aggregator.matchUpMap[tournamentId][drawId] = [matchUp];
+      } else {
+        aggregator.matchUpMap[tournamentId][drawId].push(matchUp);
+      }
+
+      // since this matchUp is to be scheduled, update the matchUpPotentialParticipantIds
+      processNextMatchUps({
+        matchUpPotentialParticipantIds,
+        matchUpNotBeforeTimes,
+        matchUp,
+      });
+
+      return aggregator;
+    },
+    { matchUpMap: {}, overLimitMatchUpIds: [], participantIdsAtLimit: [] },
   );
+
+  matchUpsToSchedule = matchUpsToSchedule.filter(({ matchUpId }) => !overLimitMatchUpIds.includes(matchUpId));
 
   let iterations = 0;
   const failSafe = scheduleTimes?.length ?? 0;
@@ -281,24 +244,19 @@ export function scheduleMatchUps(params) {
   });
 
   // while there are still matchUps to schedule and scheduleTimes, assign scheduleTimes to matchUps;
-  while (
-    scheduleTimes?.length &&
-    matchUpsToSchedule.length &&
-    iterations <= failSafe
-  ) {
+  while (scheduleTimes?.length && matchUpsToSchedule.length && iterations <= failSafe) {
     iterations++;
     const { scheduleTime } = scheduleTimes.shift();
 
     // find a matchUp where all individual participants had enough recovery time
     const scheduledMatchUp = matchUpsToSchedule.find((matchUp) => {
       const { matchUpId } = matchUp;
-      const { dependenciesScheduled, remainingDependencies } =
-        checkDependenciesScheduled({
-          matchUpScheduleTimes,
-          matchUpDependencies,
-          allDateMatchUpIds,
-          matchUp,
-        });
+      const { dependenciesScheduled, remainingDependencies } = checkDependenciesScheduled({
+        matchUpScheduleTimes,
+        matchUpDependencies,
+        allDateMatchUpIds,
+        matchUp,
+      });
       if (!dependenciesScheduled) {
         if (!dependencyDeferred[matchUpId]) dependencyDeferred[matchUpId] = [];
         dependencyDeferred[matchUpId].push({
@@ -316,8 +274,7 @@ export function scheduleMatchUps(params) {
         matchUp,
       });
       if (!enoughTime) {
-        if (!recoveryTimeDeferred[matchUpId])
-          recoveryTimeDeferred[matchUpId] = [];
+        if (!recoveryTimeDeferred[matchUpId]) recoveryTimeDeferred[matchUpId] = [];
         recoveryTimeDeferred[matchUpId].push({
           scheduleTime,
         });
@@ -353,9 +310,7 @@ export function scheduleMatchUps(params) {
       return true;
     });
 
-    matchUpsToSchedule = matchUpsToSchedule.filter(
-      ({ matchUpId }) => matchUpId !== scheduledMatchUp?.matchUpId
-    );
+    matchUpsToSchedule = matchUpsToSchedule.filter(({ matchUpId }) => matchUpId !== scheduledMatchUp?.matchUpId);
 
     if (!scheduledMatchUp) {
       skippedScheduleTimes.push(scheduleTime);
@@ -388,9 +343,7 @@ export function scheduleMatchUps(params) {
             if (scheduleTime) {
               // must include scheduleDate being scheduled to generate proper ISO string
               const formatTime = scheduleTime.split(':').map(zeroPad).join(':');
-              const scheduledTime = `${extractDate(
-                scheduleDate
-              )}T${formatTime}`;
+              const scheduledTime = `${extractDate(scheduleDate)}T${formatTime}`;
 
               if (dryRun) {
                 scheduledMatchUpIds.push(matchUpId);
@@ -424,9 +377,7 @@ export function scheduleMatchUps(params) {
   return {
     ...SUCCESS,
     requestConflicts: Object.values(requestConflicts),
-    remainingScheduleTimes: scheduleTimes?.map(
-      ({ scheduleTime }) => scheduleTime
-    ),
+    remainingScheduleTimes: scheduleTimes?.map(({ scheduleTime }) => scheduleTime),
     individualParticipantProfiles,
     matchUpNotBeforeTimes,
     participantIdsAtLimit, // at the moment this is only those participants at limit BEFORE scheduling begins

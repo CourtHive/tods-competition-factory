@@ -4,12 +4,9 @@ import { resolveFromParameters } from '../../../parameters/resolveFromParameters
 import { checkOutParticipant } from './checkOutParticipant';
 import { checkInParticipant } from './checkInParticipant';
 
+import { MATCHUP_NOT_FOUND, MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 import { DrawDefinition, Tournament } from '../../../types/tournamentTypes';
 import { TournamentRecords } from '../../../types/factoryTypes';
-import {
-  MATCHUP_NOT_FOUND,
-  MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
 import {
   DRAW_DEFINITION,
   ERROR,
@@ -30,25 +27,19 @@ type ToggleParticipantCheckInStateArgs = {
   matchUpId: string;
 };
 
-export function toggleParticipantCheckInState(
-  params: ToggleParticipantCheckInStateArgs
-) {
+export function toggleParticipantCheckInState(params: ToggleParticipantCheckInStateArgs) {
   const paramCheck = checkRequiredParameters(params, [
     { [PARTICIPANT_ID]: true, [DRAW_DEFINITION]: true, [MATCHUP_ID]: true },
   ]);
   if (paramCheck.error) return paramCheck;
 
   const tournamentId = params.tournamentId ?? params.activeTournamentId;
-  const tournamentRecord =
-    params.tournamentRecord ??
-    (tournamentId && params.tournamentRecords?.[tournamentId]);
+  const tournamentRecord = params.tournamentRecord ?? (tournamentId && params.tournamentRecords?.[tournamentId]);
 
   const { participantId, matchUpId, drawDefinition } = params;
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
-  const resolutions = resolveFromParameters(params, [
-    { [PARAM]: MATCHUP, [ERROR]: MATCHUP_NOT_FOUND },
-  ]);
+  const resolutions = resolveFromParameters(params, [{ [PARAM]: MATCHUP, [ERROR]: MATCHUP_NOT_FOUND }]);
   const matchUp = resolutions.matchUp?.matchUp;
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };
 
