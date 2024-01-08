@@ -26,6 +26,7 @@ export const DRAW_ID = 'drawId';
 export const ERROR = 'error';
 export const EVENT = 'event';
 export const PARAM = 'param';
+export const UUIDS = 'uuids';
 
 export const AVERAGE_MATCHUP_MINUTES = 'averageMatchUpMinutes';
 export const RECOVERY_MINUTES = 'recoveryMinutes';

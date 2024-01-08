@@ -6,23 +6,9 @@ import { getEntryProfile } from './getEntryProfile';
 
 import { ROUND_TARGET, TALLY } from '../../constants/extensionConstants';
 import { ErrorType } from '../../constants/errorConditionConstants';
-import {
-  POSITION,
-  CONTAINER,
-  PLAY_OFF,
-  validStages,
-} from '../../constants/drawDefinitionConstants';
-import {
-  ALTERNATE,
-  FEED_IN,
-  WILDCARD,
-  DIRECT_ENTRY_STATUSES,
-} from '../../constants/entryStatusConstants';
-import {
-  DrawDefinition,
-  DrawLink,
-  EntryStatusUnion,
-} from '../../types/tournamentTypes';
+import { POSITION, CONTAINER, PLAY_OFF, validStages } from '../../constants/drawDefinitionConstants';
+import { ALTERNATE, FEED_IN, WILDCARD, DIRECT_ENTRY_STATUSES } from '../../constants/entryStatusConstants';
+import { DrawDefinition, DrawLink, EntryStatusUnion } from '../../types/tournamentTypes';
 
 export function stageExists({ stage, drawDefinition }) {
   const { entryProfile } = getEntryProfile({ drawDefinition });
@@ -48,9 +34,7 @@ export function stageStructures({ stage, drawDefinition, stageSequence }) {
     stage &&
     drawDefinition.structures &&
     drawDefinition.structures.filter((structure) => {
-      return (
-        structure.stage === stage && structure.stageSequence === stageSequence
-      );
+      return structure.stage === stage && structure.stageSequence === stageSequence;
     })
   );
 }
@@ -65,16 +49,12 @@ export function getStageWildcardsCount({ stage, drawDefinition }) {
 }
 export function getStageEntryTypeCount({ stage, drawDefinition, entryStatus }) {
   return drawDefinition.entries.reduce(
-    (p, c) =>
-      c.entryStage === stage && c.entryStatus === entryStatus ? p + 1 : p,
-    0
+    (p, c) => (c.entryStage === stage && c.entryStatus === entryStatus ? p + 1 : p),
+    0,
   );
 }
 export function stageSeededEntries({ stage, drawDefinition }) {
-  return drawDefinition.entries.reduce(
-    (p, c) => (c.entryStage === stage && c.seed ? p.concat(c) : p),
-    []
-  );
+  return drawDefinition.entries.reduce((p, c) => (c.entryStage === stage && c.seed ? p.concat(c) : p), []);
 }
 
 type GetStageEntriesArgs = {
@@ -108,21 +88,13 @@ export function getStageEntries({
       })?.extension?.value;
       const stageTarget =
         (stage && entry.entryStage === stage) ||
-        (stages?.length &&
-          entry.entryStage &&
-          stages.includes(entry.entryStage));
-      const matchesEntryType =
-        !entryStatuses ||
-        (entry.entryStatus && entryStatuses.includes(entry.entryStatus));
+        (stages?.length && entry.entryStage && stages.includes(entry.entryStage));
+      const matchesEntryType = !entryStatuses || (entry.entryStatus && entryStatuses.includes(entry.entryStatus));
       const entryStageSequence = entry.entryStageSequence ?? 1; // default to 1 if not present
-      const sameStageSequence =
-        !stageSequence || entryStageSequence === stageSequence;
-      const targetMatch =
-        !roundTarget || !entryRoundTarget || roundTarget === entryRoundTarget;
+      const sameStageSequence = !stageSequence || entryStageSequence === stageSequence;
+      const targetMatch = !roundTarget || !entryRoundTarget || roundTarget === entryRoundTarget;
 
-      return stageTarget && sameStageSequence && matchesEntryType && targetMatch
-        ? entries.concat(entry)
-        : entries;
+      return stageTarget && sameStageSequence && matchesEntryType && targetMatch ? entries.concat(entry) : entries;
     }, []) ?? [];
 
   // handle POSITION entries
@@ -136,7 +108,7 @@ export function getStageEntries({
       console.log('playoff entries error'); // TODO: bubble this up...
     }
     return (playoffEntries?.length ? playoffEntries : entries).filter(
-      (entry) => !placementGroup || entry.placementGroup === placementGroup
+      (entry) => !placementGroup || entry.placementGroup === placementGroup,
     );
   }
   return entries;
@@ -147,15 +119,13 @@ type GetPlayoffEntriesArgs = {
   drawDefinition: DrawDefinition;
   structureId: string;
 };
-function getPlayoffEntries({
-  provisionalPositioning,
-  drawDefinition,
-  structureId,
-}: GetPlayoffEntriesArgs): { playoffEntries?: any[]; error?: ErrorType } {
+function getPlayoffEntries({ provisionalPositioning, drawDefinition, structureId }: GetPlayoffEntriesArgs): {
+  playoffEntries?: any[];
+  error?: ErrorType;
+} {
   const playoffEntries: any[] = [];
   const inboundLink: DrawLink | undefined = (drawDefinition.links ?? []).find(
-    (link) =>
-      link.linkType === POSITION && link.target.structureId === structureId
+    (link) => link.linkType === POSITION && link.target.structureId === structureId,
   );
   if (inboundLink) {
     // links from round robins include an array of finishing positions
@@ -186,50 +156,35 @@ function getPlayoffEntries({
                 name: TALLY,
               }).extension?.value;
 
-              return results && participantId
-                ? { [participantId]: results }
-                : undefined;
+              return results && participantId ? { [participantId]: results } : undefined;
             })
-            .filter(Boolean)
+            .filter(Boolean),
         );
 
         // TODO: ignore structures where finishingPositions are not unique
-        const uniqueFinishingPositions = Object.keys(results).reduce(
-          (unique: any, key) => {
-            const result = results[key];
-            const finishingPosition =
-              result.groupOrder ||
-              (provisionalPositioning && result.provisionalOrder);
-            if (!unique.includes(finishingPosition)) {
-              unique.push(finishingPosition);
-            }
-            return unique;
-          },
-          []
-        );
+        const uniqueFinishingPositions = Object.keys(results).reduce((unique: any, key) => {
+          const result = results[key];
+          const finishingPosition = result.groupOrder || (provisionalPositioning && result.provisionalOrder);
+          if (!unique.includes(finishingPosition)) {
+            unique.push(finishingPosition);
+          }
+          return unique;
+        }, []);
 
-        const finishingPositionsAreUnique =
-          uniqueFinishingPositions.length === Object.keys(results).length;
+        const finishingPositionsAreUnique = uniqueFinishingPositions.length === Object.keys(results).length;
 
         const participantIds = Object.keys(results).filter((key) => {
           const result = results[key];
-          const finishingPosition =
-            result.groupOrder ||
-            (provisionalPositioning && result.provisionalOrder);
+          const finishingPosition = result.groupOrder || (provisionalPositioning && result.provisionalOrder);
           return finishingPositions?.includes(finishingPosition);
         });
 
         if (!provisionalPositioning || finishingPositionsAreUnique) {
           participantIds.forEach((participantId) => {
             const participantResult = results[participantId];
-            const { groupOrder, provisionalOrder, GEMscore } =
-              participantResult;
-            const finishingPosition =
-              groupOrder || (provisionalPositioning && provisionalOrder);
-            const placementGroup =
-              (finishingPositions ?? [])
-                .sort(numericSort)
-                .indexOf(finishingPosition) + 1;
+            const { groupOrder, provisionalOrder, GEMscore } = participantResult;
+            const finishingPosition = groupOrder || (provisionalPositioning && provisionalOrder);
+            const placementGroup = [...(finishingPositions ?? [])].sort(numericSort).indexOf(finishingPosition) + 1;
 
             playoffEntries.push({
               entryStage: PLAY_OFF,

@@ -1,13 +1,8 @@
-import {
-  dateValidation,
-  timeValidation,
-  validDateString,
-} from '../validators/regex';
+import { dateValidation, timeValidation, validDateString } from '../validators/regex';
 
 export function getIsoDateString(schedule) {
   let { scheduledDate } = schedule;
-  if (!scheduledDate && schedule.scheduledTime)
-    scheduledDate = extractDate(schedule.scheduledTime);
+  if (!scheduledDate && schedule.scheduledTime) scheduledDate = extractDate(schedule.scheduledTime);
   if (!scheduledDate) return;
 
   const extractedTime = extractTime(schedule.scheduledTime);
@@ -27,12 +22,7 @@ export function isDateObject(value) {
 
 export function validTimeValue(value) {
   const spaceSplit = typeof value === 'string' ? value?.split(' ') : [];
-  if (
-    value &&
-    spaceSplit?.length > 1 &&
-    !['AM', 'PM'].includes(spaceSplit[1].toUpperCase())
-  )
-    return false;
+  if (value && spaceSplit?.length > 1 && !['AM', 'PM'].includes(spaceSplit[1].toUpperCase())) return false;
 
   return !!(!value || timeValidation.test(convertTime(value, true, true)));
 }
@@ -54,30 +44,20 @@ export function HHMMSS(s, format?) {
   const seconds = secondNumber - hours * 3600 - minutes * 60;
 
   const displaySeconds = !format || format?.displaySeconds;
-  const timeString = displaySeconds
-    ? hours + ':' + minutes + ':' + seconds
-    : hours + ':' + minutes;
+  const timeString = displaySeconds ? hours + ':' + minutes + ':' + seconds : hours + ':' + minutes;
   return timeString.split(':').map(zeroPad).join(':');
 }
 
 export const getUTCdateString = (date?) => {
-  const dateDate =
-    isDate(date) || isISODateString(date) ? new Date(date) : new Date();
+  const dateDate = isDate(date) || isISODateString(date) ? new Date(date) : new Date();
   const monthNumber = dateDate.getUTCMonth() + 1;
   const utcMonth = monthNumber < 10 ? `0${monthNumber}` : `${monthNumber}`;
-  return `${dateDate.getUTCFullYear()}-${zeroPad(utcMonth)}-${zeroPad(
-    dateDate.getUTCDate()
-  )}`;
+  return `${dateDate.getUTCFullYear()}-${zeroPad(utcMonth)}-${zeroPad(dateDate.getUTCDate())}`;
 };
 
 export function timeUTC(date?) {
-  const dateDate =
-    isDate(date) || isISODateString(date) ? new Date(date) : new Date();
-  return Date.UTC(
-    dateDate.getFullYear(),
-    dateDate.getMonth(),
-    dateDate.getDate()
-  );
+  const dateDate = isDate(date) || isISODateString(date) ? new Date(date) : new Date();
+  return Date.UTC(dateDate.getFullYear(), dateDate.getMonth(), dateDate.getDate());
 }
 
 export function localizeDate(submittedDate, dateLocalization, locale) {
@@ -89,10 +69,7 @@ export function localizeDate(submittedDate, dateLocalization, locale) {
     month: 'long',
     day: 'numeric',
   };
-  return date.toLocaleDateString(
-    locale,
-    dateLocalization || defaultLocalization
-  );
+  return date.toLocaleDateString(locale, dateLocalization || defaultLocalization);
 }
 
 export function formatDate(date?, separator = '-', format = 'YMD') {
@@ -129,10 +106,7 @@ export function offsetTime(date?) {
 // dateArg = new Date('xxx') produces 'Invalid Date', which return false
 export function isDate(dateArg) {
   if (typeof dateArg == 'boolean') return false;
-  const t =
-    (dateArg instanceof Date && dateArg) ||
-    (!isNaN(dateArg) && new Date(dateArg)) ||
-    false;
+  const t = (dateArg instanceof Date && dateArg) || (!isNaN(dateArg) && new Date(dateArg)) || false;
   return t && !isNaN(t.valueOf());
 }
 
@@ -143,10 +117,7 @@ export function dateRange(startDt?, endDt?) {
   const endDateString = extractDate(endDt) + 'T00:00';
   const startDate = new Date(startDateString);
   const endDate = new Date(endDateString);
-  const process =
-    isDate(endDate) &&
-    isDate(startDate) &&
-    isValidDateRange(startDate, endDate);
+  const process = isDate(endDate) && isDate(startDate) && isValidDateRange(startDate, endDate);
   const between: Date[] = [];
   let iterations = 0;
 
@@ -176,25 +147,19 @@ export function isISODateString(dateString) {
   return re.test(dateString);
 }
 
-function isTimeString(timeString) {
+export function isTimeString(timeString) {
   if (typeof timeString !== 'string') return false;
   const noZ = timeString.split('Z')[0];
   const parts: string[] = noZ.split(':');
   const isNumeric = parts.every((part) => !isNaN(parseInt(part)));
-  const invalid =
-    parts.length < 2 ||
-    !isNumeric ||
-    parseInt(parts[0]) > 23 ||
-    parseInt(parts[1]) > 60;
+  const invalid = parts.length < 2 || !isNumeric || parseInt(parts[0]) > 23 || parseInt(parts[1]) > 60;
   return !invalid;
 }
 
 export function timeStringMinutes(timeString?) {
   const validTimeString = extractTime(timeString);
   if (!validTimeString) return 0;
-  const [hours, minutes] = validTimeString
-    .split(':')
-    .map((value) => parseInt(value));
+  const [hours, minutes] = validTimeString.split(':').map((value) => parseInt(value));
   return hours * 60 + minutes;
 }
 
@@ -206,9 +171,7 @@ export function dayMinutesToTimeString(totalMinutes) {
 }
 
 export function tidyTime(timeString) {
-  return isTimeString(timeString)
-    ? timeString.split(':').slice(0, 2).map(zeroPad).join(':')
-    : undefined;
+  return isTimeString(timeString) ? timeString.split(':').slice(0, 2).map(zeroPad).join(':') : undefined;
 }
 
 export function extractTime(dateString) {
@@ -218,9 +181,7 @@ export function extractTime(dateString) {
 }
 
 export function extractDate(dateString) {
-  return isISODateString(dateString) || dateValidation.test(dateString)
-    ? dateString.split('T')[0]
-    : undefined;
+  return isISODateString(dateString) || dateValidation.test(dateString) ? dateString.split('T')[0] : undefined;
 }
 
 export function dateStringDaysChange(dateString, daysChange) {
@@ -237,11 +198,7 @@ export function splitTime(value) {
   ({ 0: time.hours, 1: time.minutes } = o.time.split(':') || []);
   time.ampm = o.ampm;
 
-  if (
-    isNaN(time.hours) ||
-    isNaN(time.minutes) ||
-    (time.ampm && !['AM', 'PM'].includes(time.ampm.toUpperCase()))
-  )
+  if (isNaN(time.hours) || isNaN(time.minutes) || (time.ampm && !['AM', 'PM'].includes(time.ampm.toUpperCase())))
     return {};
   return time;
 }
@@ -251,8 +208,7 @@ export function militaryTime(value?) {
   if (time.ampm && time.hours) {
     if (time.ampm.toLowerCase() === 'pm' && parseInt(time.hours) < 12)
       time.hours = ((time.hours && parseInt(time.hours)) || 0) + 12;
-    if (time.ampm.toLowerCase() === 'am' && time.hours === '12')
-      time.hours = '00';
+    if (time.ampm.toLowerCase() === 'am' && time.hours === '12') time.hours = '00';
   }
   const timeString = `${time.hours || '12'}:${time.minutes || '00'}`;
   return timeString.split(':').map(zeroPad).join(':');
@@ -288,8 +244,7 @@ export function convertTime(value, time24?, keepDate?) {
 
   return !value
     ? undefined
-    : (time24 && ((hasDate && keepDate && value) || militaryTime(timeValue))) ||
-        regularTime(timeValue);
+    : (time24 && ((hasDate && keepDate && value) || militaryTime(timeValue))) || regularTime(timeValue);
 }
 
 export function timeSort(a, b) {
@@ -306,9 +261,7 @@ export function timeSort(a, b) {
 
 export function weekDays(date: any = new Date(), firstDayOfWeek = 0) {
   if (!isDate(date)) return [];
-  const dates = [0, 1, 2, 3, 4, 5, 6].map((i) =>
-    dayOfWeek(date, i + firstDayOfWeek)
-  );
+  const dates = [0, 1, 2, 3, 4, 5, 6].map((i) => dayOfWeek(date, i + firstDayOfWeek));
   return dates;
 
   function dayOfWeek(date, index) {
@@ -365,9 +318,7 @@ export function addMinutesToTimeString(timeString?, minutes?) {
   const validTimeString = extractTime(timeString);
   if (!validTimeString) return '00:00';
   const minutesToAdd = isNaN(minutes) ? 0 : minutes;
-  return extractTime(
-    addMinutes(timeToDate(validTimeString), minutesToAdd).toISOString()
-  );
+  return extractTime(addMinutes(timeToDate(validTimeString), minutesToAdd).toISOString());
 }
 
 export function addMinutes(startDate, minutes) {
@@ -382,11 +333,7 @@ export function zeroPad(number) {
 export function sameDay(date1, date2) {
   const d1 = new Date(date1);
   const d2 = new Date(date2);
-  return (
-    d1.getFullYear() === d2.getFullYear() &&
-    d1.getMonth() === d2.getMonth() &&
-    d1.getDate() === d2.getDate()
-  );
+  return d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() && d1.getDate() === d2.getDate();
 }
 
 export const dateTime = {
