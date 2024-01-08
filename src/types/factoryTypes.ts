@@ -25,7 +25,6 @@ import {
 
 export type FactoryEngine = {
   [key: string]: any;
-  execute: any;
 };
 
 export type TournamentRecords = {
