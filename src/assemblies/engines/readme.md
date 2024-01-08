@@ -21,9 +21,9 @@ No parameter of a method can be a function
 
 ## Explanation
 
-Each engine is an instance of FactoryEngine. Engine objects provides several methods for managing state, executing commands, and interacting with a tournament or set of linked tournaments.
+Each engine is an instance of FactoryEngine. Engine objects provide methods for managing state, executing commands, and interacting with a tournament or set of linked tournaments.
 
-Engine objects have several properties:
+Engine objects have the following default methods:
 
 - setState: This method sets the state of the system. It accepts records, deepCopyOption, and deepCopyAttributes as arguments. It sets the deep copy options, sets the state, and returns the result of processResult(result).
 - setTournamentRecord: adds a single tournamentRecord to state
@@ -36,4 +36,11 @@ Engine objects have several properties:
 - devContext: controls execution behaviors including logging
 - getDevContext: This method retrieves the development context based on the contextCriteria argument.
 
-The engine object is immediately invoked and exported, making it a singleton. This means that there's only one instance of engine throughout the application, ensuring data consistency across different parts of the application that use it.
+Except for `async` the engine object is immediately invoked and exported, making it a singleton. This means that for all engines except `async` there's only one instance of engine throughout the application, ensuring data consistency across different parts of the application that use it.
+
+The `async` eninge must be instantiated after a valid `asyncGlobalState` as been provided. An example `asyncGlobalState.ts` can be found in `src/examples/asycEngine`.
+
+```js
+globalState.setStateProvider(asyncGlobalState);
+const engineAsync = asyncEngine();
+```

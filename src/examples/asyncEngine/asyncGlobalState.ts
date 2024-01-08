@@ -8,6 +8,7 @@ import {
 
 const MISSING_TOURNAMENT_RECORD = 'Missing Tournament Record';
 const INVALID_VALUES = 'Invalid values';
+const SUCCESS = { success: true };
 const NOT_FOUND = 'Not found';
 
 /**
@@ -52,8 +53,7 @@ function getInstanceState() {
   const asyncTaskId = executionAsyncId();
   const instanceState = asyncCtxStateMap.get(asyncTaskId);
 
-  if (!instanceState)
-    throw new Error(`Can not get instance state for async task ${asyncTaskId}`);
+  if (!instanceState) throw new Error(`Can not get instance state for async task ${asyncTaskId}`);
 
   return instanceState;
 }
@@ -111,18 +111,18 @@ export function setTournamentRecord(tournamentRecord) {
   const tournamentId = tournamentRecord?.tournamentId;
   const instanceState = getInstanceState();
   instanceState.tournamentRecords[tournamentId] = tournamentRecord;
-  return { success: true };
+  return { ...SUCCESS };
 }
 
 export function setTournamentId(tournamentId) {
   const instanceState = getInstanceState();
   if (!tournamentId) {
     instanceState.tournamentId = undefined;
-    return { success: true };
+    return { ...SUCCESS };
   }
   if (instanceState.tournamentRecords[tournamentId]) {
     instanceState.tournamentId = tournamentId;
-    return { success: true };
+    return { ...SUCCESS };
   } else {
     return { error: MISSING_TOURNAMENT_RECORD };
   }
@@ -142,8 +142,7 @@ export function setTournamentRecords(tournamentRecords) {
 export function removeTournamentRecord(tournamentId) {
   const instanceState = getInstanceState();
   if (typeof tournamentId !== 'string') return { error: INVALID_VALUES };
-  if (!instanceState.tournamentRecords[tournamentId])
-    return { error: NOT_FOUND };
+  if (!instanceState.tournamentRecords[tournamentId]) return { error: NOT_FOUND };
 
   delete instanceState.tournamentRecords[tournamentId];
   const tournamentIds = Object.keys(instanceState.tournamentRecords);
@@ -152,7 +151,7 @@ export function removeTournamentRecord(tournamentId) {
   } else if (!tournamentIds.length) {
     instanceState.tournamentId = undefined;
   }
-  return { success: true };
+  return { ...SUCCESS };
 }
 
 function setSubscriptions({ subscriptions = {} } = {}) {
@@ -163,7 +162,7 @@ function setSubscriptions({ subscriptions = {} } = {}) {
   Object.keys(subscriptions).forEach((subscription) => {
     instanceState.subscriptions[subscription] = subscriptions[subscription];
   });
-  return { success: true };
+  return { ...SUCCESS };
 }
 
 function setMethods(params) {
@@ -173,7 +172,7 @@ function setMethods(params) {
     if (typeof params[methodName] !== 'function') return;
     instanceState.methods[methodName] = params[methodName];
   });
-  return { success: true };
+  return { ...SUCCESS };
 }
 
 function cycleMutationStatus() {
@@ -191,20 +190,17 @@ function addNotice({ topic, payload, key }: Notice) {
   }
 
   if (!instanceState.disableNotifications) instanceState.modified = true;
-  if (instanceState.disableNotifications || !instanceState.subscriptions[topic])
-    return;
+  if (instanceState.disableNotifications || !instanceState.subscriptions[topic]) return;
 
   if (key) {
-    instanceState.notices = instanceState.notices.filter(
-      (notice) => !(notice.topic === topic && notice.key === key)
-    );
+    instanceState.notices = instanceState.notices.filter((notice) => !(notice.topic === topic && notice.key === key));
   }
   // NOTE: when backend does not recognize undefined for updates
   // params = undefinedToNull(params) // => see object.js utils
 
   instanceState.notices.push({ topic, payload, key });
 
-  return { success: true };
+  return { ...SUCCESS };
 }
 
 function getMethods() {
@@ -215,9 +211,7 @@ function getMethods() {
 function getNotices({ topic }: GetNoticesArgs) {
   const instanceState = getInstanceState();
 
-  const notices = instanceState.notices
-    .filter((notice) => notice.topic === topic)
-    .map((notice) => notice.payload);
+  const notices = instanceState.notices.filter((notice) => notice.topic === topic).map((notice) => notice.payload);
   return notices?.length && notices;
 }
 
@@ -229,7 +223,7 @@ function deleteNotices() {
 function deleteNotice({ key, topic }) {
   const instanceState = getInstanceState();
   instanceState.notices = instanceState.notices.filter(
-    (notice) => (!topic || notice.topic === topic) && notice.key !== key
+    (notice) => (!topic || notice.topic === topic) && notice.key !== key,
   );
 }
 
@@ -247,12 +241,7 @@ async function callListener({ topic, notices }) {
   }
 }
 
-export function handleCaughtError({
-  engineName,
-  methodName,
-  params,
-  err,
-}: HandleCaughtErrorArgs) {
+export function handleCaughtError({ engineName, methodName, params, err }: HandleCaughtErrorArgs) {
   let error;
   if (typeof err === 'string') {
     error = err.toUpperCase();

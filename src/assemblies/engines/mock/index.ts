@@ -1,13 +1,10 @@
+import { deleteNotices, setDevContext, setDeepCopy } from '../../../global/state/globalState';
 import { notifySubscribers } from '../../../global/state/notifySubscribers';
 import { factoryVersion } from '../../../global/functions/factoryVersion';
 import mocksGovernor from '../../governors/mocksGovernor';
-import {
-  deleteNotices,
-  setDevContext,
-  setDeepCopy,
-} from '../../../global/state/globalState';
 
 import { FactoryEngine } from '../../../types/factoryTypes';
+import { setState } from '../parts/stateMethods';
 
 let devContextSet = false;
 
@@ -49,7 +46,11 @@ export const mocksEngine = (() => {
       Object.keys(governor).forEach((method) => {
         engine[method] = (params) => {
           try {
-            return engineInvoke(governor[method], params);
+            const invocationResult = engineInvoke(governor[method], params);
+            if (!invocationResult?.error && params?.setState && invocationResult?.tournamentRecord) {
+              setState(invocationResult.tournamentRecord);
+            }
+            return invocationResult;
           } catch (err) {
             let error;
             if (typeof err === 'string') {

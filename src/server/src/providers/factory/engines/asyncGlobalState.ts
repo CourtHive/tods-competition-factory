@@ -1,12 +1,10 @@
 import { executionAsyncId, createHook } from 'async_hooks';
-/*
 import {
   GetNoticesArgs,
   HandleCaughtErrorArgs,
   ImplemtationGlobalStateTypes,
   Notice,
-} from '../../global/state/globalState';
-*/
+} from '../../../../../global/state/globalState';
 
 const MISSING_TOURNAMENT_RECORD = 'Missing Tournament Record';
 const INVALID_VALUES = 'Invalid values';
@@ -31,22 +29,21 @@ const asyncHook = createHook({
     if (asyncCtxStateMap.has(asyncId)) {
       asyncCtxStateMap.delete(asyncId);
     }
-  }
+  },
 });
 
 asyncHook.enable();
 
 function createInstanceState() {
   const asyncId = executionAsyncId();
-  // const instanceState: ImplemtationGlobalStateTypes = {
-  const instanceState: any = {
+  const instanceState: ImplemtationGlobalStateTypes = {
     disableNotifications: false,
     tournamentId: undefined,
     tournamentRecords: {},
     subscriptions: {},
     modified: false,
     notices: [],
-    methods: {}
+    methods: {},
   };
 
   asyncCtxStateMap.set(asyncId, instanceState);
@@ -82,7 +79,7 @@ export default {
   setTournamentId,
   setTournamentRecord,
   setTournamentRecords,
-  handleCaughtError
+  handleCaughtError,
 };
 
 export function disableNotifications() {
@@ -185,8 +182,7 @@ function cycleMutationStatus() {
   return status;
 }
 
-// function addNotice({ topic, payload, key }: Notice) {
-function addNotice({ topic, payload, key }: any) {
+function addNotice({ topic, payload, key }: Notice) {
   const instanceState = getInstanceState();
 
   if (typeof topic !== 'string' || typeof payload !== 'object') {
@@ -212,8 +208,7 @@ function getMethods() {
   return instanceState.methods ?? {};
 }
 
-// function getNotices({ topic }: GetNoticesArgs) {
-function getNotices({ topic }: any) {
+function getNotices({ topic }: GetNoticesArgs) {
   const instanceState = getInstanceState();
 
   const notices = instanceState.notices.filter((notice) => notice.topic === topic).map((notice) => notice.payload);
@@ -228,7 +223,7 @@ function deleteNotices() {
 function deleteNotice({ key, topic }) {
   const instanceState = getInstanceState();
   instanceState.notices = instanceState.notices.filter(
-    (notice) => (!topic || notice.topic === topic) && notice.key !== key
+    (notice) => (!topic || notice.topic === topic) && notice.key !== key,
   );
 }
 
@@ -246,8 +241,7 @@ async function callListener({ topic, notices }) {
   }
 }
 
-// export function handleCaughtError({ engineName, methodName, params, err }: HandleCaughtErrorArgs) {
-export function handleCaughtError({ engineName, methodName, params, err }: any) {
+export function handleCaughtError({ engineName, methodName, params, err }: HandleCaughtErrorArgs) {
   let error;
   if (typeof err === 'string') {
     error = err.toUpperCase();
@@ -260,6 +254,6 @@ export function handleCaughtError({ engineName, methodName, params, err }: any) 
     params: JSON.stringify(params),
     engine: engineName,
     methodName,
-    error
+    error,
   });
 }
