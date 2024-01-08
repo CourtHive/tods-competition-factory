@@ -1,9 +1,9 @@
-import mocksEngine from '../../../assemblies/engines/mock';
-import { instanceCount } from '../../../utilities/arrays';
-import tournamentEngine from '../../engines/syncEngine';
+import mocksEngine from '../../../../assemblies/engines/mock';
+import { instanceCount } from '../../../../utilities/arrays';
+import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { POLICY_TYPE_AVOIDANCE } from '../../../constants/policyConstants';
+import { POLICY_TYPE_AVOIDANCE } from '../../../../constants/policyConstants';
 
 const avoidancePolicy = {
   policyAttributes: [{ key: 'person.addresses.state' }],
@@ -35,26 +35,21 @@ it('will successfully place participants avoiding states', () => {
     participantsProfile,
   };
 
-  const { tournamentRecord } =
-    mocksEngine.generateTournamentRecord(mockProfile);
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord(mockProfile);
 
   tournamentEngine.setState(tournamentRecord);
 
   const { participants } = tournamentEngine.getParticipants();
   expect(participants.length).toEqual(64);
 
-  const states = participants.map(
-    (participant) => participant.person.addresses[0].state
-  );
+  const states = participants.map((participant) => participant.person.addresses[0].state);
   expect(instanceCount(states)).toEqual(statesProfile);
 
   const matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
   expect(matchUps.length).toEqual(63);
   const statePairings = matchUps
     .filter(({ roundNumber }) => roundNumber === 1)
-    .map(({ sides }) =>
-      sides.map((side) => side.participant.person.addresses[0].state)
-    );
+    .map(({ sides }) => sides.map((side) => side.participant.person.addresses[0].state));
   for (const pairing of statePairings) {
     expect(pairing[0]).not.toEqual(pairing[1]);
   }

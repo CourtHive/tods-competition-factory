@@ -1,6 +1,6 @@
 import { getPositionAssignments } from '../../../../query/drawDefinition/positionsGetter';
 import { isCompletedStructure } from '../../../../query/drawDefinition/structureActions';
-import { generateMatchUpOutcome } from '../primitives/generateMatchUpOutcome';
+import { generateMatchUpOutcome } from '../../../helpers/generateMatchUpOutcome';
 import { generateRange, intersection } from '../../../../utilities/arrays';
 import { extractAttributes } from '../../../../utilities/objects';
 import tournamentEngine from '../../../engines/syncEngine';
@@ -8,10 +8,7 @@ import { mocksEngine } from '../../../..';
 import { expect, it } from 'vitest';
 
 import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
-import {
-  INVALID_VALUES,
-  MISSING_VALUE,
-} from '../../../../constants/errorConditionConstants';
+import { INVALID_VALUES, MISSING_VALUE } from '../../../../constants/errorConditionConstants';
 import {
   COMPASS,
   CURTIS_CONSOLATION,
@@ -23,10 +20,7 @@ import {
   ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
 } from '../../../../constants/drawDefinitionConstants';
-import {
-  COMPLETED,
-  TO_BE_PLAYED,
-} from '../../../../constants/matchUpStatusConstants';
+import { COMPLETED, TO_BE_PLAYED } from '../../../../constants/matchUpStatusConstants';
 
 const scenarios = [
   {
@@ -281,213 +275,170 @@ const scenarios = [
   },
 ];
 
-it.each(scenarios)(
-  'can determine available playoff rounds for ROUND_ROBIN structures',
-  (scenario) => {
-    const {
+it.each(scenarios)('can determine available playoff rounds for ROUND_ROBIN structures', (scenario) => {
+  const { playoffGroups, allPositionsAssigned, completeAllMatchUps, drawProfile, expectation } = scenario;
+
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [drawProfile],
+    completeAllMatchUps,
+  });
+
+  let result = tournamentEngine.setState(tournamentRecord);
+  expect(result.success).toEqual(true);
+
+  let drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+  const mainStructureId = drawDefinition.structures.find(({ stage }) => stage === MAIN).structureId;
+
+  result = tournamentEngine.devContext(true).getAvailablePlayoffProfiles({ drawId });
+
+  if (expectation) {
+    expect(result.availablePlayoffProfiles[0].playoffFinishingPositionRanges).toEqual(
+      expectation.playoffFinishingPositionRanges,
+    );
+  }
+
+  // calling with structureId returns scoped values
+  result = tournamentEngine.getAvailablePlayoffProfiles({
+    structureId: mainStructureId,
+    drawId,
+  });
+  expect(result.playoffFinishingPositionRanges).toEqual(expectation.playoffFinishingPositionRanges);
+  const availableFinishingPositions = result.playoffFinishingPositionRanges.map(
+    ({ finishingPosition }) => finishingPosition,
+  );
+
+  result = tournamentEngine.generateAndPopulatePlayoffStructures({
+    structureId: mainStructureId,
+    drawId,
+  });
+  expect(result.error).toEqual(MISSING_VALUE);
+  expect(result.info).not.toBeUndefined();
+
+  const invalidFinishingPosition = Math.max(...availableFinishingPositions, 0) + 1;
+  result = tournamentEngine.generateAndPopulatePlayoffStructures({
+    playoffGroups: [{ finishingPositions: [invalidFinishingPosition] }],
+    structureId: mainStructureId,
+    drawId,
+  });
+  expect(result.error).toEqual(INVALID_VALUES);
+
+  // if { completeAllMatchUps: true } then the playoffStructures are already generated and popujlated
+  if (playoffGroups && !completeAllMatchUps) {
+    result = tournamentEngine.generateAndPopulatePlayoffStructures({
+      structureId: mainStructureId,
       playoffGroups,
-      allPositionsAssigned,
-      completeAllMatchUps,
-      drawProfile,
-      expectation,
-    } = scenario;
-
-    const {
-      tournamentRecord,
-      drawIds: [drawId],
-    } = mocksEngine.generateTournamentRecord({
-      drawProfiles: [drawProfile],
-      completeAllMatchUps,
+      drawId,
     });
-
-    let result = tournamentEngine.setState(tournamentRecord);
     expect(result.success).toEqual(true);
 
-    let drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-    const mainStructureId = drawDefinition.structures.find(
-      ({ stage }) => stage === MAIN
-    ).structureId;
-
-    result = tournamentEngine
-      .devContext(true)
-      .getAvailablePlayoffProfiles({ drawId });
-
-    if (expectation) {
-      expect(
-        result.availablePlayoffProfiles[0].playoffFinishingPositionRanges
-      ).toEqual(expectation.playoffFinishingPositionRanges);
-    }
-
-    // calling with structureId returns scoped values
-    result = tournamentEngine.getAvailablePlayoffProfiles({
-      structureId: mainStructureId,
-      drawId,
-    });
-    expect(result.playoffFinishingPositionRanges).toEqual(
-      expectation.playoffFinishingPositionRanges
+    // result.structures[0] is the first of the new structures generated
+    expect(result.structures[0].positionAssignments.every(({ participantId }) => participantId)).toEqual(
+      allPositionsAssigned,
     );
-    const availableFinishingPositions =
-      result.playoffFinishingPositionRanges.map(
-        ({ finishingPosition }) => finishingPosition
-      );
 
-    result = tournamentEngine.generateAndPopulatePlayoffStructures({
-      structureId: mainStructureId,
-      drawId,
-    });
-    expect(result.error).toEqual(MISSING_VALUE);
-    expect(result.info).not.toBeUndefined();
-
-    const invalidFinishingPosition =
-      Math.max(...availableFinishingPositions, 0) + 1;
-    result = tournamentEngine.generateAndPopulatePlayoffStructures({
-      playoffGroups: [{ finishingPositions: [invalidFinishingPosition] }],
-      structureId: mainStructureId,
-      drawId,
-    });
-    expect(result.error).toEqual(INVALID_VALUES);
-
-    // if { completeAllMatchUps: true } then the playoffStructures are already generated and popujlated
-    if (playoffGroups && !completeAllMatchUps) {
-      result = tournamentEngine.generateAndPopulatePlayoffStructures({
-        structureId: mainStructureId,
-        playoffGroups,
-        drawId,
-      });
-      expect(result.success).toEqual(true);
-
-      // result.structures[0] is the first of the new structures generated
-      expect(
-        result.structures[0].positionAssignments.every(
-          ({ participantId }) => participantId
-        )
-      ).toEqual(allPositionsAssigned);
-
-      if (expectation.totalStructuresCount) {
-        expect(result.drawDefinition.structures.length).toEqual(
-          expectation.totalStructuresCount
-        );
-      }
-
-      const { structures, links, matchUpModifications } = result;
-      if (expectation.structureNames) {
-        expect(structures.map(extractAttributes('structureName'))).toEqual(
-          expectation.structureNames
-        );
-      }
-      result = tournamentEngine.attachPlayoffStructures({
-        matchUpModifications,
-        structures,
-        drawId,
-        links,
-      });
-      expect(result.addedStructureIds.length).toEqual(
-        expectation.totalStructuresCount -
-          (expectation.initialStructuresCount ?? 1)
-      );
-      expect(result.success).toEqual(true);
+    if (expectation.totalStructuresCount) {
+      expect(result.drawDefinition.structures.length).toEqual(expectation.totalStructuresCount);
     }
 
-    if (!completeAllMatchUps && drawProfile.completionGoal) {
-      const matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
-      const mainMatchUps = matchUps.filter((m) => m.stage === MAIN);
-
-      // when not all matchUps are completed, expecting all but one MAIN matchUp to be completed
-      expect(
-        mainMatchUps.length -
-          mainMatchUps.filter((m) => m.matchUpStatus === COMPLETED).length
-      ).toEqual(1);
-
-      drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-      let thisStructureIsCompleted = isCompletedStructure({
-        structureId: mainStructureId,
-        drawDefinition,
-      });
-      expect(thisStructureIsCompleted).toEqual(false);
-
-      const matchUpsToComplete = mainMatchUps.filter(
-        (m) => m.matchUpStatus === TO_BE_PLAYED
-      );
-      expect(matchUpsToComplete.length).toEqual(1);
-
-      const setValues = [
-        [6, 0],
-        [6, 0],
-      ];
-      const outcome = generateMatchUpOutcome({
-        matchUpFormat: FORMAT_STANDARD,
-        setValues,
-      });
-      result = tournamentEngine.setMatchUpStatus({
-        matchUpId: matchUpsToComplete[0].matchUpId,
-        outcome,
-        drawId,
-      });
-      expect(result.success).toEqual(true);
-
-      drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-      thisStructureIsCompleted = isCompletedStructure({
-        structureId: mainStructureId,
-        drawDefinition,
-      });
-      expect(thisStructureIsCompleted).toEqual(true);
-
-      result = tournamentEngine.automatedPlayoffPositioning({
-        structureId: mainStructureId,
-        applyPositioning: false,
-        drawId,
-      });
-      expect(result.success).toEqual(true);
-
-      const { structurePositionAssignments } = result;
-
-      const s1pa = structurePositionAssignments[0].positionAssignments.map(
-        extractAttributes('participantId')
-      );
-      const s2pa = structurePositionAssignments[1].positionAssignments.map(
-        extractAttributes('participantId')
-      );
-      const s3pa = structurePositionAssignments[2].positionAssignments.map(
-        extractAttributes('participantId')
-      );
-
-      // ensure that there is no overlap in the positionAssignments for each playoff
-      expect(intersection(s1pa, s2pa).length).toEqual(0);
-      expect(intersection(s1pa, s3pa).length).toEqual(0);
-      expect(intersection(s2pa, s3pa).length).toEqual(0);
-
-      drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-
-      structurePositionAssignments.forEach((pa) => {
-        const s1 = drawDefinition.structures.find(
-          (s) => s.structureId === pa.structureId
-        );
-        const s1pa = getPositionAssignments({
-          structure: s1,
-        }).positionAssignments;
-        expect(
-          s1pa?.map(extractAttributes('participantId')).filter(Boolean)
-        ).toEqual([]);
-      });
-
-      result = tournamentEngine.setPositionAssignments({
-        structurePositionAssignments,
-        drawId,
-      });
-      expect(result.success).toEqual(true);
-
-      drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-      structurePositionAssignments.forEach((pa) => {
-        const s1 = drawDefinition.structures.find(
-          (s) => s.structureId === pa.structureId
-        );
-        const s1pa = getPositionAssignments({
-          structure: s1,
-        }).positionAssignments;
-        expect(
-          s1pa?.map(extractAttributes('participantId')).filter(Boolean).length
-        ).toEqual(4);
-      });
+    const { structures, links, matchUpModifications } = result;
+    if (expectation.structureNames) {
+      expect(structures.map(extractAttributes('structureName'))).toEqual(expectation.structureNames);
     }
+    result = tournamentEngine.attachPlayoffStructures({
+      matchUpModifications,
+      structures,
+      drawId,
+      links,
+    });
+    expect(result.addedStructureIds.length).toEqual(
+      expectation.totalStructuresCount - (expectation.initialStructuresCount ?? 1),
+    );
+    expect(result.success).toEqual(true);
   }
-);
+
+  if (!completeAllMatchUps && drawProfile.completionGoal) {
+    const matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+    const mainMatchUps = matchUps.filter((m) => m.stage === MAIN);
+
+    // when not all matchUps are completed, expecting all but one MAIN matchUp to be completed
+    expect(mainMatchUps.length - mainMatchUps.filter((m) => m.matchUpStatus === COMPLETED).length).toEqual(1);
+
+    drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+    let thisStructureIsCompleted = isCompletedStructure({
+      structureId: mainStructureId,
+      drawDefinition,
+    });
+    expect(thisStructureIsCompleted).toEqual(false);
+
+    const matchUpsToComplete = mainMatchUps.filter((m) => m.matchUpStatus === TO_BE_PLAYED);
+    expect(matchUpsToComplete.length).toEqual(1);
+
+    const setValues = [
+      [6, 0],
+      [6, 0],
+    ];
+    const outcome = generateMatchUpOutcome({
+      matchUpFormat: FORMAT_STANDARD,
+      setValues,
+    });
+    result = tournamentEngine.setMatchUpStatus({
+      matchUpId: matchUpsToComplete[0].matchUpId,
+      outcome,
+      drawId,
+    });
+    expect(result.success).toEqual(true);
+
+    drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+    thisStructureIsCompleted = isCompletedStructure({
+      structureId: mainStructureId,
+      drawDefinition,
+    });
+    expect(thisStructureIsCompleted).toEqual(true);
+
+    result = tournamentEngine.automatedPlayoffPositioning({
+      structureId: mainStructureId,
+      applyPositioning: false,
+      drawId,
+    });
+    expect(result.success).toEqual(true);
+
+    const { structurePositionAssignments } = result;
+
+    const s1pa = structurePositionAssignments[0].positionAssignments.map(extractAttributes('participantId'));
+    const s2pa = structurePositionAssignments[1].positionAssignments.map(extractAttributes('participantId'));
+    const s3pa = structurePositionAssignments[2].positionAssignments.map(extractAttributes('participantId'));
+
+    // ensure that there is no overlap in the positionAssignments for each playoff
+    expect(intersection(s1pa, s2pa).length).toEqual(0);
+    expect(intersection(s1pa, s3pa).length).toEqual(0);
+    expect(intersection(s2pa, s3pa).length).toEqual(0);
+
+    drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+
+    structurePositionAssignments.forEach((pa) => {
+      const s1 = drawDefinition.structures.find((s) => s.structureId === pa.structureId);
+      const s1pa = getPositionAssignments({
+        structure: s1,
+      }).positionAssignments;
+      expect(s1pa?.map(extractAttributes('participantId')).filter(Boolean)).toEqual([]);
+    });
+
+    result = tournamentEngine.setPositionAssignments({
+      structurePositionAssignments,
+      drawId,
+    });
+    expect(result.success).toEqual(true);
+
+    drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+    structurePositionAssignments.forEach((pa) => {
+      const s1 = drawDefinition.structures.find((s) => s.structureId === pa.structureId);
+      const s1pa = getPositionAssignments({
+        structure: s1,
+      }).positionAssignments;
+      expect(s1pa?.map(extractAttributes('participantId')).filter(Boolean).length).toEqual(4);
+    });
+  }
+});

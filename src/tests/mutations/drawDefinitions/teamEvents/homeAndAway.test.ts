@@ -1,9 +1,9 @@
-import { extractAttributes } from '../../../utilities/objects';
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import { extractAttributes } from '../../../../utilities/objects';
+import mocksEngine from '../../../../assemblies/engines/mock';
+import tournamentEngine from '../../../engines/syncEngine';
 import { expect, test } from 'vitest';
 
-import { TEAM_EVENT } from '../../../constants/eventConstants';
+import { TEAM_EVENT } from '../../../../constants/eventConstants';
 
 test('drawPosition placement is not randomized when drawSize: 2', () => {
   const {
@@ -17,18 +17,11 @@ test('drawPosition placement is not randomized when drawSize: 2', () => {
   expect(stateResult.success).toEqual(true);
 
   let event = tournamentEngine.getEvent({ eventId }).event;
-  let enteredParticipantOrder = event.entries.map(
-    extractAttributes('participantId')
-  );
+  let enteredParticipantOrder = event.entries.map(extractAttributes('participantId'));
 
   let generationResult = tournamentEngine.generateDrawDefinition({ eventId });
-  let positionAssignments =
-    tournamentEngine.getPositionAssignments(
-      generationResult
-    ).positionAssignments;
-  let positionedParticipantOrder = positionAssignments.map(
-    extractAttributes('participantId')
-  );
+  let positionAssignments = tournamentEngine.getPositionAssignments(generationResult).positionAssignments;
+  let positionedParticipantOrder = positionAssignments.map(extractAttributes('participantId'));
   // EXPECT: to be equivalent
   expect(enteredParticipantOrder).toEqual(positionedParticipantOrder);
 
@@ -44,26 +37,17 @@ test('drawPosition placement is not randomized when drawSize: 2', () => {
   event = tournamentEngine.getEvent({ eventId }).event;
 
   generationResult = tournamentEngine.generateDrawDefinition({ eventId });
-  positionAssignments =
-    tournamentEngine.getPositionAssignments(
-      generationResult
-    ).positionAssignments;
-  positionedParticipantOrder = positionAssignments.map(
-    extractAttributes('participantId')
-  );
+  positionAssignments = tournamentEngine.getPositionAssignments(generationResult).positionAssignments;
+  positionedParticipantOrder = positionAssignments.map(extractAttributes('participantId'));
   // EXPECT: not to be equivalent
   expect(enteredParticipantOrder).not.toEqual(positionedParticipantOrder);
 
   // update from 2nd generated drawDefinition
-  enteredParticipantOrder = event.entries.map(
-    extractAttributes('participantId')
-  );
+  enteredParticipantOrder = event.entries.map(extractAttributes('participantId'));
   // EXPECT: to be equivalent
   expect(enteredParticipantOrder).toEqual(positionedParticipantOrder);
 
-  const drawEntries = [...event.entries]
-    .reverse()
-    .map((entry, i) => ({ ...entry, entryPosition: i + 1 }));
+  const drawEntries = [...event.entries].reverse().map((entry, i) => ({ ...entry, entryPosition: i + 1 }));
 
   // pass drawEntries in desired positionAssignment order
   generationResult = tournamentEngine.generateDrawDefinition({
@@ -71,18 +55,11 @@ test('drawPosition placement is not randomized when drawSize: 2', () => {
     eventId,
   });
 
-  const drawEntriesOrder = generationResult.drawDefinition.entries.map(
-    extractAttributes('participantId')
-  );
+  const drawEntriesOrder = generationResult.drawDefinition.entries.map(extractAttributes('participantId'));
   expect(enteredParticipantOrder).not.toEqual(drawEntriesOrder);
 
-  positionAssignments =
-    tournamentEngine.getPositionAssignments(
-      generationResult
-    ).positionAssignments;
-  positionedParticipantOrder = positionAssignments.map(
-    extractAttributes('participantId')
-  );
+  positionAssignments = tournamentEngine.getPositionAssignments(generationResult).positionAssignments;
+  positionedParticipantOrder = positionAssignments.map(extractAttributes('participantId'));
 
   expect(positionedParticipantOrder).toEqual(drawEntriesOrder);
 });

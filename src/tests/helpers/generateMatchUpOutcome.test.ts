@@ -1,4 +1,4 @@
-import { parseScoreString } from '../../../../utilities/parseScoreString';
+import { parseScoreString } from '../../utilities/parseScoreString';
 import { generateMatchUpOutcome } from './generateMatchUpOutcome';
 import { expect, it } from 'vitest';
 
