@@ -17,3 +17,4 @@ documentation/build
 .DS_Store
 *decoy*
 /html
+*.tsbuildinfo

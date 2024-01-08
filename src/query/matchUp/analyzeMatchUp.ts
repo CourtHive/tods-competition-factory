@@ -3,12 +3,32 @@ import { instanceCount } from '../../utilities/arrays';
 import { analyzeSet } from './analyzeSet';
 
 import { MISSING_MATCHUP } from '../../constants/errorConditionConstants';
+import { ResultType } from '../../global/functions/decorateResult';
 
 // TODO: what about checking array of sets are in order? ( setNumber )
 
-export function analyzeMatchUp(params?) {
-  const { matchUp, sideNumber, setNumber, isTiebreakValue, isPointValue } =
-    params || {};
+export function analyzeMatchUp(params?): ResultType & {
+  matchUpScoringFormat?: any;
+  validMatchUpOutcome?: boolean;
+  calculatedWinningSide?: number;
+  validMatchUpWinningSide?: boolean;
+  completedSetsHaveValidOutcomes?: boolean;
+  isLastSetWithValues?: boolean;
+  completedSetsCount?: number;
+  isCompletedMatchUp?: boolean;
+  isValidSideNumber?: boolean;
+  hasExistingValue?: boolean;
+  existingValue?: number;
+  expectTimedSet?: boolean;
+  isExistingSet?: boolean;
+  isActiveSet?: boolean;
+  isCompletedSet?: boolean;
+  sideGameScores?: number[];
+  sidePointScores?: number[];
+  sideTiebreakScores?: number[];
+  winningSide?: number;
+} {
+  const { matchUp, sideNumber, setNumber, isTiebreakValue, isPointValue } = params || {};
   let { matchUpFormat } = params || {};
   if (!matchUp) return { error: MISSING_MATCHUP };
 
@@ -19,9 +39,7 @@ export function analyzeMatchUp(params?) {
   const sets = matchUp.score?.sets;
   const setsCount = sets?.length;
   const setIndex = setNumber && setNumber - 1;
-  const isExistingSet = !!sets?.find(
-    (set, index) => set.setNumber === setNumber && index === setIndex
-  );
+  const isExistingSet = !!sets?.find((set, index) => set.setNumber === setNumber && index === setIndex);
   const completedSets = sets?.filter((set) => set?.winningSide) || [];
   const completedSetsCount = completedSets?.length || 0;
   const setsFollowingCurrent = (setNumber && sets?.slice(setNumber)) || [];
@@ -43,10 +61,8 @@ export function analyzeMatchUp(params?) {
     }, true)
   );
 
-  const setObject =
-    setNumber <= setsCount && sets.find((set) => set.setNumber === setNumber);
-  const specifiedSetAnalysis =
-    setObject && analyzeSet({ setObject, matchUpScoringFormat });
+  const setObject = setNumber <= setsCount && sets.find((set) => set.setNumber === setNumber);
+  const specifiedSetAnalysis = setObject && analyzeSet({ setObject, matchUpScoringFormat });
 
   const {
     isCompletedSet,
@@ -65,20 +81,12 @@ export function analyzeMatchUp(params?) {
   const existingValue =
     setObject &&
     isValidSideNumber &&
-    ((!isTiebreakValue &&
-      !isPointValue &&
-      sideGameScores[sideIndex] !== undefined &&
-      sideGameScores[sideIndex]) ||
-      (isTiebreakValue &&
-        sideTiebreakScores[sideIndex] !== undefined &&
-        sideTiebreakScores[sideIndex]));
+    ((!isTiebreakValue && !isPointValue && sideGameScores[sideIndex] !== undefined && sideGameScores[sideIndex]) ||
+      (isTiebreakValue && sideTiebreakScores[sideIndex] !== undefined && sideTiebreakScores[sideIndex]));
   const hasExistingValue = !!existingValue;
 
   const completedSetsHaveValidOutcomes = completedSets
-    ?.map(
-      (setObject) =>
-        analyzeSet({ setObject, matchUpScoringFormat }).isValidSetOutcome
-    )
+    ?.map((setObject) => analyzeSet({ setObject, matchUpScoringFormat }).isValidSetOutcome)
     .reduce((valid, validOutcome) => valid && validOutcome, true);
 
   const setsWinCounts = completedSets.reduce(
@@ -88,7 +96,7 @@ export function analyzeMatchUp(params?) {
       counts[winningSideIndex]++;
       return counts;
     },
-    [0, 0]
+    [0, 0],
   );
   const matchUpWinningSide = matchUp?.winningSide;
   const matchUpWinningSideIndex = matchUpWinningSide && matchUpWinningSide - 1;
@@ -98,22 +106,15 @@ export function analyzeMatchUp(params?) {
 
   const maxSetsCount = Math.max(...setsWinCounts);
   const maxSetsInstances = instanceCount(setsWinCounts)[maxSetsCount];
-  const { bestOf } = matchUpScoringFormat || {};
+  const { bestOf } = matchUpScoringFormat ?? {};
   const setsToWin = (bestOf && Math.ceil(bestOf / 2)) || 1;
   const calculatedWinningSide =
-    (maxSetsCount === setsToWin &&
-      maxSetsInstances === 1 &&
-      setsWinCounts.indexOf(maxSetsCount) + 1) ||
-    undefined;
+    (maxSetsCount === setsToWin && maxSetsInstances === 1 && setsWinCounts.indexOf(maxSetsCount) + 1) || undefined;
 
   const validMatchUpWinningSide =
-    winningSideSetsCount > losingSideSetsCount &&
-    matchUpWinningSide === calculatedWinningSide;
+    winningSideSetsCount > losingSideSetsCount && matchUpWinningSide === calculatedWinningSide;
 
-  const validMatchUpOutcome =
-    calculatedWinningSide &&
-    completedSetsHaveValidOutcomes &&
-    validMatchUpWinningSide;
+  const validMatchUpOutcome = calculatedWinningSide && completedSetsHaveValidOutcomes && validMatchUpWinningSide;
 
   return {
     completedSetsHaveValidOutcomes,

@@ -1,0 +1,37 @@
+
+# Ignore
+node_modules/
+scratch/
+storage/
+*.un~
+.*.un~
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# tsc
+*.tsbuildinfo
+
+# CodeRush
+.cr/
+
+# test
+coverage/
+storage/
+
+# eslint
+.eslintcache
+
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Local
+.env
+dist
+.webpack

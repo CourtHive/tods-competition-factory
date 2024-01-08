@@ -1,7 +1,4 @@
-import {
-  ResultType,
-  decorateResult,
-} from '../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../global/functions/decorateResult';
 import { dateValidation } from '../../validators/regex';
 import { extractDate } from '../../utilities/dateTime';
 
@@ -34,7 +31,7 @@ export function setEventStartDate({ tournamentRecord, event, startDate }) {
     return { error: INVALID_DATE };
 
   // use extractDate() to ensure that only the YYYY-MM-DD part of date is used for comparison
-  const eventEndDate = event.endDate && new Date(extractDate(event.endDate));
+  const eventEndDate = event.endDate && new Date(extractDate(event.endDate)).getTime();
   if (eventEndDate && newEventStartDate > eventEndDate) {
     // if the new startDate is after an existing endDate set the endDate to the startDate
     event.endDate = startDate;
@@ -64,8 +61,7 @@ export function setEventEndDate({ tournamentRecord, event, endDate }) {
     return { error: INVALID_DATE };
 
   // use extractDate() to ensure that only the YYYY-MM-DD part of date is used for comparison
-  const eventStartDate =
-    event.startDate && new Date(extractDate(event.startDate));
+  const eventStartDate = event.startDate && new Date(extractDate(event.startDate)).getTime();
   if (eventStartDate && newEventEndDate < eventStartDate) {
     // if the new endDate is before an existing startDate set the startDate to the endDate
     event.startDate = endDate;
@@ -78,15 +74,13 @@ export function setEventEndDate({ tournamentRecord, event, endDate }) {
 export function setEventDates({ tournamentRecord, event, startDate, endDate }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
-  if (!startDate && !endDate)
-    return { error: MISSING_VALUE, info: 'missing date' };
-  if (startDate && !dateValidation.test(startDate))
-    return { error: INVALID_DATE };
+  if (!startDate && !endDate) return { error: MISSING_VALUE, info: 'missing date' };
+  if (startDate && !dateValidation.test(startDate)) return { error: INVALID_DATE };
   if (endDate && !dateValidation.test(endDate)) return { error: INVALID_DATE };
 
   if (startDate && endDate) {
-    const newStartDate = new Date(extractDate(startDate));
-    const newEndDate = new Date(extractDate(endDate));
+    const newStartDate = new Date(extractDate(startDate)).getTime();
+    const newEndDate = new Date(extractDate(endDate)).getTime();
     if (newStartDate > newEndDate) return { error: INVALID_VALUES };
   }
 
@@ -104,7 +98,7 @@ export function setEventDates({ tournamentRecord, event, startDate, endDate }) {
 }
 
 function getTournamentDates(
-  tournamentRecord
+  tournamentRecord,
 ): ResultType & { tournamentStartDate?: number; tournamentEndDate?: number } {
   const { startDate, endDate } = tournamentRecord;
   if (!dateValidation.test(startDate) || !dateValidation.test(endDate)) {

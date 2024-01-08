@@ -11,35 +11,18 @@ import { getAllDrawMatchUps } from '../../query/matchUps/drawMatchUps';
 import { modifyDrawNotice } from '../notifications/drawNotifications';
 import { makeDeepCopy } from '../../utilities/makeDeepCopy';
 import { findStructure } from '../../acquire/findStructure';
-import {
-  ResultType,
-  decorateResult,
-} from '../../global/functions/decorateResult';
-import {
-  getSeedPattern,
-  getValidSeedBlocks,
-} from '../../query/drawDefinition/seedGetter';
-import {
-  MatchUpsMap,
-  getMatchUpsMap,
-} from '../../query/matchUps/getMatchUpsMap';
-import {
-  disableNotifications,
-  enableNotifications,
-} from '../../global/state/globalState';
+import { ResultType, decorateResult } from '../../global/functions/decorateResult';
+import { getSeedPattern, getValidSeedBlocks } from '../../query/drawDefinition/seedGetter';
+import { MatchUpsMap, getMatchUpsMap } from '../../query/matchUps/getMatchUpsMap';
+import { disableNotifications, enableNotifications } from '../../global/state/globalState';
 
+import { LUCKY_DRAW, WATERFALL } from '../../constants/drawDefinitionConstants';
 import { STRUCTURE_NOT_FOUND } from '../../constants/errorConditionConstants';
 import { DIRECT_ENTRY_STATUSES } from '../../constants/entryStatusConstants';
 import { PolicyDefinitions, SeedingProfile } from '../../types/factoryTypes';
 import { SUCCESS } from '../../constants/resultConstants';
 import { HydratedMatchUp } from '../../types/hydrated';
-import { LUCKY_DRAW, WATERFALL } from '../../constants/drawDefinitionConstants';
-import {
-  DrawDefinition,
-  Event,
-  PositionAssignment,
-  Tournament,
-} from '../../types/tournamentTypes';
+import { DrawDefinition, Event, PositionAssignment, Tournament } from '../../types/tournamentTypes';
 
 // TODO: Throw an error if an attempt is made to automate positioning for a structure that already has completed matchUps
 type AutomatedPositioningArgs = {
@@ -81,7 +64,7 @@ export function automatedPositioning({
   event,
 }: AutomatedPositioningArgs): ResultType & {
   positionAssignments?: PositionAssignment[];
-  positioningReport?: { [key: string]: any };
+  positioningReport?: { [key: string]: any }[];
   success?: boolean;
   conflicts?: any[];
 } {
@@ -141,8 +124,7 @@ export function automatedPositioning({
     structureId,
   });
 
-  if (!entries?.length && !qualifiersCount)
-    return handleSuccessCondition({ ...SUCCESS });
+  if (!entries?.length && !qualifiersCount) return handleSuccessCondition({ ...SUCCESS });
 
   matchUpsMap = matchUpsMap ?? getMatchUpsMap({ drawDefinition });
 
@@ -175,12 +157,10 @@ export function automatedPositioning({
       })?.participants
     : [];
 
-  if (
-    getSeedPattern(structure.seedingProfile || seedingProfile) === WATERFALL
-  ) {
+  if (getSeedPattern(structure.seedingProfile || seedingProfile) === WATERFALL) {
     // since WATERFALL attempts to place ALL participants
     // BYEs must be placed first to ensure lower seeds get BYEs
-    let result = placeByes
+    let result: any = placeByes
       ? positionByes({
           provisionalPositioning,
           tournamentRecord,
@@ -199,9 +179,7 @@ export function automatedPositioning({
 
     positioningReport.push({ action: 'positionByes', unseededByePositions });
 
-    const profileSeeding = structure.seedingProfile
-      ? { positioning: structure.seedingProfile }
-      : seedingProfile;
+    const profileSeeding = structure.seedingProfile ? { positioning: structure.seedingProfile } : seedingProfile;
 
     result = positionSeedBlocks({
       seedingProfile: profileSeeding,
@@ -227,10 +205,8 @@ export function automatedPositioning({
     // otherwise... seeds need to be placed first so that BYEs
     // can follow the seedValues of placed seeds
     if (drawType !== LUCKY_DRAW) {
-      const profileSeeding = structure.seedingProfile
-        ? { positioning: structure.seedingProfile }
-        : seedingProfile;
-      const result = positionSeedBlocks({
+      const profileSeeding = structure.seedingProfile ? { positioning: structure.seedingProfile } : seedingProfile;
+      const result: any = positionSeedBlocks({
         seedingProfile: profileSeeding,
         provisionalPositioning,
         inContextDrawMatchUps,

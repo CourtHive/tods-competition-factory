@@ -6,10 +6,7 @@ import { Event, Tournament } from '../../types/tournamentTypes';
 import { SUCCESS } from '../../constants/resultConstants';
 import { isString } from '../../utilities/objects';
 import { findEvent } from '../../acquire/findEvent';
-import {
-  EVENT_NOT_FOUND,
-  INVALID_VALUES,
-} from '../../constants/errorConditionConstants';
+import { EVENT_NOT_FOUND, INVALID_VALUES } from '../../constants/errorConditionConstants';
 
 type GetPublishStateArgs = {
   tournamentRecord?: Tournament;
@@ -29,36 +26,30 @@ export function getPublishState({
   publishState?: any;
 } {
   if (Array.isArray(eventIds) && eventIds?.length) {
-    const publishState = {};
+    const publishState: any = {};
     for (const eventId of eventIds) {
       if (!isString(eventId)) return { error: INVALID_VALUES };
       const event = findEvent({ tournamentRecord, eventId });
       if (!event) return { error: EVENT_NOT_FOUND };
-      const pubStatus = getPubStatus({ event });
+      const pubStatus: any = getPubStatus({ event });
       if (pubStatus.error) return pubStatus;
       publishState[eventId] = pubStatus;
     }
     return { ...SUCCESS, publishState };
-  } else if (
-    !event &&
-    tournamentRecord?.events &&
-    Array.isArray(drawIds) &&
-    drawIds.length
-  ) {
-    const publishState = {};
+  } else if (!event && tournamentRecord?.events && Array.isArray(drawIds) && drawIds.length) {
+    const publishState: any = {};
     for (const event of tournamentRecord.events) {
-      const pubStatus = getPubStatus({ event });
+      const pubStatus: any = getPubStatus({ event });
       if (pubStatus.error) return pubStatus;
       for (const drawId of drawIds) {
         if (!isString(drawId)) return { error: INVALID_VALUES };
-        const published =
-          pubStatus.publishState.publishedDrawIds.includes(drawId);
+        const published = pubStatus.publishState.publishedDrawIds.includes(drawId);
         if (published) publishState[drawId] = { published };
       }
     }
     return { ...SUCCESS, publishState };
   } else if (event) {
-    const pubStatus = getPubStatus({ event });
+    const pubStatus: any = getPubStatus({ event });
     if (pubStatus.error) return pubStatus;
     if (drawId) {
       return {
@@ -68,7 +59,7 @@ export function getPublishState({
         },
       };
     } else if (Array.isArray(drawIds) && drawIds?.length) {
-      const publishState = {};
+      const publishState: any = {};
       for (const drawId of drawIds) {
         if (!isString(drawId)) return { error: INVALID_VALUES };
         publishState[drawId] = {
@@ -84,7 +75,7 @@ export function getPublishState({
   return { error: INVALID_VALUES };
 }
 
-function getPubStatus({ event }) {
+function getPubStatus({ event }): any {
   const eventPubStatus = getEventPublishStatus({ event });
   if (!eventPubStatus) return { error: EVENT_NOT_FOUND };
 
@@ -101,10 +92,7 @@ function getPubStatus({ event }) {
   const { drawDetails } = eventPubStatus;
 
   const publishedDrawIds =
-    (drawDetails &&
-      Object.keys(drawDetails).filter((drawId) =>
-        getDrawPublishStatus({ drawDetails, drawId })
-      )) ||
+    (drawDetails && Object.keys(drawDetails).filter((drawId) => getDrawPublishStatus({ drawDetails, drawId }))) ||
     eventPubStatus.drawIds ||
     [];
 
