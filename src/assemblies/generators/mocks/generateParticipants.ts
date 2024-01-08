@@ -1,3 +1,4 @@
+import { isNumeric, randomInt, skewedDistribution } from '../../../utilities/math';
 import { generateRange, shuffleArray } from '../../../utilities/arrays';
 import { definedAttributes } from '../../../utilities/definedAttributes';
 import { cityMocks, stateMocks, postalCodeMocks } from './address';
@@ -7,27 +8,14 @@ import { generateAddress } from './generateAddress';
 import { generatePersons } from './generatePersons';
 import { nameMocks } from './nameMocks';
 import { UUID } from '../../../utilities/UUID';
-import {
-  isNumeric,
-  randomInt,
-  skewedDistribution,
-} from '../../../utilities/math';
 
+import { GROUP, INDIVIDUAL, PAIR, TEAM } from '../../../constants/participantConstants';
 import defaultRatingsParameters from '../../../fixtures/ratings/ratingsParameters';
-import {
-  DOUBLES_EVENT,
-  SINGLES_EVENT,
-} from '../../../constants/eventConstants';
+import { DOUBLES_EVENT, SINGLES_EVENT } from '../../../constants/eventConstants';
 import { RANKING, RATING, SCALE } from '../../../constants/scaleConstants';
 import { ErrorType } from '../../../constants/errorConditionConstants';
 import { DOUBLES_MATCHUP } from '../../../constants/matchUpTypes';
 import { COMPETITOR } from '../../../constants/participantRoles';
-import {
-  GROUP,
-  INDIVIDUAL,
-  PAIR,
-  TEAM,
-} from '../../../constants/participantConstants';
 
 export function generateParticipants(params): {
   participants?: any[];
@@ -72,16 +60,12 @@ export function generateParticipants(params): {
 
   if (
     rankingRange &&
-    (!Array.isArray(rankingRange) ||
-      !rankingRange.every((r) => isNumeric(r)) ||
-      rankingRange.length !== 2)
+    (!Array.isArray(rankingRange) || !rankingRange.every((r) => isNumeric(r)) || rankingRange.length !== 2)
   ) {
     rankingRange = undefined;
   }
 
-  scaledParticipantsCount = scaleAllParticipants
-    ? participantsCount
-    : scaledParticipantsCount;
+  scaledParticipantsCount = scaleAllParticipants ? participantsCount : scaledParticipantsCount;
   const defaultRankingRange = 1000;
   const rankingUpperBound =
     scaledParticipantsCount && scaledParticipantsCount > defaultRankingRange
@@ -90,8 +74,7 @@ export function generateParticipants(params): {
   rankingRange = rankingRange || [1, rankingUpperBound];
   rankingRange[1] += 1; // so that behavior is as expected
 
-  const individualParticipantsCount =
-    participantsCount * (doubles ? 2 : team ? 8 : 1);
+  const individualParticipantsCount = participantsCount * (doubles ? 2 : team ? 8 : 1);
 
   const result = generatePersons({
     count: individualParticipantsCount,
@@ -104,8 +87,7 @@ export function generateParticipants(params): {
   });
   if (result.error) return result;
 
-  const { nationalityCodes: personNationalityCodes, persons: mockedPersons } =
-    result;
+  const { nationalityCodes: personNationalityCodes, persons: mockedPersons } = result;
 
   // generated arrays of rankings and ratings to be attached as scaleItems
   let doublesRankings: any[] = [],
@@ -117,16 +99,13 @@ export function generateParticipants(params): {
     const { categoryName, ageCategoryCode, ratingType } = category;
     if ((categoryName || ageCategoryCode) && !ratingType) {
       const [start, end] = rankingRange || [];
-      singlesRankings = shuffleArray(generateRange(start, end)).slice(
-        0,
-        scaledParticipantsCount || randomInt(20, 30)
-      );
+      singlesRankings = shuffleArray(generateRange(start, end)).slice(0, scaledParticipantsCount || randomInt(20, 30));
 
       if ([PAIR, TEAM].includes(participantType)) {
         const [start, end] = rankingRange || [];
         doublesRankings = shuffleArray(generateRange(start, end)).slice(
           0,
-          scaledParticipantsCount || randomInt(20, 30)
+          scaledParticipantsCount || randomInt(20, 30),
         );
       }
     }
@@ -140,18 +119,13 @@ export function generateParticipants(params): {
         ...(ratingAttributes || {}),
       };
 
-      const {
-        attributes = {},
-        decimalsCount,
-        accessors,
-        range,
-        step,
-      } = ratingParameters;
+      const { attributes = {}, decimalsCount, accessors, range, step } = ratingParameters;
 
       const getAttributes = (attributes) => {
         const generatedAttributes = {};
 
-        for (const attribute of Object.keys(attributes) || {}) {
+        const attributeKeys = Object.keys(attributes || {});
+        for (const attribute of attributeKeys) {
           const attributeValue = attributes[attribute];
 
           if (typeof attributeValue === 'object' && attributeValue.generator) {
@@ -173,11 +147,7 @@ export function generateParticipants(params): {
       const generateRatings = () =>
         generateRange(0, 2000) // overgenerate because filter and restricted range will impact final count
           .map(() => skewedDistribution(min, max, skew, step, decimalsCount))
-          .filter(
-            (rating) =>
-              (!ratingMax || rating <= ratingMax) &&
-              (!ratingMin || rating >= ratingMin)
-          )
+          .filter((rating) => (!ratingMax || rating <= ratingMax) && (!ratingMin || rating >= ratingMin))
           .slice(0, scaledParticipantsCount || randomInt(20, 30))
           .map((scaleValue) => {
             return !accessors
@@ -185,7 +155,7 @@ export function generateParticipants(params): {
               : Object.assign(
                   {},
                   ...accessors.map((accessor) => ({ [accessor]: scaleValue })),
-                  getAttributes(attributes)
+                  getAttributes(attributes),
                 );
           });
 
@@ -197,7 +167,7 @@ export function generateParticipants(params): {
   }
 
   const countryCodes = countries.filter((country) =>
-    nationalityCodeType === 'IOC' ? country.ioc || country.iso : country.iso
+    nationalityCodeType === 'IOC' ? country.ioc || country.iso : country.iso,
   );
 
   function getMin(count) {
@@ -207,14 +177,8 @@ export function generateParticipants(params): {
     return count;
   }
 
-  const {
-    postalCodesProfile,
-    postalCodesCount,
-    statesProfile,
-    citiesProfile,
-    citiesCount,
-    statesCount,
-  } = addressProps || {};
+  const { postalCodesProfile, postalCodesCount, statesProfile, citiesProfile, citiesCount, statesCount } =
+    addressProps || {};
 
   const valuesFromProfile = (profile) =>
     Object.keys(profile)
@@ -249,36 +213,27 @@ export function generateParticipants(params): {
   const isoList = isoMin
     ? shuffleArray(countryCodes).slice(0, nationalityCodesCount)
     : nationalityCodes
-      ? countryCodes.filter((isoCountry) =>
-          nationalityCodes.includes(isoCountry.iso)
-        )
+      ? countryCodes.filter((isoCountry) => nationalityCodes.includes(isoCountry.iso))
       : countryCodes;
 
   const countriesList = shuffleArray(
     generateRange(0, Math.ceil(individualParticipantsCount / (isoMin || 1)))
       .map(() => isoList)
-      .flat(Infinity)
+      .flat(Infinity),
   );
 
   const teamNames = nameMocks({ count: participantsCount }).names;
   const participants = generateRange(0, participantsCount)
     .map((i) => {
       const sideParticipantsCount = doubles ? 2 : team ? 8 : 1;
-      const individualParticipants = generateRange(
-        0,
-        sideParticipantsCount
-      ).map((j) => {
+      const individualParticipants = generateRange(0, sideParticipantsCount).map((j) => {
         const participantIndex = i * sideParticipantsCount + j;
         return generateIndividualParticipant(participantIndex);
       });
 
-      const individualParticipantIds = individualParticipants.map(
-        (participant) => participant.participantId
-      );
+      const individualParticipantIds = individualParticipants.map((participant) => participant.participantId);
 
-      const pairName = individualParticipants
-        .map((i) => i.person.standardFamilyName)
-        .join('/');
+      const pairName = individualParticipants.map((i) => i.person.standardFamilyName).join('/');
 
       const participantType = doubles ? PAIR : TEAM;
       const groupParticipant: any = {
@@ -294,12 +249,9 @@ export function generateParticipants(params): {
         participantType,
       };
 
-      if (inContext)
-        groupParticipant.individualParticipants = individualParticipants;
+      if (inContext) groupParticipant.individualParticipants = individualParticipants;
 
-      return doubles || team
-        ? [groupParticipant, ...individualParticipants]
-        : individualParticipants;
+      return doubles || team ? [groupParticipant, ...individualParticipants] : individualParticipants;
     })
     .flat();
 
@@ -324,10 +276,7 @@ export function generateParticipants(params): {
     const country = countriesList[participantIndex];
     const nationalityCode =
       (personNationalityCodes?.length && personNationalityCode) ||
-      (country &&
-        (nationalityCodeType === 'IOC'
-          ? country.ioc || country.iso
-          : country.iso || country.ioc)) ||
+      (country && (nationalityCodeType === 'IOC' ? country.ioc || country.iso : country.iso || country.ioc)) ||
       personNationalityCode;
 
     if (countriesList?.length && !nationalityCode && !personNationalityCode) {
@@ -353,10 +302,7 @@ export function generateParticipants(params): {
       participantName,
       person: {
         addresses: [address],
-        personId:
-          personId ||
-          (personIds?.length && personIds[participantIndex]) ||
-          UUID(),
+        personId: personId || (personIds?.length && personIds[participantIndex]) || UUID(),
         standardFamilyName,
         standardGivenName,
         nationalityCode,
@@ -419,15 +365,8 @@ export function generateParticipants(params): {
   }
 }
 
-function addScaleItem({
-  scaleValue: itemValue,
-  participant,
-  eventType,
-  scaleType,
-  category,
-}) {
-  const scaleName =
-    category.categoryName || category.ratingType || category.ageCategoryCode;
+function addScaleItem({ scaleValue: itemValue, participant, eventType, scaleType, category }) {
+  const scaleName = category.categoryName || category.ratingType || category.ageCategoryCode;
   const itemType = [SCALE, scaleType, eventType, scaleName].join('.');
   const timeItem = { itemValue, itemType };
   if (scaleName && itemValue) {
@@ -437,15 +376,6 @@ function addScaleItem({
 }
 
 function genParticipantId({ idPrefix, participantType, index, uuids }) {
-  const type =
-    participantType === INDIVIDUAL
-      ? 'I'
-      : PAIR
-        ? 'P'
-        : TEAM
-          ? 'T'
-          : GROUP
-            ? 'G'
-            : 'X';
+  const type = participantType === INDIVIDUAL ? 'I' : PAIR ? 'P' : TEAM ? 'T' : GROUP ? 'G' : 'X';
   return idPrefix ? `${idPrefix}-${type}-${index}` : uuids?.pop() || UUID();
 }

@@ -16,15 +16,16 @@ export default defineConfig({
         '**/conversion/**',
         '**/examples/**',
         '**/scratch/**',
+        '**/server/**',
         'src/forge/**',
-        '**/types/**',
+        '**/types/**'
       ],
       statements: 30,
       provider: 'v8',
       functions: 30,
       branches: 50,
       lines: 30,
-      all: true,
-    },
-  },
+      all: true
+    }
+  }
 });

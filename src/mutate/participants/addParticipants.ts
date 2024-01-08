@@ -8,55 +8,43 @@ import { Participant, Tournament } from '../../types/tournamentTypes';
 import { ADD_PARTICIPANTS } from '../../constants/topicConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import { INDIVIDUAL } from '../../constants/participantConstants';
-import {
-  MISSING_TOURNAMENT_RECORD,
-  EXISTING_PARTICIPANT,
-} from '../../constants/errorConditionConstants';
+import { MISSING_TOURNAMENT_RECORD, EXISTING_PARTICIPANT } from '../../constants/errorConditionConstants';
 
 type AddParticipantsType = {
   allowDuplicateParticipantIdPairs?: boolean;
   returnParticipants?: boolean;
-  participants: Participant[];
+  participants?: Participant[];
   tournamentRecord: Tournament;
 };
 
 export function addParticipants({
   allowDuplicateParticipantIdPairs,
   returnParticipants,
-  participants,
   tournamentRecord,
+  participants = [],
 }: AddParticipantsType) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.participants) tournamentRecord.participants = [];
   const tournamentParticipants = tournamentRecord.participants;
 
-  const existingParticipantIds =
-    tournamentParticipants.map((p) => p.participantId) || [];
+  const existingParticipantIds = tournamentParticipants.map((p) => p.participantId) || [];
 
   participants.forEach((participant) => {
     if (!participant.participantId) participant.participantId = UUID();
   });
 
   const newParticipants = participants.filter(
-    (participant) => !existingParticipantIds.includes(participant.participantId)
+    (participant) => !existingParticipantIds.includes(participant.participantId),
   );
 
-  const notAdded = participants.filter((participant) =>
-    existingParticipantIds.includes(participant.participantId)
-  );
+  const notAdded = participants.filter((participant) => existingParticipantIds.includes(participant.participantId));
 
-  const individualParticipants = newParticipants.filter(
-    (participant) => participant.participantType === INDIVIDUAL
-  );
+  const individualParticipants = newParticipants.filter((participant) => participant.participantType === INDIVIDUAL);
 
-  const groupedParticipants = newParticipants.filter(
-    (participant) => participant.participantType !== INDIVIDUAL
-  );
+  const groupedParticipants = newParticipants.filter((participant) => participant.participantType !== INDIVIDUAL);
 
   // add individual participants first so that grouped participants which include them are valid
-  const participantsToAdd = individualParticipants.concat(
-    ...groupedParticipants
-  );
+  const participantsToAdd = individualParticipants.concat(...groupedParticipants);
 
   const addedParticipants: Participant[] = [];
   if (participantsToAdd.length) {
@@ -70,8 +58,7 @@ export function addParticipants({
       });
       if (result.error) return result;
 
-      if (result.success && !result.existingParticipant)
-        addedParticipants.push(result.participant);
+      if (result.success && !result.existingParticipant) addedParticipants.push(result.participant);
     }
 
     if (addedParticipants.length) {

@@ -4,11 +4,7 @@ import { getTeamLineUp } from '../../mutate/drawDefinitions/getTeamLineUp';
 
 import { ParticipantMap, Substitution } from '../../types/factoryTypes';
 import { DOUBLES } from '../../constants/matchUpTypes';
-import {
-  DrawDefinition,
-  Participant,
-  PositionAssignment,
-} from '../../types/tournamentTypes';
+import { DrawDefinition, Participant, PositionAssignment } from '../../types/tournamentTypes';
 
 type GetDrawPositionCollectionAssignmentArgs = {
   positionAssignments: PositionAssignment[];
@@ -41,24 +37,18 @@ export function getDrawPositionCollectionAssignment({
     } {
   if (!collectionId || !collectionPosition) return;
 
-  const drawPositionCollectionAssignment: any[] =
+  const drawPositionCollectionAssignment: any =
     drawPositions
       ?.map((drawPosition) => {
-        const teamParticipantId = positionAssignments.find(
-          (assignment) => assignment.drawPosition === drawPosition
-        )?.participantId;
+        const teamParticipantId = positionAssignments.find((assignment) => assignment.drawPosition === drawPosition)
+          ?.participantId;
 
-        const side = sideLineUps?.find(
-          (lineUp) => lineUp?.drawPosition === drawPosition
-        );
+        const side = sideLineUps?.find((lineUp) => lineUp?.drawPosition === drawPosition);
 
         const teamParticipant =
           side?.teamParticipant ||
-          (teamParticipantId &&
-            participantMap?.[teamParticipantId]?.participant) ||
-          tournamentParticipants?.find(
-            ({ participantId }) => participantId === teamParticipantId
-          );
+          (teamParticipantId && participantMap?.[teamParticipantId]?.participant) ||
+          tournamentParticipants?.find(({ participantId }) => participantId === teamParticipantId);
 
         const lineUp =
           side?.lineUp ||
@@ -67,22 +57,17 @@ export function getDrawPositionCollectionAssignment({
             drawDefinition,
           })?.lineUp;
 
-        const { assignedParticipantIds, substitutions } =
-          getCollectionPositionAssignments({
-            collectionPosition,
-            collectionId,
-            lineUp,
-          });
+        const { assignedParticipantIds, substitutions } = getCollectionPositionAssignments({
+          collectionPosition,
+          collectionId,
+          lineUp,
+        });
 
         if (matchUpType === DOUBLES) {
           if (assignedParticipantIds?.length <= 2) {
             const pairedParticipantId =
-              participantMap?.[assignedParticipantIds[0]]?.pairIdMap?.[
-                assignedParticipantIds[1]
-              ];
-            const pairedParticipant =
-              pairedParticipantId &&
-              participantMap[pairedParticipantId]?.participant;
+              participantMap?.[assignedParticipantIds[0]]?.pairIdMap?.[assignedParticipantIds[1]];
+            const pairedParticipant = pairedParticipantId && participantMap[pairedParticipantId]?.participant;
             const participant =
               pairedParticipant ||
               // resort to brute force
