@@ -7,9 +7,7 @@ import { RATING } from '../../../constants/scaleConstants';
 import { ELO } from '../../../constants/ratingConstants';
 
 describe('should mock console.log', () => {
-  const consoleMock = vi
-    .spyOn(console, 'log')
-    .mockImplementation(() => undefined);
+  const consoleMock = vi.spyOn(console, 'log').mockImplementation(() => undefined);
 
   afterAll(() => {
     consoleMock.mockReset();
@@ -33,7 +31,6 @@ describe('should mock console.log', () => {
       method: 'getEvent',
       params: {
         activeTournamentId: tournamentRecord.tournamentId,
-        tournamentRecord,
       },
       result: {
         error: {
@@ -69,9 +66,7 @@ describe('should mock console.log', () => {
       eventIds: [eventId],
       tournamentRecord,
     } = mocksEngine.generateTournamentRecord({
-      eventProfiles: [
-        { eventName: 'QTest', category: { categoryName: 'U18' } },
-      ],
+      eventProfiles: [{ eventName: 'QTest', category: { categoryName: 'U18' } }],
       participantsProfile: {
         scaledParticipantsCount: participantsCount,
         category: { ratingType },
@@ -86,9 +81,7 @@ describe('should mock console.log', () => {
     expect(consoleMock).toHaveBeenCalledTimes(1);
     expect(participants.length).toEqual(participantsCount);
 
-    const scaledParticipants = participants.filter(
-      ({ timeItems }) => timeItems
-    );
+    const scaledParticipants = participants.filter(({ timeItems }) => timeItems);
     expect(scaledParticipants.length).toEqual(participantsCount);
 
     const scaleAttributes = {
