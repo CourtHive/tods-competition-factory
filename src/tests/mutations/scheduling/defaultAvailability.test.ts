@@ -77,9 +77,7 @@ test('court availability overrides default availability', () => {
   expect(result.success).toEqual(true);
 
   const { rounds } = tournamentEngine.getRounds();
-  const schedulingProfile = [
-    { scheduleDate: startDate, venues: [{ venueId, rounds }] },
-  ];
+  const schedulingProfile = [{ scheduleDate: startDate, venues: [{ venueId, rounds }] }];
 
   result = tournamentEngine.setSchedulingProfile({ schedulingProfile });
   expect(result.success).toEqual(true);

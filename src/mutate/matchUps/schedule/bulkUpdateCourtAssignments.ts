@@ -2,6 +2,7 @@ import { checkRequiredParameters } from '../../../parameters/checkRequiredParame
 import { assignMatchUpCourt } from './assignMatchUpCourt';
 import { findEvent } from '../../../acquire/findEvent';
 
+import { ARRAY, INVALID, OF_TYPE, TOURNAMENT_RECORDS } from '../../../constants/attributeConstants';
 import { TournamentRecords } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -10,12 +11,6 @@ import {
   MISSING_VALUE,
   UNABLE_TO_ASSIGN_COURT,
 } from '../../../constants/errorConditionConstants';
-import {
-  ARRAY,
-  INVALID,
-  OF_TYPE,
-  TOURNAMENT_RECORDS,
-} from '../../../constants/attributeConstants';
 
 type BulkUpdateCourtAssignmentsParams = {
   tournamentRecords: TournamentRecords;
@@ -23,25 +18,20 @@ type BulkUpdateCourtAssignmentsParams = {
   courtDayDate: string;
 };
 
-export function bulkUpdateCourtAssignments(
-  params: BulkUpdateCourtAssignmentsParams
-) {
+export function bulkUpdateCourtAssignments(params: BulkUpdateCourtAssignmentsParams) {
   const { courtDayDate } = params;
   const paramsCheck = checkRequiredParameters(params, [
-    { [TOURNAMENT_RECORDS]: true },
     { courtAssignments: true, [OF_TYPE]: ARRAY, [INVALID]: MISSING_VALUE },
+    { [TOURNAMENT_RECORDS]: true },
   ]);
   if (paramsCheck.error) return paramsCheck;
 
-  const tournamentMap = params.courtAssignments.reduce(
-    (tournamentMap, assignment) => {
-      const { tournamentId } = assignment;
-      if (!tournamentMap[tournamentId]) tournamentMap[tournamentId] = [];
-      tournamentMap[tournamentId].push(assignment);
-      return tournamentMap;
-    },
-    {}
-  );
+  const tournamentMap = params.courtAssignments.reduce((tournamentMap, assignment) => {
+    const { tournamentId } = assignment;
+    if (!tournamentMap[tournamentId]) tournamentMap[tournamentId] = [];
+    tournamentMap[tournamentId].push(assignment);
+    return tournamentMap;
+  }, {});
 
   let error;
   const tournamentIds = Object.keys(tournamentMap);
@@ -51,15 +41,12 @@ export function bulkUpdateCourtAssignments(
       error = { error: MISSING_TOURNAMENT_RECORD };
       return false;
     }
-    const drawMap = tournamentMap[tournamentId].reduce(
-      (drawMap, assignment) => {
-        const { drawId } = assignment;
-        if (!drawMap[drawId]) drawMap[drawId] = [];
-        drawMap[drawId].push(assignment);
-        return drawMap;
-      },
-      {}
-    );
+    const drawMap = tournamentMap[tournamentId].reduce((drawMap, assignment) => {
+      const { drawId } = assignment;
+      if (!drawMap[drawId]) drawMap[drawId] = [];
+      drawMap[drawId].push(assignment);
+      return drawMap;
+    }, {});
     const drawIds = Object.keys(drawMap);
     drawIds.every((drawId) => {
       const { drawDefinition } = findEvent({ tournamentRecord, drawId });

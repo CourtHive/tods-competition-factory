@@ -1,15 +1,13 @@
 import { checkRequiredParameters } from '../../../parameters/checkRequiredParameters';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import { addExtension } from '../addExtension';
 import { removeExtension } from '../removeExtension';
+import { addExtension } from '../addExtension';
 
+import { MISSING_TOURNAMENT_RECORD, POLICY_NOT_FOUND } from '../../../constants/errorConditionConstants';
+import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
 import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
 import { TournamentRecords } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
-import {
-  MISSING_TOURNAMENT_RECORD,
-  POLICY_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
 import {
   DRAW_DEFINITION,
   EVENT,
@@ -17,11 +15,6 @@ import {
   TOURNAMENT_RECORD,
   TOURNAMENT_RECORDS,
 } from '../../../constants/attributeConstants';
-import {
-  DrawDefinition,
-  Event,
-  Tournament,
-} from '../../../types/tournamentTypes';
 
 type RemovePolicyArgs = {
   tournamentRecords?: TournamentRecords;
@@ -36,10 +29,10 @@ export function removePolicy(params: RemovePolicyArgs) {
     {
       [POLICY_TYPE]: true,
       _anyOf: {
-        [TOURNAMENT_RECORDS]: true,
-        [TOURNAMENT_RECORD]: true,
-        [DRAW_DEFINITION]: true,
-        [EVENT]: true,
+        [TOURNAMENT_RECORDS]: false,
+        [TOURNAMENT_RECORD]: false,
+        [DRAW_DEFINITION]: false,
+        [EVENT]: false,
       },
     },
   ]);
@@ -49,8 +42,7 @@ export function removePolicy(params: RemovePolicyArgs) {
   const element =
     params.drawDefinition ??
     params.event ??
-    ((params.tournamentId || !params.tournamentRecords) &&
-      params.tournamentRecord);
+    ((params.tournamentId || !params.tournamentRecords) && params.tournamentRecord);
   if (element) {
     return policyDeletion(params, element);
   } else if (params.tournamentRecords) {
