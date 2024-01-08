@@ -1,6 +1,6 @@
 import { tallyParticipantResults } from '../../../../../query/matchUps/roundRobinTally/roundRobinTally';
 import { allPlayoffPositionsFilled } from '../../../../../query/drawDefinition/structureActions';
-import { generateMatchUpOutcome } from '../../primitives/generateMatchUpOutcome';
+import { generateMatchUpOutcome } from '../../../../helpers/generateMatchUpOutcome';
 import mocksEngine from '../../../../../assemblies/engines/mock';
 import { generateRange } from '../../../../../utilities/arrays';
 import tournamentEngine from '../../../../engines/syncEngine';
@@ -18,13 +18,7 @@ import {
 
 export function roundRobinWithPlayoffsTest(params) {
   let groupsCount = params.groupsCount;
-  const {
-    finishingGroupSizes,
-    participantsCount,
-    playoffGroups,
-    groupSize,
-    drawSize,
-  } = params;
+  const { finishingGroupSizes, participantsCount, playoffGroups, groupSize, drawSize } = params;
   groupsCount = groupsCount || drawSize / groupSize;
   const drawType = ROUND_ROBIN_WITH_PLAYOFF;
   const structureOptions = {
@@ -68,9 +62,7 @@ export function roundRobinWithPlayoffsTest(params) {
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
   expect(result.success).toEqual(true);
 
-  const mainStructure = drawDefinition.structures.find(
-    (structure) => structure.stage === MAIN
-  );
+  const mainStructure = drawDefinition.structures.find((structure) => structure.stage === MAIN);
 
   // the number of structureType: ITEM structures in the MAIN structureType: CONTAINER
   // should equal the number of groups
@@ -82,38 +74,25 @@ export function roundRobinWithPlayoffsTest(params) {
   });
 
   // itemdify all playoff structures by stage: PLAY_OFF
-  const playoffStructures = drawDefinition.structures.reduce(
-    (structures, structure) => {
-      return structure.stage === PLAY_OFF
-        ? structures.concat(structure)
-        : structures;
-    },
-    []
-  );
+  const playoffStructures = drawDefinition.structures.reduce((structures, structure) => {
+    return structure.stage === PLAY_OFF ? structures.concat(structure) : structures;
+  }, []);
 
   // the number of playoff structures should equal the number of specified playoff groups
   expect(playoffStructures.length).toEqual(playoffGroups.length);
 
   // check that each group has the expected number of possition asignments
   playoffStructures.forEach((structure, index) => {
-    expect(structure.positionAssignments.length).toEqual(
-      playoffGroups[index].positionAssignmentsCount
-    );
+    expect(structure.positionAssignments.length).toEqual(playoffGroups[index].positionAssignmentsCount);
   });
 
-  const playoffStructureIds = playoffStructures.map(
-    (structure) => structure.structureId
-  );
+  const playoffStructureIds = playoffStructures.map((structure) => structure.structureId);
 
-  const positioningLinks = drawDefinition.links.filter(
-    (link) => link.linkType === POSITION
-  );
+  const positioningLinks = drawDefinition.links.filter((link) => link.linkType === POSITION);
 
   positioningLinks.forEach((link) => {
     expect(link.source.structureId).toEqual(mainStructure.structureId);
-    const targetIsPlayoffStructure = playoffStructureIds.includes(
-      link.target.structureId
-    );
+    const targetIsPlayoffStructure = playoffStructureIds.includes(link.target.structureId);
     expect(targetIsPlayoffStructure).toEqual(true);
   });
 
@@ -154,9 +133,7 @@ export function roundRobinWithPlayoffsTest(params) {
   mainStructure.structures.forEach((structure) => {
     const { structureId } = structure;
 
-    const structureMatchUps = eventMatchUps.filter(
-      (matchUp) => matchUp.structureId === structureId
-    );
+    const structureMatchUps = eventMatchUps.filter((matchUp) => matchUp.structureId === structureId);
 
     const { participantResults } = tallyParticipantResults({
       matchUps: structureMatchUps,
@@ -167,17 +144,14 @@ export function roundRobinWithPlayoffsTest(params) {
 
     structureParticipantIds.forEach((key) => {
       const { groupOrder } = participantResults[key];
-      if (!finishingPositionGroups[groupOrder])
-        finishingPositionGroups[groupOrder] = [];
+      if (!finishingPositionGroups[groupOrder]) finishingPositionGroups[groupOrder] = [];
       finishingPositionGroups[groupOrder].push(key);
       expect(orderValues.includes(groupOrder)).toEqual(true);
     });
   });
 
   Object.keys(finishingPositionGroups).forEach((key, index) => {
-    expect(finishingPositionGroups[key].length).toEqual(
-      finishingGroupSizes[index]
-    );
+    expect(finishingPositionGroups[key].length).toEqual(finishingGroupSizes[index]);
   });
 
   result = tournamentEngine.automatedPlayoffPositioning({
@@ -186,28 +160,16 @@ export function roundRobinWithPlayoffsTest(params) {
   });
   expect(result.success).toEqual(true);
 
-  let { drawDefinition: updatedDrawDefinition } =
-    tournamentEngine.findDrawDefinition({ drawId });
+  let { drawDefinition: updatedDrawDefinition } = tournamentEngine.findDrawDefinition({ drawId });
 
-  const updatedPlayoffStructures = updatedDrawDefinition.structures.reduce(
-    (structures, structure) => {
-      return structure.stage === PLAY_OFF
-        ? structures.concat(structure)
-        : structures;
-    },
-    []
-  );
+  const updatedPlayoffStructures = updatedDrawDefinition.structures.reduce((structures, structure) => {
+    return structure.stage === PLAY_OFF ? structures.concat(structure) : structures;
+  }, []);
 
   updatedPlayoffStructures.forEach((structure, index) => {
-    const participantIds = structure.positionAssignments
-      .map((assignment) => assignment.participantId)
-      .filter(Boolean);
-    expect(participantIds.length).toEqual(
-      playoffGroups[index].participantIdsCount
-    );
-    const byes = structure.positionAssignments
-      .map((assignment) => assignment.bye)
-      .filter(Boolean);
+    const participantIds = structure.positionAssignments.map((assignment) => assignment.participantId).filter(Boolean);
+    expect(participantIds.length).toEqual(playoffGroups[index].participantIdsCount);
+    const byes = structure.positionAssignments.map((assignment) => assignment.bye).filter(Boolean);
     expect(byes.length).toEqual(playoffGroups[index].byesCount);
   });
 

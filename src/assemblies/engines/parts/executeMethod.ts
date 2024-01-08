@@ -10,6 +10,7 @@ import {
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 import { FactoryEngine } from '../../../types/factoryTypes';
+import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
 
 /**
  * Executes a function within a FactoryEngine.
@@ -27,7 +28,7 @@ export function executeFunction(
   method: any,
   params: { [key: string]: any } | undefined,
   methodName: string,
-  engineType: string
+  engineType: string,
 ) {
   delete engine.success;
   delete engine.error;
@@ -36,19 +37,17 @@ export function executeFunction(
   const tournamentId = getTournamentId();
   if (params) params.activeTournamentId = tournamentId;
 
-  if (params?.sandboxTournament && !params?.sandboxTournament.tournamentId)
-    return { error: INVALID_VALUES };
+  if (params?.sandboxTournament && !params?.sandboxTournament.tournamentId) return { error: INVALID_VALUES };
 
-  const tournamentRecord =
-    params?.sandboxTournament || getTournamentRecord(tournamentId);
+  const tournamentRecord = params?.sandboxTournament || getTournamentRecord(tournamentId);
 
   const tournamentRecords = params?.sandboxTournament
     ? { [params?.sandboxTournament.tournamentId]: params.sandboxTournament }
     : getTournamentRecords();
 
-  const augmentedParams = params
-    ? paramsMiddleware(tournamentRecords, params)
-    : undefined;
+  // ENSURE that logged params are not mutated by middleware
+  const paramsToLog = params ? makeDeepCopy(params, undefined, true) : undefined;
+  const augmentedParams = params ? paramsMiddleware(tournamentRecords, params) : undefined;
   if (augmentedParams?.error) return augmentedParams;
 
   const result = invoke({
@@ -59,18 +58,12 @@ export function executeFunction(
     method,
   });
   const elapsed = Date.now() - start;
-  engineLogging({ result, methodName, elapsed, params, engineType });
+  engineLogging({ result, methodName, elapsed, params: paramsToLog, engineType });
 
   return result;
 }
 
-function invoke({
-  tournamentRecords,
-  tournamentRecord,
-  params,
-  methodName,
-  method,
-}) {
+function invoke({ tournamentRecords, tournamentRecord, params, methodName, method }) {
   if (getDevContext()) {
     return method({ tournamentRecords, tournamentRecord, ...params });
   } else {

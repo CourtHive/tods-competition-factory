@@ -4,20 +4,13 @@ import { validMatchUps } from '../../validators/validMatchUp';
 import { numericSort } from '../../utilities/sorting';
 import { ensureInt } from '../../utilities/ensureInt';
 import { isPowerOf2 } from '../../utilities/math';
-import {
-  chunkArray,
-  generateRange,
-  intersection,
-} from '../../utilities/arrays';
+import { chunkArray, generateRange, intersection } from '../../utilities/arrays';
 
+import { ErrorType, INVALID_VALUES } from '../../constants/errorConditionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import { HydratedMatchUp } from '../../types/hydrated';
 import { RoundProfile } from '../../types/factoryTypes';
 import { TEAM } from '../../constants/matchUpTypes';
-import {
-  ErrorType,
-  INVALID_VALUES,
-} from '../../constants/errorConditionConstants';
 
 type GetRoundMatchUpsArgs = {
   matchUps?: HydratedMatchUp[];
@@ -34,38 +27,27 @@ export type RoundMatchUpsResult = {
   error?: ErrorType;
 };
 
-export function getRoundMatchUps({
-  matchUps = [],
-  interpolate,
-}: GetRoundMatchUpsArgs): RoundMatchUpsResult {
-  if (!validMatchUps(matchUps))
-    return { roundMatchUps: [], error: INVALID_VALUES };
+export function getRoundMatchUps({ matchUps = [], interpolate }: GetRoundMatchUpsArgs): RoundMatchUpsResult {
+  if (!validMatchUps(matchUps)) return { roundMatchUps: [], error: INVALID_VALUES };
 
   // create an array of arrays of matchUps grouped by roundNumber
   const roundMatchUpsArray = matchUps
     .reduce((roundNumbers: number[], matchUp) => {
       const roundNumber =
-        typeof matchUp.roundNumber === 'string'
-          ? ensureInt(matchUp.roundNumber)
-          : (matchUp.roundNumber as number);
+        typeof matchUp.roundNumber === 'string' ? ensureInt(matchUp.roundNumber) : (matchUp.roundNumber as number);
       return !matchUp.roundNumber || roundNumbers.includes(roundNumber)
         ? roundNumbers
         : roundNumbers.concat(roundNumber);
     }, [])
     .sort(numericSort)
     .map((roundNumber) => {
-      const roundMatchUps = matchUps.filter(
-        (matchUp) => matchUp.roundNumber === roundNumber
-      );
-      const hasTeamMatchUps = roundMatchUps.find(
-        ({ matchUpType }) => matchUpType === TEAM
-      );
+      const roundMatchUps = matchUps.filter((matchUp) => matchUp.roundNumber === roundNumber);
+      const hasTeamMatchUps = roundMatchUps.find(({ matchUpType }) => matchUpType === TEAM);
       // if there are TEAM matchUps then all other matchUpTypes must be removed
       const consideredMatchUps = hasTeamMatchUps
         ? roundMatchUps.filter(({ matchUpType }) => matchUpType === TEAM)
         : roundMatchUps;
-      const getSorted = (items) =>
-        items.sort((a, b) => numericSort(a.roundPosition, b.roundPosition));
+      const getSorted = (items) => items.sort((a, b) => numericSort(a.roundPosition, b.roundPosition));
       return {
         [roundNumber]: getSorted(consideredMatchUps),
       };
@@ -74,9 +56,7 @@ export function getRoundMatchUps({
   // calculate the finishing Round for each roundNumber
   const finishingRoundMap = matchUps.reduce((mapping, matchUp) => {
     const roundNumber =
-      typeof matchUp.roundNumber === 'string'
-        ? ensureInt(matchUp.roundNumber)
-        : (matchUp.roundNumber as number);
+      typeof matchUp.roundNumber === 'string' ? ensureInt(matchUp.roundNumber) : (matchUp.roundNumber as number);
     if (!mapping[roundNumber])
       mapping[roundNumber] = definedAttributes({
         abbreviatedRoundName: matchUp.abbreviatedRoundName,
@@ -93,7 +73,7 @@ export function getRoundMatchUps({
     const maxRoundNumber = Math.max(
       ...Object.keys(roundMatchUps)
         .map((key) => ensureInt(key))
-        .filter((f) => !isNaN(f))
+        .filter((f) => !isNaN(f)),
     );
     const maxRoundMatchUpsCount = roundMatchUps[maxRoundNumber]?.length;
     // when considering a structue, if rounds do not progress to a final round which contains one matchUp
@@ -103,10 +83,7 @@ export function getRoundMatchUps({
       const lastRound = nextRound + maxRoundMatchUpsCount / 2;
       const roundsToInterpolate = generateRange(nextRound, lastRound);
       roundsToInterpolate.forEach((roundNumber, i) => {
-        roundMatchUps[roundNumber] = generateRange(
-          0,
-          maxRoundMatchUpsCount / (2 + i * 2)
-        ).map(() => ({})); // add dummy objects for padding out the array
+        roundMatchUps[roundNumber] = generateRange(0, maxRoundMatchUpsCount / (2 + i * 2)).map(() => ({})); // add dummy objects for padding out the array
       });
     }
   }
@@ -125,15 +102,13 @@ export function getRoundMatchUps({
     ...Object.keys(roundMatchUps).map((roundNumber) => {
       const matchUpsCount = roundMatchUps[roundNumber]?.length;
       const inactiveCount = roundMatchUps[roundNumber]?.filter(
-        (matchUp) =>
-          !completedMatchUpStatuses.includes(matchUp.matchUpStatus) &&
-          !matchUp.score?.scoreStringSide1
+        (matchUp) => !completedMatchUpStatuses.includes(matchUp.matchUpStatus) && !matchUp.score?.scoreStringSide1,
       )?.length;
       const inactiveRound = matchUpsCount && matchUpsCount === inactiveCount;
 
       maxMatchUpsCount = Math.max(maxMatchUpsCount, matchUpsCount);
       return { [roundNumber]: { matchUpsCount, inactiveCount, inactiveRound } };
-    })
+    }),
   );
 
   let roundIndex = 0;
@@ -142,30 +117,21 @@ export function getRoundMatchUps({
     .map((key) => ensureInt(key))
     .filter((f) => !isNaN(f));
   roundNumbers.forEach((roundNumber) => {
-    const currentRoundMatchUps = roundMatchUps[roundNumber].sort(
-      (a, b) => a.roundPosition - b.roundPosition
-    );
-    const currentRoundDrawPositions = currentRoundMatchUps
-      .map((matchUp) => matchUp?.drawPositions || [])
-      .flat();
+    const currentRoundMatchUps = roundMatchUps[roundNumber].sort((a, b) => a.roundPosition - b.roundPosition);
+    const currentRoundDrawPositions = currentRoundMatchUps.map((matchUp) => matchUp?.drawPositions || []).flat();
 
     roundProfile[roundNumber].roundNumber = roundNumber; // convenience
 
     // convenience for display calculations
-    roundProfile[roundNumber].roundFactor = roundProfile[roundNumber]
-      .matchUpsCount
+    roundProfile[roundNumber].roundFactor = roundProfile[roundNumber].matchUpsCount
       ? maxMatchUpsCount / roundProfile[roundNumber].matchUpsCount
       : 1;
 
-    roundProfile[roundNumber].finishingRound =
-      finishingRoundMap[roundNumber]?.finishingRound;
-    roundProfile[roundNumber].roundName =
-      finishingRoundMap[roundNumber]?.roundName;
-    roundProfile[roundNumber].abbreviatedRoundName =
-      finishingRoundMap[roundNumber]?.abbreviatedRoundName;
+    roundProfile[roundNumber].finishingRound = finishingRoundMap[roundNumber]?.finishingRound;
+    roundProfile[roundNumber].roundName = finishingRoundMap[roundNumber]?.roundName;
+    roundProfile[roundNumber].abbreviatedRoundName = finishingRoundMap[roundNumber]?.abbreviatedRoundName;
 
-    roundProfile[roundNumber].finishingPositionRange =
-      roundMatchUps[roundNumber]?.[0]?.finishingPositionRange;
+    roundProfile[roundNumber].finishingPositionRange = roundMatchUps[roundNumber]?.[0]?.finishingPositionRange;
 
     if (roundNumber === 1 || !roundProfile[roundNumber - 1]) {
       const orderedDrawPositions = currentRoundDrawPositions.sort(numericSort);
@@ -175,21 +141,13 @@ export function getRoundMatchUps({
     } else {
       const priorRound = roundProfile[roundNumber - 1];
       const priorRoundDrawPositions = priorRound.drawPositions;
-      const chunkFactor =
-        priorRound.matchUpsCount / roundProfile[roundNumber].matchUpsCount;
-      const priorRoundDrawPositionChunks = chunkArray(
-        priorRoundDrawPositions,
-        chunkFactor
-      );
+      const chunkFactor = priorRound.matchUpsCount / roundProfile[roundNumber].matchUpsCount;
+      const priorRoundDrawPositionChunks = chunkArray(priorRoundDrawPositions, chunkFactor);
 
       // ensures that drawPositions are returned in top to bottom order
       const roundDrawPositions = currentRoundMatchUps.map((matchUp) => {
         const { roundPosition } = matchUp;
-        const drawPositions = [
-          ...(matchUp.drawPositions || []),
-          undefined,
-          undefined,
-        ].slice(0, 2); // accounts for empty array, should always have length 2
+        const drawPositions = [...(matchUp.drawPositions || []), undefined, undefined].slice(0, 2); // accounts for empty array, should always have length 2
 
         if (!roundPosition) return drawPositions;
 
@@ -198,12 +156,11 @@ export function getRoundMatchUps({
 
         // { roundNumber: 2 } is the first possible feed round and the last time that a numeric sort is guaranteed to work
         if (roundNumber < 3 && filteredDrawPositions?.length === 2) {
-          return drawPositions?.slice().sort(numericSort);
+          return drawPositions?.slice().sort(numericSort); // make a copy of the values to avoid mutating the original
         }
 
         const isFeedRound =
-          intersection(priorRoundDrawPositions, filteredDrawPositions)
-            .length !== filteredDrawPositions?.length;
+          intersection(priorRoundDrawPositions, filteredDrawPositions).length !== filteredDrawPositions?.length;
 
         // if the prior round does NOT include the one existing drawPosition then it is a feed round
         // ... and fed positions are always { sideNumber: 1 }
@@ -211,7 +168,7 @@ export function getRoundMatchUps({
           if (filteredDrawPositions?.length === 1) {
             return [filteredDrawPositions[0], undefined];
           } else {
-            return drawPositions?.slice().sort(numericSort);
+            return drawPositions?.slice().sort(numericSort); // make a copy of the values to avoid mutating the original
           }
         }
 
@@ -221,15 +178,10 @@ export function getRoundMatchUps({
         // from the first round may be in { sideNumber: 1 }
         // const targetChunkIndex = (roundPosition - 1) * 2;
         const targetChunkIndex = (roundPosition - 1) * 2;
-        const targetChunks = priorRoundDrawPositionChunks.slice(
-          targetChunkIndex,
-          targetChunkIndex + 2
-        );
+        const targetChunks = priorRoundDrawPositionChunks.slice(targetChunkIndex, targetChunkIndex + 2);
 
         return targetChunks.map((chunk) => {
-          return filteredDrawPositions?.find((drawPosition) =>
-            chunk.includes(drawPosition)
-          );
+          return filteredDrawPositions?.find((drawPosition) => chunk.includes(drawPosition));
         });
       });
 
@@ -239,8 +191,7 @@ export function getRoundMatchUps({
 
     if (
       roundProfile[roundNumber + 1] &&
-      roundProfile[roundNumber + 1].matchUpsCount ===
-        roundProfile[roundNumber].matchUpsCount
+      roundProfile[roundNumber + 1].matchUpsCount === roundProfile[roundNumber].matchUpsCount
     ) {
       roundProfile[roundNumber + 1].feedRound = true;
       roundProfile[roundNumber + 1].feedRoundIndex = feedRoundIndex;
@@ -253,13 +204,9 @@ export function getRoundMatchUps({
     }
   });
 
-  const roundsNotPowerOf2 = !!Object.values(roundProfile).find(
-    ({ matchUpsCount }) => !isPowerOf2(matchUpsCount)
-  );
+  const roundsNotPowerOf2 = !!Object.values(roundProfile).find(({ matchUpsCount }) => !isPowerOf2(matchUpsCount));
 
-  const hasNoRoundPositions = matchUps.some(
-    (matchUp) => !matchUp.roundPosition
-  );
+  const hasNoRoundPositions = matchUps.some((matchUp) => !matchUp.roundPosition);
 
   return {
     hasNoRoundPositions,

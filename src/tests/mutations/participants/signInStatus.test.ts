@@ -1,19 +1,15 @@
-import tournamentEngine from '../../engines/syncEngine';
-import askEngine from '../../engines/askEngine';
 import mocksEngine from '../../../assemblies/engines/mock';
+import tournamentEngine from '../../engines/syncEngine';
+import queryEngine from '../../engines/queryEngine';
 import { expect, it } from 'vitest';
 
+import { SIGNED_IN, SIGNED_OUT, SIGN_IN_STATUS } from '../../../constants/participantConstants';
 import {
   INVALID_VALUES,
   MISSING_PARTICIPANT_ID,
   MISSING_VALUE,
   PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import {
-  SIGNED_IN,
-  SIGNED_OUT,
-  SIGN_IN_STATUS,
-} from '../../../constants/participantConstants';
 
 it('can sign participants in and out', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
@@ -24,7 +20,7 @@ it('can sign participants in and out', () => {
 
   const { participantId } = participants[0];
 
-  let result = askEngine.getParticipantSignInStatus({
+  let result = queryEngine.getParticipantSignInStatus({
     participantId,
   });
   expect(result).toBeUndefined();

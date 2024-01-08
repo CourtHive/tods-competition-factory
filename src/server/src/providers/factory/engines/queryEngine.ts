@@ -9,4 +9,4 @@ const methods = {
 askEngine.importMethods(methods);
 
 export const queryEngine = askEngine;
-export default askEngine;
+export default queryEngine;

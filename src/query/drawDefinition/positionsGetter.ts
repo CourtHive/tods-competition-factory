@@ -1,21 +1,15 @@
-import { findStructure } from '../../acquire/findStructure';
 import { extractAttributes } from '../../utilities/objects';
+import { findStructure } from '../../acquire/findStructure';
 
+import { DrawDefinition, PositionAssignment, Structure } from '../../types/tournamentTypes';
 import { ResultType } from '../../global/functions/decorateResult';
 import {
   ErrorType,
   MISSING_DRAW_DEFINITION,
   MISSING_POSITION_ASSIGNMENTS,
 } from '../../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  PositionAssignment,
-  Structure,
-} from '../../types/tournamentTypes';
 
-export function getAllPositionedParticipantIds({
-  drawDefinition,
-}): ResultType & {
+export function getAllPositionedParticipantIds({ drawDefinition }): ResultType & {
   allPositionedParticipantIds?: string[];
   stagePositionedParticipantIds?: { [key: string]: string[] };
 } {
@@ -25,13 +19,9 @@ export function getAllPositionedParticipantIds({
   const allPositionedParticipantIds = (drawDefinition.structures || [])
     .map((structure) => {
       const stage = structure.stage;
-      if (!stagePositionedParticipantIds[stage])
-        stagePositionedParticipantIds[stage] = [];
+      if (!stagePositionedParticipantIds[stage]) stagePositionedParticipantIds[stage] = [];
       const { positionAssignments } = getPositionAssignments({ structure });
-      const particiapntIds =
-        positionAssignments
-          ?.map(extractAttributes('participantId'))
-          .filter(Boolean) ?? [];
+      const particiapntIds = positionAssignments?.map(extractAttributes('participantId')).filter(Boolean) ?? [];
       stagePositionedParticipantIds[stage].push(...particiapntIds);
       return particiapntIds;
     })
@@ -45,11 +35,7 @@ type GetPositionAssignmentsArgs = {
   structure?: any;
 };
 
-export function getPositionAssignments({
-  drawDefinition,
-  structureId,
-  structure,
-}: GetPositionAssignmentsArgs): {
+export function getPositionAssignments({ drawDefinition, structureId, structure }: GetPositionAssignmentsArgs): {
   positionAssignments: PositionAssignment[];
   error?: ErrorType;
 } {
@@ -67,7 +53,7 @@ export function getPositionAssignments({
     positionAssignments = [].concat(
       ...structure.structures.map((structure) => {
         return getPositionAssignments({ structure }).positionAssignments;
-      })
+      }),
     );
   } else if (structure.positionAssignments) {
     positionAssignments = structure.positionAssignments;
@@ -104,13 +90,9 @@ export function structureAssignedDrawPositions({
   const assignedPositions = positionAssignments?.filter((assignment) => {
     return assignment.participantId ?? assignment.bye ?? assignment.qualifier;
   });
-  const allPositionsAssigned =
-    positionAssignments &&
-    positionAssignments?.length === assignedPositions?.length;
+  const allPositionsAssigned = positionAssignments && positionAssignments?.length === assignedPositions?.length;
   const unassignedPositions = positionAssignments?.filter((assignment) => {
-    return (
-      !assignment.participantId && !assignment.bye && !assignment.qualifier
-    );
+    return !assignment.participantId && !assignment.bye && !assignment.qualifier;
   });
   const byePositions = positionAssignments?.filter((assignment) => {
     return !assignment.participantId && assignment.bye;

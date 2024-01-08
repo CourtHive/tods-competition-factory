@@ -1,16 +1,13 @@
 import { tallyParticipantResults } from '../../../../../query/matchUps/roundRobinTally/roundRobinTally';
 import { getAllStructureMatchUps } from '../../../../../query/matchUps/getAllStructureMatchUps';
-import { generateMatchUpOutcome } from '../../primitives/generateMatchUpOutcome';
+import { generateMatchUpOutcome } from '../../../../helpers/generateMatchUpOutcome';
 import { chunkArray, intersection } from '../../../../../utilities/arrays';
 import { findStructure } from '../../../../../acquire/findStructure';
 import tournamentEngine from '../../../../engines/syncEngine';
 import mocksEngine from '../../../../../assemblies/engines/mock';
 import { setsValues } from './roundRobinSetsValues';
 import { expect, it } from 'vitest';
-import {
-  allPlayoffPositionsFilled,
-  isCompletedStructure,
-} from '../../../../../query/drawDefinition/structureActions';
+import { allPlayoffPositionsFilled, isCompletedStructure } from '../../../../../query/drawDefinition/structureActions';
 
 import { FORMAT_STANDARD } from '../../../../../fixtures/scoring/matchUpFormats';
 import { SINGLES } from '../../../../../constants/eventConstants';
@@ -80,52 +77,36 @@ it('can advance players in Round Robin with Playoffs => 2 x 4 x 4', () => {
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
   expect(result.success).toEqual(true);
 
-  const mainStructure = drawDefinition.structures.find(
-    (structure) => structure.stage === MAIN
-  );
+  const mainStructure = drawDefinition.structures.find((structure) => structure.stage === MAIN);
 
   expect(mainStructure.structures.length).toEqual(groupsCount);
   expect(mainStructure.structures[0].positionAssignments.length).toEqual(4);
 
-  const playoffStructures = drawDefinition.structures.reduce(
-    (structures, structure) => {
-      return structure.stage === PLAY_OFF
-        ? structures.concat(structure)
-        : structures;
-    },
-    []
-  );
+  const playoffStructures = drawDefinition.structures.reduce((structures, structure) => {
+    return structure.stage === PLAY_OFF ? structures.concat(structure) : structures;
+  }, []);
 
   expect(playoffStructures.length).toEqual(playoffGroups.length);
   expect(playoffStructures[0].positionAssignments.length).toEqual(8);
 
-  const playoffStructureIds = playoffStructures.map(
-    (structure) => structure.structureId
-  );
+  const playoffStructureIds = playoffStructures.map((structure) => structure.structureId);
 
-  const positioningLinks = drawDefinition.links.filter(
-    (link) => link.linkType === POSITION
-  );
+  const positioningLinks = drawDefinition.links.filter((link) => link.linkType === POSITION);
 
   positioningLinks.forEach((link) => {
     expect(link.source.structureId).toEqual(mainStructure.structureId);
-    const targetIsPlayoffStructure = playoffStructureIds.includes(
-      link.target.structureId
-    );
+    const targetIsPlayoffStructure = playoffStructureIds.includes(link.target.structureId);
     expect(targetIsPlayoffStructure).toEqual(true);
   });
 
   const { drawId } = drawDefinition;
-  const structure = drawDefinition.structures.find(
-    ({ structureId }) => structureId === mainStructure.structureId
-  );
+  const structure = drawDefinition.structures.find(({ structureId }) => structureId === mainStructure.structureId);
   const { matchUps: allStructureMatchUps } = getAllStructureMatchUps({
     inContext: true,
     structure,
   });
   const allStructureMatchUpsCount = allStructureMatchUps.length;
-  const matchUpsPerStructure =
-    allStructureMatchUpsCount / (drawSize / groupSize);
+  const matchUpsPerStructure = allStructureMatchUpsCount / (drawSize / groupSize);
   mainStructure.structures.forEach((structure, structureOrder) => {
     const values = setsValues[0];
     const structureMatchUps = structure.matchUps;
@@ -148,18 +129,14 @@ it('can advance players in Round Robin with Playoffs => 2 x 4 x 4', () => {
         drawDefinition,
         structureId: structure.structureId,
       });
-      expect(thisStructureIsCompleted).toEqual(
-        matchUpIndex + 1 === matchUpsPerStructure
-      );
+      expect(thisStructureIsCompleted).toEqual(matchUpIndex + 1 === matchUpsPerStructure);
 
-      const matchUpInstance =
-        structureOrder * matchUpsPerStructure + (matchUpIndex + 1);
+      const matchUpInstance = structureOrder * matchUpsPerStructure + (matchUpIndex + 1);
       const mainStructureIsCompleted = isCompletedStructure({
         drawDefinition,
         structureId: mainStructure.structureId,
       });
-      const expectCompletedStructure =
-        matchUpInstance === allStructureMatchUpsCount;
+      const expectCompletedStructure = matchUpInstance === allStructureMatchUpsCount;
       expect(mainStructureIsCompleted).toEqual(expectCompletedStructure);
     });
   });
@@ -175,9 +152,7 @@ it('can advance players in Round Robin with Playoffs => 2 x 4 x 4', () => {
   mainStructure.structures.forEach((structure) => {
     const { structureId } = structure;
 
-    const structureMatchUps = eventMatchUps.filter(
-      (matchUp) => matchUp.structureId === structureId
-    );
+    const structureMatchUps = eventMatchUps.filter((matchUp) => matchUp.structureId === structureId);
 
     const { participantResults } = tallyParticipantResults({
       matchUps: structureMatchUps,
@@ -189,8 +164,7 @@ it('can advance players in Round Robin with Playoffs => 2 x 4 x 4', () => {
 
     structureParticipantIds.forEach((key) => {
       const { groupOrder } = participantResults[key];
-      if (!finishingPositionGroups[groupOrder])
-        finishingPositionGroups[groupOrder] = [];
+      if (!finishingPositionGroups[groupOrder]) finishingPositionGroups[groupOrder] = [];
       finishingPositionGroups[groupOrder].push(key);
       expect([1, 2, 3, 4].includes(groupOrder)).toEqual(true);
     });
@@ -209,31 +183,21 @@ it('can advance players in Round Robin with Playoffs => 2 x 4 x 4', () => {
     });
 
     // verify that positioning participants are expected
-    const { drawDefinition: updatedDrawDefinition } = tournamentEngine.getEvent(
-      { drawId }
-    );
+    const { drawDefinition: updatedDrawDefinition } = tournamentEngine.getEvent({ drawId });
     const { structure: updatedStructure } = findStructure({
       drawDefinition: updatedDrawDefinition,
       structureId,
     });
-    const positioningLink = positioningLinks.find(
-      (link) => link.target.structureId === structure.structureId
-    );
-    const structureFinishingPositions =
-      positioningLink.source.finishingPositions;
+    const positioningLink = positioningLinks.find((link) => link.target.structureId === structure.structureId);
+    const structureFinishingPositions = positioningLink.source.finishingPositions;
     const finishingPositionGroup = structureFinishingPositions
       .map((finishingPosition) => finishingPositionGroups[finishingPosition])
       .flat();
     const structureParticipantIds = updatedStructure?.positionAssignments
       ?.map((assignment) => assignment.participantId)
       .filter(Boolean);
-    const expectedParticipantIds = intersection(
-      structureParticipantIds,
-      finishingPositionGroup
-    );
-    expect(expectedParticipantIds.length).toEqual(
-      groupsCount * structureFinishingPositions.length
-    );
+    const expectedParticipantIds = intersection(structureParticipantIds, finishingPositionGroup);
+    expect(expectedParticipantIds.length).toEqual(groupsCount * structureFinishingPositions.length);
 
     const positionAssignments = updatedStructure?.positionAssignments ?? [];
     const pairedPositions = chunkArray(positionAssignments, 2);
@@ -316,52 +280,36 @@ it('can advance players in Round Robin with Playoffs', () => {
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
   expect(result.success).toEqual(true);
 
-  const mainStructure = drawDefinition.structures.find(
-    (structure) => structure.stage === MAIN
-  );
+  const mainStructure = drawDefinition.structures.find((structure) => structure.stage === MAIN);
 
   expect(mainStructure.structures.length).toEqual(groupsCount);
   expect(mainStructure.structures[0].positionAssignments.length).toEqual(4);
 
-  const playoffStructures = drawDefinition.structures.reduce(
-    (structures, structure) => {
-      return structure.stage === PLAY_OFF
-        ? structures.concat(structure)
-        : structures;
-    },
-    []
-  );
+  const playoffStructures = drawDefinition.structures.reduce((structures, structure) => {
+    return structure.stage === PLAY_OFF ? structures.concat(structure) : structures;
+  }, []);
 
   expect(playoffStructures.length).toEqual(playoffGroups.length);
   expect(playoffStructures[0].positionAssignments.length).toEqual(16);
 
-  const playoffStructureIds = playoffStructures.map(
-    (structure) => structure.structureId
-  );
+  const playoffStructureIds = playoffStructures.map((structure) => structure.structureId);
 
-  const positioningLinks = drawDefinition.links.filter(
-    (link) => link.linkType === POSITION
-  );
+  const positioningLinks = drawDefinition.links.filter((link) => link.linkType === POSITION);
 
   positioningLinks.forEach((link) => {
     expect(link.source.structureId).toEqual(mainStructure.structureId);
-    const targetIsPlayoffStructure = playoffStructureIds.includes(
-      link.target.structureId
-    );
+    const targetIsPlayoffStructure = playoffStructureIds.includes(link.target.structureId);
     expect(targetIsPlayoffStructure).toEqual(true);
   });
 
   const { drawId } = drawDefinition;
-  const structure = drawDefinition.structures.find(
-    ({ structureId }) => structureId === mainStructure.structureId
-  );
+  const structure = drawDefinition.structures.find(({ structureId }) => structureId === mainStructure.structureId);
   const { matchUps: allStructureMatchUps } = getAllStructureMatchUps({
     inContext: true,
     structure,
   });
   const allStructureMatchUpsCount = allStructureMatchUps.length;
-  const matchUpsPerStructure =
-    allStructureMatchUpsCount / (drawSize / groupSize);
+  const matchUpsPerStructure = allStructureMatchUpsCount / (drawSize / groupSize);
   mainStructure.structures.forEach((structure, structureOrder) => {
     const values = setsValues[0];
     const structureMatchUps = structure.matchUps;
@@ -384,18 +332,14 @@ it('can advance players in Round Robin with Playoffs', () => {
         drawDefinition,
         structureId: structure.structureId,
       });
-      expect(thisStructureIsCompleted).toEqual(
-        matchUpIndex + 1 === matchUpsPerStructure
-      );
+      expect(thisStructureIsCompleted).toEqual(matchUpIndex + 1 === matchUpsPerStructure);
 
-      const matchUpInstance =
-        structureOrder * matchUpsPerStructure + (matchUpIndex + 1);
+      const matchUpInstance = structureOrder * matchUpsPerStructure + (matchUpIndex + 1);
       const mainStructureIsCompleted = isCompletedStructure({
         drawDefinition,
         structureId: mainStructure.structureId,
       });
-      const expectCompletedStructure =
-        matchUpInstance === allStructureMatchUpsCount;
+      const expectCompletedStructure = matchUpInstance === allStructureMatchUpsCount;
       expect(mainStructureIsCompleted).toEqual(expectCompletedStructure);
     });
   });
@@ -411,9 +355,7 @@ it('can advance players in Round Robin with Playoffs', () => {
   mainStructure.structures.forEach((structure) => {
     const { structureId } = structure;
 
-    const structureMatchUps = eventMatchUps.filter(
-      (matchUp) => matchUp.structureId === structureId
-    );
+    const structureMatchUps = eventMatchUps.filter((matchUp) => matchUp.structureId === structureId);
 
     const { participantResults } = tallyParticipantResults({
       matchUps: structureMatchUps,
@@ -425,8 +367,7 @@ it('can advance players in Round Robin with Playoffs', () => {
 
     structureParticipantIds.forEach((key) => {
       const { groupOrder } = participantResults[key];
-      if (!finishingPositionGroups[groupOrder])
-        finishingPositionGroups[groupOrder] = [];
+      if (!finishingPositionGroups[groupOrder]) finishingPositionGroups[groupOrder] = [];
       finishingPositionGroups[groupOrder].push(key);
       expect([1, 2, 3, 4].includes(groupOrder)).toEqual(true);
     });
@@ -445,31 +386,21 @@ it('can advance players in Round Robin with Playoffs', () => {
     });
 
     // verify that positioning participants are expected
-    const { drawDefinition: updatedDrawDefinition } = tournamentEngine.getEvent(
-      { drawId }
-    );
+    const { drawDefinition: updatedDrawDefinition } = tournamentEngine.getEvent({ drawId });
     const { structure: updatedStructure } = findStructure({
       drawDefinition: updatedDrawDefinition,
       structureId,
     });
-    const positioningLink = positioningLinks.find(
-      (link) => link.target.structureId === structure.structureId
-    );
-    const structureFinishingPositions =
-      positioningLink.source.finishingPositions;
+    const positioningLink = positioningLinks.find((link) => link.target.structureId === structure.structureId);
+    const structureFinishingPositions = positioningLink.source.finishingPositions;
     const finishingPositionGroup = structureFinishingPositions
       .map((finishingPosition) => finishingPositionGroups[finishingPosition])
       .flat();
     const structureParticipantIds = updatedStructure?.positionAssignments
       ?.map((assignment) => assignment.participantId)
       .filter(Boolean);
-    const expectedParticipantIds = intersection(
-      structureParticipantIds,
-      finishingPositionGroup
-    );
-    expect(expectedParticipantIds.length).toEqual(
-      groupsCount * structureFinishingPositions.length
-    );
+    const expectedParticipantIds = intersection(structureParticipantIds, finishingPositionGroup);
+    expect(expectedParticipantIds.length).toEqual(groupsCount * structureFinishingPositions.length);
 
     const positionAssignments = updatedStructure?.positionAssignments ?? [];
     const pairedPositions = chunkArray(positionAssignments, 2);

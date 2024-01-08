@@ -1,9 +1,9 @@
-import { MatchUpFilters } from '../query/filterMatchUps';
-import { MatchUpsMap } from '../query/matchUps/getMatchUpsMap';
+import { DOUBLES_EVENT, SINGLES_EVENT, TEAM_EVENT } from '../constants/eventConstants';
 import { SignedInStatusUnion } from '../constants/participantConstants';
 import { HydratedMatchUp, HydratedParticipant } from './hydrated';
 import { ErrorType } from '../constants/errorConditionConstants';
 import { ValidPolicyTypes } from '../constants/policyConstants';
+import { MatchUpsMap } from '../query/matchUps/getMatchUpsMap';
 import {
   Category,
   DrawDefinition,
@@ -20,12 +20,8 @@ import {
   GenderUnion,
   SexUnion,
   ParticipantRoleUnion,
+  MatchUpStatusUnion,
 } from './tournamentTypes';
-import {
-  DOUBLES_EVENT,
-  SINGLES_EVENT,
-  TEAM_EVENT,
-} from '../constants/eventConstants';
 
 export type FactoryEngine = {
   [key: string]: any;
@@ -36,6 +32,7 @@ export type TournamentRecords = {
 };
 
 export type Directives = {
+  pipe?: { [key: string]: boolean };
   params?: { [key: string]: any };
   method: string;
 }[];
@@ -252,9 +249,7 @@ export type StructureParticipation = {
 };
 
 export type MappedParticipant = {
-  structureParticipation:
-    | { [key: string]: StructureParticipation }
-    | StructureParticipation[];
+  structureParticipation: { [key: string]: StructureParticipation } | StructureParticipation[];
   potentialMatchUps: {
     tournamentId: string;
     matchUpId: string;
@@ -412,4 +407,39 @@ export type AddScheduleAttributeArgs = {
   disableNotice?: boolean;
   matchUpId: string;
   event?: Event;
+};
+
+export type MatchUpFilters = {
+  matchUpStatuses?: MatchUpStatusUnion[];
+  excludeMatchUpStatuses?: string[];
+  isCollectionMatchUp?: boolean;
+  matchUpFormats?: string[];
+  roundPositions?: number[];
+  hasWinningSide?: boolean;
+  collectionIds?: string[];
+  roundNumbers?: number[];
+  isMatchUpTie?: boolean;
+  matchUpFormat?: string;
+  matchUpIds?: string[];
+  roundNames?: string[];
+
+  // only applies to inContext matchUps and only when processContext boolean is true
+  processContext?: boolean;
+
+  stageSequences?: string[];
+  scheduledDates?: string[];
+  participantIds?: string[];
+  stages?: StageTypeUnion[];
+  tournamentIds?: string[];
+  matchUpTypes?: string[];
+  structureIds?: string[];
+  scheduledDate?: string;
+  readyToScore?: boolean;
+  courtIds?: string[];
+  eventIds?: string[];
+  venueIds?: string[];
+  drawIds?: string[];
+
+  filterMatchUpTypes?: boolean;
+  filterMatchUpIds?: boolean;
 };

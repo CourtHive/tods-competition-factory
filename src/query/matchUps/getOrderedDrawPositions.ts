@@ -9,11 +9,7 @@ type GetOrderedDrawPositionsArgs = {
   drawPositions: number[];
   roundNumber: number;
 };
-export function getOrderedDrawPositions({
-  drawPositions,
-  roundProfile,
-  roundNumber,
-}: GetOrderedDrawPositionsArgs) {
+export function getOrderedDrawPositions({ drawPositions, roundProfile, roundNumber }: GetOrderedDrawPositionsArgs) {
   const unassignedDrawPositions = [undefined, undefined];
 
   if (noNumeric(drawPositions)) {
@@ -26,9 +22,7 @@ export function getOrderedDrawPositions({
   const targetRoundProfile = roundProfile?.[roundNumber];
   const pairedDrawPositions = targetRoundProfile?.pairedDrawPositions;
   const displayOrder =
-    pairedDrawPositions?.find((pair) =>
-      overlap(pair || [], drawPositions.filter(Boolean))
-    ) ?? unassignedDrawPositions;
+    pairedDrawPositions?.find((pair) => overlap(pair || [], drawPositions.filter(Boolean))) ?? unassignedDrawPositions;
 
   // ############# IMPORTANT DO NOT CHANGE #################
   // when both present, drawPositions are always sorted numerically
@@ -39,11 +33,10 @@ export function getOrderedDrawPositions({
   // previous round lookback is provided by the roundProfile
   const isFeedRound = targetRoundProfile?.feedRound;
   if (allNumeric(drawPositions)) {
-    const orderedDrawPositions = [...drawPositions].sort(numericSort);
+    const orderedDrawPositions = [...drawPositions].sort(numericSort); // spread to avoid immutable client data
 
     return {
-      orderedDrawPositions:
-        orderedDrawPositions.length === 2 ? orderedDrawPositions : displayOrder,
+      orderedDrawPositions: orderedDrawPositions.length === 2 ? orderedDrawPositions : displayOrder,
       displayOrder: isFeedRound ? orderedDrawPositions : displayOrder,
     };
   }
@@ -52,9 +45,7 @@ export function getOrderedDrawPositions({
   // when only one side is present in a feedRound, it is the fed position
   // and fed positions are always { sideNumber: 1 }
   if (isFeedRound) {
-    const drawPosition = drawPositions.find(
-      (drawPosition) => !isNaN(ensureInt(drawPosition))
-    );
+    const drawPosition = drawPositions.find((drawPosition) => !isNaN(ensureInt(drawPosition)));
     const orderedDrawPositions = [drawPosition, undefined];
     return { orderedDrawPositions, displayOrder: orderedDrawPositions };
   }

@@ -7,5 +7,5 @@ const methods = {
 
 ask.importMethods(methods);
 
-export const askEngine = ask;
+export const queryEngine = ask;
 export default ask;

@@ -16,13 +16,7 @@ import { DO_NOT_SCHEDULE } from '../../../constants/requestConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { TournamentRecords } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
-import {
-  ARRAY,
-  OF_TYPE,
-  SCHEDULE_DATES,
-  TOURNAMENT_RECORDS,
-  VALIDATE,
-} from '../../../constants/attributeConstants';
+import { ARRAY, OF_TYPE, SCHEDULE_DATES, TOURNAMENT_RECORDS, VALIDATE } from '../../../constants/attributeConstants';
 
 type ScheduleProfileRoundsArgs = {
   checkPotentialRequestConflicts?: boolean;
@@ -52,9 +46,8 @@ export function scheduleProfileRounds(params: ScheduleProfileRoundsArgs) {
   const paramsCheck = checkRequiredParameters(params, [
     { [TOURNAMENT_RECORDS]: true },
     {
-      [VALIDATE]: (value) =>
-        !value || (Array.isArray(value) && value.every(isValidDateString)),
-      [SCHEDULE_DATES]: true,
+      [VALIDATE]: (value) => !value || (Array.isArray(value) && value.every(isValidDateString)),
+      [SCHEDULE_DATES]: false,
       [OF_TYPE]: ARRAY,
     },
   ]);
@@ -76,9 +69,8 @@ export function scheduleProfileRounds(params: ScheduleProfileRoundsArgs) {
   const containedStructureIds = Object.assign(
     {},
     ...Object.values(tournamentRecords).map(
-      (tournamentRecord) =>
-        getContainedStructures({ tournamentRecord }).containedStructures
-    )
+      (tournamentRecord) => getContainedStructures({ tournamentRecord }).containedStructures,
+    ),
   );
 
   // ensure all scheduleDates are valid date strings
@@ -92,15 +84,8 @@ export function scheduleProfileRounds(params: ScheduleProfileRoundsArgs) {
   // filter out any invalid scheduleDates in schedulingProfile
   const profileDates = schedulingProfile
     .map((dateSchedulingProfile) => dateSchedulingProfile.scheduleDate)
-    .map(
-      (scheduleDate) =>
-        isValidDateString(scheduleDate) && extractDate(scheduleDate)
-    )
-    .filter(
-      (scheduleDate) =>
-        scheduleDate &&
-        (!scheduleDates.length || validScheduleDates.includes(scheduleDate))
-    );
+    .map((scheduleDate) => isValidDateString(scheduleDate) && extractDate(scheduleDate))
+    .filter((scheduleDate) => scheduleDate && (!scheduleDates.length || validScheduleDates.includes(scheduleDate)));
 
   // if no valid profileDates remain throw an error
   if (!profileDates.length) {
@@ -109,9 +94,7 @@ export function scheduleProfileRounds(params: ScheduleProfileRoundsArgs) {
 
   // if array of clearScheduleDates, clear all matchUps on scheduledDates
   if (clearScheduleDates && !dryRun) {
-    const scheduledDates = Array.isArray(clearScheduleDates)
-      ? clearScheduleDates
-      : [];
+    const scheduledDates = Array.isArray(clearScheduleDates) ? clearScheduleDates : [];
     clearScheduledMatchUps({ tournamentRecords, scheduledDates });
   }
 
@@ -148,9 +131,7 @@ export function scheduleProfileRounds(params: ScheduleProfileRoundsArgs) {
       return profileDates.includes(scheduleDate);
     })
     .sort((a, b) => {
-      return (
-        new Date(a.scheduleDate).getTime() - new Date(b.scheduleDate).getTime()
-      );
+      return new Date(a.scheduleDate).getTime() - new Date(b.scheduleDate).getTime();
     });
 
   const schedulingParams = {

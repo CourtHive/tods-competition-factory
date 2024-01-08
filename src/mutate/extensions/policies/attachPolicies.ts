@@ -3,10 +3,12 @@ import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { addExtension } from '../addExtension';
 
+import { PolicyDefinitions, TournamentRecords } from '../../../types/factoryTypes';
+import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
 import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
 import { ResultType } from '../../../global/functions/decorateResult';
-import { SUCCESS } from '../../../constants/resultConstants';
 import { isObject, isString } from '../../../utilities/objects';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   EXISTING_POLICY_TYPE,
   INVALID_VALUES,
@@ -20,15 +22,6 @@ import {
   TOURNAMENT_RECORD,
   TOURNAMENT_RECORDS,
 } from '../../../constants/attributeConstants';
-import {
-  DrawDefinition,
-  Event,
-  Tournament,
-} from '../../../types/tournamentTypes';
-import {
-  PolicyDefinitions,
-  TournamentRecords,
-} from '../../../types/factoryTypes';
 
 type AttachPoliciesArgs = {
   tournamentRecords?: TournamentRecords;
@@ -40,16 +33,14 @@ type AttachPoliciesArgs = {
   event?: Event;
 };
 
-export function attachPolicies(
-  params: AttachPoliciesArgs
-): ResultType & { applied?: string[] } {
+export function attachPolicies(params: AttachPoliciesArgs): ResultType & { applied?: string[] } {
   const checkParams = checkRequiredParameters(params, [
     {
       _anyOf: {
-        [TOURNAMENT_RECORDS]: true,
-        [TOURNAMENT_RECORD]: true,
-        [DRAW_DEFINITION]: true,
-        [EVENT]: true,
+        [TOURNAMENT_RECORDS]: false,
+        [TOURNAMENT_RECORD]: false,
+        [DRAW_DEFINITION]: false,
+        [EVENT]: false,
       },
       [POLICY_DEFINITIONS]: true,
     },
@@ -61,8 +52,7 @@ export function attachPolicies(
   const element =
     params.drawDefinition ??
     params.event ??
-    ((params.tournamentId || !params.tournamentRecords) &&
-      params.tournamentRecord);
+    ((params.tournamentId || !params.tournamentRecords) && params.tournamentRecord);
 
   if (element) {
     const result = policyAttachement(params, element);
@@ -88,15 +78,10 @@ export function attachPolicies(
     return { error: MISSING_TOURNAMENT_RECORD };
   }
 
-  return !applied.length
-    ? { error: EXISTING_POLICY_TYPE }
-    : { ...SUCCESS, applied };
+  return !applied.length ? { error: EXISTING_POLICY_TYPE } : { ...SUCCESS, applied };
 }
 
-function policyAttachement(
-  params: any,
-  element: any
-): ResultType & { applied?: string[] } {
+function policyAttachement(params: any, element: any): ResultType & { applied?: string[] } {
   const appliedPolicies = getAppliedPolicies(params).appliedPolicies ?? {};
   if (!element.extensions) element.extensions = [];
   const applied: string[] = [];
@@ -110,11 +95,7 @@ function policyAttachement(
       if (!policy) continue;
       if (!isObject(policy)) return { error: INVALID_VALUES };
       const { policyName, ...values } = policy;
-      if (
-        !values ||
-        !Object.keys(values).length ||
-        (policyName && !isString(policyName))
-      )
+      if (!values || !Object.keys(values).length || (policyName && !isString(policyName)))
         return { error: INVALID_VALUES };
       appliedPolicies[policyType] = params.policyDefinitions[policyType];
       applied.push(policyType);

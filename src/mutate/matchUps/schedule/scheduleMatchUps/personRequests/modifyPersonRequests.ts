@@ -1,15 +1,10 @@
+import { getPersonRequests } from '../../../../../query/matchUps/scheduling/getPersonRequests';
 import { checkRequiredParameters } from '../../../../../parameters/checkRequiredParameters';
 import { mergePersonRequests } from './mergePersonRequests';
 import { savePersonRequests } from './savePersonRequests';
-import { getPersonRequests } from '../../../../../query/matchUps/scheduling/getPersonRequests';
 
+import { ARRAY, INVALID, OF_TYPE, TOURNAMENT_RECORDS } from '../../../../../constants/attributeConstants';
 import { INVALID_VALUES } from '../../../../../constants/errorConditionConstants';
-import {
-  ARRAY,
-  INVALID,
-  OF_TYPE,
-  TOURNAMENT_RECORDS,
-} from '../../../../../constants/attributeConstants';
 
 // can be used to both add and remove requests
 // requests which don't have existing requestId will be added
@@ -33,9 +28,7 @@ export function modifyPersonRequests(params) {
           if (!requestIds.includes(request.requestId)) return request;
 
           // find the updatedRequest
-          const modification = requests.find(
-            (updatedRequest) => updatedRequest.requestId === request.requestId
-          );
+          const modification = requests.find((updatedRequest) => updatedRequest.requestId === request.requestId);
           // FEATURE: returning an updatedRequest without a requestType will remove it
           if (!modification.requestType) return;
 

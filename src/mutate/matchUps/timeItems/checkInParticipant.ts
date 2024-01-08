@@ -28,9 +28,7 @@ export function checkInParticipant(params: CheckInOutParticipantArgs) {
   const paramCheck = checkRequiredParameters(params, requiredParams);
   if (paramCheck[ERROR]) return paramCheck;
 
-  const resolutions = resolveFromParameters(params, [
-    { [PARAM]: MATCHUP, attr: { [IN_CONTEXT]: true } },
-  ]);
+  const resolutions = resolveFromParameters(params, [{ [PARAM]: MATCHUP, attr: { [IN_CONTEXT]: true } }]);
   if (resolutions[ERROR]) return resolutions;
 
   const { tournamentRecord, drawDefinition, participantId, matchUpId } = params;
@@ -44,8 +42,7 @@ export function checkInParticipant(params: CheckInOutParticipantArgs) {
 
   if (checkedInParticipantIds?.includes(participantId)) return { ...SUCCESS };
 
-  if (!allRelevantParticipantIds?.includes(participantId))
-    return { [ERROR]: INVALID_PARTICIPANT_ID };
+  if (!allRelevantParticipantIds?.includes(participantId)) return { [ERROR]: INVALID_PARTICIPANT_ID };
 
   const timeItem = {
     itemValue: participantId,

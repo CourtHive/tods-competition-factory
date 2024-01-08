@@ -2,11 +2,8 @@ import { checkRequiredParameters } from '../../parameters/checkRequiredParameter
 import { resolveFromParameters } from '../../parameters/resolveFromParameters';
 import { findStructure } from '../../acquire/findStructure';
 
+import { MISSING_DRAW_ID, MISSING_VALUE } from '../../constants/errorConditionConstants';
 import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
-import {
-  MISSING_DRAW_ID,
-  MISSING_VALUE,
-} from '../../constants/errorConditionConstants';
 import {
   ANY_OF,
   DRAW_ID,
@@ -37,18 +34,16 @@ export function getMatchUpFormat(params: GetMatchUpFormatArgs) {
     { [TOURNAMENT_RECORD]: true },
     {
       [ANY_OF]: {
-        [STRUCTURE_ID]: true,
-        [MATCHUP_ID]: true,
-        [DRAW_ID]: true,
-        [EVENT]: true,
+        [STRUCTURE_ID]: false,
+        [MATCHUP_ID]: false,
+        [DRAW_ID]: false,
+        [EVENT]: false,
       },
     },
   ]);
   if (paramCheck[ERROR]) return paramCheck;
 
-  const resolutions = resolveFromParameters(params, [
-    { [PARAM]: MATCHUP, [ERROR]: MISSING_VALUE },
-  ]);
+  const resolutions = resolveFromParameters(params, [{ [PARAM]: MATCHUP, [ERROR]: MISSING_VALUE }]);
   const matchUpResult = resolutions?.matchUp;
 
   if (matchUpId && matchUpResult?.error) {

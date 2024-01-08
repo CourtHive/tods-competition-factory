@@ -1,11 +1,11 @@
 import { tournamentMatchUps } from './getTournamentMatchUps';
-import { MatchUpFilters } from '../filterMatchUps';
 
 import { MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
 import { ResultType } from '../../global/functions/decorateResult';
 import { HydratedMatchUp } from '../../types/hydrated';
 import {
   GroupInfo,
+  MatchUpFilters,
   ParticipantsProfile,
   PolicyDefinitions,
   ScheduleVisibilityFilters,
@@ -43,10 +43,7 @@ export function getCompetitionMatchUps({
   byeMatchUps?: HydratedMatchUp[];
   groupInfo?: GroupInfo;
 } {
-  if (
-    typeof tournamentRecords !== 'object' ||
-    !Object.keys(tournamentRecords).length
-  )
+  if (typeof tournamentRecords !== 'object' || !Object.keys(tournamentRecords).length)
     return { error: MISSING_TOURNAMENT_RECORDS };
 
   const tournamentIds = Object.keys(tournamentRecords);
@@ -66,23 +63,20 @@ export function getCompetitionMatchUps({
   });
 
   const groupInfo = {};
-  const competitionMatchUpsResult = tournamentsMatchUps.reduce(
-    (groupings, matchUpGroupings) => {
-      const keys = Object.keys(matchUpGroupings);
-      keys.forEach((key) => {
-        if (Array.isArray(matchUpGroupings[key])) {
-          if (!groupings[key]) groupings[key] = [];
-          groupings[key] = groupings[key].concat(matchUpGroupings[key]);
-        }
-        if (key === 'groupInfo') {
-          Object.assign(groupInfo, matchUpGroupings[key]);
-        }
-      });
+  const competitionMatchUpsResult = tournamentsMatchUps.reduce((groupings, matchUpGroupings) => {
+    const keys = Object.keys(matchUpGroupings);
+    keys.forEach((key) => {
+      if (Array.isArray(matchUpGroupings[key])) {
+        if (!groupings[key]) groupings[key] = [];
+        groupings[key] = groupings[key].concat(matchUpGroupings[key]);
+      }
+      if (key === 'groupInfo') {
+        Object.assign(groupInfo, matchUpGroupings[key]);
+      }
+    });
 
-      return groupings;
-    },
-    {}
-  );
+    return groupings;
+  }, {});
 
   return { ...competitionMatchUpsResult, groupInfo };
 }

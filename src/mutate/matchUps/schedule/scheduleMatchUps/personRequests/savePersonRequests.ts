@@ -2,13 +2,10 @@ import { checkRequiredParameters } from '../../../../../parameters/checkRequired
 import { addExtension } from '../../../../extensions/addExtension';
 import { findParticipant } from '../../../../../acquire/findParticipant';
 
+import { PersonRequests, TournamentRecords } from '../../../../../types/factoryTypes';
 import { TOURNAMENT_RECORDS } from '../../../../../constants/attributeConstants';
 import { PERSON_REQUESTS } from '../../../../../constants/extensionConstants';
 import { SUCCESS } from '../../../../../constants/resultConstants';
-import {
-  PersonRequests,
-  TournamentRecords,
-} from '../../../../../types/factoryTypes';
 
 type SavePersonRequestsArgs = {
   tournamentRecords: TournamentRecords;
@@ -16,9 +13,7 @@ type SavePersonRequestsArgs = {
 };
 export function savePersonRequests(params: SavePersonRequestsArgs) {
   const { tournamentRecords, personRequests } = params;
-  const paramsCheck = checkRequiredParameters(params, [
-    { [TOURNAMENT_RECORDS]: true },
-  ]);
+  const paramsCheck = checkRequiredParameters(params, [{ [TOURNAMENT_RECORDS]: true }]);
   if (paramsCheck.error) return paramsCheck;
   if (!personRequests) return { ...SUCCESS };
 
@@ -29,8 +24,7 @@ export function savePersonRequests(params: SavePersonRequestsArgs) {
     for (const personId of Object.keys(personRequests)) {
       if (findParticipant({ tournamentParticipants, personId })) {
         const requests = personRequests[personId];
-        if (requests.length)
-          relevantPersonRequests.push({ personId, requests });
+        if (requests.length) relevantPersonRequests.push({ personId, requests });
       }
     }
 

@@ -1,8 +1,8 @@
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { CANNOT_REMOVE_PARTICIPANTS } from '../../../constants/errorConditionConstants';
-import tournamentRecord from './removeIndividualParticipants.tods.json';
+import { CANNOT_REMOVE_PARTICIPANTS } from '../../../../constants/errorConditionConstants';
+import tournamentRecord from '../teamEvents/removeIndividualParticipants.tods.json';
 
 it('will remove participants from lineUps unless they are part of a matchUp with a result', () => {
   let result = tournamentEngine.setState(tournamentRecord);

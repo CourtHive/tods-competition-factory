@@ -1,13 +1,10 @@
 import { structureAssignedDrawPositions } from '../positionsGetter';
-import { getNextSeedBlock } from '../seedGetter';
 import { findStructure } from '../../../acquire/findStructure';
+import { getNextSeedBlock } from '../seedGetter';
 
-import { ResultType } from '../../../global/functions/decorateResult';
-import {
-  MISSING_DRAW_DEFINITION,
-  MISSING_STRUCTURE_ID,
-} from '../../../constants/errorConditionConstants';
+import { MISSING_DRAW_DEFINITION, MISSING_STRUCTURE_ID } from '../../../constants/errorConditionConstants';
 import { DrawDefinition, Event } from '../../../types/tournamentTypes';
+import { ResultType } from '../../../global/functions/decorateResult';
 import { SeedingProfile } from '../../../types/factoryTypes';
 
 type GetNextUfilledDrawPositionsArgs = {
@@ -55,9 +52,7 @@ export function getNextUnfilledDrawPositions({
 
   const unfilledDrawPositions = positionAssignments
     .filter((assignment) => {
-      return (
-        !assignment.participantId && !assignment.bye && !assignment.qualifier
-      );
+      return !assignment.participantId && !assignment.bye && !assignment.qualifier;
     })
     .map((assignment) => assignment.drawPosition);
 

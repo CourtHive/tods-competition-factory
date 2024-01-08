@@ -1,4 +1,5 @@
 import { setDrawParticipantRepresentativeIds } from '../../../mutate/drawDefinitions/setDrawParticipantRepresentativeIds';
+import { getAvailablePlayoffProfiles } from '../../../mutate/drawDefinitions/structureGovernor/getAvailablePlayoffProfiles';
 import { resetVoluntaryConsolationStructure } from '../../../mutate/drawDefinitions/resetVoluntaryConsolationStructure';
 import { withdrawParticipantAtDrawPosition } from '../../../mutate/drawDefinitions/withdrawParticipantAtDrawPosition';
 import { addVoluntaryConsolationStructure } from '../../../mutate/drawDefinitions/addVoluntaryConsolationStructure';
@@ -17,7 +18,6 @@ import { modifyCollectionDefinition } from '../../../mutate/matchUps/tieFormat/m
 import { swapDrawPositionAssignments } from '../../../mutate/drawDefinitions/swapDrawPositionAssignments';
 import { automatedPlayoffPositioning } from '../../../mutate/drawDefinitions/automatedPlayoffPositioning';
 import { setStructureOrder } from '../../../mutate/drawDefinitions/structureGovernor/setStructureOrder';
-import { getAvailablePlayoffProfiles } from '../../../mutate/drawDefinitions/getAvailablePlayoffProfiles';
 import { attachQualifyingStructure } from '../../../mutate/drawDefinitions/attachQualifyingStructure';
 import { enableTieAutoCalc } from '../../../mutate/drawDefinitions/matchUpGovernor/enableTieAutoCalc';
 import { renameStructures } from '../../../mutate/drawDefinitions/structureGovernor/renameStructures';
@@ -86,30 +86,17 @@ import { autoSeeding } from '../../../mutate/entries/autoSeeding';
 import { modifyEvent } from '../../../mutate/events/modifyEvent';
 import { addFlight } from '../../../mutate/events/addFlight';
 import { addEvent } from '../../../mutate/events/addEvent';
-import {
-  destroyPairEntries,
-  destroyPairEntry,
-} from '../../../mutate/entries/destroyPairEntry';
-import {
-  promoteAlternate,
-  promoteAlternates,
-} from '../../../mutate/entries/promoteAlternate';
+import { destroyPairEntries, destroyPairEntry } from '../../../mutate/entries/destroyPairEntry';
+import { promoteAlternate, promoteAlternates } from '../../../mutate/entries/promoteAlternate';
 
-import {
-  setEntryPosition,
-  setEntryPositions,
-} from '../../../mutate/entries/setEntryPositions';
+import { setEntryPosition, setEntryPositions } from '../../../mutate/entries/setEntryPositions';
 
 import {
   attachConsolationStructures,
   attachPlayoffStructures,
   attachStructures,
 } from '../../../mutate/drawDefinitions/attachStructures';
-import {
-  setEventDates,
-  setEventEndDate,
-  setEventStartDate,
-} from '../../../mutate/events/setEventDates';
+import { setEventDates, setEventEndDate, setEventStartDate } from '../../../mutate/events/setEventDates';
 
 export const eventGovernor = {
   addAdHocMatchUps,

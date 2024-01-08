@@ -1,4 +1,5 @@
 import { getPositionRangeMap } from '../../../../mutate/drawDefinitions/structureGovernor/getPositionRangeMap';
+import { ResultType, decorateResult } from '../../../../global/functions/decorateResult';
 import { structureSort } from '../../../../functions/sorters/structureSort';
 import { generatePlayoffStructures } from '../drawTypes/playoffStructures';
 import { firstRoundLoserConsolation } from './firstRoundLoserConsolation';
@@ -9,14 +10,10 @@ import { numericSort } from '../../../../utilities/sorting';
 import { nextPowerOf2 } from '../../../../utilities/math';
 import { feedInChampionship } from './feedInChamp';
 import { treeMatchUps } from './eliminationTree';
-import {
-  ResultType,
-  decorateResult,
-} from '../../../../global/functions/decorateResult';
 
 import { INVALID_VALUES } from '../../../../constants/errorConditionConstants';
-import { DrawLink, Structure } from '../../../../types/tournamentTypes';
 import { POLICY_TYPE_FEED_IN } from '../../../../constants/policyConstants';
+import { DrawLink, Structure } from '../../../../types/tournamentTypes';
 import { WIN_RATIO } from '../../../../constants/statsConstants';
 import {
   AD_HOC,
@@ -82,15 +79,12 @@ export function processPlayoffGroups({
       const { finishingPositions = [] } = profile;
       if (!finishingPositions.length) return false;
 
-      const sequential = finishingPositions
+      const sequential = [...finishingPositions]
         .sort(numericSort)
         .map((pos, i) => (finishingPositions[i + 1] || pos) - pos)
         .every((val) => val < 2);
 
-      return (
-        (!requireSequential || sequential) &&
-        finishingPositions.every((position) => positionRangeMap[position])
-      );
+      return (!requireSequential || sequential) && finishingPositions.every((position) => positionRangeMap[position]);
     });
 
   if (!validFinishingPositions) {
@@ -104,31 +98,23 @@ export function processPlayoffGroups({
   for (const playoffGroup of playoffGroups) {
     const finishingPositions = playoffGroup.finishingPositions;
     const positionsPlayedOff =
-      positionRangeMap &&
-      finishingPositions
-        .map((p) => positionRangeMap[p]?.finishingPositions)
-        .flat();
+      positionRangeMap && finishingPositions.map((p) => positionRangeMap[p]?.finishingPositions).flat();
 
     const participantsInDraw = groupCount * finishingPositions.length;
     const drawSize = nextPowerOf2(participantsInDraw);
 
-    const playoffDrawType =
-      (drawSize === 2 && SINGLE_ELIMINATION) ||
-      playoffGroup.drawType ||
-      SINGLE_ELIMINATION;
+    const playoffDrawType = (drawSize === 2 && SINGLE_ELIMINATION) || playoffGroup.drawType || SINGLE_ELIMINATION;
 
     if (positionsPlayedOff) {
       finishingPositionOffset = Math.min(...positionsPlayedOff) - 1;
     }
 
     const finishingPositionRange =
-      positionsPlayedOff &&
-      `${Math.min(...positionsPlayedOff)}-${Math.max(...positionsPlayedOff)}`;
+      positionsPlayedOff && `${Math.min(...positionsPlayedOff)}-${Math.max(...positionsPlayedOff)}`;
 
     const structureName =
       playoffGroup.structureName ||
-      (finishingPositionRange &&
-        playoffGroup.playoffAttributes?.[finishingPositionRange]?.name) ||
+      (finishingPositionRange && playoffGroup.playoffAttributes?.[finishingPositionRange]?.name) ||
       playoffGroup.playoffAttributes?.['0']?.name;
 
     const playoffGroupParams = {
@@ -229,18 +215,12 @@ export function processPlayoffGroups({
 
       if (playoffDrawType === COMPASS) {
         Object.assign(params, {
-          playoffAttributes:
-            playoffGroup?.playoffAttributes ??
-            playoffAttributes ??
-            COMPASS_ATTRIBUTES,
+          playoffAttributes: playoffGroup?.playoffAttributes ?? playoffAttributes ?? COMPASS_ATTRIBUTES,
           roundOffsetLimit: 3,
         });
       } else if (playoffDrawType === OLYMPIC) {
         Object.assign(params, {
-          playoffAttributes:
-            playoffGroup?.playoffAttributes ??
-            playoffAttributes ??
-            OLYMPIC_ATTRIBUTES,
+          playoffAttributes: playoffGroup?.playoffAttributes ?? playoffAttributes ?? OLYMPIC_ATTRIBUTES,
           roundOffsetLimit: 2,
         });
       }
@@ -302,8 +282,7 @@ export function processPlayoffGroups({
 
       Object.assign(params, additionalAttributes[playoffDrawType] || {});
 
-      const { structures: champitionShipStructures, links: feedInLinks } =
-        feedInChampionship(params);
+      const { structures: champitionShipStructures, links: feedInLinks } = feedInChampionship(params);
       const [playoffStructure] = champitionShipStructures;
       const playoffLink = generatePlayoffLink({
         playoffStructureId: playoffStructure.structureId,
@@ -321,19 +300,16 @@ export function processPlayoffGroups({
       // update *after* value has been passed into current playoff structure generator
       finishingPositionOffset += participantsInDraw;
     } else if ([ROUND_ROBIN].includes(playoffDrawType)) {
-      const { structures: playoffStructures, links: playoffLinks } =
-        generateRoundRobin({
-          ...params,
-          structureOptions: playoffGroup.structureOptions || { groupSize: 4 },
-        });
+      const { structures: playoffStructures, links: playoffLinks } = generateRoundRobin({
+        ...params,
+        structureOptions: playoffGroup.structureOptions || { groupSize: 4 },
+      });
       updateStructureAndLinks({ playoffStructures, playoffLinks });
     } else if ([FIRST_ROUND_LOSER_CONSOLATION].includes(playoffDrawType)) {
-      const { structures: playoffStructures, links: playoffLinks } =
-        firstRoundLoserConsolation(params);
+      const { structures: playoffStructures, links: playoffLinks } = firstRoundLoserConsolation(params);
       updateStructureAndLinks({ playoffStructures, playoffLinks });
     } else if ([CURTIS_CONSOLATION].includes(playoffDrawType)) {
-      const { structures: playoffStructures, links: playoffLinks } =
-        generateCurtisConsolation(params);
+      const { structures: playoffStructures, links: playoffLinks } = generateCurtisConsolation(params);
       updateStructureAndLinks({ playoffStructures, playoffLinks });
     } else if ([AD_HOC].includes(playoffDrawType)) {
       const structure = structureTemplate({
@@ -354,11 +330,7 @@ export function processPlayoffGroups({
   return { finishingPositionTargets, positionRangeMap, structures, links };
 }
 
-function generatePlayoffLink({
-  playoffStructureId,
-  finishingPositions,
-  sourceStructureId,
-}) {
+function generatePlayoffLink({ playoffStructureId, finishingPositions, sourceStructureId }) {
   return {
     linkType: POSITION,
     source: {

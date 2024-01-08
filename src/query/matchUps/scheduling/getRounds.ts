@@ -1,19 +1,14 @@
+import { getFinishingPositionDetails, getRoundId, getRoundProfile, getRoundTiming } from './schedulingUtils';
 import { allCompetitionMatchUps } from '../../matchUps/getAllCompetitionMatchUps';
 import { getProfileRounds } from '../../../mutate/matchUps/schedule/profileRounds';
 import { definedAttributes } from '../../../utilities/definedAttributes';
 import { roundSort } from '../../../functions/sorters/roundSort';
 import { extractDate } from '../../../utilities/dateTime';
 import { chunkArray } from '../../../utilities/arrays';
-import {
-  getFinishingPositionDetails,
-  getRoundId,
-  getRoundProfile,
-  getRoundTiming,
-} from './schedulingUtils';
 
-import { MatchUpFilters } from '../../filterMatchUps';
-import { Tournament } from '../../../types/tournamentTypes';
+import { MatchUpFilters } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { Tournament } from '../../../types/tournamentTypes';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import {
   INVALID_TOURNAMENT_RECORD,
@@ -52,12 +47,7 @@ export function getRounds({
   venueId,
   context,
 }: GetRoundsArgs) {
-  if (
-    inContextMatchUps &&
-    !Array.isArray(
-      inContextMatchUps || typeof inContextMatchUps[0] !== 'object'
-    )
-  ) {
+  if (inContextMatchUps && !Array.isArray(inContextMatchUps || typeof inContextMatchUps[0] !== 'object')) {
     return { error: INVALID_VALUES, inContextMatchUps };
   }
 
@@ -69,30 +59,22 @@ export function getRounds({
     }
   }
 
-  const noTournamentRecords =
-    typeof tournamentRecords !== 'object' ||
-    !Object.keys(tournamentRecords).length;
+  const noTournamentRecords = typeof tournamentRecords !== 'object' || !Object.keys(tournamentRecords).length;
 
   const needsTournamentRecords =
     venueId ||
     scheduleDate ||
     !inContextMatchUps ||
     (!schedulingProfile &&
-      (excludeScheduleDateProfileRounds ||
-        excludeCompletedRounds ||
-        schedulingProfile ||
-        withSplitRounds));
+      (excludeScheduleDateProfileRounds || excludeCompletedRounds || schedulingProfile || withSplitRounds));
 
-  if (needsTournamentRecords && noTournamentRecords)
-    return { error: MISSING_TOURNAMENT_RECORDS };
+  if (needsTournamentRecords && noTournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
 
   const tournamentVenueIds = Object.assign(
     {},
-    ...Object.values(tournamentRecords ?? {}).map(
-      ({ venues = [], tournamentId }) => ({
-        [tournamentId]: venues?.map(({ venueId }) => venueId),
-      })
-    )
+    ...Object.values(tournamentRecords ?? {}).map(({ venues = [], tournamentId }) => ({
+      [tournamentId]: venues?.map(({ venueId }) => venueId),
+    })),
   );
 
   const events = Object.values(tournamentRecords ?? {})
@@ -102,31 +84,23 @@ export function getRounds({
         validVenueIds: tournamentVenueIds[tournamentId],
         startDate: event.startDate ?? startDate,
         endDate: event.endDate ?? endDate,
-      }))
+      })),
     )
     .flat();
 
   const { segmentedRounds, profileRounds } =
     (tournamentRecords &&
-      (excludeScheduleDateProfileRounds ||
-        excludeCompletedRounds ||
-        schedulingProfile ||
-        withSplitRounds) &&
+      (excludeScheduleDateProfileRounds || excludeCompletedRounds || schedulingProfile || withSplitRounds) &&
       getProfileRounds({ tournamentRecords, schedulingProfile })) ||
     {};
 
   const profileRoundsMap =
     excludeScheduleDateProfileRounds &&
-    Object.assign(
-      {},
-      ...profileRounds.map((profile) => ({ [profile.id]: profile }))
-    );
+    Object.assign({}, ...profileRounds.map((profile) => ({ [profile.id]: profile })));
 
   const consideredMatchUps =
     inContextMatchUps ||
-    (tournamentRecords &&
-      allCompetitionMatchUps({ tournamentRecords, matchUpFilters })
-        ?.matchUps) ||
+    (tournamentRecords && allCompetitionMatchUps({ tournamentRecords, matchUpFilters })?.matchUps) ||
     [];
 
   const excludedRounds: any[] = [];
@@ -154,9 +128,7 @@ export function getRounds({
             eventId,
             drawId,
           } = matchUp;
-          const relevantStructureId = isRoundRobin
-            ? containerStructureId
-            : structureId;
+          const relevantStructureId = isRoundRobin ? containerStructureId : structureId;
           return {
             ...rounds,
             [id]: {
@@ -177,28 +149,21 @@ export function getRounds({
               drawId,
             },
           };
-        }, {})
+        }, {}),
       )
         .map((round: any) => {
-          const { minFinishingSum, winnerFinishingPositionRange } =
-            getFinishingPositionDetails(round.matchUps);
+          const { minFinishingSum, winnerFinishingPositionRange } = getFinishingPositionDetails(round.matchUps);
           const segmentsCount = round.segmentsCount;
 
           if (segmentsCount) {
             const chunkSize = round.matchUps.length / segmentsCount;
             const sortedMatchUps = chunkArray(
               round.matchUps.sort((a, b) => a.roundPosition - b.roundPosition),
-              chunkSize
+              chunkSize,
             );
             return sortedMatchUps.map((matchUps, i) => {
-              const {
-                unscheduledCount,
-                incompleteCount,
-                matchUpsCount,
-                isScheduled,
-                isComplete,
-                byeCount,
-              } = getRoundProfile(matchUps);
+              const { unscheduledCount, incompleteCount, matchUpsCount, isScheduled, isComplete, byeCount } =
+                getRoundProfile(matchUps);
 
               const roundTiming = getRoundTiming({
                 matchUps: round.matchUps,
@@ -225,14 +190,8 @@ export function getRounds({
             });
           }
 
-          const {
-            unscheduledCount,
-            incompleteCount,
-            matchUpsCount,
-            isScheduled,
-            isComplete,
-            byeCount,
-          } = getRoundProfile(round.matchUps);
+          const { unscheduledCount, incompleteCount, matchUpsCount, isScheduled, isComplete, byeCount } =
+            getRoundProfile(round.matchUps);
           const roundTiming = getRoundTiming({
             matchUps: round.matchUps,
             tournamentRecords,
@@ -261,8 +220,7 @@ export function getRounds({
             if (
               scheduleDate &&
               profileRoundsMap[roundId] &&
-              extractDate(profileRoundsMap[roundId].scheduleDate) ===
-                scheduleDate
+              extractDate(profileRoundsMap[roundId].scheduleDate) === scheduleDate
             ) {
               return false;
             }
@@ -270,27 +228,17 @@ export function getRounds({
           const { isComplete, isScheduled } = round;
           const keepComplete = !excludeCompletedRounds || !isComplete;
           const keepScheduled = !excludeScheduledRounds || !isScheduled;
-          const event =
-            venueId || scheduleDate
-              ? events?.find(({ eventId }) => eventId === round.eventId)
-              : undefined;
+          const event = venueId || scheduleDate ? events?.find(({ eventId }) => eventId === round.eventId) : undefined;
 
           const startDate = event?.startDate ?? tournamentRecord?.startDate;
           const endDate = event?.endDate ?? tournamentRecord?.endDate;
-          const validStartDate =
-            !scheduleDate ||
-            !startDate ||
-            new Date(scheduleDate) >= new Date(startDate);
-          const validEndDate =
-            !scheduleDate ||
-            !endDate ||
-            new Date(scheduleDate) <= new Date(endDate);
+          const validStartDate = !scheduleDate || !startDate || new Date(scheduleDate) >= new Date(startDate);
+          const validEndDate = !scheduleDate || !endDate || new Date(scheduleDate) <= new Date(endDate);
           const validDate = validStartDate && validEndDate;
 
           const validVenue = !venueId || event?.validVenueIds.includes(venueId);
 
-          const keepRound =
-            keepComplete && keepScheduled && validVenue && validDate;
+          const keepRound = keepComplete && keepScheduled && validVenue && validDate;
           if (!keepRound) excludedRounds.push(round);
 
           return keepRound;

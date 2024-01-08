@@ -19,12 +19,8 @@ type AggregatorResut = {
 
 // Returns arrays of all drawIds and eventIds across tournamentRecords
 // Returns an combined array of drawIds and eventIds for each tournamentId
-export function getEventIdsAndDrawIds(params: {
-  tournamentRecords: TournamentRecords;
-}): AggregatorResut {
-  const paramCheck = checkRequiredParameters(params, [
-    { [TOURNAMENT_RECORDS]: true },
-  ]);
+export function getEventIdsAndDrawIds(params: { tournamentRecords: TournamentRecords }): AggregatorResut {
+  const paramCheck = checkRequiredParameters(params, [{ [TOURNAMENT_RECORDS]: true }]);
   if (paramCheck.error) return paramCheck;
 
   const tournamentIds = Object.keys(params.tournamentRecords);
@@ -36,11 +32,7 @@ export function getEventIdsAndDrawIds(params: {
       const tournamentRecord = params.tournamentRecords[tournamentId];
       const events = tournamentRecord.events || [];
       const eventIds = events.map(({ eventId }) => eventId);
-      const drawIds = events
-        .map((event) =>
-          (event.drawDefinitions || []).map(({ drawId }) => drawId)
-        )
-        .flat();
+      const drawIds = events.map((event) => (event.drawDefinitions || []).map(({ drawId }) => drawId)).flat();
 
       aggregator.tournamentIdMap[tournamentId].push(...eventIds, ...drawIds);
       aggregator.eventIds.push(...eventIds);
@@ -48,6 +40,6 @@ export function getEventIdsAndDrawIds(params: {
 
       return aggregator;
     },
-    { eventIds: [], drawIds: [], tournamentIdMap: {} }
+    { eventIds: [], drawIds: [], tournamentIdMap: {} },
   );
 }
