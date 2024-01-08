@@ -1,6 +1,7 @@
 import { automatedPlayoffPositioning } from '../../../mutate/drawDefinitions/automatedPlayoffPositioning';
 import { addPlayoffStructures } from '../../../mutate/drawDefinitions/addPlayoffStructures';
 import { setParticipantScaleItem } from '../../../mutate/participants/addScaleItems';
+import { completeDrawMatchUps, completeDrawMatchUp } from './completeDrawMatchUps';
 import { addDrawDefinition } from '../../../mutate/drawDefinitions/addDrawDefinition';
 import { generateDrawDefinition } from '../drawDefinitions/generateDrawDefinition';
 import { addParticipants } from '../../../mutate/participants/addParticipants';
@@ -20,16 +21,9 @@ import { addFlight } from '../../../mutate/events/addFlight';
 import { processTieFormat } from './processTieFormat';
 import { coerceEven } from '../../../utilities/math';
 import { UUID } from '../../../utilities/UUID';
-import {
-  completeDrawMatchUps,
-  completeDrawMatchUp,
-} from './completeDrawMatchUps';
 
-import {
-  INDIVIDUAL,
-  PAIR,
-  TEAM,
-} from '../../../constants/participantConstants';
+import { DRAW_DEFINITION_NOT_FOUND, STRUCTURE_NOT_FOUND } from '../../../constants/errorConditionConstants';
+import { INDIVIDUAL, PAIR, TEAM } from '../../../constants/participantConstants';
 import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
 import { COMPLETED } from '../../../constants/matchUpStatusConstants';
 import { SINGLES, DOUBLES } from '../../../constants/eventConstants';
@@ -45,10 +39,6 @@ import {
   ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
 } from '../../../constants/drawDefinitionConstants';
-import {
-  DRAW_DEFINITION_NOT_FOUND,
-  STRUCTURE_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
 
 export function generateEventWithDraw(params) {
   const {
@@ -93,9 +83,7 @@ export function generateEventWithDraw(params) {
     stage,
   } = drawProfileCopy;
 
-  const drawSize =
-    drawProfileCopy.drawSize ||
-    (drawProfileCopy.ignoreDefaults ? undefined : 32);
+  const drawSize = drawProfileCopy.drawSize || (drawProfileCopy.ignoreDefaults ? undefined : 32);
 
   const eventId = drawProfileCopy.eventId || UUID();
   const eventType = drawProfile.eventType || drawProfile.matchUpType || SINGLES;
@@ -111,11 +99,9 @@ export function generateEventWithDraw(params) {
       })) ||
     undefined;
 
-  const categoryName =
-    category?.categoryName || category?.ageCategoryCode || category?.ratingType;
+  const categoryName = category?.categoryName || category?.ageCategoryCode || category?.ratingType;
 
-  const eventName =
-    drawProfile.eventName || categoryName || `Generated ${eventType}`;
+  const eventName = drawProfile.eventName || categoryName || `Generated ${eventType}`;
   let targetParticipants = tournamentRecord?.participants || [];
 
   const qualifyingParticipantsCount =
@@ -124,8 +110,7 @@ export function generateEventWithDraw(params) {
       .flat() // in case each profile contains an array of stageSequences
       .reduce((count, profile) => {
         const qpc =
-          !profile.participantsCount ||
-          profile.participantsCount > profile.drawSize
+          !profile.participantsCount || profile.participantsCount > profile.drawSize
             ? profile.drawSize
             : profile.participantsCount || 0;
         return count + qpc;
@@ -154,15 +139,8 @@ export function generateEventWithDraw(params) {
   }
 
   const uniqueParticipantIds: string[] = [];
-  if (
-    qualifyingParticipantsCount ||
-    drawProfile.uniqueParticipants ||
-    !tournamentRecord ||
-    gender ||
-    category
-  ) {
-    const drawParticipantsCount =
-      (participantsCount || 0) + alternatesCount + qualifyingParticipantsCount;
+  if (qualifyingParticipantsCount || drawProfile.uniqueParticipants || !tournamentRecord || gender || category) {
+    const drawParticipantsCount = (participantsCount || 0) + alternatesCount + qualifyingParticipantsCount;
     let individualParticipantCount = drawParticipantsCount;
     const gendersCount = { [MALE]: 0, [FEMALE]: 0 };
     let teamSize, genders;
@@ -179,19 +157,14 @@ export function generateEventWithDraw(params) {
           gendersCount[key] = drawSize * genders[key];
         }
       });
-      individualParticipantCount =
-        teamSize * ((drawSize || 0) + qualifyingParticipantsCount);
+      individualParticipantCount = teamSize * ((drawSize || 0) + qualifyingParticipantsCount);
     }
 
-    const idPrefix = participantsProfile?.idPrefix
-      ? `D-${drawIndex}-${participantsProfile?.idPrefix}`
-      : undefined;
+    const idPrefix = participantsProfile?.idPrefix ? `D-${drawIndex}-${participantsProfile?.idPrefix}` : undefined;
 
     const result = generateParticipants({
       ...participantsProfile,
-      scaledParticipantsCount:
-        drawProfile.scaledParticipantsCount ||
-        participantsProfile.scaledParticipantsCount,
+      scaledParticipantsCount: drawProfile.scaledParticipantsCount || participantsProfile.scaledParticipantsCount,
       participantsCount: individualParticipantCount,
       consideredDate: tournamentRecord?.startDate,
       sex: gender || participantsProfile?.sex,
@@ -216,26 +189,18 @@ export function generateEventWithDraw(params) {
       if (result.error) return result;
     }
 
-    unique.forEach(({ participantId }) =>
-      uniqueParticipantIds.push(participantId)
-    );
+    unique.forEach(({ participantId }) => uniqueParticipantIds.push(participantId));
     targetParticipants = unique;
 
     if (eventType === TEAM) {
       const maleIndividualParticipantIds = genders[MALE]
         ? unique
-            .filter(
-              ({ participantType, person }) =>
-                participantType === INDIVIDUAL && person?.sex === MALE
-            )
+            .filter(({ participantType, person }) => participantType === INDIVIDUAL && person?.sex === MALE)
             .map(getParticipantId)
         : [];
       const femaleIndividualParticipantIds = genders[FEMALE]
         ? unique
-            .filter(
-              ({ participantType, person }) =>
-                participantType === INDIVIDUAL && person?.sex === FEMALE
-            )
+            .filter(({ participantType, person }) => participantType === INDIVIDUAL && person?.sex === FEMALE)
             .map(getParticipantId)
         : [];
       const remainingParticipantIds = unique
@@ -244,7 +209,7 @@ export function generateEventWithDraw(params) {
         .filter(
           (participantId) =>
             !maleIndividualParticipantIds.includes(participantId) &&
-            !femaleIndividualParticipantIds.includes(participantId)
+            !femaleIndividualParticipantIds.includes(participantId),
         );
 
       const mixedCount = teamSize - (genders[MALE] + genders[FEMALE]);
@@ -252,34 +217,23 @@ export function generateEventWithDraw(params) {
       let fIndex = 0,
         mIndex = 0,
         rIndex = 0;
-      const teamParticipants = generateRange(0, drawParticipantsCount).map(
-        (teamIndex) => {
-          const fPIDs = femaleIndividualParticipantIds.slice(
-            fIndex,
-            fIndex + genders[FEMALE]
-          );
-          const mPIDs = maleIndividualParticipantIds.slice(
-            mIndex,
-            mIndex + genders[MALE]
-          );
-          const rIDs = remainingParticipantIds.slice(
-            rIndex,
-            rIndex + mixedCount
-          );
-          fIndex += genders[FEMALE];
-          mIndex += genders[MALE];
-          rIndex += mixedCount;
+      const teamParticipants = generateRange(0, drawParticipantsCount).map((teamIndex) => {
+        const fPIDs = femaleIndividualParticipantIds.slice(fIndex, fIndex + genders[FEMALE]);
+        const mPIDs = maleIndividualParticipantIds.slice(mIndex, mIndex + genders[MALE]);
+        const rIDs = remainingParticipantIds.slice(rIndex, rIndex + mixedCount);
+        fIndex += genders[FEMALE];
+        mIndex += genders[MALE];
+        rIndex += mixedCount;
 
-          return {
-            individualParticipantIds: [...fPIDs, ...mPIDs, ...rIDs],
-            participantOtherName: `TM${teamIndex + 1}`,
-            participantName: `Team ${teamIndex + 1}`,
-            participantRole: COMPETITOR,
-            participantType: TEAM,
-            participantId: UUID(),
-          };
-        }
-      );
+        return {
+          individualParticipantIds: [...fPIDs, ...mPIDs, ...rIDs],
+          participantOtherName: `TM${teamIndex + 1}`,
+          participantName: `Team ${teamIndex + 1}`,
+          participantRole: COMPETITOR,
+          participantType: TEAM,
+          participantId: UUID(),
+        };
+      });
       const result = addParticipants({
         participants: teamParticipants as Participant[],
         tournamentRecord,
@@ -300,9 +254,7 @@ export function generateEventWithDraw(params) {
     if (!drawProfile.gender) return true;
     if (participant.person?.sex === drawProfile.gender) return true;
     return participant.individualParticipantIds?.some((participantId) => {
-      const individualParticipant = targetParticipants.find(
-        (p) => p.participantId === participantId
-      );
+      const individualParticipant = targetParticipants.find((p) => p.participantId === participantId);
       return individualParticipant && isEventGender(individualParticipant);
     });
   };
@@ -310,13 +262,9 @@ export function generateEventWithDraw(params) {
   const consideredParticipants = targetParticipants
     .filter(isEventParticipantType)
     .filter(isEventGender)
-    .filter(
-      ({ participantId }) => !allUniqueParticipantIds.includes(participantId)
-    );
+    .filter(({ participantId }) => !allUniqueParticipantIds.includes(participantId));
 
-  const participantIds = consideredParticipants
-    .slice(0, participantsCount)
-    .map((p) => p.participantId);
+  const participantIds = consideredParticipants.slice(0, participantsCount).map((p) => p.participantId);
 
   if (isMock && participantIds?.length) {
     const result = addEventEntries({
@@ -331,10 +279,7 @@ export function generateEventWithDraw(params) {
 
   const qualifyingParticipantIds = qualifyingParticipantsCount
     ? consideredParticipants
-        .slice(
-          participantsCount,
-          participantsCount + qualifyingParticipantsCount
-        )
+        .slice(participantsCount, participantsCount + qualifyingParticipantsCount)
         .map((p) => p.participantId)
     : 0;
 
@@ -350,17 +295,10 @@ export function generateEventWithDraw(params) {
       let entryStageSequence = 1;
       let qualifyingPositions;
 
-      for (const structureProfile of roundTargetProfile.structureProfiles.sort(
-        sequenceSort
-      )) {
-        const drawSize =
-          structureProfile.drawSize ||
-          coerceEven(structureProfile.participantsCount);
+      for (const structureProfile of roundTargetProfile.structureProfiles.sort(sequenceSort)) {
+        const drawSize = structureProfile.drawSize || coerceEven(structureProfile.participantsCount);
         const participantsCount = drawSize - (qualifyingPositions || 0); // minus qualifyingPositions
-        const participantIds = qualifyingParticipantIds.slice(
-          qualifyingIndex,
-          qualifyingIndex + participantsCount
-        );
+        const participantIds = qualifyingParticipantIds.slice(qualifyingIndex, qualifyingIndex + participantsCount);
         const result = addEventEntries({
           entryStage: QUALIFYING,
           entryStageSequence,
@@ -392,10 +330,7 @@ export function generateEventWithDraw(params) {
       ?.filter(({ participantId }) => !participantIds.includes(participantId))
       .filter(isEventParticipantType)
       .filter(isEventGender)
-      .slice(
-        0,
-        alternatesCount || drawSize - participantsCount || tournamentAlternates
-      )
+      .slice(0, alternatesCount || drawSize - participantsCount || tournamentAlternates)
       .map((p) => p.participantId);
 
   if (isMock && alternatesParticipantIds?.length) {
@@ -445,9 +380,7 @@ export function generateEventWithDraw(params) {
   if (Array.isArray(drawExtensions)) {
     drawExtensions
       .filter(isValidExtension)
-      .forEach((extension) =>
-        addExtension({ element: drawDefinition, extension })
-      );
+      .forEach((extension) => addExtension({ element: drawDefinition, extension }));
   }
 
   if (generate) {
@@ -487,9 +420,7 @@ export function generateEventWithDraw(params) {
         const completedCount = result.completedCount;
 
         if (drawType === ROUND_ROBIN_WITH_PLAYOFF) {
-          const mainStructure = drawDefinition.structures?.find(
-            (structure) => structure.stage === MAIN
-          );
+          const mainStructure = drawDefinition.structures?.find((structure) => structure.stage === MAIN);
           if (!mainStructure) return { error: STRUCTURE_NOT_FOUND };
 
           automatedPlayoffPositioning({
@@ -500,9 +431,7 @@ export function generateEventWithDraw(params) {
           });
           // ignore when positioning cannot occur because of incomplete source structure
 
-          const playoffCompletionGoal = completionGoal
-            ? completionGoal - (completedCount ?? 0)
-            : undefined;
+          const playoffCompletionGoal = completionGoal ? completionGoal - (completedCount ?? 0) : undefined;
           const result = completeDrawMatchUps({
             completionGoal: completionGoal ? playoffCompletionGoal : undefined,
             matchUpStatusProfile,
@@ -560,7 +489,7 @@ export function generateEventWithDraw(params) {
             {},
             ...Object.keys(structureMatchUpIds).map((structureId, index) => ({
               [structureId]: index + 1,
-            }))
+            })),
           );
 
           const targetMatchUps = matchUps?.filter((matchUp) => {
@@ -569,10 +498,8 @@ export function generateEventWithDraw(params) {
               (!stageSequence || matchUp.stageSequence === stageSequence) &&
               (!roundNumber || matchUp.roundNumber === roundNumber) &&
               (!roundPosition || matchUp.roundPosition === roundPosition) &&
-              (!structureOrder ||
-                orderedStructures[matchUp.structureId] === structureOrder) &&
-              (!drawPositions ||
-                intersection(drawPositions, matchUp.drawPositions).length === 2)
+              (!structureOrder || orderedStructures[matchUp.structureId] === structureOrder) &&
+              (!drawPositions || intersection(drawPositions, matchUp.drawPositions).length === 2)
             );
           });
 

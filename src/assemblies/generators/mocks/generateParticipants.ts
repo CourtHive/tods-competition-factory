@@ -9,13 +9,14 @@ import { generatePersons } from './generatePersons';
 import { nameMocks } from './nameMocks';
 import { UUID } from '../../../utilities/UUID';
 
-import { GROUP, INDIVIDUAL, PAIR, TEAM } from '../../../constants/participantConstants';
 import defaultRatingsParameters from '../../../fixtures/ratings/ratingsParameters';
+import { INDIVIDUAL, PAIR, TEAM } from '../../../constants/participantConstants';
 import { DOUBLES_EVENT, SINGLES_EVENT } from '../../../constants/eventConstants';
 import { RANKING, RATING, SCALE } from '../../../constants/scaleConstants';
 import { ErrorType } from '../../../constants/errorConditionConstants';
 import { DOUBLES_MATCHUP } from '../../../constants/matchUpTypes';
 import { COMPETITOR } from '../../../constants/participantRoles';
+import { genParticipantId } from './genParticipantId';
 
 export function generateParticipants(params): {
   participants?: any[];
@@ -373,9 +374,4 @@ function addScaleItem({ scaleValue: itemValue, participant, eventType, scaleType
     if (!participant.timeItems) participant.timeItems = [];
     participant.timeItems.push(timeItem);
   }
-}
-
-function genParticipantId({ idPrefix, participantType, index, uuids }) {
-  const type = participantType === INDIVIDUAL ? 'I' : PAIR ? 'P' : TEAM ? 'T' : GROUP ? 'G' : 'X';
-  return idPrefix ? `${idPrefix}-${type}-${index}` : uuids?.pop() || UUID();
 }
