@@ -47,6 +47,7 @@ import {
   TOURNAMENT_ID,
   TOURNAMENT_RECORD,
   TOURNAMENT_RECORDS,
+  UUIDS,
   VENUE_IDS,
 } from '../constants/attributeConstants';
 
@@ -98,18 +99,18 @@ const paramTypes = {
   [MATCHUPS]: ARRAY,
   [MATCHUP]: OBJECT,
   [EVENT]: OBJECT,
+  [UUIDS]: ARRAY,
 };
 
 export function checkRequiredParameters(
   params: Params,
   requiredParams: RequiredParams,
-  stack?: string
+  stack?: string,
 ): ResultType & {
   valid?: boolean;
 } {
   if (!params && !isObject(params)) return { error: INVALID_VALUES };
-  if (!requiredParams?.length || params?._bypassParamCheck)
-    return { valid: true };
+  if (!requiredParams?.length || params?._bypassParamCheck) return { valid: true };
 
   if (!Array.isArray(requiredParams)) return { error: INVALID_VALUES };
 
@@ -143,42 +144,38 @@ function getOneOf(params, _oneOf) {
 
 function getAnyOf(params, _anyOf) {
   if (!_anyOf) return;
-  const overlap = getIntersection(params, _anyOf).filter(
-    (param) => params[param]
-  );
+  const overlap = getIntersection(params, _anyOf).filter((param) => params[param]);
   if (overlap.length < 1) return { error: INVALID_VALUES };
   return overlap.reduce((attr, param) => ({ ...attr, [param]: true }), {});
 }
 
 function findParamError(params, requiredParams) {
   let errorParam;
-  const paramError = requiredParams.find(
-    ({ _ofType, _oneOf, _anyOf, validate, ...attrs }) => {
-      const oneOf = _oneOf && getOneOf(params, _oneOf);
-      if (oneOf?.error) return oneOf.error;
-      oneOf && Object.assign(attrs, oneOf);
+  const paramError = requiredParams.find(({ _ofType, _oneOf, _anyOf, validate, ...attrs }) => {
+    const oneOf = _oneOf && getOneOf(params, _oneOf);
+    if (oneOf?.error) return oneOf.error;
+    oneOf && Object.assign(attrs, oneOf);
 
-      const anyOf = _anyOf && getAnyOf(params, _anyOf);
-      if (anyOf?.error) return anyOf.error;
-      anyOf && Object.assign(attrs, anyOf);
+    const anyOf = _anyOf && getAnyOf(params, _anyOf);
+    if (anyOf?.error) return anyOf.error;
+    anyOf && Object.assign(attrs, anyOf);
 
-      const booleanParams = Object.keys(attrs).filter(
-        (key) => typeof attrs[key] === 'boolean'
-      );
+    const booleanParams = Object.keys(attrs).filter((key) => typeof attrs[key] === 'boolean');
 
-      const invalidParam = booleanParams.find((param) => {
-        const invalid =
-          !isFunction(validate) &&
-          (params[param] === undefined || invalidType(params, param, _ofType));
-        const hasError =
-          invalid || (validate && !checkValidation(params[param], validate));
-        if (hasError) errorParam = param;
-        return hasError;
-      });
+    const invalidParam = booleanParams.find((param) => {
+      const invalidValidationFunction = validate && !isFunction(validate); // validate is specified but not a function
+      const faliedTypeCheck = params[param] && !validate && invalidType(params, param, _ofType); // param is present, no validation function provided, and invalid type
+      const paramNotPresent = attrs[param] && !params[param]; // attrs[param] boolean value is true and param is not present
+      const invalid = invalidValidationFunction || faliedTypeCheck || paramNotPresent;
 
-      return !booleanParams.length || invalidParam;
-    }
-  );
+      const hasError = invalid || (validate && params[param] && !checkValidation(params[param], validate));
+      if (hasError) errorParam = param;
+
+      return hasError;
+    });
+
+    return !booleanParams.length || invalidParam;
+  });
   return { paramError, errorParam };
 }
 
