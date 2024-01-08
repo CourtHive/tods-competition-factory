@@ -9,12 +9,14 @@ import { generateDrawDefinition } from '../../../assemblies/generators/drawDefin
 import { generateAdHocMatchUps } from '../../../assemblies/generators/drawDefinitions/generateAdHocMatchUps';
 import { generateFlightProfile } from '../../../assemblies/generators/drawDefinitions/generateFlightProfile';
 import { generateLineUps } from '../../generators/participants/generateLineUps';
+import { generateCourts } from '../../generators/venues/generateCourts';
 import garman from '../../generators/scheduling/garman/garman';
 
 export const generationGovernor = {
   garman,
   generateAdHocMatchUps,
   generateAndPopulatePlayoffStructures,
+  generateCourts,
   generateDrawDefinition,
   generateDrawMaticRound,
   generateDrawStructuresAndLinks,
