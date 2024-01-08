@@ -29,7 +29,9 @@ describe('AppService', () => {
 
   it('should have a token', async () => {
     expect(token).toBeDefined();
+  });
 
+  it('can remove, create, save and fetch a tournamentRecord', async () => {
     const tournamentId = 't1';
 
     let result = await request(app.getHttpServer())
