@@ -1,7 +1,7 @@
 import { chunkArray, generateRange } from '../../../utilities/arrays';
 import { numericSort } from '../../../utilities/sorting';
 
-import { CLUSTER } from '../../../constants/drawDefinitionConstants';
+import { CLUSTER, WATERFALL } from '../../../constants/drawDefinitionConstants';
 
 function getDivisions({ size }) {
   const divisions: number[] = [size];
@@ -37,10 +37,7 @@ export function getSubBlock({ blockPattern, index }) {
   }
 }
 
-export function generateBlockPattern({
-  positioning,
-  size,
-}: GenerateBlockPatternArgs): {
+export function generateBlockPattern({ positioning, size }: GenerateBlockPatternArgs): {
   divisionGroupings: number[][];
   divisions: number[];
 } {
@@ -51,7 +48,7 @@ export function generateBlockPattern({
   const firstMember = (arr) => arr[0];
   const lastMember = (arr) => arr[arr.length - 1];
   const getMember = (arr, i) =>
-    (positioning === CLUSTER && i % 2 ? lastMember(arr) : firstMember(arr)) ||
+    (positioning && [CLUSTER, WATERFALL].includes(positioning) && i % 2 ? lastMember(arr) : firstMember(arr)) ||
     firstMember(arr);
   const noneSelected = (chunk, i) => {
     if (chunk.every((member) => !selected.includes(member))) {

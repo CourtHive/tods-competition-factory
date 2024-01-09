@@ -14,11 +14,7 @@ import {
   INVALID_PARTICIPANT_ID,
   INVALID_SEED_NUMBER,
 } from '../../../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  Event,
-  Tournament,
-} from '../../../types/tournamentTypes';
+import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
 
 type AssignSeedArgs = {
   provisionalPositioning?: boolean;
@@ -54,9 +50,7 @@ export function assignSeed({
     drawDefinition,
     structure,
   }).seedAssignments as any;
-  const seedNumbers = seedAssignments.map(
-    (assignment) => assignment.seedNumber
-  );
+  const seedNumbers = seedAssignments.map((assignment) => assignment.seedNumber);
 
   const validParticipantId = participantInEntries({
     drawDefinition,
@@ -70,14 +64,10 @@ export function assignSeed({
       stack,
     });
 
-  const flightsCount = event
-    ? getFlightProfile({ event }).flightProfile?.flights?.length
-    : 0;
+  const flightsCount = event ? getFlightProfile({ event }).flightProfile?.flights?.length : 0;
   const flighted = flightsCount && flightsCount > 1;
 
-  const relevantAssignment = positionAssignments?.find(
-    (assignment) => assignment.participantId === participantId
-  );
+  const relevantAssignment = positionAssignments?.find((assignment) => assignment.participantId === participantId);
   const assignedDrawPosition = relevantAssignment?.drawPosition;
 
   if (assignedDrawPosition) {
@@ -104,17 +94,13 @@ export function assignSeed({
   let success;
   seedAssignments.forEach((assignment) => {
     // ensure that this participantId is not assigned to any other seedNumber
-    if (
-      assignment.participantId === participantId &&
-      assignment.seedNumber !== seedNumber
-    ) {
+    if (assignment.participantId === participantId && assignment.seedNumber !== seedNumber) {
       assignment.participantId = undefined;
     }
     // assign participantId to target seedNumber
     if (assignment.seedNumber === seedNumber) {
       assignment.participantId = participantId;
-      if (!seedingProfile?.groupSeedingThreshold && !flighted)
-        assignment.seedValue = seedValue ?? seedNumber;
+      if (!seedingProfile?.groupSeedingThreshold && !flighted) assignment.seedValue = seedValue ?? seedNumber;
       success = true;
     }
   });
