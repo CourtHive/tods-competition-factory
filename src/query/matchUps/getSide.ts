@@ -1,29 +1,30 @@
-/**
- *
- * @param {object} drawPositionCollectionAssignment - mapping of drawPositions to participantIds derived from collectionAssignments
- * @param {object[]} positionAssignments - mapping of drawPositions to participantIds (in TIES this is TEAM participantId)
- * @param {number} displaySideNumber - accounts for both top and bottom feed arm positioning
- * @param {object[]} seedAssignments - mapping of participantIds to seedNumber and seedValue
- * @param {number} drawPosition -
- * @param {boolean} isFeedRound - whether a round includes fed drawPositions
- * @param {number} sideNumber - 1 or 2
- */
+import { PositionAssignment, SeedAssignment } from '../../types/tournamentTypes';
+
 export function getSide({
   drawPositionCollectionAssignment,
+  sideNumberCollectionAssignment,
   positionAssignments,
   displaySideNumber,
   seedAssignments,
   drawPosition,
   isFeedRound,
   sideNumber,
+}: {
+  positionAssignments: PositionAssignment[];
+  drawPositionCollectionAssignment?: any;
+  sideNumberCollectionAssignment?: any;
+  seedAssignments?: SeedAssignment[];
+  displaySideNumber: number;
+  drawPosition?: number;
+  isFeedRound: boolean;
+  sideNumber: number;
 }) {
   const assignment = positionAssignments.find(
-    (assignment) =>
-      assignment.drawPosition && assignment.drawPosition === drawPosition
+    (assignment) => assignment.drawPosition && assignment.drawPosition === drawPosition,
   );
-  const participantId = drawPositionCollectionAssignment
-    ? drawPositionCollectionAssignment[drawPosition]?.participantId
-    : assignment?.participantId;
+  const dpc = drawPosition && drawPositionCollectionAssignment;
+  const snc = sideNumber && sideNumberCollectionAssignment;
+  const participantId = dpc ? dpc[drawPosition]?.participantId : assignment?.participantId;
 
   const sideValue = assignment
     ? getSideValue({
@@ -33,7 +34,7 @@ export function getSide({
         assignment,
         sideNumber,
       })
-    : {};
+    : { ...snc?.[sideNumber] };
 
   if (isFeedRound) {
     if (sideNumber === 1) {
@@ -43,29 +44,19 @@ export function getSide({
     }
   }
 
-  const teamParticipant =
-    drawPositionCollectionAssignment?.[drawPosition]?.teamParticipant;
-
-  const participant =
-    drawPositionCollectionAssignment?.[drawPosition]?.participant;
-
-  const substitutions =
-    drawPositionCollectionAssignment?.[drawPosition]?.substitutions;
-
-  if (participant) Object.assign(sideValue, { participant });
-  if (substitutions) Object.assign(sideValue, { substitutions });
-  if (teamParticipant) Object.assign(sideValue, { teamParticipant });
+  if (drawPosition && dpc) {
+    const teamParticipant = dpc[drawPosition]?.teamParticipant;
+    const participant = dpc[drawPosition]?.participant;
+    const substitutions = dpc[drawPosition]?.substitutions;
+    if (participant) sideValue.participant = participant;
+    if (substitutions) sideValue.substitutions = substitutions;
+    if (teamParticipant) sideValue.teamParticipant = teamParticipant;
+  }
 
   return sideValue;
 }
 
-function getSideValue({
-  displaySideNumber,
-  seedAssignments,
-  participantId,
-  assignment,
-  sideNumber,
-}) {
+function getSideValue({ displaySideNumber, seedAssignments, participantId, assignment, sideNumber }) {
   const side = {
     drawPosition: assignment.drawPosition,
     displaySideNumber,
@@ -86,8 +77,5 @@ function getSideValue({
 }
 
 function getSeeding({ seedAssignments, participantId }) {
-  return seedAssignments?.find(
-    (assignment) =>
-      !assignment.seedProxy && assignment.participantId === participantId
-  );
+  return seedAssignments?.find((assignment) => !assignment.seedProxy && assignment.participantId === participantId);
 }
