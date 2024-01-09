@@ -128,6 +128,7 @@ export function collectionMatchUpActions({
       payload: {
         participantId: undefined,
         tieMatchUpId: matchUpId,
+        sideNumber,
         drawId,
       },
     });
