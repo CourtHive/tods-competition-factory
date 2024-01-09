@@ -20,4 +20,5 @@ export type HydratedParticipant = {
 
 export type HydratedSide = Side & {
   participant?: HydratedParticipant;
+  [key: string | number]: any;
 };

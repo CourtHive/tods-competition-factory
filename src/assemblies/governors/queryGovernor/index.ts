@@ -64,7 +64,7 @@ import { allEventMatchUps } from '../../../query/matchUps/getAllEventMatchUps';
 import { getParticipants } from '../../../query/participants/getParticipants';
 import { allDrawMatchUps } from '../../../query/matchUps/getAllDrawMatchUps';
 import { categoryCanContain } from '../../../query/event/categoryCanContain';
-import { matchUpActions } from '../../../query/drawDefinition/matchUpActions';
+import { matchUpActions } from '../../../query/drawDefinition/matchUpActions/matchUpActions';
 import { getEventProperties } from '../../../query/event/getEventProperties';
 import { getTeamLineUp } from '../../../mutate/drawDefinitions/getTeamLineUp';
 import { getMatchUpsStats } from '../../../query/matchUps/getMatchUpsStats';
@@ -94,26 +94,11 @@ import { getEvents } from '../../../query/events/getEvents';
 import { getEvent } from '../../../query/events/getEvent';
 import { findPolicy } from '../../../acquire/findPolicy';
 import { credits } from '../../../fixtures/credits';
-import {
-  allPlayoffPositionsFilled,
-  isCompletedStructure,
-} from '../../../query/drawDefinition/structureActions';
-import {
-  getPolicyDefinitions,
-  getAppliedPolicies,
-} from '../../../query/extensions/getAppliedPolicies';
-import {
-  getCompetitionVenues,
-  getVenuesAndCourts,
-} from '../../../query/venues/venuesAndCourtsGetter';
-import {
-  getEventStructures,
-  getTournamentStructures,
-} from '../../../query/structure/structureGetter';
-import {
-  getAllowedDrawTypes,
-  getAllowedMatchUpFormats,
-} from '../../../query/tournaments/allowedTypes';
+import { allPlayoffPositionsFilled, isCompletedStructure } from '../../../query/drawDefinition/structureActions';
+import { getPolicyDefinitions, getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
+import { getCompetitionVenues, getVenuesAndCourts } from '../../../query/venues/venuesAndCourtsGetter';
+import { getEventStructures, getTournamentStructures } from '../../../query/structure/structureGetter';
+import { getAllowedDrawTypes, getAllowedMatchUpFormats } from '../../../query/tournaments/allowedTypes';
 import {
   getTimeItem,
   getEventTimeItem,
@@ -122,10 +107,7 @@ import {
   getDrawDefinitionTimeItem,
 } from '../../../query/base/timeItems';
 
-import {
-  MISSING_DRAW_ID,
-  MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
+import { MISSING_DRAW_ID, MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 
 function findDrawDefinition({ tournamentRecord, drawDefinition }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

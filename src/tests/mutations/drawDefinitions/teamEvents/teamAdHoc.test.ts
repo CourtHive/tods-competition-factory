@@ -7,6 +7,7 @@ import { DOMINANT_DUO } from '../../../../constants/tieFormatConstants';
 import { AD_HOC } from '../../../../constants/drawDefinitionConstants';
 import { TEAM } from '../../../../constants/eventConstants';
 import { xa } from '../../../../utilities/objects';
+import { ASSIGN_PARTICIPANT } from '../../../../constants/positionActionConstants';
 
 it('can assign participants to SINGLES/DOUBLES matchUps in TEAM AdHoc events', () => {
   const tournamentId = 't1';
@@ -88,6 +89,17 @@ it('can assign participants to SINGLES/DOUBLES matchUps in TEAM AdHoc events', (
   // end unnecessary for the purpse of this test -----------------------------------------------------
 
   const tieMatchUpId = 'd1-ah-1-0-e1-COL-2-TMU-1';
+
+  result = tournamentEngine.matchUpActions({
+    matchUpId: tieMatchUpId,
+    sideNumber: 1,
+    tournamentId,
+    eventId,
+    drawId,
+  });
+
+  expect(result.validActions.find((x) => x.type === ASSIGN_PARTICIPANT).availableParticipants.length).toEqual(2);
+
   const participantId = 'ptcpt-I-0';
   result = tournamentEngine.executionQueue([
     {
