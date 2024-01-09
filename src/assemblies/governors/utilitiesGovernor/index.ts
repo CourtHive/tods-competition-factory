@@ -5,7 +5,7 @@ import { structureSort } from '../../../functions/sorters/structureSort';
 import { definedAttributes } from '../../../utilities/definedAttributes';
 import { attributeFilter } from '../../../utilities/attributeFilter';
 import { matchUpSort } from '../../../functions/sorters/matchUpSort';
-import { dateRange, dateTime } from '../../../utilities/dateTime';
+import { generateDateRange, dateTime } from '../../../utilities/dateTime';
 import { JSON2CSV, flattenJSON } from '../../../utilities/json';
 import { generateTimeCode } from '../../../utilities/timeCode';
 import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
@@ -62,11 +62,11 @@ export const utilitiesGovernor = {
   constantToString,
   countValues,
   createMap,
-  dateRange,
   dateTime,
   definedAttributes,
   extractAttributes,
   flattenJSON,
+  generateDateRange,
   generateHashCode,
   generateRange,
   generateTimeCode,

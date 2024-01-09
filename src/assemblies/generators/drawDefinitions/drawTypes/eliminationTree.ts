@@ -37,18 +37,11 @@ export function treeMatchUps({
   isMock,
   uuids,
 }: TreeMatchUpsArgs): TreeMatchUpsReturn {
-  if (
-    isNaN(drawSize) ||
-    drawSize < 2 ||
-    (qualifyingPositions && drawSize <= qualifyingPositions)
-  ) {
+  if (isNaN(drawSize) || drawSize < 2 || (qualifyingPositions && drawSize <= qualifyingPositions)) {
     return { matchUps: [], roundsCount: 0 };
   }
 
-  if (
-    qualifyingPositions &&
-    (!isPowerOf2(drawSize) || drawSize % qualifyingPositions)
-  ) {
+  if (qualifyingPositions && (!isPowerOf2(drawSize) || drawSize % qualifyingPositions)) {
     // if drawSize is NOT a multiple of qualifyingPositions...
     // change drawSize to a multiple of qualifyingPositions that is larger than drawSize
     let requiredDrawSize = qualifyingPositions;
@@ -59,13 +52,9 @@ export function treeMatchUps({
   const isValidQualifying =
     qualifyingPositions &&
     !(drawSize % 2) &&
-    (!isNaN(qualifyingPositions) ||
-      (qualifyingRoundNumber && !isNaN(qualifyingRoundNumber))) &&
-    (drawSize / qualifyingPositions ===
-      Math.round(drawSize / qualifyingPositions) ||
-      (qualifyingRoundNumber &&
-        drawSize / qualifyingRoundNumber ===
-          Math.round(drawSize / qualifyingRoundNumber)));
+    (!isNaN(qualifyingPositions) || (qualifyingRoundNumber && !isNaN(qualifyingRoundNumber))) &&
+    (drawSize / qualifyingPositions === Math.round(drawSize / qualifyingPositions) ||
+      (qualifyingRoundNumber && drawSize / qualifyingRoundNumber === Math.round(drawSize / qualifyingRoundNumber)));
 
   if (!isPowerOf2(drawSize) && !isValidQualifying) {
     return { matchUps: [], roundsCount: 0 };
@@ -124,9 +113,7 @@ export function treeMatchUps({
     // subtract one to account for the last ++
     roundLimit = roundNumber - 1;
   } else {
-    matchUps = matchUps.filter(
-      (matchUp) => roundLimit && (matchUp.roundNumber ?? 0) <= roundLimit
-    );
+    matchUps = matchUps.filter((matchUp) => roundLimit && (matchUp.roundNumber ?? 0) <= roundLimit);
   }
 
   return { drawSize, matchUps, roundsCount, roundLimit };

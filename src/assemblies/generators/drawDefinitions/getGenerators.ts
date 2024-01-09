@@ -4,12 +4,12 @@ import { firstRoundLoserConsolation } from './drawTypes/firstRoundLoserConsolati
 import { generateDoubleElimination } from './drawTypes/doubleEliminattion';
 import { generateCurtisConsolation } from './drawTypes/curtisConsolation';
 import { generatePlayoffStructures } from './drawTypes/playoffStructures';
-import structureTemplate from '../templates/structureTemplate';
-import { feedInChampionship } from './drawTypes/feedInChamp';
 import { generateRoundRobin } from './drawTypes/roundRobin/roundRobin';
-import { feedInMatchUps } from './feedInMatchUps';
-import { treeMatchUps } from './drawTypes/eliminationTree';
+import structureTemplate from '../templates/structureTemplate';
 import { constantToString } from '../../../utilities/strings';
+import { feedInChampionship } from './drawTypes/feedInChamp';
+import { treeMatchUps } from './drawTypes/eliminationTree';
+import { feedInMatchUps } from './feedInMatchUps';
 import { luckyDraw } from './drawTypes/luckyDraw';
 
 import { POLICY_TYPE_FEED_IN } from '../../../constants/policyConstants';
@@ -30,39 +30,30 @@ import {
 } from '../../../constants/drawDefinitionConstants';
 
 export function getGenerators(params): { generators?: any; error?: ErrorType } {
-  const {
-    playoffAttributes,
-    stageSequence = 1,
-    structureId,
-    stage = MAIN,
-    matchUpType,
-    drawSize,
-    uuids,
-  } = params;
+  const { playoffAttributes, stageSequence = 1, stage = MAIN, matchUpType, drawSize, uuids } = params;
+
+  const getPrefixedStructureId = () => {
+    if (!params.isMock && !params.idPrefix) return undefined;
+    const drawId = params.drawDefinition.drawId;
+    return `${drawId}-s-0`;
+  };
+  const structureId = params.structureId || getPrefixedStructureId() || uuids?.pop();
 
   const { appliedPolicies } = getAppliedPolicies(params);
-  const feedPolicy =
-    params.policyDefinitions?.[POLICY_TYPE_FEED_IN] ||
-    appliedPolicies?.[POLICY_TYPE_FEED_IN];
+  const feedPolicy = params.policyDefinitions?.[POLICY_TYPE_FEED_IN] || appliedPolicies?.[POLICY_TYPE_FEED_IN];
 
   // disable feeding from MAIN final unless policy specifies
-  params.skipRounds =
-    params.skipRounds ||
-    (drawSize <= 4 && (feedPolicy?.feedMainFinal ? 0 : 1)) ||
-    0;
+  params.skipRounds = params.skipRounds || (drawSize <= 4 && (feedPolicy?.feedMainFinal ? 0 : 1)) || 0;
 
-  const structureName =
-    params.structureName ??
-    playoffAttributes?.['0']?.name ??
-    constantToString(MAIN);
+  const structureName = params.structureName ?? playoffAttributes?.['0']?.name ?? constantToString(MAIN);
 
   const singleElimination = () => {
     const { matchUps } = treeMatchUps(params);
     const structure = structureTemplate({
-      structureId: structureId || uuids?.pop(),
       stageSequence,
       structureName,
       matchUpType,
+      structureId,
       matchUps,
       stage,
     });
@@ -73,12 +64,12 @@ export function getGenerators(params): { generators?: any; error?: ErrorType } {
   const generators = {
     [AD_HOC]: () => {
       const structure = structureTemplate({
-        structureId: structureId || uuids?.pop(),
         finishingPosition: WIN_RATIO,
         stageSequence,
         structureName,
         matchUps: [],
         matchUpType,
+        structureId,
         stage,
       });
 
@@ -87,10 +78,10 @@ export function getGenerators(params): { generators?: any; error?: ErrorType } {
     [LUCKY_DRAW]: () => {
       const { matchUps } = luckyDraw(params);
       const structure = structureTemplate({
-        structureId: structureId || uuids?.pop(),
         stageSequence,
         structureName,
         matchUpType,
+        structureId,
         matchUps,
         stage,
       });
@@ -119,10 +110,10 @@ export function getGenerators(params): { generators?: any; error?: ErrorType } {
       const { matchUps } = feedInMatchUps({ drawSize, uuids, matchUpType });
 
       const structure = structureTemplate({
-        structureId: structureId || uuids?.pop(),
         stageSequence,
         structureName,
         matchUpType,
+        structureId,
         stage: MAIN,
         matchUps,
       });
@@ -130,8 +121,7 @@ export function getGenerators(params): { generators?: any; error?: ErrorType } {
       return { structures: [structure], links: [], ...SUCCESS };
     },
     [FIRST_ROUND_LOSER_CONSOLATION]: () => firstRoundLoserConsolation(params),
-    [FIRST_MATCH_LOSER_CONSOLATION]: () =>
-      feedInChampionship({ ...params, feedRounds: 1, fmlc: true }),
+    [FIRST_MATCH_LOSER_CONSOLATION]: () => feedInChampionship({ ...params, feedRounds: 1, fmlc: true }),
     [MFIC]: () => feedInChampionship({ ...params, feedRounds: 1 }),
     [FICSF]: () => feedInChampionship({ ...params, feedsFromFinal: 1 }),
     [FICQF]: () => feedInChampionship({ ...params, feedsFromFinal: 2 }),

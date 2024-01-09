@@ -7,22 +7,18 @@ import { resolveTieFormat } from '../../../query/hierarchical/tieFormats/resolve
 import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { positionTargets } from '../../../mutate/matchUps/drawPositions/positionTargets';
 import { checkMatchUpIsComplete } from '../../../query/matchUp/checkMatchUpIsComplete';
+import { NamingEntry, generatePlayoffStructures } from './drawTypes/playoffStructures';
+import { ResultType, decorateResult } from '../../../global/functions/decorateResult';
 import { addGoesTo } from '../../../mutate/drawDefinitions/matchUpGovernor/addGoesTo';
 import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import { getMatchUpId } from '../../../global/functions/extractors';
+import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
 import { findStructure } from '../../../acquire/findStructure';
 import { ensureInt } from '../../../utilities/ensureInt';
 import { generateTieMatchUps } from './tieMatchUps';
-import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
-import {
-  ResultType,
-  decorateResult,
-} from '../../../global/functions/decorateResult';
-import {
-  NamingEntry,
-  generatePlayoffStructures,
-} from './drawTypes/playoffStructures';
 
+import { DrawDefinition, DrawLink, Event, Structure, Tournament } from '../../../types/tournamentTypes';
+import { CONTAINER, LOSER, PLAY_OFF, TOP_DOWN } from '../../../constants/drawDefinitionConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { RoundProfile } from '../../../types/factoryTypes';
@@ -32,19 +28,6 @@ import {
   MISSING_DRAW_DEFINITION,
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import {
-  CONTAINER,
-  LOSER,
-  PLAY_OFF,
-  TOP_DOWN,
-} from '../../../constants/drawDefinitionConstants';
-import {
-  DrawDefinition,
-  DrawLink,
-  Event,
-  Structure,
-  Tournament,
-} from '../../../types/tournamentTypes';
 
 type GenerateAndPopulateArgs = {
   addNameBaseToAttributeName?: boolean;
@@ -65,9 +48,7 @@ type GenerateAndPopulateArgs = {
   uuids?: string[];
   event?: Event;
 };
-export function generateAndPopulatePlayoffStructures(
-  params: GenerateAndPopulateArgs
-): ResultType & {
+export function generateAndPopulatePlayoffStructures(params: GenerateAndPopulateArgs): ResultType & {
   drawDefinition?: DrawDefinition;
   matchUpModifications?: any[];
   structures?: Structure[];
@@ -115,8 +96,7 @@ export function generateAndPopulatePlayoffStructures(
     drawDefinition,
   });
 
-  if (!structure)
-    return decorateResult({ result: { error: STRUCTURE_NOT_FOUND }, stack });
+  if (!structure) return decorateResult({ result: { error: STRUCTURE_NOT_FOUND }, stack });
 
   if (structure.structureType === CONTAINER || structure.structures) {
     return generateAndPopulateRRplayoffStructures({
@@ -127,10 +107,8 @@ export function generateAndPopulatePlayoffStructures(
     });
   }
 
-  const {
-    playoffRoundsRanges: availablePlayoffRoundsRanges,
-    playoffRounds: availablePlayoffRounds,
-  } = availabilityResult;
+  const { playoffRoundsRanges: availablePlayoffRoundsRanges, playoffRounds: availablePlayoffRounds } =
+    availabilityResult;
 
   const {
     playoffPositionsReturned,
@@ -143,17 +121,13 @@ export function generateAndPopulatePlayoffStructures(
     return decorateResult({ result: { error: sourceRoundsError }, stack });
   }
 
-  const roundProfile =
-    roundProfiles?.length && Object.assign({}, ...roundProfiles);
+  const roundProfile = roundProfiles?.length && Object.assign({}, ...roundProfiles);
 
   const targetRoundNumbers =
-    roundNumbers ||
-    (typeof roundProfiles === 'object' &&
-      roundProfiles.map((p) => Object.keys(p)).flat());
+    roundNumbers || (typeof roundProfiles === 'object' && roundProfiles.map((p) => Object.keys(p)).flat());
 
   const validRoundNumbers =
-    Array.isArray(targetRoundNumbers) &&
-    targetRoundNumbers.map((p) => !isNaN(p) && ensureInt(p)).filter(Boolean);
+    Array.isArray(targetRoundNumbers) && targetRoundNumbers.map((p) => !isNaN(p) && ensureInt(p)).filter(Boolean);
 
   if (validRoundNumbers) {
     if (!Array.isArray(validRoundNumbers))
@@ -189,17 +163,13 @@ export function generateAndPopulatePlayoffStructures(
   }
 
   const sourceRounds = validRoundNumbers || playoffSourceRounds;
-  const roundsRanges = validRoundNumbers
-    ? availablePlayoffRoundsRanges
-    : playoffRoundsRanges;
+  const roundsRanges = validRoundNumbers ? availablePlayoffRoundsRanges : playoffRoundsRanges;
 
   const newStructures: Structure[] = [];
   const newLinks: DrawLink[] = [];
 
   for (const roundNumber of sourceRounds ?? []) {
-    const roundInfo = roundsRanges?.find(
-      (roundInfo) => roundInfo.roundNumber === roundNumber
-    );
+    const roundInfo = roundsRanges?.find((roundInfo) => roundInfo.roundNumber === roundNumber);
     if (!roundInfo)
       return decorateResult({
         result: { error: INVALID_VALUES },
@@ -207,14 +177,10 @@ export function generateAndPopulatePlayoffStructures(
         stack,
       });
     const drawSize = roundInfo.finishingPositions.length;
-    const finishingPositionOffset =
-      Math.min(...roundInfo.finishingPositions) - 1;
+    const finishingPositionOffset = Math.min(...roundInfo.finishingPositions) - 1;
 
     const stageSequence = 2;
-    const sequenceLimit =
-      roundNumber &&
-      roundProfile?.[roundNumber] &&
-      stageSequence + roundProfile[roundNumber] - 1;
+    const sequenceLimit = roundNumber && roundProfile?.[roundNumber] && stageSequence + roundProfile[roundNumber] - 1;
 
     const result = generatePlayoffStructures({
       exitProfile: `0-${roundNumber}`,
@@ -282,16 +248,14 @@ export function generateAndPopulatePlayoffStructures(
     ?.filter(({ structureId }) => newStructureIds.includes(structureId))
     .map(getMatchUpId);
 
-  const addedMatchUps = matchUpsMap?.drawMatchUps?.filter(
-    ({ matchUpId }) => addedMatchUpIds?.includes(matchUpId)
-  );
+  const addedMatchUps = matchUpsMap?.drawMatchUps?.filter(({ matchUpId }) => addedMatchUpIds?.includes(matchUpId));
 
   if (addedMatchUps?.length) {
     const tieFormat = resolveTieFormat({ drawDefinition, event })?.tieFormat;
 
     if (tieFormat) {
       addedMatchUps.forEach((matchUp) => {
-        const { tieMatchUps } = generateTieMatchUps({ tieFormat, isMock });
+        const { tieMatchUps } = generateTieMatchUps({ matchUp, tieFormat, isMock });
         Object.assign(matchUp, { tieMatchUps, matchUpType: TEAM });
       });
     }
@@ -299,9 +263,7 @@ export function generateAndPopulatePlayoffStructures(
 
   // now advance any players from completed matchUps into the newly added structures
   const completedMatchUps = inContextDrawMatchUps?.filter(
-    (matchUp) =>
-      checkMatchUpIsComplete({ matchUp }) &&
-      matchUp.structureId === sourceStructureId
+    (matchUp) => checkMatchUpIsComplete({ matchUp }) && matchUp.structureId === sourceStructureId,
   );
 
   completedMatchUps?.forEach((matchUp) => {
@@ -328,8 +290,7 @@ export function generateAndPopulatePlayoffStructures(
   });
 
   const byeMatchUps = inContextDrawMatchUps?.filter(
-    (matchUp) =>
-      matchUp.matchUpStatus === BYE && matchUp.structureId === sourceStructureId
+    (matchUp) => matchUp.matchUpStatus === BYE && matchUp.structureId === sourceStructureId,
   );
 
   byeMatchUps?.forEach((matchUp) => {
@@ -349,8 +310,7 @@ export function generateAndPopulatePlayoffStructures(
 
     if (loserTargetLink && loserMatchUp) {
       const targetStructureId = loserTargetLink.target.structureId;
-      const targetDrawPosition =
-        loserMatchUp.drawPositions[loserMatchUpDrawPositionIndex];
+      const targetDrawPosition = loserMatchUp.drawPositions[loserMatchUpDrawPositionIndex];
 
       const result = assignDrawPositionBye({
         drawPosition: targetDrawPosition,

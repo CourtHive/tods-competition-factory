@@ -5,6 +5,7 @@ import { generateRange } from '../../../utilities/arrays';
 import { generateTieMatchUps } from './tieMatchUps';
 import { UUID } from '../../../utilities/UUID';
 
+import { DrawDefinition, EntryStatusUnion, Event, MatchUp, Tournament } from '../../../types/tournamentTypes';
 import { STRUCTURE_SELECTED_STATUSES } from '../../../constants/entryStatusConstants';
 import { ROUND_OUTCOME } from '../../../constants/drawDefinitionConstants';
 import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
@@ -18,68 +19,48 @@ import {
   STRUCTURE_NOT_FOUND,
   ErrorType,
 } from '../../../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  EntryStatusUnion,
-  Event,
-  MatchUp,
-} from '../../../types/tournamentTypes';
 
 type GenerateAdHocMatchUpsArgs = {
   participantIdPairings?: {
     participantIds: [string | undefined, string | undefined];
   }[];
+  tournamentRecord?: Tournament;
   drawDefinition: DrawDefinition;
   matchUpsCount?: number; // number of matchUps to be generated
   matchUpIds?: string[];
   roundNumber?: number;
   structureId?: string;
   newRound?: boolean; // optional - whether to auto-increment to the next roundNumber
+  idPrefix?: string;
   isMock?: boolean;
   event: Event;
 };
 
-export function generateAdHocMatchUps({
-  participantIdPairings,
-  matchUpIds = [],
-  drawDefinition,
-  matchUpsCount,
-  roundNumber,
-  structureId,
-  newRound,
-  isMock,
-  event,
-}: GenerateAdHocMatchUpsArgs): {
+export function generateAdHocMatchUps(params: GenerateAdHocMatchUpsArgs): {
   matchUpsCount?: number;
   matchUps?: MatchUp[];
   error?: ErrorType;
   info?: any;
 } {
-  if (typeof drawDefinition !== 'object')
-    return { error: MISSING_DRAW_DEFINITION };
+  const { matchUpIds = [], drawDefinition, roundNumber, newRound, isMock, event } = params;
+  if (typeof drawDefinition !== 'object') return { error: MISSING_DRAW_DEFINITION };
+  let { participantIdPairings, matchUpsCount } = params;
 
-  if (!structureId && drawDefinition.structures?.length === 1)
-    structureId = drawDefinition.structures?.[0]?.structureId;
+  const structureId =
+    params.structureId ?? (drawDefinition.structures?.length === 1 && drawDefinition.structures?.[0]?.structureId);
 
   if (typeof structureId !== 'string') return { error: MISSING_STRUCTURE_ID };
 
   // if drawDefinition and structureId are provided it is possible to infer roundNumber
-  const structure = drawDefinition.structures?.find(
-    (structure) => structure.structureId === structureId
-  );
+  const structure = drawDefinition.structures?.find((structure) => structure.structureId === structureId);
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
   let structureHasRoundPositions;
   const existingMatchUps = structure.matchUps ?? [];
-  const lastRoundNumber = existingMatchUps?.reduce(
-    (roundNumber: number, matchUp: any) => {
-      if (matchUp.roundPosition) structureHasRoundPositions = true;
-      return (matchUp?.roundNumber || 0) > roundNumber
-        ? matchUp.roundNumber
-        : roundNumber;
-    },
-    0
-  );
+  const lastRoundNumber = existingMatchUps?.reduce((roundNumber: number, matchUp: any) => {
+    if (matchUp.roundPosition) structureHasRoundPositions = true;
+    return (matchUp?.roundNumber || 0) > roundNumber ? matchUp.roundNumber : roundNumber;
+  }, 0);
 
   if (!matchUpsCount) {
     const selectedEntries =
@@ -94,9 +75,7 @@ export function generateAdHocMatchUps({
     } else {
       const targetRoundNumber = roundNumber ?? lastRoundNumber ?? 1;
       const existingRoundMatchUps =
-        structure.matchUps?.filter(
-          (matchUp) => matchUp.roundNumber === targetRoundNumber
-        )?.length ?? 0;
+        structure.matchUps?.filter((matchUp) => matchUp.roundNumber === targetRoundNumber)?.length ?? 0;
       const maxRemaining = roundMatchUpsCount - existingRoundMatchUps;
       if (maxRemaining > 0) matchUpsCount = maxRemaining;
     }
@@ -114,20 +93,14 @@ export function generateAdHocMatchUps({
   // structure must not be a container of other structures
   // structure must not contain matchUps with roundPosition
   // structure must not determine finishingPosition by ROUND_OUTCOME
-  if (
-    structure.structures ||
-    structureHasRoundPositions ||
-    structure.finishingPosition === ROUND_OUTCOME
-  ) {
+  if (structure.structures || structureHasRoundPositions || structure.finishingPosition === ROUND_OUTCOME) {
     return { error: INVALID_STRUCTURE };
   }
 
   if (roundNumber && roundNumber - 1 > (lastRoundNumber || 0))
     return { error: INVALID_VALUES, info: 'roundNumber error' };
 
-  const nextRoundNumber =
-    roundNumber ??
-    ((newRound && (lastRoundNumber ?? 0) + 1) || lastRoundNumber || 1);
+  const nextRoundNumber = roundNumber ?? ((newRound && (lastRoundNumber ?? 0) + 1) || lastRoundNumber || 1);
 
   participantIdPairings =
     participantIdPairings ??
@@ -135,7 +108,14 @@ export function generateAdHocMatchUps({
       participantIds: [undefined, undefined],
     }));
 
-  const matchUps = participantIdPairings?.map((pairing) => {
+  const getPrefixedId = (index: number) => {
+    if (!params.idPrefix && !isMock) return undefined;
+    const drawId = drawDefinition.drawId;
+    const idPrefix = params.idPrefix ?? 'ah';
+    return `${drawId}-${idPrefix}-${nextRoundNumber}-${index}`;
+  };
+
+  const matchUps = participantIdPairings?.map((pairing, i) => {
     const idStack = pairing?.participantIds ?? [undefined, undefined];
     // ensure there are always 2 sides in generated matchUps
     idStack.push(...[undefined, undefined]);
@@ -144,13 +124,15 @@ export function generateAdHocMatchUps({
       definedAttributes({
         sideNumber: i + 1,
         participantId,
-      })
+      }),
     );
 
+    const matchUpId = matchUpIds[i] ?? getPrefixedId(i) ?? UUID();
+
     return {
-      matchUpId: matchUpIds.pop() ?? UUID(),
       roundNumber: nextRoundNumber,
       matchUpStatus: TO_BE_PLAYED,
+      matchUpId,
       sides,
     };
   });
@@ -160,7 +142,11 @@ export function generateAdHocMatchUps({
 
     if (tieFormat) {
       matchUps.forEach((matchUp) => {
-        const { tieMatchUps } = generateTieMatchUps({ tieFormat, isMock });
+        const { tieMatchUps } = generateTieMatchUps({
+          tieFormat,
+          matchUp,
+          isMock,
+        });
         Object.assign(matchUp, { tieMatchUps, matchUpType: TEAM });
       });
     }

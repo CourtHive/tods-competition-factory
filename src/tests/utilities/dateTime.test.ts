@@ -8,7 +8,7 @@ import {
   offsetTime,
   tidyTime,
   timeUTC,
-  dateRange,
+  generateDateRange,
   timeStringMinutes,
   splitTime,
   timeSort,
@@ -26,14 +26,9 @@ it('extracts time properly', () => {
   expect(time).toBeUndefined();
 });
 
-test('dateRange reliably generates a range', () => {
-  const result = dateRange(date200101, '2020-01-04');
-  expect(result).toEqual([
-    date200101,
-    '2020-01-02',
-    '2020-01-03',
-    '2020-01-04',
-  ]);
+test('generateDateRange reliably generates a range', () => {
+  const result = generateDateRange(date200101, '2020-01-04');
+  expect(result).toEqual([date200101, '2020-01-02', '2020-01-03', '2020-01-04']);
 });
 
 test('functions with bad data', () => {

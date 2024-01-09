@@ -1,20 +1,17 @@
 import { automatedPlayoffPositioning } from '../../../mutate/drawDefinitions/automatedPlayoffPositioning';
 import { resolveTieFormat } from '../../../query/hierarchical/tieFormats/resolveTieFormat';
-import { processPlayoffGroups } from './drawTypes/processPlayoffGroups';
+import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
 import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import { decorateResult } from '../../../global/functions/decorateResult';
-import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
+import { processPlayoffGroups } from './drawTypes/processPlayoffGroups';
 import { getMatchUpId } from '../../../global/functions/extractors';
-import { generateTieMatchUps } from './tieMatchUps';
 import { findExtension } from '../../../acquire/findExtension';
+import { generateTieMatchUps } from './tieMatchUps';
 
+import { INCOMPLETE_SOURCE_STRUCTURE, MISSING_VALUE } from '../../../constants/errorConditionConstants';
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
 import { TALLY } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import {
-  INCOMPLETE_SOURCE_STRUCTURE,
-  MISSING_VALUE,
-} from '../../../constants/errorConditionConstants';
 
 export function generateAndPopulateRRplayoffStructures(params) {
   const stack = 'generateAndPopulateRRplayoffStructures';
@@ -56,10 +53,7 @@ export function generateAndPopulateRRplayoffStructures(params) {
   const positionsPlayedOff = finishingPositionTargets
     ?.map(({ finishingPositions }) => finishingPositions)
     .flat()
-    .map(
-      (finishingPosition) =>
-        positionRangeMap[finishingPosition].finishingPositions
-    )
+    .map((finishingPosition) => positionRangeMap[finishingPosition].finishingPositions)
     .flat();
 
   drawDefinition.structures.push(...playoffStructures);
@@ -70,16 +64,12 @@ export function generateAndPopulateRRplayoffStructures(params) {
     drawDefinition,
   });
 
-  const newStructureIds = playoffStructures.map(
-    ({ structureId }) => structureId
-  );
+  const newStructureIds = playoffStructures.map(({ structureId }) => structureId);
   const addedMatchUpIds = inContextDrawMatchUps
     ?.filter(({ structureId }) => newStructureIds.includes(structureId))
     .map(getMatchUpId);
 
-  const addedMatchUps = matchUpsMap?.drawMatchUps?.filter(
-    ({ matchUpId }) => addedMatchUpIds?.includes(matchUpId)
-  );
+  const addedMatchUps = matchUpsMap?.drawMatchUps?.filter(({ matchUpId }) => addedMatchUpIds?.includes(matchUpId));
 
   if (addedMatchUps?.length) {
     const tieFormat = resolveTieFormat({ drawDefinition, event })?.tieFormat;
@@ -89,6 +79,7 @@ export function generateAndPopulateRRplayoffStructures(params) {
         const { tieMatchUps } = generateTieMatchUps({
           isMock: params.isMock,
           tieFormat,
+          matchUp,
         });
         Object.assign(matchUp, { tieMatchUps, matchUpType: TEAM_MATCHUP });
       });
@@ -111,11 +102,8 @@ export function generateAndPopulateRRplayoffStructures(params) {
     const participantResult = result?.extension?.value;
     const groupOrder = participantResult?.groupOrder;
     if (groupOrder) {
-      if (!finishingPositionParticipantIds[groupOrder])
-        finishingPositionParticipantIds[groupOrder] = [];
-      finishingPositionParticipantIds[groupOrder].push(
-        assignment.participantId
-      );
+      if (!finishingPositionParticipantIds[groupOrder]) finishingPositionParticipantIds[groupOrder] = [];
+      finishingPositionParticipantIds[groupOrder].push(assignment.participantId);
     }
   });
 

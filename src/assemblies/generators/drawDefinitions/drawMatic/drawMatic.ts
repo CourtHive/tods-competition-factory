@@ -1,20 +1,15 @@
 import { participantScaleItem } from '../../../../query/participant/participantScaleItem';
+import { generateDrawMaticRound, DrawMaticRoundResult } from './generateDrawMaticRound';
 import { getParticipantId } from '../../../../global/functions/extractors';
 import { isAdHoc } from '../../../../query/drawDefinition/isAdHoc';
 import { isObject } from '../../../../utilities/objects';
-import {
-  generateDrawMaticRound,
-  DrawMaticRoundResult,
-} from './generateDrawMaticRound';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../../../constants/entryStatusConstants';
+import { ResultType, decorateResult } from '../../../../global/functions/decorateResult';
+import { AD_HOC, stageOrder } from '../../../../constants/drawDefinitionConstants';
 import { DYNAMIC, RATING } from '../../../../constants/scaleConstants';
 import { SINGLES_EVENT } from '../../../../constants/eventConstants';
 import { ScaleAttributes } from '../../../../types/factoryTypes';
-import {
-  AD_HOC,
-  stageOrder,
-} from '../../../../constants/drawDefinitionConstants';
 import {
   DrawDefinition,
   EntryStatusUnion,
@@ -29,16 +24,12 @@ import {
   INVALID_VALUES,
   STRUCTURE_NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
-import {
-  ResultType,
-  decorateResult,
-} from '../../../../global/functions/decorateResult';
 
 export type DrawMaticArgs = {
   adHocRatings?: { [key: string]: number };
   restrictEntryStatus?: boolean;
-  drawDefinition?: DrawDefinition;
   tournamentRecord: Tournament;
+  drawDefinition: DrawDefinition;
   generateMatchUps?: boolean;
   eventType?: EventTypeUnion;
   salted?: number | boolean;
@@ -49,6 +40,7 @@ export type DrawMaticArgs = {
   structure?: Structure;
   matchUpIds?: string[];
   structureId?: string;
+  idPrefix?: string;
   isMock?: boolean;
   event: Event;
 
@@ -56,56 +48,48 @@ export type DrawMaticArgs = {
   scaleName?: string;
 };
 
-export function drawMatic({
-  restrictEntryStatus,
-  adHocRatings = {},
-  generateMatchUps,
-  tournamentRecord,
-  participantIds,
-  encounterValue,
-  sameTeamValue,
-  drawDefinition,
-  scaleAccessor,
-  maxIterations,
-  structureId,
-  matchUpIds,
-  scaleName, // custom rating name to seed dynamic ratings
-  eventType,
-  isMock,
-  salted,
-  event,
-}: DrawMaticArgs): ResultType & DrawMaticRoundResult {
-  if (
-    typeof drawDefinition !== 'object' ||
-    (drawDefinition.drawType && drawDefinition.drawType !== AD_HOC)
-  ) {
+export function drawMatic(params: DrawMaticArgs): ResultType & DrawMaticRoundResult {
+  const {
+    restrictEntryStatus,
+    adHocRatings = {},
+    generateMatchUps,
+    tournamentRecord,
+    encounterValue,
+    sameTeamValue,
+    drawDefinition,
+    scaleAccessor,
+    maxIterations,
+    matchUpIds,
+    scaleName, // custom rating name to seed dynamic ratings
+    idPrefix,
+    salted,
+    event,
+  } = params;
+
+  if (typeof drawDefinition !== 'object' || (drawDefinition.drawType && drawDefinition.drawType !== AD_HOC)) {
     return { error: INVALID_DRAW_DEFINITION };
   }
 
-  if (
-    !Array.isArray(drawDefinition?.entries) &&
-    participantIds &&
-    !Array.isArray(participantIds)
-  ) {
+  let { participantIds, structureId } = params;
+  const isMock = tournamentRecord?.isMock ?? params.isMock;
+
+  if (!Array.isArray(drawDefinition?.entries) && participantIds && !Array.isArray(participantIds)) {
     return { error: INVALID_VALUES, info: 'Missing Entries' };
   }
 
-  eventType = eventType ?? event?.eventType;
+  const eventType = params.eventType ?? event?.eventType;
 
   const enteredParticipantIds = drawDefinition?.entries
     ?.filter((entry) => {
       const entryStatus = entry.entryStatus as EntryStatusUnion;
-      return (
-        !restrictEntryStatus ||
-        STRUCTURE_SELECTED_STATUSES.includes(entryStatus)
-      );
+      return !restrictEntryStatus || STRUCTURE_SELECTED_STATUSES.includes(entryStatus);
     })
     .map(getParticipantId);
 
   if (participantIds) {
     // ensure all participantIds are in drawDefinition.entries
     const invalidParticipantIds = participantIds.filter(
-      (participantId) => !enteredParticipantIds?.includes(participantId)
+      (participantId) => !enteredParticipantIds?.includes(participantId),
     );
 
     if (invalidParticipantIds?.length)
@@ -125,17 +109,14 @@ export function drawMatic({
         const orderNumber = structure.stage && stageOrder[structure.stage];
         const structureIsAdHoc = isAdHoc({ drawDefinition, structure });
 
-        return structureIsAdHoc &&
-          orderNumber > (stageOrder[targetStructure?.stage] || 1)
+        return structureIsAdHoc && orderNumber > (stageOrder[targetStructure?.stage] || 1)
           ? structure
           : targetStructure;
       }, undefined);
     structureId = targetStructure?.structureId;
   }
 
-  const structure = drawDefinition?.structures?.find(
-    (structure) => structure.structureId === structureId
-  );
+  const structure = drawDefinition?.structures?.find((structure) => structure.structureId === structureId);
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
   // an AD_HOC structure is one that has no child structures and in which no matchUps have roundPosition
@@ -144,9 +125,7 @@ export function drawMatic({
 
   const tournamentParticipants = tournamentRecord.participants ?? [];
   for (const participantId of participantIds ?? []) {
-    const participant = tournamentParticipants?.find(
-      (participant) => participant.participantId === participantId
-    );
+    const participant = tournamentParticipants?.find((participant) => participant.participantId === participantId);
     // first see if there is already a dynamic value
     let scaleValue = getScaleValue({
       scaleName: `${scaleName}.${DYNAMIC}`,
@@ -164,8 +143,7 @@ export function drawMatic({
       });
     }
 
-    if (scaleValue && !adHocRatings[participantId])
-      adHocRatings[participantId] = scaleValue;
+    if (scaleValue && !adHocRatings[participantId]) adHocRatings[participantId] = scaleValue;
   }
 
   // TODO: update dynamic ratings based on matchUps present from last played round
@@ -183,6 +161,7 @@ export function drawMatic({
     matchUpIds,
     structure,
     eventType,
+    idPrefix,
     salted,
     isMock,
     event,
@@ -197,13 +176,7 @@ type GetScaleValueArgs = {
   participant: any;
 };
 
-function getScaleValue({
-  scaleType = RATING,
-  scaleAccessor,
-  participant,
-  scaleName,
-  eventType,
-}: GetScaleValueArgs) {
+function getScaleValue({ scaleType = RATING, scaleAccessor, participant, scaleName, eventType }: GetScaleValueArgs) {
   const scaleAttributes: ScaleAttributes = {
     eventType: eventType ?? SINGLES_EVENT,
     scaleType,
@@ -217,7 +190,5 @@ function getScaleValue({
     });
 
   const scaleValue = result?.scaleItem?.scaleValue;
-  return scaleAccessor && isObject(scaleValue)
-    ? scaleValue[scaleAccessor]
-    : scaleValue;
+  return scaleAccessor && isObject(scaleValue) ? scaleValue[scaleAccessor] : scaleValue;
 }

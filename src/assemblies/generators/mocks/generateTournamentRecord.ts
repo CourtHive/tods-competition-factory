@@ -16,10 +16,7 @@ import { randomPop } from '../../../utilities/arrays';
 
 import defaultRatingsParameters from '../../../fixtures/ratings/ratingsParameters';
 import { SUCCESS } from '../../../constants/resultConstants';
-import {
-  INVALID_DATE,
-  INVALID_VALUES,
-} from '../../../constants/errorConditionConstants';
+import { INVALID_DATE, INVALID_VALUES } from '../../../constants/errorConditionConstants';
 
 const mockTournamentNames = [
   'Mock Tournament',
@@ -65,14 +62,10 @@ export function generateTournamentRecord(params: GenerateTournamentRecordArgs) {
     drawProfiles,
     uuids,
   } = params;
-  if (
-    (startDate && !isValidDateString(startDate)) ||
-    (endDate && !isValidDateString(endDate))
-  )
+  if ((startDate && !isValidDateString(startDate)) || (endDate && !isValidDateString(endDate)))
     return { error: INVALID_DATE };
 
-  if (eventProfiles && !Array.isArray(eventProfiles))
-    return { error: INVALID_VALUES };
+  if (eventProfiles && !Array.isArray(eventProfiles)) return { error: INVALID_VALUES };
 
   if (!startDate) {
     const tournamentDate = new Date();
@@ -88,18 +81,16 @@ export function generateTournamentRecord(params: GenerateTournamentRecordArgs) {
   const tournamentRecord = newTournamentRecord({
     ...tournamentAttributes,
     tournamentName,
+    isMock: true,
     startDate,
     endDate,
   });
 
   // attach any valid tournamentExtensions
   if (tournamentExtensions?.length && Array.isArray(tournamentExtensions)) {
-    const extensions = tournamentExtensions.filter((extension) =>
-      isValidExtension({ extension })
-    );
+    const extensions = tournamentExtensions.filter((extension) => isValidExtension({ extension }));
 
-    if (extensions?.length)
-      Object.assign(tournamentRecord, { extensions, isMock: true });
+    if (extensions?.length) Object.assign(tournamentRecord, { extensions, isMock: true });
   }
 
   if (typeof policyDefinitions === 'object') {
@@ -131,10 +122,10 @@ export function generateTournamentRecord(params: GenerateTournamentRecordArgs) {
       let result = generateEventWithDraw({
         allUniqueParticipantIds,
         matchUpStatusProfile,
-        participantsProfile,
         completeAllMatchUps,
         autoEntryPositions,
         hydrateCollections,
+        participantsProfile,
         randomWinningSide,
         ratingsParameters,
         tournamentRecord,
@@ -159,8 +150,7 @@ export function generateTournamentRecord(params: GenerateTournamentRecordArgs) {
       if (drawId) drawIds.push(drawId);
       eventIds.push(eventId);
 
-      if (uniqueParticipantIds?.length)
-        allUniqueParticipantIds.push(...uniqueParticipantIds);
+      if (uniqueParticipantIds?.length) allUniqueParticipantIds.push(...uniqueParticipantIds);
 
       drawIndex += 1;
     }
@@ -186,25 +176,18 @@ export function generateTournamentRecord(params: GenerateTournamentRecordArgs) {
       });
       if (result.error) return result;
 
-      const {
-        eventId,
-        drawIds: generatedDrawIds,
-        uniqueParticipantIds,
-      } = result;
+      const { eventId, drawIds: generatedDrawIds, uniqueParticipantIds } = result;
 
       if (generatedDrawIds) drawIds.push(...generatedDrawIds);
       eventIds.push(eventId);
 
-      if (uniqueParticipantIds?.length)
-        allUniqueParticipantIds.push(...uniqueParticipantIds);
+      if (uniqueParticipantIds?.length) allUniqueParticipantIds.push(...uniqueParticipantIds);
 
       eventIndex += 1;
     }
   }
 
-  const venueIds = venueProfiles?.length
-    ? generateVenues({ tournamentRecord, venueProfiles, uuids })
-    : [];
+  const venueIds = venueProfiles?.length ? generateVenues({ tournamentRecord, venueProfiles, uuids }) : [];
 
   let scheduledRounds;
   let schedulerResult = {};

@@ -3,19 +3,11 @@ import tournamentEngine from '../../../tests/engines/syncEngine';
 import mocksEngine from '../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
+import { FIRST_ROUND_LOSER_CONSOLATION, MAIN, ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
+import { DOUBLES, SINGLES, TEAM_MATCHUP } from '../../../constants/matchUpTypes';
 import { INVALID_CATEGORY } from '../../../constants/errorConditionConstants';
 import { COLLEGE_D3 } from '../../../constants/tieFormatConstants';
 import { TEAM } from '../../../constants/eventConstants';
-import {
-  DOUBLES,
-  SINGLES,
-  TEAM_MATCHUP,
-} from '../../../constants/matchUpTypes';
-import {
-  FIRST_ROUND_LOSER_CONSOLATION,
-  MAIN,
-  ROUND_ROBIN,
-} from '../../../constants/drawDefinitionConstants';
 
 const MIXED_DOUBLES = 'Mixed Doubles';
 const PRO_SET = 'SET1-S:8/TB7@7';
@@ -57,9 +49,7 @@ it('can add collectionDefinitions to tieFormat in a drawDefinition', () => {
   });
   expect(result.tieFormat.winCriteria.valueGoal).toEqual(7);
   expect(result.addedMatchUps.length).toEqual(3);
-  const collectionOrders = result.tieFormat.collectionDefinitions.map(
-    ({ collectionOrder }) => collectionOrder
-  );
+  const collectionOrders = result.tieFormat.collectionDefinitions.map(({ collectionOrder }) => collectionOrder);
   expect(collectionOrders).toEqual([1, 2, 3]);
 
   const matchUpIds = result.addedMatchUps.map(({ matchUpId }) => matchUpId);
@@ -72,23 +62,21 @@ it('can add collectionDefinitions to tieFormat in a drawDefinition', () => {
   expect(event.tieFormat.winCriteria.valueGoal).toEqual(5);
 
   drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-  const collectionIds = drawDefinition.tieFormat.collectionDefinitions.map(
-    ({ collectionId }) => collectionId
-  );
+  const collectionIds = drawDefinition.tieFormat.collectionDefinitions.map(({ collectionId }) => collectionId);
   const newOrder = [2, 3, 1];
   const orderMap = Object.assign(
     {},
     ...collectionIds.map((collectionId, i) => ({
       [collectionId]: newOrder[i],
-    }))
+    })),
   );
 
   result = tournamentEngine.orderCollectionDefinitions({ drawId, orderMap });
   expect(result.success).toEqual(true);
 
   drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-  drawDefinition.tieFormat.collectionDefinitions.forEach(
-    ({ collectionId }, i) => expect(orderMap[collectionId]).toEqual(i + 1)
+  drawDefinition.tieFormat.collectionDefinitions.forEach(({ collectionId }, i) =>
+    expect(orderMap[collectionId]).toEqual(i + 1),
   );
 
   ({
@@ -174,31 +162,27 @@ it('can add collectionDefinitions to tieFormat in a structure', () => {
   // 3 team matchUps
   expect(drawDefinition.structures[0].matchUps.length).toEqual(3);
   // 9 tieMatchUps within each team matchUp
-  expect(drawDefinition.structures[0].matchUps[0].tieMatchUps.length).toEqual(
-    9
-  );
+  expect(drawDefinition.structures[0].matchUps[0].tieMatchUps.length).toEqual(9);
 
-  const { matchUps: firstRoundDualMatchUps } =
-    tournamentEngine.allTournamentMatchUps({
-      contextFilters: {
-        stages: [MAIN],
-      },
-      matchUpFilters: {
-        matchUpTypes: [TEAM],
-        roundNumbers: [1],
-      },
-    });
+  const { matchUps: firstRoundDualMatchUps } = tournamentEngine.allTournamentMatchUps({
+    contextFilters: {
+      stages: [MAIN],
+    },
+    matchUpFilters: {
+      matchUpTypes: [TEAM],
+      roundNumbers: [1],
+    },
+  });
 
-  let { matchUps: secondRoundDualMatchUps } =
-    tournamentEngine.allTournamentMatchUps({
-      contextFilters: {
-        stages: [MAIN],
-      },
-      matchUpFilters: {
-        matchUpTypes: [TEAM],
-        roundNumbers: [2],
-      },
-    });
+  let { matchUps: secondRoundDualMatchUps } = tournamentEngine.allTournamentMatchUps({
+    contextFilters: {
+      stages: [MAIN],
+    },
+    matchUpFilters: {
+      matchUpTypes: [TEAM],
+      roundNumbers: [2],
+    },
+  });
   expect(secondRoundDualMatchUps[0].drawPositions).toEqual(undefined);
 
   expect(firstRoundDualMatchUps.length).toEqual(2);
@@ -230,16 +214,15 @@ it('can add collectionDefinitions to tieFormat in a structure', () => {
   });
 
   // confirm that team participant's drawPosition has advanced
-  ({ matchUps: secondRoundDualMatchUps } =
-    tournamentEngine.allTournamentMatchUps({
-      contextFilters: {
-        stages: [MAIN],
-      },
-      matchUpFilters: {
-        matchUpTypes: [TEAM],
-        roundNumbers: [2],
-      },
-    }));
+  ({ matchUps: secondRoundDualMatchUps } = tournamentEngine.allTournamentMatchUps({
+    contextFilters: {
+      stages: [MAIN],
+    },
+    matchUpFilters: {
+      matchUpTypes: [TEAM],
+      roundNumbers: [2],
+    },
+  }));
   expect(secondRoundDualMatchUps[0].drawPositions).toEqual([1]);
 
   let collectionDefinition = {
@@ -271,12 +254,8 @@ it('can add collectionDefinitions to tieFormat in a structure', () => {
   expect(event.tieFormat.collectionDefinitions.length).toEqual(2);
   expect(event.tieFormat.winCriteria.valueGoal).toEqual(5);
 
-  expect(
-    drawDefinition.structures[0].tieFormat.collectionDefinitions.length
-  ).toEqual(3);
-  expect(drawDefinition.structures[0].tieFormat.winCriteria.valueGoal).toEqual(
-    7
-  );
+  expect(drawDefinition.structures[0].tieFormat.collectionDefinitions.length).toEqual(3);
+  expect(drawDefinition.structures[0].tieFormat.winCriteria.valueGoal).toEqual(7);
 
   expect(matchUpAddNotices).toEqual([40, 6]);
   // 2 of the three TEAM matchUps have been modified
@@ -293,31 +272,26 @@ it('can add collectionDefinitions to tieFormat in a structure', () => {
   });
 
   // confirm that team participant's drawPosition has advanced
-  ({ matchUps: secondRoundDualMatchUps } =
-    tournamentEngine.allTournamentMatchUps({
-      contextFilters: {
-        stages: [MAIN],
-      },
-      matchUpFilters: {
-        matchUpTypes: [TEAM],
-        roundNumbers: [2],
-      },
-    }));
+  ({ matchUps: secondRoundDualMatchUps } = tournamentEngine.allTournamentMatchUps({
+    contextFilters: {
+      stages: [MAIN],
+    },
+    matchUpFilters: {
+      matchUpTypes: [TEAM],
+      roundNumbers: [2],
+    },
+  }));
   expect(secondRoundDualMatchUps[0].drawPositions).toEqual([1, 3]);
 
   drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-  let structure = drawDefinition.structures.find(
-    (structure) => structure.structureId === structureId
-  );
-  const collectionIds = structure.tieFormat.collectionDefinitions.map(
-    ({ collectionId }) => collectionId
-  );
+  let structure = drawDefinition.structures.find((structure) => structure.structureId === structureId);
+  const collectionIds = structure.tieFormat.collectionDefinitions.map(({ collectionId }) => collectionId);
   const newOrder = [2, 3, 1];
   const orderMap = Object.assign(
     {},
     ...collectionIds.map((collectionId, i) => ({
       [collectionId]: newOrder[i],
-    }))
+    })),
   );
 
   result = tournamentEngine.orderCollectionDefinitions({
@@ -328,9 +302,7 @@ it('can add collectionDefinitions to tieFormat in a structure', () => {
   expect(result.success).toEqual(true);
 
   drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-  structure = drawDefinition.structures.find(
-    (structure) => structure.structureId === structureId
-  );
+  structure = drawDefinition.structures.find((structure) => structure.structureId === structureId);
   structure.tieFormat.collectionDefinitions.forEach(({ collectionId }, i) => {
     expect(orderMap[collectionId]).toEqual(i + 1);
   });
@@ -397,31 +369,27 @@ it('added collectionDefinitions do not appear in inProgress matchUps', () => {
   // 3 team matchUps
   expect(drawDefinition.structures[0].matchUps.length).toEqual(3);
   // 9 tieMatchUps within each team matchUp
-  expect(drawDefinition.structures[0].matchUps[0].tieMatchUps.length).toEqual(
-    9
-  );
+  expect(drawDefinition.structures[0].matchUps[0].tieMatchUps.length).toEqual(9);
 
-  let { matchUps: firstRoundDualMatchUps } =
-    tournamentEngine.allTournamentMatchUps({
-      contextFilters: {
-        stages: [MAIN],
-      },
-      matchUpFilters: {
-        matchUpTypes: [TEAM],
-        roundNumbers: [1],
-      },
-    });
+  let { matchUps: firstRoundDualMatchUps } = tournamentEngine.allTournamentMatchUps({
+    contextFilters: {
+      stages: [MAIN],
+    },
+    matchUpFilters: {
+      matchUpTypes: [TEAM],
+      roundNumbers: [1],
+    },
+  });
 
-  const { matchUps: secondRoundDualMatchUps } =
-    tournamentEngine.allTournamentMatchUps({
-      contextFilters: {
-        stages: [MAIN],
-      },
-      matchUpFilters: {
-        matchUpTypes: [TEAM],
-        roundNumbers: [2],
-      },
-    });
+  const { matchUps: secondRoundDualMatchUps } = tournamentEngine.allTournamentMatchUps({
+    contextFilters: {
+      stages: [MAIN],
+    },
+    matchUpFilters: {
+      matchUpTypes: [TEAM],
+      roundNumbers: [2],
+    },
+  });
   expect(secondRoundDualMatchUps[0].drawPositions).toEqual(undefined);
 
   expect(firstRoundDualMatchUps.length).toEqual(2);
@@ -484,28 +452,23 @@ it('added collectionDefinitions do not appear in inProgress matchUps', () => {
   expect(event.tieFormat.collectionDefinitions.length).toEqual(2);
   expect(event.tieFormat.winCriteria.valueGoal).toEqual(5);
 
-  expect(
-    drawDefinition.structures[0].tieFormat.collectionDefinitions.length
-  ).toEqual(3);
-  expect(drawDefinition.structures[0].tieFormat.winCriteria.valueGoal).toEqual(
-    7
-  );
+  expect(drawDefinition.structures[0].tieFormat.collectionDefinitions.length).toEqual(3);
+  expect(drawDefinition.structures[0].tieFormat.winCriteria.valueGoal).toEqual(7);
 
   expect(matchUpAddNotices).toEqual([30, 6]);
   // 2 of the 3 TEAM matchUps have been modified
   expect(matchUpModifyNotices.length - modifiedCount).toEqual(2);
 
   // confirm that team participant's drawPosition has advanced
-  ({ matchUps: firstRoundDualMatchUps } =
-    tournamentEngine.allTournamentMatchUps({
-      contextFilters: {
-        stages: [MAIN],
-      },
-      matchUpFilters: {
-        matchUpTypes: [TEAM],
-        roundNumbers: [1],
-      },
-    }));
+  ({ matchUps: firstRoundDualMatchUps } = tournamentEngine.allTournamentMatchUps({
+    contextFilters: {
+      stages: [MAIN],
+    },
+    matchUpFilters: {
+      matchUpTypes: [TEAM],
+      roundNumbers: [1],
+    },
+  }));
 
   // the tieFormat of the in progress team matchUp should not have added a collectionDefinition
   firstRoundDualMatchUps.forEach((matchUp) => {
@@ -524,20 +487,17 @@ it('added collectionDefinitions do not appear in inProgress matchUps', () => {
   });
   expect(result.success).toEqual(true);
 
-  ({ matchUps: firstRoundDualMatchUps } =
-    tournamentEngine.allTournamentMatchUps({
-      contextFilters: {
-        stages: [MAIN],
-      },
-      matchUpFilters: {
-        matchUpTypes: [TEAM],
-        roundNumbers: [1],
-      },
-    }));
+  ({ matchUps: firstRoundDualMatchUps } = tournamentEngine.allTournamentMatchUps({
+    contextFilters: {
+      stages: [MAIN],
+    },
+    matchUpFilters: {
+      matchUpTypes: [TEAM],
+      roundNumbers: [1],
+    },
+  }));
 
-  teamMatchUp = firstRoundDualMatchUps.find(
-    (matchUp) => matchUp.matchUpId === teamMatchUpId
-  );
+  teamMatchUp = firstRoundDualMatchUps.find((matchUp) => matchUp.matchUpId === teamMatchUpId);
   expect(teamMatchUp.tieMatchUps.length).toEqual(12);
 });
 
@@ -577,9 +537,7 @@ it('properly calculates valueGoal when adding collectionDefinition with tiebreak
     tournamentRecord,
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [
-      { drawSize: 4, drawType: ROUND_ROBIN, eventType: TEAM, tieFormat },
-    ],
+    drawProfiles: [{ drawSize: 4, drawType: ROUND_ROBIN, eventType: TEAM, tieFormat }],
   });
   let result = tournamentEngine.setState(tournamentRecord);
   expect(result.success).toEqual(true);
@@ -667,7 +625,5 @@ it('can validate collectionDefinition.category when adding collectionDefinitions
   expect(result.success).toEqual(true);
   expect(result.tieFormat.tieFormatName).toEqual(tieFormatName);
   event = tournamentEngine.getEvent({ drawId }).event;
-  expect(event.drawDefinitions[0].tieFormat.tieFormatName).toEqual(
-    tieFormatName
-  );
+  expect(event.drawDefinitions[0].tieFormat.tieFormatName).toEqual(tieFormatName);
 });

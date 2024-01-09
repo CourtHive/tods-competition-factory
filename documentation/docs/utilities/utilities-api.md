@@ -59,7 +59,7 @@ const {
 
 ---
 
-## dateRange
+## generateDateRange
 
 ---
 

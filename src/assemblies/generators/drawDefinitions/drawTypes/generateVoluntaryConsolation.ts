@@ -13,10 +13,7 @@ import { nextPowerOf2 } from '../../../../utilities/math';
 import { generateTieMatchUps } from '../tieMatchUps';
 import { getGenerators } from '../getGenerators';
 
-import {
-  PlayoffAttributes,
-  SeedingProfile,
-} from '../../../../types/factoryTypes';
+import { PlayoffAttributes, SeedingProfile } from '../../../../types/factoryTypes';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { SINGLES } from '../../../../constants/matchUpTypes';
 import {
@@ -62,9 +59,7 @@ type GenerateVoluntaryConsolationArgs = {
   isMock?: boolean;
   event?: Event;
 };
-export function generateVoluntaryConsolation(
-  params: GenerateVoluntaryConsolationArgs
-): {
+export function generateVoluntaryConsolation(params: GenerateVoluntaryConsolationArgs): {
   structures?: Structure[];
   links?: DrawLink[];
   success?: boolean;
@@ -92,11 +87,7 @@ export function generateVoluntaryConsolation(
     drawDefinition,
     stage,
   });
-  const drawSize = ![
-    ROUND_ROBIN,
-    DOUBLE_ELIMINATION,
-    ROUND_ROBIN_WITH_PLAYOFF,
-  ].includes(drawType)
+  const drawSize = ![ROUND_ROBIN, DOUBLE_ELIMINATION, ROUND_ROBIN_WITH_PLAYOFF].includes(drawType)
     ? nextPowerOf2(entries.length)
     : entries.length;
 
@@ -112,9 +103,7 @@ export function generateVoluntaryConsolation(
     if (result.error) return result;
   }
 
-  tieFormat = copyTieFormat(
-    tieFormat ?? resolveTieFormat({ drawDefinition })?.tieFormat
-  );
+  tieFormat = copyTieFormat(tieFormat ?? resolveTieFormat({ drawDefinition })?.tieFormat);
   matchUpType = matchUpType ?? drawDefinition.matchUpType ?? SINGLES;
 
   const { structures: stageStructures } = getDrawStructures({
@@ -128,21 +117,19 @@ export function generateVoluntaryConsolation(
   if (structureCount > 1) return { error: STAGE_SEQUENCE_LIMIT };
 
   // invalid to already have matchUps generated for any existing structure
-  if (stageStructures?.[0]?.matchUps?.length)
-    return { error: EXISTING_STRUCTURE };
+  if (stageStructures?.[0]?.matchUps?.length) return { error: EXISTING_STRUCTURE };
   const structureId = stageStructures?.[0]?.structureId;
 
   Object.assign(
     params,
     definedAttributes({
-      structureName:
-        params.structureName ?? constantToString(VOLUNTARY_CONSOLATION),
+      structureName: params.structureName ?? constantToString(VOLUNTARY_CONSOLATION),
       structureId,
       matchUpType,
       tieFormat,
       drawSize,
       stage,
-    })
+    }),
   );
 
   const result = getGenerators(params);
@@ -156,13 +143,11 @@ export function generateVoluntaryConsolation(
 
   const { structures, links } = generatorResult;
 
-  const matchUps = structures
-    .map((structure) => getAllStructureMatchUps({ structure }).matchUps)
-    .flat();
+  const matchUps = structures.map((structure) => getAllStructureMatchUps({ structure }).matchUps).flat();
 
   if (tieFormat) {
     matchUps.forEach((matchUp) => {
-      const { tieMatchUps } = generateTieMatchUps({ tieFormat, isMock });
+      const { tieMatchUps } = generateTieMatchUps({ matchUp, tieFormat, isMock });
       Object.assign(matchUp, { tieMatchUps, matchUpType });
     });
   }
@@ -173,27 +158,19 @@ export function generateVoluntaryConsolation(
 
   if (!drawDefinition.links) drawDefinition.links = [];
   if (links.length) drawDefinition.links.push(...links);
-  const generatedStructureIds = structures.map(
-    ({ structureId }) => structureId
-  );
+  const generatedStructureIds = structures.map(({ structureId }) => structureId);
   if (!drawDefinition.structures) drawDefinition.structures = [];
-  const existingStructureIds = drawDefinition.structures.map(
-    ({ structureId }) => structureId
-  );
+  const existingStructureIds = drawDefinition.structures.map(({ structureId }) => structureId);
 
   // replace any existing structures with newly generated structures
   // this is done because it is possible that a consolation structure exists without matchUps
   drawDefinition.structures = drawDefinition.structures.map((structure) => {
     return generatedStructureIds.includes(structure.structureId)
-      ? structures.find(
-          ({ structureId }) => structureId === structure.structureId
-        )
+      ? structures.find(({ structureId }) => structureId === structure.structureId)
       : structure;
   });
 
-  const newStructures = structures.filter(
-    ({ structureId }) => !existingStructureIds.includes(structureId)
-  );
+  const newStructures = structures.filter(({ structureId }) => !existingStructureIds.includes(structureId));
   if (newStructures.length) drawDefinition.structures.push(...newStructures);
 
   if (automated) {

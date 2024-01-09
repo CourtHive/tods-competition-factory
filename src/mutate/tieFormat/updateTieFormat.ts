@@ -1,6 +1,7 @@
 import { generateCollectionMatchUps } from '../../assemblies/generators/drawDefinitions/tieMatchUps';
 import { compareTieFormats } from '../../query/hierarchical/tieFormats/compareTieFormats';
 import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
+import { ResultType, decorateResult } from '../../global/functions/decorateResult';
 import { copyTieFormat } from '../../query/hierarchical/tieFormats/copyTieFormat';
 import { getTieFormat } from '../../query/hierarchical/tieFormats/getTieFormat';
 import { instanceCount, intersection } from '../../utilities/arrays';
@@ -13,11 +14,8 @@ import {
   modifyDrawNotice,
   modifyMatchUpNotice,
 } from '../notifications/drawNotifications';
-import {
-  ResultType,
-  decorateResult,
-} from '../../global/functions/decorateResult';
 
+import { DrawDefinition, Event, MatchUp, Structure, TieFormat, Tournament } from '../../types/tournamentTypes';
 import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import { TEAM } from '../../constants/matchUpTypes';
@@ -30,25 +28,12 @@ import {
   MISSING_TIE_FORMAT,
 } from '../../constants/errorConditionConstants';
 
-import {
-  DrawDefinition,
-  Event,
-  MatchUp,
-  Structure,
-  TieFormat,
-  Tournament,
-} from '../../types/tournamentTypes';
-
 // used to determine that all collections have the same collectionIds
 function checkStructureMatchUpCounts({ from, to }) {
   const referenceKeys = Object.keys(from);
-  const sameKeys =
-    intersection(referenceKeys, Object.keys(to)).length ===
-    referenceKeys.length;
+  const sameKeys = intersection(referenceKeys, Object.keys(to)).length === referenceKeys.length;
 
-  const differentMatchUpsCount = referenceKeys.filter(
-    (collectionId) => from[collectionId] !== to[collectionId]
-  );
+  const differentMatchUpsCount = referenceKeys.filter((collectionId) => from[collectionId] !== to[collectionId]);
   const matchUpsCountChanges = differentMatchUpsCount.map((collectionId) => ({
     countChange: to[collectionId] - from[collectionId],
     collectionId,
@@ -98,23 +83,17 @@ export function updateTieFormat({
   let addedMatchUpsCount = 0;
   let modifiedCount = 0;
 
-  const collectionMap = tieFormat?.collectionDefinitions.reduce(
-    (instanceMap, def) => {
-      instanceMap[def.collectionId] =
-        (instanceMap[def.collectionId] || 0) + def.matchUpCount;
-      return instanceMap;
-    },
-    {}
-  );
+  const collectionMap = tieFormat?.collectionDefinitions.reduce((instanceMap, def) => {
+    instanceMap[def.collectionId] = (instanceMap[def.collectionId] || 0) + def.matchUpCount;
+    return instanceMap;
+  }, {});
 
   const matchingCollections = ({ tieFormat }) => {
     const cMap = tieFormat?.collectionDefinitions.reduce((instanceMap, def) => {
-      instanceMap[def.collectionId] =
-        (instanceMap[def.collectionId] || 0) + def.matchUpCount;
+      instanceMap[def.collectionId] = (instanceMap[def.collectionId] || 0) + def.matchUpCount;
       return instanceMap;
     }, {});
-    return checkStructureMatchUpCounts({ from: cMap, to: collectionMap })
-      .equivalent;
+    return checkStructureMatchUpCounts({ from: cMap, to: collectionMap }).equivalent;
   };
 
   const drawDefaultTieFormat = getTieFormat({ drawDefinition })?.tieFormat;
@@ -131,18 +110,15 @@ export function updateTieFormat({
       return decorateResult({ result: { error: INVALID_MATCHUP }, stack });
     }
     // ensure that all tieMatchUps are referenced by tieFormat
-    const matchUpMap = instanceCount(
-      matchUp.tieMatchUps?.map(({ collectionId }) => collectionId)
-    );
+    const matchUpMap = instanceCount(matchUp.tieMatchUps?.map(({ collectionId }) => collectionId));
     const check = checkStructureMatchUpCounts({
       to: collectionMap,
       from: matchUpMap,
     });
-    const { changes, changesArePossible, cannotChangeReaon } =
-      getMatchUpChangesArePossible({
-        matchUp,
-        check,
-      });
+    const { changes, changesArePossible, cannotChangeReaon } = getMatchUpChangesArePossible({
+      matchUp,
+      check,
+    });
 
     if (check.equivalent) {
       if (validUpdate({ matchUp, updateInProgressMatchUps })) {
@@ -272,9 +248,7 @@ export function updateTieFormat({
       const validToUpdate = validUpdate({ matchUp, updateInProgressMatchUps });
 
       let modified = false;
-      const tieMatchUpsMap = instanceCount(
-        matchUp.tieMatchUps?.map(({ collectionId }) => collectionId)
-      );
+      const tieMatchUpsMap = instanceCount(matchUp.tieMatchUps?.map(({ collectionId }) => collectionId));
       const check = checkStructureMatchUpCounts({
         from: tieMatchUpsMap,
         to: collectionMap,
@@ -305,11 +279,7 @@ export function updateTieFormat({
             stack,
           });
         }
-      } else if (
-        matchUp.tieFormat &&
-        matchingCollections(matchUp) &&
-        validToUpdate
-      ) {
+      } else if (matchUp.tieFormat && matchingCollections(matchUp) && validToUpdate) {
         matchUp.tieFormat = copyTieFormat(tieFormat);
         modified = true;
       }
@@ -339,33 +309,27 @@ export function updateTieFormat({
         const collectionPositionOffset = Math.max(
           0,
           ...matchUp.tieMatchUps
-            .filter(
-              (tieMatchUp) => tieMatchUp.collectionId === change.collectionId
-            )
-            .map(xa('collectionPosition'))
+            .filter((tieMatchUp) => tieMatchUp.collectionId === change.collectionId)
+            .map(xa('collectionPosition')),
         );
         const collectionDefinition = tieFormat.collectionDefinitions.find(
-          (def) => def.collectionId === change.collectionId
+          (def) => def.collectionId === change.collectionId,
         );
         const newMatchUps: MatchUp[] = generateCollectionMatchUps({
           matchUpsLimit: change.countChange,
           collectionPositionOffset,
           collectionDefinition,
+          matchUp,
           uuids,
         });
         matchUpsAdded.push(...makeDeepCopy(newMatchUps, false, true));
         addedMatchUpsCount += matchUpsAdded.length;
         matchUp.tieMatchUps.push(...newMatchUps);
       } else {
-        const tieMatchUpIdsToRemove = change.toBePlayedTieMatchUpIds.slice(
-          0,
-          Math.abs(change.countChange)
-        );
+        const tieMatchUpIdsToRemove = change.toBePlayedTieMatchUpIds.slice(0, Math.abs(change.countChange));
         console.log('remove', tieMatchUpIdsToRemove.length);
         matchUpIdsRemoved.push(...tieMatchUpIdsToRemove);
-        matchUp.tieMatchUps = matchUp.tieMatchUps.filter(
-          ({ matchUpId }) => !tieMatchUpIdsToRemove.includes(matchUpId)
-        );
+        matchUp.tieMatchUps = matchUp.tieMatchUps.filter(({ matchUpId }) => !tieMatchUpIdsToRemove.includes(matchUpId));
       }
     });
 
@@ -394,29 +358,21 @@ function getMatchUpChangesArePossible({ check, matchUp }) {
   let cannotChangeReaon = '';
   const changes: any[] = [];
 
-  const changesArePossible = check.matchUpsCountChanges.every(
-    ({ collectionId, countChange }) => {
-      const toBePlayedTieMatchUpIds = matchUp.tieMatchUps
-        .filter(
-          (tieMatchUp) =>
-            tieMatchUp.collectionId === collectionId &&
-            tieMatchUp.matchUpStatus === TO_BE_PLAYED
-        )
-        .map(xa('matchUpId'));
+  const changesArePossible = check.matchUpsCountChanges.every(({ collectionId, countChange }) => {
+    const toBePlayedTieMatchUpIds = matchUp.tieMatchUps
+      .filter((tieMatchUp) => tieMatchUp.collectionId === collectionId && tieMatchUp.matchUpStatus === TO_BE_PLAYED)
+      .map(xa('matchUpId'));
 
-      const possibleToChange =
-        toBePlayedTieMatchUpIds.length + countChange >= 0 || countChange > 0;
+    const possibleToChange = toBePlayedTieMatchUpIds.length + countChange >= 0 || countChange > 0;
 
-      if (!possibleToChange && countChange < 0)
-        cannotChangeReaon = 'Insufficient TO_BE_PLAYED matchUps';
+    if (!possibleToChange && countChange < 0) cannotChangeReaon = 'Insufficient TO_BE_PLAYED matchUps';
 
-      changes.push({
-        toBePlayedTieMatchUpIds,
-        collectionId,
-        countChange,
-      });
-      return possibleToChange;
-    }
-  );
+    changes.push({
+      toBePlayedTieMatchUpIds,
+      collectionId,
+      countChange,
+    });
+    return possibleToChange;
+  });
   return { changesArePossible, changes, cannotChangeReaon };
 }

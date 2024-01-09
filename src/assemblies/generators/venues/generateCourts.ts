@@ -1,5 +1,5 @@
+import { generateDateRange, isTimeString, isValidDateString } from '../../../utilities/dateTime';
 import { checkRequiredParameters } from '../../../parameters/checkRequiredParameters';
-import { isTimeString, isValidDateString } from '../../../utilities/dateTime';
 import { definedAttributes } from '../../../utilities/definedAttributes';
 import { generateRange } from '../../../utilities/arrays';
 import { isString } from '../../../utilities/objects';
@@ -8,11 +8,12 @@ import { UUID } from '../../../utilities/UUID';
 
 import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
 import { ResultType } from '../../../global/functions/decorateResult';
+import { Court, Tournament } from '../../../types/tournamentTypes';
 import { VALIDATE } from '../../../constants/attributeConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { Court } from '../../../types/tournamentTypes';
 
 type GenerateCourtsArgs = {
+  tournamentRecord?: Tournament;
   courtNames?: string[];
   namePrefix?: string;
   startTime?: string;
@@ -39,11 +40,14 @@ export function generateCourts(params: GenerateCourtsArgs): ResultType & Generat
   ]);
   if (paramCheck.error) return paramCheck;
 
+  const { startDate, endDate } = params.tournamentRecord ?? {};
+  const dates = params.dates || (startDate && endDate && generateDateRange(startDate, endDate)) || [];
+
   const courts: Court[] = generateRange(1, params.count + 1).map((courtNumber) =>
     definedAttributes({
       courtId: params.uuids?.pop() ?? (params.idPrefix && `${params.idPrefix}-${courtNumber}`) ?? UUID(),
       courtName: params.courtNames?.pop() ?? (params.namePrefix && `${params.namePrefix} ${courtNumber}`),
-      dateAvailability: params.dates?.map((date) => ({
+      dateAvailability: dates.map((date) => ({
         startTime: params.startTime ?? '08:00',
         endTime: params.endTime ?? '20:00',
         date,
