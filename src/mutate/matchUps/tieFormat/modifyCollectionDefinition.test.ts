@@ -1,4 +1,4 @@
-import { extractAttributes as xa } from '../../../utilities/objects';
+import { xa } from '../../../utilities/objects';
 import tournamentEngine from '../../../tests/engines/syncEngine';
 import mocksEngine from '../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
@@ -14,10 +14,7 @@ import {
   NOT_FOUND,
   NOT_IMPLEMENTED,
 } from '../../../constants/errorConditionConstants';
-import {
-  DOUBLES_MATCHUP,
-  SINGLES_MATCHUP,
-} from '../../../constants/matchUpTypes';
+import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '../../../constants/matchUpTypes';
 
 it('can modify collectionDefinitions for a tieFormat on a drawDefinition', () => {
   const policyDefinitions = { audit: { [TIE_FORMAT_MODIFICATIONS]: true } };
@@ -53,7 +50,7 @@ it('can modify collectionDefinitions for a tieFormat on a drawDefinition', () =>
 
   drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
   let definition = drawDefinition.tieFormat.collectionDefinitions.find(
-    (collectionDefinition) => collectionDefinition.collectionId === collectionId
+    (collectionDefinition) => collectionDefinition.collectionId === collectionId,
   );
   expect(definition.collectionName).toEqual(newCollectionName);
 
@@ -66,7 +63,7 @@ it('can modify collectionDefinitions for a tieFormat on a drawDefinition', () =>
 
   drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
   definition = drawDefinition.tieFormat.collectionDefinitions.find(
-    (collectionDefinition) => collectionDefinition.collectionId === collectionId
+    (collectionDefinition) => collectionDefinition.collectionId === collectionId,
   );
   expect(definition.matchUpValue).toEqual(2);
 
@@ -86,7 +83,7 @@ it('can modify collectionDefinitions for a tieFormat on a drawDefinition', () =>
 
   drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
   definition = drawDefinition.tieFormat.collectionDefinitions.find(
-    (collectionDefinition) => collectionDefinition.collectionId === collectionId
+    (collectionDefinition) => collectionDefinition.collectionId === collectionId,
   );
   expect(definition.collectionValue).toEqual(1);
   expect(definition.matchUpValue).toBeUndefined();
@@ -100,7 +97,7 @@ it('can modify collectionDefinitions for a tieFormat on a drawDefinition', () =>
 
   drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
   definition = drawDefinition.tieFormat.collectionDefinitions.find(
-    (collectionDefinition) => collectionDefinition.collectionId === collectionId
+    (collectionDefinition) => collectionDefinition.collectionId === collectionId,
   );
   expect(definition.collectionValue).toBeUndefined();
   expect(definition.scoreValue).toEqual(1);
@@ -114,7 +111,7 @@ it('can modify collectionDefinitions for a tieFormat on a drawDefinition', () =>
 
   drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
   definition = drawDefinition.tieFormat.collectionDefinitions.find(
-    (collectionDefinition) => collectionDefinition.collectionId === collectionId
+    (collectionDefinition) => collectionDefinition.collectionId === collectionId,
   );
   expect(definition.scoreValue).toBeUndefined();
   expect(definition.setValue).toEqual(1);
@@ -132,7 +129,7 @@ it('can modify collectionDefinitions for a tieFormat on a drawDefinition', () =>
 
   drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
   definition = drawDefinition.tieFormat.collectionDefinitions.find(
-    (collectionDefinition) => collectionDefinition.collectionId === collectionId
+    (collectionDefinition) => collectionDefinition.collectionId === collectionId,
   );
   expect(definition.setValue).toBeUndefined();
   expect(definition.collectionValueProfiles).not.toBeUndefined();
@@ -199,7 +196,7 @@ it('can modify collectionDefinitions for a tieFormat on a structure', () => {
   expect(structure.matchUps[0].tieMatchUps.length).toEqual(9);
 
   const collectionDefinition = structure.tieFormat.collectionDefinitions.find(
-    (collectionDefinition) => collectionDefinition.collectionId === collectionId
+    (collectionDefinition) => collectionDefinition.collectionId === collectionId,
   );
   expect(collectionDefinition.collectionName).toEqual(newCollectionName);
 
@@ -402,15 +399,11 @@ it('can modify collectionDefinitions for a tieFormat on a structure', () => {
   expect(result.modifiedMatchUpsCount).toEqual(0);
 
   drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-  const targetStructure = drawDefinition.structures.find(
-    (s) => s.structureId === structureId
-  );
+  const targetStructure = drawDefinition.structures.find((s) => s.structureId === structureId);
 
   // structure.tieFormat has been updated
   expect(
-    targetStructure.tieFormat.collectionDefinitions.find(
-      (def) => def.collectionId === collectionId
-    ).matchUpCount
+    targetStructure.tieFormat.collectionDefinitions.find((def) => def.collectionId === collectionId).matchUpCount,
   ).toEqual(5);
 
   // expect no change on matchUp because it already had tieFormat attached
@@ -422,9 +415,7 @@ it('can modify collectionDefinitions for a tieFormat on a structure', () => {
 
   // expect no change on matchUp because it already had tieFormat attached
   expect(
-    matchUps[0].tieFormat.collectionDefinitions.find(
-      (def) => def.collectionId === collectionId
-    ).matchUpCount
+    matchUps[0].tieFormat.collectionDefinitions.find((def) => def.collectionId === collectionId).matchUpCount,
   ).toEqual(3);
 
   const targetMatchUpId = matchUps[0].matchUpId;
@@ -447,20 +438,14 @@ it('can modify collectionDefinitions for a tieFormat on a structure', () => {
   let targetMatchUp = matchUps.find((m) => m.matchUpId === targetMatchUpId);
 
   expect(
-    targetMatchUp.tieFormat.collectionDefinitions.find(
-      (def) => def.collectionId === collectionId
-    ).matchUpCount
+    targetMatchUp.tieFormat.collectionDefinitions.find((def) => def.collectionId === collectionId).matchUpCount,
   ).toEqual(5);
 
   expect(targetMatchUp.tieMatchUps.length).toEqual(11);
 
-  let targetTieMatchUps = targetMatchUp.tieMatchUps.filter(
-    (tieMatchUp) => tieMatchUp.collectionId === collectionId
-  );
+  let targetTieMatchUps = targetMatchUp.tieMatchUps.filter((tieMatchUp) => tieMatchUp.collectionId === collectionId);
   expect(targetTieMatchUps.length).toEqual(5);
-  expect(targetTieMatchUps.map(xa('collectionPosition'))).toEqual([
-    1, 2, 3, 4, 5,
-  ]);
+  expect(targetTieMatchUps.map(xa('collectionPosition'))).toEqual([1, 2, 3, 4, 5]);
 
   [0, 2, 4]
     .map((i) => targetTieMatchUps[i].matchUpId)
@@ -481,9 +466,7 @@ it('can modify collectionDefinitions for a tieFormat on a structure', () => {
   targetMatchUp = matchUps.find((m) => m.matchUpId === targetMatchUpId);
 
   targetTieMatchUps = targetMatchUp.tieMatchUps.filter(
-    (matchUp) =>
-      matchUp.collectionId === collectionId &&
-      matchUp.matchUpStatus === TO_BE_PLAYED
+    (matchUp) => matchUp.collectionId === collectionId && matchUp.matchUpStatus === TO_BE_PLAYED,
   );
   expect(targetTieMatchUps.length).toEqual(2);
 

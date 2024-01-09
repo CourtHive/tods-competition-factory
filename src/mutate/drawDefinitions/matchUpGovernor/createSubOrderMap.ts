@@ -1,4 +1,4 @@
-import { extractAttributes } from '../../../utilities/objects';
+import { xa } from '../../../utilities/objects';
 import { findExtension } from '../../../acquire/findExtension';
 import { instanceCount } from '../../../utilities/arrays';
 import { ensureInt } from '../../../utilities/ensureInt';
@@ -8,7 +8,7 @@ import { SUB_ORDER } from '../../../constants/extensionConstants';
 
 export function createSubOrderMap({ positionAssignments }) {
   const subOrderArray = (positionAssignments || [])
-    .filter(extractAttributes(PARTICIPANT_ID))
+    .filter(xa(PARTICIPANT_ID))
     .map((assignment) => {
       const { extension } = findExtension({
         element: assignment,
@@ -30,7 +30,7 @@ export function createSubOrderMap({ positionAssignments }) {
       .filter(({ subOrder }) => subOrdersCount[subOrder] === 1)
       .map(({ participantId, subOrder }) => ({
         [participantId]: subOrder,
-      }))
+      })),
   );
 
   return { subOrderMap };

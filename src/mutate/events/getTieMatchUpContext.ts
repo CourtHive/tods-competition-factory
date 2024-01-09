@@ -3,7 +3,7 @@ import { getPositionAssignments } from '../../query/drawDefinition/positionsGett
 import { getParticipants } from '../../query/participants/getParticipants';
 import { getMatchUpsMap } from '../../query/matchUps/getMatchUpsMap';
 import { findDrawMatchUp } from '../../acquire/findDrawMatchUp';
-import { extractAttributes } from '../../utilities/objects';
+import { xa } from '../../utilities/objects';
 
 import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
 import { TEAM } from '../../constants/participantConstants';
@@ -82,20 +82,13 @@ export function getTieMatchUpContext({
   });
   if (!inContextTieMatchUp) return { error: MATCHUP_NOT_FOUND };
 
-  const {
-    collectionPosition,
-    drawPositions,
-    collectionId,
-    matchUpTieId,
-    matchUpType,
-  } = inContextTieMatchUp;
+  const { collectionPosition, drawPositions, collectionId, matchUpTieId, matchUpType } = inContextTieMatchUp;
 
-  if (matchUpType && ![SINGLES, DOUBLES].includes(matchUpType))
-    return { error: INVALID_MATCHUP };
+  if (matchUpType && ![SINGLES, DOUBLES].includes(matchUpType)) return { error: INVALID_MATCHUP };
 
   const { positionAssignments } = getPositionAssignments({ structure });
   const relevantAssignments = positionAssignments?.filter(
-    (assignment) => drawPositions?.includes(assignment.drawPosition)
+    (assignment) => drawPositions?.includes(assignment.drawPosition),
   );
 
   const { matchUp: dualMatchUp } = findDrawMatchUp({
@@ -104,11 +97,9 @@ export function getTieMatchUpContext({
     matchUpsMap,
   });
 
-  const sideParticipantIds =
-    dualMatchUp?.sides?.map(extractAttributes('participantId')) ?? [];
+  const sideParticipantIds = dualMatchUp?.sides?.map(xa('participantId')) ?? [];
 
-  const assignedParticipantIds =
-    relevantAssignments?.map(extractAttributes('participantId')) ?? [];
+  const assignedParticipantIds = relevantAssignments?.map(xa('participantId')) ?? [];
 
   const participantIds = [...sideParticipantIds, ...assignedParticipantIds];
 

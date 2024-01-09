@@ -6,22 +6,15 @@ import { generateDrawDefinition } from '../drawDefinitions/generateDrawDefinitio
 import { isValidExtension } from '../../../validators/isValidExtension';
 import { getFlightProfile } from '../../../query/event/getFlightProfile';
 import { addExtension } from '../../../mutate/extensions/addExtension';
-import { extractAttributes } from '../../../utilities/objects';
+import { xa } from '../../../utilities/objects';
 import { completeDrawMatchUps } from './completeDrawMatchUps';
 import { generateRange } from '../../../utilities/arrays';
 
 import { PARTICIPANT_ID } from '../../../constants/attributeConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SEEDING } from '../../../constants/scaleConstants';
-import {
-  DRAW_DEFINITION_NOT_FOUND,
-  ErrorType,
-  STRUCTURE_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
-import {
-  MAIN,
-  ROUND_ROBIN_WITH_PLAYOFF,
-} from '../../../constants/drawDefinitionConstants';
+import { DRAW_DEFINITION_NOT_FOUND, ErrorType, STRUCTURE_NOT_FOUND } from '../../../constants/errorConditionConstants';
+import { MAIN, ROUND_ROBIN_WITH_PLAYOFF } from '../../../constants/drawDefinitionConstants';
 
 export function generateFlightDrawDefinitions({
   matchUpStatusProfile,
@@ -40,8 +33,7 @@ export function generateFlightDrawDefinitions({
   const { startDate } = tournamentRecord;
   const drawIds: string[] = [];
 
-  const categoryName =
-    category?.categoryName || category?.ageCategoryCode || category?.ratingType;
+  const categoryName = category?.categoryName || category?.ageCategoryCode || category?.ratingType;
   const existingDrawIds = event.drawDefinitions?.map(({ drawId }) => drawId);
 
   if (Array.isArray(flightProfile?.flights)) {
@@ -53,17 +45,11 @@ export function generateFlightDrawDefinitions({
       const { seedsCount, generate = true } = drawProfile || {};
 
       if (generate) {
-        const drawParticipantIds = drawEntries
-          .filter(extractAttributes(PARTICIPANT_ID))
-          .map(extractAttributes(PARTICIPANT_ID));
+        const drawParticipantIds = drawEntries.filter(xa(PARTICIPANT_ID)).map(xa(PARTICIPANT_ID));
 
         const seedingScaleName = categoryName || eventName;
 
-        if (
-          tournamentRecord &&
-          seedsCount &&
-          seedsCount <= drawParticipantIds.length
-        ) {
+        if (tournamentRecord && seedsCount && seedsCount <= drawParticipantIds.length) {
           const scaleValues = generateRange(1, seedsCount + 1);
           scaleValues.forEach((scaleValue, index) => {
             const scaleItem = {
@@ -105,9 +91,7 @@ export function generateFlightDrawDefinitions({
         if (Array.isArray(drawExtensions)) {
           drawExtensions
             .filter(isValidExtension)
-            .forEach((extension) =>
-              addExtension({ element: drawDefinition, extension })
-            );
+            .forEach((extension) => addExtension({ element: drawDefinition, extension }));
         }
 
         result = addDrawDefinition({
@@ -155,9 +139,7 @@ export function generateFlightDrawDefinitions({
           const completedCount = result.completedCount;
 
           if (drawProfile?.drawType === ROUND_ROBIN_WITH_PLAYOFF) {
-            const mainStructure = drawDefinition.structures?.find(
-              (structure) => structure.stage === MAIN
-            );
+            const mainStructure = drawDefinition.structures?.find((structure) => structure.stage === MAIN);
             if (!mainStructure) return { error: STRUCTURE_NOT_FOUND };
             let result = automatedPlayoffPositioning({
               structureId: mainStructure.structureId,
@@ -167,14 +149,10 @@ export function generateFlightDrawDefinitions({
             });
             if (result.error) return { error: result.error, drawIds: [] };
 
-            const playoffCompletionGoal = completionGoal
-              ? completionGoal - (completedCount ?? 0)
-              : undefined;
+            const playoffCompletionGoal = completionGoal ? completionGoal - (completedCount ?? 0) : undefined;
             result = completeDrawMatchUps({
               completeAllMatchUps: !completionGoal && completeAllMatchUps,
-              completionGoal: completionGoal
-                ? playoffCompletionGoal
-                : undefined,
+              completionGoal: completionGoal ? playoffCompletionGoal : undefined,
               matchUpStatusProfile,
               randomWinningSide,
               tournamentRecord,

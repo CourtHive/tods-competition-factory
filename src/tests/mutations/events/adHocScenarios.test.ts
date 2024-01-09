@@ -1,17 +1,14 @@
 import { completeDrawMatchUps } from '../../../assemblies/generators/mocks/completeDrawMatchUps';
 import { validMatchUp, validMatchUps } from '../../../validators/validMatchUp';
 import { intersection, unique } from '../../../utilities/arrays';
-import { extractAttributes } from '../../../utilities/objects';
+import { xa } from '../../../utilities/objects';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it, test } from 'vitest';
 
 import { REMOVE_PARTICIPANT } from '../../../constants/matchUpActionConstants';
 import { AD_HOC } from '../../../constants/drawDefinitionConstants';
-import {
-  DOUBLES_EVENT,
-  SINGLES_EVENT,
-} from '../../../constants/eventConstants';
+import { DOUBLES_EVENT, SINGLES_EVENT } from '../../../constants/eventConstants';
 import {
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
@@ -57,9 +54,7 @@ test('generateDrawDefinition can generate specified number of rounds', () => {
   const matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
   expect(matchUps.length).toEqual((participantsCount / 2) * roundsCount);
 
-  expect(
-    matchUps.every(({ sides }) => sides.every(({ participant }) => participant))
-  ).toEqual(true);
+  expect(matchUps.every(({ sides }) => sides.every(({ participant }) => participant))).toEqual(true);
 
   const roundResult = tournamentEngine.getRoundMatchUps({ matchUps });
   expect(roundResult.maxMatchUpsCount).toEqual(participantsCount / 2);
@@ -108,20 +103,14 @@ test('adHoc matchUpActions can restrict adHoc round participants to diallow recu
   const matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
   expect(matchUps.length).toEqual((participantsCount / 2) * roundsCount);
 
-  expect(
-    matchUps.every(
-      (matchUp: any) => matchUp.sides?.every(({ participant }) => !participant)
-    )
-  ).toEqual(true);
+  expect(matchUps.every((matchUp: any) => matchUp.sides?.every(({ participant }) => !participant))).toEqual(true);
 
   let validActions = tournamentEngine.positionActions({
     ...matchUps[0],
     sideNumber: 1,
   }).validActions;
 
-  expect(
-    validActions.map(extractAttributes('type')).includes('ASSIGN')
-  ).toBeTruthy();
+  expect(validActions.map(xa('type')).includes('ASSIGN')).toBeTruthy();
 
   let assignAction = validActions.find((action) => action.type === 'ASSIGN');
 
@@ -142,9 +131,7 @@ test('adHoc matchUpActions can restrict adHoc round participants to diallow recu
     sideNumber: 1,
   }).validActions;
   assignAction = validActions.find((action) => action.type === 'ASSIGN');
-  expect(
-    assignAction.availableParticipantIds.includes(targetParticipantId)
-  ).toEqual(false);
+  expect(assignAction.availableParticipantIds.includes(targetParticipantId)).toEqual(false);
 
   // possible to override default setting
   validActions = tournamentEngine.positionActions({
@@ -153,9 +140,7 @@ test('adHoc matchUpActions can restrict adHoc round participants to diallow recu
     sideNumber: 1,
   }).validActions;
   assignAction = validActions.find((action) => action.type === 'ASSIGN');
-  expect(
-    assignAction.availableParticipantIds.includes(targetParticipantId)
-  ).toEqual(true);
+  expect(assignAction.availableParticipantIds.includes(targetParticipantId)).toEqual(true);
 
   validActions = tournamentEngine.positionActions({
     ...matchUps[0],
@@ -176,23 +161,16 @@ test('adHoc matchUpActions can restrict adHoc round participants to diallow recu
     .allTournamentMatchUps()
     .matchUps.find((matchUp) => matchUp.matchUpId === matchUps[0].matchUpId);
 
-  expect(
-    targetMatchUp.sides.map(extractAttributes('participantId')).filter(Boolean)
-      .length
-  ).toEqual(2);
+  expect(targetMatchUp.sides.map(xa('participantId')).filter(Boolean).length).toEqual(2);
 
   validActions = tournamentEngine.positionActions({
     ...matchUps[0],
     sideNumber: 1,
   }).validActions;
 
-  const removeParticiapntAction = validActions.find(
-    ({ type }) => type === REMOVE_PARTICIPANT
-  );
+  const removeParticiapntAction = validActions.find(({ type }) => type === REMOVE_PARTICIPANT);
   expect(removeParticiapntAction).not.toBeUndefined();
-  const removeResult = tournamentEngine[removeParticiapntAction.method](
-    removeParticiapntAction.payload
-  );
+  const removeResult = tournamentEngine[removeParticiapntAction.method](removeParticiapntAction.payload);
   expect(removeResult.success).toEqual(true);
 
   const modifiedMatchUp = tournamentEngine
@@ -200,10 +178,7 @@ test('adHoc matchUpActions can restrict adHoc round participants to diallow recu
     .matchUps.find((matchUp) => matchUp.matchUpId === matchUps[0].matchUpId);
 
   // confirm that participantId has been removed from { sideNumbe: 1 }
-  expect(
-    modifiedMatchUp.sides.find(({ sideNumber }) => sideNumber === 1)
-      .participantId
-  ).toBeUndefined();
+  expect(modifiedMatchUp.sides.find(({ sideNumber }) => sideNumber === 1).participantId).toBeUndefined();
 
   const { outcome } = mocksEngine.generateOutcomeFromScoreString({
     scoreString: '7-5 7-5',
@@ -219,10 +194,7 @@ test('adHoc matchUpActions can restrict adHoc round participants to diallow recu
   expect(scoringResult.success).toEqual(true);
 
   const drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-  expect(
-    drawDefinition.structures[0].positionAssignments[0].extensions[0].value
-      .gamesWon
-  ).toEqual(10);
+  expect(drawDefinition.structures[0].positionAssignments[0].extensions[0].value.gamesWon).toEqual(10);
 });
 
 it('can remove adHoc rounds', () => {
@@ -282,7 +254,7 @@ it('can remove adHoc rounds', () => {
   expect(removeResult.deletedMatchUpsCount).toEqual(participantsCount / 2);
 
   const matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
-  const roundNumbers = unique(matchUps.map(extractAttributes('roundNumber')));
+  const roundNumbers = unique(matchUps.map(xa('roundNumber')));
   expect(roundNumbers).toEqual([1, 2]);
 
   const completedDrawDefinition = tournamentEngine.generateDrawDefinition({
@@ -296,9 +268,7 @@ it('can remove adHoc rounds', () => {
     drawDefinition: completedDrawDefinition,
   });
   expect(completionResult.success).toEqual(true);
-  expect(completionResult.completedCount).toEqual(
-    (participantsCount / 2) * roundsCount
-  );
+  expect(completionResult.completedCount).toEqual((participantsCount / 2) * roundsCount);
 
   result = tournamentEngine.addDrawDefinition({
     drawDefinition: completedDrawDefinition,
@@ -366,9 +336,7 @@ it('can add matchUps to an existing adHoc round', () => {
   expect(validMatchUp(matchUps[0])).toEqual(true);
   expect(validMatchUps(matchUps)).toEqual(true);
 
-  expect(
-    matchUps[0].sides[0].participant.individualParticipants.length
-  ).toEqual(2);
+  expect(matchUps[0].sides[0].participant.individualParticipants.length).toEqual(2);
 
   const drawId = automatedDrawDefinition.drawId;
   let generationResult = tournamentEngine.generateAdHocMatchUps();
@@ -443,22 +411,12 @@ it('can add matchUps to an existing adHoc round', () => {
   matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
   expect(matchUps.length).toEqual((participantsCount / 2) * roundsCount + 12);
 
-  const firstRoundMatchUp = matchUps.find(
-    ({ roundNumber }) => roundNumber === 1
-  );
-  const secondRoundMatchUp = matchUps.find(
-    ({ roundNumber }) => roundNumber === 2
-  );
-  const thirdRoundMatchUp = matchUps.find(
-    ({ roundNumber }) => roundNumber === 3
-  );
+  const firstRoundMatchUp = matchUps.find(({ roundNumber }) => roundNumber === 1);
+  const secondRoundMatchUp = matchUps.find(({ roundNumber }) => roundNumber === 2);
+  const thirdRoundMatchUp = matchUps.find(({ roundNumber }) => roundNumber === 3);
 
   const beforeMatchUpsCount = matchUps.length;
-  const matchUpIds = [
-    firstRoundMatchUp.matchUpId,
-    secondRoundMatchUp.matchUpId,
-    thirdRoundMatchUp.matchUpId,
-  ];
+  const matchUpIds = [firstRoundMatchUp.matchUpId, secondRoundMatchUp.matchUpId, thirdRoundMatchUp.matchUpId];
 
   let deletionResult = tournamentEngine.deleteAdHocMatchUps({
     structureId,
@@ -471,9 +429,7 @@ it('can add matchUps to an existing adHoc round', () => {
   const afterMatchUpsCount = matchUps.length;
   expect(afterMatchUpsCount).toEqual(beforeMatchUpsCount - matchUpIds.length);
 
-  const roundTwoMatchUpIds = matchUps
-    .filter(({ roundNumber }) => roundNumber === 2)
-    .map(extractAttributes('matchUpId'));
+  const roundTwoMatchUpIds = matchUps.filter(({ roundNumber }) => roundNumber === 2).map(xa('matchUpId'));
 
   deletionResult = tournamentEngine.deleteAdHocMatchUps({
     matchUpIds: roundTwoMatchUpIds,
@@ -483,24 +439,17 @@ it('can add matchUps to an existing adHoc round', () => {
   expect(deletionResult.success).toEqual(true);
 
   matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
-  const finalMatchUpIds = matchUps.map(extractAttributes('matchUpId'));
+  const finalMatchUpIds = matchUps.map(xa('matchUpId'));
   expect(intersection(finalMatchUpIds, roundTwoMatchUpIds).length).toEqual(0);
-  expect(matchUps.length).toEqual(
-    afterMatchUpsCount - roundTwoMatchUpIds.length
-  );
+  expect(matchUps.length).toEqual(afterMatchUpsCount - roundTwoMatchUpIds.length);
 
   matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
-  const roundNumbers = unique(matchUps.map(extractAttributes('roundNumber')));
+  const roundNumbers = unique(matchUps.map(xa('roundNumber')));
   // all { roundNumber: 3 } matchUps were re-numbered
   expect(roundNumbers).toEqual([1, 2]);
 
-  const roundOneMatchUpIds = matchUps
-    .filter(({ roundNumber }) => roundNumber === 1)
-    .map(extractAttributes('matchUpId'));
-  const halfOfRoundOneMatchUpIds = roundOneMatchUpIds.slice(
-    0,
-    roundOneMatchUpIds.length / 2
-  );
+  const roundOneMatchUpIds = matchUps.filter(({ roundNumber }) => roundNumber === 1).map(xa('matchUpId'));
+  const halfOfRoundOneMatchUpIds = roundOneMatchUpIds.slice(0, roundOneMatchUpIds.length / 2);
 
   deletionResult = tournamentEngine.deleteAdHocMatchUps({
     matchUpIds: halfOfRoundOneMatchUpIds,

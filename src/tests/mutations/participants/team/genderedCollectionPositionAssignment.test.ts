@@ -1,4 +1,4 @@
-import { extractAttributes as xa } from '../../../../utilities/objects';
+import { xa } from '../../../../utilities/objects';
 import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
 import { unique } from '../../../../utilities/arrays';
@@ -7,10 +7,7 @@ import { expect, it } from 'vitest';
 import { INVALID_PARTICIPANT } from '../../../../constants/errorConditionConstants';
 import { USTA_GOLD_TEAM_CHALLENGE } from '../../../../constants/tieFormatConstants';
 import { ASSIGN_PARTICIPANT } from '../../../../constants/positionActionConstants';
-import {
-  SINGLES_MATCHUP,
-  TEAM_MATCHUP,
-} from '../../../../constants/matchUpTypes';
+import { SINGLES_MATCHUP, TEAM_MATCHUP } from '../../../../constants/matchUpTypes';
 import { INDIVIDUAL } from '../../../../constants/participantConstants';
 import { FEMALE, MALE } from '../../../../constants/genderConstants';
 import { TEAM_EVENT } from '../../../../constants/eventConstants';
@@ -36,30 +33,20 @@ it('can enforce collection gender', () => {
   const participants = tournamentEngine.getParticipants({
     withGroupings: true,
   }).participants;
-  const individualParticipants = participants.filter(
-    ({ participantType }) => participantType === INDIVIDUAL
-  );
+  const individualParticipants = participants.filter(({ participantType }) => participantType === INDIVIDUAL);
   expect(individualParticipants.length).toEqual(16);
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
-  const dualMatchUps = matchUps.filter(
-    ({ matchUpType }) => matchUpType === TEAM_MATCHUP
-  );
+  const dualMatchUps = matchUps.filter(({ matchUpType }) => matchUpType === TEAM_MATCHUP);
   expect(dualMatchUps.length).toEqual(1);
   const femaleSingles = matchUps.filter(
-    ({ matchUpType, gender }) =>
-      matchUpType === SINGLES_MATCHUP && gender === FEMALE
+    ({ matchUpType, gender }) => matchUpType === SINGLES_MATCHUP && gender === FEMALE,
   );
   expect(femaleSingles.length).toEqual(4);
-  const maleSingles = matchUps.filter(
-    ({ matchUpType, gender }) =>
-      matchUpType === SINGLES_MATCHUP && gender === MALE
-  );
+  const maleSingles = matchUps.filter(({ matchUpType, gender }) => matchUpType === SINGLES_MATCHUP && gender === MALE);
   expect(maleSingles.length).toEqual(4);
 
-  const side2team = dualMatchUps[0].sides.find(
-    ({ sideNumber }) => sideNumber === 2
-  ).participant;
+  const side2team = dualMatchUps[0].sides.find(({ sideNumber }) => sideNumber === 2).participant;
   const side2Individuals = side2team.individualParticipants;
 
   const testMatchUps = [maleSingles[0], femaleSingles[0]];
@@ -74,22 +61,16 @@ it('can enforce collection gender', () => {
     expect([MALE, FEMALE].includes(matchUp.gender)).toBeTruthy();
 
     // should only return participants matching collectionDefinition.gender
-    expect(
-      unique(validActions[2].availableParticipants.map((p) => p.person.sex))[0]
-    ).toEqual(matchUp.gender);
+    expect(unique(validActions[2].availableParticipants.map((p) => p.person.sex))[0]).toEqual(matchUp.gender);
 
-    const assignPositionAction = validActions.find(
-      ({ type }) => type === ASSIGN_PARTICIPANT
-    );
+    const assignPositionAction = validActions.find(({ type }) => type === ASSIGN_PARTICIPANT);
     const { method, payload, availableParticipantIds } = assignPositionAction;
     let participantId = availableParticipantIds[0];
 
     result = tournamentEngine[method]({ ...payload, participantId });
     expect(result.success).toEqual(true);
 
-    const side2incorrectGenderedIndividuals = side2Individuals.filter(
-      ({ person }) => person.sex !== matchUp.gender
-    );
+    const side2incorrectGenderedIndividuals = side2Individuals.filter(({ person }) => person.sex !== matchUp.gender);
     participantId = side2incorrectGenderedIndividuals[0].participantId;
     result = tournamentEngine[method]({ ...payload, participantId });
     expect(result.error).toEqual(INVALID_PARTICIPANT);
@@ -103,7 +84,5 @@ it('can enforce collection gender', () => {
 
   // count the number of sides (out of 4) that have participants
   // should only be one assigned side per matchUp => 2
-  expect(
-    targetMatchUps.flatMap(xa('sides')).filter(xa('participant')).length
-  ).toEqual(2);
+  expect(targetMatchUps.flatMap(xa('sides')).filter(xa('participant')).length).toEqual(2);
 });

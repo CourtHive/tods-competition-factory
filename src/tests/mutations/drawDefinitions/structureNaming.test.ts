@@ -1,4 +1,4 @@
-import { extractAttributes as xa } from '../../../utilities/objects';
+import { xa } from '../../../utilities/objects';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
@@ -42,16 +42,7 @@ it('can customize naming of COMPASS draw structures', () => {
 
   const drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
   const structureNames = drawDefinition.structures.map(xa('structureName'));
-  expect(structureNames).toEqual([
-    'Este',
-    'Oeste',
-    'Norte',
-    'Sur',
-    'Nordeste',
-    'Noroeste',
-    'Suroeste',
-    'Surdeste',
-  ]);
+  expect(structureNames).toEqual(['Este', 'Oeste', 'Norte', 'Sur', 'Nordeste', 'Noroeste', 'Suroeste', 'Surdeste']);
 });
 
 const playoffAttributes = {
@@ -147,12 +138,7 @@ it('can customize naming of CURTIS_CONSOLATION structures', () => {
 
   const drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
   const structureNames = drawDefinition.structures.map(xa('structureName'));
-  expect(structureNames).toEqual([
-    'Principal',
-    '1st Consey',
-    '2nd Consey',
-    '3-4 Playoff',
-  ]);
+  expect(structureNames).toEqual(['Principal', '1st Consey', '2nd Consey', '3-4 Playoff']);
 });
 
 it('can customize naming of added playoff structures with exitProfiles', () => {
@@ -262,19 +248,8 @@ it('can customize naming of ROUND_ROBIN groups and playoff structures', () => {
   let structureNames = drawDefinition.structures.map(xa('structureName'));
   expect(structureNames).toEqual(['Initial']);
 
-  let groupNames = drawDefinition.structures[0].structures.map(
-    xa('structureName')
-  );
-  expect(groupNames).toEqual([
-    'Grupo 1',
-    'Grupo 2',
-    'Grupo 3',
-    'Grupo 4',
-    'Grupo 5',
-    'Grupo 6',
-    'Grupo 7',
-    'Grupo 8',
-  ]);
+  let groupNames = drawDefinition.structures[0].structures.map(xa('structureName'));
+  expect(groupNames).toEqual(['Grupo 1', 'Grupo 2', 'Grupo 3', 'Grupo 4', 'Grupo 5', 'Grupo 6', 'Grupo 7', 'Grupo 8']);
 
   drawDefinition = tournamentEngine.getEvent({
     drawId: drawIds[1],
@@ -283,16 +258,7 @@ it('can customize naming of ROUND_ROBIN groups and playoff structures', () => {
   expect(structureNames).toEqual(['Initial']);
 
   groupNames = drawDefinition.structures[0].structures.map(xa('structureName'));
-  expect(groupNames).toEqual([
-    'Blue',
-    'Red',
-    'Green',
-    'Orange',
-    'Violet',
-    'Color 6',
-    'Color 7',
-    'Color 8',
-  ]);
+  expect(groupNames).toEqual(['Blue', 'Red', 'Green', 'Orange', 'Violet', 'Color 6', 'Color 7', 'Color 8']);
 });
 
 it('can customize naming of all ROUND_ROBIN_WITH_PLAYOFF structures', () => {

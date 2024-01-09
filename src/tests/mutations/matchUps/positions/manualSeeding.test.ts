@@ -1,4 +1,4 @@
-import { extractAttributes } from '../../../../utilities/objects';
+import { xa } from '../../../../utilities/objects';
 import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
@@ -52,8 +52,6 @@ it('supports manual seeding with alphanumeric values', () => {
   });
   const seedAssignments = drawDefinition.structures[0].seedAssignments;
   expect(seedAssignments.length).toEqual(4);
-  const seededParticipantIds = seedAssignments
-    .map(extractAttributes('participantId'))
-    .filter(Boolean);
+  const seededParticipantIds = seedAssignments.map(xa('participantId')).filter(Boolean);
   expect(seededParticipantIds.length).toEqual(4);
 });

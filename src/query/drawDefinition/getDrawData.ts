@@ -2,7 +2,7 @@ import { getStructureSeedAssignments } from '../structure/getStructureSeedAssign
 import { getAllStructureMatchUps } from '../matchUps/getAllStructureMatchUps';
 import { structureSort } from '../../functions/sorters/structureSort';
 import { getStructureGroups } from '../structure/getStructureGroups';
-import { extractAttributes } from '../../utilities/objects';
+import { xa } from '../../utilities/objects';
 import { makeDeepCopy } from '../../utilities/makeDeepCopy';
 import { getPositionAssignments } from './positionsGetter';
 import { findStructure } from '../../acquire/findStructure';
@@ -11,11 +11,7 @@ import { findExtension } from '../../acquire/findExtension';
 import { PARTICIPANT_ID } from '../../constants/attributeConstants';
 import { TALLY } from '../../constants/extensionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
-import {
-  ErrorType,
-  MISSING_DRAW_DEFINITION,
-  UNLINKED_STRUCTURES,
-} from '../../constants/errorConditionConstants';
+import { ErrorType, MISSING_DRAW_DEFINITION, UNLINKED_STRUCTURES } from '../../constants/errorConditionConstants';
 import {
   ABANDONED,
   BYE,
@@ -28,12 +24,7 @@ import {
   RETIRED,
   WALKOVER,
 } from '../../constants/matchUpStatusConstants';
-import {
-  CONSOLATION,
-  MAIN,
-  PLAY_OFF,
-  QUALIFYING,
-} from '../../constants/drawDefinitionConstants';
+import { CONSOLATION, MAIN, PLAY_OFF, QUALIFYING } from '../../constants/drawDefinitionConstants';
 
 export function getDrawData(params): {
   structures?: any[];
@@ -58,13 +49,7 @@ export function getDrawData(params): {
 
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
-  const drawInfo: any = (({
-    matchUpFormat,
-    updatedAt,
-    drawType,
-    drawName,
-    drawId,
-  }) => ({
+  const drawInfo: any = (({ matchUpFormat, updatedAt, drawType, drawName, drawId }) => ({
     matchUpFormat,
     updatedAt,
     drawName,
@@ -73,12 +58,7 @@ export function getDrawData(params): {
   }))(drawDefinition);
 
   let mainStageSeedAssignments, qualificationStageSeedAssignments;
-  const {
-    allStructuresLinked,
-    sourceStructureIds,
-    hasDrawFeedProfile,
-    structureGroups,
-  } = getStructureGroups({
+  const { allStructuresLinked, sourceStructureIds, hasDrawFeedProfile, structureGroups } = getStructureGroups({
     drawDefinition,
   });
 
@@ -115,10 +95,7 @@ export function getDrawData(params): {
         let seedAssignments = [];
 
         // pass seedAssignments from { stageSequence: 1 } to other stages
-        if (
-          structure.stage &&
-          [MAIN, CONSOLATION, PLAY_OFF].includes(structure.stage)
-        ) {
+        if (structure.stage && [MAIN, CONSOLATION, PLAY_OFF].includes(structure.stage)) {
           seedAssignments = mainStageSeedAssignments;
         }
 
@@ -126,30 +103,27 @@ export function getDrawData(params): {
           seedAssignments = qualificationStageSeedAssignments;
         }
 
-        const { matchUps, roundMatchUps, roundProfile } =
-          getAllStructureMatchUps({
-            // only propagate seedAssignments where none are present
-            seedAssignments: !structure?.seedAssignments?.length
-              ? seedAssignments
-              : undefined,
-            context: { drawId: drawInfo.drawId, ...context },
-            tournamentParticipants,
-            policyDefinitions,
-            tournamentRecord,
-            usePublishState,
-            publishStatus,
-            drawDefinition,
-            inContext,
-            structure,
-            event,
-          });
+        const { matchUps, roundMatchUps, roundProfile } = getAllStructureMatchUps({
+          // only propagate seedAssignments where none are present
+          seedAssignments: !structure?.seedAssignments?.length ? seedAssignments : undefined,
+          context: { drawId: drawInfo.drawId, ...context },
+          tournamentParticipants,
+          policyDefinitions,
+          tournamentRecord,
+          usePublishState,
+          publishStatus,
+          drawDefinition,
+          inContext,
+          structure,
+          event,
+        });
 
         const { positionAssignments } = getPositionAssignments({
           structure,
         });
 
         const participantResults = positionAssignments
-          ?.filter(extractAttributes(PARTICIPANT_ID))
+          ?.filter(xa(PARTICIPANT_ID))
           .map((assignment) => {
             participantPlacements = true;
             const { drawPosition, participantId } = assignment;
@@ -168,13 +142,7 @@ export function getDrawData(params): {
           .filter((f) => f?.participantResult);
 
         const structureInfo: any = structure
-          ? (({
-              stageSequence,
-              structureName,
-              structureType,
-              matchUpFormat,
-              stage,
-            }) => ({
+          ? (({ stageSequence, structureName, structureType, matchUpFormat, stage }) => ({
               stageSequence,
               structureName,
               structureType,
@@ -198,21 +166,11 @@ export function getDrawData(params): {
             DOUBLE_DEFAULT,
             DOUBLE_WALKOVER,
           ].includes(matchUp.matchUpStatus);
-          return (
-            active ||
-            activeMatchUpStatus ||
-            !!matchUp.winningSide ||
-            !!matchUp.score?.scoreStringSide1
-          );
+          return active || activeMatchUpStatus || !!matchUp.winningSide || !!matchUp.score?.scoreStringSide1;
         }, false);
 
         const structureCompleted = matchUps.reduce((completed, matchUp) => {
-          return (
-            completed &&
-            [BYE, COMPLETED, RETIRED, WALKOVER, DEFAULTED, ABANDONED].includes(
-              matchUp.matchUpStatus
-            )
-          );
+          return completed && [BYE, COMPLETED, RETIRED, WALKOVER, DEFAULTED, ABANDONED].includes(matchUp.matchUpStatus);
         }, !!matchUps.length);
         structureInfo.structureCompleted = structureCompleted;
         completedStructures[structureId] = structureCompleted;
@@ -232,9 +190,7 @@ export function getDrawData(params): {
     // cleanup attribute used for sorting
     structures.forEach((structure) => {
       if (!includePositionAssignments) delete structure.positionAssignments;
-      structure.sourceStructuresComplete = structure.sourceStructureIds?.every(
-        (id) => completedStructures[id]
-      );
+      structure.sourceStructuresComplete = structure.sourceStructureIds?.every((id) => completedStructures[id]);
     });
 
     return structures;
@@ -249,7 +205,7 @@ export function getDrawData(params): {
   }, false);
   drawInfo.drawCompleted = structures?.reduce(
     (completed, structure) => completed && structure.structureCompleted,
-    true
+    true,
   );
 
   return {

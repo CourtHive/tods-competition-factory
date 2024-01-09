@@ -1,4 +1,4 @@
-import { extractAttributes } from '../../../utilities/objects';
+import { xa } from '../../../utilities/objects';
 import mocksEngine from '../../../assemblies/engines/mock';
 import { extractTime } from '../../../utilities/dateTime';
 import tournamentEngine from '../../engines/syncEngine';
@@ -47,9 +47,7 @@ it('can add events, venues, and schedule matchUps', () => {
   expect(result.success).toEqual(true);
 
   const myCourts = { venueName: 'My Courts' };
-  result = tournamentEngine
-    .devContext({ addVenue: true })
-    .addVenue({ venue: myCourts });
+  result = tournamentEngine.devContext({ addVenue: true }).addVenue({ venue: myCourts });
   const {
     venue: { venueId },
   } = result;
@@ -76,8 +74,7 @@ it('can add events, venues, and schedule matchUps', () => {
   const { tournamentRecord } = tournamentEngine.getTournament();
   expect(tournamentRecord.venues.length).toEqual(1);
 
-  const { upcomingMatchUps: upcoming, pendingMatchUps } =
-    tournamentEngine.tournamentMatchUps();
+  const { upcomingMatchUps: upcoming, pendingMatchUps } = tournamentEngine.tournamentMatchUps();
   expect(upcoming.length).toEqual(16);
   expect(pendingMatchUps.length).toEqual(15);
 
@@ -142,11 +139,9 @@ it('can add events, venues, and schedule matchUps', () => {
   expect(matchUps.length).toEqual(1);
   expect(matchUps[0].schedule.courtId).toEqual(courtId);
   expect(matchUps[0].schedule.scheduledDate).toEqual(
-    scheduledDate.split('T')[0] // time component was stripped
+    scheduledDate.split('T')[0], // time component was stripped
   );
-  expect(matchUps[0].schedule.scheduledTime).toEqual(
-    extractTime(scheduledTime)
-  );
+  expect(matchUps[0].schedule.scheduledTime).toEqual(extractTime(scheduledTime));
 
   const venueName = 'New venue name';
   const venueAbbreviation = 'NVN';
@@ -183,9 +178,7 @@ it('can add events, venues, and schedule matchUps', () => {
   });
   expect(result.success).toEqual(true);
 
-  const remainingCourtIds = tournamentEngine
-    .findVenue({ venueId })
-    .venue.courts.map(extractAttributes('courtId'));
+  const remainingCourtIds = tournamentEngine.findVenue({ venueId }).venue.courts.map(xa('courtId'));
   expect(remainingCourtIds.includes(courtId)).toEqual(false);
 
   const matchUp = tournamentEngine.allTournamentMatchUps({

@@ -1,4 +1,4 @@
-import { extractAttributes } from '../../../../utilities/objects';
+import { xa } from '../../../../utilities/objects';
 import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
@@ -100,9 +100,7 @@ it('can generate TEAM events', () => {
   const { positionAssignments } = result.drawDefinition.structures[0];
   expect(positionAssignments.length).toEqual(drawSize);
 
-  const positionedParticipantIds = positionAssignments
-    .filter(extractAttributes(PARTICIPANT_ID))
-    .map(extractAttributes(PARTICIPANT_ID));
+  const positionedParticipantIds = positionAssignments.filter(xa(PARTICIPANT_ID)).map(xa(PARTICIPANT_ID));
   expect(positionedParticipantIds.length).toEqual(drawSize);
 
   const { outcome } = mocksEngine.generateOutcomeFromScoreString({
@@ -125,9 +123,7 @@ it('can generate TEAM events', () => {
   // because the collectionAssignments have not yet been made for the SINGLES/DOUBLES matchUps
   const { upcomingMatchUps } = tournamentEngine.tournamentMatchUps();
   expect(upcomingMatchUps.length).toEqual(4);
-  expect(upcomingMatchUps[0].score.sets).toEqual([
-    { side1Score: 1, side2Score: 0 },
-  ]);
+  expect(upcomingMatchUps[0].score.sets).toEqual([{ side1Score: 1, side2Score: 0 }]);
   expect(upcomingMatchUps[0].score.scoreStringSide1).toEqual('1-0');
 
   // all other SINGLES/DOUBLES/TEAM matchUps are pending

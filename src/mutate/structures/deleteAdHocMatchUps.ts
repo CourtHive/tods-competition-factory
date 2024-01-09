@@ -1,12 +1,8 @@
 import { updateAssignmentParticipantResults } from '../drawDefinitions/matchUpGovernor/updateAssignmentParticipantResults';
 import { checkScoreHasValue } from '../../query/matchUp/checkScoreHasValue';
 import { getMissingSequenceNumbers, unique } from '../../utilities/arrays';
-import { extractAttributes } from '../../utilities/objects';
-import {
-  deleteMatchUpsNotice,
-  modifyDrawNotice,
-  modifyMatchUpNotice,
-} from '../notifications/drawNotifications';
+import { xa } from '../../utilities/objects';
+import { deleteMatchUpsNotice, modifyDrawNotice, modifyMatchUpNotice } from '../notifications/drawNotifications';
 
 import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
 import { ROUND_OUTCOME } from '../../constants/drawDefinitionConstants';
@@ -33,45 +29,31 @@ export function deleteAdHocMatchUps({
   structureId,
   event,
 }: DeleteAdHocMatchUpsArgs) {
-  if (typeof drawDefinition !== 'object')
-    return { error: MISSING_DRAW_DEFINITION };
+  if (typeof drawDefinition !== 'object') return { error: MISSING_DRAW_DEFINITION };
   if (typeof structureId !== 'string') return { error: MISSING_STRUCTURE_ID };
 
   if (!Array.isArray(matchUpIds)) return { error: INVALID_VALUES };
 
-  const structure = drawDefinition.structures?.find(
-    (structure) => structure.structureId === structureId
-  );
+  const structure = drawDefinition.structures?.find((structure) => structure.structureId === structureId);
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
   const existingMatchUps = structure?.matchUps;
-  const structureHasRoundPositions = existingMatchUps?.find(
-    (matchUp) => !!matchUp.roundPosition
-  );
+  const structureHasRoundPositions = existingMatchUps?.find((matchUp) => !!matchUp.roundPosition);
 
-  if (
-    structure.structures ||
-    structureHasRoundPositions ||
-    structure.finishingPosition === ROUND_OUTCOME
-  ) {
+  if (structure.structures || structureHasRoundPositions || structure.finishingPosition === ROUND_OUTCOME) {
     return { error: INVALID_STRUCTURE };
   }
 
   const matchUpIdsWithScoreValue: string[] = [];
   const matchUpsToDelete =
     existingMatchUps?.filter(({ matchUpId, score }) => {
-      if (checkScoreHasValue({ score }))
-        matchUpIdsWithScoreValue.push(matchUpId);
+      if (checkScoreHasValue({ score })) matchUpIdsWithScoreValue.push(matchUpId);
       return matchUpIds.includes(matchUpId);
     }) ?? [];
-  const matchUpIdsToDelete = matchUpsToDelete.map(
-    extractAttributes('matchUpId')
-  );
+  const matchUpIdsToDelete = matchUpsToDelete.map(xa('matchUpId'));
 
   if (matchUpIdsToDelete.length) {
-    structure.matchUps = (structure.matchUps ?? []).filter(
-      ({ matchUpId }) => !matchUpIdsToDelete.includes(matchUpId)
-    );
+    structure.matchUps = (structure.matchUps ?? []).filter(({ matchUpId }) => !matchUpIdsToDelete.includes(matchUpId));
 
     deleteMatchUpsNotice({
       tournamentId: tournamentRecord?.tournamentId,
@@ -81,9 +63,7 @@ export function deleteAdHocMatchUps({
       drawDefinition,
     });
 
-    const roundNumbers = unique(
-      structure.matchUps.map(extractAttributes('roundNumber'))
-    );
+    const roundNumbers = unique(structure.matchUps.map(xa('roundNumber')));
     const missingRoundNumbers = getMissingSequenceNumbers(roundNumbers);
     if (missingRoundNumbers.length) {
       missingRoundNumbers.reverse();
@@ -106,16 +86,11 @@ export function deleteAdHocMatchUps({
     if (matchUpIdsWithScoreValue.length) {
       structure.positionAssignments = unique(
         structure.matchUps
-          .flatMap((matchUp) =>
-            (matchUp.sides ?? []).map((side) => side.participantId)
-          )
-          .filter(Boolean)
+          .flatMap((matchUp) => (matchUp.sides ?? []).map((side) => side.participantId))
+          .filter(Boolean),
       ).map((participantId) => ({ participantId }));
 
-      const matchUpFormat =
-        structure?.matchUpFormat ??
-        drawDefinition?.matchUpFormat ??
-        event?.matchUpFormat;
+      const matchUpFormat = structure?.matchUpFormat ?? drawDefinition?.matchUpFormat ?? event?.matchUpFormat;
 
       const result = updateAssignmentParticipantResults({
         positionAssignments: structure.positionAssignments,

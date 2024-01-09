@@ -1,6 +1,6 @@
 import { getAssignedParticipantIds } from '../../query/drawDefinition/getAssignedParticipantIds';
 import { refreshEntryPositions } from './refreshEntryPositions';
-import { extractAttributes as xa, isString } from '../../utilities/objects';
+import { xa, isString } from '../../utilities/objects';
 import { decorateResult } from '../../global/functions/decorateResult';
 import { getFlightProfile } from '../../query/event/getFlightProfile';
 import { intersection } from '../../utilities/arrays';
@@ -13,12 +13,7 @@ import {
   ErrorType,
   INVALID_PARTICIPANT_ID,
 } from '../../constants/errorConditionConstants';
-import {
-  EntryStatusUnion,
-  Event,
-  StageTypeUnion,
-  Tournament,
-} from '../../types/tournamentTypes';
+import { EntryStatusUnion, Event, StageTypeUnion, Tournament } from '../../types/tournamentTypes';
 
 type RemoveEventEntriesArgs = {
   tournamentParticipants?: HydratedParticipant[];
@@ -43,35 +38,25 @@ export function removeEventEntries({
   const stack = 'removeEventEntries';
   if (!event?.eventId) return { error: MISSING_EVENT };
 
-  if (
-    !Array.isArray(participantIds) ||
-    participantIds.some((participantId) => !isString(participantId))
-  ) {
+  if (!Array.isArray(participantIds) || participantIds.some((participantId) => !isString(participantId))) {
     return decorateResult({ result: { error: INVALID_PARTICIPANT_ID }, stack });
   }
 
   // do not filter by stages; must kmow all participantIds assigned to any stage!
   const assignedParticipantIds = (event.drawDefinitions ?? []).flatMap(
-    (drawDefinition) =>
-      getAssignedParticipantIds({ drawDefinition }).assignedParticipantIds ?? []
+    (drawDefinition) => getAssignedParticipantIds({ drawDefinition }).assignedParticipantIds ?? [],
   );
 
   const statusParticipantIds = (
     (entryStatuses?.length &&
-      event.entries?.filter(
-        (entry) =>
-          entry.entryStatus && entryStatuses.includes(entry.entryStatus)
-      )) ||
+      event.entries?.filter((entry) => entry.entryStatus && entryStatuses.includes(entry.entryStatus))) ||
     []
   )
     .map(xa('participantId'))
     .filter((participantId) => !assignedParticipantIds.includes(participantId));
 
   const stageParticipantIds = (
-    (stage &&
-      event.entries?.filter(
-        (entry) => entry.entryStage && entry.entryStage === stage
-      )) ||
+    (stage && event.entries?.filter((entry) => entry.entryStage && entry.entryStage === stage)) ||
     []
   )
     .map(xa('participantId'))
@@ -80,9 +65,8 @@ export function removeEventEntries({
   if (participantIds.length) {
     participantIds = participantIds.filter(
       (participantId) =>
-        (!entryStatuses?.length ||
-          statusParticipantIds.includes(participantId)) &&
-        (!stage || stageParticipantIds.includes(participantId))
+        (!entryStatuses?.length || statusParticipantIds.includes(participantId)) &&
+        (!stage || stageParticipantIds.includes(participantId)),
     );
   } else if (statusParticipantIds.length && stageParticipantIds.length) {
     participantIds = intersection(statusParticipantIds, stageParticipantIds);
@@ -94,9 +78,7 @@ export function removeEventEntries({
 
   if (
     participantIds?.length &&
-    assignedParticipantIds.some((participantId) =>
-      participantIds.includes(participantId)
-    )
+    assignedParticipantIds.some((participantId) => participantIds.includes(participantId))
   ) {
     return decorateResult({
       result: { error: EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT },
@@ -123,14 +105,12 @@ export function removeEventEntries({
   // also remove entry from all flights and drawDefinitions
   const { flightProfile } = getFlightProfile({ event });
   flightProfile?.flights?.forEach((flight) => {
-    flight.drawEntries = (flight.drawEntries || []).filter(
-      (entry) => !participantIds.includes(entry.participantId)
-    );
+    flight.drawEntries = (flight.drawEntries || []).filter((entry) => !participantIds.includes(entry.participantId));
   });
 
   event.drawDefinitions?.forEach((drawDefinition) => {
     drawDefinition.entries = (drawDefinition.entries ?? []).filter(
-      (entry) => !participantIds.includes(entry.participantId)
+      (entry) => !participantIds.includes(entry.participantId),
     );
   });
 

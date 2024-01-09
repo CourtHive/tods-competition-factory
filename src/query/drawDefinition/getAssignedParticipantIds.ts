@@ -1,4 +1,4 @@
-import { extractAttributes } from '../../utilities/objects';
+import { xa } from '../../utilities/objects';
 import { getPositionAssignments } from './positionsGetter';
 import { unique } from '../../utilities/arrays';
 
@@ -15,16 +15,12 @@ type GetAssignedParticipantIdsArgs = {
   stages?: StageTypeUnion[];
 };
 
-export function getAssignedParticipantIds({
-  drawDefinition,
-  stages,
-}: GetAssignedParticipantIdsArgs): ResultType & {
+export function getAssignedParticipantIds({ drawDefinition, stages }: GetAssignedParticipantIdsArgs): ResultType & {
   assignedParticipantIds?: string[];
 } {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   const stageStructures = (drawDefinition?.structures ?? []).filter(
-    (structure) =>
-      !stages?.length || (structure.stage && stages.includes(structure.stage))
+    (structure) => !stages?.length || (structure.stage && stages.includes(structure.stage)),
   );
   const assignedParticipantIds = unique(
     stageStructures
@@ -32,12 +28,10 @@ export function getAssignedParticipantIds({
         const { positionAssignments } = getPositionAssignments({
           structure,
         });
-        return positionAssignments
-          ? positionAssignments.map(extractAttributes('participantId'))
-          : [];
+        return positionAssignments ? positionAssignments.map(xa('participantId')) : [];
       })
       .flat()
-      .filter(Boolean)
+      .filter(Boolean),
   );
 
   return { ...SUCCESS, assignedParticipantIds };

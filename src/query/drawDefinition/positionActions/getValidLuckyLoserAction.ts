@@ -1,23 +1,14 @@
 import { getAllStructureMatchUps } from '../../matchUps/getAllStructureMatchUps';
 import { getInitialRoundNumber } from '../../matchUps/getInitialRoundNumber';
 import { getStructureMatchUps } from '../../structure/getStructureMatchUps';
-import { extractAttributes } from '../../../utilities/objects';
+import { xa } from '../../../utilities/objects';
 import { findStructure } from '../../../acquire/findStructure';
 
 import { ROUND_OUTCOME } from '../../../constants/drawDefinitionConstants';
 import { HydratedParticipant } from '../../../types/hydrated';
 import { TEAM } from '../../../constants/eventConstants';
-import {
-  DrawDefinition,
-  Event,
-  Participant,
-  PositionAssignment,
-  Structure,
-} from '../../../types/tournamentTypes';
-import {
-  LUCKY_PARTICIPANT,
-  LUCKY_PARTICIPANT_METHOD,
-} from '../../../constants/positionActionConstants';
+import { DrawDefinition, Event, Participant, PositionAssignment, Structure } from '../../../types/tournamentTypes';
+import { LUCKY_PARTICIPANT, LUCKY_PARTICIPANT_METHOD } from '../../../constants/positionActionConstants';
 
 type GetValidLuckLoserActionArgs = {
   tournamentParticipants?: HydratedParticipant[];
@@ -70,21 +61,17 @@ export function getValidLuckyLosersAction({
       (ids: any, link) => {
         const sourceStructureId = link.source?.structureId;
         const targetStructureId = link.target?.structureId;
-        if (!ids.sourceStructureIds.includes(sourceStructureId))
-          ids.sourceStructureIds.push(sourceStructureId);
-        if (!ids.targetStructureIds.includes(targetStructureId))
-          ids.targetStructureIds.push(targetStructureId);
+        if (!ids.sourceStructureIds.includes(sourceStructureId)) ids.sourceStructureIds.push(sourceStructureId);
+        if (!ids.targetStructureIds.includes(targetStructureId)) ids.targetStructureIds.push(targetStructureId);
         return ids;
       },
-      { sourceStructureIds: [], targetStructureIds: [] }
+      { sourceStructureIds: [], targetStructureIds: [] },
     ) || {};
 
   const availableLuckyLoserParticipantIds: string[] = [];
 
   const relevantLinks =
-    drawDefinition.links?.filter(
-      (link) => link.target?.structureId === structure.structureId
-    ) ?? [];
+    drawDefinition.links?.filter((link) => link.target?.structureId === structure.structureId) ?? [];
 
   for (const relevantLink of relevantLinks) {
     const sourceStructureId = relevantLink?.source?.structureId;
@@ -110,9 +97,7 @@ export function getValidLuckyLosersAction({
         matchUps,
       });
       const relevantLink = drawDefinition.links?.find(
-        (link) =>
-          link.target?.structureId === structure?.structureId &&
-          link.target.roundNumber === initialRoundNumber
+        (link) => link.target?.structureId === structure?.structureId && link.target.roundNumber === initialRoundNumber,
       );
       const sourceRoundNumber = relevantLink?.source?.roundNumber;
       matchUpFilters.roundNumbers = [sourceRoundNumber];
@@ -125,24 +110,13 @@ export function getValidLuckyLosersAction({
       drawDefinition,
     });
 
-    const assignedParticipantIds = positionAssignments
-      .map((assignment) => assignment.participantId)
-      .filter(Boolean);
+    const assignedParticipantIds = positionAssignments.map((assignment) => assignment.participantId).filter(Boolean);
 
     const availableParticipantIds = completedMatchUps
-      ?.filter(
-        ({ matchUpType, winningSide }) =>
-          winningSide && (event?.eventType !== TEAM || matchUpType === TEAM)
-      )
-      .map(
-        ({ winningSide, sides }) =>
-          winningSide && sides?.[1 - (winningSide - 1)]
-      )
-      .map(extractAttributes('participantId'))
-      .filter(
-        (participantId) =>
-          participantId && !assignedParticipantIds.includes(participantId)
-      );
+      ?.filter(({ matchUpType, winningSide }) => winningSide && (event?.eventType !== TEAM || matchUpType === TEAM))
+      .map(({ winningSide, sides }) => winningSide && sides?.[1 - (winningSide - 1)])
+      .map(xa('participantId'))
+      .filter((participantId) => participantId && !assignedParticipantIds.includes(participantId));
 
     availableParticipantIds?.forEach((participantId) => {
       // ensure if 'restrictBySourceRound' is false and there are multiple links that participants aren't added multiple times
@@ -152,14 +126,11 @@ export function getValidLuckyLosersAction({
   }
 
   const availableLuckyLosers = tournamentParticipants?.filter(
-    (participant: Participant) =>
-      availableLuckyLoserParticipantIds?.includes(participant.participantId)
+    (participant: Participant) => availableLuckyLoserParticipantIds?.includes(participant.participantId),
   );
 
   availableLuckyLosers?.forEach((luckyLoser: any) => {
-    const entry = (drawDefinition.entries ?? []).find(
-      (entry) => entry.participantId === luckyLoser.participantId
-    );
+    const entry = (drawDefinition.entries ?? []).find((entry) => entry.participantId === luckyLoser.participantId);
     luckyLoser.entryPosition = entry?.entryPosition;
   });
 

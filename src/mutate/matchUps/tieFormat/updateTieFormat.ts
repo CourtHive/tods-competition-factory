@@ -5,7 +5,7 @@ import { ResultType, decorateResult } from '../../../global/functions/decorateRe
 import { copyTieFormat } from '../../../query/hierarchical/tieFormats/copyTieFormat';
 import { getTieFormat } from '../../../query/hierarchical/tieFormats/getTieFormat';
 import { instanceCount, intersection } from '../../../utilities/arrays';
-import { extractAttributes as xa } from '../../../utilities/objects';
+import { xa } from '../../../utilities/objects';
 import { validUpdate } from '../../../validators/validUpdate';
 import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
 import {

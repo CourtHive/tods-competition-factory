@@ -10,7 +10,7 @@ import { TEAM } from '../../../../constants/eventConstants';
 it('can assign participants to SINGLES/DOUBLES matchUps in TEAM AdHoc events', () => {
   const tournamentId = 't1';
   const venueId = 'v1';
-  const eventId = 'd1';
+  const eventId = 'e1';
   const drawId = 'd1';
 
   let result = mocksEngine.generateTournamentRecord({
@@ -86,19 +86,17 @@ it('can assign participants to SINGLES/DOUBLES matchUps in TEAM AdHoc events', (
   expect(result.success).toEqual(true);
   // end unnecessary for the purpse of this test -----------------------------------------------------
 
-  const { matchUps } = tournamentEngine.allTournamentMatchUps();
-  console.log(matchUps[0].tieMatchUps.length);
-  /*
   result = tournamentEngine.executionQueue([
     {
       method: 'assignTieMatchUpParticipantId',
       params: {
-        drawId,
-        participantId: '09863268-d87d-44da-9c34-e9f17bcf48ef',
-        tieMatchUpId: '09eaf8cd-ca7f-4884-84f8-d10425c11df6',
+        tieMatchUpId: 'd1-ah-1-0-e1-COL-2-TMU-1',
+        participantId: 'ptcpt-I-0',
         sideNumber: 1,
+        drawId: 'd1',
       },
     },
   ]);
-  */
+
+  console.log(result);
 });

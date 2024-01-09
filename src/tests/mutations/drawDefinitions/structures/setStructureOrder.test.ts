@@ -1,4 +1,4 @@
-import { extractAttributes } from '../../../../utilities/objects';
+import { xa } from '../../../../utilities/objects';
 import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
@@ -19,27 +19,20 @@ it('can order structures', () => {
   expect(drawDefinition.structures.length).toEqual(8);
 
   const newOrder = [1, 3, 5, 7, 2, 4, 6, 8];
-  const structureIds = drawDefinition.structures.map(
-    extractAttributes('structureId')
-  );
+  const structureIds = drawDefinition.structures.map(xa('structureId'));
   const orderMap = Object.assign(
     {},
     ...structureIds.map((structureId, index) => ({
       [structureId]: newOrder[index],
-    }))
+    })),
   );
   const result = tournamentEngine.setStructureOrder({ drawId, orderMap });
   expect(result.success).toEqual(true);
 
-  const orderedStructures = tournamentEngine.getEvent({ drawId }).drawDefinition
-    .structures;
-  const structuresOrder = orderedStructures.map(
-    extractAttributes('structureOrder')
-  );
+  const orderedStructures = tournamentEngine.getEvent({ drawId }).drawDefinition.structures;
+  const structuresOrder = orderedStructures.map(xa('structureOrder'));
   expect(structuresOrder).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
-  const orderedStructureIds = orderedStructures.map(
-    extractAttributes('structureId')
-  );
+  const orderedStructureIds = orderedStructures.map(xa('structureId'));
   expect(structureIds).not.toEqual(orderedStructureIds);
 
   const expectedStructureIdsOrder = newOrder.map((i) => structureIds[i + 1]);

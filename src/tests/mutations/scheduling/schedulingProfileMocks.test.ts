@@ -1,6 +1,6 @@
 import { getContainedStructures } from '../../../query/drawDefinition/getContainedStructures';
 import { intersection, unique } from '../../../utilities/arrays';
-import { extractAttributes } from '../../../utilities/objects';
+import { xa } from '../../../utilities/objects';
 import { constantToString } from '../../../utilities/strings';
 import tournamentEngine from '../../engines/syncEngine';
 import { mocksEngine } from '../../..';
@@ -110,8 +110,7 @@ it('can schedule potential rounds properly in scenarios with recovery times grea
   tournamentEngine.setState(tournamentRecord);
   const { tournamentId } = tournamentRecord;
 
-  let { schedulingProfile: attachedSchedulingProfile } =
-    tournamentEngine.getSchedulingProfile();
+  let { schedulingProfile: attachedSchedulingProfile } = tournamentEngine.getSchedulingProfile();
   expect(attachedSchedulingProfile.length).toEqual(1);
   expect(attachedSchedulingProfile[0].venues[0].rounds.length).toEqual(9);
 
@@ -145,17 +144,13 @@ it('can schedule potential rounds properly in scenarios with recovery times grea
       drawMatchUps.push(...matchUps);
     });
 
-    const enteredParticipantIds = event.entries.map(
-      ({ participantId }) => participantId
-    );
+    const enteredParticipantIds = event.entries.map(({ participantId }) => participantId);
     eventEnteredParticipantIds.push(enteredParticipantIds);
 
-    const matchUpIds = drawMatchUps.map(extractAttributes('matchUpId'));
+    const matchUpIds = drawMatchUps.map(xa('matchUpId'));
     allMatchUpIds.push(...matchUpIds);
 
-    const matchUpsNoBye = drawMatchUps.filter(
-      ({ matchUpStatus }) => matchUpStatus !== BYE
-    );
+    const matchUpsNoBye = drawMatchUps.filter(({ matchUpStatus }) => matchUpStatus !== BYE);
     nonByeMatchUpsCount.push(matchUpsNoBye.length);
   }
 
@@ -166,20 +161,11 @@ it('can schedule potential rounds properly in scenarios with recovery times grea
   expect(unique(allMatchUpIds).length).toEqual(allMatchUpIds.length);
 
   // expect than none of the draws shares entered participantIds
-  expect(
-    intersection(eventEnteredParticipantIds[0], eventEnteredParticipantIds[1])
-      .length
-  ).toEqual(0);
+  expect(intersection(eventEnteredParticipantIds[0], eventEnteredParticipantIds[1]).length).toEqual(0);
 
-  expect(
-    intersection(eventEnteredParticipantIds[0], eventEnteredParticipantIds[2])
-      .length
-  ).toEqual(0);
+  expect(intersection(eventEnteredParticipantIds[0], eventEnteredParticipantIds[2]).length).toEqual(0);
 
-  expect(
-    intersection(eventEnteredParticipantIds[1], eventEnteredParticipantIds[2])
-      .length
-  ).toEqual(0);
+  expect(intersection(eventEnteredParticipantIds[1], eventEnteredParticipantIds[2]).length).toEqual(0);
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
 
@@ -187,16 +173,12 @@ it('can schedule potential rounds properly in scenarios with recovery times grea
   const roundsToSchedule = ['1-16', '9-24', '1-8'];
 
   for (const drawId of drawIds) {
-    const drawMatchUps = matchUps.filter(
-      (matchUp) => matchUp.drawId === drawId
-    );
+    const drawMatchUps = matchUps.filter((matchUp) => matchUp.drawId === drawId);
 
     for (const target of roundsToSchedule) {
       const range = target.indexOf('-') > 0 && target.split('-').map((x) => +x);
       const matchUp = drawMatchUps.find(({ finishingPositionRange }) => {
-        return range
-          ? intersection(range, finishingPositionRange.winner).length === 2
-          : undefined;
+        return range ? intersection(range, finishingPositionRange.winner).length === 2 : undefined;
       });
 
       if (matchUp) {
@@ -211,8 +193,7 @@ it('can schedule potential rounds properly in scenarios with recovery times grea
     }
   }
 
-  ({ schedulingProfile: attachedSchedulingProfile } =
-    tournamentEngine.getSchedulingProfile());
+  ({ schedulingProfile: attachedSchedulingProfile } = tournamentEngine.getSchedulingProfile());
 
   // should not schedule rounds which have already been scheduled
   expect(attachedSchedulingProfile[0].venues[0].rounds.length).toEqual(9);
@@ -252,16 +233,14 @@ it('mocksEngine can schedule Round Robin draws', () => {
     matchUps: [{ structureId }],
   } = tournamentEngine.allTournamentMatchUps();
 
-  const containerStructureId = Object.keys(containedStructureIds).find(
-    (containingStructureId) =>
-      containedStructureIds[containingStructureId].includes(structureId)
+  const containerStructureId = Object.keys(containedStructureIds).find((containingStructureId) =>
+    containedStructureIds[containingStructureId].includes(structureId),
   );
   expect(structureId).not.toBeUndefined();
   expect(containerStructureId).not.toBeUndefined();
   expect(structureId).not.toEqual(containerStructureId);
 
-  const { schedulingProfile: attachedSchedulingProfile } =
-    tournamentEngine.getSchedulingProfile();
+  const { schedulingProfile: attachedSchedulingProfile } = tournamentEngine.getSchedulingProfile();
   expect(attachedSchedulingProfile.length).toEqual(1);
   expect(attachedSchedulingProfile[0].venues[0].rounds.length).toEqual(1);
   const round = attachedSchedulingProfile[0].venues[0].rounds[0];

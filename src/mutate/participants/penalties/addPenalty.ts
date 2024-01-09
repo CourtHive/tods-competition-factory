@@ -1,5 +1,5 @@
 import { getParticipants } from '../../../query/participants/getParticipants';
-import { extractAttributes as xa } from '../../../utilities/objects';
+import { xa } from '../../../utilities/objects';
 import { addNotice } from '../../../global/state/globalState';
 import { addExtension } from '../../extensions/addExtension';
 
@@ -15,12 +15,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
   ErrorType,
 } from '../../../constants/errorConditionConstants';
-import {
-  Extension,
-  Penalty,
-  PenaltyTypeUnion,
-  Tournament,
-} from '../../../types/tournamentTypes';
+import { Extension, Penalty, PenaltyTypeUnion, Tournament } from '../../../types/tournamentTypes';
 
 type AddPenaltyArgs = {
   refereeParticipantId?: string;
@@ -36,9 +31,7 @@ type AddPenaltyArgs = {
   notes?: string;
 };
 
-export function addPenalty(
-  params: AddPenaltyArgs
-): ResultType & { penaltyId?: string } {
+export function addPenalty(params: AddPenaltyArgs): ResultType & { penaltyId?: string } {
   const { tournamentRecord, participantIds } = params;
   const tournamentRecords =
     params.tournamentRecords ??
@@ -69,9 +62,7 @@ export function addPenalty(
     }
   }
 
-  return penaltyId
-    ? { ...SUCCESS, penaltyId }
-    : { error: PARTICIPANT_NOT_FOUND };
+  return penaltyId ? { ...SUCCESS, penaltyId } : { error: PARTICIPANT_NOT_FOUND };
 }
 
 function penaltyAdd({
@@ -97,9 +88,7 @@ function penaltyAdd({
   // TODO: add penalty timeItem to matchUp.timeItems[]
 
   const participants = tournamentRecord?.participants ?? [];
-  const relevantParticipants = participants.filter((participant) =>
-    participantIds.includes(participant.participantId)
-  );
+  const relevantParticipants = participants.filter((participant) => participantIds.includes(participant.participantId));
   if (!relevantParticipants.length) return { error: PARTICIPANT_NOT_FOUND };
 
   const createdAt = new Date().toISOString();
@@ -115,9 +104,7 @@ function penaltyAdd({
   });
 
   if (Array.isArray(extensions)) {
-    extensions.forEach((extension) =>
-      addExtension({ element: penaltyItem, extension })
-    );
+    extensions.forEach((extension) => addExtension({ element: penaltyItem, extension }));
   }
 
   relevantParticipants.forEach((participant) => {

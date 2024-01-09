@@ -1,5 +1,5 @@
 import { definedAttributes } from '../../../utilities/definedAttributes';
-import { extractAttributes } from '../../../utilities/objects';
+import { xa } from '../../../utilities/objects';
 import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
 import { getDrawMatchUps } from '../../matchUps/drawMatchUps';
 import { getNumericSeedValue } from '../getNumericSeedValue';
@@ -16,11 +16,7 @@ import {
   ASSIGN_PARTICIPANT,
   ASSIGN_PARTICIPANT_METHOD,
 } from '../../../constants/positionActionConstants';
-import {
-  DrawDefinition,
-  Event,
-  PositionAssignment,
-} from '../../../types/tournamentTypes';
+import { DrawDefinition, Event, PositionAssignment } from '../../../types/tournamentTypes';
 
 type GetValidAssignmentActionsArgs = {
   tournamentParticipants?: HydratedParticipant[];
@@ -63,8 +59,7 @@ export function getValidAssignmentActions({
     unplacedSeedAssignments,
     unfilledPositions: number[] = [];
 
-  const ignoreSeedPositions =
-    appliedPolicies?.[POLICY_TYPE_SEEDING]?.validSeedPositions?.ignore;
+  const ignoreSeedPositions = appliedPolicies?.[POLICY_TYPE_SEEDING]?.validSeedPositions?.ignore;
 
   if (!ignoreSeedPositions) {
     const result = getNextSeedBlock({
@@ -76,20 +71,13 @@ export function getValidAssignmentActions({
       structureId,
       event,
     });
-    ({
-      unplacedSeedParticipantIds,
-      unplacedSeedAssignments,
-      unfilledPositions,
-    } = result);
+    ({ unplacedSeedParticipantIds, unplacedSeedAssignments, unfilledPositions } = result);
   }
 
   // if there are no unfilledPositions for available seeds then return all unfilled positions
   if (!unfilledPositions?.length) {
     unfilledPositions = positionAssignments
-      .filter(
-        (assignment) =>
-          !assignment.participantId && !assignment.bye && !assignment.qualifier
-      )
+      .filter((assignment) => !assignment.participantId && !assignment.bye && !assignment.qualifier)
       .map((assignment) => assignment.drawPosition);
   }
 
@@ -103,9 +91,7 @@ export function getValidAssignmentActions({
   }
 
   if (isWinRatioFedStructure && ignoreSeedPositions) {
-    const assignedParticipantIds = positionAssignments
-      .map((assignment) => assignment.participantId)
-      .filter(Boolean);
+    const assignedParticipantIds = positionAssignments.map((assignment) => assignment.participantId).filter(Boolean);
 
     const matchUpFilters = { structureIds: positionSourceStructureIds };
     const { completedMatchUps } = getDrawMatchUps({
@@ -117,30 +103,20 @@ export function getValidAssignmentActions({
     const availableParticipantIds = unique(
       (completedMatchUps ?? [])
         // filter completedMatchUps to exclude SINGLES/DOUBLES for TEAM events
-        .filter(
-          ({ matchUpType }) => event?.eventType !== TEAM || matchUpType === TEAM
-        )
-        ?.map(({ sides }) => sides?.map(extractAttributes('participantId')))
+        .filter(({ matchUpType }) => event?.eventType !== TEAM || matchUpType === TEAM)
+        ?.map(({ sides }) => sides?.map(xa('participantId')))
         .flat()
-        .filter(
-          (participantId) =>
-            participantId && !assignedParticipantIds.includes(participantId)
-        )
+        .filter((participantId) => participantId && !assignedParticipantIds.includes(participantId)),
     );
 
     const participantsAvailable = returnParticipants
       ? tournamentParticipants
-          ?.filter(
-            (participant) =>
-              availableParticipantIds?.includes(participant.participantId)
-          )
+          ?.filter((participant) => availableParticipantIds?.includes(participant.participantId))
           .map((participant) => makeDeepCopy(participant, undefined, true))
       : undefined;
 
     participantsAvailable?.forEach((participant) => {
-      const entry = (drawDefinition.entries ?? []).find(
-        (entry) => entry.participantId === participant.participantId
-      );
+      const entry = (drawDefinition.entries ?? []).find((entry) => entry.participantId === participant.participantId);
       // TODO: determine if this is in fact used downstream
       participant.entryPosition = entry?.entryPosition;
     });
@@ -153,7 +129,7 @@ export function getValidAssignmentActions({
           type: ASSIGN_PARTICIPANT,
           availableParticipantIds,
           participantsAvailable,
-        })
+        }),
       );
     }
     return { validAssignmentActions };
@@ -165,14 +141,11 @@ export function getValidAssignmentActions({
     if (unplacedSeedAssignments?.length) {
       // return any valid seedAssignments
       const validToAssign = unplacedSeedAssignments.filter(
-        (seedAssignment) =>
-          unplacedSeedParticipantIds?.includes(seedAssignment.participantId)
+        (seedAssignment) => unplacedSeedParticipantIds?.includes(seedAssignment.participantId),
       );
 
       validToAssign.sort(validAssignmentsSort);
-      availableParticipantIds = validToAssign.map(
-        (assignment) => assignment.participantId
-      );
+      availableParticipantIds = validToAssign.map((assignment) => assignment.participantId);
     } else {
       // otherwise look for any unplaced entries
       availableParticipantIds = unassignedParticipantIds;
@@ -181,9 +154,7 @@ export function getValidAssignmentActions({
     // add structureId and drawPosition to the payload so the client doesn't need to discover
     const participantsAvailable = returnParticipants
       ? tournamentParticipants
-          ?.filter((participant) =>
-            availableParticipantIds.includes(participant.participantId)
-          )
+          ?.filter((participant) => availableParticipantIds.includes(participant.participantId))
           .map((participant) => makeDeepCopy(participant, undefined, true))
       : undefined;
     if (participantsAvailable?.length) {
@@ -195,7 +166,7 @@ export function getValidAssignmentActions({
           type: ASSIGN_PARTICIPANT,
           availableParticipantIds,
           participantsAvailable,
-        })
+        }),
       );
     }
   }
@@ -205,10 +176,6 @@ export function getValidAssignmentActions({
 
 function validAssignmentsSort(a, b) {
   if (a.bye) return -1;
-  if (
-    getNumericSeedValue(a.seedValue) < getNumericSeedValue(b.seedValue) ||
-    (a.seedValue && !b.seedValue)
-  )
-    return -1;
+  if (getNumericSeedValue(a.seedValue) < getNumericSeedValue(b.seedValue) || (a.seedValue && !b.seedValue)) return -1;
   return (a.seedNumber || 0) - (b.seedNumber || 0);
 }

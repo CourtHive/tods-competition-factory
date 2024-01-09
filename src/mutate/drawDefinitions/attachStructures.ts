@@ -1,30 +1,13 @@
 import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
-import { extractAttributes } from '../../utilities/objects';
+import { xa } from '../../utilities/objects';
 import { addGoesTo } from './matchUpGovernor/addGoesTo';
 import { addTimeItem } from '../timeItems/addTimeItem';
-import {
-  addMatchUpsNotice,
-  modifyDrawNotice,
-  modifyMatchUpNotice,
-} from '../notifications/drawNotifications';
-import {
-  ResultType,
-  decorateResult,
-} from '../../global/functions/decorateResult';
+import { addMatchUpsNotice, modifyDrawNotice, modifyMatchUpNotice } from '../notifications/drawNotifications';
+import { ResultType, decorateResult } from '../../global/functions/decorateResult';
 
 import { SUCCESS } from '../../constants/resultConstants';
-import {
-  EXISTING_STRUCTURE,
-  INVALID_VALUES,
-  MISSING_DRAW_DEFINITION,
-} from '../../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  DrawLink,
-  Event,
-  Structure,
-  Tournament,
-} from '../../types/tournamentTypes';
+import { EXISTING_STRUCTURE, INVALID_VALUES, MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
+import { DrawDefinition, DrawLink, Event, Structure, Tournament } from '../../types/tournamentTypes';
 
 export function attachConsolationStructures(params) {
   return attachStructures({
@@ -85,35 +68,23 @@ export function attachStructures({
   // TODO: ensure that all links are valid and reference structures that are/will be included in the drawDefinition
   if (links.length) drawDefinition.links?.push(...links);
 
-  const generatedStructureIds = structures.map(
-    ({ structureId }) => structureId
-  );
-  const existingStructureIds = drawDefinition.structures?.map(
-    ({ structureId }) => structureId
-  );
+  const generatedStructureIds = structures.map(({ structureId }) => structureId);
+  const existingStructureIds = drawDefinition.structures?.map(({ structureId }) => structureId);
 
   // replace any existing structures with newly generated structures
   // this is done because it is possible that a structure exists without matchUps
-  drawDefinition.structures = (drawDefinition.structures ?? []).map(
-    (structure) => {
-      return generatedStructureIds.includes(structure.structureId)
-        ? structures.find(
-            ({ structureId }) => structureId === structure.structureId
-          )
-        : structure;
-    }
-  ) as Structure[];
+  drawDefinition.structures = (drawDefinition.structures ?? []).map((structure) => {
+    return generatedStructureIds.includes(structure.structureId)
+      ? structures.find(({ structureId }) => structureId === structure.structureId)
+      : structure;
+  }) as Structure[];
 
-  const newStructures = structures?.filter(
-    ({ structureId }) => !existingStructureIds?.includes(structureId)
-  );
+  const newStructures = structures?.filter(({ structureId }) => !existingStructureIds?.includes(structureId));
   if (newStructures.length) drawDefinition.structures.push(...newStructures);
 
   addGoesTo({ drawDefinition });
 
-  const matchUps = structures
-    .map((structure) => getAllStructureMatchUps({ structure })?.matchUps || [])
-    .flat();
+  const matchUps = structures.map((structure) => getAllStructureMatchUps({ structure })?.matchUps || []).flat();
 
   addMatchUpsNotice({
     tournamentId: tournamentRecord?.tournamentId,
@@ -141,19 +112,14 @@ export function attachStructures({
     const modifyStructureMatchUps = (structure) => {
       structure.matchUps.forEach((matchUp) => {
         if (modifiedMatchUpMap[matchUp.matchUpId]) {
-          const { tieMatchUps, ...attribs } =
-            modifiedMatchUpMap[matchUp.matchUpId].matchUp;
+          const { tieMatchUps, ...attribs } = modifiedMatchUpMap[matchUp.matchUpId].matchUp;
           Object.assign(matchUp, attribs);
           if (tieMatchUps?.length) {
             const modifiedTieMatchUpsMap = {};
             tieMatchUps.forEach(
-              (modifiedTieMatchUp) =>
-                (modifiedMatchUpMap[modifiedTieMatchUp.matchUpId] =
-                  modifiedTieMatchUp)
+              (modifiedTieMatchUp) => (modifiedMatchUpMap[modifiedTieMatchUp.matchUpId] = modifiedTieMatchUp),
             );
-            matchUp.tieMatchUps.forEach((tm) =>
-              Object.assign(tm, modifiedTieMatchUpsMap[tm.matchUpId])
-            );
+            matchUp.tieMatchUps.forEach((tm) => Object.assign(tm, modifiedTieMatchUpsMap[tm.matchUpId]));
           }
           modifiedMatchUpMap[matchUp.matchUpId].matchUp = matchUp;
           modifyMatchUpNotice(modifiedMatchUpMap[matchUp.matchUpId]);
@@ -175,7 +141,7 @@ export function attachStructures({
     });
   }
 
-  const addedStructureIds = newStructures.map(extractAttributes('structureId'));
+  const addedStructureIds = newStructures.map(xa('structureId'));
 
   if (tournamentRecord) {
     const itemValue = { structureIds, drawId: drawDefinition.drawId };

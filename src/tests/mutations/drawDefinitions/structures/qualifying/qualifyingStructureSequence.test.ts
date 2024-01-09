@@ -1,5 +1,5 @@
 import { getStructureGroups } from '../../../../../query/structure/getStructureGroups';
-import { extractAttributes } from '../../../../../utilities/objects';
+import { xa } from '../../../../../utilities/objects';
 import tournamentEngine from '../../../../engines/syncEngine';
 import * as factory from '../../../../../index';
 import { expect, it } from 'vitest';
@@ -35,9 +35,7 @@ it('can modify stageSequence when adding pre-qualifying structures', () => {
   let drawDefinition = tournamentEngine.getEvent({
     drawId,
   }).drawDefinition;
-  const qualifyingStructureId = drawDefinition.structures.find(
-    ({ stage }) => stage === QUALIFYING
-  ).structureId;
+  const qualifyingStructureId = drawDefinition.structures.find(({ stage }) => stage === QUALIFYING).structureId;
 
   result = tournamentEngine.addQualifyingStructure({
     targetStructureId: qualifyingStructureId,
@@ -51,11 +49,7 @@ it('can modify stageSequence when adding pre-qualifying structures', () => {
   result = getStructureGroups({ drawDefinition });
   expect(result.structureProfiles).not.toBeUndefined();
 
-  expect(
-    drawDefinition.structures.map(
-      extractAttributes(['structureName', 'stageSequence'])
-    )
-  ).toEqual([
+  expect(drawDefinition.structures.map(xa(['structureName', 'stageSequence']))).toEqual([
     [{ structureName: 'Qualifying' }, { stageSequence: 2 }],
     [{ structureName: 'Main' }, { stageSequence: 1 }],
     [{ structureName: 'Pre-Qualifying' }, { stageSequence: 1 }],

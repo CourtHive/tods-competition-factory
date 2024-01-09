@@ -1,4 +1,4 @@
-import { extractAttributes } from '../../../../utilities/objects';
+import { xa } from '../../../../utilities/objects';
 import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, test } from 'vitest';
@@ -17,11 +17,11 @@ test('drawPosition placement is not randomized when drawSize: 2', () => {
   expect(stateResult.success).toEqual(true);
 
   let event = tournamentEngine.getEvent({ eventId }).event;
-  let enteredParticipantOrder = event.entries.map(extractAttributes('participantId'));
+  let enteredParticipantOrder = event.entries.map(xa('participantId'));
 
   let generationResult = tournamentEngine.generateDrawDefinition({ eventId });
   let positionAssignments = tournamentEngine.getPositionAssignments(generationResult).positionAssignments;
-  let positionedParticipantOrder = positionAssignments.map(extractAttributes('participantId'));
+  let positionedParticipantOrder = positionAssignments.map(xa('participantId'));
   // EXPECT: to be equivalent
   expect(enteredParticipantOrder).toEqual(positionedParticipantOrder);
 
@@ -38,12 +38,12 @@ test('drawPosition placement is not randomized when drawSize: 2', () => {
 
   generationResult = tournamentEngine.generateDrawDefinition({ eventId });
   positionAssignments = tournamentEngine.getPositionAssignments(generationResult).positionAssignments;
-  positionedParticipantOrder = positionAssignments.map(extractAttributes('participantId'));
+  positionedParticipantOrder = positionAssignments.map(xa('participantId'));
   // EXPECT: not to be equivalent
   expect(enteredParticipantOrder).not.toEqual(positionedParticipantOrder);
 
   // update from 2nd generated drawDefinition
-  enteredParticipantOrder = event.entries.map(extractAttributes('participantId'));
+  enteredParticipantOrder = event.entries.map(xa('participantId'));
   // EXPECT: to be equivalent
   expect(enteredParticipantOrder).toEqual(positionedParticipantOrder);
 
@@ -55,11 +55,11 @@ test('drawPosition placement is not randomized when drawSize: 2', () => {
     eventId,
   });
 
-  const drawEntriesOrder = generationResult.drawDefinition.entries.map(extractAttributes('participantId'));
+  const drawEntriesOrder = generationResult.drawDefinition.entries.map(xa('participantId'));
   expect(enteredParticipantOrder).not.toEqual(drawEntriesOrder);
 
   positionAssignments = tournamentEngine.getPositionAssignments(generationResult).positionAssignments;
-  positionedParticipantOrder = positionAssignments.map(extractAttributes('participantId'));
+  positionedParticipantOrder = positionAssignments.map(xa('participantId'));
 
   expect(positionedParticipantOrder).toEqual(drawEntriesOrder);
 });

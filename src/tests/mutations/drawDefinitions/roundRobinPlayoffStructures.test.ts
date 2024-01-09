@@ -3,18 +3,13 @@ import { isCompletedStructure } from '../../../query/drawDefinition/structureAct
 import { allDrawMatchUps } from '../../../query/matchUps/getAllDrawMatchUps';
 import { intersection, overlap, unique } from '../../../utilities/arrays';
 import { structureSort } from '../../../functions/sorters/structureSort';
-import { extractAttributes } from '../../../utilities/objects';
+import { xa } from '../../../utilities/objects';
 import tournamentEngine from '../../engines/syncEngine';
 import { mocksEngine } from '../../..';
 import { expect, it } from 'vitest';
 
 import { COMPLETED } from '../../../constants/matchUpStatusConstants';
-import {
-  COMPASS,
-  MAIN,
-  PLAY_OFF,
-  ROUND_ROBIN_WITH_PLAYOFF,
-} from '../../../constants/drawDefinitionConstants';
+import { COMPASS, MAIN, PLAY_OFF, ROUND_ROBIN_WITH_PLAYOFF } from '../../../constants/drawDefinitionConstants';
 
 it('is possible to have COMPASS playoff for Round Robin with playoffs', () => {
   const completionGoal = 48;
@@ -52,16 +47,12 @@ it('is possible to have COMPASS playoff for Round Robin with playoffs', () => {
 
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
 
-  const sortedStrucctureIds = drawDefinition.structures
-    .sort(structureSort)
-    .map(({ structureId }) => structureId);
+  const sortedStrucctureIds = drawDefinition.structures.sort(structureSort).map(({ structureId }) => structureId);
 
   // this is an exercise in sorting groups of linked structures...
   const linkRelationships = drawDefinition.links
     .sort(
-      (a, b) =>
-        sortedStrucctureIds.indexOf(a.source.structureId) -
-        sortedStrucctureIds.indexOf(b.source.structureId)
+      (a, b) => sortedStrucctureIds.indexOf(a.source.structureId) - sortedStrucctureIds.indexOf(b.source.structureId),
     )
     .filter(({ linkType }) => linkType === 'LOSER')
     .map(({ source, target }) => [source.structureId, target.structureId]);
@@ -79,10 +70,8 @@ it('is possible to have COMPASS playoff for Round Robin with playoffs', () => {
   const groupedNames = linkGroups.map((group) =>
     unique(group).map(
       (structureId) =>
-        drawDefinition.structures.find(
-          (structure) => structure.structureId === structureId
-        )?.structureName
-    )
+        drawDefinition.structures.find((structure) => structure.structureId === structureId)?.structureName,
+    ),
   );
   expect(groupedNames.length).toEqual(2);
   expect(groupedNames[0].sort()).toEqual([
@@ -108,13 +97,11 @@ it('is possible to have COMPASS playoff for Round Robin with playoffs', () => {
 
   const drawMatchUps = allDrawMatchUps({ drawDefinition }).matchUps;
   const completedCount: number =
-    drawMatchUps
-      ?.map((m) => (m.matchUpStatus === COMPLETED ? 1 : 0))
-      .reduce((a: number, b: number) => a + b, 0) ?? 0;
+    drawMatchUps?.map((m) => (m.matchUpStatus === COMPLETED ? 1 : 0)).reduce((a: number, b: number) => a + b, 0) ?? 0;
   expect(completedCount).toEqual(completionGoal);
 
   const mainStructure = drawDefinition.structures.find(
-    ({ stage, stageSequence }) => stage === MAIN && stageSequence === 1
+    ({ stage, stageSequence }) => stage === MAIN && stageSequence === 1,
   );
   const structureMatchUps = getAllStructureMatchUps({
     structure: mainStructure,
@@ -122,9 +109,7 @@ it('is possible to have COMPASS playoff for Round Robin with playoffs', () => {
   expect(structureMatchUps.length).toEqual(completionGoal);
 
   const structureCompletedCount: number =
-    drawMatchUps
-      ?.map((m) => (m.matchUpStatus === COMPLETED ? 1 : 0))
-      .reduce((a: number, b: number) => a + b, 0) ?? 0;
+    drawMatchUps?.map((m) => (m.matchUpStatus === COMPLETED ? 1 : 0)).reduce((a: number, b: number) => a + b, 0) ?? 0;
   expect(structureCompletedCount).toEqual(completionGoal);
 
   const mainStructureId = mainStructure.structureId;
@@ -136,11 +121,11 @@ it('is possible to have COMPASS playoff for Round Robin with playoffs', () => {
 
   const g1 = drawDefinition.structures
     .find((s) => s.structureName === 'Gold Flight East')
-    .positionAssignments.map(extractAttributes('participantId'));
+    .positionAssignments.map(xa('participantId'));
 
   const g2 = drawDefinition.structures
     .find((s) => s.structureName === 'Silver Flight 17-32')
-    .positionAssignments.map(extractAttributes('participantId'));
+    .positionAssignments.map(xa('participantId'));
 
   expect(intersection(g1, g2)).toEqual([]);
 });

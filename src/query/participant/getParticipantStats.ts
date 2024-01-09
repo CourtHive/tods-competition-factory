@@ -1,18 +1,10 @@
 import { getMatchUpCompetitiveProfile } from '../matchUp/getMatchUpCompetitiveProfile';
 import { allTournamentMatchUps } from '../matchUps/getAllTournamentMatchUps';
-import { extractAttributes as xa, isObject } from '../../utilities/objects';
+import { xa, isObject } from '../../utilities/objects';
 import { getParticipants } from '../participants/getParticipants';
 import { intersection } from '../../utilities/arrays';
-import {
-  ResultType,
-  decorateResult,
-} from '../../global/functions/decorateResult';
-import {
-  Tally,
-  countGames,
-  countPoints,
-  countSets,
-} from '../matchUps/roundRobinTally/scoreCounters';
+import { ResultType, decorateResult } from '../../global/functions/decorateResult';
+import { Tally, countGames, countPoints, countSets } from '../matchUps/roundRobinTally/scoreCounters';
 
 import { ParticipantTypeUnion, Tournament } from '../../types/tournamentTypes';
 import { TEAM_PARTICIPANT } from '../../constants/participantConstants';
@@ -92,9 +84,7 @@ export function getParticipantStats({
   if (matchUps && !Array.isArray(matchUps)) return { error: INVALID_MATCHUP };
 
   const participantsProfile = withScaleValues ? { withScaleValues } : undefined;
-  matchUps =
-    matchUps ??
-    allTournamentMatchUps({ tournamentRecord, participantsProfile }).matchUps;
+  matchUps = matchUps ?? allTournamentMatchUps({ tournamentRecord, participantsProfile }).matchUps;
   if (!matchUps?.length) return { error: MISSING_MATCHUPS };
 
   const teamParticipantIds: string[] = [];
@@ -105,25 +95,15 @@ export function getParticipantStats({
     ? { participantTypes: [TEAM_PARTICIPANT as ParticipantTypeUnion] }
     : { participantIds: teamParticipantIds };
 
-  const teamParticipants =
-    getParticipants({ participantFilters, tournamentRecord }).participants ??
-    [];
+  const teamParticipants = getParticipants({ participantFilters, tournamentRecord }).participants ?? [];
 
-  if (
-    !teamParticipants.every(
-      ({ participantType }) => participantType === TEAM_PARTICIPANT
-    )
-  ) {
+  if (!teamParticipants.every(({ participantType }) => participantType === TEAM_PARTICIPANT)) {
     return { error: INVALID_PARTICIPANT_IDS };
   }
 
-  if (!teamParticipantIds.length)
-    teamParticipantIds.push(...teamParticipants.map(xa('participantId')));
+  if (!teamParticipantIds.length) teamParticipantIds.push(...teamParticipants.map(xa('participantId')));
 
-  const participantDetails = new Map<
-    string,
-    { participantName: string; ratings: any }
-  >();
+  const participantDetails = new Map<string, { participantName: string; ratings: any }>();
   const participantStats = new Map<string, StatCounters>();
   const participating = new Map<string, boolean>();
   const teamMap = new Map<string, string[]>();
@@ -184,16 +164,13 @@ export function getParticipantStats({
     const getCompetitorIds = ({ side, individualParticipantIds }) => {
       return (
         (side.participantId &&
-          (!individualParticipantIds?.length ||
-            individualParticipantIds.includes(side.participantId)) && [
+          (!individualParticipantIds?.length || individualParticipantIds.includes(side.participantId)) && [
             side.participantId,
           ]) ||
         (side.participant?.individualParticipantIds?.length &&
           (!individualParticipantIds?.length ||
-            intersection(
-              individualParticipantIds,
-              side.participant?.individualParticipantIds
-            ).length === side.participant?.individualParticipantIds?.length) &&
+            intersection(individualParticipantIds, side.participant?.individualParticipantIds).length ===
+              side.participant?.individualParticipantIds?.length) &&
           side.participant.individualParticipantIds)
       );
     };
@@ -215,8 +192,7 @@ export function getParticipantStats({
 
             const stats = participantStats.get(thisTeamId);
             for (const id of competitorIds.filter(Boolean)) {
-              if (stats && !stats.competitorIds.includes(id))
-                stats.competitorIds.push(id);
+              if (stats && !stats.competitorIds.includes(id)) stats.competitorIds.push(id);
             }
           }
         }
@@ -267,30 +243,15 @@ export function getParticipantStats({
   for (const matchUp of matchUps) {
     if (!isObject(matchUp)) return { error: INVALID_MATCHUP };
 
-    const {
-      matchUpStatus,
-      matchUpFormat,
-      matchUpType,
-      winningSide,
-      score,
-      sides,
-    } = matchUp;
+    const { matchUpStatus, matchUpFormat, matchUpType, winningSide, score, sides } = matchUp;
 
-    if (
-      !sides ||
-      !score ||
-      matchUpType === TEAM_MATCHUP ||
-      matchUpStatus === BYE
-    )
-      continue;
+    if (!sides || !score || matchUpType === TEAM_MATCHUP || matchUpStatus === BYE) continue;
 
     const sideParticipantIds = getSideParticipantIds(sides);
     if (!sideParticipantIds.filter(Boolean).length) continue;
 
     const competitiveness =
-      withCompetitiveProfiles &&
-      winningSide &&
-      getMatchUpCompetitiveProfile({ matchUp })?.competitiveness;
+      withCompetitiveProfiles && winningSide && getMatchUpCompetitiveProfile({ matchUp })?.competitiveness;
 
     relevantMatchUps.push(matchUp);
 
@@ -318,11 +279,8 @@ export function getParticipantStats({
         const participantName = participantDetails.get(id)?.participantName;
         const stats = initStats(id, participantName);
         if (stats) {
-          const teamSumTally = (stat: string, tally: number[]) =>
-            tally.forEach((t, i) => (stats[stat][i] += t));
-          const tiebreaks = index
-            ? [...tiebreaksTally].reverse()
-            : tiebreaksTally;
+          const teamSumTally = (stat: string, tally: number[]) => tally.forEach((t, i) => (stats[stat][i] += t));
+          const tiebreaks = index ? [...tiebreaksTally].reverse() : tiebreaksTally;
           const points = index ? [...pointsTally].reverse() : pointsTally;
           const games = index ? [...gamesTally].reverse() : gamesTally;
           const sets = index ? [...setsTally].reverse() : setsTally;
@@ -336,8 +294,7 @@ export function getParticipantStats({
           }
           if (competitiveness) {
             const attr = competitiveness.toLowerCase();
-            if (!stats.competitiveness[attr])
-              stats.competitiveness[attr] = [0, 0];
+            if (!stats.competitiveness[attr]) stats.competitiveness[attr] = [0, 0];
             stats.competitiveness[attr][index] += 1;
           }
           if (matchUpStatus) {
@@ -389,10 +346,7 @@ export function getParticipantStats({
         // now rank each team by their ratio on each attribute
         const accessor = `${attr}Ratio`;
         if (typeof stats[accessor] === 'number') {
-          const index = ratio
-            .get(accessor)
-            ?.sort(highLowSort)
-            .indexOf(stats[accessor]);
+          const index = ratio.get(accessor)?.sort(highLowSort).indexOf(stats[accessor]);
 
           if (typeof index === 'number' && index >= 0) {
             const rankAccessor = `${attr}Rank`;
@@ -406,8 +360,7 @@ export function getParticipantStats({
   const result: TeamStatsResults = { relevantMatchUps, ...SUCCESS };
   if (teamParticipantId) {
     result.teamStats = participantStats.get(teamParticipantId);
-    if (opponentParticipantId)
-      result.opponentStats = participantStats.get(opponentParticipantId);
+    if (opponentParticipantId) result.opponentStats = participantStats.get(opponentParticipantId);
   } else {
     result.participatingTeamsCount = participating.size;
   }
