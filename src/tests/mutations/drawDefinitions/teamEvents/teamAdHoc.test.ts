@@ -6,6 +6,7 @@ import { expect, it } from 'vitest';
 import { DOMINANT_DUO } from '../../../../constants/tieFormatConstants';
 import { AD_HOC } from '../../../../constants/drawDefinitionConstants';
 import { TEAM } from '../../../../constants/eventConstants';
+import { xa } from '../../../../utilities/objects';
 
 it('can assign participants to SINGLES/DOUBLES matchUps in TEAM AdHoc events', () => {
   const tournamentId = 't1';
@@ -86,17 +87,22 @@ it('can assign participants to SINGLES/DOUBLES matchUps in TEAM AdHoc events', (
   expect(result.success).toEqual(true);
   // end unnecessary for the purpse of this test -----------------------------------------------------
 
+  const tieMatchUpId = 'd1-ah-1-0-e1-COL-2-TMU-1';
+  const participantId = 'ptcpt-I-0';
   result = tournamentEngine.executionQueue([
     {
       method: 'assignTieMatchUpParticipantId',
       params: {
-        tieMatchUpId: 'd1-ah-1-0-e1-COL-2-TMU-1',
-        participantId: 'ptcpt-I-0',
+        participantId,
         sideNumber: 1,
+        tieMatchUpId,
         drawId: 'd1',
       },
     },
   ]);
 
-  console.log(result);
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.findMatchUp({ matchUpId: tieMatchUpId }); // resolve by brute force, inContext by default
+  expect(result.matchUp.sides.find(xa({ sideNumber: 1 })).participant.participantId).toEqual(participantId);
 });

@@ -1,5 +1,5 @@
 import { getMatchUpsMap, getMappedStructureMatchUps, MatchUpsMap } from './getMatchUpsMap';
-import { getDrawPositionCollectionAssignment } from './getDrawPositionCollectionAssignment';
+import { getCollectionAssignment } from './getCollectionAssignment';
 import { getStructureSeedAssignments } from '../structure/getStructureSeedAssignments';
 import { getMatchUpCompetitiveProfile } from '../matchUp/getMatchUpCompetitiveProfile';
 import { getCheckedInParticipantIds } from '../matchUp/getCheckedInParticipantIds';
@@ -398,8 +398,8 @@ export function getAllStructureMatchUps({
     const { collectionPosition, collectionId, roundPosition } = matchUp;
     const roundNumber = matchUp.roundNumber ?? additionalContext.roundNumber;
 
-    const drawPositionCollectionAssignment = collectionId
-      ? getDrawPositionCollectionAssignment({
+    const collectionAssignmentDetail = collectionId
+      ? getCollectionAssignment({
           tournamentParticipants,
           positionAssignments,
           collectionPosition,
@@ -522,7 +522,7 @@ export function getAllStructureMatchUps({
         const displaySideNumber = reversedDisplayOrder ? 3 - sideNumber : sideNumber;
 
         const side = getSide({
-          drawPositionCollectionAssignment,
+          ...collectionAssignmentDetail,
           positionAssignments,
           displaySideNumber,
           seedAssignments,
