@@ -42,6 +42,43 @@ export function getCollectionAssignment({
 } {
   if (!collectionId || !collectionPosition) return {};
 
+  const getAssignment = ({ attribute, lineUp, teamParticipant }) => {
+    const { assignedParticipantIds, substitutions } = getCollectionPositionAssignments({
+      collectionPosition,
+      collectionId,
+      lineUp,
+    });
+    if (matchUpType === DOUBLES) {
+      if (assignedParticipantIds?.length <= 2) {
+        const pairedParticipantId = participantMap?.[assignedParticipantIds[0]]?.pairIdMap?.[assignedParticipantIds[1]];
+        const pairedParticipant = pairedParticipantId && participantMap[pairedParticipantId]?.participant;
+        const participant =
+          pairedParticipant ||
+          // resort to brute force
+          getPairedParticipant({
+            participantIds: assignedParticipantIds,
+            tournamentParticipants,
+          }).participant;
+
+        const participantId = participant?.participantId;
+        return {
+          [attribute]: { participantId, teamParticipant, substitutions },
+        };
+      } else if (assignedParticipantIds?.length > 2) {
+        return { [attribute]: { teamParticipant, substitutions } };
+      }
+    } else {
+      const participantId = assignedParticipantIds?.[0];
+
+      return (
+        participantId && {
+          [attribute]: { participantId, teamParticipant, substitutions },
+        }
+      );
+    }
+    return undefined;
+  };
+
   if (!drawPositions?.length) {
     const sideNumberCollectionAssignment =
       sideLineUps
@@ -50,45 +87,12 @@ export function getCollectionAssignment({
           const lineUp =
             side.lineUp || getTeamLineUp({ participantId: teamParticipant.teamParticipantId, drawDefinition })?.lineUp;
 
-          const { assignedParticipantIds, substitutions } = getCollectionPositionAssignments({
-            collectionPosition,
-            collectionId,
-            lineUp,
-          });
-          if (matchUpType === DOUBLES) {
-            if (assignedParticipantIds?.length <= 2) {
-              const pairedParticipantId =
-                participantMap?.[assignedParticipantIds[0]]?.pairIdMap?.[assignedParticipantIds[1]];
-              const pairedParticipant = pairedParticipantId && participantMap[pairedParticipantId]?.participant;
-              const participant =
-                pairedParticipant ||
-                // resort to brute force
-                getPairedParticipant({
-                  participantIds: assignedParticipantIds,
-                  tournamentParticipants,
-                }).participant;
-
-              const participantId = participant?.participantId;
-              return {
-                [sideNumber]: { participantId, teamParticipant, substitutions },
-              };
-            } else if (assignedParticipantIds?.length > 2) {
-              return { [sideNumber]: { teamParticipant, substitutions } };
-            }
-          } else {
-            const participantId = assignedParticipantIds?.[0];
-
-            return (
-              participantId && {
-                [sideNumber]: { participantId, teamParticipant, substitutions },
-              }
-            );
-          }
-          return undefined;
+          return getAssignment({ attribute: sideNumber, lineUp, teamParticipant });
         })
         .filter(Boolean) || {};
     return { sideNumberCollectionAssignment: Object.assign({}, ...sideNumberCollectionAssignment) };
   }
+
   const drawPositionCollectionAssignment: any =
     drawPositions
       ?.map((drawPosition) => {
@@ -108,43 +112,7 @@ export function getCollectionAssignment({
             participantId: teamParticipantId,
             drawDefinition,
           })?.lineUp;
-
-        const { assignedParticipantIds, substitutions } = getCollectionPositionAssignments({
-          collectionPosition,
-          collectionId,
-          lineUp,
-        });
-
-        if (matchUpType === DOUBLES) {
-          if (assignedParticipantIds?.length <= 2) {
-            const pairedParticipantId =
-              participantMap?.[assignedParticipantIds[0]]?.pairIdMap?.[assignedParticipantIds[1]];
-            const pairedParticipant = pairedParticipantId && participantMap[pairedParticipantId]?.participant;
-            const participant =
-              pairedParticipant ||
-              // resort to brute force
-              getPairedParticipant({
-                participantIds: assignedParticipantIds,
-                tournamentParticipants,
-              }).participant;
-
-            const participantId = participant?.participantId;
-            return {
-              [drawPosition]: { participantId, teamParticipant, substitutions },
-            };
-          } else if (assignedParticipantIds?.length > 2) {
-            return { [drawPosition]: { teamParticipant, substitutions } };
-          }
-        } else {
-          const participantId = assignedParticipantIds?.[0];
-
-          return (
-            participantId && {
-              [drawPosition]: { participantId, teamParticipant, substitutions },
-            }
-          );
-        }
-        return undefined;
+        return getAssignment({ attribute: drawPosition, lineUp, teamParticipant });
       })
       .filter(Boolean) || {};
 
