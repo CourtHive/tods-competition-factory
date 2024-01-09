@@ -1,4 +1,4 @@
-import { extractAttributes as xa, isObject } from '../../utilities/objects';
+import { xa, isObject } from '../../utilities/objects';
 import { addScheduleItem } from '../../mutate/participants/addScheduleItem';
 import { getEventSeedAssignments } from '../event/getEventSeedAssignments';
 import { getPublishState } from '../events/getPublishState';
@@ -47,16 +47,11 @@ export function getParticipantEntries(params) {
   const targetParticipantIds = participantFilters?.participantIds;
   const getRelevantParticipantIds = (participantId) => {
     const relevantParticipantIds = [participantId];
-    participantMap[
-      participantId
-    ]?.participant.individualParticipantIds?.forEach(
-      (individualParticiapntId) =>
-        relevantParticipantIds.push(individualParticiapntId)
+    participantMap[participantId]?.participant.individualParticipantIds?.forEach((individualParticiapntId) =>
+      relevantParticipantIds.push(individualParticiapntId),
     );
 
-    return relevantParticipantIds.some(
-      (id) => !targetParticipantIds?.length || targetParticipantIds.includes(id)
-    )
+    return relevantParticipantIds.some((id) => !targetParticipantIds?.length || targetParticipantIds.includes(id))
       ? relevantParticipantIds
       : [];
   };
@@ -84,27 +79,14 @@ export function getParticipantEntries(params) {
   const derivedDrawInfo: any = {};
 
   const getRanking = ({ eventType, scaleNames, participantId }) =>
-    participantMap[participantId].participant?.rankings?.[eventType]?.find(
-      (ranking) => scaleNames.includes(ranking.scaleName)
+    participantMap[participantId].participant?.rankings?.[eventType]?.find((ranking) =>
+      scaleNames.includes(ranking.scaleName),
     )?.scaleValue;
 
   for (const event of tournamentRecord?.events || []) {
-    if (
-      participantFilters?.eventIds &&
-      !participantFilters.eventIds.includes(event.eventId)
-    )
-      continue;
+    if (participantFilters?.eventIds && !participantFilters.eventIds.includes(event.eventId)) continue;
 
-    const {
-      drawDefinitions = [],
-      extensions = [],
-      eventType,
-      eventName,
-      category,
-      entries,
-      eventId,
-      gender,
-    } = event;
+    const { drawDefinitions = [], extensions = [], eventType, eventName, category, entries, eventId, gender } = event;
 
     const { flightProfile } = getFlightProfile({ event });
     const flights = flightProfile?.flights ?? [];
@@ -114,9 +96,7 @@ export function getParticipantEntries(params) {
     const publishedSeeding = publishStatuses?.publishedSeeding;
 
     if (withEvents || withSeeding || withRankingProfile) {
-      const extensionConversions = convertExtensions
-        ? Object.assign({}, ...extensionsToAttributes(extensions))
-        : {};
+      const extensionConversions = convertExtensions ? Object.assign({}, ...extensionsToAttributes(extensions)) : {};
 
       derivedEventInfo[eventId] = {
         ...extensionConversions,
@@ -127,10 +107,7 @@ export function getParticipantEntries(params) {
         gender,
       };
 
-      const scaleNames = [
-        category?.categoryName,
-        category?.ageCategoryCode,
-      ].filter(Boolean);
+      const scaleNames = [category?.categoryName, category?.ageCategoryCode].filter(Boolean);
 
       for (const entry of entries) {
         const { participantId } = entry;
@@ -172,54 +149,36 @@ export function getParticipantEntries(params) {
         addEventEntry(participantId);
 
         // add details for individualParticipantIds for TEAM/PAIR events
-        const individualParticipantIds =
-          participantMap[participantId].participant.individualParticipantIds ||
-          [];
+        const individualParticipantIds = participantMap[participantId].participant.individualParticipantIds || [];
         individualParticipantIds.forEach(addEventEntry);
       }
     }
-    const eventPublishedSeeding =
-      eventsPublishStatuses?.[eventId]?.publishedSeeding;
+    const eventPublishedSeeding = eventsPublishStatuses?.[eventId]?.publishedSeeding;
 
     if (withDraws || withRankingProfile || withSeeding) {
       const getSeedingMap = (assignments) =>
         assignments
           ? Object.assign(
               {},
-              ...assignments.map(
-                ({ participantId, seedValue, seedNumber }) => ({
-                  [participantId]: { seedValue, seedNumber },
-                })
-              )
+              ...assignments.map(({ participantId, seedValue, seedNumber }) => ({
+                [participantId]: { seedValue, seedNumber },
+              })),
             )
           : undefined;
 
-      const drawIds = unique([
-        ...drawDefinitions.map(xa('drawId')),
-        ...flights.map(xa('drawId')),
-      ]);
+      const drawIds = unique([...drawDefinitions.map(xa('drawId')), ...flights.map(xa('drawId'))]);
 
       for (const drawId of drawIds) {
-        const drawDefinition = drawDefinitions.find(
-          (drawDefinition) => drawDefinition.drawId === drawId
-        );
+        const drawDefinition = drawDefinitions.find((drawDefinition) => drawDefinition.drawId === drawId);
         const flight = flights?.find((flight) => flight.drawId === drawId);
 
         const entries = drawDefinition?.entries || flight?.drawEntries;
 
-        const {
-          structures = [],
-          drawOrder,
-          drawName,
-          drawType,
-        } = drawDefinition ?? {};
+        const { structures = [], drawOrder, drawName, drawType } = drawDefinition ?? {};
 
         const flightNumber = flight?.flightNumber;
 
-        const scaleNames = [
-          category?.categoryName,
-          category?.ageCategoryCode,
-        ].filter(Boolean);
+        const scaleNames = [category?.categoryName, category?.ageCategoryCode].filter(Boolean);
 
         // used in rankings pipeline.
         // the structures in which a particpant particpates are ordered
@@ -227,10 +186,7 @@ export function getParticipantEntries(params) {
         const orderedStructureIds = (drawDefinition?.structures || [])
           .sort((a, b) => structureSort(a, b))
           .map(({ structureId, structures }) => {
-            return [
-              structureId,
-              ...(structures || []).map(({ structureId }) => structureId),
-            ];
+            return [structureId, ...(structures || []).map(({ structureId }) => structureId)];
           })
           .flat(Infinity);
 
@@ -243,10 +199,7 @@ export function getParticipantEntries(params) {
         // build up assignedParticipantIds array
         // to ensure that only assignedParticipants are included
         const assignedParticipantIds = structures
-          .filter(
-            ({ stage, stageSequence }) =>
-              (stage === MAIN && stageSequence === 1) || stage === QUALIFYING
-          )
+          .filter(({ stage, stageSequence }) => (stage === MAIN && stageSequence === 1) || stage === QUALIFYING)
           .flatMap((structure) => {
             const { seedAssignments, stageSequence, stage } = structure;
             const { positionAssignments } = getPositionAssignments({
@@ -271,19 +224,15 @@ export function getParticipantEntries(params) {
 
         const relevantEntries = !drawDefinition
           ? entries
-          : entries.filter(({ participantId }) =>
-              assignedParticipantIds.includes(participantId)
-            );
+          : entries.filter(({ participantId }) => assignedParticipantIds.includes(participantId));
 
         const seedingPublished =
           !usePublishState ||
           (eventPublishedSeeding?.published &&
-            (eventPublishedSeeding?.drawIds?.length === 0 ||
-              eventPublishedSeeding?.drawIds?.includes(drawId)));
+            (eventPublishedSeeding?.drawIds?.length === 0 || eventPublishedSeeding?.drawIds?.includes(drawId)));
 
         for (const entry of relevantEntries) {
-          const { entryStatus, entryStage, entryPosition, participantId } =
-            entry;
+          const { entryStatus, entryStage, entryPosition, participantId } = entry;
 
           // get event ranking
           const ranking = getRanking({
@@ -302,24 +251,16 @@ export function getParticipantEntries(params) {
 
             const seedAssignments = includeSeeding ? {} : undefined;
             const mainSeeding = includeSeeding
-              ? mainSeedingMap?.[participantId]?.seedValue ||
-                mainSeedingMap?.[participantId]?.seedNumber
+              ? mainSeedingMap?.[participantId]?.seedValue || mainSeedingMap?.[participantId]?.seedNumber
               : undefined;
-            const mainSeedingAssignments = mainSeeding
-              ? mainSeedingMap?.[participantId]
-              : undefined;
+            const mainSeedingAssignments = mainSeeding ? mainSeedingMap?.[participantId] : undefined;
             const qualifyingSeeding = includeSeeding
-              ? qualifyingSeedingMap?.[participantId]?.seedValue ||
-                qualifyingSeedingMap?.[participantId]?.seedNumber
+              ? qualifyingSeedingMap?.[participantId]?.seedValue || qualifyingSeedingMap?.[participantId]?.seedNumber
               : undefined;
-            const qualifyingSeedingAssignments = qualifyingSeeding
-              ? qualifyingSeedingMap?.[participantId]
-              : undefined;
+            const qualifyingSeedingAssignments = qualifyingSeeding ? qualifyingSeedingMap?.[participantId] : undefined;
 
-            if (seedAssignments && mainSeeding)
-              seedAssignments[MAIN] = mainSeedingAssignments;
-            if (seedAssignments && qualifyingSeeding)
-              seedAssignments[QUALIFYING] = qualifyingSeedingAssignments;
+            if (seedAssignments && mainSeeding) seedAssignments[MAIN] = mainSeedingAssignments;
+            if (seedAssignments && qualifyingSeeding) seedAssignments[QUALIFYING] = qualifyingSeedingAssignments;
 
             const seedValue = mainSeeding || qualifyingSeeding;
             if (seedValue) {
@@ -344,9 +285,7 @@ export function getParticipantEntries(params) {
                   participantMap[id].events[eventId].seedAssignments = {};
 
                 Object.keys(seedAssignments).forEach(
-                  (stage) =>
-                    (participantMap[id].events[eventId].seedAssignments[stage] =
-                      seedAssignments[stage])
+                  (stage) => (participantMap[id].events[eventId].seedAssignments[stage] = seedAssignments[stage]),
                 );
               }
             }
@@ -365,7 +304,7 @@ export function getParticipantEntries(params) {
                 },
                 false,
                 false,
-                true
+                true,
               );
             }
           };
@@ -373,22 +312,17 @@ export function getParticipantEntries(params) {
           if (![UNGROUPED, UNPAIRED].includes(entryStatus)) {
             addDrawEntry(participantId);
 
-            const individualParticipantIds =
-              participantMap[participantId].participant
-                .individualParticipantIds || [];
+            const individualParticipantIds = participantMap[participantId].participant.individualParticipantIds || [];
 
             // add for individualParticipantIds when participantType is TEAM/PAIR
             individualParticipantIds?.forEach(addDrawEntry);
           }
         }
 
-        const stages = (drawDefinition?.structures ?? []).reduce(
-          (stages, structure) => {
-            if (!stages.includes(structure.stage)) stages.push(structure.stage);
-            return stages;
-          },
-          []
-        );
+        const stages = (drawDefinition?.structures ?? []).reduce((stages, structure) => {
+          if (!stages.includes(structure.stage)) stages.push(structure.stage);
+          return stages;
+        }, []);
 
         const linksCount = (drawDefinition?.links ?? []).length;
 
@@ -507,25 +441,16 @@ export function getParticipantEntries(params) {
           });
         }
 
-        if (
-          Array.isArray(potentialParticipants) &&
-          (nextMatchUps || !!scheduleAnalysis || withScheduleItems)
-        ) {
-          const potentialParticipantIds = potentialParticipants
-            .flat()
-            .map(xa('participantId'))
-            .filter(Boolean);
+        if (Array.isArray(potentialParticipants) && (nextMatchUps || !!scheduleAnalysis || withScheduleItems)) {
+          const potentialParticipantIds = potentialParticipants.flat().map(xa('participantId')).filter(Boolean);
           potentialParticipantIds?.forEach((participantId) => {
-            const relevantParticipantIds =
-              getRelevantParticipantIds(participantId);
+            const relevantParticipantIds = getRelevantParticipantIds(participantId);
 
             relevantParticipantIds?.forEach((relevantParticipantId) => {
               if (!participantMap[relevantParticipantId]) {
                 return;
               }
-              participantMap[relevantParticipantId].potentialMatchUps[
-                matchUpId
-              ] = definedAttributes({
+              participantMap[relevantParticipantId].potentialMatchUps[matchUpId] = definedAttributes({
                 tournamentId: tournamentRecord?.tournamentId,
                 matchUpId,
                 eventId,
@@ -590,38 +515,25 @@ export function getParticipantEntries(params) {
       if (withRankingProfile) {
         const diff = (range = []) => Math.abs(range[0] - range[1]);
         for (const drawId of Object.keys(participantAggregator.draws)) {
-          const { orderedStructureIds = [], flightNumber } =
-            derivedDrawInfo[drawId] || {};
-          if (
-            participantAggregator.structureParticipation &&
-            orderedStructureIds.length
-          ) {
+          const { orderedStructureIds = [], flightNumber } = derivedDrawInfo[drawId] || {};
+          if (participantAggregator.structureParticipation && orderedStructureIds.length) {
             let finishingPositionRange;
             let nonQualifyingOrder = 0;
 
             // structures in which a participant participants/exits
             const orderedParticipation = orderedStructureIds
               .map((structureId) => {
-                const participation =
-                  participantAggregator.structureParticipation[structureId];
+                const participation = participantAggregator.structureParticipation[structureId];
                 if (!participation) return;
 
-                if (!finishingPositionRange)
-                  finishingPositionRange =
-                    participation?.finishingPositionRange;
-                if (
-                  diff(finishingPositionRange) >
-                  diff(participation?.finishingPositionRange)
-                )
-                  finishingPositionRange =
-                    participation?.finishingPositionRange;
+                if (!finishingPositionRange) finishingPositionRange = participation?.finishingPositionRange;
+                if (diff(finishingPositionRange) > diff(participation?.finishingPositionRange))
+                  finishingPositionRange = participation?.finishingPositionRange;
 
                 const notQualifying = participation.stage !== QUALIFYING;
                 if (notQualifying) nonQualifyingOrder += 1;
 
-                const participationOrder = notQualifying
-                  ? nonQualifyingOrder
-                  : undefined;
+                const participationOrder = notQualifying ? nonQualifyingOrder : undefined;
 
                 return definedAttributes({
                   ...participation,
@@ -632,19 +544,15 @@ export function getParticipantEntries(params) {
               .filter(Boolean);
 
             if (participantAggregator.draws[drawId]) {
-              participantAggregator.draws[drawId].finishingPositionRange =
-                finishingPositionRange;
-              participantAggregator.draws[drawId].structureParticipation =
-                orderedParticipation;
+              participantAggregator.draws[drawId].finishingPositionRange = finishingPositionRange;
+              participantAggregator.draws[drawId].structureParticipation = orderedParticipation;
             }
           }
         }
       }
 
       if (scheduleAnalysis) {
-        const scheduledMinutesDifference = isObject(scheduleAnalysis)
-          ? scheduleAnalysis.scheduledMinutesDifference
-          : 0;
+        const scheduledMinutesDifference = isObject(scheduleAnalysis) ? scheduleAnalysis.scheduledMinutesDifference : 0;
 
         // iterate through participantAggregator.scheduleItems
         const scheduleItems = participantAggregator.scheduleItems || [];
@@ -661,12 +569,7 @@ export function getParticipantEntries(params) {
         Object.values(dateItems).forEach((items: any) => items.sort(timeSort));
 
         for (const scheduleItem of scheduleItems) {
-          const {
-            typeChangeTimeAfterRecovery,
-            timeAfterRecovery,
-            scheduledDate,
-            scheduledTime,
-          } = scheduleItem;
+          const { typeChangeTimeAfterRecovery, timeAfterRecovery, scheduledDate, scheduledTime } = scheduleItem;
 
           const scheduleItemsToConsider = dateItems[scheduledDate];
           const scheduledMinutes = timeStringMinutes(scheduledTime);
@@ -674,31 +577,22 @@ export function getParticipantEntries(params) {
           for (const consideredItem of scheduleItemsToConsider) {
             const ignoreItem =
               consideredItem.matchUpId === scheduleItem.matchUpId ||
-              ([WALKOVER, DEFAULTED].includes(consideredItem.matchUpStatus) &&
-                !consideredItem.checkScoreHasValue);
+              ([WALKOVER, DEFAULTED].includes(consideredItem.matchUpStatus) && !consideredItem.checkScoreHasValue);
             if (ignoreItem) continue;
 
             // if there is a matchType change (SINGLES => DOUBLES or vice versa) then there is potentially a different timeAfterRecovery
-            const typeChange =
-              scheduleItem.matchUpType !== consideredItem.matchUpType;
+            const typeChange = scheduleItem.matchUpType !== consideredItem.matchUpType;
 
-            const notBeforeTime = typeChange
-              ? typeChangeTimeAfterRecovery || timeAfterRecovery
-              : timeAfterRecovery;
+            const notBeforeTime = typeChange ? typeChangeTimeAfterRecovery || timeAfterRecovery : timeAfterRecovery;
 
             // if two matchUps are both potentials and both part of the same draw they cannot be considered in conflict
             const sameDraw = scheduleItem.drawId === consideredItem.drawId;
 
             const bothPotential =
-              potentialMatchUps[scheduleItem.matchUpId] &&
-              potentialMatchUps[consideredItem.matchUpId];
+              potentialMatchUps[scheduleItem.matchUpId] && potentialMatchUps[consideredItem.matchUpId];
 
-            const consideredMinutes = timeStringMinutes(
-              consideredItem.scheduledTime
-            );
-            const minutesDifference = Math.abs(
-              consideredMinutes - scheduledMinutes
-            );
+            const consideredMinutes = timeStringMinutes(consideredItem.scheduledTime);
+            const minutesDifference = Math.abs(consideredMinutes - scheduledMinutes);
             const itemIsPrior = consideredMinutes >= scheduledMinutes;
 
             // Conflicts can be determined in two ways:
@@ -707,15 +601,11 @@ export function getParticipantEntries(params) {
             const timeOverlap =
               scheduledMinutesDifference && !isNaN(scheduledMinutesDifference)
                 ? minutesDifference <= scheduledMinutesDifference
-                : itemIsPrior &&
-                  timeStringMinutes(consideredItem.scheduledTime) <
-                    timeStringMinutes(notBeforeTime);
+                : itemIsPrior && timeStringMinutes(consideredItem.scheduledTime) < timeStringMinutes(notBeforeTime);
 
             // if there is a time overlap capture both the prior matchUpId and the conflicted matchUpId
             if (timeOverlap && !(bothPotential && sameDraw) && itemIsPrior) {
-              const key = [scheduleItem.matchUpId, consideredItem.matchUpId]
-                .sort(stringSort)
-                .join('|');
+              const key = [scheduleItem.matchUpId, consideredItem.matchUpId].sort(stringSort).join('|');
               participantAggregator.scheduleConflicts[key] = {
                 priorScheduledMatchUpId: scheduleItem.matchUpId,
                 matchUpIdWithConflict: consideredItem.matchUpId,
@@ -729,8 +619,7 @@ export function getParticipantEntries(params) {
           participantIdsWithConflicts.push(pid);
         }
 
-        participantMap[pid].scheduleConflicts =
-          participantAggregator.scheduleConflicts;
+        participantMap[pid].scheduleConflicts = participantAggregator.scheduleConflicts;
       }
     }
   }

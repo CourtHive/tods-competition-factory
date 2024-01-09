@@ -1,4 +1,4 @@
-import { extractAttributes as xa } from '../../utilities/objects';
+import { xa } from '../../utilities/objects';
 import { findExtension } from '../../acquire/findExtension';
 import tournamentEngine from '../engines/syncEngine';
 import { expect, it } from 'vitest';
@@ -28,10 +28,8 @@ it('populates matchUp sides', () => {
     .map(({ sides, collectionPosition, collectionId }) => {
       const assignments = originalLineUp.filter((assignment) =>
         assignment.collectionAssignments.find(
-          (a) =>
-            a.collectionId === collectionId &&
-            a.collectionPosition === collectionPosition
-        )
+          (a) => a.collectionId === collectionId && a.collectionPosition === collectionPosition,
+        ),
       );
       return {
         side: sides[1],
@@ -102,11 +100,8 @@ it('can add a participant to a partial pair with a Substitute', () => {
   const drawId = '21d8e860-41d8-4b2d-8f79-94c5758e2ad2';
 
   const drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-  const lineUps = findExtension({ element: drawDefinition, name: LINEUPS })
-    ?.extension?.value;
-  const placedParticipantIds = Object.values(lineUps)
-    .flat()
-    .map(xa('participantId'));
+  const lineUps = findExtension({ element: drawDefinition, name: LINEUPS })?.extension?.value;
+  const placedParticipantIds = Object.values(lineUps).flat().map(xa('participantId'));
   expect(placedParticipantIds.includes(participantId)).toEqual(false);
 
   const params = {
@@ -118,8 +113,6 @@ it('can add a participant to a partial pair with a Substitute', () => {
   result = tournamentEngine.assignTieMatchUpParticipantId(params);
   expect(result.success).toEqual(true);
 
-  const teamPlacedParticipantIds = result.modifiedLineUp.map(
-    xa('participantId')
-  );
+  const teamPlacedParticipantIds = result.modifiedLineUp.map(xa('participantId'));
   expect(teamPlacedParticipantIds.includes(participantId)).toEqual(true);
 });

@@ -6,17 +6,12 @@ import { addCollectionDefinition } from '../../tieFormat/addCollectionDefinition
 import { validateTieFormat } from '../../../validators/validateTieFormat';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { modifyCollectionDefinition } from './modifyCollectionDefinition';
-import { extractAttributes as xa } from '../../../utilities/objects';
+import { xa } from '../../../utilities/objects';
 import { numericSortValue } from '../../../utilities/arrays';
 
 import { INVALID_TIE_FORMAT } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import {
-  DrawDefinition,
-  Event,
-  TieFormat,
-  Tournament,
-} from '../../../types/tournamentTypes';
+import { DrawDefinition, Event, TieFormat, Tournament } from '../../../types/tournamentTypes';
 
 type ModifyTieFormatArgs = {
   updateInProgressMatchUps?: boolean;
@@ -84,20 +79,15 @@ export function modifyTieFormat({
     });
   }
 
-  const existingCollectionIds = tieFormat.collectionDefinitions.map(
-    ({ collectionId }) => collectionId
-  );
-  const updatedCollectionIds = modifiedTieFormat.collectionDefinitions.map(
-    ({ collectionId }) => collectionId
-  );
+  const existingCollectionIds = tieFormat.collectionDefinitions.map(({ collectionId }) => collectionId);
+  const updatedCollectionIds = modifiedTieFormat.collectionDefinitions.map(({ collectionId }) => collectionId);
   const removedCollectionIds = existingCollectionIds.filter(
-    (collectionId) => !updatedCollectionIds.includes(collectionId)
+    (collectionId) => !updatedCollectionIds.includes(collectionId),
   );
 
-  const addedCollectionDefinitions: any[] =
-    modifiedTieFormat.collectionDefinitions.filter(
-      ({ collectionId }) => !existingCollectionIds.includes(collectionId)
-    );
+  const addedCollectionDefinitions: any[] = modifiedTieFormat.collectionDefinitions.filter(
+    ({ collectionId }) => !existingCollectionIds.includes(collectionId),
+  );
 
   const addedCollectionIds = addedCollectionDefinitions.map(xa('collectionId'));
 
@@ -107,8 +97,7 @@ export function modifyTieFormat({
   const tieFormatName = modifiedTieFormat.tieFormatName;
   // TODO: if gender is changing pre-check for misgendered collectionAssignments
   for (const collectionDefinition of modifiedTieFormat.collectionDefinitions) {
-    if (addedCollectionIds.includes(collectionDefinition.collectionId))
-      continue;
+    if (addedCollectionIds.includes(collectionDefinition.collectionId)) continue;
 
     const result = modifyCollectionDefinition({
       updateInProgressMatchUps,
@@ -162,32 +151,20 @@ export function modifyTieFormat({
     if (result.tieFormat) processedTieFormat = result.tieFormat;
   }
 
-  const changedTieFormatName =
-    existingTieFormat?.tieFormatName !== tieFormatName;
+  const changedTieFormatName = existingTieFormat?.tieFormatName !== tieFormatName;
 
   // if tieFormat has changed, force renaming of the tieFormat
   if (changedTieFormatName) {
     processedTieFormat.tieFormatName = tieFormatName;
     modifications.push({ tieFormatName });
-  } else if (
-    modifications.length ||
-    addedCollectionIds.length ||
-    removedCollectionIds.length
-  ) {
+  } else if (modifications.length || addedCollectionIds.length || removedCollectionIds.length) {
     delete processedTieFormat.tieFormatName;
-    modifications.push(
-      'tieFormatName removed: modifications without new tieFormatName'
-    );
+    modifications.push('tieFormatName removed: modifications without new tieFormatName');
   }
 
-  processedTieFormat.collectionDefinitions =
-    processedTieFormat.collectionDefinitions
-      .sort(
-        (a, b) =>
-          numericSortValue(a.collectionOrder) -
-          numericSortValue(b.collectionOrder)
-      )
-      .map((def, i) => ({ ...def, collectionOrder: i + 1 }));
+  processedTieFormat.collectionDefinitions = processedTieFormat.collectionDefinitions
+    .sort((a, b) => numericSortValue(a.collectionOrder) - numericSortValue(b.collectionOrder))
+    .map((def, i) => ({ ...def, collectionOrder: i + 1 }));
 
   return {
     processedTieFormat: copyTieFormat(processedTieFormat),

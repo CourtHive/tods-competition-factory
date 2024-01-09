@@ -1,14 +1,11 @@
 import { getVenuesAndCourts } from '../../../../../query/venues/venuesAndCourtsGetter';
 import { getScheduleTimes } from '../../../../../query/venues/getScheduleTimes';
-import { extractAttributes } from '../../../../../utilities/objects';
+import { xa } from '../../../../../utilities/objects';
 import { calculatePeriodLength } from './calculatePeriodLength';
 import { getDateTimeBoundary } from './getTimeBoundary';
 import { generateBookings } from './generateBookings';
 
-import {
-  ErrorType,
-  MISSING_TOURNAMENT_RECORDS,
-} from '../../../../../constants/errorConditionConstants';
+import { ErrorType, MISSING_TOURNAMENT_RECORDS } from '../../../../../constants/errorConditionConstants';
 
 import { ScheduleTimesResult } from '../../../../../types/factoryTypes';
 import { Tournament } from '../../../../../types/tournamentTypes';
@@ -54,10 +51,7 @@ export function generateScheduleTimes({
   if (tournamentRecord && !tournamentRecords) {
     tournamentRecords = { [tournamentRecord.tournamentId]: tournamentRecord };
   }
-  if (
-    typeof tournamentRecords !== 'object' ||
-    !Object.keys(tournamentRecords).length
-  )
+  if (typeof tournamentRecords !== 'object' || !Object.keys(tournamentRecords).length)
     return { error: MISSING_TOURNAMENT_RECORDS };
 
   periodLength =
@@ -73,15 +67,10 @@ export function generateScheduleTimes({
     tournamentRecords,
   });
 
-  const courts =
-    allCourts?.filter(
-      (court) => !venueIds || venueIds.includes(court.venueId)
-    ) ?? [];
+  const courts = allCourts?.filter((court) => !venueIds || venueIds.includes(court.venueId)) ?? [];
 
-  startTime =
-    startTime ?? getDateTimeBoundary({ courts, scheduleDate, startTime: true });
-  endTime =
-    endTime ?? getDateTimeBoundary({ courts, scheduleDate, endTime: true });
+  startTime = startTime ?? getDateTimeBoundary({ courts, scheduleDate, startTime: true });
+  endTime = endTime ?? getDateTimeBoundary({ courts, scheduleDate, endTime: true });
 
   const { bookings, dateScheduledMatchUps } = generateBookings({
     defaultRecoveryMinutes,
@@ -108,14 +97,9 @@ export function generateScheduleTimes({
   const { scheduleTimes } = getScheduleTimes(timingParameters);
 
   // if a single venue specified, or only one venue available, return venueId
-  const venueId =
-    (venueIds?.length === 1 && venueIds[0]) ||
-    (venues?.length === 1 && venues[0].venueId) ||
-    undefined;
+  const venueId = (venueIds?.length === 1 && venueIds[0]) || (venues?.length === 1 && venues[0].venueId) || undefined;
 
-  const dateScheduledMatchUpIds = dateScheduledMatchUps?.map(
-    extractAttributes('matchUpId')
-  );
+  const dateScheduledMatchUpIds = dateScheduledMatchUps?.map(xa('matchUpId'));
 
   return {
     dateScheduledMatchUpIds,

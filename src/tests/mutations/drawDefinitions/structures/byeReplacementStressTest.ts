@@ -1,18 +1,14 @@
 import { completeDrawMatchUps } from '../../../../assemblies/generators/mocks/completeDrawMatchUps';
 import { getPositionAssignments } from '../../../../query/drawDefinition/positionsGetter';
 import { getDrawPosition } from '../../../../global/functions/extractors';
-import { extractAttributes } from '../../../../utilities/objects';
+import { xa } from '../../../../utilities/objects';
 import mocksEngine from '../../../../assemblies/engines/mock';
 import { shuffleArray } from '../../../../utilities/arrays';
 import tournamentEngine from '../../../engines/syncEngine';
 import { findEvent } from '../../../../acquire/findEvent';
 import { randomInt } from '../../../../utilities/math';
 import { expect } from 'vitest';
-import {
-  replaceWithBye,
-  removeAssignment,
-  assignDrawPosition,
-} from '../testingUtilities';
+import { replaceWithBye, removeAssignment, assignDrawPosition } from '../testingUtilities';
 
 import { PARTICIPANT_ID } from '../../../../constants/attributeConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
@@ -55,18 +51,14 @@ export function replacementTest(params) {
   });
 
   // find all drawPositions assigned to participantIds and shuffle the array
-  const participantDrawPositions = positionAssignments
-    ?.filter(extractAttributes(PARTICIPANT_ID))
-    .map(getDrawPosition);
+  const participantDrawPositions = positionAssignments?.filter(xa(PARTICIPANT_ID)).map(getDrawPosition);
   const shuffledDrawPositions = shuffleArray(participantDrawPositions);
 
   // if no byeLimit or positionsToReplaceWithBye array is provided, replace all positions with BYEs
   byeLimit = byeLimit || positionsToReplaceWithBye?.length;
   const replacementCount = byeLimit || shuffledDrawPositions.length;
 
-  positionsToReplaceWithBye =
-    positionsToReplaceWithBye ||
-    shuffledDrawPositions.slice(0, replacementCount);
+  positionsToReplaceWithBye = positionsToReplaceWithBye || shuffledDrawPositions.slice(0, replacementCount);
 
   // replace subset of randomized drawPositions with BYEs
   positionsToReplaceWithBye.forEach((drawPosition) => {
@@ -75,14 +67,14 @@ export function replacementTest(params) {
 
   if (!byeLimit) {
     // get the updated positionAssignments
-    const { positionAssignments: updatedPositionAssignments } =
-      drawPositionAssignments({ drawId });
+    const { positionAssignments: updatedPositionAssignments } = drawPositionAssignments({ drawId });
 
     // shuffle updated positionAssignments and slice to select random number of drawPositions to assign
     const assignmentCount = randomInt(0, participantsCount);
-    const drawPositionsToAssign = shuffleArray(
-      updatedPositionAssignments?.map(extractAttributes('drawPosition')) ?? []
-    ).slice(0, assignmentCount);
+    const drawPositionsToAssign = shuffleArray(updatedPositionAssignments?.map(xa('drawPosition')) ?? []).slice(
+      0,
+      assignmentCount,
+    );
 
     // for each targeted drawPosition remove the BYE and assign participantId from availableParticipantIds
     drawPositionsToAssign.forEach((drawPosition) => {
@@ -96,8 +88,7 @@ export function replacementTest(params) {
   const totalMatchUpsCount = allMatchUps.length;
 
   // complete all matchUps in the target draw
-  const { tournamentRecord: updatedTournamentRecord } =
-    tournamentEngine.getTournament();
+  const { tournamentRecord: updatedTournamentRecord } = tournamentEngine.getTournament();
   const { drawDefinition } = findEvent({
     tournamentRecord: updatedTournamentRecord,
     drawId,
@@ -111,9 +102,7 @@ export function replacementTest(params) {
   if (devMode) {
     // expect that all matchUps are either BYEs or COMPLETED
     // this is true if the combined count equals the totalMatchUpsCount
-    expect(byeMatchUps.length + completedMatchUps.length).toEqual(
-      totalMatchUpsCount
-    );
+    expect(byeMatchUps.length + completedMatchUps.length).toEqual(totalMatchUpsCount);
   }
 
   return { ...SUCCESS };

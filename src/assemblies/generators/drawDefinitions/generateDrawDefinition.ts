@@ -19,7 +19,7 @@ import { DrawMaticArgs, drawMatic } from './drawMatic/drawMatic';
 import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
 import { generateAdHocMatchUps } from './generateAdHocMatchUps';
 import structureTemplate from '../templates/structureTemplate';
-import { extractAttributes } from '../../../utilities/objects';
+import { xa } from '../../../utilities/objects';
 import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
 import { constantToString } from '../../../utilities/strings';
 import { getDrawTypeCoercion } from './getDrawTypeCoercion';
@@ -587,7 +587,7 @@ export function generateDrawDefinition(params: GenerateDrawDefinitionArgs): Resu
         ({ entryStage, entryStatus }) =>
           (!entryStage || entryStage === MAIN) && entryStatus && STRUCTURE_SELECTED_STATUSES.includes(entryStatus),
       );
-      const participantIds = entries?.map(extractAttributes('participantId'));
+      const participantIds = entries?.map(xa('participantId'));
       const matchUpsCount = entries ? Math.floor(entries.length / 2) : 0;
       generateRange(1, params.roundsCount + 1).forEach(() => {
         if (params.automated) {

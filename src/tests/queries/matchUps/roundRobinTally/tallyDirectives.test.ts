@@ -1,5 +1,5 @@
 import { tallyParticipantResults } from '../../../../query/matchUps/roundRobinTally/roundRobinTally';
-import { extractAttributes as xa } from '../../../../utilities/objects';
+import { xa } from '../../../../utilities/objects';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
@@ -18,17 +18,11 @@ it('supports multiple policy configurations', () => {
   const structureIds = RR.structures.map(xa('structureId'));
 
   const matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
-  const structure1MatchUps = matchUps.filter(
-    (m) => m.structureId === structureIds[0]
-  );
-  const structure2MatchUps = matchUps.filter(
-    (m) => m.structureId === structureIds[1]
-  );
+  const structure1MatchUps = matchUps.filter((m) => m.structureId === structureIds[0]);
+  const structure2MatchUps = matchUps.filter((m) => m.structureId === structureIds[1]);
 
   const structureGroupOrder = (structure) =>
-    structure.positionAssignments.map(
-      (assignment) => participantResults[assignment.participantId].groupOrder
-    );
+    structure.positionAssignments.map((assignment) => participantResults[assignment.participantId].groupOrder);
 
   let participantResults;
 

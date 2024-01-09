@@ -1,5 +1,5 @@
 import { getParticipantId } from '../../../../../global/functions/extractors';
-import { extractAttributes as xa } from '../../../../../utilities/objects';
+import { xa } from '../../../../../utilities/objects';
 import mocksEngine from '../../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../../engines/syncEngine';
 import { expect, it } from 'vitest';
@@ -8,10 +8,7 @@ import SEEDING_USTA from '../../../../../fixtures/policies/POLICY_SEEDING_DEFAUL
 import { RANKING, RATING } from '../../../../../constants/scaleConstants';
 import { SINGLES_EVENT } from '../../../../../constants/eventConstants';
 import { WTN } from '../../../../../constants/ratingConstants';
-import {
-  MAIN,
-  ROUND_ROBIN,
-} from '../../../../../constants/drawDefinitionConstants';
+import { MAIN, ROUND_ROBIN } from '../../../../../constants/drawDefinitionConstants';
 
 it('can autoSeed by Rankings and then generate Round Robin', () => {
   const participantsCount = 32;
@@ -39,28 +36,26 @@ it('can autoSeed by Rankings and then generate Round Robin', () => {
 
   const scaleValuesRating = [3.3, 4.4, 5.5, 1.1, 2.2, 6.6, 7.7, 8.8, 10.1, 9.9];
   const scaleValuesRanking = [100, 90, 80, 30, 20, 10, 70, 60, 50, 40];
-  const scaleItemsWithParticipantIds = participantIds.map(
-    (participantId, index) => {
-      const scaleItems = [
-        {
-          scaleValue: scaleValuesRating[index],
-          eventType: SINGLES_EVENT,
-          scaleDate: startDate,
-          scaleType: RATING,
-          scaleName: WTN,
-        },
-        {
-          scaleValue: scaleValuesRanking[index],
-          eventType: SINGLES_EVENT,
-          scaleName: categoryName,
-          scaleDate: startDate,
-          scaleType: RANKING,
-        },
-      ];
+  const scaleItemsWithParticipantIds = participantIds.map((participantId, index) => {
+    const scaleItems = [
+      {
+        scaleValue: scaleValuesRating[index],
+        eventType: SINGLES_EVENT,
+        scaleDate: startDate,
+        scaleType: RATING,
+        scaleName: WTN,
+      },
+      {
+        scaleValue: scaleValuesRanking[index],
+        eventType: SINGLES_EVENT,
+        scaleName: categoryName,
+        scaleDate: startDate,
+        scaleType: RANKING,
+      },
+    ];
 
-      return { participantId, scaleItems };
-    }
-  );
+    return { participantId, scaleItems };
+  });
 
   let result = tournamentEngine.setParticipantScaleItems({
     scaleItemsWithParticipantIds,
@@ -109,9 +104,7 @@ it('can autoSeed by Rankings and then generate Round Robin', () => {
     withDraws: true,
   }).participants;
 
-  let seededParticipants = participants.filter(
-    ({ events }) => events?.[0]?.seedValue
-  );
+  let seededParticipants = participants.filter(({ events }) => events?.[0]?.seedValue);
 
   expect(seededParticipants[0].events.length).toEqual(1);
   expect(seededParticipants[0].draws.length).toEqual(0);
@@ -148,31 +141,18 @@ it('can autoSeed by Rankings and then generate Round Robin', () => {
   });
 
   // IMPORTANT: participantMap contains object values for events, draws & etc.
-  expect(typeof p.participantMap[seededParticipantIds[0]].events).toEqual(
-    'object'
-  );
-  expect(
-    Array.isArray(p.participantMap[seededParticipantIds[0]].events)
-  ).toEqual(false);
+  expect(typeof p.participantMap[seededParticipantIds[0]].events).toEqual('object');
+  expect(Array.isArray(p.participantMap[seededParticipantIds[0]].events)).toEqual(false);
 
   // IMPORTANT: participants contains arrays for events, draws & etc.
-  expect(
-    Array.isArray(
-      p.participants.find((pt) => pt.participantId === seededParticipantIds[0])
-        .events
-    )
-  ).toEqual(true);
+  expect(Array.isArray(p.participants.find((pt) => pt.participantId === seededParticipantIds[0]).events)).toEqual(true);
 
   // the event was seeded
-  seededParticipants = p.participants.filter(
-    ({ events }) => events?.[0]?.seedValue
-  );
+  seededParticipants = p.participants.filter(({ events }) => events?.[0]?.seedValue);
   expect(seededParticipants.length).toEqual(8);
 
   // but the draw generation specified seedsCount=0 so no seedAssignments were created
-  seededParticipants = p.participants.filter(
-    ({ draws }) => draws?.[0]?.seedValue
-  );
+  seededParticipants = p.participants.filter(({ draws }) => draws?.[0]?.seedValue);
   expect(seededParticipants.length).toEqual(seedsCount);
 
   seedsCount = 8; // without seedsCount seedValue will disappear
@@ -200,16 +180,10 @@ it('can autoSeed by Rankings and then generate Round Robin', () => {
     withDraws: true,
   });
 
-  seededParticipants = p.participants.filter(
-    ({ events }) => events?.[0]?.seedValue
-  );
+  seededParticipants = p.participants.filter(({ events }) => events?.[0]?.seedValue);
   expect(seededParticipants.length).toEqual(seedsCount);
 
   seededParticipants = p.participants.filter(({ seedings }) => seedings);
-  expect(
-    seededParticipants[0].draws[0].seedAssignments[MAIN].seedValue
-  ).toBeDefined();
-  expect(
-    seededParticipants[0].events[0].seedAssignments[MAIN].seedValue
-  ).toBeDefined();
+  expect(seededParticipants[0].draws[0].seedAssignments[MAIN].seedValue).toBeDefined();
+  expect(seededParticipants[0].events[0].seedAssignments[MAIN].seedValue).toBeDefined();
 });

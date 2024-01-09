@@ -3,13 +3,10 @@ import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import { getMatchUpIds } from '../../../global/functions/extractors';
-import { extractAttributes as xa } from '../../../utilities/objects';
+import { xa } from '../../../utilities/objects';
 import { resequenceStructures } from './resequenceStructures';
 import { findStructure } from '../../../acquire/findStructure';
-import {
-  deleteMatchUpsNotice,
-  modifyDrawNotice,
-} from '../../notifications/drawNotifications';
+import { deleteMatchUpsNotice, modifyDrawNotice } from '../../notifications/drawNotifications';
 
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { POLICY_TYPE_SCORING } from '../../../constants/policyConstants';
@@ -22,11 +19,7 @@ import {
   SCORES_PRESENT,
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  Event,
-  Tournament,
-} from '../../../types/tournamentTypes';
+import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
 
 type RemoveStructureArgs = {
   tournamentRecord: Tournament;
@@ -36,13 +29,7 @@ type RemoveStructureArgs = {
   event: Event;
 };
 
-export function removeStructure({
-  tournamentRecord,
-  drawDefinition,
-  structureId,
-  event,
-  force,
-}: RemoveStructureArgs) {
+export function removeStructure({ tournamentRecord, drawDefinition, structureId, event, force }: RemoveStructureArgs) {
   if (typeof structureId !== 'string') return { error: INVALID_VALUES };
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
@@ -50,16 +37,12 @@ export function removeStructure({
   const structures = drawDefinition.structures ?? [];
   const removedStructureIds: string[] = [];
 
-  const structure = structures.find(
-    (structure) => structure.structureId === structureId
-  );
+  const structure = structures.find((structure) => structure.structureId === structureId);
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
   // TODO: if structure being rmoved is qualifying structure, ensure no source structures have scored matchUps
   const structureMatchUps = getAllStructureMatchUps({ structure }).matchUps;
-  const scoresPresent = structureMatchUps.some(({ score }) =>
-    checkScoreHasValue({ score })
-  );
+  const scoresPresent = structureMatchUps.some(({ score }) => checkScoreHasValue({ score }));
 
   if (scoresPresent) {
     const appliedPolicies = getAppliedPolicies({
@@ -70,20 +53,14 @@ export function removeStructure({
     })?.appliedPolicies;
 
     const allowDeletionWithScoresPresent =
-      force ??
-      appliedPolicies?.[POLICY_TYPE_SCORING]?.allowDeletionWithScoresPresent
-        ?.structures;
+      force ?? appliedPolicies?.[POLICY_TYPE_SCORING]?.allowDeletionWithScoresPresent?.structures;
 
     if (!allowDeletionWithScoresPresent) return { error: SCORES_PRESENT };
   }
 
-  const mainStageSequence1 = structures.find(
-    ({ stage, stageSequence }) => stage === MAIN && stageSequence === 1
-  );
+  const mainStageSequence1 = structures.find(({ stage, stageSequence }) => stage === MAIN && stageSequence === 1);
   const isMainStageSequence1 = structureId === mainStageSequence1?.structureId;
-  const qualifyingStructureIds = structures
-    .filter(({ stage }) => stage === QUALIFYING)
-    .map(xa('structureId'));
+  const qualifyingStructureIds = structures.filter(({ stage }) => stage === QUALIFYING).map(xa('structureId'));
 
   if (isMainStageSequence1 && !qualifyingStructureIds.length) {
     return { error: CANNOT_REMOVE_MAIN_STRUCTURE };
@@ -98,7 +75,7 @@ export function removeStructure({
         (link) =>
           link.source.structureId === structureId &&
           link.target.structureId !== mainStageSequence1?.structureId &&
-          link.target.structureId
+          link.target.structureId,
       )
       .filter(Boolean) ?? [];
 
@@ -108,7 +85,7 @@ export function removeStructure({
         (link) =>
           qualifyingStructureIds.includes(link.source.structureId) &&
           link.target.structureId === structureId &&
-          link.source.structureId
+          link.source.structureId,
       )
       .filter(Boolean) ?? [];
 
@@ -119,13 +96,11 @@ export function removeStructure({
       id,
       isQualifyingStructure
         ? (getQualifyingSourceStructureIds(id) as string[])
-        : (getTargetedStructureIds(id) as string[])
-    )
+        : (getTargetedStructureIds(id) as string[]),
+    ),
   );
 
-  const idsToRemove = isMainStageSequence1
-    ? relatedStructureIdsMap.get(structureId)
-    : [structureId];
+  const idsToRemove = isMainStageSequence1 ? relatedStructureIdsMap.get(structureId) : [structureId];
 
   while (idsToRemove?.length) {
     const idBeingRemoved = idsToRemove.pop();
@@ -139,9 +114,7 @@ export function removeStructure({
 
     drawDefinition.links =
       drawDefinition.links?.filter(
-        (link) =>
-          link.source.structureId !== idBeingRemoved &&
-          link.target.structureId !== idBeingRemoved
+        (link) => link.source.structureId !== idBeingRemoved && link.target.structureId !== idBeingRemoved,
       ) ?? [];
 
     if (
@@ -149,13 +122,10 @@ export function removeStructure({
       (isMainStageSequence1 && qualifyingStructureIds.length) ||
       idBeingRemoved !== structureId
     ) {
-      drawDefinition.structures = (drawDefinition.structures ?? []).filter(
-        (structure) => {
-          if (idBeingRemoved && idBeingRemoved === structure.structureId)
-            removedStructureIds.push(idBeingRemoved);
-          return structure.structureId !== idBeingRemoved;
-        }
-      );
+      drawDefinition.structures = (drawDefinition.structures ?? []).filter((structure) => {
+        if (idBeingRemoved && idBeingRemoved === structure.structureId) removedStructureIds.push(idBeingRemoved);
+        return structure.structureId !== idBeingRemoved;
+      });
     }
 
     const targetedStructureIds =
@@ -163,8 +133,7 @@ export function removeStructure({
       relatedStructureIdsMap.get(idBeingRemoved)?.filter(
         (id: string) =>
           // IMPORTANT: only delete MAIN stageSequence: 1 if specified to protect against DOUBLE_ELIMINATION scenario
-          id !== mainStageSequence1?.structureId ||
-          structureId === mainStageSequence1.structureId
+          id !== mainStageSequence1?.structureId || structureId === mainStageSequence1.structureId,
       );
     if (targetedStructureIds?.length) idsToRemove.push(...targetedStructureIds);
   }
@@ -172,25 +141,17 @@ export function removeStructure({
   // now get all remaining matchUps in the draw
   const { matchUps } = getAllDrawMatchUps({ drawDefinition });
   matchUps?.forEach((matchUp) => {
-    if (
-      matchUp.winnerMatchUpId &&
-      removedMatchUpIds.includes(matchUp.winnerMatchUpId)
-    ) {
+    if (matchUp.winnerMatchUpId && removedMatchUpIds.includes(matchUp.winnerMatchUpId)) {
       delete matchUp.winnerMatchUpId;
     }
-    if (
-      matchUp.loserMatchUpId &&
-      removedMatchUpIds.includes(matchUp.loserMatchUpId)
-    ) {
+    if (matchUp.loserMatchUpId && removedMatchUpIds.includes(matchUp.loserMatchUpId)) {
       delete matchUp.loserMatchUpId;
     }
   });
 
   // if this is MAIN stageSequence: 1 there must be qualifying, return to empty state
   if (isMainStageSequence1) {
-    const mainStageSequence1MatchUpIds = (
-      mainStageSequence1.matchUps ?? []
-    )?.map(xa('matchUpId'));
+    const mainStageSequence1MatchUpIds = (mainStageSequence1.matchUps ?? [])?.map(xa('matchUpId'));
     removedMatchUpIds.push(...mainStageSequence1MatchUpIds);
 
     mainStageSequence1.positionAssignments = [];

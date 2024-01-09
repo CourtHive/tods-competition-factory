@@ -44,13 +44,13 @@ export function createMap(objectArray, attribute) {
           }
         );
       })
-      .filter(Boolean)
+      .filter(Boolean),
   );
 }
 
 // e.g. result.find(hav({ attr: value })) -or- result.filter(hav({ attr: value }))
-export const hasAttributeValues = (a) => (o) =>
-  Object.keys(a).every((key) => o[key] === a[key]);
+export const hasAttributeValues = (a) => (o) => Object.keys(a).every((key) => o[key] === a[key]);
+export const hav = hasAttributeValues;
 
 // extracts targeted attributes
 // e.g. const byeAssignments = positionAssignments.filter(xa('bye')).map(xa('drawPosition'));
@@ -66,8 +66,8 @@ export const extractAttributes = (accessor) => (element) =>
         Object.keys(accessor).map((key) => ({
           [key]: getAccessorValue({ element, accessor: key })?.value,
         }))) ||
-      (typeof accessor === 'string' && getAccessorValue({ element, accessor }))
-        ?.value;
+      (typeof accessor === 'string' && getAccessorValue({ element, accessor }))?.value;
+export const xa = extractAttributes;
 
 // useful in notifications where back end does not recognize undefined for updates
 export function undefinedToNull(obj: object, shallow?: boolean) {
@@ -85,7 +85,7 @@ export function undefinedToNull(obj: object, shallow?: boolean) {
             [key]: shallow ? obj[key] : obj[key].map((m) => undefinedToNull(m)),
           }
         : { [key]: shallow ? notNull(obj[key]) : undefinedToNull(obj[key]) };
-    })
+    }),
   );
 }
 

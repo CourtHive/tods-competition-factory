@@ -8,7 +8,7 @@ import { generateEventParticipants } from './generateEventParticipants';
 import { isValidExtension } from '../../../validators/isValidExtension';
 import { publishEvent } from '../../../mutate/events/publishEvent';
 import tieFormatDefaults from '../templates/tieFormatDefaults';
-import { extractAttributes } from '../../../utilities/objects';
+import { xa } from '../../../utilities/objects';
 import { addEvent } from '../../../mutate/events/addEvent';
 import { generateFlights } from './generateFlights';
 import { UUID } from '../../../utilities/UUID';
@@ -178,7 +178,7 @@ export function generateEventWithFlights(params) {
     if (drawDefinitionResult.error) return drawDefinitionResult;
     drawIds = drawDefinitionResult.drawIds;
   } else if (eventProfile?.participantsProfile?.participantsCount) {
-    const eventParticipantIds = uniqueDrawParticipants.map(extractAttributes('participantId'));
+    const eventParticipantIds = uniqueDrawParticipants.map(xa('participantId'));
 
     if (eventParticipantIds.length) {
       const result = addEventEntries({

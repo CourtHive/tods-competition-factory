@@ -1,4 +1,4 @@
-import { extractAttributes } from '../../../utilities/objects';
+import { xa } from '../../../utilities/objects';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
@@ -28,9 +28,7 @@ it('can return team statistics', () => {
   const matchUps = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: { matchUpTypes: [TEAM_MATCHUP] },
   }).matchUps;
-  const sideParticipantIds = matchUps[0].sides.map(
-    extractAttributes('participantId')
-  );
+  const sideParticipantIds = matchUps[0].sides.map(xa('participantId'));
 
   const [teamParticipantId, opponentParticipantId] = sideParticipantIds;
 
@@ -39,12 +37,8 @@ it('can return team statistics', () => {
     teamParticipantId,
   });
   const teamParticiapntName = matchUps[0].sides[0].participant.participantName;
-  expect(result.allParticipantStats[0].participantName).toEqual(
-    teamParticiapntName
-  );
-  result.allParticipantStats.forEach((stats) =>
-    expect(stats.participantName).toBeDefined()
-  );
+  expect(result.allParticipantStats[0].participantName).toEqual(teamParticiapntName);
+  result.allParticipantStats.forEach((stats) => expect(stats.participantName).toBeDefined());
 
   result = tournamentEngine.getParticipantStats({
     withIndividualStats: false,

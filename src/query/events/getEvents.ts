@@ -1,6 +1,6 @@
 import { getAssignedParticipantIds } from '../drawDefinition/getAssignedParticipantIds';
 import { definedAttributes } from '../../utilities/definedAttributes';
-import { extractAttributes as xa } from '../../utilities/objects';
+import { xa } from '../../utilities/objects';
 import { getParticipants } from '../participants/getParticipants';
 import { makeDeepCopy } from '../../utilities/makeDeepCopy';
 import { getFlightProfile } from '../event/getFlightProfile';
@@ -64,14 +64,10 @@ export function getEvents({
 
   const { tournamentId } = tournamentRecord;
   const eventCopies = (tournamentRecord.events ?? [])
-    .filter(
-      ({ eventId }) =>
-        !eventIds || (Array.isArray(eventIds) && eventIds.includes(eventId))
-    )
+    .filter(({ eventId }) => !eventIds || (Array.isArray(eventIds) && eventIds.includes(eventId)))
     .map((event) => {
       const eventDrawIds = event.drawDefinitions?.map(xa('drawId'));
-      if (drawIds?.length && !intersection(drawIds, eventDrawIds).length)
-        return;
+      if (drawIds?.length && !intersection(drawIds, eventDrawIds).length) return;
       const eventCopy = makeDeepCopy(event);
       if (inContext) Object.assign(eventCopy, { tournamentId });
       if (context) Object.assign(eventCopy, context);
@@ -87,8 +83,7 @@ export function getEvents({
       tournamentRecord,
     }).participantMap;
 
-    const sum = (values) =>
-      values.reduce((total, value) => total + parseFloat(value), 0);
+    const sum = (values) => values.reduce((total, value) => total + parseFloat(value), 0);
 
     for (const event of eventCopies) {
       const eventType = scaleEventType ?? event.eventType;
@@ -103,7 +98,7 @@ export function getEvents({
         };
 
       const selectedEntries = (event.entries ?? []).filter(({ entryStatus }) =>
-        STRUCTURE_SELECTED_STATUSES.includes(entryStatus)
+        STRUCTURE_SELECTED_STATUSES.includes(entryStatus),
       );
       const participantIds = selectedEntries.map(xa(PARTICIPANT_ID));
 
@@ -111,8 +106,7 @@ export function getEvents({
         if (participant?.ratings?.[eventType]) {
           for (const rating of participant?.ratings?.[eventType] ?? []) {
             const scaleName = rating.scaleName;
-            if (!eventsMap[eventId].ratings[scaleName])
-              eventsMap[eventId].ratings[scaleName] = [];
+            if (!eventsMap[eventId].ratings[scaleName]) eventsMap[eventId].ratings[scaleName] = [];
             const accessor = ratingsParameters[scaleName]?.accessor;
             if (accessor) {
               const value = parseFloat(rating.scaleValue?.[accessor]);
@@ -123,10 +117,8 @@ export function getEvents({
         if (participant?.rankings?.[eventType]) {
           for (const ranking of participant?.rankings?.[eventType] ?? []) {
             const scaleName = ranking.scaleName;
-            if (!eventsMap[eventId].ranking[scaleName])
-              eventsMap[eventId].ranking[scaleName] = [];
-            if (ranking.scaleValue)
-              eventsMap[eventId].ranking[scaleName].push(ranking.scaleValue);
+            if (!eventsMap[eventId].ranking[scaleName]) eventsMap[eventId].ranking[scaleName] = [];
+            if (ranking.scaleValue) eventsMap[eventId].ranking[scaleName].push(ranking.scaleValue);
           }
         }
       };
@@ -134,10 +126,8 @@ export function getEvents({
       for (const participantId of participantIds) {
         const participant = participantMap?.[participantId]?.participant;
         if (participant?.participantType !== INDIVIDUAL) {
-          for (const individualParticipantId of participant?.individualParticipantIds ??
-            []) {
-            const individualParticipant =
-              participantMap?.[individualParticipantId]?.participant;
+          for (const individualParticipantId of participant?.individualParticipantIds ?? []) {
+            const individualParticipant = participantMap?.[individualParticipantId]?.participant;
             processParticipant(individualParticipant);
           }
         } else {
@@ -161,10 +151,7 @@ export function getEvents({
 
       const processFlight = (drawId, participantIds) => {
         const processParticipant = (participant) => {
-          if (
-            eventsMap[eventId].draws?.[drawId] &&
-            participant?.ratings?.[eventType]
-          ) {
+          if (eventsMap[eventId].draws?.[drawId] && participant?.ratings?.[eventType]) {
             for (const rating of participant?.ratings?.[eventType] ?? []) {
               const scaleName = rating.scaleName;
               if (!eventsMap[eventId].draws[drawId]?.ratings[scaleName])
@@ -173,17 +160,12 @@ export function getEvents({
               if (accessor) {
                 const value = parseFloat(rating.scaleValue?.[accessor]);
                 if (value) {
-                  eventsMap[eventId].draws[drawId].ratings[scaleName].push(
-                    value
-                  );
+                  eventsMap[eventId].draws[drawId].ratings[scaleName].push(value);
                 }
               }
             }
           }
-          if (
-            eventsMap[eventId].draws?.[drawId] &&
-            participant?.rankings?.[eventType]
-          ) {
+          if (eventsMap[eventId].draws?.[drawId] && participant?.rankings?.[eventType]) {
             for (const ranking of participant?.rankings?.[eventType] ?? []) {
               const scaleName = ranking.scaleName;
               if (!eventsMap[eventId].draws[drawId]?.ranking[scaleName])
@@ -198,10 +180,8 @@ export function getEvents({
         for (const participantId of participantIds.filter(Boolean)) {
           const participant = participantMap?.[participantId]?.participant;
           if (participant?.participantType !== INDIVIDUAL) {
-            for (const individualParticipantId of participant?.individualParticipantIds ??
-              []) {
-              const individualParticipant =
-                participantMap?.[individualParticipantId]?.participant;
+            for (const individualParticipantId of participant?.individualParticipantIds ?? []) {
+              const individualParticipant = participantMap?.[individualParticipantId]?.participant;
               processParticipant(individualParticipant);
             }
           } else {
@@ -212,8 +192,7 @@ export function getEvents({
 
       const processedDrawIds: string[] = [];
       const ignoreDrawId = (drawId) =>
-        (drawIds?.length && drawIds.includes(drawId)) ||
-        processedDrawIds.includes(drawId);
+        (drawIds?.length && drawIds.includes(drawId)) || processedDrawIds.includes(drawId);
       for (const drawDefinition of event.drawDefinitions ?? []) {
         const drawId: string = drawDefinition.drawId;
         if (ignoreDrawId(drawId)) continue;

@@ -2,7 +2,7 @@ import { getPositionAssignments } from '../../../../query/drawDefinition/positio
 import { isCompletedStructure } from '../../../../query/drawDefinition/structureActions';
 import { generateMatchUpOutcome } from '../../../helpers/generateMatchUpOutcome';
 import { generateRange, intersection } from '../../../../utilities/arrays';
-import { extractAttributes } from '../../../../utilities/objects';
+import { xa } from '../../../../utilities/objects';
 import tournamentEngine from '../../../engines/syncEngine';
 import { mocksEngine } from '../../../..';
 import { expect, it } from 'vitest';
@@ -345,7 +345,7 @@ it.each(scenarios)('can determine available playoff rounds for ROUND_ROBIN struc
 
     const { structures, links, matchUpModifications } = result;
     if (expectation.structureNames) {
-      expect(structures.map(extractAttributes('structureName'))).toEqual(expectation.structureNames);
+      expect(structures.map(xa('structureName'))).toEqual(expectation.structureNames);
     }
     result = tournamentEngine.attachPlayoffStructures({
       matchUpModifications,
@@ -407,9 +407,9 @@ it.each(scenarios)('can determine available playoff rounds for ROUND_ROBIN struc
 
     const { structurePositionAssignments } = result;
 
-    const s1pa = structurePositionAssignments[0].positionAssignments.map(extractAttributes('participantId'));
-    const s2pa = structurePositionAssignments[1].positionAssignments.map(extractAttributes('participantId'));
-    const s3pa = structurePositionAssignments[2].positionAssignments.map(extractAttributes('participantId'));
+    const s1pa = structurePositionAssignments[0].positionAssignments.map(xa('participantId'));
+    const s2pa = structurePositionAssignments[1].positionAssignments.map(xa('participantId'));
+    const s3pa = structurePositionAssignments[2].positionAssignments.map(xa('participantId'));
 
     // ensure that there is no overlap in the positionAssignments for each playoff
     expect(intersection(s1pa, s2pa).length).toEqual(0);
@@ -423,7 +423,7 @@ it.each(scenarios)('can determine available playoff rounds for ROUND_ROBIN struc
       const s1pa = getPositionAssignments({
         structure: s1,
       }).positionAssignments;
-      expect(s1pa?.map(extractAttributes('participantId')).filter(Boolean)).toEqual([]);
+      expect(s1pa?.map(xa('participantId')).filter(Boolean)).toEqual([]);
     });
 
     result = tournamentEngine.setPositionAssignments({
@@ -438,7 +438,7 @@ it.each(scenarios)('can determine available playoff rounds for ROUND_ROBIN struc
       const s1pa = getPositionAssignments({
         structure: s1,
       }).positionAssignments;
-      expect(s1pa?.map(extractAttributes('participantId')).filter(Boolean).length).toEqual(4);
+      expect(s1pa?.map(xa('participantId')).filter(Boolean).length).toEqual(4);
     });
   }
 });
