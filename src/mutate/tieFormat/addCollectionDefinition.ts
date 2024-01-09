@@ -1,6 +1,8 @@
+import { addMatchUpsNotice, modifyDrawNotice, modifyMatchUpNotice } from '../notifications/drawNotifications';
 import { generateCollectionMatchUps } from '../../assemblies/generators/drawDefinitions/tieMatchUps';
 import { validateCollectionDefinition } from '../../validators/validateCollectionDefinition';
 import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
+import { ResultType, decorateResult } from '../../global/functions/decorateResult';
 import { copyTieFormat } from '../../query/hierarchical/tieFormats/copyTieFormat';
 import { calculateWinCriteria } from '../../query/matchUp/calculateWinCriteria';
 import { getTieFormat } from '../../query/hierarchical/tieFormats/getTieFormat';
@@ -10,15 +12,6 @@ import { validateTieFormat } from '../../validators/validateTieFormat';
 import { definedAttributes } from '../../utilities/definedAttributes';
 import { validUpdate } from '../../validators/validUpdate';
 import { UUID } from '../../utilities/UUID';
-import {
-  addMatchUpsNotice,
-  modifyDrawNotice,
-  modifyMatchUpNotice,
-} from '../notifications/drawNotifications';
-import {
-  ResultType,
-  decorateResult,
-} from '../../global/functions/decorateResult';
 
 import { TIE_FORMAT_MODIFICATIONS } from '../../constants/extensionConstants';
 import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../constants/policyConstants';
@@ -98,20 +91,13 @@ export function addCollectionDefinition({
     }).appliedPolicies ?? {};
 
   const matchUpActionsPolicy =
-    policyDefinitions?.[POLICY_TYPE_MATCHUP_ACTIONS] ??
-    appliedPolicies?.[POLICY_TYPE_MATCHUP_ACTIONS];
+    policyDefinitions?.[POLICY_TYPE_MATCHUP_ACTIONS] ?? appliedPolicies?.[POLICY_TYPE_MATCHUP_ACTIONS];
 
-  enforceCategory =
-    enforceCategory ?? matchUpActionsPolicy?.participants?.enforceCategory;
+  enforceCategory = enforceCategory ?? matchUpActionsPolicy?.participants?.enforceCategory;
 
-  const genderEnforced =
-    (enforceGender ?? matchUpActionsPolicy?.participants?.enforceGender) !==
-    false;
+  const genderEnforced = (enforceGender ?? matchUpActionsPolicy?.participants?.enforceGender) !== false;
 
-  const checkCategory = !!(
-    (referenceCategory ?? event?.category) &&
-    enforceCategory !== false
-  );
+  const checkCategory = !!((referenceCategory ?? event?.category) && enforceCategory !== false);
   const checkGender = !!((referenceGender ?? event?.gender) && genderEnforced);
 
   const validationResult = validateCollectionDefinition({
@@ -136,8 +122,7 @@ export function addCollectionDefinition({
       })
     : undefined;
 
-  if (result?.error)
-    return decorateResult({ result: { error: result.error }, stack });
+  if (result?.error) return decorateResult({ result: { error: result.error }, stack });
 
   const structure = result?.structure;
   matchUp = matchUp ?? result?.matchUp;
@@ -152,9 +137,7 @@ export function addCollectionDefinition({
   if (!collectionDefinition.collectionId) {
     collectionDefinition.collectionId = UUID();
   } else {
-    const collectionIds = tieFormat.collectionDefinitions.map(
-      ({ collectionId }) => collectionId
-    );
+    const collectionIds = tieFormat.collectionDefinitions.map(({ collectionId }) => collectionId);
     if (collectionIds.includes(collectionDefinition.collectionId))
       return decorateResult({
         context: { collectionId: collectionDefinition.collectionId },
@@ -165,10 +148,7 @@ export function addCollectionDefinition({
   tieFormat.collectionDefinitions.push(collectionDefinition);
   tieFormat.collectionDefinitions
     .sort((a, b) => (a.collectionOrder || 0) - (b.collectionOrder || 0))
-    .forEach(
-      (collectionDefinition, i) =>
-        (collectionDefinition.collectionOrder = i + 1)
-    );
+    .forEach((collectionDefinition, i) => (collectionDefinition.collectionOrder = i + 1));
 
   // calculate new winCriteria for tieFormat
   // if existing winCriteria is aggregateValue, retain
@@ -178,10 +158,7 @@ export function addCollectionDefinition({
   // if valueGoal has changed, force renaming of the tieFormat
   const originalValueGoal = existingTieFormat?.winCriteria.valueGoal;
   const wasAggregateValue = existingTieFormat?.winCriteria.aggregateValue;
-  if (
-    (originalValueGoal && originalValueGoal !== valueGoal) ||
-    (aggregateValue && !wasAggregateValue)
-  ) {
+  if ((originalValueGoal && originalValueGoal !== valueGoal) || (aggregateValue && !wasAggregateValue)) {
     if (tieFormatName) {
       tieFormat.tieFormatName = tieFormatName;
     } else {
@@ -258,6 +235,7 @@ export function addCollectionDefinition({
     matchUp.tieFormat = prunedTieFormat;
     const newMatchUps: MatchUp[] = generateCollectionMatchUps({
       collectionDefinition,
+      matchUp,
       uuids,
     });
 
@@ -322,12 +300,7 @@ export function addCollectionDefinition({
   };
 }
 
-function updateStructureMatchUps({
-  updateInProgressMatchUps,
-  collectionDefinition,
-  structure,
-  uuids,
-}) {
+function updateStructureMatchUps({ updateInProgressMatchUps, collectionDefinition, structure, uuids }) {
   const newMatchUps: MatchUp[] = [];
   const matchUps = getAllStructureMatchUps({
     matchUpFilters: { matchUpTypes: [TEAM] },
@@ -336,13 +309,13 @@ function updateStructureMatchUps({
 
   // all team matchUps in the structure which are not completed and which have no score value should have matchUps added
   const targetMatchUps = matchUps.filter(
-    (matchUp) =>
-      validUpdate({ matchUp, updateInProgressMatchUps }) && !matchUp.tieFormat
+    (matchUp) => validUpdate({ matchUp, updateInProgressMatchUps }) && !matchUp.tieFormat,
   );
 
   for (const matchUp of targetMatchUps) {
     const tieMatchUps: MatchUp[] = generateCollectionMatchUps({
       collectionDefinition,
+      matchUp,
       uuids,
     });
 

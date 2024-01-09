@@ -18,10 +18,7 @@ import USTA_WTT_ITT_TIE_FORMAT from '../../../fixtures/scoring/tieFormats/USTA_W
 import USTA_ZONAL_TIE_FORMAT from '../../../fixtures/scoring/tieFormats/USTA_ZONAL.json';
 import LAVER_CUP_TIE_FORMAT from '../../../fixtures/scoring/tieFormats/LAVER_CUP.json';
 import USTA_TOC_TIE_FORMAT from '../../../fixtures/scoring/tieFormats/USTA_TOC.json';
-import {
-  FORMAT_ATP_DOUBLES,
-  FORMAT_STANDARD,
-} from '../../../fixtures/scoring/matchUpFormats';
+import { FORMAT_ATP_DOUBLES, FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
 import {
   COLLEGE_D3,
   COLLEGE_DEFAULT,
@@ -124,16 +121,14 @@ const namedFormats = {
 type TieFormatDefaultArgs = {
   hydrateCollections?: boolean;
   namedFormat?: string;
+  isMock?: boolean;
   uuids?: string[];
   event?: Event;
 };
 
 export const tieFormatDefaults = (params?: TieFormatDefaultArgs) => {
   const namedFormat =
-    params?.namedFormat &&
-    Object.keys(namedFormats).includes(params.namedFormat)
-      ? params.namedFormat
-      : STANDARD;
+    params?.namedFormat && Object.keys(namedFormats).includes(params.namedFormat) ? params.namedFormat : STANDARD;
 
   const uuids = Array.isArray(params?.uuids) ? params?.uuids : [];
 
@@ -141,9 +136,14 @@ export const tieFormatDefaults = (params?: TieFormatDefaultArgs) => {
   const { category, gender } = params?.event ?? {};
   const template = makeDeepCopy(namedFormats[namedFormat], false, true);
 
+  const getCollectionId = (index) => {
+    if ((!params?.isMock && !params?.event?.isMock) || !params.event) return uuids?.pop() ?? UUID();
+    const eventId = params?.event?.eventId;
+    return uuids.pop() ?? `${eventId}-COL-${index + 1}`;
+  };
   if (!template.hydrate) {
     template.collectionDefinitions.forEach(
-      (collectionDefinition) => (collectionDefinition.collectionId = UUID())
+      (collectionDefinition, i) => (collectionDefinition.collectionId = getCollectionId(i)),
     );
     tieFormat = template;
   } else {
@@ -153,14 +153,14 @@ export const tieFormatDefaults = (params?: TieFormatDefaultArgs) => {
       },
       collectionDefinitions: [
         {
-          collectionId: uuids?.pop() ?? UUID(),
+          collectionId: getCollectionId(0),
           matchUpFormat: FORMAT_ATP_DOUBLES,
           collectionName: 'Doubles',
           matchUpType: DOUBLES,
           ...template.doubles,
         },
         {
-          collectionId: uuids?.pop() ?? UUID(),
+          collectionId: getCollectionId(1),
           matchUpFormat: FORMAT_STANDARD,
           collectionName: 'Singles',
           matchUpType: SINGLES,
@@ -169,16 +169,13 @@ export const tieFormatDefaults = (params?: TieFormatDefaultArgs) => {
       ],
     };
 
-    if (template.tieFormatName)
-      tieFormat.tieFormatName = template.tieFormatName;
+    if (template.tieFormatName) tieFormat.tieFormatName = template.tieFormatName;
   }
 
   if (params?.hydrateCollections) {
     tieFormat.collectionDefinitions.forEach((collectionDefinition) => {
-      if (category && !collectionDefinition.category)
-        collectionDefinition.category = category;
-      if (gender && !collectionDefinition.gender)
-        collectionDefinition.gender = gender;
+      if (category && !collectionDefinition.category) collectionDefinition.category = category;
+      if (gender && !collectionDefinition.gender) collectionDefinition.gender = gender;
     });
   }
 

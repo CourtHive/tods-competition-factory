@@ -1,4 +1,4 @@
-import { addDays, dateRange } from '../../../utilities/dateTime';
+import { addDays, generateDateRange } from '../../../utilities/dateTime';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { chunkArray } from '../../../utilities/arrays';
@@ -23,7 +23,7 @@ test('supports v2 scheduler', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  const tournamentDateRange = dateRange(startDate, endDate);
+  const tournamentDateRange = generateDateRange(startDate, endDate);
   const { rounds } = tournamentEngine.getRounds();
   const roundChunks = chunkArray(rounds, 2);
 
@@ -36,35 +36,18 @@ test('supports v2 scheduler', () => {
 
   result = tournamentEngine.scheduleProfileRounds({ pro: true });
   expect(result.success).toEqual(true);
-  expect(
-    Object.values(result.scheduledMatchUpIds).map((x: any) => x.length)
-  ).toEqual([24, 6, 1]);
+  expect(Object.values(result.scheduledMatchUpIds).map((x: any) => x.length)).toEqual([24, 6, 1]);
 
   let { matchUps } = tournamentEngine.allCompetitionMatchUps();
-  let roundSchedules = matchUps.map(
-    ({ schedule: { scheduledTime, courtName }, roundNumber }) => [
-      roundNumber,
-      scheduledTime,
-      courtName,
-    ]
-  );
+  let roundSchedules = matchUps.map(({ schedule: { scheduledTime, courtName }, roundNumber }) => [
+    roundNumber,
+    scheduledTime,
+    courtName,
+  ]);
 
-  const times = [
-    '2022-08-27T07:00',
-    '2022-08-27T08:30',
-    '2022-08-27T10:00',
-    '2022-08-27T11:30',
-    '2022-08-28T07:00',
-  ];
+  const times = ['2022-08-27T07:00', '2022-08-27T08:30', '2022-08-27T10:00', '2022-08-27T11:30', '2022-08-28T07:00'];
 
-  const courtNames = [
-    'Court 1',
-    'Court 2',
-    'Court 3',
-    'Court 4',
-    'Court 5',
-    'Court 6',
-  ];
+  const courtNames = ['Court 1', 'Court 2', 'Court 3', 'Court 4', 'Court 5', 'Court 6'];
 
   // no recovery time has been defined and the default averageMatchUpTime is 90 minutes
   const roundScheduleExpectation = [
@@ -108,18 +91,14 @@ test('supports v2 scheduler', () => {
     pro: true,
   });
   expect(result.success).toEqual(true);
-  expect(
-    Object.values(result.scheduledMatchUpIds).map((x: any) => x.length)
-  ).toEqual([24, 6, 1]);
+  expect(Object.values(result.scheduledMatchUpIds).map((x: any) => x.length)).toEqual([24, 6, 1]);
 
   matchUps = tournamentEngine.allCompetitionMatchUps().matchUps;
-  roundSchedules = matchUps.map(
-    ({ schedule: { scheduledTime, courtName }, roundNumber }) => [
-      roundNumber,
-      scheduledTime,
-      courtName,
-    ]
-  );
+  roundSchedules = matchUps.map(({ schedule: { scheduledTime, courtName }, roundNumber }) => [
+    roundNumber,
+    scheduledTime,
+    courtName,
+  ]);
 
   expect(roundSchedules).toEqual(roundScheduleExpectation);
 });
@@ -173,9 +152,7 @@ test('scheduling v2 respects DO_NOT_SCHEDULE requests', () => {
   tournamentEngine.addPersons({ persons });
 
   const { participants } = tournamentEngine.getParticipants();
-  const participantIds = participants.map(
-    (participant) => participant.participantId
-  );
+  const participantIds = participants.map((participant) => participant.participantId);
 
   const event = {
     eventName: 'Test Event',
@@ -226,11 +203,7 @@ test('scheduling v2 respects DO_NOT_SCHEDULE requests', () => {
   let { matchUps } = tournamentEngine.allCompetitionMatchUps();
   let roundSchedules = matchUps
     .filter(({ matchUpStatus }) => matchUpStatus === TO_BE_PLAYED)
-    .map(({ schedule: { scheduledTime, courtName }, roundNumber }) => [
-      scheduledTime,
-      roundNumber,
-      courtName,
-    ]);
+    .map(({ schedule: { scheduledTime, courtName }, roundNumber }) => [scheduledTime, roundNumber, courtName]);
 
   expect(roundSchedules).toStrictEqual([
     ['2022-01-01T08:00', 1, '1'],
@@ -260,10 +233,7 @@ test('scheduling v2 respects DO_NOT_SCHEDULE requests', () => {
   matchUps = tournamentEngine.allCompetitionMatchUps().matchUps;
   roundSchedules = matchUps
     .filter(({ matchUpStatus }) => matchUpStatus === TO_BE_PLAYED)
-    .map(({ schedule: { courtName }, roundNumber }) => [
-      roundNumber,
-      courtName,
-    ]);
+    .map(({ schedule: { courtName }, roundNumber }) => [roundNumber, courtName]);
   expect(roundSchedules).toEqual([
     [1, '1'],
     [2, '1'],

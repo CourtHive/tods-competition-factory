@@ -1,4 +1,4 @@
-import { dateRange, formatDate } from '../../utilities/dateTime';
+import { generateDateRange, formatDate } from '../../utilities/dateTime';
 import { UUID } from '../../utilities/UUID';
 import { addCourts } from './addCourt';
 import { addVenue } from './addVenue';
@@ -11,11 +11,7 @@ type GenerateVenuesArgs = {
   uuids?: string[];
 };
 
-export function generateVenues({
-  tournamentRecord,
-  venueProfiles,
-  uuids,
-}: GenerateVenuesArgs) {
+export function generateVenues({ tournamentRecord, venueProfiles, uuids }: GenerateVenuesArgs) {
   const { startDate, endDate } = tournamentRecord;
   const venueIds: string[] = [];
 
@@ -44,7 +40,7 @@ export function generateVenues({
 
     venueIds.push(venueId);
 
-    const dates = dateRange(startDate, endDate);
+    const dates = generateDateRange(startDate, endDate);
     const generatedDateAvailability =
       !Array.isArray(dateAvailability) &&
       [{ startTime, endTime }].concat(
@@ -52,7 +48,7 @@ export function generateVenues({
           date: formatDate(date),
           startTime,
           endTime,
-        }))
+        })),
       );
 
     const addResult = addCourts({

@@ -110,7 +110,7 @@ export function isDate(dateArg) {
   return t && !isNaN(t.valueOf());
 }
 
-export function dateRange(startDt?, endDt?) {
+export function generateDateRange(startDt?, endDt?) {
   if (!isValidDateString(startDt) || !isValidDateString(endDt)) return [];
 
   const startDateString = extractDate(startDt) + 'T00:00';

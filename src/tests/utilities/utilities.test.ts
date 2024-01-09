@@ -9,7 +9,7 @@ import {
   convertTime,
   dateFromDay,
   DateHHMM,
-  dateRange,
+  generateDateRange,
   formatDate,
   getDateByWeek,
   HHMMSS,
@@ -33,12 +33,7 @@ import {
   noNulls,
   randomPop,
 } from '../../utilities/arrays';
-import {
-  isOdd,
-  nextPowerOf2,
-  isPowerOf2,
-  skewedDistribution,
-} from '../../utilities/math';
+import { isOdd, nextPowerOf2, isPowerOf2, skewedDistribution } from '../../utilities/math';
 
 it('can count values and determine active drawPositions', () => {
   const drawPositions = [1, 1, 2, 3, 4, 5, 5, 6];
@@ -122,14 +117,7 @@ test('converTime supports both 12 and 24 hour formats', () => {
 test('miscellaneous date/time tests', () => {
   const times = ['09:00', '10:00', '07:00', '13:00', '11:30', '09:30'];
   let result: any = times.sort(timeSort);
-  expect(result).toEqual([
-    '07:00',
-    '09:00',
-    '09:30',
-    '10:00',
-    '11:30',
-    '13:00',
-  ]);
+  expect(result).toEqual(['07:00', '09:00', '09:30', '10:00', '11:30', '13:00']);
 
   result = weekDays();
   expect(result.length).toEqual(7);
@@ -192,10 +180,10 @@ test('miscellaneous date/time tests', () => {
   // expect(result).toEqual('Wednesday, January 1, 2020');
   */
 
-  result = dateRange();
+  result = generateDateRange();
   expect(result).toEqual([]);
 
-  result = dateRange(date200101, '2020-02-01');
+  result = generateDateRange(date200101, '2020-02-01');
   expect(result.length).toEqual(32);
 });
 
@@ -245,21 +233,16 @@ test('miscellaneous math tests', () => {
 });
 
 test('skewedDistribution supports step values', () => {
-  let result = generateRange(0, 100).map(() =>
-    skewedDistribution(1, 100, 2, 0.5, 2)
-  );
+  let result = generateRange(0, 100).map(() => skewedDistribution(1, 100, 2, 0.5, 2));
   result.forEach((v) => {
     const finalDigit = v.toString().split('.')[1];
     if (finalDigit) expect(['0', '5'].includes(finalDigit)).toEqual(true);
   });
 
-  result = generateRange(0, 100).map(() =>
-    skewedDistribution(1, 100, 2, 0.25, 2)
-  );
+  result = generateRange(0, 100).map(() => skewedDistribution(1, 100, 2, 0.25, 2));
   result.forEach((v) => {
     const finalDigit = v.toString().split('.')[1];
-    if (finalDigit)
-      expect(['25', '5', '75'].includes(finalDigit)).toEqual(true);
+    if (finalDigit) expect(['25', '5', '75'].includes(finalDigit)).toEqual(true);
   });
 });
 

@@ -31,6 +31,7 @@ export function generateEventWithFlights(params) {
     eventProfile,
     eventIndex,
     publish,
+    isMock,
     uuids,
   } = params;
   let gender = eventProfile.gender;
@@ -59,6 +60,7 @@ export function generateEventWithFlights(params) {
           namedFormat: tieFormatName,
           event: { eventId, category, gender },
           hydrateCollections,
+          isMock,
         })
       : undefined);
 
@@ -68,41 +70,32 @@ export function generateEventWithFlights(params) {
     if (!gender && drawProfile.gender) gender = drawProfile?.gender;
   }
 
-  const {
-    stageParticipantsCount,
-    uniqueParticipantsCount,
-    uniqueParticipantStages,
-  } = getStageParticipantsCount({
+  const { stageParticipantsCount, uniqueParticipantsCount, uniqueParticipantStages } = getStageParticipantsCount({
     drawProfiles,
     category,
     gender,
   });
 
-  const eventParticipantType =
-    (eventType === SINGLES && INDIVIDUAL) ||
-    (eventType === DOUBLES && PAIR) ||
-    eventType;
+  const eventParticipantType = (eventType === SINGLES && INDIVIDUAL) || (eventType === DOUBLES && PAIR) || eventType;
 
-  const { uniqueDrawParticipants = [], uniqueParticipantIds = [] } =
-    uniqueParticipantStages
-      ? generateEventParticipants({
-          event: { eventType, category, gender },
-          uniqueParticipantsCount,
-          participantsProfile,
-          ratingsParameters,
-          tournamentRecord,
-          eventProfile,
-          eventIndex,
-          uuids,
-        })
-      : {};
+  const { uniqueDrawParticipants = [], uniqueParticipantIds = [] } = uniqueParticipantStages
+    ? generateEventParticipants({
+        event: { eventType, category, gender },
+        uniqueParticipantsCount,
+        participantsProfile,
+        ratingsParameters,
+        tournamentRecord,
+        eventProfile,
+        eventIndex,
+        uuids,
+      })
+    : {};
 
   // Create event object -------------------------------------------------------
   let { eventAttributes } = eventProfile;
   if (typeof eventAttributes !== 'object') eventAttributes = {};
 
-  const categoryName =
-    category?.categoryName || category?.ageCategoryCode || category?.ratingType;
+  const categoryName = category?.categoryName || category?.ageCategoryCode || category?.ratingType;
 
   eventName = eventName || categoryName || 'Generated Event';
 
@@ -185,9 +178,7 @@ export function generateEventWithFlights(params) {
     if (drawDefinitionResult.error) return drawDefinitionResult;
     drawIds = drawDefinitionResult.drawIds;
   } else if (eventProfile?.participantsProfile?.participantsCount) {
-    const eventParticipantIds = uniqueDrawParticipants.map(
-      extractAttributes('participantId')
-    );
+    const eventParticipantIds = uniqueDrawParticipants.map(extractAttributes('participantId'));
 
     if (eventParticipantIds.length) {
       const result = addEventEntries({

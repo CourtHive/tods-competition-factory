@@ -1,6 +1,6 @@
+import { addDays, generateDateRange } from '../../../utilities/dateTime';
 import { chunkArray, intersection } from '../../../utilities/arrays';
 import { extractAttributes as xa } from '../../../utilities/objects';
-import { addDays, dateRange } from '../../../utilities/dateTime';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
@@ -23,11 +23,9 @@ it('supports pro-scheduling', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  expect(
-    tournamentRecord.venues[0].courts[0].dateAvailability[0].startTime
-  ).toEqual('07:00');
+  expect(tournamentRecord.venues[0].courts[0].dateAvailability[0].startTime).toEqual('07:00');
 
-  const tournamentDateRange = dateRange(startDate, endDate);
+  const tournamentDateRange = generateDateRange(startDate, endDate);
   const { rounds } = tournamentEngine.getRounds();
   const roundChunks = chunkArray(rounds, 2);
 
@@ -35,16 +33,12 @@ it('supports pro-scheduling', () => {
   expect(rounds[0].matchUps.length).toEqual(16);
   expect(rounds[0].byeCount).toEqual(4);
 
-  const byeMatchUps = rounds[0].matchUps.filter(
-    ({ matchUpStatus }) => matchUpStatus === BYE
-  );
-  const matchUpContextIds = byeMatchUps.map(
-    ({ tournamentId, drawId, matchUpId }) => ({
-      tournamentId,
-      matchUpId,
-      drawId,
-    })
-  );
+  const byeMatchUps = rounds[0].matchUps.filter(({ matchUpStatus }) => matchUpStatus === BYE);
+  const matchUpContextIds = byeMatchUps.map(({ tournamentId, drawId, matchUpId }) => ({
+    tournamentId,
+    matchUpId,
+    drawId,
+  }));
   const byeMatchUpIds = byeMatchUps.map(xa('matchUpId'));
 
   const schedule = {
@@ -79,10 +73,7 @@ it('supports pro-scheduling', () => {
   result = tournamentEngine.scheduleProfileRounds({ pro: true });
   expect(result.success).toEqual(true);
 
-  const overlap = intersection(
-    result.scheduledMatchUpIds[startDate],
-    byeMatchUpIds
-  ).length;
+  const overlap = intersection(result.scheduledMatchUpIds[startDate], byeMatchUpIds).length;
   expect(overlap).toEqual(0);
 
   const byeMatchUpSchedules = tournamentEngine

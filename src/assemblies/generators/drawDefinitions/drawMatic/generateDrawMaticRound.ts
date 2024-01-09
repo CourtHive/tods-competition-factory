@@ -5,6 +5,7 @@ import { getPairingsData } from './getPairingsData';
 import { getEncounters } from './getEncounters';
 import { getPairings } from './getPairings';
 
+import { DrawDefinition, MatchUp, Structure, EventTypeUnion, Event } from '../../../../types/tournamentTypes';
 import { ResultType } from '../../../../global/functions/decorateResult';
 import { TEAM } from '../../../../constants/participantConstants';
 import { HydratedParticipant } from '../../../../types/hydrated';
@@ -16,13 +17,6 @@ import {
   NO_CANDIDATES,
   STRUCTURE_NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  MatchUp,
-  Structure,
-  EventTypeUnion,
-  Event,
-} from '../../../../types/tournamentTypes';
 
 // this should be in policyDefinitions
 const ENCOUNTER_VALUE = 100;
@@ -46,6 +40,7 @@ type GenerateDrawMaticRoundArgs = {
   structure?: Structure;
   structureId?: string;
   scaleName?: string;
+  idPrefix?: string;
   isMock?: boolean;
   drawId?: string;
   event: Event;
@@ -76,6 +71,7 @@ export function generateDrawMaticRound({
   eventType,
   structure,
   scaleName,
+  idPrefix,
   isMock,
   event,
 }: GenerateDrawMaticRoundArgs): ResultType & DrawMaticRoundResult {
@@ -105,9 +101,7 @@ export function generateDrawMaticRound({
     valueObjects[pairing] += encounterValue;
   }
 
-  const teamParticipants = tournamentParticipants?.filter(
-    ({ participantType }) => participantType === TEAM
-  );
+  const teamParticipants = tournamentParticipants?.filter(({ participantType }) => participantType === TEAM);
   if (teamParticipants) {
     // add SAME_TEAM_VALUE for participants who appear on the same team
     for (const teamParticipant of teamParticipants) {
@@ -146,8 +140,7 @@ export function generateDrawMaticRound({
     salted,
   };
 
-  const { candidatesCount, participantIdPairings, iterations, candidate } =
-    getPairings(params);
+  const { candidatesCount, participantIdPairings, iterations, candidate } = getPairings(params);
 
   if (!candidatesCount) return { error: NO_CANDIDATES };
 
@@ -159,6 +152,7 @@ export function generateDrawMaticRound({
       newRound: true,
       drawDefinition,
       matchUpIds,
+      idPrefix,
       isMock,
       event,
     });

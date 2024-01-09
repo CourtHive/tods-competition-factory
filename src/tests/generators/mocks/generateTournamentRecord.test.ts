@@ -22,6 +22,7 @@ test('generateTournamentRecord', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
   expect(Object.keys(tournamentRecord).sort()).toEqual([
     'endDate',
+    'isMock',
     'participants',
     'startDate',
     'tournamentId',
@@ -30,14 +31,13 @@ test('generateTournamentRecord', () => {
 });
 
 test('drawProfiles and participantsProfile work as expected', () => {
-  const { drawIds, eventIds, venueIds, tournamentRecord } =
-    mocksEngine.generateTournamentRecord({
-      participantsProfile: {
-        addressProps: { citiesCount: 10 },
-        participantsCount: 100,
-      },
-      drawProfiles: [{ drawSize: 16, eventType: DOUBLES }, { drawSize: 8 }],
-    });
+  const { drawIds, eventIds, venueIds, tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile: {
+      addressProps: { citiesCount: 10 },
+      participantsCount: 100,
+    },
+    drawProfiles: [{ drawSize: 16, eventType: DOUBLES }, { drawSize: 8 }],
+  });
 
   expect(eventIds.length).toEqual(2);
   expect(venueIds.length).toEqual(0);
@@ -53,23 +53,20 @@ test('drawProfiles and participantsProfile work as expected', () => {
   });
 
   const result = tournamentEngine.tournamentMatchUps();
-  expect(result.upcomingMatchUps[0].sides[0].participant.entryStatus).toEqual(
-    DIRECT_ACCEPTANCE
-  );
+  expect(result.upcomingMatchUps[0].sides[0].participant.entryStatus).toEqual(DIRECT_ACCEPTANCE);
 });
 
 test('drawProfiles support generate: false', () => {
-  const { drawIds, eventIds, venueIds, tournamentRecord } =
-    mocksEngine.generateTournamentRecord({
-      participantsProfile: {
-        participantsCount: 100,
-        addressProps: { citiesCount: 10 },
-      },
-      drawProfiles: [
-        { drawSize: 16, eventType: DOUBLES, generate: false },
-        { drawSize: 8, generate: false },
-      ],
-    });
+  const { drawIds, eventIds, venueIds, tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile: {
+      participantsCount: 100,
+      addressProps: { citiesCount: 10 },
+    },
+    drawProfiles: [
+      { drawSize: 16, eventType: DOUBLES, generate: false },
+      { drawSize: 8, generate: false },
+    ],
+  });
 
   expect(eventIds.length).toEqual(2);
   expect(venueIds.length).toEqual(0);
@@ -85,44 +82,37 @@ test('drawProfiles support generate: false', () => {
   });
 });
 
-test.each([
-  PLAY_OFF,
-  COMPASS,
-  FEED_IN_CHAMPIONSHIP,
-  ROUND_ROBIN,
-  ROUND_ROBIN_WITH_PLAYOFF,
-])('drawProfiles can specify idPrefix for matchUpIds', (drawType) => {
-  const idPrefix = 'Foo';
-  const eventIdPrefix = 'Bar';
-  const eventProfiles = [
-    {
-      eventName: 'U18 Male Doubles',
-      eventType: DOUBLES,
-      drawProfiles: [{ drawSize: 32, idPrefix: eventIdPrefix, drawType }],
-    },
-  ];
-  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-    participantsProfile: {
-      addressProps: { citiesCount: 10 },
-      participantsCount: 100,
-    },
-    drawProfiles: [{ drawSize: 32, idPrefix, drawType }],
-    eventProfiles,
-  });
+test.each([PLAY_OFF, COMPASS, FEED_IN_CHAMPIONSHIP, ROUND_ROBIN, ROUND_ROBIN_WITH_PLAYOFF])(
+  'drawProfiles can specify idPrefix for matchUpIds',
+  (drawType) => {
+    const idPrefix = 'Foo';
+    const eventIdPrefix = 'Bar';
+    const eventProfiles = [
+      {
+        eventName: 'U18 Male Doubles',
+        eventType: DOUBLES,
+        drawProfiles: [{ drawSize: 32, idPrefix: eventIdPrefix, drawType }],
+      },
+    ];
+    const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+      participantsProfile: {
+        addressProps: { citiesCount: 10 },
+        participantsCount: 100,
+      },
+      drawProfiles: [{ drawSize: 32, idPrefix, drawType }],
+      eventProfiles,
+    });
 
-  const { matchUps } = tournamentEngine
-    .setState(tournamentRecord)
-    .allTournamentMatchUps();
+    const { matchUps } = tournamentEngine.setState(tournamentRecord).allTournamentMatchUps();
 
-  const matchUpIds = getMatchUpIds(matchUps);
-  expect(unique(matchUpIds).length).toEqual(matchUpIds.length);
+    const matchUpIds = getMatchUpIds(matchUps);
+    expect(unique(matchUpIds).length).toEqual(matchUpIds.length);
 
-  matchUps.forEach(({ matchUpId }) =>
-    expect([idPrefix, eventIdPrefix].includes(matchUpId.split('-')[0])).toEqual(
-      true
-    )
-  );
-});
+    matchUps.forEach(({ matchUpId }) =>
+      expect([idPrefix, eventIdPrefix].includes(matchUpId.split('-')[0])).toEqual(true),
+    );
+  },
+);
 
 test('eventProfiles and participantsProfile work as expected', () => {
   const category = {
@@ -182,14 +172,13 @@ test('eventProfiles and participantsProfile work as expected', () => {
 
   const startDate = '2022-01-01';
   const endDate = '2022-01-07';
-  const { drawIds, eventIds, venueIds, tournamentRecord } =
-    mocksEngine.generateTournamentRecord({
-      participantsProfile,
-      eventProfiles,
-      venueProfiles,
-      startDate,
-      endDate,
-    });
+  const { drawIds, eventIds, venueIds, tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile,
+    eventProfiles,
+    venueProfiles,
+    startDate,
+    endDate,
+  });
 
   expect(eventIds.length).toEqual(2);
   expect(venueIds.length).toEqual(1);
@@ -214,22 +203,18 @@ test('eventProfiles and participantsProfile work as expected', () => {
       return {
         cities: cities.includes(city) ? cities : cities.concat(city),
         states: states.includes(state) ? states : states.concat(state),
-        postalCodes: postalCodes.includes(postalCode)
-          ? postalCodes
-          : postalCodes.concat(postalCode),
+        postalCodes: postalCodes.includes(postalCode) ? postalCodes : postalCodes.concat(postalCode),
         nationalityCodes: nationalityCodes.includes(nationalityCode)
           ? nationalityCodes
           : nationalityCodes.concat(nationalityCode),
       };
     },
-    { cities: [], states: [], postalCodes: [], nationalityCodes: [] }
+    { cities: [], states: [], postalCodes: [], nationalityCodes: [] },
   );
 
   Object.keys(addressComponents).forEach((key) => {
     // rarely only uniqueAddresPropsCount - 1 of the specified number are used (it's random!)
-    expect(addressComponents[key].length).toBeGreaterThan(
-      uniqueAddressPropsCount - 1
-    );
+    expect(addressComponents[key].length).toBeGreaterThan(uniqueAddressPropsCount - 1);
   });
 
   const { participants: pairParticipants } = tournamentEngine.getParticipants({
@@ -260,8 +245,7 @@ test('eventProfiles will skip drawGeneration when { generate: false }', () => {
     },
   ];
 
-  const { tournamentRecord, eventIds, drawIds } =
-    mocksEngine.generateTournamentRecord({ eventProfiles });
+  const { tournamentRecord, eventIds, drawIds } = mocksEngine.generateTournamentRecord({ eventProfiles });
 
   expect(eventIds.length).toEqual(1);
   expect(drawIds.length).toEqual(2);

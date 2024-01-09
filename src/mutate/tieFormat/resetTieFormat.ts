@@ -3,35 +3,14 @@ import { generateCollectionMatchUps } from '../../assemblies/generators/drawDefi
 import { checkRequiredParameters } from '../../parameters/checkRequiredParameters';
 import { resolveFromParameters } from '../../parameters/resolveFromParameters';
 import { getMatchUpId } from '../../global/functions/extractors';
-import {
-  addMatchUpsNotice,
-  deleteMatchUpsNotice,
-  modifyMatchUpNotice,
-} from '../notifications/drawNotifications';
+import { addMatchUpsNotice, deleteMatchUpsNotice, modifyMatchUpNotice } from '../notifications/drawNotifications';
 
 import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../constants/resultConstants';
-import {
-  ERROR,
-  MATCHUP,
-  MATCHUP_ID,
-  PARAM,
-  TOURNAMENT_RECORD,
-} from '../../constants/attributeConstants';
-import {
-  ResultType,
-  decorateResult,
-} from '../../global/functions/decorateResult';
-import {
-  INVALID_MATCHUP,
-  NOT_FOUND,
-} from '../../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  Event,
-  MatchUp,
-  Tournament,
-} from '../../types/tournamentTypes';
+import { ERROR, MATCHUP, MATCHUP_ID, PARAM, TOURNAMENT_RECORD } from '../../constants/attributeConstants';
+import { ResultType, decorateResult } from '../../global/functions/decorateResult';
+import { INVALID_MATCHUP, NOT_FOUND } from '../../constants/errorConditionConstants';
+import { DrawDefinition, Event, MatchUp, Tournament } from '../../types/tournamentTypes';
 
 /**
  * remove the tieFormat from a TEAM matchUp if there is a tieFormat further up the hierarchy
@@ -55,11 +34,7 @@ export function resetTieFormat(params: ResetTieFormatArgs): ResultType & {
   const stack = 'resetTieFormat';
   const { drawDefinition, event, uuids } = params;
 
-  const paramCheck = checkRequiredParameters(
-    params,
-    [{ [TOURNAMENT_RECORD]: true, [MATCHUP_ID]: true }],
-    stack
-  );
+  const paramCheck = checkRequiredParameters(params, [{ [TOURNAMENT_RECORD]: true, [MATCHUP_ID]: true }], stack);
   if (paramCheck.error) return paramCheck;
 
   const resolutions = resolveFromParameters(params, [{ [PARAM]: MATCHUP }]);
@@ -103,20 +78,16 @@ export function resetTieFormat(params: ResetTieFormatArgs): ResultType & {
     collectionIds.push(collectionId);
 
     const existingCollectionMatchUps = (matchUp.tieMatchUps || []).filter(
-      (matchUp) => matchUp.collectionId === collectionId
+      (matchUp) => matchUp.collectionId === collectionId,
     );
 
     if (existingCollectionMatchUps.length > matchUpCount) {
       // sort by matchUpStatus to prioritize active or completed matchUpsA
       existingCollectionMatchUps.sort(
-        (a, b) =>
-          (a.matchUpStatus === TO_BE_PLAYED ? 1 : 0) -
-          (b.matchUpStatus === TO_BE_PLAYED ? 1 : 0)
+        (a, b) => (a.matchUpStatus === TO_BE_PLAYED ? 1 : 0) - (b.matchUpStatus === TO_BE_PLAYED ? 1 : 0),
       );
       tieMatchUps.push(...existingCollectionMatchUps.slice(0, matchUpCount));
-      deletedMatchUpIds.push(
-        ...existingCollectionMatchUps.slice(3).map(getMatchUpId)
-      );
+      deletedMatchUpIds.push(...existingCollectionMatchUps.slice(3).map(getMatchUpId));
     } else {
       tieMatchUps.push(...existingCollectionMatchUps);
 
@@ -125,6 +96,7 @@ export function resetTieFormat(params: ResetTieFormatArgs): ResultType & {
         const matchUps = generateCollectionMatchUps({
           collectionDefinition,
           matchUpsLimit,
+          matchUp,
           uuids,
         });
         newMatchUps.push(...matchUps);
@@ -133,10 +105,7 @@ export function resetTieFormat(params: ResetTieFormatArgs): ResultType & {
   }
 
   for (const tieMatchUp of matchUp?.tieMatchUps || []) {
-    if (
-      tieMatchUp.collectionId &&
-      !collectionIds.includes(tieMatchUp.collectionId)
-    )
+    if (tieMatchUp.collectionId && !collectionIds.includes(tieMatchUp.collectionId))
       deletedMatchUpIds.push(tieMatchUp.matchUpId);
   }
 

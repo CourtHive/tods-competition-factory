@@ -1,3 +1,4 @@
+import { generateDateRange } from '../../../../utilities/dateTime';
 import { mocksEngine, tournamentEngine } from '../../../..';
 import { queryEngine } from '../../../engines/queryEngine';
 import { expect, it } from 'vitest';
@@ -13,7 +14,9 @@ it('can assign participants to SINGLES/DOUBLES matchUps in TEAM AdHoc events', (
   const drawId = 'd1';
 
   let result = mocksEngine.generateTournamentRecord({
-    drawProfiles: [{ drawId, drawSize: 6, eventType: TEAM, drawType: AD_HOC, eventId, tieFormatName: DOMINANT_DUO }],
+    drawProfiles: [
+      { drawId, drawSize: 6, eventType: TEAM, drawType: AD_HOC, eventId, tieFormatName: DOMINANT_DUO, idPrefix: 'mu' },
+    ],
     participantsProfile: { idPrefix: 'participant' },
     tournamentAttributes: { tournamentId },
     setState: true,
@@ -68,4 +71,35 @@ it('can assign participants to SINGLES/DOUBLES matchUps in TEAM AdHoc events', (
   expect(result.results[1].success).toEqual(true);
   expect(result.results[2].success).toEqual(true);
   expect(result.success).toEqual(true);
+
+  // unnecessary for the purpse of this test --------------------------------------------------------
+  result = tournamentEngine.generateCourts({ count: 4, idPrefix: 'court' });
+  expect(result.courts.length).toEqual(4);
+  expect(result.success).toEqual(true);
+
+  const {
+    tournamentInfo: { startDate, endDate },
+  } = tournamentEngine.getTournamentInfo();
+  const datesCount = generateDateRange(startDate, endDate).length;
+  expect(result.courts.every((court) => court.dateAvailability?.length === datesCount)).toEqual(true);
+
+  result = tournamentEngine.modifyVenue({ venueId, modifications: { courts: result.courts } });
+  expect(result.success).toEqual(true);
+  // end unnecessary for the purpse of this test -----------------------------------------------------
+
+  const { matchUps } = tournamentEngine.allTournamentMatchUps();
+  console.log(matchUps[0].tieMatchUps.length);
+  /*
+  result = tournamentEngine.executionQueue([
+    {
+      method: 'assignTieMatchUpParticipantId',
+      params: {
+        drawId,
+        participantId: '09863268-d87d-44da-9c34-e9f17bcf48ef',
+        tieMatchUpId: '09eaf8cd-ca7f-4884-84f8-d10425c11df6',
+        sideNumber: 1,
+      },
+    },
+  ]);
+  */
 });

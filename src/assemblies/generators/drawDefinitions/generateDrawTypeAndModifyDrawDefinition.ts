@@ -1,23 +1,17 @@
-import { resolveTieFormat } from '../../../query/hierarchical/tieFormats/resolveTieFormat';
-import { validateTieFormat } from '../../../validators/validateTieFormat';
-import { copyTieFormat } from '../../../query/hierarchical/tieFormats/copyTieFormat';
-import { generateDrawStructuresAndLinks } from './generateDrawStructuresAndLinks';
 import { getStageDrawPositionsCount } from '../../../query/drawDefinition/getStageDrawPositions';
-import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
+import { resolveTieFormat } from '../../../query/hierarchical/tieFormats/resolveTieFormat';
+import { copyTieFormat } from '../../../query/hierarchical/tieFormats/copyTieFormat';
+import { ResultType, decorateResult } from '../../../global/functions/decorateResult';
+import { addGoesTo } from '../../../mutate/drawDefinitions/matchUpGovernor/addGoesTo';
+import { MatchUpsMap, getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
+import { generateDrawStructuresAndLinks } from './generateDrawStructuresAndLinks';
 import { modifyDrawNotice } from '../../../mutate/notifications/drawNotifications';
+import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
+import { validateTieFormat } from '../../../validators/validateTieFormat';
 import { definedAttributes } from '../../../utilities/definedAttributes';
 import { getMatchUpId } from '../../../global/functions/extractors';
-import { generateTieMatchUps } from './tieMatchUps';
-import { addGoesTo } from '../../../mutate/drawDefinitions/matchUpGovernor/addGoesTo';
 import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
-import {
-  ResultType,
-  decorateResult,
-} from '../../../global/functions/decorateResult';
-import {
-  MatchUpsMap,
-  getMatchUpsMap,
-} from '../../../query/matchUps/getMatchUpsMap';
+import { generateTieMatchUps } from './tieMatchUps';
 import {
   setStageDrawSize,
   setStageQualifiersCount,
@@ -61,9 +55,7 @@ type GenerateDrawTypeAndModify = {
   event?: Event;
 };
 
-export function generateDrawTypeAndModifyDrawDefinition(
-  params: GenerateDrawTypeAndModify
-): ResultType & {
+export function generateDrawTypeAndModifyDrawDefinition(params: GenerateDrawTypeAndModify): ResultType & {
   inContextDrawMatchUps?: HydratedMatchUp[];
   drawDefinition?: DrawDefinition;
   matchUpsMap?: MatchUpsMap;
@@ -82,9 +74,7 @@ export function generateDrawTypeAndModifyDrawDefinition(
       stack,
     });
 
-  const drawDefinition = modifyOriginal
-    ? params.drawDefinition
-    : makeDeepCopy(params.drawDefinition, false, true);
+  const drawDefinition = modifyOriginal ? params.drawDefinition : makeDeepCopy(params.drawDefinition, false, true);
 
   let { tieFormat, matchUpType } = params;
   if (tieFormat) {
@@ -92,9 +82,7 @@ export function generateDrawTypeAndModifyDrawDefinition(
     if (result.error) return result;
   }
 
-  tieFormat = copyTieFormat(
-    tieFormat ?? resolveTieFormat({ drawDefinition })?.tieFormat
-  );
+  tieFormat = copyTieFormat(tieFormat ?? resolveTieFormat({ drawDefinition })?.tieFormat);
   matchUpType = matchUpType ?? (drawDefinition.matchUpType || SINGLES);
   params.tieFormat = tieFormat;
   params.matchUpType = matchUpType;
@@ -127,10 +115,7 @@ export function generateDrawTypeAndModifyDrawDefinition(
   drawDefinition.structures = structures;
   drawDefinition.links = links;
 
-  const qualifiersCount = Math.max(
-    params.qualifiersCount ?? 0,
-    qualifyingResult?.qualifiersCount || 0
-  );
+  const qualifiersCount = Math.max(params.qualifiersCount ?? 0, qualifyingResult?.qualifiersCount || 0);
 
   if (qualifyingResult?.qualifyingDrawPositionsCount) {
     const qualifyingStageDrawPositionsCount = getStageDrawPositionsCount({
@@ -159,10 +144,7 @@ export function generateDrawTypeAndModifyDrawDefinition(
 
   const drawSize = params.drawSize ?? mainStageDrawPositionsCount;
 
-  Object.assign(
-    params,
-    definedAttributes({ drawSize, matchUpType, tieFormat })
-  );
+  Object.assign(params, definedAttributes({ drawSize, matchUpType, tieFormat }));
 
   const { matchUps, matchUpsMap } = getAllDrawMatchUps({ drawDefinition });
 
@@ -170,7 +152,11 @@ export function generateDrawTypeAndModifyDrawDefinition(
     // if there were exiting matchUps, exclude them from this step
     matchUps?.forEach((matchUp) => {
       if (!existingMatchUpIds.includes(matchUp.matchUpId)) {
-        const { tieMatchUps } = generateTieMatchUps({ tieFormat, isMock });
+        const { tieMatchUps } = generateTieMatchUps({
+          tieFormat,
+          matchUp,
+          isMock,
+        });
         Object.assign(matchUp, { tieMatchUps, matchUpType });
       }
     });

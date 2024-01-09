@@ -93,9 +93,10 @@ export function generateEventWithDraw(params) {
     (typeof drawProfile.tieFormat === 'object' && drawProfile.tieFormat) ||
     (eventType === TEAM &&
       tieFormatDefaults({
-        namedFormat: tieFormatName,
         event: { eventId, category, gender },
+        namedFormat: tieFormatName,
         hydrateCollections,
+        isMock,
       })) ||
     undefined;
 

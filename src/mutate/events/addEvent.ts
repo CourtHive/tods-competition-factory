@@ -1,13 +1,10 @@
 import tieFormatDefaults from '../../assemblies/generators/templates/tieFormatDefaults';
+import { addDrawNotice, addMatchUpsNotice } from '../notifications/drawNotifications';
 import { allEventMatchUps } from '../../query/matchUps/getAllEventMatchUps';
 import { validateTieFormat } from '../../validators/validateTieFormat';
 import { definedAttributes } from '../../utilities/definedAttributes';
 import { getTopics } from '../../global/state/globalState';
 import { UUID } from '../../utilities/UUID';
-import {
-  addDrawNotice,
-  addMatchUpsNotice,
-} from '../notifications/drawNotifications';
 
 import { SINGLES_EVENT, TEAM_EVENT } from '../../constants/eventConstants';
 import { Event, Tournament } from '../../types/tournamentTypes';
@@ -28,12 +25,7 @@ type AddEventArgs = {
   internalUse?: boolean;
   event: any; // any because eventId need not be present
 };
-export function addEvent({
-  suppressNotifications,
-  tournamentRecord,
-  internalUse,
-  event,
-}: AddEventArgs): {
+export function addEvent({ suppressNotifications, tournamentRecord, internalUse, event }: AddEventArgs): {
   context?: { [key: string]: any };
   error?: ErrorType;
   event?: Event;
@@ -47,10 +39,7 @@ export function addEvent({
   const { startDate, endDate } = tournamentRecord;
 
   // if not internal use disallow passing entries and drawDefinitions
-  if (
-    !internalUse &&
-    (event.entries?.length || event.drawDefinitions?.length)
-  ) {
+  if (!internalUse && (event.entries?.length || event.drawDefinitions?.length)) {
     const context = definedAttributes({
       drawDefinitions: !!event.drawDefinitions?.length,
       entries: !!event.entries?.length,
@@ -83,7 +72,9 @@ export function addEvent({
         };
       }
       const tieFormat = tieFormatDefaults({
+        isMock: tournamentRecord?.isMock,
         namedFormat: event.tieFormatName,
+        event,
       });
       eventRecord.tieFormat = tieFormat;
     }
