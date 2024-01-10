@@ -3,9 +3,9 @@ import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
 import { findExtension } from '../../../acquire/findExtension';
 
+import { DrawDefinition, MatchUp } from '../../../types/tournamentTypes';
 import { LINEUPS } from '../../../constants/extensionConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
-import { DrawDefinition, MatchUp } from '../../../types/tournamentTypes';
 
 type EnsureSideLineUpsArgs = {
   inContextDualMatchUp?: HydratedMatchUp;
@@ -37,23 +37,18 @@ export function ensureSideLineUps({
 
     const lineUps = makeDeepCopy(extension?.value || {}, false, true);
 
-    const extractSideDetail = ({
-      displaySideNumber,
+    const extractSideDetail = ({ displaySideNumber, drawPosition, sideNumber }) => ({
       drawPosition,
       sideNumber,
-    }) => ({ drawPosition, sideNumber, displaySideNumber });
+      displaySideNumber,
+    });
 
     dualMatchUp.sides = inContextDualMatchUp?.sides?.map((contextSide: any) => {
       const participantId = contextSide.participantId;
-      const referenceLineUp =
-        (participantId && lineUps[participantId]) || undefined;
+      const referenceLineUp = (participantId && lineUps[participantId]) || undefined;
       const { lineUp: noContextLineUp, ...noContextSideDetail } =
-        dualMatchUp.sides?.find(
-          ({ sideNumber }) => sideNumber === contextSide.sideNumber
-        ) ?? {};
-      const lineUp = noContextLineUp?.length
-        ? noContextLineUp
-        : referenceLineUp;
+        dualMatchUp.sides?.find(({ sideNumber }) => sideNumber === contextSide.sideNumber) ?? {};
+      const lineUp = noContextLineUp?.length ? noContextLineUp : referenceLineUp;
       return {
         ...extractSideDetail(contextSide),
         ...noContextSideDetail,
