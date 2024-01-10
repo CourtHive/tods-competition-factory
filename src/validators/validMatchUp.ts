@@ -9,9 +9,7 @@ export function validMatchUp(matchUp) {
     !drawPositions ||
     (Array.isArray(drawPositions) &&
       drawPositions.length <= 2 &&
-      drawPositions.every(
-        (dp) => isConvertableInteger(dp) || dp === undefined || dp === null
-      ));
+      drawPositions.every((dp) => isConvertableInteger(dp) || dp === undefined || dp === null));
 
   return validMatchUpId && validDrawPositions;
 }
