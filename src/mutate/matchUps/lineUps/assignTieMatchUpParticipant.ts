@@ -141,8 +141,12 @@ export function assignTieMatchUpParticipantId(
     (assignment) => assignment.participantId === participantTeam?.participantId,
   );
   const teamDrawPosition = teamAssignment?.drawPosition;
-  const teamSide = inContextTieMatchUp?.sides?.find((side: any) => side.drawPosition === teamDrawPosition);
-  const sideNumber = teamSide?.sideNumber ?? params.sideNumber;
+  const dualTeamSideNumber = dualMatchUp?.sides?.find((side: any) => side.participantId === teamParticipantId)
+    ?.sideNumber;
+  const teamSideNumber = inContextTieMatchUp?.sides?.find(
+    (side: any) => teamDrawPosition && side.drawPosition === teamDrawPosition,
+  )?.sideNumber;
+  const sideNumber = dualTeamSideNumber ?? teamSideNumber ?? params.sideNumber;
 
   if (!tieFormat) {
     return { error: MISSING_TIE_FORMAT };
