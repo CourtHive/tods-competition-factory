@@ -5,10 +5,10 @@ import { generateFlightDrawDefinitions } from './generateFlightDrawDefinitions';
 import { addEventEntries } from '../../../mutate/entries/addEventEntries';
 import { addEventTimeItem } from '../../../mutate/timeItems/addTimeItem';
 import { generateEventParticipants } from './generateEventParticipants';
+import { getParticipantId } from '../../../global/functions/extractors';
 import { isValidExtension } from '../../../validators/isValidExtension';
 import { publishEvent } from '../../../mutate/events/publishEvent';
 import tieFormatDefaults from '../templates/tieFormatDefaults';
-import { xa } from '../../../utilities/objects';
 import { addEvent } from '../../../mutate/events/addEvent';
 import { generateFlights } from './generateFlights';
 import { UUID } from '../../../utilities/UUID';
@@ -178,7 +178,7 @@ export function generateEventWithFlights(params) {
     if (drawDefinitionResult.error) return drawDefinitionResult;
     drawIds = drawDefinitionResult.drawIds;
   } else if (eventProfile?.participantsProfile?.participantsCount) {
-    const eventParticipantIds = uniqueDrawParticipants.map(xa('participantId'));
+    const eventParticipantIds = uniqueDrawParticipants.map(getParticipantId);
 
     if (eventParticipantIds.length) {
       const result = addEventEntries({

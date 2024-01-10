@@ -1,4 +1,4 @@
-import { xa } from '../../utilities/objects';
+import { getParticipantId } from '../../global/functions/extractors';
 import { getPositionAssignments } from './positionsGetter';
 import { unique } from '../../utilities/arrays';
 
@@ -28,7 +28,7 @@ export function getAssignedParticipantIds({ drawDefinition, stages }: GetAssigne
         const { positionAssignments } = getPositionAssignments({
           structure,
         });
-        return positionAssignments ? positionAssignments.map(xa('participantId')) : [];
+        return positionAssignments ? positionAssignments.map(getParticipantId) : [];
       })
       .flat()
       .filter(Boolean),

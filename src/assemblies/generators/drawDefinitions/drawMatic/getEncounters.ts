@@ -1,11 +1,11 @@
-import { xa } from '../../../../utilities/objects';
+import { getParticipantId } from '../../../../global/functions/extractors';
 import { pairingHash } from './generateCandidate';
 
 export function getEncounters({ matchUps }) {
   const encounters: any = [];
 
   for (const matchUp of matchUps) {
-    const participantIds = matchUp.sides.map(xa('participantId'));
+    const participantIds = matchUp.sides.map(getParticipantId);
     if (participantIds.length === 2) {
       const [p1, p2] = participantIds;
       const pairing = pairingHash(p1, p2);

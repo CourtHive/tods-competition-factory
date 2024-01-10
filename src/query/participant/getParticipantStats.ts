@@ -1,10 +1,11 @@
+import { Tally, countGames, countPoints, countSets } from '../matchUps/roundRobinTally/scoreCounters';
 import { getMatchUpCompetitiveProfile } from '../matchUp/getMatchUpCompetitiveProfile';
+import { ResultType, decorateResult } from '../../global/functions/decorateResult';
 import { allTournamentMatchUps } from '../matchUps/getAllTournamentMatchUps';
-import { xa, isObject } from '../../utilities/objects';
+import { getParticipantId } from '../../global/functions/extractors';
 import { getParticipants } from '../participants/getParticipants';
 import { intersection } from '../../utilities/arrays';
-import { ResultType, decorateResult } from '../../global/functions/decorateResult';
-import { Tally, countGames, countPoints, countSets } from '../matchUps/roundRobinTally/scoreCounters';
+import { isObject } from '../../utilities/objects';
 
 import { ParticipantTypeUnion, Tournament } from '../../types/tournamentTypes';
 import { TEAM_PARTICIPANT } from '../../constants/participantConstants';
@@ -101,7 +102,7 @@ export function getParticipantStats({
     return { error: INVALID_PARTICIPANT_IDS };
   }
 
-  if (!teamParticipantIds.length) teamParticipantIds.push(...teamParticipants.map(xa('participantId')));
+  if (!teamParticipantIds.length) teamParticipantIds.push(...teamParticipants.map(getParticipantId));
 
   const participantDetails = new Map<string, { participantName: string; ratings: any }>();
   const participantStats = new Map<string, StatCounters>();

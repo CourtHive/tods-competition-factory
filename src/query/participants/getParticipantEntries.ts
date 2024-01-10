@@ -1,7 +1,6 @@
-import { xa, isObject } from '../../utilities/objects';
+import { getDrawId, getParticipantId } from '../../global/functions/extractors';
 import { addScheduleItem } from '../../mutate/participants/addScheduleItem';
 import { getEventSeedAssignments } from '../event/getEventSeedAssignments';
-import { getPublishState } from '../events/getPublishState';
 import { getPositionAssignments } from '../drawDefinition/positionsGetter';
 import { timeSort, timeStringMinutes } from '../../utilities/dateTime';
 import { structureSort } from '../../functions/sorters/structureSort';
@@ -10,8 +9,10 @@ import { processEventEntry } from '../participant/processEventEntry';
 import { definedAttributes } from '../../utilities/definedAttributes';
 import { allEventMatchUps } from '../matchUps/getAllEventMatchUps';
 import { stringSort } from '../../functions/sorters/stringSort';
+import { getPublishState } from '../events/getPublishState';
 import { getFlightProfile } from '../event/getFlightProfile';
 import { processSides } from '../matchUps/processSides';
+import { isObject } from '../../utilities/objects';
 
 import { DEFAULTED, WALKOVER } from '../../constants/matchUpStatusConstants';
 import { UNGROUPED, UNPAIRED } from '../../constants/entryStatusConstants';
@@ -166,7 +167,7 @@ export function getParticipantEntries(params) {
             )
           : undefined;
 
-      const drawIds = unique([...drawDefinitions.map(xa('drawId')), ...flights.map(xa('drawId'))]);
+      const drawIds = unique([...drawDefinitions.map(getDrawId), ...flights.map(getDrawId)]);
 
       for (const drawId of drawIds) {
         const drawDefinition = drawDefinitions.find((drawDefinition) => drawDefinition.drawId === drawId);
@@ -442,7 +443,7 @@ export function getParticipantEntries(params) {
         }
 
         if (Array.isArray(potentialParticipants) && (nextMatchUps || !!scheduleAnalysis || withScheduleItems)) {
-          const potentialParticipantIds = potentialParticipants.flat().map(xa('participantId')).filter(Boolean);
+          const potentialParticipantIds = potentialParticipants.flat().map(getParticipantId).filter(Boolean);
           potentialParticipantIds?.forEach((participantId) => {
             const relevantParticipantIds = getRelevantParticipantIds(participantId);
 
