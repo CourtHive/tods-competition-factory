@@ -1,13 +1,13 @@
 import { generateDateRange } from '../../../../utilities/dateTime';
 import { mocksEngine, tournamentEngine } from '../../../..';
 import { queryEngine } from '../../../engines/queryEngine';
+import { hav } from '../../../../utilities/objects';
 import { expect, it } from 'vitest';
 
+import { ASSIGN_PARTICIPANT } from '../../../../constants/positionActionConstants';
 import { DOMINANT_DUO } from '../../../../constants/tieFormatConstants';
 import { AD_HOC } from '../../../../constants/drawDefinitionConstants';
 import { TEAM } from '../../../../constants/eventConstants';
-import { xa } from '../../../../utilities/objects';
-import { ASSIGN_PARTICIPANT } from '../../../../constants/positionActionConstants';
 
 it('can assign participants to SINGLES/DOUBLES matchUps in TEAM AdHoc events', () => {
   const tournamentId = 't1';
@@ -112,9 +112,25 @@ it('can assign participants to SINGLES/DOUBLES matchUps in TEAM AdHoc events', (
       },
     },
   ]);
-
   expect(result.success).toEqual(true);
 
   result = tournamentEngine.findMatchUp({ matchUpId: tieMatchUpId }); // resolve by brute force, inContext by default
-  expect(result.matchUp.sides.find(xa({ sideNumber: 1 })).participant.participantId).toEqual(participantId);
+  expect(result.matchUp.sides.find(hav({ sideNumber: 1 })).participant.participantId).toEqual(participantId);
+
+  const side2participantId = 'ptcpt-I-8';
+  result = tournamentEngine.executionQueue([
+    {
+      method: 'assignTieMatchUpParticipantId',
+      params: {
+        participantId: side2participantId,
+        tieMatchUpId,
+        sideNumber: 2,
+        drawId,
+      },
+    },
+  ]);
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.findMatchUp({ matchUpId: tieMatchUpId }); // resolve by brute force, inContext by default
+  expect(result.matchUp.sides.find(hav({ sideNumber: 2 })).participant.participantId).toEqual(side2participantId);
 });
