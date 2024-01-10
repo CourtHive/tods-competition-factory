@@ -1,5 +1,5 @@
 // import { matchUpActions } from '../../../competitionEngine/governors/queryGovernor/matchUpActions';
-import { matchUpActions } from '../../../query/drawDefinition/matchUpActions';
+import { matchUpActions } from '../../../query/drawDefinition/matchUpActions/matchUpActions';
 import { expect, test } from 'vitest';
 
 import {

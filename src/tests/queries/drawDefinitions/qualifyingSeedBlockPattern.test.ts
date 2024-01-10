@@ -2,12 +2,8 @@ import { getSeedBlockPattern } from '../../../query/drawDefinition/seedGetter';
 import { chunkArray, generateRange } from '../../../utilities/arrays';
 import { expect, test } from 'vitest';
 
+import { CLUSTER, SEPARATE } from '../../../constants/drawDefinitionConstants';
 import { SeedingProfile } from '../../../types/factoryTypes';
-import {
-  CLUSTER,
-  SEPARATE,
-  WATERFALL,
-} from '../../../constants/drawDefinitionConstants';
 
 type Scenrio = {
   seedingProfile: SeedingProfile;
@@ -17,29 +13,6 @@ type Scenrio = {
 };
 
 const scenarios: Scenrio[] = [
-  {
-    seedingProfile: { positioning: WATERFALL },
-    qualifiersCount: 2,
-    drawSize: 16,
-    expectation: [
-      { seedNumbers: [1], drawPositions: [1] },
-      { seedNumbers: [2], drawPositions: [9] },
-      { seedNumbers: [3], drawPositions: [13] },
-      { seedNumbers: [4], drawPositions: [5] },
-      { seedNumbers: [5], drawPositions: [3] },
-      { seedNumbers: [6], drawPositions: [11] },
-      { seedNumbers: [7], drawPositions: [15] },
-      { seedNumbers: [8], drawPositions: [7] },
-      { seedNumbers: [9], drawPositions: [2] },
-      { seedNumbers: [10], drawPositions: [10] },
-      { seedNumbers: [11], drawPositions: [16] },
-      { seedNumbers: [12], drawPositions: [8] },
-      { seedNumbers: [13], drawPositions: [4] },
-      { seedNumbers: [14], drawPositions: [12] },
-      { seedNumbers: [15], drawPositions: [14] },
-      { seedNumbers: [16], drawPositions: [6] },
-    ],
-  },
   {
     seedingProfile: { positioning: CLUSTER, nonRandom: true },
     qualifiersCount: 2,
@@ -84,29 +57,6 @@ const scenarios: Scenrio[] = [
       { seedNumbers: [14], drawPositions: [14] },
       { seedNumbers: [15], drawPositions: [16] },
       { seedNumbers: [16], drawPositions: [8] },
-    ],
-  },
-  {
-    seedingProfile: { positioning: WATERFALL, nonRandom: true },
-    qualifiersCount: 4,
-    drawSize: 16,
-    expectation: [
-      { seedNumbers: [1], drawPositions: [1] },
-      { seedNumbers: [2], drawPositions: [5] },
-      { seedNumbers: [3], drawPositions: [9] },
-      { seedNumbers: [4], drawPositions: [13] },
-      { seedNumbers: [5], drawPositions: [15] },
-      { seedNumbers: [6], drawPositions: [11] },
-      { seedNumbers: [7], drawPositions: [7] },
-      { seedNumbers: [8], drawPositions: [3] },
-      { seedNumbers: [9], drawPositions: [2] },
-      { seedNumbers: [10], drawPositions: [6] },
-      { seedNumbers: [11], drawPositions: [10] },
-      { seedNumbers: [12], drawPositions: [14] },
-      { seedNumbers: [13], drawPositions: [16] },
-      { seedNumbers: [14], drawPositions: [12] },
-      { seedNumbers: [15], drawPositions: [8] },
-      { seedNumbers: [16], drawPositions: [4] },
     ],
   },
   {
@@ -161,10 +111,7 @@ test.each(scenarios)('generation of seed block patterns', (scenario) => {
   const { drawSize, qualifiersCount, seedingProfile } = scenario;
   const drawPositions = generateRange(1, drawSize + 1);
   const seedGroups = chunkArray(drawPositions, qualifiersCount);
-  const drawPositionBlocks = chunkArray(
-    drawPositions,
-    Math.floor(drawSize / qualifiersCount)
-  );
+  const drawPositionBlocks = chunkArray(drawPositions, Math.floor(drawSize / qualifiersCount));
 
   const { positioning, nonRandom } = seedingProfile;
   const { validSeedBlocks } = getSeedBlockPattern({

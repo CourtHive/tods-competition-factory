@@ -1,5 +1,6 @@
 import { removeCollectionAssignments } from '../../events/removeCollectionAssignments';
 import { getPairedParticipant } from '../../../query/participant/getPairedParticipant';
+import { ResultType, decorateResult } from '../../../global/functions/decorateResult';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { getParticipants } from '../../../query/participants/getParticipants';
 import { deleteParticipants } from '../../participants/deleteParticipants';
@@ -11,12 +12,9 @@ import { addParticipant } from '../../participants/addParticipant';
 import { getTeamLineUp } from '../../drawDefinitions/getTeamLineUp';
 import { ensureSideLineUps } from './ensureSideLineUps';
 import { overlap } from '../../../utilities/arrays';
-import {
-  ResultType,
-  decorateResult,
-} from '../../../global/functions/decorateResult';
 
 import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
+import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
 import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../../constants/policyConstants';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { LineUp, PolicyDefinitions } from '../../../types/factoryTypes';
@@ -34,11 +32,6 @@ import {
   PARTICIPANT_NOT_FOUND,
   TEAM_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  Event,
-  Tournament,
-} from '../../../types/tournamentTypes';
 
 type AssignMatchUpSideParticipantIdArgs = {
   policyDefinitions?: PolicyDefinitions;
@@ -53,7 +46,7 @@ type AssignMatchUpSideParticipantIdArgs = {
 };
 
 export function assignTieMatchUpParticipantId(
-  params: AssignMatchUpSideParticipantIdArgs
+  params: AssignMatchUpSideParticipantIdArgs,
 ): ResultType & { deletedParticipantId?: string; modifiedLineUp?: LineUp } {
   const matchUpContext = getTieMatchUpContext(params);
   if (matchUpContext.error) return matchUpContext;
@@ -83,10 +76,7 @@ export function assignTieMatchUpParticipantId(
   } = matchUpContext;
 
   const allTieIndividualParticipantIds = inContextTieMatchUp?.sides?.flatMap(
-    (side: any) =>
-      side.participant?.individualParticipantIds ||
-      side.participant?.participantId ||
-      []
+    (side: any) => side.participant?.individualParticipantIds || side.participant?.participantId || [],
   );
 
   if (allTieIndividualParticipantIds?.includes(participantId)) {
@@ -96,9 +86,7 @@ export function assignTieMatchUpParticipantId(
   teamParticipantId =
     teamParticipantId ??
     (params.sideNumber
-      ? inContextDualMatchUp?.sides?.find(
-          (side) => side.sideNumber === params.sideNumber
-        )?.participantId
+      ? inContextDualMatchUp?.sides?.find((side) => side.sideNumber === params.sideNumber)?.participantId
       : undefined);
 
   const participantToAssign = getParticipants({
@@ -121,9 +109,7 @@ export function assignTieMatchUpParticipantId(
     appliedPolicies?.[POLICY_TYPE_MATCHUP_ACTIONS] ??
     POLICY_MATCHUP_ACTIONS_DEFAULT[POLICY_TYPE_MATCHUP_ACTIONS];
 
-  const genderEnforced =
-    (params.enforceGender ??
-      matchUpActionsPolicy?.participants?.enforceGender) !== false;
+  const genderEnforced = (params.enforceGender ?? matchUpActionsPolicy?.participants?.enforceGender) !== false;
 
   if (
     genderEnforced &&
@@ -140,17 +126,11 @@ export function assignTieMatchUpParticipantId(
     return { error: INVALID_PARTICIPANT_TYPE };
   }
 
-  const relevantParticipantIds =
-    participantType === INDIVIDUAL ? [participantId] : individualParticipantIds;
+  const relevantParticipantIds = participantType === INDIVIDUAL ? [participantId] : individualParticipantIds;
 
   const participantTeam =
-    (teamParticipantId &&
-      teamParticipants?.find(
-        ({ participantId }) => participantId === teamParticipantId
-      )) ||
-    teamParticipants?.find(({ individualParticipantIds }) =>
-      overlap(relevantParticipantIds, individualParticipantIds)
-    );
+    (teamParticipantId && teamParticipants?.find(({ participantId }) => participantId === teamParticipantId)) ||
+    teamParticipants?.find(({ individualParticipantIds }) => overlap(relevantParticipantIds, individualParticipantIds));
 
   if (!participantTeam) return { error: TEAM_NOT_FOUND };
 
@@ -158,20 +138,18 @@ export function assignTieMatchUpParticipantId(
   if (!teamParticipantId) return { error: PARTICIPANT_NOT_FOUND };
 
   const teamAssignment = relevantAssignments?.find(
-    (assignment) => assignment.participantId === participantTeam?.participantId
+    (assignment) => assignment.participantId === participantTeam?.participantId,
   );
   const teamDrawPosition = teamAssignment?.drawPosition;
-  const teamSide = inContextTieMatchUp?.sides?.find(
-    (side: any) => side.drawPosition === teamDrawPosition
-  );
-  const sideNumber = params.sideNumber ?? teamSide?.sideNumber;
+  const teamSide = inContextTieMatchUp?.sides?.find((side: any) => side.drawPosition === teamDrawPosition);
+  const sideNumber = teamSide?.sideNumber ?? params.sideNumber;
 
   if (!tieFormat) {
     return { error: MISSING_TIE_FORMAT };
   }
 
   const collectionDefinition = tieFormat.collectionDefinitions?.find(
-    (collectionDefinition) => collectionDefinition.collectionId === collectionId
+    (collectionDefinition) => collectionDefinition.collectionId === collectionId,
   );
 
   if (!collectionDefinition) return { error: MISSING_COLLECTION_DEFINITION };
@@ -184,13 +162,9 @@ export function assignTieMatchUpParticipantId(
     dualMatchUp,
   });
 
-  const dualMatchUpSide = dualMatchUp?.sides?.find(
-    (side) => side.sideNumber === sideNumber
-  );
+  const dualMatchUpSide = dualMatchUp?.sides?.find((side) => side.sideNumber === sideNumber);
 
-  const tieMatchUpSide = inContextTieMatchUp?.sides?.find(
-    (side) => side.sideNumber === sideNumber
-  );
+  const tieMatchUpSide = inContextTieMatchUp?.sides?.find((side) => side.sideNumber === sideNumber);
 
   const lineUp =
     dualMatchUpSide?.lineUp ??
@@ -205,19 +179,15 @@ export function assignTieMatchUpParticipantId(
         (assignment) =>
           assignment.collectionPosition === collectionPosition &&
           assignment.collectionId === collectionId &&
-          !assignment.previousParticipantId
-      )
+          !assignment.previousParticipantId,
+      ),
   );
-  const assignedParticipantIds = targetAssignments?.map(
-    (assignment) => assignment?.participantId
-  );
+  const assignedParticipantIds = targetAssignments?.map((assignment) => assignment?.participantId);
 
   // participantIds is an array of ids for individual team participants whose assignments should be modified
   const participantIds =
     (assignedParticipantIds?.length > 1 && assignedParticipantIds) ||
-    (participantType === PAIR
-      ? participantToAssign.individualParticipantIds
-      : [participantId]);
+    (participantType === PAIR ? participantToAssign.individualParticipantIds : [participantId]);
 
   // first filter out any collectionAssignment with equivalent collectionId/collectionPosition/participantId
   const removeResult = removeCollectionAssignments({
@@ -228,8 +198,7 @@ export function assignTieMatchUpParticipantId(
     participantIds,
     collectionId,
   });
-  if (removeResult.error)
-    return decorateResult({ result: removeResult, stack });
+  if (removeResult.error) return decorateResult({ result: removeResult, stack });
 
   const { modifiedLineUp } = removeResult;
 
@@ -324,11 +293,9 @@ export function assignTieMatchUpParticipantId(
       });
       if (result.error) return result;
     } else {
-      const individualParticipantIds =
-        side.participant.individualParticipantIds || [];
+      const individualParticipantIds = side.participant.individualParticipantIds || [];
 
-      const sideParticipantsCount =
-        individualParticipantIds.filter(Boolean).length;
+      const sideParticipantsCount = individualParticipantIds.filter(Boolean).length;
 
       if (sideParticipantsCount === 1) {
         const { participant } = getPairedParticipant({
@@ -377,9 +344,9 @@ function updateLineUp({
     drawDefinition,
   })?.lineUp;
 
-  const participantCompetitiorProfile = (
-    modifiedLineUp || templateTeamLineUp
-  )?.find((teamCompetitor) => teamCompetitor?.participantId === participantId);
+  const participantCompetitiorProfile = (modifiedLineUp || templateTeamLineUp)?.find(
+    (teamCompetitor) => teamCompetitor?.participantId === participantId,
+  );
 
   const newAssignment = { collectionId, collectionPosition };
 

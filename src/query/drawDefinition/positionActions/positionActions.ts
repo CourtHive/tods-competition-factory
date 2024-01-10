@@ -15,7 +15,7 @@ import { getStageEntries } from '../stageGetter';
 import { findStructure } from '../../../acquire/findStructure';
 import { isCompletedStructure } from '../structureActions';
 import { getValidSwapAction } from './getValidSwapAction';
-import { matchUpActions } from '../matchUpActions';
+import { matchUpActions } from '../matchUpActions/matchUpActions';
 import {
   activePositionsCheck,
   getEnabledStructures,
@@ -58,19 +58,8 @@ import {
   REMOVE_SEED,
   REMOVE_SEED_METHOD,
 } from '../../../constants/positionActionConstants';
-import {
-  CONSOLATION,
-  MAIN,
-  POSITION,
-  QUALIFYING,
-  WIN_RATIO,
-} from '../../../constants/drawDefinitionConstants';
-import {
-  DrawDefinition,
-  Event,
-  Participant,
-  Tournament,
-} from '../../../types/tournamentTypes';
+import { CONSOLATION, MAIN, POSITION, QUALIFYING, WIN_RATIO } from '../../../constants/drawDefinitionConstants';
+import { DrawDefinition, Event, Participant, Tournament } from '../../../types/tournamentTypes';
 import { getParticipants } from '../../participants/getParticipants';
 
 type PositionActionsArgs = {
@@ -177,8 +166,7 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
     structure,
   });
 
-  const activePositionOverrides =
-    positionActionsPolicy?.activePositionOverrides || [];
+  const activePositionOverrides = positionActionsPolicy?.activePositionOverrides || [];
 
   // targetRoundNumber will be > 1 for fed positions
   const { sourceStructureIds: positionSourceStructureIds } =
@@ -193,21 +181,17 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
   let sourceStructuresComplete;
   if (positionSourceStructureIds?.length) {
     // EVERY: this can probably be changed to .every
-    sourceStructuresComplete = positionSourceStructureIds.reduce(
-      (ready, sourceStructureId) => {
-        const completed = isCompletedStructure({
-          structureId: sourceStructureId,
-          drawDefinition,
-        });
-        return completed && ready;
-      },
-      true
-    );
+    sourceStructuresComplete = positionSourceStructureIds.reduce((ready, sourceStructureId) => {
+      const completed = isCompletedStructure({
+        structureId: sourceStructureId,
+        drawDefinition,
+      });
+      return completed && ready;
+    }, true);
   }
 
   const isWinRatioFedStructure = positionSourceStructureIds.length;
-  const disablePlacementActions =
-    positionSourceStructureIds.length && !sourceStructuresComplete;
+  const disablePlacementActions = positionSourceStructureIds.length && !sourceStructuresComplete;
 
   const { policyActions } = getPolicyActions({
     enabledStructures,
@@ -215,25 +199,17 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
     structure,
   });
 
-  const possiblyDisablingAction =
-    ![QUALIFYING, MAIN].includes(structure.stage) ||
-    structure.stageSequence !== 1;
+  const possiblyDisablingAction = ![QUALIFYING, MAIN].includes(structure.stage) || structure.stageSequence !== 1;
 
   const { drawId } = drawDefinition;
   const validActions: any[] = [];
 
-  const { assignedPositions, positionAssignments } =
-    structureAssignedDrawPositions({ structure });
-  const positionAssignment = assignedPositions?.find(
-    (assignment) => assignment.drawPosition === drawPosition
-  );
+  const { assignedPositions, positionAssignments } = structureAssignedDrawPositions({ structure });
+  const positionAssignment = assignedPositions?.find((assignment) => assignment.drawPosition === drawPosition);
 
-  const drawPositions = positionAssignments?.map(
-    (assignment) => assignment.drawPosition
-  );
+  const drawPositions = positionAssignments?.map((assignment) => assignment.drawPosition);
 
-  if (!drawPositions?.includes(drawPosition))
-    return { error: INVALID_DRAW_POSITION };
+  if (!drawPositions?.includes(drawPosition)) return { error: INVALID_DRAW_POSITION };
 
   const { stage, stageSequence } = structure;
 
@@ -259,9 +235,7 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
     }).assignedParticipantIds ?? [];
 
   const unassignedParticipantIds = stageEntries
-    .filter(
-      (entry) => !stageAssignedParticipantIds.includes(entry.participantId)
-    )
+    .filter((entry) => !stageAssignedParticipantIds.includes(entry.participantId))
     .map((entry) => entry.participantId);
 
   const isByePosition = byeDrawPositions.includes(drawPosition);
@@ -319,16 +293,10 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
 
   const { participantId } = positionAssignment || {};
   const participant =
-    participantId &&
-    tournamentParticipants.find(
-      (participant) => participant.participantId === participantId
-    );
+    participantId && tournamentParticipants.find((participant) => participant.participantId === participantId);
 
   if (positionAssignment) {
-    if (
-      isAvailableAction({ policyActions, action: REMOVE_ASSIGNMENT }) &&
-      !isActiveDrawPosition
-    ) {
+    if (isAvailableAction({ policyActions, action: REMOVE_ASSIGNMENT }) && !isActiveDrawPosition) {
       validActions.push({
         type: REMOVE_ASSIGNMENT,
         method: REMOVE_ASSIGNMENT_METHOD,
@@ -347,10 +315,7 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
 
       // in this case the ASSIGN_BYE_METHOD is called after removing assigned participant
       // option should not be available if exising assignment is a bye
-      if (
-        isAvailableAction({ policyActions, action: ASSIGN_BYE }) &&
-        !isByePosition
-      ) {
+      if (isAvailableAction({ policyActions, action: ASSIGN_BYE }) && !isByePosition) {
         validActions.push({
           type: ASSIGN_BYE,
           method: REMOVE_ASSIGNMENT_METHOD,
@@ -361,8 +326,7 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
     }
 
     const validToAssignSeed =
-      structure.stage === QUALIFYING ||
-      (structure.stage === MAIN && structure.stageSequence === 1);
+      structure.stage === QUALIFYING || (structure.stage === MAIN && structure.stageSequence === 1);
 
     if (
       !isByePosition &&
@@ -382,9 +346,7 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
         structure,
       });
       const { seedNumber, seedValue } =
-        seedAssignments?.find(
-          (assignment) => assignment.participantId === participantId
-        ) ?? {};
+        seedAssignments?.find((assignment) => assignment.participantId === participantId) ?? {};
 
       validActions.push({
         type: SEED_VALUE,
@@ -417,10 +379,7 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
         drawDefinition,
         structure,
       });
-      const { seedNumber } =
-        seedAssignments?.find(
-          (assignment) => assignment.participantId === participantId
-        ) ?? {};
+      const { seedNumber } = seedAssignments?.find((assignment) => assignment.participantId === participantId) ?? {};
 
       validActions.push({
         method: REMOVE_SEED_METHOD,
@@ -485,10 +444,7 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
     }
   }
 
-  if (
-    isAvailableAction({ policyActions, action: ALTERNATE_PARTICIPANT }) &&
-    !disablePlacementActions
-  ) {
+  if (isAvailableAction({ policyActions, action: ALTERNATE_PARTICIPANT }) && !disablePlacementActions) {
     const { validAlternatesAction } = getValidAlternatesAction({
       possiblyDisablingAction,
       tournamentParticipants,
@@ -528,10 +484,7 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
     if (validLuckyLosersAction) validActions.push(validLuckyLosersAction);
   }
 
-  if (
-    participant?.participantType === PAIR &&
-    isAvailableAction({ policyActions, action: MODIFY_PAIR_ASSIGNMENT })
-  ) {
+  if (participant?.participantType === PAIR && isAvailableAction({ policyActions, action: MODIFY_PAIR_ASSIGNMENT })) {
     const { validModifyAssignedPairAction } = getValidModifyAssignedPairAction({
       tournamentParticipants,
       returnParticipants,
@@ -540,8 +493,7 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
       drawId,
       event,
     });
-    if (validModifyAssignedPairAction)
-      validActions.push(validModifyAssignedPairAction);
+    if (validModifyAssignedPairAction) validActions.push(validModifyAssignedPairAction);
   }
 
   return {

@@ -1,3 +1,4 @@
+import { getScheduledCourtMatchUps, getScheduledVenueMatchUps } from '../../query/venues/getScheduledCourtMatchUps';
 import { bulkScheduleTournamentMatchUps } from '../matchUps/schedule/bulkScheduleTournamentMatchUps';
 import { deletionMessage } from '../../assemblies/generators/matchUps/deletionMessage';
 import { resolveTournamentRecords } from '../../parameters/resolveTournamentRecords';
@@ -9,10 +10,6 @@ import { addNotice } from '../../global/state/globalState';
 import { modifyCourt } from './modifyCourt';
 import { addCourt } from './addCourt';
 import { findVenue } from './findVenue';
-import {
-  getScheduledCourtMatchUps,
-  getScheduledVenueMatchUps,
-} from '../../query/venues/getScheduledCourtMatchUps';
 
 import { POLICY_TYPE_SCHEDULING } from '../../constants/policyConstants';
 import { Venue, Tournament } from '../../types/tournamentTypes';
@@ -42,8 +39,7 @@ export function modifyVenue(params: ModifyVenueArgs) {
 
   const tournamentRecords = resolveTournamentRecords(params);
 
-  if (!Object.keys(tournamentRecords).length)
-    return { error: MISSING_TOURNAMENT_RECORDS };
+  if (!Object.keys(tournamentRecords).length) return { error: MISSING_TOURNAMENT_RECORDS };
   if (typeof venueId !== 'string') return { error: MISSING_VENUE_ID };
 
   let error;
@@ -66,15 +62,13 @@ export function modifyVenue(params: ModifyVenueArgs) {
   return success ? { ...SUCCESS } : { error };
 }
 
-export function venueModify({
-  tournamentRecord,
-  modifications,
-  venueId,
-  force,
-}: ModifyVenueArgs): { error?: ErrorType; success?: boolean; venue?: Venue } {
+export function venueModify({ tournamentRecord, modifications, venueId, force }: ModifyVenueArgs): {
+  error?: ErrorType;
+  success?: boolean;
+  venue?: Venue;
+} {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!modifications || typeof modifications !== 'object')
-    return { error: INVALID_OBJECT };
+  if (!modifications || typeof modifications !== 'object') return { error: INVALID_OBJECT };
   if (!venueId) return { error: MISSING_VENUE_ID };
 
   const appliedPolicies = getAppliedPolicies({
@@ -82,9 +76,7 @@ export function venueModify({
   })?.appliedPolicies;
 
   const allowModificationWhenMatchUpsScheduled =
-    force ??
-    appliedPolicies?.[POLICY_TYPE_SCHEDULING]?.allowDeletionWithScoresPresent
-      ?.venues;
+    force ?? appliedPolicies?.[POLICY_TYPE_SCHEDULING]?.allowDeletionWithScoresPresent?.venues;
 
   const { matchUps: venueMatchUps } = getScheduledVenueMatchUps({
     tournamentRecord,
@@ -96,41 +88,30 @@ export function venueModify({
   const venue = result.venue;
 
   // not valid to modify a venueId
-  const validAttributes = Object.keys(venueTemplate()).filter(
-    (attribute) => attribute !== 'venueId'
-  );
-  const validModificationAttributes = Object.keys(modifications).filter(
-    (attribute) => validAttributes.includes(attribute)
+  const validAttributes = Object.keys(venueTemplate()).filter((attribute) => attribute !== 'venueId');
+  const validModificationAttributes = Object.keys(modifications).filter((attribute) =>
+    validAttributes.includes(attribute),
   );
 
-  if (!validModificationAttributes.length)
-    return { error: NO_VALID_ATTRIBUTES };
+  if (!validModificationAttributes.length) return { error: NO_VALID_ATTRIBUTES };
 
-  const validReplacements = validAttributes.filter(
-    (attribute) => !['courts', 'onlineResources'].includes(attribute)
-  );
+  const validReplacements = validAttributes.filter((attribute) => !['courts', 'onlineResources'].includes(attribute));
 
-  const validReplacementAttributes = Object.keys(modifications).filter(
-    (attribute) => validReplacements.includes(attribute)
+  const validReplacementAttributes = Object.keys(modifications).filter((attribute) =>
+    validReplacements.includes(attribute),
   );
 
   venue &&
-    validReplacementAttributes.forEach((attribute) =>
-      Object.assign(venue, { [attribute]: modifications[attribute] })
-    );
+    validReplacementAttributes.forEach((attribute) => Object.assign(venue, { [attribute]: modifications[attribute] }));
 
   const existingCourtIds = venue?.courts?.map((court) => court.courtId) ?? [];
-  const courtIdsToModify =
-    modifications.courts?.map((court) => court.courtId) || [];
-  const courtIdsToDelete = existingCourtIds.filter(
-    (courtId) => !courtIdsToModify.includes(courtId)
-  );
+  const courtIdsToModify = modifications.courts?.map((court) => court.courtId) || [];
+  const courtIdsToDelete =
+    courtIdsToModify.length && existingCourtIds.filter((courtId) => !courtIdsToModify.includes(courtId));
 
   const matchUpsWithCourtId: { matchUpId: string; drawId: string }[] = [];
   if (courtIdsToDelete.length) {
-    const courtsToDelete = venue?.courts?.filter((court) =>
-      courtIdsToDelete.includes(court.courtId)
-    );
+    const courtsToDelete = venue?.courts?.filter((court) => courtIdsToDelete.includes(court.courtId));
     const scheduleDeletionsCount = courtsToDelete
       ?.map((court) => {
         // check whether deleting court would remove schedule from any matchUps
@@ -149,13 +130,10 @@ export function venueModify({
       })
       .reduce((a, b) => a + b);
 
-    if (
-      venue &&
-      (!scheduleDeletionsCount || allowModificationWhenMatchUpsScheduled)
-    ) {
-      venue.courts = venue.courts?.filter((court) =>
-        courtIdsToModify.includes(court.courtId)
-      );
+    console.log({ scheduleDeletionsCount });
+
+    if (venue && (!scheduleDeletionsCount || allowModificationWhenMatchUpsScheduled)) {
+      venue.courts = venue.courts?.filter((court) => courtIdsToModify.includes(court.courtId));
       bulkScheduleTournamentMatchUps({
         schedule: { courtId: '', scheduledDate: '' },
         matchUpDetails: matchUpsWithCourtId,

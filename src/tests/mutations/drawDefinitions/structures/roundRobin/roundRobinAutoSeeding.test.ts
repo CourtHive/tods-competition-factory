@@ -1,14 +1,14 @@
 import { getParticipantId } from '../../../../../global/functions/extractors';
-import { xa } from '../../../../../utilities/objects';
 import mocksEngine from '../../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../../engines/syncEngine';
+import { xa } from '../../../../../utilities/objects';
 import { expect, it } from 'vitest';
 
+import { MAIN, ROUND_ROBIN } from '../../../../../constants/drawDefinitionConstants';
 import SEEDING_USTA from '../../../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
 import { RANKING, RATING } from '../../../../../constants/scaleConstants';
 import { SINGLES_EVENT } from '../../../../../constants/eventConstants';
 import { WTN } from '../../../../../constants/ratingConstants';
-import { MAIN, ROUND_ROBIN } from '../../../../../constants/drawDefinitionConstants';
 
 it('can autoSeed by Rankings and then generate Round Robin', () => {
   const participantsCount = 32;
