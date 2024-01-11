@@ -3,13 +3,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Competition Factory',
-      items: [
-        'introduction',
-        'state-engines',
-        'features',
-        'tmx',
-        'installation',
-      ],
+      items: ['introduction', 'features', 'tmx', 'installation'],
     },
     {
       type: 'category',
@@ -46,95 +40,42 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'Mocks Engine',
+      label: 'State Engines',
       items: [
         {
           type: 'doc',
           label: 'Overview',
-          id: 'engines/mocks-engine-overview',
+          id: 'state-engines',
         },
-        'engines/mocks-engine-examples',
-        { type: 'doc', label: 'API', id: 'apis/mocks-engine-api' },
+        { type: 'doc', label: 'askEngine', id: 'state-engines' },
+        { type: 'doc', label: 'syncEngine', id: 'state-engines' },
+        { type: 'doc', label: 'asyncEngine', id: 'state-engines' },
       ],
     },
     {
       type: 'category',
-      label: 'Competition Engine',
+      label: 'Governors',
       items: [
         {
           type: 'doc',
           label: 'Overview',
           id: 'engines/competition-engine-overview',
         },
-        { type: 'doc', label: 'API', id: 'apis/competition-engine-api' },
       ],
-    },
-    {
-      type: 'category',
-      label: 'Tournament Engine',
-      items: [
-        {
-          type: 'doc',
-          label: 'Overview',
-          id: 'engines/tournament-engine-overview',
-        },
-        { type: 'doc', label: 'API', id: 'apis/tournament-engine-api' },
-      ],
-    },
-    {
-      type: 'category',
-      label: 'Draw Engine',
-      items: [
-        {
-          type: 'doc',
-          label: 'Overview',
-          id: 'engines/draw-engine-overview',
-        },
-        { type: 'doc', label: 'API', id: 'apis/draw-engine-api' },
-      ],
-    },
-    {
-      type: 'category',
-      label: 'MatchUp Engine',
-      items: [
-        {
-          type: 'doc',
-          label: 'Overview',
-          id: 'engines/matchup-engine-overview',
-        },
-        { type: 'doc', label: 'API', id: 'apis/matchup-engine-api' },
-      ],
-    },
-    {
-      type: 'category',
-      label: 'Scale Engine',
-      items: [
-        {
-          type: 'doc',
-          label: 'Overview',
-          id: 'engines/scale-engine-overview',
-        },
-        { type: 'doc', label: 'API', id: 'apis/scale-engine-api' },
-      ],
-    },
-    {
-      type: 'doc',
-      label: 'Score Governor',
-      id: 'scoreGovernor',
     },
     {
       type: 'category',
       label: 'Data',
       items: [
         'constants',
-        'types/typedefs',
         {
-          'Codes and Enums': [
+          Codes: [
             'codes/age-category',
             'codes/matchup-format',
             'enums/tournament-level',
           ],
         },
+        'types/typedefs',
         'concepts/extensions',
         {
           Explanation: [

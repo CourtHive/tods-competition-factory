@@ -35,6 +35,16 @@ tournamentEngine.publishEvent({
   drawDetails: { ['drawId']: { stagesToAdd: [QUALIFYING] } },
   eventId,
 });
+
+// publish only first round of a specific structure
+result = tournamentEngine.publishEvent({
+  drawDetails: {
+    [drawId]: {
+      structureDetails: { [structureId]: { roundLimit: 1, published: true } },
+    },
+  },
+  eventId,
+});
 ```
 
 ## Scheduled matchUps

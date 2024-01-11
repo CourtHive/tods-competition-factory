@@ -1,26 +1,27 @@
-import { MatchUpFilters } from '../drawEngine/getters/getMatchUps/filterMatchUps';
-import { MatchUpsMap } from '../drawEngine/getters/getMatchUps/getMatchUpsMap';
-import { SignedInStatusEnum } from '../constants/participantConstants';
+import { DOUBLES_EVENT, SINGLES_EVENT, TEAM_EVENT } from '../constants/eventConstants';
+import { SignedInStatusUnion } from '../constants/participantConstants';
 import { HydratedMatchUp, HydratedParticipant } from './hydrated';
 import { ErrorType } from '../constants/errorConditionConstants';
 import { ValidPolicyTypes } from '../constants/policyConstants';
+import { MatchUpsMap } from '../query/matchUps/getMatchUpsMap';
 import {
   Category,
   DrawDefinition,
   Entry,
   Event,
   Extension,
-  GenderEnum,
   MatchUpFinishingPositionRange,
-  ParticipantRoleEnum,
-  ParticipantTypeEnum,
-  SexEnum,
-  StageTypeEnum,
+  StageTypeUnion,
   TeamCompetitor,
   TimeItem,
   Tournament,
-  TypeEnum,
-} from './tournamentFromSchema';
+  EventTypeUnion,
+  ParticipantTypeUnion,
+  GenderUnion,
+  SexUnion,
+  ParticipantRoleUnion,
+  MatchUpStatusUnion,
+} from './tournamentTypes';
 
 export type FactoryEngine = {
   [key: string]: any;
@@ -29,8 +30,20 @@ export type FactoryEngine = {
 export type TournamentRecords = {
   [key: string]: Tournament;
 };
-export type TournamentRecordsArgs = {
-  tournamentRecords: TournamentRecords;
+
+export type Directives = {
+  pipe?: { [key: string]: boolean };
+  params?: { [key: string]: any };
+  method: string;
+}[];
+
+export type CheckInOutParticipantArgs = {
+  tournamentRecord: Tournament;
+  drawDefinition: DrawDefinition;
+  matchUp?: HydratedMatchUp;
+  participantId: string;
+  matchUpId: string;
+  event?: Event;
 };
 
 export type ScheduleTimesResult = { scheduleTime: string };
@@ -47,7 +60,7 @@ export type SeedingProfile = {
 };
 
 export type ScaleAttributes = {
-  eventType: TypeEnum;
+  eventType?: EventTypeUnion;
   scaleType: string;
   scaleName: string;
   accessor?: string; // optional - string determining how to access attribute if scaleValue is an object
@@ -55,7 +68,7 @@ export type ScaleAttributes = {
 
 export type ScaleItem = {
   scaleDate?: string | Date;
-  eventType: TypeEnum;
+  eventType?: EventTypeUnion;
   scaleName: string;
   scaleType: string;
   scaleValue: any;
@@ -108,15 +121,15 @@ export type RoundProfile = {
 export type ParticipantFilters = {
   accessorValues?: { accessor: string; value: any }[];
   participantRoleResponsibilities?: string[];
-  participantRoles?: ParticipantRoleEnum[];
-  participantTypes?: ParticipantTypeEnum[];
-  signInStatus?: SignedInStatusEnum;
+  participantRoles?: ParticipantRoleUnion[];
+  participantTypes?: ParticipantTypeUnion[];
+  signInStatus?: SignedInStatusUnion;
   positionedParticipants?: boolean; // boolean - participantIds that are included in any structure.positionAssignments
   eventEntryStatuses?: string[]; // {string[]} participantIds that are in entry.entries with entryStatuses
   drawEntryStatuses?: string[]; // {string[]} participantIds that are in draw.entries or flightProfile.flights[].drawEnteredParticipantIds with entryStatuses
   enableOrFiltering?: boolean;
   participantIds?: string[];
-  genders?: GenderEnum;
+  genders?: GenderUnion;
   eventIds?: string[];
 };
 
@@ -154,7 +167,7 @@ export type ScheduleAnalysis =
     };
 
 export type ParticipantsProfile = {
-  participantType?: ParticipantTypeEnum;
+  participantType?: ParticipantTypeUnion;
   scaledParticipantsCount?: number;
   rankingRange?: [number, number];
   nationalityCodesCount?: number;
@@ -178,7 +191,7 @@ export type ParticipantsProfile = {
   teamKey?: TeamKey;
   idPrefix?: string;
   uuids?: string[];
-  sex?: SexEnum;
+  sex?: SexUnion;
 
   // Usage via participantsProfile unconfirmed...
   usePublishState?: boolean;
@@ -226,7 +239,7 @@ export type ScheduleConflict = {
 };
 
 export type StructureParticipation = {
-  rankingStage: StageTypeEnum;
+  rankingStage: StageTypeUnion;
   walkoverWinCount: number;
   defaultWinCount: number;
   stageSequence: number;
@@ -236,9 +249,7 @@ export type StructureParticipation = {
 };
 
 export type MappedParticipant = {
-  structureParticipation:
-    | { [key: string]: StructureParticipation }
-    | StructureParticipation[];
+  structureParticipation: { [key: string]: StructureParticipation } | StructureParticipation[];
   potentialMatchUps: {
     tournamentId: string;
     matchUpId: string;
@@ -273,9 +284,9 @@ export type MappedParticipant = {
   events: { [key: string]: any } | any[];
   draws: { [key: string]: any } | any[];
   counters: Counters & {
-    [TypeEnum.Doubles]: Counters;
-    [TypeEnum.Singles]: Counters;
-    [TypeEnum.Team]: Counters;
+    [DOUBLES_EVENT]: Counters;
+    [SINGLES_EVENT]: Counters;
+    [TEAM_EVENT]: Counters;
   };
 };
 
@@ -387,4 +398,48 @@ type Request = {
 };
 export type PersonRequests = {
   [key: string]: Request[];
+};
+
+export type AddScheduleAttributeArgs = {
+  tournamentRecord?: Tournament;
+  drawDefinition: DrawDefinition;
+  removePriorValues?: boolean;
+  disableNotice?: boolean;
+  matchUpId: string;
+  event?: Event;
+};
+
+export type MatchUpFilters = {
+  matchUpStatuses?: MatchUpStatusUnion[];
+  excludeMatchUpStatuses?: string[];
+  isCollectionMatchUp?: boolean;
+  matchUpFormats?: string[];
+  roundPositions?: number[];
+  hasWinningSide?: boolean;
+  collectionIds?: string[];
+  roundNumbers?: number[];
+  isMatchUpTie?: boolean;
+  matchUpFormat?: string;
+  matchUpIds?: string[];
+  roundNames?: string[];
+
+  // only applies to inContext matchUps and only when processContext boolean is true
+  processContext?: boolean;
+
+  stageSequences?: string[];
+  scheduledDates?: string[];
+  participantIds?: string[];
+  stages?: StageTypeUnion[];
+  tournamentIds?: string[];
+  matchUpTypes?: string[];
+  structureIds?: string[];
+  scheduledDate?: string;
+  readyToScore?: boolean;
+  courtIds?: string[];
+  eventIds?: string[];
+  venueIds?: string[];
+  drawIds?: string[];
+
+  filterMatchUpTypes?: boolean;
+  filterMatchUpIds?: boolean;
 };

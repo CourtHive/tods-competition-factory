@@ -2,7 +2,7 @@ import { isConvertableInteger } from './math';
 
 // returns only unique values within an array
 export function unique(arr) {
-  return arr.filter((item, i, s) => s.lastIndexOf(item) === i);
+  return arr?.filter((item, i, s) => s.lastIndexOf(item) === i);
 }
 
 export function noNulls(arr) {

@@ -13,7 +13,7 @@ const srcIndex = 'src/index.ts';
 
 const esmBundle = (config) => ({
   external: (id) => !/^[./]/.test(id),
-  plugins: [esbuild(), json()],
+  plugins: [esbuild(), json(), terser()],
   input: config.input,
   output: [
     {
@@ -25,30 +25,7 @@ const esmBundle = (config) => ({
   ],
 });
 
-const esmProfile = [
-  { input: srcIndex, outputFile: 'dist/index.mjs' },
-  {
-    outputFile: 'dist/forge/utilities.mjs',
-    input: 'src/utilities/index.ts',
-    outputName: 'utilities',
-  },
-  {
-    outputFile: 'dist/forge/generate.mjs',
-    input: 'src/forge/generate/index.ts',
-    outputName: 'generate',
-  },
-  {
-    outputFile: 'dist/forge/transform.mjs',
-    input: 'src/forge/transform/index.ts',
-    outputName: 'transform',
-  },
-  {
-    outputFile: 'dist/forge/query.mjs',
-    input: 'src/forge/query/index.ts',
-    outputName: 'query',
-  },
-];
-
+const esmProfile = [{ input: srcIndex, outputFile: 'dist/index.mjs' }];
 const esmExports = [...esmProfile.map(esmBundle)];
 
 const basePath = fs.realpathSync(process.cwd());
@@ -131,43 +108,18 @@ function createExport({ input, folder, packageName, cjs, esm }) {
 
 const cjsExports = [{ input: srcIndex, cjs: true }].map(createExport);
 
+/*
+// NOTE: for posterity
 const forgeTypes = [
   {
     input: 'src/forge/query/index.ts',
     output: [{ file: `${distPath}/forge/query.d.ts`, format: 'es' }],
     plugins: [dts()],
   },
-  {
-    input: 'src/forge/transform/index.ts',
-    output: [{ file: `${distPath}/forge/transform.d.ts`, format: 'es' }],
-    plugins: [dts()],
-  },
-  {
-    input: 'src/forge/generate/index.ts',
-    output: [{ file: `${distPath}/forge/generate.d.ts`, format: 'es' }],
-    plugins: [dts()],
-  },
-  {
-    input: 'src/utilities/index.ts',
-    output: [{ file: `${distPath}/forge/utilities.d.ts`, format: 'es' }],
-    plugins: [dts()],
-  },
 ];
-
-const governorTypes = [
-  /*
-  {
-    input: 'src/tournamentEngine/governors/publishingGovernor/index.ts',
-    output: [
-      { file: 'src/tournamentEngine/governors/publishingGovernor/index.d.ts' },
-    ],
-    plugins: [dts()],
-  },
-  */
-];
+*/
 
 const engineTypes = [
-  /*
   {
     input: srcIndex,
     plugins: [dts()],
@@ -176,18 +128,6 @@ const engineTypes = [
       format: 'es',
     },
   },
-  {
-    input: 'src/mocksEngine/index.ts',
-    output: [{ file: `${distPath}/mocksEngine.d.ts`, format: 'es' }],
-    plugins: [dts()],
-  },
-  */
 ];
 
-export default [
-  ...cjsExports,
-  ...esmExports,
-  ...forgeTypes,
-  ...governorTypes,
-  ...engineTypes,
-];
+export default [...cjsExports, ...esmExports, ...engineTypes];

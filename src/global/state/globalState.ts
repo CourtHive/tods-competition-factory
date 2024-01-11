@@ -1,10 +1,11 @@
 import { intersection } from '../../utilities/arrays';
 import syncGlobalState from './syncGlobalState';
 
-import { TournamentRecordsArgs } from '../../types/factoryTypes';
+import { TournamentRecords } from '../../types/factoryTypes';
 import { ResultType } from '../functions/decorateResult';
 import {
   ErrorType,
+  INVALID_VALUES,
   MISSING_ASYNC_STATE_PROVIDER,
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
@@ -52,8 +53,10 @@ type GlobalStateTypes = {
   globalLog?: any;
 };
 
-export type ImplemtationGlobalStateTypes = TournamentRecordsArgs & {
+export type ImplemtationGlobalStateTypes = {
+  tournamentRecords: TournamentRecords;
   tournamentId?: string | undefined;
+  methods: { [key: string]: any };
   disableNotifications: boolean;
   subscriptions: any;
   notices: Notice[];
@@ -81,6 +84,7 @@ const requiredStateProviderMethods = [
   'deleteNotices',
   'disableNotifications',
   'enableNotifications',
+  'getMethods',
   'getNotices',
   'getTopics',
   'getTournamentId',
@@ -271,6 +275,13 @@ export function setSubscriptions(params: any) {
   });
 }
 
+export function setMethods(params?: { [key: string]: any }) {
+  if (!params)
+    return { error: MISSING_VALUE, info: 'missing method declarations' };
+  if (typeof params !== 'object') return { error: INVALID_VALUES };
+  return _globalStateProvider.setMethods(params);
+}
+
 export function cycleMutationStatus() {
   return _globalStateProvider.cycleMutationStatus();
 }
@@ -282,6 +293,10 @@ export function addNotice(notice: Notice) {
 export type GetNoticesArgs = {
   topic: string;
 };
+
+export function getMethods(): { [key: string]: any } {
+  return _globalStateProvider.getMethods();
+}
 
 export function getNotices(params: GetNoticesArgs): string[] {
   return _globalStateProvider.getNotices(params);
@@ -331,7 +346,7 @@ export function setTournamentRecords(tournamentRecords: any) {
   return _globalStateProvider.setTournamentRecords(tournamentRecords);
 }
 
-export function setTournamentId(tournamentId: string): {
+export function setTournamentId(tournamentId?: string): {
   success?: boolean;
   error?: ErrorType;
 } {
@@ -375,7 +390,7 @@ export function handleCaughtError({
 export function globalLog(engine: string, log: any) {
   if (globalState.globalLog) {
     try {
-      globalState.globalLog(engine, log);
+      globalState.globalLog({ engine, log });
     } catch (error) {
       console.log('globalLog error', error);
       console.log(engine, log);

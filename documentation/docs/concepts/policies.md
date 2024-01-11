@@ -40,8 +40,7 @@ Each of these methods can accept `policyDefinitions` as a parameter.
 
 - [competitionEngine.attachPolicies](../apis/competition-engine-api) - attaches to all `tournamentRecords`
 - [competitionEngine.competitionParticipants](../apis/competition-engine-api) - uses to filter participant attributes
-- [tournamentEngine.attachPolicies](../apis/tournament-engine-api) - attaches to the current `tournamentRecord`
-- [tournamentEngine.attachEventPolicies](../apis/tournament-engine-api) - attaches to the `event` specified by `eventId`
+- [tournamentEngine.attachPolicies](../apis/tournament-engine-api) - attaches to the specified element
 - [tournamentEngine.autoSeeding](../apis/tournament-engine-api) - overrides present in `tournamentRecord`
 - [tournamentEngine.generateDrawDefinition](../apis/tournament-engine-api) - overrides those present in `tournamentRecord`; are attached to the generated `drawDefinition`
 - [tournamentEngine.getEventData](../apis/tournament-engine-api) - used to filter participant attributes
@@ -52,5 +51,3 @@ Each of these methods can accept `policyDefinitions` as a parameter.
 - [tournamentEngine.positionActions](../apis/tournament-engine-api) - can modify the avialable actions
 - [tournamentEngine.tournamentParticipants](../apis/tournament-engine-api) - used to filter participant attributes
 - [tournamentEngine.publishEvent](../apis/tournament-engine-api) - used to filter particpant attributes and/or provide round naming values
-- [drawEngine.attachPolicies](../apis/draw-engine-api) - attaches to the current `drawDefinition`
-- [drawEngine.positionActions](../apis/draw-engine-api) - can modify the avialable actions

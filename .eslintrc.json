@@ -5,13 +5,7 @@
     "es6": true,
     "jest": true
   },
-  "ignorePatterns": [
-    "node_modules/",
-    "dist/",
-    "coverage/",
-    "scratch/",
-    "server/"
-  ],
+  "ignorePatterns": ["node_modules/", "dist/", "coverage/", "scratch/", "server/"],
   "parser": "@typescript-eslint/parser",
   "extends": [
     "eslint:recommended",
@@ -62,10 +56,5 @@
     "sonarjs/no-unused-collection": "warn",
     "sonarjs/prefer-object-literal": "warn",
     "sonarjs/prefer-single-boolean-return": "warn"
-  },
-  "settings": {
-    "react": {
-      "version": "17"
-    }
   }
 }

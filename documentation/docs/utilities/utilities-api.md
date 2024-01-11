@@ -59,7 +59,7 @@ const {
 
 ---
 
-## dateRange
+## generateDateRange
 
 ---
 
@@ -205,7 +205,7 @@ const {
 
 ---
 
-## scoreHasValue
+## checkScoreHasValue
 
 ---
 
