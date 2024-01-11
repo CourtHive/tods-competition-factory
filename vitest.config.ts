@@ -1,6 +1,8 @@
 import { configDefaults, defineConfig } from 'vitest/config';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
+  plugins: [tsconfigPaths()],
   test: {
     onConsoleLog: () => {},
     environment: 'node',
@@ -18,14 +20,14 @@ export default defineConfig({
         '**/scratch/**',
         '**/server/**',
         'src/forge/**',
-        '**/types/**'
+        '**/types/**',
       ],
       statements: 30,
       provider: 'v8',
       functions: 30,
       branches: 50,
       lines: 30,
-      all: true
-    }
-  }
+      all: true,
+    },
+  },
 });
