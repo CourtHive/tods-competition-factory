@@ -6,7 +6,7 @@ import { eventConstants } from './eventConstants';
 import { extensionConstants } from './extensionConstants';
 import { flightConstants } from './flightConstants';
 import { genderConstants } from './genderConstants';
-import { keyValueConstants } from '../matchUpEngine/governors/scoreGovernor/keyValueScore/constants';
+import { keyValueConstants } from '../mutate/score/keyValueScore/constants';
 import { matchUpActionConstants } from './matchUpActionConstants';
 import { matchUpTypes } from './matchUpTypes';
 import { participantConstants, participantTypes } from './participantConstants';

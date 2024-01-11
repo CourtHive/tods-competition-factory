@@ -784,21 +784,6 @@ tournamentEngine.assignTieMatchUpParticipantId({
 
 ---
 
-## attachEventPolicies
-
-Attaches a policy to an event within a tournamentRecord.
-
-See [Policies](../concepts/policies).
-
-```js
-tournamentEngine.attachEventPolicies({
-  policyDefinitions: SEEDING_POLICY,
-  eventId,
-});
-```
-
----
-
 ## attachFlightProfile
 
 Attaches a `flightProfile` to the `event` specified by `eventId`. A `flightProfile` is first generated with `generateFlightProfile()`.
@@ -965,7 +950,7 @@ const {
 
 ---
 
-## bulkScheduleMatchUps
+## bulkScheduleTournamentMatchUps
 
 ```js
 const schedule = {
@@ -974,7 +959,7 @@ const schedule = {
   venueId,
 };
 const matchUpDetails = [{ matchUpId, schedule }];
-tournamentEngine.bulkScheduleMatchUps({
+tournamentEngine.bulkScheduleTournamentMatchUps({
   checkChronology, // optional boolean - returns warnings for scheduling errors; throws errors when combined with errorOnAnachronism
   errorOnAnachronism, // optional boolean - throw error if chronological scheduduling error
   removePriorValues, // optional boolean - remove all pre-existing scheduling timeItems from matchUps
@@ -1217,7 +1202,7 @@ tournamentEngine.disableCourts({
 
 ---
 
-## disableTiaAutoCalc
+## disableTieAutoCalc
 
 Disable default behavior of auto calculating TEAM matchUp scores.
 
@@ -1242,7 +1227,6 @@ const { matchUps, participantIdPairings, iterations, candidatesCount } =
   tournamentEngine.drawMatic({
     restrictEntryStatus, // optional - only allow STRUCTURE_SELECTED_STATUSES
     generateMatchUps, // optional - defaults to true; when false only returns { participantIdPairings }
-    addToStructure, // optional - defaults to true
     maxIterations, // optional - defaults to 5000
     structureId, // optional; if no structureId is specified find the latest AD_HOC stage which has matchUps
     matchUpIds, // optional array of uuids to be used when generating matchUps
@@ -1344,26 +1328,6 @@ const { court, venue } = tournamentEngine.findCourt({ courtId });
 
 ---
 
-## findDrawDefinitionExtension
-
-```js
-const { extension } = tournamentEngine.findDrawDefinitionExtension({
-  drawId,
-  eventId,
-  name,
-});
-```
-
----
-
-## findEventExtension
-
-```js
-const { extension } = tournamentEngine.findEventExtension({ eventId, name });
-```
-
----
-
 ## findMatchUp
 
 ```js
@@ -1390,17 +1354,6 @@ const { participant } = tournamentEngine.findParticipant({
 
 ---
 
-## findParticipantExtension
-
-```js
-const { extension } = tournamentEngine.findParticipantExtension({
-  participantId,
-  name,
-});
-```
-
----
-
 ## findPolicy
 
 Find `policyType` either on an event object or the tournamentRecord.
@@ -1410,14 +1363,6 @@ const { policy } = tournamentEngine.findPolicy({
   policyType: POLICY_TYPE_SCORING,
   eventId, // optional
 });
-```
-
----
-
-## findTournamentExtension
-
-```js
-const { extension } = tournamentEngine.findTournamentExtension({ name });
 ```
 
 ---
@@ -1434,14 +1379,12 @@ tournamentEngine.findVenue({ venueId });
 
 ## generateAdHocMatchUps
 
-Draws with `{ drawType: AD_HOC }` allow `matchUps` to be dynamically added. In this type of draw there is no automatic participant progression between rounds. Participant assignment to `matchUps` is done manually, or via **DrawMatic**. The only restriction is that a participant may appear once per round. To generate only, and not add to the structure/draw, use the boolean `addToStructure` and then subsequently use [addAddHocMatchUps](#addadhocmatchups).
+Draws with `{ drawType: AD_HOC }` allow `matchUps` to be dynamically added. In this type of draw there is no automatic participant progression between rounds. Participant assignment to `matchUps` is done manually, or via **DrawMatic**. The only restriction is that a participant may appear once per round.
 
 ```js
 const result = tournamentEngine.generateAdHocMatchUps({
-  addToStructure, // boolean - defaults to true
   participantIdPairings, // optional - array of array of pairings [['id1', 'id2'], ['id3', 'id4']]
   drawId, // required - drawId of drawDefinition in which target structure is found
-  structureId, // required only when more than one structure is present and { addToStructure: true }
   matchUpIds, // optional - if matchUpIds are not specified UUIDs are generated
   roundNumber, // optional - specify round for which matchUps will be generated
   newRound, // optional - boolean defaults to false - whether to auto-increment to next roundNumber
@@ -1551,7 +1494,6 @@ const {
   maxIterations,// optional - defaults to 5000
   generateMatchUps = true, // optional - defaults to true; when false only returns { participantIdPairings }
   participantIds, // required
-  addToStructure, // optional - defaults to true
   adHocRatings, // optional { ['participantId']: numericRating }
   structureId, // required
   matchUpIds, // optional array of uuids to be used when generating matchUps
@@ -1669,7 +1611,7 @@ const { scaleItemsWithParticipantIds } =
 
 ---
 
-## generateTeamsFromParticipantAttribute
+## createTeamsFromParticipantAttributes
 
 Uses attributes of individual participnts or persons to generate `{ participantType: TEAM }` participants.
 
@@ -1677,7 +1619,7 @@ Returns count of # of TEAM participants added;
 
 ```js
 const { participantsAdded } =
-  tournamentEngine.generateTeamsFromParticipantAttribute({
+  tournamentEngine.createTeamsFromParticipantAttributes({
     participantAttribute, // optional -- attribute of participant object
     addParticipants, // optional boolean; defaults to true; when false return new participants
     personAttribute, // optional - attribute of person object
@@ -2687,7 +2629,7 @@ const { valid } = tournamentEngine.isValidForQualifiying({
 Returns boolean indicating whether matchUpFormat code is valid.
 
 ```js
-const valid = tournamentEngine.isValidMatchUpFormat(matchUpFormat);
+const valid = tournamentEngine.isValidMatchUpFormat({ matchUpFormat });
 ```
 
 ---
@@ -3053,7 +2995,7 @@ tournamentEngine.newTournamentRecord({
   tournamentId, // optional - will be generated if not provided
 });
 
-const { tournamentRecord } = tournamentEngine.getState();
+const { tournamentRecord } = tournamentEngine.getTournament();
 ```
 
 ---
@@ -3092,18 +3034,6 @@ const {
 } = tournamentEngine.participantScaleItem({
   scaleAttributes,
   participant,
-});
-```
-
----
-
-## participantScheduledMatchUps
-
-Returns `matchUps` which have been scheduled, organized by `scheduledDate` and sorted by `scheduledTime`.
-
-```js
-const { scheduledMatchUps } = tournamentEngine.participantScheduledMatchUps({
-  matchUps,
 });
 ```
 
@@ -3348,10 +3278,11 @@ tournamentEngine.removeEventMatchUpFormatTiming({ eventId });
 
 ---
 
-## removeEventPolicy
+## removePolicy
 
 ```js
-tournamentEngine.removeEventPolicy({ policyType });
+tournamentEngine.removePolicy({ policyType }); // remove from tournamentRecord
+tournamentEngine.removePolicy({ policyType, eventId }); // remove from event
 ```
 
 ---

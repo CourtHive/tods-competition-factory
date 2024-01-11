@@ -5,8 +5,8 @@ title: Scheduling Policy
 Scheduling policies define average match times and can specify recovery times as well as maximum number of matches per player per day. A scheduling policy is normally attached to a tournament record, but can optionally be attached to an event.
 
 ```js
-tournamentEngine.attachPolicies({ policyDefinitions });
-tournamentEngine.attachEventPolicies({ policyDefinitions });
+tournamentEngine.attachPolicies({ policyDefinitions }); // attach to tournamentRecord
+tournamentEngine.attachPolicies({ policyDefinitions, eventId }); // attach to event
 ```
 
 ## Retrieving Scheduling times

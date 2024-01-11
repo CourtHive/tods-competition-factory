@@ -1,0 +1,16 @@
+import tournamentEngine from '../engines/syncEngine';
+import { expect, it } from 'vitest';
+
+import tournamentRecord from './publishState.tods.json';
+
+it('can get competitionScheduleMatchUps', () => {
+  tournamentEngine.setState(tournamentRecord);
+
+  let result = tournamentEngine.competitionScheduleMatchUps();
+  expect(result.dateMatchUps.length).toEqual(29);
+
+  result = tournamentEngine.competitionScheduleMatchUps({
+    usePublishState: true,
+  });
+  expect(result.dateMatchUps.length).toEqual(0);
+});

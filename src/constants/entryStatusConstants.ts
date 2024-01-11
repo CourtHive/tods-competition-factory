@@ -1,30 +1,28 @@
-import { EntryStatusEnum } from '../types/tournamentFromSchema';
+export const ALTERNATE = 'ALTERNATE';
+export const CONFIRMED = 'CONFIRMED';
+export const DIRECT_ACCEPTANCE = 'DIRECT_ACCEPTANCE';
+export const FEED_IN = 'FEED_IN';
+export const JUNIOR_EXEMPT = 'JUNIOR_EXEMPT';
+export const LUCKY_LOSER = 'LUCKY_LOSER';
+export const ORGANISER_ACCEPTANCE = 'ORGANISER_ACCEPTANCE';
+export const QUALIFIER = 'QUALIFIER';
+export const REGISTERED = 'REGISTERED';
+export const SPECIAL_EXEMPT = 'SPECIAL_EXEMPT';
+export const UNGROUPED = 'UNGROUPED';
+export const UNPAIRED = 'UNPAIRED';
+export const WILDCARD = 'WILDCARD';
+export const WITHDRAWN = 'WITHDRAWN';
 
-export const ALTERNATE = EntryStatusEnum.Alternate;
-export const CONFIRMED = EntryStatusEnum.Confirmed;
-export const DIRECT_ACCEPTANCE = EntryStatusEnum.DirectAcceptance;
-export const FEED_IN = EntryStatusEnum.FeedIn;
-export const JUNIOR_EXEMPT = EntryStatusEnum.JuniorExempt;
-export const LUCKY_LOSER = EntryStatusEnum.LuckyLoser;
-export const ORGANISER_ACCEPTANCE = EntryStatusEnum.OrganiserAcceptance;
-export const QUALIFIER = EntryStatusEnum.Qualifier;
-export const REGISTERED = EntryStatusEnum.Registered;
-export const SPECIAL_EXEMPT = EntryStatusEnum.SpecialExempt;
-export const UNGROUPED = EntryStatusEnum.Ungrouped;
-export const UNPAIRED = EntryStatusEnum.Unpaired;
-export const WILDCARD = EntryStatusEnum.Wildcard;
-export const WITHDRAWN = EntryStatusEnum.Withdrawn;
-
-export const EQUIVALENT_ACCEPTANCE_STATUSES = [
+export const EQUIVALENT_ACCEPTANCE_STATUSES: any = [
   CONFIRMED,
   DIRECT_ACCEPTANCE,
   JUNIOR_EXEMPT,
   ORGANISER_ACCEPTANCE,
   SPECIAL_EXEMPT,
 ];
-export const DRAW_SPECIFIC_STATUSES = [FEED_IN, LUCKY_LOSER, QUALIFIER];
+export const DRAW_SPECIFIC_STATUSES: any = [FEED_IN, LUCKY_LOSER, QUALIFIER];
 
-export const DIRECT_ENTRY_STATUSES = [
+export const DIRECT_ENTRY_STATUSES: any = [
   CONFIRMED,
   DIRECT_ACCEPTANCE,
   FEED_IN,
@@ -34,7 +32,7 @@ export const DIRECT_ENTRY_STATUSES = [
   WILDCARD,
 ];
 
-export const STRUCTURE_SELECTED_STATUSES = [
+export const STRUCTURE_SELECTED_STATUSES: any = [
   CONFIRMED,
   DIRECT_ACCEPTANCE,
   JUNIOR_EXEMPT,
@@ -45,7 +43,7 @@ export const STRUCTURE_SELECTED_STATUSES = [
   WILDCARD,
 ];
 
-export const VALID_ENTRY_STATUSES = [
+export const VALID_ENTRY_STATUSES: any = [
   ALTERNATE,
   CONFIRMED,
   DIRECT_ACCEPTANCE,
@@ -62,11 +60,7 @@ export const VALID_ENTRY_STATUSES = [
   WITHDRAWN,
 ];
 
-// will be deprecated
-export const STRUCTURE_ENTERED_TYPES = STRUCTURE_SELECTED_STATUSES;
-export const VALID_ENTERED_TYPES = VALID_ENTRY_STATUSES;
-
-export const entryStatusConstants = {
+export const entryStatusConstants: any = {
   ALTERNATE,
   CONFIRMED,
   DIRECT_ACCEPTANCE,
@@ -79,11 +73,9 @@ export const entryStatusConstants = {
   ORGANISER_ACCEPTANCE,
   QUALIFIER,
   SPECIAL_EXEMPT,
-  STRUCTURE_ENTERED_TYPES,
   STRUCTURE_SELECTED_STATUSES,
   UNGROUPED,
   UNPAIRED,
-  VALID_ENTERED_TYPES,
   VALID_ENTRY_STATUSES,
   WILDCARD,
   WITHDRAWN,

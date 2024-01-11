@@ -22,7 +22,7 @@
     "seeding",
     "tennis"
   ],
-  "version": "1.9.5",
+  "version": "2.0.0-beta.6",
   "license": "MIT",
   "private": false,
   "homepage": "https://courthive.github.io/tods-competition-factory/",
@@ -37,18 +37,9 @@
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "exports": {
-    "./package.json": "./package.json",
     ".": {
       "import": "./dist/index.mjs",
       "default": "./dist/index.js"
-    },
-    "./*": {
-      "import": {
-        "types": "./dist/forge/*.d.ts",
-        "default": "./dist/forge/*.mjs"
-      },
-      "types": "./dist/forge/*.d.ts",
-      "default": "./dist/forge/*.mjs"
     }
   },
   "typesVersions": {
@@ -79,12 +70,18 @@
   "scripts": {
     "commits": "git log $(git describe --tags --abbrev=0)..HEAD --oneline --no-merges --pretty=format:'%s: %h' | sed '/factory/d'",
     "release": "npm run release:patch",
+    "release:alpha": "npm run commits && npm version $(semver $npm_package_version -i premajor --preid alpha) && npm publish --tag alpha",
+    "minor:alpha": "npm run commits && npm version $(semver $npm_package_version -i preminor --preid alpha) && npm publish --tag alpha",
+    "patch:alpha": "npm run commits && npm version $(semver $npm_package_version -i prerelease --preid alpha) && npm publish --tag alpha",
+    "release:beta": "npm run commits && npm version $(semver $npm_package_version -i prerelease --preid beta) && npm publish --tag beta",
+    "minor:beta": "npm run commits && npm version $(semver $npm_package_version -i preminor --preid beta) && npm publish --tag beta",
+    "patch:beta": "npm run commits && npm version $(semver $npm_package_version -i prerelease --preid beta) && npm publish --tag beta",
     "release:major": "npm run commits && npm version $(semver $npm_package_version -i major) && npm publish --tag latest",
     "release:minor": "npm run commits && npm version $(semver $npm_package_version -i minor) && npm publish --tag latest",
     "release:patch": "npm run commits && npm version $(semver $npm_package_version -i patch) && npm publish --tag latest",
     "start": "rollup --config -w",
     "build": "rimraf dist && rollup --config",
-    "test": "vitest",
+    "test": "VITE_CJS_IGNORE_WARNING=true vitest",
     "tuic": "vitest --ui --coverage.enabled",
     "tui": "vitest --ui",
     "coverage": "vitest run --coverage",
@@ -96,26 +93,21 @@
     "prepare": "rimraf dist && rollup --config && $(./addVersion $npm_package_version)",
     "prepublishOnly": "./addVersion $npm_package_version && pinst --disable",
     "postpublish": "pinst --enable",
-    "doc:publish": "cd documentation && GIT_USER=CourtHive USE_SSH=true yarn deploy",
+    "doc:publish": "cd documentation && GIT_USER=CourtHive USE_SSH=true pnpm deploy",
     "generate-types": "quicktype -s schema src/global/schema/tournament.schema.json -o src/types/tournamentFromSchema.ts --just-types -t Tournament",
+    "shakeable": "npx agadoo dist/tods-competition-factory.cjs.min.js",
     "check-types": "tsc --noEmit"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn eslint src"
+      "pre-commit": "pnpm eslint src"
     }
-  },
-  "prettier": {
-    "printWidth": 80,
-    "semi": true,
-    "singleQuote": true,
-    "trailingComma": "es5"
   },
   "devDependencies": {
     "@babel/core": "7.23.7",
-    "@babel/preset-env": "7.23.8",
     "@babel/plugin-transform-nullish-coalescing-operator": "^7.22.11",
     "@babel/plugin-transform-optional-chaining": "^7.23.0",
+    "@babel/preset-env": "7.23.8",
     "@babel/preset-typescript": "7.23.3",
     "@commitlint/cli": "^18.0.0",
     "@commitlint/config-conventional": "^18.0.0",
@@ -147,7 +139,7 @@
     "esm": "3.2.25",
     "fs-extra": "11.2.0",
     "husky": "8.0.3",
-    "lint-staged": "^15.0.0",
+    "lint-staged": "15.2.0",
     "pinst": "^3.0.0",
     "prettier": "3.1.1",
     "prettier-eslint": "16.2.0",
@@ -161,6 +153,7 @@
     "typescript": "5.3.3",
     "variable-diff": "^2.0.2",
     "vite": "5.0.11",
+    "vite-tsconfig-paths": "^4.2.3",
     "vitest": "^0.34.0"
   },
   "lint-staged": {

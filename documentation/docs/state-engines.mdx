@@ -4,17 +4,34 @@ title: State Engines
 
 Competition Factory engines manage different concerns within a tournament and may be used either synchronously or asynchronously.
 Engine methods which mutate/transform operate on documents which are held in state.
-The **competitionEngine**, **tournamentEngine** and **scaleEngine** share a state which contains one or more _tournamentRecords_;
-while the **drawEngine** and **matchUpEngine** have their own state.
+
+The **syncEngine**, **asyncEngine** and **askEngine** all share a state which contains one or more _tournamentRecords_.
 
 By default a deep copy of documents are made as they are loaded into each state engine. This behavior can be overridden such that the engines operate on original documents.
 
-[**competitionEngine**](./engines/competition-engine-overview) - manages resources which may be shared across multiple linked tournaments, such as venues (courts & other locations); includes advanced scheduling and cross-tournament reporting.
+## Governors
 
-[**tournamentEngine**](./engines/tournament-engine-overview) - manages tournament metadata, participants, events (including the generation of complex draw types and "flights" within events), and reporting.
+**Competition Factory** functions are organized into _governors_ which are responsible for specific areas of concern.
 
-[**drawEngine**](./engines/draw-engine-overview) - generates drawDefinitions and matchUp results; manages participant seeding and movement within and between draw structures.
+State engines can be used to call factory functions:
 
-[**matchUpEngine**](./engines/matchUp-engine-overview) - methods to manipulate tieFormats, analyze arrays of matchUps, and report on matchUp scores.
+```js
+import { askEngine, participantGovernor: { getParticipants } } from 'tods-competition-factory';
+const { participants } = askEngine.execute({ getParticipants, ...params });
+```
 
-[**scaleEngine**](./engines/scale-engine-overview) - methods to generate ranking points and calculate ratings.
+...or methods can be imported into shared engine state:
+
+```js
+askEngine.importMethods({ getParticipants });
+const { participants } = askEngine.getParticipants(params);
+// -or-
+const { participants } = askEngine.execute({
+  method: 'getParticipants',
+  params: {},
+});
+```
+
+```
+
+```

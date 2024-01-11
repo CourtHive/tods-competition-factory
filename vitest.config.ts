@@ -1,14 +1,13 @@
 import { configDefaults, defineConfig } from 'vitest/config';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
+  plugins: [tsconfigPaths()],
   test: {
     onConsoleLog: () => {},
     environment: 'node',
     useAtomics: true,
-    include: [
-      'src/**/*.test.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
-      'tests/**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
-    ],
+    include: ['src/**/*.test.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     coverage: {
       reporter: ['html'],
       include: ['src/**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
@@ -19,6 +18,7 @@ export default defineConfig({
         '**/conversion/**',
         '**/examples/**',
         '**/scratch/**',
+        '**/server/**',
         'src/forge/**',
         '**/types/**',
       ],

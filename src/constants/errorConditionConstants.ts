@@ -515,10 +515,6 @@ export const PARTICIPANT_NOT_CHECKED_IN = {
   message: 'Participant not checked in',
   code: 'ERR_UNCHANGED_PARTICIPANT_NOT_CHECKED_IN',
 };
-export const PARTICIPANT_ALREADY_CHECKED_IN = {
-  message: 'Participant already checked in',
-  code: 'ERR_UNCHANGED_PARTICIPANT_CHECKED_IN',
-};
 
 export const MISSING_PERSON_DETAILS = {
   message: 'Missing person details',
@@ -930,7 +926,6 @@ export const errorConditionConstants = {
   NO_VALID_DATES,
   NOT_FOUND,
   NOT_IMPLEMENTED,
-  PARTICIPANT_ALREADY_CHECKED_IN,
   PARTICIPANT_COUNT_EXCEEDS_DRAW_SIZE,
   PARTICIPANT_ID_EXISTS,
   PARTICIPANT_NOT_CHECKED_IN,

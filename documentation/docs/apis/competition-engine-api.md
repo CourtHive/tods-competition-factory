@@ -365,28 +365,6 @@ competitionEngine.attachPolicies({ policyDefinitions });
 
 ---
 
-## bulkMatchUpStatusUpdate
-
-Provides the ability to update the outcomes of multiple matchUps at once.
-
-```js
-const outcomes = [
-  {
-    tournamentId,
-    eventId,
-    drawId,
-    matchUpId,
-    matchUpFormat,
-    matchUpStatus,
-    winningSide,
-    score,
-  },
-];
-competitionEngine.bulkMatchUpStatusUpdate({ outcomes });
-```
-
----
-
 ## bulkRescheduleMatchUps
 
 ```js
@@ -470,7 +448,7 @@ const {
   completedMatchUps,
   pendingMatchUps,
   upcomingMatchUps,
-} = competitionEngine.competitionMatchUps({
+} = competitionEngine.getCompetitionMatchUps({
   scheduleVisibilityFilters, // { visibilityThreshold: Date, eventIds, drawIds }
   matchUpFilters, // optional; [ scheduledDate, scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
 });
@@ -557,7 +535,7 @@ competitionEngine.disableCourts({
 
 ---
 
-## disableTiaAutoCalc
+## disableTieAutoCalc
 
 Disable default behavior of auto calculating TEAM matchUp scores.
 
@@ -619,11 +597,11 @@ that the server context can not be blocked by any long-running external processe
 ```js
 const result = competitionEngine.executionQueue([
   {
-    method: 'getParticipants',
+    method: 'getCompetitionParticipants',
     params: { participantFilters: { participantTypes: [PAIR] } },
   },
   {
-    method: 'getParticipants',
+    method: 'getCompetitionParticipants',
     params: { participantFilters: { participantTypes: [INDIVIDUAL] } },
   },
 ]);
@@ -803,7 +781,7 @@ Returns the following detail for each round:
 
 ---
 
-## getParticipants
+## getCompetitionParticipants
 
 Returns **deepCopies** of competition participants filtered by participantFilters which are arrays of desired participant attribute values. This method is an optimization of `getCompetitionParticipants` and will replace it going forward.
 
@@ -827,7 +805,7 @@ const {
   participants, // array of participants
   matchUps, // array of all matchUps; when { withMatchUps: true }
 } =
-  competitionEngine.getParticipants({
+  competitionEngine.getCompetitionParticipants({
     convertExtensions, // optional - BOOLEAN - convert extensions so _extensionName attributes
     participantFilters, // optional - filters
     policyDefinitions, // optional - can accept a privacy policy to filter participant attributes
@@ -1312,7 +1290,7 @@ competitionEngine.removeEventMatchUpFormatTiming({ eventId });
 Removes an extension from all `tournamentRecords` loaded into `competitionEngine`.
 
 ```js
-competitionEngine.removeExtension({ name });
+competitionEngine.removeExtension({ name, discover: true });
 ```
 
 ---

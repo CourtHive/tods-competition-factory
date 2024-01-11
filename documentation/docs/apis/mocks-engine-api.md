@@ -118,7 +118,7 @@ An additional attribute, `teamKey` is available for `participantsProfile`.
 
 **TEAM** participants will be generated from the values of the specified attribute on **INDIVIDUAL** participants.
 
-See `tournamentEngine.generateTeamsFromParticipantAttribute()` for more information.
+See `tournamentEngine.createTeamsFromParticipantAttributes()` for more information.
 :::
 
 :::note

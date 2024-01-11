@@ -1,8 +1,8 @@
-export const ANY = 'ANY';
-export const MALE = 'MALE';
-export const MIXED = 'MIXED';
-export const OTHER = 'OTHER';
-export const FEMALE = 'FEMALE';
+export const ANY: any = 'ANY';
+export const MALE: any = 'MALE';
+export const MIXED: any = 'MIXED';
+export const OTHER: any = 'OTHER';
+export const FEMALE: any = 'FEMALE';
 
 export const genderConstants = {
   ANY,

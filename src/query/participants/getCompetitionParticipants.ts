@@ -1,0 +1,83 @@
+import { getParticipants as participantGetter } from './getParticipants';
+// import { deepMerge } from '../../utilities/deepMerge';
+
+import { MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
+import { HydratedMatchUp, HydratedParticipant } from '../../types/hydrated';
+import { ResultType } from '../../global/functions/decorateResult';
+import { SUCCESS } from '../../constants/resultConstants';
+import { ParticipantMap } from '../../types/factoryTypes';
+import { MatchUp } from '../../types/tournamentTypes';
+
+export function getCompetitionParticipants(params): ResultType & {
+  mappedMatchUps?: { [key: string]: HydratedMatchUp };
+  participantIdsWithConflicts?: string[];
+  participants?: HydratedParticipant[];
+  participantMap?: ParticipantMap;
+  matchUps?: MatchUp[];
+  derivedEventInfo?: any;
+  derivedDrawInfo?: any;
+  success?: boolean;
+} {
+  const { tournamentRecords } = params || {};
+  if (
+    typeof tournamentRecords !== 'object' ||
+    !Object.keys(tournamentRecords).length
+  ) {
+    return { error: MISSING_TOURNAMENT_RECORDS };
+  }
+
+  const participants: HydratedParticipant[] = [];
+  const participantMap: ParticipantMap = {}; // turn into Map
+  const derivedEventInfo: any = {};
+  const derivedDrawInfo: any = {};
+  const matchUps: MatchUp[] = [];
+  const mappedMatchUps = {};
+
+  const participantIdsWithConflicts: string[] = [];
+  for (const tournamentRecord of Object.values(tournamentRecords)) {
+    const {
+      participantIdsWithConflicts: idsWithConflicts,
+      mappedMatchUps: tournamentMappedMatchUps,
+      participantMap: tournamentParticipantMap,
+      participants: tournamentParticipants,
+      matchUps: tournamentMatchUps,
+      derivedEventInfo: eventInfo,
+      derivedDrawInfo: drawInfo,
+    } = participantGetter({ ...params, tournamentRecord });
+
+    Object.assign(mappedMatchUps, tournamentMappedMatchUps);
+    Object.assign(participantMap, tournamentParticipantMap);
+    Object.assign(derivedEventInfo, eventInfo);
+    Object.assign(derivedDrawInfo, drawInfo);
+
+    /*
+    // fits the use case where participantIds are equivalent to personIds
+    for (const tournamentParticipant of tournamentParticipants ?? []) {
+      const { participantId } = tournamentParticipant;
+      if (!participantMap[participantId]) {
+        participantMap[participantId] = tournamentParticipant;
+      } else {
+        // merge participant record context across tournaments
+        participantMap[participantId] = deepMerge(tournamentParticipant, participantMap[participantId], true);
+      }
+    }
+    */
+    participants.push(...(tournamentParticipants ?? []));
+    matchUps.push(...(tournamentMatchUps ?? []));
+
+    idsWithConflicts?.forEach((participantId) => {
+      if (!participantIdsWithConflicts.includes(participantId))
+        participantIdsWithConflicts.push(participantId);
+    });
+  }
+  return {
+    participantIdsWithConflicts,
+    derivedEventInfo,
+    derivedDrawInfo,
+    participantMap,
+    mappedMatchUps,
+    participants,
+    ...SUCCESS,
+    matchUps,
+  };
+}
