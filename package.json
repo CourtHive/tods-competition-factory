@@ -82,6 +82,8 @@
     "start": "rollup --config -w",
     "build": "rimraf dist && rollup --config",
     "test": "VITE_CJS_IGNORE_WARNING=true vitest",
+    "test:e2e": "cd src/server && pnpm test:e2e",
+    "test:server": "cd src/server && pnpm test",
     "tuic": "vitest --ui --coverage.enabled",
     "tui": "vitest --ui",
     "coverage": "vitest run --coverage",
