@@ -1,16 +1,11 @@
 {
-  "name": "nest-typescript-starter",
+  "name": "factory-internal-server",
   "private": true,
   "version": "1.0.0",
-  "description": "Nest TypeScript starter repository",
+  "description": "server for testing client/server model with factory",
   "license": "MIT",
   "scripts": {
-    "build": "nest -p tsconfig.build.json build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "NODE_ENV=production nest start",
-    "start:dev": "NODE_ENV=development nest start --watch",
-    "start:debug": "NODE_ENV=test nest start --debug --watch",
-    "start:prod": "NODE_ENV=production node dist/main",
     "lint:staged": "TZ=UTC lint-staged",
     "lint:tsc": "tsc --project tsconfig.json",
     "lint": "eslint src --fix --cache",
