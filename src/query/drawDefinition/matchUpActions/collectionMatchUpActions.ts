@@ -1,7 +1,6 @@
 import { isAvailableAction } from '../positionActions/actionPolicyUtils';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { checkScoreHasValue } from '../../matchUp/checkScoreHasValue';
-import { xa } from '../../../utilities/objects';
 
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '../../../constants/matchUpTypes';
@@ -67,13 +66,13 @@ export function collectionMatchUpActions({
   const allParticipants = inContextMatchUp.sides
     ?.flatMap((side: any) => side.participant?.individualParticipants || side.participant)
     .filter(Boolean);
-  const allParticipantIds = allParticipants?.map(xa('participantId'));
+  const allParticipantIds = allParticipants?.map(getParticipantId);
 
   const existingParticipants = inContextMatchUp.sides
     ?.filter((side) => !sideNumber || side.sideNumber === sideNumber)
     .flatMap((side: any) => side.participant?.individualParticipants || side.participant)
     .filter(Boolean);
-  const existingParticipantIds = existingParticipants?.map(xa('participantId'));
+  const existingParticipantIds = existingParticipants?.map(getParticipantId);
 
   const inContextDualMatchUp = inContextDrawMatchUps?.find(
     (drawMatchUp) => drawMatchUp.matchUpId === inContextMatchUp.matchUpTieId,

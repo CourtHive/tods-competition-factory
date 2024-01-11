@@ -1,4 +1,4 @@
-import { xa } from '../../utilities/objects';
+import { getParticipantId } from '../../global/functions/extractors';
 import { findStructure } from '../../acquire/findStructure';
 
 import { DrawDefinition, PositionAssignment, Structure } from '../../types/tournamentTypes';
@@ -21,7 +21,7 @@ export function getAllPositionedParticipantIds({ drawDefinition }): ResultType &
       const stage = structure.stage;
       if (!stagePositionedParticipantIds[stage]) stagePositionedParticipantIds[stage] = [];
       const { positionAssignments } = getPositionAssignments({ structure });
-      const particiapntIds = positionAssignments?.map(xa('participantId')).filter(Boolean) ?? [];
+      const particiapntIds = positionAssignments?.map(getParticipantId).filter(Boolean) ?? [];
       stagePositionedParticipantIds[stage].push(...particiapntIds);
       return particiapntIds;
     })

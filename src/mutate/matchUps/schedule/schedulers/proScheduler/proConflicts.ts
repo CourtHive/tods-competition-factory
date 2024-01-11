@@ -1,20 +1,12 @@
-import { validMatchUps } from '../../../../../validators/validMatchUp';
 import { getMatchUpDependencies } from '../../../../../query/matchUps/getMatchUpDependencies';
+import { generateRange, instanceCount, unique } from '../../../../../utilities/arrays';
 import { matchUpSort } from '../../../../../functions/sorters/matchUpSort';
+import { validMatchUps } from '../../../../../validators/validMatchUp';
 import { ensureInt } from '../../../../../utilities/ensureInt';
-import {
-  generateRange,
-  instanceCount,
-  unique,
-} from '../../../../../utilities/arrays';
 
+import { ErrorType, MISSING_CONTEXT, MISSING_MATCHUPS } from '../../../../../constants/errorConditionConstants';
 import { Tournament } from '../../../../../types/tournamentTypes';
 import { HydratedMatchUp } from '../../../../../types/hydrated';
-import {
-  ErrorType,
-  MISSING_CONTEXT,
-  MISSING_MATCHUPS,
-} from '../../../../../constants/errorConditionConstants';
 import {
   SCHEDULE_ISSUE_IDS,
   SCHEDULE_CONFLICT,
@@ -46,12 +38,10 @@ export function proConflicts({
   }
 
   const maxCourtOrder = Math.max(
-    ...matchUps
-      .map(({ schedule }) => schedule?.courtOrder || 1)
-      .map((order) => ensureInt(order))
+    ...matchUps.map(({ schedule }) => schedule?.courtOrder || 1).map((order) => ensureInt(order)),
   );
   const filteredRows = generateRange(1, maxCourtOrder + 1).map((courtOrder) =>
-    matchUps.filter((m) => ensureInt(m.schedule?.courtOrder) === courtOrder)
+    matchUps.filter((m) => ensureInt(m.schedule?.courtOrder) === courtOrder),
   );
 
   const rowIndices: { [key: string]: number } = {};
@@ -81,14 +71,7 @@ export function proConflicts({
       (profile: Profile, matchUp) => {
         if (!matchUp.matchUpId) return profile;
 
-        const {
-          matchUpId,
-          winnerMatchUpId,
-          loserMatchUpId,
-          schedule,
-          sides,
-          potentialParticipants,
-        } = matchUp;
+        const { matchUpId, winnerMatchUpId, loserMatchUpId, schedule, sides, potentialParticipants } = matchUp;
         const courtId = schedule?.courtId;
         rowIndices[matchUpId] = rowIndex;
         courtIssues[courtId] = [];
@@ -97,31 +80,21 @@ export function proConflicts({
         mappedMatchUps[matchUpId] = matchUp;
 
         const sourceMatchUpIds = deps[matchUpId].matchUpIds;
-        sourceMatchUpIds.length &&
-          profile.sourceMatchUpIds.push(...sourceMatchUpIds);
+        sourceMatchUpIds.length && profile.sourceMatchUpIds.push(...sourceMatchUpIds);
 
         const matchUpParticipantIds =
           sides
-            ?.map((side: any) => [
-              side.participant?.individualParticipantIds,
-              side.participantId,
-            ])
+            ?.map((side: any) => [side.participant?.individualParticipantIds, side.participantId])
             .flat()
             .filter(Boolean) ?? [];
         const potentialMatchUpParticipantIds =
           potentialParticipants
             ?.flat()
-            .map(({ individualParticipantIds, participantId }) => [
-              individualParticipantIds,
-              participantId,
-            ])
+            .map(({ individualParticipantIds, participantId }) => [individualParticipantIds, participantId])
             .flat()
             .filter(Boolean) || [];
 
-        profile.participantIds.push(
-          ...potentialMatchUpParticipantIds,
-          ...matchUpParticipantIds
-        );
+        profile.participantIds.push(...potentialMatchUpParticipantIds, ...matchUpParticipantIds);
 
         winnerMatchUpId && profile.targetMatchUpIds.push(winnerMatchUpId);
         loserMatchUpId && profile.targetMatchUpIds.push(loserMatchUpId);
@@ -133,15 +106,12 @@ export function proConflicts({
         targetMatchUpIds: [],
         participantIds: [],
         matchUpIds: [],
-      }
-    )
+      },
+    ),
   );
 
   const sourceDistance = (a, b) =>
-    deps[a].sources.reduce(
-      (distance, round, index) => (round.includes(b) && index + 1) || distance,
-      0
-    );
+    deps[a].sources.reduce((distance, round, index) => (round.includes(b) && index + 1) || distance, 0);
 
   const rowIssues: any[] = rowProfiles.map(() => []);
   const annotate = (matchUpId, issue, issueType, issueIds) => {
@@ -172,41 +142,28 @@ export function proConflicts({
     const participantConflicts: { [key: string]: any } = {};
 
     const instances = instanceCount(row.participantIds);
-    const conflictedParticipantIds = Object.keys(instances).filter(
-      (key) => instances[key] > 1
-    );
+    const conflictedParticipantIds = Object.keys(instances).filter((key) => instances[key] > 1);
     const conflictedMatchUpIds = row.matchUpIds.filter((matchUpId) =>
-      deps[matchUpId].participantIds.some((id) =>
-        conflictedParticipantIds.includes(id)
-      )
+      deps[matchUpId].participantIds.some((id) => conflictedParticipantIds.includes(id)),
     );
     conflictedMatchUpIds.forEach((matchUpId) => {
-      if (!participantConflicts[matchUpId])
-        participantConflicts[matchUpId] = {};
+      if (!participantConflicts[matchUpId]) participantConflicts[matchUpId] = {};
       if (!participantConflicts[matchUpId][SCHEDULE_CONFLICT]) {
-        participantConflicts[matchUpId][SCHEDULE_CONFLICT] =
-          conflictedMatchUpIds.filter((id) => id !== matchUpId);
+        participantConflicts[matchUpId][SCHEDULE_CONFLICT] = conflictedMatchUpIds.filter((id) => id !== matchUpId);
       }
     });
 
     const previousRowWarnings =
-      previousRow &&
-      row.participantIds.filter((id) =>
-        previousRow.participantIds.includes(id)
-      );
+      previousRow && row.participantIds.filter((id) => previousRow.participantIds.includes(id));
     if (previousRowWarnings) {
       previousRowWarnings.forEach((participantId) => {
         const warnedMatchUpIds = row.matchUpIds
           .concat(previousRow.matchUpIds)
-          .filter((matchUpId) =>
-            deps[matchUpId].participantIds.includes(participantId)
-          );
+          .filter((matchUpId) => deps[matchUpId].participantIds.includes(participantId));
         warnedMatchUpIds.forEach((matchUpId) => {
-          if (!participantConflicts[matchUpId])
-            participantConflicts[matchUpId] = {};
+          if (!participantConflicts[matchUpId]) participantConflicts[matchUpId] = {};
           if (!participantConflicts[matchUpId][SCHEDULE_WARNING]) {
-            participantConflicts[matchUpId][SCHEDULE_WARNING] =
-              warnedMatchUpIds.filter((id) => id !== matchUpId);
+            participantConflicts[matchUpId][SCHEDULE_WARNING] = warnedMatchUpIds.filter((id) => id !== matchUpId);
           }
         });
       });
@@ -220,19 +177,10 @@ export function proConflicts({
 
       // ERRORS Section
       for (const subsequentRow of subsequentRows) {
-        const sourceAfter = subsequentRow.matchUpIds.filter((id) =>
-          sourceMatchUpIds.includes(id)
-        );
+        const sourceAfter = subsequentRow.matchUpIds.filter((id) => sourceMatchUpIds.includes(id));
         if (sourceAfter?.length) {
-          sourceAfter.forEach((id) =>
-            annotate(id, SCHEDULE_ERROR, CONFLICT_MATCHUP_ORDER, [matchUpId])
-          );
-          annotate(
-            matchUpId,
-            SCHEDULE_ERROR,
-            CONFLICT_MATCHUP_ORDER,
-            sourceAfter
-          );
+          sourceAfter.forEach((id) => annotate(id, SCHEDULE_ERROR, CONFLICT_MATCHUP_ORDER, [matchUpId]));
+          annotate(matchUpId, SCHEDULE_ERROR, CONFLICT_MATCHUP_ORDER, sourceAfter);
         }
       }
 
@@ -242,69 +190,40 @@ export function proConflicts({
           matchUpId,
           SCHEDULE_CONFLICT,
           CONFLICT_PARTICIPANTS,
-          participantConflicts[matchUpId][SCHEDULE_CONFLICT]
+          participantConflicts[matchUpId][SCHEDULE_CONFLICT],
         );
       }
 
       // if the matchUpId is part of the sources for other row matchUps => conflict
       if (row.sourceMatchUpIds.includes(matchUpId)) {
-        const sources = row.matchUpIds.filter((id) =>
-          deps[id].matchUpIds.includes(matchUpId)
-        );
+        const sources = row.matchUpIds.filter((id) => deps[id].matchUpIds.includes(matchUpId));
         annotate(matchUpId, SCHEDULE_CONFLICT, CONFLICT_MATCHUP_ORDER, sources);
         row.matchUpIds
           .filter((id) => deps[id].matchUpIds.includes(matchUpId))
-          .forEach((id) =>
-            annotate(id, SCHEDULE_CONFLICT, CONFLICT_MATCHUP_ORDER, [matchUpId])
-          );
+          .forEach((id) => annotate(id, SCHEDULE_CONFLICT, CONFLICT_MATCHUP_ORDER, [matchUpId]));
       }
 
       // ISSUES Section
-      const insufficientGap = previousRow?.matchUpIds?.filter(
-        (id) => sourceDistance(matchUpId, id) > 1
-      );
+      const insufficientGap = previousRow?.matchUpIds?.filter((id) => sourceDistance(matchUpId, id) > 1);
       if (insufficientGap?.length) {
-        annotate(
-          matchUpId,
-          SCHEDULE_ISSUE,
-          CONFLICT_MATCHUP_ORDER,
-          insufficientGap
-        );
-        insufficientGap.forEach((id) =>
-          annotate(id, SCHEDULE_ISSUE, CONFLICT_MATCHUP_ORDER, [matchUpId])
-        );
+        annotate(matchUpId, SCHEDULE_ISSUE, CONFLICT_MATCHUP_ORDER, insufficientGap);
+        insufficientGap.forEach((id) => annotate(id, SCHEDULE_ISSUE, CONFLICT_MATCHUP_ORDER, [matchUpId]));
       }
 
       // WARNINGS Section
       if (participantConflicts[matchUpId]?.[SCHEDULE_WARNING]) {
-        annotate(
-          matchUpId,
-          SCHEDULE_WARNING,
-          CONFLICT_PARTICIPANTS,
-          participantConflicts[matchUpId][SCHEDULE_WARNING]
-        );
+        annotate(matchUpId, SCHEDULE_WARNING, CONFLICT_PARTICIPANTS, participantConflicts[matchUpId][SCHEDULE_WARNING]);
       }
       if (previousRow?.targetMatchUpIds?.includes(matchUpId)) {
         // IF: connected matchUps are on the same court with sufficient time between them
         // OR: connected matchUps are on the same court and the target matchUp has 'FOLLOWED_BY'
         // THEN: no WARNING will be given
         const consideredCourtId = mappedMatchUps[matchUpId].schedule.courtId;
-        const warningMatchUpIds = sourceMatchUpIds.filter((id) =>
-          previousRow.matchUpIds.includes(id)
-        );
-        const allSameCourt = warningMatchUpIds.some(
-          (id) => mappedMatchUps[id].schedule.courtId === consideredCourtId
-        );
+        const warningMatchUpIds = sourceMatchUpIds.filter((id) => previousRow.matchUpIds.includes(id));
+        const allSameCourt = warningMatchUpIds.some((id) => mappedMatchUps[id].schedule.courtId === consideredCourtId);
         if (!allSameCourt) {
-          warningMatchUpIds.forEach((id) =>
-            annotate(id, SCHEDULE_WARNING, CONFLICT_MATCHUP_ORDER, [matchUpId])
-          );
-          annotate(
-            matchUpId,
-            SCHEDULE_WARNING,
-            CONFLICT_MATCHUP_ORDER,
-            warningMatchUpIds
-          );
+          warningMatchUpIds.forEach((id) => annotate(id, SCHEDULE_WARNING, CONFLICT_MATCHUP_ORDER, [matchUpId]));
+          annotate(matchUpId, SCHEDULE_WARNING, CONFLICT_MATCHUP_ORDER, warningMatchUpIds);
         }
       }
     });

@@ -1,9 +1,9 @@
 import { resolveTieFormat } from '../../query/hierarchical/tieFormats/resolveTieFormat';
 import { getPositionAssignments } from '../../query/drawDefinition/positionsGetter';
 import { getParticipants } from '../../query/participants/getParticipants';
+import { getParticipantId } from '../../global/functions/extractors';
 import { getMatchUpsMap } from '../../query/matchUps/getMatchUpsMap';
 import { findDrawMatchUp } from '../../acquire/findDrawMatchUp';
-import { xa } from '../../utilities/objects';
 
 import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
 import { TEAM } from '../../constants/participantConstants';
@@ -97,9 +97,9 @@ export function getTieMatchUpContext({
     matchUpsMap,
   });
 
-  const sideParticipantIds = dualMatchUp?.sides?.map(xa('participantId')) ?? [];
+  const sideParticipantIds = dualMatchUp?.sides?.map(getParticipantId) ?? [];
 
-  const assignedParticipantIds = relevantAssignments?.map(xa('participantId')) ?? [];
+  const assignedParticipantIds = relevantAssignments?.map(getParticipantId) ?? [];
 
   const participantIds = [...sideParticipantIds, ...assignedParticipantIds];
 

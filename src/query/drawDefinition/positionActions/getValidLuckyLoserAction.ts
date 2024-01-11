@@ -1,14 +1,14 @@
 import { getAllStructureMatchUps } from '../../matchUps/getAllStructureMatchUps';
 import { getInitialRoundNumber } from '../../matchUps/getInitialRoundNumber';
 import { getStructureMatchUps } from '../../structure/getStructureMatchUps';
-import { xa } from '../../../utilities/objects';
+import { getParticipantId } from '../../../global/functions/extractors';
 import { findStructure } from '../../../acquire/findStructure';
 
+import { DrawDefinition, Event, Participant, PositionAssignment, Structure } from '../../../types/tournamentTypes';
+import { LUCKY_PARTICIPANT, LUCKY_PARTICIPANT_METHOD } from '../../../constants/positionActionConstants';
 import { ROUND_OUTCOME } from '../../../constants/drawDefinitionConstants';
 import { HydratedParticipant } from '../../../types/hydrated';
 import { TEAM } from '../../../constants/eventConstants';
-import { DrawDefinition, Event, Participant, PositionAssignment, Structure } from '../../../types/tournamentTypes';
-import { LUCKY_PARTICIPANT, LUCKY_PARTICIPANT_METHOD } from '../../../constants/positionActionConstants';
 
 type GetValidLuckLoserActionArgs = {
   tournamentParticipants?: HydratedParticipant[];
@@ -115,7 +115,7 @@ export function getValidLuckyLosersAction({
     const availableParticipantIds = completedMatchUps
       ?.filter(({ matchUpType, winningSide }) => winningSide && (event?.eventType !== TEAM || matchUpType === TEAM))
       .map(({ winningSide, sides }) => winningSide && sides?.[1 - (winningSide - 1)])
-      .map(xa('participantId'))
+      .map(getParticipantId)
       .filter((participantId) => participantId && !assignedParticipantIds.includes(participantId));
 
     availableParticipantIds?.forEach((participantId) => {

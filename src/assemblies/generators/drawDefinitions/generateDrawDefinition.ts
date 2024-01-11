@@ -14,12 +14,12 @@ import { validateTieFormat } from '../../../validators/validateTieFormat';
 import { checkTieFormat } from '../../../mutate/tieFormat/checkTieFormat';
 import { checkValidEntries } from '../../../validators/checkValidEntries';
 import { generateQualifyingLink } from './links/generateQualifyingLink';
+import { getParticipantId } from '../../../global/functions/extractors';
 import { tieFormatDefaults } from '../templates/tieFormatDefaults';
 import { DrawMaticArgs, drawMatic } from './drawMatic/drawMatic';
 import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
 import { generateAdHocMatchUps } from './generateAdHocMatchUps';
 import structureTemplate from '../templates/structureTemplate';
-import { xa } from '../../../utilities/objects';
 import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
 import { constantToString } from '../../../utilities/strings';
 import { getDrawTypeCoercion } from './getDrawTypeCoercion';
@@ -587,7 +587,7 @@ export function generateDrawDefinition(params: GenerateDrawDefinitionArgs): Resu
         ({ entryStage, entryStatus }) =>
           (!entryStage || entryStage === MAIN) && entryStatus && STRUCTURE_SELECTED_STATUSES.includes(entryStatus),
       );
-      const participantIds = entries?.map(xa('participantId'));
+      const participantIds = entries?.map(getParticipantId);
       const matchUpsCount = entries ? Math.floor(entries.length / 2) : 0;
       generateRange(1, params.roundsCount + 1).forEach(() => {
         if (params.automated) {

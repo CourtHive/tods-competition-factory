@@ -1,10 +1,12 @@
 import { getAssignedParticipantIds } from '../../query/drawDefinition/getAssignedParticipantIds';
-import { refreshEntryPositions } from './refreshEntryPositions';
-import { xa, isString } from '../../utilities/objects';
 import { decorateResult } from '../../global/functions/decorateResult';
+import { getParticipantId } from '../../global/functions/extractors';
 import { getFlightProfile } from '../../query/event/getFlightProfile';
+import { refreshEntryPositions } from './refreshEntryPositions';
 import { intersection } from '../../utilities/arrays';
+import { isString } from '../../utilities/objects';
 
+import { EntryStatusUnion, Event, StageTypeUnion, Tournament } from '../../types/tournamentTypes';
 import { HydratedParticipant } from '../../types/hydrated';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
@@ -13,7 +15,6 @@ import {
   ErrorType,
   INVALID_PARTICIPANT_ID,
 } from '../../constants/errorConditionConstants';
-import { EntryStatusUnion, Event, StageTypeUnion, Tournament } from '../../types/tournamentTypes';
 
 type RemoveEventEntriesArgs = {
   tournamentParticipants?: HydratedParticipant[];
@@ -52,14 +53,14 @@ export function removeEventEntries({
       event.entries?.filter((entry) => entry.entryStatus && entryStatuses.includes(entry.entryStatus))) ||
     []
   )
-    .map(xa('participantId'))
+    .map(getParticipantId)
     .filter((participantId) => !assignedParticipantIds.includes(participantId));
 
   const stageParticipantIds = (
     (stage && event.entries?.filter((entry) => entry.entryStage && entry.entryStage === stage)) ||
     []
   )
-    .map(xa('participantId'))
+    .map(getParticipantId)
     .filter((participantId) => !assignedParticipantIds.includes(participantId));
 
   if (participantIds.length) {

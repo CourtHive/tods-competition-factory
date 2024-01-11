@@ -37,7 +37,6 @@
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "exports": {
-    "./package.json": "./package.json",
     ".": {
       "import": "./dist/index.mjs",
       "default": "./dist/index.js"
@@ -106,9 +105,9 @@
   },
   "devDependencies": {
     "@babel/core": "7.23.7",
-    "@babel/preset-env": "7.23.8",
     "@babel/plugin-transform-nullish-coalescing-operator": "^7.22.11",
     "@babel/plugin-transform-optional-chaining": "^7.23.0",
+    "@babel/preset-env": "7.23.8",
     "@babel/preset-typescript": "7.23.3",
     "@commitlint/cli": "^18.0.0",
     "@commitlint/config-conventional": "^18.0.0",
@@ -154,6 +153,7 @@
     "typescript": "5.3.3",
     "variable-diff": "^2.0.2",
     "vite": "5.0.11",
+    "vite-tsconfig-paths": "^4.2.3",
     "vitest": "^0.34.0"
   },
   "lint-staged": {

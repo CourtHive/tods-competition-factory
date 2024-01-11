@@ -1,11 +1,12 @@
+import { getParticipantId } from '../../../global/functions/extractors';
 import { definedAttributes } from '../../../utilities/definedAttributes';
-import { xa } from '../../../utilities/objects';
 import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
 import { getDrawMatchUps } from '../../matchUps/drawMatchUps';
 import { getNumericSeedValue } from '../getNumericSeedValue';
 import { unique } from '../../../utilities/arrays';
 import { getNextSeedBlock } from '../seedGetter';
 
+import { DrawDefinition, Event, PositionAssignment } from '../../../types/tournamentTypes';
 import { PolicyDefinitions, SeedingProfile } from '../../../types/factoryTypes';
 import { POLICY_TYPE_SEEDING } from '../../../constants/policyConstants';
 import { HydratedParticipant } from '../../../types/hydrated';
@@ -16,7 +17,6 @@ import {
   ASSIGN_PARTICIPANT,
   ASSIGN_PARTICIPANT_METHOD,
 } from '../../../constants/positionActionConstants';
-import { DrawDefinition, Event, PositionAssignment } from '../../../types/tournamentTypes';
 
 type GetValidAssignmentActionsArgs = {
   tournamentParticipants?: HydratedParticipant[];
@@ -104,7 +104,7 @@ export function getValidAssignmentActions({
       (completedMatchUps ?? [])
         // filter completedMatchUps to exclude SINGLES/DOUBLES for TEAM events
         .filter(({ matchUpType }) => event?.eventType !== TEAM || matchUpType === TEAM)
-        ?.map(({ sides }) => sides?.map(xa('participantId')))
+        ?.map(({ sides }) => sides?.map(getParticipantId))
         .flat()
         .filter((participantId) => participantId && !assignedParticipantIds.includes(participantId)),
     );

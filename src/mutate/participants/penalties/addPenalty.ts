@@ -1,8 +1,9 @@
 import { getParticipants } from '../../../query/participants/getParticipants';
-import { xa } from '../../../utilities/objects';
+import { getParticipantId } from '../../../global/functions/extractors';
 import { addNotice } from '../../../global/state/globalState';
 import { addExtension } from '../../extensions/addExtension';
 
+import { Extension, Penalty, PenaltyTypeUnion, Tournament } from '../../../types/tournamentTypes';
 import penaltyTemplate from '../../../assemblies/generators/templates/penaltyTemplate';
 import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
 import { ResultType } from '../../../global/functions/decorateResult';
@@ -15,7 +16,6 @@ import {
   MISSING_TOURNAMENT_RECORD,
   ErrorType,
 } from '../../../constants/errorConditionConstants';
-import { Extension, Penalty, PenaltyTypeUnion, Tournament } from '../../../types/tournamentTypes';
 
 type AddPenaltyArgs = {
   refereeParticipantId?: string;
@@ -48,7 +48,7 @@ export function addPenalty(params: AddPenaltyArgs): ResultType & { penaltyId?: s
       }).participants ?? [];
 
     const tournamentParticipantIds = participants
-      ?.map(xa('participantId'))
+      ?.map(getParticipantId)
       .filter((participantId) => participantIds.includes(participantId));
 
     if (tournamentParticipantIds.length) {

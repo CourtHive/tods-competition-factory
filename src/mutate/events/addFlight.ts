@@ -1,14 +1,14 @@
-import { addEventExtension } from '../extensions/addRemoveExtensions';
 import { decorateResult } from '../../global/functions/decorateResult';
+import { addEventExtension } from '../extensions/addRemoveExtensions';
+import { getParticipantId } from '../../global/functions/extractors';
 import { getFlightProfile } from '../../query/event/getFlightProfile';
-import { xa } from '../../utilities/objects';
 import { intersection } from '../../utilities/arrays';
 import { ensureInt } from '../../utilities/ensureInt';
 import { UUID } from '../../utilities/UUID';
 
+import { EXISTING_FLIGHT, INVALID_VALUES, MISSING_EVENT, MISSING_VALUE } from '../../constants/errorConditionConstants';
 import { FLIGHT_PROFILE } from '../../constants/extensionConstants';
 import { Entry, Event } from '../../types/tournamentTypes';
-import { EXISTING_FLIGHT, INVALID_VALUES, MISSING_EVENT, MISSING_VALUE } from '../../constants/errorConditionConstants';
 
 type AddFlightArgs = {
   qualifyingPositions?: number;
@@ -32,8 +32,8 @@ export function addFlight({
 
   if (drawEntries?.length) {
     // check that all drawEntries are in event.entries
-    const enteredParticipantIds = (event.entries ?? []).map(xa('participantId'));
-    const flightParticipantIds = drawEntries.map(xa('participantId'));
+    const enteredParticipantIds = (event.entries ?? []).map(getParticipantId);
+    const flightParticipantIds = drawEntries.map(getParticipantId);
     if (intersection(flightParticipantIds, enteredParticipantIds).length !== flightParticipantIds.length) {
       return decorateResult({ result: { error: INVALID_VALUES }, stack });
     }

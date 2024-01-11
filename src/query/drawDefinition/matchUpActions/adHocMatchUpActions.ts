@@ -1,9 +1,9 @@
 import { getEventAlternateParticipantIds } from './getEventAlternateParticipantids';
+import { getParticipantId } from '../../../global/functions/extractors';
 import { checkScoreHasValue } from '../../matchUp/checkScoreHasValue';
 import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
 import { getFlightProfile } from '../../event/getFlightProfile';
 import { unique } from '../../../utilities/arrays';
-import { xa } from '../../../utilities/objects';
 
 import { ASSIGN_SIDE_METHOD, REMOVE_PARTICIPANT, REMOVE_SIDE_METHOD } from '../../../constants/matchUpActionConstants';
 import { ASSIGN_PARTICIPANT } from '../../../constants/positionActionConstants';
@@ -49,10 +49,10 @@ export function adHocMatchUpActions({
   const enteredParticipantIds =
     drawDefinition?.entries
       ?.filter(({ entryStatus }) => entryStatus && DIRECT_ENTRY_STATUSES.includes(entryStatus))
-      .map(xa('participantId')) ?? [];
+      .map(getParticipantId) ?? [];
 
   const roundAssignedParticipantIds = roundMatchUps
-    .map((matchUp) => (matchUp.sides ?? []).flatMap(xa('participantId')))
+    .map((matchUp) => (matchUp.sides ?? []).flatMap(getParticipantId))
     .flat()
     .filter(Boolean);
 

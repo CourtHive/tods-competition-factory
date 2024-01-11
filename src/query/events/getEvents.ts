@@ -1,20 +1,19 @@
 import { getAssignedParticipantIds } from '../drawDefinition/getAssignedParticipantIds';
+import { getDrawId, getParticipantId } from '../../global/functions/extractors';
 import { definedAttributes } from '../../utilities/definedAttributes';
-import { xa } from '../../utilities/objects';
 import { getParticipants } from '../participants/getParticipants';
 import { makeDeepCopy } from '../../utilities/makeDeepCopy';
 import { getFlightProfile } from '../event/getFlightProfile';
+import { intersection } from '../../utilities/arrays';
 import { median } from '../../utilities/math';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
 import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
 import { Event, Tournament, EventTypeUnion } from '../../types/tournamentTypes';
 import ratingsParameters from '../../fixtures/ratings/ratingsParameters';
-import { PARTICIPANT_ID } from '../../constants/attributeConstants';
 import { ResultType } from '../../global/functions/decorateResult';
 import { INDIVIDUAL } from '../../constants/participantConstants';
 import { SUCCESS } from '../../constants/resultConstants';
-import { intersection } from '../../utilities/arrays';
 
 export type RankingStat = {
   median: number;
@@ -66,7 +65,7 @@ export function getEvents({
   const eventCopies = (tournamentRecord.events ?? [])
     .filter(({ eventId }) => !eventIds || (Array.isArray(eventIds) && eventIds.includes(eventId)))
     .map((event) => {
-      const eventDrawIds = event.drawDefinitions?.map(xa('drawId'));
+      const eventDrawIds = event.drawDefinitions?.map(getDrawId);
       if (drawIds?.length && !intersection(drawIds, eventDrawIds).length) return;
       const eventCopy = makeDeepCopy(event);
       if (inContext) Object.assign(eventCopy, { tournamentId });
@@ -100,7 +99,7 @@ export function getEvents({
       const selectedEntries = (event.entries ?? []).filter(({ entryStatus }) =>
         STRUCTURE_SELECTED_STATUSES.includes(entryStatus),
       );
-      const participantIds = selectedEntries.map(xa(PARTICIPANT_ID));
+      const participantIds = selectedEntries.map(getParticipantId);
 
       const processParticipant = (participant) => {
         if (participant?.ratings?.[eventType]) {
@@ -215,7 +214,7 @@ export function getEvents({
       for (const flight of flightProfile?.flights ?? []) {
         const drawId = flight.drawId;
         if (ignoreDrawId(drawId)) continue;
-        const participantIds = flight.drawEntries.map(xa(PARTICIPANT_ID));
+        const participantIds = flight.drawEntries.map(getParticipantId);
         processFlight(drawId, participantIds);
       }
 
