@@ -13,8 +13,10 @@ export async function executionQueue(payload: any) {
     return { error: 'No tournamentIds provided' };
   }
 
-  const tournamentRecords = await recordStorage.fetchTournamentRecords(tournamentIds);
-  mutationEngine.setState(tournamentRecords);
+  const result = await recordStorage.fetchTournamentRecords({ tournamentIds });
+  if (result.error) return result;
+
+  mutationEngine.setState(result.tournamentRecords);
   const mutationResult = await mutationEngine.executionQueue(executionQueue);
 
   if (mutationResult.success) {
