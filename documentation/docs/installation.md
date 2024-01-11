@@ -5,7 +5,7 @@ title: Installation
 Add to a project:
 
 ```sh
-yarn add tods-competition-factory
+pnpm add tods-competition-factory
 ```
 
 ## Test
@@ -16,5 +16,5 @@ These tests are good references for how to use the APIs provided by the `drawEng
 
 ```sh
 // fork and clone or download from github; expand; and:
-yarn test
+pnpm test
 ```

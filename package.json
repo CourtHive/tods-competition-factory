@@ -93,14 +93,14 @@
     "prepare": "rimraf dist && rollup --config && $(./addVersion $npm_package_version)",
     "prepublishOnly": "./addVersion $npm_package_version && pinst --disable",
     "postpublish": "pinst --enable",
-    "doc:publish": "cd documentation && GIT_USER=CourtHive USE_SSH=true yarn deploy",
+    "doc:publish": "cd documentation && GIT_USER=CourtHive USE_SSH=true pnpm deploy",
     "generate-types": "quicktype -s schema src/global/schema/tournament.schema.json -o src/types/tournamentFromSchema.ts --just-types -t Tournament",
     "shakeable": "npx agadoo dist/tods-competition-factory.cjs.min.js",
     "check-types": "tsc --noEmit"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn eslint src"
+      "pre-commit": "pnpm eslint src"
     }
   },
   "devDependencies": {
