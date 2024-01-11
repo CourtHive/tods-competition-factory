@@ -12,7 +12,7 @@ describe('queryTournamentRecords', () => {
     // SECOND: generate a tournamentRecord with this tournamentId and persist to storage
     result = generateTournamentRecord({
       tournamentAttributes: { tournamentId: TEST },
-      drawProfiles: [{ drawSize: 16 }]
+      drawProfiles: [{ drawSize: 16 }],
     });
     expect(result.success).toEqual(true);
 
@@ -20,7 +20,7 @@ describe('queryTournamentRecords', () => {
     result = await queryTournamentRecords({
       params: { tournamentId: TEST },
       method: 'getTournamentInfo',
-      tournamentId: TEST
+      tournamentId: TEST,
     });
     expect(result.success).toEqual(true);
   });

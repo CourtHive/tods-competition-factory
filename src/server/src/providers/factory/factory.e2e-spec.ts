@@ -47,7 +47,7 @@ describe('AppService', () => {
       .send({ tournamentAttributes: { tournamentId: TEST } })
       .expect(200);
 
-    await request(app.getHttpServer())
+    const result = await request(app.getHttpServer())
       .post('/factory')
       .set('Authorization', 'Bearer ' + token)
       .send({
@@ -64,6 +64,7 @@ describe('AppService', () => {
         tournamentId: TEST,
       })
       .expect(200);
+    expect(result.body.success).toEqual(true);
 
     return await request(app.getHttpServer())
       .post('/factory/query')
