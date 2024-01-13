@@ -26,6 +26,7 @@ import {
   isNonDirectingMatchUpStatus,
 } from '../../drawDefinitions/matchUpGovernor/checkStatusType';
 
+import { DrawDefinition, Event, MatchUpStatusUnion, Tournament } from '../../../types/tournamentTypes';
 import { POLICY_TYPE_PROGRESSION } from '../../../constants/policyConstants';
 import { DISABLE_AUTO_CALC } from '../../../constants/extensionConstants';
 import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
@@ -54,12 +55,6 @@ import {
   validMatchUpStatuses,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
-import {
-  DrawDefinition,
-  Event,
-  MatchUpStatusUnion,
-  Tournament,
-} from '../../../types/tournamentTypes';
 
 // NOTE: Internal method for setting matchUpStatus or score and winningSide, not to be confused with setMatchUpStatus
 
@@ -92,11 +87,7 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
   const stack = 'setMatchUpStatus';
 
   // always clear score if DOUBLE_WALKOVER or WALKOVER
-  if (
-    params.matchUpStatus &&
-    [WALKOVER, DOUBLE_WALKOVER].includes(params.matchUpStatus)
-  )
-    params.score = undefined;
+  if (params.matchUpStatus && [WALKOVER, DOUBLE_WALKOVER].includes(params.matchUpStatus)) params.score = undefined;
 
   // matchUpStatus in params is the new status
   // winningSide in params is new winningSide
@@ -120,11 +111,7 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   // Check matchUpStatus, matchUpStatus/winningSide validity ------------------
-  if (
-    matchUpStatus &&
-    [CANCELLED, INCOMPLETE, ABANDONED, TO_BE_PLAYED].includes(matchUpStatus) &&
-    winningSide
-  )
+  if (matchUpStatus && [CANCELLED, INCOMPLETE, ABANDONED, TO_BE_PLAYED].includes(matchUpStatus) && winningSide)
     return { error: INVALID_VALUES, winningSide, matchUpStatus };
 
   if (![undefined, ...validMatchUpStatuses].includes(matchUpStatus)) {
@@ -146,13 +133,9 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
   });
 
   // Find target matchUp ------------------------------------------------------
-  const matchUp = matchUpsMap.drawMatchUps.find(
-    (matchUp) => matchUp.matchUpId === matchUpId
-  );
+  const matchUp = matchUpsMap.drawMatchUps.find((matchUp) => matchUp.matchUpId === matchUpId);
 
-  const inContextMatchUp = inContextDrawMatchUps?.find(
-    (matchUp) => matchUp.matchUpId === matchUpId
-  );
+  const inContextMatchUp = inContextDrawMatchUps?.find((matchUp) => matchUp.matchUpId === matchUpId);
 
   if (!matchUp || !inContextDrawMatchUps) return { error: MATCHUP_NOT_FOUND };
 
@@ -168,8 +151,7 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
   const { structure } = findStructure({ drawDefinition, structureId });
 
   // Check validity of matchUpStatus considering assigned drawPositions -------
-  const assignedDrawPositions =
-    inContextMatchUp?.drawPositions?.filter(Boolean);
+  const assignedDrawPositions = inContextMatchUp?.drawPositions?.filter(Boolean);
 
   let dualWinningSideChange;
   if (matchUp.matchUpType === TEAM) {
@@ -200,8 +182,7 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
         sets: set ? [set] : [],
       };
 
-      dualWinningSideChange =
-        projectedWinningSide !== existingDualMatchUpWinningSide;
+      dualWinningSideChange = projectedWinningSide !== existingDualMatchUpWinningSide;
 
       // setting these parameters will enable noDownStreamDependencies to attemptToSetWinningSide
       Object.assign(params, {
@@ -246,12 +227,10 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
     drawDefinition,
   });
 
+  console.log({ disableScoreValidation });
   if (score && matchUp.matchUpType !== TEAM && !disableScoreValidation) {
     const matchUpFormat =
-      matchUp.matchUpFormat ??
-      structure?.matchUpFormat ??
-      drawDefinition?.matchUpFormat ??
-      event?.matchUpFormat;
+      matchUp.matchUpFormat ?? structure?.matchUpFormat ?? drawDefinition?.matchUpFormat ?? event?.matchUpFormat;
 
     const result = validateScore({
       existingMatchUpStatus: matchUp.matchUpStatus,
@@ -273,20 +252,13 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
     : [];
 
   const bothSideParticipants =
-    matchUp.sides?.map((side) => side.participantId).filter(Boolean).length ===
-      2 ||
+    matchUp.sides?.map((side) => side.participantId).filter(Boolean).length === 2 ||
     (assignedDrawPositions?.length === 2 &&
       positionAssignments
-        ?.filter((assignment) =>
-          assignedDrawPositions.includes(assignment.drawPosition)
-        )
+        ?.filter((assignment) => assignedDrawPositions.includes(assignment.drawPosition))
         .every((assignment) => assignment.participantId));
 
-  if (
-    matchUpStatus &&
-    particicipantsRequiredMatchUpStatuses.includes(matchUpStatus) &&
-    !bothSideParticipants
-  ) {
+  if (matchUpStatus && particicipantsRequiredMatchUpStatuses.includes(matchUpStatus) && !bothSideParticipants) {
     return decorateResult({
       info: 'present in participantRequiredMatchUpStatuses',
       context: { matchUpStatus, bothSideParticipants },
@@ -306,9 +278,7 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
     Object.assign(appliedPolicies, params.policyDefinitions);
   }
 
-  const qualifyingMatch =
-    inContextMatchUp?.stage === QUALIFYING &&
-    inContextMatchUp.finishingRound === 1;
+  const qualifyingMatch = inContextMatchUp?.stage === QUALIFYING && inContextMatchUp.finishingRound === 1;
   const qualifierAdvancing = qualifyingMatch && winningSide;
   const removingQualifier =
     qualifyingMatch && // oop
@@ -369,8 +339,7 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
       });
 
       const existingDualMatchUpWinningSide = dualMatchUp.winningSide;
-      dualWinningSideChange =
-        projectedWinningSide !== existingDualMatchUpWinningSide;
+      dualWinningSideChange = projectedWinningSide !== existingDualMatchUpWinningSide;
 
       Object.assign(params, {
         isCollectionMatchUp: true,
@@ -392,8 +361,7 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
       activeDownstream &&
       !winningSide &&
       ((matchUpStatus && isNonDirectingMatchUpStatus({ matchUpStatus })) ||
-        (matchUpStatus &&
-          [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(matchUpStatus)))
+        (matchUpStatus && [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(matchUpStatus)))
     ) {
       return {
         error: INCOMPATIBLE_MATCHUP_STATUS,
@@ -402,12 +370,7 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
       };
     }
 
-    if (
-      winningSide &&
-      winningSide === matchUp.winningSide &&
-      matchUpStatus &&
-      !directingMatchUpStatus
-    ) {
+    if (winningSide && winningSide === matchUp.winningSide && matchUpStatus && !directingMatchUpStatus) {
       return {
         context: 'winningSide must include directing matchUpStatus',
         error: INCOMPATIBLE_MATCHUP_STATUS,
@@ -448,8 +411,7 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
     return swapWinnerLoser(params);
   }
 
-  const matchUpWinner =
-    (winningSide && !matchUpTieId) || params.projectedWinningSide;
+  const matchUpWinner = (winningSide && !matchUpTieId) || params.projectedWinningSide;
 
   pushGlobalLog({
     method: stack,
@@ -469,10 +431,7 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
 
 function winningSideWithDownstreamDependencies(params) {
   const { matchUp, winningSide, matchUpTieId, dualWinningSideChange } = params;
-  if (
-    winningSide === matchUp.winningSide ||
-    (matchUpTieId && !dualWinningSideChange)
-  ) {
+  if (winningSide === matchUp.winningSide || (matchUpTieId && !dualWinningSideChange)) {
     return applyMatchUpValues(params);
   } else {
     return decorateResult({
@@ -495,8 +454,7 @@ function applyMatchUpValues(params) {
     : params.matchUpStatus || COMPLETED;
   const removeScore =
     params.removeScore ||
-    ([CANCELLED, WALKOVER].includes(newMatchUpStatus) &&
-      ![INCOMPLETE, ABANDONED].includes(newMatchUpStatus));
+    ([CANCELLED, WALKOVER].includes(newMatchUpStatus) && ![INCOMPLETE, ABANDONED].includes(newMatchUpStatus));
 
   const result = modifyMatchUpScore({
     ...params,
