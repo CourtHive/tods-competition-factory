@@ -1,0 +1,115 @@
+---
+title: State Engines
+---
+
+**Competition Factory** engines share a state which contains one or more `tournamentRecords` and any factory functions which have been imported from [Governors](/docs/governors/governors-overview).
+
+All factory engines provide logging and middleware services which resolve parameters such as `events` and `drawDefinitions` from identifiers.
+Mutation engines provide subscription/notification functionality.
+
+- **askEngine**: used to _synchronously_ query `tournamentRecords` held in state.
+- **syncEngine**: used to _synchronously_ mutate `tournamentRecords` held in state.
+- **asyncEngine**: used to _asynchronously_ mutate `tournamentRecords` held in state.
+
+:::note
+All engine methods which make a mutation return either `{ success: true }` or `{ error }`
+:::
+
+## Engine state
+
+By default, a "deep copy" of `tournamentRecords` is made as they are loaded into shared state.
+
+- `engine.setState(tournamentRecord)`
+- `engine.setState(tournamentRecords)`
+
+This behavior can be overridden such that engines operate directly on loaded tournamentRecords.
+
+- `engine.setState(tournamentRecord, deepCopyOptions)`
+
+**deepCopyOptions** can be either a boolean or an object which configures the behavior of the deep copy.
+
+## Invoking Factory Functions
+
+State engines can be used to invoke factory functions in three ways:
+
+- **execute**: invoke a factory function directly, parameters passed into `execute` method
+- **import and execute**: invoke an imported function as an engine attribute
+- **import and execute by name**: invoke an imported function by reference
+- **executionQueue**: invoke an imported function as part of a queue of functions
+
+## Examples
+
+For each of the following examples `askEngine` and the `getParticipants` method are first imported from the factory.
+
+```js
+import { askEngine, participantGovernor: { getParticipants } } from 'tods-competition-factory';
+
+// load a tournamentRecord into state
+askEngine.setState(tournamentRecord);
+```
+
+### Execute
+
+Function is invoked directly, parameters passed into `execute` method.
+
+```js
+const { participants } = askEngine.execute({ getParticipants, ...params });
+```
+
+### Import and Execute
+
+Function is imported and invoked as an engine attribute.
+
+```js
+askEngine.importMethods({ getParticipants });
+const { participants } = askEngine.getParticipants({ withIndividualParticipants: true });
+```
+
+### Import and Execute by Name
+
+Function is imported and invoked by reference.
+
+```js
+askEngine.importMethods({ getParticipants });
+const { participants } = askEngine.execute({
+  params: { participantFilters: { participantTypes: [PAIR] } },
+  method: 'getParticipants',
+});
+```
+
+### Execution Queue
+
+Function is imported and invoked as part of a queue of functions.
+
+```js
+askEngine.importMethods({ getParticipants });
+const result = askEngine.executionQueue([
+  { method: 'getParticipants', params: { participantFilters: { participantTypes: [INDIVIDUAL] } } },
+]);
+const { participants } = result[0];
+```
+
+## devContext
+
+**devConext** is a property of engine state which is used to store any data which is useful for development purposes.
+
+- The devContext value can be either a boolean or an object.
+- When there is a devContext value present, the `try {} catch {}` block is **NOT** used in method invocation.
+- When devContext is an object it is used to configure engine logging.
+
+```js
+askEngine.devContext(true); // default
+askEngine.devContext(false); // do not catch internal errors
+```
+
+## Bypassing State
+
+Passing `tournamentRecord` as a parameter to any engine method will operate directly on the passed `tournamentRecord`.
+
+```js
+askEngine.getParticipants({ tournamentRecord });
+```
+
+:::info
+When `tournamentRecord` is passed as a parameter, a temporary `tournamentRecords` object is created and any `tournamentRecords` in state are not referenced.
+:::

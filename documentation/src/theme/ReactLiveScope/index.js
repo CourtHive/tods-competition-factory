@@ -12,6 +12,7 @@ import {
   tournamentEngine,
   scoreGovernor,
   mocksEngine,
+  askEngine,
   drawEngine,
   utilities,
 } from 'tods-competition-factory';
@@ -24,6 +25,7 @@ const ReactLiveScope = {
   React,
   ...React,
   utilities,
+  askEngine,
   drawEngine,
   mocksEngine,
   competitionEngine,

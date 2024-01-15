@@ -15,6 +15,7 @@ import { removeTieMatchUpParticipantId } from '../../../mutate/matchUps/lineUps/
 import { removeMatchUpSideParticipant } from '../../../mutate/matchUps/sides/removeMatchUpSideParticipant';
 import { removeDrawPositionAssignment } from '../../../mutate/drawDefinitions/removeDrawPositionAssignment';
 import { modifyCollectionDefinition } from '../../../mutate/matchUps/tieFormat/modifyCollectionDefinition';
+import { setEventDates, setEventEndDate, setEventStartDate } from '../../../mutate/events/setEventDates';
 import { swapDrawPositionAssignments } from '../../../mutate/drawDefinitions/swapDrawPositionAssignments';
 import { automatedPlayoffPositioning } from '../../../mutate/drawDefinitions/automatedPlayoffPositioning';
 import { setStructureOrder } from '../../../mutate/drawDefinitions/structureGovernor/setStructureOrder';
@@ -31,6 +32,9 @@ import { removeCollectionGroup } from '../../../mutate/matchUps/tieFormat/remove
 import { removeSeededParticipant } from '../../../mutate/drawDefinitions/removeSeededParticipant';
 import { orderCollectionDefinitions } from '../../../mutate/tieFormat/orderCollectionDefinitions';
 import { removeCollectionDefinition } from '../../../mutate/tieFormat/removeCollectionDefinition';
+import { destroyPairEntries, destroyPairEntry } from '../../../mutate/entries/destroyPairEntry';
+import { setEntryPosition, setEntryPositions } from '../../../mutate/entries/setEntryPositions';
+import { promoteAlternate, promoteAlternates } from '../../../mutate/entries/promoteAlternate';
 import { setPositionAssignments } from '../../../mutate/drawDefinitions/setPositionAssignments';
 import { addQualifyingStructure } from '../../../mutate/drawDefinitions/addQualifyingStructure';
 import { refreshEventDrawOrder } from '../../../mutate/drawDefinitions/refreshEventDrawOrder';
@@ -86,17 +90,12 @@ import { autoSeeding } from '../../../mutate/entries/autoSeeding';
 import { modifyEvent } from '../../../mutate/events/modifyEvent';
 import { addFlight } from '../../../mutate/events/addFlight';
 import { addEvent } from '../../../mutate/events/addEvent';
-import { destroyPairEntries, destroyPairEntry } from '../../../mutate/entries/destroyPairEntry';
-import { promoteAlternate, promoteAlternates } from '../../../mutate/entries/promoteAlternate';
-
-import { setEntryPosition, setEntryPositions } from '../../../mutate/entries/setEntryPositions';
 
 import {
   attachConsolationStructures,
   attachPlayoffStructures,
   attachStructures,
 } from '../../../mutate/drawDefinitions/attachStructures';
-import { setEventDates, setEventEndDate, setEventStartDate } from '../../../mutate/events/setEventDates';
 
 export const eventGovernor = {
   addAdHocMatchUps,

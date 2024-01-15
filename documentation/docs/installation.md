@@ -12,7 +12,7 @@ pnpm add tods-competition-factory
 
 The **Competition Factory** is built following a Test Driven Development process. There are ~500 test suites and ~2000 individual tests that run before every release, covering greater than 96% of the code base.
 
-These tests are good references for how to use the APIs provided by the `drawEngine`, `tournamentEngine`, `competitionEngine`, `mocksEngine` and `scoreGovernor`.
+These tests are good references for how to use the APIs provided by the factory.
 
 ```sh
 // fork and clone or download from github; expand; and:

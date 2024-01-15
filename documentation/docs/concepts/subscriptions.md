@@ -47,7 +47,7 @@ const subscriptions = {
 Subscriptions are defined once for all engines.
 
 ```js
-import { setSubcriptions } from 'tods-competition-factory';
+import { globalState: { setSubcriptions } } from 'tods-competition-factory';
 
 setSubscriptions(subscriptions);
 ```

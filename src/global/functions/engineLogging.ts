@@ -1,5 +1,5 @@
-import { ResultType } from './decorateResult';
 import { DevContextType, getDevContext, globalLog } from '../state/globalState';
+import { ResultType } from './decorateResult';
 
 type EngineLoggingArgs = {
   params?: { [key: string]: any } | boolean;
@@ -9,33 +9,20 @@ type EngineLoggingArgs = {
   elapsed: number;
 };
 
-export function engineLogging({
-  engineType,
-  methodName,
-  elapsed,
-  params,
-  result,
-}: EngineLoggingArgs) {
+export function engineLogging({ engineType, methodName, elapsed, params, result }: EngineLoggingArgs) {
   const devContext: DevContextType = getDevContext();
   if (typeof devContext !== 'object') return;
 
   const log: any = { method: methodName };
   const logError =
     result?.error &&
-    (devContext.errors === true ||
-      (Array.isArray(devContext.errors) &&
-        devContext.errors.includes(methodName)));
+    (devContext.errors === true || (Array.isArray(devContext.errors) && devContext.errors.includes(methodName)));
 
-  const specifiedMethodParams =
-    Array.isArray(devContext.params) && devContext.params?.includes(methodName);
+  const specifiedMethodParams = Array.isArray(devContext.params) && devContext.params?.includes(methodName);
 
-  const logParams =
-    (devContext.params && !Array.isArray(devContext.params)) ||
-    specifiedMethodParams;
+  const logParams = (devContext.params && !Array.isArray(devContext.params)) || specifiedMethodParams;
 
-  const exclude =
-    Array.isArray(devContext.exclude) &&
-    devContext.exclude.includes(methodName);
+  const exclude = Array.isArray(devContext.exclude) && devContext.exclude.includes(methodName);
 
   if (
     !exclude &&
@@ -56,11 +43,10 @@ export function engineLogging({
       (devContext.result &&
         !Array.isArray(devContext.result) &&
         (!Array.isArray(devContext.params) || specifiedMethodParams)) ||
-      (Array.isArray(devContext.result) &&
-        devContext.result?.includes(methodName)))
+      (Array.isArray(devContext.result) && devContext.result?.includes(methodName)))
   ) {
     log.result = result;
   }
 
-  if (Object.keys(log).length > 1) globalLog(engineType, log);
+  if (Object.keys(log).length > 1) globalLog(log, engineType);
 }

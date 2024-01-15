@@ -101,10 +101,7 @@ export function setStateProvider(globalStateProvider?: { [key: string]: any }) {
   if (typeof globalStateProvider !== 'object') {
     throw new Error(`Global state provider can not be undefined or null`);
   } else {
-    const providerMethods = intersection(
-      Object.keys(globalStateProvider),
-      requiredStateProviderMethods
-    );
+    const providerMethods = intersection(Object.keys(globalStateProvider), requiredStateProviderMethods);
     if (providerMethods.length !== requiredStateProviderMethods.length) {
       throw new Error('Global state provider is missing required methods');
     } else {
@@ -131,40 +128,30 @@ export function createInstanceState() {
 /**
  * if contextCriteria, check whether all contextCriteria keys values are equivalent with globalState.devContext object
  */
-export function getDevContext(contextCriteria?: {
-  [key: string]: any;
-}): DevContextType {
+export function getDevContext(contextCriteria?: { [key: string]: any }): DevContextType {
   if (!contextCriteria || typeof contextCriteria !== 'object') {
     return globalState.devContext ?? false;
   } else {
     if (typeof globalState.devContext !== 'object') return false;
     return (
-      Object.keys(contextCriteria).every(
-        (key) => globalState.devContext?.[key] === contextCriteria[key]
-      ) && globalState.devContext
+      Object.keys(contextCriteria).every((key) => globalState.devContext?.[key] === contextCriteria[key]) &&
+      globalState.devContext
     );
   }
 }
 
-export function timeKeeper(
-  action: string = 'reset',
-  timer: string = 'default'
-): any {
+export function timeKeeper(action: string = 'reset', timer: string = 'default'): any {
   const timeNow = Date.now();
 
   if (action === 'report') {
     if (timer === 'allTimers') {
       const timers = Object.keys(globalState.timers);
       return timers
-        .filter(
-          (timer) => timer !== 'default' || globalState.timers[timer].startTime
-        )
+        .filter((timer) => timer !== 'default' || globalState.timers[timer].startTime)
         .map((timer) => {
           const currentTimer = globalState.timers[timer];
           const elapsedPeriod =
-            currentTimer.state === 'stopped'
-              ? 0
-              : (timeNow - (currentTimer?.startTime ?? 0)) / 1000;
+            currentTimer.state === 'stopped' ? 0 : (timeNow - (currentTimer?.startTime ?? 0)) / 1000;
 
           const elapsedTime = currentTimer.elapsedTime + elapsedPeriod;
           return {
@@ -202,17 +189,13 @@ export function timeKeeper(
     }
   }
 
-  if (!globalState.timers[timer].elapsedTime)
-    globalState.timers[timer].elapsedTime = 0;
+  if (!globalState.timers[timer].elapsedTime) globalState.timers[timer].elapsedTime = 0;
 
   action === 'stop' &&
     globalState.timers[timer].state !== 'stopped' &&
     (globalState.timers[timer].state = 'stopped') &&
-    (globalState.timers[timer].elapsedTime +=
-      (timeNow - (globalState.timers[timer]?.startTime ?? 0)) / 1000);
-  action === 'start' &&
-    (globalState.timers[timer].startTime = timeNow) &&
-    (globalState.timers[timer].state = 'active');
+    (globalState.timers[timer].elapsedTime += (timeNow - (globalState.timers[timer]?.startTime ?? 0)) / 1000);
+  action === 'start' && (globalState.timers[timer].startTime = timeNow) && (globalState.timers[timer].state = 'active');
 
   return globalState.timers[timer];
 }
@@ -249,14 +232,10 @@ export function setDeepCopy(value: boolean, attributes: DeepCopyAttributes) {
     globalState.deepCopy = value;
   }
   if (typeof attributes === 'object') {
-    if (Array.isArray(attributes.ignore))
-      globalState.deepCopyAttributes.ignore = attributes.ignore;
-    if (Array.isArray(attributes.toJSON))
-      globalState.deepCopyAttributes.toJSON = attributes.toJSON;
-    if (Array.isArray(attributes.stringify))
-      globalState.deepCopyAttributes.stringify = attributes.stringify;
-    if (attributes.threshold)
-      globalState.deepCopyAttributes.threshold = attributes.threshold;
+    if (Array.isArray(attributes.ignore)) globalState.deepCopyAttributes.ignore = attributes.ignore;
+    if (Array.isArray(attributes.toJSON)) globalState.deepCopyAttributes.toJSON = attributes.toJSON;
+    if (Array.isArray(attributes.stringify)) globalState.deepCopyAttributes.stringify = attributes.stringify;
+    if (attributes.threshold) globalState.deepCopyAttributes.threshold = attributes.threshold;
   }
 }
 
@@ -268,16 +247,14 @@ export function deepCopyEnabled() {
 }
 
 export function setSubscriptions(params: any) {
-  if (!params?.subscriptions)
-    return { error: MISSING_VALUE, info: 'missing subscriptions' };
+  if (!params?.subscriptions) return { error: MISSING_VALUE, info: 'missing subscriptions' };
   return _globalStateProvider.setSubscriptions({
     subscriptions: params.subscriptions,
   });
 }
 
 export function setMethods(params?: { [key: string]: any }) {
-  if (!params)
-    return { error: MISSING_VALUE, info: 'missing method declarations' };
+  if (!params) return { error: MISSING_VALUE, info: 'missing method declarations' };
   if (typeof params !== 'object') return { error: INVALID_VALUES };
   return _globalStateProvider.setMethods(params);
 }
@@ -368,15 +345,9 @@ export type HandleCaughtErrorArgs = {
   err: any;
 };
 
-export function handleCaughtError({
-  engineName,
-  methodName,
-  params,
-  err,
-}: HandleCaughtErrorArgs) {
+export function handleCaughtError({ engineName, methodName, params, err }: HandleCaughtErrorArgs) {
   const caughtErrorHandler =
-    (typeof _globalStateProvider.handleCaughtError === 'function' &&
-      _globalStateProvider.handleCaughtError) ||
+    (typeof _globalStateProvider.handleCaughtError === 'function' && _globalStateProvider.handleCaughtError) ||
     syncGlobalState.handleCaughtError;
 
   return caughtErrorHandler({
@@ -387,10 +358,10 @@ export function handleCaughtError({
   });
 }
 
-export function globalLog(engine: string, log: any) {
+export function globalLog(log: any, engine?: string) {
   if (globalState.globalLog) {
     try {
-      globalState.globalLog({ engine, log });
+      globalState.globalLog({ log, engine });
     } catch (error) {
       console.log('globalLog error', error);
       console.log(engine, log);
