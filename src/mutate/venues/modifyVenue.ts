@@ -130,8 +130,6 @@ export function venueModify({ tournamentRecord, modifications, venueId, force }:
       })
       .reduce((a, b) => a + b);
 
-    console.log({ scheduleDeletionsCount });
-
     if (venue && (!scheduleDeletionsCount || allowModificationWhenMatchUpsScheduled)) {
       venue.courts = venue.courts?.filter((court) => courtIdsToModify.includes(court.courtId));
       bulkScheduleTournamentMatchUps({

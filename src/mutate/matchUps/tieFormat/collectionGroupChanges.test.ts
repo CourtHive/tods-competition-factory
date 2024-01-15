@@ -13,9 +13,7 @@ it('can remove collectionGroups from tieFormats', () => {
     tournamentRecord,
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [
-      { drawSize: 8, tieFormatName: USTA_BREWER_CUP, eventType: TEAM },
-    ],
+    drawProfiles: [{ drawSize: 8, tieFormatName: USTA_BREWER_CUP, eventType: TEAM }],
   });
 
   tournamentEngine.setState(tournamentRecord);
@@ -69,9 +67,7 @@ it('can remove collectionGroups and recalculate score in matchUps which are in p
         payload.forEach(({ matchUp }) => {
           const { matchUpType, matchUpStatusCodes, score } = matchUp;
           if (matchUpStatusCodes || score)
-            matchUpModifyNotices.push(
-              [matchUpType, matchUpStatusCodes, score].filter(Boolean)
-            );
+            matchUpModifyNotices.push([matchUpType, matchUpStatusCodes, score].filter(Boolean));
         });
       }
     },
@@ -83,9 +79,7 @@ it('can remove collectionGroups and recalculate score in matchUps which are in p
     tournamentRecord,
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [
-      { drawSize: 8, tieFormatName: USTA_BREWER_CUP, eventType: TEAM },
-    ],
+    drawProfiles: [{ drawSize: 8, tieFormatName: USTA_BREWER_CUP, eventType: TEAM }],
   });
 
   tournamentEngine.setState(tournamentRecord);
@@ -94,17 +88,14 @@ it('can remove collectionGroups and recalculate score in matchUps which are in p
   expect(event.tieFormat.winCriteria.valueGoal).toEqual(4);
   expect(drawDefinition.tieFormat).toBeUndefined();
 
-  let { matchUps: firstRoundDualMatchUps } =
-    tournamentEngine.allTournamentMatchUps({
-      matchUpFilters: {
-        matchUpTypes: [TEAM],
-        roundNumbers: [1],
-      },
-    });
+  let { matchUps: firstRoundDualMatchUps } = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: {
+      matchUpTypes: [TEAM],
+      roundNumbers: [1],
+    },
+  });
 
-  expect(
-    firstRoundDualMatchUps.map(({ score }) => score).filter(Boolean).length
-  ).toEqual(0);
+  expect(firstRoundDualMatchUps.map(({ score }) => score).filter(Boolean).length).toEqual(0);
 
   const outcome = {
     winningSide: 1,
@@ -126,9 +117,7 @@ it('can remove collectionGroups and recalculate score in matchUps which are in p
   expect(teamMatchUp.tieMatchUps.length).toEqual(9);
   expect(teamMatchUp.score).toEqual(undefined);
 
-  const tieMatchUp = firstRoundDualMatchUps[0].tieMatchUps.find(
-    ({ matchUpType }) => matchUpType === DOUBLES
-  );
+  const tieMatchUp = firstRoundDualMatchUps[0].tieMatchUps.find(({ matchUpType }) => matchUpType === DOUBLES);
   const { matchUpId } = tieMatchUp;
 
   let result = tournamentEngine.setMatchUpStatus({
@@ -148,24 +137,16 @@ it('can remove collectionGroups and recalculate score in matchUps which are in p
     inContext: false,
   }).matchUps;
 
-  expect(
-    firstRoundDualMatchUps.map(({ score }) => score).filter(Boolean).length
-  ).toEqual(1);
+  expect(firstRoundDualMatchUps.map(({ score }) => score).filter(Boolean).length).toEqual(1);
 
-  expect(
-    firstRoundDualMatchUps.map(({ tieFormat }) => tieFormat).filter(Boolean)
-      .length
-  ).toEqual(1);
+  expect(firstRoundDualMatchUps.map(({ tieFormat }) => tieFormat).filter(Boolean).length).toEqual(1);
 
-  teamMatchUp = firstRoundDualMatchUps.find(
-    (matchUp) => matchUp.matchUpId === teamMatchUp.matchUpId
-  );
+  teamMatchUp = firstRoundDualMatchUps.find((matchUp) => matchUp.matchUpId === teamMatchUp.matchUpId);
   expect(teamMatchUp.score).not.toBeUndefined();
 
   result = tournamentEngine.removeCollectionGroup({
     collectionGroupNumber: 1,
     tieFormatName: 'Pruned',
-    tournamentRecord,
     drawId,
   });
   expect(result.success).toEqual(true);
@@ -186,7 +167,5 @@ it('can remove collectionGroups and recalculate score in matchUps which are in p
       roundNumbers: [1],
     },
   }).matchUps;
-  expect(
-    firstRoundDualMatchUps.map(({ score }) => score).filter(Boolean).length
-  ).toEqual(1);
+  expect(firstRoundDualMatchUps.map(({ score }) => score).filter(Boolean).length).toEqual(1);
 });

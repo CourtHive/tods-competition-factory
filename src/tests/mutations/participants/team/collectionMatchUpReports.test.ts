@@ -19,11 +19,9 @@ test('collection matchUps appear in participant reports', () => {
       .filter(({ drawPosition }) => drawPositions.includes(drawPosition))
       .map(getParticipantId);
 
-    const { participants: teamParticipants } = tournamentEngine
-      .devContext(true)
-      .getParticipants({
-        participantFilters: { participantIds: teamParticipantIds },
-      });
+    const { participants: teamParticipants } = tournamentEngine.devContext(true).getParticipants({
+      participantFilters: { participantIds: teamParticipantIds },
+    });
 
     return teamParticipants;
   };
@@ -37,8 +35,7 @@ test('collection matchUps appear in participant reports', () => {
     const { drawPositions, matchUpId: doublesMatchUpId } = doublesMatchUp;
     const teamParticipants = getTeamParticipants(drawPositions);
     teamParticipants.forEach((teamParticipant) => {
-      const individualParticipantIds =
-        teamParticipant.individualParticipantIds.slice(0, 2);
+      const individualParticipantIds = teamParticipant.individualParticipantIds.slice(0, 2);
       individualParticipantIds.forEach((individualParticipantId, i) => {
         const result = tournamentEngine.assignTieMatchUpParticipantId({
           participantId: individualParticipantId,
@@ -81,8 +78,7 @@ test('collection matchUps appear in participant reports', () => {
       if (!teamSinglesCount[participantId]) teamSinglesCount[participantId] = 0;
       const count = teamSinglesCount[participantId];
 
-      const individualParticipantId =
-        teamParticipant.individualParticipantIds.slice(count, count + 1)[0];
+      const individualParticipantId = teamParticipant.individualParticipantIds.slice(count, count + 1)[0];
       teamSinglesCount[participantId] += 1;
 
       const result = tournamentEngine.assignTieMatchUpParticipantId({
@@ -118,7 +114,6 @@ test('collection matchUps appear in participant reports', () => {
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: { matchUpTypes: [DOUBLES] },
-    tournamentRecord,
   });
   const placedParticipantIds = matchUps
     .map(({ sides }) => sides.map(({ participantId }) => participantId))
@@ -126,12 +121,11 @@ test('collection matchUps appear in participant reports', () => {
     .filter(Boolean);
   expect(placedParticipantIds.length).toEqual(drawSize);
 
-  const { participants: placedPairParticipants } =
-    tournamentEngine.getParticipants({
-      participantFilters: { participantIds: placedParticipantIds },
-      withGroupings: true,
-      withMatchUps: true,
-    });
+  const { participants: placedPairParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantIds: placedParticipantIds },
+    withGroupings: true,
+    withMatchUps: true,
+  });
 
   expect(placedPairParticipants.length).toEqual(drawSize);
 

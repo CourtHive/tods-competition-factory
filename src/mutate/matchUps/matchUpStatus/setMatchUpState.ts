@@ -227,7 +227,6 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
     drawDefinition,
   });
 
-  console.log({ disableScoreValidation });
   if (score && matchUp.matchUpType !== TEAM && !disableScoreValidation) {
     const matchUpFormat =
       matchUp.matchUpFormat ?? structure?.matchUpFormat ?? drawDefinition?.matchUpFormat ?? event?.matchUpFormat;

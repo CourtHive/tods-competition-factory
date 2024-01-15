@@ -1,18 +1,15 @@
-import { getInContextCourt } from './getInContextCourt';
 import { getDisabledStatus } from '../extensions/getDisabledStatus';
 import { makeDeepCopy } from '../../utilities/makeDeepCopy';
 import { findExtension } from '../../acquire/findExtension';
+import { getInContextCourt } from './getInContextCourt';
 
+import { ErrorType, MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
 import { HydratedCourt, HydratedVenue } from '../../types/hydrated';
 import { ResultType } from '../../global/functions/decorateResult';
 import { Tournament, Venue } from '../../types/tournamentTypes';
 import { DISABLED } from '../../constants/extensionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
 import { TournamentRecords } from '../../types/factoryTypes';
-import {
-  ErrorType,
-  MISSING_TOURNAMENT_RECORDS,
-} from '../../constants/errorConditionConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 
 type GetVenuesAndCourtsArgs = {
   tournamentRecords?: TournamentRecords;
@@ -23,9 +20,7 @@ type GetVenuesAndCourtsArgs = {
   venueIds?: string[];
   dates?: string[];
 };
-export function getVenuesAndCourts(
-  params: GetVenuesAndCourtsArgs
-): ResultType & {
+export function getVenuesAndCourts(params: GetVenuesAndCourtsArgs): ResultType & {
   venues?: HydratedVenue[];
   courts?: HydratedCourt[];
 } {
@@ -49,7 +44,7 @@ export function getVenuesAndCourts(
   const venues: HydratedVenue[] = [];
 
   const tournamentIds = Object.keys(tournamentRecords).filter(
-    (id) => !params.tournamentId || id === params.tournamentId
+    (id) => !params.tournamentId || id === params.tournamentId,
   );
   tournamentIds.forEach((tournamentId) => {
     const tournamentRecord = tournamentRecords[tournamentId];
@@ -155,19 +150,12 @@ type GetCompeitionVenuesArgs = {
   dates?: string[];
 };
 
-export function getCompetitionVenues({
-  tournamentRecords,
-  requireCourts,
-  dates,
-}: GetCompeitionVenuesArgs): {
+export function getCompetitionVenues({ tournamentRecords, requireCourts, dates }: GetCompeitionVenuesArgs): {
   venueIds?: string[];
   error?: ErrorType;
   venues?: Venue[];
 } {
-  if (
-    typeof tournamentRecords !== 'object' ||
-    !Object.keys(tournamentRecords).length
-  )
+  if (typeof tournamentRecords !== 'object' || !Object.keys(tournamentRecords).length)
     return { error: MISSING_TOURNAMENT_RECORDS };
 
   const tournamentIds = Object.keys(tournamentRecords);
@@ -188,6 +176,6 @@ export function getCompetitionVenues({
       });
       return accumulator;
     },
-    { venues: [], venueIds: [] }
+    { venues: [], venueIds: [] },
   );
 }
