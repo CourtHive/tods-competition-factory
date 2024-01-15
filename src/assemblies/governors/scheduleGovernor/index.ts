@@ -1,8 +1,4 @@
-import { modifyPersonRequests } from '../../../mutate/matchUps/schedule/scheduleMatchUps/personRequests/modifyPersonRequests';
-import { removePersonRequests } from '../../../mutate/matchUps/schedule/scheduleMatchUps/personRequests/removePersonRequests';
-import { addPersonRequests } from '../../../mutate/matchUps/schedule/scheduleMatchUps/personRequests/addPersonRequests';
 import { calculateScheduleTimes } from '../../../mutate/matchUps/schedule/scheduleMatchUps/calculateScheduleTimes';
-import { modifyEventMatchUpFormatTiming } from '../../../mutate/events/extensions/modifyEventMatchUpFormatTiming';
 import { removeEventMatchUpFormatTiming } from '../../../mutate/events/extensions/removeEventMatchUpFormatTiming';
 import { bulkScheduleTournamentMatchUps } from '../../../mutate/matchUps/schedule/bulkScheduleTournamentMatchUps';
 import { generateVirtualCourts } from '../../../mutate/matchUps/schedule/schedulers/utils/generateVirtualCourts';
@@ -44,10 +40,7 @@ import {
   addMatchUpOfficial,
   addMatchUpScheduleItems,
 } from '../../../mutate/matchUps/schedule/scheduleItems';
-import {
-  getSchedulingProfile,
-  setSchedulingProfile,
-} from '../../../mutate/tournaments/schedulingProfile';
+import { getSchedulingProfile, setSchedulingProfile } from '../../../mutate/tournaments/schedulingProfile';
 
 export const scheduleGovernor = {
   addMatchUpCourtOrder,
@@ -59,7 +52,6 @@ export const scheduleGovernor = {
   addMatchUpScheduleItems,
   addMatchUpStartTime,
   addMatchUpStopTime,
-  addPersonRequests,
   addSchedulingProfileRound,
   allocateTeamMatchUpCourts,
   assignMatchUpCourt,
@@ -80,14 +72,11 @@ export const scheduleGovernor = {
   getProfileRounds,
   getSchedulingProfile,
   matchUpScheduleChange,
-  modifyEventMatchUpFormatTiming,
   modifyMatchUpFormatTiming,
-  modifyPersonRequests,
   proAutoSchedule,
   proConflicts,
   removeEventMatchUpFormatTiming,
   removeMatchUpCourtAssignment,
-  removePersonRequests,
   reorderUpcomingMatchUps,
   scheduleMatchUps,
   scheduleProfileRounds,

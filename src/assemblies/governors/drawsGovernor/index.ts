@@ -20,6 +20,7 @@ import { removeStructure } from 'mutate/drawDefinitions/structureGovernor/remove
 import { addVoluntaryConsolationStage } from 'mutate/events/addVoluntaryConsolationStage';
 import { removeSeededParticipant } from 'mutate/drawDefinitions/removeSeededParticipant';
 import { addQualifyingStructure } from 'mutate/drawDefinitions/addQualifyingStructure';
+import { updateTeamLineUp } from '../../../mutate/drawDefinitions/updateTeamLineUp';
 import { addPlayoffStructures } from 'mutate/drawDefinitions/addPlayoffStructures';
 import { automatedPositioning } from 'mutate/drawDefinitions/automatedPositioning';
 import { modifyDrawDefinition } from 'mutate/drawDefinitions/modifyDrawDefinition';
@@ -76,6 +77,7 @@ export const drawsGovernor = {
   setSubOrder,
   swapDrawPositionAssignments,
   withdrawParticipantAtDrawPosition,
+  updateTeamLineUp,
 };
 
 export default drawsGovernor;

@@ -2,6 +2,63 @@
 title: Query Governor
 ---
 
+```js
+import { governors: { queryGovernor }} from 'tods-competition-factory';
+```
+
+## allDrawMatchUps
+
+Returns all matchUps from all structures within a draw.
+
+```js
+const { matchUps } = engine.allDrawMatchUps({
+  participantsProfile, // optional - ability to specify additions to context (see parameters of getParticipants())
+  contextFilters, // filters based on context attributes
+  matchUpFilters, // attribute filters
+  nextMatchUps, // optioanl - boolean - to include winnerTo and loserTo
+  inContext, // boolean - add context { drawId, structureId, participant, individualParticipants ... }
+  context, // optional context to be added into matchUps
+  drawId,
+});
+```
+
+---
+
+## allEventMatchUps
+
+Returns all matchUps for an event.
+
+```js
+const { matchUps } = allEventMatchUps({
+  participantsProfile, // optional - ability to specify additions to context (see parameters of getParticipants())
+  scheduleVisibilityFilters, // { visibilityThreshold: Date, eventIds, drawIds }
+  matchUpFilters, // optional; [ scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
+  contextFilters, // filters based on context attributes
+  nextMatchUps: true, // include winner/loser target matchUp details
+  inContext: true, // include contextual details
+  eventId,
+});
+```
+
+---
+
+## allTournamentMatchUps
+
+Return an array of all matchUps contained within a tournament. These matchUps are returned **inContext**.
+
+```js
+const { matchUps, groupInfo } = engine.allTournamentMatchUps({
+  scheduleVisibilityFilters, // { visibilityThreshold: Date, eventIds, drawIds }
+  participantsProfile, // optional - ability to specify additions to context (see parameters of getParticipants())
+  matchUpFilters, // optional; [ scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
+  contextFilters, // filters based on context attributes
+  nextMatchUps, // include winnerTo and loserTo matchUps
+  contextProfile, // optional: { inferGender: true, withCompetitiveness: true, withScaleValues: true, exclude: ['attribute', 'to', 'exclude']}
+});
+```
+
+---
+
 ## getCompetitionDateRange
 
 ```js
@@ -377,7 +434,7 @@ const {
 
 ## matchUpActions
 
-Convenience pass through to `tournamentEngine.matchUpActions` for use in contexts where multiple tournamentRecords are loaded into `competitionEngine`.
+Convenience pass through to `engine.matchUpActions` for use in contexts where multiple tournamentRecords are loaded into `competitionEngine`.
 
 ```js
 const { matchUpActions } = competitionEngine.matchUpActions({

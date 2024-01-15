@@ -1,23 +1,23 @@
 import { decorateResult } from '../../global/functions/decorateResult';
 
+import { ErrorType, INVALID_VALUES, MISSING_VALUE, NOT_FOUND } from '../../constants/errorConditionConstants';
 import { ELEMENT_REQUIRED, MISSING_NAME } from '../../constants/infoConstants';
 import { SUCCESS } from '../../constants/resultConstants';
-import {
-  ErrorType,
-  INVALID_VALUES,
-  MISSING_VALUE,
-  NOT_FOUND,
-} from '../../constants/errorConditionConstants';
+import { TournamentRecords } from 'types/factoryTypes';
 
 type RemoveExtensionResult = {
   success?: boolean;
   error?: ErrorType;
   info?: any;
 };
-export function removeExtension(params?): RemoveExtensionResult {
+export function removeExtension(params?: {
+  tournamentRecords?: TournamentRecords;
+  element?: { extensions?: any[] };
+  discover?: boolean;
+  name?: string;
+}): RemoveExtensionResult {
   if (!params || typeof params !== 'object') return { error: MISSING_VALUE };
-  if (params.element && typeof params?.element !== 'object')
-    return { error: INVALID_VALUES };
+  if (params.element && typeof params?.element !== 'object') return { error: INVALID_VALUES };
   if (!params?.name) return { error: MISSING_VALUE, info: MISSING_NAME };
   if (!params?.element) {
     if (params.discover && params.tournamentRecords) {
@@ -27,8 +27,7 @@ export function removeExtension(params?): RemoveExtensionResult {
           element: tournamentRecord,
           name: params.name,
         });
-        if (result.error)
-          return decorateResult({ result, stack: 'removeExtension' });
+        if (result.error) return decorateResult({ result, stack: 'removeExtension' });
       }
       return { ...SUCCESS };
     }
@@ -36,9 +35,7 @@ export function removeExtension(params?): RemoveExtensionResult {
   }
   if (!params?.element.extensions) return { ...SUCCESS, info: NOT_FOUND };
 
-  params.element.extensions = params.element.extensions.filter(
-    (extension) => extension?.name !== params.name
-  );
+  params.element.extensions = params.element.extensions.filter((extension) => extension?.name !== params.name);
 
   return { ...SUCCESS };
 }
