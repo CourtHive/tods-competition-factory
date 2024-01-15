@@ -1,16 +1,10 @@
 import { getTournamentId } from '../../../global/state/globalState';
 import { findEvent } from '../../../acquire/findEvent';
 
+import { EVENT_NOT_FOUND, MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 import { TournamentRecords } from '../../../types/factoryTypes';
-import {
-  EVENT_NOT_FOUND,
-  MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
 
-export function paramsMiddleware(
-  tournamentRecords: TournamentRecords,
-  params: { [key: string]: any }
-) {
+export function paramsMiddleware(tournamentRecords: TournamentRecords, params: { [key: string]: any }) {
   if (params._middleware === false) return params;
 
   // first check validity of params.tournamentId, if present

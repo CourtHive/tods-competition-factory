@@ -9,19 +9,9 @@ import { TEAM_EVENT } from '../../../constants/eventConstants';
 import { RANKING } from '../../../constants/scaleConstants';
 import { ASC } from '../../../constants/sortingConstants';
 import { LineUp } from '../../../types/factoryTypes';
-import {
-  INVALID_VALUES,
-  SCORES_PRESENT,
-} from '../../../constants/errorConditionConstants';
-import {
-  INDIVIDUAL,
-  PAIR,
-  TEAM_PARTICIPANT,
-} from '../../../constants/participantConstants';
-import {
-  DOMINANT_DUO_MIXED,
-  USTA_GOLD_TEAM_CHALLENGE,
-} from '../../../constants/tieFormatConstants';
+import { INVALID_VALUES, SCORES_PRESENT } from '../../../constants/errorConditionConstants';
+import { INDIVIDUAL, PAIR, TEAM_PARTICIPANT } from '../../../constants/participantConstants';
+import { DOMINANT_DUO_MIXED, USTA_GOLD_TEAM_CHALLENGE } from '../../../constants/tieFormatConstants';
 
 it('can generate lineUps for TEAM events', () => {
   const categoryName = '18U';
@@ -55,24 +45,15 @@ it('can generate lineUps for TEAM events', () => {
   });
 
   // expect that all individual participants should be scaled
-  const individualParticipants = participants.filter(
-    (participant) => participant.participantType === INDIVIDUAL
-  );
-  expect(
-    individualParticipants.every((p) => p.rankings?.SINGLES.length)
-  ).toEqual(true);
+  const individualParticipants = participants.filter((participant) => participant.participantType === INDIVIDUAL);
+  expect(individualParticipants.every((p) => p.rankings?.SINGLES.length)).toEqual(true);
 
   const teamParticipants = participants.filter(
-    (participant) =>
-      participant.participantType === TEAM_PARTICIPANT &&
-      participant.draws?.[0]?.drawId === drawId
+    (participant) => participant.participantType === TEAM_PARTICIPANT && participant.draws?.[0]?.drawId === drawId,
   );
   // expect that DOMINANT_DUO_MIXED produces mixed sex teams
   teamParticipants.forEach((p) =>
-    expect(p.individualParticipants.map((ip) => ip.person.sex)).toEqual([
-      'FEMALE',
-      'MALE',
-    ])
+    expect(p.individualParticipants.map((ip) => ip.person.sex)).toEqual(['FEMALE', 'MALE']),
   );
 
   result = tournamentEngine.generateLineUps({
@@ -93,12 +74,11 @@ it('can generate lineUps for TEAM events', () => {
     scaleType: RANKING,
     sortOrder: ASC,
   };
-  const lineUpResult: { [key: string]: LineUp } =
-    tournamentEngine.generateLineUps({
-      singlesOnly: true,
-      scaleAccessor,
-      drawId,
-    }).lineUps;
+  const lineUpResult: { [key: string]: LineUp } = tournamentEngine.generateLineUps({
+    singlesOnly: true,
+    scaleAccessor,
+    drawId,
+  }).lineUps;
 
   Object.values(lineUpResult).forEach((lineUp: LineUp) => {
     // each lineUp should consist of two participants
@@ -142,43 +122,34 @@ it('will assign TEAM positions based on ranking', () => {
   });
 
   // expect that all individual participants should be scaled
-  const individualParticipants = participants.filter(
-    (participant) => participant.participantType === INDIVIDUAL
-  );
-  expect(
-    individualParticipants.every((p) => p.rankings?.SINGLES.length)
-  ).toEqual(true);
+  const individualParticipants = participants.filter((participant) => participant.participantType === INDIVIDUAL);
+  expect(individualParticipants.every((p) => p.rankings?.SINGLES.length)).toEqual(true);
 
   const teamParticipants = participants.filter(
-    (participant) =>
-      participant.participantType === TEAM_PARTICIPANT &&
-      participant.draws?.[0]?.drawId === drawId
+    (participant) => participant.participantType === TEAM_PARTICIPANT && participant.draws?.[0]?.drawId === drawId,
   );
 
   // expect that USTA_GOLD_TEAM_CHALLENGE produces mixed sex teams
   teamParticipants.forEach((p) =>
-    expect(
-      p.individualParticipants &&
-        instanceCount(p.individualParticipants.map((ip) => ip.person.sex))
-    ).toEqual({ FEMALE: 4, MALE: 4 })
+    expect(p.individualParticipants && instanceCount(p.individualParticipants.map((ip) => ip.person.sex))).toEqual({
+      FEMALE: 4,
+      MALE: 4,
+    }),
   );
 
   const { event } = tournamentEngine.getEvent({ drawId });
-  const collectionIds = event.tieFormat.collectionDefinitions.map(
-    ({ collectionId }) => collectionId
-  );
+  const collectionIds = event.tieFormat.collectionDefinitions.map(({ collectionId }) => collectionId);
 
   const scaleAccessor = {
     scaleName: categoryName,
     scaleType: RANKING,
     sortOrder: ASC,
   };
-  const lineUpResult: { [key: string]: LineUp } =
-    tournamentEngine.generateLineUps({
-      singlesOnly: true,
-      scaleAccessor,
-      drawId,
-    }).lineUps;
+  const lineUpResult: { [key: string]: LineUp } = tournamentEngine.generateLineUps({
+    singlesOnly: true,
+    scaleAccessor,
+    drawId,
+  }).lineUps;
 
   Object.values(lineUpResult).forEach((lineUp: LineUp) => {
     // each lineUp should consist of two participants
@@ -211,13 +182,11 @@ it('will assign TEAM positions based on ranking', () => {
     ]);
 
     // each participant is in 3 collections
-    const everyParticipantIn3 = Object.values(collectionParticipantIds).every(
-      (cids: any) => cids.every((cid) => collectionIds.includes(cid))
+    const everyParticipantIn3 = Object.values(collectionParticipantIds).every((cids: any) =>
+      cids.every((cid) => collectionIds.includes(cid)),
     );
     expect(everyParticipantIn3).toEqual(true);
-    expect(
-      unique(Object.values(collectionParticipantIds).map((v: any) => v.length))
-    ).toEqual([3]);
+    expect(unique(Object.values(collectionParticipantIds).map((v: any) => v.length))).toEqual([3]);
   });
 });
 
@@ -288,11 +257,7 @@ it('can generate lineUps for TEAM events', () => {
   const drawDefinition = result.drawDefinition;
 
   // all of the TEAM matchUps should have 16 tieMatchUps
-  expect(
-    drawDefinition.structures[0].matchUps.every(
-      ({ tieMatchUps }) => tieMatchUps.length === 16
-    )
-  ).toEqual(true);
+  expect(drawDefinition.structures[0].matchUps.every(({ tieMatchUps }) => tieMatchUps.length === 16)).toEqual(true);
 
   result = tournamentEngine.addDrawDefinition({
     drawDefinition,
@@ -319,10 +284,7 @@ it('can generate lineUps for TEAM events', () => {
   });
 
   const { lineUps, participantsToAdd } = result;
-  tournamentEngine.addParticipants({
-    participants: participantsToAdd,
-    tournamentRecord,
-  });
+  tournamentEngine.addParticipants({ participants: participantsToAdd });
   const extension = { name: LINEUPS, value: lineUps };
   tournamentEngine.addExtension({ element: drawDefinition, extension });
 

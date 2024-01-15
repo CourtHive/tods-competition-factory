@@ -9,7 +9,7 @@ import { INDIVIDUAL } from '../../../constants/participantConstants';
 
 it('can retrieve and modify tournament persons', () => {
   let tournamentPersons = tournamentEngine.getTournamentPersons({
-    sandboxTournament: { tournamentId: 'boo' },
+    tournamentRecord: { tournamentId: 'boo' },
   }).tournamentPersons;
   expect(tournamentPersons.length).toEqual(0);
 
@@ -27,11 +27,9 @@ it('can retrieve and modify tournament persons', () => {
   expect(tournamentPersons.length).toEqual(100);
 
   const targetedParticipantId = tournamentPersons[0].participantIds[0];
-  const { participant: targetedParticipant } = tournamentEngine.findParticipant(
-    {
-      participantId: targetedParticipantId,
-    }
-  );
+  const { participant: targetedParticipant } = tournamentEngine.findParticipant({
+    participantId: targetedParticipantId,
+  });
 
   const targetPersonId = 'targetPersonId';
   const updatedParticipant = {
@@ -84,12 +82,8 @@ it('can retrieve and modify tournament persons', () => {
   });
   expect(result.success).toEqual(true);
 
-  tournamentPersons = tournamentEngine.getTournamentPersons(
-    {}
-  ).tournamentPersons;
-  const personWithMultipleRoles = tournamentPersons.find(
-    (p) => p.participantIds.length > 1
-  );
+  tournamentPersons = tournamentEngine.getTournamentPersons({}).tournamentPersons;
+  const personWithMultipleRoles = tournamentPersons.find((p) => p.participantIds.length > 1);
   expect(personWithMultipleRoles.participantIds.length).toEqual(2);
   expect(personWithMultipleRoles.personId).toEqual(targetPersonId);
 });

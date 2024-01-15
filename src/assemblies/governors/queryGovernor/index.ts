@@ -4,16 +4,21 @@ import { getDrawParticipantRepresentativeIds } from '../../../mutate/drawDefinit
 import { getEventMatchUpFormatTiming } from '../../../query/extensions/matchUpFormatTiming/getEventMatchUpFormatTiming';
 import { getModifiedMatchUpFormatTiming } from '../../../query/extensions/matchUpFormatTiming/getModifiedMatchUpTiming';
 import { getValidGroupSizes } from '../../../assemblies/generators/drawDefinitions/drawTypes/roundRobin/roundRobin';
+import { allPlayoffPositionsFilled, isCompletedStructure } from '../../../query/drawDefinition/structureActions';
 import { getMatchUpFormatTiming } from '../../../query/extensions/matchUpFormatTiming/getMatchUpFormatTiming';
 import { getScheduledRoundsDetails } from '../../../query/matchUps/scheduling/getScheduledRoundsDetails';
 import { getSchedulingProfileIssues } from '../../../query/matchUps/scheduling/getSchedulingProfileIssues';
 import { getCompetitionPenalties } from '../../../mutate/participants/penalties/getCompetitionPenalties';
 import { roundRobinGroups } from '../../generators/drawDefinitions/drawTypes/roundRobin/roundRobinGroups';
+import { getAllowedDrawTypes, getAllowedMatchUpFormats } from '../../../query/tournaments/allowedTypes';
+import { getPolicyDefinitions, getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
+import { getCompetitionVenues, getVenuesAndCourts } from '../../../query/venues/venuesAndCourtsGetter';
+import { getEventStructures, getTournamentStructures } from '../../../query/structure/structureGetter';
 import { getTournamentPenalties } from '../../../mutate/participants/penalties/getTournamentPenalties';
+import { getSeedingThresholds } from '../../../mutate/drawDefinitions/positionGovernor/getSeedBlocks';
 import { getMatchUpDailyLimitsUpdate } from '../../../query/extensions/getMatchUpDailyLimitsUpdate';
 import { getCompetitionParticipants } from '../../../query/participants/getCompetitionParticipants';
 import { getParticipantIdFinishingPositions } from '../../../query/drawDefinition/finishingPositions';
-import { getSeedingThresholds } from '../../../mutate/drawDefinitions/positionGovernor/getSeedBlocks';
 import { participantScheduledMatchUps } from '../../../query/matchUps/participantScheduledMatchUps';
 import { getParticipantEventDetails } from '../../../query/participants/getParticipantEventDetails';
 import { getStructureSeedAssignments } from '../../../query/structure/getStructureSeedAssignments';
@@ -94,11 +99,6 @@ import { getEvents } from '../../../query/events/getEvents';
 import { getEvent } from '../../../query/events/getEvent';
 import { findPolicy } from '../../../acquire/findPolicy';
 import { credits } from '../../../fixtures/credits';
-import { allPlayoffPositionsFilled, isCompletedStructure } from '../../../query/drawDefinition/structureActions';
-import { getPolicyDefinitions, getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import { getCompetitionVenues, getVenuesAndCourts } from '../../../query/venues/venuesAndCourtsGetter';
-import { getEventStructures, getTournamentStructures } from '../../../query/structure/structureGetter';
-import { getAllowedDrawTypes, getAllowedMatchUpFormats } from '../../../query/tournaments/allowedTypes';
 import {
   getTimeItem,
   getEventTimeItem,

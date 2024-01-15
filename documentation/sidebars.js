@@ -3,7 +3,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Competition Factory',
-      items: ['introduction', 'features', 'tmx', 'installation'],
+      items: ['introduction', 'tmx', 'installation', 'migration'],
     },
     {
       type: 'category',
@@ -13,7 +13,6 @@ module.exports = {
         'concepts/accessors',
         'concepts/context',
         'concepts/draw-generation',
-        'concepts/globalState',
         {
           Policies: [
             'concepts/policies',
@@ -45,11 +44,12 @@ module.exports = {
         {
           type: 'doc',
           label: 'Overview',
-          id: 'state-engines',
+          id: 'engines/state-engines',
         },
-        { type: 'doc', label: 'askEngine', id: 'state-engines' },
-        { type: 'doc', label: 'syncEngine', id: 'state-engines' },
-        { type: 'doc', label: 'asyncEngine', id: 'state-engines' },
+        'engines/engine-logging',
+        'engines/engine-middleware',
+        'engines/mutation-engines',
+        'engines/custom-engines',
       ],
     },
     {
@@ -59,8 +59,13 @@ module.exports = {
         {
           type: 'doc',
           label: 'Overview',
-          id: 'engines/competition-engine-overview',
+          id: 'governors/governors-overview',
         },
+        'governors/competition-governor',
+        'governors/event-governor',
+        'governors/query-governor',
+        'governors/schedule-governor',
+        'governors/venue-governor',
       ],
     },
     {
@@ -69,20 +74,12 @@ module.exports = {
       items: [
         'constants',
         {
-          Codes: [
-            'codes/age-category',
-            'codes/matchup-format',
-            'enums/tournament-level',
-          ],
+          Codes: ['codes/age-category', 'codes/matchup-format'],
         },
         'types/typedefs',
         'concepts/extensions',
         {
-          Explanation: [
-            'concepts/lineUp',
-            'concepts/tieFormat',
-            'concepts/tieMatchUp',
-          ],
+          Explanation: ['concepts/lineUp', 'concepts/tieFormat', 'concepts/tieMatchUp'],
         },
       ],
     },

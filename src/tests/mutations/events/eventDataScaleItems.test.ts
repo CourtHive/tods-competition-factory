@@ -67,58 +67,36 @@ test('ratings values should be present on tournamentParticipants in getEventData
   tournamentEngine.setState(tournamentRecord);
 
   let mockedMatchUp = tournamentEngine.allTournamentMatchUps({
-    sandboxTournament: tournamentRecord,
     participantsProfile,
+    tournamentRecord,
   }).matchUps?.[0];
 
-  expect(
-    mockedMatchUp.sides[0].participant.ratings[SINGLES][0].scaleName
-  ).toEqual(WTN);
+  expect(mockedMatchUp.sides[0].participant.ratings[SINGLES][0].scaleName).toEqual(WTN);
 
   ({
     matchUps: [mockedMatchUp],
-  } = tournamentEngine.allTournamentMatchUps({
-    sandboxTournament: tournamentRecord,
-  }));
+  } = tournamentEngine.allTournamentMatchUps({ tournamentRecord }));
 
   expect(mockedMatchUp.sides[0].participant.ratings).toBeUndefined();
 
-  let { eventData } = tournamentEngine.getEventData({
-    sandboxTournament: tournamentRecord,
-    eventId,
-  });
-  expect(
-    eventData.drawsData[0].structures[0].roundMatchUps[1][0].sides[0]
-      .participant.ratings
-  ).not.toBeUndefined();
-  expect(
-    eventData.drawsData[0].structures[0].roundMatchUps[1][0].sides[0]
-      .participant.timeItems
-  ).not.toBeUndefined();
+  let { eventData } = tournamentEngine.getEventData({ tournamentRecord, eventId });
+  expect(eventData.drawsData[0].structures[0].roundMatchUps[1][0].sides[0].participant.ratings).not.toBeUndefined();
+  expect(eventData.drawsData[0].structures[0].roundMatchUps[1][0].sides[0].participant.timeItems).not.toBeUndefined();
 
   // default privacy policy filters out timeItems and ratings
   ({ eventData } = tournamentEngine.getEventData({
     policyDefinitions: POLICY_PRIVACY_DEFAULT,
-    sandboxTournament: tournamentRecord,
+    tournamentRecord,
     eventId,
   }));
-  expect(
-    eventData.drawsData[0].structures[0].roundMatchUps[1][0].sides[0]
-      .participant.ratings
-  ).toBeUndefined();
-  expect(
-    eventData.drawsData[0].structures[0].roundMatchUps[1][0].sides[0]
-      .participant.timeItems
-  ).toBeUndefined();
+  expect(eventData.drawsData[0].structures[0].roundMatchUps[1][0].sides[0].participant.ratings).toBeUndefined();
+  expect(eventData.drawsData[0].structures[0].roundMatchUps[1][0].sides[0].participant.timeItems).toBeUndefined();
 
   tournamentEngine.setState(tournamentRecord);
   const result = tournamentEngine.competitionScheduleMatchUps({
     participantsProfile,
   });
-  expect(
-    result.completedMatchUps[0].sides[0].participant.ratings.SINGLES[0]
-      .scaleName
-  ).toEqual(WTN);
+  expect(result.completedMatchUps[0].sides[0].participant.ratings.SINGLES[0].scaleName).toEqual(WTN);
 
   const eventScaleValues = tournamentEngine.getEvents({
     withScaleValues: true,

@@ -1,4 +1,6 @@
 import { engineLogging } from '../../../global/functions/engineLogging';
+import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
+import { FactoryEngine } from '../../../types/factoryTypes';
 import { paramsMiddleware } from './paramsMiddleware';
 import {
   getDevContext,
@@ -7,10 +9,6 @@ import {
   getTournamentRecords,
   handleCaughtError,
 } from '../../../global/state/globalState';
-
-import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
-import { FactoryEngine } from '../../../types/factoryTypes';
-import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
 
 /**
  * Executes a function within a FactoryEngine.
@@ -37,13 +35,13 @@ export function executeFunction(
   const tournamentId = getTournamentId();
   if (params) params.activeTournamentId = tournamentId;
 
-  if (params?.sandboxTournament && !params?.sandboxTournament.tournamentId) return { error: INVALID_VALUES };
+  const tournamentRecord = params?.tournamentRecord || getTournamentRecord(tournamentId);
 
-  const tournamentRecord = params?.sandboxTournament || getTournamentRecord(tournamentId);
-
-  const tournamentRecords = params?.sandboxTournament
-    ? { [params?.sandboxTournament.tournamentId]: params.sandboxTournament }
-    : getTournamentRecords();
+  const tournamentRecords =
+    (typeof params?.tournamentRecord === 'object' && {
+      [params?.tournamentRecord.tournamentId]: params.tournamentRecord,
+    }) ||
+    getTournamentRecords();
 
   // ENSURE that logged params are not mutated by middleware
   const paramsToLog = params ? makeDeepCopy(params, undefined, true) : undefined;
