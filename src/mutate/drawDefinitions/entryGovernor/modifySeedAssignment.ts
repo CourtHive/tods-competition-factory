@@ -1,21 +1,18 @@
-import { getStructureSeedAssignments } from '../../../query/structure/getStructureSeedAssignments';
-import { modifySeedAssignmentsNotice } from '../../notifications/drawNotifications';
-import { findStructure } from '../../../acquire/findStructure';
-import { ensureInt } from '../../../utilities/ensureInt';
-import { isNumeric } from '../../../utilities/math';
+import { getStructureSeedAssignments } from 'query/structure/getStructureSeedAssignments';
+import { modifySeedAssignmentsNotice } from 'mutate/notifications/drawNotifications';
+import { findStructure } from 'acquire/findStructure';
+import { ensureInt } from 'utilities/ensureInt';
+import { isNumeric } from 'utilities/math';
 
-import { SUCCESS } from '../../../constants/resultConstants';
+import { DrawDefinition, Event, Tournament } from 'types/tournamentTypes';
+import { SUCCESS } from 'constants/resultConstants';
 import {
+  INVALID_PARTICIPANT_ID,
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  Event,
-  Tournament,
-} from '../../../types/tournamentTypes';
+} from 'constants/errorConditionConstants';
 
 type ModifySeedAssignmentArgs = {
   tournamentRecord?: Tournament;
@@ -38,6 +35,11 @@ export function modifySeedAssignment({
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
 
+  const participant = (tournamentRecord?.participants ?? []).find(
+    (participant) => participant.participantId === participantId,
+  );
+  if (tournamentRecord && !participant) return { error: INVALID_PARTICIPANT_ID };
+
   const { structure } = findStructure({ drawDefinition, structureId });
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
@@ -46,8 +48,7 @@ export function modifySeedAssignment({
     isNumeric(seedValue) ||
     seedValue === undefined ||
     seedValue === '' ||
-    (typeof seedValue === 'string' &&
-      seedValue.split('-').every((v) => isNumeric(v) && ensureInt(v) > 0));
+    (typeof seedValue === 'string' && seedValue.split('-').every((v) => isNumeric(v) && ensureInt(v) > 0));
 
   if (!validValue) return { error: INVALID_VALUES };
 
@@ -55,13 +56,9 @@ export function modifySeedAssignment({
     drawDefinition,
     structure,
   });
-  const seedNumbers = seedAssignments?.map(
-    (assignment) => assignment.seedNumber
-  );
+  const seedNumbers = seedAssignments?.map((assignment) => assignment.seedNumber);
 
-  const existingAssginment = seedAssignments?.find(
-    (assignment) => assignment.participantId === participantId
-  );
+  const existingAssginment = seedAssignments?.find((assignment) => assignment.participantId === participantId);
 
   if (existingAssginment) {
     const newValue =

@@ -8,14 +8,15 @@ Verion 2.0 of the Competition Factory was focused on code restructuring with sup
 
 ### tournamentEngine and competitionEngine
 
-- tournamentEngine.getState() => .getTournament()
-- tournamentEngine.bulkScheduleMatchUps() is now .bulkScheduleTournamentMatchUps()
-- tournamentEngine.attachEventPolicies() => .attachPolicies({ eventId, ... })
-- tournamentEngine.generateTeamsFromParticipantAttribute() is now .createTeamsFromParticipantAttributes()
-- tournamentEngine.findEventExtension() => .findExtension({ name: '', element _or_ eventId?, discover: true })
-- tournamentEngine.findTournamentExtension() => .findExtension({ name: '', element _or_ discover: true })
-- competitionEngine.getParticipants() is now .getCompetitionParticipants()
-- competitionEngine.competitionMatchUps() is now .getCompetitionMatchUps()
+- tournamentEngine.getState() => engine.getTournament()
+- tournamentEngine.bulkScheduleMatchUps() is now engine.bulkScheduleTournamentMatchUps()
+- tournamentEngine.attachEventPolicies() => engine.attachPolicies({ eventId, ... })
+- tournamentEngine.generateTeamsFromParticipantAttribute() is now engine.createTeamsFromParticipantAttributes()
+- tournamentEngine.findEventExtension() => engine.findExtension({ name: '', element _or_ eventId?, discover: true })
+- tournamentEngine.findTournamentExtension() => engine.findExtension({ name: '', element _or_ discover: true })
+- tournamentEngine.getAvailablePlayoffRounds() => engine.getAvailablePlayoffProfiles()
+- competitionEngine.getParticipants() is now engine.getCompetitionParticipants()
+- competitionEngine.competitionMatchUps() is now engine.getCompetitionMatchUps()
 
 ### utilities
 
