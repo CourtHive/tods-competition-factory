@@ -5,17 +5,10 @@ import { findPolicy } from '../../../acquire/findPolicy';
 import { findEvent } from '../../../acquire/findEvent';
 import { setMatchUpState } from './setMatchUpState';
 
-import {
-  DrawDefinition,
-  Event,
-  Tournament,
-} from '../../../types/tournamentTypes';
+import { MISSING_DRAW_ID, MISSING_MATCHUP_ID } from '../../../constants/errorConditionConstants';
+import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
 import { POLICY_TYPE_SCORING } from '../../../constants/policyConstants';
 import { PolicyDefinitions } from '../../../types/factoryTypes';
-import {
-  MISSING_DRAW_ID,
-  MISSING_MATCHUP_ID,
-} from '../../../constants/errorConditionConstants';
 
 /**
  * Sets either matchUpStatus or score and winningSide; values to be set are passed in outcome object.
@@ -25,6 +18,7 @@ import {
 type SetMatchUpStatusArgs = {
   tournamentRecords?: { [key: string]: Tournament };
   policyDefinitions?: PolicyDefinitions;
+  disableScoreValidation?: boolean;
   allowChangePropagation?: boolean;
   tournamentRecord: Tournament;
   drawDefinition: DrawDefinition;
@@ -43,9 +37,7 @@ type SetMatchUpStatusArgs = {
 export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
   const tournamentRecords = resolveTournamentRecords(params);
   if (!params.drawDefinition) {
-    const tournamentRecord =
-      params.tournamentRecord ??
-      (params.tournamentId && tournamentRecords[params.tournamentId]);
+    const tournamentRecord = params.tournamentRecord ?? (params.tournamentId && tournamentRecords[params.tournamentId]);
     if (!params.tournamentRecord) params.tournamentRecord = tournamentRecord;
 
     const result = findEvent({
@@ -59,6 +51,7 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
   }
 
   const {
+    disableScoreValidation,
     policyDefinitions,
     tournamentRecord,
     disableAutoCalc,
@@ -82,10 +75,8 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
 
   // whether or not to allow winningSide change propagation
   const allowChangePropagation =
-    (params.allowChangePropagation !== undefined &&
-      params.allowChangePropagation) ||
-    (policy?.allowChangePropagation !== undefined &&
-      policy.allowChangePropagation) ||
+    (params.allowChangePropagation !== undefined && params.allowChangePropagation) ||
+    (policy?.allowChangePropagation !== undefined && policy.allowChangePropagation) ||
     undefined;
 
   const { outcome } = params;
@@ -105,11 +96,7 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
     const { score: scoreObject } = matchUpScore(outcome);
     outcome.score = scoreObject;
     outcome.score.sets = outcome.score.sets.filter(
-      (set) =>
-        set.side1Score ||
-        set.side2Score ||
-        set.side1TiebreakScore ||
-        set.side2TiebreakScore
+      (set) => set.side1Score || set.side2Score || set.side1TiebreakScore || set.side2TiebreakScore,
     );
   }
 
@@ -118,6 +105,7 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
     matchUpStatus: outcome?.matchUpStatus,
     winningSide: outcome?.winningSide,
     allowChangePropagation,
+    disableScoreValidation,
     score: outcome?.score,
     tournamentRecords,
     policyDefinitions,
