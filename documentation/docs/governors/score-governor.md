@@ -8,7 +8,7 @@ these utilities provide analysis/validation or generate values, but do not make 
 Lightweight independent/reusable components such as scoring dialogs can make use of the **scoreGovernor** without having to import any Competition Factory engines.
 
 ```js
-import { scoreGovernor } from 'tods-competition-factory';
+import { governors: { scoreGovernor }} from 'tods-competition-factory';
 ```
 
 ---
@@ -129,11 +129,10 @@ const [side1Score, side2Score] = scoreGovernor.getSetComplement({
 Returns string representation of current tieMatchUp score.
 
 ```js
-const { scoreStringSide1, scoreStringSide2, set, winningSide } =
-  scoreGovernor.generateTieMatchUpScore({
-    matchUp, // must have { matchUpType: 'TEAM' }
-    separator, // optional - defaults to '-'
-  });
+const { scoreStringSide1, scoreStringSide2, set, winningSide } = scoreGovernor.generateTieMatchUpScore({
+  matchUp, // must have { matchUpType: 'TEAM' }
+  separator, // optional - defaults to '-'
+});
 ```
 
 ---

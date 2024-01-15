@@ -3,6 +3,7 @@ import { deleteParticipants } from '../participants/deleteParticipants';
 import { getFlightProfile } from '../../query/event/getFlightProfile';
 import { addParticipant } from '../participants/addParticipant';
 
+import { UNGROUPED, UNPAIRED } from '../../constants/entryStatusConstants';
 import { COMPETITOR } from '../../constants/participantRoles';
 import { PAIR } from '../../constants/participantConstants';
 import { SUCCESS } from '../../constants/resultConstants';
@@ -16,7 +17,6 @@ import {
   MISSING_PARTICIPANT_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '../../constants/errorConditionConstants';
-import { UNGROUPED, UNPAIRED } from '../../constants/entryStatusConstants';
 
 export function modifyPairAssignment({
   replacementIndividualParticipantId,
@@ -32,11 +32,9 @@ export function modifyPairAssignment({
   if (uuids && !Array.isArray(uuids)) return { error: INVALID_VALUES };
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (
-    ![
-      replacementIndividualParticipantId,
-      existingIndividualParticipantId,
-      participantId,
-    ].every((id) => typeof id === 'string')
+    ![replacementIndividualParticipantId, existingIndividualParticipantId, participantId].every(
+      (id) => typeof id === 'string',
+    )
   ) {
     return { error: MISSING_PARTICIPANT_ID };
   }
@@ -46,27 +44,21 @@ export function modifyPairAssignment({
     event?.entries
       ?.filter(({ entryStatus }) => [UNGROUPED, UNPAIRED].includes(entryStatus))
       .map(({ participantId }) => participantId) || [];
-  if (
-    !availableIndividualParticipantIds.includes(
-      replacementIndividualParticipantId
-    )
-  ) {
+  if (!availableIndividualParticipantIds.includes(replacementIndividualParticipantId)) {
     return { error: INVALID_PARTICIPANT_ID };
   }
 
   const participant = (tournamentRecord.participants || []).find(
-    (participant) => participant.participantId === participantId
+    (participant) => participant.participantId === participantId,
   );
 
-  if (participant?.participantType !== PAIR)
-    return { error: INVALID_PARTICIPANT, participant };
+  if (participant?.participantType !== PAIR) return { error: INVALID_PARTICIPANT, participant };
 
   const existingIndividualParticipantIds = participant.individualParticipantIds;
   const individualParticipantIds: string[] = [
     replacementIndividualParticipantId,
     ...existingIndividualParticipantIds.filter(
-      (individualParticipantId) =>
-        individualParticipantId !== existingIndividualParticipantId
+      (individualParticipantId) => individualParticipantId !== existingIndividualParticipantId,
     ),
   ];
 
@@ -98,40 +90,32 @@ export function modifyPairAssignment({
   const { flightProfile } = getFlightProfile({ event });
   if (drawDefinition) {
     // modify all positionAssignments in event, drawDefinition and flight
-    const flight = flightProfile?.flights?.find(
-      ({ drawId }) => drawId === drawDefinition.drawId
-    );
+    const flight = flightProfile?.flights?.find(({ drawId }) => drawId === drawDefinition.drawId);
     if (flight) {
       flight.drawEntries = flight.drawEntries.map((entry) =>
-        entry.participantId === participantId
-          ? { ...entry, participantId: newPairParticipantId }
-          : entry
+        entry.participantId === participantId ? { ...entry, participantId: newPairParticipantId } : entry,
       );
     }
 
     drawDefinition.entries = drawDefinition.entries.map((entry) =>
-      entry.participantId === participantId
-        ? { ...entry, participantId: newPairParticipantId }
-        : entry
+      entry.participantId === participantId ? { ...entry, participantId: newPairParticipantId } : entry,
     );
 
     // update positionAssignments for all structures within the drawDefinition
     for (const structure of drawDefinition.structures || []) {
       if (structure.positionAssignments) {
-        structure.positionAssignments = structure.positionAssignments.map(
-          (assignment) =>
-            assignment.participantId === participantId
-              ? { ...assignment, participantId: newPairParticipantId }
-              : assignment
+        structure.positionAssignments = structure.positionAssignments.map((assignment) =>
+          assignment.participantId === participantId
+            ? { ...assignment, participantId: newPairParticipantId }
+            : assignment,
         );
       } else if (structure.structures) {
         for (const subStructure of structure.structures) {
-          subStructure.positionAssignments =
-            subStructure.positionAssignments.map((assignment) =>
-              assignment.participantId === participantId
-                ? { ...assignment, participantId: newPairParticipantId }
-                : assignment
-            );
+          subStructure.positionAssignments = subStructure.positionAssignments.map((assignment) =>
+            assignment.participantId === participantId
+              ? { ...assignment, participantId: newPairParticipantId }
+              : assignment,
+          );
         }
       }
     }
@@ -150,23 +134,19 @@ export function modifyPairAssignment({
         ...entry,
         participantId: existingIndividualParticipantId,
       }) ||
-      entry
+      entry,
   );
 
   // if participant has no other entries then the pair can be destroyed
-  const participantOtherEntries = tournamentRecord.events.some(
-    ({ entries, eventId, drawDefinitions }) => {
-      if (event.eventId === eventId) {
-        return drawDefinitions.some(({ drawId, entries }) =>
-          drawId === drawDefinition?.drawId
-            ? false
-            : entries?.find((entry) => entry.participantId === participantId)
-        );
-      } else {
-        return entries?.find((entry) => entry.participantId === participantId);
-      }
+  const participantOtherEntries = tournamentRecord.events.some(({ entries, eventId, drawDefinitions }) => {
+    if (event.eventId === eventId) {
+      return drawDefinitions.some(({ drawId, entries }) =>
+        drawId === drawDefinition?.drawId ? false : entries?.find((entry) => entry.participantId === participantId),
+      );
+    } else {
+      return entries?.find((entry) => entry.participantId === participantId);
     }
-  );
+  });
 
   if (!participantOtherEntries) {
     const result = deleteParticipants({

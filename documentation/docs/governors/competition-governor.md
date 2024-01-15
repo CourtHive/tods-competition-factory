@@ -2,7 +2,9 @@
 title: Competition Governor
 ---
 
----
+```js
+import { governors: { competitionGovernor }} from 'tods-competition-factory';
+```
 
 ## linkTournaments
 

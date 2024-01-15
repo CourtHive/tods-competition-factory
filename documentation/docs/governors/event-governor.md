@@ -2,6 +2,10 @@
 title: Event Governor
 ---
 
+```js
+import { governors: { eventGovernor }} from 'tods-competition-factory';
+```
+
 ## modifyCollectionDefinition
 
 Modifies the `collectionName` and/or `matchUpFormat` for targeted `collectionId` within the `tieFormat` specified by `eventId`, `drawId`, `structureId` or `matchUpId`.
