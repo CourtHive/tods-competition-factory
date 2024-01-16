@@ -1,8 +1,8 @@
-import competitionGovernor from './competitionGovernor';
-import drawsGovernor from './drawsGovernor';
-import entriesGovernor from './entriesGovernor';
-import eventGovernor from './eventGovernor';
-import generationGovernor from './generationGovernor';
+import * as competitionGovernor from './competitionGovernor';
+import * as drawsGovernor from './drawsGovernor';
+import * as entriesGovernor from './entriesGovernor';
+import * as eventGovernor from './eventGovernor';
+import * as generationGovernor from './generationGovernor';
 import matchUpFormatGovernor from './matchUpFormatGovernor';
 import matchUpGovernor from './matchUpGovernor';
 import mocksGovernor from './mocksGovernor';
@@ -39,5 +39,3 @@ export const governors = {
   utilitiesGovernor,
   venueGovernor,
 };
-
-export default governors;

@@ -1,15 +1,9 @@
-import { keyValueScore } from '../index';
+import { keyValueScore } from '../keyValueScore';
 import { expect, it } from 'vitest';
 
 import { OUTCOME_COMPLETE } from '../constants';
-import {
-  INCOMPLETE,
-  TO_BE_PLAYED,
-} from '../../../../constants/matchUpStatusConstants';
-import {
-  FORMAT_STANDARD,
-  TIMED20,
-} from '../../../../fixtures/scoring/matchUpFormats';
+import { INCOMPLETE, TO_BE_PLAYED } from '../../../../constants/matchUpStatusConstants';
+import { FORMAT_STANDARD, TIMED20 } from '../../../../fixtures/scoring/matchUpFormats';
 
 function enterKeyValues(params) {
   const { matchUpFormat, shiftFirst, valuePairs } = params;
@@ -19,18 +13,16 @@ function enterKeyValues(params) {
 
   valuePairs.forEach((valuePair) => {
     const { value, lowSide = 2 } = valuePair;
-    ({ updated, sets, scoreString, winningSide, matchUpStatus } = keyValueScore(
-      {
-        value,
-        lowSide,
+    ({ updated, sets, scoreString, winningSide, matchUpStatus } = keyValueScore({
+      value,
+      lowSide,
 
-        sets,
-        scoreString,
-        matchUpStatus,
-        matchUpFormat,
-        shiftFirst,
-      }
-    ));
+      sets,
+      scoreString,
+      matchUpStatus,
+      matchUpFormat,
+      shiftFirst,
+    }));
   });
 
   return {

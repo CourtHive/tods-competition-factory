@@ -1,4 +1,4 @@
-import { keyValueMatchUpScore } from '../index';
+import { keyValueMatchUpScore } from '../keyValueScore';
 import { stressTests } from './standardStress';
 import { expect, it } from 'vitest';
 
@@ -25,9 +25,7 @@ it('can enter a straight set win for side 1', () => {
   }));
 
   expect(matchUp?.scoreString.trim()).toEqual('5-3');
-  expect(matchUp?.sets).toMatchObject([
-    { side1Score: 5, side2Score: 3, winningSide: 1 },
-  ]);
+  expect(matchUp?.sets).toMatchObject([{ side1Score: 5, side2Score: 3, winningSide: 1 }]);
   expect(matchUp?.sets[0].winningSide).toEqual(1);
 
   ({ matchUp } = keyValueMatchUpScore({
@@ -64,9 +62,7 @@ it('can enter a straight set win for side 2', () => {
   }));
 
   expect(matchUp?.scoreString.trim()).toEqual('3-5');
-  expect(matchUp?.sets).toMatchObject([
-    { side1Score: 3, side2Score: 5, winningSide: 2 },
-  ]);
+  expect(matchUp?.sets).toMatchObject([{ side1Score: 3, side2Score: 5, winningSide: 2 }]);
   expect(matchUp?.sets[0].winningSide).toEqual(2);
 
   ({ matchUp } = keyValueMatchUpScore({
@@ -103,9 +99,7 @@ it('can enter a three set win for side 1', () => {
   }));
 
   expect(matchUp?.scoreString.trim()).toEqual('2-4');
-  expect(matchUp?.sets).toMatchObject([
-    { side1Score: 2, side2Score: 4, winningSide: 2 },
-  ]);
+  expect(matchUp?.sets).toMatchObject([{ side1Score: 2, side2Score: 4, winningSide: 2 }]);
   expect(matchUp?.sets[0].winningSide).toEqual(2);
 
   ({ matchUp } = keyValueMatchUpScore({
@@ -149,9 +143,7 @@ it('can enter a three set win for side 2', () => {
     matchUpFormat,
   }));
   expect(matchUp?.scoreString.trim()).toEqual('2-4');
-  expect(matchUp?.sets).toMatchObject([
-    { side1Score: 2, side2Score: 4, winningSide: 2 },
-  ]);
+  expect(matchUp?.sets).toMatchObject([{ side1Score: 2, side2Score: 4, winningSide: 2 }]);
 
   ({ matchUp } = keyValueMatchUpScore({
     lowSide: 2,
@@ -192,9 +184,7 @@ it('can enter a first set tiebreak scoreString', () => {
     matchUpFormat,
   }));
   expect(matchUp?.scoreString.trim()).toEqual('5-4(');
-  expect(matchUp?.sets).toMatchObject([
-    { side1Score: 5, side2Score: 4, winningSide: undefined },
-  ]);
+  expect(matchUp?.sets).toMatchObject([{ side1Score: 5, side2Score: 4, winningSide: undefined }]);
 
   ({ matchUp } = keyValueMatchUpScore({
     lowSide: 2,
@@ -221,12 +211,7 @@ it('can enter a second set tiebreak scoreString', () => {
   const matchUpFormat = FORMAT_SHORT_SETS;
   let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
-  const values = [
-    { lowSide: 2, value: 1 },
-    { lowSide: 2, value: 4 },
-    { lowSide: 2, value: 2 },
-    TIEBREAK_CLOSER,
-  ];
+  const values = [{ lowSide: 2, value: 1 }, { lowSide: 2, value: 4 }, { lowSide: 2, value: 2 }, TIEBREAK_CLOSER];
 
   ({ matchUp } = enterValues({ values, matchUp }));
   expect(matchUp.scoreString.trim()).toEqual('4-1 5-4(2)');

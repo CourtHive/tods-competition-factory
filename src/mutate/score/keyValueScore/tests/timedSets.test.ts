@@ -1,5 +1,5 @@
+import { keyValueMatchUpScore } from '../keyValueScore';
 import { enterValues } from './primitives';
-import { keyValueMatchUpScore } from '..';
 import { expect, it } from 'vitest';
 
 const TIMED3x10 = 'SET3-S:T10';
@@ -49,12 +49,7 @@ it('supports adding outcomes', () => {
   const matchUpFormat = TIMED3x10;
   let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
-  const values = [
-    { value: 3 },
-    { value: '-' },
-    { value: 2 },
-    { lowSide: 2, value: 'r' },
-  ];
+  const values = [{ value: 3 }, { value: '-' }, { value: 2 }, { lowSide: 2, value: 'r' }];
 
   ({ matchUp } = enterValues({ values, matchUp }));
   expect(matchUp?.scoreString.trim()).toEqual('3-2 RET');

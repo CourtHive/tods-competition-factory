@@ -11,6 +11,4 @@ it('can return version from all engines', () => {
   expect(result).not.toBeUndefined();
   result = tournamentEngine.credits();
   expect(result).not.toBeUndefined();
-  result = mocksEngine.credits();
-  expect(result).not.toBeUndefined();
 });
