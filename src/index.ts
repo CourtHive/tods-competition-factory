@@ -1,22 +1,21 @@
 export { factoryVersion as version } from './global/functions/factoryVersion';
 
 // GOVERNORS ------------------------------------------------------------
-export { governors } from './assemblies/governors';
+export * as governors from './assemblies/governors';
 
 // UTILITIES ------------------------------------------------------------
-export { matchUpFormatCode } from './assemblies/governors/matchUpFormatGovernor';
-export { utilities } from './assemblies/governors/utilitiesGovernor';
+export * as matchUpFormatCode from './assemblies/governors/matchUpFormatGovernor';
+export * as utilities from './assemblies/governors/utilitiesGovernor';
 
-import * as globalState from './global/state/globalState';
-export { globalState };
+// GLOBAL STATE ---------------------------------------------------------
+export * as globalState from './global/state/globalState';
 
 export { forge } from './forge';
 
 // ENGINES - For cusomization --------------------------------------------
 export { asyncEngine } from './assemblies/engines/async';
+export { syncEngine } from './assemblies/engines/sync';
 export { askEngine } from './assemblies/engines/ask';
-import engine from './tests/engines/syncEngine';
-export { engine as syncEngine };
 
 export { matchUpEngine } from './assemblies/engines/matchUp';
 export { mocksEngine } from './assemblies/engines/mock';

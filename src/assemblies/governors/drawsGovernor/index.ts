@@ -1,81 +1,39 @@
-import { setDrawParticipantRepresentativeIds } from '../../../mutate/drawDefinitions/setDrawParticipantRepresentativeIds';
-import { resetVoluntaryConsolationStructure } from '../../../mutate/drawDefinitions/resetVoluntaryConsolationStructure';
-import { withdrawParticipantAtDrawPosition } from '../../../mutate/drawDefinitions/withdrawParticipantAtDrawPosition';
-import { addVoluntaryConsolationStructure } from '../../../mutate/drawDefinitions/addVoluntaryConsolationStructure';
-import { luckyLoserDrawPositionAssignment } from '../../../mutate/drawDefinitions/luckyLoserDrawPositionAssignment';
-import { alternateDrawPositionAssignment } from '../../../mutate/drawDefinitions/alternateDrawPositionAssignment';
-import { setPositionAssignments } from '../../../mutate/drawDefinitions/positionGovernor/setPositionAssignments';
-import { qualifierDrawPositionAssignment } from '../../../mutate/drawDefinitions/qualifierDrawPositionAssignment';
-import { removeDrawPositionAssignment } from '../../../mutate/drawDefinitions/removeDrawPositionAssignment';
-import { swapDrawPositionAssignments } from '../../../mutate/drawDefinitions/swapDrawPositionAssignments';
-import { modifySeedAssignment } from '../../../mutate/drawDefinitions/entryGovernor/modifySeedAssignment';
-import { automatedPlayoffPositioning } from '../../../mutate/drawDefinitions/automatedPlayoffPositioning';
-import { setStructureOrder } from '../../../mutate/drawDefinitions/structureGovernor/setStructureOrder';
-import { attachQualifyingStructure } from '../../../mutate/drawDefinitions/attachQualifyingStructure';
-import { renameStructures } from '../../../mutate/drawDefinitions/structureGovernor/renameStructures';
-import { assignDrawPositionBye } from '../../../mutate/matchUps/drawPositions/assignDrawPositionBye';
-import { addDrawDefinitionTimeItem } from '../../../mutate/drawDefinitions/addDrawDefinitionTimeItem';
-import { removeStructure } from '../../../mutate/drawDefinitions/structureGovernor/removeStructure';
-import { addVoluntaryConsolationStage } from '../../../mutate/events/addVoluntaryConsolationStage';
-import { removeSeededParticipant } from '../../../mutate/drawDefinitions/removeSeededParticipant';
-import { addQualifyingStructure } from '../../../mutate/drawDefinitions/addQualifyingStructure';
-import { addPlayoffStructures } from '../../../mutate/drawDefinitions/addPlayoffStructures';
-import { automatedPositioning } from '../../../mutate/drawDefinitions/automatedPositioning';
-import { modifyDrawDefinition } from '../../../mutate/drawDefinitions/modifyDrawDefinition';
-import { resetDrawDefinition } from '../../../mutate/drawDefinitions/resetDrawDefinition';
-import { pruneDrawDefinition } from '../../../mutate/drawDefinitions/pruneDrawDefinition';
-import { assignDrawPosition } from '../../../mutate/drawDefinitions/assignDrawPosition';
-import { deleteAdHocMatchUps } from '../../../mutate/structures/deleteAdHocMatchUps';
-import { removeRoundMatchUps } from '../../../mutate/structures/removeRoundMatchUps';
-import { updateTeamLineUp } from '../../../mutate/drawDefinitions/updateTeamLineUp';
-import { addAdHocMatchUps } from '../../../mutate/structures/addAdHocMatchUps';
-import { modifyDrawName } from '../../../mutate/drawDefinitions/modifyDrawName';
-import { setSubOrder } from '../../../mutate/structures/setSubOrder';
-import { autoSeeding } from '../../../mutate/entries/autoSeeding';
-import {
+export { setDrawParticipantRepresentativeIds } from '../../../mutate/drawDefinitions/setDrawParticipantRepresentativeIds';
+export { resetVoluntaryConsolationStructure } from '../../../mutate/drawDefinitions/resetVoluntaryConsolationStructure';
+export { withdrawParticipantAtDrawPosition } from '../../../mutate/drawDefinitions/withdrawParticipantAtDrawPosition';
+export { addVoluntaryConsolationStructure } from '../../../mutate/drawDefinitions/addVoluntaryConsolationStructure';
+export { luckyLoserDrawPositionAssignment } from '../../../mutate/drawDefinitions/luckyLoserDrawPositionAssignment';
+export { alternateDrawPositionAssignment } from '../../../mutate/drawDefinitions/alternateDrawPositionAssignment';
+export { setPositionAssignments } from '../../../mutate/drawDefinitions/positionGovernor/setPositionAssignments';
+export { qualifierDrawPositionAssignment } from '../../../mutate/drawDefinitions/qualifierDrawPositionAssignment';
+export { removeDrawPositionAssignment } from '../../../mutate/drawDefinitions/removeDrawPositionAssignment';
+export { swapDrawPositionAssignments } from '../../../mutate/drawDefinitions/swapDrawPositionAssignments';
+export { modifySeedAssignment } from '../../../mutate/drawDefinitions/entryGovernor/modifySeedAssignment';
+export { automatedPlayoffPositioning } from '../../../mutate/drawDefinitions/automatedPlayoffPositioning';
+export { setStructureOrder } from '../../../mutate/drawDefinitions/structureGovernor/setStructureOrder';
+export { attachQualifyingStructure } from '../../../mutate/drawDefinitions/attachQualifyingStructure';
+export { renameStructures } from '../../../mutate/drawDefinitions/structureGovernor/renameStructures';
+export { assignDrawPositionBye } from '../../../mutate/matchUps/drawPositions/assignDrawPositionBye';
+export { addDrawDefinitionTimeItem } from '../../../mutate/drawDefinitions/addDrawDefinitionTimeItem';
+export { removeStructure } from '../../../mutate/drawDefinitions/structureGovernor/removeStructure';
+export { addVoluntaryConsolationStage } from '../../../mutate/events/addVoluntaryConsolationStage';
+export { removeSeededParticipant } from '../../../mutate/drawDefinitions/removeSeededParticipant';
+export { addQualifyingStructure } from '../../../mutate/drawDefinitions/addQualifyingStructure';
+export { addPlayoffStructures } from '../../../mutate/drawDefinitions/addPlayoffStructures';
+export { automatedPositioning } from '../../../mutate/drawDefinitions/automatedPositioning';
+export { modifyDrawDefinition } from '../../../mutate/drawDefinitions/modifyDrawDefinition';
+export { resetDrawDefinition } from '../../../mutate/drawDefinitions/resetDrawDefinition';
+export { pruneDrawDefinition } from '../../../mutate/drawDefinitions/pruneDrawDefinition';
+export { assignDrawPosition } from '../../../mutate/drawDefinitions/assignDrawPosition';
+export { deleteAdHocMatchUps } from '../../../mutate/structures/deleteAdHocMatchUps';
+export { removeRoundMatchUps } from '../../../mutate/structures/removeRoundMatchUps';
+export { updateTeamLineUp } from '../../../mutate/drawDefinitions/updateTeamLineUp';
+export { addAdHocMatchUps } from '../../../mutate/structures/addAdHocMatchUps';
+export { modifyDrawName } from '../../../mutate/drawDefinitions/modifyDrawName';
+export { setSubOrder } from '../../../mutate/structures/setSubOrder';
+export { autoSeeding } from '../../../mutate/entries/autoSeeding';
+export {
   attachConsolationStructures,
   attachPlayoffStructures,
   attachStructures,
 } from '../../../mutate/drawDefinitions/attachStructures';
-
-export const drawsGovernor = {
-  addAdHocMatchUps,
-  addDrawDefinitionTimeItem,
-  addPlayoffStructures,
-  addQualifyingStructure,
-  addVoluntaryConsolationStage,
-  addVoluntaryConsolationStructure,
-  alternateDrawPositionAssignment,
-  assignDrawPosition,
-  assignDrawPositionBye,
-  attachConsolationStructures,
-  attachPlayoffStructures,
-  attachQualifyingStructure,
-  attachStructures,
-  automatedPlayoffPositioning,
-  automatedPositioning,
-  autoSeeding,
-  deleteAdHocMatchUps,
-  luckyLoserDrawPositionAssignment,
-  modifyDrawDefinition,
-  modifyDrawName,
-  modifySeedAssignment,
-  pruneDrawDefinition,
-  qualifierDrawPositionAssignment,
-  removeDrawPositionAssignment,
-  removeRoundMatchUps,
-  removeSeededParticipant,
-  removeStructure,
-  renameStructures,
-  resetDrawDefinition,
-  resetVoluntaryConsolationStructure,
-  setDrawParticipantRepresentativeIds,
-  setPositionAssignments,
-  setStructureOrder,
-  setSubOrder,
-  swapDrawPositionAssignments,
-  withdrawParticipantAtDrawPosition,
-  updateTeamLineUp,
-};
-
-export default drawsGovernor;

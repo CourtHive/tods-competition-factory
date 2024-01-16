@@ -5,17 +5,11 @@ import { findExtension } from '../../../acquire/findExtension';
 import { findPolicy } from '../../../acquire/findPolicy';
 import { unique } from '../../../utilities/arrays';
 
+import { POLICY_TYPE_SCHEDULING, POLICY_TYPE_SCORING } from '../../../constants/policyConstants';
 import POLICY_SCHEDULING_DEFAULT from '../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
+import { ErrorType, MISSING_EVENT } from '../../../constants/errorConditionConstants';
 import { SCHEDULE_TIMING } from '../../../constants/extensionConstants';
 import { Event, Tournament } from '../../../types/tournamentTypes';
-import {
-  ErrorType,
-  MISSING_EVENT,
-} from '../../../constants/errorConditionConstants';
-import {
-  POLICY_TYPE_SCHEDULING,
-  POLICY_TYPE_SCORING,
-} from '../../../constants/policyConstants';
 
 type GetEventMatchUpFormatTimingArgs = {
   tournamentRecord: Tournament;
@@ -56,14 +50,13 @@ export function getEventMatchUpFormatTiming({
       if (extension?.value) {
         ({ matchUpAverageTimes, matchUpRecoveryTimes } = extension.value);
       } else {
-        ({ matchUpAverageTimes, matchUpRecoveryTimes } =
-          POLICY_SCHEDULING_DEFAULT[POLICY_TYPE_SCHEDULING]);
+        ({ matchUpAverageTimes, matchUpRecoveryTimes } = POLICY_SCHEDULING_DEFAULT[POLICY_TYPE_SCHEDULING]);
       }
       matchUpFormatDefinitions = unique(
         [
           ...(matchUpAverageTimes || []).map((at) => at.matchUpFormatCodes),
           ...(matchUpRecoveryTimes || []).map((at) => at.matchUpFormatCodes),
-        ].flat()
+        ].flat(),
       ).map((matchUpFormat) => ({ matchUpFormat }));
       info = 'default scheduling policy in use';
     }
@@ -71,13 +64,9 @@ export function getEventMatchUpFormatTiming({
     const uniqueMatchUpFormats: any[] = [];
     matchUpFormatDefinitions = matchUpFormats
       .map((definition) => {
-        const definitionObject =
-          typeof definition === 'string'
-            ? { matchUpFormat: definition }
-            : definition;
+        const definitionObject = typeof definition === 'string' ? { matchUpFormat: definition } : definition;
 
-        if (uniqueMatchUpFormats.includes(definitionObject?.matchUpFormat))
-          return;
+        if (uniqueMatchUpFormats.includes(definitionObject?.matchUpFormat)) return;
         if (
           !isValidMatchUpFormat({
             matchUpFormat: definitionObject?.matchUpFormat,
@@ -90,28 +79,25 @@ export function getEventMatchUpFormatTiming({
       .filter(Boolean);
   }
   const { eventType, eventId, category } = event;
-  const categoryName =
-    category?.categoryName ?? category?.ageCategoryCode ?? eventId;
+  const categoryName = category?.categoryName ?? category?.ageCategoryCode ?? eventId;
 
   if (!eventId) return { error: MISSING_EVENT };
 
-  const eventMatchUpFormatTiming = matchUpFormatDefinitions.map(
-    ({ matchUpFormat, description }) => {
-      const timing = getMatchUpFormatTiming({
-        tournamentRecord,
-        matchUpFormat,
-        categoryName,
-        categoryType,
-        eventType,
-        event,
-      });
-      return {
-        matchUpFormat,
-        description,
-        ...timing,
-      };
-    }
-  );
+  const eventMatchUpFormatTiming = matchUpFormatDefinitions.map(({ matchUpFormat, description }) => {
+    const timing = getMatchUpFormatTiming({
+      tournamentRecord,
+      matchUpFormat,
+      categoryName,
+      categoryType,
+      eventType,
+      event,
+    });
+    return {
+      matchUpFormat,
+      description,
+      ...timing,
+    };
+  });
 
   return definedAttributes({ eventMatchUpFormatTiming, info });
 }

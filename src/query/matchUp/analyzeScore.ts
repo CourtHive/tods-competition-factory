@@ -1,12 +1,8 @@
 import { parse } from '../../assemblies/generators/matchUpFormatCode/parse';
 import { instanceCount } from '../../utilities/arrays';
 
+import { DEFAULTED, RETIRED, WALKOVER } from '../../constants/matchUpStatusConstants';
 import { Score } from '../../types/tournamentTypes';
-import {
-  DEFAULTED,
-  RETIRED,
-  WALKOVER,
-} from '../../constants/matchUpStatusConstants';
 
 type AnalyzeScoreArgs = {
   existingMatchUpStatus?: string;
@@ -32,19 +28,12 @@ export function analyzeScore({
       counts[winningSideIndex]++;
       return counts;
     },
-    [0, 0]
+    [0, 0],
   );
   const matchUpWinningSideIndex = winningSide ? winningSide - 1 : undefined;
-  const matchUpLosingSideIndex =
-    matchUpWinningSideIndex !== undefined
-      ? 1 - matchUpWinningSideIndex
-      : undefined;
-  const winningSideSetsCount =
-    matchUpWinningSideIndex !== undefined &&
-    setsWinCounts[matchUpWinningSideIndex];
-  const losingSideSetsCount =
-    matchUpLosingSideIndex !== undefined &&
-    setsWinCounts[matchUpLosingSideIndex];
+  const matchUpLosingSideIndex = matchUpWinningSideIndex !== undefined ? 1 - matchUpWinningSideIndex : undefined;
+  const winningSideSetsCount = matchUpWinningSideIndex !== undefined && setsWinCounts[matchUpWinningSideIndex];
+  const losingSideSetsCount = matchUpLosingSideIndex !== undefined && setsWinCounts[matchUpLosingSideIndex];
 
   const matchUpScoringFormat = matchUpFormat ? parse(matchUpFormat) : undefined;
   const maxSetsCount = Math.max(...setsWinCounts);
@@ -54,9 +43,7 @@ export function analyzeScore({
   const setsToWin = (bestOf && Math.ceil(bestOf / 2)) || 1;
 
   const relevantMatchUpStatus = matchUpStatus ?? existingMatchUpStatus;
-  const irregularEnding =
-    relevantMatchUpStatus &&
-    [DEFAULTED, RETIRED, WALKOVER].includes(relevantMatchUpStatus);
+  const irregularEnding = relevantMatchUpStatus && [DEFAULTED, RETIRED, WALKOVER].includes(relevantMatchUpStatus);
 
   const validSets =
     !matchUpScoringFormat ||
@@ -66,13 +53,7 @@ export function analyzeScore({
       const isFinalSet = setNumber === bestOf;
       const isLastSet = setNumber === sets.length;
 
-      const {
-        side1Score,
-        side2Score,
-        side1TiebreakScore,
-        side2TiebreakScore,
-        winningSide: setWinningSide,
-      } = set;
+      const { side1Score, side2Score, side1TiebreakScore, side2TiebreakScore, winningSide: setWinningSide } = set;
       const maxSetScore = Math.max(side1Score ?? 0, side2Score ?? 0);
       const hasTiebreak = side1TiebreakScore ?? side2TiebreakScore;
 
@@ -81,10 +62,7 @@ export function analyzeScore({
 
       if (hasTiebreak) {
         const { tiebreakTo, NoAD } = setValues?.tiebreakFormat || {};
-        const maxTiebreakScore = Math.max(
-          side1TiebreakScore ?? 0,
-          side2TiebreakScore ?? 0
-        );
+        const maxTiebreakScore = Math.max(side1TiebreakScore ?? 0, side2TiebreakScore ?? 0);
         if (NoAD && maxTiebreakScore > tiebreakTo) return false;
         if (maxTiebreakScore < tiebreakTo && setWinningSide) {
           if (isLastSet && !irregularEnding) return false;
@@ -94,8 +72,7 @@ export function analyzeScore({
 
       if (!setValues.setTo) return true;
 
-      const excessiveSetScore =
-        !setValues.noTiebreak && maxSetScore > setValues.setTo + 1;
+      const excessiveSetScore = !setValues.noTiebreak && maxSetScore > setValues.setTo + 1;
       return !excessiveSetScore;
     });
 
@@ -107,9 +84,7 @@ export function analyzeScore({
 
   const valid =
     validSets &&
-    ((winningSide &&
-      winningSideSetsCount > losingSideSetsCount &&
-      winningSide === calculatedWinningSide) ||
+    ((winningSide && winningSideSetsCount > losingSideSetsCount && winningSide === calculatedWinningSide) ||
       (!winningSide && !calculatedWinningSide) ||
       irregularEnding);
 

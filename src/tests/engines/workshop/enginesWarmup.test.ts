@@ -1,8 +1,8 @@
 import { completeDrawMatchUps } from '../../../assemblies/generators/mocks/completeDrawMatchUps';
 import { getParticipants } from '../../../query/participants/getParticipants';
 import asyncGlobalState from '../../../examples/asyncEngine/asyncGlobalState';
-import eventGovernor from '../../../assemblies/governors/eventGovernor';
-import { query } from '../../../assemblies/governors/queryGovernor';
+import * as eventGovernor from '../../../assemblies/governors/eventGovernor';
+import * as query from '../../../assemblies/governors/queryGovernor';
 import { getMethods } from '../../../global/state/syncGlobalState';
 import asyncEngine from '../../../assemblies/engines/async';
 import mocksEngine from '../../../assemblies/engines/mock';
@@ -10,11 +10,7 @@ import syncEngine from '../../../assemblies/engines/sync';
 import askEngine from '../../../assemblies/engines/ask';
 import { expect, test } from 'vitest';
 
-import {
-  setGlobalLog,
-  setMethods,
-  setStateProvider,
-} from '../../../global/state/globalState';
+import { setGlobalLog, setMethods, setStateProvider } from '../../../global/state/globalState';
 
 import { deleteDrawDefinitions } from '../../../mutate/events/deleteDrawDefinitions';
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
@@ -42,9 +38,7 @@ test('sync syncEngine can set state and execute methods', () => {
   // syncEngine can get state, confirming set state was successful
   let state = syncEngine.getState();
   expect(state.tournamentId === tournamentId).toEqual(true);
-  expect(
-    state.tournamentRecords[tournamentId].tournamentId === tournamentId
-  ).toEqual(true);
+  expect(state.tournamentRecords[tournamentId].tournamentId === tournamentId).toEqual(true);
 
   // syncEngine can execute a method which is passed as a parameter
   let executionResult = syncEngine.execute({
@@ -56,8 +50,7 @@ test('sync syncEngine can set state and execute methods', () => {
 
   // syncEngine can get state, confirming method execution was successful
   state = syncEngine.getState();
-  const competitionParticipants =
-    query.getCompetitionParticipants(state).participants;
+  const competitionParticipants = query.getCompetitionParticipants(state).participants;
   expect(competitionParticipants?.length).toEqual(8);
 
   const matchUps = query.allCompetitionMatchUps(state).matchUps;
@@ -150,38 +143,35 @@ test('askEngine can import and execute methods', () => {
   expect(executionResult.participants.length).toEqual(8);
 });
 
-test.each([askEngine, syncEngine])(
-  'execution path coverage',
-  async (engine) => {
-    const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-      drawProfiles: [{ drawSize: 8 }],
-    });
+test.each([askEngine, syncEngine])('execution path coverage', async (engine) => {
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawSize: 8 }],
+  });
 
-    await engine.setState(tournamentRecord);
+  await engine.setState(tournamentRecord);
 
-    // askEngine can import methods
-    const importResult = await engine.importMethods({ getParticipants });
-    expect(importResult.success).toEqual(true);
+  // askEngine can import methods
+  const importResult = await engine.importMethods({ getParticipants });
+  expect(importResult.success).toEqual(true);
 
-    // askEngine can execute imported methods
-    let executionResult = await engine.execute({ method: 'getParticipants' });
-    expect(executionResult.participants.length).toEqual(8);
+  // askEngine can execute imported methods
+  let executionResult = await engine.execute({ method: 'getParticipants' });
+  expect(executionResult.participants.length).toEqual(8);
 
-    executionResult = await engine.execute({});
-    expect(executionResult.error).toEqual(METHOD_NOT_FOUND);
+  executionResult = await engine.execute({});
+  expect(executionResult.error).toEqual(METHOD_NOT_FOUND);
 
-    executionResult = await engine.execute({ f1: () => {}, f2: () => {} });
-    expect(executionResult.error).toEqual(INVALID_VALUES);
+  executionResult = await engine.execute({ f1: () => {}, f2: () => {} });
+  expect(executionResult.error).toEqual(INVALID_VALUES);
 
-    executionResult = await engine.execute({ method: 'unknownMethod' });
-    expect(executionResult.error).toEqual(METHOD_NOT_FOUND);
+  executionResult = await engine.execute({ method: 'unknownMethod' });
+  expect(executionResult.error).toEqual(METHOD_NOT_FOUND);
 
-    executionResult = await engine.execute({
-      method: 'version',
-    });
-    expect(executionResult).toEqual('@VERSION@');
-  }
-);
+  executionResult = await engine.execute({
+    method: 'version',
+  });
+  expect(executionResult).toEqual('@VERSION@');
+});
 
 test('execution path coverage', async () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({

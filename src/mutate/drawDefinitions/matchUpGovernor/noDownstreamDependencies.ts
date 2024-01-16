@@ -1,13 +1,13 @@
 import { lastSetFormatIsTimed } from '../../../assemblies/generators/matchUpFormatCode/lastSetFormatisTimed';
-import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { removeDirectedParticipants } from '../../matchUps/drawPositions/removeDirectedParticipants';
+import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
+import { updateTieMatchUpScore } from '../../matchUps/score/tieMatchUpScore';
+import { modifyMatchUpScore } from '../../matchUps/score/modifyMatchUpScore';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { attemptToSetMatchUpStatus } from './attemptToSetMatchUpStatus';
 import { checkConnectedStructures } from './checkConnectedStructures';
 import { attemptToSetWinningSide } from './attemptToSetWinningSide';
 import { attemptToModifyScore } from './attemptToModifyScore';
-import { updateTieMatchUpScore } from '../../matchUps/score/tieMatchUpScore';
-import { modifyMatchUpScore } from '../../matchUps/score/modifyMatchUpScore';
 import { removeDoubleExit } from './removeDoubleExit';
 import { removeQualifier } from './removeQualifier';
 
@@ -38,22 +38,15 @@ export function noDownstreamDependencies(params) {
   const scoreWithNoWinningSide =
     checkScoreHasValue({ score }) &&
     !doubleWalkover &&
-    ((params.isCollectionMatchUp && !params.projectedWinningSide) ||
-      !winningSide);
+    ((params.isCollectionMatchUp && !params.projectedWinningSide) || !winningSide);
 
-  const timedTieMatchUp =
-    params?.inContextMatchUp?.collectionId &&
-    lastSetFormatIsTimed(params.inContextMatchUp);
+  const timedTieMatchUp = params?.inContextMatchUp?.collectionId && lastSetFormatIsTimed(params.inContextMatchUp);
 
   const removeScore =
-    params.removeScore ||
-    (!timedTieMatchUp &&
-      ![INCOMPLETE, ABANDONED].includes(matchUpStatus || INCOMPLETE));
+    params.removeScore || (!timedTieMatchUp && ![INCOMPLETE, ABANDONED].includes(matchUpStatus || INCOMPLETE));
 
   const removeWinningSide =
-    (params.isCollectionMatchUp &&
-      params.dualMatchUp.winningSide &&
-      !params.projectedWinningSide) ||
+    (params.isCollectionMatchUp && params.dualMatchUp.winningSide && !params.projectedWinningSide) ||
     (matchUp.winningSide && !winningSide && !checkScoreHasValue({ score }));
 
   const statusNotTBP = matchUpStatus && matchUpStatus !== TO_BE_PLAYED;
@@ -83,10 +76,7 @@ export function noDownstreamDependencies(params) {
     const result = removeDirectedParticipants(params);
     if (result.error) return result;
 
-    if (
-      params.removingQualifier &&
-      params.appliedPolicies?.[POLICY_TYPE_PROGRESSION]?.autoRemoveQualifiers
-    ) {
+    if (params.removingQualifier && params.appliedPolicies?.[POLICY_TYPE_PROGRESSION]?.autoRemoveQualifiers) {
       const result = removeQualifier(params);
       return { ...SUCCESS, connectedStructures, ...result };
     }
@@ -99,12 +89,9 @@ export function noDownstreamDependencies(params) {
     return scoreModification(params);
   }
 
-  const triggerDualWinningSide =
-    [CANCELLED, ABANDONED].includes(matchUpStatus) &&
-    params.dualWinningSideChange;
+  const triggerDualWinningSide = [CANCELLED, ABANDONED].includes(matchUpStatus) && params.dualWinningSideChange;
 
-  const result = ((winningSide || triggerDualWinningSide) &&
-    attemptToSetWinningSide(params)) ||
+  const result = ((winningSide || triggerDualWinningSide) && attemptToSetWinningSide(params)) ||
     (scoreWithNoWinningSide && removeDirected(removeScore)) ||
     (statusNotTBP && attemptToSetMatchUpStatus(params)) ||
     (removeWinningSide && removeDirected(removeScore)) ||
@@ -117,10 +104,7 @@ export function noDownstreamDependencies(params) {
 
 function scoreModification(params) {
   const stack = 'scoreModification';
-  const remove =
-    params.isCollectionMatchUp &&
-    params.dualMatchUp?.winningSide &&
-    !params.projectedWinningSide;
+  const remove = params.isCollectionMatchUp && params.dualMatchUp?.winningSide && !params.projectedWinningSide;
 
   if (remove) {
     const result = removeDirectedParticipants(params);

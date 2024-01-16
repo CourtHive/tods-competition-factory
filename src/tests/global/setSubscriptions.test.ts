@@ -1,8 +1,8 @@
 import tournamentEngine from '../engines/syncEngine';
 import { setSubscriptions } from '../../global/state/globalState';
 import { expect, it } from 'vitest';
-import { utilities } from '../..';
 
+import * as utilities from '../../assemblies/governors/utilitiesGovernor';
 import { MatchUp, Participant } from '../../types/tournamentTypes';
 import { INDIVIDUAL } from '../../constants/participantConstants';
 import { COMPETITOR } from '../../constants/participantRoles';

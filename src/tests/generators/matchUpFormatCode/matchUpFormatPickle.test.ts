@@ -1,4 +1,4 @@
-import { matchUpFormatCode } from '../../../assemblies/governors/matchUpFormatGovernor';
+import * as matchUpFormatCode from '../../../assemblies/governors/matchUpFormatGovernor';
 import { expect, it } from 'vitest';
 
 it('supports annotations for PickleBall', () => {

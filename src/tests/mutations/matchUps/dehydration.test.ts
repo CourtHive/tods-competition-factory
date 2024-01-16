@@ -1,8 +1,8 @@
 import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
+import * as utilities from '../../../assemblies/governors/utilitiesGovernor';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
-import { utilities } from '../../..';
 
 import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
 
@@ -21,11 +21,7 @@ it('can dehydrate matchUps in tournamentRecords', () => {
   }).matchUps;
 
   const allUnhydrated = unhydratedMatchUps?.every(
-    (matchUp) =>
-      matchUp.matchUpFormat &&
-      !matchUp.eventName &&
-      !matchUp.sides &&
-      matchUp.score
+    (matchUp) => matchUp.matchUpFormat && !matchUp.eventName && !matchUp.sides && matchUp.score,
   );
 
   expect(allUnhydrated).toEqual(true);
@@ -34,24 +30,16 @@ it('can dehydrate matchUps in tournamentRecords', () => {
   for (const event of tournamentRecord.events || []) {
     for (const drawDefinition of event.drawDefinitions || []) {
       for (const structure of drawDefinition.structures || []) {
-        const matchUpIds = structure.matchUps?.map(
-          ({ matchUpId }) => matchUpId
-        );
+        const matchUpIds = structure.matchUps?.map(({ matchUpId }) => matchUpId);
 
         if (matchUpIds) {
-          structure.matchUps = matchUps.filter(({ matchUpId }) =>
-            matchUpIds.includes(matchUpId)
-          );
+          structure.matchUps = matchUps.filter(({ matchUpId }) => matchUpIds.includes(matchUpId));
         }
 
         // check for contained structures
         for (const childStructure of structure.structures || []) {
-          const matchUpIds = childStructure.matchUps?.map(
-            ({ matchUpId }) => matchUpId
-          );
-          childStructure.matchUps = matchUps.filter(({ matchUpId }) =>
-            matchUpIds.includes(matchUpId)
-          );
+          const matchUpIds = childStructure.matchUps?.map(({ matchUpId }) => matchUpId);
+          childStructure.matchUps = matchUps.filter(({ matchUpId }) => matchUpIds.includes(matchUpId));
         }
       }
     }
@@ -63,17 +51,12 @@ it('can dehydrate matchUps in tournamentRecords', () => {
   }).matchUps;
 
   const allHydrated = hydratedMatchUps?.every(
-    (matchUp) =>
-      matchUp.matchUpFormat &&
-      matchUp.eventName &&
-      matchUp.sides &&
-      matchUp.score
+    (matchUp) => matchUp.matchUpFormat && matchUp.eventName && matchUp.sides && matchUp.score,
   );
 
   expect(allHydrated).toEqual(true);
 
-  let matchUp =
-    tournamentRecord.events[0].drawDefinitions[0].structures[0].matchUps[0];
+  let matchUp = tournamentRecord.events[0].drawDefinitions[0].structures[0].matchUps[0];
 
   expect(matchUp.sides).not.toBeUndefined();
   expect(matchUp.eventName).not.toBeUndefined();
@@ -81,8 +64,7 @@ it('can dehydrate matchUps in tournamentRecords', () => {
   const result = utilities.dehydrateMatchUps({ tournamentRecord });
   expect(result.success).toEqual(true);
 
-  matchUp =
-    tournamentRecord.events[0].drawDefinitions[0].structures[0].matchUps[0];
+  matchUp = tournamentRecord.events[0].drawDefinitions[0].structures[0].matchUps[0];
 
   expect(matchUp.winningSide).not.toBeUndefined();
   expect(matchUp.matchUpFormat).toBeUndefined(); // removed because inherited matchUpFormat was identical
@@ -92,16 +74,10 @@ it('can dehydrate matchUps in tournamentRecords', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  const newlyHydratedMatchUps =
-    tournamentEngine.allTournamentMatchUps().matchUps;
+  const newlyHydratedMatchUps = tournamentEngine.allTournamentMatchUps().matchUps;
 
   const allNewlyHydrated = newlyHydratedMatchUps.every(
-    (matchUp) =>
-      matchUp.matchUpFormat &&
-      matchUp.winningSide &&
-      matchUp.eventName &&
-      matchUp.sides &&
-      matchUp.score
+    (matchUp) => matchUp.matchUpFormat && matchUp.winningSide && matchUp.eventName && matchUp.sides && matchUp.score,
   );
 
   expect(allNewlyHydrated).toEqual(true);
