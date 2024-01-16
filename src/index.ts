@@ -5,10 +5,10 @@ export { governors } from './assemblies/governors';
 
 // UTILITIES ------------------------------------------------------------
 export * as matchUpFormatCode from './assemblies/governors/matchUpFormatGovernor';
-export { utilities } from './assemblies/governors/utilitiesGovernor';
+export * as utilities from './assemblies/governors/utilitiesGovernor';
 
-import * as globalState from './global/state/globalState';
-export { globalState };
+// GLOBAL STATE ---------------------------------------------------------
+export * as globalState from './global/state/globalState';
 
 export { forge } from './forge';
 

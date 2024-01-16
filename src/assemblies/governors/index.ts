@@ -15,7 +15,7 @@ import * as scheduleGovernor from './scheduleGovernor';
 import * as scoreGovernor from './scoreGovernor';
 import * as tieFormatGovernor from './tieFormatGovernor';
 import * as tournamentGovernor from './tournamentGovernor';
-import utilitiesGovernor from './utilitiesGovernor';
+import * as utilitiesGovernor from './utilitiesGovernor';
 import * as venueGovernor from './venueGovernor';
 
 export const governors = {
