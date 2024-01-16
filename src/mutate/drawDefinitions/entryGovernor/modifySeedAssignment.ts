@@ -1,18 +1,18 @@
-import { getStructureSeedAssignments } from 'query/structure/getStructureSeedAssignments';
-import { modifySeedAssignmentsNotice } from 'mutate/notifications/drawNotifications';
-import { findStructure } from 'acquire/findStructure';
-import { ensureInt } from 'utilities/ensureInt';
-import { isNumeric } from 'utilities/math';
+import { getStructureSeedAssignments } from '../../../query/structure/getStructureSeedAssignments';
+import { modifySeedAssignmentsNotice } from '../../../mutate/notifications/drawNotifications';
+import { findStructure } from '../../../acquire/findStructure';
+import { ensureInt } from '../../../utilities/ensureInt';
+import { isNumeric } from '../../../utilities/math';
 
 import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
-import { SUCCESS } from 'constants/resultConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_PARTICIPANT_ID,
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
-} from 'constants/errorConditionConstants';
+} from '../../../constants/errorConditionConstants';
 
 type ModifySeedAssignmentArgs = {
   tournamentRecord?: Tournament;

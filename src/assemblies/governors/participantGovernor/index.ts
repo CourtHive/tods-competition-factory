@@ -1,6 +1,6 @@
-import { modifyPersonRequests } from 'mutate/matchUps/schedule/scheduleMatchUps/personRequests/modifyPersonRequests';
-import { removePersonRequests } from 'mutate/matchUps/schedule/scheduleMatchUps/personRequests/removePersonRequests';
-import { addPersonRequests } from 'mutate/matchUps/schedule/scheduleMatchUps/personRequests/addPersonRequests';
+import { modifyPersonRequests } from '../../../mutate/matchUps/schedule/scheduleMatchUps/personRequests/modifyPersonRequests';
+import { removePersonRequests } from '../../../mutate/matchUps/schedule/scheduleMatchUps/personRequests/removePersonRequests';
+import { addPersonRequests } from '../../../mutate/matchUps/schedule/scheduleMatchUps/personRequests/addPersonRequests';
 import { setParticipantScaleItems, setParticipantScaleItem } from '../../../mutate/participants/addScaleItems';
 import { modifyIndividualParticipantIds } from '../../../mutate/participants/modifyIndividualParticipantIds';
 import { createTeamsFromParticipantAttributes } from '../../../mutate/participants/createTeamsFromAttributes';
@@ -17,12 +17,12 @@ import { deleteParticipants } from '../../../mutate/participants/deleteParticipa
 import { mergeParticipants } from '../../../mutate/participants/mergeParticipants';
 import { modifyParticipant } from '../../../mutate/participants/modifyParticipant';
 import { filterParticipants } from '../../../query/participants/filterParticipants';
+import { publicFindParticipant } from '../../../acquire/publicFindParticipant';
 import { addParticipants } from '../../../mutate/participants/addParticipants';
 import { addPenalty } from '../../../mutate/participants/penalties/addPenalty';
 import { addParticipant } from '../../../mutate/participants/addParticipant';
-import { publicFindParticipant } from 'acquire/publicFindParticipant';
+import { validateLineUp } from '../../../validators/validateTeamLineUp';
 import { addPersons } from '../../../mutate/participants/addPersons';
-import { validateLineUp } from 'validators/validateTeamLineUp';
 import {
   removeIndividualParticipantIds,
   removeParticipantIdsFromAllTeams,

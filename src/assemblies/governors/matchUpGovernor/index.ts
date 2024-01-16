@@ -20,7 +20,7 @@ import { setOrderOfFinish } from '../../../mutate/drawDefinitions/setOrderOfFini
 import { applyLineUps } from '../../../mutate/matchUps/lineUps/applyLineUps';
 import { resetTieFormat } from '../../../mutate/tieFormat/resetTieFormat';
 import { resetScorecard } from '../../../mutate/matchUps/resetScorecard';
-import { publicFindMatchUp } from 'acquire/findMatchUp';
+import { publicFindMatchUp } from '../../../acquire/findMatchUp';
 
 export const matchUpGovernor = {
   applyLineUps,

@@ -13,9 +13,9 @@ import { analyzeSet } from '../../../query/matchUp/analyzeSet';
 import { updateTieMatchUpScore } from '../../../mutate/matchUps/score/tieMatchUpScore';
 
 import { getSetComplement, getTiebreakComplement } from '../../../query/matchUp/getComplement';
-import { keyValueScore } from 'mutate/score/keyValueScore/keyValueScore';
-import { checkSetIsComplete } from 'query/matchUp/checkSetIsComplete';
-import { parseScoreString } from 'utilities/parseScoreString';
+import { keyValueScore } from '../../../mutate/score/keyValueScore/keyValueScore';
+import { checkSetIsComplete } from '../../../query/matchUp/checkSetIsComplete';
+import { parseScoreString } from '../../../utilities/parseScoreString';
 
 // history
 import { calculateHistoryScore } from '../../../mutate/matchUps/score/history/calculateHistoryScore';
