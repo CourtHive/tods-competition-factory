@@ -14,7 +14,7 @@ const scaleItem = {
   scaleDate: '2020-06-06', // Ranking, Rating or Seeding date
 };
 
-tournamentEngine.setParticipantScaleItem({
+engine.setParticipantScaleItem({
   participantId,
   scaleItem,
 });
@@ -28,7 +28,7 @@ const scaleAttributes = {
   eventType: SINGLES,
   scaleName: 'WTN',
 };
-const { scaleItem } = tournamentEngine.getParticipantScaleItem({
+const { scaleItem } = engine.getParticipantScaleItem({
   scaleAttributes,
   participantId,
 });

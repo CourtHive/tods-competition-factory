@@ -1,8 +1,4 @@
-import {
-  linkTournaments,
-  unlinkTournament,
-  unlinkTournaments,
-} from '../../../mutate/tournaments/tournamentLinks';
+import { linkTournaments, unlinkTournament, unlinkTournaments } from '../../../mutate/tournaments/tournamentLinks';
 
 export const competitionGovernor = {
   linkTournaments,

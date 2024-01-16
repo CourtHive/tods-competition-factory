@@ -1,16 +1,16 @@
-import { resolveTieFormat } from '../../query/hierarchical/tieFormats/resolveTieFormat';
+import { addMatchUpsNotice, deleteMatchUpsNotice, modifyMatchUpNotice } from '../notifications/drawNotifications';
 import { generateCollectionMatchUps } from '../../assemblies/generators/drawDefinitions/tieMatchUps';
+import { resolveTieFormat } from '../../query/hierarchical/tieFormats/resolveTieFormat';
 import { checkRequiredParameters } from '../../parameters/checkRequiredParameters';
 import { resolveFromParameters } from '../../parameters/resolveFromParameters';
 import { getMatchUpId } from '../../global/functions/extractors';
-import { addMatchUpsNotice, deleteMatchUpsNotice, modifyMatchUpNotice } from '../notifications/drawNotifications';
 
+import { ERROR, MATCHUP, MATCHUP_ID, PARAM, TOURNAMENT_RECORD } from '../../constants/attributeConstants';
+import { DrawDefinition, Event, MatchUp, Tournament } from '../../types/tournamentTypes';
+import { INVALID_MATCHUP, NOT_FOUND } from '../../constants/errorConditionConstants';
+import { ResultType, decorateResult } from '../../global/functions/decorateResult';
 import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../constants/resultConstants';
-import { ERROR, MATCHUP, MATCHUP_ID, PARAM, TOURNAMENT_RECORD } from '../../constants/attributeConstants';
-import { ResultType, decorateResult } from '../../global/functions/decorateResult';
-import { INVALID_MATCHUP, NOT_FOUND } from '../../constants/errorConditionConstants';
-import { DrawDefinition, Event, MatchUp, Tournament } from '../../types/tournamentTypes';
 
 /**
  * remove the tieFormat from a TEAM matchUp if there is a tieFormat further up the hierarchy

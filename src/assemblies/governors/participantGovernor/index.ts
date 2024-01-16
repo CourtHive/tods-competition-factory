@@ -1,3 +1,7 @@
+import { modifyPersonRequests } from 'mutate/matchUps/schedule/scheduleMatchUps/personRequests/modifyPersonRequests';
+import { removePersonRequests } from 'mutate/matchUps/schedule/scheduleMatchUps/personRequests/removePersonRequests';
+import { addPersonRequests } from 'mutate/matchUps/schedule/scheduleMatchUps/personRequests/addPersonRequests';
+import { setParticipantScaleItems, setParticipantScaleItem } from '../../../mutate/participants/addScaleItems';
 import { modifyIndividualParticipantIds } from '../../../mutate/participants/modifyIndividualParticipantIds';
 import { createTeamsFromParticipantAttributes } from '../../../mutate/participants/createTeamsFromAttributes';
 import { modifyParticipantsSignInStatus } from '../../../mutate/participants/modifyParticipantsSignInStatus';
@@ -16,20 +20,18 @@ import { filterParticipants } from '../../../query/participants/filterParticipan
 import { addParticipants } from '../../../mutate/participants/addParticipants';
 import { addPenalty } from '../../../mutate/participants/penalties/addPenalty';
 import { addParticipant } from '../../../mutate/participants/addParticipant';
+import { publicFindParticipant } from 'acquire/publicFindParticipant';
 import { addPersons } from '../../../mutate/participants/addPersons';
 import {
   removeIndividualParticipantIds,
   removeParticipantIdsFromAllTeams,
 } from '../../../mutate/participants/removeIndividualParticipantIds';
-import {
-  setParticipantScaleItems,
-  setParticipantScaleItem,
-} from '../../../mutate/participants/addScaleItems';
 
 export const participantGovernor = {
   addIndividualParticipantIds,
   addParticipant,
   addParticipants,
+  addPersonRequests,
   addPenalty,
   addPersons,
   createGroupParticipant,
@@ -43,10 +45,13 @@ export const participantGovernor = {
   modifyParticipantOtherName,
   modifyParticipantsSignInStatus,
   modifyPenalty,
+  modifyPersonRequests,
+  findParticipant: publicFindParticipant,
   regenerateParticipantNames,
   removeIndividualParticipantIds,
   removeParticipantIdsFromAllTeams,
   removePenalty,
+  removePersonRequests,
   scaledTeamAssignment,
   setParticipantScaleItem,
   setParticipantScaleItems,

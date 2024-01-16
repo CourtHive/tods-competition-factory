@@ -8,16 +8,16 @@ Publishing is both a mechanism for controlling what information is available for
 
 ## Event draws
 
-Control of public display of draw structures is provided by [tournamentEngine.publishEvent](../apis/tournament-engine-api.md#publishevent); when this method is called a `timeItem` is attached to an event which directs filtering of draws and structures within draws and a notification is pushed to subscribers of the PUBLISH_EVENT topic.
+Control of public display of draw structures is provided by [engine.publishEvent](/docs/governors/publishing-governor#publishevent); when this method is called a `timeItem` is attached to an event which directs filtering of draws and structures within draws and a notification is pushed to subscribers of the PUBLISH_EVENT topic.
 
-The methods [tournamentEnigne.getEventData](../apis/tournament-engine-api.md#geteventdata) and [competitionEngine.competitionScheduleMatchUps](../apis/competition-engine-api.md#competitionschedulematchups) utilize the PUBLISH.STATUS `timeItem` values when passed the parameter `{ usePublishState: true }` to filter the data they return.
+The methods [engine.getEventData](/docs/governors/query-governor.md#geteventdata) and [engine.competitionScheduleMatchUps](/docs/governors/query-governor#competitionschedulematchups) utilize the PUBLISH.STATUS `timeItem` values when passed the parameter `{ usePublishState: true }` to filter the data they return.
 
 ```js
 // publish all draws containted within event specified by eventId
-tournamentEngine.publishEvent({ eventId });
+engine.publishEvent({ eventId });
 
 // publish specified drawId
-tournamentEngine.publishEvent({
+engine.publishEvent({
   drawDetails: {
     ['drawId']: { publishingDetail: { published: true } },
   },
@@ -25,19 +25,19 @@ tournamentEngine.publishEvent({
 });
 
 // alternative shorthand for publishing drawId(s)
-tournamentEngine.publishEvent({ eventId, drawIdsToAdd: ['drawId'] });
+engine.publishEvent({ eventId, drawIdsToAdd: ['drawId'] });
 
 // unpublish specified drawId(s)
-tournamentEngine.publishEvent({ eventId, drawIdsToRemove: ['drawId'] });
+engine.publishEvent({ eventId, drawIdsToRemove: ['drawId'] });
 
 // publish only QUALIFYING stage of specified drawId
-tournamentEngine.publishEvent({
+engine.publishEvent({
   drawDetails: { ['drawId']: { stagesToAdd: [QUALIFYING] } },
   eventId,
 });
 
 // publish only first round of a specific structure
-result = tournamentEngine.publishEvent({
+result = engine.publishEvent({
   drawDetails: {
     [drawId]: {
       structureDetails: { [structureId]: { roundLimit: 1, published: true } },
@@ -49,18 +49,18 @@ result = tournamentEngine.publishEvent({
 
 ## Scheduled matchUps
 
-Control of public display of scheduled matchUps is provided by [tournamentEngine.publishOrderOfPlay](../apis//tournament-engine-api.md#publishorderofplay) and [competitionEngine.publishOrderOfPlay](../apis/competition-engine-api.md#publishorderofplay); when either of these methods is called a `timeItem` is attached to the tournament which directs filtering of matchUps and a notification is pushed to subscribers of the PUBLISH_ORDER_OF_PLAY topic.
+Control of public display of scheduled matchUps is provided by [engine.publishOrderOfPlay](/docs/governors/publishing-governor#publishorderofplay); when this method is called a `timeItem` is attached to the tournament which directs filtering of matchUps and a notification is pushed to subscribers of the PUBLISH_ORDER_OF_PLAY topic.
 
-The method [competitionEngine.competitionScheduleMatchUps](../apis/competition-engine-api.md#competitionschedulematchups) utilizes the PUBLISH.STATUS `timeItem` values when passed the parameter `{ usePublishState: true }` to filter the matchUps which are returned in `dateMatchUps`.
+The method [engine.competitionScheduleMatchUps](/docs/governors/query-governor#competitionschedulematchups) utilizes the PUBLISH.STATUS `timeItem` values when passed the parameter `{ usePublishState: true }` to filter the matchUps which are returned in `dateMatchUps`.
 
 ```js
-competitionEngine.publishOrderOfPlay({
+engine.publishOrderOfPlay({
   removePriorValues: true, // when true remove all previous timeItems related to publishing Order of Play
   scheduledDates, // optional - if not provided will publish all scheduledDates
   eventIds, // optional - if not provided will publish all eventIds
 });
 
-const { dateMatchUps } = competitionEngine.competitionScheduleMatchUps({
+const { dateMatchUps } = engine.competitionScheduleMatchUps({
   usePublishState: true,
 });
 ```

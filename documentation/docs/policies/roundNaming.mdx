@@ -8,18 +8,18 @@ If no policy has been attached at any level of the tournament record hierarchy, 
 **Round Naming** policies can be attached to a tournament record, an event, or a drawDefinition:
 
 ```js
-tournamentEngine.attachPolicies({ policyDefinitions: { [policyType]: {} } });
-tournamentEngine.attachPolicies({
+engine.attachPolicies({ policyDefinitions: { [policyType]: {} } });
+engine.attachPolicies({
   policyDefinitions: { [policyType]: {} },
   eventId,
 });
-tournamentEngine.generateDrawDefinition({ ...params, policyDefinitions });
-tournamentEngine.modifyDrawDefinition({
+engine.generateDrawDefinition({ ...params, policyDefinitions });
+engine.modifyDrawDefinition({
   drawUpdates: { policyDefinitions },
   drawId,
 });
 
-tournamentEngine.attachPolicies({ policyDefinitions: { [policyType]: {} } });
+engine.attachPolicies({ policyDefinitions: { [policyType]: {} } });
 ```
 
 ## Default Round Naming policy

@@ -55,13 +55,13 @@ In most cases **timeItems** are used internally by the various Competition Facto
 Competition Factory defines methods for adding and retrieving arbitrary **timeItems** for the tournament record, event, and drawDefinitions.
 
 ```js
-tournamentEngine.addTournamentTimeItem({ timeItem });
-tournamentEngine.addEventTimeItem({ eventId, timeItem });
-tournamentEngine.addDrawDefinitionTimeItem({ drawId, timeItem });
+engine.addTournamentTimeItem({ timeItem });
+engine.addEventTimeItem({ eventId, timeItem });
+engine.addDrawDefinitionTimeItem({ drawId, timeItem });
 
-tournamentEngine.getTournamentTimeItem({ itemType, itemSubTypes });
-tournamentEngine.getEventTimeItem({ eventId, itemType, itemSubTypes });
-tournamentEngine.getDrawDefinitionTimeItem({ drawId, itemType, itemSubTypes });
+engine.getTournamentTimeItem({ itemType, itemSubTypes });
+engine.getEventTimeItem({ eventId, itemType, itemSubTypes });
+engine.getDrawDefinitionTimeItem({ drawId, itemType, itemSubTypes });
 ```
 
 ### Ranking and Ratings
@@ -75,15 +75,14 @@ const timeItem = {
   itemType: 'RETRIEVAL.RANKING.SINGLES.U18',
   itemValue: '2021-01-01T00:00',
 };
-tournamentEngine.addEventTimeItem({ eventId, timeItem });
+engine.addEventTimeItem({ eventId, timeItem });
 ```
 
 #### Retrieving a timeITem from an event
 
 ```js
-const { timeItem: retrievedTimeItem, message } =
-  tournamentEngine.getEventTimeItem({
-    itemType: 'RETRIEVAL.RANKING.SINGLES.U18',
-    eventId,
-  });
+const { timeItem: retrievedTimeItem, message } = engine.getEventTimeItem({
+  itemType: 'RETRIEVAL.RANKING.SINGLES.U18',
+  eventId,
+});
 ```

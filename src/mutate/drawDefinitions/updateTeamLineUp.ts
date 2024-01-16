@@ -1,18 +1,14 @@
-import { addDrawNotice } from '../notifications/drawNotifications';
-import { addExtension } from '../extensions/addExtension';
 import { removeLineUpSubstitutions } from './removeLineUpSubstitutions';
-import { findExtension } from '../../acquire/findExtension';
 import { validateLineUp } from '../../validators/validateTeamLineUp';
+import { addDrawNotice } from '../notifications/drawNotifications';
+import { findExtension } from '../../acquire/findExtension';
+import { addExtension } from '../extensions/addExtension';
 
+import { DrawDefinition, TieFormat } from '../../types/tournamentTypes';
 import { LINEUPS } from '../../constants/extensionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
-import {
-  ErrorType,
-  MISSING_DRAW_DEFINITION,
-  MISSING_PARTICIPANT_ID,
-} from '../../constants/errorConditionConstants';
-import { DrawDefinition, TieFormat } from '../../types/tournamentTypes';
 import { LineUp } from '../../types/factoryTypes';
+import { ErrorType, MISSING_DRAW_DEFINITION, MISSING_PARTICIPANT_ID } from '../../constants/errorConditionConstants';
 
 // update an extension on the drawDefinition that keeps track of the latest lineUp for all team participantIds
 // each matchUp in the draw will use this as the template on first load and then write lineUp to the matchUp
@@ -25,16 +21,12 @@ type UpdateTeamLineUpArgs = {
   lineUp: LineUp;
 };
 
-export function updateTeamLineUp({
-  drawDefinition,
-  participantId,
-  tieFormat,
-  lineUp,
-}: UpdateTeamLineUpArgs): { success?: boolean; error?: ErrorType } {
-  if (typeof drawDefinition !== 'object')
-    return { error: MISSING_DRAW_DEFINITION };
-  if (typeof participantId !== 'string')
-    return { error: MISSING_PARTICIPANT_ID };
+export function updateTeamLineUp({ drawDefinition, participantId, tieFormat, lineUp }: UpdateTeamLineUpArgs): {
+  success?: boolean;
+  error?: ErrorType;
+} {
+  if (typeof drawDefinition !== 'object') return { error: MISSING_DRAW_DEFINITION };
+  if (typeof participantId !== 'string') return { error: MISSING_PARTICIPANT_ID };
 
   const validation = validateLineUp({ lineUp, tieFormat });
   if (!validation.valid) return validation;

@@ -1,32 +1,23 @@
-import competitionGovernor from '../../../assemblies/governors/competitionGovernor';
-import participantGovernor from '../../../assemblies/governors/participantGovernor';
-import generationGovernor from '../../../assemblies/governors/generationGovernor';
-import publishingGovernor from '../../../assemblies/governors/publishingGovernor';
-import scheduleGovernor from '../../../assemblies/governors/scheduleGovernor';
-import reportGovernor from '../../../assemblies/governors/reportGovernor';
-import scoreGovernor from '../../../assemblies/governors/scoreGovernor';
-import venueGovernor from '../../../assemblies/governors/venueGovernor';
-
-import tournamentGovernor from '../../../assemblies/governors/tournamentGovernor';
-import policyGovernor from '../../../assemblies/governors/policyGovernor';
-import queryGovernor from '../../../assemblies/governors/queryGovernor';
-import eventGovernor from '../../../assemblies/governors/eventGovernor';
-
+import { governors } from '../../../assemblies/governors';
 import syncEngine from '../../../assemblies/engines/sync';
 
 const methods = {
-  ...competitionGovernor,
-  ...participantGovernor,
-  ...publishingGovernor,
-  ...generationGovernor,
-  ...tournamentGovernor,
-  ...scheduleGovernor,
-  ...policyGovernor,
-  ...reportGovernor,
-  ...eventGovernor,
-  ...queryGovernor,
-  ...scoreGovernor,
-  ...venueGovernor,
+  ...governors.competitionGovernor,
+  ...governors.participantGovernor,
+  ...governors.generationGovernor,
+  ...governors.publishingGovernor,
+  ...governors.tournamentGovernor,
+  ...governors.tieFormatGovernor,
+  ...governors.scheduleGovernor,
+  ...governors.entriesGovernor,
+  ...governors.matchUpGovernor,
+  ...governors.policyGovernor,
+  ...governors.reportGovernor,
+  ...governors.eventGovernor,
+  ...governors.drawsGovernor,
+  ...governors.queryGovernor,
+  ...governors.scoreGovernor,
+  ...governors.venueGovernor,
 };
 
 syncEngine.importMethods(methods);

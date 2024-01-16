@@ -1,0 +1,37 @@
+---
+title: Context / Hydration
+---
+
+**MatchUps** can be returned with contextual information that is not part of the TODS document node from which they originated.
+The process of adding context is also referred to as "hydration".
+
+Contextual information for `matchUps` includes information about the `structures, drawDefinitions` and `events` within which they are embeded;
+`drawPositions` are resolved using `positionAssignments` to the `participants`.
+
+Additional contextual information can be passed into methods for retrieving `matchUps` via the `context` attribute,
+and any `extensions` can be converted to attributes accessible as attributes beginning with an underscore.
+
+## matchUps
+
+All API calls which return **matchUps** return deep copies with context.
+Attributes that are added for **matchUps** include: `structureId, structureName, drawId, eventId, eventName, tournamentId` and `tournamentName`.
+
+All `matchUps` that are returned **inContext** include converted extensions. See **makeDeepCopy** in [Utilities](../utilities/make-deep-copy).
+
+In the **Live Editor** example below, `{ inContext: false }` overrides the default behavior.
+Change the value to `true` and compare the `matchUp` objects to see the difference when context is added.
+
+```jsx live
+function ContextDemo(props) {
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawSize: 4 }],
+  });
+  tournamentEngine.setState(tournamentRecord);
+
+  const { matchUps } = tournamentEngine.allTournamentMatchUps({
+    inContext: false,
+  });
+
+  return <MatchUps data={matchUps} />;
+}
+```
