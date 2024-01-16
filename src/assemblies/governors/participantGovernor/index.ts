@@ -22,6 +22,7 @@ import { addPenalty } from '../../../mutate/participants/penalties/addPenalty';
 import { addParticipant } from '../../../mutate/participants/addParticipant';
 import { publicFindParticipant } from 'acquire/publicFindParticipant';
 import { addPersons } from '../../../mutate/participants/addPersons';
+import { validateLineUp } from 'validators/validateTeamLineUp';
 import {
   removeIndividualParticipantIds,
   removeParticipantIdsFromAllTeams,
@@ -55,6 +56,7 @@ export const participantGovernor = {
   scaledTeamAssignment,
   setParticipantScaleItem,
   setParticipantScaleItems,
+  validateLineUp,
 };
 
 export default participantGovernor;

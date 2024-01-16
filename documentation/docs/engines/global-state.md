@@ -37,7 +37,7 @@ removeTournamentRecord(tournamentId);
 
 ## setState
 
-Loads tournament records into competitionEngine; supports both an array of tournamentRecords and an object with tournamentId keys.
+Loads tournament records into [Global State](/docs/engines/global-state); supports both an array of tournamentRecords and an object with tournamentId keys.
 
 ```js
 const tournamentRecords = [tournamentRecord];
@@ -47,7 +47,7 @@ setsState(tournamentRecords, deepCopy, deepCopyConfig);
 ```
 
 :::info
-By default a deep copy of the `tournamentRecords` is made so that mutations made by `competitionEngine` do not affect the source objects. An optional boolean parameter, _deepCopy_ can be set to false to override this default behavior.
+By default a deep copy of the `tournamentRecords` is made so that mutations do not affect the source objects. An optional boolean parameter, _deepCopy_ can be set to false to override this default behavior.
 :::
 
 :::note

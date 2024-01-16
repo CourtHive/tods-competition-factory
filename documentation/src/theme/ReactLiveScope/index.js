@@ -1,3 +1,4 @@
+import { tournamentEngine, mocksEngine, askEngine, utilities } from 'tods-competition-factory';
 import ConstantsViewer from '../../../docs/components/ConstantsViewr';
 import Tournament from '../../../docs/components/TournamentRecord';
 import Participants from '../../../docs/components/Participants';
@@ -7,15 +8,6 @@ import RenderCSV from '../../../docs/components/RenderCSV';
 import Draw from '../../../docs/components/DrawDefinition';
 import MatchUps from '../../../docs/components/MatchUps';
 import React from 'react';
-import {
-  competitionEngine,
-  tournamentEngine,
-  scoreGovernor,
-  mocksEngine,
-  askEngine,
-  drawEngine,
-  utilities,
-} from 'tods-competition-factory';
 
 const cfv = tournamentEngine.version();
 console.log(`%cfactory: ${cfv}`, 'color: lightblue');
@@ -26,11 +18,8 @@ const ReactLiveScope = {
   ...React,
   utilities,
   askEngine,
-  drawEngine,
   mocksEngine,
-  competitionEngine,
   tournamentEngine,
-  scoreGovernor,
   ConstantsViewer,
   Configurator,
   Participants,

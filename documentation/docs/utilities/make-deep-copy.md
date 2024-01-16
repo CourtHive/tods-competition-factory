@@ -29,15 +29,9 @@ This is useful for inContext representations of elements such as participants wh
 In server environments where it is desireable for objects originating in back end storage (such as Mongo) to be modified directly, it is possible to disable `makeDeepCopy` several ways:
 
 ```js
-import {
-  setDeepCopy,
-  drawEngine,
-  tournamentEngine,
-  competitionEngine,
-} from 'tods-competition-factory';
+import { globalState: { setDeepCopy } } from 'tods-competition-factory';
 
-tournamentEngine.setState(tournamentRecord, false, deepCopyOptions);
-competitionEngine.setState(tournamentRecords, false, deepCopyOptions);
+engine.setState(tournamentRecord, false, deepCopyOptions);
 
 setDeepCopy(false, deepCopyOptions);
 ```

@@ -57,19 +57,19 @@ In TODS, a **drawDefinition** is a collection of **structures**. For example, a 
  tournament.events[].drawDefinitions[].structures[].matchUps[]
 ```
 
-An application using the Competition Factory can request the **matchUpFormat** for a given **matchUp** and the **tournamentEngine** will traverse the hierarchy from bottom up looking to see at what level a **matchUpFormat** has been defined. This method will also return any **matchUpFormat** codes encountered in the hierarchy within which a **matchUp** is found:
+An application using the Competition Factory can request the **matchUpFormat** for a given **matchUp** and the factory **engine** will traverse the hierarchy from bottom up looking to see at what level a **matchUpFormat** has been defined. This method will also return any **matchUpFormat** codes encountered in the hierarchy within which a **matchUp** is found:
 
 ```js
-const { matchUpFormat } = tournamentEngine.getMatchUpFormat({
-  drawId,
+const { matchUpFormat } = engine.getMatchUpFormat({
   matchUpId,
+  drawId,
 });
 ```
 
 To set the **matchUpFormat** at each level:
 
 ```js
-tournamentEngine.setMatchUpFormat({
+engine.setMatchUpFormat({
   matchUpFormat,
   structureId, // optional
   eventId, // optional
@@ -80,7 +80,7 @@ tournamentEngine.setMatchUpFormat({
 The **matchUpFormat** for a **matchUp** is set at the time of score entry:
 
 ```js
-tournamentEngine.setMatchUpStatus({
+engine.setMatchUpStatus({
   matchUpFormat,
   matchUpId,
   outcome,

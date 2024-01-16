@@ -72,7 +72,7 @@ engine.modifyCollectionDefinition({
 Both modifies the `tieFormat` on the target `event`, `drawDefinition`, `structure` or `matchUp` and adds/deletes `tieMatchUps` as necessary.
 
 ```js
-competitionEngine.modifyTieFormat({
+engine.modifyTieFormat({
   modifiedTieFormat, // will be compared to existing tieFormat that is targeted and differences calculated
   tournamentId, // required
   structureId, // required if modifying tieFormat for a structure
@@ -89,7 +89,7 @@ competitionEngine.modifyTieFormat({
 Modify the array order of `tieFormat.collectionDefinitions` for an `event`, a `drawDefinition`, `structure`, or `matchUp`.
 
 ```js
-competitionEngine.orderCollectionDefinitions({
+engine.orderCollectionDefinitions({
   orderMap: { collectionId1: 1, collectionId2: 2 },
   tournamentId, // required
   structureId, // required if modifying tieFormat for a structure
@@ -104,7 +104,7 @@ competitionEngine.orderCollectionDefinitions({
 ## removeCollectionDefinition
 
 ```js
-competitionEngine.removeCollectionDefinition({
+engine.removeCollectionDefinition({
   updateInProgressMatchUps, // optional; defaults to true
   tieFormatComparison, // optional; defaults to false; when true will not delete unique collections on unscored matchUps
   tieFormatName, // any time a collectionDefinition is modified a new name must be provided
@@ -124,7 +124,7 @@ competitionEngine.removeCollectionDefinition({
 Removes a `collectionGroup` from the `tieFormat` found for the `event`, `drawDefinition`, `structure` or `matchUp`; recalculates
 
 ```js
-competitionEngine.removeCollectionGroup({
+engine.removeCollectionGroup({
   updateInProgressMatchUps, // optional - defaults to true
   tieFormatName: 'New tieFormat', // if no name is provided then there will be no name
   collectionGroupNumber: 1,

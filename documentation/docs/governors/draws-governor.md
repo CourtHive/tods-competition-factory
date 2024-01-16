@@ -134,10 +134,9 @@ engine.assignDrawPositionBye({
 ## attachPlayoffStructures
 
 Attaches the results of `generateAndPopulatePlayoffStructures` to a `drawDefinition`.
-Used primarily when multiple instances of `drawEngine` are in use and the generation step is performed by one instance.
 
 :::note
-`engine.addPlayoffStructures()` calls both `generateAndPopulatePlayoffStructures` and `attachPlayoffStructures` and is used when there is only one instance of `drawEngine`.
+`engine.addPlayoffStructures()` calls both `generateAndPopulatePlayoffStructures` and `attachPlayoffStructures`.
 :::
 
 ```js
@@ -425,7 +424,7 @@ Intended to be used in conjunction with `automatedPlayoffPositioning` in deploym
 ```js
 // executed only on the client
 const { structurePositionAssignments } = engine.automatedPlayoffPositioning({
-  applyPositioning: false, // instructs tournamentEngine to only return values, not apply them
+  applyPositioning: false, // instructs factory engine to only return values, not apply them
   structureId,
   drawId,
 });
@@ -470,11 +469,13 @@ engine.swapDrawPositionAssignments({
 
 ## updateTeamLineUp
 
+See [validateLineUp](/docs/governors/participant-governor#validateteamlineup)
+
 ```js
 engine.updateTeamLineUp({
   participantId, // id of the team for which lineUp is being updated
   tieFormat, // valid tieFormat - used to validate collectionIds
-  lineUp, // valid lineUp array - see tournamentEngine.validateTeamLineUp
+  lineUp, // valid lineUp array
   drawId, // required as latest lineUp modification is stored in an extension on drawDefinition
 });
 ```

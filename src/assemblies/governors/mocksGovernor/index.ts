@@ -5,19 +5,15 @@ import { modifyTournamentRecord } from '../../generators/mocks/modifyTournamentR
 import { generateEventWithDraw } from '../../generators/mocks/generateEventWithDraw';
 import { generateParticipants } from '../../generators/mocks/generateParticipants';
 import { generateOutcome } from '../../generators/mocks/generateOutcome';
-import { parseScoreString } from '../../../utilities/parseScoreString';
-import { credits } from '../../../fixtures/credits';
 
 export const mocksGovernor = {
-  generateOutcomeFromScoreString,
   anonymizeTournamentRecord,
+  generateEventWithDraw,
+  generateOutcome,
+  generateOutcomeFromScoreString,
+  generateParticipants,
   generateTournamentRecord,
   modifyTournamentRecord,
-  generateEventWithDraw,
-  generateParticipants,
-  parseScoreString,
-  generateOutcome,
-  credits,
 };
 
 export default mocksGovernor;

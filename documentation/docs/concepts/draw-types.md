@@ -4,7 +4,7 @@ title: Draw Types
 
 ## Draw Types
 
-The convenience method `tournamentEngine.generateDrawDefinition()` generates the following draw types:
+The convenience method `engine.generateDrawDefinition()` generates the following draw types:
 
 - **AD_HOC** - An arbitrary number of matchUps may be added to an arbitrary number of rounds.
 - **COMPASS** - Includes up to 8 structures; ensures participants a minimum of 3 matchUps.

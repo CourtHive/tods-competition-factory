@@ -15,6 +15,7 @@ import { removeSeeding } from '../../../mutate/entries/removeSeeding';
 import { deleteEvents } from '../../../mutate/events/deleteEvent';
 import { modifyEvent } from '../../../mutate/events/modifyEvent';
 import { setEventDisplay } from 'mutate/events/setEventDisplay';
+import { validateCategory } from 'validators/validateCategory';
 import { addFlight } from '../../../mutate/events/addFlight';
 import { addEvent } from '../../../mutate/events/addEvent';
 
@@ -40,6 +41,7 @@ export const eventGovernor = {
   setEventEndDate,
   setEventStartDate,
   updateDrawIdsOrder,
+  validateCategory,
 };
 
 export default eventGovernor;

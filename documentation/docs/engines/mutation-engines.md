@@ -8,7 +8,7 @@ For **asynchronous** engines it is necessary to set a global state provider whic
 
 ## Notifications
 
-Mutaion engines generate **notifications** which are delivered via functions defined by [Subscriptions](/docs/concepts/subscriptions).
+Mutaion engines generate **notifications** which are delivered via functions defined by [Subscriptions](/docs/engines/subscriptions).
 
 ## Rollback on Error
 

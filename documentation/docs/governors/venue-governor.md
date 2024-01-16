@@ -29,7 +29,7 @@ engine.addCourt({ venueId, court });
 
 ## addCourts
 
-Convenience function to bulk add courts to a Venue. Only adds **dataAvailability** and **courtName**. See [Scheduling](/docs/concepts/scheduling).
+Convenience function to bulk add courts to a Venue. Only adds **dataAvailability** and **courtName**. See [Scheduling](/docs/concepts/venues-courts).
 
 ```js
 const dateAvailability = [
@@ -85,7 +85,7 @@ engine.deleteCourt({
 If a venue has scheduled matchUps then it will not be deleted unless `{ force: true }` in which case all relevant matchUps will be unscheduled.
 
 ```js
-tournamentEngine.deleteVenue({ venueId, force });
+engine.deleteVenue({ venueId, force });
 ```
 
 ---
@@ -95,7 +95,7 @@ tournamentEngine.deleteVenue({ venueId, force });
 If a venue has scheduled matchUps then it will not be deleted unless `{ force: true }` in which case all relevant matchUps will be unscheduled.
 
 ```js
-tournamentEngine.deleteVenues({ venueIds, force });
+engine.deleteVenues({ venueIds, force });
 ```
 
 ---
@@ -184,7 +184,7 @@ engine.modifyCourt({
 
 ## modifyCourtAvailability
 
-Modifies the `dateAvailability` attribute of a specified court. Warns if existing scheduled matchUps would be affected. See [Scheduling](/docs/concepts/scheduling).
+Modifies the `dateAvailability` attribute of a specified court. Warns if existing scheduled matchUps would be affected. See [Scheduling](/docs/concepts/venues-courts).
 
 ```js
 const result = engine.modifyCourtAvailability({
@@ -198,7 +198,7 @@ const result = engine.modifyCourtAvailability({
 
 ## modifyVenue
 
-See [Scheduling](/docs/concepts/scheduling).
+See [Scheduling](/docs/concepts/venues-courts).
 
 ```js
 const modifications = {
@@ -219,7 +219,7 @@ const modifications = {
     },
   ],
 };
-competitionEngine.modifyVenue({ venueId, modifications });
+engine.modifyVenue({ venueId, modifications });
 ```
 
 ---

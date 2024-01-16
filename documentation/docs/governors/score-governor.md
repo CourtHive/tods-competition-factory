@@ -2,20 +2,17 @@
 title: Score Governor
 ---
 
-The **scoreGovernor** is a collection of scoring related utilities exported from the Competition Factory;
-these utilities provide analysis/validation or generate values, but do not make any mutations.
-
-Lightweight independent/reusable components such as scoring dialogs can make use of the **scoreGovernor** without having to import any Competition Factory engines.
-
 ```js
 import { governors: { scoreGovernor }} from 'tods-competition-factory';
 ```
 
+The **scoreGovernor** is a collection of scoring related utilities that provide analysis/validation or generate values.
+
+Lightweight independent/reusable components such as scoring dialogs can make use of the **scoreGovernor** without having to import any Competition Factory engines.
+
 ---
 
-## API
-
-### analyzeSet
+## analyzeSet
 
 ```js
 const {
@@ -44,7 +41,7 @@ const {
 
 ---
 
-### checkSetIsComplete
+## checkSetIsComplete
 
 ```js
 const hasWinningSide = scoreGovernor.checkSetIsComplete({
@@ -61,7 +58,7 @@ const hasWinningSide = scoreGovernor.checkSetIsComplete({
 
 ---
 
-### generateScoreString
+## generateScoreString
 
 ```js
 const sets = [
@@ -94,7 +91,7 @@ let result = scoreGovernor.generateScoreString({
 
 ---
 
-### getSetComplement
+## getSetComplement
 
 Returns complementary sideScore given a `lowValue`, `tieBreakAt` and `setTo` details.
 
@@ -109,7 +106,7 @@ const [side1Score, side2Score] = scoreGovernor.getSetComplement({
 
 ---
 
-### getTiebreakComplement
+## getTiebreakComplement
 
 Returns complementary sideScore given a `lowValue`, `tieBreakNoAd` and `tiebreakTo` details.
 
@@ -124,7 +121,7 @@ const [side1Score, side2Score] = scoreGovernor.getSetComplement({
 
 ---
 
-### generateTieMatchUpScore
+## generateTieMatchUpScore
 
 Returns string representation of current tieMatchUp score.
 
@@ -137,7 +134,7 @@ const { scoreStringSide1, scoreStringSide2, set, winningSide } = scoreGovernor.g
 
 ---
 
-### isValidMatchUpFormat
+## isValidMatchUpFormat
 
 Returns boolean indicating whether matchUpFormat code is valid.
 
@@ -147,18 +144,18 @@ const valid = scoreGovernor.isValidMatchUpFormat({ matchUpFormat });
 
 ---
 
-### keyValueScore
+## keyValueScore
 
 Utility for generating score strings based on key entry. Please see `keyValueScore.test.js` in the source for more detail.
 
 ---
 
-#### participantResults
+### participantResults
 
 An array of `{ drawPosition, participantId, participantResult }` objects is returned for each group of processed matchUps.
 
 In the example given below 3 of 4 participants were tied with equivalent metrics and final `rankOrder` was determined by **Head to Head** analysis.
-See [Round Robin Tally Policy](policies/tallyPolicy).
+See [Round Robin Tally Policy](/docs/policies/tallyPolicy).
 
 ```js
 {
@@ -213,9 +210,41 @@ const GEM =
 
 ---
 
-### validateTieFormat
+## parseScoreString
 
-Provides validation for `tieFormat` objects. See [tieFormats and lineUps](concepts/tieFormat)
+Produces TODS sets objects.
+
+```js
+const sets = mocksEngine.parseScoreString({ scoreString: '1-6 1-6' });
+
+/*
+console.log(sets)
+[
+  ({
+    side1Score: 1,
+    side2Score: 6,
+    side1TiebreakScore: undefined,
+    side2TiebreakScore: undefined,
+    winningSide: 2,
+    setNumber: 1,
+  },
+  {
+    side1Score: 1,
+    side2Score: 6,
+    side1TiebreakScore: undefined,
+    side2TiebreakScore: undefined,
+    winningSide: 2,
+    setNumber: 2,
+  })
+];
+*/
+```
+
+---
+
+## validateTieFormat
+
+Provides validation for `tieFormat` objects. See [tieFormats](/docs/concepts/tieFormat).
 
 ```js
 const {

@@ -120,6 +120,24 @@ engine.addPersons({
 
 ---
 
+## addPersonRequests
+
+Validates and adds person requests.
+
+```js
+const requests = [
+  {
+    date, // 'YYYY-MM-DD' date string
+    startTime, // '00:00' time string
+    endTime, // '00:00' time string
+    requestType: 'DO_NOT_SCHEDULE',
+  },
+];
+engine.addPersonRequests({ personId, requests });
+```
+
+---
+
 ## addIndividualParticipantIds
 
 Adds individualParticipantIds to GROUP or TEAM participants
@@ -204,6 +222,29 @@ Modifies attributes of a participant with integrity checks to ensure valid value
 ```js
 engine.modifyParticipant({
   participant: updatedIndividualParticipant,
+});
+```
+
+---
+
+## modifyPersonRequests
+
+Modifies existing person requests.
+
+Any requests without a `requestId` will be **added**. Any requests without `requestType` will be **removed**.
+
+```js
+engine.modifyPersonRequests({
+  personId, // optional - scope to single personId; avoid brute-force updates
+  requests: [
+    {
+      requestType,
+      requestId, // if requestId is not present, will attempt to added
+      startTime,
+      endTime,
+      date,
+    },
+  ],
 });
 ```
 
@@ -339,7 +380,7 @@ const scaleAttributes = {
   scaleName: 'U18',
   sortOrder: ASCENDING, // defaults to ASCENDING; use case for DESCENDING is unclear!
 };
-tournamentEngine.scaledTeamAssignment({
+engine.scaledTeamAssignment({
   clearExistingAssignments, // optional - true by default remove all existing individualParticipantIds from targeted teams
   individualParticipantIds, // individuals to be sorted by scaleAttributes and assigned to teams (WATERFALL)
   reverseAssignmentOrder, // optional - reverses team order; useful for sequential assignment of participant groupings to ensure balanced distribution
@@ -368,7 +409,7 @@ const scaledParticipants = individualParticipants.map((participant) => ({
 
 const teamParticipantIds = teamParticipants.map(getParticipantId);
 
-tournamentEngine.scaledTeamAssignment({
+engine.scaledTeamAssignment({
   scaledParticipants, // [{ participantId: 'participantId', scaleValue: '10' }]
   teamParticipantIds,
 });
@@ -379,12 +420,12 @@ tournamentEngine.scaledTeamAssignment({
 In this scenario scaled MALE participants are assigned in a waterfall pattern beginning with the first team (default behavior); scaled FEMALE participants are then assigned in a reverse waterfall pattern beginning with the last team. The goal is to balance the teams to the greatest extent possible. This pattern can be used with an arbitrary number of groups of `individualParticipants`.
 
 ```js
-tournamentEngine.scaledTeamAssignment({
+engine.scaledTeamAssignment({
   scaledParticipants: maleScaleParticipants,
   teamParticipantIds,
 });
 
-tournamentEngine.scaledTeamAssignment({
+engine.scaledTeamAssignment({
   scaledParticipants: femaleScaleParticipants,
   clearExistingAssignments: false,
   reverseAssignmentOrder: true,
@@ -446,7 +487,7 @@ engine.setParticipantScaleItems({
 
 ---
 
-## validateTeamLineUp
+## validateLineUp
 
 ```js
 const { valid, error, errors } = engine.validateLineUp({

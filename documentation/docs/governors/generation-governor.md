@@ -30,7 +30,7 @@ const { matchUps, participantIdPairings, iterations, candidatesCount } = engine.
 Draws with `{ drawType: AD_HOC }` allow `matchUps` to be dynamically added. In this type of draw there is no automatic participant progression between rounds. Participant assignment to `matchUps` is done manually, or via **DrawMatic**. The only restriction is that a participant may appear once per round.
 
 ```js
-const result = tournamentEngine.generateAdHocMatchUps({
+const result = engine.generateAdHocMatchUps({
   participantIdPairings, // optional - array of array of pairings [['id1', 'id2'], ['id3', 'id4']]
   drawId, // required - drawId of drawDefinition in which target structure is found
   matchUpIds, // optional - if matchUpIds are not specified UUIDs are generated
@@ -46,7 +46,7 @@ const result = tournamentEngine.generateAdHocMatchUps({
 Generates values but does not attach them to the `drawDefinition`. Used in conjunction with `attachPlayoffStructures`.
 
 ```js
-const { structures, links, matchUpModifications } = tournamentEngine.generateAndPopulatePlayoffStructures({
+const { structures, links, matchUpModifications } = engine.generateAndPopulatePlayoffStructures({
   requireSequential, // boolean defaults to true; only applies to Round Robin; require finishingPositions to be sequential
   roundNumbers: [3], // optional if playoffPositions not provided; roundNumbers of structure to be played off.
   roundProfiles, // optional - source roundNumbers as Object.keys with depth as Object.values, e.g. [{ 1: 2}, {2: 1}]
@@ -127,7 +127,7 @@ const { drawDefinition } = engine.generateDrawDefinition(drawDefinitionValues);
 
 ## generateDrawMaticRound
 
-Typically not called directly. `tournamentEngine.drawMatic` is a higher level wrapper which automates derivation of `adHocRatings`.
+Typically not called directly. `engine.drawMatic` is a higher level wrapper which automates derivation of `adHocRatings`.
 
 ```js
 const {
@@ -166,7 +166,7 @@ const scaleAttributes = {
   accessor, // optional - string determining how to access attribute if scaleValue is an object
 };
 
-const { flightProfile, splitEntries } = tournamentEngine.generateFlightProfile({
+const { flightProfile, splitEntries } = engine.generateFlightProfile({
   eventId, // event for which entries will be split
   attachFlightProfile, // boolean - also attach to event after generation
   scaledEntries, // optional - overrides the use of scaleAttributes, scaleSortMethod, and sortDescending
@@ -196,7 +196,7 @@ const {
 } = flightProfile;
 
 Object.assign(drawDefinitionValues, flight);
-const { drawDefinition } = tournamentEngine.generateDrawDefinition(drawDefinitionValues);
+const { drawDefinition } = engine.generateDrawDefinition(drawDefinitionValues);
 ```
 
 ---
@@ -211,7 +211,7 @@ const scaleAccessor = {
   scaleType: RANKING,
   sortOrder, // optional - ASCENDING or DESCENDING - defaults to ASCENDING
 };
-const { lineUps, participantsToAdd } = tournamentEngine.generateLineUps({
+const { lineUps, participantsToAdd } = engine.generateLineUps({
   useDefaultEventRanking, // optional boolen; when true scaleAccessor is not required
   scaleAccessor, // see above
   singlesOnly, // optional boolean - when true SINGLES rankings will be used for DOUBLES position assignment
@@ -225,7 +225,7 @@ const { lineUps, participantsToAdd } = tournamentEngine.generateLineUps({
 ## generateQualifyingStructure
 
 ```js
-let { structure, link } = tournamentEngine.generateQualifyingStructure({
+let { structure, link } = engine.generateQualifyingStructure({
   targetStructureId, // required: structure for which participants will qualify
   qualifyingPositions, // optional: specify the # of qualifyingPositions
   qualifyingRoundNumber, // optional: determine qualifyingPositions by # of matchUps in specified round; does not apply to ROUND_ROBIN
@@ -244,7 +244,7 @@ let { structure, link } = tournamentEngine.generateQualifyingStructure({
 Used in conjunction with `getEntriesAndSeedsCount` when it is necessary to make use of a custom function for generating `scaledEntries`.
 
 ```js
-const { scaleItemsWithParticipantIds } = tournamentEngine.generateSeedingScaleItems({
+const { scaleItemsWithParticipantIds } = engine.generateSeedingScaleItems({
   scaleAttributes,
   scaledEntries,
   stageEntries,
@@ -265,7 +265,7 @@ const { structures, links } = engine.generateVoluntaryConsolation({
 });
 
 // if { attachConsolation: false } then it will be necessary to subsequently attach the structures and links
-tournamentEngine.attachConsolationStructures({ drawId, structures, links });
+engine.attachConsolationStructures({ drawId, structures, links });
 ```
 
 ---

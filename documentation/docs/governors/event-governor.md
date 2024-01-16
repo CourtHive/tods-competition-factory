@@ -8,12 +8,12 @@ import { governors: { eventGovernor }} from 'tods-competition-factory';
 
 ## addDrawDefinition
 
-Adds a drawDefinition to an event in a tournamentRecord. Called after [generateDrawDefinition](/docs/governors/generationGovernor#generatedrawdefinition).
+Adds a drawDefinition to an event in a tournamentRecord. Called after [generateDrawDefinition](/docs/governors/generation-governor#generatedrawdefinition).
 
 ```js
-const { drawDefinition, error } = tournamentEngine.generateDrawDefinition(drawDefinitionValues);
+const { drawDefinition, error } = engine.generateDrawDefinition(drawDefinitionValues);
 if (!error) {
-  const result = tournamentEngine.addDrawDefinition({
+  const result = engine.addDrawDefinition({
     modifyEventEntries, // event.entries[{entryStatus}] are modified to match draw.entries[{entryStatus}]
     existingDrawCount, // number of draws that exist in the event, used to check that two clients don't attempt to add simultaneously
     allowReplacement, // optional - defaults to false
@@ -32,7 +32,7 @@ if (!error) {
 Add an event object to a tournamentRecord.
 
 ```js
-tournamentEngine.addEvent({ event });
+engine.addEvent({ event });
 ```
 
 ---
@@ -80,7 +80,7 @@ engine.assignSeedPositions({
 Attaches a `flightProfile` to the `event` specified by `eventId`. A `flightProfile` is first generated with `generateFlightProfile()`.
 
 ```js
-tournamentEngine.attachFlightProfile({ flightProfile, eventId });
+engine.attachFlightProfile({ flightProfile, eventId });
 ```
 
 ---
@@ -162,29 +162,6 @@ engine.modifyEventMatchUpFormatTiming({
   averageMinutes,
   matchUpFormat,
   eventId,
-});
-```
-
----
-
-## modifyPersonRequests
-
-Modifies existing person requests.
-
-Any requests without a `requestId` will be **added**. Any requests without `requestType` will be **removed**.
-
-```js
-competitionEngine.modifyPersonRequests({
-  personId, // optional - scope to single personId; avoid brute-force updates
-  requests: [
-    {
-      requestType,
-      requestId, // if requestId is not present, will attempt to added
-      startTime,
-      endTime,
-      date,
-    },
-  ],
 });
 ```
 
@@ -316,7 +293,7 @@ engine.setEventDates({ eventId, startDate, endDate });
 
 ## setEventDisplay
 
-Defines publish status for attributes of `participants` and `matchUp` schedules which are returned by [getEventData](#geteventdata) and [competitionScheduleMatchUps](competition-engine-api.md#competitionschedulematchups).
+Defines publish status for attributes of `participants` and `matchUp` schedules which are returned by [getEventData](/docs/governors/query-governor#geteventdata) and [competitionScheduleMatchUps](/docs/governors/query-governor#competitionschedulematchups).
 
 ```js
 const displaySettings = {
@@ -359,10 +336,8 @@ engine.updateDrawIdsOrder({
 
 ---
 
-## removeEventMatchUpFormatTiming
+## validateCategory
 
 ```js
-engine.removeEventMatchUpFormatTiming({ eventId });
+engine.validateCategory({ category });
 ```
-
----

@@ -4,7 +4,7 @@ title: Round Robin Tally Policy
 
 A **Tally Policy** controls how order is determined for Round Robin groups.
 
-Policy Definitions can be attached to a [tournament record](../apis/tournament-engine-api#attachpolicies), or an [event](../apis/tournament-engine-api#attacheventpolicies).
+See [engine.attachPolicies](/docs/governors/policy-governor#attachpolicies).
 
 ```js
 const roundRobinTally = {
@@ -43,16 +43,10 @@ const roundRobinTally = {
   gamesCreditForWalkovers: false, // whether or not to award e.g. 12 games won for participant who wins by opponent WALKOVER
   gamesCreditForRetirements: false, // whether or not to award e.g. 2 sets won for participant who wins by opponent RETIREMENT
   gamesCreditForTiebreakSets: true, // defaults to true; whether to count a tiebreak set as a game won, e.g. 6-2 2-6 [10-3]
-  GEMscore: [
-    'matchUpsPct',
-    'tieMatchUpsPct',
-    'setsPct',
-    'gamesPct',
-    'pointsPct',
-  ],
+  GEMscore: ['matchUpsPct', 'tieMatchUpsPct', 'setsPct', 'gamesPct', 'pointsPct'],
 };
 
-tournamentEngine.attachPolicies({ policyDefinitions: { roundRobinTally } });
+engine.attachPolicies({ policyDefinitions: { roundRobinTally } });
 ```
 
 ## Default Behavior

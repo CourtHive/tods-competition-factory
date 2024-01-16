@@ -9,7 +9,7 @@ import { governors: { scheduleGovernor }} from 'tods-competition-factory';
 ## allocateTeamMatchUpCourts
 
 ```js
-let result = tournamentEngine.allocateTeamMatchUpCourts({
+let result = engine.allocateTeamMatchUpCourts({
   removePriorValues, // optional boolean
   matchUpId,
   courtIds,
@@ -158,7 +158,7 @@ engine.scheduleMatchUps({
 
 ## scheduleProfileRounds
 
-Auto-schedules all rounds which have been specified in a `schedulingProfile` which has been saved to the tournamentRecord using `competitionEngine.setSchedulingProfile`.
+Auto-schedules all rounds which have been specified in a `schedulingProfile` which has been saved to the tournamentRecord using [engine.setSchedulingProfile](#setschedulingprofile). See [Scheduling Profile](/docs/concepts/scheduling-profile).
 
 :::note
 SINGLES and DOUBLES `matchUps` will be scheduled, but not TEAM `matchUps`.
@@ -198,8 +198,18 @@ engine.setMatchUpDailyLimits({
 
 ## setSchedulingProfile
 
+See [Scheduling Profile](/docs/concepts/scheduling-profile).
+
 ```js
-competitionEngine.setSchedulingProfile({ schedulingProfile });
+engine.setSchedulingProfile({ schedulingProfile });
 ```
 
 ---
+
+## validateSchedulingProfile
+
+```js
+const { valid, error } = engine.validateSchedulingProfile({
+  schedulingProfile,
+});
+```

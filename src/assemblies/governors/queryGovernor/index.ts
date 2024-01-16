@@ -81,8 +81,6 @@ import { checkValidEntries } from '../../../validators/checkValidEntries';
 import { getScaledEntries } from '../../../query/event/getScaledEntries';
 import { eventMatchUps } from '../../../query/matchUps/getEventMatchUps';
 import { getRounds } from '../../../query/matchUps/scheduling/getRounds';
-import { validateCategory } from '../../../validators/validateCategory';
-import { validateLineUp } from '../../../validators/validateTeamLineUp';
 import { getTieFormat } from '../../../query/hierarchical/getTieFormat';
 import { getFlightProfile } from '../../../query/event/getFlightProfile';
 import { getMatchUpType } from '../../../query/matchUp/getMatchUpType';
@@ -223,8 +221,6 @@ export const queryGovernor = {
   isAdHoc,
   isCompletedStructure,
   roundRobinGroups,
-  validateCategory,
-  validateLineUp,
 };
 
 export const query = queryGovernor;

@@ -9,7 +9,7 @@ import { governors: { tournamentGovernor }} from 'tods-competition-factory';
 ## addDrawDefinitionExtension
 
 ```js
-tournamentEngine.addDrawDefinitionExtension({
+engine.addDrawDefinitionExtension({
   extension: {
     name: 'extension name',
     value: {},
@@ -23,7 +23,7 @@ tournamentEngine.addDrawDefinitionExtension({
 ## addEventExtension
 
 ```js
-tournamentEngine.addEventExtension({
+engine.addEventExtension({
   extension: {
     name: 'extension name',
     value: {},
@@ -37,7 +37,7 @@ tournamentEngine.addEventExtension({
 ## addTournamentExtension
 
 ```js
-tournamentEngine.addTournamentExtension({
+engine.addTournamentExtension({
   extension: {
     name: 'extension name',
     value: {},

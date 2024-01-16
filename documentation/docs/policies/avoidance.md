@@ -16,19 +16,15 @@ Multiple Round Avoidance seeks to place players as far apart within a draw struc
 
 ## Avoidance Policies
 
-Both the **tournamentEngine** and **drawEngine** within the Competition Factory support attaching policy definitions which control the behavior of various exported methods.
-
-For Avoidance the algoritm requires access to attributes of tournament participants and thus must be accessed via the **tournamentEngine**.
-
 ```js
 const values = {
-  event,
-  eventId,
+  policyDefinitions: { ...AVOIDANCE_COUNTRY },
   automated: true,
   drawSize: 32,
-  policyDefinitions: { ...AVOIDANCE_COUNTRY },
+  eventId,
+  event,
 };
-const { drawDefinition } = tournamentEngine.generateDrawDefinition(values);
+const { drawDefinition } = engine.generateDrawDefinition(values);
 ```
 
 In this case the **policydefinition** specifies that participants in the generated draw are to be separated according to any country values that may exist on participant records. The policy is defined as follows:
@@ -36,10 +32,10 @@ In this case the **policydefinition** specifies that participants in the generat
 ```js
 const AVOIDANCE_COUNTRY = {
   avoidance: {
+    policyAttributes: [{ key: 'person.nationalityCode' }, { key: 'individualParticipants.person.nationalityCode' }],
     policyName: 'Nationality Code',
     roundsToSeparate: undefined,
     targetDivitions: undefined,
-    policyAttributes: [{ key: 'person.nationalityCode' }, { key: 'individualParticipants.person.nationalityCode' }],
   },
 };
 ```
