@@ -1,0 +1,22 @@
+---
+title: Overview
+---
+
+## Overview
+
+Scheduling is the process of assigning **dates**, **venues**, **courts** and **times** to tournament `matchUps`.
+
+In TODS, scheduling information is attached to `matchUps` as `timeItems` and the schedule is derived by interrogating the scheduling information attached to `matchUps`.
+This approach means that there is no master schedule object; it also means that when `drawDefinitions` or draw `structures` are removed there is no schedule to be cleared.
+
+In the Competition Factory, scheduling is accomplished either direclty via scheduling methods such as `addMatchUpScheduledDate`, or automatically via `scheduleMatchUps` or `scheduleProfileRounds`.
+
+Automated scheduling, along with direct assignment of venues and courts, depends on having venues with courts which have defined `dateAvailability`.
+
+## Iterative Garman scheduling
+
+The Competition Factory engine supports Garman scheduling of `matchUps` from multiple tournaments across shared `venues`.
+
+The Garman formula calculates the times at which `matchUps` may be scheduled, taking into consideration court availability
+and average minutes per match, but it does not inherently support the **average minutes** per `matchUp` being **_different_**
+across blocks of `matchUps`.

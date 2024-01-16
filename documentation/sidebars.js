@@ -9,7 +9,9 @@ module.exports = {
       type: 'category',
       label: 'Concepts',
       items: [
-        'concepts/draw-generation',
+        {
+          Participants: ['concepts/participants', 'concepts/participant-context', 'concepts/scaleItems'],
+        },
         {
           Policies: [
             'concepts/policies',
@@ -25,15 +27,30 @@ module.exports = {
             'policies/feedPolicy',
           ],
         },
-        'concepts/actions',
-        'concepts/accessors',
-        'concepts/context',
-        'concepts/global-state',
+        {
+          matchUps: [
+            'concepts/matchup-overview',
+            'concepts/matchup-context',
+            'concepts/tieMatchUp',
+            'concepts/lineUp',
+            'concepts/tieFormat',
+          ],
+        },
+        {
+          Draws: ['concepts/draws-overview', 'concepts/draw-types', 'concepts/actions'],
+        },
+        {
+          Scheduling: [
+            'concepts/scheduling-overview',
+            'concepts/venues-courts',
+            'concepts/scheduling-policy',
+            'concepts/scheduling-profile',
+            'concepts/automated-scheduling',
+            'concepts/pro-scheduling',
+            'concepts/scheduling-conflicts',
+          ],
+        },
         'concepts/publishing',
-        'concepts/scheduling',
-        'concepts/scaleItems',
-        'concepts/timeItems',
-        'concepts/subscriptions',
       ],
     },
     {
@@ -49,7 +66,9 @@ module.exports = {
         'engines/engine-logging',
         'engines/engine-middleware',
         'engines/mutation-engines',
+        'engines/subscriptions',
         'engines/custom-engines',
+        'engines/global-state',
       ],
     },
     {
@@ -82,21 +101,6 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'Data',
-      items: [
-        'constants',
-        {
-          Codes: ['codes/age-category', 'codes/matchup-format'],
-        },
-        'types/typedefs',
-        'concepts/extensions',
-        {
-          Explanation: ['concepts/lineUp', 'concepts/tieFormat', 'concepts/tieMatchUp'],
-        },
-      ],
-    },
-    {
-      type: 'category',
       label: 'Utilities',
       items: [
         {
@@ -107,6 +111,27 @@ module.exports = {
         'utilities/make-deep-copy',
         'utilities/structure-sort',
         'utilities/json-to-csv',
+      ],
+    },
+    {
+      Testing: [
+        { type: 'doc', label: 'Overview', id: 'testing/testing-overview' },
+        'testing/mocks-engine',
+        'testing/factory-server',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Data',
+      items: [
+        'constants',
+        {
+          Codes: ['codes/age-category', 'codes/matchup-format'],
+        },
+        'types/typedefs',
+        'concepts/accessors',
+        'concepts/timeItems',
+        'concepts/extensions',
       ],
     },
   ],

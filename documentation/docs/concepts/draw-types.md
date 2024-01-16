@@ -1,15 +1,6 @@
 ---
-title: Draw Generation
+title: Draw Types
 ---
-
-import BrowserOnly from '@docusaurus/BrowserOnly';
-import DrawType from '../components/DrawType';
-
-## Example
-
-Themed visualization of draws by [courthive-components](https://github.com/CourtHive/courthive-components).
-
-<BrowserOnly>{() => <DrawType drawType="COMPASS" drawSize={8} />}</BrowserOnly>
 
 ## Draw Types
 

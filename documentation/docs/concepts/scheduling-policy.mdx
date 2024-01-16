@@ -1,0 +1,40 @@
+---
+title: Scheduling Policy
+---
+
+import RenderJSON from '../components/RenderJSON';
+import SchedulingPolicy from './assets/schedulingPolicy.json';
+
+## Scheduling policy
+
+A "Scheduling Policy" defines the average matchUp times and mandated recovery times for each `matchUpFormat`,
+and sets limits on the number of matchUps that may be played per-player per-day.
+
+<RenderJSON data={SchedulingPolicy} root={'scheduling'} colorScheme={'summerfruit'} invertTheme={true} />
+
+## Overriding policies
+
+Average `matchUpFormat` times and recovery times can be defined, or established policies can be overridden
+
+```js
+// set averageTimes for a specific matchUpFormat
+engine.modifyMatchUpFormatTiming({
+  matchUpFormat: 'SET3-S:6/TB7',
+  averageTimes: [
+    {
+      categoryNames: ['U12', 'U14'],
+      minutes: { ['DOUBLES']: 110, default: 130 },
+    },
+    {
+      categoryNames: ['U16', 'U18'],
+      minutes: { ['DOUBLES']: 100, default: 120 },
+    },
+  ],
+  recoveryTimes: [{ categoryNames: [], minutes: { default: 15, ['DOUBLES']: 15 } }],
+});
+
+// set dailyLimits
+engine.setMatchUpDailyLimits({
+  dailyLimits: { SINGLES: 2, DOUBLES: 1, total: 3 },
+});
+```

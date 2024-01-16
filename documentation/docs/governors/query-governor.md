@@ -72,6 +72,30 @@ const { matchUps, groupInfo } = engine.allTournamentMatchUps({
 
 ---
 
+## competitionScheduleMatchUps
+
+```js
+const matchUpFilters = {
+  isMatchUpTie: false,
+  scheduledDate, // scheduled date of matchUps to return
+};
+
+const { completedMatchUps, dateMatchUps, courtsData, groupInfo, venues } =
+  competitionEngine.competitionScheduleMatchUps({
+    alwaysReturnCompleted, // boolean - when true return completed matchUps regardless of publish state
+    courtCompletedMatchUps, // boolean - include completed matchUps in court.matchUps - useful for pro-scheduling
+    participantsProfile, // optional - ability to specify additions to context (see parameters of tournamentEngine.getParticipants())
+    withCourtGridRows, // optional boolean - return { rows } of matchUps for courts layed out as a grid, with empty cells
+    minCourtGridRows, // optional integer - minimum number of rows to return (compared to auto-calculated rows)
+    sortDateMatchUps, // boolean boolean - optional - defaults to `true`
+    usePublishState, // boolean - when true filter out events and dates that have not been published
+    matchUpFilters, // optional; [ scheduledDate, scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
+    sortCourtsData, // boolean - optional
+  });
+```
+
+---
+
 ## drawMatchUps
 
 Returns categorized matchUps from all structures within a draw.
