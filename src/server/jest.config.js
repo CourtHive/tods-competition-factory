@@ -5,5 +5,6 @@ module.exports = {
   coverageDirectory: '../coverage',
   testRegex: '.*\\.spec\\.ts$',
   testEnvironment: 'node',
+  preset: 'ts-jest',
   rootDir: 'src',
 };
