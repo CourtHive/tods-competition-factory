@@ -29,7 +29,7 @@ export { scaleEngine } from './tests/engines/scaleEngine';
 export { fixtures } from './fixtures';
 
 // CONSTANTS -------------------------------------------------------------
-export { factoryConstants } from './constants';
+export * as factoryConstants from './constants';
 
 export { drawDefinitionConstants } from './constants/drawDefinitionConstants';
 export { entryStatusConstants } from './constants/entryStatusConstants';

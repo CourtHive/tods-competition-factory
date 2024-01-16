@@ -37,6 +37,3 @@ export {
   attachPlayoffStructures,
   attachStructures,
 } from '../../../mutate/drawDefinitions/attachStructures';
-
-export * as mutate from './mutate';
-export * as query from './query';

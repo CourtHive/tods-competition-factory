@@ -1,4 +1,5 @@
 import { completeDrawMatchUps } from '../../../assemblies/generators/mocks/completeDrawMatchUps';
+import { setGlobalLog, setMethods, setStateProvider } from '../../../global/state/globalState';
 import { getParticipants } from '../../../query/participants/getParticipants';
 import asyncGlobalState from '../../../examples/asyncEngine/asyncGlobalState';
 import * as eventGovernor from '../../../assemblies/governors/eventGovernor';
@@ -10,11 +11,10 @@ import syncEngine from '../../../assemblies/engines/sync';
 import askEngine from '../../../assemblies/engines/ask';
 import { expect, test } from 'vitest';
 
-import { setGlobalLog, setMethods, setStateProvider } from '../../../global/state/globalState';
-
 import { deleteDrawDefinitions } from '../../../mutate/events/deleteDrawDefinitions';
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 
+import { MUTATE } from '../../../constants/methodConstants';
 import {
   INVALID_VALUES,
   METHOD_NOT_FOUND,

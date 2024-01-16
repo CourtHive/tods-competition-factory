@@ -29,8 +29,8 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import { FactoryEngine } from '../../../types/factoryTypes';
 
 export function engineStart(engine: FactoryEngine, engineInvoke: any): void {
-  engine.importMethods = (methods) =>
-    importMethods(engine, engineInvoke, methods);
+  engine.importMethods = (methods, collections, depth) =>
+    importMethods(engine, engineInvoke, methods, collections, depth);
   engine.getTournament = (params?) => getTournament(params);
   engine.getState = (params?) =>
     getState({
@@ -62,11 +62,7 @@ export function engineStart(engine: FactoryEngine, engineInvoke: any): void {
   };
   engine.setTournamentId = (tournamentId) => setTournamentId(tournamentId);
   engine.getTournamentId = () => getTournamentId();
-  engine.setTournamentRecord = (
-    tournamentRecord,
-    deepCopyOption,
-    deepCopyAttributes
-  ) => {
+  engine.setTournamentRecord = (tournamentRecord, deepCopyOption, deepCopyAttributes) => {
     setDeepCopy(deepCopyOption, deepCopyAttributes);
     const result = setTournamentRecord(tournamentRecord, deepCopyOption);
     return processResult(engine, result);

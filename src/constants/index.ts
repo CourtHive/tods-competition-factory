@@ -1,33 +1,33 @@
-import { auditConstants } from './auditConstants';
-import { drawDefinitionConstants } from './drawDefinitionConstants';
-import { entryStatusConstants } from './entryStatusConstants';
-import { errorConditionConstants } from './errorConditionConstants';
-import { eventConstants } from './eventConstants';
-import { extensionConstants } from './extensionConstants';
-import { flightConstants } from './flightConstants';
-import { genderConstants } from './genderConstants';
-import { keyValueConstants } from '../mutate/score/keyValueScore/constants';
-import { matchUpActionConstants } from './matchUpActionConstants';
-import { matchUpTypes } from './matchUpTypes';
-import { participantConstants, participantTypes } from './participantConstants';
-import { participantRoles } from './participantRoles';
-import { penaltyConstants } from './penaltyConstants';
-import { policyConstants } from './policyConstants';
-import { positionActionConstants } from './positionActionConstants';
-import { ratingConstants } from './ratingConstants';
-import { requestConstants } from './requestConstants';
-import { resultConstants } from './resultConstants';
-import { scaleConstants } from './scaleConstants';
-import { scheduleConstants } from './scheduleConstants';
-import { sortingConstants } from './sortingConstants';
-import { surfaceConstants } from './surfaceConstants';
-import { tieFormatConstants } from './tieFormatConstants';
-import { timeItemConstants } from './timeItemConstants';
-import { topicConstants } from './topicConstants';
-import { tournamentConstants } from './tournamentConstants';
-import { venueConstants } from './venueConstants';
+export { auditConstants } from './auditConstants';
+export { drawDefinitionConstants } from './drawDefinitionConstants';
+export { entryStatusConstants } from './entryStatusConstants';
+export { errorConditionConstants } from './errorConditionConstants';
+export { eventConstants } from './eventConstants';
+export { extensionConstants } from './extensionConstants';
+export { flightConstants } from './flightConstants';
+export { genderConstants } from './genderConstants';
+export { keyValueConstants } from '../mutate/score/keyValueScore/constants';
+export { matchUpActionConstants } from './matchUpActionConstants';
+export { matchUpTypes } from './matchUpTypes';
+export { participantConstants, participantTypes } from './participantConstants';
+export { participantRoles } from './participantRoles';
+export { penaltyConstants } from './penaltyConstants';
+export { policyConstants } from './policyConstants';
+export { positionActionConstants } from './positionActionConstants';
+export { ratingConstants } from './ratingConstants';
+export { requestConstants } from './requestConstants';
+export { resultConstants } from './resultConstants';
+export { scaleConstants } from './scaleConstants';
+export { scheduleConstants } from './scheduleConstants';
+export { sortingConstants } from './sortingConstants';
+export { surfaceConstants } from './surfaceConstants';
+export { tieFormatConstants } from './tieFormatConstants';
+export { timeItemConstants } from './timeItemConstants';
+export { topicConstants } from './topicConstants';
+export { tournamentConstants } from './tournamentConstants';
+export { venueConstants } from './venueConstants';
 
-import {
+export {
   activeMatchUpStatuses,
   completedMatchUpStatuses,
   directingMatchUpStatuses,
@@ -38,46 +38,3 @@ import {
   upcomingMatchUpStatuses,
   validMatchUpStatuses,
 } from './matchUpStatusConstants';
-
-export const factoryConstants = {
-  activeMatchUpStatuses,
-  auditConstants,
-  completedMatchUpStatuses,
-  directingMatchUpStatuses,
-  drawDefinitionConstants,
-  entryStatusConstants,
-  errorConditionConstants,
-  eventConstants,
-  extensionConstants,
-  flightConstants,
-  genderConstants,
-  keyValueConstants,
-  matchUpActionConstants,
-  matchUpStatusConstants,
-  matchUpTypes,
-  nonDirectingMatchUpStatuses,
-  participantConstants,
-  participantRoles,
-  particicipantsRequiredMatchUpStatuses,
-  participantTypes,
-  penaltyConstants,
-  policyConstants,
-  positionActionConstants,
-  ratingConstants,
-  recoveryTimeRequiredMatchUpStatuses,
-  requestConstants,
-  resultConstants,
-  scaleConstants,
-  scheduleConstants,
-  sortingConstants,
-  surfaceConstants,
-  tieFormatConstants,
-  timeItemConstants,
-  topicConstants,
-  tournamentConstants,
-  upcomingMatchUpStatuses,
-  validMatchUpStatuses,
-  venueConstants,
-};
-
-export default factoryConstants;

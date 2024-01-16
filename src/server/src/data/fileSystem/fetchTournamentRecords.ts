@@ -1,8 +1,9 @@
 import { findTournamentRecord } from './findTournamentRecord';
 
-import { factoryConstants } from '../../../../constants/';
+import { errorConditionConstants } from '../../../../constants';
 import { SUCCESS } from '../../common/constants/app';
 
+errorConditionConstants
 export async function fetchTournamentRecords(params?: { tournamentIds?: string[]; tournamentId?: string }) {
   if (!params) return { error: { message: 'No params provided' } };
 
@@ -23,7 +24,7 @@ export async function fetchTournamentRecords(params?: { tournamentIds?: string[]
     }
   }
 
-  if (!fetched) return { error: factoryConstants.errorConditionConstants.MISSING_TOURNAMENT_RECORD };
+  if (!fetched) return { error: errorConditionConstants.MISSING_TOURNAMENT_RECORD };
 
   return { ...SUCCESS, tournamentRecords, fetched, notFound };
 }
