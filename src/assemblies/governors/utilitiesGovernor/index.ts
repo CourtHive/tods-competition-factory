@@ -1,18 +1,17 @@
-import { visualizeScheduledMatchUps } from '../../../tests/testHarness/testUtilities/visualizeScheduledMatchUps';
-import { dehydrateMatchUps } from '../../../mutate/tournaments/dehydrate';
-import { structureSort } from '../../../functions/sorters/structureSort';
-
-import { definedAttributes } from '../../../utilities/definedAttributes';
-import { attributeFilter } from '../../../utilities/attributeFilter';
-import { matchUpSort } from '../../../functions/sorters/matchUpSort';
-import { generateDateRange, dateTime } from '../../../utilities/dateTime';
-import { JSON2CSV, flattenJSON } from '../../../utilities/json';
-import { generateTimeCode } from '../../../utilities/timeCode';
-import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
-import { constantToString } from '../../../utilities/strings';
-import { numericSort } from '../../../utilities/sorting';
-import { UUID, UUIDS } from '../../../utilities/UUID';
-import {
+export { visualizeScheduledMatchUps } from '../../../tests/testHarness/testUtilities/visualizeScheduledMatchUps';
+export { generateDateRange, dateTime } from '../../../utilities/dateTime';
+export { dehydrateMatchUps } from '../../../mutate/tournaments/dehydrate';
+export { structureSort } from '../../../functions/sorters/structureSort';
+export { definedAttributes } from '../../../utilities/definedAttributes';
+export { attributeFilter } from '../../../utilities/attributeFilter';
+export { matchUpSort } from '../../../functions/sorters/matchUpSort';
+export { JSON2CSV, flattenJSON } from '../../../utilities/json';
+export { generateTimeCode } from '../../../utilities/timeCode';
+export { makeDeepCopy } from '../../../utilities/makeDeepCopy';
+export { constantToString } from '../../../utilities/strings';
+export { numericSort } from '../../../utilities/sorting';
+export { UUID, UUIDS } from '../../../utilities/UUID';
+export {
   nearestPowerOf2,
   nextPowerOf2,
   isPowerOf2,
@@ -20,7 +19,7 @@ import {
   isConvertableInteger,
   isNumeric,
 } from '../../../utilities/math';
-import {
+export {
   extractAttributes,
   hasAttributeValues,
   createMap,
@@ -28,7 +27,7 @@ import {
   undefinedToNull,
 } from '../../../utilities/objects';
 
-import {
+export {
   allNumeric,
   chunkArray,
   chunkByNth,
@@ -48,55 +47,3 @@ import {
   subSort,
   unique,
 } from '../../../utilities/arrays';
-
-export const utilitiesGovernor = {
-  visualizeScheduledMatchUps,
-  dehydrateMatchUps,
-  structureSort,
-
-  allNumeric,
-  attributeFilter,
-  chunkArray,
-  chunkByNth,
-  chunkSizeProfile,
-  constantToString,
-  countValues,
-  createMap,
-  dateTime,
-  definedAttributes,
-  extractAttributes,
-  flattenJSON,
-  generateDateRange,
-  generateHashCode,
-  generateRange,
-  generateTimeCode,
-  groupValues,
-  hasAttributeValues,
-  instanceCount,
-  intersection,
-  isConvertableInteger,
-  isNumeric,
-  isOdd,
-  isPowerOf2,
-  JSON2CSV,
-  makeDeepCopy,
-  matchUpSort,
-  nearestPowerOf2,
-  nextPowerOf2,
-  noNulls,
-  noNumeric,
-  numericSort,
-  occurrences,
-  overlap,
-  randomMember,
-  randomPop,
-  shuffleArray,
-  subSort,
-  undefinedToNull,
-  unique,
-  UUID,
-  UUIDS,
-};
-
-export const utilities = utilitiesGovernor;
-export default utilitiesGovernor;

@@ -1,8 +1,8 @@
+import * as utilities from '../../../assemblies/governors/utilitiesGovernor';
 import { findExtension } from '../../../acquire/findExtension';
 import mocksEngine from '../../../assemblies/engines/mock';
 import { instanceCount } from '../../../utilities/arrays';
 import tournamentEngine from '../../engines/syncEngine';
-import { utilities } from '../../..';
 import { expect, it } from 'vitest';
 import fs from 'fs';
 
@@ -13,41 +13,34 @@ import { COMPETITOR } from '../../../constants/participantRoles';
 const sourcePath = './src/global/testHarness/structureReport';
 const filenames = [];
 
-it.skip.each(filenames)(
-  'can generate structureReports for all tournamentRecords in testHarness',
-  (filename) => {
-    if (filename) {
-      const tournamentRecord = JSON.parse(
-        fs.readFileSync(`${sourcePath}/${filename}`, { encoding: 'utf8' })
-      );
-      tournamentEngine.setState(tournamentRecord);
+it.skip.each(filenames)('can generate structureReports for all tournamentRecords in testHarness', (filename) => {
+  if (filename) {
+    const tournamentRecord = JSON.parse(fs.readFileSync(`${sourcePath}/${filename}`, { encoding: 'utf8' }));
+    tournamentEngine.setState(tournamentRecord);
 
-      if (
-        (tournamentRecord?.extensions || []).find((e) => e?.name === 'level')
-      ) {
-        const districtCode = findExtension({
-          element: tournamentRecord,
-          name: 'districtCode',
-        })?.extension?.value;
-        const sectionCode = findExtension({
-          element: tournamentRecord,
-          name: 'sectionCode',
-        })?.extension?.value;
+    if ((tournamentRecord?.extensions || []).find((e) => e?.name === 'level')) {
+      const districtCode = findExtension({
+        element: tournamentRecord,
+        name: 'districtCode',
+      })?.extension?.value;
+      const sectionCode = findExtension({
+        element: tournamentRecord,
+        name: 'sectionCode',
+      })?.extension?.value;
 
-        if (sectionCode && districtCode) {
-          const result = tournamentEngine.getEntryStatusReports();
-          const {
-            participantEntryReports,
-            // tournamentEntryReport,
-            // entryStatusReports,
-            // eventReports,
-          } = result;
-          console.log(participantEntryReports[0]);
-        }
+      if (sectionCode && districtCode) {
+        const result = tournamentEngine.getEntryStatusReports();
+        const {
+          participantEntryReports,
+          // tournamentEntryReport,
+          // entryStatusReports,
+          // eventReports,
+        } = result;
+        console.log(participantEntryReports[0]);
       }
     }
   }
-);
+});
 
 it('can identify winningParticipants and map WTN and ranking', () => {
   const drawProfiles = [
@@ -99,14 +92,13 @@ it('can identify winningParticipants and map WTN and ranking', () => {
 
   // structure analytics
   tournamentEngine.setState(tournamentRecord);
-  const { structureReports, eventStructureReports } =
-    tournamentEngine.getStructureReports({
-      extensionProfiles: [
-        { name: 'level', label: 'levelOrder', accessor: 'level.orderIndex' },
-        { name: 'districtCode' },
-        { name: 'sectionCode' },
-      ],
-    });
+  const { structureReports, eventStructureReports } = tournamentEngine.getStructureReports({
+    extensionProfiles: [
+      { name: 'level', label: 'levelOrder', accessor: 'level.orderIndex' },
+      { name: 'districtCode' },
+      { name: 'sectionCode' },
+    ],
+  });
   expect(structureReports.length).toEqual(drawProfiles.length);
   eventStructureReports.forEach((report) => {
     expect(report.totalPositionManipulations).toEqual(0);
@@ -115,12 +107,8 @@ it('can identify winningParticipants and map WTN and ranking', () => {
   });
 
   // event analytics
-  const {
-    participantEntryReports,
-    tournamentEntryReport,
-    entryStatusReports,
-    eventReports,
-  } = tournamentEngine.getEntryStatusReports();
+  const { participantEntryReports, tournamentEntryReport, entryStatusReports, eventReports } =
+    tournamentEngine.getEntryStatusReports();
   expect(eventReports.length).toEqual(drawProfiles.length);
 
   const { participants } = tournamentEngine.getParticipants({
@@ -134,24 +122,18 @@ it('can identify winningParticipants and map WTN and ranking', () => {
   });
 
   const individualParticipantsWithEvents = participants.filter(
-    ({ events, participantType }) =>
-      events.length && participantType === INDIVIDUAL
+    ({ events, participantType }) => events.length && participantType === INDIVIDUAL,
   );
 
-  expect(tournamentEntryReport.individualParticipantsCount).toEqual(
-    participants.length
-  );
+  expect(tournamentEntryReport.individualParticipantsCount).toEqual(participants.length);
   expect(tournamentEntryReport.drawDefinitionsCount).toEqual(3);
   expect(tournamentEntryReport.eventsCount).toEqual(3);
 
-  expect(
-    tournamentEntryReport.nonParticipatingEntriesCount +
-      participantEntryReports.length
-  ).toEqual(participants.length);
-
-  expect(participantEntryReports.length).toEqual(
-    individualParticipantsWithEvents.length
+  expect(tournamentEntryReport.nonParticipatingEntriesCount + participantEntryReports.length).toEqual(
+    participants.length,
   );
+
+  expect(participantEntryReports.length).toEqual(individualParticipantsWithEvents.length);
 
   // dummy condition
   if (!participantEntryReports.length) {
@@ -224,13 +206,10 @@ it('can identify winningParticipants and map WTN and ranking', () => {
     'tournamentId',
   ]);
 
-  expect(
-    instanceCount(
-      participantEntryReports
-        .map((r) => r.mainSeeding?.seedValue)
-        .filter(Boolean)
-    )
-  ).toEqual({ 1: 4, 2: 4 });
+  expect(instanceCount(participantEntryReports.map((r) => r.mainSeeding?.seedValue).filter(Boolean))).toEqual({
+    1: 4,
+    2: 4,
+  });
   expect(Object.keys(participantEntryReports[0]).sort()).toEqual([
     'confidence',
     'drawId',

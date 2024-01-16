@@ -1,4 +1,4 @@
-import { matchUpFormatCode } from '../../../assemblies/governors/matchUpFormatGovernor';
+import * as matchUpFormatCode from '../../../assemblies/governors/matchUpFormatGovernor';
 import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
 import { expect, it } from 'vitest';
 
@@ -266,14 +266,9 @@ it('match format suite', () => {
   });
 
   // return expected objects
-  validFormats.forEach(
-    (sf) =>
-      sf.obj && expect(matchUpFormatCode.parse(sf.format)).toMatchObject(sf.obj)
-  );
+  validFormats.forEach((sf) => sf.obj && expect(matchUpFormatCode.parse(sf.format)).toMatchObject(sf.obj));
 
-  singleSetTimed.forEach((sf) =>
-    expect(matchUpFormatCode.parse(sf.format)).toEqual(sf.obj)
-  );
+  singleSetTimed.forEach((sf) => expect(matchUpFormatCode.parse(sf.format)).toEqual(sf.obj));
 
   // recognize invalid formats and return undefined
   invalidFormats.forEach((sf) => {
@@ -333,9 +328,7 @@ it('will not include final set code when equivalent to other sets', () => {
 });
 
 it('can preserve redundant tiebreakAt detail', () => {
-  expect(isValidMatchUpFormat({ matchUpFormat: 'SET3-S:6/TB7@6' })).toEqual(
-    true
-  );
+  expect(isValidMatchUpFormat({ matchUpFormat: 'SET3-S:6/TB7@6' })).toEqual(true);
   expect(isValidMatchUpFormat({ matchUpFormat: standard })).toEqual(true);
 });
 

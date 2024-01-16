@@ -1,23 +1,13 @@
+import { validateCollectionValueProfiles } from './validateCollectionValueProfiles';
 import { tieFormatGenderValidityCheck } from './tieFormatGenderValidityCheck';
 import { categoryCanContain } from '../query/event/categoryCanContain';
-import { matchUpFormatCode } from '../assemblies/governors/matchUpFormatGovernor';
-import { validateCollectionValueProfiles } from './validateCollectionValueProfiles';
 import { decorateResult } from '../global/functions/decorateResult';
+import { isValidMatchUpFormat } from './isValidMatchUpFormat';
 import { isConvertableInteger } from '../utilities/math';
 
+import { INVALID_CATEGORY, INVALID_COLLECTION_DEFINITION, INVALID_OBJECT } from '../constants/errorConditionConstants';
+import { Category, CollectionDefinition, Event, EventTypeUnion, GenderUnion } from '../types/tournamentTypes';
 import { DOUBLES, SINGLES } from '../constants/matchUpTypes';
-import {
-  INVALID_CATEGORY,
-  INVALID_COLLECTION_DEFINITION,
-  INVALID_OBJECT,
-} from '../constants/errorConditionConstants';
-import {
-  Category,
-  CollectionDefinition,
-  Event,
-  EventTypeUnion,
-  GenderUnion,
-} from '../types/tournamentTypes';
 
 type ValidateCollectionDefinitionArgs = {
   collectionDefinition: CollectionDefinition;
@@ -43,9 +33,7 @@ export function validateCollectionDefinition({
   const errors: string[] = [];
 
   if (typeof collectionDefinition !== 'object') {
-    errors.push(
-      `collectionDefinition must be an object: ${collectionDefinition}`
-    );
+    errors.push(`collectionDefinition must be an object: ${collectionDefinition}`);
     return decorateResult({ result: { errors, error: INVALID_OBJECT }, stack });
   }
 
@@ -75,17 +63,11 @@ export function validateCollectionDefinition({
   }
 
   const valueDeclarations = [!!collectionValueProfiles?.length]
-    .concat(
-      [matchUpValue, collectionValue, scoreValue, setValue].map(
-        isConvertableInteger
-      )
-    )
+    .concat([matchUpValue, collectionValue, scoreValue, setValue].map(isConvertableInteger))
     .filter(Boolean);
 
   if (valueDeclarations.length !== 1) {
-    errors.push(
-      'Missing value definition for matchUps: matchUpValue, collectionValue, or collectionValueProfiles'
-    );
+    errors.push('Missing value definition for matchUps: matchUpValue, collectionValue, or collectionValueProfiles');
   }
 
   if (matchUpValue && typeof matchUpValue !== 'number') {
@@ -108,10 +90,7 @@ export function validateCollectionDefinition({
     errors.push(`collectionGroupNumber is not type number: ${collectionValue}`);
   }
 
-  if (
-    matchUpFormat &&
-    !matchUpFormatCode.isValidMatchUpFormat({ matchUpFormat })
-  ) {
+  if (matchUpFormat && !isValidMatchUpFormat({ matchUpFormat })) {
     errors.push(`Invalid matchUpFormat: ${matchUpFormat}`);
   }
 

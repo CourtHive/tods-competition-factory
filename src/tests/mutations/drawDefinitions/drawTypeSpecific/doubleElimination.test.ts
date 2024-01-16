@@ -1,13 +1,10 @@
+import * as utilities from '../../../../assemblies/governors/utilitiesGovernor';
 import tournamentEngine from '../../../engines/syncEngine';
-import { mocksEngine, utilities } from '../../../..';
+import { mocksEngine } from '../../../..';
 import { expect, it } from 'vitest';
 
+import { COMPLETED, TO_BE_PLAYED, upcomingMatchUpStatuses } from '../../../../constants/matchUpStatusConstants';
 import { DOUBLE_ELIMINATION } from '../../../../constants/drawDefinitionConstants';
-import {
-  COMPLETED,
-  TO_BE_PLAYED,
-  upcomingMatchUpStatuses,
-} from '../../../../constants/matchUpStatusConstants';
 
 it('generates valid DOUBLE_ELIMINATION', () => {
   const drawSize = 32;
@@ -24,9 +21,7 @@ it('generates valid DOUBLE_ELIMINATION', () => {
   let matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
   const matchUpsCount = matchUps.length;
 
-  expect(utilities.unique(matchUps.map((m) => m.matchUpStatus))).toEqual([
-    TO_BE_PLAYED,
-  ]);
+  expect(utilities.unique(matchUps.map((m) => m.matchUpStatus))).toEqual([TO_BE_PLAYED]);
 
   matchUps = tournamentEngine.allCompetitionMatchUps({
     matchUpFilters: { matchUpStatuses: upcomingMatchUpStatuses },
@@ -63,9 +58,7 @@ it('mocksEngine can complete DOUBLE_ELIMINATION matchUps', () => {
   tournamentEngine.setState(result.tournamentRecord);
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
   const matchUpsCount = matchUps.length;
-  const completedMatchUps = matchUps.filter(
-    ({ matchUpStatus }) => matchUpStatus === COMPLETED
-  );
+  const completedMatchUps = matchUps.filter(({ matchUpStatus }) => matchUpStatus === COMPLETED);
   // mocksEngine won't complete the fed final or decider
   expect(matchUpsCount).toEqual(completedMatchUps.length + 2);
 

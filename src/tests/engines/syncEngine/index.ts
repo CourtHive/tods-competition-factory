@@ -1,4 +1,4 @@
-import { governors } from '../../../assemblies/governors';
+import * as governors from '../../../assemblies/governors';
 import syncEngine from '../../../assemblies/engines/sync';
 
 const methods = {

@@ -1,7 +1,7 @@
+import * as utilities from '../../../assemblies/governors/utilitiesGovernor';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it, test } from 'vitest';
-import { utilities } from '../../..';
 
 import { POLICY_TYPE_PARTICIPANT } from '../../../constants/policyConstants';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
@@ -66,22 +66,13 @@ it('can add ISO country codes to persons', () => {
   });
   expect(participants.length).toEqual(3);
 
-  const pairParticipant = participants.find(
-    ({ participantType }) => participantType === PAIR
-  );
-  expect(Object.keys(pairParticipant.individualParticipants[0]).length).toEqual(
-    2
-  );
+  const pairParticipant = participants.find(({ participantType }) => participantType === PAIR);
+  expect(Object.keys(pairParticipant.individualParticipants[0]).length).toEqual(2);
   const persons = participants
-    .map(
-      (participant) =>
-        participant.person ||
-        participant.individualParticipants.map(({ person }) => person)
-    )
+    .map((participant) => participant.person || participant.individualParticipants.map(({ person }) => person))
     .flat();
   persons.forEach((person) => {
-    if (isoWithIOC.includes(person.nationalityCode))
-      expect(person.iocNationalityCode).not.toBeUndefined();
+    if (isoWithIOC.includes(person.nationalityCode)) expect(person.iocNationalityCode).not.toBeUndefined();
     expect(person.countryName).not.toBeUndefined();
   });
 });
@@ -156,10 +147,8 @@ it('can accept a privacy policy to filter tournament participants attributes', (
 
   const participantTypes = participants.reduce(
     (types, participant) =>
-      types.includes(participant.participantType)
-        ? types
-        : types.concat(participant.participantType),
-    []
+      types.includes(participant.participantType) ? types : types.concat(participant.participantType),
+    [],
   );
   expect(participantTypes.length).toEqual(2);
 
@@ -168,10 +157,8 @@ it('can accept a privacy policy to filter tournament participants attributes', (
   }));
   const participantGenders = participants.reduce(
     (genders, participant) =>
-      genders.includes(participant.person.sex)
-        ? genders
-        : genders.concat(participant.person.sex),
-    []
+      genders.includes(participant.person.sex) ? genders : genders.concat(participant.person.sex),
+    [],
   );
   expect(participantGenders.length).toEqual(2);
 
@@ -202,11 +189,7 @@ it('can accept a privacy policy to filter tournament participants attributes', (
   expect(participants.length).toEqual(maleParticpantsCount);
 
   personAttributes = Object.keys(participants[0].person);
-  expect(personAttributes).toEqual([
-    'standardFamilyName',
-    'standardGivenName',
-    'nationalityCode',
-  ]);
+  expect(personAttributes).toEqual(['standardFamilyName', 'standardGivenName', 'nationalityCode']);
 
   accessorValues = [
     // this only specifies that at least one if the individualParticipants must be MALE
@@ -218,9 +201,7 @@ it('can accept a privacy policy to filter tournament participants attributes', (
   }));
 
   participants.forEach((participant) => {
-    const individualGenders = participant.individualParticipants.map(
-      ({ person }) => person.sex
-    );
+    const individualGenders = participant.individualParticipants.map(({ person }) => person.sex);
     expect(individualGenders.includes(MALE)).toEqual(true);
   });
 
@@ -286,9 +267,7 @@ it('can filter by entries', () => {
   let result = tournamentEngine.addEvent({ event });
   expect(result.success).toEqual(true);
 
-  const participantIds = tournamentRecord.participants.map(
-    (p) => p.participantId
-  );
+  const participantIds = tournamentRecord.participants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({
     eventId: newEventId,
     participantIds,

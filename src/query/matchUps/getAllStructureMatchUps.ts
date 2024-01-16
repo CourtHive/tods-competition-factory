@@ -1,5 +1,4 @@
 import { getMatchUpsMap, getMappedStructureMatchUps, MatchUpsMap } from './getMatchUpsMap';
-import { getCollectionAssignment } from './getCollectionAssignment';
 import { getStructureSeedAssignments } from '../structure/getStructureSeedAssignments';
 import { getMatchUpCompetitiveProfile } from '../matchUp/getMatchUpCompetitiveProfile';
 import { getCheckedInParticipantIds } from '../matchUp/getCheckedInParticipantIds';
@@ -12,6 +11,7 @@ import { parse } from '../../assemblies/generators/matchUpFormatCode/parse';
 import { getAppliedPolicies } from '../extensions/getAppliedPolicies';
 import { getContextContent } from '../hierarchical/getContextContent';
 import { getOrderedDrawPositions } from './getOrderedDrawPositions';
+import { getCollectionAssignment } from './getCollectionAssignment';
 import { definedAttributes } from '../../utilities/definedAttributes';
 import { getDrawPositionsRanges } from './getDrawPositionsRanges';
 import { attributeFilter } from '../../utilities/attributeFilter';

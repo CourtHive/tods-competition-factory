@@ -1,43 +1,19 @@
-import competitionGovernor from './competitionGovernor';
-import drawsGovernor from './drawsGovernor';
-import entriesGovernor from './entriesGovernor';
-import eventGovernor from './eventGovernor';
-import generationGovernor from './generationGovernor';
-import matchUpFormatGovernor from './matchUpFormatGovernor';
-import matchUpGovernor from './matchUpGovernor';
-import mocksGovernor from './mocksGovernor';
-import participantGovernor from './participantGovernor';
-import policyGovernor from './policyGovernor';
-import publishingGovernor from './publishingGovernor';
-import queryGovernor from './queryGovernor';
-import reportGovernor from './reportGovernor';
-import scheduleGovernor from './scheduleGovernor';
-import scoreGovernor from './scoreGovernor';
-import tieFormatGovernor from './tieFormatGovernor';
-import tournamentGovernor from './tournamentGovernor';
-import utilitiesGovernor from './utilitiesGovernor';
-import venueGovernor from './venueGovernor';
-
-export const governors = {
-  competitionGovernor,
-  drawsGovernor,
-  entriesGovernor,
-  eventGovernor,
-  generationGovernor,
-  matchUpFormatGovernor,
-  matchUpGovernor,
-  mocksGovernor,
-  participantGovernor,
-  policyGovernor,
-  publishingGovernor,
-  queryGovernor,
-  reportGovernor,
-  scheduleGovernor,
-  scoreGovernor,
-  tieFormatGovernor,
-  tournamentGovernor,
-  utilitiesGovernor,
-  venueGovernor,
-};
-
-export default governors;
+export * as competitionGovernor from './competitionGovernor';
+export * as drawsGovernor from './drawsGovernor';
+export * as entriesGovernor from './entriesGovernor';
+export * as eventGovernor from './eventGovernor';
+export * as generationGovernor from './generationGovernor';
+export * as matchUpFormatGovernor from './matchUpFormatGovernor';
+export * as matchUpGovernor from './matchUpGovernor';
+export * as mocksGovernor from './mocksGovernor';
+export * as participantGovernor from './participantGovernor';
+export * as policyGovernor from './policyGovernor';
+export * as publishingGovernor from './publishingGovernor';
+export * as queryGovernor from './queryGovernor';
+export * as reportGovernor from './reportGovernor';
+export * as scheduleGovernor from './scheduleGovernor';
+export * as scoreGovernor from './scoreGovernor';
+export * as tieFormatGovernor from './tieFormatGovernor';
+export * as tournamentGovernor from './tournamentGovernor';
+export * as utilitiesGovernor from './utilitiesGovernor';
+export * as venueGovernor from './venueGovernor';

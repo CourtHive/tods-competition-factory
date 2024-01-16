@@ -1,27 +1,14 @@
 import { doubleEliminationLinks } from '../links/doubleEliminationLinks';
-import { constantToString } from '../../../../utilities/strings';
 import { structureTemplate } from '../../templates/structureTemplate';
+import { constantToString } from '../../../../utilities/strings';
 import { feedInMatchUps } from '../feedInMatchUps';
 import { treeMatchUps } from './eliminationTree';
 
-import { Structure } from '../../../../types/tournamentTypes';
+import { MAIN, BACKDRAW, DECIDER, CONSOLATION, PLAY_OFF } from '../../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
-import {
-  MAIN,
-  BACKDRAW,
-  DECIDER,
-  CONSOLATION,
-  PLAY_OFF,
-} from '../../../../constants/drawDefinitionConstants';
+import { Structure } from '../../../../types/tournamentTypes';
 
-export function generateDoubleElimination({
-  structureName,
-  matchUpType,
-  idPrefix,
-  drawSize,
-  isMock,
-  uuids,
-}) {
+export function generateDoubleElimination({ structureName, matchUpType, idPrefix, drawSize, isMock, uuids }) {
   const structures: Structure[] = [];
 
   // feedIn MAIN structure needs 1st round feed and final round feed

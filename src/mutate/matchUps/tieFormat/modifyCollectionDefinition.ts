@@ -1,4 +1,5 @@
 import { validateCollectionValueProfiles } from '../../../validators/validateCollectionValueProfiles';
+import { ResultType, decorateResult } from '../../../global/functions/decorateResult';
 import { copyTieFormat } from '../../../query/hierarchical/tieFormats/copyTieFormat';
 import { calculateWinCriteria } from '../../../query/matchUp/calculateWinCriteria';
 import { getTieFormat } from '../../../query/hierarchical/tieFormats/getTieFormat';
@@ -10,11 +11,8 @@ import { updateTieFormat } from '../../tieFormat/updateTieFormat';
 import { isConvertableInteger } from '../../../utilities/math';
 import { tieFormatTelemetry } from './tieFormatTelemetry';
 import { intersection } from '../../../utilities/arrays';
-import {
-  ResultType,
-  decorateResult,
-} from '../../../global/functions/decorateResult';
 
+import { INVALID_VALUES, MISSING_VALUE, NOT_FOUND, NOT_IMPLEMENTED } from '../../../constants/errorConditionConstants';
 import { TIE_FORMAT_MODIFICATIONS } from '../../../constants/extensionConstants';
 import { genderConstants } from '../../../constants/genderConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -28,12 +26,6 @@ import {
   EventTypeUnion,
   GenderUnion,
 } from '../../../types/tournamentTypes';
-import {
-  INVALID_VALUES,
-  MISSING_VALUE,
-  NOT_FOUND,
-  NOT_IMPLEMENTED,
-} from '../../../constants/errorConditionConstants';
 
 // all child matchUps need to be checked for collectionAssignments / collectionPositions which need to be removed when collectionDefinition.collectionIds are removed
 type ModifyCollectionDefinitionArgs = {
@@ -160,13 +152,11 @@ export function modifyCollectionDefinition({
   const { matchUp, structure, tieFormat: existingTieFormat } = result;
   const tieFormat = copyTieFormat(existingTieFormat);
 
-  const sourceCollectionDefinition =
-    existingTieFormat?.collectionDefinitions.find(
-      (collectionDefinition) =>
-        collectionDefinition.collectionId === collectionId
-    );
+  const sourceCollectionDefinition = existingTieFormat?.collectionDefinitions.find(
+    (collectionDefinition) => collectionDefinition.collectionId === collectionId,
+  );
   const targetCollectionDefinition = tieFormat?.collectionDefinitions.find(
-    (collectionDefinition) => collectionDefinition.collectionId === collectionId
+    (collectionDefinition) => collectionDefinition.collectionId === collectionId,
   );
 
   if (!sourceCollectionDefinition)
@@ -180,8 +170,7 @@ export function modifyCollectionDefinition({
   const value = collectionValue ?? matchUpValue ?? scoreValue ?? setValue;
   if (collectionValueProfiles) {
     const result = validateCollectionValueProfiles({
-      matchUpCount:
-        matchUpCount ?? sourceCollectionDefinition?.matchUpCount ?? 0,
+      matchUpCount: matchUpCount ?? sourceCollectionDefinition?.matchUpCount ?? 0,
       collectionValueProfiles,
     });
     if (result.errors) {
@@ -201,28 +190,19 @@ export function modifyCollectionDefinition({
   }
 
   const equivalentValueProfiles = (a, b) =>
-    intersection(Object.keys(a), Object.keys(b)).length ===
-      Object.keys(a).length &&
-    intersection(Object.values(a), Object.values(b)).length ===
-      Object.values(a).length;
+    intersection(Object.keys(a), Object.keys(b)).length === Object.keys(a).length &&
+    intersection(Object.values(a), Object.values(b)).length === Object.values(a).length;
 
   const valueProfileModified =
     collectionValueProfiles &&
     (!sourceCollectionDefinition.collectionValueProfiles ||
-      !equivalentValueProfiles(
-        sourceCollectionDefinition.collectionValueProfiles,
-        collectionValueProfiles
-      ));
+      !equivalentValueProfiles(sourceCollectionDefinition.collectionValueProfiles, collectionValueProfiles));
 
   const valueModified =
-    (isConvertableInteger(collectionValue) &&
-      sourceCollectionDefinition.collectionValue !== collectionValue) ||
-    (isConvertableInteger(matchUpValue) &&
-      sourceCollectionDefinition.matchUpValue !== matchUpValue) ||
-    (isConvertableInteger(scoreValue) &&
-      sourceCollectionDefinition.scoreValue !== scoreValue) ||
-    (isConvertableInteger(setValue) &&
-      sourceCollectionDefinition.setValue !== setValue) ||
+    (isConvertableInteger(collectionValue) && sourceCollectionDefinition.collectionValue !== collectionValue) ||
+    (isConvertableInteger(matchUpValue) && sourceCollectionDefinition.matchUpValue !== matchUpValue) ||
+    (isConvertableInteger(scoreValue) && sourceCollectionDefinition.scoreValue !== scoreValue) ||
+    (isConvertableInteger(setValue) && sourceCollectionDefinition.setValue !== setValue) ||
     valueProfileModified;
 
   const modifications: any[] = [];
@@ -247,20 +227,17 @@ export function modifyCollectionDefinition({
     (isConvertableInteger(scoreValue) || isConvertableInteger(setValue)) &&
     targetCollectionDefinition.collectionGroupNumber
   ) {
-    const targetCollectionGroupNumber =
-      targetCollectionDefinition.collectionGroupNumber;
-    tieFormat.collectionDefinitions = tieFormat.collectionDefinitions.map(
-      (collectionDefinition) => {
-        const { collectionGroupNumber, ...rest } = collectionDefinition;
-        if (collectionGroupNumber === targetCollectionGroupNumber) {
-          return rest;
-        } else {
-          return collectionDefinition;
-        }
+    const targetCollectionGroupNumber = targetCollectionDefinition.collectionGroupNumber;
+    tieFormat.collectionDefinitions = tieFormat.collectionDefinitions.map((collectionDefinition) => {
+      const { collectionGroupNumber, ...rest } = collectionDefinition;
+      if (collectionGroupNumber === targetCollectionGroupNumber) {
+        return rest;
+      } else {
+        return collectionDefinition;
       }
-    );
+    });
     tieFormat.collectionGroups = tieFormat.collectionGroups.filter(
-      ({ groupNumber }) => groupNumber !== targetCollectionGroupNumber
+      ({ groupNumber }) => groupNumber !== targetCollectionGroupNumber,
     );
     modifications.push({
       collectionId,
@@ -273,39 +250,26 @@ export function modifyCollectionDefinition({
   const { aggregateValue, valueGoal } = calculateWinCriteria(tieFormat);
   const winCriteria = definedAttributes({ aggregateValue, valueGoal });
   if (
-    winCriteria.aggregateValue !==
-      existingTieFormat?.winCriteria.aggregateValue ||
+    winCriteria.aggregateValue !== existingTieFormat?.winCriteria.aggregateValue ||
     winCriteria.valueGoal !== existingTieFormat?.winCriteria.valueGoal
   ) {
     tieFormat.winCriteria = winCriteria;
     modifications.push({ collectionId, winCriteria });
   }
 
-  if (
-    isConvertableInteger(collectionOrder) &&
-    sourceCollectionDefinition.collectionOrder !== collectionOrder
-  ) {
+  if (isConvertableInteger(collectionOrder) && sourceCollectionDefinition.collectionOrder !== collectionOrder) {
     targetCollectionDefinition.collectionOrder = collectionOrder;
     modifications.push({ collectionId, collectionOrder });
   }
-  if (
-    collectionName &&
-    sourceCollectionDefinition.collectionName !== collectionName
-  ) {
+  if (collectionName && sourceCollectionDefinition.collectionName !== collectionName) {
     targetCollectionDefinition.collectionName = collectionName;
     modifications.push({ collectionId, collectionName });
   }
-  if (
-    matchUpFormat &&
-    sourceCollectionDefinition.matchUpFormat !== matchUpFormat
-  ) {
+  if (matchUpFormat && sourceCollectionDefinition.matchUpFormat !== matchUpFormat) {
     targetCollectionDefinition.matchUpFormat = matchUpFormat;
     modifications.push({ collectionId, matchUpFormat });
   }
-  if (
-    isConvertableInteger(matchUpCount) &&
-    sourceCollectionDefinition.matchUpCount !== matchUpCount
-  ) {
+  if (isConvertableInteger(matchUpCount) && sourceCollectionDefinition.matchUpCount !== matchUpCount) {
     targetCollectionDefinition.matchUpCount = matchUpCount;
     modifications.push({ collectionId, matchUpCount });
   }
@@ -341,8 +305,7 @@ export function modifyCollectionDefinition({
 
   // Note: this logic needs to exist both here and in `modifyTieFormat`
   // it is duplicated because this method can be called independently
-  const changedTieFormatName =
-    existingTieFormat?.tieFormatName !== tieFormatName;
+  const changedTieFormatName = existingTieFormat?.tieFormatName !== tieFormatName;
 
   // if tieFormat has changed, force renaming of the tieFormat
   if (changedTieFormatName) {
@@ -350,9 +313,7 @@ export function modifyCollectionDefinition({
     modifications.push({ tieFormatName });
   } else if (modifications.length) {
     delete modifiedTieFormat.tieFormatName;
-    modifications.push(
-      'tieFormatName removed: modifications without new tieFormatName'
-    );
+    modifications.push('tieFormatName removed: modifications without new tieFormatName');
   }
   result = updateTieFormat({
     tieFormat: modifiedTieFormat,

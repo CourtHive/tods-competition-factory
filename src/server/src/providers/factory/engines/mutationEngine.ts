@@ -1,4 +1,4 @@
-import { governors } from '../../../../../assemblies/governors';
+import * as governors from '../../../../../assemblies/governors';
 import { asyncEngine, globalState } from '../../../../..';
 import asyncGlobalState from './asyncGlobalState';
 

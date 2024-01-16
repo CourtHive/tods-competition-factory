@@ -1,4 +1,4 @@
-import { governors } from '../../../../../assemblies/governors';
+import * as governors from '../../../../../assemblies/governors';
 import { askEngine } from '../../../../..';
 
 const methods = {

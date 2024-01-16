@@ -1,7 +1,7 @@
-import { xa } from '../../../../utilities/objects';
 import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
 import { unique } from '../../../../utilities/arrays';
+import { xa } from '../../../../utilities/objects';
 import { expect, it } from 'vitest';
 
 import { INVALID_PARTICIPANT } from '../../../../constants/errorConditionConstants';

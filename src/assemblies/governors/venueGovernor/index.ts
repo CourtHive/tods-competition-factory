@@ -1,31 +1,12 @@
-import { modifyCourtAvailability } from '../../../mutate/venues/courtAvailability';
-import { deleteVenue, deleteVenues } from '../../../mutate/venues/deleteVenue';
-import { addCourt, addCourts } from '../../../mutate/venues/addCourt';
-import { disableCourts } from '../../../mutate/venues/disableCourts';
-import { disableVenues } from '../../../mutate/venues/disableVenues';
-import { enableCourts } from '../../../mutate/venues/enableCourts';
-import { enableVenues } from '../../../mutate/venues/enableVenues';
-import { publicFindVenue } from '../../../mutate/venues/findVenue';
-import { deleteCourt } from '../../../mutate/venues/deleteCourt';
-import { modifyCourt } from '../../../mutate/venues/modifyCourt';
-import { modifyVenue } from '../../../mutate/venues/modifyVenue';
-import { addVenue } from '../../../mutate/venues/addVenue';
-
-export const venueGovernor = {
-  addCourt,
-  addCourts,
-  addVenue,
-  deleteCourt,
-  deleteVenue,
-  deleteVenues,
-  disableCourts,
-  disableVenues,
-  enableCourts,
-  enableVenues,
-  findVenue: publicFindVenue,
-  modifyCourt,
-  modifyCourtAvailability,
-  modifyVenue,
-};
-
-export default venueGovernor;
+export { modifyCourtAvailability } from '../../../mutate/venues/courtAvailability';
+export { deleteVenue, deleteVenues } from '../../../mutate/venues/deleteVenue';
+export { addCourt, addCourts } from '../../../mutate/venues/addCourt';
+export { disableCourts } from '../../../mutate/venues/disableCourts';
+export { disableVenues } from '../../../mutate/venues/disableVenues';
+export { enableCourts } from '../../../mutate/venues/enableCourts';
+export { enableVenues } from '../../../mutate/venues/enableVenues';
+export { publicFindVenue } from '../../../mutate/venues/findVenue';
+export { deleteCourt } from '../../../mutate/venues/deleteCourt';
+export { modifyCourt } from '../../../mutate/venues/modifyCourt';
+export { modifyVenue } from '../../../mutate/venues/modifyVenue';
+export { addVenue } from '../../../mutate/venues/addVenue';

@@ -1,8 +1,8 @@
+import * as utilities from '../../../assemblies/governors/utilitiesGovernor';
 import { structureSort } from '../../../functions/sorters/structureSort';
 import mocksEngine from '../../../assemblies/engines/mock';
 import { instanceCount } from '../../../utilities/arrays';
 import tournamentEngine from '../../engines/syncEngine';
-import { utilities } from '../../../index';
 import { expect, test } from 'vitest';
 
 import {
@@ -25,9 +25,7 @@ test('structureSort can sort by stage and stageSequence', () => {
         drawSize: 64,
         qualifyingProfiles: [
           {
-            structureProfiles: [
-              { qualifyingPositions: 4, seedsCount: 4, drawSize: 16 },
-            ],
+            structureProfiles: [{ qualifyingPositions: 4, seedsCount: 4, drawSize: 16 }],
           },
         ],
       },
@@ -53,17 +51,7 @@ test('structureSort can sort by stage and stageSequence', () => {
     'Southeast',
   ]);
 
-  const fpSort = [
-    'East',
-    'Northeast',
-    'North',
-    'West',
-    'Northwest',
-    'Southwest',
-    'South',
-    'Southeast',
-    'Qualifying',
-  ];
+  const fpSort = ['East', 'Northeast', 'North', 'West', 'Northwest', 'Southwest', 'South', 'Southeast', 'Qualifying'];
 
   structureNames = drawDefinition.structures
     .sort((a, b) => structureSort(a, b, { mode: FINISHING_POSITIONS }))
@@ -72,17 +60,13 @@ test('structureSort can sort by stage and stageSequence', () => {
   expect(structureNames).toEqual(fpSort);
 
   structureNames = drawDefinition.structures
-    .sort((a, b) =>
-      utilities.structureSort(a, b, { mode: FINISHING_POSITIONS })
-    )
+    .sort((a, b) => utilities.structureSort(a, b, { mode: FINISHING_POSITIONS }))
     .map(({ structureName }) => structureName);
 
   expect(structureNames).toEqual(fpSort);
 
   structureNames = drawDefinition.structures
-    .sort((a, b) =>
-      utilities.structureSort(a, b, { mode: AGGREGATE_EVENT_STRUCTURES })
-    )
+    .sort((a, b) => utilities.structureSort(a, b, { mode: AGGREGATE_EVENT_STRUCTURES }))
     .map(({ structureName }) => structureName);
 
   expect(structureNames).toEqual(fpSort);
@@ -107,44 +91,26 @@ test('structureSort can sort by stage and stageSequence', () => {
   });
 
   const allStructures = tournamentRecord.events
-    .map(({ drawDefinitions }) =>
-      drawDefinitions.map(({ structures }) => structures).flat()
-    )
+    .map(({ drawDefinitions }) => drawDefinitions.map(({ structures }) => structures).flat())
     .flat()
-    .sort((a, b) =>
-      utilities.structureSort(a, b, { mode: AGGREGATE_EVENT_STRUCTURES })
-    );
+    .sort((a, b) => utilities.structureSort(a, b, { mode: AGGREGATE_EVENT_STRUCTURES }));
 
-  const structureMap = Object.keys(
-    instanceCount(allStructures.map(({ structureName }) => structureName))
-  );
+  const structureMap = Object.keys(instanceCount(allStructures.map(({ structureName }) => structureName)));
 
   const flatStructures = tournamentRecord.events
-    ?.flatMap(
-      ({ drawDefinitions, eventType }) =>
-        drawDefinitions?.flatMap(
-          ({ structures, drawId }) =>
-            structures?.map((s) => ({ ...s, drawId, eventType }))
-        )
+    ?.flatMap(({ drawDefinitions, eventType }) =>
+      drawDefinitions?.flatMap(({ structures, drawId }) => structures?.map((s) => ({ ...s, drawId, eventType }))),
     )
-    .sort((a, b) =>
-      utilities.structureSort(a, b, { mode: AGGREGATE_EVENT_STRUCTURES })
-    )
+    .sort((a, b) => utilities.structureSort(a, b, { mode: AGGREGATE_EVENT_STRUCTURES }))
     ?.reduce(
       (acc, { structureName, stage }) => ({
         ...acc,
         [structureName]: [...(acc[structureName] ?? []), { stage }],
       }),
-      {}
+      {},
     );
 
-  const expectation = [
-    'Main',
-    'Play Off',
-    'Consolation',
-    'Consolation 1',
-    'Consolation 2',
-  ];
+  const expectation = ['Main', 'Play Off', 'Consolation', 'Consolation 1', 'Consolation 2'];
   expect(Object.keys(flatStructures)).toEqual(expectation);
   expect(structureMap).toEqual(expectation);
 });

@@ -1,8 +1,8 @@
-import scoreGovernor from '../../governors/scoreGovernor';
-import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
-
+import { getMatchUps, getMatchUp, setState, getState, reset } from './stateMethods';
 import { notifySubscribers } from '../../../global/state/notifySubscribers';
 import { factoryVersion } from '../../../global/functions/factoryVersion';
+import * as scoreGovernor from '../../governors/scoreGovernor';
+import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
 import {
   setDeepCopy,
   setDevContext,
@@ -10,13 +10,6 @@ import {
   deleteNotices,
   handleCaughtError,
 } from '../../../global/state/globalState';
-import {
-  getMatchUps,
-  getMatchUp,
-  setState,
-  getState,
-  reset,
-} from './stateMethods';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { FactoryEngine } from '../../../types/factoryTypes';
@@ -89,8 +82,7 @@ export const matchUpEngine = (() => {
     const matchUp = params?.matchUp || getMatchUp();
     const matchUps = params?.matchUps || getMatchUps();
 
-    const snapshot =
-      params?.rollbackOnError && makeDeepCopy(matchUp, false, true);
+    const snapshot = params?.rollbackOnError && makeDeepCopy(matchUp, false, true);
 
     params = {
       ...params,
@@ -106,10 +98,7 @@ export const matchUpEngine = (() => {
       return { ...result, rolledBack: !!snapshot };
     }
 
-    const notify =
-      result?.success &&
-      params?.delayNotify !== true &&
-      params?.doNotNotify !== true;
+    const notify = result?.success && params?.delayNotify !== true && params?.doNotNotify !== true;
     if (notify) notifySubscribers();
     if (notify || !result?.success || params?.doNotNotify) deleteNotices();
 

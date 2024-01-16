@@ -1,62 +1,29 @@
-import { modifyPersonRequests } from '../../../mutate/matchUps/schedule/scheduleMatchUps/personRequests/modifyPersonRequests';
-import { removePersonRequests } from '../../../mutate/matchUps/schedule/scheduleMatchUps/personRequests/removePersonRequests';
-import { addPersonRequests } from '../../../mutate/matchUps/schedule/scheduleMatchUps/personRequests/addPersonRequests';
-import { setParticipantScaleItems, setParticipantScaleItem } from '../../../mutate/participants/addScaleItems';
-import { modifyIndividualParticipantIds } from '../../../mutate/participants/modifyIndividualParticipantIds';
-import { createTeamsFromParticipantAttributes } from '../../../mutate/participants/createTeamsFromAttributes';
-import { modifyParticipantsSignInStatus } from '../../../mutate/participants/modifyParticipantsSignInStatus';
-import { addIndividualParticipantIds } from '../../../mutate/participants/addIndividualParticipantIds';
-import { modifyParticipantOtherName } from '../../../mutate/participants/modifyParticipantOtherName';
-import { regenerateParticipantNames } from '../../../mutate/participants/regenerateParticipantNames';
-import { createGroupParticipant } from '../../../mutate/participants/createGroupParticipant';
-import { modifyParticipantName } from '../../../mutate/participants/modifyParticipantName';
-import { scaledTeamAssignment } from '../../../mutate/participants/scaledTeamAssignment';
-import { removePenalty } from '../../../mutate/participants/penalties/removePenalty';
-import { modifyPenalty } from '../../../mutate/participants/penalties/modifyPenalty';
-import { deleteParticipants } from '../../../mutate/participants/deleteParticipants';
-import { mergeParticipants } from '../../../mutate/participants/mergeParticipants';
-import { modifyParticipant } from '../../../mutate/participants/modifyParticipant';
-import { filterParticipants } from '../../../query/participants/filterParticipants';
-import { publicFindParticipant } from '../../../acquire/publicFindParticipant';
-import { addParticipants } from '../../../mutate/participants/addParticipants';
-import { addPenalty } from '../../../mutate/participants/penalties/addPenalty';
-import { addParticipant } from '../../../mutate/participants/addParticipant';
-import { validateLineUp } from '../../../validators/validateTeamLineUp';
-import { addPersons } from '../../../mutate/participants/addPersons';
-import {
+export { modifyPersonRequests } from '../../../mutate/matchUps/schedule/scheduleMatchUps/personRequests/modifyPersonRequests';
+export { removePersonRequests } from '../../../mutate/matchUps/schedule/scheduleMatchUps/personRequests/removePersonRequests';
+export { addPersonRequests } from '../../../mutate/matchUps/schedule/scheduleMatchUps/personRequests/addPersonRequests';
+export { setParticipantScaleItems, setParticipantScaleItem } from '../../../mutate/participants/addScaleItems';
+export { modifyIndividualParticipantIds } from '../../../mutate/participants/modifyIndividualParticipantIds';
+export { createTeamsFromParticipantAttributes } from '../../../mutate/participants/createTeamsFromAttributes';
+export { modifyParticipantsSignInStatus } from '../../../mutate/participants/modifyParticipantsSignInStatus';
+export { addIndividualParticipantIds } from '../../../mutate/participants/addIndividualParticipantIds';
+export { modifyParticipantOtherName } from '../../../mutate/participants/modifyParticipantOtherName';
+export { regenerateParticipantNames } from '../../../mutate/participants/regenerateParticipantNames';
+export { publicFindParticipant as findParticipant } from '../../../acquire/publicFindParticipant';
+export { createGroupParticipant } from '../../../mutate/participants/createGroupParticipant';
+export { modifyParticipantName } from '../../../mutate/participants/modifyParticipantName';
+export { scaledTeamAssignment } from '../../../mutate/participants/scaledTeamAssignment';
+export { removePenalty } from '../../../mutate/participants/penalties/removePenalty';
+export { modifyPenalty } from '../../../mutate/participants/penalties/modifyPenalty';
+export { deleteParticipants } from '../../../mutate/participants/deleteParticipants';
+export { mergeParticipants } from '../../../mutate/participants/mergeParticipants';
+export { modifyParticipant } from '../../../mutate/participants/modifyParticipant';
+export { filterParticipants } from '../../../query/participants/filterParticipants';
+export { addParticipants } from '../../../mutate/participants/addParticipants';
+export { addPenalty } from '../../../mutate/participants/penalties/addPenalty';
+export { addParticipant } from '../../../mutate/participants/addParticipant';
+export { validateLineUp } from '../../../validators/validateTeamLineUp';
+export { addPersons } from '../../../mutate/participants/addPersons';
+export {
   removeIndividualParticipantIds,
   removeParticipantIdsFromAllTeams,
 } from '../../../mutate/participants/removeIndividualParticipantIds';
-
-export const participantGovernor = {
-  addIndividualParticipantIds,
-  addParticipant,
-  addParticipants,
-  addPersonRequests,
-  addPenalty,
-  addPersons,
-  createGroupParticipant,
-  createTeamsFromParticipantAttributes,
-  deleteParticipants,
-  filterParticipants,
-  mergeParticipants,
-  modifyIndividualParticipantIds,
-  modifyParticipant,
-  modifyParticipantName,
-  modifyParticipantOtherName,
-  modifyParticipantsSignInStatus,
-  modifyPenalty,
-  modifyPersonRequests,
-  findParticipant: publicFindParticipant,
-  regenerateParticipantNames,
-  removeIndividualParticipantIds,
-  removeParticipantIdsFromAllTeams,
-  removePenalty,
-  removePersonRequests,
-  scaledTeamAssignment,
-  setParticipantScaleItem,
-  setParticipantScaleItems,
-  validateLineUp,
-};
-
-export default participantGovernor;
