@@ -1,26 +1,12 @@
 import { getDateTimeBoundary } from '../../mutate/matchUps/schedule/schedulers/utils/getTimeBoundary';
 import { getCourtDateAvailability } from './getCourtDateAvailability';
 import { generateTimeSlots } from '../../assemblies/generators/scheduling/generateTimeSlots';
-import {
-  extractTime,
-  minutesDifference,
-  timeToDate,
-} from '../../utilities/dateTime';
+import { extractTime, minutesDifference, timeToDate } from '../../utilities/dateTime';
 
-export function getFirstTimeSlotStartTime({
-  averageMinutes,
-  startTime,
-  endTime,
-  courts,
-  date,
-}) {
+export function getFirstTimeSlotStartTime({ averageMinutes, startTime, endTime, courts, date }) {
   // find the first timeSlot across all courts between startTime and endTime that can accommodate averageMatchUpMinutes
-  startTime =
-    startTime ||
-    getDateTimeBoundary({ courts, scheduleDate: date, startTime: true });
-  endTime =
-    endTime ||
-    getDateTimeBoundary({ courts, scheduleDate: date, endTime: true });
+  startTime = startTime || getDateTimeBoundary({ courts, scheduleDate: date, startTime: true });
+  endTime = endTime || getDateTimeBoundary({ courts, scheduleDate: date, endTime: true });
 
   let firstTimeSlotStartTime;
   if (startTime && endTime) {
@@ -29,20 +15,13 @@ export function getFirstTimeSlotStartTime({
     for (const court of courts || []) {
       if (!Array.isArray(court.dateAvailability)) continue;
       const courtDate = getCourtDateAvailability({ court, date });
-      const timeSlots = generateTimeSlots({ courtDate });
-      timeSlots.forEach((timeSlot) => {
+      const { timeSlots } = generateTimeSlots({ courtDate });
+      timeSlots?.forEach((timeSlot) => {
         const timeSlotStartTime = timeToDate(timeSlot.startTime);
         const timeSlotEndTime = timeToDate(timeSlot.endTime);
-        if (
-          timeSlotStartTime > dateEndTime ||
-          timeSlotStartTime < dateStartTime
-        )
-          return false;
+        if (timeSlotStartTime > dateEndTime || timeSlotStartTime < dateStartTime) return false;
         if (timeSlotEndTime < dateStartTime) return false;
-        const timeSlotMinutes = minutesDifference(
-          timeSlotStartTime,
-          timeSlotEndTime
-        );
+        const timeSlotMinutes = minutesDifference(timeSlotStartTime, timeSlotEndTime);
         const available = timeSlotMinutes >= averageMinutes;
         if (available) {
           const timeString = extractTime(timeSlotStartTime.toISOString());

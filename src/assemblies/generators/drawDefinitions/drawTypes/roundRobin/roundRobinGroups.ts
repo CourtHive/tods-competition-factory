@@ -1,30 +1,29 @@
 import { numericSort } from '../../../../../utilities/sorting';
 import { unique } from '../../../../../utilities/arrays';
 
-export function getRoundRobinGroupMatchUps({ drawPositions }) {
-  const positionMatchUps = (position) => {
-    return drawPositions
-      .filter((p) => p !== position)
-      .map((o) => [position, o]);
-  };
-  const groupMatchUps = [].concat(...drawPositions.map(positionMatchUps));
+import { MISSING_DRAW_POSITIONS, MISSING_VALUE } from 'constants/errorConditionConstants';
 
-  const uniqueMatchUpGroupings = unique(
-    groupMatchUps.map(drawPositionsHash)
-  ).map((h) => h.split('|').map((p) => +p));
+export function getRoundRobinGroupMatchUps({ drawPositions }) {
+  if (!drawPositions?.length) return { error: MISSING_DRAW_POSITIONS };
+  const positionMatchUps = (position) => {
+    return drawPositions.filter((p) => p !== position).map((o) => [position, o]);
+  };
+  const groupMatchUps = [].concat(...(drawPositions ?? []).map(positionMatchUps));
+
+  const uniqueMatchUpGroupings = unique(groupMatchUps.map(drawPositionsHash)).map((h) => h.split('|').map((p) => +p));
 
   return { groupMatchUps, uniqueMatchUpGroupings };
 }
 
-export function drawPositionsHash(drawPositions) {
+export function drawPositionsHash(drawPositions = []) {
+  if (!Array.isArray(drawPositions) || !drawPositions.length) return '';
   return [...drawPositions].sort(numericSort).join('|');
 }
 
 export function groupRounds({ groupSize, drawPositionOffset }) {
+  if (!groupSize) return [];
   const numArr = (count) => [...Array(count)].map((_, i) => i);
-  const groupPositions: number[] = numArr(
-    2 * Math.round(groupSize / 2) + 1
-  ).slice(1);
+  const groupPositions: number[] = numArr(2 * Math.round(groupSize / 2) + 1).slice(1);
   const rounds: any[] = numArr(groupPositions.length - 1).map(() => []);
 
   let aRow = groupPositions.slice(0, groupPositions.length / 2);
@@ -53,23 +52,17 @@ export function groupRounds({ groupSize, drawPositionOffset }) {
     .sort((a, b) => sum(a) - sum(b))
     .map((round) =>
       round
-        .filter((groupPositions) =>
-          groupPositions.every((position) => position <= groupSize)
-        )
+        .filter((groupPositions) => groupPositions.every((position) => position <= groupSize))
         .map((groupPositions) => {
-          const drawPositions = groupPositions.map(
-            (groupPosition) => groupPosition + drawPositionOffset
-          );
+          const drawPositions = groupPositions.map((groupPosition) => groupPosition + drawPositionOffset);
           return drawPositionsHash(drawPositions);
-        })
+        }),
     );
 }
 
 export function determineRoundNumber({ rounds, hash }) {
-  return rounds.reduce(
-    (p, round, i) => (round.includes(hash) ? i + 1 : p),
-    undefined
-  );
+  if (!rounds?.length) return { error: MISSING_VALUE };
+  return rounds?.reduce((p, round, i) => (round.includes(hash) ? i + 1 : p), undefined);
 }
 
 export const roundRobinGroups = {

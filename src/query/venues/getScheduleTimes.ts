@@ -2,8 +2,10 @@ import { generateVirtualCourts } from '../../mutate/matchUps/schedule/schedulers
 import { calculatePeriodLength } from '../../mutate/matchUps/schedule/schedulers/utils/calculatePeriodLength';
 import { courtGenerator } from '../../assemblies/generators/scheduling/courtGenerator';
 import { getCourtsAvailableAtPeriodStart } from './getCourtsAvailableAtPeriodStart';
+import { checkRequiredParameters } from '../../parameters/checkRequiredParameters';
 import { getFirstTimeSlotStartTime } from './getFirstTimeSlotStartTime';
 import { generateRange } from '../../utilities/arrays';
+import { ensureInt } from '../../utilities/ensureInt';
 import {
   getUTCdateString,
   extractTime,
@@ -12,21 +14,19 @@ import {
   dayMinutesToTimeString,
 } from '../../utilities/dateTime';
 
+import { ResultType } from '../../global/functions/decorateResult';
 import { ScheduleTimesResult } from '../../types/factoryTypes';
-import { ensureInt } from '../../utilities/ensureInt';
+import { ARRAY } from '../../constants/attributeConstants';
 
-export function getScheduleTimes(params): {
-  scheduleTimes: ScheduleTimesResult[];
-  totalMatchUps: number;
-  timingProfile: any;
+export function getScheduleTimes(params): ResultType & {
+  scheduleTimes?: ScheduleTimesResult[];
+  totalMatchUps?: number;
+  timingProfile?: any;
 } {
-  let {
-    date = getUTCdateString(),
-    startTime = '08:00',
-    endTime = '19:00',
-    periodLength,
-    courts,
-  } = params;
+  const paramsCheck = checkRequiredParameters(params, [{ courts: true, _ofType: ARRAY }]);
+  if (paramsCheck.error) return paramsCheck;
+
+  let { date = getUTCdateString(), startTime = '08:00', endTime = '19:00', periodLength, courts } = params;
 
   const {
     calculateStartTimeFromCourts = true,
@@ -37,8 +37,7 @@ export function getScheduleTimes(params): {
     bookings,
   } = params;
 
-  periodLength =
-    periodLength || calculatePeriodLength({ averageMatchUpMinutes });
+  periodLength = periodLength || calculatePeriodLength({ averageMatchUpMinutes });
 
   // standardize date as YYYY-MM-DD
   date = extractDate(date);
@@ -101,32 +100,28 @@ export function getScheduleTimes(params): {
 
     // availableToScheduleCount calculated from periodStartTime and averageMatchUpMinutes
     // a court is only available if it can accommodate matchUps of duration averageMatchUpMinutes
-    const { availableToScheduleCount } = getCourtsAvailableAtPeriodStart({
+    const availableResult = getCourtsAvailableAtPeriodStart({
       courts: virtualCourts || [],
       averageMatchUpMinutes,
       periodStart,
       date,
     });
+    if (availableResult.error) return { error: availableResult.error };
+    const { availableToScheduleCount = 0 } = availableResult;
 
     // newCourts are courts which have become available for the start of current time period
     const newCourts =
-      availableToScheduleCount > previousAvailableCourts
-        ? availableToScheduleCount - previousAvailableCourts
-        : 0;
+      availableToScheduleCount > previousAvailableCourts ? availableToScheduleCount - previousAvailableCourts : 0;
 
     cumulativePeriods += period ? availableToScheduleCount : 0;
-    const averageCourts = period
-      ? cumulativePeriods / period
-      : availableToScheduleCount;
+    const averageCourts = period ? cumulativePeriods / period : availableToScheduleCount;
 
     // calculatedTotal uses Revised Garman Formula to calculate total number of matchUps
     // which should be possible given a number of periods and an average number of courts
     // available over the accumulated time
     const accumulatedTime = periodLength * averageCourts;
     const matchesCalculation = accumulatedTime / averageMatchUpMinutes;
-    const calculatedTotal = period
-      ? matchesCalculation * (period - 1) + averageCourts
-      : averageCourts;
+    const calculatedTotal = period ? matchesCalculation * (period - 1) + averageCourts : averageCourts;
 
     // used to increment cumulativeMatches
     // difference between current calculation and previous calculation
@@ -134,8 +129,7 @@ export function getScheduleTimes(params): {
     // if available courts but no previously available courts then newCourts;
     const calculationDifference = !availableToScheduleCount
       ? 0
-      : (previousAvailableCourts && calculatedTotal - previousCalculation) ||
-        newCourts;
+      : (previousAvailableCourts && calculatedTotal - previousCalculation) || newCourts;
 
     previousCalculation = calculatedTotal;
     previousAvailableCourts = availableToScheduleCount;

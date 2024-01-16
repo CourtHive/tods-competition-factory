@@ -1,7 +1,12 @@
-import { Court } from '../../types/tournamentTypes';
-import { addMinutes, timeToDate } from '../../utilities/dateTime';
+import { checkRequiredParameters } from '../../parameters/checkRequiredParameters';
 import { getCourtDateAvailability } from './getCourtDateAvailability';
+import { addMinutes, timeToDate } from '../../utilities/dateTime';
 import { getEnoughTime } from './getEnoughTime';
+
+import { ResultType } from '../../global/functions/decorateResult';
+import { ARRAY } from '../../constants/attributeConstants';
+import { SUCCESS } from '../../constants/resultConstants';
+import { Court } from '../../types/tournamentTypes';
 
 type GetCourtsAvailableAtPeriodStartArgs = {
   averageMatchUpMinutes: number;
@@ -10,11 +15,16 @@ type GetCourtsAvailableAtPeriodStartArgs = {
   courts: any[];
   date: string;
 };
-export function getCourtsAvailableAtPeriodStart(
-  params: GetCourtsAvailableAtPeriodStartArgs
-) {
-  const { averageMatchUpMinutes, includeBookingTypes, periodStart, date } =
-    params;
+export function getCourtsAvailableAtPeriodStart(params: GetCourtsAvailableAtPeriodStartArgs): ResultType & {
+  availableToScheduleCount?: number;
+} {
+  const paramsCheck = checkRequiredParameters(params, [
+    { periodStart: true, date: true },
+    { courts: true, _ofType: ARRAY },
+  ]);
+  if (paramsCheck.error) return paramsCheck;
+
+  const { averageMatchUpMinutes, includeBookingTypes, periodStart, date } = params;
   const courts = params.courts as Court[];
   const periodStartTime = timeToDate(periodStart);
   const periodEndTime = addMinutes(periodStartTime, averageMatchUpMinutes);
@@ -35,5 +45,6 @@ export function getCourtsAvailableAtPeriodStart(
 
   return {
     availableToScheduleCount: availableCourts.length,
+    ...SUCCESS,
   };
 }
