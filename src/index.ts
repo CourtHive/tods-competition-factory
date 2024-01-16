@@ -14,9 +14,8 @@ export { forge } from './forge';
 
 // ENGINES - For cusomization --------------------------------------------
 export { asyncEngine } from './assemblies/engines/async';
+export { syncEngine } from './assemblies/engines/sync';
 export { askEngine } from './assemblies/engines/ask';
-import engine from './tests/engines/syncEngine';
-export { engine as syncEngine };
 
 export { matchUpEngine } from './assemblies/engines/matchUp';
 export { mocksEngine } from './assemblies/engines/mock';

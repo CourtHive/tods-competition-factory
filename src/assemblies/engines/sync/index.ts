@@ -4,7 +4,7 @@ import { engineInvoke } from './engineInvoke';
 
 import { Directives, FactoryEngine } from '../../../types/factoryTypes';
 
-export const engine = ((): FactoryEngine => {
+export const syncEngine = ((): FactoryEngine => {
   const engine: FactoryEngine = {
     executionQueue: (directives: Directives, rollbackOnError?: boolean) =>
       executionQueue(engine, directives, rollbackOnError),
@@ -16,4 +16,4 @@ export const engine = ((): FactoryEngine => {
   return engine;
 })();
 
-export default engine;
+export default syncEngine;
