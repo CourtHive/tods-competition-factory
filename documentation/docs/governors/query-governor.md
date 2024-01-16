@@ -1285,20 +1285,6 @@ const { bookings, relevantMatchUps } = engine.generateBookings({
 
 ---
 
-## getVenuesAndCourts
-
-Returns an aggregate view of venues and courts across all tournamentRecords loaded into `competitionEngine`.
-
-```js
-const { courts, venues } = engine.getVenuesAndCourts({
-  convertExtensions, // optional boolean
-  ignoreDisabled, // optional boolean
-  dates, // optional - used with ignoreDisabled - applies to courts
-});
-```
-
----
-
 ## getVenuesReport
 
 Returns a `venueReports` array which provides details for each targt `venue` for targt date(s).
@@ -1317,6 +1303,18 @@ const {
   scheduledMatchUpsCount, // number of scheduled matchUps
   percentUtilization, // percent of available minutes utilized by scheduled matchUps
 } = venuesReport[0].venueReport[date];
+```
+
+---
+
+## isCompletedStructure
+
+Returns boolean whether all matchUps in a given structure have been completed
+
+```js
+const structureIsComplete = engine.isCompletedStructure({
+  structureId,
+});
 ```
 
 ---

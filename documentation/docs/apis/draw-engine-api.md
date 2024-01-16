@@ -171,6 +171,8 @@ const {
 
 ---
 
+// NOTEXPORTED: should it be?
+
 ## initializeStructureSeedAssignments
 
 Creates the `seedAssignments` attribute for the specified structure.
@@ -184,42 +186,7 @@ drawEngine.initializeStructureSeedAssignments({
 
 ---
 
-## isCompletedStructure
-
-Returns boolean whether all matchUps in a given structure have been completed
-
-```js
-const structureIsComplete = drawEngine.isCompletedStructure({
-  structureId,
-});
-```
-
----
-
-## matchUpActions
-
-Return an array of all validActions for a specific matchUp.
-
-```js
-const {
-  isByeMatchUp, // boolean; true if matchUp includes a BYE
-  structureIsComplete, // boolean; true if structure is ready for positioning
-  validActions, // array of possible actions given current matchUpStatus
-} = drawEngine.matchUpActions({
-  restrictAdHocRoundParticipants, // optional - true by default; applies to AD_HOC; disallow the same participant being in the same round multiple times
-  sideNumber, // optional - select side to which action should apply; applies to AD_HOC position assignments
-  matchUpId,
-});
-
-const {
-  type, // 'REFEREE', 'SCHEDULE', 'PENALTY', 'STATUS', 'SCORE', 'START', 'END'.
-  method, // tournamentEngine method relating to action type
-  payload, // attributes to be passed to method
-  // additional method-specific options for values to be added to payload when calling method
-} = validAction;
-```
-
----
+// NOTEXPORTED: should it be?
 
 ## matchUpDuration
 
@@ -237,6 +204,8 @@ const {
 
 ---
 
+// NOTEXPORTED: should it be?
+
 ## newDrawDefinition
 
 Creates a new drawDefinition within drawEngine state.
@@ -248,74 +217,7 @@ const { drawDefinition } = drawEngine.getState();
 
 ---
 
-## positionActions
-
-```js
-const positionActions = drawEngine.positionActions({
-  policyDefinitions: positionActionsPolicy, // optional - policy defining what actions are allowed in client context
-  returnParticipants, // optional boolean; defaults to true; performance optimization when false requires client to provide participants.
-  drawPosition,
-  structureId,
-});
-
-const {
-  isActiveDrawPosition, // boolean
-  isByePosition, // boolean
-  isDrawPosition, // boolean
-  hasPositionAssiged, // boolean
-  validActions,
-} = positionActions;
-
-const {
-  type, // 'ASSIGN', 'LUCKY', 'SWAP', 'BYE', 'REMOVE'
-  method, // tournamentEngine method relating to action type
-  payload, // attributes to be passed to method
-  // additional method-specific options for values to be added to payload when calling method
-} = validAction;
-```
-
----
-
-## removeEntry
-
-```js
-drawEngine.removeEntry({
-  participantId,
-  autoEntryPositions, // optional - keeps entries ordered by entryStage/entryStatus
-});
-```
-
----
-
-## removeStructure
-
-Removes targeted `drawDefinition.structure` and all other child `structures` along with all associated `drawDefinition.links`.
-
-```js
-const { removedMatchUpIds } = drawEngine.removeStructure({
-  structureId,
-});
-```
-
----
-
-## renameStructures
-
-```js
-drawEngine.renameStructures({
-  structureDetails: [{ structureId, structureName }],
-});
-```
-
-## reset
-
-Clears the drawEngine state.
-
-```js
-drawEngine.reset();
-```
-
----
+// NOTEXPORTED: should it be?
 
 ## resetMatchUpTimeItems
 
@@ -327,6 +229,8 @@ drawEngine.resetMatchUpTimeItems({ matchUpId });
 
 ---
 
+// NOTEXPORTED: should it be?
+
 ## setDrawDescription
 
 ```js
@@ -336,76 +240,7 @@ drawEngine.setDrawDescription({ description: drawDescription });
 
 ---
 
-## setMatchUpFormat
-
-Sets the default `matchUpFormat` for a `drawDefintion` or a `structure`, or for a specific `matchUp`.
-
-```js
-drawEngine.setMatchUpFormat({
-  matchUpFormat,
-  structureId, // optional - if structureId is present and not matchUpId is present, then set for structure
-  matchUpId, // optional - if matchUpId is present then only set for matchUp
-});
-```
-
----
-
-## setMatchUpStatus
-
-Sets either matchUpStatus or score and winningSide. Handles any winner/loser participant movements within or across structures.
-
-```js
-drawEngine.setMatchUpStatus({
-  disableScoreValidation, // optional boolean
-  allowChangePropagation, // optional boolean - allow winner/loser to be swapped and propgate change throughout draw structures
-  disableAutoCalc, // optional - applies only to { matchUpType: TEAM }
-  enableAutoCalc, // optional - applies only to { matchUpType: TEAM }
-  matchUpTieId, // optional - if part of a TIE matchUp
-  matchUpStatus, // optional - if matchUpFormat differs from event/draw/structure defaults
-  matchUpId,
-  score, // optional - { sets }
-  winningSide,
-  schedule: {
-    // optional - set schedule items
-    scheduledDate,
-    scheduledTime,
-    startTime,
-    endTime,
-  },
-  notes, // optional - add note (string) to matchUp object
-});
-```
-
----
-
-## setOrderOfFinish
-
-Sets the `orderOfFinish` attribute for `matchUps` specified by `matchUpId` in the `finishingOrder` array.
-
-### Validation
-
-Validation is done within a _cohort_ of `matchUps` which have equivalent `structureId`, `matchUpType`, `roundNumber`, and `matchUpTieId` (if applicable).
-
-- `matchUpIds` in `finishingOrder` must be part of the same _cohort_
-- `orderOfFinish` values must be unique positive integers within the _cohort_
-
-```js
-drawEngine.setOrderOfFinish({
-  finishingOrder: [{ matchUpId, orderOfFinish: 1 }],
-});
-```
-
----
-
-## setParticipants
-
-Participants are not managed by the `drawEngine`, but they can be used when returning 'inContext' matchUps as well as when automated positioning relies on avoidance policies.
-
-```js
-drawEngine.setParticipants(participants);
-```
-
----
+// NOTEXPORTED: should it be?
 
 ## setStageAlternatesCount
 
@@ -419,6 +254,8 @@ drawEngine.setStageAlternatesCount({ alternatesCount: 8 });
 
 ---
 
+// NOTEXPORTED: should it be?
+
 ## setStageDrawSize
 
 Modifies the 'entryProfile' of a drawDefinition before the structures have been generated.
@@ -429,6 +266,8 @@ drawEngine.setStageDrawSize({ stage: MAIN, drawSize: 16 });
 ```
 
 ---
+
+// NOTEXPORTED: should it be?
 
 ## setStageQualifiersCount
 
@@ -442,6 +281,8 @@ drawEngine.setStageQualifiersCount({
 
 ---
 
+// NOTEXPORTED: should it be?
+
 ## setStageWildcardsCount
 
 ```js
@@ -450,56 +291,7 @@ drawEngine.setStageWildcardsCount({ stage, stageSequence, wildcardsCount: 2 });
 
 ---
 
-## setState
-
-Loads a drawDefinition into drawEngine.
-
-```js
-drawEngine.setsState(drawDefinition, deepCopy, deepCopyConfig);
-```
-
-:::info
-By default a deep copy of the tournament record is made so that mutations made by drawEngine do not affect the source object. An optional boolean parameter, _deepCopy_ can be set to false to override this default behavior.
-:::
-
-:::note
-`deepCopyConfig` is an optional configuration for `makeDeepCopy`. In server configurations when `deepCopy` is FALSE and `tournamentRecords` are retrieved from Mongo, for instance, there are scenarios where nodes of the JSON structure contain prototypes which cannot be converted.
-:::
-
-```js
-const deepCopyConfig = {
-  ignore, // optional - either an array of attributes to ignore or a function which processes attributes to determine whether to ignore them
-  toJSON, // optional - an array of attributes to convert to JSON if the attribute in question is an object with .toJSON property
-  stringify, // optional - an array of attributes to stringify
-  modulate, // optional - function to process every attribute and return custom values, or undefined, which continues normal processing
-};
-```
-
----
-
-## setSubOrder
-
-Used to order ROUND_ROBIN participants when finishingPosition ties cannot be broken algorithmically. Assigns a subOrder value to a participant within a structure by drawPosition.
-
-```js
-drawEngine.setSubOrder({
-  structureId, // structure identifier within drawDefinition
-  drawPosition: 1, // drawPosition of the participant where subOrder is to be added
-  subOrder: 2, // order in which tied participant should receive finishing position
-});
-```
-
----
-
-## swapDrawPositionAssignments
-
-Swaps the `participantIds` of two `drawPositions`.
-
-```js
-drawEngine.swapDrawPositionAssignments({ structureId, drawPositions });
-```
-
----
+// NOTEXPORTED: should it be?
 
 ## getStructureMatchUps
 
@@ -523,22 +315,14 @@ const { upcomingMatchUps, pendingMatchUps, completedMatchUps, abandonedMatchUps,
 
 ---
 
+// NOTEXPORTED: should it be?
+
 ## validDrawPositions
 
 Returns boolean indicating whether all matchUps have valid draw positions
 
 ```js
 drawEngine.validDrawPositions({ matchUps });
-```
-
----
-
-## version
-
-Returns NPM package version. Can be used in configurations that utilize Competition Factory engines on both client and server to ensure equivalency.
-
-```js
-const version = drawEngine.version();
 ```
 
 ---
