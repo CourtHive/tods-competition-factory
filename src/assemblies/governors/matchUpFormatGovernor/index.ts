@@ -1,12 +1,4 @@
-import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
-import { stringify } from '../../generators/matchUpFormatCode/stringify';
-import { parse } from '../../generators/matchUpFormatCode/parse';
-
-export const matchUpFormatCode = {
-  isValid: isValidMatchUpFormat,
-  isValidMatchUpFormat,
-  stringify,
-  parse,
-};
-
-export default matchUpFormatCode;
+export { isValidMatchUpFormat as isValid } from '../../../validators/isValidMatchUpFormat';
+export { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
+export { stringify } from '../../generators/matchUpFormatCode/stringify';
+export { parse } from '../../generators/matchUpFormatCode/parse';

@@ -1,7 +1,7 @@
 import { generateScoreString } from '../../../../assemblies/generators/matchUps/generateScoreString';
-import { isConvertableInteger } from '../../../../utilities/math';
 import { isValidMatchUpFormat } from '../../../../validators/isValidMatchUpFormat';
 import { parse } from '../../../../assemblies/generators/matchUpFormatCode/parse';
+import { isConvertableInteger } from '../../../../utilities/math';
 import { getHistory } from './getHistory';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
@@ -20,13 +20,11 @@ export function calculateHistoryScore(params) {
 
   const history = getHistory({ matchUp })?.history || [];
 
-  if (!Array.isArray(history))
-    return { error: INVALID_VALUES, info: 'history is not an array' };
+  if (!Array.isArray(history)) return { error: INVALID_VALUES, info: 'history is not an array' };
 
   const { matchUpFormat } = matchUp;
   if (!matchUpFormat) return { error: MISSING_MATCHUP_FORMAT };
-  if (!isValidMatchUpFormat({ matchUpFormat }))
-    return { error: INVALID_MATCHUP_FORMAT };
+  if (!isValidMatchUpFormat({ matchUpFormat })) return { error: INVALID_MATCHUP_FORMAT };
 
   const parsedFormat: any = parse(matchUpFormat);
   const { bestOf, finalSetFormat, setFormat } = parsedFormat;
@@ -84,12 +82,9 @@ export function calculateHistoryScore(params) {
     const format = isFinalSet && finalSetFormat ? finalSetFormat : setFormat;
     const { tiebreakAt, setTo, NoAD, tiebbreakFormat } = format;
 
-    const isTiebreak =
-      set.side1Score === tiebreakAt && set.side1Score === set.side2Score;
+    const isTiebreak = set.side1Score === tiebreakAt && set.side1Score === set.side2Score;
     const isTiebreakSet = !!format.tiebreakSet;
-    const tiebreakDetails = isTiebreakSet
-      ? format.tiebreakSet
-      : tiebbreakFormat;
+    const tiebreakDetails = isTiebreakSet ? format.tiebreakSet : tiebbreakFormat;
     const { tiebreakTo, NoAD: tiebreakNoAD } = tiebreakDetails || {};
 
     const cleanup = () => {
@@ -157,8 +152,7 @@ export function calculateHistoryScore(params) {
         sidePoints[winningIndex] += 1;
         tiebreakServingSide = getTiebreakServingSide();
         set[`side${winningSide}TiebreakScore`] = sidePoints[winningIndex];
-        set[`side${3 - winningSide}TiebreakScore`] =
-          sidePoints[1 - winningIndex];
+        set[`side${3 - winningSide}TiebreakScore`] = sidePoints[1 - winningIndex];
 
         const winBy = tiebreakNoAD ? 1 : 2;
         if (
@@ -169,10 +163,7 @@ export function calculateHistoryScore(params) {
           return { gameCompleted: true };
         }
       } else {
-        if (
-          sidePoints[1 - winningIndex] === 4 &&
-          sidePoints[winningIndex] === 3
-        ) {
+        if (sidePoints[1 - winningIndex] === 4 && sidePoints[winningIndex] === 3) {
           // return to deuce
           sidePoints[1 - winningIndex] -= 1;
         } else {
@@ -184,8 +175,7 @@ export function calculateHistoryScore(params) {
 
         if (
           sidePoints[winningIndex] === 5 ||
-          (sidePoints[winningIndex] === 4 &&
-            sidePoints[1 - winningIndex] < 3) ||
+          (sidePoints[winningIndex] === 4 && sidePoints[1 - winningIndex] < 3) ||
           (NoAD && sidePoints[winningIndex] === 4)
         ) {
           completeGame(winningSide);
@@ -237,8 +227,7 @@ export function calculateHistoryScore(params) {
       completeGame(winningSide);
 
       const setIsComplete =
-        set[winningScoreSide] === setTo &&
-        set[winningScoreSide] - set[losingScoreSide] >= (NoAD ? 1 : 2);
+        set[winningScoreSide] === setTo && set[winningScoreSide] - set[losingScoreSide] >= (NoAD ? 1 : 2);
 
       if (setIsComplete) {
         completeSet(winningSide);
@@ -269,13 +258,7 @@ export function calculateHistoryScore(params) {
     console.log({ error: 'Match completed with excess history' });
   }
 
-  if (
-    set.side1Score ||
-    set.side2Score ||
-    set.games.length ||
-    set.side1TiebreakScore ||
-    set.side2TiebreakScore
-  ) {
+  if (set.side1Score || set.side2Score || set.games.length || set.side1TiebreakScore || set.side2TiebreakScore) {
     score.sets.push(set);
   }
 

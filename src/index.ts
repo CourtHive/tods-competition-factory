@@ -4,7 +4,7 @@ export { factoryVersion as version } from './global/functions/factoryVersion';
 export { governors } from './assemblies/governors';
 
 // UTILITIES ------------------------------------------------------------
-export { matchUpFormatCode } from './assemblies/governors/matchUpFormatGovernor';
+export * as matchUpFormatCode from './assemblies/governors/matchUpFormatGovernor';
 export { utilities } from './assemblies/governors/utilitiesGovernor';
 
 import * as globalState from './global/state/globalState';

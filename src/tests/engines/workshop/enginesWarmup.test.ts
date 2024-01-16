@@ -2,7 +2,7 @@ import { completeDrawMatchUps } from '../../../assemblies/generators/mocks/compl
 import { getParticipants } from '../../../query/participants/getParticipants';
 import asyncGlobalState from '../../../examples/asyncEngine/asyncGlobalState';
 import * as eventGovernor from '../../../assemblies/governors/eventGovernor';
-import { query } from '../../../assemblies/governors/queryGovernor';
+import * as query from '../../../assemblies/governors/queryGovernor';
 import { getMethods } from '../../../global/state/syncGlobalState';
 import asyncEngine from '../../../assemblies/engines/async';
 import mocksEngine from '../../../assemblies/engines/mock';

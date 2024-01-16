@@ -1,8 +1,9 @@
+import { decorateResult } from '../global/functions/decorateResult';
+import { makeDeepCopy } from 'utilities/makeDeepCopy';
 import { findTournamentId } from './findTournamentId';
 import { findEvent } from './findEvent';
-import { decorateResult } from '../global/functions/decorateResult';
-import { DrawDefinition, Event, Tournament } from '../types/tournamentTypes';
 
+import { DrawDefinition, Event, Tournament } from '../types/tournamentTypes';
 import { SUCCESS } from '../constants/resultConstants';
 import {
   DRAW_DEFINITION_NOT_FOUND,
@@ -30,8 +31,7 @@ export function findDrawDefinition({
   error?: ErrorType;
   event?: Event;
 } {
-  if (!tournamentRecord && !tournamentRecords)
-    return { error: MISSING_TOURNAMENT_RECORD };
+  if (!tournamentRecord && !tournamentRecords) return { error: MISSING_TOURNAMENT_RECORD };
   if (!drawId) return { error: MISSING_DRAW_ID };
 
   if (!tournamentRecord && tournamentRecords) {
@@ -59,4 +59,10 @@ export function findDrawDefinition({
     tournamentRecord,
     ...SUCCESS,
   };
+}
+
+export function publicFindDrawDefinition(params: GetDrawDefinitionArgs) {
+  const { drawDefinition, error } = findDrawDefinition(params);
+  if (error) return { error };
+  return { drawDefinition: makeDeepCopy(drawDefinition) };
 }

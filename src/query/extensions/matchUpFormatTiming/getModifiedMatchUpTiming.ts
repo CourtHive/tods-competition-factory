@@ -1,21 +1,13 @@
-import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
+import { findMatchupFormatAverageTimes, findMatchupFormatRecoveryTimes } from '../../../acquire/findMatchUpFormatTimes';
 import { checkRequiredParameters } from '../../../parameters/checkRequiredParameters';
+import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
 import { findExtension } from '../../../acquire/findExtension';
-import {
-  findMatchupFormatAverageTimes,
-  findMatchupFormatRecoveryTimes,
-} from '../../../acquire/findMatchUpFormatTimes';
+import { INVALID, MATCHUP_FORMAT, TOURNAMENT_RECORD, VALIDATE } from '../../../constants/attributeConstants';
 
 import { UNRECOGNIZED_MATCHUP_FORMAT } from '../../../constants/errorConditionConstants';
 import { SCHEDULE_TIMING } from '../../../constants/extensionConstants';
 import { ResultType } from '../../../global/functions/decorateResult';
 import { Event, Tournament } from '../../../types/tournamentTypes';
-import {
-  INVALID,
-  MATCHUP_FORMAT,
-  TOURNAMENT_RECORD,
-  VALIDATE,
-} from '../../../constants/attributeConstants';
 
 type GetModifiedMatchUpFormatTimingArgs = {
   tournamentRecord: Tournament;
@@ -23,9 +15,7 @@ type GetModifiedMatchUpFormatTimingArgs = {
   event: Event;
 };
 
-export function getModifiedMatchUpFormatTiming(
-  params: GetModifiedMatchUpFormatTimingArgs
-): ResultType & {
+export function getModifiedMatchUpFormatTiming(params: GetModifiedMatchUpFormatTimingArgs): ResultType & {
   matchUpFormat?: string;
   recoveryTimes?: any[];
   averageTimes?: any[];
@@ -68,9 +58,7 @@ export function getModifiedMatchUpFormatTiming(
       matchUpFormat,
     });
 
-  const averageTimes = [eventAverageTimes, tournamentAverageTimes].find(
-    (f) => f
-  );
+  const averageTimes = [eventAverageTimes, tournamentAverageTimes].find((f) => f);
 
   const eventRecoveryTimes =
     eventScheduling?.matchUpRecoveryTimes &&
@@ -86,9 +74,7 @@ export function getModifiedMatchUpFormatTiming(
       matchUpFormat,
     });
 
-  const recoveryTimes = [eventRecoveryTimes, tournamentRecoveryTimes].find(
-    (f) => f
-  );
+  const recoveryTimes = [eventRecoveryTimes, tournamentRecoveryTimes].find((f) => f);
 
   return {
     matchUpFormat,

@@ -1,15 +1,11 @@
-import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
 import { getModifiedMatchUpFormatTiming } from '../../../query/extensions/matchUpFormatTiming/getModifiedMatchUpTiming';
 import { modifyMatchUpFormatTiming } from '../../matchUps/extensions/modifyMatchUpFormatTiming';
+import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
 import { Event, Tournament } from '../../../types/tournamentTypes';
 import { ensureInt } from '../../../utilities/ensureInt';
 
+import { INVALID_VALUES, MISSING_EVENT, MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 import { SINGLES } from '../../../constants/matchUpTypes';
-import {
-  INVALID_VALUES,
-  MISSING_EVENT,
-  MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
 
 type ModifyEventMatchUpFormatTimingArgs = {
   tournamentRecord: Tournament;
@@ -22,34 +18,21 @@ type ModifyEventMatchUpFormatTimingArgs = {
   event?: Event;
 };
 
-export function modifyEventMatchUpFormatTiming(
-  params: ModifyEventMatchUpFormatTimingArgs
-) {
-  const {
-    tournamentRecord,
-    recoveryMinutes,
-    averageMinutes,
-    matchUpFormat,
-    categoryType,
-    eventId,
-    event,
-  } = params;
+export function modifyEventMatchUpFormatTiming(params: ModifyEventMatchUpFormatTimingArgs) {
+  const { tournamentRecord, recoveryMinutes, averageMinutes, matchUpFormat, categoryType, eventId, event } = params;
 
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!isValidMatchUpFormat({ matchUpFormat }))
-    return { error: INVALID_VALUES };
+  if (!isValidMatchUpFormat({ matchUpFormat })) return { error: INVALID_VALUES };
   if (!event) return { error: MISSING_EVENT };
 
-  const { averageTimes = [], recoveryTimes = [] } =
-    getModifiedMatchUpFormatTiming({
-      tournamentRecord,
-      matchUpFormat,
-      event,
-    });
+  const { averageTimes = [], recoveryTimes = [] } = getModifiedMatchUpFormatTiming({
+    tournamentRecord,
+    matchUpFormat,
+    event,
+  });
 
   const category = event.category;
-  const categoryName =
-    category?.categoryName || category?.ageCategoryCode || event?.eventId;
+  const categoryName = category?.categoryName || category?.ageCategoryCode || event?.eventId;
 
   let currentAverageTime = { categoryNames: [categoryName], minutes: {} };
   const currentRecoveryTime = { categoryNames: [categoryName], minutes: {} };
@@ -60,9 +43,7 @@ export function modifyEventMatchUpFormatTiming(
       console.log('encountered:', { categoryType });
     }
     if (timing.categoryNames?.includes(categoryName)) {
-      timing.categoryNames = timing.categoryNames.filter(
-        (c) => c !== categoryName
-      );
+      timing.categoryNames = timing.categoryNames.filter((c) => c !== categoryName);
       currentAverageTime = {
         minutes: timing.minutes,
         categoryNames: [categoryName],
@@ -72,17 +53,11 @@ export function modifyEventMatchUpFormatTiming(
     return timing;
   };
 
-  const validAverageMinutes =
-    averageMinutes && !isNaN(ensureInt(averageMinutes));
-  const validRecoveryMinutes =
-    recoveryMinutes && !isNaN(ensureInt(recoveryMinutes));
+  const validAverageMinutes = averageMinutes && !isNaN(ensureInt(averageMinutes));
+  const validRecoveryMinutes = recoveryMinutes && !isNaN(ensureInt(recoveryMinutes));
 
-  const newAverageTimes = averageTimes
-    .map(newTiming)
-    .filter((f) => f?.categoryNames?.length);
-  const newRecoveryTimes = recoveryTimes
-    .map(newTiming)
-    .filter((f) => f?.categoryNames?.length);
+  const newAverageTimes = averageTimes.map(newTiming).filter((f) => f?.categoryNames?.length);
+  const newRecoveryTimes = recoveryTimes.map(newTiming).filter((f) => f?.categoryNames?.length);
 
   if (validAverageMinutes) {
     Object.assign(currentAverageTime.minutes, {
@@ -98,8 +73,7 @@ export function modifyEventMatchUpFormatTiming(
     newRecoveryTimes.push(currentRecoveryTime);
   }
 
-  if (!validAverageMinutes && !validRecoveryMinutes)
-    return { error: INVALID_VALUES };
+  if (!validAverageMinutes && !validRecoveryMinutes) return { error: INVALID_VALUES };
 
   return modifyMatchUpFormatTiming({
     averageTimes: validAverageMinutes && newAverageTimes,

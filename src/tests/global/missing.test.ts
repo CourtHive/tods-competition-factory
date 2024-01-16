@@ -4,11 +4,11 @@ import { expect, it } from 'vitest';
 
 it.each([syncEngine, asyncEngine])(
   'will return MISSING_TOURNAMENT_RECORDS for most methods if no state has been set',
-  async (competitionEngine) => {
-    const competitionEngineMethods = Object.keys(competitionEngine);
-    for (const method of competitionEngineMethods) {
-      await competitionEngine.reset();
-      const result = await competitionEngine[method]();
+  async (engine) => {
+    const engineMethods = Object.keys(engine);
+    for (const method of engineMethods) {
+      await engine.devContext(true).reset();
+      const result = await engine[method]();
       if (!result) {
         if (['getTournamentId'].includes(method)) {
           expect(result).toBeUndefined();
@@ -20,6 +20,8 @@ it.each([syncEngine, asyncEngine])(
         [
           'credits',
           'version',
+          'getDevContext',
+          'makeDeepCopy',
           'parseMatchUpFormat',
           'stringifyMatchUpFormat',
           'getDrawTypeCoercion',
@@ -59,8 +61,7 @@ it.each([syncEngine, asyncEngine])(
           'devContext',
           'reset',
         ].includes(method);
-        if (!successExpected)
-          console.log('success expected', { method, result });
+        if (!successExpected) console.log('success expected', { method, result });
         expect(successExpected).toEqual(true);
       } else if (Array.isArray(result)) {
         expect(result.length).toEqual(0); // filtering with no values returns no results
@@ -72,5 +73,5 @@ it.each([syncEngine, asyncEngine])(
         expect(result.error).not.toBeUndefined();
       }
     }
-  }
+  },
 );

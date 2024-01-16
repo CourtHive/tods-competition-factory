@@ -3,20 +3,20 @@ import * as drawsGovernor from './drawsGovernor';
 import * as entriesGovernor from './entriesGovernor';
 import * as eventGovernor from './eventGovernor';
 import * as generationGovernor from './generationGovernor';
-import matchUpFormatGovernor from './matchUpFormatGovernor';
-import matchUpGovernor from './matchUpGovernor';
-import mocksGovernor from './mocksGovernor';
-import participantGovernor from './participantGovernor';
-import policyGovernor from './policyGovernor';
-import publishingGovernor from './publishingGovernor';
-import queryGovernor from './queryGovernor';
-import reportGovernor from './reportGovernor';
-import scheduleGovernor from './scheduleGovernor';
-import scoreGovernor from './scoreGovernor';
-import tieFormatGovernor from './tieFormatGovernor';
-import tournamentGovernor from './tournamentGovernor';
+import * as matchUpFormatGovernor from './matchUpFormatGovernor';
+import * as matchUpGovernor from './matchUpGovernor';
+import * as mocksGovernor from './mocksGovernor';
+import * as participantGovernor from './participantGovernor';
+import * as policyGovernor from './policyGovernor';
+import * as publishingGovernor from './publishingGovernor';
+import * as queryGovernor from './queryGovernor';
+import * as reportGovernor from './reportGovernor';
+import * as scheduleGovernor from './scheduleGovernor';
+import * as scoreGovernor from './scoreGovernor';
+import * as tieFormatGovernor from './tieFormatGovernor';
+import * as tournamentGovernor from './tournamentGovernor';
 import utilitiesGovernor from './utilitiesGovernor';
-import venueGovernor from './venueGovernor';
+import * as venueGovernor from './venueGovernor';
 
 export const governors = {
   competitionGovernor,

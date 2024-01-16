@@ -1,23 +1,19 @@
 import { getParticipantScaleItem } from '../../query/participant/getParticipantScaleItem';
-import { setParticipantScaleItem } from '../participants/addScaleItems';
 import { allTournamentMatchUps } from '../../query/matchUps/getAllTournamentMatchUps';
 import { parse } from '../../assemblies/generators/matchUpFormatCode/parse';
+import { setParticipantScaleItem } from '../participants/addScaleItems';
 import ratingsParameters from '../../fixtures/ratings/ratingsParameters';
 import { matchUpSort } from '../../functions/sorters/matchUpSort';
 import { calculateNewRatings } from './calculateNewRatings';
 import { aggregateSets } from './aggregators';
 
+import { INVALID_VALUES, MISSING_MATCHUPS, MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
 import { completedMatchUpStatuses } from '../../constants/matchUpStatusConstants';
 import { DYNAMIC, RATING } from '../../constants/scaleConstants';
 import { EventTypeUnion } from '../../types/tournamentTypes';
 import { SUCCESS } from '../../constants/resultConstants';
 import { ELO } from '../../constants/ratingConstants';
 import { HydratedSide } from '../../types/hydrated';
-import {
-  INVALID_VALUES,
-  MISSING_MATCHUPS,
-  MISSING_TOURNAMENT_RECORD,
-} from '../../constants/errorConditionConstants';
 
 export function generateDynamicRatings({
   removePriorValues = true,
@@ -29,8 +25,7 @@ export function generateDynamicRatings({
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!Array.isArray(matchUpIds)) return { error: MISSING_MATCHUPS };
-  if (typeof ratingType !== 'string')
-    return { error: INVALID_VALUES, ratingType };
+  if (typeof ratingType !== 'string') return { error: INVALID_VALUES, ratingType };
   if (!ratingsParameters[ratingType]) return { error: INVALID_VALUES };
   const ratingParameter = ratingsParameters[ratingType];
   const { accessor } = ratingParameter;
@@ -69,15 +64,12 @@ export function generateDynamicRatings({
         const { sideNumber, participant } = side;
         return (
           sideNumber && {
-            [sideNumber]: [
-              participant?.participantId,
-              ...(participant?.individualParticipantIds ?? []),
-            ]
+            [sideNumber]: [participant?.participantId, ...(participant?.individualParticipantIds ?? [])]
               .filter(Boolean)
               .flat(),
           }
         );
-      })
+      }),
     );
 
     const outputScaleName = asDynamic ? dynamicScaleName : ratingType;
@@ -111,7 +103,7 @@ export function generateDynamicRatings({
                 },
             }
           );
-        })
+        }),
     );
 
     const parsedFormat: any = matchUpFormat ? parse(matchUpFormat) : {};
@@ -120,33 +112,20 @@ export function generateDynamicRatings({
 
     const maxCountables = considerGames ? bestOf & setsTo : bestOf;
 
-    const countables = (score?.sets && aggregateSets(score.sets)) ||
-      (winningSide === 1 && [1, 0]) || [0, 1];
+    const countables = (score?.sets && aggregateSets(score.sets)) || (winningSide === 1 && [1, 0]) || [0, 1];
 
-    const winningSideParticipantIds = winningSide
-      ? sideParticipantIds[winningSide]
-      : [];
-    const losingSideParticipantIds = winningSide
-      ? sideParticipantIds[3 - winningSide]
-      : [];
+    const winningSideParticipantIds = winningSide ? sideParticipantIds[winningSide] : [];
+    const losingSideParticipantIds = winningSide ? sideParticipantIds[3 - winningSide] : [];
     for (const winnerParticipantId of winningSideParticipantIds) {
       const winnerScaleValue = scaleItemMap[winnerParticipantId]?.scaleValue;
-      const winnerRating =
-        typeof winnerScaleValue === 'object'
-          ? winnerScaleValue[accessor]
-          : winnerScaleValue;
+      const winnerRating = typeof winnerScaleValue === 'object' ? winnerScaleValue[accessor] : winnerScaleValue;
 
       for (const loserParticipantId of losingSideParticipantIds) {
         const loserScaleValue = scaleItemMap[loserParticipantId]?.scaleValue;
-        const loserRating =
-          typeof loserScaleValue === 'object'
-            ? loserScaleValue[accessor]
-            : loserScaleValue;
+        const loserRating = typeof loserScaleValue === 'object' ? loserScaleValue[accessor] : loserScaleValue;
 
         const winnerCountables = winningSide ? countables[winningSide] : [0, 0];
-        const loserCountables = winningSide
-          ? countables[3 - winningSide]
-          : [0, 0];
+        const loserCountables = winningSide ? countables[3 - winningSide] : [0, 0];
 
         const { newWinnerRating, newLoserRating } = calculateNewRatings({
           winnerCountables,

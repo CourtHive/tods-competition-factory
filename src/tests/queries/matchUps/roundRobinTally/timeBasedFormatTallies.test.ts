@@ -1,18 +1,16 @@
+import { tallyParticipantResults } from '../../../../query/matchUps/roundRobinTally/roundRobinTally';
 import { getParticipantId } from '../../../../global/functions/extractors';
 import tournamentEngine from '../../../engines/syncEngine';
 import mocksEngine from '../../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
 import { ROUND_ROBIN } from '../../../../constants/drawDefinitionConstants';
-import { tallyParticipantResults } from '../../../../query/matchUps/roundRobinTally/roundRobinTally';
 
 it('round robins with timed formats will default to game based when no indicator', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     completeAllMatchUps: true,
     randomWinningSide: true,
-    drawProfiles: [
-      { drawSize: 4, drawType: ROUND_ROBIN, matchUpFormat: 'SET1-S:T20' },
-    ],
+    drawProfiles: [{ drawSize: 4, drawType: ROUND_ROBIN, matchUpFormat: 'SET1-S:T20' }],
   });
 
   const result = tournamentEngine.setState(tournamentRecord);
@@ -38,9 +36,7 @@ it('round robins with points based timed formats to tally points not games', () 
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     completeAllMatchUps: true,
     randomWinningSide: true,
-    drawProfiles: [
-      { drawSize: 4, drawType: ROUND_ROBIN, matchUpFormat: 'SET1-S:T20P' },
-    ],
+    drawProfiles: [{ drawSize: 4, drawType: ROUND_ROBIN, matchUpFormat: 'SET1-S:T20P' }],
   });
 
   const result = tournamentEngine.setState(tournamentRecord);

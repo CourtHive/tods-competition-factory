@@ -1,29 +1,29 @@
-import { setTournamentStatus } from '../../../mutate/tournaments/setTournamentStatus';
-import { removeExtension } from '../../../mutate/extensions/removeExtension';
-import { addNotes, removeNotes } from '../../../mutate/base/addRemoveNotes';
-import { addOnlineResource } from '../../../mutate/base/addOnlineResource';
-import { addExtension } from '../../../mutate/extensions/addExtension';
+export { setTournamentStatus } from '../../../mutate/tournaments/setTournamentStatus';
+export { removeExtension } from '../../../mutate/extensions/removeExtension';
+export { addNotes, removeNotes } from '../../../mutate/base/addRemoveNotes';
+export { addOnlineResource } from '../../../mutate/base/addOnlineResource';
+export { addExtension } from '../../../mutate/extensions/addExtension';
 
-import {
+export {
   setTournamentName,
   setTournamentNotes,
   setTournamentCategories,
 } from '../../../mutate/tournaments/tournamentDetails';
 
-import {
+export {
   setTournamentDates,
   setTournamentEndDate,
   setTournamentStartDate,
 } from '../../../mutate/tournaments/tournamentDates';
 
-import {
+export {
   addTimeItem,
   addEventTimeItem,
   addParticipantTimeItem,
   addTournamentTimeItem,
 } from '../../../mutate/timeItems/addTimeItem';
 
-import {
+export {
   addDrawDefinitionExtension,
   addEventExtension,
   addParticipantExtension,
@@ -33,35 +33,3 @@ import {
   removeParticipantExtension,
   removeTournamentExtension,
 } from '../../../mutate/extensions/addRemoveExtensions';
-
-import { getProfileRounds } from '../../../mutate/matchUps/schedule/profileRounds';
-
-export const tournamentGovernor = {
-  addDrawDefinitionExtension,
-  addEventExtension,
-  addEventTimeItem,
-  addExtension,
-  addNotes,
-  addOnlineResource,
-  addParticipantExtension,
-  addParticipantTimeItem,
-  addTimeItem,
-  addTournamentExtension,
-  addTournamentTimeItem,
-  getProfileRounds,
-  removeDrawDefinitionExtension,
-  removeEventExtension,
-  removeExtension,
-  removeNotes,
-  removeParticipantExtension,
-  removeTournamentExtension,
-  setTournamentCategories,
-  setTournamentDates,
-  setTournamentEndDate,
-  setTournamentName,
-  setTournamentNotes,
-  setTournamentStartDate,
-  setTournamentStatus,
-};
-
-export default tournamentGovernor;

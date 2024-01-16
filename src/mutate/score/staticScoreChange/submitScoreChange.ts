@@ -1,5 +1,5 @@
-import { analyzeMatchUp } from '../../../query/matchUp/analyzeMatchUp';
 import { parse } from '../../../assemblies/generators/matchUpFormatCode/parse';
+import { analyzeMatchUp } from '../../../query/matchUp/analyzeMatchUp';
 import { analyzeSet } from '../../../query/matchUp/analyzeSet';
 
 import {

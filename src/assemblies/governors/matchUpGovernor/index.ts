@@ -1,51 +1,23 @@
-import { assignMatchUpSideParticipant } from '../../../mutate/matchUps/drawPositions/assignMatchUpSideParticipant';
-import { toggleParticipantCheckInState } from '../../../mutate/matchUps/timeItems/toggleParticipantCheckInState';
-import { replaceTieMatchUpParticipantId } from '../../../mutate/matchUps/lineUps/replaceTieMatchUpParticipant';
-import { assignTieMatchUpParticipantId } from '../../../mutate/matchUps/lineUps/assignTieMatchUpParticipant';
-import { removeTieMatchUpParticipantId } from '../../../mutate/matchUps/lineUps/removeTieMatchUpParticipant';
-import { removeMatchUpSideParticipant } from '../../../mutate/matchUps/sides/removeMatchUpSideParticipant';
-import { enableTieAutoCalc } from '../../../mutate/drawDefinitions/matchUpGovernor/enableTieAutoCalc';
-import { removeDelegatedOutcome } from '../../../mutate/matchUps/extensions/removeDelegatedOutcome';
-import { substituteParticipant } from '../../../mutate/drawDefinitions/substituteParticipant';
-import { checkOutParticipant } from '../../../mutate/matchUps/timeItems/checkOutParticipant';
-import { disableTieAutoCalc } from '../../../mutate/matchUps/extensions/disableTieAutoCalc';
-import { setMatchUpFormat } from '../../../mutate/matchUps/matchUpFormat/setMatchUpFormat';
-import { checkInParticipant } from '../../../mutate/matchUps/timeItems/checkInParticipant';
-import { resetMatchUpLineUps } from '../../../mutate/matchUps/lineUps/resetMatchUpLineUps';
-import { setMatchUpStatus } from '../../../mutate/matchUps/matchUpStatus/setMatchUpStatus';
-import { bulkMatchUpStatusUpdate } from '../../../mutate/events/bulkMatchUpStatusUpdate';
-import { setDelegatedOutcome } from '../../../mutate/drawDefinitions/setDelegatedOutcome';
-import { updateTieMatchUpScore } from '../../../mutate/matchUps/score/tieMatchUpScore';
-import { setOrderOfFinish } from '../../../mutate/drawDefinitions/setOrderOfFinish';
-import { applyLineUps } from '../../../mutate/matchUps/lineUps/applyLineUps';
-import { resetTieFormat } from '../../../mutate/tieFormat/resetTieFormat';
-import { resetScorecard } from '../../../mutate/matchUps/resetScorecard';
-import { publicFindMatchUp } from '../../../acquire/findMatchUp';
-
-export const matchUpGovernor = {
-  applyLineUps,
-  assignMatchUpSideParticipant,
-  assignTieMatchUpParticipantId,
-  bulkMatchUpStatusUpdate,
-  checkInParticipant,
-  checkOutParticipant,
-  disableTieAutoCalc,
-  enableTieAutoCalc,
-  findMatchUp: publicFindMatchUp,
-  removeDelegatedOutcome,
-  removeMatchUpSideParticipant,
-  removeTieMatchUpParticipantId,
-  replaceTieMatchUpParticipantId,
-  resetMatchUpLineUps,
-  resetScorecard,
-  resetTieFormat, // perhaps this should not be public
-  setDelegatedOutcome,
-  setMatchUpFormat,
-  setMatchUpStatus,
-  setOrderOfFinish,
-  substituteParticipant,
-  toggleParticipantCheckInState,
-  updateTieMatchUpScore,
-};
-
-export default matchUpGovernor;
+export { assignMatchUpSideParticipant } from '../../../mutate/matchUps/drawPositions/assignMatchUpSideParticipant';
+export { toggleParticipantCheckInState } from '../../../mutate/matchUps/timeItems/toggleParticipantCheckInState';
+export { replaceTieMatchUpParticipantId } from '../../../mutate/matchUps/lineUps/replaceTieMatchUpParticipant';
+export { assignTieMatchUpParticipantId } from '../../../mutate/matchUps/lineUps/assignTieMatchUpParticipant';
+export { removeTieMatchUpParticipantId } from '../../../mutate/matchUps/lineUps/removeTieMatchUpParticipant';
+export { removeMatchUpSideParticipant } from '../../../mutate/matchUps/sides/removeMatchUpSideParticipant';
+export { enableTieAutoCalc } from '../../../mutate/drawDefinitions/matchUpGovernor/enableTieAutoCalc';
+export { removeDelegatedOutcome } from '../../../mutate/matchUps/extensions/removeDelegatedOutcome';
+export { substituteParticipant } from '../../../mutate/drawDefinitions/substituteParticipant';
+export { checkOutParticipant } from '../../../mutate/matchUps/timeItems/checkOutParticipant';
+export { disableTieAutoCalc } from '../../../mutate/matchUps/extensions/disableTieAutoCalc';
+export { setMatchUpFormat } from '../../../mutate/matchUps/matchUpFormat/setMatchUpFormat';
+export { checkInParticipant } from '../../../mutate/matchUps/timeItems/checkInParticipant';
+export { resetMatchUpLineUps } from '../../../mutate/matchUps/lineUps/resetMatchUpLineUps';
+export { setMatchUpStatus } from '../../../mutate/matchUps/matchUpStatus/setMatchUpStatus';
+export { bulkMatchUpStatusUpdate } from '../../../mutate/events/bulkMatchUpStatusUpdate';
+export { setDelegatedOutcome } from '../../../mutate/drawDefinitions/setDelegatedOutcome';
+export { updateTieMatchUpScore } from '../../../mutate/matchUps/score/tieMatchUpScore';
+export { setOrderOfFinish } from '../../../mutate/drawDefinitions/setOrderOfFinish';
+export { publicFindMatchUp as findMatchUp } from '../../../acquire/findMatchUp';
+export { applyLineUps } from '../../../mutate/matchUps/lineUps/applyLineUps';
+export { resetTieFormat } from '../../../mutate/tieFormat/resetTieFormat';
+export { resetScorecard } from '../../../mutate/matchUps/resetScorecard';
