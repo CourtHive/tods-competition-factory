@@ -101,6 +101,14 @@ engine.deleteDrawDefinitions({
 
 ---
 
+## deleteEvents
+
+```js
+engine.deleteEvents({ eventIds });
+```
+
+---
+
 ## deleteFlightAndFlightDraw
 
 Removes flight from `event` flightProfile as well as associated `drawDefinition` (if generated).
@@ -199,7 +207,70 @@ engine.modifyPairAssignment({
 
 ---
 
+## modifyTieFormat
+
+Both modifies the `tieFormat` on the target `event`, `drawDefinition`, `structure` or `matchUp` and adds/deletes `tieMatchUps` as necessary.
+
+```js
+engine.modifyTieFormat({
+  modifiedTieFormat, // will be compared to existing tieFormat that is targeted and differences calculated
+  structureId, // required if modifying tieFormat for a structure
+  matchUpId, // required if modifying tieFormat for a matchUp
+  eventId, // required if modifying tieFormat for a event
+  drawId, // required if modifying tieFormat for a drawDefinition or a structure
+});
+```
+
+---
+
+## promoteAlternates
+
+```js
+engine.promoteAlternates({
+  participantIds,
+  // either drawId or eventId are REQUIRED
+  eventId, // optional if drawId proided
+  drawId, // optional if eventId proided
+});
+```
+
+---
+
 ## refreshEventDrawOrder
+
+---
+
+## removeEventEntries
+
+Removes `event.entries` with integrity checks.
+
+Filters `participantIds` by specified `entryStatuses` and/or `stage`. If no `participantIds` are provided, removes all `entries` that match both `entryStatuses` and `stage`.
+
+```js
+engine.removeEventEntries({
+  autoEntryPositions, // optional - keeps entries ordered by entryStage/entryStatus and auto-increments
+  participantIds, // optional array of participantIds to remove
+  entryStatuses, // optional array of entryStatuses to remove
+  stage, // optional - remove entries for specified stage
+  eventId,
+});
+```
+
+---
+
+## removeEventExtension
+
+```js
+engine.removeEventExtension({ eventId, name });
+```
+
+---
+
+## removeEventMatchUpFormatTiming
+
+```js
+engine.removeEventMatchUpFormatTiming({ eventId });
+```
 
 ---
 

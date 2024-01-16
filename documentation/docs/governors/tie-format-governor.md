@@ -46,10 +46,9 @@ engine.addCollectionGroup({
 Modifies the `collectionName` and/or `matchUpFormat` for targeted `collectionId` within the `tieFormat` specified by `eventId`, `drawId`, `structureId` or `matchUpId`.
 
 ```js
-competitionEngine.modifyCollectionDefinition({
+engine.modifyCollectionDefinition({
   collectionName, // optional
   matchUpFormat, // optional
-  tournamentId, // required
   collectionId, // required
   structureId, // required if modifying tieFormat for a structure
   matchUpId, // required if modifying tieFormat for a matchUp
@@ -134,6 +133,22 @@ competitionEngine.removeCollectionGroup({
   matchUpId, // optional
   eventId, // optional
   drawId, // optional; required if structureId is targeted
+});
+```
+
+---
+
+## validateCollectionDefinition
+
+```js
+const { valid } = engine.validateCollectionDefinition({
+  collectionDefinition, // required
+  checkCollectionIds, // optional boolean - check that collectionIds are present
+  referenceCategory, // optional - category for comparision if eventId is not provided
+  referenceGender, // optional - expected gender if eventId is not provided
+  checkCategory, // optional boolean - defaults to true
+  checkGender, // optional boolean - defaults to true
+  eventId, // required only for checking gender
 });
 ```
 

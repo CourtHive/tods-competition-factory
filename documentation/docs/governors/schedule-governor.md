@@ -19,6 +19,81 @@ let result = tournamentEngine.allocateTeamMatchUpCourts({
 
 ---
 
+## bulkRescheduleMatchUps
+
+```js
+const {
+  rescheduled, // array of inContext matchUps which have been rescheduled
+  notRescheduled, // array of inContext matchUps which have NOT been rescheduled
+  allRescheduled, // boolean indicating whether all matchUps have been rescheduled
+  dryRun, // boolean - only report what would happen without making modifications
+} = engine.bulkRescheduleMatchUps({
+  matchUpIds, // array of matchUupIds for matchUps which are to be rescheduled
+  scheduleChange: {
+    daysChange: 1, // number of days +/-
+    minutesChange: 30, // number of minutes +/-
+  },
+});
+```
+
+---
+
+## bulkScheduleTournamentMatchUps
+
+```js
+const schedule = {
+  scheduledTime: '08:00',
+  scheduledDate: '2021-01-01T00:00', // best practice to provide ISO date string
+  venueId,
+};
+const matchUpDetails = [{ matchUpId, schedule }];
+engine.bulkScheduleTournamentMatchUps({
+  checkChronology, // optional boolean - returns warnings for scheduling errors; throws errors when combined with errorOnAnachronism
+  errorOnAnachronism, // optional boolean - throw error if chronological scheduduling error
+  removePriorValues, // optional boolean - remove all pre-existing scheduling timeItems from matchUps
+  matchUpDetails, // optional - for use when matchUps have different scheduling details
+  matchUpIds, // optional - used together with schedule when all matchUps will have the same schedule details applied
+  schedule, // optiona - used together with matchUpIds when all matchUps will ahve the same schedule details applied
+});
+```
+
+## bulkUpdatePublishedEventIds
+
+Returns a filtered array of publishedEventIds from all eventIds which are included in a bulkMatchUpStatusUpdate. publishedEventIds can be used to determine which events to re-publish.
+
+```js
+const { publishedEventIds } = engine.bulkUpdatePublishedEventIds({
+  outcomes,
+});
+```
+
+---
+
+## clearMatchUpSchedule
+
+```js
+engine.clearMatchUpSchedule({
+  scheduleAttributes, // optional array of schedule constants
+  matchUpId,
+  drawId, // optional optimizes matchUp lookup, triggers drawModificationNotice
+});
+```
+
+---
+
+## clearScheduledMatchUps
+
+```js
+engine.clearScheduledMatchUps({
+  ignoreMatchUpStatuses, // optional - specify matchUpStatus values to be ignored; defaults to all completed matchUpStatuses
+  scheduleAttributes, // optional - specify which attributes should be considered; defaults to ['scheduledDate', 'scheduledTime']
+  scheduledDates, // optional - array of dates to be cleared; only matchUps with specified scheduledDate will be cleared
+  venueIds, // optional - array of venueIds; only matchUps at specified venues will be cleared
+});
+```
+
+---
+
 ## matchUpScheduleChange
 
 Swaps the schedule details of two scheduled matchUps.

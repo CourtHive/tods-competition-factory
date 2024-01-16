@@ -120,6 +120,17 @@ engine.assignDrawPosition({
 
 ---
 
+## assignDrawPositionBye
+
+```js
+engine.assignDrawPositionBye({
+  structureId,
+  drawId,
+});
+```
+
+---
+
 ## attachPlayoffStructures
 
 Attaches the results of `generateAndPopulatePlayoffStructures` to a `drawDefinition`.
@@ -216,6 +227,272 @@ const { scaleItemsWithParticipantIds } = engine.autoSeeding({
 
 engine.setParticipantScaleItems({
   scaleItemsWithParticipantIds,
+});
+```
+
+---
+
+## deleteAdHocMatchUps
+
+```js
+const result = engine.deleteAdHocMatchUps({
+  drawId, // required - drawId of drawDefinition in which target structure is found
+  structureId, // required - structureId of structure for which matchUps are being generated
+  matchUpIds, // array of matchUpIds identifying matchUps to be deleted
+});
+```
+
+---
+
+## luckyLoserDrawPositionAssignment
+
+Replaces an existing drawPosition assignment with a luckyLoserParticipantId. This method is included in `validActions` for [positionActions](../policies/positionActions)
+
+```js
+engine.luckyLoserDrawPositionAssignment({
+  luckyLoserParticipantId,
+  drawPosition,
+  structureId,
+  drawId,
+});
+```
+
+---
+
+## modifyDrawDefinition
+
+```js
+engine.modifyDrawDefinition({
+  drawUpdates: { policyDefinitions: { ...policies } },
+  drawName: 'League Play',
+  drawId,
+});
+```
+
+---
+
+## modifySeedAssignment
+
+Change the display representation of a seedNumber for a specified `participantId`. This method is included in `validActions` for [positionActions](../policies/positionActions).
+
+The rationale for `seedValue` is to be able to, for instance, represent the fifth through the eighth seed as `5-8`, or simply as `5`. When there are no restrictions on seed positioning `seedValue` allows assigning seeding to arbitrary `participants`.
+
+```js
+engine.modifySeedAssignment({
+  participantId,
+  structureId,
+  seedValue, // display representation such as '5-8'
+  drawId,
+});
+```
+
+---
+
+## qualifierDrawPositionAssignment
+
+Replaces an existing drawPosition assignment with a qualifierParticipantId. This method is included in `validActions` for [positionActions](../policies/positionActions)
+
+```js
+engine.qualifierDrawPositionAssignment({
+  qualifierParticipantId,
+  drawPosition,
+  structureId,
+  drawId,
+});
+```
+
+---
+
+## removeDrawDefinitionExtension
+
+```js
+engine.removeDrawDefintionExtension({ eventId, drawId, name });
+```
+
+---
+
+## removeDrawPositionAssignment
+
+Clear draw position and optionally replace with a BYE, change entryStatus, or decompose a PAIR participant into UNGROUPED participants (DOUBLES only).
+
+```js
+engine.removeDrawPositionAssignment({
+  drawDefinition,
+  structureId,
+  drawPosition,
+  replaceWithBye, // optional
+  entryStatus, // optional - change the entryStatus of the removed participant
+  destroyPair, // optional - decompose PAIR participant into UNGROUPED participants
+});
+```
+
+---
+
+## removeDrawEntries
+
+Removes participantIds from `drawDefinition.entries` (if generated) as well as any relevent `flightProfile.flights`.
+
+```js
+engine.removeDrawEntries({
+  autoEntryPositions, // optional - keeps entries ordered by entryStage/entryStatus and auto-increments
+  participantIds
+  eventId,
+  stages, // optional array of stages to consider, e.g. [VOLUNTARY_CONSOLATION]
+  drawId,
+  });
+```
+
+---
+
+## removeRoundMatchUps
+
+```js
+const {
+  deltedMatchUpsCount, // number
+  roundRemoved, // boolean
+  success, // boolean
+  error, // if any
+} = engine.removeRoundMatchUps({
+  removeCompletedMatchUps, // optional boolean - whether to remove completed matchUps
+  roundNumber, // required - roundNumber to remove
+  structureId, // required
+  drawId, // required
+});
+```
+
+---
+
+## removeStructure
+
+Removes targeted `drawDefinition.structure` and all other child `structures` along with all associated `drawDefinition.links`.
+
+```js
+const { removedMatchUpIds } = engine.removeStructure({
+  structureId,
+  drawId,
+});
+```
+
+---
+
+## renameStructures
+
+```js
+engine.renameStructures({
+  structureDetails: [{ structureId, structureName }],
+  drawId,
+});
+```
+
+---
+
+## resetDrawDefinition
+
+```js
+engine.resetDrawDefinition({ drawId });
+```
+
+---
+
+## resetVoluntaryConsolationStructure
+
+```js
+engine.resetVoluntaryConsolationStructure({
+  resetEntries, // optional - remove all { entryStage: VOLUNTARY_CONSOLATION }
+  drawId,
+});
+```
+
+--
+
+## setDrawParticipantRepresentativeIds
+
+Set the participantIds of participants in the draw who are representing players by observing the creation of the draw.
+
+```js
+engine.setDrawParticipantRepresentativeIds({
+  representativeParticipantIds,
+  drawId,
+});
+```
+
+---
+
+## setPositionAssignments
+
+Intended to be used in conjunction with `automatedPlayoffPositioning` in deployments where a client instance gets the positioning which is then set on both the client and the server, to ensure that both client and server are identical. If `automatedPlayoffPositioning` is invoked on both client and server independently then it is likely that the positioning on client and server will be different.
+
+```js
+// executed only on the client
+const { structurePositionAssignments } = engine.automatedPlayoffPositioning({
+  applyPositioning: false, // instructs tournamentEngine to only return values, not apply them
+  structureId,
+  drawId,
+});
+
+// executed on both client and server
+result = engine.setPositionAssignments({
+  structurePositionAssignments,
+  drawId,
+});
+```
+
+---
+
+## setSubOrder
+
+Used to order ROUND_ROBIN participants when finishingPosition ties cannot be broken algorithmically. Assigns a `subOrder` value to a participant within a `structure` by `drawPosition`.
+
+```js
+engine.setSubOrder({
+  drawPosition: 1,
+  subOrder: 2,
+  structureId,
+  drawId,
+});
+```
+
+---
+
+## swapDrawPositionAssignments
+
+Swaps the `participantIds` of two `drawPositions`.
+
+```js
+engine.swapDrawPositionAssignments({
+  drawPositions,
+  structureId,
+  drawId,
+});
+```
+
+---
+
+## updateTeamLineUp
+
+```js
+engine.updateTeamLineUp({
+  participantId, // id of the team for which lineUp is being updated
+  tieFormat, // valid tieFormat - used to validate collectionIds
+  lineUp, // valid lineUp array - see tournamentEngine.validateTeamLineUp
+  drawId, // required as latest lineUp modification is stored in an extension on drawDefinition
+});
+```
+
+---
+
+## withdrawParticipantAtDrawPosition
+
+Thin wrapper around [removeDrawPositionAssignment](#removedrawpositionassignment). This method is included in `validActions` for [positionActions](../policies/positionActions).
+
+```js
+engine.withdrawParticipantAtDrawPosition({
+  entryStatus = WITHDRAWN,
+  replaceWithBye, // optional
+  drawDefinition,
+  drawPosition,
+  structureId,
+  destroyPair, // optional - decompose PAIR participant into UNPAIRED participants
 });
 ```
 

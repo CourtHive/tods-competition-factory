@@ -20,6 +20,7 @@ import { setOrderOfFinish } from '../../../mutate/drawDefinitions/setOrderOfFini
 import { applyLineUps } from '../../../mutate/matchUps/lineUps/applyLineUps';
 import { resetTieFormat } from '../../../mutate/tieFormat/resetTieFormat';
 import { resetScorecard } from '../../../mutate/matchUps/resetScorecard';
+import { publicFindMatchUp } from 'acquire/findMatchUp';
 
 export const matchUpGovernor = {
   applyLineUps,
@@ -30,6 +31,7 @@ export const matchUpGovernor = {
   checkOutParticipant,
   disableTieAutoCalc,
   enableTieAutoCalc,
+  findMatchUp: publicFindMatchUp,
   removeDelegatedOutcome,
   removeMatchUpSideParticipant,
   removeTieMatchUpParticipantId,

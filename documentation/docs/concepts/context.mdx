@@ -2,8 +2,8 @@
 title: Context / Hydration
 ---
 
-When **matchUps** and **tournamentParticipants** are returned with `{ inContext: true }`
-they will include contextual information that is not part of the TODS document node from which they originated; the process is also referred to as "hydration".
+**matchUps** and **participants** can be returned with contextual information that is not part of the TODS document node from which they originated.
+The process of adding context is also referred to as "hydration".
 
 Contextual information for `matchUps` includes information about the `structures, drawDefinitions` and `events` within which they are embeded;
 `drawPositions` are resolved using `positionAssignments` to the `participants`.

@@ -6,6 +6,21 @@ title: Participant Governor
 import { governors: { participantGovernor }} from 'tods-competition-factory';
 ```
 
+## participantFilters
+
+- enableOrFiltering: boolean - use OR logic instead of default AND
+- accessorValues: array of accessors and targeted value `[{ accessor, value }]`
+- drawEntryStatuses: array of `entryStatus` values for participantIds found in draw.entries
+- eventEntryStatuses: array of `entryStatus` values for participantIds found in event.entries
+- eventIds: array of targeted eventIds
+- participantIds: array of targeted participantIds
+- participantRoles: array of targeted participantRoles
+- participantTypes: array of targeted participantTypes
+- positionedParticipants: participantIds positioned in structures `[true, false, undefined]`
+- signInStatus: SIGNED_IN or SIGNED_OUT
+
+---
+
 ## addParticipant
 
 Adds an INDIVIDUAL, PAIR or TEAM participant to tournament participants. Includes integrity checks for `{ participantType: PAIR }` to ensure `participant.individualParticipantIds` are valid.
@@ -119,12 +134,171 @@ engine.addIndividualParticipantIds({
 
 ---
 
+## createTeamsFromParticipantAttributes
+
+Uses attributes of individual participnts or persons to generate `{ participantType: TEAM }` participants.
+
+Returns count of # of TEAM participants added;
+
+```js
+const { participantsAdded } = engine.createTeamsFromParticipantAttributes({
+  participantAttribute, // optional -- attribute of participant object
+  addParticipants, // optional boolean; defaults to true; when false return new participants
+  personAttribute, // optional - attribute of person object
+  accessor, // optional - use accessor string to retrieve nested value (even from person address arrays)
+  uuids, // optional - uuids to assign to generated participants
+});
+```
+
+---
+
+## deleteParticipants
+
+```js
+engine.deleteParticipants({
+  addIndividualParticipantsToEvents, // optional boolean
+  paricipantIds,
+});
+```
+
+---
+
+## findParticipant
+
+```js
+const { participant } = engine.findParticipant({
+  participantId, // required only if no personId provided
+  personId, // required only if no participantId provided
+});
+```
+
+---
+
+## mergeParticipants
+
+Merge `participants` array with existing tournament participants. Useful when synchronizing with a remote registration service, for example.
+
+```js
+engine.mergeParticipants({ participants });
+```
+
+---
+
+## modifyIndividualParticipantIds
+
+Modify `individualParticipantIds` of a grouping participant `{ participantType: TEAM || GROUP }`.
+
+```js
+engine.devContext(true).modifyIndividualParticipantIds({
+  groupingParticipantId, // participant (TEAM or GROUP) to which participantIds are to be added
+  individualParticipantIds: newIndividualParticipantIds,
+});
+```
+
+---
+
+## modifyParticipant
+
+Modifies attributes of a participant with integrity checks to ensure valid values for e.g. `{ participantType, participantRole }`. Adds participant if not found.
+
+```js
+engine.modifyParticipant({
+  participant: updatedIndividualParticipant,
+});
+```
+
+---
+
 ## modifyPenalty
 
 ```js
+const penaltyData = {
+  participantIds: ['participantId'],
+  notes: 'Hit ball into sea',
+  penaltyType: BALL_ABUSE,
+  matchUpId,
+  issuedAt,
+};
+let result = engine.addPenalty(penaltyData);
+const { penaltyId } = result;
+
 const notes = 'Hit ball into spectator';
 const modifications = { notes };
 engine.modifyPenalty({ penaltyId, modifications });
+```
+
+---
+
+## modifyParticipantsSignInStatus
+
+Modify the signInStatus of multiple participants, referenced by participantId.
+
+```js
+engine.modifyParticipantsSignInStatus({
+  participantIds: ['participantId'],
+  signInState: SIGNED_IN,
+});
+```
+
+---
+
+## regenerateParticipantNames
+
+Regenerate `.participantName` for SINGLES and DOUBLES `participants`.
+
+Upper/lower case and order are derived from `personFormat` string which must contain "last" and may contain "first" or "f", for first initial.
+
+```js
+const formats = {
+  PAIR: { personFormat: 'LAST', doublesJointer: '/' },
+  INDIVIDUAL: { personFormat: 'LAST, First' },
+};
+engine.regenerateParticipantNames({ formats });
+```
+
+---
+
+## removeIndividualParticipantIds
+
+Remove an array of individualParticipantIds from a grouping participant [TEAM, GROUP].
+If an individualParticipant is in a matchUp with a result they cannot be removed.
+
+```js
+const { removed, notRemoved, cannotRemove } = engine.removeIndividualParticipantIds({
+  addIndividualParticipantsToEvents, // optional boolean
+  individualParticipantIds,
+  groupingParticipantId,
+  suppressErrors, // optional boolean - do not throw an error if an individualParticipant cannot be removed
+});
+```
+
+---
+
+## removeParticipantIdsFromAllTeams
+
+```js
+engine.removeParticipantIdsFromAllTeams({
+  individualParticipantIds,
+  groupingType, // optional - restrict to removing from only specified groupingType
+});
+```
+
+---
+
+## removeParticipantExtension
+
+```js
+engine.removeParticipantExtension({ participantId, name });
+```
+
+---
+
+## removePenalty
+
+Removes a penalty from all relevant tournament participants.
+
+```js
+engine.removePenalty({ penaltyId });
 ```
 
 ---
@@ -144,12 +318,141 @@ result = engine.removePersonRequests({
 
 ---
 
-## removePenalty
+## scaledTeamAssignment
 
-Removes a penalty from all relevant tournament participants.
+Assigns individual participants to teams using a waterfall pattern; removes UNGROUPED entries as appropriate for TEAM events. May be called with either `individualParticipantIds` and `scaleAttributes` or with an array of `scaledParticipants`.
+
+:::info
+By default existing `individualParticipant` assignments are cleared. If existing assignments are retained, any `individualParticipant` already assigned will be excluded from further assignment. It may be desirable to retain existing assignments if sequential assignment of different groups of `individualParticipants` is desired.
+:::
+
+:::note
+Modifying team assignments has "global" effect, meaning that if a team appears in multiple events, team membership will be changed for all events.
+:::
+
+### Example use with `individualParticipantIds` and `scaleAttributes`
 
 ```js
-engine.removePenalty({ penaltyId });
+const scaleAttributes = {
+  scaleType: RANKING,
+  eventType: SINGLES,
+  scaleName: 'U18',
+  sortOrder: ASCENDING, // defaults to ASCENDING; use case for DESCENDING is unclear!
+};
+tournamentEngine.scaledTeamAssignment({
+  clearExistingAssignments, // optional - true by default remove all existing individualParticipantIds from targeted teams
+  individualParticipantIds, // individuals to be sorted by scaleAttributes and assigned to teams (WATERFALL)
+  reverseAssignmentOrder, // optional - reverses team order; useful for sequential assignment of participant groupings to ensure balanced distribution
+  teamParticipantIds, // optional, IF teamsCount is provided then teams will be created
+  initialTeamIndex, // optional - allows assignment to begin at a specified array index; useful for sequential assignment of groups of scaledParticipants
+  scaleAttributes, // ignored if scaledParticipants are provided; { scaleName, scaleType, sortOrder, eventType }
+  teamNameBase, // optional - defaults to '[categoryName] TEAM #', where categoryName is derived from eventId (if supplied)
+  teamsCount, // optional - derived from teamParticipantIds (if provided) - create # of teams if teamParticipantIds provided are insufficient
+  eventId, // optional - source team participants from DIRECT_ACCEPTANCE entries for specified event
+});
+```
+
+### Example use with `scaledParticipants`
+
+```js
+const scaleAttributes = {
+  scaleType: RANKING,
+  eventType: SINGLES,
+  scaleName: 'U18',
+};
+
+const scaledParticipants = individualParticipants.map((participant) => ({
+  participantId: 'participantId',
+  scaleValue: participantScaleItem({ participant, scaleAttributes }).scaleItem.scaleValue,
+}));
+
+const teamParticipantIds = teamParticipants.map(getParticipantId);
+
+tournamentEngine.scaledTeamAssignment({
+  scaledParticipants, // [{ participantId: 'participantId', scaleValue: '10' }]
+  teamParticipantIds,
+});
+```
+
+### Example use with sequential assignment where there are 8 teams
+
+In this scenario scaled MALE participants are assigned in a waterfall pattern beginning with the first team (default behavior); scaled FEMALE participants are then assigned in a reverse waterfall pattern beginning with the last team. The goal is to balance the teams to the greatest extent possible. This pattern can be used with an arbitrary number of groups of `individualParticipants`.
+
+```js
+tournamentEngine.scaledTeamAssignment({
+  scaledParticipants: maleScaleParticipants,
+  teamParticipantIds,
+});
+
+tournamentEngine.scaledTeamAssignment({
+  scaledParticipants: femaleScaleParticipants,
+  clearExistingAssignments: false,
+  reverseAssignmentOrder: true,
+  initialTeamIndex: 7,
+  teamParticipantIds,
+});
+```
+
+---
+
+## setParticipantScaleItem
+
+```js
+scaleItem = {
+  scaleValue: 12,
+  scaleName: 'U16',
+  scaleType: RANKING,
+  eventType: SINGLES,
+  scaleDate: '2020-06-06',
+};
+
+result = engine.setParticipantScaleItem({
+  removePriorValues, // optional boolean - when true will delete prior timeItems
+  participantId,
+  scaleItem,
+});
+```
+
+---
+
+## setParticipantScaleItems
+
+```js
+const scaleItemsWithParticipantIds = [
+  {
+    participantId: 'participantId',
+    scaleItems: [
+      {
+        scaleValue: 8.3,
+        scaleName: 'WTN',
+        scaleType: RATING,
+        eventType: SINGLES,
+        scaleDate: '2021-01-01',
+      },
+    ],
+  },
+];
+engine.setParticipantScaleItems({
+  removePriorValues, // optional boolean - when true will delete prior timeItems
+  scaleItemsWithParticipantIds,
+  // optional context, primarily used when adding SEEDING, useful for structureReports
+  context: {
+    scaleAttributes, // e.g. { scaleType: 'SEEDING' }
+    scaleBasis, // e.g. { scaleType: 'RANKING', scaleDate }
+    eventId,
+  },
+});
+```
+
+---
+
+## validateTeamLineUp
+
+```js
+const { valid, error, errors } = engine.validateLineUp({
+  tieFormat, // required to validate collectionIds in lineUp
+  lineUp,
+});
 ```
 
 ---

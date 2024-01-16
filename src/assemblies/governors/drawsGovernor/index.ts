@@ -1,5 +1,4 @@
 import { setDrawParticipantRepresentativeIds } from 'mutate/drawDefinitions/setDrawParticipantRepresentativeIds';
-import { getAvailablePlayoffProfiles } from 'mutate/drawDefinitions/structureGovernor/getAvailablePlayoffProfiles';
 import { resetVoluntaryConsolationStructure } from 'mutate/drawDefinitions/resetVoluntaryConsolationStructure';
 import { withdrawParticipantAtDrawPosition } from 'mutate/drawDefinitions/withdrawParticipantAtDrawPosition';
 import { addVoluntaryConsolationStructure } from 'mutate/drawDefinitions/addVoluntaryConsolationStructure';
@@ -57,7 +56,6 @@ export const drawsGovernor = {
   automatedPositioning,
   autoSeeding,
   deleteAdHocMatchUps,
-  getAvailablePlayoffProfiles,
   luckyLoserDrawPositionAssignment,
   modifyDrawDefinition,
   modifyDrawName,

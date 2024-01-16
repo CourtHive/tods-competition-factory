@@ -2,9 +2,32 @@
 title: Global State
 ---
 
+## devContext
+
+Setting devContext(true) bypasses **try {} catch (err) {}** code block and in some cases enables enhanced logging
+
+```js
+getDevContext(true);
+```
+
+---
+
+## getState
+
+Returns a deep copy of `tournamentRecords` which have been loaded, along with currently selected `tournamentId`.
+
+```js
+const { tournamentId, tournamentRecords } = getState({
+  convertExtensions, // optional - convert extensions to '_' prefixed attributes
+  removeExtensions, // optional - strip all extensions out of tournamentRecord
+});
+```
+
+---
+
 ## removeTournamentRecord
 
-Removes a tournamentRecord from `competitionEngine` state.
+Removes a tournamentRecord from shared state.
 
 ```js
 removeTournamentRecord(tournamentId);
@@ -48,6 +71,16 @@ Adds a tournamentRecord to shared engine state, or overwrite/replace an existing
 
 ```js
 setTournamentRecord(tournamentRecord);
+```
+
+---
+
+## setTournamentId
+
+Sets a tournamentRecord in shared state as the 'default' tournament for invoked functions.
+
+```js
+setTournamentId(tournamentId);
 ```
 
 ---

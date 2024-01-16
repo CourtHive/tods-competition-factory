@@ -20,6 +20,7 @@ import { filterParticipants } from '../../../query/participants/filterParticipan
 import { addParticipants } from '../../../mutate/participants/addParticipants';
 import { addPenalty } from '../../../mutate/participants/penalties/addPenalty';
 import { addParticipant } from '../../../mutate/participants/addParticipant';
+import { publicFindParticipant } from 'acquire/publicFindParticipant';
 import { addPersons } from '../../../mutate/participants/addPersons';
 import {
   removeIndividualParticipantIds,
@@ -45,6 +46,7 @@ export const participantGovernor = {
   modifyParticipantsSignInStatus,
   modifyPenalty,
   modifyPersonRequests,
+  findParticipant: publicFindParticipant,
   regenerateParticipantNames,
   removeIndividualParticipantIds,
   removeParticipantIdsFromAllTeams,

@@ -4,16 +4,19 @@ title: Accessors
 
 import RenderJSON from '../components/RenderJSON';
 
-Accessors are used to specify the location of data values in JSON objects. Avoidance policies and participant filters are examples of accessors being used to target values.
+Accessors are used to specify the location of data values in JSON objects; they are strings which describe an attribute path to a value nested within an object.
+They are used in [Avoidance Policies](/docs/policies/avoidance), [scaleAttributes](/docs/concepts/scaleItems), and `participantFilters`.
 
-<RenderJSON
-  data={{ participantType: 'INDIVIDUAL', person: { sex: 'MALE' } }}
-  root={'participant'}
-  colorScheme={'summerfruit'}
-  invertTheme={true}
-  expandRoot={true}
-  expandToLevel={3}
-/>
+```js
+// given the follwoing accessor...
+const accessor = 'individualParticipants.person.nationalityCode';
+
+// an array of nationalityCodes can be accessed from a PAIR participant
+const participant = {
+  individualParticipants: [{ person: { nationalityCode } }],
+  participantType: PAIR,
+};
+```
 
 In the **Live Editor** below, the accessor `"person.sex"` is used to target `FEMALE` participants.
 Change the accessor value in the `participantFilters` to `MALE` or uncomment the `person.nationalityCode`
@@ -35,15 +38,14 @@ function AccessorsDemo(props) {
   // ... and add them to the tournament
   tournamentEngine.addParticipants({ participants });
 
-  const { participants: tournamentParticipants } =
-    tournamentEngine.getParticipants({
-      participantFilters: {
-        accessorValues: [
-          { accessor: 'person.sex', value: 'FEMALE' },
-          // { accessor: 'person.nationalityCode', value: 'FRA' },
-        ],
-      },
-    });
+  const { participants: tournamentParticipants } = tournamentEngine.getParticipants({
+    participantFilters: {
+      accessorValues: [
+        { accessor: 'person.sex', value: 'FEMALE' },
+        // { accessor: 'person.nationalityCode', value: 'FRA' },
+      ],
+    },
+  });
 
   return <Participants data={tournamentParticipants} />;
 }

@@ -35,3 +35,13 @@ Removes links between all tournaments currently loaded in state.
 ```js
 competitionEngine.unlinkTournaments();
 ```
+
+## removeExtension
+
+Removes an extension from all `tournamentRecords` loaded into shared state.
+
+```js
+engine.removeExtension({ name, discover: true });
+```
+
+---

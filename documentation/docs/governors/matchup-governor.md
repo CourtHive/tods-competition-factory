@@ -263,6 +263,41 @@ engine.checkOutParticipant({
 
 ---
 
+## disableTieAutoCalc
+
+Disable default behavior of auto calculating TEAM matchUp scores.
+
+```js
+engine.disableTieAutoCalc({ drawId, matchUpId });
+```
+
+---
+
+## enableTiaAutoCalc
+
+Re-enable default behavior of auto calculating TEAM matchUp scores, and trigger auto calculation.
+
+```js
+engine.enableTieAutoCalc({ drawId, matchUpId });
+```
+
+---
+
+## findMatchUp
+
+```js
+const {
+  matchUp,
+  structure, // returned for convenience
+} = engine.findMatchUp({
+  inContext, // optional - boolean - returns matchUp with additional attributes
+  matchUpId,
+  drawId,
+});
+```
+
+---
+
 ## modifyMatchUpFormatTiming
 
 ```js
@@ -279,6 +314,45 @@ engine.modifyMatchUpFormatTiming({
     },
   ],
   recoveryTimes: [{ categoryNames: [], minutes: { default: 15, [DOUBLES]: 15 } }],
+});
+```
+
+---
+
+## removeMatchUpSideParticipant
+
+Removes participant assigned to AD_HOC matchUp.
+
+```js
+engine.removeMatchUpSideParticipant({
+  sideNumber, // number - required
+  matchUpId, // required
+  drawId, // required
+});
+```
+
+---
+
+## replaceTieMatchUpParticipantId
+
+```js
+engine.replaceTieMatchUpParticipantId({
+  existingParticipantId,
+  newParticipantId,
+  tieMatchUpId,
+  drawId,
+});
+```
+
+---
+
+## removeTieMatchUpParticipantId
+
+```js
+engine.removeTieMatchUpParticipantId({
+  participantId, // id of INDIVIDUAL or PAIR be removed
+  tieMatchUpId, // tieMatchUp, matchUpType either DOUBLES or SINGLES
+  drawId, // draw within which tieMatchUp is found
 });
 ```
 
@@ -314,6 +388,50 @@ engine.resetTieFormat({
 
 ---
 
+## setMatchUpDailyLimits
+
+```js
+engine.setMatchUpDailyLimits({
+  dailyLimits: { SINGLES: 2, DOUBLES: 1, total: 3 },
+});
+```
+
+---
+
+## setMatchUpFormat
+
+Sets the `matchUpFormat` for a specific `matchUp` or for any scope within the hierarchy of a `tournamentRecord`.
+
+:::info
+If an array of `scheduledDates` is provided then `matchUps` which have `matchUpStatus: TO_BE_PLAYED` and are scheduled to be played on the specified dates will have their `matchUpFormat` fixed rather than inherited. This means that subsequent changes to the parent `structure.matchUpFormat` will have no effect on such `matchUps`.
+
+The `force` attribute will remove the `matchUpFormat` from all targeted `matchUps` which have `matchUpStatus: TO_BE_PLAYED`; this allows the effect of using `scheduledDates` to be reversed. Use of this attribute will have no effect if `scheduledDates` is also provided.
+
+:::
+
+```js
+engine.setMatchUpFormat({
+  matchUpFormat, // TODS matchUpFormatCode
+  eventType, // optional - restrict to SINGLES or DOUBLES
+
+  matchUpId, // optional - set matchUpFormat for a specific matchUp
+  drawId, // required only if matchUpId, structureId or structureIds is present
+  force, // optional boolean - when setting for structure, draws or events, strip any defined matchUpFormat from all TO_BE_PLAYED matchUps
+
+  // scoping options
+  scheduledDates, // optional - ['2022-01-01']
+  stageSequences, // optional - [1, 2]
+  structureIds, // optional - ['structureId1', 'structureId2']
+  structureId, // optional
+  eventIds, // optional - ['eventId1', 'eventId2']
+  eventId, // optional
+  drawIds, // optional - ['drawId1', 'drawId2']
+  stages, // optional - ['MAIN', 'CONSOLATION']
+});
+```
+
+---
+
 ## setMatchUpStatus
 
 Sets either matchUpStatus or score and winningSide; values to be set are passed in outcome object. Handles any winner/loser participant movements within or across structures.
@@ -333,8 +451,8 @@ engine.setMatchUpStatus({
   tournamentId,
   matchUpTieId, // optional - if part of a TIE matchUp
   matchUpId,
-  drawId,
   outcome, // optional
+  drawId,
   schedule: {
     // optional - set schedule items
     courtIds, // optional - applies only to TEAM matchUps => creates .allocatedCourts
@@ -346,6 +464,26 @@ engine.setMatchUpStatus({
     endTime,
   },
   notes, // optional - add note (string) to matchUp object
+});
+```
+
+---
+
+## setOrderOfFinish
+
+Sets the `orderOfFinish` attribute for `matchUps` specified by `matchUpId` in the `finishingOrder` array.
+
+### Validation
+
+Validation is done within a _cohort_ of `matchUps` which have equivalent `structureId`, `matchUpType`, `roundNumber`, and `matchUpTieId` (if applicable).
+
+- `matchUpIds` in `finishingOrder` must be part of the same _cohort_
+- `orderOfFinish` values must be unique positive integers within the _cohort_
+
+```js
+engine.setOrderOfFinish({
+  finishingOrder: [{ matchUpId, orderOfFinish: 1 }],
+  drawId,
 });
 ```
 
@@ -370,7 +508,7 @@ Trigger automatic calculation of the score of a TEAM matchUp.
 
 ```js
 engine.updateTieMatchUpScore({
-  tournamentId,
+  tournamentId, // optional if default tournament set
   matchUpId,
   drawId,
 });

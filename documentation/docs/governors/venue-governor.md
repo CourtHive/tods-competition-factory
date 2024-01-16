@@ -69,10 +69,98 @@ engine.addVenue({
 
 ---
 
+## deleteCourt
+
+```js
+engine.deleteCourt({
+  courtId,
+  force, // override warnings about matchUps scheduled on specified court
+});
+```
+
+---
+
+## deleteVenue
+
+If a venue has scheduled matchUps then it will not be deleted unless `{ force: true }` in which case all relevant matchUps will be unscheduled.
+
+```js
+tournamentEngine.deleteVenue({ venueId, force });
+```
+
+---
+
+## deleteVenues
+
+If a venue has scheduled matchUps then it will not be deleted unless `{ force: true }` in which case all relevant matchUps will be unscheduled.
+
+```js
+tournamentEngine.deleteVenues({ venueIds, force });
+```
+
+---
+
+## disableCourts
+
+```js
+engine.disableCourts({
+  courtIds,
+  dates, // optional - if not provided, courts will be disalbed for all dates
+});
+```
+
+---
+
+## disableVenues
+
+```js
+engine.disableVenues({ venueIds });
+```
+
+---
+
+## enableCourts
+
+```js
+engine.enableCourts({
+  enableAll, // optional boolean
+  courtIds,
+  dates, // optional - array of dates to enable (if they have been disabled)
+});
+```
+
+---
+
+## enableVenues
+
+```js
+engine.enableVenues({ venueIds, enableAll });
+```
+
+---
+
+## findCourt
+
+```js
+const { court, venue } = engine.findCourt({ courtId });
+```
+
+---
+
+## findVenue
+
+Returns a complete venue object. Primarily used internally.
+
+```js
+engine.findVenue({ venueId });
+```
+
+---
+
 ## modifyCourt
 
 ```js
-competitionEngine.modifyCourt({
+engine.modifyCourt({
   courtId,
   force, // applies only to dateAvailability, will remove scheduling information from matchUps where court is no longer available
   modifications: {
@@ -89,6 +177,20 @@ competitionEngine.modifyCourt({
     notes,
     pace,
   },
+});
+```
+
+---
+
+## modifyCourtAvailability
+
+Modifies the `dateAvailability` attribute of a specified court. Warns if existing scheduled matchUps would be affected. See [Scheduling](/docs/concepts/scheduling).
+
+```js
+const result = engine.modifyCourtAvailability({
+  dateAvailability,
+  courtId,
+  force, // override warning that existing scheduled matchUps exist
 });
 ```
 

@@ -30,11 +30,14 @@ This behavior can be overridden such that engines operate directly on loaded tou
 
 ## Invoking Factory Functions
 
-State engines can be used to invoke factory functions in three ways:
+All state engines can be used to invoke factory functions in multiple ways:
 
 - **execute**: invoke a factory function directly, parameters passed into `execute` method
 - **import and execute**: invoke an imported function as an engine attribute
 - **import and execute by name**: invoke an imported function by reference
+
+Mutation engines can submit a queue of functions to be executed in sequence.
+
 - **executionQueue**: invoke an imported function as part of a queue of functions
 
 ## Examples
@@ -79,11 +82,18 @@ const { participants } = askEngine.execute({
 
 ### Execution Queue
 
-Function is imported and invoked as part of a queue of functions.
+The `executionQueue` method accepts an array of imported governor methods and associated parameters,
+allowing for multiple queries or mutations in a single API call, which is significant if a client is making a
+request of a server and the server needs to prepare context by loading a tournament record.
+
+An additional benefit of the `executionQueue` is that subscribers to `engine` events are not notified
+until all methods in the queue have completed successfully, and a failure of any one method can be used to roll back state
+with the assurance that there are no side-effects caused by subscribers responding to notifications. This also means
+that the server context can not be blocked by any long-running external processes.
 
 ```js
-askEngine.importMethods({ getParticipants });
-const result = askEngine.executionQueue([
+syncEngine.importMethods({ getParticipants });
+const result = syncEngine.executionQueue([
   { method: 'getParticipants', params: { participantFilters: { participantTypes: [INDIVIDUAL] } } },
 ]);
 const { participants } = result[0];

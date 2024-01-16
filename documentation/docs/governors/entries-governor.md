@@ -12,11 +12,11 @@ Bulk add an array of `participantIds` to a specific **stage** of a draw with a s
 
 ```js
 engine.addDrawEntries({
-  entryStage: MAIN, // optional
-  entryStatus: ALTERNATE, // optional
   ignoreStageSpace, // optional boolean to disable checking available positions
   entryStageSequence, // optional - applies to qualifying
   autoEntryPositions, // optional - keeps entries ordered by entryStage/entryStatus and auto-increments
+  entryStatus: ALTERNATE, // optional
+  entryStage: MAIN, // optional
   participantIds,
   eventId,
   drawId,
@@ -63,6 +63,112 @@ engine.addEventEntryPairs({
   entryStage: QUALIFYING, // optional
   participantIdPairs,
   eventId,
+});
+```
+
+---
+
+## checkValidEntries
+
+```js
+const { error, success } = engine.checkValidEntries({
+  consideredEntries, // optional array of entries to check
+  enforceGender, // optional boolean - defaults to true
+  eventId, // required
+});
+```
+
+---
+
+## destroyGroupEntry
+
+Removes a "grouping" entry from a event and adds the `individualParticipantIds` to entries. Grouping entries are `participantType` **TEAM** and **PAIR**, both of which include `individualParticipantIds`.
+
+```js
+engine.destroyGroupEntry({
+  participantId,
+  eventId,
+
+  entryStatus, // optional - new entryStatus for individualParticipantIds
+  removeGroupParticipant, // optional - removes group participant from tournament participants
+});
+```
+
+---
+
+## destroyPairEntry
+
+Removes a `{ participantType: PAIR }` entry from an event and adds the individualParticipantIds to entries as entryStatus: UNGROUPED
+
+```js
+engine.destroyPairEntry({
+  participantId,
+  eventId,
+});
+```
+
+---
+
+## modifyEntriesStatus
+
+Modify the entryStatus of participants already in an event or flight/draw. Does not allow participants assigned positions in structures to have an entryStatus of WITHDRAWN.
+
+```js
+const result = engine.modifyEntriesStatus({
+  autoEntryPositions, // optional - keeps entries ordered by entryStage/entryStatus and auto-increments
+  participantIds, // ids of participants whose entryStatus will be modified
+  entryStatus, // new entryStatus
+  entryStage, // optional - e.g. QUALIFYING
+  eventSync, // optional - if there is only a single drawDefinition in event, keep event.entries in sync
+  extension, // optional - { name, value } - add if value; removes if value is undefined
+  eventId, // id of event where the modification(s) will occur
+  drawId, // optional - scope to a specific flight/draw
+  stage, // optional - scope to a specific stage
+});
+```
+
+---
+
+## modifyEventEntries
+
+Modify the entries for an event. For DOUBLES events automatically create PAIR participants if not already present.
+
+```js
+engine.modifyEventEntries({
+  entryStatus = DIRECT_ACCEPTANCE,
+  unpairedParticipantIds = [],
+  participantIdPairs = [],
+  entryStage = MAIN,
+  eventId,
+})
+```
+
+---
+
+## setEntryPosition
+
+Set entry position a single event entry
+
+```js
+engine.setEntryPosition({
+  entryPosition,
+  participantId,
+  eventId, // optional if drawId is provided
+  drawId, // optional if eventId is provided
+});
+```
+
+---
+
+## setEntryPositions
+
+Set entry position for multiple event entries.
+
+```js
+engine.setEntryPositions({
+  entryPositions, // array of [{ entryPosition: 1, participantId: 'participantid' }]
+  eventId, // optional if drawId is provided
+  drawId, // optional if eventId is provided
 });
 ```
 
