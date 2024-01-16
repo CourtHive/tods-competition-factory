@@ -1,13 +1,14 @@
+import { getMatchUpWinner, removeFromScore, getHighTiebreakValue } from './keyValueUtilities';
 import { processIncompleteSetScore } from './processIncompleteSetScore';
+import { getLeadingSide } from 'query/matchUp/checkSetIsComplete';
 import { keyValueTimedSetScore } from './keyValueTimedSetScore';
-import { getWinningSide } from './winningSide';
+import { processTiebreakSet } from './processTiebreakSet';
 import { arrayIndices } from '../../../utilities/arrays';
 import { ensureInt } from '../../../utilities/ensureInt';
-import { processTiebreakSet } from './processTiebreakSet';
 import { keyValueSetScore } from './keyValueSetScore';
 import { getScoreAnalysis } from './scoreAnalysis';
 import { processOutcome } from './processOutcome';
-import { getMatchUpWinner, removeFromScore, getHighTiebreakValue } from './keyValueUtilities';
+import { getWinningSide } from './winningSide';
 
 import { INCOMPLETE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import {
@@ -28,7 +29,6 @@ import {
   STATUS_INTERRUPTED,
   STATUS_ABANDONED,
 } from './constants';
-import { getLeadingSide } from 'query/matchUp/checkSetIsComplete';
 
 export function keyValueMatchUpScore(params) {
   const { auto, checkFormat, shiftFirst, lowSide, value, matchUp } = params;

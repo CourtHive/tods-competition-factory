@@ -12,14 +12,9 @@ import { analyzeSet } from '../../../query/matchUp/analyzeSet';
 
 import { updateTieMatchUpScore } from '../../../mutate/matchUps/score/tieMatchUpScore';
 
-import {
-  checkSetIsComplete,
-  keyValueScore,
-} from '../../../mutate/score/keyValueScore';
-import {
-  getSetComplement,
-  getTiebreakComplement,
-} from '../../../query/matchUp/getComplement';
+import { getSetComplement, getTiebreakComplement } from '../../../query/matchUp/getComplement';
+import { keyValueScore } from 'mutate/score/keyValueScore/keyValueScore';
+import { checkSetIsComplete } from 'query/matchUp/checkSetIsComplete';
 
 // history
 import { calculateHistoryScore } from '../../../mutate/matchUps/score/history/calculateHistoryScore';

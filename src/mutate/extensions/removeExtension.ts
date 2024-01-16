@@ -1,9 +1,9 @@
-import { decorateResult } from '../../global/functions/decorateResult';
+import { decorateResult } from 'global/functions/decorateResult';
 
 import { ErrorType, INVALID_VALUES, MISSING_VALUE, NOT_FOUND } from '../../constants/errorConditionConstants';
-import { ELEMENT_REQUIRED, MISSING_NAME } from '../../constants/infoConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import { TournamentRecords } from 'types/factoryTypes';
+import { ELEMENT_REQUIRED, MISSING_NAME } from 'constants/infoConstants';
+import { TournamentRecords } from '../../types/factoryTypes';
+import { SUCCESS } from 'constants/resultConstants';
 
 type RemoveExtensionResult = {
   success?: boolean;

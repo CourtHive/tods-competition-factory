@@ -4,7 +4,7 @@ import { findStructure } from 'acquire/findStructure';
 import { ensureInt } from 'utilities/ensureInt';
 import { isNumeric } from 'utilities/math';
 
-import { DrawDefinition, Event, Tournament } from 'types/tournamentTypes';
+import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
 import { SUCCESS } from 'constants/resultConstants';
 import {
   INVALID_PARTICIPANT_ID,
