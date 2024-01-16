@@ -1,7 +1,7 @@
 export { factoryVersion as version } from './global/functions/factoryVersion';
 
 // GOVERNORS ------------------------------------------------------------
-export { governors } from './assemblies/governors';
+export * as governors from './assemblies/governors';
 
 // UTILITIES ------------------------------------------------------------
 export * as matchUpFormatCode from './assemblies/governors/matchUpFormatGovernor';

@@ -1,4 +1,4 @@
-import { governors } from '../../../assemblies/governors';
+import * as governors from '../../../assemblies/governors';
 import async from '../../../assemblies/engines/async';
 
 /**
