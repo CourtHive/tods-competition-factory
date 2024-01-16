@@ -2,19 +2,26 @@
 title: Installation
 ---
 
-Add to a project:
+## Add to a project
 
-```sh
+```js
 pnpm add tods-competition-factory
+// - or -
+yarn add tods-competition-factory
+// -or -
+npm i tods-competition-factory
 ```
 
-## Test
+## Include in project
 
-The **Competition Factory** is built following a Test Driven Development process. There are ~500 test suites and ~2000 individual tests that run before every release, covering greater than 96% of the code base.
+```js
+import * as factory from 'tods-competition-factory';
+// - or -
+const factory = require('tods-competition-factory');
+```
 
-These tests are good references for how to use the APIs provided by the factory.
+## Invoke a function
 
-```sh
-// fork and clone or download from github; expand; and:
-pnpm test
+```js
+factory.askEngine.version();
 ```

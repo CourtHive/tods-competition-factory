@@ -13,7 +13,7 @@ import { governors: { competitionGovernor }} from 'tods-competition-factory';
 Links all tournaments currently loaded in state.
 
 ```js
-competitionEngine.linkTournaments();
+engine.linkTournaments();
 ```
 
 ---
@@ -23,7 +23,7 @@ competitionEngine.linkTournaments();
 Unlink the tournament specified by `tournamentId` from other tournaments loaded in state.
 
 ```js
-competitionEngine.unlinkTournament({ tournamentId });
+engine.unlinkTournament({ tournamentId });
 ```
 
 ---
@@ -33,7 +33,7 @@ competitionEngine.unlinkTournament({ tournamentId });
 Removes links between all tournaments currently loaded in state.
 
 ```js
-competitionEngine.unlinkTournaments();
+engine.unlinkTournaments();
 ```
 
 ## removeExtension

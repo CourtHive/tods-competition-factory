@@ -16,7 +16,7 @@ When participants are returned with `{ withIndividualParticipants: true }`, thos
 const {
   participants,
   participantIdsWithConflicts, // array of participantIds which have scheduling conflicts
-} = tournamentEngine.getParticipants({
+} = engine.getParticipants({
   convertExtensions: true, // converts extensions to attributes beginning with underscore
   participantFilters: { participantTypes: [PAIR] },
   scheduleAnalysis: { scheduledMinutesDifference },

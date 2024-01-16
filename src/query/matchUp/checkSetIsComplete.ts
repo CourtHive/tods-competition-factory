@@ -1,6 +1,6 @@
 import { parse } from '../../assemblies/generators/matchUpFormatCode/parse';
 
-import { MISSING_VALUE } from 'constants/errorConditionConstants';
+import { MISSING_VALUE } from '../../constants/errorConditionConstants';
 
 type CheckSetIsCompleteArgs = {
   matchUpScoringFormat?: any;

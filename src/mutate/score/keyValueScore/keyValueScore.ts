@@ -1,6 +1,6 @@
 import { getMatchUpWinner, removeFromScore, getHighTiebreakValue } from './keyValueUtilities';
+import { getLeadingSide } from '../../../query/matchUp/checkSetIsComplete';
 import { processIncompleteSetScore } from './processIncompleteSetScore';
-import { getLeadingSide } from 'query/matchUp/checkSetIsComplete';
 import { keyValueTimedSetScore } from './keyValueTimedSetScore';
 import { processTiebreakSet } from './processTiebreakSet';
 import { arrayIndices } from '../../../utilities/arrays';

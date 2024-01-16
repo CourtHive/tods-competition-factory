@@ -7,20 +7,14 @@ import SeedAssignments from './seedAssignments.json';
 import PolicySeeding from './policySeeding.json';
 
 A **seeding policy** specifies how many seeds to allow per draw size and how seeds are to be positioned within a draw structure;
-it may also instruct the `drawEngine` to disallow the placement of seed numbers in positions which are not defined as seeded positions,
+it may also instruct [generateDrawDefinition](/docs/governors/generation-governor#generatedrawdefinition) to disallow the placement of seed numbers in positions which are not defined as seeded positions,
 as well as indicate that duplicate seed numbers may be used.
 
-<RenderJSON
-  data={PolicySeeding}
-  root={'seeding'}
-  colorScheme={'summerfruit'}
-  invertTheme={true}
-  expandToLevel={1}
-/>
+<RenderJSON data={PolicySeeding} root={'seeding'} colorScheme={'summerfruit'} invertTheme={true} expandToLevel={1} />
 
 ## seedingProfile
 
-There are two **seedingProfile** patterns supported by the `drawEngine` for elimination structures: "CLUSTER" and "SEPARATE".
+There are two **seedingProfile** patterns supported for elimination structures: "CLUSTER" and "SEPARATE".
 `seedingProfile.positioning` determines which draw positions appear in **seedBlocks**.
 
 "CLUSTER" indicates the positioning used by the **ITF**, while "SEPARATE" indicates the positioning used by the **USTA**.

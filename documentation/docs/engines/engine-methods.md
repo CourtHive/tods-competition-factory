@@ -32,7 +32,7 @@ engine.newTournamentRecord(params);
 
 ## setState
 
-See [Global State](docs/global-state#setState)
+See [Global State](/docs/engines/global-state#setstate)
 
 ```js
 engine.setState(tournamentRecords, deepCopyOption, deepCopyAttributes);

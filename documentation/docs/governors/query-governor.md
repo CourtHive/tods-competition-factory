@@ -80,18 +80,17 @@ const matchUpFilters = {
   scheduledDate, // scheduled date of matchUps to return
 };
 
-const { completedMatchUps, dateMatchUps, courtsData, groupInfo, venues } =
-  competitionEngine.competitionScheduleMatchUps({
-    alwaysReturnCompleted, // boolean - when true return completed matchUps regardless of publish state
-    courtCompletedMatchUps, // boolean - include completed matchUps in court.matchUps - useful for pro-scheduling
-    participantsProfile, // optional - ability to specify additions to context (see parameters of tournamentEngine.getParticipants())
-    withCourtGridRows, // optional boolean - return { rows } of matchUps for courts layed out as a grid, with empty cells
-    minCourtGridRows, // optional integer - minimum number of rows to return (compared to auto-calculated rows)
-    sortDateMatchUps, // boolean boolean - optional - defaults to `true`
-    usePublishState, // boolean - when true filter out events and dates that have not been published
-    matchUpFilters, // optional; [ scheduledDate, scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
-    sortCourtsData, // boolean - optional
-  });
+const { completedMatchUps, dateMatchUps, courtsData, groupInfo, venues } = engine.competitionScheduleMatchUps({
+  alwaysReturnCompleted, // boolean - when true return completed matchUps regardless of publish state
+  courtCompletedMatchUps, // boolean - include completed matchUps in court.matchUps - useful for pro-scheduling
+  participantsProfile, // optional - ability to specify additions to context (see parameters of getParticipants())
+  withCourtGridRows, // optional boolean - return { rows } of matchUps for courts layed out as a grid, with empty cells
+  minCourtGridRows, // optional integer - minimum number of rows to return (compared to auto-calculated rows)
+  sortDateMatchUps, // boolean boolean - optional - defaults to `true`
+  usePublishState, // boolean - when true filter out events and dates that have not been published
+  matchUpFilters, // optional; [ scheduledDate, scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
+  sortCourtsData, // boolean - optional
+});
 ```
 
 ---
@@ -102,14 +101,12 @@ Returns categorized matchUps from all structures within a draw.
 
 ```js
 const { upcomingMatchUps, pendingMatchUps, completedMatchUps, abandonedMatchUps, byeMatchUps } = engine.drawMatchUps({
-  context, // optional context to be added into matchUps
-  inContext, // boolean - add context { drawId, structureId, participant, individualParticipants ... }
-  nextMatchUps, // optioanl - boolean - to include winnerTo and loserTo
-  matchUpFilters, // attribute filters
-  contextFilters, // filters based on context attributes
-  tournamentParticipants, // optional - provide an array of tournamentParticipants to add into matchUps
-  requireParticipants, // optional - require that participants be loaded into drawEngine or passed into method
   tournamentAppliedPolicies, // any policies, such as privacy, to be applied to matchUps
+  contextFilters, // filters based on context attributes
+  matchUpFilters, // attribute filters
+  nextMatchUps, // optioanl - boolean - to include winnerTo and loserTo
+  inContext, // boolean - add context { drawId, structureId, participant, individualParticipants ... }
+  context, // optional context to be added into matchUps
 });
 ```
 
@@ -525,12 +522,12 @@ const {
 
 ## getMatchUpContextIds
 
-Convenience method to find a `matchUp` by `matchUpId` and return "context ids". Does NOT require that drawEngine state be set, but does require an array of "inContext" `matchUps`.
+Convenience method to get "context" ids for a `matchUp` by `matchUpId`. Requires an array of "inContext" `matchUps`.
 
 ```js
 const { matchUpId, drawId, eventId, structureId, tournamentId } = engine.getMatchUpContextIds({
-  matchUps,
   matchUpId,
+  matchUps,
 });
 ```
 
@@ -914,7 +911,7 @@ const result = engine.getParticipantStats({
   withIndividualStats, // optional boolean
   teamParticipantId, // optional - when not provided all teams are processed
   tallyPolicy, // optional
-  matchUps, // optional - specifiy or allow tournamentEngine to get all
+  matchUps, // optional - specifiy or allow engine to get all
 });
 
 const {
@@ -932,9 +929,9 @@ const {
 
 ## getPersonRequests
 
-Returns an object with array of requests for each relevant `personId`. Request objects are returned with a `requestId` which can be used to call [modifyPersonRequests](competition-engine-api#modifypersonrequests).
+Returns an object with array of requests for each relevant `personId`. Request objects are returned with a `requestId` which can be used to call [modifyPersonRequests](/docs/governors/participant-governor#modifypersonrequests).
 
-See [addPersonRequests](competition-engine-api#addpersonrequests) for request object structure.
+See [addPersonRequests](/docs/governors/participant-governor#addpersonrequests) for request object structure.
 
 ```js
 const { personRequests } = engine.getPersonRequests({
@@ -1375,7 +1372,7 @@ const {
   isByeMatchUp, // boolean; true if matchUp includes a BYE
   structureIsComplete, // boolean; true if structure is ready for positioning
   validActions, // array of possible actions given current matchUpStatus
-} = tournamentEngine.matchUpActions({
+} = engine.matchUpActions({
   restrictAdHocRoundParticipants, // optional - true by default; applies to AD_HOC; disallow the same participant being in the same round multiple times
   sideNumber, // optional - select side to which action should apply; applies to AD_HOC position assignments
   matchUpId, // required - reference to targeted matchUp
@@ -1384,7 +1381,7 @@ const {
 
 const {
   type, // 'REFEREE', 'SCHEDULE', 'PENALTY', 'STATUS', 'SCORE', 'START', 'END', 'SUBSTITUTION'.
-  method, // tournamentEngine method relating to action type
+  method, // engine method relating to action type
   payload, // attributes to be passed to method
   // additional method-specific options for values to be added to payload when calling method
 } = validAction;
@@ -1394,7 +1391,7 @@ const {
 
 ## participantScaleItem
 
-Similar to [getParticipantScaleItem](#getparticipantscaleitem) but takes a `participant` object and doesn't require `tournamentEngine.setState(tournamentRecord)`.
+Similar to [getParticipantScaleItem](#getparticipantscaleitem) but takes a `participant` object and doesn't require `engine.setState(tournamentRecord)`.
 
 See [Scale Items](../concepts/scaleItems).
 
@@ -1438,7 +1435,7 @@ const {
 
 const {
   type, // 'ASSIGN', 'LUCKY', 'SWAP', 'BYE', 'REMOVE'
-  method, // tournamentEngine method relating to action type
+  method, // engine method relating to action type
   payload, // attributes to be passed to method
   // additional method-specific options for values to be added to payload when calling method
 } = validAction;
@@ -1460,11 +1457,3 @@ const { abandonedMatchUps, completedMatchUps, upcomingMatchUps, pendingMatchUps,
 ```
 
 ---
-
-## validateSchedulingProfile
-
-```js
-const { valid, error } = engine.validateSchedulingProfile({
-  schedulingProfile,
-});
-```

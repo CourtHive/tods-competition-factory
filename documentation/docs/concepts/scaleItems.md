@@ -36,13 +36,13 @@ const { scaleItem } = engine.getParticipantScaleItem({
 
 ## Generating Seeding scaleItems
 
-Scale items may be generated automatically using [autoSeeding](/docs/apis/tournament-engine-api#autoseeding) or [generateSeedingScaleItems](/docs/apis/tournament-engine-api#generateseedingscaleitems) and then saved to participants with [setParticipantScaleItems](/docs/apis/tournament-engine-api#setparticipantscaleitems).
+Scale items may be generated automatically using [autoSeeding](/docs/governors/draws-governor#autoseeding) or [generateSeedingScaleItems](/docs/governors/generation-governor#generateseedingscaleitems) and then saved to participants with [setParticipantScaleItems](/docs/governors/participant-governor#setparticipantscaleitems).
 
 ## scaleItem Accessors
 
 When **scaleValues** are objects, **scaleAttributes** may include an **accessor** describing an attribute path to a nested value.
 
-See [Accessors](../policies/accessors).
+See [Accessors](/docs/concepts/accessors).
 
 ```js
 // to access the value of a particular attribute...
