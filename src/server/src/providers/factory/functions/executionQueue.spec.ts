@@ -1,8 +1,9 @@
 import { generateTournamentRecord } from '../../../data/fileSystem/generateTournamentRecord';
 import { removeTournamentRecords } from '../../../data/fileSystem/removeTournamentRecords';
-import { factoryConstants } from '../../../../../constants/';
-import { TEST } from '../../../common/constants/test';
 import { executionQueue } from './executionQueue';
+
+import { errorConditionConstants } from '../../../../../constants';
+import { TEST } from '../../../common/constants/test';
 
 describe('executionQueue', () => {
   it('can generate a tournamentRecord', async () => {
@@ -38,6 +39,6 @@ describe('executionQueue', () => {
       executionQueue: [{ method: 'setTournamentDates', params: { tournamentId: TEST } }],
       tournamentIds: ['doesNotExist'],
     });
-    expect(result.error).toEqual(factoryConstants.errorConditionConstants.MISSING_TOURNAMENT_RECORD);
+    expect(result.error).toEqual(errorConditionConstants.MISSING_TOURNAMENT_RECORD);
   });
 });

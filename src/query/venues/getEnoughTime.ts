@@ -1,19 +1,14 @@
 import { minutesDifference, timeToDate } from '../../utilities/dateTime';
 import { generateTimeSlots } from '../../assemblies/generators/scheduling/generateTimeSlots';
 
-export function getEnoughTime({
-  averageMatchUpMinutes,
-  includeBookingTypes,
-  periodStartTime,
-  periodEndTime,
-}) {
+export function getEnoughTime({ averageMatchUpMinutes, includeBookingTypes, periodStartTime, periodEndTime }) {
   const enoughTime = (courtDate) => {
-    const timeSlots = generateTimeSlots({
+    const { timeSlots } = generateTimeSlots({
       includeBookingTypes,
       courtDate,
     });
-    const availableTimeSlots = timeSlots.filter(validTimeSlot);
-    return !!availableTimeSlots.length;
+    const availableTimeSlots = timeSlots?.filter(validTimeSlot);
+    return !!availableTimeSlots?.length;
   };
 
   function validTimeSlot(timeSlot) {

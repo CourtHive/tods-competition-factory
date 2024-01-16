@@ -1,23 +1,25 @@
+import { checkRequiredParameters } from '../../../parameters/checkRequiredParameters';
 import { timeToDate, extractTime, tidyTime } from '../../../utilities/dateTime';
+
+import { ResultType } from '../../../global/functions/decorateResult';
+import { OBJECT } from '../../../constants/attributeConstants';
 
 type GenerateTimeSlotsArgs = {
   includeBookingTypes?: string[];
   courtDate: any;
 };
 
-export function generateTimeSlots({
-  includeBookingTypes = [],
-  courtDate,
-}: GenerateTimeSlotsArgs) {
+export function generateTimeSlots(params: GenerateTimeSlotsArgs): ResultType & { timeSlots?: any[] } {
+  const paramsCheck = checkRequiredParameters(params, [{ courtDate: true, _ofType: OBJECT }]);
+  if (paramsCheck.error) return paramsCheck;
+
+  const { includeBookingTypes = [], courtDate } = params;
+
   const timeSlots: any[] = [];
   let startTime = timeToDate(courtDate.startTime);
 
   (courtDate.bookings || [])
-    .filter(
-      (booking) =>
-        !booking.bookingType ||
-        !includeBookingTypes.includes(booking.bookingType)
-    )
+    .filter((booking) => !booking.bookingType || !includeBookingTypes.includes(booking.bookingType))
     .sort((a, b) => tidyTime(a.startTime).localeCompare(tidyTime(b.startTime)))
     .forEach((booking) => {
       const timeSlot = {
@@ -40,5 +42,5 @@ export function generateTimeSlots({
     timeSlots.push(timeSlot);
   }
 
-  return timeSlots;
+  return { timeSlots };
 }

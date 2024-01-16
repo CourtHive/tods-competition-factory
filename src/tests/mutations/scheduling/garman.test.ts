@@ -221,10 +221,10 @@ it('can generate timeSlots from dateAvailability', () => {
   };
 
   const timeSlots = garman.generateTimeSlots({
-    courtDate,
     includeBookingTypes: ['matchUp'],
-  });
-  expect(timeSlots.length).toEqual(2);
-  expect(timeSlots[0]).toEqual({ startTime: '09:10', endTime: '12:00' });
-  expect(timeSlots[1]).toEqual({ startTime: '13:30', endTime: '14:00' });
+    courtDate,
+  }).timeSlots;
+  expect(timeSlots?.length).toEqual(2);
+  expect(timeSlots?.[0]).toEqual({ startTime: '09:10', endTime: '12:00' });
+  expect(timeSlots?.[1]).toEqual({ startTime: '13:30', endTime: '14:00' });
 });

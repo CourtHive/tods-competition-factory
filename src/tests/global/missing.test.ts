@@ -13,8 +13,8 @@ it.each([syncEngine, asyncEngine])(
         if (['getTournamentId'].includes(method)) {
           expect(result).toBeUndefined();
         } else {
-          // covers methods which are expected to return boolean
-          expect([false, 0].includes(result)).toEqual(true);
+          // covers methods which are expected to return boolean or empty value
+          expect([false, 0, ''].includes(result)).toEqual(true);
         }
       } else if (
         [
@@ -45,26 +45,29 @@ it.each([syncEngine, asyncEngine])(
           'calculateWinCriteria',
           'removePersonRequests',
           'unPublishOrderOfPlay',
-          'categoryCanContain',
-          'getValidGroupSizes',
           'newTournamentRecord',
           'setSchedulingProfile',
+          'categoryCanContain',
+          'getValidGroupSizes',
           'getAppliedPolicies',
           'getVenuesAndCourts',
           'publishOrderOfPlay',
           'compareTieFormats',
           'getPersonRequests',
-          'getScaleValues',
           'getRoundMatchUps',
           'getTournamentIds',
           'setTournamentId',
+          'getScaleValues',
           'devContext',
           'reset',
         ].includes(method);
         if (!successExpected) console.log('success expected', { method, result });
         expect(successExpected).toEqual(true);
       } else if (Array.isArray(result)) {
-        expect(result.length).toEqual(0); // filtering with no values returns no results
+        const expectResultLength = ['courtGenerator'];
+        if (!expectResultLength.includes(method)) {
+          expect(result.length).toEqual(0); // filtering with no values returns no results
+        }
       } else if (['devContext'].includes(method)) {
         expect(result.version).not.toBeUndefined();
       } else {

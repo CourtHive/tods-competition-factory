@@ -18,6 +18,3 @@ export { deleteEvents } from '../../../mutate/events/deleteEvent';
 export { modifyEvent } from '../../../mutate/events/modifyEvent';
 export { addFlight } from '../../../mutate/events/addFlight';
 export { addEvent } from '../../../mutate/events/addEvent';
-
-export * as mutate from './mutate';
-export * as query from './query';
