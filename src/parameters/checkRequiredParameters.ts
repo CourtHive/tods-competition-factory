@@ -1,5 +1,5 @@
-import { isFunction, isObject } from '../utilities/objects';
-import { intersection } from '../utilities/arrays';
+import { isFunction, isObject } from '../tools/objects';
+import { intersection } from '../tools/arrays';
 
 import { ResultType, decorateResult } from '../global/functions/decorateResult';
 import {

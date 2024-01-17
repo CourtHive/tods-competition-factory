@@ -1,16 +1,11 @@
 import { countGames, countSets, countPoints } from './scoreCounters';
 import { calculatePercentages } from './calculatePercentages';
-import { intersection } from '../../../utilities/arrays';
-import { ensureInt } from '../../../utilities/ensureInt';
+import { intersection } from '../../../tools/arrays';
+import { ensureInt } from '../../../tools/ensureInt';
 
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { HydratedMatchUp } from '../../../types/hydrated';
-import {
-  completedMatchUpStatuses,
-  DEFAULTED,
-  RETIRED,
-  WALKOVER,
-} from '../../../constants/matchUpStatusConstants';
+import { completedMatchUpStatuses, DEFAULTED, RETIRED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 
 // DONE: ?? this TODO seems old
 /*
@@ -40,38 +35,28 @@ export function getParticipantResults({
   const filteredMatchUps = matchUps.filter((matchUp) => {
     return (
       // Do not filter out team matchUps based on matchUpStatus
-      (matchUp.tieMatchUps ||
-        !excludeMatchUpStatuses.includes(matchUp.matchUpStatus)) &&
+      (matchUp.tieMatchUps || !excludeMatchUpStatuses.includes(matchUp.matchUpStatus)) &&
       // include if no participantIds (idsFilter active) have been specified
       // if idsFilter is active then exclude matchUps which are not between specified participantIds
       (!participantIds?.length ||
-        intersection(participantIds, [
-          getSideId(matchUp, 0),
-          getSideId(matchUp, 1),
-        ]).length === 2)
+        intersection(participantIds, [getSideId(matchUp, 0), getSideId(matchUp, 1)]).length === 2)
     );
   });
 
   const allSets = filteredMatchUps.flatMap(({ score, tieMatchUps }) =>
     tieMatchUps
       ? tieMatchUps
-          .filter(
-            ({ matchUpStatus }) =>
-              !excludeMatchUpStatuses.includes(matchUpStatus)
-          )
+          .filter(({ matchUpStatus }) => !excludeMatchUpStatuses.includes(matchUpStatus))
           .flatMap(({ score }) => score?.sets?.length ?? 0)
-      : score?.sets?.length ?? 0
+      : score?.sets?.length ?? 0,
   );
   const totalSets = allSets.reduce((a, b) => a + b, 0);
 
   for (const matchUp of filteredMatchUps) {
-    const { matchUpStatus, tieMatchUps, tieFormat, score, winningSide, sides } =
-      matchUp;
+    const { matchUpStatus, tieMatchUps, tieFormat, score, winningSide, sides } = matchUp;
 
     const manualGamesOverride =
-      tieFormat &&
-      matchUp._disableAutoCalc &&
-      tieFormat.collectionDefinitions.every(({ scoreValue }) => scoreValue);
+      tieFormat && matchUp._disableAutoCalc && tieFormat.collectionDefinitions.every(({ scoreValue }) => scoreValue);
 
     const winningParticipantId = winningSide && getWinningSideId(matchUp);
     const losingParticipantId = winningSide && getLosingSideId(matchUp);
@@ -94,20 +79,14 @@ export function getParticipantResults({
         for (const tieMatchUp of tieMatchUps) {
           if (tieMatchUp.winningSide) {
             const tieWinningParticipantId = sides?.find(
-              ({ sideNumber }) => sideNumber === tieMatchUp.winningSide
+              ({ sideNumber }) => sideNumber === tieMatchUp.winningSide,
             )?.participantId;
             const tieLosingParticipantId = sides?.find(
-              ({ sideNumber }) => sideNumber === tieMatchUp.winningSide
+              ({ sideNumber }) => sideNumber === tieMatchUp.winningSide,
             )?.participantId;
             if (tieWinningParticipantId && tieLosingParticipantId) {
-              checkInitializeParticipant(
-                participantResults,
-                tieWinningParticipantId
-              );
-              checkInitializeParticipant(
-                participantResults,
-                tieLosingParticipantId
-              );
+              checkInitializeParticipant(participantResults, tieWinningParticipantId);
+              checkInitializeParticipant(participantResults, tieLosingParticipantId);
               participantResults[tieWinningParticipantId].tieMatchUpsWon += 1;
               participantResults[tieLosingParticipantId].tieMatchUpsLost += 1;
 
@@ -153,15 +132,12 @@ export function getParticipantResults({
             if (tieMatchUp.winningSide === winningSide) {
               if (winningParticipantId) {
                 participantResults[winningParticipantId].tieMatchUpsWon += 1;
-                if (isSingles)
-                  participantResults[winningParticipantId].tieSinglesWon += 1;
-                if (isDoubles)
-                  participantResults[winningParticipantId].tieDoublesWon += 1;
+                if (isSingles) participantResults[winningParticipantId].tieSinglesWon += 1;
+                if (isDoubles) participantResults[winningParticipantId].tieDoublesWon += 1;
               }
               if (losingParticipantId) {
                 participantResults[losingParticipantId].tieMatchUpsLost += 1;
-                if (isSingles)
-                  participantResults[losingParticipantId].tieSinglesLost += 1;
+                if (isSingles) participantResults[losingParticipantId].tieSinglesLost += 1;
                 if (isDoubles) {
                   participantResults[losingParticipantId].tieDoublesLost += 1;
                 }
@@ -169,16 +145,14 @@ export function getParticipantResults({
             } else if (tieMatchUp.winningSide !== winningSide) {
               if (losingParticipantId) {
                 participantResults[losingParticipantId].tieMatchUpsWon += 1;
-                if (isSingles)
-                  participantResults[losingParticipantId].tieSinglesWon += 1;
+                if (isSingles) participantResults[losingParticipantId].tieSinglesWon += 1;
                 if (isDoubles) {
                   participantResults[losingParticipantId].tieDoublesWon += 1;
                 }
               }
               if (winningParticipantId) {
                 participantResults[winningParticipantId].tieMatchUpsLost += 1;
-                if (isSingles)
-                  participantResults[winningParticipantId].tieSinglesLost += 1;
+                if (isSingles) participantResults[winningParticipantId].tieSinglesLost += 1;
                 if (isDoubles) {
                   participantResults[winningParticipantId].tieDoublesLost += 1;
                 }
@@ -222,24 +196,14 @@ export function getParticipantResults({
     }
 
     if (manualGamesOverride) {
-      const side1participantId = sides?.find(
-        ({ sideNumber }) => sideNumber === 1
-      )?.participantId;
-      const side2participantId = sides?.find(
-        ({ sideNumber }) => sideNumber === 2
-      )?.participantId;
+      const side1participantId = sides?.find(({ sideNumber }) => sideNumber === 1)?.participantId;
+      const side2participantId = sides?.find(({ sideNumber }) => sideNumber === 2)?.participantId;
 
       checkInitializeParticipant(participantResults, side1participantId);
       checkInitializeParticipant(participantResults, side2participantId);
 
-      const gamesWonSide1 = score?.sets?.reduce(
-        (total, set) => total + (set?.side1Score ?? 0),
-        0
-      );
-      const gamesWonSide2 = score?.sets?.reduce(
-        (total, set) => total + (set.side2Score ?? 0),
-        0
-      );
+      const gamesWonSide1 = score?.sets?.reduce((total, set) => total + (set?.side1Score ?? 0), 0);
+      const gamesWonSide2 = score?.sets?.reduce((total, set) => total + (set.side2Score ?? 0), 0);
 
       if (side1participantId) {
         participantResults[side1participantId].gamesWon += gamesWonSide1;
@@ -314,12 +278,7 @@ function checkInitializeParticipant(participantResults, participantId) {
     };
 }
 
-function processScore({
-  manualGamesOverride,
-  participantResults,
-  score,
-  sides,
-}) {
+function processScore({ manualGamesOverride, participantResults, score, sides }) {
   const { sets } = score || {};
   const gamesTally: number[][] = [[], []];
   const setsTally = [0, 0];
@@ -331,10 +290,7 @@ function processScore({
     gamesTally[1].push(ensureInt(side2Score || 0));
   }
 
-  const gamesTotal = [
-    gamesTally[0].reduce((a, b) => a + b, 0),
-    gamesTally[1].reduce((a, b) => a + b, 0),
-  ];
+  const gamesTotal = [gamesTally[0].reduce((a, b) => a + b, 0), gamesTally[1].reduce((a, b) => a + b, 0)];
 
   sides.forEach((side, i) => {
     const { participantId } = side;
@@ -391,56 +347,36 @@ function processMatchUp({
   const { pointsTally } = countPoints({ score, matchUpFormat });
 
   if (winningParticipantId) {
-    participantResults[winningParticipantId].setsWon +=
-      setsTally[winningSideIndex];
-    participantResults[winningParticipantId].setsLost +=
-      setsTally[losingSideIndex];
+    participantResults[winningParticipantId].setsWon += setsTally[winningSideIndex];
+    participantResults[winningParticipantId].setsLost += setsTally[losingSideIndex];
 
     if (!manualGamesOverride) {
-      participantResults[winningParticipantId].gamesWon +=
-        gamesTally[winningSideIndex];
-      participantResults[winningParticipantId].gamesLost +=
-        gamesTally[losingSideIndex];
+      participantResults[winningParticipantId].gamesWon += gamesTally[winningSideIndex];
+      participantResults[winningParticipantId].gamesLost += gamesTally[losingSideIndex];
     }
 
-    participantResults[winningParticipantId].pointsWon +=
-      pointsTally[winningSideIndex];
-    participantResults[winningParticipantId].pointsLost +=
-      pointsTally[losingSideIndex];
+    participantResults[winningParticipantId].pointsWon += pointsTally[winningSideIndex];
+    participantResults[winningParticipantId].pointsLost += pointsTally[losingSideIndex];
   }
   if (losingParticipantId) {
-    participantResults[losingParticipantId].setsWon +=
-      setsTally[losingSideIndex];
-    participantResults[losingParticipantId].setsLost +=
-      setsTally[winningSideIndex];
+    participantResults[losingParticipantId].setsWon += setsTally[losingSideIndex];
+    participantResults[losingParticipantId].setsLost += setsTally[winningSideIndex];
 
     if (!manualGamesOverride) {
-      participantResults[losingParticipantId].gamesWon +=
-        gamesTally[losingSideIndex];
-      participantResults[losingParticipantId].gamesLost +=
-        gamesTally[winningSideIndex];
+      participantResults[losingParticipantId].gamesWon += gamesTally[losingSideIndex];
+      participantResults[losingParticipantId].gamesLost += gamesTally[winningSideIndex];
     }
 
-    participantResults[losingParticipantId].pointsWon +=
-      pointsTally[losingSideIndex];
-    participantResults[losingParticipantId].pointsLost +=
-      pointsTally[winningSideIndex];
+    participantResults[losingParticipantId].pointsWon += pointsTally[losingSideIndex];
+    participantResults[losingParticipantId].pointsLost += pointsTally[winningSideIndex];
   }
 }
 
-function processOutcome({
-  winningParticipantId,
-  losingParticipantId,
-  participantResults,
-  matchUpStatus,
-}) {
+function processOutcome({ winningParticipantId, losingParticipantId, participantResults, matchUpStatus }) {
   if (losingParticipantId) {
-    if (matchUpStatus === WALKOVER)
-      participantResults[losingParticipantId].walkovers += 1;
-    if (matchUpStatus === DEFAULTED)
-      participantResults[losingParticipantId].defaults += 1;
-    if (matchUpStatus === RETIRED)
-      participantResults[losingParticipantId].retirements += 1;
+    if (matchUpStatus === WALKOVER) participantResults[losingParticipantId].walkovers += 1;
+    if (matchUpStatus === DEFAULTED) participantResults[losingParticipantId].defaults += 1;
+    if (matchUpStatus === RETIRED) participantResults[losingParticipantId].retirements += 1;
 
     // attribute to catch all scenarios where participant terminated matchUp irregularly
     if ([DEFAULTED, RETIRED, WALKOVER].includes(matchUpStatus))
@@ -455,8 +391,6 @@ function processOutcome({
 
   if (losingParticipantId && winningParticipantId) {
     participantResults[losingParticipantId].defeats.push(winningParticipantId);
-    participantResults[winningParticipantId].victories.push(
-      losingParticipantId
-    );
+    participantResults[winningParticipantId].victories.push(losingParticipantId);
   }
 }

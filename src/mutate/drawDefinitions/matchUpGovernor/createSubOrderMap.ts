@@ -1,7 +1,7 @@
-import { xa } from '../../../utilities/objects';
+import { xa } from '../../../tools/objects';
 import { findExtension } from '../../../acquire/findExtension';
-import { instanceCount } from '../../../utilities/arrays';
-import { ensureInt } from '../../../utilities/ensureInt';
+import { instanceCount } from '../../../tools/arrays';
+import { ensureInt } from '../../../tools/ensureInt';
 
 import { PARTICIPANT_ID } from '../../../constants/attributeConstants';
 import { SUB_ORDER } from '../../../constants/extensionConstants';

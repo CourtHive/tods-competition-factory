@@ -1,7 +1,7 @@
 import { generateScoreString } from '../matchUps/generateScoreString';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
-import { definedAttributes } from '../../../utilities/definedAttributes';
-import { parseScoreString } from '../../../utilities/parseScoreString';
+import { definedAttributes } from '../../../tools/definedAttributes';
+import { parseScoreString } from '../../../tools/parseScoreString';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 
@@ -25,8 +25,7 @@ export function generateOutcomeFromScoreString(params) {
         matchUpStatus,
       },
     };
-  if (winningSide && ![1, 2, undefined].includes(winningSide))
-    return { error: INVALID_VALUES, winningSide };
+  if (winningSide && ![1, 2, undefined].includes(winningSide)) return { error: INVALID_VALUES, winningSide };
 
   const neutralParsedSets = scoreString && parseScoreString({ scoreString });
   const score: any = {};

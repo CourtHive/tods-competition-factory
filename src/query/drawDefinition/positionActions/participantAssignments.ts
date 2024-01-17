@@ -1,9 +1,9 @@
 import { getParticipantId } from '../../../global/functions/extractors';
-import { definedAttributes } from '../../../utilities/definedAttributes';
-import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
+import { definedAttributes } from '../../../tools/definedAttributes';
+import { makeDeepCopy } from '../../../tools/makeDeepCopy';
 import { getDrawMatchUps } from '../../matchUps/drawMatchUps';
 import { getNumericSeedValue } from '../getNumericSeedValue';
-import { unique } from '../../../utilities/arrays';
+import { unique } from '../../../tools/arrays';
 import { getNextSeedBlock } from '../seedGetter';
 
 import { DrawDefinition, Event, PositionAssignment } from '../../../types/tournamentTypes';
@@ -140,8 +140,8 @@ export function getValidAssignmentActions({
 
     if (unplacedSeedAssignments?.length) {
       // return any valid seedAssignments
-      const validToAssign = unplacedSeedAssignments.filter(
-        (seedAssignment) => unplacedSeedParticipantIds?.includes(seedAssignment.participantId),
+      const validToAssign = unplacedSeedAssignments.filter((seedAssignment) =>
+        unplacedSeedParticipantIds?.includes(seedAssignment.participantId),
       );
 
       validToAssign.sort(validAssignmentsSort);

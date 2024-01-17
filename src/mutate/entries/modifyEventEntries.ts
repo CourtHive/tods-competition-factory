@@ -1,6 +1,6 @@
 import { getPairedParticipant } from '../../query/participant/getPairedParticipant';
 import { addParticipants } from '../participants/addParticipants';
-import { intersection } from '../../utilities/arrays';
+import { intersection } from '../../tools/arrays';
 
 import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';
 import { MAIN } from '../../constants/drawDefinitionConstants';
@@ -12,15 +12,8 @@ import {
   INVALID_PARTICIPANT_IDS,
 } from '../../constants/errorConditionConstants';
 
-import {
-  DIRECT_ACCEPTANCE,
-  UNGROUPED,
-} from '../../constants/entryStatusConstants';
-import {
-  EntryStatusUnion,
-  Event,
-  Tournament,
-} from '../../types/tournamentTypes';
+import { DIRECT_ACCEPTANCE, UNGROUPED } from '../../constants/entryStatusConstants';
+import { EntryStatusUnion, Event, Tournament } from '../../types/tournamentTypes';
 
 // should NOT remove entries that are present in drawDefinition.entries
 // if those entries are assigned positions in any structures...
@@ -49,23 +42,17 @@ export function modifyEventEntries({
     .map((participant) => participant.participantId);
 
   // concat all incoming INDIVIDUAL participantIds
-  const incomingIndividualParticipantIds = unpairedParticipantIds
-    .concat(...participantIdPairs)
-    .flat(Infinity);
+  const incomingIndividualParticipantIds = unpairedParticipantIds.concat(...participantIdPairs).flat(Infinity);
 
   // ensure all participants are present in the tournament record
   const invalidParticipantIds = incomingIndividualParticipantIds.filter(
-    (participantId) => !individualParticipantIds.includes(participantId)
+    (participantId) => !individualParticipantIds.includes(participantId),
   );
-  if (invalidParticipantIds.length)
-    return { error: INVALID_PARTICIPANT_IDS, invalidParticipantIds };
+  if (invalidParticipantIds.length) return { error: INVALID_PARTICIPANT_IDS, invalidParticipantIds };
 
   // ensure all participantIdPairs have two individual participantIds
-  const invalidParticipantIdPairs = participantIdPairs.filter(
-    (pair) => pair.length !== 2
-  );
-  if (invalidParticipantIdPairs.length)
-    return { error: INVALID_PARTICIPANT_IDS, invalidParticipantIdPairs };
+  const invalidParticipantIdPairs = participantIdPairs.filter((pair) => pair.length !== 2);
+  if (invalidParticipantIdPairs.length) return { error: INVALID_PARTICIPANT_IDS, invalidParticipantIdPairs };
 
   // make an array of all existing PAIR participantIds
   const existingParticipantIdPairs = tournamentParticipants
@@ -74,20 +61,15 @@ export function modifyEventEntries({
 
   // determine participantIdPairs which do not already exist
   const newParticipantIdPairs = participantIdPairs.filter(
-    (incoming) =>
-      !existingParticipantIdPairs.find(
-        (existing) => intersection(existing, incoming).length === 2
-      )
+    (incoming) => !existingParticipantIdPairs.find((existing) => intersection(existing, incoming).length === 2),
   );
 
   // create new participant objects
-  const newParticipants: any[] = newParticipantIdPairs.map(
-    (individualParticipantIds) => ({
-      participantType: PAIR,
-      participantRole: COMPETITOR,
-      individualParticipantIds,
-    })
-  );
+  const newParticipants: any[] = newParticipantIdPairs.map((individualParticipantIds) => ({
+    participantType: PAIR,
+    participantRole: COMPETITOR,
+    individualParticipantIds,
+  }));
 
   const result = addParticipants({
     participants: newParticipants,
@@ -111,23 +93,16 @@ export function modifyEventEntries({
       entryStage,
     }));
 
-  const unpairedParticipantEntries: any[] = unpairedParticipantIds.map(
-    (participantId) => ({
-      entryStatus: UNGROUPED,
-      participantId,
-      entryStage,
-    })
-  );
+  const unpairedParticipantEntries: any[] = unpairedParticipantIds.map((participantId) => ({
+    entryStatus: UNGROUPED,
+    participantId,
+    entryStage,
+  }));
 
   // remove all entries matching the stage which has been modified
-  event.entries = (event.entries ?? []).filter(
-    (entry) => entry.entryStage === entryStage
-  );
+  event.entries = (event.entries ?? []).filter((entry) => entry.entryStage === entryStage);
 
-  event.entries = event.entries.concat(
-    ...pairParticipantEntries,
-    ...unpairedParticipantEntries
-  );
+  event.entries = event.entries.concat(...pairParticipantEntries, ...unpairedParticipantEntries);
 
   return { ...SUCCESS };
 }

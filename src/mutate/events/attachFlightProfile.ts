@@ -1,7 +1,7 @@
 import { addEventExtension } from '../extensions/addRemoveExtensions';
 import { decorateResult } from '../../global/functions/decorateResult';
 import { getFlightProfile } from '../../query/event/getFlightProfile';
-import { makeDeepCopy } from '../../utilities/makeDeepCopy';
+import { makeDeepCopy } from '../../tools/makeDeepCopy';
 
 import { FLIGHT_PROFILE } from '../../constants/extensionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
@@ -14,14 +14,11 @@ import {
 
 export function attachFlightProfile({ deleteExisting, event, flightProfile }) {
   const stack = 'attachFlightProfile';
-  if (!flightProfile)
-    return decorateResult({ result: { error: MISSING_VALUE }, stack });
-  if (!event)
-    return decorateResult({ result: { error: MISSING_EVENT }, stack });
+  if (!flightProfile) return decorateResult({ result: { error: MISSING_VALUE }, stack });
+  if (!event) return decorateResult({ result: { error: MISSING_EVENT }, stack });
 
   const { flightProfile: existingFlightProfile } = getFlightProfile({ event });
-  if (existingFlightProfile && !deleteExisting)
-    return decorateResult({ result: { error: EXISTING_PROFILE }, stack });
+  if (existingFlightProfile && !deleteExisting) return decorateResult({ result: { error: EXISTING_PROFILE }, stack });
 
   if (event.drawDefinitions?.length)
     return decorateResult({

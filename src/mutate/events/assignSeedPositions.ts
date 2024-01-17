@@ -1,6 +1,6 @@
 import { getStructureSeedAssignments } from '../../query/structure/getStructureSeedAssignments';
 import { assignSeed } from '../drawDefinitions/entryGovernor/seedAssignment';
-import { uniqueValues } from '../../utilities/arrays';
+import { uniqueValues } from '../../tools/arrays';
 
 import { ResultType } from '../../global/functions/decorateResult';
 import { SUCCESS } from '../../constants/resultConstants';
@@ -12,11 +12,7 @@ import {
   NO_MODIFICATIONS_APPLIED,
   INVALID_PARTICIPANT_SEEDING,
 } from '../../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  SeedAssignment,
-  Tournament,
-} from '../../types/tournamentTypes';
+import { DrawDefinition, SeedAssignment, Tournament } from '../../types/tournamentTypes';
 
 /*
  * Provides the ability to assign seedPositions *after* a structure has been generated
@@ -35,7 +31,7 @@ type AssignSeedPositionsArgs = {
   event: Event;
 };
 export function assignSeedPositions(
-  params: AssignSeedPositionsArgs
+  params: AssignSeedPositionsArgs,
 ): ResultType | { modifications?: number; success?: boolean } {
   const {
     provisionalPositioning,
@@ -70,16 +66,12 @@ export function assignSeedPositions(
     {},
     ...(seedAssignments ?? [])
       .filter((assignment) => assignment.seedNumber)
-      .map((assignment) => ({ [assignment.seedNumber]: assignment }))
+      .map((assignment) => ({ [assignment.seedNumber]: assignment })),
   );
 
   assignments.forEach((newAssignment) => {
     const { seedNumber } = newAssignment;
-    if (
-      seedLimit &&
-      seedNumber <= seedLimit &&
-      (!useExistingSeedLimit || mergeObject[seedNumber])
-    ) {
+    if (seedLimit && seedNumber <= seedLimit && (!useExistingSeedLimit || mergeObject[seedNumber])) {
       mergeObject[seedNumber] = newAssignment;
     }
   });
@@ -88,9 +80,7 @@ export function assignSeedPositions(
    * ensure that no participantId is assigned to multiple seedNumbers
    */
   const updatedAssignments: any[] = Object.values(mergeObject);
-  const participantIds = updatedAssignments
-    .map((assignment) => assignment?.participantId)
-    .filter(Boolean);
+  const participantIds = updatedAssignments.map((assignment) => assignment?.participantId).filter(Boolean);
 
   if (participantIds.length !== uniqueValues(participantIds).length) {
     return {
@@ -115,7 +105,5 @@ export function assignSeedPositions(
     }
   }
 
-  return modifications
-    ? { ...SUCCESS, modifications }
-    : { error: NO_MODIFICATIONS_APPLIED };
+  return modifications ? { ...SUCCESS, modifications } : { error: NO_MODIFICATIONS_APPLIED };
 }

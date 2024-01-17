@@ -1,5 +1,5 @@
 import { parse } from '../../assemblies/generators/matchUpFormatCode/parse';
-import { instanceCount } from '../../utilities/arrays';
+import { instanceCount } from '../../tools/arrays';
 
 import { DEFAULTED, RETIRED, WALKOVER } from '../../constants/matchUpStatusConstants';
 import { Score } from '../../types/tournamentTypes';

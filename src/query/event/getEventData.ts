@@ -2,25 +2,17 @@ import { getTournamentInfo } from '../tournaments/getTournamentInfo';
 import { getParticipants } from '../participants/getParticipants';
 import { getEventPublishStatus } from './getEventPublishStatus';
 import { getPublishState } from '../events/getPublishState';
-import { makeDeepCopy } from '../../utilities/makeDeepCopy';
-import { isConvertableInteger } from '../../utilities/math';
+import { makeDeepCopy } from '../../tools/makeDeepCopy';
+import { isConvertableInteger } from '../../tools/math';
 import { getDrawData } from '../drawDefinition/getDrawData';
-import { generateRange } from '../../utilities/arrays';
+import { generateRange } from '../../tools/arrays';
 import { getVenueData } from '../venues/getVenueData';
 
 import { Event, Tournament } from '../../types/tournamentTypes';
 import { PUBLIC } from '../../constants/timeItemConstants';
 import { SUCCESS } from '../../constants/resultConstants';
-import {
-  ParticipantsProfile,
-  PolicyDefinitions,
-  StructureSortConfig,
-} from '../../types/factoryTypes';
-import {
-  ErrorType,
-  MISSING_EVENT,
-  MISSING_TOURNAMENT_RECORD,
-} from '../../constants/errorConditionConstants';
+import { ParticipantsProfile, PolicyDefinitions, StructureSortConfig } from '../../types/factoryTypes';
+import { ErrorType, MISSING_EVENT, MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
 
 type GetEventDataArgs = {
   participantsProfile?: ParticipantsProfile;
@@ -77,8 +69,7 @@ export function getEventData(params: GetEventDataArgs): {
 
   const structureFilter = ({ structureId, drawId }) => {
     if (!usePublishState) return true;
-    const structureDetails =
-      publishStatus?.drawDetails?.[drawId]?.structureDetails;
+    const structureDetails = publishStatus?.drawDetails?.[drawId]?.structureDetails;
     if (!structureDetails || !Object.keys(structureDetails).length) return true;
     return structureDetails[structureId]?.published;
   };
@@ -95,10 +86,7 @@ export function getEventData(params: GetEventDataArgs): {
 
   const roundLimitMapper = ({ drawId, structure }) => {
     if (!usePublishState) return structure;
-    const roundLimit =
-      publishStatus?.drawDetails?.[drawId]?.structureDetails?.[
-        structure.structureId
-      ]?.roundLimit;
+    const roundLimit = publishStatus?.drawDetails?.[drawId]?.structureDetails?.[structure.structureId]?.roundLimit;
     if (isConvertableInteger(roundLimit)) {
       const roundNumbers = generateRange(1, roundLimit + 1);
       const roundMatchUps = {};
@@ -135,19 +123,17 @@ export function getEventData(params: GetEventDataArgs): {
           publishStatus,
           sortConfig,
           event,
-        })
-      )
+        }),
+      ),
     )
     .map(({ structures, ...drawData }) => {
       const filteredStructures = structures
         ?.filter(
           ({ stage, structureId }) =>
             structureFilter({ structureId, drawId: drawData.drawId }) &&
-            stageFilter({ stage, drawId: drawData.drawId })
+            stageFilter({ stage, drawId: drawData.drawId }),
         )
-        .map((structure) =>
-          roundLimitMapper({ drawId: drawData.drawId, structure })
-        );
+        .map((structure) => roundLimitMapper({ drawId: drawData.drawId, structure }));
       return {
         ...drawData,
         structures: filteredStructures,
@@ -164,8 +150,8 @@ export function getEventData(params: GetEventDataArgs): {
       getVenueData({
         tournamentRecord,
         venueId: venue.venueId,
-      })
-    )
+      }),
+    ),
   );
 
   const eventInfo: any = (({

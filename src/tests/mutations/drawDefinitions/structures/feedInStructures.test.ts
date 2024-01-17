@@ -4,7 +4,7 @@ import { setStageDrawSize } from '../../../../mutate/drawDefinitions/entryGovern
 import { feedInMatchUps } from '../../../../assemblies/generators/drawDefinitions/feedInMatchUps';
 import { getRoundMatchUps } from '../../../../query/matchUps/getRoundMatchUps';
 import { getDrawData } from '../../../../query/drawDefinition/getDrawData';
-import { generateRange } from '../../../../utilities/arrays';
+import { generateRange } from '../../../../tools/arrays';
 import { feedInChampionship } from '../primitives/feedIn';
 import { expect, it } from 'vitest';
 
@@ -65,9 +65,7 @@ it('can generate structured entry draw', () => {
   ];
 
   matchUps.forEach((matchUp, i) => {
-    expect(matchUp.drawPositions?.filter(Boolean)).toMatchObject(
-      drawPositions[i]
-    );
+    expect(matchUp.drawPositions?.filter(Boolean)).toMatchObject(drawPositions[i]);
   });
 });
 
@@ -98,12 +96,8 @@ it('generates structured entry draw with expected finishing drawPositions', () =
     if (roundIndex !== undefined) {
       const expectedLoserRange = finishingPositionRanges[roundIndex].loser;
       const expectedWinnerRange = finishingPositionRanges[roundIndex].winner;
-      expect(matchUp.finishingPositionRange?.loser).toMatchObject(
-        expectedLoserRange
-      );
-      expect(matchUp.finishingPositionRange?.winner).toMatchObject(
-        expectedWinnerRange
-      );
+      expect(matchUp.finishingPositionRange?.loser).toMatchObject(expectedLoserRange);
+      expect(matchUp.finishingPositionRange?.winner).toMatchObject(expectedWinnerRange);
     }
   });
 });
@@ -141,11 +135,10 @@ it('can generate FEED_IN_CHAMPIONSHIP with drawSize: 16', () => {
 
 it('can generate FEED_IN_CHAMPIONSHIP with drawSize: 32', () => {
   const drawSize = 32;
-  const { consolationMatchUps, mainDrawMatchUps, drawDefinition, links } =
-    feedInChampionship({
-      drawType: FEED_IN_CHAMPIONSHIP,
-      drawSize,
-    });
+  const { consolationMatchUps, mainDrawMatchUps, drawDefinition, links } = feedInChampionship({
+    drawType: FEED_IN_CHAMPIONSHIP,
+    drawSize,
+  });
 
   expect(mainDrawMatchUps.length).toEqual(drawSize - 1);
   expect(consolationMatchUps.length).toEqual(drawSize - 2);
@@ -174,9 +167,7 @@ it('can generate FEED_IN_CHAMPIONSHIP with drawSize: 32', () => {
   expect(links[4].target.roundNumber).toEqual(8);
 
   const result = getDrawData({ drawDefinition });
-  expect(
-    result?.structures?.[0].roundMatchUps[1][0].sides[0].displaySideNumber
-  ).not.toBeUndefined();
+  expect(result?.structures?.[0].roundMatchUps[1][0].sides[0].displaySideNumber).not.toBeUndefined();
 });
 
 it('can generate FEED_IN_CHAMPIONSHIP with drawSize: 64', () => {
@@ -256,31 +247,15 @@ it('can generate MODIFIED_FEED_IN_CHAMPIONSHIP', () => {
   expect(mainDrawMatchUps.length).toEqual(31);
   expect(consolationMatchUps.length).toEqual(23);
 
-  expect(mainDrawMatchUps[0].finishingPositionRange.loser).toMatchObject([
-    17, 32,
-  ]);
-  expect(mainDrawMatchUps[0].finishingPositionRange.winner).toMatchObject([
-    1, 16,
-  ]);
-  expect(consolationMatchUps[0].finishingPositionRange.loser).toMatchObject([
-    25, 32,
-  ]);
-  expect(consolationMatchUps[0].finishingPositionRange.winner).toMatchObject([
-    9, 24,
-  ]);
+  expect(mainDrawMatchUps[0].finishingPositionRange.loser).toMatchObject([17, 32]);
+  expect(mainDrawMatchUps[0].finishingPositionRange.winner).toMatchObject([1, 16]);
+  expect(consolationMatchUps[0].finishingPositionRange.loser).toMatchObject([25, 32]);
+  expect(consolationMatchUps[0].finishingPositionRange.winner).toMatchObject([9, 24]);
 
-  expect(mainDrawMatchUps[30].finishingPositionRange.loser).toMatchObject([
-    2, 2,
-  ]);
-  expect(mainDrawMatchUps[30].finishingPositionRange.winner).toMatchObject([
-    1, 1,
-  ]);
-  expect(consolationMatchUps[22].finishingPositionRange.loser).toMatchObject([
-    10, 10,
-  ]);
-  expect(consolationMatchUps[22].finishingPositionRange.winner).toMatchObject([
-    9, 9,
-  ]);
+  expect(mainDrawMatchUps[30].finishingPositionRange.loser).toMatchObject([2, 2]);
+  expect(mainDrawMatchUps[30].finishingPositionRange.winner).toMatchObject([1, 1]);
+  expect(consolationMatchUps[22].finishingPositionRange.loser).toMatchObject([10, 10]);
+  expect(consolationMatchUps[22].finishingPositionRange.winner).toMatchObject([9, 9]);
 });
 
 it('can generate feedInMatchUps', () => {
@@ -303,19 +278,13 @@ it('can generate feedInMatchUps', () => {
   });
 });
 
-function verifyexpectedRoundMatchUpsCounts({
-  expectedRoundMatchUpsCounts,
-  feedRoundsProfile,
-  baseDrawSize,
-}) {
+function verifyexpectedRoundMatchUpsCounts({ expectedRoundMatchUpsCounts, feedRoundsProfile, baseDrawSize }) {
   const { matchUps, roundsCount } = feedInMatchUps({
     feedRoundsProfile,
     baseDrawSize,
   });
   const { roundMatchUps } = getRoundMatchUps({ matchUps });
   generateRange(1, roundsCount + 1).forEach((roundNumber) => {
-    expect(roundMatchUps?.[roundNumber].length).toEqual(
-      expectedRoundMatchUpsCounts[roundNumber - 1]
-    );
+    expect(roundMatchUps?.[roundNumber].length).toEqual(expectedRoundMatchUpsCounts[roundNumber - 1]);
   });
 }

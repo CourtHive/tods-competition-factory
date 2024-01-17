@@ -1,21 +1,15 @@
 import { decorateResult } from '../../global/functions/decorateResult';
-import { definedAttributes } from '../../utilities/definedAttributes';
-import { makeDeepCopy } from '../../utilities/makeDeepCopy';
+import { definedAttributes } from '../../tools/definedAttributes';
+import { makeDeepCopy } from '../../tools/makeDeepCopy';
 import { addNotice } from '../../global/state/globalState';
-import { intersection } from '../../utilities/arrays';
-import { UUID } from '../../utilities/UUID';
+import { intersection } from '../../tools/arrays';
+import { UUID } from '../../tools/UUID';
 
 import { ADD_PARTICIPANTS } from '../../constants/topicConstants';
 import { TournamentRecords } from '../../types/factoryTypes';
 import { SUCCESS } from '../../constants/resultConstants';
 import { Tournament } from '../../types/tournamentTypes';
-import {
-  GROUP,
-  INDIVIDUAL,
-  PAIR,
-  participantTypes,
-  TEAM,
-} from '../../constants/participantConstants';
+import { GROUP, INDIVIDUAL, PAIR, participantTypes, TEAM } from '../../constants/participantConstants';
 import {
   INVALID_PARTICIPANT_IDS,
   INVALID_PARTICIPANT_TYPE,
@@ -44,49 +38,31 @@ type AddParticipantType = {
 export function addParticipant(params: AddParticipantType) {
   const stack = 'addParticipant';
 
-  const {
-    allowDuplicateParticipantIdPairs,
-    returnParticipant,
-    disableNotice,
-    pairOverride,
-    participant,
-  } = params;
+  const { allowDuplicateParticipantIdPairs, returnParticipant, disableNotice, pairOverride, participant } = params;
 
   const tournamentRecord = params.tournamentId // if a tournamentId is specified, use it!
     ? params.tournamentRecords?.[params.tournamentId]
-    : params.tournamentRecord ??
-      (params.activeTournamentId &&
-        params.tournamentRecords?.[params.activeTournamentId]);
+    : params.tournamentRecord ?? (params.activeTournamentId && params.tournamentRecords?.[params.activeTournamentId]);
 
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!participant)
-    return decorateResult({ result: { error: MISSING_PARTICIPANT }, stack });
+  if (!participant) return decorateResult({ result: { error: MISSING_PARTICIPANT }, stack });
   if (!participant.participantId) participant.participantId = UUID();
   if (!tournamentRecord.participants) tournamentRecord.participants = [];
 
   const { participantId, individualParticipantIds } = participant;
 
-  const idExists = tournamentRecord.participants.reduce(
-    (p, c) => c.participantId === participantId || p,
-    false
-  );
+  const idExists = tournamentRecord.participants.reduce((p, c) => c.participantId === participantId || p, false);
   if (idExists) return { error: PARTICIPANT_ID_EXISTS };
 
   const { participantType, participantRole } = participant;
-  if (
-    !participantType ||
-    !Object.keys(participantTypes).includes(participantType)
-  )
+  if (!participantType || !Object.keys(participantTypes).includes(participantType))
     return { error: INVALID_PARTICIPANT_TYPE, participantType };
 
   if (!participantRole) return { error: MISSING_PARTICIPANT_ROLE };
 
   const tournamentParticipants = tournamentRecord.participants || [];
   const tournamentIndividualParticipantIds = tournamentParticipants
-    .filter(
-      (tournamentParticipant) =>
-        tournamentParticipant.participantType === INDIVIDUAL
-    )
+    .filter((tournamentParticipant) => tournamentParticipant.participantType === INDIVIDUAL)
     .map((individualParticipant) => individualParticipant.participantId);
 
   if (participantType !== INDIVIDUAL && participant.person)
@@ -96,17 +72,13 @@ export function addParticipant(params: AddParticipantType) {
     return { error: INVALID_VALUES, individualParticipantIds };
 
   if (participantType === PAIR) {
-    if (participant.person)
-      return { error: INVALID_VALUES, person: participant.person };
+    if (participant.person) return { error: INVALID_VALUES, person: participant.person };
     if (!participant.individualParticipantIds) {
       return decorateResult({
         result: { error: MISSING_PARTICIPANT_IDS },
         stack,
       });
-    } else if (
-      participant.individualParticipantIds.length !== 2 &&
-      !pairOverride
-    ) {
+    } else if (participant.individualParticipantIds.length !== 2 && !pairOverride) {
       return decorateResult({
         info: 'PAIR must be 2 individualParticipantIds',
         result: { error: INVALID_PARTICIPANT_IDS },
@@ -124,9 +96,8 @@ export function addParticipant(params: AddParticipantType) {
         });
 
       const validPairParticipants = participant.individualParticipantIds.reduce(
-        (valid, participantId) =>
-          individualParticipantIds.includes(participantId) && valid,
-        true
+        (valid, participantId) => individualParticipantIds.includes(participantId) && valid,
+        true,
       );
       if (!validPairParticipants)
         return decorateResult({
@@ -147,28 +118,21 @@ export function addParticipant(params: AddParticipantType) {
       participant.participantType === PAIR &&
       existingPairParticipants.find(
         (existingPairParticipant) =>
-          intersection(
-            existingPairParticipant.individualParticipantIds,
-            participant.individualParticipantIds
-          ).length === 2
+          intersection(existingPairParticipant.individualParticipantIds, participant.individualParticipantIds)
+            .length === 2,
       );
 
     if (existingPairParticipant && !allowDuplicateParticipantIdPairs) {
       return {
         ...SUCCESS,
         existingParticipant: true,
-        participant:
-          returnParticipant &&
-          makeDeepCopy(existingPairParticipant.participant),
+        participant: returnParticipant && makeDeepCopy(existingPairParticipant.participant),
       };
     }
 
     if (!participant.participantName) {
-      const individualParticipants = tournamentParticipants.filter(
-        (tournamentParticipant) =>
-          participant.individualParticipantIds?.includes(
-            tournamentParticipant.participantId
-          )
+      const individualParticipants = tournamentParticipants.filter((tournamentParticipant) =>
+        participant.individualParticipantIds?.includes(tournamentParticipant.participantId),
       );
 
       let participantName = individualParticipants
@@ -180,10 +144,7 @@ export function addParticipant(params: AddParticipantType) {
       participant.participantName = participantName;
     }
   } else if (participantType === INDIVIDUAL) {
-    if (
-      !participant.person?.standardFamilyName ||
-      !participant.person?.standardGivenName
-    )
+    if (!participant.person?.standardFamilyName || !participant.person?.standardGivenName)
       return { error: MISSING_PERSON_DETAILS };
 
     if (!participant.participantName) {
@@ -205,9 +166,7 @@ export function addParticipant(params: AddParticipantType) {
             stack,
           });
         }
-        if (
-          !tournamentIndividualParticipantIds.includes(individualParticipantId)
-        ) {
+        if (!tournamentIndividualParticipantIds.includes(individualParticipantId)) {
           return decorateResult({
             result: {
               participantId: individualParticipantId,

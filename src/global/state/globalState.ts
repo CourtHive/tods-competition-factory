@@ -1,4 +1,4 @@
-import { intersection } from '../../utilities/arrays';
+import { intersection } from '../../tools/arrays';
 import syncGlobalState from './syncGlobalState';
 
 import { TournamentRecords } from '../../types/factoryTypes';

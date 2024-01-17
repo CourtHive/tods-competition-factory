@@ -1,5 +1,5 @@
 import { parse } from '../../../assemblies/generators/matchUpFormatCode/parse';
-import { ensureInt } from '../../../utilities/ensureInt';
+import { ensureInt } from '../../../tools/ensureInt';
 
 import { DEFAULTED, RETIRED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';

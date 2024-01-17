@@ -1,7 +1,7 @@
 import { getTieFormatDesc } from '../../../query/hierarchical/tieFormats/getTieFormatDescription';
 import { stringSort } from '../../../functions/sorters/stringSort';
-import { isConvertableInteger } from '../../../utilities/math';
-import { difference, unique } from '../../../utilities/arrays';
+import { isConvertableInteger } from '../../../tools/math';
+import { difference, unique } from '../../../tools/arrays';
 
 import { TieFormat } from '../../../types/tournamentTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -12,123 +12,84 @@ type CompareTieFormatsArgs = {
   ancestor: TieFormat;
 };
 
-export function compareTieFormats({
-  considerations = {},
-  descendant,
-  ancestor,
-}: CompareTieFormatsArgs) {
+export function compareTieFormats({ considerations = {}, descendant, ancestor }: CompareTieFormatsArgs) {
   const descendantDifferences: any = {};
   const ancestorDifferences: any = {};
 
-  const {
-    matchUpFormats: descendantMatchUpFormats,
-    tieFormatDesc: descendantDesc,
-  } = getTieFormatDesc(descendant);
+  const { matchUpFormats: descendantMatchUpFormats, tieFormatDesc: descendantDesc } = getTieFormatDesc(descendant);
 
-  const {
-    matchUpFormats: ancestorMatchUpFormats,
-    tieFormatDesc: ancestorDesc,
-  } = getTieFormatDesc(ancestor);
+  const { matchUpFormats: ancestorMatchUpFormats, tieFormatDesc: ancestorDesc } = getTieFormatDesc(ancestor);
 
   const matchUpFormatDifferences = unique(
     (descendantMatchUpFormats ?? [])
       .filter((format) => !(ancestorMatchUpFormats ?? []).includes(format))
-      .concat(
-        (ancestorMatchUpFormats ?? []).filter(
-          (format) => !(descendantMatchUpFormats ?? []).includes(format)
-        )
-      )
+      .concat((ancestorMatchUpFormats ?? []).filter((format) => !(descendantMatchUpFormats ?? []).includes(format))),
   );
 
   const nameDifference = !!(
     considerations?.collectionName &&
-    descendant.collectionDefinitions
-      .map(({ collectionName }) => collectionName)
-      .join('|') !==
-      ancestor.collectionDefinitions
-        .map(({ collectionName }) => collectionName)
-        .join('|')
+    descendant.collectionDefinitions.map(({ collectionName }) => collectionName).join('|') !==
+      ancestor.collectionDefinitions.map(({ collectionName }) => collectionName).join('|')
   );
 
   const orderDifference = !!(
     considerations?.collectionOrder &&
-    descendant.collectionDefinitions
-      .map(({ collectionOrder }) => collectionOrder)
-      .join('|') !==
-      ancestor.collectionDefinitions
-        .map(({ collectionOrder }) => collectionOrder)
-        .join('|')
+    descendant.collectionDefinitions.map(({ collectionOrder }) => collectionOrder).join('|') !==
+      ancestor.collectionDefinitions.map(({ collectionOrder }) => collectionOrder).join('|')
   );
 
   const descendantCollectionDefinitions = Object.assign(
     {},
-    ...(descendant?.collectionDefinitions || []).map(
-      (collectionDefinition) => ({
-        [collectionDefinition.collectionId]: collectionDefinition,
-      })
-    )
+    ...(descendant?.collectionDefinitions || []).map((collectionDefinition) => ({
+      [collectionDefinition.collectionId]: collectionDefinition,
+    })),
   );
   const ancestorCollectionDefinitions = Object.assign(
     {},
     ...(ancestor?.collectionDefinitions || []).map((collectionDefinition) => ({
       [collectionDefinition.collectionId]: collectionDefinition,
-    }))
+    })),
   );
 
   descendantDifferences.collectionIds = difference(
     Object.keys(descendantCollectionDefinitions),
-    Object.keys(ancestorCollectionDefinitions)
+    Object.keys(ancestorCollectionDefinitions),
   );
   ancestorDifferences.collectionIds = difference(
     Object.keys(ancestorCollectionDefinitions),
-    Object.keys(descendantCollectionDefinitions)
+    Object.keys(descendantCollectionDefinitions),
   );
 
-  descendantDifferences.collectionsValue = getCollectionsValue(
-    descendantCollectionDefinitions
-  );
+  descendantDifferences.collectionsValue = getCollectionsValue(descendantCollectionDefinitions);
 
-  ancestorDifferences.collectionsValue = getCollectionsValue(
-    ancestorCollectionDefinitions
-  );
+  ancestorDifferences.collectionsValue = getCollectionsValue(ancestorCollectionDefinitions);
 
   descendantDifferences.groupsCount =
-    ancestor?.collectionGroups?.length ??
-    (0 - (descendant?.collectionGroups?.length ?? 0) || 0);
+    ancestor?.collectionGroups?.length ?? (0 - (descendant?.collectionGroups?.length ?? 0) || 0);
 
-  ancestorDifferences.groupsCount = descendantDifferences.groupsCount
-    ? -1 * descendantDifferences.groupsCount
-    : 0;
+  ancestorDifferences.groupsCount = descendantDifferences.groupsCount ? -1 * descendantDifferences.groupsCount : 0;
 
   const valueDifference =
-    descendantDifferences.collectionsValue.totalValue -
-    ancestorDifferences.collectionsValue.totalValue;
+    descendantDifferences.collectionsValue.totalValue - ancestorDifferences.collectionsValue.totalValue;
   const matchUpCountDifference =
-    descendantDifferences.collectionsValue.totalMatchUps -
-    ancestorDifferences.collectionsValue.totalMatchUps;
+    descendantDifferences.collectionsValue.totalMatchUps - ancestorDifferences.collectionsValue.totalMatchUps;
 
   const assignmentValuesCountDifference =
     ancestorDifferences.collectionsValue.assignmentValues.length !==
     descendantDifferences.collectionsValue.assignmentValues.length;
 
-  const assignmentValuesDifference =
-    ancestorDifferences.collectionsValue.assignmentValues.some(
-      (assignment, i) => {
-        const comparisonAssignment =
-          descendantDifferences.collectionsValue.assignmentValues[i];
-        if (!comparisonAssignment) return true;
+  const assignmentValuesDifference = ancestorDifferences.collectionsValue.assignmentValues.some((assignment, i) => {
+    const comparisonAssignment = descendantDifferences.collectionsValue.assignmentValues[i];
+    if (!comparisonAssignment) return true;
 
-        if (assignment.valueKey !== comparisonAssignment.valueKey) return true;
-        if (assignment.value !== comparisonAssignment.value) return true;
-        if (Array.isArray(assignment.value)) {
-          return assignment.value.every(
-            (value, i) => comparisonAssignment.value[i] === value
-          );
-        }
+    if (assignment.valueKey !== comparisonAssignment.valueKey) return true;
+    if (assignment.value !== comparisonAssignment.value) return true;
+    if (Array.isArray(assignment.value)) {
+      return assignment.value.every((value, i) => comparisonAssignment.value[i] === value);
+    }
 
-        return false;
-      }
-    );
+    return false;
+  });
 
   const different =
     nameDifference ||
@@ -168,14 +129,8 @@ function getCollectionsValue(definitions) {
   const collectionIds = Object.keys(definitions).sort(stringSort);
   const totalValue = collectionIds.reduce((total, collectionId) => {
     const collectionDefinition = definitions[collectionId];
-    const {
-      collectionValueProfiles,
-      collectionValue,
-      matchUpCount,
-      matchUpValue,
-      scoreValue,
-      setValue,
-    } = collectionDefinition;
+    const { collectionValueProfiles, collectionValue, matchUpCount, matchUpValue, scoreValue, setValue } =
+      collectionDefinition;
 
     const valueAssignments = {
       collectionValueProfiles,
@@ -185,9 +140,7 @@ function getCollectionsValue(definitions) {
       setValue,
     };
 
-    const valueKeys = Object.keys(valueAssignments).filter(
-      (key) => ![undefined, null].includes(valueAssignments[key])
-    );
+    const valueKeys = Object.keys(valueAssignments).filter((key) => ![undefined, null].includes(valueAssignments[key]));
     if (valueKeys.length !== 1) {
       invalidValues.push({ collectionId });
     }
@@ -195,32 +148,21 @@ function getCollectionsValue(definitions) {
     const valueKey = valueKeys[0];
     if (valueKey) {
       const value =
-        valueKey === 'collectionValueProfiles'
-          ? Object.values(collectionValueProfiles)
-          : valueAssignments[valueKey];
+        valueKey === 'collectionValueProfiles' ? Object.values(collectionValueProfiles) : valueAssignments[valueKey];
       assignmentValues.push({ valueKey, value });
     }
 
     totalMatchUps += matchUpCount;
 
     if (collectionValueProfiles)
-      return (
-        total +
-        collectionValueProfiles.reduce(
-          (total, profile) => total + profile.value,
-          0
-        )
-      );
+      return total + collectionValueProfiles.reduce((total, profile) => total + profile.value, 0);
 
     if (matchUpCount) {
-      if (isConvertableInteger(matchUpValue))
-        return total + matchUpValue * matchUpCount;
+      if (isConvertableInteger(matchUpValue)) return total + matchUpValue * matchUpCount;
 
-      if (isConvertableInteger(scoreValue))
-        return total + scoreValue * matchUpCount;
+      if (isConvertableInteger(scoreValue)) return total + scoreValue * matchUpCount;
 
-      if (isConvertableInteger(setValue))
-        return total + setValue * matchUpCount;
+      if (isConvertableInteger(setValue)) return total + setValue * matchUpCount;
 
       return total + collectionValue;
     }

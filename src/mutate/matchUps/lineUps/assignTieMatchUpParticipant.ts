@@ -11,7 +11,7 @@ import { getTieMatchUpContext } from '../../events/getTieMatchUpContext';
 import { addParticipant } from '../../participants/addParticipant';
 import { getTeamLineUp } from '../../../query/drawDefinition/getTeamLineUp';
 import { ensureSideLineUps } from './ensureSideLineUps';
-import { overlap } from '../../../utilities/arrays';
+import { overlap } from '../../../tools/arrays';
 
 import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
 import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';

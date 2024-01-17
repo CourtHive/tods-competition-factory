@@ -7,7 +7,7 @@ import {
   isValidDateString,
   sameDay,
   timeStringMinutes,
-} from '../../utilities/dateTime';
+} from '../../tools/dateTime';
 
 import { TournamentRecords } from '../../types/factoryTypes';
 import { INVALID_DATE, INVALID_VALUES, MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';

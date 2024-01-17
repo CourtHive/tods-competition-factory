@@ -1,8 +1,8 @@
-import { xa } from '../../../../utilities/objects';
+import { xa } from '../../../../tools/objects';
 import { setSubscriptions } from '../../../../global/state/globalState';
 import { generateTeamTournament } from './generateTestTeamTournament';
 import { findExtension } from '../../../../acquire/findExtension';
-import { intersection } from '../../../../utilities/arrays';
+import { intersection } from '../../../../tools/arrays';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 

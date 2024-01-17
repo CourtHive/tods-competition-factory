@@ -1,13 +1,10 @@
 import { removeParticipantsScaleItems } from '../participants/removeScaleItems';
 import { decorateResult } from '../../global/functions/decorateResult';
 import { getParticipantId } from '../../global/functions/extractors';
-import { mustBeAnArray } from '../../utilities/mustBeAnArray';
+import { mustBeAnArray } from '../../tools/mustBeAnArray';
 import { getFlightProfile } from '../../query/event/getFlightProfile';
 
-import {
-  INVALID_VALUES,
-  MISSING_EVENT,
-} from '../../constants/errorConditionConstants';
+import { INVALID_VALUES, MISSING_EVENT } from '../../constants/errorConditionConstants';
 
 /**
  *
@@ -39,9 +36,7 @@ export function removeScaleValues({
 
   if (drawId) {
     const { flightProfile } = getFlightProfile({ event });
-    const flight = flightProfile?.flights?.find(
-      (flight) => flight.drawId === drawId
-    );
+    const flight = flightProfile?.flights?.find((flight) => flight.drawId === drawId);
     if (flight) {
       entries = flight.drawEntries;
     } else {
@@ -52,7 +47,7 @@ export function removeScaleValues({
   const stageEntries = (entries || []).filter(
     (entry) =>
       (!stage || !entry.entryStage || entry.entryStage === stage) &&
-      (!entryStatuses || entryStatuses.includes(entry.entryStatus))
+      (!entryStatuses || entryStatuses.includes(entry.entryStatus)),
   );
 
   const participantIds = stageEntries.map(getParticipantId);

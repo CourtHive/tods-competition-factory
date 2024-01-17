@@ -1,4 +1,4 @@
-import { generateRange, unique } from '../../../utilities/arrays';
+import { generateRange, unique } from '../../../tools/arrays';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
@@ -35,10 +35,7 @@ it('can generate draw with appropriate ITF seeding', () => {
   };
 
   let { tournamentRecord } = mocksEngine.generateTournamentRecord(mockProfile);
-  expect(
-    tournamentRecord.events[0].drawDefinitions[0].structures[0].seedAssignments
-      .length
-  ).toEqual(8);
+  expect(tournamentRecord.events[0].drawDefinitions[0].structures[0].seedAssignments.length).toEqual(8);
 
   mockProfile = {
     drawProfiles: [
@@ -53,12 +50,8 @@ it('can generate draw with appropriate ITF seeding', () => {
     ],
   };
 
-  tournamentRecord =
-    mocksEngine.generateTournamentRecord(mockProfile).tournamentRecord;
-  expect(
-    tournamentRecord.events[0].drawDefinitions[0].structures[0].seedAssignments
-      .length
-  ).toEqual(4);
+  tournamentRecord = mocksEngine.generateTournamentRecord(mockProfile).tournamentRecord;
+  expect(tournamentRecord.events[0].drawDefinitions[0].structures[0].seedAssignments.length).toEqual(4);
 
   mockProfile = {
     drawProfiles: [
@@ -73,12 +66,8 @@ it('can generate draw with appropriate ITF seeding', () => {
     ],
   };
 
-  tournamentRecord =
-    mocksEngine.generateTournamentRecord(mockProfile).tournamentRecord;
-  expect(
-    tournamentRecord.events[0].drawDefinitions[0].structures[0].seedAssignments
-      .length
-  ).toEqual(16);
+  tournamentRecord = mocksEngine.generateTournamentRecord(mockProfile).tournamentRecord;
+  expect(tournamentRecord.events[0].drawDefinitions[0].structures[0].seedAssignments.length).toEqual(16);
 
   mockProfile = {
     drawProfiles: [
@@ -93,12 +82,8 @@ it('can generate draw with appropriate ITF seeding', () => {
     ],
   };
 
-  tournamentRecord =
-    mocksEngine.generateTournamentRecord(mockProfile).tournamentRecord;
-  expect(
-    tournamentRecord.events[0].drawDefinitions[0].structures[0].seedAssignments
-      .length
-  ).toEqual(32);
+  tournamentRecord = mocksEngine.generateTournamentRecord(mockProfile).tournamentRecord;
+  expect(tournamentRecord.events[0].drawDefinitions[0].structures[0].seedAssignments.length).toEqual(32);
 
   tournamentEngine.setState(tournamentRecord);
   const { participants } = tournamentEngine.getParticipants({
@@ -106,18 +91,11 @@ it('can generate draw with appropriate ITF seeding', () => {
     withEvents: true,
     withDraws: true,
   });
-  const targetParticipants = participants.filter(
-    (participant) => participant.events[0].seedValue
-  );
-  const seedingScaleValues = targetParticipants.map(
-    (participant) => participant.events[0].seedValue
-  );
+  const targetParticipants = participants.filter((participant) => participant.events[0].seedValue);
+  const seedingScaleValues = targetParticipants.map((participant) => participant.events[0].seedValue);
 
   expect(unique(seedingScaleValues).length).toEqual(32);
   expect(seedingScaleValues).toEqual(generateRange(1, 33));
 
-  expect(
-    unique(targetParticipants.map((p) => p.draws[0].seedAssignments[MAIN]))
-      .length
-  ).toEqual(32);
+  expect(unique(targetParticipants.map((p) => p.draws[0].seedAssignments[MAIN])).length).toEqual(32);
 });

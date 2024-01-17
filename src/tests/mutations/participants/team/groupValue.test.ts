@@ -1,4 +1,4 @@
-import { generateRange, shuffleArray } from '../../../../utilities/arrays';
+import { generateRange, shuffleArray } from '../../../../tools/arrays';
 import tournamentEngine from '../../../engines/syncEngine';
 import { mocksEngine } from '../../../..';
 import { expect, test } from 'vitest';
@@ -6,18 +6,12 @@ import { expect, test } from 'vitest';
 import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';
 import { DOUBLES, SINGLES, TEAM } from '../../../../constants/matchUpTypes';
 import { COMPLETED } from '../../../../constants/matchUpStatusConstants';
-import {
-  INVALID_MATCHUP,
-  INVALID_VALUES,
-  VALUE_UNCHANGED,
-} from '../../../../constants/errorConditionConstants';
+import { INVALID_MATCHUP, INVALID_VALUES, VALUE_UNCHANGED } from '../../../../constants/errorConditionConstants';
 
 test('groupValue can be used in tieFormats and lineUps can be applied after scoring is completed', () => {
   const mockProfile = {
     tournamentName: 'Brewer',
-    drawProfiles: [
-      { drawSize: 4, tieFormatName: 'USTA_BREWER_CUP', eventType: 'TEAM' },
-    ],
+    drawProfiles: [{ drawSize: 4, tieFormatName: 'USTA_BREWER_CUP', eventType: 'TEAM' }],
   };
 
   const {
@@ -153,9 +147,7 @@ test('groupValue can be used in tieFormats and lineUps can be applied after scor
   expect(result.error).toEqual(VALUE_UNCHANGED);
 
   // now construct lineUp to apply
-  const individualParticipantIds = teamMatchUp.sides.map(
-    (side) => side.participant.individualParticipantIds
-  );
+  const individualParticipantIds = teamMatchUp.sides.map((side) => side.participant.individualParticipantIds);
   const { tieFormat } = tournamentEngine.getTieFormat({ drawId });
 
   const lineUpSides = [{}, {}];
@@ -164,16 +156,14 @@ test('groupValue can be used in tieFormats and lineUps can be applied after scor
     for (const side of [0, 1]) {
       const collectionPositions = generateRange(1, matchUpCount + 1);
       const multiplier = matchUpType === DOUBLES ? 2 : 1;
-      const candidateParticipantIds = shuffleArray(
-        individualParticipantIds[side]
-      ).slice(0, collectionPositions.length * multiplier);
+      const candidateParticipantIds = shuffleArray(individualParticipantIds[side]).slice(
+        0,
+        collectionPositions.length * multiplier,
+      );
 
       for (const collectionPosition of collectionPositions) {
         const index = (collectionPosition - 1) * multiplier;
-        const participantIds = candidateParticipantIds.slice(
-          index,
-          index + multiplier
-        );
+        const participantIds = candidateParticipantIds.slice(index, index + multiplier);
         for (const participantId of participantIds) {
           const assignment = {
             collectionPosition,
@@ -186,9 +176,7 @@ test('groupValue can be used in tieFormats and lineUps can be applied after scor
               participantId,
             };
 
-          lineUpSides[side][participantId].collectionAssignments.push(
-            assignment
-          );
+          lineUpSides[side][participantId].collectionAssignments.push(assignment);
         }
       }
     }
@@ -219,28 +207,18 @@ test('groupValue can be used in tieFormats and lineUps can be applied after scor
     matchUpFilters: { matchUpTypes: [TEAM] },
   }).matchUps;
 
-  teamMatchUp = teamMatchUps.find(
-    (matchUp) => matchUp.matchUpId === teamMatchUpId
-  );
+  teamMatchUp = teamMatchUps.find((matchUp) => matchUp.matchUpId === teamMatchUpId);
   teamMatchUp.sides.forEach((side) => expect(side.lineUp).not.toBeUndefined());
 
   const tieMatchUps = teamMatchUp.tieMatchUps;
-  const singlesTieMatchUps = tieMatchUps.filter(
-    (matchUp) => matchUp.matchUpType === SINGLES
-  );
+  const singlesTieMatchUps = tieMatchUps.filter((matchUp) => matchUp.matchUpType === SINGLES);
 
   singlesTieMatchUps.forEach((matchUp) => {
-    matchUp.sides.forEach((side) =>
-      expect(side.participant.participantType).toEqual(INDIVIDUAL)
-    );
+    matchUp.sides.forEach((side) => expect(side.participant.participantType).toEqual(INDIVIDUAL));
   });
 
-  const doublesTieMatchUps = tieMatchUps.filter(
-    (matchUp) => matchUp.matchUpType === DOUBLES
-  );
+  const doublesTieMatchUps = tieMatchUps.filter((matchUp) => matchUp.matchUpType === DOUBLES);
   doublesTieMatchUps.forEach((matchUp) => {
-    matchUp.sides.forEach((side) =>
-      expect(side.participant.participantType).toEqual(PAIR)
-    );
+    matchUp.sides.forEach((side) => expect(side.participant.participantType).toEqual(PAIR));
   });
 });

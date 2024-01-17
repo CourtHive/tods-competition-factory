@@ -2,17 +2,13 @@ import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
 import { getDrawStructures } from '../../../../acquire/findStructure';
 import { completeMatchUp } from '../primitives/verifyMatchUps';
 import mocksEngine from '../../../../assemblies/engines/mock';
-import { instanceCount } from '../../../../utilities/arrays';
+import { instanceCount } from '../../../../tools/arrays';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import SEEDING_USTA from '../../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
 import SEEDING_ITF from '../../../../fixtures/policies/POLICY_SEEDING_ITF';
-import {
-  CONSOLATION,
-  FIRST_MATCH_LOSER_CONSOLATION,
-  MAIN,
-} from '../../../../constants/drawDefinitionConstants';
+import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION, MAIN } from '../../../../constants/drawDefinitionConstants';
 
 it('can support ITF Consolation BYE placement', () => {
   const participantsCount = 24;
@@ -52,14 +48,12 @@ it('can support ITF Consolation BYE placement', () => {
     stage: CONSOLATION,
     stageSequence: 1,
   });
-  const positionAssignmentByesCount =
-    consolationStructure.positionAssignments?.filter(
-      (assignment) => !!assignment.bye
-    ).length;
-  const positionAssignmentParticipantidsCount =
-    consolationStructure.positionAssignments?.filter(
-      (assignment) => !!assignment.participantId
-    ).length;
+  const positionAssignmentByesCount = consolationStructure.positionAssignments?.filter(
+    (assignment) => !!assignment.bye,
+  ).length;
+  const positionAssignmentParticipantidsCount = consolationStructure.positionAssignments?.filter(
+    (assignment) => !!assignment.participantId,
+  ).length;
   expect(positionAssignmentByesCount).toEqual(10);
   expect(positionAssignmentParticipantidsCount).toEqual(2);
 });
@@ -103,14 +97,12 @@ it('can support USTA Consolation BYE placement', () => {
     stageSequence: 1,
   });
 
-  const positionAssignmentByesCount =
-    consolationStructure.positionAssignments?.filter(
-      (assignment) => !!assignment.bye
-    ).length;
-  const positionAssignmentParticipantidsCount =
-    consolationStructure.positionAssignments?.filter(
-      (assignment) => !!assignment.participantId
-    ).length;
+  const positionAssignmentByesCount = consolationStructure.positionAssignments?.filter(
+    (assignment) => !!assignment.bye,
+  ).length;
+  const positionAssignmentParticipantidsCount = consolationStructure.positionAssignments?.filter(
+    (assignment) => !!assignment.participantId,
+  ).length;
   expect(positionAssignmentByesCount).toEqual(10);
   expect(positionAssignmentParticipantidsCount).toEqual(2);
 });
@@ -224,9 +216,7 @@ it('can remove BYEs when matchUps are cleared', () => {
     drawId,
   });
   expect(upcomingMatchUps.length).toEqual(8);
-  const secondRoundUpcoming = upcomingMatchUps.filter(
-    ({ roundNumber }) => roundNumber === 2
-  );
+  const secondRoundUpcoming = upcomingMatchUps.filter(({ roundNumber }) => roundNumber === 2);
   expect(secondRoundUpcoming.length).toEqual(7);
 
   let { byeMatchUps } = tournamentEngine.drawMatchUps({
@@ -235,21 +225,16 @@ it('can remove BYEs when matchUps are cleared', () => {
     drawId,
   });
   expect(byeMatchUps.length).toEqual(15);
-  expect(instanceCount(byeMatchUps.map((m) => m.matchUpStatus)).BYE).toEqual(
-    15
-  );
+  expect(instanceCount(byeMatchUps.map((m) => m.matchUpStatus)).BYE).toEqual(15);
 
   let {
     drawDefinition: {
       structures: [mainStructure, consolationStructure],
     },
   } = tournamentEngine.getEvent({ drawId });
-  let mainByePositionAssignments = mainStructure.positionAssignments.filter(
-    ({ bye }) => bye
-  );
+  let mainByePositionAssignments = mainStructure.positionAssignments.filter(({ bye }) => bye);
   expect(mainByePositionAssignments.length).toEqual(15);
-  let consolationByePositionAssignments =
-    consolationStructure.positionAssignments.filter(({ bye }) => bye);
+  let consolationByePositionAssignments = consolationStructure.positionAssignments.filter(({ bye }) => bye);
   expect(consolationByePositionAssignments.length).toEqual(15);
 
   secondRoundUpcoming.forEach(({ matchUpId }) => {
@@ -273,31 +258,20 @@ it('can remove BYEs when matchUps are cleared', () => {
     contextFilters: { stages: [CONSOLATION] },
   }));
   expect(byeMatchUps.length).toEqual(15);
-  expect(instanceCount(byeMatchUps.map((m) => m.matchUpStatus)).BYE).toEqual(
-    15
-  );
+  expect(instanceCount(byeMatchUps.map((m) => m.matchUpStatus)).BYE).toEqual(15);
 
   ({
     drawDefinition: {
       structures: [mainStructure, consolationStructure],
     },
   } = tournamentEngine.getEvent({ drawId }));
-  mainByePositionAssignments = mainStructure.positionAssignments.filter(
-    ({ bye }) => bye
-  );
+  mainByePositionAssignments = mainStructure.positionAssignments.filter(({ bye }) => bye);
   expect(mainByePositionAssignments.length).toEqual(15);
-  consolationByePositionAssignments =
-    consolationStructure.positionAssignments.filter(({ bye }) => bye);
+  consolationByePositionAssignments = consolationStructure.positionAssignments.filter(({ bye }) => bye);
   expect(consolationByePositionAssignments.length).toEqual(15);
 });
 
-function checkAssignments({
-  completionValues,
-  participantsCount,
-  drawDefinition,
-  structureId,
-  byesCount,
-}) {
+function checkAssignments({ completionValues, participantsCount, drawDefinition, structureId, byesCount }) {
   completionValues?.forEach((values) => {
     const [roundNumber, roundPosition, winningSide, success] = values;
     const result = completeMatchUp({
@@ -317,14 +291,12 @@ function checkAssignments({
     stage: CONSOLATION,
     stageSequence: 1,
   });
-  const positionAssignmentByesCount =
-    consolationStructure.positionAssignments?.filter(
-      (assignment) => !!assignment.bye
-    ).length;
-  const positionAssignmentParticipantidsCount =
-    consolationStructure.positionAssignments?.filter(
-      (assignment) => !!assignment.participantId
-    ).length;
+  const positionAssignmentByesCount = consolationStructure.positionAssignments?.filter(
+    (assignment) => !!assignment.bye,
+  ).length;
+  const positionAssignmentParticipantidsCount = consolationStructure.positionAssignments?.filter(
+    (assignment) => !!assignment.participantId,
+  ).length;
   expect(positionAssignmentByesCount).toEqual(byesCount);
   expect(positionAssignmentParticipantidsCount).toEqual(participantsCount);
 }

@@ -1,7 +1,7 @@
-import { dashJoin, isDiffOne, isTiebreakScore } from './utilities';
+import { dashJoin, isDiffOne, isTiebreakScore } from './helpers';
 import { dashMash } from './commonPatterns';
-import { instanceCount } from '../../utilities/arrays';
-import { isNumeric } from '../../utilities/math';
+import { instanceCount } from '../../tools/arrays';
+import { isNumeric } from '../../tools/math';
 
 export function containedSets({ score, attributes, identifier }) {
   if (typeof score !== 'string') return { score, identifier };
@@ -51,19 +51,10 @@ export function containedSets({ score, attributes, identifier }) {
         if (part.startsWith(',')) part = part.slice(1);
         return part.trim();
       });
-    const commadDelimited = parts.every(
-      (part) => part.includes(',') || isTiebreakScore(part)
-    );
-    const slashDelimited = parts.every(
-      (part) => part.includes('/') || isTiebreakScore(part)
-    );
-    const dashDelimited = parts.every(
-      (part) => part.includes('-') || isTiebreakScore(part)
-    );
-    const delimiter =
-      (commadDelimited && ',') ||
-      (dashDelimited && '-') ||
-      (slashDelimited && '/');
+    const commadDelimited = parts.every((part) => part.includes(',') || isTiebreakScore(part));
+    const slashDelimited = parts.every((part) => part.includes('/') || isTiebreakScore(part));
+    const dashDelimited = parts.every((part) => part.includes('-') || isTiebreakScore(part));
+    const delimiter = (commadDelimited && ',') || (dashDelimited && '-') || (slashDelimited && '/');
 
     if (delimiter) {
       let lastPart;
@@ -105,20 +96,11 @@ export function containedSets({ score, attributes, identifier }) {
   }
 
   const counts = instanceCount(score.split(''));
-  if (
-    counts['('] === 1 &&
-    counts[')'] === 1 &&
-    score.startsWith('(') &&
-    score.endsWith(')')
-  ) {
+  if (counts['('] === 1 && counts[')'] === 1 && score.startsWith('(') && score.endsWith(')')) {
     score = score.slice(1, score.length - 1);
 
     // is a tiebreakSet; check for valid removed tiebreak value
-    if (
-      counts['-'] === 1 &&
-      isDiffOne(score) &&
-      isNumeric(attributes?.removed)
-    ) {
+    if (counts['-'] === 1 && isDiffOne(score) && isNumeric(attributes?.removed)) {
       score = score + `(${attributes.removed})`;
       attributes.removed = undefined;
     }

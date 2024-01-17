@@ -1,6 +1,6 @@
-import { allNumeric, noNumeric, overlap } from '../../utilities/arrays';
-import { ensureInt } from '../../utilities/ensureInt';
-import { numericSort } from '../../utilities/sorting';
+import { allNumeric, noNumeric, overlap } from '../../tools/arrays';
+import { ensureInt } from '../../tools/ensureInt';
+import { numericSort } from '../../tools/sorting';
 
 import { RoundProfile } from '../../types/factoryTypes';
 

@@ -1,21 +1,15 @@
 import { getParticipantId } from '../../../../global/functions/extractors';
 import mocksEngine from '../../../../assemblies/engines/mock';
-import { instanceCount } from '../../../../utilities/arrays';
+import { instanceCount } from '../../../../tools/arrays';
 import tournamentEngine from '../../../engines/syncEngine';
-import { UUID } from '../../../../utilities/UUID';
+import { UUID } from '../../../../tools/UUID';
 import { expect, it } from 'vitest';
 
 import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
 import { QUALIFYING } from '../../../../constants/drawDefinitionConstants';
 import { TEAM_EVENT } from '../../../../constants/eventConstants';
-import {
-  DOUBLES_MATCHUP,
-  SINGLES_MATCHUP,
-} from '../../../../constants/matchUpTypes';
-import {
-  ALTERNATE,
-  DIRECT_ACCEPTANCE,
-} from '../../../../constants/entryStatusConstants';
+import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '../../../../constants/matchUpTypes';
+import { ALTERNATE, DIRECT_ACCEPTANCE } from '../../../../constants/entryStatusConstants';
 
 it('Modifying tieFormats supported for TEAM QUALIFYING events', () => {
   const singlesCollectionId = UUID();
@@ -85,9 +79,7 @@ it('Modifying tieFormats supported for TEAM QUALIFYING events', () => {
   expect(event.tieFormat).toBeUndefined();
 
   const qualifyingParticipantIds = event.entries.slice(8).map(getParticipantId);
-  const alternateParticipantIds = event.entries
-    .slice(6, 8)
-    .map(getParticipantId);
+  const alternateParticipantIds = event.entries.slice(6, 8).map(getParticipantId);
 
   result = tournamentEngine.modifyEntriesStatus({
     participantIds: qualifyingParticipantIds,
@@ -107,9 +99,7 @@ it('Modifying tieFormats supported for TEAM QUALIFYING events', () => {
   const entryDetails = instanceCount(
     tournamentEngine
       .getEvent({ eventId })
-      .event.entries.map(
-        ({ entryStage, entryStatus }) => `${entryStage}|${entryStatus}`
-      )
+      .event.entries.map(({ entryStage, entryStatus }) => `${entryStage}|${entryStatus}`),
   );
   expect(entryDetails).toEqual({
     'MAIN|DIRECT_ACCEPTANCE': 6,
@@ -134,13 +124,9 @@ it('Modifying tieFormats supported for TEAM QUALIFYING events', () => {
 
   const drawId = drawDefinition.drawId;
   expect(drawDefinition.tieFormat).not.toBeUndefined();
-  drawDefinition.structures.forEach((structure) =>
-    expect(structure.tieFormat).toBeUndefined()
-  );
+  drawDefinition.structures.forEach((structure) => expect(structure.tieFormat).toBeUndefined());
 
-  const qualifyingStructure = drawDefinition.structures.find(
-    ({ stage }) => stage === QUALIFYING
-  );
+  const qualifyingStructure = drawDefinition.structures.find(({ stage }) => stage === QUALIFYING);
 
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
   expect(result.success).toEqual(true);

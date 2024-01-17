@@ -1,9 +1,9 @@
 import { getFinishingPositionSourceRoundsMap } from '../../mutate/drawDefinitions/structureGovernor/structureUtils';
 import { getStructureRoundProfile } from '../structure/getStructureRoundProfile';
 import { getPositionsPlayedOff } from './getPositionsPlayedOff';
-import { generateRange } from '../../utilities/arrays';
-import { numericSort } from '../../utilities/sorting';
-import { ensureInt } from '../../utilities/ensureInt';
+import { generateRange } from '../../tools/arrays';
+import { numericSort } from '../../tools/sorting';
+import { ensureInt } from '../../tools/ensureInt';
 
 import { DrawDefinition } from '../../types/tournamentTypes';
 import { RoundProfile } from '../../types/factoryTypes';

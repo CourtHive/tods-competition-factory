@@ -6,8 +6,8 @@ import { firstRoundLoserConsolation } from './firstRoundLoserConsolation';
 import structureTemplate from '../../templates/structureTemplate';
 import { generateCurtisConsolation } from './curtisConsolation';
 import { generateRoundRobin } from './roundRobin/roundRobin';
-import { numericSort } from '../../../../utilities/sorting';
-import { nextPowerOf2 } from '../../../../utilities/math';
+import { numericSort } from '../../../../tools/sorting';
+import { nextPowerOf2 } from '../../../../tools/math';
 import { feedInChampionship } from './feedInChamp';
 import { treeMatchUps } from './eliminationTree';
 

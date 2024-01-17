@@ -1,6 +1,6 @@
 import { getRoundMatchUps } from '../../../../../query/matchUps/getRoundMatchUps';
 import mocksEngine from '../../../../../assemblies/engines/mock';
-import { generateRange } from '../../../../../utilities/arrays';
+import { generateRange } from '../../../../../tools/arrays';
 import tournamentEngine from '../../../../engines/syncEngine';
 import { expect, it, test } from 'vitest';
 
@@ -19,12 +19,8 @@ it('generates roundNumbers for all matchUps when odd-sized groups', () => {
     drawProfiles,
   });
 
-  const { matchUps } = tournamentEngine
-    .setState(tournamentRecord)
-    .allTournamentMatchUps();
-  expect(matchUps.map((m) => m.roundNumber)).toEqual([
-    1, 1, 2, 2, 3, 3, 4, 4, 5, 5,
-  ]);
+  const { matchUps } = tournamentEngine.setState(tournamentRecord).allTournamentMatchUps();
+  expect(matchUps.map((m) => m.roundNumber)).toEqual([1, 1, 2, 2, 3, 3, 4, 4, 5, 5]);
 });
 
 // 8 is the default maximum for group size
@@ -36,7 +32,7 @@ test.each([3, 4, 5, 6, 7, 8])(
     const roundsCount = isOdd ? groupSize + 1 : groupSize;
     const expectation = generateRange(1, roundsCount);
     expect(roundNumbers).toEqual(expectation);
-  }
+  },
 );
 
 function getRoundRobinRoundNumber({ groupSize }) {
@@ -52,9 +48,7 @@ function getRoundRobinRoundNumber({ groupSize }) {
     drawProfiles,
   });
 
-  const { matchUps } = tournamentEngine
-    .setState(tournamentRecord)
-    .allTournamentMatchUps();
+  const { matchUps } = tournamentEngine.setState(tournamentRecord).allTournamentMatchUps();
   const roundMatchUps = getRoundMatchUps({ matchUps }).roundMatchUps ?? {};
   return Object.keys(roundMatchUps).map((n) => parseInt(n));
 }

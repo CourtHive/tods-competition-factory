@@ -2,7 +2,7 @@ import { tallyParticipantResults } from '../../../../../query/matchUps/roundRobi
 import { allPlayoffPositionsFilled } from '../../../../../query/drawDefinition/structureActions';
 import { generateMatchUpOutcome } from '../../../../helpers/generateMatchUpOutcome';
 import mocksEngine from '../../../../../assemblies/engines/mock';
-import { generateRange } from '../../../../../utilities/arrays';
+import { generateRange } from '../../../../../tools/arrays';
 import tournamentEngine from '../../../../engines/syncEngine';
 import { expect } from 'vitest';
 

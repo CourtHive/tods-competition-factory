@@ -1,12 +1,8 @@
 import { findMatchUp } from '../acquire/findMatchUp';
-import { isObject, isString } from '../utilities/objects';
+import { isObject, isString } from '../tools/objects';
 
 import { MATCHUP, STRUCTURE } from '../constants/attributeConstants';
-import {
-  ErrorType,
-  INVALID_VALUES,
-  NOT_FOUND,
-} from '../constants/errorConditionConstants';
+import { ErrorType, INVALID_VALUES, NOT_FOUND } from '../constants/errorConditionConstants';
 
 type Params = { [key: string]: any };
 type ParamsToResolve = {
@@ -17,10 +13,7 @@ type ParamsToResolve = {
   type?: string;
 }[];
 
-export function resolveFromParameters(
-  params: Params,
-  paramsToResolve: ParamsToResolve
-) {
+export function resolveFromParameters(params: Params, paramsToResolve: ParamsToResolve) {
   if (!isObject(params)) return { error: INVALID_VALUES };
   if (!Array.isArray(paramsToResolve)) return { error: INVALID_VALUES };
 
@@ -35,13 +28,9 @@ export function resolveFromParameters(
 }
 
 function findResolution({ params, param, attr, error }) {
-  if (
-    param === STRUCTURE &&
-    isObject(params.drawDefinition) &&
-    isString(params.structureId)
-  ) {
+  if (param === STRUCTURE && isObject(params.drawDefinition) && isString(params.structureId)) {
     const result = (params.drawDefinition.structures ?? []).find(
-      ({ structureId }) => structureId === params.structureId
+      ({ structureId }) => structureId === params.structureId,
     );
     return !result.length && error ? { error } : { structure: result };
   }

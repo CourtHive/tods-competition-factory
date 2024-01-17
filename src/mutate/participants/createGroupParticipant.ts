@@ -1,9 +1,9 @@
 import { getParticipants } from '../../query/participants/getParticipants';
 import { addNotice, getTopics } from '../../global/state/globalState';
-import { definedAttributes } from '../../utilities/definedAttributes';
-import { makeDeepCopy } from '../../utilities/makeDeepCopy';
+import { definedAttributes } from '../../tools/definedAttributes';
+import { makeDeepCopy } from '../../tools/makeDeepCopy';
 import { addParticipant } from './addParticipant';
-import { UUID } from '../../utilities/UUID';
+import { UUID } from '../../tools/UUID';
 
 import { GROUP, INDIVIDUAL } from '../../constants/participantConstants';
 import { Participant, Tournament } from '../../types/tournamentTypes';
@@ -54,9 +54,7 @@ export function createGroupParticipant({
       participantFilters: { participantTypes: [INDIVIDUAL] },
       tournamentRecord,
     }).participants ?? [];
-  const tournamentIndividualParticipantIds = participants.map(
-    (participant) => participant.participantId
-  );
+  const tournamentIndividualParticipantIds = participants.map((participant) => participant.participantId);
 
   for (const participantId of individualParticipantIds) {
     if (!tournamentIndividualParticipantIds.includes(participantId)) {

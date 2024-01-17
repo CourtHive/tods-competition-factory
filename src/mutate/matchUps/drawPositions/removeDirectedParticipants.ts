@@ -7,7 +7,7 @@ import { updateTieMatchUpScore } from '../score/tieMatchUpScore';
 import { modifyMatchUpScore } from '../score/modifyMatchUpScore';
 import { isAdHoc } from '../../../query/drawDefinition/isAdHoc';
 import { findStructure } from '../../../acquire/findStructure';
-import { instanceCount } from '../../../utilities/arrays';
+import { instanceCount } from '../../../tools/arrays';
 import { clearDrawPosition } from './positionClear';
 
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
@@ -15,17 +15,8 @@ import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { MatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
-import {
-  ErrorType,
-  MISSING_DRAW_POSITIONS,
-  STRUCTURE_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  DrawLink,
-  Event,
-  Tournament,
-} from '../../../types/tournamentTypes';
+import { ErrorType, MISSING_DRAW_POSITIONS, STRUCTURE_NOT_FOUND } from '../../../constants/errorConditionConstants';
+import { DrawDefinition, DrawLink, Event, Tournament } from '../../../types/tournamentTypes';
 
 export function removeDirectedParticipants(params): {
   error?: ErrorType;
@@ -77,8 +68,7 @@ export function removeDirectedParticipants(params): {
       matchUpsMap,
       event,
     });
-    if (!dualWinningSideChange && !tieMatchUpResult.removeWinningSide)
-      return { ...SUCCESS };
+    if (!dualWinningSideChange && !tieMatchUpResult.removeWinningSide) return { ...SUCCESS };
   }
 
   if (isAdHocMatchUp) return { ...SUCCESS };
@@ -102,18 +92,14 @@ export function removeDirectedParticipants(params): {
   const { winnerParticipantId, loserParticipantId } =
     positionAssignments?.reduce(
       (assignments: any, assignment) => {
-        if (assignment.drawPosition === loserDrawPosition)
-          assignments.loserParticipantId = assignment.participantId;
-        if (assignment.drawPosition === winningDrawPosition)
-          assignments.winnerParticipantId = assignment.participantId;
+        if (assignment.drawPosition === loserDrawPosition) assignments.loserParticipantId = assignment.participantId;
+        if (assignment.drawPosition === winningDrawPosition) assignments.winnerParticipantId = assignment.participantId;
         return assignments;
       },
-      { winnerParticipantId: undefined, loserParticipantId: undefined }
+      { winnerParticipantId: undefined, loserParticipantId: undefined },
     ) || {};
 
-  const drawPositionMatchUps = sourceMatchUps.filter(
-    (matchUp) => matchUp.drawPositions?.includes(loserDrawPosition)
-  );
+  const drawPositionMatchUps = sourceMatchUps.filter((matchUp) => matchUp.drawPositions?.includes(loserDrawPosition));
 
   if (winnerMatchUp) {
     removeDirectedWinner({
@@ -227,11 +213,11 @@ export function removeDirectedWinner({
 
     // remove participant from seedAssignments
     structure.seedAssignments = (structure.seedAssignments ?? []).filter(
-      (assignment) => assignment.participantId !== winnerParticipantId
+      (assignment) => assignment.participantId !== winnerParticipantId,
     );
 
     const relevantAssignment = positionAssignments?.find(
-      (assignment) => assignment.participantId === winnerParticipantId
+      (assignment) => assignment.participantId === winnerParticipantId,
     );
     const winnerDrawPosition = relevantAssignment?.drawPosition;
 
@@ -245,9 +231,7 @@ export function removeDirectedWinner({
       .flat(Infinity)
       .filter(Boolean);
     const drawPositionInstanceCount = instanceCount(allDrawPositionInstances);
-    const winnerDrawPositionInstances = winnerDrawPosition
-      ? drawPositionInstanceCount[winnerDrawPosition]
-      : undefined;
+    const winnerDrawPositionInstances = winnerDrawPosition ? drawPositionInstanceCount[winnerDrawPosition] : undefined;
 
     if (winnerDrawPositionInstances === 1) {
       // only remove position assignment if it has a single instance...
@@ -258,18 +242,14 @@ export function removeDirectedWinner({
         }
       });
     } else {
-      const drawPositionMatchUps = matchUps.filter(({ drawPositions }) =>
-        drawPositions.includes(winnerDrawPosition)
-      );
-      console.log(
-        'not removing from position assignments since instances > 1',
-        { drawPositionMatchUps, winnerTargetLink }
-      );
+      const drawPositionMatchUps = matchUps.filter(({ drawPositions }) => drawPositions.includes(winnerDrawPosition));
+      console.log('not removing from position assignments since instances > 1', {
+        drawPositionMatchUps,
+        winnerTargetLink,
+      });
     }
 
-    const targetMatchUp = matchUpsMap?.drawMatchUps?.find(
-      ({ matchUpId }) => matchUpId === winnerMatchUp.matchUpId
-    );
+    const targetMatchUp = matchUpsMap?.drawMatchUps?.find(({ matchUpId }) => matchUpId === winnerMatchUp.matchUpId);
 
     targetMatchUp &&
       modifyMatchUpNotice({
@@ -317,7 +297,7 @@ function removeDirectedLoser({
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const relevantDrawPosition = positionAssignments?.find(
-    (assignment) => assignment.participantId === loserParticipantId
+    (assignment) => assignment.participantId === loserParticipantId,
   )?.drawPosition;
   positionAssignments?.forEach((assignment) => {
     if (assignment.participantId === loserParticipantId) {
@@ -332,19 +312,16 @@ function removeDirectedLoser({
 
   // remove participant from seedAssignments
   structure.seedAssignments = (structure.seedAssignments ?? []).filter(
-    (assignment) => assignment.participantId !== loserParticipantId
+    (assignment) => assignment.participantId !== loserParticipantId,
   );
 
   if (dualMatchUp) {
     // remove propagated lineUp
     const drawPositionSideIndex = loserMatchUp?.sides.reduce(
-      (sideIndex, side, i) =>
-        side.drawPosition === relevantDrawPosition ? i : sideIndex,
-      undefined
+      (sideIndex, side, i) => (side.drawPosition === relevantDrawPosition ? i : sideIndex),
+      undefined,
     );
-    const targetMatchUp = matchUpsMap?.drawMatchUps?.find(
-      ({ matchUpId }) => matchUpId === loserMatchUp.matchUpId
-    );
+    const targetMatchUp = matchUpsMap?.drawMatchUps?.find(({ matchUpId }) => matchUpId === loserMatchUp.matchUpId);
     const targetSide = targetMatchUp?.sides?.[drawPositionSideIndex];
 
     if (targetSide) {

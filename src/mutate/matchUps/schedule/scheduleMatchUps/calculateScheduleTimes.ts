@@ -5,18 +5,10 @@ import { calculatePeriodLength } from '../schedulers/utils/calculatePeriodLength
 import { getVenuesAndCourts } from '../../../../query/venues/venuesAndCourtsGetter';
 import { getMatchUpId } from '../../../../global/functions/extractors';
 import { getScheduleTimes } from '../../../../query/venues/getScheduleTimes';
-import {
-  addMinutesToTimeString,
-  extractTime,
-  sameDay,
-  timeStringMinutes,
-} from '../../../../utilities/dateTime';
+import { addMinutesToTimeString, extractTime, sameDay, timeStringMinutes } from '../../../../tools/dateTime';
 
 import { Tournament } from '../../../../types/tournamentTypes';
-import {
-  ErrorType,
-  MISSING_TOURNAMENT_RECORDS,
-} from '../../../../constants/errorConditionConstants';
+import { ErrorType, MISSING_TOURNAMENT_RECORDS } from '../../../../constants/errorConditionConstants';
 
 type CalculateScheduleTimesArgs = {
   tournamentRecords: { [key: string]: Tournament };
@@ -51,10 +43,7 @@ export function calculateScheduleTimes({
   error?: ErrorType;
   venueId?: string;
 } {
-  if (
-    typeof tournamentRecords !== 'object' ||
-    !Object.keys(tournamentRecords).length
-  )
+  if (typeof tournamentRecords !== 'object' || !Object.keys(tournamentRecords).length)
     return { error: MISSING_TOURNAMENT_RECORDS };
 
   periodLength =
@@ -70,24 +59,18 @@ export function calculateScheduleTimes({
     tournamentRecords,
   });
 
-  const courts = allCourts?.filter(
-    (court) => !venueIds || venueIds.includes(court.venueId)
-  );
+  const courts = allCourts?.filter((court) => !venueIds || venueIds.includes(court.venueId));
 
   if (!startTime) {
     startTime = courts?.reduce((minStartTime, court) => {
       const dateAvailability = court.dateAvailability?.find(
         // if no date is specified consider it to be default for all tournament dates
-        (availability) =>
-          !availability.date || sameDay(scheduleDate, availability.date)
+        (availability) => !availability.date || sameDay(scheduleDate, availability.date),
       );
-      const comparisonStartTime =
-        dateAvailability?.startTime ?? court.startTime;
+      const comparisonStartTime = dateAvailability?.startTime ?? court.startTime;
 
       return comparisonStartTime &&
-        (!minStartTime ||
-          timeStringMinutes(comparisonStartTime) <
-            timeStringMinutes(minStartTime))
+        (!minStartTime || timeStringMinutes(comparisonStartTime) < timeStringMinutes(minStartTime))
         ? comparisonStartTime
         : minStartTime;
     }, undefined);
@@ -97,14 +80,11 @@ export function calculateScheduleTimes({
     endTime = courts?.reduce((maxEndTime, court) => {
       const dateAvailability = court.dateAvailability?.find(
         // if no date is specified consider it to be default for all tournament dates
-        (availability) =>
-          !availability.date || sameDay(scheduleDate, availability.date)
+        (availability) => !availability.date || sameDay(scheduleDate, availability.date),
       );
       const comparisonEndTime = dateAvailability?.endTime ?? court.endTime;
 
-      return comparisonEndTime &&
-        (!maxEndTime ||
-          timeStringMinutes(comparisonEndTime) > timeStringMinutes(maxEndTime))
+      return comparisonEndTime && (!maxEndTime || timeStringMinutes(comparisonEndTime) > timeStringMinutes(maxEndTime))
         ? comparisonEndTime
         : maxEndTime;
     }, undefined);
@@ -125,9 +105,9 @@ export function calculateScheduleTimes({
           return {
             [event.eventId]: { event, scheduleTiming },
           };
-        })
+        }),
       )
-      .flat()
+      .flat(),
   );
 
   // Get an array of all matchUps scheduled for the date
@@ -151,33 +131,31 @@ export function calculateScheduleTimes({
     recoveryTimes: [{ minutes: { default: defaultRecoveryMinutes } }],
   };
 
-  const bookings = relevantMatchUps?.map(
-    ({ eventId, schedule, matchUpFormat }) => {
-      const { event, scheduleTiming } = eventDetails[eventId];
-      const eventType = event?.eventType;
-      const timingDetails = {
-        ...scheduleTiming,
-        defaultTiming,
-        matchUpFormat,
-      };
-      const { averageMinutes, recoveryMinutes } = matchUpFormatTimes({
-        eventType,
-        timingDetails,
-      });
-      const { courtId, venueId } = schedule;
-      const startTime = extractTime(schedule.scheduledTime);
-      const endTime = addMinutesToTimeString(startTime, averageMinutes);
-      return {
-        recoveryMinutes,
-        averageMinutes,
-        periodLength,
-        startTime,
-        endTime,
-        courtId,
-        venueId,
-      };
-    }
-  );
+  const bookings = relevantMatchUps?.map(({ eventId, schedule, matchUpFormat }) => {
+    const { event, scheduleTiming } = eventDetails[eventId];
+    const eventType = event?.eventType;
+    const timingDetails = {
+      ...scheduleTiming,
+      defaultTiming,
+      matchUpFormat,
+    };
+    const { averageMinutes, recoveryMinutes } = matchUpFormatTimes({
+      eventType,
+      timingDetails,
+    });
+    const { courtId, venueId } = schedule;
+    const startTime = extractTime(schedule.scheduledTime);
+    const endTime = addMinutesToTimeString(startTime, averageMinutes);
+    return {
+      recoveryMinutes,
+      averageMinutes,
+      periodLength,
+      startTime,
+      endTime,
+      courtId,
+      venueId,
+    };
+  });
 
   const timingParameters = {
     calculateStartTimeFromCourts,
@@ -194,10 +172,7 @@ export function calculateScheduleTimes({
   const { scheduleTimes } = getScheduleTimes(timingParameters);
 
   // if a single venue specified, or only one venue available, return venueId
-  const venueId =
-    (venueIds?.length === 1 && venueIds[0]) ||
-    (venues?.length === 1 && venues[0].venueId) ||
-    undefined;
+  const venueId = (venueIds?.length === 1 && venueIds[0]) || (venues?.length === 1 && venues[0].venueId) || undefined;
 
   const dateScheduledMatchUpIds = relevantMatchUps.map(getMatchUpId);
 

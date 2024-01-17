@@ -1,73 +1,67 @@
-import { dateStringDaysChange } from '../../../utilities/dateTime';
+import { dateStringDaysChange } from '../../../tools/dateTime';
 import mocksEngine from '../../../assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
 import tournamentEngineSync from '../../engines/syncEngine';
-import {
-  INVALID_DATE,
-  MISSING_EVENT,
-} from '../../../constants/errorConditionConstants';
+import { INVALID_DATE, MISSING_EVENT } from '../../../constants/errorConditionConstants';
 
-test.each([tournamentEngineSync])(
-  'can modify event.startDate and event.endDate',
-  async (tournamentEngine) => {
-    const { tournamentRecord } = mocksEngine.generateTournamentRecord();
-    await tournamentEngine.setState(tournamentRecord);
+test.each([tournamentEngineSync])('can modify event.startDate and event.endDate', async (tournamentEngine) => {
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord();
+  await tournamentEngine.setState(tournamentRecord);
 
-    const newEvent = { eventName: 'Test Event' };
-    const {
-      event: { eventId, startDate: eventStartDate, endDate: eventEndDate },
-      success,
-    } = await tournamentEngine.addEvent({
-      event: newEvent,
-    });
-    expect(success).toEqual(true);
+  const newEvent = { eventName: 'Test Event' };
+  const {
+    event: { eventId, startDate: eventStartDate, endDate: eventEndDate },
+    success,
+  } = await tournamentEngine.addEvent({
+    event: newEvent,
+  });
+  expect(success).toEqual(true);
 
-    const { startDate, endDate } = tournamentRecord;
-    expect(eventStartDate).toEqual(startDate);
-    expect(eventEndDate).toEqual(endDate);
+  const { startDate, endDate } = tournamentRecord;
+  expect(eventStartDate).toEqual(startDate);
+  expect(eventEndDate).toEqual(endDate);
 
-    const newEventStartDate = dateStringDaysChange(startDate, 1);
-    let result = await tournamentEngine.setEventStartDate({
-      startDate: newEventStartDate,
-    });
-    expect(result.error).toEqual(MISSING_EVENT);
-    result = await tournamentEngine.setEventStartDate({
-      eventId,
-    });
-    expect(result.error).toEqual(INVALID_DATE);
-    result = await tournamentEngine.setEventStartDate({
-      eventId,
-      startDate: newEventStartDate,
-    });
-    expect(result.success).toEqual(true);
-    let { event } = await tournamentEngine.getEvent({ eventId });
-    expect(event.startDate).toEqual(newEventStartDate);
+  const newEventStartDate = dateStringDaysChange(startDate, 1);
+  let result = await tournamentEngine.setEventStartDate({
+    startDate: newEventStartDate,
+  });
+  expect(result.error).toEqual(MISSING_EVENT);
+  result = await tournamentEngine.setEventStartDate({
+    eventId,
+  });
+  expect(result.error).toEqual(INVALID_DATE);
+  result = await tournamentEngine.setEventStartDate({
+    eventId,
+    startDate: newEventStartDate,
+  });
+  expect(result.success).toEqual(true);
+  let { event } = await tournamentEngine.getEvent({ eventId });
+  expect(event.startDate).toEqual(newEventStartDate);
 
-    const newEventEndDate = dateStringDaysChange(endDate, -1);
-    result = await tournamentEngine.setEventEndDate({
-      endDate: newEventEndDate,
-    });
-    expect(result.error).toEqual(MISSING_EVENT);
-    result = await tournamentEngine.setEventEndDate({
-      eventId,
-    });
-    expect(result.error).toEqual(INVALID_DATE);
-    result = await tournamentEngine.setEventEndDate({
-      eventId,
-      endDate: newEventEndDate,
-    });
-    expect(result.success).toEqual(true);
-    ({ event } = await tournamentEngine.getEvent({ eventId }));
-    expect(event.endDate).toEqual(newEventEndDate);
+  const newEventEndDate = dateStringDaysChange(endDate, -1);
+  result = await tournamentEngine.setEventEndDate({
+    endDate: newEventEndDate,
+  });
+  expect(result.error).toEqual(MISSING_EVENT);
+  result = await tournamentEngine.setEventEndDate({
+    eventId,
+  });
+  expect(result.error).toEqual(INVALID_DATE);
+  result = await tournamentEngine.setEventEndDate({
+    eventId,
+    endDate: newEventEndDate,
+  });
+  expect(result.success).toEqual(true);
+  ({ event } = await tournamentEngine.getEvent({ eventId }));
+  expect(event.endDate).toEqual(newEventEndDate);
 
-    result = await tournamentEngine.setEventEndDate({
-      eventId,
-      endDate: startDate,
-    });
-    expect(result.success).toEqual(true);
-  }
-);
+  result = await tournamentEngine.setEventEndDate({
+    eventId,
+    endDate: startDate,
+  });
+  expect(result.success).toEqual(true);
+});
 
 test.each([tournamentEngineSync])(
   'will reject event.startDate and event.endDate if they fall outside of tournament dates',
@@ -118,5 +112,5 @@ test.each([tournamentEngineSync])(
     ({ event } = await tournamentEngine.getEvent({ eventId }));
     expect(event.startDate).toEqual(startDate);
     expect(event.endDate).toEqual(endDate);
-  }
+  },
 );

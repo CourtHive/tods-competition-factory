@@ -1,7 +1,7 @@
 import { completeDrawMatchUps } from '../../../assemblies/generators/mocks/completeDrawMatchUps';
 import { validMatchUp, validMatchUps } from '../../../validators/validMatchUp';
-import { intersection, unique } from '../../../utilities/arrays';
-import { xa } from '../../../utilities/objects';
+import { intersection, unique } from '../../../tools/arrays';
+import { xa } from '../../../tools/objects';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it, test } from 'vitest';

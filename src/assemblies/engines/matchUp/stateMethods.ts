@@ -1,9 +1,6 @@
-import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
+import { makeDeepCopy } from '../../../tools/makeDeepCopy';
 import { MatchUp } from '../../../types/tournamentTypes';
-import {
-  INVALID_OBJECT,
-  MISSING_VALUE,
-} from '../../../constants/errorConditionConstants';
+import { INVALID_OBJECT, MISSING_VALUE } from '../../../constants/errorConditionConstants';
 
 type MatchUpArg = {
   [key: string | number | symbol]: unknown;
@@ -54,10 +51,5 @@ export function reset() {
 }
 
 export function getState(params?) {
-  return makeDeepCopy(
-    keyedMatchUps[matchUpId],
-    params?.convertExtensions,
-    false,
-    params?.removeExtensions
-  );
+  return makeDeepCopy(keyedMatchUps[matchUpId], params?.convertExtensions, false, params?.removeExtensions);
 }

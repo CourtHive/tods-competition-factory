@@ -1,8 +1,8 @@
 import { updateAssignmentParticipantResults } from '../drawDefinitions/matchUpGovernor/updateAssignmentParticipantResults';
 import { deleteMatchUpsNotice, modifyDrawNotice, modifyMatchUpNotice } from '../notifications/drawNotifications';
 import { checkScoreHasValue } from '../../query/matchUp/checkScoreHasValue';
-import { getMissingSequenceNumbers, unique } from '../../utilities/arrays';
-import { xa } from '../../utilities/objects';
+import { getMissingSequenceNumbers, unique } from '../../tools/arrays';
+import { xa } from '../../tools/objects';
 
 import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
 import { ROUND_OUTCOME } from '../../constants/drawDefinitionConstants';

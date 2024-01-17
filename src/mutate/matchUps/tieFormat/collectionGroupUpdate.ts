@@ -1,5 +1,5 @@
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
-import { definedAttributes } from '../../../utilities/definedAttributes';
+import { definedAttributes } from '../../../tools/definedAttributes';
 import { updateTargetTeamMatchUps } from '../../tieFormat/updateTargetTeamMatchUps';
 import { getTargetTeamMatchUps } from '../../../query/hierarchical/tieFormats/getTargetTeamMatchUps';
 import { calculateWinCriteria } from '../../../query/matchUp/calculateWinCriteria';
@@ -7,14 +7,7 @@ import { validateTieFormat } from '../../../validators/validateTieFormat';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import {
-  DrawDefinition,
-  Event,
-  MatchUp,
-  Structure,
-  TieFormat,
-  Tournament,
-} from '../../../types/tournamentTypes';
+import { DrawDefinition, Event, MatchUp, Structure, TieFormat, Tournament } from '../../../types/tournamentTypes';
 
 type CollectionGroupUpdateArgs = {
   updateInProgressMatchUps?: boolean;
@@ -52,10 +45,7 @@ export function collectionGroupUpdate({
   tieFormat.winCriteria = definedAttributes({ aggregateValue, valueGoal });
 
   // if valueGoal has changed, force renaming of the tieFormat
-  if (
-    (originalValueGoal && originalValueGoal !== valueGoal) ||
-    (aggregateValue && !wasAggregateValue)
-  ) {
+  if ((originalValueGoal && originalValueGoal !== valueGoal) || (aggregateValue && !wasAggregateValue)) {
     if (tieFormatName) {
       tieFormat.tieFormatName = tieFormatName;
     } else {

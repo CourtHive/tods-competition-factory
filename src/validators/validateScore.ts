@@ -1,14 +1,11 @@
 import { analyzeScore } from '../query/matchUp/analyzeScore';
-import { mustBeAnArray } from '../utilities/mustBeAnArray';
-import { isConvertableInteger } from '../utilities/math';
-import { unique } from '../utilities/arrays';
+import { mustBeAnArray } from '../tools/mustBeAnArray';
+import { isConvertableInteger } from '../tools/math';
+import { unique } from '../tools/arrays';
 
 import type { Score } from '../types/tournamentTypes';
 import { ResultType } from '../global/functions/decorateResult';
-import {
-  INVALID_SCORE,
-  INVALID_VALUES,
-} from '../constants/errorConditionConstants';
+import { INVALID_SCORE, INVALID_VALUES } from '../constants/errorConditionConstants';
 
 type validateScoreTypes = {
   existingMatchUpStatus?: string;
@@ -29,14 +26,11 @@ export function validateScore({
   const { sets, scoreStringSide1, scoreStringSide2 } = score;
   const info = 'scoreString must be a string!';
 
-  if (scoreStringSide1 !== undefined && typeof scoreStringSide1 !== 'string')
-    return { error: INVALID_VALUES, info };
+  if (scoreStringSide1 !== undefined && typeof scoreStringSide1 !== 'string') return { error: INVALID_VALUES, info };
 
-  if (scoreStringSide2 !== undefined && typeof scoreStringSide2 !== 'string')
-    return { error: INVALID_VALUES, info };
+  if (scoreStringSide2 !== undefined && typeof scoreStringSide2 !== 'string') return { error: INVALID_VALUES, info };
 
-  if (sets !== undefined && !Array.isArray(sets))
-    return { error: INVALID_VALUES, info: mustBeAnArray('sets') };
+  if (sets !== undefined && !Array.isArray(sets)) return { error: INVALID_VALUES, info: mustBeAnArray('sets') };
 
   if (sets?.length) {
     const setNumbers = sets.map((set) => set?.setNumber).filter(Boolean);
@@ -62,9 +56,7 @@ export function validateScore({
         [side1PointScore, side2PointScore],
       ]
         .filter((pair) => pair.some((value) => value !== undefined))
-        .every((pair) =>
-          pair.every((numericValue) => isConvertableInteger(numericValue))
-        );
+        .every((pair) => pair.every((numericValue) => isConvertableInteger(numericValue)));
 
       if (!numericValuePairs) {
         return { error: INVALID_VALUES, info: 'non-numeric values' };

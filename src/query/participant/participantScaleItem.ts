@@ -1,16 +1,12 @@
-import { getAccessorValue } from '../../utilities/getAccessorValue';
+import { getAccessorValue } from '../../tools/getAccessorValue';
 
 import type { Participant, EventTypeUnion } from '../../types/tournamentTypes';
 import { ScaleAttributes, ScaleItem } from '../../types/factoryTypes';
 import { ResultType } from '../../global/functions/decorateResult';
 import { SUCCESS } from '../../constants/resultConstants';
 import { SCALE } from '../../constants/scaleConstants';
-import { isObject } from '../../utilities/objects';
-import {
-  INVALID_SCALE_ITEM,
-  INVALID_VALUES,
-  MISSING_PARTICIPANT,
-} from '../../constants/errorConditionConstants';
+import { isObject } from '../../tools/objects';
+import { INVALID_SCALE_ITEM, INVALID_VALUES, MISSING_PARTICIPANT } from '../../constants/errorConditionConstants';
 
 export interface ParticipantScaleItemArgs {
   scaleAttributes: ScaleAttributes;
@@ -35,20 +31,17 @@ export function participantScaleItem({
       .filter((timeItem) => !requireTimeStamp || timeItem?.itemDate)
       .sort(
         (a, b) =>
-          (a.createdAt ? new Date(a.createdAt).getTime() : 0) -
-          (b.createdAt ? new Date(b.createdAt).getTime() : 0)
+          (a.createdAt ? new Date(a.createdAt).getTime() : 0) - (b.createdAt ? new Date(b.createdAt).getTime() : 0),
       );
 
     const timeItem = filteredTimeItems.pop();
 
     if (timeItem) {
-      const [itemSubject, scaleType, eventType, scaleName] =
-        timeItem.itemType?.split('.') ?? [];
+      const [itemSubject, scaleType, eventType, scaleName] = timeItem.itemType?.split('.') ?? [];
 
       if (itemSubject !== SCALE) return { error: INVALID_SCALE_ITEM };
 
-      const accessorValue: any =
-        accessor && getAccessorValue({ element: timeItem.itemValue, accessor });
+      const accessorValue: any = accessor && getAccessorValue({ element: timeItem.itemValue, accessor });
       const scaleValue = accessorValue?.value || timeItem.itemValue;
 
       const scaleItem = {

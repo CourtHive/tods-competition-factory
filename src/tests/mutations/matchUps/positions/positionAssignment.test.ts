@@ -5,21 +5,14 @@ import { assignDrawPosition } from '../../../../mutate/matchUps/drawPositions/po
 import { structureAssignedDrawPositions } from '../../../../query/drawDefinition/positionsGetter';
 import { getStageEntries } from '../../../../query/drawDefinition/stageGetter';
 import { getDrawStructures } from '../../../../acquire/findStructure';
-import { generateRange } from '../../../../utilities/arrays';
+import { generateRange } from '../../../../tools/arrays';
 import { mocksEngine } from '../../../..';
 import { expect, it } from 'vitest';
 
 import { ERROR, SUCCESS } from '../../../../constants/resultConstants';
 import { EntryStatusUnion } from '../../../../types/tournamentTypes';
-import {
-  MAIN,
-  ROUND_ROBIN,
-  CONTAINER,
-} from '../../../../constants/drawDefinitionConstants';
-import {
-  DIRECT_ACCEPTANCE,
-  WILDCARD,
-} from '../../../../constants/entryStatusConstants';
+import { MAIN, ROUND_ROBIN, CONTAINER } from '../../../../constants/drawDefinitionConstants';
+import { DIRECT_ACCEPTANCE, WILDCARD } from '../../../../constants/entryStatusConstants';
 
 let result;
 
@@ -72,8 +65,7 @@ it('can assign SINGLE_ELIMINATION draw drawPositions', () => {
       structureId,
     });
     expect(result).toMatchObject(SUCCESS);
-    const { unassignedPositions: stillUnassigned } =
-      structureAssignedDrawPositions({ drawDefinition, structureId });
+    const { unassignedPositions: stillUnassigned } = structureAssignedDrawPositions({ drawDefinition, structureId });
     expect(stillUnassigned?.length).toEqual(participantIds.length - 1 - i);
   });
 
@@ -137,8 +129,7 @@ it('can assign ROUND_ROBIN draw drawPositions', () => {
       structureId,
     });
     expect(result).toMatchObject(SUCCESS);
-    const { unassignedPositions: stillUnassigned } =
-      structureAssignedDrawPositions({ drawDefinition, structureId });
+    const { unassignedPositions: stillUnassigned } = structureAssignedDrawPositions({ drawDefinition, structureId });
     expect(stillUnassigned?.length).toEqual(participantIds.length - 1 - i);
   });
 
@@ -177,8 +168,7 @@ it('returns positionAssignments for SINGLE_ELIMINATION and ROUND_ROBIN strucures
   const elimination = generateDrawTypeAndModifyDrawDefinition({
     drawDefinition,
   }).structures?.[0];
-  const { positionAssignments: eliminationAssignments } =
-    structureAssignedDrawPositions({ structure: elimination });
+  const { positionAssignments: eliminationAssignments } = structureAssignedDrawPositions({ structure: elimination });
   expect(eliminationAssignments?.length).toEqual(16);
 
   drawDefinition = newDrawDefinition();
@@ -188,7 +178,6 @@ it('returns positionAssignments for SINGLE_ELIMINATION and ROUND_ROBIN strucures
     drawDefinition,
     drawType,
   }).structures?.[0];
-  const { positionAssignments: roundRobinAssignments } =
-    structureAssignedDrawPositions({ structure: roundRobin });
+  const { positionAssignments: roundRobinAssignments } = structureAssignedDrawPositions({ structure: roundRobin });
   expect(roundRobinAssignments?.length).toEqual(16);
 });

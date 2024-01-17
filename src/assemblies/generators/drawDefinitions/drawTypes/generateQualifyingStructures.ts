@@ -1,25 +1,17 @@
 import { generateQualifyingLink } from '../links/generateQualifyingLink';
 import { addExtension } from '../../../../mutate/extensions/addExtension';
-import { coerceEven, isConvertableInteger } from '../../../../utilities/math';
+import { coerceEven, isConvertableInteger } from '../../../../tools/math';
 import structureTemplate from '../../templates/structureTemplate';
 import { generateRoundRobin } from './roundRobin/roundRobin';
 import { treeMatchUps } from './eliminationTree';
-import { constantToString } from '../../../../utilities/strings';
-import {
-  ResultType,
-  decorateResult,
-} from '../../../../global/functions/decorateResult';
+import { constantToString } from '../../../../tools/strings';
+import { ResultType, decorateResult } from '../../../../global/functions/decorateResult';
 
 import { MISSING_DRAW_SIZE } from '../../../../constants/errorConditionConstants';
 import { DrawLink, Structure } from '../../../../types/tournamentTypes';
 import { ROUND_TARGET } from '../../../../constants/extensionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
-import {
-  POSITION,
-  QUALIFYING,
-  ROUND_ROBIN,
-  WINNER,
-} from '../../../../constants/drawDefinitionConstants';
+import { POSITION, QUALIFYING, ROUND_ROBIN, WINNER } from '../../../../constants/drawDefinitionConstants';
 
 export function generateQualifyingStructures({
   qualifyingProfiles,
@@ -58,25 +50,14 @@ export function generateQualifyingStructures({
       finalQualifyingStructureId,
       linkType;
 
-    for (const structureProfile of (structureProfiles || []).sort(
-      sequenceSort
-    )) {
-      let drawSize = coerceEven(
-        structureProfile.drawSize || structureProfile.participantsCount
-      );
-      const {
-        qualifyingRoundNumber,
-        structureOptions,
-        matchUpFormat,
-        structureName,
-        structureId,
-        drawType,
-      } = structureProfile;
+    for (const structureProfile of (structureProfiles || []).sort(sequenceSort)) {
+      let drawSize = coerceEven(structureProfile.drawSize || structureProfile.participantsCount);
+      const { qualifyingRoundNumber, structureOptions, matchUpFormat, structureName, structureId, drawType } =
+        structureProfile;
       const matchUpType = structureProfile.matchUpType;
 
       const qualifyingPositions =
-        structureProfile.qualifyingPositions ||
-        deriveQualifyingPositions({ drawSize, qualifyingRoundNumber });
+        structureProfile.qualifyingPositions || deriveQualifyingPositions({ drawSize, qualifyingRoundNumber });
 
       let roundLimit, structure, matchUps;
 
@@ -86,37 +67,31 @@ export function generateQualifyingStructures({
           stack,
         });
       }
-      const roundTargetName =
-        qualifyingProfiles.length > 1 ? `${roundTarget}-` : '';
-      const stageSequenceName =
-        structureProfiles.length > 1 || roundTargetName ? stageSequence : '';
+      const roundTargetName = qualifyingProfiles.length > 1 ? `${roundTarget}-` : '';
+      const stageSequenceName = structureProfiles.length > 1 || roundTargetName ? stageSequence : '';
 
       const qualifyingStructureName =
         structureName ||
         (roundTargetName || stageSequenceName
-          ? `${constantToString(
-              QUALIFYING
-            )} ${roundTargetName}${stageSequenceName}`
+          ? `${constantToString(QUALIFYING)} ${roundTargetName}${stageSequenceName}`
           : constantToString(QUALIFYING));
 
       if (drawType === ROUND_ROBIN) {
-        const { structures, groupCount, maxRoundNumber /*, groupSize*/ } =
-          generateRoundRobin({
-            structureName:
-              structureProfile.structureName || qualifyingStructureName,
-            structureId: structureId || uuids?.pop(),
-            // qualifyingPositions,
-            stage: QUALIFYING,
-            structureOptions,
-            appliedPolicies,
-            stageSequence,
-            matchUpType,
-            roundTarget,
-            drawSize,
-            idPrefix,
-            isMock,
-            uuids,
-          });
+        const { structures, groupCount, maxRoundNumber /*, groupSize*/ } = generateRoundRobin({
+          structureName: structureProfile.structureName || qualifyingStructureName,
+          structureId: structureId || uuids?.pop(),
+          // qualifyingPositions,
+          stage: QUALIFYING,
+          structureOptions,
+          appliedPolicies,
+          stageSequence,
+          matchUpType,
+          roundTarget,
+          drawSize,
+          idPrefix,
+          isMock,
+          uuids,
+        });
         targetRoundQualifiersCount = groupCount;
         roundLimit = maxRoundNumber;
         structure = structures[0];
@@ -133,8 +108,7 @@ export function generateQualifyingStructures({
         }));
 
         structure = structureTemplate({
-          structureName:
-            structureProfile.structureName || qualifyingStructureName,
+          structureName: structureProfile.structureName || qualifyingStructureName,
           structureId: structureId || uuids?.pop(),
           qualifyingRoundNumber: roundLimit,
           stage: QUALIFYING,
@@ -153,9 +127,7 @@ export function generateQualifyingStructures({
         }
 
         // always set to the final round of the last generated qualifying structure
-        targetRoundQualifiersCount =
-          matchUps?.filter((matchUp) => matchUp.roundNumber === roundLimit)
-            ?.length || 0;
+        targetRoundQualifiersCount = matchUps?.filter((matchUp) => matchUp.roundNumber === roundLimit)?.length || 0;
       }
 
       if (stageSequence > 1) {
@@ -168,8 +140,7 @@ export function generateQualifyingStructures({
         });
         links.push(link);
         // if more than one qualifying stageSequence, remove last stageSequence qualifier positions from count
-        qualifyingDrawPositionsCount +=
-          (drawSize || 0) - targetRoundQualifiersCount;
+        qualifyingDrawPositionsCount += (drawSize || 0) - targetRoundQualifiersCount;
       } else {
         qualifyingDrawPositionsCount += drawSize || 0;
       }

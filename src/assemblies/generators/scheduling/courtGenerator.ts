@@ -1,4 +1,4 @@
-import { generateRange } from '../../../utilities/arrays';
+import { generateRange } from '../../../tools/arrays';
 
 type CourtGeneratorArgs = {
   startTime?: string;
@@ -7,12 +7,7 @@ type CourtGeneratorArgs = {
   date?: string;
 };
 export function courtGenerator(params?: CourtGeneratorArgs) {
-  const {
-    startTime = '8:00',
-    endTime = '20:30',
-    count = 10,
-    date,
-  } = params ?? {};
+  const { startTime = '8:00', endTime = '20:30', count = 10, date } = params ?? {};
   return generateRange(0, count).map(() => ({
     dateAvailability: [{ date, startTime, endTime }],
   }));

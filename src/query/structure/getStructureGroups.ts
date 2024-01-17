@@ -1,9 +1,4 @@
-import {
-  generateRange,
-  intersection,
-  overlap,
-  unique,
-} from '../../utilities/arrays';
+import { generateRange, intersection, overlap, unique } from '../../tools/arrays';
 
 import { DrawDefinition } from '../../types/tournamentTypes';
 import { StructureProfile } from '../../types/factoryTypes';
@@ -22,11 +17,7 @@ import {
  * the expectation is that all structures within a drawDefintion are linked
  * return a boolean whether this condition is met => allSructuresLinked
  */
-export function getStructureGroups({
-  drawDefinition,
-}: {
-  drawDefinition: DrawDefinition;
-}): {
+export function getStructureGroups({ drawDefinition }: { drawDefinition: DrawDefinition }): {
   sourceStructureIds: { [key: string]: boolean };
   hasDrawFeedProfile: { [key: string]: boolean }; // denotes placement is by DRAW, e.g. manually placed qualifiers
   structureProfiles: { [key: string]: StructureProfile };
@@ -52,9 +43,7 @@ export function getStructureGroups({
         structureProfiles.get(structureId));
 
     if (profile && !profile?.stage) {
-      const structure = structures.find(
-        (structure) => structure.structureId === structureId
-      );
+      const structure = structures.find((structure) => structure.structureId === structureId);
       profile.stage = structure?.stage;
     }
 
@@ -69,9 +58,7 @@ export function getStructureGroups({
 
     const sourceProfile = initStructureProfile(sourceId);
     const targetProfile = initStructureProfile(targetId);
-    if (
-      [BOTTOM_UP, TOP_DOWN, RANDOM, WATERFALL].includes(link.target.feedProfile)
-    ) {
+    if ([BOTTOM_UP, TOP_DOWN, RANDOM, WATERFALL].includes(link.target.feedProfile)) {
       sourceProfile?.targets.push(targetId);
       targetProfile?.sources.push(sourceId);
     } else if (link.target.feedProfile === DRAW) {
@@ -79,12 +66,8 @@ export function getStructureGroups({
       sourceProfile?.drawTargets.push(targetId);
     }
 
-    hasDrawFeedProfile[targetId] =
-      hasDrawFeedProfile[targetId] || link.target.feedProfile === DRAW;
-    sourceStructureIds[targetId] = unique([
-      ...(sourceStructureIds[targetId] || []),
-      sourceId,
-    ]).filter(Boolean);
+    hasDrawFeedProfile[targetId] = hasDrawFeedProfile[targetId] || link.target.feedProfile === DRAW;
+    sourceStructureIds[targetId] = unique([...(sourceStructureIds[targetId] || []), sourceId]).filter(Boolean);
 
     return [link.source.structureId, link.target.structureId];
   });
@@ -129,16 +112,13 @@ export function getStructureGroups({
       while (drawTargets.length) {
         distanceFromMain += 1;
         const drawTarget = drawTargets.pop();
-        const targetProfile = drawTarget
-          ? structureProfiles.get(drawTarget)
-          : undefined;
+        const targetProfile = drawTarget ? structureProfiles.get(drawTarget) : undefined;
         if (targetProfile?.drawTargets?.length) {
           drawTargets.push(targetProfile.drawTargets[0]);
         }
       }
       profile.distanceFromMain = distanceFromMain;
-      if (distanceFromMain > maxQualifyingDepth)
-        maxQualifyingDepth = distanceFromMain;
+      if (distanceFromMain > maxQualifyingDepth) maxQualifyingDepth = distanceFromMain;
     }
   }
 
@@ -164,11 +144,9 @@ export function getStructureGroups({
   const identityLink = (a, b) => intersection(a, b).length === a.length;
 
   // check that all arrays of linkedStructureIds are equivalent to identity array
-  const allLinkStructuresLinked = linkedStructureIds
-    .slice(1)
-    .reduce((allLinkStructuresLinked, ids) => {
-      return allLinkStructuresLinked && identityLink(ids, groupedStructureIds);
-    }, true);
+  const allLinkStructuresLinked = linkedStructureIds.slice(1).reduce((allLinkStructuresLinked, ids) => {
+    return allLinkStructuresLinked && identityLink(ids, groupedStructureIds);
+  }, true);
 
   // if a drawDefinition contains no links then no structure groups will exist
   // filter out undefined when there are no links in a drawDefinition

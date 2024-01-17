@@ -1,5 +1,5 @@
 import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
-import { xa } from '../../utilities/objects';
+import { xa } from '../../tools/objects';
 import { addGoesTo } from './matchUpGovernor/addGoesTo';
 import { addTimeItem } from '../timeItems/addTimeItem';
 import { addMatchUpsNotice, modifyDrawNotice, modifyMatchUpNotice } from '../notifications/drawNotifications';

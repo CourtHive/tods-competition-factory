@@ -2,22 +2,15 @@ import { getSourceStructureIdsAndRelevantLinks } from '../../structure/getSource
 import { findExtension } from '../../../acquire/findExtension';
 import { getAllStructureMatchUps } from '../../matchUps/getAllStructureMatchUps';
 import { getPositionAssignments } from '../positionsGetter';
-import { definedAttributes } from '../../../utilities/definedAttributes';
+import { definedAttributes } from '../../../tools/definedAttributes';
 import { isCompletedStructure } from '../structureActions';
 
 import { POLICY_TYPE_POSITION_ACTIONS } from '../../../constants/policyConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { TALLY } from '../../../constants/extensionConstants';
 import { HydratedParticipant } from '../../../types/hydrated';
-import {
-  QUALIFYING_PARTICIPANT,
-  QUALIFYING_PARTICIPANT_METHOD,
-} from '../../../constants/positionActionConstants';
-import {
-  POSITION,
-  QUALIFYING,
-  WINNER,
-} from '../../../constants/drawDefinitionConstants';
+import { QUALIFYING_PARTICIPANT, QUALIFYING_PARTICIPANT_METHOD } from '../../../constants/positionActionConstants';
+import { POSITION, QUALIFYING, WINNER } from '../../../constants/drawDefinitionConstants';
 
 export function getValidQualifiersAction({
   /*
@@ -39,49 +32,37 @@ export function getValidQualifiersAction({
   const validAssignmentActions: any[] = [];
   const sourceStructureIds: string[] = [];
 
-  const assignedParticipantIds = positionAssignments
-    .map((assignment) => assignment.participantId)
-    .filter(Boolean);
+  const assignedParticipantIds = positionAssignments.map((assignment) => assignment.participantId).filter(Boolean);
 
   const policy = appliedPolicies?.[POLICY_TYPE_POSITION_ACTIONS];
 
   // get the round number in which the drawPosition initially occurs
-  const targetRoundNumber =
-    !policy?.disableRoundRestrictions &&
-    drawPositionInitialRounds[drawPosition];
+  const targetRoundNumber = !policy?.disableRoundRestrictions && drawPositionInitialRounds[drawPosition];
 
   // disallow placing qualifiers until source structure is completed
   const requireCompletedStructures = policy?.requireCompletedStructures;
 
-  const {
-    sourceStructureIds: eliminationSoureStructureIds,
-    relevantLinks: eliminationSourceLinks,
-  } =
+  const { sourceStructureIds: eliminationSoureStructureIds, relevantLinks: eliminationSourceLinks } =
     getSourceStructureIdsAndRelevantLinks({
       targetRoundNumber, // look for soure structrues targeting roundNumber
       linkType: WINNER, // WINNER of qualifying structures will traverse link
       drawDefinition,
       structureId,
     }) || {};
-  if (eliminationSoureStructureIds?.length)
-    sourceStructureIds.push(...eliminationSoureStructureIds);
+  if (eliminationSoureStructureIds?.length) sourceStructureIds.push(...eliminationSoureStructureIds);
 
-  const {
-    sourceStructureIds: roundRobinSourceStructureIds,
-    relevantLinks: roundRobinSourceLinks,
-  } =
+  const { sourceStructureIds: roundRobinSourceStructureIds, relevantLinks: roundRobinSourceLinks } =
     getSourceStructureIdsAndRelevantLinks({
       targetRoundNumber, // look for soure structrues targeting roundNumber
       linkType: POSITION, // link will define how many finishingPositions traverse the link
       drawDefinition,
       structureId,
     }) || {};
-  if (roundRobinSourceStructureIds?.length)
-    sourceStructureIds.push(...roundRobinSourceStructureIds);
+  if (roundRobinSourceStructureIds?.length) sourceStructureIds.push(...roundRobinSourceStructureIds);
 
   for (const sourceLink of eliminationSourceLinks) {
     const structure = drawDefinition.structures?.find(
-      (structure) => structure.structureId === sourceLink.source.structureId
+      (structure) => structure.structureId === sourceLink.source.structureId,
     );
     if (structure?.stage !== QUALIFYING) continue;
 
@@ -104,22 +85,13 @@ export function getValidQualifiersAction({
       });
 
       for (const matchUp of matchUps) {
-        const winningSide = matchUp.sides.find(
-          (side) => side?.sideNumber === matchUp.winningSide
-        );
-        const relevantSide =
-          matchUp.matchUpStatus === BYE &&
-          matchUp.sides?.find(({ participantId }) => participantId);
+        const winningSide = matchUp.sides.find((side) => side?.sideNumber === matchUp.winningSide);
+        const relevantSide = matchUp.matchUpStatus === BYE && matchUp.sides?.find(({ participantId }) => participantId);
 
         if (winningSide || relevantSide) {
-          const { participantId, participant } =
-            winningSide || relevantSide || {};
-          if (
-            participantId &&
-            !assignedParticipantIds.includes(participantId)
-          ) {
-            if (participant && returnParticipants)
-              qualifyingParticipants.push(participant);
+          const { participantId, participant } = winningSide || relevantSide || {};
+          if (participantId && !assignedParticipantIds.includes(participantId)) {
+            if (participant && returnParticipants) qualifyingParticipants.push(participant);
             qualifyingParticipantIds.push(participantId);
           }
         }
@@ -129,7 +101,7 @@ export function getValidQualifiersAction({
 
   for (const sourceLink of roundRobinSourceLinks) {
     const structure = drawDefinition.structures?.find(
-      (structure) => structure.structureId === sourceLink.source.structureId
+      (structure) => structure.structureId === sourceLink.source.structureId,
     );
     if (structure?.stage !== QUALIFYING) continue;
 
@@ -149,24 +121,20 @@ export function getValidQualifiersAction({
               name: TALLY,
             }).extension?.value;
 
-            return results
-              ? { participantId, groupOrder: results?.groupOrder }
-              : {};
+            return results ? { participantId, groupOrder: results?.groupOrder } : {};
           })
           .filter(
             ({ groupOrder, participantId }) =>
               // TODO: is this limiting RR qualifiers to groupOrder: 1?
-              groupOrder === 1 &&
-              !assignedParticipantIds.includes(participantId)
+              groupOrder === 1 && !assignedParticipantIds.includes(participantId),
           )
           .map(({ participantId }) => participantId) ?? [];
 
-      if (relevantParticipantIds)
-        qualifyingParticipantIds.push(...relevantParticipantIds);
+      if (relevantParticipantIds) qualifyingParticipantIds.push(...relevantParticipantIds);
 
       if (returnParticipants) {
-        const relevantParticipants = tournamentParticipants.filter(
-          ({ participantId }) => relevantParticipantIds.includes(participantId)
+        const relevantParticipants = tournamentParticipants.filter(({ participantId }) =>
+          relevantParticipantIds.includes(participantId),
         );
         qualifyingParticipants.push(...relevantParticipants);
       }
@@ -186,10 +154,8 @@ export function getValidQualifiersAction({
         method: QUALIFYING_PARTICIPANT_METHOD,
         type: QUALIFYING_PARTICIPANT,
         qualifyingParticipantIds,
-        qualifyingParticipants: returnParticipants
-          ? qualifyingParticipants
-          : undefined,
-      })
+        qualifyingParticipants: returnParticipants ? qualifyingParticipants : undefined,
+      }),
     );
   }
 

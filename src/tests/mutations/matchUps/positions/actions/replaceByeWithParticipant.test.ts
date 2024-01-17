@@ -1,22 +1,13 @@
 import { getDrawPosition } from '../../../../../global/functions/extractors';
 import mocksEngine from '../../../../../assemblies/engines/mock';
-import { generateRange } from '../../../../../utilities/arrays';
+import { generateRange } from '../../../../../tools/arrays';
 import tournamentEngine from '../../../../engines/syncEngine';
 import { expect, it } from 'vitest';
-import {
-  replaceWithAlternate,
-  replaceWithBye,
-} from '../../../drawDefinitions/testingUtilities';
+import { replaceWithAlternate, replaceWithBye } from '../../../drawDefinitions/testingUtilities';
 
 import { ALTERNATE } from '../../../../../constants/entryStatusConstants';
-import {
-  ALTERNATE_PARTICIPANT,
-  ASSIGN_BYE,
-} from '../../../../../constants/positionActionConstants';
-import {
-  BYE,
-  TO_BE_PLAYED,
-} from '../../../../../constants/matchUpStatusConstants';
+import { ALTERNATE_PARTICIPANT, ASSIGN_BYE } from '../../../../../constants/positionActionConstants';
+import { BYE, TO_BE_PLAYED } from '../../../../../constants/matchUpStatusConstants';
 
 it('supports replacing a BYE with a participant (DA or ALT)', () => {
   const drawProfiles = [
@@ -64,9 +55,7 @@ it('supports replacing a BYE with a participant (DA or ALT)', () => {
   } = tournamentEngine.getEvent({ drawId }));
 
   const { positionAssignments } = structures[0];
-  const assignment = positionAssignments.find(
-    (assignment) => assignment.drawPosition === drawPosition
-  );
+  const assignment = positionAssignments.find((assignment) => assignment.drawPosition === drawPosition);
   expect(assignment.bye).toEqual(true);
 
   // test that availableAlternates will not be returned with { returnParticipants: false }
@@ -80,9 +69,7 @@ it('supports replacing a BYE with a participant (DA or ALT)', () => {
   expect(options.includes(BYE)).toEqual(false);
   expect(options.includes(ALTERNATE_PARTICIPANT)).toEqual(true);
 
-  option = result.validActions.find(
-    (action) => action.type === ALTERNATE_PARTICIPANT
-  );
+  option = result.validActions.find((action) => action.type === ALTERNATE_PARTICIPANT);
   expect(option.availableAlternates).toBeUndefined();
 
   // Now test that a BYE can be replaced
@@ -95,9 +82,7 @@ it('supports replacing a BYE with a participant (DA or ALT)', () => {
   expect(options.includes(BYE)).toEqual(false);
   expect(options.includes(ALTERNATE_PARTICIPANT)).toEqual(true);
 
-  option = result.validActions.find(
-    (action) => action.type === ALTERNATE_PARTICIPANT
-  );
+  option = result.validActions.find((action) => action.type === ALTERNATE_PARTICIPANT);
   expect(option.availableAlternates.length).toEqual(3);
 
   const alternateParticipantId = option.availableAlternatesParticipantIds[0];
@@ -142,17 +127,13 @@ it('can replace BYE with ALTERNATE to Final in drawSize: 8 when 7 BYEs', () => {
     drawDefinition: { structures },
   } = tournamentEngine.getEvent({ drawId }));
   const { positionAssignments } = structures[0];
-  const byeDrawPositions = positionAssignments
-    .filter(({ bye }) => bye)
-    .map(getDrawPosition);
+  const byeDrawPositions = positionAssignments.filter(({ bye }) => bye).map(getDrawPosition);
 
   expect(byeDrawPositions).toEqual(targetByeDrawPositions);
 
   replaceWithAlternate({ drawId, structureId, drawPosition: 8 });
   let { matchUps } = tournamentEngine.allDrawMatchUps({ drawId });
-  let finalMatchUp = matchUps.find(
-    ({ finishingRound }) => finishingRound === 1
-  );
+  let finalMatchUp = matchUps.find(({ finishingRound }) => finishingRound === 1);
   expect(finalMatchUp.drawPositions).toEqual([1, 8]);
   expect(finalMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
 

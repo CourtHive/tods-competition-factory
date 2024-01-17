@@ -5,11 +5,11 @@ import { copyTieFormat } from '../../../../query/hierarchical/tieFormats/copyTie
 import { modifyDrawNotice } from '../../../../mutate/notifications/drawNotifications';
 import { getStageEntries } from '../../../../query/drawDefinition/stageGetter';
 import { validateTieFormat } from '../../../../validators/validateTieFormat';
-import { definedAttributes } from '../../../../utilities/definedAttributes';
+import { definedAttributes } from '../../../../tools/definedAttributes';
 import { getDrawStructures } from '../../../../acquire/findStructure';
-import { makeDeepCopy } from '../../../../utilities/makeDeepCopy';
-import { constantToString } from '../../../../utilities/strings';
-import { nextPowerOf2 } from '../../../../utilities/math';
+import { makeDeepCopy } from '../../../../tools/makeDeepCopy';
+import { constantToString } from '../../../../tools/strings';
+import { nextPowerOf2 } from '../../../../tools/math';
 import { generateTieMatchUps } from '../tieMatchUps';
 import { getGenerators } from '../getGenerators';
 

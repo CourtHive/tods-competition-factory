@@ -1,14 +1,9 @@
-import { ensureInt } from '../../../utilities/ensureInt';
+import { ensureInt } from '../../../tools/ensureInt';
 import { getWinningSide } from './winningSide';
 
 import { SPACE_CHARACTER, SET_TIEBREAK_BRACKETS } from './constants';
 
-export function processIncompleteSetScore({
-  analysis,
-  scoreString,
-  sets,
-  value,
-}) {
+export function processIncompleteSetScore({ analysis, scoreString, sets, value }) {
   let updated;
 
   if (!sets?.length) return { sets: [] };
@@ -48,14 +43,9 @@ type CheckValidSide2ScoreArgs = {
   value: any;
   set: any;
 };
-function checkValidSide2Score({
-  analysis,
-  set = {},
-  value,
-}: CheckValidSide2ScoreArgs) {
+function checkValidSide2Score({ analysis, set = {}, value }: CheckValidSide2ScoreArgs) {
   const setFormat =
-    (analysis.isDecidingSet && analysis.matchUpScoringFormat.finalSetFormat) ||
-    analysis.matchUpScoringFormat.setFormat;
+    (analysis.isDecidingSet && analysis.matchUpScoringFormat.finalSetFormat) || analysis.matchUpScoringFormat.setFormat;
   const { tiebreakAt, setTo, NoAD } = setFormat;
   const { side1Score } = set;
 
@@ -88,11 +78,9 @@ function checkValidSide2Score({
   if (validSide2Score) {
     if (tiebreakAt && tiebreakAt < setTo) {
       requiresTiebreak =
-        (side1Score === setTo && value === tiebreakAt) ||
-        (side1Score === tiebreakAt && value === setTo);
+        (side1Score === setTo && value === tiebreakAt) || (side1Score === tiebreakAt && value === setTo);
     } else {
-      requiresTiebreak =
-        side1Score >= setTo && value >= setTo && side1Score !== value;
+      requiresTiebreak = side1Score >= setTo && value >= setTo && side1Score !== value;
     }
   }
 

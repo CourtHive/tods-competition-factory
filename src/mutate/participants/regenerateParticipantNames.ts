@@ -1,12 +1,9 @@
-import { createMap, isObject } from '../../utilities/objects';
+import { createMap, isObject } from '../../tools/objects';
 import { formatParticipantName } from '../../assemblies/generators/participants/formatParticipantName';
 
 import { Tournament } from '../../types/tournamentTypes';
 import { SUCCESS } from '../../constants/resultConstants';
-import {
-  MISSING_TOURNAMENT_RECORD,
-  MISSING_VALUE,
-} from '../../constants/errorConditionConstants';
+import { MISSING_TOURNAMENT_RECORD, MISSING_VALUE } from '../../constants/errorConditionConstants';
 
 /**
  * "First Last"
@@ -23,10 +20,7 @@ type RegenArgs = {
   tournamentRecord: Tournament;
 };
 
-export function regenerateParticipantNames({
-  tournamentRecord,
-  formats,
-}: RegenArgs) {
+export function regenerateParticipantNames({ tournamentRecord, formats }: RegenArgs) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!isObject(formats)) return { error: MISSING_VALUE };
 

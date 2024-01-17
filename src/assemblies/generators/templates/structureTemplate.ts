@@ -1,13 +1,9 @@
-import { unique } from '../../../utilities/arrays';
-import { UUID } from '../../../utilities/UUID';
+import { unique } from '../../../tools/arrays';
+import { UUID } from '../../../tools/UUID';
 
 import { ROUND_OUTCOME } from '../../../constants/drawDefinitionConstants';
 import { SeedingProfile } from '../../../types/factoryTypes';
-import {
-  MatchUp,
-  SeedAssignment,
-  Structure,
-} from '../../../types/tournamentTypes';
+import { MatchUp, SeedAssignment, Structure } from '../../../types/tournamentTypes';
 
 type StructureTemplateArgs = {
   seedAssignments?: SeedAssignment[];
@@ -65,10 +61,7 @@ export const structureTemplate = ({
   if (seedingProfile) {
     if (typeof seedingProfile === 'string') {
       structure.seedingProfile = seedingProfile;
-    } else if (
-      typeof seedingProfile === 'object' &&
-      typeof seedingProfile.positioning === 'string'
-    ) {
+    } else if (typeof seedingProfile === 'object' && typeof seedingProfile.positioning === 'string') {
       structure.seedingProfile = seedingProfile.positioning;
     }
   }
@@ -78,12 +71,9 @@ export const structureTemplate = ({
   if (roundLimit) structure.roundLimit = roundLimit;
   if (stage) structure.stage = stage;
 
-  if (qualifyingRoundNumber)
-    structure.qualifyingRoundNumber = qualifyingRoundNumber;
+  if (qualifyingRoundNumber) structure.qualifyingRoundNumber = qualifyingRoundNumber;
 
-  const drawPositions = matchUps
-    .flatMap(({ drawPositions }) => drawPositions)
-    .filter(Boolean);
+  const drawPositions = matchUps.flatMap(({ drawPositions }) => drawPositions).filter(Boolean);
 
   if (structures) {
     structure.structures = structures;

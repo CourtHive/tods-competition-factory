@@ -1,13 +1,9 @@
 import { getPositionedParticipants } from './getPositionedParticipants';
 import { getParticipantPlacement } from './getParticipantPlacement';
-import { makeDeepCopy } from '../../../../utilities/makeDeepCopy';
+import { makeDeepCopy } from '../../../../tools/makeDeepCopy';
 import { getAvoidanceConflicts } from './getAvoidanceConflicts';
 import { getSwapOptions } from './getSwapOptions';
-import {
-  chunkArray,
-  generateRange,
-  randomPop,
-} from '../../../../utilities/arrays';
+import { chunkArray, generateRange, randomPop } from '../../../../tools/arrays';
 
 import { INVALID_ASSIGNMENT } from '../../../../constants/errorConditionConstants';
 import { PositionAssignment } from '../../../../types/tournamentTypes';
@@ -30,9 +26,7 @@ type GeneratePositioningCandidateArgs = {
   drawSize?: number;
 };
 
-export function generatePositioningCandidate(
-  params: GeneratePositioningCandidateArgs
-) {
+export function generatePositioningCandidate(params: GeneratePositioningCandidateArgs) {
   const {
     initialPositionAssignments,
     participantsWithGroupings,
@@ -47,35 +41,28 @@ export function generatePositioningCandidate(
   const errors: any[] = [];
   let groupKey;
 
-  const groupSize = Math.min(
-    ...(drawPositionGroups || []).map((dpg) => dpg?.length).filter(Boolean)
-  );
+  const groupSize = Math.min(...(drawPositionGroups || []).map((dpg) => dpg?.length).filter(Boolean));
   const isRoundRobin = groupSize > 2;
 
-  const candidatePositionAssignments = makeDeepCopy(
-    initialPositionAssignments,
-    false,
-    true
-  ).filter((assignment) => !assignment.qualifier);
+  const candidatePositionAssignments = makeDeepCopy(initialPositionAssignments, false, true).filter(
+    (assignment) => !assignment.qualifier,
+  );
 
   // all drawPositions which are available for placement
   const potentialDrawPositions = initialPositionAssignments
     .filter(
       (assignment) =>
-        !assignment.participantId &&
-        (!assignment.bye ||
-          unseededByePositions?.includes(assignment.drawPosition))
+        !assignment.participantId && (!assignment.bye || unseededByePositions?.includes(assignment.drawPosition)),
     )
     .map((assignment) => assignment.drawPosition);
 
   generateRange(0, opponentsToPlaceCount).forEach(() => {
-    const { newGroupKey, selectedParticipantId, targetDrawPosition } =
-      getParticipantPlacement({
-        ...params,
-        candidatePositionAssignments,
-        allGroups,
-        groupKey,
-      });
+    const { newGroupKey, selectedParticipantId, targetDrawPosition } = getParticipantPlacement({
+      ...params,
+      candidatePositionAssignments,
+      allGroups,
+      groupKey,
+    });
     groupKey = newGroupKey;
 
     candidatePositionAssignments.forEach((assignment) => {
@@ -152,22 +139,15 @@ export function generatePositioningCandidate(
   };
 }
 
-export function swapAssignedPositions({
-  candidatePositionAssignments,
-  swapOptions,
-}) {
+export function swapAssignedPositions({ candidatePositionAssignments, swapOptions }) {
   const swapOption = randomPop(swapOptions);
   if (!swapOption) return { error: { message: 'No swap options' } };
 
   const firstPosition = swapOption.drawPosition;
   const secondPosition = randomPop(swapOption.possibleDrawPositions);
-  const firstAssignment = candidatePositionAssignments.find(
-    (assignment) => assignment.drawPosition === firstPosition
-  );
+  const firstAssignment = candidatePositionAssignments.find((assignment) => assignment.drawPosition === firstPosition);
   const secondAssignment =
-    candidatePositionAssignments.find(
-      (assignment) => assignment.drawPosition === secondPosition
-    ) ?? {};
+    candidatePositionAssignments.find((assignment) => assignment.drawPosition === secondPosition) ?? {};
 
   const updatedFirstAssignmentAttributes = {
     participantId: secondAssignment?.participantId,

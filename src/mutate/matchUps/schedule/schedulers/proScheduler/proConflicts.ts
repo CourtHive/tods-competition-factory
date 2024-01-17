@@ -1,8 +1,8 @@
 import { getMatchUpDependencies } from '../../../../../query/matchUps/getMatchUpDependencies';
-import { generateRange, instanceCount, unique } from '../../../../../utilities/arrays';
+import { generateRange, instanceCount, unique } from '../../../../../tools/arrays';
 import { matchUpSort } from '../../../../../functions/sorters/matchUpSort';
 import { validMatchUps } from '../../../../../validators/validMatchUp';
-import { ensureInt } from '../../../../../utilities/ensureInt';
+import { ensureInt } from '../../../../../tools/ensureInt';
 
 import { ErrorType, MISSING_CONTEXT, MISSING_MATCHUPS } from '../../../../../constants/errorConditionConstants';
 import { Tournament } from '../../../../../types/tournamentTypes';

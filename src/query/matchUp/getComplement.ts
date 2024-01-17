@@ -1,4 +1,4 @@
-import { ensureInt } from '../../utilities/ensureInt';
+import { ensureInt } from '../../tools/ensureInt';
 
 type SetComplementArgs = {
   lowValue?: string | number;

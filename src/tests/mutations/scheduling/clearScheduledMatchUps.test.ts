@@ -1,22 +1,16 @@
 import { visualizeScheduledMatchUps } from '../../testHarness/testUtilities/visualizeScheduledMatchUps';
 import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
-import { extractTime, timeStringMinutes } from '../../../utilities/dateTime';
+import { extractTime, timeStringMinutes } from '../../../tools/dateTime';
 import { getParticipantId } from '../../../global/functions/extractors';
 import mocksEngine from '../../../assemblies/engines/mock';
-import { intersection } from '../../../utilities/arrays';
+import { intersection } from '../../../tools/arrays';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
 import { SINGLES } from '../../../constants/eventConstants';
-import {
-  INVALID_DATE,
-  INVALID_VALUES,
-} from '../../../constants/errorConditionConstants';
-import {
-  COMPASS,
-  FIRST_MATCH_LOSER_CONSOLATION,
-} from '../../../constants/drawDefinitionConstants';
+import { INVALID_DATE, INVALID_VALUES } from '../../../constants/errorConditionConstants';
+import { COMPASS, FIRST_MATCH_LOSER_CONSOLATION } from '../../../constants/drawDefinitionConstants';
 
 it.each([
   {
@@ -149,10 +143,7 @@ it.each([
       drawEnteredParticipantIds.push(drawEntries.map(getParticipantId));
     }
     // expect the two draws to have unique participants
-    expect(
-      intersection(drawEnteredParticipantIds[0], drawEnteredParticipantIds[1])
-        .length
-    ).toEqual(0);
+    expect(intersection(drawEnteredParticipantIds[0], drawEnteredParticipantIds[1]).length).toEqual(0);
 
     let { matchUps } = tournamentEngine.allCompetitionMatchUps({
       afterRecoveryTimes: true,
@@ -177,11 +168,7 @@ it.each([
       withMatchUps: true,
       inContext: true,
     });
-    const {
-      participants: competitionParticipants,
-      participantIdsWithConflicts,
-      mappedMatchUps,
-    } = participantsResult;
+    const { participants: competitionParticipants, participantIdsWithConflicts, mappedMatchUps } = participantsResult;
     expect(competitionParticipants.length).toEqual(48);
 
     expect(participantIdsWithConflicts.length).toEqual(0);
@@ -195,18 +182,12 @@ it.each([
       if (scheduledMatchUps.length > 1) {
         participantsWithMultipleScheduledMatchUps += 1;
         const firstMatchAfterRecoveryMinutes = timeStringMinutes(
-          mappedMatchUps[scheduledMatchUps[0].matchUpId].schedule
-            .timeAfterRecovery
+          mappedMatchUps[scheduledMatchUps[0].matchUpId].schedule.timeAfterRecovery,
         );
         const secondMatchStartMinutes = timeStringMinutes(
-          extractTime(
-            mappedMatchUps[scheduledMatchUps[1].matchUpId].schedule
-              .scheduledTime
-          )
+          extractTime(mappedMatchUps[scheduledMatchUps[1].matchUpId].schedule.scheduledTime),
         );
-        expect(secondMatchStartMinutes).toBeGreaterThanOrEqual(
-          firstMatchAfterRecoveryMinutes
-        );
+        expect(secondMatchStartMinutes).toBeGreaterThanOrEqual(firstMatchAfterRecoveryMinutes);
       }
     });
 
@@ -240,7 +221,7 @@ it.each([
     ({ matchUps } = tournamentEngine.allCompetitionMatchUps());
     scheduledMatchUps = matchUps.filter(hasSchedule);
     expect(scheduledMatchUps.length).toEqual(0);
-  }
+  },
 );
 
 it('can clear scheduled matchUps', () => {
@@ -343,15 +324,10 @@ it('can clear scheduled matchUps', () => {
     const {
       drawDefinition: { entries: drawEntries },
     } = tournamentEngine.getEvent({ drawId });
-    drawEnteredParticipantIds.push(
-      drawEntries.map(({ participantId }) => participantId)
-    );
+    drawEnteredParticipantIds.push(drawEntries.map(({ participantId }) => participantId));
   }
   // expect the two draws to have unique participants
-  const entriesOverlap = intersection(
-    drawEnteredParticipantIds[0],
-    drawEnteredParticipantIds[1]
-  ).length;
+  const entriesOverlap = intersection(drawEnteredParticipantIds[0], drawEnteredParticipantIds[1]).length;
   if (uniqueParticipants) {
     expect(entriesOverlap).toEqual(0);
   } else {
@@ -413,17 +389,12 @@ it('can clear scheduled matchUps', () => {
     if (scheduledMatchUps.length > 1) {
       participantsWithMultipleScheduledMatchUps += 1;
       const firstMatchAfterRecoveryMinutes = timeStringMinutes(
-        mappedMatchUps[scheduledMatchUps[0].matchUpId].schedule
-          .timeAfterRecovery
+        mappedMatchUps[scheduledMatchUps[0].matchUpId].schedule.timeAfterRecovery,
       );
       const secondMatchStartMinutes = timeStringMinutes(
-        extractTime(
-          mappedMatchUps[scheduledMatchUps[1].matchUpId].schedule.scheduledTime
-        )
+        extractTime(mappedMatchUps[scheduledMatchUps[1].matchUpId].schedule.scheduledTime),
       );
-      expect(secondMatchStartMinutes).toBeGreaterThanOrEqual(
-        firstMatchAfterRecoveryMinutes
-      );
+      expect(secondMatchStartMinutes).toBeGreaterThanOrEqual(firstMatchAfterRecoveryMinutes);
     }
   });
 

@@ -1,15 +1,10 @@
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
-import { unique } from '../../../utilities/arrays';
+import { unique } from '../../../tools/arrays';
 import { expect, it } from 'vitest';
 
 import { CANNOT_REMOVE_MAIN_STRUCTURE } from '../../../constants/errorConditionConstants';
-import {
-  DRAW,
-  MAIN,
-  QUALIFYING,
-  WINNER,
-} from '../../../constants/drawDefinitionConstants';
+import { DRAW, MAIN, QUALIFYING, WINNER } from '../../../constants/drawDefinitionConstants';
 
 it('allows deletion of non-qualifying structures', () => {
   let result = mocksEngine.generateTournamentRecord({
@@ -19,9 +14,7 @@ it('allows deletion of non-qualifying structures', () => {
         qualifyingProfiles: [
           {
             roundTarget: 1,
-            structureProfiles: [
-              { stageSequence: 1, drawSize: 16, qualifyingRoundNumber: 2 },
-            ],
+            structureProfiles: [{ stageSequence: 1, drawSize: 16, qualifyingRoundNumber: 2 }],
           },
         ],
       },
@@ -40,20 +33,14 @@ it('allows deletion of non-qualifying structures', () => {
   const { matchUps } = tournamentEngine.allDrawMatchUps({ drawId });
   expect(matchUps.length).toEqual(12);
 
-  const entryStages = unique(
-    eventResult.event.entries.map(({ entryStage }) => entryStage)
-  );
+  const entryStages = unique(eventResult.event.entries.map(({ entryStage }) => entryStage));
   expect(entryStages).toEqual([QUALIFYING]);
 
-  let mainStructure = eventResult.drawDefinition.structures.find(
-    ({ stage }) => stage === MAIN
-  );
+  let mainStructure = eventResult.drawDefinition.structures.find(({ stage }) => stage === MAIN);
   expect(mainStructure.matchUps.length).toEqual(0);
   const mainStructureId = mainStructure.structureId;
 
-  const qualifyingStructure = eventResult.drawDefinition.structures.find(
-    ({ stage }) => stage === QUALIFYING
-  );
+  const qualifyingStructure = eventResult.drawDefinition.structures.find(({ stage }) => stage === QUALIFYING);
   expect(qualifyingStructure.matchUps.length).toEqual(12);
 
   const links = eventResult.drawDefinition.links;
@@ -74,9 +61,7 @@ it('allows deletion of non-qualifying structures', () => {
   expect(result.success).toEqual(true);
   expect(result.drawDefinition.links.length).toEqual(1);
 
-  mainStructure = result.drawDefinition.structures.find(
-    ({ stage }) => stage === MAIN
-  );
+  mainStructure = result.drawDefinition.structures.find(({ stage }) => stage === MAIN);
   expect(mainStructure.positionAssignments.length).toEqual(32);
   expect(mainStructure.matchUps.length).toEqual(31);
 
@@ -93,9 +78,7 @@ it('allows deletion of non-qualifying structures', () => {
   expect(result.success).toEqual(true);
   expect(result.drawDefinition.links.length).toEqual(1);
 
-  mainStructure = result.drawDefinition.structures.find(
-    ({ stage }) => stage === MAIN
-  );
+  mainStructure = result.drawDefinition.structures.find(({ stage }) => stage === MAIN);
   expect(mainStructure.positionAssignments.length).toEqual(32);
   expect(mainStructure.matchUps.length).toEqual(31);
 

@@ -1,6 +1,6 @@
 import { getLinkedTournamentIds } from '../../query/tournaments/getLinkedTournamentIds';
 import { decorateResult } from '../../global/functions/decorateResult';
-import { makeDeepCopy } from '../../utilities/makeDeepCopy';
+import { makeDeepCopy } from '../../tools/makeDeepCopy';
 import { addVenue } from './addVenue';
 
 import { Court, Tournament, Venue } from '../../types/tournamentTypes';
@@ -17,11 +17,7 @@ type FindCourtArgs = {
   tournamentRecord?: Tournament;
   courtId: string;
 };
-export function findCourt({
-  tournamentRecords,
-  tournamentRecord,
-  courtId,
-}: FindCourtArgs): {
+export function findCourt({ tournamentRecords, tournamentRecord, courtId }: FindCourtArgs): {
   success?: boolean;
   error?: ErrorType;
   court?: Court;

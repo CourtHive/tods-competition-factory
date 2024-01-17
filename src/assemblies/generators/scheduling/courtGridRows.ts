@@ -1,25 +1,16 @@
-import { generateRange } from '../../../utilities/arrays';
+import { generateRange } from '../../../tools/arrays';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 
-export function courtGridRows({
-  courtPrefix = 'C|',
-  minRowsCount,
-  courtsData,
-}) {
+export function courtGridRows({ courtPrefix = 'C|', minRowsCount, courtsData }) {
   if (!Array.isArray(courtsData)) return { error: INVALID_VALUES };
   const maxCourtOrder = courtsData?.reduce((order, court) => {
     const matchUps = court.matchUps || [];
-    const courtOrder = Math.max(
-      0,
-      ...matchUps.map((m) => m.schedule.courtOrder || 0)
-    );
+    const courtOrder = Math.max(0, ...matchUps.map((m) => m.schedule.courtOrder || 0));
     return courtOrder > order ? courtOrder : order;
   }, 1);
 
-  const rowsCount = minRowsCount
-    ? Math.max(minRowsCount, maxCourtOrder)
-    : maxCourtOrder;
+  const rowsCount = minRowsCount ? Math.max(minRowsCount, maxCourtOrder) : maxCourtOrder;
 
   const rowBuilder = generateRange(0, rowsCount).map((rowIndex) => ({
     matchUps: generateRange(0, courtsData.length).map((courtIndex) => {
@@ -51,8 +42,8 @@ export function courtGridRows({
         { rowId: `rowId-${i + 1}` },
         ...row.matchUps.map((matchUp, i) => ({
           [`${courtPrefix}${i}`]: matchUp,
-        }))
-      )
+        })),
+      ),
     ),
   };
 }

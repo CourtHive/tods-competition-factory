@@ -2,7 +2,7 @@ import { addDrawDefinitionTimeItem } from '../drawDefinitions/addDrawDefinitionT
 import { participantScaleItem } from '../../query/participant/participantScaleItem';
 import { addEventTimeItem, addTournamentTimeItem } from '../timeItems/addTimeItem';
 import { addNotice, getTopics } from '../../global/state/globalState';
-import { definedAttributes } from '../../utilities/definedAttributes';
+import { definedAttributes } from '../../tools/definedAttributes';
 import { findEvent } from '../../acquire/findEvent';
 
 import { ADD_SCALE_ITEMS, AUDIT, MODIFY_PARTICIPANTS } from '../../constants/topicConstants';

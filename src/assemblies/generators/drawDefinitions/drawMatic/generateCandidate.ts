@@ -1,9 +1,5 @@
 import { stringSort } from '../../../../functions/sorters/stringSort';
-import {
-  chunkArray,
-  randomPop,
-  shuffleArray,
-} from '../../../../utilities/arrays';
+import { chunkArray, randomPop, shuffleArray } from '../../../../tools/arrays';
 
 type GenerateCandidateArgs = {
   valueSortedPairings: { [key: string]: number }[];
@@ -20,10 +16,7 @@ export function generateCandidate({
   valueObjects,
   deltaObjects,
 }: GenerateCandidateArgs) {
-  const pairingValueMap = Object.assign(
-    {},
-    ...valueSortedPairings.map((rm) => ({ [rm.pairing]: rm.value }))
-  );
+  const pairingValueMap = Object.assign({}, ...valueSortedPairings.map((rm) => ({ [rm.pairing]: rm.value })));
 
   const actors = Object.keys(pairingValues);
   let proposedCandidates: any[] = [];
@@ -99,9 +92,7 @@ export function generateCandidate({
         }
       }
     });
-    proposedCandidates = proposedCandidates.filter(
-      (proposed) => Math.abs(proposed.value - lowCandidateValue) < 5
-    );
+    proposedCandidates = proposedCandidates.filter((proposed) => Math.abs(proposed.value - lowCandidateValue) < 5);
   });
 
   proposedCandidates.sort((a, b) => a.maxDiff - b.maxDiff);
@@ -165,17 +156,14 @@ function roundCandidate({
       shuffleArray(pairings).map((pairing) => ({
         ...pairing,
         value: pairing.value + Math.random() * Math.round(Math.random()),
-      }))
+      })),
     )
     .flat();
 
   // go through the valueSortedPairings (of all possible unique pairings)
   consideredPairings.forEach((rankedPairing) => {
     const participantIds = rankedPairing.pairing.split('|');
-    const opponentExists = participantIds.reduce(
-      (p, c) => roundPlayers.includes(c) || p,
-      false
-    );
+    const opponentExists = participantIds.reduce((p, c) => roundPlayers.includes(c) || p, false);
 
     if (!opponentExists) {
       roundPlayers.push(...participantIds);

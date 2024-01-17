@@ -1,5 +1,5 @@
 import { tallyParticipantResults } from '../../../../query/matchUps/roundRobinTally/roundRobinTally';
-import { xa } from '../../../../utilities/objects';
+import { xa } from '../../../../tools/objects';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 

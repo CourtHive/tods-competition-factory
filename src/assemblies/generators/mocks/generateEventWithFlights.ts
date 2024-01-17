@@ -11,7 +11,7 @@ import { publishEvent } from '../../../mutate/events/publishEvent';
 import tieFormatDefaults from '../templates/tieFormatDefaults';
 import { addEvent } from '../../../mutate/events/addEvent';
 import { generateFlights } from './generateFlights';
-import { UUID } from '../../../utilities/UUID';
+import { UUID } from '../../../tools/UUID';
 
 import { SINGLES, DOUBLES, TEAM } from '../../../constants/eventConstants';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';

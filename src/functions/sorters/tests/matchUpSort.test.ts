@@ -1,6 +1,6 @@
 import mocksEngine from '../../../assemblies/engines/mock';
 import queryEngine from '../../../tests/engines/queryEngine';
-import { shuffleArray } from '../../../utilities/arrays';
+import { shuffleArray } from '../../../tools/arrays';
 import { matchUpSort } from '../matchUpSort';
 import { it, expect } from 'vitest';
 

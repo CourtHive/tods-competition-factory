@@ -1,6 +1,6 @@
 import { getVenuesAndCourts } from '../../../../../query/venues/venuesAndCourtsGetter';
 import { getScheduleTimes } from '../../../../../query/venues/getScheduleTimes';
-import { xa } from '../../../../../utilities/objects';
+import { xa } from '../../../../../tools/objects';
 import { calculatePeriodLength } from './calculatePeriodLength';
 import { getDateTimeBoundary } from './getTimeBoundary';
 import { generateBookings } from './generateBookings';

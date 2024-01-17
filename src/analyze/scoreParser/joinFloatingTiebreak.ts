@@ -1,12 +1,11 @@
 import { matchTiebreak, standardSet, tiebreakSet } from './validPatterns';
-import { isBracketScore, isDiffOne, isTiebreakScore } from './utilities';
-import { arrayIndices } from '../../utilities/arrays';
+import { isBracketScore, isDiffOne, isTiebreakScore } from './helpers';
+import { arrayIndices } from '../../tools/arrays';
 
 export function joinFloatingTiebreak({ score }) {
   if (typeof score !== 'string') return { score };
   const strip = (value) => value?.split('-').join('').split('/').join('');
-  const bracketToParen = (value) =>
-    value.split('[').join('(').split(']').join(')');
+  const bracketToParen = (value) => value.split('[').join('(').split(']').join(')');
   score = score.split(', ').join(' ');
   let parts = score.split(' ');
 
@@ -30,9 +29,7 @@ export function joinFloatingTiebreak({ score }) {
   let lastIndex = 0;
   let joinedScore = '';
   for (const floatingTiebreak of floatingTiebreaks) {
-    const thisIndex = arrayIndices(floatingTiebreak, parts).filter(
-      (index) => !lastIndex || index > lastIndex
-    )[0];
+    const thisIndex = arrayIndices(floatingTiebreak, parts).filter((index) => !lastIndex || index > lastIndex)[0];
     const leading = parts.slice(lastIndex, thisIndex - 1);
     const prior = parts[thisIndex - 1];
     const stripped = strip(prior);
@@ -40,23 +37,15 @@ export function joinFloatingTiebreak({ score }) {
       const scores = stripped.split('');
       const diff = Math.abs(scores.reduce((a, b) => +a - +b));
       if (diff === 1) {
-        const joined = [
-          leading.join(' '),
-          [prior, floatingTiebreak].join(''),
-        ].join(' ');
+        const joined = [leading.join(' '), [prior, floatingTiebreak].join('')].join(' ');
         joinedScore += joined;
         lastIndex = thisIndex + 1;
       } else if (diff === 0) {
         const sameScore = Math.max(...scores);
         if ([4, 5, 6, 7, 8, 9].includes(sameScore)) {
-          const pairedScore = [6, 4].includes(sameScore)
-            ? sameScore + 1
-            : sameScore - 1;
+          const pairedScore = [6, 4].includes(sameScore) ? sameScore + 1 : sameScore - 1;
           const setScore = [sameScore, pairedScore].sort().reverse().join('-');
-          const joined = [
-            leading.join(' '),
-            [setScore, floatingTiebreak].join(''),
-          ].join(' ');
+          const joined = [leading.join(' '), [setScore, floatingTiebreak].join('')].join(' ');
           joinedScore += joined;
           lastIndex = thisIndex + 1;
         }
@@ -70,10 +59,7 @@ export function joinFloatingTiebreak({ score }) {
     return { score: joinedScore.trim() };
   }
 
-  if (
-    parts.length === 2 &&
-    ['(', '['].some((punctuation) => parts[1].includes(punctuation))
-  ) {
+  if (parts.length === 2 && ['(', '['].some((punctuation) => parts[1].includes(punctuation))) {
     const stripped = strip(parts[0]);
     const scores = stripped.split('');
     const diff = Math.abs(scores.reduce((a, b) => +a - +b, 0));
@@ -83,9 +69,7 @@ export function joinFloatingTiebreak({ score }) {
     }
   }
 
-  const parenScores = parts.map(
-    (part) => (isBracketScore(part) && 'bracket') || (isDiffOne(part) && 'set')
-  );
+  const parenScores = parts.map((part) => (isBracketScore(part) && 'bracket') || (isDiffOne(part) && 'set'));
   if (parenScores.includes('set') && parenScores.includes('bracket')) {
     let lastPart;
     let joinedParts = '';

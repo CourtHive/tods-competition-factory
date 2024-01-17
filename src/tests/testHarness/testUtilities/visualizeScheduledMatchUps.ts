@@ -1,29 +1,18 @@
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
-import { extractTime } from '../../../utilities/dateTime';
-import {
-  printGlobalLog,
-  purgeGlobalLog,
-  pushGlobalLog,
-} from '../../../global/functions/globalLog';
+import { extractTime } from '../../../tools/dateTime';
+import { printGlobalLog, purgeGlobalLog, pushGlobalLog } from '../../../global/functions/globalLog';
 
-export function visualizeScheduledMatchUps({
-  scheduledMatchUps,
-  showGlobalLog,
-}) {
+export function visualizeScheduledMatchUps({ scheduledMatchUps, showGlobalLog }) {
   purgeGlobalLog();
   const structureIds = scheduledMatchUps?.reduce(
     (structureIds, { structureId }) =>
-      structureIds.includes(structureId)
-        ? structureIds
-        : structureIds.concat(structureId),
-    []
+      structureIds.includes(structureId) ? structureIds : structureIds.concat(structureId),
+    [],
   );
 
   const structureNames = Array.isArray(structureIds) && {
     ...structureIds.map((structureId) => {
-      const { structureName, matchUpType } = scheduledMatchUps.find(
-        (matchUp) => matchUp.structureId === structureId
-      );
+      const { structureName, matchUpType } = scheduledMatchUps.find((matchUp) => matchUp.structureId === structureId);
       return {
         [structureId]: `${structureName} ${matchUpType}`,
       };
@@ -40,11 +29,9 @@ export function visualizeScheduledMatchUps({
           structure: 'magenta',
         },
       },
-      true
+      true,
     );
-    const structureMatchUps = scheduledMatchUps.filter(
-      (matchUp) => matchUp.structureId === structureId
-    );
+    const structureMatchUps = scheduledMatchUps.filter((matchUp) => matchUp.structureId === structureId);
     const roundMatchUps =
       getRoundMatchUps({
         matchUps: structureMatchUps,
@@ -57,7 +44,7 @@ export function visualizeScheduledMatchUps({
             roundNumber: 'brightcyan',
           },
         },
-        true
+        true,
       );
       roundMatchUps[roundNumber].forEach(({ matchUpId, schedule }) => {
         const scheduledTime = extractTime(schedule.scheduledTime);
@@ -74,7 +61,7 @@ export function visualizeScheduledMatchUps({
               venue: 'magenta',
             },
           },
-          true
+          true,
         );
       });
     });

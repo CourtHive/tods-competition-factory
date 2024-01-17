@@ -1,5 +1,5 @@
 import { getScheduleTiming } from '../extensions/matchUpFormatTiming/getScheduleTiming';
-import { definedAttributes } from '../../utilities/definedAttributes';
+import { definedAttributes } from '../../tools/definedAttributes';
 import { hydrateParticipants } from '../participants/hydrateParticipants';
 import { getContextContent } from '../hierarchical/getContextContent';
 import { getAllDrawMatchUps } from './drawMatchUps';
@@ -27,15 +27,13 @@ export function allEventMatchUps(params: GetMatchUpsArgs) {
     event,
   } = params;
   if (!event) return { error: MISSING_EVENT };
-  const { eventId, eventName, endDate, category, gender, matchUpFormat } =
-    event;
+  const { eventId, eventName, endDate, category, gender, matchUpFormat } = event;
 
   const additionalContext = {
     ...context,
     ...definedAttributes({
       indoorOutDoor: event.indoorOutdoor ?? tournamentRecord?.indoorOutdoor,
-      surfaceCategory:
-        event.surfaceCategory ?? tournamentRecord?.surfaceCategory,
+      surfaceCategory: event.surfaceCategory ?? tournamentRecord?.surfaceCategory,
       endDate: event.endDate ?? tournamentRecord?.endDate,
       tournamentId: tournamentRecord?.tournamentId,
       matchUpFormat,
@@ -77,32 +75,30 @@ export function allEventMatchUps(params: GetMatchUpsArgs) {
     event,
   }).scheduleTiming;
 
-  const matchUps: HydratedMatchUp[] = drawDefinitions.flatMap(
-    (drawDefinition) => {
-      const { matchUps } = getAllDrawMatchUps({
-        tournamentParticipants: participants,
-        tournamentAppliedPolicies,
-        scheduleVisibilityFilters,
-        context: additionalContext,
-        participantsProfile,
-        afterRecoveryTimes,
-        policyDefinitions,
-        tournamentRecord,
-        contextFilters,
-        contextProfile,
-        drawDefinition,
-        contextContent,
-        matchUpFilters,
-        participantMap,
-        scheduleTiming,
-        nextMatchUps,
-        inContext,
-        event,
-      });
+  const matchUps: HydratedMatchUp[] = drawDefinitions.flatMap((drawDefinition) => {
+    const { matchUps } = getAllDrawMatchUps({
+      tournamentParticipants: participants,
+      tournamentAppliedPolicies,
+      scheduleVisibilityFilters,
+      context: additionalContext,
+      participantsProfile,
+      afterRecoveryTimes,
+      policyDefinitions,
+      tournamentRecord,
+      contextFilters,
+      contextProfile,
+      drawDefinition,
+      contextContent,
+      matchUpFilters,
+      participantMap,
+      scheduleTiming,
+      nextMatchUps,
+      inContext,
+      event,
+    });
 
-      return matchUps ?? [];
-    }
-  );
+    return matchUps ?? [];
+  });
 
   return { matchUps, groupInfo };
 }

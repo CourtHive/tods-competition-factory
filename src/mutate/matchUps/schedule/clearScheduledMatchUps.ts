@@ -3,7 +3,7 @@ import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConsta
 import { hasSchedule } from './scheduleMatchUps/hasSchedule';
 import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
 import { getMatchUpId } from '../../../global/functions/extractors';
-import { isObject } from '../../../utilities/objects';
+import { isObject } from '../../../tools/objects';
 
 import { MatchUpStatusUnion, Tournament } from '../../../types/tournamentTypes';
 import { TournamentRecords } from '../../../types/factoryTypes';
@@ -31,9 +31,7 @@ type ClearScheduledMatchUpsArgs = {
   scheduledDates: string[];
   venueIds?: string[];
 };
-export function clearScheduledMatchUps(
-  params: ClearScheduledMatchUpsArgs
-): ResultType & {
+export function clearScheduledMatchUps(params: ClearScheduledMatchUpsArgs): ResultType & {
   clearedScheduleCount?: number;
 } {
   const {
@@ -80,8 +78,7 @@ function clearSchedules({
   success?: boolean;
   error?: ErrorType;
 } {
-  if (typeof tournamentRecord !== 'object')
-    return { error: MISSING_TOURNAMENT_RECORD };
+  if (typeof tournamentRecord !== 'object') return { error: MISSING_TOURNAMENT_RECORD };
 
   if (!Array.isArray(ignoreMatchUpStatuses) || !Array.isArray(venueIds)) {
     return { error: INVALID_VALUES };
@@ -100,7 +97,7 @@ function clearSchedules({
         matchUp.matchUpStatus &&
         !ignoreMatchUpStatuses.includes(matchUp.matchUpStatus) &&
         hasSchedule({ schedule: matchUp.schedule, scheduleAttributes }) &&
-        (!venueIds?.length || venueIds.includes(matchUp.schedule.venueId))
+        (!venueIds?.length || venueIds.includes(matchUp.schedule.venueId)),
     )
     .map(getMatchUpId);
 
@@ -116,13 +113,7 @@ function clearSchedules({
       matchUp.timeItems = (matchUp.timeItems ?? []).filter(
         (timeItem) =>
           timeItem?.itemType &&
-          ![
-            ALLOCATE_COURTS,
-            ASSIGN_COURT,
-            ASSIGN_VENUE,
-            SCHEDULED_DATE,
-            SCHEDULED_TIME,
-          ].includes(timeItem?.itemType)
+          ![ALLOCATE_COURTS, ASSIGN_COURT, ASSIGN_VENUE, SCHEDULED_DATE, SCHEDULED_TIME].includes(timeItem?.itemType),
       );
       clearedScheduleCount += 1;
     }

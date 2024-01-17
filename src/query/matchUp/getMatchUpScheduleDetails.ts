@@ -1,7 +1,7 @@
 import { matchUpFormatTimes } from '../extensions/matchUpFormatTiming/getMatchUpFormatTiming';
 import { completedMatchUpStatuses } from '../../constants/matchUpStatusConstants';
-import { definedAttributes } from '../../utilities/definedAttributes';
-import { attributeFilter } from '../../utilities/attributeFilter';
+import { definedAttributes } from '../../tools/definedAttributes';
+import { attributeFilter } from '../../tools/attributeFilter';
 import { scheduledMatchUpTime } from './scheduledMatchUpTime';
 import { scheduledMatchUpDate } from './scheduledMatchUpDate';
 import { matchUpAllocatedCourts } from './courtAllocations';
@@ -14,21 +14,13 @@ import { findEvent } from '../../acquire/findEvent';
 import { matchUpCourtOrder } from './courtOrder';
 import { matchUpStartTime } from './startTime';
 import { matchUpEndTime } from './endTime';
-import {
-  addMinutesToTimeString,
-  extractDate,
-  extractTime,
-  getIsoDateString,
-} from '../../utilities/dateTime';
+import { addMinutesToTimeString, extractDate, extractTime, getIsoDateString } from '../../tools/dateTime';
 
 import { Event, Tournament, EventTypeUnion } from '../../types/tournamentTypes';
 import { MISSING_MATCHUP } from '../../constants/errorConditionConstants';
 import { HydratedMatchUp } from '../../types/hydrated';
 import { TEAM } from '../../constants/eventConstants';
-import {
-  ScheduleTiming,
-  ScheduleVisibilityFilters,
-} from '../../types/factoryTypes';
+import { ScheduleTiming, ScheduleVisibilityFilters } from '../../types/factoryTypes';
 
 type GetMatchUpScheduleDetailsArgs = {
   scheduleVisibilityFilters?: ScheduleVisibilityFilters;
@@ -42,9 +34,7 @@ type GetMatchUpScheduleDetailsArgs = {
   publishStatus?: any;
   event?: Event;
 };
-export function getMatchUpScheduleDetails(
-  params: GetMatchUpScheduleDetailsArgs
-) {
+export function getMatchUpScheduleDetails(params: GetMatchUpScheduleDetailsArgs) {
   let event = params.event;
   let matchUpType: any = params.matchUpType;
   const {
@@ -70,9 +60,7 @@ export function getMatchUpScheduleDetails(
     (event || tournamentRecord) &&
     matchUp.drawId
   ) {
-    let drawDefinition = event?.drawDefinitions?.find(
-      (drawDefinition) => drawDefinition.drawId === matchUp.drawId
-    );
+    let drawDefinition = event?.drawDefinitions?.find((drawDefinition) => drawDefinition.drawId === matchUp.drawId);
 
     if (!drawDefinition && tournamentRecord) {
       ({ drawDefinition, event } = findEvent({
@@ -82,10 +70,7 @@ export function getMatchUpScheduleDetails(
     }
 
     const structure =
-      matchUp.structureId &&
-      drawDefinition?.structures?.find(
-        ({ structureId }) => structureId === matchUp.structureId
-      );
+      matchUp.structureId && drawDefinition?.structures?.find(({ structureId }) => structureId === matchUp.structureId);
 
     matchUpType =
       params.matchUpType ||
@@ -99,13 +84,9 @@ export function getMatchUpScheduleDetails(
   const { endTime } = matchUpEndTime({ matchUp });
 
   let schedule;
-  const { visibilityThreshold, eventIds, drawIds } =
-    scheduleVisibilityFilters ?? {};
+  const { visibilityThreshold, eventIds, drawIds } = scheduleVisibilityFilters ?? {};
 
-  if (
-    (!eventIds || eventIds.includes(matchUp.eventId)) &&
-    (!drawIds || drawIds.includes(matchUp.drawId))
-  ) {
+  if ((!eventIds || eventIds.includes(matchUp.eventId)) && (!drawIds || drawIds.includes(matchUp.drawId))) {
     const scheduleSource = { matchUp, visibilityThreshold };
     const { allocatedCourts } = matchUpAllocatedCourts(scheduleSource);
     const { scheduledTime } = scheduledMatchUpTime(scheduleSource);
@@ -115,11 +96,7 @@ export function getMatchUpScheduleDetails(
     const { courtOrder } = matchUpCourtOrder(scheduleSource);
     const { timeModifiers } = matchUpTimeModifiers(scheduleSource);
 
-    let timeAfterRecovery,
-      averageMinutes,
-      recoveryMinutes,
-      typeChangeRecoveryMinutes,
-      typeChangeTimeAfterRecovery;
+    let timeAfterRecovery, averageMinutes, recoveryMinutes, typeChangeRecoveryMinutes, typeChangeTimeAfterRecovery;
 
     const eventType = matchUp.matchUpType ?? matchUpType;
     if (scheduleTiming && scheduledTime && afterRecoveryTimes && eventType) {
@@ -139,42 +116,26 @@ export function getMatchUpScheduleDetails(
       if (averageMinutes || recoveryMinutes) {
         timeAfterRecovery = endTime
           ? addMinutesToTimeString(extractTime(endTime), recoveryMinutes)
-          : addMinutesToTimeString(
-              scheduledTime,
-              averageMinutes + recoveryMinutes
-            );
+          : addMinutesToTimeString(scheduledTime, averageMinutes + recoveryMinutes);
       }
       if (typeChangeRecoveryMinutes) {
         typeChangeTimeAfterRecovery = endTime
-          ? addMinutesToTimeString(
-              extractTime(endTime),
-              typeChangeRecoveryMinutes
-            )
-          : addMinutesToTimeString(
-              scheduledTime,
-              averageMinutes + typeChangeRecoveryMinutes
-            );
+          ? addMinutesToTimeString(extractTime(endTime), typeChangeRecoveryMinutes)
+          : addMinutesToTimeString(scheduledTime, averageMinutes + typeChangeRecoveryMinutes);
       }
     }
 
-    if (!scheduledDate && scheduledTime)
-      scheduledDate = extractDate(scheduledTime);
+    if (!scheduledDate && scheduledTime) scheduledDate = extractDate(scheduledTime);
 
     const isoDateString = getIsoDateString({ scheduledDate, scheduledTime });
 
     const venueDataMap = {};
-    const venueData =
-      (
-        tournamentRecord &&
-        venueId &&
-        getVenueData({ tournamentRecord, venueId })
-      )?.venueData || {};
+    const venueData = (tournamentRecord && venueId && getVenueData({ tournamentRecord, venueId }))?.venueData || {};
 
     if (venueId) venueDataMap[venueId] = venueData;
     const { venueName, venueAbbreviation, courtsInfo } = venueData;
 
-    const courtInfo =
-      courtId && courtsInfo?.find((courtInfo) => courtInfo.courtId === courtId);
+    const courtInfo = courtId && courtsInfo?.find((courtInfo) => courtInfo.courtId === courtId);
     const courtName = courtInfo?.courtName;
 
     for (const allocatedCourt of allocatedCourts || []) {
@@ -187,9 +148,7 @@ export function getMatchUpScheduleDetails(
       }
       const vData = venueDataMap[allocatedCourt.venueId];
       allocatedCourt.venueName = vData?.venueName;
-      const courtInfo = vData?.courtsInfo?.find(
-        (courtInfo) => courtInfo.courtId === allocatedCourt.courtId
-      );
+      const courtInfo = vData?.courtsInfo?.find((courtInfo) => courtInfo.courtId === allocatedCourt.courtId);
       allocatedCourt.courtName = courtInfo?.courtName;
     }
 
@@ -231,14 +190,11 @@ export function getMatchUpScheduleDetails(
 
   if (usePublishState && publishStatus?.displaySettings?.draws) {
     const drawSettings = publishStatus.displaySettings.draws;
-    const scheduleDetails = (
-      drawSettings?.[matchUp.drawId] ?? drawSettings?.default
-    )?.scheduleDetails;
+    const scheduleDetails = (drawSettings?.[matchUp.drawId] ?? drawSettings?.default)?.scheduleDetails;
     if (scheduleDetails) {
       const scheduleAttributes = (
-        scheduleDetails.find(
-          (details) => scheduledDate && details.dates?.includes(scheduledDate)
-        ) ?? scheduleDetails.find((details) => !details.dates?.length)
+        scheduleDetails.find((details) => scheduledDate && details.dates?.includes(scheduledDate)) ??
+        scheduleDetails.find((details) => !details.dates?.length)
       )?.attributes;
 
       if (scheduleAttributes) {
@@ -247,7 +203,7 @@ export function getMatchUpScheduleDetails(
           {},
           ...Object.keys(schedule).map((key) => ({ [key]: true })),
           // overwrite with publishStatus attributes
-          scheduleAttributes
+          scheduleAttributes,
         );
         schedule = attributeFilter({
           source: schedule,
@@ -257,15 +213,10 @@ export function getMatchUpScheduleDetails(
     }
   }
 
-  const hasCompletedStatus =
-    matchUp.matchUpStatus &&
-    completedMatchUpStatuses.includes(matchUp.matchUpStatus);
+  const hasCompletedStatus = matchUp.matchUpStatus && completedMatchUpStatuses.includes(matchUp.matchUpStatus);
 
   const endDate =
-    (hasCompletedStatus &&
-      (extractDate(endTime) ||
-        extractDate(scheduledDate) ||
-        extractDate(scheduledTime))) ||
+    (hasCompletedStatus && (extractDate(endTime) || extractDate(scheduledDate) || extractDate(scheduledTime))) ||
     undefined;
 
   return { schedule, endDate };

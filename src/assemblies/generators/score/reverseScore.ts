@@ -1,11 +1,8 @@
 import { generateScoreString } from '../matchUps/generateScoreString';
-import { definedAttributes } from '../../../utilities/definedAttributes';
+import { definedAttributes } from '../../../tools/definedAttributes';
 
 import { SUCCESS } from '../../../constants/resultConstants';
-import {
-  ErrorType,
-  MISSING_VALUE,
-} from '../../../constants/errorConditionConstants';
+import { ErrorType, MISSING_VALUE } from '../../../constants/errorConditionConstants';
 
 export function reverseScore(params?): {
   reversedScore?: any;
@@ -15,14 +12,7 @@ export function reverseScore(params?): {
   if (!params?.score) return { error: MISSING_VALUE };
   const { sets } = params.score;
   const reversedSets = sets.map((set) => {
-    const {
-      side1TiebreakScore,
-      side2TiebreakScore,
-      winningSide,
-      side1Score,
-      side2Score,
-      setNumber,
-    } = set;
+    const { side1TiebreakScore, side2TiebreakScore, winningSide, side1Score, side2Score, setNumber } = set;
     return definedAttributes({
       winningSide: winningSide ? 3 - winningSide : undefined,
       side1TiebreakScore: side2TiebreakScore,

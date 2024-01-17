@@ -1,5 +1,5 @@
 import definitionTemplate from '../templates/drawDefinitionTemplate';
-import { UUID } from '../../../utilities/UUID';
+import { UUID } from '../../../tools/UUID';
 
 type NewDrawDefinitionArgs = {
   processCodes?: string[];

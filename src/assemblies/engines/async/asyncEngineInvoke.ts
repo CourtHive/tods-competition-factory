@@ -1,27 +1,17 @@
 import { notifySubscribersAsync } from '../../../global/state/notifySubscribers';
-import { isFunction, isObject, isString } from '../../../utilities/objects';
+import { isFunction, isObject, isString } from '../../../tools/objects';
 import { getMethods } from '../../../global/state/syncGlobalState';
 import { getMutationStatus } from '../parts/getMutationStatus';
 import { logMethodNotFound } from '../parts/logMethodNotFound';
-import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
+import { makeDeepCopy } from '../../../tools/makeDeepCopy';
 import { executeFunction } from '../parts/executeMethod';
 import { setState } from '../parts/stateMethods';
-import {
-  deleteNotices,
-  getTournamentRecords,
-} from '../../../global/state/globalState';
+import { deleteNotices, getTournamentRecords } from '../../../global/state/globalState';
 
-import {
-  INVALID_VALUES,
-  METHOD_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+import { INVALID_VALUES, METHOD_NOT_FOUND } from '../../../constants/errorConditionConstants';
 
-export async function asyncEngineInvoke(
-  engine: { [key: string]: any },
-  args: any
-) {
-  if (!isObject(args))
-    return { error: INVALID_VALUES, message: 'args must be an object' };
+export async function asyncEngineInvoke(engine: { [key: string]: any }, args: any) {
+  if (!isObject(args)) return { error: INVALID_VALUES, message: 'args must be an object' };
   const methodsCount = Object.values(args).filter(isFunction).length;
   if (methodsCount > 1)
     return {
@@ -37,24 +27,19 @@ export async function asyncEngineInvoke(
   const { [methodName]: passedMethod, ...remainingArgs } = args;
   const params = args?.params || { ...remainingArgs };
 
-  const snapshot =
-    params.rollbackOnError && makeDeepCopy(getTournamentRecords(), false, true);
+  const snapshot = params.rollbackOnError && makeDeepCopy(getTournamentRecords(), false, true);
 
   const method = passedMethod || engine[methodName] || getMethods()[methodName];
   if (!method) return logMethodNotFound({ methodName, params });
 
-  const result =
-    (await executeFunction(engine, method, params, methodName, 'async')) ?? {};
+  const result = (await executeFunction(engine, method, params, methodName, 'async')) ?? {};
 
   if (result?.error && snapshot) setState(snapshot);
 
   const timeStamp = Date.now();
   const mutationStatus = getMutationStatus({ timeStamp });
 
-  const notify =
-    result?.success &&
-    params?.delayNotify !== true &&
-    params?.doNotNotify !== true;
+  const notify = result?.success && params?.delayNotify !== true && params?.doNotNotify !== true;
 
   if (notify)
     await notifySubscribersAsync({

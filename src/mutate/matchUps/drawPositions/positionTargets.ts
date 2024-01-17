@@ -1,21 +1,12 @@
 import { getNextRoundMatchUp } from '../../../query/matchUps/getNextRoundMatchUp';
 import { getTargetMatchUp } from '../../../query/matchUps/getTargetMatchUp';
-import {
-  getRoundLinks,
-  getTargetLink,
-} from '../../../query/drawDefinition/linkGetter';
-import { definedAttributes } from '../../../utilities/definedAttributes';
+import { getRoundLinks, getTargetLink } from '../../../query/drawDefinition/linkGetter';
+import { definedAttributes } from '../../../tools/definedAttributes';
 import { DrawDefinition } from '../../../types/tournamentTypes';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import { findStructure } from '../../../acquire/findStructure';
 
-import {
-  LOSER,
-  WINNER,
-  ROUND_OUTCOME,
-  DRAW,
-  FIRST_MATCHUP,
-} from '../../../constants/drawDefinitionConstants';
+import { LOSER, WINNER, ROUND_OUTCOME, DRAW, FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 
 /**
  * @param {string=} matchUpId - matchUp identifier for sourceMatchUp
@@ -69,13 +60,7 @@ export function positionTargets({
   }
 }
 
-function targetByRoundOutcome({
-  inContextDrawMatchUps,
-  useTargetMatchUpIds,
-  drawDefinition,
-  structure,
-  matchUp,
-}) {
+function targetByRoundOutcome({ inContextDrawMatchUps, useTargetMatchUpIds, drawDefinition, structure, matchUp }) {
   const { winnerMatchUpId, loserMatchUpId } = matchUp;
   const { links } = getRoundLinks({
     roundNumber: matchUp.roundNumber,
@@ -108,15 +93,11 @@ function targetByRoundOutcome({
     winnerMatchUp =
       winnerMatchUpId &&
       winnerFeedProfile !== DRAW &&
-      inContextDrawMatchUps.find(
-        ({ matchUpId }) => matchUpId === winnerMatchUpId
-      );
+      inContextDrawMatchUps.find(({ matchUpId }) => matchUpId === winnerMatchUpId);
     loserMatchUp =
       loserMatchUpId &&
       loserFeedProfile !== DRAW &&
-      inContextDrawMatchUps.find(
-        ({ matchUpId }) => matchUpId === loserMatchUpId
-      );
+      inContextDrawMatchUps.find(({ matchUpId }) => matchUpId === loserMatchUpId);
 
     if (winnerMatchUp || loserMatchUp) {
       return {
@@ -129,19 +110,12 @@ function targetByRoundOutcome({
 
   const { roundPosition: sourceRoundPosition } = matchUp;
   structureMatchUps =
-    structureMatchUps ||
-    inContextDrawMatchUps.filter(
-      (matchUp) => matchUp.structureId === structure.structureId
-    );
-  const sourceRoundMatchUpCount = structureMatchUps.reduce(
-    (count, currentMatchUp) => {
-      return currentMatchUp.roundNumber === matchUp.roundNumber &&
-        !currentMatchUp.matchUpTieId // exclude tieMatchUps
-        ? count + 1
-        : count;
-    },
-    0
-  );
+    structureMatchUps || inContextDrawMatchUps.filter((matchUp) => matchUp.structureId === structure.structureId);
+  const sourceRoundMatchUpCount = structureMatchUps.reduce((count, currentMatchUp) => {
+    return currentMatchUp.roundNumber === matchUp.roundNumber && !currentMatchUp.matchUpTieId // exclude tieMatchUps
+      ? count + 1
+      : count;
+  }, 0);
 
   if (loserTargetLink && !loserMatchUp && loserFeedProfile !== DRAW) {
     ({
@@ -188,10 +162,7 @@ function targetByRoundOutcome({
   if (!winnerMatchUp) {
     // if there is no winnerTargetLink then find targetMatchUp in next round
     structureMatchUps =
-      structureMatchUps ||
-      inContextDrawMatchUps.filter(
-        (matchUp) => matchUp.structureId === structure.structureId
-      );
+      structureMatchUps || inContextDrawMatchUps.filter((matchUp) => matchUp.structureId === structure.structureId);
     ({ matchUp: winnerMatchUp } = getNextRoundMatchUp({
       structureMatchUps,
       matchUp,

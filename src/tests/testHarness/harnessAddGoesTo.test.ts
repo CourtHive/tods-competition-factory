@@ -1,6 +1,6 @@
 import { hasSchedule } from '../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
 import { visualizeScheduledMatchUps } from './testUtilities/visualizeScheduledMatchUps';
-import { extractTime, timeStringMinutes } from '../../utilities/dateTime';
+import { extractTime, timeStringMinutes } from '../../tools/dateTime';
 import competitionEngine from '../engines/syncEngine';
 import { expect, it } from 'vitest';
 
@@ -34,8 +34,7 @@ it('can auto schedule matchUps which are missing winnerMatchUpId and loserMatchU
 
   scheduledMatchUps.forEach(({ matchUpType, schedule }) => {
     const averagePlusRecovery = Math.abs(
-      timeStringMinutes(extractTime(schedule.scheduledTime)) -
-        timeStringMinutes(schedule.timeAfterRecovery)
+      timeStringMinutes(extractTime(schedule.scheduledTime)) - timeStringMinutes(schedule.timeAfterRecovery),
     );
     if (matchUpType === SINGLES) {
       expect(schedule.recoveryMinutes).toEqual(60);
@@ -50,17 +49,14 @@ it('can auto schedule matchUps which are missing winnerMatchUpId and loserMatchU
 
   visualizeScheduledMatchUps({ scheduledMatchUps, showGlobalLog });
 
-  const scheduleConflicts = scheduledMatchUps.filter(
-    ({ schedule }) => schedule.scheduleConflict
-  );
+  const scheduleConflicts = scheduledMatchUps.filter(({ schedule }) => schedule.scheduleConflict);
   expect(scheduleConflicts.length).toEqual(0);
 
-  const { participantIdsWithConflicts } =
-    competitionEngine.getCompetitionParticipants({
-      withScheduleItems: true,
-      scheduleAnalysis: true,
-      withEvents: false,
-      withDraws: false,
-    });
+  const { participantIdsWithConflicts } = competitionEngine.getCompetitionParticipants({
+    withScheduleItems: true,
+    scheduleAnalysis: true,
+    withEvents: false,
+    withDraws: false,
+  });
   expect(participantIdsWithConflicts.length).toEqual(0);
 });

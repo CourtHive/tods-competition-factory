@@ -1,6 +1,6 @@
 import { getAllStructureMatchUps } from '../../../../query/matchUps/getAllStructureMatchUps';
 import mocksEngine from '../../../../assemblies/engines/mock';
-import { intersection } from '../../../../utilities/arrays';
+import { intersection } from '../../../../tools/arrays';
 import tournamentEngine from '../../../engines/syncEngine';
 import { feedInChampionship } from '../primitives/feedIn';
 import { expect, it } from 'vitest';
@@ -58,22 +58,16 @@ it('can add drawPositionsRange to inContext matchUps in a SINGLE_ELIMINATION str
   };
 
   matchUps.forEach((matchUp) => {
-    const { drawPositions, drawPositionsRange, roundNumber, roundPosition } =
-      matchUp;
+    const { drawPositions, drawPositionsRange, roundNumber, roundPosition } = matchUp;
 
     const expectation = expectations?.[roundNumber][roundPosition];
     if (expectation) {
-      expect(expectation).toEqual(
-        drawPositionsRange.firstRoundDrawPositionsRange
-      );
+      expect(expectation).toEqual(drawPositionsRange.firstRoundDrawPositionsRange);
     }
 
     if (drawPositions) {
       const filteredDrawPositions = drawPositions.filter(Boolean);
-      const overlap = intersection(
-        filteredDrawPositions,
-        drawPositionsRange.possibleDrawPositions
-      );
+      const overlap = intersection(filteredDrawPositions, drawPositionsRange.possibleDrawPositions);
       if (filteredDrawPositions.length) {
         expect(overlap.length).toBeGreaterThan(0);
       }
@@ -82,13 +76,7 @@ it('can add drawPositionsRange to inContext matchUps in a SINGLE_ELIMINATION str
 });
 
 it('can add drawPositionsRange to inContext matchUps in a FEED_IN_CHAMPIONSHIP_TO_SF', () => {
-  const {
-    links,
-    drawDefinition,
-    mainDrawMatchUps,
-    consolationMatchUps,
-    consolationStructure,
-  } = feedInChampionship({
+  const { links, drawDefinition, mainDrawMatchUps, consolationMatchUps, consolationStructure } = feedInChampionship({
     drawSize: 32,
     drawType: FEED_IN_CHAMPIONSHIP_TO_SF,
     feedPolicy: { roundGroupedOrder: [] },
@@ -115,22 +103,16 @@ it('can add drawPositionsRange to inContext matchUps in a FEED_IN_CHAMPIONSHIP_T
   };
 
   matchUps.forEach((matchUp) => {
-    const { drawPositions, drawPositionsRange, roundNumber, roundPosition } =
-      matchUp;
+    const { drawPositions, drawPositionsRange, roundNumber, roundPosition } = matchUp;
 
     const expectation = expectations?.[roundNumber][roundPosition];
     if (expectation) {
-      expect(expectation).toEqual(
-        drawPositionsRange.firstRoundDrawPositionsRange
-      );
+      expect(expectation).toEqual(drawPositionsRange.firstRoundDrawPositionsRange);
     }
 
     if (drawPositions) {
       const filteredDrawPositions = drawPositions.filter(Boolean);
-      const overlap = intersection(
-        filteredDrawPositions,
-        drawPositionsRange.possibleDrawPositions
-      );
+      const overlap = intersection(filteredDrawPositions, drawPositionsRange.possibleDrawPositions);
       if (filteredDrawPositions.length) {
         expect(overlap.length).toBeGreaterThan(0);
       }

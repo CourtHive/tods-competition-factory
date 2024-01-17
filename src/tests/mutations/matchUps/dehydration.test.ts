@@ -1,7 +1,7 @@
 import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
-import * as utilities from '../../../assemblies/tools';
+import * as tools from '../../../assemblies/tools';
 import { expect, it } from 'vitest';
 
 import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
@@ -61,7 +61,7 @@ it('can dehydrate matchUps in tournamentRecords', () => {
   expect(matchUp.sides).not.toBeUndefined();
   expect(matchUp.eventName).not.toBeUndefined();
 
-  const result = utilities.dehydrateMatchUps({ tournamentRecord });
+  const result = tools.dehydrateMatchUps({ tournamentRecord });
   expect(result.success).toEqual(true);
 
   matchUp = tournamentRecord.events[0].drawDefinitions[0].structures[0].matchUps[0];

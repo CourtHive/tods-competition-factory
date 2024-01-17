@@ -3,15 +3,8 @@ import { verifyStructure } from '../primitives/verifyStructure';
 import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
-import {
-  verifyMatchUps,
-  verifySideNumbers,
-} from '../primitives/verifyMatchUps';
-import {
-  generateRange,
-  instanceCount,
-  unique,
-} from '../../../../utilities/arrays';
+import { verifyMatchUps, verifySideNumbers } from '../primitives/verifyMatchUps';
+import { generateRange, instanceCount, unique } from '../../../../tools/arrays';
 
 import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
 
@@ -162,9 +155,7 @@ it('will vary bye distribution', () => {
   const quartersIterations = iterations.map((i) => i.quartersHash);
 
   expect(byesIterations.length).not.toEqual(unique(byesIterations).length);
-  expect(quartersIterations.length).not.toEqual(
-    unique(quartersIterations).length
-  );
+  expect(quartersIterations.length).not.toEqual(unique(quartersIterations).length);
 });
 
 it('can advance participants in elmination structures', () => {
@@ -504,9 +495,7 @@ it('can return participantIdMatchUps', () => {
   const participantIds = Object.keys(participantIdMatchUps);
   expect(participantIds.length).toEqual(14);
 
-  const matchUpsCount = participantIds.map(
-    (participantId) => participantIdMatchUps[participantId].length
-  );
+  const matchUpsCount = participantIds.map((participantId) => participantIdMatchUps[participantId].length);
 
   const matchUpsCountInstances = instanceCount(matchUpsCount);
   expect(matchUpsCountInstances[1]).toEqual(6);

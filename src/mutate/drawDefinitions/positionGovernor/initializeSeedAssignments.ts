@@ -1,9 +1,9 @@
 import { structureAssignedDrawPositions } from '../../../query/drawDefinition/positionsGetter';
 import { getSeedsCount } from '../../../query/drawDefinition/getSeedsCount';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
-import { isConvertableInteger } from '../../../utilities/math';
+import { isConvertableInteger } from '../../../tools/math';
 import { findStructure } from '../../../acquire/findStructure';
-import { generateRange } from '../../../utilities/arrays';
+import { generateRange } from '../../../tools/arrays';
 import { getSeedGroups } from './getSeedBlocks';
 
 import { PolicyDefinitions, SeedingProfile } from '../../../types/factoryTypes';
@@ -53,13 +53,11 @@ export function initializeStructureSeedAssignments({
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const drawSize = positionAssignments?.length || 0;
 
-  if (seedsCount > drawSize)
-    return { error: SEEDSCOUNT_GREATER_THAN_DRAW_SIZE };
+  if (seedsCount > drawSize) return { error: SEEDSCOUNT_GREATER_THAN_DRAW_SIZE };
 
   const roundRobinGroupsCount = structure.structures?.length;
   const groupSeedingThreshold =
-    isConvertableInteger(seedingProfile?.groupSeedingThreshold) &&
-    seedingProfile?.groupSeedingThreshold;
+    isConvertableInteger(seedingProfile?.groupSeedingThreshold) && seedingProfile?.groupSeedingThreshold;
 
   const seedGroups = getSeedGroups({
     roundRobinGroupsCount,
@@ -74,34 +72,22 @@ export function initializeStructureSeedAssignments({
     drawSize,
   });
 
-  if (
-    maxSeedsCount &&
-    appliedPolicies?.[POLICY_TYPE_SEEDING] &&
-    seedsCount > maxSeedsCount &&
-    enforcePolicyLimits
-  ) {
+  if (maxSeedsCount && appliedPolicies?.[POLICY_TYPE_SEEDING] && seedsCount > maxSeedsCount && enforcePolicyLimits) {
     seedsCount = maxSeedsCount;
   }
 
   structure.seedLimit = seedsCount;
-  structure.seedAssignments = generateRange(1, seedsCount + 1).map(
-    (seedNumber) => {
-      const seedGroup = seedGroups?.find((seedGroup) =>
-        seedGroup.includes(seedNumber)
-      );
-      const groupSeedValue = seedGroup && Math.min(...seedGroup);
-      const seedValue =
-        groupSeedingThreshold && seedNumber >= groupSeedingThreshold
-          ? groupSeedValue
-          : seedNumber;
+  structure.seedAssignments = generateRange(1, seedsCount + 1).map((seedNumber) => {
+    const seedGroup = seedGroups?.find((seedGroup) => seedGroup.includes(seedNumber));
+    const groupSeedValue = seedGroup && Math.min(...seedGroup);
+    const seedValue = groupSeedingThreshold && seedNumber >= groupSeedingThreshold ? groupSeedValue : seedNumber;
 
-      return {
-        participantId: undefined,
-        seedNumber,
-        seedValue,
-      };
-    }
-  );
+    return {
+      participantId: undefined,
+      seedNumber,
+      seedValue,
+    };
+  });
 
   modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
 

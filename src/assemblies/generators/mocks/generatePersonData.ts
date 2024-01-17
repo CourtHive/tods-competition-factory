@@ -1,25 +1,17 @@
-import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
+import { makeDeepCopy } from '../../../tools/makeDeepCopy';
 import { countries } from '../../../fixtures/countryData';
 import namesData from '../../../fixtures/data/names.json';
-import {
-  generateRange,
-  randomMember,
-  randomPop,
-} from '../../../utilities/arrays';
+import { generateRange, randomMember, randomPop } from '../../../tools/arrays';
 
 import { FEMALE, MALE } from '../../../constants/genderConstants';
-import {
-  ErrorType,
-  INVALID_VALUES,
-} from '../../../constants/errorConditionConstants';
+import { ErrorType, INVALID_VALUES } from '../../../constants/errorConditionConstants';
 
 export function generatePersonData(params?): {
   personData?: any[];
   error?: ErrorType;
 } {
   const { count = 100, sex } = params || {};
-  if (!count || (sex && ![MALE, FEMALE].includes(sex)))
-    return { personData: [], error: INVALID_VALUES };
+  if (!count || (sex && ![MALE, FEMALE].includes(sex))) return { personData: [], error: INVALID_VALUES };
 
   // generate 30% more than count to account for duplicated firstName/lastName
   const buffer = Math.ceil(count * 1.3);

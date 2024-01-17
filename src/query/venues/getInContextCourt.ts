@@ -1,15 +1,10 @@
-import { makeDeepCopy } from '../../utilities/makeDeepCopy';
+import { makeDeepCopy } from '../../tools/makeDeepCopy';
 import { findExtension } from '../../acquire/findExtension';
-import { isObject } from '../../utilities/objects';
+import { isObject } from '../../tools/objects';
 
 import { DISABLED } from '../../constants/extensionConstants';
 
-export function getInContextCourt({
-  convertExtensions,
-  ignoreDisabled,
-  venue,
-  court,
-}) {
+export function getInContextCourt({ convertExtensions, ignoreDisabled, venue, court }) {
   const inContextCourt = {
     ...makeDeepCopy(court, convertExtensions, true),
     venueId: venue.venueId,
@@ -20,9 +15,7 @@ export function getInContextCourt({
   });
 
   if (ignoreDisabled && extension) {
-    const disabledDates = isObject(extension.value)
-      ? extension.value?.dates
-      : undefined;
+    const disabledDates = isObject(extension.value) ? extension.value?.dates : undefined;
 
     const dateAvailability =
       extension?.value === true

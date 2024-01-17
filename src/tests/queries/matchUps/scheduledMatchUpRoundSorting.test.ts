@@ -1,4 +1,4 @@
-import { extractTime, timeStringMinutes } from '../../../utilities/dateTime';
+import { extractTime, timeStringMinutes } from '../../../tools/dateTime';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, test } from 'vitest';
@@ -94,33 +94,22 @@ test.each([
 
     expect(result.success).toEqual(true);
     expect(result.scheduledDates).toEqual([startDate]);
-    expect(result.scheduledMatchUpIds[startDate].length).toEqual(
-      scheduledMatchUps
-    );
+    expect(result.scheduledMatchUpIds[startDate].length).toEqual(scheduledMatchUps);
 
     const matchUpFilters = { scheduledDate: startDate };
     result = tournamentEngine.competitionScheduleMatchUps({
       matchUpFilters,
     });
 
-    const drawsRounds = result.dateMatchUps.reduce(
-      (drawsRounds, { drawId, roundNumber }) => {
-        const drawRound = [drawId, roundNumber].join('|');
-        return drawsRounds.includes(drawRound)
-          ? drawsRounds
-          : drawsRounds.concat(drawRound);
-      },
-      []
-    );
+    const drawsRounds = result.dateMatchUps.reduce((drawsRounds, { drawId, roundNumber }) => {
+      const drawRound = [drawId, roundNumber].join('|');
+      return drawsRounds.includes(drawRound) ? drawsRounds : drawsRounds.concat(drawRound);
+    }, []);
     expect(drawsRounds).toEqual(['first|1', 'second|1', 'first|2', 'second|2']);
 
-    const scheduleMap = result.dateMatchUps.map(({ schedule }) =>
-      extractTime(schedule.scheduledTime)
-    );
+    const scheduleMap = result.dateMatchUps.map(({ schedule }) => extractTime(schedule.scheduledTime));
     scheduleMap.forEach((scheduledTime, i) => {
-      expect(i && timeStringMinutes(scheduledTime)).toBeGreaterThanOrEqual(
-        i && timeStringMinutes(scheduleMap[i - 1])
-      );
+      expect(i && timeStringMinutes(scheduledTime)).toBeGreaterThanOrEqual(i && timeStringMinutes(scheduleMap[i - 1]));
     });
-  }
+  },
 );

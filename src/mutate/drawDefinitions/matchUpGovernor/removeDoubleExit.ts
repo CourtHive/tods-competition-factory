@@ -2,12 +2,9 @@ import { getPairedPreviousMatchUp } from '../positionGovernor/getPairedPreviousM
 import { positionTargets } from '../../matchUps/drawPositions/positionTargets';
 import { modifyMatchUpScore } from '../../matchUps/score/modifyMatchUpScore';
 import { decorateResult } from '../../../global/functions/decorateResult';
-import { intersection, overlap } from '../../../utilities/arrays';
+import { intersection, overlap } from '../../../tools/arrays';
 import { findStructure } from '../../../acquire/findStructure';
-import {
-  removeDirectedBye,
-  removeDirectedWinner,
-} from '../../matchUps/drawPositions/removeDirectedParticipants';
+import { removeDirectedBye, removeDirectedWinner } from '../../matchUps/drawPositions/removeDirectedParticipants';
 
 import { pushGlobalLog } from '../../../global/functions/globalLog';
 
@@ -30,14 +27,7 @@ const keyColors = {
 };
 
 export function removeDoubleExit(params) {
-  const {
-    inContextDrawMatchUps,
-    appliedPolicies,
-    drawDefinition,
-    matchUpsMap,
-    targetData,
-    matchUp,
-  } = params;
+  const { inContextDrawMatchUps, appliedPolicies, drawDefinition, matchUpsMap, targetData, matchUp } = params;
 
   let { iteration = 0 } = params;
   iteration += 1;
@@ -75,9 +65,7 @@ export function removeDoubleExit(params) {
   }
 
   if (loserMatchUp && loserMatchUp.matchUpStatus !== BYE) {
-    const inContextLoserMatchUp = inContextDrawMatchUps.find(
-      ({ matchUpId }) => matchUpId === loserMatchUp.matchUpId
-    );
+    const inContextLoserMatchUp = inContextDrawMatchUps.find(({ matchUpId }) => matchUpId === loserMatchUp.matchUpId);
     const { structure: loserStructure } = findStructure({
       drawDefinition,
       structureId: inContextLoserMatchUp.structureId,
@@ -139,7 +127,7 @@ export function conditionallyRemoveDrawPosition(params) {
   } = nextTargetData;
 
   const noContextTargetMatchUp = matchUpsMap?.drawMatchUps.find(
-    (matchUp) => matchUp.matchUpId === targetMatchUp.matchUpId
+    (matchUp) => matchUp.matchUpId === targetMatchUp.matchUpId,
   );
 
   let pairedPreviousDrawPositions = [];
@@ -149,15 +137,14 @@ export function conditionallyRemoveDrawPosition(params) {
 
   // targetMatchUp has context
   if (targetMatchUp.feedRound) {
-    const nextWinnerDrawPositions =
-      nextWinnerMatchUp?.drawPositions?.filter(Boolean);
+    const nextWinnerDrawPositions = nextWinnerMatchUp?.drawPositions?.filter(Boolean);
     drawPositionToRemove = nextWinnerDrawPositions?.find((drawPosition) =>
-      targetMatchUp.drawPositions.includes(drawPosition)
+      targetMatchUp.drawPositions.includes(drawPosition),
     );
   } else if (!sourceMatchUp) {
     drawPositionToRemove = intersection(
       targetMatchUp?.drawPositions || [],
-      nextWinnerMatchUp?.drawPositions || []
+      nextWinnerMatchUp?.drawPositions || [],
     )?.[0];
   } else {
     pairedPreviousMatchUp = getPairedPreviousMatchUp({
@@ -166,32 +153,26 @@ export function conditionallyRemoveDrawPosition(params) {
       matchUpsMap,
     })?.pairedPreviousMatchUp;
 
-    pairedPreviousDoubleExit = [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(
-      pairedPreviousMatchUp?.matchUpStatus
-    );
+    pairedPreviousDoubleExit = [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(pairedPreviousMatchUp?.matchUpStatus);
 
-    pairedPreviousDrawPositions =
-      pairedPreviousMatchUp?.drawPositions?.filter(Boolean) || [];
+    pairedPreviousDrawPositions = pairedPreviousMatchUp?.drawPositions?.filter(Boolean) || [];
 
     const pairedPreviousMatchUpComplete =
-      [...completedMatchUpStatuses, BYE].includes(
-        pairedPreviousMatchUp?.matchUpStatus
-      ) || pairedPreviousMatchUp?.winningSide;
+      [...completedMatchUpStatuses, BYE].includes(pairedPreviousMatchUp?.matchUpStatus) ||
+      pairedPreviousMatchUp?.winningSide;
 
     if (pairedPreviousMatchUpComplete) {
       const sourceDrawPositions = sourceMatchUp.drawPositions || [];
       let targetDrawPositions = targetMatchUp.drawPositions?.filter(Boolean);
       if (overlap(sourceDrawPositions, targetDrawPositions)) {
         targetDrawPositions = targetDrawPositions?.filter(
-          (drawPosition) => !sourceDrawPositions.includes(drawPosition)
+          (drawPosition) => !sourceDrawPositions.includes(drawPosition),
         );
       }
 
-      const possibleBranchDrawPositions = sourceDrawPositions.concat(
-        pairedPreviousDrawPositions
-      );
-      drawPositionToRemove = possibleBranchDrawPositions.find(
-        (drawPosition) => targetDrawPositions?.includes(drawPosition)
+      const possibleBranchDrawPositions = sourceDrawPositions.concat(pairedPreviousDrawPositions);
+      drawPositionToRemove = possibleBranchDrawPositions.find((drawPosition) =>
+        targetDrawPositions?.includes(drawPosition),
       );
     }
   }
@@ -254,15 +235,8 @@ export function conditionallyRemoveDrawPosition(params) {
   return { ...SUCCESS };
 }
 
-function getMatchUpStatus({
-  pairedPreviousDoubleExit,
-  noContextTargetMatchUp,
-}) {
+function getMatchUpStatus({ pairedPreviousDoubleExit, noContextTargetMatchUp }) {
   if (noContextTargetMatchUp.matchUpStatus === BYE) return BYE;
   if (!pairedPreviousDoubleExit) return TO_BE_PLAYED;
-  return [DOUBLE_DEFAULT, DEFAULTED].includes(
-    noContextTargetMatchUp?.matchUpStatus
-  )
-    ? DEFAULTED
-    : WALKOVER;
+  return [DOUBLE_DEFAULT, DEFAULTED].includes(noContextTargetMatchUp?.matchUpStatus) ? DEFAULTED : WALKOVER;
 }

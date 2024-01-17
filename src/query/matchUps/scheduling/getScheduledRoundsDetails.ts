@@ -1,25 +1,18 @@
 import { getContainedStructures } from '../../drawDefinition/getContainedStructures';
 import { allCompetitionMatchUps } from '../../matchUps/getAllCompetitionMatchUps';
 import { findMatchUpFormatTiming } from '../../../acquire/findMatchUpFormatTiming';
-import { isConvertableInteger, isPowerOf2 } from '../../../utilities/math';
+import { isConvertableInteger, isPowerOf2 } from '../../../tools/math';
 import { matchUpSort } from '../../../functions/sorters/matchUpSort';
 import { getMatchUpId } from '../../../global/functions/extractors';
-import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
+import { mustBeAnArray } from '../../../tools/mustBeAnArray';
 import { findEvent } from '../../../acquire/findEvent';
 import { filterMatchUps } from '../../filterMatchUps';
 
 import { Tournament } from '../../../types/tournamentTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
-import {
-  ErrorType,
-  MISSING_TOURNAMENT_RECORDS,
-  MISSING_VALUE,
-} from '../../../constants/errorConditionConstants';
-import {
-  BYE,
-  completedMatchUpStatuses,
-} from '../../../constants/matchUpStatusConstants';
+import { ErrorType, MISSING_TOURNAMENT_RECORDS, MISSING_VALUE } from '../../../constants/errorConditionConstants';
+import { BYE, completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 
 /**
  *
@@ -59,10 +52,8 @@ export function getScheduledRoundsDetails({
   matchUps, // optional to support calling method outside of scheduleProfileRounds
   rounds,
 }: GetScheduledRoundsDetailsArgs): RoundsDetailsResult {
-  if (typeof tournamentRecords !== 'object')
-    return { error: MISSING_TOURNAMENT_RECORDS };
-  if (!Array.isArray(rounds))
-    return { error: MISSING_VALUE, info: mustBeAnArray('rounds') };
+  if (typeof tournamentRecords !== 'object') return { error: MISSING_TOURNAMENT_RECORDS };
+  if (!Array.isArray(rounds)) return { error: MISSING_VALUE, info: mustBeAnArray('rounds') };
 
   const matchUpFormatCohorts = {};
   const hashes: string[] = [];
@@ -76,9 +67,8 @@ export function getScheduledRoundsDetails({
     Object.assign(
       {},
       ...Object.values(tournamentRecords).map(
-        (tournamentRecord) =>
-          getContainedStructures({ tournamentRecord }).containedStructures
-      )
+        (tournamentRecord) => getContainedStructures({ tournamentRecord }).containedStructures,
+      ),
     );
 
   if (!matchUps) {
@@ -129,10 +119,7 @@ export function getScheduledRoundsDetails({
     ) {
       const segmentSize = roundMatchUps.length / segmentsCount;
       const firstSegmentIndex = segmentSize * (segmentNumber - 1);
-      roundMatchUps = roundMatchUps.slice(
-        firstSegmentIndex,
-        firstSegmentIndex + segmentSize
-      );
+      roundMatchUps = roundMatchUps.slice(firstSegmentIndex, firstSegmentIndex + segmentSize);
     }
 
     const tournamentRecord = tournamentRecords[round.tournamentId];
@@ -156,12 +143,7 @@ export function getScheduledRoundsDetails({
     for (const matchUpFormat of matchUpFormatOrder) {
       const { eventType, category } = event ?? {};
       const { categoryName, ageCategoryCode } = category ?? {};
-      const {
-        typeChangeRecoveryMinutes,
-        recoveryMinutes,
-        averageMinutes,
-        error,
-      } = findMatchUpFormatTiming({
+      const { typeChangeRecoveryMinutes, recoveryMinutes, averageMinutes, error } = findMatchUpFormatTiming({
         categoryName: categoryName ?? ageCategoryCode,
         categoryType: category?.categoryType,
         tournamentId: round.tournamentId,
@@ -176,9 +158,8 @@ export function getScheduledRoundsDetails({
         .filter(
           (rm: any) =>
             // don't attempt to scheduled completed matchUpstatuses unless explicit override
-            (scheduleCompletedMatchUps ||
-              !completedMatchUpStatuses.includes(rm.matchUpStatus)) &&
-            rm.matchUpStatus !== BYE
+            (scheduleCompletedMatchUps || !completedMatchUpStatuses.includes(rm.matchUpStatus)) &&
+            rm.matchUpStatus !== BYE,
         )
         .map(getMatchUpId);
 
@@ -193,10 +174,7 @@ export function getScheduledRoundsDetails({
       });
       orderedMatchUpIds.push(...matchUpIds);
 
-      greatestAverageMinutes = Math.max(
-        averageMinutes || 0,
-        greatestAverageMinutes
-      );
+      greatestAverageMinutes = Math.max(averageMinutes || 0, greatestAverageMinutes);
       const hash = `${averageMinutes}|${roundPeriodLength}`;
       if (!hashes.includes(hash)) hashes.push(hash);
 

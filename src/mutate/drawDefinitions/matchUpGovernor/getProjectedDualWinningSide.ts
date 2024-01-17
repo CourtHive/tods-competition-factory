@@ -3,15 +3,9 @@ import { resolveTieFormat } from '../../../query/hierarchical/tieFormats/resolve
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { MatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
-import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
+import { makeDeepCopy } from '../../../tools/makeDeepCopy';
 import { HydratedMatchUp } from '../../../types/hydrated';
-import {
-  DrawDefinition,
-  Event,
-  MatchUp,
-  Structure,
-  TieFormat,
-} from '../../../types/tournamentTypes';
+import { DrawDefinition, Event, MatchUp, Structure, TieFormat } from '../../../types/tournamentTypes';
 
 type GetProjectedDualWinningSideArgs = {
   drawDefinition?: DrawDefinition;
@@ -50,9 +44,7 @@ export function getProjectedDualWinningSide({
     }
   }
 
-  tieFormat =
-    tieFormat ??
-    resolveTieFormat({ matchUp, structure, drawDefinition, event })?.tieFormat;
+  tieFormat = tieFormat ?? resolveTieFormat({ matchUp, structure, drawDefinition, event })?.tieFormat;
 
   const { winningSide: projectedWinningSide } = generateTieMatchUpScore({
     matchUp: projectedDualMatchUp,

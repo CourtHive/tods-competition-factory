@@ -1,8 +1,8 @@
 import { structureSort } from '../../../functions/sorters/structureSort';
 import mocksEngine from '../../../assemblies/engines/mock';
-import { instanceCount } from '../../../utilities/arrays';
 import tournamentEngine from '../../engines/syncEngine';
-import * as utilities from '../../../assemblies/tools';
+import { instanceCount } from '../../../tools/arrays';
+import * as tools from '../../../assemblies/tools';
 import { expect, test } from 'vitest';
 
 import {
@@ -60,13 +60,13 @@ test('structureSort can sort by stage and stageSequence', () => {
   expect(structureNames).toEqual(fpSort);
 
   structureNames = drawDefinition.structures
-    .sort((a, b) => utilities.structureSort(a, b, { mode: FINISHING_POSITIONS }))
+    .sort((a, b) => tools.structureSort(a, b, { mode: FINISHING_POSITIONS }))
     .map(({ structureName }) => structureName);
 
   expect(structureNames).toEqual(fpSort);
 
   structureNames = drawDefinition.structures
-    .sort((a, b) => utilities.structureSort(a, b, { mode: AGGREGATE_EVENT_STRUCTURES }))
+    .sort((a, b) => tools.structureSort(a, b, { mode: AGGREGATE_EVENT_STRUCTURES }))
     .map(({ structureName }) => structureName);
 
   expect(structureNames).toEqual(fpSort);
@@ -93,7 +93,7 @@ test('structureSort can sort by stage and stageSequence', () => {
   const allStructures = tournamentRecord.events
     .map(({ drawDefinitions }) => drawDefinitions.map(({ structures }) => structures).flat())
     .flat()
-    .sort((a, b) => utilities.structureSort(a, b, { mode: AGGREGATE_EVENT_STRUCTURES }));
+    .sort((a, b) => tools.structureSort(a, b, { mode: AGGREGATE_EVENT_STRUCTURES }));
 
   const structureMap = Object.keys(instanceCount(allStructures.map(({ structureName }) => structureName)));
 
@@ -101,7 +101,7 @@ test('structureSort can sort by stage and stageSequence', () => {
     ?.flatMap(({ drawDefinitions, eventType }) =>
       drawDefinitions?.flatMap(({ structures, drawId }) => structures?.map((s) => ({ ...s, drawId, eventType }))),
     )
-    .sort((a, b) => utilities.structureSort(a, b, { mode: AGGREGATE_EVENT_STRUCTURES }))
+    .sort((a, b) => tools.structureSort(a, b, { mode: AGGREGATE_EVENT_STRUCTURES }))
     ?.reduce(
       (acc, { structureName, stage }) => ({
         ...acc,

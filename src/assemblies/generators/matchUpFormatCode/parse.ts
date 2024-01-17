@@ -1,5 +1,5 @@
-import { definedAttributes } from '../../../utilities/definedAttributes';
-import { isConvertableInteger } from '../../../utilities/math';
+import { definedAttributes } from '../../../tools/definedAttributes';
+import { isConvertableInteger } from '../../../tools/math';
 
 import { SET, NOAD, TIMED, setTypes } from '../../../constants/matchUpFormatConstants';
 

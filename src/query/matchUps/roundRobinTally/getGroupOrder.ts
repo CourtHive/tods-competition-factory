@@ -1,7 +1,7 @@
 import { getParticipantResults } from './getParticipantResults';
-import { instanceCount } from '../../../utilities/arrays';
+import { instanceCount } from '../../../tools/arrays';
 import { getGroups, getResultsArray } from './getGroups';
-import { isNumeric } from '../../../utilities/math';
+import { isNumeric } from '../../../tools/math';
 
 /*
 Round Robin group tally logic by default implements the following guidelines:
@@ -65,12 +65,7 @@ const GEMScoreValueMap = {
  */
 
 export function getGroupOrder(params) {
-  const {
-    requireCompletion = true,
-    participantResults,
-    subOrderMap,
-    tallyPolicy,
-  } = params;
+  const { requireCompletion = true, participantResults, subOrderMap, tallyPolicy } = params;
 
   const report: any[] = [];
 
@@ -160,8 +155,7 @@ export function getGroupOrder(params) {
       }
 
       finishingPosition.rankOrder = position;
-      finishingPosition.groupOrder =
-        position + (finishingPosition.subOrder || 1) - 1;
+      finishingPosition.groupOrder = position + (finishingPosition.subOrder || 1) - 1;
     }
   });
 
@@ -171,15 +165,11 @@ export function getGroupOrder(params) {
   // which would allow for custom valueMaps... or valueMap could use index as multiplier
   function getRatioHash(result) {
     const attributes = Array.isArray(tallyPolicy?.GEMscore)
-      ? Object.keys(GEMScoreValueMap).filter((attribute) =>
-          tallyPolicy.GEMscore.includes(attribute)
-        )
+      ? Object.keys(GEMScoreValueMap).filter((attribute) => tallyPolicy.GEMscore.includes(attribute))
       : Object.keys(GEMScoreValueMap);
 
     const attributeValues = attributes.map(
-      (attribute) =>
-        (result[attribute] || 0) *
-        Math.pow(10, GEMScoreValueMap[attribute].toFixed(3))
+      (attribute) => (result[attribute] || 0) * Math.pow(10, GEMScoreValueMap[attribute].toFixed(3)),
     );
 
     return attributeValues.reduce((a, b) => a + b, 0);
@@ -189,11 +179,7 @@ export function getGroupOrder(params) {
 function isComplete({ participantResults, participantsCount }) {
   const resultsArray = getResultsArray({ participantResults });
   const participantsFinished = resultsArray.filter(
-    (r) =>
-      participantsCount - 1 ===
-      r.results.matchUpsWon +
-        r.results.matchUpsLost +
-        r.results.matchUpsCancelled
+    (r) => participantsCount - 1 === r.results.matchUpsWon + r.results.matchUpsLost + r.results.matchUpsCancelled,
   );
   return participantsCount === participantsFinished.length;
 }
@@ -248,14 +234,7 @@ function processAttribute({
   return { order, report };
 }
 
-function groupSubSort({
-  participantResults,
-  disableHeadToHead,
-  participantIds,
-  matchUpFormat,
-  tallyPolicy,
-  matchUps,
-}) {
+function groupSubSort({ participantResults, disableHeadToHead, participantIds, matchUpFormat, tallyPolicy, matchUps }) {
   const excludedDirectives: any[] = [];
   const report: any[] = [];
   let result;
@@ -268,8 +247,7 @@ function groupSubSort({
   }
   if (
     participantIds?.length === 2 &&
-    (!tallyPolicy?.headToHead ||
-      (!tallyPolicy.headToHead.disabled && !disableHeadToHead))
+    (!tallyPolicy?.headToHead || (!tallyPolicy.headToHead.disabled && !disableHeadToHead))
   ) {
     const result = headToHeadWinner({ participantIds, participantResults });
     if (result) {
@@ -283,36 +261,30 @@ function groupSubSort({
 
   const filteredDirectives = directives.filter((directive) => {
     // if maxParticipants is defined, filter out the rule if # of participants is greater than maxParticipants
-    const keepDirective = !(
-      isNumeric(directive.maxParticipants) &&
-      participantIds?.length > directive.maxParticipants
-    );
+    const keepDirective = !(isNumeric(directive.maxParticipants) && participantIds?.length > directive.maxParticipants);
 
     if (!keepDirective) excludedDirectives.push(directive);
     return keepDirective;
   });
 
-  if (excludedDirectives.length)
-    report.push({ excludedDirectives, participantIds });
+  if (excludedDirectives.length) report.push({ excludedDirectives, participantIds });
 
-  filteredDirectives.every(
-    ({ attribute, reversed, idsFilter, disableHeadToHead }) => {
-      result = processAttribute({
-        disableHeadToHead,
-        participantIds,
-        matchUpFormat,
-        tallyPolicy,
-        attribute,
-        idsFilter,
-        matchUps,
-        reversed,
-      });
-      report.push(result.report);
+  filteredDirectives.every(({ attribute, reversed, idsFilter, disableHeadToHead }) => {
+    result = processAttribute({
+      disableHeadToHead,
+      participantIds,
+      matchUpFormat,
+      tallyPolicy,
+      attribute,
+      idsFilter,
+      matchUps,
+      reversed,
+    });
+    report.push(result.report);
 
-      // return false if a rule has successfully broken the tie
-      return result.order ? false : true;
-    }
-  );
+    // return false if a rule has successfully broken the tie
+    return result.order ? false : true;
+  });
 
   if (result.order) return { order: result.order, report };
 
@@ -326,18 +298,12 @@ function groupSubSort({
 function headToHeadWinner({ participantIds, participantResults }) {
   if (!participantIds) return;
 
-  if (
-    participantResults[participantIds[0]].victories.includes(participantIds[1])
-  ) {
+  if (participantResults[participantIds[0]].victories.includes(participantIds[1])) {
     return participantIds.map((participantId) => ({
       resolved: true,
       participantId,
     }));
-  } else if (
-    participantResults[participantIds[1]].victories.includes(participantIds[0])
-  ) {
-    return participantIds
-      .reverse()
-      .map((participantId) => ({ resolved: true, participantId }));
+  } else if (participantResults[participantIds[1]].victories.includes(participantIds[0])) {
+    return participantIds.reverse().map((participantId) => ({ resolved: true, participantId }));
   }
 }

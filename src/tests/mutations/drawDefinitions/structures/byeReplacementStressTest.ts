@@ -1,12 +1,12 @@
 import { completeDrawMatchUps } from '../../../../assemblies/generators/mocks/completeDrawMatchUps';
 import { getPositionAssignments } from '../../../../query/drawDefinition/positionsGetter';
 import { getDrawPosition } from '../../../../global/functions/extractors';
-import { xa } from '../../../../utilities/objects';
+import { xa } from '../../../../tools/objects';
 import mocksEngine from '../../../../assemblies/engines/mock';
-import { shuffleArray } from '../../../../utilities/arrays';
+import { shuffleArray } from '../../../../tools/arrays';
 import tournamentEngine from '../../../engines/syncEngine';
 import { findEvent } from '../../../../acquire/findEvent';
-import { randomInt } from '../../../../utilities/math';
+import { randomInt } from '../../../../tools/math';
 import { expect } from 'vitest';
 import { replaceWithBye, removeAssignment, assignDrawPosition } from '../testingUtilities';
 

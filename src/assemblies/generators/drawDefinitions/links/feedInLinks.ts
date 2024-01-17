@@ -1,13 +1,8 @@
 import { getDevContext } from '../../../../global/state/globalState';
-import { generateRange } from '../../../../utilities/arrays';
+import { generateRange } from '../../../../tools/arrays';
 
 import { Structure } from '../../../../types/tournamentTypes';
-import {
-  BOTTOM_UP,
-  TOP_DOWN,
-  LOSER,
-  FIRST_MATCHUP,
-} from '../../../../constants/drawDefinitionConstants';
+import { BOTTOM_UP, TOP_DOWN, LOSER, FIRST_MATCHUP } from '../../../../constants/drawDefinitionConstants';
 
 type FeedInLinksArgs = {
   mainStructure: Structure;
@@ -28,9 +23,7 @@ export function feedInLinks({
   const consolationMatchUps = consolationStructure.matchUps;
   const roundsFed = consolationMatchUps.reduce((p, matchUp) => {
     const drawPositions = (matchUp.drawPositions || []).filter(Boolean);
-    return drawPositions.length && !p.includes(matchUp.roundNumber)
-      ? p.concat(matchUp.roundNumber)
-      : p;
+    return drawPositions.length && !p.includes(matchUp.roundNumber) ? p.concat(matchUp.roundNumber) : p;
   }, []);
 
   const roundGroupedOrder = feedPolicy?.roundGroupedOrder || [];
@@ -48,9 +41,7 @@ export function feedInLinks({
 
       // after first two rounds of target feed, matchUps are every other round
       const targetRound =
-        roundNumber - roundOffset <= 2
-          ? roundNumber - roundOffset
-          : (roundNumber - roundOffset - 2) * 2 + 2;
+        roundNumber - roundOffset <= 2 ? roundNumber - roundOffset : (roundNumber - roundOffset - 2) * 2 + 2;
 
       const link: any = {
         linkType: LOSER,

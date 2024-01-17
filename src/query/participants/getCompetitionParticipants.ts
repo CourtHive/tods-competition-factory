@@ -1,5 +1,5 @@
 import { getParticipants as participantGetter } from './getParticipants';
-// import { deepMerge } from '../../utilities/deepMerge';
+// import { deepMerge } from '../../tools/deepMerge';
 
 import { MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
 import { HydratedMatchUp, HydratedParticipant } from '../../types/hydrated';
@@ -19,10 +19,7 @@ export function getCompetitionParticipants(params): ResultType & {
   success?: boolean;
 } {
   const { tournamentRecords } = params || {};
-  if (
-    typeof tournamentRecords !== 'object' ||
-    !Object.keys(tournamentRecords).length
-  ) {
+  if (typeof tournamentRecords !== 'object' || !Object.keys(tournamentRecords).length) {
     return { error: MISSING_TOURNAMENT_RECORDS };
   }
 
@@ -66,8 +63,7 @@ export function getCompetitionParticipants(params): ResultType & {
     matchUps.push(...(tournamentMatchUps ?? []));
 
     idsWithConflicts?.forEach((participantId) => {
-      if (!participantIdsWithConflicts.includes(participantId))
-        participantIdsWithConflicts.push(participantId);
+      if (!participantIdsWithConflicts.includes(participantId)) participantIdsWithConflicts.push(participantId);
     });
   }
   return {

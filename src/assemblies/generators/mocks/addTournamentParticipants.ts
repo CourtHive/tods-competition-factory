@@ -3,7 +3,7 @@ import { addParticipants } from '../../../mutate/participants/addParticipants';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { generateParticipants } from './generateParticipants';
 import { getParticipantsCount } from './getParticipantsCount';
-import { generateRange } from '../../../utilities/arrays';
+import { generateRange } from '../../../tools/arrays';
 
 import { Participant, Tournament } from '../../../types/tournamentTypes';
 import { INDIVIDUAL, TEAM } from '../../../constants/participantConstants';

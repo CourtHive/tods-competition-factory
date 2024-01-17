@@ -1,7 +1,7 @@
 import { generateTimeSlots } from '../../../../../assemblies/generators/scheduling/generateTimeSlots';
 import { getCourtDateAvailability } from '../../../../../query/venues/getCourtDateAvailability';
-import { makeDeepCopy } from '../../../../../utilities/makeDeepCopy';
-import { isValidDateString, timeStringMinutes } from '../../../../../utilities/dateTime';
+import { makeDeepCopy } from '../../../../../tools/makeDeepCopy';
+import { isValidDateString, timeStringMinutes } from '../../../../../tools/dateTime';
 
 import { INVALID_BOOKINGS, INVALID_DATE, INVALID_VALUES } from '../../../../../constants/errorConditionConstants';
 

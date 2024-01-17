@@ -3,7 +3,7 @@ import { generateTeamTournament } from '../participants/team/generateTestTeamTou
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { validateLineUp } from '../../../validators/validateTeamLineUp';
 import mocksEngine from '../../../assemblies/engines/mock';
-import { intersection } from '../../../utilities/arrays';
+import { intersection } from '../../../tools/arrays';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
@@ -19,10 +19,7 @@ import {
   MATCHUP_NOT_FOUND,
   MISSING_PARTICIPANT_ID,
 } from '../../../constants/errorConditionConstants';
-import {
-  PAIR,
-  TEAM_PARTICIPANT,
-} from '../../../constants/participantConstants';
+import { PAIR, TEAM_PARTICIPANT } from '../../../constants/participantConstants';
 import {
   END,
   PENALTY,
@@ -36,11 +33,7 @@ import {
   STATUS,
   SUBSTITUTION,
 } from '../../../constants/matchUpActionConstants';
-import {
-  DOUBLES_MATCHUP,
-  SINGLES_MATCHUP,
-  TEAM_MATCHUP,
-} from '../../../constants/matchUpTypes';
+import { DOUBLES_MATCHUP, SINGLES_MATCHUP, TEAM_MATCHUP } from '../../../constants/matchUpTypes';
 
 const scenario = {
   singlesCount: 3,
@@ -50,14 +43,8 @@ const scenario = {
 };
 
 function assignIndividualParticipants(params) {
-  const {
-    doublesMatchUpCount,
-    singlesMatchUpCount,
-    teamMatchUpCount,
-    teamParticipants,
-    drawDefinition,
-    teamMatchUps,
-  } = params;
+  const { doublesMatchUpCount, singlesMatchUpCount, teamMatchUpCount, teamParticipants, drawDefinition, teamMatchUps } =
+    params;
   const { positionAssignments } = drawDefinition.structures[0];
   const { drawId } = drawDefinition;
 
@@ -67,14 +54,11 @@ function assignIndividualParticipants(params) {
       const { drawPosition } = side;
       const teamParticipant = teamParticipants.find((teamParticipant) => {
         const { participantId } = teamParticipant;
-        const assignment = positionAssignments.find(
-          (assignment) => assignment.participantId === participantId
-        );
+        const assignment = positionAssignments.find((assignment) => assignment.participantId === participantId);
         return assignment.drawPosition === drawPosition;
       });
       if (teamParticipant) {
-        const individualParticipantId =
-          teamParticipant.individualParticipantIds[i];
+        const individualParticipantId = teamParticipant.individualParticipantIds[i];
         const result = tournamentEngine.assignTieMatchUpParticipantId({
           participantId: individualParticipantId,
           tieMatchUpId,
@@ -92,14 +76,11 @@ function assignIndividualParticipants(params) {
       const { drawPosition } = side;
       const teamParticipant = teamParticipants.find((teamParticipant) => {
         const { participantId } = teamParticipant;
-        const assignment = positionAssignments.find(
-          (assignment) => assignment.participantId === participantId
-        );
+        const assignment = positionAssignments.find((assignment) => assignment.participantId === participantId);
         return assignment.drawPosition === drawPosition;
       });
       if (teamParticipant) {
-        const individualParticipantIds =
-          teamParticipant.individualParticipantIds.slice(i * 2, i * 2 + 2);
+        const individualParticipantIds = teamParticipant.individualParticipantIds.slice(i * 2, i * 2 + 2);
         individualParticipantIds.forEach((individualParticipantId) => {
           const result = tournamentEngine.assignTieMatchUpParticipantId({
             participantId: individualParticipantId,
@@ -115,43 +96,29 @@ function assignIndividualParticipants(params) {
 
   const assignParticipants = (dualMatchUp) => {
     // assign team participants to singlesG matchUps
-    const singlesMatchUps = dualMatchUp.tieMatchUps.filter(
-      ({ matchUpType }) => matchUpType === SINGLES_MATCHUP
-    );
-    singlesMatchUps
-      .slice(0, singlesMatchUpCount)
-      .forEach(assignSinglesParticipants);
+    const singlesMatchUps = dualMatchUp.tieMatchUps.filter(({ matchUpType }) => matchUpType === SINGLES_MATCHUP);
+    singlesMatchUps.slice(0, singlesMatchUpCount).forEach(assignSinglesParticipants);
 
     // assign team participants to doubles matchUps
-    const doublesMatchUps = dualMatchUp.tieMatchUps.filter(
-      ({ matchUpType }) => matchUpType === DOUBLES_MATCHUP
-    );
-    doublesMatchUps
-      .slice(0, doublesMatchUpCount)
-      .forEach(assignDoublesParticipants);
+    const doublesMatchUps = dualMatchUp.tieMatchUps.filter(({ matchUpType }) => matchUpType === DOUBLES_MATCHUP);
+    doublesMatchUps.slice(0, doublesMatchUpCount).forEach(assignDoublesParticipants);
   };
 
   // assign individual participants to all first round East matchUps
   teamMatchUps
-    .filter(
-      ({ stageSequence, roundNumber }) =>
-        stageSequence === 1 && roundNumber === 1
-    )
+    .filter(({ stageSequence, roundNumber }) => stageSequence === 1 && roundNumber === 1)
     .slice(0, teamMatchUpCount)
     .forEach(assignParticipants);
 }
 
 it('can substitute an individual participant in a TEAM tieMatchUp', () => {
-  const { tournamentRecord, drawId, valueGoal } =
-    generateTeamTournament(scenario);
+  const { tournamentRecord, drawId, valueGoal } = generateTeamTournament(scenario);
   expect(valueGoal).toEqual(scenario.valueGoal);
 
   tournamentEngine.setState(tournamentRecord);
 
   let { drawDefinition } = tournamentEngine.getEvent({ drawId });
-  let lineUpExtension = drawDefinition.extensions.find(
-    ({ name }) => name === LINEUPS
-  );
+  let lineUpExtension = drawDefinition.extensions.find(({ name }) => name === LINEUPS);
   expect(lineUpExtension).toBeUndefined();
 
   const { participants: teamParticipants } = tournamentEngine.getParticipants({
@@ -171,9 +138,7 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
   });
 
   drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-  lineUpExtension = drawDefinition.extensions.find(
-    ({ name }) => name === LINEUPS
-  );
+  lineUpExtension = drawDefinition.extensions.find(({ name }) => name === LINEUPS);
   expect(lineUpExtension).not.toBeUndefined();
 
   const { participants: pairParticipants } = tournamentEngine.getParticipants({
@@ -187,9 +152,7 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     matchUpFilters: { readyToScore: true },
   });
 
-  const singlesMatchUps = matchUps.filter(
-    ({ matchUpType }) => matchUpType === SINGLES_MATCHUP
-  );
+  const singlesMatchUps = matchUps.filter(({ matchUpType }) => matchUpType === SINGLES_MATCHUP);
   expect(singlesMatchUps.length).toEqual(24);
 
   const singlesMatchUpId = singlesMatchUps[0].matchUpId;
@@ -199,16 +162,7 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     drawId,
   });
   let validActions = result.validActions.map(({ type }) => type);
-  expect(validActions).toEqual([
-    REFEREE,
-    SCHEDULE,
-    PENALTY,
-    STATUS,
-    SCORE,
-    START,
-    END,
-    REMOVE_PARTICIPANT,
-  ]);
+  expect(validActions).toEqual([REFEREE, SCHEDULE, PENALTY, STATUS, SCORE, START, END, REMOVE_PARTICIPANT]);
 
   result = tournamentEngine.matchUpActions({
     policyDefinitions: {
@@ -262,16 +216,7 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
   validActions = result.validActions.map(({ type }) => type);
 
   // since there is a score removing is not allowed
-  expect(validActions).toEqual([
-    REFEREE,
-    SCHEDULE,
-    PENALTY,
-    STATUS,
-    SCORE,
-    START,
-    END,
-    SUBSTITUTION,
-  ]);
+  expect(validActions).toEqual([REFEREE, SCHEDULE, PENALTY, STATUS, SCORE, START, END, SUBSTITUTION]);
 
   result = tournamentEngine.matchUpActions({
     matchUpId: singlesMatchUpId,
@@ -295,9 +240,7 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
   ]);
 
   // test doublesMatchUps
-  const doublesMatchUps = matchUps.filter(
-    ({ matchUpType }) => matchUpType === DOUBLES_MATCHUP
-  );
+  const doublesMatchUps = matchUps.filter(({ matchUpType }) => matchUpType === DOUBLES_MATCHUP);
   expect(doublesMatchUps.length).toEqual(16);
 
   const doublesMatchUpId = doublesMatchUps[0].matchUpId;
@@ -308,16 +251,7 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     drawId,
   });
   validActions = result.validActions.map(({ type }) => type);
-  expect(validActions).toEqual([
-    REFEREE,
-    SCHEDULE,
-    PENALTY,
-    STATUS,
-    SCORE,
-    START,
-    END,
-    REMOVE_PARTICIPANT,
-  ]);
+  expect(validActions).toEqual([REFEREE, SCHEDULE, PENALTY, STATUS, SCORE, START, END, REMOVE_PARTICIPANT]);
 
   result = tournamentEngine.matchUpActions({
     policyDefinitions: {
@@ -354,28 +288,15 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
   });
   validActions = result.validActions.map(({ type }) => type);
 
-  expect(validActions).toEqual([
-    REFEREE,
-    SCHEDULE,
-    PENALTY,
-    STATUS,
-    SCORE,
-    START,
-    END,
-    SUBSTITUTION,
-  ]);
+  expect(validActions).toEqual([REFEREE, SCHEDULE, PENALTY, STATUS, SCORE, START, END, SUBSTITUTION]);
 
-  let substitutionAction = result.validActions.find(
-    ({ type }) => type === SUBSTITUTION
-  );
+  let substitutionAction = result.validActions.find(({ type }) => type === SUBSTITUTION);
 
   expect(substitutionAction.existingParticipants.length).toEqual(4);
   expect(substitutionAction.availableParticipants.length).toEqual(2);
   // when no sideNumber is provided availableParticiants is an array
   expect(substitutionAction.availableParticipants[0].sideNumber).toEqual(1);
-  expect(
-    substitutionAction.availableParticipants[0].participants.length
-  ).toEqual(2);
+  expect(substitutionAction.availableParticipants[0].participants.length).toEqual(2);
 
   result = tournamentEngine.matchUpActions({
     matchUpId: doublesMatchUpId,
@@ -404,15 +325,12 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     SUBSTITUTION,
   ]);
 
-  substitutionAction = result.validActions.find(
-    ({ type }) => type === SUBSTITUTION
-  );
+  substitutionAction = result.validActions.find(({ type }) => type === SUBSTITUTION);
 
   expect(substitutionAction.existingParticipants.length).toEqual(2);
   expect(substitutionAction.availableParticipants.length).toEqual(2);
 
-  const { availableParticipantIds, existingParticipantIds } =
-    substitutionAction;
+  const { availableParticipantIds, existingParticipantIds } = substitutionAction;
   let { method, payload } = substitutionAction;
 
   const substituteParticipantId = availableParticipantIds[0];
@@ -459,60 +377,39 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
   expect(result.success).toEqual(true);
 
   const allMatchUps = tournamentEngine.allTournamentMatchUps().matchUps;
-  let targetMatchUp = allMatchUps.find(
-    ({ matchUpId }) => matchUpId === doublesMatchUpId
-  );
+  let targetMatchUp = allMatchUps.find(({ matchUpId }) => matchUpId === doublesMatchUpId);
 
   const modifiedSides = targetMatchUp.sides;
 
   // expect the side that DID NOT have a substitution to be equivalent
-  expect(
-    originalSides.find(({ sideNumber }) => sideNumber !== targetSideNumber)
-      .participantId
-  ).toEqual(
-    modifiedSides.find(({ sideNumber }) => sideNumber !== targetSideNumber)
-      .participantId
+  expect(originalSides.find(({ sideNumber }) => sideNumber !== targetSideNumber).participantId).toEqual(
+    modifiedSides.find(({ sideNumber }) => sideNumber !== targetSideNumber).participantId,
   );
 
   // expect the side that DID have a substitution to be different
-  expect(
-    originalSides.find(({ sideNumber }) => sideNumber === targetSideNumber)
-      .participantId
-  ).not.toEqual(
-    modifiedSides.find(({ sideNumber }) => sideNumber === targetSideNumber)
-      .participantId
+  expect(originalSides.find(({ sideNumber }) => sideNumber === targetSideNumber).participantId).not.toEqual(
+    modifiedSides.find(({ sideNumber }) => sideNumber === targetSideNumber).participantId,
   );
 
   // expect the side that DID have a substitution to have one individualParticipantId that is equivalent
-  const originalSideIndividualParticipantIds = originalSides.find(
-    ({ sideNumber }) => sideNumber === targetSideNumber
-  ).participant.individualParticipantIds;
-  const modifiedSideIndividualParticipantIds = modifiedSides.find(
-    ({ sideNumber }) => sideNumber === targetSideNumber
-  ).participant.individualParticipantIds;
+  const originalSideIndividualParticipantIds = originalSides.find(({ sideNumber }) => sideNumber === targetSideNumber)
+    .participant.individualParticipantIds;
+  const modifiedSideIndividualParticipantIds = modifiedSides.find(({ sideNumber }) => sideNumber === targetSideNumber)
+    .participant.individualParticipantIds;
 
-  expect(
-    intersection(
-      originalSideIndividualParticipantIds,
-      modifiedSideIndividualParticipantIds
-    ).length
-  ).toEqual(1);
+  expect(intersection(originalSideIndividualParticipantIds, modifiedSideIndividualParticipantIds).length).toEqual(1);
 
-  expect(
-    modifiedSideIndividualParticipantIds.includes(substituteParticipantId)
-  ).toEqual(true);
+  expect(modifiedSideIndividualParticipantIds.includes(substituteParticipantId)).toEqual(true);
 
   const teamLineUps = allMatchUps
     .find(({ matchUpId }) => matchUpId === targetMatchUp.matchUpTieId)
     .sides.map(({ lineUp }) => lineUp);
-  expect(
-    teamLineUps.every((lineUp) => validateLineUp({ lineUp }).valid)
-  ).toEqual(true);
+  expect(teamLineUps.every((lineUp) => validateLineUp({ lineUp }).valid)).toEqual(true);
 
   const modifiedLineUp = teamLineUps.find((lineUp) =>
     lineUp.some(({ collectionAssignments }) =>
-      collectionAssignments.some(({ substitutionOrder }) => substitutionOrder)
-    )
+      collectionAssignments.some(({ substitutionOrder }) => substitutionOrder),
+    ),
   );
 
   // removeLineUpSubstitutions is used when Directing Winning/Losing teams and copying lineUp into subsequent matchUps
@@ -526,12 +423,8 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
   // expect the aggregate number of collectionAssignments in prunedLineUp to be one less
   expect(prunedLineUp).toBeDefined();
   if (prunedLineUp) {
-    expect(
-      modifiedLineUp.flatMap((assignment) => assignment.collectionAssignments)
-        .length
-    ).toEqual(
-      prunedLineUp.flatMap((assignment) => assignment.collectionAssignments)
-        .length + 1
+    expect(modifiedLineUp.flatMap((assignment) => assignment.collectionAssignments).length).toEqual(
+      prunedLineUp.flatMap((assignment) => assignment.collectionAssignments).length + 1,
     );
   }
 
@@ -539,7 +432,7 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
   expect(
     modifiedLineUp
       .flatMap((assignment) => assignment.collectionAssignments)
-      .some(({ substitutionOrder }) => substitutionOrder)
+      .some(({ substitutionOrder }) => substitutionOrder),
   ).toEqual(true);
 
   // expect there to be NO collectionAssignments with substitutionOrder in prunedLineUp
@@ -548,7 +441,7 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     expect(
       prunedLineUp
         .flatMap((assignment) => assignment.collectionAssignments)
-        .some(({ substitutionOrder }) => substitutionOrder)
+        .some(({ substitutionOrder }) => substitutionOrder),
     ).toEqual(false);
   }
 
@@ -606,10 +499,7 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     inContext: false,
   }).matchUps[0];
 
-  expect(targetMatchUp.processCodes).toEqual([
-    'RANKING.IGNORE',
-    'RATING.IGNORE',
-  ]);
+  expect(targetMatchUp.processCodes).toEqual(['RANKING.IGNORE', 'RATING.IGNORE']);
 
   result = tournamentEngine.matchUpActions({
     policyDefinitions: {
@@ -636,9 +526,7 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
   ]);
 
   // now remove the substituted participant and check for REMOVE_PARTICIPANT options
-  const removalMethod = result.validActions.find(
-    ({ type }) => type === REMOVE_PARTICIPANT
-  );
+  const removalMethod = result.validActions.find(({ type }) => type === REMOVE_PARTICIPANT);
   ({ method, payload } = removalMethod);
   payload.participantId = substituteParticipantId;
   result = tournamentEngine[method](payload);
@@ -652,14 +540,7 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
   });
   validActions = result.validActions.map(({ type }) => type);
 
-  expect(validActions).toEqual([
-    REFEREE,
-    PENALTY,
-    SCORE,
-    START,
-    END,
-    REPLACE_PARTICIPANT,
-  ]);
+  expect(validActions).toEqual([REFEREE, PENALTY, SCORE, START, END, REPLACE_PARTICIPANT]);
 
   // if there are no substitutions then processCodes should be removed
   targetMatchUp = tournamentEngine.allTournamentMatchUps({
@@ -689,12 +570,9 @@ function makeSubstitution({ drawId, matchUpType, sideNumber }) {
     matchUpId,
     drawId,
   });
-  const substitutionAction = result.validActions.find(
-    ({ type }) => type === SUBSTITUTION
-  );
+  const substitutionAction = result.validActions.find(({ type }) => type === SUBSTITUTION);
 
-  const { method, payload, availableParticipantIds, existingParticipantIds } =
-    substitutionAction;
+  const { method, payload, availableParticipantIds, existingParticipantIds } = substitutionAction;
 
   const substituteParticipantId = availableParticipantIds[0];
   const existingParticipantId = existingParticipantIds[0];
@@ -709,16 +587,13 @@ function makeSubstitution({ drawId, matchUpType, sideNumber }) {
 }
 
 it('can substitute a single individual participant in a TEAM tieMatchUp when only one position has been assigned', () => {
-  const { tournamentRecord, drawId, valueGoal } =
-    generateTeamTournament(scenario);
+  const { tournamentRecord, drawId, valueGoal } = generateTeamTournament(scenario);
   expect(valueGoal).toEqual(scenario.valueGoal);
 
   tournamentEngine.setState(tournamentRecord);
 
   let { drawDefinition } = tournamentEngine.getEvent({ drawId });
-  let lineUpExtension = drawDefinition.extensions.find(
-    ({ name }) => name === LINEUPS
-  );
+  let lineUpExtension = drawDefinition.extensions.find(({ name }) => name === LINEUPS);
   expect(lineUpExtension).toBeUndefined();
 
   const { participants: teamParticipants } = tournamentEngine.getParticipants({
@@ -762,9 +637,7 @@ it('can substitute a single individual participant in a TEAM tieMatchUp when onl
   });
 
   drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-  lineUpExtension = drawDefinition.extensions.find(
-    ({ name }) => name === LINEUPS
-  );
+  lineUpExtension = drawDefinition.extensions.find(({ name }) => name === LINEUPS);
   expect(lineUpExtension).not.toBeUndefined();
 
   result = tournamentEngine.matchUpActions({
@@ -804,19 +677,16 @@ it('can substitute a single individual participant in a TEAM tieMatchUp when onl
     },
   }).matchUps[0];
 
-  const matchUpActionsPolicy =
-    POLICY_MATCHUP_ACTIONS_DEFAULT[POLICY_TYPE_MATCHUP_ACTIONS];
-  const substitutionProcessCodes =
-    matchUpActionsPolicy?.processCodes?.substitution;
+  const matchUpActionsPolicy = POLICY_MATCHUP_ACTIONS_DEFAULT[POLICY_TYPE_MATCHUP_ACTIONS];
+  const substitutionProcessCodes = matchUpActionsPolicy?.processCodes?.substitution;
   expect(tieMatchUp.processCodes).toEqual(substitutionProcessCodes);
 
   const side = tieMatchUp.sides.find(({ sideNumber }) => sideNumber === 1);
   expect(side.substitutions.length).toEqual(1);
 
   const sOrder = result.modifiedLineUp.map((participant) => {
-    return participant.collectionAssignments.find(
-      (assignment) => assignment.substitutionOrder !== undefined
-    )?.substitutionOrder;
+    return participant.collectionAssignments.find((assignment) => assignment.substitutionOrder !== undefined)
+      ?.substitutionOrder;
   });
   expect(sOrder).toEqual([0, 1]);
 

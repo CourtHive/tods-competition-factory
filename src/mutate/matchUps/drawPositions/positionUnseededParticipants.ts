@@ -7,17 +7,14 @@ import { decorateResult } from '../../../global/functions/decorateResult';
 import { findExtension } from '../../../acquire/findExtension';
 import { findStructure } from '../../../acquire/findStructure';
 import { assignDrawPosition } from './positionAssignment';
-import { shuffleArray } from '../../../utilities/arrays';
+import { shuffleArray } from '../../../tools/arrays';
 
 import { INSUFFICIENT_DRAW_POSITIONS } from '../../../constants/errorConditionConstants';
 import { DIRECT_ENTRY_STATUSES } from '../../../constants/entryStatusConstants';
 import { POLICY_TYPE_AVOIDANCE } from '../../../constants/policyConstants';
 import { ROUND_TARGET } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import {
-  PLAY_OFF,
-  QUALIFYING,
-} from '../../../constants/drawDefinitionConstants';
+import { PLAY_OFF, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 
 export function positionUnseededParticipants({
   provisionalPositioning,
@@ -36,8 +33,7 @@ export function positionUnseededParticipants({
 }) {
   const stack = 'positionUnseededParticipants';
 
-  if (!structure)
-    ({ structure } = findStructure({ drawDefinition, structureId }));
+  if (!structure) ({ structure } = findStructure({ drawDefinition, structureId }));
   if (!structureId) ({ structureId } = structure);
 
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
@@ -47,17 +43,12 @@ export function positionUnseededParticipants({
     structure,
   });
 
-  const assignedSeedParticipantIds = seedAssignments
-    ?.map((assignment) => assignment.participantId)
-    .filter(Boolean);
+  const assignedSeedParticipantIds = seedAssignments?.map((assignment) => assignment.participantId).filter(Boolean);
 
   const { stage, stageSequence } = structure;
 
   const roundTarget =
-    stage === QUALIFYING
-      ? findExtension({ element: structure, name: ROUND_TARGET })?.extension
-          ?.value
-      : undefined;
+    stage === QUALIFYING ? findExtension({ element: structure, name: ROUND_TARGET })?.extension?.value : undefined;
 
   const entryStatuses = DIRECT_ENTRY_STATUSES;
   const entries = getStageEntries({
@@ -69,24 +60,15 @@ export function positionUnseededParticipants({
     roundTarget,
     stage,
   });
-  const unseededEntries = entries.filter(
-    (entry) => !assignedSeedParticipantIds?.includes(entry.participantId)
-  );
-  const unseededParticipantIds = unseededEntries.map(
-    (entry) => entry.participantId
-  );
+  const unseededEntries = entries.filter((entry) => !assignedSeedParticipantIds?.includes(entry.participantId));
+  const unseededParticipantIds = unseededEntries.map((entry) => entry.participantId);
   const unfilledDrawPositions = positionAssignments
     ?.filter((assignment) => {
-      return (
-        !assignment.participantId && !assignment.bye && !assignment.qualifier
-      );
+      return !assignment.participantId && !assignment.bye && !assignment.qualifier;
     })
     .map((assignment) => assignment.drawPosition);
 
-  if (
-    !multipleStructures &&
-    unseededParticipantIds.length > (unfilledDrawPositions?.length || 0)
-  ) {
+  if (!multipleStructures && unseededParticipantIds.length > (unfilledDrawPositions?.length || 0)) {
     return decorateResult({
       result: { error: INSUFFICIENT_DRAW_POSITIONS },
       context: {
@@ -167,10 +149,7 @@ function randomUnseededDistribution({
   event,
 }) {
   // when { drawSize: 2 } reverse the order so that popping results in equivalent order
-  const shuffledDrawPositions =
-    drawSize > 2
-      ? shuffleArray(unfilledDrawPositions)
-      : unfilledDrawPositions.reverse();
+  const shuffledDrawPositions = drawSize > 2 ? shuffleArray(unfilledDrawPositions) : unfilledDrawPositions.reverse();
 
   for (const participantId of unseededParticipantIds) {
     const drawPosition = shuffledDrawPositions.pop();
@@ -188,8 +167,7 @@ function randomUnseededDistribution({
         event,
       });
       if (result?.error) console.log('!!!!!', { result });
-      if (result?.error)
-        return decorateResult({ result, stack: 'randomUnseededDistribution' });
+      if (result?.error) return decorateResult({ result, stack: 'randomUnseededDistribution' });
     }
   }
   return { ...SUCCESS };

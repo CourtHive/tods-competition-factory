@@ -2,10 +2,10 @@ import { findTournamentParticipant } from '../../acquire/findTournamentParticipa
 import { addIndividualParticipantIds } from './addIndividualParticipantIds';
 import { getParticipants } from '../../query/participants/getParticipants';
 import { getParticipantId } from '../../global/functions/extractors';
-import { definedAttributes } from '../../utilities/definedAttributes';
+import { definedAttributes } from '../../tools/definedAttributes';
 import { participantRoles } from '../../constants/participantRoles';
 import { genderConstants } from '../../constants/genderConstants';
-import { makeDeepCopy } from '../../utilities/makeDeepCopy';
+import { makeDeepCopy } from '../../tools/makeDeepCopy';
 import { addNotice } from '../../global/state/globalState';
 import { countries } from '../../fixtures/countryData';
 import { addParticipant } from './addParticipant';
@@ -18,12 +18,7 @@ import {
   MISSING_PARTICIPANT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../constants/errorConditionConstants';
-import {
-  GROUP,
-  INDIVIDUAL,
-  PAIR,
-  participantTypes,
-} from '../../constants/participantConstants';
+import { GROUP, INDIVIDUAL, PAIR, participantTypes } from '../../constants/participantConstants';
 
 export function modifyParticipant(params) {
   const {
@@ -37,16 +32,14 @@ export function modifyParticipant(params) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!participant) return { error: MISSING_PARTICIPANT };
 
-  if (!participant.participantId)
-    return addParticipant({ tournamentRecord, participant });
+  if (!participant.participantId) return addParticipant({ tournamentRecord, participant });
 
   const { participant: existingParticipant } = findTournamentParticipant({
     participantId: participant.participantId,
     tournamentRecord,
   });
 
-  if (!existingParticipant)
-    return addParticipant({ tournamentRecord, participant });
+  if (!existingParticipant) return addParticipant({ tournamentRecord, participant });
 
   const {
     participantRoleResponsibilties,
@@ -60,10 +53,7 @@ export function modifyParticipant(params) {
     person,
   } = participant;
 
-  if (
-    participantType &&
-    existingParticipant.participantType !== participantType
-  )
+  if (participantType && existingParticipant.participantType !== participantType)
     return { error: CANNOT_MODIFY_PARTICIPANT_TYPE };
 
   const newValues: any = {};
@@ -72,8 +62,7 @@ export function modifyParticipant(params) {
   if (contacts) newValues.contacts = contacts;
   if (onlineResources) newValues.onlineResources = onlineResources;
 
-  if (participantName && typeof participantName === 'string')
-    newValues.participantName = participantName;
+  if (participantName && typeof participantName === 'string') newValues.participantName = participantName;
   if (participantOtherName && typeof participantOtherName === 'string')
     newValues.participantOtherName = participantOtherName;
 
@@ -82,32 +71,23 @@ export function modifyParticipant(params) {
       participantFilters: { participantTypes: [INDIVIDUAL] },
       tournamentRecord,
     });
-    const allIndividualParticipantIds =
-      individualParticipants?.map(getParticipantId);
+    const allIndividualParticipantIds = individualParticipants?.map(getParticipantId);
 
     if (allIndividualParticipantIds) {
       // check that all new individualParticipantIds exist and are { participantType: INDIVIDUAL }
       const updatedIndividualParticipantIds = individualParticipantIds.filter(
-        (participantId) =>
-          typeof participantId === 'string' &&
-          allIndividualParticipantIds.includes(participantId)
+        (participantId) => typeof participantId === 'string' && allIndividualParticipantIds.includes(participantId),
       );
 
       if (
-        [GROUP, TEAM].includes(
-          participantType || existingParticipant.participantType
-        ) ||
-        (participantType === PAIR &&
-          (updatedIndividualParticipantIds.length === 2 || pairOverride))
+        [GROUP, TEAM].includes(participantType || existingParticipant.participantType) ||
+        (participantType === PAIR && (updatedIndividualParticipantIds.length === 2 || pairOverride))
       ) {
         newValues.individualParticipantIds = updatedIndividualParticipantIds;
       }
 
       // check whether to update PAIR participantName
-      if (
-        existingParticipant.participantType === participantTypes.PAIR &&
-        updateParticipantName
-      ) {
+      if (existingParticipant.participantType === participantTypes.PAIR && updateParticipantName) {
         newValues.participantName = generatePairParticipantName({
           individualParticipants,
           newValues,
@@ -115,18 +95,13 @@ export function modifyParticipant(params) {
       }
     }
   }
-  if (Object.keys(participantRoles).includes(participantRole))
-    newValues.participantRole = participantRole;
-  if (Object.keys(participantTypes).includes(participantType))
-    newValues.participantType = participantType;
+  if (Object.keys(participantRoles).includes(participantRole)) newValues.participantRole = participantRole;
+  if (Object.keys(participantTypes).includes(participantType)) newValues.participantType = participantType;
 
   if (Array.isArray(participantRoleResponsibilties))
     newValues.participantRoleResponsibilties = participantRoleResponsibilties;
 
-  if (
-    existingParticipant.participantType === participantTypes.INDIVIDUAL &&
-    person
-  ) {
+  if (existingParticipant.participantType === participantTypes.INDIVIDUAL && person) {
     updatePerson({
       updateParticipantName,
       existingParticipant,
@@ -163,9 +138,7 @@ export function modifyParticipant(params) {
 function generatePairParticipantName({ individualParticipants, newValues }) {
   const individualParticipantIds = newValues.individualParticipantIds;
   let participantName = individualParticipants
-    .filter(({ participantId }) =>
-      individualParticipantIds.includes(participantId)
-    )
+    .filter(({ participantId }) => individualParticipantIds.includes(participantId))
     .map(({ person }) => person?.standardFamilyName)
     .filter(Boolean)
     .sort()
@@ -175,22 +148,10 @@ function generatePairParticipantName({ individualParticipants, newValues }) {
   return participantName;
 }
 
-function updatePerson({
-  updateParticipantName,
-  existingParticipant,
-  newValues,
-  person,
-}) {
+function updatePerson({ updateParticipantName, existingParticipant, newValues, person }) {
   const newPersonValues: any = {};
-  const {
-    standardFamilyName,
-    standardGivenName,
-    nationalityCode,
-    personId,
-    sex,
-  } = person;
-  if (sex && Object.keys(genderConstants).includes(sex))
-    newPersonValues.sex = sex;
+  const { standardFamilyName, standardGivenName, nationalityCode, personId, sex } = person;
+  if (sex && Object.keys(genderConstants).includes(sex)) newPersonValues.sex = sex;
 
   let personNameModified;
   if (personId && typeof personId === 'string') {
@@ -205,20 +166,12 @@ function updatePerson({
     newPersonValues.nationalityCode = nationalityCode;
   }
 
-  if (
-    standardFamilyName &&
-    typeof standardFamilyName === 'string' &&
-    standardFamilyName.length > 1
-  ) {
+  if (standardFamilyName && typeof standardFamilyName === 'string' && standardFamilyName.length > 1) {
     newPersonValues.standardFamilyName = standardFamilyName;
     personNameModified = true;
   }
 
-  if (
-    standardGivenName &&
-    typeof standardGivenName === 'string' &&
-    standardGivenName.length > 1
-  ) {
+  if (standardGivenName && typeof standardGivenName === 'string' && standardGivenName.length > 1) {
     newPersonValues.standardGivenName = standardGivenName;
     personNameModified = true;
   }

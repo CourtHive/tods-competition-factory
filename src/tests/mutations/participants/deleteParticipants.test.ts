@@ -1,7 +1,7 @@
 import { getParticipantId } from '../../../global/functions/extractors';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
-import { unique } from '../../../utilities/arrays';
+import { unique } from '../../../tools/arrays';
 import { expect, it } from 'vitest';
 
 import { EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT } from '../../../constants/errorConditionConstants';
@@ -51,9 +51,7 @@ it('will not delete participants in draws', () => {
 
 it('will not delete pair participants in team draws', () => {
   let result = mocksEngine.generateTournamentRecord({
-    drawProfiles: [
-      { drawSize: 2, eventType: TEAM, tieFormatName: DOMINANT_DUO },
-    ],
+    drawProfiles: [{ drawSize: 2, eventType: TEAM, tieFormatName: DOMINANT_DUO }],
     completeAllMatchUps: true,
   });
 
@@ -63,9 +61,7 @@ it('will not delete pair participants in team draws', () => {
     participantFilters: { participantTypes: [PAIR] },
   });
 
-  const pairParticipantIds = pairParticipants.map(
-    ({ participantId }) => participantId
-  );
+  const pairParticipantIds = pairParticipants.map(({ participantId }) => participantId);
   expect(pairParticipantIds.length).toBeGreaterThan(0);
 
   result = tournamentEngine.deleteParticipants({
@@ -96,9 +92,7 @@ it('will clean up entries when participants are deleted', () => {
     participantFilters: { participantTypes: [TEAM] },
   });
 
-  const pairParticipantIds = teamParticipants.map(
-    ({ participantId }) => participantId
-  );
+  const pairParticipantIds = teamParticipants.map(({ participantId }) => participantId);
   expect(pairParticipantIds.length).toEqual(2);
 
   let { event, drawDefinition } = tournamentEngine.getEvent({ drawId });
@@ -113,9 +107,7 @@ it('will clean up entries when participants are deleted', () => {
 
   ({ event, drawDefinition } = tournamentEngine.getEvent({ drawId }));
   expect(event.entries.length).toEqual(4);
-  expect(unique(event.entries.map(({ entryStatus }) => entryStatus))).toEqual([
-    UNGROUPED,
-  ]);
+  expect(unique(event.entries.map(({ entryStatus }) => entryStatus))).toEqual([UNGROUPED]);
 });
 
 it('will clean up pairParticipants when individual participants are deleted', () => {

@@ -3,7 +3,7 @@ import { getGroupedRounds } from './getGroupedRounds';
 import { processAlreadyScheduledMatchUps } from '../../../mutate/matchUps/schedule/schedulers/utils/processAlreadyScheduledMatchUps';
 import { getMatchUpsToSchedule } from '../../../mutate/matchUps/schedule/schedulers/utils/getMatchUpsToSchedule';
 import { generateScheduleTimes } from '../../../mutate/matchUps/schedule/schedulers/utils/generateScheduleTimes';
-import { extractDate } from '../../../utilities/dateTime';
+import { extractDate } from '../../../tools/dateTime';
 
 import { Tournament } from '../../../types/tournamentTypes';
 import { HydratedMatchUp } from '../../../types/hydrated';
@@ -64,19 +64,16 @@ export function getVenueSchedulingDetails({
   // first pass through all venues is to build up an array of all matchUpIds in the schedulingProfile for current scheduleDate
   for (const venue of venues) {
     const { rounds = [], venueId } = venue; // rounds derives from dateSchedulingProfile
-    const {
-      scheduledRoundsDetails,
-      greatestAverageMinutes,
-      orderedMatchUpIds,
-      minutesMap,
-    } = getScheduledRoundsDetails({
-      scheduleCompletedMatchUps,
-      containedStructureIds,
-      tournamentRecords,
-      periodLength,
-      matchUps,
-      rounds,
-    });
+    const { scheduledRoundsDetails, greatestAverageMinutes, orderedMatchUpIds, minutesMap } = getScheduledRoundsDetails(
+      {
+        scheduleCompletedMatchUps,
+        containedStructureIds,
+        tournamentRecords,
+        periodLength,
+        matchUps,
+        rounds,
+      },
+    );
 
     allDateMatchUpIds.push(...(orderedMatchUpIds ?? []));
 
@@ -94,16 +91,15 @@ export function getVenueSchedulingDetails({
       // determines court availability taking into account already scheduled matchUps on the scheduleDate
       // optimization to pass already retrieved competitionMatchUps to avoid refetch (requires refactor)
       // on first call pass in the averageMatchUpMiutes of first round to be scheduled
-      ({ scheduleTimes, dateScheduledMatchUpIds, dateScheduledMatchUps } =
-        generateScheduleTimes({
-          averageMatchUpMinutes: groupedRounds[0]?.averageMinutes,
-          scheduleDate: extractDate(scheduleDate),
-          venueIds: [venue.venueId],
-          clearScheduleDates,
-          tournamentRecords,
-          periodLength,
-          matchUps,
-        }));
+      ({ scheduleTimes, dateScheduledMatchUpIds, dateScheduledMatchUps } = generateScheduleTimes({
+        averageMatchUpMinutes: groupedRounds[0]?.averageMinutes,
+        scheduleDate: extractDate(scheduleDate),
+        venueIds: [venue.venueId],
+        clearScheduleDates,
+        tournamentRecords,
+        periodLength,
+        matchUps,
+      }));
     }
 
     const processResult = processAlreadyScheduledMatchUps({
@@ -122,8 +118,7 @@ export function getVenueSchedulingDetails({
 
     ({ dateScheduledMatchUpIds, dateScheduledMatchUps } = processResult);
     const { byeScheduledMatchUpDetails, clearDate } = processResult;
-    if (byeScheduledMatchUpDetails?.length)
-      allDateScheduledByeMatchUpDetails.push(...byeScheduledMatchUpDetails);
+    if (byeScheduledMatchUpDetails?.length) allDateScheduledByeMatchUpDetails.push(...byeScheduledMatchUpDetails);
 
     const { matchUpsToSchedule, matchUpMap } = getMatchUpsToSchedule({
       matchUpPotentialParticipantIds,

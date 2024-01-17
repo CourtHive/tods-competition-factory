@@ -4,15 +4,15 @@ import { courtGenerator } from '../../assemblies/generators/scheduling/courtGene
 import { getCourtsAvailableAtPeriodStart } from './getCourtsAvailableAtPeriodStart';
 import { checkRequiredParameters } from '../../parameters/checkRequiredParameters';
 import { getFirstTimeSlotStartTime } from './getFirstTimeSlotStartTime';
-import { generateRange } from '../../utilities/arrays';
-import { ensureInt } from '../../utilities/ensureInt';
+import { generateRange } from '../../tools/arrays';
+import { ensureInt } from '../../tools/ensureInt';
 import {
   getUTCdateString,
   extractTime,
   extractDate,
   timeStringMinutes,
   dayMinutesToTimeString,
-} from '../../utilities/dateTime';
+} from '../../tools/dateTime';
 
 import { ResultType } from '../../global/functions/decorateResult';
 import { ScheduleTimesResult } from '../../types/factoryTypes';

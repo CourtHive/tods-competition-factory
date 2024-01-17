@@ -1,10 +1,10 @@
 import { getFinishingPositionDetails, getRoundId, getRoundProfile, getRoundTiming } from './schedulingUtils';
 import { allCompetitionMatchUps } from '../../matchUps/getAllCompetitionMatchUps';
 import { getProfileRounds } from '../../../mutate/matchUps/schedule/profileRounds';
-import { definedAttributes } from '../../../utilities/definedAttributes';
+import { definedAttributes } from '../../../tools/definedAttributes';
 import { roundSort } from '../../../functions/sorters/roundSort';
-import { extractDate } from '../../../utilities/dateTime';
-import { chunkArray } from '../../../utilities/arrays';
+import { extractDate } from '../../../tools/dateTime';
+import { chunkArray } from '../../../tools/arrays';
 
 import { MatchUpFilters } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';

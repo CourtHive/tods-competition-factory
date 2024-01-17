@@ -11,7 +11,7 @@ import { getAllDrawMatchUps } from '../../matchUps/drawMatchUps';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { adHocMatchUpActions } from './adHocMatchUpActions';
 import { isCompletedStructure } from '../structureActions';
-import { isString } from '../../../utilities/objects';
+import { isString } from '../../../tools/objects';
 import { isAdHoc } from '../isAdHoc';
 import {
   getEnabledStructures,

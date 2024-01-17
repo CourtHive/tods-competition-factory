@@ -3,14 +3,11 @@ import { completeMatchUp, verifyMatchUps } from '../primitives/verifyMatchUps';
 import { getAllDrawMatchUps } from '../../../../query/matchUps/drawMatchUps';
 import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
 import { getDrawStructures } from '../../../../acquire/findStructure';
-import { instanceCount } from '../../../../utilities/arrays';
+import { instanceCount } from '../../../../tools/arrays';
 import { expect, it } from 'vitest';
 
 import { BYE } from '../../../../constants/matchUpStatusConstants';
-import {
-  MAIN,
-  CONSOLATION,
-} from '../../../../constants/drawDefinitionConstants';
+import { MAIN, CONSOLATION } from '../../../../constants/drawDefinitionConstants';
 
 import SEEDING_USTA from '../../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
 import SEEDING_ITF from '../../../../fixtures/policies/POLICY_SEEDING_ITF';
@@ -20,13 +17,12 @@ it('can direct winners and losers with ITF SEEDING POLICY; all participants with
   const seedsCount = 8;
   const drawSize = 32;
 
-  const { drawDefinition, mainStructureId, consolationStructureId } =
-    generateFMLC({
-      policyDefinitions: SEEDING_ITF,
-      participantsCount,
-      seedsCount,
-      drawSize,
-    });
+  const { drawDefinition, mainStructureId, consolationStructureId } = generateFMLC({
+    policyDefinitions: SEEDING_ITF,
+    participantsCount,
+    seedsCount,
+    drawSize,
+  });
 
   const {
     structures: [mainStructure],
@@ -46,9 +42,7 @@ it('can direct winners and losers with ITF SEEDING POLICY; all participants with
   expect(consolationStructureId).toEqual(verifyConsolationStructureId);
 
   let { roundMatchUps } = getRoundMatchUps(consolationStructure);
-  const matchUpStatuses = instanceCount(
-    roundMatchUps?.[1].map(({ matchUpStatus }) => matchUpStatus)
-  );
+  const matchUpStatuses = instanceCount(roundMatchUps?.[1].map(({ matchUpStatus }) => matchUpStatus));
   // all first round consolation matchUps are BYEs
   expect(matchUpStatuses.BYE).toEqual(8);
 
@@ -138,20 +132,18 @@ it('can direct winners and losers with ITF SEEDING POLICY; all participants with
         (matchUp) =>
           matchUp.structureId === mainStructureId &&
           matchUp.roundNumber === roundNumber &&
-          matchUp.roundPosition === roundPosition
+          matchUp.roundPosition === roundPosition,
       );
       expect(matchUp?.winningSide).toEqual(winningSide);
     }
   });
 
-  const positionAssignmentByesCount =
-    consolationStructure.positionAssignments?.filter(
-      (assignment) => !!assignment.bye
-    ).length;
-  const positionAssignmentParticipantidsCount =
-    consolationStructure.positionAssignments?.filter(
-      (assignment) => !!assignment.participantId
-    ).length;
+  const positionAssignmentByesCount = consolationStructure.positionAssignments?.filter(
+    (assignment) => !!assignment.bye,
+  ).length;
+  const positionAssignmentParticipantidsCount = consolationStructure.positionAssignments?.filter(
+    (assignment) => !!assignment.participantId,
+  ).length;
 
   expect(positionAssignmentByesCount).toEqual(16);
   expect(positionAssignmentParticipantidsCount).toEqual(8);
@@ -167,13 +159,12 @@ it('can direct winners and losers with ITF SEEDING POLICY; all participants with
   const seedsCount = 8;
   const participantsCount = 24;
 
-  const { drawDefinition, mainStructureId, consolationStructureId } =
-    generateFMLC({
-      policyDefinitions: SEEDING_ITF,
-      participantsCount,
-      seedsCount,
-      drawSize,
-    });
+  const { drawDefinition, mainStructureId, consolationStructureId } = generateFMLC({
+    policyDefinitions: SEEDING_ITF,
+    participantsCount,
+    seedsCount,
+    drawSize,
+  });
 
   const {
     structures: [mainStructure],
@@ -193,9 +184,7 @@ it('can direct winners and losers with ITF SEEDING POLICY; all participants with
   expect(consolationStructureId).toEqual(verifyConsolationStructureId);
 
   let { roundMatchUps } = getRoundMatchUps(consolationStructure);
-  const matchUpStatuses = instanceCount(
-    roundMatchUps?.[1].map(({ matchUpStatus }) => matchUpStatus)
-  );
+  const matchUpStatuses = instanceCount(roundMatchUps?.[1].map(({ matchUpStatus }) => matchUpStatus));
   // all first round consolation matchUps are BYEs
   expect(matchUpStatuses.BYE).toEqual(8);
 
@@ -285,20 +274,18 @@ it('can direct winners and losers with ITF SEEDING POLICY; all participants with
         (matchUp) =>
           matchUp.structureId === mainStructureId &&
           matchUp.roundNumber === roundNumber &&
-          matchUp.roundPosition === roundPosition
+          matchUp.roundPosition === roundPosition,
       );
       expect(matchUp?.winningSide).toEqual(winningSide);
     }
   });
 
-  const positionAssignmentByesCount =
-    consolationStructure.positionAssignments?.filter(
-      (assignment) => !!assignment.bye
-    ).length;
-  const positionAssignmentParticipantidsCount =
-    consolationStructure.positionAssignments?.filter(
-      (assignment) => !!assignment.participantId
-    ).length;
+  const positionAssignmentByesCount = consolationStructure.positionAssignments?.filter(
+    (assignment) => !!assignment.bye,
+  ).length;
+  const positionAssignmentParticipantidsCount = consolationStructure.positionAssignments?.filter(
+    (assignment) => !!assignment.participantId,
+  ).length;
   expect(positionAssignmentByesCount).toEqual(8);
   expect(positionAssignmentParticipantidsCount).toEqual(16);
 
@@ -313,13 +300,12 @@ it('can direct winners and losers with USTA SEEDING POLICY; all participants wit
   const seedsCount = 8;
   const participantsCount = 24;
 
-  const { drawDefinition, mainStructureId, consolationStructureId } =
-    generateFMLC({
-      policyDefinitions: SEEDING_USTA,
-      participantsCount,
-      seedsCount,
-      drawSize,
-    });
+  const { drawDefinition, mainStructureId, consolationStructureId } = generateFMLC({
+    policyDefinitions: SEEDING_USTA,
+    participantsCount,
+    seedsCount,
+    drawSize,
+  });
 
   const {
     structures: [mainStructure],
@@ -422,14 +408,12 @@ it('can direct winners and losers with USTA SEEDING POLICY; all participants wit
     expect(result.success).toEqual(success);
   });
 
-  const positionAssignmentByesCount =
-    consolationStructure.positionAssignments?.filter(
-      (assignment) => !!assignment.bye
-    ).length;
-  const positionAssignmentParticipantidsCount =
-    consolationStructure.positionAssignments?.filter(
-      (assignment) => !!assignment.participantId
-    ).length;
+  const positionAssignmentByesCount = consolationStructure.positionAssignments?.filter(
+    (assignment) => !!assignment.bye,
+  ).length;
+  const positionAssignmentParticipantidsCount = consolationStructure.positionAssignments?.filter(
+    (assignment) => !!assignment.participantId,
+  ).length;
   expect(positionAssignmentByesCount).toEqual(16);
   expect(positionAssignmentParticipantidsCount).toEqual(8);
 
@@ -446,13 +430,12 @@ it('can direct winners and losers with USTA SEEDING POLICY; all participants wit
   const seedsCount = 8;
   const participantsCount = 24;
 
-  const { drawDefinition, mainStructureId, consolationStructureId } =
-    generateFMLC({
-      policyDefinitions: SEEDING_USTA,
-      participantsCount,
-      seedsCount,
-      drawSize,
-    });
+  const { drawDefinition, mainStructureId, consolationStructureId } = generateFMLC({
+    policyDefinitions: SEEDING_USTA,
+    participantsCount,
+    seedsCount,
+    drawSize,
+  });
 
   const {
     structures: [mainStructure],
@@ -555,14 +538,12 @@ it('can direct winners and losers with USTA SEEDING POLICY; all participants wit
     expect(result.success).toEqual(success);
   });
 
-  const positionAssignmentByesCount =
-    consolationStructure.positionAssignments?.filter(
-      (assignment) => !!assignment.bye
-    ).length;
-  const positionAssignmentParticipantidsCount =
-    consolationStructure.positionAssignments?.filter(
-      (assignment) => !!assignment.participantId
-    ).length;
+  const positionAssignmentByesCount = consolationStructure.positionAssignments?.filter(
+    (assignment) => !!assignment.bye,
+  ).length;
+  const positionAssignmentParticipantidsCount = consolationStructure.positionAssignments?.filter(
+    (assignment) => !!assignment.participantId,
+  ).length;
   expect(positionAssignmentByesCount).toEqual(8);
   expect(positionAssignmentParticipantidsCount).toEqual(16);
 

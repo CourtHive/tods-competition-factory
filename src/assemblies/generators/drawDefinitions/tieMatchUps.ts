@@ -1,5 +1,5 @@
-import { generateRange } from '../../../utilities/arrays';
-import { UUID } from '../../../utilities/UUID';
+import { generateRange } from '../../../tools/arrays';
+import { UUID } from '../../../tools/UUID';
 
 import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { MatchUp, TieFormat } from '../../../types/tournamentTypes';

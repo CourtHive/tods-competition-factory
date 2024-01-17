@@ -13,7 +13,7 @@ import {
   extractDate,
   extractTime,
   timeStringMinutes,
-} from '../../../utilities/dateTime';
+} from '../../../tools/dateTime';
 
 import { ResultType } from '../../../global/functions/decorateResult';
 import { TournamentRecords } from '../../../types/factoryTypes';

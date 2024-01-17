@@ -9,21 +9,14 @@ import { decorateResult } from '../../../global/functions/decorateResult';
 import { assignDrawPositionBye } from './assignDrawPositionBye';
 import { updateSideLineUp } from '../lineUps/updateSideLineUp';
 import { positionTargets } from './positionTargets';
-import { overlap } from '../../../utilities/arrays';
-import {
-  MatchUpsMap,
-  getMappedStructureMatchUps,
-  getMatchUpsMap,
-} from '../../../query/matchUps/getMatchUpsMap';
+import { overlap } from '../../../tools/arrays';
+import { MatchUpsMap, getMappedStructureMatchUps, getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
 
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import { TEAM } from '../../../constants/matchUpTypes';
-import {
-  DRAW_POSITION_ASSIGNED,
-  STRUCTURE_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+import { DRAW_POSITION_ASSIGNED, STRUCTURE_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import {
   BYE,
   COMPLETED,
@@ -34,11 +27,7 @@ import {
   TO_BE_PLAYED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
-import {
-  DrawDefinition,
-  Event,
-  Tournament,
-} from '../../../types/tournamentTypes';
+import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
 
 type AssignMatchUpDrawPositionArgs = {
   inContextDrawMatchUps: HydratedMatchUp[];
@@ -79,23 +68,19 @@ export function assignMatchUpDrawPosition({
       }).matchUps ?? [];
   }
 
-  const inContextMatchUp = inContextDrawMatchUps.find(
-    (m) => m.matchUpId === matchUpId
-  );
+  const inContextMatchUp = inContextDrawMatchUps.find((m) => m.matchUpId === matchUpId);
   const structureId = inContextMatchUp?.structureId;
-  const structure = drawDefinition?.structures?.find(
-    (structure) => structure.structureId === structureId
-  );
+  const structure = drawDefinition?.structures?.find((structure) => structure.structureId === structureId);
 
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
-  const matchUp = matchUpsMap?.drawMatchUps?.find(
-    (matchUp) => matchUp.matchUpId === matchUpId
-  );
+  const matchUp = matchUpsMap?.drawMatchUps?.find((matchUp) => matchUp.matchUpId === matchUpId);
 
   const drawPositions: number[] = matchUp?.drawPositions ?? [];
-  const { positionAdded, positionAssigned, updatedDrawPositions } =
-    getUpdatedDrawPositions({ drawPosition, drawPositions });
+  const { positionAdded, positionAssigned, updatedDrawPositions } = getUpdatedDrawPositions({
+    drawPosition,
+    drawPositions,
+  });
 
   const { positionAssignments } = getPositionAssignments({
     drawDefinition,
@@ -103,7 +88,7 @@ export function assignMatchUpDrawPosition({
   });
 
   const matchUpAssignments = positionAssignments?.filter((assignment) =>
-    updatedDrawPositions.includes(assignment.drawPosition)
+    updatedDrawPositions.includes(assignment.drawPosition),
   );
   const isByeMatchUp = matchUpAssignments?.find(({ bye }) => bye);
   const isDoubleExitExit =
@@ -194,20 +179,17 @@ export function assignMatchUpDrawPosition({
       } else {
         const { structureId } = winnerMatchUp;
         if (structureId !== structure.structureId) {
-          console.log(
-            'winnerMatchUp in different structure... participant is in different targetDrawPosition'
-          );
+          console.log('winnerMatchUp in different structure... participant is in different targetDrawPosition');
         }
       }
     }
   } else if (winnerMatchUp && inContextMatchUp && !inContextMatchUp.feedRound) {
-    const { pairedPreviousMatchUpIsDoubleExit } =
-      getPairedPreviousMatchUpIsDoubleExit({
-        targetMatchUp: matchUp,
-        drawPosition,
-        matchUpsMap,
-        structure,
-      });
+    const { pairedPreviousMatchUpIsDoubleExit } = getPairedPreviousMatchUpIsDoubleExit({
+      targetMatchUp: matchUp,
+      drawPosition,
+      matchUpsMap,
+      structure,
+    });
 
     if (pairedPreviousMatchUpIsDoubleExit) {
       const result = assignMatchUpDrawPosition({
@@ -224,16 +206,14 @@ export function assignMatchUpDrawPosition({
 
   // if { matchUpType: TEAM } then also assign the default lineUp to the appopriate side
   if (matchUp?.matchUpType === TEAM) {
-    const inContextTargetMatchUp = inContextDrawMatchUps?.find(
-      ({ matchUpId }) => matchUpId === matchUp.matchUpId
-    );
+    const inContextTargetMatchUp = inContextDrawMatchUps?.find(({ matchUpId }) => matchUpId === matchUp.matchUpId);
     const sides: any[] = inContextTargetMatchUp?.sides ?? [];
     const drawPositionSideIndex = sides.reduce(
       (index, side, i) => (side.drawPosition === drawPosition ? i : index),
-      undefined
+      undefined,
     );
     const teamParticipantId = positionAssignments?.find(
-      (assignment) => assignment.drawPosition === drawPosition
+      (assignment) => assignment.drawPosition === drawPosition,
     )?.participantId;
 
     if (teamParticipantId && drawPositionSideIndex !== undefined) {
@@ -255,11 +235,10 @@ export function assignMatchUpDrawPosition({
     !isByeMatchUp
   ) {
     const firstRoundMatchUps = structureMatchUps.filter(
-      ({ drawPositions, roundNumber }) =>
-        roundNumber === 1 && overlap(drawPositions, updatedDrawPositions)
+      ({ drawPositions, roundNumber }) => roundNumber === 1 && overlap(drawPositions, updatedDrawPositions),
     );
     const byePropagation = firstRoundMatchUps.every(({ matchUpStatus }) =>
-      [COMPLETED, RETIRED].includes(matchUpStatus)
+      [COMPLETED, RETIRED].includes(matchUpStatus),
     );
     if (byePropagation && loserMatchUp) {
       const { structureId } = loserMatchUp;

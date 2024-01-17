@@ -2,7 +2,7 @@ import { getPositionsPlayedOff } from '../../../query/drawDefinition/getPosition
 import { setSubscriptions } from '../../../global/state/globalState';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
-import { chunkByNth } from '../../../utilities/arrays';
+import { chunkByNth } from '../../../tools/arrays';
 import { expect, it } from 'vitest';
 
 import {

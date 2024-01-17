@@ -1,6 +1,6 @@
 import { generateOutcomeFromScoreString } from '../../../assemblies/generators/mocks/generateOutcomeFromScoreString';
 import mocksEngine from '../../../assemblies/engines/mock';
-import { intersection } from '../../../utilities/arrays';
+import { intersection } from '../../../tools/arrays';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
@@ -8,19 +8,8 @@ import { ELIMINATION } from '../../../constants/drawDefinitionConstants';
 import { INDIVIDUAL } from '../../../constants/participantConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 import { FEMALE } from '../../../constants/genderConstants';
-import {
-  COMPLETED,
-  TO_BE_PLAYED,
-} from '../../../constants/matchUpStatusConstants';
-import {
-  END,
-  PENALTY,
-  REFEREE,
-  SCHEDULE,
-  SCORE,
-  START,
-  STATUS,
-} from '../../../constants/matchUpActionConstants';
+import { COMPLETED, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
+import { END, PENALTY, REFEREE, SCHEDULE, SCORE, START, STATUS } from '../../../constants/matchUpActionConstants';
 
 it('can return valid actions for matchUps', () => {
   const participantsProfile = {
@@ -61,13 +50,7 @@ it('can return valid actions for matchUps', () => {
   expect(matchUp.matchUpStatus).toEqual(COMPLETED);
   let { validActions } = tournamentEngine.matchUpActions(matchUp);
   let actionTypes = validActions.map((action) => action.type);
-  const overlap = intersection(actionTypes, [
-    REFEREE,
-    SCORE,
-    PENALTY,
-    START,
-    END,
-  ]);
+  const overlap = intersection(actionTypes, [REFEREE, SCORE, PENALTY, START, END]);
   expect(overlap.length).toEqual(5);
 
   matchUp = matchUps[1];
@@ -115,8 +98,7 @@ it('can score a matchUp using params provided in validActions', () => {
 
   const drawPosition = 3;
   const targetMatchUp = matchUps.find(
-    (matchUp) =>
-      matchUp.drawPositions.includes(drawPosition) && matchUp.roundNumber === 1
+    (matchUp) => matchUp.drawPositions.includes(drawPosition) && matchUp.roundNumber === 1,
   );
   const { validActions } = tournamentEngine.matchUpActions(targetMatchUp);
   const scoreAction = validActions.find(({ type }) => type === SCORE);
@@ -134,8 +116,6 @@ it('can score a matchUp using params provided in validActions', () => {
 
   ({ matchUps } = tournamentEngine.allDrawMatchUps({ drawId }));
 
-  const updatedMatchUp = matchUps.find(
-    ({ matchUpId }) => matchUpId === targetMatchUp.matchUpId
-  );
+  const updatedMatchUp = matchUps.find(({ matchUpId }) => matchUpId === targetMatchUp.matchUpId);
   expect(updatedMatchUp.winningSide).toEqual(2);
 });

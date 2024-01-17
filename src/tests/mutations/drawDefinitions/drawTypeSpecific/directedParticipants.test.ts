@@ -1,4 +1,4 @@
-import { parseScoreString } from '../../../../utilities/parseScoreString';
+import { parseScoreString } from '../../../../tools/parseScoreString';
 import { structureAssignedDrawPositions } from '../../../../query/drawDefinition/positionsGetter';
 import { verifyStructure } from '../primitives/verifyStructure';
 import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
@@ -14,10 +14,7 @@ import {
 } from '../primitives/verifyMatchUps';
 
 import { MAIN } from '../../../../constants/drawDefinitionConstants';
-import {
-  EntryStatusUnion,
-  StageTypeUnion,
-} from '../../../../types/tournamentTypes';
+import { EntryStatusUnion, StageTypeUnion } from '../../../../types/tournamentTypes';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   CANNOT_CHANGE_WINNING_SIDE,
@@ -32,10 +29,7 @@ import {
   DEFAULTED,
   SUSPENDED,
 } from '../../../../constants/matchUpStatusConstants';
-import {
-  DIRECT_ACCEPTANCE,
-  WILDCARD,
-} from '../../../../constants/entryStatusConstants';
+import { DIRECT_ACCEPTANCE, WILDCARD } from '../../../../constants/entryStatusConstants';
 import { assignDrawPositionBye } from '../../../../mutate/matchUps/drawPositions/assignDrawPositionBye';
 import { assignDrawPosition } from '../../../../mutate/matchUps/drawPositions/positionAssignment';
 import { setMatchUpState } from '../../../../mutate/matchUps/matchUpStatus/setMatchUpState';
@@ -435,11 +429,10 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
   const sets = parseScoreString({ scoreString: '6-1 6-2' });
   expect(score?.sets).toEqual(sets);
 
-  const { winningParticipantId, losingParticipantId } =
-    getMatchUpWinnerLoserIds({
-      drawDefinition,
-      matchUpId,
-    });
+  const { winningParticipantId, losingParticipantId } = getMatchUpWinnerLoserIds({
+    drawDefinition,
+    matchUpId,
+  });
 
   // check that winner advanced to second round matchUp and that matchUpStatus is TO_BE_PLAYED
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({

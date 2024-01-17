@@ -4,7 +4,7 @@ import { newDrawDefinition } from '../../../../../assemblies/generators/drawDefi
 import { setStageDrawSize } from '../../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 import { getAllStructureMatchUps } from '../../../../../query/matchUps/getAllStructureMatchUps';
 import { generateMatchUpOutcome } from '../../../../helpers/generateMatchUpOutcome';
-import { chunkArray, intersection } from '../../../../../utilities/arrays';
+import { chunkArray, intersection } from '../../../../../tools/arrays';
 import { findStructure } from '../../../../../acquire/findStructure';
 import mocksEngine from '../../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../../engines/syncEngine';

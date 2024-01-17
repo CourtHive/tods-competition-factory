@@ -1,22 +1,15 @@
 import { getEventPublishStatus } from '../event/getEventPublishStatus';
-import { definedAttributes } from '../../utilities/definedAttributes';
+import { definedAttributes } from '../../tools/definedAttributes';
 import { hydrateParticipants } from '../participants/hydrateParticipants';
 import { MISSING_EVENT } from '../../constants/errorConditionConstants';
 import { getContextContent } from '../hierarchical/getContextContent';
 import { getDrawMatchUps } from './drawMatchUps';
 
 import { SUCCESS } from '../../constants/resultConstants';
-import {
-  GetMatchUpsArgs,
-  GroupsMatchUpsResult,
-} from '../../types/factoryTypes';
+import { GetMatchUpsArgs, GroupsMatchUpsResult } from '../../types/factoryTypes';
 
 export function eventMatchUps(params: GetMatchUpsArgs): GroupsMatchUpsResult {
-  let {
-    participants: tournamentParticipants,
-    contextContent,
-    participantMap,
-  } = params;
+  let { participants: tournamentParticipants, contextContent, participantMap } = params;
 
   const {
     tournamentAppliedPolicies,
@@ -48,8 +41,7 @@ export function eventMatchUps(params: GetMatchUpsArgs): GroupsMatchUpsResult {
       endDate: endDate ?? tournamentRecord?.endDate,
       tournamentId: tournamentId ?? tournamentRecord?.tournamentId,
       indoorOutDoor: event.indoorOutdoor ?? tournamentRecord?.indoorOutdoor,
-      surfaceCategory:
-        event.surfaceCategory ?? tournamentRecord?.surfaceCategory,
+      surfaceCategory: event.surfaceCategory ?? tournamentRecord?.surfaceCategory,
     }),
   };
 

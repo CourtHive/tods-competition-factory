@@ -5,7 +5,7 @@ import { attachPolicies } from '../../../mutate/extensions/policies/attachPolici
 import { setStageDrawSize } from '../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
-import { constantToString } from '../../../utilities/strings';
+import { constantToString } from '../../../tools/strings';
 import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { expect, it } from 'vitest';
 
@@ -57,8 +57,7 @@ it('can return matchUps with roundNames from an SINGLE_ELIMINATION structure', (
   expect(upcomingMatchUps?.length).toEqual(0);
 
   matchUps.forEach((matchUp) => {
-    const { abbreviatedRoundName, finishingRound, roundNumber, roundName } =
-      matchUp;
+    const { abbreviatedRoundName, finishingRound, roundNumber, roundName } = matchUp;
     if (finishingRound === 1) expect(abbreviatedRoundName).toEqual('F');
     if (finishingRound === 2) expect(abbreviatedRoundName).toEqual('SF');
     if (finishingRound === 3) expect(abbreviatedRoundName).toEqual('QF');
@@ -134,8 +133,7 @@ it('can return matchUps with roundNames from a FIRST_MATCH_LOSER_CONSOLATION str
   }));
 
   matchUps.forEach((matchUp) => {
-    const { abbreviatedRoundName, finishingRound, roundNumber, roundName } =
-      matchUp;
+    const { abbreviatedRoundName, finishingRound, roundNumber, roundName } = matchUp;
     if (finishingRound === 1) expect(abbreviatedRoundName).toEqual('C-F');
     if (finishingRound === 2) expect(abbreviatedRoundName).toEqual('C-SF');
     if (finishingRound === 3) expect(abbreviatedRoundName).toEqual('C-QF');
@@ -181,13 +179,7 @@ it('can return matchUps with roundNames from a FEED_IN structure and identify fe
   expect(roundProfile?.[2].feedRound).toEqual(true);
 
   matchUps.forEach((matchUp) => {
-    const {
-      abbreviatedRoundName,
-      feedRound,
-      finishingRound,
-      roundNumber,
-      roundName,
-    } = matchUp;
+    const { abbreviatedRoundName, feedRound, finishingRound, roundNumber, roundName } = matchUp;
     if (roundNumber === 1) expect(abbreviatedRoundName).toEqual('QF-Q');
     if (roundNumber === 2) {
       expect(abbreviatedRoundName).toEqual('QF');
@@ -229,41 +221,26 @@ it('can return matchUps with roundNames from a OLYMPIC structure', () => {
     drawDefinition,
   });
   matchUps?.forEach((matchUp) => {
-    const {
-      abbreviatedRoundName,
-      finishingRound,
-      roundNumber,
-      roundName,
-      structureName,
-    } = matchUp;
+    const { abbreviatedRoundName, finishingRound, roundNumber, roundName, structureName } = matchUp;
     if (roundNumber === 1 && structureName === 'East') {
       expect(roundName).toEqual('E-R16');
       expect(finishingRound).toEqual(4);
     }
-    if (roundNumber === 2 && structureName === 'East')
-      expect(abbreviatedRoundName).toEqual('E-QF');
-    if (roundNumber === 3 && structureName === 'East')
-      expect(abbreviatedRoundName).toEqual('E-SF');
+    if (roundNumber === 2 && structureName === 'East') expect(abbreviatedRoundName).toEqual('E-QF');
+    if (roundNumber === 3 && structureName === 'East') expect(abbreviatedRoundName).toEqual('E-SF');
     if (roundNumber === 4 && structureName === 'East') {
       expect(abbreviatedRoundName).toEqual('E-F');
       expect(finishingRound).toEqual(1);
     }
 
-    if (roundNumber === 1 && structureName === 'West')
-      expect(abbreviatedRoundName).toEqual('W-QF');
-    if (roundNumber === 2 && structureName === 'West')
-      expect(abbreviatedRoundName).toEqual('W-SF');
-    if (roundNumber === 3 && structureName === 'West')
-      expect(abbreviatedRoundName).toEqual('W-F');
+    if (roundNumber === 1 && structureName === 'West') expect(abbreviatedRoundName).toEqual('W-QF');
+    if (roundNumber === 2 && structureName === 'West') expect(abbreviatedRoundName).toEqual('W-SF');
+    if (roundNumber === 3 && structureName === 'West') expect(abbreviatedRoundName).toEqual('W-F');
 
-    if (roundNumber === 1 && structureName === 'North')
-      expect(abbreviatedRoundName).toEqual('N-SF');
-    if (roundNumber === 2 && structureName === 'North')
-      expect(abbreviatedRoundName).toEqual('N-F');
+    if (roundNumber === 1 && structureName === 'North') expect(abbreviatedRoundName).toEqual('N-SF');
+    if (roundNumber === 2 && structureName === 'North') expect(abbreviatedRoundName).toEqual('N-F');
 
-    if (roundNumber === 1 && structureName === 'South')
-      expect(abbreviatedRoundName).toEqual('S-SF');
-    if (roundNumber === 2 && structureName === 'South')
-      expect(abbreviatedRoundName).toEqual('S-F');
+    if (roundNumber === 1 && structureName === 'South') expect(abbreviatedRoundName).toEqual('S-SF');
+    if (roundNumber === 2 && structureName === 'South') expect(abbreviatedRoundName).toEqual('S-F');
   });
 });

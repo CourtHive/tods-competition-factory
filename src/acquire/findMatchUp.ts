@@ -2,22 +2,13 @@ import { allTournamentMatchUps } from '../query/matchUps/getAllTournamentMatchUp
 import { hydrateParticipants } from '../query/participants/hydrateParticipants';
 import { getContextContent } from '../query/hierarchical/getContextContent';
 import { allDrawMatchUps } from '../query/matchUps/getAllDrawMatchUps';
-import { makeDeepCopy } from '../utilities/makeDeepCopy';
+import { makeDeepCopy } from '../tools/makeDeepCopy';
 import { findDrawMatchUp } from './findDrawMatchUp';
 import { findEvent } from './findEvent';
 
 import { HydratedMatchUp } from '../types/hydrated';
-import {
-  ContextContent,
-  ContextProfile,
-  ParticipantsProfile,
-} from '../types/factoryTypes';
-import {
-  DrawDefinition,
-  Tournament,
-  Event,
-  Structure,
-} from '../types/tournamentTypes';
+import { ContextContent, ContextProfile, ParticipantsProfile } from '../types/factoryTypes';
+import { DrawDefinition, Tournament, Event, Structure } from '../types/tournamentTypes';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   ErrorType,
@@ -73,12 +64,9 @@ export function findMatchUp({
 
   // brute force
   if (!drawDefinition || !event) {
-    const matchUps =
-      allTournamentMatchUps({ tournamentRecord, nextMatchUps }).matchUps ?? [];
+    const matchUps = allTournamentMatchUps({ tournamentRecord, nextMatchUps }).matchUps ?? [];
 
-    const inContextMatchUp = matchUps.find(
-      (matchUp) => matchUp.matchUpId === matchUpId
-    );
+    const inContextMatchUp = matchUps.find((matchUp) => matchUp.matchUpId === matchUpId);
     if (!inContextMatchUp) return { error: MATCHUP_NOT_FOUND };
 
     // since drawEngineFindMatchUp is being used, additional context needs to be provided
@@ -92,8 +80,7 @@ export function findMatchUp({
 
   if (!drawDefinition) return { error: DRAW_DEFINITION_NOT_FOUND };
 
-  if (contextProfile && !contextContent)
-    contextContent = getContextContent({ tournamentRecord, contextProfile });
+  if (contextProfile && !contextContent) contextContent = getContextContent({ tournamentRecord, contextProfile });
 
   const additionalContext = {
     surfaceCategory: event?.surfaceCategory ?? tournamentRecord.surfaceCategory,
@@ -124,12 +111,10 @@ export function findMatchUp({
         inContext,
         event,
       }).matchUps ?? [];
-    const inContextMatchUp = matchUps.find(
-      (matchUp) => matchUp.matchUpId === matchUpId
-    );
+    const inContextMatchUp = matchUps.find((matchUp) => matchUp.matchUpId === matchUpId);
     if (!inContextMatchUp) return { error: MATCHUP_NOT_FOUND };
     const structure = drawDefinition?.structures?.find(
-      (structure) => structure.structureId === inContextMatchUp.structureId
+      (structure) => structure.structureId === inContextMatchUp.structureId,
     );
     return { drawDefinition, structure, matchUp: inContextMatchUp };
   } else {

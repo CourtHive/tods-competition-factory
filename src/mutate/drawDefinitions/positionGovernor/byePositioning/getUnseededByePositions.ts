@@ -1,8 +1,8 @@
 import { structureAssignedDrawPositions } from '../../../../query/drawDefinition/positionsGetter';
 import { getSeedPattern, getValidSeedBlocks } from '../../../../query/drawDefinition/seedGetter';
 import { getAllStructureMatchUps } from '../../../../query/matchUps/getAllStructureMatchUps';
-import { chunkArray, shuffleArray, unique } from '../../../../utilities/arrays';
-import { numericSort } from '../../../../utilities/sorting';
+import { chunkArray, shuffleArray, unique } from '../../../../tools/arrays';
+import { numericSort } from '../../../../tools/sorting';
 import { getSeedBlocks } from '../getSeedBlocks';
 
 import { CLUSTER, CONTAINER, QUALIFYING } from '../../../../constants/drawDefinitionConstants';
@@ -92,8 +92,8 @@ export function getUnseededByePositions({
     structure,
   });
 
-  const validBlockDrawPositions = validSeedBlocks?.map(
-    (block) => block.drawPositions?.map((drawPosition) => drawPosition + drawPositionOffset),
+  const validBlockDrawPositions = validSeedBlocks?.map((block) =>
+    block.drawPositions?.map((drawPosition) => drawPosition + drawPositionOffset),
   );
 
   let unfilledSeedBlocks;

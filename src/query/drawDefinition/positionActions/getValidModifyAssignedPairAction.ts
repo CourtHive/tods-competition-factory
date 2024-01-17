@@ -1,9 +1,6 @@
-import { definedAttributes } from '../../../utilities/definedAttributes';
+import { definedAttributes } from '../../../tools/definedAttributes';
 
-import {
-  MODIFY_PAIR_ASSIGNMENT,
-  MODIFY_PAIR_ASSIGNMENT_METHOD,
-} from '../../../constants/positionActionConstants';
+import { MODIFY_PAIR_ASSIGNMENT, MODIFY_PAIR_ASSIGNMENT_METHOD } from '../../../constants/positionActionConstants';
 import { UNGROUPED, UNPAIRED } from '../../../constants/entryStatusConstants';
 
 export function getValidModifyAssignedPairAction({
@@ -21,19 +18,14 @@ export function getValidModifyAssignedPairAction({
       .map(({ participantId }) => participantId) || [];
 
   if (availableIndividualParticipantIds.length) {
-    const existingIndividualParticipantIds =
-      participant.individualParticipantIds;
+    const existingIndividualParticipantIds = participant.individualParticipantIds;
 
     const availableIndividualParticipants = returnParticipants
-      ? tournamentParticipants.filter(({ participantId }) =>
-          availableIndividualParticipantIds.includes(participantId)
-        )
+      ? tournamentParticipants.filter(({ participantId }) => availableIndividualParticipantIds.includes(participantId))
       : undefined;
 
     const existingIndividualParticipants = returnParticipants
-      ? tournamentParticipants.filter(({ participantId }) =>
-          existingIndividualParticipantIds.includes(participantId)
-        )
+      ? tournamentParticipants.filter(({ participantId }) => existingIndividualParticipantIds.includes(participantId))
       : undefined;
 
     const validModifyAssignedPairAction = definedAttributes(
@@ -54,7 +46,7 @@ export function getValidModifyAssignedPairAction({
       },
       false,
       false,
-      true
+      true,
     );
 
     return { validModifyAssignedPairAction };

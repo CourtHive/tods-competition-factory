@@ -1,14 +1,9 @@
-import { generateRange } from '../../../../utilities/arrays';
+import { generateRange } from '../../../../tools/arrays';
 import { replacementTest } from './byeReplacementStressTest';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it, test } from 'vitest';
 import fs from 'fs';
-import {
-  popGlobalLog,
-  printGlobalLog,
-  purgeGlobalLog,
-  pushGlobalLog,
-} from '../../../../global/functions/globalLog';
+import { popGlobalLog, printGlobalLog, purgeGlobalLog, pushGlobalLog } from '../../../../global/functions/globalLog';
 
 import { AUDIT_POSITION_ACTIONS } from '../../../../constants/extensionConstants';
 import {
@@ -22,21 +17,19 @@ import {
 
 it('can run stress tests when JEST_STRESS=true', () => {
   if (!process.env.JEST_STRESS) {
-    ['brightyellow', 'brightgreen', 'brightmagenta', 'brightblue'].forEach(
-      (color) => {
-        pushGlobalLog(
-          {
-            color,
-            keyColors: {
-              stage: 'brightcyan',
-            },
-            stage: 'MAIN',
-            method: 'Global Log Tests',
+    ['brightyellow', 'brightgreen', 'brightmagenta', 'brightblue'].forEach((color) => {
+      pushGlobalLog(
+        {
+          color,
+          keyColors: {
+            stage: 'brightcyan',
           },
-          true
-        );
-      }
-    );
+          stage: 'MAIN',
+          method: 'Global Log Tests',
+        },
+        true,
+      );
+    });
     pushGlobalLog('logTest', true);
     const result = popGlobalLog();
     expect(result.method).toEqual('logTest');
@@ -53,29 +46,26 @@ test.skip.each([
   [8, FEED_IN_CHAMPIONSHIP, [5, 6, 3, 1]],
   [8, MODIFIED_FEED_IN_CHAMPIONSHIP, [5, 6, 3, 1]],
   [8, FIRST_MATCH_LOSER_CONSOLATION, [5, 6, 3, 1]],
-])(
-  'pass specific bye replacement scenarios',
-  (drawSize, drawType, positionsToReplaceWithBye) => {
-    pushGlobalLog(
-      {
-        color: 'brightyellow',
-        method: 'Begin replacementTest',
-      },
-      true
-    );
-    const result = replacementTest({
-      positionsToReplaceWithBye,
-      devMode: true,
-      drawType,
-      drawSize,
-    });
-    if (!result.success) {
-      printGlobalLog(true);
-    } else {
-      purgeGlobalLog();
-    }
+])('pass specific bye replacement scenarios', (drawSize, drawType, positionsToReplaceWithBye) => {
+  pushGlobalLog(
+    {
+      color: 'brightyellow',
+      method: 'Begin replacementTest',
+    },
+    true,
+  );
+  const result = replacementTest({
+    positionsToReplaceWithBye,
+    devMode: true,
+    drawType,
+    drawSize,
+  });
+  if (!result.success) {
+    printGlobalLog(true);
+  } else {
+    purgeGlobalLog();
   }
-);
+});
 
 /*
 PASSED ...
@@ -138,18 +128,13 @@ test.each([
     console.log({ drawSize, byeLimit, drawType, iterations });
     if (positionActionErrorScenarios.length) {
       console.log(`#### ERRORS ####`);
-      console.log(
-        `${positionActionErrorScenarios.length} of ${iterations} failed`
-      );
+      console.log(`${positionActionErrorScenarios.length} of ${iterations} failed`);
       const fileName = `positionActions_${drawSize}_${drawType}.json`;
       const dirPath = './scratch/';
       if (fs.existsSync(dirPath)) {
         const output = `${dirPath}${fileName}`;
-        fs.writeFileSync(
-          output,
-          JSON.stringify(positionActionErrorScenarios, undefined, 1)
-        );
+        fs.writeFileSync(output, JSON.stringify(positionActionErrorScenarios, undefined, 1));
       }
     }
-  }
+  },
 );

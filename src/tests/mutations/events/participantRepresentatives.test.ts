@@ -1,5 +1,5 @@
 import mocksEngine from '../../../assemblies/engines/mock';
-import { intersection } from '../../../utilities/arrays';
+import { intersection } from '../../../tools/arrays';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
@@ -20,9 +20,7 @@ it('can set and get drawRepresentatitveIds', () => {
     inContext: true,
   });
 
-  const { participants } = tournamentEngine
-    .setState(tournamentRecord)
-    .getParticipants();
+  const { participants } = tournamentEngine.setState(tournamentRecord).getParticipants();
   const participantIds = participants.map(({ participantId }) => participantId);
 
   const representativeParticipantIds = participantIds.slice(0, 2);
@@ -44,12 +42,11 @@ it('can set and get drawRepresentatitveIds', () => {
   });
   expect(result.error).toEqual(INVALID_VALUES);
 
-  const { representativeParticipantIds: retrievedIds } =
-    tournamentEngine.getDrawParticipantRepresentativeIds({ drawId });
+  const { representativeParticipantIds: retrievedIds } = tournamentEngine.getDrawParticipantRepresentativeIds({
+    drawId,
+  });
 
-  expect(
-    intersection(representativeParticipantIds, retrievedIds).length
-  ).toEqual(representativeParticipantIds.length);
+  expect(intersection(representativeParticipantIds, retrievedIds).length).toEqual(representativeParticipantIds.length);
 
   result = tournamentEngine.setDrawParticipantRepresentativeIds({
     representativeParticipantIds: [],
@@ -57,8 +54,7 @@ it('can set and get drawRepresentatitveIds', () => {
   });
   expect(result.success).toEqual(true);
 
-  const { representativeParticipantIds: updatedIds } =
-    tournamentEngine.getDrawParticipantRepresentativeIds({ drawId });
+  const { representativeParticipantIds: updatedIds } = tournamentEngine.getDrawParticipantRepresentativeIds({ drawId });
 
   expect(updatedIds.length).toEqual(0);
 });

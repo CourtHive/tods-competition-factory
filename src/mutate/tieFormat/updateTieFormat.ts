@@ -4,9 +4,9 @@ import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMat
 import { ResultType, decorateResult } from '../../global/functions/decorateResult';
 import { copyTieFormat } from '../../query/hierarchical/tieFormats/copyTieFormat';
 import { getTieFormat } from '../../query/hierarchical/tieFormats/getTieFormat';
-import { instanceCount, intersection } from '../../utilities/arrays';
-import { xa } from '../../utilities/objects';
-import { makeDeepCopy } from '../../utilities/makeDeepCopy';
+import { instanceCount, intersection } from '../../tools/arrays';
+import { xa } from '../../tools/objects';
+import { makeDeepCopy } from '../../tools/makeDeepCopy';
 import { validUpdate } from '../../validators/validUpdate';
 import {
   addMatchUpsNotice,

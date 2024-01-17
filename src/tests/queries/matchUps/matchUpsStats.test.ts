@@ -1,13 +1,9 @@
 import mocksEngine from '../../../assemblies/engines/mock';
-import { instanceCount } from '../../../utilities/arrays';
+import { instanceCount } from '../../../tools/arrays';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import {
-  COMPETITIVE,
-  DECISIVE,
-  ROUTINE,
-} from '../../../constants/statsConstants';
+import { COMPETITIVE, DECISIVE, ROUTINE } from '../../../constants/statsConstants';
 
 it('can generate competitive statistics for matchUps and add competitiveness', () => {
   const mocksProfile = {
@@ -33,9 +29,7 @@ it('can generate competitive statistics for matchUps and add competitiveness', (
   expect(Math.round(sum)).toEqual(100);
 
   let matchUpsCompetitiveness = instanceCount(
-    matchUps
-      .map(({ competitiveProfile }) => competitiveProfile.competitiveness)
-      .filter(Boolean)
+    matchUps.map(({ competitiveProfile }) => competitiveProfile.competitiveness).filter(Boolean),
   );
   expect(matchUpsCompetitiveness[ROUTINE]).not.toBeUndefined();
 
@@ -46,9 +40,7 @@ it('can generate competitive statistics for matchUps and add competitiveness', (
   }).matchUps;
 
   matchUpsCompetitiveness = instanceCount(
-    matchUps
-      .map(({ competitiveProfile }) => competitiveProfile.competitiveness)
-      .filter(Boolean)
+    matchUps.map(({ competitiveProfile }) => competitiveProfile.competitiveness).filter(Boolean),
   );
   expect(matchUpsCompetitiveness[ROUTINE]).not.toBeUndefined();
 
@@ -59,9 +51,7 @@ it('can generate competitive statistics for matchUps and add competitiveness', (
   }).matchUps;
 
   matchUpsCompetitiveness = instanceCount(
-    matchUps
-      .map(({ competitiveProfile }) => competitiveProfile.competitiveness)
-      .filter(Boolean)
+    matchUps.map(({ competitiveProfile }) => competitiveProfile.competitiveness).filter(Boolean),
   );
   expect(matchUpsCompetitiveness[ROUTINE]).not.toBeUndefined();
 });
@@ -100,8 +90,7 @@ it('can determine competitive band for matchUps', () => {
       },
     ],
   };
-  const { tournamentRecord } =
-    mocksEngine.generateTournamentRecord(mocksProfile);
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord(mocksProfile);
 
   tournamentEngine.setState(tournamentRecord);
 
@@ -112,8 +101,7 @@ it('can determine competitive band for matchUps', () => {
   expect(matchUps.length).toEqual(4);
 
   const competitiveness = matchUps.map(
-    (matchUp) =>
-      tournamentEngine.getMatchUpCompetitiveProfile({ matchUp }).competitiveness
+    (matchUp) => tournamentEngine.getMatchUpCompetitiveProfile({ matchUp }).competitiveness,
   );
 
   expect(competitiveness).toEqual([DECISIVE, ROUTINE, COMPETITIVE, DECISIVE]);

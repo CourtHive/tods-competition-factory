@@ -1,4 +1,4 @@
-import { ensureInt } from '../../../utilities/ensureInt';
+import { ensureInt } from '../../../tools/ensureInt';
 import { removeFromScore } from './keyValueUtilities';
 import { processOutcome } from './processOutcome';
 
@@ -21,15 +21,14 @@ export function keyValueTimedSetScore(params) {
     } else if (analysis.isIncompleteSetScore) {
       info = 'incomplete set scoreString';
     } else if (!analysis.isIncompleteSetScore) {
-      ({ sets, scoreString, winningSide, matchUpStatus, updated } =
-        processOutcome({
-          lowSide,
-          value,
-          sets,
-          scoreString,
-          matchUpStatus,
-          winningSide,
-        }));
+      ({ sets, scoreString, winningSide, matchUpStatus, updated } = processOutcome({
+        lowSide,
+        value,
+        sets,
+        scoreString,
+        matchUpStatus,
+        winningSide,
+      }));
     }
   } else if (value === BACKSPACE) {
     ({ scoreString, sets, outcomeRemoved } = removeFromScore({
@@ -46,10 +45,7 @@ export function keyValueTimedSetScore(params) {
       const lastSet = sets[sets.length - 1] || {};
       const { side1Score, side2Score } = lastSet;
       if (side1Score && side2Score) {
-        const winningSide =
-          (side1Score > side2Score && 1) ||
-          (side2Score > side1Score && 2) ||
-          undefined;
+        const winningSide = (side1Score > side2Score && 1) || (side2Score > side1Score && 2) || undefined;
         if (winningSide) {
           lastSet.winningSide = winningSide;
           sets.push({ setNumber: sets.length + 1 });
@@ -75,10 +71,7 @@ export function keyValueTimedSetScore(params) {
   } else if (value === SPACE_KEY) {
     const lastSet = sets[sets.length - 1] || {};
     const { side1Score, side2Score } = lastSet;
-    const setWinningSide =
-      (side1Score > side2Score && 1) ||
-      (side2Score > side1Score && 2) ||
-      undefined;
+    const setWinningSide = (side1Score > side2Score && 1) || (side2Score > side1Score && 2) || undefined;
 
     if (setWinningSide && !winningSide && !analysis.isIncompleteSetScore) {
       sets[sets.length - 1].winningSide = setWinningSide;
@@ -105,25 +98,18 @@ export function keyValueTimedSetScore(params) {
     let currentSetScore;
 
     if (sets[setIndex].side2Score === undefined) {
-      const newValue = ensureInt(
-        (sets[setIndex].side1Score || 0).toString() + value
-      )
+      const newValue = ensureInt((sets[setIndex].side1Score || 0).toString() + value)
         .toString()
         .slice(0, 2);
       sets[setIndex].side1Score = ensureInt(newValue);
       currentSetScore = sets[setIndex].side1Score.toString();
       updated = true;
     } else {
-      const newValue = ensureInt(
-        (sets[setIndex].side2Score || 0).toString() + value
-      )
+      const newValue = ensureInt((sets[setIndex].side2Score || 0).toString() + value)
         .toString()
         .slice(0, 2);
       sets[setIndex].side2Score = ensureInt(newValue);
-      currentSetScore = [
-        sets[setIndex].side1Score,
-        sets[setIndex].side2Score,
-      ].join('-');
+      currentSetScore = [sets[setIndex].side1Score, sets[setIndex].side2Score].join('-');
       updated = true;
     }
     if (updated) {

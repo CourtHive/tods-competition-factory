@@ -1,6 +1,6 @@
 import { getSeededDrawPositions } from '../../../../query/drawDefinition/getSeededDrawPositions';
 import mocksEngine from '../../../../assemblies/engines/mock';
-import { generateRange } from '../../../../utilities/arrays';
+import { generateRange } from '../../../../tools/arrays';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
@@ -52,7 +52,7 @@ it.each(scenarios)('properly distributes byes to seeds', (scenario) => {
       const thresholdSequentialByes = getSequentialByes(seededDrawPositions);
       if (!thresholdSequentialByes) console.log({ seededDrawPositions });
       return thresholdSequentialByes;
-    })
+    }),
   );
 
   expect(result.every(Boolean)).toEqual(true);

@@ -1,18 +1,12 @@
-import { definedAttributes } from '../../utilities/definedAttributes';
+import { definedAttributes } from '../../tools/definedAttributes';
 import { modifyEventPublishStatus } from './modifyEventPublishStatus';
 import { getEventPublishStatus } from '../../query/event/getEventPublishStatus';
 import { addNotice } from '../../global/state/globalState';
 
 import { PUBLIC } from '../../constants/timeItemConstants';
 import { SUCCESS } from '../../constants/resultConstants';
-import {
-  MISSING_EVENT,
-  MISSING_TOURNAMENT_RECORD,
-} from '../../constants/errorConditionConstants';
-import {
-  PUBLISH_EVENT_SEEDING,
-  UNPUBLISH_EVENT_SEEDING,
-} from '../../constants/topicConstants';
+import { MISSING_EVENT, MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
+import { PUBLISH_EVENT_SEEDING, UNPUBLISH_EVENT_SEEDING } from '../../constants/topicConstants';
 
 export function publishEventSeeding({
   removePriorValues = true,
@@ -28,16 +22,12 @@ export function publishEventSeeding({
 
   const eventPubStatus = getEventPublishStatus({ event, status });
 
-  const updatedSeedingScaleNames = (eventPubStatus?.seeding
-    ?.seedingScaleNames ||
-    seedingScaleNames) && {
+  const updatedSeedingScaleNames = (eventPubStatus?.seeding?.seedingScaleNames || seedingScaleNames) && {
     ...eventPubStatus?.seeding?.seedingScaleNames,
     ...seedingScaleNames,
   };
 
-  const updatedStageSeedingScaleNames = (eventPubStatus?.seeding
-    ?.stageSeedingScaleNames ||
-    stageSeedingScaleNames) && {
+  const updatedStageSeedingScaleNames = (eventPubStatus?.seeding?.stageSeedingScaleNames || stageSeedingScaleNames) && {
     ...eventPubStatus?.seeding?.stageSeedingScaleNames,
     ...stageSeedingScaleNames,
   };
@@ -95,14 +85,12 @@ export function unPublishEventSeeding({
 
     if (Array.isArray(seedingScaleNames) && seeding?.seedingScaleNames) {
       seeding.seedingScaleNames = seeding.seedingScaleNames.filter(
-        (scaleName) => !seedingScaleNames.includes(scaleName)
+        (scaleName) => !seedingScaleNames.includes(scaleName),
       );
     }
 
     if (Array.isArray(drawIds) && seeding?.drawIds) {
-      seeding.drawIds = seeding.drawIds.filter(
-        (drawId) => !drawIds.includes(drawId)
-      );
+      seeding.drawIds = seeding.drawIds.filter((drawId) => !drawIds.includes(drawId));
     }
 
     if (

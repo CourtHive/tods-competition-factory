@@ -3,7 +3,7 @@ import { getPositionAssignments } from '../../../query/drawDefinition/positionsG
 import { positionTargets } from '../../matchUps/drawPositions/positionTargets';
 import { findStructure } from '../../../acquire/findStructure';
 import { isActiveDownstream } from './isActiveDownstream';
-import { randomMember } from '../../../utilities/arrays';
+import { randomMember } from '../../../tools/arrays';
 
 import { STRUCTURE_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
@@ -11,31 +11,22 @@ import { ResultType } from '../../../global/functions/decorateResult';
 import { DRAW } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
-export function placeQualifier(
-  params
-): ResultType & { qualifierPlaced?: boolean } {
+export function placeQualifier(params): ResultType & { qualifierPlaced?: boolean } {
   let qualifierPlaced;
-  const {
-    inContextDrawMatchUps,
-    inContextMatchUp,
-    drawDefinition,
-    winningSide,
-  } = params;
+  const { inContextDrawMatchUps, inContextMatchUp, drawDefinition, winningSide } = params;
 
   const winnerTargetLink = params.targetData.targetLinks?.winnerTargetLink;
 
   if (winnerTargetLink.target.feedProfile === DRAW) {
     const winningQualifierId = inContextMatchUp.sides.find(
-      ({ sideNumber }) => sideNumber === winningSide
+      ({ sideNumber }) => sideNumber === winningSide,
     )?.participantId;
 
     const mainDrawQualifierMatchUps = inContextDrawMatchUps.filter(
       (m) =>
         m.structureId === winnerTargetLink.target.structureId &&
         m.roundNumber === winnerTargetLink.target.roundNumber &&
-        m.sides.some(
-          ({ participantId, qualifier }) => qualifier && !participantId
-        )
+        m.sides.some(({ participantId, qualifier }) => qualifier && !participantId),
     );
     const mainDrawTargetMatchUp = randomMember(mainDrawQualifierMatchUps);
     if (mainDrawTargetMatchUp?.matchUpStatus === TO_BE_PLAYED) {
@@ -51,7 +42,7 @@ export function placeQualifier(
       });
       if (!activeDownstream) {
         const targetDrawPosition = mainDrawTargetMatchUp.sides.find(
-          (side) => side.qualifier && !side.participantId
+          (side) => side.qualifier && !side.participantId,
         )?.drawPosition;
         const { structure } = findStructure({
           structureId: mainDrawTargetMatchUp.structureId,
@@ -63,10 +54,7 @@ export function placeQualifier(
         }).positionAssignments;
 
         for (const positionAssignment of positionAssignments || []) {
-          if (
-            positionAssignment.drawPosition === targetDrawPosition &&
-            !positionAssignment.participantId
-          ) {
+          if (positionAssignment.drawPosition === targetDrawPosition && !positionAssignment.participantId) {
             positionAssignment.participantId = winningQualifierId;
 
             // update positionAssignments on structure
@@ -77,13 +65,11 @@ export function placeQualifier(
                 {},
                 ...(positionAssignments || []).map((assignment) => ({
                   [assignment.drawPosition]: assignment.participantId,
-                }))
+                })),
               );
               for (const subStructure of structure.structures) {
                 subStructure.positionAssignments?.forEach(
-                  (assignment) =>
-                    (assignment.participantId =
-                      assignmentMap[assignment.drawPosition])
+                  (assignment) => (assignment.participantId = assignmentMap[assignment.drawPosition]),
                 );
               }
             }

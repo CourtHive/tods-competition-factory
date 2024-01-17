@@ -2,7 +2,7 @@ import { participantScaleItem } from '../../../../query/participant/participantS
 import { generateDrawMaticRound, DrawMaticRoundResult } from './generateDrawMaticRound';
 import { getParticipantId } from '../../../../global/functions/extractors';
 import { isAdHoc } from '../../../../query/drawDefinition/isAdHoc';
-import { isObject } from '../../../../utilities/objects';
+import { isObject } from '../../../../tools/objects';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../../../constants/entryStatusConstants';
 import { ResultType, decorateResult } from '../../../../global/functions/decorateResult';

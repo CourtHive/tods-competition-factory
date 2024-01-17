@@ -1,31 +1,21 @@
 import { addDrawDefinitionExtension } from '../extensions/addRemoveExtensions';
 import { getParticipantIds } from '../../global/functions/extractors';
-import { intersection } from '../../utilities/arrays';
+import { intersection } from '../../tools/arrays';
 
 import { PARTICIPANT_REPRESENTATIVES } from '../../constants/extensionConstants';
-import {
-  DRAW_DEFINITION_NOT_FOUND,
-  INVALID_VALUES,
-} from '../../constants/errorConditionConstants';
+import { DRAW_DEFINITION_NOT_FOUND, INVALID_VALUES } from '../../constants/errorConditionConstants';
 
-export function setDrawParticipantRepresentativeIds({
-  representativeParticipantIds,
-  drawDefinition,
-}) {
+export function setDrawParticipantRepresentativeIds({ representativeParticipantIds, drawDefinition }) {
   if (!drawDefinition) return { error: DRAW_DEFINITION_NOT_FOUND };
-  if (!Array.isArray(representativeParticipantIds))
-    return { error: INVALID_VALUES };
+  if (!Array.isArray(representativeParticipantIds)) return { error: INVALID_VALUES };
 
-  const enteredParticipantIds = getParticipantIds(
-    drawDefinition?.entries || []
-  );
+  const enteredParticipantIds = getParticipantIds(drawDefinition?.entries || []);
 
   // An empty array is valid; if ids provided...
   // check that all representativeParticipantIds are enteredParticipantIds
   if (
     representativeParticipantIds.length &&
-    intersection(representativeParticipantIds, enteredParticipantIds).length <
-      representativeParticipantIds.length
+    intersection(representativeParticipantIds, enteredParticipantIds).length < representativeParticipantIds.length
   ) {
     return { error: INVALID_VALUES };
   }

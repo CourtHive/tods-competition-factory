@@ -1,5 +1,5 @@
-import { definedAttributes } from '../../../../utilities/definedAttributes';
-import { timeStringMinutes } from '../../../../utilities/dateTime';
+import { definedAttributes } from '../../../../tools/definedAttributes';
+import { timeStringMinutes } from '../../../../tools/dateTime';
 
 export function analyzeScheduleOverlap(a, b) {
   const startA = timeStringMinutes(a.scheduleTime);
@@ -14,11 +14,7 @@ export function analyzeScheduleOverlap(a, b) {
   const endBisContained = endB > startA && endB < endA;
 
   const hasOverlap =
-    startOrEndEquivalence ||
-    startAisContained ||
-    endAisContained ||
-    startBisContained ||
-    endBisContained;
+    startOrEndEquivalence || startAisContained || endAisContained || startBisContained || endBisContained;
 
   return definedAttributes(
     {
@@ -28,6 +24,6 @@ export function analyzeScheduleOverlap(a, b) {
       startBisContained,
       endBisContained,
     },
-    true
+    true,
   );
 }

@@ -1,12 +1,12 @@
-import { isNumeric, randomInt, skewedDistribution } from '../../../utilities/math';
-import { generateRange, shuffleArray } from '../../../utilities/arrays';
-import { definedAttributes } from '../../../utilities/definedAttributes';
+import { isNumeric, randomInt, skewedDistribution } from '../../../tools/math';
+import { generateRange, shuffleArray } from '../../../tools/arrays';
+import { definedAttributes } from '../../../tools/definedAttributes';
 import { cityMocks, stateMocks, postalCodeMocks } from './address';
-import { isValidDateString } from '../../../utilities/dateTime';
+import { isValidDateString } from '../../../tools/dateTime';
 import { countries } from '../../../fixtures/countryData';
 import { generateAddress } from './generateAddress';
 import { generatePersons } from './generatePersons';
-import { UUID } from '../../../utilities/UUID';
+import { UUID } from '../../../tools/UUID';
 import { nameMocks } from './nameMocks';
 
 import defaultRatingsParameters from '../../../fixtures/ratings/ratingsParameters';

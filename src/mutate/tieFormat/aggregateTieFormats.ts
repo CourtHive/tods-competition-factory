@@ -1,8 +1,8 @@
 import { compareTieFormats } from '../../query/hierarchical/tieFormats/compareTieFormats';
 import { allEventMatchUps } from '../../query/matchUps/getAllEventMatchUps';
 import { modifyMatchUpNotice } from '../notifications/drawNotifications';
-import { makeDeepCopy } from '../../utilities/makeDeepCopy';
-import { UUID } from '../../utilities/UUID';
+import { makeDeepCopy } from '../../tools/makeDeepCopy';
+import { UUID } from '../../tools/UUID';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
 import { ResultType } from '../../global/functions/decorateResult';
@@ -61,9 +61,7 @@ export function aggregateTieFormats({
     }
 
     const setTieFormatId = (matchUpId, tieFormatId) => {
-      const matchUp = eventMatchUpResult.matchUps?.find(
-        (matchUp) => matchUp.matchUpId === matchUpId
-      );
+      const matchUp = eventMatchUpResult.matchUps?.find((matchUp) => matchUp.matchUpId === matchUpId);
       if (matchUp) {
         matchUp.tieFormatId = tieFormatId;
         delete matchUp.tieFormat;
@@ -75,11 +73,7 @@ export function aggregateTieFormats({
       }
     };
     const addNewTieFormat = (inContextMatchUp) => {
-      const newTieFormat = makeDeepCopy(
-        inContextMatchUp.tieFormat,
-        undefined,
-        true
-      );
+      const newTieFormat = makeDeepCopy(inContextMatchUp.tieFormat, undefined, true);
       if (!newTieFormat.tieFormatId) newTieFormat.tieFormatId = UUID();
       tieFormats.push(newTieFormat);
       addedCount += 1;

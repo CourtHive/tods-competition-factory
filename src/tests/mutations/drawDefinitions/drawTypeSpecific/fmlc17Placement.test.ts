@@ -1,13 +1,10 @@
 import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
 import { getDrawStructures } from '../../../../acquire/findStructure';
 import { completeMatchUp } from '../primitives/verifyMatchUps';
-import { chunkArray } from '../../../../utilities/arrays';
+import { chunkArray } from '../../../../tools/arrays';
 import { expect, it } from 'vitest';
 
-import {
-  CONSOLATION,
-  MAIN,
-} from '../../../../constants/drawDefinitionConstants';
+import { CONSOLATION, MAIN } from '../../../../constants/drawDefinitionConstants';
 import SEEDING_USTA from '../../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
 import SEEDING_ITF from '../../../../fixtures/policies/POLICY_SEEDING_ITF';
 
@@ -29,13 +26,8 @@ it('can support ITF Consolation BYE placement', () => {
   const roundPositionReadyToScore =
     Math.max(
       ...chunkArray(mainStructure.positionAssignments, 2)
-        .find((pair) =>
-          pair.reduce(
-            (ready, assignment) => assignment.participantId && ready,
-            true
-          )
-        )
-        .map((pair) => pair.drawPosition)
+        .find((pair) => pair.reduce((ready, assignment) => assignment.participantId && ready, true))
+        .map((pair) => pair.drawPosition),
     ) / 2;
 
   const testingSideIndex = roundPositionReadyToScore < 8 ? 0 : 1;
@@ -45,15 +37,12 @@ it('can support ITF Consolation BYE placement', () => {
       (matchUp) =>
         matchUp.roundPosition &&
         matchUp.roundNumber === 2 &&
-        secondRoundPositionsReadyToScore.includes(matchUp.roundPosition)
+        secondRoundPositionsReadyToScore.includes(matchUp.roundPosition),
     )
     .map((matchUp) => matchUp.drawPositions)
     .flat();
   const participantIds = mainStructure.positionAssignments
-    ?.filter(
-      (assignment) =>
-        secondRoundDrawPositions?.includes(assignment.drawPosition)
-    )
+    ?.filter((assignment) => secondRoundDrawPositions?.includes(assignment.drawPosition))
     .map((assignment) => assignment.participantId);
 
   // these will be the losing participantIds if side 1 wins first selected matchUp and side 2 wins second selected matchUp
@@ -85,10 +74,9 @@ it('can support ITF Consolation BYE placement', () => {
     stageSequence: 1,
   });
 
-  const positionAssignmentByesCount =
-    consolationStructure.positionAssignments?.filter(
-      (assignment) => !!assignment.bye
-    ).length;
+  const positionAssignmentByesCount = consolationStructure.positionAssignments?.filter(
+    (assignment) => !!assignment.bye,
+  ).length;
   const assignedParticipantIds = consolationStructure.positionAssignments
     ?.filter((assignment) => !!assignment.participantId)
     .map((assignment) => assignment.participantId);
@@ -117,13 +105,8 @@ it('can support USTA Consolation BYE placement', () => {
   const roundPositionReadyToScore =
     Math.max(
       ...chunkArray(mainStructure.positionAssignments, 2)
-        .find((pair) =>
-          pair.reduce(
-            (ready, assignment) => assignment.participantId && ready,
-            true
-          )
-        )
-        .map((pair) => pair.drawPosition)
+        .find((pair) => pair.reduce((ready, assignment) => assignment.participantId && ready, true))
+        .map((pair) => pair.drawPosition),
     ) / 2;
 
   const testingSideIndex = roundPositionReadyToScore < 8 ? 0 : 1;
@@ -134,15 +117,12 @@ it('can support USTA Consolation BYE placement', () => {
       (matchUp) =>
         matchUp.roundPosition &&
         matchUp.roundNumber === 2 &&
-        secondRoundPositionsReadyToScore.includes(matchUp.roundPosition)
+        secondRoundPositionsReadyToScore.includes(matchUp.roundPosition),
     )
     .map((matchUp) => matchUp.drawPositions)
     .flat();
   const participantIds = mainStructure.positionAssignments
-    ?.filter(
-      (assignment) =>
-        secondRoundDrawPositions?.includes(assignment.drawPosition)
-    )
+    ?.filter((assignment) => secondRoundDrawPositions?.includes(assignment.drawPosition))
     .map((assignment) => assignment.participantId);
 
   const losingParticipantIds = [participantIds?.[1], participantIds?.[3]];
@@ -173,10 +153,9 @@ it('can support USTA Consolation BYE placement', () => {
     stageSequence: 1,
   });
 
-  const positionAssignmentByesCount =
-    consolationStructure.positionAssignments?.filter(
-      (assignment) => !!assignment.bye
-    ).length;
+  const positionAssignmentByesCount = consolationStructure.positionAssignments?.filter(
+    (assignment) => !!assignment.bye,
+  ).length;
   const assignedParticipantIds = consolationStructure.positionAssignments
     ?.filter((assignment) => !!assignment.participantId)
     .map((assignment) => assignment.participantId);

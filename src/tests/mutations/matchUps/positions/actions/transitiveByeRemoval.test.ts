@@ -1,6 +1,6 @@
 import { getDrawPosition } from '../../../../../global/functions/extractors';
 import mocksEngine from '../../../../../assemblies/engines/mock';
-import { generateRange } from '../../../../../utilities/arrays';
+import { generateRange } from '../../../../../tools/arrays';
 import tournamentEngine from '../../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 import {
@@ -45,9 +45,7 @@ it('supports transitive BYE removal in large structures', () => {
   const originalPositionAssignments = structures[0].positionAssignments;
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
-  const finalMatchUp = matchUps.find(
-    ({ roundNumber, roundPosition }) => roundNumber === 3 && roundPosition === 1
-  );
+  const finalMatchUp = matchUps.find(({ roundNumber, roundPosition }) => roundNumber === 3 && roundPosition === 1);
   if (finalMatchUp.drawPositions) {
     expect(finalMatchUp.drawPositions.filter(Boolean)).toEqual([]);
   }
@@ -63,7 +61,7 @@ it('supports transitive BYE removal in large structures', () => {
 
   generateRange(5, 9).forEach((drawPosition) => {
     const participantId = originalPositionAssignments.find(
-      (assignment) => assignment.drawPosition === drawPosition
+      (assignment) => assignment.drawPosition === drawPosition,
     ).participantId;
     if (participantId) {
       removeAssignment({
@@ -101,9 +99,7 @@ it('supports transitive BYE removal in large structures', () => {
     [5], // drawPositions 5, 6 are BYEs and 5 is BYE-advanced
   ]);
 
-  const participantId = originalPositionAssignments.find(
-    ({ drawPosition }) => drawPosition === 8
-  ).participantId;
+  const participantId = originalPositionAssignments.find(({ drawPosition }) => drawPosition === 8).participantId;
 
   const result = tournamentEngine.assignDrawPosition({
     drawId,
@@ -129,9 +125,7 @@ it('supports transitive BYE removal in large structures', () => {
     },
   } = tournamentEngine.getEvent({ drawId });
 
-  const byeDrawPositions = updatedStructure.positionAssignments.filter(
-    ({ bye }) => bye
-  );
+  const byeDrawPositions = updatedStructure.positionAssignments.filter(({ bye }) => bye);
   expect(byeDrawPositions.length).toEqual(4);
 });
 
@@ -158,9 +152,7 @@ function swapTest({ swapPosition }) {
   const originalPositionAssignments = structures[0].positionAssignments;
 
   let { matchUps } = tournamentEngine.allTournamentMatchUps();
-  const finalMatchUp = matchUps.find(
-    ({ roundNumber, roundPosition }) => roundNumber === 2 && roundPosition === 1
-  );
+  const finalMatchUp = matchUps.find(({ roundNumber, roundPosition }) => roundNumber === 2 && roundPosition === 1);
   expect(finalMatchUp.drawPositions).toEqual([1, undefined]);
   let { filteredOrderedPairs } = getOrderedDrawPositionPairs();
   expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([
@@ -210,12 +202,8 @@ function swapTest({ swapPosition }) {
     drawDefinition: { structures },
   } = tournamentEngine.getEvent({ drawId }));
   const modifiedPositionAssignments = structures[0].positionAssignments;
-  const originalByeAssignments = originalPositionAssignments
-    .filter(({ bye }) => bye)
-    .map(getDrawPosition);
-  const modifiedByeAssignments = modifiedPositionAssignments
-    .filter(({ bye }) => bye)
-    .map(getDrawPosition);
+  const originalByeAssignments = originalPositionAssignments.filter(({ bye }) => bye).map(getDrawPosition);
+  const modifiedByeAssignments = modifiedPositionAssignments.filter(({ bye }) => bye).map(getDrawPosition);
 
   expect(originalByeAssignments).toEqual([2, 7]);
   expect(modifiedByeAssignments).toEqual([2, 3, 4, 7]);
@@ -255,12 +243,8 @@ function swapPositions({ drawPosition, swapPosition, drawId, structureId }) {
   expect(options.includes(ALTERNATE_PARTICIPANT)).toEqual(true);
   expect(options.includes(REMOVE_ASSIGNMENT)).toEqual(true);
 
-  const option = result.validActions.find(
-    (action) => action.type === SWAP_PARTICIPANTS
-  );
-  const availableSwapPositions = option.availableAssignments.map(
-    ({ drawPosition }) => drawPosition
-  );
+  const option = result.validActions.find((action) => action.type === SWAP_PARTICIPANTS);
+  const availableSwapPositions = option.availableAssignments.map(({ drawPosition }) => drawPosition);
   expect(availableSwapPositions.includes(swapPosition));
 
   const payload = option.payload;

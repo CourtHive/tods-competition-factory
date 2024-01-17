@@ -1,6 +1,6 @@
 import { getStructureSeedAssignments } from '../../../query/structure/getStructureSeedAssignments';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import { parseScoreString } from '../../../utilities/parseScoreString';
+import { parseScoreString } from '../../../tools/parseScoreString';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
@@ -69,9 +69,7 @@ it('can generate a tournament with events and draws', () => {
 
   const { positionAssignments } = drawDefinition.structures[0];
   function getPositionParticipantId(drawPosition) {
-    const targetAssignment = positionAssignments.find(
-      (assignment) => assignment.drawPosition === drawPosition
-    );
+    const targetAssignment = positionAssignments.find((assignment) => assignment.drawPosition === drawPosition);
     return targetAssignment?.participantId;
   }
 
@@ -116,8 +114,7 @@ it('can generate a tournament with events and draws', () => {
     matchUpId,
     drawId,
   });
-  const { upcomingMatchUps: modifiedUpcoming } =
-    tournamentEngine.tournamentMatchUps();
+  const { upcomingMatchUps: modifiedUpcoming } = tournamentEngine.tournamentMatchUps();
   const modifiedMatchUp = modifiedUpcoming[0];
   expect(modifiedMatchUp.matchUpId).toEqual(matchUpId);
   expect(modifiedMatchUp.matchUpFormat).toEqual(matchUpFormat);
@@ -134,9 +131,7 @@ it('can generate a tournament with events and draws', () => {
   expect(result.success).toEqual(true);
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
-  const targetMatchUp = matchUps.find(
-    (matchUp) => matchUp.matchUpId === matchUpId
-  );
+  const targetMatchUp = matchUps.find((matchUp) => matchUp.matchUpId === matchUpId);
   expect(targetMatchUp.matchUpFormat).toEqual(secondMatchUpFormat);
   expect(targetMatchUp.winningSide).toBeUndefined();
 });

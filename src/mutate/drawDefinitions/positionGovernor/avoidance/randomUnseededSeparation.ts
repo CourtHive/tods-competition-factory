@@ -4,20 +4,16 @@ import { assignDrawPosition } from '../../../matchUps/drawPositions/positionAssi
 import { getAttributeGroupings } from '../../../../query/participants/getAttributeGrouping';
 import { generatePositioningCandidate } from './generatePositioningCandidate';
 import { decorateResult } from '../../../../global/functions/decorateResult';
-import { chunkArray, generateRange } from '../../../../utilities/arrays';
+import { chunkArray, generateRange } from '../../../../tools/arrays';
 import { getUnplacedParticipantIds } from './getUnplacedParticipantIds';
 import { addParticipantGroupings } from './addParticipantGroupings';
 import { findStructure } from '../../../../acquire/findStructure';
-import { numericSort } from '../../../../utilities/sorting';
+import { numericSort } from '../../../../tools/sorting';
 import {
   getPositionAssignments,
   structureAssignedDrawPositions,
 } from '../../../../query/drawDefinition/positionsGetter';
-import {
-  deriveExponent,
-  isPowerOf2,
-  nearestPowerOf2,
-} from '../../../../utilities/math';
+import { deriveExponent, isPowerOf2, nearestPowerOf2 } from '../../../../tools/math';
 
 import { GROUP, PAIR, TEAM } from '../../../../constants/participantConstants';
 import { MatchUpsMap } from '../../../../query/matchUps/getMatchUpsMap';
@@ -29,15 +25,8 @@ import {
   MISSING_AVOIDANCE_POLICY,
   NO_CANDIDATES,
 } from '../../../../constants/errorConditionConstants';
-import {
-  HydratedMatchUp,
-  HydratedParticipant,
-} from '../../../../types/hydrated';
-import {
-  DrawDefinition,
-  Event,
-  Tournament,
-} from '../../../../types/tournamentTypes';
+import { HydratedMatchUp, HydratedParticipant } from '../../../../types/hydrated';
+import { DrawDefinition, Event, Tournament } from '../../../../types/tournamentTypes';
 
 type RandomUnseededDistribution = {
   inContextDrawMatchUps?: HydratedMatchUp[];
@@ -94,9 +83,8 @@ export function randomUnseededSeparation({
   if (targetDivisions && isPowerOf2(targetDivisions) && !roundsToSeparate) {
     const exponent: number = deriveExponent(targetDivisions) || 0;
     const roundsCount = matchUps.reduce(
-      (count, matchUp) =>
-        matchUp.roundNumber > count ? matchUp.roundNumber : count,
-      0
+      (count, matchUp) => (matchUp.roundNumber > count ? matchUp.roundNumber : count),
+      0,
     );
     roundsToSeparate = roundsCount < exponent ? 1 : roundsCount - exponent + 1;
   }
@@ -108,13 +96,9 @@ export function randomUnseededSeparation({
     participants,
   }).participantsWithGroupings;
 
-  const unassignedPositions = positionAssignments?.filter(
-    (assignment) => !assignment.participantId
-  );
+  const unassignedPositions = positionAssignments?.filter((assignment) => !assignment.participantId);
 
-  const allDrawPositions = positionAssignments?.map(
-    (assignment) => assignment.drawPosition
-  );
+  const allDrawPositions = positionAssignments?.map((assignment) => assignment.drawPosition);
 
   const isRoundRobin = structure?.structureType === CONTAINER;
 
@@ -152,11 +136,9 @@ export function randomUnseededSeparation({
   const participantIdGroups = Object.assign(
     {},
     ...unseededParticipantIds.map((participantId) => {
-      const groups = Object.keys(allGroups).filter((key) =>
-        (allGroups[key] ?? []).includes(participantId)
-      );
+      const groups = Object.keys(allGroups).filter((key) => (allGroups[key] ?? []).includes(participantId));
       return { [participantId]: groups };
-    })
+    }),
   );
 
   const unplacedParticipantIds = getUnplacedParticipantIds({
@@ -186,12 +168,12 @@ export function randomUnseededSeparation({
       idCollections,
       allGroups,
       drawSize,
-    })
+    }),
   );
 
   candidate = noPairPriorityCandidates.reduce(
     (p: any, c) => (!p || (c.conflicts || 0) < (p.conflicts || 0) ? c : p),
-    undefined
+    undefined,
   );
 
   if (!candidate || candidate.conflicts) {
@@ -211,30 +193,24 @@ export function randomUnseededSeparation({
         allGroups,
         drawSize,
         // entries,
-      })
+      }),
     );
 
     const candidates = noPairPriorityCandidates
       .concat(...pairedPriorityCandidates)
       .filter((candidate) => !candidate.errors?.length);
 
-    candidate = candidates.reduce(
-      (p: any, c) => (!p || (c.conflicts || 0) < (p.conflicts || 0) ? c : p),
-      undefined
-    );
+    candidate = candidates.reduce((p: any, c) => (!p || (c.conflicts || 0) < (p.conflicts || 0) ? c : p), undefined);
   }
 
   if (!candidate) return { error: NO_CANDIDATES };
 
-  const alreadyAssignedParticipantIds = (
-    getPositionAssignments({ structure })?.positionAssignments ?? []
-  )
+  const alreadyAssignedParticipantIds = (getPositionAssignments({ structure })?.positionAssignments ?? [])
     .filter((assignment) => assignment.participantId)
     .map((assignment) => assignment.participantId);
 
   const filteredAssignments = candidate.positionAssignments.filter(
-    (assignment) =>
-      !alreadyAssignedParticipantIds.includes(assignment.participantId)
+    (assignment) => !alreadyAssignedParticipantIds.includes(assignment.participantId),
   );
 
   for (const assignment of filteredAssignments) {
@@ -276,41 +252,25 @@ function roundRobinParticipantGroups(params) {
     structure: { structures },
   } = params;
   const drawPositionGroups = structures.map((structure) =>
-    structure.positionAssignments.map((assignment) => assignment.drawPosition)
+    structure.positionAssignments.map((assignment) => assignment.drawPosition),
   );
   return { drawPositionGroups, drawPositionChunks: [drawPositionGroups] };
 }
 
-function eliminationParticipantGroups({
-  allDrawPositions,
-  roundsToSeparate,
-  matchUps,
-}) {
+function eliminationParticipantGroups({ allDrawPositions, roundsToSeparate, matchUps }) {
   const drawPositionPairs = matchUps
     .filter((matchUp) => matchUp.roundNumber === 1)
     .map((matchUp) => matchUp.drawPositions);
-  const firstRoundMatchUpDrawPositions = drawPositionPairs
-    .flat()
-    .sort(numericSort);
-  const greatestFirstRoundDrawPosition = Math.max(
-    ...firstRoundMatchUpDrawPositions
-  );
-  const fedDrawPositions = allDrawPositions.filter(
-    (drawPositon) => drawPositon > greatestFirstRoundDrawPosition
-  );
+  const firstRoundMatchUpDrawPositions = drawPositionPairs.flat().sort(numericSort);
+  const greatestFirstRoundDrawPosition = Math.max(...firstRoundMatchUpDrawPositions);
+  const fedDrawPositions = allDrawPositions.filter((drawPositon) => drawPositon > greatestFirstRoundDrawPosition);
 
   const structureSize = firstRoundMatchUpDrawPositions.length;
   const rangeStart = structureSize === 2 ? 1 : 2;
-  const roundSizes = generateRange(rangeStart, structureSize).filter(
-    (f) => f === nearestPowerOf2(f)
-  );
+  const roundSizes = generateRange(rangeStart, structureSize).filter((f) => f === nearestPowerOf2(f));
 
-  const chunkSizes = roundSizes
-    .slice(0, roundsToSeparate || roundSizes.length)
-    .reverse();
-  const drawPositionChunks = chunkSizes.map((size) =>
-    chunkArray(firstRoundMatchUpDrawPositions, size)
-  );
+  const chunkSizes = roundSizes.slice(0, roundsToSeparate || roundSizes.length).reverse();
+  const drawPositionChunks = chunkSizes.map((size) => chunkArray(firstRoundMatchUpDrawPositions, size));
 
   if (fedDrawPositions.length) {
     // TODO: calculate chunking for fed drawPositions and add to appropriate drawPositionChunks

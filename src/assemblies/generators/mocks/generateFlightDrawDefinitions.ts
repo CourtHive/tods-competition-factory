@@ -6,9 +6,9 @@ import { generateDrawDefinition } from '../drawDefinitions/generateDrawDefinitio
 import { isValidExtension } from '../../../validators/isValidExtension';
 import { getFlightProfile } from '../../../query/event/getFlightProfile';
 import { addExtension } from '../../../mutate/extensions/addExtension';
-import { xa } from '../../../utilities/objects';
+import { xa } from '../../../tools/objects';
 import { completeDrawMatchUps } from './completeDrawMatchUps';
-import { generateRange } from '../../../utilities/arrays';
+import { generateRange } from '../../../tools/arrays';
 
 import { PARTICIPANT_ID } from '../../../constants/attributeConstants';
 import { SUCCESS } from '../../../constants/resultConstants';

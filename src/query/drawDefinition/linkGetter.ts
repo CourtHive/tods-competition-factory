@@ -1,12 +1,8 @@
 import { decorateResult } from '../../global/functions/decorateResult';
-import { overlap } from '../../utilities/arrays';
+import { overlap } from '../../tools/arrays';
 
 import { LOSER, WINNER } from '../../constants/drawDefinitionConstants';
-import {
-  MISSING_STRUCTURE_ID,
-  MISSING_DRAW_DEFINITION,
-  INVALID_VALUES,
-} from '../../constants/errorConditionConstants';
+import { MISSING_STRUCTURE_ID, MISSING_DRAW_DEFINITION, INVALID_VALUES } from '../../constants/errorConditionConstants';
 
 type GetRoundLinksArgs = {
   roundNumber?: number;
@@ -26,14 +22,10 @@ export function getRoundLinks({
   const { links } = getStructureLinks({ drawDefinition, structureId });
 
   const source = links.source.reduce((source, link) => {
-    return !link.source.roundNumber || link.source.roundNumber === roundNumber
-      ? source.concat(link)
-      : source;
+    return !link.source.roundNumber || link.source.roundNumber === roundNumber ? source.concat(link) : source;
   }, []);
   const target = links.target.reduce((target, link) => {
-    return !link.target.roundNumber || link.target.roundNumber === roundNumber
-      ? target.concat(link)
-      : target;
+    return !link.target.roundNumber || link.target.roundNumber === roundNumber ? target.concat(link) : target;
   }, []);
   return { links: { source, target } };
 }
@@ -45,12 +37,7 @@ type GetTargetLinkArgs = {
   source: any[];
 };
 
-export function getTargetLink({
-  finishingPositions,
-  linkCondition,
-  linkType,
-  source,
-}: GetTargetLinkArgs) {
+export function getTargetLink({ finishingPositions, linkCondition, linkType, source }: GetTargetLinkArgs) {
   const result = source.find((link) => {
     const positionCondition =
       !link.source?.finishingPositions ||
@@ -60,10 +47,7 @@ export function getTargetLink({
     return condition && positionCondition && link.linkType === linkType;
   });
 
-  if (
-    [WINNER, LOSER].includes(result?.linkType) &&
-    !result?.source?.roundNumber
-  ) {
+  if ([WINNER, LOSER].includes(result?.linkType) && !result?.source?.roundNumber) {
     return decorateResult({
       result: { error: INVALID_VALUES },
       stack: 'getTargetLink',
@@ -90,19 +74,13 @@ export function getStructureLinks({
   const links = drawDefinition.links || [];
   const structureLinks = links.filter(Boolean).reduce(
     (structureLinks, link) => {
-      if (
-        link.source?.structureId === structureId &&
-        (!roundNumber || link.source.roundNumber === roundNumber)
-      )
+      if (link.source?.structureId === structureId && (!roundNumber || link.source.roundNumber === roundNumber))
         structureLinks.source = structureLinks.source.concat(link);
-      if (
-        link.target?.structureId === structureId &&
-        (!roundNumber || link.target.roundNumber === roundNumber)
-      )
+      if (link.target?.structureId === structureId && (!roundNumber || link.target.roundNumber === roundNumber))
         structureLinks.target = structureLinks.target.concat(link);
       return structureLinks;
     },
-    { source: [], target: [] }
+    { source: [], target: [] },
   );
   return { links: structureLinks };
 }

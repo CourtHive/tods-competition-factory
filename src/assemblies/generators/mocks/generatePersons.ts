@@ -1,15 +1,10 @@
 import { getCategoryAgeDetails } from '../../../query/event/getCategoryAgeDetails';
-import { definedAttributes } from '../../../utilities/definedAttributes';
+import { definedAttributes } from '../../../tools/definedAttributes';
 import { generatePersonData } from './generatePersonData';
-import { dateFromDay } from '../../../utilities/dateTime';
+import { dateFromDay } from '../../../tools/dateTime';
 import { countries } from '../../../fixtures/countryData';
-import { ensureInt } from '../../../utilities/ensureInt';
-import {
-  generateRange,
-  randomMember,
-  randomPop,
-  shuffleArray,
-} from '../../../utilities/arrays';
+import { ensureInt } from '../../../tools/ensureInt';
+import { generateRange, randomMember, randomPop, shuffleArray } from '../../../tools/arrays';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 import { MALE, FEMALE } from '../../../constants/genderConstants';
@@ -22,15 +17,7 @@ import { MALE, FEMALE } from '../../../constants/genderConstants';
  */
 export function generatePersons(params?) {
   let count = params?.count || 1;
-  const {
-    personExtensions,
-    consideredDate,
-    isMock = true,
-    gendersCount,
-    personData,
-    category,
-    sex,
-  } = params || {};
+  const { personExtensions, consideredDate, isMock = true, gendersCount, personData, category, sex } = params || {};
   if (isNaN(count)) return { error: INVALID_VALUES };
 
   const maleCount = gendersCount?.[MALE] || (sex === MALE && count) || 0;
@@ -64,9 +51,7 @@ export function generatePersons(params?) {
       []),
   ];
 
-  let validPersonData = defaultPersonData.filter(
-    (person) => !sex || (maleCount && femaleCount) || person.sex === sex
-  );
+  let validPersonData = defaultPersonData.filter((person) => !sex || (maleCount && femaleCount) || person.sex === sex);
 
   const nationalityCodes: string[] = [];
 
@@ -79,9 +64,7 @@ export function generatePersons(params?) {
         person.nationalityCode &&
         (typeof person.nationalityCode !== 'string' ||
           person.nationalityCode.length > 3 ||
-          !countries.find(({ iso, ioc }) =>
-            [iso, ioc].includes(person.nationalityCode)
-          ))
+          !countries.find(({ iso, ioc }) => [iso, ioc].includes(person.nationalityCode)))
       )
         return false;
 
@@ -97,55 +80,37 @@ export function generatePersons(params?) {
     }
   }
 
-  const shuffledPersons = personData
-    ? validPersonData
-    : shuffleArray(validPersonData);
+  const shuffledPersons = personData ? validPersonData : shuffleArray(validPersonData);
 
   if (shuffledPersons.length < count) {
-    const {
-      maleFirstNames,
-      maleLastNames,
-      femaleFirstNames,
-      femaleLastNames,
-      nationalityCodes,
-    } = defaultPersonData.reduce(
-      (a, person) => {
-        const { firstName, lastName, nationalityCode } = person;
-        if (person.sex === MALE) {
-          if (!a.maleFirstNames.includes(firstName))
-            a.maleFirstNames.push(firstName);
-          if (!a.maleLastNames.includes(lastName))
-            a.maleLastNames.push(lastName);
-        } else {
-          if (!a.femaleFirstNames.includes(firstName))
-            a.femaleFirstNames.push(firstName);
-          if (!a.femaleLastNames.includes(lastName))
-            a.femaleLastNames.push(lastName);
-        }
-        if (!a.nationalityCodes.includes(nationalityCode))
-          a.nationalityCodes.push(nationalityCode);
-        return a;
-      },
-      {
-        maleFirstNames: [],
-        maleLastNames: [],
-        femaleFirstNames: [],
-        femaleLastNames: [],
-        nationalityCodes: [],
-      }
-    );
+    const { maleFirstNames, maleLastNames, femaleFirstNames, femaleLastNames, nationalityCodes } =
+      defaultPersonData.reduce(
+        (a, person) => {
+          const { firstName, lastName, nationalityCode } = person;
+          if (person.sex === MALE) {
+            if (!a.maleFirstNames.includes(firstName)) a.maleFirstNames.push(firstName);
+            if (!a.maleLastNames.includes(lastName)) a.maleLastNames.push(lastName);
+          } else {
+            if (!a.femaleFirstNames.includes(firstName)) a.femaleFirstNames.push(firstName);
+            if (!a.femaleLastNames.includes(lastName)) a.femaleLastNames.push(lastName);
+          }
+          if (!a.nationalityCodes.includes(nationalityCode)) a.nationalityCodes.push(nationalityCode);
+          return a;
+        },
+        {
+          maleFirstNames: [],
+          maleLastNames: [],
+          femaleFirstNames: [],
+          femaleLastNames: [],
+          nationalityCodes: [],
+        },
+      );
 
     generateRange(0, count - shuffledPersons.length).forEach(() => {
       const personSex = sex || randomMember([MALE, FEMALE]);
       const nationalityCode = randomMember(nationalityCodes);
-      const firstName =
-        personSex === MALE
-          ? randomMember(maleFirstNames)
-          : randomMember(femaleFirstNames);
-      const lastName =
-        personSex === MALE
-          ? randomMember(maleLastNames)
-          : randomMember(femaleLastNames);
+      const firstName = personSex === MALE ? randomMember(maleFirstNames) : randomMember(femaleFirstNames);
+      const lastName = personSex === MALE ? randomMember(maleLastNames) : randomMember(femaleLastNames);
       const person = {
         firstName,
         lastName,
@@ -161,13 +126,9 @@ export function generatePersons(params?) {
     category,
   });
 
-  const rangeStart =
-    ensureInt(ageMinDate?.slice(0, 4) || 0) ||
-    ensureInt(ageMaxDate?.slice(0, 4) || 0) - 3;
+  const rangeStart = ensureInt(ageMinDate?.slice(0, 4) || 0) || ensureInt(ageMaxDate?.slice(0, 4) || 0) - 3;
 
-  const rangeEnd =
-    ensureInt(ageMaxDate?.slice(0, 4) || 0) ||
-    ensureInt(ageMinDate?.slice(0, 4) || 0) + 3;
+  const rangeEnd = ensureInt(ageMaxDate?.slice(0, 4) || 0) || ensureInt(ageMinDate?.slice(0, 4) || 0) + 3;
 
   const yearRange = (ageMinDate || ageMaxDate) && [rangeStart, rangeEnd];
 
@@ -183,7 +144,7 @@ export function generatePersons(params?) {
         birthDate,
         isMock,
       }),
-      person
+      person,
     );
   });
 

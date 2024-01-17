@@ -1,8 +1,8 @@
 import { findExtension } from '../../../acquire/findExtension';
 import mocksEngine from '../../../assemblies/engines/mock';
-import { instanceCount } from '../../../utilities/arrays';
+import { instanceCount } from '../../../tools/arrays';
 import tournamentEngine from '../../engines/syncEngine';
-import * as utilities from '../../../assemblies/tools';
+import * as tools from '../../../assemblies/tools';
 import { expect, it } from 'vitest';
 import fs from 'fs';
 
@@ -138,11 +138,11 @@ it('can identify winningParticipants and map WTN and ranking', () => {
   // dummy condition
   if (!participantEntryReports.length) {
     console.log('STRUCTURE REPORT');
-    console.log(utilities.JSON2CSV(structureReports));
+    console.log(tools.JSON2CSV(structureReports));
     console.log('ENTRY STATUS REPORTS');
-    console.log(utilities.JSON2CSV(entryStatusReports));
+    console.log(tools.JSON2CSV(entryStatusReports));
     console.log('PERSON ENTRY REPORTS');
-    console.log(utilities.JSON2CSV(participantEntryReports));
+    console.log(tools.JSON2CSV(participantEntryReports));
   }
 
   expect(structureReports.map((r) => r.pctNoRating)).toEqual([0, 0, 100]);

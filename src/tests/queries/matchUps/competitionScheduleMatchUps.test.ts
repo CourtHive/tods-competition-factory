@@ -1,8 +1,8 @@
 import { visualizeScheduledMatchUps } from '../../testHarness/testUtilities/visualizeScheduledMatchUps';
 import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
 import { getMatchUpIds } from '../../../global/functions/extractors';
-import { xa } from '../../../utilities/objects';
-import { instanceCount, unique } from '../../../utilities/arrays';
+import { xa } from '../../../tools/objects';
+import { instanceCount, unique } from '../../../tools/arrays';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, test } from 'vitest';

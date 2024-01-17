@@ -12,9 +12,9 @@ import { addGoesTo } from '../../../mutate/drawDefinitions/matchUpGovernor/addGo
 import { getSourceRounds } from '../../../query/drawDefinition/getSourceRounds';
 import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import { getMatchUpId } from '../../../global/functions/extractors';
-import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
+import { makeDeepCopy } from '../../../tools/makeDeepCopy';
 import { findStructure } from '../../../acquire/findStructure';
-import { ensureInt } from '../../../utilities/ensureInt';
+import { ensureInt } from '../../../tools/ensureInt';
 import { generateTieMatchUps } from './tieMatchUps';
 
 import { DrawDefinition, DrawLink, Event, Structure, Tournament } from '../../../types/tournamentTypes';

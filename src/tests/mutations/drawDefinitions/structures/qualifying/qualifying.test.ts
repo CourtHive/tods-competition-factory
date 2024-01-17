@@ -3,7 +3,7 @@ import { getPositionAssignments } from '../../../../../query/drawDefinition/posi
 import { getRoundMatchUps } from '../../../../../query/matchUps/getRoundMatchUps';
 import { getDrawStructures } from '../../../../../acquire/findStructure';
 import tournamentEngine from '../../../../engines/syncEngine';
-import { unique } from '../../../../../utilities/arrays';
+import { unique } from '../../../../../tools/arrays';
 import { mocksEngine } from '../../../../..';
 import { expect, it } from 'vitest';
 
@@ -53,9 +53,7 @@ const scenarios = [
     qualifyingProfiles: [
       {
         roundTarget: 1,
-        structureProfiles: [
-          { stageSequence: 1, drawSize: 16, qualifyingPositions: 4 },
-        ],
+        structureProfiles: [{ stageSequence: 1, drawSize: 16, qualifyingPositions: 4 }],
       },
     ],
     expectation: {
@@ -70,9 +68,7 @@ const scenarios = [
     qualifyingProfiles: [
       {
         roundTarget: 1,
-        structureProfiles: [
-          { stageSequence: 1, drawSize: 16, qualifyingPositions: 2 },
-        ],
+        structureProfiles: [{ stageSequence: 1, drawSize: 16, qualifyingPositions: 2 }],
       },
     ],
     expectation: {
@@ -106,84 +102,63 @@ const scenarios = [
   },
 ];
 
-it.each(scenarios)(
-  'supports drawProfiles which include qualifying structures',
-  (scenario) => {
-    const drawProfiles = [scenario];
+it.each(scenarios)('supports drawProfiles which include qualifying structures', (scenario) => {
+  const drawProfiles = [scenario];
 
-    let result = mocksEngine.generateTournamentRecord({
-      completeAllMatchUps: true,
-      drawProfiles,
-    });
+  let result = mocksEngine.generateTournamentRecord({
+    completeAllMatchUps: true,
+    drawProfiles,
+  });
 
-    const {
-      tournamentRecord,
-      drawIds: [drawId],
-    } = result;
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = result;
 
-    tournamentEngine.setState(tournamentRecord);
+  tournamentEngine.setState(tournamentRecord);
 
-    const { drawDefinition } = tournamentEngine.getEvent({ drawId });
-    expect(drawDefinition.structures.length).toEqual(2);
-    expect(drawDefinition.links.length).toEqual(1);
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  expect(drawDefinition.structures.length).toEqual(2);
+  expect(drawDefinition.links.length).toEqual(1);
 
-    const { matchUps } = tournamentEngine.allTournamentMatchUps({
-      contextFilters: { stages: [QUALIFYING] },
-    });
-    expect(matchUps.length).toEqual(scenario.expectation.qualifyingMatchUps);
+  const { matchUps } = tournamentEngine.allTournamentMatchUps({
+    contextFilters: { stages: [QUALIFYING] },
+  });
+  expect(matchUps.length).toEqual(scenario.expectation.qualifyingMatchUps);
 
-    const { roundMatchUps } = getRoundMatchUps({ matchUps });
-    const roundNumbers = roundMatchUps
-      ? Object.keys(roundMatchUps).map((r) => parseInt(r))
-      : [];
-    const qualifyingRoundNumber = Math.max(...roundNumbers);
-    expect(qualifyingRoundNumber).toEqual(
-      scenario.expectation.qualifyingRoundNumber
-    );
+  const { roundMatchUps } = getRoundMatchUps({ matchUps });
+  const roundNumbers = roundMatchUps ? Object.keys(roundMatchUps).map((r) => parseInt(r)) : [];
+  const qualifyingRoundNumber = Math.max(...roundNumbers);
+  expect(qualifyingRoundNumber).toEqual(scenario.expectation.qualifyingRoundNumber);
 
-    const directAcceptance = drawDefinition.entries.filter(
-      (entry) => entry.entryStatus === DIRECT_ACCEPTANCE
-    );
-    expect(directAcceptance.length).toEqual(
-      scenario.expectation.directAcceptance
-    );
+  const directAcceptance = drawDefinition.entries.filter((entry) => entry.entryStatus === DIRECT_ACCEPTANCE);
+  expect(directAcceptance.length).toEqual(scenario.expectation.directAcceptance);
 
-    const {
-      structures: [mainStructure],
-    } = getDrawStructures({ stage: MAIN, drawDefinition });
+  const {
+    structures: [mainStructure],
+  } = getDrawStructures({ stage: MAIN, drawDefinition });
 
-    const { positionAssignments } = getPositionAssignments({
-      structure: mainStructure,
-    });
+  const { positionAssignments } = getPositionAssignments({
+    structure: mainStructure,
+  });
 
-    const qualifiersCount = positionAssignments?.filter(
-      (assignment) => assignment.qualifier
-    ).length;
-    expect(qualifiersCount).toEqual(scenario.expectation.qualifiersCount);
+  const qualifiersCount = positionAssignments?.filter((assignment) => assignment.qualifier).length;
+  expect(qualifiersCount).toEqual(scenario.expectation.qualifiersCount);
 
-    const qualifierDrawPosition = positionAssignments?.find(
-      ({ qualifier }) => qualifier
-    )?.drawPosition;
-    const mainStructureId = drawDefinition.structures.find(
-      ({ stage }) => stage === MAIN
-    ).structureId;
+  const qualifierDrawPosition = positionAssignments?.find(({ qualifier }) => qualifier)?.drawPosition;
+  const mainStructureId = drawDefinition.structures.find(({ stage }) => stage === MAIN).structureId;
 
-    result = tournamentEngine.positionActions({
-      policyDefinitions: POLICY_POSITION_ACTIONS_UNRESTRICTED,
-      drawPosition: qualifierDrawPosition,
-      structureId: mainStructureId,
-      drawId,
-    });
+  result = tournamentEngine.positionActions({
+    policyDefinitions: POLICY_POSITION_ACTIONS_UNRESTRICTED,
+    drawPosition: qualifierDrawPosition,
+    structureId: mainStructureId,
+    drawId,
+  });
 
-    const qualifierAssingmentAction = result.validActions.find(
-      ({ type }) => type === QUALIFYING_PARTICIPANT
-    );
-    expect(qualifierAssingmentAction).not.toBeUndefined();
-    expect(qualifierAssingmentAction.qualifyingParticipantIds.length).toEqual(
-      qualifiersCount
-    );
-  }
-);
+  const qualifierAssingmentAction = result.validActions.find(({ type }) => type === QUALIFYING_PARTICIPANT);
+  expect(qualifierAssingmentAction).not.toBeUndefined();
+  expect(qualifierAssingmentAction.qualifyingParticipantIds.length).toEqual(qualifiersCount);
+});
 
 it('supports ROUND_ROBIN in multi-sequence qualifying structures', () => {
   const drawProfiles = [
@@ -228,9 +203,7 @@ it('supports ROUND_ROBIN in multi-sequence qualifying structures', () => {
     structure: mainStructure,
   });
 
-  const qualifiersCount = positionAssignments?.filter(
-    (assignment) => assignment.qualifier
-  ).length;
+  const qualifiersCount = positionAssignments?.filter((assignment) => assignment.qualifier).length;
   expect(qualifiersCount).toEqual(4);
 
   const {
@@ -250,9 +223,7 @@ it('supports ROUND_ROBIN in multi-sequence qualifying structures', () => {
 
   const matchUps = getAllStructureMatchUps({ structure: q1 }).matchUps;
   let { roundMatchUps } = getRoundMatchUps({ matchUps });
-  let roundNumbers = roundMatchUps
-    ? Object.keys(roundMatchUps).map((r) => parseInt(r))
-    : [];
+  let roundNumbers = roundMatchUps ? Object.keys(roundMatchUps).map((r) => parseInt(r)) : [];
   let qualifyingRoundNumber = Math.max(...roundNumbers);
   expect(qualifyingRoundNumber).toEqual(3);
 
@@ -271,21 +242,15 @@ it('supports ROUND_ROBIN in multi-sequence qualifying structures', () => {
   expect(q2positioned?.length).toEqual(12);
 
   ({ roundMatchUps } = getRoundMatchUps({ matchUps: q2.matchUps }));
-  roundNumbers = roundMatchUps
-    ? Object.keys(roundMatchUps).map((r) => parseInt(r))
-    : [];
+  roundNumbers = roundMatchUps ? Object.keys(roundMatchUps).map((r) => parseInt(r)) : [];
   qualifyingRoundNumber = Math.max(...roundNumbers);
   expect(qualifyingRoundNumber).toEqual(2);
 
   expect(q1.structureName).toEqual('Qualifying 1');
   expect(q2.structureName).toEqual('Qualifying 2');
 
-  const firstLink = drawDefinition.links.find(
-    (link) => link.source.structureId === q1.structureId
-  );
-  const secondLink = drawDefinition.links.find(
-    (link) => link.source.structureId === q2.structureId
-  );
+  const firstLink = drawDefinition.links.find((link) => link.source.structureId === q1.structureId);
+  const secondLink = drawDefinition.links.find((link) => link.source.structureId === q2.structureId);
 
   expect(firstLink.target.structureId).toEqual(q2.structureId);
   expect(secondLink.target.structureId).toEqual(mainStructure.structureId);
@@ -298,9 +263,7 @@ it('supports ROUND_ROBIN in multi-sequence qualifying structures', () => {
   expect(firstLink.target.feedProfile).toEqual(DRAW);
   expect(secondLink.target.feedProfile).toEqual(DRAW);
 
-  const participantAssignment = q2.positionAssignments?.find(
-    ({ participantId }) => participantId
-  );
+  const participantAssignment = q2.positionAssignments?.find(({ participantId }) => participantId);
   const participantDrawPosition = participantAssignment?.drawPosition;
 
   const result = tournamentEngine.positionActions({
@@ -369,15 +332,11 @@ it('supports round robin qualifying structures', () => {
   expect(matchUps.length).toEqual(expectation.qualifyingMatchUps);
 
   const { roundMatchUps } = getRoundMatchUps({ matchUps });
-  const roundNumbers = roundMatchUps
-    ? Object.keys(roundMatchUps).map((r) => parseInt(r))
-    : [];
+  const roundNumbers = roundMatchUps ? Object.keys(roundMatchUps).map((r) => parseInt(r)) : [];
   const qualifyingRoundNumber = Math.max(...roundNumbers);
   expect(qualifyingRoundNumber).toEqual(expectation.qualifyingRoundNumber);
 
-  const directAcceptance = drawDefinition.entries.filter(
-    (entry) => entry.entryStatus === DIRECT_ACCEPTANCE
-  );
+  const directAcceptance = drawDefinition.entries.filter((entry) => entry.entryStatus === DIRECT_ACCEPTANCE);
   expect(directAcceptance.length).toEqual(expectation.directAcceptance);
 
   const {
@@ -388,20 +347,14 @@ it('supports round robin qualifying structures', () => {
     structure: mainStructure,
   });
 
-  const qualifiersCount = positionAssignments?.filter(
-    (assignment) => assignment.qualifier
-  ).length;
+  const qualifiersCount = positionAssignments?.filter((assignment) => assignment.qualifier).length;
   expect(qualifiersCount).toEqual(expectation.qualifiersCount);
 
-  const qualifierDrawPosition = positionAssignments?.find(
-    ({ qualifier }) => qualifier
-  )?.drawPosition;
-  const mainStructureId = drawDefinition.structures.find(
-    ({ stage }) => stage === MAIN
-  ).structureId;
+  const qualifierDrawPosition = positionAssignments?.find(({ qualifier }) => qualifier)?.drawPosition;
+  const mainStructureId = drawDefinition.structures.find(({ stage }) => stage === MAIN).structureId;
 
   const qualifierAssignment = positionAssignments?.find(
-    (assignment) => assignment.drawPosition === qualifierDrawPosition
+    (assignment) => assignment.drawPosition === qualifierDrawPosition,
   );
 
   result = tournamentEngine.positionActions({
@@ -411,9 +364,7 @@ it('supports round robin qualifying structures', () => {
     drawId,
   });
 
-  const qualifyingAction = result.validActions.find(
-    ({ type }) => type === QUALIFYING_PARTICIPANT
-  );
+  const qualifyingAction = result.validActions.find(({ type }) => type === QUALIFYING_PARTICIPANT);
   expect(qualifyingAction).not.toBeUndefined();
 
   const qualifyingParticipantId = qualifyingAction.qualifyingParticipantIds[0];
@@ -434,9 +385,7 @@ it('supports round robin qualifying structures', () => {
     structure: main,
   });
 
-  const assignment = mainPa?.find(
-    (assignment) => assignment.drawPosition === qualifierDrawPosition
-  );
+  const assignment = mainPa?.find((assignment) => assignment.drawPosition === qualifierDrawPosition);
   expect(assignment?.participantId).toEqual(qualifyingParticipantId);
   expect(qualifierAssignment?.drawPosition).toEqual(assignment?.drawPosition);
 });
@@ -484,9 +433,7 @@ it('Fish Farm: supports qualifying structures with multiple roundTargets', () =>
   const { matchUps } = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: { matchUpStatuses: [COMPLETED] },
   });
-  const completedQualifying = matchUps.filter(
-    (matchUp) => matchUp.stage === QUALIFYING
-  );
+  const completedQualifying = matchUps.filter((matchUp) => matchUp.stage === QUALIFYING);
   // prettier-ignore
   expect(unique(completedQualifying.map(({ roundName }) => roundName))).toEqual([
     'Q-R32', 'Q-R16', 'Q-Final', 'Q-Round 1', 'Q-Round 2', 'Q-Round 3',
@@ -501,21 +448,15 @@ it('Fish Farm: supports qualifying structures with multiple roundTargets', () =>
   expect(drawDefinition.links.length).toEqual(2);
 
   // test that structureSort handled roundTargets
-  const structureNames = drawDefinition.structures.map(
-    ({ structureName }) => structureName
-  );
+  const structureNames = drawDefinition.structures.map(({ structureName }) => structureName);
   expect(structureNames).toEqual(['Qualifying 1-1', 'Qualifying 2-1', 'Main']);
 
-  const rrQLink = drawDefinition.links.find(
-    ({ linkType }) => linkType === POSITION
-  );
+  const rrQLink = drawDefinition.links.find(({ linkType }) => linkType === POSITION);
   expect(rrQLink.source.finishingPositions).toEqual([1]);
   expect(rrQLink.target.roundNumber).toEqual(2);
 
   const rrQstructureId = rrQLink.source.structureId;
-  const rrQstructure = drawDefinition.structures.find(
-    ({ structureId }) => structureId === rrQstructureId
-  );
+  const rrQstructure = drawDefinition.structures.find(({ structureId }) => structureId === rrQstructureId);
   expect(rrQstructure.structureName).toEqual('Qualifying 2-1');
 
   const {
@@ -527,14 +468,10 @@ it('Fish Farm: supports qualifying structures with multiple roundTargets', () =>
     structure: mainStructure,
   });
 
-  const qualifiersCount = positionAssignments?.filter(
-    (assignment) => assignment.qualifier
-  ).length;
+  const qualifiersCount = positionAssignments?.filter((assignment) => assignment.qualifier).length;
   expect(qualifiersCount).toEqual(8);
 
-  const assignment = positionAssignments?.find(
-    ({ participantId }) => participantId
-  );
+  const assignment = positionAssignments?.find(({ participantId }) => participantId);
   let result = tournamentEngine.positionActions({
     policyDefinitions: POLICY_POSITION_ACTIONS_UNRESTRICTED,
     drawPosition: assignment?.drawPosition,
@@ -549,9 +486,7 @@ it('Fish Farm: supports qualifying structures with multiple roundTargets', () =>
     QUALIFYING_PARTICIPANT, REMOVE_ASSIGNMENT, REMOVE_SEED, SEED_VALUE, SWAP_PARTICIPANTS, WITHDRAW_PARTICIPANT,
   ]);
 
-  const qualifierDrawPosition = positionAssignments?.find(
-    (assignment) => assignment.qualifier
-  )?.drawPosition;
+  const qualifierDrawPosition = positionAssignments?.find((assignment) => assignment.qualifier)?.drawPosition;
 
   result = tournamentEngine.positionActions({
     policyDefinitions: POLICY_POSITION_ACTIONS_UNRESTRICTED,
@@ -568,9 +503,7 @@ it('Fish Farm: supports qualifying structures with multiple roundTargets', () =>
     REMOVE_ASSIGNMENT, REMOVE_SEED, SEED_VALUE, SWAP_PARTICIPANTS, WITHDRAW_PARTICIPANT,
   ]);
 
-  let qualifierAssingmentAction = result.validActions.find(
-    ({ type }) => type === QUALIFYING_PARTICIPANT
-  );
+  let qualifierAssingmentAction = result.validActions.find(({ type }) => type === QUALIFYING_PARTICIPANT);
   expect(qualifierAssingmentAction).not.toBeUndefined();
   expect(qualifierAssingmentAction.qualifyingParticipantIds.length).toEqual(8);
 
@@ -581,9 +514,7 @@ it('Fish Farm: supports qualifying structures with multiple roundTargets', () =>
     drawId,
   });
 
-  qualifierAssingmentAction = result.validActions.find(
-    ({ type }) => type === QUALIFYING_PARTICIPANT
-  );
+  qualifierAssingmentAction = result.validActions.find(({ type }) => type === QUALIFYING_PARTICIPANT);
   expect(qualifierAssingmentAction).not.toBeUndefined();
   expect(qualifierAssingmentAction.qualifyingParticipantIds.length).toEqual(4);
 });
@@ -631,9 +562,7 @@ it('qualifying structures with multiple chains can share the same roundTarget', 
   const { matchUps } = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: { matchUpStatuses: [COMPLETED] },
   });
-  const completedQualifying = matchUps.filter(
-    (matchUp) => matchUp.stage === QUALIFYING
-  );
+  const completedQualifying = matchUps.filter((matchUp) => matchUp.stage === QUALIFYING);
   expect(completedQualifying.length).toEqual(completionGoal);
 
   const completedMain = matchUps.filter((matchUp) => matchUp.stage === MAIN);
@@ -647,16 +576,12 @@ it('qualifying structures with multiple chains can share the same roundTarget', 
   expect(drawDefinition.structures.length).toEqual(3);
   expect(drawDefinition.links.length).toEqual(2);
 
-  const rrQLink = drawDefinition.links.find(
-    ({ linkType }) => linkType === POSITION
-  );
+  const rrQLink = drawDefinition.links.find(({ linkType }) => linkType === POSITION);
   expect(rrQLink.source.finishingPositions).toEqual([1]);
   expect(rrQLink.target.roundNumber).toEqual(1);
 
   const rrQstructureId = rrQLink.source.structureId;
-  const rrQstructure = drawDefinition.structures.find(
-    ({ structureId }) => structureId === rrQstructureId
-  );
+  const rrQstructure = drawDefinition.structures.find(({ structureId }) => structureId === rrQstructureId);
   expect(rrQstructure.structureName).toEqual('Qualifying 1-1');
 
   const {
@@ -668,16 +593,11 @@ it('qualifying structures with multiple chains can share the same roundTarget', 
     structure: mainStructure,
   });
 
-  const qualifiersCount = positionAssignments?.filter(
-    (assignment) => assignment.qualifier
-  ).length;
+  const qualifiersCount = positionAssignments?.filter((assignment) => assignment.qualifier).length;
   expect(qualifiersCount).toEqual(8);
 
-  const assignment = positionAssignments?.find(
-    ({ participantId }) => participantId
-  );
-  const unrestrictedActionsPolicy =
-    POLICY_POSITION_ACTIONS_UNRESTRICTED[POLICY_TYPE_POSITION_ACTIONS];
+  const assignment = positionAssignments?.find(({ participantId }) => participantId);
+  const unrestrictedActionsPolicy = POLICY_POSITION_ACTIONS_UNRESTRICTED[POLICY_TYPE_POSITION_ACTIONS];
   const restrictedQualifyingAlternatesPolicy = {
     ...unrestrictedActionsPolicy,
     restrictQualifyingAlternates: true,
@@ -718,9 +638,7 @@ it('qualifying structures with multiple chains can share the same roundTarget', 
     QUALIFYING_PARTICIPANT, REMOVE_ASSIGNMENT, REMOVE_SEED, SEED_VALUE, SWAP_PARTICIPANTS, WITHDRAW_PARTICIPANT,
   ]);
 
-  const qualifierDrawPosition = positionAssignments?.find(
-    (assignment) => assignment.qualifier
-  )?.drawPosition;
+  const qualifierDrawPosition = positionAssignments?.find((assignment) => assignment.qualifier)?.drawPosition;
 
   result = tournamentEngine.positionActions({
     policyDefinitions: {
@@ -757,9 +675,7 @@ it('qualifying structures with multiple chains can share the same roundTarget', 
     REMOVE_ASSIGNMENT, REMOVE_SEED, SEED_VALUE, SWAP_PARTICIPANTS, WITHDRAW_PARTICIPANT,
   ]);
 
-  let qualifierAssingmentAction = result.validActions.find(
-    ({ type }) => type === QUALIFYING_PARTICIPANT
-  );
+  let qualifierAssingmentAction = result.validActions.find(({ type }) => type === QUALIFYING_PARTICIPANT);
   expect(qualifierAssingmentAction).not.toBeUndefined();
   expect(qualifierAssingmentAction.qualifyingParticipantIds.length).toEqual(8);
 
@@ -770,9 +686,7 @@ it('qualifying structures with multiple chains can share the same roundTarget', 
     drawId,
   });
 
-  qualifierAssingmentAction = result.validActions.find(
-    ({ type }) => type === QUALIFYING_PARTICIPANT
-  );
+  qualifierAssingmentAction = result.validActions.find(({ type }) => type === QUALIFYING_PARTICIPANT);
   expect(qualifierAssingmentAction).not.toBeUndefined();
   expect(qualifierAssingmentAction.qualifyingParticipantIds.length).toEqual(8);
 });

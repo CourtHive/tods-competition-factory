@@ -1,6 +1,6 @@
 import { checkParticipantProfileInitialization } from './checkParticipantProfileInitialization';
 import { getIndividualParticipantIds } from './getIndividualParticipantIds';
-import { unique } from '../../../../utilities/arrays';
+import { unique } from '../../../../tools/arrays';
 
 import { TOTAL } from '../../../../constants/scheduleConstants';
 
@@ -20,19 +20,13 @@ export function checkDailyLimits({
   matchUp,
 }) {
   const { matchUpId, matchUpType } = matchUp;
-  const { enteredIndividualParticipantIds } =
-    getIndividualParticipantIds(matchUp);
+  const { enteredIndividualParticipantIds } = getIndividualParticipantIds(matchUp);
 
   // don't include potentials if matchUp is in round robin
   // this is because potentials uses { sidesTo } attribute which must be present for other calculations
-  const potentialParticipantIds = (
-    (matchUp.roundPosition && matchUpPotentialParticipantIds[matchUpId]) ||
-    []
-  ).flat();
+  const potentialParticipantIds = ((matchUp.roundPosition && matchUpPotentialParticipantIds[matchUpId]) || []).flat();
 
-  const relevantParticipantIds = unique(
-    enteredIndividualParticipantIds.concat(...potentialParticipantIds)
-  );
+  const relevantParticipantIds = unique(enteredIndividualParticipantIds.concat(...potentialParticipantIds));
 
   relevantParticipantIds.forEach((participantId) => {
     checkParticipantProfileInitialization({
@@ -41,20 +35,16 @@ export function checkDailyLimits({
     });
   });
 
-  const participantIdsAtLimit = relevantParticipantIds.filter(
-    (participantId) => {
-      const profile = individualParticipantProfiles[participantId];
-      if (profile) {
-        return [matchUpType, TOTAL].find((counterName) => {
-          const participantsCount = profile.counters?.[counterName] || 0;
-          const dailyLimit = matchUpDailyLimits[counterName] || 0;
-          return (
-            participantsCount && dailyLimit && participantsCount >= dailyLimit
-          );
-        });
-      }
+  const participantIdsAtLimit = relevantParticipantIds.filter((participantId) => {
+    const profile = individualParticipantProfiles[participantId];
+    if (profile) {
+      return [matchUpType, TOTAL].find((counterName) => {
+        const participantsCount = profile.counters?.[counterName] || 0;
+        const dailyLimit = matchUpDailyLimits[counterName] || 0;
+        return participantsCount && dailyLimit && participantsCount >= dailyLimit;
+      });
     }
-  );
+  });
 
   return { participantIdsAtLimit, relevantParticipantIds };
 }

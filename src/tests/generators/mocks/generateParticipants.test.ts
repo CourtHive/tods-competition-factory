@@ -1,7 +1,7 @@
 import { generatePersonData } from '../../../assemblies/generators/mocks/generatePersonData';
 import mocksEngine from '../../../assemblies/engines/mock';
-import { generateRange } from '../../../utilities/arrays';
-import { UUID } from '../../../utilities/UUID';
+import { generateRange } from '../../../tools/arrays';
+import { UUID } from '../../../tools/UUID';
 import { expect, it, test } from 'vitest';
 
 import { FEMALE, MALE } from '../../../constants/genderConstants';
@@ -13,9 +13,7 @@ it('can generate unique participants', () => {
   const { participants } = mocksEngine.generateParticipants({
     participantsCount,
   });
-  expect(participants[participants.length - 1].person.firstName).not.toEqual(
-    'GivenName'
-  );
+  expect(participants[participants.length - 1].person.firstName).not.toEqual('GivenName');
 });
 
 it('can use idPrefix when generating participantIds', () => {
@@ -24,9 +22,7 @@ it('can use idPrefix when generating participantIds', () => {
     idPrefix: 'P',
   });
 
-  participants.forEach(({ participantId }, i) =>
-    expect(participantId).toEqual(`P-I-${i}`)
-  );
+  participants.forEach(({ participantId }, i) => expect(participantId).toEqual(`P-I-${i}`));
 });
 
 test('generateTournamentRecord passes participantsProfile.personIds', () => {
@@ -38,9 +34,7 @@ test('generateTournamentRecord passes participantsProfile.personIds', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     participantsProfile,
   });
-  expect(tournamentRecord.participants[0].person.personId).toEqual(
-    personIds[0]
-  );
+  expect(tournamentRecord.participants[0].person.personId).toEqual(personIds[0]);
 });
 
 it('can generate use pre-defined personIds', () => {
@@ -51,9 +45,7 @@ it('can generate use pre-defined personIds', () => {
     participantsCount,
     personIds,
   });
-  expect(participants[participants.length - 1].person.firstName).not.toEqual(
-    'GivenName'
-  );
+  expect(participants[participants.length - 1].person.firstName).not.toEqual('GivenName');
   expect(participants[0].person.personId).toEqual(personIds[0]);
 });
 
@@ -142,11 +134,7 @@ it('can generate sexed participants', () => {
       if (!sexes.includes(pairSexes)) sexes.push(pairSexes);
       return sexes;
     }, []);
-  expect(sexes.sort()).toEqual([
-    `${FEMALE}/${FEMALE}`,
-    `${FEMALE}/${MALE}`,
-    `${MALE}/${MALE}`,
-  ]);
+  expect(sexes.sort()).toEqual([`${FEMALE}/${FEMALE}`, `${FEMALE}/${MALE}`, `${MALE}/${MALE}`]);
 });
 
 it('can accept custom personData', () => {
@@ -166,14 +154,10 @@ it('can accept custom personData', () => {
   });
   expect(error).toBeUndefined();
   const samIndex = participants.findIndex(
-    ({ person }) =>
-      person.standardGivenName === 'Sam' &&
-      person.standardFamilyName === 'Smith'
+    ({ person }) => person.standardGivenName === 'Sam' && person.standardFamilyName === 'Smith',
   );
   const jennyIndex = participants.findIndex(
-    ({ person }) =>
-      person.standardGivenName === 'Jennifer' &&
-      person.standardFamilyName === 'Jameson'
+    ({ person }) => person.standardGivenName === 'Jennifer' && person.standardFamilyName === 'Jameson',
   );
   expect([samIndex, jennyIndex].sort((a, b) => a - b)).toEqual([0, 1]);
 

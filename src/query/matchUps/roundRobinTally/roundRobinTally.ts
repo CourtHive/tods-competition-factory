@@ -2,7 +2,7 @@ import { checkMatchUpIsComplete } from '../../matchUp/checkMatchUpIsComplete';
 import { getDevContext } from '../../../global/state/globalState';
 import { validMatchUps } from '../../../validators/validMatchUp';
 import { getParticipantResults } from './getParticipantResults';
-import { unique } from '../../../utilities/arrays';
+import { unique } from '../../../tools/arrays';
 import { getTallyReport } from './getTallyReport';
 import { getGroupOrder } from './getGroupOrder';
 
@@ -11,10 +11,7 @@ import { ResultType } from '../../../global/functions/decorateResult';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { PolicyDefinitions } from '../../../types/factoryTypes';
 import { TEAM } from '../../../constants/matchUpTypes';
-import {
-  INVALID_VALUES,
-  MISSING_MATCHUPS,
-} from '../../../constants/errorConditionConstants';
+import { INVALID_VALUES, MISSING_MATCHUPS } from '../../../constants/errorConditionConstants';
 
 type TallyParticipantResultsArgs = {
   policyDefinitions?: PolicyDefinitions;
@@ -46,40 +43,30 @@ export function tallyParticipantResults({
 
   const structureIds = matchUps.reduce(
     (structureIds, { structureId }) =>
-      structureIds.includes(structureId)
-        ? structureIds
-        : structureIds.concat(structureId),
-    []
+      structureIds.includes(structureId) ? structureIds : structureIds.concat(structureId),
+    [],
   );
-  if (structureIds.length !== 1)
-    return { error: INVALID_VALUES, info: 'Maximum one structureId' };
+  if (structureIds.length !== 1) return { error: INVALID_VALUES, info: 'Maximum one structureId' };
 
-  const relevantMatchUps = matchUps.filter(
-    (matchUp) => matchUp && matchUp.matchUpStatus !== BYE
-  );
+  const relevantMatchUps = matchUps.filter((matchUp) => matchUp && matchUp.matchUpStatus !== BYE);
 
   const participantsCount =
-    relevantMatchUps.length &&
-    unique(relevantMatchUps.map(({ drawPositions }) => drawPositions).flat())
-      .length;
+    relevantMatchUps.length && unique(relevantMatchUps.map(({ drawPositions }) => drawPositions).flat()).length;
 
   const bracketComplete =
-    relevantMatchUps.filter((matchUp) => checkMatchUpIsComplete({ matchUp }))
-      .length === relevantMatchUps.length;
+    relevantMatchUps.filter((matchUp) => checkMatchUpIsComplete({ matchUp })).length === relevantMatchUps.length;
   // if bracket is incomplete don't use expected matchUps perPlayer for calculating
   if (!bracketComplete) perPlayer = 0;
 
   const completedTieMatchUps = matchUps.every(
     ({ matchUpType, tieMatchUps }) =>
-      matchUpType === TEAM &&
-      tieMatchUps?.every((matchUp) => checkMatchUpIsComplete({ matchUp }))
+      matchUpType === TEAM && tieMatchUps?.every((matchUp) => checkMatchUpIsComplete({ matchUp })),
   );
 
   const tallyPolicy = policyDefinitions?.[POLICY_TYPE_ROUND_ROBIN_TALLY];
 
   const consideredMatchUps = matchUps.filter(
-    (matchUp) =>
-      checkMatchUpIsComplete({ matchUp }) || matchUp.matchUpType === TEAM
+    (matchUp) => checkMatchUpIsComplete({ matchUp }) || matchUp.matchUpType === TEAM,
   );
   const { participantResults } = getParticipantResults({
     matchUps: consideredMatchUps,
@@ -105,8 +92,7 @@ export function tallyParticipantResults({
     order = groupOrder;
 
     groupOrder.forEach((finishingPosition) => {
-      const { participantId, groupOrder, rankOrder, subOrder, ties, GEMscore } =
-        finishingPosition;
+      const { participantId, groupOrder, rankOrder, subOrder, ties, GEMscore } = finishingPosition;
       const participantResult = participantResults[participantId];
       Object.assign(participantResult, {
         groupOrder,
@@ -117,16 +103,15 @@ export function tallyParticipantResults({
       });
     });
   } else {
-    const { groupOrder: provisionalOrder, report: provisionalOrderReport } =
-      getGroupOrder({
-        requireCompletion: false,
-        participantResults,
-        participantsCount,
-        matchUpFormat,
-        tallyPolicy,
-        subOrderMap,
-        matchUps,
-      });
+    const { groupOrder: provisionalOrder, report: provisionalOrderReport } = getGroupOrder({
+      requireCompletion: false,
+      participantResults,
+      participantsCount,
+      matchUpFormat,
+      tallyPolicy,
+      subOrderMap,
+      matchUps,
+    });
 
     report = provisionalOrderReport;
     order = provisionalOrder;

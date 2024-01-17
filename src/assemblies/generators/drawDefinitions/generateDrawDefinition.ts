@@ -9,7 +9,7 @@ import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies
 import { addAdHocMatchUps } from '../../../mutate/structures/addAdHocMatchUps';
 import { getAllowedDrawTypes } from '../../../query/tournaments/allowedTypes';
 import { getParticipants } from '../../../query/participants/getParticipants';
-import { isConvertableInteger, nextPowerOf2 } from '../../../utilities/math';
+import { isConvertableInteger, nextPowerOf2 } from '../../../tools/math';
 import { validateTieFormat } from '../../../validators/validateTieFormat';
 import { checkTieFormat } from '../../../mutate/tieFormat/checkTieFormat';
 import { checkValidEntries } from '../../../validators/checkValidEntries';
@@ -17,14 +17,14 @@ import { generateQualifyingLink } from './links/generateQualifyingLink';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { tieFormatDefaults } from '../templates/tieFormatDefaults';
 import { DrawMaticArgs, drawMatic } from './drawMatic/drawMatic';
-import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
+import { mustBeAnArray } from '../../../tools/mustBeAnArray';
 import { generateAdHocMatchUps } from './generateAdHocMatchUps';
 import structureTemplate from '../templates/structureTemplate';
-import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
-import { constantToString } from '../../../utilities/strings';
+import { makeDeepCopy } from '../../../tools/makeDeepCopy';
+import { constantToString } from '../../../tools/strings';
 import { getDrawTypeCoercion } from './getDrawTypeCoercion';
-import { generateRange } from '../../../utilities/arrays';
-import { ensureInt } from '../../../utilities/ensureInt';
+import { generateRange } from '../../../tools/arrays';
+import { ensureInt } from '../../../tools/ensureInt';
 import { newDrawDefinition } from './newDrawDefinition';
 import { prepareStage } from './prepareStage';
 import {

@@ -1,14 +1,10 @@
 import { validateSchedulingProfile } from '../../../validators/validateSchedulingProfile';
 import { getRoundId } from '../../../query/matchUps/scheduling/schedulingUtils';
 import { getSchedulingProfile } from '../../tournaments/schedulingProfile';
-import { definedAttributes } from '../../../utilities/definedAttributes';
+import { definedAttributes } from '../../../tools/definedAttributes';
 
 import { Tournament } from '../../../types/tournamentTypes';
-import {
-  ErrorType,
-  INVALID_TOURNAMENT_RECORD,
-  NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+import { ErrorType, INVALID_TOURNAMENT_RECORD, NOT_FOUND } from '../../../constants/errorConditionConstants';
 
 type GetProfileRoundsArgs = {
   tournamentRecords?: { [key: string]: Tournament };
@@ -66,8 +62,8 @@ export function getProfileRounds({
             scheduleDate,
             ...roundRef,
           });
-        })
-      )
+        }),
+      ),
     )
     .flat(Infinity);
 

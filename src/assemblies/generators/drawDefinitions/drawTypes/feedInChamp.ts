@@ -1,13 +1,10 @@
-import { constantToString } from '../../../../utilities/strings';
+import { constantToString } from '../../../../tools/strings';
 import structureTemplate from '../../templates/structureTemplate';
 import { feedInMatchUps } from '../feedInMatchUps';
 import { treeMatchUps } from './eliminationTree';
 import { feedInLinks } from '../links/feedInLinks';
 
-import {
-  MAIN,
-  CONSOLATION,
-} from '../../../../constants/drawDefinitionConstants';
+import { MAIN, CONSOLATION } from '../../../../constants/drawDefinitionConstants';
 import { POLICY_TYPE_FEED_IN } from '../../../../constants/policyConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { DrawLink } from '../../../../types/tournamentTypes';
@@ -33,8 +30,7 @@ export function feedInChampionship(params) {
     fmlc,
   } = params;
 
-  const feedPolicy =
-    params.feedPolicy || policyDefinitions?.[POLICY_TYPE_FEED_IN];
+  const feedPolicy = params.feedPolicy || policyDefinitions?.[POLICY_TYPE_FEED_IN];
 
   const mainParams = {
     finishingPositionOffset,
@@ -45,13 +41,10 @@ export function feedInChampionship(params) {
     isMock,
     uuids,
   };
-  const { matchUps } = staggeredEntry
-    ? feedInMatchUps(mainParams)
-    : treeMatchUps(mainParams);
+  const { matchUps } = staggeredEntry ? feedInMatchUps(mainParams) : treeMatchUps(mainParams);
 
   const mainStructure = structureTemplate({
-    structureName:
-      structureName || playoffAttributes?.['0']?.name || constantToString(MAIN),
+    structureName: structureName || playoffAttributes?.['0']?.name || constantToString(MAIN),
     structureId: structureId || uuids?.pop(),
     stageSequence,
     matchUpType,
@@ -78,11 +71,8 @@ export function feedInChampionship(params) {
   });
 
   if (drawSize > 2) {
-    const name =
-      playoffAttributes?.['0-1']?.name ?? constantToString(CONSOLATION);
-    const structureName = params.playoffStructureNameBase
-      ? `${params.playoffStructureNameBase} ${name}`
-      : name;
+    const name = playoffAttributes?.['0-1']?.name ?? constantToString(CONSOLATION);
+    const structureName = params.playoffStructureNameBase ? `${params.playoffStructureNameBase} ${name}` : name;
 
     const consolationStructure = structureTemplate({
       matchUps: consolationMatchUps,

@@ -1,5 +1,5 @@
 import { getSeedBlockPattern } from '../../../query/drawDefinition/seedGetter';
-import { chunkArray, generateRange } from '../../../utilities/arrays';
+import { chunkArray, generateRange } from '../../../tools/arrays';
 import { expect, test } from 'vitest';
 
 import { CLUSTER, SEPARATE } from '../../../constants/drawDefinitionConstants';

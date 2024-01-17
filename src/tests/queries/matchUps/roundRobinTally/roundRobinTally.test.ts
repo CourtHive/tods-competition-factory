@@ -3,7 +3,7 @@ import { getPositionAssignments } from '../../../../query/drawDefinition/positio
 import { toBePlayed } from '../../../../fixtures/scoring/outcomes/toBePlayed';
 import { findExtension } from '../../../../acquire/findExtension';
 import mocksEngine from '../../../../assemblies/engines/mock';
-import { intersection } from '../../../../utilities/arrays';
+import { intersection } from '../../../../tools/arrays';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
@@ -11,19 +11,9 @@ import { ROUND_ROBIN } from '../../../../constants/drawDefinitionConstants';
 import { DOMINANT_DUO } from '../../../../constants/tieFormatConstants';
 import { SINGLES, TEAM } from '../../../../constants/eventConstants';
 import { TALLY } from '../../../../constants/extensionConstants';
-import {
-  FORMAT_SHORT_SETS,
-  FORMAT_STANDARD,
-} from '../../../../fixtures/scoring/matchUpFormats';
-import {
-  MISSING_DRAW_POSITION,
-  MISSING_STRUCTURE_ID,
-} from '../../../../constants/errorConditionConstants';
-import {
-  DEFAULTED,
-  RETIRED,
-  WALKOVER,
-} from '../../../../constants/matchUpStatusConstants';
+import { FORMAT_SHORT_SETS, FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
+import { MISSING_DRAW_POSITION, MISSING_STRUCTURE_ID } from '../../../../constants/errorConditionConstants';
+import { DEFAULTED, RETIRED, WALKOVER } from '../../../../constants/matchUpStatusConstants';
 
 it('can recalculate participantResults when outcomes are removed', () => {
   const drawProfiles = [
@@ -73,9 +63,7 @@ it('can recalculate participantResults when outcomes are removed', () => {
   expect(dp1.result).toEqual('1/0');
 
   // now remove the one matchUp outcome
-  const { matchUpId } = matchUps.find(
-    ({ drawPositions }) => intersection(drawPositions, [1, 2]).length === 2
-  );
+  const { matchUpId } = matchUps.find(({ drawPositions }) => intersection(drawPositions, [1, 2]).length === 2);
   const result = tournamentEngine.setMatchUpStatus({
     outcome: toBePlayed,
     matchUpId,
@@ -152,12 +140,8 @@ it('calculate participantResult values are present for all drawPositions', () =>
   mainStructure.structures.forEach((structure) => {
     const { structureId } = structure;
 
-    const structureMatchUps = matchUps.filter(
-      (matchUp) => matchUp.structureId === structureId
-    );
-    const matchUpFormat = structureMatchUps.find(
-      ({ matchUpFormat }) => matchUpFormat
-    )?.matchUpFormat;
+    const structureMatchUps = matchUps.filter((matchUp) => matchUp.structureId === structureId);
+    const matchUpFormat = structureMatchUps.find(({ matchUpFormat }) => matchUpFormat)?.matchUpFormat;
 
     const { participantResults } = tallyParticipantResults({
       matchUps: structureMatchUps,
@@ -381,21 +365,18 @@ it('properly orders round robin participants; drawSize: 5, SET3-S:4/TB7-F:TB7', 
   });
 
   const { eventData } = tournamentEngine.getEventData({ drawId });
-  const participantResults =
-    eventData.drawsData[0].structures[0].participantResults;
+  const participantResults = eventData.drawsData[0].structures[0].participantResults;
 
   // check the expectations against both the positionAssignments for the structure
   // and the eventData payload that is intended for presentation
   expectations.forEach(({ drawPosition, expectation }) => {
-    const assignment = positionAssignments?.find(
-      (assignment) => assignment.drawPosition === drawPosition
-    );
+    const assignment = positionAssignments?.find((assignment) => assignment.drawPosition === drawPosition);
     const participantResult = findExtension({
       element: assignment,
       name: TALLY,
     }).extension?.value;
     const eventParticipantResult = participantResults.find(
-      (result) => result.drawPosition === drawPosition
+      (result) => result.drawPosition === drawPosition,
     ).participantResult;
     Object.keys(expectation).forEach((key) => {
       expect(participantResult[key]).toEqual(expectation[key]);
@@ -572,44 +553,22 @@ it('recognize when participants are tied with position order', () => {
   });
 
   let { eventData } = tournamentEngine.getEventData({ drawId });
-  let participantResults =
-    eventData.drawsData[0].structures[0].participantResults;
+  let participantResults = eventData.drawsData[0].structures[0].participantResults;
 
   // check the expectations against both the positionAssignments for the structure
   // and the eventData payload that is intended for presentation
   positionAssignments?.forEach((assignment) => {
     const { drawPosition } = assignment;
-    const result = participantResults.find(
-      (result) => result.drawPosition === drawPosition
-    ).participantResult;
+    const result = participantResults.find((result) => result.drawPosition === drawPosition).participantResult;
     const participantResult = findExtension({
       element: assignment,
       name: TALLY,
     }).extension?.value;
 
-    const {
-      ties,
-      matchUpsWon,
-      matchUpsLost,
-      setsWon,
-      setsLost,
-      gamesWon,
-      gamesLost,
-      groupOrder,
-      rankOrder,
-    } = participantResult;
+    const { ties, matchUpsWon, matchUpsLost, setsWon, setsLost, gamesWon, gamesLost, groupOrder, rankOrder } =
+      participantResult;
 
-    const check = [
-      ties,
-      matchUpsWon,
-      matchUpsLost,
-      setsWon,
-      setsLost,
-      gamesWon,
-      gamesLost,
-      groupOrder,
-      rankOrder,
-    ];
+    const check = [ties, matchUpsWon, matchUpsLost, setsWon, setsLost, gamesWon, gamesLost, groupOrder, rankOrder];
 
     expect(check).toEqual([5, 2, 2, 4, 4, 24, 24, 1, 1]);
 
@@ -676,44 +635,22 @@ it('recognize when participants are tied with position order', () => {
     element: positionAssignments?.[0],
     name: TALLY,
   }).extension?.value;
-  expect(tally.subOrder).toEqual(
-    participantResults[0].participantResult.subOrder
-  );
+  expect(tally.subOrder).toEqual(participantResults[0].participantResult.subOrder);
 
   const groupOrders: any[] = [];
   positionAssignments?.forEach((assignment) => {
     const { drawPosition } = assignment;
-    const result = participantResults.find(
-      (result) => result.drawPosition === drawPosition
-    ).participantResult;
+    const result = participantResults.find((result) => result.drawPosition === drawPosition).participantResult;
     const participantResult = findExtension({
       element: assignment,
       name: TALLY,
     }).extension?.value;
 
-    const {
-      ties,
-      matchUpsWon,
-      matchUpsLost,
-      setsWon,
-      setsLost,
-      gamesWon,
-      gamesLost,
-      groupOrder,
-      rankOrder,
-    } = participantResult;
+    const { ties, matchUpsWon, matchUpsLost, setsWon, setsLost, gamesWon, gamesLost, groupOrder, rankOrder } =
+      participantResult;
     groupOrders.push(groupOrder);
 
-    const check = [
-      ties,
-      matchUpsWon,
-      matchUpsLost,
-      setsWon,
-      setsLost,
-      gamesWon,
-      gamesLost,
-      rankOrder,
-    ];
+    const check = [ties, matchUpsWon, matchUpsLost, setsWon, setsLost, gamesWon, gamesLost, rankOrder];
 
     expect(check).toEqual([5, 2, 2, 4, 4, 24, 24, 1]);
 
@@ -1016,16 +953,13 @@ it('recognize when TEAM participants are tied with position order', () => {
   });
 
   let { eventData } = tournamentEngine.getEventData({ drawId });
-  let participantResults =
-    eventData.drawsData[0].structures[0].participantResults;
+  let participantResults = eventData.drawsData[0].structures[0].participantResults;
 
   // check the expectations against both the positionAssignments for the structure
   // and the eventData payload that is intended for presentation
   positionAssignments?.forEach((assignment) => {
     const { drawPosition } = assignment;
-    const result = participantResults.find(
-      (result) => result.drawPosition === drawPosition
-    ).participantResult;
+    const result = participantResults.find((result) => result.drawPosition === drawPosition).participantResult;
     const participantResult = findExtension({
       element: assignment,
       name: TALLY,
@@ -1086,7 +1020,5 @@ it('recognize when TEAM participants are tied with position order', () => {
     element: positionAssignments?.[0],
     name: TALLY,
   }).extension?.value;
-  expect(tally.subOrder).toEqual(
-    participantResults[0].participantResult.subOrder
-  );
+  expect(tally.subOrder).toEqual(participantResults[0].participantResult.subOrder);
 });

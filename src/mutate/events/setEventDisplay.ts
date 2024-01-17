@@ -1,18 +1,11 @@
-import { isObject, objShallowEqual } from '../../utilities/objects';
+import { isObject, objShallowEqual } from '../../tools/objects';
 import { modifyEventPublishStatus } from './modifyEventPublishStatus';
-import {
-  ResultType,
-  decorateResult,
-} from '../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../global/functions/decorateResult';
 
 import { Event, Tournament } from '../../types/tournamentTypes';
 import { PUBLIC } from '../../constants/timeItemConstants';
 import { SUCCESS } from '../../constants/resultConstants';
-import {
-  MISSING_EVENT,
-  MISSING_TOURNAMENT_RECORD,
-  MISSING_VALUE,
-} from '../../constants/errorConditionConstants';
+import { MISSING_EVENT, MISSING_TOURNAMENT_RECORD, MISSING_VALUE } from '../../constants/errorConditionConstants';
 
 type ScheduleDetails = {
   attributes: { [key: string]: boolean }; // true indicates display; false indicates excise from data
@@ -48,11 +41,9 @@ export function setEventDisplay({
   status = PUBLIC,
   event,
 }: SetEventDisplaySettings): ResultType {
-  if (!tournamentRecord)
-    return decorateResult({ result: { error: MISSING_TOURNAMENT_RECORD } });
+  if (!tournamentRecord) return decorateResult({ result: { error: MISSING_TOURNAMENT_RECORD } });
   if (!event) return decorateResult({ result: { error: MISSING_EVENT } });
-  if (!isObject(displaySettings))
-    return decorateResult({ result: { error: MISSING_VALUE } });
+  if (!isObject(displaySettings)) return decorateResult({ result: { error: MISSING_VALUE } });
 
   // combine ScheduleDetails that are equivalent
   if (isObject(displaySettings.draws)) {
@@ -61,9 +52,7 @@ export function setEventDisplay({
       if (details.length) {
         const scheduleDetails: ScheduleDetails[] = [];
         for (const detail of details) {
-          const existingDetail = scheduleDetails.find((sd) =>
-            objShallowEqual(sd.attributes, detail.attributes)
-          );
+          const existingDetail = scheduleDetails.find((sd) => objShallowEqual(sd.attributes, detail.attributes));
           if (existingDetail?.dates && detail.dates) {
             existingDetail.dates.push(...detail.dates);
           } else {

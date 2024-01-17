@@ -1,14 +1,11 @@
-import { isObject } from '../../utilities/objects';
+import { isObject } from '../../tools/objects';
 
 type GetDisabledStatusArgs = {
   dates?: string[];
   extension?: any;
 };
 
-export function getDisabledStatus({
-  dates = [],
-  extension,
-}: GetDisabledStatusArgs) {
+export function getDisabledStatus({ dates = [], extension }: GetDisabledStatusArgs) {
   if (!extension) return false;
 
   // boolean value false means court is entirely disabled
@@ -18,15 +15,11 @@ export function getDisabledStatus({
 
   if (!dates.length) return false;
 
-  const disabledDates = isObject(extension.value)
-    ? extension.value?.dates
-    : undefined;
+  const disabledDates = isObject(extension.value) ? extension.value?.dates : undefined;
 
   if (Array.isArray(disabledDates)) {
     if (!disabledDates?.length) return false;
-    const datesToConsider = disabledDates.filter(
-      (date) => !dates.length || dates.includes(date)
-    );
+    const datesToConsider = disabledDates.filter((date) => !dates.length || dates.includes(date));
 
     // only if all provided dates appear in disabled dates is the court considered disabled
     return !!datesToConsider.length;

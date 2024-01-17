@@ -1,5 +1,5 @@
 import { modifyDrawNotice } from '../notifications/drawNotifications';
-import { constantToString } from '../../utilities/strings';
+import { constantToString } from '../../tools/strings';
 import structureTemplate from '../../assemblies/generators/templates/structureTemplate';
 
 import { MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';

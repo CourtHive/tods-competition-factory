@@ -1,9 +1,9 @@
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
-import { generateRange, unique } from '../../../utilities/arrays';
+import { generateRange, unique } from '../../../tools/arrays';
 import { validMatchUps } from '../../../validators/validMatchUp';
-import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
-import { ensureInt } from '../../../utilities/ensureInt';
-import { UUID } from '../../../utilities/UUID';
+import { makeDeepCopy } from '../../../tools/makeDeepCopy';
+import { ensureInt } from '../../../tools/ensureInt';
+import { UUID } from '../../../tools/UUID';
 
 import { MISSING_MATCHUPS } from '../../../constants/errorConditionConstants';
 import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
@@ -18,19 +18,13 @@ type BuildDrawHierarchyArgs = {
   matchUpType?: string;
   matchUps: any[];
 };
-export function buildDrawHierarchy({
-  matchUps,
-  matchUpType,
-}: BuildDrawHierarchyArgs): any {
+export function buildDrawHierarchy({ matchUps, matchUpType }: BuildDrawHierarchyArgs): any {
   if (!matchUps) return { error: MISSING_MATCHUPS };
   let previousRound: any[] = [];
   let missingMatchUps: any[] = [];
   let feedRoundNumber = 0;
 
-  if (matchUpType)
-    matchUps = matchUps.filter(
-      (matchUp) => matchUp.matchUpType === matchUpType
-    );
+  if (matchUpType) matchUps = matchUps.filter((matchUp) => matchUp.matchUpType === matchUpType);
   const matchUpTypes = unique(matchUps.map(({ matchUpType }) => matchUpType));
   if (matchUpTypes.length > 1) {
     if (matchUpTypes.includes(TEAM)) {
@@ -51,12 +45,9 @@ export function buildDrawHierarchy({
     matchUps
       .map((matchUp) => matchUp.drawPositions)
       .flat()
-      .filter(Boolean)
+      .filter(Boolean),
   ).sort(drawPositionSort);
-  const expectedDrawPositions = generateRange(
-    1,
-    Math.max(...allDrawPositions) + 1
-  );
+  const expectedDrawPositions = generateRange(1, Math.max(...allDrawPositions) + 1);
   const missingDrawPositions = expectedDrawPositions
     .filter((drawPosition) => !allDrawPositions.includes(drawPosition))
     .sort(drawPositionSort);
@@ -69,86 +60,57 @@ export function buildDrawHierarchy({
   const drawId = firstRoundMatchUp?.drawId;
   const structureId = firstRoundMatchUp?.structureId;
 
-  const roundNumbers: number[] = roundMatchUps
-    ? Object.keys(roundMatchUps).map((r) => ensureInt(r))
-    : [];
+  const roundNumbers: number[] = roundMatchUps ? Object.keys(roundMatchUps).map((r) => ensureInt(r)) : [];
   const maxRound = Math.max(...roundNumbers);
 
   const maxRoundMatchUpsCount = roundMatchUps?.[maxRound]?.length ?? 0;
-  const additionalRounds = Math.ceil(
-    Math.log(maxRoundMatchUpsCount) / Math.log(2)
-  );
+  const additionalRounds = Math.ceil(Math.log(maxRoundMatchUpsCount) / Math.log(2));
 
-  const additionalRoundMatchUps = generateRange(1, additionalRounds + 1).map(
-    (finishingRound) => {
-      const matchUpsToGenerate = Math.pow(2, finishingRound - 1);
-      const roundNumber = maxRound + additionalRounds - finishingRound + 1;
-      return generateRange(1, matchUpsToGenerate + 1).map((roundPosition) => {
-        return {
-          drawId,
-          structureId,
-          matchUpId: UUID(),
-          drawPositions: [],
-          sides: [],
-          roundNumber,
-          roundPosition,
-          finishingRound,
-        };
-      });
-    }
-  );
+  const additionalRoundMatchUps = generateRange(1, additionalRounds + 1).map((finishingRound) => {
+    const matchUpsToGenerate = Math.pow(2, finishingRound - 1);
+    const roundNumber = maxRound + additionalRounds - finishingRound + 1;
+    return generateRange(1, matchUpsToGenerate + 1).map((roundPosition) => {
+      return {
+        drawId,
+        structureId,
+        matchUpId: UUID(),
+        drawPositions: [],
+        sides: [],
+        roundNumber,
+        roundPosition,
+        finishingRound,
+      };
+    });
+  });
 
   if (additionalRounds) {
     matchUps = matchUps.concat(...additionalRoundMatchUps.flat());
   }
 
-  const firstRoundPairedDrawPositions = firstRoundMatchUps?.map(
-    (matchUp) => matchUp.drawPositions
-  );
+  const firstRoundPairedDrawPositions = firstRoundMatchUps?.map((matchUp) => matchUp.drawPositions);
   const firstRoundDrawPositions = firstRoundPairedDrawPositions?.flat(Infinity);
 
-  const secondRoundDrawPositions = secondRoundMatchUps
-    .map((matchUp) => matchUp.drawPositions)
-    .flat(Infinity);
+  const secondRoundDrawPositions = secondRoundMatchUps.map((matchUp) => matchUp.drawPositions).flat(Infinity);
   const secondRoundEntries = secondRoundDrawPositions
     .filter((drawPosition) => !firstRoundDrawPositions?.includes(drawPosition))
     .sort(drawPositionSort);
   const secondRoundEntrySides = secondRoundMatchUps
-    .filter(
-      (matchUp) =>
-        matchUp.drawPositions?.find((dp) => secondRoundEntries.includes(dp))
-    )
+    .filter((matchUp) => matchUp.drawPositions?.find((dp) => secondRoundEntries.includes(dp)))
     .map((matchUp) => {
-      const targetDrawPosition = matchUp.drawPositions?.find((dp) =>
-        secondRoundEntries.includes(dp)
-      );
-      const targetIndex =
-        targetDrawPosition &&
-        matchUp.drawPositions?.indexOf(targetDrawPosition);
-      const targetSide =
-        targetIndex !== undefined && matchUp.sides?.[targetIndex];
+      const targetDrawPosition = matchUp.drawPositions?.find((dp) => secondRoundEntries.includes(dp));
+      const targetIndex = targetDrawPosition && matchUp.drawPositions?.indexOf(targetDrawPosition);
+      const targetSide = targetIndex !== undefined && matchUp.sides?.[targetIndex];
       return targetDrawPosition && { [targetDrawPosition]: targetSide };
     });
 
-  if (
-    missingDrawPositions?.length &&
-    secondRoundEntries?.length === missingDrawPositions?.length
-  ) {
+  if (missingDrawPositions?.length && secondRoundEntries?.length === missingDrawPositions?.length) {
     const missingPairs = secondRoundEntries.map((drawPosition, index) => {
       return [drawPosition, missingDrawPositions[index]].sort(drawPositionSort);
     });
 
     const entrySides = Object.assign({}, ...secondRoundEntrySides);
-    const finishingRound = makeDeepCopy(
-      firstRoundMatchUps?.[0].finishingRound,
-      false,
-      true
-    );
-    const finishingPositionRange = makeDeepCopy(
-      firstRoundMatchUps?.[0].finishingPositionRange,
-      false,
-      true
-    );
+    const finishingRound = makeDeepCopy(firstRoundMatchUps?.[0].finishingRound, false, true);
+    const finishingPositionRange = makeDeepCopy(firstRoundMatchUps?.[0].finishingPositionRange, false, true);
 
     missingMatchUps = missingPairs.map((drawPositions, index) => {
       const roundPosition = Math.max(...(drawPositions || [])) / 2;
@@ -183,9 +145,7 @@ export function buildDrawHierarchy({
       matchUps,
       roundNumber: roundNumber - 1,
     });
-    const previousRoundWinnerIds = previousRoundMatchUps
-      .map(getAdvancingParticipantId)
-      .filter(Boolean);
+    const previousRoundWinnerIds = previousRoundMatchUps.map(getAdvancingParticipantId).filter(Boolean);
 
     const feedRound = roundMatchUps?.length === previousRound?.length;
     const matchRound = roundMatchUps?.length === previousRound?.length / 2;
@@ -223,14 +183,9 @@ export function buildDrawHierarchy({
             return firstRoundDrawPositions?.includes(position) ? fed : position;
           }, undefined);
 
-        const fedSide = matchUp.sides
-          .filter(Boolean)
-          .reduce((fedSide, side) => {
-            return side.participantId &&
-              !previousRoundWinnerIds.includes(side.participantId)
-              ? side
-              : fedSide;
-          }, undefined);
+        const fedSide = matchUp.sides.filter(Boolean).reduce((fedSide, side) => {
+          return side.participantId && !previousRoundWinnerIds.includes(side.participantId) ? side : fedSide;
+        }, undefined);
 
         const children = [
           {
@@ -262,9 +217,7 @@ export function buildDrawHierarchy({
   return { hierarchy, missingMatchUps, maxRound, finalRound, matchUps };
 
   function filterRoundMatchUps({ matchUps, roundNumber }) {
-    return matchUps
-      .filter((m) => m.roundNumber === roundNumber)
-      .sort((a, b) => a.roundPosition - b.roundPosition);
+    return matchUps.filter((m) => m.roundNumber === roundNumber).sort((a, b) => a.roundPosition - b.roundPosition);
   }
 }
 
@@ -273,10 +226,7 @@ function getAdvancingParticipantId(matchUp) {
     return matchUp.sides.reduce((p, c) => c.participantId || p, undefined);
   }
   if (!matchUp.winningSide) return undefined;
-  return matchUp.sides.reduce(
-    (p, c) => (c.sideNumber === matchUp.winningSide ? c.participantId : p),
-    undefined
-  );
+  return matchUp.sides.reduce((p, c) => (c.sideNumber === matchUp.winningSide ? c.participantId : p), undefined);
 }
 
 export function collapseHierarchy(node, depth) {

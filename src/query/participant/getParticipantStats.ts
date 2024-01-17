@@ -4,8 +4,8 @@ import { ResultType, decorateResult } from '../../global/functions/decorateResul
 import { allTournamentMatchUps } from '../matchUps/getAllTournamentMatchUps';
 import { getParticipantId } from '../../global/functions/extractors';
 import { getParticipants } from '../participants/getParticipants';
-import { intersection } from '../../utilities/arrays';
-import { isObject } from '../../utilities/objects';
+import { intersection } from '../../tools/arrays';
+import { isObject } from '../../tools/objects';
 
 import { ParticipantTypeUnion, Tournament } from '../../types/tournamentTypes';
 import { TEAM_PARTICIPANT } from '../../constants/participantConstants';

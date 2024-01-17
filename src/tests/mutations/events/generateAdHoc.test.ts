@@ -1,4 +1,4 @@
-import { generateRange, randomPop } from '../../../utilities/arrays';
+import { generateRange, randomPop } from '../../../tools/arrays';
 import { getMatchUpIds } from '../../../global/functions/extractors';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
@@ -11,18 +11,8 @@ import {
   INVALID_STRUCTURE,
   INVALID_VALUES,
 } from '../../../constants/errorConditionConstants';
-import {
-  ABANDONED,
-  CANCELLED,
-  DOUBLE_WALKOVER,
-  TO_BE_PLAYED,
-} from '../../../constants/matchUpStatusConstants';
-import {
-  PENALTY,
-  REFEREE,
-  SCHEDULE,
-  SCORE,
-} from '../../../constants/matchUpActionConstants';
+import { ABANDONED, CANCELLED, DOUBLE_WALKOVER, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
+import { PENALTY, REFEREE, SCHEDULE, SCORE } from '../../../constants/matchUpActionConstants';
 
 it('will generate an AD_HOC drawDefinition with no matchUps', () => {
   const {
@@ -214,9 +204,7 @@ it('can generate AD_HOC with arbitrary drawSizes and assign positions', () => {
   // get the actions for the first drawPosition
   result = tournamentEngine.matchUpActions(firstRoundMatchUp);
   // expect that ASSIGN_PARTICIPANT would be a validAction for an AD_HOC matchUp
-  let assignmentAction = result.validActions.find(
-    ({ type }) => type === ASSIGN_PARTICIPANT
-  );
+  let assignmentAction = result.validActions.find(({ type }) => type === ASSIGN_PARTICIPANT);
 
   let { method, payload, availableParticipantIds } = assignmentAction;
   // expect the avialbleParticipantIds to equl the number of entered participants
@@ -240,9 +228,7 @@ it('can generate AD_HOC with arbitrary drawSizes and assign positions', () => {
   result = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: { matchUpIds: [firstRoundMatchUp.matchUpId] },
   });
-  const targetSide = result.matchUps[0].sides.find(
-    (side) => side.sideNumber === 1
-  );
+  const targetSide = result.matchUps[0].sides.find((side) => side.sideNumber === 1);
   expect(targetSide.participant.participantId).toEqual(firstParticipantId);
 
   result = tournamentEngine.positionActions(firstRoundMatchUp);
@@ -250,9 +236,7 @@ it('can generate AD_HOC with arbitrary drawSizes and assign positions', () => {
   expect(actionTypes).toEqual([ASSIGN_PARTICIPANT, REFEREE, SCHEDULE, PENALTY]);
 
   result = tournamentEngine.matchUpActions(firstRoundMatchUp);
-  assignmentAction = result.validActions.find(
-    ({ type }) => type === ASSIGN_PARTICIPANT
-  );
+  assignmentAction = result.validActions.find(({ type }) => type === ASSIGN_PARTICIPANT);
   ({ method, payload, availableParticipantIds } = assignmentAction);
 
   // expect that the available participantIds does not include the assigned participantId
@@ -267,9 +251,7 @@ it('can generate AD_HOC with arbitrary drawSizes and assign positions', () => {
   expect(result.success).toEqual(true);
 
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
-  const matchUp = matchUps.find(
-    (matchUp) => matchUp.matchUpId === payload.matchUpId
-  );
+  const matchUp = matchUps.find((matchUp) => matchUp.matchUpId === payload.matchUpId);
   const sideTwo = matchUp.sides.find(({ sideNumber }) => sideNumber === 2);
   expect(sideTwo.participantId).toEqual(secondParticipantId);
 
@@ -294,9 +276,7 @@ it('can generate AD_HOC with arbitrary drawSizes and assign positions', () => {
   expect(matchUps.length).toEqual(drawSize / 2);
 
   result = tournamentEngine.allTournamentMatchUps();
-  const matchUpsReadyToScore = result.matchUps.filter(
-    (matchUp) => matchUp.readyToScore
-  );
+  const matchUpsReadyToScore = result.matchUps.filter((matchUp) => matchUp.readyToScore);
   expect(matchUpsReadyToScore.length).toEqual(1);
 
   // score the first round matchUp which has two participants assigned

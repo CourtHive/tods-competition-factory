@@ -3,18 +3,12 @@ import { getMatchUpDependencies } from '../../../../../query/matchUps/getMatchUp
 import { matchUpSort } from '../../../../../functions/sorters/matchUpSort';
 import { validMatchUps } from '../../../../../validators/validMatchUp';
 import { bulkScheduleMatchUps } from '../../bulkScheduleMatchUps';
-import { isObject } from '../../../../../utilities/objects';
+import { isObject } from '../../../../../tools/objects';
 
 import { Tournament } from '../../../../../types/tournamentTypes';
 import { HydratedMatchUp } from '../../../../../types/hydrated';
-import {
-  INVALID_VALUES,
-  MISSING_CONTEXT,
-} from '../../../../../constants/errorConditionConstants';
-import {
-  BYE,
-  completedMatchUpStatuses,
-} from '../../../../../constants/matchUpStatusConstants';
+import { INVALID_VALUES, MISSING_CONTEXT } from '../../../../../constants/errorConditionConstants';
+import { BYE, completedMatchUpStatuses } from '../../../../../constants/matchUpStatusConstants';
 
 // NOTE: matchUps are assumed to be { inContext: true, nextMatchUps: true }
 
@@ -53,13 +47,8 @@ export function proAutoSchedule({
 
   const getMatchUpParticipantIds = (matchUp) =>
     [
-      (matchUp.sides || []).map((side) => [
-        side.participantId,
-        side.participant?.individualParticipantIds,
-      ]),
-      (matchUp.potentialParticipants || [])
-        .flat()
-        .map((p) => [p.participantId, p.individualParticipantIds]),
+      (matchUp.sides || []).map((side) => [side.participantId, side.participant?.individualParticipantIds]),
+      (matchUp.potentialParticipants || []).flat().map((p) => [p.participantId, p.individualParticipantIds]),
     ]
       .flat(Infinity)
       .filter(Boolean);
@@ -79,9 +68,7 @@ export function proAutoSchedule({
         }
       }
     });
-    const availableCourts = Object.values(row).filter(
-      (c: any) => isObject(c) && !c.matchUpId
-    );
+    const availableCourts = Object.values(row).filter((c: any) => isObject(c) && !c.matchUpId);
     return gridRows.concat({
       matchUpIds,
       availableCourts,
@@ -95,8 +82,7 @@ export function proAutoSchedule({
       ({ matchUpStatus }) =>
         matchUpStatus &&
         matchUpStatus !== BYE &&
-        (scheduleCompletedMatchUps ||
-          !completedMatchUpStatuses.includes(matchUpStatus))
+        (scheduleCompletedMatchUps || !completedMatchUpStatuses.includes(matchUpStatus)),
     )
     .sort(matchUpSort);
 
@@ -113,33 +99,19 @@ export function proAutoSchedule({
     const row = gridRows.shift();
     const unscheduledMatchUps: HydratedMatchUp[] = [];
     while (matchUps.length && row.availableCourts.length) {
-      const unscheduledMatchUpIds = matchUps
-        .concat(unscheduledMatchUps)
-        .map((m) => m.matchUpId);
+      const unscheduledMatchUpIds = matchUps.concat(unscheduledMatchUps).map((m) => m.matchUpId);
       const matchUp = matchUps.shift();
       const matchUpId = matchUp?.matchUpId;
-      const linkedMatchUpIds =
-        matchUpId &&
-        deps[matchUpId].matchUpIds.concat(deps[matchUpId].dependentMatchUpIds);
+      const linkedMatchUpIds = matchUpId && deps[matchUpId].matchUpIds.concat(deps[matchUpId].dependentMatchUpIds);
 
       const unscheduledContainSource =
-        matchUpId &&
-        unscheduledMatchUpIds.some((id) =>
-          deps[matchUpId].matchUpIds.includes(id)
-        );
+        matchUpId && unscheduledMatchUpIds.some((id) => deps[matchUpId].matchUpIds.includes(id));
       const previousIncludesDependent =
-        matchUpId &&
-        previousRowMatchUpIds.some((id) =>
-          deps[matchUpId].dependentMatchUpIds.includes(id)
-        );
-      const rowIncludesLinked = row.matchUpIds.some((id) =>
-        linkedMatchUpIds.includes(id)
-      );
+        matchUpId && previousRowMatchUpIds.some((id) => deps[matchUpId].dependentMatchUpIds.includes(id));
+      const rowIncludesLinked = row.matchUpIds.some((id) => linkedMatchUpIds.includes(id));
 
       const participantIds = getMatchUpParticipantIds(matchUp);
-      const rowContainsParticipants = row.participantIds.some((id) =>
-        participantIds.includes(id)
-      );
+      const rowContainsParticipants = row.participantIds.some((id) => participantIds.includes(id));
 
       if (
         matchUp &&
@@ -164,17 +136,15 @@ export function proAutoSchedule({
     previousRowMatchUpIds.push(...row.matchUpIds);
   }
 
-  const matchUpDetails = scheduled.map(
-    ({ matchUpId, tournamentId, schedule, drawId }) => ({
-      tournamentId,
-      matchUpId,
-      drawId,
-      schedule: {
-        ...schedule,
-        scheduledDate,
-      },
-    })
-  );
+  const matchUpDetails = scheduled.map(({ matchUpId, tournamentId, schedule, drawId }) => ({
+    tournamentId,
+    matchUpId,
+    drawId,
+    schedule: {
+      ...schedule,
+      scheduledDate,
+    },
+  }));
 
   result = bulkScheduleMatchUps({ tournamentRecords, matchUpDetails });
 

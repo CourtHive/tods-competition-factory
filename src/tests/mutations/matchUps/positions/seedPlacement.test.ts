@@ -7,17 +7,11 @@ import { assignSeed } from '../../../../mutate/drawDefinitions/entryGovernor/see
 import { attachPolicies } from '../../../../mutate/extensions/policies/attachPolicies';
 import { getAppliedPolicies } from '../../../../query/extensions/getAppliedPolicies';
 import { getStageEntries } from '../../../../query/drawDefinition/stageGetter';
-import { numericSort } from '../../../../utilities/sorting';
+import { numericSort } from '../../../../tools/sorting';
 import { mocksEngine } from '../../../..';
 import { expect, it } from 'vitest';
-import {
-  getNextSeedBlock,
-  getValidSeedBlocks,
-} from '../../../../query/drawDefinition/seedGetter';
-import {
-  findStructure,
-  getDrawStructures,
-} from '../../../../acquire/findStructure';
+import { getNextSeedBlock, getValidSeedBlocks } from '../../../../query/drawDefinition/seedGetter';
+import { findStructure, getDrawStructures } from '../../../../acquire/findStructure';
 
 import SEEDING_NATIONAL from '../../../../fixtures/policies/POLICY_SEEDING_NATIONAL';
 import SEEDING_USTA from '../../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
@@ -30,10 +24,7 @@ import {
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
-import {
-  DIRECT_ACCEPTANCE,
-  WILDCARD,
-} from '../../../../constants/entryStatusConstants';
+import { DIRECT_ACCEPTANCE, WILDCARD } from '../../../../constants/entryStatusConstants';
 
 it('can define seedAssignments', () => {
   const drawSize = 8;
@@ -166,12 +157,8 @@ it('generates valild seedBlocks given different policies', () => {
       drawPositions: [9, 25, 41, 57, 72, 88, 104, 120],
     },
     {
-      seedNumbers: [
-        17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
-      ],
-      drawPositions: [
-        5, 13, 21, 29, 37, 45, 53, 61, 68, 76, 84, 92, 100, 108, 116, 124,
-      ],
+      seedNumbers: [17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32],
+      drawPositions: [5, 13, 21, 29, 37, 45, 53, 61, 68, 76, 84, 92, 100, 108, 116, 124],
     },
   ];
   checkSeedBlocks({
@@ -190,22 +177,17 @@ it('generates valild seedBlocks given different policies', () => {
       drawPositions: [17, 49, 81, 113, 144, 176, 208, 240],
     },
     {
-      seedNumbers: [
-        17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
-      ],
-      drawPositions: [
-        9, 25, 41, 57, 73, 89, 105, 121, 136, 152, 168, 184, 200, 216, 232, 248,
-      ],
+      seedNumbers: [17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32],
+      drawPositions: [9, 25, 41, 57, 73, 89, 105, 121, 136, 152, 168, 184, 200, 216, 232, 248],
     },
     {
       seedNumbers: [
-        33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50,
-        51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64,
+        33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60,
+        61, 62, 63, 64,
       ],
       drawPositions: [
-        5, 13, 21, 29, 37, 45, 53, 61, 69, 77, 85, 93, 101, 109, 117, 125, 132,
-        140, 148, 156, 164, 172, 180, 188, 196, 204, 212, 220, 228, 236, 244,
-        252,
+        5, 13, 21, 29, 37, 45, 53, 61, 69, 77, 85, 93, 101, 109, 117, 125, 132, 140, 148, 156, 164, 172, 180, 188, 196,
+        204, 212, 220, 228, 236, 244, 252,
       ],
     },
   ];
@@ -442,9 +424,7 @@ it('can assign seedNumbers and drawPositions to seeded participants', () => {
     structureId,
   }));
   expect(seedAssignments?.length).toEqual(16);
-  const assignedSeedPositions = seedAssignments?.filter(
-    (assignment) => assignment.participantId
-  );
+  const assignedSeedPositions = seedAssignments?.filter((assignment) => assignment.participantId);
   expect(assignedSeedPositions?.length).toEqual(3);
 
   // validation can be disabled
@@ -482,9 +462,7 @@ function checkSeedBlocks({ drawSize, policy, expectedBlocks }) {
   });
   const structureId = drawDefinition.structures[0].structureId;
 
-  const seedsCount = Math.max(
-    ...[].concat(...expectedBlocks.map((b) => b.seedNumbers))
-  );
+  const seedsCount = Math.max(...[].concat(...expectedBlocks.map((b) => b.seedNumbers)));
 
   const result = attachPolicies({
     policyDefinitions: policy,
@@ -514,10 +492,10 @@ function checkSeedBlocks({ drawSize, policy, expectedBlocks }) {
   if (validSeedBlocks) {
     validSeedBlocks.forEach((seedBlock, i) => {
       expect([...seedBlock.seedNumbers].sort(numericSort)).toMatchObject(
-        expectedBlocks[i].seedNumbers.sort(numericSort)
+        expectedBlocks[i].seedNumbers.sort(numericSort),
       );
       expect([...seedBlock.drawPositions].sort(numericSort)).toMatchObject(
-        [...expectedBlocks[i].drawPositions].sort(numericSort)
+        [...expectedBlocks[i].drawPositions].sort(numericSort),
       );
     });
   }

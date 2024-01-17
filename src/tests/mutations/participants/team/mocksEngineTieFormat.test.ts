@@ -1,6 +1,6 @@
 import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
-import { UUID } from '../../../../utilities/UUID';
+import { UUID } from '../../../../tools/UUID';
 import { expect, it } from 'vitest';
 
 import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';
@@ -61,10 +61,9 @@ it('can generate draws in TEAM events with tieFormat and assign participants to 
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { participants: individualParticipants } =
-    tournamentEngine.getParticipants({
-      participantFilters: { participantTypes: [INDIVIDUAL] },
-    });
+  const { participants: individualParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [INDIVIDUAL] },
+  });
 
   expect(individualParticipants.length).toEqual(40);
 
@@ -138,10 +137,9 @@ it('can generate TEAM draws and use tieFormat and assign participants to collect
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { participants: individualParticipants } =
-    tournamentEngine.getParticipants({
-      participantFilters: { participantTypes: [INDIVIDUAL] },
-    });
+  const { participants: individualParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [INDIVIDUAL] },
+  });
 
   expect(individualParticipants.length).toEqual(40);
 

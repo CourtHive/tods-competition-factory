@@ -1,5 +1,5 @@
 import mocksEngine from '../../../assemblies/engines/mock';
-import { formatDate } from '../../../utilities/dateTime';
+import { formatDate } from '../../../tools/dateTime';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, test } from 'vitest';
 
@@ -44,9 +44,7 @@ const mockProfiles = [
       {
         eventName: 'U16 Girls Singles',
         category: { categoryName: 'U16' },
-        timeItems: [
-          { itemType: 'RETRIEVAL.RANKING.SINGLES.U16', itemValue: startDate },
-        ],
+        timeItems: [{ itemType: 'RETRIEVAL.RANKING.SINGLES.U16', itemValue: startDate }],
         drawType: FIRST_MATCH_LOSER_CONSOLATION,
         gender: FEMALE,
         drawSize: 32,
@@ -54,9 +52,7 @@ const mockProfiles = [
       {
         eventName: `WTN 5-8 SINGLES`,
         category: { ratingType: 'WTN', ratingMin: 5, ratingMax: 8 },
-        timeItems: [
-          { itemType: 'RETRIEVAL.RATING.SINGLES.WTN', itemValue: startDate },
-        ],
+        timeItems: [{ itemType: 'RETRIEVAL.RATING.SINGLES.WTN', itemValue: startDate }],
         generate: false,
         drawSize: 32,
       },
@@ -190,8 +186,7 @@ test.each([tournamentEngine].slice(0, 1))(
   'will add venue to linked tournament when scheduling courts which are not present on both tournaments',
   async (competitionEngine) => {
     for (const mockProfile of mockProfiles) {
-      const { tournamentRecord } =
-        mocksEngine.generateTournamentRecord(mockProfile);
+      const { tournamentRecord } = mocksEngine.generateTournamentRecord(mockProfile);
       await competitionEngine.setTournamentRecord(tournamentRecord);
     }
     await competitionEngine.linkTournaments();
@@ -205,19 +200,14 @@ test.each([tournamentEngine].slice(0, 1))(
     const court = courts.find(({ courtId }) => courtId === cpsCourt1);
     expect(court).not.toBeUndefined();
 
-    const { upcomingMatchUps } = await competitionEngine.getCompetitionMatchUps(
-      {
-        contextFilters: { tournamentIds: [tid] },
-      }
-    );
-    let courtMatchUps = upcomingMatchUps.filter(
-      (matchUp) => matchUp.schedule?.courtId === cpsCourt1
-    );
+    const { upcomingMatchUps } = await competitionEngine.getCompetitionMatchUps({
+      contextFilters: { tournamentIds: [tid] },
+    });
+    let courtMatchUps = upcomingMatchUps.filter((matchUp) => matchUp.schedule?.courtId === cpsCourt1);
     expect(courtMatchUps.length).toEqual(0);
 
     const targetMatchUp = upcomingMatchUps[0];
-    const { drawId, eventId, matchUpId, structureId, tournamentId } =
-      targetMatchUp;
+    const { drawId, eventId, matchUpId, structureId, tournamentId } = targetMatchUp;
     const sourceMatchUpContextIds = {
       tournamentId,
       structureId,
@@ -239,9 +229,7 @@ test.each([tournamentEngine].slice(0, 1))(
     result = await competitionEngine.getCompetitionMatchUps({
       contextFilters: { tournamentIds: [tid] },
     });
-    courtMatchUps = result.upcomingMatchUps.filter(
-      (matchUp) => matchUp.schedule?.courtId === cpsCourt1
-    );
+    courtMatchUps = result.upcomingMatchUps.filter((matchUp) => matchUp.schedule?.courtId === cpsCourt1);
     expect(courtMatchUps.length).toEqual(1);
-  }
+  },
 );

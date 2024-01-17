@@ -1,9 +1,9 @@
 import tournamentEngine from '../engines/syncEngine';
-import { xa } from '../../utilities/objects';
+import { xa } from '../../tools/objects';
 import mocksEngine from '../../assemblies/engines/mock';
-import { numericSort } from '../../utilities/sorting';
+import { numericSort } from '../../tools/sorting';
 import { it, expect } from 'vitest';
-import { unique } from '../../utilities/arrays';
+import { unique } from '../../tools/arrays';
 
 it('can extract values from object', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({

@@ -1,4 +1,4 @@
-import { definedAttributes } from '../../utilities/definedAttributes';
+import { definedAttributes } from '../../tools/definedAttributes';
 
 import { ErrorType } from '../../constants/errorConditionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
@@ -20,12 +20,7 @@ type DecorateResultArgs = {
   info?: any;
 };
 
-export function decorateResult({
-  context,
-  result,
-  stack,
-  info,
-}: DecorateResultArgs): ResultType {
+export function decorateResult({ context, result, stack, info }: DecorateResultArgs): ResultType {
   if (result && !Array.isArray(result?.stack)) result.stack = [];
   if (result && Array.isArray(result?.stack) && typeof stack === 'string') {
     result.stack.push(stack);

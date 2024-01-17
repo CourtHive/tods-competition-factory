@@ -8,9 +8,9 @@ import { generateDrawStructuresAndLinks } from './generateDrawStructuresAndLinks
 import { modifyDrawNotice } from '../../../mutate/notifications/drawNotifications';
 import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import { validateTieFormat } from '../../../validators/validateTieFormat';
-import { definedAttributes } from '../../../utilities/definedAttributes';
+import { definedAttributes } from '../../../tools/definedAttributes';
 import { getMatchUpId } from '../../../global/functions/extractors';
-import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
+import { makeDeepCopy } from '../../../tools/makeDeepCopy';
 import { generateTieMatchUps } from './tieMatchUps';
 import {
   setStageDrawSize,

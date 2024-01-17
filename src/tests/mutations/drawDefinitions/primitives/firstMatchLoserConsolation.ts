@@ -7,25 +7,15 @@ import { automatedPositioning } from '../../../../mutate/drawDefinitions/automat
 import { assignSeed } from '../../../../mutate/drawDefinitions/entryGovernor/seedAssignment';
 import { attachPolicies } from '../../../../mutate/extensions/policies/attachPolicies';
 import { getDrawStructures } from '../../../../acquire/findStructure';
-import { generateRange } from '../../../../utilities/arrays';
+import { generateRange } from '../../../../tools/arrays';
 
 import SEEDING_POLICY from '../../../../fixtures/policies/POLICY_SEEDING_ITF';
-import {
-  MAIN,
-  FIRST_MATCH_LOSER_CONSOLATION,
-  CONSOLATION,
-} from '../../../../constants/drawDefinitionConstants';
+import { MAIN, FIRST_MATCH_LOSER_CONSOLATION, CONSOLATION } from '../../../../constants/drawDefinitionConstants';
 
 // NOTE: replace all other occurrences of this function with this one
 
 export function generateFMLC(params) {
-  const {
-    tournamentRecord,
-    policyDefinitions,
-    participantsCount,
-    seedsCount,
-    drawSize,
-  } = params;
+  const { tournamentRecord, policyDefinitions, participantsCount, seedsCount, drawSize } = params;
   const drawType = FIRST_MATCH_LOSER_CONSOLATION;
 
   const drawDefinition = newDrawDefinition();

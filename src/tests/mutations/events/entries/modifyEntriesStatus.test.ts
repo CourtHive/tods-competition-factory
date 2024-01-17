@@ -1,25 +1,13 @@
 import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
-import { UUID } from '../../../../utilities/UUID';
+import { UUID } from '../../../../tools/UUID';
 import { expect, it } from 'vitest';
-import {
-  getEntryStatus,
-  getParticipantId,
-  getParticipantIds,
-} from '../../../../global/functions/extractors';
-import {
-  instanceCount,
-  intersection,
-  unique,
-} from '../../../../utilities/arrays';
+import { getEntryStatus, getParticipantId, getParticipantIds } from '../../../../global/functions/extractors';
+import { instanceCount, intersection, unique } from '../../../../tools/arrays';
 
 import { QUALIFYING } from '../../../../constants/drawDefinitionConstants';
 import { COMPETITOR } from '../../../../constants/participantRoles';
-import {
-  INDIVIDUAL,
-  PAIR,
-  TEAM,
-} from '../../../../constants/participantConstants';
+import { INDIVIDUAL, PAIR, TEAM } from '../../../../constants/participantConstants';
 import {
   ENTRY_STATUS_NOT_ALLOWED_FOR_EVENT,
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
@@ -49,9 +37,7 @@ it('can modify entryStatus within event.entries', () => {
     drawProfiles,
   });
 
-  const { participants } = tournamentEngine
-    .setState(tournamentRecord)
-    .getParticipants();
+  const { participants } = tournamentEngine.setState(tournamentRecord).getParticipants();
   const participantIds = getParticipantIds(participants);
 
   let result = tournamentEngine.addEventEntries({ eventId, participantIds });
@@ -65,7 +51,7 @@ it('can modify entryStatus within event.entries', () => {
   });
   const assignedParticipantIds = positionAssignments.map(getParticipantId);
   const unassignedParticipantIds = participantIds.filter(
-    (participantId) => !assignedParticipantIds.includes(participantId)
+    (participantId) => !assignedParticipantIds.includes(participantId),
   );
 
   result = tournamentEngine.modifyEntriesStatus({
@@ -98,17 +84,13 @@ it('can modify entryStatus within event.entries', () => {
   let eventEntries = event.entries;
   let drawEntries = drawDefinition.entries;
   let { flightProfile } = tournamentEngine.getFlightProfile({ eventId });
-  let flightEntries = flightProfile.flights.find(
-    (flight) => flight.drawId === drawId
-  )?.drawEntries;
+  let flightEntries = flightProfile.flights.find((flight) => flight.drawId === drawId)?.drawEntries;
 
   let eventEntryStatuses = unique(eventEntries.map(getEntryStatus));
   let drawEntryStatuses = unique(drawEntries.map(getEntryStatus));
   let flightEntryStatuses = unique(flightEntries.map(getEntryStatus));
 
-  expect(
-    intersection(eventEntryStatuses, [CONFIRMED, WITHDRAWN]).length
-  ).toEqual(2);
+  expect(intersection(eventEntryStatuses, [CONFIRMED, WITHDRAWN]).length).toEqual(2);
   expect(drawEntryStatuses).toEqual([DIRECT_ACCEPTANCE]);
   expect(flightEntryStatuses).toEqual([DIRECT_ACCEPTANCE]);
 
@@ -126,21 +108,13 @@ it('can modify entryStatus within event.entries', () => {
   eventEntries = event.entries;
   drawEntries = drawDefinition.entries;
   ({ flightProfile } = tournamentEngine.getFlightProfile({ eventId }));
-  flightEntries = flightProfile.flights.find(
-    (flight) => flight.drawId === drawId
-  )?.drawEntries;
+  flightEntries = flightProfile.flights.find((flight) => flight.drawId === drawId)?.drawEntries;
 
-  eventEntryStatuses = unique(
-    eventEntries.map(({ entryStatus }) => entryStatus)
-  );
+  eventEntryStatuses = unique(eventEntries.map(({ entryStatus }) => entryStatus));
   drawEntryStatuses = unique(drawEntries.map(({ entryStatus }) => entryStatus));
-  flightEntryStatuses = unique(
-    flightEntries.map(({ entryStatus }) => entryStatus)
-  );
+  flightEntryStatuses = unique(flightEntries.map(({ entryStatus }) => entryStatus));
 
-  expect(
-    intersection(eventEntryStatuses, [CONFIRMED, WITHDRAWN]).length
-  ).toEqual(2);
+  expect(intersection(eventEntryStatuses, [CONFIRMED, WITHDRAWN]).length).toEqual(2);
   expect(drawEntryStatuses).toEqual([ORGANISER_ACCEPTANCE]);
   expect(flightEntryStatuses).toEqual([ORGANISER_ACCEPTANCE]);
 });
@@ -160,9 +134,7 @@ it('can add and remove extensions from entries', () => {
     drawProfiles,
   });
 
-  const { participants } = tournamentEngine
-    .setState(tournamentRecord)
-    .getParticipants();
+  const { participants } = tournamentEngine.setState(tournamentRecord).getParticipants();
   const participantIds = getParticipantIds(participants);
 
   let result = tournamentEngine.addEventEntries({ eventId, participantIds });
@@ -176,7 +148,7 @@ it('can add and remove extensions from entries', () => {
   });
   const assignedParticipantIds = positionAssignments.map(getParticipantId);
   const unassignedParticipantIds = participantIds.filter(
-    (participantId) => !assignedParticipantIds.includes(participantId)
+    (participantId) => !assignedParticipantIds.includes(participantId),
   );
 
   result = tournamentEngine.modifyEntriesStatus({
@@ -188,9 +160,7 @@ it('can add and remove extensions from entries', () => {
 
   let { event } = tournamentEngine.getEvent({ drawId });
 
-  let entriesWithExtensions = event.entries.filter(
-    ({ extensions }) => extensions && extensions.length
-  );
+  let entriesWithExtensions = event.entries.filter(({ extensions }) => extensions && extensions.length);
   expect(entriesWithExtensions.length).toEqual(unassignedParticipantIds.length);
 
   result = tournamentEngine.modifyEntriesStatus({
@@ -201,9 +171,7 @@ it('can add and remove extensions from entries', () => {
   expect(result.success).toEqual(true);
 
   ({ event } = tournamentEngine.getEvent({ drawId }));
-  entriesWithExtensions = event.entries.filter(
-    ({ extensions }) => extensions && extensions.length
-  );
+  entriesWithExtensions = event.entries.filter(({ extensions }) => extensions && extensions.length);
   expect(entriesWithExtensions.length).toEqual(0);
 
   // is valid without a value for the purpose of removing an extension which has no value
@@ -223,9 +191,7 @@ it('can add and remove extensions from entries', () => {
   expect(result.success).toEqual(true);
 
   ({ event } = tournamentEngine.getEvent({ drawId }));
-  entriesWithExtensions = event.entries.filter(
-    ({ extensions }) => extensions && extensions.length
-  );
+  entriesWithExtensions = event.entries.filter(({ extensions }) => extensions && extensions.length);
   expect(entriesWithExtensions.length).toEqual(8);
 });
 
@@ -255,10 +221,9 @@ it('can account for individuals appearing in multiple doubles pairs', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { participants: individualParticipants } =
-    tournamentEngine.getParticipants({
-      participantFilters: { participantTypes: [INDIVIDUAL] },
-    });
+  const { participants: individualParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [INDIVIDUAL] },
+  });
   const { participants: pairParticipants } = tournamentEngine.getParticipants({
     participantFilters: { participantTypes: [PAIR] },
   });
@@ -274,10 +239,9 @@ it('can account for individuals appearing in multiple doubles pairs', () => {
     .map((index) =>
       flightProfile.flights.map(({ drawEntries }) => {
         const pairParticipantId = drawEntries[index].participantId;
-        return pairParticipants.find(
-          ({ participantId }) => participantId === pairParticipantId
-        ).individualParticipantIds[0];
-      })
+        return pairParticipants.find(({ participantId }) => participantId === pairParticipantId)
+          .individualParticipantIds[0];
+      }),
     )
     .map((individualParticipantIds) => ({
       participantType: PAIR,
@@ -295,10 +259,7 @@ it('can account for individuals appearing in multiple doubles pairs', () => {
 
   // add crossParticipants/newPairParticipants to each flight (via drawId)
   for (const index of [0, 1]) {
-    const pairParticipants = newPairParticipants.slice(
-      index * 2,
-      index * 2 + 2
-    );
+    const pairParticipants = newPairParticipants.slice(index * 2, index * 2 + 2);
     const participantIds = pairParticipants.map(getParticipantId);
     const result = tournamentEngine.addEventEntries({
       drawId: drawIds[index],
@@ -334,9 +295,7 @@ it('can account for individuals appearing in multiple doubles pairs', () => {
   });
   expect(result.error).toEqual(EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT);
 
-  const secondFlightParticipantIds = getParticipantIds(
-    secondFlight.drawEntries
-  );
+  const secondFlightParticipantIds = getParticipantIds(secondFlight.drawEntries);
   result = tournamentEngine.modifyEntriesStatus({
     participantIds: secondFlightParticipantIds,
     entryStatus: ALTERNATE,
@@ -347,12 +306,8 @@ it('can account for individuals appearing in multiple doubles pairs', () => {
   ({ flightProfile } = tournamentEngine.getFlightProfile({ eventId }));
   [firstFlight, secondFlight] = flightProfile.flights;
 
-  expect(unique(firstFlight.drawEntries.map(getEntryStatus))).toEqual([
-    DIRECT_ACCEPTANCE,
-  ]);
-  expect(unique(secondFlight.drawEntries.map(getEntryStatus))).toEqual([
-    ALTERNATE,
-  ]);
+  expect(unique(firstFlight.drawEntries.map(getEntryStatus))).toEqual([DIRECT_ACCEPTANCE]);
+  expect(unique(secondFlight.drawEntries.map(getEntryStatus))).toEqual([ALTERNATE]);
 
   const { event } = tournamentEngine.getEvent({ eventId });
   expect(instanceCount(event.entries.map(getEntryStatus))).toEqual({
@@ -420,9 +375,7 @@ it('will not allow event.entries to have entryStatus appropriate only for draws'
   expect(result.success).toEqual(true);
 
   let { event } = tournamentEngine.getEvent({ eventId });
-  expect(unique(event.entries.map(getEntryStatus))).toEqual([
-    DIRECT_ACCEPTANCE,
-  ]);
+  expect(unique(event.entries.map(getEntryStatus))).toEqual([DIRECT_ACCEPTANCE]);
 
   ({
     flightProfile: {
@@ -446,9 +399,7 @@ it('will not allow event.entries to have entryStatus appropriate only for draws'
   expect(result.error).toEqual(ENTRY_STATUS_NOT_ALLOWED_FOR_EVENT);
 
   ({ event } = tournamentEngine.getEvent({ eventId }));
-  expect(unique(event.entries.map(getEntryStatus))).toEqual([
-    DIRECT_ACCEPTANCE,
-  ]);
+  expect(unique(event.entries.map(getEntryStatus))).toEqual([DIRECT_ACCEPTANCE]);
 
   result = tournamentEngine.modifyEntriesStatus({
     entryStatus: DIRECT_ACCEPTANCE,
@@ -458,9 +409,7 @@ it('will not allow event.entries to have entryStatus appropriate only for draws'
   });
   expect(result.success).toEqual(true);
   ({ event } = tournamentEngine.getEvent({ eventId }));
-  expect(unique(event.entries.map(({ entryStage }) => entryStage))).toEqual([
-    QUALIFYING,
-  ]);
+  expect(unique(event.entries.map(({ entryStage }) => entryStage))).toEqual([QUALIFYING]);
 });
 
 it('disallows invalid entryTypes for TEAM events', () => {

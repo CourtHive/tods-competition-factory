@@ -6,7 +6,7 @@ import { generateCurtisConsolation } from './drawTypes/curtisConsolation';
 import { generatePlayoffStructures } from './drawTypes/playoffStructures';
 import { generateRoundRobin } from './drawTypes/roundRobin/roundRobin';
 import structureTemplate from '../templates/structureTemplate';
-import { constantToString } from '../../../utilities/strings';
+import { constantToString } from '../../../tools/strings';
 import { feedInChampionship } from './drawTypes/feedInChamp';
 import { treeMatchUps } from './drawTypes/eliminationTree';
 import { feedInMatchUps } from './feedInMatchUps';

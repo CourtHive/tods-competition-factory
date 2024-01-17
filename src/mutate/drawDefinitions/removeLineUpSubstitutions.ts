@@ -1,5 +1,5 @@
 import { getCollectionPositionAssignments } from '../events/getCollectionPositionAssignments';
-import { unique } from '../../utilities/arrays';
+import { unique } from '../../tools/arrays';
 
 import { LineUp } from '../../types/factoryTypes';
 
@@ -10,13 +10,12 @@ export function removeLineUpSubstitutions({ lineUp }: { lineUp: LineUp }) {
 
   const permutations = unique(
     lineUp
-      .flatMap(
-        ({ collectionAssignments }) =>
-          collectionAssignments?.map(({ collectionId, collectionPosition }) =>
-            [collectionId, collectionPosition].join('|')
-          )
+      .flatMap(({ collectionAssignments }) =>
+        collectionAssignments?.map(({ collectionId, collectionPosition }) =>
+          [collectionId, collectionPosition].join('|'),
+        ),
       )
-      .filter(Boolean)
+      .filter(Boolean),
   );
 
   permutations.forEach((permutation) => {
@@ -29,8 +28,7 @@ export function removeLineUpSubstitutions({ lineUp }: { lineUp: LineUp }) {
     });
 
     assignedParticipantIds.forEach((participantId) => {
-      if (!participantAssignments[participantId])
-        participantAssignments[participantId] = [];
+      if (!participantAssignments[participantId]) participantAssignments[participantId] = [];
       participantAssignments[participantId].push({
         collectionId,
         collectionPosition,

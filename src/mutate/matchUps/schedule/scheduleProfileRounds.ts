@@ -4,7 +4,7 @@ import { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDepend
 import { getMatchUpDailyLimits } from '../../../query/extensions/getMatchUpDailyLimits';
 import { checkRequiredParameters } from '../../../parameters/checkRequiredParameters';
 import { getVenuesAndCourts } from '../../../query/venues/venuesAndCourtsGetter';
-import { extractDate, isValidDateString } from '../../../utilities/dateTime';
+import { extractDate, isValidDateString } from '../../../tools/dateTime';
 import { getSchedulingProfile } from '../../tournaments/schedulingProfile';
 import { jinnScheduler } from './schedulers/jinnScheduler/jinnScheduler';
 import { getPersonRequests } from '../../../query/matchUps/scheduling/getPersonRequests';

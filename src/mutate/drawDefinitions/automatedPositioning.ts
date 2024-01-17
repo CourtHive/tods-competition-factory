@@ -9,7 +9,7 @@ import { getParticipants } from '../../query/participants/getParticipants';
 import { getStageEntries } from '../../query/drawDefinition/stageGetter';
 import { getAllDrawMatchUps } from '../../query/matchUps/drawMatchUps';
 import { modifyDrawNotice } from '../notifications/drawNotifications';
-import { makeDeepCopy } from '../../utilities/makeDeepCopy';
+import { makeDeepCopy } from '../../tools/makeDeepCopy';
 import { findStructure } from '../../acquire/findStructure';
 import { ResultType, decorateResult } from '../../global/functions/decorateResult';
 import { getSeedPattern, getValidSeedBlocks } from '../../query/drawDefinition/seedGetter';

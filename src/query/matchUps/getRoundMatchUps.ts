@@ -1,10 +1,10 @@
 import { completedMatchUpStatuses } from '../../constants/matchUpStatusConstants';
-import { definedAttributes } from '../../utilities/definedAttributes';
+import { definedAttributes } from '../../tools/definedAttributes';
 import { validMatchUps } from '../../validators/validMatchUp';
-import { numericSort } from '../../utilities/sorting';
-import { ensureInt } from '../../utilities/ensureInt';
-import { isPowerOf2 } from '../../utilities/math';
-import { chunkArray, generateRange, intersection } from '../../utilities/arrays';
+import { numericSort } from '../../tools/sorting';
+import { ensureInt } from '../../tools/ensureInt';
+import { isPowerOf2 } from '../../tools/math';
+import { chunkArray, generateRange, intersection } from '../../tools/arrays';
 
 import { ErrorType, INVALID_VALUES } from '../../constants/errorConditionConstants';
 import { SUCCESS } from '../../constants/resultConstants';

@@ -1,4 +1,4 @@
-import { isConvertableInteger } from '../../utilities/math';
+import { isConvertableInteger } from '../../tools/math';
 import { getTargetElement } from './getTargetElement';
 
 type GetAwardPointsArgs = {
@@ -20,9 +20,7 @@ export function getAwardPoints({
   const getFlightValue = (flightNumber, targetElement) => {
     if (!flightNumber) return;
     if (Array.isArray(targetElement)) {
-      const arrayMember = targetElement.find(
-        (m) => m.flight === flightNumber || m.f === flightNumber
-      );
+      const arrayMember = targetElement.find((m) => m.flight === flightNumber || m.f === flightNumber);
       return arrayMember.value || arrayMember.v;
     }
     if (typeof targetElement === 'object') {
@@ -32,14 +30,10 @@ export function getAwardPoints({
   };
 
   const getValue = (obj, flightNumber) => {
-    const objectValue =
-      obj?.value || obj?.v || (isConvertableInteger(obj) ? obj : 0);
+    const objectValue = obj?.value || obj?.v || (isConvertableInteger(obj) ? obj : 0);
     const targetElement = getTargetElement(level, obj?.level);
     const flightValue = getFlightValue(flightNumber, targetElement);
-    const value =
-      flightValue ||
-      (isConvertableInteger(targetElement) && targetElement) ||
-      objectValue;
+    const value = flightValue || (isConvertableInteger(targetElement) && targetElement) || objectValue;
     return { value };
   };
 
@@ -47,24 +41,15 @@ export function getAwardPoints({
   let requireWin;
   let s, t, d;
 
-  const winAccessor =
-    (participantWon && 'won') ||
-    (participantWon === false && 'lost') ||
-    undefined;
+  const winAccessor = (participantWon && 'won') || (participantWon === false && 'lost') || undefined;
 
   if (Array.isArray(valueObj)) {
-    let sizeDefined = valueObj.find(
-      (obj) => obj.drawSize === drawSize || obj.drawSizes?.includes(drawSize)
-    );
+    let sizeDefined = valueObj.find((obj) => obj.drawSize === drawSize || obj.drawSizes?.includes(drawSize));
 
     // threshold attribute allows a definition for e.g. drawSize: 16 to apply to all LARGER drawSizes
-    let thresholdMatched = valueObj.find(
-      (obj) => obj.drawSize && obj.threshold && drawSize > obj.drawSize
-    );
+    let thresholdMatched = valueObj.find((obj) => obj.drawSize && obj.threshold && drawSize > obj.drawSize);
     // a default definition can be provided which has no drawSize or drawSizes
-    let defaultDef = valueObj.find(
-      (obj) => !obj.drawSize && !obj.drawSizes?.length
-    );
+    let defaultDef = valueObj.find((obj) => !obj.drawSize && !obj.drawSizes?.length);
 
     if (winAccessor !== undefined) {
       sizeDefined = sizeDefined?.[winAccessor];
@@ -76,10 +61,7 @@ export function getAwardPoints({
     d = getValue(defaultDef, flightNumber).value;
     awardPoints = s || t || d;
 
-    requireWin =
-      (s && sizeDefined.requireWin) ||
-      (t && thresholdMatched.requireWin) ||
-      defaultDef?.requireWin;
+    requireWin = (s && sizeDefined.requireWin) || (t && thresholdMatched.requireWin) || defaultDef?.requireWin;
   } else if (typeof valueObj === 'object') {
     let sizeDefined = valueObj?.drawSizes?.[drawSize];
     let defaultDef = valueObj;

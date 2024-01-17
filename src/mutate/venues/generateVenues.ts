@@ -1,5 +1,5 @@
-import { generateDateRange, formatDate } from '../../utilities/dateTime';
-import { UUID } from '../../utilities/UUID';
+import { generateDateRange, formatDate } from '../../tools/dateTime';
+import { UUID } from '../../tools/UUID';
 import { addCourts } from './addCourt';
 import { addVenue } from './addVenue';
 

@@ -1,17 +1,12 @@
 import { setSubscriptions } from '../../../../global/state/globalState';
 import mocksEngine from '../../../../assemblies/engines/mock';
-import { generateRange } from '../../../../utilities/arrays';
+import { generateRange } from '../../../../tools/arrays';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, test } from 'vitest';
 
 import { CONSOLATION } from '../../../../constants/drawDefinitionConstants';
 import { MODIFY_MATCHUP } from '../../../../constants/topicConstants';
-import {
-  COMPLETED,
-  DOUBLE_WALKOVER,
-  TO_BE_PLAYED,
-  WALKOVER,
-} from '../../../../constants/matchUpStatusConstants';
+import { COMPLETED, DOUBLE_WALKOVER, TO_BE_PLAYED, WALKOVER } from '../../../../constants/matchUpStatusConstants';
 
 const getTarget = (params) => {
   const { matchUps, roundNumber, roundPosition, stage } = params;
@@ -19,7 +14,7 @@ const getTarget = (params) => {
     (matchUp) =>
       matchUp.roundNumber === roundNumber &&
       matchUp.roundPosition === roundPosition &&
-      (!stage || matchUp.stage === stage)
+      (!stage || matchUp.stage === stage),
   );
 };
 
@@ -60,9 +55,7 @@ test('A produced WALKOVER encountering a produced WALKOVER winningSide will not 
   let result = setSubscriptions({
     subscriptions: {
       [MODIFY_MATCHUP]: (matchUps) => {
-        matchUps.forEach(({ matchUp }) =>
-          modifiedMatchUpLog.push([matchUp.roundNumber, matchUp.roundPosition])
-        );
+        matchUps.forEach(({ matchUp }) => modifiedMatchUpLog.push([matchUp.roundNumber, matchUp.roundPosition]));
       },
     },
   });
@@ -269,9 +262,7 @@ test('A produced WALKOVER encountering a produced WALKOVER winningSide will not 
     expect(matchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
     expect(matchUp.winningSide).toEqual(undefined);
     const drawPositions = matchUp.drawPositions?.filter(Boolean);
-    expect(drawPositions?.length).toEqual(
-      matchUp.roundNumber === 1 ? 2 : undefined
-    );
+    expect(drawPositions?.length).toEqual(matchUp.roundNumber === 1 ? 2 : undefined);
   });
 });
 
@@ -295,8 +286,7 @@ test('DOUBLE_WALKOVER in feedRound does not inappropriately advance drawPosition
   ];
   const mockProfile = { drawProfiles };
 
-  const { tournamentRecord } =
-    mocksEngine.generateTournamentRecord(mockProfile);
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord(mockProfile);
 
   tournamentEngine.setState(tournamentRecord);
 

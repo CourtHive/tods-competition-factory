@@ -1,10 +1,7 @@
 import { addNotice, getTopics } from '../../global/state/globalState';
 import { updateTeamEventEntries } from './updateTeamEventEntries';
-import { makeDeepCopy } from '../../utilities/makeDeepCopy';
-import {
-  ResultType,
-  decorateResult,
-} from '../../global/functions/decorateResult';
+import { makeDeepCopy } from '../../tools/makeDeepCopy';
+import { ResultType, decorateResult } from '../../global/functions/decorateResult';
 
 import { removeParticipantIdsFromAllTeams } from './removeIndividualParticipantIds';
 import { GROUP, INDIVIDUAL, TEAM } from '../../constants/participantConstants';
@@ -45,15 +42,11 @@ export function addIndividualParticipantIds({
 
   const tournamentParticipants = tournamentRecord.participants ?? [];
   const groupingParticipant = tournamentParticipants.find(
-    (participant) => participant.participantId === groupingParticipantId
+    (participant) => participant.participantId === groupingParticipantId,
   );
-  if (!groupingParticipant)
-    return decorateResult({ result: { error: PARTICIPANT_NOT_FOUND }, stack });
+  if (!groupingParticipant) return decorateResult({ result: { error: PARTICIPANT_NOT_FOUND }, stack });
 
-  if (
-    groupingParticipant?.participantType &&
-    ![TEAM, GROUP].includes(groupingParticipant.participantType)
-  ) {
+  if (groupingParticipant?.participantType && ![TEAM, GROUP].includes(groupingParticipant.participantType)) {
     return decorateResult({
       context: { participantType: groupingParticipant.participantType },
       result: { error: INVALID_PARTICIPANT_TYPE },
@@ -62,15 +55,12 @@ export function addIndividualParticipantIds({
   }
 
   // integrity chck to ensure only individuals can be added to groupings
-  const invalidParticipantIds = individualParticipantIds.filter(
-    (participantId) => {
-      const participant = tournamentParticipants.find(
-        (tournamentParticipant) =>
-          tournamentParticipant.participantId === participantId
-      );
-      return participant?.participantType !== INDIVIDUAL;
-    }
-  );
+  const invalidParticipantIds = individualParticipantIds.filter((participantId) => {
+    const participant = tournamentParticipants.find(
+      (tournamentParticipant) => tournamentParticipant.participantId === participantId,
+    );
+    return participant?.participantType !== INDIVIDUAL;
+  });
 
   if (invalidParticipantIds.length)
     return decorateResult({
@@ -78,18 +68,13 @@ export function addIndividualParticipantIds({
       stack,
     });
 
-  if (!groupingParticipant.individualParticipantIds)
-    groupingParticipant.individualParticipantIds = [];
-  const existingIndividualParticipantIds =
-    groupingParticipant.individualParticipantIds;
+  if (!groupingParticipant.individualParticipantIds) groupingParticipant.individualParticipantIds = [];
+  const existingIndividualParticipantIds = groupingParticipant.individualParticipantIds;
 
-  const participantIdsToAdd = individualParticipantIds.filter(
-    (participantId) => {
-      const participantIsMember =
-        existingIndividualParticipantIds.includes(participantId);
-      return !participantIsMember;
-    }
-  );
+  const participantIdsToAdd = individualParticipantIds.filter((participantId) => {
+    const participantIsMember = existingIndividualParticipantIds.includes(participantId);
+    return !participantIsMember;
+  });
 
   if (participantIdsToAdd.length) {
     if (removeFromOtherTeams) {
@@ -98,16 +83,15 @@ export function addIndividualParticipantIds({
         tournamentRecord,
       });
     }
-    groupingParticipant.individualParticipantIds =
-      groupingParticipant.individualParticipantIds.concat(
-        ...participantIdsToAdd
-      );
+    groupingParticipant.individualParticipantIds = groupingParticipant.individualParticipantIds.concat(
+      ...participantIdsToAdd,
+    );
   }
 
   const { topics } = getTopics();
   if (topics.includes(MODIFY_PARTICIPANTS)) {
     const updatedParticipant = tournamentParticipants.find(
-      ({ participantId }) => participantId === groupingParticipantId
+      ({ participantId }) => participantId === groupingParticipantId,
     );
 
     addNotice({

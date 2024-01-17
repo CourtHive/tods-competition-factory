@@ -1,4 +1,4 @@
-import { chunkArray, unique } from '../../../../utilities/arrays';
+import { chunkArray, unique } from '../../../../tools/arrays';
 import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
@@ -6,26 +6,16 @@ import { expect, it } from 'vitest';
 import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';
 import { QUALIFYING } from '../../../../constants/drawDefinitionConstants';
 import { ALTERNATE } from '../../../../constants/entryStatusConstants';
-import {
-  INVALID_PARTICIPANT_IDS,
-  MISSING_EVENT,
-} from '../../../../constants/errorConditionConstants';
-import {
-  DOUBLES_EVENT,
-  SINGLES_EVENT,
-} from '../../../../constants/eventConstants';
+import { INVALID_PARTICIPANT_IDS, MISSING_EVENT } from '../../../../constants/errorConditionConstants';
+import { DOUBLES_EVENT, SINGLES_EVENT } from '../../../../constants/eventConstants';
 
 it('can modify entries for a DOUBLES event and create PAIR participants', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     participantsProfile: { participantsCount: 32 },
   });
-  let participants =
-    tournamentEngine.setState(tournamentRecord).getParticipants()
-      .participants ?? [];
+  let participants = tournamentEngine.setState(tournamentRecord).getParticipants().participants ?? [];
 
-  let participantTypes = unique(
-    participants.map(({ participantType }) => participantType)
-  );
+  let participantTypes = unique(participants.map(({ participantType }) => participantType));
   expect(participantTypes).toEqual([INDIVIDUAL]);
 
   const participantIds = participants.map(({ participantId }) => participantId);
@@ -55,9 +45,7 @@ it('can modify entries for a DOUBLES event and create PAIR participants', () => 
   expect(result.success).toEqual(true);
 
   participants = tournamentEngine.getParticipants().participants ?? [];
-  participantTypes = unique(
-    participants.map(({ participantType }) => participantType)
-  );
+  participantTypes = unique(participants.map(({ participantType }) => participantType));
 
   // modifyEventEntries has automatically created PAIR participants
   expect(participantTypes).toEqual([INDIVIDUAL, PAIR]);

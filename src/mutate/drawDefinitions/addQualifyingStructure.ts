@@ -1,6 +1,6 @@
 import { generateQualifyingStructure } from '../../assemblies/generators/drawDefinitions/drawTypes/generateQualifyingStructure';
 import { addTournamentTimeItem } from '../timeItems/addTimeItem';
-import { definedAttributes } from '../../utilities/definedAttributes';
+import { definedAttributes } from '../../tools/definedAttributes';
 import { attachQualifyingStructure } from './attachQualifyingStructure';
 
 import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';

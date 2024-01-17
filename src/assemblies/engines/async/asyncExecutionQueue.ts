@@ -2,7 +2,7 @@ import { deleteNotices, getTournamentRecords, getMethods } from '../../../global
 import { notifySubscribersAsync } from '../../../global/state/notifySubscribers';
 import { getMutationStatus } from '../parts/getMutationStatus';
 import { logMethodNotFound } from '../parts/logMethodNotFound';
-import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
+import { makeDeepCopy } from '../../../tools/makeDeepCopy';
 import { executeFunction } from '../parts/executeMethod';
 import { setState } from '../parts/stateMethods';
 

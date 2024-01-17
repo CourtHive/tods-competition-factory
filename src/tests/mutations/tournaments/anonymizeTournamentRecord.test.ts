@@ -1,6 +1,6 @@
 import { findExtension } from '../../../acquire/findExtension';
 import mocksEngine from '../../../assemblies/engines/mock';
-import { intersection } from '../../../utilities/arrays';
+import { intersection } from '../../../tools/arrays';
 import { expect, it, test } from 'vitest';
 import fs from 'fs';
 
@@ -42,26 +42,19 @@ test.each(mockProfiles)('it can anonymize tournamentRecords', (mockProfile) => {
     tournamentName,
   });
 
-  const originalPersons = tournamentRecord.participants.map(
-    (participant) => participant.person
-  );
+  const originalPersons = tournamentRecord.participants.map((participant) => participant.person);
 
-  const originalEventEntries = tournamentRecord.events[0].entries.map(
-    ({ participantId }) => participantId
+  const originalEventEntries = tournamentRecord.events[0].entries.map(({ participantId }) => participantId);
+  const originalDrawEntries = tournamentRecord.events[0].drawDefinitions[0].entries.map(
+    ({ participantId }) => participantId,
   );
-  const originalDrawEntries =
-    tournamentRecord.events[0].drawDefinitions[0].entries.map(
-      ({ participantId }) => participantId
-    );
 
   let { extension: flightProfile } = findExtension({
     element: tournamentRecord.events[0],
     name: FLIGHT_PROFILE,
   });
 
-  const originalFlightEntries = flightProfile?.value.flights[0].drawEntries.map(
-    ({ participantId }) => participantId
-  );
+  const originalFlightEntries = flightProfile?.value.flights[0].drawEntries.map(({ participantId }) => participantId);
 
   expect(tournamentRecord.tournamentName).toEqual(tournamentName);
   const result = mocksEngine.anonymizeTournamentRecord({ tournamentRecord });
@@ -69,49 +62,38 @@ test.each(mockProfiles)('it can anonymize tournamentRecords', (mockProfile) => {
 
   expect(tournamentRecord.tournamentName.split(':')[0]).toEqual(`Anonymized`);
 
-  const generatedPersons = tournamentRecord.participants.map(
-    (participant) => participant.person
-  );
+  const generatedPersons = tournamentRecord.participants.map((participant) => participant.person);
 
   const originalPersonIds = originalPersons.map(({ personId }) => personId);
   const generatedPersonIds = generatedPersons.map(({ personId }) => personId);
   expect(intersection(originalPersonIds, generatedPersonIds).length).toEqual(0);
 
-  const eventEntries = tournamentRecord.events[0].entries.map(
-    ({ participantId }) => participantId
-  );
+  const eventEntries = tournamentRecord.events[0].entries.map(({ participantId }) => participantId);
   expect(intersection(originalEventEntries, eventEntries).length).toEqual(0);
 
-  const drawEntries = tournamentRecord.events[0].drawDefinitions[0].entries.map(
-    ({ participantId }) => participantId
-  );
+  const drawEntries = tournamentRecord.events[0].drawDefinitions[0].entries.map(({ participantId }) => participantId);
   expect(intersection(originalDrawEntries, drawEntries).length).toEqual(0);
 
   ({ extension: flightProfile } = findExtension({
     element: tournamentRecord.events[0],
     name: FLIGHT_PROFILE,
   }));
-  const flightEntries = flightProfile?.value.flights[0].drawEntries.map(
-    ({ participantId }) => participantId
-  );
+  const flightEntries = flightProfile?.value.flights[0].drawEntries.map(({ participantId }) => participantId);
   expect(intersection(originalFlightEntries, flightEntries).length).toEqual(0);
 });
 
 const sourcePath = './src/tests/testHarness';
 const filenames = fs.readdirSync(sourcePath).filter(
-  (filename) => filename.indexOf('.tods.json') > 0 && filename.indexOf('.8') > 0 // skip v0.8
+  (filename) => filename.indexOf('.tods.json') > 0 && filename.indexOf('.8') > 0, // skip v0.8
 );
 
-it.each(filenames)(
-  'can anonymize TODS files in the testHarness directory',
-  (filename) => {
-    const tournamentRecord = JSON.parse(
-      fs.readFileSync(`./src/global/testHarness/${filename}`, {
-        encoding: 'utf8',
-      })
-    );
+it.each(filenames)('can anonymize TODS files in the testHarness directory', (filename) => {
+  const tournamentRecord = JSON.parse(
+    fs.readFileSync(`./src/global/testHarness/${filename}`, {
+      encoding: 'utf8',
+    }),
+  );
 
-    const result = mocksEngine.anonymizeTournamentRecord({ tournamentRecord });
-    expect(result.success).toEqual(true);
-  }
-);
+  const result = mocksEngine.anonymizeTournamentRecord({ tournamentRecord });
+  expect(result.success).toEqual(true);
+});

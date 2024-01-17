@@ -1,9 +1,9 @@
 import { resolveTieFormat } from '../../../query/hierarchical/tieFormats/resolveTieFormat';
-import { definedAttributes } from '../../../utilities/definedAttributes';
-import { isConvertableInteger } from '../../../utilities/math';
-import { generateRange } from '../../../utilities/arrays';
+import { definedAttributes } from '../../../tools/definedAttributes';
+import { isConvertableInteger } from '../../../tools/math';
+import { generateRange } from '../../../tools/arrays';
 import { generateTieMatchUps } from './tieMatchUps';
-import { UUID } from '../../../utilities/UUID';
+import { UUID } from '../../../tools/UUID';
 
 import { DrawDefinition, EntryStatusUnion, Event, MatchUp, Tournament } from '../../../types/tournamentTypes';
 import { STRUCTURE_SELECTED_STATUSES } from '../../../constants/entryStatusConstants';

@@ -3,7 +3,7 @@ import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import { getMatchUpIds } from '../../../global/functions/extractors';
-import { xa } from '../../../utilities/objects';
+import { xa } from '../../../tools/objects';
 import { resequenceStructures } from './resequenceStructures';
 import { findStructure } from '../../../acquire/findStructure';
 import { deleteMatchUpsNotice, modifyDrawNotice } from '../../notifications/drawNotifications';

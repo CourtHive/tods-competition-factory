@@ -5,7 +5,7 @@ import { resolveTournamentRecords } from '../../parameters/resolveTournamentReco
 import { checkAndUpdateSchedulingProfile } from '../tournaments/schedulingProfile';
 import venueTemplate from '../../assemblies/generators/templates/venueTemplate';
 import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
-import { makeDeepCopy } from '../../utilities/makeDeepCopy';
+import { makeDeepCopy } from '../../tools/makeDeepCopy';
 import { addNotice } from '../../global/state/globalState';
 import { modifyCourt } from './modifyCourt';
 import { addCourt } from './addCourt';

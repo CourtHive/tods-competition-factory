@@ -4,7 +4,7 @@ import { getUnplacedParticipantIds } from './getUnplacedParticipantIds';
 import { getParticipantGroups } from './analyzeDrawPositions';
 import { getNextParticipantId } from './getNextParticipantId';
 import { getUnfilledPositions } from './getUnfilledPositions';
-import { randomPop } from '../../../../utilities/arrays';
+import { randomPop } from '../../../../tools/arrays';
 
 type GetParticipantPlacementArgs = {
   candidatePositionAssignments: PositionAssignment[];
@@ -42,13 +42,12 @@ export function getParticipantPlacement({
     drawPositionGroups,
   });
 
-  const { participantId: selectedParticipantId, groupKey: newGroupKey } =
-    getNextParticipantId({
-      targetParticipantIds,
-      useSpecifiedGroupKey,
-      allGroups,
-      groupKey,
-    });
+  const { participantId: selectedParticipantId, groupKey: newGroupKey } = getNextParticipantId({
+    targetParticipantIds,
+    useSpecifiedGroupKey,
+    allGroups,
+    groupKey,
+  });
 
   const selectedParticipantGroups = getParticipantGroups({
     participantId: selectedParticipantId,
@@ -71,9 +70,7 @@ export function getParticipantPlacement({
   const desiredOptions = pairedPriority && pnc ? pnc : up;
   const fallbackOptions = pairedPriority ? up : pnc;
 
-  const prioritizedOptions =
-    (desiredOptions?.length && desiredOptions) ||
-    (fallbackOptions?.length && fallbackOptions);
+  const prioritizedOptions = (desiredOptions?.length && desiredOptions) || (fallbackOptions?.length && fallbackOptions);
 
   let targetDrawPosition;
   if (prioritizedOptions?.length) {

@@ -1,7 +1,7 @@
 import { getParticipantId } from '../../../global/functions/extractors';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
-import { unique } from '../../../utilities/arrays';
+import { unique } from '../../../tools/arrays';
 import { mockProfile } from './mockScaleProfile';
 import { expect, it, test } from 'vitest';
 
@@ -9,10 +9,7 @@ import ratingsParameters from '../../../fixtures/ratings/ratingsParameters';
 import { ELO, NTRP, UTR, WTN } from '../../../constants/ratingConstants';
 import { COMPLETED } from '../../../constants/matchUpStatusConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
-import {
-  EVENT_NOT_FOUND,
-  INVALID_VALUES,
-} from '../../../constants/errorConditionConstants';
+import { EVENT_NOT_FOUND, INVALID_VALUES } from '../../../constants/errorConditionConstants';
 
 const WTN_RATING = 'SCALE.RATING.SINGLES.WTN';
 
@@ -29,38 +26,35 @@ const rankingsScenarios = [
   { category: { ratingType: ELO, ratingMin: 1200, ratingMax: 1400 }, expectation: { timeItem: { itemType: 'SCALE.RATING.SINGLES.ELO' } }},
 ];
 
-test.each(rankingsScenarios)(
-  'it can generate rankings for participants',
-  (scenario) => {
-    const participantsProfile = {
-      category: scenario.category,
-      participantsCount: 1,
-    };
+test.each(rankingsScenarios)('it can generate rankings for participants', (scenario) => {
+  const participantsProfile = {
+    category: scenario.category,
+    participantsCount: 1,
+  };
 
-    const {
-      participants: [participant],
-    } = mocksEngine.generateParticipants(participantsProfile);
+  const {
+    participants: [participant],
+  } = mocksEngine.generateParticipants(participantsProfile);
 
-    if (scenario.expectation.timeItem && participant.timeItems?.length) {
-      const timeItem = participant.timeItems[0];
-      expect(timeItem.itemType).toEqual(scenario.expectation.timeItem.itemType);
-      const { ratingMin, ratingMax, ratingType } = scenario.category;
-      const accessor = ratingType && ratingsParameters[ratingType]?.accessor;
-      const itemValue = timeItem.itemValue;
-      const value = accessor ? itemValue[accessor] : itemValue;
+  if (scenario.expectation.timeItem && participant.timeItems?.length) {
+    const timeItem = participant.timeItems[0];
+    expect(timeItem.itemType).toEqual(scenario.expectation.timeItem.itemType);
+    const { ratingMin, ratingMax, ratingType } = scenario.category;
+    const accessor = ratingType && ratingsParameters[ratingType]?.accessor;
+    const itemValue = timeItem.itemValue;
+    const value = accessor ? itemValue[accessor] : itemValue;
 
-      expect(value).not.toBeUndefined();
+    expect(value).not.toBeUndefined();
 
-      if (ratingMin && ratingMax) {
-        expect(value).toBeLessThanOrEqual(ratingMax);
-        expect(value).toBeGreaterThanOrEqual(ratingMin);
-      }
-    } else {
-      // ratingMin and ratingMax are close and there is a chance no random values fall into the range
-      expect([ELO, WTN].includes(ratingType)).toEqual(true);
+    if (ratingMin && ratingMax) {
+      expect(value).toBeLessThanOrEqual(ratingMax);
+      expect(value).toBeGreaterThanOrEqual(ratingMin);
     }
+  } else {
+    // ratingMin and ratingMax are close and there is a chance no random values fall into the range
+    expect([ELO, WTN].includes(ratingType)).toEqual(true);
   }
-);
+});
 
 const ratingType = WTN;
 const categoryName = '12U';
@@ -73,40 +67,36 @@ const mockScenarios = [
    { eventProfiles: [{ drawProfiles: [{ drawSize: 4 }], category: { ratingType }, rankingRange: [1, 15] }], expectation: { itemType: WTN_RATING }}
 ];
 
-it.each(mockScenarios)(
-  'can generate events with scaled participants',
-  (scenario) => {
-    const {
-      tournamentRecord,
-      drawIds: [drawId],
-    } = mocksEngine.generateTournamentRecord(scenario);
-    tournamentEngine.setState(tournamentRecord);
+it.each(mockScenarios)('can generate events with scaled participants', (scenario) => {
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord(scenario);
+  tournamentEngine.setState(tournamentRecord);
 
-    const {
-      drawDefinition: {
-        structures: [{ structureId }],
-      },
-    } = tournamentEngine.getEvent({ drawId });
-    const { positionAssignments } = tournamentEngine.getPositionAssignments({
-      structureId,
-      drawId,
-    });
-    const participantIds = positionAssignments.map(getParticipantId);
-    const { participants } = tournamentEngine.getParticipants({
-      participantFilters: { participantIds },
-    });
-    participants.forEach(({ timeItems }) => {
-      const { itemValue, itemType } = timeItems[0];
-      expect(itemType).toEqual(scenario.expectation.itemType);
-      expect(itemValue).not.toBeUndefined();
-    });
-  }
-);
+  const {
+    drawDefinition: {
+      structures: [{ structureId }],
+    },
+  } = tournamentEngine.getEvent({ drawId });
+  const { positionAssignments } = tournamentEngine.getPositionAssignments({
+    structureId,
+    drawId,
+  });
+  const participantIds = positionAssignments.map(getParticipantId);
+  const { participants } = tournamentEngine.getParticipants({
+    participantFilters: { participantIds },
+  });
+  participants.forEach(({ timeItems }) => {
+    const { itemValue, itemType } = timeItems[0];
+    expect(itemType).toEqual(scenario.expectation.itemType);
+    expect(itemValue).not.toBeUndefined();
+  });
+});
 
 // testing that NTRP values can be generated with a "step" of "0.5"
 test('generates participants with rankings and ratings with additional embellishments', () => {
-  const { tournamentRecord, eventIds } =
-    mocksEngine.generateTournamentRecord(mockProfile);
+  const { tournamentRecord, eventIds } = mocksEngine.generateTournamentRecord(mockProfile);
 
   tournamentEngine.setState(tournamentRecord);
 
@@ -127,8 +117,7 @@ test('generates participants with rankings and ratings with additional embellish
       typesCount += 1;
     } else if (itemType === WTN_RATING) {
       const decimalValue = itemValue.wtnRating.toString().split('.')[1];
-      decimalValue &&
-        expect([1, 2].includes(decimalValue?.length)).toEqual(true);
+      decimalValue && expect([1, 2].includes(decimalValue?.length)).toEqual(true);
       typesCount += 1;
     } else if (itemType === 'SCALE.RATING.SINGLES.NTRP') {
       const decimalValue = itemValue.ntrpRating.toString().split('.')[1];
@@ -187,11 +176,7 @@ test('generates participants with rankings and ratings with additional embellish
   });
   const scaleValuesPresent = matchUps.every(
     ({ sides }) =>
-      !sides ||
-      sides.some(
-        ({ participant }) =>
-          !participant || participant.ratings || participant.rankings
-      )
+      !sides || sides.some(({ participant }) => !participant || participant.ratings || participant.rankings),
   );
 
   expect(scaleValuesPresent).toEqual(true);
@@ -204,9 +189,7 @@ test('generates participants with rankings and ratings with additional embellish
 });
 
 it('can assess predictive accuracy of scaleValues', () => {
-  const drawProfile: any = mockProfile.drawProfiles.find(
-    (drawProfile) => drawProfile.category.ratingType === WTN
-  );
+  const drawProfile: any = mockProfile.drawProfiles.find((drawProfile) => drawProfile.category.ratingType === WTN);
   const drawSize = 64;
   if (drawProfile) {
     drawProfile.scaledParticipantsCount = drawSize - 4;
@@ -222,9 +205,7 @@ it('can assess predictive accuracy of scaleValues', () => {
   tournamentEngine.setState(tournamentRecord);
 
   const participants = tournamentRecord.participants;
-  const participantsWithTimeItemsCount = participants.filter(
-    ({ timeItems }) => timeItems?.length
-  ).length;
+  const participantsWithTimeItemsCount = participants.filter(({ timeItems }) => timeItems?.length).length;
 
   expect(participantsWithTimeItemsCount).toEqual(drawSize - 4);
 
@@ -253,16 +234,14 @@ it('can assess predictive accuracy of scaleValues', () => {
   });
   expect(result.error).toEqual(INVALID_VALUES);
 
-  const { accuracy, zoneDistribution } = tournamentEngine.getPredictiveAccuracy(
-    {
-      exclusionRule: { valueAccessor: 'confidence', range: [0, 70] },
-      matchUpFilters: { matchUpStatuses: [COMPLETED] },
-      ascending: true, // scale goes from low to high
-      valueAccessor: 'wtnRating',
-      scaleName: WTN,
-      zoneMargin: 3,
-    }
-  );
+  const { accuracy, zoneDistribution } = tournamentEngine.getPredictiveAccuracy({
+    exclusionRule: { valueAccessor: 'confidence', range: [0, 70] },
+    matchUpFilters: { matchUpStatuses: [COMPLETED] },
+    ascending: true, // scale goes from low to high
+    valueAccessor: 'wtnRating',
+    scaleName: WTN,
+    zoneMargin: 3,
+  });
 
   const distributionValues: number[] = Object.values(zoneDistribution);
   const zonePercentTotal = distributionValues.reduce((a, b) => a + b);
@@ -278,15 +257,11 @@ it('can assess predictive accuracy of scaleValues', () => {
 
   accuracy.affirmative.forEach(({ winningSide, sideValues }) => {
     const winningIndex = winningSide - 1;
-    expect(sideValues[winningIndex].value).toBeLessThanOrEqual(
-      sideValues[1 - winningIndex].value
-    );
+    expect(sideValues[winningIndex].value).toBeLessThanOrEqual(sideValues[1 - winningIndex].value);
   });
   accuracy.negative.forEach(({ winningSide, sideValues }) => {
     const winningIndex = winningSide - 1;
-    expect(sideValues[winningIndex].value).toBeGreaterThanOrEqual(
-      sideValues[1 - winningIndex].value
-    );
+    expect(sideValues[winningIndex].value).toBeGreaterThanOrEqual(sideValues[1 - winningIndex].value);
   });
 });
 
@@ -308,9 +283,7 @@ it('can get predictiveAccuracy for DOUBLES events', () => {
   tournamentEngine.setState(tournamentRecord);
 
   const matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
-  const matchUpStatuses = unique(
-    matchUps.map(({ matchUpStatus }) => matchUpStatus)
-  );
+  const matchUpStatuses = unique(matchUps.map(({ matchUpStatus }) => matchUpStatus));
   expect(matchUpStatuses).toEqual([COMPLETED]);
 
   let { accuracy } = tournamentEngine.getPredictiveAccuracy({
@@ -318,9 +291,7 @@ it('can get predictiveAccuracy for DOUBLES events', () => {
     scaleName: WTN,
   });
 
-  expect(matchUps.length).toEqual(
-    accuracy.affirmative.length + accuracy.negative.length
-  );
+  expect(matchUps.length).toEqual(accuracy.affirmative.length + accuracy.negative.length);
 
   ({ accuracy } = tournamentEngine.getPredictiveAccuracy({
     valueAccessor: 'wtnRating',
@@ -328,11 +299,7 @@ it('can get predictiveAccuracy for DOUBLES events', () => {
     drawId: 'none',
   }));
 
-  expect(
-    accuracy.affirmative.length +
-      accuracy.negative.length +
-      accuracy.excluded.length
-  ).toEqual(0);
+  expect(accuracy.affirmative.length + accuracy.negative.length + accuracy.excluded.length).toEqual(0);
 
   const result = tournamentEngine.getPredictiveAccuracy({
     valueAccessor: 'wtnRating',
@@ -360,9 +327,7 @@ it('can pass matchUps array into predictiveAccuracy', () => {
   tournamentEngine.setState(tournamentRecord);
 
   let matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
-  const matchUpStatuses = unique(
-    matchUps.map(({ matchUpStatus }) => matchUpStatus)
-  );
+  const matchUpStatuses = unique(matchUps.map(({ matchUpStatus }) => matchUpStatus));
   expect(matchUpStatuses).toEqual([COMPLETED]);
 
   const contextProfile = { withScaleValues: true, withCompetitiveness: true };
@@ -381,7 +346,5 @@ it('can pass matchUps array into predictiveAccuracy', () => {
     matchUps,
   });
 
-  expect(matchUps.length).toEqual(
-    accuracy.affirmative.length + accuracy.negative.length
-  );
+  expect(matchUps.length).toEqual(accuracy.affirmative.length + accuracy.negative.length);
 });

@@ -1,6 +1,6 @@
 import mocksEngine from '../../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../../engines/syncEngine';
-import { chunkArray } from '../../../../../utilities/arrays';
+import { chunkArray } from '../../../../../tools/arrays';
 import { expect, it } from 'vitest';
 
 import { QUALIFYING } from '../../../../../constants/drawDefinitionConstants';
@@ -36,16 +36,12 @@ it('places BYEs reasonably in qualifying structures', () => {
 
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
 
-  const qualifyingStructure = drawDefinition.structures.find(
-    ({ stage }) => stage === QUALIFYING
-  );
+  const qualifyingStructure = drawDefinition.structures.find(({ stage }) => stage === QUALIFYING);
   const { positionAssignments } = tournamentEngine.getPositionAssignments({
     structure: qualifyingStructure,
   });
 
-  const doubleByeChunks = chunkArray(positionAssignments, 2).filter((chunk) =>
-    chunk.every(({ bye }) => bye)
-  );
+  const doubleByeChunks = chunkArray(positionAssignments, 2).filter((chunk) => chunk.every(({ bye }) => bye));
 
   expect(doubleByeChunks.length).toEqual(0);
 });

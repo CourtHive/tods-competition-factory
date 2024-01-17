@@ -6,18 +6,12 @@ import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { addMatchUpTimeItem } from '../timeItems/matchUpTimeItems';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { findParticipant } from '../../../acquire/findParticipant';
-import { isConvertableInteger } from '../../../utilities/math';
-import { ensureInt } from '../../../utilities/ensureInt';
+import { isConvertableInteger } from '../../../tools/math';
+import { ensureInt } from '../../../tools/ensureInt';
 import { assignMatchUpCourt } from './assignMatchUpCourt';
 import { assignMatchUpVenue } from './assignMatchUpVenue';
-import {
-  ResultType,
-  decorateResult,
-} from '../../../global/functions/decorateResult';
-import {
-  addMatchUpScheduledTime,
-  addMatchUpTimeModifiers,
-} from './scheduledTime';
+import { ResultType, decorateResult } from '../../../global/functions/decorateResult';
+import { addMatchUpScheduledTime, addMatchUpTimeModifiers } from './scheduledTime';
 import {
   convertTime,
   extractDate,
@@ -25,7 +19,7 @@ import {
   formatDate,
   getIsoDateString,
   validTimeValue,
-} from '../../../utilities/dateTime';
+} from '../../../tools/dateTime';
 import { dateValidation, validTimeString } from '../../../validators/regex';
 
 import { INDIVIDUAL } from '../../../constants/participantConstants';
@@ -58,16 +52,11 @@ import {
   SCHEDULED_DATE,
   COURT_ORDER,
 } from '../../../constants/timeItemConstants';
-import {
-  DrawDefinition,
-  Event,
-  TimeItem,
-} from '../../../types/tournamentTypes';
+import { DrawDefinition, Event, TimeItem } from '../../../types/tournamentTypes';
 
 function timeDate(value, scheduledDate) {
   const time = validTimeString.test(value) ? value : extractTime(value);
-  const date =
-    extractDate(value) || extractDate(scheduledDate) || formatDate(new Date());
+  const date = extractDate(value) || extractDate(scheduledDate) || formatDate(new Date());
 
   // doesn't matter if this is invalid due to undefined time because this is used for sorting only
   return new Date(`${date}T${time}`).getTime();
@@ -121,9 +110,7 @@ export function addMatchUpScheduleItems({
     if (result.error) return result;
     matchUp = result.matchUp;
   } else {
-    matchUp = drawMatchUps.find(
-      (drawMatchUp) => drawMatchUp.matchUpId === matchUpId
-    );
+    matchUp = drawMatchUps.find((drawMatchUp) => drawMatchUp.matchUpId === matchUpId);
   }
 
   const {
@@ -141,10 +128,9 @@ export function addMatchUpScheduleItems({
   } = schedule;
 
   if (checkChronology && (!matchUpDependencies || !inContextMatchUps)) {
-    ({ matchUpDependencies, matchUps: inContextMatchUps } =
-      getMatchUpDependencies({
-        drawDefinition,
-      }));
+    ({ matchUpDependencies, matchUps: inContextMatchUps } = getMatchUpDependencies({
+      drawDefinition,
+    }));
   }
 
   const priorMatchUpIds = matchUpDependencies?.[matchUpId]?.matchUpIds;
@@ -152,9 +138,8 @@ export function addMatchUpScheduleItems({
     const priorMatchUpTimes = inContextMatchUps
       ?.filter(
         (matchUp) =>
-          (matchUp.schedule?.scheduledDate ||
-            extractDate(matchUp.schedule?.scheduledTime)) &&
-          priorMatchUpIds.includes(matchUp.matchUpId)
+          (matchUp.schedule?.scheduledDate || extractDate(matchUp.schedule?.scheduledTime)) &&
+          priorMatchUpIds.includes(matchUp.matchUpId),
       )
       .map(({ schedule }) => {
         const isoDateString = getIsoDateString(schedule);
@@ -184,8 +169,7 @@ export function addMatchUpScheduleItems({
       scheduledDate,
       matchUpId,
     });
-    if (result?.error)
-      return decorateResult({ result, stack, context: { scheduledDate } });
+    if (result?.error) return decorateResult({ result, stack, context: { scheduledDate } });
   }
   if (scheduledTime !== undefined) {
     const result = addMatchUpScheduledTime({
@@ -197,8 +181,7 @@ export function addMatchUpScheduleItems({
       matchUpId,
       matchUp,
     });
-    if (result?.error)
-      return decorateResult({ result, stack, context: { scheduledTime } });
+    if (result?.error) return decorateResult({ result, stack, context: { scheduledTime } });
   }
   if (startTime !== undefined) {
     const result = addMatchUpStartTime({
@@ -210,8 +193,7 @@ export function addMatchUpScheduleItems({
       startTime,
       event,
     });
-    if (result?.error)
-      return decorateResult({ result, stack, context: { startTime } });
+    if (result?.error) return decorateResult({ result, stack, context: { startTime } });
   }
   if (stopTime !== undefined) {
     const result = addMatchUpStopTime({
@@ -223,8 +205,7 @@ export function addMatchUpScheduleItems({
       stopTime,
       event,
     });
-    if (result?.error)
-      return decorateResult({ result, stack, context: { stopTime } });
+    if (result?.error) return decorateResult({ result, stack, context: { stopTime } });
   }
   if (resumeTime !== undefined) {
     const result = addMatchUpResumeTime({
@@ -236,8 +217,7 @@ export function addMatchUpScheduleItems({
       matchUpId,
       event,
     });
-    if (result?.error)
-      return decorateResult({ result, stack, context: { resumeTime } });
+    if (result?.error) return decorateResult({ result, stack, context: { resumeTime } });
   }
   if (endTime !== undefined) {
     const result = addMatchUpEndTime({
@@ -249,8 +229,7 @@ export function addMatchUpScheduleItems({
       endTime,
       event,
     });
-    if (result?.error)
-      return decorateResult({ result, stack, context: { endTime } });
+    if (result?.error) return decorateResult({ result, stack, context: { endTime } });
   }
   if (courtIds !== undefined) {
     const result = allocateTeamMatchUpCourts({
@@ -261,8 +240,7 @@ export function addMatchUpScheduleItems({
       matchUpId,
       courtIds,
     });
-    if (result?.error)
-      return decorateResult({ result, stack, context: { courtIds } });
+    if (result?.error) return decorateResult({ result, stack, context: { courtIds } });
   }
   if (courtId !== undefined && scheduledDate !== undefined) {
     const result = assignMatchUpCourt({
@@ -275,8 +253,7 @@ export function addMatchUpScheduleItems({
       matchUpId,
       courtId,
     });
-    if (result?.error)
-      return decorateResult({ result, stack, context: { courtId } });
+    if (result?.error) return decorateResult({ result, stack, context: { courtId } });
   }
 
   if (venueId !== undefined) {
@@ -289,8 +266,7 @@ export function addMatchUpScheduleItems({
       matchUpId,
       venueId,
     });
-    if (result?.error)
-      return decorateResult({ result, stack, context: { venueId } });
+    if (result?.error) return decorateResult({ result, stack, context: { venueId } });
   }
 
   if (courtOrder !== undefined && isConvertableInteger(courtOrder)) {
@@ -302,8 +278,7 @@ export function addMatchUpScheduleItems({
       courtOrder,
       matchUpId,
     });
-    if (result?.error)
-      return decorateResult({ result, stack, context: { courtOrder } });
+    if (result?.error) return decorateResult({ result, stack, context: { courtOrder } });
   }
 
   if (timeModifiers !== undefined) {
@@ -316,8 +291,7 @@ export function addMatchUpScheduleItems({
       matchUpId,
       matchUp,
     });
-    if (result?.error)
-      return decorateResult({ result, stack, context: { timeModifiers } });
+    if (result?.error) return decorateResult({ result, stack, context: { timeModifiers } });
   }
 
   if (!disableNotice) {
@@ -470,26 +444,15 @@ export function addMatchUpStartTime({
   const timeItems = matchUp?.timeItems ?? [];
 
   const earliestRelevantTimeValue = timeItems
-    .filter((timeItem: any) =>
-      [STOP_TIME, RESUME_TIME, END_TIME].includes(timeItem?.itemType)
-    )
+    .filter((timeItem: any) => [STOP_TIME, RESUME_TIME, END_TIME].includes(timeItem?.itemType))
     .map((timeItem) => timeDate(timeItem.itemValue, scheduledDate))
-    .reduce(
-      (earliest: any, timeValue) =>
-        !earliest || timeValue < earliest ? timeValue : earliest,
-      undefined
-    );
+    .reduce((earliest: any, timeValue) => (!earliest || timeValue < earliest ? timeValue : earliest), undefined);
 
   // START_TIME must be prior to any STOP_TIMEs, RESUME_TIMEs and STOP_TIME
-  if (
-    !earliestRelevantTimeValue ||
-    timeDate(startTime, scheduledDate) < earliestRelevantTimeValue
-  ) {
+  if (!earliestRelevantTimeValue || timeDate(startTime, scheduledDate) < earliestRelevantTimeValue) {
     // there can be only one START_TIME; if a prior START_TIME exists, remove it
     if (matchUp?.timeItems) {
-      matchUp.timeItems = matchUp.timeItems.filter(
-        (timeItem) => timeItem.itemType !== START_TIME
-      );
+      matchUp.timeItems = matchUp.timeItems.filter((timeItem) => timeItem.itemType !== START_TIME);
     }
 
     const militaryTime = convertTime(startTime, true, true);
@@ -530,27 +493,15 @@ export function addMatchUpEndTime({
   const timeItems = matchUp?.timeItems ?? [];
 
   const latestRelevantTimeValue = timeItems
-    .filter((timeItem: any) =>
-      [START_TIME, RESUME_TIME, STOP_TIME].includes(timeItem?.itemType)
-    )
+    .filter((timeItem: any) => [START_TIME, RESUME_TIME, STOP_TIME].includes(timeItem?.itemType))
     .map((timeItem) => timeDate(timeItem.itemValue, scheduledDate))
-    .reduce(
-      (latest: any, timeValue) =>
-        !latest || timeValue > latest ? timeValue : latest,
-      undefined
-    );
+    .reduce((latest: any, timeValue) => (!latest || timeValue > latest ? timeValue : latest), undefined);
 
   // END_TIME must be after any START_TIMEs, STOP_TIMEs, RESUME_TIMEs
-  if (
-    !validateTimeSeries ||
-    !latestRelevantTimeValue ||
-    timeDate(endTime, scheduledDate) > latestRelevantTimeValue
-  ) {
+  if (!validateTimeSeries || !latestRelevantTimeValue || timeDate(endTime, scheduledDate) > latestRelevantTimeValue) {
     // there can be only one END_TIME; if a prior END_TIME exists, remove it
     if (matchUp?.timeItems) {
-      matchUp.timeItems = matchUp.timeItems.filter(
-        (timeItem) => timeItem.itemType !== END_TIME
-      );
+      matchUp.timeItems = matchUp.timeItems.filter((timeItem) => timeItem.itemType !== END_TIME);
     }
 
     // All times stored as military time
@@ -599,38 +550,21 @@ export function addMatchUpStopTime({
   if (hasEndTime) return { error: EXISTING_END_TIME };
 
   const relevantTimeItems = timeItems
-    .filter((timeItem: any) =>
-      [START_TIME, RESUME_TIME, STOP_TIME].includes(timeItem?.itemType)
-    )
-    .sort(
-      (a, b) =>
-        timeDate(a.itemValue, scheduledDate) -
-        timeDate(b.itemValue, scheduledDate)
-    );
+    .filter((timeItem: any) => [START_TIME, RESUME_TIME, STOP_TIME].includes(timeItem?.itemType))
+    .sort((a, b) => timeDate(a.itemValue, scheduledDate) - timeDate(b.itemValue, scheduledDate));
 
   const lastRelevantTimeItem = relevantTimeItems[relevantTimeItems.length - 1];
-  const lastRelevantTimeItemIsStop =
-    lastRelevantTimeItem && lastRelevantTimeItem.itemType === STOP_TIME;
+  const lastRelevantTimeItemIsStop = lastRelevantTimeItem && lastRelevantTimeItem.itemType === STOP_TIME;
 
   const latestRelevantTimeValue = relevantTimeItems
-    .filter(
-      (timeItem) =>
-        !lastRelevantTimeItemIsStop ||
-        timeItem.createdAt !== lastRelevantTimeItem.createdAt
-    )
+    .filter((timeItem) => !lastRelevantTimeItemIsStop || timeItem.createdAt !== lastRelevantTimeItem.createdAt)
     .map((timeItem) => timeDate(timeItem.itemValue, scheduledDate))
-    .reduce(
-      (latest: any, timeValue) =>
-        !latest || timeValue > latest ? timeValue : latest,
-      undefined
-    );
+    .reduce((latest: any, timeValue) => (!latest || timeValue > latest ? timeValue : latest), undefined);
 
   if (timeDate(stopTime, scheduledDate) > latestRelevantTimeValue) {
     if (matchUp?.timeItems && lastRelevantTimeItemIsStop) {
       const targetTimeStamp = lastRelevantTimeItem.createdAt;
-      matchUp.timeItems = matchUp.timeItems.filter(
-        (timeItem) => timeItem.createdAt !== targetTimeStamp
-      );
+      matchUp.timeItems = matchUp.timeItems.filter((timeItem) => timeItem.createdAt !== targetTimeStamp);
     }
 
     // All times stored as military time
@@ -682,38 +616,21 @@ export function addMatchUpResumeTime({
   if (hasEndTime) return { error: EXISTING_END_TIME };
 
   const relevantTimeItems = timeItems
-    .filter((timeItem: any) =>
-      [START_TIME, RESUME_TIME, STOP_TIME].includes(timeItem?.itemType)
-    )
-    .sort(
-      (a, b) =>
-        timeDate(a.itemValue, scheduledDate) -
-        timeDate(b.itemValue, scheduledDate)
-    );
+    .filter((timeItem: any) => [START_TIME, RESUME_TIME, STOP_TIME].includes(timeItem?.itemType))
+    .sort((a, b) => timeDate(a.itemValue, scheduledDate) - timeDate(b.itemValue, scheduledDate));
 
   const lastRelevantTimeItem = relevantTimeItems[relevantTimeItems.length - 1];
-  const lastRelevantTimeItemIsResume =
-    lastRelevantTimeItem && lastRelevantTimeItem.itemType === RESUME_TIME;
+  const lastRelevantTimeItemIsResume = lastRelevantTimeItem && lastRelevantTimeItem.itemType === RESUME_TIME;
 
   const latestRelevantTimeValue = relevantTimeItems
-    .filter(
-      (timeItem) =>
-        !lastRelevantTimeItemIsResume ||
-        timeItem.createdAt !== lastRelevantTimeItem.createdAt
-    )
+    .filter((timeItem) => !lastRelevantTimeItemIsResume || timeItem.createdAt !== lastRelevantTimeItem.createdAt)
     .map((timeItem) => timeDate(timeItem.itemValue, scheduledDate))
-    .reduce(
-      (latest: any, timeValue) =>
-        !latest || timeValue > latest ? timeValue : latest,
-      undefined
-    );
+    .reduce((latest: any, timeValue) => (!latest || timeValue > latest ? timeValue : latest), undefined);
 
   if (timeDate(resumeTime, scheduledDate) > latestRelevantTimeValue) {
     if (matchUp?.timeItems && lastRelevantTimeItemIsResume) {
       const targetTimeStamp = lastRelevantTimeItem.createdAt;
-      matchUp.timeItems = matchUp.timeItems.filter(
-        (timeItem) => timeItem.createdAt !== targetTimeStamp
-      );
+      matchUp.timeItems = matchUp.timeItems.filter((timeItem) => timeItem.createdAt !== targetTimeStamp);
     }
 
     // All times stored as military time

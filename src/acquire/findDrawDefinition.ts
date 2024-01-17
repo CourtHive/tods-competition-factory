@@ -1,5 +1,5 @@
 import { decorateResult } from '../global/functions/decorateResult';
-import { makeDeepCopy } from '../utilities/makeDeepCopy';
+import { makeDeepCopy } from '../tools/makeDeepCopy';
 import { findTournamentId } from './findTournamentId';
 import { findEvent } from './findEvent';
 

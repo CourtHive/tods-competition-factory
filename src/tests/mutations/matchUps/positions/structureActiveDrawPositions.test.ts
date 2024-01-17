@@ -1,6 +1,6 @@
 import { getStructureDrawPositionProfiles } from '../../../../query/structure/getStructureDrawPositionProfiles';
 import mocksEngine from '../../../../assemblies/engines/mock';
-import { numericSort } from '../../../../utilities/sorting';
+import { numericSort } from '../../../../tools/sorting';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
@@ -40,21 +40,16 @@ it('correctly identifies active drawPositions', () => {
 
   let drawPosition = 3;
   let targetMatchUp = matchUps.find(
-    (matchUp) =>
-      matchUp.drawPositions.includes(drawPosition) && matchUp.roundNumber === 1
+    (matchUp) => matchUp.drawPositions.includes(drawPosition) && matchUp.roundNumber === 1,
   );
   expect(targetMatchUp.matchUpStatus).toEqual(COMPLETED);
 
-  const { activeDrawPositions, byeDrawPositions } =
-    getStructureDrawPositionProfiles({ drawDefinition, structureId });
+  const { activeDrawPositions, byeDrawPositions } = getStructureDrawPositionProfiles({ drawDefinition, structureId });
   expect(activeDrawPositions).toEqual([3, 4]);
   expect(byeDrawPositions).toEqual([2, 31]);
 
   drawPosition = 1;
-  targetMatchUp = matchUps.find(
-    (matchUp) =>
-      matchUp.drawPositions.includes(drawPosition) && matchUp.roundNumber === 1
-  );
+  targetMatchUp = matchUps.find((matchUp) => matchUp.drawPositions.includes(drawPosition) && matchUp.roundNumber === 1);
   expect(targetMatchUp.matchUpStatus).toEqual(BYE);
 });
 
@@ -98,20 +93,15 @@ it('correctly identifies active BYE drawPositions', () => {
 
   let drawPosition = 3;
   let targetMatchUp = matchUps.find(
-    (matchUp) =>
-      matchUp.drawPositions.includes(drawPosition) && matchUp.roundNumber === 1
+    (matchUp) => matchUp.drawPositions.includes(drawPosition) && matchUp.roundNumber === 1,
   );
   expect(targetMatchUp.matchUpStatus).toEqual(COMPLETED);
 
-  const { activeDrawPositions, byeDrawPositions } =
-    getStructureDrawPositionProfiles({ drawDefinition, structureId });
+  const { activeDrawPositions, byeDrawPositions } = getStructureDrawPositionProfiles({ drawDefinition, structureId });
   expect(activeDrawPositions.sort(numericSort)).toEqual([1, 2, 3, 4]);
   expect(byeDrawPositions).toEqual([2, 31]);
 
   drawPosition = 1;
-  targetMatchUp = matchUps.find(
-    (matchUp) =>
-      matchUp.drawPositions.includes(drawPosition) && matchUp.roundNumber === 1
-  );
+  targetMatchUp = matchUps.find((matchUp) => matchUp.drawPositions.includes(drawPosition) && matchUp.roundNumber === 1);
   expect(targetMatchUp.matchUpStatus).toEqual(BYE);
 });

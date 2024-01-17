@@ -1,8 +1,8 @@
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { getDevContext } from '../../../global/state/globalState';
 import { validMatchUps } from '../../../validators/validMatchUp';
-import { xa } from '../../../utilities/objects';
-import { generateRange } from '../../../utilities/arrays';
+import { xa } from '../../../tools/objects';
+import { generateRange } from '../../../tools/arrays';
 
 import { MatchUp } from '../../../types/tournamentTypes';
 

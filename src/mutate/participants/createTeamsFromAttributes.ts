@@ -1,8 +1,8 @@
-import { getAccessorValue } from '../../utilities/getAccessorValue';
+import { getAccessorValue } from '../../tools/getAccessorValue';
 import { addNotice } from '../../global/state/globalState';
 import { addExtension } from '../extensions/addExtension';
 import { findExtension } from '../../acquire/findExtension';
-import { UUID } from '../../utilities/UUID';
+import { UUID } from '../../tools/UUID';
 
 import { GROUPING_ATTRIBUTE } from '../../constants/extensionConstants';
 import { INDIVIDUAL, TEAM } from '../../constants/participantConstants';
@@ -10,10 +10,7 @@ import { ADD_PARTICIPANTS } from '../../constants/topicConstants';
 import { COMPETITOR } from '../../constants/participantRoles';
 import { SUCCESS } from '../../constants/resultConstants';
 import { Tournament } from '../../types/tournamentTypes';
-import {
-  MISSING_TOURNAMENT_RECORD,
-  NO_PARTICIPANTS_GENERATED,
-} from '../../constants/errorConditionConstants';
+import { MISSING_TOURNAMENT_RECORD, NO_PARTICIPANTS_GENERATED } from '../../constants/errorConditionConstants';
 
 /**
  *
@@ -47,8 +44,7 @@ export function createTeamsFromParticipantAttributes({
 
   const teams = {};
   const individualParticipants = (tournamentRecord.participants ?? []).filter(
-    ({ participantType, participantRole }) =>
-      participantType === INDIVIDUAL && participantRole === COMPETITOR
+    ({ participantType, participantRole }) => participantType === INDIVIDUAL && participantRole === COMPETITOR,
   );
 
   let teamIndex = 0;
@@ -85,9 +81,7 @@ export function createTeamsFromParticipantAttributes({
         teamIndex += 1;
       }
 
-      teams[attributeValue].individualParticipantIds.push(
-        individualParticipant.participantId
-      );
+      teams[attributeValue].individualParticipantIds.push(individualParticipant.participantId);
     }
   }
 

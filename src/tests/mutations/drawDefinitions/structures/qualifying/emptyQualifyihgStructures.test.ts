@@ -1,13 +1,10 @@
 import { getStructureGroups } from '../../../../../query/structure/getStructureGroups';
 import mocksEngine from '../../../../../assemblies/engines/mock';
-import { instanceCount } from '../../../../../utilities/arrays';
+import { instanceCount } from '../../../../../tools/arrays';
 import tournamentEngine from '../../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import {
-  MAIN,
-  QUALIFYING,
-} from '../../../../../constants/drawDefinitionConstants';
+import { MAIN, QUALIFYING } from '../../../../../constants/drawDefinitionConstants';
 import { DRAW_ID_EXISTS } from '../../../../../constants/errorConditionConstants';
 import { DIRECT_ACCEPTANCE } from '../../../../../constants/entryStatusConstants';
 
@@ -37,23 +34,19 @@ it('can specify qualifiersCount when no qualifying draws are generated', () => {
 
   let { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
 
-  const enteredParticipantIds = event.entries.map(
-    ({ participantId }) => participantId
-  );
+  const enteredParticipantIds = event.entries.map(({ participantId }) => participantId);
   expect(enteredParticipantIds.length).toEqual(32);
   const directAcceptanceParticipantIds = event.entries
     .filter(({ entryStatus }) => entryStatus === DIRECT_ACCEPTANCE)
     .map(({ participantId }) => participantId);
   expect(directAcceptanceParticipantIds.length).toEqual(28);
 
-  const participantIds = tournamentEngine
-    .getParticipants()
-    .participants.map(({ participantId }) => participantId);
+  const participantIds = tournamentEngine.getParticipants().participants.map(({ participantId }) => participantId);
 
   expect(participantIds.length).toEqual(participantsCount);
 
   const qualifyihgParticipantIds = participantIds.filter(
-    (participantId) => !enteredParticipantIds.includes(participantId)
+    (participantId) => !enteredParticipantIds.includes(participantId),
   );
   expect(qualifyihgParticipantIds.length).toEqual(12);
 
@@ -64,36 +57,24 @@ it('can specify qualifiersCount when no qualifying draws are generated', () => {
   });
   event = tournamentEngine.getEvent({ drawId }).event;
   const entryCounts = instanceCount(
-    event.entries
-      .filter(({ entryStatus }) => entryStatus === DIRECT_ACCEPTANCE)
-      .map(({ entryStage }) => entryStage)
+    event.entries.filter(({ entryStatus }) => entryStatus === DIRECT_ACCEPTANCE).map(({ entryStage }) => entryStage),
   );
   expect(entryCounts[MAIN]).toEqual(28);
   expect(entryCounts[QUALIFYING]).toEqual(12);
 
-  const mainStructure = drawDefinition.structures.find(
-    ({ stage }) => stage === MAIN
-  );
-  const mainStructureQualifiers = mainStructure.positionAssignments.filter(
-    ({ qualifier }) => qualifier
-  );
+  const mainStructure = drawDefinition.structures.find(({ stage }) => stage === MAIN);
+  const mainStructureQualifiers = mainStructure.positionAssignments.filter(({ qualifier }) => qualifier);
   expect(mainStructureQualifiers.length).toEqual(qualifiersCount);
-  let qualifyingStructure = drawDefinition.structures.find(
-    ({ stage }) => stage === QUALIFYING
-  );
+  let qualifyingStructure = drawDefinition.structures.find(({ stage }) => stage === QUALIFYING);
   expect(qualifyingStructure).not.toBeUndefined();
   expect(drawDefinition.structures.length).toEqual(2);
 
-  const drawEntries = event.entries.filter(
-    ({ entryStatus }) => entryStatus === DIRECT_ACCEPTANCE
-  );
+  const drawEntries = event.entries.filter(({ entryStatus }) => entryStatus === DIRECT_ACCEPTANCE);
   result = tournamentEngine.generateDrawDefinition({
     drawEntries,
     qualifyingProfiles: [
       {
-        structureProfiles: [
-          { stageSequence: 1, drawSize: 16, qualifyingPositions: 4 },
-        ],
+        structureProfiles: [{ stageSequence: 1, drawSize: 16, qualifyingPositions: 4 }],
       },
     ],
     drawId,
@@ -101,13 +82,10 @@ it('can specify qualifiersCount when no qualifying draws are generated', () => {
   expect(result.success).toEqual(true);
   drawDefinition = result.drawDefinition;
 
-  qualifyingStructure = drawDefinition.structures.find(
-    ({ stage }) => stage === QUALIFYING
-  );
-  const assignedQualifyingParticipantsCount =
-    qualifyingStructure.positionAssignments.filter(
-      ({ participantId }) => participantId
-    ).length;
+  qualifyingStructure = drawDefinition.structures.find(({ stage }) => stage === QUALIFYING);
+  const assignedQualifyingParticipantsCount = qualifyingStructure.positionAssignments.filter(
+    ({ participantId }) => participantId,
+  ).length;
   expect(assignedQualifyingParticipantsCount).toEqual(12);
 
   result = getStructureGroups({ drawDefinition });

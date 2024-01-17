@@ -1,20 +1,11 @@
-import { definedAttributes } from '../../utilities/definedAttributes';
-import { isNumeric } from '../../utilities/math';
-import {
-  dateStringDaysChange,
-  extractDate,
-  isValidDateString,
-  zeroPad,
-} from '../../utilities/dateTime';
+import { definedAttributes } from '../../tools/definedAttributes';
+import { isNumeric } from '../../tools/math';
+import { dateStringDaysChange, extractDate, isValidDateString, zeroPad } from '../../tools/dateTime';
 
 import { Category } from '../../types/tournamentTypes';
-import {
-  INVALID_CATEGORY,
-  INVALID_DATE,
-} from '../../constants/errorConditionConstants';
+import { INVALID_CATEGORY, INVALID_DATE } from '../../constants/errorConditionConstants';
 
-const typeMatch = (arr, type) =>
-  arr.filter(Boolean).every((i) => typeof i === type);
+const typeMatch = (arr, type) => arr.filter(Boolean).every((i) => typeof i === type);
 const allNumeric = (arr) => arr.filter(Boolean).every(isNumeric);
 
 type ParseArgs = {
@@ -32,19 +23,12 @@ export function getCategoryAgeDetails(params: ParseArgs) {
   let combinedAge;
 
   if (
-    !typeMatch(
-      [ageCategoryCode, ageMaxDate, ageMinDate, categoryName],
-      'string'
-    ) ||
-    !allNumeric(
-      [ageMax, ageMin] ||
-        ![ageMaxDate, ageMinDate].filter(Boolean).every(isValidDateString)
-    )
+    !typeMatch([ageCategoryCode, ageMaxDate, ageMinDate, categoryName], 'string') ||
+    !allNumeric([ageMax, ageMin] || ![ageMaxDate, ageMinDate].filter(Boolean).every(isValidDateString))
   )
     return { error: INVALID_CATEGORY };
 
-  const consideredDate =
-    params.consideredDate ?? extractDate(new Date().toLocaleDateString('sv'));
+  const consideredDate = params.consideredDate ?? extractDate(new Date().toLocaleDateString('sv'));
   if (!isValidDateString(consideredDate)) return { error: INVALID_DATE };
 
   // const [consideredYear, month, day] = consideredDate
@@ -59,9 +43,7 @@ export function getCategoryAgeDetails(params: ParseArgs) {
     .split('-')
     .slice(1, 3)
     .map((n) => parseInt(n));
-  const previousMonthDay = `${zeroPad(previousDayMonth)}-${zeroPad(
-    previousDay
-  )}`;
+  const previousMonthDay = `${zeroPad(previousDayMonth)}-${zeroPad(previousDay)}`;
 
   const nextDayDate = dateStringDaysChange(consideredDate, 1);
   const [nextDayMonth, nextDay] = nextDayDate
@@ -70,16 +52,13 @@ export function getCategoryAgeDetails(params: ParseArgs) {
     .map((n) => parseInt(n));
   const nextMonthDay = `${zeroPad(nextDayMonth)}-${zeroPad(nextDay)}`;
 
-  let calculatedAgeMaxDate =
-    ageMin && dateStringDaysChange(consideredDate, -1 * 365 * ageMin);
-  let calculatedAgeMinDate =
-    ageMax && dateStringDaysChange(consideredDate, -1 * 365 * ageMax);
+  let calculatedAgeMaxDate = ageMin && dateStringDaysChange(consideredDate, -1 * 365 * ageMin);
+  let calculatedAgeMinDate = ageMax && dateStringDaysChange(consideredDate, -1 * 365 * ageMax);
 
   // collect errors; e.g. provided ageMin does not equal calculated ageMin
   const errors: string[] = [];
 
-  const addError = (errorString: string) =>
-    !errors.includes(errorString) && errors.push(errorString);
+  const addError = (errorString: string) => !errors.includes(errorString) && errors.push(errorString);
 
   ageCategoryCode = ageCategoryCode ?? categoryName;
 
@@ -218,9 +197,7 @@ export function getCategoryAgeDetails(params: ParseArgs) {
       ageMinDate = constructedDate(ageMinYear, nextMonthDay);
     }
 
-    const [lowAge, highAge] = (ageCategoryCode?.match(extractCombined) ?? [])
-      .slice(1)
-      .map((n) => parseInt(n));
+    const [lowAge, highAge] = (ageCategoryCode?.match(extractCombined) ?? []).slice(1).map((n) => parseInt(n));
     if (lowAge <= highAge) {
       ageMin = lowAge;
       ageMax = highAge;

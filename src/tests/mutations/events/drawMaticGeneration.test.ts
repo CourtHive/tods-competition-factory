@@ -1,6 +1,6 @@
 import { getParticipantId } from '../../../global/functions/extractors';
-import { generateRange, unique } from '../../../utilities/arrays';
-import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
+import { generateRange, unique } from '../../../tools/arrays';
+import { makeDeepCopy } from '../../../tools/makeDeepCopy';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
@@ -8,13 +8,9 @@ import { expect, it } from 'vitest';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { DOUBLES, SINGLES } from '../../../constants/eventConstants';
 import { AD_HOC } from '../../../constants/drawDefinitionConstants';
-import {
-  EXISTING_MATCHUP_ID,
-  MISSING_PARTICIPANT_IDS,
-} from '../../../constants/errorConditionConstants';
+import { EXISTING_MATCHUP_ID, MISSING_PARTICIPANT_IDS } from '../../../constants/errorConditionConstants';
 
-const getParticipantType = (eventType) =>
-  (eventType === SINGLES && INDIVIDUAL) || (eventType === DOUBLES && PAIR);
+const getParticipantType = (eventType) => (eventType === SINGLES && INDIVIDUAL) || (eventType === DOUBLES && PAIR);
 
 const scenarios = [
   { eventType: SINGLES, drawSize: 5, roundsCount: 5 },
@@ -24,101 +20,84 @@ const scenarios = [
   { eventType: DOUBLES, drawSize: 10, roundsCount: 1 },
 ];
 
-it.each(scenarios)(
-  'can generate AD_HOC with arbitrary drawSizes',
-  (scenario) => {
-    const { drawSize, eventType } = scenario;
+it.each(scenarios)('can generate AD_HOC with arbitrary drawSizes', (scenario) => {
+  const { drawSize, eventType } = scenario;
 
-    const {
-      tournamentRecord,
-      drawIds: [drawId],
-    } = mocksEngine.generateTournamentRecord({
-      drawProfiles: [
-        {
-          drawType: AD_HOC,
-          automated: true,
-          roundsCount: 1,
-          eventType,
-          drawSize,
-        },
-      ],
-      participantsProfile: { idPrefix: 'P' },
-    });
-
-    tournamentEngine.setState(tournamentRecord);
-
-    const { matchUps } = tournamentEngine.allTournamentMatchUps();
-    expect(matchUps.length).toEqual(Math.floor(drawSize / 2));
-    expect(matchUps[0].sides[0].participant.participantType).toEqual(
-      getParticipantType(scenario.eventType)
-    );
-    expect(matchUps[0].sides[0].participant.participantId.slice(0, 4)).toEqual(
-      eventType === SINGLES ? 'P-I-' : 'P-P-'
-    );
-    const structureId = matchUps[0].structureId;
-
-    for (const roundNumber of generateRange(
-      2,
-      (scenario?.roundsCount || 0) + 1 || 2
-    )) {
-      const result = tournamentEngine.drawMatic({
-        restrictEntryStatus: true,
-        generateMatchUps: true, // without this it will only generate { participantIdPairings }
-        drawId,
-      });
-      expect(result.success).toEqual(true);
-
-      const addResult = tournamentEngine.addAdHocMatchUps({
-        matchUps: result.matchUps,
-        structureId,
-        drawId,
-      });
-      expect(addResult.success).toEqual(true);
-
-      const matchUpsPerRound = Math.floor(drawSize / 2);
-      const { matchUps } = tournamentEngine.allTournamentMatchUps();
-      expect(matchUps.length).toEqual(matchUpsPerRound * roundNumber); // # participants is half drawSize * roundNumber
-      expect(matchUps[matchUps.length - 1].roundNumber).toEqual(roundNumber);
-
-      // now get all matchUp.sides => participantIds and ensure all pairings are unique
-      // e.g. participants did not play the same opponent
-      const pairings = matchUps.map(({ sides }) =>
-        sides.map(getParticipantId).sort().join('|')
-      );
-      const uniquePairings = unique(pairings);
-      if (roundNumber < (drawSize % 2 ? drawSize - 1 : drawSize)) {
-        expect(pairings.length - uniquePairings.length).toEqual(0);
-      }
-    }
-  }
-);
-
-it.each(scenarios)(
-  'DrawMatic events can be generated using eventProfiles',
-  (scenario) => {
-    const { drawSize, eventType, roundsCount = 1 } = scenario;
-    const eventProfiles = [
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [
       {
+        drawType: AD_HOC,
+        automated: true,
+        roundsCount: 1,
         eventType,
-        drawProfiles: [
-          { drawType: AD_HOC, drawSize, automated: true, roundsCount },
-        ],
+        drawSize,
       },
-    ];
-    const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-      participantsProfile: { idPrefix: 'P' },
-      eventProfiles,
-    });
+    ],
+    participantsProfile: { idPrefix: 'P' },
+  });
 
-    tournamentEngine.setState(tournamentRecord);
+  tournamentEngine.setState(tournamentRecord);
+
+  const { matchUps } = tournamentEngine.allTournamentMatchUps();
+  expect(matchUps.length).toEqual(Math.floor(drawSize / 2));
+  expect(matchUps[0].sides[0].participant.participantType).toEqual(getParticipantType(scenario.eventType));
+  expect(matchUps[0].sides[0].participant.participantId.slice(0, 4)).toEqual(eventType === SINGLES ? 'P-I-' : 'P-P-');
+  const structureId = matchUps[0].structureId;
+
+  for (const roundNumber of generateRange(2, (scenario?.roundsCount || 0) + 1 || 2)) {
+    const result = tournamentEngine.drawMatic({
+      restrictEntryStatus: true,
+      generateMatchUps: true, // without this it will only generate { participantIdPairings }
+      drawId,
+    });
+    expect(result.success).toEqual(true);
+
+    const addResult = tournamentEngine.addAdHocMatchUps({
+      matchUps: result.matchUps,
+      structureId,
+      drawId,
+    });
+    expect(addResult.success).toEqual(true);
 
     const matchUpsPerRound = Math.floor(drawSize / 2);
     const { matchUps } = tournamentEngine.allTournamentMatchUps();
-    expect(matchUps.length).toEqual(matchUpsPerRound * roundsCount);
-    const roundNames = matchUps.map((m) => m.roundName);
-    roundNames.forEach((roundName) => expect(roundName[0]).toEqual('R'));
+    expect(matchUps.length).toEqual(matchUpsPerRound * roundNumber); // # participants is half drawSize * roundNumber
+    expect(matchUps[matchUps.length - 1].roundNumber).toEqual(roundNumber);
+
+    // now get all matchUp.sides => participantIds and ensure all pairings are unique
+    // e.g. participants did not play the same opponent
+    const pairings = matchUps.map(({ sides }) => sides.map(getParticipantId).sort().join('|'));
+    const uniquePairings = unique(pairings);
+    if (roundNumber < (drawSize % 2 ? drawSize - 1 : drawSize)) {
+      expect(pairings.length - uniquePairings.length).toEqual(0);
+    }
   }
-);
+});
+
+it.each(scenarios)('DrawMatic events can be generated using eventProfiles', (scenario) => {
+  const { drawSize, eventType, roundsCount = 1 } = scenario;
+  const eventProfiles = [
+    {
+      eventType,
+      drawProfiles: [{ drawType: AD_HOC, drawSize, automated: true, roundsCount }],
+    },
+  ];
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile: { idPrefix: 'P' },
+    eventProfiles,
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const matchUpsPerRound = Math.floor(drawSize / 2);
+  const { matchUps } = tournamentEngine.allTournamentMatchUps();
+  expect(matchUps.length).toEqual(matchUpsPerRound * roundsCount);
+  const roundNames = matchUps.map((m) => m.roundName);
+  roundNames.forEach((roundName) => expect(roundName[0]).toEqual('R'));
+});
 
 it('can use drawMatic to generate rounds in existing AD_HOC draws', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({

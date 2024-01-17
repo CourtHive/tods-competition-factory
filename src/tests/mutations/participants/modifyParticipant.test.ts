@@ -1,16 +1,12 @@
-import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
+import { makeDeepCopy } from '../../../tools/makeDeepCopy';
 import mocksEngine from '../../../assemblies/engines/mock';
-import { intersection } from '../../../utilities/arrays';
+import { intersection } from '../../../tools/arrays';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { CANNOT_MODIFY_PARTICIPANT_TYPE } from '../../../constants/errorConditionConstants';
 import { MALE } from '../../../constants/genderConstants';
-import {
-  INDIVIDUAL,
-  PAIR,
-  TEAM,
-} from '../../../constants/participantConstants';
+import { INDIVIDUAL, PAIR, TEAM } from '../../../constants/participantConstants';
 
 tournamentEngine.devContext(true);
 
@@ -26,10 +22,9 @@ it('can modify PAIR participants', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { participants: individualParticipants } =
-    tournamentEngine.getParticipants({
-      participantFilters: { participantTypes: [INDIVIDUAL] },
-    });
+  const { participants: individualParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [INDIVIDUAL] },
+  });
   expect(individualParticipants.length).toEqual(20);
 
   const individualParticipant = individualParticipants[0];
@@ -43,9 +38,7 @@ it('can modify PAIR participants', () => {
     participant: updatedIndividualParticipant,
   });
   expect(result.success).toEqual(true);
-  expect(result.participant.participantName).toEqual(
-    `${person.standardGivenName} ${person.standardFamilyName}`
-  );
+  expect(result.participant.participantName).toEqual(`${person.standardGivenName} ${person.standardFamilyName}`);
 
   const secondIndividual = individualParticipants[0];
   const updatedSecondIndividual = {
@@ -65,13 +58,11 @@ it('can modify PAIR participants', () => {
   const pairParticipant = pairParticipants[0];
 
   const newIndividualParticipant = individualParticipants.filter(
-    ({ participantId }) =>
-      !pairParticipant.individualParticipantIds.includes(participantId)
+    ({ participantId }) => !pairParticipant.individualParticipantIds.includes(participantId),
   )[0];
 
   const updatedPairParticipant = makeDeepCopy(pairParticipant);
-  const individualParticipantIds =
-    updatedPairParticipant.individualParticipantIds;
+  const individualParticipantIds = updatedPairParticipant.individualParticipantIds;
   individualParticipantIds[0] = newIndividualParticipant.participantId;
 
   result = tournamentEngine.modifyParticipant({
@@ -81,17 +72,11 @@ it('can modify PAIR participants', () => {
 
   // split the previous and new participantNames and expect the overlap to = 1
   expect(
-    intersection(
-      pairParticipant.participantName.split('/'),
-      result.participant.participantName.split('/')
-    ).length
+    intersection(pairParticipant.participantName.split('/'), result.participant.participantName.split('/')).length,
   ).toEqual(1);
 
   expect(
-    intersection(
-      pairParticipant.individualParticipantIds,
-      result.participant.individualParticipantIds
-    ).length
+    intersection(pairParticipant.individualParticipantIds, result.participant.individualParticipantIds).length,
   ).toEqual(1);
 
   const modifiedSecondIndividual = makeDeepCopy(updatedSecondIndividual);
@@ -130,15 +115,11 @@ it('can modify TEAM participants', () => {
 
   const firstTeam = teamParticipants[0];
   const individualParticipantIds = firstTeam.individualParticipantIds;
-  const reversedIndividualParticipants = makeDeepCopy(
-    individualParticipantIds,
-    false,
-    true
-  ).reverse();
+  const reversedIndividualParticipants = makeDeepCopy(individualParticipantIds, false, true).reverse();
 
   expect(individualParticipantIds).not.toEqual(reversedIndividualParticipants);
   expect(individualParticipantIds[0]).toEqual(
-    reversedIndividualParticipants[reversedIndividualParticipants.length - 1]
+    reversedIndividualParticipants[reversedIndividualParticipants.length - 1],
   );
   const result = tournamentEngine.modifyParticipant({
     participant: {
@@ -147,9 +128,7 @@ it('can modify TEAM participants', () => {
     },
   });
 
-  expect(reversedIndividualParticipants).toEqual(
-    result.participant.individualParticipantIds
-  );
+  expect(reversedIndividualParticipants).toEqual(result.participant.individualParticipantIds);
 });
 
 it('will not modify participantType', () => {

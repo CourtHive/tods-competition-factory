@@ -2,14 +2,11 @@ import { refreshEntryPositions } from './refreshEntryPositions';
 import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
 import { addExtension } from '../extensions/addExtension';
 import { isValidExtension } from '../../validators/isValidExtension';
-import { definedAttributes } from '../../utilities/definedAttributes';
+import { definedAttributes } from '../../tools/definedAttributes';
 import { isUngrouped } from '../../query/entries/isUngrouped';
 import { addDrawEntries } from '../drawDefinitions/addDrawEntries';
 import { removeEventEntries } from './removeEventEntries';
-import {
-  ResultType,
-  decorateResult,
-} from '../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../global/functions/decorateResult';
 
 import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
 import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../constants/policyConstants';
@@ -91,25 +88,20 @@ export function addEventEntries(params: AddEventEntriesArgs): ResultType {
 
   if (!event?.eventId) return { error: EVENT_NOT_FOUND };
 
-  const appliedPolicies =
-    getAppliedPolicies({ tournamentRecord, event }).appliedPolicies ?? {};
+  const appliedPolicies = getAppliedPolicies({ tournamentRecord, event }).appliedPolicies ?? {};
 
   const matchUpActionsPolicy =
     policyDefinitions?.[POLICY_TYPE_MATCHUP_ACTIONS] ??
     appliedPolicies?.[POLICY_TYPE_MATCHUP_ACTIONS] ??
     POLICY_MATCHUP_ACTIONS_DEFAULT[POLICY_TYPE_MATCHUP_ACTIONS];
 
-  const genderEnforced =
-    (enforceGender ?? matchUpActionsPolicy?.participants?.enforceGender) !==
-    false;
+  const genderEnforced = (enforceGender ?? matchUpActionsPolicy?.participants?.enforceGender) !== false;
 
   const addedParticipantIdEntries: string[] = [];
   const removedEntries: any[] = [];
 
   if (
-    (extensions &&
-      (!Array.isArray(extensions) ||
-        !extensions.every((extension) => isValidExtension({ extension })))) ||
+    (extensions && (!Array.isArray(extensions) || !extensions.every((extension) => isValidExtension({ extension })))) ||
     (extension && !isValidExtension({ extension }))
   ) {
     return decorateResult({
@@ -130,12 +122,9 @@ export function addEventEntries(params: AddEventEntriesArgs): ResultType {
         if (!participantIds.includes(participant.participantId)) return false;
 
         const validSingles =
-          event.eventType === SINGLES &&
-          participant.participantType === INDIVIDUAL &&
-          !isUngrouped(entryStatus);
+          event.eventType === SINGLES && participant.participantType === INDIVIDUAL && !isUngrouped(entryStatus);
 
-        const validDoubles =
-          event.eventType === DOUBLES && participant.participantType === PAIR;
+        const validDoubles = event.eventType === DOUBLES && participant.participantType === PAIR;
 
         if (
           validSingles &&
@@ -151,11 +140,7 @@ export function addEventEntries(params: AddEventEntriesArgs): ResultType {
           return true;
         }
 
-        if (
-          event.eventType === DOUBLES &&
-          participant.participantType === INDIVIDUAL &&
-          isUngrouped(entryStatus)
-        ) {
+        if (event.eventType === DOUBLES && participant.participantType === INDIVIDUAL && isUngrouped(entryStatus)) {
           return true;
         }
 
@@ -176,21 +161,17 @@ export function addEventEntries(params: AddEventEntriesArgs): ResultType {
         return (
           (event.eventType as string) === TEAM &&
           (participant.participantType === TEAM ||
-            (isUngrouped(entryStatus) &&
-              participant.participantType === INDIVIDUAL))
+            (isUngrouped(entryStatus) && participant.participantType === INDIVIDUAL))
         );
       })
       .map((participant) => participant.participantId) ?? [];
 
   const validParticipantIds = participantIds.filter(
-    (participantId) =>
-      !checkTypedParticipants || typedParticipantIds.includes(participantId)
+    (participantId) => !checkTypedParticipants || typedParticipantIds.includes(participantId),
   );
 
   if (!event.entries) event.entries = [];
-  const existingIds = event.entries.map(
-    (e: any) => e.participantId || e.participant?.participantId
-  );
+  const existingIds = event.entries.map((e: any) => e.participantId || e.participant?.participantId);
 
   validParticipantIds.forEach((participantId) => {
     if (!existingIds.includes(participantId)) {
@@ -240,13 +221,8 @@ export function addEventEntries(params: AddEventEntriesArgs): ResultType {
   }
 
   // now remove any ungrouped participantIds which exist as part of added grouped participants
-  if (
-    event.eventType &&
-    [DOUBLES_EVENT, TEAM_EVENT].includes(event.eventType)
-  ) {
-    const enteredParticipantIds = (event.entries || []).map(
-      (entry) => entry.participantId
-    );
+  if (event.eventType && [DOUBLES_EVENT, TEAM_EVENT].includes(event.eventType)) {
+    const enteredParticipantIds = (event.entries || []).map((entry) => entry.participantId);
     const ungroupedIndividualParticipantIds = (event.entries || [])
       .filter((entry) => isUngrouped(entry.entryStatus))
       .map((entry) => entry.participantId);
@@ -256,14 +232,13 @@ export function addEventEntries(params: AddEventEntriesArgs): ResultType {
         (participant) =>
           enteredParticipantIds.includes(participant.participantId) &&
           participant.participantType &&
-          [PAIR, TEAM].includes(participant.participantType)
+          [PAIR, TEAM].includes(participant.participantType),
       )
       .map((participant) => participant.individualParticipantIds)
       .flat(Infinity);
-    const ungroupedParticipantIdsToRemove =
-      ungroupedIndividualParticipantIds.filter((participantId) =>
-        groupedIndividualParticipantIds.includes(participantId)
-      );
+    const ungroupedParticipantIdsToRemove = ungroupedIndividualParticipantIds.filter((participantId) =>
+      groupedIndividualParticipantIds.includes(participantId),
+    );
     if (ungroupedParticipantIdsToRemove.length) {
       removedEntries.push(...ungroupedParticipantIdsToRemove);
       removeEventEntries({
@@ -274,8 +249,7 @@ export function addEventEntries(params: AddEventEntriesArgs): ResultType {
     }
   }
 
-  const invalidParticipantIds =
-    validParticipantIds.length !== participantIds.length;
+  const invalidParticipantIds = validParticipantIds.length !== participantIds.length;
 
   if (invalidParticipantIds)
     return decorateResult({
@@ -290,8 +264,7 @@ export function addEventEntries(params: AddEventEntriesArgs): ResultType {
     });
   }
 
-  const addedEntriesCount =
-    addedParticipantIdEntries.length - removedEntries.length;
+  const addedEntriesCount = addedParticipantIdEntries.length - removedEntries.length;
 
   return decorateResult({
     result: { ...SUCCESS, addedEntriesCount },

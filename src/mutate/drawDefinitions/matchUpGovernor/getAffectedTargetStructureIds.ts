@@ -2,14 +2,10 @@ import { getContainedStructures } from '../../../query/drawDefinition/getContain
 import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
 import { getStructureLinks } from '../../../query/drawDefinition/linkGetter';
 import { findExtension } from '../../../acquire/findExtension';
-import { overlap } from '../../../utilities/arrays';
+import { overlap } from '../../../tools/arrays';
 
 import { TALLY } from '../../../constants/extensionConstants';
-import {
-  DrawDefinition,
-  MatchUp,
-  Structure,
-} from '../../../types/tournamentTypes';
+import { DrawDefinition, MatchUp, Structure } from '../../../types/tournamentTypes';
 
 /**
  * Finds all structureIds which are affected by an outcome change in a completed structure
@@ -22,20 +18,14 @@ type GetAffectedTargetStructureIds = {
   matchUp: MatchUp;
 };
 
-export function getAffectedTargetStructureIds({
-  drawDefinition,
-  structure,
-  matchUp,
-}: GetAffectedTargetStructureIds) {
+export function getAffectedTargetStructureIds({ drawDefinition, structure, matchUp }: GetAffectedTargetStructureIds) {
   const { drawPositions } = matchUp;
   const { positionAssignments } = getPositionAssignments({
     drawDefinition,
     structure,
   });
 
-  const relevantAssignments = positionAssignments?.filter(
-    ({ drawPosition }) => drawPositions?.includes(drawPosition)
-  );
+  const relevantAssignments = positionAssignments?.filter(({ drawPosition }) => drawPositions?.includes(drawPosition));
 
   const finishingPositions = relevantAssignments?.map((assignment) => {
     const { extension } = findExtension({ element: assignment, name: TALLY });

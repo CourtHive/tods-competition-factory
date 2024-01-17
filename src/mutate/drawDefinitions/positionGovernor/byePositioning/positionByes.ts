@@ -4,25 +4,13 @@ import { getSeedOrderByePositions } from './getSeedOrderedByePositions';
 import { getDevContext } from '../../../../global/state/globalState';
 import { getUnseededByePositions } from './getUnseededByePositions';
 import { findStructure } from '../../../../acquire/findStructure';
-import { shuffleArray } from '../../../../utilities/arrays';
+import { shuffleArray } from '../../../../tools/arrays';
 
 import { MatchUpsMap } from '../../../../query/matchUps/getMatchUpsMap';
 import { SUCCESS } from '../../../../constants/resultConstants';
-import {
-  CONTAINER,
-  ITEM,
-  QUALIFYING,
-} from '../../../../constants/drawDefinitionConstants';
-import {
-  DrawDefinition,
-  Event,
-  Structure,
-  Tournament,
-} from '../../../../types/tournamentTypes';
-import {
-  PolicyDefinitions,
-  SeedingProfile,
-} from '../../../../types/factoryTypes';
+import { CONTAINER, ITEM, QUALIFYING } from '../../../../constants/drawDefinitionConstants';
+import { DrawDefinition, Event, Structure, Tournament } from '../../../../types/tournamentTypes';
+import { PolicyDefinitions, SeedingProfile } from '../../../../types/factoryTypes';
 
 type PositionByesArgs = {
   appliedPolicies?: PolicyDefinitions;
@@ -52,13 +40,10 @@ export function positionByes({
   seedsOnly,
   event,
 }: PositionByesArgs) {
-  if (!structure)
-    ({ structure } = findStructure({ drawDefinition, structureId }));
+  if (!structure) ({ structure } = findStructure({ drawDefinition, structureId }));
   if (!structureId) structureId = structure?.structureId;
 
-  const blockOrdered = !(
-    structure?.structures ?? structure?.stage === QUALIFYING
-  );
+  const blockOrdered = !(structure?.structures ?? structure?.stage === QUALIFYING);
 
   const { byesCount, placedByes, relevantMatchUps } = getByesData({
     provisionalPositioning,
@@ -70,21 +55,17 @@ export function positionByes({
   const byesToPlace = byesCount - (placedByes || 0);
   if (byesToPlace <= 0) return { ...SUCCESS };
 
-  const {
-    strictSeedOrderByePositions,
-    blockSeedOrderByePositions,
-    isLuckyStructure,
-    isFeedIn,
-  } = getSeedOrderByePositions({
-    provisionalPositioning,
-    relevantMatchUps,
-    appliedPolicies,
-    drawDefinition,
-    seedingProfile,
-    seedBlockInfo,
-    byesToPlace,
-    structure,
-  });
+  const { strictSeedOrderByePositions, blockSeedOrderByePositions, isLuckyStructure, isFeedIn } =
+    getSeedOrderByePositions({
+      provisionalPositioning,
+      relevantMatchUps,
+      appliedPolicies,
+      drawDefinition,
+      seedingProfile,
+      seedBlockInfo,
+      byesToPlace,
+      structure,
+    });
 
   const ignoreSeededByes =
     structure?.structureType &&
@@ -92,9 +73,7 @@ export function positionByes({
     appliedPolicies?.seeding?.containerByesIgnoreSeeding;
 
   const seedOrderByePositions =
-    blockOrdered && blockSeedOrderByePositions?.length
-      ? blockSeedOrderByePositions
-      : strictSeedOrderByePositions;
+    blockOrdered && blockSeedOrderByePositions?.length ? blockSeedOrderByePositions : strictSeedOrderByePositions;
 
   let { unseededByePositions } = getUnseededByePositions({
     provisionalPositioning,
@@ -109,8 +88,7 @@ export function positionByes({
 
   const isOdd = (x) => x % 2;
   // method determines whether candidate c is paired to elements in an array
-  const isNotPaired = (arr, c) =>
-    (arr || []).every((a) => (isOdd(a) ? c !== a + 1 : c !== a - 1));
+  const isNotPaired = (arr, c) => (arr || []).every((a) => (isOdd(a) ? c !== a + 1 : c !== a - 1));
 
   // first add all drawPositions paired with sorted seeds drawPositions
   // then add quarter separated and evenly distributed drawPositions
@@ -121,14 +99,10 @@ export function positionByes({
 
   if (!seedsOnly) {
     while (unseededByePositions.length) {
-      const unPairedPosition = unseededByePositions.find((position) =>
-        isNotPaired(byePositions, position)
-      );
+      const unPairedPosition = unseededByePositions.find((position) => isNotPaired(byePositions, position));
       if (unPairedPosition) {
         byePositions.push(unPairedPosition);
-        unseededByePositions = unseededByePositions.filter(
-          (position) => position !== unPairedPosition
-        );
+        unseededByePositions = unseededByePositions.filter((position) => position !== unPairedPosition);
       } else {
         byePositions.push(...unseededByePositions);
         unseededByePositions = [];

@@ -3,7 +3,7 @@ import { tieFormatGenderValidityCheck } from './tieFormatGenderValidityCheck';
 import { categoryCanContain } from '../query/event/categoryCanContain';
 import { decorateResult } from '../global/functions/decorateResult';
 import { isValidMatchUpFormat } from './isValidMatchUpFormat';
-import { isConvertableInteger } from '../utilities/math';
+import { isConvertableInteger } from '../tools/math';
 
 import { INVALID_CATEGORY, INVALID_COLLECTION_DEFINITION, INVALID_OBJECT } from '../constants/errorConditionConstants';
 import { Category, CollectionDefinition, Event, EventTypeUnion, GenderUnion } from '../types/tournamentTypes';

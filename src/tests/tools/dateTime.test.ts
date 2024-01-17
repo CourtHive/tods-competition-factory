@@ -12,7 +12,7 @@ import {
   timeStringMinutes,
   splitTime,
   timeSort,
-} from '../../utilities/dateTime';
+} from '../../tools/dateTime';
 
 const date200101 = '2020-01-01';
 const date201001 = '2020-10-01';

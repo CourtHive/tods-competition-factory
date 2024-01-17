@@ -1,5 +1,5 @@
-import { extensionsToAttributes } from '../../utilities/makeDeepCopy';
-import { definedAttributes } from '../../utilities/definedAttributes';
+import { extensionsToAttributes } from '../../tools/makeDeepCopy';
+import { definedAttributes } from '../../tools/definedAttributes';
 
 export function processEventEntry({
   convertExtensions,
@@ -14,9 +14,7 @@ export function processEventEntry({
   const { entryStatus, entryStage, entryPosition, extensions } = entry;
 
   const entryExtensions =
-    extensions?.length && convertExtensions
-      ? Object.assign({}, ...extensionsToAttributes(extensions))
-      : {};
+    extensions?.length && convertExtensions ? Object.assign({}, ...extensionsToAttributes(extensions)) : {};
 
   const attributes = Object.assign(entryExtensions, {
     entryPosition,
@@ -25,16 +23,10 @@ export function processEventEntry({
     ranking,
     eventId,
   });
-  participant.events[eventId] = definedAttributes(
-    attributes,
-    false,
-    false,
-    true
-  );
+  participant.events[eventId] = definedAttributes(attributes, false, false, true);
 
   if (withSeeding) {
-    if (seedAssignments)
-      participant.events[eventId].seedAssignments = seedAssignments;
+    if (seedAssignments) participant.events[eventId].seedAssignments = seedAssignments;
     if (seedValue) participant.events[eventId].seedValue = seedValue;
   }
 }

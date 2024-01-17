@@ -1,4 +1,4 @@
-import { numericSort } from '../../../utilities/sorting';
+import { numericSort } from '../../../tools/sorting';
 
 /**
  * ensures that a matchUp has 2 and only 2 drawPositions
@@ -9,10 +9,7 @@ type GetUpdateDrawPositions = {
   drawPositions: number[];
   drawPosition: number;
 };
-export function getUpdatedDrawPositions({
-  drawPosition,
-  drawPositions,
-}: GetUpdateDrawPositions): {
+export function getUpdatedDrawPositions({ drawPosition, drawPositions }: GetUpdateDrawPositions): {
   updatedDrawPositions: number[];
   positionAssigned: boolean;
   positionAdded: boolean;

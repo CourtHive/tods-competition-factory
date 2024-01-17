@@ -9,29 +9,16 @@ import { assignSeed } from '../../../../mutate/drawDefinitions/entryGovernor/see
 import { attachPolicies } from '../../../../mutate/extensions/policies/attachPolicies';
 import { getDrawStructures } from '../../../../acquire/findStructure';
 import { verifyStructure } from '../primitives/verifyStructure';
-import { generateRange } from '../../../../utilities/arrays';
+import { generateRange } from '../../../../tools/arrays';
 import { expect, it } from 'vitest';
 
 import SEEDING_POLICY from '../../../../fixtures/policies/POLICY_SEEDING_ITF';
-import {
-  MAIN,
-  CONSOLATION,
-  CURTIS,
-  PLAY_OFF,
-} from '../../../../constants/drawDefinitionConstants';
+import { MAIN, CONSOLATION, CURTIS, PLAY_OFF } from '../../../../constants/drawDefinitionConstants';
 
 it('can generate and verify curtis structures', () => {
-  let mainStructureId,
-    consolation1stStructureId,
-    consolation2ndStructureId,
-    drawDefinition;
+  let mainStructureId, consolation1stStructureId, consolation2ndStructureId, drawDefinition;
 
-  ({
-    consolation1stStructureId,
-    consolation2ndStructureId,
-    mainStructureId,
-    drawDefinition,
-  } = generateCurtis({
+  ({ consolation1stStructureId, consolation2ndStructureId, mainStructureId, drawDefinition } = generateCurtis({
     participantsCount: 30,
     assignSeeds: 8,
     seedsCount: 8,
@@ -102,8 +89,7 @@ it('can generate and verify curtis structures', () => {
     drawSize: 64,
   });
 
-  ({ drawDefinition, consolation1stStructureId, consolation2ndStructureId } =
-    result);
+  ({ drawDefinition, consolation1stStructureId, consolation2ndStructureId } = result);
 
   verifyStructure({
     structureId: result.playoffStructureId,
@@ -139,13 +125,7 @@ it('can generate and verify curtis structures', () => {
   });
 });
 
-function generateCurtis({
-  seedAssignmentProfile = {},
-  participantsCount,
-  assignSeeds,
-  seedsCount,
-  drawSize,
-}) {
+function generateCurtis({ seedAssignmentProfile = {}, participantsCount, assignSeeds, seedsCount, drawSize }) {
   const stage = MAIN;
   const drawType = CURTIS;
 

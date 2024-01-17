@@ -1,8 +1,8 @@
 import { getAllStructureMatchUps } from '../query/matchUps/getAllStructureMatchUps';
 import { getRoundMatchUps } from '../query/matchUps/getRoundMatchUps';
 import { getDrawStructures } from '../acquire/findStructure';
-import { isConvertableInteger, isPowerOf2 } from '../utilities/math';
-import { isValidDateString } from '../utilities/dateTime';
+import { isConvertableInteger, isPowerOf2 } from '../tools/math';
+import { isValidDateString } from '../tools/dateTime';
 
 import { INVALID_VALUES, VENUE_NOT_FOUND } from '../constants/errorConditionConstants';
 

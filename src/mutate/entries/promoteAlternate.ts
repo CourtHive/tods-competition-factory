@@ -1,5 +1,5 @@
 import { decorateResult } from '../../global/functions/decorateResult';
-import { ensureInt } from '../../utilities/ensureInt';
+import { ensureInt } from '../../tools/ensureInt';
 
 import { MAIN } from '../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
@@ -12,15 +12,11 @@ import {
   PARTICIPANT_NOT_ENTERED_IN_STAGE,
   INVALID_VALUES,
 } from '../../constants/errorConditionConstants';
-import {
-  ALTERNATE,
-  DIRECT_ACCEPTANCE,
-} from '../../constants/entryStatusConstants';
+import { ALTERNATE, DIRECT_ACCEPTANCE } from '../../constants/entryStatusConstants';
 
 export function promoteAlternate(params) {
   const { participantId } = params;
-  if (participantId && typeof participantId !== 'string')
-    return { error: INVALID_VALUES, participantId };
+  if (participantId && typeof participantId !== 'string') return { error: INVALID_VALUES, participantId };
 
   return promoteAlternates({
     ...params,
@@ -38,8 +34,7 @@ export function promoteAlternates({
   event,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!Array.isArray(participantIds))
-    return { error: INVALID_VALUES, participantIds };
+  if (!Array.isArray(participantIds)) return { error: INVALID_VALUES, participantIds };
   if (!event) return { error: MISSING_EVENT };
   const stack = 'promoteAlternates';
 
@@ -81,56 +76,35 @@ export function promoteAlternates({
   return { ...SUCCESS };
 }
 
-function promoteWithinElement({
-  participantIds,
-  stageSequence,
-  element,
-  stage,
-}) {
-  const alternates = (element.entries || []).filter(
-    (entry) => entry.entryStatus === ALTERNATE
-  );
+function promoteWithinElement({ participantIds, stageSequence, element, stage }) {
+  const alternates = (element.entries || []).filter((entry) => entry.entryStatus === ALTERNATE);
 
-  const targetedEntries = (element.entries || []).filter((entry) =>
-    participantIds.includes(entry.participantId)
-  );
+  const targetedEntries = (element.entries || []).filter((entry) => participantIds.includes(entry.participantId));
 
   // if no participantId is provided, take the alternate with the lowest entryPosition
   const alternateEntry = alternates.reduce((participantEntry, entry) => {
     const { entryPosition } = entry;
     return (
       (isNaN(entryPosition) && participantEntry) ||
-      ((!participantEntry || entryPosition < participantEntry.entryPosition) &&
-        entry) ||
+      ((!participantEntry || entryPosition < participantEntry.entryPosition) && entry) ||
       participantEntry
     );
   }, undefined);
 
-  const participantEntries = targetedEntries.length
-    ? targetedEntries
-    : [alternateEntry].filter(Boolean);
+  const participantEntries = targetedEntries.length ? targetedEntries : [alternateEntry].filter(Boolean);
 
-  if (!participantEntries?.length)
-    return { error: PARTICIPANT_ENTRY_NOT_FOUND };
+  if (!participantEntries?.length) return { error: PARTICIPANT_ENTRY_NOT_FOUND };
 
-  const invalidEntryStatus = participantEntries.filter(
-    ({ entryStatus }) => entryStatus !== ALTERNATE
-  );
+  const invalidEntryStatus = participantEntries.filter(({ entryStatus }) => entryStatus !== ALTERNATE);
 
-  if (invalidEntryStatus.length)
-    return { error: INVALID_ENTRY_STATUS, invalidEntryStatus };
+  if (invalidEntryStatus.length) return { error: INVALID_ENTRY_STATUS, invalidEntryStatus };
 
-  const invalidStage = participantEntries.filter(
-    ({ entryStage }) => entryStage && entryStage !== stage
-  );
-  if (invalidStage.length)
-    return { error: PARTICIPANT_NOT_ENTERED_IN_STAGE, invalidStage };
+  const invalidStage = participantEntries.filter(({ entryStage }) => entryStage && entryStage !== stage);
+  if (invalidStage.length) return { error: PARTICIPANT_NOT_ENTERED_IN_STAGE, invalidStage };
 
   const invalidStageSequence =
-    stageSequence &&
-    participantEntries.filter((entry) => entry.stageSequence !== stageSequence);
-  if (invalidStageSequence?.length)
-    return { error: PARTICIPANT_NOT_FOUND_IN_STAGE, invalidStageSequence };
+    stageSequence && participantEntries.filter((entry) => entry.stageSequence !== stageSequence);
+  if (invalidStageSequence?.length) return { error: PARTICIPANT_NOT_FOUND_IN_STAGE, invalidStageSequence };
 
   for (const participantEntry of participantEntries) {
     participantEntry.entryStatus = DIRECT_ACCEPTANCE;
@@ -141,10 +115,7 @@ function promoteWithinElement({
     if (!isNaN(entryPosition)) {
       // if promoted participant has an entryPosition, adjust all other alternates with an entryPosition higher than promoted participant
       element.entries.forEach((entry) => {
-        if (
-          entry.entryStatus === ALTERNATE &&
-          entry.entryPosition > entryPosition
-        ) {
+        if (entry.entryStatus === ALTERNATE && entry.entryPosition > entryPosition) {
           entry.entryPosition = entry.entryPosition - 1;
         }
       });
@@ -152,13 +123,9 @@ function promoteWithinElement({
 
     const maxEntryPosition = Math.max(
       ...element.entries
-        .filter(
-          (entry) =>
-            entry.entryStatus === DIRECT_ACCEPTANCE &&
-            !isNaN(entry.entryPosition)
-        )
+        .filter((entry) => entry.entryStatus === DIRECT_ACCEPTANCE && !isNaN(entry.entryPosition))
         .map(({ entryPosition }) => ensureInt(entryPosition || 0)),
-      0
+      0,
     );
     participantEntry.entryPosition = maxEntryPosition || 0;
   }

@@ -1,4 +1,4 @@
-import { intersection, unique } from '../../../utilities/arrays';
+import { intersection, unique } from '../../../tools/arrays';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
@@ -43,15 +43,13 @@ it('can update matchUp court assignments accross multiple events/draws', () => {
   const { tournamentId } = tournamentRecord;
 
   let { matchUps } = tournamentEngine.allTournamentMatchUps();
-  const courtAssignments = matchUps.map(
-    ({ matchUpId, eventId, drawId }, index) => ({
-      courtId: courtIds[index % 3],
-      tournamentId,
-      matchUpId,
-      eventId,
-      drawId,
-    })
-  );
+  const courtAssignments = matchUps.map(({ matchUpId, eventId, drawId }, index) => ({
+    courtId: courtIds[index % 3],
+    tournamentId,
+    matchUpId,
+    eventId,
+    drawId,
+  }));
   result = tournamentEngine.setState([tournamentRecord]);
   expect(result.success).toEqual(true);
   result = tournamentEngine.bulkUpdateCourtAssignments({
@@ -61,10 +59,6 @@ it('can update matchUp court assignments accross multiple events/draws', () => {
   expect(result.success).toEqual(true);
 
   ({ matchUps } = tournamentEngine.allCompetitionMatchUps());
-  const scheduledCourtIds = unique(
-    matchUps.map(({ schedule }) => schedule?.courtId)
-  );
-  expect(intersection(scheduledCourtIds, courtIds).length).toEqual(
-    courtIds.length
-  );
+  const scheduledCourtIds = unique(matchUps.map(({ schedule }) => schedule?.courtId));
+  expect(intersection(scheduledCourtIds, courtIds).length).toEqual(courtIds.length);
 });

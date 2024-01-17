@@ -1,13 +1,11 @@
-import { unique } from '../utilities/arrays';
+import { unique } from '../tools/arrays';
 import { expect, test } from 'vitest';
 
 import errorConditionConstants from './errorConditionConstants';
 
 test('all error codes are unique', () => {
   const isUpperCase = (str) => /^[A-Z_]+$/.test(str);
-  const codes = Object.values(errorConditionConstants).map(
-    (value) => value.code
-  );
+  const codes = Object.values(errorConditionConstants).map((value) => value.code);
   expect(codes.length).toEqual(unique(codes).length);
   const allUpperCaseCodes = codes.every(isUpperCase);
   if (!allUpperCaseCodes) {

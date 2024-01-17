@@ -9,9 +9,9 @@ import { getTieFormat } from '../../query/hierarchical/tieFormats/getTieFormat';
 import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
 import { tieFormatTelemetry } from '../matchUps/tieFormat/tieFormatTelemetry';
 import { validateTieFormat } from '../../validators/validateTieFormat';
-import { definedAttributes } from '../../utilities/definedAttributes';
+import { definedAttributes } from '../../tools/definedAttributes';
 import { validUpdate } from '../../validators/validUpdate';
-import { UUID } from '../../utilities/UUID';
+import { UUID } from '../../tools/UUID';
 
 import { TIE_FORMAT_MODIFICATIONS } from '../../constants/extensionConstants';
 import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../constants/policyConstants';

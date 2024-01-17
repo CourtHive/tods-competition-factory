@@ -12,12 +12,7 @@ import { checkDailyLimits } from '../../scheduleMatchUps/checkDailyLimits';
 import { getMatchUpId } from '../../../../../global/functions/extractors';
 import { bulkScheduleMatchUps } from '../../bulkScheduleMatchUps';
 import { auditAutoScheduling } from '../auditAutoScheduling';
-import {
-  extractDate,
-  sameDay,
-  timeStringMinutes,
-  zeroPad,
-} from '../../../../../utilities/dateTime';
+import { extractDate, sameDay, timeStringMinutes, zeroPad } from '../../../../../tools/dateTime';
 
 import { SUCCESS } from '../../../../../constants/resultConstants';
 import { TOTAL } from '../../../../../constants/scheduleConstants';
@@ -80,10 +75,7 @@ export function jinnScheduler({
     // Build up matchUpNotBeforeTimes for all matchUps already scheduled on scheduleDate
     const matchUpNotBeforeTimes = {};
     matchUps.forEach((matchUp) => {
-      if (
-        matchUp.schedule?.scheduledDate &&
-        sameDay(scheduleDate, extractDate(matchUp.schedule.scheduledDate))
-      ) {
+      if (matchUp.schedule?.scheduledDate && sameDay(scheduleDate, extractDate(matchUp.schedule.scheduledDate))) {
         processNextMatchUps({
           matchUpPotentialParticipantIds,
           matchUpNotBeforeTimes,
@@ -92,27 +84,24 @@ export function jinnScheduler({
       }
     });
 
-    const {
-      allDateScheduledByeMatchUpDetails,
-      venueScheduledRoundDetails,
-      allDateMatchUpIds,
-    } = getVenueSchedulingDetails({
-      matchUpPotentialParticipantIds,
-      individualParticipantProfiles,
-      scheduleCompletedMatchUps,
-      containedStructureIds,
-      matchUpNotBeforeTimes,
-      matchUpScheduleTimes,
-      matchUpDependencies,
-      clearScheduleDates,
-      tournamentRecords,
-      useGarman: true,
-      periodLength,
-      scheduleDate,
-      matchUps,
-      courts,
-      venues,
-    });
+    const { allDateScheduledByeMatchUpDetails, venueScheduledRoundDetails, allDateMatchUpIds } =
+      getVenueSchedulingDetails({
+        matchUpPotentialParticipantIds,
+        individualParticipantProfiles,
+        scheduleCompletedMatchUps,
+        containedStructureIds,
+        matchUpNotBeforeTimes,
+        matchUpScheduleTimes,
+        matchUpDependencies,
+        clearScheduleDates,
+        tournamentRecords,
+        useGarman: true,
+        periodLength,
+        scheduleDate,
+        matchUps,
+        courts,
+        venues,
+      });
 
     const maxScheduleTimeAttempts = 10; // TODO: calculate this based on max court start/end range and averageMinutes
     let schedulingIterations = 0;
@@ -133,119 +122,112 @@ export function jinnScheduler({
         ) {
           // attempt to schedule a round or at least venue.courts.length matchUps
           const { scheduleTime, attempts = 0 } = details.scheduleTimes.shift();
-          const scheduledMatchUp = details.matchUpsToSchedule.find(
-            (matchUp) => {
-              const { matchUpId, matchUpType } = matchUp;
+          const scheduledMatchUp = details.matchUpsToSchedule.find((matchUp) => {
+            const { matchUpId, matchUpType } = matchUp;
 
-              const { participantIdsAtLimit, relevantParticipantIds } =
-                checkDailyLimits({
-                  matchUpPotentialParticipantIds,
-                  individualParticipantProfiles,
-                  matchUpDailyLimits,
-                  matchUp,
-                });
+            const { participantIdsAtLimit, relevantParticipantIds } = checkDailyLimits({
+              matchUpPotentialParticipantIds,
+              individualParticipantProfiles,
+              matchUpDailyLimits,
+              matchUp,
+            });
 
-              if (participantIdsAtLimit.length) {
-                if (!overLimitMatchUpIds[scheduleDate].includes(matchUpId))
-                  overLimitMatchUpIds[scheduleDate].push(matchUpId);
-                return false;
-              }
-
-              const { scheduledDependent } = checkDependendantTiming({
-                matchUpScheduleTimes,
-                matchUpDependencies,
-                scheduleTime,
-                matchUpId,
-                details,
-              });
-              if (scheduledDependent) return false;
-
-              const { dependenciesScheduled, remainingDependencies } =
-                checkDependenciesScheduled({
-                  matchUpScheduleTimes,
-                  matchUpDependencies,
-                  allDateMatchUpIds,
-                  matchUp,
-                });
-              if (!dependenciesScheduled) {
-                if (!dependencyDeferredMatchUpIds[scheduleDate][matchUpId])
-                  dependencyDeferredMatchUpIds[scheduleDate][matchUpId] = [];
-                dependencyDeferredMatchUpIds[scheduleDate][matchUpId].push({
-                  scheduleTime,
-                  remainingDependencies,
-                });
-                return false;
-              }
-
-              const { enoughTime } = checkRecoveryTime({
-                individualParticipantProfiles,
-                matchUpNotBeforeTimes,
-                matchUpDependencies,
-                scheduleTime,
-                details,
-                matchUp,
-              });
-
-              if (!enoughTime) {
-                if (!recoveryTimeDeferredMatchUpIds[scheduleDate][matchUpId])
-                  recoveryTimeDeferredMatchUpIds[scheduleDate][matchUpId] = [];
-                recoveryTimeDeferredMatchUpIds[scheduleDate][matchUpId].push({
-                  scheduleTime,
-                });
-                return false;
-              }
-
-              const averageMatchUpMinutes = details.greatestAverageMinutes;
-              // details.minutesMap?.[matchUpId]?.averageMinutes;
-              // TODO: check the previous scheduled matchUp for each participantId/potentialParticipantId
-              // CHECK: if the matchUpType has changed for ALL PARTICIPANTS from SINGLE/DOUBLES use typeChangeRecoveryMinutes
-
-              const { conflicts } = checkRequestConflicts({
-                potentials: checkPotentialRequestConflicts,
-                averageMatchUpMinutes,
-                requestConflicts,
-                personRequests,
-                scheduleTime,
-                scheduleDate,
-                matchUp,
-              });
-
-              if (conflicts?.length) {
-                if (!scheduleDateRequestConflicts[scheduleDate])
-                  scheduleDateRequestConflicts[scheduleDate] = [];
-                scheduleDateRequestConflicts[scheduleDate].push(...conflicts);
-                return false;
-              }
-
-              bumpLimits(relevantParticipantIds, matchUpType);
-
-              const recoveryMinutes =
-                details.minutesMap?.[matchUpId]?.recoveryMinutes;
-
-              updateTimeAfterRecovery({
-                matchUpPotentialParticipantIds,
-                individualParticipantProfiles,
-                matchUpNotBeforeTimes,
-                averageMatchUpMinutes,
-                matchUpDependencies,
-                recoveryMinutes,
-                scheduleTime,
-                matchUp,
-              });
-
-              matchUpScheduleTimes[matchUpId] = scheduleTime;
-
-              return true;
+            if (participantIdsAtLimit.length) {
+              if (!overLimitMatchUpIds[scheduleDate].includes(matchUpId))
+                overLimitMatchUpIds[scheduleDate].push(matchUpId);
+              return false;
             }
-          );
+
+            const { scheduledDependent } = checkDependendantTiming({
+              matchUpScheduleTimes,
+              matchUpDependencies,
+              scheduleTime,
+              matchUpId,
+              details,
+            });
+            if (scheduledDependent) return false;
+
+            const { dependenciesScheduled, remainingDependencies } = checkDependenciesScheduled({
+              matchUpScheduleTimes,
+              matchUpDependencies,
+              allDateMatchUpIds,
+              matchUp,
+            });
+            if (!dependenciesScheduled) {
+              if (!dependencyDeferredMatchUpIds[scheduleDate][matchUpId])
+                dependencyDeferredMatchUpIds[scheduleDate][matchUpId] = [];
+              dependencyDeferredMatchUpIds[scheduleDate][matchUpId].push({
+                scheduleTime,
+                remainingDependencies,
+              });
+              return false;
+            }
+
+            const { enoughTime } = checkRecoveryTime({
+              individualParticipantProfiles,
+              matchUpNotBeforeTimes,
+              matchUpDependencies,
+              scheduleTime,
+              details,
+              matchUp,
+            });
+
+            if (!enoughTime) {
+              if (!recoveryTimeDeferredMatchUpIds[scheduleDate][matchUpId])
+                recoveryTimeDeferredMatchUpIds[scheduleDate][matchUpId] = [];
+              recoveryTimeDeferredMatchUpIds[scheduleDate][matchUpId].push({
+                scheduleTime,
+              });
+              return false;
+            }
+
+            const averageMatchUpMinutes = details.greatestAverageMinutes;
+            // details.minutesMap?.[matchUpId]?.averageMinutes;
+            // TODO: check the previous scheduled matchUp for each participantId/potentialParticipantId
+            // CHECK: if the matchUpType has changed for ALL PARTICIPANTS from SINGLE/DOUBLES use typeChangeRecoveryMinutes
+
+            const { conflicts } = checkRequestConflicts({
+              potentials: checkPotentialRequestConflicts,
+              averageMatchUpMinutes,
+              requestConflicts,
+              personRequests,
+              scheduleTime,
+              scheduleDate,
+              matchUp,
+            });
+
+            if (conflicts?.length) {
+              if (!scheduleDateRequestConflicts[scheduleDate]) scheduleDateRequestConflicts[scheduleDate] = [];
+              scheduleDateRequestConflicts[scheduleDate].push(...conflicts);
+              return false;
+            }
+
+            bumpLimits(relevantParticipantIds, matchUpType);
+
+            const recoveryMinutes = details.minutesMap?.[matchUpId]?.recoveryMinutes;
+
+            updateTimeAfterRecovery({
+              matchUpPotentialParticipantIds,
+              individualParticipantProfiles,
+              matchUpNotBeforeTimes,
+              averageMatchUpMinutes,
+              matchUpDependencies,
+              recoveryMinutes,
+              scheduleTime,
+              matchUp,
+            });
+
+            matchUpScheduleTimes[matchUpId] = scheduleTime;
+
+            return true;
+          });
 
           details.matchUpsToSchedule = details.matchUpsToSchedule.filter(
-            ({ matchUpId }) => matchUpId !== scheduledMatchUp?.matchUpId
+            ({ matchUpId }) => matchUpId !== scheduledMatchUp?.matchUpId,
           );
 
           if (!scheduledMatchUp) {
-            if (!skippedScheduleTimes[scheduleDate][venueId])
-              skippedScheduleTimes[scheduleDate][venueId] = [];
+            if (!skippedScheduleTimes[scheduleDate][venueId]) skippedScheduleTimes[scheduleDate][venueId] = [];
             skippedScheduleTimes[scheduleDate][venueId].push({
               scheduleTime,
               attempts: attempts + 1,
@@ -256,27 +238,22 @@ export function jinnScheduler({
         }
 
         if (details.matchUpsToSchedule?.length) {
-          skippedScheduleTimes[scheduleDate][venueId] = skippedScheduleTimes[
-            scheduleDate
-          ][venueId]?.filter((unused) => {
-            const tryAgain = unused.attempts < maxScheduleTimeAttempts;
-            if (tryAgain) details.scheduleTimes.push(unused);
-            return !tryAgain;
-          });
+          skippedScheduleTimes[scheduleDate][venueId] = skippedScheduleTimes[scheduleDate][venueId]?.filter(
+            (unused) => {
+              const tryAgain = unused.attempts < maxScheduleTimeAttempts;
+              if (tryAgain) details.scheduleTimes.push(unused);
+              return !tryAgain;
+            },
+          );
         }
 
-        if (
-          !details.scheduleTimes?.length ||
-          !details.matchUpsToSchedule?.length
-        )
-          details.complete = true;
+        if (!details.scheduleTimes?.length || !details.matchUpsToSchedule?.length) details.complete = true;
       }
 
       schedulingIterations += 1;
       schedulingComplete =
-        venues.every(
-          ({ venueId }) => venueScheduledRoundDetails[venueId].complete
-        ) || schedulingIterations === failSafe;
+        venues.every(({ venueId }) => venueScheduledRoundDetails[venueId].complete) ||
+        schedulingIterations === failSafe;
     }
 
     // assign scheduledTime and venue to each matchUp
@@ -300,13 +277,8 @@ export function jinnScheduler({
                 const scheduleTime = matchUpScheduleTimes[matchUpId];
                 if (scheduleTime) {
                   // must include scheduleDate being scheduled to generate proper ISO string
-                  const formatTime = scheduleTime
-                    .split(':')
-                    .map(zeroPad)
-                    .join(':');
-                  const scheduledTime = `${extractDate(
-                    scheduleDate
-                  )}T${formatTime}`;
+                  const formatTime = scheduleTime.split(':').map(zeroPad).join(':');
+                  const scheduledTime = `${extractDate(scheduleDate)}T${formatTime}`;
 
                   if (dryRun) {
                     scheduledMatchUpIds[scheduleDate].push(matchUpId);
@@ -316,8 +288,7 @@ export function jinnScheduler({
                       scheduledTime,
                       matchUpId,
                     });
-                    if (result.success)
-                      scheduledMatchUpIds[scheduleDate].push(matchUpId);
+                    if (result.success) scheduledMatchUpIds[scheduleDate].push(matchUpId);
 
                     if (venueId) {
                       assignMatchUpVenue({
@@ -335,17 +306,11 @@ export function jinnScheduler({
         }
       });
 
-      noTimeMatchUpIds[scheduleDate] =
-        venueScheduledRoundDetails[venueId].matchUpsToSchedule.map(
-          getMatchUpId
-        );
+      noTimeMatchUpIds[scheduleDate] = venueScheduledRoundDetails[venueId].matchUpsToSchedule.map(getMatchUpId);
 
-      scheduleTimesRemaining[scheduleDate][venueId] =
-        venueScheduledRoundDetails[venueId].scheduleTimes.sort(
-          (a, b) =>
-            timeStringMinutes(a.scheduleTime) -
-            timeStringMinutes(b.scheduleTime)
-        );
+      scheduleTimesRemaining[scheduleDate][venueId] = venueScheduledRoundDetails[venueId].scheduleTimes.sort(
+        (a, b) => timeStringMinutes(a.scheduleTime) - timeStringMinutes(b.scheduleTime),
+      );
     }
 
     if (!dryRun && allDateScheduledByeMatchUpDetails?.length) {
@@ -368,18 +333,13 @@ export function jinnScheduler({
 
     for (const venue of dateSchedulingProfile.venues) {
       for (const round of venue.rounds) {
-        const matchUpIds =
-          round.matchUps?.map(({ matchUpId }) => matchUpId) || [];
+        const matchUpIds = round.matchUps?.map(({ matchUpId }) => matchUpId) || [];
         const canScheduleMatchUpIds = matchUpIds.filter((matchUpId) =>
-          scheduledMatchUpIds[scheduleDate].includes(matchUpId)
+          scheduledMatchUpIds[scheduleDate].includes(matchUpId),
         );
         round.canScheduledMatchUpIds = canScheduleMatchUpIds;
-        let possibleToSchedulePct =
-          Math.round(
-            (canScheduleMatchUpIds.length / round.matchUpsCount) * 10000
-          ) / 100;
-        if (possibleToSchedulePct === Infinity || isNaN(possibleToSchedulePct))
-          possibleToSchedulePct = 0;
+        let possibleToSchedulePct = Math.round((canScheduleMatchUpIds.length / round.matchUpsCount) * 10000) / 100;
+        if (possibleToSchedulePct === Infinity || isNaN(possibleToSchedulePct)) possibleToSchedulePct = 0;
         round.possibleToSchedulePct = possibleToSchedulePct;
         if (round.matchUpsCount === canScheduleMatchUpIds.length) {
           round.possibleToSchedule = true;
@@ -389,9 +349,7 @@ export function jinnScheduler({
   }
 
   // returns the original form of the dateStrings, before extractDate()
-  const scheduledDates = dateSchedulingProfiles.map(
-    ({ scheduleDate }) => scheduleDate
-  );
+  const scheduledDates = dateSchedulingProfiles.map(({ scheduleDate }) => scheduleDate);
 
   const autoSchedulingAudit = {
     timeStamp: Date.now(),

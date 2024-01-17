@@ -1,6 +1,6 @@
-import { isConvertableInteger, isPowerOf2 } from '../../../../utilities/math';
-import { generateRange } from '../../../../utilities/arrays';
-import { ensureInt } from '../../../../utilities/ensureInt';
+import { isConvertableInteger, isPowerOf2 } from '../../../../tools/math';
+import { generateRange } from '../../../../tools/arrays';
+import { ensureInt } from '../../../../tools/ensureInt';
 import { addFinishingRounds } from '../addFinishingRounds';
 import { generateMatchUpId } from '../generateMatchUpId';
 import { treeMatchUps } from './eliminationTree';
@@ -27,11 +27,9 @@ export function luckyDraw(params) {
   const roundProfiles = luckyRoundProfiles(drawSize);
 
   const firstRound = roundProfiles.shift();
-  const nodes = generateRange(1, (firstRound?.participantsCount || 0) + 1).map(
-    (drawPosition) => ({
-      drawPosition,
-    })
-  );
+  const nodes = generateRange(1, (firstRound?.participantsCount || 0) + 1).map((drawPosition) => ({
+    drawPosition,
+  }));
 
   let matchUps: any[] = [];
   let roundNumber = 1;
@@ -103,9 +101,7 @@ function luckyRoundProfiles(drawSize) {
     const nextIsFinal = nextRound === 1;
     const feedRound = !!(!nextIsFinal && nextRound % 2);
     participantsCount = !nextIsFinal && feedRound ? nextRound + 1 : nextRound;
-    const preFeedRound = !!(
-      participantsCount !== 2 && Math.ceil(participantsCount / 2) % 2
-    );
+    const preFeedRound = !!(participantsCount !== 2 && Math.ceil(participantsCount / 2) % 2);
     rounds.push({ participantsCount, preFeedRound, feedRound });
   }
   return rounds;

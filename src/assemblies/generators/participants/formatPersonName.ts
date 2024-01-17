@@ -1,4 +1,4 @@
-import { capitalizeFirst } from '../../../utilities/strings';
+import { capitalizeFirst } from '../../../tools/strings';
 
 import { Person } from '../../../types/tournamentTypes';
 
@@ -7,16 +7,12 @@ type FormatPersonNameArgs = {
   person: Person;
 };
 
-export function formatPersonName({
-  personFormat,
-  person,
-}: FormatPersonNameArgs) {
+export function formatPersonName({ personFormat, person }: FormatPersonNameArgs) {
   const alpha = (str) => str.replace(/\W/g, '');
   const allLowerCase = (str) => /^[a-z]*$/.test(alpha(str));
   const allUpperCase = (str) => /^[A-Z]*$/.test(alpha(str));
   const lastUpperCase = (str) => /^[LAST]{4}/.test(alpha(str));
-  const lastFirst = (str) =>
-    str.toLowerCase().indexOf('l') < str.toLowerCase().indexOf('f');
+  const lastFirst = (str) => str.toLowerCase().indexOf('l') < str.toLowerCase().indexOf('f');
   const commaSeparated = (str) => str.indexOf(',') >= 0;
   const firstInital = (str) => str.toLowerCase().indexOf('f.') >= 0;
   const lastNameOnly = (str) => str.toLowerCase().indexOf('f') < 0;
@@ -29,11 +25,7 @@ export function formatPersonName({
 
   if (!personFormat) return `${firstName}${spacer}${lastName}`;
 
-  if (
-    firstInital(personFormat) &&
-    !commaSeparated(personFormat) &&
-    !lastFirst(personFormat)
-  ) {
+  if (firstInital(personFormat) && !commaSeparated(personFormat) && !lastFirst(personFormat)) {
     firstName = `${firstName[0]}.`;
   }
 

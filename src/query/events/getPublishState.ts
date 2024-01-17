@@ -4,7 +4,7 @@ import { getDrawPublishStatus } from '../event/getDrawPublishStatus';
 import { ResultType } from '../../global/functions/decorateResult';
 import { Event, Tournament } from '../../types/tournamentTypes';
 import { SUCCESS } from '../../constants/resultConstants';
-import { isString } from '../../utilities/objects';
+import { isString } from '../../tools/objects';
 import { findEvent } from '../../acquire/findEvent';
 import { EVENT_NOT_FOUND, INVALID_VALUES } from '../../constants/errorConditionConstants';
 

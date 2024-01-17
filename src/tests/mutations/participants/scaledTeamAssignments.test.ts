@@ -1,7 +1,7 @@
 import { participantScaleItem } from '../../../query/participant/participantScaleItem';
 import { getParticipantId } from '../../../global/functions/extractors';
 import mocksEngine from '../../../assemblies/engines/mock';
-import { generateRange } from '../../../utilities/arrays';
+import { generateRange } from '../../../tools/arrays';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
@@ -11,11 +11,7 @@ import { UNGROUPED } from '../../../constants/entryStatusConstants';
 import { COMPETITOR } from '../../../constants/participantRoles';
 import { ScaleAttributes } from '../../../types/factoryTypes';
 import { RANKING } from '../../../constants/scaleConstants';
-import {
-  INVALID_PARTICIPANT_IDS,
-  INVALID_VALUES,
-  MISSING_VALUE,
-} from '../../../constants/errorConditionConstants';
+import { INVALID_PARTICIPANT_IDS, INVALID_VALUES, MISSING_VALUE } from '../../../constants/errorConditionConstants';
 
 const EVENT_NAME = 'Team Event';
 
@@ -40,8 +36,7 @@ it('can automatically assign participants to teams using individualParticipantId
 
   tournamentEngine.setState(tournamentRecord);
 
-  const individualParticipantIds =
-    tournamentRecord.participants.map(getParticipantId);
+  const individualParticipantIds = tournamentRecord.participants.map(getParticipantId);
 
   let result = tournamentEngine.addEventEntries({
     participantIds: individualParticipantIds,
@@ -109,19 +104,13 @@ it('can automatically assign participants to teams using individualParticipantId
     inContext: true,
   }).participants;
 
-  const teamMemberCounts = teamParticipants.map(
-    (teamParticipant) => teamParticipant.individualParticipants.length
-  );
+  const teamMemberCounts = teamParticipants.map((teamParticipant) => teamParticipant.individualParticipants.length);
   expect(teamMemberCounts).toEqual([13, 13, 13, 13, 12, 12, 12, 12]);
 
   const teamScaleTotals = teamParticipants.map((teamParticipant) =>
     teamParticipant.individualParticipants
-      .map(
-        (participant) =>
-          participantScaleItem({ participant, scaleAttributes })?.scaleItem
-            ?.scaleValue
-      )
-      .reduce((a, b) => (a || 0) + (b || 0))
+      .map((participant) => participantScaleItem({ participant, scaleAttributes })?.scaleItem?.scaleValue)
+      .reduce((a, b) => (a || 0) + (b || 0)),
   );
   // 100 participants with rankings 1-100 were distributed across 8 teams.
   // 4 teams received an additional team member, rankings 97, 98, 99, 100
@@ -185,8 +174,7 @@ it('can automatically assign participants to teams using scaledParticipants', ()
 
   const scaledParticipants = individualParticipants.map((participant) => ({
     participantId: participant.participantId,
-    scaleValue: participantScaleItem({ participant, scaleAttributes })
-      ?.scaleItem?.scaleValue,
+    scaleValue: participantScaleItem({ participant, scaleAttributes })?.scaleItem?.scaleValue,
   }));
 
   const teamParticipantIds = teamParticipants.map(getParticipantId);
@@ -207,19 +195,13 @@ it('can automatically assign participants to teams using scaledParticipants', ()
     withScaleValues: true,
   }).participants;
 
-  const teamMemberCounts = teamParticipants.map(
-    (teamParticipant) => teamParticipant.individualParticipants.length
-  );
+  const teamMemberCounts = teamParticipants.map((teamParticipant) => teamParticipant.individualParticipants.length);
   expect(teamMemberCounts).toEqual([13, 13, 13, 13, 12, 12, 12, 12]);
 
   const teamScaleTotals = teamParticipants.map((teamParticipant) =>
     teamParticipant.individualParticipants
-      .map(
-        (participant) =>
-          participantScaleItem({ participant, scaleAttributes })?.scaleItem
-            ?.scaleValue
-      )
-      .reduce((a, b) => (a || 0) + (b || 0))
+      .map((participant) => participantScaleItem({ participant, scaleAttributes })?.scaleItem?.scaleValue)
+      .reduce((a, b) => (a || 0) + (b || 0)),
   );
   // 100 participants with rankings 1-100 were distributed across 8 teams.
   // 4 teams received an additional team member, rankings 97, 98, 99, 100
@@ -283,8 +265,7 @@ it('will cleanup UNGROUPED participant entries if TEAM entry is added AFTER team
 
   const scaledParticipants = individualParticipants.map((participant) => ({
     participantId: participant.participantId,
-    scaleValue: participantScaleItem({ participant, scaleAttributes })
-      ?.scaleItem?.scaleValue,
+    scaleValue: participantScaleItem({ participant, scaleAttributes })?.scaleItem?.scaleValue,
   }));
 
   const teamParticipantIds = teamParticipants.map(getParticipantId);
@@ -299,19 +280,13 @@ it('will cleanup UNGROUPED participant entries if TEAM entry is added AFTER team
     withScaleValues: true,
   }).participants;
 
-  const teamMemberCounts = teamParticipants.map(
-    (teamParticipant) => teamParticipant.individualParticipants.length
-  );
+  const teamMemberCounts = teamParticipants.map((teamParticipant) => teamParticipant.individualParticipants.length);
   expect(teamMemberCounts).toEqual([13, 13, 13, 13, 12, 12, 12, 12]);
 
   const teamScaleTotals = teamParticipants.map((teamParticipant) =>
     teamParticipant.individualParticipants
-      .map(
-        (participant) =>
-          participantScaleItem({ participant, scaleAttributes })?.scaleItem
-            ?.scaleValue
-      )
-      .reduce((a, b) => (a || 0) + (b || 0))
+      .map((participant) => participantScaleItem({ participant, scaleAttributes })?.scaleItem?.scaleValue)
+      .reduce((a, b) => (a || 0) + (b || 0)),
   );
   // 100 participants with rankings 1-100 were distributed across 8 teams.
   // 4 teams received an additional team member, rankings 97, 98, 99, 100
@@ -373,8 +348,7 @@ it('will generate teams for scaledTeamAssignment when given teamsCount', () => {
 
   const scaledParticipants = individualParticipants.map((participant) => ({
     participantId: participant.participantId,
-    scaleValue: participantScaleItem({ participant, scaleAttributes })
-      ?.scaleItem?.scaleValue,
+    scaleValue: participantScaleItem({ participant, scaleAttributes })?.scaleItem?.scaleValue,
   }));
 
   tournamentEngine.scaledTeamAssignment({
@@ -388,19 +362,13 @@ it('will generate teams for scaledTeamAssignment when given teamsCount', () => {
     withScaleValues: true,
   }).participants;
 
-  const teamMemberCounts = teamParticipants.map(
-    (teamParticipant) => teamParticipant.individualParticipants.length
-  );
+  const teamMemberCounts = teamParticipants.map((teamParticipant) => teamParticipant.individualParticipants.length);
   expect(teamMemberCounts).toEqual([13, 13, 13, 13, 12, 12, 12, 12]);
 
   const teamScaleTotals = teamParticipants.map((teamParticipant) =>
     teamParticipant.individualParticipants
-      .map(
-        (participant) =>
-          participantScaleItem({ participant, scaleAttributes })?.scaleItem
-            ?.scaleValue
-      )
-      .reduce((a, b) => (a || 0) + (b || 0))
+      .map((participant) => participantScaleItem({ participant, scaleAttributes })?.scaleItem?.scaleValue)
+      .reduce((a, b) => (a || 0) + (b || 0)),
   );
   // 100 participants with rankings 1-100 were distributed across 8 teams.
   // 4 teams received an additional team member, rankings 97, 98, 99, 100
@@ -429,8 +397,7 @@ it('can determine teams from DIRECT_ACCEPTANCE entries of a TEAM event', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  const individualParticipantIds =
-    tournamentRecord.participants.map(getParticipantId);
+  const individualParticipantIds = tournamentRecord.participants.map(getParticipantId);
 
   let result = tournamentEngine.addEventEntries({
     participantIds: individualParticipantIds,
@@ -491,19 +458,13 @@ it('can determine teams from DIRECT_ACCEPTANCE entries of a TEAM event', () => {
     withScaleValues: true,
   }).participants;
 
-  const teamMemberCounts = teamParticipants.map(
-    (teamParticipant) => teamParticipant.individualParticipants.length
-  );
+  const teamMemberCounts = teamParticipants.map((teamParticipant) => teamParticipant.individualParticipants.length);
   expect(teamMemberCounts).toEqual([13, 13, 13, 13, 12, 12, 12, 12]);
 
   const teamScaleTotals = teamParticipants.map((teamParticipant) =>
     teamParticipant.individualParticipants
-      .map(
-        (participant) =>
-          participantScaleItem({ participant, scaleAttributes })?.scaleItem
-            ?.scaleValue
-      )
-      .reduce((a, b) => (a || 0) + (b || 0))
+      .map((participant) => participantScaleItem({ participant, scaleAttributes })?.scaleItem?.scaleValue)
+      .reduce((a, b) => (a || 0) + (b || 0)),
   );
   // 100 participants with rankings 1-100 were distributed across 8 teams.
   // 4 teams received an additional team member, rankings 97, 98, 99, 100

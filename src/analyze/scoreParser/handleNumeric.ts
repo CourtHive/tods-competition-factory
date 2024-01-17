@@ -1,7 +1,7 @@
-import { chunkArray, instanceCount } from '../../utilities/arrays';
+import { chunkArray, instanceCount } from '../../tools/arrays';
 import { setBuilder } from './setBuilder';
 import { parseSuper } from './parseSuper';
-import { isNumeric } from '../../utilities/math';
+import { isNumeric } from '../../tools/math';
 
 export function handleNumeric(params) {
   let { score } = params;
@@ -17,9 +17,7 @@ export function handleNumeric(params) {
   if (typeof score === 'number' || allNumeric) {
     score = score.toString().toLowerCase();
     if (allNumeric) score = onlyNumbers.join('');
-    const numbers = allNumeric
-      ? onlyNumbers.map((n) => parseInt(n))
-      : score.split('').map((n) => parseInt(n));
+    const numbers = allNumeric ? onlyNumbers.map((n) => parseInt(n)) : score.split('').map((n) => parseInt(n));
 
     const { sets } = setBuilder({ score });
     if (sets) {
@@ -70,11 +68,7 @@ export function handleNumeric(params) {
       score = `${s1}-${s2} ${s3}-${s4}(${tb})`;
       applied.push('numericTiebreakPattern5');
     } else if (numbers.length === 7) {
-      if (
-        getDiff(numbers.slice(0, 2)) > 1 &&
-        getDiff(numbers.slice(2, 4)) > 1 &&
-        numbers[4] === 1
-      ) {
+      if (getDiff(numbers.slice(0, 2)) > 1 && getDiff(numbers.slice(2, 4)) > 1 && numbers[4] === 1) {
         const [s1, s2, s3, s4, mtb1, mtb2, mtb3] = numbers;
         score = `${s1}-${s2} ${s3}-${s4} [${mtb1}${mtb2}-${mtb3}]`;
         applied.push('numericTiebreakPattern6');
@@ -110,14 +104,11 @@ export function handleNumeric(params) {
         score = `${s1}-${s2} ${s3}-${s4} ${s5}-${s6}(${tb})`;
         applied.push('numericTiebreakPattern9');
       } else {
-        score =
-          score.slice(0, 2) + ' ' + score.slice(2, 4) + ' ' + score.slice(4);
+        score = score.slice(0, 2) + ' ' + score.slice(2, 4) + ' ' + score.slice(4);
         applied.push('numericMatchTiebreakPattern');
       }
     } else if (!(score.length % 2)) {
-      const chunks = chunkArray(score.split(''), 2).map((part) =>
-        part.join('')
-      );
+      const chunks = chunkArray(score.split(''), 2).map((part) => part.join(''));
       const chunkCharacter = chunks.map((chunk) => {
         const [s1, s2] = chunk.split('').map((s) => parseInt(s));
         const diff = Math.abs(s1 - s2);
@@ -131,14 +122,8 @@ export function handleNumeric(params) {
       const set1tb = chunkCharacter[0] < 0;
       const set2tb = !set1tb && chunkCharacter[1] < 0;
 
-      if (
-        chunkCharacter[0] > 0 &&
-        chunkCharacter[1] > 0 &&
-        chunkCharacter[0] !== chunkCharacter[1]
-      ) {
-        score = [chunks.slice(0, 2).join(' '), chunks.slice(2).join('-')].join(
-          ' '
-        );
+      if (chunkCharacter[0] > 0 && chunkCharacter[1] > 0 && chunkCharacter[0] !== chunkCharacter[1]) {
+        score = [chunks.slice(0, 2).join(' '), chunks.slice(2).join('-')].join(' ');
         applied.push('numeric3rdSetTiebreakPattern');
       } else if (allWinners) {
         score = chunks.join(' ');
@@ -150,10 +135,7 @@ export function handleNumeric(params) {
             applied.push('chunkSplit');
           } else {
             const [n1, n2, n3, n4, n5, n6] = numbers;
-            const tiebreakChunkIndex = chunkCharacter.reduce(
-              (index, chunk, i) => (chunk < 0 ? i : index),
-              undefined
-            );
+            const tiebreakChunkIndex = chunkCharacter.reduce((index, chunk, i) => (chunk < 0 ? i : index), undefined);
             if (tiebreakChunkIndex === 0) {
               const tb = Math.min(n3, n4);
               score = `${n1}-${n2}(${tb}) ${n5}-${n6}`;

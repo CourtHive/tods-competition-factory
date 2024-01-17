@@ -3,19 +3,15 @@ import { getPositionAssignments } from '../../../query/drawDefinition/positionsG
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { structureSort } from '../../../functions/sorters/structureSort';
 import { generateQualifyingLink } from './links/generateQualifyingLink';
-import { definedAttributes } from '../../../utilities/definedAttributes';
+import { definedAttributes } from '../../../tools/definedAttributes';
 import { getDrawTypeCoercion } from './getDrawTypeCoercion';
-import { ensureInt } from '../../../utilities/ensureInt';
-import { isPowerOf2 } from '../../../utilities/math';
+import { ensureInt } from '../../../tools/ensureInt';
+import { isPowerOf2 } from '../../../tools/math';
 import { getGenerators } from './getGenerators';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/matchUpTypes';
-import {
-  EXISTING_STAGE,
-  INVALID_DRAW_SIZE,
-  UNRECOGNIZED_DRAW_TYPE,
-} from '../../../constants/errorConditionConstants';
+import { EXISTING_STAGE, INVALID_DRAW_SIZE, UNRECOGNIZED_DRAW_TYPE } from '../../../constants/errorConditionConstants';
 import {
   MAIN,
   AD_HOC,
@@ -29,15 +25,8 @@ import {
   WINNER,
   POSITION,
 } from '../../../constants/drawDefinitionConstants';
-import {
-  DrawDefinition,
-  Structure,
-  TieFormat,
-} from '../../../types/tournamentTypes';
-import {
-  PlayoffAttributes,
-  PolicyDefinitions,
-} from '../../../types/factoryTypes';
+import { DrawDefinition, Structure, TieFormat } from '../../../types/tournamentTypes';
+import { PlayoffAttributes, PolicyDefinitions } from '../../../types/factoryTypes';
 
 type GenerateDrawStructuresAndLinksArgs = {
   playoffAttributes?: PlayoffAttributes;
@@ -57,9 +46,7 @@ type GenerateDrawStructuresAndLinksArgs = {
   isMock?: boolean;
   uuids?: string[];
 };
-export function generateDrawStructuresAndLinks(
-  params: GenerateDrawStructuresAndLinksArgs
-) {
+export function generateDrawStructuresAndLinks(params: GenerateDrawStructuresAndLinksArgs) {
   const {
     enforceMinimumDrawSize = true,
     overwriteExisting,
@@ -73,36 +60,29 @@ export function generateDrawStructuresAndLinks(
   } = params || {};
 
   const drawTypeCoercion =
-    params.drawTypeCoercion ??
-    getDrawTypeCoercion({ appliedPolicies, drawType: params.drawType });
+    params.drawTypeCoercion ?? getDrawTypeCoercion({ appliedPolicies, drawType: params.drawType });
 
   const stack = 'generateDrawStructuresAndLinks';
   let drawType =
-    (drawTypeCoercion && params.drawSize === 2 && SINGLE_ELIMINATION) ||
-    params.drawType ||
-    SINGLE_ELIMINATION;
+    (drawTypeCoercion && params.drawSize === 2 && SINGLE_ELIMINATION) || params.drawType || SINGLE_ELIMINATION;
 
   const structures: Structure[] = [],
     links: any[] = [];
 
   const matchUpType = params?.matchUpType ?? SINGLES;
 
-  const existingQualifyingStructures = drawDefinition?.structures?.filter(
-    ({ stage }) => stage === QUALIFYING
-  );
+  const existingQualifyingStructures = drawDefinition?.structures?.filter(({ stage }) => stage === QUALIFYING);
   if (existingQualifyingStructures) {
     structures.push(...existingQualifyingStructures);
   }
-  const existingQualifyingStructureIds = existingQualifyingStructures?.map(
-    ({ structureId }) => structureId
-  );
+  const existingQualifyingStructureIds = existingQualifyingStructures?.map(({ structureId }) => structureId);
   const existingMainStructure = drawDefinition?.structures?.find(
-    ({ stage, stageSequence }) => stage === MAIN && stageSequence === 1
+    ({ stage, stageSequence }) => stage === MAIN && stageSequence === 1,
   );
   const existingQualifyingLinks = drawDefinition?.links?.filter(
     (link) =>
       link.target.structureId === existingMainStructure?.structureId &&
-      existingQualifyingStructureIds?.includes(link.source.structureId)
+      existingQualifyingStructureIds?.includes(link.source.structureId),
   );
   const getQualifiersCount = (link, structure) => {
     if (link.linkType === POSITION && structure?.structures) {
@@ -110,28 +90,22 @@ export function generateDrawStructuresAndLinks(
       return structure.structures.length * finishingPositions.length;
     } else if (link.linkType === WINNER && structure?.matchUps?.length) {
       const qualifyingRoundNumber = link.source.roundNumber;
-      const matchUps = structure.matchUps.filter(
-        ({ roundNumber }) => roundNumber === qualifyingRoundNumber
-      );
+      const matchUps = structure.matchUps.filter(({ roundNumber }) => roundNumber === qualifyingRoundNumber);
       return matchUps.length;
     }
   };
 
   const existingQualifyingDrawPositionsCount = existingQualifyingStructures
     ?.map((structure) => {
-      const relevantLink = existingQualifyingLinks?.find(
-        (link) => link.target.structureId === structure.structureId
-      );
-      const drawPositionsCount =
-        getPositionAssignments({ structure })?.positionAssignments?.length ?? 0;
+      const relevantLink = existingQualifyingLinks?.find((link) => link.target.structureId === structure.structureId);
+      const drawPositionsCount = getPositionAssignments({ structure })?.positionAssignments?.length ?? 0;
       if (!relevantLink) return drawPositionsCount;
 
       const sourceStructureId = relevantLink?.source.structureId;
       const sourceStructure = drawDefinition.structures?.find(
-        (structure) => structure.structureId === sourceStructureId
+        (structure) => structure.structureId === sourceStructureId,
       );
-      const sourceQualifiersCount =
-        getQualifiersCount(relevantLink, sourceStructure) || 0;
+      const sourceQualifiersCount = getQualifiersCount(relevantLink, sourceStructure) || 0;
       return drawPositionsCount - sourceQualifiersCount;
     })
     .filter(Boolean)
@@ -140,22 +114,19 @@ export function generateDrawStructuresAndLinks(
     ?.map((link) => {
       const qualifyingStructureId = link.source.structureId;
       const structure = existingQualifyingStructures?.find(
-        (structure) => structure.structureId === qualifyingStructureId
+        (structure) => structure.structureId === qualifyingStructureId,
       );
       return getQualifiersCount(link, structure);
     })
     .filter(Boolean)
     .reduce((a, b) => a + b, 0);
-  const mainStructureIsPlaceholder = !!(
-    existingMainStructure && !existingMainStructure?.matchUps?.length
-  );
+  const mainStructureIsPlaceholder = !!(existingMainStructure && !existingMainStructure?.matchUps?.length);
 
   if (existingQualifyingStructures?.length && !mainStructureIsPlaceholder) {
     return { error: EXISTING_STAGE };
   }
 
-  const qualifyingProfiles =
-    !existingQualifyingStructures?.length && params.qualifyingProfiles;
+  const qualifyingProfiles = !existingQualifyingStructures?.length && params.qualifyingProfiles;
 
   // first generate any qualifying structures and links
   const qualifyingResult =
@@ -172,11 +143,10 @@ export function generateDrawStructuresAndLinks(
     return qualifyingResult;
   }
 
-  const { qualifyingDrawPositionsCount, qualifyingDetails, qualifiersCount } =
-    qualifyingResult || {
-      qualifyingDrawPositionsCount: existingQualifyingDrawPositionsCount,
-      qualifiersCount: existingQualifiersCount,
-    };
+  const { qualifyingDrawPositionsCount, qualifyingDetails, qualifiersCount } = qualifyingResult || {
+    qualifyingDrawPositionsCount: existingQualifyingDrawPositionsCount,
+    qualifiersCount: existingQualifiersCount,
+  };
 
   if (qualifyingDrawPositionsCount) {
     if (qualifyingResult?.structures) {
@@ -187,10 +157,7 @@ export function generateDrawStructuresAndLinks(
     }
   }
 
-  Object.assign(
-    params,
-    definedAttributes({ drawSize, matchUpType, tieFormat })
-  );
+  Object.assign(params, definedAttributes({ drawSize, matchUpType, tieFormat }));
 
   // check that drawSize is a valid value
   const invalidDrawSize =
@@ -200,10 +167,8 @@ export function generateDrawStructuresAndLinks(
       drawSize < 2 ||
       (!staggeredEntry &&
         ![FEED_IN, LUCKY_DRAW].includes(drawType) &&
-        (([ROUND_ROBIN_WITH_PLAYOFF, ROUND_ROBIN].includes(drawType) &&
-          drawSize < 3) ||
-          (![ROUND_ROBIN, ROUND_ROBIN_WITH_PLAYOFF].includes(drawType) &&
-            !isPowerOf2(drawSize)))));
+        (([ROUND_ROBIN_WITH_PLAYOFF, ROUND_ROBIN].includes(drawType) && drawSize < 3) ||
+          (![ROUND_ROBIN, ROUND_ROBIN_WITH_PLAYOFF].includes(drawType) && !isPowerOf2(drawSize)))));
 
   if (invalidDrawSize && !qualifyingDrawPositionsCount) {
     return decorateResult({
@@ -242,12 +207,11 @@ export function generateDrawStructuresAndLinks(
   const generatorResult = generator?.();
   if (generatorResult.error) return generatorResult;
 
-  const { structures: generatedStructures, links: generatedLinks } =
-    generatorResult;
+  const { structures: generatedStructures, links: generatedLinks } = generatorResult;
 
   if (generatedStructures?.length) {
     const generatedMainStructure = generatedStructures.find(
-      ({ stage, stageSequence }) => stage === MAIN && stageSequence === 1
+      ({ stage, stageSequence }) => stage === MAIN && stageSequence === 1,
     );
 
     if (existingMainStructure && generatedMainStructure) {
@@ -278,7 +242,7 @@ export function generateDrawStructuresAndLinks(
   }
 
   const mainStructure = generatorResult.structures.find(
-    ({ stage, stageSequence }) => stage === MAIN && stageSequence === 1
+    ({ stage, stageSequence }) => stage === MAIN && stageSequence === 1,
   );
 
   for (const qualifyingDetail of qualifyingDetails || []) {

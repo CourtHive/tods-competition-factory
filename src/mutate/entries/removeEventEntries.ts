@@ -3,8 +3,8 @@ import { decorateResult } from '../../global/functions/decorateResult';
 import { getParticipantId } from '../../global/functions/extractors';
 import { getFlightProfile } from '../../query/event/getFlightProfile';
 import { refreshEntryPositions } from './refreshEntryPositions';
-import { intersection } from '../../utilities/arrays';
-import { isString } from '../../utilities/objects';
+import { intersection } from '../../tools/arrays';
+import { isString } from '../../tools/objects';
 
 import { EntryStatusUnion, Event, StageTypeUnion, Tournament } from '../../types/tournamentTypes';
 import { HydratedParticipant } from '../../types/hydrated';
