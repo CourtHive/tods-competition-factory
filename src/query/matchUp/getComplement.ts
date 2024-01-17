@@ -8,9 +8,7 @@ type SetComplementArgs = {
   setTo: number;
 };
 
-export const getSetComplement = (
-  params: SetComplementArgs
-): number[] | false => {
+export const getSetComplement = (params: SetComplementArgs): number[] | false => {
   const { isSide1, lowValue, setTo, tiebreakAt, NoAD } = params;
   if (lowValue === undefined) return false;
   let valueAsNumber = ensureInt(lowValue);
@@ -26,14 +24,12 @@ export const getSetComplement = (
 
   let calculatedValue;
   if (NoAD && !tiebreakAt) {
+    if (valueAsNumber > setTo) calculatedValue = setTo;
     calculatedValue = valueAsNumber < setTo ? setTo : setTo - 1;
   } else {
     calculatedValue =
       (valueAsNumber + 1 < setTo && setTo) ||
-      (tiebreakAt &&
-        tiebreakAt < setTo &&
-        valueAsNumber === tiebreakAt &&
-        setTo) ||
+      (tiebreakAt && tiebreakAt < setTo && valueAsNumber === tiebreakAt && setTo) ||
       (!tiebreakAt && valueAsNumber + 2) ||
       setTo + 1;
   }
@@ -51,13 +47,10 @@ type TiebreakComplementArgs = {
   isSide1?: boolean;
 };
 
-export const getTiebreakComplement = (
-  params: TiebreakComplementArgs
-): number[] | false => {
+export const getTiebreakComplement = (params: TiebreakComplementArgs): number[] | false => {
   const { isSide1, lowValue, tiebreakTo, tiebreakNoAd } = params;
   if (lowValue === undefined) return false;
-  let valueAsNumber =
-    typeof lowValue === 'string' ? parseInt(lowValue) : lowValue;
+  let valueAsNumber = typeof lowValue === 'string' ? parseInt(lowValue) : lowValue;
 
   // Not necessary?
   // do not accept low values greater than two digits;

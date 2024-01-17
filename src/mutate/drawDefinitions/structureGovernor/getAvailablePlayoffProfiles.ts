@@ -7,9 +7,9 @@ import { getPositionsPlayedOff } from './getPositionsPlayedOff';
 import { numericSort } from '../../../utilities/sorting';
 import { getSourceRounds } from './getSourceRounds';
 
+import { CONTAINER, FIRST_MATCHUP, VOLUNTARY_CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { DrawDefinition } from '../../../types/tournamentTypes';
-import { CONTAINER, FIRST_MATCHUP, VOLUNTARY_CONSOLATION } from '../../../constants/drawDefinitionConstants';
 
 type GetAvailablePlayoffProfileArgs = {
   drawDefinition: DrawDefinition;
@@ -81,11 +81,11 @@ function availablePlayoffProfiles({ playoffPositions, drawDefinition, structure,
     const positionRange = matchUps.find((m) => m.containerStructureId === structureId && m.finishingPositionRange)
       ?.finishingPositionRange?.winner || [0, 1];
     const targetStructureIds = links?.source.map(({ target }) => target.structureId);
-    const { positionsPlayedOff, positionsNotPlayedOff } = getPositionsPlayedOff({
+    const { positionsPlayedOff = [], positionsNotPlayedOff = [] } = getPositionsPlayedOff({
       structureIds: targetStructureIds,
       drawDefinition,
     });
-    const positionsInTargetStructures = [...(positionsPlayedOff ?? []), ...positionsNotPlayedOff];
+    const positionsInTargetStructures = [...positionsPlayedOff, ...positionsNotPlayedOff];
     const availablePlayoffPositions = generateRange(positionRange[0], positionRange[1] + 1).filter(
       (position) => !positionsInTargetStructures.includes(position),
     );
