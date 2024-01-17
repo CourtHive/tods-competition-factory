@@ -15,5 +15,4 @@ export * as scheduleGovernor from './scheduleGovernor';
 export * as scoreGovernor from './scoreGovernor';
 export * as tieFormatGovernor from './tieFormatGovernor';
 export * as tournamentGovernor from './tournamentGovernor';
-export * as utilitiesGovernor from './utilitiesGovernor';
 export * as venueGovernor from './venueGovernor';

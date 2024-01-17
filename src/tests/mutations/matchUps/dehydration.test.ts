@@ -1,7 +1,7 @@
 import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
-import * as utilities from '../../../assemblies/governors/utilitiesGovernor';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
+import * as utilities from '../../../assemblies/tools';
 import { expect, it } from 'vitest';
 
 import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';

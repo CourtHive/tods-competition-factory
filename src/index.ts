@@ -5,7 +5,8 @@ export * as governors from './assemblies/governors';
 
 // UTILITIES ------------------------------------------------------------
 export * as matchUpFormatCode from './assemblies/governors/matchUpFormatGovernor';
-export * as utilities from './assemblies/governors/utilitiesGovernor';
+export * as utilities from './assemblies/tools'; // deprecate
+export * as tools from './assemblies/tools';
 
 // GLOBAL STATE ---------------------------------------------------------
 export * as globalState from './global/state/globalState';

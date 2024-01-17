@@ -1,6 +1,6 @@
-import * as utilities from '../../../assemblies/governors/utilitiesGovernor';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
+import * as utilities from '../../../assemblies/tools';
 import { expect, it, test } from 'vitest';
 
 import { POLICY_TYPE_PARTICIPANT } from '../../../constants/policyConstants';

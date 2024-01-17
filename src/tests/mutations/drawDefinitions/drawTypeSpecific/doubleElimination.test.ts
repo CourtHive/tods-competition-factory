@@ -1,5 +1,5 @@
-import * as utilities from '../../../../assemblies/governors/utilitiesGovernor';
 import tournamentEngine from '../../../engines/syncEngine';
+import * as utilities from '../../../../assemblies/tools';
 import { mocksEngine } from '../../../..';
 import { expect, it } from 'vitest';
 

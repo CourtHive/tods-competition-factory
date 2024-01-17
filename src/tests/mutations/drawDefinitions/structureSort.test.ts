@@ -1,8 +1,8 @@
-import * as utilities from '../../../assemblies/governors/utilitiesGovernor';
 import { structureSort } from '../../../functions/sorters/structureSort';
 import mocksEngine from '../../../assemblies/engines/mock';
 import { instanceCount } from '../../../utilities/arrays';
 import tournamentEngine from '../../engines/syncEngine';
+import * as utilities from '../../../assemblies/tools';
 import { expect, test } from 'vitest';
 
 import {

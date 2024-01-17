@@ -8,6 +8,7 @@ export { generateSeedingScaleItems } from '../../../assemblies/generators/drawDe
 export { generateDrawDefinition } from '../../../assemblies/generators/drawDefinitions/generateDrawDefinition';
 export { generateAdHocMatchUps } from '../../../assemblies/generators/drawDefinitions/generateAdHocMatchUps';
 export { generateFlightProfile } from '../../../assemblies/generators/drawDefinitions/generateFlightProfile';
+export { roundRobinGroups } from '../../generators/drawDefinitions/drawTypes/roundRobin/roundRobinGroups';
 export { generateLineUps } from '../../../assemblies/generators/participants/generateLineUps';
 export { drawMatic } from '../../../assemblies/generators/drawDefinitions/drawMatic/drawMatic';
 export { generateCourts } from '../../../assemblies/generators/venues/generateCourts';
