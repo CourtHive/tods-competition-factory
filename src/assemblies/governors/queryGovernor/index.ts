@@ -88,7 +88,6 @@ export { getMatchUpType } from '../../../query/matchUp/getMatchUpType';
 export { analyzeMatchUp } from '../../../query/matchUp/analyzeMatchUp';
 export { analyzeDraws } from '../../../query/tournaments/analyzeDraws';
 export { drawMatchUps } from '../../../query/matchUps/getDrawMatchUps';
-export { getVenuesReport } from '../../../query/venues/venuesReport';
 export { isAdHoc } from '../../../query/drawDefinition/isAdHoc';
 export { findExtension } from '../../../acquire/findExtension';
 export { getCourts } from '../../../query/venues/getCourts';

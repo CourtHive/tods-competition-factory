@@ -33,6 +33,3 @@ export {
   removeParticipantExtension,
   removeTournamentExtension,
 } from '../../../mutate/extensions/addRemoveExtensions';
-
-export * as mutate from './mutate';
-export * as query from './query';

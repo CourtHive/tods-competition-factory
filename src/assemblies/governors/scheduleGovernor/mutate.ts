@@ -7,7 +7,6 @@ export { removeMatchUpCourtAssignment } from '../../../mutate/matchUps/schedule/
 export { proAutoSchedule } from '../../../mutate/matchUps/schedule/schedulers/proScheduler/proAutoSchedule';
 export { modifyMatchUpFormatTiming } from '../../../mutate/matchUps/extensions/modifyMatchUpFormatTiming';
 export { bulkUpdateCourtAssignments } from '../../../mutate/matchUps/schedule/bulkUpdateCourtAssignments';
-export { getSchedulingProfile, setSchedulingProfile } from '../../../mutate/tournaments/schedulingProfile';
 export { allocateTeamMatchUpCourts } from '../../../mutate/matchUps/schedule/allocateTeamMatchUpCourts';
 export { scheduleMatchUps } from '../../../mutate/matchUps/schedule/scheduleMatchUps/scheduleMatchUps';
 export { generateBookings } from '../../../mutate/matchUps/schedule/schedulers/utils/generateBookings';
@@ -25,6 +24,7 @@ export { setMatchUpDailyLimits } from '../../../mutate/tournaments/setMatchUpDai
 export { assignMatchUpCourt } from '../../../mutate/matchUps/schedule/assignMatchUpCourt';
 export { assignMatchUpVenue } from '../../../mutate/matchUps/schedule/assignMatchUpVenue';
 export { validateSchedulingProfile } from '../../../validators/validateSchedulingProfile';
+export { setSchedulingProfile } from '../../../mutate/tournaments/schedulingProfile';
 export { findMatchUpFormatTiming } from '../../../acquire/findMatchUpFormatTiming';
 export { getProfileRounds } from '../../../mutate/matchUps/schedule/profileRounds';
 export { courtGridRows } from '../../generators/scheduling/courtGridRows';
@@ -40,6 +40,3 @@ export {
   addMatchUpOfficial,
   addMatchUpScheduleItems,
 } from '../../../mutate/matchUps/schedule/scheduleItems';
-
-export * as mutate from './mutate';
-export * as query from './query';

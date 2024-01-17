@@ -8,3 +8,6 @@ export { removeEventEntries } from '../../../mutate/entries/removeEventEntries';
 export { modifyEventEntries } from '../../../mutate/entries/modifyEventEntries';
 export { addDrawEntries } from '../../../mutate/drawDefinitions/addDrawEntries';
 export { addEventEntries } from '../../../mutate/entries/addEventEntries';
+
+export * as mutate from './mutate';
+export * as query from './query';

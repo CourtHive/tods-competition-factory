@@ -21,6 +21,3 @@ export { publicFindMatchUp as findMatchUp } from '../../../acquire/findMatchUp';
 export { applyLineUps } from '../../../mutate/matchUps/lineUps/applyLineUps';
 export { resetTieFormat } from '../../../mutate/tieFormat/resetTieFormat';
 export { resetScorecard } from '../../../mutate/matchUps/resetScorecard';
-
-export * as mutate from './mutate';
-export * as query from './query';

@@ -17,16 +17,11 @@ export { modifyPenalty } from '../../../mutate/participants/penalties/modifyPena
 export { deleteParticipants } from '../../../mutate/participants/deleteParticipants';
 export { mergeParticipants } from '../../../mutate/participants/mergeParticipants';
 export { modifyParticipant } from '../../../mutate/participants/modifyParticipant';
-export { filterParticipants } from '../../../query/participants/filterParticipants';
 export { addParticipants } from '../../../mutate/participants/addParticipants';
 export { addPenalty } from '../../../mutate/participants/penalties/addPenalty';
 export { addParticipant } from '../../../mutate/participants/addParticipant';
-export { validateLineUp } from '../../../validators/validateTeamLineUp';
 export { addPersons } from '../../../mutate/participants/addPersons';
 export {
   removeIndividualParticipantIds,
   removeParticipantIdsFromAllTeams,
 } from '../../../mutate/participants/removeIndividualParticipantIds';
-
-export * as mutate from './mutate';
-export * as query from './query';

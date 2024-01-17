@@ -10,3 +10,6 @@ export { publishEvent } from '../../../mutate/events/publishEvent';
 export { getVenueData } from '../../../query/venues/getVenueData';
 export { getCourtInfo } from '../../../query/venues/getCourtInfo';
 export { getEventData } from '../../../query/event/getEventData';
+
+export * as mutate from './mutate';
+export * as query from './query';
