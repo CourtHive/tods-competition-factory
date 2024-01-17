@@ -6,7 +6,7 @@ title: Score Governor
 import { governors: { scoreGovernor }} from 'tods-competition-factory';
 ```
 
-The **scoreGovernor** is a collection of scoring related utilities that provide analysis/validation or generate values.
+The **scoreGovernor** is a collection of scoring related tools that provide analysis/validation or generate values.
 
 Lightweight independent/reusable components such as scoring dialogs can make use of the **scoreGovernor** without having to import any Competition Factory engines.
 

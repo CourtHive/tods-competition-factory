@@ -1,4 +1,4 @@
-import { tournamentEngine, mocksEngine, askEngine, utilities } from 'tods-competition-factory';
+import { tournamentEngine, mocksEngine, askEngine, tools } from 'tods-competition-factory';
 import ConstantsViewer from '../../../docs/components/ConstantsViewr';
 import Tournament from '../../../docs/components/TournamentRecord';
 import Participants from '../../../docs/components/Participants';
@@ -16,7 +16,7 @@ console.log(`%cfactory: ${cfv}`, 'color: lightblue');
 const ReactLiveScope = {
   React,
   ...React,
-  utilities,
+  tools,
   askEngine,
   mocksEngine,
   tournamentEngine,

@@ -35,6 +35,12 @@ Verion 2.0 of the Competition Factory was focused on code restructuring with sup
 - utilities.findExtension() => engine.findExtension()
 - scoreGovernor.function() => engine.function()
 
+All other utilities should now be imported as `tools`.
+
+```js
+import { tools } from 'tods-competition-factory';
+```
+
 ## Parameter changes
 
 - `{ sandboxTourmament }` is no longer necessary.

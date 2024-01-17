@@ -1,5 +1,5 @@
-import React from 'react';
 import RenderJSON from './RenderJSON';
+import React from 'react';
 
 export const Participants = ({ data }) => {
   return (

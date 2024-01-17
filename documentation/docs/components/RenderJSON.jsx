@@ -1,5 +1,5 @@
 import React from 'react';
-import { utilities } from 'tods-competition-factory';
+import { tools } from 'tods-competition-factory';
 
 import { JSONTree } from 'react-json-tree';
 import themes from './themes';
@@ -9,10 +9,7 @@ import themes from './themes';
 const getValueLabelStyle = ({ style }, nodeType, keyPath) => ({
   style: {
     ...style,
-    color:
-      !Number.isNaN(keyPath[0]) && !(parseInt(keyPath, 10) % 2)
-        ? '#33F'
-        : style.color,
+    color: !Number.isNaN(keyPath[0]) && !(parseInt(keyPath, 10) % 2) ? '#33F' : style.color,
   },
 });
 
@@ -38,81 +35,52 @@ const getItemString = (type, data, itemType) => {
   let customLabel;
   if (isObject) {
     const keys = Object.keys(data);
-    if (
-      utilities.intersection(keys, ['drawId', 'drawType']).length === 2 &&
-      !keys.includes('drawRepresentativeIds')
-    ) {
+    if (tools.intersection(keys, ['drawId', 'drawType']).length === 2 && !keys.includes('drawRepresentativeIds')) {
       customLabel = 'drawDefinition';
     }
     if (
-      utilities.intersection(keys, ['entryPosition', 'entryStatus']).length ===
-        2 &&
+      tools.intersection(keys, ['entryPosition', 'entryStatus']).length === 2 &&
       !keys.includes('entryStageSequence')
     ) {
       customLabel = 'entry';
     }
     if (
-      utilities.intersection(keys, ['eventId', 'sortOrder', 'notBeforeTime'])
-        .length === 3 &&
+      tools.intersection(keys, ['eventId', 'sortOrder', 'notBeforeTime']).length === 3 &&
       !keys.includes('tennisOfficialIds')
     ) {
       customLabel = 'round';
-    } else if (
-      utilities.intersection(keys, ['eventId', 'eventName']).length === 2 &&
-      !keys.includes('tennisOfficialIds')
-    ) {
+    } else if (tools.intersection(keys, ['eventId', 'eventName']).length === 2 && !keys.includes('tennisOfficialIds')) {
       customLabel = 'event';
     }
 
-    if (utilities.intersection(keys, ['flightNumber', 'drawId']).length === 2) {
+    if (tools.intersection(keys, ['flightNumber', 'drawId']).length === 2) {
       customLabel = 'flight';
     }
-    if (utilities.intersection(keys, ['name', 'value']).length === 2) {
+    if (tools.intersection(keys, ['name', 'value']).length === 2) {
       customLabel = 'extension';
     }
-    if (
-      utilities.intersection(keys, ['linkType', 'source']).length === 2 &&
-      !keys.includes('linkCondition')
-    ) {
+    if (tools.intersection(keys, ['linkType', 'source']).length === 2 && !keys.includes('linkCondition')) {
       customLabel = 'link';
     }
-    if (
-      utilities.intersection(keys, ['matchUpId', 'drawPositions']).length ===
-        2 &&
-      !keys.includes('surfaceCategory')
-    ) {
+    if (tools.intersection(keys, ['matchUpId', 'drawPositions']).length === 2 && !keys.includes('surfaceCategory')) {
       customLabel = 'matchUp';
     }
-    if (
-      utilities.intersection(keys, ['drawPosition', 'participantId', 'bye'])
-        .length === 2
-    ) {
+    if (tools.intersection(keys, ['drawPosition', 'participantId', 'bye']).length === 2) {
       customLabel = 'positionAssignment';
     }
-    if (
-      utilities.intersection(keys, ['courtId', 'dateAvailability']).length ===
-        2 &&
-      !keys.includes('altitude')
-    ) {
+    if (tools.intersection(keys, ['courtId', 'dateAvailability']).length === 2 && !keys.includes('altitude')) {
       customLabel = 'court';
     }
     if (
-      utilities.intersection(keys, ['participantId', 'participantName'])
-        .length === 2 &&
+      tools.intersection(keys, ['participantId', 'participantName']).length === 2 &&
       !keys.includes('onlineResources')
     ) {
       customLabel = 'participant';
     }
-    if (
-      utilities.intersection(keys, ['structureId', 'structureName']).length ===
-      2
-    ) {
+    if (tools.intersection(keys, ['structureId', 'structureName']).length === 2) {
       customLabel = 'structure';
     }
-    if (
-      utilities.intersection(keys, ['venueId', 'courts']).length === 2 &&
-      !keys.includes('venueOtherIds')
-    ) {
+    if (tools.intersection(keys, ['venueId', 'courts']).length === 2 && !keys.includes('venueOtherIds')) {
       customLabel = 'venue';
     }
   }
@@ -138,13 +106,11 @@ const renderTypeDef = (raw) => {
 };
 
 const stringLimit = 40;
-const isJSONstring = (data) =>
-  typeof data === 'string' && data.length > 2 && data[1] === '{';
+const isJSONstring = (data) => typeof data === 'string' && data.length > 2 && data[1] === '{';
 
 const renderValue = (raw) => {
   if (isJSONstring(raw)) return renderTypeDef(raw);
-  if (typeof raw === 'string' && raw.length > stringLimit)
-    return raw.slice(0, stringLimit) + '...';
+  if (typeof raw === 'string' && raw.length > stringLimit) return raw.slice(0, stringLimit) + '...';
   return raw;
 };
 

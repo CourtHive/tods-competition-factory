@@ -7,7 +7,7 @@ Provides custom mapping of column names and merging of column values (resolves t
 Context attributes can be added to all rows and column-specific value replacements may be defined.
 
 ```js
-import { utilities } from 'tods-competition-factory';
+import { tools } from 'tods-competition-factory';
 
 const config = {
   includeTransformAccessors, // optional boolean - transform accessors are included with columnAccessors
@@ -25,7 +25,7 @@ const config = {
   keyJoiner, // optional - defines how flattened column names are constructed; defaults to '.'
 };
 const arrayOfJSON = [{ a: 1 }, { b: 2 }];
-const csv = utilities.JSON2CSV(arrayOfJSON, config);
+const csv = tools.JSON2CSV(arrayOfJSON, config);
 ```
 
 :::note
@@ -51,9 +51,7 @@ function MocksEngineDemo(props) {
     drawProfiles,
   });
 
-  const { matchUps } = tournamentEngine
-    .setState(tournamentRecord)
-    .allTournamentMatchUps();
+  const { matchUps } = tournamentEngine.setState(tournamentRecord).allTournamentMatchUps();
 
   const rowJoiner = '|';
   const config = {
@@ -67,20 +65,16 @@ function MocksEngineDemo(props) {
         'sides.0.participant.individualParticipants.0.participantName',
         'sides.0.participant.participantName',
       ],
-      side1Participant2: [
-        'sides.0.participant.individualParticipants.1.participantName',
-      ],
+      side1Participant2: ['sides.0.participant.individualParticipants.1.participantName'],
       side2Participant1: [
         'sides.1.participant.individualParticipants.0.participantName',
         'sides.1.participant.participantName',
       ],
-      side2Participant2: [
-        'sides.1.participant.individualParticipants.1.participantName',
-      ],
+      side2Participant2: ['sides.1.participant.individualParticipants.1.participantName'],
     },
   };
 
-  const csvMatchUps = utilities.JSON2CSV(matchUps, config);
+  const csvMatchUps = tools.JSON2CSV(matchUps, config);
   return <RenderCSV data={csvMatchUps} rowJoiner={rowJoiner} />;
 }
 ```

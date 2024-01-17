@@ -101,16 +101,16 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'Utilities',
+      label: 'Tools',
       items: [
         {
           type: 'doc',
           label: 'Overview',
-          id: 'utilities/utilities-overview',
+          id: 'tools/tools-overview',
         },
-        'utilities/make-deep-copy',
-        'utilities/structure-sort',
-        'utilities/json-to-csv',
+        'tools/make-deep-copy',
+        'tools/structure-sort',
+        'tools/json-to-csv',
       ],
     },
     {
