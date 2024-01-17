@@ -1,7 +1,7 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
-import { getSourceRounds } from '../../../../mutate/drawDefinitions/structureGovernor/getSourceRounds';
 import { setStageDrawSize } from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 import { newDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/newDrawDefinition';
+import { getSourceRounds } from '../../../../query/drawDefinition/getSourceRounds';
 import { it, expect } from 'vitest';
 
 import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../../constants/drawDefinitionConstants';
@@ -69,10 +69,7 @@ it('can correctly derive source rounds for final positions in FIRST_MATCH_LOSER_
   expect(result.success).toEqual(true);
 
   const structures = result?.structures ?? [];
-  const [
-    { structureId: mainStructureId },
-    { structureId: consolationStructureId },
-  ] = structures;
+  const [{ structureId: mainStructureId }, { structureId: consolationStructureId }] = structures;
 
   let { playoffSourceRounds, playoffPositionsReturned } = getSourceRounds({
     drawDefinition,

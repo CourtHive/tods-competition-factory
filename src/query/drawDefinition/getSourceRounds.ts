@@ -1,18 +1,18 @@
-import { getStructureRoundProfile } from '../../../query/structure/getStructureRoundProfile';
-import { getFinishingPositionSourceRoundsMap } from './structureUtils';
+import { getFinishingPositionSourceRoundsMap } from '../../mutate/drawDefinitions/structureGovernor/structureUtils';
+import { getStructureRoundProfile } from '../structure/getStructureRoundProfile';
 import { getPositionsPlayedOff } from './getPositionsPlayedOff';
-import { generateRange } from '../../../utilities/arrays';
-import { numericSort } from '../../../utilities/sorting';
-import { ensureInt } from '../../../utilities/ensureInt';
+import { generateRange } from '../../utilities/arrays';
+import { numericSort } from '../../utilities/sorting';
+import { ensureInt } from '../../utilities/ensureInt';
 
-import { DrawDefinition } from '../../../types/tournamentTypes';
-import { RoundProfile } from '../../../types/factoryTypes';
+import { DrawDefinition } from '../../types/tournamentTypes';
+import { RoundProfile } from '../../types/factoryTypes';
 import {
   ErrorType,
   MISSING_DRAW_DEFINITION,
   MISSING_STRUCTURE_ID,
   MISSING_VALUE,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 type GetSourceRoundsArgs = {
   excludeRoundNumbers?: number[];

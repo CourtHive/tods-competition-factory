@@ -1,6 +1,8 @@
 export { getAllowedDrawTypes, getAllowedMatchUpFormats } from '../../../query/tournaments/allowedTypes';
-export { getTournamentPenalties } from '../../../mutate/participants/penalties/getTournamentPenalties';
+export { getPolicyDefinitions, getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
+export { getCompetitionPenalties } from '../../../query/participants/getCompetitionPenalties';
 export { getCompetitionDateRange } from '../../../query/tournaments/getCompetitionDateRange';
+export { getTournamentPenalties } from '../../../query/participants/getTournamentPenalties';
 export { getTournamentPersons } from '../../../query/tournaments/getTournamentPersons';
 export { getTournamentStructures } from '../../../query/structure/structureGetter';
 export { analyzeTournament } from '../../../query/tournaments/analyzeTournament';

@@ -1,4 +1,4 @@
-import { getPositionRangeMap } from '../../../../mutate/drawDefinitions/structureGovernor/getPositionRangeMap';
+import { getPositionRangeMap } from '../../../../query/drawDefinition/getPositionRangeMap';
 import { ResultType, decorateResult } from '../../../../global/functions/decorateResult';
 import { structureSort } from '../../../../functions/sorters/structureSort';
 import { generatePlayoffStructures } from '../drawTypes/playoffStructures';

@@ -1,15 +1,13 @@
-import { Penalty, Tournament } from '../../../types/tournamentTypes';
-import {
-  ErrorType,
-  MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
+import { Penalty, Tournament } from '../../types/tournamentTypes';
+import { ErrorType, MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
 
 type GetTournamentPenaltiesArgs = {
   tournamentRecord: Tournament;
 };
-export function getTournamentPenalties({
-  tournamentRecord,
-}: GetTournamentPenaltiesArgs): { error?: ErrorType; penalties?: Penalty[] } {
+export function getTournamentPenalties({ tournamentRecord }: GetTournamentPenaltiesArgs): {
+  error?: ErrorType;
+  penalties?: Penalty[];
+} {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   const participants = tournamentRecord?.participants ?? [];
   const allPenalties = participants.reduce((penalties, participant) => {

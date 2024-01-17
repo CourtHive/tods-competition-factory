@@ -9,7 +9,7 @@ import { modifyParticipant } from '../../participants/modifyParticipant';
 import { updateTeamLineUp } from '../../drawDefinitions/updateTeamLineUp';
 import { getTieMatchUpContext } from '../../events/getTieMatchUpContext';
 import { addParticipant } from '../../participants/addParticipant';
-import { getTeamLineUp } from '../../drawDefinitions/getTeamLineUp';
+import { getTeamLineUp } from '../../../query/drawDefinition/getTeamLineUp';
 import { ensureSideLineUps } from './ensureSideLineUps';
 import { overlap } from '../../../utilities/arrays';
 
@@ -141,8 +141,9 @@ export function assignTieMatchUpParticipantId(
     (assignment) => assignment.participantId === participantTeam?.participantId,
   );
   const teamDrawPosition = teamAssignment?.drawPosition;
-  const dualTeamSideNumber = dualMatchUp?.sides?.find((side: any) => side.participantId === teamParticipantId)
-    ?.sideNumber;
+  const dualTeamSideNumber = dualMatchUp?.sides?.find(
+    (side: any) => side.participantId === teamParticipantId,
+  )?.sideNumber;
   const teamSideNumber = inContextTieMatchUp?.sides?.find(
     (side: any) => teamDrawPosition && side.drawPosition === teamDrawPosition,
   )?.sideNumber;
@@ -177,14 +178,13 @@ export function assignTieMatchUpParticipantId(
       drawDefinition,
     })?.lineUp;
 
-  const targetAssignments = lineUp?.filter(
-    (participantAssignment) =>
-      participantAssignment.collectionAssignments?.find(
-        (assignment) =>
-          assignment.collectionPosition === collectionPosition &&
-          assignment.collectionId === collectionId &&
-          !assignment.previousParticipantId,
-      ),
+  const targetAssignments = lineUp?.filter((participantAssignment) =>
+    participantAssignment.collectionAssignments?.find(
+      (assignment) =>
+        assignment.collectionPosition === collectionPosition &&
+        assignment.collectionId === collectionId &&
+        !assignment.previousParticipantId,
+    ),
   );
   const assignedParticipantIds = targetAssignments?.map((assignment) => assignment?.participantId);
 

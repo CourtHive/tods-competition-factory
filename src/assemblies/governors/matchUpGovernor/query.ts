@@ -2,6 +2,7 @@ export { getMatchUpFormatTimingUpdate } from '../../../query/extensions/matchUpF
 export { getEventMatchUpFormatTiming } from '../../../query/extensions/matchUpFormatTiming/getEventMatchUpFormatTiming';
 export { getModifiedMatchUpFormatTiming } from '../../../query/extensions/matchUpFormatTiming/getModifiedMatchUpTiming';
 export { getMatchUpFormatTiming } from '../../../query/extensions/matchUpFormatTiming/getMatchUpFormatTiming';
+export { getMatchUpDailyLimitsUpdate } from '../../../query/extensions/getMatchUpDailyLimitsUpdate';
 export { participantScheduledMatchUps } from '../../../query/matchUps/participantScheduledMatchUps';
 export { tallyParticipantResults } from '../../../query/matchUps/roundRobinTally/roundRobinTally';
 export { competitionScheduleMatchUps } from '../../../query/matchUps/competitionScheduleMatchUps';
@@ -12,13 +13,15 @@ export { matchUpActions } from '../../../query/drawDefinition/matchUpActions/mat
 export { allCompetitionMatchUps } from '../../../query/matchUps/getAllCompetitionMatchUps';
 export { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
 export { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDependencies';
+export { getCompetitionMatchUps } from '../../../query/matchUps/getCompetitionMatchUps';
 export { getMatchUpDailyLimits } from '../../../query/extensions/getMatchUpDailyLimits';
 export { checkMatchUpIsComplete } from '../../../query/matchUp/checkMatchUpIsComplete';
+export { getPredictiveAccuracy } from '../../../query/matchUps/getPredictiveAccuracy';
+export { calculateWinCriteria } from '../../../query/matchUp/calculateWinCriteria';
 export { tournamentMatchUps } from '../../../query/matchUps/getTournamentMatchUps';
 export { getMatchUpContextIds } from '../../../query/matchUp/getMatchUpContextIds';
 export { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
 export { getMatchUpFormat } from '../../../query/hierarchical/getMatchUpFormat';
-export { getTournamentIds } from '../../../query/tournaments/getTournamentIds';
 export { validMatchUp, validMatchUps } from '../../../validators/validMatchUp';
 export { allEventMatchUps } from '../../../query/matchUps/getAllEventMatchUps';
 export { allDrawMatchUps } from '../../../query/matchUps/getAllDrawMatchUps';

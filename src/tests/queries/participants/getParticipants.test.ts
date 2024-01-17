@@ -162,8 +162,8 @@ it('can accept a privacy policy to filter tournament participants attributes', (
   );
   expect(participantGenders.length).toEqual(2);
 
-  let personAttributes = Object.keys(participants[0].person);
-  expect(personAttributes.sort()).toEqual([
+  let personAttributes = Object.keys(participants[0].person).sort();
+  expect(personAttributes).toEqual([
     'addresses',
     'extensions',
     'nationalityCode',

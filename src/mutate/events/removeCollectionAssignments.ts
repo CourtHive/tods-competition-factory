@@ -1,4 +1,4 @@
-import { getTeamLineUp } from '../drawDefinitions/getTeamLineUp';
+import { getTeamLineUp } from '../../query/drawDefinition/getTeamLineUp';
 
 import { INVALID_VALUES } from '../../constants/errorConditionConstants';
 
@@ -34,22 +34,20 @@ export function removeCollectionAssignments({
           return teamCompetitor;
         }
 
-        const collectionAssignments =
-          teamCompetitor.collectionAssignments?.filter((assignment) => {
-            const target =
-              assignment.collectionId === collectionId &&
-              assignment.collectionPosition === collectionPosition;
-            if (target) {
-              if (assignment.previousParticipantId) {
-                previousParticipantIds.push(assignment.previousParticipantId);
-              }
-              assignmentsRemoved.push({
-                participantId: teamCompetitor.participantId,
-                ...assignment,
-              });
+        const collectionAssignments = teamCompetitor.collectionAssignments?.filter((assignment) => {
+          const target =
+            assignment.collectionId === collectionId && assignment.collectionPosition === collectionPosition;
+          if (target) {
+            if (assignment.previousParticipantId) {
+              previousParticipantIds.push(assignment.previousParticipantId);
             }
-            return !target;
-          });
+            assignmentsRemoved.push({
+              participantId: teamCompetitor.participantId,
+              ...assignment,
+            });
+          }
+          return !target;
+        });
         return {
           participantId: teamCompetitor.participantId,
           collectionAssignments,
