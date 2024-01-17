@@ -1,6 +1,6 @@
 import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
 import { getScheduledCourtMatchUps } from '../../query/venues/getScheduledCourtMatchUps';
-import { minutesDifference, timeToDate } from '../../utilities/dateTime';
+import { minutesDifference, timeToDate } from '../../tools/dateTime';
 import { startTimeSort } from '../../validators/time';
 import { addNotice } from '../../global/state/globalState';
 import { validDateAvailability } from '../../validators/validateDateAvailability';
@@ -11,11 +11,7 @@ import { POLICY_TYPE_SCHEDULING } from '../../constants/policyConstants';
 import { MODIFY_VENUE } from '../../constants/topicConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import { HydratedMatchUp } from '../../types/hydrated';
-import {
-  ErrorType,
-  MISSING_COURT_ID,
-  MISSING_TOURNAMENT_RECORD,
-} from '../../constants/errorConditionConstants';
+import { ErrorType, MISSING_COURT_ID, MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
 
 type ModifyCourtAvailabilityArgs = {
   venueMatchUps?: HydratedMatchUp[];
@@ -47,8 +43,7 @@ export function modifyCourtAvailability({
   // 1. whether aggregate time on given dates has increased or decreased
   // 2. specific periods of time on given dates that are no longer available
 
-  const { updatedDateAvailability, totalMergeCount } =
-    sortAndMergeDateAvailability(dateAvailability);
+  const { updatedDateAvailability, totalMergeCount } = sortAndMergeDateAvailability(dateAvailability);
   dateAvailability = updatedDateAvailability;
 
   const courtResult = findCourt({ tournamentRecord, courtId });
@@ -70,9 +65,7 @@ export function modifyCourtAvailability({
     })?.appliedPolicies;
 
     const allowModificationWhenMatchUpsScheduled =
-      force ??
-      appliedPolicies?.[POLICY_TYPE_SCHEDULING]?.allowDeletionWithScoresPresent
-        ?.courts;
+      force ?? appliedPolicies?.[POLICY_TYPE_SCHEDULING]?.allowDeletionWithScoresPresent?.courts;
 
     // Iterate through courtMatchUps and check that scheduledTime/scheduledDate still avilable
     const matchUpsWithInvalidScheduling = [];
@@ -81,10 +74,7 @@ export function modifyCourtAvailability({
       if (allowModificationWhenMatchUpsScheduled) {
         // go ahead and remove scheduling
       } else {
-        console.log(
-          'throw error: scheduled court matchUps',
-          matchUpsWithInvalidScheduling.length
-        );
+        console.log('throw error: scheduled court matchUps', matchUpsWithInvalidScheduling.length);
       }
     }
   }
@@ -119,14 +109,12 @@ function sortAndMergeDateAvailability(dateAvailability) {
 
   Object.keys(availabilityByDate).forEach((date) => {
     availabilityByDate[date].sort(startTimeSort);
-    const { mergedAvailability, mergeCount } = getMergedAvailability(
-      availabilityByDate[date]
-    );
+    const { mergedAvailability, mergeCount } = getMergedAvailability(availabilityByDate[date]);
     updatedDateAvailability.push(
       ...mergedAvailability.map((availability: any) => ({
         date,
         ...availability,
-      }))
+      })),
     );
     totalMergeCount += mergeCount;
   });
@@ -152,11 +140,7 @@ function getMergedAvailability(dateDetails) {
       lastBookings = bookings;
       lastEndTime = endTime;
     } else {
-      const difference = minutesDifference(
-        timeToDate(lastEndTime),
-        timeToDate(startTime),
-        false
-      );
+      const difference = minutesDifference(timeToDate(lastEndTime), timeToDate(startTime), false);
 
       if (difference > 0) {
         const availability: any = {

@@ -3,7 +3,7 @@ import { isCompletedStructure } from '../../../../../query/drawDefinition/struct
 import { getRoundMatchUps } from '../../../../../query/matchUps/getRoundMatchUps';
 import { getDrawStructures } from '../../../../../acquire/findStructure';
 import tournamentEngine from '../../../../engines/syncEngine';
-import { unique } from '../../../../../utilities/arrays';
+import { unique } from '../../../../../tools/arrays';
 import { mocksEngine } from '../../../../..';
 import { expect, it } from 'vitest';
 
@@ -19,15 +19,8 @@ import {
   REMOVE_ASSIGNMENT,
   ADD_NICKNAME,
 } from '../../../../../constants/positionActionConstants';
-import {
-  DRAW,
-  MAIN,
-  QUALIFYING,
-} from '../../../../../constants/drawDefinitionConstants';
-import {
-  COMPLETED,
-  TO_BE_PLAYED,
-} from '../../../../../constants/matchUpStatusConstants';
+import { DRAW, MAIN, QUALIFYING } from '../../../../../constants/drawDefinitionConstants';
+import { COMPLETED, TO_BE_PLAYED } from '../../../../../constants/matchUpStatusConstants';
 
 it('supports multi-sequence qualifying structures', () => {
   const drawProfiles = [
@@ -71,9 +64,7 @@ it('supports multi-sequence qualifying structures', () => {
     structure: mainStructure,
   });
 
-  const qualifiersCount = positionAssignments?.filter(
-    (assignment) => assignment.qualifier
-  ).length;
+  const qualifiersCount = positionAssignments?.filter((assignment) => assignment.qualifier).length;
   expect(qualifiersCount).toEqual(4);
 
   const {
@@ -92,9 +83,7 @@ it('supports multi-sequence qualifying structures', () => {
   expect(q1positioned?.length).toEqual(32);
 
   let { roundMatchUps } = getRoundMatchUps({ matchUps: q1.matchUps ?? [] });
-  let roundNumbers = roundMatchUps
-    ? Object.keys(roundMatchUps).map((r) => parseInt(r))
-    : [];
+  let roundNumbers = roundMatchUps ? Object.keys(roundMatchUps).map((r) => parseInt(r)) : [];
   let qualifyingRoundNumber = Math.max(...roundNumbers);
   expect(qualifyingRoundNumber).toEqual(3);
 
@@ -113,21 +102,15 @@ it('supports multi-sequence qualifying structures', () => {
   expect(q2positioned?.length).toEqual(12);
 
   ({ roundMatchUps } = getRoundMatchUps({ matchUps: q2.matchUps ?? [] }));
-  roundNumbers = roundMatchUps
-    ? Object.keys(roundMatchUps).map((r) => parseInt(r))
-    : [];
+  roundNumbers = roundMatchUps ? Object.keys(roundMatchUps).map((r) => parseInt(r)) : [];
   qualifyingRoundNumber = Math.max(...roundNumbers);
   expect(qualifyingRoundNumber).toEqual(2);
 
   expect(q1.structureName).toEqual('Qualifying 1');
   expect(q2.structureName).toEqual('Qualifying 2');
 
-  const firstLink = drawDefinition.links.find(
-    (link) => link.source.structureId === q1.structureId
-  );
-  const secondLink = drawDefinition.links.find(
-    (link) => link.source.structureId === q2.structureId
-  );
+  const firstLink = drawDefinition.links.find((link) => link.source.structureId === q1.structureId);
+  const secondLink = drawDefinition.links.find((link) => link.source.structureId === q2.structureId);
 
   expect(firstLink.target.structureId).toEqual(q2.structureId);
   expect(secondLink.target.structureId).toEqual(mainStructure.structureId);
@@ -203,10 +186,10 @@ it('can advance participants through multi-stage qualifying structures', () => {
   expect(matchUps.length).toEqual(2);
 
   const qualifying1 = drawDefinition.structures.find(
-    ({ stage, stageSequence }) => stage === QUALIFYING && stageSequence === 1
+    ({ stage, stageSequence }) => stage === QUALIFYING && stageSequence === 1,
   );
   const qualifying2 = drawDefinition.structures.find(
-    ({ stage, stageSequence }) => stage === QUALIFYING && stageSequence === 2
+    ({ stage, stageSequence }) => stage === QUALIFYING && stageSequence === 2,
   );
 
   const isCompleted = isCompletedStructure({
@@ -235,18 +218,13 @@ it('can advance participants through multi-stage qualifying structures', () => {
       drawPosition,
       drawId,
     });
-    const qualifyingAction = result.validActions.find(
-      ({ type }) => type === QUALIFYING_PARTICIPANT
-    );
+    const qualifyingAction = result.validActions.find(({ type }) => type === QUALIFYING_PARTICIPANT);
     expect(qualifyingAction).not.toBeUndefined();
 
     const expectation = expectations.pop();
-    expect(qualifyingAction.qualifyingParticipantIds.length).toEqual(
-      expectation
-    );
+    expect(qualifyingAction.qualifyingParticipantIds.length).toEqual(expectation);
 
-    const qualifyingParticipantId =
-      qualifyingAction.qualifyingParticipantIds[0];
+    const qualifyingParticipantId = qualifyingAction.qualifyingParticipantIds[0];
     const payload = { ...qualifyingAction.payload, qualifyingParticipantId };
     result = tournamentEngine[qualifyingAction.method](payload);
     expect(result.success).toEqual(true);
@@ -259,9 +237,7 @@ it('can advance participants through multi-stage qualifying structures', () => {
     matchUpFilters: { matchUpStatuses: [TO_BE_PLAYED] },
   }).matchUps;
 
-  expect(
-    matchUps.map(({ winnerMatchUpId }) => winnerMatchUpId).filter(Boolean)
-  ).toEqual([]);
+  expect(matchUps.map(({ winnerMatchUpId }) => winnerMatchUpId).filter(Boolean)).toEqual([]);
 
   const readyToScore = matchUps.filter((matchUp) => matchUp.readyToScore);
   expect(readyToScore.length).toEqual(matchUps.length);
@@ -372,12 +348,9 @@ it('does what Jeff wants it to', () => {
     if (structure.stage === QUALIFYING) {
       expect(structure.structures.length).toEqual(2);
       const { positionAssignments } = getPositionAssignments({ structure });
-      const qualifyingPositionsCount = positionAssignments?.filter(
-        ({ qualifier }) => qualifier
-      ).length;
+      const qualifyingPositionsCount = positionAssignments?.filter(({ qualifier }) => qualifier).length;
       const unassignedPositionsCount = positionAssignments?.filter(
-        ({ qualifier, bye, participantId }) =>
-          !qualifier && !bye && !participantId
+        ({ qualifier, bye, participantId }) => !qualifier && !bye && !participantId,
       ).length;
       if (structure.stageSequence > 1) {
         expect(qualifyingPositionsCount).toEqual(2);

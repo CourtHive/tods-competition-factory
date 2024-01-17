@@ -1,8 +1,8 @@
 import { matchTiebreak, standardSet, tiebreakSet } from './validPatterns';
 import { getWinningSide } from './getWinningSide';
 import { dashMash } from './commonPatterns';
-import { isDiffOne } from './utilities';
-import { isNumeric } from '../../utilities/math';
+import { isDiffOne } from './helpers';
+import { isNumeric } from '../../tools/math';
 
 export function sensibleSets({ score, matchUpStatus, attributes }) {
   const profile: any[] = [];
@@ -52,16 +52,10 @@ export function sensibleSets({ score, matchUpStatus, attributes }) {
         if (max > 9 && diff > 2) {
           const splitMax = max.toString().split('');
           const reasonable =
-            splitMax.find(
-              (value) =>
-                parseInt(value) > min ||
-                (index && parseInt(value) <= maxSetValue)
-            ) ?? splitMax[0];
+            splitMax.find((value) => parseInt(value) > min || (index && parseInt(value) <= maxSetValue)) ?? splitMax[0];
 
           if (reasonable) {
-            set = minIndex
-              ? [reasonable, min].join('-')
-              : [min, reasonable].join('-');
+            set = minIndex ? [reasonable, min].join('-') : [min, reasonable].join('-');
           }
         }
 
@@ -90,11 +84,7 @@ export function sensibleSets({ score, matchUpStatus, attributes }) {
   }
 
   // if a side won the first two sets and there are more than 2 sets, trim the score
-  if (
-    score.split(' ').length > 2 &&
-    Math.max(...setsWon) >= 2 &&
-    setWinners[0] === setWinners[1]
-  ) {
+  if (score.split(' ').length > 2 && Math.max(...setsWon) >= 2 && setWinners[0] === setWinners[1]) {
     score = score.split(' ').slice(0, 2).join(' ');
   }
 

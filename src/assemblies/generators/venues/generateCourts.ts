@@ -1,10 +1,10 @@
-import { generateDateRange, isTimeString, isValidDateString } from '../../../utilities/dateTime';
+import { generateDateRange, isTimeString, isValidDateString } from '../../../tools/dateTime';
 import { checkRequiredParameters } from '../../../parameters/checkRequiredParameters';
-import { definedAttributes } from '../../../utilities/definedAttributes';
-import { generateRange } from '../../../utilities/arrays';
-import { isString } from '../../../utilities/objects';
-import { isNumeric } from '../../../utilities/math';
-import { UUID } from '../../../utilities/UUID';
+import { definedAttributes } from '../../../tools/definedAttributes';
+import { generateRange } from '../../../tools/arrays';
+import { isString } from '../../../tools/objects';
+import { isNumeric } from '../../../tools/math';
+import { UUID } from '../../../tools/UUID';
 
 import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
 import { ResultType } from '../../../global/functions/decorateResult';

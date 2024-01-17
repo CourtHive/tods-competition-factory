@@ -1,27 +1,27 @@
 import { automatedPlayoffPositioning } from '../../../mutate/drawDefinitions/automatedPlayoffPositioning';
 import { addPlayoffStructures } from '../../../mutate/drawDefinitions/addPlayoffStructures';
+import { checkRequiredParameters } from '../../../parameters/checkRequiredParameters';
 import { setParticipantScaleItem } from '../../../mutate/participants/addScaleItems';
 import { completeDrawMatchUps, completeDrawMatchUp } from './completeDrawMatchUps';
 import { addDrawDefinition } from '../../../mutate/drawDefinitions/addDrawDefinition';
 import { generateDrawDefinition } from '../drawDefinitions/generateDrawDefinition';
 import { addParticipants } from '../../../mutate/participants/addParticipants';
-import { checkRequiredParameters } from 'parameters/checkRequiredParameters';
 import { allDrawMatchUps } from '../../../query/matchUps/getAllDrawMatchUps';
 import { addEventEntries } from '../../../mutate/entries/addEventEntries';
 import { addEventTimeItem } from '../../../mutate/timeItems/addTimeItem';
-import { generateRange, intersection } from '../../../utilities/arrays';
+import { generateRange, intersection } from '../../../tools/arrays';
 import { isValidExtension } from '../../../validators/isValidExtension';
 import { getParticipantId } from '../../../global/functions/extractors';
-import { definedAttributes } from '../../../utilities/definedAttributes';
+import { definedAttributes } from '../../../tools/definedAttributes';
 import { addExtension } from '../../../mutate/extensions/addExtension';
 import { publishEvent } from '../../../mutate/events/publishEvent';
 import tieFormatDefaults from '../templates/tieFormatDefaults';
-import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
+import { makeDeepCopy } from '../../../tools/makeDeepCopy';
 import { generateParticipants } from './generateParticipants';
 import { addFlight } from '../../../mutate/events/addFlight';
 import { processTieFormat } from './processTieFormat';
-import { coerceEven } from '../../../utilities/math';
-import { UUID } from '../../../utilities/UUID';
+import { coerceEven } from '../../../tools/math';
+import { UUID } from '../../../tools/UUID';
 
 import { DRAW_DEFINITION_NOT_FOUND, STRUCTURE_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { INDIVIDUAL, PAIR, TEAM } from '../../../constants/participantConstants';
@@ -32,9 +32,9 @@ import { ALTERNATE } from '../../../constants/entryStatusConstants';
 import { FEMALE, MALE } from '../../../constants/genderConstants';
 import { COMPETITOR } from '../../../constants/participantRoles';
 import { SEEDING } from '../../../constants/timeItemConstants';
+import { OBJECT } from '../../../constants/attributeConstants';
 import { Participant } from '../../../types/tournamentTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { OBJECT } from 'constants/attributeConstants';
 import {
   MAIN,
   QUALIFYING,

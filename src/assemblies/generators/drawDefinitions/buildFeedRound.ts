@@ -1,4 +1,4 @@
-import { generateRange } from '../../../utilities/arrays';
+import { generateRange } from '../../../tools/arrays';
 import { generateMatchUpId } from './generateMatchUpId';
 
 import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
@@ -33,12 +33,9 @@ export function buildFeedRound({
   roundNodes: any;
 } {
   const feedRoundMatchUpsCount = nodes.length;
-  const initialGroupDrawPosition = drawPosition
-    ? drawPosition - feedRoundMatchUpsCount
-    : undefined;
-  const drawPositionGroup = generateRange(0, feedRoundMatchUpsCount).map(
-    (value) =>
-      initialGroupDrawPosition ? initialGroupDrawPosition + value : undefined
+  const initialGroupDrawPosition = drawPosition ? drawPosition - feedRoundMatchUpsCount : undefined;
+  const drawPositionGroup = generateRange(0, feedRoundMatchUpsCount).map((value) =>
+    initialGroupDrawPosition ? initialGroupDrawPosition + value : undefined,
   );
 
   const roundNodes: any[] = [];
@@ -78,9 +75,7 @@ export function buildFeedRound({
     roundNodes.push(roundNode);
   }
 
-  const nextDrawPosition = drawPosition
-    ? drawPosition - feedRoundMatchUpsCount
-    : undefined;
+  const nextDrawPosition = drawPosition ? drawPosition - feedRoundMatchUpsCount : undefined;
 
   return { roundNodes, matchUps, drawPosition: nextDrawPosition };
 }

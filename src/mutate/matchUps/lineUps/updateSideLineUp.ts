@@ -1,15 +1,10 @@
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
-import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
+import { makeDeepCopy } from '../../../tools/makeDeepCopy';
 import { findExtension } from '../../../acquire/findExtension';
 
 import { LINEUPS } from '../../../constants/extensionConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
-import {
-  DrawDefinition,
-  Event,
-  MatchUp,
-  Tournament,
-} from '../../../types/tournamentTypes';
+import { DrawDefinition, Event, MatchUp, Tournament } from '../../../types/tournamentTypes';
 
 type UpdateSideLineUpArgs = {
   inContextTargetMatchUp?: HydratedMatchUp;
@@ -31,12 +26,10 @@ export function updateSideLineUp({
   event,
 }: UpdateSideLineUpArgs) {
   // update matchUp.sides to include lineUps
-  const drawPositionSideNumber =
-    inContextTargetMatchUp?.sides?.[drawPositionSideIndex]?.sideNumber;
+  const drawPositionSideNumber = inContextTargetMatchUp?.sides?.[drawPositionSideIndex]?.sideNumber;
 
   const sideExists =
-    drawPositionSideNumber &&
-    matchUp.sides?.find((side) => side.sideNumber === drawPositionSideNumber);
+    drawPositionSideNumber && matchUp.sides?.find((side) => side.sideNumber === drawPositionSideNumber);
 
   const { extension: existingExtension } = findExtension({
     element: drawDefinition,
@@ -54,14 +47,11 @@ export function updateSideLineUp({
     });
   } else {
     matchUp.sides = [1, 2].map((sideNumber) => {
-      const existingSide =
-        matchUp.sides?.find((side) => side.sideNumber === sideNumber) ?? {};
+      const existingSide = matchUp.sides?.find((side) => side.sideNumber === sideNumber) ?? {};
       return { ...existingSide, sideNumber };
     });
 
-    const targetSide = matchUp.sides.find(
-      (side) => side.sideNumber === drawPositionSideNumber
-    );
+    const targetSide = matchUp.sides.find((side) => side.sideNumber === drawPositionSideNumber);
     if (targetSide) targetSide.lineUp = lineUp;
   }
 

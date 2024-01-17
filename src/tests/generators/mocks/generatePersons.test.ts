@@ -1,10 +1,10 @@
 import { generatePersonData } from '../../../assemblies/generators/mocks/generatePersonData';
 import { generatePersons } from '../../../assemblies/generators/mocks/generatePersons';
 import mocksEngine from '../../../assemblies/engines/mock';
-import { instanceCount } from '../../../utilities/arrays';
+import { instanceCount } from '../../../tools/arrays';
 import namesData from '../../../fixtures/data/names.json';
 import tournamentEngine from '../../engines/syncEngine';
-import { UUID } from '../../../utilities/UUID';
+import { UUID } from '../../../tools/UUID';
 import { expect, test } from 'vitest';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
@@ -12,10 +12,7 @@ import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
 import { MALE } from '../../../constants/genderConstants';
 
 test('lastName uniqueness', () => {
-  const counts = Object.assign(
-    {},
-    ...Object.keys(namesData).map((key) => ({ [key]: namesData[key].length }))
-  );
+  const counts = Object.assign({}, ...Object.keys(namesData).map((key) => ({ [key]: namesData[key].length })));
   const { persons } = generatePersons({ count: counts.lastNames, sex: MALE });
   const lastNameMap = instanceCount(persons.map((p) => p.lastName));
   const lastNameCounts: number[] = Object.values(lastNameMap);
@@ -90,39 +87,30 @@ test('basic person generation', () => {
 });
 
 const defaultPersonData = generatePersonData({ count: 8 }).personData;
-const personData = defaultPersonData
-  ?.slice(0, 8)
-  .map((person) => Object.assign(person, { personId: UUID() }));
+const personData = defaultPersonData?.slice(0, 8).map((person) => Object.assign(person, { personId: UUID() }));
 
 const firstNames = (personData ?? []).map(({ firstName }) => firstName);
 const lastNames = (personData ?? []).map(({ lastName }) => lastName);
 
-const scenarios = [
-  undefined,
-  { drawSize: 8 },
-  { drawSize: 8, drawType: ROUND_ROBIN },
-];
+const scenarios = [undefined, { drawSize: 8 }, { drawSize: 8, drawType: ROUND_ROBIN }];
 
-test.each(scenarios)(
-  'can generate participants with identical persons for different draw types',
-  (drawProfile) => {
-    // create 8 persons to be used across multiple tournaments
-    const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-      participantsProfile: { personData, participantsCount: 8 },
-      drawProfiles: drawProfile && [drawProfile],
-    });
-    tournamentEngine.setState(tournamentRecord);
+test.each(scenarios)('can generate participants with identical persons for different draw types', (drawProfile) => {
+  // create 8 persons to be used across multiple tournaments
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile: { personData, participantsCount: 8 },
+    drawProfiles: drawProfile && [drawProfile],
+  });
+  tournamentEngine.setState(tournamentRecord);
 
-    const { participants } = tournamentEngine.getParticipants();
+  const { participants } = tournamentEngine.getParticipants();
 
-    participants.forEach((participant) => {
-      const included =
-        firstNames.includes(participant.person.standardGivenName) &&
-        lastNames.includes(participant.person.standardFamilyName);
-      expect(included).toEqual(true);
-    });
-  }
-);
+  participants.forEach((participant) => {
+    const included =
+      firstNames.includes(participant.person.standardGivenName) &&
+      lastNames.includes(participant.person.standardFamilyName);
+    expect(included).toEqual(true);
+  });
+});
 
 test('it can attach participant extensions and timeItems from personData', () => {
   const participantExtensions = [{ name: 'test', value: 1 }];

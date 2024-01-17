@@ -1,24 +1,16 @@
-import { makeDeepCopy } from '../../utilities/makeDeepCopy';
+import { makeDeepCopy } from '../../tools/makeDeepCopy';
 import { findCourt } from '../../mutate/venues/findCourt';
 
 import { Tournament } from '../../types/tournamentTypes';
 import { SUCCESS } from '../../constants/resultConstants';
-import {
-  ErrorType,
-  MISSING_COURT_ID,
-  MISSING_TOURNAMENT_RECORD,
-} from '../../constants/errorConditionConstants';
+import { ErrorType, MISSING_COURT_ID, MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
 
 type GetCourtInfoArgs = {
   tournamentRecord: Tournament;
   internalUse?: boolean;
   courtId: string;
 };
-export function getCourtInfo({
-  tournamentRecord,
-  internalUse,
-  courtId,
-}: GetCourtInfoArgs): {
+export function getCourtInfo({ tournamentRecord, internalUse, courtId }: GetCourtInfoArgs): {
   error?: ErrorType;
   success?: boolean;
   courtInfo?: any;

@@ -1,7 +1,7 @@
 import { generateScoreString } from '../../../../assemblies/generators/matchUps/generateScoreString';
 import { isValidMatchUpFormat } from '../../../../validators/isValidMatchUpFormat';
 import { parse } from '../../../../assemblies/generators/matchUpFormatCode/parse';
-import { isConvertableInteger } from '../../../../utilities/math';
+import { isConvertableInteger } from '../../../../tools/math';
 import { getHistory } from './getHistory';
 
 import { SUCCESS } from '../../../../constants/resultConstants';

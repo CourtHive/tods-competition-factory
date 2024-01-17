@@ -1,13 +1,10 @@
 import { hasSchedule } from '../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
 import { validMatchUps } from '../../validators/validMatchUp';
-import { extractDate, extractTime, timeSort } from '../../utilities/dateTime';
+import { extractDate, extractTime, timeSort } from '../../tools/dateTime';
 
 import { SUCCESS } from '../../constants/resultConstants';
 import { HydratedMatchUp } from '../../types/hydrated';
-import {
-  INVALID_VALUES,
-  MISSING_MATCHUPS,
-} from '../../constants/errorConditionConstants';
+import { INVALID_VALUES, MISSING_MATCHUPS } from '../../constants/errorConditionConstants';
 
 /**
  * Retrieves the scheduled matchUps for participants.
@@ -54,10 +51,7 @@ export function participantScheduledMatchUps({
   const dates = Object.keys(scheduledMatchUps);
   dates.forEach((date) => {
     scheduledMatchUps[date].sort((a, b) =>
-      timeSort(
-        extractTime(a.schedule?.scheduledTime),
-        extractTime(b.schedule?.scheduledTime)
-      )
+      timeSort(extractTime(a.schedule?.scheduledTime), extractTime(b.schedule?.scheduledTime)),
     );
   });
 

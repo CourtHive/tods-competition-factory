@@ -3,7 +3,7 @@ import { getPairedParticipant } from '../../../query/participant/getPairedPartic
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { addParticipant } from '../../participants/addParticipant';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
-import { instanceCount } from '../../../utilities/arrays';
+import { instanceCount } from '../../../tools/arrays';
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
@@ -21,13 +21,7 @@ import {
   VALUE_UNCHANGED,
 } from '../../../constants/errorConditionConstants';
 
-export function applyLineUps({
-  tournamentRecord,
-  drawDefinition,
-  matchUpId,
-  lineUps,
-  event,
-}) {
+export function applyLineUps({ tournamentRecord, drawDefinition, matchUpId, lineUps, event }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!drawDefinition) return { error: DRAW_DEFINITION_NOT_FOUND };
   if (typeof matchUpId !== 'string') return { error: INVALID_MATCHUP };
@@ -71,39 +65,30 @@ export function applyLineUps({
     const sideNumbers: number[] = [];
 
     for (const lineUpAssignment of lineUp) {
-      if (typeof lineUpAssignment !== 'object')
-        return { error: INVALID_VALUES, lineUpAssignment };
+      if (typeof lineUpAssignment !== 'object') return { error: INVALID_VALUES, lineUpAssignment };
 
       const { participantId, collectionAssignments = [] } = lineUpAssignment;
-      if (!Array.isArray(collectionAssignments))
-        return { error: INVALID_VALUES, collectionAssignments };
+      if (!Array.isArray(collectionAssignments)) return { error: INVALID_VALUES, collectionAssignments };
 
-      const participant = tournamentParticipants.find(
-        (participant) => participant.participantId === participantId
-      );
+      const participant = tournamentParticipants.find((participant) => participant.participantId === participantId);
       if (!participant) return { error: PARTICIPANT_NOT_FOUND };
-      if (participant.participantType !== INDIVIDUAL)
-        return { error: INVALID_PARTICIPANT_TYPE };
+      if (participant.participantType !== INDIVIDUAL) return { error: INVALID_PARTICIPANT_TYPE };
 
-      const sideNumber = inContextMatchUp.sides?.find(
-        (side: any) =>
-          side.participant?.individualParticipantIds?.includes(participantId)
+      const sideNumber = inContextMatchUp.sides?.find((side: any) =>
+        side.participant?.individualParticipantIds?.includes(participantId),
       )?.sideNumber;
       if (sideNumber) sideNumbers.push(sideNumber);
 
       for (const collectionAssignment of collectionAssignments) {
-        if (typeof collectionAssignment !== 'object')
-          return { error: INVALID_VALUES, collectionAssignment };
+        if (typeof collectionAssignment !== 'object') return { error: INVALID_VALUES, collectionAssignment };
 
         const { collectionId, collectionPosition } = collectionAssignment;
 
         const collectionDefinition = tieFormat?.collectionDefinitions?.find(
-          (collectionDefinition) =>
-            collectionDefinition.collectionId === collectionId
+          (collectionDefinition) => collectionDefinition.collectionId === collectionId,
         );
         // all collectionIds in the lineUp must be present in the tieFormat collectionDefinitions
-        if (!collectionDefinition)
-          return { error: INVALID_VALUES, collectionId };
+        if (!collectionDefinition) return { error: INVALID_VALUES, collectionId };
 
         const aggregator = `${collectionId}-${collectionPosition}`;
         if (!collectionParticipantIds[aggregator]) {
@@ -114,8 +99,7 @@ export function applyLineUps({
 
         if (
           (collectionDefinition.matchUpType === SINGLES && participantsCount) ||
-          (collectionDefinition.matchUpType === DOUBLES &&
-            participantsCount > 1)
+          (collectionDefinition.matchUpType === DOUBLES && participantsCount > 1)
         ) {
           // cannot have more than one assignment for singles or two for doubles
           return {
@@ -129,9 +113,7 @@ export function applyLineUps({
     }
 
     // ensure that doubles pair participants exist, otherwise create
-    const collectionParticipantIdPairs: string[][] = Object.values(
-      collectionParticipantIds
-    );
+    const collectionParticipantIdPairs: string[][] = Object.values(collectionParticipantIds);
     for (const participantIds of collectionParticipantIdPairs) {
       if (participantIds.length === 2) {
         const { participant: pairedParticipant } = getPairedParticipant({
@@ -159,14 +141,10 @@ export function applyLineUps({
     // allows for some team members to be "borrowed"
     const instances = instanceCount(sideNumbers);
     const sideNumber =
-      ((instances[1] || 0) > (instances[2] || 0) && 1) ||
-      ((instances[2] || 0) > (instances[1] || 0) && 2) ||
-      undefined;
+      ((instances[1] || 0) > (instances[2] || 0) && 1) || ((instances[2] || 0) > (instances[1] || 0) && 2) || undefined;
 
     // if side not previously assigned, map sideNumber to lineUp
-    const sideAssignmentKeys = Object.keys(sideAssignments).map((key) =>
-      parseInt(key)
-    );
+    const sideAssignmentKeys = Object.keys(sideAssignments).map((key) => parseInt(key));
     if (sideNumber && !sideAssignmentKeys.includes(sideNumber)) {
       sideAssignments[sideNumber] = lineUp;
     }

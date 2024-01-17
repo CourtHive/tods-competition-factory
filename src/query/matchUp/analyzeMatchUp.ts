@@ -1,5 +1,5 @@
 import { parse } from '../../assemblies/generators/matchUpFormatCode/parse';
-import { instanceCount } from '../../utilities/arrays';
+import { instanceCount } from '../../tools/arrays';
 import { analyzeSet } from './analyzeSet';
 
 import { MISSING_MATCHUP } from '../../constants/errorConditionConstants';

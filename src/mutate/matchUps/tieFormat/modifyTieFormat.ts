@@ -6,8 +6,8 @@ import { addCollectionDefinition } from '../../tieFormat/addCollectionDefinition
 import { validateTieFormat } from '../../../validators/validateTieFormat';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { modifyCollectionDefinition } from './modifyCollectionDefinition';
-import { xa } from '../../../utilities/objects';
-import { numericSortValue } from '../../../utilities/arrays';
+import { xa } from '../../../tools/objects';
+import { numericSortValue } from '../../../tools/arrays';
 
 import { INVALID_TIE_FORMAT } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';

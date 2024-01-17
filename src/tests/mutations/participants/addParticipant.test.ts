@@ -1,6 +1,6 @@
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
-import { UUID } from '../../../utilities/UUID';
+import { UUID } from '../../../tools/UUID';
 import { expect, it } from 'vitest';
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
@@ -181,15 +181,12 @@ it('will not add invalid PAIR participants', () => {
   expect(result.error).toEqual(INVALID_PARTICIPANT_IDS);
   expect(result.info).toBeUndefined();
 
-  const { participants: individualParticipants } =
-    tournamentEngine.getParticipants({
-      participantFilters: { participantTypes: [INDIVIDUAL] },
-    });
+  const { participants: individualParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [INDIVIDUAL] },
+  });
 
   // cannot add 3 individualParticipantIds for PAIR
-  const threePrticipantIds = individualParticipants
-    .slice(0, 3)
-    .map((participant) => participant.participantId);
+  const threePrticipantIds = individualParticipants.slice(0, 3).map((participant) => participant.participantId);
   pairParticipant = {
     participantType: PAIR,
     participantRole: COMPETITOR,
@@ -214,9 +211,7 @@ it('will not add invalid PAIR participants', () => {
   expect(result.error).toEqual(INVALID_PARTICIPANT_IDS);
 
   // expect success
-  const individualParticipantIds = individualParticipants
-    .slice(0, 2)
-    .map((participant) => participant.participantId);
+  const individualParticipantIds = individualParticipants.slice(0, 2).map((participant) => participant.participantId);
   pairParticipant = {
     participantType: PAIR,
     participantRole: COMPETITOR,
@@ -232,9 +227,7 @@ it('will not add invalid PAIR participants', () => {
   const { participants: pairParticipants } = tournamentEngine.getParticipants({
     participantFilters: { participantTypes: [PAIR] },
   });
-  const pairParticipantIds = pairParticipants.map(
-    (participant) => participant.participantId
-  );
+  const pairParticipantIds = pairParticipants.map((participant) => participant.participantId);
   expect(pairParticipantIds.includes(pairParticipantId)).toEqual(true);
 
   pairParticipant = {
@@ -296,7 +289,5 @@ it('will not add invalid PAIR participants', () => {
   result = tournamentEngine.getPairedParticipant({
     participantIds: [individualParticipantIds[0]],
   });
-  expect(result.participant.participantId).toEqual(
-    pairParticipantSingleIndividual.participantId
-  );
+  expect(result.participant.participantId).toEqual(pairParticipantSingleIndividual.participantId);
 });

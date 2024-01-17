@@ -1,5 +1,5 @@
 import { isUngrouped } from '../../../../query/entries/isUngrouped';
-import { chunkArray, unique } from '../../../../utilities/arrays';
+import { chunkArray, unique } from '../../../../tools/arrays';
 import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
@@ -72,11 +72,8 @@ it('can add doubles events to a tournament record', () => {
   });
   expect(result.success).toEqual(true);
 
-  const { tournamentRecord: updatedTournamentRecord } =
-    tournamentEngine.getTournament();
-  expect(
-    updatedTournamentRecord.events[0].drawDefinitions[0].matchUpFormat
-  ).toEqual(defaultMatchUpFormat);
+  const { tournamentRecord: updatedTournamentRecord } = tournamentEngine.getTournament();
+  expect(updatedTournamentRecord.events[0].drawDefinitions[0].matchUpFormat).toEqual(defaultMatchUpFormat);
 
   let { participants } = tournamentEngine.getParticipants();
   expect(participants.length).toEqual(96);
@@ -101,9 +98,7 @@ it('can add doubles events to a tournament record', () => {
   }));
   expect(participants.length).toEqual(96);
 
-  const individualParticipants = participants.filter(
-    (participant) => participant.participantType === INDIVIDUAL
-  );
+  const individualParticipants = participants.filter((participant) => participant.participantType === INDIVIDUAL);
   const individualParticipant = individualParticipants[0];
   const { participantId } = individualParticipant;
 
@@ -181,13 +176,9 @@ it('can destroy pair entries in doubles events', () => {
   }));
   expect(updatedEvent.entries.length).toEqual(33);
 
-  const unpairedEntries = updatedEvent.entries.filter((entry) =>
-    isUngrouped(entry.entryStatus)
-  );
+  const unpairedEntries = updatedEvent.entries.filter((entry) => isUngrouped(entry.entryStatus));
   expect(unpairedEntries.length).toEqual(2);
-  const individualParticipantIds = unpairedEntries.map(
-    (entry) => entry.participantId
-  );
+  const individualParticipantIds = unpairedEntries.map((entry) => entry.participantId);
 
   const participant = {
     participantType: PAIR,
@@ -252,10 +243,9 @@ it('can create pair entries in doubles events', () => {
   tournamentEngine.setState(tournamentRecord);
   const eventId = 'firstDoublesId';
 
-  const { participants: individualParticipants } =
-    tournamentEngine.getParticipants({
-      participantFilters: { participantTypes: [INDIVIDUAL] },
-    });
+  const { participants: individualParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [INDIVIDUAL] },
+  });
 
   const { participants: pairParticipants } = tournamentEngine.getParticipants({
     participantFilters: { participantTypes: [PAIR] },
@@ -266,20 +256,17 @@ it('can create pair entries in doubles events', () => {
     .flat();
 
   const unpairedIndividualParticipants = individualParticipants.filter(
-    ({ participantId }) =>
-      !individualParticipantIdsInPairs.includes(participantId)
+    ({ participantId }) => !individualParticipantIdsInPairs.includes(participantId),
   );
 
   const invalidParticipantIdPairs = chunkArray(
     pairParticipants.map((participant) => participant.participantId),
-    2
+    2,
   );
 
   const participantIdPairs = chunkArray(
-    unpairedIndividualParticipants.map(
-      (participant) => participant.participantId
-    ),
-    2
+    unpairedIndividualParticipants.map((participant) => participant.participantId),
+    2,
   );
 
   result = tournamentEngine.addEventEntryPairs({
@@ -368,18 +355,14 @@ it('can allow duplicateParticipantIdsPairs and add them to events', () => {
   expect(pairPairticipants.length).toEqual(32);
 
   const pairParticipantToDuplicate = pairPairticipants.pop();
-  const participantIds = pairPairticipants.map(
-    ({ participantId }) => participantId
-  );
+  const participantIds = pairPairticipants.map(({ participantId }) => participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result.success).toEqual(true);
 
   let { event: updatedEvent } = tournamentEngine.getEvent({ eventId });
   expect(updatedEvent.entries.length).toEqual(31);
 
-  const participantIdPairs = [
-    pairParticipantToDuplicate.individualParticipantIds,
-  ];
+  const participantIdPairs = [pairParticipantToDuplicate.individualParticipantIds];
   result = tournamentEngine.addEventEntryPairs({
     allowDuplicateParticipantIdPairs: true,
     participantIdPairs,
@@ -399,23 +382,16 @@ it('can allow duplicateParticipantIdsPairs and add them to events', () => {
     participantIds: pairParticipantToDuplicate.individualParticipantIds,
   });
   expect(duplicatedPairParticipants.length).toEqual(1);
-  const duplicatedPairParticipantIds = duplicatedPairParticipants.map(
-    ({ participantId }) => participantId
-  );
+  const duplicatedPairParticipantIds = duplicatedPairParticipants.map(({ participantId }) => participantId);
   const newPairParticipantId = duplicatedPairParticipantIds.find(
-    (participantId) =>
-      participantId !== pairParticipantToDuplicate.participantId
+    (participantId) => participantId !== pairParticipantToDuplicate.participantId,
   );
 
   const {
     event: { entries },
   } = tournamentEngine.getEvent({ eventId });
-  const enteredParticipantIds = entries.map(
-    ({ participantId }) => participantId
-  );
-  expect(
-    enteredParticipantIds.includes(pairParticipantToDuplicate.participantId)
-  ).toEqual(false);
+  const enteredParticipantIds = entries.map(({ participantId }) => participantId);
+  expect(enteredParticipantIds.includes(pairParticipantToDuplicate.participantId)).toEqual(false);
   expect(enteredParticipantIds.includes(newPairParticipantId)).toEqual(true);
 });
 
@@ -440,14 +416,12 @@ it('will throw errors when pair genders do not match event.gender', () => {
 
   const genderedPairs = pairPairticipants.reduce(
     (genderedPairs, { individualParticipantIds, individualParticipants }) => {
-      const genders = unique(
-        individualParticipants.map((p) => p.person?.sex).sort()
-      );
+      const genders = unique(individualParticipants.map((p) => p.person?.sex).sort());
       const type = (genders.length === 1 && genders[0]) || MIXED;
       genderedPairs[type].push(individualParticipantIds);
       return genderedPairs;
     },
-    { [MALE]: [], [FEMALE]: [], [MIXED]: [] }
+    { [MALE]: [], [FEMALE]: [], [MIXED]: [] },
   );
 
   let result = tournamentEngine.addEventEntryPairs({

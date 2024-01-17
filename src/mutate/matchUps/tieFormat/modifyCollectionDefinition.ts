@@ -6,11 +6,11 @@ import { getTieFormat } from '../../../query/hierarchical/tieFormats/getTieForma
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
 import { validateTieFormat } from '../../../validators/validateTieFormat';
-import { definedAttributes } from '../../../utilities/definedAttributes';
+import { definedAttributes } from '../../../tools/definedAttributes';
 import { updateTieFormat } from '../../tieFormat/updateTieFormat';
-import { isConvertableInteger } from '../../../utilities/math';
+import { isConvertableInteger } from '../../../tools/math';
 import { tieFormatTelemetry } from './tieFormatTelemetry';
-import { intersection } from '../../../utilities/arrays';
+import { intersection } from '../../../tools/arrays';
 
 import { INVALID_VALUES, MISSING_VALUE, NOT_FOUND, NOT_IMPLEMENTED } from '../../../constants/errorConditionConstants';
 import { TIE_FORMAT_MODIFICATIONS } from '../../../constants/extensionConstants';

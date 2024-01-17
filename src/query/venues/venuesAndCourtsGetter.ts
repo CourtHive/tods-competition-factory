@@ -1,5 +1,5 @@
 import { getDisabledStatus } from '../extensions/getDisabledStatus';
-import { makeDeepCopy } from '../../utilities/makeDeepCopy';
+import { makeDeepCopy } from '../../tools/makeDeepCopy';
 import { findExtension } from '../../acquire/findExtension';
 import { getInContextCourt } from './getInContextCourt';
 

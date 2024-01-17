@@ -1,10 +1,7 @@
 import { getEliminationDrawSize } from '../participants/getEliminationDrawSize';
 import { getPolicyDefinitions } from '../extensions/getAppliedPolicies';
-import { isConvertableInteger } from '../../utilities/math';
-import {
-  ResultType,
-  decorateResult,
-} from '../../global/functions/decorateResult';
+import { isConvertableInteger } from '../../tools/math';
+import { ResultType, decorateResult } from '../../global/functions/decorateResult';
 
 import { POLICY_TYPE_SEEDING } from '../../constants/policyConstants';
 import { PolicyDefinitions } from '../../types/factoryTypes';
@@ -30,24 +27,12 @@ type GetSeedsCountArgs = {
   event?: Event;
 };
 
-export function getSeedsCount(
-  params: GetSeedsCountArgs
-): ResultType & { seedsCount?: number } {
-  let {
-    drawSizeProgression = false,
-    policyDefinitions,
-    drawSize,
-  } = params || {};
-  const {
-    requireParticipantCount = true,
-    tournamentRecord,
-    drawDefinition,
-    event,
-  } = params || {};
+export function getSeedsCount(params: GetSeedsCountArgs): ResultType & { seedsCount?: number } {
+  let { drawSizeProgression = false, policyDefinitions, drawSize } = params || {};
+  const { requireParticipantCount = true, tournamentRecord, drawDefinition, event } = params || {};
   const stack = 'getSeedsCount';
 
-  const participantsCount =
-    params?.participantsCount ?? params?.participantCount;
+  const participantsCount = params?.participantsCount ?? params?.participantCount;
 
   if (!policyDefinitions) {
     const result = getPolicyDefinitions({
@@ -82,8 +67,7 @@ export function getSeedsCount(
     }
   }
 
-  const consideredParticipantCount =
-    (requireParticipantCount && participantsCount) || drawSize;
+  const consideredParticipantCount = (requireParticipantCount && participantsCount) || drawSize;
   if (consideredParticipantCount && consideredParticipantCount > drawSize)
     return { error: PARTICIPANT_COUNT_EXCEEDS_DRAW_SIZE };
 
@@ -92,18 +76,14 @@ export function getSeedsCount(
 
   const seedsCountThresholds = policy.seedsCountThresholds;
   if (!seedsCountThresholds) return { error: MISSING_SEEDCOUNT_THRESHOLDS };
-  if (policy.drawSizeProgression !== undefined)
-    drawSizeProgression = policy.drawSizeProgression;
+  if (policy.drawSizeProgression !== undefined) drawSizeProgression = policy.drawSizeProgression;
 
   const relevantThresholds = seedsCountThresholds.filter((threshold) => {
-    return drawSizeProgression
-      ? threshold.drawSize <= drawSize
-      : drawSize === threshold.drawSize;
+    return drawSizeProgression ? threshold.drawSize <= drawSize : drawSize === threshold.drawSize;
   });
 
   const seedsCount = relevantThresholds.reduce((seedsCount, threshold) => {
-    return participantsCount &&
-      participantsCount >= threshold.minimumParticipantCount
+    return participantsCount && participantsCount >= threshold.minimumParticipantCount
       ? threshold.seedsCount
       : seedsCount;
   }, 0);

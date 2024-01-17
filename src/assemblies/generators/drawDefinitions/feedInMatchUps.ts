@@ -1,6 +1,6 @@
-import { generateRange, instanceCount } from '../../../utilities/arrays';
+import { generateRange, instanceCount } from '../../../tools/arrays';
 import { addFinishingRounds } from './addFinishingRounds';
-import { nearestPowerOf2 } from '../../../utilities/math';
+import { nearestPowerOf2 } from '../../../tools/math';
 import { buildFeedRound } from './buildFeedRound';
 import { buildRound } from './buildRound';
 
@@ -26,12 +26,7 @@ type FeedInMatchUpsArgs = {
 
 export function feedInMatchUps(params: FeedInMatchUpsArgs) {
   const drawSize = params.drawSize;
-  let {
-    feedRoundsProfile,
-    feedRounds = 0,
-    skipRounds = 0,
-    baseDrawSize,
-  } = params;
+  let { feedRoundsProfile, feedRounds = 0, skipRounds = 0, baseDrawSize } = params;
 
   const {
     linkFedFinishingRoundNumbers,
@@ -89,9 +84,7 @@ export function feedInMatchUps(params: FeedInMatchUpsArgs) {
     feedRounds = feedRoundsProfile.length;
   }
 
-  const allRounds = [...baseDrawRounds, ...feedRoundsProfile].sort(
-    (a, b) => b - a
-  );
+  const allRounds = [...baseDrawRounds, ...feedRoundsProfile].sort((a, b) => b - a);
   const roundsCount = allRounds.length;
 
   // rounds which have linkFed participants can be specified two ways:
@@ -104,9 +97,7 @@ export function feedInMatchUps(params: FeedInMatchUpsArgs) {
 
   // positionsFedByLinks can be determined by summing the values in allRounds
   // which are found at linkFedRoundNumbersIndices
-  const positionsFedByLinks = linkFedRoundNumbersIndices
-    .map((i) => allRounds[i])
-    .reduce((a, b) => a + b, 0);
+  const positionsFedByLinks = linkFedRoundNumbersIndices.map((i) => allRounds[i]).reduce((a, b) => a + b, 0);
   positionsFed = positionsFed - positionsFedByLinks;
 
   // initialize round creation variables
@@ -116,11 +107,9 @@ export function feedInMatchUps(params: FeedInMatchUpsArgs) {
   let roundNumber = 1; // initial roundNumber
 
   // firstRoundDrawPositions are generated and assigned drawPositions
-  const firstRoundDrawPositions = generateRange(0, baseDrawSize).map(
-    (_, i) => ({
-      drawPosition: i + 1 + positionsFed,
-    })
-  );
+  const firstRoundDrawPositions = generateRange(0, baseDrawSize).map((_, i) => ({
+    drawPosition: i + 1 + positionsFed,
+  }));
 
   // initial nodes fed into buildRound
   let nodes = firstRoundDrawPositions;
@@ -144,12 +133,10 @@ export function feedInMatchUps(params: FeedInMatchUpsArgs) {
       const iterationRange = generateRange(0, roundIterations);
       const finishingRoundNumber = roundsCount + 1 - roundNumber;
       const isLinkFedRound =
-        linkFedFinishingRoundNumbers?.includes(finishingRoundNumber) ??
-        linkFedRoundNumbers?.includes(roundNumber);
+        linkFedFinishingRoundNumbers?.includes(finishingRoundNumber) ?? linkFedRoundNumbers?.includes(roundNumber);
 
       iterationRange.forEach(() => {
-        const iterationDrawPosition =
-          (!isLinkFedRound && drawPosition) || undefined;
+        const iterationDrawPosition = (!isLinkFedRound && drawPosition) || undefined;
         ({ roundNodes, matchUps, drawPosition } = buildFeedRound({
           drawPosition: iterationDrawPosition,
           nodes: roundNodes,
@@ -176,9 +163,7 @@ export function feedInMatchUps(params: FeedInMatchUpsArgs) {
   // final drawPositions will be played off twice up until the final feed round
 
   const consolationFinish = baseDrawSize - positionsFed;
-  const modifiedFinishingPositionOffset = isConsolation
-    ? consolationFinish
-    : finishingPositionOffset;
+  const modifiedFinishingPositionOffset = isConsolation ? consolationFinish : finishingPositionOffset;
 
   matchUps = addFinishingRounds({
     finishingPositionOffset: modifiedFinishingPositionOffset,

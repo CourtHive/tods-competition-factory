@@ -1,9 +1,9 @@
 import { getCategoryAgeDetails } from '../query/event/getCategoryAgeDetails';
 import { decorateResult } from '../global/functions/decorateResult';
-import { isObject } from '../utilities/objects';
+import { isObject } from '../tools/objects';
 
 import { INVALID_VALUES } from '../constants/errorConditionConstants';
-import { isNumeric } from '../utilities/math';
+import { isNumeric } from '../tools/math';
 
 export function validateCategory({ category }) {
   if (!isObject(category)) return { error: INVALID_VALUES };

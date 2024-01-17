@@ -1,11 +1,5 @@
 import { getIndividualParticipants } from './getIndividualParticipants';
-import {
-  addMinutes,
-  extractDate,
-  extractTime,
-  sameDay,
-  timeToDate,
-} from '../../../../utilities/dateTime';
+import { addMinutes, extractDate, extractTime, sameDay, timeToDate } from '../../../../tools/dateTime';
 
 import { DO_NOT_SCHEDULE } from '../../../../constants/requestConstants';
 
@@ -31,38 +25,22 @@ export function checkRequestConflicts({
   scheduleDate,
   matchUp,
 }) {
-  const personIds = getIndividualParticipants(matchUp).map(
-    ({ person }) => person?.personId
-  );
+  const personIds = getIndividualParticipants(matchUp).map(({ person }) => person?.personId);
   if (potentials) {
-    const potentialPersonIds = (matchUp?.potentialParticipants || [])
-      .flat()
-      .map(({ person }) => person?.personId);
+    const potentialPersonIds = (matchUp?.potentialParticipants || []).flat().map(({ person }) => person?.personId);
     personIds.push(...potentialPersonIds);
   }
 
   const relevantPersonRequests = personIds
-    .map(
-      (personId) =>
-        personRequests[personId]?.map((request) => ({ ...request, personId }))
-    )
+    .map((personId) => personRequests[personId]?.map((request) => ({ ...request, personId })))
     .filter(Boolean)
     .flat()
-    .filter(
-      (request) =>
-        request.requestType === DO_NOT_SCHEDULE &&
-        sameDay(scheduleDate, request.date)
-    );
+    .filter((request) => request.requestType === DO_NOT_SCHEDULE && sameDay(scheduleDate, request.date));
 
   const conflicts: any[] = [];
   const matchUpId = matchUp?.matchUpId;
-  const scheduleStart = timeToDate(
-    extractTime(scheduleTime),
-    extractDate(scheduleDate)
-  );
-  const averageEnd = extractTime(
-    addMinutes(scheduleStart, averageMatchUpMinutes).toISOString()
-  );
+  const scheduleStart = timeToDate(extractTime(scheduleTime), extractDate(scheduleDate));
+  const averageEnd = extractTime(addMinutes(scheduleStart, averageMatchUpMinutes).toISOString());
 
   // scheduleTime, averageEnd, startTime and endTime are all string format '00:00'
   // string comparison < > is used to determine...
@@ -70,8 +48,7 @@ export function checkRequestConflicts({
   for (const request of relevantPersonRequests) {
     const { requestId, startTime, endTime } = request;
     const conflict =
-      (scheduleTime > startTime && scheduleTime < endTime) ||
-      (averageEnd > startTime && averageEnd < endTime);
+      (scheduleTime > startTime && scheduleTime < endTime) || (averageEnd > startTime && averageEnd < endTime);
     if (conflict) {
       conflicts.push({ matchUpId, request, scheduleTime });
       if (!requestConflicts[requestId]) {

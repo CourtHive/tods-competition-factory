@@ -1,4 +1,4 @@
-import { ensureInt } from '../../../utilities/ensureInt';
+import { ensureInt } from '../../../tools/ensureInt';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
@@ -7,11 +7,7 @@ import { MISSING_EVENT } from '../../../constants/errorConditionConstants';
 import { INDIVIDUAL } from '../../../constants/participantConstants';
 import { RANKING, RATING } from '../../../constants/scaleConstants';
 import { SINGLES } from '../../../constants/eventConstants';
-import {
-  SPLIT_LEVEL_BASED,
-  SPLIT_SHUTTLE,
-  SPLIT_WATERFALL,
-} from '../../../constants/flightConstants';
+import { SPLIT_LEVEL_BASED, SPLIT_SHUTTLE, SPLIT_WATERFALL } from '../../../constants/flightConstants';
 
 // turn on devContext to enable checking splitEntries value
 tournamentEngine.devContext(true);
@@ -59,8 +55,7 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
       participantId,
       scaleAttributes,
     });
-    if (scaleValues[index])
-      expect(scaleItem.scaleValue).toEqual(scaleValues[index]);
+    if (scaleValues[index]) expect(scaleItem.scaleValue).toEqual(scaleValues[index]);
   });
 
   let { flightProfile, splitEntries } = tournamentEngine.generateFlightProfile({
@@ -70,15 +65,11 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
     eventId,
   });
   expect(flightProfile.flights.length).toEqual(3);
-  expect(
-    splitEntries[0].map(({ scaleValue }) => scaleValue).filter(Boolean)
-  ).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
-  expect(
-    splitEntries[1].map(({ scaleValue }) => scaleValue).filter(Boolean)
-  ).toEqual([12, 13, 14, 15]);
-  expect(
-    splitEntries[2].map(({ scaleValue }) => scaleValue).filter(Boolean)
-  ).toEqual([]);
+  expect(splitEntries[0].map(({ scaleValue }) => scaleValue).filter(Boolean)).toEqual([
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
+  ]);
+  expect(splitEntries[1].map(({ scaleValue }) => scaleValue).filter(Boolean)).toEqual([12, 13, 14, 15]);
+  expect(splitEntries[2].map(({ scaleValue }) => scaleValue).filter(Boolean)).toEqual([]);
 
   ({ flightProfile, splitEntries } = tournamentEngine.generateFlightProfile({
     splitMethod: SPLIT_LEVEL_BASED,
@@ -89,15 +80,11 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
     eventId,
   }));
   expect(flightProfile.flights.length).toEqual(3);
-  expect(
-    splitEntries[0].map(({ scaleValue }) => scaleValue).filter(Boolean)
-  ).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
-  expect(
-    splitEntries[1].map(({ scaleValue }) => scaleValue).filter(Boolean)
-  ).toEqual([12, 13, 14, 15]);
-  expect(
-    splitEntries[2].map(({ scaleValue }) => scaleValue).filter(Boolean)
-  ).toEqual([]);
+  expect(splitEntries[0].map(({ scaleValue }) => scaleValue).filter(Boolean)).toEqual([
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
+  ]);
+  expect(splitEntries[1].map(({ scaleValue }) => scaleValue).filter(Boolean)).toEqual([12, 13, 14, 15]);
+  expect(splitEntries[2].map(({ scaleValue }) => scaleValue).filter(Boolean)).toEqual([]);
 
   ({ flightProfile, splitEntries } = tournamentEngine.generateFlightProfile({
     splitMethod: SPLIT_WATERFALL,
@@ -108,15 +95,9 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
     eventId,
   }));
   expect(flightProfile.flights.length).toEqual(3);
-  expect(
-    splitEntries[0].map(({ scaleValue }) => scaleValue).filter(Boolean)
-  ).toEqual([1, 4, 7, 10, 13]);
-  expect(
-    splitEntries[1].map(({ scaleValue }) => scaleValue).filter(Boolean)
-  ).toEqual([2, 5, 8, 11, 14]);
-  expect(
-    splitEntries[2].map(({ scaleValue }) => scaleValue).filter(Boolean)
-  ).toEqual([3, 6, 9, 12, 15]);
+  expect(splitEntries[0].map(({ scaleValue }) => scaleValue).filter(Boolean)).toEqual([1, 4, 7, 10, 13]);
+  expect(splitEntries[1].map(({ scaleValue }) => scaleValue).filter(Boolean)).toEqual([2, 5, 8, 11, 14]);
+  expect(splitEntries[2].map(({ scaleValue }) => scaleValue).filter(Boolean)).toEqual([3, 6, 9, 12, 15]);
 
   ({ flightProfile, splitEntries } = tournamentEngine.generateFlightProfile({
     splitMethod: SPLIT_SHUTTLE,
@@ -127,15 +108,9 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
     eventId,
   }));
   expect(flightProfile.flights.length).toEqual(3);
-  expect(
-    splitEntries[0].map(({ scaleValue }) => scaleValue).filter(Boolean)
-  ).toEqual([1, 6, 7, 12, 13]);
-  expect(
-    splitEntries[1].map(({ scaleValue }) => scaleValue).filter(Boolean)
-  ).toEqual([2, 5, 8, 11, 14]);
-  expect(
-    splitEntries[2].map(({ scaleValue }) => scaleValue).filter(Boolean)
-  ).toEqual([3, 4, 9, 10, 15]);
+  expect(splitEntries[0].map(({ scaleValue }) => scaleValue).filter(Boolean)).toEqual([1, 6, 7, 12, 13]);
+  expect(splitEntries[1].map(({ scaleValue }) => scaleValue).filter(Boolean)).toEqual([2, 5, 8, 11, 14]);
+  expect(splitEntries[2].map(({ scaleValue }) => scaleValue).filter(Boolean)).toEqual([3, 4, 9, 10, 15]);
 
   // no drawDefinitions were ever generated, so expect attempts to delete them to throw errors
   result = tournamentEngine.deleteFlightProfileAndFlightDraws();
@@ -182,10 +157,9 @@ it('will randomly sort unranked participants when creating flights', () => {
   const scaledParticipants = participants.filter((p) => p.rankings?.SINGLES);
   expect(scaledParticipants.length).toEqual(scaledParticipantsCount);
 
-  const { participants: tournamentParticipants } =
-    tournamentEngine.getParticipants({
-      participantFilters: { participantTypes: [INDIVIDUAL] },
-    });
+  const { participants: tournamentParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [INDIVIDUAL] },
+  });
   const participantIds = tournamentParticipants.map((p) => p.participantId);
   const result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result.success).toEqual(true);
@@ -198,17 +172,14 @@ it('will randomly sort unranked participants when creating flights', () => {
     eventType: SINGLES,
     scaleName: '18U',
   };
-  const { flightProfile, splitEntries } =
-    tournamentEngine.generateFlightProfile({
-      attachFlightProfile: true,
-      scaleAttributes,
-      flightsCount: 3,
-      eventId,
-    });
+  const { flightProfile, splitEntries } = tournamentEngine.generateFlightProfile({
+    attachFlightProfile: true,
+    scaleAttributes,
+    flightsCount: 3,
+    eventId,
+  });
   expect(flightProfile.flights.length).toEqual(3);
   const entryPositions = splitEntries[2].map((e) => ensureInt(e.entryPosition));
-  const nonSequential = entryPositions.some(
-    (entryPosition, i) => entryPosition > entryPositions[i + 1]
-  );
+  const nonSequential = entryPositions.some((entryPosition, i) => entryPosition > entryPositions[i + 1]);
   expect(nonSequential).toBeTruthy();
 });

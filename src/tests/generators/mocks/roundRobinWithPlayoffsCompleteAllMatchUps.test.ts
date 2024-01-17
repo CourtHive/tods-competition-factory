@@ -1,15 +1,12 @@
 import mocksEngine from '../../../assemblies/engines/mock';
-import { instanceCount } from '../../../utilities/arrays';
+import { instanceCount } from '../../../tools/arrays';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
 import { COMPLETED } from '../../../constants/matchUpStatusConstants';
 import { SINGLES } from '../../../constants/eventConstants';
-import {
-  MAIN,
-  ROUND_ROBIN_WITH_PLAYOFF,
-} from '../../../constants/drawDefinitionConstants';
+import { MAIN, ROUND_ROBIN_WITH_PLAYOFF } from '../../../constants/drawDefinitionConstants';
 
 it('can complete matchUps in playoff structures', () => {
   const structureOptions = { groupSize: 5 };
@@ -51,11 +48,7 @@ it('can complete matchUps in playoff structures', () => {
     includePositionAssignments: true,
     drawId,
   });
-  expect(
-    drawsData[0].structures.filter(
-      ({ positionAssignments }) => positionAssignments
-    ).length
-  ).toEqual(2);
+  expect(drawsData[0].structures.filter(({ positionAssignments }) => positionAssignments).length).toEqual(2);
 });
 
 function generateScenario({ drawSize, structureOptions }) {
@@ -77,9 +70,7 @@ function generateScenario({ drawSize, structureOptions }) {
     drawProfiles,
   });
 
-  const { drawDefinition } = tournamentEngine
-    .setState(tournamentRecord)
-    .getEvent({ drawId });
+  const { drawDefinition } = tournamentEngine.setState(tournamentRecord).getEvent({ drawId });
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
   return { drawDefinition, matchUps };
 }

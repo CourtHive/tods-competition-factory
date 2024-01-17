@@ -3,7 +3,7 @@ import { scheduledMatchUpDate } from './matchUp/scheduledMatchUpDate';
 import { matchUpAllocatedCourts } from './matchUp/courtAllocations';
 import { matchUpAssignedCourtId } from './matchUp/courtAssignment';
 import { matchUpAssignedVenueId } from './matchUp/venueAssignment';
-import { extractDate, sameDay } from '../utilities/dateTime';
+import { extractDate, sameDay } from '../tools/dateTime';
 
 import { TEAM_MATCHUP } from '../constants/matchUpTypes';
 import { MatchUpFilters } from '../types/factoryTypes';

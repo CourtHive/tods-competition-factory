@@ -1,7 +1,7 @@
 import { setSubscriptions } from '../../../../../global/state/globalState';
 import mocksEngine from '../../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../../engines/syncEngine';
-import { unique } from '../../../../../utilities/arrays';
+import { unique } from '../../../../../tools/arrays';
 import { expect, it } from 'vitest';
 
 import { ENTRY_PROFILE } from '../../../../../constants/extensionConstants';
@@ -18,30 +18,17 @@ import {
   SINGLE_ELIMINATION,
   WINNER,
 } from '../../../../../constants/drawDefinitionConstants';
-import {
-  DRAW_ID_EXISTS,
-  INVALID_DRAW_SIZE,
-} from '../../../../../constants/errorConditionConstants';
-import {
-  ADD_MATCHUPS,
-  DELETED_MATCHUP_IDS,
-} from '../../../../../constants/topicConstants';
-import {
-  INDIVIDUAL,
-  PAIR,
-  TEAM,
-} from '../../../../../constants/participantConstants';
+import { DRAW_ID_EXISTS, INVALID_DRAW_SIZE } from '../../../../../constants/errorConditionConstants';
+import { ADD_MATCHUPS, DELETED_MATCHUP_IDS } from '../../../../../constants/topicConstants';
+import { INDIVIDUAL, PAIR, TEAM } from '../../../../../constants/participantConstants';
 
-it.each([ROUND_ROBIN, SINGLE_ELIMINATION, undefined])(
-  'will generate a drawDefinition with no matchUps',
-  (drawType) => {
-    const result = mocksEngine.generateTournamentRecord({
-      drawProfiles: [{ drawSize: 0, drawType }],
-    });
+it.each([ROUND_ROBIN, SINGLE_ELIMINATION, undefined])('will generate a drawDefinition with no matchUps', (drawType) => {
+  const result = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawSize: 0, drawType }],
+  });
 
-    expect(result.error).toEqual(INVALID_DRAW_SIZE);
-  }
-);
+  expect(result.error).toEqual(INVALID_DRAW_SIZE);
+});
 
 it('can generate QUALIFYING structures when no MAIN structure is specified', () => {
   let notificationsOrder: any[] = [];
@@ -72,9 +59,7 @@ it('can generate QUALIFYING structures when no MAIN structure is specified', () 
         qualifyingProfiles: [
           {
             roundTarget: 1,
-            structureProfiles: [
-              { stageSequence: 1, drawSize: 16, qualifyingRoundNumber: 2 },
-            ],
+            structureProfiles: [{ stageSequence: 1, drawSize: 16, qualifyingRoundNumber: 2 }],
           },
         ],
       },
@@ -99,14 +84,10 @@ it('can generate QUALIFYING structures when no MAIN structure is specified', () 
   const entryStages = unique(event.entries.map(({ entryStage }) => entryStage));
   expect(entryStages).toEqual([QUALIFYING]);
 
-  const mainStructure = drawDefinition.structures.find(
-    ({ stage }) => stage === MAIN
-  );
+  const mainStructure = drawDefinition.structures.find(({ stage }) => stage === MAIN);
   expect(mainStructure.matchUps.length).toEqual(0);
 
-  const qualifyingStructure = drawDefinition.structures.find(
-    ({ stage }) => stage === QUALIFYING
-  );
+  const qualifyingStructure = drawDefinition.structures.find(({ stage }) => stage === QUALIFYING);
   expect(qualifyingStructure.matchUps.length).toEqual(12);
 
   const links = drawDefinition.links;
@@ -119,9 +100,7 @@ it('can generate QUALIFYING structures when no MAIN structure is specified', () 
   expect(links[0].target.structureId).toEqual(mainStructure.structureId);
   expect(links[0].target.roundNumber).toEqual(1);
 
-  const structureIds = drawDefinition.structures.map(
-    ({ structureId }) => structureId
-  );
+  const structureIds = drawDefinition.structures.map(({ structureId }) => structureId);
   result = tournamentEngine.generateDrawTypeAndModifyDrawDefinition({
     modifyOriginal: false,
     drawSize: 32,
@@ -132,9 +111,7 @@ it('can generate QUALIFYING structures when no MAIN structure is specified', () 
   expect(allMatchUps.length).toEqual(12);
 
   // check that structureIds have not changed
-  expect(
-    result.drawDefinition.structures.map(({ structureId }) => structureId)
-  ).toEqual(structureIds);
+  expect(result.drawDefinition.structures.map(({ structureId }) => structureId)).toEqual(structureIds);
 
   // check that number of matchUps has not changed in state
   drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
@@ -249,14 +226,10 @@ it.each([
 
     tournamentEngine.setState(tournamentRecord);
     const { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
-    const mainStructure = drawDefinition.structures.find(
-      ({ stage }) => stage === MAIN
-    );
+    const mainStructure = drawDefinition.structures.find(({ stage }) => stage === MAIN);
     expect(mainStructure.matchUps.length).toEqual(0);
 
-    const qualifyingStructure = drawDefinition.structures.find(
-      ({ stage }) => stage === QUALIFYING
-    );
+    const qualifyingStructure = drawDefinition.structures.find(({ stage }) => stage === QUALIFYING);
     expect(qualifyingStructure.matchUpFormat).not.toBeUndefined();
     expect(qualifyingStructure.matchUps.length).toEqual(12);
 
@@ -281,10 +254,8 @@ it.each([
 
     result = tournamentEngine.getEventData({ eventId });
     expect(result.success).toEqual(true);
-    expect(result.eventData.drawsData[0].structures?.length).toEqual(
-      structuresCount
-    );
-  }
+    expect(result.eventData.drawsData[0].structures?.length).toEqual(structuresCount);
+  },
 );
 
 it('can generate only qualifying structure for eventType: TEAM', () => {
@@ -298,9 +269,7 @@ it('can generate only qualifying structure for eventType: TEAM', () => {
         qualifyingProfiles: [
           {
             roundTarget: 1,
-            structureProfiles: [
-              { stageSequence: 1, drawSize: 16, qualifyingRoundNumber: 2 },
-            ],
+            structureProfiles: [{ stageSequence: 1, drawSize: 16, qualifyingRoundNumber: 2 }],
           },
         ],
       },
@@ -327,16 +296,10 @@ it('can generate only qualifying structure for eventType: TEAM', () => {
 
   const { participants } = tournamentEngine.getParticipants();
   //expect(participants.length).toEqual(80);
-  const teamParticipants = participants.filter(
-    ({ participantType }) => participantType === TEAM
-  );
+  const teamParticipants = participants.filter(({ participantType }) => participantType === TEAM);
   expect(teamParticipants.length).toEqual(16);
-  const individualParticipants = participants.filter(
-    ({ participantType }) => participantType === INDIVIDUAL
-  );
+  const individualParticipants = participants.filter(({ participantType }) => participantType === INDIVIDUAL);
   expect(individualParticipants.length).toEqual(32);
-  const pairParticipants = participants.filter(
-    ({ participantType }) => participantType === PAIR
-  );
+  const pairParticipants = participants.filter(({ participantType }) => participantType === PAIR);
   expect(pairParticipants.length).toEqual(16);
 });

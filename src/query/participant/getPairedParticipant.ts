@@ -1,6 +1,6 @@
 import { decorateResult } from '../../global/functions/decorateResult';
-import { makeDeepCopy } from '../../utilities/makeDeepCopy';
-import { intersection } from '../../utilities/arrays';
+import { makeDeepCopy } from '../../tools/makeDeepCopy';
+import { intersection } from '../../tools/arrays';
 
 import { Participant, Tournament } from '../../types/tournamentTypes';
 import { PAIR } from '../../constants/participantConstants';
@@ -31,36 +31,28 @@ export function getPairedParticipant({
 } {
   const stack = 'getPairedParticipant';
 
-  if (!tournamentParticipants && !tournamentRecord)
-    return { error: MISSING_TOURNAMENT_RECORD };
-  if (!Array.isArray(participantIds) || participantIds.length > 2)
-    return { error: INVALID_PARTICIPANT_IDS };
+  if (!tournamentParticipants && !tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  if (!Array.isArray(participantIds) || participantIds.length > 2) return { error: INVALID_PARTICIPANT_IDS };
   if (!participantIds.length)
     return decorateResult({
       result: { error: MISSING_PARTICIPANT_IDS },
       stack,
     });
 
-  tournamentParticipants =
-    tournamentParticipants ?? tournamentRecord?.participants ?? [];
+  tournamentParticipants = tournamentParticipants ?? tournamentRecord?.participants ?? [];
 
   const existingPairedParticipants = tournamentParticipants.filter(
     (participant) =>
       participant.participantType === PAIR &&
-      intersection(participantIds, participant.individualParticipantIds)
-        .length === participantIds.length &&
-      participant.individualParticipantIds.length === participantIds.length
+      intersection(participantIds, participant.individualParticipantIds).length === participantIds.length &&
+      participant.individualParticipantIds.length === participantIds.length,
   );
   const existingPairedParticipant = existingPairedParticipants[0];
   if (!existingPairedParticipant) {
     return decorateResult({ result: { error: PARTICIPANT_NOT_FOUND }, stack });
   }
 
-  const duplicatedPairParticipants = makeDeepCopy(
-    existingPairedParticipants.slice(1),
-    false,
-    true
-  );
+  const duplicatedPairParticipants = makeDeepCopy(existingPairedParticipants.slice(1), false, true);
 
   return {
     participant: makeDeepCopy(existingPairedParticipant),

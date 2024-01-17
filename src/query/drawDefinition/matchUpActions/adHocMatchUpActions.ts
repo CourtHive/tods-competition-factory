@@ -1,9 +1,9 @@
 import { getEventAlternateParticipantIds } from './getEventAlternateParticipantids';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { checkScoreHasValue } from '../../matchUp/checkScoreHasValue';
-import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
+import { makeDeepCopy } from '../../../tools/makeDeepCopy';
 import { getFlightProfile } from '../../event/getFlightProfile';
-import { unique } from '../../../utilities/arrays';
+import { unique } from '../../../tools/arrays';
 
 import { ASSIGN_SIDE_METHOD, REMOVE_PARTICIPANT, REMOVE_SIDE_METHOD } from '../../../constants/matchUpActionConstants';
 import { ASSIGN_PARTICIPANT } from '../../../constants/positionActionConstants';

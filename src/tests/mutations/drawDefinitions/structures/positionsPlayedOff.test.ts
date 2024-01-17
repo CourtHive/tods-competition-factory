@@ -1,5 +1,5 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
-import { getPositionsPlayedOff } from '../../../../mutate/drawDefinitions/structureGovernor/getPositionsPlayedOff';
+import { getPositionsPlayedOff } from '../../../../query/drawDefinition/getPositionsPlayedOff';
 import { setStageDrawSize } from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 import { newDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { expect, it } from 'vitest';
@@ -30,9 +30,7 @@ it('can correctly determin positions playedOff for FIRST_MATCH_LOSER_CONSOLATION
     drawDefinition,
   });
   expect(result.success).toEqual(true);
-  const structureIds = result.drawDefinition?.structures?.map(
-    (s) => s.structureId
-  );
+  const structureIds = result.drawDefinition?.structures?.map((s) => s.structureId);
 
   const { positionsPlayedOff } = getPositionsPlayedOff({
     drawDefinition,

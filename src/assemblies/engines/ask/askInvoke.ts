@@ -1,16 +1,12 @@
-import { isFunction, isObject, isString } from '../../../utilities/objects';
+import { isFunction, isObject, isString } from '../../../tools/objects';
 import { getMethods } from '../../../global/state/syncGlobalState';
 import { logMethodNotFound } from '../parts/logMethodNotFound';
 import { executeFunction } from '../parts/executeMethod';
 
-import {
-  INVALID_VALUES,
-  METHOD_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+import { INVALID_VALUES, METHOD_NOT_FOUND } from '../../../constants/errorConditionConstants';
 
 export function askInvoke(engine: { [key: string]: any }, args: any) {
-  if (!isObject(args))
-    return { error: INVALID_VALUES, message: 'args must be an object' };
+  if (!isObject(args)) return { error: INVALID_VALUES, message: 'args must be an object' };
   const methodsCount = Object.values(args).filter(isFunction).length;
   if (methodsCount > 1)
     return {

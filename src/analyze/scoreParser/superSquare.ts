@@ -1,5 +1,5 @@
 import { getWinningSide } from './getWinningSide';
-import { isNumeric } from '../../utilities/math';
+import { isNumeric } from '../../tools/math';
 
 export function superSquare({ score }) {
   const { setsTied, winningSide } = getWinningSide(score);
@@ -9,10 +9,7 @@ export function superSquare({ score }) {
   if (!winningSide && setsTied && finalSetMatchTiebreak.test(score)) {
     const lowTiebreakScore = score.match(finalSetMatchTiebreak).slice(1)[0];
     const highTiebreakScore = lowTiebreakScore <= 8 ? 10 : lowTiebreakScore + 2;
-    score = score.replace(
-      finalSetMatchTiebreak,
-      ` [${highTiebreakScore}-${lowTiebreakScore}]`
-    );
+    score = score.replace(finalSetMatchTiebreak, ` [${highTiebreakScore}-${lowTiebreakScore}]`);
   }
 
   const sets = score.split(' ');
@@ -22,10 +19,7 @@ export function superSquare({ score }) {
   let scores = finalSet.split('(').join('').split(')').join('').split('-');
   if (!scores.every((score) => isNumeric(score))) return { score };
   if (scores[0] === '76') {
-    const tb =
-      scores[1].length === 2
-        ? Math.min(...scores[1].split('').map((n) => parseInt(n)))
-        : scores[1];
+    const tb = scores[1].length === 2 ? Math.min(...scores[1].split('').map((n) => parseInt(n))) : scores[1];
     score = [...sets.slice(0, sets.length - 1), `7-6(${tb})`].join(' ');
   } else {
     scores = scores.map((score) => parseInt(score));
@@ -36,19 +30,13 @@ export function superSquare({ score }) {
     if (maxSetScore >= 10) {
       // if both scores are greater than 10 and diff > 2 then attempt to modify
       if (diff > 2 && scores.every((s) => +s >= 10)) {
-        const modifiedScores = scores
-          .map((s) => (s === maxSetScore ? s - 10 : 10))
-          .sort();
+        const modifiedScores = scores.map((s) => (s === maxSetScore ? s - 10 : 10)).sort();
         diff = Math.abs(modifiedScores[0] - modifiedScores[1]);
         if (diff > 2) scores = modifiedScores;
       }
-      score = [...sets.slice(0, sets.length - 1), `[${scores.join('-')}]`].join(
-        ' '
-      );
+      score = [...sets.slice(0, sets.length - 1), `[${scores.join('-')}]`].join(' ');
     } else if (sets.length === 3 && maxSetScore >= 7 && diff > 2) {
-      score = [...sets.slice(0, sets.length - 1), `[${scores.join('-')}]`].join(
-        ' '
-      );
+      score = [...sets.slice(0, sets.length - 1), `[${scores.join('-')}]`].join(' ');
     }
   }
 

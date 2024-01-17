@@ -6,36 +6,19 @@ import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import { pushGlobalLog } from '../../../global/functions/globalLog';
 import { findStructure } from '../../../acquire/findStructure';
-import { ensureInt } from '../../../utilities/ensureInt';
+import { ensureInt } from '../../../tools/ensureInt';
 import { positionTargets } from './positionTargets';
-import { overlap } from '../../../utilities/arrays';
-import {
-  getPositionAssignments,
-  structureAssignedDrawPositions,
-} from '../../../query/drawDefinition/positionsGetter';
-import {
-  ResultType,
-  decorateResult,
-} from '../../../global/functions/decorateResult';
-import {
-  MatchUpsMap,
-  getMatchUpsMap,
-} from '../../../query/matchUps/getMatchUpsMap';
-import {
-  modifyPositionAssignmentsNotice,
-  modifyMatchUpNotice,
-} from '../../notifications/drawNotifications';
+import { overlap } from '../../../tools/arrays';
+import { getPositionAssignments, structureAssignedDrawPositions } from '../../../query/drawDefinition/positionsGetter';
+import { ResultType, decorateResult } from '../../../global/functions/decorateResult';
+import { MatchUpsMap, getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
+import { modifyPositionAssignmentsNotice, modifyMatchUpNotice } from '../../notifications/drawNotifications';
 
 import { CONTAINER, DRAW } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import { TEAM } from '../../../constants/matchUpTypes';
-import {
-  BYE,
-  DEFAULTED,
-  TO_BE_PLAYED,
-  WALKOVER,
-} from '../../../constants/matchUpStatusConstants';
+import { BYE, DEFAULTED, TO_BE_PLAYED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 
 import {
   DRAW_POSITION_ACTIVE,
@@ -44,13 +27,7 @@ import {
   ErrorType,
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  Event,
-  PositionAssignment,
-  Structure,
-  Tournament,
-} from '../../../types/tournamentTypes';
+import { DrawDefinition, Event, PositionAssignment, Structure, Tournament } from '../../../types/tournamentTypes';
 
 type ClearDrawPositionArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];
@@ -62,12 +39,9 @@ type ClearDrawPositionArgs = {
   structureId: string;
   event?: Event;
 };
-export function clearDrawPosition(
-  params: ClearDrawPositionArgs
-): ResultType & { participantId?: string } {
+export function clearDrawPosition(params: ClearDrawPositionArgs): ResultType & { participantId?: string } {
   let { inContextDrawMatchUps, participantId, drawPosition } = params;
-  const { tournamentRecord, drawDefinition, structureId, matchUpsMap, event } =
-    params;
+  const { tournamentRecord, drawDefinition, structureId, matchUpsMap, event } = params;
   const { structure } = findStructure({ drawDefinition, structureId });
   const positionAssignments =
     structureAssignedDrawPositions({
@@ -78,7 +52,7 @@ export function clearDrawPosition(
   const existingAssignment = positionAssignments.find(
     (assignment) =>
       (participantId && assignment.participantId === participantId) ||
-      (drawPosition && assignment.drawPosition === drawPosition)
+      (drawPosition && assignment.drawPosition === drawPosition),
   );
 
   if (existingAssignment && participantId && !drawPosition) {
@@ -189,9 +163,7 @@ export function drawPositionRemovals({
     matchUps: structureMatchUps,
   });
   const profileKeys = roundProfile && Object.keys(roundProfile);
-  const roundNumbers = profileKeys?.map((roundNumber) =>
-    ensureInt(roundNumber)
-  );
+  const roundNumbers = profileKeys?.map((roundNumber) => ensureInt(roundNumber));
 
   let targetDrawPosition: any = drawPosition;
   const pairingDetails = roundNumbers
@@ -199,32 +171,30 @@ export function drawPositionRemovals({
       // find the pair of drawPositions which includes the targetDrawPosition
       const profile = roundProfile?.[roundNumber];
       const relevantPair = profile?.pairedDrawPositions?.find((drawPositions) =>
-        drawPositions.includes(targetDrawPosition)
+        drawPositions.includes(targetDrawPosition),
       );
       // find the drawPosition which is paired with the targetDrawPosition
       const pairedDrawPosition: any = relevantPair?.find(
-        (currentDrawPosition) => currentDrawPosition !== targetDrawPosition
+        (currentDrawPosition) => currentDrawPosition !== targetDrawPosition,
       );
       // find the assignment for the paired drawPosition
       const pairedDrawPositionAssignment = positionAssignments.find(
-        (assignment) => assignment.drawPosition === pairedDrawPosition
+        (assignment) => assignment.drawPosition === pairedDrawPosition,
       );
       const nextRoundProfile = roundProfile?.[roundNumber + 1];
       // whether or not the pairedDrawPosition is a BYE
       const pairedDrawPositionIsBye = pairedDrawPositionAssignment?.bye;
       // whether or not the pairedDrawPosition is present in the next round
-      const pairedDrawPositionInNextRound =
-        nextRoundProfile?.pairedDrawPositions?.find((pairedPositions: any) =>
-          pairedPositions.includes(pairedDrawPosition)
-        );
+      const pairedDrawPositionInNextRound = nextRoundProfile?.pairedDrawPositions?.find((pairedPositions: any) =>
+        pairedPositions.includes(pairedDrawPosition),
+      );
       // pairedDrawPosition is a transitiveBye if it is a BYE and if it is present in next round
       const isTransitiveBye =
         pairedDrawPositionIsBye &&
         pairedDrawPositionInNextRound &&
         nextRoundProfile &&
         nextRoundProfile.drawPositions?.includes(pairedDrawPosition);
-      const pairedDrawPositionByeAdvancedPair =
-        !isTransitiveBye && pairedDrawPositionInNextRound;
+      const pairedDrawPositionByeAdvancedPair = !isTransitiveBye && pairedDrawPositionInNextRound;
 
       const result = relevantPair && {
         pairedDrawPositionByeAdvancedPair,
@@ -242,13 +212,8 @@ export function drawPositionRemovals({
     .filter((f) => f?.targetDrawPosition);
 
   const tasks: any = pairingDetails?.reduce((tasks, pairingDetail: any) => {
-    const {
-      roundNumber,
-      relevantPair,
-      targetDrawPosition,
-      pairedDrawPosition,
-      pairedDrawPositionByeAdvancedPair,
-    } = pairingDetail;
+    const { roundNumber, relevantPair, targetDrawPosition, pairedDrawPosition, pairedDrawPositionByeAdvancedPair } =
+      pairingDetail;
     const roundRemoval = { roundNumber, targetDrawPosition, relevantPair };
     const byeAdvancedRemoval = pairedDrawPositionByeAdvancedPair && {
       roundNumber: roundNumber + 1,
@@ -262,10 +227,7 @@ export function drawPositionRemovals({
 
   tasks?.forEach(({ roundNumber, targetDrawPosition, relevantPair }) => {
     const targetMatchUp = roundMatchUps?.[roundNumber].find((matchUp) =>
-      overlap(
-        matchUp.drawPositions?.filter(Boolean),
-        relevantPair.filter(Boolean)
-      )
+      overlap(matchUp.drawPositions?.filter(Boolean), relevantPair.filter(Boolean)),
     );
     if (!targetMatchUp) {
       return;
@@ -323,7 +285,7 @@ function removeSubsequentRoundsParticipant({
     (matchUp) =>
       matchUp.roundNumber >= roundNumber &&
       matchUp.roundNumber !== initialRoundNumber &&
-      matchUp.drawPositions?.includes(targetDrawPosition)
+      matchUp.drawPositions?.includes(targetDrawPosition),
   );
 
   const positionAssignments =
@@ -342,7 +304,7 @@ function removeSubsequentRoundsParticipant({
       drawDefinition,
       matchUpsMap,
       structure,
-    })
+    }),
   );
   return { ...SUCCESS };
 }
@@ -382,32 +344,24 @@ function removeDrawPosition({
     matchUps,
   });
 
-  if (
-    targetMatchUp.roundNumber &&
-    initialRoundNumber &&
-    targetMatchUp.roundNumber > initialRoundNumber
-  ) {
-    const drawPositions: any[] = (targetMatchUp.drawPositions ?? []).map(
-      (currentDrawPosition) =>
-        currentDrawPosition === drawPosition ? undefined : currentDrawPosition
+  if (targetMatchUp.roundNumber && initialRoundNumber && targetMatchUp.roundNumber > initialRoundNumber) {
+    const drawPositions: any[] = (targetMatchUp.drawPositions ?? []).map((currentDrawPosition) =>
+      currentDrawPosition === drawPosition ? undefined : currentDrawPosition,
     );
     targetMatchUp.drawPositions = drawPositions as number[];
   }
 
   if (targetMatchUp.matchUpType === TEAM) {
     const inContextTargetMatchUp = inContextDrawMatchUps?.find(
-      (matchUp) => matchUp.matchUpId === targetMatchUp.matchUpId
+      (matchUp) => matchUp.matchUpId === targetMatchUp.matchUpId,
     );
     const sides: any[] = inContextTargetMatchUp?.sides ?? [];
     const drawPositionSideIndex = sides.reduce(
       (index, side, i) => (side.drawPosition === drawPosition ? i : index),
-      undefined
+      undefined,
     );
 
-    if (
-      drawPositionSideIndex !== undefined &&
-      targetMatchUp.sides?.[drawPositionSideIndex]?.lineUp
-    ) {
+    if (drawPositionSideIndex !== undefined && targetMatchUp.sides?.[drawPositionSideIndex]?.lineUp) {
       delete targetMatchUp.sides?.[drawPositionSideIndex].lineUp;
 
       modifyMatchUpNotice({
@@ -436,12 +390,10 @@ function removeDrawPosition({
     },
   } = targetData;
 
-  const matchUpAssignments = positionAssignments.filter(
-    ({ drawPosition }) => targetMatchUp.drawPositions?.includes(drawPosition)
+  const matchUpAssignments = positionAssignments.filter(({ drawPosition }) =>
+    targetMatchUp.drawPositions?.includes(drawPosition),
   );
-  const matchUpContainsBye = matchUpAssignments.filter(
-    (assignment) => assignment.bye
-  ).length;
+  const matchUpContainsBye = matchUpAssignments.filter((assignment) => assignment.bye).length;
 
   const newMatchUpStatus =
     (matchUpContainsBye && BYE) ||
@@ -456,14 +408,11 @@ function removeDrawPosition({
   // if the matchUpStatus is WALKOVER then it is DOUBLE_WALKOVER produced
   // if the matchUpStatus is DEFAULTED then it is DOUBLE_DEFAULT produced
   // ... and the winningSide must be removed
-  if (
-    targetMatchUp.matchUpStatus &&
-    [WALKOVER, DEFAULTED].includes(targetMatchUp.matchUpStatus)
-  )
+  if (targetMatchUp.matchUpStatus && [WALKOVER, DEFAULTED].includes(targetMatchUp.matchUpStatus))
     targetMatchUp.winningSide = undefined;
 
   const removedDrawPosition = initialDrawPositions?.find(
-    (position) => !targetMatchUp.drawPositions?.includes(position)
+    (position) => !targetMatchUp.drawPositions?.includes(position),
   );
   const noChange =
     initialDrawPositions?.includes(drawPosition) &&
@@ -488,16 +437,11 @@ function removeDrawPosition({
     });
   }
 
-  if (
-    loserMatchUp &&
-    loserMatchUp.structureId !== targetData.matchUp.structureId &&
-    !matchUpContainsBye
-  ) {
+  if (loserMatchUp && loserMatchUp.structureId !== targetData.matchUp.structureId && !matchUpContainsBye) {
     const { drawPositions, roundNumber } = loserMatchUp;
 
     if (roundNumber === 1) {
-      const loserMatchUpDrawPosition =
-        drawPositions[loserMatchUpDrawPositionIndex];
+      const loserMatchUpDrawPosition = drawPositions[loserMatchUpDrawPositionIndex];
 
       drawPositionRemovals({
         structureId: loserMatchUp.structureId,
@@ -510,9 +454,7 @@ function removeDrawPosition({
     } else {
       // for fed rounds the loserMatchUpDrawPosiiton is always the fed drawPosition
       // which is always the lowest numerical drawPosition
-      const loserMatchUpDrawPosition = Math.min(
-        ...drawPositions.filter(Boolean)
-      );
+      const loserMatchUpDrawPosition = Math.min(...drawPositions.filter(Boolean));
 
       const result = consolationCleanup({
         loserMatchUpDrawPosition,
@@ -526,8 +468,7 @@ function removeDrawPosition({
       if (result.error) return decorateResult({ result, stack });
 
       const mappedMatchUps = matchUpsMap?.mappedMatchUps || {};
-      const loserStructureMatchUps =
-        mappedMatchUps[loserMatchUp.structureId].matchUps;
+      const loserStructureMatchUps = mappedMatchUps[loserMatchUp.structureId].matchUps;
 
       const { initialRoundNumber } = getInitialRoundNumber({
         drawPosition: loserMatchUpDrawPosition,
@@ -591,9 +532,7 @@ function consolationCleanup({
     drawDefinition,
   });
   const { positionAssignments } = getPositionAssignments({ structure });
-  const assignment = positionAssignments?.find(
-    (assignment) => assignment.drawPosition === loserMatchUpDrawPosition
-  );
+  const assignment = positionAssignments?.find((assignment) => assignment.drawPosition === loserMatchUpDrawPosition);
 
   if (assignment?.bye) {
     const result = clearDrawPosition({

@@ -7,7 +7,7 @@ import { PolicyDefinitions, TournamentRecords } from '../../../types/factoryType
 import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
 import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
 import { ResultType } from '../../../global/functions/decorateResult';
-import { isObject, isString } from '../../../utilities/objects';
+import { isObject, isString } from '../../../tools/objects';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   EXISTING_POLICY_TYPE,

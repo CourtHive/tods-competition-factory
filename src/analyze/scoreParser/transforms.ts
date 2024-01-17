@@ -9,8 +9,8 @@ import { sensibleSets } from './sensibleSets';
 import { superSquare } from './superSquare';
 import { setBuilder } from './setBuilder';
 import { parseSuper } from './parseSuper';
-import { getSuper } from './utilities';
-import { isNumeric } from '../../utilities/math';
+import { getSuper } from './helpers';
+import { isNumeric } from '../../tools/math';
 
 export function stringScore({ score }) {
   score = score?.toString().toLowerCase() || '';
@@ -88,9 +88,7 @@ export function removeErroneous({ score, applied }) {
 }
 
 export function handleWalkover({ score, applied }) {
-  if (
-    ['walkover', 'wo', 'w/o', 'w-o'].includes(score?.toString().toLowerCase())
-  ) {
+  if (['walkover', 'wo', 'w/o', 'w-o'].includes(score?.toString().toLowerCase())) {
     applied.push('handleWalkover');
     return { matchUpStatus: 'walkover', score: '', applied };
   }
@@ -107,14 +105,10 @@ export function handleRetired({ score, profile, applied }) {
   }
 
   const providerRetired = profile?.matchUpStatuses?.retired;
-  const additionalRetired = Array.isArray(providerRetired)
-    ? providerRetired
-    : [providerRetired].filter(Boolean);
+  const additionalRetired = Array.isArray(providerRetired) ? providerRetired : [providerRetired].filter(Boolean);
 
   // accommodate other variations
-  const retired = ['rtd', ...additionalRetired].find(
-    (ret) => score?.endsWith(ret)
-  );
+  const retired = ['rtd', ...additionalRetired].find((ret) => score?.endsWith(ret));
 
   if (retired) {
     applied.push('handleRetired');
@@ -135,9 +129,7 @@ export function removeDanglingBits({ score, attributes }) {
     score = score.slice(0, score.length - 1);
   }
 
-  const targetPunctuation = '()/-'
-    .split('')
-    .some((punctuation) => score.includes(punctuation));
+  const targetPunctuation = '()/-'.split('').some((punctuation) => score.includes(punctuation));
   if (/ \d$/.test(score) && targetPunctuation) {
     const removed = score.slice(score.length - 2).trim();
     attributes = { removed };
@@ -165,9 +157,7 @@ export function handleGameSeparation({ score }) {
   const re = new RegExp(/^\d+\/\d+/);
   const parts = score.split(' ');
   if (parts.some((part) => re.test(part))) {
-    score = parts
-      .map((part) => (re.test(part) ? part.replace('/', '-') : part))
-      .join(' ');
+    score = parts.map((part) => (re.test(part) ? part.replace('/', '-') : part)).join(' ');
   }
 
   const singleSet = /^(\d+), *(\d+)$/;

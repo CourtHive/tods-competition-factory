@@ -1,11 +1,8 @@
-import { definedAttributes } from '../../utilities/definedAttributes';
-import { makeDeepCopy } from '../../utilities/makeDeepCopy';
+import { definedAttributes } from '../../tools/definedAttributes';
+import { makeDeepCopy } from '../../tools/makeDeepCopy';
 
 import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
-import {
-  MISSING_EVENT,
-  MISSING_TOURNAMENT_RECORD,
-} from '../../constants/errorConditionConstants';
+import { MISSING_EVENT, MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
 
 type GetEventArgs = {
   context: { [key: string]: any };
@@ -14,12 +11,7 @@ type GetEventArgs = {
   event: Event;
 };
 
-export function getEvent({
-  tournamentRecord,
-  drawDefinition,
-  context,
-  event,
-}: GetEventArgs) {
+export function getEvent({ tournamentRecord, drawDefinition, context, event }: GetEventArgs) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
 
@@ -27,10 +19,7 @@ export function getEvent({
   if (context) Object.assign(eventCopy, context);
 
   const drawDefinitionCopy =
-    drawDefinition &&
-    eventCopy.drawDefinitions?.find(
-      ({ drawId }) => drawDefinition.drawId === drawId
-    );
+    drawDefinition && eventCopy.drawDefinitions?.find(({ drawId }) => drawDefinition.drawId === drawId);
 
   return definedAttributes({
     drawDefinition: drawDefinitionCopy,

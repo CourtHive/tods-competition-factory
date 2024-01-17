@@ -1,5 +1,5 @@
 import mocksEngine from '../../../assemblies/engines/mock';
-import { extractDate } from '../../../utilities/dateTime';
+import { extractDate } from '../../../tools/dateTime';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 

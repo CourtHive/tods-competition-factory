@@ -1,9 +1,9 @@
 import { getParticipants } from '../../query/participants/getParticipants';
 import { getParticipantId } from '../../global/functions/extractors';
-import { definedAttributes } from '../../utilities/definedAttributes';
+import { definedAttributes } from '../../tools/definedAttributes';
 import { findParticipant } from '../../acquire/findParticipant';
 import { addParticipants } from './addParticipants';
-import { UUID } from '../../utilities/UUID';
+import { UUID } from '../../tools/UUID';
 
 import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';
 import { Participant } from '../../types/tournamentTypes';
@@ -17,19 +17,12 @@ import {
 
 // add persons to a tournamentRecord and create participants in the process
 // include ability to specify a doubles partner by personId
-export function addPersons({
-  participantRole = COMPETITOR,
-  tournamentRecord,
-  persons,
-}) {
+export function addPersons({ participantRole = COMPETITOR, tournamentRecord, persons }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!Array.isArray(persons)) return { error: INVALID_VALUES };
-  if (!Object.keys(participantRoles).includes(participantRole))
-    return { error: INVALID_PARTICIPANT_ROLE };
+  if (!Object.keys(participantRoles).includes(participantRole)) return { error: INVALID_PARTICIPANT_ROLE };
 
-  const existingPersonIds = (tournamentRecord.participants || [])
-    .map(({ person }) => person?.personId)
-    .filter(Boolean);
+  const existingPersonIds = (tournamentRecord.participants || []).map(({ person }) => person?.personId).filter(Boolean);
 
   const newPersonIds: string[] = [];
 
@@ -38,7 +31,7 @@ export function addPersons({
       (person) =>
         person &&
         // don't add a person if their personId is present in tournament.participants
-        (!person.personId || !existingPersonIds.includes(person.personId))
+        (!person.personId || !existingPersonIds.includes(person.personId)),
     )
     .map((person) => {
       if (!person.personId) person.personId = UUID();
@@ -53,7 +46,7 @@ export function addPersons({
       {},
       ...Object.keys(element)
         .filter((key) => !attributes.includes(key))
-        .map((key) => ({ [key]: element[key] }))
+        .map((key) => ({ [key]: element[key] })),
     );
   };
 
@@ -63,12 +56,8 @@ export function addPersons({
       timeItems: person.participantTimeItems,
       participantType: INDIVIDUAL,
       participantRole,
-      person: excludeAttributes(person, [
-        'participantExtensions',
-        'participantTimeItems',
-        'pairedPersons',
-      ]),
-    })
+      person: excludeAttributes(person, ['participantExtensions', 'participantTimeItems', 'pairedPersons']),
+    }),
   );
 
   let addedPairParticipantsCount = 0;
@@ -96,13 +85,10 @@ export function addPersons({
         Array.isArray(pairedPersons) &&
           pairedPersons.forEach((pairing) => {
             const individualParticipants = [personId, pairing.personId]
-              .map((id) =>
-                findParticipant({ tournamentParticipants, personId: id })
-              )
+              .map((id) => findParticipant({ tournamentParticipants, personId: id }))
               .filter(Boolean);
             if (individualParticipants.length === 2) {
-              const individualParticipantIds =
-                individualParticipants.map(getParticipantId);
+              const individualParticipantIds = individualParticipants.map(getParticipantId);
               pairParticipants.push(
                 definedAttributes({
                   extensions: pairing.participantExtensions,
@@ -110,7 +96,7 @@ export function addPersons({
                   participantRole: COMPETITOR,
                   individualParticipantIds,
                   participantType: PAIR,
-                })
+                }),
               );
             }
           });
@@ -126,8 +112,7 @@ export function addPersons({
     addedPairParticipantsCount = result.addedCount || 0;
   }
 
-  const addedCount =
-    addedIndividualParticipantsCount + addedPairParticipantsCount;
+  const addedCount = addedIndividualParticipantsCount + addedPairParticipantsCount;
 
   return { ...SUCCESS, addedCount, newPersonIds };
 }

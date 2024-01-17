@@ -1,6 +1,6 @@
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { decorateResult } from '../../../global/functions/decorateResult';
-import { definedAttributes } from '../../../utilities/definedAttributes';
+import { definedAttributes } from '../../../tools/definedAttributes';
 import { collectionGroupUpdate } from './collectionGroupUpdate';
 import { getTieFormat } from '../../../query/hierarchical/tieFormats/getTieFormat';
 import { tieFormatTelemetry } from './tieFormatTelemetry';
@@ -8,16 +8,8 @@ import { validateTieFormat } from '../../../validators/validateTieFormat';
 import { copyTieFormat } from '../../../query/hierarchical/tieFormats/copyTieFormat';
 
 import { TIE_FORMAT_MODIFICATIONS } from '../../../constants/extensionConstants';
-import {
-  INVALID_VALUES,
-  MISSING_VALUE,
-} from '../../../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  Event,
-  MatchUp,
-  Tournament,
-} from '../../../types/tournamentTypes';
+import { INVALID_VALUES, MISSING_VALUE } from '../../../constants/errorConditionConstants';
+import { DrawDefinition, Event, MatchUp, Tournament } from '../../../types/tournamentTypes';
 
 type RemoveCollectionGroupArgs = {
   updateInProgressMatchUps?: boolean;
@@ -70,20 +62,17 @@ export function removeCollectionGroup({
 
   const modifiedCollectionIds: string[] = [];
   // remove the collectionGroup and all references to it in other collectionDefinitions
-  tieFormat.collectionDefinitions = tieFormat.collectionDefinitions.map(
-    (collectionDefinition) => {
-      const { collectionGroupNumber: groupNumber, ...rest } =
-        collectionDefinition;
-      if (groupNumber !== collectionGroupNumber) {
-        return collectionDefinition;
-      } else {
-        modifiedCollectionIds.push(collectionDefinition.collectionId);
-        return rest;
-      }
+  tieFormat.collectionDefinitions = tieFormat.collectionDefinitions.map((collectionDefinition) => {
+    const { collectionGroupNumber: groupNumber, ...rest } = collectionDefinition;
+    if (groupNumber !== collectionGroupNumber) {
+      return collectionDefinition;
+    } else {
+      modifiedCollectionIds.push(collectionDefinition.collectionId);
+      return rest;
     }
-  );
+  });
   tieFormat.collectionGroups = tieFormat.collectionGroups.filter(
-    ({ groupNumber }) => groupNumber !== collectionGroupNumber
+    ({ groupNumber }) => groupNumber !== collectionGroupNumber,
   );
 
   result = collectionGroupUpdate({

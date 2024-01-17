@@ -1,20 +1,14 @@
 import { addIndividualParticipants } from '../../mutate/participants/addIndividualParticipants';
 import { addNationalityCode } from '../../mutate/participants/addNationalityCode';
 import { getScaleValues } from '../participant/getScaleValues';
-import { makeDeepCopy } from '../../utilities/makeDeepCopy';
-import { isObject } from '../../utilities/objects';
+import { makeDeepCopy } from '../../tools/makeDeepCopy';
+import { isObject } from '../../tools/objects';
 import { getTimeItem } from '../base/timeItems';
 
 import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
 import { Tournament } from '../../types/tournamentTypes';
 import { ParticipantMap } from '../../types/factoryTypes';
-import {
-  GROUP,
-  PAIR,
-  SIGNED_IN,
-  SIGN_IN_STATUS,
-  TEAM,
-} from '../../constants/participantConstants';
+import { GROUP, PAIR, SIGNED_IN, SIGN_IN_STATUS, TEAM } from '../../constants/participantConstants';
 
 const typeMap = {
   [GROUP]: 'groupParticipantIds',
@@ -59,14 +53,9 @@ export function getParticipantMap({
   }
 
   for (const participant of tournamentRecord.participants ?? []) {
-    const participantCopy = makeDeepCopy(
-      participant,
-      convertExtensions,
-      internalUse
-    );
+    const participantCopy = makeDeepCopy(participant, convertExtensions, internalUse);
 
-    const { participantId, individualParticipantIds, participantType } =
-      participantCopy;
+    const { participantId, individualParticipantIds, participantType } = participantCopy;
 
     Object.assign(participantMap[participantId].participant, participantCopy);
 
@@ -81,8 +70,7 @@ export function getParticipantMap({
     }
 
     if (withSignInStatus) {
-      participantMap[participantId].participant.signedIn =
-        signedIn(participantCopy);
+      participantMap[participantId].participant.signedIn = signedIn(participantCopy);
     }
 
     if (withScaleValues) {
@@ -103,9 +91,7 @@ export function getParticipantMap({
   }
 
   if (withIndividualParticipants) {
-    const template = isObject(withIndividualParticipants)
-      ? withIndividualParticipants
-      : undefined;
+    const template = isObject(withIndividualParticipants) ? withIndividualParticipants : undefined;
     addIndividualParticipants({ participantMap, template });
   }
 
@@ -129,18 +115,12 @@ function processIndividualParticipantIds({
   participantId,
 }) {
   for (const individualParticipantId of individualParticipantIds) {
-    const individualParticipant =
-      participantMap[individualParticipantId].participant;
+    const individualParticipant = participantMap[individualParticipantId].participant;
     individualParticipant[typeMap[participantType]].push(participantId);
 
     if ([TEAM, GROUP].includes(participantType)) {
-      const {
-        participantRoleResponsibilities,
-        participantOtherName,
-        participantName,
-        participantId,
-        teamId,
-      } = participantCopy;
+      const { participantRoleResponsibilities, participantOtherName, participantName, participantId, teamId } =
+        participantCopy;
       const membership = membershipMap[participantType];
       individualParticipant[membership].push({
         participantRoleResponsibilities,
@@ -152,13 +132,9 @@ function processIndividualParticipantIds({
     }
 
     if (participantType === PAIR) {
-      const partnerParticipantId = individualParticipantIds.find(
-        (id) => id !== individualParticipantId
-      );
-      participantMap[individualParticipantId].pairIdMap[participantId] =
-        partnerParticipantId;
-      participantMap[individualParticipantId].pairIdMap[partnerParticipantId] =
-        participantId;
+      const partnerParticipantId = individualParticipantIds.find((id) => id !== individualParticipantId);
+      participantMap[individualParticipantId].pairIdMap[participantId] = partnerParticipantId;
+      participantMap[individualParticipantId].pairIdMap[partnerParticipantId] = participantId;
     }
   }
 }

@@ -1,15 +1,12 @@
 import { matchUpSort } from '../../../functions/sorters/matchUpSort';
 import mocksEngine from '../../../assemblies/engines/mock';
-import { instanceCount } from '../../../utilities/arrays';
+import { instanceCount } from '../../../tools/arrays';
 import tournamentEngine from '../../engines/syncEngine';
 import { fmlc32profile } from './fmlc32';
 import { expect, it } from 'vitest';
 
 import { COMPLETED } from '../../../constants/matchUpStatusConstants';
-import {
-  FIRST_MATCH_LOSER_CONSOLATION,
-  ROUND_ROBIN,
-} from '../../../constants/drawDefinitionConstants';
+import { FIRST_MATCH_LOSER_CONSOLATION, ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
 
 it('can generate a tournament with all results completed', () => {
   const drawProfiles = [{ drawSize: 32 }];
@@ -51,9 +48,7 @@ it('can generate a ROUND_ROBIN draw with all results completed', () => {
 });
 
 it('can generate a ROUND_ROBIN 32 draw with 31 participants with all results completed', () => {
-  const drawProfiles = [
-    { drawSize: 32, drawType: ROUND_ROBIN, participantsCount: 31 },
-  ];
+  const drawProfiles = [{ drawSize: 32, drawType: ROUND_ROBIN, participantsCount: 31 }];
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     completeAllMatchUps: true,
     drawProfiles,
@@ -96,8 +91,7 @@ it('can generate an FMLC draw with all results completed', () => {
 
   // find the roundPosition of the one first round matchUp that was COMPLETED
   const completedRoundPosition = matchUps.find(
-    ({ roundNumber, matchUpStatus }) =>
-      roundNumber === 1 && matchUpStatus === COMPLETED
+    ({ roundNumber, matchUpStatus }) => roundNumber === 1 && matchUpStatus === COMPLETED,
   ).roundPosition;
 
   // The expected # of COMPLETED and BYE matchUps varies depending on where the COMPLETED first round matchUp occurs
@@ -120,27 +114,20 @@ function checkMatchUpsProfile({ completed, bye, profile }) {
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
   const sortedMatchUpsProfile = matchUps
     .sort(matchUpSort)
-    .map(({ stage, stageSequence, roundNumber, roundPosition }) => [
-      stage,
-      stageSequence,
-      roundNumber,
-      roundPosition,
-    ]);
+    .map(({ stage, stageSequence, roundNumber, roundPosition }) => [stage, stageSequence, roundNumber, roundPosition]);
   expect(sortedMatchUpsProfile).toEqual(profile);
   const matchUpStatuses = instanceCount(matchUps.map((m) => m.matchUpStatus));
   if (matchUpStatuses.COMPLETED !== completed) {
     console.log({ completed, matchUpStatuses });
     const sortedMatchUpsProfile = matchUps
       .sort(matchUpSort)
-      .map(
-        ({
-          stage,
-          stageSequence,
-          roundNumber,
-          roundPosition,
-          matchUpStatus,
-        }) => [stage, stageSequence, roundNumber, roundPosition, matchUpStatus]
-      );
+      .map(({ stage, stageSequence, roundNumber, roundPosition, matchUpStatus }) => [
+        stage,
+        stageSequence,
+        roundNumber,
+        roundPosition,
+        matchUpStatus,
+      ]);
     console.log(sortedMatchUpsProfile);
   } else {
     expect(matchUpStatuses.COMPLETED).toEqual(completed);

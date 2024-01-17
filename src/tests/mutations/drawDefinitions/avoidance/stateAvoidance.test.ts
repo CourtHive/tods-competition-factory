@@ -1,5 +1,5 @@
 import mocksEngine from '../../../../assemblies/engines/mock';
-import { instanceCount } from '../../../../utilities/arrays';
+import { instanceCount } from '../../../../tools/arrays';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 

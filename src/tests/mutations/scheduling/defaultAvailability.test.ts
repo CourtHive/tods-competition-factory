@@ -1,7 +1,7 @@
 import mocksEngine from '../../../assemblies/engines/mock';
-import { extractDate } from '../../../utilities/dateTime';
+import { extractDate } from '../../../tools/dateTime';
 import tournamentEngine from '../../engines/syncEngine';
-import { UUID } from '../../../utilities/UUID';
+import { UUID } from '../../../tools/UUID';
 import { expect, test } from 'vitest';
 
 test('court availability overrides default availability', () => {

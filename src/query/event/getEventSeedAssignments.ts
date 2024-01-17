@@ -1,19 +1,12 @@
 import { participantScaleItem } from '../participant/participantScaleItem';
-import { intersection } from '../../utilities/arrays';
+import { intersection } from '../../tools/arrays';
 
 import { SCALE, SEEDING } from '../../constants/scaleConstants';
 
-export function getEventSeedAssignments({
-  publishedSeeding,
-  usePublishState,
-  withSeeding,
-  participant,
-  event,
-}) {
+export function getEventSeedAssignments({ publishedSeeding, usePublishState, withSeeding, participant, event }) {
   const eventSeedAssignments: any = {};
 
-  const getScaleAccessor = (scaleName) =>
-    [SCALE, SEEDING, event.eventType, scaleName].join('.');
+  const getScaleAccessor = (scaleName) => [SCALE, SEEDING, event.eventType, scaleName].join('.');
 
   const seedingScales = Object.assign(
     {},
@@ -21,26 +14,20 @@ export function getEventSeedAssignments({
       .filter(({ itemType }) => itemType.split('.')[1] === SEEDING)
       .map(({ itemType: seedingScaleName, itemValue: seedValue }) => ({
         [seedingScaleName]: seedValue,
-      }))
+      })),
   );
 
   const eventSeedingScaleNames = (
-    (publishedSeeding?.stageSeedingScaleNames &&
-      Object.values(publishedSeeding?.stageSeedingScaleNames)) ||
-    (Array.isArray(publishedSeeding?.seedingScaleNames) &&
-      publishedSeeding.seedingScaleNames) ||
+    (publishedSeeding?.stageSeedingScaleNames && Object.values(publishedSeeding?.stageSeedingScaleNames)) ||
+    (Array.isArray(publishedSeeding?.seedingScaleNames) && publishedSeeding.seedingScaleNames) ||
     []
   ).map(getScaleAccessor);
 
-  const publishedEventSeedingScaleNames = intersection(
-    Object.keys(seedingScales),
-    eventSeedingScaleNames
-  );
+  const publishedEventSeedingScaleNames = intersection(Object.keys(seedingScales), eventSeedingScaleNames);
 
   const eventSeedingPublished = !!(
     !usePublishState ||
-    (!Object.keys(seedingScales).length &&
-      !publishedSeeding?.drawIds?.length) ||
+    (!Object.keys(seedingScales).length && !publishedSeeding?.drawIds?.length) ||
     publishedEventSeedingScaleNames.length
   );
 
@@ -48,9 +35,7 @@ export function getEventSeedAssignments({
     if (publishedSeeding?.stageSeedingScaleNames) {
       const scaleValues = Object.keys(publishedSeeding.stageSeedingScaleNames)
         .map((key) => {
-          const accessor = getScaleAccessor(
-            publishedSeeding.stageSeedingScaleNames[key]
-          );
+          const accessor = getScaleAccessor(publishedSeeding.stageSeedingScaleNames[key]);
           const scaleValue = seedingScales[accessor];
           return [key, scaleValue];
         })
@@ -60,9 +45,7 @@ export function getEventSeedAssignments({
 
       eventSeedAssignments.seedAssignments = seedAssignments;
     } else if (publishedEventSeedingScaleNames) {
-      const seedValues = publishedEventSeedingScaleNames.map(
-        (scaleName) => seedingScales[scaleName]
-      );
+      const seedValues = publishedEventSeedingScaleNames.map((scaleName) => seedingScales[scaleName]);
       eventSeedAssignments.seedValue = seedValues.pop();
     }
   } else if (!usePublishState && typeof withSeeding === 'object') {
@@ -80,9 +63,7 @@ export function getEventSeedAssignments({
   } else {
     const { categoryName, ageCategoryCode } = event.category || {};
 
-    const scaleNames = [ageCategoryCode, event.eventId, categoryName].filter(
-      Boolean
-    );
+    const scaleNames = [ageCategoryCode, event.eventId, categoryName].filter(Boolean);
 
     let scaleItem;
     for (const scaleName of scaleNames) {

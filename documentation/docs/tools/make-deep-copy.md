@@ -5,9 +5,9 @@ title: makeDeepCopy
 Makes a deep copy of a JSON object; used internally by default to ensure that objects returns by factory query methods are immutable.
 
 ```js
-import { utilities } from 'tods-competition-factory';
+import { tools } from 'tods-competition-factory';
 
-utilities.makeDeepCopy(element, convertExtensions, internalUse);
+tools.makeDeepCopy(element, convertExtensions, internalUse);
 ```
 
 ## convertExtensions

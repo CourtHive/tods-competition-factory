@@ -2,17 +2,14 @@ import { addEventExtension } from '../extensions/addRemoveExtensions';
 import { allDrawMatchUps } from '../../query/matchUps/getAllDrawMatchUps';
 import { getMatchUpId } from '../../global/functions/extractors';
 import { getFlightProfile } from '../../query/event/getFlightProfile';
-import { ensureInt } from '../../utilities/ensureInt';
+import { ensureInt } from '../../tools/ensureInt';
 import {
   addDrawNotice,
   addMatchUpsNotice,
   deleteMatchUpsNotice,
   modifyDrawNotice,
 } from '../notifications/drawNotifications';
-import {
-  ResultType,
-  decorateResult,
-} from '../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../global/functions/decorateResult';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
 import { FLIGHT_PROFILE } from '../../constants/extensionConstants';
@@ -40,7 +37,7 @@ type AddDrawDefinitionArgs = {
 };
 
 export function addDrawDefinition(
-  params: AddDrawDefinitionArgs
+  params: AddDrawDefinitionArgs,
 ): ResultType & { modifiedEventEntryStatusCount?: number } {
   const {
     flight: flightDefinition,
@@ -61,28 +58,17 @@ export function addDrawDefinition(
   const { entries: eventEntries } = event;
   let modifiedEventEntryStatusCount = 0;
 
-  if (
-    existingDrawCount !== undefined &&
-    existingDrawCount !== event.drawDefinitions.length
-  )
+  if (existingDrawCount !== undefined && existingDrawCount !== event.drawDefinitions.length)
     return { error: INVALID_VALUES, info: 'drawDefintions count mismatch' };
 
   const { flightProfile } = getFlightProfile({ event });
   const relevantFlight =
-    flightDefinition &&
-    flightProfile?.flights?.find(
-      (flight) => flight.flightNumber === flightDefinition.flightNumber
-    );
+    flightDefinition && flightProfile?.flights?.find((flight) => flight.flightNumber === flightDefinition.flightNumber);
 
   // if there is a source drawId specified, the source draw must exist
-  const sourceDrawId = flightProfile?.links?.find(
-    (link) => link?.target?.drawId === drawId
-  )?.source?.drawId;
+  const sourceDrawId = flightProfile?.links?.find((link) => link?.target?.drawId === drawId)?.source?.drawId;
   const sourceDrawIdError =
-    sourceDrawId &&
-    !event.drawDefinitions.find(
-      (drawDefinition) => drawDefinition.drawId === sourceDrawId
-    );
+    sourceDrawId && !event.drawDefinitions.find((drawDefinition) => drawDefinition.drawId === sourceDrawId);
 
   if (sourceDrawIdError)
     return decorateResult({
@@ -90,8 +76,7 @@ export function addDrawDefinition(
       info: { sourceDrawId },
     });
 
-  const flightConflict =
-    relevantFlight && relevantFlight.drawId !== drawDefinition.drawId;
+  const flightConflict = relevantFlight && relevantFlight.drawId !== drawDefinition.drawId;
   if (flightConflict) {
     return decorateResult({
       result: { error: INVALID_DRAW_DEFINITION },
@@ -99,14 +84,10 @@ export function addDrawDefinition(
     });
   }
 
-  const drawEntriesPresentInFlight = drawEntries?.every(
-    ({ participantId, entryStatus }) => {
-      const flightEntry = relevantFlight?.drawEntries.find(
-        (entry) => entry.participantId === participantId
-      );
-      return !entryStatus || flightEntry?.entryStatus === entryStatus;
-    }
-  );
+  const drawEntriesPresentInFlight = drawEntries?.every(({ participantId, entryStatus }) => {
+    const flightEntry = relevantFlight?.drawEntries.find((entry) => entry.participantId === participantId);
+    return !entryStatus || flightEntry?.entryStatus === entryStatus;
+  });
 
   // check that all drawEntries have equivalent entryStatus to event.entries
   const matchingEventEntries =
@@ -116,7 +97,7 @@ export function addDrawDefinition(
         const eventEntry = eventEntries.find(
           (eventEntry) =>
             eventEntry.participantId === participantId &&
-            (!eventEntry.entryStage || eventEntry.entryStage === entryStage)
+            (!eventEntry.entryStage || eventEntry.entryStage === entryStage),
         );
         return eventEntry?.entryStatus === entryStatus;
       }));
@@ -135,20 +116,11 @@ export function addDrawDefinition(
 
   if (modifyEventEntries) {
     drawEntries?.filter(Boolean).forEach((drawEntry) => {
-      if (
-        drawEntry?.entryStatus &&
-        STRUCTURE_SELECTED_STATUSES.includes(drawEntry?.entryStatus)
-      ) {
+      if (drawEntry?.entryStatus && STRUCTURE_SELECTED_STATUSES.includes(drawEntry?.entryStatus)) {
         const eventEntry = eventEntries
           ?.filter(Boolean)
-          .find(
-            (eventEntry) => eventEntry.participantId === drawEntry.participantId
-          );
-        if (
-          eventEntry &&
-          drawEntry.entryStatus &&
-          eventEntry?.entryStatus !== drawEntry.entryStatus
-        ) {
+          .find((eventEntry) => eventEntry.participantId === drawEntry.participantId);
+        if (eventEntry && drawEntry.entryStatus && eventEntry?.entryStatus !== drawEntry.entryStatus) {
           eventEntry.entryStatus = drawEntry.entryStatus;
           modifiedEventEntryStatusCount += 1;
         }
@@ -167,21 +139,16 @@ export function addDrawDefinition(
 
   const flightNumbers =
     flightProfile?.flights
-      ?.map(
-        ({ flightNumber }) => !isNaN(flightNumber) && ensureInt(flightNumber)
-      )
+      ?.map(({ flightNumber }) => !isNaN(flightNumber) && ensureInt(flightNumber))
       ?.filter(Boolean) || [];
 
   const drawOrders =
-    (event.drawDefinitions
-      .map(({ drawOrder }) => drawOrder && ensureInt(drawOrder))
-      ?.filter(Boolean) as number[]) || [];
+    (event.drawDefinitions.map(({ drawOrder }) => drawOrder && ensureInt(drawOrder))?.filter(Boolean) as number[]) ||
+    [];
 
   let drawOrder = Math.max(0, ...drawOrders, ...flightNumbers) + 1;
 
-  const flight = flightProfile?.flights?.find(
-    (flight) => flight.drawId === drawId
-  );
+  const flight = flightProfile?.flights?.find((flight) => flight.drawId === drawId);
 
   let extension;
   if (flight) {
@@ -223,9 +190,7 @@ export function addDrawDefinition(
   addEventExtension({ event, extension });
   Object.assign(drawDefinition, { drawOrder });
 
-  const existingDrawDefinition = event.drawDefinitions.find(
-    (drawDefinition) => drawDefinition.drawId === drawId
-  );
+  const existingDrawDefinition = event.drawDefinitions.find((drawDefinition) => drawDefinition.drawId === drawId);
   const tournamentId = tournamentRecord?.tournamentId;
   const eventId: string = event.eventId;
 
@@ -237,8 +202,7 @@ export function addDrawDefinition(
     const existingMatchUps = allDrawMatchUps({
       drawDefinition: existingDrawDefinition,
     })?.matchUps;
-    const existingMatchUpIds: string[] =
-      existingMatchUps?.map(getMatchUpId) ?? [];
+    const existingMatchUpIds: string[] = existingMatchUps?.map(getMatchUpId) ?? [];
     const incomingMatchUps = allDrawMatchUps({
       drawDefinition,
     })?.matchUps;
@@ -262,13 +226,9 @@ export function addDrawDefinition(
       }
 
       // replace the existing drawDefinition with the updated version
-      event.drawDefinitions = event.drawDefinitions.map((d) =>
-        d.drawId === drawId ? drawDefinition : d
-      );
+      event.drawDefinitions = event.drawDefinitions.map((d) => (d.drawId === drawId ? drawDefinition : d));
 
-      const structureIds = drawDefinition.structures?.map(
-        ({ structureId }) => structureId
-      );
+      const structureIds = drawDefinition.structures?.map(({ structureId }) => structureId);
       modifyDrawNotice({ drawDefinition, tournamentId, structureIds, eventId });
     }
   } else {

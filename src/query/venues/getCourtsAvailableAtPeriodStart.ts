@@ -1,6 +1,6 @@
 import { checkRequiredParameters } from '../../parameters/checkRequiredParameters';
 import { getCourtDateAvailability } from './getCourtDateAvailability';
-import { addMinutes, timeToDate } from '../../utilities/dateTime';
+import { addMinutes, timeToDate } from '../../tools/dateTime';
 import { getEnoughTime } from './getEnoughTime';
 
 import { ResultType } from '../../global/functions/decorateResult';

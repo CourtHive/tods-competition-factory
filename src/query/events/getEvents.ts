@@ -1,11 +1,11 @@
 import { getAssignedParticipantIds } from '../drawDefinition/getAssignedParticipantIds';
 import { getDrawId, getParticipantId } from '../../global/functions/extractors';
-import { definedAttributes } from '../../utilities/definedAttributes';
+import { definedAttributes } from '../../tools/definedAttributes';
 import { getParticipants } from '../participants/getParticipants';
-import { makeDeepCopy } from '../../utilities/makeDeepCopy';
+import { makeDeepCopy } from '../../tools/makeDeepCopy';
 import { getFlightProfile } from '../event/getFlightProfile';
-import { intersection } from '../../utilities/arrays';
-import { median } from '../../utilities/math';
+import { intersection } from '../../tools/arrays';
+import { median } from '../../tools/math';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
 import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';

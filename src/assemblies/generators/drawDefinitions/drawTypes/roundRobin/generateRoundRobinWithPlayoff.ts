@@ -3,14 +3,11 @@
 // groups of finishing drawPositions which playoff
 
 import { processPlayoffGroups } from '../processPlayoffGroups';
-import { constantToString } from '../../../../../utilities/strings';
+import { constantToString } from '../../../../../tools/strings';
 import { generateRoundRobin } from './roundRobin';
 
 import { INVALID_CONFIGURATION } from '../../../../../constants/errorConditionConstants';
-import {
-  MAIN,
-  PLAY_OFF,
-} from '../../../../../constants/drawDefinitionConstants';
+import { MAIN, PLAY_OFF } from '../../../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../../../constants/resultConstants';
 
 export function generateRoundRobinWithPlayOff(params) {
@@ -21,8 +18,7 @@ export function generateRoundRobinWithPlayOff(params) {
     ...params,
     stage: MAIN,
   }; // default structureName
-  const { structures, groupCount, groupSize } =
-    generateRoundRobin(mainDrawProperties);
+  const { structures, groupCount, groupSize } = generateRoundRobin(mainDrawProperties);
 
   if (groupCount < 1) {
     return { error: INVALID_CONFIGURATION };

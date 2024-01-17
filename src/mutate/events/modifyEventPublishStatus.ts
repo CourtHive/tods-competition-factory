@@ -1,6 +1,6 @@
 import { addEventTimeItem } from '../timeItems/addTimeItem';
 import { getEventPublishStatus } from '../../query/event/getEventPublishStatus';
-import { isObject } from '../../utilities/objects';
+import { isObject } from '../../tools/objects';
 
 import { PUBLIC, PUBLISH, STATUS } from '../../constants/timeItemConstants';
 import { INVALID_VALUES } from '../../constants/errorConditionConstants';

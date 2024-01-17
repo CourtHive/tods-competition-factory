@@ -2,7 +2,7 @@ import { getGroupValueGroups } from '../../assemblies/generators/drawDefinitions
 import { SUCCESS } from '../../constants/resultConstants';
 import { ResultType } from '../../global/functions/decorateResult';
 import { CollectionDefinition } from '../../types/tournamentTypes';
-import { isConvertableInteger } from '../../utilities/math';
+import { isConvertableInteger } from '../../tools/math';
 
 type CalculateWinCriteriaArgs = {
   collectionGroups?: { groupValue?: number; groupNumber?: number }[];
@@ -32,9 +32,7 @@ export function calculateWinCriteria({
       setValue,
     } = collectionDefinition;
 
-    const belongsToValueGroup =
-      collectionGroupNumber &&
-      groupValueNumbers.includes(collectionGroupNumber);
+    const belongsToValueGroup = collectionGroupNumber && groupValueNumbers.includes(collectionGroupNumber);
 
     if (isConvertableInteger(setValue || scoreValue)) {
       // because setValues and scoreValues are unpredictable,
@@ -42,19 +40,13 @@ export function calculateWinCriteria({
       aggregateValueImperative = true;
     } else if (belongsToValueGroup) {
       continue;
-    } else if (
-      typeof collectionValue === 'number' &&
-      isConvertableInteger(collectionValue)
-    ) {
+    } else if (typeof collectionValue === 'number' && isConvertableInteger(collectionValue)) {
       valueTotal += collectionValue;
     } else if (collectionValueProfiles?.length) {
       for (const collectionValueProfile of collectionValueProfiles) {
         valueTotal += collectionValueProfile.matchUpValue;
       }
-    } else if (
-      typeof matchUpValue === 'number' &&
-      isConvertableInteger(matchUpValue)
-    ) {
+    } else if (typeof matchUpValue === 'number' && isConvertableInteger(matchUpValue)) {
       valueTotal += (matchUpCount ?? 0) * matchUpValue;
     }
   }
@@ -63,8 +55,7 @@ export function calculateWinCriteria({
     valueTotal += collectionGroup.groupValue ?? 0;
   }
 
-  if (aggregateValueImperative || !valueTotal)
-    return { aggregateValue: true, ...SUCCESS };
+  if (aggregateValueImperative || !valueTotal) return { aggregateValue: true, ...SUCCESS };
 
   const valueGoal = Math.floor(valueTotal / 2) + 1;
 

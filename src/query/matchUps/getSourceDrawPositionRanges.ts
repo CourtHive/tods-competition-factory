@@ -1,35 +1,22 @@
-import { chunkArray, generateRange } from '../../utilities/arrays';
+import { chunkArray, generateRange } from '../../tools/arrays';
 import { getMappedStructureMatchUps } from './getMatchUpsMap';
 import { reduceGroupedOrder } from './reduceGroupedOrder';
 import { findStructure } from '../../acquire/findStructure';
 import { getRoundMatchUps } from './getRoundMatchUps';
 import { getRangeString } from './getRangeString';
 
-import {
-  BOTTOM_UP,
-  CONSOLATION,
-} from '../../constants/drawDefinitionConstants';
-import {
-  INVALID_STAGE,
-  MISSING_DRAW_DEFINITION,
-  MISSING_STRUCTURE_ID,
-} from '../../constants/errorConditionConstants';
+import { BOTTOM_UP, CONSOLATION } from '../../constants/drawDefinitionConstants';
+import { INVALID_STAGE, MISSING_DRAW_DEFINITION, MISSING_STRUCTURE_ID } from '../../constants/errorConditionConstants';
 
-export function getSourceDrawPositionRanges({
-  drawDefinition,
-  structureId,
-  matchUpsMap,
-}) {
+export function getSourceDrawPositionRanges({ drawDefinition, structureId, matchUpsMap }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
 
   const { structure } = findStructure({ drawDefinition, structureId });
-  if (structure?.stage !== CONSOLATION)
-    return { error: INVALID_STAGE, info: 'Structure is not CONSOLATION stage' };
+  if (structure?.stage !== CONSOLATION) return { error: INVALID_STAGE, info: 'Structure is not CONSOLATION stage' };
 
   const { links } = drawDefinition;
-  const relevantLinks =
-    links?.filter((link) => link.target.structureId === structureId) || [];
+  const relevantLinks = links?.filter((link) => link.target.structureId === structureId) || [];
   const sourceStructureIds =
     relevantLinks?.reduce((sourceStructureIds, link) => {
       const { structureId: sourceStructureId } = link.source;
@@ -50,7 +37,7 @@ export function getSourceDrawPositionRanges({
 
       const roundProfile = roundMatchUpsResult.roundProfile;
       return { [sourceStructureId]: roundProfile };
-    })
+    }),
   );
 
   const structureMatchUps = getMappedStructureMatchUps({
@@ -63,23 +50,15 @@ export function getSourceDrawPositionRanges({
 
   const sourceDrawPositionRanges = {};
   relevantLinks?.forEach((link) => {
-    const { structureId: sourceStructureId, roundNumber: sourceRoundNumber } =
-      link.source;
-    const {
-      feedProfile,
-      groupedOrder,
-      positionInterleave,
-      roundNumber: targetRoundNumber,
-    } = link.target;
+    const { structureId: sourceStructureId, roundNumber: sourceRoundNumber } = link.source;
+    const { feedProfile, groupedOrder, positionInterleave, roundNumber: targetRoundNumber } = link.target;
     const sourceStructureProfile = sourceStructureProfiles[sourceStructureId];
     const firstRoundDrawPositions = sourceStructureProfile[1]?.drawPositions;
     const sourceRoundProfile = sourceStructureProfile[sourceRoundNumber];
     const sourceRoundMatchUpsCount = sourceRoundProfile?.matchUpsCount;
     if (!sourceRoundMatchUpsCount) return;
 
-    const chunkSize = sourceRoundMatchUpsCount
-      ? firstRoundDrawPositions.length / sourceRoundMatchUpsCount
-      : 0;
+    const chunkSize = sourceRoundMatchUpsCount ? firstRoundDrawPositions.length / sourceRoundMatchUpsCount : 0;
     const targetRoundMatchUpsCount = firstRoundDrawPositions.length / chunkSize;
     let orderedPositions = firstRoundDrawPositions.slice();
 
@@ -93,15 +72,12 @@ export function getSourceDrawPositionRanges({
       const groups = chunkArray(orderedPositions, groupSize);
       if (feedProfile === BOTTOM_UP) groups.forEach((group) => group.reverse());
       orderedPositions =
-        (sizedGroupOrder?.length &&
-          sizedGroupOrder?.map((order) => groups[order - 1]).flat()) ||
-        orderedPositions;
+        (sizedGroupOrder?.length && sizedGroupOrder?.map((order) => groups[order - 1]).flat()) || orderedPositions;
     }
 
     let drawPositionBlocks = chunkArray(orderedPositions, chunkSize);
 
-    if (!sizedGroupOrder?.length && feedProfile === BOTTOM_UP)
-      drawPositionBlocks.reverse();
+    if (!sizedGroupOrder?.length && feedProfile === BOTTOM_UP) drawPositionBlocks.reverse();
 
     // positionInterleave describes how positions are fed from source to target
     // In double elimination, for instance:
@@ -111,27 +87,18 @@ export function getSourceDrawPositionRanges({
     // The BOTTOM_UP feed in this example is offset (shifted down) by 1 and reversed
     if (positionInterleave) {
       // an array of undefined items
-      const interleave = generateRange(0, positionInterleave.interleave).map(
-        () => undefined
-      );
+      const interleave = generateRange(0, positionInterleave.interleave).map(() => undefined);
       // an array of undefined items. NOTE: new Array(#) does not work in this instance
-      const offset = generateRange(0, positionInterleave.offset).map(
-        () => undefined
-      );
-      drawPositionBlocks = drawPositionBlocks.map((block) => [
-        block,
-        ...interleave,
-      ]);
+      const offset = generateRange(0, positionInterleave.offset).map(() => undefined);
+      drawPositionBlocks = drawPositionBlocks.map((block) => [block, ...interleave]);
       drawPositionBlocks.unshift(offset);
       drawPositionBlocks = drawPositionBlocks.flat(1);
-      const targetLength =
-        drawPositionBlocks.length - positionInterleave.offset;
+      const targetLength = drawPositionBlocks.length - positionInterleave.offset;
       drawPositionBlocks = drawPositionBlocks.slice(0, targetLength);
     }
 
     // build an object with keys [targetRoundnumber][roundPosition]
-    if (!sourceDrawPositionRanges[targetRoundNumber])
-      sourceDrawPositionRanges[targetRoundNumber] = {};
+    if (!sourceDrawPositionRanges[targetRoundNumber]) sourceDrawPositionRanges[targetRoundNumber] = {};
 
     // drawPositions for consolation structures are offset by the number of fed positions in subsequent rounds
     // columnPosition gives an ordered position value relative to a single column
@@ -146,8 +113,7 @@ export function getSourceDrawPositionRanges({
       // because sideNumber: 1 maps to index: 0 in matchUp.drawPositions
       const columnPosition = 1 + index * increment;
       if (!sourceDrawPositionRanges[targetRoundNumber][columnPosition]) {
-        sourceDrawPositionRanges[targetRoundNumber][columnPosition] =
-          getRangeString(block);
+        sourceDrawPositionRanges[targetRoundNumber][columnPosition] = getRangeString(block);
       }
     });
   });

@@ -1,7 +1,7 @@
 import { participantScaleItem } from '../../../../query/participant/participantScaleItem';
 import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
-import { unique } from '../../../../utilities/arrays';
+import { unique } from '../../../../tools/arrays';
 import { expect, it } from 'vitest';
 
 import { RANKING, RATING, SEEDING } from '../../../../constants/scaleConstants';
@@ -15,9 +15,7 @@ it('can autoSeed by Rankings', () => {
   const eventId = 'seededEventId';
   const drawId = 'seededDrawId';
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [
-      { drawId, eventId, drawSize: 32, category: { categoryName: 'U18' } },
-    ],
+    drawProfiles: [{ drawId, eventId, drawSize: 32, category: { categoryName: 'U18' } }],
     participantsProfile: { idPrefix: 'p' },
   });
 
@@ -27,29 +25,27 @@ it('can autoSeed by Rankings', () => {
   const scaleDate = '2021-01-01';
   const scaleValuesRating = [3.3, 4.4, 5.5, 1.1, 2.2, 6.6, 7.7, 8.8, 10.1, 9.9];
   const scaleValuesRanking = [100, 90, 80, 30, 20, 10, 70, 60, 50, 40];
-  const scaleItemsWithParticipantIds = tournamentParticipants.map(
-    (participant, index) => {
-      const { participantId } = participant;
-      const scaleItems = [
-        {
-          scaleValue: scaleValuesRating[index],
-          eventType: SINGLES_EVENT,
-          scaleType: RATING,
-          scaleName: 'WTN',
-          scaleDate,
-        },
-        {
-          scaleValue: scaleValuesRanking[index],
-          eventType: SINGLES_EVENT,
-          scaleType: RANKING,
-          scaleName: 'U18',
-          scaleDate,
-        },
-      ];
+  const scaleItemsWithParticipantIds = tournamentParticipants.map((participant, index) => {
+    const { participantId } = participant;
+    const scaleItems = [
+      {
+        scaleValue: scaleValuesRating[index],
+        eventType: SINGLES_EVENT,
+        scaleType: RATING,
+        scaleName: 'WTN',
+        scaleDate,
+      },
+      {
+        scaleValue: scaleValuesRanking[index],
+        eventType: SINGLES_EVENT,
+        scaleType: RANKING,
+        scaleName: 'U18',
+        scaleDate,
+      },
+    ];
 
-      return { participantId, scaleItems };
-    }
-  );
+    return { participantId, scaleItems };
+  });
 
   let scaleAttributes = {
     eventType: SINGLES_EVENT,
@@ -151,9 +147,7 @@ it('can autoSeed by Rankings', () => {
     withEvents: true,
   }).participants;
 
-  seedingScaleValues = tournamentParticipants
-    .map((participant) => participant.events[0].seedValue)
-    .filter(Boolean);
+  seedingScaleValues = tournamentParticipants.map((participant) => participant.events[0].seedValue).filter(Boolean);
 
   // when { usePublishState: true } seedValues are not added if eventSeeding not published
   expect(seedingScaleValues.length).toEqual(0);
@@ -167,9 +161,7 @@ it('can autoSeed by Rankings', () => {
     withEvents: true,
   }).participants;
 
-  seedingScaleValues = tournamentParticipants
-    .map((participant) => participant.events[0].seedValue)
-    .filter(Boolean);
+  seedingScaleValues = tournamentParticipants.map((participant) => participant.events[0].seedValue).filter(Boolean);
 
   // when { usePublishState: true } seedValues are added when eventSeeding is published
   // BUT just because someone was seeded for the event doesn't mean they were seeded for the draw
@@ -180,15 +172,11 @@ it('can autoSeed by Rankings', () => {
     withEvents: true,
     withDraws: true,
   });
-  seedingScaleValues = participants
-    .map((participant) => participant.events[0].seedValue)
-    .filter(Boolean);
+  seedingScaleValues = participants.map((participant) => participant.events[0].seedValue).filter(Boolean);
   expect(unique(seedingScaleValues).length).toEqual(8);
 
   // event was seeded AFTER the draw was made, so there is no seeding for the draw
-  const drawSeedingScaleValues = participants
-    .map((participant) => participant.draws[0].seedValue)
-    .filter(Boolean);
+  const drawSeedingScaleValues = participants.map((participant) => participant.draws[0].seedValue).filter(Boolean);
   expect(unique(drawSeedingScaleValues).length).toEqual(0);
 
   // now unPublish and test again
@@ -201,9 +189,7 @@ it('can autoSeed by Rankings', () => {
     withEvents: true,
   }).participants;
 
-  seedingScaleValues = tournamentParticipants
-    .map((participant) => participant.events[0].seedValue)
-    .filter(Boolean);
+  seedingScaleValues = tournamentParticipants.map((participant) => participant.events[0].seedValue).filter(Boolean);
 
   // when { usePublishState: true } seedValues are not added if eventSeeding not published
   expect(seedingScaleValues.length).toEqual(0);
@@ -216,9 +202,7 @@ it('can autoSeed by Rankings', () => {
     scaleAttributes,
     eventId,
   });
-  scaleValues = result.scaleItemsWithParticipantIds
-    .map(({ scaleItems }) => scaleItems[0].scaleValue)
-    .filter(Boolean);
+  scaleValues = result.scaleItemsWithParticipantIds.map(({ scaleItems }) => scaleItems[0].scaleValue).filter(Boolean);
   expect(scaleValues).toEqual([3, 4, 5, 1, 2, 6, 7, 8]);
   result = tournamentEngine.setParticipantScaleItems({
     scaleItemsWithParticipantIds: result.scaleItemsWithParticipantIds,
@@ -237,9 +221,7 @@ it('can autoSeed by Rankings', () => {
     scaleAttributes,
     eventId,
   });
-  scaleValues = result.scaleItemsWithParticipantIds
-    .map(({ scaleItems }) => scaleItems[0].scaleValue)
-    .filter(Boolean);
+  scaleValues = result.scaleItemsWithParticipantIds.map(({ scaleItems }) => scaleItems[0].scaleValue).filter(Boolean);
   expect(scaleValues).toEqual([8, 3, 2, 1, 7, 6, 5, 4]);
   result = tournamentEngine.setParticipantScaleItems({
     scaleItemsWithParticipantIds: result.scaleItemsWithParticipantIds,
@@ -303,8 +285,6 @@ it('can autoSeed by Rankings', () => {
   }).eventScaleValues;
 
   expect(eventScaleValues.seededEventId.ranking.U18.length).toEqual(10);
-  expect(
-    eventScaleValues.seededEventId.draws.seededDrawId.ranking.U18.length
-  ).toEqual(10);
+  expect(eventScaleValues.seededEventId.draws.seededDrawId.ranking.U18.length).toEqual(10);
   // TODO: also need to test this with scale items that are stageEntries on a drawDefinition where the scaleAttributes include drawId-specific scaleName
 });

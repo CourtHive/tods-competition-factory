@@ -2,7 +2,7 @@ import { getModifiedMatchUpFormatTiming } from '../../../query/extensions/matchU
 import { modifyMatchUpFormatTiming } from '../../matchUps/extensions/modifyMatchUpFormatTiming';
 import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
 import { Event, Tournament } from '../../../types/tournamentTypes';
-import { ensureInt } from '../../../utilities/ensureInt';
+import { ensureInt } from '../../../tools/ensureInt';
 
 import { INVALID_VALUES, MISSING_EVENT, MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 import { SINGLES } from '../../../constants/matchUpTypes';

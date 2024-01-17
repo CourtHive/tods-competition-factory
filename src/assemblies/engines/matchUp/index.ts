@@ -2,7 +2,7 @@ import { getMatchUps, getMatchUp, setState, getState, reset } from './stateMetho
 import { notifySubscribers } from '../../../global/state/notifySubscribers';
 import { factoryVersion } from '../../../global/functions/factoryVersion';
 import * as scoreGovernor from '../../governors/scoreGovernor';
-import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
+import { makeDeepCopy } from '../../../tools/makeDeepCopy';
 import {
   setDeepCopy,
   setDevContext,

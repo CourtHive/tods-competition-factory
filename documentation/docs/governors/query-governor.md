@@ -379,8 +379,8 @@ const {
 To export reports as CSV:
 
 ```js
-const entryStatusCSV = utilities.JSON2CSV(entryStatusReports);
-const personEntryCSV = utilities.JSON2CSV(participantEntryReports);
+const entryStatusCSV = tools.JSON2CSV(entryStatusReports);
+const personEntryCSV = tools.JSON2CSV(participantEntryReports);
 ```
 
 ---
@@ -1155,7 +1155,7 @@ const {
 To export report as CSV:
 
 ```js
-const csv = utilities.JSON2CSV(structureReports);
+const csv = tools.JSON2CSV(structureReports);
 ```
 
 ---

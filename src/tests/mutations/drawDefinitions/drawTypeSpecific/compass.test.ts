@@ -10,7 +10,7 @@ import { getStructureMatchUps } from '../../../../query/structure/getStructureMa
 import { attachPolicies } from '../../../../mutate/extensions/policies/attachPolicies';
 import { drawMatchUps } from '../../../../query/matchUps/getDrawMatchUps';
 import { getDrawStructures } from '../../../../acquire/findStructure';
-import { generateRange } from '../../../../utilities/arrays';
+import { generateRange } from '../../../../tools/arrays';
 import { expect, it } from 'vitest';
 
 import { MAIN, COMPASS } from '../../../../constants/drawDefinitionConstants';
@@ -101,9 +101,7 @@ function testByeRemoval({ drawDefinition, stage, expectedByeRemoval }) {
   const byeDrawPositions = assignedByes(directionEast.positionAssignments);
 
   const { byeMatchUps } = drawMatchUps({ drawDefinition });
-  expect(byeMatchUps?.length).toEqual(
-    expectedByeRemoval.initialByeMatchUpCount
-  );
+  expect(byeMatchUps?.length).toEqual(expectedByeRemoval.initialByeMatchUpCount);
 
   if (expectedByeRemoval.clearExpect) {
     expectedByeRemoval.clearExpect.forEach(([index, length]) => {
@@ -124,22 +122,13 @@ function checkCompassByes({ drawDefinition, stage, expectedCompassByes }) {
   Object.keys(expectedCompassByes).forEach((direction) => {
     const structure = findStructureByName(structures, direction);
     const byeDrawPositions = assignedByes(structure.positionAssignments);
-    expect(byeDrawPositions).toMatchObject(
-      expectedCompassByes[direction].byeDrawPositions
-    );
+    expect(byeDrawPositions).toMatchObject(expectedCompassByes[direction].byeDrawPositions);
     const byeMatchUpRoundPositions = matchUpsWithBye(structure.matchUps);
-    expect(byeMatchUpRoundPositions).toMatchObject(
-      expectedCompassByes[direction].roundPositions
-    );
+    expect(byeMatchUpRoundPositions).toMatchObject(expectedCompassByes[direction].roundPositions);
   });
 }
 
-function checkByeAdvancedDrawPositions({
-  expectedByeDrawPositions,
-  drawDefinition,
-  advanced,
-  stage,
-}) {
+function checkByeAdvancedDrawPositions({ expectedByeDrawPositions, drawDefinition, advanced, stage }) {
   const { structures } = getDrawStructures({ drawDefinition, stage });
 
   Object.keys(expectedByeDrawPositions).forEach((direction) => {
@@ -151,72 +140,43 @@ function checkByeAdvancedDrawPositions({
     const filteredMatchUps = pendingMatchUps?.filter(pendingWithOneParticipant);
 
     if (advanced) {
-      const expectedFiltered =
-        expectedByeDrawPositions[direction].advancedFiltered;
+      const expectedFiltered = expectedByeDrawPositions[direction].advancedFiltered;
       if (expectedFiltered) {
         expect(filteredMatchUps?.length).toEqual(expectedFiltered[0]);
         if (filteredMatchUps?.length) {
-          if (expectedFiltered[1])
-            expect(filteredMatchUps[0].roundPosition).toEqual(
-              expectedFiltered[1]
-            );
-          if (expectedFiltered[2])
-            expect(filteredMatchUps[1].roundPosition).toEqual(
-              expectedFiltered[2]
-            );
+          if (expectedFiltered[1]) expect(filteredMatchUps[0].roundPosition).toEqual(expectedFiltered[1]);
+          if (expectedFiltered[2]) expect(filteredMatchUps[1].roundPosition).toEqual(expectedFiltered[2]);
         }
       }
-      const pendingLength =
-        expectedByeDrawPositions[direction].pendingAdvancedLength;
+      const pendingLength = expectedByeDrawPositions[direction].pendingAdvancedLength;
       if (pendingLength) expect(pendingMatchUps?.length).toEqual(pendingLength);
       if (pendingMatchUps?.length) {
-        const pendingRoundPosition =
-          expectedByeDrawPositions[direction].pendingAdvancedRoundPosition;
-        if (pendingRoundPosition)
-          expect(pendingMatchUps[0].roundPosition).toEqual(
-            pendingRoundPosition
-          );
-        const pendingDrawPositions =
-          expectedByeDrawPositions[direction].pendingAdvancedDrawPositions;
+        const pendingRoundPosition = expectedByeDrawPositions[direction].pendingAdvancedRoundPosition;
+        if (pendingRoundPosition) expect(pendingMatchUps[0].roundPosition).toEqual(pendingRoundPosition);
+        const pendingDrawPositions = expectedByeDrawPositions[direction].pendingAdvancedDrawPositions;
         if (pendingDrawPositions) {
-          expect(pendingMatchUps[0].drawPositions).toMatchObject(
-            pendingDrawPositions
-          );
+          expect(pendingMatchUps[0].drawPositions).toMatchObject(pendingDrawPositions);
         }
       }
     } else {
-      const unadvancedFiltered =
-        expectedByeDrawPositions[direction].unadvancedFiltered;
-      if (unadvancedFiltered)
-        expect(filteredMatchUps?.length).toEqual(unadvancedFiltered);
-      const unadvancedPending =
-        expectedByeDrawPositions[direction].unadvancedPending;
-      if (unadvancedPending)
-        expect(pendingMatchUps?.length).toEqual(unadvancedPending);
-      const pendingDrawPositions =
-        expectedByeDrawPositions[direction].pendingUnadvancedDrawPositions;
+      const unadvancedFiltered = expectedByeDrawPositions[direction].unadvancedFiltered;
+      if (unadvancedFiltered) expect(filteredMatchUps?.length).toEqual(unadvancedFiltered);
+      const unadvancedPending = expectedByeDrawPositions[direction].unadvancedPending;
+      if (unadvancedPending) expect(pendingMatchUps?.length).toEqual(unadvancedPending);
+      const pendingDrawPositions = expectedByeDrawPositions[direction].pendingUnadvancedDrawPositions;
       if (pendingDrawPositions) {
         console.log(pendingMatchUps?.[0].drawPositions);
-        expect(pendingMatchUps?.[0].drawPositions).toMatchObject(
-          pendingDrawPositions[0]
-        );
+        expect(pendingMatchUps?.[0].drawPositions).toMatchObject(pendingDrawPositions[0]);
         console.log(pendingMatchUps?.[1].drawPositions);
-        expect(pendingMatchUps?.[1].drawPositions).toMatchObject(
-          pendingDrawPositions[1]
-        );
+        expect(pendingMatchUps?.[1].drawPositions).toMatchObject(pendingDrawPositions[1]);
         console.log(pendingMatchUps?.[2].drawPositions);
-        expect(pendingMatchUps?.[2].drawPositions).toMatchObject(
-          pendingDrawPositions[2]
-        );
+        expect(pendingMatchUps?.[2].drawPositions).toMatchObject(pendingDrawPositions[2]);
       }
     }
   });
 
   function pendingWithOneParticipant(matchUp) {
-    return (
-      matchUp.roundNumber === 2 &&
-      matchUp.drawPositions.filter(Boolean).length === 1
-    );
+    return matchUp.roundNumber === 2 && matchUp.drawPositions.filter(Boolean).length === 1;
   }
 }
 
@@ -279,19 +239,13 @@ function generateCompass({
 }
 
 function assignedByes(assignments) {
-  return assignments
-    .filter((assignment) => assignment.bye)
-    .map((assignment) => assignment.drawPosition);
+  return assignments.filter((assignment) => assignment.bye).map((assignment) => assignment.drawPosition);
 }
 function matchUpsWithBye(matchUps) {
-  return matchUps
-    .filter((matchUp) => matchUp.matchUpStatus === BYE)
-    .map((matchUp) => matchUp.roundPosition);
+  return matchUps.filter((matchUp) => matchUp.matchUpStatus === BYE).map((matchUp) => matchUp.roundPosition);
 }
 function findStructureByName(structures, structureName) {
   return structures.reduce((structure, currentStructure) => {
-    return currentStructure.structureName === structureName
-      ? currentStructure
-      : structure;
+    return currentStructure.structureName === structureName ? currentStructure : structure;
   }, undefined);
 }

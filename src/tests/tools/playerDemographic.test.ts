@@ -5,7 +5,7 @@ import { expect, it } from 'vitest';
 import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';
 import { DOUBLES } from '../../constants/eventConstants';
 import { MALE } from '../../constants/genderConstants';
-import { JSON2CSV } from '../../utilities/json';
+import { JSON2CSV } from '../../tools/json';
 
 it('can export CSV files with player demographic data', () => {
   const personExtensions = [
@@ -43,13 +43,12 @@ it('can export CSV files with player demographic data', () => {
   });
   expect(result.success).toEqual(true);
 
-  const { participants: individualParticipants } =
-    tournamentEngine.getParticipants({
-      participantFilters: { participantTypes: [INDIVIDUAL] },
-      convertExtensions: true,
-      withScaleValues: true,
-      withEvents: true,
-    });
+  const { participants: individualParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [INDIVIDUAL] },
+    convertExtensions: true,
+    withScaleValues: true,
+    withEvents: true,
+  });
   expect(individualParticipants.length).toEqual(128);
 
   const columnJoiner = ',';
@@ -73,14 +72,10 @@ it('can export CSV files with player demographic data', () => {
     },
   };
 
-  const eventParticipants = individualParticipants.filter(
-    (participant) => participant.events?.length
-  );
+  const eventParticipants = individualParticipants.filter((participant) => participant.events?.length);
   const csvParticipants = JSON2CSV(eventParticipants, config) as string;
   const rows = csvParticipants.split(rowJoiner);
   expect(rows.length).toEqual(65);
-  expect(rows[0]).toEqual(
-    'state,city,personId,lastName,firstName,district,section,birthDate,sex'
-  );
+  expect(rows[0]).toEqual('state,city,personId,lastName,firstName,district,section,birthDate,sex');
   expect(rows[1].split(columnJoiner).reverse()[0]).toEqual(MALE);
 });

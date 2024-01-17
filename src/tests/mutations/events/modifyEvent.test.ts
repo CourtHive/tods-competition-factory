@@ -1,7 +1,7 @@
 import { stringSort } from '../../../functions/sorters/stringSort';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
-import { unique } from '../../../utilities/arrays';
+import { unique } from '../../../tools/arrays';
 import { expect, it } from 'vitest';
 
 import { FEMALE, MALE, MIXED } from '../../../constants/genderConstants';
@@ -65,15 +65,11 @@ it('supports modifying event gender, name and eventType', () => {
     const eventId = event.eventId;
 
     expect(event.eventName).toEqual(eventId);
-    const enteredParticipantIds = event.entries.map(
-      ({ participantId }) => participantId
-    );
+    const enteredParticipantIds = event.entries.map(({ participantId }) => participantId);
     const enteredParticipantGenders = unique(
       participants
-        .filter(({ participantId }) =>
-          enteredParticipantIds.includes(participantId)
-        )
-        .map(({ person }) => person.sex)
+        .filter(({ participantId }) => enteredParticipantIds.includes(participantId))
+        .map(({ person }) => person.sex),
     ).sort(stringSort);
 
     expect(enteredParticipantGenders).toEqual(profile.genders);

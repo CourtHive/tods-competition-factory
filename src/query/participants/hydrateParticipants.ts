@@ -1,16 +1,12 @@
 import { addParticipantGroupings } from '../../mutate/drawDefinitions/positionGovernor/avoidance/addParticipantGroupings';
 import { addNationalityCode } from '../../mutate/participants/addNationalityCode';
 import { getScaleValues } from '../participant/getScaleValues';
-import { makeDeepCopy } from '../../utilities/makeDeepCopy';
+import { makeDeepCopy } from '../../tools/makeDeepCopy';
 
 import { getParticipantMap } from './getParticipantMap';
 import { Tournament } from '../../types/tournamentTypes';
 import { HydratedParticipant } from '../../types/hydrated';
-import {
-  ContextProfile,
-  ParticipantsProfile,
-  PolicyDefinitions,
-} from '../../types/factoryTypes';
+import { ContextProfile, ParticipantsProfile, PolicyDefinitions } from '../../types/factoryTypes';
 
 type HydrateParticipantsArgs = {
   participantsProfile?: ParticipantsProfile;
@@ -37,25 +33,18 @@ export function hydrateParticipants({
     return { participantMap };
   }
 
-  let participants: HydratedParticipant[] =
-    makeDeepCopy(tournamentRecord.participants, false, true) || [];
+  let participants: HydratedParticipant[] = makeDeepCopy(tournamentRecord.participants, false, true) || [];
 
   if (participantsProfile?.withIOC || participantsProfile?.withISO2)
-    participants.forEach((participant) =>
-      addNationalityCode({ participant, ...participantsProfile })
-    );
+    participants.forEach((participant) => addNationalityCode({ participant, ...participantsProfile }));
 
   let groupInfo;
-  if (
-    (inContext || participantsProfile?.withGroupings) &&
-    participants?.length
-  ) {
-    ({ participantsWithGroupings: participants, groupInfo } =
-      addParticipantGroupings({
-        participantsProfile,
-        deepCopy: false,
-        participants,
-      }));
+  if ((inContext || participantsProfile?.withGroupings) && participants?.length) {
+    ({ participantsWithGroupings: participants, groupInfo } = addParticipantGroupings({
+      participantsProfile,
+      deepCopy: false,
+      participants,
+    }));
   }
 
   if (participantsProfile?.withScaleValues && participants?.length) {

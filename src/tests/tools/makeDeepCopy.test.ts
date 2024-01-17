@@ -1,8 +1,8 @@
 import tournamentEngine from '../engines/syncEngine';
-import { makeDeepCopy } from '../../utilities/makeDeepCopy';
+import { makeDeepCopy } from '../../tools/makeDeepCopy';
 import mocksEngine from '../../assemblies/engines/mock';
 import { expect, it, test } from 'vitest';
-import { UUID } from '../../utilities/UUID';
+import { UUID } from '../../tools/UUID';
 
 import { APPLIED_POLICIES } from '../../constants/extensionConstants';
 import { INDIVIDUAL } from '../../constants/participantConstants';
@@ -56,9 +56,7 @@ it('can convert extensions during deepCopy', () => {
   }));
 
   const tournamentParticipants = tournamentRecord.participants;
-  const targetParticipant = tournamentParticipants.find(
-    (participant) => participant.participantId === participantId
-  );
+  const targetParticipant = tournamentParticipants.find((participant) => participant.participantId === participantId);
   expect(targetParticipant._anotherExtension).toEqual('anotherExtensionValue');
   expect(targetParticipant.person._someExtension).toEqual('extensionValue');
 });
@@ -103,10 +101,7 @@ it('can disable deepCopy without compromising source document', () => {
   expect(matchUps[0].sides).not.toBeUndefined();
 
   ({ tournamentRecord } = tournamentEngine.getTournament());
-  expect(
-    tournamentRecord.events[0].drawDefinitions[0].structures[0].matchUps[0]
-      .sides
-  ).toBeUndefined();
+  expect(tournamentRecord.events[0].drawDefinitions[0].structures[0].matchUps[0].sides).toBeUndefined();
 
   tournamentEngine.setState(tournamentRecord, false);
 
@@ -115,10 +110,7 @@ it('can disable deepCopy without compromising source document', () => {
 
   ({ tournamentRecord } = tournamentEngine.getTournament());
 
-  expect(
-    tournamentRecord.events[0].drawDefinitions[0].structures[0].matchUps[0]
-      .sides
-  ).toBeUndefined();
+  expect(tournamentRecord.events[0].drawDefinitions[0].structures[0].matchUps[0].sides).toBeUndefined();
 });
 
 it('can selectively stringify or ignore attributes when used internally', () => {

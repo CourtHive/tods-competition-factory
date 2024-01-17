@@ -1,19 +1,15 @@
 import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
-import { constantToString } from '../../../utilities/strings';
+import { constantToString } from '../../../tools/strings';
 import mocksEngine from '../../../assemblies/engines/mock';
-import { extractTime } from '../../../utilities/dateTime';
+import { extractTime } from '../../../tools/dateTime';
 import tournamentEngine from '../../engines/syncEngine';
-import { unique } from '../../../utilities/arrays';
+import { unique } from '../../../tools/arrays';
 import { expect, it } from 'vitest';
 
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
 import { FEMALE, MALE } from '../../../constants/genderConstants';
 import { DOUBLES } from '../../../constants/eventConstants';
-import {
-  CONSOLATION,
-  FEED_IN_CHAMPIONSHIP_TO_R16,
-  MAIN,
-} from '../../../constants/drawDefinitionConstants';
+import { CONSOLATION, FEED_IN_CHAMPIONSHIP_TO_R16, MAIN } from '../../../constants/drawDefinitionConstants';
 
 it.each([
   {
@@ -40,16 +36,9 @@ it.each([
   },
 ])(
   'can schedule potential rounds properly in scenarios with recovery times greater than average matchUp times',
-  ({
-    dependencyDeferredCount,
-    recoveryDeferredCount,
-    timeProfiles,
-    rounds,
-  }) => {
+  ({ dependencyDeferredCount, recoveryDeferredCount, timeProfiles, rounds }) => {
     const firstVenueId = 'firstVenueId';
-    const venueProfiles = [
-      { venueId: firstVenueId, courtsCount: 31, startTime: '08:00' },
-    ];
+    const venueProfiles = [{ venueId: firstVenueId, courtsCount: 31, startTime: '08:00' }];
     const withPlayoffs = {
       roundProfiles: [{ 3: 1 }, { 4: 1 }],
       playoffAttributes: {
@@ -111,22 +100,19 @@ it.each([
     ];
 
     const policyDefinitions = POLICY_SCHEDULING_NO_DAILY_LIMITS;
-    const { tournamentRecord, schedulerResult } =
-      mocksEngine.generateTournamentRecord({
-        autoSchedule: true,
-        policyDefinitions,
-        schedulingProfile,
-        venueProfiles,
-        drawProfiles,
-        startDate,
-      });
+    const { tournamentRecord, schedulerResult } = mocksEngine.generateTournamentRecord({
+      autoSchedule: true,
+      policyDefinitions,
+      schedulingProfile,
+      venueProfiles,
+      drawProfiles,
+      startDate,
+    });
 
     tournamentEngine.setState(tournamentRecord);
 
-    const dependency =
-      schedulerResult.dependencyDeferredMatchUpIds?.[startDate];
-    const recovery =
-      schedulerResult.recoveryTimeDeferredMatchUpIds?.[startDate];
+    const dependency = schedulerResult.dependencyDeferredMatchUpIds?.[startDate];
+    const recovery = schedulerResult.recoveryTimeDeferredMatchUpIds?.[startDate];
 
     expect(dependency).not.toBeUndefined();
     expect(recovery).not.toBeUndefined();
@@ -137,19 +123,16 @@ it.each([
         .map((key) =>
           dependency[key].map(
             ({ scheduleTime, remainingDependencies }) =>
-              `${key} => ${scheduleTime}: ${remainingDependencies.join('|')}`
-          )
+              `${key} => ${scheduleTime}: ${remainingDependencies.join('|')}`,
+          ),
         )
         .flat();
     const recoveryDeferred =
       recovery &&
       Object.keys(recovery)
-        .map((key) =>
-          recovery[key].map(({ scheduleTime }) => `${key} => ${scheduleTime}`)
-        )
+        .map((key) => recovery[key].map(({ scheduleTime }) => `${key} => ${scheduleTime}`))
         .flat();
-    dependency &&
-      expect(dependencyDeferredCount).toEqual(dependencyDeferred.length);
+    dependency && expect(dependencyDeferredCount).toEqual(dependencyDeferred.length);
     recovery && expect(recoveryDeferredCount).toEqual(recoveryDeferred.length);
 
     const { matchUps } = tournamentEngine.allTournamentMatchUps();
@@ -161,18 +144,16 @@ it.each([
     expect(scheduledMatchUps.length).toEqual(80);
 
     const main1stRound = scheduledMatchUps.filter(
-      ({ structureName, roundNumber }) =>
-        structureName === constantToString(MAIN) && roundNumber === 1
+      ({ structureName, roundNumber }) => structureName === constantToString(MAIN) && roundNumber === 1,
     );
     const main2ndRound = scheduledMatchUps.filter(
-      ({ structureName, roundNumber }) =>
-        structureName === constantToString(MAIN) && roundNumber === 2
+      ({ structureName, roundNumber }) => structureName === constantToString(MAIN) && roundNumber === 2,
     );
     expect(main1stRound.length).toEqual(40);
     expect(main2ndRound.length).toEqual(24);
 
     const consolationMatchUps = scheduledMatchUps.filter(
-      ({ structureName }) => structureName === constantToString(CONSOLATION)
+      ({ structureName }) => structureName === constantToString(CONSOLATION),
     );
     expect(consolationMatchUps.length).toEqual(16);
 
@@ -180,23 +161,21 @@ it.each([
       const main1st = unique(
         main1stRound
           .filter(({ drawId }) => drawId === profileDrawId)
-          .map(({ schedule }) => extractTime(schedule.scheduledTime))
+          .map(({ schedule }) => extractTime(schedule.scheduledTime)),
       );
       expect(timeProfiles[profileDrawId].main1st).toEqual(main1st);
       const main2nd = unique(
         main2ndRound
           .filter(({ drawId }) => drawId === profileDrawId)
-          .map(({ schedule }) => extractTime(schedule.scheduledTime))
+          .map(({ schedule }) => extractTime(schedule.scheduledTime)),
       );
       expect(timeProfiles[profileDrawId].main2nd).toEqual(main2nd);
       const consolation1st = unique(
         consolationMatchUps
           .filter(({ drawId }) => drawId === profileDrawId)
-          .map(({ schedule }) => extractTime(schedule.scheduledTime))
+          .map(({ schedule }) => extractTime(schedule.scheduledTime)),
       );
-      expect(timeProfiles[profileDrawId].consolation1st).toEqual(
-        consolation1st
-      );
+      expect(timeProfiles[profileDrawId].consolation1st).toEqual(consolation1st);
     });
-  }
+  },
 );

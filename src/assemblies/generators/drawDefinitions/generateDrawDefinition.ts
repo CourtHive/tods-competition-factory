@@ -9,7 +9,7 @@ import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies
 import { addAdHocMatchUps } from '../../../mutate/structures/addAdHocMatchUps';
 import { getAllowedDrawTypes } from '../../../query/tournaments/allowedTypes';
 import { getParticipants } from '../../../query/participants/getParticipants';
-import { isConvertableInteger, nextPowerOf2 } from '../../../utilities/math';
+import { isConvertableInteger, nextPowerOf2 } from '../../../tools/math';
 import { validateTieFormat } from '../../../validators/validateTieFormat';
 import { checkTieFormat } from '../../../mutate/tieFormat/checkTieFormat';
 import { checkValidEntries } from '../../../validators/checkValidEntries';
@@ -17,14 +17,14 @@ import { generateQualifyingLink } from './links/generateQualifyingLink';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { tieFormatDefaults } from '../templates/tieFormatDefaults';
 import { DrawMaticArgs, drawMatic } from './drawMatic/drawMatic';
-import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
+import { mustBeAnArray } from '../../../tools/mustBeAnArray';
 import { generateAdHocMatchUps } from './generateAdHocMatchUps';
 import structureTemplate from '../templates/structureTemplate';
-import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
-import { constantToString } from '../../../utilities/strings';
+import { makeDeepCopy } from '../../../tools/makeDeepCopy';
+import { constantToString } from '../../../tools/strings';
 import { getDrawTypeCoercion } from './getDrawTypeCoercion';
-import { generateRange } from '../../../utilities/arrays';
-import { ensureInt } from '../../../utilities/ensureInt';
+import { generateRange } from '../../../tools/arrays';
+import { ensureInt } from '../../../tools/ensureInt';
 import { newDrawDefinition } from './newDrawDefinition';
 import { prepareStage } from './prepareStage';
 import {
@@ -589,31 +589,34 @@ export function generateDrawDefinition(params: GenerateDrawDefinitionArgs): Resu
       );
       const participantIds = entries?.map(getParticipantId);
       const matchUpsCount = entries ? Math.floor(entries.length / 2) : 0;
-      generateRange(1, params.roundsCount + 1).forEach(() => {
-        if (params.automated) {
-          const { restrictEntryStatus, generateMatchUps, structureId, matchUpIds, scaleName } = params.drawMatic ?? {};
 
-          const matchUps = drawMatic({
-            eventType: params.drawMatic?.eventType ?? matchUpType,
-            generateMatchUps: generateMatchUps ?? true,
-            restrictEntryStatus,
-            tournamentRecord,
-            participantIds,
-            drawDefinition,
-            structureId,
-            matchUpIds,
-            scaleName, // custom rating name to seed dynamic ratings
-            idPrefix,
-            isMock,
-            event,
-          }).matchUps;
-          addAdHocMatchUps({
-            tournamentRecord,
-            drawDefinition,
-            structureId,
-            matchUps,
-          });
-        } else {
+      if (params.automated) {
+        const { restrictEntryStatus, generateMatchUps, structureId, matchUpIds, scaleName } = params.drawMatic ?? {};
+
+        const result = drawMatic({
+          eventType: params.drawMatic?.eventType ?? matchUpType,
+          generateMatchUps: generateMatchUps ?? true,
+          roundsCount: params.roundsCount,
+          restrictEntryStatus,
+          tournamentRecord,
+          participantIds,
+          drawDefinition,
+          structureId,
+          matchUpIds,
+          scaleName, // custom rating name to seed dynamic ratings
+          idPrefix,
+          isMock,
+          event,
+        });
+
+        addAdHocMatchUps({
+          matchUps: result.matchUps,
+          tournamentRecord,
+          drawDefinition,
+          structureId,
+        });
+      } else {
+        generateRange(1, params.roundsCount + 1).forEach(() => {
           const { matchUps } = generateAdHocMatchUps({
             newRound: true,
             drawDefinition,
@@ -628,8 +631,8 @@ export function generateDrawDefinition(params: GenerateDrawDefinitionArgs): Resu
             structureId,
             matchUps,
           });
-        }
-      });
+        });
+      }
     }
   }
 

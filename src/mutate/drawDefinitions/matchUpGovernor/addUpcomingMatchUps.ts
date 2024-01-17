@@ -1,10 +1,10 @@
 import { positionTargets } from '../../matchUps/drawPositions/positionTargets';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { getParticipantIds } from '../../../global/functions/extractors';
-import { timeStringMinutes } from '../../../utilities/dateTime';
+import { timeStringMinutes } from '../../../tools/dateTime';
 import { findStructure } from '../../../acquire/findStructure';
-import { numericSort } from '../../../utilities/sorting';
-import { ensureInt } from '../../../utilities/ensureInt';
+import { numericSort } from '../../../tools/sorting';
+import { ensureInt } from '../../../tools/ensureInt';
 
 import { FIRST_MATCHUP, WIN_RATIO } from '../../../constants/drawDefinitionConstants';
 import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
@@ -26,8 +26,8 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
         const sidesTo = [...drawPositions] // spread to avoid mutating the original
           .sort(numericSort)
           .map((drawPosition, index) => {
-            const nextRoundMatchUp = roundMatchUps[nextRoundNumber].find(
-              (matchUp) => matchUp.drawPositions?.includes(drawPosition),
+            const nextRoundMatchUp = roundMatchUps[nextRoundNumber].find((matchUp) =>
+              matchUp.drawPositions?.includes(drawPosition),
             );
             return {
               matchUpId: nextRoundMatchUp?.matchUpId,

@@ -1,8 +1,8 @@
 import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
 import { getParticipantId } from '../../../global/functions/extractors';
-import { intersection, unique } from '../../../utilities/arrays';
+import { intersection, unique } from '../../../tools/arrays';
 import mocksEngine from '../../../assemblies/engines/mock';
-import { extractTime } from '../../../utilities/dateTime';
+import { extractTime } from '../../../tools/dateTime';
 import tournamentEngine from '../../engines/syncEngine';
 import garman from '../../../assemblies/generators/scheduling/garman/garman';
 import { expect, it } from 'vitest';
@@ -29,17 +29,14 @@ it('correctly generates second round scheduleTimes', () => {
     date,
   });
 
-  const allScheduleTimes = scheduleTimes.reduce(
-    (timesMapped: any, { scheduleTime }) => {
-      if (!timesMapped[scheduleTime]) {
-        timesMapped[scheduleTime] = 1;
-      } else {
-        timesMapped[scheduleTime] += 1;
-      }
-      return timesMapped;
-    },
-    {}
-  );
+  const allScheduleTimes = scheduleTimes.reduce((timesMapped: any, { scheduleTime }) => {
+    if (!timesMapped[scheduleTime]) {
+      timesMapped[scheduleTime] = 1;
+    } else {
+      timesMapped[scheduleTime] += 1;
+    }
+    return timesMapped;
+  }, {});
 
   // the incidence of the first schedule time is equivalent to the total number of courts
   expect(allScheduleTimes['08:00']).toEqual(courtsCount);
@@ -50,8 +47,8 @@ it('correctly generates second round scheduleTimes', () => {
   // after the first two periods 10 matchUps are added per period until the end of the avialble court time
   // ... after which it is unchanging
   expect(timingProfile.map(({ totalMatchUps }) => totalMatchUps)).toEqual([
-    30, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180,
-    190, 200, 210, 220, 230, 240, 250, 250, 250, 250,
+    30, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230, 240, 250, 250,
+    250, 250,
   ]);
 
   // from 08:00 until 21:00 there are 26 periods of 30 minutes
@@ -60,9 +57,7 @@ it('correctly generates second round scheduleTimes', () => {
   // given that the second period cannot be scheduled due to averageMatchUpMinutes
   // ... there are 23 periods which can be scheduled
   // we expect that the unique number of totalMatchUps values will be 23
-  expect(
-    unique(timingProfile.map(({ totalMatchUps }) => totalMatchUps)).length
-  );
+  expect(unique(timingProfile.map(({ totalMatchUps }) => totalMatchUps)).length);
 });
 
 it('properly schedules 2nd round of 128 single elimination draw with 30 courts', () => {
@@ -152,18 +147,14 @@ it('properly schedules 2nd round of 128 single elimination draw with 30 courts',
   ]);
 
   const { matchUps } = tournamentEngine.allCompetitionMatchUps();
-  const byeMatchUps = matchUps.filter(
-    ({ matchUpStatus }) => matchUpStatus === BYE
-  );
+  const byeMatchUps = matchUps.filter(({ matchUpStatus }) => matchUpStatus === BYE);
   expect(byeMatchUps.length).toEqual(1);
   expect(byeMatchUps[0].roundNumber).toEqual(1);
 
   const scheduledMatchUps = matchUps.filter(hasSchedule);
   expect(scheduledMatchUps.length).toEqual(95);
 
-  const scheduledTimes = scheduledMatchUps.map(
-    ({ schedule }) => schedule.scheduledTime
-  );
+  const scheduledTimes = scheduledMatchUps.map(({ schedule }) => schedule.scheduledTime);
   const timeMap = scheduledTimes.reduce((timesMapped, scheduledTime) => {
     const time = extractTime(scheduledTime);
     if (!timesMapped[time]) {
@@ -283,9 +274,7 @@ it('properly schedules 1st rounds of two 32 single elimination draws with 10 cou
 
   // expect there to be no overlap in the entries between the two events
   expect(intersection(eventEntries[0], eventEntries[1]).length).toEqual(0);
-  expect(intersection(eventDrawEntries[0], eventDrawEntries[1]).length).toEqual(
-    0
-  );
+  expect(intersection(eventDrawEntries[0], eventDrawEntries[1]).length).toEqual(0);
 
   result = tournamentEngine.scheduleProfileRounds({
     scheduleDates: [startDate],
@@ -305,9 +294,7 @@ it('properly schedules 1st rounds of two 32 single elimination draws with 10 cou
   const scheduledMatchUps = matchUps.filter(hasSchedule);
   expect(scheduledMatchUps.length).toEqual(32);
 
-  const scheduledTimes = scheduledMatchUps
-    .map(({ schedule }) => schedule.scheduledTime)
-    .sort();
+  const scheduledTimes = scheduledMatchUps.map(({ schedule }) => schedule.scheduledTime).sort();
   const timeMap = scheduledTimes.reduce((timesMapped, scheduledTime) => {
     const time = extractTime(scheduledTime);
     if (!timesMapped[time]) {

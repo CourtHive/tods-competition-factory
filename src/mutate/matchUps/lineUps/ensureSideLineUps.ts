@@ -1,6 +1,6 @@
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
-import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
+import { makeDeepCopy } from '../../../tools/makeDeepCopy';
 import { findExtension } from '../../../acquire/findExtension';
 
 import { DrawDefinition, MatchUp } from '../../../types/tournamentTypes';

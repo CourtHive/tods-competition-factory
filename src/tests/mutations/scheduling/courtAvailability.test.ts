@@ -1,4 +1,4 @@
-import { extractDate } from '../../../utilities/dateTime';
+import { extractDate } from '../../../tools/dateTime';
 import tournamentEngine from '../../engines/syncEngine';
 import { mocksEngine } from '../../..';
 import { expect, test } from 'vitest';
@@ -24,11 +24,7 @@ const scenarios = [
     lastScheduledMatchUpId: 'm-4-2',
   },
   {
-    courtTimings: [
-      { startTime: '11:00' },
-      { startTime: '12:00' },
-      { startTime: '13:00' },
-    ],
+    courtTimings: [{ startTime: '11:00' }, { startTime: '12:00' }, { startTime: '13:00' }],
     expectations: [
       { startTime: '11:00', endTime },
       { startTime: '12:00', endTime },
@@ -61,73 +57,62 @@ const scenarios = [
   },
 ];
 
-test.each(scenarios)(
-  'varying court availability is properly considered',
-  (scenario) => {
-    const drawId = 'drawId';
-    const venueId = 'venueId';
-    const startDate = extractDate(new Date().toISOString());
-    const drawProfiles = [{ idPrefix: 'm', drawId, drawSize: 32 }];
-    const venueProfiles = [
-      {
-        courtTimings: scenario.courtTimings,
-        venueAbbreviation: 'VNU',
-        courtsCount: 8,
-        startTime,
-        endTime,
-        venueId,
-      },
-    ];
-    const schedulingProfile = [
-      {
-        scheduleDate: startDate,
-        venues: [
-          {
-            venueId,
-            rounds: [
-              { drawId, winnerFinishingPositionRange: '1-16' },
-              { drawId, winnerFinishingPositionRange: '1-8' },
-              { drawId, winnerFinishingPositionRange: '1-4' },
-              { drawId, winnerFinishingPositionRange: '1-2' },
-              { drawId, winnerFinishingPositionRange: '1-1' },
-            ],
-          },
-        ],
-      },
-    ];
+test.each(scenarios)('varying court availability is properly considered', (scenario) => {
+  const drawId = 'drawId';
+  const venueId = 'venueId';
+  const startDate = extractDate(new Date().toISOString());
+  const drawProfiles = [{ idPrefix: 'm', drawId, drawSize: 32 }];
+  const venueProfiles = [
+    {
+      courtTimings: scenario.courtTimings,
+      venueAbbreviation: 'VNU',
+      courtsCount: 8,
+      startTime,
+      endTime,
+      venueId,
+    },
+  ];
+  const schedulingProfile = [
+    {
+      scheduleDate: startDate,
+      venues: [
+        {
+          venueId,
+          rounds: [
+            { drawId, winnerFinishingPositionRange: '1-16' },
+            { drawId, winnerFinishingPositionRange: '1-8' },
+            { drawId, winnerFinishingPositionRange: '1-4' },
+            { drawId, winnerFinishingPositionRange: '1-2' },
+            { drawId, winnerFinishingPositionRange: '1-1' },
+          ],
+        },
+      ],
+    },
+  ];
 
-    const { tournamentRecord, schedulerResult } =
-      mocksEngine.generateTournamentRecord({
-        policyDefinitions: POLICY_SCHEDULING_NO_DAILY_LIMITS,
-        autoSchedule: true,
-        schedulingProfile,
-        venueProfiles,
-        drawProfiles,
-        startDate,
-      });
+  const { tournamentRecord, schedulerResult } = mocksEngine.generateTournamentRecord({
+    policyDefinitions: POLICY_SCHEDULING_NO_DAILY_LIMITS,
+    autoSchedule: true,
+    schedulingProfile,
+    venueProfiles,
+    drawProfiles,
+    startDate,
+  });
 
-    tournamentEngine.setState(tournamentRecord);
+  tournamentEngine.setState(tournamentRecord);
 
-    const { courts } = tournamentEngine.getVenuesAndCourts();
-    scenario.expectations.forEach((expectation, index) => {
-      expect(courts[index].dateAvailability[0].startTime).toEqual(
-        expectation.startTime
-      );
-      expect(courts[index].dateAvailability[0].endTime).toEqual(
-        expectation.endTime
-      );
-    });
+  const { courts } = tournamentEngine.getVenuesAndCourts();
+  scenario.expectations.forEach((expectation, index) => {
+    expect(courts[index].dateAvailability[0].startTime).toEqual(expectation.startTime);
+    expect(courts[index].dateAvailability[0].endTime).toEqual(expectation.endTime);
+  });
 
-    const matchUpsAtStartTime = Object.values(
-      schedulerResult.matchUpScheduleTimes
-    ).filter((scheduleTime) => scheduleTime === startTime).length;
-    expect(matchUpsAtStartTime).toEqual(scenario.matchUpsAtStartTime);
+  const matchUpsAtStartTime = Object.values(schedulerResult.matchUpScheduleTimes).filter(
+    (scheduleTime) => scheduleTime === startTime,
+  ).length;
+  expect(matchUpsAtStartTime).toEqual(scenario.matchUpsAtStartTime);
 
-    const scheduledMatchUpIds = Object.keys(
-      schedulerResult.matchUpScheduleTimes
-    );
-    const lastScheduledMatchUpId =
-      scheduledMatchUpIds[scheduledMatchUpIds.length - 1];
-    expect(lastScheduledMatchUpId).toEqual(scenario.lastScheduledMatchUpId);
-  }
-);
+  const scheduledMatchUpIds = Object.keys(schedulerResult.matchUpScheduleTimes);
+  const lastScheduledMatchUpId = scheduledMatchUpIds[scheduledMatchUpIds.length - 1];
+  expect(lastScheduledMatchUpId).toEqual(scenario.lastScheduledMatchUpId);
+});

@@ -1,6 +1,6 @@
 import { getParticipantId } from '../global/functions/extractors';
-import { mustBeAnArray } from '../utilities/mustBeAnArray';
-import { unique } from '../utilities/arrays';
+import { mustBeAnArray } from '../tools/mustBeAnArray';
+import { unique } from '../tools/arrays';
 
 import { INVALID_VALUES } from '../constants/errorConditionConstants';
 import { TieFormat } from '../types/tournamentTypes';
@@ -52,8 +52,7 @@ export function validateLineUp({ lineUp, tieFormat }: ValidateLineUpArgs) {
     });
   });
 
-  const noDuplicates =
-    unique(lineUp.map(getParticipantId)).length === lineUp.length;
+  const noDuplicates = unique(lineUp.map(getParticipantId)).length === lineUp.length;
   if (!noDuplicates) errors.push('Duplicated participantId(s)');
 
   if (tieFormat) {

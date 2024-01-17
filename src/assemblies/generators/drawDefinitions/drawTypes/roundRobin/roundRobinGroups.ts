@@ -1,5 +1,5 @@
-import { numericSort } from '../../../../../utilities/sorting';
-import { unique } from '../../../../../utilities/arrays';
+import { numericSort } from '../../../../../tools/sorting';
+import { unique } from '../../../../../tools/arrays';
 
 import { MISSING_DRAW_POSITIONS, MISSING_VALUE } from '../../../../../constants/errorConditionConstants';
 

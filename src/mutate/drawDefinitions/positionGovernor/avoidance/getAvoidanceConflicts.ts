@@ -1,5 +1,5 @@
 import { getRoundRobinGroupMatchUps } from '../../../../assemblies/generators/drawDefinitions/drawTypes/roundRobin/roundRobinGroups';
-import { overlap } from '../../../../utilities/arrays';
+import { overlap } from '../../../../tools/arrays';
 
 export function getAvoidanceConflicts({ isRoundRobin, groupedParticipants }) {
   const avoidanceConflicts: any[] = [];

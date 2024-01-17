@@ -1,9 +1,9 @@
 import { getRoundRobinGroupMatchUps, drawPositionsHash, groupRounds } from './roundRobinGroups';
 import { addExtension } from '../../../../../mutate/extensions/addExtension';
 import { structureTemplate } from '../../../templates/structureTemplate';
-import { constantToString } from '../../../../../utilities/strings';
-import { generateRange } from '../../../../../utilities/arrays';
-import { UUID } from '../../../../../utilities/UUID';
+import { constantToString } from '../../../../../tools/strings';
+import { generateRange } from '../../../../../tools/arrays';
+import { UUID } from '../../../../../tools/UUID';
 
 import { PlayoffAttributes, PolicyDefinitions, SeedingProfile } from '../../../../../types/factoryTypes';
 import { MAIN, ITEM, WIN_RATIO, CONTAINER } from '../../../../../constants/drawDefinitionConstants';
@@ -12,7 +12,7 @@ import { MatchUp, EventTypeUnion } from '../../../../../types/tournamentTypes';
 import { ResultType } from '../../../../../global/functions/decorateResult';
 import { ROUND_TARGET } from '../../../../../constants/extensionConstants';
 import { SUCCESS } from '../../../../../constants/resultConstants';
-import { HydratedMatchUp } from 'types/hydrated';
+import { HydratedMatchUp } from '../../../../../types/hydrated';
 
 type GenerateRoundRobinArgs = {
   playoffAttributes?: PlayoffAttributes;

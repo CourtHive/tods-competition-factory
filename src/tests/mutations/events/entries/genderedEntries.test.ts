@@ -1,6 +1,6 @@
 import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
-import { unique } from '../../../../utilities/arrays';
+import { unique } from '../../../../tools/arrays';
 import { expect, it } from 'vitest';
 
 import { INVALID_PARTICIPANT_IDS } from '../../../../constants/errorConditionConstants';
@@ -35,9 +35,7 @@ it('throws an error on misgendered entries', () => {
   expect(result.error).toEqual(INVALID_PARTICIPANT_IDS);
   expect(result.mismatchedGender.length).toBeGreaterThan(0);
 
-  const maleParticipantIds = participants
-    .filter(({ person }) => person.sex === MALE)
-    .map((p) => p.participantId);
+  const maleParticipantIds = participants.filter(({ person }) => person.sex === MALE).map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({
     participantIds: maleParticipantIds,
     eventId,

@@ -1,6 +1,6 @@
 import { generatePersonData } from '../../../assemblies/generators/mocks/generatePersonData';
 import tournamentEngine from '../../engines/syncEngine';
-import { UUID } from '../../../utilities/UUID';
+import { UUID } from '../../../tools/UUID';
 import { expect, test } from 'vitest';
 
 import {

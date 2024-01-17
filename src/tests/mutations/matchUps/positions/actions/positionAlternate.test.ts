@@ -1,17 +1,11 @@
 import { getRoundMatchUps } from '../../../../../query/matchUps/getRoundMatchUps';
 import mocksEngine from '../../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../../engines/syncEngine';
-import { unique } from '../../../../../utilities/arrays';
+import { unique } from '../../../../../tools/arrays';
 import { expect, it } from 'vitest';
 
-import {
-  BYE,
-  TO_BE_PLAYED,
-} from '../../../../../constants/matchUpStatusConstants';
-import {
-  ALTERNATE,
-  DIRECT_ACCEPTANCE,
-} from '../../../../../constants/entryStatusConstants';
+import { BYE, TO_BE_PLAYED } from '../../../../../constants/matchUpStatusConstants';
+import { ALTERNATE, DIRECT_ACCEPTANCE } from '../../../../../constants/entryStatusConstants';
 
 it('can generate drawSize: 8 with 6 participants', () => {
   const drawProfiles = [
@@ -31,13 +25,10 @@ it('can generate drawSize: 8 with 6 participants', () => {
   tournamentEngine.setState(tournamentRecord);
 
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
-  const directAcceptanceEntries = drawDefinition.entries.filter(
-    (e) => e.entryStatus === DIRECT_ACCEPTANCE
-  );
+  const directAcceptanceEntries = drawDefinition.entries.filter((e) => e.entryStatus === DIRECT_ACCEPTANCE);
   expect(directAcceptanceEntries.length).toEqual(6);
 
-  const { upcomingMatchUps, pendingMatchUps, byeMatchUps } =
-    tournamentEngine.tournamentMatchUps();
+  const { upcomingMatchUps, pendingMatchUps, byeMatchUps } = tournamentEngine.tournamentMatchUps();
   expect(upcomingMatchUps.length).toEqual(2);
   expect(pendingMatchUps.length).toEqual(3);
   expect(byeMatchUps.length).toEqual(2);
@@ -52,11 +43,8 @@ it('can generate drawSize: 8 with 6 participants', () => {
   expect(result.isDrawPosition).toEqual(true);
   expect(result.isByePosition).toEqual(false);
 
-  const alternateOption = result.validActions.find(
-    ({ type }) => type === ALTERNATE
-  );
-  const { method, payload, availableAlternatesParticipantIds } =
-    alternateOption;
+  const alternateOption = result.validActions.find(({ type }) => type === ALTERNATE);
+  const { method, payload, availableAlternatesParticipantIds } = alternateOption;
   const alternateParticipantId = availableAlternatesParticipantIds[0];
   Object.assign(payload, { alternateParticipantId });
   result = tournamentEngine[method](payload);
@@ -82,23 +70,15 @@ it('can generate drawSize: 8 with only 4 participants', () => {
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
   const { roundMatchUps } = getRoundMatchUps({ matchUps });
-  const firstRoundMatchUpStatuses = unique(
-    roundMatchUps?.[1].map((m) => m.matchUpStatus)
-  );
+  const firstRoundMatchUpStatuses = unique(roundMatchUps?.[1].map((m) => m.matchUpStatus));
   expect(firstRoundMatchUpStatuses).toEqual([BYE]);
-  const secondRoundMatchUpStatuses = unique(
-    roundMatchUps?.[2].map((m) => m.matchUpStatus)
-  );
+  const secondRoundMatchUpStatuses = unique(roundMatchUps?.[2].map((m) => m.matchUpStatus));
   expect(secondRoundMatchUpStatuses).toEqual([TO_BE_PLAYED]);
-  const thirdRoundMatchUpStatuses = unique(
-    roundMatchUps?.[3].map((m) => m.matchUpStatus)
-  );
+  const thirdRoundMatchUpStatuses = unique(roundMatchUps?.[3].map((m) => m.matchUpStatus));
   expect(thirdRoundMatchUpStatuses).toEqual([TO_BE_PLAYED]);
 
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
-  const directAcceptanceEntries = drawDefinition.entries.filter(
-    (e) => e.entryStatus === DIRECT_ACCEPTANCE
-  );
+  const directAcceptanceEntries = drawDefinition.entries.filter((e) => e.entryStatus === DIRECT_ACCEPTANCE);
   expect(directAcceptanceEntries.length).toEqual(4);
 });
 
@@ -121,24 +101,16 @@ it('can generate drawSize: 8 with only 2 participants', () => {
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
   const { roundMatchUps } = getRoundMatchUps({ matchUps });
-  const firstRoundMatchUpStatuses = unique(
-    roundMatchUps?.[1].map((m) => m.matchUpStatus)
-  );
+  const firstRoundMatchUpStatuses = unique(roundMatchUps?.[1].map((m) => m.matchUpStatus));
   expect(firstRoundMatchUpStatuses).toEqual([BYE]);
 
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
-  const directAcceptanceEntries = drawDefinition.entries.filter(
-    (e) => e.entryStatus === DIRECT_ACCEPTANCE
-  );
+  const directAcceptanceEntries = drawDefinition.entries.filter((e) => e.entryStatus === DIRECT_ACCEPTANCE);
   expect(directAcceptanceEntries.length).toEqual(2);
 
-  const secondRoundMatchUpStatuses = unique(
-    roundMatchUps?.[2].map((m) => m.matchUpStatus)
-  );
+  const secondRoundMatchUpStatuses = unique(roundMatchUps?.[2].map((m) => m.matchUpStatus));
   expect(secondRoundMatchUpStatuses).toEqual([BYE]);
 
-  const thirdRoundMatchUpStatuses = unique(
-    roundMatchUps?.[3].map((m) => m.matchUpStatus)
-  );
+  const thirdRoundMatchUpStatuses = unique(roundMatchUps?.[3].map((m) => m.matchUpStatus));
   expect(thirdRoundMatchUpStatuses).toEqual([TO_BE_PLAYED]);
 });

@@ -1,10 +1,7 @@
 import { parse } from '../matchUpFormatCode/parse';
-import { isNumeric } from '../../../utilities/math';
+import { isNumeric } from '../../../tools/math';
 
-import {
-  ErrorType,
-  MISSING_VALUE,
-} from '../../../constants/errorConditionConstants';
+import { ErrorType, MISSING_VALUE } from '../../../constants/errorConditionConstants';
 import {
   ABANDONED,
   DEAD_RUBBER,
@@ -27,7 +24,7 @@ type GenerateScoreString = {
   sets: any;
 };
 export function generateScoreString(
-  params: GenerateScoreString
+  params: GenerateScoreString,
 ): string | { error?: ErrorType; info?: ErrorType | string } {
   const {
     winnerFirst = true,
@@ -48,9 +45,7 @@ export function generateScoreString(
   const scoresInSideOrder = !winnerFirst || !winningSide || winningSide === 1;
   const reverseScores = reversed || !scoresInSideOrder;
 
-  const outcomeString = addOutcomeString
-    ? getOutcomeString({ matchUpStatus })
-    : '';
+  const outcomeString = addOutcomeString ? getOutcomeString({ matchUpStatus }) : '';
 
   const setScores =
     sets
@@ -66,24 +61,15 @@ export function generateScoreString(
   function setString(currentSet) {
     const isFinalSet = bestOf && currentSet.setNumber === bestOf;
     const format = isFinalSet && finalSetFormat ? finalSetFormat : setFormat;
-    const hasGameScores = (set) =>
-      isNumeric(set?.side1Score) || isNumeric(set?.side2Score);
-    const hasTiebreakScores = (set) =>
-      isNumeric(set?.side1TiebreakScore) || isNumeric(set?.side2TiebreakScore);
+    const hasGameScores = (set) => isNumeric(set?.side1Score) || isNumeric(set?.side2Score);
+    const hasTiebreakScores = (set) => isNumeric(set?.side1TiebreakScore) || isNumeric(set?.side2TiebreakScore);
 
-    const isTiebreakSet =
-      format?.tiebreakSet ||
-      (!hasGameScores(currentSet) && hasTiebreakScores(currentSet));
+    const isTiebreakSet = format?.tiebreakSet || (!hasGameScores(currentSet) && hasTiebreakScores(currentSet));
 
-    const { side1Score, side2Score, side1TiebreakScore, side2TiebreakScore } =
-      currentSet;
+    const { side1Score, side2Score, side1TiebreakScore, side2TiebreakScore } = currentSet;
 
-    const t1 =
-      side1TiebreakScore ||
-      (isNumeric(side1TiebreakScore) || autoComplete ? 0 : '');
-    const t2 =
-      side2TiebreakScore ||
-      (isNumeric(side2TiebreakScore) || autoComplete ? 0 : '');
+    const t1 = side1TiebreakScore || (isNumeric(side1TiebreakScore) || autoComplete ? 0 : '');
+    const t2 = side2TiebreakScore || (isNumeric(side2TiebreakScore) || autoComplete ? 0 : '');
 
     if (isTiebreakSet) {
       const tiebreakScore = reverseScores ? [t2, t1] : [t1, t2];
@@ -96,9 +82,7 @@ export function generateScoreString(
     const s1 = side1Score || (isNumeric(side1Score) || autoComplete ? 0 : '');
     const s2 = side2Score || (isNumeric(side2Score) || autoComplete ? 0 : '');
 
-    let scoreString = reverseScores
-      ? `${[s2, s1].join('-')}${tiebreak}`
-      : `${[s1, s2].join('-')}${tiebreak}`;
+    let scoreString = reverseScores ? `${[s2, s1].join('-')}${tiebreak}` : `${[s1, s2].join('-')}${tiebreak}`;
 
     if (['-', ' '].includes(scoreString)) scoreString = '';
     return scoreString;

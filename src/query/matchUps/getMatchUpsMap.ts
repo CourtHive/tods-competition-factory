@@ -1,11 +1,7 @@
-import { makeDeepCopy } from '../../utilities/makeDeepCopy';
+import { makeDeepCopy } from '../../tools/makeDeepCopy';
 
 import { HydratedMatchUp } from '../../types/hydrated';
-import {
-  DrawDefinition,
-  MatchUp,
-  Structure,
-} from '../../types/tournamentTypes';
+import { DrawDefinition, MatchUp, Structure } from '../../types/tournamentTypes';
 
 export type MappedMatchUps = {
   [key: string]: {
@@ -25,10 +21,7 @@ type GetMatchUpsMapArgs = {
   structure?: Structure;
 };
 
-export function getMatchUpsMap({
-  drawDefinition,
-  structure,
-}: GetMatchUpsMapArgs): MatchUpsMap {
+export function getMatchUpsMap({ drawDefinition, structure }: GetMatchUpsMapArgs): MatchUpsMap {
   const mappedMatchUps: MappedMatchUps = {};
   const drawMatchUps: MatchUp[] = [];
 
@@ -61,8 +54,7 @@ export function getMatchUpsMap({
           if (filteredMatchUps) {
             drawMatchUps.push(...filteredMatchUps);
             filteredMatchUps.forEach((matchUp) => {
-              if (matchUp.tieMatchUps)
-                drawMatchUps.push(...matchUp.tieMatchUps);
+              if (matchUp.tieMatchUps) drawMatchUps.push(...matchUp.tieMatchUps);
             });
           }
           if (!mappedMatchUps[structureId])
@@ -70,11 +62,8 @@ export function getMatchUpsMap({
               itemStructureIds: [],
               matchUps: [],
             };
-          if (!mappedMatchUps[structureId].itemStructureIds)
-            mappedMatchUps[structureId].itemStructureIds = [];
-          mappedMatchUps[structureId].itemStructureIds.push(
-            itemStructure.structureId
-          );
+          if (!mappedMatchUps[structureId].itemStructureIds) mappedMatchUps[structureId].itemStructureIds = [];
+          mappedMatchUps[structureId].itemStructureIds.push(itemStructure.structureId);
         });
       }
     });
@@ -113,7 +102,5 @@ export function getMappedStructureMatchUps({
     })
     .flat();
 
-  return (structureMatchUpsMap?.matchUps || []).concat(
-    ...itemStructureMatchUps
-  );
+  return (structureMatchUpsMap?.matchUps || []).concat(...itemStructureMatchUps);
 }

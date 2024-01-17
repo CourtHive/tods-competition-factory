@@ -15,7 +15,7 @@ import { assignMatchUpVenue } from '../assignMatchUpVenue';
 import { checkRecoveryTime } from './checkRecoveryTime';
 import { checkDailyLimits } from './checkDailyLimits';
 import { getPersonRequests } from '../../../../query/matchUps/scheduling/getPersonRequests';
-import { extractDate, extractTime, isValidDateString, sameDay, zeroPad } from '../../../../utilities/dateTime';
+import { extractDate, extractTime, isValidDateString, sameDay, zeroPad } from '../../../../tools/dateTime';
 
 import { DO_NOT_SCHEDULE } from '../../../../constants/requestConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
@@ -148,8 +148,8 @@ export function scheduleMatchUps(params) {
 
   // first build up a map of matchUpNotBeforeTimes and matchUpPotentialParticipantIds
   // based on already scheduled matchUps
-  const dateScheduledMatchUps = competitionMatchUps.filter(
-    ({ matchUpId }) => dateScheduledMatchUpIds?.includes(matchUpId),
+  const dateScheduledMatchUps = competitionMatchUps.filter(({ matchUpId }) =>
+    dateScheduledMatchUpIds?.includes(matchUpId),
   );
   dateScheduledMatchUps.forEach((matchUp) => {
     modifyParticipantMatchUpsCount({

@@ -1,7 +1,7 @@
 import { tallyParticipantResults } from '../../../../../query/matchUps/roundRobinTally/roundRobinTally';
 import { getAllStructureMatchUps } from '../../../../../query/matchUps/getAllStructureMatchUps';
 import { generateMatchUpOutcome } from '../../../../helpers/generateMatchUpOutcome';
-import { chunkArray, intersection } from '../../../../../utilities/arrays';
+import { chunkArray, intersection } from '../../../../../tools/arrays';
 import { findStructure } from '../../../../../acquire/findStructure';
 import tournamentEngine from '../../../../engines/syncEngine';
 import mocksEngine from '../../../../../assemblies/engines/mock';

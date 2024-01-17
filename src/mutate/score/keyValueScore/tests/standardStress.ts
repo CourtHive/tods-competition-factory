@@ -1,4 +1,4 @@
-import { generateRange, randomMember } from '../../../../utilities/arrays';
+import { generateRange, randomMember } from '../../../../tools/arrays';
 import { scoreMatchUp, enterValues } from './primitives';
 import { expect, it } from 'vitest';
 
@@ -81,11 +81,7 @@ export function stressTests({ matchUpFormat, setTo, games2Win = 2 }) {
     expect(scoredMatchUp?.winningSide).toEqual(undefined);
     expect(scoredMatchUp?.matchUpStatus).toEqual(STATUS_ABANDONED);
 
-    const values = [
-      { value: 'backspace' },
-      { lowSide: 2, value: '1' },
-      { lowSide: 2, value: 'a' },
-    ];
+    const values = [{ value: 'backspace' }, { lowSide: 2, value: '1' }, { lowSide: 2, value: 'a' }];
 
     const { matchUp: matchUpWithValues } = enterValues({
       values,
@@ -118,11 +114,7 @@ export function stressTests({ matchUpFormat, setTo, games2Win = 2 }) {
     expect(matchUp?.winningSide).toEqual(2);
     expect(matchUp?.matchUpStatus).toEqual(STATUS_DEFAULT);
 
-    let values = [
-      { value: 'backspace' },
-      { lowSide: 2, value: 1 },
-      { lowSide: 2, value: 'r' },
-    ];
+    let values = [{ value: 'backspace' }, { lowSide: 2, value: 1 }, { lowSide: 2, value: 'r' }];
 
     ({ matchUp } = enterValues({ values, matchUp }));
     expect(matchUp?.scoreString).toEqual(`${setTo}-1 RET`);
@@ -209,11 +201,7 @@ export function singleSetStressTests({ matchUpFormat, setTo }) {
   it('supports use of - to modify side 2 scoreString', () => {
     let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
-    const values = [
-      { lowSide: 2, value: 2 },
-      { value: '-' },
-      { lowSide: 2, value: 1 },
-    ];
+    const values = [{ lowSide: 2, value: 2 }, { value: '-' }, { lowSide: 2, value: 1 }];
 
     ({ matchUp } = enterValues({ values, matchUp }));
     expect(matchUp.scoreString.trim()).toEqual(`${setTo}-1`);

@@ -1,5 +1,5 @@
 import tournamentEngine from '../engines/syncEngine';
-import { getAccessorValue } from '../../utilities/getAccessorValue';
+import { getAccessorValue } from '../../tools/getAccessorValue';
 import mocksEngine from '../../assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
@@ -30,9 +30,7 @@ test('accessorValues can target person.sex when participantType: PAIR', () => {
   tournamentEngine.setState(tournamentRecord);
 
   const participantWithTimeItems = tournamentRecord.participants.find(
-    (participant) =>
-      participant.participantType === INDIVIDUAL &&
-      participant.timeItems?.length
+    (participant) => participant.participantType === INDIVIDUAL && participant.timeItems?.length,
   );
   expect(participantWithTimeItems.ratings).toBeUndefined();
 
@@ -43,18 +41,14 @@ test('accessorValues can target person.sex when participantType: PAIR', () => {
   });
 
   const ratedParticipant = participants.find(
-    (p) =>
-      p.participantType === PAIR &&
-      p.individualParticipants &&
-      p.individualParticipants[0].timeItems
+    (p) => p.participantType === PAIR && p.individualParticipants && p.individualParticipants[0].timeItems,
   );
   for (const participant of ratedParticipant.individualParticipants) {
     expect(Object.keys(participant.ratings)).not.toBeUndefined();
   }
 
   let targetParticipant = participants.find(
-    (participant) =>
-      participant.participantId === participantWithTimeItems.participantId
+    (participant) => participant.participantId === participantWithTimeItems.participantId,
   );
   expect(Object.keys(targetParticipant.ratings)).not.toBeUndefined();
 
@@ -67,8 +61,7 @@ test('accessorValues can target person.sex when participantType: PAIR', () => {
 
   const state = tournamentEngine.getTournament();
   targetParticipant = state.tournamentRecord.participants.find(
-    (participant) =>
-      participant.participantId === participantWithTimeItems.participantId
+    (participant) => participant.participantId === participantWithTimeItems.participantId,
   );
   expect(targetParticipant.ratings).toBeUndefined();
 });

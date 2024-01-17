@@ -2,7 +2,7 @@ import { setSubscriptions } from '../../../global/state/globalState';
 import tournamentEngineAsync from '../../engines/asyncEngine';
 import tournamentEngineSync from '../../engines/syncEngine';
 import mocksEngine from '../../../assemblies/engines/mock';
-import { instanceCount } from '../../../utilities/arrays';
+import { instanceCount } from '../../../tools/arrays';
 import { expect, test } from 'vitest';
 
 import { FEED_IN_CHAMPIONSHIP_TO_R16, MAIN } from '../../../constants/drawDefinitionConstants';

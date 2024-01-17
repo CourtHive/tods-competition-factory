@@ -1,5 +1,5 @@
 import mocksEngine from '../../../assemblies/engines/mock';
-import { intersection } from '../../../utilities/arrays';
+import { intersection } from '../../../tools/arrays';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
@@ -147,8 +147,7 @@ it('can add statistics to tournament participants', () => {
   };
   tournamentEngine.addEventExtension({ eventId, extension });
 
-  const positionAssignments =
-    event.drawDefinitions[0].structures[0].positionAssignments;
+  const positionAssignments = event.drawDefinitions[0].structures[0].positionAssignments;
 
   const { participants, derivedEventInfo } = tournamentEngine.getParticipants({
     withPotentialMatchUps: true,
@@ -164,9 +163,7 @@ it('can add statistics to tournament participants', () => {
   expect(participants.length).toEqual(720);
 
   const categoriesPresent = participants.every((participant) =>
-    participant.events.every(
-      ({ eventId }) => derivedEventInfo[eventId].category
-    )
+    participant.events.every(({ eventId }) => derivedEventInfo[eventId].category),
   );
   expect(categoriesPresent).toBeTruthy();
 
@@ -181,17 +178,14 @@ it('can add statistics to tournament participants', () => {
   expect(doublesParticipant.events.length).toEqual(1);
   expect(doublesParticipant.draws.length).toEqual(1);
 
-  const individualParticipantId =
-    doublesParticipant.individualParticipantIds[0];
+  const individualParticipantId = doublesParticipant.individualParticipantIds[0];
   const individualParticipant = participants.find(
-    (participant) => participant.participantId === individualParticipantId
+    (participant) => participant.participantId === individualParticipantId,
   );
   expect(individualParticipant.draws.length).toBeGreaterThan(0);
   expect(individualParticipant.statistics[0].statValue).toBeGreaterThan(0);
 
-  expect(
-    derivedEventInfo[individualParticipant.events[0].eventId].eventType
-  ).toEqual(DOUBLES);
+  expect(derivedEventInfo[individualParticipant.events[0].eventId].eventType).toEqual(DOUBLES);
 
   const hasPotentials = participants.find((p) => p.potentialMatchUps?.length);
   expect(hasPotentials).not.toBeUndefined();
@@ -220,8 +214,7 @@ it('can add statistics to tournament participants', () => {
   const eventId = eventIds[0];
   const { event } = tournamentEngine.getEvent({ eventId });
 
-  const positionAssignments =
-    event.drawDefinitions[0].structures[0].positionAssignments;
+  const positionAssignments = event.drawDefinitions[0].structures[0].positionAssignments;
 
   const { participants } = tournamentEngine.getParticipants({
     withIndividualParticipants: true,
@@ -241,10 +234,9 @@ it('can add statistics to tournament participants', () => {
 
   const { individualParticipantIds } = doublesParticipant;
 
-  const individualParticipantId =
-    doublesParticipant.individualParticipantIds[0];
+  const individualParticipantId = doublesParticipant.individualParticipantIds[0];
   const individualParticipant = participants.find(
-    (participant) => participant.participantId === individualParticipantId
+    (participant) => participant.participantId === individualParticipantId,
   );
 
   const {
@@ -252,23 +244,12 @@ it('can add statistics to tournament participants', () => {
   } = individualParticipant;
 
   // check that the individual and partner equal individualParticipantIds for the PAIR
-  expect(
-    intersection(
-      [individualParticipantId, ...partnerParticipantIds],
-      individualParticipantIds
-    ).length
-  ).toEqual(2);
+  expect(intersection([individualParticipantId, ...partnerParticipantIds], individualParticipantIds).length).toEqual(2);
 });
 
-function getParticipant({
-  tournamentParticipants,
-  positionAssignments,
-  drawPosition,
-}) {
+function getParticipant({ tournamentParticipants, positionAssignments, drawPosition }) {
   const participantId = positionAssignments.find(
-    (assignment) => assignment.drawPosition === drawPosition
+    (assignment) => assignment.drawPosition === drawPosition,
   ).participantId;
-  return tournamentParticipants.find(
-    (participant) => participant.participantId === participantId
-  );
+  return tournamentParticipants.find((participant) => participant.participantId === participantId);
 }

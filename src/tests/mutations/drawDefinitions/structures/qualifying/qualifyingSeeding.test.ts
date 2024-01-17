@@ -1,16 +1,13 @@
 import { getParticipantId } from '../../../../../global/functions/extractors';
 import mocksEngine from '../../../../../assemblies/engines/mock';
-import { generateRange } from '../../../../../utilities/arrays';
+import { generateRange } from '../../../../../tools/arrays';
 import tournamentEngine from '../../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { RATING, SEEDING } from '../../../../../constants/scaleConstants';
 import { SINGLES } from '../../../../../constants/eventConstants';
 import { ELO } from '../../../../../constants/ratingConstants';
-import {
-  CLUSTER,
-  QUALIFYING,
-} from '../../../../../constants/drawDefinitionConstants';
+import { CLUSTER, QUALIFYING } from '../../../../../constants/drawDefinitionConstants';
 
 const scenarios = [
   {
@@ -129,140 +126,130 @@ const scenarios = [
   },
 ];
 
-it.each(scenarios.slice(8))(
-  'can generate and seed a qualifying structure',
-  (scenario) => {
-    const ratingType = ELO;
-    const participantsCount = 144;
-    const {
-      eventIds: [eventId],
-      tournamentRecord,
-    } = mocksEngine.generateTournamentRecord({
-      eventProfiles: [{ eventName: 'QTest' }],
-      participantsProfile: {
-        scaledParticipantsCount: participantsCount,
-        category: { ratingType },
-        participantsCount,
-      },
-    });
+it.each(scenarios.slice(8))('can generate and seed a qualifying structure', (scenario) => {
+  const ratingType = ELO;
+  const participantsCount = 144;
+  const {
+    eventIds: [eventId],
+    tournamentRecord,
+  } = mocksEngine.generateTournamentRecord({
+    eventProfiles: [{ eventName: 'QTest' }],
+    participantsProfile: {
+      scaledParticipantsCount: participantsCount,
+      category: { ratingType },
+      participantsCount,
+    },
+  });
 
-    tournamentEngine.setState(tournamentRecord);
+  tournamentEngine.setState(tournamentRecord);
 
-    const event = tournamentEngine.getEvent({ eventId }).event;
-    expect(event.entries.length).toEqual(0);
+  const event = tournamentEngine.getEvent({ eventId }).event;
+  expect(event.entries.length).toEqual(0);
 
-    const participants = tournamentEngine.getParticipants().participants;
-    expect(participants.length).toEqual(participantsCount);
+  const participants = tournamentEngine.getParticipants().participants;
+  expect(participants.length).toEqual(participantsCount);
 
-    const scaledParticipants = participants.filter(
-      ({ timeItems }) => timeItems
-    );
-    expect(scaledParticipants.length).toEqual(participantsCount);
+  const scaledParticipants = participants.filter(({ timeItems }) => timeItems);
+  expect(scaledParticipants.length).toEqual(participantsCount);
 
-    const scaleAttributes = {
+  const scaleAttributes = {
+    eventType: SINGLES,
+    scaleType: RATING,
+    scaleName: ELO,
+  };
+  let result = tournamentEngine.participantScaleItem({
+    participant: scaledParticipants[0],
+    scaleAttributes,
+  });
+  expect(result.scaleItem.scaleName).toEqual(ratingType);
+
+  const participantIds = participants.map(getParticipantId);
+  const mainStageEntryIds = participantIds.slice(0, 12);
+  const qualifyingStageEntryIds = participantIds.slice(12);
+
+  const sortedQualifyingParticipantIds = qualifyingStageEntryIds.sort(
+    (a, b) =>
+      tournamentEngine.getParticipantScaleItem({
+        scaleAttributes,
+        participantId: a,
+      }).scaleItem.scaleValue -
+      tournamentEngine.getParticipantScaleItem({
+        scaleAttributes,
+        participantId: b,
+      }).scaleItem.scaleValue,
+  );
+
+  result = tournamentEngine.addEventEntries({
+    participantIds: mainStageEntryIds,
+    eventId,
+  });
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.addEventEntries({
+    participantIds: qualifyingStageEntryIds,
+    entryStage: QUALIFYING,
+    eventId,
+  });
+  expect(result.success).toEqual(true);
+
+  const qualifyingSeedingScaleName = 'QS';
+  const scaleValues = generateRange(1, scenario.seedsCount + 1);
+  scaleValues.forEach((scaleValue, index) => {
+    const scaleItem = {
+      scaleName: qualifyingSeedingScaleName,
+      scaleType: SEEDING,
       eventType: SINGLES,
-      scaleType: RATING,
-      scaleName: ELO,
+      scaleValue,
     };
-    let result = tournamentEngine.participantScaleItem({
-      participant: scaledParticipants[0],
-      scaleAttributes,
-    });
-    expect(result.scaleItem.scaleName).toEqual(ratingType);
-
-    const participantIds = participants.map(getParticipantId);
-    const mainStageEntryIds = participantIds.slice(0, 12);
-    const qualifyingStageEntryIds = participantIds.slice(12);
-
-    const sortedQualifyingParticipantIds = qualifyingStageEntryIds.sort(
-      (a, b) =>
-        tournamentEngine.getParticipantScaleItem({
-          scaleAttributes,
-          participantId: a,
-        }).scaleItem.scaleValue -
-        tournamentEngine.getParticipantScaleItem({
-          scaleAttributes,
-          participantId: b,
-        }).scaleItem.scaleValue
-    );
-
-    result = tournamentEngine.addEventEntries({
-      participantIds: mainStageEntryIds,
-      eventId,
+    const participantId = sortedQualifyingParticipantIds[index];
+    const result = tournamentEngine.setParticipantScaleItem({
+      participantId,
+      scaleItem,
     });
     expect(result.success).toEqual(true);
+  });
 
-    result = tournamentEngine.addEventEntries({
-      participantIds: qualifyingStageEntryIds,
-      entryStage: QUALIFYING,
-      eventId,
-    });
-    expect(result.success).toEqual(true);
+  result = tournamentEngine.generateDrawDefinition({
+    seedingProfile: scenario.seedingProfile,
+    qualifyingProfiles: [
+      {
+        structureProfiles: [
+          {
+            seedingScaleName: qualifyingSeedingScaleName,
+            ...scenario,
+          },
+        ],
+      },
+    ],
+    qualifyingOnly: true,
+    eventId,
+  });
+  expect(result.success).toEqual(true);
+  const drawDefinition = result.drawDefinition;
+  expect(drawDefinition.structures.length).toEqual(2);
+  expect(drawDefinition.structures[0].positionAssignments.filter(({ participantId }) => participantId).length).toEqual(
+    scenario.drawSize,
+  );
 
-    const qualifyingSeedingScaleName = 'QS';
-    const scaleValues = generateRange(1, scenario.seedsCount + 1);
-    scaleValues.forEach((scaleValue, index) => {
-      const scaleItem = {
-        scaleName: qualifyingSeedingScaleName,
-        scaleType: SEEDING,
-        eventType: SINGLES,
-        scaleValue,
-      };
-      const participantId = sortedQualifyingParticipantIds[index];
-      const result = tournamentEngine.setParticipantScaleItem({
-        participantId,
-        scaleItem,
-      });
-      expect(result.success).toEqual(true);
-    });
+  expect(drawDefinition.structures[1].matchUps.length).toEqual(0);
+  expect(drawDefinition.structures[0].seedAssignments.map(({ participantId }) => participantId).length).toEqual(
+    scenario.seedsCount,
+  );
 
-    result = tournamentEngine.generateDrawDefinition({
-      seedingProfile: scenario.seedingProfile,
-      qualifyingProfiles: [
-        {
-          structureProfiles: [
-            {
-              seedingScaleName: qualifyingSeedingScaleName,
-              ...scenario,
-            },
-          ],
-        },
-      ],
-      qualifyingOnly: true,
-      eventId,
-    });
-    expect(result.success).toEqual(true);
-    const drawDefinition = result.drawDefinition;
-    expect(drawDefinition.structures.length).toEqual(2);
-    expect(
-      drawDefinition.structures[0].positionAssignments.filter(
-        ({ participantId }) => participantId
-      ).length
-    ).toEqual(scenario.drawSize);
+  const participantIdDrawPositionMap = Object.assign(
+    {},
+    ...drawDefinition.structures[0].positionAssignments.map(({ participantId, drawPosition }) => ({
+      [participantId]: drawPosition,
+    })),
+  );
 
-    expect(drawDefinition.structures[1].matchUps.length).toEqual(0);
-    expect(
-      drawDefinition.structures[0].seedAssignments.map(
-        ({ participantId }) => participantId
-      ).length
-    ).toEqual(scenario.seedsCount);
-
-    const participantIdDrawPositionMap = Object.assign(
-      {},
-      ...drawDefinition.structures[0].positionAssignments.map(
-        ({ participantId, drawPosition }) => ({ [participantId]: drawPosition })
-      )
-    );
-
-    const seededDrawPositions =
-      drawDefinition.structures[0].seedAssignments.map((assignment) => [
-        assignment.seedNumber,
-        participantIdDrawPositionMap[assignment.participantId],
-      ]);
-    if (scenario.seededDrawPositions) {
-      expect(seededDrawPositions).toEqual(scenario.seededDrawPositions);
-    } else {
-      console.log({ seededDrawPositions });
-    }
+  const seededDrawPositions = drawDefinition.structures[0].seedAssignments.map((assignment) => [
+    assignment.seedNumber,
+    participantIdDrawPositionMap[assignment.participantId],
+  ]);
+  if (scenario.seededDrawPositions) {
+    expect(seededDrawPositions).toEqual(scenario.seededDrawPositions);
+  } else {
+    console.log({ seededDrawPositions });
   }
-);
+});

@@ -1,6 +1,6 @@
 import { getParticipantId } from '../../global/functions/extractors';
 import { getPositionAssignments } from './positionsGetter';
-import { unique } from '../../utilities/arrays';
+import { unique } from '../../tools/arrays';
 
 import { MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
 import { DrawDefinition, StageTypeUnion } from '../../types/tournamentTypes';

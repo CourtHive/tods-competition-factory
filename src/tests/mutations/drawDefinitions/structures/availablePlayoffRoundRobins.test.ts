@@ -1,8 +1,8 @@
 import { getPositionAssignments } from '../../../../query/drawDefinition/positionsGetter';
 import { isCompletedStructure } from '../../../../query/drawDefinition/structureActions';
 import { generateMatchUpOutcome } from '../../../helpers/generateMatchUpOutcome';
-import { generateRange, intersection } from '../../../../utilities/arrays';
-import { xa } from '../../../../utilities/objects';
+import { generateRange, intersection } from '../../../../tools/arrays';
+import { xa } from '../../../../tools/objects';
 import tournamentEngine from '../../../engines/syncEngine';
 import { mocksEngine } from '../../../..';
 import { expect, it } from 'vitest';

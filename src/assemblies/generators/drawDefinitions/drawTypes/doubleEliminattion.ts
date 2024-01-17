@@ -1,6 +1,6 @@
 import { doubleEliminationLinks } from '../links/doubleEliminationLinks';
 import { structureTemplate } from '../../templates/structureTemplate';
-import { constantToString } from '../../../../utilities/strings';
+import { constantToString } from '../../../../tools/strings';
 import { feedInMatchUps } from '../feedInMatchUps';
 import { treeMatchUps } from './eliminationTree';
 

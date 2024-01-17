@@ -5,15 +5,12 @@ import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructure
 import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
 import { assignDrawPositionBye } from './assignDrawPositionBye';
-import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
+import { makeDeepCopy } from '../../../tools/makeDeepCopy';
 import { updateSideLineUp } from '../lineUps/updateSideLineUp';
 import { findStructure } from '../../../acquire/findStructure';
 import { assignDrawPosition } from './positionAssignment';
 import { resetLineUps } from '../lineUps/resetLineUps';
-import {
-  modifyDrawNotice,
-  modifyPositionAssignmentsNotice,
-} from '../../notifications/drawNotifications';
+import { modifyDrawNotice, modifyPositionAssignmentsNotice } from '../../notifications/drawNotifications';
 
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
@@ -26,13 +23,7 @@ import {
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
-export function swapDrawPositionAssignments({
-  tournamentRecord,
-  drawDefinition,
-  drawPositions,
-  structureId,
-  event,
-}) {
+export function swapDrawPositionAssignments({ tournamentRecord, drawDefinition, drawPositions, structureId, event }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
   if (drawPositions?.length !== 2) {
@@ -98,11 +89,8 @@ export function swapDrawPositionAssignments({
       matchUpFilters: { matchUpTypes: [TEAM_MATCHUP] },
       inContext: true,
       structure,
-    }).matchUps.filter(
-      (matchUp) =>
-        matchUp.drawPositions?.some((drawPosition) =>
-          drawPositions.includes(drawPosition)
-        )
+    }).matchUps.filter((matchUp) =>
+      matchUp.drawPositions?.some((drawPosition) => drawPositions.includes(drawPosition)),
     );
     const structureMatchUps = getAllStructureMatchUps({
       structure,
@@ -114,13 +102,10 @@ export function swapDrawPositionAssignments({
         const drawPosition = inContextSide?.drawPosition;
         if (drawPositions.includes(drawPosition)) {
           const teamParticipantId = inContextSide.participantId;
-          const matchUp = structureMatchUps.find(
-            ({ matchUpId }) => matchUpId === inContextTargetMatchUp.matchUpId
-          );
+          const matchUp = structureMatchUps.find(({ matchUpId }) => matchUpId === inContextTargetMatchUp.matchUpId);
           const drawPositionSideIndex = inContextTargetMatchUp?.sides?.reduce(
-            (index, side, i) =>
-              side.drawPosition === drawPosition ? i : index,
-            undefined
+            (index, side, i) => (side.drawPosition === drawPosition ? i : index),
+            undefined,
           );
 
           updateSideLineUp({
@@ -151,8 +136,8 @@ function eliminationSwap({
   event,
 }) {
   // if not a CONTAINER then swap occurs within elimination structure
-  const assignments = structure?.positionAssignments.filter(
-    (assignment) => drawPositions?.includes(assignment.drawPosition)
+  const assignments = structure?.positionAssignments.filter((assignment) =>
+    drawPositions?.includes(assignment.drawPosition),
   );
 
   if (!assignments) {
@@ -167,8 +152,7 @@ function eliminationSwap({
   if (assignments.filter(({ bye }) => bye).length === 2) return { ...SUCCESS };
 
   // if both positions are qualifier no need to do anything
-  if (assignments.filter(({ qualifier }) => qualifier).length === 2)
-    return { ...SUCCESS };
+  if (assignments.filter(({ qualifier }) => qualifier).length === 2) return { ...SUCCESS };
 
   const isQualifierSwap = assignments.some(({ qualifier }) => qualifier);
   const isByeSwap = assignments.some(({ bye }) => bye);
@@ -207,12 +191,9 @@ function swapParticipantIdWithBYE({
 }) {
   // remove the assignment that has a participantId
   const originalByeAssignment = assignments.find(({ bye }) => bye);
-  const originalParticipantIdAssignment = assignments.find(
-    ({ participantId }) => participantId
-  );
+  const originalParticipantIdAssignment = assignments.find(({ participantId }) => participantId);
   const originalByeDrawPosition = originalByeAssignment.drawPosition;
-  const { participantId, drawPosition: originalParticipantIdDrawPosition } =
-    originalParticipantIdAssignment;
+  const { participantId, drawPosition: originalParticipantIdDrawPosition } = originalParticipantIdAssignment;
   const { structureId } = structure;
 
   // remove both drawPosition assignments
@@ -278,11 +259,11 @@ function eliminationPosiitonSwap({
       const { drawPosition } = assignment;
       const newAssignment = { ...assignments[1 - index], drawPosition };
       return { [drawPosition]: newAssignment };
-    })
+    }),
   );
 
   structure.positionAssignments = structure.positionAssignments.map(
-    (assignment) => newAssignments[assignment.drawPosition] || assignment
+    (assignment) => newAssignments[assignment.drawPosition] || assignment,
   );
 
   resetLineUps({
@@ -308,8 +289,8 @@ function roundRobinSwap({
   event,
 }) {
   const assignments = structure.structures?.reduce((assignments, structure) => {
-    const structureAssignments = structure?.positionAssignments.filter(
-      (assignment) => drawPositions?.includes(assignment.drawPosition)
+    const structureAssignments = structure?.positionAssignments.filter((assignment) =>
+      drawPositions?.includes(assignment.drawPosition),
     );
     if (structureAssignments) assignments.push(...structureAssignments);
     return assignments;
@@ -319,8 +300,7 @@ function roundRobinSwap({
   if (assignments.filter(({ bye }) => bye).length === 2) return { ...SUCCESS };
 
   // if both positions are QUALIFIER no need to do anything
-  if (assignments.filter(({ qualifier }) => qualifier).length === 2)
-    return { ...SUCCESS };
+  if (assignments.filter(({ qualifier }) => qualifier).length === 2) return { ...SUCCESS };
 
   resetLineUps({
     inContextDrawMatchUps,

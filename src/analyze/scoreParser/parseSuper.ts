@@ -1,4 +1,4 @@
-import { getSuper } from './utilities';
+import { getSuper } from './helpers';
 
 export function parseSuper(score) {
   const oneIndex = score.indexOf('1');

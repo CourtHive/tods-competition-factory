@@ -1,5 +1,5 @@
 import { generateCourts } from '../../../assemblies/generators/venues/generateCourts';
-import { xa } from '../../../utilities/objects';
+import { xa } from '../../../tools/objects';
 import { expect, it } from 'vitest';
 
 import { INVALID_VALUES, MISSING_VALUE } from '../../../constants/errorConditionConstants';

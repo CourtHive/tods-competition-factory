@@ -1,9 +1,9 @@
 import { resolveTournamentRecords } from '../../parameters/resolveTournamentRecords';
-import { definedAttributes } from '../../utilities/definedAttributes';
-import { makeDeepCopy } from '../../utilities/makeDeepCopy';
+import { definedAttributes } from '../../tools/definedAttributes';
+import { makeDeepCopy } from '../../tools/makeDeepCopy';
 import { addNotice } from '../../global/state/globalState';
 import { addExtension } from '../extensions/addExtension';
-import { UUID } from '../../utilities/UUID';
+import { UUID } from '../../tools/UUID';
 
 import { CONTEXT } from '../../constants/extensionConstants';
 import { ADD_VENUE } from '../../constants/topicConstants';
@@ -50,12 +50,7 @@ type AddVenueArgs = {
   venue: Venue;
 };
 
-function venueAdd({
-  tournamentRecord,
-  disableNotice,
-  context,
-  venue,
-}: AddVenueArgs): {
+function venueAdd({ tournamentRecord, disableNotice, context, venue }: AddVenueArgs): {
   success?: boolean;
   error?: ErrorType;
   venue?: Venue;
@@ -67,12 +62,9 @@ function venueAdd({
   if (!tournamentRecord.venues) tournamentRecord.venues = [];
   if (!venue.venueId) venue.venueId = UUID();
 
-  const venueExists = tournamentRecord.venues.reduce(
-    (exists: any, existingVenue) => {
-      return exists || existingVenue.venueId === venue.venueId;
-    },
-    undefined
-  );
+  const venueExists = tournamentRecord.venues.reduce((exists: any, existingVenue) => {
+    return exists || existingVenue.venueId === venue.venueId;
+  }, undefined);
 
   if (!venueExists) {
     if (context) {

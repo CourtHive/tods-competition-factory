@@ -1,17 +1,14 @@
 import { structureAssignedDrawPositions } from '../../../../query/drawDefinition/positionsGetter';
 import { getDrawStructures } from '../../../../acquire/findStructure';
 import mocksEngine from '../../../../assemblies/engines/mock';
-import { instanceCount } from '../../../../utilities/arrays';
+import { instanceCount } from '../../../../tools/arrays';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
 import { BYE } from '../../../../constants/matchUpStatusConstants';
 import { SINGLES } from '../../../../constants/eventConstants';
-import {
-  ELIMINATION,
-  FIRST_ROUND_LOSER_CONSOLATION,
-} from '../../../../constants/drawDefinitionConstants';
+import { ELIMINATION, FIRST_ROUND_LOSER_CONSOLATION } from '../../../../constants/drawDefinitionConstants';
 
 it('correctly assigns positions for Elimination structure', () => {
   const drawSize = 32;
@@ -105,9 +102,7 @@ it('correctly assigns BYE positions in consolation structure', () => {
   const { matchUps } = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: { structureIds: [consolationStructure.structureId] },
   });
-  const finalMatchUp = matchUps.find(
-    ({ finishingRound }) => finishingRound === 1
-  );
+  const finalMatchUp = matchUps.find(({ finishingRound }) => finishingRound === 1);
   expect(finalMatchUp.matchUpStatus).toEqual(BYE);
 
   const matchUpStatuses = matchUps.map(({ matchUpStatus }) => matchUpStatus);
@@ -160,9 +155,7 @@ it('correctly assigns BYE positions in consolation structure', () => {
   const { matchUps } = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: { structureIds: [consolationStructure.structureId] },
   });
-  const finalMatchUp = matchUps.find(
-    ({ finishingRound }) => finishingRound === 1
-  );
+  const finalMatchUp = matchUps.find(({ finishingRound }) => finishingRound === 1);
   expect(finalMatchUp.matchUpStatus).toEqual(BYE);
 
   result = structureAssignedDrawPositions({

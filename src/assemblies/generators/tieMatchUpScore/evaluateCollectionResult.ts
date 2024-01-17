@@ -1,9 +1,6 @@
-import { isConvertableInteger } from '../../../utilities/math';
+import { isConvertableInteger } from '../../../tools/math';
 
-import {
-  COMPLETED,
-  completedMatchUpStatuses,
-} from '../../../constants/matchUpStatusConstants';
+import { COMPLETED, completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 
 export function evaluateCollectionResult({
   collectionDefinition,
@@ -13,7 +10,7 @@ export function evaluateCollectionResult({
   tieMatchUps,
 }) {
   const collectionMatchUps = tieMatchUps.filter(
-    (matchUp) => matchUp.collectionId === collectionDefinition.collectionId
+    (matchUp) => matchUp.collectionId === collectionDefinition.collectionId,
   );
 
   // keep track of the values derived from matchUps
@@ -23,7 +20,7 @@ export function evaluateCollectionResult({
   let sideCollectionValues: number[] = [0, 0];
 
   const allCollectionMatchUpsCompleted = collectionMatchUps.every((matchUp) =>
-    completedMatchUpStatuses.includes(matchUp.matchUpStatus)
+    completedMatchUpStatuses.includes(matchUp.matchUpStatus),
   );
 
   const {
@@ -36,8 +33,7 @@ export function evaluateCollectionResult({
     setValue,
   } = collectionDefinition;
 
-  const belongsToValueGroup =
-    collectionGroupNumber && groupValueNumbers.includes(collectionGroupNumber);
+  const belongsToValueGroup = collectionGroupNumber && groupValueNumbers.includes(collectionGroupNumber);
 
   const sideWins = [0, 0];
   collectionMatchUps.forEach((matchUp) => {
@@ -60,25 +56,13 @@ export function evaluateCollectionResult({
   } else if (isConvertableInteger(scoreValue)) {
     collectionMatchUps.forEach((matchUp) => {
       matchUp.score?.sets?.forEach((set) => {
-        const {
-          side1TiebreakScore = 0,
-          side2TiebreakScore = 0,
-          side1Score = 0,
-          side2Score = 0,
-        } = set;
+        const { side1TiebreakScore = 0, side2TiebreakScore = 0, side1Score = 0, side2Score = 0 } = set;
 
-        if (
-          matchUp.matchUpStatus === COMPLETED ||
-          matchUp.winningSide ||
-          set.winningSide
-        ) {
+        if (matchUp.matchUpStatus === COMPLETED || matchUp.winningSide || set.winningSide) {
           if (side1Score || side2Score) {
             sideMatchUpValues[0] += side1Score;
             sideMatchUpValues[1] += side2Score;
-          } else if (
-            (side1TiebreakScore || side2TiebreakScore) &&
-            set.winningSide
-          ) {
+          } else if ((side1TiebreakScore || side2TiebreakScore) && set.winningSide) {
             sideMatchUpValues[set.winningSide - 1] += 1;
           }
         }
@@ -111,19 +95,15 @@ export function evaluateCollectionResult({
           isConvertableInteger(matchUpValue || setValue || scoreValue) &&
           sideMatchUpValues[0] !== sideMatchUpValues[1]
         ) {
-          collectionWinningSide =
-            sideMatchUpValues[0] > sideMatchUpValues[1] ? 1 : 2;
+          collectionWinningSide = sideMatchUpValues[0] > sideMatchUpValues[1] ? 1 : 2;
         } else if (sideWins[0] !== sideWins[1]) {
           collectionWinningSide = sideWins[0] > sideWins[1] ? 1 : 2;
         }
       }
     } else if (winCriteria?.valueGoal) {
-      collectionWinningSide = sideMatchUpValues.reduce(
-        (winningSide, side, i) => {
-          return side >= winCriteria.valueGoal ? i + 1 : winningSide;
-        },
-        0
-      );
+      collectionWinningSide = sideMatchUpValues.reduce((winningSide, side, i) => {
+        return side >= winCriteria.valueGoal ? i + 1 : winningSide;
+      }, 0);
     } else {
       const winGoal = Math.floor(collectionDefinition.matchUpCount / 2) + 1;
 
@@ -134,45 +114,31 @@ export function evaluateCollectionResult({
 
     if (collectionWinningSide) {
       if (belongsToValueGroup) {
-        groupValueGroups[collectionGroupNumber].values[
-          collectionWinningSide - 1
-        ] += collectionValue;
+        groupValueGroups[collectionGroupNumber].values[collectionWinningSide - 1] += collectionValue;
       } else {
         sideCollectionValues[collectionWinningSide - 1] += collectionValue;
       }
     }
   } else if (belongsToValueGroup) {
-    groupValueGroups[collectionGroupNumber].values[0] +=
-      sideMatchUpValues[0] || 0;
-    groupValueGroups[collectionGroupNumber].values[1] +=
-      sideMatchUpValues[1] || 0;
+    groupValueGroups[collectionGroupNumber].values[0] += sideMatchUpValues[0] || 0;
+    groupValueGroups[collectionGroupNumber].values[1] += sideMatchUpValues[1] || 0;
   } else {
     sideCollectionValues = sideMatchUpValues;
   }
 
   if (!belongsToValueGroup) {
-    sideCollectionValues.forEach(
-      (sideCollectionValue, i) => (sideTieValues[i] += sideCollectionValue || 0)
-    );
+    sideCollectionValues.forEach((sideCollectionValue, i) => (sideTieValues[i] += sideCollectionValue || 0));
   } else {
     groupValueGroups[collectionGroupNumber].sideWins[0] += sideWins[0] || 0;
     groupValueGroups[collectionGroupNumber].sideWins[1] += sideWins[1] || 0;
     groupValueGroups[collectionGroupNumber].allGroupMatchUpsCompleted =
-      groupValueGroups[collectionGroupNumber].allGroupMatchUpsCompleted &&
-      allCollectionMatchUpsCompleted;
-    groupValueGroups[collectionGroupNumber].matchUpsCount +=
-      collectionMatchUps.length;
+      groupValueGroups[collectionGroupNumber].allGroupMatchUpsCompleted && allCollectionMatchUpsCompleted;
+    groupValueGroups[collectionGroupNumber].matchUpsCount += collectionMatchUps.length;
   }
 }
 
-function getCollectionPositionValue({
-  collectionDefinition,
-  collectionPosition,
-}) {
-  const collectionValueProfiles =
-    collectionDefinition.collectionValueProfiles || [];
-  const profile = collectionValueProfiles?.find(
-    (profile) => profile.collectionPosition === collectionPosition
-  );
+function getCollectionPositionValue({ collectionDefinition, collectionPosition }) {
+  const collectionValueProfiles = collectionDefinition.collectionValueProfiles || [];
+  const profile = collectionValueProfiles?.find((profile) => profile.collectionPosition === collectionPosition);
   return profile?.matchUpValue;
 }

@@ -2,13 +2,9 @@ import { scheduledMatchUpDate } from '../../../query/matchUp/scheduledMatchUpDat
 import { matchUpTimeModifiers } from '../../../query/matchUp/timeModifiers';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
-import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
+import { mustBeAnArray } from '../../../tools/mustBeAnArray';
 import { addMatchUpTimeItem } from '../timeItems/matchUpTimeItems';
-import {
-  convertTime,
-  extractDate,
-  validTimeValue,
-} from '../../../utilities/dateTime';
+import { convertTime, extractDate, validTimeValue } from '../../../tools/dateTime';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
@@ -17,16 +13,8 @@ import {
   SCHEDULED_TIME,
   TIME_MODIFIERS,
 } from '../../../constants/timeItemConstants';
-import {
-  INVALID_TIME,
-  INVALID_VALUES,
-  MISSING_MATCHUP_ID,
-} from '../../../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  MatchUp,
-  Tournament,
-} from '../../../types/tournamentTypes';
+import { INVALID_TIME, INVALID_VALUES, MISSING_MATCHUP_ID } from '../../../constants/errorConditionConstants';
+import { DrawDefinition, MatchUp, Tournament } from '../../../types/tournamentTypes';
 
 type AddScheduleAttributeArgs = {
   tournamentRecord?: Tournament;
@@ -51,21 +39,12 @@ export function addMatchUpScheduledTime(params: AddMatchUpScheduledTimeArgs) {
   const stack = 'addMatchUpScheduledTime';
   let matchUp = params.matchUp;
 
-  const {
-    removePriorValues,
-    tournamentRecord,
-    drawDefinition,
-    disableNotice,
-    scheduledTime,
-    matchUpId,
-  } = params;
+  const { removePriorValues, tournamentRecord, drawDefinition, disableNotice, scheduledTime, matchUpId } = params;
 
-  if (!matchUpId)
-    return decorateResult({ result: { error: MISSING_MATCHUP_ID }, stack });
+  if (!matchUpId) return decorateResult({ result: { error: MISSING_MATCHUP_ID }, stack });
 
   // must support undefined as a value so that scheduledTime can be cleared
-  if (!validTimeValue(scheduledTime))
-    return decorateResult({ result: { error: INVALID_TIME }, stack });
+  if (!validTimeValue(scheduledTime)) return decorateResult({ result: { error: INVALID_TIME }, stack });
 
   if (!matchUp) {
     const result = findDrawMatchUp({ drawDefinition, matchUpId });
@@ -78,8 +57,7 @@ export function addMatchUpScheduledTime(params: AddMatchUpScheduledTimeArgs) {
   const scheduledDate = scheduledMatchUpDate({ matchUp }).scheduledDate;
   const keepDate = timeDate && !scheduledDate;
 
-  const existingTimeModifiers =
-    matchUpTimeModifiers({ matchUp }).timeModifiers || [];
+  const existingTimeModifiers = matchUpTimeModifiers({ matchUp }).timeModifiers || [];
 
   if (existingTimeModifiers?.length) {
     const result = addMatchUpTimeModifiers({
@@ -126,8 +104,7 @@ export function addMatchUpTimeModifiers({
   timeModifiers: any[];
 }) {
   const stack = 'addMatchUpTimeModifiers';
-  if (!matchUpId)
-    return decorateResult({ result: { error: MISSING_MATCHUP_ID }, stack });
+  if (!matchUpId) return decorateResult({ result: { error: MISSING_MATCHUP_ID }, stack });
 
   if (timeModifiers !== undefined && !Array.isArray(timeModifiers))
     return decorateResult({
@@ -141,20 +118,15 @@ export function addMatchUpTimeModifiers({
     if (result.error) return decorateResult({ result, stack });
     matchUp = result.matchUp;
   }
-  let existingTimeModifiers =
-    matchUpTimeModifiers({ matchUp }).timeModifiers || [];
-  const toBeAdded = timeModifiers.filter(
-    (modifier) => !existingTimeModifiers.includes(modifier)
-  );
+  let existingTimeModifiers = matchUpTimeModifiers({ matchUp }).timeModifiers || [];
+  const toBeAdded = timeModifiers.filter((modifier) => !existingTimeModifiers.includes(modifier));
   if (timeModifiers.length && !toBeAdded.length) return { ...SUCCESS };
 
   // remove all existing exclusives if incoming includes exclusive
-  const containsExclusive = toBeAdded.some((modifier) =>
-    MUTUALLY_EXCLUSIVE_TIME_MODIFIERS.includes(modifier)
-  );
+  const containsExclusive = toBeAdded.some((modifier) => MUTUALLY_EXCLUSIVE_TIME_MODIFIERS.includes(modifier));
   if (containsExclusive) {
     existingTimeModifiers = existingTimeModifiers.filter(
-      (modifier) => !MUTUALLY_EXCLUSIVE_TIME_MODIFIERS.includes(modifier)
+      (modifier) => !MUTUALLY_EXCLUSIVE_TIME_MODIFIERS.includes(modifier),
     );
 
     // scheduledTime should be removed for exclusive timeModifiers
@@ -170,9 +142,7 @@ export function addMatchUpTimeModifiers({
   }
 
   // undefined value when array is empty;
-  const itemValue = !timeModifiers?.length
-    ? undefined
-    : [...toBeAdded, ...existingTimeModifiers];
+  const itemValue = !timeModifiers?.length ? undefined : [...toBeAdded, ...existingTimeModifiers];
 
   const timeItem = {
     itemType: TIME_MODIFIERS,

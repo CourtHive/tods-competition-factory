@@ -1,5 +1,4 @@
 export { getCompetitionParticipants } from '../../../query/participants/getCompetitionParticipants';
-export { participantScheduledMatchUps } from '../../../query/matchUps/participantScheduledMatchUps';
 export { getParticipantEventDetails } from '../../../query/participants/getParticipantEventDetails';
 export { getParticipantMembership } from '../../../query/participants/getParticipantMembership';
 export { getParticipantSchedules } from '../../../query/participants/getParticipantSchedules';

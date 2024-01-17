@@ -1,5 +1,5 @@
-import { numericSort } from '../../utilities/sorting';
-import { chunkArray } from '../../utilities/arrays';
+import { numericSort } from '../../tools/sorting';
+import { chunkArray } from '../../tools/arrays';
 
 export function reduceGroupedOrder({ groupedOrder, roundPositionsCount }) {
   if (!groupedOrder || groupedOrder?.length <= roundPositionsCount) {

@@ -1,13 +1,10 @@
-import { shuffleArray, unique } from '../../../utilities/arrays';
+import { shuffleArray, unique } from '../../../tools/arrays';
 import mocksEngine from '../../../assemblies/engines/mock';
 import competitionEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { SINGLES } from '../../../constants/eventConstants';
-import {
-  PLAY_OFF,
-  ROUND_ROBIN_WITH_PLAYOFF,
-} from '../../../constants/drawDefinitionConstants';
+import { PLAY_OFF, ROUND_ROBIN_WITH_PLAYOFF } from '../../../constants/drawDefinitionConstants';
 
 it('will not schedule RR PLAY_OFF rounds before MAIN rounds', () => {
   const venueProfiles = [
@@ -50,9 +47,7 @@ it('will not schedule RR PLAY_OFF rounds before MAIN rounds', () => {
   // even if the rounds are shuffled to be "out of order" the test will still work
   const rounds = shuffleArray(derivedRounds);
 
-  const schedulingProfile = [
-    { scheduleDate: startDate, venues: [{ venueId, rounds }] },
-  ];
+  const schedulingProfile = [{ scheduleDate: startDate, venues: [{ venueId, rounds }] }];
 
   let result = competitionEngine.validateSchedulingProfile({
     schedulingProfile,
@@ -78,25 +73,19 @@ it('will not schedule RR PLAY_OFF rounds before MAIN rounds', () => {
   const scheduledMatchUpIds = result.scheduledMatchUpIds[startDate];
   expect(scheduledMatchUpIds.length).toEqual(27);
 
-  const dependencyDeferredMatchUpIds = Object.keys(
-    result.dependencyDeferredMatchUpIds[startDate]
-  );
+  const dependencyDeferredMatchUpIds = Object.keys(result.dependencyDeferredMatchUpIds[startDate]);
   // this is the most important test of all.  Scheduling of the 3 PLAY_OFF matchUps was deferred until all dependencies were resolved.
   expect(dependencyDeferredMatchUpIds.length).toEqual(3);
   const dependencyDefferredMatchUps = matchUps.filter(({ matchUpId }) =>
-    dependencyDeferredMatchUpIds.includes(matchUpId)
+    dependencyDeferredMatchUpIds.includes(matchUpId),
   );
-  expect(unique(dependencyDefferredMatchUps.map(({ stage }) => stage))).toEqual(
-    [PLAY_OFF]
-  );
+  expect(unique(dependencyDefferredMatchUps.map(({ stage }) => stage))).toEqual([PLAY_OFF]);
 
   const matchUpScheduleTimes = result.matchUpScheduleTimes;
   expect(Object.keys(matchUpScheduleTimes).length).toEqual(27);
 
   const targetMatchUpIds = Object.keys(matchUpScheduleTimes).slice(24);
-  const targetMatchUps = matchUps.filter(({ matchUpId }) =>
-    targetMatchUpIds.includes(matchUpId)
-  );
+  const targetMatchUps = matchUps.filter(({ matchUpId }) => targetMatchUpIds.includes(matchUpId));
 
   expect(unique(targetMatchUps.map(({ stage }) => stage))).toEqual([PLAY_OFF]);
 });

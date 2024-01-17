@@ -1,7 +1,7 @@
 import { getDateTimeBoundary } from '../../mutate/matchUps/schedule/schedulers/utils/getTimeBoundary';
 import { getCourtDateAvailability } from './getCourtDateAvailability';
 import { generateTimeSlots } from '../../assemblies/generators/scheduling/generateTimeSlots';
-import { extractTime, minutesDifference, timeToDate } from '../../utilities/dateTime';
+import { extractTime, minutesDifference, timeToDate } from '../../tools/dateTime';
 
 export function getFirstTimeSlotStartTime({ averageMinutes, startTime, endTime, courts, date }) {
   // find the first timeSlot across all courts between startTime and endTime that can accommodate averageMatchUpMinutes

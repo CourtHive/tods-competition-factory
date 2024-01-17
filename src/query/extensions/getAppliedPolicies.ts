@@ -1,19 +1,10 @@
-import { makeDeepCopy } from '../../utilities/makeDeepCopy';
+import { makeDeepCopy } from '../../tools/makeDeepCopy';
 
 import { APPLIED_POLICIES } from '../../constants/extensionConstants';
 import { PolicyDefinitions } from '../../types/factoryTypes';
 import { SUCCESS } from '../../constants/resultConstants';
-import {
-  ErrorType,
-  MISSING_POLICY_TYPE,
-  POLICY_NOT_FOUND,
-} from '../../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  Event,
-  Structure,
-  Tournament,
-} from '../../types/tournamentTypes';
+import { ErrorType, MISSING_POLICY_TYPE, POLICY_NOT_FOUND } from '../../constants/errorConditionConstants';
+import { DrawDefinition, Event, Structure, Tournament } from '../../types/tournamentTypes';
 
 type GetAppliedPoliciesArgs = {
   onlySpecifiedPolicyTypes?: boolean;
@@ -47,21 +38,11 @@ export function getAppliedPolicies({
 
   function extractAppliedPolicies(params) {
     const extensions = params?.extensions;
-    const extensionPolicies = extensions?.find(
-      (extension) => extension.name === APPLIED_POLICIES
-    )?.value;
+    const extensionPolicies = extensions?.find((extension) => extension.name === APPLIED_POLICIES)?.value;
     if (extensionPolicies) {
       for (const key of Object.keys(extensionPolicies))
-        if (
-          onlySpecifiedPolicyTypes
-            ? policyTypes.includes(key)
-            : !policyTypes.length || policyTypes.includes(key)
-        ) {
-          appliedPolicies[key] = makeDeepCopy(
-            extensionPolicies[key],
-            false,
-            true
-          );
+        if (onlySpecifiedPolicyTypes ? policyTypes.includes(key) : !policyTypes.length || policyTypes.includes(key)) {
+          appliedPolicies[key] = makeDeepCopy(extensionPolicies[key], false, true);
         }
     }
   }
@@ -101,7 +82,5 @@ export function getPolicyDefinitions({
     if (policy) policyDefinitions[policyType] = policy;
   }
 
-  return Object.keys(policyDefinitions).length
-    ? { policyDefinitions }
-    : { info: POLICY_NOT_FOUND.message };
+  return Object.keys(policyDefinitions).length ? { policyDefinitions } : { info: POLICY_NOT_FOUND.message };
 }

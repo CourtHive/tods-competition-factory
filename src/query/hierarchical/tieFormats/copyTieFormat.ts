@@ -1,4 +1,4 @@
-import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
+import { makeDeepCopy } from '../../../tools/makeDeepCopy';
 
 import { TieFormat } from '../../../types/tournamentTypes';
 

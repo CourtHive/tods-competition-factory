@@ -1,13 +1,10 @@
 import { processNextMatchUps } from './processNextMatchUps';
-import { ensureInt } from '../../../../utilities/ensureInt';
+import { ensureInt } from '../../../../tools/ensureInt';
 import {
   addParticipantPotentialRecovery,
   checkParticipantProfileInitialization,
 } from './checkParticipantProfileInitialization';
-import {
-  addMinutesToTimeString,
-  extractTime,
-} from '../../../../utilities/dateTime';
+import { addMinutesToTimeString, extractTime } from '../../../../tools/dateTime';
 
 import { HydratedMatchUp } from '../../../../types/hydrated';
 
@@ -36,26 +33,17 @@ export function updateTimeAfterRecovery({
   const endTime = extractTime(matchUp?.schedule?.endTime);
   const timeAfterRecovery = endTime
     ? addMinutesToTimeString(endTime, ensureInt(recoveryMinutes))
-    : addMinutesToTimeString(
-        scheduleTime,
-        ensureInt(averageMatchUpMinutes) + ensureInt(recoveryMinutes)
-      );
+    : addMinutesToTimeString(scheduleTime, ensureInt(averageMatchUpMinutes) + ensureInt(recoveryMinutes));
 
   const typeChangeTimeAfterRecovery =
     typeChangeRecoveryMinutes &&
     (endTime
       ? addMinutesToTimeString(extractTime(endTime), typeChangeRecoveryMinutes)
-      : addMinutesToTimeString(
-          scheduleTime,
-          ensureInt(averageMatchUpMinutes) +
-            ensureInt(typeChangeRecoveryMinutes)
-        ));
-  const participantIdDependencies =
-    matchUpDependencies?.[matchUp.matchUpId]?.participantIds || [];
+      : addMinutesToTimeString(scheduleTime, ensureInt(averageMatchUpMinutes) + ensureInt(typeChangeRecoveryMinutes)));
+  const participantIdDependencies = matchUpDependencies?.[matchUp.matchUpId]?.participantIds || [];
 
   const potentialIndividualParticipantIds = (
-    (matchUp.roundPosition &&
-      matchUpPotentialParticipantIds[matchUp.matchUpId]) ||
+    (matchUp.roundPosition && matchUpPotentialParticipantIds[matchUp.matchUpId]) ||
     []
   ).flat();
 
@@ -65,14 +53,10 @@ export function updateTimeAfterRecovery({
       participantId,
     });
 
-    const matchUpTypeChange =
-      individualParticipantProfiles[participantId].priorMatchUpType !==
-      matchUp.matchUpType;
+    const matchUpTypeChange = individualParticipantProfiles[participantId].priorMatchUpType !== matchUp.matchUpType;
 
     // if matchUpType of previous matchUp is different, use typeChangeTimeAfterRecovery (if available)
-    const recoveryValue = matchUpTypeChange
-      ? typeChangeTimeAfterRecovery || timeAfterRecovery
-      : timeAfterRecovery;
+    const recoveryValue = matchUpTypeChange ? typeChangeTimeAfterRecovery || timeAfterRecovery : timeAfterRecovery;
 
     // check whether this participantId is potential or actual for this matchUp
     if (potentialIndividualParticipantIds.includes(participantId)) {
@@ -84,8 +68,7 @@ export function updateTimeAfterRecovery({
         scheduleTime,
       });
     } else {
-      individualParticipantProfiles[participantId].timeAfterRecovery =
-        recoveryValue;
+      individualParticipantProfiles[participantId].timeAfterRecovery = recoveryValue;
 
       individualParticipantProfiles[participantId].bookings.push({
         scheduleTime,

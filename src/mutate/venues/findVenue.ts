@@ -1,5 +1,5 @@
 import { getLinkedTournamentIds } from '../../query/tournaments/getLinkedTournamentIds';
-import { makeDeepCopy } from '../../utilities/makeDeepCopy';
+import { makeDeepCopy } from '../../tools/makeDeepCopy';
 import { addVenue } from './addVenue';
 
 import { Tournament, Venue } from '../../types/tournamentTypes';
@@ -18,11 +18,11 @@ type FindVenueArgs = {
   venueId: string;
 };
 
-export function findVenue({
-  tournamentRecords,
-  tournamentRecord,
-  venueId,
-}: FindVenueArgs): { success?: boolean; venue?: Venue; error?: ErrorType } {
+export function findVenue({ tournamentRecords, tournamentRecord, venueId }: FindVenueArgs): {
+  success?: boolean;
+  venue?: Venue;
+  error?: ErrorType;
+} {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!venueId) return { error: MISSING_VENUE_ID };
 

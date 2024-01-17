@@ -8,11 +8,8 @@ import { setMatchUpState } from './matchUpStatus/setMatchUpState';
 import { updateTieMatchUpScore } from './score/tieMatchUpScore';
 import { resetTieFormat } from '../tieFormat/resetTieFormat';
 import { findStructure } from '../../acquire/findStructure';
-import { isString } from '../../utilities/objects';
-import {
-  ResultType,
-  decorateResult,
-} from '../../global/functions/decorateResult';
+import { isString } from '../../tools/objects';
+import { ResultType, decorateResult } from '../../global/functions/decorateResult';
 
 import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
 import { TEAM_EVENT } from '../../constants/eventConstants';
@@ -59,8 +56,7 @@ export function resetScorecard(params: ResetScoreCardArgs): ResultType {
       result: { error: MISSING_DRAW_DEFINITION },
       stack,
     });
-  if (!matchUpId)
-    return decorateResult({ result: { error: MISSING_MATCHUP_ID }, stack });
+  if (!matchUpId) return decorateResult({ result: { error: MISSING_MATCHUP_ID }, stack });
   if (!isString(matchUpId))
     return decorateResult({
       result: { error: INVALID_VALUES, matchUpId },
@@ -77,13 +73,9 @@ export function resetScorecard(params: ResetScoreCardArgs): ResultType {
   });
 
   // Find target matchUp ------------------------------------------------------
-  const matchUp = matchUpsMap.drawMatchUps.find(
-    (matchUp) => matchUp.matchUpId === matchUpId
-  );
+  const matchUp = matchUpsMap.drawMatchUps.find((matchUp) => matchUp.matchUpId === matchUpId);
 
-  const inContextMatchUp = inContextDrawMatchUps?.find(
-    (matchUp) => matchUp.matchUpId === matchUpId
-  );
+  const inContextMatchUp = inContextDrawMatchUps?.find((matchUp) => matchUp.matchUpId === matchUpId);
 
   if (!matchUp || !inContextDrawMatchUps) return { error: MATCHUP_NOT_FOUND };
 
@@ -147,15 +139,12 @@ export function resetScorecard(params: ResetScoreCardArgs): ResultType {
     })?.tieFormat;
 
     if (matchUp.tieFormat && inheritedTieFormat) {
-      const {
-        matchUpCountDifference,
-        descendantDifferences,
-        ancestorDifferences,
-        valueDifference,
-      } = compareTieFormats({
-        descendant: matchUp.tieFormat,
-        ancestor: inheritedTieFormat,
-      });
+      const { matchUpCountDifference, descendantDifferences, ancestorDifferences, valueDifference } = compareTieFormats(
+        {
+          descendant: matchUp.tieFormat,
+          ancestor: inheritedTieFormat,
+        },
+      );
 
       if (
         descendantDifferences.collectionIds.length === 1 &&

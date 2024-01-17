@@ -1,10 +1,10 @@
 import { getStructureGroups } from '../../../../query/structure/getStructureGroups';
-import { coerceEven, isConvertableInteger } from '../../../../utilities/math';
+import { coerceEven, isConvertableInteger } from '../../../../tools/math';
 import { decorateResult } from '../../../../global/functions/decorateResult';
 import { addExtension } from '../../../../mutate/extensions/addExtension';
 import { generateQualifyingLink } from '../links/generateQualifyingLink';
 import structureTemplate from '../../templates/structureTemplate';
-import { constantToString } from '../../../../utilities/strings';
+import { constantToString } from '../../../../tools/strings';
 import { generateRoundRobin } from './roundRobin/roundRobin';
 import { treeMatchUps } from './eliminationTree';
 
@@ -20,19 +20,8 @@ import {
   MISSING_DRAW_SIZE,
   STRUCTURE_NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
-import {
-  POSITION,
-  QUALIFYING,
-  ROUND_ROBIN,
-  WINNER,
-} from '../../../../constants/drawDefinitionConstants';
-import {
-  DrawDefinition,
-  DrawLink,
-  DrawTypeUnion,
-  Event,
-  Structure,
-} from '../../../../types/tournamentTypes';
+import { POSITION, QUALIFYING, ROUND_ROBIN, WINNER } from '../../../../constants/drawDefinitionConstants';
+import { DrawDefinition, DrawLink, DrawTypeUnion, Event, Structure } from '../../../../types/tournamentTypes';
 
 type GenerateQualifyingStructureArgs = {
   appliedPolicies?: PolicyDefinitions;
@@ -56,9 +45,7 @@ type GenerateQualifyingStructureArgs = {
 
 // for use when adding a qualifying structure to an existing drawDefinition
 // not for use when generating structures from qualifyingProfiles
-export function generateQualifyingStructure(
-  params: GenerateQualifyingStructureArgs
-): {
+export function generateQualifyingStructure(params: GenerateQualifyingStructureArgs): {
   qualifyingDrawPositionsCount?: number;
   qualifiersCount?: number;
   structure?: Structure;
@@ -76,10 +63,8 @@ export function generateQualifyingStructure(
 
   if (
     (params.drawSize && !isConvertableInteger(params.drawSize)) ||
-    (params.participantsCount &&
-      !isConvertableInteger(params.participantsCount)) ||
-    (params.qualifyingPositions &&
-      !isConvertableInteger(params.qualifyingPositions))
+    (params.participantsCount && !isConvertableInteger(params.participantsCount)) ||
+    (params.qualifyingPositions && !isConvertableInteger(params.qualifyingPositions))
   ) {
     return decorateResult({ result: { error: INVALID_VALUES }, stack });
   }
@@ -117,10 +102,7 @@ export function generateQualifyingStructure(
       stack,
     });
 
-  let roundLimit: number | undefined,
-    roundsCount: number | undefined,
-    structure: Structure | undefined,
-    matchUps;
+  let roundLimit: number | undefined, roundsCount: number | undefined, structure: Structure | undefined, matchUps;
   let qualifiersCount = 0;
   let finishingPositions;
   const stageSequence = 1;
@@ -143,10 +125,8 @@ export function generateQualifyingStructure(
   const isPreQualifying = structureProfile.stage === QUALIFYING;
   const preQualifyingNaming =
     appliedPolicies?.[POLICY_TYPE_ROUND_NAMING]?.namingConventions?.pre ??
-    POLICY_ROUND_NAMING_DEFAULT[POLICY_TYPE_ROUND_NAMING]?.namingConventions
-      ?.pre;
-  const pre =
-    isPreQualifying && preQualifyingNaming ? `${preQualifyingNaming}-` : '';
+    POLICY_ROUND_NAMING_DEFAULT[POLICY_TYPE_ROUND_NAMING]?.namingConventions?.pre;
+  const pre = isPreQualifying && preQualifyingNaming ? `${preQualifyingNaming}-` : '';
 
   const qualifyingStructureName =
     structureName ??
@@ -155,21 +135,20 @@ export function generateQualifyingStructure(
       : `${pre}${constantToString(QUALIFYING)}`);
 
   if (drawType === ROUND_ROBIN) {
-    const { maxRoundNumber /*, groupSize*/, structures, groupCount } =
-      generateRoundRobin({
-        structureName: structureName ?? qualifyingStructureName,
-        structureId: structureId ?? uuids?.pop(),
-        stage: QUALIFYING,
-        structureOptions,
-        appliedPolicies,
-        stageSequence,
-        matchUpType,
-        roundTarget,
-        idPrefix,
-        drawSize,
-        isMock,
-        uuids,
-      });
+    const { maxRoundNumber /*, groupSize*/, structures, groupCount } = generateRoundRobin({
+      structureName: structureName ?? qualifyingStructureName,
+      structureId: structureId ?? uuids?.pop(),
+      stage: QUALIFYING,
+      structureOptions,
+      appliedPolicies,
+      stageSequence,
+      matchUpType,
+      roundTarget,
+      idPrefix,
+      drawSize,
+      isMock,
+      uuids,
+    });
     qualifiersCount = groupCount;
     roundLimit = maxRoundNumber;
     structure = structures[0];
@@ -205,9 +184,7 @@ export function generateQualifyingStructure(
       });
     }
 
-    qualifiersCount = matchUps?.filter(
-      (matchUp) => matchUp.roundNumber === roundLimit
-    )?.length;
+    qualifiersCount = matchUps?.filter((matchUp) => matchUp.roundNumber === roundLimit)?.length;
   }
 
   // order of operations is important here!! finalQualifier positions is not yet updated when this step occurs

@@ -1,6 +1,6 @@
 import mocksEngine from '../../../assemblies/engines/mock';
-import { extractTime } from '../../../utilities/dateTime';
-import { intersection } from '../../../utilities/arrays';
+import { extractTime } from '../../../tools/dateTime';
+import { intersection } from '../../../tools/arrays';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
@@ -45,87 +45,80 @@ it.each([
     roundNumbers: [1, 3, 2, 4],
     expectedErrors: 2,
   },
-])(
-  'can clear scheduled matchUps',
-  ({ drawSize, drawType, roundNumbers, expectedErrors }) => {
-    const venueProfiles = [
-      {
-        startTime: '08:00',
-        endTime: '19:00',
-        courtsCount: 4,
-      },
-    ];
+])('can clear scheduled matchUps', ({ drawSize, drawType, roundNumbers, expectedErrors }) => {
+  const venueProfiles = [
+    {
+      startTime: '08:00',
+      endTime: '19:00',
+      courtsCount: 4,
+    },
+  ];
 
-    const eventProfiles = [
-      {
-        eventExtensions: [],
-        eventAttributes: {},
-        eventName: 'Event Test',
-        drawProfiles: [
-          {
-            drawSize,
-            drawType,
-          },
-        ],
-      },
-    ];
-    const startDate = '2022-01-01';
-    const endDate = '2022-01-07';
-    const {
-      drawIds,
-      venueIds: [venueId],
-      tournamentRecord,
-    } = mocksEngine.generateTournamentRecord({
-      eventProfiles,
-      venueProfiles,
-      startDate,
-      endDate,
-    });
-
-    tournamentEngine.setState(tournamentRecord);
-
-    tournamentEngine.attachPolicies({
-      policyDefinitions: POLICY_SCHEDULING_DEFAULT,
-    });
-
-    const { tournamentId } = tournamentRecord;
-
-    const drawId = drawIds[0];
-    for (const roundNumber of roundNumbers) {
-      const {
-        event: { eventId },
-        drawDefinition: {
-          structures: [{ structureId }],
+  const eventProfiles = [
+    {
+      eventExtensions: [],
+      eventAttributes: {},
+      eventName: 'Event Test',
+      drawProfiles: [
+        {
+          drawSize,
+          drawType,
         },
-      } = tournamentEngine.getEvent({ drawId });
-      const result = tournamentEngine.addSchedulingProfileRound({
-        round: { tournamentId, eventId, drawId, structureId, roundNumber },
-        scheduleDate: startDate,
-        venueId,
-      });
-      expect(result.success).toEqual(true);
-    }
+      ],
+    },
+  ];
+  const startDate = '2022-01-01';
+  const endDate = '2022-01-07';
+  const {
+    drawIds,
+    venueIds: [venueId],
+    tournamentRecord,
+  } = mocksEngine.generateTournamentRecord({
+    eventProfiles,
+    venueProfiles,
+    startDate,
+    endDate,
+  });
 
-    const { schedulingProfile } = tournamentEngine.getSchedulingProfile();
-    const rounds = schedulingProfile[0].venues[0].rounds;
-    const { orderedMatchUpIds } = tournamentEngine.getScheduledRoundsDetails({
-      rounds,
-    });
-    const { matchUpDependencies } = tournamentEngine.getMatchUpDependencies();
+  tournamentEngine.setState(tournamentRecord);
 
-    const schedulingErrors: any[] = [];
-    orderedMatchUpIds.forEach((matchUpId, index) => {
-      const followingMatchUpIds = orderedMatchUpIds.slice(index + 1);
-      const orderErrors = intersection(
-        followingMatchUpIds,
-        matchUpDependencies[matchUpId].matchUpIds
-      );
-      if (orderErrors.length)
-        schedulingErrors.push({ [matchUpId]: orderErrors });
+  tournamentEngine.attachPolicies({
+    policyDefinitions: POLICY_SCHEDULING_DEFAULT,
+  });
+
+  const { tournamentId } = tournamentRecord;
+
+  const drawId = drawIds[0];
+  for (const roundNumber of roundNumbers) {
+    const {
+      event: { eventId },
+      drawDefinition: {
+        structures: [{ structureId }],
+      },
+    } = tournamentEngine.getEvent({ drawId });
+    const result = tournamentEngine.addSchedulingProfileRound({
+      round: { tournamentId, eventId, drawId, structureId, roundNumber },
+      scheduleDate: startDate,
+      venueId,
     });
-    expect(schedulingErrors.length).toEqual(expectedErrors);
+    expect(result.success).toEqual(true);
   }
-);
+
+  const { schedulingProfile } = tournamentEngine.getSchedulingProfile();
+  const rounds = schedulingProfile[0].venues[0].rounds;
+  const { orderedMatchUpIds } = tournamentEngine.getScheduledRoundsDetails({
+    rounds,
+  });
+  const { matchUpDependencies } = tournamentEngine.getMatchUpDependencies();
+
+  const schedulingErrors: any[] = [];
+  orderedMatchUpIds.forEach((matchUpId, index) => {
+    const followingMatchUpIds = orderedMatchUpIds.slice(index + 1);
+    const orderErrors = intersection(followingMatchUpIds, matchUpDependencies[matchUpId].matchUpIds);
+    if (orderErrors.length) schedulingErrors.push({ [matchUpId]: orderErrors });
+  });
+  expect(schedulingErrors.length).toEqual(expectedErrors);
+});
 
 it('does not schedule subsequent rounds if dependencies are unscheduled', () => {
   const startDate = '2022-01-01';
@@ -169,9 +162,7 @@ it('does not schedule subsequent rounds if dependencies are unscheduled', () => 
   const { matchUps } = tournamentEngine.allCompetitionMatchUps();
   const { roundMatchUps } = tournamentEngine.getRoundMatchUps({ matchUps });
   const roundScheduledTimes = Object.keys(roundMatchUps).map((roundNumber) =>
-    roundMatchUps[roundNumber].map(({ schedule }) =>
-      extractTime(schedule.scheduledTime)
-    )
+    roundMatchUps[roundNumber].map(({ schedule }) => extractTime(schedule.scheduledTime)),
   );
   // prettier-ignore
   expect(roundScheduledTimes).toEqual([

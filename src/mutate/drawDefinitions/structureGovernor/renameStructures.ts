@@ -1,23 +1,16 @@
-import { isObject } from '../../../utilities/objects';
+import { isObject } from '../../../tools/objects';
 
 import { ResultType } from '../../../global/functions/decorateResult';
 import { DrawDefinition } from '../../../types/tournamentTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
-import {
-  INVALID_VALUES,
-  MISSING_DRAW_DEFINITION,
-  MISSING_VALUE,
-} from '../../../constants/errorConditionConstants';
+import { INVALID_VALUES, MISSING_DRAW_DEFINITION, MISSING_VALUE } from '../../../constants/errorConditionConstants';
 
 type RenameStructuresArgs = {
   drawDefinition: DrawDefinition;
   structureDetails: { structureId: string; structureName: string }[];
 };
 
-export function renameStructures({
-  drawDefinition,
-  structureDetails,
-}: RenameStructuresArgs): ResultType {
+export function renameStructures({ drawDefinition, structureDetails }: RenameStructuresArgs): ResultType {
   if (!Array.isArray(structureDetails)) return { error: INVALID_VALUES };
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
@@ -30,7 +23,7 @@ export function renameStructures({
         if (!structureId || !structureName) return;
         return { [structureId]: structureName };
       })
-      .filter(Boolean)
+      .filter(Boolean),
   );
 
   if (!Object.values(detailMap).length) {

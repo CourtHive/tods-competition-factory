@@ -2,33 +2,22 @@ import { getSchedulingProfile } from '../../../mutate/tournaments/schedulingProf
 import { allCompetitionMatchUps } from '../../matchUps/getAllCompetitionMatchUps';
 import { getMatchUpDependencies } from '../../matchUps/getMatchUpDependencies';
 import { getScheduledRoundsDetails } from './getScheduledRoundsDetails';
-import { intersection, unique } from '../../../utilities/arrays';
-import { isValidDateString } from '../../../utilities/dateTime';
+import { intersection, unique } from '../../../tools/arrays';
+import { isValidDateString } from '../../../tools/dateTime';
 
 import { TournamentRecords } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
-import {
-  INVALID_DATE,
-  INVALID_TOURNAMENT_RECORD,
-  INVALID_VALUES,
-} from '../../../constants/errorConditionConstants';
+import { INVALID_DATE, INVALID_TOURNAMENT_RECORD, INVALID_VALUES } from '../../../constants/errorConditionConstants';
 
 type GetSchedulingProfileIssuesArgs = {
   tournamentRecords: TournamentRecords;
   scheduleDates?: string[];
   periodLength?: number;
 };
-export function getSchedulingProfileIssues(
-  params?: GetSchedulingProfileIssuesArgs
-) {
-  const {
-    scheduleDates = [],
-    tournamentRecords,
-    periodLength = 30,
-  } = params ?? {};
+export function getSchedulingProfileIssues(params?: GetSchedulingProfileIssuesArgs) {
+  const { scheduleDates = [], tournamentRecords, periodLength = 30 } = params ?? {};
 
-  if (typeof tournamentRecords !== 'object')
-    return { error: INVALID_TOURNAMENT_RECORD };
+  if (typeof tournamentRecords !== 'object') return { error: INVALID_TOURNAMENT_RECORD };
   if (!Array.isArray(scheduleDates)) return { error: INVALID_VALUES };
 
   const validDates = scheduleDates.every(isValidDateString);
@@ -56,13 +45,12 @@ export function getSchedulingProfileIssues(
         if (venue) {
           const { rounds } = venue;
           const schedulingErrors: any = [];
-          const { orderedMatchUpIds, scheduledRoundsDetails } =
-            getScheduledRoundsDetails({
-              tournamentRecords,
-              periodLength,
-              matchUps,
-              rounds,
-            });
+          const { orderedMatchUpIds, scheduledRoundsDetails } = getScheduledRoundsDetails({
+            tournamentRecords,
+            periodLength,
+            matchUps,
+            rounds,
+          });
           const { matchUpDependencies } = getMatchUpDependencies({
             tournamentRecords,
             matchUps,
@@ -79,47 +67,33 @@ export function getSchedulingProfileIssues(
 
           orderedMatchUpIds?.forEach((matchUpId, index) => {
             const followingMatchUpIds = orderedMatchUpIds.slice(index + 1);
-            const shouldBeAfter = intersection(
-              followingMatchUpIds,
-              matchUpDependencies?.[matchUpId]?.matchUpIds || []
-            );
-            if (shouldBeAfter.length)
-              schedulingErrors.push({ matchUpId, shouldBeAfter });
+            const shouldBeAfter = intersection(followingMatchUpIds, matchUpDependencies?.[matchUpId]?.matchUpIds || []);
+            if (shouldBeAfter.length) schedulingErrors.push({ matchUpId, shouldBeAfter });
           });
           if (schedulingErrors.length) {
             issuesCount += schedulingErrors.length;
-            const errorsDetail = schedulingErrors.map(
-              ({ matchUpId, shouldBeAfter }) => {
-                const matchUpRoundIndex = getRoundIndex(matchUpId);
-                const earlierRoundIndices = unique(
-                  shouldBeAfter.map(getRoundIndex)
-                );
+            const errorsDetail = schedulingErrors.map(({ matchUpId, shouldBeAfter }) => {
+              const matchUpRoundIndex = getRoundIndex(matchUpId);
+              const earlierRoundIndices = unique(shouldBeAfter.map(getRoundIndex));
 
-                if (!roundIndexShouldBeAfter[scheduleDate]) {
-                  roundIndexShouldBeAfter[scheduleDate] = {};
-                }
-                if (!roundIndexShouldBeAfter[scheduleDate][matchUpRoundIndex])
-                  roundIndexShouldBeAfter[scheduleDate][matchUpRoundIndex] = [];
-                earlierRoundIndices.forEach((index) => {
-                  if (
-                    !roundIndexShouldBeAfter[scheduleDate][
-                      matchUpRoundIndex
-                    ].includes(index)
-                  ) {
-                    roundIndexShouldBeAfter[scheduleDate][
-                      matchUpRoundIndex
-                    ].push(index);
-                  }
-                });
-
-                return {
-                  matchUpId,
-                  matchUpRoundIndex,
-                  earlierRoundIndices,
-                  shouldBeAfter,
-                };
+              if (!roundIndexShouldBeAfter[scheduleDate]) {
+                roundIndexShouldBeAfter[scheduleDate] = {};
               }
-            );
+              if (!roundIndexShouldBeAfter[scheduleDate][matchUpRoundIndex])
+                roundIndexShouldBeAfter[scheduleDate][matchUpRoundIndex] = [];
+              earlierRoundIndices.forEach((index) => {
+                if (!roundIndexShouldBeAfter[scheduleDate][matchUpRoundIndex].includes(index)) {
+                  roundIndexShouldBeAfter[scheduleDate][matchUpRoundIndex].push(index);
+                }
+              });
+
+              return {
+                matchUpId,
+                matchUpRoundIndex,
+                earlierRoundIndices,
+                shouldBeAfter,
+              };
+            });
 
             issues.push(...errorsDetail);
           }
@@ -136,7 +110,7 @@ export function getSchedulingProfileIssues(
         return {
           [matchUpId]: { earlierRoundIndices, shouldBeAfter },
         };
-      })
+      }),
     ),
   };
 

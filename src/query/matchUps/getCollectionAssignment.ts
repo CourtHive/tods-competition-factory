@@ -1,6 +1,6 @@
 import { getCollectionPositionAssignments } from '../../mutate/events/getCollectionPositionAssignments';
 import { getPairedParticipant } from '../participant/getPairedParticipant';
-import { getTeamLineUp } from '../../mutate/drawDefinitions/getTeamLineUp';
+import { getTeamLineUp } from '../drawDefinition/getTeamLineUp';
 
 import { DrawDefinition, Participant, PositionAssignment } from '../../types/tournamentTypes';
 import { ParticipantMap, Substitution } from '../../types/factoryTypes';
@@ -96,8 +96,9 @@ export function getCollectionAssignment({
   const drawPositionCollectionAssignment: any =
     drawPositions
       ?.map((drawPosition) => {
-        const teamParticipantId = positionAssignments.find((assignment) => assignment.drawPosition === drawPosition)
-          ?.participantId;
+        const teamParticipantId = positionAssignments.find(
+          (assignment) => assignment.drawPosition === drawPosition,
+        )?.participantId;
 
         const side = sideLineUps?.find((lineUp) => lineUp?.drawPosition === drawPosition);
 

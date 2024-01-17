@@ -1,5 +1,5 @@
 import { checkRequiredParameters } from '../../parameters/checkRequiredParameters';
-import { unique } from '../../utilities/arrays';
+import { unique } from '../../tools/arrays';
 
 import { DOUBLES_EVENT, SINGLES_EVENT, TEAM_EVENT } from '../../constants/eventConstants';
 import { RANKING, RATING, SCALE, SEEDING } from '../../constants/scaleConstants';

@@ -1,25 +1,16 @@
 import { getTournamentInfo } from './getTournamentInfo';
-import { extractDate } from '../../utilities/dateTime';
+import { extractDate } from '../../tools/dateTime';
 
 import { TournamentRecords } from '../../types/factoryTypes';
-import {
-  ErrorType,
-  MISSING_DATE,
-  MISSING_TOURNAMENT_RECORDS,
-} from '../../constants/errorConditionConstants';
-import { isObject } from '../../utilities/objects';
+import { ErrorType, MISSING_DATE, MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
+import { isObject } from '../../tools/objects';
 
-export function getCompetitionDateRange({
-  tournamentRecords,
-}: {
-  tournamentRecords: TournamentRecords;
-}): {
+export function getCompetitionDateRange({ tournamentRecords }: { tournamentRecords: TournamentRecords }): {
   startDate?: Date;
   endDate?: Date;
   error?: ErrorType;
 } {
-  if (!isObject(tournamentRecords))
-    return { error: MISSING_TOURNAMENT_RECORDS };
+  if (!isObject(tournamentRecords)) return { error: MISSING_TOURNAMENT_RECORDS };
   const tournamentIds = Object.keys(tournamentRecords ?? {});
   const dateRange: {
     startDate: Date | undefined;
@@ -32,10 +23,7 @@ export function getCompetitionDateRange({
       } = getTournamentInfo({ tournamentRecord });
 
       const dateOfStart = startDate && new Date(extractDate(startDate));
-      if (
-        !dateRange.startDate ||
-        (dateOfStart && dateOfStart < dateRange.startDate)
-      ) {
+      if (!dateRange.startDate || (dateOfStart && dateOfStart < dateRange.startDate)) {
         dateRange.startDate = dateOfStart;
       }
 
@@ -46,13 +34,11 @@ export function getCompetitionDateRange({
 
       return dateRange;
     },
-    { startDate: undefined, endDate: undefined }
+    { startDate: undefined, endDate: undefined },
   );
 
-  const startDate =
-    dateRange.startDate && extractDate(dateRange.startDate.toISOString());
-  const endDate =
-    dateRange.endDate && extractDate(dateRange.endDate.toISOString());
+  const startDate = dateRange.startDate && extractDate(dateRange.startDate.toISOString());
+  const endDate = dateRange.endDate && extractDate(dateRange.endDate.toISOString());
 
   if (!startDate || !endDate) return { error: MISSING_DATE };
 

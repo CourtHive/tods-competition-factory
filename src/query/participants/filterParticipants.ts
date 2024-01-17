@@ -1,9 +1,9 @@
 import { getAllPositionedParticipantIds } from '../drawDefinition/positionsGetter';
 import { getParticipantId } from '../../global/functions/extractors';
-import { getAccessorValue } from '../../utilities/getAccessorValue';
+import { getAccessorValue } from '../../tools/getAccessorValue';
 import { getFlightProfile } from '../event/getFlightProfile';
 import { getTimeItem } from '../base/timeItems';
-import { unique } from '../../utilities/arrays';
+import { unique } from '../../tools/arrays';
 
 import { SIGN_IN_STATUS } from '../../constants/participantConstants';
 import { SINGLES } from '../../constants/eventConstants';
@@ -43,20 +43,13 @@ export function filterParticipants({
   } = participantFilters;
 
   const tournamentEvents =
-    (isValidFilterArray(eventIds) &&
-      tournamentRecord?.events?.filter(
-        (event) => eventIds?.includes(event.eventId)
-      )) ||
+    (isValidFilterArray(eventIds) && tournamentRecord?.events?.filter((event) => eventIds?.includes(event.eventId))) ||
     tournamentRecord?.events ||
     [];
 
-  const drawEnteredParticipantIds =
-    drawEntryStatuses &&
-    getDrawEntries({ drawEntryStatuses, tournamentEvents });
+  const drawEnteredParticipantIds = drawEntryStatuses && getDrawEntries({ drawEntryStatuses, tournamentEvents });
 
-  const eventEnteredParticipantIds =
-    eventEntryStatuses &&
-    getEventEntries({ eventEntryStatuses, tournamentEvents });
+  const eventEnteredParticipantIds = eventEntryStatuses && getEventEntries({ eventEntryStatuses, tournamentEvents });
 
   const positionedParticipantIds =
     positionedParticipants !== undefined &&
@@ -64,12 +57,8 @@ export function filterParticipants({
     tournamentEvents.reduce((participantIds, event) => {
       return participantIds.concat(
         ...(event.drawDefinitions || [])
-          .map(
-            (drawDefinition) =>
-              getAllPositionedParticipantIds({ drawDefinition })
-                .allPositionedParticipantIds
-          )
-          .filter(Boolean)
+          .map((drawDefinition) => getAllPositionedParticipantIds({ drawDefinition }).allPositionedParticipantIds)
+          .filter(Boolean),
       );
     }, []);
 
@@ -97,19 +86,13 @@ export function filterParticipants({
       person,
     } = participant;
 
-    const hasGender =
-      Array.isArray(genders) &&
-      genders?.length &&
-      person?.sex &&
-      genders.includes(person.sex);
+    const hasGender = Array.isArray(genders) && genders?.length && person?.sex && genders.includes(person.sex);
 
     if (enableOrFiltering) {
       return (
         (genders && hasGender) ||
-        (positionedParticipants &&
-          positionedParticipantIds.includes(participantId)) ||
-        (positionedParticipants === false &&
-          !positionedParticipantIds.includes(participantId)) ||
+        (positionedParticipants && positionedParticipantIds.includes(participantId)) ||
+        (positionedParticipants === false && !positionedParticipantIds.includes(participantId)) ||
         drawEnteredParticipantIds?.includes(participantId) ||
         eventEnteredParticipantIds?.includes(participantId) ||
         participantIds?.includes(participantId) ||
@@ -125,45 +108,30 @@ export function filterParticipants({
         (participantRoleResponsibilities &&
           isValidFilterArray(responsibilities) &&
           isValidFilterArray(participantRoleResponsibilities) &&
-          participantRoleResponsibilities.find(
-            (roleResponsbility) => responsibilities?.includes(roleResponsbility)
-          )) ||
-        (accessorValues?.length &&
-          isValidFilterArray(accessorValues) &&
-          participantHasAccessorValues(participant))
+          participantRoleResponsibilities.find((roleResponsbility) => responsibilities?.includes(roleResponsbility))) ||
+        (accessorValues?.length && isValidFilterArray(accessorValues) && participantHasAccessorValues(participant))
       );
     } else {
       return (
         (!genders || hasGender) &&
         (positionedParticipants === undefined ||
-          (positionedParticipants &&
-            positionedParticipantIds.includes(participantId)) ||
-          (positionedParticipants === false &&
-            !positionedParticipantIds.includes(participantId))) &&
-        (!drawEnteredParticipantIds ||
-          drawEnteredParticipantIds.includes(participantId)) &&
-        (!eventEnteredParticipantIds ||
-          eventEnteredParticipantIds.includes(participantId)) &&
+          (positionedParticipants && positionedParticipantIds.includes(participantId)) ||
+          (positionedParticipants === false && !positionedParticipantIds.includes(participantId))) &&
+        (!drawEnteredParticipantIds || drawEnteredParticipantIds.includes(participantId)) &&
+        (!eventEnteredParticipantIds || eventEnteredParticipantIds.includes(participantId)) &&
         (!participantIds || participantIds.includes(participantId)) &&
         (!signInStatus || participantSignInStatus === signInStatus) &&
         (!participantTypes ||
-          (participantType &&
-            isValidFilterArray(participantTypes) &&
-            participantTypes.includes(participantType))) &&
+          (participantType && isValidFilterArray(participantTypes) && participantTypes.includes(participantType))) &&
         (!participantRoles ||
-          (participantRole &&
-            isValidFilterArray(participantRoles) &&
-            participantRoles.includes(participantRole))) &&
+          (participantRole && isValidFilterArray(participantRoles) && participantRoles.includes(participantRole))) &&
         (!participantRoleResponsibilities ||
           (isValidFilterArray(responsibilities) &&
             isValidFilterArray(participantRoleResponsibilities) &&
-            participantRoleResponsibilities.find(
-              (roleResponsbility) =>
-                responsibilities?.includes(roleResponsbility)
+            participantRoleResponsibilities.find((roleResponsbility) =>
+              responsibilities?.includes(roleResponsbility),
             ))) &&
-        (!accessorValues?.length ||
-          (isValidFilterArray(accessorValues) &&
-            participantHasAccessorValues(participant)))
+        (!accessorValues?.length || (isValidFilterArray(accessorValues) && participantHasAccessorValues(participant)))
       );
     }
   });
@@ -172,22 +140,16 @@ export function filterParticipants({
     const participantIds = tournamentEvents
       .filter((event) => eventIds.includes(event.eventId))
       .map((event) => {
-        const enteredParticipantIds = (event.entries || []).map(
-          (entry) => entry.participantId
-        );
+        const enteredParticipantIds = (event.entries || []).map((entry) => entry.participantId);
         if (event.eventType === SINGLES) return enteredParticipantIds;
         const individualParticipantIds = (tournamentRecord?.participants ?? [])
-          .filter((participant) =>
-            enteredParticipantIds.includes(participant.participantId)
-          )
+          .filter((participant) => enteredParticipantIds.includes(participant.participantId))
           .map((participant) => participant.individualParticipantIds)
           .flat(1);
         return enteredParticipantIds.concat(...individualParticipantIds);
       })
       .flat(1);
-    participants = participants?.filter((participant) =>
-      participantIds.includes(participant.participantId)
-    );
+    participants = participants?.filter((participant) => participantIds.includes(participant.participantId));
   }
 
   return participants;
@@ -199,9 +161,7 @@ function isValidFilterArray(filter) {
 
 function getDrawEntries({ drawEntryStatuses, tournamentEvents }) {
   const statusFilter = ({ entryStatus }) =>
-    !Array.isArray(drawEntryStatuses)
-      ? true
-      : drawEntryStatuses.includes(entryStatus);
+    !Array.isArray(drawEntryStatuses) ? true : drawEntryStatuses.includes(entryStatus);
 
   return unique(
     tournamentEvents.reduce((entries, event) => {
@@ -209,19 +169,17 @@ function getDrawEntries({ drawEntryStatuses, tournamentEvents }) {
       const flightEntries =
         flightProfile?.flights
           ?.map(({ drawEntries }) =>
-            Array.isArray(drawEntries)
-              ? drawEntries.filter(statusFilter).map(getParticipantId)
-              : []
+            Array.isArray(drawEntries) ? drawEntries.filter(statusFilter).map(getParticipantId) : [],
           )
           .flat() || [];
 
       const drawEnteredParticipantIds =
         event.drawDefinitions?.map(({ entries }) =>
-          entries ? entries.filter(statusFilter).map(getParticipantId) : []
+          entries ? entries.filter(statusFilter).map(getParticipantId) : [],
         ) || [];
 
       return entries.concat(...flightEntries, ...drawEnteredParticipantIds);
-    }, [])
+    }, []),
   );
 }
 
@@ -230,13 +188,11 @@ function getEventEntries({ eventEntryStatuses, tournamentEvents }) {
     tournamentEvents.reduce((entries, event) => {
       const eventEntries = (event.entries || [])
         .filter(({ entryStatus }) =>
-          !Array.isArray(eventEntryStatuses)
-            ? true
-            : eventEntryStatuses.includes(entryStatus)
+          !Array.isArray(eventEntryStatuses) ? true : eventEntryStatuses.includes(entryStatus),
         )
         .map(getParticipantId);
 
       return entries.concat(...eventEntries);
-    }, [])
+    }, []),
   );
 }

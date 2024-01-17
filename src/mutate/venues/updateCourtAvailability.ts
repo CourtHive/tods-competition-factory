@@ -1,4 +1,4 @@
-import { generateDateRange, timeStringMinutes } from '../../utilities/dateTime';
+import { generateDateRange, timeStringMinutes } from '../../tools/dateTime';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
 import { SUCCESS } from '../../constants/resultConstants';

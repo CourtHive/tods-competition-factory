@@ -2,9 +2,9 @@ import { decorateResult } from '../../global/functions/decorateResult';
 import { addEventExtension } from '../extensions/addRemoveExtensions';
 import { getParticipantId } from '../../global/functions/extractors';
 import { getFlightProfile } from '../../query/event/getFlightProfile';
-import { intersection } from '../../utilities/arrays';
-import { ensureInt } from '../../utilities/ensureInt';
-import { UUID } from '../../utilities/UUID';
+import { intersection } from '../../tools/arrays';
+import { ensureInt } from '../../tools/ensureInt';
+import { UUID } from '../../tools/UUID';
 
 import { EXISTING_FLIGHT, INVALID_VALUES, MISSING_EVENT, MISSING_VALUE } from '../../constants/errorConditionConstants';
 import { FLIGHT_PROFILE } from '../../constants/extensionConstants';

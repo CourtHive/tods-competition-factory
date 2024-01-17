@@ -1,6 +1,6 @@
 import { generatePersonData } from '../../../assemblies/generators/mocks/generatePersonData';
-import { instanceCount, unique } from '../../../utilities/arrays';
-import { numericSort } from '../../../utilities/sorting';
+import { instanceCount, unique } from '../../../tools/arrays';
+import { numericSort } from '../../../tools/sorting';
 import namesData from '../../../fixtures/data/names.json';
 import { it, expect } from 'vitest';
 
@@ -53,17 +53,13 @@ it('minimizes duplication of names', () => {
   let firstCount = Object.keys(firstInstances).length;
   // fails if there are any duplicated firstMale names
   expect(firstCount).toEqual(firstMale.length);
-  let firstInstanceRange = unique(Object.values(firstInstances)).sort(
-    numericSort
-  );
+  let firstInstanceRange = unique(Object.values(firstInstances)).sort(numericSort);
   expect(firstInstanceRange[1] - firstInstanceRange[0]).toEqual(1);
 
   let lastCount = Object.keys(lastInstances).length;
   // fails if there are any duplicated lastNames
   expect(lastCount).toEqual(lastNames.length);
-  let lastInstanceRange = unique(Object.values(lastInstances)).sort(
-    numericSort
-  );
+  let lastInstanceRange = unique(Object.values(lastInstances)).sort(numericSort);
   if (lastInstanceRange.length > 1) {
     expect(lastInstanceRange[1] - lastInstanceRange[0]).toEqual(1);
   }

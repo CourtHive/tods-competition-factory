@@ -1,4 +1,4 @@
-import { minutesDifference, timeToDate } from '../../utilities/dateTime';
+import { minutesDifference, timeToDate } from '../../tools/dateTime';
 import { generateTimeSlots } from '../../assemblies/generators/scheduling/generateTimeSlots';
 
 export function getEnoughTime({ averageMatchUpMinutes, includeBookingTypes, periodStartTime, periodEndTime }) {

@@ -1,11 +1,6 @@
-import { extractDate } from '../../../utilities/dateTime';
+import { extractDate } from '../../../tools/dateTime';
 
-export function getUpdatedSchedulingProfile({
-  schedulingProfile,
-  venueIds,
-  eventIds,
-  drawIds,
-}) {
+export function getUpdatedSchedulingProfile({ schedulingProfile, venueIds, eventIds, drawIds }) {
   const issues: string[] = [];
   const updatedSchedulingProfile = schedulingProfile
     ?.map((dateSchedulingProfile) => {
@@ -25,13 +20,8 @@ export function getUpdatedSchedulingProfile({
           }
 
           const filteredRounds = rounds.filter((round) => {
-            const validEventIdAndDrawId =
-              eventIds.includes(round.eventId) &&
-              drawIds.includes(round.drawId);
-            if (!validEventIdAndDrawId)
-              issues.push(
-                `Invalid eventId: ${round.eventId} or drawId: ${round.drawId}`
-              );
+            const validEventIdAndDrawId = eventIds.includes(round.eventId) && drawIds.includes(round.drawId);
+            if (!validEventIdAndDrawId) issues.push(`Invalid eventId: ${round.eventId} or drawId: ${round.drawId}`);
             return validEventIdAndDrawId;
           });
 

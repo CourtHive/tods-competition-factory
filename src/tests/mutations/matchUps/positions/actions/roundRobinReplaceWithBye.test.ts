@@ -1,17 +1,11 @@
 import mocksEngine from '../../../../../assemblies/engines/mock';
-import { instanceCount } from '../../../../../utilities/arrays';
+import { instanceCount } from '../../../../../tools/arrays';
 import tournamentEngine from '../../../../engines/syncEngine';
 import { expect, it } from 'vitest';
-import {
-  replaceWithAlternate,
-  replaceWithBye,
-} from '../../../drawDefinitions/testingUtilities';
+import { replaceWithAlternate, replaceWithBye } from '../../../drawDefinitions/testingUtilities';
 
 import { ROUND_ROBIN } from '../../../../../constants/drawDefinitionConstants';
-import {
-  BYE,
-  TO_BE_PLAYED,
-} from '../../../../../constants/matchUpStatusConstants';
+import { BYE, TO_BE_PLAYED } from '../../../../../constants/matchUpStatusConstants';
 
 it('can replace positioned participant with a bye and move to ALTERNATEs', () => {
   const drawProfiles = [

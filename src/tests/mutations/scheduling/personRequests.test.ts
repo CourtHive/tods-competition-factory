@@ -1,5 +1,5 @@
 import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
-import { extractTime, timeStringMinutes } from '../../../utilities/dateTime';
+import { extractTime, timeStringMinutes } from '../../../tools/dateTime';
 import { getMatchUpId } from '../../../global/functions/extractors';
 import mocksEngine from '../../../assemblies/engines/mock';
 import competitionEngine from '../../engines/syncEngine';
@@ -9,10 +9,8 @@ import { DO_NOT_SCHEDULE } from '../../../constants/requestConstants';
 import { Tournament } from '../../../types/tournamentTypes';
 
 it('can add, query, amd remove personRequests across multiple tournaments', () => {
-  const { tournamentRecord: tournament1 } =
-    mocksEngine.generateTournamentRecord();
-  const { tournamentRecord: tournament2 } =
-    mocksEngine.generateTournamentRecord();
+  const { tournamentRecord: tournament1 } = mocksEngine.generateTournamentRecord();
+  const { tournamentRecord: tournament2 } = mocksEngine.generateTournamentRecord();
 
   const personId = tournament1.participants[0].person.personId;
 
@@ -36,9 +34,7 @@ it('can add, query, amd remove personRequests across multiple tournaments', () =
 
   let { tournamentRecords } = competitionEngine.getState();
   // extension is only added to the tournament which includes participant with personId
-  let tournamentRecord: Tournament = Object.values(
-    tournamentRecords
-  )[0] as Tournament;
+  let tournamentRecord: Tournament = Object.values(tournamentRecords)[0] as Tournament;
   expect(tournamentRecord?.extensions?.length).toEqual(1);
   tournamentRecord = Object.values(tournamentRecords)[1] as Tournament;
   expect(tournamentRecord.extensions).toBeUndefined();
@@ -120,9 +116,7 @@ it('can identify conflicts with person requests', () => {
   });
   expect(result.success).toEqual(true);
 
-  const matchUpIds = matchUps
-    .filter(({ roundNumber }) => roundNumber < 3)
-    .map(getMatchUpId);
+  const matchUpIds = matchUps.filter(({ roundNumber }) => roundNumber < 3).map(getMatchUpId);
 
   result = competitionEngine.scheduleMatchUps({
     scheduleDate: startDate,
@@ -156,15 +150,13 @@ it('can identify conflicts with person requests', () => {
 
   expect(lateRecoveryTimes.length).toEqual(2);
 
-  const potentialRecoveryTimes = Object.values(
-    result.individualParticipantProfiles
-  )
+  const potentialRecoveryTimes = Object.values(result.individualParticipantProfiles)
     .map((p: any) => p.potentialRecovery[drawId])
     .flat();
 
   // when potentialRecoveryTimes are considered there are twice as many lateRecoveryTimes
   const potentialLateRecoveryTimes = potentialRecoveryTimes.filter(
-    (time) => timeStringMinutes(time) > timeStringMinutes('11:00')
+    (time) => timeStringMinutes(time) > timeStringMinutes('11:00'),
   );
   expect(potentialLateRecoveryTimes.length).toBeGreaterThanOrEqual(4);
 });

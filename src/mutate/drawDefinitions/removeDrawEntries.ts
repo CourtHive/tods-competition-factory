@@ -1,7 +1,7 @@
 import { getAssignedParticipantIds } from '../../query/drawDefinition/getAssignedParticipantIds';
 import { refreshEntryPositions } from '../entries/refreshEntryPositions';
 import { getFlightProfile } from '../../query/event/getFlightProfile';
-import { overlap } from '../../utilities/arrays';
+import { overlap } from '../../tools/arrays';
 
 import { SUCCESS } from '../../constants/resultConstants';
 import {
@@ -28,13 +28,9 @@ export function removeDrawEntries({
       drawDefinition,
       stages,
     }).assignedParticipantIds ?? [];
-  const someAssignedParticipantIds = overlap(
-    assignedParticipantIds,
-    participantIds
-  );
+  const someAssignedParticipantIds = overlap(assignedParticipantIds, participantIds);
 
-  if (someAssignedParticipantIds)
-    return { error: EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT };
+  if (someAssignedParticipantIds) return { error: EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT };
 
   const filterEntry = (entry) => {
     const entryId = entry.participantId;
@@ -42,9 +38,7 @@ export function removeDrawEntries({
   };
 
   const { flightProfile } = getFlightProfile({ event });
-  const flight = flightProfile?.flights?.find(
-    (flight) => flight.drawId === drawId
-  );
+  const flight = flightProfile?.flights?.find((flight) => flight.drawId === drawId);
   if (flight?.drawEntries) {
     flight.drawEntries = flight.drawEntries.filter(filterEntry);
     if (autoEntryPositions) {

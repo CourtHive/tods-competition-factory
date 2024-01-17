@@ -3,32 +3,15 @@ import { getScaledEntries } from '../../../query/event/getScaledEntries';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { getFlightProfile } from '../../../query/event/getFlightProfile';
 import { getDevContext } from '../../../global/state/globalState';
-import { UUID } from '../../../utilities/UUID';
-import {
-  chunkArray,
-  chunkByNth,
-  generateRange,
-  shuffleArray,
-} from '../../../utilities/arrays';
+import { UUID } from '../../../tools/UUID';
+import { chunkArray, chunkByNth, generateRange, shuffleArray } from '../../../tools/arrays';
 
 import { DIRECT_ENTRY_STATUSES } from '../../../constants/entryStatusConstants';
 import { FlightProfile, ScaleAttributes } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
-import {
-  EXISTING_PROFILE,
-  ErrorType,
-  MISSING_EVENT,
-} from '../../../constants/errorConditionConstants';
-import {
-  SPLIT_SHUTTLE,
-  SPLIT_WATERFALL,
-} from '../../../constants/flightConstants';
-import {
-  Entry,
-  Event,
-  StageTypeUnion,
-  Tournament,
-} from '../../../types/tournamentTypes';
+import { EXISTING_PROFILE, ErrorType, MISSING_EVENT } from '../../../constants/errorConditionConstants';
+import { SPLIT_SHUTTLE, SPLIT_WATERFALL } from '../../../constants/flightConstants';
+import { Entry, Event, StageTypeUnion, Tournament } from '../../../types/tournamentTypes';
 
 /**
  * @param {object} event - automatically retrieved by tournamentEngine given eventId
@@ -106,16 +89,13 @@ export function generateFlightProfile(params: GenerateFlightProfileArgs): {
   const scaledEntryParticipantIds = scaledEntries.map(getParticipantId);
   const unscaledEntries = shuffleArray(
     eventEntries
-      .filter(
-        ({ participantId }) =>
-          !scaledEntryParticipantIds.includes(participantId)
-      )
+      .filter(({ participantId }) => !scaledEntryParticipantIds.includes(participantId))
       .filter(
         (entry: Entry) =>
           (!stage || !entry.entryStage || entry.entryStage === stage) &&
           (!entry.entryStatus || // absence of entryStatus is equivalent to DIRECT_ACCEPTANCE
-            DIRECT_ENTRY_STATUSES.includes(entry.entryStatus))
-      )
+            DIRECT_ENTRY_STATUSES.includes(entry.entryStatus)),
+      ),
   );
 
   const flightEntries = scaledEntries.concat(...unscaledEntries);
@@ -136,9 +116,7 @@ export function generateFlightProfile(params: GenerateFlightProfileArgs): {
   function getDrawEntries(entriesChunk) {
     return (entriesChunk || [])
       .map(({ participantId, scaleValue }) => {
-        const entry = eventEntries.find(
-          (entry: Entry) => entry.participantId === participantId
-        );
+        const entry = eventEntries.find((entry: Entry) => entry.participantId === participantId);
         if (entry?.scaleValue && scaleValue) entry.scaleValue = scaleValue;
         return entry;
       })
@@ -155,9 +133,7 @@ export function generateFlightProfile(params: GenerateFlightProfileArgs): {
       flightNumber,
       drawId: uuids?.pop() ?? UUID(),
       drawEntries: getDrawEntries(splitEntries[index]),
-      drawName:
-        (drawNames?.length && drawNames[index]) ||
-        `${drawNameRoot} ${flightNumber}`,
+      drawName: (drawNames?.length && drawNames[index]) || `${drawNameRoot} ${flightNumber}`,
     };
   });
 

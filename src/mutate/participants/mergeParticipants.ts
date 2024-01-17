@@ -1,6 +1,6 @@
 import { addNotice, getTopics } from '../../global/state/globalState';
-import { xa } from '../../utilities/objects';
-import { deepMerge } from '../../utilities/deepMerge';
+import { xa } from '../../tools/objects';
+import { deepMerge } from '../../tools/deepMerge';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
 import { PARTICIPANT_ID } from '../../constants/attributeConstants';

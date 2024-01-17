@@ -1,7 +1,7 @@
 import { getSeedBlocks, getSeedGroups } from '../../mutate/drawDefinitions/positionGovernor/getSeedBlocks';
 import { getPositionAssignments, structureAssignedDrawPositions } from './positionsGetter';
 import { getStructureSeedAssignments } from '../structure/getStructureSeedAssignments';
-import { chunkArray, generateRange, shuffleArray } from '../../utilities/arrays';
+import { chunkArray, generateRange, shuffleArray } from '../../tools/arrays';
 import { getAllStructureMatchUps } from '../matchUps/getAllStructureMatchUps';
 import { getAppliedPolicies } from '../extensions/getAppliedPolicies';
 import { getNumericSeedValue } from './getNumericSeedValue';
@@ -204,11 +204,10 @@ export function getContainerBlocks({ seedingProfile, structure, nonRandom }) {
     roundRobinGroupsCount,
     drawSize,
   });
-  const drawPositionBlocks = containedStructures.map(
-    (containedStructure) =>
-      getPositionAssignments({
-        structure: containedStructure,
-      }).positionAssignments?.map((assignment) => assignment.drawPosition),
+  const drawPositionBlocks = containedStructures.map((containedStructure) =>
+    getPositionAssignments({
+      structure: containedStructure,
+    }).positionAssignments?.map((assignment) => assignment.drawPosition),
   );
 
   return getSeedBlockPattern({
@@ -396,16 +395,16 @@ export function getNextSeedBlock(params) {
   const assignedPositionParticipantIds = positionAssignments
     ?.map((assignment) => assignment.participantId)
     .filter(Boolean);
-  const placedSeedParticipantIds = assignedSeedParticipantIds?.filter(
-    (participantId) => assignedPositionParticipantIds?.includes(participantId),
+  const placedSeedParticipantIds = assignedSeedParticipantIds?.filter((participantId) =>
+    assignedPositionParticipantIds?.includes(participantId),
   );
 
   const unplacedSeedIds = assignedSeedParticipantIds?.filter(
     (participantId) => !assignedPositionParticipantIds?.includes(participantId),
   );
 
-  const unplacedSeedAssignments = seedAssignments?.filter(
-    (assignment) => unplacedSeedIds?.includes(assignment.participantId),
+  const unplacedSeedAssignments = seedAssignments?.filter((assignment) =>
+    unplacedSeedIds?.includes(assignment.participantId),
   );
 
   const seedsWithoutDrawPositions = seedAssignments?.filter((assignment) => !assignment.participantId);

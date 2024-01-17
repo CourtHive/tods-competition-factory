@@ -1,16 +1,12 @@
 import tournamentEngine from '../engines/syncEngine';
-import { numericSort } from '../../utilities/sorting';
-import { unique } from '../../utilities/arrays';
+import { numericSort } from '../../tools/sorting';
+import { unique } from '../../tools/arrays';
 import { mocksEngine } from '../..';
 import { expect, it } from 'vitest';
 
 import { TEAM as EVENT_TEAM } from '../../constants/eventConstants';
 import { DOUBLES, SINGLES, TEAM } from '../../constants/matchUpTypes';
-import {
-  TEAM as PARTICIPANT_TEAM,
-  INDIVIDUAL,
-  PAIR,
-} from '../../constants/participantConstants';
+import { TEAM as PARTICIPANT_TEAM, INDIVIDUAL, PAIR } from '../../constants/participantConstants';
 
 import tournamentRecord from './teamMadness.tods.json';
 
@@ -18,9 +14,7 @@ import tournamentRecord from './teamMadness.tods.json';
 it('withOpponents adds appropriate opponents', () => {
   tournamentEngine.setState(tournamentRecord);
 
-  let result = tournamentEngine
-    .devContext({ makeDeepCopy: true })
-    .allTournamentMatchUps({ inContext: true });
+  let result = tournamentEngine.devContext({ makeDeepCopy: true }).allTournamentMatchUps({ inContext: true });
   const matchUps = result.matchUps;
   expect(matchUps.length).toEqual(240);
 
@@ -36,41 +30,23 @@ it('withOpponents adds appropriate opponents', () => {
   const tournamentParticipants = result.participants;
   expect(tournamentParticipants.length).toEqual(314);
 
-  const individualParticipants = tournamentParticipants.filter(
-    ({ participantType }) => participantType === INDIVIDUAL
-  );
+  const individualParticipants = tournamentParticipants.filter(({ participantType }) => participantType === INDIVIDUAL);
 
-  const pairParticipants = tournamentParticipants.filter(
-    ({ participantType }) => participantType === PAIR
-  );
+  const pairParticipants = tournamentParticipants.filter(({ participantType }) => participantType === PAIR);
 
-  const teamParticipants = tournamentParticipants.filter(
-    ({ participantType }) => participantType === PARTICIPANT_TEAM
-  );
+  const teamParticipants = tournamentParticipants.filter(({ participantType }) => participantType === PARTICIPANT_TEAM);
 
-  const iOpponentsCount = unique(
-    individualParticipants.map((ip) => ip.opponents?.length || 0)
-  ).sort(numericSort);
-  const pOpponentsCount = unique(
-    pairParticipants.map((ip) => ip.opponents?.length || 0)
-  ).sort(numericSort);
-  const tOpponentsCount = unique(
-    teamParticipants.map((ip) => ip.opponents?.length || 0)
-  ).sort(numericSort);
+  const iOpponentsCount = unique(individualParticipants.map((ip) => ip.opponents?.length || 0)).sort(numericSort);
+  const pOpponentsCount = unique(pairParticipants.map((ip) => ip.opponents?.length || 0)).sort(numericSort);
+  const tOpponentsCount = unique(teamParticipants.map((ip) => ip.opponents?.length || 0)).sort(numericSort);
 
   expect(tOpponentsCount).toEqual([3]);
   expect(pOpponentsCount).toEqual([0, 1, 2, 3]);
   expect(iOpponentsCount).toEqual([0, 1, 2, 3, 4, 5, 6]);
 
-  const iMatchUpsCount = unique(
-    individualParticipants.map((ip) => ip.matchUps?.length || 0)
-  ).sort(numericSort);
-  const pMatchUpsCount = unique(
-    pairParticipants.map((ip) => ip.matchUps?.length || 0)
-  ).sort(numericSort);
-  const tMatchUpsCount = unique(
-    teamParticipants.map((ip) => ip.matchUps?.length || 0)
-  ).sort(numericSort);
+  const iMatchUpsCount = unique(individualParticipants.map((ip) => ip.matchUps?.length || 0)).sort(numericSort);
+  const pMatchUpsCount = unique(pairParticipants.map((ip) => ip.matchUps?.length || 0)).sort(numericSort);
+  const tMatchUpsCount = unique(teamParticipants.map((ip) => ip.matchUps?.length || 0)).sort(numericSort);
 
   expect(tMatchUpsCount).toEqual([30]);
   expect(pMatchUpsCount).toEqual([0, 1, 2, 3]);
@@ -78,32 +54,22 @@ it('withOpponents adds appropriate opponents', () => {
 
   expect(
     unique(
-      teamParticipants
-        .map((participant) =>
-          (participant.matchUps || []).map(({ matchUpType }) => matchUpType)
-        )
-        .flat()
-    )
+      teamParticipants.map((participant) => (participant.matchUps || []).map(({ matchUpType }) => matchUpType)).flat(),
+    ),
   ).toEqual([TEAM]);
 
   expect(
     unique(
-      pairParticipants
-        .map((participant) =>
-          (participant.matchUps || []).map(({ matchUpType }) => matchUpType)
-        )
-        .flat()
-    )
+      pairParticipants.map((participant) => (participant.matchUps || []).map(({ matchUpType }) => matchUpType)).flat(),
+    ),
   ).toEqual([DOUBLES]);
 
   expect(
     unique(
       individualParticipants
-        .map((participant) =>
-          (participant.matchUps || []).map(({ matchUpType }) => matchUpType)
-        )
-        .flat()
-    ).sort()
+        .map((participant) => (participant.matchUps || []).map(({ matchUpType }) => matchUpType))
+        .flat(),
+    ).sort(),
   ).toEqual([DOUBLES, SINGLES]);
 });
 
@@ -121,13 +87,9 @@ it('returns expected opponents for withOpponents', () => {
     withOpponents: true,
   });
 
-  let individualParticipants = participants.filter(
-    ({ participantType }) => participantType === INDIVIDUAL
-  );
+  let individualParticipants = participants.filter(({ participantType }) => participantType === INDIVIDUAL);
 
-  const teamParticipants = participants.filter(
-    ({ participantType }) => participantType === PARTICIPANT_TEAM
-  );
+  const teamParticipants = participants.filter(({ participantType }) => participantType === PARTICIPANT_TEAM);
 
   expect(teamParticipants.length).toEqual(2);
   const team = teamParticipants[0];
@@ -152,23 +114,18 @@ it('returns expected opponents for withOpponents', () => {
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   const { positionAssignments } = drawDefinition.structures[0];
   const assignParticipants = (dualMatchUp) => {
-    const singlesMatchUps = dualMatchUp.tieMatchUps.filter(
-      ({ matchUpType }) => matchUpType === SINGLES
-    );
+    const singlesMatchUps = dualMatchUp.tieMatchUps.filter(({ matchUpType }) => matchUpType === SINGLES);
     singlesMatchUps.forEach((singlesMatchUp, i) => {
       const tieMatchUpId = singlesMatchUp.matchUpId;
       singlesMatchUp.sides.forEach((side) => {
         const { drawPosition } = side;
         const teamParticipant = teamParticipants.find((teamParticipant) => {
           const { participantId } = teamParticipant;
-          const assignment = positionAssignments.find(
-            (assignment) => assignment.participantId === participantId
-          );
+          const assignment = positionAssignments.find((assignment) => assignment.participantId === participantId);
           return assignment.drawPosition === drawPosition;
         });
         if (teamParticipant) {
-          const individualParticipantId =
-            teamParticipant.individualParticipantIds[i];
+          const individualParticipantId = teamParticipant.individualParticipantIds[i];
           const result = tournamentEngine.assignTieMatchUpParticipantId({
             participantId: individualParticipantId,
             tieMatchUpId,
@@ -181,13 +138,12 @@ it('returns expected opponents for withOpponents', () => {
     });
   };
 
-  const { matchUps: firstRoundDualMatchUps } =
-    tournamentEngine.allTournamentMatchUps({
-      matchUpFilters: {
-        matchUpTypes: [TEAM],
-        roundNumbers: [1],
-      },
-    });
+  const { matchUps: firstRoundDualMatchUps } = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: {
+      matchUpTypes: [TEAM],
+      roundNumbers: [1],
+    },
+  });
 
   firstRoundDualMatchUps.forEach(assignParticipants);
 
@@ -201,17 +157,11 @@ it('returns expected opponents for withOpponents', () => {
     withOpponents: true,
   }).participants;
 
-  participant = participants.find(
-    (participant) => participant.participantId === participantId
-  );
+  participant = participants.find((participant) => participant.participantId === participantId);
   expect(participant.opponents.length).toEqual(1);
 
-  individualParticipants = participants.filter(
-    ({ participantType }) => participantType === INDIVIDUAL
-  );
+  individualParticipants = participants.filter(({ participantType }) => participantType === INDIVIDUAL);
 
-  const iOpponentsCount = individualParticipants.map(
-    (ip) => ip.opponents?.length || 0
-  );
+  const iOpponentsCount = individualParticipants.map((ip) => ip.opponents?.length || 0);
   expect(unique(iOpponentsCount)).toEqual([1]);
 });

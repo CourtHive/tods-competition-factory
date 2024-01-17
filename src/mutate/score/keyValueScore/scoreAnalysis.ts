@@ -1,6 +1,6 @@
 import { checkValidMatchTiebreak, testTiebreakEntry } from './keyValueUtilities';
 import { parse } from '../../../assemblies/generators/matchUpFormatCode/parse';
-import { arrayIndices } from '../../../utilities/arrays';
+import { arrayIndices } from '../../../tools/arrays';
 
 import {
   SCORE_JOINER,

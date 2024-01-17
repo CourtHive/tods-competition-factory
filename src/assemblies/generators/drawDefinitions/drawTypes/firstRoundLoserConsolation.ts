@@ -1,16 +1,11 @@
-import { constantToString } from '../../../../utilities/strings';
+import { constantToString } from '../../../../tools/strings';
 import structureTemplate from '../../templates/structureTemplate';
 import { feedInMatchUps } from '../feedInMatchUps';
 import { treeMatchUps } from './eliminationTree';
 
 import { DrawLink, Structure } from '../../../../types/tournamentTypes';
 import { SUCCESS } from '../../../../constants/resultConstants';
-import {
-  MAIN,
-  CONSOLATION,
-  LOSER,
-  TOP_DOWN,
-} from '../../../../constants/drawDefinitionConstants';
+import { MAIN, CONSOLATION, LOSER, TOP_DOWN } from '../../../../constants/drawDefinitionConstants';
 
 export function firstRoundLoserConsolation(params) {
   const {
@@ -36,13 +31,10 @@ export function firstRoundLoserConsolation(params) {
     isMock,
     uuids,
   };
-  const { matchUps } = staggeredEntry
-    ? feedInMatchUps(mainParams)
-    : treeMatchUps(mainParams);
+  const { matchUps } = staggeredEntry ? feedInMatchUps(mainParams) : treeMatchUps(mainParams);
 
   const mainStructure = structureTemplate({
-    structureName:
-      structureName || playoffAttributes?.['0']?.name || constantToString(MAIN),
+    structureName: structureName || playoffAttributes?.['0']?.name || constantToString(MAIN),
     structureId: structureId || uuids?.pop(),
     stageSequence,
     matchUpType,
@@ -57,8 +49,7 @@ export function firstRoundLoserConsolation(params) {
     const consolationDrawPositions = drawSize / 2;
 
     const { matchUps: consolationMatchUps } = treeMatchUps({
-      finishingPositionOffset:
-        finishingPositionOffset + consolationDrawPositions,
+      finishingPositionOffset: finishingPositionOffset + consolationDrawPositions,
       idPrefix: idPrefix && `${idPrefix}-c`,
       drawSize: consolationDrawPositions,
       matchUpType,

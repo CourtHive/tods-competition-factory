@@ -2,7 +2,7 @@ import { attachPolicies } from '../extensions/policies/attachPolicies';
 import { modifyDrawNotice } from '../notifications/drawNotifications';
 import { addEventExtension } from '../extensions/addRemoveExtensions';
 import { getFlightProfile } from '../../query/event/getFlightProfile';
-import { isObject } from '../../utilities/objects';
+import { isObject } from '../../tools/objects';
 import { modifyDrawName } from './modifyDrawName';
 
 import { ResultType } from '../../global/functions/decorateResult';
@@ -10,10 +10,7 @@ import { FLIGHT_PROFILE } from '../../constants/extensionConstants';
 import { PolicyDefinitions } from '../../types/factoryTypes';
 import { SUCCESS } from '../../constants/resultConstants';
 import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
-import {
-  INVALID_VALUES,
-  MISSING_DRAW_DEFINITION,
-} from '../../constants/errorConditionConstants';
+import { INVALID_VALUES, MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
 
 type ModifyDrawArgs = {
   drawUpdates: { drawName: string; policyDefinitions: PolicyDefinitions };
@@ -45,9 +42,7 @@ export function modifyDrawDefinition({
     });
   if (nameResult?.error) return nameResult?.error;
 
-  const flight =
-    nameResult?.flight ||
-    flightProfile?.flights?.find((flight) => flight.drawId === drawId);
+  const flight = nameResult?.flight || flightProfile?.flights?.find((flight) => flight.drawId === drawId);
 
   if (!flight && !drawDefinition) {
     return { error: MISSING_DRAW_DEFINITION };

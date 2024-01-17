@@ -1,13 +1,10 @@
 import { mocksEngine } from '../../../assemblies/engines/mock';
 import competitionEngine from '../../engines/syncEngine';
-import { addDays } from '../../../utilities/dateTime';
+import { addDays } from '../../../tools/dateTime';
 import { expect, it } from 'vitest';
 
 import { MISSING_TOURNAMENT_RECORDS } from '../../../constants/errorConditionConstants';
-import {
-  CURTIS_CONSOLATION,
-  ROUND_ROBIN_WITH_PLAYOFF,
-} from '../../../constants/drawDefinitionConstants';
+import { CURTIS_CONSOLATION, ROUND_ROBIN_WITH_PLAYOFF } from '../../../constants/drawDefinitionConstants';
 
 it('can generate tournament rounds and profileRounds', () => {
   let result = competitionEngine.getRounds();
@@ -78,9 +75,7 @@ it('can generate tournament rounds and profileRounds', () => {
   result = competitionEngine.getRounds({ withRoundId: true });
   expect(result.rounds[0].id).not.toBeUndefined();
 
-  const ronundPositions = segmentedRounds.map(({ matchUps }) =>
-    matchUps.map(({ roundPosition }) => roundPosition)
-  );
+  const ronundPositions = segmentedRounds.map(({ matchUps }) => matchUps.map(({ roundPosition }) => roundPosition));
   expect(ronundPositions).toEqual([
     [1, 2, 3, 4, 5, 6, 7, 8],
     [9, 10, 11, 12, 13, 14, 15, 16],

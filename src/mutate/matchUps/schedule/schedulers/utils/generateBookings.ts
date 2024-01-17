@@ -3,18 +3,12 @@ import { getScheduleTiming } from '../../../../../query/extensions/matchUpFormat
 import { validMatchUps } from '../../../../../validators/validMatchUp';
 import { calculatePeriodLength } from './calculatePeriodLength';
 import { hasSchedule } from '../../scheduleMatchUps/hasSchedule';
-import {
-  addMinutesToTimeString,
-  extractTime,
-} from '../../../../../utilities/dateTime';
+import { addMinutesToTimeString, extractTime } from '../../../../../tools/dateTime';
 
 import { Tournament } from '../../../../../types/tournamentTypes';
 import { BYE } from '../../../../../constants/matchUpStatusConstants';
 import { HydratedMatchUp } from '../../../../../types/hydrated';
-import {
-  MISSING_MATCHUPS,
-  MISSING_TOURNAMENT_RECORDS,
-} from '../../../../../constants/errorConditionConstants';
+import { MISSING_MATCHUPS, MISSING_TOURNAMENT_RECORDS } from '../../../../../constants/errorConditionConstants';
 
 type GenerateBookingsArgs = {
   tournamentRecords: { [key: string]: Tournament };
@@ -36,11 +30,9 @@ export function generateBookings({
   scheduleDate,
   matchUps,
 }: GenerateBookingsArgs) {
-  if (typeof tournamentRecords !== 'object')
-    return { error: MISSING_TOURNAMENT_RECORDS };
+  if (typeof tournamentRecords !== 'object') return { error: MISSING_TOURNAMENT_RECORDS };
 
-  if (!validMatchUps(matchUps) && !Array.isArray(dateScheduledMatchUps))
-    return { error: MISSING_MATCHUPS };
+  if (!validMatchUps(matchUps) && !Array.isArray(dateScheduledMatchUps)) return { error: MISSING_MATCHUPS };
 
   periodLength =
     periodLength ??
@@ -63,9 +55,9 @@ export function generateBookings({
           return {
             [event.eventId]: { event, scheduleTiming },
           };
-        })
+        }),
       )
-      .flat()
+      .flat(),
   );
 
   const defaultTiming = {
@@ -76,17 +68,12 @@ export function generateBookings({
   if (!dateScheduledMatchUps) {
     dateScheduledMatchUps = matchUps?.filter((matchUp) => {
       const schedule = matchUp.schedule;
-      return (
-        hasSchedule({ schedule }) &&
-        (!scheduleDate || matchUp.schedule.scheduledDate === scheduleDate)
-      );
+      return hasSchedule({ schedule }) && (!scheduleDate || matchUp.schedule.scheduledDate === scheduleDate);
     });
   }
 
   const relevantMatchUps = dateScheduledMatchUps?.filter(
-    (matchUp) =>
-      (!venueIds.length || venueIds.includes(matchUp.schedule.venueId)) &&
-      matchUp.matchUpStatus !== BYE
+    (matchUp) => (!venueIds.length || venueIds.includes(matchUp.schedule.venueId)) && matchUp.matchUpStatus !== BYE,
   );
 
   const bookings = relevantMatchUps

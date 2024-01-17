@@ -5,11 +5,8 @@ import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
 import { findStructure } from '../../../acquire/findStructure';
-import { intersection } from '../../../utilities/arrays';
-import {
-  modifyDrawNotice,
-  modifyPositionAssignmentsNotice,
-} from '../../notifications/drawNotifications';
+import { intersection } from '../../../tools/arrays';
+import { modifyDrawNotice, modifyPositionAssignmentsNotice } from '../../notifications/drawNotifications';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -26,8 +23,7 @@ export function setPositionAssignments({
   event,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-  if (!Array.isArray(structurePositionAssignments))
-    return { error: INVALID_VALUES };
+  if (!Array.isArray(structurePositionAssignments)) return { error: INVALID_VALUES };
 
   const stack = 'setPositionAssignments';
 
@@ -44,14 +40,9 @@ export function setPositionAssignments({
       structure,
     }).positionAssignments?.map(({ drawPosition }) => drawPosition);
 
-    const submittedDrawPositions = positionAssignments?.map(
-      ({ drawPosition }) => drawPosition
-    );
+    const submittedDrawPositions = positionAssignments?.map(({ drawPosition }) => drawPosition);
 
-    if (
-      intersection(structureDrawPositions, submittedDrawPositions).length !==
-      structureDrawPositions?.length
-    ) {
+    if (intersection(structureDrawPositions, submittedDrawPositions).length !== structureDrawPositions?.length) {
       return decorateResult({
         result: { error: INVALID_VALUES },
         info: 'drawPositions do not match',
@@ -111,9 +102,7 @@ export function setPositionAssignments({
     });
   }
 
-  const structureIds = structurePositionAssignments.map(
-    ({ structureId }) => structureId
-  );
+  const structureIds = structurePositionAssignments.map(({ structureId }) => structureId);
   modifyDrawNotice({
     tournamentId: tournamentRecord?.tournamentId,
     eventId: event?.eventId,

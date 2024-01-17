@@ -1,9 +1,9 @@
 import { visualizeScheduledMatchUps } from '../../testHarness/testUtilities/visualizeScheduledMatchUps';
 import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
-import { extractTime, timeStringMinutes } from '../../../utilities/dateTime';
+import { extractTime, timeStringMinutes } from '../../../tools/dateTime';
 import { getParticipantId } from '../../../global/functions/extractors';
 import mocksEngine from '../../../assemblies/engines/mock';
-import { intersection } from '../../../utilities/arrays';
+import { intersection } from '../../../tools/arrays';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
@@ -29,154 +29,139 @@ it.each([
     matchUpFormatB: 'SET3-S:4/TB7-F:TB7',
     iterations: 4,
   },
-])(
-  'can schedule iteratively',
-  ({
-    startTime,
-    endTime,
-    courtsCount,
-    matchUpFormatA,
-    matchUpFormatB,
-    iterations,
-  }) => {
-    const startDate = '2022-01-01';
-    const endDate = '2022-01-07';
-    const venueProfiles = [
-      {
-        venueId: 'venueId',
-        courtsCount,
-        startTime,
-        endTime,
-      },
-    ];
+])('can schedule iteratively', ({ startTime, endTime, courtsCount, matchUpFormatA, matchUpFormatB, iterations }) => {
+  const startDate = '2022-01-01';
+  const endDate = '2022-01-07';
+  const venueProfiles = [
+    {
+      venueId: 'venueId',
+      courtsCount,
+      startTime,
+      endTime,
+    },
+  ];
 
-    const drawProfiles = [
-      {
-        drawSize: 4,
-        drawName: 'A',
-        idPrefix: 'A',
-        drawId: 'firstDraw',
-        uniqueParticipants: true,
-        matchUpFormat: matchUpFormatA,
-        drawExtensions: [],
-      },
-      {
-        drawSize: 4,
-        drawName: 'B',
-        idPrefix: 'B',
-        drawId: 'secondDraw',
-        matchUpFormat: matchUpFormatB,
-      },
-    ];
-    const schedulingProfile = [
-      {
-        scheduleDate: startDate,
-        venues: [
-          {
-            venueId: 'venueId',
-            rounds: [
-              { drawId: 'firstDraw', winnerFinishingPositionRange: '1-2' },
-              { drawId: 'secondDraw', winnerFinishingPositionRange: '1-2' },
-            ],
-          },
-        ],
-      },
-    ];
-
-    const {
-      drawIds,
-      venueIds: [venueId],
-      tournamentRecord,
-    } = mocksEngine.generateTournamentRecord({
-      policyDefinitions: POLICY_SCHEDULING_DEFAULT,
-      tournamentExtensions: [],
-      tournamentAttributes: {},
-      autoSchedule: true,
-      schedulingProfile,
-      venueProfiles,
-      drawProfiles,
-      startDate,
-      endDate,
-    });
-
-    tournamentEngine.setState(tournamentRecord);
-    const { tournamentId } = tournamentRecord;
-
-    let { matchUps } = tournamentEngine.allCompetitionMatchUps();
-    let scheduledMatchUps = matchUps.filter(hasSchedule);
-    visualizeScheduledMatchUps({ scheduledMatchUps, showGlobalLog });
-
-    // add second round of each draw to scheduling profile
-    for (const drawId of drawIds) {
-      const {
-        event: { eventId },
-        drawDefinition: {
-          structures: [{ structureId }],
+  const drawProfiles = [
+    {
+      drawSize: 4,
+      drawName: 'A',
+      idPrefix: 'A',
+      drawId: 'firstDraw',
+      uniqueParticipants: true,
+      matchUpFormat: matchUpFormatA,
+      drawExtensions: [],
+    },
+    {
+      drawSize: 4,
+      drawName: 'B',
+      idPrefix: 'B',
+      drawId: 'secondDraw',
+      matchUpFormat: matchUpFormatB,
+    },
+  ];
+  const schedulingProfile = [
+    {
+      scheduleDate: startDate,
+      venues: [
+        {
+          venueId: 'venueId',
+          rounds: [
+            { drawId: 'firstDraw', winnerFinishingPositionRange: '1-2' },
+            { drawId: 'secondDraw', winnerFinishingPositionRange: '1-2' },
+          ],
         },
-      } = tournamentEngine.getEvent({ drawId });
-      const result = tournamentEngine.addSchedulingProfileRound({
-        round: { tournamentId, eventId, drawId, structureId, roundNumber: 2 },
-        scheduleDate: startDate,
-        venueId,
-      });
-      expect(result.success).toEqual(true);
-    }
+      ],
+    },
+  ];
 
-    tournamentEngine.devContext({ virtual: true });
-    // Scheduled Profile Rounds ##############################
-    const result = tournamentEngine.scheduleProfileRounds({
-      scheduleDates: [startDate],
-      garmanSinglePass: false,
+  const {
+    drawIds,
+    venueIds: [venueId],
+    tournamentRecord,
+  } = mocksEngine.generateTournamentRecord({
+    policyDefinitions: POLICY_SCHEDULING_DEFAULT,
+    tournamentExtensions: [],
+    tournamentAttributes: {},
+    autoSchedule: true,
+    schedulingProfile,
+    venueProfiles,
+    drawProfiles,
+    startDate,
+    endDate,
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+  const { tournamentId } = tournamentRecord;
+
+  let { matchUps } = tournamentEngine.allCompetitionMatchUps();
+  let scheduledMatchUps = matchUps.filter(hasSchedule);
+  visualizeScheduledMatchUps({ scheduledMatchUps, showGlobalLog });
+
+  // add second round of each draw to scheduling profile
+  for (const drawId of drawIds) {
+    const {
+      event: { eventId },
+      drawDefinition: {
+        structures: [{ structureId }],
+      },
+    } = tournamentEngine.getEvent({ drawId });
+    const result = tournamentEngine.addSchedulingProfileRound({
+      round: { tournamentId, eventId, drawId, structureId, roundNumber: 2 },
+      scheduleDate: startDate,
+      venueId,
     });
     expect(result.success).toEqual(true);
-    if (result.iterations) expect(result.iterations).toEqual(iterations);
-    expect(result.scheduledDates).toEqual([startDate]);
-    // #######################################################
+  }
 
-    ({ matchUps } = tournamentEngine.allCompetitionMatchUps());
-    scheduledMatchUps = matchUps.filter(hasSchedule);
-    visualizeScheduledMatchUps({ scheduledMatchUps, showGlobalLog });
+  tournamentEngine.devContext({ virtual: true });
+  // Scheduled Profile Rounds ##############################
+  const result = tournamentEngine.scheduleProfileRounds({
+    scheduleDates: [startDate],
+    garmanSinglePass: false,
+  });
+  expect(result.success).toEqual(true);
+  if (result.iterations) expect(result.iterations).toEqual(iterations);
+  expect(result.scheduledDates).toEqual([startDate]);
+  // #######################################################
 
-    // get the participantIds for each draw
-    const drawEnteredParticipantIds: string[] = [];
-    for (const drawId of drawIds) {
-      const {
-        drawDefinition: { entries: drawEntries },
-      } = tournamentEngine.getEvent({ drawId });
-      drawEnteredParticipantIds.push(drawEntries.map(getParticipantId));
-    }
-    // expect the two draws to have unique participants
-    expect(
-      intersection(drawEnteredParticipantIds[0], drawEnteredParticipantIds[1])
-        .length
-    ).toEqual(0);
+  ({ matchUps } = tournamentEngine.allCompetitionMatchUps());
+  scheduledMatchUps = matchUps.filter(hasSchedule);
+  visualizeScheduledMatchUps({ scheduledMatchUps, showGlobalLog });
 
-    ({ matchUps } = tournamentEngine.allCompetitionMatchUps());
-    scheduledMatchUps = matchUps.filter(hasSchedule);
-
-    const roundMap = scheduledMatchUps
-      .map(({ roundNumber, roundPosition, drawName, schedule }) => [
-        extractTime(schedule.scheduledTime),
-        roundNumber,
-        roundPosition,
-        drawName,
-      ])
-      .sort((a, b) => timeStringMinutes(a[0]) - timeStringMinutes(b[0]));
-    expect(roundMap.length).toEqual(scheduledMatchUps.length);
-    // console.log(roundMap); // useful for eye-balling
-
+  // get the participantIds for each draw
+  const drawEnteredParticipantIds: string[] = [];
+  for (const drawId of drawIds) {
     const {
-      participants: competitionParticipants,
-      participantIdsWithConflicts,
-    } = tournamentEngine.getCompetitionParticipants({
+      drawDefinition: { entries: drawEntries },
+    } = tournamentEngine.getEvent({ drawId });
+    drawEnteredParticipantIds.push(drawEntries.map(getParticipantId));
+  }
+  // expect the two draws to have unique participants
+  expect(intersection(drawEnteredParticipantIds[0], drawEnteredParticipantIds[1]).length).toEqual(0);
+
+  ({ matchUps } = tournamentEngine.allCompetitionMatchUps());
+  scheduledMatchUps = matchUps.filter(hasSchedule);
+
+  const roundMap = scheduledMatchUps
+    .map(({ roundNumber, roundPosition, drawName, schedule }) => [
+      extractTime(schedule.scheduledTime),
+      roundNumber,
+      roundPosition,
+      drawName,
+    ])
+    .sort((a, b) => timeStringMinutes(a[0]) - timeStringMinutes(b[0]));
+  expect(roundMap.length).toEqual(scheduledMatchUps.length);
+  // console.log(roundMap); // useful for eye-balling
+
+  const { participants: competitionParticipants, participantIdsWithConflicts } =
+    tournamentEngine.getCompetitionParticipants({
       withScheduleItems: true,
       withMatchUps: true,
       inContext: true,
     });
-    expect(participantIdsWithConflicts.length).toEqual(0);
-    expect(competitionParticipants.length).toEqual(8);
-  }
-);
+  expect(participantIdsWithConflicts.length).toEqual(0);
+  expect(competitionParticipants.length).toEqual(8);
+});
 
 it.each([
   {
@@ -301,5 +286,5 @@ it.each([
     visualizeScheduledMatchUps({ scheduledMatchUps, showGlobalLog });
 
     expect(Object.values(result.matchUpScheduleTimes).length).toEqual(48);
-  }
+  },
 );

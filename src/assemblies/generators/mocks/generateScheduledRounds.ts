@@ -1,22 +1,16 @@
 import { getContainedStructures } from '../../../query/drawDefinition/getContainedStructures';
 import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
 import { addSchedulingProfileRound } from '../../../mutate/matchUps/schedule/addSchedulingProfileRound';
-import { intersection, unique } from '../../../utilities/arrays';
+import { intersection, unique } from '../../../tools/arrays';
 
 import { Tournament } from '../../../types/tournamentTypes';
-import {
-  ErrorType,
-  INVALID_VALUES,
-} from '../../../constants/errorConditionConstants';
+import { ErrorType, INVALID_VALUES } from '../../../constants/errorConditionConstants';
 
 type GenerateSchedulingProfileArgs = {
   tournamentRecord: Tournament;
   schedulingProfile: any;
 };
-export function generateScheduledRounds({
-  schedulingProfile,
-  tournamentRecord,
-}: GenerateSchedulingProfileArgs): {
+export function generateScheduledRounds({ schedulingProfile, tournamentRecord }: GenerateSchedulingProfileArgs): {
   scheduledRounds?: any;
   error?: ErrorType;
 } {
@@ -41,8 +35,7 @@ export function generateScheduledRounds({
 
         const targetMatchUps = matchUps.filter((matchUp) => {
           const targetRange =
-            winnerFinishingPositionRange?.indexOf('-') > 0 &&
-            winnerFinishingPositionRange.split('-').map((x) => +x);
+            winnerFinishingPositionRange?.indexOf('-') > 0 && winnerFinishingPositionRange.split('-').map((x) => +x);
           const range = matchUp.finishingPositionRange?.winner;
 
           return (
@@ -52,22 +45,20 @@ export function generateScheduledRounds({
               !targetRange ||
               intersection(range, targetRange).length === 2 ||
               (unique(range).length === unique(targetRange).length &&
-                intersection(range, targetRange).length ===
-                  unique(range).length))
+                intersection(range, targetRange).length === unique(range).length))
           );
         });
 
         const targetMatchUp = targetMatchUps[0];
 
         if (targetMatchUp) {
-          const { eventId, roundNumber, drawName, structureName, roundName } =
-            targetMatchUp;
+          const { eventId, roundNumber, drawName, structureName, roundName } = targetMatchUp;
           let structureId = targetMatchUp.structureId;
 
           if (roundNumber && !winnerFinishingPositionRange) {
             structureId =
               Object.keys(containedStructures).find((containingStructureId) =>
-                containedStructures[containingStructureId].includes(structureId)
+                containedStructures[containingStructureId].includes(structureId),
               ) ?? structureId;
           }
 

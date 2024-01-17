@@ -1,7 +1,7 @@
 import { decorateResult, ResultType } from '../global/functions/decorateResult';
 import { validateCollectionDefinition } from './validateCollectionDefinition';
-import { mustBeAnArray } from '../utilities/mustBeAnArray';
-import { unique } from '../utilities/arrays';
+import { mustBeAnArray } from '../tools/mustBeAnArray';
+import { unique } from '../tools/arrays';
 
 import { INVALID_TIE_FORMAT } from '../constants/errorConditionConstants';
 import { Category, Event, GenderUnion } from '../types/tournamentTypes';
@@ -17,9 +17,7 @@ type ValidateTieFormatArgs = {
 };
 
 export function validateTieFormat(params: ValidateTieFormatArgs): ResultType {
-  const checkCategory = !!(
-    params?.enforceCategory !== false && params?.category
-  );
+  const checkCategory = !!(params?.enforceCategory !== false && params?.category);
   const checkGender = !!(params?.enforceGender !== false && params?.gender);
   const checkCollectionIds = params?.checkCollectionIds;
   const tieFormat = params?.tieFormat;
@@ -56,30 +54,26 @@ export function validateTieFormat(params: ValidateTieFormatArgs): ResultType {
   }
 
   let aggregateValueImperative;
-  const validCollections = tieFormat.collectionDefinitions.every(
-    (collectionDefinition) => {
-      const { setValue, scoreValue, collectionValue } = collectionDefinition;
-      if ((setValue || scoreValue) && !collectionValue)
-        aggregateValueImperative = true;
-      const { valid, errors: collectionDefinitionErrors } =
-        validateCollectionDefinition({
-          referenceCategory: params.category,
-          referenceGender: params.gender,
-          collectionDefinition,
-          checkCollectionIds,
-          checkCategory,
-          checkGender,
-          event,
-        });
+  const validCollections = tieFormat.collectionDefinitions.every((collectionDefinition) => {
+    const { setValue, scoreValue, collectionValue } = collectionDefinition;
+    if ((setValue || scoreValue) && !collectionValue) aggregateValueImperative = true;
+    const { valid, errors: collectionDefinitionErrors } = validateCollectionDefinition({
+      referenceCategory: params.category,
+      referenceGender: params.gender,
+      collectionDefinition,
+      checkCollectionIds,
+      checkCategory,
+      checkGender,
+      event,
+    });
 
-      if (valid) {
-        return true;
-      } else if (Array.isArray(collectionDefinitionErrors)) {
-        errors.push(...collectionDefinitionErrors);
-      }
-      return false;
+    if (valid) {
+      return true;
+    } else if (Array.isArray(collectionDefinitionErrors)) {
+      errors.push(...collectionDefinitionErrors);
     }
-  );
+    return false;
+  });
 
   const validWinCriteria =
     (typeof tieFormat.winCriteria?.valueGoal === 'number' &&
@@ -91,9 +85,7 @@ export function validateTieFormat(params: ValidateTieFormatArgs): ResultType {
     if (aggregateValueImperative) {
       errors.push('aggregateValue is required');
     } else {
-      errors.push(
-        'Either non-zero valueGoal, or { aggregateValue: true } must be specified in winCriteria'
-      );
+      errors.push('Either non-zero valueGoal, or { aggregateValue: true } must be specified in winCriteria');
     }
     return decorateResult({
       context: { tieFormat, errors, aggregateValueImperative },
@@ -102,12 +94,8 @@ export function validateTieFormat(params: ValidateTieFormatArgs): ResultType {
     });
   }
 
-  const collectionIds = tieFormat.collectionDefinitions.map(
-    ({ collectionId }) => collectionId
-  );
-  const uniqueCollectionIds =
-    !checkCollectionIds ||
-    collectionIds.length === unique(collectionIds).length;
+  const collectionIds = tieFormat.collectionDefinitions.map(({ collectionId }) => collectionId);
+  const uniqueCollectionIds = !checkCollectionIds || collectionIds.length === unique(collectionIds).length;
 
   const valid = validCollections && validWinCriteria && uniqueCollectionIds;
 

@@ -1,15 +1,15 @@
-import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
-import { allDrawMatchUps } from '../../../query/matchUps/getAllDrawMatchUps';
-import { getStructureLinks } from '../../../query/drawDefinition/linkGetter';
-import { chunkArray, generateRange } from '../../../utilities/arrays';
-import { getDrawStructures } from '../../../acquire/findStructure';
+import { chunkArray, generateRange } from '../../tools/arrays';
+import { allDrawMatchUps } from '../matchUps/getAllDrawMatchUps';
 import { getPositionsPlayedOff } from './getPositionsPlayedOff';
-import { numericSort } from '../../../utilities/sorting';
+import { getDrawStructures } from '../../acquire/findStructure';
+import { getPositionAssignments } from './positionsGetter';
+import { numericSort } from '../../tools/sorting';
 import { getSourceRounds } from './getSourceRounds';
+import { getStructureLinks } from './linkGetter';
 
-import { CONTAINER, FIRST_MATCHUP, VOLUNTARY_CONSOLATION } from '../../../constants/drawDefinitionConstants';
-import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
-import { DrawDefinition } from '../../../types/tournamentTypes';
+import { CONTAINER, FIRST_MATCHUP, VOLUNTARY_CONSOLATION } from '../../constants/drawDefinitionConstants';
+import { MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
+import { DrawDefinition } from '../../types/tournamentTypes';
 
 type GetAvailablePlayoffProfileArgs = {
   drawDefinition: DrawDefinition;

@@ -1,6 +1,6 @@
 import { getContainedStructures } from '../../../query/drawDefinition/getContainedStructures';
 import { MatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
-import { intersection } from '../../../utilities/arrays';
+import { intersection } from '../../../tools/arrays';
 
 import { DrawDefinition, Structure } from '../../../types/tournamentTypes';
 import { HydratedMatchUp } from '../../../types/hydrated';
@@ -24,29 +24,22 @@ export function getTargetMatchUps({
     drawDefinition,
   })?.containedStructures;
 
-  const targetStructureIds =
-    containedStructures?.[structure.structureId]?.map(
-      ({ structureId }) => structureId
-    ) || [];
+  const targetStructureIds = containedStructures?.[structure.structureId]?.map(({ structureId }) => structureId) || [];
 
   targetStructureIds.push(structure?.structureId);
 
-  const drawPositions =
-    assignments?.map(({ drawPosition }) => drawPosition) || [];
+  const drawPositions = assignments?.map(({ drawPosition }) => drawPosition) || [];
 
   // find all matchUps in the specified structure which contain the target drawPositions
   const targetMatchUps =
     inContextDrawMatchUps?.filter(
       (matchUp) =>
         targetStructureIds.includes(matchUp.structureId) &&
-        intersection(matchUp.drawPositions ?? [], drawPositions).length
+        intersection(matchUp.drawPositions ?? [], drawPositions).length,
     ) ?? [];
 
   const targetMatchUpIds = targetMatchUps.map(({ matchUpId }) => matchUpId);
-  const matchUps =
-    matchUpsMap?.drawMatchUps?.filter((matchUp) =>
-      targetMatchUpIds.includes(matchUp.matchUpId)
-    ) ?? [];
+  const matchUps = matchUpsMap?.drawMatchUps?.filter((matchUp) => targetMatchUpIds.includes(matchUp.matchUpId)) ?? [];
 
   return { drawPositions, matchUps, targetMatchUps };
 }

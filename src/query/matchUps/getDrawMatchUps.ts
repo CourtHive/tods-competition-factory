@@ -1,4 +1,4 @@
-import { definedAttributes } from '../../utilities/definedAttributes';
+import { definedAttributes } from '../../tools/definedAttributes';
 import { hydrateParticipants } from '../participants/hydrateParticipants';
 import { getContextContent } from '../hierarchical/getContextContent';
 import { getDrawMatchUps } from './drawMatchUps';
@@ -38,8 +38,7 @@ export function drawMatchUps({
       endDate: endDate ?? event?.endDate ?? tournamentRecord?.endDate,
       tournamentId: tournamentId ?? tournamentRecord?.tournamentId,
       indoorOutDoor: event?.indoorOutdoor ?? tournamentRecord?.indoorOutdoor,
-      surfaceCategory:
-        event?.surfaceCategory ?? tournamentRecord?.surfaceCategory,
+      surfaceCategory: event?.surfaceCategory ?? tournamentRecord?.surfaceCategory,
     }),
   };
 

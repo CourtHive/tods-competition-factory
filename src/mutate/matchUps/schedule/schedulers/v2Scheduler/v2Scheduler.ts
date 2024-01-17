@@ -22,15 +22,12 @@ import {
   timeStringMinutes,
   timeToDate,
   zeroPad,
-} from '../../../../../utilities/dateTime';
+} from '../../../../../tools/dateTime';
 
 import { HydratedCourt, HydratedMatchUp } from '../../../../../types/hydrated';
 import { SUCCESS } from '../../../../../constants/resultConstants';
 import { TOTAL } from '../../../../../constants/scheduleConstants';
-import {
-  PersonRequests,
-  TournamentRecords,
-} from '../../../../../types/factoryTypes';
+import { PersonRequests, TournamentRecords } from '../../../../../types/factoryTypes';
 
 // NOTE: non-Garman scheduling
 
@@ -108,10 +105,7 @@ export function v2Scheduler({
     // Build up matchUpNotBeforeTimes for all matchUps already scheduled on scheduleDate
     const matchUpNotBeforeTimes = {};
     matchUps?.forEach((matchUp) => {
-      if (
-        matchUp.schedule?.scheduledDate &&
-        sameDay(scheduleDate, extractDate(matchUp.schedule.scheduledDate))
-      ) {
+      if (matchUp.schedule?.scheduledDate && sameDay(scheduleDate, extractDate(matchUp.schedule.scheduledDate))) {
         processNextMatchUps({
           matchUpPotentialParticipantIds,
           matchUpNotBeforeTimes,
@@ -141,9 +135,7 @@ export function v2Scheduler({
       courts,
       venues,
     });
-    const dateScheduledMatchUps = matchUps?.filter(({ matchUpId }) =>
-      allDateScheduledMatchUpIds.includes(matchUpId)
-    );
+    const dateScheduledMatchUps = matchUps?.filter(({ matchUpId }) => allDateScheduledMatchUpIds.includes(matchUpId));
 
     const { bookings } = generateBookings({
       dateScheduledMatchUps,
@@ -166,17 +158,11 @@ export function v2Scheduler({
         court,
       });
 
-      if (
-        !timeBoundaries.startTime ||
-        timeToDate(earliestCourtTime) < timeToDate(timeBoundaries.startTime)
-      ) {
+      if (!timeBoundaries.startTime || timeToDate(earliestCourtTime) < timeToDate(timeBoundaries.startTime)) {
         timeBoundaries.startTime = earliestCourtTime;
       }
 
-      if (
-        !timeBoundaries.endTime ||
-        timeToDate(courtEndTime) > timeToDate(timeBoundaries.endTime)
-      ) {
+      if (!timeBoundaries.endTime || timeToDate(courtEndTime) > timeToDate(timeBoundaries.endTime)) {
         timeBoundaries.endTime = courtEndTime;
       }
 
@@ -186,9 +172,7 @@ export function v2Scheduler({
     let venueEarliestCourtTime = venueTimeBoundaries.startTime;
 
     const addDateCourtBooking = ({ courtId, booking }) =>
-      dateCourts
-        ?.find((court) => court.courtId === courtId)
-        ?.dateAvailability[0].bookings.push(booking);
+      dateCourts?.find((court) => court.courtId === courtId)?.dateAvailability[0].bookings.push(booking);
 
     const failSafe = 10;
     let schedulingIterations = 0;
@@ -220,13 +204,12 @@ export function v2Scheduler({
 
             const { matchUpId, matchUpType } = matchUp;
 
-            const { participantIdsAtLimit, relevantParticipantIds } =
-              checkDailyLimits({
-                matchUpPotentialParticipantIds,
-                individualParticipantProfiles,
-                matchUpDailyLimits,
-                matchUp,
-              });
+            const { participantIdsAtLimit, relevantParticipantIds } = checkDailyLimits({
+              matchUpPotentialParticipantIds,
+              individualParticipantProfiles,
+              matchUpDailyLimits,
+              matchUp,
+            });
 
             if (participantIdsAtLimit.length) {
               if (!overLimitMatchUpIds[scheduleDate].includes(matchUpId))
@@ -234,13 +217,12 @@ export function v2Scheduler({
               continue;
             }
 
-            const { dependenciesScheduled, remainingDependencies } =
-              checkDependenciesScheduled({
-                matchUpScheduleTimes,
-                matchUpDependencies,
-                allDateMatchUpIds,
-                matchUp,
-              });
+            const { dependenciesScheduled, remainingDependencies } = checkDependenciesScheduled({
+              matchUpScheduleTimes,
+              matchUpDependencies,
+              allDateMatchUpIds,
+              matchUp,
+            });
 
             if (!dependenciesScheduled) {
               if (!dependencyDeferredMatchUpIds[scheduleDate][matchUpId])
@@ -264,8 +246,7 @@ export function v2Scheduler({
 
               if (
                 courtTime.scheduleTime &&
-                timeStringMinutes(scheduleTime) >=
-                  timeStringMinutes(courtTime.scheduleTime)
+                timeStringMinutes(scheduleTime) >= timeStringMinutes(courtTime.scheduleTime)
               ) {
                 return courtTime;
               }
@@ -291,21 +272,14 @@ export function v2Scheduler({
               if (!enoughTime) {
                 if (!recoveryTimeDeferredMatchUpIds[scheduleDate][matchUpId])
                   recoveryTimeDeferredMatchUpIds[scheduleDate][matchUpId] = [];
-                if (
-                  !recoveryTimeDeferredMatchUpIds[scheduleDate][
-                    matchUpId
-                  ].includes(scheduleTime)
-                ) {
-                  recoveryTimeDeferredMatchUpIds[scheduleDate][matchUpId].push(
-                    scheduleTime
-                  );
+                if (!recoveryTimeDeferredMatchUpIds[scheduleDate][matchUpId].includes(scheduleTime)) {
+                  recoveryTimeDeferredMatchUpIds[scheduleDate][matchUpId].push(scheduleTime);
                 }
                 return courtTime;
               }
 
               const averageMatchUpMinutes =
-                details.minutesMap?.[matchUpId]?.averageMinutes ||
-                details.greatestAverageMinutes;
+                details.minutesMap?.[matchUpId]?.averageMinutes || details.greatestAverageMinutes;
 
               const { conflicts } = checkRequestConflicts({
                 potentials: checkPotentialRequestConflicts,
@@ -324,8 +298,7 @@ export function v2Scheduler({
 
               bumpLimits(relevantParticipantIds, matchUpType);
 
-              const recoveryMinutes =
-                details.minutesMap?.[matchUpId]?.recoveryMinutes;
+              const recoveryMinutes = details.minutesMap?.[matchUpId]?.recoveryMinutes;
 
               updateTimeAfterRecovery({
                 matchUpPotentialParticipantIds,
@@ -340,8 +313,7 @@ export function v2Scheduler({
 
               if (
                 !courtTime.scheduleTime ||
-                timeStringMinutes(scheduleTime) <
-                  timeStringMinutes(courtTime.scheduleTime)
+                timeStringMinutes(scheduleTime) < timeStringMinutes(courtTime.scheduleTime)
               ) {
                 courtTime.averageMatchUpMinutes = averageMatchUpMinutes;
                 courtTime.recoveryMinutes = recoveryMinutes;
@@ -354,22 +326,14 @@ export function v2Scheduler({
             }, {});
 
             if (courtTime.scheduleTime) {
-              const {
-                averageMatchUpMinutes,
-                recoveryMinutes,
-                scheduleTime,
-                courtId,
-              } = courtTime;
+              const { averageMatchUpMinutes, recoveryMinutes, scheduleTime, courtId } = courtTime;
               matchUpScheduleTimes[matchUpId] = scheduleTime;
               matchUpScheduleCourtIds[matchUpId] = courtId;
               matchUpIdsScheduled.push(matchUpId);
               courtIdsScheduled.push(courtId);
 
               const startTime = scheduleTime;
-              const endTime = addMinutesToTimeString(
-                startTime,
-                averageMatchUpMinutes
-              );
+              const endTime = addMinutesToTimeString(startTime, averageMatchUpMinutes);
               const booking = {
                 averageMatchUpMinutes,
                 recoveryMinutes,
@@ -384,14 +348,11 @@ export function v2Scheduler({
               addDateCourtBooking({ courtId, booking });
 
               details.matchUpsToSchedule = details.matchUpsToSchedule.filter(
-                (matchUp) => matchUp.matchUpId !== matchUpId
+                (matchUp) => matchUp.matchUpId !== matchUpId,
               );
             } else if (schedulingConflicts?.length) {
-              if (!scheduleDateRequestConflicts[scheduleDate])
-                scheduleDateRequestConflicts[scheduleDate] = [];
-              scheduleDateRequestConflicts[scheduleDate].push(
-                ...schedulingConflicts
-              );
+              if (!scheduleDateRequestConflicts[scheduleDate]) scheduleDateRequestConflicts[scheduleDate] = [];
+              scheduleDateRequestConflicts[scheduleDate].push(...schedulingConflicts);
             }
           }
 
@@ -402,18 +363,9 @@ export function v2Scheduler({
           ) {
             venuePassComplete = true;
           }
-          if (
-            details.matchUpsToSchedule.length &&
-            matchUpIdsScheduled < details.courtsCount
-          ) {
-            if (
-              timeToDate(venueEarliestCourtTime) <
-              timeToDate(venueTimeBoundaries.endTime)
-            ) {
-              venueEarliestCourtTime = addMinutesToTimeString(
-                venueEarliestCourtTime,
-                periodLength
-              );
+          if (details.matchUpsToSchedule.length && matchUpIdsScheduled < details.courtsCount) {
+            if (timeToDate(venueEarliestCourtTime) < timeToDate(venueTimeBoundaries.endTime)) {
+              venueEarliestCourtTime = addMinutesToTimeString(venueEarliestCourtTime, periodLength);
             } else {
               venuePassComplete = true;
               details.complete = true;
@@ -432,9 +384,8 @@ export function v2Scheduler({
 
       schedulingIterations += 1;
       schedulingComplete =
-        venues.every(
-          ({ venueId }) => venueScheduledRoundDetails[venueId].complete
-        ) || schedulingIterations === failSafe;
+        venues.every(({ venueId }) => venueScheduledRoundDetails[venueId].complete) ||
+        schedulingIterations === failSafe;
     }
 
     // assign scheduledTime, venueId and courtId to each matchUp
@@ -459,13 +410,8 @@ export function v2Scheduler({
                 const courtId = matchUpScheduleCourtIds[matchUpId];
                 if (scheduleTime) {
                   // must include scheduleDate being scheduled to generate proper ISO string
-                  const formatTime = scheduleTime
-                    .split(':')
-                    .map(zeroPad)
-                    .join(':');
-                  const scheduledTime = `${extractDate(
-                    scheduleDate
-                  )}T${formatTime}`;
+                  const formatTime = scheduleTime.split(':').map(zeroPad).join(':');
+                  const scheduledTime = `${extractDate(scheduleDate)}T${formatTime}`;
 
                   if (dryRun) {
                     scheduledMatchUpIds[scheduleDate].push(matchUpId);
@@ -492,10 +438,7 @@ export function v2Scheduler({
         }
       });
 
-      noTimeMatchUpIds[scheduleDate] =
-        venueScheduledRoundDetails[venueId].matchUpsToSchedule.map(
-          getMatchUpId
-        );
+      noTimeMatchUpIds[scheduleDate] = venueScheduledRoundDetails[venueId].matchUpsToSchedule.map(getMatchUpId);
     }
 
     if (!dryRun && allDateScheduledByeMatchUpDetails?.length) {
@@ -517,19 +460,14 @@ export function v2Scheduler({
 
     for (const venue of dateSchedulingProfile.venues) {
       for (const round of venue.rounds) {
-        const matchUpIds = (round.matchUps ?? []).map(
-          ({ matchUpId }) => matchUpId
-        );
+        const matchUpIds = (round.matchUps ?? []).map(({ matchUpId }) => matchUpId);
         const canScheduleMatchUpIds = matchUpIds?.filter((matchUpId) =>
-          scheduledMatchUpIds[scheduleDate].includes(matchUpId)
+          scheduledMatchUpIds[scheduleDate].includes(matchUpId),
         );
         round.canScheduledMatchUpIds = canScheduleMatchUpIds;
         let possibleToSchedulePct: any =
-          Math.round(
-            ((canScheduleMatchUpIds?.length || 0) / round.matchUpsCount) * 10000
-          ) / 100;
-        if (possibleToSchedulePct === Infinity || isNaN(possibleToSchedulePct))
-          possibleToSchedulePct = undefined;
+          Math.round(((canScheduleMatchUpIds?.length || 0) / round.matchUpsCount) * 10000) / 100;
+        if (possibleToSchedulePct === Infinity || isNaN(possibleToSchedulePct)) possibleToSchedulePct = undefined;
         round.possibleToSchedulePct = possibleToSchedulePct;
         if (round.matchUpsCount === canScheduleMatchUpIds?.length) {
           round.possibleToSchedule = true;
@@ -539,9 +477,7 @@ export function v2Scheduler({
   }
 
   // returns the original form of the dateStrings, before extractDate()
-  const scheduledDates = (dateSchedulingProfiles ?? []).map(
-    ({ scheduleDate }) => scheduleDate
-  );
+  const scheduledDates = (dateSchedulingProfiles ?? []).map(({ scheduleDate }) => scheduleDate);
 
   const autoSchedulingAudit = {
     timeStamp: Date.now(),

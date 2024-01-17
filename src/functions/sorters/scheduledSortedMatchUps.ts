@@ -1,14 +1,11 @@
 import { HydratedMatchUp } from '../../types/hydrated';
-import { extractDate, extractTime } from '../../utilities/dateTime';
+import { extractDate, extractTime } from '../../tools/dateTime';
 
 type ScheduledSortedMatchUpsArgs = {
   matchUps: HydratedMatchUp[];
   schedulingProfile: any[];
 };
-export function scheduledSortedMatchUps({
-  schedulingProfile,
-  matchUps = [],
-}: ScheduledSortedMatchUpsArgs) {
+export function scheduledSortedMatchUps({ schedulingProfile, matchUps = [] }: ScheduledSortedMatchUpsArgs) {
   const profileHash = {};
 
   // hash is used to store a sort order value for scheduled rounds
@@ -17,20 +14,14 @@ export function scheduledSortedMatchUps({
   };
 
   if (schedulingProfile?.length) {
-    const roundsGroupings = schedulingProfile
-      .map(({ venues }) => venues.map(({ rounds }) => rounds))
-      .flat();
+    const roundsGroupings = schedulingProfile.map(({ venues }) => venues.map(({ rounds }) => rounds)).flat();
 
     roundsGroupings.forEach((grouping) => {
-      const sortedRounds = grouping.sort(
-        (a, b) => (a.sortOrder || 0) - (b.sortOrder || 0)
-      );
-      sortedRounds.forEach(
-        ({ eventId, drawId, structureId, roundNumber }, index) => {
-          const hash = getHash({ eventId, drawId, structureId, roundNumber });
-          profileHash[hash] = index;
-        }
-      );
+      const sortedRounds = grouping.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+      sortedRounds.forEach(({ eventId, drawId, structureId, roundNumber }, index) => {
+        const hash = getHash({ eventId, drawId, structureId, roundNumber });
+        profileHash[hash] = index;
+      });
     });
   }
 
@@ -60,9 +51,7 @@ export function scheduledSortedMatchUps({
 
     for (const matchUp of dateGroup) {
       const schedule = matchUp.schedule || {};
-      const scheduledTime =
-        (schedule.scheduledTime && extractTime(schedule.scheduledTime)) ||
-        'noScheduledTime';
+      const scheduledTime = (schedule.scheduledTime && extractTime(schedule.scheduledTime)) || 'noScheduledTime';
 
       if (!timeGroups[scheduledTime]) timeGroups[scheduledTime] = [];
       timeGroups[scheduledTime].push(matchUp);

@@ -2,7 +2,8 @@ import { participantScaleItem } from '../../../../query/participant/participantS
 import { generateDrawMaticRound, DrawMaticRoundResult } from './generateDrawMaticRound';
 import { getParticipantId } from '../../../../global/functions/extractors';
 import { isAdHoc } from '../../../../query/drawDefinition/isAdHoc';
-import { isObject } from '../../../../utilities/objects';
+import { generateRange } from '../../../../tools/arrays';
+import { isObject } from '../../../../tools/objects';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../../../constants/entryStatusConstants';
 import { ResultType, decorateResult } from '../../../../global/functions/decorateResult';
@@ -10,6 +11,7 @@ import { AD_HOC, stageOrder } from '../../../../constants/drawDefinitionConstant
 import { DYNAMIC, RATING } from '../../../../constants/scaleConstants';
 import { SINGLES_EVENT } from '../../../../constants/eventConstants';
 import { ScaleAttributes } from '../../../../types/factoryTypes';
+import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   DrawDefinition,
   EntryStatusUnion,
@@ -17,6 +19,7 @@ import {
   Structure,
   Tournament,
   EventTypeUnion,
+  MatchUp,
 } from '../../../../types/tournamentTypes';
 import {
   INVALID_DRAW_DEFINITION,
@@ -37,8 +40,9 @@ export type DrawMaticArgs = {
   encounterValue?: number;
   sameTeamValue?: number;
   maxIterations?: number;
-  structure?: Structure;
   matchUpIds?: string[];
+  structure?: Structure;
+  roundsCount?: number;
   structureId?: string;
   idPrefix?: string;
   isMock?: boolean;
@@ -48,7 +52,9 @@ export type DrawMaticArgs = {
   scaleName?: string;
 };
 
-export function drawMatic(params: DrawMaticArgs): ResultType & DrawMaticRoundResult {
+export function drawMatic(
+  params: DrawMaticArgs,
+): ResultType & { matchUps?: MatchUp[]; roundResults?: DrawMaticRoundResult[] } {
   const {
     restrictEntryStatus,
     adHocRatings = {},
@@ -59,12 +65,17 @@ export function drawMatic(params: DrawMaticArgs): ResultType & DrawMaticRoundRes
     drawDefinition,
     scaleAccessor,
     maxIterations,
+    roundsCount,
     matchUpIds,
     scaleName, // custom rating name to seed dynamic ratings
     idPrefix,
     salted,
     event,
   } = params;
+
+  if (roundsCount && typeof roundsCount !== 'number') {
+    return { error: INVALID_VALUES, info: 'roundsCount must be a number' };
+  }
 
   if (typeof drawDefinition !== 'object' || (drawDefinition.drawType && drawDefinition.drawType !== AD_HOC)) {
     return { error: INVALID_DRAW_DEFINITION };
@@ -79,12 +90,13 @@ export function drawMatic(params: DrawMaticArgs): ResultType & DrawMaticRoundRes
 
   const eventType = params.eventType ?? event?.eventType;
 
-  const enteredParticipantIds = drawDefinition?.entries
-    ?.filter((entry) => {
-      const entryStatus = entry.entryStatus as EntryStatusUnion;
-      return !restrictEntryStatus || STRUCTURE_SELECTED_STATUSES.includes(entryStatus);
-    })
-    .map(getParticipantId);
+  const enteredParticipantIds =
+    drawDefinition?.entries
+      ?.filter((entry) => {
+        const entryStatus = entry.entryStatus as EntryStatusUnion;
+        return !restrictEntryStatus || STRUCTURE_SELECTED_STATUSES.includes(entryStatus);
+      })
+      .map(getParticipantId) ?? [];
 
   if (participantIds) {
     // ensure all participantIds are in drawDefinition.entries
@@ -99,6 +111,10 @@ export function drawMatic(params: DrawMaticArgs): ResultType & DrawMaticRoundRes
       });
   } else {
     participantIds = enteredParticipantIds;
+  }
+
+  if (roundsCount && roundsCount > participantIds.length - 1) {
+    return { error: INVALID_VALUES, info: 'Not enough participants for roundsCount' };
   }
 
   // if no structureId is specified find the latest AD_HOC stage which has matchUps
@@ -149,23 +165,41 @@ export function drawMatic(params: DrawMaticArgs): ResultType & DrawMaticRoundRes
   // TODO: update dynamic ratings based on matchUps present from last played round
   // use scaleEngine.generateDynamicRatings(); see dynamicCalculations.test.ts
 
-  return generateDrawMaticRound({
-    tournamentParticipants,
-    generateMatchUps,
-    participantIds,
-    encounterValue,
-    sameTeamValue,
-    drawDefinition,
-    maxIterations,
-    adHocRatings,
-    matchUpIds,
-    structure,
-    eventType,
-    idPrefix,
-    salted,
-    isMock,
-    event,
-  });
+  const matchUps: MatchUp[] = [];
+  const roundResults: any = [];
+  let roundNumber;
+
+  for (const iteration of generateRange(0, roundsCount ?? 1)) {
+    const result = generateDrawMaticRound({
+      ignoreLastRoundNumber: true,
+      tournamentParticipants,
+      generateMatchUps,
+      participantIds,
+      encounterValue,
+      sameTeamValue,
+      drawDefinition,
+      maxIterations,
+      adHocRatings,
+      roundNumber,
+      matchUpIds,
+      structure,
+      eventType,
+      idPrefix,
+      salted,
+      isMock,
+      event,
+    });
+    if (result.error) return result;
+
+    const { matchUps: roundMatchUps, ...roundResult } = result;
+    roundResults.push({ ...roundResult, iteration, matchUpsCount: roundMatchUps?.length });
+    roundNumber = (roundResult?.roundNumber || 1) + 1;
+    if (roundMatchUps?.length) {
+      matchUps.push(...roundMatchUps);
+    }
+  }
+
+  return { ...SUCCESS, matchUps, roundResults };
 }
 
 type GetScaleValueArgs = {

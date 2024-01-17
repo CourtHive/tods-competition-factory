@@ -1,7 +1,7 @@
 import { visualizeScheduledMatchUps } from '../../testHarness/testUtilities/visualizeScheduledMatchUps';
 import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
 import mocksEngine from '../../../assemblies/engines/mock';
-import { extractDate } from '../../../utilities/dateTime';
+import { extractDate } from '../../../tools/dateTime';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
@@ -40,20 +40,17 @@ it('can schedule all matchUps in first round with only drawId', () => {
       ],
     },
   ];
-  const { tournamentRecord, schedulerResult } =
-    mocksEngine.generateTournamentRecord({
-      policyDefinitions: POLICY_SCHEDULING_NO_DAILY_LIMITS,
-      autoSchedule: true,
-      schedulingProfile,
-      venueProfiles,
-      drawProfiles,
-      startDate,
-    });
+  const { tournamentRecord, schedulerResult } = mocksEngine.generateTournamentRecord({
+    policyDefinitions: POLICY_SCHEDULING_NO_DAILY_LIMITS,
+    autoSchedule: true,
+    schedulingProfile,
+    venueProfiles,
+    drawProfiles,
+    startDate,
+  });
 
   tournamentEngine.setState(tournamentRecord);
-  expect(Object.values(schedulerResult.matchUpScheduleTimes).length).toEqual(
-    24
-  );
+  expect(Object.values(schedulerResult.matchUpScheduleTimes).length).toEqual(24);
 
   const { matchUps } = tournamentEngine.allCompetitionMatchUps();
   const scheduledMatchUps = matchUps?.filter(hasSchedule);

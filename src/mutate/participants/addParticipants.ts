@@ -1,8 +1,8 @@
-import { definedAttributes } from '../../utilities/definedAttributes';
-import { makeDeepCopy } from '../../utilities/makeDeepCopy';
+import { definedAttributes } from '../../tools/definedAttributes';
+import { makeDeepCopy } from '../../tools/makeDeepCopy';
 import { addNotice } from '../../global/state/globalState';
 import { addParticipant } from './addParticipant';
-import { UUID } from '../../utilities/UUID';
+import { UUID } from '../../tools/UUID';
 
 import { Participant, Tournament } from '../../types/tournamentTypes';
 import { ADD_PARTICIPANTS } from '../../constants/topicConstants';

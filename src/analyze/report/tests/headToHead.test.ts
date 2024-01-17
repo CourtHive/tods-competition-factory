@@ -2,7 +2,7 @@ import { completeDrawMatchUps } from '../../../assemblies/generators/mocks/compl
 import tournamentEngine from '../../../tests/engines/syncEngine';
 import { timeKeeper } from '../../../global/state/globalState';
 import mocksEngine from '../../../assemblies/engines/mock';
-import { generateRange } from '../../../utilities/arrays';
+import { generateRange } from '../../../tools/arrays';
 import { participantHeadToHead } from '../headToHead';
 import { expect, it } from 'vitest';
 

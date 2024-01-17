@@ -1,14 +1,11 @@
 import { mocksEngine } from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
-import { unique } from '../../../utilities/arrays';
+import { unique } from '../../../tools/arrays';
 import { it, expect } from 'vitest';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 import { SCHEDULE_WARNING } from '../../../constants/scheduleConstants';
-import {
-  FOLLOWED_BY,
-  NEXT_AVAILABLE,
-} from '../../../constants/timeItemConstants';
+import { FOLLOWED_BY, NEXT_AVAILABLE } from '../../../constants/timeItemConstants';
 
 const startDate = '2023-06-16';
 const venueId = 'cc-venue-id';
@@ -81,7 +78,7 @@ it('will not scheduled earlier rounds after later rounds', () => {
   const issues = unique(
     Object.values(courtIssues)
       .flat()
-      .map((c: any) => c.issue)
+      .map((c: any) => c.issue),
   );
   expect(issues).toEqual([SCHEDULE_WARNING]);
 });
@@ -180,20 +177,12 @@ it('will not save overlapping timeModifiers', () => {
     inContext: true,
   }).matchUps;
 
-  let firstRowMatchUps = matchUps.filter(
-    ({ schedule }) => schedule?.courtOrder === 1
-  );
+  let firstRowMatchUps = matchUps.filter(({ schedule }) => schedule?.courtOrder === 1);
 
-  const secondRowMatchUps = matchUps.filter(
-    ({ schedule }) => schedule?.courtOrder === 2
-  );
+  const secondRowMatchUps = matchUps.filter(({ schedule }) => schedule?.courtOrder === 2);
 
   expect(firstRowMatchUps.every(({ schedule }) => schedule.scheduledTime));
-  expect(
-    secondRowMatchUps.every(
-      ({ schedule }) => schedule.timeModifiers?.[0] === FOLLOWED_BY
-    )
-  );
+  expect(secondRowMatchUps.every(({ schedule }) => schedule.timeModifiers?.[0] === FOLLOWED_BY));
 
   bulkScheduleFirst = {
     method: 'bulkScheduleMatchUps',
@@ -211,14 +200,10 @@ it('will not save overlapping timeModifiers', () => {
     inContext: true,
   }).matchUps;
 
-  firstRowMatchUps = matchUps.filter(
-    ({ schedule }) => schedule?.courtOrder === 1
-  );
+  firstRowMatchUps = matchUps.filter(({ schedule }) => schedule?.courtOrder === 1);
 
   // confirm scheduledTime for first row matchUps removed when exlusive timeModifier added
-  expect(
-    firstRowMatchUps.every(({ schedule }) => !schedule.scheduledTime)
-  ).toEqual(true);
+  expect(firstRowMatchUps.every(({ schedule }) => !schedule.scheduledTime)).toEqual(true);
 
   bulkScheduleFirst = {
     method: 'bulkScheduleMatchUps',
@@ -236,15 +221,10 @@ it('will not save overlapping timeModifiers', () => {
     inContext: true,
   }).matchUps;
 
-  firstRowMatchUps = matchUps.filter(
-    ({ schedule }) => schedule?.courtOrder === 1
-  );
+  firstRowMatchUps = matchUps.filter(({ schedule }) => schedule?.courtOrder === 1);
 
   // confirm timeModifiers for first row matchUps removed when scheduledTime added
-  expect(
-    firstRowMatchUps.every(
-      ({ schedule }) =>
-        schedule.scheduledTime && !schedule.timeModifiers?.length
-    )
-  ).toEqual(true);
+  expect(firstRowMatchUps.every(({ schedule }) => schedule.scheduledTime && !schedule.timeModifiers?.length)).toEqual(
+    true,
+  );
 });

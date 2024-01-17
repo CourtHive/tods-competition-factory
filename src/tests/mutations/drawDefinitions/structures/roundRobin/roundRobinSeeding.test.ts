@@ -1,5 +1,5 @@
 import { getStructureSeedAssignments } from '../../../../../query/structure/getStructureSeedAssignments';
-import { chunkArray, unique } from '../../../../../utilities/arrays';
+import { chunkArray, unique } from '../../../../../tools/arrays';
 import mocksEngine from '../../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../../engines/syncEngine';
 import { it, expect } from 'vitest';

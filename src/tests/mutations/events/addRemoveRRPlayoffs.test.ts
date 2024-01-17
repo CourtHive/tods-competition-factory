@@ -1,8 +1,8 @@
-import { getPositionsPlayedOff } from '../../../mutate/drawDefinitions/structureGovernor/getPositionsPlayedOff';
+import { getPositionsPlayedOff } from '../../../query/drawDefinition/getPositionsPlayedOff';
 import { setSubscriptions } from '../../../global/state/globalState';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
-import { chunkByNth } from '../../../utilities/arrays';
+import { chunkByNth } from '../../../tools/arrays';
 import { expect, it } from 'vitest';
 
 import {
@@ -14,10 +14,7 @@ import {
   ROUND_ROBIN,
   SINGLE_ELIMINATION,
 } from '../../../constants/drawDefinitionConstants';
-import {
-  ADD_MATCHUPS,
-  DELETED_MATCHUP_IDS,
-} from '../../../constants/topicConstants';
+import { ADD_MATCHUPS, DELETED_MATCHUP_IDS } from '../../../constants/topicConstants';
 
 it('cann add ROUND_ROBIN playoff structures', () => {
   const {
@@ -44,12 +41,9 @@ it('cann add ROUND_ROBIN playoff structures', () => {
   result = tournamentEngine.executionQueue([getAvailablePlayoffs]);
   expect(result.results.length).toEqual(1); // not a mutation; not expecting SUCCESS
 
-  expect(result.results[0].positionsNotPlayedOff).toEqual([
-    1, 2, 3, 4, 5, 6, 7, 8,
-  ]);
+  expect(result.results[0].positionsNotPlayedOff).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
 
-  const playoffFinishingPositionRanges =
-    result.results[0].playoffFinishingPositionRanges;
+  const playoffFinishingPositionRanges = result.results[0].playoffFinishingPositionRanges;
   expect(playoffFinishingPositionRanges).toEqual([
     {
       finishingPositionRange: '1-2',
@@ -176,139 +170,126 @@ const scenarios: any[] = [
   },
 ];
 
-it.each(scenarios)(
-  'cann ADD and REMOVE various types of playoff structures to/from ROUND_ROBIN draws',
-  (scenario) => {
-    const deletedMatchUpIds: string[] = [];
-    let matchUpAddNotices: number[] = [];
+it.each(scenarios)('cann ADD and REMOVE various types of playoff structures to/from ROUND_ROBIN draws', (scenario) => {
+  const deletedMatchUpIds: string[] = [];
+  let matchUpAddNotices: number[] = [];
 
-    const subscriptions = {
-      [ADD_MATCHUPS]: (payload) => {
-        if (Array.isArray(payload)) {
-          payload.forEach(({ matchUps }) => {
-            matchUpAddNotices.push(matchUps.length);
-          });
-        }
-      },
-      [DELETED_MATCHUP_IDS]: (notices) => {
-        notices.forEach(({ matchUpIds }) =>
-          deletedMatchUpIds.push(...matchUpIds)
-        );
-      },
-    };
+  const subscriptions = {
+    [ADD_MATCHUPS]: (payload) => {
+      if (Array.isArray(payload)) {
+        payload.forEach(({ matchUps }) => {
+          matchUpAddNotices.push(matchUps.length);
+        });
+      }
+    },
+    [DELETED_MATCHUP_IDS]: (notices) => {
+      notices.forEach(({ matchUpIds }) => deletedMatchUpIds.push(...matchUpIds));
+    },
+  };
 
-    setSubscriptions({ subscriptions });
+  setSubscriptions({ subscriptions });
 
-    const baseMatchUpsCount = 48;
-    const drawSize = 32;
+  const baseMatchUpsCount = 48;
+  const drawSize = 32;
 
-    const {
-      tournamentRecord,
-      drawIds: [drawId],
-    } = mocksEngine.generateTournamentRecord({
-      drawProfiles: [
-        { drawType: ROUND_ROBIN, drawSize: scenario.drawSize ?? drawSize },
-      ],
-    });
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawType: ROUND_ROBIN, drawSize: scenario.drawSize ?? drawSize }],
+  });
 
-    let result = tournamentEngine.setState(tournamentRecord);
-    expect(result.success).toEqual(true);
-    matchUpAddNotices = [];
+  let result = tournamentEngine.setState(tournamentRecord);
+  expect(result.success).toEqual(true);
+  matchUpAddNotices = [];
 
-    let matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
-    expect(matchUps.length).toEqual(
-      scenario.baseMatchUpsCount ?? baseMatchUpsCount
-    );
+  let matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+  expect(matchUps.length).toEqual(scenario.baseMatchUpsCount ?? baseMatchUpsCount);
 
-    let drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-    const structureId = drawDefinition.structures[0].structureId;
-    const baseStructuresCount = drawDefinition.structures.length;
+  let drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+  const structureId = drawDefinition.structures[0].structureId;
+  const baseStructuresCount = drawDefinition.structures.length;
 
-    const getAvailablePlayoffs = {
-      method: 'getAvailablePlayoffProfiles',
+  const getAvailablePlayoffs = {
+    method: 'getAvailablePlayoffProfiles',
+    params: {
+      structureId,
+      drawId,
+    },
+  };
+
+  result = tournamentEngine.executionQueue([getAvailablePlayoffs]);
+  expect(result.results.length).toEqual(1); // not a mutation; not expecting SUCCESS
+
+  const methods = [
+    {
+      method: 'addPlayoffStructures',
       params: {
         structureId,
         drawId,
+
+        playoffGroups: [
+          {
+            structureName: 'Playoff 1-2',
+            drawType: scenario.drawType,
+            finishingPositions: [1],
+          },
+          {
+            structureName: 'Playoff 3-4',
+            drawType: scenario.drawType,
+            finishingPositions: [2],
+          },
+          {
+            structureName: 'Playoff 5-6',
+            drawType: scenario.drawType,
+            finishingPositions: [3],
+          },
+          {
+            structureName: 'Playoff 7-8',
+            drawType: scenario.drawType,
+            finishingPositions: [4],
+          },
+        ],
       },
-    };
+    },
+  ];
 
-    result = tournamentEngine.executionQueue([getAvailablePlayoffs]);
-    expect(result.results.length).toEqual(1); // not a mutation; not expecting SUCCESS
+  result = tournamentEngine.executionQueue(methods);
+  expect(result.success).toEqual(true);
+  const addedStructureIds = result.results[0].addedStructureIds;
 
-    const methods = [
-      {
-        method: 'addPlayoffStructures',
-        params: {
-          structureId,
-          drawId,
+  drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
 
-          playoffGroups: [
-            {
-              structureName: 'Playoff 1-2',
-              drawType: scenario.drawType,
-              finishingPositions: [1],
-            },
-            {
-              structureName: 'Playoff 3-4',
-              drawType: scenario.drawType,
-              finishingPositions: [2],
-            },
-            {
-              structureName: 'Playoff 5-6',
-              drawType: scenario.drawType,
-              finishingPositions: [3],
-            },
-            {
-              structureName: 'Playoff 7-8',
-              drawType: scenario.drawType,
-              finishingPositions: [4],
-            },
-          ],
-        },
-      },
-    ];
+  const generatedStructuresCount = drawDefinition.structures.length - baseStructuresCount;
+  expect(addedStructureIds.length).toEqual(generatedStructuresCount);
 
-    result = tournamentEngine.executionQueue(methods);
-    expect(result.success).toEqual(true);
-    const addedStructureIds = result.results[0].addedStructureIds;
+  matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+  const matchUpsCount = matchUps.length;
+  const generatedMatchUpsCount = matchUpsCount - baseMatchUpsCount;
+  expect(generatedStructuresCount).toEqual(scenario.generatedStructuresCount);
+  expect(generatedMatchUpsCount).toEqual(scenario.generatedMatchUpsCount);
 
-    drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+  const groupsCount = methods[0].params.playoffGroups.length;
+  const structureIdGroups = chunkByNth(addedStructureIds, groupsCount);
+  expect(structureIdGroups.length).toEqual(groupsCount);
 
-    const generatedStructuresCount =
-      drawDefinition.structures.length - baseStructuresCount;
-    expect(addedStructureIds.length).toEqual(generatedStructuresCount);
+  const structuresCount = drawDefinition.structures.length;
+  // deleting the first structure of each structureIdGroup should delete all child structures
+  result = tournamentEngine.removeStructure({
+    structureId: structureIdGroups[0][0],
+    drawId,
+  });
+  expect(result.success).toEqual(true);
 
-    matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
-    const matchUpsCount = matchUps.length;
-    const generatedMatchUpsCount = matchUpsCount - baseMatchUpsCount;
-    expect(generatedStructuresCount).toEqual(scenario.generatedStructuresCount);
-    expect(generatedMatchUpsCount).toEqual(scenario.generatedMatchUpsCount);
+  // only deleted 1 of the playoff structures
+  expect(matchUpAddNotices[0] / groupsCount).toEqual(deletedMatchUpIds.length);
 
-    const groupsCount = methods[0].params.playoffGroups.length;
-    const structureIdGroups = chunkByNth(addedStructureIds, groupsCount);
-    expect(structureIdGroups.length).toEqual(groupsCount);
+  drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+  const deletedStructuresCount = structuresCount - drawDefinition.structures.length;
 
-    const structuresCount = drawDefinition.structures.length;
-    // deleting the first structure of each structureIdGroup should delete all child structures
-    result = tournamentEngine.removeStructure({
-      structureId: structureIdGroups[0][0],
-      drawId,
-    });
-    expect(result.success).toEqual(true);
+  expect(deletedStructuresCount).toEqual(result.removedStructureIds.length);
 
-    // only deleted 1 of the playoff structures
-    expect(matchUpAddNotices[0] / groupsCount).toEqual(
-      deletedMatchUpIds.length
-    );
-
-    drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-    const deletedStructuresCount =
-      structuresCount - drawDefinition.structures.length;
-
-    expect(deletedStructuresCount).toEqual(result.removedStructureIds.length);
-
-    matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
-    const deletedMatchUpsCount = matchUpsCount - matchUps.length;
-    expect(deletedMatchUpsCount).toEqual(result.removedMatchUpIds.length);
-  }
-);
+  matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+  const deletedMatchUpsCount = matchUpsCount - matchUps.length;
+  expect(deletedMatchUpsCount).toEqual(result.removedMatchUpIds.length);
+});

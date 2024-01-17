@@ -5,7 +5,7 @@ import { updateTieMatchUpScore } from '../matchUps/score/tieMatchUpScore';
 import { setMatchUpState } from '../matchUps/matchUpStatus/setMatchUpState';
 import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
 import { findDrawMatchUp } from '../../acquire/findDrawMatchUp';
-import { definedAttributes } from '../../utilities/definedAttributes';
+import { definedAttributes } from '../../tools/definedAttributes';
 import { checkScoreHasValue } from '../../query/matchUp/checkScoreHasValue';
 import { calculateWinCriteria } from '../../query/matchUp/calculateWinCriteria';
 import { getTieFormat } from '../../query/hierarchical/tieFormats/getTieFormat';
@@ -13,11 +13,7 @@ import { tieFormatTelemetry } from '../matchUps/tieFormat/tieFormatTelemetry';
 import { validateTieFormat } from '../../validators/validateTieFormat';
 import { compareTieFormats } from '../../query/hierarchical/tieFormats/compareTieFormats';
 import { copyTieFormat } from '../../query/hierarchical/tieFormats/copyTieFormat';
-import {
-  deleteMatchUpsNotice,
-  modifyDrawNotice,
-  modifyMatchUpNotice,
-} from '../notifications/drawNotifications';
+import { deleteMatchUpsNotice, modifyDrawNotice, modifyMatchUpNotice } from '../notifications/drawNotifications';
 import { allDrawMatchUps } from '../../query/matchUps/getAllDrawMatchUps';
 import { allEventMatchUps } from '../../query/matchUps/getAllEventMatchUps';
 
@@ -31,13 +27,7 @@ import {
   NOT_FOUND,
   NO_MODIFICATIONS_APPLIED,
 } from '../../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  Event,
-  MatchUp,
-  TieFormat,
-  Tournament,
-} from '../../types/tournamentTypes';
+import { DrawDefinition, Event, MatchUp, TieFormat, Tournament } from '../../types/tournamentTypes';
 import { HydratedMatchUp } from '../../types/hydrated';
 import { decorateResult } from '../../global/functions/decorateResult';
 
@@ -101,30 +91,26 @@ export function removeCollectionDefinition({
   if (result.error) return decorateResult({ result, stack });
 
   const targetCollection = tieFormat?.collectionDefinitions?.find(
-    (collectionDefinition) => collectionDefinition.collectionId === collectionId
+    (collectionDefinition) => collectionDefinition.collectionId === collectionId,
   );
-  if (!targetCollection)
-    return decorateResult({ result: { error: NOT_FOUND, collectionId } });
+  if (!targetCollection) return decorateResult({ result: { error: NOT_FOUND, collectionId } });
 
   tieFormat.collectionDefinitions = tieFormat.collectionDefinitions.filter(
-    (collectionDefinition) => collectionDefinition.collectionId !== collectionId
+    (collectionDefinition) => collectionDefinition.collectionId !== collectionId,
   );
 
   // if the collectionDefinition being removed contains a collectionGroupNumber,
   // remove the collectionGroup and all references to it in other collectionDefinitions
   if (targetCollection.collectionGroupNumber) {
-    tieFormat.collectionDefinitions = tieFormat.collectionDefinitions.map(
-      (collectionDefinition) => {
-        const { collectionGroupNumber, ...rest } = collectionDefinition;
-        if (collectionGroupNumber) {
-          // collectionGroupNumber removed
-        }
-        return rest;
+    tieFormat.collectionDefinitions = tieFormat.collectionDefinitions.map((collectionDefinition) => {
+      const { collectionGroupNumber, ...rest } = collectionDefinition;
+      if (collectionGroupNumber) {
+        // collectionGroupNumber removed
       }
-    );
+      return rest;
+    });
     tieFormat.collectionGroups = tieFormat.collectionGroups.filter(
-      ({ groupNumber }) =>
-        groupNumber !== targetCollection.collectionGroupNumber
+      ({ groupNumber }) => groupNumber !== targetCollection.collectionGroupNumber,
     );
   }
 
@@ -136,10 +122,7 @@ export function removeCollectionDefinition({
   // if valueGoal has changed, force renaming of the tieFormat
   const originalValueGoal = existingTieFormat?.winCriteria.valueGoal;
   const wasAggregateValue = existingTieFormat?.winCriteria.aggregateValue;
-  if (
-    (originalValueGoal && originalValueGoal !== valueGoal) ||
-    (aggregateValue && !wasAggregateValue)
-  ) {
+  if ((originalValueGoal && originalValueGoal !== valueGoal) || (aggregateValue && !wasAggregateValue)) {
     if (tieFormatName) {
       tieFormat.tieFormatName = tieFormatName;
     } else {
@@ -175,9 +158,7 @@ export function removeCollectionDefinition({
   // all team matchUps in scope which are completed or which have a score should not be modified
   // UNLESS all collectionMatchUps have no score
   const targetMatchUps = (matchUps || []).filter((matchUp) => {
-    const collectionMatchUps = matchUp.tieMatchUps?.filter(
-      (tieMatchUp) => tieMatchUp.collectionId === collectionId
-    );
+    const collectionMatchUps = matchUp.tieMatchUps?.filter((tieMatchUp) => tieMatchUp.collectionId === collectionId);
     const collectionScore = collectionMatchUps?.some(checkScoreHasValue);
 
     const tieFormatDifference =
@@ -193,9 +174,7 @@ export function removeCollectionDefinition({
       (!matchUp.winningSide &&
         matchUp.matchUpStatus !== COMPLETED &&
         (updateInProgressMatchUps ||
-          (matchUp.matchUpStatus !== IN_PROGRESS &&
-            !checkScoreHasValue(matchUp) &&
-            !tieFormatDifference)))
+          (matchUp.matchUpStatus !== IN_PROGRESS && !checkScoreHasValue(matchUp) && !tieFormatDifference)))
     );
   });
 
@@ -204,9 +183,7 @@ export function removeCollectionDefinition({
   }
 
   if (matchUpId && matchUp && updateInProgressMatchUps) {
-    const collectionMatchUps = matchUp.tieMatchUps?.filter(
-      (tieMatchUp) => tieMatchUp.collectionId === collectionId
-    );
+    const collectionMatchUps = matchUp.tieMatchUps?.filter((tieMatchUp) => tieMatchUp.collectionId === collectionId);
     for (const collectionMatchUp of collectionMatchUps ?? []) {
       let result: any = setMatchUpState({
         matchUpId: collectionMatchUp.matchUpId,
@@ -235,8 +212,7 @@ export function removeCollectionDefinition({
       side.lineUp = (side.lineUp ?? []).map((assignment) => ({
         participantId: assignment.participantId,
         collectionAssignments: (assignment?.collectionAssignments ?? []).filter(
-          (collectionAssignment) =>
-            collectionAssignment.collectionId !== collectionId
+          (collectionAssignment) => collectionAssignment.collectionId !== collectionId,
         ),
       }));
     }

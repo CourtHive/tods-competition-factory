@@ -1,5 +1,5 @@
 import { processAccessors } from '../drawDefinition/processAccessors';
-import { unique } from '../../utilities/arrays';
+import { unique } from '../../tools/arrays';
 
 import { ResultType } from '../../global/functions/decorateResult';
 import { HydratedParticipant } from '../../types/hydrated';
@@ -41,9 +41,7 @@ export function getAttributeGroupings({
   }
   const groupings = {};
   targetParticipantIds.forEach((participantId) => {
-    const participant = participants.find(
-      (candidate) => candidate.participantId === participantId
-    );
+    const participant = participants.find((candidate) => candidate.participantId === participantId);
 
     const { values } = extractAttributeValues({
       policyAttributes,
@@ -84,8 +82,7 @@ export function extractAttributeValues({
   }
   const extractedValues: string[] = [];
   policyAttributes.forEach((policyAttribute) => {
-    const { directive, groupings, key, significantCharacters } =
-      policyAttribute || {};
+    const { directive, groupings, key, significantCharacters } = policyAttribute || {};
 
     if (key) {
       const accessors = key.split('.');
@@ -94,26 +91,21 @@ export function extractAttributeValues({
           significantCharacters,
           value: participant,
           accessors,
-        })
+        }),
       );
     } else if (directive) {
       // extractedValues are values to be avoided
       // e.g. for { directive: 'pairParticipants' } the extractedValues would be [ 'partnerParticipantId' ]
       const includeIds = policyAttribute?.includeIds;
       const collectionIds = (idCollections?.[directive] || []).filter(
-        (participantId) => !includeIds || includeIds.includes(participantId)
+        (participantId) => !includeIds || includeIds.includes(participantId),
       );
       if (collectionIds?.length && participants?.length) {
         collectionIds.forEach((collectionParticipantId) => {
           const collectionParticipant = participants.find(
-            (participant) =>
-              participant.participantId === collectionParticipantId
+            (participant) => participant.participantId === collectionParticipantId,
           );
-          if (
-            collectionParticipant?.individualParticipantIds?.includes(
-              participant.participantId
-            )
-          ) {
+          if (collectionParticipant?.individualParticipantIds?.includes(participant.participantId)) {
             const participantId = collectionParticipant?.participantId;
             extractedValues.push(participantId);
           }

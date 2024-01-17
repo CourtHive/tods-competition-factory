@@ -1,7 +1,7 @@
 import { unlinkTournament } from '../../../mutate/tournaments/tournamentLinks';
 import competitionEngineSync from '../../engines/syncEngine';
 import mocksEngine from '../../../assemblies/engines/mock';
-import { intersection } from '../../../utilities/arrays';
+import { intersection } from '../../../tools/arrays';
 import { expect, test } from 'vitest';
 
 import { LINKED_TOURNAMENTS } from '../../../constants/extensionConstants';
@@ -48,15 +48,13 @@ test('throws appropriate errors', () => {
 test.each([competitionEngineSync])(
   'can link and unlink tournamentRecords loaded into competitionEngine',
   async (competitionEngine) => {
-    const { tournamentRecord: firstRecord } =
-      mocksEngine.generateTournamentRecord();
+    const { tournamentRecord: firstRecord } = mocksEngine.generateTournamentRecord();
     await competitionEngine.setState(firstRecord);
 
     let result = await competitionEngine.linkTournaments();
     expect(result.success).toEqual(true);
 
-    const { tournamentRecord: secondRecord } =
-      mocksEngine.generateTournamentRecord();
+    const { tournamentRecord: secondRecord } = mocksEngine.generateTournamentRecord();
     await competitionEngine.setState([firstRecord, secondRecord]);
 
     // two tournamentRecords are in competitionEngine state... now link them
@@ -67,8 +65,7 @@ test.each([competitionEngineSync])(
     expect(tournamentIds.length).toEqual(2);
     await checkExtensions({ tournamentIds, competitionEngine });
 
-    const { tournamentRecord: thirdRecord } =
-      mocksEngine.generateTournamentRecord();
+    const { tournamentRecord: thirdRecord } = mocksEngine.generateTournamentRecord();
     competitionEngine.setTournamentRecord(thirdRecord);
 
     result = await competitionEngine.linkTournaments();
@@ -78,15 +75,12 @@ test.each([competitionEngineSync])(
     expect(tournamentIds.length).toEqual(3);
     await checkExtensions({ tournamentIds, competitionEngine });
 
-    const { linkedTournamentIds } =
-      await competitionEngine.getLinkedTournamentIds();
+    const { linkedTournamentIds } = await competitionEngine.getLinkedTournamentIds();
 
     const keys = Object.keys(linkedTournamentIds);
     expect(intersection(keys, tournamentIds).length).toEqual(3);
     keys.forEach((tournamentId) => {
-      expect(
-        intersection([tournamentId], linkedTournamentIds[tournamentId]).length
-      ).toEqual(0);
+      expect(intersection([tournamentId], linkedTournamentIds[tournamentId]).length).toEqual(0);
     });
 
     const tournamentId = tournamentIds.pop();
@@ -105,9 +99,7 @@ test.each([competitionEngineSync])(
     result = await competitionEngine.unlinkTournament({
       tournamentId: 'bogusId',
     });
-    expect(
-      [MISSING_TOURNAMENT_ID, MISSING_TOURNAMENT_RECORD].includes(result.error)
-    ).toEqual(true);
+    expect([MISSING_TOURNAMENT_ID, MISSING_TOURNAMENT_RECORD].includes(result.error)).toEqual(true);
 
     result = await competitionEngine.unlinkTournaments();
     expect(result.success).toEqual(true);
@@ -115,22 +107,19 @@ test.each([competitionEngineSync])(
       unlinkedTournamentIds: [...tournamentIds, tournamentId],
       competitionEngine,
     });
-  }
+  },
 );
 
 test.each([competitionEngineSync])(
   'can purge unliked tournamentRecords from competitionEngine state',
   async (competitionEngine) => {
     competitionEngine.reset();
-    const { tournamentRecord: firstRecord } =
-      mocksEngine.generateTournamentRecord();
-    const { tournamentRecord: secondRecord } =
-      mocksEngine.generateTournamentRecord();
+    const { tournamentRecord: firstRecord } = mocksEngine.generateTournamentRecord();
+    const { tournamentRecord: secondRecord } = mocksEngine.generateTournamentRecord();
     await competitionEngine.setState([firstRecord, secondRecord]);
 
     await competitionEngine.linkTournaments();
-    const { tournamentRecord: thirdRecord } =
-      mocksEngine.generateTournamentRecord();
+    const { tournamentRecord: thirdRecord } = mocksEngine.generateTournamentRecord();
     competitionEngine.setTournamentRecord(thirdRecord);
 
     let { tournamentRecords } = await competitionEngine.getState();
@@ -140,7 +129,7 @@ test.each([competitionEngineSync])(
 
     ({ tournamentRecords } = await competitionEngine.getState());
     expect(Object.keys(tournamentRecords).length).toEqual(2);
-  }
+  },
 );
 
 test.each([competitionEngineSync])(
@@ -148,35 +137,29 @@ test.each([competitionEngineSync])(
   async (competitionEngine) => {
     competitionEngine.reset();
     const drawProfiles = [{ drawSize: 8 }];
-    const { tournamentRecord: firstRecord } =
-      mocksEngine.generateTournamentRecord({ drawProfiles });
-    const { tournamentRecord: secondRecord } =
-      mocksEngine.generateTournamentRecord({ drawProfiles });
+    const { tournamentRecord: firstRecord } = mocksEngine.generateTournamentRecord({ drawProfiles });
+    const { tournamentRecord: secondRecord } = mocksEngine.generateTournamentRecord({ drawProfiles });
     await competitionEngine.setState([firstRecord, secondRecord]);
     await competitionEngine.linkTournaments();
 
-    const { upcomingMatchUps } =
-      await competitionEngine.getCompetitionMatchUps();
+    const { upcomingMatchUps } = await competitionEngine.getCompetitionMatchUps();
 
     upcomingMatchUps.forEach(({ sides }) =>
       sides.forEach((side) => {
         expect(side.participant.person).not.toBeUndefined();
-      })
+      }),
     );
-  }
+  },
 );
 
-test.each([competitionEngineSync])(
-  'can set a single tournamentRecord',
-  async (competitionEngine) => {
-    competitionEngine.reset();
-    const { tournamentRecord } = mocksEngine.generateTournamentRecord();
-    let result = await competitionEngine.setTournamentRecord(tournamentRecord);
-    expect(result.success).toEqual(true);
-    result = await competitionEngine.linkTournaments();
-    expect(result.success).toEqual(true);
-  }
-);
+test.each([competitionEngineSync])('can set a single tournamentRecord', async (competitionEngine) => {
+  competitionEngine.reset();
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord();
+  let result = await competitionEngine.setTournamentRecord(tournamentRecord);
+  expect(result.success).toEqual(true);
+  result = await competitionEngine.linkTournaments();
+  expect(result.success).toEqual(true);
+});
 
 async function getLinkedIds(competitionEngine) {
   const { extension } = await competitionEngine.findExtension({
@@ -193,11 +176,7 @@ type CheckExtensionsArgs = {
   competitionEngine: FactoryEngine;
   tournamentIds?: string[];
 };
-async function checkExtensions({
-  unlinkedTournamentIds,
-  competitionEngine,
-  tournamentIds,
-}: CheckExtensionsArgs) {
+async function checkExtensions({ unlinkedTournamentIds, competitionEngine, tournamentIds }: CheckExtensionsArgs) {
   const { tournamentRecords } = await competitionEngine.getState();
   Object.keys(tournamentRecords).forEach((tournamentId) => {
     const tournamentRecord = tournamentRecords[tournamentId];
@@ -205,9 +184,7 @@ async function checkExtensions({
       // unlinked tournaments have no extensions remaining
       expect(tournamentRecord.extensions.length).toEqual(0);
     } else {
-      expect(tournamentRecord.extensions[0].value.tournamentIds).toEqual(
-        tournamentIds
-      );
+      expect(tournamentRecord.extensions[0].value.tournamentIds).toEqual(tournamentIds);
     }
   });
 }

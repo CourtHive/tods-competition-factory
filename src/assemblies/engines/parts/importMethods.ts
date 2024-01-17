@@ -1,5 +1,5 @@
 import { getDevContext, handleCaughtError, setMethods } from '../../../global/state/globalState';
-import { isFunction, isObject } from '../../../utilities/objects';
+import { isFunction, isObject } from '../../../tools/objects';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 import { ResultType } from '../../../global/functions/decorateResult';

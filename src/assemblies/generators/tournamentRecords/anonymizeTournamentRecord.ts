@@ -1,10 +1,10 @@
 import { postalCodeMocks, stateMocks, cityMocks } from '../mocks/address';
-import { extractDate, formatDate } from '../../../utilities/dateTime';
+import { extractDate, formatDate } from '../../../tools/dateTime';
 import { findExtension } from '../../../acquire/findExtension';
 import { generatePersons } from '../mocks/generatePersons';
 import { generateAddress } from '../mocks/generateAddress';
 import { nameMocks } from '../mocks/nameMocks';
-import { UUID } from '../../../utilities/UUID';
+import { UUID } from '../../../tools/UUID';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 import { FEMALE, MALE, OTHER } from '../../../constants/genderConstants';
@@ -15,12 +15,7 @@ import {
   PERSON_REQUESTS,
   SCHEDULING_PROFILE,
 } from '../../../constants/extensionConstants';
-import {
-  GROUP,
-  INDIVIDUAL,
-  PAIR,
-  TEAM,
-} from '../../../constants/participantConstants';
+import { GROUP, INDIVIDUAL, PAIR, TEAM } from '../../../constants/participantConstants';
 
 export function anonymizeTournamentRecord({
   keepExtensions = [], // e.g. ['level']
@@ -40,9 +35,7 @@ export function anonymizeTournamentRecord({
 
   const filterExtensions = (element) => {
     if (Array.isArray(keepExtensions)) {
-      return element?.extensions?.filter((extension) =>
-        extensionsToKeep.includes(extension.name)
-      );
+      return element?.extensions?.filter((extension) => extensionsToKeep.includes(extension.name));
     } else {
       return element?.extensions;
     }
@@ -59,8 +52,7 @@ export function anonymizeTournamentRecord({
   tournamentRecord.tournamentId = newTournamentId;
 
   tournamentRecord.createdAt = new Date().toISOString();
-  tournamentRecord.tournamentName =
-    tournamentName || `Anonymized: ${formatDate(new Date())}`;
+  tournamentRecord.tournamentName = tournamentName || `Anonymized: ${formatDate(new Date())}`;
 
   delete tournamentRecord.parentOrganisation;
 
@@ -73,10 +65,9 @@ export function anonymizeTournamentRecord({
   // update all PAIR, GROUP and TEAM participant individualParticipantIds
   for (const participant of tournamentRecord.participants || []) {
     if (Array.isArray(participant.individualParticipantIds)) {
-      participant.individualParticipantIds =
-        participant.individualParticipantIds.map(
-          (individualParticipantId) => idMap[individualParticipantId]
-        );
+      participant.individualParticipantIds = participant.individualParticipantIds.map(
+        (individualParticipantId) => idMap[individualParticipantId],
+      );
     }
   }
 
@@ -99,10 +90,7 @@ export function anonymizeTournamentRecord({
     idMap[event.eventId] = newEventId;
     event.eventId = newEventId;
     const categoryName =
-      event.category?.categoryName ||
-      event.category?.ageCategoryCode ||
-      event.category?.ratingType ||
-      event.gender;
+      event.category?.categoryName || event.category?.ageCategoryCode || event.category?.ratingType || event.gender;
     event.eventName = `Event ${eventCount} ${categoryName}`;
 
     // update all event entries
@@ -133,26 +121,22 @@ export function anonymizeTournamentRecord({
 
         // update positionAssignments for all structures
         for (const assignment of structure.positionAssignments || []) {
-          if (assignment.participantId)
-            assignment.participantId = idMap[assignment.participantId];
+          if (assignment.participantId) assignment.participantId = idMap[assignment.participantId];
         }
 
         // update seedAssignments for all structures
         for (const assignment of structure.seedAssignments || []) {
-          if (assignment.participantId)
-            assignment.participantId = idMap[assignment.participantId];
+          if (assignment.participantId) assignment.participantId = idMap[assignment.participantId];
         }
 
         // update lineUps in each matchUp
         for (const matchUp of structure.matchUps || []) {
           for (const side of matchUp.sides || []) {
             if (!side.lineUp) continue;
-            side.lineUp = side.lineUp.map(
-              ({ participantId, collectionAssignments }) => ({
-                participantId: idMap[participantId],
-                collectionAssignments,
-              })
-            );
+            side.lineUp = side.lineUp.map(({ participantId, collectionAssignments }) => ({
+              participantId: idMap[participantId],
+              collectionAssignments,
+            }));
           }
         }
       };
@@ -198,7 +182,7 @@ export function anonymizeTournamentRecord({
   const consideredDate = tournamentRecord.startDate || formatDate(new Date());
 
   const individualParticipants = (tournamentRecord.participants || []).filter(
-    ({ participantType }) => participantType === INDIVIDUAL
+    ({ participantType }) => participantType === INDIVIDUAL,
   );
 
   const gendersCount = individualParticipants.reduce(
@@ -211,7 +195,7 @@ export function anonymizeTournamentRecord({
       }
       return counts;
     },
-    { [MALE]: 0, [FEMALE]: 0, [OTHER]: 0 }
+    { [MALE]: 0, [FEMALE]: 0, [OTHER]: 0 },
   );
 
   const genderedPersons = Object.assign(
@@ -226,7 +210,7 @@ export function anonymizeTournamentRecord({
           consideredDate,
           sex: gender,
         })?.persons || [],
-    }))
+    })),
   );
 
   const genderedIndices = { [MALE]: 0, [FEMALE]: 0, [OTHER]: 0 };
@@ -239,11 +223,10 @@ export function anonymizeTournamentRecord({
       const { city, state, postalCode } = address;
       if (!components.cities.includes(city)) components.cities.push(city);
       if (!components.states.includes(state)) components.states.push(state);
-      if (!components.postalCodes.includes(postalCode))
-        components.postalCodes.push(postalCode);
+      if (!components.postalCodes.includes(postalCode)) components.postalCodes.push(postalCode);
       return components;
     },
-    { cities: [], postalCodes: [], states: [] }
+    { cities: [], postalCodes: [], states: [] },
   );
 
   const postalCodesCount = addressComponents.postalCodes.length;
@@ -309,7 +292,7 @@ export function anonymizeTournamentRecord({
   });
 
   const pairParticipants = (tournamentRecord.participants || []).filter(
-    ({ participantType }) => participantType === PAIR
+    ({ participantType }) => participantType === PAIR,
   );
 
   pairParticipants.forEach((pairParticipant) => {
@@ -321,7 +304,7 @@ export function anonymizeTournamentRecord({
   });
 
   const teamParticipants = (tournamentRecord.participants || []).filter(
-    ({ participantType }) => participantType === TEAM
+    ({ participantType }) => participantType === TEAM,
   );
   const teamParticipantsCount = teamParticipants.length;
   const teamNames = nameMocks({ count: teamParticipantsCount }).names;
@@ -330,7 +313,7 @@ export function anonymizeTournamentRecord({
   });
 
   const groupParticipants = (tournamentRecord.participants || []).filter(
-    ({ participantType }) => participantType === GROUP
+    ({ participantType }) => participantType === GROUP,
   );
   const groupParticipantsCount = groupParticipants.length;
   const groupNames = nameMocks({
@@ -371,14 +354,9 @@ export function anonymizeTournamentRecord({
   return { ...SUCCESS };
 }
 
-function generatePairParticipantName({
-  individualParticipantIds,
-  individualParticipants,
-}) {
+function generatePairParticipantName({ individualParticipantIds, individualParticipants }) {
   let participantName = individualParticipants
-    .filter(({ participantId }) =>
-      individualParticipantIds.includes(participantId)
-    )
+    .filter(({ participantId }) => individualParticipantIds.includes(participantId))
     .map(({ person }) => person?.standardFamilyName)
     .filter(Boolean)
     .sort()

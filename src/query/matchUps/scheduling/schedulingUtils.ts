@@ -1,23 +1,12 @@
 import { findMatchUpFormatTiming } from '../../../acquire/findMatchUpFormatTiming';
-import { definedAttributes } from '../../../utilities/definedAttributes';
-import { instanceCount } from '../../../utilities/arrays';
+import { definedAttributes } from '../../../tools/definedAttributes';
+import { instanceCount } from '../../../tools/arrays';
 
-import {
-  BYE,
-  completedMatchUpStatuses,
-} from '../../../constants/matchUpStatusConstants';
+import { BYE, completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 
 export function getRoundId(obj) {
-  const {
-    containerStructureId,
-    roundSegment,
-    isRoundRobin,
-    tournamentId,
-    roundNumber,
-    structureId,
-    eventId,
-    drawId,
-  } = obj;
+  const { containerStructureId, roundSegment, isRoundRobin, tournamentId, roundNumber, structureId, eventId, drawId } =
+    obj;
   const relevantStructureId = isRoundRobin ? containerStructureId : structureId;
 
   // retain order
@@ -44,9 +33,7 @@ export function getRoundTiming({ round, matchUps, events, tournamentRecords }) {
   const event = events.find((event) => event.eventId === round.eventId);
   const { eventType, category, categoryType } = event || {};
   const { categoryName, ageCategoryCode } = category || {};
-  const formatCounts = instanceCount(
-    matchUps.map(({ matchUpFormat }) => matchUpFormat)
-  );
+  const formatCounts = instanceCount(matchUps.map(({ matchUpFormat }) => matchUpFormat));
 
   let roundMinutes = 0;
   Object.keys(formatCounts).forEach((matchUpFormat) => {
@@ -72,35 +59,25 @@ export function getRoundTiming({ round, matchUps, events, tournamentRecords }) {
 export function getFinishingPositionDetails(matchUps) {
   return (matchUps || []).reduce(
     (foo, matchUp) => {
-      const sum = (matchUp.finishingPositionRange?.winner || []).reduce(
-        (a, b) => a + b,
-        0
-      );
-      const winnerFinishingPositionRange =
-        (matchUp.finishingPositionRange?.winner || []).join('-') || '';
+      const sum = (matchUp.finishingPositionRange?.winner || []).reduce((a, b) => a + b, 0);
+      const winnerFinishingPositionRange = (matchUp.finishingPositionRange?.winner || []).join('-') || '';
       return !foo.minFinishingSum || sum < foo.minFinishingSum
         ? { minFinishingSum: sum, winnerFinishingPositionRange }
         : foo;
     },
-    { minFinishingSum: 0, winnerFinishingPositionRange: '' }
+    { minFinishingSum: 0, winnerFinishingPositionRange: '' },
   );
 }
 
 export function getRoundProfile(matchUps) {
   const matchUpsCount = matchUps.length;
-  const byeCount =
-    matchUps.filter(({ sides }) => sides?.some(({ bye }) => bye)).length || 0;
+  const byeCount = matchUps.filter(({ sides }) => sides?.some(({ bye }) => bye)).length || 0;
   const completedCount =
-    matchUps.filter(
-      ({ winningSide, matchUpStatus }) =>
-        winningSide || completedMatchUpStatuses.includes(matchUpStatus)
-    ).length || 0;
+    matchUps.filter(({ winningSide, matchUpStatus }) => winningSide || completedMatchUpStatuses.includes(matchUpStatus))
+      .length || 0;
   const scheduledCount =
     matchUps.filter(
-      ({ schedule, matchUpStatus }) =>
-        schedule?.scheduledDate &&
-        schedule?.scheduledTime &&
-        matchUpStatus !== BYE
+      ({ schedule, matchUpStatus }) => schedule?.scheduledDate && schedule?.scheduledTime && matchUpStatus !== BYE,
     ).length || 0;
   const consideredCount = matchUpsCount - byeCount;
   const isComplete = consideredCount === completedCount;

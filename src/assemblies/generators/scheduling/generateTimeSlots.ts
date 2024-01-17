@@ -1,5 +1,5 @@
 import { checkRequiredParameters } from '../../../parameters/checkRequiredParameters';
-import { timeToDate, extractTime, tidyTime } from '../../../utilities/dateTime';
+import { timeToDate, extractTime, tidyTime } from '../../../tools/dateTime';
 
 import { ResultType } from '../../../global/functions/decorateResult';
 import { OBJECT } from '../../../constants/attributeConstants';

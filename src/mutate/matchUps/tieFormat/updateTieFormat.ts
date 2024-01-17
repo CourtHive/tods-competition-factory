@@ -4,10 +4,10 @@ import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructure
 import { ResultType, decorateResult } from '../../../global/functions/decorateResult';
 import { copyTieFormat } from '../../../query/hierarchical/tieFormats/copyTieFormat';
 import { getTieFormat } from '../../../query/hierarchical/tieFormats/getTieFormat';
-import { instanceCount, intersection } from '../../../utilities/arrays';
-import { xa } from '../../../utilities/objects';
+import { instanceCount, intersection } from '../../../tools/arrays';
+import { xa } from '../../../tools/objects';
 import { validUpdate } from '../../../validators/validUpdate';
-import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
+import { makeDeepCopy } from '../../../tools/makeDeepCopy';
 import {
   addMatchUpsNotice,
   deleteMatchUpsNotice,

@@ -2,17 +2,14 @@ import { visualizeScheduledMatchUps } from '../../testHarness/testUtilities/visu
 import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
 import { matchUpSort } from '../../../functions/sorters/matchUpSort';
 import mocksEngine from '../../../assemblies/engines/mock';
-import { extractTime } from '../../../utilities/dateTime';
+import { extractTime } from '../../../tools/dateTime';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { DOUBLES, SINGLES } from '../../../constants/eventConstants';
-import {
-  MISSING_EVENT,
-  MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
+import { MISSING_EVENT, MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 
 it('auto schedules multiple events at multiple venues and tracks participants across venues', () => {
   const venueProfiles = [
@@ -62,9 +59,7 @@ it('auto schedules multiple events at multiple venues and tracks participants ac
   let competitionParticipants = tournamentEngine.getCompetitionParticipants({
     participantFilters: { participantTypes: [INDIVIDUAL] },
   }).participants;
-  const firstEventParticipantIds = competitionParticipants
-    .slice(0, 32)
-    .map((p) => p.participantId);
+  const firstEventParticipantIds = competitionParticipants.slice(0, 32).map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({
     participantIds: firstEventParticipantIds,
     eventId: eventIds[0],
@@ -132,13 +127,10 @@ it('auto schedules multiple events at multiple venues and tracks participants ac
 
   // --------------------------------------------------
   // generate draw for second event
-  ({ participants: competitionParticipants } =
-    tournamentEngine.getCompetitionParticipants({
-      participantFilters: { participantTypes: [PAIR] },
-    }));
-  const secondEventParticipantIds = competitionParticipants
-    .slice(0, 32)
-    .map((p) => p.participantId);
+  ({ participants: competitionParticipants } = tournamentEngine.getCompetitionParticipants({
+    participantFilters: { participantTypes: [PAIR] },
+  }));
+  const secondEventParticipantIds = competitionParticipants.slice(0, 32).map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({
     participantIds: secondEventParticipantIds,
     eventId: eventIds[1],
@@ -199,9 +191,7 @@ it('auto schedules multiple events at multiple venues and tracks participants ac
   expect(schedulingProfile[0].venues[1].rounds[0].drawId).toEqual(drawIds[1]);
 
   result = tournamentEngine.getSchedulingProfileIssues();
-  expect(
-    Object.keys(result.profileIssues.matchUpIdShouldBeAfter).length
-  ).toEqual(0);
+  expect(Object.keys(result.profileIssues.matchUpIdShouldBeAfter).length).toEqual(0);
   expect(result.success).toEqual(true);
 
   // #################################################
@@ -213,24 +203,19 @@ it('auto schedules multiple events at multiple venues and tracks participants ac
   expect(result.noTimeMatchUpIds[startDate].length).toBeGreaterThan(0);
   // #################################################
 
-  const { matchUps: singlesMatchUps } = tournamentEngine.allCompetitionMatchUps(
-    {
-      matchUpFilters: { matchUpTypes: [SINGLES] },
-    }
-  );
+  const { matchUps: singlesMatchUps } = tournamentEngine.allCompetitionMatchUps({
+    matchUpFilters: { matchUpTypes: [SINGLES] },
+  });
   expect(singlesMatchUps.length).toEqual(31);
 
-  const { matchUps: doublesMatchUps } = tournamentEngine.allCompetitionMatchUps(
-    {
-      matchUpFilters: { matchUpTypes: [DOUBLES] },
-    }
-  );
+  const { matchUps: doublesMatchUps } = tournamentEngine.allCompetitionMatchUps({
+    matchUpFilters: { matchUpTypes: [DOUBLES] },
+  });
   expect(doublesMatchUps.length).toEqual(15);
 
   const singlesScheduled = singlesMatchUps.filter(hasSchedule);
   const doublesScheduled = doublesMatchUps.filter(hasSchedule);
-  const totalScheduledMatchUps =
-    singlesScheduled.length + doublesScheduled.length;
+  const totalScheduledMatchUps = singlesScheduled.length + doublesScheduled.length;
 
   expect(singlesScheduled.length).toBeGreaterThanOrEqual(15);
   expect(doublesScheduled.length).toBeGreaterThanOrEqual(6);
@@ -269,14 +254,13 @@ it('multiple events at multiple venues with different participants will start at
   ];
   const startDate = '2022-01-01';
   const endDate = '2022-01-07';
-  const { drawIds, venueIds, tournamentRecord } =
-    mocksEngine.generateTournamentRecord({
-      participantsProfile: { participantsCount: 100, participantType: PAIR },
-      eventProfiles,
-      venueProfiles,
-      startDate,
-      endDate,
-    });
+  const { drawIds, venueIds, tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile: { participantsCount: 100, participantType: PAIR },
+    eventProfiles,
+    venueProfiles,
+    startDate,
+    endDate,
+  });
 
   tournamentEngine.setState(tournamentRecord);
   const { tournamentId } = tournamentRecord;
@@ -290,19 +274,17 @@ it('multiple events at multiple venues with different participants will start at
     } = drawDefinition;
 
     for (const roundNumber of [1, 2]) {
-      const result = tournamentEngine
-        .devContext(true)
-        .addSchedulingProfileRound({
-          scheduleDate: startDate,
-          venueId: venueIds[index],
-          round: {
-            tournamentId,
-            eventId,
-            drawId,
-            structureId,
-            roundNumber,
-          },
-        });
+      const result = tournamentEngine.devContext(true).addSchedulingProfileRound({
+        scheduleDate: startDate,
+        venueId: venueIds[index],
+        round: {
+          tournamentId,
+          eventId,
+          drawId,
+          structureId,
+          roundNumber,
+        },
+      });
       expect(result.success).toEqual(true);
     }
   }
@@ -316,13 +298,9 @@ it('multiple events at multiple venues with different participants will start at
   expect(result.noTimeMatchUpIds[startDate].length).toEqual(0);
   // #################################################
 
-  const firstVenueRemainingScheduleTimes =
-    result.scheduleTimesRemaining[startDate][venueIds[0]];
-  const secondVenueRemainingScheduleTimes =
-    result.scheduleTimesRemaining[startDate][venueIds[1]];
-  expect(firstVenueRemainingScheduleTimes.length).toBeGreaterThan(
-    secondVenueRemainingScheduleTimes.length
-  );
+  const firstVenueRemainingScheduleTimes = result.scheduleTimesRemaining[startDate][venueIds[0]];
+  const secondVenueRemainingScheduleTimes = result.scheduleTimesRemaining[startDate][venueIds[1]];
+  expect(firstVenueRemainingScheduleTimes.length).toBeGreaterThan(secondVenueRemainingScheduleTimes.length);
 
   const { matchUps } = tournamentEngine.allCompetitionMatchUps();
   const scheduledMatchUps = matchUps.filter(hasSchedule);
@@ -337,9 +315,7 @@ it('multiple events at multiple venues with different participants will start at
     .sort(matchUpSort)
     .map(({ schedule }) => schedule.scheduledTime);
 
-  expect(firstVenueMatchUpScheduleTimes.length).toEqual(
-    secondVenueMatchUpScheduleTimes.length
-  );
+  expect(firstVenueMatchUpScheduleTimes.length).toEqual(secondVenueMatchUpScheduleTimes.length);
 
   expect(extractTime(firstVenueMatchUpScheduleTimes[0])).toEqual('08:00');
   expect(extractTime(secondVenueMatchUpScheduleTimes[0])).toEqual('08:00');

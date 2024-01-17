@@ -1,7 +1,7 @@
 import { getPositionAssignments } from '../../../../../query/drawDefinition/positionsGetter';
 import { generateMatchUpOutcome } from '../../../../helpers/generateMatchUpOutcome';
 import mocksEngine from '../../../../../assemblies/engines/mock';
-import { intersection } from '../../../../../utilities/arrays';
+import { intersection } from '../../../../../tools/arrays';
 import tournamentEngine from '../../../../engines/syncEngine';
 import { setsValues } from './roundRobinSetsValues';
 import { expect, it } from 'vitest';

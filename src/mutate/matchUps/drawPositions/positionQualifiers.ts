@@ -3,16 +3,13 @@ import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructure
 import { getQualifiersCount } from '../../../query/drawDefinition/getQualifiersCount';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { decorateResult } from '../../../global/functions/decorateResult';
-import { generateRange, randomPop } from '../../../utilities/arrays';
+import { generateRange, randomPop } from '../../../tools/arrays';
 import { findStructure } from '../../../acquire/findStructure';
-import { ensureInt } from '../../../utilities/ensureInt';
+import { ensureInt } from '../../../tools/ensureInt';
 
 import { CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import {
-  INVALID_STAGE,
-  NO_DRAW_POSITIONS_AVAILABLE_FOR_QUALIFIERS,
-} from '../../../constants/errorConditionConstants';
+import { INVALID_STAGE, NO_DRAW_POSITIONS_AVAILABLE_FOR_QUALIFIERS } from '../../../constants/errorConditionConstants';
 
 export function positionQualifiers(params) {
   const structure = params.structure ?? findStructure(params).structure;
@@ -24,11 +21,7 @@ export function positionQualifiers(params) {
     return decorateResult({ result: { error: INVALID_STAGE }, stack });
   }
 
-  const {
-    unplacedRoundQualifierCounts,
-    positionAssignments,
-    roundDrawPositions,
-  } = getQualifiersData(params);
+  const { unplacedRoundQualifierCounts, positionAssignments, roundDrawPositions } = getQualifiersData(params);
 
   for (const roundNumber of Object.keys(unplacedRoundQualifierCounts)) {
     const unfilledDrawPositions = positionAssignments
@@ -42,9 +35,7 @@ export function positionQualifiers(params) {
       })
       .map((assignment) => assignment.drawPosition);
 
-    if (
-      unplacedRoundQualifierCounts[roundNumber] > (unfilledDrawPositions || 0)
-    )
+    if (unplacedRoundQualifierCounts[roundNumber] > (unfilledDrawPositions || 0))
       return decorateResult({
         result: { error: NO_DRAW_POSITIONS_AVAILABLE_FOR_QUALIFIERS },
         context: { unfilledDrawPositions },
@@ -68,8 +59,7 @@ export function positionQualifiers(params) {
 }
 
 export function getQualifiersData({ drawDefinition, structure, structureId }) {
-  if (!structure)
-    ({ structure } = findStructure({ drawDefinition, structureId }));
+  if (!structure) ({ structure } = findStructure({ drawDefinition, structureId }));
   if (!structureId) ({ structureId } = structure);
 
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
@@ -93,17 +83,15 @@ export function getQualifiersData({ drawDefinition, structure, structureId }) {
     ...targetRoundNumbers
       .filter((roundNumber) => roundProfile?.[roundNumber])
       .map((roundNumber) => ({
-        [roundNumber]:
-          roundProfile?.[roundNumber]?.drawPositions?.filter(Boolean) ?? [],
-      }))
+        [roundNumber]: roundProfile?.[roundNumber]?.drawPositions?.filter(Boolean) ?? [],
+      })),
   );
 
   const assignedQualifierPositions = positionAssignments
     ?.filter((assignment) => assignment.qualifier)
     .map((assignment) => assignment.drawPosition);
 
-  const unplacedQualifiersCount =
-    qualifiersCount - (assignedQualifierPositions?.length ?? 0);
+  const unplacedQualifiersCount = qualifiersCount - (assignedQualifierPositions?.length ?? 0);
   const placedQualifiersCount = assignedQualifierPositions?.length;
 
   const unplacedRoundQualifierCounts = Object.assign(
@@ -112,18 +100,13 @@ export function getQualifiersData({ drawDefinition, structure, structureId }) {
       const assignedQualifierPositions = positionAssignments
         ?.filter(
           (assignment) =>
-            assignment.qualifier &&
-            roundDrawPositions[roundNumber]?.drawPositions?.includes(
-              assignment.drawPosition
-            )
+            assignment.qualifier && roundDrawPositions[roundNumber]?.drawPositions?.includes(assignment.drawPosition),
         )
         .map((assignment) => assignment.drawPosition);
       return {
-        [roundNumber]:
-          (roundQualifiersCounts?.[roundNumber] ?? 0) -
-          (assignedQualifierPositions?.length ?? 0),
+        [roundNumber]: (roundQualifiersCounts?.[roundNumber] ?? 0) - (assignedQualifierPositions?.length ?? 0),
       };
-    })
+    }),
   );
 
   return {

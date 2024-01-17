@@ -2,7 +2,7 @@ import { deleteParticipants } from '../participants/deleteParticipants';
 import { getStageEntries } from '../../query/drawDefinition/getStageEntries';
 import { decorateResult } from '../../global/functions/decorateResult';
 import { getParticipantId } from '../../global/functions/extractors';
-import { arrayIndices } from '../../utilities/arrays';
+import { arrayIndices } from '../../tools/arrays';
 import { removeEventEntries } from './removeEventEntries';
 import { addEventEntries } from './addEventEntries';
 
@@ -58,21 +58,15 @@ export function destroyGroupEntry({
 } {
   const stack = 'destroyGroupEntry';
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!participantId)
-    return decorateResult({ result: { error: MISSING_PARTICIPANT_ID }, stack });
+  if (!participantId) return decorateResult({ result: { error: MISSING_PARTICIPANT_ID }, stack });
   if (!event) return { error: MISSING_EVENT };
 
-  if (
-    !event.eventType ||
-    ![DOUBLES_EVENT, TEAM_EVENT].includes(event.eventType)
-  ) {
+  if (!event.eventType || ![DOUBLES_EVENT, TEAM_EVENT].includes(event.eventType)) {
     return decorateResult({ result: { error: INVALID_EVENT_TYPE }, stack });
   }
 
   const tournamentParticipants = tournamentRecord.participants ?? [];
-  const participant = tournamentParticipants.find(
-    (participant) => participant.participantId === participantId
-  );
+  const participant = tournamentParticipants.find((participant) => participant.participantId === participantId);
 
   if (!participant) {
     return decorateResult({ result: { error: PARTICIPANT_NOT_FOUND }, stack });
@@ -81,17 +75,14 @@ export function destroyGroupEntry({
   if (
     !participant.participantType ||
     ![PAIR, TEAM_PARTICIPANT].includes(participant.participantType) ||
-    (participant.participantType === TEAM_PARTICIPANT &&
-      event.eventType !== TEAM_EVENT) ||
+    (participant.participantType === TEAM_PARTICIPANT && event.eventType !== TEAM_EVENT) ||
     (participant.participantType === PAIR && event.eventType !== DOUBLES_EVENT)
   ) {
     return { error: INVALID_PARTICIPANT_TYPE };
   }
 
   const eventEntries = event.entries ?? [];
-  const entry = eventEntries.find(
-    (entry) => entry.participantId === participantId
-  );
+  const entry = eventEntries.find((entry) => entry.participantId === participantId);
   if (!entry) return { error: PARTICIPANT_ENTRY_NOT_FOUND };
 
   const { stageEntries } = getStageEntries({
@@ -103,9 +94,7 @@ export function destroyGroupEntry({
   });
   const groupedParticipantIds = stageEntries.map(getParticipantId);
   const individualParticipantIdsInGroups = tournamentParticipants
-    .filter(({ participantId }) =>
-      groupedParticipantIds.includes(participantId)
-    )
+    .filter(({ participantId }) => groupedParticipantIds.includes(participantId))
     .map(({ individualParticipantIds }) => individualParticipantIds)
     .flat()
     .filter(Boolean);
@@ -113,8 +102,7 @@ export function destroyGroupEntry({
   // find only those individualParticipantIds which do not occur MULTIPLE TIMES in PAIRs/GROUPs in the event.entries or drawEntries
   // this scenario can occur in e.g. ITA tournaments where an individual participant is paired multiple times across flights
   const individualParticipantIds = participant.individualParticipantIds?.filter(
-    (participantId) =>
-      arrayIndices(participantId, individualParticipantIdsInGroups).length === 1
+    (participantId) => arrayIndices(participantId, individualParticipantIdsInGroups).length === 1,
   );
 
   // remove the group participant from event entries

@@ -7,19 +7,16 @@ import { allDrawMatchUps } from '../../query/matchUps/getAllDrawMatchUps';
 import { decorateResult } from '../../global/functions/decorateResult';
 import { modifyEventPublishStatus } from './modifyEventPublishStatus';
 import { addEventExtension } from '../extensions/addRemoveExtensions';
-import { definedAttributes } from '../../utilities/definedAttributes';
+import { definedAttributes } from '../../tools/definedAttributes';
 import { getFlightProfile } from '../../query/event/getFlightProfile';
 import { getDrawStructures } from '../../acquire/findStructure';
-import { makeDeepCopy } from '../../utilities/makeDeepCopy';
+import { makeDeepCopy } from '../../tools/makeDeepCopy';
 import { addNotice } from '../../global/state/globalState';
 import { addExtension } from '../extensions/addExtension';
 import { findExtension } from '../../acquire/findExtension';
 import { findEvent } from '../../acquire/findEvent';
 import { publishEvent } from './publishEvent';
-import {
-  deleteDrawNotice,
-  deleteMatchUpsNotice,
-} from '../notifications/drawNotifications';
+import { deleteDrawNotice, deleteMatchUpsNotice } from '../notifications/drawNotifications';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
 import { DELETE_DRAW_DEFINITIONS } from '../../constants/auditConstants';
@@ -28,15 +25,9 @@ import { Event, Tournament } from '../../types/tournamentTypes';
 import { PolicyDefinitions } from '../../types/factoryTypes';
 import { SUCCESS } from '../../constants/resultConstants';
 import { AUDIT } from '../../constants/topicConstants';
-import {
-  MISSING_TOURNAMENT_RECORD,
-  SCORES_PRESENT,
-} from '../../constants/errorConditionConstants';
+import { MISSING_TOURNAMENT_RECORD, SCORES_PRESENT } from '../../constants/errorConditionConstants';
 import { MAIN, QUALIFYING } from '../../constants/drawDefinitionConstants';
-import {
-  DRAW_DELETIONS,
-  FLIGHT_PROFILE,
-} from '../../constants/extensionConstants';
+import { DRAW_DELETIONS, FLIGHT_PROFILE } from '../../constants/extensionConstants';
 
 type DeleteDrawDefinitionArgs = {
   policyDefinitions?: PolicyDefinitions;
@@ -54,13 +45,7 @@ export function deleteDrawDefinitions(params: DeleteDrawDefinitionArgs) {
 
   let drawIds = params.drawIds ?? [];
   let event = params.event;
-  const {
-    autoPublish = true,
-    tournamentRecord,
-    auditData,
-    eventId,
-    force,
-  } = params;
+  const { autoPublish = true, tournamentRecord, auditData, eventId, force } = params;
 
   const { appliedPolicies } = getAppliedPolicies({ tournamentRecord, event });
   const policyDefinitions = { ...appliedPolicies, ...params.policyDefinitions };
@@ -97,129 +82,110 @@ export function deleteDrawDefinitions(params: DeleteDrawDefinitionArgs) {
       stack,
     });
 
-  const flightProfile = makeDeepCopy(
-    getFlightProfile({ event }).flightProfile,
-    false,
-    true
-  );
+  const flightProfile = makeDeepCopy(getFlightProfile({ event }).flightProfile, false, true);
 
-  const positionAssignmentMap = ({
-    participantId,
-    drawPosition,
-    qualifier,
+  const positionAssignmentMap = ({ participantId, drawPosition, qualifier, bye }) => ({
     bye,
-  }) => ({ bye, qualifier, drawPosition, participantId });
+    qualifier,
+    drawPosition,
+    participantId,
+  });
 
   const allowDeletionWithScoresPresent =
-    force ??
-    appliedPolicies?.[POLICY_TYPE_SCORING]?.allowDeletionWithScoresPresent
-      ?.drawDefinitions;
+    force ?? appliedPolicies?.[POLICY_TYPE_SCORING]?.allowDeletionWithScoresPresent?.drawDefinitions;
 
   const publishStatus = getEventPublishStatus({ event }) ?? {};
 
   let updatedDrawIds =
-    publishStatus.drawIds ??
-    (publishStatus.drawDetails && Object.keys(publishStatus.drawDetails)) ??
-    [];
+    publishStatus.drawIds ?? (publishStatus.drawDetails && Object.keys(publishStatus.drawDetails)) ?? [];
   let publishedDrawsDeleted;
 
   const drawIdsWithScoresPresent: string[] = [];
-  const filteredDrawDefinitions = event.drawDefinitions.filter(
-    (drawDefinition) => {
-      if (drawIds.includes(drawDefinition.drawId)) {
-        const matchUps =
-          allDrawMatchUps({ event, drawDefinition })?.matchUps ?? [];
+  const filteredDrawDefinitions = event.drawDefinitions.filter((drawDefinition) => {
+    if (drawIds.includes(drawDefinition.drawId)) {
+      const matchUps = allDrawMatchUps({ event, drawDefinition })?.matchUps ?? [];
 
-        const scoresPresent = matchUps.some(({ score }) =>
-          checkScoreHasValue({ score })
+      const scoresPresent = matchUps.some(({ score }) => checkScoreHasValue({ score }));
+      if (scoresPresent && !allowDeletionWithScoresPresent) {
+        drawIdsWithScoresPresent.push(drawDefinition.drawId);
+        return true;
+      }
+
+      const { drawId, drawType, drawName } = drawDefinition;
+      const flight = flightProfile?.flights?.find((flight) => flight.drawId === drawDefinition.drawId);
+
+      if (flight) {
+        flight.drawEntries = flight.drawEntries?.filter((entry) =>
+          STRUCTURE_SELECTED_STATUSES.includes(entry.entryStatus),
         );
-        if (scoresPresent && !allowDeletionWithScoresPresent) {
-          drawIdsWithScoresPresent.push(drawDefinition.drawId);
-          return true;
-        }
+      }
 
-        const { drawId, drawType, drawName } = drawDefinition;
-        const flight = flightProfile?.flights?.find(
-          (flight) => flight.drawId === drawDefinition.drawId
-        );
+      if (updatedDrawIds.includes(drawId)) {
+        updatedDrawIds = updatedDrawIds.filter((id) => id !== drawId);
+        publishedDrawsDeleted = true;
+      }
 
-        if (flight) {
-          flight.drawEntries = flight.drawEntries?.filter((entry) =>
-            STRUCTURE_SELECTED_STATUSES.includes(entry.entryStatus)
-          );
-        }
+      const mainStructure = getDrawStructures({
+        stageSequence: 1,
+        drawDefinition,
+        stage: MAIN,
+      })?.structures?.[0];
 
-        if (updatedDrawIds.includes(drawId)) {
-          updatedDrawIds = updatedDrawIds.filter((id) => id !== drawId);
-          publishedDrawsDeleted = true;
-        }
+      const pa: any = mainStructure
+        ? getPositionAssignments({
+            structureId: mainStructure.structureId,
+            tournamentRecord,
+            drawDefinition,
+          })
+        : undefined;
 
-        const mainStructure = getDrawStructures({
-          stageSequence: 1,
-          drawDefinition,
-          stage: MAIN,
-        })?.structures?.[0];
+      const positionAssignments = pa?.positionAssignments?.map(positionAssignmentMap);
 
-        const pa: any = mainStructure
-          ? getPositionAssignments({
-              structureId: mainStructure.structureId,
+      const qualifyingStructures = getDrawStructures({
+        stage: QUALIFYING,
+        drawDefinition,
+      })?.structures;
+
+      const qualifyingPositionAssignments = qualifyingStructures?.length
+        ? qualifyingStructures.map((qualifyingStructure) => {
+            const stageSequence = qualifyingStructure.stageSequence;
+            const pa: any = getPositionAssignments({
+              structureId: qualifyingStructure.structureId,
               tournamentRecord,
               drawDefinition,
-            })
-          : undefined;
-
-        const positionAssignments = pa?.positionAssignments?.map(
-          positionAssignmentMap
-        );
-
-        const qualifyingStructures = getDrawStructures({
-          stage: QUALIFYING,
-          drawDefinition,
-        })?.structures;
-
-        const qualifyingPositionAssignments = qualifyingStructures?.length
-          ? qualifyingStructures.map((qualifyingStructure) => {
-              const stageSequence = qualifyingStructure.stageSequence;
-              const pa: any = getPositionAssignments({
-                structureId: qualifyingStructure.structureId,
-                tournamentRecord,
-                drawDefinition,
-              });
-              const positionAssignments = pa?.positionAssignments.map(
-                positionAssignmentMap
-              );
-              return { positionAssignments, stageSequence };
-            })
-          : undefined;
-
-        // TODO: conditionally add auditTrail based on policyDefinitions
-        const audit = {
-          action: DELETE_DRAW_DEFINITIONS,
-          payload: {
-            drawDefinitions: [drawDefinition],
-            eventId: eventId ?? event?.eventId,
-            auditData,
-          },
-        };
-        auditTrail.push(audit);
-
-        deletedDrawsDetail.push(
-          definedAttributes({
-            tournamentId: tournamentRecord.tournamentId,
-            eventId: eventId ?? event?.eventId,
-            qualifyingPositionAssignments,
-            positionAssignments,
-            auditData,
-            drawType,
-            drawName,
-            drawId,
+            });
+            const positionAssignments = pa?.positionAssignments.map(positionAssignmentMap);
+            return { positionAssignments, stageSequence };
           })
-        );
-        matchUps?.forEach(({ matchUpId }) => matchUpIds.push(matchUpId));
-      }
-      return !drawIds.includes(drawDefinition.drawId);
+        : undefined;
+
+      // TODO: conditionally add auditTrail based on policyDefinitions
+      const audit = {
+        action: DELETE_DRAW_DEFINITIONS,
+        payload: {
+          drawDefinitions: [drawDefinition],
+          eventId: eventId ?? event?.eventId,
+          auditData,
+        },
+      };
+      auditTrail.push(audit);
+
+      deletedDrawsDetail.push(
+        definedAttributes({
+          tournamentId: tournamentRecord.tournamentId,
+          eventId: eventId ?? event?.eventId,
+          qualifyingPositionAssignments,
+          positionAssignments,
+          auditData,
+          drawType,
+          drawName,
+          drawId,
+        }),
+      );
+      matchUps?.forEach(({ matchUpId }) => matchUpIds.push(matchUpId));
     }
-  );
+    return !drawIds.includes(drawDefinition.drawId);
+  });
 
   if (drawIdsWithScoresPresent.length && !force) {
     return decorateResult({
@@ -295,9 +261,7 @@ function addDrawDeletionTelemetry({ event, deletedDrawsDetail, auditData }) {
   const deletionData = { ...auditData, deletedDrawsDetail };
   const updatedExtension = {
     name: DRAW_DELETIONS,
-    value: Array.isArray(extension?.value)
-      ? extension?.value.concat(deletionData)
-      : [deletionData],
+    value: Array.isArray(extension?.value) ? extension?.value.concat(deletionData) : [deletionData],
   };
   addExtension({ element: event, extension: updatedExtension });
 }

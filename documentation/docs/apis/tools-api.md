@@ -1,5 +1,5 @@
 ---
-title: utilities API
+title: tools API
 ---
 
 Convenience methods useful for projects working with the Competition Factory.
@@ -11,7 +11,7 @@ Convenience methods useful for projects working with the Competition Factory.
 Adds extension entry to element `.extensions` attribute; error checking; creates attribute if necessary; overwrites existing value;
 
 ```js
-utilities.addExtension({
+tools.addExtension({
   extension: { name, value },
   creationTime, // boolean - add timeStamp
   element: obj,
@@ -35,7 +35,7 @@ const {
   invalidAgeMax,
   invalidAgeMin,
   valid,
-} = utilities.categoryCanContain({
+} = tools.categoryCanContain({
   childCategory: { ageCategoryCode: 'U16' },
   category: { ageCategoryCode: 'U18' },
 });
@@ -82,7 +82,7 @@ const {
 ## findExtension
 
 ```js
-const { extension } = utilities.findExtension({ element, name });
+const { extension } = tools.findExtension({ element, name });
 ```
 
 ---
@@ -110,7 +110,7 @@ If attributes are combined will sanity check correspondence and return an array 
 
 ```js
 const {
-} = utilities.getCategoryAgeDetails({
+} = tools.getCategoryAgeDetails({
   consideredDate, // returns either supplied value or date when invoked
   combinedAge, // boolean indicating that ageMax and ageMin are combined values
   ageMaxDate,
@@ -118,7 +118,7 @@ const {
   ageMax,
   ageMin,
   errors,
-} = utilities.getCategoryAgeDetails({
+} = tools.getCategoryAgeDetails({
   consideredDate, // optional - date string 'YYYY-MM-DD'; defaults to current date
   category: {
     ageCategoryCode, // TODS code, e.g. 'U18', '18U', '18O', 'O18', '8O-U18', 'C50-70'
@@ -224,7 +224,7 @@ const {
 ## tieFormatGenderValidityCheck
 
 ```js
-const { valid, error } = utilities.tieFormatGenderValidityCheck({
+const { valid, error } = tools.tieFormatGenderValidityCheck({
   referenceGender, // if not present then always returns { valid: true }
   matchUpType, // optional - check whether matchUpType is valid for referenceGender
   gender,
@@ -254,7 +254,7 @@ const { valid, error } = utilities.tieFormatGenderValidityCheck({
 Generate color-coded printout of matchUp schedule details
 
 ```js
-utilities.visualizeScheduledMatchUps({
+tools.visualizeScheduledMatchUps({
   showGlobalLogs: true,
   scheduledMatchUps,
 });

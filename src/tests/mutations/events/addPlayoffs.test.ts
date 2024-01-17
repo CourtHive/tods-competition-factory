@@ -1,17 +1,13 @@
-import { constantToString } from '../../../utilities/strings';
+import { constantToString } from '../../../tools/strings';
 import mocksEngine from '../../../assemblies/engines/mock';
-import { generateRange } from '../../../utilities/arrays';
-import { deriveExponent } from '../../../utilities/math';
+import { generateRange } from '../../../tools/arrays';
+import { deriveExponent } from '../../../tools/math';
 import tournamentEngine from '../../engines/syncEngine';
 import { globalState } from '../../..';
 import { expect, it } from 'vitest';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
-import {
-  FIRST_MATCH_LOSER_CONSOLATION,
-  MAIN,
-  PLAY_OFF,
-} from '../../../constants/drawDefinitionConstants';
+import { FIRST_MATCH_LOSER_CONSOLATION, MAIN, PLAY_OFF } from '../../../constants/drawDefinitionConstants';
 
 it('errors if attempting generation of existing playoff structure', () => {
   const {
@@ -59,165 +55,135 @@ it('errors if attempting generation of existing playoff structure', () => {
 it.each([
   [32, INVALID_VALUES, undefined],
   [64, undefined, 74],
-])(
-  'can add Silver, Gold and 3-4 playoff structures, then delete them',
-  (drawSize, error, playoffMatchesCount) => {
-    const drawProfiles = [{ drawSize }];
+])('can add Silver, Gold and 3-4 playoff structures, then delete them', (drawSize, error, playoffMatchesCount) => {
+  const drawProfiles = [{ drawSize }];
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+  let { matchUps } = tournamentEngine.allDrawMatchUps({ drawId });
+  expect(matchUps.length).toEqual(drawSize - 1);
+
+  const roundProfiles = [{ 3: 1 }, { 4: 1 }, { 5: 1 }];
+  const playoffAttributes = {
+    '0-3': { name: 'Silver', abbreviation: 'S' },
+    '0-4': { name: 'Gold', abbreviation: 'G' },
+  };
+  const {
+    drawDefinition: {
+      structures: [{ structureId }],
+    },
+  } = tournamentEngine.getEvent({ drawId });
+
+  const result = tournamentEngine.addPlayoffStructures({
+    playoffStructureNameBase: 'Playoff',
+    playoffAttributes,
+    roundProfiles,
+    structureId,
+    drawId,
+  });
+
+  if (error) {
+    expect(result.error).toEqual(error);
+  } else {
+    expect(result.success).toEqual(true);
     const {
-      tournamentRecord,
-      drawIds: [drawId],
-    } = mocksEngine.generateTournamentRecord({
-      drawProfiles,
-    });
-
-    tournamentEngine.setState(tournamentRecord);
-    let { matchUps } = tournamentEngine.allDrawMatchUps({ drawId });
-    expect(matchUps.length).toEqual(drawSize - 1);
-
-    const roundProfiles = [{ 3: 1 }, { 4: 1 }, { 5: 1 }];
-    const playoffAttributes = {
-      '0-3': { name: 'Silver', abbreviation: 'S' },
-      '0-4': { name: 'Gold', abbreviation: 'G' },
-    };
-    const {
-      drawDefinition: {
-        structures: [{ structureId }],
-      },
-    } = tournamentEngine.getEvent({ drawId });
-
-    const result = tournamentEngine.addPlayoffStructures({
-      playoffStructureNameBase: 'Playoff',
-      playoffAttributes,
-      roundProfiles,
-      structureId,
-      drawId,
-    });
-
-    if (error) {
-      expect(result.error).toEqual(error);
-    } else {
-      expect(result.success).toEqual(true);
-      const {
-        drawDefinition: { structures },
-      } = tournamentEngine.getEvent({ drawId });
-
-      for (const structure of structures) {
-        expect(structure.updatedAt).not.toBeUndefined();
-      }
-
-      const structureNames = structures.map(
-        ({ structureName }) => structureName
-      );
-      expect(structureNames).toEqual([
-        constantToString(MAIN),
-        'Silver',
-        'Gold',
-        'Playoff 3-4',
-      ]);
-
-      ({ matchUps } = tournamentEngine.allDrawMatchUps({ drawId }));
-      expect(matchUps.length).toEqual(playoffMatchesCount);
-
-      const playoffStructureIds = structures
-        .map(({ structureId }) => structureId)
-        .filter((s) => s !== structureId);
-
-      playoffStructureIds.forEach((structureId) => {
-        const result = tournamentEngine.removeStructure({
-          structureId,
-          drawId,
-        });
-        expect(result.success).toEqual(true);
-      });
-
-      ({ matchUps } = tournamentEngine.allDrawMatchUps({ drawId }));
-      expect(matchUps.length).toEqual(drawSize - 1);
-    }
-  }
-);
-
-it.each([32, 64])(
-  'can delete playoffStructures beyond stageSequence 2',
-  (drawSize: number) => {
-    const drawProfiles = [{ drawSize, drawType: PLAY_OFF }];
-    const {
-      tournamentRecord,
-      drawIds: [drawId],
-    } = mocksEngine.generateTournamentRecord({
-      drawProfiles,
-    });
-
-    tournamentEngine.setState(tournamentRecord);
-    let {
       drawDefinition: { structures },
     } = tournamentEngine.getEvent({ drawId });
-    const [{ structureId }] = structures;
 
-    const generatedStructuresCount = structures.length;
+    for (const structure of structures) {
+      expect(structure.updatedAt).not.toBeUndefined();
+    }
 
-    const apResult = tournamentEngine.getAvailablePlayoffProfiles({
+    const structureNames = structures.map(({ structureName }) => structureName);
+    expect(structureNames).toEqual([constantToString(MAIN), 'Silver', 'Gold', 'Playoff 3-4']);
+
+    ({ matchUps } = tournamentEngine.allDrawMatchUps({ drawId }));
+    expect(matchUps.length).toEqual(playoffMatchesCount);
+
+    const playoffStructureIds = structures.map(({ structureId }) => structureId).filter((s) => s !== structureId);
+
+    playoffStructureIds.forEach((structureId) => {
+      const result = tournamentEngine.removeStructure({
+        structureId,
+        drawId,
+      });
+      expect(result.success).toEqual(true);
+    });
+
+    ({ matchUps } = tournamentEngine.allDrawMatchUps({ drawId }));
+    expect(matchUps.length).toEqual(drawSize - 1);
+  }
+});
+
+it.each([32, 64])('can delete playoffStructures beyond stageSequence 2', (drawSize: number) => {
+  const drawProfiles = [{ drawSize, drawType: PLAY_OFF }];
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+  let {
+    drawDefinition: { structures },
+  } = tournamentEngine.getEvent({ drawId });
+  const [{ structureId }] = structures;
+
+  const generatedStructuresCount = structures.length;
+
+  const apResult = tournamentEngine.getAvailablePlayoffProfiles({
+    structureId,
+    drawId,
+  });
+  let { playoffRounds, playoffRoundsRanges } = apResult;
+  const { positionsPlayedOff } = apResult;
+  // since this is a PLAY_OFF structure there are no available structures to add
+  expect(playoffRounds).toEqual([]);
+  expect(playoffRoundsRanges).toEqual([]);
+  expect(positionsPlayedOff).toEqual(generateRange(1, drawSize + 1));
+
+  const stageSequence2structureIds = structures
+    .filter(({ stageSequence }) => stageSequence === 2)
+    .map(({ structureId }) => structureId);
+
+  const deletedStructureCounts = stageSequence2structureIds.map((structureId) => {
+    const result = tournamentEngine.removeStructure({
       structureId,
       drawId,
     });
-    let { playoffRounds, playoffRoundsRanges } = apResult;
-    const { positionsPlayedOff } = apResult;
-    // since this is a PLAY_OFF structure there are no available structures to add
-    expect(playoffRounds).toEqual([]);
-    expect(playoffRoundsRanges).toEqual([]);
-    expect(positionsPlayedOff).toEqual(generateRange(1, drawSize + 1));
+    expect(result.success).toEqual(true);
+    return result.removedStructureIds.length;
+  });
 
-    const stageSequence2structureIds = structures
-      .filter(({ stageSequence }) => stageSequence === 2)
-      .map(({ structureId }) => structureId);
+  expect(deletedStructureCounts.length).toEqual(stageSequence2structureIds.length);
 
-    const deletedStructureCounts = stageSequence2structureIds.map(
-      (structureId) => {
-        const result = tournamentEngine.removeStructure({
-          structureId,
-          drawId,
-        });
-        expect(result.success).toEqual(true);
-        return result.removedStructureIds.length;
-      }
-    );
+  expect(deletedStructureCounts.reduce((a, b) => a + b, 0)).toEqual(generatedStructuresCount - 1);
 
-    expect(deletedStructureCounts.length).toEqual(
-      stageSequence2structureIds.length
-    );
+  structures = tournamentEngine.getEvent({ drawId }).drawDefinition.structures;
+  expect(structures.length).toEqual(1);
 
-    expect(deletedStructureCounts.reduce((a, b) => a + b, 0)).toEqual(
-      generatedStructuresCount - 1
-    );
+  ({ playoffRounds, playoffRoundsRanges } = tournamentEngine.getAvailablePlayoffProfiles({
+    structureId,
+    drawId,
+  }));
 
-    structures = tournamentEngine.getEvent({ drawId }).drawDefinition
-      .structures;
-    expect(structures.length).toEqual(1);
-
-    ({ playoffRounds, playoffRoundsRanges } =
-      tournamentEngine.getAvailablePlayoffProfiles({
-        structureId,
-        drawId,
-      }));
-
-    const rangeMap = playoffRoundsRanges.map(
-      ({ finishingPositionRange, roundNumber }) =>
-        `${roundNumber}|${finishingPositionRange}`
-    );
-    if (drawSize === 32) {
-      expect(rangeMap).toEqual(['1|17-32', '2|9-16', '3|5-8', '4|3-4']);
-    } else if (drawSize === 64) {
-      expect(rangeMap).toEqual([
-        '1|33-64',
-        '2|17-32',
-        '3|9-16',
-        '4|5-8',
-        '5|3-4',
-      ]);
-    }
-    const expectdPlayoffRounds = (deriveExponent(drawSize) || 0) - 1;
-    expect(playoffRounds.length).toEqual(expectdPlayoffRounds);
+  const rangeMap = playoffRoundsRanges.map(
+    ({ finishingPositionRange, roundNumber }) => `${roundNumber}|${finishingPositionRange}`,
+  );
+  if (drawSize === 32) {
+    expect(rangeMap).toEqual(['1|17-32', '2|9-16', '3|5-8', '4|3-4']);
+  } else if (drawSize === 64) {
+    expect(rangeMap).toEqual(['1|33-64', '2|17-32', '3|9-16', '4|5-8', '5|3-4']);
   }
-);
+  const expectdPlayoffRounds = (deriveExponent(drawSize) || 0) - 1;
+  expect(playoffRounds.length).toEqual(expectdPlayoffRounds);
+});
 
 it('can add 3-4 playoff structure to a SINGLE ELIMINATION structure', () => {
   const { success, drawDefinition } = tournamentEngineAddPlayoffsTest({
@@ -276,13 +242,7 @@ it('can add playoff structures to a FIRST_MATCH_LOSER_CONSOLATION structure', ()
 });
 
 function tournamentEngineAddPlayoffsTest(params) {
-  const {
-    playoffStructureNameBase,
-    playoffPositions,
-    roundNumbers,
-    drawSize,
-    drawType,
-  } = params;
+  const { playoffStructureNameBase, playoffPositions, roundNumbers, drawSize, drawType } = params;
   const drawProfiles = [{ drawSize, drawType }];
   const {
     tournamentRecord,

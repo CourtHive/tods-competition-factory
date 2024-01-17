@@ -1,8 +1,8 @@
 import { getStructureSeedAssignments } from '../../../query/structure/getStructureSeedAssignments';
 import { modifySeedAssignmentsNotice } from '../../../mutate/notifications/drawNotifications';
 import { findStructure } from '../../../acquire/findStructure';
-import { ensureInt } from '../../../utilities/ensureInt';
-import { isNumeric } from '../../../utilities/math';
+import { ensureInt } from '../../../tools/ensureInt';
+import { isNumeric } from '../../../tools/math';
 
 import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
 import { SUCCESS } from '../../../constants/resultConstants';

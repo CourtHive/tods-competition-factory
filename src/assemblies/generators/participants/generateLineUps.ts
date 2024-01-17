@@ -5,8 +5,8 @@ import { addParticipant } from '../../../mutate/participants/addParticipant';
 import { validateTieFormat } from '../../../validators/validateTieFormat';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { addExtension } from '../../../mutate/extensions/addExtension';
-import { generateRange } from '../../../utilities/arrays';
-import { isNumeric } from '../../../utilities/math';
+import { generateRange } from '../../../tools/arrays';
+import { isNumeric } from '../../../tools/math';
 
 import { CollectionAssignment, DrawDefinition, Event, TieFormat, Tournament } from '../../../types/tournamentTypes';
 import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '../../../constants/matchUpTypes';

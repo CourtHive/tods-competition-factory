@@ -1,6 +1,6 @@
 import { getParticipants } from '../query/participants/getParticipants';
 import { isUngrouped } from '../query/entries/isUngrouped';
-import { unique } from '../utilities/arrays';
+import { unique } from '../tools/arrays';
 
 import POLICY_MATCHUP_ACTIONS_DEFAULT from '../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
 import { Entry, Event, Participant, Tournament } from '../types/tournamentTypes';

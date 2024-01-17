@@ -1,5 +1,5 @@
-import { chunkArray, generateRange } from '../../../utilities/arrays';
-import { numericSort } from '../../../utilities/sorting';
+import { chunkArray, generateRange } from '../../../tools/arrays';
+import { numericSort } from '../../../tools/sorting';
 
 import { CLUSTER, WATERFALL } from '../../../constants/drawDefinitionConstants';
 

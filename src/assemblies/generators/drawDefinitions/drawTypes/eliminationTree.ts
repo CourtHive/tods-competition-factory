@@ -1,6 +1,6 @@
-import { generateRange } from '../../../../utilities/arrays';
+import { generateRange } from '../../../../tools/arrays';
 import { addFinishingRounds } from '../addFinishingRounds';
-import { isPowerOf2 } from '../../../../utilities/math';
+import { isPowerOf2 } from '../../../../tools/math';
 import { buildRound } from '../buildRound';
 
 import { MatchUp } from '../../../../types/tournamentTypes';

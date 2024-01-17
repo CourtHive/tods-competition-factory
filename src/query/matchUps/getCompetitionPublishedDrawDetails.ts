@@ -1,13 +1,9 @@
 import { getEventPublishStatus } from '../event/getEventPublishStatus';
 import { getDrawPublishStatus } from '../event/getDrawPublishStatus';
 import { TournamentRecords } from '../../types/factoryTypes';
-import { isObject } from '../../utilities/objects';
+import { isObject } from '../../tools/objects';
 
-export function getCompetitionPublishedDrawDetails({
-  tournamentRecords,
-}: {
-  tournamentRecords: TournamentRecords;
-}) {
+export function getCompetitionPublishedDrawDetails({ tournamentRecords }: { tournamentRecords: TournamentRecords }) {
   const drawIds: string[] = [];
   const detailsMap: { [key: string]: any } = {};
 
@@ -18,11 +14,7 @@ export function getCompetitionPublishedDrawDetails({
 
       if (isObject(drawDetails)) {
         Object.assign(detailsMap, drawDetails);
-        drawIds.push(
-          ...Object.keys(drawDetails).filter((drawId) =>
-            getDrawPublishStatus({ drawId, drawDetails })
-          )
-        );
+        drawIds.push(...Object.keys(drawDetails).filter((drawId) => getDrawPublishStatus({ drawId, drawDetails })));
       } else if (eventPubStatus?.drawIds?.length) {
         // LEGACY - deprecate
         drawIds.push(...eventPubStatus.drawIds);

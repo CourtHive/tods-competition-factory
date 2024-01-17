@@ -2,16 +2,12 @@ import { getAllStructureMatchUps } from '../../../../query/matchUps/getAllStruct
 import { getPositionAssignments } from '../../../../query/drawDefinition/positionsGetter';
 import { getRoundMatchUps } from '../../../../query/matchUps/getRoundMatchUps';
 import mocksEngine from '../../../../assemblies/engines/mock';
-import { intersection } from '../../../../utilities/arrays';
+import { intersection } from '../../../../tools/arrays';
 import tournamentEngine from '../../../engines/syncEngine';
 import { it, expect } from 'vitest';
 
 import { SINGLES_EVENT } from '../../../../constants/eventConstants';
-import {
-  MAIN,
-  ROUND_ROBIN,
-  WATERFALL,
-} from '../../../../constants/drawDefinitionConstants';
+import { MAIN, ROUND_ROBIN, WATERFALL } from '../../../../constants/drawDefinitionConstants';
 
 const scenarios = [
   {
@@ -99,9 +95,7 @@ const scenarios = [
 it.each(scenarios)('can generate and verify', (scenario) => {
   const { drawProfile, expectation } = scenario;
   const result = mocksEngine.generateTournamentRecord({
-    drawProfiles: [
-      { ...drawProfile, enforcePolicyLimits: false, drawType: ROUND_ROBIN },
-    ],
+    drawProfiles: [{ ...drawProfile, enforcePolicyLimits: false, drawType: ROUND_ROBIN }],
   });
 
   const {
@@ -116,45 +110,30 @@ it.each(scenarios)('can generate and verify', (scenario) => {
     withEvents: true,
     withDraws: true,
   });
-  const participantsWithSeedings = p.participants.filter(
-    (participant) => participant.seedings?.[SINGLES_EVENT]
-  );
-  expect(participantsWithSeedings.length).toEqual(
-    scenario.drawProfile.seedsCount
-  );
+  const participantsWithSeedings = p.participants.filter((participant) => participant.seedings?.[SINGLES_EVENT]);
+  expect(participantsWithSeedings.length).toEqual(scenario.drawProfile.seedsCount);
 
   for (const participant of participantsWithSeedings) {
     const { participantId } = participant;
     expect(participant.seedings[SINGLES_EVENT].length).toBeDefined();
-    expect(
-      p.participantMap[participantId].events[eventId].seedAssignments[MAIN]
-        .seedValue
-    ).toBeDefined();
-    expect(
-      p.participantMap[participantId].draws[drawId].seedAssignments[MAIN]
-        .seedValue
-    ).toBeDefined();
+    expect(p.participantMap[participantId].events[eventId].seedAssignments[MAIN].seedValue).toBeDefined();
+    expect(p.participantMap[participantId].draws[drawId].seedAssignments[MAIN].seedValue).toBeDefined();
   }
 
-  const structure =
-    result.tournamentRecord.events[0].drawDefinitions[0].structures[0];
+  const structure = result.tournamentRecord.events[0].drawDefinitions[0].structures[0];
   const containedStructures = structure.structures;
   expect(containedStructures.length).toEqual(expectation.groups);
 
   const seedAssignments = structure.seedAssignments;
   const { positionAssignments } = getPositionAssignments({ structure });
-  const assignedPositions = positionAssignments?.filter(
-    (assignment) => assignment.bye ?? assignment.participantId
-  );
+  const assignedPositions = positionAssignments?.filter((assignment) => assignment.bye ?? assignment.participantId);
   expect(assignedPositions?.length).toEqual(expectation.assignedPositionsCount);
   const byePositions = positionAssignments
     ?.filter((assignment) => assignment.bye)
     .map(({ drawPosition }) => drawPosition);
   expect(byePositions?.length).toEqual(expectation.byesCount);
 
-  const assignedSeedPositions = seedAssignments.filter(
-    (assignment) => assignment.participantId
-  );
+  const assignedSeedPositions = seedAssignments.filter((assignment) => assignment.participantId);
   expect(assignedSeedPositions.length).toEqual(drawProfile.seedsCount);
 
   const matchUps = getAllStructureMatchUps({ structure }).matchUps;
@@ -163,14 +142,11 @@ it.each(scenarios)('can generate and verify', (scenario) => {
   const roundMatchUpCounts = rmArr.map((value) => value.length);
   expect(roundMatchUpCounts).toEqual(expectation.roundMatchUpCounts);
 
-  const groupedDrawPositions = structure.structures.map(
-    ({ positionAssignments }) =>
-      positionAssignments.map(({ drawPosition }) => drawPosition)
+  const groupedDrawPositions = structure.structures.map(({ positionAssignments }) =>
+    positionAssignments.map(({ drawPosition }) => drawPosition),
   );
   const seedMapping = seedAssignments.map((seedAssignment) => {
-    const position = assignedPositions?.find(
-      (assignment) => assignment.participantId === seedAssignment.participantId
-    );
+    const position = assignedPositions?.find((assignment) => assignment.participantId === seedAssignment.participantId);
     return {
       drawPosition: position?.drawPosition,
       seedNumber: seedAssignment.seedNumber,
@@ -178,17 +154,13 @@ it.each(scenarios)('can generate and verify', (scenario) => {
   });
 
   const seededByes = seedMapping.map(({ drawPosition, seedNumber }) => {
-    const groupedPositions = groupedDrawPositions.find((group) =>
-      group.includes(drawPosition)
-    );
+    const groupedPositions = groupedDrawPositions.find((group) => group.includes(drawPosition));
     const groupByes = intersection(byePositions, groupedPositions).length;
     return [seedNumber, groupByes];
   });
 
   if (expectation.seedsWithByes) {
-    const check = seededByes.filter((sb) =>
-      expectation.seedsWithByes.includes(sb[0])
-    );
+    const check = seededByes.filter((sb) => expectation.seedsWithByes.includes(sb[0]));
     expect(check.length).toEqual(expectation.seedsWithByes.length);
   }
 });

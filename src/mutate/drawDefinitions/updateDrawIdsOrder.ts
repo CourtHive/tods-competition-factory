@@ -1,12 +1,8 @@
 import { getFlightProfile } from '../../query/event/getFlightProfile';
-import { intersection, unique } from '../../utilities/arrays';
+import { intersection, unique } from '../../tools/arrays';
 
 import { SUCCESS } from '../../constants/resultConstants';
-import {
-  INVALID_VALUES,
-  MISSING_EVENT,
-  MISSING_VALUE,
-} from '../../constants/errorConditionConstants';
+import { INVALID_VALUES, MISSING_EVENT, MISSING_VALUE } from '../../constants/errorConditionConstants';
 
 /**
  *
@@ -14,8 +10,7 @@ import {
  */
 export function updateDrawIdsOrder({ event, orderedDrawIdsMap }) {
   if (typeof event !== 'object') return { error: MISSING_EVENT };
-  if (!orderedDrawIdsMap)
-    return { error: MISSING_VALUE, info: 'Missing drawIdsOrderMap' };
+  if (!orderedDrawIdsMap) return { error: MISSING_VALUE, info: 'Missing drawIdsOrderMap' };
   if (typeof orderedDrawIdsMap !== 'object')
     return {
       error: INVALID_VALUES,
@@ -25,8 +20,7 @@ export function updateDrawIdsOrder({ event, orderedDrawIdsMap }) {
   const drawOrders: number[] = Object.values(orderedDrawIdsMap);
 
   const validDrawOrders = drawOrders.every((drawOrder) => !isNaN(drawOrder));
-  if (!validDrawOrders)
-    return { error: INVALID_VALUES, info: 'drawOrder must be numeric' };
+  if (!validDrawOrders) return { error: INVALID_VALUES, info: 'drawOrder must be numeric' };
 
   if (unique(drawOrders).length !== drawOrders.length)
     return {
@@ -37,10 +31,7 @@ export function updateDrawIdsOrder({ event, orderedDrawIdsMap }) {
   if (event.drawDefinitions?.length) {
     const drawIds = (event.drawDefinitions || []).map(({ drawId }) => drawId);
     const orderedDrawIds = Object.keys(orderedDrawIdsMap);
-    if (
-      orderedDrawIds?.length &&
-      intersection(drawIds, orderedDrawIds).length !== drawIds.length
-    )
+    if (orderedDrawIds?.length && intersection(drawIds, orderedDrawIds).length !== drawIds.length)
       return { error: INVALID_VALUES, info: 'Missing drawIds' };
 
     event.drawDefinitions.forEach((drawDefinition) => {

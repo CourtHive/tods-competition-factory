@@ -1,6 +1,6 @@
 import { getScaleValues } from '../query/participant/getScaleValues';
-import { attributeFilter } from '../utilities/attributeFilter';
-import { makeDeepCopy } from '../utilities/makeDeepCopy';
+import { attributeFilter } from '../tools/attributeFilter';
+import { makeDeepCopy } from '../tools/makeDeepCopy';
 
 import { ContextProfile, PolicyDefinitions } from '../types/factoryTypes';
 import { POLICY_TYPE_PARTICIPANT } from '../constants/policyConstants';
@@ -30,7 +30,7 @@ export function findParticipant({
   const foundParticipant = tournamentParticipants.find(
     (candidate) =>
       (participantId && candidate.participantId === participantId) ||
-      (personId && candidate.person && candidate.person.personId === personId)
+      (personId && candidate.person && candidate.person.personId === personId),
   );
 
   const participant = makeDeepCopy(foundParticipant, false, internalUse);

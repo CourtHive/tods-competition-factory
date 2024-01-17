@@ -1,16 +1,11 @@
 import { getParticipantId } from '../../../global/functions/extractors';
 import mocksEngine from '../../../assemblies/engines/mock';
-import { generateRange } from '../../../utilities/arrays';
+import { generateRange } from '../../../tools/arrays';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { DOUBLES } from '../../../constants/eventConstants';
-import {
-  GROUP,
-  INDIVIDUAL,
-  PAIR,
-  TEAM,
-} from '../../../constants/participantConstants';
+import { GROUP, INDIVIDUAL, PAIR, TEAM } from '../../../constants/participantConstants';
 
 it('can generate TEAMs from attributes', () => {
   let result = mocksEngine.generateTournamentRecord({
@@ -18,8 +13,7 @@ it('can generate TEAMs from attributes', () => {
   });
   tournamentEngine.setState(result.tournamentRecord);
 
-  let participantsCount =
-    tournamentEngine.getParticipants().participants.length;
+  let participantsCount = tournamentEngine.getParticipants().participants.length;
   expect(participantsCount).toEqual(64);
 
   result = tournamentEngine.createTeamsFromParticipantAttributes({
@@ -72,10 +66,9 @@ it('can generate TEAM events', () => {
   });
   expect(result.success).toEqual(true);
 
-  const { participants: individualParticipants } =
-    tournamentEngine.getParticipants({
-      participantFilters: { participantTypes: [INDIVIDUAL] },
-    });
+  const { participants: individualParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [INDIVIDUAL] },
+  });
   expect(individualParticipants.length).toEqual(64);
 
   generateRange(0, groupsToGenerate).forEach((index) => {
@@ -90,49 +83,40 @@ it('can generate TEAM events', () => {
     });
   });
 
-  const { participants: groupTournamentParticipants } =
-    tournamentEngine.getParticipants({
-      participantFilters: { participantTypes: [GROUP] },
-    });
+  const { participants: groupTournamentParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [GROUP] },
+  });
   expect(groupTournamentParticipants.length).toEqual(groupsToGenerate);
 
-  expect(
-    groupTournamentParticipants[0].individualParticipantIds.length
-  ).toEqual(participantsPerGroup);
+  expect(groupTournamentParticipants[0].individualParticipantIds.length).toEqual(participantsPerGroup);
 
-  const { participants: pairTournamentParticipants } =
-    tournamentEngine.getParticipants({
-      participantFilters: { participantTypes: [PAIR] },
-    });
+  const { participants: pairTournamentParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [PAIR] },
+  });
   expect(pairTournamentParticipants.length).toEqual(participantsCount);
 
-  const { participants: teamTournamentParticipants } =
-    tournamentEngine.getParticipants({
-      participantFilters: { participantTypes: [TEAM] },
-    });
+  const { participants: teamTournamentParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [TEAM] },
+  });
   expect(teamTournamentParticipants.length).toEqual(10);
 
-  let { participants: inContextIdividualParticipants, mappedMatchUps } =
-    tournamentEngine.getParticipants({
-      participantFilters: { participantTypes: [INDIVIDUAL] },
-      inContext: true,
-    });
+  let { participants: inContextIdividualParticipants, mappedMatchUps } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [INDIVIDUAL] },
+    inContext: true,
+  });
 
-  expect(inContextIdividualParticipants[0].person.extensions).toEqual(
-    personExtensions
-  );
+  expect(inContextIdividualParticipants[0].person.extensions).toEqual(personExtensions);
 
-  ({ participants: inContextIdividualParticipants, mappedMatchUps } =
-    tournamentEngine.getParticipants({
-      participantFilters: { participantTypes: [INDIVIDUAL] },
-      withIndividualParticipants: true,
-      convertExtensions: true,
-      withStatistics: true,
-      withGroupings: true,
-      withMatchUps: true,
-      withEvents: false,
-      withDraws: false,
-    }));
+  ({ participants: inContextIdividualParticipants, mappedMatchUps } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [INDIVIDUAL] },
+    withIndividualParticipants: true,
+    convertExtensions: true,
+    withStatistics: true,
+    withGroupings: true,
+    withMatchUps: true,
+    withEvents: false,
+    withDraws: false,
+  }));
 
   expect(inContextIdividualParticipants[0].person._districtCode).toEqual('Z');
   const matchUpId = inContextIdividualParticipants[0].matchUps[0].matchUpId;
@@ -140,42 +124,37 @@ it('can generate TEAM events', () => {
   expect(mappedMatchUps[matchUpId].tournamentId).toBeDefined();
 
   const individualsInGroups = inContextIdividualParticipants.filter(
-    (participant) => participant.groupParticipantIds.length
+    (participant) => participant.groupParticipantIds.length,
   );
   expect(individualsInGroups.length).toEqual(60);
 
   const individualsInTeams = inContextIdividualParticipants.filter(
-    (participant) => participant.teamParticipantIds.length
+    (participant) => participant.teamParticipantIds.length,
   );
   expect(individualsInTeams.length).toEqual(64);
   const individualsInPairs = inContextIdividualParticipants.filter(
-    (participant) => participant.pairParticipantIds.length
+    (participant) => participant.pairParticipantIds.length,
   );
   expect(individualsInPairs.length).toEqual(64);
 
-  const { participants: participantsWithResponsibilities } =
-    tournamentEngine.getParticipants({
-      participantFilters: {
-        participantRoleResponsibilities: [schoolResponsibility],
-      },
-    });
+  const { participants: participantsWithResponsibilities } = tournamentEngine.getParticipants({
+    participantFilters: {
+      participantRoleResponsibilities: [schoolResponsibility],
+    },
+  });
 
   expect(participantsWithResponsibilities.length).toEqual(groupsToGenerate);
 
   const responsibilityGroupNameMapping = Object.assign(
     {},
-    ...participantsWithResponsibilities.map(
-      ({ participantId, participantName }) => ({
-        [participantId]: participantName,
-      })
-    )
+    ...participantsWithResponsibilities.map(({ participantId, participantName }) => ({
+      [participantId]: participantName,
+    })),
   );
 
   individualsInGroups.forEach((participant) => {
     participant.groupParticipantIds.forEach((groupParticipantId) => {
-      expect(
-        responsibilityGroupNameMapping[groupParticipantId]
-      ).not.toBeUndefined();
+      expect(responsibilityGroupNameMapping[groupParticipantId]).not.toBeUndefined();
     });
   });
 });

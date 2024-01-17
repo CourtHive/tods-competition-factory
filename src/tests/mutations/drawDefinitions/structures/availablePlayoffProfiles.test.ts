@@ -1,9 +1,9 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
-import { getAvailablePlayoffProfiles } from '../../../../mutate/drawDefinitions/structureGovernor/getAvailablePlayoffProfiles';
+import { getAvailablePlayoffProfiles } from '../../../../query/drawDefinition/getAvailablePlayoffProfiles';
 import { newDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { setStageDrawSize } from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 import { getDrawStructures } from '../../../../acquire/findStructure';
-import { constantToString } from '../../../../utilities/strings';
+import { constantToString } from '../../../../tools/strings';
 import tournamentEngine from '../../../engines/syncEngine';
 import mocksEngine from '../../../../assemblies/engines/mock';
 import { globalState } from '../../../..';
@@ -108,11 +108,10 @@ it('can correctly determine positions playedOff for FIRST_MATCH_LOSER_CONSOLATIO
 
   const structureId = drawDefinition.structures?.[0].structureId;
 
-  const { playoffRounds, playoffRoundsRanges, positionsPlayedOff } =
-    getAvailablePlayoffProfiles({
-      drawDefinition,
-      structureId,
-    });
+  const { playoffRounds, playoffRoundsRanges, positionsPlayedOff } = getAvailablePlayoffProfiles({
+    drawDefinition,
+    structureId,
+  });
 
   expect(positionsPlayedOff).toEqual([1, 2, 9, 10]);
 
@@ -151,8 +150,7 @@ it('will allow generation of 3-4 playoffs in FMLC if there are players who COULD
 
   result = tournamentEngine.getAvailablePlayoffProfiles({ drawId });
   const { positionsPlayedOff } = result;
-  const { playoffRounds, playoffRoundsRanges } =
-    result.availablePlayoffProfiles[0];
+  const { playoffRounds, playoffRoundsRanges } = result.availablePlayoffProfiles[0];
 
   expect(positionsPlayedOff).toEqual([1, 2, 5, 6]);
 
@@ -207,8 +205,7 @@ it('will exclude playoff rounds where participants have progressed to other stru
 
   result = tournamentEngine.getAvailablePlayoffProfiles({ drawId });
   const { positionsPlayedOff } = result;
-  const { playoffRounds, playoffRoundsRanges } =
-    result.availablePlayoffProfiles[0];
+  const { playoffRounds, playoffRoundsRanges } = result.availablePlayoffProfiles[0];
 
   expect(positionsPlayedOff).toEqual([1, 2, 5, 6]);
   expect(playoffRounds).toEqual([]);
@@ -227,9 +224,7 @@ it('can accurately determine no playoff rounds available for MAIN draw of FIC', 
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
-  const { drawDefinition } = tournamentEngine
-    .setState(tournamentRecord)
-    .getEvent({ drawId });
+  const { drawDefinition } = tournamentEngine.setState(tournamentRecord).getEvent({ drawId });
 
   const {
     structures: [mainStructure],
@@ -255,9 +250,7 @@ it('can accurately determine available playoff rounds for CONSOLATION draw of FI
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
-  const { drawDefinition } = tournamentEngine
-    .setState(tournamentRecord)
-    .getEvent({ drawId });
+  const { drawDefinition } = tournamentEngine.setState(tournamentRecord).getEvent({ drawId });
 
   const {
     structures: [consolationStructure],
@@ -301,9 +294,7 @@ it('can generate only specified playoff rounds and give them custom names', () =
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
-  let { drawDefinition } = tournamentEngine
-    .setState(tournamentRecord)
-    .getEvent({ drawId });
+  let { drawDefinition } = tournamentEngine.setState(tournamentRecord).getEvent({ drawId });
 
   const {
     structures: [consolationStructure],
@@ -328,11 +319,7 @@ it('can generate only specified playoff rounds and give them custom names', () =
   expect(result.success).toEqual(true);
   ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
   const structureNames = drawDefinition.structures.map((s) => s.structureName);
-  expect(structureNames).toEqual([
-    constantToString(MAIN),
-    constantToString(CONSOLATION),
-    'Bronze',
-  ]);
+  expect(structureNames).toEqual([constantToString(MAIN), constantToString(CONSOLATION), 'Bronze']);
   expect(drawDefinition.links.length).toEqual(7);
 
   expect(matchUpAddNotices).toEqual([125, 15]);
@@ -364,9 +351,7 @@ it('can use roundProfiles to specify depth of playoff structures', () => {
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
-  let { drawDefinition } = tournamentEngine
-    .setState(tournamentRecord)
-    .getEvent({ drawId });
+  let { drawDefinition } = tournamentEngine.setState(tournamentRecord).getEvent({ drawId });
 
   const {
     structures: [consolationStructure],
@@ -427,9 +412,7 @@ it('can determine playoff structures available from playoff structures', () => {
     structureId,
   });
 
-  const fourthRound = playoffRoundsRanges.find(
-    ({ roundNumber }) => roundNumber === 4
-  );
+  const fourthRound = playoffRoundsRanges.find(({ roundNumber }) => roundNumber === 4);
   expect(fourthRound.finishingPositionRange).toEqual('5-8');
 
   const result = tournamentEngine.addPlayoffStructures({
@@ -469,9 +452,7 @@ it('can determine available playoff rounds for CONSOLATION draw of FEED_IN', () 
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
-  const { drawDefinition } = tournamentEngine
-    .setState(tournamentRecord)
-    .getEvent({ drawId });
+  const { drawDefinition } = tournamentEngine.setState(tournamentRecord).getEvent({ drawId });
 
   const {
     structures: [mainStructure],
@@ -499,10 +480,9 @@ it('can determine playoff structures available from playoff structures', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { positionsPlayedOff, availablePlayoffProfiles } =
-    tournamentEngine.getAvailablePlayoffProfiles({
-      drawId,
-    });
+  const { positionsPlayedOff, availablePlayoffProfiles } = tournamentEngine.getAvailablePlayoffProfiles({
+    drawId,
+  });
 
   expect(positionsPlayedOff).toEqual([1, 2, 9, 10]);
   expect(availablePlayoffProfiles.length).toEqual(2);
@@ -535,17 +515,13 @@ it('can determine playoff structures available from Round Robin playoff structur
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { positionsPlayedOff, availablePlayoffProfiles } =
-    tournamentEngine.getAvailablePlayoffProfiles({
-      drawId,
-    });
+  const { positionsPlayedOff, availablePlayoffProfiles } = tournamentEngine.getAvailablePlayoffProfiles({
+    drawId,
+  });
 
-  expect(positionsPlayedOff).toEqual([
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
-  ]);
+  expect(positionsPlayedOff).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
   availablePlayoffProfiles.forEach((round) => {
-    if (round.playoffRoundsRanges)
-      expect(round.playoffRoundsRanges).toEqual([]);
+    if (round.playoffRoundsRanges) expect(round.playoffRoundsRanges).toEqual([]);
   });
   const finishingPositionRanges = tournamentEngine
     .allTournamentMatchUps({
@@ -555,7 +531,5 @@ it('can determine playoff structures available from Round Robin playoff structur
 
   // expect that the loser range is an equivalent number for both loser[0] and loser[1]
   // this is testing the condition where there are only 3 positions to be played off for each playoff structure
-  finishingPositionRanges.forEach(({ loser }) =>
-    expect(loser[0]).toEqual(loser[1])
-  );
+  finishingPositionRanges.forEach(({ loser }) => expect(loser[0]).toEqual(loser[1]));
 });

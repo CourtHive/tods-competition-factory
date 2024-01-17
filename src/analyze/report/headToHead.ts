@@ -1,22 +1,16 @@
-import { intersection } from '../../utilities/arrays';
+import { intersection } from '../../tools/arrays';
 
 import { HydratedMatchUp, HydratedParticipant } from '../../types/hydrated';
 import { INVALID_VALUES } from '../../constants/errorConditionConstants';
 import { ResultType } from '../../global/functions/decorateResult';
 import { SUCCESS } from '../../constants/resultConstants';
-import {
-  countGames,
-  countSets,
-} from '../../query/matchUps/roundRobinTally/scoreCounters';
+import { countGames, countSets } from '../../query/matchUps/roundRobinTally/scoreCounters';
 
 type ParticipantHeadToHead = {
   participants: [HydratedParticipant, HydratedParticipant];
   mappedMatchUps: { [key: string]: HydratedMatchUp };
 };
-export function participantHeadToHead({
-  mappedMatchUps,
-  participants,
-}: ParticipantHeadToHead): ResultType & {
+export function participantHeadToHead({ mappedMatchUps, participants }: ParticipantHeadToHead): ResultType & {
   h2h?: any;
 } {
   if (participants.length !== 2) return { error: INVALID_VALUES };
@@ -39,8 +33,7 @@ export function participantHeadToHead({
       const opponentId = matchUpStub.opponentParticipantInfo[0].participantId;
       opponentIds[i].push(opponentId);
       matchUpIds[i].push(matchUpId);
-      const { score, winningSide, matchUpFormat, matchUpStatus } =
-        mappedMatchUps[matchUpId];
+      const { score, winningSide, matchUpFormat, matchUpStatus } = mappedMatchUps[matchUpId];
       if (!opponentOutcomes[i][opponentId]) {
         opponentOutcomes[i][opponentId] = { lost: [], won: [] };
       }
@@ -88,14 +81,10 @@ export function participantHeadToHead({
 
   encounterIds.forEach((matchUpId) => {
     participants.forEach((participant, i) => {
-      const encounter = participant.matchUps.find(
-        (matchUpStub) => matchUpStub.matchUpId === matchUpId
-      );
-      const { winningSide, score, matchUpFormat, matchUpStatus } =
-        mappedMatchUps[matchUpId];
+      const encounter = participant.matchUps.find((matchUpStub) => matchUpStub.matchUpId === matchUpId);
+      const { winningSide, score, matchUpFormat, matchUpStatus } = mappedMatchUps[matchUpId];
       const wl = encounter.participantWon ? 'won' : 'lost';
-      if (winningSide && score)
-        h2h[i][wl].push({ winningSide, score, matchUpFormat, matchUpStatus });
+      if (winningSide && score) h2h[i][wl].push({ winningSide, score, matchUpFormat, matchUpStatus });
     });
   });
 
@@ -148,15 +137,9 @@ export function participantHeadToHead({
         });
 
         const matchUpDenominator = matchUpsWon + matchUpsLost;
-        const matchUpPct = matchUpDenominator
-          ? matchUpsWon / matchUpDenominator
-          : 0;
-        const gamesPct = totalGamesVsOpponent
-          ? gamesWonVsOpponent / totalGamesVsOpponent
-          : 0;
-        const setsPct = totalSetsVsOpponent
-          ? setsWonVsOpponent / totalSetsVsOpponent
-          : 0;
+        const matchUpPct = matchUpDenominator ? matchUpsWon / matchUpDenominator : 0;
+        const gamesPct = totalGamesVsOpponent ? gamesWonVsOpponent / totalGamesVsOpponent : 0;
+        const setsPct = totalSetsVsOpponent ? setsWonVsOpponent / totalSetsVsOpponent : 0;
 
         if (matchUpDenominator) {
           aggregateMatchUpWinPct += matchUpPct;

@@ -1,8 +1,5 @@
-import { nextPowerOf2 } from '../../utilities/math';
-import {
-  ResultType,
-  decorateResult,
-} from '../../global/functions/decorateResult';
+import { nextPowerOf2 } from '../../tools/math';
+import { ResultType, decorateResult } from '../../global/functions/decorateResult';
 
 import { INVALID_VALUES } from '../../constants/errorConditionConstants';
 

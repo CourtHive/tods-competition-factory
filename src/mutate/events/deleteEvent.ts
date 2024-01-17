@@ -1,6 +1,6 @@
 import { checkAndUpdateSchedulingProfile } from '../tournaments/schedulingProfile';
 import { addTournamentTimeItem } from '../timeItems/addTimeItem';
-import { mustBeAnArray } from '../../utilities/mustBeAnArray';
+import { mustBeAnArray } from '../../tools/mustBeAnArray';
 import { addNotice } from '../../global/state/globalState';
 
 import { UNGROUPED } from '../../constants/entryStatusConstants';
@@ -8,21 +8,12 @@ import { DELETE_EVENTS } from '../../constants/auditConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import { DOUBLES } from '../../constants/eventConstants';
 import { AUDIT } from '../../constants/topicConstants';
-import {
-  EVENT_NOT_FOUND,
-  MISSING_TOURNAMENT_RECORD,
-  MISSING_VALUE,
-} from '../../constants/errorConditionConstants';
+import { EVENT_NOT_FOUND, MISSING_TOURNAMENT_RECORD, MISSING_VALUE } from '../../constants/errorConditionConstants';
 
-export function deleteEvents({
-  removePairParticipants,
-  tournamentRecord,
-  eventIds,
-}) {
+export function deleteEvents({ removePairParticipants, tournamentRecord, eventIds }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.events) return { error: EVENT_NOT_FOUND };
-  if (!Array.isArray(eventIds))
-    return { error: MISSING_VALUE, info: mustBeAnArray('drawIds') };
+  if (!Array.isArray(eventIds)) return { error: MISSING_VALUE, info: mustBeAnArray('drawIds') };
 
   const auditTrail: any[] = [];
   const deletedEventDetails: any[] = [];
@@ -50,10 +41,7 @@ export function deleteEvents({
     const enteredPairParticipantIds =
       event.eventType === DOUBLES
         ? (event.entries || [])
-            .map(
-              ({ entryStatus, participantId }) =>
-                entryStatus !== UNGROUPED && participantId
-            )
+            .map(({ entryStatus, participantId }) => entryStatus !== UNGROUPED && participantId)
             .filter(Boolean)
         : [];
 
@@ -70,10 +58,10 @@ export function deleteEvents({
 
   if (removePairParticipants) {
     const particiapntIdsToRemove = pairParticipantIds.filter(
-      (participantId) => !activePairParticipantIds.includes(participantId)
+      (participantId) => !activePairParticipantIds.includes(participantId),
     );
     tournamentRecord.participants = tournamentRecord.participants.filter(
-      ({ participantId }) => !particiapntIdsToRemove.includes(participantId)
+      ({ participantId }) => !particiapntIdsToRemove.includes(participantId),
     );
   }
 

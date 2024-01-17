@@ -2,27 +2,15 @@ import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMat
 import { findDrawMatchUp } from '../../acquire/findDrawMatchUp';
 import { decorateResult } from '../../global/functions/decorateResult';
 import { findStructure } from '../../acquire/findStructure';
-import { isConvertableInteger } from '../../utilities/math';
-import { numericSortValue } from '../../utilities/arrays';
+import { isConvertableInteger } from '../../tools/math';
+import { numericSortValue } from '../../tools/arrays';
 import { copyTieFormat } from '../../query/hierarchical/tieFormats/copyTieFormat';
-import {
-  modifyDrawNotice,
-  modifyMatchUpNotice,
-} from '../notifications/drawNotifications';
+import { modifyDrawNotice, modifyMatchUpNotice } from '../notifications/drawNotifications';
 
 import { SUCCESS } from '../../constants/resultConstants';
 import { TEAM } from '../../constants/matchUpTypes';
-import {
-  INVALID_VALUES,
-  MISSING_MATCHUP,
-  NOT_FOUND,
-} from '../../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  Event,
-  MatchUp,
-  Tournament,
-} from '../../types/tournamentTypes';
+import { INVALID_VALUES, MISSING_MATCHUP, NOT_FOUND } from '../../constants/errorConditionConstants';
+import { DrawDefinition, Event, MatchUp, Tournament } from '../../types/tournamentTypes';
 
 function getOrderedTieFormat({ tieFormat, orderMap }) {
   const orderedTieFormat = copyTieFormat(tieFormat);
@@ -32,8 +20,7 @@ function getOrderedTieFormat({ tieFormat, orderMap }) {
   });
 
   orderedTieFormat.collectionDefinitions.sort(
-    (a, b) =>
-      numericSortValue(a.collectionOrder) - numericSortValue(b.collectionOrder)
+    (a, b) => numericSortValue(a.collectionOrder) - numericSortValue(b.collectionOrder),
   );
 
   return orderedTieFormat;
@@ -60,10 +47,7 @@ export function orderCollectionDefinitions({
   matchUp,
   event,
 }: OrderCollectionDefinitionsArgs) {
-  if (
-    typeof orderMap !== 'object' ||
-    !Object.values(orderMap).every((val) => isConvertableInteger(val))
-  )
+  if (typeof orderMap !== 'object' || !Object.values(orderMap).every((val) => isConvertableInteger(val)))
     return decorateResult({
       result: { error: INVALID_VALUES },
       context: { orderMap },
@@ -199,13 +183,11 @@ function updateDrawTieFormat({
 
   for (const structure of drawDefinition.structures ?? []) {
     // if structureIds is present, only modify referenced structures
-    if (structureIds?.length && !structureIds.includes(structure.structureId))
-      continue;
+    if (structureIds?.length && !structureIds.includes(structure.structureId)) continue;
 
     if (structure.tieFormat || structureIds?.includes(structure.structureId))
       structure.tieFormat = getOrderedTieFormat({
-        tieFormat:
-          structure.tieFormat ?? drawDefinition.tieFormat ?? event?.tieFormat,
+        tieFormat: structure.tieFormat ?? drawDefinition.tieFormat ?? event?.tieFormat,
         orderMap,
       });
     updateStructureMatchUps({
@@ -220,13 +202,7 @@ function updateDrawTieFormat({
   modifyDrawNotice({ drawDefinition, structureIds: modifiedStructureIds });
 }
 
-function updateStructureMatchUps({
-  tournamentRecord,
-  drawDefinition,
-  structure,
-  orderMap,
-  eventId,
-}) {
+function updateStructureMatchUps({ tournamentRecord, drawDefinition, structure, orderMap, eventId }) {
   const matchUps = getAllStructureMatchUps({
     matchUpFilters: { matchUpTypes: [TEAM] },
     structure,

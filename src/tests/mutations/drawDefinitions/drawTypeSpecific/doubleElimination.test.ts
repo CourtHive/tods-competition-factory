@@ -1,5 +1,5 @@
-import * as utilities from '../../../../assemblies/governors/utilitiesGovernor';
 import tournamentEngine from '../../../engines/syncEngine';
+import * as tools from '../../../../assemblies/tools';
 import { mocksEngine } from '../../../..';
 import { expect, it } from 'vitest';
 
@@ -21,7 +21,7 @@ it('generates valid DOUBLE_ELIMINATION', () => {
   let matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
   const matchUpsCount = matchUps.length;
 
-  expect(utilities.unique(matchUps.map((m) => m.matchUpStatus))).toEqual([TO_BE_PLAYED]);
+  expect(tools.unique(matchUps.map((m) => m.matchUpStatus))).toEqual([TO_BE_PLAYED]);
 
   matchUps = tournamentEngine.allCompetitionMatchUps({
     matchUpFilters: { matchUpStatuses: upcomingMatchUpStatuses },

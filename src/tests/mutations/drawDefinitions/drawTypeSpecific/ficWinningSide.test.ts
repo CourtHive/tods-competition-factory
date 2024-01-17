@@ -1,17 +1,10 @@
 import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
-import { unique } from '../../../../utilities/arrays';
+import { unique } from '../../../../tools/arrays';
 import { expect, it } from 'vitest';
 
-import {
-  DOUBLE_WALKOVER,
-  WALKOVER,
-} from '../../../../constants/matchUpStatusConstants';
-import {
-  CONSOLATION,
-  FICSF,
-  MAIN,
-} from '../../../../constants/drawDefinitionConstants';
+import { DOUBLE_WALKOVER, WALKOVER } from '../../../../constants/matchUpStatusConstants';
+import { CONSOLATION, FICSF, MAIN } from '../../../../constants/drawDefinitionConstants';
 
 it('can complete FIC consolation with WOWO before main', () => {
   const winningSide = 1;
@@ -43,8 +36,7 @@ it('can complete FIC consolation with WOWO before main', () => {
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   expect(drawDefinition.links.length).toEqual(3);
 
-  const { completedMatchUps, upcomingMatchUps } =
-    tournamentEngine.tournamentMatchUps();
+  const { completedMatchUps, upcomingMatchUps } = tournamentEngine.tournamentMatchUps();
   expect(completedMatchUps.length).toEqual(8);
   expect(upcomingMatchUps.length).toEqual(8);
 
@@ -71,9 +63,7 @@ it('can complete FIC consolation with WOWO before main', () => {
 
   expect(unique(consolation2ndRoundStatuses)).toEqual([WALKOVER]);
 
-  const mainMatchUpIds = upcomingMatchUps
-    .filter((matchUp) => matchUp.stage === MAIN)
-    .map(({ matchUpId }) => matchUpId);
+  const mainMatchUpIds = upcomingMatchUps.filter((matchUp) => matchUp.stage === MAIN).map(({ matchUpId }) => matchUpId);
   expect(mainMatchUpIds.length).toEqual(4);
 
   const result = tournamentEngine.setMatchUpStatus({

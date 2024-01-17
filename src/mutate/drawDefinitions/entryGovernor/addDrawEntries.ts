@@ -2,7 +2,7 @@ import { refreshEntryPositions } from '../../entries/refreshEntryPositions';
 import { addExtension } from '../../extensions/addExtension';
 import { isValidExtension } from '../../../validators/isValidExtension';
 import { decorateResult } from '../../../global/functions/decorateResult';
-import { definedAttributes } from '../../../utilities/definedAttributes';
+import { definedAttributes } from '../../../tools/definedAttributes';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { participantInEntries } from '../../../query/drawDefinition/entryGetter';
 import { getValidStage } from '../../../query/drawDefinition/getValidStage';
@@ -20,11 +20,7 @@ import {
   PARTICIPANT_COUNT_EXCEEDS_DRAW_SIZE,
   INVALID_VALUES,
 } from '../../../constants/errorConditionConstants';
-import {
-  AD_HOC,
-  MAIN,
-  VOLUNTARY_CONSOLATION,
-} from '../../../constants/drawDefinitionConstants';
+import { AD_HOC, MAIN, VOLUNTARY_CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import {
   DrawDefinition,
   Entry,
@@ -33,10 +29,7 @@ import {
   Participant,
   StageTypeUnion,
 } from '../../../types/tournamentTypes';
-import {
-  DIRECT_ACCEPTANCE,
-  LUCKY_LOSER,
-} from '../../../constants/entryStatusConstants';
+import { DIRECT_ACCEPTANCE, LUCKY_LOSER } from '../../../constants/entryStatusConstants';
 
 type AddDrawEntryArgs = {
   entryStatus?: EntryStatusUnion;
@@ -71,10 +64,7 @@ export function addDrawEntry(params: AddDrawEntryArgs) {
   const stack = 'addDrawEntry';
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!entryStage) return { error: MISSING_STAGE };
-  if (
-    drawType !== AD_HOC &&
-    !getValidStage({ stage: entryStage, drawDefinition })
-  ) {
+  if (drawType !== AD_HOC && !getValidStage({ stage: entryStage, drawDefinition })) {
     return decorateResult({ result: { error: INVALID_STAGE }, stack });
   }
   const spaceAvailable = getStageSpace({
@@ -96,12 +86,10 @@ export function addDrawEntry(params: AddDrawEntryArgs) {
     });
 
   const participantId = params.participantId || participant?.participantId;
-  if (!participantId)
-    return decorateResult({ result: { error: MISSING_PARTICIPANT_ID }, stack });
+  if (!participantId) return decorateResult({ result: { error: MISSING_PARTICIPANT_ID }, stack });
 
   const invalidLuckyLoser =
-    entryStatus === LUCKY_LOSER &&
-    participantInEntries({ participantId, drawDefinition, entryStatus });
+    entryStatus === LUCKY_LOSER && participantInEntries({ participantId, drawDefinition, entryStatus });
   const invalidVoluntaryConsolation =
     entryStage === VOLUNTARY_CONSOLATION &&
     participantInEntries({
@@ -201,43 +189,32 @@ export function addDrawEntries(params: AddDrawEntriesArgs) {
     return { error: spaceAvailable.error };
   }
   const positionsAvailable = spaceAvailable.positionsAvailable ?? 0;
-  if (
-    !ignoreStageSpace &&
-    stage !== VOLUNTARY_CONSOLATION &&
-    positionsAvailable < participantIds.length
-  )
+  if (!ignoreStageSpace && stage !== VOLUNTARY_CONSOLATION && positionsAvailable < participantIds.length)
     return { error: PARTICIPANT_COUNT_EXCEEDS_DRAW_SIZE };
 
-  const participantIdsNotAdded = participantIds.reduce(
-    (notAdded: string[], participantId) => {
-      const invalidLuckyLoser =
-        entryStatus === LUCKY_LOSER &&
-        participantInEntries({ participantId, drawDefinition, entryStatus });
-      const invalidVoluntaryConsolation =
-        stage === VOLUNTARY_CONSOLATION &&
-        participantInEntries({
-          entryStage: stage,
-          drawDefinition,
-          participantId,
-        });
-      const invalidEntry =
-        entryStatus !== LUCKY_LOSER &&
-        stage !== VOLUNTARY_CONSOLATION &&
-        participantInEntries({ drawDefinition, participantId });
+  const participantIdsNotAdded = participantIds.reduce((notAdded: string[], participantId) => {
+    const invalidLuckyLoser =
+      entryStatus === LUCKY_LOSER && participantInEntries({ participantId, drawDefinition, entryStatus });
+    const invalidVoluntaryConsolation =
+      stage === VOLUNTARY_CONSOLATION &&
+      participantInEntries({
+        entryStage: stage,
+        drawDefinition,
+        participantId,
+      });
+    const invalidEntry =
+      entryStatus !== LUCKY_LOSER &&
+      stage !== VOLUNTARY_CONSOLATION &&
+      participantInEntries({ drawDefinition, participantId });
 
-      if (invalidEntry || invalidLuckyLoser || invalidVoluntaryConsolation) {
-        return notAdded.concat(participantId);
-      }
-      return notAdded;
-    },
-    []
-  );
+    if (invalidEntry || invalidLuckyLoser || invalidVoluntaryConsolation) {
+      return notAdded.concat(participantId);
+    }
+    return notAdded;
+  }, []);
 
   participantIds
-    .filter(
-      (participantId) =>
-        participantId && !participantIdsNotAdded.includes(participantId)
-    )
+    .filter((participantId) => participantId && !participantIdsNotAdded.includes(participantId))
     .forEach((participantId) => {
       const entry: Entry = {
         entryStageSequence: stageSequence,

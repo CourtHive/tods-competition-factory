@@ -1,4 +1,4 @@
-import { isNumeric } from '../../utilities/math';
+import { isNumeric } from '../../tools/math';
 
 export function setBuilder({ score }) {
   const chars = score.split('');
@@ -18,11 +18,7 @@ export function setBuilder({ score }) {
   // let tiebreak = '';
 
   const getDiff = () => {
-    return (
-      set[0] !== undefined &&
-      set[1] !== undefined &&
-      Math.abs(parseInt(set[0]) - parseInt(set[1]))
-    );
+    return set[0] !== undefined && set[1] !== undefined && Math.abs(parseInt(set[0]) - parseInt(set[1]));
   };
 
   while (chars.length) {

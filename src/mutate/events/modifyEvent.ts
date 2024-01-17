@@ -1,24 +1,14 @@
 import { getParticipants } from '../../query/participants/getParticipants';
-import { isObject, isString } from '../../utilities/objects';
-import { unique } from '../../utilities/arrays';
-import {
-  ResultType,
-  decorateResult,
-} from '../../global/functions/decorateResult';
+import { isObject, isString } from '../../tools/objects';
+import { unique } from '../../tools/arrays';
+import { ResultType, decorateResult } from '../../global/functions/decorateResult';
 
 import { DOUBLES, SINGLES, TEAM } from '../../constants/eventConstants';
 import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';
 import { ANY, MIXED } from '../../constants/genderConstants';
 import { SUCCESS } from '../../constants/resultConstants';
-import {
-  INVALID_VALUES,
-  MISSING_EVENT,
-  MISSING_TOURNAMENT_RECORD,
-} from '../../constants/errorConditionConstants';
-import {
-  ALTERNATE,
-  STRUCTURE_SELECTED_STATUSES,
-} from '../../constants/entryStatusConstants';
+import { INVALID_VALUES, MISSING_EVENT, MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
+import { ALTERNATE, STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
 import {
   // Category,
   Event,
@@ -45,12 +35,7 @@ type ModifyEventArgs = {
   event: Event;
 };
 
-export function modifyEvent({
-  tournamentRecord,
-  eventUpdates,
-  eventId,
-  event,
-}: ModifyEventArgs): ResultType {
+export function modifyEvent({ tournamentRecord, eventUpdates, eventId, event }: ModifyEventArgs): ResultType {
   const stack = 'modifyEvent';
 
   if (!tournamentRecord)
@@ -88,26 +73,20 @@ export function modifyEvent({
     : [];
 
   const genderAccumulator: string[] = [];
-  const enteredParticipantTypes = enteredParticipants.reduce(
-    (types: any[], participant) => {
-      const genders = participant.person?.sex
-        ? [participant.person.sex]
-        : participant.individualParticpants?.map((p) => p.person?.sex) || [];
-      genderAccumulator.push(...genders);
-      return !types.includes(participant.participantType)
-        ? types.concat(participant.participantType)
-        : types;
-    },
-    []
-  );
+  const enteredParticipantTypes = enteredParticipants.reduce((types: any[], participant) => {
+    const genders = participant.person?.sex
+      ? [participant.person.sex]
+      : participant.individualParticpants?.map((p) => p.person?.sex) || [];
+    genderAccumulator.push(...genders);
+    return !types.includes(participant.participantType) ? types.concat(participant.participantType) : types;
+  }, []);
 
   const enteredParticipantGenders = unique(genderAccumulator);
 
   const validGender =
     !enteredParticipantGenders.length ||
     [MIXED, ANY].includes(eventUpdates.gender ?? '') ||
-    (enteredParticipantGenders.length === 1 &&
-      enteredParticipantGenders[0] === eventUpdates.gender);
+    (enteredParticipantGenders.length === 1 && enteredParticipantGenders[0] === eventUpdates.gender);
 
   if (eventUpdates.gender && !validGender)
     return decorateResult({
@@ -118,11 +97,7 @@ export function modifyEvent({
 
   const validEventTypes = (enteredParticipantTypes.includes(TEAM) && [TEAM]) ||
     (enteredParticipantTypes.includes(INDIVIDUAL) && [SINGLES]) ||
-    (enteredParticipantTypes.includes(PAIR) && [DOUBLES]) || [
-      DOUBLES,
-      SINGLES,
-      TEAM,
-    ];
+    (enteredParticipantTypes.includes(PAIR) && [DOUBLES]) || [DOUBLES, SINGLES, TEAM];
 
   const validEventType = validEventTypes.includes(eventUpdates.eventType ?? '');
 

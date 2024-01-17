@@ -2,17 +2,17 @@ import { getDrawId, getParticipantId } from '../../global/functions/extractors';
 import { addScheduleItem } from '../../mutate/participants/addScheduleItem';
 import { getEventSeedAssignments } from '../event/getEventSeedAssignments';
 import { getPositionAssignments } from '../drawDefinition/positionsGetter';
-import { timeSort, timeStringMinutes } from '../../utilities/dateTime';
+import { timeSort, timeStringMinutes } from '../../tools/dateTime';
 import { structureSort } from '../../functions/sorters/structureSort';
-import { extensionsToAttributes } from '../../utilities/makeDeepCopy';
+import { extensionsToAttributes } from '../../tools/makeDeepCopy';
 import { processEventEntry } from '../participant/processEventEntry';
-import { definedAttributes } from '../../utilities/definedAttributes';
+import { definedAttributes } from '../../tools/definedAttributes';
 import { allEventMatchUps } from '../matchUps/getAllEventMatchUps';
 import { stringSort } from '../../functions/sorters/stringSort';
 import { getPublishState } from '../events/getPublishState';
 import { getFlightProfile } from '../event/getFlightProfile';
 import { processSides } from '../matchUps/processSides';
-import { isObject } from '../../utilities/objects';
+import { isObject } from '../../tools/objects';
 
 import { DEFAULTED, WALKOVER } from '../../constants/matchUpStatusConstants';
 import { UNGROUPED, UNPAIRED } from '../../constants/entryStatusConstants';
@@ -20,7 +20,7 @@ import { MAIN, QUALIFYING } from '../../constants/drawDefinitionConstants';
 import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
 import { WIN_RATIO } from '../../constants/statsConstants';
 import { HydratedMatchUp } from '../../types/hydrated';
-import { unique } from '../../utilities/arrays';
+import { unique } from '../../tools/arrays';
 
 export function getParticipantEntries(params) {
   const {

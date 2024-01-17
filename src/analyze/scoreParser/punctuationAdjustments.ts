@@ -1,6 +1,6 @@
 import { correctContainerMismatch } from './correctContainerMismatch';
-import { instanceCount } from '../../utilities/arrays';
-import { isContained } from './utilities';
+import { instanceCount } from '../../tools/arrays';
+import { isContained } from './helpers';
 
 export function punctuationAdjustments({ score, applied }) {
   score = correctContainerMismatch(score);
@@ -62,10 +62,7 @@ export function punctuationAdjustments({ score, applied }) {
     const dashSpace = new RegExp(`(\\d+)${dashScenario}(\\d+)`, 'g');
     const spacedDash = score.match(dashSpace);
     if (spacedDash) {
-      spacedDash.forEach(
-        (spaced) =>
-          (score = score.replace(spaced, spaced.split(dashScenario).join('-')))
-      );
+      spacedDash.forEach((spaced) => (score = score.replace(spaced, spaced.split(dashScenario).join('-'))));
     }
   });
 
@@ -179,10 +176,7 @@ export function punctuationAdjustments({ score, applied }) {
 
   // remove enclosing [] provided there is anything other than numbers contained
   // don't want to remove for e.g. "[1]" which is dealt with as seeding value
-  if (
-    /^\[.+\]$/.test(score) &&
-    '()/,- '.split('').some((punctuation) => counts[punctuation])
-  ) {
+  if (/^\[.+\]$/.test(score) && '()/,- '.split('').some((punctuation) => counts[punctuation])) {
     score = score.slice(1, score.length - 1);
   }
 
@@ -295,12 +289,7 @@ export function punctuationAdjustments({ score, applied }) {
     score = score.slice(0, score.length - 1);
   }
 
-  if (
-    score.startsWith('(') &&
-    score.endsWith(')') &&
-    counts['('] === 1 &&
-    counts[')'] === 1
-  ) {
+  if (score.startsWith('(') && score.endsWith(')') && counts['('] === 1 && counts[')'] === 1) {
     score = score.slice(1, score.length - 1);
     getMissing();
   }

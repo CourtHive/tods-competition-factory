@@ -1,4 +1,4 @@
-import { attributeFilter } from '../../utilities/attributeFilter';
+import { attributeFilter } from '../../tools/attributeFilter';
 
 import { HydratedParticipant } from '../../types/hydrated';
 
@@ -10,9 +10,7 @@ export function addIndividualParticipants({ participantMap, template }) {
       participant.individualParticipants = [];
       for (const participantId of participant.individualParticipantIds) {
         const source = participantMap[participantId].participant;
-        participant.individualParticipants.push(
-          template ? attributeFilter({ template, source }) : source
-        );
+        participant.individualParticipants.push(template ? attributeFilter({ template, source }) : source);
       }
     }
   }

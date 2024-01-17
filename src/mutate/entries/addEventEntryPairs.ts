@@ -3,9 +3,9 @@ import { getParticipantId } from '../../global/functions/extractors';
 import { addParticipants } from '../participants/addParticipants';
 import { stringSort } from '../../functions/sorters/stringSort';
 import { addNotice } from '../../global/state/globalState';
-import { intersection } from '../../utilities/arrays';
+import { intersection } from '../../tools/arrays';
 import { addEventEntries } from './addEventEntries';
-import { UUID } from '../../utilities/UUID';
+import { UUID } from '../../tools/UUID';
 
 import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';
 import { ADD_PARTICIPANTS } from '../../constants/topicConstants';
@@ -19,13 +19,7 @@ import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  EntryStatusUnion,
-  Event,
-  StageTypeUnion,
-  Tournament,
-} from '../../types/tournamentTypes';
+import { DrawDefinition, EntryStatusUnion, Event, StageTypeUnion, Tournament } from '../../types/tournamentTypes';
 import { ANY, FEMALE, MALE, MIXED } from '../../constants/genderConstants';
 
 /**
@@ -61,8 +55,7 @@ export function addEventEntryPairs({
   const genderMap = new Map<string, string>();
 
   for (const participant of tournamentRecord.participants ?? []) {
-    const { participantType, participantId, person, individualParticipantIds } =
-      participant;
+    const { participantType, participantId, person, individualParticipantIds } = participant;
     if (participantType === INDIVIDUAL && person?.sex) {
       genderMap.set(participantId, person.sex);
     } else if (participantType === PAIR && individualParticipantIds) {
@@ -82,42 +75,34 @@ export function addEventEntryPairs({
     const participantGenders = pair.map((id) => genderMap.get(id));
     // invalid if event.gender is MALE/FEMALE and both participants do not match
     let invalidParticiapntGenders =
-      (event.gender === MALE &&
-        (participantGenders[0] !== MALE || participantGenders[1] !== MALE)) ||
-      (event.gender === FEMALE &&
-        (participantGenders[0] !== FEMALE || participantGenders[1] !== FEMALE));
+      (event.gender === MALE && (participantGenders[0] !== MALE || participantGenders[1] !== MALE)) ||
+      (event.gender === FEMALE && (participantGenders[0] !== FEMALE || participantGenders[1] !== FEMALE));
 
     // invalid if event.gender is MIXED and participant genders are not different
     if (event.gender === MIXED) {
       participantGenders.sort(stringSort);
-      if (participantGenders[0] !== FEMALE || participantGenders[1] !== MALE)
-        invalidParticiapntGenders = true;
+      if (participantGenders[0] !== FEMALE || participantGenders[1] !== MALE) invalidParticiapntGenders = true;
     }
 
     return invalidParticiapntGenders;
   });
 
-  if (invalidParticipantIdPairs.length)
-    return { error: INVALID_PARTICIPANT_IDS, invalidParticipantIdPairs };
+  if (invalidParticipantIdPairs.length) return { error: INVALID_PARTICIPANT_IDS, invalidParticipantIdPairs };
 
   // create provisional participant objects
-  const provisionalParticipants: any[] = participantIdPairs.map(
-    (individualParticipantIds) => ({
-      participantId: uuids?.pop() ?? UUID(),
-      participantRole: COMPETITOR,
-      individualParticipantIds,
-      participantType: PAIR,
-    })
-  );
+  const provisionalParticipants: any[] = participantIdPairs.map((individualParticipantIds) => ({
+    participantId: uuids?.pop() ?? UUID(),
+    participantRole: COMPETITOR,
+    individualParticipantIds,
+    participantType: PAIR,
+  }));
 
   // filter out existing participants unless allowDuplicateParticipantIdPairs is true
   const newParticipants = allowDuplicateParticipantIdPairs
     ? provisionalParticipants
     : provisionalParticipants.filter((participant) => {
         return !existingParticipantIdPairs.find(
-          (existing) =>
-            intersection(existing, participant.individualParticipantIds)
-              .length === 2
+          (existing) => intersection(existing, participant.individualParticipantIds).length === 2,
         );
       });
 
@@ -138,9 +123,7 @@ export function addEventEntryPairs({
   const pairParticipantIds = participantIdPairs
     .map((participantIds) => {
       const addedParticipant = addedParticipants.find(
-        (addedPair) =>
-          intersection(addedPair.individualParticipantIds, participantIds)
-            .length === 2
+        (addedPair) => intersection(addedPair.individualParticipantIds, participantIds).length === 2,
       );
       if (addedParticipant) return addedParticipant;
 

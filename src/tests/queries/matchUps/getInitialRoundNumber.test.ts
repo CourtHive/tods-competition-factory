@@ -1,6 +1,6 @@
 import { getInitialRoundNumber } from '../../../query/matchUps/getInitialRoundNumber';
 import mocksEngine from '../../../assemblies/engines/mock';
-import { generateRange } from '../../../utilities/arrays';
+import { generateRange } from '../../../tools/arrays';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 

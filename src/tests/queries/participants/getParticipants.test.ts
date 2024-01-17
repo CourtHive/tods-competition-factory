@@ -1,6 +1,6 @@
-import * as utilities from '../../../assemblies/governors/utilitiesGovernor';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
+import * as tools from '../../../assemblies/tools';
 import { expect, it, test } from 'vitest';
 
 import { POLICY_TYPE_PARTICIPANT } from '../../../constants/policyConstants';
@@ -162,8 +162,8 @@ it('can accept a privacy policy to filter tournament participants attributes', (
   );
   expect(participantGenders.length).toEqual(2);
 
-  let personAttributes = Object.keys(participants[0].person);
-  expect(personAttributes.sort()).toEqual([
+  let personAttributes = Object.keys(participants[0].person).sort();
+  expect(personAttributes).toEqual([
     'addresses',
     'extensions',
     'nationalityCode',
@@ -258,7 +258,7 @@ it('can filter by entries', () => {
   }));
   expect(participants.length).toEqual(drawSize);
 
-  const newEventId = utilities.UUID();
+  const newEventId = tools.UUID();
   const event = {
     eventType: SINGLES,
     eventId: newEventId,

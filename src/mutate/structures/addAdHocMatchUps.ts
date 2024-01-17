@@ -1,12 +1,9 @@
 import { allTournamentMatchUps } from '../../query/matchUps/getAllTournamentMatchUps';
 import { getMatchUpId } from '../../global/functions/extractors';
-import { mustBeAnArray } from '../../utilities/mustBeAnArray';
+import { mustBeAnArray } from '../../tools/mustBeAnArray';
 import { validMatchUps } from '../../validators/validMatchUp';
-import { overlap } from '../../utilities/arrays';
-import {
-  addMatchUpsNotice,
-  modifyDrawNotice,
-} from '../notifications/drawNotifications';
+import { overlap } from '../../tools/arrays';
+import { addMatchUpsNotice, modifyDrawNotice } from '../notifications/drawNotifications';
 
 import { ROUND_OUTCOME } from '../../constants/drawDefinitionConstants';
 import { ResultType } from '../../global/functions/decorateResult';
@@ -20,38 +17,23 @@ import {
   EXISTING_MATCHUP_ID,
 } from '../../constants/errorConditionConstants';
 
-export function addAdHocMatchUps({
-  tournamentRecord,
-  drawDefinition,
-  structureId,
-  matchUps,
-}): ResultType {
-  if (typeof drawDefinition !== 'object')
-    return { error: MISSING_DRAW_DEFINITION };
+export function addAdHocMatchUps({ tournamentRecord, drawDefinition, structureId, matchUps }): ResultType {
+  if (typeof drawDefinition !== 'object') return { error: MISSING_DRAW_DEFINITION };
 
   if (!structureId && drawDefinition.structures?.length === 1)
     structureId = drawDefinition.structures?.[0]?.structureId;
 
   if (typeof structureId !== 'string') return { error: MISSING_STRUCTURE_ID };
 
-  if (!validMatchUps(matchUps))
-    return { error: INVALID_VALUES, info: mustBeAnArray('matchUps') };
+  if (!validMatchUps(matchUps)) return { error: INVALID_VALUES, info: mustBeAnArray('matchUps') };
 
-  const structure = drawDefinition.structures?.find(
-    (structure) => structure.structureId === structureId
-  );
+  const structure = drawDefinition.structures?.find((structure) => structure.structureId === structureId);
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
   const existingMatchUps = structure?.matchUps;
-  const structureHasRoundPositions = existingMatchUps.find(
-    (matchUp) => !!matchUp.roundPosition
-  );
+  const structureHasRoundPositions = existingMatchUps.find((matchUp) => !!matchUp.roundPosition);
 
-  if (
-    structure.structures ||
-    structureHasRoundPositions ||
-    structure.finishingPosition === ROUND_OUTCOME
-  ) {
+  if (structure.structures || structureHasRoundPositions || structure.finishingPosition === ROUND_OUTCOME) {
     return { error: INVALID_STRUCTURE };
   }
 

@@ -1,4 +1,4 @@
-import { unique } from '../utilities/arrays';
+import { unique } from '../tools/arrays';
 
 import { CollectionValueProfile } from '../types/tournamentTypes';
 import { SUCCESS } from '../constants/resultConstants';
@@ -14,15 +14,10 @@ export function validateCollectionValueProfiles({
 }: ValidateCollectionDefinitionArgs) {
   const errors: string[] = [];
   if (!Array.isArray(collectionValueProfiles)) {
-    errors.push(
-      `collectionValueProfiles is not an array: ${collectionValueProfiles}`
-    );
+    errors.push(`collectionValueProfiles is not an array: ${collectionValueProfiles}`);
     return { errors };
   }
-  if (
-    collectionValueProfiles.length &&
-    collectionValueProfiles.length !== matchUpCount
-  ) {
+  if (collectionValueProfiles.length && collectionValueProfiles.length !== matchUpCount) {
     errors.push(`collectionValueProfiles do not align with matchUpsCount`);
     return { errors };
   }
@@ -39,14 +34,12 @@ export function validateCollectionValueProfiles({
       collectionPosition < 1
     ) {
       errors.push(
-        `Invalid value profile: value and collectionPosition must be numeric. collectionPosition cannot be greater than matchUpCount`
+        `Invalid value profile: value and collectionPosition must be numeric. collectionPosition cannot be greater than matchUpCount`,
       );
       return { errors };
     }
   }
-  const collectionPositions = collectionValueProfiles.map(
-    (valueProfile) => valueProfile.collectionPosition
-  );
+  const collectionPositions = collectionValueProfiles.map((valueProfile) => valueProfile.collectionPosition);
   if (collectionPositions.length !== unique(collectionPositions).length) {
     errors.push('collectionPositions are not unique');
     return { errors };

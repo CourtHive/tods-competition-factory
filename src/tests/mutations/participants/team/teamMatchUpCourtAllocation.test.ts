@@ -1,6 +1,6 @@
 import tournamentEngine from '../../../engines/syncEngine';
 import queryEngine from '../../../engines/queryEngine';
-import { unique } from '../../../../utilities/arrays';
+import { unique } from '../../../../tools/arrays';
 import { mocksEngine } from '../../../..';
 import { expect, test } from 'vitest';
 

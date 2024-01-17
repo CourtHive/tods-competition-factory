@@ -1,16 +1,8 @@
 import { validTimeString } from '../../validators/regex';
-import { getUTCdateString } from '../../utilities/dateTime';
+import { getUTCdateString } from '../../tools/dateTime';
 
-import {
-  MISSING_MATCHUP,
-  MISSING_TIME_ITEMS,
-} from '../../constants/errorConditionConstants';
-import {
-  START_TIME,
-  STOP_TIME,
-  RESUME_TIME,
-  END_TIME,
-} from '../../constants/timeItemConstants';
+import { MISSING_MATCHUP, MISSING_TIME_ITEMS } from '../../constants/errorConditionConstants';
+import { START_TIME, STOP_TIME, RESUME_TIME, END_TIME } from '../../constants/timeItemConstants';
 
 function timeDate(value) {
   if (validTimeString.test(value)) {
@@ -26,36 +18,22 @@ export function matchUpDuration({ matchUp }) {
   if (!matchUp.timeItems) return { error: MISSING_TIME_ITEMS };
 
   const relevantTimeItems = matchUp.timeItems
-    .filter((timeItem) =>
-      [START_TIME, STOP_TIME, RESUME_TIME, END_TIME].includes(
-        timeItem?.itemType
-      )
-    )
-    .sort(
-      (a, b) =>
-        timeDate(a.itemValue).getTime() - timeDate(b.itemValue).getTime()
-    );
+    .filter((timeItem) => [START_TIME, STOP_TIME, RESUME_TIME, END_TIME].includes(timeItem?.itemType))
+    .sort((a, b) => timeDate(a.itemValue).getTime() - timeDate(b.itemValue).getTime());
 
   const elapsed = relevantTimeItems.reduce(
     (elapsed, timeItem) => {
       let milliseconds;
       const itemTypeComponents = timeItem?.itemType?.split('.');
-      const timeType =
-        timeItem?.itemType?.startsWith('SCHEDULE.TIME') &&
-        itemTypeComponents[2];
+      const timeType = timeItem?.itemType?.startsWith('SCHEDULE.TIME') && itemTypeComponents[2];
       const scheduleType = `SCHEDULE.TIME.${timeType}`;
       switch (scheduleType) {
         case START_TIME:
           milliseconds = 0;
           break;
         case END_TIME:
-          if (
-            elapsed.lastValue &&
-            [START_TIME, RESUME_TIME].includes(elapsed.lastType)
-          ) {
-            const interval =
-              timeDate(timeItem.itemValue).getTime() -
-              timeDate(elapsed.lastValue).getTime();
+          if (elapsed.lastValue && [START_TIME, RESUME_TIME].includes(elapsed.lastType)) {
+            const interval = timeDate(timeItem.itemValue).getTime() - timeDate(elapsed.lastValue).getTime();
             milliseconds = elapsed.milliseconds + interval;
           } else {
             milliseconds = elapsed.milliseconds;
@@ -63,9 +41,7 @@ export function matchUpDuration({ matchUp }) {
           break;
         case STOP_TIME:
           if ([START_TIME, 'SCHECULE.TIME.RESUME'].includes(elapsed.lastType)) {
-            const interval =
-              timeDate(timeItem.itemValue).getTime() -
-              timeDate(elapsed.lastValue).getTime();
+            const interval = timeDate(timeItem.itemValue).getTime() - timeDate(elapsed.lastValue).getTime();
             milliseconds = elapsed.milliseconds + interval;
           } else {
             milliseconds = elapsed.milliseconds;
@@ -81,12 +57,11 @@ export function matchUpDuration({ matchUp }) {
         lastValue: timeItem.itemValue,
       };
     },
-    { milliseconds: 0, lastType: undefined, lastValue: undefined }
+    { milliseconds: 0, lastType: undefined, lastValue: undefined },
   );
 
   if ([START_TIME, RESUME_TIME].includes(elapsed.lastType)) {
-    const interval =
-      new Date().getTime() - timeDate(elapsed.lastValue).getTime();
+    const interval = new Date().getTime() - timeDate(elapsed.lastValue).getTime();
     elapsed.milliseconds += interval;
   }
 
@@ -99,11 +74,5 @@ export function matchUpDuration({ matchUp }) {
 
 function msToTime(s) {
   const pad = (n, z = 2) => ('00' + n).slice(-z);
-  return (
-    pad((s / 3.6e6) | 0) +
-    ':' +
-    pad(((s % 3.6e6) / 6e4) | 0) +
-    ':' +
-    pad(((s % 6e4) / 1000) | 0)
-  );
+  return pad((s / 3.6e6) | 0) + ':' + pad(((s % 3.6e6) / 6e4) | 0) + ':' + pad(((s % 6e4) / 1000) | 0);
 }

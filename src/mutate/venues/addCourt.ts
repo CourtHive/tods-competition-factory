@@ -1,16 +1,13 @@
 import { courtTemplate } from '../../assemblies/generators/templates/courtTemplate';
 import { validDateAvailability } from '../../validators/validateDateAvailability';
-import { extractDate, extractTime, formatDate } from '../../utilities/dateTime';
-import { makeDeepCopy } from '../../utilities/makeDeepCopy';
+import { extractDate, extractTime, formatDate } from '../../tools/dateTime';
+import { makeDeepCopy } from '../../tools/makeDeepCopy';
 import { addNotice } from '../../global/state/globalState';
-import { generateRange } from '../../utilities/arrays';
-import { isNumeric } from '../../utilities/math';
-import { UUID } from '../../utilities/UUID';
+import { generateRange } from '../../tools/arrays';
+import { isNumeric } from '../../tools/math';
+import { UUID } from '../../tools/UUID';
 import { findVenue } from './findVenue';
-import {
-  ResultType,
-  decorateResult,
-} from '../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../global/functions/decorateResult';
 
 import { Availability, Court, Tournament } from '../../types/tournamentTypes';
 import { MODIFY_VENUE } from '../../constants/topicConstants';
@@ -30,13 +27,7 @@ type AddCourtArgs = {
   venueId: string;
   court?: any; // courtId may not yet be present
 };
-export function addCourt({
-  tournamentRecord,
-  disableNotice,
-  venueId,
-  courtId,
-  court,
-}: AddCourtArgs) {
+export function addCourt({ tournamentRecord, disableNotice, venueId, courtId, court }: AddCourtArgs) {
   const { venue } = findVenue({ tournamentRecord, venueId });
   if (!venue) return { error: VENUE_NOT_FOUND };
 
@@ -47,29 +38,23 @@ export function addCourt({
     courtRecord.courtId = UUID();
   }
 
-  const courtExists = venue.courts.some(
-    (candidate) => candidate.courtId === courtRecord.courtId
-  );
+  const courtExists = venue.courts.some((candidate) => candidate.courtId === courtRecord.courtId);
 
   if (courtExists) {
     return { error: COURT_EXISTS };
   } else {
     // build new dateAvailability object with date/time extraction
-    const dateAvailability = (court?.dateAvailability || []).map(
-      (availabilty: any) => ({
-        ...availabilty,
-        date: extractDate(availabilty.date),
-        startTime: extractTime(availabilty.startTime),
-        endTime: extractTime(availabilty.endTime),
-        bookings: availabilty.bookings?.map(
-          ({ startTime, endTime, bookingType }) => ({
-            startTime: extractTime(startTime),
-            endTime: extractTime(endTime),
-            bookingType,
-          })
-        ),
-      })
-    );
+    const dateAvailability = (court?.dateAvailability || []).map((availabilty: any) => ({
+      ...availabilty,
+      date: extractDate(availabilty.date),
+      startTime: extractTime(availabilty.startTime),
+      endTime: extractTime(availabilty.endTime),
+      bookings: availabilty.bookings?.map(({ startTime, endTime, bookingType }) => ({
+        startTime: extractTime(startTime),
+        endTime: extractTime(endTime),
+        bookingType,
+      })),
+    }));
 
     const attributes = Object.keys(courtRecord);
     for (const attribute of attributes) {
@@ -108,8 +93,7 @@ export function addCourts(params: ACArgs) {
   // if tournamentRecord is not linked to other tournamentRecods, only add to tournamentRecord
   const { tournamentRecord, venueId } = params;
 
-  if (typeof venueId !== 'string' || !venueId)
-    return { error: MISSING_VENUE_ID };
+  if (typeof venueId !== 'string' || !venueId) return { error: MISSING_VENUE_ID };
 
   const tournamentRecords =
     params.tournamentRecords ??
@@ -174,8 +158,7 @@ export function courtsAdd({
 
   const { venue } = result;
 
-  if (!isNumeric(courtsCount) || !courtNames)
-    return { error: MISSING_COURTS_INFO };
+  if (!isNumeric(courtsCount) || !courtNames) return { error: MISSING_COURTS_INFO };
 
   courtsCount = courtsCount ?? courtNames.length;
   const courts = generateRange(0, courtsCount).map((i) => {
@@ -190,15 +173,12 @@ export function courtsAdd({
       : dateAvailability;
 
     // when courtTiming is provided, also add default availability
-    if (courtTiming && startTime && endTime)
-      courtAvailability.push({ startTime, endTime });
+    if (courtTiming && startTime && endTime) courtAvailability.push({ startTime, endTime });
 
     return {
       courtName:
         courtNames[i] ||
-        (venueAbbreviationRoot &&
-          venue?.venueAbbreviation &&
-          `${venue?.venueAbbreviation} ${i + 1}`) ||
+        (venueAbbreviationRoot && venue?.venueAbbreviation && `${venue?.venueAbbreviation} ${i + 1}`) ||
         `${courtNameRoot} ${i + 1}`,
       dateAvailability: courtAvailability,
     };
@@ -215,9 +195,7 @@ export function courtsAdd({
     });
   });
 
-  const courtRecords = mapResult
-    .map((outcome) => outcome.court)
-    .filter(Boolean);
+  const courtRecords = mapResult.map((outcome) => outcome.court).filter(Boolean);
   if (courtRecords.length !== courtsCount) {
     return decorateResult({
       info: 'not all courts could be generated',

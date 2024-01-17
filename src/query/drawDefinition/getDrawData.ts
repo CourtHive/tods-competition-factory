@@ -2,8 +2,8 @@ import { getStructureSeedAssignments } from '../structure/getStructureSeedAssign
 import { getAllStructureMatchUps } from '../matchUps/getAllStructureMatchUps';
 import { structureSort } from '../../functions/sorters/structureSort';
 import { getStructureGroups } from '../structure/getStructureGroups';
-import { xa } from '../../utilities/objects';
-import { makeDeepCopy } from '../../utilities/makeDeepCopy';
+import { xa } from '../../tools/objects';
+import { makeDeepCopy } from '../../tools/makeDeepCopy';
 import { getPositionAssignments } from './positionsGetter';
 import { findStructure } from '../../acquire/findStructure';
 import { findExtension } from '../../acquire/findExtension';

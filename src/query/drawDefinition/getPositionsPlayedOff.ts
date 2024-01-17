@@ -1,15 +1,12 @@
-import { getStructureRoundProfile } from '../../../query/structure/getStructureRoundProfile';
-import { numericSort } from '../../../utilities/sorting';
-import { roundValueRanges } from './structureUtils';
-import { unique } from '../../../utilities/arrays';
+import { getStructureRoundProfile } from '../structure/getStructureRoundProfile';
+import { numericSort } from '../../tools/sorting';
+import { roundValueRanges } from '../../mutate/drawDefinitions/structureGovernor/structureUtils';
+import { unique } from '../../tools/arrays';
 
-import { MatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
-import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
-import { DrawDefinition } from '../../../types/tournamentTypes';
-import {
-  INVALID_VALUES,
-  MISSING_DRAW_DEFINITION,
-} from '../../../constants/errorConditionConstants';
+import { MatchUpsMap } from '../matchUps/getMatchUpsMap';
+import { QUALIFYING } from '../../constants/drawDefinitionConstants';
+import { DrawDefinition } from '../../types/tournamentTypes';
+import { INVALID_VALUES, MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
 
 // NOTE: positionsNotPlayedOff may not be accurate when structureIds are are provided
 type GetPositionsPlayedOff = {
@@ -17,13 +14,8 @@ type GetPositionsPlayedOff = {
   matchUpsMap?: MatchUpsMap;
   structureIds?: string[];
 };
-export function getPositionsPlayedOff({
-  drawDefinition,
-  structureIds,
-  matchUpsMap,
-}: GetPositionsPlayedOff) {
-  if (structureIds && !Array.isArray(structureIds))
-    return { error: INVALID_VALUES, context: { structureIds } };
+export function getPositionsPlayedOff({ drawDefinition, structureIds, matchUpsMap }: GetPositionsPlayedOff) {
+  if (structureIds && !Array.isArray(structureIds)) return { error: INVALID_VALUES, context: { structureIds } };
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   structureIds =
@@ -50,9 +42,7 @@ export function getPositionsPlayedOff({
     .flat();
 
   const allRangeValues = unique(allFinishingPositionRanges.flat());
-  const positionsNotPlayedOff = allRangeValues.filter(
-    (position) => !positionsPlayedOff.includes(position)
-  );
+  const positionsNotPlayedOff = allRangeValues.filter((position) => !positionsPlayedOff.includes(position));
 
   return {
     positionsNotPlayedOff,

@@ -1,10 +1,10 @@
 import { getMatchUpDependencies } from '../matchUps/getMatchUpDependencies';
-import { definedAttributes } from '../../utilities/definedAttributes';
-import { attributeFilter } from '../../utilities/attributeFilter';
+import { definedAttributes } from '../../tools/definedAttributes';
+import { attributeFilter } from '../../tools/attributeFilter';
 import { getParticipantEntries } from './getParticipantEntries';
 import { filterParticipants } from './filterParticipants';
 import { getParticipantMap } from './getParticipantMap';
-import { isObject } from '../../utilities/objects';
+import { isObject } from '../../tools/objects';
 
 import { POLICY_TYPE_PARTICIPANT } from '../../constants/policyConstants';
 import { MatchUp, Tournament } from '../../types/tournamentTypes';
@@ -17,10 +17,7 @@ import {
   ScheduleAnalysis,
   ParticipantMap,
 } from '../../types/factoryTypes';
-import {
-  MISSING_TOURNAMENT_RECORD,
-  ErrorType,
-} from '../../constants/errorConditionConstants';
+import { MISSING_TOURNAMENT_RECORD, ErrorType } from '../../constants/errorConditionConstants';
 
 type GetParticipantsArgs = {
   withIndividualParticipants?: boolean | { [key: string]: any };
@@ -122,13 +119,8 @@ export function getParticipants(params: GetParticipantsArgs): {
     withSeeding,
   });
 
-  const {
-    participantIdsWithConflicts,
-    eventsPublishStatuses,
-    derivedEventInfo,
-    derivedDrawInfo,
-    mappedMatchUps,
-  } = entriesResult;
+  const { participantIdsWithConflicts, eventsPublishStatuses, derivedEventInfo, derivedDrawInfo, mappedMatchUps } =
+    entriesResult;
 
   const matchUps: any[] = entriesResult.matchUps;
 
@@ -151,35 +143,25 @@ export function getParticipants(params: GetParticipantsArgs): {
     const participantOpponents = Object.values(opponents);
     if (withOpponents) {
       participantDraws?.forEach((draw) => {
-        draw.opponents = participantOpponents.filter(
-          (opponent: any) => opponent.drawId === draw.drawId
-        );
+        draw.opponents = participantOpponents.filter((opponent: any) => opponent.drawId === draw.drawId);
       });
     }
 
     return definedAttributes(
       {
         ...participant,
-        scheduleConflicts: scheduleAnalysis
-          ? Object.values(scheduleConflicts)
-          : undefined,
+        scheduleConflicts: scheduleAnalysis ? Object.values(scheduleConflicts) : undefined,
         draws: withDraws || withRankingProfile ? participantDraws : undefined,
-        events:
-          withEvents || withRankingProfile ? Object.values(events) : undefined,
-        matchUps:
-          withMatchUps || withRankingProfile
-            ? Object.values(matchUps)
-            : undefined,
+        events: withEvents || withRankingProfile ? Object.values(events) : undefined,
+        matchUps: withMatchUps || withRankingProfile ? Object.values(matchUps) : undefined,
         opponents: withOpponents ? participantOpponents : undefined,
-        potentialMatchUps: nextMatchUps
-          ? Object.values(potentialMatchUps)
-          : undefined,
+        potentialMatchUps: nextMatchUps ? Object.values(potentialMatchUps) : undefined,
         statistics: withStatistics ? Object.values(statistics) : undefined,
         scheduleItems: withScheduleItems ? scheduleItems : undefined,
       },
       false,
       false,
-      true
+      true,
     );
   };
 
@@ -201,26 +183,18 @@ export function getParticipants(params: GetParticipantsArgs): {
   });
 
   if (withIndividualParticipants) {
-    const template = isObject(withIndividualParticipants)
-      ? withIndividualParticipants
-      : undefined;
+    const template = isObject(withIndividualParticipants) ? withIndividualParticipants : undefined;
     for (const participant of filteredParticipants) {
-      for (const individualParticipantId of participant.individualParticipantIds ??
-        []) {
-        if (!participant.individualParticipants)
-          participant.individualParticipants = [];
+      for (const individualParticipantId of participant.individualParticipantIds ?? []) {
+        if (!participant.individualParticipants) participant.individualParticipants = [];
         const source = ppMap.get(individualParticipantId);
-        participant.individualParticipants.push(
-          template ? attributeFilter({ template, source }) : source
-        );
+        participant.individualParticipants.push(template ? attributeFilter({ template, source }) : source);
       }
     }
   }
 
   const participants: HydratedParticipant[] = template
-    ? filteredParticipants.map((source) =>
-        attributeFilter({ source, template })
-      )
+    ? filteredParticipants.map((source) => attributeFilter({ source, template }))
     : filteredParticipants;
 
   // IDEA: optimizePayload derive array of matchUpIds required for filteredParticipants

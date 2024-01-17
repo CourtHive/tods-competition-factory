@@ -1,6 +1,6 @@
 import { getIndividualParticipantIds } from './getIndividualParticipantIds';
 import { HydratedMatchUp } from '../../../../types/hydrated';
-import { unique } from '../../../../utilities/arrays';
+import { unique } from '../../../../tools/arrays';
 
 type ProcessNextMatchUpsArgs = {
   matchUpPotentialParticipantIds: { [key: string]: string[] };
@@ -18,15 +18,12 @@ export function processNextMatchUps({
   timeAfterRecovery = timeAfterRecovery ?? matchUp.schedule?.timeAfterRecovery;
 
   const addPotentialParticipantIds = (targetMatchUpId) => {
-    if (!matchUpPotentialParticipantIds[targetMatchUpId])
-      matchUpPotentialParticipantIds[targetMatchUpId] = [];
+    if (!matchUpPotentialParticipantIds[targetMatchUpId]) matchUpPotentialParticipantIds[targetMatchUpId] = [];
 
     // push potentials as an array so that if any have progressed to target matchUp
     // others in the array can be identfied as no longer potentials
     matchUpPotentialParticipantIds[targetMatchUpId] = unique(
-      matchUpPotentialParticipantIds[targetMatchUpId].concat(
-        ...individualParticipantIds
-      )
+      matchUpPotentialParticipantIds[targetMatchUpId].concat(...individualParticipantIds),
     );
   };
 
@@ -38,15 +35,13 @@ export function processNextMatchUps({
   const updateNotBeforeTime = (matchUpId) => {
     if (
       timeAfterRecovery &&
-      (!matchUpNotBeforeTimes[matchUpId] ||
-        timeAfterRecovery > matchUpNotBeforeTimes[matchUpId])
+      (!matchUpNotBeforeTimes[matchUpId] || timeAfterRecovery > matchUpNotBeforeTimes[matchUpId])
     ) {
       matchUpNotBeforeTimes[matchUpId] = timeAfterRecovery;
     }
   };
 
-  const winnerMatchUpId =
-    matchUp.winnerTo?.matchUpId || matchUp.winnerMatchUpId;
+  const winnerMatchUpId = matchUp.winnerTo?.matchUpId || matchUp.winnerMatchUpId;
   if (winnerMatchUpId) {
     timeAfterRecovery && updateNotBeforeTime(winnerMatchUpId);
     addPotentialParticipantIds(winnerMatchUpId);

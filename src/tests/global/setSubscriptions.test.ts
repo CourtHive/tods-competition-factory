@@ -1,8 +1,8 @@
-import tournamentEngine from '../engines/syncEngine';
 import { setSubscriptions } from '../../global/state/globalState';
+import tournamentEngine from '../engines/syncEngine';
+import * as tools from '../../assemblies/tools';
 import { expect, it } from 'vitest';
 
-import * as utilities from '../../assemblies/governors/utilitiesGovernor';
 import { MatchUp, Participant } from '../../types/tournamentTypes';
 import { INDIVIDUAL } from '../../constants/participantConstants';
 import { COMPETITOR } from '../../constants/participantRoles';
@@ -43,7 +43,7 @@ it('can set subscriptions in global state outside of engines', () => {
   tournamentEngine.addParticipant({ participant });
   expect(allParticipants.length).toEqual(1);
 
-  const eventId = utilities.UUID();
+  const eventId = tools.UUID();
   tournamentEngine.addEvent({ event: { eventId } });
   const matchUpFormat = 'SET5-S:4/TB7';
 
@@ -101,7 +101,7 @@ it('can delay notifications to subscribers', () => {
   // notifications were not sent, so expect no participants
   expect(allParticipants.length).toEqual(0);
 
-  const eventId = utilities.UUID();
+  const eventId = tools.UUID();
   tournamentEngine.addEvent({ event: { eventId } });
   const matchUpFormat = 'SET5-S:4/TB7';
 

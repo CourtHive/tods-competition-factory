@@ -1,4 +1,4 @@
-import { constantToString } from '../../../../utilities/strings';
+import { constantToString } from '../../../../tools/strings';
 import { structureTemplate } from '../../templates/structureTemplate';
 import { feedInMatchUps } from '../feedInMatchUps';
 import { treeMatchUps } from './eliminationTree';
@@ -6,13 +6,7 @@ import { feedInLinks } from '../links/feedInLinks';
 
 import { DrawLink, Structure } from '../../../../types/tournamentTypes';
 import { SUCCESS } from '../../../../constants/resultConstants';
-import {
-  MAIN,
-  CONSOLATION,
-  PLAY_OFF,
-  LOSER,
-  TOP_DOWN,
-} from '../../../../constants/drawDefinitionConstants';
+import { MAIN, CONSOLATION, PLAY_OFF, LOSER, TOP_DOWN } from '../../../../constants/drawDefinitionConstants';
 
 export function generateCurtisConsolation(params) {
   const {
@@ -42,10 +36,7 @@ export function generateCurtisConsolation(params) {
   const { matchUps, roundsCount: mainDrawRoundsCount } = staggeredEntry
     ? feedInMatchUps(mainParams)
     : treeMatchUps(mainParams);
-  const structureName =
-    params.structureName ??
-    playoffAttributes?.['0']?.name ??
-    constantToString(MAIN);
+  const structureName = params.structureName ?? playoffAttributes?.['0']?.name ?? constantToString(MAIN);
   const mainStructure = structureTemplate({
     structureId: structureId || uuids?.pop(),
     structureName,
@@ -104,10 +95,8 @@ export function generateCurtisConsolation(params) {
         matchUpType,
         isMock,
       });
-      const defaultName =
-        playoffAttributes?.['3-4']?.name ?? constantToString(PLAY_OFF);
-      const mappedStructureName =
-        structureNameMap?.[defaultName] || defaultName;
+      const defaultName = playoffAttributes?.['3-4']?.name ?? constantToString(PLAY_OFF);
+      const mappedStructureName = structureNameMap?.[defaultName] || defaultName;
       const structureName = playoffStructureNameBase
         ? `${playoffStructureNameBase} ${mappedStructureName}`
         : mappedStructureName;
@@ -158,22 +147,19 @@ function consolationFeedStructure({
 }) {
   const consolationDrawPositions = drawSize / (2 * Math.pow(2, roundOffset));
 
-  const { matchUps: consolationMatchUps, roundsCount: consolationRoundsCount } =
-    feedInMatchUps({
-      finishingPositionOffset: consolationDrawPositions,
-      baseDrawSize: consolationDrawPositions,
-      isConsolation: true,
-      feedRounds: 1,
-      matchUpType,
-      idPrefix,
-      isMock,
-      uuids,
-    });
+  const { matchUps: consolationMatchUps, roundsCount: consolationRoundsCount } = feedInMatchUps({
+    finishingPositionOffset: consolationDrawPositions,
+    baseDrawSize: consolationDrawPositions,
+    isConsolation: true,
+    feedRounds: 1,
+    matchUpType,
+    idPrefix,
+    isMock,
+    uuids,
+  });
   const indexedStructureName =
-    (index === 0 && playoffAttributes?.['0-1']?.name) ||
-    (index === 1 && playoffAttributes?.['0-3']?.name);
-  const defaultName =
-    indexedStructureName || `${constantToString(CONSOLATION)} ${index + 1}`;
+    (index === 0 && playoffAttributes?.['0-1']?.name) || (index === 1 && playoffAttributes?.['0-3']?.name);
+  const defaultName = indexedStructureName || `${constantToString(CONSOLATION)} ${index + 1}`;
   const mappedStructureName = structureNameMap?.[defaultName] || defaultName;
   const structureName = playoffStructureNameBase
     ? `${playoffStructureNameBase} ${mappedStructureName}`

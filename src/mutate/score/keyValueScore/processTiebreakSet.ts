@@ -1,16 +1,9 @@
 import { getHighTiebreakValue, testTiebreakEntry } from './keyValueUtilities';
-import { ensureInt } from '../../../utilities/ensureInt';
+import { ensureInt } from '../../../tools/ensureInt';
 
 import { MATCH_TIEBREAK_BRACKETS, MATCH_TIEBREAK_JOINER } from './constants';
 
-export function processTiebreakSet({
-  analysis,
-  auto,
-  lowSide,
-  scoreString = '',
-  sets,
-  value,
-}) {
+export function processTiebreakSet({ analysis, auto, lowSide, scoreString = '', sets, value }) {
   let updated, info;
   const {
     tiebreakSet: { tiebreakTo, NoAD },
@@ -44,25 +37,17 @@ export function processTiebreakSet({
       brackets: MATCH_TIEBREAK_BRACKETS,
       scoreString,
     });
-    const matchTiebreakScoreString =
-      scoreString.slice((lastOpenBracketIndex ?? 0) + 1) + (auto ? '' : value);
-    const matchTiebreakScores = matchTiebreakScoreString.split(
-      MATCH_TIEBREAK_JOINER
-    );
+    const matchTiebreakScoreString = scoreString.slice((lastOpenBracketIndex ?? 0) + 1) + (auto ? '' : value);
+    const matchTiebreakScores = matchTiebreakScoreString.split(MATCH_TIEBREAK_JOINER);
     const lowSideLength = matchTiebreakScores[lowSide - 1]?.length || 0;
 
     if (lowSideLength >= 2) {
       // don't allow tiebreak scores to have more than two digits
       info = 'tiebreak digit limit';
     } else if (auto) {
-      if (lowSide === 1)
-        matchTiebreakScores[0] = (matchTiebreakScores[0] || '') + value;
-      if (lowSide === 2)
-        matchTiebreakScores[1] = (matchTiebreakScores[1] || '') + value;
-      const setScores = [
-        matchTiebreakScores[0] || 0,
-        matchTiebreakScores[1] || 0,
-      ].map((s) => ensureInt(s));
+      if (lowSide === 1) matchTiebreakScores[0] = (matchTiebreakScores[0] || '') + value;
+      if (lowSide === 2) matchTiebreakScores[1] = (matchTiebreakScores[1] || '') + value;
+      const setScores = [matchTiebreakScores[0] || 0, matchTiebreakScores[1] || 0].map((s) => ensureInt(s));
       const highIndex = lowSide === 1 ? 1 : 0;
       setScores[highIndex] = setScores[1 - highIndex] + (NoAD ? 1 : 2);
       if (setScores[highIndex] < tiebreakTo) setScores[highIndex] = tiebreakTo;
@@ -75,10 +60,7 @@ export function processTiebreakSet({
       scoreString += setScores.join(MATCH_TIEBREAK_JOINER);
       updated = true;
     } else {
-      const setScores = [
-        matchTiebreakScores[0] || 0,
-        matchTiebreakScores[1] || 0,
-      ].map((s) => ensureInt(s));
+      const setScores = [matchTiebreakScores[0] || 0, matchTiebreakScores[1] || 0].map((s) => ensureInt(s));
 
       const lastSet = sets[sets.length - 1];
       lastSet.side1TiebreakScore = setScores[0];

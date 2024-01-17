@@ -1,10 +1,7 @@
 import { getValidGroupSizes } from '../../../assemblies/generators/drawDefinitions/drawTypes/roundRobin/roundRobin';
-import { chunkArray, generateRange, overlap } from '../../../utilities/arrays';
-import { isConvertableInteger, nextPowerOf2 } from '../../../utilities/math';
-import {
-  ResultType,
-  decorateResult,
-} from '../../../global/functions/decorateResult';
+import { chunkArray, generateRange, overlap } from '../../../tools/arrays';
+import { isConvertableInteger, nextPowerOf2 } from '../../../tools/math';
+import { ResultType, decorateResult } from '../../../global/functions/decorateResult';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -28,9 +25,7 @@ type GetSeedBlocksArgs = {
   cluster?: boolean;
 };
 
-export function getSeedBlocks(
-  params: GetSeedBlocksArgs
-): ResultType & { seedBlocks?: any; success?: boolean } {
+export function getSeedBlocks(params: GetSeedBlocksArgs): ResultType & { seedBlocks?: any; success?: boolean } {
   const { roundRobinGroupsCount, participantsCount, cluster } = params;
   if (!isConvertableInteger(participantsCount))
     return {
@@ -103,9 +98,7 @@ export function getSeedBlocks(
     chunkSize = chunkSize / 2;
   }
 
-  const remainingPositions = range.filter(
-    (position) => !positions.includes(position)
-  );
+  const remainingPositions = range.filter((position) => !positions.includes(position));
 
   while (remainingPositions.length) {
     // for remaining positions alternately select from bottom/top
@@ -168,10 +161,7 @@ export function getSeedGroups({
     let seedNumber = 1;
     const roundsCount = Math.floor(drawSize / roundRobinGroupsCount);
     const seedGroups = generateRange(0, roundsCount).map(() => {
-      const seedNumbers = generateRange(
-        seedNumber,
-        seedNumber + roundRobinGroupsCount
-      );
+      const seedNumbers = generateRange(seedNumber, seedNumber + roundRobinGroupsCount);
       seedNumber += roundRobinGroupsCount;
       return seedNumbers;
     });
@@ -187,7 +177,7 @@ export function getSeedGroups({
       (seedBlock || []).map(() => {
         seedNumber += 1;
         return seedNumber;
-      })
+      }),
     );
 
     return { seedGroups };
@@ -209,9 +199,7 @@ export function getSeedingThresholds({
     const { validGroupSizes } = getValidGroupSizes({
       drawSize: participantsCount,
     });
-    const validGroupsCounts = validGroupSizes?.map((groupSize) =>
-      Math.ceil(participantsCount / groupSize)
-    );
+    const validGroupsCounts = validGroupSizes?.map((groupSize) => Math.ceil(participantsCount / groupSize));
     const invalid = !validGroupsCounts?.includes(roundRobinGroupsCount);
 
     if (invalid) {
@@ -227,8 +215,7 @@ export function getSeedingThresholds({
     roundRobinGroupsCount,
   });
 
-  const seedingThresholds =
-    seedGroups?.map((seedNumberBlock) => Math.min(...seedNumberBlock)) || [];
+  const seedingThresholds = seedGroups?.map((seedNumberBlock) => Math.min(...seedNumberBlock)) || [];
 
   return { ...SUCCESS, seedingThresholds };
 }

@@ -1,11 +1,7 @@
 import statesData from '../../../fixtures/data/territories.json';
 import citiesData from '../../../fixtures/data/cities.json';
-import { randomInt } from '../../../utilities/math';
-import {
-  generateRange,
-  randomMember,
-  shuffleArray,
-} from '../../../utilities/arrays';
+import { randomInt } from '../../../tools/math';
+import { generateRange, randomMember, shuffleArray } from '../../../tools/arrays';
 
 export function address() {
   return {
@@ -21,9 +17,7 @@ export function cityMocks({ count = 1, participantsCount = 32 } = {}) {
 
   // the following ensures that all of the generated items are used at least once
   const cities = generateRange(0, participantsCount).map((i) =>
-    i < Math.min(count, shuffledCities.length)
-      ? candidateCities[i]
-      : randomMember(candidateCities)
+    i < Math.min(count, shuffledCities.length) ? candidateCities[i] : randomMember(candidateCities),
   );
   return { cities };
 }
@@ -37,9 +31,7 @@ export function stateMocks({ count = 1, participantsCount = 32 } = {}) {
 
   // the following ensures that all of the generated items are used at least once
   const states = generateRange(0, participantsCount).map((i) =>
-    i < Math.min(count, shuffledStates.length)
-      ? candidateStates[i]
-      : randomMember(candidateStates)
+    i < Math.min(count, shuffledStates.length) ? candidateStates[i] : randomMember(candidateStates),
   );
   return { states };
 }
@@ -48,12 +40,12 @@ export function postalCodeMocks({ count = 1, participantsCount = 32 } = {}) {
   const candidatePostalCodes = generateRange(0, count).map(() =>
     generateRange(0, 5)
       .map(() => randomInt(0, 9))
-      .join('')
+      .join(''),
   );
 
   // the following ensures that all of the generated items are used at least once
   const postalCodes = generateRange(0, participantsCount).map((i) =>
-    i < count ? candidatePostalCodes[i] : randomMember(candidatePostalCodes)
+    i < count ? candidatePostalCodes[i] : randomMember(candidatePostalCodes),
   );
   return { postalCodes };
 }

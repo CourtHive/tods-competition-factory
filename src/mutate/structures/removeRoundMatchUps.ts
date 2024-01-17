@@ -1,10 +1,7 @@
 import { isAdHoc } from '../../query/drawDefinition/isAdHoc';
 import { findStructure } from '../../acquire/findStructure';
-import { numericSort } from '../../utilities/sorting';
-import {
-  deleteMatchUpsNotice,
-  modifyMatchUpNotice,
-} from '../notifications/drawNotifications';
+import { numericSort } from '../../tools/sorting';
+import { deleteMatchUpsNotice, modifyMatchUpNotice } from '../notifications/drawNotifications';
 
 import { completedMatchUpStatuses } from '../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../constants/resultConstants';
@@ -14,10 +11,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
-import {
-  ResultType,
-  decorateResult,
-} from '../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../global/functions/decorateResult';
 import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
 
 type RemoveRoundMatchUpsArgs = {
@@ -96,8 +90,7 @@ function removeAdHocRound({
     const updatedMatchUps = matchUps.filter((matchUp) => {
       const target =
         matchUp.roundNumber === roundNumber &&
-        (!completedMatchUpStatuses.includes(matchUp.matchUpStatus) ||
-          removeCompletedMatchUps);
+        (!completedMatchUpStatuses.includes(matchUp.matchUpStatus) || removeCompletedMatchUps);
       if (target) deletedMatchUpIds.push(matchUp.matchUpId);
 
       return !target;
@@ -111,9 +104,7 @@ function removeAdHocRound({
         eventId,
       });
 
-      const stillContainsRoundNumber = updatedMatchUps.some(
-        (matchUp) => matchUp.roundNumber === roundNumber
-      );
+      const stillContainsRoundNumber = updatedMatchUps.some((matchUp) => matchUp.roundNumber === roundNumber);
 
       if (!stillContainsRoundNumber) {
         updatedMatchUps.forEach((matchUp) => {

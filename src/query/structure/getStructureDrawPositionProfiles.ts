@@ -4,9 +4,9 @@ import { getMatchUpDependencies } from '../matchUps/getMatchUpDependencies';
 import { getPositionAssignments } from '../drawDefinition/positionsGetter';
 import { getAllDrawMatchUps } from '../matchUps/drawMatchUps';
 import { findStructure } from '../../acquire/findStructure';
-import { numericSort } from '../../utilities/sorting';
+import { numericSort } from '../../tools/sorting';
 import { isAdHoc } from '../drawDefinition/isAdHoc';
-import { unique } from '../../utilities/arrays';
+import { unique } from '../../tools/arrays';
 
 import { INVALID_DRAW_POSITION } from '../../constants/errorConditionConstants';
 import { DrawDefinition, Event, Structure } from '../../types/tournamentTypes';
@@ -21,25 +21,19 @@ type GetStructureDrawPositionProfilesArgs = {
   structureId?: string;
   event?: Event;
 };
-export function getStructureDrawPositionProfiles(
-  params: GetStructureDrawPositionProfilesArgs
-): { [key: string]: any } {
+export function getStructureDrawPositionProfiles(params: GetStructureDrawPositionProfilesArgs): { [key: string]: any } {
   const { drawDefinition, findContainer, structureId, event } = params;
   let structure = params.structure;
 
   const matchUpFilters = { isCollectionMatchUp: false };
   const { containedStructures } = getContainedStructures({ drawDefinition });
-  const containedStructureIds = structureId
-    ? containedStructures[structureId] || []
-    : [];
+  const containedStructureIds = structureId ? containedStructures[structureId] || [] : [];
 
   if (!structure) {
     const result = findStructure({ drawDefinition, structureId });
     if (result.error) return result;
 
-    structure = findContainer
-      ? result.containingStructure ?? result.structure
-      : result.structure;
+    structure = findContainer ? result.containingStructure ?? result.structure : result.structure;
   }
 
   if (isAdHoc({ drawDefinition, structure })) {
@@ -55,9 +49,7 @@ export function getStructureDrawPositionProfiles(
   });
 
   const inContextStructureMatchUps = inContextDrawMatchUps?.filter(
-    (matchUp) =>
-      matchUp.structureId === structureId ||
-      containedStructureIds.includes(matchUp.structureId)
+    (matchUp) => matchUp.structureId === structureId || containedStructureIds.includes(matchUp.structureId),
   );
 
   // get a mapping of all matchUpIds to dependent matchUpIds
@@ -73,16 +65,11 @@ export function getStructureDrawPositionProfiles(
   const activeMatchUps: any[] = [];
 
   for (const matchUp of inContextDrawMatchUps ?? []) {
-    if (
-      matchUp.structureId === structureId ||
-      containedStructureIds.includes(matchUp.structureId)
-    ) {
+    if (matchUp.structureId === structureId || containedStructureIds.includes(matchUp.structureId)) {
       drawPositionsCollection.push(...(matchUp.drawPositions ?? []));
 
       const roundNumber = matchUp.roundNumber;
-      for (const drawPosition of (matchUp.drawPositions ?? []).filter(
-        Boolean
-      )) {
+      for (const drawPosition of (matchUp.drawPositions ?? []).filter(Boolean)) {
         if (
           !drawPositionInitialRounds[drawPosition] ||
           (roundNumber && drawPositionInitialRounds[drawPosition] > roundNumber)
@@ -96,25 +83,21 @@ export function getStructureDrawPositionProfiles(
       activeMatchUps.push(matchUp);
       activeDependentMatchUpIdsCollection.push(
         matchUp.matchUpId,
-        ...(matchUpDependencies?.[matchUp?.matchUpId]?.matchUpIds || [])
+        ...(matchUpDependencies?.[matchUp?.matchUpId]?.matchUpIds || []),
       );
     }
   }
 
   // sorted drawPositions for the structure
-  const drawPositions = unique(drawPositionsCollection.filter(Boolean)).sort(
-    numericSort
-  );
+  const drawPositions = unique(drawPositionsCollection.filter(Boolean)).sort(numericSort);
 
   const activeDependentMatchUpIds = unique(activeDependentMatchUpIdsCollection);
 
   const activeDrawPositions = unique(
     inContextStructureMatchUps
-      ?.map(({ matchUpId, drawPositions }) =>
-        activeDependentMatchUpIds.includes(matchUpId) ? drawPositions : []
-      )
+      ?.map(({ matchUpId, drawPositions }) => (activeDependentMatchUpIds.includes(matchUpId) ? drawPositions : []))
       .flat()
-      .filter(Boolean)
+      .filter(Boolean),
   ).sort(numericSort);
 
   const { positionAssignments } = getPositionAssignments({
@@ -133,9 +116,7 @@ export function getStructureDrawPositionProfiles(
     .map((assignment) => assignment.drawPosition);
 
   const inactiveDrawPositions =
-    drawPositions?.filter(
-      (drawPosition) => !activeDrawPositions.includes(drawPosition)
-    ) || [];
+    drawPositions?.filter((drawPosition) => !activeDrawPositions.includes(drawPosition)) || [];
 
   return {
     allDrawPositions: drawPositions,

@@ -8,15 +8,12 @@ import { decorateResult } from '../../../global/functions/decorateResult';
 import { assignDrawPositionBye } from './assignDrawPositionBye';
 import { findStructure } from '../../../acquire/findStructure';
 import { assignDrawPosition } from './positionAssignment';
-import { numericSort } from '../../../utilities/sorting';
+import { numericSort } from '../../../tools/sorting';
 
 import { DEFAULTED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import {
-  INVALID_DRAW_POSITION,
-  MISSING_PARTICIPANT_ID,
-} from '../../../constants/errorConditionConstants';
+import { INVALID_DRAW_POSITION, MISSING_PARTICIPANT_ID } from '../../../constants/errorConditionConstants';
 
 /*
   FIRST_MATCH_LOSER_CONSOLATION linkCondition... check whether it is a participant's first 
@@ -45,12 +42,8 @@ export function directLoser(params) {
     loserMatchUp.roundNumber === 2 &&
     Math.min(...targetMatchUpDrawPositions.filter(Boolean));
 
-  const targetMatchUpDrawPosition =
-    fedDrawPositionFMLC ||
-    targetMatchUpDrawPositions[loserMatchUpDrawPositionIndex];
-  const loserBackdrawPosition =
-    fedDrawPositionFMLC ||
-    targetMatchUpDrawPositions[1 - loserMatchUpDrawPositionIndex];
+  const targetMatchUpDrawPosition = fedDrawPositionFMLC || targetMatchUpDrawPositions[loserMatchUpDrawPositionIndex];
+  const loserBackdrawPosition = fedDrawPositionFMLC || targetMatchUpDrawPositions[1 - loserMatchUpDrawPositionIndex];
 
   const sourceStructureId = loserTargetLink.source.structureId;
   const { structure } = findStructure({
@@ -65,51 +58,41 @@ export function directLoser(params) {
     event,
   });
 
-  const drawPositionMatchUps = sourceMatchUps.filter(
-    (matchUp) => matchUp.drawPositions?.includes(loserDrawPosition)
-  );
+  const drawPositionMatchUps = sourceMatchUps.filter((matchUp) => matchUp.drawPositions?.includes(loserDrawPosition));
 
   // in this calculation BYEs and WALKOVERs are not counted as wins
   // as well as DEFAULTED when there is no score component
   const loserDrawPositionWins = drawPositionMatchUps.filter((matchUp) => {
-    const drawPositionSide = matchUp.sides.find(
-      (side) => side.drawPosition === loserDrawPosition
-    );
+    const drawPositionSide = matchUp.sides.find((side) => side.drawPosition === loserDrawPosition);
     const unscoredOutcome =
-      matchUp.matchUpStatus === WALKOVER ||
-      (matchUp.matchUpStatus === DEFAULTED && !checkScoreHasValue(matchUp));
-    return (
-      drawPositionSide?.sideNumber === matchUp.winningSide && !unscoredOutcome
-    );
+      matchUp.matchUpStatus === WALKOVER || (matchUp.matchUpStatus === DEFAULTED && !checkScoreHasValue(matchUp));
+    return drawPositionSide?.sideNumber === matchUp.winningSide && !unscoredOutcome;
   });
 
-  const validForConsolation =
-    loserLinkCondition === FIRST_MATCHUP && loserDrawPositionWins.length === 0;
+  const validForConsolation = loserLinkCondition === FIRST_MATCHUP && loserDrawPositionWins.length === 0;
 
-  const { positionAssignments: sourcePositionAssignments } =
-    structureAssignedDrawPositions({
-      structureId: sourceStructureId,
-      drawDefinition,
-    });
+  const { positionAssignments: sourcePositionAssignments } = structureAssignedDrawPositions({
+    structureId: sourceStructureId,
+    drawDefinition,
+  });
 
   const relevantAssignment = sourcePositionAssignments?.find(
-    (assignment) => assignment.drawPosition === loserDrawPosition
+    (assignment) => assignment.drawPosition === loserDrawPosition,
   );
   const loserParticipantId = relevantAssignment?.participantId;
 
   const targetStructureId = loserTargetLink.target.structureId;
-  const { positionAssignments: targetPositionAssignments } =
-    structureAssignedDrawPositions({
-      structureId: targetStructureId,
-      drawDefinition,
-    });
+  const { positionAssignments: targetPositionAssignments } = structureAssignedDrawPositions({
+    structureId: targetStructureId,
+    drawDefinition,
+  });
 
-  const targetMatchUpPositionAssignments = targetPositionAssignments?.filter(
-    ({ drawPosition }) => targetMatchUpDrawPositions.includes(drawPosition)
+  const targetMatchUpPositionAssignments = targetPositionAssignments?.filter(({ drawPosition }) =>
+    targetMatchUpDrawPositions.includes(drawPosition),
   );
 
   const loserAlreadyDirected = targetMatchUpPositionAssignments?.some(
-    (assignment) => assignment.participantId === loserParticipantId
+    (assignment) => assignment.participantId === loserParticipantId,
   );
 
   if (loserAlreadyDirected) {
@@ -118,24 +101,17 @@ export function directLoser(params) {
 
   const unfilledTargetMatchUpDrawPositions = targetMatchUpPositionAssignments
     ?.filter((assignment) => {
-      const inTarget = targetMatchUpDrawPositions.includes(
-        assignment.drawPosition
-      );
-      const unfilled =
-        !assignment.participantId && !assignment.bye && !assignment.qualifier;
+      const inTarget = targetMatchUpDrawPositions.includes(assignment.drawPosition);
+      const unfilled = !assignment.participantId && !assignment.bye && !assignment.qualifier;
       return inTarget && unfilled;
     })
     .map((assignment) => assignment.drawPosition);
 
-  const targetDrawPositionIsUnfilled =
-    unfilledTargetMatchUpDrawPositions?.includes(targetMatchUpDrawPosition);
+  const targetDrawPositionIsUnfilled = unfilledTargetMatchUpDrawPositions?.includes(targetMatchUpDrawPosition);
 
-  const isFeedRound =
-    loserTargetLink.target.roundNumber > 1 &&
-    unfilledTargetMatchUpDrawPositions?.length;
+  const isFeedRound = loserTargetLink.target.roundNumber > 1 && unfilledTargetMatchUpDrawPositions?.length;
 
-  const isFirstRoundValidDrawPosition =
-    loserTargetLink.target.roundNumber === 1 && targetDrawPositionIsUnfilled;
+  const isFirstRoundValidDrawPosition = loserTargetLink.target.roundNumber === 1 && targetDrawPositionIsUnfilled;
 
   if (fedDrawPositionFMLC) {
     const result = loserLinkFedFMLC();
@@ -167,13 +143,8 @@ export function directLoser(params) {
     });
   }
 
-  if (
-    structure?.seedAssignments &&
-    structure.structureId !== targetStructureId
-  ) {
-    const seedAssignment = structure.seedAssignments.find(
-      ({ participantId }) => participantId === loserParticipantId
-    );
+  if (structure?.seedAssignments && structure.structureId !== targetStructureId) {
+    const seedAssignment = structure.seedAssignments.find(({ participantId }) => participantId === loserParticipantId);
     const participantId = seedAssignment?.participantId;
     if (seedAssignment && participantId) {
       assignSeed({
@@ -189,9 +160,7 @@ export function directLoser(params) {
 
   if (dualMatchUp && projectedWinningSide) {
     // propagated lineUp
-    const side = dualMatchUp.sides?.find(
-      (side) => side.sideNumber === 3 - projectedWinningSide
-    );
+    const side = dualMatchUp.sides?.find((side) => side.sideNumber === 3 - projectedWinningSide);
     if (side?.lineUp) {
       const { roundNumber, eventId } = loserMatchUp;
       const { roundPosition } = dualMatchUp;
@@ -199,21 +168,15 @@ export function directLoser(params) {
       // when roundNumber === 1 then it is even/odd calculated as remainder of roundPositon % 2 + 1
       const targetSideNumber = roundNumber === 1 ? 2 - (roundPosition % 2) : 1;
 
-      const targetMatchUp = matchUpsMap?.drawMatchUps?.find(
-        ({ matchUpId }) => matchUpId === loserMatchUp.matchUpId
-      );
+      const targetMatchUp = matchUpsMap?.drawMatchUps?.find(({ matchUpId }) => matchUpId === loserMatchUp.matchUpId);
 
       const updatedSides = [1, 2].map((sideNumber) => {
-        const existingSide =
-          targetMatchUp.sides?.find((side) => side.sideNumber === sideNumber) ||
-          {};
+        const existingSide = targetMatchUp.sides?.find((side) => side.sideNumber === sideNumber) || {};
         return { ...existingSide, sideNumber };
       });
 
       targetMatchUp.sides = updatedSides;
-      const targetSide = targetMatchUp.sides.find(
-        (side) => side.sideNumber === targetSideNumber
-      );
+      const targetSide = targetMatchUp.sides.find((side) => side.sideNumber === targetSideNumber);
 
       // attach to appropriate side of winnerMatchUp
       if (targetSide) {

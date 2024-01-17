@@ -1,5 +1,5 @@
 import mocksEngine from '../../../assemblies/engines/mock';
-import { instanceCount } from '../../../utilities/arrays';
+import { instanceCount } from '../../../tools/arrays';
 import tournamentEngine from '../../engines/syncEngine';
 import { it, expect } from 'vitest';
 
@@ -21,21 +21,18 @@ it.each([
   [FIRST_MATCH_LOSER_CONSOLATION, 32],
   [ROUND_ROBIN_WITH_PLAYOFF, 16, { groupSize: 4 }],
   [ROUND_ROBIN_WITH_PLAYOFF, 16, { groupSize: 5 }],
-])(
-  'can complete matchUps with randomWinningSide',
-  (drawType, drawSize, structureOptions = undefined) => {
-    const { matchUps } = generateScenario({
-      structureOptions,
-      drawType,
-      drawSize,
-    });
+])('can complete matchUps with randomWinningSide', (drawType, drawSize, structureOptions = undefined) => {
+  const { matchUps } = generateScenario({
+    structureOptions,
+    drawType,
+    drawSize,
+  });
 
-    const winningSides = matchUps.map(({ winningSide }) => winningSide);
-    const completed = matchUps.filter(({ winningSide }) => winningSide);
-    const instances = instanceCount(winningSides);
-    expect(instances[1] + instances[2]).toEqual(completed.length);
-  }
-);
+  const winningSides = matchUps.map(({ winningSide }) => winningSide);
+  const completed = matchUps.filter(({ winningSide }) => winningSide);
+  const instances = instanceCount(winningSides);
+  expect(instances[1] + instances[2]).toEqual(completed.length);
+});
 
 function generateScenario({ drawSize, structureOptions, drawType }) {
   const drawProfiles = [
@@ -57,9 +54,7 @@ function generateScenario({ drawSize, structureOptions, drawType }) {
     drawProfiles,
   });
 
-  const { drawDefinition } = tournamentEngine
-    .setState(tournamentRecord)
-    .getEvent({ drawId });
+  const { drawDefinition } = tournamentEngine.setState(tournamentRecord).getEvent({ drawId });
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
   return { drawDefinition, matchUps };
 }

@@ -1,5 +1,5 @@
 import tournamentEngine from '../../engines/syncEngine';
-import { UUID } from '../../../utilities/UUID';
+import { UUID } from '../../../tools/UUID';
 import { expect, it } from 'vitest';
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
@@ -107,9 +107,7 @@ it('can add multiple participants at once', () => {
   let { participants } = tournamentEngine.getParticipants();
   expect(participants.length).toEqual(2);
 
-  const individualParticipantIds = participants.map(
-    (participant) => participant.participantId
-  );
+  const individualParticipantIds = participants.map((participant) => participant.participantId);
 
   const participant3 = {
     participantType: PAIR,

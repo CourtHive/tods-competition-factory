@@ -2,7 +2,7 @@ import { getAllStructureMatchUps } from '../query/matchUps/getAllStructureMatchU
 import { getContextContent } from '../query/hierarchical/getContextContent';
 import { getMatchUp } from '../query/matchUps/getMatchUpFromMatchUps';
 import { MatchUpsMap } from '../query/matchUps/getMatchUpsMap';
-import { makeDeepCopy } from '../utilities/makeDeepCopy';
+import { makeDeepCopy } from '../tools/makeDeepCopy';
 import { getDrawStructures } from './findStructure';
 
 import { ContextContent, ContextProfile } from '../types/factoryTypes';
@@ -14,12 +14,7 @@ import {
   MISSING_DRAW_DEFINITION,
   MISSING_MATCHUP_ID,
 } from '../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  Event,
-  Participant,
-  Structure,
-} from '../types/tournamentTypes';
+import { DrawDefinition, Event, Participant, Structure } from '../types/tournamentTypes';
 
 /*
   public version of findMatchUp
@@ -66,8 +61,7 @@ export function findDrawMatchUp({
 
   const { structures = [] } = getDrawStructures({ drawDefinition });
 
-  if (contextProfile && !contextContent)
-    contextContent = getContextContent({ contextProfile, drawDefinition });
+  if (contextProfile && !contextContent) contextContent = getContextContent({ contextProfile, drawDefinition });
 
   for (const structure of structures) {
     const { matchUps } = getAllStructureMatchUps({

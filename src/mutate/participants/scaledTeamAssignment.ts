@@ -1,8 +1,8 @@
 import { participantScaleItem } from '../../query/participant/participantScaleItem';
 import { getParticipantId } from '../../global/functions/extractors';
 import { getFlightProfile } from '../../query/event/getFlightProfile';
-import { isConvertableInteger } from '../../utilities/math';
-import { generateRange } from '../../utilities/arrays';
+import { isConvertableInteger } from '../../tools/math';
+import { generateRange } from '../../tools/arrays';
 import { addParticipants } from './addParticipants';
 
 import { Event, Participant, Tournament } from '../../types/tournamentTypes';
@@ -20,10 +20,7 @@ import {
   PARTICIPANT_NOT_FOUND,
   TEAM_NOT_FOUND,
 } from '../../constants/errorConditionConstants';
-import {
-  INDIVIDUAL,
-  TEAM_PARTICIPANT,
-} from '../../constants/participantConstants';
+import { INDIVIDUAL, TEAM_PARTICIPANT } from '../../constants/participantConstants';
 
 /*
 scaledParticipants are equivalent to scaledEntries
@@ -68,14 +65,10 @@ export function scaledTeamAssignment({
 }: ScaledTeamAssignmentArgs) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (
-    (!Array.isArray(teamParticipantIds) &&
-      !isConvertableInteger(teamsCount) &&
-      !eventId) ||
+    (!Array.isArray(teamParticipantIds) && !isConvertableInteger(teamsCount) && !eventId) ||
     !isConvertableInteger(initialTeamIndex) ||
     (scaledParticipants && !Array.isArray(scaledParticipants)) ||
-    (scaleAttributes &&
-      (typeof scaleAttributes !== 'object' ||
-        !Object.keys(scaleAttributes).length))
+    (scaleAttributes && (typeof scaleAttributes !== 'object' || !Object.keys(scaleAttributes).length))
   ) {
     return { error: INVALID_VALUES };
   }
@@ -100,29 +93,23 @@ export function scaledTeamAssignment({
     };
   }
 
-  let participantIdsToAssign =
-    individualParticipantIds ??
-    scaledParticipants.map(({ participantId }) => participantId);
+  let participantIdsToAssign = individualParticipantIds ?? scaledParticipants.map(({ participantId }) => participantId);
 
   if (reverseAssignmentOrder) {
     teamParticipantIds?.reverse();
     initialTeamIndex += 1; // ensures that the targeted team remains the first team to receive an assignment
   }
-  if (initialTeamIndex > (teamParticipantIds?.length || 0) - 1)
-    initialTeamIndex = 0;
+  if (initialTeamIndex > (teamParticipantIds?.length || 0) - 1) initialTeamIndex = 0;
 
   const orderedTeamParticipantIds =
-    teamParticipantIds
-      ?.slice(initialTeamIndex)
-      .concat(...teamParticipantIds.slice(0, initialTeamIndex)) ?? [];
+    teamParticipantIds?.slice(initialTeamIndex).concat(...teamParticipantIds.slice(0, initialTeamIndex)) ?? [];
 
   const relevantTeams: any[] = [];
   // build up an array of targeted TEAM participants
   for (const participant of tournamentRecord.participants ?? []) {
     const { participantId, participantType } = participant;
     if (!orderedTeamParticipantIds.includes(participantId)) continue;
-    if (participantType !== TEAM_PARTICIPANT)
-      return { error: INVALID_PARTICIPANT_TYPE, participant };
+    if (participantType !== TEAM_PARTICIPANT) return { error: INVALID_PARTICIPANT_TYPE, participant };
     relevantTeams.push(participant);
   }
 
@@ -142,9 +129,7 @@ export function scaledTeamAssignment({
     });
     const addedParticipantIds = participants.map(getParticipantId);
     const addedParticipants =
-      tournamentRecord.participants?.filter(({ participantId }) =>
-        addedParticipantIds.includes(participantId)
-      ) ?? [];
+      tournamentRecord.participants?.filter(({ participantId }) => addedParticipantIds.includes(participantId)) ?? [];
     relevantTeams.push(...addedParticipants);
   }
 
@@ -156,18 +141,15 @@ export function scaledTeamAssignment({
       relevantTeam.individualParticipantIds = [];
     }
   } else {
-    const preAssignedParticipantIds = relevantTeams
-      .map((individualParticipantIds) => individualParticipantIds)
-      .flat();
+    const preAssignedParticipantIds = relevantTeams.map((individualParticipantIds) => individualParticipantIds).flat();
 
     if (individualParticipantIds?.length) {
       participantIdsToAssign = participantIdsToAssign.filter(
-        (participantId) => !preAssignedParticipantIds.includes(participantId)
+        (participantId) => !preAssignedParticipantIds.includes(participantId),
       );
     } else {
       scaledParticipants = scaledParticipants?.filter(
-        ({ participantId }) =>
-          !preAssignedParticipantIds.includes(participantId)
+        ({ participantId }) => !preAssignedParticipantIds.includes(participantId),
       );
     }
   }
@@ -180,8 +162,7 @@ export function scaledTeamAssignment({
     for (const participant of tournamentRecord.participants ?? []) {
       const { participantId, participantType } = participant;
       if (!participantIdsToAssign.includes(participantId)) continue;
-      if (participantType !== INDIVIDUAL)
-        return { error: INVALID_PARTICIPANT_TYPE, participant };
+      if (participantType !== INDIVIDUAL) return { error: INVALID_PARTICIPANT_TYPE, participant };
 
       const scaleItem = participantScaleItem({
         scaleAttributes,
@@ -201,12 +182,11 @@ export function scaledTeamAssignment({
   scaledParticipants.sort((a, b) =>
     scaleAttributes?.sortOrder
       ? (b?.scaleValue || 0) - (a?.scaleValue || 0)
-      : (a?.scaleValue || Infinity) - (b?.scaleValue || Infinity)
+      : (a?.scaleValue || Infinity) - (b?.scaleValue || Infinity),
   );
 
   for (const scaledParticipant of scaledParticipants) {
-    if (!scaledParticipant.participantId)
-      return { error: INVALID_VALUES, scaledParticipant };
+    if (!scaledParticipant.participantId) return { error: INVALID_VALUES, scaledParticipant };
   }
 
   let index = 0;
@@ -214,9 +194,7 @@ export function scaledTeamAssignment({
     for (const relevantTeam of relevantTeams) {
       if (index + 1 > scaledParticipants.length) break;
       const scaledParticipant = scaledParticipants[index];
-      relevantTeam.individualParticipantIds.push(
-        scaledParticipant.participantId
-      );
+      relevantTeam.individualParticipantIds.push(scaledParticipant.participantId);
       index++;
     }
     relevantTeams.reverse();
@@ -228,30 +206,27 @@ export function scaledTeamAssignment({
   for (const event of tournamentRecord.events ?? []) {
     if (event.eventType !== TEAM_EVENT) continue;
     const relevantTeamEntries = (event.entries ?? []).filter((entry) =>
-      relevantTeamParticipantIds.includes(entry.participantId)
+      relevantTeamParticipantIds.includes(entry.participantId),
     );
     for (const relevantEntry of relevantTeamEntries) {
       const relevantTeamParticipantId = relevantEntry.participantId;
       const relevantTeam = relevantTeams.find(
-        (teamParticipant) =>
-          teamParticipant.participantId === relevantTeamParticipantId
+        (teamParticipant) => teamParticipant.participantId === relevantTeamParticipantId,
       );
       const individualParticipantIds = relevantTeam?.individualParticipantIds;
       // remove any relevant individualParticipant entries from event.entries
-      event.entries = (event.entries ?? []).filter(
-        (entry) => !individualParticipantIds.includes(entry.participantId)
-      );
+      event.entries = (event.entries ?? []).filter((entry) => !individualParticipantIds.includes(entry.participantId));
       // also remove any relevant individualParticipant entries from drawDefinition.entries
       (event.drawDefinitions ?? []).forEach((drawDefinition) => {
         drawDefinition.entries = (drawDefinition.entries ?? []).filter(
-          (entry) => !individualParticipantIds.includes(entry.participantId)
+          (entry) => !individualParticipantIds.includes(entry.participantId),
         );
       });
       // also remove any relevant individualParticipant any flight.drawEntries
       const { flightProfile } = getFlightProfile({ event });
       (flightProfile?.flights || []).forEach((flight) => {
         flight.drawEntries = (flight.drawEntries || []).filter(
-          (entry) => !individualParticipantIds.includes(entry.participantId)
+          (entry) => !individualParticipantIds.includes(entry.participantId),
         );
       });
     }

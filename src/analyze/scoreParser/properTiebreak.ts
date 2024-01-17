@@ -1,5 +1,5 @@
-import { getSuper, isDiffOne } from './utilities';
-import { isNumeric } from '../../utilities/math';
+import { getSuper, isDiffOne } from './helpers';
+import { isNumeric } from '../../tools/math';
 
 export function properTiebreak({ score, matchUpStatus }) {
   let parts = score?.split(' ');
@@ -8,9 +8,7 @@ export function properTiebreak({ score, matchUpStatus }) {
       if (part.endsWith(']')) {
         const setScores = part.split('[');
         if (isDiffOne(setScores[0])) {
-          return (
-            setScores[0] + `(${setScores[1].slice(0, setScores[1].length - 1)})`
-          );
+          return setScores[0] + `(${setScores[1].slice(0, setScores[1].length - 1)})`;
         }
       }
       return part;
@@ -43,9 +41,7 @@ export function properTiebreak({ score, matchUpStatus }) {
   const lastIndex = parts.length - 1;
   score = parts
     .map((part, index) => {
-      const considerCompleted =
-        [undefined, '', 'COMPLETED'].includes(matchUpStatus) ||
-        index !== lastIndex;
+      const considerCompleted = [undefined, '', 'COMPLETED'].includes(matchUpStatus) || index !== lastIndex;
       if (re.test(part) && considerCompleted) {
         const [set, tb1, tb2] = Array.from(part.match(re)).slice(1) as number[];
         const lowTiebreakScore = Math.min(tb1, tb2);
@@ -61,9 +57,7 @@ export function properTiebreak({ score, matchUpStatus }) {
   score = parts
     .map((part) => {
       if (re.test(part)) {
-        const [set, lowTiebreakScore] = Array.from(part.match(re)).slice(
-          1
-        ) as string[];
+        const [set, lowTiebreakScore] = Array.from(part.match(re)).slice(1) as string[];
         const setScores = set.split('');
         return `${setScores[0]}-${setScores[1]}(${lowTiebreakScore})`;
       }
@@ -96,8 +90,7 @@ export function properTiebreak({ score, matchUpStatus }) {
     .map((part) => {
       if (re.test(part)) {
         const [lowTiebreakScore] = part.match(re).slice(1);
-        const hightiebreakScore =
-          lowTiebreakScore < 9 ? 10 : parseInt(lowTiebreakScore) + 2;
+        const hightiebreakScore = lowTiebreakScore < 9 ? 10 : parseInt(lowTiebreakScore) + 2;
         return `[${hightiebreakScore}-${lowTiebreakScore}]`;
       }
       return part;

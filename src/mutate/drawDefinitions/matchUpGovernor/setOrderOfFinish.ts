@@ -2,9 +2,9 @@ import { getStructureMatchUps } from '../../../query/structure/getStructureMatch
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { getDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import { getMatchUpId } from '../../../global/functions/extractors';
-import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
-import { isConvertableInteger } from '../../../utilities/math';
-import { uniqueValues } from '../../../utilities/arrays';
+import { mustBeAnArray } from '../../../tools/mustBeAnArray';
+import { isConvertableInteger } from '../../../tools/math';
+import { uniqueValues } from '../../../tools/arrays';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -25,10 +25,7 @@ type SetOrderOfFinishArgs = {
   finishingOrder: { matchUpId: string; orderOfFinish: number }[];
   drawDefinition: DrawDefinition;
 };
-export function setOrderOfFinish({
-  drawDefinition,
-  finishingOrder,
-}: SetOrderOfFinishArgs) {
+export function setOrderOfFinish({ drawDefinition, finishingOrder }: SetOrderOfFinishArgs) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   const stack = 'setOrderOfFinish';
 
@@ -47,21 +44,15 @@ export function setOrderOfFinish({
   const matchUpIds: string[] = completedMatchUps?.map(getMatchUpId) ?? [];
   const targetMatchUpIds = finishingOrder.map(getMatchUpId);
 
-  const { matchUpTypes, roundNumbers, structureIds, matchUpTieIds } = (
-    completedMatchUps ?? []
-  )
+  const { matchUpTypes, roundNumbers, structureIds, matchUpTieIds } = (completedMatchUps ?? [])
     .filter(({ matchUpId }) => targetMatchUpIds.includes(matchUpId))
     .reduce(
       (aggregator: any, matchUp) => {
         const { matchUpTieId, matchUpType, roundNumber, structureId } = matchUp;
-        if (!aggregator.matchUpTypes.includes(matchUpType))
-          aggregator.matchUpTypes.push(matchUpType);
-        if (!aggregator.roundNumbers.includes(roundNumber))
-          aggregator.roundNumbers.push(roundNumber);
-        if (!aggregator.structureIds.includes(structureId))
-          aggregator.structureIds.push(structureId);
-        if (!aggregator.matchUpTieIds.includes(matchUpTieId))
-          aggregator.matchUpTieIds.push(matchUpTieId);
+        if (!aggregator.matchUpTypes.includes(matchUpType)) aggregator.matchUpTypes.push(matchUpType);
+        if (!aggregator.roundNumbers.includes(roundNumber)) aggregator.roundNumbers.push(roundNumber);
+        if (!aggregator.structureIds.includes(structureId)) aggregator.structureIds.push(structureId);
+        if (!aggregator.matchUpTieIds.includes(matchUpTieId)) aggregator.matchUpTieIds.push(matchUpTieId);
         return aggregator;
       },
       {
@@ -69,16 +60,11 @@ export function setOrderOfFinish({
         roundNumbers: [],
         structureIds: [],
         matchUpTieIds: [],
-      }
+      },
     );
 
   // targeted matchUps must all be of the same matchUpType and have the same roundNumber and structureId
-  if (
-    matchUpTypes.length > 1 ||
-    matchUpTieIds.length > 1 ||
-    roundNumbers.length > 1 ||
-    structureIds.length > 1
-  ) {
+  if (matchUpTypes.length > 1 || matchUpTieIds.length > 1 || roundNumbers.length > 1 || structureIds.length > 1) {
     return decorateResult({
       info: 'matchUpType, structureId and roundNumber must be equivalent',
       result: { error: INVALID_VALUES },
@@ -97,8 +83,7 @@ export function setOrderOfFinish({
     valuesMap[matchUpId] = orderOfFinish;
     validMatchUpId = matchUpIds.includes(matchUpId);
     validOrderOfFinish =
-      orderOfFinish === undefined ||
-      (isConvertableInteger(orderOfFinish) && Math.floor(orderOfFinish) > 0);
+      orderOfFinish === undefined || (isConvertableInteger(orderOfFinish) && Math.floor(orderOfFinish) > 0);
     return validMatchUpId && validOrderOfFinish;
   });
 
@@ -109,8 +94,7 @@ export function setOrderOfFinish({
       },
       info:
         (!validMatchUpId && 'matchUps must be completed') ||
-        (!validOrderOfFinish &&
-          'orderOfFinish must be integer > 0 or undefined') ||
+        (!validOrderOfFinish && 'orderOfFinish must be integer > 0 or undefined') ||
         undefined,
       stack,
     });
@@ -123,7 +107,7 @@ export function setOrderOfFinish({
       matchUp.roundNumber === roundNumbers[0] &&
       matchUp.matchUpType === matchUpTypes[0] &&
       matchUp.matchUpTieId === matchUpTieIds[0] &&
-      !targetedMatchUpIds.includes(matchUp.matchUpId)
+      !targetedMatchUpIds.includes(matchUp.matchUpId),
   );
 
   // throw an error if an existing matchUp has an invalid orderOfFinish value
@@ -163,9 +147,7 @@ export function setOrderOfFinish({
     if (result.error) return decorateResult({ result, stack });
 
     // apply the new values to targeted matchUps
-    result.completedMatchUps?.forEach(
-      (matchUp) => (matchUp.orderOfFinish = valuesMap[matchUp.matchUpId])
-    );
+    result.completedMatchUps?.forEach((matchUp) => (matchUp.orderOfFinish = valuesMap[matchUp.matchUpId]));
   }
 
   return { ...SUCCESS };

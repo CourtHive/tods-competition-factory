@@ -1,5 +1,5 @@
 import { visualizeScheduledMatchUps } from '../../testHarness/testUtilities/visualizeScheduledMatchUps';
-import { extractDate, timeStringMinutes } from '../../../utilities/dateTime';
+import { extractDate, timeStringMinutes } from '../../../tools/dateTime';
 import tournamentEngine from '../../engines/syncEngine';
 import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
 import { mocksEngine, competitionEngine } from '../../..';
@@ -16,9 +16,7 @@ it('can create virtual courts with overlapping bookings', () => {
   const endTime = '20:00';
   const startDate = extractDate(new Date().toISOString());
   const drawProfiles = [{ idPrefix: 'm', drawId, drawSize: 32 }];
-  const venueProfiles = [
-    { venueId, venueAbbreviation: 'VNU', courtsCount: 8, startTime, endTime },
-  ];
+  const venueProfiles = [{ venueId, venueAbbreviation: 'VNU', courtsCount: 8, startTime, endTime }];
   const schedulingProfile = [
     {
       scheduleDate: startDate,
@@ -34,15 +32,14 @@ it('can create virtual courts with overlapping bookings', () => {
       ],
     },
   ];
-  const { tournamentRecord, schedulerResult } =
-    mocksEngine.generateTournamentRecord({
-      policyDefinitions: POLICY_SCHEDULING_NO_DAILY_LIMITS,
-      autoSchedule: true,
-      schedulingProfile,
-      venueProfiles,
-      drawProfiles,
-      startDate,
-    });
+  const { tournamentRecord, schedulerResult } = mocksEngine.generateTournamentRecord({
+    policyDefinitions: POLICY_SCHEDULING_NO_DAILY_LIMITS,
+    autoSchedule: true,
+    schedulingProfile,
+    venueProfiles,
+    drawProfiles,
+    startDate,
+  });
   competitionEngine.setState(tournamentRecord);
 
   const { matchUps } = competitionEngine.allCompetitionMatchUps();
@@ -50,15 +47,13 @@ it('can create virtual courts with overlapping bookings', () => {
 
   visualizeScheduledMatchUps({ scheduledMatchUps, showGlobalLog });
 
-  const { bookings, dateScheduledMatchUps, relevantMatchUps } =
-    competitionEngine.generateBookings({
-      scheduleDate: startDate,
-      venueIds: [venueId],
-      matchUps,
-    });
+  const { bookings, dateScheduledMatchUps, relevantMatchUps } = competitionEngine.generateBookings({
+    scheduleDate: startDate,
+    venueIds: [venueId],
+    matchUps,
+  });
 
-  const scheduledMatchUpsCount =
-    schedulerResult.scheduledMatchUpIds[startDate].length;
+  const scheduledMatchUpsCount = schedulerResult.scheduledMatchUpIds[startDate].length;
   expect(dateScheduledMatchUps.length).toEqual(scheduledMatchUpsCount);
   expect(relevantMatchUps.length).toEqual(scheduledMatchUpsCount);
   expect(bookings.length).toEqual(scheduledMatchUpsCount);
@@ -93,11 +88,8 @@ test('already scheduled round matchUps', () => {
   tournamentEngine.setState(tournamentRecord);
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
-  const targetMatchUp = matchUps.find(
-    ({ roundNumber, roundPosition }) => roundNumber === 1 && roundPosition === 1
-  );
-  const { tournamentId, matchUpId, drawId, eventId, structureId } =
-    targetMatchUp;
+  const targetMatchUp = matchUps.find(({ roundNumber, roundPosition }) => roundNumber === 1 && roundPosition === 1);
+  const { tournamentId, matchUpId, drawId, eventId, structureId } = targetMatchUp;
 
   let result = competitionEngine.addMatchUpScheduleItems({
     schedule: {
@@ -123,16 +115,13 @@ test('already scheduled round matchUps', () => {
   });
   expect(result.success).toEqual(true);
 
-  const { dateMatchUps: scheduledMatchUps } =
-    competitionEngine.competitionScheduleMatchUps();
+  const { dateMatchUps: scheduledMatchUps } = competitionEngine.competitionScheduleMatchUps();
   visualizeScheduledMatchUps({
     showGlobalLog: false,
     scheduledMatchUps,
   });
 
-  const venueIdsWithScheduledMatchUps = scheduledMatchUps
-    .map(({ schedule }) => schedule?.venueId)
-    .filter(Boolean);
+  const venueIdsWithScheduledMatchUps = scheduledMatchUps.map(({ schedule }) => schedule?.venueId).filter(Boolean);
   expect(venueIdsWithScheduledMatchUps.length).toEqual(2);
 });
 
@@ -144,9 +133,7 @@ function findOverlappingBooking(virtualCourts) {
       const endMinutes = timeStringMinutes(booking.endTime);
       const overlap = bookings.some(({ startTime }) => {
         const bookingStartMinutes = timeStringMinutes(startTime);
-        return (
-          bookingStartMinutes > startMinutes && bookingStartMinutes < endMinutes
-        );
+        return bookingStartMinutes > startMinutes && bookingStartMinutes < endMinutes;
       });
       if (overlap) return true;
     }

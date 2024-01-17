@@ -1,6 +1,6 @@
-import { xa } from '../../../utilities/objects';
+import { xa } from '../../../tools/objects';
 import mocksEngine from '../../../assemblies/engines/mock';
-import { extractTime } from '../../../utilities/dateTime';
+import { extractTime } from '../../../tools/dateTime';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 

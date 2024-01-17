@@ -1,30 +1,15 @@
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { findStructure } from '../../../acquire/findStructure';
-import { generateRange } from '../../../utilities/arrays';
+import { generateRange } from '../../../tools/arrays';
 import { assignDrawPosition } from './positionAssignment';
-import {
-  getValidSeedBlocks,
-  getNextSeedBlock,
-} from '../../../query/drawDefinition/seedGetter';
+import { getValidSeedBlocks, getNextSeedBlock } from '../../../query/drawDefinition/seedGetter';
 
 import { HydratedMatchUp, HydratedParticipant } from '../../../types/hydrated';
 import { MatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
 import { SUCCESS } from '../../../constants/resultConstants';
-import {
-  PolicyDefinitions,
-  SeedBlock,
-  SeedingProfile,
-} from '../../../types/factoryTypes';
-import {
-  ErrorType,
-  MISSING_DRAW_POSITION,
-} from '../../../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  Event,
-  Structure,
-  Tournament,
-} from '../../../types/tournamentTypes';
+import { PolicyDefinitions, SeedBlock, SeedingProfile } from '../../../types/factoryTypes';
+import { ErrorType, MISSING_DRAW_POSITION } from '../../../constants/errorConditionConstants';
+import { DrawDefinition, Event, Structure, Tournament } from '../../../types/tournamentTypes';
 
 type PositionSeedBlocksArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];
@@ -62,8 +47,7 @@ export function positionSeedBlocks({
   const errors: any[] = [];
   let placedSeedBlocks = 0;
 
-  if (!structure)
-    ({ structure } = findStructure({ drawDefinition, structureId }));
+  if (!structure) ({ structure } = findStructure({ drawDefinition, structureId }));
   if (!structureId) structureId = structure?.structureId;
 
   if (!appliedPolicies) {

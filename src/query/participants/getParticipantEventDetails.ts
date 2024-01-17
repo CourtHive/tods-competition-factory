@@ -1,10 +1,7 @@
-import { overlap } from '../../utilities/arrays';
+import { overlap } from '../../tools/arrays';
 
 import { PAIR, TEAM } from '../../constants/participantConstants';
-import {
-  MISSING_PARTICIPANT_ID,
-  MISSING_TOURNAMENT_RECORD,
-} from '../../constants/errorConditionConstants';
+import { MISSING_PARTICIPANT_ID, MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
 
 import { Tournament } from '../../types/tournamentTypes';
 import { ResultType } from '../../global/functions/decorateResult';
@@ -34,16 +31,14 @@ export function getParticipantEventDetails({
         (participant) =>
           participant?.participantType &&
           [TEAM, PAIR].includes(participant.participantType) &&
-          participant.individualParticipantIds?.includes(participantId)
+          participant.individualParticipantIds?.includes(participantId),
       )
-      .map((participant) => participant.participantId)
+      .map((participant) => participant.participantId),
   );
 
   const relevantEvents = (tournamentRecord.events ?? [])
     .filter((event) => {
-      const enteredParticipantIds = (event?.entries ?? []).map(
-        (entry) => entry.participantId
-      );
+      const enteredParticipantIds = (event?.entries ?? []).map((entry) => entry.participantId);
       return overlap(enteredParticipantIds, relevantParticipantIds);
     })
     .map((event) => ({ eventName: event.eventName, eventId: event.eventId }));

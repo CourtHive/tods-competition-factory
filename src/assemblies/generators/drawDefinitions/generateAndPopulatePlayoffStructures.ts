@@ -1,6 +1,5 @@
-import { getAvailablePlayoffProfiles } from '../../../mutate/drawDefinitions/structureGovernor/getAvailablePlayoffProfiles';
+import { getAvailablePlayoffProfiles } from '../../../query/drawDefinition/getAvailablePlayoffProfiles';
 import { assignDrawPositionBye } from '../../../mutate/matchUps/drawPositions/assignDrawPositionBye';
-import { getSourceRounds } from '../../../mutate/drawDefinitions/structureGovernor/getSourceRounds';
 import { generateAndPopulateRRplayoffStructures } from './generateAndPopulateRRplayoffStructures';
 import { directParticipants } from '../../../mutate/matchUps/drawPositions/directParticipants';
 import { resolveTieFormat } from '../../../query/hierarchical/tieFormats/resolveTieFormat';
@@ -10,11 +9,12 @@ import { checkMatchUpIsComplete } from '../../../query/matchUp/checkMatchUpIsCom
 import { NamingEntry, generatePlayoffStructures } from './drawTypes/playoffStructures';
 import { ResultType, decorateResult } from '../../../global/functions/decorateResult';
 import { addGoesTo } from '../../../mutate/drawDefinitions/matchUpGovernor/addGoesTo';
+import { getSourceRounds } from '../../../query/drawDefinition/getSourceRounds';
 import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import { getMatchUpId } from '../../../global/functions/extractors';
-import { makeDeepCopy } from '../../../utilities/makeDeepCopy';
+import { makeDeepCopy } from '../../../tools/makeDeepCopy';
 import { findStructure } from '../../../acquire/findStructure';
-import { ensureInt } from '../../../utilities/ensureInt';
+import { ensureInt } from '../../../tools/ensureInt';
 import { generateTieMatchUps } from './tieMatchUps';
 
 import { DrawDefinition, DrawLink, Event, Structure, Tournament } from '../../../types/tournamentTypes';

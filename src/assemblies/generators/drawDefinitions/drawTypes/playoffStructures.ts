@@ -1,21 +1,12 @@
 import structureTemplate from '../../templates/structureTemplate';
-import { generateRange } from '../../../../utilities/arrays';
+import { generateRange } from '../../../../tools/arrays';
 import { feedInMatchUps } from '../feedInMatchUps';
 import { treeMatchUps } from './eliminationTree';
 
-import {
-  LOSER,
-  MAIN,
-  TOP_DOWN,
-} from '../../../../constants/drawDefinitionConstants';
+import { LOSER, MAIN, TOP_DOWN } from '../../../../constants/drawDefinitionConstants';
 import { ErrorType } from '../../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
-import {
-  DrawDefinition,
-  DrawLink,
-  MatchUp,
-  Structure,
-} from '../../../../types/tournamentTypes';
+import { DrawDefinition, DrawLink, MatchUp, Structure } from '../../../../types/tournamentTypes';
 
 export type NamingEntry = {
   [key: string]: { name: string; abbreviation: string; structureId?: string };
@@ -46,9 +37,7 @@ type GeneratePlayoffStructuresArgs = {
   stage: string;
 };
 
-export function generatePlayoffStructures(
-  params: GeneratePlayoffStructuresArgs
-): {
+export function generatePlayoffStructures(params: GeneratePlayoffStructuresArgs): {
   structures?: Structure[];
   structureName?: string;
   structureId?: string;
@@ -77,15 +66,9 @@ export function generatePlayoffStructures(
     isMock,
     uuids,
   } = params;
-  const generateStructure =
-    !playoffAttributes || !exitProfileLimit || playoffAttributes?.[exitProfile];
+  const generateStructure = !playoffAttributes || !exitProfileLimit || playoffAttributes?.[exitProfile];
 
-  if (
-    !generateStructure ||
-    drawSize < 2 ||
-    (sequenceLimit && stageSequence > sequenceLimit)
-  )
-    return {};
+  if (!generateStructure || drawSize < 2 || (sequenceLimit && stageSequence > sequenceLimit)) return {};
 
   const allMatchUps: any[] = [];
   const structures: Structure[] = [];
@@ -97,25 +80,18 @@ export function generatePlayoffStructures(
   const finishingPositionsTo = finishingPositionOffset + drawSize;
   const finishingPositionRange = `${finishingPositionsFrom}-${finishingPositionsTo}`;
   const attributeProfile = playoffAttributes?.[exitProfile];
-  const base =
-    (playoffStructureNameBase && `${playoffStructureNameBase} `) || '';
-  const customNaming =
-    playoffAttributes?.[finishingPositionRange] ??
-    finishingPositionNaming?.[finishingPositionRange];
+  const base = (playoffStructureNameBase && `${playoffStructureNameBase} `) || '';
+  const customNaming = playoffAttributes?.[finishingPositionRange] ?? finishingPositionNaming?.[finishingPositionRange];
 
   const structureName =
     params.structureName ||
     customNaming?.name ||
     (attributeProfile?.name &&
-      (addNameBaseToAttributeName
-        ? `${base}${attributeProfile?.name}`
-        : attributeProfile.name)) ||
+      (addNameBaseToAttributeName ? `${base}${attributeProfile?.name}` : attributeProfile.name)) ||
     `${base}${finishingPositionRange}`;
 
-  const structureAbbreviation =
-    customNaming?.abbreviation ?? attributeProfile?.abbreviation;
-  const structureId =
-    params.structureId ?? attributeProfile?.structureId ?? uuids?.pop();
+  const structureAbbreviation = customNaming?.abbreviation ?? attributeProfile?.abbreviation;
+  const structureId = params.structureId ?? attributeProfile?.structureId ?? uuids?.pop();
 
   const mainParams = {
     idPrefix: idPrefix && `${idPrefix}-${structureName}-RP`,
@@ -151,9 +127,7 @@ export function generatePlayoffStructures(
       : 0;
 
   if (drawSize > 2) {
-    generateRange(1, roundsToPlayOff + 1).forEach((roundNumber) =>
-      generateChildStructures(roundNumber)
-    );
+    generateRange(1, roundsToPlayOff + 1).forEach((roundNumber) => generateChildStructures(roundNumber));
   }
 
   return {
@@ -169,13 +143,8 @@ export function generatePlayoffStructures(
     const playoffDrawPositions = drawSize / Math.pow(2, roundNumber);
     if (playoffDrawPositions < 2) return;
 
-    const childFinishingPositionOffset =
-      drawSize / Math.pow(2, roundNumber) + finishingPositionOffset;
-    if (
-      finishingPositionLimit &&
-      childFinishingPositionOffset + 1 > finishingPositionLimit
-    )
-      return;
+    const childFinishingPositionOffset = drawSize / Math.pow(2, roundNumber) + finishingPositionOffset;
+    if (finishingPositionLimit && childFinishingPositionOffset + 1 > finishingPositionLimit) return;
 
     const {
       structures: childStructures,

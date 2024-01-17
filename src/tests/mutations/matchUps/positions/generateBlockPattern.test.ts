@@ -1,11 +1,8 @@
 import { generateBlockPattern } from '../../../../assemblies/generators/drawDefinitions/generateBlockPattern';
-import { generateRange } from '../../../../utilities/arrays';
+import { generateRange } from '../../../../tools/arrays';
 import { expect, test } from 'vitest';
 
-import {
-  CLUSTER,
-  SEPARATE,
-} from '../../../../constants/drawDefinitionConstants';
+import { CLUSTER, SEPARATE } from '../../../../constants/drawDefinitionConstants';
 
 const expectations = {
   2: {
@@ -44,67 +41,23 @@ const expectations = {
   },
 
   16: {
-    separatedGroupings: [
-      [1],
-      [9],
-      [5, 13],
-      [3, 7, 11, 15],
-      [2, 4, 6, 8, 10, 12, 14, 16],
-    ],
-    clusteredGroupings: [
-      [1],
-      [16],
-      [8, 9],
-      [4, 5, 12, 13],
-      [2, 3, 6, 7, 10, 11, 14, 15],
-    ],
+    separatedGroupings: [[1], [9], [5, 13], [3, 7, 11, 15], [2, 4, 6, 8, 10, 12, 14, 16]],
+    clusteredGroupings: [[1], [16], [8, 9], [4, 5, 12, 13], [2, 3, 6, 7, 10, 11, 14, 15]],
   },
 
   18: {
-    separatedGroupings: [
-      [1],
-      [10],
-      [3, 5, 7, 11, 13, 15, 17],
-      [2, 4, 6, 8, 9, 12, 14, 16, 18],
-    ],
-    clusteredGroupings: [
-      [1],
-      [18],
-      [4, 5, 8, 9, 12, 13, 16],
-      [2, 3, 6, 7, 10, 11, 14, 15, 17],
-    ],
+    separatedGroupings: [[1], [10], [3, 5, 7, 11, 13, 15, 17], [2, 4, 6, 8, 9, 12, 14, 16, 18]],
+    clusteredGroupings: [[1], [18], [4, 5, 8, 9, 12, 13, 16], [2, 3, 6, 7, 10, 11, 14, 15, 17]],
   },
 
   20: {
-    separatedGroupings: [
-      [1],
-      [11],
-      [6, 16],
-      [3, 7, 9, 13, 17, 19],
-      [2, 4, 5, 8, 10, 12, 14, 15, 18, 20],
-    ],
-    clusteredGroupings: [
-      [1],
-      [20],
-      [10, 11],
-      [4, 5, 8, 13, 16, 17],
-      [2, 3, 6, 7, 9, 12, 14, 15, 18, 19],
-    ],
+    separatedGroupings: [[1], [11], [6, 16], [3, 7, 9, 13, 17, 19], [2, 4, 5, 8, 10, 12, 14, 15, 18, 20]],
+    clusteredGroupings: [[1], [20], [10, 11], [4, 5, 8, 13, 16, 17], [2, 3, 6, 7, 9, 12, 14, 15, 18, 19]],
   },
 
   22: {
-    separatedGroupings: [
-      [1],
-      [12],
-      [3, 5, 7, 9, 13, 15, 17, 19, 21],
-      [2, 4, 6, 8, 10, 11, 14, 16, 18, 20, 22],
-    ],
-    clusteredGroupings: [
-      [1],
-      [22],
-      [4, 5, 8, 9, 12, 13, 16, 17, 20],
-      [2, 3, 6, 7, 10, 11, 14, 15, 18, 19, 21],
-    ],
+    separatedGroupings: [[1], [12], [3, 5, 7, 9, 13, 15, 17, 19, 21], [2, 4, 6, 8, 10, 11, 14, 16, 18, 20, 22]],
+    clusteredGroupings: [[1], [22], [4, 5, 8, 9, 12, 13, 16, 17, 20], [2, 3, 6, 7, 10, 11, 14, 15, 18, 19, 21]],
   },
 
   24: {
@@ -194,22 +147,15 @@ const expectations = {
 };
 
 const divisionScenarios = generateRange(1, 17).map((v) => v * 2);
-test.each(divisionScenarios)(
-  'divisions are generated propertly',
-  (scenario) => {
-    const { divisionGroupings: separatedGroupings } = generateBlockPattern({
-      positioning: SEPARATE,
-      size: scenario,
-    });
-    const { divisionGroupings: clusteredGroupings } = generateBlockPattern({
-      positioning: CLUSTER,
-      size: scenario,
-    });
-    expect(expectations[scenario].separatedGroupings).toEqual(
-      separatedGroupings
-    );
-    expect(expectations[scenario].clusteredGroupings).toEqual(
-      clusteredGroupings
-    );
-  }
-);
+test.each(divisionScenarios)('divisions are generated propertly', (scenario) => {
+  const { divisionGroupings: separatedGroupings } = generateBlockPattern({
+    positioning: SEPARATE,
+    size: scenario,
+  });
+  const { divisionGroupings: clusteredGroupings } = generateBlockPattern({
+    positioning: CLUSTER,
+    size: scenario,
+  });
+  expect(expectations[scenario].separatedGroupings).toEqual(separatedGroupings);
+  expect(expectations[scenario].clusteredGroupings).toEqual(clusteredGroupings);
+});
