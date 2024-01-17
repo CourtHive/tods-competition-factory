@@ -1,5 +1,7 @@
 import { completeDrawMatchUps } from '../../../assemblies/generators/mocks/completeDrawMatchUps';
 import { setGlobalLog, setMethods, setStateProvider } from '../../../global/state/globalState';
+import { deleteDrawDefinitions } from '../../../mutate/events/deleteDrawDefinitions';
+import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { getParticipants } from '../../../query/participants/getParticipants';
 import asyncGlobalState from '../../../examples/asyncEngine/asyncGlobalState';
 import * as eventGovernor from '../../../assemblies/governors/eventGovernor';
@@ -10,9 +12,6 @@ import mocksEngine from '../../../assemblies/engines/mock';
 import syncEngine from '../../../assemblies/engines/sync';
 import askEngine from '../../../assemblies/engines/ask';
 import { expect, test } from 'vitest';
-
-import { deleteDrawDefinitions } from '../../../mutate/events/deleteDrawDefinitions';
-import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 
 import { MUTATE } from '../../../constants/methodConstants';
 import {
@@ -106,7 +105,7 @@ test('syncEngine can import and execute methods', () => {
   syncEngine.setState(tournamentRecord);
 
   // askEngine can import methods
-  const importResult = syncEngine.importMethods(eventGovernor);
+  const importResult = syncEngine.importMethods(eventGovernor, [MUTATE]);
   expect(importResult.success).toEqual(true);
   expect(typeof importResult.deleteDrawDefinitions).toEqual('function');
 

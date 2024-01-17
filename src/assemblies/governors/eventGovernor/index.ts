@@ -1,23 +1,5 @@
-export { deleteFlightProfileAndFlightDraws } from '../../../mutate/drawDefinitions/deleteFlightProfileAndFlightDraws';
-export { modifyEventMatchUpFormatTiming } from '../../../mutate/events/extensions/modifyEventMatchUpFormatTiming';
-export { removeEventMatchUpFormatTiming } from '../../../mutate/events/extensions/removeEventMatchUpFormatTiming';
-export { setEventDates, setEventEndDate, setEventStartDate } from '../../../mutate/events/setEventDates';
-export { deleteFlightAndFlightDraw } from '../../../mutate/drawDefinitions/deleteFlightAndFlightDraw';
-export { refreshEventDrawOrder } from '../../../mutate/drawDefinitions/refreshEventDrawOrder';
-export { modifyPairAssignment } from '../../../mutate/drawDefinitions/modifyPairAssignment';
-export { updateDrawIdsOrder } from '../../../mutate/drawDefinitions/updateDrawIdsOrder';
-export { addDrawDefinition } from '../../../mutate/drawDefinitions/addDrawDefinition';
-export { deleteDrawDefinitions } from '../../../mutate/events/deleteDrawDefinitions';
-export { assignSeedPositions } from '../../../mutate/events/assignSeedPositions';
-export { attachFlightProfile } from '../../../mutate/events/attachFlightProfile';
-export { removeScaleValues } from '../../../mutate/entries/removeScaleValues';
-export { setEventDisplay } from '../../../mutate/events/setEventDisplay';
-export { validateCategory } from '../../../validators/validateCategory';
-export { removeSeeding } from '../../../mutate/entries/removeSeeding';
-export { deleteEvents } from '../../../mutate/events/deleteEvent';
-export { modifyEvent } from '../../../mutate/events/modifyEvent';
-export { addFlight } from '../../../mutate/events/addFlight';
-export { addEvent } from '../../../mutate/events/addEvent';
-
 export * as mutate from './mutate';
 export * as query from './query';
+
+export * from './mutate';
+export * from './query';
