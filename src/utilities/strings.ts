@@ -9,11 +9,11 @@ export function capitalizeFirst(str) {
           name
             .split('')
             .map((c, i) => (i ? c.toLowerCase() : c.toUpperCase()))
-            .join('')
+            .join(''),
         )
         .join(' ');
 }
 
 export function constantToString(str) {
-  return !isString(str) ? str : capitalizeFirst(str.replace(/_/g, ' '));
+  return !isString(str) ? '' : capitalizeFirst(str.replace(/_/g, ' '));
 }

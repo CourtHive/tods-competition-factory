@@ -1,12 +1,7 @@
 import { definedAttributes } from '../../../utilities/definedAttributes';
 import { isConvertableInteger } from '../../../utilities/math';
 
-import {
-  SET,
-  NOAD,
-  TIMED,
-  setTypes,
-} from '../../../constants/matchUpFormatConstants';
+import { SET, NOAD, TIMED, setTypes } from '../../../constants/matchUpFormatConstants';
 
 type TiebreakFormat = {
   tiebreakTo: number;
@@ -38,10 +33,7 @@ export type ParsedFormat = {
 
 export function parse(matchUpFormatCode: string): ParsedFormat | undefined {
   if (typeof matchUpFormatCode === 'string') {
-    const type =
-      (matchUpFormatCode.startsWith('T') && TIMED) ||
-      (matchUpFormatCode.startsWith(SET) && SET) ||
-      '';
+    const type = (matchUpFormatCode.startsWith('T') && TIMED) || (matchUpFormatCode.startsWith(SET) && SET) || '';
 
     if (type === TIMED) {
       const setFormat = parseTimedSet(matchUpFormatCode);
@@ -63,12 +55,10 @@ function setsMatch(formatstring: string): any {
 
   const setsCount = getNumber(parts[0].slice(3));
   const bestOf = setsCount === 1 || setsCount % 2 !== 0 ? setsCount : undefined;
-  const exactly =
-    setsCount !== 1 && setsCount % 2 === 0 ? setsCount : undefined;
+  const exactly = setsCount !== 1 && setsCount % 2 === 0 ? setsCount : undefined;
   const setFormat = parts && parseSetFormat(parts[1]);
   const finalSetFormat = parts && parseSetFormat(parts[2]);
-  const timed =
-    (setFormat && setFormat.timed) || (finalSetFormat && finalSetFormat.timed);
+  const timed = (setFormat && setFormat.timed) || (finalSetFormat && finalSetFormat.timed);
   const validSetsCount = (bestOf && bestOf < 6) || (timed && exactly);
   const validFinalSet = !parts[2] || finalSetFormat;
   const validSetsFormat = setFormat;
@@ -115,35 +105,24 @@ function parseSetFormat(formatstring: string): SetFormat | undefined | false {
         result.noTiebreak = true;
       }
 
-      return (
-        (setTo && validNoAD && validTiebreak && validTiebreakAt && result) ||
-        false
-      );
+      return (setTo && validNoAD && validTiebreak && validTiebreakAt && result) || false;
     }
   }
 
   return undefined;
 }
 
-function parseTiebreakAt(
-  setFormatString: string,
-  expectNumber: boolean = true
-) {
-  const tiebreakAtValue =
-    setFormatString?.indexOf('@') > 0 && setFormatString.split('@');
+function parseTiebreakAt(setFormatString: string, expectNumber: boolean = true) {
+  const tiebreakAtValue = setFormatString?.indexOf('@') > 0 && setFormatString.split('@');
   if (tiebreakAtValue) {
-    const tiebreakAt = expectNumber
-      ? getNumber(tiebreakAtValue[1])
-      : tiebreakAtValue[1];
+    const tiebreakAt = expectNumber ? getNumber(tiebreakAtValue[1]) : tiebreakAtValue[1];
     return tiebreakAt || false;
   }
 
   return undefined;
 }
 
-function parseTiebreakFormat(
-  formatstring: string
-): TiebreakFormat | undefined | false {
+function parseTiebreakFormat(formatstring: string): TiebreakFormat | undefined | false {
   if (formatstring) {
     if (formatstring.startsWith('TB')) {
       const modifier = parseTiebreakAt(formatstring, false);
@@ -155,11 +134,7 @@ function parseTiebreakFormat(
       if (tiebreakTo && validNoAD) {
         const result: TiebreakFormat = { tiebreakTo };
         // modifiers cannot be numeric
-        if (
-          modifier &&
-          typeof modifier === 'string' &&
-          !isConvertableInteger(modifier)
-        ) {
+        if (modifier && typeof modifier === 'string' && !isConvertableInteger(modifier)) {
           result.modifier = modifier;
         }
         if (NoAD) result.NoAD = true;

@@ -25,8 +25,8 @@ import { INVALID_VALUES } from '../constants/errorConditionConstants';
  * NOTE: `columnTransform` mapped array elements are sensitive to order and will resolve to the first matching value
  * NOTE: `columnMap` should not contain new columnName(s) that are `columnTransform` keys
  */
-export function JSON2CSV(arrayOfJSON?, config?) {
-  if (config && typeof config !== 'object') return INVALID_VALUES;
+export function JSON2CSV(arrayOfJSON?, config?): any {
+  if (config && typeof config !== 'object') return { error: INVALID_VALUES };
 
   let { columnTransform = {} } = config || {};
 
@@ -62,7 +62,7 @@ export function JSON2CSV(arrayOfJSON?, config?) {
     typeof keyJoiner !== 'string' ||
     typeof delimiter !== 'string'
   )
-    return INVALID_VALUES;
+    return { error: INVALID_VALUES };
 
   // ensure all column transformers are arrays
   columnTransform = Object.assign(
@@ -76,12 +76,10 @@ export function JSON2CSV(arrayOfJSON?, config?) {
               // ensure transform attributes are strings
               typeof columnTransform[key] === 'string' && columnTransform[key],
             ].filter(Boolean),
-      }))
+      })),
   );
 
-  const flattened = arrayOfJSON
-    .filter(Boolean)
-    .map((obj) => flattenJSON(obj, keyJoiner));
+  const flattened = arrayOfJSON.filter(Boolean).map((obj) => flattenJSON(obj, keyJoiner));
 
   const transformColumns = Object.values(columnTransform).flat();
   if (includeTransformAccessors) columnAccessors.push(...transformColumns);
@@ -89,10 +87,8 @@ export function JSON2CSV(arrayOfJSON?, config?) {
   const headerRow = flattened
     .reduce(
       (aggregator, row) =>
-        Object.keys(row).every(
-          (key) => (!aggregator.includes(key) && aggregator.push(key)) || true
-        ) && aggregator,
-      []
+        Object.keys(row).every((key) => (!aggregator.includes(key) && aggregator.push(key)) || true) && aggregator,
+      [],
     )
     .filter((key) => !columnAccessors?.length || columnAccessors.includes(key));
 
@@ -100,12 +96,8 @@ export function JSON2CSV(arrayOfJSON?, config?) {
     {},
     ...Object.keys(columnTransform)
       .reverse() // so that original order is preserved when later pushed
-      .map((transform) =>
-        columnTransform[transform]
-          .map((value) => ({ [value]: transform }))
-          .flat()
-      )
-      .flat()
+      .map((transform) => columnTransform[transform].map((value) => ({ [value]: transform })).flat())
+      .flat(),
   );
 
   const sortColumns = (a, b) =>
@@ -129,22 +121,16 @@ export function JSON2CSV(arrayOfJSON?, config?) {
     .sort(sortColumns);
 
   Object.keys(columnMap).forEach(
-    (columnName) =>
-      !tranformedHeaderRow.includes(columnName) &&
-      tranformedHeaderRow.unshift(columnName)
+    (columnName) => !tranformedHeaderRow.includes(columnName) && tranformedHeaderRow.unshift(columnName),
   );
 
   Object.keys(columnTransform).forEach(
-    (columnName) =>
-      !tranformedHeaderRow.includes(columnName) &&
-      tranformedHeaderRow.unshift(columnName)
+    (columnName) => !tranformedHeaderRow.includes(columnName) && tranformedHeaderRow.unshift(columnName),
   );
 
   typeof context === 'object' &&
     Object.keys(context).forEach(
-      (columnName) =>
-        !tranformedHeaderRow.includes(columnName) &&
-        tranformedHeaderRow.unshift(columnName)
+      (columnName) => !tranformedHeaderRow.includes(columnName) && tranformedHeaderRow.unshift(columnName),
     );
 
   let mappedHeaderRow = tranformedHeaderRow.map((key) => columnMap[key] || key);
@@ -159,24 +145,19 @@ export function JSON2CSV(arrayOfJSON?, config?) {
       tranformedHeaderRow.reduce((columnsMap, columnName, columnIndex) => {
         const accessors = columnTransform[columnName];
         const value =
-          (accessors?.length
-            ? row[accessors.find((accessor) => row[accessor])]
-            : row[columnName]) ||
+          (accessors?.length ? row[accessors.find((accessor) => row[accessor])] : row[columnName]) ||
           context?.[columnName] ||
           '';
 
         const mappedValue = valuesMap[columnName]?.[value] || value;
         const fxValue =
-          typeof functionMap[columnName] === 'function'
-            ? functionMap[columnName](mappedValue)
-            : mappedValue;
+          typeof functionMap[columnName] === 'function' ? functionMap[columnName](mappedValue) : mappedValue;
         columnsMap[columnName] = withDelimiter(fxValue);
         if (fxValue) {
-          columnValueCounts[columnIndex] =
-            (columnValueCounts[columnIndex] || 0) + 1;
+          columnValueCounts[columnIndex] = (columnValueCounts[columnIndex] || 0) + 1;
         }
         return columnsMap;
-      }, {})
+      }, {}),
     );
   };
 
@@ -190,8 +171,7 @@ export function JSON2CSV(arrayOfJSON?, config?) {
       .reverse();
 
   if (indicesToRemove) {
-    const purge = (row) =>
-      row.filter((_, index) => !indicesToRemove.includes(index));
+    const purge = (row) => row.filter((_, index) => !indicesToRemove.includes(index));
     flattenedRows = flattenedRows.map(purge);
     mappedHeaderRow = purge(mappedHeaderRow);
   }
@@ -201,17 +181,12 @@ export function JSON2CSV(arrayOfJSON?, config?) {
   if (returnTransformedJSON) {
     return rows.map((row) => {
       const columnValues = row.split(columnJoiner);
-      return Object.assign(
-        {},
-        ...columnValues.map((v, i) => ({ [mappedHeaderRow[i]]: v }))
-      );
+      return Object.assign({}, ...columnValues.map((v, i) => ({ [mappedHeaderRow[i]]: v })));
     });
   }
 
   return includeHeaderRow
-    ? [mappedHeaderRow.map(withDelimiter).join(columnJoiner), ...rows].join(
-        rowJoiner
-      )
+    ? [mappedHeaderRow.map(withDelimiter).join(columnJoiner), ...rows].join(rowJoiner)
     : rows.join(rowJoiner);
 }
 
@@ -223,10 +198,7 @@ export function flattenJSON(obj, keyJoiner: string = '.', path: string[] = []) {
         result[path.concat(key).join(keyJoiner)] = obj[key];
         return result;
       }
-      return Object.assign(
-        result,
-        flattenJSON(obj[key], keyJoiner, path.concat(key))
-      );
+      return Object.assign(result, flattenJSON(obj[key], keyJoiner, path.concat(key)));
     }, {})
   );
 }

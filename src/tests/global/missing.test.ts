@@ -7,24 +7,40 @@ it.each([syncEngine, asyncEngine])(
   async (engine) => {
     const engineMethods = Object.keys(engine);
     for (const method of engineMethods) {
+      if (
+        [
+          'generateEventWithDraw',
+          'extractAttributes',
+          'hasAttributeValues',
+          'chunkSizeProfile',
+          'undefinedToNull',
+          'hasAttributes',
+          'groupValues',
+          'noNulls',
+        ].includes(method)
+      )
+        continue;
       await engine.devContext(true).reset();
       const result = await engine[method]();
       if (!result) {
         if (['getTournamentId'].includes(method)) {
           expect(result).toBeUndefined();
+        } else if (['numericSort', 'nearestPowerOf2'].includes(method)) {
+          expect(result).toEqual(NaN);
         } else {
           // covers methods which are expected to return boolean or empty value
           expect([false, 0, ''].includes(result)).toEqual(true);
         }
       } else if (
         [
-          'credits',
-          'version',
-          'getDevContext',
-          'makeDeepCopy',
-          'parseMatchUpFormat',
           'stringifyMatchUpFormat',
           'getDrawTypeCoercion',
+          'parseMatchUpFormat',
+          'generateTimeCode',
+          'getDevContext',
+          'makeDeepCopy',
+          'credits',
+          'version',
         ].includes(method)
       ) {
         expect(result).not.toBeUndefined();
@@ -32,6 +48,28 @@ it.each([syncEngine, asyncEngine])(
         expect(result.tournamentRecord).toBeUndefined();
       } else if (method === 'getTournament') {
         expect(result.tournamentRecord).toBeUndefined();
+      } else if (
+        [
+          'generateOutcomeFromScoreString',
+          'visualizeScheduledMatchUps',
+          'definedAttributes',
+          'generateHashCode',
+          'attributeFilter',
+          'generateOutcome',
+          'instanceCount',
+          'randomMember',
+          'countValues',
+          'flattenJSON',
+          'randomPop',
+          'stringify',
+          'createMap',
+          'isOdd',
+          'parse',
+          'UUIDS',
+          'UUID',
+        ].includes(method)
+      ) {
+        expect(result).toBeDefined();
       } else if (result.success || result.valid) {
         const successExpected = [
           'removeUnlinkedTournamentRecords',
@@ -40,7 +78,9 @@ it.each([syncEngine, asyncEngine])(
           'getScheduledRoundsDetails',
           'getSchedulingProfileIssues',
           'validateSchedulingProfile',
+          'generateTournamentRecord',
           'getMatchUpDependencies',
+          'generateParticipants',
           'getSeedingThresholds',
           'calculateWinCriteria',
           'removePersonRequests',

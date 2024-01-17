@@ -3,10 +3,7 @@ import { isObject } from '../../../utilities/objects';
 
 export function stringify(matchUpFormatObject, preserveRedundant?: boolean) {
   if (!isObject(matchUpFormatObject)) undefined;
-  if (
-    (matchUpFormatObject?.bestOf || matchUpFormatObject?.exactly) &&
-    matchUpFormatObject?.setFormat
-  ) {
+  if ((matchUpFormatObject?.bestOf || matchUpFormatObject?.exactly) && matchUpFormatObject?.setFormat) {
     return getSetFormat(matchUpFormatObject, preserveRedundant);
   }
   return undefined;
@@ -28,23 +25,13 @@ function getSetFormat(matchUpFormatObject, preserveRedundant?: boolean) {
   const exactly = getNumber(matchUpFormatObject.exactly) || undefined;
   const setLimit = bestOfValue || exactly;
 
-  if (
-    matchUpFormatObject.setFormat?.timed &&
-    matchUpFormatObject.simplified &&
-    setLimit === 1
-  ) {
+  if (matchUpFormatObject.setFormat?.timed && matchUpFormatObject.simplified && setLimit === 1) {
     return timedSetFormat(matchUpFormatObject.setFormat);
   }
   const setLimitCode = (setLimit && `${SET}${setLimit}`) || '';
-  const setCountValue = stringifySet(
-    matchUpFormatObject.setFormat,
-    preserveRedundant
-  );
+  const setCountValue = stringifySet(matchUpFormatObject.setFormat, preserveRedundant);
   const setCode = (setCountValue && `S:${setCountValue}`) || '';
-  const finalSetCountValue = stringifySet(
-    matchUpFormatObject.finalSetFormat,
-    preserveRedundant
-  );
+  const finalSetCountValue = stringifySet(matchUpFormatObject.finalSetFormat, preserveRedundant);
 
   const finalSetCode =
     (setLimit &&
@@ -69,14 +56,10 @@ function stringifySet(setObject, preserveRedundant) {
     if (setToValue) {
       const NoAD = (setObject.NoAD && NOAD) || '';
       const setTiebreakValue = tiebreakFormat(setObject.tiebreakFormat);
-      const setTiebreakCode =
-        (setTiebreakValue && `/${setTiebreakValue}`) || '';
+      const setTiebreakCode = (setTiebreakValue && `/${setTiebreakValue}`) || '';
       const tiebreakAtValue = getNumber(setObject.tiebreakAt);
       const tiebreakAtCode =
-        (tiebreakAtValue &&
-          (tiebreakAtValue !== setToValue || preserveRedundant) &&
-          `@${tiebreakAtValue}`) ||
-        '';
+        (tiebreakAtValue && (tiebreakAtValue !== setToValue || preserveRedundant) && `@${tiebreakAtValue}`) || '';
       if (setTiebreakValue !== false) {
         return `${setToValue}${NoAD}${setTiebreakCode}${tiebreakAtCode}`;
       }
@@ -89,10 +72,7 @@ function tiebreakFormat(tieobject) {
   if (tieobject) {
     if (typeof tieobject === 'object' && !tieobject.tiebreakTo) {
       return '';
-    } else if (
-      typeof tieobject === 'object' &&
-      getNumber(tieobject.tiebreakTo)
-    ) {
+    } else if (typeof tieobject === 'object' && getNumber(tieobject.tiebreakTo)) {
       let value = `TB${tieobject.tiebreakTo}${tieobject.NoAD ? NOAD : ''}`;
       if (tieobject.modifier) value += `@${tieobject.modifier}`;
       return value;

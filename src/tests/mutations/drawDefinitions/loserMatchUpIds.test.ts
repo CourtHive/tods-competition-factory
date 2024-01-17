@@ -1,27 +1,20 @@
 import { setSubscriptions } from '../../../global/state/globalState';
+import tournamentEngineAsync from '../../engines/asyncEngine';
 import tournamentEngineSync from '../../engines/syncEngine';
 import mocksEngine from '../../../assemblies/engines/mock';
 import { instanceCount } from '../../../utilities/arrays';
-import asyncEngine from '../../engines/asyncEngine';
 import { expect, test } from 'vitest';
 
+import { FEED_IN_CHAMPIONSHIP_TO_R16, MAIN } from '../../../constants/drawDefinitionConstants';
 import { TEAM_EVENT } from '../../../constants/eventConstants';
-import {
-  FEED_IN_CHAMPIONSHIP_TO_R16,
-  MAIN,
-} from '../../../constants/drawDefinitionConstants';
 
 function getLoserMatchUpIdRounds(matchUps) {
-  const matchUpsWithLoserMatchUpIds = matchUps.filter(
-    ({ loserMatchUpId }) => loserMatchUpId
-  );
-  const matchUpRounds = instanceCount(
-    matchUpsWithLoserMatchUpIds.map(({ roundNumber }) => roundNumber)
-  );
+  const matchUpsWithLoserMatchUpIds = matchUps.filter(({ loserMatchUpId }) => loserMatchUpId);
+  const matchUpRounds = instanceCount(matchUpsWithLoserMatchUpIds.map(({ roundNumber }) => roundNumber));
   return Object.values(matchUpRounds);
 }
 
-test.each([tournamentEngineSync, asyncEngine])(
+test.each([tournamentEngineSync, tournamentEngineAsync])(
   'generates loserMatchUpIds for playoff structures',
   async (tournamentEngine) => {
     const withPlayoffs = {
@@ -48,18 +41,14 @@ test.each([tournamentEngineSync, asyncEngine])(
     result = await tournamentEngine.allTournamentMatchUps();
 
     const matchUps = result.matchUps;
-    const round3MatchUps = matchUps.filter(
-      ({ roundNumber, stage }) => stage === MAIN && [3].includes(roundNumber)
-    );
-    round3MatchUps.forEach(({ loserMatchUpId }) =>
-      expect(loserMatchUpId).not.toBeUndefined()
-    );
+    const round3MatchUps = matchUps.filter(({ roundNumber, stage }) => stage === MAIN && [3].includes(roundNumber));
+    round3MatchUps.forEach(({ loserMatchUpId }) => expect(loserMatchUpId).not.toBeUndefined());
 
     expect(getLoserMatchUpIdRounds(matchUps)).toEqual([16, 8, 4, 2]);
-  }
+  },
 );
 
-test.each([tournamentEngineSync, asyncEngine])(
+test.each([tournamentEngineSync, tournamentEngineAsync])(
   'generates loserMatchUpIds when generated playoffs are attached',
   async (tournamentEngine) => {
     let matchUpModifyNotices: any[] = [];
@@ -121,26 +110,16 @@ test.each([tournamentEngineSync, asyncEngine])(
     matchUps = result.matchUps;
     expect(getLoserMatchUpIdRounds(matchUps)).toEqual([4, 2]);
 
-    const withLoserMatchUpId = matchUpModifyNotices.filter(
-      ({ loserMatchUpId }) => loserMatchUpId
-    );
-    const noLoserMatchUpId = matchUpModifyNotices.filter(
-      ({ loserMatchUpId }) => !loserMatchUpId
-    );
-    expect(matchUpModifyNotices.length).toEqual(
-      withLoserMatchUpId.length + noLoserMatchUpId.length
-    );
+    const withLoserMatchUpId = matchUpModifyNotices.filter(({ loserMatchUpId }) => loserMatchUpId);
+    const noLoserMatchUpId = matchUpModifyNotices.filter(({ loserMatchUpId }) => !loserMatchUpId);
+    expect(matchUpModifyNotices.length).toEqual(withLoserMatchUpId.length + noLoserMatchUpId.length);
 
-    const playoffMatchUps = matchUps.filter(
-      ({ stage, roundNumber }) => stage !== MAIN && roundNumber === 1
-    );
+    const playoffMatchUps = matchUps.filter(({ stage, roundNumber }) => stage !== MAIN && roundNumber === 1);
     // expect that the number of notices is twice the number of first round playoff matchUps
     // because there are two participants progressed for each first round playoff matchUp
     expect(matchUpModifyNotices.length).toEqual(playoffMatchUps.length * 2);
 
-    const sanityCheckMatchUpIds = withLoserMatchUpId.map(
-      ({ matchUpId }) => matchUpId
-    );
+    const sanityCheckMatchUpIds = withLoserMatchUpId.map(({ matchUpId }) => matchUpId);
 
     result = await tournamentEngine.allTournamentMatchUps();
     matchUps = result.matchUps;
@@ -149,11 +128,11 @@ test.each([tournamentEngineSync, asyncEngine])(
         expect(loserMatchUpId).not.toBeUndefined();
       }
     });
-  }
+  },
 );
 
 // test used to work through MONGO interactions in client/server scenarios
-test.each([asyncEngine, tournamentEngineSync])(
+test.each([tournamentEngineSync, tournamentEngineAsync])(
   'generates appropriate notifications for team matchUps',
   async (tournamentEngine) => {
     let matchUpModifyNotices: any[] = [];
@@ -182,9 +161,7 @@ test.each([asyncEngine, tournamentEngineSync])(
       tournamentRecord,
       drawIds: [drawId],
     } = mocksEngine.generateTournamentRecord({
-      drawProfiles: [
-        { drawSize: 32, eventType: TEAM_EVENT, tieFormatName: 'DOMINANT_DUO' },
-      ],
+      drawProfiles: [{ drawSize: 32, eventType: TEAM_EVENT, tieFormatName: 'DOMINANT_DUO' }],
     });
 
     expect(addMatchUpNotices.length).toEqual(124);
@@ -225,28 +202,16 @@ test.each([asyncEngine, tournamentEngineSync])(
     matchUps = result.matchUps;
     expect(getLoserMatchUpIdRounds(matchUps)).toEqual([2]);
 
-    const withLoserMatchUpId = matchUpModifyNotices.filter(
-      ({ loserMatchUpId }) => loserMatchUpId
-    );
-    const noLoserMatchUpId = matchUpModifyNotices.filter(
-      ({ loserMatchUpId }) => !loserMatchUpId
-    );
-    expect(matchUpModifyNotices.length).toEqual(
-      withLoserMatchUpId.length + noLoserMatchUpId.length
-    );
+    const withLoserMatchUpId = matchUpModifyNotices.filter(({ loserMatchUpId }) => loserMatchUpId);
+    const noLoserMatchUpId = matchUpModifyNotices.filter(({ loserMatchUpId }) => !loserMatchUpId);
+    expect(matchUpModifyNotices.length).toEqual(withLoserMatchUpId.length + noLoserMatchUpId.length);
 
-    const playoffMatchUps = matchUps.filter(
-      ({ stage, roundNumber }) => stage !== MAIN && roundNumber === 1
-    );
+    const playoffMatchUps = matchUps.filter(({ stage, roundNumber }) => stage !== MAIN && roundNumber === 1);
     // DOMINANT_DUO has 3 tieMatchUps, plus 1 TEAM matchUp = 4 per
     // There are two MAIN matchUps which have been modified, feeding into one PLAYOFF matchUp
-    expect(playoffMatchUps.length).toEqual(
-      (matchUpModifyNotices.length / 2) * 4
-    );
+    expect(playoffMatchUps.length).toEqual((matchUpModifyNotices.length / 2) * 4);
 
-    const sanityCheckMatchUpIds = withLoserMatchUpId.map(
-      ({ matchUpId }) => matchUpId
-    );
+    const sanityCheckMatchUpIds = withLoserMatchUpId.map(({ matchUpId }) => matchUpId);
 
     result = await tournamentEngine.allTournamentMatchUps();
     matchUps = result.matchUps;
@@ -255,5 +220,5 @@ test.each([asyncEngine, tournamentEngineSync])(
         expect(loserMatchUpId).not.toBeUndefined();
       }
     });
-  }
+  },
 );

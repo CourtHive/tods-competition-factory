@@ -7,17 +7,14 @@ import { DOUBLES, SINGLES_EVENT } from '../../constants/eventConstants';
 import { WALKOVER } from '../../constants/matchUpStatusConstants';
 import { SINGLES } from '../../constants/matchUpTypes';
 import { JSON2CSV } from '../../utilities/json';
-import {
-  FORMAT_ATP_DOUBLES,
-  FORMAT_STANDARD,
-} from '../../fixtures/scoring/matchUpFormats';
+import { FORMAT_ATP_DOUBLES, FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats';
 
 it('can create CSV from shallow JSON objects', () => {
   const csv = JSON2CSV([{ a: '1', b: '2' }]);
   expect(csv).not.toBeUndefined;
 
   const result = JSON2CSV();
-  expect(result).toEqual(INVALID_VALUES);
+  expect(result.error).toEqual(INVALID_VALUES);
 });
 
 it('can transform arrays of JSON objects to CSV', () => {
@@ -26,9 +23,7 @@ it('can transform arrays of JSON objects to CSV', () => {
   const config = { delimiter: '' };
   const converted = JSON2CSV(jsonObjects, config) as string;
   const conversion = converted.split('\r\n');
-  expectations.forEach((expectation, i) =>
-    expect(conversion[i]).toEqual(expectation)
-  );
+  expectations.forEach((expectation, i) => expect(conversion[i]).toEqual(expectation));
 });
 
 it('can transform arrays of JSON objects to CSV and remap values', () => {
@@ -38,17 +33,12 @@ it('can transform arrays of JSON objects to CSV and remap values', () => {
   const converted = JSON2CSV(jsonObjects, config) as string;
   const conversion = converted.split('\r\n');
   expectations.length
-    ? expectations.forEach((expectation, i) =>
-        expect(conversion[i]).toEqual(expectation)
-      )
+    ? expectations.forEach((expectation, i) => expect(conversion[i]).toEqual(expectation))
     : console.log(conversion);
 });
 
 it('supports passing functions which manipulate values', () => {
-  const jsonObjects = [
-    { matchUpStatus: WALKOVER },
-    { matchUpType: SINGLES_EVENT },
-  ];
+  const jsonObjects = [{ matchUpStatus: WALKOVER }, { matchUpType: SINGLES_EVENT }];
   const expectations = ['matchUpStatus,matchUpType', 'WO,', ',S'];
   const config = {
     delimiter: '',
@@ -60,9 +50,7 @@ it('supports passing functions which manipulate values', () => {
   const converted = JSON2CSV(jsonObjects, config) as string;
   const conversion = converted.split('\r\n');
   expectations.length
-    ? expectations.forEach((expectation, i) =>
-        expect(conversion[i]).toEqual(expectation)
-      )
+    ? expectations.forEach((expectation, i) => expect(conversion[i]).toEqual(expectation))
     : console.log(conversion);
 });
 
@@ -72,9 +60,7 @@ it('can transform arrays of JSON objects to CSV with custom columnJoiner', () =>
   const config = { columnJoiner: ';', delimiter: '' };
   const converted = JSON2CSV(jsonObjects, config) as string;
   const conversion = converted.split('\r\n');
-  expectations.forEach((expectation, i) =>
-    expect(conversion[i]).toEqual(expectation)
-  );
+  expectations.forEach((expectation, i) => expect(conversion[i]).toEqual(expectation));
 });
 
 it('can transform arrays of JSON objects to CSV with custom delimiter', () => {
@@ -84,9 +70,7 @@ it('can transform arrays of JSON objects to CSV with custom delimiter', () => {
   const converted = JSON2CSV(jsonObjects, config) as string;
   const conversion = converted.split('\r\n');
   expectations.length
-    ? expectations.forEach((expectation, i) =>
-        expect(conversion[i]).toEqual(expectation)
-      )
+    ? expectations.forEach((expectation, i) => expect(conversion[i]).toEqual(expectation))
     : console.log(conversion);
 });
 
@@ -96,9 +80,7 @@ it('can transform arrays of JSON objects to CSV and add context to all rows', ()
   const config = { context: { contextItem: 'context' }, delimiter: '' };
   const converted = JSON2CSV(jsonObjects, config) as string;
   const conversion = converted.split('\r\n');
-  expectations.forEach((expectation, i) =>
-    expect(conversion[i]).toEqual(expectation)
-  );
+  expectations.forEach((expectation, i) => expect(conversion[i]).toEqual(expectation));
 });
 
 it('can transform arrays of JSON objects to CSV and map header column names', () => {
@@ -151,11 +133,11 @@ it('can transform arrays of JSON objects to CSV and transform multiple target at
 
 it('can recognized bad data', () => {
   let result = JSON2CSV([{ a: 1 }], { columnTransform: 'bad' });
-  expect(result).toEqual(INVALID_VALUES);
+  expect(result.error).toEqual(INVALID_VALUES);
   result = JSON2CSV([{ a: 1 }], { columnMap: 'bad' });
-  expect(result).toEqual(INVALID_VALUES);
+  expect(result.error).toEqual(INVALID_VALUES);
   result = JSON2CSV([{ a: 1 }], 'string');
-  expect(result).toEqual(INVALID_VALUES);
+  expect(result.error).toEqual(INVALID_VALUES);
 });
 
 it('can sort csv columns', () => {
@@ -207,10 +189,7 @@ it('can transform arrays of JSON objects to CSV and transform multiple target at
 it('can transform singles and doubles matchUps to extract side1player1', () => {
   const endDate = '2022-12-22';
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [
-      { drawSize: 4 },
-      { drawSize: 4, eventType: DOUBLES, matchUpFormat: FORMAT_ATP_DOUBLES },
-    ],
+    drawProfiles: [{ drawSize: 4 }, { drawSize: 4, eventType: DOUBLES, matchUpFormat: FORMAT_ATP_DOUBLES }],
     completeAllMatchUps: true,
     startDate: endDate,
     endDate,
@@ -229,31 +208,25 @@ it('can transform singles and doubles matchUps to extract side1player1', () => {
         'sides.0.participant.individualParticipants.0.participantName',
         'sides.0.participant.participantName',
       ],
-      side1Participant2: [
-        'sides.0.participant.individualParticipants.1.participantName',
-      ],
+      side1Participant2: ['sides.0.participant.individualParticipants.1.participantName'],
       side2Participant1: [
         'sides.1.participant.individualParticipants.0.participantName',
         'sides.1.participant.participantName',
       ],
-      side2Participant2: [
-        'sides.1.participant.individualParticipants.1.participantName',
-      ],
+      side2Participant2: ['sides.1.participant.individualParticipants.1.participantName'],
     },
   };
   const converted = JSON2CSV(matchUps, config) as string;
   const conversion = converted.split('\r\n');
 
   expect(conversion[0]).toEqual(
-    'endDate,matchUpFormat,matchUpType,scoreString,side1Participant1,side2Participant1,side1Participant2,side2Participant2'
+    'endDate,matchUpFormat,matchUpType,scoreString,side1Participant1,side2Participant1,side1Participant2,side2Participant2',
   );
   conversion.slice(1).forEach((row) => {
     const columns = row.split(',');
     expect(columns.length).toEqual(8);
     expect([SINGLES, DOUBLES].includes(columns[2])).toEqual(true);
     expect(columns[0]).toEqual(endDate);
-    expect(columns[1]).toEqual(
-      columns[2] === DOUBLES ? FORMAT_ATP_DOUBLES : FORMAT_STANDARD
-    );
+    expect(columns[1]).toEqual(columns[2] === DOUBLES ? FORMAT_ATP_DOUBLES : FORMAT_STANDARD);
   });
 });

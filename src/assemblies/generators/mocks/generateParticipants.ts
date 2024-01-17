@@ -6,8 +6,8 @@ import { isValidDateString } from '../../../utilities/dateTime';
 import { countries } from '../../../fixtures/countryData';
 import { generateAddress } from './generateAddress';
 import { generatePersons } from './generatePersons';
-import { nameMocks } from './nameMocks';
 import { UUID } from '../../../utilities/UUID';
+import { nameMocks } from './nameMocks';
 
 import defaultRatingsParameters from '../../../fixtures/ratings/ratingsParameters';
 import { INDIVIDUAL, PAIR, TEAM } from '../../../constants/participantConstants';
@@ -17,6 +17,7 @@ import { ErrorType } from '../../../constants/errorConditionConstants';
 import { DOUBLES_MATCHUP } from '../../../constants/matchUpTypes';
 import { COMPETITOR } from '../../../constants/participantRoles';
 import { genParticipantId } from './genParticipantId';
+import { SUCCESS } from 'constants/resultConstants';
 
 export function generateParticipants(params): {
   participants?: any[];
@@ -256,7 +257,7 @@ export function generateParticipants(params): {
     })
     .flat();
 
-  return { participants };
+  return { participants, ...SUCCESS };
 
   function generateIndividualParticipant(participantIndex) {
     const person = mockedPersons[participantIndex];
