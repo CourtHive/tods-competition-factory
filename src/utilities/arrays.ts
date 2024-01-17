@@ -2,14 +2,17 @@ import { isConvertableInteger } from './math';
 
 // returns only unique values within an array
 export function unique(arr) {
+  if (!Array.isArray(arr)) return [];
   return arr?.filter((item, i, s) => s.lastIndexOf(item) === i);
 }
 
 export function noNulls(arr) {
+  if (!Array.isArray(arr)) return arr;
   return arr?.map((item) => (item === null ? undefined : item));
 }
 
 export function shuffleArray(arr) {
+  if (!Array.isArray(arr)) return [];
   return arr
     .map((a) => [Math.random(), a])
     .sort((a, b) => a[0] - b[0])
@@ -23,6 +26,7 @@ export function numericSortValue(v) {
 // return an object whose attributes are values and whose values are counts for values
 // e.g. values=[1,2,2,3,4,4,5] produces { 1: 1, 2: 2, 3: 1, 4: 2, 5: 1}
 export function instanceCount(values): { [key: number | string]: number } {
+  if (!Array.isArray(values)) return {};
   return values.reduce((a, c) => {
     if (!a[c]) a[c] = 0;
     a[c]++;
@@ -81,9 +85,7 @@ export function arrayIndices(val, arr) {
 }
 export function intersection(a, b) {
   if (!Array.isArray(a) || !Array.isArray(b)) return [];
-  return a
-    .filter((n) => b.indexOf(n) !== -1)
-    .filter((e, i, c) => c.indexOf(e) === i);
+  return a.filter((n) => b.indexOf(n) !== -1).filter((e, i, c) => c.indexOf(e) === i);
 }
 export function difference(a, b) {
   if (!Array.isArray(a) || !Array.isArray(b)) return [];
@@ -91,15 +93,14 @@ export function difference(a, b) {
 }
 export function symmetricDifference(a, b) {
   if (!Array.isArray(a) || !Array.isArray(b)) return [];
-  return a
-    .filter((x) => !b.includes(x))
-    .concat(b.filter((x) => !a.includes(x)));
+  return a.filter((x) => !b.includes(x)).concat(b.filter((x) => !a.includes(x)));
 }
 export function overlap(a, b) {
   if (!Array.isArray(a) || !Array.isArray(b)) return false;
   return a.some((e) => b.includes(e));
 }
 export function occurrences(val, arr) {
+  if (!Array.isArray(arr)) return 0;
   return (
     arr.reduce((r, val) => {
       r[val] = 1 + r[val] || 1;
@@ -108,23 +109,17 @@ export function occurrences(val, arr) {
   );
 }
 export function subSort(arr, i, n, sortFx) {
-  return [].concat(
-    ...arr.slice(0, i),
-    ...arr.slice(i, i + n).sort(sortFx),
-    ...arr.slice(i + n, arr.length)
-  );
+  if (!Array.isArray(arr)) return [];
+  return [].concat(...arr.slice(0, i), ...arr.slice(i, i + n).sort(sortFx), ...arr.slice(i + n, arr.length));
 }
 export function inPlaceSubSort(arr, i, n, sortFx) {
-  const newarray = [].concat(
-    ...arr.slice(0, i),
-    ...arr.slice(i, i + n).sort(sortFx),
-    ...arr.slice(i + n, arr.length)
-  );
+  const newarray = [].concat(...arr.slice(0, i), ...arr.slice(i, i + n).sort(sortFx), ...arr.slice(i + n, arr.length));
   arr.length = 0;
   arr.push(...newarray); // use spread operator instead?
   return arr;
 }
 export function chunkArray(arr, chunksize) {
+  if (!Array.isArray(arr)) return [];
   return arr.reduce((all, one, i) => {
     const ch = Math.floor(i / chunksize);
     all[ch] = [].concat(all[ch] || [], one);
@@ -133,16 +128,8 @@ export function chunkArray(arr, chunksize) {
 }
 
 // will break an array of items into chunks following pattern [size1, size2, ...]
-export function chunkSizeProfile(
-  arr: number[],
-  [size, ...otherSizes]: number[]
-) {
-  return arr.length
-    ? [
-        arr.slice(0, size),
-        ...chunkSizeProfile(arr.slice(size), [...otherSizes, size]),
-      ]
-    : [];
+export function chunkSizeProfile(arr: number[], [size, ...otherSizes]: number[]) {
+  return arr.length ? [arr.slice(0, size), ...chunkSizeProfile(arr.slice(size), [...otherSizes, size])] : [];
 }
 export function groupConsecutiveNumbers(arr) {
   return arr.reduce((result, num) => {
@@ -156,9 +143,11 @@ export function groupConsecutiveNumbers(arr) {
 }
 
 export function allNumeric(arr) {
+  if (!Array.isArray(arr)) return false;
   return arr.reduce((numeric, item) => !isNaN(parseInt(item)) && numeric, true);
 }
 export function noNumeric(arr) {
+  if (!Array.isArray(arr)) return false;
   return arr.reduce((numeric, item) => isNaN(parseInt(item)) && numeric, true);
 }
 
@@ -193,14 +182,11 @@ export function noNumeric(arr) {
  * @param {boolean} shuttle - whether or not to "shuttle" as in the movment of a shuttle in a loom
  */
 export function chunkByNth(arr: any[], chunksCount: number, shuttle?: boolean) {
+  if (!Array.isArray(arr)) return [];
   return arr.reduce((chunks, entry, index) => {
-    const reverseDirection = shuttle
-      ? !!(Math.floor(index / chunksCount) % 2)
-      : false;
+    const reverseDirection = shuttle ? !!(Math.floor(index / chunksCount) % 2) : false;
     const chunkIndex = index % chunksCount;
-    const directionIndex = reverseDirection
-      ? chunksCount - 1 - chunkIndex
-      : chunkIndex;
+    const directionIndex = reverseDirection ? chunksCount - 1 - chunkIndex : chunkIndex;
     if (!chunks[directionIndex]) chunks[directionIndex] = [];
     chunks[directionIndex].push(entry);
     return chunks;
@@ -213,8 +199,7 @@ export function getRanges(array) {
     .map((e) => parseInt(e))
     .filter((e) => !isNaN(e))
     .reduce((ranges, a) => {
-      if (!ranges.some((range) => range.includes(a - 1) && range.push(a)))
-        ranges.push([a]);
+      if (!ranges.some((range) => range.includes(a - 1) && range.push(a))) ranges.push([a]);
       return ranges;
     }, []);
 }

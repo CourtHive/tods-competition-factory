@@ -1,7 +1,7 @@
 import { numericSort } from '../../../../../utilities/sorting';
 import { unique } from '../../../../../utilities/arrays';
 
-import { MISSING_DRAW_POSITIONS, MISSING_VALUE } from 'constants/errorConditionConstants';
+import { MISSING_DRAW_POSITIONS, MISSING_VALUE } from '../../../../../constants/errorConditionConstants';
 
 export function getRoundRobinGroupMatchUps({ drawPositions }) {
   if (!drawPositions?.length) return { error: MISSING_DRAW_POSITIONS };

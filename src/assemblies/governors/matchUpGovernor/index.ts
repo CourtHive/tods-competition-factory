@@ -1,23 +1,5 @@
-export { assignMatchUpSideParticipant } from '../../../mutate/matchUps/drawPositions/assignMatchUpSideParticipant';
-export { toggleParticipantCheckInState } from '../../../mutate/matchUps/timeItems/toggleParticipantCheckInState';
-export { replaceTieMatchUpParticipantId } from '../../../mutate/matchUps/lineUps/replaceTieMatchUpParticipant';
-export { assignTieMatchUpParticipantId } from '../../../mutate/matchUps/lineUps/assignTieMatchUpParticipant';
-export { removeTieMatchUpParticipantId } from '../../../mutate/matchUps/lineUps/removeTieMatchUpParticipant';
-export { removeMatchUpSideParticipant } from '../../../mutate/matchUps/sides/removeMatchUpSideParticipant';
-export { enableTieAutoCalc } from '../../../mutate/drawDefinitions/matchUpGovernor/enableTieAutoCalc';
-export { removeDelegatedOutcome } from '../../../mutate/matchUps/extensions/removeDelegatedOutcome';
-export { substituteParticipant } from '../../../mutate/drawDefinitions/substituteParticipant';
-export { checkOutParticipant } from '../../../mutate/matchUps/timeItems/checkOutParticipant';
-export { disableTieAutoCalc } from '../../../mutate/matchUps/extensions/disableTieAutoCalc';
-export { setMatchUpFormat } from '../../../mutate/matchUps/matchUpFormat/setMatchUpFormat';
-export { checkInParticipant } from '../../../mutate/matchUps/timeItems/checkInParticipant';
-export { resetMatchUpLineUps } from '../../../mutate/matchUps/lineUps/resetMatchUpLineUps';
-export { setMatchUpStatus } from '../../../mutate/matchUps/matchUpStatus/setMatchUpStatus';
-export { bulkMatchUpStatusUpdate } from '../../../mutate/events/bulkMatchUpStatusUpdate';
-export { setDelegatedOutcome } from '../../../mutate/drawDefinitions/setDelegatedOutcome';
-export { updateTieMatchUpScore } from '../../../mutate/matchUps/score/tieMatchUpScore';
-export { setOrderOfFinish } from '../../../mutate/drawDefinitions/setOrderOfFinish';
-export { publicFindMatchUp as findMatchUp } from '../../../acquire/findMatchUp';
-export { applyLineUps } from '../../../mutate/matchUps/lineUps/applyLineUps';
-export { resetTieFormat } from '../../../mutate/tieFormat/resetTieFormat';
-export { resetScorecard } from '../../../mutate/matchUps/resetScorecard';
+export * as mutate from './mutate';
+export * as query from './query';
+
+export * from './mutate';
+export * from './query';

@@ -1,12 +1,12 @@
-import { hasSchedule } from './scheduleMatchUps/hasSchedule';
-import { addMatchUpScheduledDate } from './scheduleItems';
-import { addMatchUpScheduledTime } from './scheduledTime';
 import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
 import { resolveTournamentRecords } from '../../../parameters/resolveTournamentRecords';
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 import { getTournamentInfo } from '../../../query/tournaments/getTournamentInfo';
 import { findDrawDefinition } from '../../../acquire/findDrawDefinition';
 import { getMatchUpIds } from '../../../global/functions/extractors';
+import { hasSchedule } from './scheduleMatchUps/hasSchedule';
+import { addMatchUpScheduledDate } from './scheduleItems';
+import { addMatchUpScheduledTime } from './scheduledTime';
 import {
   addMinutesToTimeString,
   dateStringDaysChange,
@@ -32,16 +32,13 @@ type BulkRescheduleMatchUpsArgs = {
   scheduleChange: any;
   dryRun?: boolean;
 };
-export function bulkRescheduleMatchUps(
-  params: BulkRescheduleMatchUpsArgs
-): ResultType & {
+export function bulkRescheduleMatchUps(params: BulkRescheduleMatchUpsArgs): ResultType & {
   allRescheduled?: boolean;
   notRescheduled?: any[];
   rescheduled?: any[];
 } {
   const { scheduleChange, matchUpIds, dryRun } = params;
-  if (!matchUpIds || !Array.isArray(matchUpIds))
-    return { error: MISSING_MATCHUP_IDS };
+  if (!matchUpIds || !Array.isArray(matchUpIds)) return { error: MISSING_MATCHUP_IDS };
   if (typeof scheduleChange !== 'object') return { error: INVALID_VALUES };
 
   const tournamentRecords = resolveTournamentRecords(params);
@@ -58,8 +55,7 @@ export function bulkRescheduleMatchUps(
     });
     if (result.error) return result;
 
-    if (Array.isArray(result.notRescheduled))
-      notRescheduled.push(...result.notRescheduled);
+    if (Array.isArray(result.notRescheduled)) notRescheduled.push(...result.notRescheduled);
 
     // this is a check in case something has been rescheduled multiple times in the same call
     const notRescheduledIds = getMatchUpIds(result.notRescheduled);
@@ -74,9 +70,7 @@ export function bulkRescheduleMatchUps(
 
     if (removeFromNotScheduledIds.length) {
       notRescheduled =
-        result?.notRescheduled?.filter(
-          ({ matchUpId }) => !removeFromNotScheduledIds.includes(matchUpId)
-        ) || [];
+        result?.notRescheduled?.filter(({ matchUpId }) => !removeFromNotScheduledIds.includes(matchUpId)) || [];
     }
   }
 
@@ -92,15 +86,9 @@ export function bulkRescheduleMatchUps(
  *
  */
 
-export function bulkReschedule({
-  tournamentRecord,
-  scheduleChange,
-  matchUpIds,
-  dryRun,
-}) {
+export function bulkReschedule({ tournamentRecord, scheduleChange, matchUpIds, dryRun }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!matchUpIds || !Array.isArray(matchUpIds))
-    return { error: MISSING_MATCHUP_IDS };
+  if (!matchUpIds || !Array.isArray(matchUpIds)) return { error: MISSING_MATCHUP_IDS };
   if (typeof scheduleChange !== 'object') return { error: INVALID_VALUES };
 
   const rescheduledMatchUpIds: string[] = [];
@@ -116,33 +104,27 @@ export function bulkReschedule({
     tournamentRecord,
   });
 
-  const notCompleted = ({ matchUpStatus }) =>
-    !completedMatchUpStatuses.includes(matchUpStatus);
+  const notCompleted = ({ matchUpStatus }) => !completedMatchUpStatuses.includes(matchUpStatus);
 
   // return success if there are no scheduled matchUps to reschedule
   const scheduledNotCompletedMatchUps = matchUps
     ?.filter((matchUp) => hasSchedule({ schedule: matchUp.schedule }))
-    .filter((matchUp) =>
-      notCompleted({ matchUpStatus: matchUp.matchUpStatus })
-    );
+    .filter((matchUp) => notCompleted({ matchUpStatus: matchUp.matchUpStatus }));
   if (!scheduledNotCompletedMatchUps?.length) return { ...SUCCESS };
 
   const { tournamentInfo } = getTournamentInfo({ tournamentRecord });
   const { startDate, endDate } = tournamentInfo;
 
   // first organize matchUpIds by drawId
-  const drawIdMap = scheduledNotCompletedMatchUps?.reduce(
-    (drawIdMap, matchUp) => {
-      const { matchUpId, drawId } = matchUp;
-      if (drawIdMap[drawId]) {
-        drawIdMap[drawId].push(matchUpId);
-      } else {
-        drawIdMap[drawId] = [matchUpId];
-      }
-      return drawIdMap;
-    },
-    {}
-  );
+  const drawIdMap = scheduledNotCompletedMatchUps?.reduce((drawIdMap, matchUp) => {
+    const { matchUpId, drawId } = matchUp;
+    if (drawIdMap[drawId]) {
+      drawIdMap[drawId].push(matchUpId);
+    } else {
+      drawIdMap[drawId] = [matchUpId];
+    }
+    return drawIdMap;
+  }, {});
 
   const dayTotalMinutes = 1440;
   for (const drawId of Object.keys(drawIdMap)) {
@@ -153,15 +135,11 @@ export function bulkReschedule({
     if (result.error) return result;
     const drawDefinition = result.drawDefinition;
 
-    const drawMatchUpIds = drawIdMap[drawId].filter((matchUpId) =>
-      matchUpIds.includes(matchUpId)
-    );
+    const drawMatchUpIds = drawIdMap[drawId].filter((matchUpId) => matchUpIds.includes(matchUpId));
 
     for (const matchUpId of drawMatchUpIds) {
       if (matchUpId && drawDefinition) {
-        const inContextMatchUp = scheduledNotCompletedMatchUps.find(
-          (matchUp) => matchUp.matchUpId === matchUpId
-        );
+        const inContextMatchUp = scheduledNotCompletedMatchUps.find((matchUp) => matchUp.matchUpId === matchUpId);
         const schedule = inContextMatchUp?.schedule;
         const { scheduledTime, scheduledDate } = schedule;
 
@@ -171,31 +149,22 @@ export function bulkReschedule({
           newScheduledDate = dateStringDaysChange(currentDate, daysChange);
 
           doNotReschedule =
-            new Date(newScheduledDate) < new Date(startDate) ||
-            new Date(newScheduledDate) > new Date(endDate);
+            new Date(newScheduledDate) < new Date(startDate) || new Date(newScheduledDate) > new Date(endDate);
         }
 
         if (minutesChange && scheduledTime) {
           const scheduledTimeDate = extractDate(scheduledTime);
-          const currentDayMinutes = timeStringMinutes(
-            extractTime(scheduledTime)
-          );
+          const currentDayMinutes = timeStringMinutes(extractTime(scheduledTime));
           const newTime = currentDayMinutes + minutesChange;
           doNotReschedule = newTime < 0 || newTime > dayTotalMinutes;
 
           if (!doNotReschedule) {
-            const timeString = addMinutesToTimeString(
-              scheduledTime,
-              minutesChange
-            );
+            const timeString = addMinutesToTimeString(scheduledTime, minutesChange);
 
             const timeStringDate =
-              (scheduledTimeDate && newScheduledDate) ||
-              (scheduledDate === scheduledTimeDate && scheduledTimeDate);
+              (scheduledTimeDate && newScheduledDate) || (scheduledDate === scheduledTimeDate && scheduledTimeDate);
 
-            newScheduledTime = timeStringDate
-              ? `${timeStringDate}T${timeString}`
-              : timeString;
+            newScheduledTime = timeStringDate ? `${timeStringDate}T${timeString}` : timeString;
           }
         }
 
@@ -234,12 +203,8 @@ export function bulkReschedule({
       tournamentRecord,
     }).matchUps ?? [];
 
-  const rescheduled = updatedInContext.filter(({ matchUpId }) =>
-    rescheduledMatchUpIds.includes(matchUpId)
-  );
-  const notRescheduled = updatedInContext.filter(({ matchUpId }) =>
-    notRescheduledMatchUpIds.includes(matchUpId)
-  );
+  const rescheduled = updatedInContext.filter(({ matchUpId }) => rescheduledMatchUpIds.includes(matchUpId));
+  const notRescheduled = updatedInContext.filter(({ matchUpId }) => notRescheduledMatchUpIds.includes(matchUpId));
 
   const allRescheduled = rescheduled.length && !notRescheduled.length;
 

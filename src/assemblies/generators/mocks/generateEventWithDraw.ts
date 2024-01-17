@@ -5,6 +5,7 @@ import { completeDrawMatchUps, completeDrawMatchUp } from './completeDrawMatchUp
 import { addDrawDefinition } from '../../../mutate/drawDefinitions/addDrawDefinition';
 import { generateDrawDefinition } from '../drawDefinitions/generateDrawDefinition';
 import { addParticipants } from '../../../mutate/participants/addParticipants';
+import { checkRequiredParameters } from 'parameters/checkRequiredParameters';
 import { allDrawMatchUps } from '../../../query/matchUps/getAllDrawMatchUps';
 import { addEventEntries } from '../../../mutate/entries/addEventEntries';
 import { addEventTimeItem } from '../../../mutate/timeItems/addTimeItem';
@@ -33,6 +34,7 @@ import { COMPETITOR } from '../../../constants/participantRoles';
 import { SEEDING } from '../../../constants/timeItemConstants';
 import { Participant } from '../../../types/tournamentTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { OBJECT } from 'constants/attributeConstants';
 import {
   MAIN,
   QUALIFYING,
@@ -41,6 +43,9 @@ import {
 } from '../../../constants/drawDefinitionConstants';
 
 export function generateEventWithDraw(params) {
+  const paramsCheck = checkRequiredParameters(params, [{ drawProfile: true, _ofType: OBJECT }]);
+  if (paramsCheck.error) return paramsCheck;
+
   const {
     allUniqueParticipantIds = [],
     participantsProfile = {},

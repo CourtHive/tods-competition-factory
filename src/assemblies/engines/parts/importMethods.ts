@@ -14,7 +14,8 @@ export function importMethods(engine, engineInvoke, submittedMethods, collection
       if (isFunction(obj[key])) {
         methods[key] = obj[key];
       } else if (
-        isObject(obj[key] && (collections === true || collectionFilter?.includes(key))) &&
+        isObject(obj[key]) &&
+        (collections === true || collectionFilter?.includes(key)) &&
         (maxDepth === undefined || depth < maxDepth)
       ) {
         attrWalker(obj[key], depth + 1);
@@ -22,6 +23,7 @@ export function importMethods(engine, engineInvoke, submittedMethods, collection
     });
   };
   attrWalker(submittedMethods);
+
   setMethods(methods);
   const methodNames = Object.keys(methods).filter((key) => isFunction(methods[key]));
   methodNames.forEach((methodName) => {
