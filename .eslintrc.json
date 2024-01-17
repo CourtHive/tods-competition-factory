@@ -5,7 +5,7 @@
     "es6": true,
     "jest": true
   },
-  "ignorePatterns": ["node_modules/", "dist/", "coverage/", "scratch/", "server/"],
+  "ignorePatterns": ["node_modules/", "dist/", "coverage/", "scratch/", "server/", "dist/"],
   "parser": "@typescript-eslint/parser",
   "extends": [
     "eslint:recommended",
