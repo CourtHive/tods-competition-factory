@@ -41,7 +41,7 @@ type GenerateTournamentRecordArgs = {
 };
 
 export function generateTournamentRecord(params: GenerateTournamentRecordArgs) {
-  let { tournamentAttributes, startDate, endDate } = params;
+  let { tournamentAttributes, startDate, endDate } = params ?? {};
   const {
     tournamentName = randomPop(mockTournamentNames),
     ratingsParameters = defaultRatingsParameters,
@@ -61,7 +61,7 @@ export function generateTournamentRecord(params: GenerateTournamentRecordArgs) {
     venueProfiles,
     drawProfiles,
     uuids,
-  } = params;
+  } = params ?? {};
   if ((startDate && !isValidDateString(startDate)) || (endDate && !isValidDateString(endDate)))
     return { error: INVALID_DATE };
 
