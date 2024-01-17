@@ -1,33 +1,18 @@
+import { getRoundRobinGroupMatchUps, drawPositionsHash, groupRounds } from './roundRobinGroups';
 import { addExtension } from '../../../../../mutate/extensions/addExtension';
 import { structureTemplate } from '../../../templates/structureTemplate';
 import { constantToString } from '../../../../../utilities/strings';
 import { generateRange } from '../../../../../utilities/arrays';
 import { UUID } from '../../../../../utilities/UUID';
-import {
-  getRoundRobinGroupMatchUps,
-  drawPositionsHash,
-  groupRounds,
-} from './roundRobinGroups';
 
+import { PlayoffAttributes, PolicyDefinitions, SeedingProfile } from '../../../../../types/factoryTypes';
+import { MAIN, ITEM, WIN_RATIO, CONTAINER } from '../../../../../constants/drawDefinitionConstants';
+import { BYE, TO_BE_PLAYED } from '../../../../../constants/matchUpStatusConstants';
 import { MatchUp, EventTypeUnion } from '../../../../../types/tournamentTypes';
 import { ResultType } from '../../../../../global/functions/decorateResult';
 import { ROUND_TARGET } from '../../../../../constants/extensionConstants';
 import { SUCCESS } from '../../../../../constants/resultConstants';
-import {
-  BYE,
-  TO_BE_PLAYED,
-} from '../../../../../constants/matchUpStatusConstants';
-import {
-  MAIN,
-  ITEM,
-  WIN_RATIO,
-  CONTAINER,
-} from '../../../../../constants/drawDefinitionConstants';
-import {
-  PlayoffAttributes,
-  PolicyDefinitions,
-  SeedingProfile,
-} from '../../../../../types/factoryTypes';
+import { HydratedMatchUp } from 'types/hydrated';
 
 type GenerateRoundRobinArgs = {
   playoffAttributes?: PlayoffAttributes;
@@ -67,10 +52,7 @@ export function generateRoundRobin(params: GenerateRoundRobinArgs) {
     uuids,
   } = params;
 
-  const structureName =
-    params.structureName ??
-    playoffAttributes?.['0']?.name ??
-    constantToString(MAIN);
+  const structureName = params.structureName ?? playoffAttributes?.['0']?.name ?? constantToString(MAIN);
 
   const { groupCount, groupSize } = deriveGroups({
     structureOptions,
@@ -83,7 +65,7 @@ export function generateRoundRobin(params: GenerateRoundRobinArgs) {
   let maxRoundNumber;
 
   const structures = generateRange(1, groupCount + 1).map((structureOrder) => {
-    const matchUps = roundRobinMatchUps({
+    const matchUps: HydratedMatchUp[] = roundRobinMatchUps({
       groupSize: groupSize,
       structureOrder,
       matchUpType,
@@ -91,12 +73,9 @@ export function generateRoundRobin(params: GenerateRoundRobinArgs) {
       idPrefix,
       isMock,
     });
-    maxRoundNumber = Math.max(
-      ...matchUps.map(({ roundNumber }) => roundNumber)
-    );
+    maxRoundNumber = Array.isArray(matchUps) ? Math.max(...matchUps.map(({ roundNumber }) => roundNumber ?? 0)) : 0;
 
-    const structureName =
-      groupNames?.[structureOrder - 1] ?? `${groupNameBase} ${structureOrder}`;
+    const structureName = groupNames?.[structureOrder - 1] ?? `${groupNameBase} ${structureOrder}`;
 
     return structureTemplate({
       structureId: uuids?.pop(),
@@ -171,20 +150,18 @@ export function getValidGroupSizes({
   drawSize,
   groupSizeLimit = 10,
 }: GetValidGroupSizesArgs): ResultType & { validGroupSizes?: number[] } {
-  const validGroupSizes = generateRange(3, groupSizeLimit + 1).filter(
-    (groupSize) => {
-      const groupsCount = Math.ceil(drawSize / groupSize);
-      const byesCount = groupsCount * groupSize - drawSize;
-      const maxParticipantsPerGroup = Math.ceil(drawSize / groupsCount);
-      const maxByesPerGroup = Math.ceil(byesCount / groupsCount);
-      return (
-        (!byesCount || byesCount < groupSize) &&
-        maxParticipantsPerGroup === groupSize &&
-        maxParticipantsPerGroup >= 3 &&
-        maxByesPerGroup < 2
-      );
-    }
-  );
+  const validGroupSizes = generateRange(3, groupSizeLimit + 1).filter((groupSize) => {
+    const groupsCount = Math.ceil(drawSize / groupSize);
+    const byesCount = groupsCount * groupSize - drawSize;
+    const maxParticipantsPerGroup = Math.ceil(drawSize / groupsCount);
+    const maxByesPerGroup = Math.ceil(byesCount / groupsCount);
+    return (
+      (!byesCount || byesCount < groupSize) &&
+      maxParticipantsPerGroup === groupSize &&
+      maxParticipantsPerGroup >= 3 &&
+      maxByesPerGroup < 2
+    );
+  });
   return { ...SUCCESS, validGroupSizes };
 }
 
@@ -206,16 +183,14 @@ function roundRobinMatchUps({
   idPrefix,
   isMock,
   uuids,
-}: RoundRobinMatchUpsArgs) {
+}: RoundRobinMatchUpsArgs): HydratedMatchUp[] {
   const drawPositionOffset = (structureOrder - 1) * groupSize;
-  const drawPositions = generateRange(
-    1 + drawPositionOffset,
-    groupSize + 1 + drawPositionOffset
-  );
+  const drawPositions = generateRange(1 + drawPositionOffset, groupSize + 1 + drawPositionOffset);
 
-  const { uniqueMatchUpGroupings } = getRoundRobinGroupMatchUps({
-    drawPositions,
-  });
+  const uniqueMatchUpGroupings =
+    getRoundRobinGroupMatchUps({
+      drawPositions,
+    }).uniqueMatchUpGroupings ?? [];
   const rounds: any[] = groupRounds({ groupSize, drawPositionOffset });
 
   const matchUps = uniqueMatchUpGroupings
@@ -225,10 +200,7 @@ function roundRobinMatchUps({
   return matchUps;
 
   function determineRoundNumber(hash) {
-    return rounds.reduce(
-      (p, round, i) => (round.includes(hash) ? i + 1 : p),
-      undefined
-    );
+    return rounds.reduce((p, round, i) => (round.includes(hash) ? i + 1 : p), undefined);
   }
 
   // returns a range for array of possible finishing drawPositions
@@ -259,16 +231,8 @@ function roundRobinMatchUps({
   }
 }
 
-function roundRobinMatchUpId({
-  structureOrder,
-  drawPositions,
-  roundNumber,
-  idPrefix,
-  uuids,
-}) {
+function roundRobinMatchUpId({ structureOrder, drawPositions, roundNumber, idPrefix, uuids }) {
   return idPrefix
-    ? `${idPrefix}-${structureOrder}-${roundNumber}-DP-${drawPositions.join(
-        '-'
-      )}`
+    ? `${idPrefix}-${structureOrder}-${roundNumber}-DP-${drawPositions.join('-')}`
     : uuids?.pop() || UUID();
 }

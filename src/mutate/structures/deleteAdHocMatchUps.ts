@@ -1,8 +1,8 @@
 import { updateAssignmentParticipantResults } from '../drawDefinitions/matchUpGovernor/updateAssignmentParticipantResults';
+import { deleteMatchUpsNotice, modifyDrawNotice, modifyMatchUpNotice } from '../notifications/drawNotifications';
 import { checkScoreHasValue } from '../../query/matchUp/checkScoreHasValue';
 import { getMissingSequenceNumbers, unique } from '../../utilities/arrays';
 import { xa } from '../../utilities/objects';
-import { deleteMatchUpsNotice, modifyDrawNotice, modifyMatchUpNotice } from '../notifications/drawNotifications';
 
 import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
 import { ROUND_OUTCOME } from '../../constants/drawDefinitionConstants';
@@ -34,7 +34,7 @@ export function deleteAdHocMatchUps({
 
   if (!Array.isArray(matchUpIds)) return { error: INVALID_VALUES };
 
-  const structure = drawDefinition.structures?.find((structure) => structure.structureId === structureId);
+  const structure: any = drawDefinition.structures?.find((structure) => structure.structureId === structureId);
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
   const existingMatchUps = structure?.matchUps;

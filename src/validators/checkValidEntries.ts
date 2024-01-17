@@ -3,6 +3,7 @@ import { isUngrouped } from '../query/entries/isUngrouped';
 import { unique } from '../utilities/arrays';
 
 import POLICY_MATCHUP_ACTIONS_DEFAULT from '../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
+import { Entry, Event, Participant, Tournament } from '../types/tournamentTypes';
 import { POLICY_TYPE_MATCHUP_ACTIONS } from '../constants/policyConstants';
 import { INDIVIDUAL, PAIR, TEAM } from '../constants/participantConstants';
 import { ParticipantMap, PolicyDefinitions } from '../types/factoryTypes';
@@ -16,12 +17,6 @@ import {
   MISSING_EVENT,
   MISSING_PARTICIPANTS,
 } from '../constants/errorConditionConstants';
-import {
-  Entry,
-  Event,
-  Participant,
-  Tournament,
-} from '../types/tournamentTypes';
 
 type CheckValidEntriesArgs = {
   policyDefinitions?: PolicyDefinitions;
@@ -58,25 +53,22 @@ export function checkValidEntries({
     appliedPolicies?.[POLICY_TYPE_MATCHUP_ACTIONS] ??
     POLICY_MATCHUP_ACTIONS_DEFAULT[POLICY_TYPE_MATCHUP_ACTIONS];
 
-  const genderEnforced =
-    (enforceGender ?? matchUpActionsPolicy?.participants?.enforceGender) !==
-    false;
+  const genderEnforced = (enforceGender ?? matchUpActionsPolicy?.participants?.enforceGender) !== false;
 
   const { eventType, gender: eventGender } = event;
   const isDoubles = eventType === DOUBLES_EVENT;
-  const participantType =
-    (eventType === TEAM_EVENT && TEAM) || (isDoubles && PAIR) || INDIVIDUAL;
+  const participantType = (eventType === TEAM_EVENT && TEAM) || (isDoubles && PAIR) || INDIVIDUAL;
 
   const entryStatusMap = Object.assign(
     {},
     ...(consideredEntries ?? event.entries ?? []).map((entry) => ({
       [entry.participantId]: entry.entryStatus,
-    }))
+    })),
   );
 
   const enteredParticipantIds = Object.keys(entryStatusMap);
   const enteredParticipants = participants.filter((participant) =>
-    enteredParticipantIds.includes(participant.participantId)
+    enteredParticipantIds.includes(participant.participantId),
   );
 
   const invalidEntries = enteredParticipants.filter((participant) => {
@@ -86,26 +78,24 @@ export function checkValidEntries({
       [DOUBLES_EVENT, TEAM_EVENT].includes(eventType) &&
       participant.participantType === INDIVIDUAL &&
       (isUngrouped(entryStatus) || entryStatus === WITHDRAWN);
-    const mismatch =
-      participant.participantType !== participantType && !ungroupedParticipant;
+    const mismatch = participant.participantType !== participantType && !ungroupedParticipant;
 
-    const pairGender =
-      !mismatch &&
-      isDoubles &&
-      unique(
-        participant?.individualParticipantIds
-          ?.map((id) => participantMap?.[id]?.participant?.person?.sex)
-          .filter(Boolean) ?? []
-      );
+    const pairGender: string[] =
+      (!mismatch &&
+        isDoubles &&
+        unique(
+          participant?.individualParticipantIds
+            ?.map((id) => participantMap?.[id]?.participant?.person?.sex)
+            .filter(Boolean) ?? [],
+        )) ||
+      [];
     const validPairGender =
       !eventGender ||
       !pairGender?.length ||
       ANY === eventGender ||
       ([MALE, FEMALE].includes(eventGender) && pairGender[0] === eventGender) ||
       (MIXED === eventGender &&
-        ((pairGender.length == 1 &&
-          participant.individualParticipantIds?.length === 1) ||
-          pairGender.length === 2));
+        ((pairGender.length == 1 && participant.individualParticipantIds?.length === 1) || pairGender.length === 2));
 
     const personGender = participant?.person?.sex as unknown;
     const validPersonGender =
@@ -114,16 +104,13 @@ export function checkValidEntries({
       [ANY, MIXED].includes(eventGender) ||
       ([MALE, FEMALE].includes(eventGender) && personGender === eventGender);
 
-    const validGender =
-      !genderEnforced || (validPairGender && validPersonGender);
+    const validGender = !genderEnforced || (validPairGender && validPersonGender);
 
     return mismatch || !validGender;
   });
 
   if (invalidEntries.length) {
-    const invalidParticipantIds = invalidEntries.map(
-      (participant) => participant.participantId
-    );
+    const invalidParticipantIds = invalidEntries.map((participant) => participant.participantId);
     return { error: INVALID_ENTRIES, invalidParticipantIds };
   }
 
