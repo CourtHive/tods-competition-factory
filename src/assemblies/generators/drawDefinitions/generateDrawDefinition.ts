@@ -589,31 +589,34 @@ export function generateDrawDefinition(params: GenerateDrawDefinitionArgs): Resu
       );
       const participantIds = entries?.map(getParticipantId);
       const matchUpsCount = entries ? Math.floor(entries.length / 2) : 0;
-      generateRange(1, params.roundsCount + 1).forEach(() => {
-        if (params.automated) {
-          const { restrictEntryStatus, generateMatchUps, structureId, matchUpIds, scaleName } = params.drawMatic ?? {};
 
-          const matchUps = drawMatic({
-            eventType: params.drawMatic?.eventType ?? matchUpType,
-            generateMatchUps: generateMatchUps ?? true,
-            restrictEntryStatus,
-            tournamentRecord,
-            participantIds,
-            drawDefinition,
-            structureId,
-            matchUpIds,
-            scaleName, // custom rating name to seed dynamic ratings
-            idPrefix,
-            isMock,
-            event,
-          }).matchUps;
-          addAdHocMatchUps({
-            tournamentRecord,
-            drawDefinition,
-            structureId,
-            matchUps,
-          });
-        } else {
+      if (params.automated) {
+        const { restrictEntryStatus, generateMatchUps, structureId, matchUpIds, scaleName } = params.drawMatic ?? {};
+
+        const result = drawMatic({
+          eventType: params.drawMatic?.eventType ?? matchUpType,
+          generateMatchUps: generateMatchUps ?? true,
+          roundsCount: params.roundsCount,
+          restrictEntryStatus,
+          tournamentRecord,
+          participantIds,
+          drawDefinition,
+          structureId,
+          matchUpIds,
+          scaleName, // custom rating name to seed dynamic ratings
+          idPrefix,
+          isMock,
+          event,
+        });
+
+        addAdHocMatchUps({
+          matchUps: result.matchUps,
+          tournamentRecord,
+          drawDefinition,
+          structureId,
+        });
+      } else {
+        generateRange(1, params.roundsCount + 1).forEach(() => {
           const { matchUps } = generateAdHocMatchUps({
             newRound: true,
             drawDefinition,
@@ -628,8 +631,8 @@ export function generateDrawDefinition(params: GenerateDrawDefinitionArgs): Resu
             structureId,
             matchUps,
           });
-        }
-      });
+        });
+      }
     }
   }
 

@@ -24,6 +24,7 @@ type GenerateAdHocMatchUpsArgs = {
   participantIdPairings?: {
     participantIds: [string | undefined, string | undefined];
   }[];
+  ignoreLastRoundNumber?: boolean;
   tournamentRecord?: Tournament;
   drawDefinition: DrawDefinition;
   matchUpsCount?: number; // number of matchUps to be generated
@@ -38,6 +39,7 @@ type GenerateAdHocMatchUpsArgs = {
 
 export function generateAdHocMatchUps(params: GenerateAdHocMatchUpsArgs): {
   matchUpsCount?: number;
+  roundNumber?: number;
   matchUps?: MatchUp[];
   error?: ErrorType;
   info?: any;
@@ -97,8 +99,9 @@ export function generateAdHocMatchUps(params: GenerateAdHocMatchUpsArgs): {
     return { error: INVALID_STRUCTURE };
   }
 
-  if (roundNumber && roundNumber - 1 > (lastRoundNumber || 0))
+  if (roundNumber && !params.ignoreLastRoundNumber && roundNumber - 1 > (lastRoundNumber || 0)) {
     return { error: INVALID_VALUES, info: 'roundNumber error' };
+  }
 
   const nextRoundNumber = roundNumber ?? ((newRound && (lastRoundNumber ?? 0) + 1) || lastRoundNumber || 1);
 
@@ -152,5 +155,5 @@ export function generateAdHocMatchUps(params: GenerateAdHocMatchUpsArgs): {
     }
   }
 
-  return { matchUpsCount: matchUps?.length ?? 0, matchUps, ...SUCCESS };
+  return { roundNumber: nextRoundNumber, matchUpsCount: matchUps?.length ?? 0, matchUps, ...SUCCESS };
 }

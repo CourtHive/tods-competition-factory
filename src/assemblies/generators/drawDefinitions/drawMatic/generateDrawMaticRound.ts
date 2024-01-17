@@ -27,6 +27,7 @@ const MAX_ITERATIONS = 4000;
 type GenerateDrawMaticRoundArgs = {
   tournamentParticipants?: HydratedParticipant[];
   adHocRatings?: { [key: string]: number };
+  ignoreLastRoundNumber?: boolean;
   restrictEntryStatus?: boolean;
   drawDefinition: DrawDefinition;
   generateMatchUps?: boolean;
@@ -38,6 +39,7 @@ type GenerateDrawMaticRoundArgs = {
   maxIterations?: number;
   matchUpIds?: string[];
   structure?: Structure;
+  roundNumber?: number;
   structureId?: string;
   scaleName?: string;
   idPrefix?: string;
@@ -49,6 +51,7 @@ type GenerateDrawMaticRoundArgs = {
 export type DrawMaticRoundResult = {
   participantIdPairings?: string[][];
   candidatesCount?: number;
+  roundNumber?: number;
   matchUps?: MatchUp[];
   iterations?: number;
   success?: boolean;
@@ -62,11 +65,13 @@ export function generateDrawMaticRound({
   maxIterations = MAX_ITERATIONS,
   generateMatchUps = true,
   tournamentParticipants,
+  ignoreLastRoundNumber,
   participantIds,
   drawDefinition,
   adHocRatings,
-  structureId,
   salted = 0.5,
+  roundNumber,
+  structureId,
   matchUpIds,
   eventType,
   structure,
@@ -144,28 +149,34 @@ export function generateDrawMaticRound({
 
   if (!candidatesCount) return { error: NO_CANDIDATES };
 
+  let generatedRoundNumber;
   let matchUps;
+
   if (generateMatchUps) {
     const result = generateAdHocMatchUps({
       structureId: structure?.structureId,
+      ignoreLastRoundNumber,
       participantIdPairings,
       newRound: true,
       drawDefinition,
+      roundNumber,
       matchUpIds,
       idPrefix,
       isMock,
       event,
     });
     if (result.error) return result;
+    generatedRoundNumber = result.roundNumber;
     matchUps = result.matchUps;
   }
 
   const { maxDelta, maxDiff } = candidate;
 
   return {
-    ...SUCCESS,
+    roundNumber: generatedRoundNumber,
     participantIdPairings,
     candidatesCount,
+    ...SUCCESS,
     iterations,
     matchUps,
     maxDelta,
