@@ -13,7 +13,7 @@ import { EXISTING_MATCHUP_ID, MISSING_PARTICIPANT_IDS } from '../../../constants
 const getParticipantType = (eventType) => (eventType === SINGLES && INDIVIDUAL) || (eventType === DOUBLES && PAIR);
 
 const scenarios = [
-  { eventType: SINGLES, drawSize: 5, roundsCount: 5 },
+  { eventType: SINGLES, drawSize: 5, roundsCount: 4 },
   { eventType: SINGLES, drawSize: 6, roundsCount: 3 },
   { eventType: SINGLES, drawSize: 8, roundsCount: 3 },
   { eventType: SINGLES, drawSize: 10, roundsCount: 3 },
@@ -81,8 +81,8 @@ it.each(scenarios)('DrawMatic events can be generated using eventProfiles', (sce
   const { drawSize, eventType, roundsCount = 1 } = scenario;
   const eventProfiles = [
     {
-      eventType,
       drawProfiles: [{ drawType: AD_HOC, drawSize, automated: true, roundsCount }],
+      eventType,
     },
   ];
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({

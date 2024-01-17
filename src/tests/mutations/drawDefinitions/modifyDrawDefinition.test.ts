@@ -2,9 +2,9 @@ import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { AD_HOC } from '../../../constants/drawDefinitionConstants';
 import { POLICY_TYPE_ROUND_NAMING } from '../../../constants/policyConstants';
 import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
+import { AD_HOC } from '../../../constants/drawDefinitionConstants';
 
 it('can modify drawDefinition round naming policy', () => {
   const {
@@ -47,8 +47,7 @@ it('can modify drawDefinition round naming policy', () => {
 
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   expect(
-    drawDefinition.extensions.find(({ name }) => name === APPLIED_POLICIES)
-      .value[POLICY_TYPE_ROUND_NAMING].policyName
+    drawDefinition.extensions.find(({ name }) => name === APPLIED_POLICIES).value[POLICY_TYPE_ROUND_NAMING].policyName,
   ).toEqual(policyName);
   matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
   expect(matchUps[0].abbreviatedRoundName).toEqual('W1');

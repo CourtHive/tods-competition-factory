@@ -12,7 +12,7 @@ import { MatchUp, EventTypeUnion } from '../../../../../types/tournamentTypes';
 import { ResultType } from '../../../../../global/functions/decorateResult';
 import { ROUND_TARGET } from '../../../../../constants/extensionConstants';
 import { SUCCESS } from '../../../../../constants/resultConstants';
-import { HydratedMatchUp } from 'types/hydrated';
+import { HydratedMatchUp } from '../../../../../types/hydrated';
 
 type GenerateRoundRobinArgs = {
   playoffAttributes?: PlayoffAttributes;

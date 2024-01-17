@@ -12,7 +12,7 @@ export { positionActions } from '../../../query/drawDefinition/positionActions/p
 export { getPositionsPlayedOff } from '../../../query/drawDefinition/getPositionsPlayedOff';
 export { getDrawTypeCoercion } from '../../generators/drawDefinitions/getDrawTypeCoercion';
 export { getPositionAssignments } from '../../../query/structure/getPositionAssignments';
-export { isValidForQualifying } from 'query/drawDefinition/isValidForQualifying';
+export { isValidForQualifying } from '../../../query/drawDefinition/isValidForQualifying';
 export { getTeamLineUp } from '../../../query/drawDefinition/getTeamLineUp';
 export { getSeedsCount } from '../../../query/drawDefinition/getSeedsCount';
 export { checkValidEntries } from '../../../validators/checkValidEntries';

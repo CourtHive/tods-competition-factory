@@ -16,8 +16,8 @@ import { RANKING, RATING, SCALE } from '../../../constants/scaleConstants';
 import { ErrorType } from '../../../constants/errorConditionConstants';
 import { DOUBLES_MATCHUP } from '../../../constants/matchUpTypes';
 import { COMPETITOR } from '../../../constants/participantRoles';
+import { SUCCESS } from '../../../constants/resultConstants';
 import { genParticipantId } from './genParticipantId';
-import { SUCCESS } from 'constants/resultConstants';
 
 export function generateParticipants(params): {
   participants?: any[];

@@ -1,9 +1,11 @@
-import { generateRange, randomPop } from '../../../tools/arrays';
 import { getMatchUpIds } from '../../../global/functions/extractors';
+import { generateRange, randomPop } from '../../../tools/arrays';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
+import { ABANDONED, CANCELLED, DOUBLE_WALKOVER, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
+import { PENALTY, REFEREE, SCHEDULE, SCORE } from '../../../constants/matchUpActionConstants';
 import { ASSIGN_PARTICIPANT } from '../../../constants/positionActionConstants';
 import { AD_HOC, WIN_RATIO } from '../../../constants/drawDefinitionConstants';
 import {
@@ -11,8 +13,6 @@ import {
   INVALID_STRUCTURE,
   INVALID_VALUES,
 } from '../../../constants/errorConditionConstants';
-import { ABANDONED, CANCELLED, DOUBLE_WALKOVER, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
-import { PENALTY, REFEREE, SCHEDULE, SCORE } from '../../../constants/matchUpActionConstants';
 
 it('will generate an AD_HOC drawDefinition with no matchUps', () => {
   const {
