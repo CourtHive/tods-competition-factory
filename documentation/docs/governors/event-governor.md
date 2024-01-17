@@ -3,7 +3,7 @@ title: Event Governor
 ---
 
 ```js
-import { governors: { eventGovernor }} from 'tods-competition-factory';
+import { eventGovernor } from 'tods-competition-factory';
 ```
 
 ## addDrawDefinition

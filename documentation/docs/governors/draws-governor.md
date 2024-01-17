@@ -3,7 +3,7 @@ title: Draws Governor
 ---
 
 ```js
-import { governors: { drawsGovernor }} from 'tods-competition-factory';
+import { drawsGovernor } from 'tods-competition-factory';
 ```
 
 ## addAdHocMatchUps

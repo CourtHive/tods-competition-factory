@@ -3,7 +3,7 @@ title: Schedule Governor
 ---
 
 ```js
-import { governors: { scheduleGovernor }} from 'tods-competition-factory';
+import { scheduleGovernor } from 'tods-competition-factory';
 ```
 
 ## allocateTeamMatchUpCourts

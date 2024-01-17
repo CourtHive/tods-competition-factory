@@ -3,7 +3,7 @@ title: Query Governor
 ---
 
 ```js
-import { governors: { queryGovernor }} from 'tods-competition-factory';
+import { queryGovernor } from 'tods-competition-factory';
 ```
 
 ## allDrawMatchUps

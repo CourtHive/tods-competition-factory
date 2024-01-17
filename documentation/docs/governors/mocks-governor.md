@@ -3,7 +3,7 @@ title: Mocks Governor
 ---
 
 ```js
-import { governors: { mocksGovernor }} from 'tods-competition-factory';
+import { mocksGovernor } from 'tods-competition-factory';
 ```
 
 ## anonymizeTournamentRecord

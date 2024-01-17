@@ -3,7 +3,7 @@ title: matchUp Governor
 ---
 
 ```js
-import { governors: { matchUpGovernor }} from 'tods-competition-factory';
+import { matchUpGovernor } from 'tods-competition-factory';
 ```
 
 ## addMatchUpEndTime

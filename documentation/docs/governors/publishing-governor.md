@@ -3,7 +3,7 @@ title: Publishing Governor
 ---
 
 ```js
-import { governors: { publishingGovernor }} from 'tods-competition-factory';
+import { publishingGovernor } from 'tods-competition-factory';
 ```
 
 ## publishEvent

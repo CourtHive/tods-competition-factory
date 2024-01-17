@@ -3,7 +3,7 @@ title: Policy Governor
 ---
 
 ```js
-import { governors: { policyGovernor }} from 'tods-competition-factory';
+import { policyGovernor } from 'tods-competition-factory';
 ```
 
 ## attachPolicies

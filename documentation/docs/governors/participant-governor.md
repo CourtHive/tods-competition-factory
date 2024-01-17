@@ -3,7 +3,7 @@ title: Participant Governor
 ---
 
 ```js
-import { governors: { participantGovernor }} from 'tods-competition-factory';
+import { participantGovernor } from 'tods-competition-factory';
 ```
 
 ## participantFilters
