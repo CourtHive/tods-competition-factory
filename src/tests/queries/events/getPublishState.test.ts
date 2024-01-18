@@ -85,6 +85,7 @@ it('should return the publish state of all events', () => {
 
   publishState = tournamentEngine.getPublishState({ drawId: 'e4-d1' }).publishState;
   expect(publishState.status.published).toEqual(true);
+  expect(publishState.status.drawDetail).toBeDefined();
 
   publishState = tournamentEngine.getPublishState({ eventId: 'e4' }).publishState;
   expect(publishState.status.published).toEqual(true);

@@ -6,6 +6,28 @@ title: Publishing Governor
 import { publishingGovernor } from 'tods-competition-factory';
 ```
 
+## getPublishState
+
+Return publishing details for tournament, event(s), and/or draws.
+
+```js
+// return status for all events and tournament `orderOfPlay`
+publishState = engine.getPublishState().publishState;
+const orderOfPlayPublished = publishState.tournament.orderOfPlay.published;
+// status returned for all events within tournamentRecord, accessed by eventId
+const { published, publishedDrawIds, drawDetails } = publishState['eventId'].status;
+
+// publishState for specific event
+publishState = engine.getPublishState({ eventId }).publishState;
+const eventPublished = publishState.status.published;
+
+// publishState for specific draw
+publishState = engine.getPublishState({ drawId }).publishState;
+const drawPublished = publishState.status.published;
+// when only specific stages or structures are published
+const drawPublishDetail = publishState.status.drawDetail;
+```
+
 ## publishEvent
 
 Utilizes [getEventData](/docs/governors/event-governor#geteventdata) to prepare data for display. Differs from [getEventData](/docs/governors/event-governor#geteventdata) in that it modifies the `publishState` of the event. Subscriptions or middleware may be used to deliver the generated payload for presentation on a public website.

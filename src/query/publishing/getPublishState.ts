@@ -1,3 +1,4 @@
+import { getTournamentPublishStatus } from 'query/tournaments/getTournamentPublishStatus';
 import { getEventPublishStatus } from '../event/getEventPublishStatus';
 import { getDrawPublishStatus } from '../event/getDrawPublishStatus';
 import { getDrawId } from '../../global/functions/extractors';
@@ -57,6 +58,7 @@ export function getPublishState({
         publishState: {
           status: {
             published: !!pubStatus.status.publishedDrawIds?.includes(drawId),
+            drawDetail: pubStatus.status.drawDetails?.[drawId],
           },
           ...SUCCESS,
         },
@@ -68,6 +70,7 @@ export function getPublishState({
         publishState[drawId] = {
           status: {
             published: !!pubStatus.status.publishedDrawIds.includes(drawId),
+            drawDetail: pubStatus.status.drawDetails?.[drawId],
           },
         };
         return { ...SUCCESS, publishState };
@@ -79,6 +82,8 @@ export function getPublishState({
     return { error: MISSING_TOURNAMENT_RECORD };
   } else {
     const publishState: any = {};
+    const pubStatus: any = getTournamentPublishStatus({ tournamentRecord });
+    publishState.tournament = pubStatus;
     for (const event of tournamentRecord.events ?? []) {
       const pubStatus: any = getPubStatus({ event });
       publishState[event.eventId] = pubStatus;
@@ -132,6 +137,5 @@ function getPubStatus({ event }): any {
       publishedSeeding,
       drawDetails,
     },
-    ...SUCCESS,
   };
 }
