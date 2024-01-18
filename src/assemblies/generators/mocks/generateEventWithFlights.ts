@@ -7,7 +7,7 @@ import { addEventTimeItem } from '../../../mutate/timeItems/addTimeItem';
 import { generateEventParticipants } from './generateEventParticipants';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { isValidExtension } from '../../../validators/isValidExtension';
-import { publishEvent } from '../../../mutate/events/publishEvent';
+import { publishEvent } from '../../../mutate/publishing/publishEvent';
 import tieFormatDefaults from '../templates/tieFormatDefaults';
 import { addEvent } from '../../../mutate/events/addEvent';
 import { generateFlights } from './generateFlights';

@@ -3,7 +3,7 @@ title: Score Governor
 ---
 
 ```js
-import { governors: { scoreGovernor }} from 'tods-competition-factory';
+import { scoreGovernor } from 'tods-competition-factory';
 ```
 
 The **scoreGovernor** is a collection of scoring related tools that provide analysis/validation or generate values.

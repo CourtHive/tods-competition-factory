@@ -5,7 +5,7 @@ title: Competition Governor
 Functions which are applicable to situations where multiple `tournamentRecords` are held in shared state.
 
 ```js
-import { governors: { competitionGovernor }} from 'tods-competition-factory';
+import { competitionGovernor } from 'tods-competition-factory';
 ```
 
 ## linkTournaments

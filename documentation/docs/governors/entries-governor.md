@@ -3,7 +3,7 @@ title: Entries Governor
 ---
 
 ```js
-import { governors: { entriesGovernor }} from 'tods-competition-factory';
+import { entriesGovernor } from 'tods-competition-factory';
 ```
 
 ## addDrawEntries

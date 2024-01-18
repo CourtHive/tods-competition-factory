@@ -3,7 +3,7 @@ title: Generation Governor
 ---
 
 ```js
-import { governors: { generationGovernor }} from 'tods-competition-factory';
+import { generationGovernor } from 'tods-competition-factory';
 ```
 
 ## drawMatic

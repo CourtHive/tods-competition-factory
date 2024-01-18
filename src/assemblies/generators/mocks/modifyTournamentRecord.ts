@@ -5,9 +5,9 @@ import { setSchedulingProfile } from '../../../mutate/tournaments/schedulingProf
 import { generateFlightDrawDefinitions } from './generateFlightDrawDefinitions';
 import { addTournamentParticipants } from './addTournamentParticipants';
 import { generateEventParticipants } from './generateEventParticipants';
-import { generateEventWithFlights } from './generateEventWithFlights';
 import { generateVenues } from '../../../mutate/venues/generateVenues';
-import { publishEvent } from '../../../mutate/events/publishEvent';
+import { publishEvent } from '../../../mutate/publishing/publishEvent';
+import { generateEventWithFlights } from './generateEventWithFlights';
 import { generateEventWithDraw } from './generateEventWithDraw';
 import { addEvent } from '../../../mutate/events/addEvent';
 import { generateFlights } from './generateFlights';
@@ -45,11 +45,9 @@ export function modifyTournamentRecord(params) {
   eventProfiles?.forEach((eventProfile) => {
     const event = tournamentRecord.events?.find(
       (event, index) =>
-        (eventProfile.eventIndex !== undefined &&
-          index === eventProfile.eventIndex) ||
-        (eventProfile.eventName &&
-          event.eventName === eventProfile.eventName) ||
-        (eventProfile.eventId && event.eventId === eventProfile.eventId)
+        (eventProfile.eventIndex !== undefined && index === eventProfile.eventIndex) ||
+        (eventProfile.eventName && event.eventName === eventProfile.eventName) ||
+        (eventProfile.eventId && event.eventId === eventProfile.eventId),
     );
 
     if (event?.gender) {
@@ -79,11 +77,9 @@ export function modifyTournamentRecord(params) {
 
       const event = tournamentRecord.events?.find(
         (event, index) =>
-          (eventProfile.eventIndex !== undefined &&
-            index === eventProfile.eventIndex) ||
-          (eventProfile.eventName &&
-            event.eventName === eventProfile.eventName) ||
-          (eventProfile.eventId && event.eventId === eventProfile.eventId)
+          (eventProfile.eventIndex !== undefined && index === eventProfile.eventIndex) ||
+          (eventProfile.eventName && event.eventName === eventProfile.eventName) ||
+          (eventProfile.eventId && event.eventId === eventProfile.eventId),
       );
 
       if (!event) {
@@ -103,17 +99,12 @@ export function modifyTournamentRecord(params) {
         });
         if (result.error) return result;
 
-        const {
-          eventId,
-          drawIds: generatedDrawIds,
-          uniqueParticipantIds,
-        } = result;
+        const { eventId, drawIds: generatedDrawIds, uniqueParticipantIds } = result;
 
         if (generatedDrawIds) drawIds.push(...generatedDrawIds);
         eventIds.push(eventId);
 
-        if (uniqueParticipantIds?.length)
-          allUniqueParticipantIds.push(...uniqueParticipantIds);
+        if (uniqueParticipantIds?.length) allUniqueParticipantIds.push(...uniqueParticipantIds);
 
         eventIndex += 1;
       } else {
@@ -121,33 +112,27 @@ export function modifyTournamentRecord(params) {
         const { drawProfiles, publish } = eventProfile;
 
         const eventParticipantType =
-          (eventType === SINGLES && INDIVIDUAL) ||
-          (eventType === DOUBLES && PAIR) ||
-          eventType;
+          (eventType === SINGLES && INDIVIDUAL) || (eventType === DOUBLES && PAIR) || eventType;
 
         if (drawProfiles) {
-          const {
-            stageParticipantsCount,
-            uniqueParticipantsCount,
-            uniqueParticipantStages,
-          } = getStageParticipantsCount({
-            drawProfiles,
-            category,
-            gender,
-          });
+          const { stageParticipantsCount, uniqueParticipantsCount, uniqueParticipantStages } =
+            getStageParticipantsCount({
+              drawProfiles,
+              category,
+              gender,
+            });
 
-          const { uniqueDrawParticipants = [], uniqueParticipantIds = [] } =
-            uniqueParticipantStages
-              ? generateEventParticipants({
-                  event: { eventType, category, gender },
-                  uniqueParticipantsCount,
-                  participantsProfile,
-                  ratingsParameters,
-                  tournamentRecord,
-                  eventProfile,
-                  uuids,
-                })
-              : {};
+          const { uniqueDrawParticipants = [], uniqueParticipantIds = [] } = uniqueParticipantStages
+            ? generateEventParticipants({
+                event: { eventType, category, gender },
+                uniqueParticipantsCount,
+                participantsProfile,
+                ratingsParameters,
+                tournamentRecord,
+                eventProfile,
+                uuids,
+              })
+            : {};
 
           allUniqueParticipantIds.push(...uniqueParticipantIds);
 
@@ -222,16 +207,13 @@ export function modifyTournamentRecord(params) {
       if (drawId) drawIds.push(drawId);
       eventIds.push(eventId);
 
-      if (uniqueParticipantIds?.length)
-        allUniqueParticipantIds.push(...uniqueParticipantIds);
+      if (uniqueParticipantIds?.length) allUniqueParticipantIds.push(...uniqueParticipantIds);
 
       drawIndex += 1;
     }
   }
 
-  const venueIds = venueProfiles?.length
-    ? generateVenues({ tournamentRecord, venueProfiles })
-    : [];
+  const venueIds = venueProfiles?.length ? generateVenues({ tournamentRecord, venueProfiles }) : [];
 
   let scheduledRounds;
   let schedulerResult = {};

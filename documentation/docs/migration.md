@@ -8,32 +8,33 @@ Verion 2.0 of the Competition Factory was focused on code restructuring with sup
 
 ### tournamentEngine and competitionEngine
 
-- tournamentEngine.getState() => engine.getTournament()
-- tournamentEngine.bulkScheduleMatchUps() is now engine.bulkScheduleTournamentMatchUps()
-- tournamentEngine.attachEventPolicies() => engine.attachPolicies({ eventId, ... })
-- tournamentEngine.generateTeamsFromParticipantAttribute() is now engine.createTeamsFromParticipantAttributes()
-- tournamentEngine.findEventExtension() => engine.findExtension({ name: '', element _or_ eventId?, discover: true })
-- tournamentEngine.findTournamentExtension() => engine.findExtension({ name: '', element _or_ discover: true })
-- tournamentEngine.getAvailablePlayoffRounds() => engine.getAvailablePlayoffProfiles()
-- competitionEngine.getParticipants() is now engine.getCompetitionParticipants()
-- competitionEngine.competitionMatchUps() is now engine.getCompetitionMatchUps()
+- tournamentEngine.getState() => tournamentEngine.getTournament()
+- tournamentEngine.generateTeamsFromParticipantAttribute() is now tournamentEngine.createTeamsFromParticipantAttributes()
+- tournamentEngine.findEventExtension() => tournamentEngine.findExtension({ name: '', element _or_ eventId?, discover: true })
+- tournamentEngine.findTournamentExtension() => tournamentEngine.findExtension({ name: '', element _or_ discover: true })
+- tournamentEngine.bulkScheduleMatchUps() is now tournamentEngine.bulkScheduleTournamentMatchUps()
+- tournamentEngine.getAvailablePlayoffRounds() => tournamentEngine.getAvailablePlayoffProfiles()
+- tournamentEngine.attachEventPolicies() => tournamentEngine.attachPolicies({ eventId, ... })
+- competitionEngine.getParticipants() is now tournamentEngine.getCompetitionParticipants()
+- competitionEngine.competitionMatchUps() is now tournamentEngine.getCompetitionMatchUps()
 
 ### utilities
 
-- utilities.tieFormatGenderValidityCheck() => engine.tieFormatGenderValidityCheck()
-- utilities.getStructureSeedAssignments() => engine.getStructureSeedAssignments()
-- utilities.getAvailablePlayoffProfiles() => engine.getAvailablePlayoffProfiles()
-- utilities.allPlayoffPositionsFilled() => engine.allPlayoffPositionsFilled()
-- utilities.getMatchUpContextIds() => engine.getMatchUpContextIds()
-- utilities.getSeedingThresholds() => engine.getSeedingThresholds()
-- utilities.participantScaleItem() => engine.participantScaleItem()
-- utilities.generateScoreString() => engine.generateScoreString()
-- utilities.categoryCanContain() => engine.categoryCanContain()
-- utilities.checkSetIsComplete() => engine.checkSetIsComplete()
-- utilities.getValidGroupSizes() => engine.getValidGroupSizes()
-- utilities.getSetComplement() => engine.getSetComplement()
-- utilities.findExtension() => engine.findExtension()
-- scoreGovernor.function() => engine.function()
+- utilities.tieFormatGenderValidityCheck() => tournamentEngine.tieFormatGenderValidityCheck()
+- utilities.getStructureSeedAssignments() => tournamentEngine.getStructureSeedAssignments()
+- utilities.getAvailablePlayoffProfiles() => tournamentEngine.getAvailablePlayoffProfiles()
+- utilities.allPlayoffPositionsFilled() => tournamentEngine.allPlayoffPositionsFilled()
+- utilities.getMatchUpContextIds() => tournamentEngine.getMatchUpContextIds()
+- utilities.getSeedingThresholds() => tournamentEngine.getSeedingThresholds()
+- utilities.participantScaleItem() => tournamentEngine.participantScaleItem()
+- utilities.generateScoreString() => tournamentEngine.generateScoreString()
+- utilities.categoryCanContain() => tournamentEngine.categoryCanContain()
+- utilities.checkSetIsComplete() => tournamentEngine.checkSetIsComplete()
+- utilities.getValidGroupSizes() => tournamentEngine.getValidGroupSizes()
+- mocksEngine.parseScoreString() => tournamentEngine.parseScoreString();
+- utilities.getSetComplement() => tournamentEngine.getSetComplement()
+- utilities.findExtension() => tournamentEngine.findExtension()
+- scoreGovernor.function() => tournamentEngine.function()
 
 All other utilities should now be imported as `tools`.
 

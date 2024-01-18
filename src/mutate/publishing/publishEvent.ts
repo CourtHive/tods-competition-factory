@@ -1,9 +1,9 @@
 import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
-import { decorateResult } from '../../global/functions/decorateResult';
-import { modifyEventPublishStatus } from './modifyEventPublishStatus';
 import { getEventPublishStatus } from '../../query/event/getEventPublishStatus';
-import { addNotice } from '../../global/state/globalState';
+import { modifyEventPublishStatus } from '../events/modifyEventPublishStatus';
+import { decorateResult } from '../../global/functions/decorateResult';
 import { getEventData } from '../../query/event/getEventData';
+import { addNotice } from '../../global/state/globalState';
 
 import { Event, Tournament } from '../../types/tournamentTypes';
 import { PUBLISH_EVENT } from '../../constants/topicConstants';
@@ -34,7 +34,7 @@ export type DrawPublishingDetails = {
 };
 
 type PublishEventType = {
-  includePositionAssignments?: boolean;
+  includePositionAssignments?: boolean; // include positionAssignments in eventData
   policyDefinitions?: PolicyDefinitions;
   removePriorValues?: boolean;
   tournamentRecord: Tournament;
@@ -72,19 +72,15 @@ export function publishEvent(params: PublishEventType) {
 
   const eventDrawIds = event.drawDefinitions?.map(({ drawId }) => drawId) ?? [];
 
-  const keyedDrawIds = params.drawDetails
-    ? Object.keys(params.drawDetails)
-    : [];
+  const keyedDrawIds = params.drawDetails ? Object.keys(params.drawDetails) : [];
   const specifiedDrawIds = keyedDrawIds.length ? [] : params.drawIds;
 
   const drawIdsToValidate = (drawIdsToAdd ?? []).concat(
     ...(drawIdsToRemove ?? []),
     ...(specifiedDrawIds ?? []),
-    ...keyedDrawIds
+    ...keyedDrawIds,
   );
-  const invalidDrawIds = drawIdsToValidate.filter(
-    (drawId) => !eventDrawIds.includes(drawId)
-  );
+  const invalidDrawIds = drawIdsToValidate.filter((drawId) => !eventDrawIds.includes(drawId));
   if (invalidDrawIds.length) {
     return decorateResult({
       result: { error: DRAW_DEFINITION_NOT_FOUND },
@@ -104,19 +100,12 @@ export function publishEvent(params: PublishEventType) {
 
   for (const drawId of eventDrawIds) {
     if (!drawIdsToValidate.length || drawIdsToValidate.includes(drawId)) {
-      if (
-        drawIdsToRemove?.includes(drawId) ||
-        (specifiedDrawIds?.length && !specifiedDrawIds.includes(drawId))
-      ) {
+      if (drawIdsToRemove?.includes(drawId) || (specifiedDrawIds?.length && !specifiedDrawIds.includes(drawId))) {
         drawDetails[drawId] = {
           ...drawDetails[drawId],
           publishingDetail: { published: false },
         };
-      } else if (
-        drawIdsToAdd?.includes(drawId) ||
-        specifiedDrawIds?.includes(drawId) ||
-        !specifiedDrawIds?.length
-      ) {
+      } else if (drawIdsToAdd?.includes(drawId) || specifiedDrawIds?.includes(drawId) || !specifiedDrawIds?.length) {
         drawDetails[drawId] = {
           ...drawDetails[drawId],
           publishingDetail: { published: true },
@@ -126,10 +115,8 @@ export function publishEvent(params: PublishEventType) {
 
     if (params.drawDetails?.[drawId]) {
       const newDetail = params.drawDetails[drawId];
-      let structureDetails =
-        newDetail.structureDetails ?? drawDetails[drawId].structureDetails;
-      const stageDetails =
-        newDetail.stageDetails ?? drawDetails[drawId].stageDetails ?? {};
+      let structureDetails = newDetail.structureDetails ?? drawDetails[drawId].structureDetails;
+      const stageDetails = newDetail.stageDetails ?? drawDetails[drawId].stageDetails ?? {};
 
       const {
         structureIdsToRemove = [],
@@ -149,15 +136,11 @@ export function publishEvent(params: PublishEventType) {
 
       if (structureIdsToAdd.length || structureIdsToRemove.length) {
         const drawStructureIds = (
-          event.drawDefinitions?.find(
-            (drawDefinition) => drawDefinition.drawId === drawId
-          )?.structures ?? []
+          event.drawDefinitions?.find((drawDefinition) => drawDefinition.drawId === drawId)?.structures ?? []
         ).map(({ structureId }) => structureId);
-        const structureIdsToValidate = (structureIdsToAdd ?? []).concat(
-          structureIdsToRemove ?? []
-        );
+        const structureIdsToValidate = (structureIdsToAdd ?? []).concat(structureIdsToRemove ?? []);
         const invalidStructureIds = structureIdsToValidate.filter(
-          (structureId) => !drawStructureIds.includes(structureId)
+          (structureId) => !drawStructureIds.includes(structureId),
         );
         if (invalidStructureIds.length) {
           return decorateResult({
@@ -179,9 +162,7 @@ export function publishEvent(params: PublishEventType) {
       }
 
       const drawStages = (
-        event.drawDefinitions?.find(
-          (drawDefinition) => drawDefinition.drawId === drawId
-        )?.structures ?? []
+        event.drawDefinitions?.find((drawDefinition) => drawDefinition.drawId === drawId)?.structures ?? []
       ).map(({ stage }) => stage as string);
 
       if (stagesToAdd.length) {

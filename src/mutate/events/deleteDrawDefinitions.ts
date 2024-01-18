@@ -1,3 +1,4 @@
+import { deleteDrawNotice, deleteMatchUpsNotice } from '../notifications/drawNotifications';
 import { getPositionAssignments } from '../../query/structure/getPositionAssignments';
 import { checkAndUpdateSchedulingProfile } from '../tournaments/schedulingProfile';
 import { getEventPublishStatus } from '../../query/event/getEventPublishStatus';
@@ -7,27 +8,26 @@ import { allDrawMatchUps } from '../../query/matchUps/getAllDrawMatchUps';
 import { decorateResult } from '../../global/functions/decorateResult';
 import { modifyEventPublishStatus } from './modifyEventPublishStatus';
 import { addEventExtension } from '../extensions/addRemoveExtensions';
-import { definedAttributes } from '../../tools/definedAttributes';
 import { getFlightProfile } from '../../query/event/getFlightProfile';
+import { definedAttributes } from '../../tools/definedAttributes';
 import { getDrawStructures } from '../../acquire/findStructure';
-import { makeDeepCopy } from '../../tools/makeDeepCopy';
 import { addNotice } from '../../global/state/globalState';
+import { publishEvent } from '../publishing/publishEvent';
 import { addExtension } from '../extensions/addExtension';
 import { findExtension } from '../../acquire/findExtension';
+import { makeDeepCopy } from '../../tools/makeDeepCopy';
 import { findEvent } from '../../acquire/findEvent';
-import { publishEvent } from './publishEvent';
-import { deleteDrawNotice, deleteMatchUpsNotice } from '../notifications/drawNotifications';
 
+import { MISSING_TOURNAMENT_RECORD, SCORES_PRESENT } from '../../constants/errorConditionConstants';
+import { DRAW_DELETIONS, FLIGHT_PROFILE } from '../../constants/extensionConstants';
 import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
+import { MAIN, QUALIFYING } from '../../constants/drawDefinitionConstants';
 import { DELETE_DRAW_DEFINITIONS } from '../../constants/auditConstants';
 import { POLICY_TYPE_SCORING } from '../../constants/policyConstants';
 import { Event, Tournament } from '../../types/tournamentTypes';
 import { PolicyDefinitions } from '../../types/factoryTypes';
 import { SUCCESS } from '../../constants/resultConstants';
 import { AUDIT } from '../../constants/topicConstants';
-import { MISSING_TOURNAMENT_RECORD, SCORES_PRESENT } from '../../constants/errorConditionConstants';
-import { MAIN, QUALIFYING } from '../../constants/drawDefinitionConstants';
-import { DRAW_DELETIONS, FLIGHT_PROFILE } from '../../constants/extensionConstants';
 
 type DeleteDrawDefinitionArgs = {
   policyDefinitions?: PolicyDefinitions;

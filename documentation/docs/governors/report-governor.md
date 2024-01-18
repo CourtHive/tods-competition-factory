@@ -3,5 +3,5 @@ title: Report Governor
 ---
 
 ```js
-import { governors: { reportGovernor }} from 'tods-competition-factory';
+import { reportGovernor } from 'tods-competition-factory';
 ```

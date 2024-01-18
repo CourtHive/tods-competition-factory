@@ -2,14 +2,14 @@ import { getDrawId, getParticipantId } from '../../global/functions/extractors';
 import { addScheduleItem } from '../../mutate/participants/addScheduleItem';
 import { getEventSeedAssignments } from '../event/getEventSeedAssignments';
 import { getPositionAssignments } from '../drawDefinition/positionsGetter';
-import { timeSort, timeStringMinutes } from '../../tools/dateTime';
 import { structureSort } from '../../functions/sorters/structureSort';
-import { extensionsToAttributes } from '../../tools/makeDeepCopy';
 import { processEventEntry } from '../participant/processEventEntry';
-import { definedAttributes } from '../../tools/definedAttributes';
+import { timeSort, timeStringMinutes } from '../../tools/dateTime';
 import { allEventMatchUps } from '../matchUps/getAllEventMatchUps';
+import { extensionsToAttributes } from '../../tools/makeDeepCopy';
+import { definedAttributes } from '../../tools/definedAttributes';
 import { stringSort } from '../../functions/sorters/stringSort';
-import { getPublishState } from '../events/getPublishState';
+import { getPublishState } from '../publishing/getPublishState';
 import { getFlightProfile } from '../event/getFlightProfile';
 import { processSides } from '../matchUps/processSides';
 import { isObject } from '../../tools/objects';
@@ -94,7 +94,7 @@ export function getParticipantEntries(params) {
 
     const publishStatuses = getPublishState({ event }).publishState;
     if (publishStatuses) eventsPublishStatuses[eventId] = publishStatuses;
-    const publishedSeeding = publishStatuses?.publishedSeeding;
+    const publishedSeeding = publishStatuses?.status?.publishedSeeding;
 
     if (withEvents || withSeeding || withRankingProfile) {
       const extensionConversions = convertExtensions ? Object.assign({}, ...extensionsToAttributes(extensions)) : {};

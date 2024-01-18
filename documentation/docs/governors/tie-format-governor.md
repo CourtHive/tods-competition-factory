@@ -3,7 +3,7 @@ title: tieFormat Governor
 ---
 
 ```js
-import { governors: { tieFormatGovernor }} from 'tods-competition-factory';
+import { tieFormatGovernor } from 'tods-competition-factory';
 ```
 
 ## addCollectionDefinition
