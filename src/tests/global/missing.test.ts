@@ -33,7 +33,9 @@ it.each([syncEngine, asyncEngine])(
         }
       } else if (
         [
+          'getTournamentPublishStatus',
           'stringifyMatchUpFormat',
+          'getEventPublishStatus',
           'getDrawTypeCoercion',
           'parseMatchUpFormat',
           'generateTimeCode',
@@ -43,7 +45,7 @@ it.each([syncEngine, asyncEngine])(
           'version',
         ].includes(method)
       ) {
-        expect(result).not.toBeUndefined();
+        expect(result).toBeDefined();
       } else if (method === 'getState') {
         expect(result.tournamentRecord).toBeUndefined();
       } else if (method === 'getTournament') {
