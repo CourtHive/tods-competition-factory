@@ -132,6 +132,5 @@ function getPubStatus({ event }): any {
       publishedSeeding,
       drawDetails,
     },
-    ...SUCCESS,
   };
 }
