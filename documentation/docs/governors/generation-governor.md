@@ -15,6 +15,10 @@ The number of rounds (`roundsCount`) that can be generated is limited to **# par
 
 The number of participants is determined by the number of **entries** or the number of valid `{ participantIds }` provided.
 
+:::info
+Inspired by the work of the Constantine who runs spectacular D3 College Tennis events using this format for flexible round generation when teams arrive and depart on different days.
+:::
+
 ```js
 const { matchUps, participantIdPairings, iterations, candidatesCount } = engine.drawMatic({
   restrictEntryStatus, // optional - only allow STRUCTURE_SELECTED_STATUSES
