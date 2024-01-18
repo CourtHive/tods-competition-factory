@@ -1,6 +1,6 @@
+import { automatedPositioning } from '../../../../mutate/drawDefinitions/automatedPositioning';
 import { resolveTieFormat } from '../../../../query/hierarchical/tieFormats/resolveTieFormat';
 import { getAllStructureMatchUps } from '../../../../query/matchUps/getAllStructureMatchUps';
-import { automatedPositioning } from '../../../../mutate/drawDefinitions/automatedPositioning';
 import { copyTieFormat } from '../../../../query/hierarchical/tieFormats/copyTieFormat';
 import { modifyDrawNotice } from '../../../../mutate/notifications/drawNotifications';
 import { getStageEntries } from '../../../../query/drawDefinition/stageGetter';

@@ -37,7 +37,7 @@ const { matchUps, participantIdPairings, iterations, candidatesCount } = engine.
 
 ## generateAdHocMatchUps
 
-Draws with `{ drawType: AD_HOC }` allow `matchUps` to be dynamically added. In this type of draw there is no automatic participant progression between rounds. Participant assignment to `matchUps` is done manually, or via **DrawMatic**. The only restriction is that a participant may appear once per round.
+Draws with `{ drawType: AD_HOC }` allow `matchUps` to be dynamically added. In this type of draw there is no automatic participant progression between rounds. Participant assignment to `matchUps` is done manually, or via **drawMatic**. The only restriction is that a participant may appear once per round.
 
 ```js
 const result = engine.generateAdHocMatchUps({
@@ -269,7 +269,6 @@ const { scaleItemsWithParticipantIds } = engine.generateSeedingScaleItems({
 
 ```js
 const { structures, links } = engine.generateVoluntaryConsolation({
-  attachConsolation: false, // optional - defaults to true
   automated: true,
   drawId,
 });
