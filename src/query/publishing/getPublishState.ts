@@ -1,4 +1,4 @@
-import { getTournamentPublishStatus } from 'query/tournaments/getTournamentPublishStatus';
+import { getTournamentPublishStatus } from '../../query/tournaments/getTournamentPublishStatus';
 import { getEventPublishStatus } from '../event/getEventPublishStatus';
 import { getDrawPublishStatus } from '../event/getDrawPublishStatus';
 import { getDrawId } from '../../global/functions/extractors';
