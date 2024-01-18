@@ -33,3 +33,5 @@ The structure of a **_policyDefinitions_** object is as follows:
 - [Round Naming Policy](../policies/roundNaming): Specifies how rounds of draw structures should be named
 - Scoring Policy: Restricts available matchUpFormats, defines a default and conditions for "ready to score"
 - Voluntary Consolation Policy: Specifies `{ winsLimit, finishingRoundLimit }` for voluntary consolation eligibility
+- Competitive Bands: Determines thresholds for ROUTINE and COMPETITIVE matches in `getCompetitiveProfile`
+- Draws Policy: Configures either global or draw-type-specific `drawTypeCoercion`
