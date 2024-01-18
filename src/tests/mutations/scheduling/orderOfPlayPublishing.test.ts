@@ -106,16 +106,18 @@ it('can publish order of play for specified days', () => {
 
   competitionEngine.setState(result.tournamentRecord);
 
+  let publishState = competitionEngine.getPublishState().publishState;
+  expect(publishState.tournament?.orderOfPlay?.published).toBeUndefined();
+
   result = competitionEngine.publishOrderOfPlay();
   expect(result.success).toEqual(true);
 
   result = competitionEngine.getState();
-  let tournamentRecord: Tournament = Object.values(
-    result.tournamentRecords
-  )[0] as Tournament;
-  expect(
-    tournamentRecord.timeItems?.[1].itemValue[PUBLIC].orderOfPlay
-  ).not.toBeUndefined();
+  let tournamentRecord: Tournament = Object.values(result.tournamentRecords)[0] as Tournament;
+  expect(tournamentRecord.timeItems?.[1].itemValue[PUBLIC].orderOfPlay).not.toBeUndefined();
+
+  publishState = competitionEngine.getPublishState().publishState;
+  expect(publishState.tournament.orderOfPlay.published).toEqual(true);
 
   result = competitionEngine.unPublishOrderOfPlay({
     removePriorValues: false,
