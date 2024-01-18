@@ -5,18 +5,18 @@ import { formatDate, isValidDateString } from '../../../tools/dateTime';
 import { addTournamentParticipants } from './addTournamentParticipants';
 import { isValidExtension } from '../../../validators/isValidExtension';
 import { cycleMutationStatus } from '../../../global/state/globalState';
-import { definedAttributes } from '../../../tools/definedAttributes';
 import { generateVenues } from '../../../mutate/venues/generateVenues';
 import { generateEventWithFlights } from './generateEventWithFlights';
 import { generateScheduledRounds } from './generateScheduledRounds';
+import { definedAttributes } from '../../../tools/definedAttributes';
 import { generateEventWithDraw } from './generateEventWithDraw';
 import { Extension } from '../../../types/tournamentTypes';
 import { addEvent } from '../../../mutate/events/addEvent';
 import { randomPop } from '../../../tools/arrays';
 
+import { INVALID_DATE, INVALID_VALUES } from '../../../constants/errorConditionConstants';
 import defaultRatingsParameters from '../../../fixtures/ratings/ratingsParameters';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { INVALID_DATE, INVALID_VALUES } from '../../../constants/errorConditionConstants';
 
 const mockTournamentNames = [
   'Mock Tournament',

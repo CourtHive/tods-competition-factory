@@ -154,6 +154,8 @@ it('can autoSeed by Rankings', () => {
 
   result = tournamentEngine.publishEventSeeding({ eventId });
   expect(result.success).toEqual(true);
+  result = tournamentEngine.getPublishState({ eventId });
+  expect(result.publishState.status.publishedSeeding.published).toEqual(true);
 
   tournamentParticipants = tournamentEngine.getParticipants({
     usePublishState: true,

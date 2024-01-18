@@ -6,6 +6,7 @@ import { filterParticipants } from './filterParticipants';
 import { getParticipantMap } from './getParticipantMap';
 import { isObject } from '../../tools/objects';
 
+import { MISSING_TOURNAMENT_RECORD, ErrorType } from '../../constants/errorConditionConstants';
 import { POLICY_TYPE_PARTICIPANT } from '../../constants/policyConstants';
 import { MatchUp, Tournament } from '../../types/tournamentTypes';
 import { HydratedParticipant } from '../../types/hydrated';
@@ -17,7 +18,6 @@ import {
   ScheduleAnalysis,
   ParticipantMap,
 } from '../../types/factoryTypes';
-import { MISSING_TOURNAMENT_RECORD, ErrorType } from '../../constants/errorConditionConstants';
 
 type GetParticipantsArgs = {
   withIndividualParticipants?: boolean | { [key: string]: any };
