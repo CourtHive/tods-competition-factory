@@ -1,3 +1,4 @@
+import { getTournamentPublishStatus } from 'query/tournaments/getTournamentPublishStatus';
 import { getEventPublishStatus } from '../event/getEventPublishStatus';
 import { getDrawPublishStatus } from '../event/getDrawPublishStatus';
 import { getDrawId } from '../../global/functions/extractors';
@@ -79,6 +80,8 @@ export function getPublishState({
     return { error: MISSING_TOURNAMENT_RECORD };
   } else {
     const publishState: any = {};
+    const pubStatus: any = getTournamentPublishStatus({ tournamentRecord });
+    publishState.tournament = pubStatus;
     for (const event of tournamentRecord.events ?? []) {
       const pubStatus: any = getPubStatus({ event });
       publishState[event.eventId] = pubStatus;
