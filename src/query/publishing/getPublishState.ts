@@ -58,6 +58,7 @@ export function getPublishState({
         publishState: {
           status: {
             published: !!pubStatus.status.publishedDrawIds?.includes(drawId),
+            drawDetail: pubStatus.status.drawDetails?.[drawId],
           },
           ...SUCCESS,
         },
@@ -69,6 +70,7 @@ export function getPublishState({
         publishState[drawId] = {
           status: {
             published: !!pubStatus.status.publishedDrawIds.includes(drawId),
+            drawDetail: pubStatus.status.drawDetails?.[drawId],
           },
         };
         return { ...SUCCESS, publishState };
