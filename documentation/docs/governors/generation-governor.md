@@ -8,18 +8,28 @@ import { generationGovernor } from 'tods-competition-factory';
 
 ## drawMatic
 
+**drawMatic** is a dynamic round generator for AD_HOC draws which produces participant pairings with previous opponent and team member avoidance.
+When `{ scaleName, scaleAccessor }` values are present, participants will be paired for level-based play.
+
+The number of rounds (`roundsCount`) that can be generated is limited to **# participants - 1**, which is the normal size of a Round Robin, unless `{ enableDoubleRobin: true }`, in which case the upper limit is **(# participants - 1) \* 2**.
+
+The number of participants is determined by the number of **entries** or the number of valid `{ participantIds }` provided.
+
 ```js
 const { matchUps, participantIdPairings, iterations, candidatesCount } = engine.drawMatic({
   restrictEntryStatus, // optional - only allow STRUCTURE_SELECTED_STATUSES
+  enableDoubleRobin, // optional - allows roundsCount <= (drawSize - 1) * 2
   generateMatchUps, // optional - defaults to true; when false only returns { participantIdPairings }
-  maxIterations, // optional - defaults to 5000
+  participantIds, // optional array of [participantId] to restrict enteredParticipantIds which appear in generated round
+  maxIterations, // optional - defaults to 5000; can be used to set a limit on processing overhead
+  roundsCount, // optional - number of rounds to generate; limited to 1 - drawSize unless { enableDoubleRobin: true }
   structureId, // optional; if no structureId is specified find the latest AD_HOC stage which has matchUps
   matchUpIds, // optional array of uuids to be used when generating matchUps
   eventType, // optional - override eventType of event within which draw appears; e.g. to force use of SINGLES ratings in DOUBLES events
   drawId, // required
 
-  scaleAccessor, // optional string to access value within scaleValue, e.g. 'wtnRating'
-  scaleName, // optional; custom rating name to seed dynamic ratings
+  scaleAccessor, // optional - string to access value within scaleValue, e.g. 'wtnRating'
+  scaleName, // optional - custom rating name to seed dynamic ratings
 });
 ```
 
