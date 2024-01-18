@@ -1,4 +1,6 @@
+export { getTournamentPublishStatus } from '../../../query/tournaments/getTournamentPublishStatus';
 export { bulkUpdatePublishedEventIds } from '../../../query/event/bulkUpdatePublishedEventIds';
+export { getEventPublishStatus } from '../../../query/event/getEventPublishStatus';
 export { getPublishState } from '../../../query/publishing/getPublishState';
 export { getAllEventData } from '../../../query/event/getAllEventData';
 export { getDrawData } from '../../../query/drawDefinition/getDrawData';

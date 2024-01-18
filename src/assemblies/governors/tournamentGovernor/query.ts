@@ -3,7 +3,6 @@ export { getPolicyDefinitions, getAppliedPolicies } from '../../../query/extensi
 export { getCompetitionPenalties } from '../../../query/participants/getCompetitionPenalties';
 export { getCompetitionDateRange } from '../../../query/tournaments/getCompetitionDateRange';
 export { getTournamentPenalties } from '../../../query/participants/getTournamentPenalties';
-export { getTournamentPublishStatus } from 'query/tournaments/getTournamentPublishStatus';
 export { getTournamentPersons } from '../../../query/tournaments/getTournamentPersons';
 export { getTournamentStructures } from '../../../query/structure/structureGetter';
 export { analyzeTournament } from '../../../query/tournaments/analyzeTournament';
