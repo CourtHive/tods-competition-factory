@@ -8,7 +8,7 @@ import { publishingGovernor } from 'tods-competition-factory';
 
 ## publishEvent
 
-Utilizes [getEventData](#geteventdata) to prepare data for display. Differs from [getEventData](#geteventdata) in that it modifies the `publishState` of the event. Subscriptions or middleware may be used to deliver the generated payload for presentation on a public website.
+Utilizes [getEventData](/docs/governors/event-governor#geteventdata) to prepare data for display. Differs from [getEventData](/docs/governors/event-governor#geteventdata) in that it modifies the `publishState` of the event. Subscriptions or middleware may be used to deliver the generated payload for presentation on a public website.
 
 See [Policies](../concepts/policies) for more details on `policyDefinitions` and [Publishing](../concepts/publishing.md) for more on use cases.
 
