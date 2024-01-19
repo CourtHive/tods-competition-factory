@@ -1,11 +1,11 @@
 import mocksEngine from '../../../assemblies/engines/mock';
-import { generateRange } from '../../../tools/arrays';
 import tournamentEngine from '../../engines/syncEngine';
+import { generateRange } from '../../../tools/arrays';
 import { expect, it } from 'vitest';
 
+import { INDIVIDUAL, PAIR, TEAM_PARTICIPANT } from '../../../constants/participantConstants';
 import { DOUBLES_EVENT, TEAM_EVENT } from '../../../constants/eventConstants';
 import names from '../../../fixtures/data/names.json';
-import { INDIVIDUAL, PAIR, TEAM_PARTICIPANT } from '../../../constants/participantConstants';
 
 const personData = generateRange(0, 20).map((i) => ({
   lastName: names.lastNames[i],
@@ -19,7 +19,7 @@ const formatsScenarios = [
       INDIVIDUAL: { personFormat: 'f. last' },
     },
     expectation: {
-      pairParticipantName: 'A.Abbey|A.Assange',
+      pairParticipantName: 'A.Abbey|A.Ahern',
       participantName: 'a. abbey',
     },
   },
@@ -29,7 +29,7 @@ const formatsScenarios = [
       INDIVIDUAL: { personFormat: 'LAST, First' },
     },
     expectation: {
-      pairParticipantName: 'ABBEY/ASSANGE',
+      pairParticipantName: 'ABBEY/AHERN',
       participantName: 'ABBEY, Alan',
     },
   },
@@ -39,7 +39,7 @@ const formatsScenarios = [
       INDIVIDUAL: { personFormat: 'LASTFirst' },
     },
     expectation: {
-      pairParticipantName: 'AbbeyAlan/AssangeAldous',
+      pairParticipantName: 'AbbeyAlan/AhernAldous',
       participantName: 'ABBEYAlan',
     },
   },
