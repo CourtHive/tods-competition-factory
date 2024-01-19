@@ -7,7 +7,6 @@ import { ADD_MATCHUPS, DELETED_MATCHUP_IDS } from '../../../constants/topicConst
 import { COLLEGE_DEFAULT, DOMINANT_DUO } from '../../../constants/tieFormatConstants';
 import { AD_HOC } from '../../../constants/drawDefinitionConstants';
 import { TEAM } from '../../../constants/eventConstants';
-import { unique } from '../../../tools/arrays';
 
 // testing for generation of addMatchUps notifications for tieMatchUps in AD_HOC TEAM events
 // each scenario generates a different number of matchUps due to different tieFormats having different collectionDefinitions
@@ -43,7 +42,7 @@ it.each(scenarios)('generates addMatchUps notifications for tieMatchUps in AD_HO
     setState: true,
   });
   expect(result.success).toEqual(true);
-  expect(unique(addedMatchUpIds).length).toEqual(scenario.expectation.added);
+  expect(addedMatchUpIds.length).toEqual(scenario.expectation.added);
 
   const matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
   expect(matchUps.length).toEqual(scenario.expectation.added);

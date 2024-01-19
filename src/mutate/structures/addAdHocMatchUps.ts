@@ -1,8 +1,8 @@
 import { addMatchUpsNotice, modifyDrawNotice } from '../notifications/drawNotifications';
 import { allTournamentMatchUps } from '../../query/matchUps/getAllTournamentMatchUps';
 import { getMatchUpId } from '../../global/functions/extractors';
-import { mustBeAnArray } from '../../tools/mustBeAnArray';
 import { validMatchUps } from '../../validators/validMatchUp';
+import { mustBeAnArray } from '../../tools/mustBeAnArray';
 import { overlap } from '../../tools/arrays';
 
 import { ROUND_OUTCOME } from '../../constants/drawDefinitionConstants';
@@ -17,9 +17,20 @@ import {
   EXISTING_MATCHUP_ID,
 } from '../../constants/errorConditionConstants';
 
-export function addAdHocMatchUps({ tournamentRecord, drawDefinition, structureId, matchUps, event }): ResultType {
+type AddAdHocMatchUpsParams = {
+  suppressNotifications?: boolean; // internal - avoid duplicate notifications from mocksEngine
+  tournamentRecord: any;
+  structureId?: string;
+  drawDefinition: any;
+  matchUps: any[];
+  event: any;
+};
+
+export function addAdHocMatchUps(params: AddAdHocMatchUpsParams): ResultType {
+  const { suppressNotifications, tournamentRecord, drawDefinition, matchUps, event } = params;
   if (typeof drawDefinition !== 'object') return { error: MISSING_DRAW_DEFINITION };
 
+  let structureId = params?.structureId;
   if (!structureId && drawDefinition.structures?.length === 1)
     structureId = drawDefinition.structures?.[0]?.structureId;
 
@@ -59,13 +70,15 @@ export function addAdHocMatchUps({ tournamentRecord, drawDefinition, structureId
     .filter(Boolean)
     .flat();
 
-  addMatchUpsNotice({
-    tournamentId: tournamentRecord?.tournamentId,
-    matchUps: [...tieMatchUps, ...matchUps],
-    eventId: event?.eventId,
-    drawDefinition,
-  });
-  modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
+  if (!suppressNotifications) {
+    addMatchUpsNotice({
+      tournamentId: tournamentRecord?.tournamentId,
+      matchUps: [...tieMatchUps, ...matchUps],
+      eventId: event?.eventId,
+      drawDefinition,
+    });
+    modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
+  }
 
   return { ...SUCCESS };
 }
