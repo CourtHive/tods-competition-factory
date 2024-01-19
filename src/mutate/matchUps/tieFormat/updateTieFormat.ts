@@ -327,7 +327,6 @@ export function updateTieFormat({
         matchUp.tieMatchUps.push(...newMatchUps);
       } else {
         const tieMatchUpIdsToRemove = change.toBePlayedTieMatchUpIds.slice(0, Math.abs(change.countChange));
-        console.log('remove', tieMatchUpIdsToRemove.length);
         matchUpIdsRemoved.push(...tieMatchUpIdsToRemove);
         matchUp.tieMatchUps = matchUp.tieMatchUps.filter(({ matchUpId }) => !tieMatchUpIdsToRemove.includes(matchUpId));
       }

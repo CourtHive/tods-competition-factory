@@ -2,6 +2,7 @@ import { updateAssignmentParticipantResults } from '../drawDefinitions/matchUpGo
 import { deleteMatchUpsNotice, modifyDrawNotice, modifyMatchUpNotice } from '../notifications/drawNotifications';
 import { checkScoreHasValue } from '../../query/matchUp/checkScoreHasValue';
 import { getMissingSequenceNumbers, unique } from '../../tools/arrays';
+import { getMatchUpId } from 'global/functions/extractors';
 import { xa } from '../../tools/objects';
 
 import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
@@ -11,7 +12,6 @@ import {
   INVALID_STRUCTURE,
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
-  MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
 } from '../../constants/errorConditionConstants';
 
@@ -19,20 +19,21 @@ type DeleteAdHocMatchUpsArgs = {
   tournamentRecord?: Tournament;
   drawDefinition: DrawDefinition;
   matchUpIds?: string[];
-  structureId: string;
+  structureId?: string;
   event?: Event;
 };
-export function deleteAdHocMatchUps({
-  tournamentRecord,
-  matchUpIds = [],
-  drawDefinition,
-  structureId,
-  event,
-}: DeleteAdHocMatchUpsArgs) {
+export function deleteAdHocMatchUps(params: DeleteAdHocMatchUpsArgs) {
+  const { tournamentRecord, matchUpIds = [], drawDefinition, event } = params;
   if (typeof drawDefinition !== 'object') return { error: MISSING_DRAW_DEFINITION };
-  if (typeof structureId !== 'string') return { error: MISSING_STRUCTURE_ID };
-
   if (!Array.isArray(matchUpIds)) return { error: INVALID_VALUES };
+
+  const structureId =
+    params.structureId ??
+    drawDefinition?.structures?.find((structure) =>
+      structure.matchUps?.some(({ matchUpId }) => matchUpIds.includes(matchUpId)),
+    )?.structureId;
+
+  if (!structureId) return { error: STRUCTURE_NOT_FOUND };
 
   const structure: any = drawDefinition.structures?.find((structure) => structure.structureId === structureId);
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
@@ -50,14 +51,18 @@ export function deleteAdHocMatchUps({
       if (checkScoreHasValue({ score })) matchUpIdsWithScoreValue.push(matchUpId);
       return matchUpIds.includes(matchUpId);
     }) ?? [];
-  const matchUpIdsToDelete = matchUpsToDelete.map(xa('matchUpId'));
+  const matchUpIdsToDelete = matchUpsToDelete.map(getMatchUpId);
+  const tieMatchUpIdsToDelete: string[] = matchUpsToDelete
+    .map(({ tieMatchUps }) => tieMatchUps?.map(getMatchUpId))
+    .filter(Boolean)
+    .flat();
 
   if (matchUpIdsToDelete.length) {
     structure.matchUps = (structure.matchUps ?? []).filter(({ matchUpId }) => !matchUpIdsToDelete.includes(matchUpId));
 
     deleteMatchUpsNotice({
       tournamentId: tournamentRecord?.tournamentId,
-      matchUpIds: matchUpIdsToDelete,
+      matchUpIds: [...tieMatchUpIdsToDelete, ...matchUpIdsToDelete],
       action: 'deleteAdHocMatchUps',
       eventId: event?.eventId,
       drawDefinition,

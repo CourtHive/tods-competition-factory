@@ -2,31 +2,65 @@
 title: Engine Methods
 ---
 
-engine.importMethods(methods);
+## importMethods
+
+Imports methods into shared factory state.
+
+```ts
+type MethodsObject = {
+  { [key]: function | MethodObject}
+}
+
+engine.importMethods(methods: MethodsObject, traverse?: boolean | string[], maxDepth?: number);
+```
 
 ---
 
+## getTournament
+
+```js
 engine.getTournament(params?)
+```
 
 ---
 
+## getState
+
+```js
 engine.getState = (params?) =>
+```
 
 ---
 
+## reset
+
+```js
 engine.reset();
+```
 
 ---
 
+## devContext
+
+```js
 engine.devContex(contextCriteria);
+```
 
 ---
 
+## getDevContext
+
+```js
 engine.getDevContext(contextCriteria);
+```
 
 ---
 
+## newTournamentRecord
+
+```js
 engine.newTournamentRecord(params);
+```
 
 ---
 
@@ -40,23 +74,43 @@ engine.setState(tournamentRecords, deepCopyOption, deepCopyAttributes);
 
 ---
 
+## setTournamentId
+
+```js
 engine.setTournamentId(tournamentId);
+```
 
 ---
 
+## getTournamentId
+
+```js
 engine.getTournamentId();
+```
 
 ---
 
+## setTournamentRecord
+
+```js
 engine.setTournamentRecord();
+```
 
 ---
 
+## removeTournamentRecord
+
+```js
 engine.removeTournamentRecord(tournamentId);
+```
 
 ---
 
+## removeUnlinkedTournamentRecords
+
+```js
 engine.removeUnlinkedTournamentRecords();
+```
 
 ---
 

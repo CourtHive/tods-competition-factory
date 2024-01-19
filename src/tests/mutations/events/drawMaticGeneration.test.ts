@@ -13,7 +13,6 @@ import {
   INVALID_VALUES,
   MISSING_PARTICIPANT_IDS,
 } from '../../../constants/errorConditionConstants';
-import exp from 'constants';
 
 const getParticipantType = (eventType) => (eventType === SINGLES && INDIVIDUAL) || (eventType === DOUBLES && PAIR);
 

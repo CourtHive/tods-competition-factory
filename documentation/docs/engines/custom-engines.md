@@ -13,8 +13,9 @@ The `tournamentEngine` and `competitionEngine` exports from 'tods-competition-fa
 // queryEngine.ts
 import { governors, syncEngine } from 'tods-competition-engine';
 
-const methods = { ...governors.queryGovernor };
-syncEngine.importMethods(methods);
+syncEngine.importMethods(governors, true, 1); // (object, traverse, maxDepth) => process child objects to add nested methods
+// - or -
+syncEngine.importMethods(governors.queryGovernor);
 
 export const queryEngine = syncEngine;
 ```
