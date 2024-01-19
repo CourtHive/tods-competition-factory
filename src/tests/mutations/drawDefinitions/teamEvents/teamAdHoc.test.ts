@@ -8,6 +8,7 @@ import { ASSIGN_PARTICIPANT } from '../../../../constants/positionActionConstant
 import { DOMINANT_DUO } from '../../../../constants/tieFormatConstants';
 import { AD_HOC } from '../../../../constants/drawDefinitionConstants';
 import { TEAM } from '../../../../constants/eventConstants';
+import { COMPLETED } from '../../../../constants/matchUpStatusConstants';
 
 it('can assign participants to SINGLES/DOUBLES matchUps in TEAM AdHoc events', () => {
   const tournamentId = 't1';
@@ -133,4 +134,18 @@ it('can assign participants to SINGLES/DOUBLES matchUps in TEAM AdHoc events', (
 
   result = tournamentEngine.findMatchUp({ matchUpId: tieMatchUpId }); // resolve by brute force, inContext by default
   expect(result.matchUp.sides.find(hav({ sideNumber: 2 })).participant.participantId).toEqual(side2participantId);
+
+  const { outcome } = mocksEngine.generateOutcomeFromScoreString({
+    scoreString: '6-1 6-2',
+    winningSide: 1,
+  });
+  result = tournamentEngine.setMatchUpStatus({
+    matchUpId: tieMatchUpId,
+    outcome,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.findMatchUp({ matchUpId: tieMatchUpId }); // resolve by brute force, inContext by default
+  expect(result.matchUp.matchUpStatus).toEqual(COMPLETED);
 });
