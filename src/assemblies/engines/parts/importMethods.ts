@@ -5,9 +5,9 @@ import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 import { ResultType } from '../../../global/functions/decorateResult';
 import { SUCCESS } from '../../../constants/resultConstants';
 
-export function importMethods(engine, engineInvoke, submittedMethods, collections, maxDepth?): ResultType {
+export function importMethods(engine, engineInvoke, submittedMethods, traverse, maxDepth?): ResultType {
   if (!isObject(submittedMethods)) return { error: INVALID_VALUES };
-  const collectionFilter = Array.isArray(collections) ? collections : [];
+  const collectionFilter = Array.isArray(traverse) ? traverse : [];
   const methods = {};
   const attrWalker = (obj, depth = 0) => {
     Object.keys(obj).forEach((key) => {
@@ -15,7 +15,7 @@ export function importMethods(engine, engineInvoke, submittedMethods, collection
         methods[key] = obj[key];
       } else if (
         isObject(obj[key]) &&
-        (collections === true || collectionFilter?.includes(key)) &&
+        (traverse === true || collectionFilter?.includes(key)) &&
         (maxDepth === undefined || depth < maxDepth)
       ) {
         attrWalker(obj[key], depth + 1);

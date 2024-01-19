@@ -19,9 +19,9 @@ const { participants } = askEngine.getParticipants({ tournamentId });
 Passing `tournamentId` is unnecessary when there is only one tournament in state, or when `setTournamentId(tournamentId)` has been called.
 
 ```js
-import { askEngine, globalState: { setTournmentId }} from 'tods-competition-factory';
+import { askEngine, globalStat } from 'tods-competition-factory';
 
-setTournamentId(tournamentId);
+globalState.setTournamentId(tournamentId);
 
 // - or -
 askEngine.setTourmamentId(touramentId);
