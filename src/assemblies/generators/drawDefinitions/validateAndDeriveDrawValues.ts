@@ -10,6 +10,7 @@ import { POLICY_TYPE_MATCHUP_ACTIONS, POLICY_TYPE_SEEDING } from '../../../const
 import { INVALID_DRAW_TYPE, MISSING_DRAW_SIZE } from '../../../constants/errorConditionConstants';
 import POLICY_SEEDING_DEFAULT from '../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
 import { PolicyDefinitions } from '../../../types/factoryTypes';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   AD_HOC,
   DOUBLE_ELIMINATION,
@@ -28,8 +29,6 @@ export function validateAndDeriveDrawValues(params): ResultType & {
   drawType?: string;
 } {
   const stack = 'validateAndDeriveDrawValues';
-  const { ignoreAllowedDrawTypes, tournamentRecord, event } = params;
-
   const { appliedPolicies, policyDefinitions } = getPolicies(params);
   const enforceGender = getEnforceGender({ ...params, policyDefinitions, appliedPolicies });
   const consideredEntries = getConsideredEntries(params);
@@ -37,15 +36,7 @@ export function validateAndDeriveDrawValues(params): ResultType & {
   const entriesAreValid = checkEntriesAreValid({ ...params, appliedPolicies });
   if (entriesAreValid?.error) return decorateResult({ result: entriesAreValid, stack });
 
-  const derivedDrawSize =
-    !params.drawSize &&
-    consideredEntries.length &&
-    ![AD_HOC, DOUBLE_ELIMINATION, FEED_IN, ROUND_ROBIN, ROUND_ROBIN_WITH_PLAYOFF].includes(params.drawType ?? '') &&
-    nextPowerOf2(consideredEntries.length);
-
-  // coersion of drawSize and seedsCount to integers
-  const drawSize = derivedDrawSize || (params.drawSize && ensureInt(params.drawSize)) || false; // required for isNaN check
-
+  const drawSize = getDerivedDrawSize({ ...params, consideredEntries });
   const drawTypeResult = getDrawType({ ...params, appliedPolicies, policyDefinitions, drawSize });
   if (drawTypeResult.error) return decorateResult({ result: drawTypeResult, stack });
   const drawType = drawTypeResult.drawType;
@@ -71,19 +62,8 @@ export function validateAndDeriveDrawValues(params): ResultType & {
     policyDefinitions[POLICY_TYPE_SEEDING].seedingProfile = seedingProfile;
   }
 
-  // if tournamentRecord is provided, and unless instructed to ignore valid types,
-  // check for restrictions on allowed drawTypes
-  const allowedDrawTypes =
-    !ignoreAllowedDrawTypes &&
-    tournamentRecord &&
-    getAllowedDrawTypes({
-      tournamentRecord,
-      categoryType: event?.category?.categoryType,
-      categoryName: event?.category?.categoryName,
-    });
-  if (allowedDrawTypes?.length && !allowedDrawTypes.includes(drawType)) {
-    return decorateResult({ result: { error: INVALID_DRAW_TYPE }, stack });
-  }
+  const drawTypeAllowed = checkDrawTypeIsAllowed({ ...params, drawType });
+  if (drawTypeAllowed?.error) return decorateResult({ result: drawTypeAllowed, stack });
 
   return { drawSize, drawType, enforceGender, seedingProfile, appliedPolicies, policyDefinitions };
 }
@@ -152,4 +132,32 @@ function checkEntriesAreValid(params) {
       event,
     })
   );
+}
+
+function getDerivedDrawSize(params) {
+  const derivedDrawSize =
+    !params.drawSize &&
+    params.consideredEntries.length &&
+    ![AD_HOC, DOUBLE_ELIMINATION, FEED_IN, ROUND_ROBIN, ROUND_ROBIN_WITH_PLAYOFF].includes(params.drawType ?? '') &&
+    nextPowerOf2(params.consideredEntries.length);
+
+  // coersion of drawSize and seedsCount to integers
+  return derivedDrawSize || (params.drawSize && ensureInt(params.drawSize)) || false; // required for isNaN check
+}
+
+function checkDrawTypeIsAllowed(params) {
+  const { tournamentRecord, event, ignoreAllowedDrawTypes, drawType } = params;
+  const allowedDrawTypes =
+    !ignoreAllowedDrawTypes &&
+    tournamentRecord &&
+    getAllowedDrawTypes({
+      tournamentRecord,
+      categoryType: event?.category?.categoryType,
+      categoryName: event?.category?.categoryName,
+    });
+  if (allowedDrawTypes?.length && !allowedDrawTypes.includes(drawType)) {
+    return { error: INVALID_DRAW_TYPE };
+  }
+
+  return { ...SUCCESS };
 }
